@@ -2,26 +2,26 @@ import tornado.web
 
 
 class BasicHandler(tornado.web.RequestHandler):
-    def get(self):
+    def get(self):  # $ MISSING: requestHandler
         self.write("BasicHandler " + self.get_argument("xss"))
 
-    def post(self):
+    def post(self):  # $ MISSING: requestHandler
         self.write("BasicHandler (POST)")
 
 
 class DeepInheritance(BasicHandler):
-    def get(self):
+    def get(self):  # $ MISSING: requestHandler
         self.write("DeepInheritance" + self.get_argument("also_xss"))
 
 
 class FormHandler(tornado.web.RequestHandler):
-    def post(self):
+    def post(self):  # $ MISSING: requestHandler
         name = self.get_body_argument("name")
         self.write(name)
 
 
 class RedirectHandler(tornado.web.RequestHandler):
-    def get(self):
+    def get(self):  # $ MISSING: requestHandler
         req = self.request
         h = req.headers
         url = h["url"]
@@ -29,7 +29,7 @@ class RedirectHandler(tornado.web.RequestHandler):
 
 
 class BaseReverseInheritance(tornado.web.RequestHandler):
-    def get(self):
+    def get(self):  # $ MISSING: requestHandler
         self.write("hello from BaseReverseInheritance")
 
 
@@ -38,13 +38,16 @@ class ReverseInheritance(BaseReverseInheritance):
 
 
 def make_app():
-    return tornado.web.Application([
-        (r"/basic", BasicHandler),
-        (r"/deep", DeepInheritance),
-        (r"/form", FormHandler),
-        (r"/redirect", RedirectHandler),
-        (r"/reverse-inheritance", ReverseInheritance),
-    ])
+    return tornado.web.Application(
+        [
+            (r"/basic", BasicHandler),  # $ MISSING: routeSetup="/basic"
+            (r"/deep", DeepInheritance),  # $ MISSING: routeSetup="/deep"
+            (r"/form", FormHandler),  # $ MISSING: routeSetup="/form"
+            (r"/redirect", RedirectHandler),  # $ MISSING: routeSetup="/redirect"
+            (r"/reverse-inheritance", ReverseInheritance),  # $ MISSING: routeSetup="/reverse-inheritance"
+        ],
+        debug=True,
+    )
 
 
 if __name__ == "__main__":
