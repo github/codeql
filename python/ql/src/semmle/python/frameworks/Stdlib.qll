@@ -1616,6 +1616,20 @@ private module Stdlib {
         )
       }
     }
+
+    /**
+     * The entry-point for handling a request with a `BaseHTTPRequestHandler` subclass.
+     *
+     * Not essential for any functionality, but provides a consistent modeling.
+     */
+    private class RequestHandlerFunc extends HTTP::Server::RequestHandler::Range {
+      RequestHandlerFunc() {
+        this = any(HTTPRequestHandlerClassDef cls).getAMethod() and
+        this.getName() = "do_" + HTTP::httpVerb()
+      }
+
+      override Parameter getARoutedParameter() { none() }
+    }
   }
 
   // ---------------------------------------------------------------------------
