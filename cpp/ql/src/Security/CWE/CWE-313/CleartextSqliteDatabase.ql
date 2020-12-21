@@ -34,6 +34,10 @@ predicate sqlite_encryption_used() {
 }
 
 class Configuration extends TaintTrackingConfiguration {
+  override predicate isSource(Expr source) {
+    super.isSource(source) and source instanceof SensitiveExpr
+  }
+
   override predicate isSink(Element taintedArg) {
     exists(SqliteFunctionCall sqliteCall |
       taintedArg = sqliteCall.getASource() and
