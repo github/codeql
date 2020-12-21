@@ -16,3 +16,9 @@ puts a
    puts c # new local variable
    puts d # new local variable
 end
+
+# new global variable
+$global = 42
+
+# use of a pre-defined global variable
+script = $0

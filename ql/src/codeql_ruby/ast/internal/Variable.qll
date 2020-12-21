@@ -101,6 +101,7 @@ cached
 private module Cached {
   cached
   newtype TScope =
+    TGlobalScope() or
     TTopLevelScope(Generated::Program node) or
     TModuleScope(Generated::Module node) or
     TClassScope(AstNode cls) {
@@ -110,6 +111,7 @@ private module Cached {
 
   cached
   newtype TVariable =
+    TGlobalVariable(string name) { name = any(Generated::GlobalVariable var).getValue() } or
     TLocalVariable(VariableScope scope, string name, Generated::Identifier i) {
       scopeDefinesParameterVariable(scope, name, i)
       or
@@ -150,6 +152,14 @@ module VariableScope {
     abstract string toString();
 
     abstract AstNode getScopeElement();
+  }
+}
+
+module GlobalScope {
+  class Range extends VariableScope::Range, TGlobalScope {
+    override string toString() { result = "global scope" }
+
+    override AstNode getScopeElement() { none() }
   }
 }
 
@@ -211,7 +221,7 @@ module Variable {
 }
 
 module LocalVariable {
-  class Range extends Variable::Range {
+  class Range extends Variable::Range, TLocalVariable {
     private VariableScope scope;
     private string name;
     private Generated::Identifier i;
@@ -226,21 +236,43 @@ module LocalVariable {
   }
 }
 
+module GlobalVariable {
+  class Range extends Variable::Range, TGlobalVariable {
+    private string name;
+
+    Range() { this = TGlobalVariable(name) }
+
+    final override string getName() { result = name }
+
+    final override Location getLocation() { none() }
+
+    final override VariableScope getDeclaringScope() { result = TGlobalScope() }
+  }
+}
+
 module VariableAccess {
-  class Range extends Expr::Range, @token_identifier {
-    override Generated::Identifier generated;
-    Variable variable;
-
-    Range() { access(this, variable) }
-
-    Variable getVariable() { result = variable }
+  abstract class Range extends Expr::Range {
+    abstract Variable getVariable();
   }
 }
 
 module LocalVariableAccess {
-  class Range extends VariableAccess::Range {
-    override LocalVariable variable;
+  class Range extends VariableAccess::Range, @token_identifier {
+    override Generated::Identifier generated;
+    LocalVariable variable;
 
-    override LocalVariable getVariable() { result = variable }
+    Range() { access(this, variable) }
+
+    final override LocalVariable getVariable() { result = variable }
+  }
+}
+
+module GlobalVariableAccess {
+  class Range extends VariableAccess::Range, @token_global_variable {
+    GlobalVariable variable;
+
+    Range() { this.(Generated::GlobalVariable).getValue() = variable.getName() }
+
+    final override GlobalVariable getVariable() { result = variable }
   }
 }
