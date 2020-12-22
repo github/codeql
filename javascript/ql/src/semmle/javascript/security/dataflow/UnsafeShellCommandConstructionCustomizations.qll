@@ -201,7 +201,7 @@ module UnsafeShellCommandConstruction {
 
     TypeOfSanitizer() {
       TaintTracking::isTypeofGuard(astNode, x,
-        any(InferredType t | t = TTUndefined() or t = TTNumber() or t = TTBoolean()))
+        any(InferredType t | t = TTNumber() or t = TTBoolean()))
     }
 
     override predicate sanitizes(boolean outcome, Expr e) {
