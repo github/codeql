@@ -451,12 +451,12 @@ abstract class PostUpdateNode extends Node {
 }
 
 /**
- * A partial definition of a node. A partial definition that target arrays or pointers is attached to
+ * A partial definition of a node. A partial definition that targets arrays or pointers is attached to
  * an `InstructionNode` (specifially, to the `ChiInstruction` that follows the `StoreInstruction`), and
- * a partial update that targets a `FieldNode` is attached to the `FieldNode`.
- *s
- * The pre update node of a partial definition of a `FieldNode` is the `FieldNode` itself. This ensures
- * that the dataflow library's reverse read mechanism builds up the correct access path for nested
+ * a partial definition that targets a `FieldNode` is attached to the `FieldNode`.
+ *
+ * The pre-update node of a partial definition of a `FieldNode` is the `FieldNode` itself. This ensures
+ * that the data flow library's reverse read mechanism builds up the correct access path for nested
  * fields.
  * For instance, in `a.b.c = x` there is a partial definition for `c` (let's call it `post[c]`) and a
  * partial definition for `b` (let's call it `post[b]`), and there is a read step from `b` to `c`
