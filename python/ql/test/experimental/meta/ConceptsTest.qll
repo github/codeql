@@ -205,6 +205,8 @@ class HttpServerHttpResponseTest extends InlineExpectationsTest {
     // the tests for routing setup is both annoying and not very useful.
     location.getFile() = file and
     exists(file.getRelativePath()) and
+    // we need to do this step since we expect subclasses could override getARelevantTag
+    tag = getARelevantTag() and
     (
       exists(HTTP::Server::HttpResponse response |
         location = response.getLocation() and
