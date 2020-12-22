@@ -915,7 +915,7 @@ private module SuffixConstruction {
    */
   pragma[noinline]
   private string relevant(RegExpRoot root) {
-    result = ["a", "9", "|", "\n", " ", "|", "\n", "Z"] // must include all the strings from `hasSimpleRejectEdge`.
+    result = ["a", "9", " ", "|", "\n", "Z"] // must include all the strings from `hasSimpleRejectEdge`.
     or
     exists(InputSymbol s | belongsTo(s, root) | result = intersect(s, _))
   }
