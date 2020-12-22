@@ -744,27 +744,27 @@ private FieldNode getOutermostFieldNode(Instruction address) {
 
 private predicate flowIntoReadNode(Node nodeFrom, FieldNode nodeTo) {
   // flow from the memory of a load to the "outermost" field of that load.
-  not nodeFrom.asInstruction().isResultConflated() and
-  (
-    exists(LoadInstruction load |
-      nodeTo = getOutermostFieldNode(load.getSourceAddress()) and
-      nodeFrom.asInstruction() = load.getSourceValueOperand().getAnyDef()
-    )
-    or
-    // We need this to make stores look like loads for the dataflow library. So when there's a store
-    // of the form x->y = z we need to make the field node corresponding to y look like it's reading
-    // from the memory of x.
-    exists(StoreInstruction store, ChiInstruction chi |
-      chi.getPartial() = store and
-      nodeTo = getOutermostFieldNode(store.getDestinationAddress()) and
-      nodeFrom.asInstruction() = chi.getTotal()
-    )
+  exists(LoadInstruction load |
+    nodeTo = getOutermostFieldNode(load.getSourceAddress()) and
+    not nodeFrom.asInstruction().isResultConflated() and
+    nodeFrom.asInstruction() = load.getSourceValueOperand().getAnyDef()
   )
   or
-  exists(ReadSideEffectInstruction read |
-    not read.getSideEffectOperand().getAnyDef().isResultConflated() and
+  // We need this to make stores look like loads for the dataflow library. So when there's a store
+  // of the form x->y = z we need to make the field node corresponding to y look like it's reading
+  // from the memory of x.
+  exists(StoreInstruction store, ChiInstruction chi |
+    chi.getPartial() = store and
+    nodeTo = getOutermostFieldNode(store.getDestinationAddress()) and
+    not nodeFrom.asInstruction().isResultConflated() and
+    nodeFrom.asInstruction() = chi.getTotal()
+  )
+  or
+  exists(ReadSideEffectInstruction read, SideEffectOperand sideEffect |
+    sideEffect = read.getSideEffectOperand() and
+    not sideEffect.getAnyDef().isResultConflated() and
     nodeTo = getOutermostFieldNode(read.getArgumentDef()) and
-    nodeFrom.asOperand() = read.getSideEffectOperand()
+    nodeFrom.asOperand() = sideEffect
   )
 }
 
