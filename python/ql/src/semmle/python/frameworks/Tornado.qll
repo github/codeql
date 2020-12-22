@@ -142,6 +142,14 @@ private module Tornado {
         class RequestHandlerClass extends Class {
           RequestHandlerClass() { this.getParent() = subclassRef().asExpr() }
 
+          /** Gets a function that could handle incoming requests, if any. */
+          Function getARequestHandler() {
+            // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
+            // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
+            result = this.getAMethod() and
+            result.getName() = HTTP::httpVerbLower()
+          }
+
           /** Gets a reference to this class. */
           private DataFlow::Node getARef(DataFlow::TypeTracker t) {
             t.start() and
@@ -489,9 +497,7 @@ private module Tornado {
     override Function getARequestHandler() {
       exists(tornado::web::RequestHandler::RequestHandlerClass cls |
         cls.getARef().asCfgNode() = node.getElement(1) and
-        // TODO: Proper MRO
-        result = cls.getAMethod() and
-        result.getName() = HTTP::httpVerbLower()
+        result = cls.getARequestHandler()
       )
     }
 
@@ -514,6 +520,24 @@ private module Tornado {
         or
         result = requestHandler.getArgByName(regex.getGroupName(_, _))
       )
+    }
+  }
+
+  /** A request handler defined in a tornado RequestHandler class, that has no known route. */
+  private class TornadoRequestHandlerWithoutKnownRoute extends HTTP::Server::RequestHandler::Range {
+    TornadoRequestHandlerWithoutKnownRoute() {
+      exists(tornado::web::RequestHandler::RequestHandlerClass cls |
+        cls.getARequestHandler() = this
+      ) and
+      not exists(TornadoRouteSetup setup | setup.getARequestHandler() = this)
+    }
+
+    override Parameter getARoutedParameter() {
+      // Since we don't know the URL pattern, we simply mark all parameters as a routed
+      // parameter. This should give us more RemoteFlowSources but could also lead to
+      // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
+      result in [this.getArg(_), this.getArgByName(_)] and
+      not result = this.getArg(0)
     }
   }
 }

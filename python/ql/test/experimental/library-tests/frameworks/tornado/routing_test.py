@@ -8,12 +8,12 @@ class FooHandler(tornado.web.RequestHandler):
 
 
 class BarHandler(tornado.web.RequestHandler):
-    def get(self, x, y=None, not_used=None):  # $ MISSING: requestHandler routedParameter=x routedParameter=y
+    def get(self, x, y=None, not_used=None):  # $ requestHandler routedParameter=x routedParameter=y SPURIOUS: routedParameter=not_used
         self.write("BarHandler {} {}".format(x, y))
 
 
 class BazHandler(tornado.web.RequestHandler):
-    def get(self, x, y=None, not_used=None):  # $ MISSING: requestHandler routedParameter=x routedParameter=y
+    def get(self, x, y=None, not_used=None):  # $ requestHandler routedParameter=x routedParameter=y SPURIOUS: routedParameter=not_used
         self.write("BazHandler {} {}".format(x, y))
 
 
@@ -51,7 +51,7 @@ class PossiblyNotRouted(tornado.web.RequestHandler):
     # Even if our analysis can't find a route-setup for this class, we should still
     # consider it to be a handle incoming HTTP requests
 
-    def get(self):  # $ MISSING: requestHandler
+    def get(self):  # $ requestHandler
         self.write("NotRouted")
 
 

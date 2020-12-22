@@ -29,7 +29,7 @@ class RedirectHandler(tornado.web.RequestHandler):
 
 
 class BaseReverseInheritance(tornado.web.RequestHandler):
-    def get(self):  # $ MISSING: requestHandler
+    def get(self):  # $ requestHandler
         self.write("hello from BaseReverseInheritance")
 
 
