@@ -1,0 +1,2 @@
+| query-tests/Security/CWE-078/tst_shell-command-injection-from-environment.js:8 | expected an alert, but found none | NOT OK | ComandInjection |
+| query-tests/Security/CWE-078/tst_shell-command-injection-from-environment.js:9 | expected an alert, but found none | NOT OK | ComandInjection |
