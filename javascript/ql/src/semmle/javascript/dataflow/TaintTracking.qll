@@ -899,7 +899,7 @@ module TaintTracking {
     Expr x;
     override EqualityTest astNode;
 
-    TypeOfUndefinedSanitizer() { isTypeofGuard(astNode, x, TTUndefined()) }
+    TypeOfUndefinedSanitizer() { isTypeofGuard(astNode, x, "undefined") }
 
     override predicate sanitizes(boolean outcome, Expr e) {
       outcome = astNode.getPolarity() and
@@ -910,13 +910,13 @@ module TaintTracking {
   }
 
   /**
-   * Holds if `test` is a guard that checks if `operand` is typeof `type`.
+   * Holds if `test` is a guard that checks if `operand` is typeof `tag`.
    *
    * See `TypeOfUndefinedSanitizer` for example usage.
    */
-  predicate isTypeofGuard(EqualityTest test, Expr operand, InferredType type) {
+  predicate isTypeofGuard(EqualityTest test, Expr operand, TypeofTag tag) {
     exists(Expr str, TypeofExpr typeof | test.hasOperands(str, typeof) |
-      str.mayHaveStringValue(type.getTypeofTag()) and
+      str.mayHaveStringValue(tag) and
       typeof.getOperand() = operand
     )
   }

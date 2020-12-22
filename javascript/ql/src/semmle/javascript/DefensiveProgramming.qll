@@ -326,15 +326,15 @@ module DefensiveExpressionTest {
    */
   private class TypeofTest extends EqualityTest {
     Expr operand;
-    InferredType type;
+    TypeofTag tag;
 
-    TypeofTest() { TaintTracking::isTypeofGuard(this, operand, type) }
+    TypeofTest() { TaintTracking::isTypeofGuard(this, operand, tag) }
 
     boolean getTheTestResult() {
       exists(boolean testResult |
-        testResult = true and operand.analyze().getTheType() = type
+        testResult = true and operand.analyze().getTheType().getTypeofTag() = tag
         or
-        testResult = false and not operand.analyze().getAType() = type
+        testResult = false and not operand.analyze().getAType().getTypeofTag() = tag
       |
         if getPolarity() = true then result = testResult else result = testResult.booleanNot()
       )
@@ -348,7 +348,7 @@ module DefensiveExpressionTest {
     /**
      * Gets the `typeof` tag that is tested.
      */
-    TypeofTag getTag() { result = type.getTypeofTag() }
+    TypeofTag getTag() { result = tag }
   }
 
   /**

@@ -168,10 +168,10 @@ module PrototypePollutingAssignment {
     boolean polarity;
 
     TypeofCheck() {
-      exists(InferredType type | TaintTracking::isTypeofGuard(astNode, operand, type) |
-        type = TTObject() and polarity = astNode.getPolarity().booleanNot()
+      exists(TypeofTag value | TaintTracking::isTypeofGuard(astNode, operand, value) |
+        value = "object" and polarity = astNode.getPolarity().booleanNot()
         or
-        type != TTObject() and polarity = astNode.getPolarity()
+        value != "object" and polarity = astNode.getPolarity()
       )
     }
 

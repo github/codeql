@@ -100,7 +100,7 @@ module UnvalidatedDynamicMethodCall {
     override EqualityTest astNode;
     Expr operand;
 
-    FunctionCheck() { TaintTracking::isTypeofGuard(astNode, operand, TTFunction()) }
+    FunctionCheck() { TaintTracking::isTypeofGuard(astNode, operand, "function") }
 
     override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       outcome = astNode.getPolarity() and

@@ -199,10 +199,7 @@ module UnsafeShellCommandConstruction {
     Expr x;
     override EqualityTest astNode;
 
-    TypeOfSanitizer() {
-      TaintTracking::isTypeofGuard(astNode, x,
-        any(InferredType t | t = TTNumber() or t = TTBoolean()))
-    }
+    TypeOfSanitizer() { TaintTracking::isTypeofGuard(astNode, x, ["number", "boolean"]) }
 
     override predicate sanitizes(boolean outcome, Expr e) {
       outcome = astNode.getPolarity() and

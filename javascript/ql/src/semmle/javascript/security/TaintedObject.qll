@@ -103,13 +103,13 @@ module TaintedObject {
     boolean polarity;
 
     TypeTestGuard() {
-      exists(InferredType type | TaintTracking::isTypeofGuard(astNode, operand, type) |
+      exists(TypeofTag tag | TaintTracking::isTypeofGuard(astNode, operand, tag) |
         // typeof x === "object" sanitizes `x` when it evaluates to false
-        type = TTObject() and
+        tag = "object" and
         polarity = astNode.getPolarity().booleanNot()
         or
         // typeof x === "string" sanitizes `x` when it evaluates to true
-        type != TTObject() and
+        tag != "object" and
         polarity = astNode.getPolarity()
       )
     }

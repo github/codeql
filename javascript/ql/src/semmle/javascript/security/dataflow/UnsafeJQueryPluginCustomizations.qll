@@ -134,7 +134,7 @@ module UnsafeJQueryPlugin {
             SyntacticConstants::isUndefined(undef)
           )
           or
-          TaintTracking::isTypeofGuard(test, read.asExpr(), TTUndefined())
+          TaintTracking::isTypeofGuard(test, read.asExpr(), "undefined")
         )
         or
         polarity = true and

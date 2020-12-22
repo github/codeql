@@ -108,13 +108,13 @@ module XssThroughDom {
     boolean polarity;
 
     TypeTestGuard() {
-      exists(InferredType type | TaintTracking::isTypeofGuard(astNode, operand, type) |
+      exists(TypeofTag tag | TaintTracking::isTypeofGuard(astNode, operand, tag) |
         // typeof x === "string" sanitizes `x` when it evaluates to false
-        type = TTString() and
+        tag = "string" and
         polarity = astNode.getPolarity().booleanNot()
         or
         // typeof x === "object" sanitizes `x` when it evaluates to true
-        type != TTString() and
+        tag != "string" and
         polarity = astNode.getPolarity()
       )
     }

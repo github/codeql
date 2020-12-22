@@ -396,18 +396,18 @@ class InstanceOfGuard extends DataFlow::LabeledBarrierGuardNode, DataFlow::Value
 class TypeofGuard extends DataFlow::LabeledBarrierGuardNode, DataFlow::ValueNode {
   override EqualityTest astNode;
   Expr operand;
-  InferredType type;
+  TypeofTag tag;
 
-  TypeofGuard() { TaintTracking::isTypeofGuard(astNode, operand, type) }
+  TypeofGuard() { TaintTracking::isTypeofGuard(astNode, operand, tag) }
 
   override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
     e = operand and
     outcome = astNode.getPolarity() and
     (
-      type = TTObject() and
+      tag = "object" and
       label = "constructor"
       or
-      type = TTFunction() and
+      tag = "function" and
       label = "__proto__"
     )
     or
@@ -416,10 +416,10 @@ class TypeofGuard extends DataFlow::LabeledBarrierGuardNode, DataFlow::ValueNode
     (
       // If something is not an object, sanitize object, as both must end
       // in non-function prototype object.
-      type = TTObject() and
+      tag = "object" and
       label instanceof UnsafePropLabel
       or
-      type = TTFunction() and
+      tag = "function" and
       label = "constructor"
     )
   }
