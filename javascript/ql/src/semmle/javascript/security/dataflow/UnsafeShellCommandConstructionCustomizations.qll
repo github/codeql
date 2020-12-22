@@ -7,6 +7,7 @@
 import javascript
 private import semmle.javascript.security.dataflow.RemoteFlowSources
 private import semmle.javascript.PackageExports as Exports
+private import semmle.javascript.dataflow.InferredTypes
 
 /**
  * Module containing sources, sinks, and sanitizers for shell command constructed from library input.
@@ -199,8 +200,10 @@ module UnsafeShellCommandConstruction {
     override EqualityTest astNode;
 
     TypeOfSanitizer() {
-      exists(StringLiteral str, TypeofExpr typeof | astNode.hasOperands(str, typeof) |
-        str.getValue() = ["number", "boolean"] and // "undefined" is already handled in TaintTracking.qll
+      exists(Expr str, TypeofExpr typeof | astNode.hasOperands(str, typeof) |
+        str.mayHaveStringValue(any(InferredType t |
+            t = TTUndefined() or t = TTNumber() or t = TTBoolean()
+          ).getTypeofTag()) and
         typeof.getOperand() = x
       )
     }
