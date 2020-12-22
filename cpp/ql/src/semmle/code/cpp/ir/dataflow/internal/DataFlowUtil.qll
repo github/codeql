@@ -185,16 +185,24 @@ class OperandNode extends Node, TOperandNode {
   override string toString() { result = this.getOperand().toString() }
 }
 
+/** An abstract class that defines conversion-like instructions. */
 abstract private class SkippableInstruction extends Instruction {
   abstract Instruction getSourceInstruction();
 }
 
+/**
+ * Gets the instruction that is propaged through a non-empty sequence of conversion-like instructions.
+ */
 private Instruction skipSkippableInstructionsRec(SkippableInstruction skip) {
   result = skip.getSourceInstruction() and not result instanceof SkippableInstruction
   or
   result = skipSkippableInstructionsRec(skip.getSourceInstruction())
 }
 
+/**
+ * Gets the instruction that is propagated through a (possibly empty) sequence of conversion-like
+ * instructions.
+ */
 private Instruction skipSkippableInstructions(Instruction instr) {
   result = instr and not result instanceof SkippableInstruction
   or
@@ -228,8 +236,16 @@ FieldNode getFieldNodeForFieldInstruction(Instruction instr) {
 }
 
 /**
- * INTERNAL: do not use. A `FieldNode` represents the state of an object after modifying one
- * of its fields.
+ * INTERNAL: do not use. A `FieldNode` represents the state of a field before any partial definitions
+ * of the field. For instance, in the snippet:
+ * ```cpp
+ * struct A { int b, c; };
+ * // ...
+ * A a;
+ * f(a.b.c);
+ * ```
+ * there are two `FieldNode`s: one corresponding to `c`, and one corresponding to `b`. Similarly,
+ * in `a.b.c = x` there are two `FieldNode`s: one for `c` and one for `b`.
  */
 class FieldNode extends Node, TFieldNode {
   FieldAddressInstruction field;
@@ -272,10 +288,9 @@ class FieldNode extends Node, TFieldNode {
 }
 
 /**
- * INTERNAL: do not use. A `FieldNode` represents the state of an object after modifying one
- * of its fields.
+ * INTERNAL: do not use. A partial definition of a `FieldNode`.
  */
-class PostUpdateFieldNode extends PartialDefinition {
+class PartialFieldDefinition extends PartialDefinition {
   override FieldNode node;
 
   override FieldNode getPreUpdateNode() { result = node }
@@ -435,6 +450,18 @@ abstract class PostUpdateNode extends Node {
   override Location getLocation() { result = getPreUpdateNode().getLocation() }
 }
 
+/**
+ * A partial definition of a node. A partial definition that target arrays or pointers is attached to
+ * an `InstructionNode` (specifially, to the `ChiInstruction` that follows the `StoreInstruction`), and
+ * a partial update that targets a `FieldNode` is attached to the `FieldNode`.
+ *s
+ * The pre update node of a partial definition of a `FieldNode` is the `FieldNode` itself. This ensures
+ * that the dataflow library's reverse read mechanism builds up the correct access path for nested
+ * fields.
+ * For instance, in `a.b.c = x` there is a partial definition for `c` (let's call it `post[c]`) and a
+ * partial definition for `b` (let's call it `post[b]`), and there is a read step from `b` to `c`
+ * (using `instrToFieldNodeReadStep`), so there is a store step from `post[c]` to `post[b]`.
+ */
 private newtype TPartialDefinition =
   MkPartialDefinition(Node node) {
     isPointerStoreNode(node, _, _) or
@@ -681,7 +708,7 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
 private predicate flowOutOfPostUpdate(PartialDefinitionNode nodeFrom, Node nodeTo) {
   // flow from the "outermost" field to the `ChiInstruction`, or `StoreInstruction`
   // if no `ChiInstruction` exists.
-  exists(AddressOperand addressOperand, PostUpdateFieldNode pd |
+  exists(AddressOperand addressOperand, PartialFieldDefinition pd |
     pd = nodeFrom.getPartialDefinition() and
     not exists(pd.getPreUpdateNode().getObjectNode()) and
     pd.getPreUpdateNode().getNextNode*() = getFieldNodeForFieldInstruction(addressOperand.getDef()) and
@@ -707,30 +734,37 @@ private predicate flowOutOfPostUpdate(PartialDefinitionNode nodeFrom, Node nodeT
   )
 }
 
-private predicate flowIntoReadNode(Node nodeFrom, Node nodeTo) {
-  // flow from the "innermost" field to the load of that field.
-  exists(FieldNode fieldNode | nodeTo = fieldNode |
-    not exists(fieldNode.getObjectNode()) and
-    (
-      exists(LoadInstruction load |
-        fieldNode.getNextNode*() = getFieldNodeForFieldInstruction(load.getSourceAddress()) and
-        nodeFrom.asInstruction() = load.getSourceValueOperand().getAnyDef()
-      )
-      or
-      // We need this to make stores look like loads for the dataflow library. So when there's a store
-      // of the form x->y = z we need to make the field node corresponding to y look like it's reading
-      // from the memory of x.
-      exists(StoreInstruction store, ChiInstruction chi |
-        chi.getPartial() = store and
-        fieldNode.getNextNode*() = getFieldNodeForFieldInstruction(store.getDestinationAddress()) and
-        nodeFrom.asInstruction() = chi.getTotal()
-      )
-      or
-      exists(ReadSideEffectInstruction read |
-        fieldNode.getNextNode*() = getFieldNodeForFieldInstruction(read.getArgumentDef()) and
-        nodeFrom.asOperand() = read.getSideEffectOperand()
-      )
+/**
+ * Gets the `FieldNode` corresponding to the outermost field that is used to compute `address`.
+ */
+private FieldNode getOutermostFieldNode(Instruction address) {
+  not exists(result.getObjectNode()) and
+  result.getNextNode*() = getFieldNodeForFieldInstruction(address)
+}
+
+private predicate flowIntoReadNode(Node nodeFrom, FieldNode nodeTo) {
+  // flow from the memory of a load to the "outermost" field of that load.
+  not nodeFrom.asInstruction().isResultConflated() and
+  (
+    exists(LoadInstruction load |
+      nodeTo = getOutermostFieldNode(load.getSourceAddress()) and
+      nodeFrom.asInstruction() = load.getSourceValueOperand().getAnyDef()
     )
+    or
+    // We need this to make stores look like loads for the dataflow library. So when there's a store
+    // of the form x->y = z we need to make the field node corresponding to y look like it's reading
+    // from the memory of x.
+    exists(StoreInstruction store, ChiInstruction chi |
+      chi.getPartial() = store and
+      nodeTo = getOutermostFieldNode(store.getDestinationAddress()) and
+      nodeFrom.asInstruction() = chi.getTotal()
+    )
+  )
+  or
+  exists(ReadSideEffectInstruction read |
+    not read.getSideEffectOperand().getAnyDef().isResultConflated() and
+    nodeTo = getOutermostFieldNode(read.getArgumentDef()) and
+    nodeFrom.asOperand() = read.getSideEffectOperand()
   )
 }
 

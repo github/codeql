@@ -237,12 +237,12 @@ private class ArrayContent extends Content, TArrayContent {
 private predicate instrToFieldNodeStoreStepNoChi(
   Node node1, FieldContent f, PartialDefinitionNode node2
 ) {
-  exists(StoreInstruction store, PostUpdateFieldNode post |
-    post = node2.getPartialDefinition() and
+  exists(StoreInstruction store, PartialFieldDefinition pd |
+    pd = node2.getPartialDefinition() and
     not exists(ChiInstruction chi | chi.getPartial() = store) and
-    post.getPreUpdateNode() = getFieldNodeForFieldInstruction(store.getDestinationAddress()) and
+    pd.getPreUpdateNode() = getFieldNodeForFieldInstruction(store.getDestinationAddress()) and
     store.getSourceValueOperand() = node1.asOperand() and
-    f.getADirectField() = post.getPreUpdateNode().getField()
+    f.getADirectField() = pd.getPreUpdateNode().getField()
   )
 }
 
@@ -255,15 +255,15 @@ private predicate instrToFieldNodeStoreStepChi(
   Node node1, FieldContent f, PartialDefinitionNode node2
 ) {
   exists(
-    ChiPartialOperand operand, StoreInstruction store, ChiInstruction chi, PostUpdateFieldNode post
+    ChiPartialOperand operand, StoreInstruction store, ChiInstruction chi, PartialFieldDefinition pd
   |
-    post = node2.getPartialDefinition() and
+    pd = node2.getPartialDefinition() and
     not chi.isResultConflated() and
     node1.asOperand() = operand and
     chi.getPartialOperand() = operand and
     store = operand.getDef() and
-    post.getPreUpdateNode() = getFieldNodeForFieldInstruction(store.getDestinationAddress()) and
-    f.getADirectField() = post.getPreUpdateNode().getField()
+    pd.getPreUpdateNode() = getFieldNodeForFieldInstruction(store.getDestinationAddress()) and
+    f.getADirectField() = pd.getPreUpdateNode().getField()
   )
 }
 
@@ -271,14 +271,14 @@ private predicate callableWithoutDefinitionStoreStep(
   Node node1, FieldContent f, PartialDefinitionNode node2
 ) {
   exists(
-    WriteSideEffectInstruction write, ChiInstruction chi, PostUpdateFieldNode post,
+    WriteSideEffectInstruction write, ChiInstruction chi, PartialFieldDefinition pd,
     Function callable, CallInstruction call
   |
     chi.getPartial() = write and
     not chi.isResultConflated() and
-    post = node2.getPartialDefinition() and
-    post.getPreUpdateNode() = getFieldNodeForFieldInstruction(write.getDestinationAddress()) and
-    f.getADirectField() = post.getPreUpdateNode().getField() and
+    pd = node2.getPartialDefinition() and
+    pd.getPreUpdateNode() = getFieldNodeForFieldInstruction(write.getDestinationAddress()) and
+    f.getADirectField() = pd.getPreUpdateNode().getField() and
     call = write.getPrimaryInstruction() and
     callable = call.getStaticCallTarget() and
     not callable.hasDefinition()
@@ -346,6 +346,12 @@ private class ArrayToPointerConvertInstruction extends ConvertInstruction {
   }
 }
 
+/**
+ * These two predicates look like copy-paste from the two predicates with the same name in DataFlowUtil,
+ * but crucially they only skip past `CopyValueInstruction`s. This is because we use a special case of
+ * a `ConvertInstruction` to detect some read steps from arrays that undergoes array-to-pointer
+ * conversion.
+ */
 private Instruction skipOneCopyValueInstructionRec(CopyValueInstruction copy) {
   copy.getUnary() = result and not result instanceof CopyValueInstruction
   or
