@@ -17,7 +17,7 @@ import javascript
 /**
  * A configuration for which parts of a regular expression should be considered relevant for
  * the different predicates in `ReDoS.qll`.
- * Used to adjust the computations for either superliniear or exponential backtracking.
+ * Used to adjust the computations for either superlinear or exponential backtracking.
  */
 abstract class ReDoSConfiguration extends string {
   bindingset[this]
@@ -124,12 +124,12 @@ private class RegexpCharacterConstant extends RegExpConstant {
 }
 
 /**
- * Holds if `term` is the chosen cannonical representative for all terms with string representation `str`.
+ * Holds if `term` is the chosen canonical representative for all terms with string representation `str`.
  *
- * Using cannonical representatives gives a huge performance boost when working with tuples containing multiple `InputSymbol`s.
+ * Using canonical representatives gives a huge performance boost when working with tuples containing multiple `InputSymbol`s.
  * The number of `InputSymbol`s is decreased by 3 orders of magnitude or more in some larger benchmarks.
  */
-private predicate isCannonicalTerm(RegExpTerm term, string str) {
+private predicate isCanonicalTerm(RegExpTerm term, string str) {
   term =
     rank[1](RegExpTerm t, Location loc, File file |
       loc = t.getLocation() and
@@ -154,7 +154,7 @@ private newtype TInputSymbol =
    */
   CharClass(string charClassString) {
     exists(RegExpTerm term | term.getRawValue() = charClassString | getRoot(term).isRelevant()) and
-    exists(RegExpTerm recc | isCannonicalTerm(recc, charClassString) |
+    exists(RegExpTerm recc | isCanonicalTerm(recc, charClassString) |
       recc instanceof RegExpCharacterClass and
       not recc.(RegExpCharacterClass).isUniversalClass()
       or
@@ -167,6 +167,13 @@ private newtype TInputSymbol =
   Any() or
   /** An epsilon transition in the automaton. */
   Epsilon()
+
+/**
+ * Gets the canonical CharClass for `term`.
+ */
+CharClass getCanonicalCharClass(RegExpTerm term) {
+  exists(string str | isCanonicalTerm(term, str) | result = CharClass(str))
+}
 
 /**
  * Holds if `a` and `b` are input symbols from the same regexp.
@@ -251,10 +258,7 @@ private module CharacterClasses {
    */
   pragma[noinline]
   predicate hasChildThatMatches(RegExpCharacterClass cc, string char) {
-    exists(string str |
-      isCannonicalTerm(cc, str) and
-      exists(CharClass(str))
-    ) and
+    exists(getCanonicalCharClass(cc)) and
     exists(RegExpTerm child | child = cc.getAChild() |
       char = child.(RegexpCharacterConstant).getValue()
       or
@@ -350,9 +354,7 @@ private module CharacterClasses {
   private class PositiveCharacterClass extends CharacterClass {
     RegExpCharacterClass cc;
 
-    PositiveCharacterClass() {
-      exists(string str | isCannonicalTerm(cc, str) | this = CharClass(str) and not cc.isInverted())
-    }
+    PositiveCharacterClass() { this = getCanonicalCharClass(cc) and not cc.isInverted() }
 
     override string getARelevantChar() { result = getAMentionedChar(cc) }
 
@@ -365,9 +367,7 @@ private module CharacterClasses {
   private class InvertedCharacterClass extends CharacterClass {
     RegExpCharacterClass cc;
 
-    InvertedCharacterClass() {
-      exists(string str | isCannonicalTerm(cc, str) | this = CharClass(str) and cc.isInverted())
-    }
+    InvertedCharacterClass() { this = getCanonicalCharClass(cc) and cc.isInverted() }
 
     override string getARelevantChar() {
       result = nextChar(getAMentionedChar(cc)) or
@@ -405,9 +405,7 @@ private module CharacterClasses {
     RegExpCharacterClassEscape cc;
 
     PositiveCharacterClassEscape() {
-      exists(string str | isCannonicalTerm(cc, str) |
-        this = CharClass(str) and cc.getValue() = ["d", "s", "w"]
-      )
+      this = getCanonicalCharClass(cc) and cc.getValue() = ["d", "s", "w"]
     }
 
     override string getARelevantChar() {
@@ -442,9 +440,7 @@ private module CharacterClasses {
     RegExpCharacterClassEscape cc;
 
     NegativeCharacterClassEscape() {
-      exists(string str | isCannonicalTerm(cc, str) |
-        this = CharClass(str) and cc.getValue() = ["D", "S", "W"]
-      )
+      this = getCanonicalCharClass(cc) and cc.getValue() = ["D", "S", "W"]
     }
 
     override string getARelevantChar() {
@@ -802,14 +798,14 @@ private module PrefixConstruction {
       result = prefix(prev) and delta(prev, Epsilon(), state)
       or
       not delta(prev, Epsilon(), state) and
-      result = prefix(prev) + getMinimumEdgeChar(prev, state)
+      result = prefix(prev) + getCanonicalEdgeChar(prev, state)
     )
   }
 
   /**
-   * Gets the minimum char for which there exists a transition from `prev` to `next` in the NFA.
+   * Gets a canonical char for which there exists a transition from `prev` to `next` in the NFA.
    */
-  private string getMinimumEdgeChar(State prev, State next) {
+  private string getCanonicalEdgeChar(State prev, State next) {
     result =
       min(string c | delta(prev, any(InputSymbol symbol | c = intersect(Any(), symbol)), next))
   }
@@ -882,6 +878,7 @@ private module SuffixConstruction {
     // all edges (at least one) with some char leads to another state that is rejectable.
     // the `next` states might not share a common suffix, which can cause FPs.
     exists(string char | char = hasEdgeToLikelyRejectableHelper(s) |
+      // noopt to force `hasEdgeToLikelyRejectableHelper` to be first in the join-order.
       exists(State next | deltaClosedChar(s, char, next) | isLikelyRejectable(next)) and
       forall(State next | deltaClosedChar(s, char, next) | isLikelyRejectable(next))
     )
@@ -935,7 +932,7 @@ private module SuffixConstruction {
   }
 
   /**
-   * Holds if there is not edge from `s` labeled with "|", "\n", or "Z" in our NFA.
+   * Holds if there is no edge from `s` labeled with "|", "\n", or "Z" in our NFA.
    * This predicate is used as a cheap pre-processing to speed up `hasRejectEdge`.
    */
   private predicate hasSimpleRejectEdge(State s) {
@@ -953,6 +950,8 @@ private module SuffixConstruction {
       exists(string char, InputSymbol sym |
         char = w.charAt(i) and
         deltaClosed(prev, sym, result) and
+        // noopt to prevent joining `prev` with all possible `chars` that could transition away from `prev`.
+        // Instead only join with the set of `chars` where a relevant `InputSymbol` has already been found.
         sym = getAProcessInputSymbol(char)
       )
     )
@@ -1015,8 +1014,8 @@ private string rotate(string str, int i) {
 }
 
 /**
- * Holds if `term` may cause superliniear backtracking on strings containing many repetitions of `pump`.
- * Gets the minimum possible string that causes superliniear backtracking.
+ * Holds if `term` may cause superlinear backtracking on strings containing many repetitions of `pump`.
+ * Gets the shortest string that causes superlinear backtracking.
  */
 private predicate isReDoSAttackable(RegExpTerm term, string pump, State s) {
   exists(int i, string c | s = Match(term, i) |

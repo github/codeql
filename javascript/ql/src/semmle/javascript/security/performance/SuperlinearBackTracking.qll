@@ -44,10 +44,10 @@ import ReDoSUtil
  */
 
 /**
- * An instantiaion of `ReDoSConfiguration` for superliniear ReDoS.
+ * An instantiaion of `ReDoSConfiguration` for superlinear ReDoS.
  */
-class SuperLiniearReDoSConfiguration extends ReDoSConfiguration {
-  SuperLiniearReDoSConfiguration() { this = "SuperLiniearReDoSConfiguration" }
+class SuperLinearReDoSConfiguration extends ReDoSConfiguration {
+  SuperLinearReDoSConfiguration() { this = "SuperLinearReDoSConfiguration" }
 
   override predicate isReDoSCandidate(State state, string pump) { isPumpable(_, state, pump) }
 }
@@ -109,23 +109,23 @@ private module FeasibleTuple {
   pragma[inline]
   predicate isFeasibleTuple(State r1, State r2, State r3) {
     // The first element is either inside a repetition (or the start state itself)
-    isRepeitionOrStart(r1) and
+    isRepetitionOrStart(r1) and
     // The last element is inside a repetition
     stateInsideRepetition(r3) and
     // The states are reachable in the NFA in the order r1 -> r2 -> r3
     delta+(r1) = r2 and
     delta+(r2) = r3 and
-    // The last element can reach a target (the "succ" state in a `(pivot, succ)` pair).
-    canReachATarget(r3) and
     // The first element can reach a beginning (the "pivot" state in a `(pivot, succ)` pair).
-    canReachABeginning(r1)
+    canReachABeginning(r1) and
+    // The last element can reach a target (the "succ" state in a `(pivot, succ)` pair).
+    canReachATarget(r3)
   }
 
   /**
    * Holds if `s` is either inside a repetition, or is the start state (which is a repetition).
    */
   pragma[noinline]
-  private predicate isRepeitionOrStart(State s) { stateInsideRepetition(s) or s = getRootState() }
+  private predicate isRepetitionOrStart(State s) { stateInsideRepetition(s) or s = getRootState() }
 
   /**
    * Holds if state `s` might be inside a backtracking repetition.
@@ -155,7 +155,7 @@ private module FeasibleTuple {
 /**
  * Holds if `pivot` and `succ` are a pair of loops that could be the beginning of a quadratic blowup.
  *
- * There is a slight implementation difference compared to the paper: this predicate require that `pivot != succ`.
+ * There is a slight implementation difference compared to the paper: this predicate requires that `pivot != succ`.
  * The case where `pivot = succ` causes exponential backtracking and is handled by the `js/redos` query.
  */
 predicate isStartLoops(State pivot, State succ) {
@@ -163,7 +163,7 @@ predicate isStartLoops(State pivot, State succ) {
   succ.getRepr() instanceof InfiniteRepetitionQuantifier and
   delta+(pivot) = succ and
   (
-    pivot.getRepr() = any(InfiniteRepetitionQuantifier i)
+    pivot.getRepr() instanceof InfiniteRepetitionQuantifier
     or
     pivot = mkMatch(any(RegExpRoot root))
   )
@@ -333,7 +333,7 @@ StateTuple getAnEndTuple(State pivot, State succ) {
  * From theorem 3 in the paper linked in the top of this file we can therefore conclude that
  * the regular expression has polynomial backtracking - if a rejecting suffix exists.
  *
- * This predicate is used by `SuperLiniearReDoSConfiguration`, and the final results are
+ * This predicate is used by `SuperLinearReDoSConfiguration`, and the final results are
  * available in the `hasReDoSResult` predicate.
  */
 predicate isPumpable(State pivot, State succ, string pump) {
