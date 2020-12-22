@@ -111,6 +111,7 @@ class CodeExecutionTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = "getCode" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
     exists(CodeExecution ce, DataFlow::Node code |
       exists(location.getFile().getRelativePath()) and
       code = ce.getCode() and
@@ -128,6 +129,7 @@ class SqlExecutionTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = "getSql" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
     exists(SqlExecution e, DataFlow::Node sql |
       exists(location.getFile().getRelativePath()) and
       sql = e.getSql() and
@@ -145,6 +147,7 @@ class HttpServerRouteSetupTest extends InlineExpectationsTest {
   override string getARelevantTag() { result in ["routeSetup"] }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
     exists(HTTP::Server::RouteSetup setup |
       location = setup.getLocation() and
       element = setup.toString() and
@@ -165,19 +168,22 @@ class HttpServerRequestHandlerTest extends InlineExpectationsTest {
   override string getARelevantTag() { result in ["requestHandler", "routedParameter"] }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(HTTP::Server::RequestHandler handler |
-      location = handler.getLocation() and
-      element = handler.toString() and
-      value = "" and
-      tag = "requestHandler"
-    )
-    or
-    exists(HTTP::Server::RequestHandler handler, Parameter param |
-      param = handler.getARoutedParameter() and
-      location = param.getLocation() and
-      element = param.toString() and
-      value = param.asName().getId() and
-      tag = "routedParameter"
+    exists(location.getFile().getRelativePath()) and
+    (
+      exists(HTTP::Server::RequestHandler handler |
+        location = handler.getLocation() and
+        element = handler.toString() and
+        value = "" and
+        tag = "requestHandler"
+      )
+      or
+      exists(HTTP::Server::RequestHandler handler, Parameter param |
+        param = handler.getARoutedParameter() and
+        location = param.getLocation() and
+        element = param.toString() and
+        value = param.asName().getId() and
+        tag = "routedParameter"
+      )
     )
   }
 }
@@ -198,7 +204,7 @@ class HttpServerHttpResponseTest extends InlineExpectationsTest {
     // flask tests more readable since adding full annotations for HttpResponses in the
     // the tests for routing setup is both annoying and not very useful.
     location.getFile() = file and
-    tag = getARelevantTag() and
+    exists(file.getRelativePath()) and
     (
       exists(HTTP::Server::HttpResponse response |
         location = response.getLocation() and
@@ -237,8 +243,8 @@ class FileSystemAccessTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = "getAPathArgument" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
     exists(FileSystemAccess a, DataFlow::Node path |
-      exists(location.getFile().getRelativePath()) and
       path = a.getAPathArgument() and
       location = a.getLocation() and
       element = path.toString() and
@@ -254,8 +260,8 @@ class PathNormalizationTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = "pathNormalization" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
     exists(Path::PathNormalization n |
-      exists(location.getFile().getRelativePath()) and
       location = n.getLocation() and
       element = n.toString() and
       value = "" and
@@ -270,8 +276,8 @@ class SafeAccessCheckTest extends InlineExpectationsTest {
   override string getARelevantTag() { result in ["checks", "branch"] }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
     exists(Path::SafeAccessCheck c, DataFlow::Node checks, boolean branch |
-      exists(location.getFile().getRelativePath()) and
       c.checks(checks.asCfgNode(), branch) and
       location = c.getLocation() and
       (
