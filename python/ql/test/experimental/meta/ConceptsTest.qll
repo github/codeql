@@ -142,9 +142,7 @@ class SqlExecutionTest extends InlineExpectationsTest {
 class HttpServerRouteSetupTest extends InlineExpectationsTest {
   HttpServerRouteSetupTest() { this = "HttpServerRouteSetupTest" }
 
-  override string getARelevantTag() {
-    result in ["routeSetup", "requestHandler", "routedParameter"]
-  }
+  override string getARelevantTag() { result in ["routeSetup"] }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(HTTP::Server::RouteSetup setup |
@@ -158,7 +156,15 @@ class HttpServerRouteSetupTest extends InlineExpectationsTest {
       ) and
       tag = "routeSetup"
     )
-    or
+  }
+}
+
+class HttpServerRequestHandlerTest extends InlineExpectationsTest {
+  HttpServerRequestHandlerTest() { this = "HttpServerRequestHandlerTest" }
+
+  override string getARelevantTag() { result in ["requestHandler", "routedParameter"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(HTTP::Server::RequestHandler handler |
       location = handler.getLocation() and
       element = handler.toString() and
