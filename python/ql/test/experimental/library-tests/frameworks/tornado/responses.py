@@ -2,7 +2,7 @@ import tornado.web
 
 
 class ResponseWriting(tornado.web.RequestHandler):
-    def get(self, type_):  # $ MISSING: requestHandler routedParameter=type_
+    def get(self, type_):  # $ requestHandler routedParameter=type_
         if type_ == "str":
             self.write("foo")
         elif type_ == "bytes":
@@ -17,7 +17,7 @@ class ResponseWriting(tornado.web.RequestHandler):
 def make_app():
     return tornado.web.Application(
         [
-            (r"/ResponseWriting/(str|bytes|dict)", ResponseWriting),  # $ MISSING: routeSetup="/ResponseWriting/(str|bytes|dict)"
+            (r"/ResponseWriting/(str|bytes|dict)", ResponseWriting),  # $ routeSetup="/ResponseWriting/(str|bytes|dict)"
         ],
         debug=True,
     )

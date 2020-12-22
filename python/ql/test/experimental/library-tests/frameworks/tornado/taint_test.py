@@ -2,7 +2,7 @@ import tornado.web
 
 
 class TaintTest(tornado.web.RequestHandler):
-    def get(self, name = "World!", number="0", foo="foo"):  # $ MISSING: requestHandler routedParameter=name routedParameter=number
+    def get(self, name = "World!", number="0", foo="foo"):  # $ requestHandler routedParameter=name routedParameter=number
         ensure_tainted(name, number)
         ensure_not_tainted(foo)
 
@@ -72,7 +72,7 @@ class TaintTest(tornado.web.RequestHandler):
 def make_app():
     return tornado.web.Application(
         [
-            (r"/test_taint/([^/]+)/([0-9]+)", TaintTest),  # $ MISSING: routeSetup="/test_taint/([^/]+)/([0-9]+)"
+            (r"/test_taint/([^/]+)/([0-9]+)", TaintTest),  # $ routeSetup="/test_taint/([^/]+)/([0-9]+)"
         ],
         debug=True,
     )

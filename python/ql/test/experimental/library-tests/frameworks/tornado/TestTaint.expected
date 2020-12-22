@@ -1,5 +1,5 @@
-| taint_test.py:6 | fail | get | name |
-| taint_test.py:6 | fail | get | number |
+| taint_test.py:6 | ok   | get | name |
+| taint_test.py:6 | ok   | get | number |
 | taint_test.py:7 | ok   | get | foo |
 | taint_test.py:11 | ok   | get | self.get_argument(..) |
 | taint_test.py:12 | ok   | get | self.get_arguments(..) |

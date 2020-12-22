@@ -8,6 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
+private import semmle.python.regex
 
 /**
  * Provides models for the `tornado` PyPI package.
@@ -82,7 +83,7 @@ private module Tornado {
        * WARNING: Only holds for a few predefined attributes.
        */
       private DataFlow::Node web_attr(DataFlow::TypeTracker t, string attr_name) {
-        attr_name in ["RequestHandler"] and
+        attr_name in ["RequestHandler", "Application"] and
         (
           t.start() and
           result = DataFlow::importNode("tornado.web" + "." + attr_name)
@@ -138,8 +139,19 @@ private module Tornado {
         DataFlow::Node subclassRef() { result = subclassRef(DataFlow::TypeTracker::end()) }
 
         /** A RequestHandler class (most likely in project code). */
-        private class RequestHandlerClass extends Class {
+        class RequestHandlerClass extends Class {
           RequestHandlerClass() { this.getParent() = subclassRef().asExpr() }
+
+          /** Gets a reference to this class. */
+          private DataFlow::Node getARef(DataFlow::TypeTracker t) {
+            t.start() and
+            result.asExpr().(ClassExpr) = this.getParent()
+            or
+            exists(DataFlow::TypeTracker t2 | result = this.getARef(t2).track(t2, t))
+          }
+
+          /** Gets a reference to this class. */
+          DataFlow::Node getARef() { result = this.getARef(DataFlow::TypeTracker::end()) }
         }
 
         /**
@@ -228,6 +240,64 @@ private module Tornado {
             this.(DataFlow::AttrRead).getAttributeName() = "request"
           }
         }
+      }
+
+      /**
+       * Provides models for the `tornado.web.Application` class
+       *
+       * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.Application.
+       */
+      module Application {
+        /** Gets a reference to the `tornado.web.Application` class. */
+        private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+          t.start() and
+          result = web_attr("Application")
+          or
+          exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+        }
+
+        /** Gets a reference to the `tornado.web.Application` class. */
+        DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+        /**
+         * A source of instances of `tornado.web.Application`, extend this class to model new instances.
+         *
+         * This can include instantiations of the class, return values from function
+         * calls, or a special parameter that will be set when functions are called by an external
+         * library.
+         *
+         * Use the predicate `Application::instance()` to get references to instances of `tornado.web.Application`.
+         */
+        abstract class InstanceSource extends DataFlow::Node { }
+
+        /** A direct instantiation of `tornado.web.Application`. */
+        class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+          override CallNode node;
+
+          ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+        }
+
+        /** Gets a reference to an instance of `tornado.web.Application`. */
+        private DataFlow::Node instance(DataFlow::TypeTracker t) {
+          t.start() and
+          result instanceof InstanceSource
+          or
+          exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+        }
+
+        /** Gets a reference to an instance of `tornado.web.Application`. */
+        DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+
+        /** Gets a reference to the `add_handlers` method. */
+        private DataFlow::Node add_handlers(DataFlow::TypeTracker t) {
+          t.startInAttr("add_handlers") and
+          result = instance()
+          or
+          exists(DataFlow::TypeTracker t2 | result = add_handlers(t2).track(t2, t))
+        }
+
+        /** Gets a reference to the `add_handlers` method. */
+        DataFlow::Node add_handlers() { result = add_handlers(DataFlow::TypeTracker::end()) }
       }
     }
 
@@ -364,6 +434,86 @@ private module Tornado {
           }
         }
       }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // routing
+  // ---------------------------------------------------------------------------
+  /** A sequence that defines a number of route rules */
+  SequenceNode routeSetupRuleList() {
+    exists(CallNode call | call = any(tornado::web::Application::ClassInstantiation c).asCfgNode() |
+      result in [call.getArg(0), call.getArgByName("handlers")]
+    )
+    or
+    exists(CallNode call |
+      call.getFunction() = tornado::web::Application::add_handlers().asCfgNode()
+    |
+      result in [call.getArg(1), call.getArgByName("host_handlers")]
+    )
+    or
+    result = routeSetupRuleList().getElement(_).(TupleNode).getElement(1)
+  }
+
+  /** A tornado route setup. */
+  abstract class TornadoRouteSetup extends HTTP::Server::RouteSetup::Range { }
+
+  /**
+   * A regex that is used to set up a route.
+   *
+   * Needs this subclass to be considered a RegexString.
+   */
+  private class TornadoRouteRegex extends RegexString {
+    TornadoRouteSetup setup;
+
+    TornadoRouteRegex() {
+      this instanceof StrConst and
+      DataFlow::localFlow(DataFlow::exprNode(this), setup.getUrlPatternArg())
+    }
+
+    TornadoRouteSetup getRouteSetup() { result = setup }
+  }
+
+  /** A route setup using a tuple. */
+  private class TornadoTupleRouteSetup extends TornadoRouteSetup, DataFlow::CfgNode {
+    override TupleNode node;
+
+    TornadoTupleRouteSetup() {
+      node = routeSetupRuleList().getElement(_) and
+      count(node.getElement(_)) = 2 and
+      not node.getElement(1) instanceof SequenceNode
+    }
+
+    override DataFlow::Node getUrlPatternArg() { result.asCfgNode() = node.getElement(0) }
+
+    override Function getARequestHandler() {
+      exists(tornado::web::RequestHandler::RequestHandlerClass cls |
+        cls.getARef().asCfgNode() = node.getElement(1) and
+        // TODO: Proper MRO
+        result = cls.getAMethod() and
+        result.getName() = HTTP::httpVerbLower()
+      )
+    }
+
+    override Parameter getARoutedParameter() {
+      // If we don't know the URL pattern, we simply mark all parameters as a routed
+      // parameter. This should give us more RemoteFlowSources but could also lead to
+      // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
+      exists(Function requestHandler | requestHandler = this.getARequestHandler() |
+        not exists(this.getUrlPattern()) and
+        result in [requestHandler.getArg(_), requestHandler.getArgByName(_)] and
+        not result = requestHandler.getArg(0)
+      )
+      or
+      exists(Function requestHandler, TornadoRouteRegex regex |
+        requestHandler = this.getARequestHandler() and
+        regex.getRouteSetup() = this
+      |
+        // first group will have group number 1
+        result = requestHandler.getArg(regex.getGroupNumber(_, _))
+        or
+        result = requestHandler.getArgByName(regex.getGroupName(_, _))
+      )
     }
   }
 }

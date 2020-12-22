@@ -2,26 +2,26 @@ import tornado.web
 
 
 class BasicHandler(tornado.web.RequestHandler):
-    def get(self):  # $ MISSING: requestHandler
+    def get(self):  # $ requestHandler
         self.write("BasicHandler " + self.get_argument("xss"))
 
-    def post(self):  # $ MISSING: requestHandler
+    def post(self):  # $ requestHandler
         self.write("BasicHandler (POST)")
 
 
 class DeepInheritance(BasicHandler):
-    def get(self):  # $ MISSING: requestHandler
+    def get(self):  # $ requestHandler
         self.write("DeepInheritance" + self.get_argument("also_xss"))
 
 
 class FormHandler(tornado.web.RequestHandler):
-    def post(self):  # $ MISSING: requestHandler
+    def post(self):  # $ requestHandler
         name = self.get_body_argument("name")
         self.write(name)
 
 
 class RedirectHandler(tornado.web.RequestHandler):
-    def get(self):  # $ MISSING: requestHandler
+    def get(self):  # $ requestHandler
         req = self.request
         h = req.headers
         url = h["url"]
@@ -40,11 +40,11 @@ class ReverseInheritance(BaseReverseInheritance):
 def make_app():
     return tornado.web.Application(
         [
-            (r"/basic", BasicHandler),  # $ MISSING: routeSetup="/basic"
-            (r"/deep", DeepInheritance),  # $ MISSING: routeSetup="/deep"
-            (r"/form", FormHandler),  # $ MISSING: routeSetup="/form"
-            (r"/redirect", RedirectHandler),  # $ MISSING: routeSetup="/redirect"
-            (r"/reverse-inheritance", ReverseInheritance),  # $ MISSING: routeSetup="/reverse-inheritance"
+            (r"/basic", BasicHandler),  # $ routeSetup="/basic"
+            (r"/deep", DeepInheritance),  # $ routeSetup="/deep"
+            (r"/form", FormHandler),  # $ routeSetup="/form"
+            (r"/redirect", RedirectHandler),  # $ routeSetup="/redirect"
+            (r"/reverse-inheritance", ReverseInheritance),  # $ routeSetup="/reverse-inheritance"
         ],
         debug=True,
     )
