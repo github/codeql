@@ -33,7 +33,7 @@ private module Tornado {
    * WARNING: Only holds for a few predefined attributes.
    */
   private DataFlow::Node tornado_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["web"] and
+    attr_name in ["web", "httputil"] and
     (
       t.start() and
       result = DataFlow::importNode("tornado" + "." + attr_name)
@@ -217,6 +217,148 @@ private module Tornado {
                   "path_kwargs",
                   // tornado.httputil.HTTPServerRequest
                   "request"
+                ]
+            )
+          }
+        }
+
+        private class RequestAttrAccess extends tornado::httputil::HttpServerRequest::InstanceSource {
+          RequestAttrAccess() {
+            this.(DataFlow::AttrRead).getObject() = instance() and
+            this.(DataFlow::AttrRead).getAttributeName() = "request"
+          }
+        }
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // tornado.httputil
+    // -------------------------------------------------------------------------
+    /** Gets a reference to the `tornado.httputil` module. */
+    DataFlow::Node httputil() { result = tornado_attr("httputil") }
+
+    /** Provides models for the `tornado.httputil` module */
+    module httputil {
+      /**
+       * Gets a reference to the attribute `attr_name` of the `tornado.httputil` module.
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node httputil_attr(DataFlow::TypeTracker t, string attr_name) {
+        attr_name in ["HTTPServerRequest"] and
+        (
+          t.start() and
+          result = DataFlow::importNode("tornado.httputil" + "." + attr_name)
+          or
+          t.startInAttr(attr_name) and
+          result = httputil()
+        )
+        or
+        // Due to bad performance when using normal setup with `httputil_attr(t2, attr_name).track(t2, t)`
+        // we have inlined that code and forced a join
+        exists(DataFlow::TypeTracker t2 |
+          exists(DataFlow::StepSummary summary |
+            httputil_attr_first_join(t2, attr_name, result, summary) and
+            t = t2.append(summary)
+          )
+        )
+      }
+
+      pragma[nomagic]
+      private predicate httputil_attr_first_join(
+        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+        DataFlow::StepSummary summary
+      ) {
+        DataFlow::StepSummary::step(httputil_attr(t2, attr_name), res, summary)
+      }
+
+      /**
+       * Gets a reference to the attribute `attr_name` of the `tornado.httputil` module.
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node httputil_attr(string attr_name) {
+        result = httputil_attr(DataFlow::TypeTracker::end(), attr_name)
+      }
+
+      /**
+       * Provides models for the `tornado.httputil.HttpServerRequest` class
+       *
+       * See https://www.tornadoweb.org/en/stable/httputil.html#tornado.httputil.HTTPServerRequest.
+       */
+      module HttpServerRequest {
+        /** Gets a reference to the `tornado.httputil.HttpServerRequest` class. */
+        private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+          t.start() and
+          result = httputil_attr("HttpServerRequest")
+          or
+          exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+        }
+
+        /** Gets a reference to the `tornado.httputil.HttpServerRequest` class. */
+        DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+        /**
+         * A source of instances of `tornado.httputil.HttpServerRequest`, extend this class to model new instances.
+         *
+         * This can include instantiations of the class, return values from function
+         * calls, or a special parameter that will be set when functions are called by an external
+         * library.
+         *
+         * Use the predicate `HttpServerRequest::instance()` to get references to instances of `tornado.httputil.HttpServerRequest`.
+         */
+        abstract class InstanceSource extends DataFlow::Node { }
+
+        /** A direct instantiation of `tornado.httputil.HttpServerRequest`. */
+        private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+          override CallNode node;
+
+          ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+        }
+
+        /** Gets a reference to an instance of `tornado.httputil.HttpServerRequest`. */
+        private DataFlow::Node instance(DataFlow::TypeTracker t) {
+          t.start() and
+          result instanceof InstanceSource
+          or
+          exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+        }
+
+        /** Gets a reference to an instance of `tornado.httputil.HttpServerRequest`. */
+        DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+
+        /** Gets a reference to the `full_url` method. */
+        private DataFlow::Node full_url(DataFlow::TypeTracker t) {
+          t.startInAttr("full_url") and
+          result = instance()
+          or
+          exists(DataFlow::TypeTracker t2 | result = full_url(t2).track(t2, t))
+        }
+
+        /** Gets a reference to the `full_url` method. */
+        DataFlow::Node full_url() { result = full_url(DataFlow::TypeTracker::end()) }
+
+        private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+          override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+            // Method access
+            nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
+            nodeFrom = instance() and
+            nodeTo in [full_url()]
+            or
+            // Method call
+            nodeTo.asCfgNode().(CallNode).getFunction() = nodeFrom.asCfgNode() and
+            nodeFrom in [full_url()]
+            or
+            // Attributes
+            nodeFrom = instance() and
+            exists(DataFlow::AttrRead read | nodeTo = read and read.getObject() = nodeFrom |
+              read.getAttributeName() in [
+                  // str / bytes
+                  "uri", "path", "query", "remote_ip", "body",
+                  // Dict[str, List[bytes]]
+                  "arguments", "query_arguments", "body_arguments",
+                  // dict-like, https://www.tornadoweb.org/en/stable/httputil.html#tornado.httputil.HTTPHeaders
+                  "headers",
+                  // Dict[str, http.cookies.Morsel]
+                  "cookies"
                 ]
             )
           }
