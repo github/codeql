@@ -480,7 +480,7 @@ Exercise 4
      Configuration() { this="Environment to System.Uri" }
      
      override predicate isSource(DataFlow::Node src) {
-       src.asExpr() instanceof EnvironmentVariableFlowSource
+       src instanceof EnvironmentVariableFlowSource
      }
      
      override predicate isSink(DataFlow::Node sink) {

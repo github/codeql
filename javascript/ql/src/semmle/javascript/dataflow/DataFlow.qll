@@ -628,7 +628,11 @@ module DataFlow {
     override string getPropertyName() { result = astNode.getArgument(1).getStringValue() }
 
     override Node getRhs() {
-      result = astNode.getArgument(2).(ObjectExpr).getPropertyByName("value").getInit().flow()
+      exists(ObjectExpr obj | obj = astNode.getArgument(2) |
+        result = obj.getPropertyByName("value").getInit().flow()
+        or
+        result = obj.getPropertyByName("get").getInit().flow().(DataFlow::FunctionNode).getAReturn()
+      )
     }
 
     override ControlFlowNode getWriteNode() { result = astNode }

@@ -345,3 +345,14 @@ module.exports.typeofNumber = function(n) {
 		cp.exec("rm -rf " + n); // OK
 	}
 };
+
+function boundProblem(safe, unsafe) {
+	cp.exec("rm -rf " + safe); // OK
+	cp.exec("rm -rf " + unsafe); // NOT OK
+}
+
+Object.defineProperty(module.exports, "boundProblem", {
+	get: function () {
+		return boundProblem.bind(this, "safe");
+	}
+});
