@@ -9,6 +9,7 @@
 
 private import javascript
 private import semmle.javascript.DynamicPropertyAccess
+private import semmle.javascript.dataflow.InferredTypes
 
 /**
  * Provides a taint tracking configuration for reasoning about
@@ -164,22 +165,18 @@ module PrototypePollutingAssignment {
   private class TypeofCheck extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::ValueNode {
     override EqualityTest astNode;
     Expr operand;
-    string value;
+    boolean polarity;
 
     TypeofCheck() {
-      exists(TypeofExpr typeof, Expr str |
-        astNode.hasOperands(typeof, str) and
-        typeof.getOperand() = operand and
-        str.getStringValue() = value
+      exists(InferredType type | TaintTracking::isTypeofGuard(astNode, operand, type) |
+        type = TTObject() and polarity = astNode.getPolarity().booleanNot()
+        or
+        type != TTObject() and polarity = astNode.getPolarity()
       )
     }
 
     override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      (
-        value = "object" and outcome = astNode.getPolarity().booleanNot()
-        or
-        value != "object" and outcome = astNode.getPolarity()
-      ) and
+      polarity = outcome and
       e = operand and
       label instanceof ObjectPrototype
     }

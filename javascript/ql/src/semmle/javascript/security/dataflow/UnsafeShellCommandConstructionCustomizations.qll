@@ -200,12 +200,8 @@ module UnsafeShellCommandConstruction {
     override EqualityTest astNode;
 
     TypeOfSanitizer() {
-      exists(Expr str, TypeofExpr typeof | astNode.hasOperands(str, typeof) |
-        str.mayHaveStringValue(any(InferredType t |
-            t = TTUndefined() or t = TTNumber() or t = TTBoolean()
-          ).getTypeofTag()) and
-        typeof.getOperand() = x
-      )
+      TaintTracking::isTypeofGuard(astNode, x,
+        any(InferredType t | t = TTUndefined() or t = TTNumber() or t = TTBoolean()))
     }
 
     override predicate sanitizes(boolean outcome, Expr e) {
