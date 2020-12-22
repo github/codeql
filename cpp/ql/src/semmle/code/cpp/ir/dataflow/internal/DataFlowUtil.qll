@@ -239,7 +239,7 @@ FieldNode getFieldNodeForFieldInstruction(Instruction instr) {
  * INTERNAL: do not use. A `FieldNode` represents the state of a field before any partial definitions
  * of the field. For instance, in the snippet:
  * ```cpp
- * struct A { int b, c; };
+ * struct A { struct B { int c; } b; };
  * // ...
  * A a;
  * f(a.b.c);
