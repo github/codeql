@@ -51,10 +51,12 @@ module UnsafeShellCommandConstruction {
    */
   class ExternalInputSource extends Source, DataFlow::ParameterNode {
     ExternalInputSource() {
-      this =
-        Exports::getAValueExportedBy(Exports::getTopmostPackageJSON())
-            .getAFunctionValue()
-            .getAParameter() and
+      exists(int bound, DataFlow::FunctionNode func |
+        func =
+          Exports::getAValueExportedBy(Exports::getTopmostPackageJSON())
+              .getABoundFunctionValue(bound) and
+        this = func.getParameter(any(int arg | arg >= bound))
+      ) and
       not this.getName() = ["cmd", "command"] // looks to be on purpose.
     }
   }
