@@ -12,5 +12,5 @@ Get to know more about queries and learn some key query-writing skills by solvin
 .. toctree::
    :hidden:
 
-   ql-tutorials
    codeql-queries
+   ql-tutorials
