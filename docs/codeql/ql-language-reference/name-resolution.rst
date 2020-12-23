@@ -106,7 +106,7 @@ Consider the following :ref:`library module <library-modules>`:
 
 **CountriesLib.qll**
 
-:: 
+.. code-block:: ql
 
     class Countries extends string {
       Countries() {
@@ -129,7 +129,9 @@ Consider the following :ref:`library module <library-modules>`:
     }
 
 You could write a query that imports ``CountriesLib`` and then uses ``M::EuropeanCountries``
-to refer to the class ``EuropeanCountries``:: 
+to refer to the class ``EuropeanCountries``:
+
+.. code-block:: ql
 
     import CountriesLib
 
@@ -137,7 +139,9 @@ to refer to the class ``EuropeanCountries``::
     select ec
 
 Alternatively, you could import the contents of ``M`` directly by using the selection
-``CountriesLib::M`` in the import statement:: 
+``CountriesLib::M`` in the import statement:
+
+.. code-block:: ql
 
     import CountriesLib::M 
 
@@ -246,7 +250,7 @@ were defined in the :ref:`QL tutorials <ql-tutorials>`:
     
 **Villagers.qll**
 
-::    
+.. code-block:: ql
 
     import tutorial
         
