@@ -34,4 +34,10 @@ func main() {
 
 	regexp.Match(`https?://good.com`, []byte("http://evil.com/?http://good.com"))  // NOT OK
 	regexp.Match(`^https?://good.com`, []byte("http://evil.com/?http://good.com")) // OK
+
+	regexp.Match(`www\.example\.com`, []byte(""))   // NOT OK
+	regexp.Match(`^www\.example\.com`, []byte(""))  // OK
+	regexp.Match(`\Awww\.example\.com`, []byte("")) // OK
+	regexp.Match(`www\.example\.com$`, []byte(""))  // OK
+	regexp.Match(`www\.example\.com\z`, []byte("")) // OK
 }
