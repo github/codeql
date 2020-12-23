@@ -6,6 +6,22 @@ Contributions to this project are [released](https://help.github.com/articles/gi
 
 Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
 
+## Building and testing
+
+1. Install the CodeQL CLI as described in [Getting started with the CodeQL CLI](https://codeql.github.com/docs/codeql-cli/getting-started-with-the-codeql-cli/).
+
+2. Ensure that `<extraction-root>/codeql` is in your `PATH`.
+
+3. Clone this repository into `<extraction-root>/codeql-go` and change to this directory.
+
+4. To build, run `make`.
+
+5. To run the full test suite, run `make test`. This will take approximately one hour.
+
+6. To run all tests in a directory and its subdirectories, run `codeql test run <directory>`, for example `codeql test run ql/test/query-tests/Security`.
+
+7. To run an individual test, run `codeql test run <filename>`, where `<filename>` is a `.ql` or `.qlref` file, for example `codeql test run ql/test/query-tests/Security/CWE-020/MissingRegexpAnchor/MissingRegexpAnchor.qlref`.
+
 ## Adding a new query
 
 If you have an idea for a query that you would like to share with other CodeQL users, please open a pull request to add it to this repository.
