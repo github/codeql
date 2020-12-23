@@ -156,7 +156,7 @@ The class `Comment <https://codeql.github.com/codeql-standard-libraries/javascri
 
          -  `HtmlCommentStart <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Comments.qll/type.Comments$HtmlCommentStart.html>`__: an HTML comment starting with ``<!--``
 
-            -  `HtmlCommentEnd <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Comments.qll/type.Comments$HtmlCommentEnd.html>`__: an HTML comment ending with ``-->``
+         -  `HtmlCommentEnd <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Comments.qll/type.Comments$HtmlCommentEnd.html>`__: an HTML comment ending with ``-->``
 
 -  `BlockComment <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Comments.qll/type.Comments$BlockComment.html>`__: a block comment potentially spanning multiple lines
 
