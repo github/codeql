@@ -100,7 +100,7 @@ class ParamTag extends JavadocTag {
   ParamTag() { this.getTagName() = "@param" }
 
   /** Gets the name of the parameter. */
-  string getParamName() { result = this.getChild(0).toString() }
+  string getParamName() { result = this.getChild(0).toString().replaceAll(",", "") }
 
   /** Gets the documentation for the parameter. */
   override string getText() { result = this.getChild(1).toString() }
