@@ -222,10 +222,12 @@ blockquote.pull-quote > :last-child {
 
 .toggle .name:after {
     content: " ▶";
+    font-family: "monospace";
 }
 
 .toggle .name.open:after {
     content: " ▼";
+    font-family: "monospace";
 }
 
 /* -- PRINT VIEW ----------------------------------------------------------------------------*/
