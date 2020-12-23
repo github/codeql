@@ -88,7 +88,7 @@ It's now easy to add another conjunct to the ``where`` clause, restricting the q
 
    from Callable c, ParamTag pt
    where c.getDoc().getJavadoc() = pt.getParent() and
-       not c.getAParameter().hasName(pt.getParamName())
+       not c.getAParameter().hasName(pt.getParamName().replaceAll(",", ""))
    select pt, "Spurious @param tag."
 
 Example: Finding spurious @throws tags
