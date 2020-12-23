@@ -318,7 +318,8 @@ The following query selects files that are not HTML files.
     where not f.getFileType().isHtml()
     select f
 
-.. note:: 
+.. pull-quote:: Note 
+
    You should be careful when using ``not`` in a recursive definition, as this could lead to
    non-monotonic recursion. For more information, ":ref:`non-monotonic-recursion`."
 

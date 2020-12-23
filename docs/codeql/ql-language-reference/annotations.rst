@@ -203,7 +203,8 @@ change this definition. In this case, ``hasName`` should be final:
 
 **Available for**: |classes|
 
-.. important::
+.. pull-quote:: Important
+
    This annotation is deprecated. Instead of annotating a name with ``library``, put it in a
    private (or privately imported) module.
 

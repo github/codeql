@@ -55,7 +55,8 @@ When defining a predicate, you should specify:
    argument type and an identifier for the argument variable.
 #. The predicate body itself. This is a logical formula enclosed in braces. 
 
-.. note::
+.. pull-quote:: Note
+
    An :ref:`abstract` or :ref:`external` predicate has no body. To define such a predicate, 
    end the predicate definition with a semicolon (``;``) instead.
 
