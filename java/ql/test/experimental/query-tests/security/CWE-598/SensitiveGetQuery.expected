@@ -1,0 +1,7 @@
+edges
+| SensitiveGetQuery.java:12:38:12:45 | password : String | SensitiveGetQuery.java:12:22:12:45 | ... + ... |
+nodes
+| SensitiveGetQuery.java:12:22:12:45 | ... + ... | semmle.label | ... + ... |
+| SensitiveGetQuery.java:12:38:12:45 | password : String | semmle.label | password : String |
+#select
+| SensitiveGetQuery.java:12:22:12:45 | ... + ... | SensitiveGetQuery.java:12:38:12:45 | password : String | SensitiveGetQuery.java:12:22:12:45 | ... + ... | $@ uses GET request method with sensitive information. | SensitiveGetQuery.java:12:38:12:45 | password | sensitive query string |
