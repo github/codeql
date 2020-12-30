@@ -393,18 +393,23 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
 
   /** Gets a function that overloads this one. */
   Function getAnOverload() {
-    result.getName() = getName() and
-    result.getNamespace() = getNamespace() and
-    result != this and
-    // If this function is declared in a class, only consider other
-    // functions from the same class. Conversely, if this function is not
-    // declared in a class, only consider other functions not declared in a
-    // class.
     (
-      if exists(getDeclaringType())
-      then result.getDeclaringType() = getDeclaringType()
-      else not exists(result.getDeclaringType())
+      // If this function is declared in a class, only consider other
+      // functions from the same class.
+      exists(string name, Namespace namespace, Class declaringType |
+        candGetAnOverloadMember(name, namespace, declaringType, this) and
+        candGetAnOverloadMember(name, namespace, declaringType, result)
+      )
+      or
+      // Conversely, if this function is not
+      // declared in a class, only consider other functions not declared in a
+      // class.
+      exists(string name, Namespace namespace |
+        candGetAnOverloadNonMember(name, namespace, this) and
+        candGetAnOverloadNonMember(name, namespace, result)
+      )
     ) and
+    result != this and
     // Instantiations and specializations don't participate in overload
     // resolution.
     not (
@@ -460,6 +465,22 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * Gets the nearest enclosing AccessHolder.
    */
   override AccessHolder getEnclosingAccessHolder() { result = this.getDeclaringType() }
+}
+
+pragma[noinline]
+private predicate candGetAnOverloadMember(
+  string name, Namespace namespace, Class declaringType, Function f
+) {
+  f.getName() = name and
+  f.getNamespace() = namespace and
+  f.getDeclaringType() = declaringType
+}
+
+pragma[noinline]
+private predicate candGetAnOverloadNonMember(string name, Namespace namespace, Function f) {
+  f.getName() = name and
+  f.getNamespace() = namespace and
+  not exists(f.getDeclaringType())
 }
 
 /**
