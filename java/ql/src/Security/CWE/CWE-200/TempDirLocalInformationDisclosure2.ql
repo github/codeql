@@ -22,14 +22,7 @@ private class MethodFileSystemFileCreation extends Method {
   }
 }
 
-private class MethodFilesSystemFileCreation extends Method {
-  MethodFilesSystemFileCreation() {
-    getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
-    hasName("write")
-  }
-}
-
-private abstract class FileCreationSink extends DataFlow::Node {}
+abstract private class FileCreationSink extends DataFlow::Node { }
 
 private class FileFileCreationSink extends FileCreationSink {
   FileFileCreationSink() {
@@ -42,9 +35,17 @@ private class FileFileCreationSink extends FileCreationSink {
 
 private class FilesFileCreationSink extends FileCreationSink {
   FilesFileCreationSink() {
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof MethodFilesSystemFileCreation and
-      ma.getArgument(0) = this.asExpr()
+    exists(FilesVulnerableCreationMethodAccess ma | ma.getArgument(0) = this.asExpr())
+  }
+}
+
+private class FilesVulnerableCreationMethodAccess extends MethodAccess {
+  FilesVulnerableCreationMethodAccess() {
+    getMethod().getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
+    (
+      getMethod().hasName(["write", "newBufferedWriter", "newOutputStream"])
+      or
+      getMethod().hasName(["createFile", "createDirectory", "createDirectories"]) and getNumArgument() = 1
     )
   }
 }
@@ -60,9 +61,7 @@ private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Conf
     isAdditionalFileTaintStep(node1, node2)
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink instanceof FileCreationSink
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof FileCreationSink }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, TempDirSystemGetPropertyToCreateConfig conf

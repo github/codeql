@@ -1,9 +1,13 @@
 
 import java.util.Arrays;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.util.EnumSet;
 
 public class Test {
 
@@ -52,18 +56,51 @@ public class Test {
 
     void vulnerableFileCreateTempFileMkdirsTainted() {
         File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child");
-        tempDirChild.mkdir();
+        tempDirChild.mkdirs();
     }
 
     void vulnerableFileCreateTempFilesWrite1() {
-        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child");
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child.txt");
         Files.write(tempDirChild.toPath(), Arrays.asList("secret"), StandardCharsets.UTF_8, StandardOpenOption.CREATE);
     }
     
     void vulnerableFileCreateTempFilesWrite2() {
-        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child");
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child.txt");
         String secret = "secret";
         byte[] byteArrray = secret.getBytes();
         Files.write(tempDirChild.toPath(), byteArrray, StandardOpenOption.CREATE);
+    }
+
+    void vulnerableFileCreateTempFilesNewBufferedWriter() throws IOException {
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-buffered-writer.txt");
+        Files.newBufferedWriter(tempDirChild.toPath());
+    }
+
+    void vulnerableFileCreateTempFilesNewOutputStream() throws IOException {
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-output-stream.txt");
+        Files.newOutputStream(tempDirChild.toPath()).close();
+    }
+
+    void vulnerableFileCreateTempFilesCreateFile() throws IOException {
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-file.txt");
+        Files.createFile(tempDirChild.toPath());
+    }
+
+    void safeFileCreateTempFilesCreateFile() throws IOException {
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-file.txt");
+        Files.createFile(
+            tempDirChild.toPath(),
+            PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE))
+        );
+    }
+
+    void vulnerableFileCreateDirectory() throws IOException {
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+        Files.createDirectory(tempDirChild.toPath());
+    }
+
+    void vulnerableFileCreateDirectories() throws IOException {
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directories/child");
+        Files.createDirectories(tempDirChild.toPath());
     }
 }
