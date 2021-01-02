@@ -17,11 +17,6 @@ abstract class SafeHeaderSplittingSource extends DataFlow::Node {
 /** A sink that identifies a Java Servlet or JaxWs method that is vulnerable to an HTTP header splitting attack. */
 private class ServletHeaderSplittingSink extends HeaderSplittingSink {
   ServletHeaderSplittingSink() {
-    exists(ResponseAddCookieMethod m, MethodAccess ma |
-      ma.getMethod() = m and
-      this.asExpr() = ma.getArgument(0)
-    )
-    or
     exists(ResponseAddHeaderMethod m, MethodAccess ma |
       ma.getMethod() = m and
       this.asExpr() = ma.getAnArgument()
