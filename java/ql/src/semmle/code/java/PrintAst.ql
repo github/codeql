@@ -16,5 +16,6 @@ class PrintAstConfigurationOverride extends PrintAstConfiguration {
   /**
    * TWEAK THIS PREDICATE AS NEEDED.
    */
-  override predicate shouldPrint(Element e, Location l) { super.shouldPrint(e, l) }
+  override predicate shouldPrint(Element e, Location l) { super.shouldPrint(e, l) and 
+    not l.getFile().getBaseName().matches("SystemGetPropertyCall.java") }
 }
