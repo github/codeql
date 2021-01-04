@@ -446,7 +446,7 @@ A one-line comment is two slash characters (``/``, U+002F) followed by any seque
 
    // This is a comment
 
-A multiline comment is a *comment start*, followed by a *comment body*, followed by a *comment end*. A comment start is a slash (``/``, U+002F) followed by an asterisk (``*``, U+002A), and a comment end is an asterisk followed by a slash. A comment body is any sequence of characters that does not include a comment end. Here is an example multiline comment:
+A multiline comment is a *comment start*, followed by a *comment body*, followed by a *comment end*. A comment start is a slash (``/``, U+002F) followed by an asterisk (``*``, U+002A), and a comment end is an asterisk followed by a slash. A comment body is any sequence of characters that does not include a comment end and does not start with an asterisk. Here is an example multiline comment:
 
 ::
 
@@ -455,6 +455,21 @@ A multiline comment is a *comment start*, followed by a *comment body*, followed
      It was the worst of code.
      It had a multiline comment.
    */
+
+QLDoc (qldoc)
+~~~~~~~~
+
+A QLDoc comment is a *qldoc comment start*, followed by a *comment body*, followed by a *qldoc comment end*. A comment start is a slash (``/``, U+002F) followed by two asterisks (``*``, U+002A), and a qldoc comment end is an asterisk followed by a slash. A qldoc comment body is any sequence of characters that does not include a comment end. Here is an example qldoc comment:
+
+::
+
+   /**
+     It was the best of code.
+     It was the worst of code.
+     It had a qldoc comment.
+   */
+
+The ‘content’ of a QLDoc comment is the comment body of the comment, omitting the initial /**, the trailing */, and the leading whitespace followed by * on each internal line.
 
 Keywords
 ~~~~~~~~
@@ -738,6 +753,49 @@ A predicate may have several different binding sets, which can be stated by usin
 | ``bindingset`` |         | yes        | yes               | yes                   |         |        |         |         |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
 
+QLDoc
+-----
+
+QLDoc is used for documenting ql entities and bindings. QLDoc that is used as part of the
+declaration is said to be declared.
+
+Ambiguous QLDoc
+~~~~~~~~~~~
+
+If QLDoc could be parsed as part a file module or as part of the first declaration in the file then
+it is parsed as part of the first declaration.
+
+Inheriting QLDoc
+~~~~~~~~~~~
+
+If no qldoc is provided then in may be inherited. 
+
+In the case of an alias then it may be inherited from the right-hand-side of the alias.
+
+In the case of a member predicate we collect all member predicates that it overrides with declared QLDoc. Then if there is a member predicate in that collection that
+that overrides every other member predicate in that collection then the QLDoc of that field is used as the QLDoc.
+
+In the case of a field we collect all fields that it overrides with declared QLDoc. Then if there is a field in that collection that
+that overrides every other field in that collection then its QLDoc of that field used as the QLDoc.
+
+Content
+~~~~~~~
+
+The content of a QLDoc comment is interpreted as standard Markdown, with the following extensions:
+
+-  Fenced code blocks using backticks.
+-  Automatic interpretation of links and email addresses.
+-  Use of appropriate characters for ellipses, dashes, apostrophes, and quotes.
+
+The content of a QLDoc comment may contain metadata tags as follows:
+
+The tag begins with any number of whitespace characters, followed by an '@' sign. At this point there may be any number of non-whitespace characters, which form the key of the tag. Then, a single whitespace character which separates the key from the value. The value of the tag is formed by the remainder of the line, and any subsequent lines until another '@' tag is seen, or the end of the content is reached. Any sequence of consecutive whitespace characters in the value are replaced by a single space.
+
+Metadata
+~~~~~~~~
+
+If the query file starts with whitespace followed by a qldoc comment then the tags from that qldoc comment form the query metadata.
+
 Top-level entities
 ------------------
 
@@ -750,7 +808,7 @@ A *predicate* is declared as a sequence of annotations, a head, and an optional 
 
 ::
 
-   predicate ::= annotations head optbody
+   predicate ::= qldoc? annotations head optbody
 
 A predicate definition adds a mapping from the predicate name and arity to the predicate declaration to the current module's declared predicate environment.
 
@@ -785,7 +843,7 @@ A class definition has the following syntax:
 
 ::
 
-   class ::= annotations "class" classname "extends" type ("," type)* "{" member* "}"
+   class ::= qldoc? annotations "class" classname "extends" type ("," type)* "{" member* "}"
 
 The identifier following the ``class`` keyword is the name of the class.
 
@@ -824,8 +882,8 @@ Each member of a class is either a *character*, a predicate, or a field:
 ::
 
    member ::= character | predicate | field
-   character ::= annotations classname "(" ")" "{" formula "}" 
-   field ::= annotations var_decl ";"
+   character ::= qldoc? annotations classname "(" ")" "{" formula "}" 
+   field ::= qldoc? annotations var_decl ";"
 
 Characters
 ^^^^^^^^^^
@@ -1476,9 +1534,9 @@ Aliases define new names for existing QL entities.
 
 ::
 
-   alias ::= annotations "predicate" literalId "=" predicateRef "/" int ";"
-         |   annotations "class" classname "=" type ";"
-         |   annotations "module" modulename "=" moduleId ";"
+   alias ::= qldoc? annotations "predicate" literalId "=" predicateRef "/" int ";"
+         |   qldoc? annotations "class" classname "=" type ";"
+         |   qldoc? annotations "module" modulename "=" moduleId ";"
        
 
 An alias introduces a binding from the new name to the entity referred to by the right-hand side in the current module's declared predicate, type, or module environment respectively.
@@ -1896,7 +1954,7 @@ The complete grammar for QL is as follows:
 
 ::
 
-   ql ::= moduleBody
+   ql ::= qldoc? moduleBody
 
    module ::= annotation* "module" modulename "{" moduleBody "}"
 
@@ -1919,7 +1977,7 @@ The complete grammar for QL is as follows:
 
    orderby ::= simpleId ("asc" | "desc")?
 
-   predicate ::= annotations head optbody
+   predicate ::= qldoc? annotations head optbody
 
    annotations ::= annotation*
 
@@ -1946,13 +2004,13 @@ The complete grammar for QL is as follows:
            |  "{" formula "}" 
            |  "=" literalId "(" (predicateRef "/" int ("," predicateRef "/" int)*)? ")" "(" (exprs)? ")"
 
-   class ::= annotations "class" classname "extends" type ("," type)* "{" member* "}"
+   class ::= qldoc? annotations "class" classname "extends" type ("," type)* "{" member* "}"
 
    member ::= character | predicate | field
 
-   character ::= annotations classname "(" ")" "{" formula "}" 
+   character ::= qldoc? annotations classname "(" ")" "{" formula "}" 
 
-   field ::= annotations var_decl ";"
+   field ::= qldoc? annotations var_decl ";"
 
    moduleId ::= simpleId | moduleId "::" simpleId 
 
@@ -1960,9 +2018,9 @@ The complete grammar for QL is as follows:
 
    exprs ::= expr ("," expr)*
 
-   alias := annotations "predicate" literalId "=" predicateRef "/" int ";"
-         |  annotations "class" classname "=" type ";"
-         |  annotations "module" modulename "=" moduleId ";"
+   alias := qldoc? annotations "predicate" literalId "=" predicateRef "/" int ";"
+         |  qldoc? annotations "class" classname "=" type ";"
+         |  qldoc? annotations "module" modulename "=" moduleId ";"
          
    var_decls ::= var_decl ("," var_decl)*
 
