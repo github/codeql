@@ -391,14 +391,19 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   /** Holds if this function has a `noexcept` exception specification. */
   predicate isNoExcept() { getADeclarationEntry().isNoExcept() }
 
-  /** Gets a function that overloads this one. */
+  /**
+   * Gets a function that overloads this one.
+   *
+   * Note: if _overrides_ are wanted rather than _overloads_ then
+   * `MemberFunction::getAnOverridingFunction` should be used instead.
+   */
   Function getAnOverload() {
     (
       // If this function is declared in a class, only consider other
       // functions from the same class.
-      exists(string name, Namespace namespace, Class declaringType |
-        candGetAnOverloadMember(name, namespace, declaringType, this) and
-        candGetAnOverloadMember(name, namespace, declaringType, result)
+      exists(string name, Class declaringType |
+        candGetAnOverloadMember(name, declaringType, this) and
+        candGetAnOverloadMember(name, declaringType, result)
       )
       or
       // Conversely, if this function is not
@@ -468,11 +473,8 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
 }
 
 pragma[noinline]
-private predicate candGetAnOverloadMember(
-  string name, Namespace namespace, Class declaringType, Function f
-) {
+private predicate candGetAnOverloadMember(string name, Class declaringType, Function f) {
   f.getName() = name and
-  f.getNamespace() = namespace and
   f.getDeclaringType() = declaringType
 }
 
