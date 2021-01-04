@@ -390,27 +390,30 @@ The store
 
 QL programs evaluate in the context of a *store*. This section specifies several definitions related to the store.
 
-A *fact* is a predicate or type along with an ordered tuple. A fact is written as the predicate name or type name followed immediately by the tuple. Here are some examples of facts:
+A *fact* is a predicate or type along with an named tuple. A fact is written as the predicate name or type name followed immediately by the tuple. Here are some examples of facts:
 
 ::
 
-   successor(0, 1)
-   Tree.toString(@method_tree(12), "def println")
-   Location.class(@location(43))
-   Location.getURL(@location(43), "file:///etc/hosts:2:0:2:12")
+   successor(fst: 0, snd:1)
+   Tree.toString(this:@method_tree(12), result:"def println")
+   Location.class(this:@location(43))
+   Location.getURL(this: @location(43), result:"file:///etc/hosts:2:0:2:12")
 
 A *store* is a mutable set of facts. The store can be mutated by adding more facts to it.
 
-An ordered tuple *directly satisfies* a predicate or type with a given if there is a fact in the store with the given tuple and predicate or type.
+An named tuple *directly satisfies* a predicate or type with a given tuple if there is a fact in the store with the given tuple and predicate or type.
 
 A value ``v`` is in a type ``t`` under any of the following conditions:
 
 -  The type of ``v`` is ``t`` and ``t`` is a primitive type.
--  The tuple ``(v)`` directly satisfies ``t``.
+-  There is tuple with ``this`` component ``v`` that directly satisfies ``t``.
 
-An ordered tuple *satisfies a predicate* ``p`` under the following circumstances. If ``p`` is not a member predicate, then the tuple satisfies the predicate whenever it directly satisfies the predicate.
+An ordered tuple ``v`` *directly satisfies* a predicate with a given if there is a fact in the store with the given predicate and a named tuple ``v'``
+such that taking the ordered formed by the ``this`` component of ``v'`` followed by component for each argument equals the ordered tuple.
 
-Otherwise, the tuple must be the tuple of a fact in the store with predicate ``q``, where ``q`` shares a root definition with ``p``. The first element of the tuple must be in the type before the dot in ``q``, and there must be no other predicate that overrides ``q`` such that this is true (see "`Classes <#classes>`__" for details on overriding and root definitions).
+An ordered tuple *satisfies a predicate* ``p`` under the following circumstances. If ``p`` is not a member predicate, then the tuple satisfies the predicate whenever the named tuple satisfies the tuple.
+
+Otherwise, the tuple must be the tuple of a fact in the store with predicate ``q``, where ``q`` shares a root definition with ``p``. The `first` element of the tuple must be in the type before the dot in ``q``, and there must be no other predicate that overrides ``q`` such that this is true (see "`Classes <#classes>`__" for details on overriding and root definitions).
 
 An ordered tuple ``(a0, an)`` satisfies the ``+`` closure of a predicate if there is a sequence of binary tuples ``(a0, a1)``, ``(a1, a2)``, ..., ``(an-1, an)`` that all satisfy the predicate. An ordered tuple ``(a, b)`` satisfies the ``*`` closure of a predicate if it either satisfies the ``+`` closure, or if ``a`` and ``b`` are the same, and if moreover they are in each argument type of the predicate.
 
@@ -918,12 +921,21 @@ A valid class must include a non-private predicate named ``toString`` with no ar
 
 A valid class may not inherit from two different classes that include a predicate with the same name and number of arguments, unless either one of the predicates overrides the other, or the class defines a predicate that overrides both of them.
 
-The typing environment for a member predicate or character is the same as if it were a non-member predicate, except that it additionally maps ``this`` to a type. If the member is a character, then the typing environment maps ``this`` to the class domain type of the class. Otherwise, it maps ``this`` to the class type of the class itself.
+The typing environment for a member predicate or character is the same as if it were a non-member predicate, except that it additionally maps ``this`` to a type and also maps any fields on a class to a type. If the member is a character, then the typing environment maps ``this`` to the class domain type of the class. Otherwise, it maps ``this`` to the class type of the class itself.
+It any field to the type of the field.
 
 Fields
 ^^^^^^
 
 A field declaration introduces a mapping from the field name to the field declaration in the class's declared field environment.
+
+A field ``f`` with enclosing class ``C`` *overrides* a field ``f'`` with enclosing class ``D`` when ``f`` is annotated override, ``C`` inherits from ``D``, ``p'`` is visible in ``C``, and both ``p`` and ``p'`` have the same name.
+
+A valid class may not inherit from two different classes that include a field with the same name, unless either one of the fields overrides the other, or the class defines a field that overrides both of them.
+
+A valid field must override another field if it is annotated override.
+
+When field ``f`` overrides field ``g`` the type of ``f`` must be a subtype of the type of ``g``. ``f`` may not be a final field. 
 
 Select clauses
 ~~~~~~~~~~~~~~
@@ -1326,7 +1338,8 @@ The grammar given in this section is disambiguated first by precedence, and seco
 -  binary ``*`` , ``/`` and ``%``
 -  binary ``+`` and ``-``
 
-Additionally, whenever a sequence of tokens can be interpreted either as a call to a predicate with result (with specified closure), or as a binary operation with operator ``+`` or ``*``, the syntax is interpreted as a call to a predicate with result.
+Whenever a sequence of tokens can be interpreted either as a call to a predicate with result (with specified closure), or as a binary operation with operator ``+`` or ``*``, the syntax is interpreted as a call to a predicate with result.
+Whenever a sequence of tokens can be interpreted either as either arithmetic with a parenthesized variable or a prefix cast of a unary operation the syntax is interpreted as a cast.
 
 Formulas
 --------
@@ -1889,7 +1902,7 @@ Predicates, and types can *depend* and *strictly depend* on each other. Such dep
 
 -  If a predicate contains a variable declaration with negative or zero polarity of a variable whose declared type is a class type ``C``, then the predicate strictly depends on ``C.class``.
 
--  If a predicate contains an expression whose type is a class type ``C``, then the predicate depends on ``C.class``. If the expression has negative or zero polarity then the dependency is strict.
+-  If a predicate contains an expression whose type is a class type ``C`` which is not a variable reference, then the predicate depends on ``C.class``. If the expression has negative or zero polarity then the dependency is strict.
 
 -  A predicate containing a predicate call depends on the predicate to which the call resolves. If the call has negative or zero polarity then the dependency is strict.
 
@@ -1922,29 +1935,39 @@ The store is first initialized with the *database content* of all built-in predi
 
 Each layer of the stratification is *populated* in order. To populate a layer, each predicate in the layer is repeatedly populated until the store stops changing. The way that a predicate is populated is as follows:
 
--  To populate a predicate that has a formula as a body, find all named tuples with the variables of the predicate's arguments that match the body formula and the types of the variables. If the predicate has a result, then the matching named tuples should additionally have a value for ``result`` that is in the result type of the predicate. If the predicate is a member predicate, then the tuples should additionally have a value for ``this`` that is of the type assigned to ``this`` by the typing environment. For each such tuple, convert the named tuple to an ordered tuple by sequencing the values of the tuple, starting with ``this`` if present, followed by the predicate's arguments, followed by ``result`` if present. Add each such converted tuple to the predicate in the store.
+-  To populate a predicate that has a formula as a body, find all named tuples with the variables of the predicate's arguments that match the body formula and the types of the variables. If the predicate has a result, then the matching named tuples should additionally have a value for ``result`` that is in the result type of the predicate. 
+   If the predicate is a member predicate of a class ``C`` and not a characteristic predicate, then the tuples should additionally have a value for ``this`` and fields that match some tuple in ``C.class``. 
+   If the predicate is a characteristic predicate of a class ``C``, then the tuples should additionally have a value for ``this`` and fields that match some tuple in ``C.extends`` and each 
+   declared field ``f`` with type ``B`` the value of ``f`` is a member of ``B.class``.
+   For each such tuple remove any components that have the same name as a field on the declaring type and add it to the predicate in the store.
 
 -  To populate an abstract predicate, do nothing.
 
 -  The population of predicates with a higher-order body is left only partially specified. A number of tuples are added to the given predicate in the store. The tuples that are added must be fully determined by the QL program and by the state of the store.
 
--  To populate the type ``C.extends`` for a class ``C``, identify each value ``v`` that has the following properties: It is in all non-class base types of ``C``, and for each class base type ``B`` of ``C`` it is in ``B.B``. For each such ``v``, add ``(v)`` to ``C.extends``.
+-  To populate the type ``C.extends`` for a class ``C``, identify each named tuple that has the following properties:
+     - The value of ``this`` is in all non-class base types of ``C``.
+     - For each class base type ``B`` of ``C`` the projection of the tuple onto fields the public fields of ``B`` is the projection of a tuple in ``B.B`` onto the public fields of ``B``. 
+   For each such tuple add it to ``C.extends``.
 
--  To populate the type ``C.C`` for a class ``C``, if ``C`` has a characteristic predicate, then add all tuples from that predicate to the store. Otherwise add each tuple in ``C.extends`` into the store.
+-  To populate the type ``C.C`` for a class ``C``, if ``C`` has a characteristic predicate, then add all tuples from that predicate to the store. 
+   Otherwise add all tuples into the store that it satisfy ``C.extends`` and for each declared field ``f`` with type ``B`` the value of ``f`` is a member of ``B.class``
 
 -  To populate the type ``C.class`` for a non-abstract class type ``C``, add each tuple in ``C.C`` to ``C.class``.
 
--  To populate the type ``C.class`` for an abstract class type ``C``, for each class ``D`` that has ``C`` as a base type add all tuples in ``D.class`` to ``C.class``.
+-  To populate the type ``C.class`` for an abstract class type ``C``, identify each named tuple that has the following properties:
+     - It is a member of ``C.C``
+     - For each class ``D`` that has ``C`` as a base type then the projection of the tuple to the public ``D.class``.
 
--  To populate a select clause, find all named tuples with the variables declared in the ``from`` clause that match the formula given in the ``where`` clause, if there is one. For each named tuple, convert it to a set of ordered tuples where each element of the ordered tuple is, in the context of the named tuple, a value of one of the corresponding select expressions. Collect all ordered tuples that can be produced from all of the restricted named tuples in this way. Add each such converted tuple to the select clause in the store.
 
 Query evaluation
 ~~~~~~~~~~~~~~~~
 
 A query is evaluated as follows:
 
-#. Identify all named tuples in the predicate targeted by the query.
-#. Sequence the ordered tuples lexicographically. The first elements of the lexicographic order are the tuple elements specified by the ordering directives of the predicate targeted by the query, if it has any. Each such element is ordered either ascending (``asc``) or descending (``desc``) as specified by the ordering directive, or ascending if the ordering directive does not specify. This lexicographic order is only a partial order, if there are fewer ordering directives than elements of the tuples. An implementation may produce any sequence of the ordered tuples that satisfies this partial order.
+#. Identify all facts about query predicates.
+#. If there is a select clause then find all named tuples with the variables declared in the ``from`` clause that match the formula given in the ``where`` clause, if there is one. For each named tuple, convert it to a set of ordered tuples where each element of the ordered tuple is, in the context of the named tuple, a value of one of the corresponding select expressions. Then sequence the ordered tuples lexicographically. The first elements of the lexicographic order are the tuple elements specified by the ordering directives of the predicate targeted by the query, if it has any. Each such element is ordered either ascending (``asc``) or descending (``desc``) as specified by the ordering directive, or ascending if the ordering directive does not specify. This lexicographic order is only a partial order, if there are fewer ordering directives than elements of the tuples. An implementation may produce any sequence of the ordered tuples that satisfies this partial order.
+#. The result is the facts from the query predicates plus the list of ordered tuples from the select clause if it exists.
 
 Summary of syntax
 -----------------
