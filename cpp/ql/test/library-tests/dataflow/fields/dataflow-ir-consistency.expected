@@ -1,6 +1,10 @@
 uniqueEnclosingCallable
 uniqueType
 uniqueNodeLocation
+| E.cpp:15:31:15:33 | buf | Node should have one location but has 2. |
+| aliasing.cpp:2:11:2:13 | (unnamed parameter 0) | Node should have one location but has 2. |
+| conflated.cpp:2:11:2:13 | (unnamed parameter 0) | Node should have one location but has 2. |
+| conflated.cpp:14:22:14:25 | buf | Node should have one location but has 2. |
 | file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
 | file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
 | file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
@@ -129,6 +133,8 @@ postWithInFlow
 | complex.cpp:54:12:54:12 | Chi | PostUpdateNode should not be the target of local flow. |
 | complex.cpp:55:12:55:12 | Chi | PostUpdateNode should not be the target of local flow. |
 | complex.cpp:56:12:56:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| conflated.cpp:45:39:45:42 | Chi | PostUpdateNode should not be the target of local flow. |
+| conflated.cpp:53:3:53:27 | Chi | PostUpdateNode should not be the target of local flow. |
 | constructors.cpp:20:24:20:29 | Chi | PostUpdateNode should not be the target of local flow. |
 | constructors.cpp:21:24:21:29 | Chi | PostUpdateNode should not be the target of local flow. |
 | constructors.cpp:23:28:23:28 | Chi | PostUpdateNode should not be the target of local flow. |
