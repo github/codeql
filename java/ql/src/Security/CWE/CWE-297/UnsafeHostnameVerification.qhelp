@@ -5,24 +5,31 @@
 <overview>
 <p>
 If a <code>HostnameVerifier</code> always returns <code>true</code> it will not verify the hostname at all.
-This allows an attacker to perform a Man-in-the-middle attack against the application therefore breaking any security Transport Layer Security (TLS) gives.
-
-An attack would look like this:
-1. The program connects to <code>https://example.com</code>.
-2. The attacker intercepts this connection and presents one of their valid certificates they control, for example one from Let's Encrypt.
-3. Java verifies that the certificate has been issued by a trusted certificate authority.
-4. Java verifies that the certificate has been issued for the host <code>example.com</code>, which will fail because the certificate has been issued for <code>malicious.domain</code>.
-5. Java wants to reject the certificate because the hostname does not match. Before doing this it checks whether there exists a <code>HostnameVerifier</code>.
-6. Your <code>HostnameVerifier</code> is called which returns <code>true</code> for any certificate so also for this one.
-7. Java proceeds with the connection since your <code>HostnameVerifier</code> accepted it.
-8. The attacker can now read the data your program sends to <code>https://example.com</code> and/or alter its replies while the program thinks the connection is secure.
+This stops Transport Layer Security (TLS) providing any security and allows an attacker to perform a Man-in-the-middle attack against the application.
 </p>
+
+<p>
+An attack might look like this:
+</p>
+
+<ol>
+  <li>The program connects to <code>https://example.com</code>.</li>
+  <li>The attacker intercepts this connection and presents one of their valid certificates they control, for example one from Let's Encrypt.</li>
+  <li>Java verifies that the certificate has been issued by a trusted certificate authority.</li>
+  <li>Java verifies that the certificate has been issued for the host <code>example.com</code>, which will fail because the certificate has been issued for <code>malicious.domain</code>.</li>
+  <li>Java wants to reject the certificate because the hostname does not match. Before doing this it checks whether there exists a <code>HostnameVerifier</code>.</li>
+  <li>Your <code>HostnameVerifier</code> is called which returns <code>true</code> for any certificate so also for this one.</li>
+  <li>Java proceeds with the connection since your <code>HostnameVerifier</code> accepted it.</li>
+  <li>The attacker can now read the data your program sends to <code>https://example.com</code> 
+and/or alter its replies while the program thinks the connection is secure.</li>
+</ol>
+
 </overview>
 
 <recommendation>
 <p>
 Do not use an open <code>HostnameVerifier</code>.
-If you use an open verifier to solve a configuration problem with TLS/HTTPS you should solve the configuration problem instead.
+If you have a configuration problem with TLS/HTTPS, you should always solve the configuration problem instead of using an open verifier.
 </p>
 
 </recommendation>
@@ -37,8 +44,7 @@ In the second (good) example, the <code>HostnameVerifier</code> only returns <co
 </example>
 
 <references>
-<li><a href="https://developer.android.com/training/articles/security-ssl">Android Security Guide for TLS/HTTPS</a>.</li>
-<li><a href="https://tersesystems.com/blog/2014/03/23/fixing-hostname-verification/">Further Information on Hostname Verification</a>.</li>
-<li>OWASP: <a href="https://cwe.mitre.org/data/definitions/297.html">CWE-297</a>.</li>
+<li>Android developers: <a href="https://developer.android.com/training/articles/security-ssl">Security with HTTPS and SSL</a>.</li>
+<li>Terse systems blog: <a href="https://tersesystems.com/blog/2014/03/23/fixing-hostname-verification/">Fixing Hostname Verification</a>.</li>
 </references>
 </qhelp>

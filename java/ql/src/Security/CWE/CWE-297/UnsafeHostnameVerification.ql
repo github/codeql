@@ -1,6 +1,6 @@
 /**
  * @name Disabled hostname verification
- * @description Accepting any certificate as valid for a host allows an attacker to perform a machine-in-the-middle attack.
+ * @description Marking a certificate as valid for a host without checking the certificate hostname allows an attacker to perform a machine-in-the-middle attack.
  * @kind path-problem
  * @problem.severity error
  * @precision high
