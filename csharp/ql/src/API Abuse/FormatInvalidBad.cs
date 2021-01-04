@@ -1,6 +1,6 @@
 using System;
 
-class Bad
+class Bad1
 {
     string GenerateEmptyClass(string c)
     {
