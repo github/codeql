@@ -391,20 +391,30 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   /** Holds if this function has a `noexcept` exception specification. */
   predicate isNoExcept() { getADeclarationEntry().isNoExcept() }
 
-  /** Gets a function that overloads this one. */
+  /**
+   * Gets a function that overloads this one.
+   *
+   * Note: if _overrides_ are wanted rather than _overloads_ then
+   * `MemberFunction::getAnOverridingFunction` should be used instead.
+   */
   Function getAnOverload() {
-    result.getName() = getName() and
-    result.getNamespace() = getNamespace() and
-    result != this and
-    // If this function is declared in a class, only consider other
-    // functions from the same class. Conversely, if this function is not
-    // declared in a class, only consider other functions not declared in a
-    // class.
     (
-      if exists(getDeclaringType())
-      then result.getDeclaringType() = getDeclaringType()
-      else not exists(result.getDeclaringType())
+      // If this function is declared in a class, only consider other
+      // functions from the same class.
+      exists(string name, Class declaringType |
+        candGetAnOverloadMember(name, declaringType, this) and
+        candGetAnOverloadMember(name, declaringType, result)
+      )
+      or
+      // Conversely, if this function is not
+      // declared in a class, only consider other functions not declared in a
+      // class.
+      exists(string name, Namespace namespace |
+        candGetAnOverloadNonMember(name, namespace, this) and
+        candGetAnOverloadNonMember(name, namespace, result)
+      )
     ) and
+    result != this and
     // Instantiations and specializations don't participate in overload
     // resolution.
     not (
@@ -460,6 +470,19 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * Gets the nearest enclosing AccessHolder.
    */
   override AccessHolder getEnclosingAccessHolder() { result = this.getDeclaringType() }
+}
+
+pragma[noinline]
+private predicate candGetAnOverloadMember(string name, Class declaringType, Function f) {
+  f.getName() = name and
+  f.getDeclaringType() = declaringType
+}
+
+pragma[noinline]
+private predicate candGetAnOverloadNonMember(string name, Namespace namespace, Function f) {
+  f.getName() = name and
+  f.getNamespace() = namespace and
+  not exists(f.getDeclaringType())
 }
 
 /**
