@@ -55,7 +55,7 @@ class Bar
     void M1() { }
 
     [MyAttribute(true, y = "", x = 0)]
-    [My2(true, false, X = 42)]
+    [My2(b: true, j: 1, a: false, X = 42)]
     void M2() { }
 }
 
@@ -85,5 +85,5 @@ public class X
 class My2Attribute : Attribute
 {
     public int X { get; set; }
-    public My2Attribute(bool a, bool b, int i = 12) { }
+    public My2Attribute(bool a, bool b, int i = 12, int j = 13) { }
 }
