@@ -51,7 +51,7 @@ module StepSummary {
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
    */
   cached
-  predicate step(Node nodeFrom, Node nodeTo, StepSummary summary) {
+  predicate step(LocalSourceNode nodeFrom, Node nodeTo, StepSummary summary) {
     exists(Node mid | typePreservingStep*(nodeFrom, mid) and smallstep(mid, nodeTo, summary))
   }
 
