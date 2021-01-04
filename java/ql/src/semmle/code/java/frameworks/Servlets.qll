@@ -322,3 +322,12 @@ class ServletWebXMLListenerType extends RefType {
     //  - `HttpSessionBindingListener`
   }
 }
+
+/** Holds if `c` is a call to some override of methods of `HttpServlet`, for example `doGet` or `doPost`. */
+predicate isServletMethod(Callable c, string methodName) {
+  c.getDeclaringType() instanceof ServletClass and
+  c.getNumberOfParameters() = 2 and
+  c.getParameter(0).getType() instanceof ServletRequest and
+  c.getParameter(1).getType() instanceof ServletResponse and
+  c.getName() = methodName
+}

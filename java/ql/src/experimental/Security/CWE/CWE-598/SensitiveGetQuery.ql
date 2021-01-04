@@ -23,18 +23,13 @@ class SensitiveInfoExpr extends Expr {
   }
 }
 
-/** GET servlet method of `javax.servlet.http.Servlet` and subtypes. */
-private predicate isGetServletMethod(Callable c) {
-  c.getDeclaringType() instanceof ServletClass and
-  c.getNumberOfParameters() = 2 and
-  c.getParameter(1).getType() instanceof ServletResponse and
-  c.getName() = "doGet"
-}
+/** Holds if `c` is a call to some override of `HttpServlet.doGet`. */
+private predicate isGetServletMethod(Callable c) { isServletMethod(c, "doGet") }
 
 /** Sink of GET servlet requests. */
 class GetServletMethodSink extends DataFlow::ExprNode {
   GetServletMethodSink() {
-    exists(Method m, MethodAccess ma | ma.getMethod() = m |
+    exists(MethodAccess ma |
       isGetServletMethod(ma.getEnclosingCallable()) and
       ma.getAnArgument() = this.getExpr()
     )
