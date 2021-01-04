@@ -51,9 +51,6 @@ class Expr extends DotNet::Expr, ControlFlowElement, @expr {
   /** Gets the value of this expression, if any */
   override string getValue() { expr_value(this, result) }
 
-  /** Holds if this expression has a value. */
-  predicate hasValue() { exists(getValue()) }
-
   /** Gets the enclosing statement of this expression, if any. */
   final Stmt getEnclosingStmt() { enclosingStmt(this, result) }
 
