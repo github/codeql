@@ -781,9 +781,8 @@ that overrides every other field in that collection then its QLDoc of that field
 Content
 ~~~~~~~
 
-The content of a QLDoc comment is interpreted as standard Markdown, with the following extensions:
+The content of a QLDoc comment is interpreted as `CommonMark <https://commonmark.org/>`__, with the following extensions:
 
--  Fenced code blocks using backticks.
 -  Automatic interpretation of links and email addresses.
 -  Use of appropriate characters for ellipses, dashes, apostrophes, and quotes.
 
