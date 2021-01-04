@@ -349,6 +349,7 @@
 | tst.js:23:33:23:40 | [\\s\\S]*? | Strings starting with '(*(*' and with many repetitions of '(*' can start matching anywhere after the start of the preceeding (?:[\\s\\S]*?\\(\\*[\\s\\S]*?\\*\\))* |
 | tst.js:23:47:23:54 | [\\s\\S]*? | Strings starting with '(*' and with many repetitions of '(*a' can start matching anywhere after the start of the preceeding (?:[\\s\\S]*?\\(\\*[\\s\\S]*?\\*\\))* |
 | tst.js:28:24:28:25 | .* | Strings starting with '!\|' and with many repetitions of '\|' can start matching anywhere after the start of the preceeding .* |
+| tst.js:28:59:28:60 | .* | Strings starting with '!\|\\n-\|\\n\|' and with many repetitions of '\|' can start matching anywhere after the start of the preceeding .* |
 | tst.js:31:23:31:24 | .* | Strings starting with '!\|' and with many repetitions of '\|' can start matching anywhere after the start of the preceeding .* |
 | tst.js:31:54:31:55 | .* | Strings starting with '!\|\\n-\|\\n' and with many repetitions of '\|\\n\|' can start matching anywhere after the start of the preceeding .* |
 | tst.js:31:58:31:59 | .* | Strings starting with '!\|\\n-\|\\n\|' and with many repetitions of '\|' can start matching anywhere after the start of the preceeding .* |

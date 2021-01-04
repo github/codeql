@@ -177,7 +177,6 @@ CharClass getCanonicalCharClass(RegExpTerm term) {
 
 /**
  * Holds if `a` and `b` are input symbols from the same regexp.
- * (And not a `Dot()`, `Any()` or `Epsilon()`)
  */
 private predicate sharesRoot(TInputSymbol a, TInputSymbol b) {
   exists(RegExpRoot root |
@@ -190,13 +189,10 @@ private predicate sharesRoot(TInputSymbol a, TInputSymbol b) {
  * Holds if the `a` is an input symbol from a regexp that has root `root`.
  */
 private predicate belongsTo(TInputSymbol a, RegExpRoot root) {
-  exists(RegExpTerm term | getRoot(term) = root |
-    a = Char(term.(RegexpCharacterConstant).getValue().charAt(_))
-  )
-  or
-  exists(string str, RegExpTerm term | a = CharClass(str) |
-    term.getRawValue() = str and
-    getRoot(term) = root
+  exists(State s | getRoot(s.getRepr()) = root |
+    delta(s, a, _)
+    or
+    delta(_, a, s)
   )
 }
 
@@ -675,36 +671,27 @@ private string getAOverlapBetweenCharacterClasses(CharacterClass c, CharacterCla
  * Gets a character that is represented by both `c` and `d`.
  */
 string intersect(InputSymbol c, InputSymbol d) {
-  c = Char(result) and
-  d = getAnInputSymbolMatching(result) and
+  (sharesRoot(c, d) or [c, d] = Any()) and
   (
-    sharesRoot(c, d)
+    c = Char(result) and
+    d = getAnInputSymbolMatching(result)
     or
-    d = Dot()
+    result = getMinOverlapBetweenCharacterClasses(c, d)
     or
-    d = Any()
+    result = c.(CharacterClass).choose() and
+    (
+      d = c
+      or
+      d = Dot() and
+      not (result = "\n" or result = "\r")
+      or
+      d = Any()
+    )
+    or
+    (c = Dot() or c = Any()) and
+    (d = Dot() or d = Any()) and
+    result = "a"
   )
-  or
-  result = getMinOverlapBetweenCharacterClasses(c, d)
-  or
-  result = c.(CharacterClass).choose() and
-  (
-    d = c
-    or
-    d = Dot() and
-    not (result = "\n" or result = "\r")
-    or
-    d = Any()
-  )
-  or
-  c = Dot() and
-  (
-    d = Dot() and result = "a"
-    or
-    d = Any() and result = "a"
-  )
-  or
-  c = Any() and d = Any() and result = "a"
   or
   result = intersect(d, c)
 }
