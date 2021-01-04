@@ -66,12 +66,18 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private void ExtractArguments(TextWriter trapFile)
         {
+            var ctorArguments = attributeSyntax?.ArgumentList?.Arguments.Where(a => a.NameEquals == null).ToList();
+
             var childIndex = 0;
             foreach (var constructorArgument in symbol.ConstructorArguments)
             {
+                var argSyntax = ctorArguments?.Count > childIndex
+                    ? ctorArguments[childIndex]
+                    : null;
+
                 CreateExpressionFromArgument(
                     constructorArgument,
-                    attributeSyntax?.ArgumentList.Arguments[childIndex].Expression,
+                    argSyntax?.Expression,
                     this,
                     childIndex++);
             }
