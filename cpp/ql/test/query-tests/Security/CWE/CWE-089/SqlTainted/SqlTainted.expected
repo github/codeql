@@ -1,13 +1,23 @@
 edges
-| test.c:14:20:14:23 | argv | test.c:19:18:19:23 | (const char *)... |
-| test.c:14:20:14:23 | argv | test.c:19:18:19:23 | (const char *)... |
-| test.c:14:20:14:23 | argv | test.c:19:18:19:23 | query1 |
-| test.c:14:20:14:23 | argv | test.c:19:18:19:23 | query1 |
+| test.c:15:20:15:23 | argv | test.c:21:18:21:23 | (const char *)... |
+| test.c:15:20:15:23 | argv | test.c:21:18:21:23 | (const char *)... |
+| test.c:15:20:15:23 | argv | test.c:21:18:21:23 | query1 |
+| test.c:15:20:15:23 | argv | test.c:21:18:21:23 | query1 |
+| test.c:16:25:16:28 | argv | test.c:33:18:33:23 | (const char *)... |
+| test.c:16:25:16:28 | argv | test.c:33:18:33:23 | (const char *)... |
+| test.c:16:25:16:28 | argv | test.c:33:18:33:23 | query3 |
+| test.c:16:25:16:28 | argv | test.c:33:18:33:23 | query3 |
 nodes
-| test.c:14:20:14:23 | argv | semmle.label | argv |
-| test.c:14:20:14:23 | argv | semmle.label | argv |
-| test.c:19:18:19:23 | (const char *)... | semmle.label | (const char *)... |
-| test.c:19:18:19:23 | (const char *)... | semmle.label | (const char *)... |
-| test.c:19:18:19:23 | query1 | semmle.label | query1 |
+| test.c:15:20:15:23 | argv | semmle.label | argv |
+| test.c:15:20:15:23 | argv | semmle.label | argv |
+| test.c:16:25:16:28 | argv | semmle.label | argv |
+| test.c:16:25:16:28 | argv | semmle.label | argv |
+| test.c:21:18:21:23 | (const char *)... | semmle.label | (const char *)... |
+| test.c:21:18:21:23 | (const char *)... | semmle.label | (const char *)... |
+| test.c:21:18:21:23 | query1 | semmle.label | query1 |
+| test.c:33:18:33:23 | (const char *)... | semmle.label | (const char *)... |
+| test.c:33:18:33:23 | (const char *)... | semmle.label | (const char *)... |
+| test.c:33:18:33:23 | query3 | semmle.label | query3 |
 #select
-| test.c:19:18:19:23 | query1 | test.c:14:20:14:23 | argv | test.c:19:18:19:23 | query1 | This argument to a SQL query function is derived from $@ and then passed to mysql_query(sqlArg) | test.c:14:20:14:23 | argv | user input (argv) |
+| test.c:21:18:21:23 | query1 | test.c:15:20:15:23 | argv | test.c:21:18:21:23 | query1 | This argument to a SQL query function is derived from $@ and then passed to mysql_query(sqlArg) | test.c:15:20:15:23 | argv | user input (argv) |
+| test.c:33:18:33:23 | query3 | test.c:16:25:16:28 | argv | test.c:33:18:33:23 | query3 | This argument to a SQL query function is derived from $@ and then passed to mysql_query(sqlArg) | test.c:16:25:16:28 | argv | user input (argv) |
