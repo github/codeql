@@ -10,26 +10,19 @@
 
 import java
 import semmle.code.java.frameworks.Jndi
+import semmle.code.java.frameworks.Networking
 import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /**
- * Gets a regular expression for matching private hosts, which only matches the host portion therefore checking for port is not necessary.
+ * Insecure (non-SSL, non-private) LDAP URL string literal.
  */
-private string getPrivateHostRegex() {
-  result =
-    "(?i)localhost(?:[:/?#].*)?|127\\.0\\.0\\.1(?:[:/?#].*)?|10(?:\\.[0-9]+){3}(?:[:/?#].*)?|172\\.16(?:\\.[0-9]+){2}(?:[:/?#].*)?|192.168(?:\\.[0-9]+){2}(?:[:/?#].*)?|\\[?0:0:0:0:0:0:0:1\\]?(?:[:/?#].*)?|\\[?::1\\]?(?:[:/?#].*)?"
-}
-
-/**
- * String of LDAP connections not in private domains.
- */
-class LdapStringLiteral extends StringLiteral {
-  LdapStringLiteral() {
+class InsecureLdapUrlLiteral extends StringLiteral {
+  InsecureLdapUrlLiteral() {
     // Match connection strings with the LDAP protocol and without private IP addresses to reduce false positives.
     exists(string s | this.getRepresentedString() = s |
       s.regexpMatch("(?i)ldap://[\\[a-zA-Z0-9].*") and
-      not s.substring(7, s.length()).regexpMatch(getPrivateHostRegex())
+      not s.substring(7, s.length()) instanceof PrivateHostName
     )
   }
 }
@@ -47,24 +40,15 @@ class TypeHashtable extends Class {
 /**
  * Holds if a non-private LDAP string is concatenated from both protocol and host.
  */
-predicate concatLdapString(Expr protocol, Expr host) {
-  (
-    protocol.(CompileTimeConstantExpr).getStringValue().regexpMatch("(?i)ldap(://)?") or
-    protocol
-        .(VarAccess)
-        .getVariable()
-        .getAnAssignedValue()
-        .(CompileTimeConstantExpr)
-        .getStringValue()
-        .regexpMatch("(?i)ldap(://)?")
-  ) and
+predicate concatInsecureLdapString(Expr protocol, Expr host) {
+  protocol.(CompileTimeConstantExpr).getStringValue() = "ldap://" and
   not exists(string hostString |
     hostString = host.(CompileTimeConstantExpr).getStringValue() or
     hostString =
       host.(VarAccess).getVariable().getAnAssignedValue().(CompileTimeConstantExpr).getStringValue()
   |
     hostString.length() = 0 or // Empty host is loopback address
-    hostString.regexpMatch(getPrivateHostRegex())
+    hostString instanceof PrivateHostName
   )
 }
 
@@ -76,22 +60,21 @@ Expr getLeftmostConcatOperand(Expr expr) {
 }
 
 /**
- * String concatenated with `LdapStringLiteral`.
+ * String concatenated with `InsecureLdapUrlLiteral`.
  */
-class LdapString extends Expr {
-  LdapString() {
-    this instanceof LdapStringLiteral
+class InsecureLdapUrl extends Expr {
+  InsecureLdapUrl() {
+    this instanceof InsecureLdapUrlLiteral
     or
-    concatLdapString(this.(AddExpr).getLeftOperand(),
+    concatInsecureLdapString(this.(AddExpr).getLeftOperand(),
       getLeftmostConcatOperand(this.(AddExpr).getRightOperand()))
   }
 }
 
 /**
- * Tainted value passed to env `Hashtable` as the provider URL, i.e.
- * `env.put(Context.PROVIDER_URL, tainted)` or `env.setProperty(Context.PROVIDER_URL, tainted)`.
+ * Holds if `ma` writes the `java.naming.provider.url` (also known as `Context.PROVIDER_URL`) key of a `Hashtable`.
  */
-predicate isProviderUrlEnv(MethodAccess ma) {
+predicate isProviderUrlSetter(MethodAccess ma) {
   ma.getMethod().getDeclaringType().getAnAncestor() instanceof TypeHashtable and
   (ma.getMethod().hasName("put") or ma.getMethod().hasName("setProperty")) and
   (
@@ -106,8 +89,7 @@ predicate isProviderUrlEnv(MethodAccess ma) {
 }
 
 /**
- * Holds if the value "simple" is passed to env `Hashtable` as the authentication mechanism, i.e.
- * `env.put(Context.SECURITY_AUTHENTICATION, "simple")` or `env.setProperty(Context.SECURITY_AUTHENTICATION, "simple")`.
+ * Holds if `ma` sets `java.naming.security.authentication` (also known as `Context.SECURITY_AUTHENTICATION`) to `simple` in some `Hashtable`.
  */
 predicate isSimpleAuthEnv(MethodAccess ma) {
   ma.getMethod().getDeclaringType().getAnAncestor() instanceof TypeHashtable and
@@ -132,13 +114,13 @@ class LdapAuthFlowConfig extends TaintTracking::Configuration {
   LdapAuthFlowConfig() { this = "InsecureLdapAuth:LdapAuthFlowConfig" }
 
   /** Source of non-private LDAP connection string */
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof LdapString }
+  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof InsecureLdapUrl }
 
   /** Sink of provider URL with simple authentication */
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess pma |
       sink.asExpr() = pma.getArgument(1) and
-      isProviderUrlEnv(pma) and
+      isProviderUrlSetter(pma) and
       exists(MethodAccess sma |
         sma.getQualifier() = pma.getQualifier().(VarAccess).getVariable().getAnAccess() and
         isSimpleAuthEnv(sma)

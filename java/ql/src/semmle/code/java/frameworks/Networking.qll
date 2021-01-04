@@ -129,3 +129,13 @@ class UrlOpenConnectionMethod extends Method {
     this.getName() = "openConnection"
   }
 }
+
+/**
+ * A string matching private host names of IPv4 and IPv6, which only matches the host portion therefore checking for port is not necessary.
+ */
+class PrivateHostName extends string {
+  bindingset[this]
+  PrivateHostName() {
+    this.regexpMatch("(?i)localhost(?:[:/?#].*)?|127\\.0\\.0\\.1(?:[:/?#].*)?|10(?:\\.[0-9]+){3}(?:[:/?#].*)?|172\\.16(?:\\.[0-9]+){2}(?:[:/?#].*)?|192.168(?:\\.[0-9]+){2}(?:[:/?#].*)?|\\[?0:0:0:0:0:0:0:1\\]?(?:[:/?#].*)?|\\[?::1\\]?(?:[:/?#].*)?")
+  }
+}

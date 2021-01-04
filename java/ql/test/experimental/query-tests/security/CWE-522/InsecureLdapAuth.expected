@@ -2,6 +2,7 @@ edges
 | InsecureLdapAuth.java:11:20:11:50 | "ldap://ad.your-server.com:389" : String | InsecureLdapAuth.java:15:41:15:47 | ldapUrl |
 | InsecureLdapAuth.java:25:20:25:39 | ... + ... : String | InsecureLdapAuth.java:29:41:29:47 | ldapUrl |
 | InsecureLdapAuth.java:81:20:81:50 | "ldap://ad.your-server.com:389" : String | InsecureLdapAuth.java:85:41:85:47 | ldapUrl |
+| InsecureLdapAuth.java:96:20:96:50 | "ldap://ad.your-server.com:389" : String | InsecureLdapAuth.java:100:47:100:53 | ldapUrl |
 nodes
 | InsecureLdapAuth.java:11:20:11:50 | "ldap://ad.your-server.com:389" : String | semmle.label | "ldap://ad.your-server.com:389" : String |
 | InsecureLdapAuth.java:15:41:15:47 | ldapUrl | semmle.label | ldapUrl |
@@ -9,7 +10,10 @@ nodes
 | InsecureLdapAuth.java:29:41:29:47 | ldapUrl | semmle.label | ldapUrl |
 | InsecureLdapAuth.java:81:20:81:50 | "ldap://ad.your-server.com:389" : String | semmle.label | "ldap://ad.your-server.com:389" : String |
 | InsecureLdapAuth.java:85:41:85:47 | ldapUrl | semmle.label | ldapUrl |
+| InsecureLdapAuth.java:96:20:96:50 | "ldap://ad.your-server.com:389" : String | semmle.label | "ldap://ad.your-server.com:389" : String |
+| InsecureLdapAuth.java:100:47:100:53 | ldapUrl | semmle.label | ldapUrl |
 #select
 | InsecureLdapAuth.java:15:41:15:47 | ldapUrl | InsecureLdapAuth.java:11:20:11:50 | "ldap://ad.your-server.com:389" : String | InsecureLdapAuth.java:15:41:15:47 | ldapUrl | Insecure LDAP authentication from $@. | InsecureLdapAuth.java:11:20:11:50 | "ldap://ad.your-server.com:389" | LDAP connection string |
 | InsecureLdapAuth.java:29:41:29:47 | ldapUrl | InsecureLdapAuth.java:25:20:25:39 | ... + ... : String | InsecureLdapAuth.java:29:41:29:47 | ldapUrl | Insecure LDAP authentication from $@. | InsecureLdapAuth.java:25:20:25:39 | ... + ... | LDAP connection string |
 | InsecureLdapAuth.java:85:41:85:47 | ldapUrl | InsecureLdapAuth.java:81:20:81:50 | "ldap://ad.your-server.com:389" : String | InsecureLdapAuth.java:85:41:85:47 | ldapUrl | Insecure LDAP authentication from $@. | InsecureLdapAuth.java:81:20:81:50 | "ldap://ad.your-server.com:389" | LDAP connection string |
+| InsecureLdapAuth.java:100:47:100:53 | ldapUrl | InsecureLdapAuth.java:96:20:96:50 | "ldap://ad.your-server.com:389" : String | InsecureLdapAuth.java:100:47:100:53 | ldapUrl | Insecure LDAP authentication from $@. | InsecureLdapAuth.java:96:20:96:50 | "ldap://ad.your-server.com:389" | LDAP connection string |

@@ -89,4 +89,19 @@ public class InsecureLdapAuth {
 		environment.put(Context.SECURITY_CREDENTIALS, password);
 		InitialLdapContext ldapContext = new InitialLdapContext(environment, null);
 	}	
+
+
+	// BAD - Test LDAP authentication in cleartext using `DirContext` and string literals.
+	public void testCleartextLdapAuth4(String ldapUserName, String password) {
+		String ldapUrl = "ldap://ad.your-server.com:389";
+		Hashtable<String, String> environment = new Hashtable<String, String>();
+		environment.put("java.naming.factory.initial",
+			"com.sun.jndi.ldap.LdapCtxFactory");
+		environment.put("java.naming.provider.url", ldapUrl);
+		environment.put("java.naming.referral", "follow");
+		environment.put("java.naming.security.authentication", "simple");
+		environment.put("java.naming.security.principal", ldapUserName);
+		environment.put("java.naming.security.credentials", password);
+		DirContext dirContext = new InitialDirContext(environment);
+	}
 }
