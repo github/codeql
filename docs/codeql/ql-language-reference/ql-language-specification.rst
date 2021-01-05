@@ -776,7 +776,7 @@ If no qldoc is provided then in may be inherited.
 In the case of an alias then it may be inherited from the right-hand-side of the alias.
 
 In the case of a member predicate we collect all member predicates that it overrides with declared QLDoc. Then if there is a member predicate in that collection that
-that overrides every other member predicate in that collection then the QLDoc of that field is used as the QLDoc.
+that overrides every other member predicate in that collection then the QLDoc of that member predicate is used as the QLDoc.
 
 In the case of a field we collect all fields that it overrides with declared QLDoc. Then if there is a field in that collection that
 that overrides every other field in that collection then its QLDoc of that field used as the QLDoc.
