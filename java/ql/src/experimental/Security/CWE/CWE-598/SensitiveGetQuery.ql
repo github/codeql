@@ -10,7 +10,6 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.frameworks.Servlets
 import semmle.code.java.security.SensitiveActions
 import DataFlow::PathGraph
 
@@ -23,15 +22,15 @@ class SensitiveInfoExpr extends Expr {
   }
 }
 
-/** Holds if `ma` is a method access to some override of `HttpServlet.doGet`. */
-private predicate isGetServletMethod(MethodAccess ma) { isServletMethod(ma, "doGet") }
+/** Holds if `m` is a method of some override of `HttpServlet.doGet`. */
+private predicate isGetServletMethod(Method m) { isServletMethod(m) and m.getName() = "doGet" }
 
 /** Source of GET servlet requests. */
-class GetServletMethodSource extends DataFlow::ExprNode {
-  GetServletMethodSource() {
-    exists(MethodAccess ma |
-      isGetServletMethod(ma) and
-      ma = this.getExpr()
+class GetHttpRequestSource extends DataFlow::ExprNode {
+  GetHttpRequestSource() {
+    exists(Method m |
+      isGetServletMethod(m) and
+      m.getParameter(0).getAnAccess() = this.asExpr()
     )
   }
 }
@@ -40,9 +39,15 @@ class GetServletMethodSource extends DataFlow::ExprNode {
 class SensitiveGetQueryConfiguration extends TaintTracking::Configuration {
   SensitiveGetQueryConfiguration() { this = "SensitiveGetQueryConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof GetServletMethodSource }
+  override predicate isSource(DataFlow::Node source) { source instanceof GetHttpRequestSource }
 
   override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof SensitiveExpr }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(MethodAccess ma |
+      isRequestGetParamMethod(ma) and pred.asExpr() = ma.getQualifier() and succ.asExpr() = ma
+    )
+  }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, SensitiveGetQueryConfiguration c

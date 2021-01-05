@@ -323,20 +323,17 @@ class ServletWebXMLListenerType extends RefType {
   }
 }
 
-/** Holds if `ma` is a method access to some override of methods of `HttpServlet`, for example `doGet` or `doPost`. */
-predicate isServletMethod(MethodAccess ma, string methodName) {
-  exists(Method m |
-    m = ma.getEnclosingCallable() and
-    m.getDeclaringType() instanceof ServletClass and
-    m.getNumberOfParameters() = 2 and
-    m.getParameter(0).getType() instanceof ServletRequest and
-    m.getParameter(1).getType() instanceof ServletResponse and
-    m.getName() = methodName and
-    ma.getQualifier() = m.getParameter(0).getAnAccess() and
-    (
-      ma.getMethod() instanceof ServletRequestGetParameterMethod or
-      ma.getMethod() instanceof ServletRequestGetParameterMapMethod or
-      ma.getMethod() instanceof HttpServletRequestGetQueryStringMethod
-    )
-  )
+/** Holds if `m` is a request handler method (for example `doGet` or `doPost`). */
+predicate isServletMethod(Method m) {
+  m.getDeclaringType() instanceof ServletClass and
+  m.getNumberOfParameters() = 2 and
+  m.getParameter(0).getType() instanceof ServletRequest and
+  m.getParameter(1).getType() instanceof ServletResponse
+}
+
+/** Holds if `ma` is a call that gets a request parameter. */
+predicate isRequestGetParamMethod(MethodAccess ma) {
+  ma.getMethod() instanceof ServletRequestGetParameterMethod or
+  ma.getMethod() instanceof ServletRequestGetParameterMapMethod or
+  ma.getMethod() instanceof HttpServletRequestGetQueryStringMethod
 }
