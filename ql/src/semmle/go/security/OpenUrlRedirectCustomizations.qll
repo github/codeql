@@ -39,6 +39,9 @@ module OpenUrlRedirect {
    */
   bindingset[this]
   abstract class AdditionalStep extends string {
+    /**
+     * Holds if `pred` to `succ` is an additional taint-propagating step for this query.
+     */
     abstract predicate hasTaintStep(DataFlow::Node pred, DataFlow::Node succ);
   }
 
