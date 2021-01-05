@@ -545,6 +545,9 @@ module TaintedWithPath {
     /** Override this to specify which elements are sinks in this configuration. */
     abstract predicate isSink(Element e);
 
+    /** Override this to specify additional barriers in this configuration. */
+    predicate isAdditionalBarrier(Expr node) { none() }
+
     /**
      * Override this predicate to `any()` to allow taint to flow through global
      * variables.
@@ -578,7 +581,13 @@ module TaintedWithPath {
       )
     }
 
-    override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
+    override predicate isBarrier(DataFlow::Node node) {
+      nodeIsBarrier(node)
+      or
+      exists(TaintTrackingConfiguration cfg, Expr e |
+        cfg.isAdditionalBarrier(e) and node = getNodeForExpr(e)
+      )
+    }
 
     override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
   }
