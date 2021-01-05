@@ -418,7 +418,7 @@ aggregation in a simpler form:
        count(int i | i = "hello".indexOf("l") | i)
        count("hello".indexOf("l"))
 
-#. If there only one aggregation variable, you can omit the ``<expression>`` part instead.
+#. If there is only one aggregation variable, you can omit the ``<expression>`` part instead.
    In this case, the expression is considered to be the aggregation variable itself.
    For example, the following aggregations are equivalent:
 
