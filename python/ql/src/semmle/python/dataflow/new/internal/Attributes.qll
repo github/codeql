@@ -30,8 +30,8 @@ abstract class AttrRef extends Node {
   predicate mayHaveAttributeName(string attrName) {
     attrName = this.getAttributeName()
     or
-    exists(Node nodeFrom |
-      localFlow(nodeFrom, this.getAttributeNameExpr()) and
+    exists(LocalSourceNode nodeFrom |
+      nodeFrom.flowsTo(this.getAttributeNameExpr()) and
       attrName = nodeFrom.asExpr().(StrConst).getText()
     )
   }
