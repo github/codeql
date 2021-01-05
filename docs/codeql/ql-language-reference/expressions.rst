@@ -552,7 +552,8 @@ The following table lists some examples of different forms of ``any`` expression
 | ``any(int i | i = [0 .. 3] | i * i)``    | the integers ``0``, ``1``, ``4``, and ``9``     |
 +------------------------------------------+-------------------------------------------------+
 
-.. note::
+.. pull-quote:: Note
+
    There is also a `built-in predicate <ql-language-specification#non-member-built-ins>`_
    ``any()``. This is a predicate that always holds.
 

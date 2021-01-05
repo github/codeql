@@ -366,7 +366,9 @@ value, namely 2.
 It inherits member predicates from ``OneTwo`` and ``TwoThree``. It also (indirectly) inherits
 from ``OneTwoThree`` and ``int``.
 
-.. note:: If a subclass inherits multiple definitions for the same predicate name, then it
+.. pull-quote:: Note
+
+   If a subclass inherits multiple definitions for the same predicate name, then it
    must :ref:`override <overriding-member-predicates>` those definitions to avoid ambiguity.
    :ref:`Super expressions <super>` are often useful in this situation.
 
@@ -397,7 +399,9 @@ in the characteristic predicate of a class.
 Algebraic datatypes
 *******************
 
-.. note:: The syntax for algebraic datatypes is considered experimental and is subject to
+.. pull-quote:: Note
+
+   The syntax for algebraic datatypes is considered experimental and is subject to
    change. However, they appear in the `standard QL libraries <https://github.com/github/codeql>`_
    so the following sections should help you understand those examples.
 

@@ -96,7 +96,9 @@ To do this, you can use the following mechanisms:
    :ref:`binds <predicate-binding>` all its arguments.
    Therefore, if you :ref:`call <calls>` a predicate on a variable, the variable becomes bound.
    
-   .. important:: If a predicate uses non-standard binding sets, then it does **not** always bind
+   .. pull-quote:: Important 
+      
+      If a predicate uses non-standard binding sets, then it does **not** always bind
       all its arguments. In such a case, whether the predicate call binds a specific argument
       depends on which other arguments are bound, and what the binding sets say about the
       argument in question. For more information, see ":ref:`binding-sets`."

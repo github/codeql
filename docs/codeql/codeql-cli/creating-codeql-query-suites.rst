@@ -16,7 +16,7 @@ mapping with (usually) a single key. The instructions are executed in the order
 they appear in the query suite definition. After all the instructions in the
 suite definition have been executed, the result is a set of selected queries.
 
-.. note::
+.. pull-quote:: Note
 
    Any custom queries that you want to add to a query suite must be in a :doc:`QL
    pack <about-ql-packs>` and contain the correct query metadata. 
@@ -54,7 +54,7 @@ queries using:
 
    - qlpack: <qlpack-name>
 
-.. note::
+.. pull-quote:: Note
 
    When pathnames appear in query suite definitions, they must always
    be given with a forward slash, ``/``, as a directory separator.
