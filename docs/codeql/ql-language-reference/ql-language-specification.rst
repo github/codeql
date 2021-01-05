@@ -1221,7 +1221,7 @@ An aggregation can be written in one of two forms:
 
    aggorderby ::= expr ("asc" | "desc")?
 
-The expression enclosed in square brackets (``[`` and ``]``, U+005B and U+005D), if present, is called the *rank expression*. It must have type ``int`` in the enclosing environment.
+The expression enclosed in square brackets (``[`` and ``]``, U+005B and U+005D), if present, is called the *rank expression*. It must have type ``int``.
 
 The ``as_exprs``, if present, are called the *aggregation expressions*. If an aggregation expression is of the form ``expr as v`` then the expression is said to be *named* v.
 
