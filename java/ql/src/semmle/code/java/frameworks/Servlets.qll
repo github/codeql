@@ -323,11 +323,20 @@ class ServletWebXMLListenerType extends RefType {
   }
 }
 
-/** Holds if `c` is a call to some override of methods of `HttpServlet`, for example `doGet` or `doPost`. */
-predicate isServletMethod(Callable c, string methodName) {
-  c.getDeclaringType() instanceof ServletClass and
-  c.getNumberOfParameters() = 2 and
-  c.getParameter(0).getType() instanceof ServletRequest and
-  c.getParameter(1).getType() instanceof ServletResponse and
-  c.getName() = methodName
+/** Holds if `ma` is a method access to some override of methods of `HttpServlet`, for example `doGet` or `doPost`. */
+predicate isServletMethod(MethodAccess ma, string methodName) {
+  exists(Method m |
+    m = ma.getEnclosingCallable() and
+    m.getDeclaringType() instanceof ServletClass and
+    m.getNumberOfParameters() = 2 and
+    m.getParameter(0).getType() instanceof ServletRequest and
+    m.getParameter(1).getType() instanceof ServletResponse and
+    m.getName() = methodName and
+    ma.getQualifier() = m.getParameter(0).getAnAccess() and
+    (
+      ma.getMethod() instanceof ServletRequestGetParameterMethod or
+      ma.getMethod() instanceof ServletRequestGetParameterMapMethod or
+      ma.getMethod() instanceof HttpServletRequestGetQueryStringMethod
+    )
+  )
 }

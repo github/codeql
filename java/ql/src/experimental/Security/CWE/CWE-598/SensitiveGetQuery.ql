@@ -23,15 +23,15 @@ class SensitiveInfoExpr extends Expr {
   }
 }
 
-/** Holds if `c` is a call to some override of `HttpServlet.doGet`. */
-private predicate isGetServletMethod(Callable c) { isServletMethod(c, "doGet") }
+/** Holds if `ma` is a method access to some override of `HttpServlet.doGet`. */
+private predicate isGetServletMethod(MethodAccess ma) { isServletMethod(ma, "doGet") }
 
-/** Sink of GET servlet requests. */
-class GetServletMethodSink extends DataFlow::ExprNode {
-  GetServletMethodSink() {
+/** Source of GET servlet requests. */
+class GetServletMethodSource extends DataFlow::ExprNode {
+  GetServletMethodSource() {
     exists(MethodAccess ma |
-      isGetServletMethod(ma.getEnclosingCallable()) and
-      ma.getAnArgument() = this.getExpr()
+      isGetServletMethod(ma) and
+      ma = this.getExpr()
     )
   }
 }
@@ -40,11 +40,9 @@ class GetServletMethodSink extends DataFlow::ExprNode {
 class SensitiveGetQueryConfiguration extends TaintTracking::Configuration {
   SensitiveGetQueryConfiguration() { this = "SensitiveGetQueryConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof SensitiveInfoExpr
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof GetServletMethodSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof GetServletMethodSink }
+  override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof SensitiveExpr }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, SensitiveGetQueryConfiguration c
