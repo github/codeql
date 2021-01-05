@@ -1,17 +1,13 @@
 /**
- * TODO: Doc about this file.
+ * Provides classes for working with concepts from [`clevergo.tech/clevergo@v0.5.2`](https://pkg.go.dev/clevergo.tech/clevergo@v0.5.2) package.
  */
 
 import go
 
 /**
- * TODO: Doc about this module.
+ * Provides classes for working with concepts from [`clevergo.tech/clevergo@v0.5.2`](https://pkg.go.dev/clevergo.tech/clevergo@v0.5.2) package.
  */
 private module CleverGo {
-  /** Gets the package path. */
-  bindingset[result]
-  string packagePath() { result = ["clevergo.tech/clevergo", "github.com/clevergo/clevergo"] }
-
   /**
    * Provides models of untrusted flow sources.
    */
@@ -22,7 +18,7 @@ private module CleverGo {
         this = outp.getExitNode(mtd.getACall())
       |
         // Receiver: Context
-        mtd.hasQualifiedName(packagePath(), "Context", methodName) and
+        mtd.hasQualifiedName(package("clevergo.tech/clevergo", ""), "Context", methodName) and
         (
           // Method: func (*Context).BasicAuth() (username string, password string, ok bool)
           methodName = "BasicAuth" and
@@ -58,7 +54,7 @@ private module CleverGo {
         )
         or
         // Receiver: Params
-        mtd.hasQualifiedName(packagePath(), "Params", methodName) and
+        mtd.hasQualifiedName(package("clevergo.tech/clevergo", ""), "Params", methodName) and
         (
           // Method: func (Params).String(name string) string
           methodName = "String" and
@@ -66,23 +62,35 @@ private module CleverGo {
         )
       )
       or
+      // Interfaces of package: clevergo.tech/clevergo@v0.5.2
+      exists(string methodName, Method mtd, FunctionOutput outp |
+        this = outp.getExitNode(mtd.getACall())
+      |
+        // Interface: Decoder
+        mtd.implements(package("clevergo.tech/clevergo", ""), "Decoder", methodName) and
+        (
+          // Method: func (Decoder).Decode(req *net/http.Request, v interface{}) error
+          methodName = "Decode" and
+          outp.isParameter(1)
+        )
+      )
+      or
       // Structs of package: clevergo.tech/clevergo@v0.5.2
       exists(DataFlow::Field fld |
         // Struct: Context
-        fld.hasQualifiedName(packagePath(), "Context", "Params")
+        fld.hasQualifiedName(package("clevergo.tech/clevergo", ""), "Context", "Params")
         or
         // Struct: Param
-        fld.hasQualifiedName(packagePath(), "Param", ["Key", "Value"])
+        fld.hasQualifiedName(package("clevergo.tech/clevergo", ""), "Param", ["Key", "Value"])
       |
         this = fld.getARead()
       )
       or
       // Types of package: clevergo.tech/clevergo@v0.5.2
-      exists(DataFlow::ReadNode read, ValueEntity v |
-        v.getType().hasQualifiedName(packagePath(), "Params")
+      exists(ValueEntity v |
+        v.getType().hasQualifiedName(package("clevergo.tech/clevergo", ""), "Params")
       |
-        read.reads(v) and
-        this = read
+        this = v.getARead()
       )
     }
   }
@@ -95,12 +103,10 @@ private module CleverGo {
     TaintTrackingFunctionModels() {
       // Taint-tracking models for package: clevergo.tech/clevergo@v0.5.2
       (
-        // signature: func CleanPath(p string) string
-        hasQualifiedName(packagePath(), "CleanPath") and
-        (
-          inp.isParameter(0) and
-          out.isResult()
-        )
+        // Function: func CleanPath(p string) string
+        this.hasQualifiedName(package("clevergo.tech/clevergo", ""), "CleanPath") and
+        inp.isParameter(0) and
+        out.isResult()
       )
     }
 
@@ -117,19 +123,23 @@ private module CleverGo {
     TaintTrackingMethodModels() {
       // Taint-tracking models for package: clevergo.tech/clevergo@v0.5.2
       (
-        // signature: func (Decoder).Decode(req *net/http.Request, v interface{}) error
-        implements(packagePath(), "Decoder", "Decode") and
-        (
-          inp.isParameter(0) and
-          out.isParameter(1)
-        )
+        // Receiver: Application
+        // Method: func (*Application).RouteURL(name string, args ...string) (*net/url.URL, error)
+        this.hasQualifiedName(package("clevergo.tech/clevergo", ""), "Application", "RouteURL") and
+        inp.isParameter(_) and
+        out.isResult(0)
         or
-        // signature: func (Renderer).Render(w io.Writer, name string, data interface{}, c *Context) error
-        implements(packagePath(), "Renderer", "Render") and
-        (
-          inp.isParameter(2) and
-          out.isParameter(0)
-        )
+        // Receiver: Decoder
+        // Method: func (Decoder).Decode(req *net/http.Request, v interface{}) error
+        this.implements(package("clevergo.tech/clevergo", ""), "Decoder", "Decode") and
+        inp.isParameter(0) and
+        out.isParameter(1)
+        or
+        // Receiver: Renderer
+        // Method: func (Renderer).Render(w io.Writer, name string, data interface{}, c *Context) error
+        this.implements(package("clevergo.tech/clevergo", ""), "Renderer", "Render") and
+        inp.isParameter(2) and
+        out.isParameter(0)
       )
     }
 
