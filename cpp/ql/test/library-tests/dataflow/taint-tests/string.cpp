@@ -396,9 +396,9 @@ void test_string_iterators() {
 		sink(*(i2+1)); // $ ast,ir
 		sink(*(i2-1)); // $ ast,ir
 		i3 = i2;
-		sink(*(++i3)); // $ ast MISSING: ir
+		sink(*(++i3)); // $ ast,ir
 		i4 = i2;
-		sink(*(--i4)); // $ ast MISSING: ir
+		sink(*(--i4)); // $ ast,ir
 		i5 = i2;
 		i5++;
 		sink(*i5); // $ ast,ir
@@ -406,19 +406,19 @@ void test_string_iterators() {
 		i6--;
 		sink(*i6); // $ ast,ir
 		i7 = i2;
-		sink(*(i7+=1)); // $ ast MISSING: ir
+		sink(*(i7+=1)); // $ ast,ir
 		i8 = i2;
-		sink(*(i8-=1)); // $ ast MISSING: ir
+		sink(*(i8-=1)); // $ ast,ir
 
 		i9 = s2.end();
 		--i9;
 		sink(*i9); // $ ast,ir
 
 		i10 = i2;
-		sink(*(i10++)); // $ ast MISSING: ir
+		sink(*(i10++)); // $ ast,ir
 		sink(i10); // $ ast,ir
 		i11 = i2;
-		sink(*(i11--)); // $ ast MISSING: ir
+		sink(*(i11--)); // $ ast,ir
 		sink(i11); // $ ast,ir
 	}
 }
