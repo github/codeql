@@ -24,15 +24,6 @@ namespace Semmle.Extraction.CommentProcessing
         // Program elements sorted by location.
         private readonly SortedDictionary<Location, Label> elements = new SortedDictionary<Location, Label>(new LocationComparer());
 
-        private readonly Dictionary<Label, Key> duplicationGuardKeys = new Dictionary<Label, Key>();
-
-        private Key? GetDuplicationGuardKey(Label label)
-        {
-            if (duplicationGuardKeys.TryGetValue(label, out var duplicationGuardKey))
-                return duplicationGuardKey;
-            return null;
-        }
-
         private class LocationComparer : IComparer<Location>
         {
             public int Compare(Location? l1, Location? l2) => CommentProcessor.Compare(l1, l2);
@@ -66,14 +57,11 @@ namespace Semmle.Extraction.CommentProcessing
         /// Called by the populator when there is a program element which can have comments.
         /// </summary>
         /// <param name="elementLabel">The label of the element in the trap file.</param>
-        /// <param name="duplicationGuardKey">The duplication guard key of the element, if any.</param>
         /// <param name="loc">The location of the element.</param>
-        public void AddElement(Label elementLabel, Key? duplicationGuardKey, Location loc)
+        public void AddElement(Label elementLabel, Location loc)
         {
             if (loc != null && loc.IsInSource)
                 elements[loc] = elementLabel;
-            if (duplicationGuardKey != null)
-                duplicationGuardKeys[elementLabel] = duplicationGuardKey;
         }
 
         // Ensure that commentBlock and element refer to the same file
@@ -109,19 +97,19 @@ namespace Semmle.Extraction.CommentProcessing
             if (previousElement != null)
             {
                 var key = previousElement.Value.Value;
-                callback(key, GetDuplicationGuardKey(key), commentBlock, CommentBinding.Before);
+                callback(key, commentBlock, CommentBinding.Before);
             }
 
             if (nextElement != null)
             {
                 var key = nextElement.Value.Value;
-                callback(key, GetDuplicationGuardKey(key), commentBlock, CommentBinding.After);
+                callback(key, commentBlock, CommentBinding.After);
             }
 
             if (parentElement != null)
             {
                 var key = parentElement.Value.Value;
-                callback(key, GetDuplicationGuardKey(key), commentBlock, CommentBinding.Parent);
+                callback(key, commentBlock, CommentBinding.Parent);
             }
 
             // Heuristic to decide which is the "best" element associated with the comment.
@@ -171,7 +159,7 @@ namespace Semmle.Extraction.CommentProcessing
             if (bestElement != null)
             {
                 var label = bestElement.Value.Value;
-                callback(label, GetDuplicationGuardKey(label), commentBlock, CommentBinding.Best);
+                callback(label, commentBlock, CommentBinding.Best);
             }
         }
 

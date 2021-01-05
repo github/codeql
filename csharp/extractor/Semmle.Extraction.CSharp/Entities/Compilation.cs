@@ -65,14 +65,10 @@ namespace Semmle.Extraction.CSharp.Entities
             }
             trapFile.compilation_finished(this, (float)p.Total.Cpu.TotalSeconds, (float)p.Total.Elapsed.TotalSeconds);
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 
     internal class Diagnostic : FreshEntity
     {
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
-
         private readonly Microsoft.CodeAnalysis.Diagnostic diagnostic;
 
         public Diagnostic(Context cx, Microsoft.CodeAnalysis.Diagnostic diag) : base(cx)

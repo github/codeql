@@ -34,8 +34,6 @@ namespace Semmle.Extraction.CSharp.Entities
         bool IStatementParentEntity.IsTopLevelParent => false;
 
         protected abstract CSharpSyntaxNode GetStatementSyntax();
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NeedsLabel;
     }
 
     internal abstract class Statement<TSyntax> : Statement where TSyntax : CSharpSyntaxNode

@@ -43,7 +43,5 @@ namespace Semmle.Extraction.CSharp.Entities
 
             public CommentBlock Create(Context cx, ICommentBlock init) => new CommentBlock(cx, init);
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 }

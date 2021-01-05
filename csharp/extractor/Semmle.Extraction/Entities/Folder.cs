@@ -33,8 +33,6 @@ namespace Semmle.Extraction.Entities
             public Folder Create(Context cx, PathTransformer.ITransformedPath init) => new Folder(cx, init);
         }
 
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
-
         public override int GetHashCode() => symbol.GetHashCode();
 
         public override bool Equals(object? obj)

@@ -70,8 +70,6 @@ namespace Semmle.Extraction.CIL
             this.Cx = cx;
             cx.Cx.AddFreshLabel(this);
         }
-
-        TrapStackBehaviour IEntity.TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 
     /// <summary>
@@ -114,8 +112,6 @@ namespace Semmle.Extraction.CIL
             WriteQuotedId(writer);
             return writer.ToString();
         }
-
-        TrapStackBehaviour IEntity.TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 
     /// <summary>

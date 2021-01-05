@@ -53,7 +53,5 @@ namespace Semmle.Extraction
         public override string ToString() => Label.ToString();
 
         public virtual Microsoft.CodeAnalysis.Location? ReportingLocation => null;
-
-        public abstract TrapStackBehaviour TrapStackBehaviour { get; }
     }
 }

@@ -40,7 +40,5 @@ namespace Semmle.Extraction.CIL.Entities
             WriteQuotedId(writer);
             return writer.ToString();
         }
-
-        TrapStackBehaviour IEntity.TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 }

@@ -183,19 +183,9 @@ namespace Semmle.Extraction
         /// Enqueue the given action to be performed later.
         /// </summary>
         /// <param name="toRun">The action to run.</param>
-        public void PopulateLater(Action a)
+        public void PopulateLater(Action toRun)
         {
-            if (tagStack.Count > 0)
-            {
-                // If we are currently executing with a duplication guard, then the same
-                // guard must be used for the deferred action
-                var key = tagStack.Peek();
-                populateQueue.Enqueue(() => WithDuplicationGuard(key, a));
-            }
-            else
-            {
-                populateQueue.Enqueue(a);
-            }
+            populateQueue.Enqueue(toRun);
         }
 
         /// <summary>
@@ -299,39 +289,11 @@ namespace Semmle.Extraction
             }
         }
 
-        private class PushEmitter : ITrapEmitter
-        {
-            private readonly Key key;
-
-            public PushEmitter(Key key)
-            {
-                this.key = key;
-            }
-
-            public void EmitTrap(TextWriter trapFile)
-            {
-                trapFile.Write(".push ");
-                key.AppendTo(trapFile);
-                trapFile.WriteLine();
-            }
-        }
-
-        private class PopEmitter : ITrapEmitter
-        {
-            public void EmitTrap(TextWriter trapFile)
-            {
-                trapFile.WriteLine(".pop");
-            }
-        }
-
-        private readonly Stack<Key> tagStack = new Stack<Key>();
-
         /// <summary>
-        /// Populates an entity, handling the tag stack appropriately
+        /// Populates an entity
         /// </summary>
         /// <param name="optionalSymbol">Symbol for reporting errors.</param>
         /// <param name="entity">The entity to populate.</param>
-        /// <exception cref="InternalError">Thrown on invalid trap stack behaviour.</exception>
         public void Populate(ISymbol? optionalSymbol, ICachedEntity entity)
         {
             if (writingLabel)
@@ -341,82 +303,17 @@ namespace Semmle.Extraction
                 return;
             }
 
-            bool duplicationGuard;
-            bool deferred;
-
-            switch (entity.TrapStackBehaviour)
-            {
-                case TrapStackBehaviour.NeedsLabel:
-                    if (!tagStack.Any())
-                        ExtractionError("TagStack unexpectedly empty", optionalSymbol, entity);
-                    duplicationGuard = false;
-                    deferred = false;
-                    break;
-                case TrapStackBehaviour.NoLabel:
-                    duplicationGuard = false;
-                    deferred = tagStack.Any();
-                    break;
-                case TrapStackBehaviour.OptionalLabel:
-                    duplicationGuard = false;
-                    deferred = false;
-                    break;
-                case TrapStackBehaviour.PushesLabel:
-                    duplicationGuard = true;
-                    deferred = tagStack.Any();
-                    break;
-                default:
-                    throw new InternalError("Unexpected TrapStackBehaviour");
-            }
-
-            var a = duplicationGuard && this.Create(entity.ReportingLocation) is NonGeneratedSourceLocation loc ?
-                (Action)(() => WithDuplicationGuard(new Key(entity, loc), () => entity.Populate(TrapWriter.Writer))) :
-                (Action)(() => this.Try(null, optionalSymbol, () => entity.Populate(TrapWriter.Writer)));
-
-            if (deferred)
-                populateQueue.Enqueue(a);
-            else
-                a();
-        }
-
-        /// <summary>
-        /// Runs the given action <paramref name="a"/>, guarding for trap duplication
-        /// based on key <paramref name="key"/>.
-        /// </summary>
-        public void WithDuplicationGuard(Key key, Action a)
-        {
-            if (scope is AssemblyScope)
-            {
-                // No need for a duplication guard when extracting assemblies,
-                // and the duplication guard could lead to method bodies being missed
-                // depending on trap import order.
-                a();
-            }
-            else
-            {
-                tagStack.Push(key);
-                TrapWriter.Emit(new PushEmitter(key));
-                try
-                {
-                    a();
-                }
-                finally
-                {
-                    TrapWriter.Emit(new PopEmitter());
-                    tagStack.Pop();
-                }
-            }
+            this.Try(null, optionalSymbol, () => entity.Populate(TrapWriter.Writer));
         }
 
         /// <summary>
         /// Register a program entity which can be bound to comments.
         /// </summary>
-        /// <param name="cx">Extractor context.</param>
         /// <param name="entity">Program entity.</param>
         /// <param name="l">Location of the entity.</param>
         public void BindComments(IEntity entity, Microsoft.CodeAnalysis.Location l)
         {
-            var duplicationGuardKey = tagStack.Count > 0 ? tagStack.Peek() : null;
-            CommentGenerator.AddElement(entity.Label, duplicationGuardKey, l);
+            CommentGenerator.AddElement(entity.Label, l);
         }
 
         /// <summary>

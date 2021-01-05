@@ -23,8 +23,6 @@ namespace Semmle.Extraction.Entities
         }
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => symbol;
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }
 
     public static class LocationExtensions

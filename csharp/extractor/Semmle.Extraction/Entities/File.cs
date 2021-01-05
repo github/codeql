@@ -92,7 +92,5 @@ namespace Semmle.Extraction.Entities
 
             public File Create(Context cx, string init) => new File(cx, init);
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 }
