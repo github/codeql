@@ -9,6 +9,7 @@ import go
  */
 private module CleverGo {
   /** Gets the package path. */
+  bindingset[result]
   string packagePath() {
     result = package(["clevergo.tech/clevergo", "github.com/clevergo/clevergo"], "")
   }
