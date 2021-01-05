@@ -1948,11 +1948,17 @@ The store is first initialized with the *database content* of all built-in predi
 
 Each layer of the stratification is *populated* in order. To populate a layer, each predicate in the layer is repeatedly populated until the store stops changing. The way that a predicate is populated is as follows:
 
--  To populate a predicate that has a formula as a body, find all named tuples with the variables of the predicate's arguments that match the body formula and the types of the variables. If the predicate has a result, then the matching named tuples should additionally have a value for ``result`` that is in the result type of the predicate. 
-   If the predicate is a member predicate of a class ``C`` and not a characteristic predicate, then the tuples should additionally have a value for ``this`` and fields that match some tuple in ``C.class``. 
-   If the predicate is a characteristic predicate of a class ``C``, then the tuples should additionally have a value for ``this`` and fields that match some tuple in ``C.extends`` and each 
-   declared field ``f`` with type ``B`` the value of ``f`` is a member of ``B.class``.
-   For each such tuple remove any components that have the same name as a field on the declaring type and add it to the predicate in the store.
+-  To populate a predicate that has a formula as a body, find all named tuples with identify each named tuple ``t`` that has the following properties:
+   - The tuple matches the body formula.
+   - The variables should be  the predicate's arguments.  
+   - If the predicate has a result, then the tuples should additionally have a value for ``result``
+   - If the predicate is a member predicate or characteristic predicate of a class ``C`` then the tuples should additionally have a value for ``this`` and each visible field on the class.
+   - The values corresponding to the arguments should all be a member of the declared types of the arguments.
+   - The values corresponding to ``result`` should all be a member of the result type.
+   - The values corresponding to the fields should all be a member of the declared types of the fields.
+   - If the predicate is a member predicate of a class ``C`` and not a characteristic predicate, then the tuples should additionally extend some tuple in ``C.class``. 
+   - If the predicate is a characteristic predicate of a class ``C``, then there should be a tuple ``t'``in ``C.extends`` such that for each visible field in ``C`` any field that is equal to or overrides a field in that ``t'`` should have the same value in ``t``. ``this`` should also map to the same value in ``t`` and ``t``.
+   For each such tuple remove any components that correspond to fields and add it to the predicate in the store.
 
 -  To populate an abstract predicate, do nothing.
 
@@ -1960,17 +1966,21 @@ Each layer of the stratification is *populated* in order. To populate a layer, e
 
 -  To populate the type ``C.extends`` for a class ``C``, identify each named tuple that has the following properties:
      - The value of ``this`` is in all non-class base types of ``C``.
-     - For each class base type ``B`` of ``C`` the projection of the tuple onto fields the public fields of ``B`` is the projection of a tuple in ``B.B`` onto the public fields of ``B``. 
+     - The keys of the tuple are ``this`` and the union of the public fields from each base type.
+     - For each class base type ``B`` of ``C`` there is a named tuple with with variables from the public fields of ``B`` and ``this`` that is the given tuple and some tuple in ``B.B`` both extend. 
    For each such tuple add it to ``C.extends``.
 
 -  To populate the type ``C.C`` for a class ``C``, if ``C`` has a characteristic predicate, then add all tuples from that predicate to the store. 
-   Otherwise add all tuples into the store that it satisfy ``C.extends`` and for each declared field ``f`` with type ``B`` the value of ``f`` is a member of ``B.class``
+   Otherwise add all tuples ``t`` such that:
+   - The variables of ``t`` should be ``this`` and the visible fields of ``C``.  
+   - The values corresponding to the fields should all be a member of the declared types of the fields.
+   - If the predicate is a characteristic predicate of a class ``C``, then there should be a tuple ``t'``in ``C.extends`` such that for each visible field in ``C`` any field that is equal to or overrides a field in that ``t'`` should have the same value in ``t``. ``this`` should also map to the same value in ``t`` and ``t``.
 
 -  To populate the type ``C.class`` for a non-abstract class type ``C``, add each tuple in ``C.C`` to ``C.class``.
 
 -  To populate the type ``C.class`` for an abstract class type ``C``, identify each named tuple that has the following properties:
      - It is a member of ``C.C``
-     - For each class ``D`` that has ``C`` as a base type then the projection of the tuple to the public ``D.class``.
+     - For each class ``D`` that has ``C`` as a base type then there is a named tuple with variables from the public fields of ``C`` and ``this`` that the given tuple and a tuple in ``D.class`` both extend.
 
 
 Query evaluation
