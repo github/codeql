@@ -1194,6 +1194,8 @@ If the resolved predicate is built in, then the call may not include a closure. 
 
 -  The number 1 if the predicate has a result, otherwise 0.
 
+If the call includes a closure then all declared predicate arguments, the enclosing type of the declaration if it exists and the result type of the declaration if it exists must be compatible. If one of those types is a subtype of ``int`` all the other arguments must be a subtype of ``int``.
+
 If the call resolves to a member predicate, then the *receiver values* are as follows. If the call has a receiver, then the receiver values are the values of that receiver. If the call does not have a receiver, then the single receiver value is the value of ``this`` in the contextual named tuple.
 
 The *tuple prefixes* of a call with results include one value from each of the argument expressions' values, in the same order as the order of the arguments. If the call resolves to a non-member predicate, then those values are exactly the tuple prefixes of the call. If the call instead resolves to a member predicate, then the tuple prefixes additionally include a receiver value, ordered before the argument values.
