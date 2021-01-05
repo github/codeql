@@ -251,7 +251,7 @@ class Setter extends Accessor {
   /** Holds if this setter is an `init` accessor. */
   predicate isInitOnly() {
     exists(Type t | t.getQualifiedName() = "System.Runtime.CompilerServices.IsExternalInit" |
-      cil_custom_modifiers(this, t, 1)
+      this.hasRequiredCustomModifier(t)
     )
   }
 }

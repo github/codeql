@@ -7,7 +7,7 @@ from string receiver, string modifier, int kind
 where
   exists(Type modType, CustomModifierReceiver cmr |
     receiver = cmr.toString() and
-    cmr.hasCustomModifier(modType, kind) and
+    cil_custom_modifiers(cmr, modType, kind) and
     modType.getQualifiedName() = modifier
   )
 select receiver, modifier, getKind(kind)

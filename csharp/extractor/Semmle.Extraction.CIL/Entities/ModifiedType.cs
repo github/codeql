@@ -33,17 +33,10 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override Type Construct(IEnumerable<Type> typeArguments) => throw new NotImplementedException();
 
-        public override string Name => Unmodified.Name + (IsRequired ? " modreq" : " modopt") + $"({Modifier.Name})";
+        public override string Name => $"{Unmodified.Name} {(IsRequired ? "modreq" : "modopt")}({Modifier.Name})";
 
-        public override void WriteAssemblyPrefix(TextWriter trapFile) => Unmodified.WriteAssemblyPrefix(trapFile);
+        public override void WriteAssemblyPrefix(TextWriter trapFile) => throw new NotImplementedException();
 
-        public override void WriteId(TextWriter trapFile, bool inContext)
-        {
-            Unmodified.WriteId(trapFile, inContext);
-            trapFile.Write(IsRequired ? " modreq" : " modopt");
-            trapFile.Write("(");
-            Modifier.WriteId(trapFile, inContext);
-            trapFile.Write(")");
-        }
+        public override void WriteId(TextWriter trapFile, bool inContext) => throw new NotImplementedException();
     }
 }
