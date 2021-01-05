@@ -651,6 +651,11 @@ private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
     opTo.getAnyDef() = iFrom and
     isSingleFieldClass(iFrom.getResultType(), opTo)
   )
+  or
+  exists(ReadSideEffectInstruction read |
+    iFrom = read.getArgumentDef() and
+    opTo = read.getSideEffectOperand()
+  )
 }
 
 private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
@@ -694,6 +699,15 @@ private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo
     opFrom.getAnyDef() instanceof WriteSideEffectInstruction and
     chi.getPartialOperand() = opFrom and
     not chi.isResultConflated()
+  )
+  or
+  // Until we have flow through indirections across calls, we'll take flow out
+  // of the indirection and into the argument.
+  // When we get proper flow through indirections across calls, this code can be
+  // moved to `adjusedSink` or possibly into the `DataFlow::ExprNode` class.
+  exists(ReadSideEffectInstruction read |
+    opFrom = read.getSideEffectOperand() and
+    iTo = read.getArgumentDef()
   )
   or
   // Flow through modeled functions

@@ -224,11 +224,6 @@ private predicate instructionToOperandTaintStep(Instruction fromInstr, Operand t
     fromInstr.getResultType() instanceof ArrayType or
     fromInstr.getResultType() instanceof Union
   )
-  or
-  exists(ReadSideEffectInstruction readInstr |
-    fromInstr = readInstr.getArgumentDef() and
-    toOperand = readInstr.getSideEffectOperand()
-  )
 }
 
 private predicate operandToInstructionTaintStep(Operand fromOperand, Instruction toInstr) {
@@ -315,15 +310,6 @@ private predicate operandToInstructionTaintStep(Operand fromOperand, Instruction
   // This is part of the translation of `a[i]`, where we want taint to flow
   // from `a`.
   toInstr.(PointerAddInstruction).getLeftOperand() = fromOperand
-  or
-  // Until we have flow through indirections across calls, we'll take flow out
-  // of the indirection and into the argument.
-  // When we get proper flow through indirections across calls, this code can be
-  // moved to `adjusedSink` or possibly into the `DataFlow::ExprNode` class.
-  exists(ReadSideEffectInstruction read |
-    read.getSideEffectOperand() = fromOperand and
-    read.getArgumentDef() = toInstr
-  )
   or
   // Until we have from through indirections across calls, we'll take flow out
   // of the parameter and into its indirection.
