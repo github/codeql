@@ -10,13 +10,11 @@
  */
 
 import java
-
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.security.Encryption
-
 import DataFlow::PathGraph
 
 /**
