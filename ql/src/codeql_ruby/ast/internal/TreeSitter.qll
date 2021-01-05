@@ -621,22 +621,22 @@ module Generated {
   class For extends @for, AstNode {
     override string getAPrimaryQlClass() { result = "For" }
 
-    override Location getLocation() { for_def(this, _, _, _, _, result) }
+    override Location getLocation() { for_def(this, _, _, _, _, _, result) }
 
-    Do getBody() { for_def(this, _, _, result, _, _) }
+    Do getBody() { for_def(this, _, _, result, _, _, _) }
 
-    AstNode getPattern(int i) { for_pattern(this, i, result) }
+    AstNode getPattern() { for_def(this, _, _, _, result, _, _) }
 
-    In getValue() { for_def(this, _, _, _, result, _) }
+    In getValue() { for_def(this, _, _, _, _, result, _) }
 
-    override AstNode getParent() { for_def(this, result, _, _, _, _) }
+    override AstNode getParent() { for_def(this, result, _, _, _, _, _) }
 
-    override int getParentIndex() { for_def(this, _, result, _, _, _) }
+    override int getParentIndex() { for_def(this, _, result, _, _, _, _) }
 
     override AstNode getAFieldOrChild() {
-      for_def(this, _, _, result, _, _) or
-      for_pattern(this, _, result) or
-      for_def(this, _, _, _, result, _)
+      for_def(this, _, _, result, _, _, _) or
+      for_def(this, _, _, _, result, _, _) or
+      for_def(this, _, _, _, _, result, _)
     }
   }
 
@@ -779,15 +779,15 @@ module Generated {
   class Interpolation extends @interpolation, AstNode {
     override string getAPrimaryQlClass() { result = "Interpolation" }
 
-    override Location getLocation() { interpolation_def(this, _, _, _, result) }
+    override Location getLocation() { interpolation_def(this, _, _, result) }
 
-    UnderscoreStatement getChild() { interpolation_def(this, _, _, result, _) }
+    UnderscoreStatement getChild() { interpolation_child(this, result) }
 
-    override AstNode getParent() { interpolation_def(this, result, _, _, _) }
+    override AstNode getParent() { interpolation_def(this, result, _, _) }
 
-    override int getParentIndex() { interpolation_def(this, _, result, _, _) }
+    override int getParentIndex() { interpolation_def(this, _, result, _) }
 
-    override AstNode getAFieldOrChild() { interpolation_def(this, _, _, result, _) }
+    override AstNode getAFieldOrChild() { interpolation_child(this, result) }
   }
 
   class KeywordParameter extends @keyword_parameter, AstNode {

@@ -1,0 +1,24 @@
+| cases.rb:8:1:15:3 | case ... | CaseExpr |
+| cases.rb:18:1:22:3 | case ... | CaseExpr |
+| conditionals.rb:10:1:12:3 | if ... | IfExpr |
+| conditionals.rb:15:1:19:3 | if ... | IfExpr |
+| conditionals.rb:22:1:30:3 | if ... | IfExpr |
+| conditionals.rb:24:1:29:5 | elsif ... | ElsifExpr |
+| conditionals.rb:26:1:29:5 | elsif ... | ElsifExpr |
+| conditionals.rb:33:1:37:3 | if ... | IfExpr |
+| conditionals.rb:35:1:36:5 | elsif ... | ElsifExpr |
+| conditionals.rb:40:1:42:3 | unless ... | UnlessExpr |
+| conditionals.rb:45:1:49:3 | unless ... | UnlessExpr |
+| conditionals.rb:52:1:52:14 | ... if ... | IfModifierExpr |
+| conditionals.rb:55:1:55:18 | ... unless ... | UnlessModifierExpr |
+| conditionals.rb:58:5:58:25 | ... ? ... : ... | TernaryIfExpr |
+| loops.rb:9:1:12:3 | for ... in ... | ForExpr |
+| loops.rb:16:1:19:3 | for ... in ... | ForExpr |
+| loops.rb:22:1:25:3 | for ... in ... | ForExpr |
+| loops.rb:28:1:31:3 | for ... in ... | ForExpr |
+| loops.rb:34:1:37:3 | while ... | WhileExpr |
+| loops.rb:40:1:43:3 | while ... | WhileExpr |
+| loops.rb:46:1:46:19 | ... while ... | WhileModifierExpr |
+| loops.rb:49:1:52:3 | until ... | UntilExpr |
+| loops.rb:55:1:58:3 | until ... | UntilExpr |
+| loops.rb:61:1:61:19 | ... until ... | UntilModifierExpr |

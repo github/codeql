@@ -73,3 +73,59 @@ class RegexLiteral extends Literal, @regex {
 
   final override string getAPrimaryQlClass() { result = "RegexLiteral" }
 }
+
+/** A sequence of expressions. */
+class ExprSequence extends Expr {
+  override ExprSequence::Range range;
+
+  /** Gets the `n`th expression in this sequence. */
+  final Expr getExpr(int n) { result = this.(ExprSequence::Range).getExpr(n) }
+
+  /** Gets an expression in this sequence. */
+  final Expr getAnExpr() { result = this.getExpr(_) }
+
+  /** Gets the last expression in this sequence. */
+  final Expr getLastExpr() { result = this.getExpr(this.getNumberOfExpressions() - 1) }
+
+  /** Gets the number of expressions in this sequence. */
+  final int getNumberOfExpressions() { result = count(this.getAnExpr()) }
+
+  /** Holds if this sequence has no expressions. */
+  final predicate isEmpty() { this.getNumberOfExpressions() = 0 }
+}
+
+/**
+ * A sequence of expressions in a `then` branch of an `if`, `unless`, or `when`
+ * expression.
+ */
+class ThenExpr extends ExprSequence, @then {
+  final override ThenExpr::Range range;
+
+  final override string getAPrimaryQlClass() { result = "ThenExpr" }
+
+  final override string toString() { result = "then ..." }
+}
+
+/**
+ * A sequence of expressions in an `else` branch of an `if`, `unless`, or
+ * `case` expression.
+ */
+class ElseExpr extends ExprSequence, @else {
+  final override ElseExpr::Range range;
+
+  final override string getAPrimaryQlClass() { result = "ElseExpr" }
+
+  final override string toString() { result = "else ..." }
+}
+
+/**
+ * A sequence of expressions representing the body of a `for`, `while`, or
+ * `until` loop.
+ */
+class DoExpr extends ExprSequence, @do {
+  final override DoExpr::Range range;
+
+  final override string getAPrimaryQlClass() { result = "DoExpr" }
+
+  final override string toString() { result = "do ..." }
+}

@@ -1,4 +1,4 @@
-import codeql_ruby.AST
+private import codeql_ruby.AST
 private import codeql_ruby.ast.internal.TreeSitter
 
 module Expr {
@@ -57,5 +57,35 @@ module RegexLiteral {
           s order by i
         )
     }
+  }
+}
+
+module ExprSequence {
+  abstract class Range extends Expr::Range {
+    abstract Expr getExpr(int n);
+  }
+}
+
+module ThenExpr {
+  class Range extends ExprSequence::Range, @then {
+    final override Generated::Then generated;
+
+    final override Expr getExpr(int n) { result = generated.getChild(n) }
+  }
+}
+
+module ElseExpr {
+  class Range extends ExprSequence::Range, @else {
+    final override Generated::Else generated;
+
+    final override Expr getExpr(int n) { result = generated.getChild(n) }
+  }
+}
+
+module DoExpr {
+  class Range extends ExprSequence::Range, @do {
+    final override Generated::Do generated;
+
+    final override Expr getExpr(int n) { result = generated.getChild(n) }
   }
 }

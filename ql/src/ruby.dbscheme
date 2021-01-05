@@ -585,14 +585,7 @@ exceptions_def(
   int loc: @location ref
 );
 
-@for_pattern_type = @destructured_left_assignment | @rest_assignment | @underscore_lhs
-
-#keyset[for, index]
-for_pattern(
-  int for: @for ref,
-  int index: int ref,
-  unique int pattern: @for_pattern_type ref
-);
+@for_pattern_type = @left_assignment_list | @underscore_lhs
 
 #keyset[parent, parent_index]
 for_def(
@@ -600,6 +593,7 @@ for_def(
   int parent: @ast_node_parent ref,
   int parent_index: int ref,
   int body: @do ref,
+  int pattern: @for_pattern_type ref,
   int value: @in ref,
   int loc: @location ref
 );
@@ -702,12 +696,16 @@ in_def(
   int loc: @location ref
 );
 
+interpolation_child(
+  unique int interpolation: @interpolation ref,
+  unique int child: @underscore_statement ref
+);
+
 #keyset[parent, parent_index]
 interpolation_def(
   unique int id: @interpolation,
   int parent: @ast_node_parent ref,
   int parent_index: int ref,
-  int child: @underscore_statement ref,
   int loc: @location ref
 );
 
