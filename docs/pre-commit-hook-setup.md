@@ -1,6 +1,6 @@
 # CodeQL pre-commit-hook setup
 
-As stated in [CONTRIBUTING](../CONTRIBUTING.md) all CodeQL files must be formatted according to our [CodeQL style guide](ql-style-guide.md). You can use our pre-commit hook to avoid committing incorrectly formatted code. To use it, simply copy the [pre-commit](../misc/scripts/pre-commit) script to `.git/modules/ql/hooks/pre-commit` and make sure that:
+As stated in [CONTRIBUTING](../CONTRIBUTING.md) all CodeQL files must be formatted according to our [CodeQL style guide](ql-style-guide.md). You can use our pre-commit hook to avoid committing incorrectly formatted code. To use it, simply copy the [pre-commit](../misc/scripts/pre-commit) script to `.git/hooks/pre-commit` and make sure that:
 
 - The script is executable. On Linux and macOS this can be done using `chmod +x`.
 - The CodeQL CLI has been added to your `PATH`.
