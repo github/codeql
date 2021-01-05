@@ -862,19 +862,19 @@ A valid class may not inherit from a final class, from itself, or from more than
 Class environments
 ~~~~~~~~~~~~~~~~~~
 
-For each of modules, types, predicates, and fields a class *inherits*, *declares*, and *exports* an environment. These are defined as follows (with X denoting the type of entity we are currently considering):
+For each of member predicates and fields a class *inherits* and *declares*, and *exports* an environment. These are defined as follows (with X denoting the type of entity we are currently considering):
 
--  The *inherited X environment* of a class is the union of the exported X environments of its base types.
+-  The *inherited X environment* of a class is the union of the exported X environments of types it inherits from, excluding any elements that are ``overridden`` by another element.
 
 -  The *declared X environment* of a class is the multimap of X declarations in the class itself.
 
 -  The *exported X environment* of a class is the overriding union of its declared X environment (excluding ``private`` declaration entries) with its inherited X environment.
 
--  The *external X environment* of a class is the visible X environment of the enclosing module.
-
--  The *visible X environment* is the overriding union of the declared X environment and the inherited X environment; overriding unioned with the external X environment.
+-  The *visible X environment* is the overriding union of the declared X environment and the inherited X environment.
 
 The program is invalid if any of these environments is not definite.
+
+For each of member predicates and fields a domain type *exports* an environment. This is the union of the exported ``X`` environments of types the class inherits from, excluding any elements that are ``overridden`` by another element.
 
 Members
 ~~~~~~~
@@ -899,7 +899,7 @@ Member predicates
 
 A predicate that is a member of a class is called a *member predicate*. The name of the predicate is the identifier just before the open parenthesis.
 
-A member predicate adds a mapping from the predicate name and arity to the predicate declaration in the class's declared predicate environment.
+A member predicate adds a mapping from the predicate name and arity to the predicate declaration in the class's declared member predicate environment.
 
 A valid member predicate can be annotated with ``abstract``, ``cached``, ``final``, ``private``, ``deprecated``, and ``override``.
 
@@ -922,7 +922,7 @@ A valid class must include a non-private predicate named ``toString`` with no ar
 A valid class may not inherit from two different classes that include a predicate with the same name and number of arguments, unless either one of the predicates overrides the other, or the class defines a predicate that overrides both of them.
 
 The typing environment for a member predicate or character is the same as if it were a non-member predicate, except that it additionally maps ``this`` to a type and also maps any fields on a class to a type. If the member is a character, then the typing environment maps ``this`` to the class domain type of the class. Otherwise, it maps ``this`` to the class type of the class itself.
-It any field to the type of the field.
+The typing environment also maps any field to the type of the field.
 
 Fields
 ^^^^^^
@@ -1163,13 +1163,24 @@ The expressions in parentheses are the *arguments* of the call. The expression b
 
 The type environment for the arguments is the same as for the call.
 
-A valid call with results must *resolve* to exactly one predicate. The ways a call can resolve are as follows:
+A valid call with results *resolves* to a set of predicates. The ways a call can resolve are as follows:
 
--  If the call has no receiver, then it can resolve to a non-member predicate. If the predicate name is a simple identifier, then the predicate is resolved by looking up its name and arity in the visible predicate environment of the enclosing class or module.
+-  If the call has no receiver and the predicate name is a simple identifier, then the predicate is resolved by looking up its name and arity in the visible member-predicate environment of the enclosing class.
 
-   If the predicate name is a selection identifier, then the qualifier is resolved as a module (see "`Module resolution <#module-resolution>`__"). The identifier is then resolved in the exported predicate environment of the qualifier module.
+-  If the call has no receiver and the predicate name is a simple identifier, then the predicate is resolved by looking up its name and arity in the visible predicate environment of the enclosing module.
 
--  If the call has a super expression as the receiver, then it resolves to a member predicate in a class the enclosing class inherits from. If the super expression is unqualified, then the super-class is the single class that the current class inherits from. If there is not exactly one such class, then the program is invalid. Otherwise the super-class is the class named by the qualifier of the super expression. The predicate is resolved by looking up its name and arity in the exported predicate environment of the super-class. If there is more than one such predicate, then the predicate call is not valid.
+-  If the call has no receiver and the predicate name is a selection identifier, then the qualifier is resolved as a module (see "`Module resolution <#module-resolution>`__"). The identifier is then resolved in the exported predicate environment of the qualifier module.
+
+-  If the call has a super expression as the receiver, then it resolves to a member predicate in a class the enclosing class inherits from. If the super expression is unqualified, then the super-class is the single class that the current class inherits from. If there is not exactly one such class, then the program is invalid. Otherwise the super-class is the class named by the qualifier of the super expression. The predicate is resolved by looking up its name and arity in the exported predicate environment of the super-class. 
+
+-  If the type of the receiver is the same as the the enclosing class the predicate is resolved by looking up its name and arity in the ``visible`` predicate environment of the class.
+
+-  If the type of the receiver is not the same as the the enclosing class the predicate is resolved by looking up its name and arity in the ``exported`` predicate environment of the class or domain type.
+
+If all the predicates that the call resolves to are declared on a primitive type we then restrict to the set of predicates where each argument of the call is a subtype of the corresponding predicate argument type.
+Then we find all predicates ``p`` from this new set such that there is not another predicate ``p'``where each argument of ``p'`` is a subtype of the corresponding argument in ``p``. We then say the call resolves to this set instead.
+
+A valid call must only resolve to a single predicate.
 
 For each argument other than a don't-care expression, the type of the argument must be compatible with the type of the corresponding argument type of the predicate, otherwise the call is invalid.
 
