@@ -110,7 +110,7 @@ module AbstractValues {
 
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
       s.(BooleanSuccessor).getValue() = this.getValue() and
-      exists(BooleanCompletion c | s.matchesCompletion(c) |
+      exists(BooleanCompletion c | s = c.getAMatchingSuccessorType() |
         c.isValidFor(cfe) and
         e = cfe
       )
@@ -161,7 +161,7 @@ module AbstractValues {
 
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
       this = TNullValue(s.(NullnessSuccessor).getValue()) and
-      exists(NullnessCompletion c | s.matchesCompletion(c) |
+      exists(NullnessCompletion c | s = c.getAMatchingSuccessorType() |
         c.isValidFor(cfe) and
         e = cfe
       )
@@ -190,7 +190,7 @@ module AbstractValues {
 
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
       this = TMatchValue(_, s.(MatchingSuccessor).getValue()) and
-      exists(MatchingCompletion c, Switch switch, Case case | s.matchesCompletion(c) |
+      exists(MatchingCompletion c, Switch switch, Case case | s = c.getAMatchingSuccessorType() |
         c.isValidFor(cfe) and
         switchMatching(switch, case, cfe) and
         e = switch.getExpr() and
@@ -227,7 +227,7 @@ module AbstractValues {
 
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
       this = TEmptyCollectionValue(s.(EmptinessSuccessor).getValue()) and
-      exists(EmptinessCompletion c, ForeachStmt fs | s.matchesCompletion(c) |
+      exists(EmptinessCompletion c, ForeachStmt fs | s = c.getAMatchingSuccessorType() |
         c.isValidFor(cfe) and
         foreachEmptiness(fs, cfe) and
         e = fs.getIterableExpr()
@@ -260,6 +260,12 @@ module AbstractValues {
 }
 
 private import AbstractValues
+
+pragma[nomagic]
+private predicate typePattern(PatternMatch pm, TypePatternExpr tpe, Type t) {
+  tpe = pm.getPattern() and
+  t = pm.getExpr().getType()
+}
 
 /**
  * An expression that evaluates to a value that can be dereferenced. That is,
@@ -337,19 +343,23 @@ class DereferenceableExpr extends Expr {
       or
       result =
         any(PatternMatch pm |
-          pm.getExpr() = this and
-          if pm.getPattern() instanceof NullLiteral
-          then
+          this = pm.getExpr() and
+          (
             // E.g. `x is null`
+            pm.getPattern() instanceof NullLiteral and
             isNull = branch
-          else (
-            // E.g. `x is string` or `x is ""`
-            branch = true and isNull = false
             or
-            // E.g. `x is string` where `x` has type `string`
-            pm.getPattern().(TypePatternExpr).getCheckedType() = pm.getExpr().getType() and
-            branch = false and
-            isNull = true
+            // E.g. `x is string` or `x is ""`
+            not pm.getPattern() instanceof NullLiteral and
+            branch = true and
+            isNull = false
+            or
+            exists(TypePatternExpr tpe |
+              // E.g. `x is string` where `x` has type `string`
+              typePattern(result, tpe, tpe.getCheckedType()) and
+              branch = false and
+              isNull = true
+            )
           )
         )
       or
@@ -481,17 +491,16 @@ class CollectionExpr extends Expr {
     result =
       any(PropertyRead pr |
         this = pr.getQualifier() and
-        pr
-            .getTarget()
+        pr.getTarget()
             .overridesOrImplementsOrEquals(any(Property p |
-                p.getSourceDeclaration() =
+                p.getUnboundDeclaration() =
                   any(SystemCollectionsGenericICollectionInterface x).getCountProperty()
               ))
       )
     or
     result =
       any(MethodCall mc |
-        mc.getTarget().getSourceDeclaration() =
+        mc.getTarget().getUnboundDeclaration() =
           any(SystemLinq::SystemLinqEnumerableClass x).getACountMethod() and
         this = mc.getArgument(0) and
         if mc.getNumberOfArguments() = 1 then lowerBound = false else lowerBound = true
@@ -544,7 +553,7 @@ class CollectionExpr extends Expr {
       or
       result =
         any(MethodCall mc |
-          mc.getTarget().getSourceDeclaration() =
+          mc.getTarget().getUnboundDeclaration() =
             any(SystemLinq::SystemLinqEnumerableClass x).getAnAnyMethod() and
           this = mc.getArgument(0) and
           branch = isEmpty.booleanNot() and
@@ -842,7 +851,7 @@ module Internal {
     or
     e instanceof DefaultValueExpr and e.getType().isRefType()
     or
-    e.(Call).getTarget().getSourceDeclaration() instanceof NullCallable
+    e.(Call).getTarget().getUnboundDeclaration() instanceof NullCallable
   }
 
   /** Holds if expression `e2` is a `null` value whenever `e1` is. */
@@ -893,7 +902,7 @@ module Internal {
     or
     e.(DefaultValueExpr).getType().isValueType()
     or
-    e.(Call).getTarget().getSourceDeclaration() instanceof NonNullCallable and
+    e.(Call).getTarget().getUnboundDeclaration() instanceof NonNullCallable and
     not e.(QualifiableExpr).isConditional()
     or
     e instanceof SuppressNullableWarningExpr
@@ -1249,6 +1258,7 @@ module Internal {
       )
     }
 
+    pragma[nomagic]
     private Expr getAnEqualityCheckVal(Expr e, AbstractValue v, AbstractValue vExpr) {
       result = getAnEqualityCheck(e, v, vExpr.getAnExpr())
     }
@@ -1428,8 +1438,8 @@ module Internal {
       cached
       predicate isCustomNullCheck(Call call, Expr arg, BooleanValue v, boolean isNull) {
         exists(Callable callable, Parameter p |
-          arg = call.getArgumentForParameter(any(Parameter p0 | p0.getSourceDeclaration() = p)) and
-          call.getTarget().getSourceDeclaration() = callable and
+          arg = call.getArgumentForParameter(any(Parameter p0 | p0.getUnboundDeclaration() = p)) and
+          call.getTarget().getUnboundDeclaration() = callable and
           callable = customNullCheck(p, v, isNull)
         )
       }
@@ -1645,7 +1655,7 @@ module Internal {
         exists(PreSsa::Definition def | emptyDef(def) | firstReadSameVarUniquePredecesssor(def, e))
         or
         exists(MethodCall mc |
-          mc.getTarget().getAnUltimateImplementee().getSourceDeclaration() =
+          mc.getTarget().getAnUltimateImplementee().getUnboundDeclaration() =
             any(SystemCollectionsGenericICollectionInterface c).getClearMethod() and
           adjacentReadPairSameVarUniquePredecessor(mc.getQualifier(), e)
         )
@@ -1670,7 +1680,7 @@ module Internal {
         )
         or
         exists(MethodCall mc |
-          mc.getTarget().getAnUltimateImplementee().getSourceDeclaration() =
+          mc.getTarget().getAnUltimateImplementee().getUnboundDeclaration() =
             any(SystemCollectionsGenericICollectionInterface c).getAddMethod() and
           adjacentReadPairSameVarUniquePredecessor(mc.getQualifier(), e)
         )

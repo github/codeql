@@ -1,0 +1,12 @@
+| nonUniqueInclude/index.js:1:12:1:38 | require ... oo.js') | nonUniqueInclude/src/foo.ts:1:1:1:27 | <toplevel> |
+| nonUniqueInclude/index.js:2:12:2:39 | require ... oo.js') | nonUniqueInclude/src2/foo.ts:1:1:1:27 | <toplevel> |
+| nonUniqueInclude/index.js:3:12:3:34 | require ... oo.ts') | nonUniqueInclude/src/foo.ts:1:1:1:27 | <toplevel> |
+| nonUniqueInclude/index.js:4:12:4:35 | require ... oo.ts') | nonUniqueInclude/src2/foo.ts:1:1:1:27 | <toplevel> |
+| rootDir/index.js:1:12:1:36 | require ... ex.js') | rootDir/src/index.ts:1:1:1:27 | <toplevel> |
+| rootDir/index.js:2:12:2:36 | require ... ex.ts') | rootDir/src/index.ts:1:1:1:27 | <toplevel> |
+| rootDirIsDot/index.js:1:12:1:34 | require ... oo.js') | rootDirIsDot/foo.ts:1:1:1:27 | <toplevel> |
+| rootDirIsDot/index.js:2:12:2:30 | require('./foo.ts') | rootDirIsDot/foo.ts:1:1:1:27 | <toplevel> |
+| simpleOutDir/index.js:1:12:1:36 | require ... ex.js') | simpleOutDir/src/index.ts:1:1:1:27 | <toplevel> |
+| simpleOutDir/index.js:2:12:2:36 | require ... ex.ts') | simpleOutDir/src/index.ts:1:1:1:27 | <toplevel> |
+| simpleOutDir/index.js:4:12:4:33 | require ... index') | simpleOutDir/src/index.ts:1:1:1:27 | <toplevel> |
+| simpleOutDir/index.js:5:12:5:33 | require ... index') | simpleOutDir/src/index.ts:1:1:1:27 | <toplevel> |

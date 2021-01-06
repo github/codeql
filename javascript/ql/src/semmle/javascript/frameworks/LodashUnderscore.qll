@@ -403,11 +403,18 @@ module LodashUnderscore {
       call = any(Member member | member.getName() = name).getACall()
     |
       name =
-        ["find", "filter", "findWhere", "where", "reject", "pluck", "max", "min", "sortBy",
-            "shuffle", "sample", "toArray", "partition", "compact", "first", "initial", "last",
-            "rest", "flatten", "without", "difference", "uniq", "unique", "unzip", "transpose",
-            "object", "chunk", "values", "mapObject", "pick", "omit", "defaults", "clone", "tap",
-            "identity"] and
+        [
+          "find", "filter", "findWhere", "where", "reject", "pluck", "max", "min", "sortBy",
+          "shuffle", "sample", "toArray", "partition", "compact", "first", "initial", "last",
+          "rest", "flatten", "without", "difference", "uniq", "unique", "unzip", "transpose",
+          "object", "chunk", "values", "mapObject", "pick", "omit", "defaults", "clone", "tap",
+          "identity",
+          // String category
+          "camelCase", "capitalize", "deburr", "kebabCase", "lowerCase", "lowerFirst", "pad",
+          "padEnd", "padStart", "repeat", "replace", "snakeCase", "split", "startCase", "toLower",
+          "toUpper", "trim", "trimEnd", "trimStart", "truncate", "unescape", "upperCase",
+          "upperFirst", "words"
+        ] and
       pred = call.getArgument(0) and
       succ = call
       or

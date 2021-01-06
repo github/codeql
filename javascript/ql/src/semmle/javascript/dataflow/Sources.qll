@@ -307,7 +307,8 @@ module SourceNode {
         astNode instanceof FunctionBindExpr or
         astNode instanceof DynamicImportExpr or
         astNode instanceof ImportSpecifier or
-        astNode instanceof ImportMetaExpr
+        astNode instanceof ImportMetaExpr or
+        astNode instanceof TaggedTemplateExpr
       )
       or
       DataFlow::parameterNode(this, _)

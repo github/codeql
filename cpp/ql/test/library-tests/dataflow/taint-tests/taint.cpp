@@ -1,11 +1,11 @@
 int source();
-void sink(...) {};
+void sink(...);
 
 void arithAssignments(int source1, int clean1) {
   sink(clean1); // clean
   clean1 += source1;
   clean1 += 1;
-  sink(clean1); // tainted
+  sink(clean1); // $ ast,ir
 
   clean1 = source1 = 1;
   sink(clean1); // clean
@@ -13,8 +13,8 @@ void arithAssignments(int source1, int clean1) {
   source1++;
   ++source1;
   source1 += 1;
-  sink(source1); // tainted
-  sink(++source1); // tainted
+  sink(source1); // $ ast,ir
+  sink(++source1); // $ ast,ir
 }
 
 // --- globals ---
@@ -38,23 +38,23 @@ void do_source()
 	global10 = zero(source());
 
 	sink(global6);
-	sink(global7); // tainted
-	sink(global8); // tainted
-	sink(global9); // tainted
+	sink(global7); // $ ast MISSING: ir
+	sink(global8); // $ ast MISSING: ir
+	sink(global9); // $ ast MISSING: ir
 	sink(global10);
 }
 
 void do_sink()
 {
 	sink(global1);
-	sink(global2); // tainted [NOT DETECTED]
-	sink(global3); // tainted [NOT DETECTED]
-	sink(global4); // tainted [NOT DETECTED]
+	sink(global2); // $ MISSING: ast,ir
+	sink(global3); // $ MISSING: ast,ir
+	sink(global4); // $ MISSING: ast,ir
 	sink(global5);
 	sink(global6);
-	sink(global7); // tainted [NOT DETECTED]
-	sink(global8); // tainted [NOT DETECTED]
-	sink(global9); // tainted [NOT DETECTED]
+	sink(global7); // $ MISSING: ast,ir
+	sink(global8); // $ MISSING: ast,ir
+	sink(global9); // $ MISSING: ast,ir
 	sink(global10);
 }
 
@@ -86,12 +86,12 @@ void class_field_test() {
 	mc1.myMethod();
 
 	sink(mc1.a);
-	sink(mc1.b); // tainted
-	sink(mc1.c); // tainted
-	sink(mc1.d); // tainted
+	sink(mc1.b); // $ ast,ir
+	sink(mc1.c); // $ ast,ir
+	sink(mc1.d); // $ ast,ir
 	sink(mc2.a);
-	sink(mc2.b); // tainted
-	sink(mc2.c); // tainted
+	sink(mc2.b); // $ ast,ir
+	sink(mc2.c); // $ ast,ir
 	sink(mc2.d);
 }
 
@@ -106,10 +106,10 @@ void array_test(int i) {
 	arr2[i] = source();
 	arr3[5] = 0;
 
-	sink(arr1[5]); // tainted
-	sink(arr1[i]); // tainted
-	sink(arr2[5]); // tainted
-	sink(arr2[i]); // tainted
+	sink(arr1[5]); // $ ast,ir
+	sink(arr1[i]); // $ ast,ir
+	sink(arr2[5]); // $ ast,ir
+	sink(arr2[i]); // $ ast,ir
 	sink(arr3[5]);
 	sink(arr3[i]);
 }
@@ -126,15 +126,15 @@ void pointer_test() {
 
 	*p2 = source();
 
-	sink(*p1); // tainted
-	sink(*p2); // tainted
+	sink(*p1); // $ ast,ir
+	sink(*p2); // $ ast,ir
 	sink(*p3);
 
 	p3 = &t1;
-	sink(*p3); // tainted
+	sink(*p3); // $ ast,ir
 
 	*p3 = 0;
-	sink(*p3); // [FALSE POSITIVE]
+	sink(*p3); // $ SPURIOUS: ast
 }
 
 // --- return values ---
@@ -148,7 +148,7 @@ int select(int i, int a, int b) {
 }
 
 void fn_test(int i) {
-	sink(select(i, 1, source())); // tainted
+	sink(select(i, 1, source())); // $ ast,ir
 }
 
 // --- strings ---
@@ -164,13 +164,13 @@ namespace strings
 		char *tainted = source();
 		char buffer[1024] = {0};
 
-		sink(source()); // tainted
-		sink(tainted); // tainted
+		sink(source()); // $ ast,ir
+		sink(tainted); // $ ast,ir
 
 		strcpy(buffer, "Hello, ");
 		sink(buffer);
 		strcat(buffer, tainted);
-		sink(buffer); // tainted
+		sink(buffer); // $ ast,ir
 	}
 }
 
@@ -178,7 +178,7 @@ namespace strings
 
 namespace refs {
 	void callee(int *p) {
-		sink(*p); // tainted
+		sink(*p); // $ ast,ir
 	}
 
 	void caller() {
@@ -192,7 +192,7 @@ void *memcpy(void *dest, void *src, int len);
 void test_memcpy(int *source) {
 	int x;
 	memcpy(&x, source, sizeof(int));
-	sink(x);
+	sink(x); // $ ast=192:23 MISSING: ir SPURIOUS: ast=193:6
 }
 
 // --- std::swap ---
@@ -207,13 +207,13 @@ void test_swap() {
 	x = source();
 	y = 0;
 
-	sink(x); // tainted
+	sink(x); // $ ast,ir
 	sink(y); // clean
 
 	std::swap(x, y);
 
-	sink(x); // clean [FALSE POSITIVE]
-	sink(y); // tainted
+	sink(x); // $ SPURIOUS: ast,ir
+	sink(y); // $ ast,ir
 }
 
 // --- lambdas ---
@@ -226,39 +226,39 @@ void test_lambdas()
 	int w = 0;
 
 	auto a = [t, u]() -> int {
-		sink(t); // tainted
+		sink(t); // $ ast,ir
 		sink(u); // clean
 		return t;
 	};
-	sink(a()); // tainted
+	sink(a()); // $ ast,ir
 
 	auto b = [&] {
-		sink(t); // tainted
+		sink(t); // $ ast MISSING: ir
 		sink(u); // clean
 		v = source(); // (v is reference captured)
 	};
 	b();
-	sink(v); // tainted [NOT DETECTED]
+	sink(v); // $ MISSING: ast,ir
 
 	auto c = [=] {
-		sink(t); // tainted
+		sink(t); // $ ast,ir
 		sink(u); // clean
 	};
 	c();
 
 	auto d = [](int a, int b) {
-		sink(a); // tainted
+		sink(a); // $ ast,ir
 		sink(b); // clean
 	};
 	d(t, u);
 
 	auto e = [](int &a, int &b, int &c) {
-		sink(a); // tainted
+		sink(a); // $ ast,ir
 		sink(b); // clean
 		c = source();
 	};
 	e(t, u, w);
-	sink(w); // tainted
+	sink(w); // $ ast,ir
 }
 
 // --- taint through return value ---
@@ -277,7 +277,7 @@ void test_return()
 	y = 0;
 	z = 0;
 
-	sink(t); // tainted
+	sink(t); // $ ast,ir
 	sink(x);
 	sink(y);
 	sink(z);
@@ -286,9 +286,9 @@ void test_return()
 	y = id(id(t));
 	z = id(z);
 
-	sink(t); // tainted
-	sink(x); // tainted
-	sink(y); // tainted
+	sink(t); // $ ast,ir
+	sink(x); // $ ast,ir
+	sink(y); // $ ast,ir
 	sink(z);
 }
 
@@ -334,7 +334,7 @@ void test_outparams()
 	d = 0;
 	e = 0;
 
-	sink(t); // tainted
+	sink(t); // $ ast,ir
 	sink(a);
 	sink(b);
 	sink(c);
@@ -347,11 +347,11 @@ void test_outparams()
 	myAssign4(&d, t);
 	myNotAssign(e, t);
 
-	sink(t); // tainted
-	sink(a); // tainted
-	sink(b); // tainted
-	sink(c); // tainted
-	sink(d); // tainted
+	sink(t); // $ ast,ir
+	sink(a); // $ ast,ir
+	sink(b); // $ ast,ir
+	sink(c); // $ ast,ir
+	sink(d); // $ ast,ir
 	sink(e);
 }
 
@@ -369,9 +369,9 @@ void test_strdup(char *source)
 	a = strdup(source);
 	b = strdup("hello, world");
 	c = strndup(source, 100);
-	sink(a); // tainted
+	sink(a); // $ ast MISSING: ir
 	sink(b);
-	sink(c); // tainted
+	sink(c); // $ ast MISSING: ir
 }
 
 void test_strndup(int source)
@@ -379,7 +379,7 @@ void test_strndup(int source)
 	char *a;
 
 	a = strndup("hello, world", source);
-	sink(a); // tainted
+	sink(a); // $ ast,ir
 }
 
 void test_wcsdup(wchar_t *source)
@@ -388,7 +388,7 @@ void test_wcsdup(wchar_t *source)
 
 	a = wcsdup(source);
 	b = wcsdup(L"hello, world");
-	sink(a); // tainted
+	sink(a); // $ ast MISSING: ir
 	sink(b);
 }
 
@@ -420,31 +420,31 @@ void test_qualifiers()
 	sink(a);
 	sink(a.getMember());
 	a.setMember(source());
-	sink(a); // tainted
-	sink(a.getMember()); // tainted
+	sink(a); // $ ast,ir
+	sink(a.getMember()); // $ ast,ir
 
 	sink(b);
 	sink(b.getMember());
 	b.member = source();
-	sink(b); // tainted
-	sink(b.member); // tainted
-	sink(b.getMember());
+	sink(b); // $ ir MISSING: ast
+	sink(b.member); // $ ast,ir
+	sink(b.getMember()); // $ ir MISSING: ast
 
 	c = new MyClass2(0);
 
 	sink(c);
 	sink(c->getMember());
 	c->setMember(source());
-	sink(c); // tainted (deref)
-	sink(c->getMember()); // tainted
+	sink(c); // $ ast,ir
+	sink(c->getMember()); // $ ast,ir
 
 	delete c;
 
 	sink(d);
 	sink(d.getString());
 	d.setString(strings::source());
-	sink(d); // tainted
-	sink(d.getString()); // tainted
+	sink(d); // $ ast,ir
+	sink(d.getString()); // $ ast MISSING: ir
 }
 
 // --- non-standard swap ---
@@ -462,13 +462,13 @@ void test_swop() {
 	x = source();
 	y = 0;
 
-	sink(x); // tainted
+	sink(x); // $ ast,ir
 	sink(y); // clean
 
 	swop(x, y);
 
-	sink(x); // clean [FALSE POSITIVE]
-	sink(y); // tainted
+	sink(x); // $ SPURIOUS: ast,ir
+	sink(y); // $ ast,ir
 }
 
 // --- getdelim ---
@@ -482,5 +482,5 @@ void test_getdelim(FILE* source1) {
 	size_t n;
 	getdelim(&line, &n, '\n', source1);
 
-	sink(line);
+	sink(line); // $ ir,ast
 }

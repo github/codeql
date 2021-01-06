@@ -52,7 +52,7 @@ module Steps {
   private predicate flowIn(Parameter p, Expr pred, AssignableRead succ) {
     exists(AssignableDefinitions::ImplicitParameterDefinition def, Call c | succ = getARead(def) |
       pred = getArgumentForOverridderParameter(c, p) and
-      p.getSourceDeclaration() = def.getParameter()
+      p.getUnboundDeclaration() = def.getParameter()
     )
   }
 

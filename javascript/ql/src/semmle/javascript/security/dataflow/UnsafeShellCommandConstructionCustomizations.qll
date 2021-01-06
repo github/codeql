@@ -51,10 +51,12 @@ module UnsafeShellCommandConstruction {
    */
   class ExternalInputSource extends Source, DataFlow::ParameterNode {
     ExternalInputSource() {
-      this =
-        Exports::getAValueExportedBy(Exports::getTopmostPackageJSON())
-            .(DataFlow::FunctionNode)
-            .getAParameter() and
+      exists(int bound, DataFlow::FunctionNode func |
+        func =
+          Exports::getAValueExportedBy(Exports::getTopmostPackageJSON())
+              .getABoundFunctionValue(bound) and
+        this = func.getParameter(any(int arg | arg >= bound))
+      ) and
       not this.getName() = ["cmd", "command"] // looks to be on purpose.
     }
   }
@@ -105,8 +107,10 @@ module UnsafeShellCommandConstruction {
 
     ArrayAppendEndingInCommandExecutinSink() {
       this =
-        [array.(DataFlow::ArrayCreationNode).getAnElement(),
-            array.getAMethodCall(["push", "unshift"]).getAnArgument()] and
+        [
+          array.(DataFlow::ArrayCreationNode).getAnElement(),
+          array.getAMethodCall(["push", "unshift"]).getAnArgument()
+        ] and
       exists(DataFlow::MethodCallNode joinCall | array.getAMethodCall("join") = joinCall |
         joinCall = isExecutedAsShellCommand(DataFlow::TypeBackTracker::end(), sys) and
         joinCall.getNumArgument() = 1 and

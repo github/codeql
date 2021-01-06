@@ -27,7 +27,10 @@ module Private {
 
   class LongLiteral = J::LongLiteral;
 
-  class CastExpr = J::CastExpr;
+  class CastExpr extends J::CastExpr {
+    /** Gets the source type of this cast. */
+    J::Type getSourceType() { result = this.getExpr().getType() }
+  }
 
   class Type = J::Type;
 

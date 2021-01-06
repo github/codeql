@@ -34,8 +34,7 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) {
     exists(MethodCall mc |
       mc.getTarget().hasName("Escape") and
-      mc
-          .getTarget()
+      mc.getTarget()
           .getDeclaringType()
           .getABaseType*()
           .hasQualifiedName("System.Security.SecurityElement")

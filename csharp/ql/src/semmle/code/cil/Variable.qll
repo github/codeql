@@ -39,7 +39,8 @@ class StackVariable extends Variable, @cil_stack_variable {
  */
 class LocalVariable extends StackVariable, @cil_local_variable {
   override string toString() {
-    result = "Local variable " + getIndex() + " of method " + getImplementation().getMethod()
+    result =
+      "Local variable " + getIndex() + " of method " + getImplementation().getMethod().getName()
   }
 
   /** Gets the method implementation defining this local variable. */
@@ -65,7 +66,7 @@ class Parameter extends DotNet::Parameter, StackVariable, @cil_parameter {
   /** Gets the index of this parameter. */
   int getIndex() { cil_parameter(this, _, result, _) }
 
-  override string toString() { result = "Parameter " + getIndex() + " of " + getMethod() }
+  override string toString() { result = "Parameter " + getIndex() + " of " + getMethod().getName() }
 
   override Type getType() { cil_parameter(this, _, _, result) }
 
@@ -107,8 +108,8 @@ class Parameter extends DotNet::Parameter, StackVariable, @cil_parameter {
     result = getMethod().getOverriddenMethod().getRawParameter(getRawPosition())
   }
 
-  override Parameter getSourceDeclaration() {
-    result = getMethod().getSourceDeclaration().getRawParameter(getRawPosition())
+  override Parameter getUnboundDeclaration() {
+    result = getMethod().getUnboundDeclaration().getRawParameter(getRawPosition())
   }
 }
 

@@ -444,6 +444,15 @@ class SystemStringClass extends StringType {
     result.getNumberOfParameters() = 1 and
     result.getReturnType() instanceof BoolType
   }
+
+  /** Gets the `IsNullOrWhiteSpace(string)` method. */
+  Method getIsNullOrWhiteSpaceMethod() {
+    result.getDeclaringType() = this and
+    result.hasName("IsNullOrWhiteSpace") and
+    result.isStatic() and
+    result.getNumberOfParameters() = 1 and
+    result.getReturnType() instanceof BoolType
+  }
 }
 
 /** A `ToString()` method. */
@@ -554,7 +563,7 @@ class IEquatableEqualsMethod extends Method {
   IEquatableEqualsMethod() {
     exists(Method m |
       m = any(SystemIEquatableTInterface i).getAConstructedGeneric().getAMethod() and
-      m.getSourceDeclaration() = any(SystemIEquatableTInterface i).getEqualsMethod()
+      m.getUnboundDeclaration() = any(SystemIEquatableTInterface i).getEqualsMethod()
     |
       this = m or getAnUltimateImplementee() = m
     )
@@ -626,8 +635,8 @@ private IEquatableEqualsMethod getInvokedIEquatableEqualsMethod(ValueOrRefType t
 /** Whether `eq` calls `ieem` */
 private predicate callsEqualsMethod(EqualsMethod eq, IEquatableEqualsMethod ieem) {
   exists(MethodCall callToDerivedEquals |
-    callToDerivedEquals.getEnclosingCallable() = eq.getSourceDeclaration() and
-    callToDerivedEquals.getTarget() = ieem.getSourceDeclaration()
+    callToDerivedEquals.getEnclosingCallable() = eq.getUnboundDeclaration() and
+    callToDerivedEquals.getTarget() = ieem.getUnboundDeclaration()
   )
 }
 
@@ -709,8 +718,8 @@ private DisposeBoolMethod getInvokedDiposeBoolMethod(ValueOrRefType t, DisposeMe
     not disp.fromSource()
     or
     exists(MethodCall callToDerivedDispose |
-      callToDerivedDispose.getEnclosingCallable() = disp.getSourceDeclaration() and
-      callToDerivedDispose.getTarget() = dbm.getSourceDeclaration()
+      callToDerivedDispose.getEnclosingCallable() = disp.getUnboundDeclaration() and
+      callToDerivedDispose.getTarget() = dbm.getUnboundDeclaration()
     )
   )
 }
@@ -728,4 +737,9 @@ class SystemGuid extends SystemStruct {
 /** The `System.NotImplementedException` class. */
 class SystemNotImplementedExceptionClass extends SystemClass {
   SystemNotImplementedExceptionClass() { this.hasName("NotImplementedException") }
+}
+
+/** The `System.DateTime` struct. */
+class SystemDateTimeStruct extends SystemStruct {
+  SystemDateTimeStruct() { this.hasName("DateTime") }
 }

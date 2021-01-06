@@ -1050,7 +1050,7 @@ module Ssa {
     Callable getARuntimeTarget(Call c, boolean libraryDelegateCall) {
       // Non-delegate call: use dispatch library
       exists(DispatchCall dc | dc.getCall() = c |
-        result = dc.getADynamicTarget().getSourceDeclaration() and
+        result = dc.getADynamicTarget().getUnboundDeclaration() and
         libraryDelegateCall = false
       )
       or
@@ -1090,7 +1090,7 @@ module Ssa {
         or
         e =
           any(CallableAccess ca |
-            c = ca.getTarget().getSourceDeclaration() and
+            c = ca.getTarget().getUnboundDeclaration() and
             dt = ca.getType()
           )
       }
@@ -1099,7 +1099,7 @@ module Ssa {
         Steps::stepClosed(pred, succ)
         or
         exists(Call call, Callable callable |
-          callable.getSourceDeclaration().canReturn(pred) and
+          callable.getUnboundDeclaration().canReturn(pred) and
           call = succ
         |
           callable = call.getTarget() or
@@ -1130,7 +1130,7 @@ module Ssa {
         exists(Expr mid | reachesDelegateCall(mid) | delegateFlowStep(e, mid))
       }
 
-      pragma[noinline]
+      pragma[nomagic]
       private predicate delegateFlowStepReaches(Expr pred, Expr succ) {
         delegateFlowStep(pred, succ) and
         reachesDelegateCall(succ)
@@ -1820,11 +1820,12 @@ module Ssa {
       BasicBlock bb, int i, LocalScopeSourceVariable v, ImplicitEntryDefinition def,
       ControlFlow::Nodes::ElementNode c, boolean additionalCalls
     ) {
-      exists(Callable reader |
+      exists(Callable reader, SourceVariable sv |
         implicitReadCandidate(bb, i, c, v) and
         readsCapturedVariable(c, v, reader, additionalCalls) and
-        def.getCallable() = reader and
-        def.getSourceVariable().getAssignable() = v.getAssignable()
+        sv = def.getSourceVariable() and
+        reader = sv.getEnclosingCallable() and
+        v.getAssignable() = sv.getAssignable()
       )
     }
 

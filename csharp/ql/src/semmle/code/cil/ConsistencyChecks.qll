@@ -380,7 +380,7 @@ class TypeIsBothConstructedAndUnbound extends TypeViolation {
  */
 class InconsistentTypeLocation extends TypeViolation {
   InconsistentTypeLocation() {
-    this.getType().getLocation() != this.getType().getSourceDeclaration().getLocation()
+    this.getType().getLocation() != this.getType().getUnboundDeclaration().getLocation()
   }
 
   override string getMessage() { result = "Inconsistent constructed type location" }
@@ -423,7 +423,7 @@ class MethodViolation extends ConsistencyViolation, DeclarationCheck {
  */
 class InconsistentMethodLocation extends MethodViolation {
   InconsistentMethodLocation() {
-    this.getMethod().getLocation() != this.getMethod().getSourceDeclaration().getLocation()
+    this.getMethod().getLocation() != this.getMethod().getUnboundDeclaration().getLocation()
   }
 
   override string getMessage() { result = "Inconsistent constructed method location" }
@@ -435,13 +435,13 @@ class InconsistentMethodLocation extends MethodViolation {
 class ConstructedMethodTypeParams extends MethodViolation {
   ConstructedMethodTypeParams() {
     getMethod().(ConstructedGeneric).getNumberOfTypeArguments() !=
-      getMethod().getSourceDeclaration().(UnboundGeneric).getNumberOfTypeParameters()
+      getMethod().getUnboundDeclaration().(UnboundGeneric).getNumberOfTypeParameters()
   }
 
   override string getMessage() {
     result =
       "The constructed method " + getMethod().toStringWithTypes() +
-        " does not match unbound method " + getMethod().getSourceDeclaration().toStringWithTypes()
+        " does not match unbound method " + getMethod().getUnboundDeclaration().toStringWithTypes()
   }
 }
 
@@ -477,7 +477,9 @@ class InvalidOverride extends MethodViolation {
   }
 
   override string getMessage() {
-    result = "Overridden method from " + base.getDeclaringType() + " is not in a base type"
+    result =
+      "Overridden method from " + base.getDeclaringType().getQualifiedName() +
+        " is not in a base type"
   }
 }
 
@@ -528,7 +530,9 @@ class KindViolation extends TypeViolation {
  * unbound generic.
  */
 class InconsistentKind extends TypeViolation {
-  InconsistentKind() { typeKind(this.getType()) != typeKind(this.getType().getSourceDeclaration()) }
+  InconsistentKind() {
+    typeKind(this.getType()) != typeKind(this.getType().getUnboundDeclaration())
+  }
 
   override string getMessage() { result = "Inconsistent type kind of source declaration" }
 }
@@ -670,7 +674,7 @@ class MissingCilDeclaration extends ConsistencyViolation, MissingCSharpCheck {
  * Holds if the C# declaration is expected to have a CIl declaration.
  */
 private predicate expectedCilDeclaration(CS::Declaration decl) {
-  decl = decl.getSourceDeclaration() and
+  decl = decl.getUnboundDeclaration() and
   not decl instanceof CS::ArrayType and
   decl.getALocation() instanceof CS::Assembly and
   not decl.(CS::Modifiable).isInternal() and
@@ -722,7 +726,7 @@ class ConstructedSourceDeclarationMethod extends MethodViolation {
 
   ConstructedSourceDeclarationMethod() {
     method = getMethod() and
-    method = method.getSourceDeclaration() and
+    method = method.getUnboundDeclaration() and
     (
       method instanceof ConstructedGeneric or
       method.getDeclaringType() instanceof ConstructedGeneric

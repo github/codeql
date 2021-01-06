@@ -80,6 +80,19 @@ class AssertTests
         Assert.IsFalse(s != null || b);
         Console.WriteLine(s.Length);
     }
+
+    private void AssertTrueFalse(
+           [System.Diagnostics.CodeAnalysis.DoesNotReturnIf(false)] bool condition1,
+           [System.Diagnostics.CodeAnalysis.DoesNotReturnIf(true)] bool condition2,
+           bool nonCondition)
+    {
+    }
+
+    bool M12(bool b1, bool b2)
+    {
+        AssertTrueFalse(b1, b2, b2);
+        return b1 && !b2;
+    }
 }
 
 // semmle-extractor-options: ${testdir}/../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs

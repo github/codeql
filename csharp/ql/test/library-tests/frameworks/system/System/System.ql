@@ -6,7 +6,7 @@ import semmle.code.csharp.frameworks.system.collections.Generic
 predicate implementsMethod(Method m, int i) {
   exists(Method other, Method imp |
     m.overridesOrImplementsOrEquals(imp) and
-    other = imp.getSourceDeclaration()
+    other = imp.getUnboundDeclaration()
   |
     other = any(SystemObjectClass c).getEqualsMethod() and i = 1
     or

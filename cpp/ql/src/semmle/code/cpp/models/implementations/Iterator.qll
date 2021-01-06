@@ -13,7 +13,7 @@ import semmle.code.cpp.models.interfaces.Iterator
 /**
  * An instantiation of the `std::iterator_traits` template.
  */
-class IteratorTraits extends Class {
+private class IteratorTraits extends Class {
   IteratorTraits() {
     this.hasQualifiedName("std", "iterator_traits") and
     not this instanceof TemplateClass and
@@ -29,7 +29,7 @@ class IteratorTraits extends Class {
 /**
  * A type which has the typedefs expected for an iterator.
  */
-class IteratorByTypedefs extends Class {
+private class IteratorByTypedefs extends Iterator, Class {
   IteratorByTypedefs() {
     this.getAMember().(TypedefType).hasName("difference_type") and
     this.getAMember().(TypedefType).hasName("value_type") and
@@ -43,26 +43,22 @@ class IteratorByTypedefs extends Class {
 /**
  * The `std::iterator` class.
  */
-class StdIterator extends Class {
+private class StdIterator extends Iterator, Class {
   StdIterator() { this.hasQualifiedName("std", "iterator") }
 }
 
 /**
- * A type which can be used as an iterator
+ * A type that is deduced to be an iterator because there is a corresponding
+ * `std::iterator_traits` instantiation for it.
  */
-class Iterator extends Type {
-  Iterator() {
-    this instanceof IteratorByTypedefs or
-    exists(IteratorTraits it | it.getIteratorType() = this) or
-    this instanceof StdIterator
-  }
+private class IteratorByTraits extends Iterator {
+  IteratorByTraits() { exists(IteratorTraits it | it.getIteratorType() = this) }
 }
 
 private FunctionInput getIteratorArgumentInput(Operator op, int index) {
   exists(Type t |
     t =
-      op
-          .getACallToThisFunction()
+      op.getACallToThisFunction()
           .getArgument(index)
           .getExplicitlyConverted()
           .getType()
@@ -81,7 +77,8 @@ private FunctionInput getIteratorArgumentInput(Operator op, int index) {
 /**
  * A non-member prefix `operator*` function for an iterator type.
  */
-class IteratorPointerDereferenceOperator extends Operator, TaintFunction, IteratorReferenceFunction {
+private class IteratorPointerDereferenceOperator extends Operator, TaintFunction,
+  IteratorReferenceFunction {
   FunctionInput iteratorInput;
 
   IteratorPointerDereferenceOperator() {
@@ -92,13 +89,16 @@ class IteratorPointerDereferenceOperator extends Operator, TaintFunction, Iterat
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input = iteratorInput and
     output.isReturnValue()
+    or
+    input.isReturnValueDeref() and
+    output.isParameterDeref(0)
   }
 }
 
 /**
  * A non-member `operator++` or `operator--` function for an iterator type.
  */
-class IteratorCrementOperator extends Operator, DataFlowFunction {
+private class IteratorCrementOperator extends Operator, DataFlowFunction {
   FunctionInput iteratorInput;
 
   IteratorCrementOperator() {
@@ -115,7 +115,7 @@ class IteratorCrementOperator extends Operator, DataFlowFunction {
 /**
  * A non-member `operator+` function for an iterator type.
  */
-class IteratorAddOperator extends Operator, TaintFunction {
+private class IteratorAddOperator extends Operator, TaintFunction {
   FunctionInput iteratorInput;
 
   IteratorAddOperator() {
@@ -132,7 +132,7 @@ class IteratorAddOperator extends Operator, TaintFunction {
 /**
  * A non-member `operator-` function that takes a pointer difference type as its second argument.
  */
-class IteratorSubOperator extends Operator, TaintFunction {
+private class IteratorSubOperator extends Operator, TaintFunction {
   FunctionInput iteratorInput;
 
   IteratorSubOperator() {
@@ -150,7 +150,7 @@ class IteratorSubOperator extends Operator, TaintFunction {
 /**
  * A non-member `operator+=` or `operator-=` function for an iterator type.
  */
-class IteratorAssignArithmeticOperator extends Operator, DataFlowFunction, TaintFunction {
+private class IteratorAssignArithmeticOperator extends Operator, DataFlowFunction, TaintFunction {
   IteratorAssignArithmeticOperator() {
     this.hasName(["operator+=", "operator-="]) and
     this.getDeclaringType() instanceof Iterator
@@ -180,13 +180,16 @@ class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunc
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
     output.isReturnValue()
+    or
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
   }
 }
 
 /**
  * An `operator++` or `operator--` member function for an iterator type.
  */
-class IteratorCrementMemberOperator extends MemberFunction, DataFlowFunction, TaintFunction {
+private class IteratorCrementMemberOperator extends MemberFunction, DataFlowFunction, TaintFunction {
   IteratorCrementMemberOperator() {
     this.hasName(["operator++", "operator--"]) and
     this.getDeclaringType() instanceof Iterator
@@ -209,7 +212,7 @@ class IteratorCrementMemberOperator extends MemberFunction, DataFlowFunction, Ta
 /**
  * A member `operator->` function for an iterator type.
  */
-class IteratorFieldMemberOperator extends Operator, TaintFunction {
+private class IteratorFieldMemberOperator extends Operator, TaintFunction {
   IteratorFieldMemberOperator() {
     this.hasName("operator->") and
     this.getDeclaringType() instanceof Iterator
@@ -224,7 +227,7 @@ class IteratorFieldMemberOperator extends Operator, TaintFunction {
 /**
  * An `operator+` or `operator-` member function of an iterator class.
  */
-class IteratorBinaryArithmeticMemberOperator extends MemberFunction, TaintFunction {
+private class IteratorBinaryArithmeticMemberOperator extends MemberFunction, TaintFunction {
   IteratorBinaryArithmeticMemberOperator() {
     this.hasName(["operator+", "operator-"]) and
     this.getDeclaringType() instanceof Iterator
@@ -239,7 +242,8 @@ class IteratorBinaryArithmeticMemberOperator extends MemberFunction, TaintFuncti
 /**
  * An `operator+=` or `operator-=` member function of an iterator class.
  */
-class IteratorAssignArithmeticMemberOperator extends MemberFunction, DataFlowFunction, TaintFunction {
+private class IteratorAssignArithmeticMemberOperator extends MemberFunction, DataFlowFunction,
+  TaintFunction {
   IteratorAssignArithmeticMemberOperator() {
     this.hasName(["operator+=", "operator-="]) and
     this.getDeclaringType() instanceof Iterator
@@ -262,7 +266,8 @@ class IteratorAssignArithmeticMemberOperator extends MemberFunction, DataFlowFun
 /**
  * An `operator[]` member function of an iterator class.
  */
-class IteratorArrayMemberOperator extends MemberFunction, TaintFunction, IteratorReferenceFunction {
+private class IteratorArrayMemberOperator extends MemberFunction, TaintFunction,
+  IteratorReferenceFunction {
   IteratorArrayMemberOperator() {
     this.hasName("operator[]") and
     this.getDeclaringType() instanceof Iterator
@@ -275,19 +280,61 @@ class IteratorArrayMemberOperator extends MemberFunction, TaintFunction, Iterato
 }
 
 /**
+ * An `operator=` member function of an iterator class that is not a copy or move assignment
+ * operator.
+ *
+ * The `hasTaintFlow` override provides flow through output iterators that return themselves with
+ * `operator*` and use their own `operator=` to assign to the container.
+ */
+private class IteratorAssignmentMemberOperator extends MemberFunction, TaintFunction {
+  IteratorAssignmentMemberOperator() {
+    this.hasName("operator=") and
+    this.getDeclaringType() instanceof Iterator and
+    not this instanceof CopyAssignmentOperator and
+    not this instanceof MoveAssignmentOperator
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isParameterDeref(0) and
+    output.isQualifierObject()
+  }
+}
+
+/**
  * A `begin` or `end` member function, or a related member function, that
  * returns an iterator.
  */
-class BeginOrEndFunction extends MemberFunction, TaintFunction {
+private class BeginOrEndFunction extends MemberFunction, TaintFunction, GetIteratorFunction {
   BeginOrEndFunction() {
-    this
-        .hasName(["begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend",
-              "before_begin", "cbefore_begin"]) and
+    this.hasName([
+        "begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend", "before_begin",
+        "cbefore_begin"
+      ]) and
     this.getType().getUnspecifiedType() instanceof Iterator
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
+    output.isReturnValue()
+  }
+
+  override predicate getsIterator(FunctionInput input, FunctionOutput output) {
+    input.isQualifierObject() and
+    output.isReturnValue()
+  }
+}
+
+/**
+ * The `std::front_inserter`, `std::inserter`, and `std::back_inserter`
+ * functions.
+ */
+private class InserterIteratorFunction extends GetIteratorFunction {
+  InserterIteratorFunction() {
+    this.hasQualifiedName("std", ["front_inserter", "inserter", "back_inserter"])
+  }
+
+  override predicate getsIterator(FunctionInput input, FunctionOutput output) {
+    input.isParameterDeref(0) and
     output.isReturnValue()
   }
 }

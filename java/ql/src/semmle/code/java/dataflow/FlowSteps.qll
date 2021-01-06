@@ -15,6 +15,7 @@ module Frameworks {
   private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.Guice
   private import semmle.code.java.frameworks.Protobuf
+  private import semmle.code.java.frameworks.guava.Guava
 }
 
 /**
@@ -54,11 +55,11 @@ abstract class TaintPreservingCallable extends Callable {
 private class StringTaintPreservingMethod extends TaintPreservingCallable {
   StringTaintPreservingMethod() {
     this.getDeclaringType() instanceof TypeString and
-    this
-        .hasName(["concat", "copyValueOf", "endsWith", "format", "formatted", "getBytes", "indent",
-              "intern", "join", "repeat", "split", "strip", "stripIndent", "stripLeading",
-              "stripTrailing", "substring", "toCharArray", "toLowerCase", "toString", "toUpperCase",
-              "trim"])
+    this.hasName([
+        "concat", "copyValueOf", "endsWith", "format", "formatted", "getBytes", "indent", "intern",
+        "join", "repeat", "split", "strip", "stripIndent", "stripLeading", "stripTrailing",
+        "substring", "toCharArray", "toLowerCase", "toString", "toUpperCase", "trim"
+      ])
   }
 
   override predicate returnsTaintFrom(int arg) {

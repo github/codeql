@@ -6,7 +6,7 @@ g = [5] # $writes=g
 
 # Multiple assignment
 
-g1, g2 = [6], [7] # $writes=g1 $writes=g2
+g1, g2 = [6], [7] # $writes=g1 writes=g2
 
 # Assignment that's only referenced in this scope. This one will not give rise to a `ModuleVariableNode`.
 
@@ -22,7 +22,7 @@ g_mod = []
 
 # The following assignment should not be a `ModuleVariableNode`,
 # but currently our analysis thinks `g_mod` might be used in the `print` call
-g_mod = [10] # $f+:writes=g_mod
+g_mod = [10] # $ SPURIOUS: writes=g_mod
 print("foo")
 g_mod = [100] # $writes=g_mod
 
@@ -81,10 +81,10 @@ def use_foo():
 
 # Partial imports
 
-from bar import baz_attr, quux_attr # $writes=baz_attr $writes=quux_attr
+from bar import baz_attr, quux_attr # $writes=baz_attr writes=quux_attr
 
 def use_partial_import():
-    print(baz_attr, quux_attr) # $reads=baz_attr $reads=quux_attr
+    print(baz_attr, quux_attr) # $reads=baz_attr reads=quux_attr
 
 # Aliased imports
 

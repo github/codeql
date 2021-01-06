@@ -8,14 +8,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A property.
     /// </summary>
-    internal interface IProperty : IExtractedEntity
-    {
-    }
-
-    /// <summary>
-    /// A property.
-    /// </summary>
-    internal sealed class Property : LabelledEntity, IProperty
+    internal sealed class Property : LabelledEntity
     {
         private readonly Handle handle;
         private readonly Type type;

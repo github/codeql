@@ -69,8 +69,7 @@ module XssThroughDom {
       ) and
       // looks like a $("<p>" + ... ) source, which is benign for this query.
       not exists(DataFlow::Node prefix |
-        DomBasedXss::isPrefixOfJQueryHtmlString(this
-              .getReceiver()
+        DomBasedXss::isPrefixOfJQueryHtmlString(this.getReceiver()
               .(DataFlow::CallNode)
               .getAnArgument(), prefix)
       |

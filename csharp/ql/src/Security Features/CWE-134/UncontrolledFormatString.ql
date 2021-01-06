@@ -27,7 +27,7 @@ class FormatStringConfiguration extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(FormatCall call).getFormatExpr()
+    sink.asExpr() = any(FormatCall call | call.hasInsertions()).getFormatExpr()
   }
 }
 

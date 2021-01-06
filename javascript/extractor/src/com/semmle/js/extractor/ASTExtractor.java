@@ -143,6 +143,7 @@ import com.semmle.ts.ast.OptionalTypeExpr;
 import com.semmle.ts.ast.ParenthesizedTypeExpr;
 import com.semmle.ts.ast.PredicateTypeExpr;
 import com.semmle.ts.ast.RestTypeExpr;
+import com.semmle.ts.ast.TemplateLiteralTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.TypeAssertion;
@@ -1267,6 +1268,13 @@ public class ASTExtractor {
     public Label visit(TemplateLiteral nd, Context c) {
       Label key = super.visit(nd, c);
       visitAll(nd.getChildren(), key, IdContext.varBind, 0);
+      return key;
+    }
+
+    @Override
+    public Label visit(TemplateLiteralTypeExpr nd, Context c) {
+      Label key = super.visit(nd, c);
+      visitAll(nd.getChildren(), key, IdContext.typeBind, 0);
       return key;
     }
 

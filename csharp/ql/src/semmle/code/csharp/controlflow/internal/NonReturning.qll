@@ -11,7 +11,7 @@ private import semmle.code.cil.CallableReturns
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.frameworks.System
-private import semmle.code.csharp.controlflow.internal.Completion
+private import Completion
 
 /** A call that definitely does not return (conservative analysis). */
 abstract class NonReturningCall extends Call {
@@ -23,9 +23,7 @@ private class ExitingCall extends NonReturningCall {
   ExitingCall() {
     this.getTarget() instanceof ExitingCallable
     or
-    exists(AssertMethod m | m = this.(FailingAssertion).getAssertMethod() |
-      not exists(m.getExceptionClass())
-    )
+    this = any(FailingAssertion fa | fa.getAssertionFailure().isExit())
   }
 
   override ExitCompletion getACompletion() { not result instanceof NestedCompletion }
@@ -39,9 +37,7 @@ private class ThrowingCall extends NonReturningCall {
     (
       c = this.getTarget().(ThrowingCallable).getACallCompletion()
       or
-      exists(AssertMethod m | m = this.(FailingAssertion).getAssertMethod() |
-        c.getExceptionClass() = m.getExceptionClass()
-      )
+      this.(FailingAssertion).getAssertionFailure().isException(c.getExceptionClass())
       or
       exists(CIL::Method m, CIL::Type ex |
         this.getTarget().matchesHandle(m) and

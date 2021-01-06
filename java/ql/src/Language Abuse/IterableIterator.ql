@@ -25,8 +25,7 @@ class EmptyIterableIterator extends IterableIterator {
     exists(Method m |
       m.getDeclaringType().getSourceDeclaration() = this and
       m.getName() = "hasNext" and
-      m
-          .getBody()
+      m.getBody()
           .(SingletonBlock)
           .getStmt()
           .(ReturnStmt)

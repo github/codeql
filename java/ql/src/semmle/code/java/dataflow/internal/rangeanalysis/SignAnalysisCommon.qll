@@ -51,7 +51,7 @@ private predicate unknownSign(Expr e) {
     or
     exists(CastExpr cast, Type fromtyp |
       cast = e and
-      fromtyp = cast.getExpr().getType() and
+      fromtyp = cast.getSourceType() and
       not fromtyp instanceof NumericOrCharType
     )
     or

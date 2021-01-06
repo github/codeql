@@ -4,11 +4,7 @@ using Semmle.Extraction.PDB;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    public interface ISourceLocation : ILocation
-    {
-    }
-
-    public sealed class PdbSourceLocation : LabelledEntity, ISourceLocation
+    public sealed class PdbSourceLocation : LabelledEntity, ILocation
     {
         private readonly Location location;
         private readonly PdbSourceFile file;

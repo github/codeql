@@ -21,7 +21,7 @@ private import TypeRef
 class Type extends DotNet::Type, Member, TypeContainer, @type {
   override string getName() { types(this, _, result) }
 
-  override Type getSourceDeclaration() { result = this }
+  override Type getUnboundDeclaration() { result = this }
 
   /** Holds if this type is implicitly convertible to `that` type. */
   predicate isImplicitlyConvertibleTo(Type that) { implicitConversion(this, that) }
@@ -258,8 +258,11 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     getAMember().(Virtualizable).getOverridee() = v
   }
 
+  /** Gets a field (or member constant) with the given name. */
+  Field getField(string name) { result = getAMember() and result.hasName(name) }
+
   /** Gets a field (or member constant) of this type, if any. */
-  Field getAField() { result = getAMember() }
+  Field getAField() { result = this.getField(_) }
 
   /** Gets a member constant of this type, if any. */
   MemberConstant getAConstant() { result = getAMember() }
@@ -364,11 +367,11 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
   /** Gets the number of callables in this type. */
   int getNumberOfCallables() { result = count(Callable c | this.getAMember() = c) }
 
-  override ValueOrRefType getSourceDeclaration() {
+  override ValueOrRefType getUnboundDeclaration() {
     result = this and
     not this instanceof NestedType
     or
-    // We must use `nested_types` here, rather than overriding `getSourceDeclaration`
+    // We must use `nested_types` here, rather than overriding `getUnboundDeclaration`
     // in the class `NestedType` below. Otherwise, the overrides in `UnboundGenericType`
     // and its subclasses will not work
     nested_types(this, _, result)

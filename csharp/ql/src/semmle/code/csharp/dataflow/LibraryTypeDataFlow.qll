@@ -22,6 +22,7 @@ private import semmle.code.csharp.dataflow.internal.DelegateDataFlow
 // import `LibraryTypeDataFlow` definitions from other files to avoid potential reevaluation
 private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.JsonNET
+private import FlowSummary
 
 private newtype TAccessPath =
   TNilAccessPath() or
@@ -93,12 +94,12 @@ module AccessPath {
 
   /** Gets a singleton property access path. */
   AccessPath property(Property p) {
-    result = singleton(any(PropertyContent c | c.getProperty() = p.getSourceDeclaration()))
+    result = singleton(any(PropertyContent c | c.getProperty() = p.getUnboundDeclaration()))
   }
 
   /** Gets a singleton field access path. */
   AccessPath field(Field f) {
-    result = singleton(any(FieldContent c | c.getField() = f.getSourceDeclaration()))
+    result = singleton(any(FieldContent c | c.getField() = f.getUnboundDeclaration()))
   }
 
   /** Gets an access path representing a property inside a collection. */
@@ -107,7 +108,7 @@ module AccessPath {
 
 /** An unbound callable. */
 class SourceDeclarationCallable extends Callable {
-  SourceDeclarationCallable() { this = this.getSourceDeclaration() }
+  SourceDeclarationCallable() { this.isUnboundDeclaration() }
 }
 
 /** An unbound method. */
@@ -300,7 +301,7 @@ class CallableFlowSinkDelegateArg extends CallableFlowSink, TCallableFlowSinkDel
 
 /** A specification of data flow for a library (non-source code) type. */
 abstract class LibraryTypeDataFlow extends Type {
-  LibraryTypeDataFlow() { this = this.getSourceDeclaration() }
+  LibraryTypeDataFlow() { this = this.getUnboundDeclaration() }
 
   /**
    * Holds if data may flow from `source` to `sink` when calling callable `c`.
@@ -350,6 +351,89 @@ abstract class LibraryTypeDataFlow extends Type {
     CallableFlowSource source, Content content, SourceDeclarationCallable callable
   ) {
     none()
+  }
+}
+
+private CallableFlowSource toCallableFlowSource(SummaryInput input) {
+  result = TCallableFlowSourceQualifier() and
+  input = SummaryInput::parameter(-1)
+  or
+  exists(int i |
+    result = TCallableFlowSourceArg(i) and
+    input = SummaryInput::parameter(i)
+  )
+  or
+  exists(int i |
+    result = TCallableFlowSourceDelegateArg(i) and
+    input = SummaryInput::delegate(i)
+  )
+}
+
+private CallableFlowSink toCallableFlowSink(SummaryOutput output) {
+  result = TCallableFlowSinkQualifier() and
+  output = SummaryOutput::parameter(-1)
+  or
+  result = TCallableFlowSinkReturn() and
+  output = SummaryOutput::return()
+  or
+  exists(int i |
+    result = TCallableFlowSinkArg(i) and
+    output = SummaryOutput::parameter(i)
+  )
+  or
+  exists(int i, int j |
+    result = TCallableFlowSinkDelegateArg(i, j) and
+    output = SummaryOutput::delegate(i, j)
+  )
+}
+
+private AccessPath toAccessPath(ContentList cl) {
+  cl = ContentList::empty() and
+  result = TNilAccessPath()
+  or
+  exists(Content head, ContentList tail |
+    cl = ContentList::cons(head, tail) and
+    result = TConsAccessPath(head, toAccessPath(tail))
+  )
+}
+
+private class FrameworkDataFlowAdaptor extends SummarizedCallable {
+  private LibraryTypeDataFlow ltdf;
+
+  FrameworkDataFlowAdaptor() {
+    ltdf.callableFlow(_, _, this, _) or
+    ltdf.callableFlow(_, _, _, _, this, _) or
+    ltdf.clearsContent(_, _, this)
+  }
+
+  override predicate propagatesFlow(SummaryInput input, SummaryOutput output, boolean preservesValue) {
+    ltdf.callableFlow(toCallableFlowSource(input), toCallableFlowSink(output), this, preservesValue)
+  }
+
+  override predicate propagatesFlow(
+    SummaryInput input, ContentList inputContents, SummaryOutput output, ContentList outputContents,
+    boolean preservesValue
+  ) {
+    ltdf.callableFlow(toCallableFlowSource(input), toAccessPath(inputContents),
+      toCallableFlowSink(output), toAccessPath(outputContents), this, preservesValue)
+  }
+
+  private AccessPath getAnAccessPath() {
+    ltdf.callableFlow(_, result, _, _, this, _)
+    or
+    ltdf.callableFlow(_, _, _, result, _, _)
+  }
+
+  override predicate requiresContentList(Content head, ContentList tail) {
+    exists(AccessPath ap |
+      ap = this.getAnAccessPath().drop(_) and
+      head = ap.getHead() and
+      toAccessPath(tail) = ap.getTail()
+    )
+  }
+
+  override predicate clearsContent(SummaryInput input, Content content) {
+    ltdf.clearsContent(toCallableFlowSource(input), content, this)
   }
 }
 
@@ -694,7 +778,7 @@ class SystemLazyFlow extends LibraryTypeDataFlow, SystemLazyClass {
     preservesValue = true and
     exists(SystemFuncDelegateType t, int i | t.getNumberOfTypeParameters() = 1 |
       c.(Constructor).getDeclaringType() = this and
-      c.getParameter(i).getType().getSourceDeclaration() = t and
+      c.getParameter(i).getType().getUnboundDeclaration() = t and
       source = getDelegateFlowSourceArg(c, i) and
       sourceAp = AccessPath::empty() and
       sink = TCallableFlowSinkReturn() and
@@ -832,7 +916,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
     CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
     SourceDeclarationMethod m
   ) {
-    m.(ExtensionMethod).getExtendedType().getSourceDeclaration() = this and
+    m.(ExtensionMethod).getExtendedType().getUnboundDeclaration() = this and
     exists(string name, int arity | name = m.getName() and arity = m.getNumberOfParameters() |
       name = "Aggregate" and
       (
@@ -1038,7 +1122,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
           sink = getDelegateFlowSinkArg(m, 2, 0) and
           sinkAp = AccessPath::empty()
           or
-          not m.getParameter(2).getType().getSourceDeclaration() instanceof
+          not m.getParameter(2).getType().getUnboundDeclaration() instanceof
             SystemCollectionsGenericIEqualityComparerTInterface and
           source = getDelegateFlowSourceArg(m, 2) and
           sourceAp = AccessPath::empty() and
@@ -1352,7 +1436,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
 /** Data flow for `System.Collections.[Generic.]ICollection` (and sub types). */
 class ICollectionFlow extends LibraryTypeDataFlow, RefType {
   ICollectionFlow() {
-    exists(Interface i | i = this.getABaseType*().getSourceDeclaration() |
+    exists(Interface i | i = this.getABaseType*().getUnboundDeclaration() |
       i instanceof SystemCollectionsICollectionInterface
       or
       i instanceof SystemCollectionsGenericICollectionInterface
@@ -1401,7 +1485,7 @@ class ICollectionFlow extends LibraryTypeDataFlow, RefType {
 /** Data flow for `System.Collections.[Generic.]IList` (and sub types). */
 class IListFlow extends LibraryTypeDataFlow, RefType {
   IListFlow() {
-    exists(Interface i | i = this.getABaseType*().getSourceDeclaration() |
+    exists(Interface i | i = this.getABaseType*().getUnboundDeclaration() |
       i instanceof SystemCollectionsIListInterface
       or
       i instanceof SystemCollectionsGenericIListInterface
@@ -1451,7 +1535,7 @@ class IListFlow extends LibraryTypeDataFlow, RefType {
 /** Data flow for `System.Collections.[Generic.]IDictionary` (and sub types). */
 class IDictionaryFlow extends LibraryTypeDataFlow, RefType {
   IDictionaryFlow() {
-    exists(Interface i | i = this.getABaseType*().getSourceDeclaration() |
+    exists(Interface i | i = this.getABaseType*().getUnboundDeclaration() |
       i instanceof SystemCollectionsIDictionaryInterface
       or
       i instanceof SystemCollectionsGenericIDictionaryInterface
@@ -1653,6 +1737,69 @@ class SystemCollectionsGenericKeyValuePairStructFlow extends LibraryTypeDataFlow
   }
 }
 
+/** Data flow for `System.[Value]Tuple<,...,>`. */
+class SystemTupleFlow extends LibraryTypeDataFlow, ValueOrRefType {
+  SystemTupleFlow() {
+    this.getNamespace() instanceof SystemNamespace and
+    this.getName().regexpMatch("(Value)?Tuple(<,*>)?")
+    or
+    this instanceof TupleType
+  }
+
+  private AccessPath getItemAccessPath(int i) {
+    result =
+      unique(AccessPath ap |
+        i in [1 .. count(this.getAMember())] and
+        ap in [
+            AccessPath::field(this.getField("Item" + i)),
+            AccessPath::property(this.getProperty("Item" + i))
+          ]
+      |
+        ap
+      )
+  }
+
+  override predicate callableFlow(
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
+  ) {
+    preservesValue = true and
+    (
+      exists(SystemTupleFlow t, int i |
+        source = getFlowSourceArg(c, i - 1, _) and
+        sourceAp = AccessPath::empty() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = t.getItemAccessPath(i)
+      |
+        c.(Constructor).getDeclaringType() = this and
+        t = this
+        or
+        c = this.getAMethod(any(string name | name.regexpMatch("Create(<,*>)?"))) and
+        t = c.getReturnType().getUnboundDeclaration()
+      )
+      or
+      c =
+        any(ExtensionMethod m |
+          m.hasName("Deconstruct") and
+          this = m.getExtendedType().getUnboundDeclaration() and
+          exists(int i |
+            m.getParameter(i).isOut() and
+            source = getFlowSourceArg(c, 0, _) and
+            sourceAp = this.getItemAccessPath(i) and
+            sink = TCallableFlowSinkArg(i) and
+            sinkAp = AccessPath::empty()
+          )
+        )
+      or
+      c = this.getAnIndexer().getGetter() and
+      source = TCallableFlowSourceQualifier() and
+      sourceAp = this.getItemAccessPath(_) and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::empty()
+    )
+  }
+}
+
 /** Data flow for `System.Threading.Tasks.Task`. */
 class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingTasksTaskClass {
   override predicate callableFlow(
@@ -1843,6 +1990,53 @@ class SystemThreadingTasksTaskTFlow extends LibraryTypeDataFlow, SystemThreading
     sinkAp =
       AccessPath::field(any(SystemRuntimeCompilerServicesTaskAwaiterStruct s)
             .getUnderlyingTaskField())
+    or
+    // var awaitable = task.ConfigureAwait(false);  // <-- new ConfiguredTaskAwaitable<>(task, false)
+    //                                              //       m_configuredTaskAwaiter = new ConfiguredTaskAwaiter(task, false)
+    //                                              //         m_task = task
+    // var awaiter = awaitable.GetAwaiter();
+    // var result = awaiter.GetResult();
+    m = this.getConfigureAwaitMethod() and
+    source = TCallableFlowSourceQualifier() and
+    sourceAp = AccessPath::empty() and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp =
+      AccessPath::cons(any(FieldContent fc |
+          fc.getField() =
+            any(SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct t)
+                .getUnderlyingAwaiterField()
+        ),
+        AccessPath::field(any(SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterStruct s
+          ).getUnderlyingTaskField()))
+  }
+
+  override predicate requiresAccessPath(Content head, AccessPath tail) {
+    head.(FieldContent).getField() =
+      any(SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct t).getUnderlyingAwaiterField() and
+    tail =
+      AccessPath::field(any(SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterStruct s
+        ).getUnderlyingTaskField())
+  }
+}
+
+/** Data flow for `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>`. */
+private class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTFlow extends LibraryTypeDataFlow,
+  SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct {
+  override predicate callableFlow(
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
+  ) {
+    // var awaitable = task.ConfigureAwait(false);
+    // var awaiter = awaitable.GetAwaiter();  // <-- awaitable.m_configuredTaskAwaiter
+    // var result = awaiter.GetResult();
+    c = this.getGetAwaiterMethod() and
+    source = TCallableFlowSourceQualifier() and
+    sourceAp =
+      AccessPath::field(any(SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct s)
+            .getUnderlyingAwaiterField()) and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty() and
+    preservesValue = true
   }
 }
 
@@ -1950,6 +2144,32 @@ class SystemRuntimeCompilerServicesTaskAwaiterFlow extends LibraryTypeDataFlow,
   }
 }
 
+/** Data flow for `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>.ConfiguredTaskAwaiter`. */
+class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterFlow extends LibraryTypeDataFlow,
+  SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterStruct {
+  override predicate callableFlow(
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
+  ) {
+    // var awaitable = task.ConfigureAwait(false);
+    // var awaiter = awaitable.GetAwaiter();
+    // var result = awaiter.GetResult();  // <-- task.Result
+    preservesValue = true and
+    c = this.getGetResultMethod() and
+    source = TCallableFlowSourceQualifier() and
+    sourceAp =
+      AccessPath::cons(any(FieldContent fc | fc.getField() = this.getUnderlyingTaskField()),
+        AccessPath::property(any(SystemThreadingTasksTaskTClass t).getResultProperty())) and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty()
+  }
+
+  override predicate requiresAccessPath(Content head, AccessPath tail) {
+    head.(FieldContent).getField() = this.getUnderlyingTaskField() and
+    tail = AccessPath::property(any(SystemThreadingTasksTaskTClass t).getResultProperty())
+  }
+}
+
 /** Data flow for `System.Text.Encoding`. */
 library class SystemTextEncodingFlow extends LibraryTypeDataFlow, SystemTextEncodingClass {
   override predicate callableFlow(
@@ -1958,7 +2178,7 @@ library class SystemTextEncodingFlow extends LibraryTypeDataFlow, SystemTextEnco
   ) {
     preservesValue = false and
     c = this.getAMethod() and
-    exists(Method m | m.getAnOverrider*().getSourceDeclaration() = c |
+    exists(Method m | m.getAnOverrider*().getUnboundDeclaration() = c |
       m = getGetBytesMethod() and
       source = getFlowSourceArg(m, 0, sourceAp) and
       sink = TCallableFlowSinkReturn() and

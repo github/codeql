@@ -1,13 +1,14 @@
 import python
-import experimental.dataflow.TaintTracking
-import experimental.dataflow.DataFlow
+import semmle.python.dataflow.new.TaintTracking
+import semmle.python.dataflow.new.DataFlow
 
 class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
   TestTaintTrackingConfiguration() { this = "TestTaintTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
-    source.(DataFlow::CfgNode).getNode().(NameNode).getId() in ["TAINTED_STRING", "TAINTED_BYTES",
-          "TAINTED_LIST", "TAINTED_DICT"]
+    source.(DataFlow::CfgNode).getNode().(NameNode).getId() in [
+        "TAINTED_STRING", "TAINTED_BYTES", "TAINTED_LIST", "TAINTED_DICT"
+      ]
   }
 
   override predicate isSink(DataFlow::Node sink) {

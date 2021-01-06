@@ -9,18 +9,10 @@ using Semmle.Util;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    public interface ILocation : IEntity
-    {
-    }
-
-    internal interface IAssembly : ILocation
-    {
-    }
-
     /// <summary>
     /// An assembly to extract.
     /// </summary>
-    public class Assembly : LabelledEntity, IAssembly
+    public class Assembly : LabelledEntity, ILocation
     {
         private readonly File file;
         private readonly AssemblyName assemblyName;
@@ -140,7 +132,7 @@ namespace Semmle.Extraction.CIL.Entities
                 var extractor = new Extractor(false, assemblyPath, logger, pathTransformer);
                 var transformedAssemblyPath = pathTransformer.Transform(assemblyPath);
                 var project = layout.LookupProjectOrDefault(transformedAssemblyPath);
-                using var trapWriter = project.CreateTrapWriter(logger, transformedAssemblyPath.WithSuffix(".cil"), true, trapCompression);
+                using var trapWriter = project.CreateTrapWriter(logger, transformedAssemblyPath.WithSuffix(".cil"), trapCompression, discardDuplicates: true);
                 trapFile = trapWriter.TrapFile;
                 if (nocache || !System.IO.File.Exists(trapFile))
                 {

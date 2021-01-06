@@ -76,11 +76,10 @@ module NHibernate {
     SqlParameter() {
       this.getType() instanceof StringType and
       (this.getName() = "sql" or this.getName() = "sqlString" or this.getName() = "query") and
-      this
-          .getCallable()
+      this.getCallable()
           .getDeclaringType()
           .getDeclaringNamespace()
-          .getParent*()
+          .getParentNamespace*()
           .hasQualifiedName("", "NHibernate")
     }
   }

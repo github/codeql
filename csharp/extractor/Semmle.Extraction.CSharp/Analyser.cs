@@ -198,12 +198,12 @@ namespace Semmle.Extraction.CSharp
         /// Perform an analysis on an assembly.
         /// </summary>
         /// <param name="assembly">Assembly to analyse.</param>
-        private void AnalyseAssembly(PortableExecutableReference assembly)
+        private void AnalyseReferenceAssembly(PortableExecutableReference assembly)
         {
             // CIL first - it takes longer.
             if (options.CIL)
                 extractionTasks.Add(() => DoExtractCIL(assembly));
-            extractionTasks.Add(() => DoAnalyseAssembly(assembly));
+            extractionTasks.Add(() => DoAnalyseReferenceAssembly(assembly));
         }
 
         private static bool FileIsUpToDate(string src, string dest)
@@ -230,7 +230,7 @@ namespace Semmle.Extraction.CSharp
                 var transformedAssemblyPath = PathTransformer.Transform(assemblyPath);
                 var assembly = compilation.Assembly;
                 var projectLayout = layout.LookupProjectOrDefault(transformedAssemblyPath);
-                var trapWriter = projectLayout.CreateTrapWriter(Logger, transformedAssemblyPath, true, options.TrapCompression);
+                var trapWriter = projectLayout.CreateTrapWriter(Logger, transformedAssemblyPath, options.TrapCompression, discardDuplicates: false);
                 compilationTrapFile = trapWriter;  // Dispose later
                 var cx = extractor.CreateContext(compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath, true), AddAssemblyTrapPrefix);
 
@@ -250,7 +250,7 @@ namespace Semmle.Extraction.CSharp
         ///     extraction within the snapshot.
         /// </summary>
         /// <param name="r">The assembly to extract.</param>
-        private void DoAnalyseAssembly(PortableExecutableReference r)
+        private void DoAnalyseReferenceAssembly(PortableExecutableReference r)
         {
             try
             {
@@ -260,7 +260,7 @@ namespace Semmle.Extraction.CSharp
                 var assemblyPath = r.FilePath;
                 var transformedAssemblyPath = PathTransformer.Transform(assemblyPath);
                 var projectLayout = layout.LookupProjectOrDefault(transformedAssemblyPath);
-                using var trapWriter = projectLayout.CreateTrapWriter(Logger, transformedAssemblyPath, true, options.TrapCompression);
+                using var trapWriter = projectLayout.CreateTrapWriter(Logger, transformedAssemblyPath, options.TrapCompression, discardDuplicates: true);
 
                 var skipExtraction = options.Cache && File.Exists(trapWriter.TrapFile);
 
@@ -293,6 +293,8 @@ namespace Semmle.Extraction.CSharp
                         {
                             AnalyseNamespace(cx, module.GlobalNamespace);
                         }
+
+                        Entities.Attribute.ExtractAttributes(cx, assembly, Extraction.Entities.Assembly.Create(cx, assembly.GetSymbolLocation()));
 
                         cx.PopulateAll();
                     }
@@ -335,7 +337,7 @@ namespace Semmle.Extraction.CSharp
         {
             foreach (var r in compilation.References.OfType<PortableExecutableReference>())
             {
-                AnalyseAssembly(r);
+                AnalyseReferenceAssembly(r);
             }
         }
 
@@ -365,7 +367,7 @@ namespace Semmle.Extraction.CSharp
                 if (!excluded)
                 {
                     // compilation.Clone() is used to allow symbols to be garbage collected.
-                    using var trapWriter = projectLayout.CreateTrapWriter(Logger, transformedSourcePath, false, options.TrapCompression);
+                    using var trapWriter = projectLayout.CreateTrapWriter(Logger, transformedSourcePath, options.TrapCompression, discardDuplicates: false);
 
                     upToDate = options.Fast && FileIsUpToDate(sourcePath, trapWriter.TrapFile);
 

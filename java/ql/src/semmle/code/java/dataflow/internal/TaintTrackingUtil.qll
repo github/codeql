@@ -9,6 +9,7 @@ private import semmle.code.java.Maps
 private import semmle.code.java.dataflow.internal.ContainerFlow
 private import semmle.code.java.frameworks.spring.SpringController
 private import semmle.code.java.frameworks.spring.SpringHttp
+private import semmle.code.java.frameworks.Networking
 import semmle.code.java.dataflow.FlowSteps
 
 /**
@@ -341,7 +342,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.getDeclaringType() instanceof TypeFile and
   m.hasName("toURI")
   or
-  m.getDeclaringType().hasQualifiedName("java.net", "URI") and
+  m.getDeclaringType() instanceof TypeUri and
   m.hasName("toURL")
   or
   m instanceof GetterMethod and m.getDeclaringType() instanceof SpringUntrustedDataType
@@ -469,7 +470,7 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   arg = 0
   or
   // A URI created from a tainted string is still tainted.
-  method.getDeclaringType().hasQualifiedName("java.net", "URI") and
+  method.getDeclaringType() instanceof TypeUri and
   method.hasName("create") and
   arg = 0
   or
@@ -683,8 +684,7 @@ private class FormatterCallable extends TaintPreservingCallable {
     (
       this.hasName(["format", "out", "toString"])
       or
-      this
-          .(Constructor)
+      this.(Constructor)
           .getParameterType(0)
           .(RefType)
           .getASourceSupertype*()

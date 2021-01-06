@@ -153,7 +153,7 @@ private predicate isMaybeNullArgument(Ssa::ExplicitDefinition def, MaybeNullExpr
   exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
     pdef = def.getADefinition()
   |
-    p = pdef.getParameter().getSourceDeclaration() and
+    p = pdef.getParameter().getUnboundDeclaration() and
     arg = p.getAnAssignedArgument() and
     not arg.getEnclosingCallable().getEnclosingCallable*() instanceof TestMethod
   )
@@ -163,7 +163,7 @@ private predicate isNullDefaultArgument(Ssa::ExplicitDefinition def, AlwaysNullE
   exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
     pdef = def.getADefinition()
   |
-    p = pdef.getParameter().getSourceDeclaration() and
+    p = pdef.getParameter().getUnboundDeclaration() and
     arg = p.getDefaultValue() and
     not arg.getEnclosingCallable().getEnclosingCallable*() instanceof TestMethod
   )
@@ -498,7 +498,7 @@ class Dereference extends G::DereferenceableExpr {
         |
           pdef = def.getADefinition()
         |
-          p.getSourceDeclaration() = pdef.getParameter() and
+          p.getUnboundDeclaration() = pdef.getParameter() and
           def.getARead() instanceof Dereference
         )
       )

@@ -6,7 +6,7 @@ import semmle.code.cpp.models.interfaces.SideEffect
 /**
  * The standard function templates `std::move` and `std::forward`.
  */
-class IdentityFunction extends DataFlowFunction, SideEffectFunction, AliasFunction {
+private class IdentityFunction extends DataFlowFunction, SideEffectFunction, AliasFunction {
   IdentityFunction() {
     this.getNamespace().getParentNamespace() instanceof GlobalNamespace and
     this.getNamespace().getName() = "std" and

@@ -3,7 +3,8 @@ private import cil
 private import dotnet
 private import DataFlowPrivate
 private import DelegateDataFlow
-private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
+private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
@@ -16,27 +17,30 @@ private import semmle.code.csharp.frameworks.system.collections.Generic
  * code version.
  */
 DotNet::Callable getCallableForDataFlow(DotNet::Callable c) {
-  exists(DotNet::Callable sourceDecl | sourceDecl = c.getSourceDeclaration() |
-    result = sourceDecl and
-    Summaries::summary(result, _, _, _, _, _)
+  exists(DotNet::Callable unboundDecl | unboundDecl = c.getUnboundDeclaration() |
+    result = unboundDecl and
+    result instanceof SummarizedCallable
+    or
+    result = unboundDecl and
+    FlowSummaryImpl::Private::summary(_, _, _, SummaryOutput::jump(result, _), _, _)
     or
     result.hasBody() and
-    if sourceDecl.getFile().fromSource()
+    if unboundDecl.getFile().fromSource()
     then
       // C# callable with C# implementation in the database
-      result = sourceDecl
+      result = unboundDecl
     else
-      if sourceDecl instanceof CIL::Callable
+      if unboundDecl instanceof CIL::Callable
       then
         // CIL callable with C# implementation in the database
-        sourceDecl.matchesHandle(result.(Callable))
+        unboundDecl.matchesHandle(result.(Callable))
         or
         // CIL callable without C# implementation in the database
-        not sourceDecl.matchesHandle(any(Callable k | k.hasBody())) and
-        result = sourceDecl
+        not unboundDecl.matchesHandle(any(Callable k | k.hasBody())) and
+        result = unboundDecl
       else
         // C# callable without C# implementation in the database
-        sourceDecl.matchesHandle(result.(CIL::Callable))
+        unboundDecl.matchesHandle(result.(CIL::Callable))
   )
 }
 
@@ -107,15 +111,15 @@ private module Cached {
       // No need to include calls that are compiled from source
       not call.getImplementation().getMethod().compiledFromSource()
     } or
-    TSummaryDelegateCall(SourceDeclarationCallable c, int pos) {
-      exists(CallableFlowSourceDelegateArg source |
-        Summaries::summary(c, source, _, _, _, _) and
-        pos = source.getArgumentIndex()
+    TSummaryDelegateCall(SummarizedCallable c, int pos) {
+      exists(SummaryInput input |
+        FlowSummaryImpl::Private::summary(c, input, _, _, _, _) and
+        input = SummaryInput::delegate(pos)
       )
       or
-      exists(CallableFlowSinkDelegateArg sink |
-        Summaries::summary(c, _, _, sink, _, _) and
-        pos = sink.getDelegateIndex()
+      exists(SummaryOutput output |
+        FlowSummaryImpl::Private::summary(c, _, _, output, _, _) and
+        output = SummaryOutput::delegate(pos, _)
       )
     }
 
@@ -164,11 +168,10 @@ private module DispatchImpl {
     )
     or
     result =
-      call
-          .(NonDelegateDataFlowCall)
+      call.(NonDelegateDataFlowCall)
           .getDispatchCall()
           .getADynamicTargetInCallContext(ctx.(NonDelegateDataFlowCall).getDispatchCall())
-          .getSourceDeclaration()
+          .getUnboundDeclaration()
   }
 }
 
@@ -381,7 +384,7 @@ class CilDataFlowCall extends DataFlowCall, TCilCall {
  * the method `Select`.
  */
 class SummaryDelegateCall extends DelegateDataFlowCall, TSummaryDelegateCall {
-  private SourceDeclarationCallable c;
+  private SummarizedCallable c;
   private int pos;
 
   SummaryDelegateCall() { this = TSummaryDelegateCall(c, pos) }

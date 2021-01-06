@@ -41,4 +41,7 @@ class SystemThreadingTasksTaskTClass extends SystemThreadingTasksUnboundGenericC
 
   /** Gets the `GetAwaiter` method. */
   Method getGetAwaiterMethod() { result = this.getAMethod("GetAwaiter") }
+
+  /** Gets the `ConfigureAwait` method. */
+  Method getConfigureAwaitMethod() { result = this.getAMethod("ConfigureAwait") }
 }

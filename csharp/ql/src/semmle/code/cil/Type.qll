@@ -38,7 +38,7 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
 
   override string getName() { cil_type(this, result, _, _, _) }
 
-  override string toString() { result = getQualifiedName() }
+  override string toString() { result = this.getName() }
 
   /** Gets the containing type of this type, if any. */
   override Type getDeclaringType() { result = getParent() }
@@ -57,7 +57,7 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
     qualifier = this.getParent().getQualifiedName()
   }
 
-  override Location getALocation() { cil_type_location(this.getSourceDeclaration(), result) }
+  override Location getALocation() { cil_type_location(this.getUnboundDeclaration(), result) }
 
   /** Holds if this type is a class. */
   predicate isClass() { cil_class(this) }
@@ -79,7 +79,7 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
   }
 
   /** Holds if this type is an `enum`. */
-  predicate isEnum() { this.getBaseClass*().isSystemType("Enum") }
+  predicate isEnum() { this.getBaseClass().isSystemType("Enum") }
 
   /** Holds if this type is public. */
   predicate isPublic() { cil_public(this) }
@@ -112,5 +112,5 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
    */
   int getConversionIndex() { result = 0 }
 
-  override Type getSourceDeclaration() { cil_type(this, _, _, _, result) }
+  override Type getUnboundDeclaration() { cil_type(this, _, _, _, result) }
 }

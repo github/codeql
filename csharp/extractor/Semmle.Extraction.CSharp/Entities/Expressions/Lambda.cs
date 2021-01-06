@@ -24,6 +24,15 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         private Lambda(ExpressionNodeInfo info, CSharpSyntaxNode body, IEnumerable<ParameterSyntax> @params)
             : base(info)
         {
+            if (cx.GetModel(info.Node).GetSymbolInfo(info.Node).Symbol is IMethodSymbol symbol)
+            {
+                Modifier.ExtractModifiers(cx, info.Context.TrapWriter.Writer, this, symbol);
+            }
+            else
+            {
+                cx.ModelError(info.Node, "Unknown declared symbol");
+            }
+
             // No need to use `Populate` as the population happens later
             cx.PopulateLater(() =>
             {

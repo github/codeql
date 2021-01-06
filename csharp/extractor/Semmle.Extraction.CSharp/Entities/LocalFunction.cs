@@ -34,17 +34,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
-
-            // There is a "bug" in Roslyn whereby the IMethodSymbol associated with the local function symbol
-            // is always static, so we need to go to the syntax reference of the local function to see whether
-            // the "static" modifier is present.
-            if (symbol.DeclaringSyntaxReferences.SingleOrDefault().GetSyntax() is LocalFunctionStatementSyntax fn)
-            {
-                foreach (var modifier in fn.Modifiers)
-                {
-                    Modifier.HasModifier(Context, trapFile, this, modifier.Text);
-                }
-            }
+            PopulateModifiers(trapFile);
 
             var originalDefinition = IsSourceDeclaration ? this : Create(Context, symbol.OriginalDefinition);
             var returnType = Type.Create(Context, symbol.ReturnType);

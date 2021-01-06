@@ -13,7 +13,7 @@ import semmle.code.cpp.models.interfaces.FlowSource
 /**
  * The standard functions `gets` and `fgets`.
  */
-class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, AliasFunction,
+private class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, AliasFunction,
   SideEffectFunction, RemoteFlowFunction {
   GetsFunction() {
     // gets(str)

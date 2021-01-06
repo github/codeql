@@ -846,8 +846,7 @@ private class ApplicationInsightsInstance extends FrameworkLibraryInstance {
 
   ApplicationInsightsInstance() {
     version =
-      this
-          .(TopLevel)
+      this.(TopLevel)
           .getFile()
           .getAbsolutePath()
           .regexpCapture(any(ApplicationInsights t).getAURLRegex(), 1)
@@ -891,8 +890,7 @@ private class TwitterTextClassic extends FrameworkLibraryWithURLRegex {
  */
 private class TwitterTextClassicInstance extends FrameworkLibraryInstance {
   TwitterTextClassicInstance() {
-    this
-        .(TopLevel)
+    this.(TopLevel)
         .getFile()
         .getAbsolutePath()
         .regexpMatch(any(TwitterTextClassic t).getAURLRegex())

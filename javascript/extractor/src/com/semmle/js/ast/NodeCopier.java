@@ -39,6 +39,7 @@ import com.semmle.ts.ast.OptionalTypeExpr;
 import com.semmle.ts.ast.ParenthesizedTypeExpr;
 import com.semmle.ts.ast.PredicateTypeExpr;
 import com.semmle.ts.ast.RestTypeExpr;
+import com.semmle.ts.ast.TemplateLiteralTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.TypeAssertion;
@@ -417,6 +418,11 @@ public class NodeCopier implements Visitor<Void, INode> {
   @Override
   public TemplateLiteral visit(TemplateLiteral nd, Void q) {
     return new TemplateLiteral(visit(nd.getLoc()), copy(nd.getExpressions()), copy(nd.getQuasis()));
+  }
+
+  @Override
+  public TemplateLiteralTypeExpr visit(TemplateLiteralTypeExpr nd, Void q) {
+    return new TemplateLiteralTypeExpr(visit(nd.getLoc()), copy(nd.getExpressions()), copy(nd.getQuasis()));
   }
 
   @Override

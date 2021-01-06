@@ -620,7 +620,8 @@ module FlowVar_internal {
   private predicate largeVariable(Variable v, int liveBlocks, int defs) {
     liveBlocks = strictcount(SubBasicBlock sbb | variableLiveInSBB(sbb, v)) and
     defs = strictcount(SubBasicBlock sbb | exists(TBlockVar(sbb, v))) and
-    liveBlocks * defs > 1000000
+    // Convert to float to avoid int overflow (32-bit two's complement)
+    liveBlocks.(float) * defs.(float) > 100000.0
   }
 
   /**
@@ -801,11 +802,33 @@ module FlowVar_internal {
   }
 
   Expr getAnIteratorAccess(Variable collection) {
-    exists(Call c, SsaDefinition def, Variable iterator |
-      c.getQualifier() = collection.getAnAccess() and
-      c.getTarget() instanceof BeginOrEndFunction and
+    exists(
+      Call c, SsaDefinition def, Variable iterator, FunctionInput input, FunctionOutput output
+    |
+      c.getTarget().(GetIteratorFunction).getsIterator(input, output) and
+      (
+        (
+          input.isQualifierObject() or
+          input.isQualifierAddress()
+        ) and
+        c.getQualifier() = collection.getAnAccess()
+        or
+        exists(int index |
+          input.isParameter(index) or
+          input.isParameterDeref(index)
+        |
+          c.getArgument(index) = collection.getAnAccess()
+        )
+      ) and
+      output.isReturnValue() and
       def.getAnUltimateDefiningValue(iterator) = c and
       result = def.getAUse(iterator)
+    )
+    or
+    exists(Call crement |
+      crement = result and
+      [crement.getQualifier(), crement.getArgument(0)] = getAnIteratorAccess(collection) and
+      crement.getTarget().getName() = ["operator++", "operator--"]
     )
   }
 

@@ -1,12 +1,22 @@
-from django.conf.urls import url
-import base64
+from flask import Flask, request
+app = Flask(__name__)
 
-def code_execution(request):
-    if request.method == 'POST':
-        first_name = request.POST.get('first_name', '')
-        exec(base64.decodestring(first_name))
+@app.route("/code-execution")
+def code_execution():
+    code = request.args.get("code")
+    exec(code) # NOT OK
+    eval(code) # NOT OK
+    cmd = compile(code, "<filename>", "exec")
+    exec(cmd) # NOT OK
 
-urlpatterns = [
-    # Route to code_execution
-    url(r'^code-ex$', code_execution, name='code-execution')
-]
+
+@app.route("/safe-code-execution")
+def code_execution():
+    foo = 42
+    bar = 43
+
+    obj_name = request.args.get("obj")
+    if obj_name == "foo" or obj_name == "bar":
+        # TODO: Should not alert on this
+        obj = eval(obj_name) # OK
+        print(obj, obj*10)

@@ -1,98 +1,40 @@
 module Private {
   private import csharp as CS
   private import ConstantUtils as CU
-  private import semmle.code.csharp.controlflow.Guards as G
   private import semmle.code.csharp.dataflow.internal.rangeanalysis.RangeUtils as RU
   private import SsaUtils as SU
-  private import SignAnalysisSpecific::Private as SA
+  private import SsaReadPositionCommon
+  private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl as CfgImpl
 
   class BasicBlock = CS::Ssa::BasicBlock;
 
-  class SsaVariable extends CS::Ssa::Definition {
-    CS::AssignableRead getAUse() { result = this.getARead() }
-  }
+  class SsaVariable = SU::SsaVariable;
 
   class SsaPhiNode = CS::Ssa::PhiNode;
 
-  class Expr = CS::Expr;
+  class Expr = CS::ControlFlow::Nodes::ExprNode;
 
-  class Guard = G::Guard;
+  class Guard = RU::Guard;
 
   class ConstantIntegerExpr = CU::ConstantIntegerExpr;
 
-  class ConditionalExpr extends CS::ConditionalExpr {
-    /** Gets the "then" expression of this conditional expression. */
-    Expr getTrueExpr() { result = this.getThen() }
+  class ConditionalExpr = RU::ExprNode::ConditionalExpr;
 
-    /** Gets the "else" expression of this conditional expression. */
-    Expr getFalseExpr() { result = this.getElse() }
-  }
+  class AddExpr = RU::ExprNode::AddExpr;
 
-  /** Represent an addition expression. */
-  class AddExpr extends CS::AddExpr {
-    /** Gets the LHS operand of this add expression. */
-    Expr getLhs() { result = this.getLeftOperand() }
+  class SubExpr = RU::ExprNode::SubExpr;
 
-    /** Gets the RHS operand of this add expression. */
-    Expr getRhs() { result = this.getRightOperand() }
-  }
+  class RemExpr = RU::ExprNode::RemExpr;
 
-  /** Represent a subtraction expression. */
-  class SubExpr extends CS::SubExpr {
-    /** Gets the LHS operand of this subtraction expression. */
-    Expr getLhs() { result = this.getLeftOperand() }
+  class BitwiseAndExpr = RU::ExprNode::BitwiseAndExpr;
 
-    /** Gets the RHS operand of this subtraction expression. */
-    Expr getRhs() { result = this.getRightOperand() }
-  }
+  class MulExpr = RU::ExprNode::MulExpr;
 
-  class RemExpr = CS::RemExpr;
+  class LShiftExpr = RU::ExprNode::LShiftExpr;
 
-  /** Represent a bitwise and or an assign-and expression. */
-  class BitwiseAndExpr extends CS::Expr {
-    BitwiseAndExpr() { this instanceof CS::BitwiseAndExpr or this instanceof CS::AssignAndExpr }
+  predicate guardDirectlyControlsSsaRead = RU::guardControlsSsaRead/3;
 
-    /** Gets an operand of this bitwise and operation. */
-    Expr getAnOperand() {
-      result = this.(CS::BitwiseAndExpr).getAnOperand() or
-      result = this.(CS::AssignAndExpr).getRValue() or
-      result = this.(CS::AssignAndExpr).getLValue()
-    }
-
-    /** Holds if this expression has operands `e1` and `e2`. */
-    predicate hasOperands(Expr e1, Expr e2) {
-      this.getAnOperand() = e1 and
-      this.getAnOperand() = e2 and
-      e1 != e2
-    }
-  }
-
-  /** Represent a multiplication or an assign-mul expression. */
-  class MulExpr extends CS::Expr {
-    MulExpr() { this instanceof CS::MulExpr or this instanceof CS::AssignMulExpr }
-
-    /** Gets an operand of this multiplication. */
-    Expr getAnOperand() {
-      result = this.(CS::MulExpr).getAnOperand() or
-      result = this.(CS::AssignMulExpr).getRValue() or
-      result = this.(CS::AssignMulExpr).getLValue()
-    }
-  }
-
-  /** Represent a left shift or an assign-lshift expression. */
-  class LShiftExpr extends CS::Expr {
-    LShiftExpr() { this instanceof CS::LShiftExpr or this instanceof CS::AssignLShiftExpr }
-
-    /** Gets the RHS operand of this shift. */
-    Expr getRhs() {
-      result = this.(CS::LShiftExpr).getRightOperand() or
-      result = this.(CS::AssignLShiftExpr).getRValue()
-    }
-  }
-
-  predicate guardDirectlyControlsSsaRead = SA::guardControlsSsaRead/3;
-
-  predicate guardControlsSsaRead = SA::guardControlsSsaRead/3;
+  predicate guardControlsSsaRead = RU::guardControlsSsaRead/3;
 
   predicate valueFlowStep = RU::valueFlowStep/3;
 
@@ -100,11 +42,38 @@ module Private {
 
   predicate ssaUpdateStep = RU::ssaUpdateStep/3;
 
-  Expr getABasicBlockExpr(BasicBlock bb) { result = bb.getANode().getElement() }
+  Expr getABasicBlockExpr(BasicBlock bb) { result = bb.getANode() }
 
-  private predicate id(CS::ControlFlowElement x, CS::ControlFlowElement y) { x = y }
+  private class PhiInputEdgeBlock extends BasicBlock {
+    PhiInputEdgeBlock() { this = any(SsaReadPositionPhiInputEdge edge).getOrigBlock() }
+  }
 
-  private predicate idOf(CS::ControlFlowElement x, int y) = equivalenceRelation(id/2)(x, y)
+  int getId(PhiInputEdgeBlock bb) {
+    exists(CfgImpl::ControlFlowTree::Range t | CfgImpl::ControlFlowTree::idOf(t, result) |
+      t = bb.getFirstNode().getElement()
+      or
+      t = bb.(CS::ControlFlow::BasicBlocks::EntryBlock).getCallable()
+    )
+  }
 
-  int getId(BasicBlock bb) { idOf(bb.getFirstNode().getElement(), result) }
+  private string getSplitString(PhiInputEdgeBlock bb) {
+    result = bb.getFirstNode().(CS::ControlFlow::Nodes::ElementNode).getSplitsString()
+    or
+    not exists(bb.getFirstNode().(CS::ControlFlow::Nodes::ElementNode).getSplitsString()) and
+    result = ""
+  }
+
+  /**
+   * Holds if `inp` is an input to `phi` along `edge` and this input has index `r`
+   * in an arbitrary 1-based numbering of the input edges to `phi`.
+   */
+  predicate rankedPhiInput(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge, int r) {
+    edge.phiInput(phi, inp) and
+    edge =
+      rank[r](SsaReadPositionPhiInputEdge e |
+        e.phiInput(phi, _)
+      |
+        e order by getId(e.getOrigBlock()), getSplitString(e.getOrigBlock())
+      )
+  }
 }

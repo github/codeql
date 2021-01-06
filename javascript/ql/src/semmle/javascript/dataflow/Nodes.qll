@@ -519,6 +519,11 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::SourceNode {
  */
 class ObjectLiteralNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   override ObjectExpr astNode;
+
+  /** Gets the value of a spread property of this object literal, such as `x` in `{...x}` */
+  DataFlow::Node getASpreadProperty() {
+    result = astNode.getAProperty().(SpreadProperty).getInit().(SpreadElement).getOperand().flow()
+  }
 }
 
 /**

@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 cx, Entities.Type.Create(cx, cx.GetType(arm.Expression)), cx.Create(arm.GetLocation()),
                 ExprKind.SWITCH_CASE, parent, child, false, null))
         {
-            cx.CreatePattern(arm.Pattern, this, 0);
+            Expressions.Pattern.Create(cx, arm.Pattern, this, 0);
             if (arm.WhenClause is WhenClauseSyntax when)
                 Expression.Create(cx, when.Condition, this, 1);
             Expression.Create(cx, arm.Expression, this, 2);

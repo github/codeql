@@ -221,6 +221,14 @@ edges
 | GlobalDataFlow.cs:402:16:402:21 | access to local variable sink11 : String | GlobalDataFlow.cs:164:22:164:43 | call to method TaintedParam : String |
 | GlobalDataFlow.cs:424:9:424:11 | value : String | GlobalDataFlow.cs:424:41:424:46 | access to local variable sink20 |
 | GlobalDataFlow.cs:435:22:435:35 | "taint source" : String | GlobalDataFlow.cs:198:22:198:32 | access to property OutProperty : String |
+| GlobalDataFlow.cs:471:20:471:49 | call to method Run [Result] : String | GlobalDataFlow.cs:472:25:472:28 | access to local variable task [Result] : String |
+| GlobalDataFlow.cs:471:35:471:48 | "taint source" : String | GlobalDataFlow.cs:471:20:471:49 | call to method Run [Result] : String |
+| GlobalDataFlow.cs:472:25:472:28 | access to local variable task [Result] : String | GlobalDataFlow.cs:472:25:472:50 | call to method ConfigureAwait [m_configuredTaskAwaiter, m_task, Result] : String |
+| GlobalDataFlow.cs:472:25:472:50 | call to method ConfigureAwait [m_configuredTaskAwaiter, m_task, Result] : String | GlobalDataFlow.cs:473:23:473:31 | access to local variable awaitable [m_configuredTaskAwaiter, m_task, Result] : String |
+| GlobalDataFlow.cs:473:23:473:31 | access to local variable awaitable [m_configuredTaskAwaiter, m_task, Result] : String | GlobalDataFlow.cs:473:23:473:44 | call to method GetAwaiter [m_task, Result] : String |
+| GlobalDataFlow.cs:473:23:473:44 | call to method GetAwaiter [m_task, Result] : String | GlobalDataFlow.cs:474:22:474:28 | access to local variable awaiter [m_task, Result] : String |
+| GlobalDataFlow.cs:474:22:474:28 | access to local variable awaiter [m_task, Result] : String | GlobalDataFlow.cs:474:22:474:40 | call to method GetResult : String |
+| GlobalDataFlow.cs:474:22:474:40 | call to method GetResult : String | GlobalDataFlow.cs:475:15:475:20 | access to local variable sink45 |
 | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted : String |
 | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted : String |
 | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return : String | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x |
@@ -242,7 +250,6 @@ edges
 | Splitting.cs:31:19:31:25 | [b (line 24): false] access to parameter tainted : String | Splitting.cs:31:17:31:26 | [b (line 24): false] dynamic access to element : String |
 | Splitting.cs:31:19:31:25 | [b (line 24): true] access to parameter tainted : String | Splitting.cs:31:17:31:26 | [b (line 24): true] dynamic access to element : String |
 | Splitting.cs:39:21:39:34 | [b (line 37): true] "taint source" : String | Splitting.cs:41:19:41:19 | access to local variable s |
-| Splitting.cs:39:21:39:34 | [b (line 37): true] "taint source" : String | Splitting.cs:43:19:43:19 | access to local variable s |
 | Splitting.cs:48:36:48:49 | "taint source" : String | Splitting.cs:50:19:50:19 | access to local variable s |
 | Splitting.cs:48:36:48:49 | "taint source" : String | Splitting.cs:52:19:52:19 | access to local variable s |
 nodes
@@ -428,6 +435,15 @@ nodes
 | GlobalDataFlow.cs:424:9:424:11 | value : String | semmle.label | value : String |
 | GlobalDataFlow.cs:424:41:424:46 | access to local variable sink20 | semmle.label | access to local variable sink20 |
 | GlobalDataFlow.cs:435:22:435:35 | "taint source" : String | semmle.label | "taint source" : String |
+| GlobalDataFlow.cs:471:20:471:49 | call to method Run [Result] : String | semmle.label | call to method Run [Result] : String |
+| GlobalDataFlow.cs:471:35:471:48 | "taint source" : String | semmle.label | "taint source" : String |
+| GlobalDataFlow.cs:472:25:472:28 | access to local variable task [Result] : String | semmle.label | access to local variable task [Result] : String |
+| GlobalDataFlow.cs:472:25:472:50 | call to method ConfigureAwait [m_configuredTaskAwaiter, m_task, Result] : String | semmle.label | call to method ConfigureAwait [m_configuredTaskAwaiter, m_task, Result] : String |
+| GlobalDataFlow.cs:473:23:473:31 | access to local variable awaitable [m_configuredTaskAwaiter, m_task, Result] : String | semmle.label | access to local variable awaitable [m_configuredTaskAwaiter, m_task, Result] : String |
+| GlobalDataFlow.cs:473:23:473:44 | call to method GetAwaiter [m_task, Result] : String | semmle.label | call to method GetAwaiter [m_task, Result] : String |
+| GlobalDataFlow.cs:474:22:474:28 | access to local variable awaiter [m_task, Result] : String | semmle.label | access to local variable awaiter [m_task, Result] : String |
+| GlobalDataFlow.cs:474:22:474:40 | call to method GetResult : String | semmle.label | call to method GetResult : String |
+| GlobalDataFlow.cs:475:15:475:20 | access to local variable sink45 | semmle.label | access to local variable sink45 |
 | Splitting.cs:3:28:3:34 | tainted : String | semmle.label | tainted : String |
 | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return : String | semmle.label | [b (line 3): false] call to method Return : String |
 | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return : String | semmle.label | [b (line 3): true] call to method Return : String |
@@ -451,7 +467,6 @@ nodes
 | Splitting.cs:34:19:34:19 | access to local variable x | semmle.label | access to local variable x |
 | Splitting.cs:39:21:39:34 | [b (line 37): true] "taint source" : String | semmle.label | [b (line 37): true] "taint source" : String |
 | Splitting.cs:41:19:41:19 | access to local variable s | semmle.label | access to local variable s |
-| Splitting.cs:43:19:43:19 | access to local variable s | semmle.label | access to local variable s |
 | Splitting.cs:48:36:48:49 | "taint source" : String | semmle.label | "taint source" : String |
 | Splitting.cs:50:19:50:19 | access to local variable s | semmle.label | access to local variable s |
 | Splitting.cs:52:19:52:19 | access to local variable s | semmle.label | access to local variable s |
@@ -462,7 +477,6 @@ nodes
 | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | [b (line 3): true] access to local variable x |
 | GlobalDataFlow.cs:19:15:19:29 | access to field SinkField0 | GlobalDataFlow.cs:18:27:18:40 | "taint source" : String | GlobalDataFlow.cs:19:15:19:29 | access to field SinkField0 | access to field SinkField0 |
 | Splitting.cs:41:19:41:19 | access to local variable s | Splitting.cs:39:21:39:34 | [b (line 37): true] "taint source" : String | Splitting.cs:41:19:41:19 | access to local variable s | access to local variable s |
-| Splitting.cs:43:19:43:19 | access to local variable s | Splitting.cs:39:21:39:34 | [b (line 37): true] "taint source" : String | Splitting.cs:43:19:43:19 | access to local variable s | access to local variable s |
 | Splitting.cs:50:19:50:19 | access to local variable s | Splitting.cs:48:36:48:49 | "taint source" : String | Splitting.cs:50:19:50:19 | access to local variable s | access to local variable s |
 | Splitting.cs:52:19:52:19 | access to local variable s | Splitting.cs:48:36:48:49 | "taint source" : String | Splitting.cs:52:19:52:19 | access to local variable s | access to local variable s |
 | GlobalDataFlow.cs:72:15:72:19 | access to local variable sink0 | GlobalDataFlow.cs:18:27:18:40 | "taint source" : String | GlobalDataFlow.cs:72:15:72:19 | access to local variable sink0 | access to local variable sink0 |
@@ -498,6 +512,7 @@ nodes
 | Capture.cs:122:15:122:20 | access to local variable sink40 | Capture.cs:115:26:115:39 | "taint source" : String | Capture.cs:122:15:122:20 | access to local variable sink40 | access to local variable sink40 |
 | GlobalDataFlow.cs:240:15:240:20 | access to local variable sink41 | GlobalDataFlow.cs:238:35:238:48 | "taint source" : String | GlobalDataFlow.cs:240:15:240:20 | access to local variable sink41 | access to local variable sink41 |
 | GlobalDataFlow.cs:242:15:242:20 | access to local variable sink42 | GlobalDataFlow.cs:238:35:238:48 | "taint source" : String | GlobalDataFlow.cs:242:15:242:20 | access to local variable sink42 | access to local variable sink42 |
+| GlobalDataFlow.cs:475:15:475:20 | access to local variable sink45 | GlobalDataFlow.cs:471:35:471:48 | "taint source" : String | GlobalDataFlow.cs:475:15:475:20 | access to local variable sink45 | access to local variable sink45 |
 | GlobalDataFlow.cs:145:15:145:19 | access to local variable sink5 | GlobalDataFlow.cs:18:27:18:40 | "taint source" : String | GlobalDataFlow.cs:145:15:145:19 | access to local variable sink5 | access to local variable sink5 |
 | GlobalDataFlow.cs:155:15:155:19 | access to local variable sink6 | GlobalDataFlow.cs:338:16:338:29 | "taint source" : String | GlobalDataFlow.cs:155:15:155:19 | access to local variable sink6 | access to local variable sink6 |
 | GlobalDataFlow.cs:158:15:158:19 | access to local variable sink7 | GlobalDataFlow.cs:343:13:343:26 | "taint source" : String | GlobalDataFlow.cs:158:15:158:19 | access to local variable sink7 | access to local variable sink7 |

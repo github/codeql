@@ -142,7 +142,9 @@ class PlayMVCHTTPRequestHeaderMethods extends Method {
   /**
    * Gets all references to play.mvc.HTTP.RequestHeader `getQueryString` method
    */
-  MethodAccess getQueryString() { this.hasName("getQueryString") and result = this.getAReference() }
+  MethodAccess getAQueryStringAccess() {
+    this.hasName("getQueryString") and result = this.getAReference()
+  }
 }
 
 /**

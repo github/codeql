@@ -792,8 +792,7 @@ module ClientRequest {
       this = cmd and
       (
         cmd.getACommandArgument().getStringValue() = "curl" or
-        cmd
-            .getACommandArgument()
+        cmd.getACommandArgument()
             .(StringOps::ConcatenationRoot)
             .getConstantStringParts()
             .regexpMatch("curl .*")
@@ -804,6 +803,21 @@ module ClientRequest {
       result = cmd.getArgumentList().getALocalSource().getAPropertyWrite().getRhs() or
       result = cmd.getACommandArgument().(StringOps::ConcatenationRoot).getALeaf()
     }
+
+    override DataFlow::Node getHost() { none() }
+
+    override DataFlow::Node getADataNode() { none() }
+  }
+
+  /**
+   * A model of a URL request made using `jsdom.fromUrl()`.
+   */
+  class JSDOMFromUrl extends ClientRequest::Range {
+    JSDOMFromUrl() {
+      this = API::moduleImport("jsdom").getMember("JSDOM").getMember("fromURL").getACall()
+    }
+
+    override DataFlow::Node getUrl() { result = getArgument(0) }
 
     override DataFlow::Node getHost() { none() }
 

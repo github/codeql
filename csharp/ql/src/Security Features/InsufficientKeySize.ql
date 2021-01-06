@@ -15,8 +15,7 @@ predicate incorrectUseOfRC2(Assignment e, string msg) {
   exists(PropertyAccess pa |
     pa.getParent() = e and
     pa.getTarget().hasName("EffectiveKeySize") and
-    pa
-        .getTarget()
+    pa.getTarget()
         .getDeclaringType()
         .hasQualifiedName("System.Security.Cryptography", "RC2CryptoServiceProvider")
   ) and
@@ -25,8 +24,7 @@ predicate incorrectUseOfRC2(Assignment e, string msg) {
 }
 
 predicate incorrectUseOfDSA(ObjectCreation e, string msg) {
-  e
-      .getTarget()
+  e.getTarget()
       .getDeclaringType()
       .hasQualifiedName("System.Security.Cryptography", "DSACryptoServiceProvider") and
   exists(Expr i | e.getArgument(0) = i and i.getValue().toInt() < 2048) and
@@ -34,8 +32,7 @@ predicate incorrectUseOfDSA(ObjectCreation e, string msg) {
 }
 
 predicate incorrectUseOfRSA(ObjectCreation e, string msg) {
-  e
-      .getTarget()
+  e.getTarget()
       .getDeclaringType()
       .hasQualifiedName("System.Security.Cryptography", "RSACryptoServiceProvider") and
   exists(Expr i | e.getArgument(0) = i and i.getValue().toInt() < 2048) and

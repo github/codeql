@@ -72,6 +72,7 @@ abstractValue
 | empty | Collections.cs:87:17:87:32 | array creation of type String[] |
 | empty | Collections.cs:87:30:87:32 | { ..., ... } |
 | empty | Collections.cs:88:22:88:24 | { ..., ... } |
+| false | Assert.cs:85:61:85:65 | false |
 | false | Guards.cs:178:16:178:20 | false |
 | false | Guards.cs:181:53:181:57 | false |
 | false | Guards.cs:217:18:217:22 | false |
@@ -124,6 +125,7 @@ abstractValue
 | non-null | Assert.cs:79:31:79:32 | "" |
 | non-null | Assert.cs:80:9:80:14 | access to type Assert |
 | non-null | Assert.cs:81:9:81:15 | access to type Console |
+| non-null | Assert.cs:93:9:93:35 | this access |
 | non-null | Collections.cs:12:17:12:20 | access to parameter args |
 | non-null | Collections.cs:13:13:13:16 | access to parameter args |
 | non-null | Collections.cs:14:13:14:16 | access to parameter args |
@@ -457,6 +459,7 @@ abstractValue
 | null | Splitting.cs:116:27:116:30 | null |
 | null | Splitting.cs:125:21:125:24 | null |
 | null | Splitting.cs:129:22:129:25 | null |
+| true | Assert.cs:86:61:86:64 | true |
 | true | Guards.cs:177:20:177:23 | true |
 | true | Guards.cs:181:46:181:49 | true |
 | true | Guards.cs:185:50:185:53 | true |

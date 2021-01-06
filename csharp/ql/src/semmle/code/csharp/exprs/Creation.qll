@@ -205,6 +205,9 @@ class ObjectCreation extends Call, LateBindableExpr, @object_creation_expr {
    */
   ObjectOrCollectionInitializer getInitializer() { result = this.getChild(-1) }
 
+  /** Holds if the type of the created object is inferred. */
+  predicate isImplicitlyTyped() { implicitly_typed_object_creation(this) }
+
   override string toString() { result = "object creation of type " + this.getType().getName() }
 
   override Expr getRawArgument(int i) {
@@ -271,6 +274,9 @@ class DelegateCreation extends Expr, @delegate_creation_expr {
  */
 class ExplicitDelegateCreation extends DelegateCreation, @explicit_delegate_creation_expr {
   override string getAPrimaryQlClass() { result = "ExplicitDelegateCreation" }
+
+  /** Holds if the type of the created delegate is inferred. */
+  predicate isImplicitlyTyped() { implicitly_typed_object_creation(this) }
 }
 
 /**
@@ -407,7 +413,7 @@ class Stackalloc extends ArrayCreation {
  * An anonymous function. Either a lambda expression (`LambdaExpr`) or an
  * anonymous method expression (`AnonymousMethodExpr`).
  */
-class AnonymousFunctionExpr extends Expr, Callable, @anonymous_function_expr {
+class AnonymousFunctionExpr extends Expr, Callable, Modifiable, @anonymous_function_expr {
   override string getName() { result = "<anonymous>" }
 
   override Type getReturnType() {
@@ -415,7 +421,7 @@ class AnonymousFunctionExpr extends Expr, Callable, @anonymous_function_expr {
       this.getType().(SystemLinqExpressions::DelegateExtType).getDelegateType().getReturnType()
   }
 
-  override AnonymousFunctionExpr getSourceDeclaration() { result = this }
+  override AnonymousFunctionExpr getUnboundDeclaration() { result = this }
 
   override Callable getEnclosingCallable() { result = Expr.super.getEnclosingCallable() }
 

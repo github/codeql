@@ -9,5 +9,9 @@ private boolean isImplicit(Expr expr) {
 }
 
 from ArrayCreation ac, Expr expr
-where ac.isImplicitlySized() and not ac.isImplicitlyTyped() and expr = ac.getALengthArgument()
+where
+  ac.isImplicitlySized() and
+  not ac.isImplicitlyTyped() and
+  expr = ac.getALengthArgument() and
+  ac.fromSource()
 select ac, expr, isImplicit(expr)

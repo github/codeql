@@ -9,6 +9,16 @@ private import TranslatedExpr
 private import TranslatedFunction
 
 /**
+ * Gets the `CallInstruction` from the `TranslatedCallExpr` for the specified expression.
+ */
+private CallInstruction getTranslatedCallInstruction(Call call) {
+  exists(TranslatedCallExpr translatedCall |
+    translatedCall.getExpr() = call and
+    result = translatedCall.getInstruction(CallTag())
+  )
+}
+
+/**
  * The IR translation of a call to a function. The call may be from an actual
  * call in the source code, or could be a call that is part of the translation
  * of a higher-level constructor (e.g. the allocator call in a `NewExpr`).
@@ -388,7 +398,7 @@ class TranslatedAllocationSideEffects extends TranslatedSideEffects,
     tag = OnlyInstructionTag() and
     if expr instanceof NewOrNewArrayExpr
     then result = getTranslatedAllocatorCall(expr).getInstruction(CallTag())
-    else result = getTranslatedExpr(expr).getInstruction(CallTag())
+    else result = getTranslatedCallInstruction(expr)
   }
 }
 
@@ -409,7 +419,7 @@ class TranslatedCallSideEffects extends TranslatedSideEffects, TTranslatedCallSi
 
   override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
     tag = OnlyInstructionTag() and
-    result = getTranslatedExpr(expr).getInstruction(CallTag())
+    result = getTranslatedCallInstruction(expr)
   }
 }
 
@@ -518,9 +528,9 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
     tag instanceof OnlyInstructionTag and
     operandTag instanceof BufferSizeOperandTag and
     result =
-      getTranslatedExpr(call
-            .getArgument(call.getTarget().(SideEffectFunction).getParameterSizeIndex(index))
-            .getFullyConverted()).getResult()
+      getTranslatedExpr(call.getArgument(call.getTarget()
+              .(SideEffectFunction)
+              .getParameterSizeIndex(index)).getFullyConverted()).getResult()
   }
 
   override CppType getInstructionMemoryOperandType(InstructionTag tag, TypedOperandTag operandTag) {
@@ -599,7 +609,7 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
 
   override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
     tag = OnlyInstructionTag() and
-    result = getTranslatedExpr(call).getInstruction(CallTag())
+    result = getTranslatedCallInstruction(call)
   }
 
   final override int getInstructionIndex(InstructionTag tag) {

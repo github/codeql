@@ -114,12 +114,13 @@ module Fastify {
       if methodName = "route"
       then
         result =
-          this
-              .flow()
+          this.flow()
               .(DataFlow::MethodCallNode)
               .getOptionArgument(0,
-                ["onRequest", "preParsing", "preValidation", "preHandler", "preSerialization",
-                    "onSend", "onResponse", "handler"])
+                [
+                  "onRequest", "preParsing", "preValidation", "preHandler", "preSerialization",
+                  "onSend", "onResponse", "handler"
+                ])
       else result = getLastArgument().flow()
     }
   }

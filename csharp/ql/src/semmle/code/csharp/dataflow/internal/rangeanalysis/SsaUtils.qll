@@ -4,15 +4,32 @@
 
 private import csharp
 private import Ssa
+private import RangeUtils
 private import ConstantUtils
+
+private class ExprNode = ControlFlow::Nodes::ExprNode;
+
+/** An SSA variable. */
+class SsaVariable extends Definition {
+  /** Gets a read of this SSA variable. */
+  ExprNode getAUse() { exists(this.getAReadAtNode(result)) }
+}
+
+/** Gets a node that reads `src` via an SSA explicit definition. */
+ExprNode getAnExplicitDefinitionRead(ExprNode src) {
+  exists(ExplicitDefinition def |
+    exists(def.getAReadAtNode(result)) and
+    hasChild(def.getElement(), def.getADefinition().getSource(), def.getControlFlowNode(), src)
+  )
+}
 
 /**
  * Gets an expression that equals `v - delta`.
  */
-Expr ssaRead(Definition v, int delta) {
-  result = v.getARead() and delta = 0
+ExprNode ssaRead(Definition v, int delta) {
+  exists(v.getAReadAtNode(result)) and delta = 0
   or
-  exists(AddExpr add, int d1, ConstantIntegerExpr c |
+  exists(ExprNode::AddExpr add, int d1, ConstantIntegerExpr c |
     result = add and
     delta = d1 - c.getIntValue()
   |
@@ -21,22 +38,22 @@ Expr ssaRead(Definition v, int delta) {
     add.getRightOperand() = ssaRead(v, d1) and add.getLeftOperand() = c
   )
   or
-  exists(SubExpr sub, int d1, ConstantIntegerExpr c |
+  exists(ExprNode::SubExpr sub, int d1, ConstantIntegerExpr c |
     result = sub and
     sub.getLeftOperand() = ssaRead(v, d1) and
     sub.getRightOperand() = c and
     delta = d1 + c.getIntValue()
   )
   or
-  v.(ExplicitDefinition).getADefinition().getExpr().(PreIncrExpr) = result and delta = 0
+  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::PreIncrExpr) = result and delta = 0
   or
-  v.(ExplicitDefinition).getADefinition().getExpr().(PreDecrExpr) = result and delta = 0
+  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::PreDecrExpr) = result and delta = 0
   or
-  v.(ExplicitDefinition).getADefinition().getExpr().(PostIncrExpr) = result and delta = 1 // x++ === ++x - 1
+  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::PostIncrExpr) = result and delta = 1 // x++ === ++x - 1
   or
-  v.(ExplicitDefinition).getADefinition().getExpr().(PostDecrExpr) = result and delta = -1 // x-- === --x + 1
+  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::PostDecrExpr) = result and delta = -1 // x-- === --x + 1
   or
-  v.(ExplicitDefinition).getADefinition().getExpr().(Assignment) = result and delta = 0
+  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::Assignment) = result and delta = 0
   or
-  result.(AssignExpr).getRValue() = ssaRead(v, delta)
+  result.(ExprNode::AssignExpr).getRValue() = ssaRead(v, delta)
 }

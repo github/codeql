@@ -3,6 +3,8 @@
  */
 
 import javascript
+private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
 
 /**
  * Gets a reference to the 'React' object.
@@ -547,4 +549,234 @@ private class ReactJSXElement extends JSXElement {
    * Gets the component this element instantiates.
    */
   ReactComponent getComponent() { result = component }
+}
+
+/**
+ * Step through the state variable of a `useState` call.
+ *
+ * It returns a pair of the current state, and a callback to change the state.
+ *
+ * For example:
+ * ```js
+ * let [state, setState] = useState(initialValue);
+ * let [state, setState] = useState(() => initialValue); // lazy initial state
+ *
+ * setState(newState);
+ * setState(prevState => { ... });
+ * ```
+ */
+private class UseStateStep extends PreCallGraphStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::CallNode call | call = react().getAMemberCall("useState") |
+      pred =
+        [
+          call.getArgument(0), // initial state
+          call.getCallback(0).getReturnNode(), // lazy initial state
+          call.getAPropertyRead("1").getACall().getArgument(0), // setState invocation
+          call.getAPropertyRead("1").getACall().getCallback(0).getReturnNode() // setState with callback
+        ] and
+      succ = call.getAPropertyRead("0")
+      or
+      // Propagate current state into the callback argument of `setState(prevState => { ... })`
+      pred = call.getAPropertyRead("0") and
+      succ = call.getAPropertyRead("1").getACall().getCallback(0).getParameter(0)
+    )
+  }
+}
+
+/**
+ * A step through a React context object.
+ *
+ * For example:
+ * ```js
+ * let MyContext = React.createContext('foo');
+ *
+ * <MyContext.Provider value={pred}>
+ *   <Foo/>
+ * </MyContext.Provider>
+ *
+ * function Foo() {
+ *   let succ = useContext(MyContext);
+ * }
+ * ```
+ */
+private class UseContextStep extends PreCallGraphStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::CallNode context |
+      pred = getAContextInput(context) and
+      succ = getAContextOutput(context)
+    )
+  }
+}
+
+/**
+ * Gets a data flow node referring to the result of the given `createContext` call.
+ */
+private DataFlow::SourceNode getAContextRef(DataFlow::CallNode createContext) {
+  createContext = react().getAMemberCall("createContext") and
+  result = createContext
+  or
+  // Track through imports/exports, but not full type tracking, so this can be used as a PreCallGraphStep.
+  exists(DataFlow::Node mid |
+    getAContextRef(createContext).flowsTo(mid) and
+    FlowSteps::propertyFlowStep(mid, result)
+  )
+}
+
+/**
+ * Gets a data flow node whose value is provided to the given context object.
+ *
+ * For example:
+ * ```jsx
+ * React.createContext(x);
+ * <MyContext.Provider value={x}>
+ * ```
+ */
+pragma[nomagic]
+private DataFlow::Node getAContextInput(DataFlow::CallNode createContext) {
+  createContext = react().getAMemberCall("createContext") and
+  result = createContext.getArgument(0) // initial value
+  or
+  exists(JSXElement provider |
+    getAContextRef(createContext)
+        .getAPropertyRead("Provider")
+        .flowsTo(provider.getNameExpr().flow()) and
+    result = provider.getAttributeByName("value").getValue().flow()
+  )
+}
+
+/**
+ * Gets a data flow node whose value is obtained from the given context object.
+ *
+ * For example:
+ * ```js
+ * let value = useContext(MyContext);
+ * ```
+ */
+pragma[nomagic]
+private DataFlow::SourceNode getAContextOutput(DataFlow::CallNode createContext) {
+  exists(DataFlow::CallNode call |
+    call = react().getAMemberCall("useContext") and
+    getAContextRef(createContext).flowsTo(call.getArgument(0)) and
+    result = call
+  )
+  or
+  exists(DataFlow::ClassNode cls |
+    getAContextRef(createContext).flowsTo(cls.getAPropertyWrite("contextType").getRhs()) and
+    result = cls.getAReceiverNode().getAPropertyRead("context")
+  )
+}
+
+/**
+ * A step through a `useMemo` call; for example:
+ * ```js
+ * let succ = useMemo(() => pred, []);
+ * ```
+ */
+private class UseMemoStep extends PreCallGraphStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::CallNode call | call = react().getAMemberCall("useMemo") |
+      pred = call.getCallback(0).getReturnNode() and
+      succ = call
+    )
+  }
+}
+
+private DataFlow::SourceNode reactRouterDom() {
+  result = DataFlow::moduleImport("react-router-dom")
+}
+
+private class ReactRouterSource extends RemoteFlowSource {
+  ReactRouterSource() {
+    this = reactRouterDom().getAMemberCall("useParams")
+    or
+    this = reactRouterDom().getAMemberCall("useRouteMatch").getAPropertyRead(["params", "url"])
+  }
+
+  override string getSourceType() { result = "react-router path parameters" }
+}
+
+/**
+ * Holds if `mod` transitively depends on `react-router-dom`.
+ *
+ * We assume any React component in such a file may be used in a context where react-router
+ * injects the `location` property in its `props` object.
+ */
+private predicate dependsOnReactRouter(Module mod) {
+  mod.getAnImport().getImportedPath().getValue() = "react-router-dom"
+  or
+  dependsOnReactRouter(mod.getAnImportedModule())
+}
+
+/**
+ * A reference to the DOM location obtained through `react-router-dom`
+ *
+ * For example:
+ * ```js
+ * let location = useLocation();
+ *
+ * function MyComponent(props) {
+ *   props.location;
+ * }
+ * export default withRouter(MyComponent);
+ */
+private class ReactRouterLocationSource extends DOM::LocationSource::Range {
+  ReactRouterLocationSource() {
+    this = reactRouterDom().getAMemberCall("useLocation")
+    or
+    exists(ReactComponent component |
+      dependsOnReactRouter(component.getTopLevel()) and
+      this = component.getAPropRead("location")
+    )
+  }
+}
+
+/**
+ * Gets a reference to a function which, if called with a React component, returns wrapped
+ * version of that component, which we model as a direct reference to the underlying component.
+ */
+private DataFlow::SourceNode higherOrderComponentBuilder() {
+  // `memo(f)` returns a function that behaves as `f` but caches results
+  // It is sometimes used to wrap an entire functional component.
+  result = react().getAPropertyRead("memo")
+  or
+  result = DataFlow::moduleMember("react-redux", "connect").getACall()
+  or
+  result = DataFlow::moduleMember(["react-hot-loader", "react-hot-loader/root"], "hot").getACall()
+  or
+  result = reactRouterDom().getAPropertyRead("withRouter")
+  or
+  exists(FunctionCompositionCall compose |
+    higherOrderComponentBuilder().flowsTo(compose.getAnOperandNode()) and
+    result = compose
+  )
+}
+
+private class HigherOrderComponentStep extends PreCallGraphStep {
+  override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    // `lazy(() => P)` returns a proxy for the component eventually returned by
+    // the promise P. We model this call as simply returning the value in P.
+    // It is primarily used for lazy-loading of React components.
+    exists(DataFlow::CallNode call |
+      call = react().getAMemberCall("lazy") and
+      pred = call.getCallback(0).getReturnNode() and
+      succ = call and
+      prop = Promises::valueProp()
+    )
+  }
+
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::CallNode call |
+      call = higherOrderComponentBuilder().getACall() and
+      pred = call.getArgument(0) and
+      succ = call
+    )
+    or
+    exists(TaggedTemplateExpr expr, DataFlow::CallNode call |
+      call = DataFlow::moduleImport("styled-components").getACall() and
+      pred = call.getArgument(0) and
+      call.flowsTo(expr.getTag().flow()) and
+      succ = expr.flow()
+    )
+  }
 }

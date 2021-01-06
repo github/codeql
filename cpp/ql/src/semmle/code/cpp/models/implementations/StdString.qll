@@ -5,12 +5,13 @@
  */
 
 import semmle.code.cpp.models.interfaces.Taint
-import semmle.code.cpp.models.implementations.Iterator
+import semmle.code.cpp.models.interfaces.Iterator
+import semmle.code.cpp.models.interfaces.DataFlow
 
 /**
  * The `std::basic_string` template class.
  */
-class StdBasicString extends TemplateClass {
+private class StdBasicString extends TemplateClass {
   StdBasicString() { this.hasQualifiedName("std", "basic_string") }
 }
 
@@ -22,7 +23,7 @@ class StdBasicString extends TemplateClass {
  * std::string b(a.begin(), a.end());
  * ```
  */
-class StdStringConstructor extends Constructor, TaintFunction {
+private class StdStringConstructor extends Constructor, TaintFunction {
   StdStringConstructor() { this.getDeclaringType().hasQualifiedName("std", "basic_string") }
 
   /**
@@ -30,10 +31,19 @@ class StdStringConstructor extends Constructor, TaintFunction {
    * character).
    */
   int getAStringParameterIndex() {
-    getParameter(result).getType() instanceof PointerType or // e.g. `std::basic_string::CharT *`
-    getParameter(result).getType() instanceof ReferenceType or // e.g. `std::basic_string &`
-    getParameter(result).getUnspecifiedType() =
-      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
+    exists(Type paramType | paramType = getParameter(result).getUnspecifiedType() |
+      // e.g. `std::basic_string::CharT *`
+      paramType instanceof PointerType
+      or
+      // e.g. `std::basic_string &`, avoiding `const Allocator&`
+      paramType instanceof ReferenceType and
+      not paramType.(ReferenceType).getBaseType() =
+        getDeclaringType().getTemplateArgument(2).(Type).getUnspecifiedType()
+      or
+      // i.e. `std::basic_string::CharT`
+      getParameter(result).getUnspecifiedType() =
+        getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType()
+    )
   }
 
   /**
@@ -58,7 +68,7 @@ class StdStringConstructor extends Constructor, TaintFunction {
 /**
  * The `std::string` function `c_str`.
  */
-class StdStringCStr extends TaintFunction {
+private class StdStringCStr extends TaintFunction {
   StdStringCStr() { this.hasQualifiedName("std", "basic_string", "c_str") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -71,7 +81,7 @@ class StdStringCStr extends TaintFunction {
 /**
  * The `std::string` function `data`.
  */
-class StdStringData extends TaintFunction {
+private class StdStringData extends TaintFunction {
   StdStringData() { this.hasQualifiedName("std", "basic_string", "data") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -89,7 +99,7 @@ class StdStringData extends TaintFunction {
 /**
  * The `std::string` function `push_back`.
  */
-class StdStringPush extends TaintFunction {
+private class StdStringPush extends TaintFunction {
   StdStringPush() { this.hasQualifiedName("std", "basic_string", "push_back") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -102,7 +112,7 @@ class StdStringPush extends TaintFunction {
 /**
  * The `std::string` functions `front` and `back`.
  */
-class StdStringFrontBack extends TaintFunction {
+private class StdStringFrontBack extends TaintFunction {
   StdStringFrontBack() { this.hasQualifiedName("std", "basic_string", ["front", "back"]) }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -115,7 +125,7 @@ class StdStringFrontBack extends TaintFunction {
 /**
  * The `std::string` function `operator+`.
  */
-class StdStringPlus extends TaintFunction {
+private class StdStringPlus extends TaintFunction {
   StdStringPlus() {
     this.hasQualifiedName("std", "operator+") and
     this.getUnspecifiedType() = any(StdBasicString s).getAnInstantiation()
@@ -136,7 +146,7 @@ class StdStringPlus extends TaintFunction {
  * `replace`. All of these functions combine the existing string
  * with a new string (or character) from one of the arguments.
  */
-class StdStringAppend extends TaintFunction {
+private class StdStringAppend extends TaintFunction {
   StdStringAppend() {
     this.hasQualifiedName("std", "basic_string", ["operator+=", "append", "insert", "replace"])
   }
@@ -179,7 +189,7 @@ class StdStringAppend extends TaintFunction {
 /**
  * The standard function `std::string.assign`.
  */
-class StdStringAssign extends TaintFunction {
+private class StdStringAssign extends TaintFunction {
   StdStringAssign() { this.hasQualifiedName("std", "basic_string", "assign") }
 
   /**
@@ -219,7 +229,7 @@ class StdStringAssign extends TaintFunction {
 /**
  * The standard function `std::string.copy`.
  */
-class StdStringCopy extends TaintFunction {
+private class StdStringCopy extends TaintFunction {
   StdStringCopy() { this.hasQualifiedName("std", "basic_string", "copy") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -232,7 +242,7 @@ class StdStringCopy extends TaintFunction {
 /**
  * The standard function `std::string.substr`.
  */
-class StdStringSubstr extends TaintFunction {
+private class StdStringSubstr extends TaintFunction {
   StdStringSubstr() { this.hasQualifiedName("std", "basic_string", "substr") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -243,28 +253,9 @@ class StdStringSubstr extends TaintFunction {
 }
 
 /**
- * The standard functions `std::string.swap` and `std::stringstream::swap`.
- */
-class StdStringSwap extends TaintFunction {
-  StdStringSwap() {
-    this.hasQualifiedName("std", "basic_string", "swap") or
-    this.hasQualifiedName("std", "basic_stringstream", "swap")
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // str1.swap(str2)
-    input.isQualifierObject() and
-    output.isParameterDeref(0)
-    or
-    input.isParameterDeref(0) and
-    output.isQualifierObject()
-  }
-}
-
-/**
  * The `std::string` functions `at` and `operator[]`.
  */
-class StdStringAt extends TaintFunction {
+private class StdStringAt extends TaintFunction {
   StdStringAt() { this.hasQualifiedName("std", "basic_string", ["at", "operator[]"]) }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -281,14 +272,14 @@ class StdStringAt extends TaintFunction {
 /**
  * The `std::basic_istream` template class.
  */
-class StdBasicIStream extends TemplateClass {
+private class StdBasicIStream extends TemplateClass {
   StdBasicIStream() { this.hasQualifiedName("std", "basic_istream") }
 }
 
 /**
  * The `std::istream` function `operator>>` (defined as a member function).
  */
-class StdIStreamIn extends DataFlowFunction, TaintFunction {
+private class StdIStreamIn extends DataFlowFunction, TaintFunction {
   StdIStreamIn() { this.hasQualifiedName("std", "basic_istream", "operator>>") }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
@@ -311,7 +302,7 @@ class StdIStreamIn extends DataFlowFunction, TaintFunction {
 /**
  * The `std::istream` function `operator>>` (defined as a non-member function).
  */
-class StdIStreamInNonMember extends DataFlowFunction, TaintFunction {
+private class StdIStreamInNonMember extends DataFlowFunction, TaintFunction {
   StdIStreamInNonMember() {
     this.hasQualifiedName("std", "operator>>") and
     this.getUnspecifiedType().(ReferenceType).getBaseType() =
@@ -338,7 +329,7 @@ class StdIStreamInNonMember extends DataFlowFunction, TaintFunction {
 /**
  * The `std::istream` functions `get` (without parameters) and `peek`.
  */
-class StdIStreamGet extends TaintFunction {
+private class StdIStreamGet extends TaintFunction {
   StdIStreamGet() {
     this.hasQualifiedName("std", "basic_istream", ["get", "peek"]) and
     this.getNumberOfParameters() = 0
@@ -354,7 +345,7 @@ class StdIStreamGet extends TaintFunction {
 /**
  * The `std::istream` functions `get` (with parameters) and `read`.
  */
-class StdIStreamRead extends DataFlowFunction, TaintFunction {
+private class StdIStreamRead extends DataFlowFunction, TaintFunction {
   StdIStreamRead() {
     this.hasQualifiedName("std", "basic_istream", ["get", "read"]) and
     this.getNumberOfParameters() > 0
@@ -380,7 +371,7 @@ class StdIStreamRead extends DataFlowFunction, TaintFunction {
 /**
  * The `std::istream` function `readsome`.
  */
-class StdIStreamReadSome extends TaintFunction {
+private class StdIStreamReadSome extends TaintFunction {
   StdIStreamReadSome() { this.hasQualifiedName("std", "basic_istream", "readsome") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -393,7 +384,7 @@ class StdIStreamReadSome extends TaintFunction {
 /**
  * The `std::istream` function `putback`.
  */
-class StdIStreamPutBack extends DataFlowFunction, TaintFunction {
+private class StdIStreamPutBack extends DataFlowFunction, TaintFunction {
   StdIStreamPutBack() { this.hasQualifiedName("std", "basic_istream", "putback") }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
@@ -426,7 +417,7 @@ class StdIStreamPutBack extends DataFlowFunction, TaintFunction {
 /**
  * The `std::istream` function `getline`.
  */
-class StdIStreamGetLine extends DataFlowFunction, TaintFunction {
+private class StdIStreamGetLine extends DataFlowFunction, TaintFunction {
   StdIStreamGetLine() { this.hasQualifiedName("std", "basic_istream", "getline") }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
@@ -449,7 +440,7 @@ class StdIStreamGetLine extends DataFlowFunction, TaintFunction {
 /**
  * The (non-member) function `std::getline`.
  */
-class StdGetLine extends DataFlowFunction, TaintFunction {
+private class StdGetLine extends DataFlowFunction, TaintFunction {
   StdGetLine() { this.hasQualifiedName("std", "getline") }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
@@ -472,7 +463,7 @@ class StdGetLine extends DataFlowFunction, TaintFunction {
 /**
  * The `std::basic_ostream` template class.
  */
-class StdBasicOStream extends TemplateClass {
+private class StdBasicOStream extends TemplateClass {
   StdBasicOStream() { this.hasQualifiedName("std", "basic_ostream") }
 }
 
@@ -480,7 +471,7 @@ class StdBasicOStream extends TemplateClass {
  * The `std::ostream` functions `operator<<` (defined as a member function),
  * `put` and `write`.
  */
-class StdOStreamOut extends DataFlowFunction, TaintFunction {
+private class StdOStreamOut extends DataFlowFunction, TaintFunction {
   StdOStreamOut() { this.hasQualifiedName("std", "basic_ostream", ["operator<<", "put", "write"]) }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
@@ -513,7 +504,7 @@ class StdOStreamOut extends DataFlowFunction, TaintFunction {
 /**
  * The `std::ostream` function `operator<<` (defined as a non-member function).
  */
-class StdOStreamOutNonMember extends DataFlowFunction, TaintFunction {
+private class StdOStreamOutNonMember extends DataFlowFunction, TaintFunction {
   StdOStreamOutNonMember() {
     this.hasQualifiedName("std", "operator<<") and
     this.getUnspecifiedType().(ReferenceType).getBaseType() =
@@ -545,7 +536,7 @@ class StdOStreamOutNonMember extends DataFlowFunction, TaintFunction {
  * Additional model for `std::stringstream` constructors that take a string
  * input parameter.
  */
-class StdStringStreamConstructor extends Constructor, TaintFunction {
+private class StdStringStreamConstructor extends Constructor, TaintFunction {
   StdStringStreamConstructor() {
     this.getDeclaringType().hasQualifiedName("std", "basic_stringstream")
   }
@@ -571,7 +562,7 @@ class StdStringStreamConstructor extends Constructor, TaintFunction {
 /**
  * The `std::stringstream` function `str`.
  */
-class StdStringStreamStr extends TaintFunction {
+private class StdStringStreamStr extends TaintFunction {
   StdStringStreamStr() { this.hasQualifiedName("std", "basic_stringstream", "str") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -589,7 +580,7 @@ class StdStringStreamStr extends TaintFunction {
  * A `std::` stream function that does not require a model, except that it
  * returns a reference to `*this` and thus could be used in a chain.
  */
-class StdStreamFunction extends DataFlowFunction, TaintFunction {
+private class StdStreamFunction extends DataFlowFunction, TaintFunction {
   StdStreamFunction() {
     this.hasQualifiedName("std", "basic_istream", ["ignore", "unget", "seekg"]) or
     this.hasQualifiedName("std", "basic_ostream", ["seekp", "flush"]) or

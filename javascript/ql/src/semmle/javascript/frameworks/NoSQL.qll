@@ -237,9 +237,17 @@ private module Mongoose {
         // implement lots of the MongoDB collection interface
         MongoDB::CollectionMethodSignatures::interpretsArgumentAsQuery(name, n)
         or
-        name = "findByIdAndUpdate" and n = 1
+        name = "find" + ["ById", "One"] + "AndUpdate" and n = 1
         or
-        name = "where" and n = 0
+        name in ["delete" + ["Many", "One"], "geoSearch", "remove", "replaceOne", "where"] and
+        n = 0
+        or
+        name in [
+            "find" + ["", "ById", "One"],
+            "find" + ["ById", "One"] + "And" + ["Delete", "Remove", "Update"],
+            "update" + ["", "Many", "One"]
+          ] and
+        n = 0
       }
 
       /**
@@ -262,6 +270,7 @@ private module Mongoose {
         name = "findOneAndReplace" or
         name = "findOneAndUpdate" or
         name = "geosearch" or
+        name = "remove" or
         name = "replaceOne" or
         name = "update" or
         name = "updateMany" or
@@ -735,5 +744,112 @@ private module MarsDB {
     Query() { this = qc.getAQueryArgument().asExpr() }
 
     override DataFlow::Node getACodeOperator() { result = qc.getACodeOperator() }
+  }
+}
+
+/**
+ * Provides classes modeling the `Node Redis` library.
+ *
+ * Redis is an in-memory key-value store and not a database,
+ * but `Node Redis` can be exploited similarly to a NoSQL database by giving a method an array as argument instead of a string.
+ * As an example the below two invocations of `client.set` are equivalent:
+ *
+ * ```
+ * const redis = require("redis");
+ * const client = redis.createClient();
+ * client.set("key", "value");
+ * client.set(["key", "value"]);
+ * ```
+ *
+ * ioredis is a very similar library. However, ioredis does not support array arguments in the same way, and is therefore not vulnerable to the same kind of type confusion.
+ */
+private module Redis {
+  /**
+   * Gets a `Node Redis` client.
+   */
+  private API::Node client() {
+    result = API::moduleImport("redis").getMember("createClient").getReturn()
+    or
+    result = API::moduleImport("redis").getMember("RedisClient").getInstance()
+    or
+    result = client().getMember("duplicate").getReturn()
+    or
+    result = client().getMember("duplicate").getLastParameter().getParameter(1)
+  }
+
+  /**
+   * Gets a (possibly chained) reference to a batch operation object.
+   * These have the same API as a redis client, except the calls are chained, and the sequence is terminated with a `.exec` call.
+   */
+  private API::Node multi() {
+    result = client().getMember(["multi", "batch"]).getReturn()
+    or
+    result = multi().getAMember().getReturn()
+  }
+
+  /**
+   * Gets a `Node Redis` client instance. Either a client created using `createClient()`, or a batch operation object.
+   */
+  private API::Node redis() { result = [client(), multi()] }
+
+  /**
+   * Provides signatures for the query methods from Node Redis.
+   */
+  module QuerySignatures {
+    /**
+     * Holds if `method` interprets parameter `argIndex` as a key, and a later parameter determines a value/field.
+     * Thereby the method is vulnerable if parameter `argIndex` is unexpectedly an array instead of a string, as an attacker can control arguments to Redis that the attacker was not supposed to control.
+     *
+     * Only setters and similar methods are included.
+     * For getter-like methods it is not generally possible to gain access "outside" of where you are supposed to have access,
+     * it is at most possible to get a Redis call to return more results than expected (e.g. by adding more members to [`geohash`](https://redis.io/commands/geohash)).
+     */
+    bindingset[argIndex]
+    predicate argumentIsAmbiguousKey(string method, int argIndex) {
+      method =
+        [
+          "set", "publish", "append", "bitfield", "decrby", "getset", "hincrby", "hincrbyfloat",
+          "hset", "hsetnx", "incrby", "incrbyfloat", "linsert", "lpush", "lpushx", "lset", "ltrim",
+          "rename", "renamenx", "rpushx", "setbit", "setex", "smove", "zincrby", "zinterstore",
+          "hdel", "lpush", "pfadd", "rpush", "sadd", "sdiffstore", "srem"
+        ] and
+      argIndex = 0
+      or
+      method = ["bitop", "hmset", "mset", "msetnx", "geoadd"] and argIndex >= 0
+    }
+  }
+
+  /**
+   * An expression that is interpreted as a key in a Node Redis call.
+   */
+  class RedisKeyArgument extends NoSQL::Query {
+    RedisKeyArgument() {
+      exists(string method, int argIndex |
+        QuerySignatures::argumentIsAmbiguousKey(method, argIndex)
+      |
+        this =
+          [promisify(redis().getMember(method)), redis().getMember(method)]
+              .getACall()
+              .getArgument(argIndex)
+              .asExpr()
+      )
+    }
+  }
+
+  /**
+   * Gets a promisified version of `method`.
+   */
+  private API::Node promisify(API::Node method) {
+    exists(API::Node promisify |
+      promisify = API::moduleImport(["util", "bluebird"]).getMember("promisify").getReturn() and
+      method
+          .getAnImmediateUse()
+          .flowsTo(promisify.getAnImmediateUse().(DataFlow::CallNode).getArgument(0))
+    |
+      result = promisify
+      or
+      result = promisify.getMember("bind").getReturn() and
+      result.getAnImmediateUse().(DataFlow::CallNode).getNumArgument() = 1
+    )
   }
 }

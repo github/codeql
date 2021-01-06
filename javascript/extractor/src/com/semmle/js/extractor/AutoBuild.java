@@ -146,7 +146,8 @@ import com.semmle.util.trap.TrapWriter;
  *       FileType#HTML} (currently ".htm", ".html", ".xhtm", ".xhtml", ".vue").
  *   <li>All YAML files, that is, files with one of the extensions supported by {@link
  *       FileType#YAML} (currently ".raml", ".yaml", ".yml").
- *   <li>Files with base name "package.json".
+ *   <li>Files with base name "package.json" or "tsconfig.json", and files whose base name
+ *       is of the form "codeql-javascript-*.json".
  *   <li>JavaScript, JSON or YAML files whose base name starts with ".eslintrc".
  *   <li>All extension-less files.
  * </ul>
@@ -402,10 +403,12 @@ public class AutoBuild {
     for (FileType filetype : defaultExtract)
       for (String extension : filetype.getExtensions()) patterns.add("**/*" + extension);
 
-    // include .eslintrc files, package.json files, and tsconfig.json files
+    // include .eslintrc files, package.json files, tsconfig.json files, and
+    // codeql-javascript-*.json files
     patterns.add("**/.eslintrc*");
     patterns.add("**/package.json");
     patterns.add("**/tsconfig.json");
+    patterns.add("**/codeql-javascript-*.json");
 
     // include any explicitly specified extensions
     for (String extension : fileTypes.keySet()) patterns.add("**/*" + extension);
@@ -746,6 +749,9 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       if (file.getFileName().toString().equals("package.json")) {
         try {
           PackageJson packageJson = new Gson().fromJson(new WholeIO().read(file), PackageJson.class);
+          if (packageJson == null) {
+            continue;
+          }
           file = file.toAbsolutePath();
           if (tryRelativize(sourceRoot, file) == null) {
             continue; // Ignore package.json files outside the source root.

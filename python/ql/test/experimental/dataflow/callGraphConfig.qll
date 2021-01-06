@@ -1,6 +1,6 @@
 private import python
-import experimental.dataflow.DataFlow
-private import experimental.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
  * A configuration to find the call graph edges.

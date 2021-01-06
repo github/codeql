@@ -6,6 +6,7 @@ constructors.cs:
 #    8|     5: [InstanceConstructor] Class
 #-----|       2: (Parameters)
 #    8|         0: [Parameter] i
+#    8|           -1: [TypeMention] int
 #    9|       4: [BlockStmt] {...}
 #   11|     6: [StaticConstructor] Class
 #   12|       4: [BlockStmt] {...}
@@ -13,5 +14,6 @@ constructors.cs:
 #   15|       4: [BlockStmt] {...}
 #   16|         0: [LocalVariableDeclStmt] ... ...;
 #   16|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#   16|             0: [IntLiteral] 0
-#   16|             1: [LocalVariableAccess] access to local variable i
+#   16|             -1: [TypeMention] int
+#   16|             0: [LocalVariableAccess] access to local variable i
+#   16|             1: [IntLiteral] 0
