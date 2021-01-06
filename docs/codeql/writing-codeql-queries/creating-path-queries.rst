@@ -44,7 +44,9 @@ Constructing a path query
 Path queries require certain metadata, query predicates, and ``select`` statement structures. 
 Many of the built-in path queries included in CodeQL follow a simple structure, which depends on how the language you are analyzing is modeled with CodeQL.
 
-For C/C++, C#, Java, and JavaScript you should use the following template::
+For C/C++, C#, Java, and JavaScript you should use the following template:
+
+.. code-block:: ql
 
     /**
      * ... 
@@ -66,7 +68,9 @@ Where:
 - ``source`` and ``sink`` are nodes on the `path graph <https://en.wikipedia.org/wiki/Path_graph>`__, and ``DataFlow::PathNode`` is their type.
 - ``Configuration`` is a class containing the predicates which define how data may flow between the ``source`` and the ``sink``. 
 
-For Python you should use a slightly different template::
+For Python you should use a slightly different template:
+
+.. code-block:: ql
 
     /**
      * ... 
@@ -104,13 +108,17 @@ To do this you need to define a :ref:`query predicate <query-predicates>` called
 This predicate defines the edge relations of the graph you are computing, and it is used to compute the paths related to each result that your query generates. 
 You can import a predefined ``edges`` predicate from a path graph module in one of the standard data flow libraries. In addition to the path graph module, the data flow libraries contain the other ``classes``, ``predicates``, and ``modules`` that are commonly used in data flow analysis. The import statement to use depends on the language that you are analyzing.
 
-For C/C++, C#, Java, and JavaScript you would use::
+For C/C++, C#, Java, and JavaScript you would use:
+
+.. code-block:: ql
 
     import DataFlow::PathGraph
 
 This statement imports the ``PathGraph`` module from the data flow library (``DataFlow.qll``), in which ``edges`` is defined. 
 
-For Python, the ``Paths`` module contains the ``edges`` predicate::
+For Python, the ``Paths`` module contains the ``edges`` predicate:
+
+.. code-block:: ql
 
     import semmle.python.security.Paths 
 
@@ -121,7 +129,9 @@ For all languages, you can also optionally define a ``nodes`` query predicate, w
 Defining your own ``edges`` predicate
 -------------------------------------
 
-You can also define your own ``edges`` predicate in the body of your query. It should take the following form::
+You can also define your own ``edges`` predicate in the body of your query. It should take the following form:
+
+.. code-block:: ql
 
     query predicate edges(PathNode a, PathNode b) {
     /** Logical conditions which hold if `(a,b)` is an edge in the data flow graph */
@@ -136,7 +146,9 @@ You must provide information about the ``source`` and ``sink`` in your path quer
 The name and the type of the ``source`` and the ``sink`` must be declared in the ``from`` statement of the query, and the types must be compatible with the nodes of the graph computed by the ``edges`` predicate.
 
 If you are querying C/C++, C#, Java, or JavaScript code (and you have used ``import DataFlow::PathGraph`` in your query), the definitions of the ``source`` and ``sink`` are accessed via the ``Configuration`` class in the data flow library. You should declare all three of these objects in the ``from`` statement.
-For example::
+For example:
+
+.. code-block:: ql
 
     from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink 
 
@@ -149,7 +161,9 @@ For more information on using the configuration class in your analysis see the s
 
 You can also create a configuration for different frameworks and environments by extending the ``Configuration`` class. For more information, see ":ref:`Types <defining-a-class>`" in the QL language reference.
 
-If you are querying Python code (and you have used ``import semmle.python.security.Paths`` in your query) you should declare ``TaintedPathSource source, TaintedPathSink sink`` in your ``from`` statement. You do not need to declare a ``Configuration`` class as the definitions of the ``TaintedPathSource`` and ``TaintedPathSink`` contain all of the type information that is required::
+If you are querying Python code (and you have used ``import semmle.python.security.Paths`` in your query) you should declare ``TaintedPathSource source, TaintedPathSink sink`` in your ``from`` statement. You do not need to declare a ``Configuration`` class as the definitions of the ``TaintedPathSource`` and ``TaintedPathSink`` contain all of the type information that is required:
+
+.. code-block:: ql
 
     from TaintedPathSource source, TaintedPathSink sink
 
@@ -163,11 +177,15 @@ This clause can use :ref:`aggregations <aggregations>`, :ref:`predicates <predic
 
 When writing a path queries, you would typically include a predicate that holds only if data flows from the ``source`` to the ``sink``. 
 
-For C/C++, C#, Java or JavaScript, you would use the ``hasFlowPath`` predicate to define flow from the ``source`` to the ``sink`` for a given ``Configuration``:: 
+For C/C++, C#, Java or JavaScript, you would use the ``hasFlowPath`` predicate to define flow from the ``source`` to the ``sink`` for a given ``Configuration``:
+
+.. code-block:: ql
 
     where config.hasFlowPath(source, sink)
 
-For Python, you would simply use the ``flowsTo`` predicate to define flow from the ``source`` to the ``sink``:: 
+For Python, you would simply use the ``flowsTo`` predicate to define flow from the ``source`` to the ``sink``:
+
+.. code-block:: ql
 
     where source.flowsTo(sink)
 

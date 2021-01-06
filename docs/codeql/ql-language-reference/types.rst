@@ -163,7 +163,9 @@ The expression ``(OneTwoThree)`` is a :ref:`cast <casts>`. It ensures that ``1``
 ``getAString()``.
 
 Member predicates are especially useful because you can chain them together. For example, you
-can use ``toUpperCase()``, a built-in function defined for ``string``::
+can use ``toUpperCase()``, a built-in function defined for ``string``:
+
+.. code-block:: ql
 
     1.(OneTwoThree).getAString().toUpperCase()
 
@@ -172,9 +174,7 @@ This call returns ``"ONE, TWO OR THREE: 1"``.
 .. index:: this
 .. _this:
 
-.. note:
-
-.. code-block:: ql
+.. pull-quote:: Note
 
     Characteristic predicates and member predicates often use the variable ``this``. 
     This variable always refers to a member of the class—in this case a value belonging to the 
@@ -195,7 +195,9 @@ declarations (that is, variable declarations) within its body. You can use these
 predicate declarations inside the class. Much like the :ref:`variable <this>` ``this``, fields
 must be constrained in the :ref:`characteristic predicate <characteristic-predicates>`.
 
-For example:: 
+For example:
+
+.. code-block:: ql
 
     class SmallInt extends int {
       SmallInt() { this = [1 .. 10] }
@@ -283,7 +285,9 @@ inherited predicate, and by adding the ``override`` :ref:`annotation <override>`
 This is useful if you want to refine the predicate to give a more specific result for the 
 values in the subclass.
 
-For example, extending the class from the :ref:`first example <defining-a-class>`::
+For example, extending the class from the :ref:`first example <defining-a-class>`:
+
+.. code-block:: ql
 
     class OneTwo extends OneTwoThree {
       OneTwo() {
@@ -298,7 +302,9 @@ For example, extending the class from the :ref:`first example <defining-a-class>
 The member predicate ``getAString()`` overrides the original definition of ``getAString()``
 from ``OneTwoThree``.
 
-Now, consider the following query:: 
+Now, consider the following query:
+
+.. code-block:: ql
 
     from OneTwoThree o
     select o, o.getAString()
@@ -318,7 +324,9 @@ look like this:
 
 In QL, unlike other object-oriented languages, different subtypes of the same types don't need to be 
 disjoint. For example, you could define another subclass of ``OneTwoThree``, which overlaps
-with ``OneTwo``::
+with ``OneTwo``:
+
+.. code-block:: ql
 
     class TwoThree extends OneTwoThree {
       TwoThree() {
@@ -429,7 +437,9 @@ It also means that a unique ``NoCall`` value is produced.
 Defining an algebraic datatype
 ==============================
 
-To define an algebraic datatype, use the following general syntax:: 
+To define an algebraic datatype, use the following general syntax:
+
+.. code-block:: ql
 
     newtype <TypeName> = <branches>
 
@@ -478,7 +488,9 @@ In the standard QL language libraries, this is usually done as follows:
 For example, the following code snippet from the CodeQL data-flow library for C# defines classes
 for dealing with tainted or untainted values. In this case, it doesn't make sense for 
 ``TaintType`` to extend a database type. It is part of the taint analysis, not the underlying
-program, so it's helpful to extend a new type (namely ``TTaintType``):: 
+program, so it's helpful to extend a new type (namely ``TTaintType``):
+
+.. code-block:: ql
 
     private newtype TTaintType =
       TExactValue()
@@ -535,7 +547,9 @@ For example, the following construction is legal:
     }
 
 However, a similar implementation that restricts ``InitialValueSource`` in a class extension is not valid.
-If we had implemented ``DefiniteInitialization`` as a class extension instead, it would trigger a type test for ``InitialValueSource``. This results in an illegal recursion ``DefiniteInitialization -> InitialValueSource -> UnknownInitialGarbage -> ¬DefiniteInitialization`` since ``UnknownInitialGarbage`` relies on ``DefiniteInitialization``::
+If we had implemented ``DefiniteInitialization`` as a class extension instead, it would trigger a type test for ``InitialValueSource``. This results in an illegal recursion ``DefiniteInitialization -> InitialValueSource -> UnknownInitialGarbage -> ¬DefiniteInitialization`` since ``UnknownInitialGarbage`` relies on ``DefiniteInitialization``:
+
+.. code-block:: ql
 
     // THIS WON'T WORK: The implicit type check for InitialValueSource involves an illegal recursion 
     // DefiniteInitialization -> InitialValueSource -> UnknownInitialGarbage -> ¬DefiniteInitialization!

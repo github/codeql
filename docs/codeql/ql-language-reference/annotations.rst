@@ -83,7 +83,9 @@ to describe specific configurations. Any non-abstract subtypes must override it 
 indirectly) to describe what sources of data they each track.
 
 In other words, all non-abstract classes that extend ``Configuration`` must override ``isSource`` in their
-own body, or they must inherit from another class that overrides ``isSource``::
+own body, or they must inherit from another class that overrides ``isSource``:
+
+.. code-block:: ql
 
     class ConfigA extends Configuration {
       ...
@@ -329,8 +331,10 @@ When you use this annotation, be aware of the following issues:
    In particular, you can't chain predicate :ref:`calls <calls>` or call predicates on a
    :ref:`cast <casts>`. You must write them as multiple conjuncts and explicitly order them.
 
-   For example, suppose you have the following definitions::
-   
+   For example, suppose you have the following definitions:
+
+   .. code-block:: ql
+
        class Small extends int {
          Small() { this in [1 .. 10] }
          Small getSucc() { result = this + 1}
@@ -344,8 +348,10 @@ When you use this annotation, be aware of the following issues:
          s.getSucc().getSucc() = 3
        }
    
-   If you add ``noopt`` pragmas, you must rewrite the predicates. For example::
-   
+   If you add ``noopt`` pragmas, you must rewrite the predicates. For example:
+
+   .. code-block:: ql
+
        pragma[noopt]
        predicate p(int i) {
          exists(Small s | s = i and s.getSucc() = 2)
