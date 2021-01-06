@@ -57,6 +57,8 @@ from any location in the pack by declaring ``import mycompany.java.CustomSinks``
 For more information, see ":ref:`Importing modules <importing-modules>`" 
 in the QL language reference.
 
+.. _qlpack-yml-properties:
+
 ``qlpack.yml`` properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -101,7 +103,7 @@ The following properties are supported in ``qlpack.yml`` files.
    * - ``upgrades``
      - ``.``
      - Packs with upgrades
-     - The path to a directory within the pack that contains upgrade scripts, defined relative to the pack directory. The ``database upgrade`` action uses these scripts to update databases that were created by an older version of an extractor so they're compatible with the current extractor (see `Upgrade scripts for a language <upgrade-scripts-for-a-language>`__ below.)
+     - The path to a directory within the pack that contains upgrade scripts, defined relative to the pack directory. The ``database upgrade`` action uses these scripts to update databases that were created by an older version of an extractor so they're compatible with the current extractor (see `Upgrade scripts for a language <#upgrade-scripts-for-a-language>`__ below.)
 
 
 .. _custom-ql-packs:

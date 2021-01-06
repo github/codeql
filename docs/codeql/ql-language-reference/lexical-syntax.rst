@@ -8,7 +8,7 @@ Lexical syntax
 The QL syntax includes different kinds of keywords, identifiers, and comments.
 
 For an overview of the lexical syntax, see "`Lexical syntax 
-<ql-language-specification#lexical-syntax>`_" in the QL language specification.
+<https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#lexical-syntax>`_" in the QL language specification.
 
 .. index:: comment, QLDoc
 .. _comments:

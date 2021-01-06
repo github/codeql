@@ -23,7 +23,7 @@ A QL program is evaluated from the bottom up, so a predicate is usually only eva
 all the predicates it depends on are evaluated. 
 
 The database includes sets of ordered tuples for the `built-in predicates 
-<ql-language-specification#built-ins>`_ and :ref:`external predicates <external>`. 
+<https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#built-ins>`_ and :ref:`external predicates <external>`. 
 Each evaluation starts from these sets of tuples.
 The remaining predicates and types in the program are organized into a number of layers, based 
 on the dependencies between them.
@@ -35,7 +35,7 @@ results of the program. The results are sorted according to any ordering directi
 (``order by``) in the queries.
 
 For more details about each step of the evaluation process, see the "`QL language specification
-<ql-language-specification#evaluations-of-ql-programs>`_."
+<https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#evaluation>`_."
 
 Validity of programs
 ********************
