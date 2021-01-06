@@ -35,7 +35,7 @@ class GetHttpRequestSource extends DataFlow::ExprNode {
   }
 }
 
-/** Taint configuration of using GET requests with sensitive query strings. */
+/** Taint configuration tracking flow from the `ServletRequest` of a GET request handler to an expression whose name suggests it holds security-sensitive data. */
 class SensitiveGetQueryConfiguration extends TaintTracking::Configuration {
   SensitiveGetQueryConfiguration() { this = "SensitiveGetQueryConfiguration" }
 
@@ -52,5 +52,6 @@ class SensitiveGetQueryConfiguration extends TaintTracking::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, SensitiveGetQueryConfiguration c
 where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ uses GET request method with sensitive information.",
-  source.getNode(), "sensitive query string"
+select sink.getNode(), source, sink,
+  "$@ uses the GET request method to transmit sensitive information.", source.getNode(),
+  "This request"

@@ -2,17 +2,15 @@
 <qhelp>
 
   <overview>
-    <p>Sensitive information like user passwords is transmitted within the query string of the requested URL in GET requests. Sensitive information within URLs may be logged in various locations, including the user's browser, the web server, and any forward or reverse proxy servers between the two endpoints. URLs may also be displayed on-screen, bookmarked or emailed around by users. They may be disclosed to third parties via the Referer header when any off-site links are followed. Placing passwords into the URL increases the risk that they will be captured by an attacker.</p>
-
-    <p>Vulnerabilities that result in the disclosure of users' passwords can result in compromises that are extremely difficult to investigate due to obscured audit trails. Even if an application itself only handles non-sensitive information, exposing passwords puts users who have re-used their password elsewhere at risk.</p>
+    <p>Sensitive information such as user passwords should not be transmitted within the query string of the requested URL. Sensitive information within URLs may be logged in various locations, including the user's browser, the web server, and any forward or reverse proxy servers between the two endpoints. URLs may also be displayed on-screen, bookmarked or emailed around by users. They may be disclosed to third parties via the Referer header when any off-site links are followed. Placing passwords into the URL therefore increases the risk that they will be captured by an attacker.</p>
   </overview>
 
   <recommendation>
-    <p>Use HTTP POST to send sensitive information either in web forms or REST web services calls.</p>
+    <p>Use HTTP POST to send sensitive information as part of the request body; for example, as form data.</p>
   </recommendation>
 
   <example>
-    <p>The following example shows two ways of sending sensitive information. In the 'BAD' case, password is transmitted using the GET method. In the 'GOOD' case, the password is transmitted using the POST method.</p>
+    <p>The following example shows two ways of sending sensitive information. In the 'BAD' case, a password is transmitted using the GET method. In the 'GOOD' case, the password is transmitted using the POST method.</p>
     <sample src="SensitiveGetQuery.java" />
   </example>
 
