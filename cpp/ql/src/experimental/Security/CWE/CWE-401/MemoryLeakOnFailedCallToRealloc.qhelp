@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 <p>Memory leak on failed call to realloc. 
-The expression mem = realloc (mem, size) is potentially dangerous, if the call fails, we will lose the pointer to the memory block.  
+The expression <code>mem = realloc (mem, size)</code> is potentially dangerous, if the call fails, we will lose the pointer to the memory block.  
 An unsuccessful call is possible not only when trying to allocate a large amount of memory, but also when the process memory is strongly segmented.</p>
 
 <p>False positives include code in which immediately after calling the realloc function, the pointer is manipulated without first checking for validity. 
