@@ -1,4 +1,6 @@
-import semmle.code.java.Type
+/** Provides classes related to `android.content.SharedPreferences`. */
+
+import java
 
 /** Definitions related to `android.content.SharedPreferences`. */
 module SharedPreferences {

@@ -35,7 +35,7 @@ private predicate sharedPreferencesStore(DataFlow::Node sharedPrefs, Expr store)
 }
 
 /** Flow from `SharedPreferences` to either a setter or a store method. */
-class SharedPreferencesFlowConfig extends TaintTracking::Configuration {
+class SharedPreferencesFlowConfig extends DataFlow::Configuration {
   SharedPreferencesFlowConfig() {
     this = "CleartextStorageSharedPrefs::SharedPreferencesFlowConfig"
   }
@@ -65,20 +65,13 @@ class EncryptedValueFlowConfig extends DataFlow5::Configuration {
   EncryptedValueFlowConfig() { this = "CleartextStorageSharedPrefs::EncryptedValueFlowConfig" }
 
   override predicate isSource(DataFlow5::Node src) {
-    exists(EncryptedSensitiveMethodAccess ema | src.asExpr() = ema.getAnArgument())
+    exists(EncryptedSensitiveMethodAccess ema | src.asExpr() = ema)
   }
 
   override predicate isSink(DataFlow5::Node sink) {
     exists(MethodAccess ma |
       ma.getMethod() instanceof SharedPreferences::SetPreferenceMethod and
       sink.asExpr() = ma.getArgument(1)
-    )
-  }
-
-  override predicate isAdditionalFlowStep(DataFlow5::Node n1, DataFlow5::Node n2) {
-    exists(EncryptedSensitiveMethodAccess ema |
-      n1.asExpr() = ema.getAnArgument() and
-      n2.asExpr() = ema
     )
   }
 }
@@ -109,7 +102,7 @@ class SharedPreferencesEditor extends MethodAccess {
     )
   }
 
-  /** Gets an input, for example `input` in `editor.putString("password", password);`. */
+  /** Gets an input, for example `password` in `editor.putString("password", password);`. */
   Expr getAnInput() {
     exists(SharedPreferencesFlowConfig conf, DataFlow::Node n |
       sharedPreferencesInput(n, result) and
