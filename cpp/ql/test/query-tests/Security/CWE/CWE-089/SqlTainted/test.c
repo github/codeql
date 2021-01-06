@@ -30,5 +30,5 @@ int main(int argc, char** argv) {
   // an integer from the user is injected into an SQL query.
   char query3[1000] = {0};
   snprintf(query3, 1000, "SELECT UID FROM USERS where number = \"%i\"", userNumber);
-  mysql_query(0, query3); // BAD
+  mysql_query(0, query3); // GOOD
 }
