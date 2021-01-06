@@ -27,7 +27,9 @@ The performance of a predicate can often be judged by considering roughly how ma
 One way of creating badly performing predicates is by using two variables without relating them in any way, or only relating them using a negation.
 This leads to computing the `Cartesian product <https://en.wikipedia.org/wiki/Cartesian_product>`__ between the sets of possible values for each variable, potentially generating a huge table of results.
 This can occur if you don't specify restrictions on your variables. 
-For instance, consider the following predicate that checks whether a Java method ``m`` may access a field ``f``::
+For instance, consider the following predicate that checks whether a Java method ``m`` may access a field ``f``:
+
+.. code-block:: ql
 
    predicate mayAccess(Method m, Field f) {
      f.getAnAccess().getEnclosingCallable() = m
@@ -39,7 +41,9 @@ The predicate holds if ``m`` contains an access to ``f``, but also conservativel
 
 However, if ``m`` is a native method, the table computed by ``mayAccess`` will contain a row ``m, f`` for *all* fields ``f`` in the codebase, making it potentially very large.
 
-This example shows a similar mistake in a member predicate::
+This example shows a similar mistake in a member predicate:
+
+.. code-block:: ql
 
      class Foo extends Class {
        ...
@@ -57,11 +61,15 @@ Use specific types
 ~~~~~~~~~~~~~~~~~~
 
 ":ref:`Types <types>`" provide an upper bound on the size of a relation. 
-This helps the query optimizer be more effective, so it's generally good to use the most specific types possible. For example::
+This helps the query optimizer be more effective, so it's generally good to use the most specific types possible. For example:
+
+.. code-block:: ql
 
   predicate foo(LoggingCall e)
 
-is preferred over::
+is preferred over:
+
+.. code-block:: ql
 
   predicate foo(Expr e)
 
@@ -95,7 +103,9 @@ Avoid complex recursion
 ":ref:`Recursion <recursion>`" is about self-referencing definitions.
 It can be extremely powerful as long as it is used appropriately.
 On the whole, you should try to make recursive predicates as simple as possible.
-That is, you should define a *base case* that allows the predicate to *bottom out*, along with a single *recursive call*::
+That is, you should define a *base case* that allows the predicate to *bottom out*, along with a single *recursive call*:
+
+.. code-block:: ql
 
   int depth(Stmt s) {
     exists(Callable c | c.getBody() = s | result = 0) // base case

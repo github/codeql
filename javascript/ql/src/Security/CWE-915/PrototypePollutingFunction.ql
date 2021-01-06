@@ -18,6 +18,7 @@ import javascript
 import DataFlow
 import PathGraph
 import semmle.javascript.DynamicPropertyAccess
+private import semmle.javascript.dataflow.InferredTypes
 
 /**
  * A call of form `x.split(".")` where `x` is a parameter.
@@ -394,34 +395,31 @@ class InstanceOfGuard extends DataFlow::LabeledBarrierGuardNode, DataFlow::Value
  */
 class TypeofGuard extends DataFlow::LabeledBarrierGuardNode, DataFlow::ValueNode {
   override EqualityTest astNode;
-  TypeofExpr typeof;
-  string typeofStr;
+  Expr operand;
+  TypeofTag tag;
 
-  TypeofGuard() {
-    typeof = astNode.getAnOperand() and
-    typeofStr = astNode.getAnOperand().getStringValue()
-  }
+  TypeofGuard() { TaintTracking::isTypeofGuard(astNode, operand, tag) }
 
   override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-    e = typeof.getOperand() and
+    e = operand and
     outcome = astNode.getPolarity() and
     (
-      typeofStr = "object" and
+      tag = "object" and
       label = "constructor"
       or
-      typeofStr = "function" and
+      tag = "function" and
       label = "__proto__"
     )
     or
-    e = typeof.getOperand() and
+    e = operand and
     outcome = astNode.getPolarity().booleanNot() and
     (
       // If something is not an object, sanitize object, as both must end
       // in non-function prototype object.
-      typeofStr = "object" and
+      tag = "object" and
       label instanceof UnsafePropLabel
       or
-      typeofStr = "function" and
+      tag = "function" and
       label = "constructor"
     )
   }

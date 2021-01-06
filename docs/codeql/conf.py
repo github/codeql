@@ -39,6 +39,12 @@ source_encoding = 'utf-8-sig'
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 
+# The default language for syntax highlighting. We need to explicitly set this to "none",
+# otherwise Sphinx tries to highlight any unlabeled code samples as "python3".
+# See https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-highlight_language.
+
+highlight_language = "none"
+
 # Import the QL Lexer to use for syntax highlighting
 import os
 import sys

@@ -7,6 +7,7 @@
 import javascript
 private import semmle.javascript.security.dataflow.RemoteFlowSources
 private import semmle.javascript.PackageExports as Exports
+private import semmle.javascript.dataflow.InferredTypes
 
 /**
  * Module containing sources, sinks, and sanitizers for shell command constructed from library input.
@@ -189,6 +190,22 @@ module UnsafeShellCommandConstruction {
         e = getArgument(0).asExpr() or
         e = getArgument(0).(StringOps::ConcatenationRoot).getALeaf().asExpr()
       )
+    }
+  }
+
+  /**
+   * A guard of the form `typeof x === "<T>"`, where <T> is  "number", or "boolean",
+   * which sanitizes `x` in its "then" branch.
+   */
+  class TypeOfSanitizer extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+    Expr x;
+    override EqualityTest astNode;
+
+    TypeOfSanitizer() { TaintTracking::isTypeofGuard(astNode, x, ["number", "boolean"]) }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      outcome = astNode.getPolarity() and
+      e = x
     }
   }
 }

@@ -21,7 +21,9 @@ For more information on how to format your code when contributing queries to the
 Basic query structure
 *********************
 
-:ref:`Queries <queries>` written with CodeQL have the file extension ``.ql``, and contain a ``select`` clause. Many of the existing queries include additional optional information, and have the following structure::
+:ref:`Queries <queries>` written with CodeQL have the file extension ``.ql``, and contain a ``select`` clause. Many of the existing queries include additional optional information, and have the following structure:
+
+.. code-block:: ql
 
     /**
      * 
