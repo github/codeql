@@ -1,13 +1,13 @@
 /**
  * @name Memory leak on failed call to realloc
  * @description The expression mem = realloc (mem, size) is potentially dangerous, if the call fails, we will lose the pointer to the memory block.
- *	            An unsuccessful call is possible not only when trying to allocate a large amount of memory, but also when the process memory is strongly segmented.
  *              We recommend storing the result in a temporary variable and eliminating memory leak.
  * @kind problem
  * @id cpp/memory-leak-on-failed-call-to-realloc
  * @problem.severity warning
  * @precision medium
- * @tags security
+ * @tags correctness
+ *       security
  *       external/cwe/cwe-401
  */
 
