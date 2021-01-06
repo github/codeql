@@ -79,7 +79,7 @@ When writing your own alert queries, you would typically import the standard lib
 
 There are also libraries containing commonly used predicates, types, and other modules associated with different analyses, including data flow, control flow, and taint-tracking. In order to calculate path graphs, path queries require you to import a data flow library into the query file. For more information, see ":doc:`Creating path queries <creating-path-queries>`."
 
-You can explore the contents of all the standard libraries in the `CodeQL library reference documentation <https://help.semmle.com/QL/ql-libraries.html>`__ or in the `GitHub repository <https://github.com/github/codeql>`__.
+You can explore the contents of all the standard libraries in the `CodeQL library reference documentation <https://codeql.github.com/codeql-standard-libraries/>`__ or in the `GitHub repository <https://github.com/github/codeql>`__.
 
 Optional CodeQL classes and predicates
 --------------------------------------
@@ -119,7 +119,7 @@ Viewing the standard CodeQL queries
 
 One of the easiest ways to get started writing your own queries is to modify an existing query. To view the standard CodeQL queries, or to try out other examples, visit the `CodeQL <https://github.com/github/codeql>`__ and `CodeQL for Go <https://github.com/github/codeql-go>`__ repositories on GitHub. 
 
-You can also find examples of queries developed to find security vulnerabilities and bugs in open source software projects on the `GitHub Security Lab website <https://securitylab.github.com/research>`__ and in the associated `repository <https://github.com/github/security-lab>`__.
+You can also find examples of queries developed to find security vulnerabilities and bugs in open source software projects on the `GitHub Security Lab website <https://securitylab.github.com/research>`__ and in the associated `repository <https://github.com/github/securitylab>`__.
 
 Contributing queries
 ********************

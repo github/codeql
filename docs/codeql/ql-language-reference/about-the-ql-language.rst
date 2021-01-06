@@ -64,9 +64,9 @@ Here are a few prominent conceptual and functional differences between general p
 Further reading
 ---------------
 
-`Academic references <https://help.semmle.com/publications.html>`__ also provide an overview of QL and its semantics. Other useful references on database query languages and Datalog:
+`Academic references <https://codeql.github.com/publications/>`__ also provide an overview of QL and its semantics. Other useful references on database query languages and Datalog:
 
--  `Database theory: Query languages <http://www.lsv.ens-cachan.fr/~segoufin/Papers/Mypapers/DB-chapter.pdf>`__
--  `Logic Programming and Databases book - Amazon page <http://www.amazon.co.uk/Programming-Databases-Surveys-Computer-Science/dp/3642839541>`__
+-  `Database theory: Query languages <http://www.lsv.fr/~segoufin/Papers/Mypapers/DB-chapter.pdf>`__
+-  `Logic Programming and Databases book - Amazon page <https://www.amazon.co.uk/Programming-Databases-Surveys-Computer-Science/dp/3642839541>`__
 -  `Foundations of Databases <http://webdam.inria.fr/Alice/>`__
 -  `Datalog <https://en.wikipedia.org/wiki/Datalog>`__
