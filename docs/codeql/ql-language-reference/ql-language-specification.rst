@@ -390,7 +390,7 @@ The store
 
 QL programs evaluate in the context of a *store*. This section specifies several definitions related to the store.
 
-A *fact* is a predicate or type along with an named tuple. A fact is written as the predicate name or type name followed immediately by the tuple. Here are some examples of facts:
+A *fact* is a predicate or type along with a named tuple. A fact is written as the predicate name or type name followed immediately by the tuple. Here are some examples of facts:
 
 ::
 
@@ -406,10 +406,10 @@ An named tuple *directly satisfies* a predicate or type with a given tuple if th
 A value ``v`` is in a type ``t`` under any of the following conditions:
 
 -  The type of ``v`` is ``t`` and ``t`` is a primitive type.
--  There is tuple with ``this`` component ``v`` that directly satisfies ``t``.
+-  There is a tuple with ``this`` component ``v`` that directly satisfies ``t``.
 
-An ordered tuple ``v`` *directly satisfies* a predicate with a given if there is a fact in the store with the given predicate and a named tuple ``v'``
-such that taking the ordered formed by the ``this`` component of ``v'`` followed by component for each argument equals the ordered tuple.
+An ordered tuple ``v`` *directly satisfies* a predicate with a given tuple if there is a fact in the store with the given predicate and a named tuple ``v'``
+such that taking the ordered tuple formed by the ``this`` component of ``v'`` followed by the component for each argument equals the ordered tuple.
 
 An ordered tuple *satisfies a predicate* ``p`` under the following circumstances. If ``p`` is not a member predicate, then the tuple satisfies the predicate whenever the named tuple satisfies the tuple.
 
@@ -460,9 +460,9 @@ A multiline comment is a *comment start*, followed by a *comment body*, followed
    */
 
 QLDoc (qldoc)
-~~~~~~~~
+~~~~~~~~~~~~~
 
-A QLDoc comment is a *qldoc comment start*, followed by a *comment body*, followed by a *qldoc comment end*. A comment start is a slash (``/``, U+002F) followed by two asterisks (``*``, U+002A), and a qldoc comment end is an asterisk followed by a slash. A qldoc comment body is any sequence of characters that does not include a comment end. Here is an example qldoc comment:
+A QLDoc comment is a *qldoc comment start*, followed by a *qldoc comment body*, followed by a *qldoc comment end*. A comment start is a slash (``/``, U+002F) followed by two asterisks (``*``, U+002A), and a qldoc comment end is an asterisk followed by a slash. A qldoc comment body is any sequence of characters that does not include a comment end. Here is an example QLDoc comment:
 
 ::
 
@@ -472,7 +472,7 @@ A QLDoc comment is a *qldoc comment start*, followed by a *comment body*, follow
      It had a qldoc comment.
    */
 
-The ‘content’ of a QLDoc comment is the comment body of the comment, omitting the initial /**, the trailing */, and the leading whitespace followed by * on each internal line.
+The "content" of a QLDoc comment is the comment body of the comment, omitting the initial ``/**``, the trailing ``*/``, and the leading whitespace followed by ``*`` on each internal line.
 
 Keywords
 ~~~~~~~~
@@ -759,27 +759,27 @@ A predicate may have several different binding sets, which can be stated by usin
 QLDoc
 -----
 
-QLDoc is used for documenting ql entities and bindings. QLDoc that is used as part of the
+QLDoc is used for documenting QL entities and bindings. QLDoc that is used as part of the
 declaration is said to be declared.
 
 Ambiguous QLDoc
-~~~~~~~~~~~
+~~~~~~~~~~~~~~~
 
-If QLDoc could be parsed as part a file module or as part of the first declaration in the file then
+If QLDoc can be parsed as part of a file module or as part of the first declaration in the file then
 it is parsed as part of the first declaration.
 
 Inheriting QLDoc
-~~~~~~~~~~~
+~~~~~~~~~~~~~~~~
 
-If no qldoc is provided then in may be inherited. 
+If no QLDoc is provided then it may be inherited. 
 
-In the case of an alias then it may be inherited from the right-hand-side of the alias.
+In the case of an alias then it may be inherited from the right-hand side of the alias.
 
-In the case of a member predicate we collect all member predicates that it overrides with declared QLDoc. Then if there is a member predicate in that collection that
-that overrides every other member predicate in that collection then the QLDoc of that member predicate is used as the QLDoc.
+In the case of a member predicate we collect all member predicates that it overrides with declared QLDoc. If there is a member predicate in that collection that
+overrides every other member predicate in that collection, then the QLDoc of that member predicate is used as the QLDoc.
 
-In the case of a field we collect all fields that it overrides with declared QLDoc. Then if there is a field in that collection that
-that overrides every other field in that collection then its QLDoc of that field used as the QLDoc.
+In the case of a field we collect all fields that it overrides with declared QLDoc. If there is a field in that collection that
+overrides every other field in that collection, then the QLDoc of that field is used as the QLDoc.
 
 Content
 ~~~~~~~
@@ -791,12 +791,12 @@ The content of a QLDoc comment is interpreted as `CommonMark <https://commonmark
 
 The content of a QLDoc comment may contain metadata tags as follows:
 
-The tag begins with any number of whitespace characters, followed by an '@' sign. At this point there may be any number of non-whitespace characters, which form the key of the tag. Then, a single whitespace character which separates the key from the value. The value of the tag is formed by the remainder of the line, and any subsequent lines until another '@' tag is seen, or the end of the content is reached. Any sequence of consecutive whitespace characters in the value are replaced by a single space.
+The tag begins with any number of whitespace characters, followed by an ``@`` sign. At this point there may be any number of non-whitespace characters, which form the key of the tag. Then, a single whitespace character which separates the key from the value. The value of the tag is formed by the remainder of the line, and any subsequent lines until another ``@`` tag is seen, or the end of the content is reached. Any sequence of consecutive whitespace characters in the value are replaced by a single space.
 
 Metadata
 ~~~~~~~~
 
-If the query file starts with whitespace followed by a qldoc comment then the tags from that qldoc comment form the query metadata.
+If the query file starts with whitespace followed by a QLDoc comment, then the tags from that QLDoc comment form the query metadata.
 
 Top-level entities
 ------------------
@@ -929,11 +929,11 @@ Fields
 
 A field declaration introduces a mapping from the field name to the field declaration in the class's declared field environment.
 
-A field ``f`` with enclosing class ``C`` *overrides* a field ``f'`` with enclosing class ``D`` when ``f`` is annotated override, ``C`` inherits from ``D``, ``p'`` is visible in ``C``, and both ``p`` and ``p'`` have the same name.
+A field ``f`` with enclosing class ``C`` *overrides* a field ``f'`` with enclosing class ``D`` when ``f`` is annotated ``override``, ``C`` inherits from ``D``, ``p'`` is visible in ``C``, and both ``p`` and ``p'`` have the same name.
 
 A valid class may not inherit from two different classes that include a field with the same name, unless either one of the fields overrides the other, or the class defines a field that overrides both of them.
 
-A valid field must override another field if it is annotated override.
+A valid field must override another field if it is annotated ``override``.
 
 When field ``f`` overrides field ``g`` the type of ``f`` must be a subtype of the type of ``g``. ``f`` may not be a final field. 
 
@@ -1173,12 +1173,12 @@ A valid call with results *resolves* to a set of predicates. The ways a call can
 
 -  If the call has a super expression as the receiver, then it resolves to a member predicate in a class the enclosing class inherits from. If the super expression is unqualified, then the super-class is the single class that the current class inherits from. If there is not exactly one such class, then the program is invalid. Otherwise the super-class is the class named by the qualifier of the super expression. The predicate is resolved by looking up its name and arity in the exported predicate environment of the super-class. 
 
--  If the type of the receiver is the same as the the enclosing class the predicate is resolved by looking up its name and arity in the ``visible`` predicate environment of the class.
+-  If the type of the receiver is the same as the enclosing class, the predicate is resolved by looking up its name and arity in the visible predicate environment of the class.
 
--  If the type of the receiver is not the same as the the enclosing class the predicate is resolved by looking up its name and arity in the ``exported`` predicate environment of the class or domain type.
+-  If the type of the receiver is not the same as the enclosing class, the predicate is resolved by looking up its name and arity in the exported predicate environment of the class or domain type.
 
-If all the predicates that the call resolves to are declared on a primitive type we then restrict to the set of predicates where each argument of the call is a subtype of the corresponding predicate argument type.
-Then we find all predicates ``p`` from this new set such that there is not another predicate ``p'``where each argument of ``p'`` is a subtype of the corresponding argument in ``p``. We then say the call resolves to this set instead.
+If all the predicates that the call resolves to are declared on a primitive type, we then restrict to the set of predicates where each argument of the call is a subtype of the corresponding predicate argument type.
+Then we find all predicates ``p`` from this new set such that there is not another predicate ``p'`` where each argument of ``p'`` is a subtype of the corresponding argument in ``p``. We then say the call resolves to this set instead.
 
 A valid call must only resolve to a single predicate.
 
@@ -1194,7 +1194,7 @@ If the resolved predicate is built in, then the call may not include a closure. 
 
 -  The number 1 if the predicate has a result, otherwise 0.
 
-If the call includes a closure then all declared predicate arguments, the enclosing type of the declaration if it exists and the result type of the declaration if it exists must be compatible. If one of those types is a subtype of ``int`` all the other arguments must be a subtype of ``int``.
+If the call includes a closure, then all declared predicate arguments, the enclosing type of the declaration (if it exists), and the result type of the declaration (if it exists) must be compatible. If one of those types is a subtype of ``int``, then all the other arguments must be a subtype of ``int``.
 
 If the call resolves to a member predicate, then the *receiver values* are as follows. If the call has a receiver, then the receiver values are the values of that receiver. If the call does not have a receiver, then the single receiver value is the value of ``this`` in the contextual named tuple.
 
@@ -1352,7 +1352,8 @@ The grammar given in this section is disambiguated first by precedence, and seco
 -  binary ``+`` and ``-``
 
 Whenever a sequence of tokens can be interpreted either as a call to a predicate with result (with specified closure), or as a binary operation with operator ``+`` or ``*``, the syntax is interpreted as a call to a predicate with result.
-Whenever a sequence of tokens can be interpreted either as either arithmetic with a parenthesized variable or a prefix cast of a unary operation the syntax is interpreted as a cast.
+
+Whenever a sequence of tokens can be interpreted either as arithmetic with a parenthesized variable or as a prefix cast of a unary operation, the syntax is interpreted as a cast.
 
 Formulas
 --------
@@ -1948,16 +1949,18 @@ The store is first initialized with the *database content* of all built-in predi
 
 Each layer of the stratification is *populated* in order. To populate a layer, each predicate in the layer is repeatedly populated until the store stops changing. The way that a predicate is populated is as follows:
 
--  To populate a predicate that has a formula as a body, find all named tuples with identify each named tuple ``t`` that has the following properties:
-   - The tuple matches the body formula.
-   - The variables should be  the predicate's arguments.  
-   - If the predicate has a result, then the tuples should additionally have a value for ``result``
-   - If the predicate is a member predicate or characteristic predicate of a class ``C`` then the tuples should additionally have a value for ``this`` and each visible field on the class.
-   - The values corresponding to the arguments should all be a member of the declared types of the arguments.
-   - The values corresponding to ``result`` should all be a member of the result type.
-   - The values corresponding to the fields should all be a member of the declared types of the fields.
-   - If the predicate is a member predicate of a class ``C`` and not a characteristic predicate, then the tuples should additionally extend some tuple in ``C.class``. 
-   - If the predicate is a characteristic predicate of a class ``C``, then there should be a tuple ``t'``in ``C.extends`` such that for each visible field in ``C`` any field that is equal to or overrides a field in that ``t'`` should have the same value in ``t``. ``this`` should also map to the same value in ``t`` and ``t``.
+-  To populate a predicate that has a formula as a body, find each named tuple ``t`` that has the following properties:
+
+     - The tuple matches the body formula.
+     - The variables should be the predicate's arguments.  
+     - If the predicate has a result, then the tuples should additionally have a value for ``result``.
+     - If the predicate is a member predicate or characteristic predicate of a class ``C`` then the tuples should additionally have a value for ``this`` and each visible field on the class.
+     - The values corresponding to the arguments should all be a member of the declared types of the arguments.
+     - The values corresponding to ``result`` should all be a member of the result type.
+     - The values corresponding to the fields should all be a member of the declared types of the fields.
+     - If the predicate is a member predicate of a class ``C`` and not a characteristic predicate, then the tuples should additionally extend some tuple in ``C.class``. 
+     - If the predicate is a characteristic predicate of a class ``C``, then there should be a tuple ``t'`` in ``C.extends`` such that for each visible field in ``C``, any field that is equal to or overrides a field in ``t'`` should have the same value in ``t``. ``this`` should also map to the same value in ``t`` and ``t'``.
+
    For each such tuple remove any components that correspond to fields and add it to the predicate in the store.
 
 -  To populate an abstract predicate, do nothing.
@@ -1965,21 +1968,23 @@ Each layer of the stratification is *populated* in order. To populate a layer, e
 -  The population of predicates with a higher-order body is left only partially specified. A number of tuples are added to the given predicate in the store. The tuples that are added must be fully determined by the QL program and by the state of the store.
 
 -  To populate the type ``C.extends`` for a class ``C``, identify each named tuple that has the following properties:
+
      - The value of ``this`` is in all non-class base types of ``C``.
      - The keys of the tuple are ``this`` and the union of the public fields from each base type.
-     - For each class base type ``B`` of ``C`` there is a named tuple with with variables from the public fields of ``B`` and ``this`` that is the given tuple and some tuple in ``B.B`` both extend. 
+     - For each class base type ``B`` of ``C`` there is a named tuple with variables from the public fields of ``B`` and ``this`` that the given tuple and some tuple in ``B.B`` both extend.
+
    For each such tuple add it to ``C.extends``.
 
--  To populate the type ``C.C`` for a class ``C``, if ``C`` has a characteristic predicate, then add all tuples from that predicate to the store. 
-   Otherwise add all tuples ``t`` such that:
-   - The variables of ``t`` should be ``this`` and the visible fields of ``C``.  
-   - The values corresponding to the fields should all be a member of the declared types of the fields.
-   - If the predicate is a characteristic predicate of a class ``C``, then there should be a tuple ``t'``in ``C.extends`` such that for each visible field in ``C`` any field that is equal to or overrides a field in that ``t'`` should have the same value in ``t``. ``this`` should also map to the same value in ``t`` and ``t``.
+-  To populate the type ``C.C`` for a class ``C``, if ``C`` has a characteristic predicate, then add all tuples from that predicate to the store. Otherwise add all tuples ``t`` such that:
+
+     - The variables of ``t`` should be ``this`` and the visible fields of ``C``.  
+     - The values corresponding to the fields should all be a member of the declared types of the fields.
+     - If the predicate is a characteristic predicate of a class ``C``, then there should be a tuple ``t'`` in ``C.extends`` such that for each visible field in ``C``, any field that is equal to or overrides a field in ``t'`` should have the same value in ``t``. ``this`` should also map to the same value in ``t`` and ``t'``.
 
 -  To populate the type ``C.class`` for a non-abstract class type ``C``, add each tuple in ``C.C`` to ``C.class``.
 
 -  To populate the type ``C.class`` for an abstract class type ``C``, identify each named tuple that has the following properties:
-     - It is a member of ``C.C``
+     - It is a member of ``C.C``.
      - For each class ``D`` that has ``C`` as a base type then there is a named tuple with variables from the public fields of ``C`` and ``this`` that the given tuple and a tuple in ``D.class`` both extend.
 
 
