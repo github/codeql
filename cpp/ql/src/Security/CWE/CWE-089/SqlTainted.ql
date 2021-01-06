@@ -28,7 +28,9 @@ class Configuration extends TaintTrackingConfiguration {
     exists(SQLLikeFunction runSql | runSql.outermostWrapperFunctionCall(tainted, _))
   }
 
-  override predicate isAdditionalBarrier(Expr e) { e.getUnspecifiedType() instanceof IntegralType }
+  override predicate isBarrier(Expr e) {
+    super.isBarrier(e) or e.getUnspecifiedType() instanceof IntegralType
+  }
 }
 
 from
