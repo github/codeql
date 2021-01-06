@@ -83,11 +83,11 @@ private class EncryptedSharedPrefFlowConfig extends DataFlow4::Configuration {
   }
 
   override predicate isSource(DataFlow4::Node src) {
-    src.asExpr().(MethodAccess).getMethod() instanceof SharedPreferences::CreateEncryptedPrefsMethod
+    src.asExpr().(MethodAccess).getMethod() instanceof SharedPreferences::CreateEncryptedMethod
   }
 
   override predicate isSink(DataFlow4::Node sink) {
-    sink.asExpr().getType() instanceof SharedPreferences::TypePrefs
+    sink.asExpr().getType() instanceof SharedPreferences::TypeBase
   }
 }
 

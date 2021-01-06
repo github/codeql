@@ -5,21 +5,19 @@ import java
 /** Definitions related to `android.content.SharedPreferences`. */
 module SharedPreferences {
   /** The interface `android.content.SharedPreferences` */
-  class TypePrefs extends Interface {
-    TypePrefs() { hasQualifiedName("android.content", "SharedPreferences") }
+  class TypeBase extends Interface {
+    TypeBase() { hasQualifiedName("android.content", "SharedPreferences") }
   }
 
   /** The class `androidx.security.crypto.EncryptedSharedPreferences`, which implements `SharedPreferences` with encryption support. */
-  class TypeEncryptedPrefs extends Class {
-    TypeEncryptedPrefs() {
-      hasQualifiedName("androidx.security.crypto", "EncryptedSharedPreferences")
-    }
+  class TypeEncrypted extends Class {
+    TypeEncrypted() { hasQualifiedName("androidx.security.crypto", "EncryptedSharedPreferences") }
   }
 
   /** The create method of `androidx.security.crypto.EncryptedSharedPreferences` */
-  class CreateEncryptedPrefsMethod extends Method {
-    CreateEncryptedPrefsMethod() {
-      getDeclaringType() instanceof TypeEncryptedPrefs and
+  class CreateEncryptedMethod extends Method {
+    CreateEncryptedMethod() {
+      getDeclaringType() instanceof TypeEncrypted and
       hasName("create")
     }
   }
@@ -27,7 +25,7 @@ module SharedPreferences {
   /** A getter method of `android.content.SharedPreferences`. */
   class GetPreferenceMethod extends Method {
     GetPreferenceMethod() {
-      getDeclaringType() instanceof TypePrefs and
+      getDeclaringType() instanceof TypeBase and
       getName().matches("get%")
     }
   }
@@ -35,7 +33,7 @@ module SharedPreferences {
   /** Returns `android.content.SharedPreferences.Editor` from the `edit` call of `android.content.SharedPreferences`. */
   class GetEditorMethod extends Method {
     GetEditorMethod() {
-      getDeclaringType() instanceof TypePrefs and
+      getDeclaringType() instanceof TypeBase and
       hasName("edit") and
       getReturnType() instanceof TypeEditor
     }
