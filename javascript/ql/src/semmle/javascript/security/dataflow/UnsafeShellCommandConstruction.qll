@@ -41,5 +41,15 @@ module UnsafeShellCommandConstruction {
         mid.getPathSummary().hasReturn() = false
       )
     }
+
+    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+      // flow-step from a property written in the constructor to a use in an instance method.
+      // "simulates" client usage of a class, and regains some flow-steps lost by `hasFlowPath` above.
+      exists(DataFlow::ClassNode clz, string name |
+        pred =
+          DataFlow::thisNode(clz.getConstructor().getFunction()).getAPropertyWrite(name).getRhs() and
+        succ = DataFlow::thisNode(clz.getInstanceMethod(_).getFunction()).getAPropertyRead(name)
+      )
+    }
   }
 }
