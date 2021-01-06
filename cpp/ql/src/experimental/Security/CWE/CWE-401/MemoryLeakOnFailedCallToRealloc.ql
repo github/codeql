@@ -14,6 +14,9 @@
 import cpp
 import semmle.code.cpp.dataflow.DataFlow
 
+/**
+ * A call to `realloc` of the form `v = realloc(v, size)`, for some variable `v`.
+ */
 class ReallocCallLeak extends FunctionCall {
   ReallocCallLeak() {
     exists(AssignExpr ex, Variable v, VariableAccess va1, VariableAccess va2 |
