@@ -41,7 +41,7 @@ class SensitiveGetQueryConfiguration extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof GetHttpRequestSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof SensitiveExpr }
+  override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof SensitiveInfoExpr }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(MethodAccess ma |
