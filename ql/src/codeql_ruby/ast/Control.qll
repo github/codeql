@@ -376,9 +376,7 @@ class UntilExpr extends Loop, @until {
 }
 
 /**
- * An expression looped using the `while` modifier. In the following example,
- * `getCondition` returns the `Expr` for `bar`, and `getBody` returns the
- * `Expr` for `foo`.
+ * An expression looped using the `while` modifier.
  * ```rb
  * foo while bar
  * ```
@@ -390,14 +388,18 @@ class WhileModifierExpr extends Loop, @while_modifier {
 
   final override string toString() { result = "... while ..." }
 
-  /** Gets the condition expression of this `while`-modifier. */
+  /**
+   * Gets the condition expression of this `while`-modifier. In the following
+   * example, the result is the `Expr` for `bar`.
+   * ```rb
+   * foo while bar
+   * ```
+   */
   final Expr getCondition() { result = range.getCondition() }
 }
 
 /**
- * An expression looped using the `until` modifier. In the following example,
- * `getCondition` returns the `Expr` for `bar`, and `getBody` returns the
- * `Expr` for `foo`.
+ * An expression looped using the `until` modifier.
  * ```rb
  * foo until bar
  * ```
@@ -409,7 +411,13 @@ class UntilModifierExpr extends Loop, @until_modifier {
 
   final override string toString() { result = "... until ..." }
 
-  /** Gets the condition expression of this `until`-modifier. */
+  /**
+   * Gets the condition expression of this `until`-modifier. In the following
+   * example, the result is the `Expr` for `bar`.
+   * ```rb
+   * foo until bar
+   * ```
+   */
   final Expr getCondition() { result = range.getCondition() }
 }
 
