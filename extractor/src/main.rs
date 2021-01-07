@@ -47,24 +47,25 @@ impl TrapCompression {
 
 /**
  * Gets the number of threads the extractor should use, by reading the
- * CODEQL_THREADS environment variable and using it as follows:
+ * CODEQL_THREADS environment variable and using it as described in the
+ * extractor spec:
  *
- * If the number is positive, it indicates the number of threads that should be
- * used. If the number is negative or zero, it should be added to the number of
- * cores available on the machine to determine how many threads to use (minimum
- * of 1). If unspecified, should be considered as set to 1.
+ * "If the number is positive, it indicates the number of threads that should
+ * be used. If the number is negative or zero, it should be added to the number
+ * of cores available on the machine to determine how many threads to use
+ * (minimum of 1). If unspecified, should be considered as set to 1."
  */
 fn num_codeql_threads() -> usize {
     match std::env::var("CODEQL_THREADS") {
+        // Use 1 thread if the environment variable isn't set.
+        Err(_) => 1,
+
         Ok(num) => match num.parse::<i32>() {
-            Ok(num) => {
-                if num <= 0 {
-                    let reduction = -num as usize;
-                    num_cpus::get() - reduction
-                } else {
-                    num as usize
-                }
+            Ok(num) if num <= 0 => {
+                let reduction = -num as usize;
+                num_cpus::get() - reduction
             }
+            Ok(num) => num as usize,
 
             Err(_) => {
                 tracing::error!(
@@ -74,9 +75,6 @@ fn num_codeql_threads() -> usize {
                 1
             }
         },
-
-        // Use 1 thread if the environment variable isn't set.
-        Err(_) => 1,
     }
 }
 
