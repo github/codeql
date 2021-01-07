@@ -2,7 +2,7 @@
 <qhelp>
 
   <overview>
-    <p>In cryptography, "salt" is random data that are used as an additional input to a one-way function that hashes a password or pass-phrase. It makes dictionary attacks more difficult.</p>
+    <p>In cryptography, a salt is some random data used as an additional input to a one-way function that hashes a password or pass-phrase. It makes dictionary attacks more difficult.</p>
 
     <p>Without a salt, it is much easier for attackers to pre-compute the hash value using dictionary attack techniques such as rainbow tables to crack passwords.</p>
   </overview>

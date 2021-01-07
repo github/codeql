@@ -1,8 +1,8 @@
 /**
- * @id java/hash-without-salt
- * @name Use of a One-Way Hash without a Salt
+ * @name Use of a hash function without a salt
  * @description Hashed passwords without a salt are vulnerable to dictionary attacks.
  * @kind path-problem
+ * @id java/hash-without-salt
  * @tags security
  *       external/cwe-759
  */
@@ -11,7 +11,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
 
-/** The Java class `java.security.MessageDigest` */
+/** The Java class `java.security.MessageDigest`. */
 class MessageDigest extends RefType {
   MessageDigest() { this.hasQualifiedName("java.security", "MessageDigest") }
 }
@@ -19,22 +19,20 @@ class MessageDigest extends RefType {
 /** The method `digest()` declared in `java.security.MessageDigest`. */
 class MDDigestMethod extends Method {
   MDDigestMethod() {
-    getDeclaringType() instanceof MessageDigest and
-    hasName("digest")
+    this.getDeclaringType() instanceof MessageDigest and
+    this.hasName("digest")
   }
 }
 
 /** The method `update()` declared in `java.security.MessageDigest`. */
 class MDUpdateMethod extends Method {
   MDUpdateMethod() {
-    getDeclaringType() instanceof MessageDigest and
-    hasName("update")
+    this.getDeclaringType() instanceof MessageDigest and
+    this.hasName("update")
   }
 }
 
-/**
- * Gets a regular expression for matching common names of variables that indicate the value being held is a password.
- */
+/** Gets a regular expression for matching common names of variables that indicate the value being held is a password. */
 string getPasswordRegex() { result = "(?i).*pass(wd|word|code|phrase).*" }
 
 /** Finds variables that hold password information judging by their names. */
@@ -78,9 +76,11 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
     )
   }
 
-  /** Holds for additional steps such as `passwordStr.getBytes()` */
+  /** Holds for additional steps that flow to a method call of `update` or `digest` declared in `java.security.MessageDigest`. */
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(MethodAccess ma |
+      ma.getMethod().getDeclaringType() instanceof MessageDigest and
+      ma.getMethod().hasName(["digest", "update"]) and
       pred.asExpr() = ma.getAnArgument() and
       (succ.asExpr() = ma or succ.asExpr() = ma.getQualifier())
     )
