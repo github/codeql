@@ -4,7 +4,9 @@ query predicate caseValues(CaseExpr c, Expr value) { value = c.getValue() }
 
 query predicate caseNoValues(CaseExpr c) { not exists(c.getValue()) }
 
-query predicate caseElseBranches(CaseExpr c, ElseExpr elseBranch) { elseBranch = c.getElseBranch() }
+query predicate caseElseBranches(CaseExpr c, ExprSequence elseBranch) {
+  elseBranch = c.getElseBranch()
+}
 
 query predicate caseNoElseBranches(CaseExpr c) { not exists(c.getElseBranch()) }
 

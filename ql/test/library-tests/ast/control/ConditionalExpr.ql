@@ -26,13 +26,13 @@ predicate helper(ConditionalExpr e, string pClass, Expr cond, Expr thenExpr, str
 }
 
 query predicate ifOrElsifExprs(
-  IfOrElsifExpr e, string pClass, Expr cond, ThenExpr thenExpr, string elseStr
+  IfOrElsifExpr e, string pClass, Expr cond, ExprSequence thenExpr, string elseStr
 ) {
   helper(e, pClass, cond, thenExpr, elseStr)
 }
 
 query predicate unlessExprs(
-  UnlessExpr e, string pClass, Expr cond, ThenExpr thenExpr, string elseStr
+  UnlessExpr e, string pClass, Expr cond, ExprSequence thenExpr, string elseStr
 ) {
   helper(e, pClass, cond, thenExpr, elseStr)
 }

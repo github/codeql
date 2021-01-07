@@ -46,11 +46,11 @@ class IfOrElsifExpr extends ConditionalExpr {
   override IfOrElsifExpr::Range range;
 
   /** Gets the 'then' branch of this `if`/`elsif` expression. */
-  final override ThenExpr getThen() { result = range.getThen() }
+  final override ExprSequence getThen() { result = range.getThen() }
 
   /**
    * Gets the `elsif`/`else` branch of this `if`/`elsif` expression, if any. In
-   * the following example, the result is an `ElseExpr` containing `b`.
+   * the following example, the result is an `ExprSequence` containing `b`.
    * ```rb
    * if foo
    *   a
@@ -66,8 +66,8 @@ class IfOrElsifExpr extends ConditionalExpr {
    * ```
    * There can be at most one result, since `elsif` branches nest. In the
    * following example, `ifExpr.getElse()` returns an `ElsifExpr`, and the
-   * `else` branch is nested inside that. To get the `ElseExpr` for the `else`
-   * branch, i.e. the one containing `c`, use
+   * `else` branch is nested inside that. To get the `ExprSequence` for the
+   * `else` branch, i.e. the one containing `c`, use
    * `getElse().(ElsifExpr).getElse()`.
    * ```rb
    * if foo
@@ -219,7 +219,7 @@ class CaseExpr extends ControlExpr, @case__ {
 
   /**
    * Gets the `n`th branch of this case expression, either a `WhenExpr` or an
-   * `ElseExpr`.
+   * `ExprSequence`.
    */
   final Expr getBranch(int n) { result = range.getBranch(n) }
 
@@ -233,7 +233,7 @@ class CaseExpr extends ControlExpr, @case__ {
   final WhenExpr getAWhenBranch() { result = range.getAWhenBranch() }
 
   /** Gets the `else` branch of this case expression, if any. */
-  final ElseExpr getElseBranch() { result = range.getElseBranch() }
+  final ExprSequence getElseBranch() { result = range.getElseBranch() }
 
   /**
    * Gets the number of branches of this case expression.
@@ -257,7 +257,7 @@ class WhenExpr extends Expr, @when {
   final override string toString() { result = "when ..." }
 
   /** Gets the body of this case-when expression. */
-  final ThenExpr getBody() { result = range.getBody() }
+  final ExprSequence getBody() { result = range.getBody() }
 
   /**
    * Gets the `n`th pattern (or condition) in this case-when expression.
@@ -303,7 +303,7 @@ class WhileExpr extends Loop, @while {
   final override string toString() { result = "while ..." }
 
   /** Gets the body of this `while` loop. */
-  final override DoExpr getBody() { result = range.getBody() }
+  final override ExprSequence getBody() { result = range.getBody() }
 
   /** Gets the condition expression of this `while` loop. */
   final Expr getCondition() { result = range.getCondition() }
@@ -326,7 +326,7 @@ class UntilExpr extends Loop, @until {
   final override string toString() { result = "until ..." }
 
   /** Gets the body of this `until` loop. */
-  final override DoExpr getBody() { result = range.getBody() }
+  final override ExprSequence getBody() { result = range.getBody() }
 
   /** Gets the condition expression of this `until` loop. */
   final Expr getCondition() { result = range.getCondition() }
