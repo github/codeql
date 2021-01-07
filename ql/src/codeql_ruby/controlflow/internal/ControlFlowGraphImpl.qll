@@ -642,7 +642,8 @@ module Trees {
       c.(EmptinessCompletion).getValue() = false
       or
       first(this.getBody(), succ) and
-      last(this.getPattern(), pred, c)
+      last(this.getPattern(), pred, c) and
+      c instanceof NormalCompletion
       or
       last(this.getBody(), pred, c) and
       succ = this and
