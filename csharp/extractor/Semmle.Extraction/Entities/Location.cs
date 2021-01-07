@@ -1,4 +1,6 @@
 
+using Microsoft.CodeAnalysis.Text;
+
 namespace Semmle.Extraction.Entities
 {
     public abstract class Location : CachedEntity<Microsoft.CodeAnalysis.Location?>
@@ -12,6 +14,13 @@ namespace Semmle.Extraction.Entities
                 : loc.IsInSource
                     ? NonGeneratedSourceLocation.Create(cx, loc)
                     : Assembly.Create(cx, loc);
+
+        public static Location Create(Context cx)
+        {
+            return cx.SourceTree == null
+                ? GeneratedLocation.Create(cx)
+                : Create(cx, Microsoft.CodeAnalysis.Location.Create(cx.SourceTree, TextSpan.FromBounds(0, 0)));
+        }
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => symbol;
 
