@@ -14,3 +14,5 @@ tree-sitter-ruby = { git = "https://github.com/tree-sitter/tree-sitter-ruby.git"
 clap = "2.33"
 tracing = "0.1"
 tracing-subscriber = { version = "0.2", features = ["env-filter"] }
+rayon = "1.5.0"
+num_cpus = "1.13.0"

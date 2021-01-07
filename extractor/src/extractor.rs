@@ -148,55 +148,40 @@ impl TrapWriter {
     }
 }
 
-pub struct Extractor {
-    pub parser: Parser,
-    pub schema: NodeTypeMap,
-}
+/// Extracts the source file at `path`, which is assumed to be canonicalized.
+pub fn extract(language: Language, schema: &NodeTypeMap, path: &Path) -> std::io::Result<Program> {
+    let span = span!(
+        Level::TRACE,
+        "extract",
+        file = %path.display()
+    );
 
-pub fn create(language: Language, schema: NodeTypeMap) -> Extractor {
+    let _enter = span.enter();
+
+    info!("extracting: {}", path.display());
+
     let mut parser = Parser::new();
     parser.set_language(language).unwrap();
+    let source = std::fs::read(&path)?;
+    let tree = parser.parse(&source, None).expect("Failed to parse file");
+    let mut trap_writer = new_trap_writer();
+    trap_writer.comment(format!("Auto-generated TRAP file for {}", path.display()));
+    let file_label = &trap_writer.populate_file(path);
+    let mut visitor = Visitor {
+        source: &source,
+        trap_writer: trap_writer,
+        // TODO: should we handle path strings that are not valid UTF8 better?
+        path: format!("{}", path.display()),
+        file_label: *file_label,
+        token_counter: 0,
+        toplevel_child_counter: 0,
+        stack: Vec::new(),
+        schema,
+    };
+    traverse(&tree, &mut visitor);
 
-    Extractor { parser, schema }
-}
-
-impl Extractor {
-    /// Extracts the source file at `path`, which is assumed to be canonicalized.
-    pub fn extract<'a>(&'a mut self, path: &Path) -> std::io::Result<Program> {
-        let span = span!(
-            Level::TRACE,
-            "extract",
-            file = %path.display()
-        );
-
-        let _enter = span.enter();
-
-        info!("extracting: {}", path.display());
-
-        let source = std::fs::read(&path)?;
-        let tree = &self
-            .parser
-            .parse(&source, None)
-            .expect("Failed to parse file");
-        let mut trap_writer = new_trap_writer();
-        trap_writer.comment(format!("Auto-generated TRAP file for {}", path.display()));
-        let file_label = &trap_writer.populate_file(path);
-        let mut visitor = Visitor {
-            source: &source,
-            trap_writer: trap_writer,
-            // TODO: should we handle path strings that are not valid UTF8 better?
-            path: format!("{}", path.display()),
-            file_label: *file_label,
-            token_counter: 0,
-            toplevel_child_counter: 0,
-            stack: Vec::new(),
-            schema: &self.schema,
-        };
-        traverse(&tree, &mut visitor);
-
-        &self.parser.reset();
-        Ok(Program(visitor.trap_writer.trap_output))
-    }
+    parser.reset();
+    Ok(Program(visitor.trap_writer.trap_output))
 }
 
 /// Normalizes the path according the common CodeQL specification. Assumes that
