@@ -31,11 +31,11 @@ class ConditionalExpr extends Expr {
    */
   final Expr getCondition() { result = range.getCondition() }
 
-  /** Gets the 'then' branch of this conditional expression. */
-  Expr getThen() { result = range.getThen() }
-
-  /** Gets the 'else' branch of this conditional expression, if any. */
-  Expr getElse() { result = range.getElse() }
+  /**
+   * Gets the branch of this conditional expression that is taken when the
+   * condition evaluates to `cond`, if any.
+   */
+  Expr getBranch(boolean cond) { result = range.getBranch(cond) }
 }
 
 /**
@@ -46,7 +46,7 @@ class IfOrElsifExpr extends ConditionalExpr {
   override IfOrElsifExpr::Range range;
 
   /** Gets the 'then' branch of this `if`/`elsif` expression. */
-  final override ExprSequence getThen() { result = range.getThen() }
+  final ExprSequence getThen() { result = range.getThen() }
 
   /**
    * Gets the `elsif`/`else` branch of this `if`/`elsif` expression, if any. In
@@ -79,7 +79,7 @@ class IfOrElsifExpr extends ConditionalExpr {
    * end
    * ```
    */
-  final override Expr getElse() { result = range.getElse() }
+  final Expr getElse() { result = range.getElse() }
 }
 
 /**
@@ -108,7 +108,7 @@ class IfExpr extends IfOrElsifExpr, @if {
  * end
  * ```
  */
-class ElsifExpr extends ConditionalExpr {
+class ElsifExpr extends IfOrElsifExpr, @elsif {
   final override ElsifExpr::Range range;
 
   final override string getAPrimaryQlClass() { result = "ElsifExpr" }
@@ -130,11 +130,36 @@ class UnlessExpr extends ConditionalExpr, @unless {
   final override string getAPrimaryQlClass() { result = "UnlessExpr" }
 
   final override string toString() { result = "unless ..." }
+
+  /**
+   * Gets the 'then' branch of this `unless` expression. In the following
+   * example, the result is the `ExprSequence` containing `foo`.
+   * ```rb
+   * unless a == b then
+   *   foo
+   * else
+   *   bar
+   * end
+   * ```
+   */
+  final ExprSequence getThen() { result = range.getThen() }
+
+  /**
+   * Gets the 'else' branch of this `unless` expression. In the following
+   * example, the result is the `ExprSequence` containing `bar`.
+   * ```rb
+   * unless a == b then
+   *   foo
+   * else
+   *   bar
+   * end
+   * ```
+   */
+  final ExprSequence getElse() { result = range.getElse() }
 }
 
 /**
- * An expression modified using `if`. In the following example, `getCondition`
- * returns the `Expr` for `bar`, and `getThen` returns the `Expr` for `foo`.
+ * An expression modified using `if`.
  * ```rb
  * foo if bar
  * ```
@@ -147,19 +172,20 @@ class IfModifierExpr extends ConditionalExpr, @if_modifier {
   final override string toString() { result = "... if ..." }
 
   /**
-   * Does not hold, since `if`-modified expressions cannot have `else`
-   * branches.
+   * Gets the expression that is conditionally evaluated. In the following
+   * example, the result is the `Expr` for `foo`.
+   * ```rb
+   * foo if bar
+   * ```
    */
-  final override Expr getElse() { none() }
+  final Expr getExpr() { result = range.getExpr() }
 }
 
 /**
- * An expression modified using `unless`. For example, in:
+ * An expression modified using `unless`.
  * ```rb
  * y /= x unless x == 0
  * ```
- * `getCondition` returns the `x == 0` expression, and `getThen` returns the
- * `y /= x` expression.
  */
 class UnlessModifierExpr extends ConditionalExpr, @unless_modifier {
   final override UnlessModifierExpr::Range range;
@@ -169,10 +195,13 @@ class UnlessModifierExpr extends ConditionalExpr, @unless_modifier {
   final override string toString() { result = "... unless ..." }
 
   /**
-   * Does not hold, since `unless`-modified expressions cannot have `else`
-   * branches.
+   * Gets the expression that is conditionally evaluated. In the following
+   * example, the result is the `Expr` for `foo`.
+   * ```rb
+   * foo unless bar
+   * ```
    */
-  final override Expr getElse() { none() }
+  final Expr getExpr() { result = range.getExpr() }
 }
 
 /**
@@ -187,6 +216,12 @@ class TernaryIfExpr extends ConditionalExpr, @conditional {
   final override string getAPrimaryQlClass() { result = "TernaryIfExpr" }
 
   final override string toString() { result = "... ? ... : ..." }
+
+  /** Gets the 'then' branch of this ternary if expression. */
+  final Expr getThen() { result = range.getThen() }
+
+  /** Gets the 'else' branch of this ternary if expression. */
+  final Expr getElse() { result = range.getElse() }
 }
 
 class CaseExpr extends ControlExpr, @case__ {

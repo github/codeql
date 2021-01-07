@@ -11,14 +11,16 @@ module ConditionalExpr {
   abstract class Range extends ControlExpr::Range {
     abstract Expr getCondition();
 
-    abstract Expr getThen();
-
-    abstract Expr getElse();
+    abstract Expr getBranch(boolean cond);
   }
 }
 
 module IfOrElsifExpr {
-  abstract class Range extends ConditionalExpr::Range { }
+  abstract class Range extends ConditionalExpr::Range {
+    abstract Expr getThen();
+
+    abstract Expr getElse();
+  }
 }
 
 module IfExpr {
@@ -30,6 +32,12 @@ module IfExpr {
     final override ExprSequence getThen() { result = generated.getConsequence() }
 
     final override Expr getElse() { result = generated.getAlternative() }
+
+    final override Expr getBranch(boolean cond) {
+      cond = true and result = getThen()
+      or
+      cond = false and result = getElse()
+    }
   }
 }
 
@@ -42,6 +50,12 @@ module ElsifExpr {
     final override ExprSequence getThen() { result = generated.getConsequence() }
 
     final override Expr getElse() { result = generated.getAlternative() }
+
+    final override Expr getBranch(boolean cond) {
+      cond = true and result = getThen()
+      or
+      cond = false and result = getElse()
+    }
   }
 }
 
@@ -51,9 +65,15 @@ module UnlessExpr {
 
     final override Expr getCondition() { result = generated.getCondition() }
 
-    final override ExprSequence getThen() { result = generated.getConsequence() }
+    final ExprSequence getThen() { result = generated.getConsequence() }
 
-    final override ExprSequence getElse() { result = generated.getAlternative() }
+    final ExprSequence getElse() { result = generated.getAlternative() }
+
+    final override Expr getBranch(boolean cond) {
+      cond = false and result = getThen()
+      or
+      cond = true and result = getElse()
+    }
   }
 }
 
@@ -63,9 +83,9 @@ module IfModifierExpr {
 
     final override Expr getCondition() { result = generated.getCondition() }
 
-    final override Expr getThen() { result = generated.getBody() }
+    final Expr getExpr() { result = generated.getBody() }
 
-    final override Expr getElse() { none() }
+    final override Expr getBranch(boolean cond) { cond = true and result = getExpr() }
   }
 }
 
@@ -75,9 +95,9 @@ module UnlessModifierExpr {
 
     final override Expr getCondition() { result = generated.getCondition() }
 
-    final override Expr getThen() { result = generated.getBody() }
+    final Expr getExpr() { result = generated.getBody() }
 
-    final override Expr getElse() { none() }
+    final override Expr getBranch(boolean cond) { cond = false and result = getExpr() }
   }
 }
 
@@ -87,9 +107,15 @@ module TernaryIfExpr {
 
     final override Expr getCondition() { result = generated.getCondition() }
 
-    final override Expr getThen() { result = generated.getConsequence() }
+    final Expr getThen() { result = generated.getConsequence() }
 
-    final override Expr getElse() { result = generated.getAlternative() }
+    final Expr getElse() { result = generated.getAlternative() }
+
+    final override Expr getBranch(boolean cond) {
+      cond = true and result = getThen()
+      or
+      cond = false and result = getElse()
+    }
   }
 }
 
