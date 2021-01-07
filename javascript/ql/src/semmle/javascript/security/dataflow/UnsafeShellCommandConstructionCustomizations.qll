@@ -218,6 +218,19 @@ module UnsafeShellCommandConstruction {
   /**
    * Holds if `instance` is an instance of the access-path `ap`, and there exists a guard
    * that ensures that `instance` is not equal to `char`.
+   *
+   * For example if `ap` is `str[i]` and `char` is `<`:
+   * ```JavaScript
+   * if (str[i] !== "<" && ...) {
+   *   var foo = str[i]; // <- `instance`
+   * }
+   * ```
+   * or
+   * ```JavaScript
+   * if (!(str[i] == "<" || ...)) {
+   *   var foo = str[i]; // <- `instance`
+   * }
+   * ```
    */
   private predicate blocksCharInAccess(AccessPath ap, string char, Expr instance) {
     exists(BasicBlock bb, ConditionGuardNode guard, EqualityTest test |
