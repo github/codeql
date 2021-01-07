@@ -76,11 +76,10 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
     )
   }
 
-  /** Holds for additional steps that flow to a method call of `update` or `digest` declared in `java.security.MessageDigest`. */
+  /** Holds for additional steps that flow to additional method calls of the type `java.security.MessageDigest`. */
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(MethodAccess ma |
       ma.getMethod().getDeclaringType() instanceof MessageDigest and
-      ma.getMethod().hasName(["digest", "update"]) and
       pred.asExpr() = ma.getAnArgument() and
       (succ.asExpr() = ma or succ.asExpr() = ma.getQualifier())
     )
