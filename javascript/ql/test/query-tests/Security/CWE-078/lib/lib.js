@@ -356,3 +356,15 @@ Object.defineProperty(module.exports, "boundProblem", {
 		return boundProblem.bind(this, "safe");
 	}
 });
+
+function MyTrainer(opts) {
+	this.learn_args = opts.learn_args
+}
+
+MyTrainer.prototype = {
+	train: function() {
+		var command = "learn " + this.learn_args + " " + model; // NOT OK
+		cp.exec(command); 
+	}
+};
+module.exports.MyTrainer = MyTrainer;
