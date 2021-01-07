@@ -1,8 +1,32 @@
 #define size_t int
 #define NULL ((void*)0)
 
+#define assert(x) if (!(x)) __assert_fail(#x,__FILE__,__LINE__)
+void __assert_fail(const char *assertion, const char *file, int line) {  }
 
-unsigned char * badResize0(unsigned char * buffer,size_t currentSize,size_t newSize)
+void aFakeFailed_1(int file, int line)
+{
+}
+void aFailed_1(int file, int line)
+{
+    exit(0);
+}
+void aFailed_2(int file, int line, int ex)
+{
+    if(ex == 1)
+	    exit(0);
+    else
+	    return;
+}
+#define F_NUM 1
+#define myASSERT_1(expr) \
+    if (!(expr)) \
+        aFailed_1(F_NUM, __LINE__)
+#define myASSERT_2(expr) \
+    if (!(expr)) \
+        aFailed_2(F_NUM, __LINE__, 1)
+
+unsigned char * badResize_0(unsigned char * buffer,size_t currentSize,size_t newSize)
 {
 	// BAD: on unsuccessful call to realloc, we will lose a pointer to a valid memory block
 	if (currentSize < newSize)
@@ -12,7 +36,7 @@ unsigned char * badResize0(unsigned char * buffer,size_t currentSize,size_t newS
 	return buffer;
 }
 
-unsigned char * goodResize0(unsigned char * buffer,size_t currentSize,size_t newSize)
+unsigned char * goodResize_0(unsigned char * buffer,size_t currentSize,size_t newSize)
 {
 	// GOOD: this way we will exclude possible memory leak 
 	unsigned char * tmp;
@@ -29,7 +53,7 @@ unsigned char * goodResize0(unsigned char * buffer,size_t currentSize,size_t new
 		buffer = tmp;
 	return buffer;
 }
-unsigned char * badResize1(unsigned char * buffer,size_t currentSize,size_t newSize)
+unsigned char * badResize_1_0(unsigned char * buffer,size_t currentSize,size_t newSize)
 {
 	if(!buffer)
 		exit(0);
@@ -41,7 +65,7 @@ unsigned char * badResize1(unsigned char * buffer,size_t currentSize,size_t newS
 	return buffer;
 }
 
-unsigned char * noBadResize1(unsigned char * buffer,size_t currentSize,size_t newSize)
+unsigned char * noBadResize_1_0(unsigned char * buffer,size_t currentSize,size_t newSize)
 {
 	// GOOD: program to end
 	if (currentSize < newSize)
@@ -52,7 +76,7 @@ unsigned char * noBadResize1(unsigned char * buffer,size_t currentSize,size_t ne
 		exit(0);
 	return buffer;
 }
-unsigned char * noBadResize1e(unsigned char * buffer,size_t currentSize,size_t newSize)
+unsigned char * noBadResize_1_1(unsigned char * buffer,size_t currentSize,size_t newSize)
 {
 	// GOOD: program to end
 	if (currentSize < newSize)
@@ -64,20 +88,99 @@ unsigned char * noBadResize1e(unsigned char * buffer,size_t currentSize,size_t n
 	else
 		exit(0);
 }
-unsigned char * noBadResize1o(unsigned char * buffer,size_t currentSize,size_t newSize)
+unsigned char * noBadResize_1_2(unsigned char * buffer,size_t currentSize,size_t newSize)
 {
 	// GOOD: program to end
 	if (currentSize < newSize)
 	{
 		if(buffer = (unsigned char *)realloc(buffer, newSize))
-			exit(0);
+		exit(0);
 	}
 	return buffer;
 }
-unsigned char * badResize2(unsigned char * buffer,size_t currentSize,size_t newSize)
+unsigned char * noBadResize_1_3(unsigned char * buffer,size_t currentSize,size_t newSize)
 {
-	assert(buffer!=0);
+	// GOOD: program to end
+	if (currentSize < newSize)
+	{
+		buffer = (unsigned char *)realloc(buffer, newSize);
+	}
+	if(!buffer)
+		aFailed_1(1, 1);
+	return buffer;
+}
+unsigned char * noBadResize_1_4(unsigned char * buffer,size_t currentSize,size_t newSize)
+{
+	// GOOD: program to end
+	if (currentSize < newSize)
+	{
+		buffer = (unsigned char *)realloc(buffer, newSize);
+	}
+	if(buffer)
+		return buffer;
+	else
+		aFailed_1(1, 1);
+}
+unsigned char * noBadResize_1_5(unsigned char * buffer,size_t currentSize,size_t newSize)
+{
+	// GOOD: program to end
+	if (currentSize < newSize)
+	{
+		if(buffer = (unsigned char *)realloc(buffer, newSize))
+		aFailed_1(1, 1);
+	}
+	return buffer;
+}
+unsigned char * badResize_1_1(unsigned char * buffer,size_t currentSize,size_t newSize)
+{
 	// BAD: on unsuccessful call to realloc, we will lose a pointer to a valid memory block
+	if (currentSize < newSize)
+	{
+		buffer = (unsigned char *)realloc(buffer, newSize);
+	}
+	if(!buffer)
+		aFakeFailed_1(1, 1);
+	return buffer;
+}
+
+unsigned char * noBadResize_1_6(unsigned char * buffer,size_t currentSize,size_t newSize)
+{
+	// GOOD: program to end
+	if (currentSize < newSize)
+	{
+		buffer = (unsigned char *)realloc(buffer, newSize);
+	}
+	if(!buffer)
+		aFailed_2(1, 1, 1);
+	return buffer;
+}
+unsigned char * noBadResize_1_7(unsigned char * buffer,size_t currentSize,size_t newSize)
+{
+	// GOOD: program to end
+	if (currentSize < newSize)
+	{
+		buffer = (unsigned char *)realloc(buffer, newSize);
+	}
+	if(buffer)
+		return buffer;
+	else
+		aFailed_2(1, 1, 1);
+}
+unsigned char * noBadResize_1_8(unsigned char * buffer,size_t currentSize,size_t newSize)
+{
+	// GOOD: program to end
+	if (currentSize < newSize)
+	{
+		if(buffer = (unsigned char *)realloc(buffer, newSize))
+		aFailed_2(1, 1, 1);
+	}
+	return buffer;
+}
+
+unsigned char * badResize_2_0(unsigned char * buffer,size_t currentSize,size_t newSize)
+{
+	// BAD: on unsuccessful call to realloc, we will lose a pointer to a valid memory block
+	assert(buffer!=0);
 	if (currentSize < newSize)
 	{
 		buffer = (unsigned char *)realloc(buffer, newSize);
@@ -85,7 +188,7 @@ unsigned char * badResize2(unsigned char * buffer,size_t currentSize,size_t newS
 	return buffer;
 }
 
-unsigned char * noBadResize2(unsigned char * buffer,size_t currentSize,size_t newSize)
+unsigned char * noBadResize_2_0(unsigned char * buffer,size_t currentSize,size_t newSize)
 {
 	// GOOD: program to end
 	if (currentSize < newSize)
@@ -96,7 +199,7 @@ unsigned char * noBadResize2(unsigned char * buffer,size_t currentSize,size_t ne
 	return buffer;
 }
 
-unsigned char * noBadResize2e(unsigned char * buffer,size_t currentSize,size_t newSize)
+unsigned char * noBadResize2e_2_1(unsigned char * buffer,size_t currentSize,size_t newSize)
 {
 	// GOOD: program to end
 	if (currentSize < newSize)
@@ -104,5 +207,68 @@ unsigned char * noBadResize2e(unsigned char * buffer,size_t currentSize,size_t n
 		buffer = (unsigned char *)realloc(buffer, newSize);
 	}
 	assert(buffer!=0);
+	return buffer;
+}
+unsigned char * noBadResize_2_2(unsigned char * buffer,size_t currentSize,size_t newSize)
+{
+	// GOOD: program to end
+	if (currentSize < newSize)
+	{
+		buffer = (unsigned char *)realloc(buffer, newSize);
+		assert(buffer);
+	}
+	return buffer;
+}
+
+unsigned char * noBadResize_2_3(unsigned char * buffer,size_t currentSize,size_t newSize)
+{
+	// GOOD: program to end
+	if (currentSize < newSize)
+	{
+		buffer = (unsigned char *)realloc(buffer, newSize);
+	}
+	assert(buffer);
+	return buffer;
+}
+unsigned char * noBadResize_2_4(unsigned char * buffer,size_t currentSize,size_t newSize)
+{
+	// GOOD: program to end
+	if (currentSize < newSize)
+	{
+		buffer = (unsigned char *)realloc(buffer, newSize);
+		myASSERT_1(buffer);
+	}
+	return buffer;
+}
+
+unsigned char * noBadResize_2_5(unsigned char * buffer,size_t currentSize,size_t newSize)
+{
+	// GOOD: program to end
+	if (currentSize < newSize)
+	{
+		buffer = (unsigned char *)realloc(buffer, newSize);
+	}
+	myASSERT_1(buffer);
+	return buffer;
+}
+unsigned char * noBadResize_2_6(unsigned char * buffer,size_t currentSize,size_t newSize)
+{
+	// GOOD: program to end
+	if (currentSize < newSize)
+	{
+		buffer = (unsigned char *)realloc(buffer, newSize);
+		myASSERT_2(buffer);
+	}
+	return buffer;
+}
+
+unsigned char * noBadResize_2_7(unsigned char * buffer,size_t currentSize,size_t newSize)
+{
+	// GOOD: program to end
+	if (currentSize < newSize)
+	{
+		buffer = (unsigned char *)realloc(buffer, newSize);
+	}
+	myASSERT_2(buffer);
 	return buffer;
 }
