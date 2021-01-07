@@ -20,7 +20,6 @@ namespace Semmle.Extraction.Entities
             return cx.SourceTree == null
                 ? GeneratedLocation.Create(cx)
                 : Create(cx, Microsoft.CodeAnalysis.Location.Create(cx.SourceTree, TextSpan.FromBounds(0, 0)));
-
         }
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => symbol;
