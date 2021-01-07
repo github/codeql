@@ -77,14 +77,19 @@ namespace Semmle.Extraction.CIL.Entities
                         throw new InternalError($"Unexpected constructed method handle kind {ms.Method.Kind}");
                 }
 
-                Parameters = MakeParameters(constructedTypeSignature.ParameterTypes).ToArray();
-                foreach (var p in Parameters)
+                var parameters = GetParameterExtractionProducts(constructedTypeSignature.ParameterTypes).ToArray();
+                Parameters = parameters.OfType<Parameter>().ToArray();
+                foreach (var p in parameters)
                     yield return p;
 
                 foreach (var f in PopulateFlags)
                     yield return f;
 
-                yield return Tuples.cil_method(this, Name, DeclaringType, constructedTypeSignature.ReturnType);
+                foreach (var m in GetMethodExtractionProducts(Name, DeclaringType, constructedTypeSignature.ReturnType))
+                {
+                    yield return m;
+                }
+
                 yield return Tuples.cil_method_source_declaration(this, SourceDeclaration);
 
                 if (typeParams.Length != unboundMethod.GenericParameterCount)

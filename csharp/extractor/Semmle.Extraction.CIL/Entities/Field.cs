@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// An entity representing a field.
     /// </summary>
-    internal abstract class Field : GenericContext, IMember
+    internal abstract class Field : GenericContext, IMember, ICustomModifierReceiver
     {
         protected Field(Context cx) : base(cx)
         {
@@ -45,7 +45,13 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                yield return Tuples.cil_field(this, DeclaringType, Name, Type);
+                var t = Type;
+                if (t is ModifiedType mt)
+                {
+                    t = mt.Unmodified;
+                    yield return Tuples.cil_custom_modifiers(this, mt.Modifier, mt.IsRequired);
+                }
+                yield return Tuples.cil_field(this, DeclaringType, Name, t);
             }
         }
 
