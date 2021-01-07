@@ -1859,19 +1859,14 @@
 | Finally.cs:11:13:11:37 | call to method WriteLine | Finally.cs:14:9:16:9 | {...} | semmle.label | successor |
 | Finally.cs:11:13:11:38 | ...; | Finally.cs:11:31:11:36 | "Try1" | semmle.label | successor |
 | Finally.cs:11:31:11:36 | "Try1" | Finally.cs:11:13:11:37 | call to method WriteLine | semmle.label | successor |
-| Finally.cs:11:31:11:36 | "Try1" | Finally.cs:14:9:16:9 | [finally: exception(OutOfMemoryException)] {...} | semmle.label | exception(OutOfMemoryException) |
 | Finally.cs:14:9:16:9 | [finally: exception(Exception)] {...} | Finally.cs:15:13:15:41 | [finally: exception(Exception)] ...; | semmle.label | successor |
-| Finally.cs:14:9:16:9 | [finally: exception(OutOfMemoryException)] {...} | Finally.cs:15:13:15:41 | [finally: exception(OutOfMemoryException)] ...; | semmle.label | successor |
 | Finally.cs:14:9:16:9 | {...} | Finally.cs:15:13:15:41 | ...; | semmle.label | successor |
 | Finally.cs:15:13:15:40 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:7:10:7:11 | exit M1 (abnormal) | semmle.label | exception(Exception) |
-| Finally.cs:15:13:15:40 | [finally: exception(OutOfMemoryException)] call to method WriteLine | Finally.cs:7:10:7:11 | exit M1 (abnormal) | semmle.label | exception(OutOfMemoryException) |
 | Finally.cs:15:13:15:40 | call to method WriteLine | Finally.cs:7:10:7:11 | exit M1 (normal) | semmle.label | successor |
 | Finally.cs:15:13:15:41 | ...; | Finally.cs:15:31:15:39 | "Finally" | semmle.label | successor |
 | Finally.cs:15:13:15:41 | [finally: exception(Exception)] ...; | Finally.cs:15:31:15:39 | [finally: exception(Exception)] "Finally" | semmle.label | successor |
-| Finally.cs:15:13:15:41 | [finally: exception(OutOfMemoryException)] ...; | Finally.cs:15:31:15:39 | [finally: exception(OutOfMemoryException)] "Finally" | semmle.label | successor |
 | Finally.cs:15:31:15:39 | "Finally" | Finally.cs:15:13:15:40 | call to method WriteLine | semmle.label | successor |
 | Finally.cs:15:31:15:39 | [finally: exception(Exception)] "Finally" | Finally.cs:15:13:15:40 | [finally: exception(Exception)] call to method WriteLine | semmle.label | successor |
-| Finally.cs:15:31:15:39 | [finally: exception(OutOfMemoryException)] "Finally" | Finally.cs:15:13:15:40 | [finally: exception(OutOfMemoryException)] call to method WriteLine | semmle.label | successor |
 | Finally.cs:19:10:19:11 | enter M2 | Finally.cs:20:5:52:5 | {...} | semmle.label | successor |
 | Finally.cs:19:10:19:11 | exit M2 (abnormal) | Finally.cs:19:10:19:11 | exit M2 | semmle.label | successor |
 | Finally.cs:19:10:19:11 | exit M2 (normal) | Finally.cs:19:10:19:11 | exit M2 | semmle.label | successor |
@@ -1882,18 +1877,15 @@
 | Finally.cs:23:13:23:37 | call to method WriteLine | Finally.cs:26:9:29:9 | [exception: Exception] catch (...) {...} | semmle.label | exception(Exception) |
 | Finally.cs:23:13:23:38 | ...; | Finally.cs:23:31:23:36 | "Try2" | semmle.label | successor |
 | Finally.cs:23:31:23:36 | "Try2" | Finally.cs:23:13:23:37 | call to method WriteLine | semmle.label | successor |
-| Finally.cs:23:31:23:36 | "Try2" | Finally.cs:26:9:29:9 | [exception: OutOfMemoryException] catch (...) {...} | semmle.label | exception(OutOfMemoryException) |
 | Finally.cs:24:13:24:19 | return ...; | Finally.cs:49:9:51:9 | [finally: return] {...} | semmle.label | return |
 | Finally.cs:26:9:29:9 | [exception: Exception] catch (...) {...} | Finally.cs:26:38:26:39 | [exception: Exception] IOException ex | semmle.label | match |
 | Finally.cs:26:9:29:9 | [exception: Exception] catch (...) {...} | Finally.cs:30:9:40:9 | [exception: Exception] catch (...) {...} | semmle.label | no-match |
-| Finally.cs:26:9:29:9 | [exception: OutOfMemoryException] catch (...) {...} | Finally.cs:30:9:40:9 | [exception: OutOfMemoryException] catch (...) {...} | semmle.label | no-match |
 | Finally.cs:26:38:26:39 | [exception: Exception] IOException ex | Finally.cs:26:48:26:51 | [exception: Exception] true | semmle.label | successor |
 | Finally.cs:26:48:26:51 | [exception: Exception] true | Finally.cs:27:9:29:9 | {...} | semmle.label | true |
 | Finally.cs:27:9:29:9 | {...} | Finally.cs:28:13:28:18 | throw ...; | semmle.label | successor |
 | Finally.cs:28:13:28:18 | throw ...; | Finally.cs:49:9:51:9 | [finally: exception(IOException)] {...} | semmle.label | exception(IOException) |
 | Finally.cs:30:9:40:9 | [exception: Exception] catch (...) {...} | Finally.cs:30:41:30:42 | [exception: Exception] ArgumentException ex | semmle.label | match |
 | Finally.cs:30:9:40:9 | [exception: Exception] catch (...) {...} | Finally.cs:41:9:43:9 | [exception: Exception] catch (...) {...} | semmle.label | no-match |
-| Finally.cs:30:9:40:9 | [exception: OutOfMemoryException] catch (...) {...} | Finally.cs:41:9:43:9 | [exception: OutOfMemoryException] catch (...) {...} | semmle.label | no-match |
 | Finally.cs:30:41:30:42 | [exception: Exception] ArgumentException ex | Finally.cs:31:9:40:9 | {...} | semmle.label | successor |
 | Finally.cs:31:9:40:9 | {...} | Finally.cs:32:13:39:13 | try {...} ... | semmle.label | successor |
 | Finally.cs:32:13:39:13 | try {...} ... | Finally.cs:33:13:35:13 | {...} | semmle.label | successor |
@@ -1906,7 +1898,6 @@
 | Finally.cs:38:23:38:43 | [finally: exception(ArgumentException)] object creation of type Exception | Finally.cs:38:17:38:44 | [finally: exception(ArgumentException)] throw ...; | semmle.label | successor |
 | Finally.cs:38:37:38:42 | [finally: exception(ArgumentException)] "Boo!" | Finally.cs:38:23:38:43 | [finally: exception(ArgumentException)] object creation of type Exception | semmle.label | successor |
 | Finally.cs:41:9:43:9 | [exception: Exception] catch (...) {...} | Finally.cs:42:9:43:9 | {...} | semmle.label | match |
-| Finally.cs:41:9:43:9 | [exception: OutOfMemoryException] catch (...) {...} | Finally.cs:42:9:43:9 | {...} | semmle.label | match |
 | Finally.cs:42:9:43:9 | {...} | Finally.cs:49:9:51:9 | {...} | semmle.label | successor |
 | Finally.cs:49:9:51:9 | [finally: exception(Exception)] {...} | Finally.cs:50:13:50:41 | [finally: exception(Exception)] ...; | semmle.label | successor |
 | Finally.cs:49:9:51:9 | [finally: exception(IOException)] {...} | Finally.cs:50:13:50:41 | [finally: exception(IOException)] ...; | semmle.label | successor |
@@ -1934,49 +1925,36 @@
 | Finally.cs:58:13:58:37 | call to method WriteLine | Finally.cs:61:9:64:9 | [exception: Exception] catch (...) {...} | semmle.label | exception(Exception) |
 | Finally.cs:58:13:58:38 | ...; | Finally.cs:58:31:58:36 | "Try3" | semmle.label | successor |
 | Finally.cs:58:31:58:36 | "Try3" | Finally.cs:58:13:58:37 | call to method WriteLine | semmle.label | successor |
-| Finally.cs:58:31:58:36 | "Try3" | Finally.cs:61:9:64:9 | [exception: OutOfMemoryException] catch (...) {...} | semmle.label | exception(OutOfMemoryException) |
 | Finally.cs:59:13:59:19 | return ...; | Finally.cs:69:9:71:9 | [finally: return] {...} | semmle.label | return |
 | Finally.cs:61:9:64:9 | [exception: Exception] catch (...) {...} | Finally.cs:61:38:61:39 | [exception: Exception] IOException ex | semmle.label | match |
 | Finally.cs:61:9:64:9 | [exception: Exception] catch (...) {...} | Finally.cs:65:9:67:9 | [exception: Exception] catch (...) {...} | semmle.label | no-match |
-| Finally.cs:61:9:64:9 | [exception: OutOfMemoryException] catch (...) {...} | Finally.cs:65:9:67:9 | [exception: OutOfMemoryException] catch (...) {...} | semmle.label | no-match |
 | Finally.cs:61:38:61:39 | [exception: Exception] IOException ex | Finally.cs:61:48:61:51 | [exception: Exception] true | semmle.label | successor |
 | Finally.cs:61:48:61:51 | [exception: Exception] true | Finally.cs:62:9:64:9 | {...} | semmle.label | true |
 | Finally.cs:62:9:64:9 | {...} | Finally.cs:63:13:63:18 | throw ...; | semmle.label | successor |
 | Finally.cs:63:13:63:18 | throw ...; | Finally.cs:69:9:71:9 | [finally: exception(IOException)] {...} | semmle.label | exception(IOException) |
 | Finally.cs:65:9:67:9 | [exception: Exception] catch (...) {...} | Finally.cs:65:26:65:26 | [exception: Exception] Exception e | semmle.label | match |
-| Finally.cs:65:9:67:9 | [exception: OutOfMemoryException] catch (...) {...} | Finally.cs:65:26:65:26 | [exception: OutOfMemoryException] Exception e | semmle.label | match |
 | Finally.cs:65:26:65:26 | [exception: Exception] Exception e | Finally.cs:65:35:65:35 | [exception: Exception] access to local variable e | semmle.label | successor |
-| Finally.cs:65:26:65:26 | [exception: OutOfMemoryException] Exception e | Finally.cs:65:35:65:35 | [exception: OutOfMemoryException] access to local variable e | semmle.label | successor |
 | Finally.cs:65:35:65:35 | [exception: Exception] access to local variable e | Finally.cs:65:35:65:43 | [exception: Exception] access to property Message | semmle.label | successor |
-| Finally.cs:65:35:65:35 | [exception: OutOfMemoryException] access to local variable e | Finally.cs:65:35:65:43 | [exception: OutOfMemoryException] access to property Message | semmle.label | successor |
 | Finally.cs:65:35:65:43 | [exception: Exception] access to property Message | Finally.cs:65:48:65:51 | [exception: Exception] null | semmle.label | successor |
-| Finally.cs:65:35:65:43 | [exception: OutOfMemoryException] access to property Message | Finally.cs:65:48:65:51 | [exception: OutOfMemoryException] null | semmle.label | successor |
 | Finally.cs:65:35:65:51 | [exception: Exception] ... != ... | Finally.cs:66:9:67:9 | {...} | semmle.label | true |
 | Finally.cs:65:35:65:51 | [exception: Exception] ... != ... | Finally.cs:69:9:71:9 | [finally: exception(Exception)] {...} | semmle.label | exception(Exception) |
-| Finally.cs:65:35:65:51 | [exception: OutOfMemoryException] ... != ... | Finally.cs:66:9:67:9 | {...} | semmle.label | true |
-| Finally.cs:65:35:65:51 | [exception: OutOfMemoryException] ... != ... | Finally.cs:69:9:71:9 | [finally: exception(OutOfMemoryException)] {...} | semmle.label | exception(OutOfMemoryException) |
 | Finally.cs:65:48:65:51 | [exception: Exception] null | Finally.cs:65:35:65:51 | [exception: Exception] ... != ... | semmle.label | successor |
-| Finally.cs:65:48:65:51 | [exception: OutOfMemoryException] null | Finally.cs:65:35:65:51 | [exception: OutOfMemoryException] ... != ... | semmle.label | successor |
 | Finally.cs:66:9:67:9 | {...} | Finally.cs:69:9:71:9 | {...} | semmle.label | successor |
 | Finally.cs:69:9:71:9 | [finally: exception(Exception)] {...} | Finally.cs:70:13:70:41 | [finally: exception(Exception)] ...; | semmle.label | successor |
 | Finally.cs:69:9:71:9 | [finally: exception(IOException)] {...} | Finally.cs:70:13:70:41 | [finally: exception(IOException)] ...; | semmle.label | successor |
-| Finally.cs:69:9:71:9 | [finally: exception(OutOfMemoryException)] {...} | Finally.cs:70:13:70:41 | [finally: exception(OutOfMemoryException)] ...; | semmle.label | successor |
 | Finally.cs:69:9:71:9 | [finally: return] {...} | Finally.cs:70:13:70:41 | [finally: return] ...; | semmle.label | successor |
 | Finally.cs:69:9:71:9 | {...} | Finally.cs:70:13:70:41 | ...; | semmle.label | successor |
 | Finally.cs:70:13:70:40 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:54:10:54:11 | exit M3 (abnormal) | semmle.label | exception(Exception) |
 | Finally.cs:70:13:70:40 | [finally: exception(IOException)] call to method WriteLine | Finally.cs:54:10:54:11 | exit M3 (abnormal) | semmle.label | exception(IOException) |
-| Finally.cs:70:13:70:40 | [finally: exception(OutOfMemoryException)] call to method WriteLine | Finally.cs:54:10:54:11 | exit M3 (abnormal) | semmle.label | exception(OutOfMemoryException) |
 | Finally.cs:70:13:70:40 | [finally: return] call to method WriteLine | Finally.cs:54:10:54:11 | exit M3 (normal) | semmle.label | return |
 | Finally.cs:70:13:70:40 | call to method WriteLine | Finally.cs:54:10:54:11 | exit M3 (normal) | semmle.label | successor |
 | Finally.cs:70:13:70:41 | ...; | Finally.cs:70:31:70:39 | "Finally" | semmle.label | successor |
 | Finally.cs:70:13:70:41 | [finally: exception(Exception)] ...; | Finally.cs:70:31:70:39 | [finally: exception(Exception)] "Finally" | semmle.label | successor |
 | Finally.cs:70:13:70:41 | [finally: exception(IOException)] ...; | Finally.cs:70:31:70:39 | [finally: exception(IOException)] "Finally" | semmle.label | successor |
-| Finally.cs:70:13:70:41 | [finally: exception(OutOfMemoryException)] ...; | Finally.cs:70:31:70:39 | [finally: exception(OutOfMemoryException)] "Finally" | semmle.label | successor |
 | Finally.cs:70:13:70:41 | [finally: return] ...; | Finally.cs:70:31:70:39 | [finally: return] "Finally" | semmle.label | successor |
 | Finally.cs:70:31:70:39 | "Finally" | Finally.cs:70:13:70:40 | call to method WriteLine | semmle.label | successor |
 | Finally.cs:70:31:70:39 | [finally: exception(Exception)] "Finally" | Finally.cs:70:13:70:40 | [finally: exception(Exception)] call to method WriteLine | semmle.label | successor |
 | Finally.cs:70:31:70:39 | [finally: exception(IOException)] "Finally" | Finally.cs:70:13:70:40 | [finally: exception(IOException)] call to method WriteLine | semmle.label | successor |
-| Finally.cs:70:31:70:39 | [finally: exception(OutOfMemoryException)] "Finally" | Finally.cs:70:13:70:40 | [finally: exception(OutOfMemoryException)] call to method WriteLine | semmle.label | successor |
 | Finally.cs:70:31:70:39 | [finally: return] "Finally" | Finally.cs:70:13:70:40 | [finally: return] call to method WriteLine | semmle.label | successor |
 | Finally.cs:74:10:74:11 | enter M4 | Finally.cs:75:5:101:5 | {...} | semmle.label | successor |
 | Finally.cs:74:10:74:11 | exit M4 (abnormal) | Finally.cs:74:10:74:11 | exit M4 | semmle.label | successor |
@@ -2257,19 +2235,14 @@
 | Finally.cs:137:13:137:36 | call to method WriteLine | Finally.cs:140:9:143:9 | {...} | semmle.label | successor |
 | Finally.cs:137:13:137:37 | ...; | Finally.cs:137:31:137:35 | "Try" | semmle.label | successor |
 | Finally.cs:137:31:137:35 | "Try" | Finally.cs:137:13:137:36 | call to method WriteLine | semmle.label | successor |
-| Finally.cs:137:31:137:35 | "Try" | Finally.cs:140:9:143:9 | [finally: exception(OutOfMemoryException)] {...} | semmle.label | exception(OutOfMemoryException) |
 | Finally.cs:140:9:143:9 | [finally: exception(Exception)] {...} | Finally.cs:141:41:141:42 | [finally: exception(Exception)] "" | semmle.label | successor |
-| Finally.cs:140:9:143:9 | [finally: exception(OutOfMemoryException)] {...} | Finally.cs:141:41:141:42 | [finally: exception(OutOfMemoryException)] "" | semmle.label | successor |
 | Finally.cs:140:9:143:9 | {...} | Finally.cs:141:41:141:42 | "" | semmle.label | successor |
 | Finally.cs:141:13:141:44 | [finally: exception(Exception)] throw ...; | Finally.cs:133:10:133:11 | exit M7 (abnormal) | semmle.label | exception(ArgumentException) |
-| Finally.cs:141:13:141:44 | [finally: exception(OutOfMemoryException)] throw ...; | Finally.cs:133:10:133:11 | exit M7 (abnormal) | semmle.label | exception(ArgumentException) |
 | Finally.cs:141:13:141:44 | throw ...; | Finally.cs:133:10:133:11 | exit M7 (abnormal) | semmle.label | exception(ArgumentException) |
 | Finally.cs:141:19:141:43 | [finally: exception(Exception)] object creation of type ArgumentException | Finally.cs:141:13:141:44 | [finally: exception(Exception)] throw ...; | semmle.label | successor |
-| Finally.cs:141:19:141:43 | [finally: exception(OutOfMemoryException)] object creation of type ArgumentException | Finally.cs:141:13:141:44 | [finally: exception(OutOfMemoryException)] throw ...; | semmle.label | successor |
 | Finally.cs:141:19:141:43 | object creation of type ArgumentException | Finally.cs:141:13:141:44 | throw ...; | semmle.label | successor |
 | Finally.cs:141:41:141:42 | "" | Finally.cs:141:19:141:43 | object creation of type ArgumentException | semmle.label | successor |
 | Finally.cs:141:41:141:42 | [finally: exception(Exception)] "" | Finally.cs:141:19:141:43 | [finally: exception(Exception)] object creation of type ArgumentException | semmle.label | successor |
-| Finally.cs:141:41:141:42 | [finally: exception(OutOfMemoryException)] "" | Finally.cs:141:19:141:43 | [finally: exception(OutOfMemoryException)] object creation of type ArgumentException | semmle.label | successor |
 | Finally.cs:147:10:147:11 | enter M8 | Finally.cs:148:5:170:5 | {...} | semmle.label | successor |
 | Finally.cs:147:10:147:11 | exit M8 (abnormal) | Finally.cs:147:10:147:11 | exit M8 | semmle.label | successor |
 | Finally.cs:147:10:147:11 | exit M8 (normal) | Finally.cs:147:10:147:11 | exit M8 | semmle.label | successor |
@@ -2327,74 +2300,50 @@
 | Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:159:21:159:45 | throw ...; | semmle.label | successor |
 | Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} | semmle.label | exception(Exception) |
 | Finally.cs:159:41:159:43 | "1" | Finally.cs:159:27:159:44 | object creation of type Exception | semmle.label | successor |
-| Finally.cs:159:41:159:43 | "1" | Finally.cs:161:13:164:13 | [exception: OutOfMemoryException] catch (...) {...} | semmle.label | exception(OutOfMemoryException) |
 | Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" | Finally.cs:159:27:159:44 | [finally: exception(ArgumentNullException)] object creation of type Exception | semmle.label | successor |
-| Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] catch (...) {...} | semmle.label | exception(OutOfMemoryException) |
 | Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" | Finally.cs:159:27:159:44 | [finally: exception(Exception)] object creation of type Exception | semmle.label | successor |
-| Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: OutOfMemoryException] catch (...) {...} | semmle.label | exception(OutOfMemoryException) |
 | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} | Finally.cs:161:30:161:30 | [exception: Exception] Exception e | semmle.label | match |
 | Finally.cs:161:13:164:13 | [exception: NullReferenceException] catch (...) {...} | Finally.cs:161:30:161:30 | [exception: NullReferenceException] Exception e | semmle.label | match |
-| Finally.cs:161:13:164:13 | [exception: OutOfMemoryException] catch (...) {...} | Finally.cs:161:30:161:30 | [exception: OutOfMemoryException] Exception e | semmle.label | match |
 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} | Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: Exception] Exception e | semmle.label | match |
 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} | Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: NullReferenceException] Exception e | semmle.label | match |
-| Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] catch (...) {...} | Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] Exception e | semmle.label | match |
 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} | Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: Exception] Exception e | semmle.label | match |
 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} | Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: NullReferenceException] Exception e | semmle.label | match |
-| Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: OutOfMemoryException] catch (...) {...} | Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: OutOfMemoryException] Exception e | semmle.label | match |
 | Finally.cs:161:30:161:30 | [exception: Exception] Exception e | Finally.cs:161:39:161:39 | [exception: Exception] access to local variable e | semmle.label | successor |
 | Finally.cs:161:30:161:30 | [exception: NullReferenceException] Exception e | Finally.cs:161:39:161:39 | [exception: NullReferenceException] access to local variable e | semmle.label | successor |
-| Finally.cs:161:30:161:30 | [exception: OutOfMemoryException] Exception e | Finally.cs:161:39:161:39 | [exception: OutOfMemoryException] access to local variable e | semmle.label | successor |
 | Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: Exception] Exception e | Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: Exception] access to local variable e | semmle.label | successor |
 | Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: NullReferenceException] Exception e | Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: NullReferenceException] access to local variable e | semmle.label | successor |
-| Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] Exception e | Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] access to local variable e | semmle.label | successor |
 | Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: Exception] Exception e | Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: Exception] access to local variable e | semmle.label | successor |
 | Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: NullReferenceException] Exception e | Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: NullReferenceException] access to local variable e | semmle.label | successor |
-| Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: OutOfMemoryException] Exception e | Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: OutOfMemoryException] access to local variable e | semmle.label | successor |
 | Finally.cs:161:39:161:39 | [exception: Exception] access to local variable e | Finally.cs:161:39:161:47 | [exception: Exception] access to property Message | semmle.label | successor |
 | Finally.cs:161:39:161:39 | [exception: NullReferenceException] access to local variable e | Finally.cs:161:39:161:47 | [exception: NullReferenceException] access to property Message | semmle.label | successor |
-| Finally.cs:161:39:161:39 | [exception: OutOfMemoryException] access to local variable e | Finally.cs:161:39:161:47 | [exception: OutOfMemoryException] access to property Message | semmle.label | successor |
 | Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: Exception] access to local variable e | Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: Exception] access to property Message | semmle.label | successor |
 | Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: NullReferenceException] access to local variable e | Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: NullReferenceException] access to property Message | semmle.label | successor |
-| Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] access to local variable e | Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] access to property Message | semmle.label | successor |
 | Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: Exception] access to local variable e | Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: Exception] access to property Message | semmle.label | successor |
 | Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: NullReferenceException] access to local variable e | Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: NullReferenceException] access to property Message | semmle.label | successor |
-| Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: OutOfMemoryException] access to local variable e | Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: OutOfMemoryException] access to property Message | semmle.label | successor |
 | Finally.cs:161:39:161:47 | [exception: Exception] access to property Message | Finally.cs:161:52:161:54 | [exception: Exception] "1" | semmle.label | successor |
 | Finally.cs:161:39:161:47 | [exception: NullReferenceException] access to property Message | Finally.cs:161:52:161:54 | [exception: NullReferenceException] "1" | semmle.label | successor |
-| Finally.cs:161:39:161:47 | [exception: OutOfMemoryException] access to property Message | Finally.cs:161:52:161:54 | [exception: OutOfMemoryException] "1" | semmle.label | successor |
 | Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: Exception] access to property Message | Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: Exception] "1" | semmle.label | successor |
 | Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: NullReferenceException] access to property Message | Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] "1" | semmle.label | successor |
-| Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] access to property Message | Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] "1" | semmle.label | successor |
 | Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: Exception] access to property Message | Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: Exception] "1" | semmle.label | successor |
 | Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: NullReferenceException] access to property Message | Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: NullReferenceException] "1" | semmle.label | successor |
-| Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: OutOfMemoryException] access to property Message | Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: OutOfMemoryException] "1" | semmle.label | successor |
 | Finally.cs:161:39:161:54 | [exception: Exception] ... == ... | Finally.cs:162:13:164:13 | {...} | semmle.label | true |
 | Finally.cs:161:39:161:54 | [exception: Exception] ... == ... | Finally.cs:165:13:168:13 | catch {...} | semmle.label | false |
 | Finally.cs:161:39:161:54 | [exception: NullReferenceException] ... == ... | Finally.cs:162:13:164:13 | {...} | semmle.label | true |
 | Finally.cs:161:39:161:54 | [exception: NullReferenceException] ... == ... | Finally.cs:165:13:168:13 | catch {...} | semmle.label | false |
-| Finally.cs:161:39:161:54 | [exception: OutOfMemoryException] ... == ... | Finally.cs:162:13:164:13 | {...} | semmle.label | true |
-| Finally.cs:161:39:161:54 | [exception: OutOfMemoryException] ... == ... | Finally.cs:165:13:168:13 | catch {...} | semmle.label | false |
 | Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: Exception] ... == ... | Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} | semmle.label | true |
 | Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: Exception] ... == ... | Finally.cs:165:13:168:13 | [finally: exception(ArgumentNullException)] catch {...} | semmle.label | false |
 | Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] ... == ... | Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} | semmle.label | true |
 | Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] ... == ... | Finally.cs:165:13:168:13 | [finally: exception(ArgumentNullException)] catch {...} | semmle.label | false |
-| Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] ... == ... | Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} | semmle.label | true |
-| Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] ... == ... | Finally.cs:165:13:168:13 | [finally: exception(ArgumentNullException)] catch {...} | semmle.label | false |
 | Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: Exception] ... == ... | Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} | semmle.label | true |
 | Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: Exception] ... == ... | Finally.cs:165:13:168:13 | [finally: exception(Exception)] catch {...} | semmle.label | false |
 | Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: NullReferenceException] ... == ... | Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} | semmle.label | true |
 | Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: NullReferenceException] ... == ... | Finally.cs:165:13:168:13 | [finally: exception(Exception)] catch {...} | semmle.label | false |
-| Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: OutOfMemoryException] ... == ... | Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} | semmle.label | true |
-| Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: OutOfMemoryException] ... == ... | Finally.cs:165:13:168:13 | [finally: exception(Exception)] catch {...} | semmle.label | false |
 | Finally.cs:161:52:161:54 | [exception: Exception] "1" | Finally.cs:161:39:161:54 | [exception: Exception] ... == ... | semmle.label | successor |
 | Finally.cs:161:52:161:54 | [exception: NullReferenceException] "1" | Finally.cs:161:39:161:54 | [exception: NullReferenceException] ... == ... | semmle.label | successor |
-| Finally.cs:161:52:161:54 | [exception: OutOfMemoryException] "1" | Finally.cs:161:39:161:54 | [exception: OutOfMemoryException] ... == ... | semmle.label | successor |
 | Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: Exception] "1" | Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: Exception] ... == ... | semmle.label | successor |
 | Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] "1" | Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] ... == ... | semmle.label | successor |
-| Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] "1" | Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] ... == ... | semmle.label | successor |
 | Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: Exception] "1" | Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: Exception] ... == ... | semmle.label | successor |
 | Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: NullReferenceException] "1" | Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: NullReferenceException] ... == ... | semmle.label | successor |
-| Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: OutOfMemoryException] "1" | Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: OutOfMemoryException] ... == ... | semmle.label | successor |
 | Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} | Finally.cs:163:17:163:43 | [finally: exception(ArgumentNullException)] ...; | semmle.label | successor |
 | Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} | Finally.cs:163:17:163:43 | [finally: exception(Exception)] ...; | semmle.label | successor |
 | Finally.cs:162:13:164:13 | {...} | Finally.cs:163:17:163:43 | ...; | semmle.label | successor |
@@ -2613,7 +2562,6 @@
 | Finally.cs:220:13:220:36 | call to method WriteLine | Finally.cs:227:9:229:9 | {...} | semmle.label | successor |
 | Finally.cs:220:13:220:37 | ...; | Finally.cs:220:31:220:35 | "Try" | semmle.label | successor |
 | Finally.cs:220:31:220:35 | "Try" | Finally.cs:220:13:220:36 | call to method WriteLine | semmle.label | successor |
-| Finally.cs:220:31:220:35 | "Try" | Finally.cs:222:9:225:9 | catch {...} | semmle.label | exception(OutOfMemoryException) |
 | Finally.cs:222:9:225:9 | catch {...} | Finally.cs:223:9:225:9 | {...} | semmle.label | successor |
 | Finally.cs:223:9:225:9 | {...} | Finally.cs:224:13:224:39 | ...; | semmle.label | successor |
 | Finally.cs:224:13:224:38 | call to method WriteLine | Finally.cs:227:9:229:9 | {...} | semmle.label | successor |
@@ -2707,23 +2655,18 @@
 | Finally.cs:254:13:254:44 | call to method WriteLine | Finally.cs:257:9:259:9 | {...} | semmle.label | successor |
 | Finally.cs:254:13:254:45 | ...; | Finally.cs:254:31:254:43 | "Mid finally" | semmle.label | successor |
 | Finally.cs:254:31:254:43 | "Mid finally" | Finally.cs:254:13:254:44 | call to method WriteLine | semmle.label | successor |
-| Finally.cs:254:31:254:43 | "Mid finally" | Finally.cs:257:9:259:9 | [finally: exception(OutOfMemoryException)] {...} | semmle.label | exception(OutOfMemoryException) |
 | Finally.cs:257:9:259:9 | [finally: exception(Exception)] {...} | Finally.cs:258:13:258:47 | [finally: exception(Exception)] ...; | semmle.label | successor |
 | Finally.cs:257:9:259:9 | [finally: exception(ExceptionA)] {...} | Finally.cs:258:13:258:47 | [finally: exception(ExceptionA)] ...; | semmle.label | successor |
-| Finally.cs:257:9:259:9 | [finally: exception(OutOfMemoryException)] {...} | Finally.cs:258:13:258:47 | [finally: exception(OutOfMemoryException)] ...; | semmle.label | successor |
 | Finally.cs:257:9:259:9 | {...} | Finally.cs:258:13:258:47 | ...; | semmle.label | successor |
 | Finally.cs:258:13:258:46 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:233:10:233:12 | exit M12 (abnormal) | semmle.label | exception(Exception) |
 | Finally.cs:258:13:258:46 | [finally: exception(ExceptionA)] call to method WriteLine | Finally.cs:233:10:233:12 | exit M12 (abnormal) | semmle.label | exception(ExceptionA) |
-| Finally.cs:258:13:258:46 | [finally: exception(OutOfMemoryException)] call to method WriteLine | Finally.cs:233:10:233:12 | exit M12 (abnormal) | semmle.label | exception(OutOfMemoryException) |
 | Finally.cs:258:13:258:46 | call to method WriteLine | Finally.cs:260:9:260:34 | ...; | semmle.label | successor |
 | Finally.cs:258:13:258:47 | ...; | Finally.cs:258:31:258:45 | "Outer finally" | semmle.label | successor |
 | Finally.cs:258:13:258:47 | [finally: exception(Exception)] ...; | Finally.cs:258:31:258:45 | [finally: exception(Exception)] "Outer finally" | semmle.label | successor |
 | Finally.cs:258:13:258:47 | [finally: exception(ExceptionA)] ...; | Finally.cs:258:31:258:45 | [finally: exception(ExceptionA)] "Outer finally" | semmle.label | successor |
-| Finally.cs:258:13:258:47 | [finally: exception(OutOfMemoryException)] ...; | Finally.cs:258:31:258:45 | [finally: exception(OutOfMemoryException)] "Outer finally" | semmle.label | successor |
 | Finally.cs:258:31:258:45 | "Outer finally" | Finally.cs:258:13:258:46 | call to method WriteLine | semmle.label | successor |
 | Finally.cs:258:31:258:45 | [finally: exception(Exception)] "Outer finally" | Finally.cs:258:13:258:46 | [finally: exception(Exception)] call to method WriteLine | semmle.label | successor |
 | Finally.cs:258:31:258:45 | [finally: exception(ExceptionA)] "Outer finally" | Finally.cs:258:13:258:46 | [finally: exception(ExceptionA)] call to method WriteLine | semmle.label | successor |
-| Finally.cs:258:31:258:45 | [finally: exception(OutOfMemoryException)] "Outer finally" | Finally.cs:258:13:258:46 | [finally: exception(OutOfMemoryException)] call to method WriteLine | semmle.label | successor |
 | Finally.cs:260:9:260:33 | call to method WriteLine | Finally.cs:233:10:233:12 | exit M12 (normal) | semmle.label | successor |
 | Finally.cs:260:9:260:34 | ...; | Finally.cs:260:27:260:32 | "Done" | semmle.label | successor |
 | Finally.cs:260:27:260:32 | "Done" | Finally.cs:260:9:260:33 | call to method WriteLine | semmle.label | successor |

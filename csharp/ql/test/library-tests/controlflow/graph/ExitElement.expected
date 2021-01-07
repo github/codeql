@@ -982,25 +982,19 @@
 | CompileTimeOperators.cs:22:23:22:23 | access to parameter i | CompileTimeOperators.cs:22:23:22:23 | access to parameter i | normal |
 | CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | goto(End) [normal] (0) |
 | CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(Exception) [normal] (0) |
-| CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(OutOfMemoryException) [normal] (0) |
 | CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:40:14:40:37 | call to method WriteLine | normal |
 | CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | goto(End) [normal] (0) |
 | CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | normal |
 | CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(Exception) [normal] (0) |
-| CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(OutOfMemoryException) [normal] (0) |
 | CompileTimeOperators.cs:31:9:34:9 | {...} | CompileTimeOperators.cs:32:13:32:21 | goto ...; | goto(End) |
 | CompileTimeOperators.cs:31:9:34:9 | {...} | CompileTimeOperators.cs:33:13:33:37 | call to method WriteLine | normal |
 | CompileTimeOperators.cs:31:9:34:9 | {...} | CompileTimeOperators.cs:33:13:33:37 | call to method WriteLine | throw(Exception) |
-| CompileTimeOperators.cs:31:9:34:9 | {...} | CompileTimeOperators.cs:33:31:33:36 | "Dead" | throw(OutOfMemoryException) |
 | CompileTimeOperators.cs:32:13:32:21 | goto ...; | CompileTimeOperators.cs:32:13:32:21 | goto ...; | goto(End) |
 | CompileTimeOperators.cs:33:13:33:37 | call to method WriteLine | CompileTimeOperators.cs:33:13:33:37 | call to method WriteLine | normal |
 | CompileTimeOperators.cs:33:13:33:37 | call to method WriteLine | CompileTimeOperators.cs:33:13:33:37 | call to method WriteLine | throw(Exception) |
-| CompileTimeOperators.cs:33:13:33:37 | call to method WriteLine | CompileTimeOperators.cs:33:31:33:36 | "Dead" | throw(OutOfMemoryException) |
 | CompileTimeOperators.cs:33:13:33:38 | ...; | CompileTimeOperators.cs:33:13:33:37 | call to method WriteLine | normal |
 | CompileTimeOperators.cs:33:13:33:38 | ...; | CompileTimeOperators.cs:33:13:33:37 | call to method WriteLine | throw(Exception) |
-| CompileTimeOperators.cs:33:13:33:38 | ...; | CompileTimeOperators.cs:33:31:33:36 | "Dead" | throw(OutOfMemoryException) |
 | CompileTimeOperators.cs:33:31:33:36 | "Dead" | CompileTimeOperators.cs:33:31:33:36 | "Dead" | normal |
-| CompileTimeOperators.cs:33:31:33:36 | "Dead" | CompileTimeOperators.cs:33:31:33:36 | "Dead" | throw(OutOfMemoryException) |
 | CompileTimeOperators.cs:36:9:38:9 | {...} | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | normal |
 | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | normal |
 | CompileTimeOperators.cs:37:13:37:41 | ...; | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | normal |
@@ -1635,21 +1629,15 @@
 | Extensions.cs:25:23:25:32 | delegate creation of type Func<String,Boolean> | Extensions.cs:25:23:25:32 | delegate creation of type Func<String,Boolean> | normal |
 | Finally.cs:8:5:17:5 | {...} | Finally.cs:15:13:15:40 | call to method WriteLine | normal |
 | Finally.cs:8:5:17:5 | {...} | Finally.cs:15:13:15:40 | call to method WriteLine | throw(Exception) [normal] (0) |
-| Finally.cs:8:5:17:5 | {...} | Finally.cs:15:13:15:40 | call to method WriteLine | throw(OutOfMemoryException) [normal] (0) |
 | Finally.cs:9:9:16:9 | try {...} ... | Finally.cs:15:13:15:40 | call to method WriteLine | normal |
 | Finally.cs:9:9:16:9 | try {...} ... | Finally.cs:15:13:15:40 | call to method WriteLine | throw(Exception) [normal] (0) |
-| Finally.cs:9:9:16:9 | try {...} ... | Finally.cs:15:13:15:40 | call to method WriteLine | throw(OutOfMemoryException) [normal] (0) |
 | Finally.cs:10:9:12:9 | {...} | Finally.cs:11:13:11:37 | call to method WriteLine | normal |
 | Finally.cs:10:9:12:9 | {...} | Finally.cs:11:13:11:37 | call to method WriteLine | throw(Exception) |
-| Finally.cs:10:9:12:9 | {...} | Finally.cs:11:31:11:36 | "Try1" | throw(OutOfMemoryException) |
 | Finally.cs:11:13:11:37 | call to method WriteLine | Finally.cs:11:13:11:37 | call to method WriteLine | normal |
 | Finally.cs:11:13:11:37 | call to method WriteLine | Finally.cs:11:13:11:37 | call to method WriteLine | throw(Exception) |
-| Finally.cs:11:13:11:37 | call to method WriteLine | Finally.cs:11:31:11:36 | "Try1" | throw(OutOfMemoryException) |
 | Finally.cs:11:13:11:38 | ...; | Finally.cs:11:13:11:37 | call to method WriteLine | normal |
 | Finally.cs:11:13:11:38 | ...; | Finally.cs:11:13:11:37 | call to method WriteLine | throw(Exception) |
-| Finally.cs:11:13:11:38 | ...; | Finally.cs:11:31:11:36 | "Try1" | throw(OutOfMemoryException) |
 | Finally.cs:11:31:11:36 | "Try1" | Finally.cs:11:31:11:36 | "Try1" | normal |
-| Finally.cs:11:31:11:36 | "Try1" | Finally.cs:11:31:11:36 | "Try1" | throw(OutOfMemoryException) |
 | Finally.cs:14:9:16:9 | {...} | Finally.cs:15:13:15:40 | call to method WriteLine | normal |
 | Finally.cs:15:13:15:40 | call to method WriteLine | Finally.cs:15:13:15:40 | call to method WriteLine | normal |
 | Finally.cs:15:13:15:41 | ...; | Finally.cs:15:13:15:40 | call to method WriteLine | normal |
@@ -1663,16 +1651,12 @@
 | Finally.cs:21:9:51:9 | try {...} ... | Finally.cs:50:13:50:40 | call to method WriteLine | throw(Exception) [normal] (0) |
 | Finally.cs:21:9:51:9 | try {...} ... | Finally.cs:50:13:50:40 | call to method WriteLine | throw(IOException) [normal] (0) |
 | Finally.cs:22:9:25:9 | {...} | Finally.cs:23:13:23:37 | call to method WriteLine | throw(Exception) |
-| Finally.cs:22:9:25:9 | {...} | Finally.cs:23:31:23:36 | "Try2" | throw(OutOfMemoryException) |
 | Finally.cs:22:9:25:9 | {...} | Finally.cs:24:13:24:19 | return ...; | return |
 | Finally.cs:23:13:23:37 | call to method WriteLine | Finally.cs:23:13:23:37 | call to method WriteLine | normal |
 | Finally.cs:23:13:23:37 | call to method WriteLine | Finally.cs:23:13:23:37 | call to method WriteLine | throw(Exception) |
-| Finally.cs:23:13:23:37 | call to method WriteLine | Finally.cs:23:31:23:36 | "Try2" | throw(OutOfMemoryException) |
 | Finally.cs:23:13:23:38 | ...; | Finally.cs:23:13:23:37 | call to method WriteLine | normal |
 | Finally.cs:23:13:23:38 | ...; | Finally.cs:23:13:23:37 | call to method WriteLine | throw(Exception) |
-| Finally.cs:23:13:23:38 | ...; | Finally.cs:23:31:23:36 | "Try2" | throw(OutOfMemoryException) |
 | Finally.cs:23:31:23:36 | "Try2" | Finally.cs:23:31:23:36 | "Try2" | normal |
-| Finally.cs:23:31:23:36 | "Try2" | Finally.cs:23:31:23:36 | "Try2" | throw(OutOfMemoryException) |
 | Finally.cs:24:13:24:19 | return ...; | Finally.cs:24:13:24:19 | return ...; | return |
 | Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:26:9:29:9 | catch (...) {...} | no-match |
 | Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:28:13:28:18 | throw ...; | throw(IOException) |
@@ -1707,23 +1691,17 @@
 | Finally.cs:55:5:72:5 | {...} | Finally.cs:70:13:70:40 | call to method WriteLine | return [normal] (0) |
 | Finally.cs:55:5:72:5 | {...} | Finally.cs:70:13:70:40 | call to method WriteLine | throw(Exception) [normal] (0) |
 | Finally.cs:55:5:72:5 | {...} | Finally.cs:70:13:70:40 | call to method WriteLine | throw(IOException) [normal] (0) |
-| Finally.cs:55:5:72:5 | {...} | Finally.cs:70:13:70:40 | call to method WriteLine | throw(OutOfMemoryException) [normal] (0) |
 | Finally.cs:56:9:71:9 | try {...} ... | Finally.cs:70:13:70:40 | call to method WriteLine | normal |
 | Finally.cs:56:9:71:9 | try {...} ... | Finally.cs:70:13:70:40 | call to method WriteLine | return [normal] (0) |
 | Finally.cs:56:9:71:9 | try {...} ... | Finally.cs:70:13:70:40 | call to method WriteLine | throw(Exception) [normal] (0) |
 | Finally.cs:56:9:71:9 | try {...} ... | Finally.cs:70:13:70:40 | call to method WriteLine | throw(IOException) [normal] (0) |
-| Finally.cs:56:9:71:9 | try {...} ... | Finally.cs:70:13:70:40 | call to method WriteLine | throw(OutOfMemoryException) [normal] (0) |
 | Finally.cs:57:9:60:9 | {...} | Finally.cs:58:13:58:37 | call to method WriteLine | throw(Exception) |
-| Finally.cs:57:9:60:9 | {...} | Finally.cs:58:31:58:36 | "Try3" | throw(OutOfMemoryException) |
 | Finally.cs:57:9:60:9 | {...} | Finally.cs:59:13:59:19 | return ...; | return |
 | Finally.cs:58:13:58:37 | call to method WriteLine | Finally.cs:58:13:58:37 | call to method WriteLine | normal |
 | Finally.cs:58:13:58:37 | call to method WriteLine | Finally.cs:58:13:58:37 | call to method WriteLine | throw(Exception) |
-| Finally.cs:58:13:58:37 | call to method WriteLine | Finally.cs:58:31:58:36 | "Try3" | throw(OutOfMemoryException) |
 | Finally.cs:58:13:58:38 | ...; | Finally.cs:58:13:58:37 | call to method WriteLine | normal |
 | Finally.cs:58:13:58:38 | ...; | Finally.cs:58:13:58:37 | call to method WriteLine | throw(Exception) |
-| Finally.cs:58:13:58:38 | ...; | Finally.cs:58:31:58:36 | "Try3" | throw(OutOfMemoryException) |
 | Finally.cs:58:31:58:36 | "Try3" | Finally.cs:58:31:58:36 | "Try3" | normal |
-| Finally.cs:58:31:58:36 | "Try3" | Finally.cs:58:31:58:36 | "Try3" | throw(OutOfMemoryException) |
 | Finally.cs:59:13:59:19 | return ...; | Finally.cs:59:13:59:19 | return ...; | return |
 | Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:61:9:64:9 | catch (...) {...} | no-match |
 | Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:63:13:63:18 | throw ...; | throw(IOException) |
@@ -1732,9 +1710,7 @@
 | Finally.cs:62:9:64:9 | {...} | Finally.cs:63:13:63:18 | throw ...; | throw(IOException) |
 | Finally.cs:63:13:63:18 | throw ...; | Finally.cs:63:13:63:18 | throw ...; | throw(IOException) |
 | Finally.cs:65:9:67:9 | catch (...) {...} | Finally.cs:65:9:67:9 | catch (...) {...} | throw(Exception) [no-match] (0) |
-| Finally.cs:65:9:67:9 | catch (...) {...} | Finally.cs:65:9:67:9 | catch (...) {...} | throw(OutOfMemoryException) [no-match] (0) |
 | Finally.cs:65:9:67:9 | catch (...) {...} | Finally.cs:65:35:65:51 | ... != ... | throw(Exception) [false] (0) |
-| Finally.cs:65:9:67:9 | catch (...) {...} | Finally.cs:65:35:65:51 | ... != ... | throw(OutOfMemoryException) [false] (0) |
 | Finally.cs:65:9:67:9 | catch (...) {...} | Finally.cs:66:9:67:9 | {...} | normal |
 | Finally.cs:65:26:65:26 | Exception e | Finally.cs:65:26:65:26 | Exception e | normal |
 | Finally.cs:65:35:65:35 | access to local variable e | Finally.cs:65:35:65:35 | access to local variable e | normal |
@@ -1934,23 +1910,17 @@
 | Finally.cs:129:13:129:13 | ; | Finally.cs:129:13:129:13 | ; | normal |
 | Finally.cs:134:5:145:5 | {...} | Finally.cs:141:13:141:44 | throw ...; | throw(ArgumentException) |
 | Finally.cs:134:5:145:5 | {...} | Finally.cs:142:13:142:37 | call to method WriteLine | throw(Exception) [normal] (0) |
-| Finally.cs:134:5:145:5 | {...} | Finally.cs:142:13:142:37 | call to method WriteLine | throw(OutOfMemoryException) [normal] (0) |
 | Finally.cs:134:5:145:5 | {...} | Finally.cs:144:9:144:33 | call to method WriteLine | normal |
 | Finally.cs:135:9:143:9 | try {...} ... | Finally.cs:141:13:141:44 | throw ...; | throw(ArgumentException) |
 | Finally.cs:135:9:143:9 | try {...} ... | Finally.cs:142:13:142:37 | call to method WriteLine | normal |
 | Finally.cs:135:9:143:9 | try {...} ... | Finally.cs:142:13:142:37 | call to method WriteLine | throw(Exception) [normal] (0) |
-| Finally.cs:135:9:143:9 | try {...} ... | Finally.cs:142:13:142:37 | call to method WriteLine | throw(OutOfMemoryException) [normal] (0) |
 | Finally.cs:136:9:138:9 | {...} | Finally.cs:137:13:137:36 | call to method WriteLine | normal |
 | Finally.cs:136:9:138:9 | {...} | Finally.cs:137:13:137:36 | call to method WriteLine | throw(Exception) |
-| Finally.cs:136:9:138:9 | {...} | Finally.cs:137:31:137:35 | "Try" | throw(OutOfMemoryException) |
 | Finally.cs:137:13:137:36 | call to method WriteLine | Finally.cs:137:13:137:36 | call to method WriteLine | normal |
 | Finally.cs:137:13:137:36 | call to method WriteLine | Finally.cs:137:13:137:36 | call to method WriteLine | throw(Exception) |
-| Finally.cs:137:13:137:36 | call to method WriteLine | Finally.cs:137:31:137:35 | "Try" | throw(OutOfMemoryException) |
 | Finally.cs:137:13:137:37 | ...; | Finally.cs:137:13:137:36 | call to method WriteLine | normal |
 | Finally.cs:137:13:137:37 | ...; | Finally.cs:137:13:137:36 | call to method WriteLine | throw(Exception) |
-| Finally.cs:137:13:137:37 | ...; | Finally.cs:137:31:137:35 | "Try" | throw(OutOfMemoryException) |
 | Finally.cs:137:31:137:35 | "Try" | Finally.cs:137:31:137:35 | "Try" | normal |
-| Finally.cs:137:31:137:35 | "Try" | Finally.cs:137:31:137:35 | "Try" | throw(OutOfMemoryException) |
 | Finally.cs:140:9:143:9 | {...} | Finally.cs:141:13:141:44 | throw ...; | throw(ArgumentException) |
 | Finally.cs:140:9:143:9 | {...} | Finally.cs:142:13:142:37 | call to method WriteLine | normal |
 | Finally.cs:141:13:141:44 | throw ...; | Finally.cs:141:13:141:44 | throw ...; | throw(ArgumentException) |
@@ -2005,13 +1975,11 @@
 | Finally.cs:157:13:160:13 | {...} | Finally.cs:158:21:158:36 | ... == ... | false |
 | Finally.cs:157:13:160:13 | {...} | Finally.cs:159:21:159:45 | throw ...; | throw(Exception) |
 | Finally.cs:157:13:160:13 | {...} | Finally.cs:159:27:159:44 | object creation of type Exception | throw(Exception) |
-| Finally.cs:157:13:160:13 | {...} | Finally.cs:159:41:159:43 | "1" | throw(OutOfMemoryException) |
 | Finally.cs:158:17:159:45 | if (...) ... | Finally.cs:158:21:158:31 | access to property Length | throw(Exception) |
 | Finally.cs:158:17:159:45 | if (...) ... | Finally.cs:158:21:158:31 | access to property Length | throw(NullReferenceException) |
 | Finally.cs:158:17:159:45 | if (...) ... | Finally.cs:158:21:158:36 | ... == ... | false |
 | Finally.cs:158:17:159:45 | if (...) ... | Finally.cs:159:21:159:45 | throw ...; | throw(Exception) |
 | Finally.cs:158:17:159:45 | if (...) ... | Finally.cs:159:27:159:44 | object creation of type Exception | throw(Exception) |
-| Finally.cs:158:17:159:45 | if (...) ... | Finally.cs:159:41:159:43 | "1" | throw(OutOfMemoryException) |
 | Finally.cs:158:21:158:24 | access to parameter args | Finally.cs:158:21:158:24 | access to parameter args | normal |
 | Finally.cs:158:21:158:31 | access to property Length | Finally.cs:158:21:158:31 | access to property Length | normal |
 | Finally.cs:158:21:158:31 | access to property Length | Finally.cs:158:21:158:31 | access to property Length | throw(Exception) |
@@ -2023,12 +1991,9 @@
 | Finally.cs:158:36:158:36 | 1 | Finally.cs:158:36:158:36 | 1 | normal |
 | Finally.cs:159:21:159:45 | throw ...; | Finally.cs:159:21:159:45 | throw ...; | throw(Exception) |
 | Finally.cs:159:21:159:45 | throw ...; | Finally.cs:159:27:159:44 | object creation of type Exception | throw(Exception) |
-| Finally.cs:159:21:159:45 | throw ...; | Finally.cs:159:41:159:43 | "1" | throw(OutOfMemoryException) |
 | Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:159:27:159:44 | object creation of type Exception | normal |
 | Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:159:27:159:44 | object creation of type Exception | throw(Exception) |
-| Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:159:41:159:43 | "1" | throw(OutOfMemoryException) |
 | Finally.cs:159:41:159:43 | "1" | Finally.cs:159:41:159:43 | "1" | normal |
-| Finally.cs:159:41:159:43 | "1" | Finally.cs:159:41:159:43 | "1" | throw(OutOfMemoryException) |
 | Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:161:13:164:13 | catch (...) {...} | no-match |
 | Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:161:39:161:54 | ... == ... | false |
 | Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:163:17:163:42 | call to method WriteLine | normal |
@@ -2191,15 +2156,11 @@
 | Finally.cs:218:9:229:9 | try {...} ... | Finally.cs:228:13:228:40 | call to method WriteLine | normal |
 | Finally.cs:219:9:221:9 | {...} | Finally.cs:220:13:220:36 | call to method WriteLine | normal |
 | Finally.cs:219:9:221:9 | {...} | Finally.cs:220:13:220:36 | call to method WriteLine | throw(Exception) |
-| Finally.cs:219:9:221:9 | {...} | Finally.cs:220:31:220:35 | "Try" | throw(OutOfMemoryException) |
 | Finally.cs:220:13:220:36 | call to method WriteLine | Finally.cs:220:13:220:36 | call to method WriteLine | normal |
 | Finally.cs:220:13:220:36 | call to method WriteLine | Finally.cs:220:13:220:36 | call to method WriteLine | throw(Exception) |
-| Finally.cs:220:13:220:36 | call to method WriteLine | Finally.cs:220:31:220:35 | "Try" | throw(OutOfMemoryException) |
 | Finally.cs:220:13:220:37 | ...; | Finally.cs:220:13:220:36 | call to method WriteLine | normal |
 | Finally.cs:220:13:220:37 | ...; | Finally.cs:220:13:220:36 | call to method WriteLine | throw(Exception) |
-| Finally.cs:220:13:220:37 | ...; | Finally.cs:220:31:220:35 | "Try" | throw(OutOfMemoryException) |
 | Finally.cs:220:31:220:35 | "Try" | Finally.cs:220:31:220:35 | "Try" | normal |
-| Finally.cs:220:31:220:35 | "Try" | Finally.cs:220:31:220:35 | "Try" | throw(OutOfMemoryException) |
 | Finally.cs:222:9:225:9 | catch {...} | Finally.cs:224:13:224:38 | call to method WriteLine | normal |
 | Finally.cs:223:9:225:9 | {...} | Finally.cs:224:13:224:38 | call to method WriteLine | normal |
 | Finally.cs:224:13:224:38 | call to method WriteLine | Finally.cs:224:13:224:38 | call to method WriteLine | normal |
@@ -2214,19 +2175,16 @@
 | Finally.cs:230:27:230:32 | "Done" | Finally.cs:230:27:230:32 | "Done" | normal |
 | Finally.cs:234:5:261:5 | {...} | Finally.cs:258:13:258:46 | call to method WriteLine | throw(Exception) [normal] (0) |
 | Finally.cs:234:5:261:5 | {...} | Finally.cs:258:13:258:46 | call to method WriteLine | throw(ExceptionA) [normal] (0) |
-| Finally.cs:234:5:261:5 | {...} | Finally.cs:258:13:258:46 | call to method WriteLine | throw(OutOfMemoryException) [normal] (0) |
 | Finally.cs:234:5:261:5 | {...} | Finally.cs:260:9:260:33 | call to method WriteLine | normal |
 | Finally.cs:235:9:259:9 | try {...} ... | Finally.cs:258:13:258:46 | call to method WriteLine | normal |
 | Finally.cs:235:9:259:9 | try {...} ... | Finally.cs:258:13:258:46 | call to method WriteLine | throw(Exception) [normal] (0) |
 | Finally.cs:235:9:259:9 | try {...} ... | Finally.cs:258:13:258:46 | call to method WriteLine | throw(ExceptionA) [normal] (0) |
-| Finally.cs:235:9:259:9 | try {...} ... | Finally.cs:258:13:258:46 | call to method WriteLine | throw(OutOfMemoryException) [normal] (0) |
 | Finally.cs:236:9:255:9 | {...} | Finally.cs:251:21:251:54 | call to method WriteLine | throw(Exception) [normal] (0) |
 | Finally.cs:236:9:255:9 | {...} | Finally.cs:251:21:251:54 | call to method WriteLine | throw(Exception) [normal] (1) |
 | Finally.cs:236:9:255:9 | {...} | Finally.cs:251:21:251:54 | call to method WriteLine | throw(ExceptionA) [normal] (0) |
 | Finally.cs:236:9:255:9 | {...} | Finally.cs:251:21:251:54 | call to method WriteLine | throw(ExceptionA) [normal] (1) |
 | Finally.cs:236:9:255:9 | {...} | Finally.cs:254:13:254:44 | call to method WriteLine | normal |
 | Finally.cs:236:9:255:9 | {...} | Finally.cs:254:13:254:44 | call to method WriteLine | throw(Exception) |
-| Finally.cs:236:9:255:9 | {...} | Finally.cs:254:31:254:43 | "Mid finally" | throw(OutOfMemoryException) |
 | Finally.cs:237:13:253:13 | try {...} ... | Finally.cs:251:21:251:54 | call to method WriteLine | normal |
 | Finally.cs:237:13:253:13 | try {...} ... | Finally.cs:251:21:251:54 | call to method WriteLine | throw(Exception) [normal] (0) |
 | Finally.cs:237:13:253:13 | try {...} ... | Finally.cs:251:21:251:54 | call to method WriteLine | throw(Exception) [normal] (1) |
@@ -2268,12 +2226,9 @@
 | Finally.cs:251:39:251:53 | "Inner finally" | Finally.cs:251:39:251:53 | "Inner finally" | normal |
 | Finally.cs:254:13:254:44 | call to method WriteLine | Finally.cs:254:13:254:44 | call to method WriteLine | normal |
 | Finally.cs:254:13:254:44 | call to method WriteLine | Finally.cs:254:13:254:44 | call to method WriteLine | throw(Exception) |
-| Finally.cs:254:13:254:44 | call to method WriteLine | Finally.cs:254:31:254:43 | "Mid finally" | throw(OutOfMemoryException) |
 | Finally.cs:254:13:254:45 | ...; | Finally.cs:254:13:254:44 | call to method WriteLine | normal |
 | Finally.cs:254:13:254:45 | ...; | Finally.cs:254:13:254:44 | call to method WriteLine | throw(Exception) |
-| Finally.cs:254:13:254:45 | ...; | Finally.cs:254:31:254:43 | "Mid finally" | throw(OutOfMemoryException) |
 | Finally.cs:254:31:254:43 | "Mid finally" | Finally.cs:254:31:254:43 | "Mid finally" | normal |
-| Finally.cs:254:31:254:43 | "Mid finally" | Finally.cs:254:31:254:43 | "Mid finally" | throw(OutOfMemoryException) |
 | Finally.cs:257:9:259:9 | {...} | Finally.cs:258:13:258:46 | call to method WriteLine | normal |
 | Finally.cs:258:13:258:46 | call to method WriteLine | Finally.cs:258:13:258:46 | call to method WriteLine | normal |
 | Finally.cs:258:13:258:47 | ...; | Finally.cs:258:13:258:46 | call to method WriteLine | normal |
@@ -4112,7 +4067,6 @@
 | cflow.cs:262:5:277:5 | {...} | cflow.cs:275:13:275:41 | call to method WriteLine | normal |
 | cflow.cs:262:5:277:5 | {...} | cflow.cs:275:13:275:41 | call to method WriteLine | return [normal] (0) |
 | cflow.cs:262:5:277:5 | {...} | cflow.cs:275:13:275:41 | call to method WriteLine | throw(Exception) [normal] (0) |
-| cflow.cs:262:5:277:5 | {...} | cflow.cs:275:13:275:41 | call to method WriteLine | throw(OutOfMemoryException) [normal] (0) |
 | cflow.cs:263:9:263:23 | yield return ...; | cflow.cs:263:9:263:23 | yield return ...; | normal |
 | cflow.cs:263:22:263:22 | 0 | cflow.cs:263:22:263:22 | 0 | normal |
 | cflow.cs:264:9:267:9 | for (...;...;...) ... | cflow.cs:264:25:264:30 | ... < ... | false |
@@ -4130,20 +4084,15 @@
 | cflow.cs:268:9:276:9 | try {...} ... | cflow.cs:275:13:275:41 | call to method WriteLine | normal |
 | cflow.cs:268:9:276:9 | try {...} ... | cflow.cs:275:13:275:41 | call to method WriteLine | return [normal] (0) |
 | cflow.cs:268:9:276:9 | try {...} ... | cflow.cs:275:13:275:41 | call to method WriteLine | throw(Exception) [normal] (0) |
-| cflow.cs:268:9:276:9 | try {...} ... | cflow.cs:275:13:275:41 | call to method WriteLine | throw(OutOfMemoryException) [normal] (0) |
 | cflow.cs:269:9:272:9 | {...} | cflow.cs:270:13:270:24 | yield break; | return |
 | cflow.cs:269:9:272:9 | {...} | cflow.cs:271:13:271:42 | call to method WriteLine | normal |
 | cflow.cs:269:9:272:9 | {...} | cflow.cs:271:13:271:42 | call to method WriteLine | throw(Exception) |
-| cflow.cs:269:9:272:9 | {...} | cflow.cs:271:31:271:41 | "dead code" | throw(OutOfMemoryException) |
 | cflow.cs:270:13:270:24 | yield break; | cflow.cs:270:13:270:24 | yield break; | return |
 | cflow.cs:271:13:271:42 | call to method WriteLine | cflow.cs:271:13:271:42 | call to method WriteLine | normal |
 | cflow.cs:271:13:271:42 | call to method WriteLine | cflow.cs:271:13:271:42 | call to method WriteLine | throw(Exception) |
-| cflow.cs:271:13:271:42 | call to method WriteLine | cflow.cs:271:31:271:41 | "dead code" | throw(OutOfMemoryException) |
 | cflow.cs:271:13:271:43 | ...; | cflow.cs:271:13:271:42 | call to method WriteLine | normal |
 | cflow.cs:271:13:271:43 | ...; | cflow.cs:271:13:271:42 | call to method WriteLine | throw(Exception) |
-| cflow.cs:271:13:271:43 | ...; | cflow.cs:271:31:271:41 | "dead code" | throw(OutOfMemoryException) |
 | cflow.cs:271:31:271:41 | "dead code" | cflow.cs:271:31:271:41 | "dead code" | normal |
-| cflow.cs:271:31:271:41 | "dead code" | cflow.cs:271:31:271:41 | "dead code" | throw(OutOfMemoryException) |
 | cflow.cs:274:9:276:9 | {...} | cflow.cs:275:13:275:41 | call to method WriteLine | normal |
 | cflow.cs:275:13:275:41 | call to method WriteLine | cflow.cs:275:13:275:41 | call to method WriteLine | normal |
 | cflow.cs:275:13:275:42 | ...; | cflow.cs:275:13:275:41 | call to method WriteLine | normal |

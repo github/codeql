@@ -354,9 +354,6 @@ private class TriedControlFlowElement extends ControlFlowElement {
     or
     this instanceof DynamicExpr and
     result instanceof SystemExceptionClass
-    or
-    this instanceof StringLiteral and
-    result instanceof SystemOutOfMemoryExceptionClass
   }
 
   private CoreLib getCoreLibFromACatchClause() {
