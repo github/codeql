@@ -1610,6 +1610,22 @@
 | Finally.cs:260:9:260:33 | call to method WriteLine | Finally.cs:260:27:260:32 | "Done" |
 | Finally.cs:260:9:260:34 | ...; | Finally.cs:260:9:260:34 | ...; |
 | Finally.cs:260:27:260:32 | "Done" | Finally.cs:260:27:260:32 | "Done" |
+| Finally.cs:264:5:274:5 | {...} | Finally.cs:264:5:274:5 | {...} |
+| Finally.cs:265:9:273:9 | try {...} ... | Finally.cs:265:9:273:9 | try {...} ... |
+| Finally.cs:266:9:268:9 | {...} | Finally.cs:266:9:268:9 | {...} |
+| Finally.cs:267:13:267:34 | call to method WriteLine | Finally.cs:267:31:267:33 | "1" |
+| Finally.cs:267:13:267:35 | ...; | Finally.cs:267:13:267:35 | ...; |
+| Finally.cs:267:31:267:33 | "1" | Finally.cs:267:31:267:33 | "1" |
+| Finally.cs:270:9:273:9 | {...} | Finally.cs:270:9:273:9 | {...} |
+| Finally.cs:271:13:271:34 | call to method WriteLine | Finally.cs:271:31:271:33 | "3" |
+| Finally.cs:271:13:271:35 | ...; | Finally.cs:271:13:271:35 | ...; |
+| Finally.cs:271:31:271:33 | "3" | Finally.cs:271:31:271:33 | "3" |
+| Finally.cs:272:13:272:13 | access to parameter i | Finally.cs:272:13:272:13 | access to parameter i |
+| Finally.cs:272:13:272:18 | ... + ... | Finally.cs:272:13:272:13 | access to parameter i |
+| Finally.cs:272:13:272:18 | ... += ... | Finally.cs:272:13:272:13 | access to parameter i |
+| Finally.cs:272:13:272:18 | ... = ... | Finally.cs:272:13:272:13 | access to parameter i |
+| Finally.cs:272:13:272:19 | ...; | Finally.cs:272:13:272:19 | ...; |
+| Finally.cs:272:18:272:18 | 3 | Finally.cs:272:18:272:18 | 3 |
 | Foreach.cs:7:5:10:5 | {...} | Foreach.cs:7:5:10:5 | {...} |
 | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:8:29:8:32 | access to parameter args |
 | Foreach.cs:8:22:8:24 | String arg | Foreach.cs:8:22:8:24 | String arg |

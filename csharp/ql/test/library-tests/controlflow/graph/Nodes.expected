@@ -1013,6 +1013,11 @@ finallyNode
 | Finally.cs:258:13:258:47 | [finally: exception(ExceptionA)] ...; | Finally.cs:235:9:259:9 | try {...} ... |
 | Finally.cs:258:31:258:45 | [finally: exception(Exception)] "Outer finally" | Finally.cs:235:9:259:9 | try {...} ... |
 | Finally.cs:258:31:258:45 | [finally: exception(ExceptionA)] "Outer finally" | Finally.cs:235:9:259:9 | try {...} ... |
+| Finally.cs:270:9:273:9 | [finally: exception(Exception)] {...} | Finally.cs:265:9:273:9 | try {...} ... |
+| Finally.cs:271:13:271:34 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:265:9:273:9 | try {...} ... |
+| Finally.cs:271:13:271:35 | [finally: exception(Exception)] ...; | Finally.cs:265:9:273:9 | try {...} ... |
+| Finally.cs:271:31:271:33 | [finally: exception(Exception)] "3" | Finally.cs:265:9:273:9 | try {...} ... |
+| Finally.cs:272:13:272:19 | [finally: exception(Exception)] ...; | Finally.cs:265:9:273:9 | try {...} ... |
 | cflow.cs:274:9:276:9 | [finally: return] {...} | cflow.cs:268:9:276:9 | try {...} ... |
 | cflow.cs:275:13:275:41 | [finally: return] call to method WriteLine | cflow.cs:268:9:276:9 | try {...} ... |
 | cflow.cs:275:13:275:42 | [finally: return] ...; | cflow.cs:268:9:276:9 | try {...} ... |
@@ -1120,6 +1125,7 @@ entryPoint
 | Finally.cs:195:10:195:12 | M10 | Finally.cs:196:5:214:5 | {...} |
 | Finally.cs:216:10:216:12 | M11 | Finally.cs:217:5:231:5 | {...} |
 | Finally.cs:233:10:233:12 | M12 | Finally.cs:234:5:261:5 | {...} |
+| Finally.cs:263:10:263:12 | M13 | Finally.cs:264:5:274:5 | {...} |
 | Foreach.cs:6:10:6:11 | M1 | Foreach.cs:7:5:10:5 | {...} |
 | Foreach.cs:12:10:12:11 | M2 | Foreach.cs:13:5:16:5 | {...} |
 | Foreach.cs:18:10:18:11 | M3 | Foreach.cs:19:5:22:5 | {...} |

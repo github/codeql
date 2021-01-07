@@ -2670,6 +2670,22 @@
 | Finally.cs:260:9:260:33 | call to method WriteLine | Finally.cs:233:10:233:12 | exit M12 (normal) | semmle.label | successor |
 | Finally.cs:260:9:260:34 | ...; | Finally.cs:260:27:260:32 | "Done" | semmle.label | successor |
 | Finally.cs:260:27:260:32 | "Done" | Finally.cs:260:9:260:33 | call to method WriteLine | semmle.label | successor |
+| Finally.cs:263:10:263:12 | enter M13 | Finally.cs:264:5:274:5 | {...} | semmle.label | successor |
+| Finally.cs:264:5:274:5 | {...} | Finally.cs:265:9:273:9 | try {...} ... | semmle.label | successor |
+| Finally.cs:265:9:273:9 | try {...} ... | Finally.cs:266:9:268:9 | {...} | semmle.label | successor |
+| Finally.cs:266:9:268:9 | {...} | Finally.cs:267:13:267:35 | ...; | semmle.label | successor |
+| Finally.cs:267:13:267:34 | call to method WriteLine | Finally.cs:270:9:273:9 | [finally: exception(Exception)] {...} | semmle.label | exception(Exception) |
+| Finally.cs:267:13:267:34 | call to method WriteLine | Finally.cs:270:9:273:9 | {...} | semmle.label | successor |
+| Finally.cs:267:13:267:35 | ...; | Finally.cs:267:31:267:33 | "1" | semmle.label | successor |
+| Finally.cs:267:31:267:33 | "1" | Finally.cs:267:13:267:34 | call to method WriteLine | semmle.label | successor |
+| Finally.cs:270:9:273:9 | [finally: exception(Exception)] {...} | Finally.cs:271:13:271:35 | [finally: exception(Exception)] ...; | semmle.label | successor |
+| Finally.cs:270:9:273:9 | {...} | Finally.cs:271:13:271:35 | ...; | semmle.label | successor |
+| Finally.cs:271:13:271:34 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:272:13:272:19 | [finally: exception(Exception)] ...; | semmle.label | successor |
+| Finally.cs:271:13:271:34 | call to method WriteLine | Finally.cs:272:13:272:19 | ...; | semmle.label | successor |
+| Finally.cs:271:13:271:35 | ...; | Finally.cs:271:31:271:33 | "3" | semmle.label | successor |
+| Finally.cs:271:13:271:35 | [finally: exception(Exception)] ...; | Finally.cs:271:31:271:33 | [finally: exception(Exception)] "3" | semmle.label | successor |
+| Finally.cs:271:31:271:33 | "3" | Finally.cs:271:13:271:34 | call to method WriteLine | semmle.label | successor |
+| Finally.cs:271:31:271:33 | [finally: exception(Exception)] "3" | Finally.cs:271:13:271:34 | [finally: exception(Exception)] call to method WriteLine | semmle.label | successor |
 | Foreach.cs:6:10:6:11 | enter M1 | Foreach.cs:7:5:10:5 | {...} | semmle.label | successor |
 | Foreach.cs:6:10:6:11 | exit M1 (normal) | Foreach.cs:6:10:6:11 | exit M1 | semmle.label | successor |
 | Foreach.cs:7:5:10:5 | {...} | Foreach.cs:8:29:8:32 | access to parameter args | semmle.label | successor |
