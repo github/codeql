@@ -245,7 +245,7 @@ module UnsafeShellCommandConstruction {
   }
 
   /**
-   * A sanitizer for a single char, where the char cannot be an unsafe shell char.
+   * A sanitizer for a single character, where the character cannot be an unsafe shell character.
    */
   class SanitizedChar extends Sanitizer, DataFlow::ValueNode {
     override PropAccess astNode;
