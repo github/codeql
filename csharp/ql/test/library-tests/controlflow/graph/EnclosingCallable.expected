@@ -2556,6 +2556,9 @@ nodeEnclosing
 | Finally.cs:260:9:260:34 | ...; | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:260:27:260:32 | "Done" | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:263:10:263:12 | enter M13 | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:263:10:263:12 | exit M13 | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:263:10:263:12 | exit M13 (abnormal) | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:263:10:263:12 | exit M13 (normal) | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:264:5:274:5 | {...} | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:265:9:273:9 | try {...} ... | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:266:9:268:9 | {...} | Finally.cs:263:10:263:12 | M13 |
@@ -2570,8 +2573,16 @@ nodeEnclosing
 | Finally.cs:271:13:271:35 | [finally: exception(Exception)] ...; | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:271:31:271:33 | "3" | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:271:31:271:33 | [finally: exception(Exception)] "3" | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:272:13:272:13 | [finally: exception(Exception)] access to parameter i | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:272:13:272:13 | access to parameter i | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:272:13:272:18 | ... + ... | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:272:13:272:18 | ... = ... | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:272:13:272:18 | [finally: exception(Exception)] ... + ... | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:272:13:272:18 | [finally: exception(Exception)] ... = ... | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:272:13:272:19 | ...; | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:272:13:272:19 | [finally: exception(Exception)] ...; | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:272:18:272:18 | 3 | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:272:18:272:18 | [finally: exception(Exception)] 3 | Finally.cs:263:10:263:12 | M13 |
 | Foreach.cs:6:10:6:11 | enter M1 | Foreach.cs:6:10:6:11 | M1 |
 | Foreach.cs:6:10:6:11 | exit M1 | Foreach.cs:6:10:6:11 | M1 |
 | Foreach.cs:6:10:6:11 | exit M1 (normal) | Foreach.cs:6:10:6:11 | M1 |
@@ -5328,6 +5339,7 @@ blockEnclosing
 | Finally.cs:257:9:259:9 | [finally: exception(ExceptionA)] {...} | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:257:9:259:9 | {...} | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:263:10:263:12 | enter M13 | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:263:10:263:12 | exit M13 | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:270:9:273:9 | [finally: exception(Exception)] {...} | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:270:9:273:9 | {...} | Finally.cs:263:10:263:12 | M13 |
 | Foreach.cs:6:10:6:11 | enter M1 | Foreach.cs:6:10:6:11 | M1 |

@@ -1017,7 +1017,11 @@ finallyNode
 | Finally.cs:271:13:271:34 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:265:9:273:9 | try {...} ... |
 | Finally.cs:271:13:271:35 | [finally: exception(Exception)] ...; | Finally.cs:265:9:273:9 | try {...} ... |
 | Finally.cs:271:31:271:33 | [finally: exception(Exception)] "3" | Finally.cs:265:9:273:9 | try {...} ... |
+| Finally.cs:272:13:272:13 | [finally: exception(Exception)] access to parameter i | Finally.cs:265:9:273:9 | try {...} ... |
+| Finally.cs:272:13:272:18 | [finally: exception(Exception)] ... + ... | Finally.cs:265:9:273:9 | try {...} ... |
+| Finally.cs:272:13:272:18 | [finally: exception(Exception)] ... = ... | Finally.cs:265:9:273:9 | try {...} ... |
 | Finally.cs:272:13:272:19 | [finally: exception(Exception)] ...; | Finally.cs:265:9:273:9 | try {...} ... |
+| Finally.cs:272:18:272:18 | [finally: exception(Exception)] 3 | Finally.cs:265:9:273:9 | try {...} ... |
 | cflow.cs:274:9:276:9 | [finally: return] {...} | cflow.cs:268:9:276:9 | try {...} ... |
 | cflow.cs:275:13:275:41 | [finally: return] call to method WriteLine | cflow.cs:268:9:276:9 | try {...} ... |
 | cflow.cs:275:13:275:42 | [finally: return] ...; | cflow.cs:268:9:276:9 | try {...} ... |

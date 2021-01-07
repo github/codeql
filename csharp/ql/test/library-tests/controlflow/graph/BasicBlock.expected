@@ -640,8 +640,9 @@
 | Finally.cs:257:9:259:9 | [finally: exception(ExceptionA)] {...} | Finally.cs:258:13:258:46 | [finally: exception(ExceptionA)] call to method WriteLine | 4 |
 | Finally.cs:257:9:259:9 | {...} | Finally.cs:233:10:233:12 | exit M12 (normal) | 8 |
 | Finally.cs:263:10:263:12 | enter M13 | Finally.cs:267:13:267:34 | call to method WriteLine | 7 |
-| Finally.cs:270:9:273:9 | [finally: exception(Exception)] {...} | Finally.cs:272:13:272:19 | [finally: exception(Exception)] ...; | 5 |
-| Finally.cs:270:9:273:9 | {...} | Finally.cs:272:13:272:19 | ...; | 5 |
+| Finally.cs:263:10:263:12 | exit M13 | Finally.cs:263:10:263:12 | exit M13 | 1 |
+| Finally.cs:270:9:273:9 | [finally: exception(Exception)] {...} | Finally.cs:263:10:263:12 | exit M13 (abnormal) | 10 |
+| Finally.cs:270:9:273:9 | {...} | Finally.cs:263:10:263:12 | exit M13 (normal) | 10 |
 | Foreach.cs:6:10:6:11 | enter M1 | Foreach.cs:8:29:8:32 | access to parameter args | 3 |
 | Foreach.cs:6:10:6:11 | exit M1 (normal) | Foreach.cs:6:10:6:11 | exit M1 | 2 |
 | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | 1 |
