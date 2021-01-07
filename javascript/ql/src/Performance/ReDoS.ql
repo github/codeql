@@ -118,9 +118,22 @@ newtype TStatePair =
   MkStatePair(State q1, State q2) {
     isFork(q1, _, _, _, _) and q2 = q1
     or
-    step(_, _, _, q1, q2) and
-    q1.toString() <= q2.toString()
+    (step(_, _, _, q1, q2) or step(_, _, _, q2, q1)) and
+    rankState(q1) <= rankState(q2)
   }
+
+/**
+ * Gets a unique number for a `state`.
+ * Is used to create an ordering of states, where states with the same `toString()` will be ordered differently.
+ */
+int rankState(State state) {
+  state =
+    rank[result](State s, Location l |
+      l = s.getRepr().getLocation()
+    |
+      s order by l.getStartLine(), l.getStartColumn(), s.toString()
+    )
+}
 
 class StatePair extends TStatePair {
   State q1;
@@ -133,14 +146,6 @@ class StatePair extends TStatePair {
   State getLeft() { result = q1 }
 
   State getRight() { result = q2 }
-}
-
-/**
- * Gets the state pair `(q1, q2)` or `(q2, q1)`; note that only
- * one or the other is defined.
- */
-StatePair mkStatePair(State q1, State q2) {
-  result = MkStatePair(q1, q2) or result = MkStatePair(q2, q1)
 }
 
 predicate isStatePair(StatePair p) { any() }
@@ -181,9 +186,41 @@ predicate isFork(State q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
     r1 != r2
     or
     r1 = r2 and q1 != q2
+    or
+    // If q can reach itself by epsilon transitions, then there are two distinct paths to the q1/q2 state:
+    // one that uses the loop and one that doesn't. The engine will separately attempt to match with each path,
+    // despite ending in the same state. The "fork" thus arises from the choice of whether to use the loop or not.
+    // To avoid every state in the loop becoming a fork state,
+    // we arbitrarily pick the InfiniteRepetitionQuantifier state as the canonical fork state for the loop
+    // (every epsilon-loop must contain such a state).
+    //
+    // We additionally require that the there exists another InfiniteRepetitionQuantifier `mid` on the path from `q` to itself.
+    // This is done to avoid flagging regular expressions such as `/(a?)*b/` - that only has polynomial runtime, and is detected by `js/polynomial-redos`.
+    // The below code is therefore a heuritic, that only flags regular expressions such as `/(a*)*b/`,
+    // and does not flag regular expressions such as `/(a?b?)c/`, but the latter pattern is not used frequently.
+    r1 = r2 and
+    q1 = q2 and
+    epsilonSucc+(q) = q and
+    exists(RegExpTerm term | term = q.getRepr() | term instanceof InfiniteRepetitionQuantifier) and
+    // One of the mid states is an infinite quantifier itself	
+    exists(State mid, RegExpTerm term |
+      mid = epsilonSucc+(q) and
+      term = mid.getRepr() and
+      term instanceof InfiniteRepetitionQuantifier and
+      q = epsilonSucc+(mid) and
+      not mid = q
+    )
   ) and
   stateInsideBacktracking(r1) and
   stateInsideBacktracking(r2)
+}
+
+/**
+ * Gets the state pair `(q1, q2)` or `(q2, q1)`; note that only
+ * one or the other is defined.
+ */
+StatePair mkStatePair(State q1, State q2) {
+  result = MkStatePair(q1, q2) or result = MkStatePair(q2, q1)
 }
 
 /**
