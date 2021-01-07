@@ -1,3 +1,5 @@
+/** Provides classes related to `android.content.SharedPreferences`. */
+
 import java
 
 /** The interface `android.content.SharedPreferences`. */
@@ -20,7 +22,7 @@ class CreateEncryptedSharedPreferencesMethod extends Method {
   }
 }
 
-/** Returns `android.content.SharedPreferences.Editor` from the `edit` call of `android.content.SharedPreferences`. */
+/** The method `android.content.SharedPreferences::edit`, which returns an `android.content.SharedPreferences.Editor`. */
 class GetSharedPreferencesEditorMethod extends Method {
   GetSharedPreferencesEditorMethod() {
     this.getDeclaringType() instanceof SharedPreferences and
@@ -34,7 +36,11 @@ class SharedPreferencesEditor extends Interface {
   SharedPreferencesEditor() { this.hasQualifiedName("android.content", "SharedPreferences$Editor") }
 }
 
-/** A method that updates a key-value pair in a `android.content.SharedPreferences` through a `SharedPreferences.Editor`. The value is not written until a `StorePreferenceMethod` is called. */
+/**
+ * A method that updates a key-value pair in a
+ * `android.content.SharedPreferences` through a `SharedPreferences.Editor`. The
+ * value is not written until a `StorePreferenceMethod` is called.
+ */
 class PutSharedPreferenceMethod extends Method {
   PutSharedPreferenceMethod() {
     this.getDeclaringType() instanceof SharedPreferencesEditor and
