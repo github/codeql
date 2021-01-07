@@ -27,6 +27,7 @@ jobs:
           unzip -q codeql-linux64.zip
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          CODEQL_THREADS: 4 # TODO: remove this once it's set by the CLI
       - uses: actions/cache@v2
         with:
           path: |
@@ -46,6 +47,7 @@ jobs:
         run: |
           codeql/codeql database create \
             --search-path "${{ github.workspace }}" \
+            --threads 4 \
             --language ruby --source-root "${{ github.workspace }}/repo" \
             "${{ runner.temp }}/database"
       - name: Measure database
