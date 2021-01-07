@@ -115,5 +115,5 @@ where
   not isNodeGuardedByFlag(sink.getNode()) and
   verifier = source.getNode().asExpr().(ClassInstanceExpr).getConstructedType()
 select sink, source, sink,
-  "$@ that is defined $@ and accepts any certificate as valid, is used $@.", source,
-  "This hostname verifier", verifier, "here", sink, "here"
+  "$@ that is defined $@ and accepts any certificate as valid, is used here.", source,
+  "This hostname verifier", verifier, "here"
