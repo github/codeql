@@ -18,8 +18,10 @@ import semmle.code.cpp.dataflow.DataFlow
  * A call to `realloc` of the form `v = realloc(v, size)`, for some variable `v`.
  */
 class ReallocCallLeak extends FunctionCall {
+  Variable v;
+
   ReallocCallLeak() {
-    exists(AssignExpr ex, Variable v, VariableAccess va1, VariableAccess va2 |
+    exists(AssignExpr ex, VariableAccess va1, VariableAccess va2 |
       this.getTarget().hasName("realloc") and
       this = ex.getRValue() and
       va1 = ex.getLValue() and
@@ -31,31 +33,32 @@ class ReallocCallLeak extends FunctionCall {
 
   predicate isExistsIfWithExitCall() {
     exists(IfStmt ifc |
-      exists(Variable v, DataFlow::Node source, DataFlow::Node sink |
-        DataFlow::localFlow(source, sink) and
-        source.asExpr() = this.getArgument(0) and
-        this.getArgument(0) = v.getAnAccess() and
-        ifc.getEnclosingFunction() = this.getEnclosingFunction() and
-        ifc.getLocation().getStartLine() >= this.getArgument(0).getLocation().getStartLine() and
-        v.getAnAccess() = ifc.getCondition().getAChild*() and
-        sink.asExpr() = v.getAnAccess()
-      ) and
+      this.getArgument(0) = v.getAnAccess() and
+      ifc.getCondition().getAChild*() = v.getAnAccess() and
+      ifc.getEnclosingFunction() = this.getEnclosingFunction() and
+      ifc.getLocation().getStartLine() >= this.getArgument(0).getLocation().getStartLine() and
       exists(FunctionCall fc |
-        fc.getEnclosingFunction() = this.getEnclosingFunction() and
         fc.getTarget().hasName("exit") and
+        fc.getEnclosingFunction() = this.getEnclosingFunction() and
+        (ifc.getThen().getAChild*() = fc or ifc.getElse().getAChild*() = fc)
+      )
+      or
+      exists(FunctionCall fc, FunctionCall ftmp1, FunctionCall ftmp2 |
+        ftmp1.getTarget().hasName("exit") and
+        ftmp2.(ControlFlowNode).getASuccessor*() = ftmp1 and
+        fc = ftmp2.getEnclosingFunction().getACallToThisFunction() and
+        fc.getEnclosingFunction() = this.getEnclosingFunction() and
         (ifc.getThen().getAChild*() = fc or ifc.getElse().getAChild*() = fc)
       )
     )
   }
 
   predicate isExistsAssertWithArgumentCall() {
-    exists(FunctionCall fc, Variable v, VariableAccess va1, VariableAccess va2 |
-      fc.getTarget().hasName("assert") and
+    exists(FunctionCall fc |
+      fc.getTarget().hasName("__assert_fail") and
       this.getEnclosingFunction() = fc.getEnclosingFunction() and
       fc.getLocation().getStartLine() > this.getArgument(0).getLocation().getEndLine() and
-      va2 = this.getArgument(0) and
-      va1 = v.getAnAccess() and
-      va2 = v.getAnAccess()
+      fc.getArgument(0).toString().matches("%" + this.getArgument(0).toString() + "%")
     )
   }
 }
