@@ -8,7 +8,9 @@ Predicates
 Predicates are used to describe the logical relations that make up a QL program. 
 
 Strictly speaking, a predicate evaluates to a set of tuples. For example, consider the 
-following two predicate definitions:: 
+following two predicate definitions:
+
+.. code-block:: ql
 
     predicate isCountry(string country) {
       country = "Germany"
@@ -55,7 +57,8 @@ When defining a predicate, you should specify:
    argument type and an identifier for the argument variable.
 #. The predicate body itself. This is a logical formula enclosed in braces. 
 
-.. note::
+.. pull-quote:: Note
+
    An :ref:`abstract` or :ref:`external` predicate has no body. To define such a predicate, 
    end the predicate definition with a semicolon (``;``) instead.
 
@@ -142,7 +145,9 @@ on itself.
 For example, you could use recursion to refine the above example. As it stands, the relation 
 defined in ``getANeighbor`` is not symmetric—it does not capture the fact that if x is a 
 neighbor of y, then y is a neighbor of x. A simple way to capture this is to call this 
-predicate recursively, as shown below:: 
+predicate recursively, as shown below:
+
+.. code-block:: ql
 
     string getANeighbor(string country) {
       country = "France" and result = "Belgium"

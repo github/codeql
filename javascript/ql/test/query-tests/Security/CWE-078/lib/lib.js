@@ -339,3 +339,20 @@ module.exports.unproblematic = function() {
 module.exports.problematic = function(n) {
 	cp.exec("rm -rf " + id(n)); // NOT OK
 };
+
+module.exports.typeofNumber = function(n) {
+	if (typeof n === "number") {
+		cp.exec("rm -rf " + n); // OK
+	}
+};
+
+function boundProblem(safe, unsafe) {
+	cp.exec("rm -rf " + safe); // OK
+	cp.exec("rm -rf " + unsafe); // NOT OK
+}
+
+Object.defineProperty(module.exports, "boundProblem", {
+	get: function () {
+		return boundProblem.bind(this, "safe");
+	}
+});

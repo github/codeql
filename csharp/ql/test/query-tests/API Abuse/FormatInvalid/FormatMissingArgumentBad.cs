@@ -1,6 +1,6 @@
 using System;
 
-class Bad
+class Bad3
 {
     void Hello(string first, string last)
     {

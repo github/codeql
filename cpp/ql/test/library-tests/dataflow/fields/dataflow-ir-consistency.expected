@@ -1,6 +1,10 @@
 uniqueEnclosingCallable
 uniqueType
 uniqueNodeLocation
+| E.cpp:15:31:15:33 | buf | Node should have one location but has 2. |
+| aliasing.cpp:2:11:2:13 | (unnamed parameter 0) | Node should have one location but has 2. |
+| conflated.cpp:2:11:2:13 | (unnamed parameter 0) | Node should have one location but has 2. |
+| conflated.cpp:14:22:14:25 | buf | Node should have one location but has 2. |
 | file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
 | file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
 | file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
@@ -66,6 +70,7 @@ postHasUniquePre
 | complex.cpp:49:9:49:10 | Outer output argument | PostUpdateNode should have one pre-update node but has 0. |
 | complex.cpp:50:9:50:10 | Outer output argument | PostUpdateNode should have one pre-update node but has 0. |
 | complex.cpp:51:9:51:10 | Outer output argument | PostUpdateNode should have one pre-update node but has 0. |
+| conflated.cpp:59:20:59:39 | LinkedList output argument | PostUpdateNode should have one pre-update node but has 0. |
 | constructors.cpp:34:11:34:26 | Foo output argument | PostUpdateNode should have one pre-update node but has 0. |
 | constructors.cpp:35:11:35:26 | Foo output argument | PostUpdateNode should have one pre-update node but has 0. |
 | constructors.cpp:36:11:36:37 | Foo output argument | PostUpdateNode should have one pre-update node but has 0. |

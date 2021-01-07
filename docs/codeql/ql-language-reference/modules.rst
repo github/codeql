@@ -17,7 +17,9 @@ Defining a module
 
 There are various ways to define modules—here is an example of the simplest way, declaring an
 :ref:`explicit module  <explicit-modules>` named ``Example`` containing 
-a class ``OneTwoThree``::
+a class ``OneTwoThree``:
+
+.. code-block:: ql
 
     module Example {
       class OneTwoThree extends int {
@@ -115,7 +117,9 @@ the module name, and then the module body enclosed in braces. It can contain any
 of the elements listed in ":ref:`module-bodies`" below, apart from select clauses. 
 
 For example, you could add the following QL snippet to the library file **OneTwoThreeLib.qll** 
-defined :ref:`above <library-modules>`::
+defined :ref:`above <library-modules>`:
+
+.. code-block:: ql
 
     ...
     module M {
