@@ -141,17 +141,14 @@ fn main() -> std::io::Result<()> {
         let mut trap_file = BufWriter::new(trap_file);
         match trap_compression {
             TrapCompression::None => {
-                write!(trap_file, "{}", trap)?;
+                write!(trap_file, "{}", trap)
             }
             TrapCompression::Gzip => {
                 let mut compressed_writer = GzEncoder::new(trap_file, flate2::Compression::fast());
-                write!(compressed_writer, "{}", trap)?;
+                write!(compressed_writer, "{}", trap)
             }
         }
-        std::io::Result::Ok(())
-    })?;
-
-    Ok(())
+    })
 }
 
 fn path_for(dir: &Path, path: &Path, ext: &str) -> PathBuf {
