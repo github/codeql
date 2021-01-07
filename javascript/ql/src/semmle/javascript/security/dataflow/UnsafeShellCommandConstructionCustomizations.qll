@@ -162,7 +162,7 @@ module UnsafeShellCommandConstruction {
   }
 
   /**
-   * Gets all the unsafe shell chars.
+   * Gets an unsafe shell character.
    */
   private string getAShellChar() {
     result = ["&", "`", "$", "|", ">", "<", "#", ";", "(", ")", "[", "]", "\n"]
