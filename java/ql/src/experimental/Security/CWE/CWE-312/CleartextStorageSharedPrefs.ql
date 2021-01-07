@@ -18,7 +18,7 @@ import semmle.code.java.security.SensitiveActions
 /** Holds if the method call is a setter method of `SharedPreferences`. */
 private predicate sharedPreferencesInput(DataFlow::Node sharedPrefs, Expr input) {
   exists(MethodAccess m |
-    m.getMethod() instanceof SharedPreferences::SetPreferenceMethod and
+    m.getMethod() instanceof PutSharedPreferenceMethod and
     input = m.getArgument(1) and
     not exists(EncryptedValueFlowConfig conf | conf.hasFlow(_, DataFlow::exprNode(input))) and
     sharedPrefs.asExpr() = m.getQualifier()
@@ -28,7 +28,7 @@ private predicate sharedPreferencesInput(DataFlow::Node sharedPrefs, Expr input)
 /** Holds if the method call is the store method of `SharedPreferences`. */
 private predicate sharedPreferencesStore(DataFlow::Node sharedPrefs, Expr store) {
   exists(MethodAccess m |
-    m.getMethod() instanceof SharedPreferences::StorePreferenceMethod and
+    m.getMethod() instanceof StoreSharedPreferenceMethod and
     store = m and
     sharedPrefs.asExpr() = m.getQualifier()
   )
@@ -41,7 +41,7 @@ class SharedPreferencesFlowConfig extends DataFlow::Configuration {
   }
 
   override predicate isSource(DataFlow::Node src) {
-    src.asExpr() instanceof SharedPreferencesEditor
+    src.asExpr() instanceof SharedPreferencesEditorMethodAccess
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -56,7 +56,7 @@ class SharedPreferencesFlowConfig extends DataFlow::Configuration {
  */
 class EncryptedSensitiveMethodAccess extends MethodAccess {
   EncryptedSensitiveMethodAccess() {
-    getMethod().getName().toLowerCase().matches(["%encrypt%", "%hash%"])
+    this.getMethod().getName().toLowerCase().matches(["%encrypt%", "%hash%"])
   }
 }
 
@@ -70,7 +70,7 @@ class EncryptedValueFlowConfig extends DataFlow5::Configuration {
 
   override predicate isSink(DataFlow5::Node sink) {
     exists(MethodAccess ma |
-      ma.getMethod() instanceof SharedPreferences::SetPreferenceMethod and
+      ma.getMethod() instanceof PutSharedPreferenceMethod and
       sink.asExpr() = ma.getArgument(1)
     )
   }
@@ -83,18 +83,18 @@ private class EncryptedSharedPrefFlowConfig extends DataFlow4::Configuration {
   }
 
   override predicate isSource(DataFlow4::Node src) {
-    src.asExpr().(MethodAccess).getMethod() instanceof SharedPreferences::CreateEncryptedMethod
+    src.asExpr().(MethodAccess).getMethod() instanceof CreateEncryptedSharedPreferencesMethod
   }
 
   override predicate isSink(DataFlow4::Node sink) {
-    sink.asExpr().getType() instanceof SharedPreferences::TypeBase
+    sink.asExpr().getType() instanceof SharedPreferences
   }
 }
 
 /** The call to get a `SharedPreferences.Editor` object, which can set shared preferences or be stored to device. */
-class SharedPreferencesEditor extends MethodAccess {
-  SharedPreferencesEditor() {
-    this.getMethod() instanceof SharedPreferences::GetEditorMethod and
+class SharedPreferencesEditorMethodAccess extends MethodAccess {
+  SharedPreferencesEditorMethodAccess() {
+    this.getMethod() instanceof GetSharedPreferencesEditorMethod and
     not exists(
       EncryptedSharedPrefFlowConfig config // not exists `SharedPreferences sharedPreferences = EncryptedSharedPreferences.create(...)`
     |
@@ -132,7 +132,7 @@ private class SensitiveSharedPrefsFlowConfig extends TaintTracking::Configuratio
 
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess m |
-      m.getMethod() instanceof SharedPreferences::SetPreferenceMethod and
+      m.getMethod() instanceof PutSharedPreferenceMethod and
       sink.asExpr() = m.getArgument(1)
     )
   }
@@ -154,7 +154,7 @@ class SensitiveSharedPrefsSource extends Expr {
   }
 }
 
-from SensitiveSharedPrefsSource data, SharedPreferencesEditor s, Expr input, Expr store
+from SensitiveSharedPrefsSource data, SharedPreferencesEditorMethodAccess s, Expr input, Expr store
 where
   input = s.getAnInput() and
   store = s.getAStore() and
