@@ -8,7 +8,6 @@ use rayon::prelude::*;
 use std::fs;
 use std::io::{BufRead, BufWriter, Write};
 use std::path::{Path, PathBuf};
-use tree_sitter::Parser;
 
 enum TrapCompression {
     None,
@@ -133,12 +132,10 @@ fn main() -> std::io::Result<()> {
     let lines: std::io::Result<Vec<String>> = std::io::BufReader::new(file_list).lines().collect();
     let lines = lines?;
     lines.par_iter().try_for_each(|line| {
-        let mut parser = Parser::new();
-        parser.set_language(language).unwrap();
         let path = PathBuf::from(line).canonicalize()?;
         let trap_file = path_for(&trap_dir, &path, trap_compression.extension());
         let src_archive_file = path_for(&src_archive_dir, &path, "");
-        let trap = extractor::extract(&mut parser, &schema, &path)?;
+        let trap = extractor::extract(language, &schema, &path)?;
         std::fs::create_dir_all(&src_archive_file.parent().unwrap())?;
         std::fs::copy(&path, &src_archive_file)?;
         std::fs::create_dir_all(&trap_file.parent().unwrap())?;
