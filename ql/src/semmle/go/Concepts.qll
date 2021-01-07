@@ -21,6 +21,9 @@ class SystemCommandExecution extends DataFlow::Node {
 
   /** Gets the argument that specifies the command to be executed. */
   DataFlow::Node getCommandName() { result = self.getCommandName() }
+
+  /** Holds if this node is sanitized whenever it follows `--` in an argument list. */
+  predicate doubleDashIsSanitizing() { self.doubleDashIsSanitizing() }
 }
 
 /** Provides a class for modeling new system-command execution APIs. */
@@ -35,6 +38,9 @@ module SystemCommandExecution {
   abstract class Range extends DataFlow::Node {
     /** Gets the argument that specifies the command to be executed. */
     abstract DataFlow::Node getCommandName();
+
+    /** Holds if this node is sanitized whenever it follows `--` in an argument list. */
+    predicate doubleDashIsSanitizing() { none() }
   }
 }
 

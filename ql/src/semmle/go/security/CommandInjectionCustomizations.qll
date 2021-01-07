@@ -19,7 +19,10 @@ module CommandInjection {
   /**
    * A data flow sink for command-injection vulnerabilities.
    */
-  abstract class Sink extends DataFlow::Node { }
+  abstract class Sink extends DataFlow::Node {
+    /** Holds if this node is sanitized whenever it follows `--` in an argument list. */
+    predicate doubleDashIsSanitizing() { none() }
+  }
 
   /**
    * A sanitizer for command-injection vulnerabilities.
@@ -38,6 +41,10 @@ module CommandInjection {
 
   /** A command name, considered as a taint sink for command injection. */
   class CommandNameAsSink extends Sink {
-    CommandNameAsSink() { this = any(SystemCommandExecution exec).getCommandName() }
+    SystemCommandExecution exec;
+
+    CommandNameAsSink() { this = exec.getCommandName() }
+
+    override predicate doubleDashIsSanitizing() { exec.doubleDashIsSanitizing() }
   }
 }

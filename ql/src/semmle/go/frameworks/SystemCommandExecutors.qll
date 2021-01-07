@@ -10,12 +10,17 @@ import go
  * such as a shell, `sudo`, or a programming-language interpreter.
  */
 private class ShellOrSudoExecution extends SystemCommandExecution::Range, DataFlow::CallNode {
+  ShellLike shellCommand;
+
   ShellOrSudoExecution() {
     this instanceof SystemCommandExecution and
-    this.getAnArgument().getAPredecessor*() instanceof ShellLike
+    shellCommand = this.getAnArgument().getAPredecessor*() and
+    not hasSafeSubcommand(shellCommand.getStringValue(), this.getAnArgument().getStringValue())
   }
 
   override DataFlow::Node getCommandName() { result = getAnArgument() }
+
+  override predicate doubleDashIsSanitizing() { shellCommand.getStringValue().matches("%git") }
 }
 
 private class SystemCommandExecutors extends SystemCommandExecution::Range, DataFlow::CallNode {
@@ -151,7 +156,39 @@ private string getASudoCommand() {
   result = "awk" or
   result = "gawk" or
   result = "mawk" or
-  result = "nawk"
+  result = "nawk" or
+  result = "git"
+}
+
+/**
+ * Excuse git commands other than those that interact with remotes, as only those currently
+ * take arbitrary commands to run on the remote host as arguments.
+ */
+bindingset[command, subcommand]
+private predicate hasSafeSubcommand(string command, string subcommand) {
+  command.matches("%git") and
+  // All git subcommands except for clone, fetch, ls-remote, pull and fetch-pack
+  subcommand in [
+      "add", "am", "archive", "bisect", "branch", "bundle", "checkout", "cherry-pick", "citool",
+      "clean", "commit", "describe", "diff", "format-patch", "gc", "gitk", "grep", "gui", "init",
+      "log", "merge", "mv", "notes", "push", "range-diff", "rebase", "reset", "restore", "revert",
+      "rm", "shortlog", "show", "sparse-checkout", "stash", "status", "submodule", "switch", "tag",
+      "worktree", "fast-export", "fast-import", "filter-branch", "mergetool", "pack-refs", "prune",
+      "reflog", "remote", "repack", "replace", "annotate", "blame", "bugreport", "count-objects",
+      "difftool", "fsck", "gitweb", "help", "instaweb", "merge-tree", "rerere", "show-branch",
+      "verify-commit", "verify-tag", "whatchanged", "archimport", "cvsexportcommit", "cvsimport",
+      "cvsserver", "imap-send", "p4", "quiltimport", "request-pull", "send-email", "apply",
+      "checkout-index", "commit-graph", "commit-tree", "hash-object", "index-pack", "merge-file",
+      "merge-index", "mktag", "mktree", "multi-pack-index", "pack-objects", "prune-packed",
+      "read-tree", "symbolic-ref", "unpack-objects", "update-index", "update-ref", "write-tree",
+      "cat-file", "cherry", "diff-files", "diff-index", "diff-tree", "for-each-ref",
+      "get-tar-commit-id", "ls-files", "ls-tree", "merge-base", "name-rev", "pack-redundant",
+      "rev-list", "rev-parse", "show-index", "show-ref", "unpack-file", "var", "verify-pack",
+      "http-backend", "send-pack", "update-server-info", "check-attr", "check-ignore",
+      "check-mailmap", "check-ref-format", "column", "credential", "credential-cache",
+      "credential-store", "fmt-merge-msg", "interpret-trailers", "mailinfo", "mailsplit",
+      "merge-one-file", "patch-id"
+    ]
 }
 
 /**

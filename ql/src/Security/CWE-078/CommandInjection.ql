@@ -14,7 +14,9 @@ import go
 import semmle.go.security.CommandInjection
 import DataFlow::PathGraph
 
-from CommandInjection::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from
+  CommandInjection::Configuration cfg, CommandInjection::DoubleDashSanitizingConfiguration cfg2,
+  DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasFlowPath(source, sink) or cfg2.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "This command depends on $@.", source.getNode(),
   "a user-provided value"
