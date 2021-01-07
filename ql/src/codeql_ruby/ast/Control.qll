@@ -265,10 +265,10 @@ class CaseExpr extends ControlExpr, @case__ {
   final Expr getABranch() { result = this.getBranch(_) }
 
   /** Gets a `when` branch of this case expression. */
-  final WhenExpr getAWhenBranch() { result = range.getAWhenBranch() }
+  final WhenExpr getAWhenBranch() { result = getABranch() }
 
   /** Gets the `else` branch of this case expression, if any. */
-  final ExprSequence getElseBranch() { result = range.getElseBranch() }
+  final ExprSequence getElseBranch() { result = getABranch() }
 
   /**
    * Gets the number of branches of this case expression.
@@ -280,7 +280,7 @@ class CaseExpr extends ControlExpr, @case__ {
  * A `when` branch of a `case` expression.
  * ```rb
  * case
- * when a>b then x
+ * when a > b then x
  * end
  * ```
  */
@@ -295,7 +295,15 @@ class WhenExpr extends Expr, @when {
   final ExprSequence getBody() { result = range.getBody() }
 
   /**
-   * Gets the `n`th pattern (or condition) in this case-when expression.
+   * Gets the `n`th pattern (or condition) in this case-when expression. In the
+   * following example, the 0th pattern is `x`, the 1st pattern is `y`, and the
+   * 2nd pattern is `z`.
+   * ```rb
+   * case foo
+   * when x, y, z
+   *   puts 'x/y/z'
+   * end
+   * ```
    */
   final Expr getPattern(int n) { result = range.getPattern(n) }
 

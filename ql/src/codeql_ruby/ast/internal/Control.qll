@@ -126,10 +126,6 @@ module CaseExpr {
     final Expr getValue() { result = generated.getValue() }
 
     final Expr getBranch(int n) { result = generated.getChild(n) }
-
-    final WhenExpr getAWhenBranch() { result = this.getBranch(_) }
-
-    final ExprSequence getElseBranch() { result = this.getBranch(_) }
   }
 }
 
