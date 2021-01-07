@@ -83,12 +83,12 @@ class ExprSequence extends Expr {
   final override string toString() { result = "...; ..." }
 
   /** Gets the `n`th expression in this sequence. */
-  final Expr getExpr(int n) { result = this.(ExprSequence::Range).getExpr(n) }
+  final Expr getExpr(int n) { result = range.getExpr(n) }
 
   /** Gets an expression in this sequence. */
   final Expr getAnExpr() { result = this.getExpr(_) }
 
-  /** Gets the last expression in this sequence. */
+  /** Gets the last expression in this sequence, if any. */
   final Expr getLastExpr() { result = this.getExpr(this.getNumberOfExpressions() - 1) }
 
   /** Gets the number of expressions in this sequence. */
