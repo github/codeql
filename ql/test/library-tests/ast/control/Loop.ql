@@ -4,6 +4,15 @@ query predicate loops(Loop l, string lClass, Expr body, string bodyClass) {
   l.getBody() = body and lClass = l.getAPrimaryQlClass() and bodyClass = body.getAPrimaryQlClass()
 }
 
+query predicate conditionalLoops(
+  ConditionalLoop l, string lClass, Expr cond, Expr body, string bodyClass
+) {
+  l.getBody() = body and
+  lClass = l.getAPrimaryQlClass() and
+  bodyClass = body.getAPrimaryQlClass() and
+  cond = l.getCondition()
+}
+
 query predicate forExprs(ForExpr f, Pattern p, ExprSequence body, int i, Expr bodyChild) {
   p = f.getPattern() and
   body = f.getBody() and

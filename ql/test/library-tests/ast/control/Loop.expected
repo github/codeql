@@ -9,6 +9,13 @@ loops
 | loops.rb:49:1:52:3 | until ... | UntilExpr | loops.rb:49:13:52:3 | ...; ... | ExprSequence |
 | loops.rb:55:1:58:3 | until ... | UntilExpr | loops.rb:55:13:58:3 | ...; ... | ExprSequence |
 | loops.rb:61:1:61:19 | ... until ... | UntilModifierExpr | loops.rb:61:1:61:6 | ... -= ... | AssignSubExpr |
+conditionalLoops
+| loops.rb:34:1:37:3 | while ... | WhileExpr | loops.rb:34:7:34:11 | ... < ... | loops.rb:34:12:37:3 | ...; ... | ExprSequence |
+| loops.rb:40:1:43:3 | while ... | WhileExpr | loops.rb:40:7:40:11 | ... < ... | loops.rb:40:13:43:3 | ...; ... | ExprSequence |
+| loops.rb:46:1:46:19 | ... while ... | WhileModifierExpr | loops.rb:46:14:46:19 | ... >= ... | loops.rb:46:1:46:6 | ... += ... | AssignAddExpr |
+| loops.rb:49:1:52:3 | until ... | UntilExpr | loops.rb:49:7:49:12 | ... == ... | loops.rb:49:13:52:3 | ...; ... | ExprSequence |
+| loops.rb:55:1:58:3 | until ... | UntilExpr | loops.rb:55:7:55:11 | ... > ... | loops.rb:55:13:58:3 | ...; ... | ExprSequence |
+| loops.rb:61:1:61:19 | ... until ... | UntilModifierExpr | loops.rb:61:14:61:19 | ... == ... | loops.rb:61:1:61:6 | ... -= ... | AssignSubExpr |
 forExprs
 | loops.rb:9:1:12:3 | for ... in ... | loops.rb:9:5:9:5 | n | loops.rb:9:15:12:3 | ...; ... | 0 | loops.rb:10:5:10:12 | ... += ... |
 | loops.rb:9:1:12:3 | for ... in ... | loops.rb:9:5:9:5 | n | loops.rb:9:15:12:3 | ...; ... | 1 | loops.rb:11:5:11:11 | ... = ... |

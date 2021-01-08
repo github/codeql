@@ -309,6 +309,17 @@ class Loop extends ControlExpr {
 }
 
 /**
+ * A loop using a condition expression. That is, a `while` or `until` loop, or
+ * their expression-modifier variants.
+ */
+class ConditionalLoop extends Loop {
+  override ConditionalLoop::Range range;
+
+  /** Gets the condition expression of this loop. */
+  final Expr getCondition() { result = range.getCondition() }
+}
+
+/**
  * A `while` loop.
  * ```rb
  * while a < b
@@ -317,7 +328,7 @@ class Loop extends ControlExpr {
  * end
  * ```
  */
-class WhileExpr extends Loop, @while {
+class WhileExpr extends ConditionalLoop, @while {
   final override WhileExpr::Range range;
 
   final override string getAPrimaryQlClass() { result = "WhileExpr" }
@@ -326,9 +337,6 @@ class WhileExpr extends Loop, @while {
 
   /** Gets the body of this `while` loop. */
   final override ExprSequence getBody() { result = range.getBody() }
-
-  /** Gets the condition expression of this `while` loop. */
-  final Expr getCondition() { result = range.getCondition() }
 }
 
 /**
@@ -340,7 +348,7 @@ class WhileExpr extends Loop, @while {
  * end
  * ```
  */
-class UntilExpr extends Loop, @until {
+class UntilExpr extends ConditionalLoop, @until {
   final override UntilExpr::Range range;
 
   final override string getAPrimaryQlClass() { result = "UntilExpr" }
@@ -349,9 +357,6 @@ class UntilExpr extends Loop, @until {
 
   /** Gets the body of this `until` loop. */
   final override ExprSequence getBody() { result = range.getBody() }
-
-  /** Gets the condition expression of this `until` loop. */
-  final Expr getCondition() { result = range.getCondition() }
 }
 
 /**
@@ -360,21 +365,12 @@ class UntilExpr extends Loop, @until {
  * foo while bar
  * ```
  */
-class WhileModifierExpr extends Loop, @while_modifier {
+class WhileModifierExpr extends ConditionalLoop, @while_modifier {
   final override WhileModifierExpr::Range range;
 
   final override string getAPrimaryQlClass() { result = "WhileModifierExpr" }
 
   final override string toString() { result = "... while ..." }
-
-  /**
-   * Gets the condition expression of this `while`-modifier. In the following
-   * example, the result is the `Expr` for `bar`.
-   * ```rb
-   * foo while bar
-   * ```
-   */
-  final Expr getCondition() { result = range.getCondition() }
 }
 
 /**
@@ -383,21 +379,12 @@ class WhileModifierExpr extends Loop, @while_modifier {
  * foo until bar
  * ```
  */
-class UntilModifierExpr extends Loop, @until_modifier {
+class UntilModifierExpr extends ConditionalLoop, @until_modifier {
   final override UntilModifierExpr::Range range;
 
   final override string getAPrimaryQlClass() { result = "UntilModifierExpr" }
 
   final override string toString() { result = "... until ..." }
-
-  /**
-   * Gets the condition expression of this `until`-modifier. In the following
-   * example, the result is the `Expr` for `bar`.
-   * ```rb
-   * foo until bar
-   * ```
-   */
-  final Expr getCondition() { result = range.getCondition() }
 }
 
 /**

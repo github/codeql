@@ -141,43 +141,49 @@ module Loop {
   }
 }
 
+module ConditionalLoop {
+  abstract class Range extends Loop::Range {
+    abstract Expr getCondition();
+  }
+}
+
 module WhileExpr {
-  class Range extends Loop::Range, @while {
+  class Range extends ConditionalLoop::Range, @while {
     final override Generated::While generated;
 
     final override ExprSequence getBody() { result = generated.getBody() }
 
-    final Expr getCondition() { result = generated.getCondition() }
+    final override Expr getCondition() { result = generated.getCondition() }
   }
 }
 
 module UntilExpr {
-  class Range extends Loop::Range, @until {
+  class Range extends ConditionalLoop::Range, @until {
     final override Generated::Until generated;
 
     final override ExprSequence getBody() { result = generated.getBody() }
 
-    final Expr getCondition() { result = generated.getCondition() }
+    final override Expr getCondition() { result = generated.getCondition() }
   }
 }
 
 module WhileModifierExpr {
-  class Range extends Loop::Range, @while_modifier {
+  class Range extends ConditionalLoop::Range, @while_modifier {
     final override Generated::WhileModifier generated;
 
     final override Expr getBody() { result = generated.getBody() }
 
-    final Expr getCondition() { result = generated.getCondition() }
+    final override Expr getCondition() { result = generated.getCondition() }
   }
 }
 
 module UntilModifierExpr {
-  class Range extends Loop::Range, @until_modifier {
+  class Range extends ConditionalLoop::Range, @until_modifier {
     final override Generated::UntilModifier generated;
 
     final override Expr getBody() { result = generated.getBody() }
 
-    final Expr getCondition() { result = generated.getCondition() }
+    final override Expr getCondition() { result = generated.getCondition() }
   }
 }
 
