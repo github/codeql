@@ -15,16 +15,14 @@ module ConditionalExpr {
   }
 }
 
-module IfOrElsifExpr {
+module IfExpr {
   abstract class Range extends ConditionalExpr::Range {
-    abstract Expr getThen();
+    abstract ExprSequence getThen();
 
     abstract Expr getElse();
   }
-}
 
-module IfExpr {
-  class Range extends IfOrElsifExpr::Range, @if {
+  private class IfRange extends IfExpr::Range, @if {
     final override Generated::If generated;
 
     final override Expr getCondition() { result = generated.getCondition() }
@@ -39,10 +37,8 @@ module IfExpr {
       cond = false and result = getElse()
     }
   }
-}
 
-module ElsifExpr {
-  class Range extends IfOrElsifExpr::Range, @elsif {
+  private class ElsifRange extends IfExpr::Range, @elsif {
     final override Generated::Elsif generated;
 
     final override Expr getCondition() { result = generated.getCondition() }

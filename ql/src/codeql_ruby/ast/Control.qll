@@ -40,10 +40,23 @@ class ConditionalExpr extends Expr {
 
 /**
  * An `if` or `elsif` expression.
+ * ```rb
+ * if x
+ *   a += 1
+ * elsif y
+ *   a += 2
+ * end
  * ```
  */
-class IfOrElsifExpr extends ConditionalExpr {
-  override IfOrElsifExpr::Range range;
+class IfExpr extends ConditionalExpr {
+  override IfExpr::Range range;
+
+  final override string getAPrimaryQlClass() { result = "IfExpr" }
+
+  final override string toString() { if isElsif() then result = "elsif ..." else result = "if ..." }
+
+  /** Holds if this is an `elsif` expression. */
+  final predicate isElsif() { this instanceof @elsif }
 
   /** Gets the 'then' branch of this `if`/`elsif` expression. */
   final ExprSequence getThen() { result = range.getThen() }
@@ -80,40 +93,6 @@ class IfOrElsifExpr extends ConditionalExpr {
    * ```
    */
   final Expr getElse() { result = range.getElse() }
-}
-
-/**
- * An `if` expression.
- * ```rb
- * if x
- *   y += 1
- * end
- * ```
- */
-class IfExpr extends IfOrElsifExpr, @if {
-  final override IfExpr::Range range;
-
-  final override string getAPrimaryQlClass() { result = "IfExpr" }
-
-  final override string toString() { result = "if ..." }
-}
-
-/**
- * An `elsif` expression.
- * ```rb
- * if x
- *   a += 1
- * elsif y
- *   a += 2
- * end
- * ```
- */
-class ElsifExpr extends IfOrElsifExpr, @elsif {
-  final override ElsifExpr::Range range;
-
-  final override string getAPrimaryQlClass() { result = "ElsifExpr" }
-
-  final override string toString() { result = "elsif ..." }
 }
 
 /**

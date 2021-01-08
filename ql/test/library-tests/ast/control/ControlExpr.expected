@@ -3,10 +3,10 @@
 | conditionals.rb:10:1:12:3 | if ... | IfExpr |
 | conditionals.rb:15:1:19:3 | if ... | IfExpr |
 | conditionals.rb:22:1:30:3 | if ... | IfExpr |
-| conditionals.rb:24:1:29:5 | elsif ... | ElsifExpr |
-| conditionals.rb:26:1:29:5 | elsif ... | ElsifExpr |
+| conditionals.rb:24:1:29:5 | elsif ... | IfExpr |
+| conditionals.rb:26:1:29:5 | elsif ... | IfExpr |
 | conditionals.rb:33:1:37:3 | if ... | IfExpr |
-| conditionals.rb:35:1:36:5 | elsif ... | ElsifExpr |
+| conditionals.rb:35:1:36:5 | elsif ... | IfExpr |
 | conditionals.rb:40:1:42:3 | unless ... | UnlessExpr |
 | conditionals.rb:45:1:49:3 | unless ... | UnlessExpr |
 | conditionals.rb:52:1:52:14 | ... if ... | IfModifierExpr |

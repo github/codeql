@@ -8,13 +8,14 @@ query predicate conditionalExprs(
   branch = e.getBranch(branchCond)
 }
 
-query predicate ifOrElsifExprs(
-  IfOrElsifExpr e, string pClass, Expr cond, ExprSequence thenExpr, string elseStr
+query predicate ifExprs(
+  IfExpr e, string pClass, Expr cond, ExprSequence thenExpr, string elseStr, boolean isElsif
 ) {
   pClass = e.getAPrimaryQlClass() and
   cond = e.getCondition() and
   thenExpr = e.getThen() and
-  if exists(e.getElse()) then elseStr = e.getElse().toString() else elseStr = "(none)"
+  (if exists(e.getElse()) then elseStr = e.getElse().toString() else elseStr = "(none)") and
+  if e.isElsif() then isElsif = true else isElsif = false
 }
 
 query predicate unlessExprs(
