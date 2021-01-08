@@ -31,7 +31,7 @@ predicate localExprTaint(Expr src, Expr sink) {
  */
 predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   DataFlow::localFlowStep(src, sink) or
-  localAdditionalTaintStep(src, sink)
+  defaultAdditionalTaintStep(src, sink)
 }
 
 /**
