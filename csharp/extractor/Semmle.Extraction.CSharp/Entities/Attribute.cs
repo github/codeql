@@ -66,12 +66,25 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private void ExtractArguments(TextWriter trapFile)
         {
+            var ctorArguments = attributeSyntax?.ArgumentList?.Arguments.Where(a => a.NameEquals == null).ToList();
+
             var childIndex = 0;
-            foreach (var constructorArgument in symbol.ConstructorArguments)
+            for (var i = 0; i < symbol.ConstructorArguments.Length; i++)
             {
+                var constructorArgument = symbol.ConstructorArguments[i];
+                var paramName = symbol.AttributeConstructor?.Parameters[i].Name;
+                var argSyntax = ctorArguments?.SingleOrDefault(a => a.NameColon != null && a.NameColon.Name.Identifier.Text == paramName);
+
+                if (argSyntax == null &&                            // couldn't find named argument
+                    ctorArguments?.Count > childIndex &&            // there're more arguments
+                    ctorArguments[childIndex].NameColon == null)    // the argument is positional
+                {
+                    argSyntax = ctorArguments[childIndex];
+                }
+
                 CreateExpressionFromArgument(
                     constructorArgument,
-                    attributeSyntax?.ArgumentList.Arguments[childIndex].Expression,
+                    argSyntax?.Expression,
                     this,
                     childIndex++);
             }

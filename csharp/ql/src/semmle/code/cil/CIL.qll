@@ -18,3 +18,4 @@ import ControlFlow
 import DataFlow
 import Attribute
 import Stubs
+import CustomModifierReceiver

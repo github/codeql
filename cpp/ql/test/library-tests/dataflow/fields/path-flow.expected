@@ -336,6 +336,27 @@ edges
 | complex.cpp:62:7:62:8 | b2 [inner, f, b_] | complex.cpp:40:17:40:17 | b [inner, f, b_] |
 | complex.cpp:65:7:65:8 | b3 [inner, f, a_] | complex.cpp:40:17:40:17 | b [inner, f, a_] |
 | complex.cpp:65:7:65:8 | b3 [inner, f, b_] | complex.cpp:40:17:40:17 | b [inner, f, b_] |
+| conflated.cpp:19:19:19:21 | ref arg raw | conflated.cpp:20:8:20:10 | raw |
+| conflated.cpp:29:3:29:4 | pa [post update] [x] | conflated.cpp:30:8:30:9 | pa [x] |
+| conflated.cpp:29:3:29:22 | ... = ... | conflated.cpp:29:3:29:4 | pa [post update] [x] |
+| conflated.cpp:29:11:29:20 | call to user_input | conflated.cpp:29:3:29:22 | ... = ... |
+| conflated.cpp:30:8:30:9 | pa [x] | conflated.cpp:30:12:30:12 | x |
+| conflated.cpp:36:3:36:4 | pa [post update] [x] | conflated.cpp:37:8:37:9 | pa [x] |
+| conflated.cpp:36:3:36:22 | ... = ... | conflated.cpp:36:3:36:4 | pa [post update] [x] |
+| conflated.cpp:36:11:36:20 | call to user_input | conflated.cpp:36:3:36:22 | ... = ... |
+| conflated.cpp:37:8:37:9 | pa [x] | conflated.cpp:37:12:37:12 | x |
+| conflated.cpp:54:3:54:4 | ll [post update] [next, y] | conflated.cpp:55:8:55:9 | ll [next, y] |
+| conflated.cpp:54:3:54:28 | ... = ... | conflated.cpp:54:7:54:10 | next [post update] [y] |
+| conflated.cpp:54:7:54:10 | next [post update] [y] | conflated.cpp:54:3:54:4 | ll [post update] [next, y] |
+| conflated.cpp:54:17:54:26 | call to user_input | conflated.cpp:54:3:54:28 | ... = ... |
+| conflated.cpp:55:8:55:9 | ll [next, y] | conflated.cpp:55:12:55:15 | next [y] |
+| conflated.cpp:55:12:55:15 | next [y] | conflated.cpp:55:18:55:18 | y |
+| conflated.cpp:60:3:60:4 | ll [post update] [next, y] | conflated.cpp:61:8:61:9 | ll [next, y] |
+| conflated.cpp:60:3:60:28 | ... = ... | conflated.cpp:60:7:60:10 | next [post update] [y] |
+| conflated.cpp:60:7:60:10 | next [post update] [y] | conflated.cpp:60:3:60:4 | ll [post update] [next, y] |
+| conflated.cpp:60:17:60:26 | call to user_input | conflated.cpp:60:3:60:28 | ... = ... |
+| conflated.cpp:61:8:61:9 | ll [next, y] | conflated.cpp:61:12:61:15 | next [y] |
+| conflated.cpp:61:12:61:15 | next [y] | conflated.cpp:61:18:61:18 | y |
 | constructors.cpp:26:15:26:15 | f [a_] | constructors.cpp:28:10:28:10 | f [a_] |
 | constructors.cpp:26:15:26:15 | f [b_] | constructors.cpp:29:10:29:10 | f [b_] |
 | constructors.cpp:28:10:28:10 | f [a_] | constructors.cpp:28:12:28:12 | call to a |
@@ -827,6 +848,32 @@ nodes
 | complex.cpp:62:7:62:8 | b2 [inner, f, b_] | semmle.label | b2 [inner, f, b_] |
 | complex.cpp:65:7:65:8 | b3 [inner, f, a_] | semmle.label | b3 [inner, f, a_] |
 | complex.cpp:65:7:65:8 | b3 [inner, f, b_] | semmle.label | b3 [inner, f, b_] |
+| conflated.cpp:19:19:19:21 | ref arg raw | semmle.label | ref arg raw |
+| conflated.cpp:20:8:20:10 | raw | semmle.label | raw |
+| conflated.cpp:29:3:29:4 | pa [post update] [x] | semmle.label | pa [post update] [x] |
+| conflated.cpp:29:3:29:22 | ... = ... | semmle.label | ... = ... |
+| conflated.cpp:29:11:29:20 | call to user_input | semmle.label | call to user_input |
+| conflated.cpp:30:8:30:9 | pa [x] | semmle.label | pa [x] |
+| conflated.cpp:30:12:30:12 | x | semmle.label | x |
+| conflated.cpp:36:3:36:4 | pa [post update] [x] | semmle.label | pa [post update] [x] |
+| conflated.cpp:36:3:36:22 | ... = ... | semmle.label | ... = ... |
+| conflated.cpp:36:11:36:20 | call to user_input | semmle.label | call to user_input |
+| conflated.cpp:37:8:37:9 | pa [x] | semmle.label | pa [x] |
+| conflated.cpp:37:12:37:12 | x | semmle.label | x |
+| conflated.cpp:54:3:54:4 | ll [post update] [next, y] | semmle.label | ll [post update] [next, y] |
+| conflated.cpp:54:3:54:28 | ... = ... | semmle.label | ... = ... |
+| conflated.cpp:54:7:54:10 | next [post update] [y] | semmle.label | next [post update] [y] |
+| conflated.cpp:54:17:54:26 | call to user_input | semmle.label | call to user_input |
+| conflated.cpp:55:8:55:9 | ll [next, y] | semmle.label | ll [next, y] |
+| conflated.cpp:55:12:55:15 | next [y] | semmle.label | next [y] |
+| conflated.cpp:55:18:55:18 | y | semmle.label | y |
+| conflated.cpp:60:3:60:4 | ll [post update] [next, y] | semmle.label | ll [post update] [next, y] |
+| conflated.cpp:60:3:60:28 | ... = ... | semmle.label | ... = ... |
+| conflated.cpp:60:7:60:10 | next [post update] [y] | semmle.label | next [post update] [y] |
+| conflated.cpp:60:17:60:26 | call to user_input | semmle.label | call to user_input |
+| conflated.cpp:61:8:61:9 | ll [next, y] | semmle.label | ll [next, y] |
+| conflated.cpp:61:12:61:15 | next [y] | semmle.label | next [y] |
+| conflated.cpp:61:18:61:18 | y | semmle.label | y |
 | constructors.cpp:26:15:26:15 | f [a_] | semmle.label | f [a_] |
 | constructors.cpp:26:15:26:15 | f [b_] | semmle.label | f [b_] |
 | constructors.cpp:28:10:28:10 | f [a_] | semmle.label | f [a_] |
@@ -1028,6 +1075,11 @@ nodes
 | complex.cpp:42:18:42:18 | call to a | complex.cpp:55:19:55:28 | call to user_input | complex.cpp:42:18:42:18 | call to a | call to a flows from $@ | complex.cpp:55:19:55:28 | call to user_input | call to user_input |
 | complex.cpp:43:18:43:18 | call to b | complex.cpp:54:19:54:28 | call to user_input | complex.cpp:43:18:43:18 | call to b | call to b flows from $@ | complex.cpp:54:19:54:28 | call to user_input | call to user_input |
 | complex.cpp:43:18:43:18 | call to b | complex.cpp:56:19:56:28 | call to user_input | complex.cpp:43:18:43:18 | call to b | call to b flows from $@ | complex.cpp:56:19:56:28 | call to user_input | call to user_input |
+| conflated.cpp:20:8:20:10 | raw | conflated.cpp:19:19:19:21 | ref arg raw | conflated.cpp:20:8:20:10 | raw | raw flows from $@ | conflated.cpp:19:19:19:21 | ref arg raw | ref arg raw |
+| conflated.cpp:30:12:30:12 | x | conflated.cpp:29:11:29:20 | call to user_input | conflated.cpp:30:12:30:12 | x | x flows from $@ | conflated.cpp:29:11:29:20 | call to user_input | call to user_input |
+| conflated.cpp:37:12:37:12 | x | conflated.cpp:36:11:36:20 | call to user_input | conflated.cpp:37:12:37:12 | x | x flows from $@ | conflated.cpp:36:11:36:20 | call to user_input | call to user_input |
+| conflated.cpp:55:18:55:18 | y | conflated.cpp:54:17:54:26 | call to user_input | conflated.cpp:55:18:55:18 | y | y flows from $@ | conflated.cpp:54:17:54:26 | call to user_input | call to user_input |
+| conflated.cpp:61:18:61:18 | y | conflated.cpp:60:17:60:26 | call to user_input | conflated.cpp:61:18:61:18 | y | y flows from $@ | conflated.cpp:60:17:60:26 | call to user_input | call to user_input |
 | constructors.cpp:28:12:28:12 | call to a | constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:28:12:28:12 | call to a | call to a flows from $@ | constructors.cpp:34:11:34:20 | call to user_input | call to user_input |
 | constructors.cpp:28:12:28:12 | call to a | constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:28:12:28:12 | call to a | call to a flows from $@ | constructors.cpp:36:11:36:20 | call to user_input | call to user_input |
 | constructors.cpp:29:12:29:12 | call to b | constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:29:12:29:12 | call to b | call to b flows from $@ | constructors.cpp:35:14:35:23 | call to user_input | call to user_input |

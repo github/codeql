@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CIL.Entities
             genericContext.GetGenericTypeParameter(index);
 
         Type ISignatureTypeProvider<Type, GenericContext>.GetModifiedType(Type modifier, Type unmodifiedType, bool isRequired) =>
-            unmodifiedType; // !! Not implemented properly
+            new ModifiedType(cx, unmodifiedType, modifier, isRequired);
 
         Type ISignatureTypeProvider<Type, GenericContext>.GetPinnedType(Type elementType) =>
             cx.Populate(new PointerType(cx, elementType));

@@ -37,7 +37,7 @@ Order
 
 To compare two expressions using one of these order operators, each expression must have a type
 and those types must be :ref:`compatible <type-compatibility>` and 
-`orderable <ql-language-specification#ordering>`_.
+`orderable <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#ordering>`_.
 
 +--------------------------+--------+
 | Name                     | Symbol |
@@ -318,7 +318,8 @@ The following query selects files that are not HTML files.
     where not f.getFileType().isHtml()
     select f
 
-.. note:: 
+.. pull-quote:: Note 
+
    You should be careful when using ``not`` in a recursive definition, as this could lead to
    non-monotonic recursion. For more information, ":ref:`non-monotonic-recursion`."
 
@@ -381,13 +382,14 @@ disjunction.
 **Example**
 
 With the following definition, an integer is in the class ``OneTwoThree`` if it is equal to
-``1``, ``2``, or ``3``::
+``1``, ``2``, or ``3``:
+
+.. code-block:: ql
 
     class OneTwoThree extends int {
       OneTwoThree() {
         this = 1 or this = 2 or this = 3
       }
-      ...
     }
 
 .. index:: implies
@@ -418,13 +420,13 @@ The following query selects any ``SmallInt`` that is odd, or a multiple of ``4``
 .. [#] The difference between ``A != B`` and ``not A = B`` is due to the underlying quantifiers. 
        If you think of ``A`` and ``B`` as sets of values, then ``A != B`` means:
 
-.. code-block:: ql
+       .. code-block:: ql
 
-           exists( a, b | a in A and b in B | a != b )
+          exists( a, b | a in A and b in B | a != b )
 
        On the other hand, ``not A = B`` means:
 
-.. code-block:: ql
+       .. code-block:: ql
 
            not exists( a, b | a in A and b in B | a = b )
        
