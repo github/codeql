@@ -1,3 +1,5 @@
+:tocdepth: 1
+
 .. _evaluation-of-ql-programs:
 
 Evaluation of QL programs
@@ -21,7 +23,7 @@ A QL program is evaluated from the bottom up, so a predicate is usually only eva
 all the predicates it depends on are evaluated. 
 
 The database includes sets of ordered tuples for the `built-in predicates 
-<ql-language-specification#built-ins>`_ and :ref:`external predicates <external>`. 
+<https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#built-ins>`_ and :ref:`external predicates <external>`. 
 Each evaluation starts from these sets of tuples.
 The remaining predicates and types in the program are organized into a number of layers, based 
 on the dependencies between them.
@@ -33,7 +35,7 @@ results of the program. The results are sorted according to any ordering directi
 (``order by``) in the queries.
 
 For more details about each step of the evaluation process, see the "`QL language specification
-<ql-language-specification#evaluations-of-ql-programs>`_."
+<https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#evaluation>`_."
 
 Validity of programs
 ********************
@@ -46,21 +48,27 @@ Here are some common ways that you might define infinite predicates. These all g
 compilation errors:
 
 - The following query conceptually selects all values of type ``int``, without restricting them.
-  The QL compiler returns the error ``'i' is not bound to a value``::
+  The QL compiler returns the error ``'i' is not bound to a value``:
+
+  .. code-block:: ql
   
       from int i
       select i
 
 - The following predicate generates two errors: ``'n' is not bound to a value`` and ``'result' is
-  not bound to a value``::
+  not bound to a value``:
   
+  .. code-block:: ql
+
       int timesTwo(int n) {
         result = n * 2
       }
 
 - The following class ``Person`` contains all strings that start with ``"Peter"``. There are
   infinitely many such strings, so this is another invalid definition. The QL compiler gives the
-  error message ``'this' is not bound to a value``::
+  error message ``'this' is not bound to a value``:
+  
+  .. code-block:: ql
   
       class Person extends string {
         Person() {
@@ -94,7 +102,9 @@ To do this, you can use the following mechanisms:
    :ref:`binds <predicate-binding>` all its arguments.
    Therefore, if you :ref:`call <calls>` a predicate on a variable, the variable becomes bound.
    
-   .. important:: If a predicate uses non-standard binding sets, then it does **not** always bind
+   .. pull-quote:: Important 
+      
+      If a predicate uses non-standard binding sets, then it does **not** always bind
       all its arguments. In such a case, whether the predicate call binds a specific argument
       depends on which other arguments are bound, and what the binding sets say about the
       argument in question. For more information, see ":ref:`binding-sets`."

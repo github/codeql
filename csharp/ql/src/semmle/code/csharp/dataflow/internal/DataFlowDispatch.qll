@@ -168,8 +168,7 @@ private module DispatchImpl {
     )
     or
     result =
-      call
-          .(NonDelegateDataFlowCall)
+      call.(NonDelegateDataFlowCall)
           .getDispatchCall()
           .getADynamicTargetInCallContext(ctx.(NonDelegateDataFlowCall).getDispatchCall())
           .getUnboundDeclaration()

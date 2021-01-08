@@ -1162,37 +1162,6 @@ module Ssa {
       not intraInstanceCallEdge(c1, c2)
     }
 
-    /**
-     * Holds if a call to `x.c` can change the value of `x.fp`. The actual
-     * update occurs in `setter`.
-     */
-    private predicate setsOwnFieldOrPropTransitive(
-      InstanceCallable c, FieldOrProp fp, InstanceCallable setter
-    ) {
-      setsOwnFieldOrProp(setter, fp) and
-      // `intraInstanceCallEdge*(c, setter)` applies `fastTC` and therefore misses
-      // important magic optimization; consequently apply magic manually by explicit
-      // recursion
-      c = setter
-      or
-      exists(InstanceCallable mid | setsOwnFieldOrPropTransitive(mid, fp, setter) |
-        intraInstanceCallEdge(c, mid)
-      )
-    }
-
-    /**
-     * Holds if a call to `c` can change the value of `fp` on some instance.
-     * The actual update occurs in `setter`.
-     */
-    private predicate generalSetter(Callable c, FieldOrProp fp, Callable setter) {
-      exists(InstanceCallable ownsetter |
-        setsOwnFieldOrPropTransitive(ownsetter, fp, setter) and
-        crossInstanceCallEdge(c, ownsetter)
-      )
-      or
-      setsOtherFieldOrProp(c, fp) and c = setter
-    }
-
     pragma[noinline]
     predicate callAt(BasicBlock bb, int i, Call call) {
       bb.getNode(i) = call.getAControlFlowNode() and
@@ -1211,103 +1180,89 @@ module Ssa {
       not ref(bb, i, fp, _)
     }
 
-    /**
-     * Holds if `c` is a relevant part of the call graph for
-     * `updatesNamedFieldOrPropPart1` based on following edges in forward direction.
-     */
-    private predicate pruneFromLeft(Callable c) {
-      exists(Call call, TrackedFieldOrProp f |
-        updateCandidate(_, _, f, call) and
-        c = getARuntimeTarget(call, _) and
-        generalSetter(_, f.getAssignable(), _)
-      )
-      or
-      exists(Callable mid | pruneFromLeft(mid) | callEdge(mid, c))
-    }
-
-    /**
-     * Holds if `c` is a relevant part of the call graph for
-     * `updatesNamedFieldOrPropPart1` based on following edges in backward direction.
-     */
-    private predicate pruneFromRight(Callable c) {
-      relevantDefinition(c, _, _) and
-      pruneFromLeft(c)
-      or
-      exists(Callable mid | pruneFromRight(mid) |
-        callEdge(c, mid) and
-        pruneFromLeft(c)
-      )
-    }
-
-    private class PrunedCallable extends Callable {
-      PrunedCallable() { pruneFromRight(this) }
-    }
-
-    private predicate callEdgePruned(PrunedCallable c1, PrunedCallable c2) { callEdge(c1, c2) }
-
-    private predicate callEdgePrunedPlus(PrunedCallable c1, PrunedCallable c2) =
-      fastTC(callEdgePruned/2)(c1, c2)
-
-    pragma[noinline]
-    private predicate updatesNamedFieldOrPropPart1Prefix0(
-      Call call, TrackedFieldOrProp tfp, Callable c1, FieldOrProp fp
+    private predicate source(
+      Call call, TrackedFieldOrProp tfp, FieldOrProp fp, Callable c, boolean fresh
     ) {
       updateCandidate(_, _, tfp, call) and
+      c = getARuntimeTarget(call, _) and
       fp = tfp.getAssignable() and
-      generalSetter(_, fp, _) and
-      c1 = getARuntimeTarget(call, _)
-    }
-
-    pragma[noinline]
-    private predicate relevantDefinitionProj(PrunedCallable c, FieldOrProp fp) {
-      relevantDefinition(c, fp, _)
-    }
-
-    pragma[noopt]
-    predicate updatesNamedFieldOrPropPart1Prefix(
-      Call call, TrackedFieldOrProp tfp, Callable c1, Callable setter, FieldOrProp fp
-    ) {
-      updatesNamedFieldOrPropPart1Prefix0(call, tfp, c1, fp) and
-      relevantDefinitionProj(setter, fp) and
-      (c1 = setter or callEdgePrunedPlus(c1, setter))
+      if c instanceof Constructor then fresh = true else fresh = false
     }
 
     /**
-     * Holds if `call` may change the value of `tfp` on some instance, which may or
-     * may not alias with `this`. The actual update occurs in `setter`.
+     * A callable in a potential call-chain between a source that cares about the
+     * value of some field `f` and a sink that may overwrite `f`. The Boolean
+     * `fresh` indicates whether the instance `this` in `c` has been freshly
+     * allocated along the call-chain.
      */
-    pragma[noopt]
-    private predicate updatesNamedFieldOrPropPart1(
-      Call call, TrackedFieldOrProp tfp, Callable setter
-    ) {
-      exists(Callable c1, Callable c2, FieldOrProp fp |
-        updatesNamedFieldOrPropPart1Prefix(call, tfp, c1, setter, fp) and
-        generalSetter(c2, fp, setter)
-      |
-        c1 = c2 or callEdgePrunedPlus(c1, c2)
+    private newtype TCallableNode =
+      MkCallableNode(Callable c, boolean fresh) { source(_, _, _, c, fresh) or edge(_, c, fresh) }
+
+    private predicate edge(TCallableNode n, Callable c2, boolean f2) {
+      exists(Callable c1, boolean f1 | n = MkCallableNode(c1, f1) |
+        intraInstanceCallEdge(c1, c2) and f2 = f1
+        or
+        crossInstanceCallEdge(c1, c2) and
+        if c2 instanceof Constructor then f2 = true else f2 = false
       )
     }
 
-    /**
-     * Holds if `call` may change the value of `tfp` on `this`. The actual update occurs
-     * in `setter`.
-     */
-    private predicate updatesNamedFieldOrPropPart2(
-      Call call, TrackedFieldOrProp tfp, Callable setter
+    private predicate edge(TCallableNode n1, TCallableNode n2) {
+      exists(Callable c2, boolean f2 |
+        edge(n1, c2, f2) and
+        n2 = MkCallableNode(c2, f2)
+      )
+    }
+
+    pragma[noinline]
+    private predicate source(
+      Call call, FieldOrPropSourceVariable fps, FieldOrProp fp, TCallableNode n
     ) {
-      updateCandidate(_, _, tfp, call) and
-      setsOwnFieldOrPropTransitive(getARuntimeTarget(call, _), tfp.getAssignable(), setter)
+      exists(Callable c, boolean fresh |
+        source(call, fps, fp, c, fresh) and
+        n = MkCallableNode(c, fresh)
+      )
+    }
+
+    private predicate sink(Callable c, FieldOrProp fp, TCallableNode n) {
+      relevantDefinition(c, fp, _) and
+      (
+        setsOwnFieldOrProp(c, fp) and n = MkCallableNode(c, false)
+        or
+        setsOtherFieldOrProp(c, fp) and n = MkCallableNode(c, _)
+      )
+    }
+
+    private predicate prunedNode(TCallableNode n) {
+      sink(_, _, n)
+      or
+      exists(TCallableNode mid | edge(n, mid) and prunedNode(mid))
+    }
+
+    private predicate prunedEdge(TCallableNode n1, TCallableNode n2) {
+      prunedNode(n1) and
+      prunedNode(n2) and
+      edge(n1, n2)
+    }
+
+    private predicate edgePlus(TCallableNode c1, TCallableNode c2) = fastTC(prunedEdge/2)(c1, c2)
+
+    pragma[noopt]
+    private predicate updatesNamedFieldOrProp_(
+      FieldOrPropSourceVariable fps, Call call, Callable setter
+    ) {
+      exists(TCallableNode src, TCallableNode sink, FieldOrProp fp |
+        source(call, fps, fp, src) and
+        sink(setter, fp, sink) and
+        (src = sink or edgePlus(src, sink))
+      )
     }
 
     private predicate updatesNamedFieldOrPropPossiblyLive(
       BasicBlock bb, int i, TrackedFieldOrProp fp, Call call, Callable setter
     ) {
       updateCandidate(bb, i, fp, call) and
-      (
-        updatesNamedFieldOrPropPart1(call, fp, setter)
-        or
-        updatesNamedFieldOrPropPart2(call, fp, setter)
-      )
+      updatesNamedFieldOrProp_(fp, call, setter)
     }
 
     private int firstRefAfterCall(BasicBlock bb, int i, TrackedFieldOrProp fp) {
@@ -1457,58 +1412,44 @@ module Ssa {
       )
     }
 
+    private predicate source(
+      Call call, CapturedWrittenLocalScopeSourceVariable v,
+      CapturedWrittenLocalScopeVariable captured, Callable c, boolean libraryDelegateCall
+    ) {
+      updateCandidate(_, _, v, call) and
+      c = getARuntimeTarget(call, libraryDelegateCall) and
+      captured = v.getAssignable() and
+      relevantDefinition(_, captured, _)
+    }
+
     /**
      * Holds if `c` is a relevant part of the call graph for
      * `updatesCapturedVariable` based on following edges in forward direction.
      */
-    private predicate pruneFromLeft(Callable c) {
-      exists(Call call, CapturedWrittenLocalScopeSourceVariable v |
-        updateCandidate(_, _, v, call) and
-        c = getARuntimeTarget(call, _) and
-        relevantDefinition(_, v.getAssignable(), _)
-      )
+    private predicate reachbleFromSource(Callable c) {
+      source(_, _, _, c, _)
       or
-      exists(Callable mid | pruneFromLeft(mid) | callEdge(mid, c))
+      exists(Callable mid | reachbleFromSource(mid) | callEdge(mid, c))
     }
 
-    /**
-     * Holds if `c` is a relevant part of the call graph for
-     * `updatesCapturedVariable` based on following edges in backward direction.
-     */
-    private predicate pruneFromRight(Callable c) {
-      relevantDefinition(c, _, _) and
-      pruneFromLeft(c)
+    private predicate sink(Callable c, CapturedWrittenLocalScopeVariable captured) {
+      reachbleFromSource(c) and
+      relevantDefinition(c, captured, _)
+    }
+
+    private predicate prunedCallable(Callable c) {
+      sink(c, _)
       or
-      exists(Callable mid | pruneFromRight(mid) |
-        callEdge(c, mid) and
-        pruneFromLeft(c)
-      )
+      exists(Callable mid | callEdge(c, mid) and prunedCallable(mid))
     }
 
-    private class PrunedCallable extends Callable {
-      PrunedCallable() { pruneFromRight(this) }
+    private predicate prunedEdge(Callable c1, Callable c2) {
+      prunedCallable(c1) and
+      prunedCallable(c2) and
+      callEdge(c1, c2)
     }
 
-    private predicate callEdgePruned(PrunedCallable c1, PrunedCallable c2) { callEdge(c1, c2) }
-
-    private predicate callEdgePrunedPlus(PrunedCallable c1, PrunedCallable c2) =
-      fastTC(callEdgePruned/2)(c1, c2)
-
-    pragma[noinline]
-    private predicate relevantDefinitionProj(PrunedCallable c, CapturedWrittenLocalScopeVariable v) {
-      relevantDefinition(c, v, _)
-    }
-
-    pragma[noinline]
-    private predicate updatesCapturedVariablePrefix(
-      Call call, CapturedWrittenLocalScopeSourceVariable v, PrunedCallable c,
-      CapturedWrittenLocalScopeVariable captured, boolean libraryDelegateCall
-    ) {
-      updateCandidate(_, _, v, call) and
-      captured = v.getAssignable() and
-      relevantDefinitionProj(_, captured) and
-      c = getARuntimeTarget(call, libraryDelegateCall)
-    }
+    private predicate edgePlus(Callable c1, Callable c2) = fastTC(prunedEdge/2)(c1, c2)
 
     /**
      * Holds if `call` may change the value of captured variable `v`. The actual
@@ -1519,18 +1460,15 @@ module Ssa {
      */
     pragma[noopt]
     private predicate updatesCapturedVariableWriter(
-      Call call, CapturedWrittenLocalScopeSourceVariable v, PrunedCallable writer,
-      boolean additionalCalls
+      Call call, CapturedWrittenLocalScopeSourceVariable v, Callable writer, boolean additionalCalls
     ) {
-      exists(
-        PrunedCallable c, CapturedWrittenLocalScopeVariable captured, boolean libraryDelegateCall
-      |
-        updatesCapturedVariablePrefix(call, v, c, captured, libraryDelegateCall) and
-        relevantDefinitionProj(writer, captured) and
+      exists(Callable src, CapturedWrittenLocalScopeVariable captured, boolean libraryDelegateCall |
+        source(call, v, captured, src, libraryDelegateCall) and
+        sink(writer, captured) and
         (
-          c = writer and additionalCalls = libraryDelegateCall
+          src = writer and additionalCalls = libraryDelegateCall
           or
-          callEdgePrunedPlus(c, writer) and additionalCalls = true
+          edgePlus(src, writer) and additionalCalls = true
         )
       )
     }
@@ -1641,8 +1579,8 @@ module Ssa {
      * block `bb` may be read by a callable reachable from the call `c`.
      */
     private predicate implicitReadCandidate(
-      BasicBlock bb, int i, ControlFlow::Nodes::ElementNode c,
-      CapturedReadLocalScopeSourceVariable v
+      BasicBlock bb, int i, CapturedReadLocalScopeSourceVariable v,
+      ControlFlow::Nodes::ElementNode c
     ) {
       c.getElement() instanceof Call and
       exists(BasicBlock bb0, int i0 | bb0.getNode(i0) = c |
@@ -1679,55 +1617,44 @@ module Ssa {
       )
     }
 
+    private predicate source(
+      ControlFlow::Nodes::ElementNode call, CapturedReadLocalScopeSourceVariable v,
+      CapturedReadLocalScopeVariable captured, Callable c, boolean libraryDelegateCall
+    ) {
+      implicitReadCandidate(_, _, v, call) and
+      c = getARuntimeTarget(call.getElement(), libraryDelegateCall) and
+      captured = v.getAssignable() and
+      capturerReads(_, captured)
+    }
+
     /**
      * Holds if `c` is a relevant part of the call graph for
      * `readsCapturedVariable` based on following edges in forward direction.
      */
-    private predicate pruneFromLeft(Callable c) {
-      exists(Call call, CapturedReadLocalScopeSourceVariable v |
-        implicitReadCandidate(_, _, call.getAControlFlowNode(), v) and
-        c = getARuntimeTarget(call, _)
-      )
+    private predicate reachbleFromSource(Callable c) {
+      source(_, _, _, c, _)
       or
-      exists(Callable mid | pruneFromLeft(mid) | callEdge(mid, c))
+      exists(Callable mid | reachbleFromSource(mid) | callEdge(mid, c))
     }
 
-    /**
-     * Holds if `c` is a relevant part of the call graph for
-     * `readsCapturedVariable` based on following edges in backward direction.
-     */
-    private predicate pruneFromRight(Callable c) {
-      exists(CapturedReadLocalScopeSourceVariable v |
-        capturerReads(c, v.getAssignable()) and
-        capturedVariableWrite(_, _, v) and
-        pruneFromLeft(c)
-      )
+    private predicate sink(Callable c, CapturedReadLocalScopeVariable captured) {
+      reachbleFromSource(c) and
+      capturerReads(c, captured)
+    }
+
+    private predicate prunedCallable(Callable c) {
+      sink(c, _)
       or
-      exists(Callable mid | pruneFromRight(mid) |
-        callEdge(c, mid) and
-        pruneFromLeft(c)
-      )
+      exists(Callable mid | callEdge(c, mid) and prunedCallable(mid))
     }
 
-    private class PrunedCallable extends Callable {
-      PrunedCallable() { pruneFromRight(this) }
+    private predicate prunedEdge(Callable c1, Callable c2) {
+      prunedCallable(c1) and
+      prunedCallable(c2) and
+      callEdge(c1, c2)
     }
 
-    private predicate callEdgePruned(PrunedCallable c1, PrunedCallable c2) { callEdge(c1, c2) }
-
-    private predicate callEdgePrunedPlus(PrunedCallable c1, PrunedCallable c2) =
-      fastTC(callEdgePruned/2)(c1, c2)
-
-    pragma[noinline]
-    private predicate readsCapturedVariablePrefix(
-      ControlFlow::Node call, CapturedReadLocalScopeSourceVariable v, PrunedCallable c,
-      CapturedReadLocalScopeVariable captured, boolean libraryDelegateCall
-    ) {
-      implicitReadCandidate(_, _, call, v) and
-      captured = v.getAssignable() and
-      capturerReads(_, captured) and
-      c = getARuntimeTarget(call.getElement(), libraryDelegateCall)
-    }
+    private predicate edgePlus(Callable c1, Callable c2) = fastTC(prunedEdge/2)(c1, c2)
 
     /**
      * Holds if `call` may read the value of captured variable `v`. The actual
@@ -1741,15 +1668,13 @@ module Ssa {
       ControlFlow::Nodes::ElementNode call, CapturedReadLocalScopeSourceVariable v, Callable reader,
       boolean additionalCalls
     ) {
-      exists(
-        PrunedCallable c, CapturedReadLocalScopeVariable captured, boolean libraryDelegateCall
-      |
-        readsCapturedVariablePrefix(call, v, c, captured, libraryDelegateCall) and
-        capturerReads(reader, captured) and
+      exists(Callable src, CapturedReadLocalScopeVariable captured, boolean libraryDelegateCall |
+        source(call, v, captured, src, libraryDelegateCall) and
+        sink(reader, captured) and
         (
-          c = reader and additionalCalls = libraryDelegateCall
+          src = reader and additionalCalls = libraryDelegateCall
           or
-          callEdgePrunedPlus(c, reader) and additionalCalls = true
+          edgePlus(src, reader) and additionalCalls = true
         )
       )
     }
@@ -1820,11 +1745,12 @@ module Ssa {
       BasicBlock bb, int i, LocalScopeSourceVariable v, ImplicitEntryDefinition def,
       ControlFlow::Nodes::ElementNode c, boolean additionalCalls
     ) {
-      exists(Callable reader |
-        implicitReadCandidate(bb, i, c, v) and
+      exists(Callable reader, SourceVariable sv |
+        implicitReadCandidate(bb, i, v, c) and
         readsCapturedVariable(c, v, reader, additionalCalls) and
-        def.getCallable() = reader and
-        def.getSourceVariable().getAssignable() = v.getAssignable()
+        sv = def.getSourceVariable() and
+        reader = sv.getEnclosingCallable() and
+        v.getAssignable() = sv.getAssignable()
       )
     }
 

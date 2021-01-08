@@ -18,15 +18,18 @@ private predicate execApi(string mod, string fn, int cmdArg, int optionsArg, boo
     shell = false and
     (
       fn = "node" or
-      fn = "shell" or
-      fn = "shellSync" or
       fn = "stdout" or
       fn = "stderr" or
       fn = "sync"
     )
     or
     shell = true and
-    (fn = "command" or fn = "commandSync")
+    (
+      fn = "command" or
+      fn = "commandSync" or
+      fn = "shell" or
+      fn = "shellSync"
+    )
   ) and
   cmdArg = 0
 }

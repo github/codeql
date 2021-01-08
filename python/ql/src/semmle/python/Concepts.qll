@@ -295,6 +295,8 @@ module SqlExecution {
 
 /** Provides classes for modeling HTTP-related APIs. */
 module HTTP {
+  import semmle.python.web.HttpConstants
+
   /** Provides classes for modeling HTTP servers. */
   module Server {
     /**
@@ -336,7 +338,7 @@ module HTTP {
         /** Gets the URL pattern for this route, if it can be statically determined. */
         string getUrlPattern() {
           exists(StrConst str |
-            DataFlow::localFlow(DataFlow::exprNode(str), this.getUrlPatternArg()) and
+            DataFlow::exprNode(str).(DataFlow::LocalSourceNode).flowsTo(this.getUrlPatternArg()) and
             result = str.getText()
           )
         }
@@ -403,7 +405,9 @@ module HTTP {
         /** Gets the mimetype of this HTTP response, if it can be statically determined. */
         string getMimetype() {
           exists(StrConst str |
-            DataFlow::localFlow(DataFlow::exprNode(str), this.getMimetypeOrContentTypeArg()) and
+            DataFlow::exprNode(str)
+                .(DataFlow::LocalSourceNode)
+                .flowsTo(this.getMimetypeOrContentTypeArg()) and
             result = str.getText().splitAt(";", 0)
           )
           or

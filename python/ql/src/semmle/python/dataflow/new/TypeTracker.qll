@@ -51,7 +51,7 @@ module StepSummary {
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
    */
   cached
-  predicate step(Node nodeFrom, Node nodeTo, StepSummary summary) {
+  predicate step(LocalSourceNode nodeFrom, Node nodeTo, StepSummary summary) {
     exists(Node mid | typePreservingStep*(nodeFrom, mid) and smallstep(mid, nodeTo, summary))
   }
 
@@ -82,9 +82,8 @@ module StepSummary {
 
 /** Holds if it's reasonable to expect the data flow step from `nodeFrom` to `nodeTo` to preserve types. */
 private predicate typePreservingStep(Node nodeFrom, Node nodeTo) {
-  EssaFlow::essaFlowStep(nodeFrom, nodeTo) or
-  jumpStep(nodeFrom, nodeTo) or
-  nodeFrom = nodeTo.(PostUpdateNode).getPreUpdateNode()
+  simpleLocalFlowStep(nodeFrom, nodeTo) or
+  jumpStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -142,11 +141,11 @@ predicate returnStep(ReturnNode nodeFrom, Node nodeTo) {
  * function. This means we will track the fact that `x.attr` can have the type of `y` into the
  * assignment to `z` inside `bar`, even though this attribute write happens _after_ `bar` is called.
  */
-predicate basicStoreStep(Node nodeFrom, Node nodeTo, string attr) {
+predicate basicStoreStep(Node nodeFrom, LocalSourceNode nodeTo, string attr) {
   exists(AttrWrite a |
     a.mayHaveAttributeName(attr) and
     nodeFrom = a.getValue() and
-    simpleLocalFlowStep*(nodeTo, a.getObject())
+    nodeTo.flowsTo(a.getObject())
   )
 }
 
@@ -275,7 +274,7 @@ class TypeTracker extends TTypeTracker {
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
    */
   pragma[inline]
-  TypeTracker step(Node nodeFrom, Node nodeTo) {
+  TypeTracker step(LocalSourceNode nodeFrom, Node nodeTo) {
     exists(StepSummary summary |
       StepSummary::step(nodeFrom, nodeTo, summary) and
       result = this.append(summary)

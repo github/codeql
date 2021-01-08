@@ -237,9 +237,17 @@ private module Mongoose {
         // implement lots of the MongoDB collection interface
         MongoDB::CollectionMethodSignatures::interpretsArgumentAsQuery(name, n)
         or
-        name = "findByIdAndUpdate" and n = 1
+        name = "find" + ["ById", "One"] + "AndUpdate" and n = 1
         or
-        name = "where" and n = 0
+        name in ["delete" + ["Many", "One"], "geoSearch", "remove", "replaceOne", "where"] and
+        n = 0
+        or
+        name in [
+            "find" + ["", "ById", "One"],
+            "find" + ["ById", "One"] + "And" + ["Delete", "Remove", "Update"],
+            "update" + ["", "Many", "One"]
+          ] and
+        n = 0
       }
 
       /**
@@ -262,6 +270,7 @@ private module Mongoose {
         name = "findOneAndReplace" or
         name = "findOneAndUpdate" or
         name = "geosearch" or
+        name = "remove" or
         name = "replaceOne" or
         name = "update" or
         name = "updateMany" or

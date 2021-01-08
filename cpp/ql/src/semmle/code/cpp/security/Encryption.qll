@@ -8,21 +8,17 @@ import cpp
  * Gets the name of an algorithm that is known to be insecure.
  */
 string getAnInsecureAlgorithmName() {
-  result = "DES" or
-  result = "RC2" or
-  result = "RC4" or
-  result = "RC5" or
-  result = "ARCFOUR" // a variant of RC4
+  result =
+    [
+      "DES", "RC2", "RC4", "RC5", "ARCFOUR" // ARCFOUR is a variant of RC4
+    ]
 }
 
 /**
  * Gets the name of a hash algorithm that is insecure if it is being used for
  * encryption (but it is hard to know when that is happening).
  */
-string getAnInsecureHashAlgorithmName() {
-  result = "SHA1" or
-  result = "MD5"
-}
+string getAnInsecureHashAlgorithmName() { result = ["SHA1", "MD5"] }
 
 /**
  * Gets the regular expression used for matching strings that look like they
@@ -45,13 +41,7 @@ string getInsecureAlgorithmRegex() {
  * Gets the name of an algorithm that is known to be secure.
  */
 string getASecureAlgorithmName() {
-  result = "RSA" or
-  result = "SHA256" or
-  result = "CCM" or
-  result = "GCM" or
-  result = "AES" or
-  result = "Blowfish" or
-  result = "ECIES"
+  result = ["RSA", "SHA256", "CCM", "GCM", "AES", "Blowfish", "ECIES"]
 }
 
 /**

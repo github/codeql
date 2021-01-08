@@ -19,10 +19,12 @@ private predicate startsBB(ControlFlowElement cfe) {
   (
     succ(cfe, _, _)
     or
-    succExit(cfe, _, _)
+    scopeLast(_, cfe, _)
   )
   or
   strictcount(ControlFlowElement pred, Completion c | succ(pred, cfe, c)) > 1
+  or
+  succ(_, cfe, any(ConditionalCompletion c))
   or
   exists(ControlFlowElement pred, int i |
     succ(pred, cfe, _) and
@@ -31,7 +33,7 @@ private predicate startsBB(ControlFlowElement cfe) {
     i > 1
     or
     i = 1 and
-    succExit(pred, _, _)
+    scopeLast(_, pred, _)
   )
 }
 
@@ -45,7 +47,7 @@ private predicate bbIndex(ControlFlowElement bbStart, ControlFlowElement cfe, in
 
 private predicate succBB(PreBasicBlock pred, PreBasicBlock succ) { succ = pred.getASuccessor() }
 
-private predicate entryBB(PreBasicBlock bb) { succEntry(_, bb) }
+private predicate entryBB(PreBasicBlock bb) { scopeFirst(_, bb) }
 
 private predicate bbIDominates(PreBasicBlock dom, PreBasicBlock bb) =
   idominance(entryBB/1, succBB/2)(_, dom, bb)
@@ -95,14 +97,11 @@ private Completion getConditionalCompletion(ConditionalCompletion cc) {
 
 class ConditionBlock extends PreBasicBlock {
   ConditionBlock() {
-    strictcount(Completion c |
-      c = getConditionalCompletion(_) and
-      (
-        succ(this.getLastElement(), _, c)
-        or
-        succExit(this.getLastElement(), _, c)
-      )
-    ) > 1
+    exists(Completion c | c = getConditionalCompletion(_) |
+      succ(this.getLastElement(), _, c)
+      or
+      scopeLast(_, this.getLastElement(), c)
+    )
   }
 
   private predicate immediatelyControls(PreBasicBlock succ, ConditionalCompletion cc) {

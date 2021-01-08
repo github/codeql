@@ -174,11 +174,10 @@ private class RequestEntityUriArg extends RequestForgerySink {
 private class SpringRestTemplateUrlMethods extends Method {
   SpringRestTemplateUrlMethods() {
     this.getDeclaringType() instanceof SpringRestTemplate and
-    this
-        .hasName([
-            "doExecute", "postForEntity", "postForLocation", "postForObject", "put", "exchange",
-            "execute", "getForEntity", "getForObject", "patchForObject"
-          ])
+    this.hasName([
+        "doExecute", "postForEntity", "postForLocation", "postForObject", "put", "exchange",
+        "execute", "getForEntity", "getForObject", "patchForObject"
+      ])
   }
 
   /**

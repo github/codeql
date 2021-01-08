@@ -414,9 +414,8 @@ private class FrameworkDataFlowAdaptor extends SummarizedCallable {
     SummaryInput input, ContentList inputContents, SummaryOutput output, ContentList outputContents,
     boolean preservesValue
   ) {
-    ltdf
-        .callableFlow(toCallableFlowSource(input), toAccessPath(inputContents),
-          toCallableFlowSink(output), toAccessPath(outputContents), this, preservesValue)
+    ltdf.callableFlow(toCallableFlowSource(input), toAccessPath(inputContents),
+      toCallableFlowSink(output), toAccessPath(outputContents), this, preservesValue)
   }
 
   private AccessPath getAnAccessPath() {

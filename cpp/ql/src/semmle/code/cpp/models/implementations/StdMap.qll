@@ -103,22 +103,6 @@ private class StdMapTryEmplace extends TaintFunction {
 }
 
 /**
- * The standard map `swap` function.
- */
-private class StdMapSwap extends TaintFunction {
-  StdMapSwap() { this.hasQualifiedName("std", ["map", "unordered_map"], "swap") }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // container1.swap(container2)
-    input.isQualifierObject() and
-    output.isParameterDeref(0)
-    or
-    input.isParameterDeref(0) and
-    output.isQualifierObject()
-  }
-}
-
-/**
  * The standard map `merge` function.
  */
 private class StdMapMerge extends TaintFunction {
@@ -179,9 +163,8 @@ private class StdMapErase extends TaintFunction {
  */
 private class StdMapEqualRange extends TaintFunction {
   StdMapEqualRange() {
-    this
-        .hasQualifiedName("std", ["map", "unordered_map"],
-          ["lower_bound", "upper_bound", "equal_range"])
+    this.hasQualifiedName("std", ["map", "unordered_map"],
+      ["lower_bound", "upper_bound", "equal_range"])
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

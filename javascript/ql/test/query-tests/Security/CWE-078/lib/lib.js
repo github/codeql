@@ -339,3 +339,72 @@ module.exports.unproblematic = function() {
 module.exports.problematic = function(n) {
 	cp.exec("rm -rf " + id(n)); // NOT OK
 };
+
+module.exports.typeofNumber = function(n) {
+	if (typeof n === "number") {
+		cp.exec("rm -rf " + n); // OK
+	}
+};
+
+function boundProblem(safe, unsafe) {
+	cp.exec("rm -rf " + safe); // OK
+	cp.exec("rm -rf " + unsafe); // NOT OK
+}
+
+Object.defineProperty(module.exports, "boundProblem", {
+	get: function () {
+		return boundProblem.bind(this, "safe");
+	}
+});
+
+function MyTrainer(opts) {
+	this.learn_args = opts.learn_args
+}
+
+MyTrainer.prototype = {
+	train: function() {
+		var command = "learn " + this.learn_args + " " + model; // NOT OK
+		cp.exec(command); 
+	}
+};
+module.exports.MyTrainer = MyTrainer;
+
+
+function yetAnohterSanitizer(str) {
+	const s = str || '';
+	let result = '';
+	for (let i = 0; i <= 2000; i++) {
+		if (!(s[i] === undefined ||
+			s[i] === '>' ||
+			s[i] === '<' ||
+			s[i] === '*' ||
+			s[i] === '?' ||
+			s[i] === '[' ||
+			s[i] === ']' ||
+			s[i] === '|' ||
+			s[i] === '˚' ||
+			s[i] === '$' ||
+			s[i] === ';' ||
+			s[i] === '&' ||
+			s[i] === '(' ||
+			s[i] === ')' ||
+			s[i] === ']' ||
+			s[i] === '#' ||
+			s[i] === '\\' ||
+			s[i] === '\t' ||
+			s[i] === '\n' ||
+			s[i] === '\'' ||
+			s[i] === '`' ||
+			s[i] === '"')) {
+			result = result + s[i];
+		}
+	}
+	return result;
+}
+
+module.exports.sanitizer3 = function (name) {
+	cp.exec("rm -rf " + name); // NOT OK
+
+	var sanitized = yetAnohterSanitizer(name);
+	cp.exec("rm -rf " + sanitized); // OK
+}

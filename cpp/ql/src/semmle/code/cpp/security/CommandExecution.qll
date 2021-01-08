@@ -168,17 +168,14 @@ class ArrayExecFunctionCall extends FunctionCall {
  *  for testing purposes.
  */
 predicate shellCommandPreface(string cmd, string flag) {
-  (cmd = "sh" or cmd = "/bin/sh" or cmd = "bash" or cmd = "/bin/bash") and
+  cmd = ["sh", "/bin/sh", "bash", "/bin/bash"] and
   flag = "-c"
   or
-  (
-    cmd = "cmd" or
-    cmd = "cmd.exe" or
-    cmd = "CMD" or
-    cmd = "CMD.EXE" or
-    cmd = "%WINDIR%\\system32\\cmd.exe" // used in Juliet tests
-  ) and
-  (flag = "/c" or flag = "/C")
+  cmd =
+    [
+      "cmd", "cmd.exe", "CMD", "CMD.EXE", "%WINDIR%\\system32\\cmd.exe" // used in Juliet tests
+    ] and
+  flag = ["/c", "/C"]
 }
 
 /**

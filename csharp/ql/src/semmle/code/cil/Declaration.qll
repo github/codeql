@@ -82,7 +82,7 @@ class Member extends DotNet::Member, Declaration, @cil_member {
 }
 
 /** A property. */
-class Property extends DotNet::Property, Member, @cil_property {
+class Property extends DotNet::Property, Member, CustomModifierReceiver, @cil_property {
   override string getName() { cil_property(this, _, result, _) }
 
   /** Gets the type of this property. */

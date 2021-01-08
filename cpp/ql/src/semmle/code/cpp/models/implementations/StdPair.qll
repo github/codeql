@@ -60,19 +60,3 @@ private class StdPairConstructor extends Constructor, TaintFunction {
     )
   }
 }
-
-/**
- * The standard pair `swap` function.
- */
-private class StdPairSwap extends TaintFunction {
-  StdPairSwap() { this.hasQualifiedName("std", "pair", "swap") }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // container1.swap(container2)
-    input.isQualifierObject() and
-    output.isParameterDeref(0)
-    or
-    input.isParameterDeref(0) and
-    output.isQualifierObject()
-  }
-}

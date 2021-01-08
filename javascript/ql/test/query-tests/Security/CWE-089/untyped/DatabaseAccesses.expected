@@ -32,6 +32,7 @@
 | mongoose.js:96:2:96:52 | Documen ... query)) |
 | mongoose.js:97:2:97:52 | Documen ... query)) |
 | mongoose.js:99:2:99:50 | Documen ... query)) |
+| mongoose.js:113:2:113:53 | Documen ... () { }) |
 | socketio.js:11:5:11:54 | db.run( ... ndle}`) |
 | tst2.js:7:3:7:62 | sql.que ... ms.id}` |
 | tst2.js:9:3:9:85 | new sql ...  + "'") |

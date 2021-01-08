@@ -68,8 +68,7 @@ abstract class Module extends TopLevel {
       or
       // a re-export using spread-operator. E.g. `const foo = require("./foo"); module.exports = {bar: bar, ...foo};`
       exists(ObjectExpr obj | obj = this.(NodeModule).getAModuleExportsNode().asExpr() |
-        obj
-            .getAProperty()
+        obj.getAProperty()
             .(SpreadProperty)
             .getInit()
             .(SpreadElement)

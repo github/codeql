@@ -109,4 +109,24 @@ app.post('/documents/find', (req, res) => {
 
 	var C = getQueryConstructor();
 	new C(X, Y, query); // NOT OK
+
+	Document.findOneAndUpdate(X, query, function () { }); // NOT OK
+
+	let id = req.query.id, cond = req.query.cond;
+	Document.deleteMany(cond); // NOT OK
+	Document.deleteOne(cond); // NOT OK
+	Document.geoSearch(cond); // NOT OK
+	Document.remove(cond); // NOT OK
+	Document.replaceOne(cond, Y); // NOT OK
+	Document.find(cond); // NOT OK
+	Document.findOne(cond); // NOT OK
+	Document.findById(id); // NOT OK
+	Document.findOneAndDelete(cond); // NOT OK
+	Document.findOneAndRemove(cond); // NOT OK
+	Document.findOneAndUpdate(cond, Y); // NOT OK
+	Document.update(cond, Y); // NOT OK
+	Document.updateMany(cond, Y); // NOT OK
+	Document.updateOne(cond, Y); // NOT OK
+	Document.find({ _id: id }); // NOT OK
+	Document.find({ _id: { $eq: id } }); // OK
 });

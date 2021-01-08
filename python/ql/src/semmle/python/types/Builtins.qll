@@ -104,7 +104,8 @@ class Builtin extends @py_cobject {
     ) and
     exists(string quoted_string |
       quoted_string = this.getName() and
-      result = quoted_string.regexpCapture("[bu]'([\\s\\S]*)'", 1)
+      // Remove prefix ("b" or "u") and leading and trailing quotes (both "'").
+      result = quoted_string.substring(2, quoted_string.length() - 1)
     )
   }
 }

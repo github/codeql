@@ -8,7 +8,7 @@ struct Top {
   virtual void isSink(int x) { }
   virtual int notSource1() { return source(); }
   virtual int notSource2() { return source(); }
-  virtual void notSink(int x) { sink(x); }
+  virtual void notSink(int x) { sink(x); } // $ SPURIOUS: ast,ir=37:19 ast,ir=45:18
 };
 
 // This class has the correct behavior for just the functions ending in 2.
@@ -20,7 +20,7 @@ struct Middle : Top {
 // This class has all the behavior suggested by the function names.
 struct Bottom : Middle {
   int isSource1() override { return source(); }
-  void isSink(int x) override { sink(x); }
+  void isSink(int x) override { sink(x); } // $ ir=33:18 ir=41:17 ir=69:15 ir=73:14 ir=81:13 MISSING: ast=33:18 ast=41:17 ast=69:15 ast=73:14 ast=81:13
   int notSource1() override { return 0; }
   void notSink(int x) override { }
 };
@@ -28,21 +28,21 @@ struct Bottom : Middle {
 void VirtualDispatch(Bottom *bottomPtr, Bottom &bottomRef) {
   Top *topPtr = bottomPtr, &topRef = bottomRef;
 
-  sink(topPtr->isSource1()); // flow [NOT DETECTED by AST]
-  sink(topPtr->isSource2()); // flow [NOT DETECTED by AST]
-  topPtr->isSink(source()); // flow [NOT DETECTED by AST]
+  sink(topPtr->isSource1()); // $ ir MISSING: ast
+  sink(topPtr->isSource2()); // $ ir MISSING: ast
+  topPtr->isSink(source()); // causing a MISSING for ast
 
-  sink(topPtr->notSource1()); // no flow [FALSE POSITIVE]
-  sink(topPtr->notSource2()); // no flow [FALSE POSITIVE]
-  topPtr->notSink(source()); // no flow [FALSE POSITIVE]
+  sink(topPtr->notSource1()); // $ SPURIOUS: ast,ir
+  sink(topPtr->notSource2()); // $ SPURIOUS: ast,ir
+  topPtr->notSink(source()); // causing SPURIOUS for ast,ir
 
-  sink(topRef.isSource1()); // flow [NOT DETECTED by AST]
-  sink(topRef.isSource2()); // flow [NOT DETECTED by AST]
-  topRef.isSink(source()); // flow [NOT DETECTED by AST]
+  sink(topRef.isSource1()); // $ ir MISSING: ast
+  sink(topRef.isSource2()); // $ ir MISSING: ast
+  topRef.isSink(source()); // causing a MISSING for ast
 
-  sink(topRef.notSource1()); // no flow [FALSE POSITIVE]
-  sink(topRef.notSource2()); // no flow [FALSE POSITIVE]
-  topRef.notSink(source()); // no flow [FALSE POSITIVE]
+  sink(topRef.notSource1()); // $ SPURIOUS: ast,ir
+  sink(topRef.notSource2()); // $ SPURIOUS: ast,ir
+  topRef.notSink(source()); // causing SPURIOUS for ast,ir
 }
 
 Top *globalBottom, *globalMiddle;
@@ -52,10 +52,10 @@ Top *readGlobalBottom() {
 }
 
 void DispatchThroughGlobal() {
-  sink(globalBottom->isSource1()); // flow [NOT DETECTED by AST]
+  sink(globalBottom->isSource1()); // $ ir MISSING: ast
   sink(globalMiddle->isSource1()); // no flow
 
-  sink(readGlobalBottom()->isSource1()); // flow [NOT DETECTED by AST]
+  sink(readGlobalBottom()->isSource1()); // $ ir MISSING: ast
 
   globalBottom = new Bottom();
   globalMiddle = new Middle();
@@ -66,11 +66,11 @@ Top *allocateBottom() {
 }
 
 void callSinkByPointer(Top *top) {
-  top->isSink(source()); // flow [NOT DETECTED by AST]
+  top->isSink(source()); // leads to MISSING from ast
 }
 
 void callSinkByReference(Top &top) {
-  top.isSink(source()); // flow [NOT DETECTED by AST]
+  top.isSink(source()); // leads to MISSING from ast
 }
 
 void globalVirtualDispatch() {
@@ -78,7 +78,7 @@ void globalVirtualDispatch() {
   callSinkByReference(*allocateBottom());
 
   Top *x = allocateBottom();
-  x->isSink(source()); // flow [NOT DETECTED by AST]
+  x->isSink(source()); // $ MISSING: ast,ir
 }
 
 Top *identity(Top *top) {
@@ -86,14 +86,14 @@ Top *identity(Top *top) {
 }
 
 void callIdentityFunctions(Top *top, Bottom *bottom) {
-  identity(bottom)->isSink(source()); // flow [NOT DETECTED]
+  identity(bottom)->isSink(source()); // $ MISSING: ast,ir
   identity(top)->isSink(source()); // now flow
 }
 
 using SinkFunctionType = void (*)(int);
 
 void callSink(int x) {
-  sink(x);
+  sink(x); // $ ir=107:17 ir=140:8 ir=144:8 MISSING: ast=107:17 ast=140:8 ast=144:8
 }
 
 SinkFunctionType returnCallSink() {
@@ -104,7 +104,7 @@ void testFunctionPointer(SinkFunctionType maybeCallSink, SinkFunctionType dontCa
   if (b) {
     maybeCallSink = returnCallSink();
   }
-  maybeCallSink(source()); // flow [NOT DETECTED by AST]
+  maybeCallSink(source());
   dontCallSink(source()); // no flow
 }
 
@@ -126,8 +126,8 @@ namespace virtual_inheritance {
     // get flow from a `Middle` value to the call qualifier.
     Top *topPtr = bottomPtr, &topRef = bottomRef;
 
-    sink(topPtr->isSource()); // flow [NOT DETECTED]
-    sink(topRef.isSource()); // flow [NOT DETECTED]
+    sink(topPtr->isSource()); // $ MISSING: ast,ir
+    sink(topRef.isSource()); // $ MISSING: ast,ir
   }
 }
 
@@ -170,6 +170,6 @@ void set_global_union_field_u_f() {
 
 void test_call_sink_through_union_2() {
   set_global_union_field_u_f();
-  call_sink_through_union_field_u_f(u2.u.f); // flow [NOT DETECTED]
-  call_sink_through_union_field_u_g(u2.u.g); // flow [NOT DETECTED]
+  call_sink_through_union_field_u_f(u2.u.f); // $ MISSING: ast,ir
+  call_sink_through_union_field_u_g(u2.u.g); // $ MISSING: ast,ir
 }

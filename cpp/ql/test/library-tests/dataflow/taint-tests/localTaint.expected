@@ -787,8 +787,6 @@
 | map.cpp:152:15:152:19 | call to begin | map.cpp:154:9:154:10 | i2 |  |
 | map.cpp:152:15:152:19 | call to begin | map.cpp:155:8:155:9 | i2 |  |
 | map.cpp:152:15:152:19 | call to begin | map.cpp:156:8:156:9 | i2 |  |
-| map.cpp:152:15:152:19 | call to begin | map.cpp:161:8:161:9 | i2 |  |
-| map.cpp:152:15:152:19 | call to begin | map.cpp:162:8:162:9 | i2 |  |
 | map.cpp:152:30:152:31 | m2 | map.cpp:152:33:152:35 | call to end | TAINT |
 | map.cpp:152:30:152:31 | ref arg m2 | map.cpp:152:30:152:31 | m2 |  |
 | map.cpp:152:30:152:31 | ref arg m2 | map.cpp:182:7:182:8 | m2 |  |
@@ -804,8 +802,6 @@
 | map.cpp:152:40:152:41 | ref arg i2 | map.cpp:154:9:154:10 | i2 |  |
 | map.cpp:152:40:152:41 | ref arg i2 | map.cpp:155:8:155:9 | i2 |  |
 | map.cpp:152:40:152:41 | ref arg i2 | map.cpp:156:8:156:9 | i2 |  |
-| map.cpp:152:40:152:41 | ref arg i2 | map.cpp:161:8:161:9 | i2 |  |
-| map.cpp:152:40:152:41 | ref arg i2 | map.cpp:162:8:162:9 | i2 |  |
 | map.cpp:154:8:154:8 | call to operator* | map.cpp:154:8:154:10 | call to pair | TAINT |
 | map.cpp:154:9:154:10 | i2 | map.cpp:154:8:154:8 | call to operator* | TAINT |
 | map.cpp:155:8:155:9 | i2 | map.cpp:155:10:155:10 | call to operator-> | TAINT |
@@ -817,6 +813,8 @@
 | map.cpp:158:15:158:19 | call to begin | map.cpp:158:24:158:25 | i3 |  |
 | map.cpp:158:15:158:19 | call to begin | map.cpp:158:40:158:41 | i3 |  |
 | map.cpp:158:15:158:19 | call to begin | map.cpp:160:9:160:10 | i3 |  |
+| map.cpp:158:15:158:19 | call to begin | map.cpp:161:8:161:9 | i3 |  |
+| map.cpp:158:15:158:19 | call to begin | map.cpp:162:8:162:9 | i3 |  |
 | map.cpp:158:30:158:31 | m3 | map.cpp:158:33:158:35 | call to end | TAINT |
 | map.cpp:158:30:158:31 | ref arg m3 | map.cpp:158:30:158:31 | m3 |  |
 | map.cpp:158:30:158:31 | ref arg m3 | map.cpp:252:1:252:1 | m3 |  |
@@ -824,10 +822,12 @@
 | map.cpp:158:40:158:41 | ref arg i3 | map.cpp:158:24:158:25 | i3 |  |
 | map.cpp:158:40:158:41 | ref arg i3 | map.cpp:158:40:158:41 | i3 |  |
 | map.cpp:158:40:158:41 | ref arg i3 | map.cpp:160:9:160:10 | i3 |  |
+| map.cpp:158:40:158:41 | ref arg i3 | map.cpp:161:8:161:9 | i3 |  |
+| map.cpp:158:40:158:41 | ref arg i3 | map.cpp:162:8:162:9 | i3 |  |
 | map.cpp:160:8:160:8 | call to operator* | map.cpp:160:8:160:10 | call to pair | TAINT |
 | map.cpp:160:9:160:10 | i3 | map.cpp:160:8:160:8 | call to operator* | TAINT |
-| map.cpp:161:8:161:9 | i2 | map.cpp:161:10:161:10 | call to operator-> | TAINT |
-| map.cpp:162:8:162:9 | i2 | map.cpp:162:10:162:10 | call to operator-> | TAINT |
+| map.cpp:161:8:161:9 | i3 | map.cpp:161:10:161:10 | call to operator-> | TAINT |
+| map.cpp:162:8:162:9 | i3 | map.cpp:162:10:162:10 | call to operator-> | TAINT |
 | map.cpp:166:27:166:29 | call to map | map.cpp:167:7:167:9 | m10 |  |
 | map.cpp:166:27:166:29 | call to map | map.cpp:171:7:171:9 | m10 |  |
 | map.cpp:166:27:166:29 | call to map | map.cpp:252:1:252:1 | m10 |  |
@@ -1448,8 +1448,6 @@
 | map.cpp:304:15:304:19 | call to begin | map.cpp:306:9:306:10 | i2 |  |
 | map.cpp:304:15:304:19 | call to begin | map.cpp:307:8:307:9 | i2 |  |
 | map.cpp:304:15:304:19 | call to begin | map.cpp:308:8:308:9 | i2 |  |
-| map.cpp:304:15:304:19 | call to begin | map.cpp:313:8:313:9 | i2 |  |
-| map.cpp:304:15:304:19 | call to begin | map.cpp:314:8:314:9 | i2 |  |
 | map.cpp:304:30:304:31 | m2 | map.cpp:304:33:304:35 | call to end | TAINT |
 | map.cpp:304:30:304:31 | ref arg m2 | map.cpp:304:30:304:31 | m2 |  |
 | map.cpp:304:30:304:31 | ref arg m2 | map.cpp:334:7:334:8 | m2 |  |
@@ -1462,8 +1460,6 @@
 | map.cpp:304:40:304:41 | ref arg i2 | map.cpp:306:9:306:10 | i2 |  |
 | map.cpp:304:40:304:41 | ref arg i2 | map.cpp:307:8:307:9 | i2 |  |
 | map.cpp:304:40:304:41 | ref arg i2 | map.cpp:308:8:308:9 | i2 |  |
-| map.cpp:304:40:304:41 | ref arg i2 | map.cpp:313:8:313:9 | i2 |  |
-| map.cpp:304:40:304:41 | ref arg i2 | map.cpp:314:8:314:9 | i2 |  |
 | map.cpp:306:8:306:8 | call to operator* | map.cpp:306:8:306:10 | call to pair | TAINT |
 | map.cpp:306:9:306:10 | i2 | map.cpp:306:8:306:8 | call to operator* | TAINT |
 | map.cpp:307:8:307:9 | i2 | map.cpp:307:10:307:10 | call to operator-> | TAINT |
@@ -1475,6 +1471,8 @@
 | map.cpp:310:15:310:19 | call to begin | map.cpp:310:24:310:25 | i3 |  |
 | map.cpp:310:15:310:19 | call to begin | map.cpp:310:40:310:41 | i3 |  |
 | map.cpp:310:15:310:19 | call to begin | map.cpp:312:9:312:10 | i3 |  |
+| map.cpp:310:15:310:19 | call to begin | map.cpp:313:8:313:9 | i3 |  |
+| map.cpp:310:15:310:19 | call to begin | map.cpp:314:8:314:9 | i3 |  |
 | map.cpp:310:30:310:31 | m3 | map.cpp:310:33:310:35 | call to end | TAINT |
 | map.cpp:310:30:310:31 | ref arg m3 | map.cpp:310:30:310:31 | m3 |  |
 | map.cpp:310:30:310:31 | ref arg m3 | map.cpp:438:1:438:1 | m3 |  |
@@ -1482,10 +1480,12 @@
 | map.cpp:310:40:310:41 | ref arg i3 | map.cpp:310:24:310:25 | i3 |  |
 | map.cpp:310:40:310:41 | ref arg i3 | map.cpp:310:40:310:41 | i3 |  |
 | map.cpp:310:40:310:41 | ref arg i3 | map.cpp:312:9:312:10 | i3 |  |
+| map.cpp:310:40:310:41 | ref arg i3 | map.cpp:313:8:313:9 | i3 |  |
+| map.cpp:310:40:310:41 | ref arg i3 | map.cpp:314:8:314:9 | i3 |  |
 | map.cpp:312:8:312:8 | call to operator* | map.cpp:312:8:312:10 | call to pair | TAINT |
 | map.cpp:312:9:312:10 | i3 | map.cpp:312:8:312:8 | call to operator* | TAINT |
-| map.cpp:313:8:313:9 | i2 | map.cpp:313:10:313:10 | call to operator-> | TAINT |
-| map.cpp:314:8:314:9 | i2 | map.cpp:314:10:314:10 | call to operator-> | TAINT |
+| map.cpp:313:8:313:9 | i3 | map.cpp:313:10:313:10 | call to operator-> | TAINT |
+| map.cpp:314:8:314:9 | i3 | map.cpp:314:10:314:10 | call to operator-> | TAINT |
 | map.cpp:318:37:318:39 | call to unordered_map | map.cpp:319:7:319:9 | m10 |  |
 | map.cpp:318:37:318:39 | call to unordered_map | map.cpp:323:7:323:9 | m10 |  |
 | map.cpp:318:37:318:39 | call to unordered_map | map.cpp:438:1:438:1 | m10 |  |
@@ -5004,7 +5004,9 @@
 | swap1.cpp:24:9:24:13 | this | swap1.cpp:24:31:24:34 | this |  |
 | swap1.cpp:24:23:24:26 | that | swap1.cpp:24:23:24:26 | that |  |
 | swap1.cpp:24:23:24:26 | that | swap1.cpp:24:36:24:39 | that |  |
+| swap1.cpp:24:31:24:34 | this | swap1.cpp:24:36:24:39 | ref arg that | TAINT |
 | swap1.cpp:24:36:24:39 | ref arg that | swap1.cpp:24:23:24:26 | that |  |
+| swap1.cpp:24:36:24:39 | that | swap1.cpp:24:31:24:34 | ref arg this | TAINT |
 | swap1.cpp:25:9:25:13 | this | swap1.cpp:25:36:25:52 | constructor init of field data1 [pre-this] |  |
 | swap1.cpp:25:28:25:31 | that | swap1.cpp:25:42:25:45 | that |  |
 | swap1.cpp:25:47:25:51 | data1 | swap1.cpp:25:36:25:52 | constructor init of field data1 | TAINT |
@@ -5014,28 +5016,36 @@
 | swap1.cpp:29:23:29:27 | call to Class | swap1.cpp:30:18:30:20 | tmp |  |
 | swap1.cpp:29:24:29:27 | that | swap1.cpp:29:23:29:27 | call to Class |  |
 | swap1.cpp:30:13:30:16 | ref arg this | swap1.cpp:31:21:31:24 | this |  |
+| swap1.cpp:30:13:30:16 | this | swap1.cpp:30:18:30:20 | ref arg tmp | TAINT |
 | swap1.cpp:30:13:30:16 | this | swap1.cpp:31:21:31:24 | this |  |
+| swap1.cpp:30:18:30:20 | tmp | swap1.cpp:30:13:30:16 | ref arg this | TAINT |
 | swap1.cpp:31:21:31:24 | this | swap1.cpp:31:20:31:24 | * ... | TAINT |
 | swap1.cpp:34:16:34:24 | this | swap1.cpp:36:13:36:16 | this |  |
 | swap1.cpp:34:34:34:37 | that | swap1.cpp:34:34:34:37 | that |  |
 | swap1.cpp:34:34:34:37 | that | swap1.cpp:36:18:36:21 | that |  |
 | swap1.cpp:36:13:36:16 | ref arg this | swap1.cpp:37:21:37:24 | this |  |
+| swap1.cpp:36:13:36:16 | this | swap1.cpp:36:18:36:21 | ref arg that | TAINT |
 | swap1.cpp:36:13:36:16 | this | swap1.cpp:37:21:37:24 | this |  |
 | swap1.cpp:36:18:36:21 | ref arg that | swap1.cpp:34:34:34:37 | that |  |
+| swap1.cpp:36:18:36:21 | that | swap1.cpp:36:13:36:16 | ref arg this | TAINT |
 | swap1.cpp:37:21:37:24 | this | swap1.cpp:37:20:37:24 | * ... | TAINT |
 | swap1.cpp:40:16:40:26 | this | swap1.cpp:43:13:43:16 | this |  |
 | swap1.cpp:40:41:40:44 | that | swap1.cpp:42:24:42:27 | that |  |
 | swap1.cpp:42:23:42:27 | call to Class | swap1.cpp:43:18:43:20 | tmp |  |
 | swap1.cpp:42:24:42:27 | that | swap1.cpp:42:23:42:27 | call to Class |  |
 | swap1.cpp:43:13:43:16 | ref arg this | swap1.cpp:44:21:44:24 | this |  |
+| swap1.cpp:43:13:43:16 | this | swap1.cpp:43:18:43:20 | ref arg tmp | TAINT |
 | swap1.cpp:43:13:43:16 | this | swap1.cpp:44:21:44:24 | this |  |
+| swap1.cpp:43:18:43:20 | tmp | swap1.cpp:43:13:43:16 | ref arg this | TAINT |
 | swap1.cpp:44:21:44:24 | this | swap1.cpp:44:20:44:24 | * ... | TAINT |
 | swap1.cpp:47:16:47:26 | this | swap1.cpp:49:13:49:16 | this |  |
 | swap1.cpp:47:36:47:39 | that | swap1.cpp:47:36:47:39 | that |  |
 | swap1.cpp:47:36:47:39 | that | swap1.cpp:49:18:49:21 | that |  |
 | swap1.cpp:49:13:49:16 | ref arg this | swap1.cpp:50:21:50:24 | this |  |
+| swap1.cpp:49:13:49:16 | this | swap1.cpp:49:18:49:21 | ref arg that | TAINT |
 | swap1.cpp:49:13:49:16 | this | swap1.cpp:50:21:50:24 | this |  |
 | swap1.cpp:49:18:49:21 | ref arg that | swap1.cpp:47:36:47:39 | that |  |
+| swap1.cpp:49:18:49:21 | that | swap1.cpp:49:13:49:16 | ref arg this | TAINT |
 | swap1.cpp:50:21:50:24 | this | swap1.cpp:50:20:50:24 | * ... | TAINT |
 | swap1.cpp:53:14:53:17 | this | swap1.cpp:56:18:56:22 | this |  |
 | swap1.cpp:53:26:53:29 | that | swap1.cpp:53:26:53:29 | that |  |
@@ -5049,7 +5059,9 @@
 | swap1.cpp:61:32:61:32 | y | swap1.cpp:61:32:61:32 | y |  |
 | swap1.cpp:61:32:61:32 | y | swap1.cpp:63:16:63:16 | y |  |
 | swap1.cpp:63:9:63:9 | ref arg x | swap1.cpp:61:22:61:22 | x |  |
+| swap1.cpp:63:9:63:9 | x | swap1.cpp:63:16:63:16 | ref arg y | TAINT |
 | swap1.cpp:63:16:63:16 | ref arg y | swap1.cpp:61:32:61:32 | y |  |
+| swap1.cpp:63:16:63:16 | y | swap1.cpp:63:9:63:9 | ref arg x | TAINT |
 | swap1.cpp:69:23:69:23 | x | swap1.cpp:71:5:71:5 | x |  |
 | swap1.cpp:69:23:69:23 | x | swap1.cpp:73:10:73:10 | x |  |
 | swap1.cpp:69:23:69:23 | x | swap1.cpp:76:9:76:9 | x |  |
@@ -5158,7 +5170,9 @@
 | swap2.cpp:24:9:24:13 | this | swap2.cpp:24:31:24:34 | this |  |
 | swap2.cpp:24:23:24:26 | that | swap2.cpp:24:23:24:26 | that |  |
 | swap2.cpp:24:23:24:26 | that | swap2.cpp:24:36:24:39 | that |  |
+| swap2.cpp:24:31:24:34 | this | swap2.cpp:24:36:24:39 | ref arg that | TAINT |
 | swap2.cpp:24:36:24:39 | ref arg that | swap2.cpp:24:23:24:26 | that |  |
+| swap2.cpp:24:36:24:39 | that | swap2.cpp:24:31:24:34 | ref arg this | TAINT |
 | swap2.cpp:25:9:25:13 | this | swap2.cpp:25:36:25:52 | constructor init of field data1 [pre-this] |  |
 | swap2.cpp:25:28:25:31 | that | swap2.cpp:25:42:25:45 | that |  |
 | swap2.cpp:25:28:25:31 | that | swap2.cpp:25:61:25:64 | that |  |
@@ -5173,28 +5187,36 @@
 | swap2.cpp:29:23:29:27 | call to Class | swap2.cpp:30:18:30:20 | tmp |  |
 | swap2.cpp:29:24:29:27 | that | swap2.cpp:29:23:29:27 | call to Class |  |
 | swap2.cpp:30:13:30:16 | ref arg this | swap2.cpp:31:21:31:24 | this |  |
+| swap2.cpp:30:13:30:16 | this | swap2.cpp:30:18:30:20 | ref arg tmp | TAINT |
 | swap2.cpp:30:13:30:16 | this | swap2.cpp:31:21:31:24 | this |  |
+| swap2.cpp:30:18:30:20 | tmp | swap2.cpp:30:13:30:16 | ref arg this | TAINT |
 | swap2.cpp:31:21:31:24 | this | swap2.cpp:31:20:31:24 | * ... | TAINT |
 | swap2.cpp:34:16:34:24 | this | swap2.cpp:36:13:36:16 | this |  |
 | swap2.cpp:34:34:34:37 | that | swap2.cpp:34:34:34:37 | that |  |
 | swap2.cpp:34:34:34:37 | that | swap2.cpp:36:18:36:21 | that |  |
 | swap2.cpp:36:13:36:16 | ref arg this | swap2.cpp:37:21:37:24 | this |  |
+| swap2.cpp:36:13:36:16 | this | swap2.cpp:36:18:36:21 | ref arg that | TAINT |
 | swap2.cpp:36:13:36:16 | this | swap2.cpp:37:21:37:24 | this |  |
 | swap2.cpp:36:18:36:21 | ref arg that | swap2.cpp:34:34:34:37 | that |  |
+| swap2.cpp:36:18:36:21 | that | swap2.cpp:36:13:36:16 | ref arg this | TAINT |
 | swap2.cpp:37:21:37:24 | this | swap2.cpp:37:20:37:24 | * ... | TAINT |
 | swap2.cpp:40:16:40:26 | this | swap2.cpp:43:13:43:16 | this |  |
 | swap2.cpp:40:41:40:44 | that | swap2.cpp:42:24:42:27 | that |  |
 | swap2.cpp:42:23:42:27 | call to Class | swap2.cpp:43:18:43:20 | tmp |  |
 | swap2.cpp:42:24:42:27 | that | swap2.cpp:42:23:42:27 | call to Class |  |
 | swap2.cpp:43:13:43:16 | ref arg this | swap2.cpp:44:21:44:24 | this |  |
+| swap2.cpp:43:13:43:16 | this | swap2.cpp:43:18:43:20 | ref arg tmp | TAINT |
 | swap2.cpp:43:13:43:16 | this | swap2.cpp:44:21:44:24 | this |  |
+| swap2.cpp:43:18:43:20 | tmp | swap2.cpp:43:13:43:16 | ref arg this | TAINT |
 | swap2.cpp:44:21:44:24 | this | swap2.cpp:44:20:44:24 | * ... | TAINT |
 | swap2.cpp:47:16:47:26 | this | swap2.cpp:49:13:49:16 | this |  |
 | swap2.cpp:47:36:47:39 | that | swap2.cpp:47:36:47:39 | that |  |
 | swap2.cpp:47:36:47:39 | that | swap2.cpp:49:18:49:21 | that |  |
 | swap2.cpp:49:13:49:16 | ref arg this | swap2.cpp:50:21:50:24 | this |  |
+| swap2.cpp:49:13:49:16 | this | swap2.cpp:49:18:49:21 | ref arg that | TAINT |
 | swap2.cpp:49:13:49:16 | this | swap2.cpp:50:21:50:24 | this |  |
 | swap2.cpp:49:18:49:21 | ref arg that | swap2.cpp:47:36:47:39 | that |  |
+| swap2.cpp:49:18:49:21 | that | swap2.cpp:49:13:49:16 | ref arg this | TAINT |
 | swap2.cpp:50:21:50:24 | this | swap2.cpp:50:20:50:24 | * ... | TAINT |
 | swap2.cpp:53:14:53:17 | this | swap2.cpp:56:18:56:22 | this |  |
 | swap2.cpp:53:26:53:29 | that | swap2.cpp:53:26:53:29 | that |  |
@@ -5216,7 +5238,9 @@
 | swap2.cpp:61:32:61:32 | y | swap2.cpp:61:32:61:32 | y |  |
 | swap2.cpp:61:32:61:32 | y | swap2.cpp:63:16:63:16 | y |  |
 | swap2.cpp:63:9:63:9 | ref arg x | swap2.cpp:61:22:61:22 | x |  |
+| swap2.cpp:63:9:63:9 | x | swap2.cpp:63:16:63:16 | ref arg y | TAINT |
 | swap2.cpp:63:16:63:16 | ref arg y | swap2.cpp:61:32:61:32 | y |  |
+| swap2.cpp:63:16:63:16 | y | swap2.cpp:63:9:63:9 | ref arg x | TAINT |
 | swap2.cpp:69:23:69:23 | x | swap2.cpp:71:5:71:5 | x |  |
 | swap2.cpp:69:23:69:23 | x | swap2.cpp:73:10:73:10 | x |  |
 | swap2.cpp:69:23:69:23 | x | swap2.cpp:76:9:76:9 | x |  |

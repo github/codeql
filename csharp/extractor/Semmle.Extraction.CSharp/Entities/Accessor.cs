@@ -76,6 +76,11 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 trapFile.compiler_generated(this);
             }
+
+            if (symbol.IsInitOnly)
+            {
+                trapFile.init_only_accessors(this);
+            }
         }
 
         public static new Accessor Create(Context cx, IMethodSymbol symbol) =>

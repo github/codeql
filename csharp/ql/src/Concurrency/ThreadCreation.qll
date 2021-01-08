@@ -13,8 +13,7 @@ class ThreadStartingCallable extends Callable {
     this.(Method).getQualifiedName() = "System.Threading.Tasks.Task.Run" or
     this.(Constructor).getDeclaringType().getQualifiedName() = "System.Threading.Thread" or
     this.(Method).getQualifiedName() = "System.Threading.Thread.Start" or
-    this
-        .(Constructor)
+    this.(Constructor)
         .getDeclaringType()
         .getQualifiedName()
         .matches("System.Threading.Tasks.Task<%>")

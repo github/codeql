@@ -20,6 +20,19 @@ private predicate re_module_function(string name, int flags) {
 }
 
 /**
+ * Gets the names and corresponding values of attributes of the `re` module that are likely to be
+ * methods taking regular expressions as arguments.
+ *
+ * This is a helper predicate that fixes a bad join order, and should not be inlined without checking
+ * that this is safe.
+ */
+pragma[nomagic]
+private Value relevant_re_attr(string name) {
+  result = Module::named("re").attr(name) and
+  name != "escape"
+}
+
+/**
  * Holds if `s` is used as a regex with the `re` module, with the regex-mode `mode` (if known).
  * If regex mode is not known, `mode` will be `"None"`.
  */
@@ -28,8 +41,7 @@ predicate used_as_regex(Expr s, string mode) {
   /* Call to re.xxx(regex, ... [mode]) */
   exists(CallNode call, string name |
     call.getArg(0).pointsTo(_, _, s.getAFlowNode()) and
-    call.getFunction().pointsTo(Module::named("re").attr(name)) and
-    not name = "escape"
+    call.getFunction().pointsTo(relevant_re_attr(name))
   |
     mode = "None"
     or

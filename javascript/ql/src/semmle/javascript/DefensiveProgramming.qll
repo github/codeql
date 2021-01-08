@@ -328,12 +328,7 @@ module DefensiveExpressionTest {
     Expr operand;
     TypeofTag tag;
 
-    TypeofTest() {
-      exists(Expr op1, Expr op2 | hasOperands(op1, op2) |
-        operand = op1.(TypeofExpr).getOperand() and
-        op2.mayHaveStringValue(tag)
-      )
-    }
+    TypeofTest() { TaintTracking::isTypeofGuard(this, operand, tag) }
 
     boolean getTheTestResult() {
       exists(boolean testResult |

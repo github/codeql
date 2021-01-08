@@ -97,13 +97,13 @@ private module FlaskModel {
       DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
       /**
-       * A source of an instance of `flask.Flask`.
+       * A source of instances of `flask.Flask`, extend this class to model new instances.
        *
-       * This can include instantiation of the class, return value from function
-       * calls, or a special parameter that will be set when functions are call by external
+       * This can include instantiations of the class, return values from function
+       * calls, or a special parameter that will be set when functions are called by an external
        * library.
        *
-       * Use `Flask::instance()` predicate to get references to instances of `flask.Flask`.
+       * Use the predicate `Flask::instance()` to get references to instances of `flask.Flask`.
        */
       abstract class InstanceSource extends DataFlow::Node { }
 
@@ -207,13 +207,13 @@ private module FlaskModel {
     DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
     /**
-     * A source of an instance of `flask.Response`.
+     * A source of instances of `flask.Response`, extend this class to model new instances.
      *
-     * This can include instantiation of the class, return value from function
-     * calls, or a special parameter that will be set when functions are call by external
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
      * library.
      *
-     * Use `Response::instance()` predicate to get references to instances of `flask.Response`.
+     * Use the predicate `Response::instance()` to get references to instances of `flask.Response`.
      */
     abstract class InstanceSource extends HTTP::Server::HttpResponse::Range, DataFlow::Node { }
 
@@ -319,9 +319,9 @@ private module FlaskModel {
     }
 
     override Function getARouteHandler() {
-      exists(DataFlow::Node view_func_arg, DataFlow::Node func_src |
+      exists(DataFlow::Node view_func_arg, DataFlow::LocalSourceNode func_src |
         view_func_arg.asCfgNode() in [node.getArg(2), node.getArgByName("view_func")] and
-        DataFlow::localFlow(func_src, view_func_arg) and
+        func_src.flowsTo(view_func_arg) and
         func_src.asExpr().(CallableExpr) = result.getDefinition()
       )
     }

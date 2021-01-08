@@ -46,7 +46,7 @@ Node importNode(string name) {
       or
       name = alias.getValue().(ImportExpr).getImportedModuleName()
     ) and
-    result.(EssaNode).getVar().(AssignmentDefinition).getSourceVariable() = var
+    result.asExpr() = alias.getValue()
   )
   or
   // Although it may seem superfluous to consider the `foo` part of `from foo import bar as baz` to
