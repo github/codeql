@@ -89,6 +89,9 @@ class GlobalVariable extends Variable, TGlobalVariable {
 class InstanceVariable extends Variable, TInstanceVariable {
   override InstanceVariable::Range range;
 
+  /** Holds is this variable is a class instance variable. */
+  final predicate isClassInstanceVariable() { range.isClassInstanceVariable() }
+
   final override InstanceVariableAccess getAnAccess() { result.getVariable() = this }
 }
 

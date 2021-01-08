@@ -9,6 +9,36 @@ private Generated::AstNode parent(Generated::AstNode n) {
   not n = any(VariableScope s).getScopeElement()
 }
 
+private predicate instanceVariableAccess(
+  Generated::InstanceVariable var, string name, VariableScope scope, boolean instance
+) {
+  name = var.getValue() and
+  scope = enclosingModuleOrClass(var) and
+  if
+    exists(VariableScope method |
+      method = enclosingMethod(var) and scope = enclosingScope(method.getScopeElement())
+    )
+  then instance = true
+  else instance = false
+}
+
+private VariableScope enclosingMethod(Generated::AstNode node) {
+  exists(VariableScope scope, Callable c |
+    scope = outerScope*(enclosingScope(node)) and
+    scope = TCallableScope(c) and
+    (c instanceof Method or c instanceof SingletonMethod) and
+    result = scope
+  )
+}
+
+private VariableScope enclosingModuleOrClass(Generated::AstNode node) {
+  exists(VariableScope scope | scope = enclosingScope(node) |
+    if scope instanceof ModuleOrClassScope
+    then result = scope
+    else result = enclosingModuleOrClass(scope.getScopeElement())
+  )
+}
+
 private predicate parameterAssignment(
   CallableScope::Range scope, string name, Generated::Identifier i
 ) {
@@ -56,6 +86,10 @@ private predicate strictlyBefore(Location one, Location two) {
   one.getStartLine() = two.getStartLine() and one.getStartColumn() < two.getStartColumn()
 }
 
+private VariableScope outerScope(VariableScope scope) {
+  result = enclosingScope(scope.getScopeElement())
+}
+
 /** A scope that may capture outer local variables. */
 private class CapturingScope extends VariableScope {
   CapturingScope() {
@@ -69,7 +103,7 @@ private class CapturingScope extends VariableScope {
   }
 
   /** Gets the scope in which this scope is nested, if any. */
-  private VariableScope getOuterScope() { result = enclosingScope(this.getScopeElement()) }
+  VariableScope getOuterScope() { result = outerScope(this) }
 
   /** Holds if this scope inherits `name` from an outer scope `outer`. */
   predicate inherits(string name, VariableScope outer) {
@@ -111,7 +145,14 @@ private module Cached {
   cached
   newtype TVariable =
     TGlobalVariable(string name) { name = any(Generated::GlobalVariable var).getValue() } or
-    TInstanceVariable(VariableScope scope, string name, Generated::AstNode decl) { none() } or
+    TInstanceVariable(VariableScope scope, string name, boolean instance, Generated::AstNode decl) {
+      decl =
+        min(Generated::InstanceVariable other |
+          instanceVariableAccess(other, name, scope, instance)
+        |
+          other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
+        )
+    } or
     TLocalVariable(VariableScope scope, string name, Generated::Identifier i) {
       scopeDefinesParameterVariable(scope, name, i)
       or
@@ -415,17 +456,20 @@ module GlobalVariable {
   }
 }
 
-module InstanceVariable {
-  private class ClassLikeScope = TClassScope or TModuleScope or TTopLevelScope;
+private class ModuleOrClassScope = TClassScope or TModuleScope or TTopLevelScope;
 
+module InstanceVariable {
   class Range extends Variable::Range, TInstanceVariable {
-    private ClassLikeScope scope;
+    private ModuleOrClassScope scope;
+    private boolean instance;
     private string name;
     private Generated::AstNode decl;
 
-    Range() { this = TInstanceVariable(scope, name, decl) }
+    Range() { this = TInstanceVariable(scope, name, instance, decl) }
 
     final override string getName() { result = name }
+
+    final predicate isClassInstanceVariable() { instance = false }
 
     final override Location getLocation() { result = decl.getLocation() }
 
@@ -473,7 +517,12 @@ module InstanceVariableAccess {
   class Range extends VariableAccess::Range, @token_instance_variable {
     InstanceVariable variable;
 
-    Range() { this.(Generated::InstanceVariable).getValue() = variable.getName() }
+    Range() {
+      exists(boolean instance, VariableScope scope, string name |
+        variable = TInstanceVariable(scope, name, instance, _) and
+        instanceVariableAccess(this, name, scope, instance)
+      )
+    }
 
     final override InstanceVariable getVariable() { result = variable }
   }

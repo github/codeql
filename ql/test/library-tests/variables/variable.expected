@@ -1,5 +1,15 @@
 | file://:0:0:0:0 | $0 |
 | file://:0:0:0:0 | $global |
+| instance_variables.rb:1:1:1:4 | @top |
+| instance_variables.rb:4:3:4:6 | @foo |
+| instance_variables.rb:14:3:14:4 | @x |
+| instance_variables.rb:16:5:16:6 | @y |
+| instance_variables.rb:21:2:21:3 | @m |
+| instance_variables.rb:23:4:23:5 | @n |
+| instance_variables.rb:28:3:28:4 | @x |
+| instance_variables.rb:32:12:32:13 | @x |
+| instance_variables.rb:36:3:36:4 | @x |
+| instance_variables.rb:39:6:39:7 | @x |
 | nested_scopes.rb:5:3:5:3 | a |
 | nested_scopes.rb:7:5:7:5 | a |
 | nested_scopes.rb:9:7:9:7 | a |

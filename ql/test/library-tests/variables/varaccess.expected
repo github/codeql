@@ -1,4 +1,17 @@
 variableAccess
+| instance_variables.rb:1:1:1:4 | @top | instance_variables.rb:1:1:1:4 | @top | instance_variables.rb:1:1:44:4 | top-level scope |
+| instance_variables.rb:4:3:4:6 | @foo | instance_variables.rb:4:3:4:6 | @foo | instance_variables.rb:1:1:44:4 | top-level scope |
+| instance_variables.rb:8:8:8:11 | @foo | instance_variables.rb:4:3:4:6 | @foo | instance_variables.rb:1:1:44:4 | top-level scope |
+| instance_variables.rb:11:6:11:9 | @top | instance_variables.rb:1:1:1:4 | @top | instance_variables.rb:1:1:44:4 | top-level scope |
+| instance_variables.rb:14:3:14:4 | @x | instance_variables.rb:14:3:14:4 | @x | instance_variables.rb:13:1:18:3 | class scope |
+| instance_variables.rb:16:5:16:6 | @y | instance_variables.rb:16:5:16:6 | @y | instance_variables.rb:13:1:18:3 | class scope |
+| instance_variables.rb:21:2:21:3 | @m | instance_variables.rb:21:2:21:3 | @m | instance_variables.rb:20:1:25:3 | module scope |
+| instance_variables.rb:23:4:23:5 | @n | instance_variables.rb:23:4:23:5 | @n | instance_variables.rb:20:1:25:3 | module scope |
+| instance_variables.rb:28:3:28:4 | @x | instance_variables.rb:28:3:28:4 | @x | instance_variables.rb:1:1:44:4 | top-level scope |
+| instance_variables.rb:32:12:32:13 | @x | instance_variables.rb:32:12:32:13 | @x | instance_variables.rb:1:1:44:4 | top-level scope |
+| instance_variables.rb:36:3:36:4 | @x | instance_variables.rb:36:3:36:4 | @x | instance_variables.rb:35:1:44:4 | class scope |
+| instance_variables.rb:39:6:39:7 | @x | instance_variables.rb:39:6:39:7 | @x | instance_variables.rb:35:1:44:4 | class scope |
+| instance_variables.rb:42:6:42:7 | @x | instance_variables.rb:39:6:39:7 | @x | instance_variables.rb:35:1:44:4 | class scope |
 | nested_scopes.rb:5:3:5:3 | a | nested_scopes.rb:5:3:5:3 | a | nested_scopes.rb:4:1:39:3 | class scope |
 | nested_scopes.rb:7:5:7:5 | a | nested_scopes.rb:7:5:7:5 | a | nested_scopes.rb:6:3:37:5 | module scope |
 | nested_scopes.rb:9:7:9:7 | a | nested_scopes.rb:9:7:9:7 | a | nested_scopes.rb:8:5:35:7 | module scope |
@@ -221,6 +234,19 @@ implicitWrite
 | ssa.rb:64:8:64:8 | a |
 | ssa.rb:66:15:66:15 | a |
 readAccess
+| instance_variables.rb:1:1:1:4 | @top |
+| instance_variables.rb:4:3:4:6 | @foo |
+| instance_variables.rb:8:8:8:11 | @foo |
+| instance_variables.rb:11:6:11:9 | @top |
+| instance_variables.rb:14:3:14:4 | @x |
+| instance_variables.rb:16:5:16:6 | @y |
+| instance_variables.rb:21:2:21:3 | @m |
+| instance_variables.rb:23:4:23:5 | @n |
+| instance_variables.rb:28:3:28:4 | @x |
+| instance_variables.rb:32:12:32:13 | @x |
+| instance_variables.rb:36:3:36:4 | @x |
+| instance_variables.rb:39:6:39:7 | @x |
+| instance_variables.rb:42:6:42:7 | @x |
 | nested_scopes.rb:14:16:14:16 | a |
 | nested_scopes.rb:15:11:15:11 | a |
 | nested_scopes.rb:16:13:16:13 | a |
