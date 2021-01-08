@@ -7,11 +7,13 @@
  *   csc f1.cs f2.cs f3.cs
  *
  * The `id` simply identifies the invocation, while `cwd` is the working
- * directory from which the compiler was invoked.
+ * directory from which the compiler was invoked. The `assembly` identifies
+ * the output assembly of the compilation.
  */
 compilations(
     unique int id : @compilation,
-    string cwd : string ref
+    string cwd : string ref,
+    int assembly: @assembly ref
 );
 
 /**

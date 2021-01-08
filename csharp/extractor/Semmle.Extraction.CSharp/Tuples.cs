@@ -106,9 +106,9 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("compilation_time", compilation, num, index, metric);
         }
 
-        internal static void compilations(this TextWriter trapFile, Compilation compilation, string cwd)
+        internal static void compilations(this TextWriter trapFile, Compilation compilation, string cwd, Assembly assembly)
         {
-            trapFile.WriteTuple("compilations", compilation, cwd);
+            trapFile.WriteTuple("compilations", compilation, cwd, assembly);
         }
 
         internal static void compiler_generated(this TextWriter trapFile, IEntity entity)

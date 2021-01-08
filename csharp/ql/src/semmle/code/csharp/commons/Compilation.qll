@@ -7,7 +7,10 @@ class Compilation extends @compilation {
   string toString() { result = "compilation" }
 
   /** Gets the directory in which this compilation was run, as a string. */
-  string getDirectoryString() { compilations(this, result) }
+  string getDirectoryString() { compilations(this, result, _) }
+
+  /** Gets the output assembly. */
+  Assembly getOutputAssembly() { compilations(this, _, result) }
 
   /** Gets the folder in which this compilation was run. */
   Folder getFolder() { result.getAbsolutePath() = getDirectoryString() }
