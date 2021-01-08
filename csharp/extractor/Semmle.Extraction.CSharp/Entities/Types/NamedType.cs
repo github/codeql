@@ -87,6 +87,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 foreach (var l in Locations)
                     trapFile.type_location(this, l);
             }
+
+            if (symbol.IsAnonymousType)
+            {
+                trapFile.anonymous_types(this);
+            }
         }
 
         private readonly Lazy<Type[]> typeArgumentsLazy;

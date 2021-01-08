@@ -413,9 +413,6 @@ extend(
   unique int sub: @type ref,
   int super: @type_or_ref ref);
 
-anonymous_types(
-  unique int id: @type ref);
-
 @interface_or_ref = @interface_type | @typeref;
 
 implement(
