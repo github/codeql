@@ -232,7 +232,7 @@ namespace Semmle.Extraction.CSharp
                 var projectLayout = layout.LookupProjectOrDefault(transformedAssemblyPath);
                 var trapWriter = projectLayout.CreateTrapWriter(Logger, transformedAssemblyPath, options.TrapCompression, discardDuplicates: false);
                 compilationTrapFile = trapWriter;  // Dispose later
-                var cx = extractor.CreateContext(compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath, true), AddAssemblyTrapPrefix);
+                var cx = extractor.CreateContext(compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath), AddAssemblyTrapPrefix);
 
                 compilationEntity = new Entities.Compilation(cx, cwd, args);
             }
@@ -287,7 +287,7 @@ namespace Semmle.Extraction.CSharp
 
                     if (c.GetAssemblyOrModuleSymbol(r) is IAssemblySymbol assembly)
                     {
-                        var cx = extractor.CreateContext(c, trapWriter, new AssemblyScope(assembly, assemblyPath, false), AddAssemblyTrapPrefix);
+                        var cx = extractor.CreateContext(c, trapWriter, new AssemblyScope(assembly, assemblyPath), AddAssemblyTrapPrefix);
 
                         foreach (var module in assembly.Modules)
                         {

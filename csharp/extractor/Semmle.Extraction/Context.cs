@@ -244,8 +244,6 @@ namespace Semmle.Extraction
 
         public bool FromSource => scope.FromSource;
 
-        public bool IsGlobalContext => scope.IsGlobalScope;
-
         public ICommentGenerator CommentGenerator { get; } = new CommentProcessor();
 
         private IExtractionScope scope { get; }

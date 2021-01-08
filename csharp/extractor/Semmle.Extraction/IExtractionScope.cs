@@ -23,8 +23,6 @@ namespace Semmle.Extraction
         /// <param name="path">The path to populate.</param>
         bool InFileScope(string path);
 
-        bool IsGlobalScope { get; }
-
         bool FromSource { get; }
     }
 }
