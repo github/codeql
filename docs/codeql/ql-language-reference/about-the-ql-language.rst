@@ -67,6 +67,6 @@ Further reading
 `Academic references <https://codeql.github.com/publications/>`__ also provide an overview of QL and its semantics. Other useful references on database query languages and Datalog:
 
 -  `Database theory: Query languages <http://www.lsv.fr/~segoufin/Papers/Mypapers/DB-chapter.pdf>`__
--  `Logic Programming and Databases book - Amazon page <https://www.amazon.co.uk/Programming-Databases-Surveys-Computer-Science/dp/3642839541>`__
+-  `Logic Programming and Databases book <https://doi.org/10.1007/978-3-642-83952-8>`__
 -  `Foundations of Databases <http://webdam.inria.fr/Alice/>`__
 -  `Datalog <https://en.wikipedia.org/wiki/Datalog>`__

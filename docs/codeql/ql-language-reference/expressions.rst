@@ -63,7 +63,7 @@ You can express certain values directly in QL, such as numbers, booleans, and st
     "hello"
     "They said, \"Please escape quotation marks!\""
   
-  See `String literals <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#string-literals-string>` 
+  See `String literals <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#string-literals-string>`__
   in the QL language specification for more details. 
     
   Note: there is no "date literal" in QL. Instead, to specify a :ref:`date <date>`, you should
