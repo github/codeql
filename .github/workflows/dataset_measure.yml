@@ -12,6 +12,8 @@ on:
 
 jobs:
   measure:
+    env:
+      CODEQL_THREADS: 4 # TODO: remove this once it's set by the CLI
     strategy:
       fail-fast: false
       matrix:
@@ -27,7 +29,6 @@ jobs:
           unzip -q codeql-linux64.zip
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          CODEQL_THREADS: 4 # TODO: remove this once it's set by the CLI
       - uses: actions/cache@v2
         with:
           path: |
@@ -53,7 +54,7 @@ jobs:
       - name: Measure database
         run: |
           mkdir -p "stats/${{ matrix.repo }}"
-          codeql/codeql dataset measure --output "stats/${{ matrix.repo }}/stats.xml" "${{ runner.temp }}/database/db-ruby"
+          codeql/codeql dataset measure --threads 4 --output "stats/${{ matrix.repo }}/stats.xml" "${{ runner.temp }}/database/db-ruby"
       - uses: actions/upload-artifact@v2
         with:
           name: measurements
