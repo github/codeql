@@ -1,11 +1,11 @@
 edges
-| HashWithoutSalt.java:9:36:9:43 | password : String | HashWithoutSalt.java:9:26:9:55 | digest(...) |
-| HashWithoutSalt.java:15:13:15:20 | password : String | HashWithoutSalt.java:16:26:16:27 | md |
+| HashWithoutSalt.java:9:36:9:43 | password : String | HashWithoutSalt.java:9:36:9:54 | getBytes(...) |
+| HashWithoutSalt.java:15:13:15:20 | password : String | HashWithoutSalt.java:15:13:15:31 | getBytes(...) |
 nodes
-| HashWithoutSalt.java:9:26:9:55 | digest(...) | semmle.label | digest(...) |
 | HashWithoutSalt.java:9:36:9:43 | password : String | semmle.label | password : String |
+| HashWithoutSalt.java:9:36:9:54 | getBytes(...) | semmle.label | getBytes(...) |
 | HashWithoutSalt.java:15:13:15:20 | password : String | semmle.label | password : String |
-| HashWithoutSalt.java:16:26:16:27 | md | semmle.label | md |
+| HashWithoutSalt.java:15:13:15:31 | getBytes(...) | semmle.label | getBytes(...) |
 #select
-| HashWithoutSalt.java:9:26:9:55 | digest(...) | HashWithoutSalt.java:9:36:9:43 | password : String | HashWithoutSalt.java:9:26:9:55 | digest(...) | $@ is hashed without a salt. | HashWithoutSalt.java:9:36:9:43 | password | The password |
-| HashWithoutSalt.java:16:26:16:27 | md | HashWithoutSalt.java:15:13:15:20 | password : String | HashWithoutSalt.java:16:26:16:27 | md | $@ is hashed without a salt. | HashWithoutSalt.java:15:13:15:20 | password | The password |
+| HashWithoutSalt.java:9:36:9:54 | getBytes(...) | HashWithoutSalt.java:9:36:9:43 | password : String | HashWithoutSalt.java:9:36:9:54 | getBytes(...) | $@ is hashed without a salt. | HashWithoutSalt.java:9:36:9:43 | password | The password |
+| HashWithoutSalt.java:15:13:15:31 | getBytes(...) | HashWithoutSalt.java:15:13:15:20 | password : String | HashWithoutSalt.java:15:13:15:31 | getBytes(...) | $@ is hashed without a salt. | HashWithoutSalt.java:15:13:15:20 | password | The password |

@@ -50,13 +50,13 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(
-      MethodAccess mda, MethodAccess mua // invoke `md.digest()` with only one call of `md.update(password)`, that is, without the call of `md.update(digest)`
+      MethodAccess mua, MethodAccess mda // invoke `md.digest()` with only one call of `md.update(password)`, that is, without the call of `md.update(digest)`
     |
-      sink.asExpr() = mda.getQualifier() and
+      sink.asExpr() = mua.getArgument(0) and
+      mua.getMethod() instanceof MDUpdateMethod and // md.update(password)
       mda.getMethod() instanceof MDDigestMethod and
       mda.getNumArgument() = 0 and // md.digest()
-      mua.getMethod() instanceof MDUpdateMethod and // md.update(password)
-      mua.getQualifier() = mda.getQualifier().(VarAccess).getVariable().getAnAccess() and
+      mda.getQualifier() = mua.getQualifier().(VarAccess).getVariable().getAnAccess() and
       not exists(MethodAccess mua2 |
         mua2.getMethod() instanceof MDUpdateMethod and // md.update(salt)
         mua2.getQualifier() = mua.getQualifier().(VarAccess).getVariable().getAnAccess() and
@@ -66,22 +66,13 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
     or
     // invoke `md.digest(password)` without another call of `md.update(salt)`
     exists(MethodAccess mda |
-      sink.asExpr() = mda and
+      sink.asExpr() = mda.getArgument(0) and
       mda.getMethod() instanceof MDDigestMethod and // md.digest(password)
       mda.getNumArgument() = 1 and
       not exists(MethodAccess mua |
         mua.getMethod() instanceof MDUpdateMethod and // md.update(salt)
         mua.getQualifier() = mda.getQualifier().(VarAccess).getVariable().getAnAccess()
       )
-    )
-  }
-
-  /** Holds for additional steps that flow to additional method calls of the type `java.security.MessageDigest`. */
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(MethodAccess ma |
-      ma.getMethod().getDeclaringType() instanceof MessageDigest and
-      pred.asExpr() = ma.getAnArgument() and
-      (succ.asExpr() = ma or succ.asExpr() = ma.getQualifier())
     )
   }
 }
