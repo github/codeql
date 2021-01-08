@@ -151,6 +151,11 @@ compilation_finished(
     float elapsed_seconds : float ref
 );
 
+compilation_assembly(
+  unique int id : @compilation ref,
+  int assembly: @assembly ref
+)
+
 /*
  * External artifacts
  */
