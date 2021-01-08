@@ -58,9 +58,9 @@ edges
 | aliasing.cpp:79:11:79:20 | call to user_input | aliasing.cpp:80:12:80:13 | m1 |
 | aliasing.cpp:86:10:86:19 | call to user_input | aliasing.cpp:87:12:87:13 | m1 |
 | aliasing.cpp:92:12:92:21 | call to user_input | aliasing.cpp:93:12:93:13 | m1 |
-| aliasing.cpp:98:5:98:6 | m1 [post update] [m1] | aliasing.cpp:101:21:101:22 | m1 [m1] |
+| aliasing.cpp:98:5:98:6 | m1 [post update] [m1] | aliasing.cpp:100:14:100:14 | Store [m1] |
 | aliasing.cpp:98:10:98:19 | call to user_input | aliasing.cpp:98:5:98:6 | m1 [post update] [m1] |
-| aliasing.cpp:101:21:101:22 | m1 [m1] | aliasing.cpp:102:8:102:10 | * ... |
+| aliasing.cpp:100:14:100:14 | Store [m1] | aliasing.cpp:102:8:102:10 | * ... |
 | aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:121:15:121:16 | taint_a_ptr output argument [array content] |
 | aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:126:15:126:20 | taint_a_ptr output argument [array content] |
 | aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:131:15:131:16 | taint_a_ptr output argument [array content] |
@@ -373,7 +373,7 @@ nodes
 | aliasing.cpp:93:12:93:13 | m1 | semmle.label | m1 |
 | aliasing.cpp:98:5:98:6 | m1 [post update] [m1] | semmle.label | m1 [post update] [m1] |
 | aliasing.cpp:98:10:98:19 | call to user_input | semmle.label | call to user_input |
-| aliasing.cpp:101:21:101:22 | m1 [m1] | semmle.label | m1 [m1] |
+| aliasing.cpp:100:14:100:14 | Store [m1] | semmle.label | Store [m1] |
 | aliasing.cpp:102:8:102:10 | * ... | semmle.label | * ... |
 | aliasing.cpp:106:3:106:20 | Chi [array content] | semmle.label | Chi [array content] |
 | aliasing.cpp:106:3:106:20 | ChiTotal [post update] [array content] | semmle.label | ChiTotal [post update] [array content] |

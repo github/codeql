@@ -192,7 +192,7 @@ class OperandNode extends Node, TOperandNode {
 FieldNode getFieldNodeForFieldInstruction(Instruction instr) {
   result.getFieldInstruction() =
     any(FieldAddressInstruction fai |
-      instructionOperandLocalFlowStep*(instructionNode(fai), instructionNode(instr))
+      longestRegisterInstructionOperandLocalFlowStep(instructionNode(fai), instructionNode(instr))
     )
 }
 
@@ -251,13 +251,19 @@ class FieldNode extends Node, TFieldNode {
 /**
  * INTERNAL: do not use. A partial definition of a `FieldNode`.
  */
-class PartialFieldDefinition extends PartialDefinition {
-  override FieldNode node;
-
-  override FieldNode getPreUpdateNode() { result = node }
+class PartialFieldDefinition extends FieldNode, PartialDefinition {
+  /**
+   * The pre-update node of a partial definition of a `FieldNode` is the `FieldNode` itself. This ensures
+   * that the data flow library's reverse read mechanism builds up the correct access path for nested
+   * fields.
+   * For instance, in `a.b.c = x` there is a partial definition for `c` (let's call it `post[c]`) and a
+   * partial definition for `b` (let's call it `post[b]`), and there is a read step from `b` to `c`
+   * (using `instrToFieldNodeReadStep`), so there is a store step from `post[c]` to `post[b]`.
+   */
+  override FieldNode getPreUpdateNode() { result = this }
 
   override Expr getDefinedExpr() {
-    result = node.getFieldInstruction().getObjectAddress().getUnconvertedResultExpression()
+    result = this.getFieldInstruction().getObjectAddress().getUnconvertedResultExpression()
   }
 }
 
@@ -411,39 +417,13 @@ abstract class PostUpdateNode extends Node {
   override Location getLocation() { result = getPreUpdateNode().getLocation() }
 }
 
-/**
- * A partial definition of a node. A partial definition that targets arrays or pointers is attached to
- * an `InstructionNode` (specifially, to the `ChiInstruction` that follows the `StoreInstruction`), and
- * a partial definition that targets a `FieldNode` is attached to the `FieldNode`.
- *
- * The pre-update node of a partial definition of a `FieldNode` is the `FieldNode` itself. This ensures
- * that the data flow library's reverse read mechanism builds up the correct access path for nested
- * fields.
- * For instance, in `a.b.c = x` there is a partial definition for `c` (let's call it `post[c]`) and a
- * partial definition for `b` (let's call it `post[b]`), and there is a read step from `b` to `c`
- * (using `instrToFieldNodeReadStep`), so there is a store step from `post[c]` to `post[b]`.
- */
-private newtype TPartialDefinition =
-  MkPartialDefinition(Node node) {
-    isPointerStoreNode(node, _, _) or
-    isArrayStoreNode(node, _, _) or
-    node instanceof FieldNode
-  }
-
 /** INTERNAL: do not use. A partial definition of a node. */
-abstract class PartialDefinition extends TPartialDefinition {
-  Node node;
-
-  PartialDefinition() { this = MkPartialDefinition(node) }
-
+abstract class PartialDefinition extends Node {
   /** Gets the node before the state update. */
   abstract Node getPreUpdateNode();
 
   /** Gets the expression that is partially defined by this node. */
   abstract Expr getDefinedExpr();
-
-  /** Gets a string representation of this partial definition. */
-  string toString() { result = node.toString() + " [partial definition]" }
 }
 
 /**
@@ -475,52 +455,44 @@ class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNode {
   override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
 }
 
-private predicate isArrayStoreNode(
-  InstructionNode node, ChiInstruction chi, PointerAddInstruction add
-) {
-  chi = node.getInstruction() and
-  not chi.isResultConflated() and
-  exists(StoreInstruction store |
-    chi.getPartial() = store and
-    add = store.getDestinationAddress()
-  )
-}
-
 /**
  * The `PostUpdateNode` that is the target of a `arrayStoreStepChi` store step. The overriden
  * `ChiInstruction` corresponds to the instruction represented by `node2` in `arrayStoreStepChi`.
  */
-private class ArrayStoreNode extends PartialDefinition {
-  override InstructionNode node;
+private class ArrayStoreNode extends InstructionNode, PartialDefinition {
   ChiInstruction chi;
   PointerAddInstruction add;
 
-  ArrayStoreNode() { isArrayStoreNode(node, chi, add) }
+  ArrayStoreNode() {
+    chi = this.getInstruction() and
+    not chi.isResultConflated() and
+    exists(StoreInstruction store |
+      chi.getPartial() = store and
+      add = store.getDestinationAddress()
+    )
+  }
 
   override Node getPreUpdateNode() { result.asOperand() = chi.getTotalOperand() }
 
   override Expr getDefinedExpr() { result = add.getLeft().getUnconvertedResultExpression() }
 }
 
-private predicate isPointerStoreNode(InstructionNode node, ChiInstruction chi, LoadInstruction load) {
-  chi = node.getInstruction() and
-  not chi.isResultConflated() and
-  exists(StoreInstruction store |
-    chi.getPartial() = store and
-    load = store.getDestinationAddress().(CopyValueInstruction).getUnary()
-  )
-}
-
 /**
  * The `PostUpdateNode` that is the target of a `arrayStoreStepChi` store step. The overriden
  * `ChiInstruction` corresponds to the instruction represented by `node2` in `arrayStoreStepChi`.
  */
-private class PointerStoreNode extends PartialDefinition {
-  override InstructionNode node;
+private class PointerStoreNode extends InstructionNode, PartialDefinition {
   ChiInstruction chi;
   LoadInstruction load;
 
-  PointerStoreNode() { isPointerStoreNode(node, chi, load) }
+  PointerStoreNode() {
+    chi = this.getInstruction() and
+    not chi.isResultConflated() and
+    exists(StoreInstruction store |
+      chi.getPartial() = store and
+      load = store.getDestinationAddress().(CopyValueInstruction).getUnary()
+    )
+  }
 
   override Node getPreUpdateNode() { result.asOperand() = chi.getTotalOperand() }
 
@@ -734,12 +706,40 @@ private predicate flowIntoReadNode(Node nodeFrom, FieldNode nodeTo) {
   )
 }
 
+/** Holds if `node` holds an `Instruction` or `Operand` that has a register result. */
+private predicate hasRegisterResult(Node node) {
+  node.asOperand() instanceof RegisterOperand
+  or
+  exists(Instruction i | i = node.asInstruction() and not i.hasMemoryResult())
+}
+
+/**
+ * Holds if there is a `Instruction` or `Operand` flow step from `nodeFrom` to `nodeTo` and both
+ * `nodeFrom` and `nodeTo` wraps register results.
+ */
+private predicate registerInstructionOperandLocalFlowStep(Node nodeFrom, Node nodeTo) {
+  hasRegisterResult(nodeFrom) and
+  hasRegisterResult(nodeTo) and
+  instructionOperandLocalFlowStep(nodeFrom, nodeTo)
+}
+
+/**
+ * INTERNAL: do not use.
+ * Holds if `nodeFrom` has no incoming local `Operand` or `Instruction` register flow and `nodeFrom` can
+ * reach `nodeTo` using only local `Instruction` or `Operand` register flow steps.
+ */
+bindingset[nodeTo]
+private predicate longestRegisterInstructionOperandLocalFlowStep(Node nodeFrom, Node nodeTo) {
+  registerInstructionOperandLocalFlowStep*(nodeFrom, nodeTo) and
+  not registerInstructionOperandLocalFlowStep(_, nodeFrom)
+}
+
 /**
  * INTERNAL: do not use.
  * Holds if `nodeFrom` is an operand and `nodeTo` is an instruction node that uses this operand, or
  * if `nodeFrom` is an instruction and `nodeTo` is an operand that refers to this instruction.
  */
-predicate instructionOperandLocalFlowStep(Node nodeFrom, Node nodeTo) {
+private predicate instructionOperandLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Operand -> Instruction flow
   simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
   or

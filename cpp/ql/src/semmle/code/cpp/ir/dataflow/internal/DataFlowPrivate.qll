@@ -350,20 +350,25 @@ private class InexactLoadOperand extends LoadOperand {
   InexactLoadOperand() { this.isDefinitionInexact() }
 }
 
+/** Get the result type of an `Instruction` i, if it is a `PointerType`. */
+private PointerType getPointerType(Instruction i) {
+  // We are done if the type is a pointer type that is not a glvalue
+  i.getResultLanguageType().hasType(result, false)
+  or
+  // Some instructions produce a glvalue. Recurse past those to get the actual `PointerType`.
+  result = getPointerType(i.(PointerOffsetInstruction).getLeft())
+}
+
 private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
   a = TArrayContent() and
   // Explicit dereferences such as `*p` or `p[i]` where `p` is a pointer or array.
-  exists(InexactLoadOperand operand, Instruction address |
+  exists(InexactLoadOperand operand, LoadInstruction load |
+    load.getSourceValueOperand() = operand and
     node1.asInstruction() = operand.getAnyDef() and
     not node1.asInstruction().isResultConflated() and
     operand = node2.asOperand() and
-    instructionOperandLocalFlowStep+(instructionNode(address),
-      operandNode(operand.getAddressOperand())) and
-    (
-      address instanceof LoadInstruction or
-      address instanceof ArrayToPointerConvertInstruction or
-      address instanceof PointerOffsetInstruction
-    )
+    // Ensure that the load is actually loading from an array or a pointer.
+    getPointerType(load.getSourceAddress()).getBaseType() = load.getResultType()
   )
 }
 
@@ -392,19 +397,18 @@ bindingset[result, i]
 private int unbindInt(int i) { i <= result and i >= result }
 
 pragma[noinline]
-private predicate getFieldNodeFromLoadOperand(FieldNode fieldNode, LoadOperand loadOperand) {
-  fieldNode = getFieldNodeForFieldInstruction(loadOperand.getAddressOperand().getDef())
+private FieldNode getFieldNodeFromLoadOperand(LoadOperand loadOperand) {
+  result = getFieldNodeForFieldInstruction(loadOperand.getAddressOperand().getDef())
 }
 
-// Sometimes there's no explicit field dereference. In such cases we use the IR alias analysis to
-// determine the offset being, and deduce the field from this information.
+/**
+ * Sometimes there's no explicit field dereference. In such cases we use the IR alias analysis to
+ * determine the offset being, and deduce the field from this information.
+ */
 private predicate aliasedReadStep(Node node1, FieldContent f, Node node2) {
   exists(LoadOperand operand, Class c, int startBit, int endBit |
     // Ensure that we don't already catch this store step using a `FieldNode`.
-    not exists(FieldNode node |
-      getFieldNodeFromLoadOperand(node, operand) and
-      instrToFieldNodeReadStep(node, f, _)
-    ) and
+    not instrToFieldNodeReadStep(getFieldNodeFromLoadOperand(operand), f, _) and
     node1.asInstruction() = operand.getAnyDef() and
     node2.asOperand() = operand and
     not node1.asInstruction().isResultConflated() and
@@ -412,6 +416,11 @@ private predicate aliasedReadStep(Node node1, FieldContent f, Node node2) {
     f.hasOffset(c, startBit, endBit) and
     operand.getUsedInterval(unbindInt(startBit), unbindInt(endBit))
   )
+}
+
+/** Get the result type of an `Instruction` i, if it is a `ReferenceType`. */
+private ReferenceType getReferenceType(Instruction i) {
+  i.getResultLanguageType().hasType(result, false)
 }
 
 /**
@@ -431,7 +440,7 @@ private predicate aliasedReadStep(Node node1, FieldContent f, Node node2) {
  */
 private predicate innerReadSteap(Node node1, Content a, Node node2) {
   a = TArrayContent() and
-  exists(WriteSideEffectInstruction write, CallInstruction call, Expr arg |
+  exists(WriteSideEffectInstruction write, CallInstruction call, CopyValueInstruction copyValue |
     write.getPrimaryInstruction() = call and
     node1.asInstruction() = write and
     (
@@ -440,8 +449,9 @@ private predicate innerReadSteap(Node node1, Content a, Node node2) {
       exists(ChiInstruction chi | chi.getPartial() = write and not chi.isResultConflated())
     ) and
     node2.asInstruction() = write and
-    arg = call.getArgument(write.getIndex()).getUnconvertedResultExpression() and
-    (arg instanceof AddressOfExpr or arg.getConversion() instanceof ReferenceToExpr)
+    copyValue = call.getArgument(write.getIndex()) and
+    [getPointerType(copyValue).getBaseType(), getReferenceType(copyValue).getBaseType()] =
+      copyValue.getSourceValue().getResultType()
   )
 }
 
