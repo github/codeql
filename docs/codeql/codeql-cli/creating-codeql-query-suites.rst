@@ -254,7 +254,7 @@ without providing their full path. This gives you a simple way of specifying a
 set of queries, without needing to search inside QL packs and distributions.
 To declare a directory that contains "well-known" query suites, add the directory
 to the ``suites`` property in the ``qlpack.yml`` file at the root of your QL pack.
-For more information, see "`About QL packs <qlpack-overview.html#qlpack-yml-properties>`__."
+For more information, see ":ref:`About QL packs <qlpack-yml-properties>`."
 
 Using query suites with CodeQL
 ------------------------------

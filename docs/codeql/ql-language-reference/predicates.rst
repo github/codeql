@@ -37,7 +37,7 @@ The `arity <https://en.wikipedia.org/wiki/Arity>`_ of these predicates is one an
 In general, all tuples in a predicate have the same number of elements. The **arity** of 
 a predicate is that number of elements, not including a possible ``result`` variable. For more information, see ":ref:`predicates-with-result`."
 
-There are a number of `built-in predicates <ql-language-specification#built-ins>`_ 
+There are a number of `built-in predicates <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#built-ins>`_ 
 in QL. You can use these in any queries without needing to :ref:`import <importing-modules>`
 any additional modules. In addition to these built-in predicates, you can also define your
 own:
@@ -51,7 +51,7 @@ When defining a predicate, you should specify:
 
 #. The keyword ``predicate`` (for a :ref:`predicate without result <predicates-without-result>`), 
    or the type of the result (for a :ref:`predicate with result <predicates-with-result>`).
-#. The name of the predicate. This is an `identifier <ql-language-specification#identifiers>`_ 
+#. The name of the predicate. This is an `identifier <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#identifiers>`_ 
    starting with a lowercase letter.
 #. The arguments to the predicate, if any, separated by commas. For each argument, specify the
    argument type and an identifier for the argument variable.

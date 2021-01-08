@@ -8,7 +8,7 @@ You can write CodeQL queries to explore the control-flow graph of a Python progr
 About analyzing control flow
 --------------------------------------
 
-To analyze the control-flow graph of a ``Scope`` we can use the two CodeQL classes ``ControlFlowNode`` and ``BasicBlock``. These classes allow you to ask such questions as "can you reach point A from point B?" or "Is it possible to reach point B *without* going through point A?". To report results we use the class ``AstNode``, which represents a syntactic element and corresponds to the source code - allowing the results of the query to be more easily understood. For more information, see `Control-flow graph <http://en.wikipedia.org/wiki/Control_flow_graph>`__ on Wikipedia.
+To analyze the control-flow graph of a ``Scope`` we can use the two CodeQL classes ``ControlFlowNode`` and ``BasicBlock``. These classes allow you to ask such questions as "can you reach point A from point B?" or "Is it possible to reach point B *without* going through point A?". To report results we use the class ``AstNode``, which represents a syntactic element and corresponds to the source code - allowing the results of the query to be more easily understood. For more information, see `Control-flow graph <https://en.wikipedia.org/wiki/Control_flow_graph>`__ on Wikipedia.
 
 The ``ControlFlowNode`` class
 -----------------------------
@@ -65,7 +65,7 @@ Example finding unreachable statements
 The ``BasicBlock`` class
 ------------------------
 
-The ``BasicBlock`` class represents a basic block of control flow nodes. The ``BasicBlock`` class is not that useful for writing queries directly, but is very useful for building complex analyses, such as data flow. The reason it is useful is that it shares many of the interesting properties of control flow nodes, such as, what can reach what, and what dominates what, but there are fewer basic blocks than control flow nodes - resulting in queries that are faster and use less memory. For more information, see `Basic block <http://en.wikipedia.org/wiki/Basic_block>`__ and `Dominator <http://en.wikipedia.org/wiki/Dominator_%28graph_theory%29>`__ on Wikipedia.
+The ``BasicBlock`` class represents a basic block of control flow nodes. The ``BasicBlock`` class is not that useful for writing queries directly, but is very useful for building complex analyses, such as data flow. The reason it is useful is that it shares many of the interesting properties of control flow nodes, such as, what can reach what, and what dominates what, but there are fewer basic blocks than control flow nodes - resulting in queries that are faster and use less memory. For more information, see `Basic block <https://en.wikipedia.org/wiki/Basic_block>`__ and `Dominator <https://en.wikipedia.org/wiki/Dominator_%28graph_theory%29>`__ on Wikipedia.
 
 Example finding mutually exclusive basic blocks
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

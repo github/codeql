@@ -97,7 +97,7 @@ When you have defined the basic query then you can refine the query to include f
 Improving the query using the 'SSA' library
 -------------------------------------------
 
-The ``SSA`` library represents variables in static single assignment (SSA) form. In this form, each variable is assigned exactly once and every variable is defined before it is used. The use of SSA variables simplifies queries considerably as much of the local data flow analysis has been done for us. For more information, see `Static single assignment <http://en.wikipedia.org/wiki/Static_single_assignment_form>`__ on Wikipedia.
+The ``SSA`` library represents variables in static single assignment (SSA) form. In this form, each variable is assigned exactly once and every variable is defined before it is used. The use of SSA variables simplifies queries considerably as much of the local data flow analysis has been done for us. For more information, see `Static single assignment <https://en.wikipedia.org/wiki/Static_single_assignment_form>`__ on Wikipedia.
 
 Including examples where the string size is stored before use
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
