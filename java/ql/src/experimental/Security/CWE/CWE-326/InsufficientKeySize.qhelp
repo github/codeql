@@ -6,7 +6,7 @@ are vulnerable to brute force attack when too small a key size is used.</p>
     </overview>
 
     <recommendation>
-        <p>The key should be at least 2048-bit long when using RSA and DSA encryption, 224-bit long when using EC encryption, and 128-bit long when using 
+        <p>The key should be at least 2048 bits long when using RSA and DSA encryption, 224 bits long when using EC encryption, and 128 bits long when using 
 symmetric encryption.</p>
     </recommendation>
     
@@ -23,10 +23,6 @@ symmetric encryption.</p>
         <li>
             CWE.
             <a href="https://cwe.mitre.org/data/definitions/326.html">CWE-326: Inadequate Encryption Strength</a>
-        </li>
-        <li>
-            C# implementation of CodeQL
-            <a href="https://github.com/github/codeql/blob/df29a1636555465527d17668c19c202e365cf502/csharp/ql/src/Security%20Features/InsufficientKeySize.ql">codeql/csharp/ql/src/Security Features/InsufficientKeySize.ql</a>
         </li>
  
     </references>
