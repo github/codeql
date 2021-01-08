@@ -1,0 +1,180 @@
+edges
+| Jexl2Injection.java:10:43:10:57 | jexlExpr : String | Jexl2Injection.java:14:9:14:9 | e |
+| Jexl2Injection.java:17:55:17:69 | jexlExpr : String | Jexl2Injection.java:22:9:22:9 | e |
+| Jexl2Injection.java:25:39:25:53 | jexlExpr : String | Jexl2Injection.java:29:9:29:14 | script |
+| Jexl2Injection.java:32:50:32:64 | jexlExpr : String | Jexl2Injection.java:38:13:38:31 | callable(...) |
+| Jexl2Injection.java:44:57:44:71 | jexlExpr : String | Jexl2Injection.java:46:40:46:47 | jexlExpr |
+| Jexl2Injection.java:49:57:49:71 | jexlExpr : String | Jexl2Injection.java:51:40:51:47 | jexlExpr |
+| Jexl2Injection.java:54:73:54:87 | jexlExpr : String | Jexl2Injection.java:57:9:57:35 | parse(...) |
+| Jexl2Injection.java:60:72:60:86 | jexlExpr : String | Jexl2Injection.java:63:9:63:35 | parse(...) |
+| Jexl2Injection.java:66:73:66:87 | jexlExpr : String | Jexl2Injection.java:69:9:69:44 | createTemplate(...) |
+| Jexl2Injection.java:76:25:76:47 | getInputStream(...) : InputStream | Jexl2Injection.java:78:31:78:38 | jexlExpr : String |
+| Jexl2Injection.java:78:31:78:38 | jexlExpr : String | Jexl2Injection.java:86:24:86:56 | jexlExpr : String |
+| Jexl2Injection.java:78:31:78:38 | jexlExpr : String | Jexl2Injection.java:90:24:90:68 | jexlExpr : String |
+| Jexl2Injection.java:78:31:78:38 | jexlExpr : String | Jexl2Injection.java:94:24:94:52 | jexlExpr : String |
+| Jexl2Injection.java:78:31:78:38 | jexlExpr : String | Jexl2Injection.java:98:24:98:63 | jexlExpr : String |
+| Jexl2Injection.java:78:31:78:38 | jexlExpr : String | Jexl2Injection.java:102:24:102:70 | jexlExpr : String |
+| Jexl2Injection.java:78:31:78:38 | jexlExpr : String | Jexl2Injection.java:106:24:106:70 | jexlExpr : String |
+| Jexl2Injection.java:78:31:78:38 | jexlExpr : String | Jexl2Injection.java:110:24:110:86 | jexlExpr : String |
+| Jexl2Injection.java:78:31:78:38 | jexlExpr : String | Jexl2Injection.java:114:24:114:85 | jexlExpr : String |
+| Jexl2Injection.java:78:31:78:38 | jexlExpr : String | Jexl2Injection.java:118:24:118:86 | jexlExpr : String |
+| Jexl2Injection.java:86:24:86:56 | jexlExpr : String | Jexl2Injection.java:10:43:10:57 | jexlExpr : String |
+| Jexl2Injection.java:86:24:86:56 | jexlExpr : String | Jexl2Injection.java:86:24:86:56 | jexlExpr : String |
+| Jexl2Injection.java:90:24:90:68 | jexlExpr : String | Jexl2Injection.java:17:55:17:69 | jexlExpr : String |
+| Jexl2Injection.java:90:24:90:68 | jexlExpr : String | Jexl2Injection.java:90:24:90:68 | jexlExpr : String |
+| Jexl2Injection.java:94:24:94:52 | jexlExpr : String | Jexl2Injection.java:25:39:25:53 | jexlExpr : String |
+| Jexl2Injection.java:94:24:94:52 | jexlExpr : String | Jexl2Injection.java:94:24:94:52 | jexlExpr : String |
+| Jexl2Injection.java:98:24:98:63 | jexlExpr : String | Jexl2Injection.java:32:50:32:64 | jexlExpr : String |
+| Jexl2Injection.java:98:24:98:63 | jexlExpr : String | Jexl2Injection.java:98:24:98:63 | jexlExpr : String |
+| Jexl2Injection.java:102:24:102:70 | jexlExpr : String | Jexl2Injection.java:44:57:44:71 | jexlExpr : String |
+| Jexl2Injection.java:102:24:102:70 | jexlExpr : String | Jexl2Injection.java:102:24:102:70 | jexlExpr : String |
+| Jexl2Injection.java:106:24:106:70 | jexlExpr : String | Jexl2Injection.java:49:57:49:71 | jexlExpr : String |
+| Jexl2Injection.java:106:24:106:70 | jexlExpr : String | Jexl2Injection.java:106:24:106:70 | jexlExpr : String |
+| Jexl2Injection.java:110:24:110:86 | jexlExpr : String | Jexl2Injection.java:54:73:54:87 | jexlExpr : String |
+| Jexl2Injection.java:110:24:110:86 | jexlExpr : String | Jexl2Injection.java:110:24:110:86 | jexlExpr : String |
+| Jexl2Injection.java:114:24:114:85 | jexlExpr : String | Jexl2Injection.java:60:72:60:86 | jexlExpr : String |
+| Jexl2Injection.java:114:24:114:85 | jexlExpr : String | Jexl2Injection.java:114:24:114:85 | jexlExpr : String |
+| Jexl2Injection.java:118:24:118:86 | jexlExpr : String | Jexl2Injection.java:66:73:66:87 | jexlExpr : String |
+| Jexl2Injection.java:118:24:118:86 | jexlExpr : String | Jexl2Injection.java:118:24:118:86 | jexlExpr : String |
+| Jexl3Injection.java:10:43:10:57 | jexlExpr : String | Jexl3Injection.java:14:9:14:9 | e |
+| Jexl3Injection.java:17:55:17:69 | jexlExpr : String | Jexl3Injection.java:21:9:21:9 | e |
+| Jexl3Injection.java:24:39:24:53 | jexlExpr : String | Jexl3Injection.java:28:9:28:14 | script |
+| Jexl3Injection.java:31:50:31:64 | jexlExpr : String | Jexl3Injection.java:37:13:37:31 | callable(...) |
+| Jexl3Injection.java:43:57:43:71 | jexlExpr : String | Jexl3Injection.java:45:40:45:47 | jexlExpr |
+| Jexl3Injection.java:48:57:48:71 | jexlExpr : String | Jexl3Injection.java:50:40:50:47 | jexlExpr |
+| Jexl3Injection.java:53:74:53:88 | jexlExpr : String | Jexl3Injection.java:56:9:56:39 | createExpression(...) |
+| Jexl3Injection.java:59:73:59:87 | jexlExpr : String | Jexl3Injection.java:62:9:62:39 | createExpression(...) |
+| Jexl3Injection.java:65:72:65:86 | jexlExpr : String | Jexl3Injection.java:68:9:68:37 | createTemplate(...) |
+| Jexl3Injection.java:71:54:71:68 | jexlExpr : String | Jexl3Injection.java:77:13:77:26 | callable(...) |
+| Jexl3Injection.java:87:25:87:47 | getInputStream(...) : InputStream | Jexl3Injection.java:89:31:89:38 | jexlExpr : String |
+| Jexl3Injection.java:89:31:89:38 | jexlExpr : String | Jexl3Injection.java:97:24:97:56 | jexlExpr : String |
+| Jexl3Injection.java:89:31:89:38 | jexlExpr : String | Jexl3Injection.java:101:24:101:68 | jexlExpr : String |
+| Jexl3Injection.java:89:31:89:38 | jexlExpr : String | Jexl3Injection.java:105:24:105:52 | jexlExpr : String |
+| Jexl3Injection.java:89:31:89:38 | jexlExpr : String | Jexl3Injection.java:109:24:109:63 | jexlExpr : String |
+| Jexl3Injection.java:89:31:89:38 | jexlExpr : String | Jexl3Injection.java:113:24:113:70 | jexlExpr : String |
+| Jexl3Injection.java:89:31:89:38 | jexlExpr : String | Jexl3Injection.java:117:24:117:70 | jexlExpr : String |
+| Jexl3Injection.java:89:31:89:38 | jexlExpr : String | Jexl3Injection.java:121:24:121:87 | jexlExpr : String |
+| Jexl3Injection.java:89:31:89:38 | jexlExpr : String | Jexl3Injection.java:125:24:125:86 | jexlExpr : String |
+| Jexl3Injection.java:89:31:89:38 | jexlExpr : String | Jexl3Injection.java:129:24:129:85 | jexlExpr : String |
+| Jexl3Injection.java:89:31:89:38 | jexlExpr : String | Jexl3Injection.java:133:24:133:67 | jexlExpr : String |
+| Jexl3Injection.java:97:24:97:56 | jexlExpr : String | Jexl3Injection.java:10:43:10:57 | jexlExpr : String |
+| Jexl3Injection.java:97:24:97:56 | jexlExpr : String | Jexl3Injection.java:97:24:97:56 | jexlExpr : String |
+| Jexl3Injection.java:101:24:101:68 | jexlExpr : String | Jexl3Injection.java:17:55:17:69 | jexlExpr : String |
+| Jexl3Injection.java:101:24:101:68 | jexlExpr : String | Jexl3Injection.java:101:24:101:68 | jexlExpr : String |
+| Jexl3Injection.java:105:24:105:52 | jexlExpr : String | Jexl3Injection.java:24:39:24:53 | jexlExpr : String |
+| Jexl3Injection.java:105:24:105:52 | jexlExpr : String | Jexl3Injection.java:105:24:105:52 | jexlExpr : String |
+| Jexl3Injection.java:109:24:109:63 | jexlExpr : String | Jexl3Injection.java:31:50:31:64 | jexlExpr : String |
+| Jexl3Injection.java:109:24:109:63 | jexlExpr : String | Jexl3Injection.java:109:24:109:63 | jexlExpr : String |
+| Jexl3Injection.java:113:24:113:70 | jexlExpr : String | Jexl3Injection.java:43:57:43:71 | jexlExpr : String |
+| Jexl3Injection.java:113:24:113:70 | jexlExpr : String | Jexl3Injection.java:113:24:113:70 | jexlExpr : String |
+| Jexl3Injection.java:117:24:117:70 | jexlExpr : String | Jexl3Injection.java:48:57:48:71 | jexlExpr : String |
+| Jexl3Injection.java:117:24:117:70 | jexlExpr : String | Jexl3Injection.java:117:24:117:70 | jexlExpr : String |
+| Jexl3Injection.java:121:24:121:87 | jexlExpr : String | Jexl3Injection.java:53:74:53:88 | jexlExpr : String |
+| Jexl3Injection.java:121:24:121:87 | jexlExpr : String | Jexl3Injection.java:121:24:121:87 | jexlExpr : String |
+| Jexl3Injection.java:125:24:125:86 | jexlExpr : String | Jexl3Injection.java:59:73:59:87 | jexlExpr : String |
+| Jexl3Injection.java:125:24:125:86 | jexlExpr : String | Jexl3Injection.java:125:24:125:86 | jexlExpr : String |
+| Jexl3Injection.java:129:24:129:85 | jexlExpr : String | Jexl3Injection.java:65:72:65:86 | jexlExpr : String |
+| Jexl3Injection.java:129:24:129:85 | jexlExpr : String | Jexl3Injection.java:129:24:129:85 | jexlExpr : String |
+| Jexl3Injection.java:133:24:133:67 | jexlExpr : String | Jexl3Injection.java:71:54:71:68 | jexlExpr : String |
+| Jexl3Injection.java:133:24:133:67 | jexlExpr : String | Jexl3Injection.java:133:24:133:67 | jexlExpr : String |
+nodes
+| Jexl2Injection.java:10:43:10:57 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:14:9:14:9 | e | semmle.label | e |
+| Jexl2Injection.java:17:55:17:69 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:22:9:22:9 | e | semmle.label | e |
+| Jexl2Injection.java:25:39:25:53 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:29:9:29:14 | script | semmle.label | script |
+| Jexl2Injection.java:32:50:32:64 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:38:13:38:31 | callable(...) | semmle.label | callable(...) |
+| Jexl2Injection.java:44:57:44:71 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:46:40:46:47 | jexlExpr | semmle.label | jexlExpr |
+| Jexl2Injection.java:49:57:49:71 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:51:40:51:47 | jexlExpr | semmle.label | jexlExpr |
+| Jexl2Injection.java:54:73:54:87 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:57:9:57:35 | parse(...) | semmle.label | parse(...) |
+| Jexl2Injection.java:60:72:60:86 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:63:9:63:35 | parse(...) | semmle.label | parse(...) |
+| Jexl2Injection.java:66:73:66:87 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:69:9:69:44 | createTemplate(...) | semmle.label | createTemplate(...) |
+| Jexl2Injection.java:76:25:76:47 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| Jexl2Injection.java:78:31:78:38 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:86:24:86:56 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:86:24:86:56 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:90:24:90:68 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:90:24:90:68 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:94:24:94:52 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:94:24:94:52 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:98:24:98:63 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:98:24:98:63 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:102:24:102:70 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:102:24:102:70 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:106:24:106:70 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:106:24:106:70 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:110:24:110:86 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:110:24:110:86 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:114:24:114:85 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:114:24:114:85 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:118:24:118:86 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl2Injection.java:118:24:118:86 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:10:43:10:57 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:14:9:14:9 | e | semmle.label | e |
+| Jexl3Injection.java:17:55:17:69 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:21:9:21:9 | e | semmle.label | e |
+| Jexl3Injection.java:24:39:24:53 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:28:9:28:14 | script | semmle.label | script |
+| Jexl3Injection.java:31:50:31:64 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:37:13:37:31 | callable(...) | semmle.label | callable(...) |
+| Jexl3Injection.java:43:57:43:71 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:45:40:45:47 | jexlExpr | semmle.label | jexlExpr |
+| Jexl3Injection.java:48:57:48:71 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:50:40:50:47 | jexlExpr | semmle.label | jexlExpr |
+| Jexl3Injection.java:53:74:53:88 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:56:9:56:39 | createExpression(...) | semmle.label | createExpression(...) |
+| Jexl3Injection.java:59:73:59:87 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:62:9:62:39 | createExpression(...) | semmle.label | createExpression(...) |
+| Jexl3Injection.java:65:72:65:86 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:68:9:68:37 | createTemplate(...) | semmle.label | createTemplate(...) |
+| Jexl3Injection.java:71:54:71:68 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:77:13:77:26 | callable(...) | semmle.label | callable(...) |
+| Jexl3Injection.java:87:25:87:47 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| Jexl3Injection.java:89:31:89:38 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:97:24:97:56 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:97:24:97:56 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:101:24:101:68 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:101:24:101:68 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:105:24:105:52 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:105:24:105:52 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:109:24:109:63 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:109:24:109:63 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:113:24:113:70 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:113:24:113:70 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:117:24:117:70 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:117:24:117:70 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:121:24:121:87 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:121:24:121:87 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:125:24:125:86 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:125:24:125:86 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:129:24:129:85 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:129:24:129:85 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:133:24:133:67 | jexlExpr : String | semmle.label | jexlExpr : String |
+| Jexl3Injection.java:133:24:133:67 | jexlExpr : String | semmle.label | jexlExpr : String |
+#select
+| Jexl2Injection.java:14:9:14:9 | e | Jexl2Injection.java:76:25:76:47 | getInputStream(...) : InputStream | Jexl2Injection.java:14:9:14:9 | e | Jexl injection from $@. | Jexl2Injection.java:76:25:76:47 | getInputStream(...) | this user input |
+| Jexl2Injection.java:22:9:22:9 | e | Jexl2Injection.java:76:25:76:47 | getInputStream(...) : InputStream | Jexl2Injection.java:22:9:22:9 | e | Jexl injection from $@. | Jexl2Injection.java:76:25:76:47 | getInputStream(...) | this user input |
+| Jexl2Injection.java:29:9:29:14 | script | Jexl2Injection.java:76:25:76:47 | getInputStream(...) : InputStream | Jexl2Injection.java:29:9:29:14 | script | Jexl injection from $@. | Jexl2Injection.java:76:25:76:47 | getInputStream(...) | this user input |
+| Jexl2Injection.java:38:13:38:31 | callable(...) | Jexl2Injection.java:76:25:76:47 | getInputStream(...) : InputStream | Jexl2Injection.java:38:13:38:31 | callable(...) | Jexl injection from $@. | Jexl2Injection.java:76:25:76:47 | getInputStream(...) | this user input |
+| Jexl2Injection.java:46:40:46:47 | jexlExpr | Jexl2Injection.java:76:25:76:47 | getInputStream(...) : InputStream | Jexl2Injection.java:46:40:46:47 | jexlExpr | Jexl injection from $@. | Jexl2Injection.java:76:25:76:47 | getInputStream(...) | this user input |
+| Jexl2Injection.java:51:40:51:47 | jexlExpr | Jexl2Injection.java:76:25:76:47 | getInputStream(...) : InputStream | Jexl2Injection.java:51:40:51:47 | jexlExpr | Jexl injection from $@. | Jexl2Injection.java:76:25:76:47 | getInputStream(...) | this user input |
+| Jexl2Injection.java:57:9:57:35 | parse(...) | Jexl2Injection.java:76:25:76:47 | getInputStream(...) : InputStream | Jexl2Injection.java:57:9:57:35 | parse(...) | Jexl injection from $@. | Jexl2Injection.java:76:25:76:47 | getInputStream(...) | this user input |
+| Jexl2Injection.java:63:9:63:35 | parse(...) | Jexl2Injection.java:76:25:76:47 | getInputStream(...) : InputStream | Jexl2Injection.java:63:9:63:35 | parse(...) | Jexl injection from $@. | Jexl2Injection.java:76:25:76:47 | getInputStream(...) | this user input |
+| Jexl2Injection.java:69:9:69:44 | createTemplate(...) | Jexl2Injection.java:76:25:76:47 | getInputStream(...) : InputStream | Jexl2Injection.java:69:9:69:44 | createTemplate(...) | Jexl injection from $@. | Jexl2Injection.java:76:25:76:47 | getInputStream(...) | this user input |
+| Jexl3Injection.java:14:9:14:9 | e | Jexl3Injection.java:87:25:87:47 | getInputStream(...) : InputStream | Jexl3Injection.java:14:9:14:9 | e | Jexl injection from $@. | Jexl3Injection.java:87:25:87:47 | getInputStream(...) | this user input |
+| Jexl3Injection.java:21:9:21:9 | e | Jexl3Injection.java:87:25:87:47 | getInputStream(...) : InputStream | Jexl3Injection.java:21:9:21:9 | e | Jexl injection from $@. | Jexl3Injection.java:87:25:87:47 | getInputStream(...) | this user input |
+| Jexl3Injection.java:28:9:28:14 | script | Jexl3Injection.java:87:25:87:47 | getInputStream(...) : InputStream | Jexl3Injection.java:28:9:28:14 | script | Jexl injection from $@. | Jexl3Injection.java:87:25:87:47 | getInputStream(...) | this user input |
+| Jexl3Injection.java:37:13:37:31 | callable(...) | Jexl3Injection.java:87:25:87:47 | getInputStream(...) : InputStream | Jexl3Injection.java:37:13:37:31 | callable(...) | Jexl injection from $@. | Jexl3Injection.java:87:25:87:47 | getInputStream(...) | this user input |
+| Jexl3Injection.java:45:40:45:47 | jexlExpr | Jexl3Injection.java:87:25:87:47 | getInputStream(...) : InputStream | Jexl3Injection.java:45:40:45:47 | jexlExpr | Jexl injection from $@. | Jexl3Injection.java:87:25:87:47 | getInputStream(...) | this user input |
+| Jexl3Injection.java:50:40:50:47 | jexlExpr | Jexl3Injection.java:87:25:87:47 | getInputStream(...) : InputStream | Jexl3Injection.java:50:40:50:47 | jexlExpr | Jexl injection from $@. | Jexl3Injection.java:87:25:87:47 | getInputStream(...) | this user input |
+| Jexl3Injection.java:56:9:56:39 | createExpression(...) | Jexl3Injection.java:87:25:87:47 | getInputStream(...) : InputStream | Jexl3Injection.java:56:9:56:39 | createExpression(...) | Jexl injection from $@. | Jexl3Injection.java:87:25:87:47 | getInputStream(...) | this user input |
+| Jexl3Injection.java:62:9:62:39 | createExpression(...) | Jexl3Injection.java:87:25:87:47 | getInputStream(...) : InputStream | Jexl3Injection.java:62:9:62:39 | createExpression(...) | Jexl injection from $@. | Jexl3Injection.java:87:25:87:47 | getInputStream(...) | this user input |
+| Jexl3Injection.java:68:9:68:37 | createTemplate(...) | Jexl3Injection.java:87:25:87:47 | getInputStream(...) : InputStream | Jexl3Injection.java:68:9:68:37 | createTemplate(...) | Jexl injection from $@. | Jexl3Injection.java:87:25:87:47 | getInputStream(...) | this user input |
+| Jexl3Injection.java:77:13:77:26 | callable(...) | Jexl3Injection.java:87:25:87:47 | getInputStream(...) : InputStream | Jexl3Injection.java:77:13:77:26 | callable(...) | Jexl injection from $@. | Jexl3Injection.java:87:25:87:47 | getInputStream(...) | this user input |

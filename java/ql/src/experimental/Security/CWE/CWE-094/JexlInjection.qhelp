@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Java EXpression Language (JEXL) is a simple expression language
+provided by the Apache Commons JEXL library.
+The syntax is close to a mix of ECMAScript and shell-script. 
+The language allows invocation of methods available in the JVM.
+If a JEXL expression is built using attacker-controlled data, 
+and then evaluated, then it may allow the attacker to run arbitrary code.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Including user input in a JEXL expression should be avoided.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example uses untrusted data to build and run a JEXL expression.
+</p>
+<sample src="UnsafeJexlExpressionEvaluation.java" />
+</example>
+
+<references>
+<li>
+  Apache Commons JEXL:
+  <a href="https://commons.apache.org/proper/commons-jexl/">Project page</a>.
+</li>
+<li>
+  Apache Commons JEXL documentation:
+  <a href="https://commons.apache.org/proper/commons-jexl/javadocs/apidocs-2.1.1/">JEXL 2.1.1 API</a>.
+</li>
+<li>
+  Apache Commons JEXL documentation:
+  <a href="https://commons.apache.org/proper/commons-jexl/apidocs/index.html">JEXL 3.1 API</a>.
+</li>
+<li>
+  OWASP:
+  <a href="https://owasp.org/www-community/vulnerabilities/Expression_Language_Injection">Expression Language Injection</a>.
+</li>
+</references>
+</qhelp>
