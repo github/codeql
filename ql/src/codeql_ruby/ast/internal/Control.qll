@@ -120,7 +120,7 @@ module TernaryIfExpr {
 }
 
 module CaseExpr {
-  class Range extends ControlExpr::Range {
+  class Range extends ControlExpr::Range, @case__ {
     final override Generated::Case generated;
 
     final Expr getValue() { result = generated.getValue() }
