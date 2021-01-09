@@ -174,15 +174,17 @@ This call returns ``"ONE, TWO OR THREE: 1"``.
 .. index:: this
 .. _this:
 
-.. pull-quote:: Note
+.. pull-quote:: 
+  
+  Note
 
-    Characteristic predicates and member predicates often use the variable ``this``. 
-    This variable always refers to a member of the class—in this case a value belonging to the 
-    class ``OneTwoThree``.
-    In the :ref:`characteristic predicate <characteristic-predicates>`, the variable ``this`` 
-    constrains the values that are in the class.
-    In a :ref:`member predicate <member-predicates>`, ``this`` acts in the same way as any 
-    other argument to the predicate.
+  Characteristic predicates and member predicates often use the variable ``this``. 
+  This variable always refers to a member of the class—in this case a value belonging to the 
+  class ``OneTwoThree``.
+  In the :ref:`characteristic predicate <characteristic-predicates>`, the variable ``this`` 
+  constrains the values that are in the class.
+  In a :ref:`member predicate <member-predicates>`, ``this`` acts in the same way as any 
+  other argument to the predicate.
 
 .. index:: field
 .. _fields: 
