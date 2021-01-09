@@ -5,7 +5,7 @@
 <overview>
 <p>
 If a <code>HostnameVerifier</code> always returns <code>true</code> it will not verify the hostname at all.
-This stops Transport Layer Security (TLS) providing any security and allows an attacker to perform a Man-in-the-middle attack against the application.
+This stops Transport Layer Security (TLS) providing any security and allows an attacker to perform a man-in-the-middle attack against the application.
 </p>
 
 <p>
@@ -14,10 +14,10 @@ An attack might look like this:
 
 <ol>
   <li>The program connects to <code>https://example.com</code>.</li>
-  <li>The attacker intercepts this connection and presents one of their valid certificates they control, for example one from Let's Encrypt.</li>
-  <li>Java verifies that the certificate has been issued by a trusted certificate authority.</li>
-  <li>Java verifies that the certificate has been issued for the host <code>example.com</code>, which will fail because the certificate has been issued for <code>malicious.domain</code>.</li>
-  <li>Java wants to reject the certificate because the hostname does not match. Before doing this it checks whether there exists a <code>HostnameVerifier</code>.</li>
+  <li>The attacker intercepts this connection and presents an apparently-valid certificate of their choosing.</li>
+  <li>The `TrustManager` of the program verifies that the certificate has been issued by a trusted certificate authority.</li>
+  <li>Java checks whether the certificate has been issued for the host <code>example.com</code>. This check fails because the certificate has been issued for a domain controlled by the attacker, for example: <code>malicious.domain</code>.</li>
+  <li>Java wants to reject the certificate because the hostname does not match. Before doing this it checks whether a <code>HostnameVerifier</code> exists.</li>
   <li>Your <code>HostnameVerifier</code> is called which returns <code>true</code> for any certificate so also for this one.</li>
   <li>Java proceeds with the connection since your <code>HostnameVerifier</code> accepted it.</li>
   <li>The attacker can now read the data your program sends to <code>https://example.com</code> 
