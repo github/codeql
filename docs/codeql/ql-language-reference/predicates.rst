@@ -226,6 +226,7 @@ Here are a few examples of infinite predicates:
       Compilation errors:
       ERROR: "i" is not bound to a value.
       ERROR: "result" is not bound to a value.
+      ERROR: expression is not bound to a value.
     */
     int multiplyBy4(int i) {
       result = i * 4
