@@ -39,7 +39,7 @@ int getECKeySize(string algorithm) {
   result = algorithm.regexpCapture("sec[p|t](\\d+)[a-zA-Z].*", 1).toInt()
   or
   algorithm.matches("X9.62%") and //specification such as "X9.62 prime192v2"
-  result = algorithm.regexpCapture("X9.62 .*[a-zA-Z](\\d+)[a-zA-Z].*", 1).toInt()
+  result = algorithm.regexpCapture("X9\\.62 .*[a-zA-Z](\\d+)[a-zA-Z].*", 1).toInt()
 }
 
 /** Taint configuration tracking flow from a key generator to a `init` method call. */
@@ -74,21 +74,25 @@ class KeyPairGeneratorInitConfiguration extends TaintTracking::Configuration {
   }
 }
 
-/** Holds if an AES `KeyGenerator` is initialized with an insufficient key size. */
-predicate hasShortAESKey(MethodAccess ma, string msg) {
+/** Holds if a symmetric `KeyGenerator` is initialized with an insufficient key size. */
+bindingset[type]
+predicate hasShortSymmetricKey(MethodAccess ma, string msg, string type) {
   ma.getMethod() instanceof KeyGeneratorInitMethod and
   exists(
     JavaxCryptoKeyGenerator jcg, KeyGeneratorInitConfiguration cc, DataFlow::PathNode source,
     DataFlow::PathNode dest
   |
-    jcg.getAlgoSpec().(StringLiteral).getValue() = "AES" and
+    jcg.getAlgoSpec().(StringLiteral).getValue() = type and
     source.getNode().asExpr() = jcg and
     dest.getNode().asExpr() = ma.getQualifier() and
     cc.hasFlowPath(source, dest)
   ) and
   ma.getArgument(0).(IntegerLiteral).getIntValue() < 128 and
-  msg = "Key size should be at least 128 bits for AES encryption."
+  msg = "Key size should be at least 128 bits for " + type + " encryption."
 }
+
+/** Holds if an AES `KeyGenerator` is initialized with an insufficient key size. */
+predicate hasShortAESKey(MethodAccess ma, string msg) { hasShortSymmetricKey(ma, msg, "AES") }
 
 /** Holds if an asymmetric `KeyPairGenerator` is initialized with an insufficient key size. */
 bindingset[type]
