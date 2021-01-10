@@ -13,7 +13,6 @@ import java
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.security.Encryption
 import DataFlow::PathGraph
 
@@ -58,28 +57,78 @@ class TrustAllHostnameVerifierConfiguration extends DataFlow::Configuration {
       ma.getArgument(0) = sink.asExpr()
     )
   }
+
+  override predicate isBarrier(DataFlow::Node barrier) {
+    // ignore nodes that are in functions that intentionally disable hostname verification
+    barrier
+        .getEnclosingCallable()
+        .getName()
+        /*
+         * Regex: (_)* :
+         * some methods have underscores.
+         * Regex: (no|ignore|disable)(strictssl|ssl|verify|verification|hostname)
+         * noStrictSSL ignoreSsl
+         * Regex: (set)?(accept|trust|ignore|allow)(all|every|any)
+         * acceptAll trustAll ignoreAll setTrustAnyHttps
+         * Regex: (use|do|enable)insecure
+         * useInsecureSSL
+         * Regex: (set|do|use)?no.*(check|validation|verify|verification)
+         * setNoCertificateCheck
+         * Regex: disable
+         * disableChecks
+         */
+
+        .regexpMatch("^(?i)(_)*((no|ignore|disable)(strictssl|ssl|verify|verification|hostname)" +
+            "|(set)?(accept|trust|ignore|allow)(all|every|any)" +
+            "|(use|do|enable)insecure|(set|do|use)?no.*(check|validation|verify|verification)|disable).*$")
+  }
 }
 
 bindingset[result]
 private string getAFlagName() {
-  result.regexpMatch("(?i).*(secure|(en|dis)able|selfCert|selfSign|validat|verif|trust|ignore).*")
+  result
+      .regexpMatch("(?i).*(secure|disable|selfCert|selfSign|validat|verif|trust|ignore|nocertificatecheck).*")
+}
+
+/**
+ * A flag has to either be of type `String`, `boolean` or `Boolean`.
+ */
+private class FlagType extends Type {
+  FlagType() {
+    this instanceof TypeString
+    or
+    exists(BoxedType boxedBoolean | boxedBoolean.getPrimitiveType().hasName("boolean") |
+      this = boxedBoolean or this = boxedBoolean.getPrimitiveType()
+    )
+  }
+}
+
+private predicate isEqualsIgnoreCaseMethodAccess(MethodAccess ma) {
+  ma.getMethod().hasName("equalsIgnoreCase") and
+  ma.getMethod().getDeclaringType() instanceof TypeString
 }
 
 /** A configuration to model the flow of feature flags into `Guard`s. This is used to determine whether something is guarded by such a flag. */
-private class FlagTaintTracking extends TaintTracking2::Configuration {
-  FlagTaintTracking() { this = "FlagTaintTracking" }
+private class FlagToGuardFlow extends DataFlow::Configuration {
+  FlagToGuardFlow() { this = "FlagToGuardFlow" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(VarAccess v | v.getVariable().getName() = getAFlagName() | source.asExpr() = v)
+    exists(VarAccess v | v.getVariable().getName() = getAFlagName() |
+      source.asExpr() = v and v.getType() instanceof FlagType
+    )
     or
     exists(StringLiteral s | s.getRepresentedString() = getAFlagName() | source.asExpr() = s)
     or
-    exists(MethodAccess ma | ma.getMethod().getName() = getAFlagName() | source.asExpr() = ma)
+    exists(MethodAccess ma | ma.getMethod().getName() = getAFlagName() |
+      source.asExpr() = ma and
+      ma.getType() instanceof FlagType and
+      not isEqualsIgnoreCaseMethodAccess(ma)
+    )
   }
 
   override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof Guard }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(MethodAccess ma | ma.getMethod() = any(EnvTaintedMethod m) |
       ma = node2.asExpr() and ma.getAnArgument() = node1.asExpr()
     )
@@ -95,7 +144,7 @@ private class FlagTaintTracking extends TaintTracking2::Configuration {
 
 /** Gets a guard that depends on a flag. */
 private Guard getAGuard() {
-  exists(FlagTaintTracking cfg, DataFlow::Node source, DataFlow::Node sink |
+  exists(FlagToGuardFlow cfg, DataFlow::Node source, DataFlow::Node sink |
     cfg.hasFlow(source, sink)
   |
     sink.asExpr() = result
