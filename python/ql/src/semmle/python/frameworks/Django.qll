@@ -1905,9 +1905,10 @@ private module Django {
   // ---------------------------------------------------------------------------
   // HttpRequest taint modeling
   // ---------------------------------------------------------------------------
-  class DjangoRouteHandlerRequestParam extends django::http::request::HttpRequest::InstanceSource,
+  /** A parameter that will receive the django `HttpRequest` instance when a request handler is invoked. */
+  private class DjangoRequestHandlerRequestParam extends django::http::request::HttpRequest::InstanceSource,
     RemoteFlowSource::Range, DataFlow::ParameterNode {
-    DjangoRouteHandlerRequestParam() {
+    DjangoRequestHandlerRequestParam() {
       this.getParameter() = any(DjangoRouteSetup setup).getARequestHandler().getRequestParam()
       or
       this.getParameter() = any(DjangoViewClassHandlerWithoutKnownRoute setup).getRequestParam()
