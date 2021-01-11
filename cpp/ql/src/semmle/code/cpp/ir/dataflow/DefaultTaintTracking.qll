@@ -582,9 +582,7 @@ module TaintedWithPath {
     }
 
     override predicate isBarrier(DataFlow::Node node) {
-      exists(TaintTrackingConfiguration cfg, Expr e |
-        cfg.isBarrier(e) and node = getNodeForExpr(e)
-      )
+      exists(TaintTrackingConfiguration cfg, Expr e | cfg.isBarrier(e) and node = getNodeForExpr(e))
     }
 
     override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
