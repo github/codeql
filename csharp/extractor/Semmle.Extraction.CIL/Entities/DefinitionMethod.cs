@@ -125,9 +125,15 @@ namespace Semmle.Extraction.CIL.Entities
                             if (t is ByRefType brt)
                             {
                                 t = brt.ElementType;
+                                this.locals[l] = Cx.Populate(new LocalVariable(Cx, Implementation, l, t));
+                                yield return this.locals[l];
+                                yield return Tuples.cil_type_annotation(this.locals[l], TypeAnnotation.Ref);
                             }
-                            this.locals[l] = Cx.Populate(new LocalVariable(Cx, Implementation, l, t));
-                            yield return this.locals[l];
+                            else
+                            {
+                                this.locals[l] = Cx.Populate(new LocalVariable(Cx, Implementation, l, t));
+                                yield return this.locals[l];
+                            }
                         }
                     }
 

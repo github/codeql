@@ -1753,6 +1753,7 @@ cil_field(
 @cil_member = @cil_method | @cil_type | @cil_field | @cil_property | @cil_event;
 @cil_custom_modifier_receiver = @cil_method | @cil_property | @cil_parameter | @cil_field | @cil_function_pointer_type;
 @cil_parameterizable = @cil_method | @cil_function_pointer_type;
+@cil_has_type_annotation = @cil_stack_variable | @cil_property | @cil_method | @cil_function_pointer_type;
 
 #keyset[parameterizable, index]
 cil_parameter(
@@ -1772,6 +1773,10 @@ cil_custom_modifiers(
   int id: @cil_custom_modifier_receiver ref,
   int modifier: @cil_type ref,
   int kind: int ref); // modreq: 1, modopt: 0
+
+cil_type_annotation(
+  int id: @cil_has_type_annotation ref,
+  int annotation: int ref);
 
 cil_getter(unique int prop: @cil_property ref,
   int method: @cil_method ref);

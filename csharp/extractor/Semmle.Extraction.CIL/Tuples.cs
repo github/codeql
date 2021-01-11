@@ -197,6 +197,9 @@ namespace Semmle.Extraction.CIL
         internal static Tuple cil_custom_modifiers(ICustomModifierReceiver receiver, Type modifier, bool isRequired) =>
             new Tuple("cil_custom_modifiers", receiver, modifier, isRequired ? 1 : 0);
 
+        internal static Tuple cil_type_annotation(IEntity receiver, TypeAnnotation annotation) =>
+            new Tuple("cil_type_annotation", receiver, (int)annotation);
+
         internal static Tuple containerparent(Folder parent, IFileOrFolder child) =>
             new Tuple("containerparent", parent, child);
 

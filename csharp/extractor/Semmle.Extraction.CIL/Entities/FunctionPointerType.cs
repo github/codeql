@@ -98,6 +98,7 @@ namespace Semmle.Extraction.CIL.Entities
                 if (retType is ByRefType byRefType)
                 {
                     retType = byRefType.ElementType;
+                    yield return Tuples.cil_type_annotation(this, TypeAnnotation.Ref);
                 }
                 yield return Tuples.cil_function_pointer_return_type(this, retType);
 

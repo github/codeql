@@ -106,8 +106,14 @@ namespace Semmle.Extraction.CIL.Entities
                 if (t is ByRefType brt)
                 {
                     t = brt.ElementType;
+                    var parameter = cx.Populate(new Parameter(cx, parameterizable, i++, t));
+                    yield return parameter;
+                    yield return Tuples.cil_type_annotation(parameter, TypeAnnotation.Ref);
                 }
-                yield return cx.Populate(new Parameter(cx, parameterizable, i++, t));
+                else
+                {
+                    yield return cx.Populate(new Parameter(cx, parameterizable, i++, t));
+                }
             }
         }
 
@@ -122,6 +128,7 @@ namespace Semmle.Extraction.CIL.Entities
             if (t is ByRefType brt)
             {
                 t = brt.ElementType;
+                yield return Tuples.cil_type_annotation(this, TypeAnnotation.Ref);
             }
             yield return Tuples.cil_method(this, name, declaringType, t);
         }
