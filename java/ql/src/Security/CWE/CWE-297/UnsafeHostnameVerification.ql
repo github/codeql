@@ -106,45 +106,42 @@ private predicate isEqualsIgnoreCaseMethodAccess(MethodAccess ma) {
   ma.getMethod().getDeclaringType() instanceof TypeString
 }
 
-/** A configuration to model the flow of feature flags into `Guard`s. This is used to determine whether something is guarded by such a flag. */
-private class FlagToGuardFlow extends DataFlow::Configuration {
-  FlagToGuardFlow() { this = "FlagToGuardFlow" }
+/** Holds if `source` should is considered a flag. */
+private predicate isFlag(DataFlow::Node source) {
+  exists(VarAccess v | v.getVariable().getName() = getAFlagName() |
+    source.asExpr() = v and v.getType() instanceof FlagType
+  )
+  or
+  exists(StringLiteral s | s.getRepresentedString() = getAFlagName() | source.asExpr() = s)
+  or
+  exists(MethodAccess ma | ma.getMethod().getName() = getAFlagName() |
+    source.asExpr() = ma and
+    ma.getType() instanceof FlagType and
+    not isEqualsIgnoreCaseMethodAccess(ma)
+  )
+}
 
-  override predicate isSource(DataFlow::Node source) {
-    exists(VarAccess v | v.getVariable().getName() = getAFlagName() |
-      source.asExpr() = v and v.getType() instanceof FlagType
-    )
-    or
-    exists(StringLiteral s | s.getRepresentedString() = getAFlagName() | source.asExpr() = s)
-    or
-    exists(MethodAccess ma | ma.getMethod().getName() = getAFlagName() |
-      source.asExpr() = ma and
-      ma.getType() instanceof FlagType and
-      not isEqualsIgnoreCaseMethodAccess(ma)
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof Guard }
-
-  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(MethodAccess ma | ma.getMethod() = any(EnvReadMethod m) |
-      ma = node2.asExpr() and ma.getAnArgument() = node1.asExpr()
-    )
-    or
-    exists(MethodAccess ma |
-      ma.getMethod().hasName("parseBoolean") and
-      ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "Boolean")
-    |
-      ma = node2.asExpr() and ma.getAnArgument() = node1.asExpr()
-    )
-  }
+/** Holds if there is flow from `node1` to `node2` either due to local flow or due to custom flow steps. */
+private predicate flagFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+  DataFlow::localFlowStep(node1, node2)
+  or
+  exists(MethodAccess ma | ma.getMethod() = any(EnvReadMethod m) |
+    ma = node2.asExpr() and ma.getAnArgument() = node1.asExpr()
+  )
+  or
+  exists(MethodAccess ma |
+    ma.getMethod().hasName("parseBoolean") and
+    ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "Boolean")
+  |
+    ma = node2.asExpr() and ma.getAnArgument() = node1.asExpr()
+  )
 }
 
 /** Gets a guard that depends on a flag. */
 private Guard getAGuard() {
-  exists(FlagToGuardFlow cfg, DataFlow::Node source, DataFlow::Node sink |
-    cfg.hasFlow(source, sink)
-  |
+  exists(DataFlow::Node source, DataFlow::Node sink |
+    isFlag(source) and
+    flagFlowStep*(source, sink) and
     sink.asExpr() = result
   )
 }
