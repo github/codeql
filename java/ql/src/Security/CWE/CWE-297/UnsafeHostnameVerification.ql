@@ -129,7 +129,7 @@ private class FlagToGuardFlow extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof Guard }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(MethodAccess ma | ma.getMethod() = any(EnvTaintedMethod m) |
+    exists(MethodAccess ma | ma.getMethod() = any(EnvReadMethod m) |
       ma = node2.asExpr() and ma.getAnArgument() = node1.asExpr()
     )
     or
