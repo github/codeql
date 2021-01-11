@@ -54,7 +54,7 @@ The value numbering library exposes its interface primarily through the ``GVN`` 
 
 To get the ``GVN`` of an ``Expr``, use the ``globalValueNumber`` predicate.
 
-.. note::
+.. pull-quote:: Note
 
     While the ``GVN`` class has ``toString`` and ``getLocation`` methods, these are only provided as debugging aids. They give the ``toString`` and ``getLocation`` of an arbitrary ``Expr`` within the set.
 
@@ -90,7 +90,7 @@ The hash consing API
 
 The hash consing library exposes its interface primarily through the ``HashCons`` class. Each instance of ``HashCons`` represents a set of expressions within one function that have the same syntax (including referring to the same variables). To get an expression in the set represented by a particular ``HashCons``, use the ``getAnExpr()`` member predicate.
 
-.. note::
+.. pull-quote:: Note
 
     While the ``HashCons`` class has ``toString`` and ``getLocation`` methods, these are only provided as debugging aids. They give the ``toString`` and ``getLocation`` of an arbitrary ``Expr`` within the set.
 

@@ -171,7 +171,7 @@ class InvalidFormatString extends StringLiteral {
 }
 
 /** Provides a dataflow configuration for format strings. */
-module FormatFlow {
+deprecated module FormatFlow {
   private import semmle.code.csharp.dataflow.DataFlow
 
   private class FormatConfiguration extends DataFlow2::Configuration {
@@ -184,18 +184,20 @@ module FormatFlow {
     }
   }
 
-  query predicate nodes = DataFlow2::PathGraph::nodes/3;
+  deprecated query predicate nodes = DataFlow2::PathGraph::nodes/3;
 
-  query predicate edges = DataFlow2::PathGraph::edges/2;
+  deprecated query predicate edges = DataFlow2::PathGraph::edges/2;
 
-  class PathNode = DataFlow2::PathNode;
+  deprecated class PathNode = DataFlow2::PathNode;
 
   /**
    * Holds if there is flow from string literal `lit` to the format string in
    * `call`. `litNode` and `formatNode` are the corresponding data-flow path
    * nodes.
    */
-  predicate hasFlowPath(StringLiteral lit, PathNode litNode, FormatCall call, PathNode formatNode) {
+  deprecated predicate hasFlowPath(
+    StringLiteral lit, PathNode litNode, FormatCall call, PathNode formatNode
+  ) {
     litNode.getNode().asExpr() = lit and
     formatNode.getNode().asExpr() = call.getFormatExpr() and
     any(FormatConfiguration conf).hasFlowPath(litNode, formatNode)
@@ -255,7 +257,7 @@ class FormatCall extends MethodCall {
   }
 
   /** Gets a supplied argument that is not used in the format string `src`. */
-  int getAnUnusedArgument(ValidFormatString src) {
+  deprecated int getAnUnusedArgument(ValidFormatString src) {
     result = this.getASuppliedArgument() and
     FormatFlow::hasFlowPath(src, _, this, _) and
     not result = src.getAnInsert()

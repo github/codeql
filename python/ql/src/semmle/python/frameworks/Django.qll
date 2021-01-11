@@ -1858,7 +1858,7 @@ private module Django {
 
     DjangoRouteRegex() {
       this instanceof StrConst and
-      DataFlow::localFlow(DataFlow::exprNode(this), rePathCall.getUrlPatternArg())
+      DataFlow::exprNode(this).(DataFlow::LocalSourceNode).flowsTo(rePathCall.getUrlPatternArg())
     }
 
     DjangoRegexRouteSetup getRouteSetup() { result = rePathCall }

@@ -57,7 +57,7 @@ class LocalVariable extends StackVariable, @cil_local_variable {
 }
 
 /** A method parameter. */
-class Parameter extends DotNet::Parameter, StackVariable, @cil_parameter {
+class Parameter extends DotNet::Parameter, StackVariable, CustomModifierReceiver, @cil_parameter {
   /** Gets the method declaring this parameter. */
   override Method getMethod() { this = result.getARawParameter() }
 
@@ -122,7 +122,7 @@ class ThisParameter extends Parameter {
 }
 
 /** A field. */
-class Field extends DotNet::Field, Variable, Member, @cil_field {
+class Field extends DotNet::Field, Variable, Member, CustomModifierReceiver, @cil_field {
   override string toString() { result = getName() }
 
   override string toStringWithTypes() {
