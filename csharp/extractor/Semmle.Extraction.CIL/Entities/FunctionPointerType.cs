@@ -99,16 +99,9 @@ namespace Semmle.Extraction.CIL.Entities
 
                 yield return Tuples.cil_function_pointer_calling_conventions(this, signature.Header.CallingConvention);
 
-                var i = 0;
-                foreach (var p in signature.ParameterTypes)
+                foreach (var p in Method.GetParameterExtractionProducts(signature.ParameterTypes, this, this, Cx, 0))
                 {
-                    var t = p;
-                    if (t is ModifiedType mtparam)
-                    {
-                        t = mtparam.Unmodified;
-                        yield return Tuples.cil_custom_modifiers(this, mtparam.Modifier, mtparam.IsRequired);
-                    }
-                    yield return Cx.Populate(new Parameter(Cx, this, i++, t));
+                    yield return p;
                 }
             }
         }

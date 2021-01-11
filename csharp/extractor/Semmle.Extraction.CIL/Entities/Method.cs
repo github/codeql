@@ -86,15 +86,24 @@ namespace Semmle.Extraction.CIL.Entities
                 yield return Cx.Populate(new Parameter(Cx, this, i++, DeclaringType));
             }
 
+            foreach (var p in GetParameterExtractionProducts(parameterTypes, this, this, Cx, i))
+            {
+                yield return p;
+            }
+        }
+
+        internal static IEnumerable<IExtractionProduct> GetParameterExtractionProducts(IEnumerable<Type> parameterTypes, IParameterizable parameterizable, ICustomModifierReceiver receiver, Context cx, int firstChildIndex)
+        {
+            var i = firstChildIndex;
             foreach (var p in parameterTypes)
             {
                 var t = p;
                 if (t is ModifiedType mt)
                 {
                     t = mt.Unmodified;
-                    yield return Tuples.cil_custom_modifiers(this, mt.Modifier, mt.IsRequired);
+                    yield return Tuples.cil_custom_modifiers(receiver, mt.Modifier, mt.IsRequired);
                 }
-                yield return Cx.Populate(new Parameter(Cx, this, i++, t));
+                yield return cx.Populate(new Parameter(cx, parameterizable, i++, t));
             }
         }
 
