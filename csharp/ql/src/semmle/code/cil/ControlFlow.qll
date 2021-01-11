@@ -9,6 +9,9 @@ class ControlFlowNode extends @cil_controlflow_node {
   /** Gets a textual representation of this control flow node. */
   string toString() { none() }
 
+  /** Gets the location of this control flow node. */
+  Location getLocation() { none() }
+
   /**
    * Gets the number of items this node pushes onto the stack.
    * This value is either 0 or 1, except for the instruction `dup`
