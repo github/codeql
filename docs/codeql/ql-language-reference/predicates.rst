@@ -235,6 +235,7 @@ Here are a few examples of infinite predicates:
     /*
       Compilation error:
       ERROR: "str" is not bound to a value.
+      ERROR: expression is not bound to a value.
     */
     predicate shortString(string str) {
       str.length() < 10
