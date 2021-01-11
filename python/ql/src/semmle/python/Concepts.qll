@@ -404,7 +404,7 @@ module HTTP {
 
     /** A parameter that will receive parts of the url when handling an incoming request. */
     private class RoutedParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
-      RoutedParameter() { this.getParameter() = any(RequestHandler setup).getARoutedParameter() }
+      RoutedParameter() { this.getParameter() = any(RequestHandler handler).getARoutedParameter() }
 
       override string getSourceType() { result = "RoutedParameter" }
     }
