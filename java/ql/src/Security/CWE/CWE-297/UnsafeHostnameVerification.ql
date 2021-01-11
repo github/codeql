@@ -97,9 +97,7 @@ private class FlagType extends Type {
   FlagType() {
     this instanceof TypeString
     or
-    exists(BoxedType boxedBoolean | boxedBoolean.getPrimitiveType().hasName("boolean") |
-      this = boxedBoolean or this = boxedBoolean.getPrimitiveType()
-    )
+    this instanceof BooleanType
   }
 }
 

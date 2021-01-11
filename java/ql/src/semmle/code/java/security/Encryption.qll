@@ -29,7 +29,7 @@ class SSLContext extends RefType {
   SSLContext() { hasQualifiedName("javax.net.ssl", "SSLContext") }
 }
 
-/** Models the `javax.net.ssl.SSLSession` class. */
+/** The `javax.net.ssl.SSLSession` class. */
 class SSLSession extends RefType {
   SSLSession() { hasQualifiedName("javax.net.ssl", "SSLSession") }
 }
@@ -38,7 +38,7 @@ class HostnameVerifier extends RefType {
   HostnameVerifier() { hasQualifiedName("javax.net.ssl", "HostnameVerifier") }
 }
 
-/** Models the `verify` method of the class `javax.net.ssl.HostnameVerifier`. */
+/** The `verify` method of the class `javax.net.ssl.HostnameVerifier`. */
 class HostnameVerifierVerify extends Method {
   HostnameVerifierVerify() {
     hasName("verify") and
@@ -83,7 +83,7 @@ class SetHostnameVerifierMethod extends Method {
   }
 }
 
-/** Models the `setDefaultHostnameVerifier` method of the class `javax.net.ssl.HttpsURLConnection`. */
+/** The `setDefaultHostnameVerifier` method of the class `javax.net.ssl.HttpsURLConnection`. */
 class SetDefaultHostnameVerifierMethod extends Method {
   SetDefaultHostnameVerifierMethod() {
     hasName("setDefaultHostnameVerifier") and
