@@ -75,6 +75,20 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
       )
     )
   }
+
+  /**
+   * Holds if a password is concatenated with a salt then hashed together through the call `System.arraycopy(password.getBytes(), ...)`. For example,
+   *  `System.arraycopy(password.getBytes(), 0, allBytes, 0, password.getBytes().length);`
+   *  `System.arraycopy(salt, 0, allBytes, password.getBytes().length, salt.length);`
+   *  `byte[] messageDigest = md.digest(allBytes);`
+   */
+  override predicate isSanitizer(DataFlow::Node node) {
+    exists(MethodAccess ma |
+      ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "System") and
+      ma.getMethod().hasName("arraycopy") and
+      ma.getArgument(0) = node.asExpr()
+    )
+  }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, HashWithoutSaltConfiguration c
