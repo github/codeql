@@ -62,6 +62,10 @@ namespace Semmle.Extraction.CIL.Entities
                     t = mt.Unmodified;
                     yield return Tuples.cil_custom_modifiers(this, mt.Modifier, mt.IsRequired);
                 }
+                if (t is ByRefType brt)
+                {
+                    t = brt.ElementType;
+                }
                 yield return Tuples.cil_property(this, type, name, t);
 
                 var accessors = pd.GetAccessors();

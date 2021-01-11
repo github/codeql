@@ -41,8 +41,8 @@ namespace Semmle.Extraction.CIL.Entities
 
             public void WriteId(TextWriter trapFile, GenericContext gc)
             {
-                trapFile.Write("ref ");
                 elementType.WriteId(trapFile, gc);
+                trapFile.Write('&');
             }
         }
 
@@ -173,25 +173,9 @@ namespace Semmle.Extraction.CIL.Entities
             return new Modified(unmodifiedType, modifier, isRequired);
         }
 
-        private class Pinned : ITypeSignature
-        {
-            private readonly ITypeSignature elementType;
-
-            public Pinned(ITypeSignature elementType)
-            {
-                this.elementType = elementType;
-            }
-
-            public void WriteId(TextWriter trapFile, GenericContext gc)
-            {
-                trapFile.Write("pinned ");
-                elementType.WriteId(trapFile, gc);
-            }
-        }
-
         ITypeSignature ISignatureTypeProvider<ITypeSignature, object>.GetPinnedType(ITypeSignature elementType)
         {
-            return new Pinned(elementType);
+            return elementType;
         }
 
         private class PointerType : ITypeSignature

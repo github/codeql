@@ -103,6 +103,10 @@ namespace Semmle.Extraction.CIL.Entities
                     t = mt.Unmodified;
                     yield return Tuples.cil_custom_modifiers(receiver, mt.Modifier, mt.IsRequired);
                 }
+                if (t is ByRefType brt)
+                {
+                    t = brt.ElementType;
+                }
                 yield return cx.Populate(new Parameter(cx, parameterizable, i++, t));
             }
         }
@@ -114,6 +118,10 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 t = mt.Unmodified;
                 yield return Tuples.cil_custom_modifiers(this, mt.Modifier, mt.IsRequired);
+            }
+            if (t is ByRefType brt)
+            {
+                t = brt.ElementType;
             }
             yield return Tuples.cil_method(this, name, declaringType, t);
         }

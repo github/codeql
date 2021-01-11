@@ -95,6 +95,10 @@ namespace Semmle.Extraction.CIL.Entities
                     retType = mt.Unmodified;
                     yield return Tuples.cil_custom_modifiers(this, mt.Modifier, mt.IsRequired);
                 }
+                if (retType is ByRefType byRefType)
+                {
+                    retType = byRefType.ElementType;
+                }
                 yield return Tuples.cil_function_pointer_return_type(this, retType);
 
                 yield return Tuples.cil_function_pointer_calling_conventions(this, signature.Header.CallingConvention);

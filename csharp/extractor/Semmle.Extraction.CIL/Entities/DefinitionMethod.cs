@@ -121,7 +121,12 @@ namespace Semmle.Extraction.CIL.Entities
 
                         for (var l = 0; l < this.locals.Length; ++l)
                         {
-                            this.locals[l] = Cx.Populate(new LocalVariable(Cx, Implementation, l, localVariableTypes[l]));
+                            var t = localVariableTypes[l];
+                            if (t is ByRefType brt)
+                            {
+                                t = brt.ElementType;
+                            }
+                            this.locals[l] = Cx.Populate(new LocalVariable(Cx, Implementation, l, t));
                             yield return this.locals[l];
                         }
                     }
