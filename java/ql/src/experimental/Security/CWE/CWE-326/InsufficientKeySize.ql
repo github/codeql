@@ -74,7 +74,7 @@ class KeyPairGeneratorInitConfiguration extends TaintTracking::Configuration {
   }
 }
 
-/** Holds if a symmetric `KeyGenerator` is initialized with an insufficient key size. */
+/** Holds if a symmetric `KeyGenerator` implementing encryption algorithm `type` and initialized by `ma` uses an insufficient key size. `msg` provides a human-readable description of the problem. */
 bindingset[type]
 predicate hasShortSymmetricKey(MethodAccess ma, string msg, string type) {
   ma.getMethod() instanceof KeyGeneratorInitMethod and
@@ -91,10 +91,10 @@ predicate hasShortSymmetricKey(MethodAccess ma, string msg, string type) {
   msg = "Key size should be at least 128 bits for " + type + " encryption."
 }
 
-/** Holds if an AES `KeyGenerator` is initialized with an insufficient key size. */
+/** Holds if an AES `KeyGenerator` initialized by `ma` uses an insufficient key size. `msg` provides a human-readable description of the problem. */
 predicate hasShortAESKey(MethodAccess ma, string msg) { hasShortSymmetricKey(ma, msg, "AES") }
 
-/** Holds if an asymmetric `KeyPairGenerator` is initialized with an insufficient key size. */
+/** Holds if an asymmetric `KeyPairGenerator` implementing encryption algorithm `type` and initialized by `ma` uses an insufficient key size. `msg` provides a human-readable description of the problem. */
 bindingset[type]
 predicate hasShortAsymmetricKeyPair(MethodAccess ma, string msg, string type) {
   ma.getMethod() instanceof KeyPairGeneratorInitMethod and
@@ -111,24 +111,24 @@ predicate hasShortAsymmetricKeyPair(MethodAccess ma, string msg, string type) {
   msg = "Key size should be at least 2048 bits for " + type + " encryption."
 }
 
-/** Holds if a DSA `KeyPairGenerator` is initialized with an insufficient key size. */
+/** Holds if a DSA `KeyPairGenerator` initialized by `ma` uses an insufficient key size. `msg` provides a human-readable description of the problem. */
 predicate hasShortDSAKeyPair(MethodAccess ma, string msg) {
   hasShortAsymmetricKeyPair(ma, msg, "DSA")
 }
 
-/** Holds if a RSA `KeyPairGenerator` is initialized with an insufficient key size. */
+/** Holds if a RSA `KeyPairGenerator` initialized by `ma` uses an insufficient key size. `msg` provides a human-readable description of the problem. */
 predicate hasShortRSAKeyPair(MethodAccess ma, string msg) {
   hasShortAsymmetricKeyPair(ma, msg, "RSA")
 }
 
-/** Holds if an EC `KeyPairGenerator` is initialized with an insufficient key size. */
+/** Holds if an EC `KeyPairGenerator` initialized by `ma` uses an insufficient key size. `msg` provides a human-readable description of the problem. */
 predicate hasShortECKeyPair(MethodAccess ma, string msg) {
   ma.getMethod() instanceof KeyPairGeneratorInitMethod and
   exists(
     JavaSecurityKeyPairGenerator jpg, KeyPairGeneratorInitConfiguration kc,
     DataFlow::PathNode source, DataFlow::PathNode dest, ClassInstanceExpr cie
   |
-    jpg.getAlgoSpec().(StringLiteral).getValue().matches("EC%") and //ECC variants such as ECDH and ECDSA
+    jpg.getAlgoSpec().(StringLiteral).getValue().matches("EC%") and // ECC variants such as ECDH and ECDSA
     source.getNode().asExpr() = jpg and
     dest.getNode().asExpr() = ma.getQualifier() and
     kc.hasFlowPath(source, dest) and
