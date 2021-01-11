@@ -73,3 +73,27 @@ class RegexLiteral extends Literal, @regex {
 
   final override string getAPrimaryQlClass() { result = "RegexLiteral" }
 }
+
+/** A sequence of expressions. */
+class ExprSequence extends Expr {
+  override ExprSequence::Range range;
+
+  final override string getAPrimaryQlClass() { result = "ExprSequence" }
+
+  final override string toString() { result = "...; ..." }
+
+  /** Gets the `n`th expression in this sequence. */
+  final Expr getExpr(int n) { result = range.getExpr(n) }
+
+  /** Gets an expression in this sequence. */
+  final Expr getAnExpr() { result = this.getExpr(_) }
+
+  /** Gets the last expression in this sequence, if any. */
+  final Expr getLastExpr() { result = this.getExpr(this.getNumberOfExpressions() - 1) }
+
+  /** Gets the number of expressions in this sequence. */
+  final int getNumberOfExpressions() { result = count(this.getAnExpr()) }
+
+  /** Holds if this sequence has no expressions. */
+  final predicate isEmpty() { this.getNumberOfExpressions() = 0 }
+}

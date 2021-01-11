@@ -1,4 +1,5 @@
 import codeql.Locations
+import ast.Control
 import ast.Expr
 import ast.Method
 import ast.Parameter

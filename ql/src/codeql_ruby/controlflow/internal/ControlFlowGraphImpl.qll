@@ -608,7 +608,7 @@ module Trees {
    */
   private class ForTree extends ControlFlowTree, For {
     final override predicate propagatesAbnormal(AstNode child) {
-      child = this.getPattern(_) or child = this.getValue()
+      child = this.getPattern() or child = this.getValue()
     }
 
     final override predicate first(AstNode node) { node = this.getValue() }
@@ -638,18 +638,12 @@ module Trees {
       c instanceof SimpleCompletion
       or
       pred = this and
-      first(this.getPattern(0), succ) and
+      first(this.getPattern(), succ) and
       c.(EmptinessCompletion).getValue() = false
       or
-      exists(int i, ControlFlowTree next |
-        last(this.getPattern(i), pred, c) and
-        first(next, succ) and
-        c instanceof SimpleCompletion
-      |
-        next = this.getPattern(i + 1)
-        or
-        not exists(this.getPattern(i + 1)) and next = this.getBody()
-      )
+      first(this.getBody(), succ) and
+      last(this.getPattern(), pred, c) and
+      c instanceof NormalCompletion
       or
       last(this.getBody(), pred, c) and
       succ = this and
