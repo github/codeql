@@ -995,7 +995,7 @@ module Internal {
   // pre-SSA predicates
   private module PreCFG {
     private import semmle.code.csharp.controlflow.internal.PreBasicBlocks as PreBasicBlocks
-    private import semmle.code.csharp.controlflow.internal.PreSsa as PreSsa
+    private import semmle.code.csharp.controlflow.internal.PreSsa
 
     /**
      * Holds if pre-basic-block `bb` only is reached when guard `g` has abstract value `v`,
@@ -1081,25 +1081,25 @@ module Internal {
 
     pragma[noinline]
     private predicate conditionalAssign0(
-      Guard guard, AbstractValue vGuard, PreSsa::Definition def, Expr e, PreSsa::Definition upd,
+      Guard guard, AbstractValue vGuard, PreSsa::PhiNode phi, Expr e, PreSsa::Definition upd,
       PreBasicBlocks::PreBasicBlock bbGuard
     ) {
       e = upd.getDefinition().getSource() and
-      upd = def.getAPhiInput() and
+      upd = phi.getAnInput() and
       preControlsDirect(guard, upd.getBasicBlock(), vGuard) and
       bbGuard.getAnElement() = guard and
-      bbGuard.strictlyDominates(def.getBasicBlock()) and
-      not preControlsDirect(guard, def.getBasicBlock(), vGuard)
+      bbGuard.strictlyDominates(phi.getBasicBlock()) and
+      not preControlsDirect(guard, phi.getBasicBlock(), vGuard)
     }
 
     pragma[noinline]
     private predicate conditionalAssign1(
-      Guard guard, AbstractValue vGuard, PreSsa::Definition def, Expr e, PreSsa::Definition upd,
+      Guard guard, AbstractValue vGuard, PreSsa::PhiNode phi, Expr e, PreSsa::Definition upd,
       PreBasicBlocks::PreBasicBlock bbGuard, PreSsa::Definition other
     ) {
-      conditionalAssign0(guard, vGuard, def, e, upd, bbGuard) and
+      conditionalAssign0(guard, vGuard, phi, e, upd, bbGuard) and
       other != upd and
-      other = def.getAPhiInput()
+      other = phi.getAnInput()
     }
 
     pragma[noinline]
@@ -1127,7 +1127,7 @@ module Internal {
     ) {
       conditionalAssign1(guard, vGuard, def, e, upd, bbGuard, other) and
       other.getBasicBlock().dominates(bbGuard) and
-      not PreSsa::ssaDefReachesEndOfBlock(getConditionalSuccessor(guard, vGuard), other, _)
+      not other.isLiveAtEndOfBlock(getConditionalSuccessor(guard, vGuard))
     }
 
     /**
@@ -1315,14 +1315,14 @@ module Internal {
      */
     private PreSsa::Definition getADefinition(PreSsa::Definition def, boolean fromBackEdge) {
       result = def and
-      not exists(def.getAPhiInput()) and
+      not def instanceof PreSsa::PhiNode and
       fromBackEdge = false
       or
       exists(PreSsa::Definition input, PreBasicBlocks::PreBasicBlock pred, boolean fbe |
-        input = def.getAPhiInput()
+        input = def.(PreSsa::PhiNode).getAnInput()
       |
         pred = def.getBasicBlock().getAPredecessor() and
-        PreSsa::ssaDefReachesEndOfBlock(pred, input, _) and
+        input.isLiveAtEndOfBlock(pred) and
         result = getADefinition(input, fbe) and
         (if def.getBasicBlock().dominates(pred) then fromBackEdge = true else fromBackEdge = fbe)
       )
@@ -1446,7 +1446,7 @@ module Internal {
       private predicate firstReadSameVarUniquePredecesssor(
         PreSsa::Definition def, AssignableRead read
       ) {
-        PreSsa::firstReadSameVar(def, read) and
+        read = def.getAFirstRead() and
         not exists(AssignableRead other | PreSsa::adjacentReadPairSameVar(other, read) |
           other != read
         )
