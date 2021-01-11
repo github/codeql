@@ -12,7 +12,6 @@
  */
 
 import cpp
-import semmle.code.cpp.dataflow.DataFlow
 
 /**
  * A call to `realloc` of the form `v = realloc(v, size)`, for some variable `v`.
