@@ -350,7 +350,7 @@ private class InexactLoadOperand extends LoadOperand {
   InexactLoadOperand() { this.isDefinitionInexact() }
 }
 
-/** Get the result type of an `Instruction` i, if it is a `PointerType`. */
+/** Get the result type of `i`, if it is a `PointerType`. */
 private PointerType getPointerType(Instruction i) {
   // We are done if the type is a pointer type that is not a glvalue
   i.getResultLanguageType().hasType(result, false)
@@ -359,16 +359,24 @@ private PointerType getPointerType(Instruction i) {
   result = getPointerType(i.(PointerOffsetInstruction).getLeft())
 }
 
+pragma[noinline]
+private predicate deconstructLoad(
+  LoadInstruction load, InexactLoadOperand loadOperand, Instruction addressInstr
+) {
+  load.getSourceAddress() = addressInstr and
+  load.getSourceValueOperand() = loadOperand
+}
+
 private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
   a = TArrayContent() and
   // Explicit dereferences such as `*p` or `p[i]` where `p` is a pointer or array.
-  exists(InexactLoadOperand operand, LoadInstruction load |
-    load.getSourceValueOperand() = operand and
-    node1.asInstruction() = operand.getAnyDef() and
+  exists(InexactLoadOperand loadOperand, LoadInstruction load, Instruction address |
+    deconstructLoad(load, loadOperand, address) and
+    node1.asInstruction() = loadOperand.getAnyDef() and
     not node1.asInstruction().isResultConflated() and
-    operand = node2.asOperand() and
+    loadOperand = node2.asOperand() and
     // Ensure that the load is actually loading from an array or a pointer.
-    getPointerType(load.getSourceAddress()).getBaseType() = load.getResultType()
+    getPointerType(address).getBaseType() = load.getResultType()
   )
 }
 
@@ -423,6 +431,11 @@ private ReferenceType getReferenceType(Instruction i) {
   i.getResultLanguageType().hasType(result, false)
 }
 
+pragma[noinline]
+Type getResultTypeOfSourceValue(CopyValueInstruction copy) {
+  result = copy.getSourceValue().getResultType()
+}
+
 /**
  * In cases such as:
  * ```cpp
@@ -451,7 +464,7 @@ private predicate innerReadSteap(Node node1, Content a, Node node2) {
     node2.asInstruction() = write and
     copyValue = call.getArgument(write.getIndex()) and
     [getPointerType(copyValue).getBaseType(), getReferenceType(copyValue).getBaseType()] =
-      copyValue.getSourceValue().getResultType()
+      getResultTypeOfSourceValue(copyValue)
   )
 }
 
