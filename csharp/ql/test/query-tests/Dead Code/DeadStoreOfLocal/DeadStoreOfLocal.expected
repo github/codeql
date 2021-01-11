@@ -9,7 +9,6 @@
 | DeadStoreOfLocal.cs:142:26:142:27 | Exception ex | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:142:26:142:27 | ex | ex |
 | DeadStoreOfLocal.cs:246:17:246:24 | Int32 y = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:246:17:246:17 | y | y |
 | DeadStoreOfLocal.cs:261:17:261:21 | Int32 x = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:261:17:261:17 | x | x |
-| DeadStoreOfLocal.cs:281:13:281:18 | String x = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:281:13:281:13 | x | x |
 | DeadStoreOfLocal.cs:300:23:300:28 | Object v1 | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:300:27:300:28 | v1 | v1 |
 | DeadStoreOfLocal.cs:314:18:314:23 | Object v2 | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:314:22:314:23 | v2 | v2 |
 | DeadStoreOfLocal.cs:331:9:331:32 | ... = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:327:23:327:23 | b | b |

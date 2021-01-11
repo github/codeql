@@ -278,7 +278,7 @@ public class Captured
 
     void M10(bool b)
     {
-        var x = ""; // GOOD [FALSE POSITIVE]
+        var x = ""; // GOOD
         Action action;
         if (b)
             action = () => System.Console.WriteLine(x);
