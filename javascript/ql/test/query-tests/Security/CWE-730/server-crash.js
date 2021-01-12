@@ -38,7 +38,7 @@ app.get("/async-throw", (req, res) => {
     } catch (e) {}
   });
   fs.readFile("/WHATEVER", (err, x) => {
-    res.setHeader("reflected", req.query.header); // NOT OK
+    res.setHeader("reflected", req.query.header); // NOT OK [INCONSISTENCY]
   });
   fs.readFile("/WHATEVER", (err, x) => {
     try {
