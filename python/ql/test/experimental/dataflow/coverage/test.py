@@ -530,7 +530,7 @@ def test_nested_unpacking_assignment():
     a, (b, c) = t
     SINK(a)
     SINK_F(b)
-    SINK(c)  # Flow not found
+    SINK(c)
 
 
 @expects(2)

@@ -63,6 +63,7 @@ edges
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:509:9:509:14 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:521:10:521:15 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:529:10:529:15 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:529:30:529:35 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:546:10:546:15 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:651:16:651:21 | ControlFlowNode for SOURCE |
 | test.py:20:1:20:6 | GSSA Variable SOURCE | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test |
@@ -188,9 +189,16 @@ edges
 | test.py:522:5:522:5 | SSA variable a | test.py:523:10:523:10 | ControlFlowNode for a |
 | test.py:522:12:522:12 | ControlFlowNode for t [Tuple element at index 0] | test.py:522:5:522:5 | SSA variable a |
 | test.py:529:10:529:15 | ControlFlowNode for SOURCE | test.py:529:10:529:36 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:529:10:529:15 | ControlFlowNode for SOURCE | test.py:529:30:529:35 | ControlFlowNode for SOURCE |
 | test.py:529:10:529:36 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:530:17:530:17 | ControlFlowNode for t [Tuple element at index 0] |
+| test.py:529:10:529:36 | ControlFlowNode for Tuple [Tuple element at index 1, Tuple element at index 1] | test.py:530:17:530:17 | ControlFlowNode for t [Tuple element at index 1, Tuple element at index 1] |
+| test.py:529:19:529:35 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:529:10:529:36 | ControlFlowNode for Tuple [Tuple element at index 1, Tuple element at index 1] |
+| test.py:529:30:529:35 | ControlFlowNode for SOURCE | test.py:529:19:529:35 | ControlFlowNode for Tuple [Tuple element at index 1] |
 | test.py:530:5:530:5 | SSA variable a | test.py:531:10:531:10 | ControlFlowNode for a |
+| test.py:530:9:530:12 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:530:12:530:12 | SSA variable c |
+| test.py:530:12:530:12 | SSA variable c | test.py:533:10:533:10 | ControlFlowNode for c |
 | test.py:530:17:530:17 | ControlFlowNode for t [Tuple element at index 0] | test.py:530:5:530:5 | SSA variable a |
+| test.py:530:17:530:17 | ControlFlowNode for t [Tuple element at index 1, Tuple element at index 1] | test.py:530:9:530:12 | ControlFlowNode for Tuple [Tuple element at index 1] |
 | test.py:546:10:546:15 | ControlFlowNode for SOURCE | test.py:546:10:546:34 | ControlFlowNode for Tuple [Tuple element at index 0] |
 | test.py:546:10:546:34 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:547:16:547:16 | ControlFlowNode for t [Tuple element at index 0] |
 | test.py:547:5:547:5 | SSA variable a | test.py:548:10:548:10 | ControlFlowNode for a |
@@ -379,9 +387,16 @@ nodes
 | test.py:523:10:523:10 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
 | test.py:529:10:529:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:529:10:529:36 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:529:10:529:36 | ControlFlowNode for Tuple [Tuple element at index 1, Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1, Tuple element at index 1] |
+| test.py:529:19:529:35 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:529:30:529:35 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:530:5:530:5 | SSA variable a | semmle.label | SSA variable a |
+| test.py:530:9:530:12 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:530:12:530:12 | SSA variable c | semmle.label | SSA variable c |
 | test.py:530:17:530:17 | ControlFlowNode for t [Tuple element at index 0] | semmle.label | ControlFlowNode for t [Tuple element at index 0] |
+| test.py:530:17:530:17 | ControlFlowNode for t [Tuple element at index 1, Tuple element at index 1] | semmle.label | ControlFlowNode for t [Tuple element at index 1, Tuple element at index 1] |
 | test.py:531:10:531:10 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
+| test.py:533:10:533:10 | ControlFlowNode for c | semmle.label | ControlFlowNode for c |
 | test.py:546:10:546:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:546:10:546:34 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
 | test.py:547:5:547:5 | SSA variable a | semmle.label | SSA variable a |
@@ -490,6 +505,9 @@ nodes
 | test.py:523:10:523:10 | ControlFlowNode for a | test.py:521:10:521:15 | ControlFlowNode for SOURCE | test.py:523:10:523:10 | ControlFlowNode for a | Flow found |
 | test.py:531:10:531:10 | ControlFlowNode for a | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:531:10:531:10 | ControlFlowNode for a | Flow found |
 | test.py:531:10:531:10 | ControlFlowNode for a | test.py:529:10:529:15 | ControlFlowNode for SOURCE | test.py:531:10:531:10 | ControlFlowNode for a | Flow found |
+| test.py:533:10:533:10 | ControlFlowNode for c | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:533:10:533:10 | ControlFlowNode for c | Flow found |
+| test.py:533:10:533:10 | ControlFlowNode for c | test.py:529:10:529:15 | ControlFlowNode for SOURCE | test.py:533:10:533:10 | ControlFlowNode for c | Flow found |
+| test.py:533:10:533:10 | ControlFlowNode for c | test.py:529:30:529:35 | ControlFlowNode for SOURCE | test.py:533:10:533:10 | ControlFlowNode for c | Flow found |
 | test.py:548:10:548:10 | ControlFlowNode for a | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:548:10:548:10 | ControlFlowNode for a | Flow found |
 | test.py:548:10:548:10 | ControlFlowNode for a | test.py:546:10:546:15 | ControlFlowNode for SOURCE | test.py:548:10:548:10 | ControlFlowNode for a | Flow found |
 | test.py:654:10:654:36 | ControlFlowNode for return_from_inner_scope() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:654:10:654:36 | ControlFlowNode for return_from_inner_scope() | Flow found |
