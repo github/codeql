@@ -3,6 +3,7 @@ module main
 go 1.14
 
 require (
+	github.com/couchbase/gocb/v2 v2.2.0
 	github.com/google/uuid v1.1.4 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
 	go.mongodb.org/mongo-driver v1.3.2

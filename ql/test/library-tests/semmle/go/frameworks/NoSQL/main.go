@@ -3,10 +3,12 @@ package main
 //go:generate depstubber -vendor go.mongodb.org/mongo-driver/bson/primitive D
 //go:generate depstubber -vendor go.mongodb.org/mongo-driver/mongo Collection,Pipeline
 //go:generate depstubber -vendor  gopkg.in/couchbase/gocb.v1 Bucket,Cluster
+//go:generate depstubber -vendor  github.com/couchbase/gocb/v2 Cluster,Scope
 
 import (
 	"context"
 
+	gocbv2 "github.com/couchbase/gocb/v2"
 	gocbv1 "gopkg.in/couchbase/gocb.v1"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -57,6 +59,13 @@ func testGocbV1(bucket gocbv1.Bucket, cluster gocbv1.Cluster, aq *gocbv1.Analyti
 	cluster.ExecuteAnalyticsQuery(aq, nil) // $nosqlquery=aq
 	bucket.ExecuteN1qlQuery(nq, nil)       // $nosqlquery=nq
 	cluster.ExecuteN1qlQuery(nq, nil)      // $nosqlquery=nq
+}
+
+func testGocbV2(cluster gocbv2.Cluster, scope gocbv2.Scope) {
+	cluster.AnalyticsQuery("a", nil) // $nosqlquery="a"
+	scope.AnalyticsQuery("b", nil)   // $nosqlquery="b"
+	cluster.Query("c", nil)          // $nosqlquery="c"
+	scope.Query("d", nil)            // $nosqlquery="d"
 }
 
 func main() {}
