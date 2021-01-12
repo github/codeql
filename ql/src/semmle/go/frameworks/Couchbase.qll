@@ -79,4 +79,23 @@ module Couchbase {
       )
     }
   }
+
+  /**
+   * A query used in an API function acting on a `Bucket` or `Cluster` struct of v1 of
+   * the official Couchbase Go library, gocb.
+   */
+  private class CouchbaseV2Query extends NoSQL::Query::Range {
+    CouchbaseV2Query() {
+      // func (c *Cluster) AnalyticsQuery(statement string, opts *AnalyticsOptions) (*AnalyticsResult, error)
+      // func (c *Cluster) Query(statement string, opts *QueryOptions) (*QueryResult, error)
+      // func (s *Scope) AnalyticsQuery(statement string, opts *AnalyticsOptions) (*AnalyticsResult, error)
+      // func (s *Scope) Query(statement string, opts *QueryOptions) (*QueryResult, error)
+      exists(Method meth, string structName, string methodName |
+        structName in ["Cluster", "Scope"] and
+        methodName in ["AnalyticsQuery", "Query"] and
+        meth.hasQualifiedName(packagePathV2(), structName, methodName) and
+        this = meth.getACall().getArgument(0)
+      )
+    }
+  }
 }
