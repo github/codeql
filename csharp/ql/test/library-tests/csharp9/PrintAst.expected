@@ -223,7 +223,6 @@ FunctionPointer.cs:
 #   50|     14: [Class] B
 #-----|       3: (Base types)
 #   50|         0: [TypeMention] A
-#   50|         0: [TypeMention] A
 InitOnlyProperty.cs:
 #    3| [NamespaceDeclaration] namespace ... { ... }
 #    5|   1: [Class] IsExternalInit
@@ -256,8 +255,6 @@ InitOnlyProperty.cs:
 #   14|         0: [Parameter] value
 #   18| [Class] Derived
 #-----|   3: (Base types)
-#   18|     0: [TypeMention] Base
-#   18|     0: [TypeMention] Base
 #   18|     0: [TypeMention] Base
 #   20|   5: [Property] Prop1
 #   20|     -1: [TypeMention] int

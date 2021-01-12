@@ -1,6 +1,6 @@
 using System;
 
-#nullable enable
+
 
 public class FnPointer
 {
