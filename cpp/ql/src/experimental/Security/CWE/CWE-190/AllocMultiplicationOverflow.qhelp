@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>The result of a multiplication is used in the size of an allocation. If the multiplication can be made to overflow, a much smaller amount of memory may be allocated than the rest of the code expects. This may lead to overflowing writes when the buffer is accessed later.</p>
+</overview>
+
+<recommendation>
+<p>To fix this issue, ensure that the arithmetic used in the size of an allocation cannot overflow before memory is allocated.</p>
+</recommendation>
+
+<example>
+<p>In the following example, an array of size <code>width * height</code> is allocated and stored as <code>pixels</code>. If <code>width</code> and <code>height</code> are set such that the multiplication overflows and wraps to a small value (say, 4) then the initialization code that follows the allocation will write beyond the end of the array.</p>
+<sample src="AllocMultiplicationOverflow.cpp"/>
+</example>
+
+<references>
+<li>
+  Cplusplus.com: <a href="http://www.cplusplus.com/articles/DE18T05o/">Integer overflow</a>.
+</li>
+</references>
+
+</qhelp>

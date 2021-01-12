@@ -703,8 +703,8 @@ Further reading
 .. _SizeofPackOperator: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Cast.qll/type.Cast$SizeofPackOperator.html
 .. _StmtExpr: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$StmtExpr.html
 .. _ThisExpr: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$ThisExpr.html
-.. _ThrowExpr: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Call.qll/type.Call$ThrowExpr.html
-.. _ReThrowExpr: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Call.qll/type.Call$ReThrowExpr.html
+.. _ThrowExpr: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$ThrowExpr.html
+.. _ReThrowExpr: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$ReThrowExpr.html
 .. _TypeidOperator: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Cast.qll/type.Cast$TypeidOperator.html
 .. _UuidofOperator: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Cast.qll/type.Cast$UuidofOperator.html
 .. _VoidType: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$VoidType.html

@@ -47,7 +47,7 @@ Overview of annotations
 
 This section describes what the different annotations do, and when you can use them.
 You can also find a summary table in the Annotations section of the 
-`QL language specification <ql-language-specification#annotations-in-java>`_.
+`QL language specification <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#annotations>`_.
 
 .. index:: abstract
 .. _abstract:

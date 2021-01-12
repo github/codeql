@@ -37,7 +37,7 @@ Order
 
 To compare two expressions using one of these order operators, each expression must have a type
 and those types must be :ref:`compatible <type-compatibility>` and 
-`orderable <ql-language-specification#ordering>`_.
+`orderable <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#ordering>`_.
 
 +--------------------------+--------+
 | Name                     | Symbol |

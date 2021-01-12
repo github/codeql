@@ -22,7 +22,7 @@ library by beginning your query with:
 
 Broadly speaking, the CodeQL library for Go provides two views of a Go code base: at the `syntactic
 level`, source code is represented as an `abstract syntax tree
-<https://wikipedia.org/wiki/Abstract_syntax_tree>`__ (AST), while at the `data-flow level` it is
+<https://en.wikipedia.org/wiki/Abstract_syntax_tree>`__ (AST), while at the `data-flow level` it is
 represented as a `data-flow graph <https://en.wikipedia.org/wiki/Data-flow_analysis>`__ (DFG). In
 between, there is also an intermediate representation of the program as a control-flow graph (CFG),
 though this representation is rarely useful on its own and mostly used to construct the higher-level

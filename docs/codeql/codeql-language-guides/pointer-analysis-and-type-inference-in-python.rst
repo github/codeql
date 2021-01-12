@@ -24,7 +24,7 @@ Class hierarchy for ``Value``:
 Points-to analysis and type inference
 -------------------------------------
 
-Points-to analysis, sometimes known as pointer analysis, allows us to determine which objects an expression may "point to" at runtime. Type inference allows us to infer what the types (classes) of an expression may be at runtime. For more information, see `Pointer analysis <http://en.wikipedia.org/wiki/Pointer_analysis>`__ and `Type inference <http://en.wikipedia.org/wiki/Type_inference>`__ on Wikipedia.
+Points-to analysis, sometimes known as pointer analysis, allows us to determine which objects an expression may "point to" at runtime. Type inference allows us to infer what the types (classes) of an expression may be at runtime. For more information, see `Pointer analysis <https://en.wikipedia.org/wiki/Pointer_analysis>`__ and `Type inference <https://en.wikipedia.org/wiki/Type_inference>`__ on Wikipedia.
 
 The predicate ``ControlFlowNode.pointsTo(...)`` shows which object a control flow node may "point to" at runtime.
 

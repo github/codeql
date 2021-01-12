@@ -55,6 +55,7 @@ class Bar
     void M1() { }
 
     [MyAttribute(true, y = "", x = 0)]
+    [My2(b: true, j: 1, a: false, X = 42)]
     void M2() { }
 }
 
@@ -79,4 +80,10 @@ public class X
     [Args(42 + 0, new int[] { 1, 2, 3 }, null, (E)12, null, Prop = new object[] { 1, typeof(int) })]
     [return: Args(42 + 0, new int[] { 1, 2, 3 }, null, (E)12, null, Prop = new object[] { 1, typeof(int) })]
     int SomeMethod() { return 1; }
+}
+
+class My2Attribute : Attribute
+{
+    public int X { get; set; }
+    public My2Attribute(bool a, bool b, int i = 12, int j = 13) { }
 }

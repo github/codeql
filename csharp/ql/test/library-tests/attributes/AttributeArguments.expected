@@ -47,18 +47,23 @@ arguments
 | attributes.cs:57:6:57:16 | [My(...)] | 0 | attributes.cs:57:18:57:21 | true |
 | attributes.cs:57:6:57:16 | [My(...)] | 1 | attributes.cs:57:28:57:29 | "" |
 | attributes.cs:57:6:57:16 | [My(...)] | 2 | attributes.cs:57:36:57:36 | 0 |
-| attributes.cs:76:2:76:5 | [Args(...)] | 0 | attributes.cs:76:7:76:8 | 42 |
-| attributes.cs:76:2:76:5 | [Args(...)] | 1 | attributes.cs:76:11:76:14 | null |
-| attributes.cs:76:2:76:5 | [Args(...)] | 2 | attributes.cs:76:17:76:25 | typeof(...) |
-| attributes.cs:76:2:76:5 | [Args(...)] | 3 | attributes.cs:76:28:76:30 | access to constant A |
-| attributes.cs:76:2:76:5 | [Args(...)] | 4 | attributes.cs:76:33:76:53 | array creation of type Int32[] |
-| attributes.cs:76:2:76:5 | [Args(...)] | 5 | attributes.cs:76:63:76:93 | array creation of type Object[] |
-| attributes.cs:79:6:79:9 | [Args(...)] | 0 | attributes.cs:79:11:79:16 | ... + ... |
-| attributes.cs:79:6:79:9 | [Args(...)] | 1 | attributes.cs:79:19:79:39 | array creation of type Int32[] |
-| attributes.cs:79:6:79:9 | [Args(...)] | 2 | attributes.cs:79:42:79:45 | null |
-| attributes.cs:79:6:79:9 | [Args(...)] | 3 | attributes.cs:79:48:79:52 | (...) ... |
-| attributes.cs:79:6:79:9 | [Args(...)] | 4 | attributes.cs:79:55:79:58 | null |
-| attributes.cs:79:6:79:9 | [Args(...)] | 5 | attributes.cs:79:68:79:98 | array creation of type Object[] |
+| attributes.cs:58:6:58:8 | [My2(...)] | 0 | attributes.cs:58:28:58:32 | false |
+| attributes.cs:58:6:58:8 | [My2(...)] | 1 | attributes.cs:58:13:58:16 | true |
+| attributes.cs:58:6:58:8 | [My2(...)] | 2 | attributes.cs:58:6:58:8 | 12 |
+| attributes.cs:58:6:58:8 | [My2(...)] | 3 | attributes.cs:58:22:58:22 | 1 |
+| attributes.cs:58:6:58:8 | [My2(...)] | 4 | attributes.cs:58:39:58:40 | 42 |
+| attributes.cs:77:2:77:5 | [Args(...)] | 0 | attributes.cs:77:7:77:8 | 42 |
+| attributes.cs:77:2:77:5 | [Args(...)] | 1 | attributes.cs:77:11:77:14 | null |
+| attributes.cs:77:2:77:5 | [Args(...)] | 2 | attributes.cs:77:17:77:25 | typeof(...) |
+| attributes.cs:77:2:77:5 | [Args(...)] | 3 | attributes.cs:77:28:77:30 | access to constant A |
+| attributes.cs:77:2:77:5 | [Args(...)] | 4 | attributes.cs:77:33:77:53 | array creation of type Int32[] |
+| attributes.cs:77:2:77:5 | [Args(...)] | 5 | attributes.cs:77:63:77:93 | array creation of type Object[] |
+| attributes.cs:80:6:80:9 | [Args(...)] | 0 | attributes.cs:80:11:80:16 | ... + ... |
+| attributes.cs:80:6:80:9 | [Args(...)] | 1 | attributes.cs:80:19:80:39 | array creation of type Int32[] |
+| attributes.cs:80:6:80:9 | [Args(...)] | 2 | attributes.cs:80:42:80:45 | null |
+| attributes.cs:80:6:80:9 | [Args(...)] | 3 | attributes.cs:80:48:80:52 | (...) ... |
+| attributes.cs:80:6:80:9 | [Args(...)] | 4 | attributes.cs:80:55:80:58 | null |
+| attributes.cs:80:6:80:9 | [Args(...)] | 5 | attributes.cs:80:68:80:98 | array creation of type Object[] |
 constructorArguments
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | 0 | Assembly1.dll:0:0:0:0 | 1 |
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | 0 | Assembly1.dll:0:0:0:0 | 3 |
@@ -101,16 +106,20 @@ constructorArguments
 | attributes.cs:46:6:46:16 | [Conditional(...)] | 0 | attributes.cs:46:18:46:25 | "DEBUG2" |
 | attributes.cs:54:6:54:16 | [My(...)] | 0 | attributes.cs:54:18:54:22 | false |
 | attributes.cs:57:6:57:16 | [My(...)] | 0 | attributes.cs:57:18:57:21 | true |
-| attributes.cs:76:2:76:5 | [Args(...)] | 0 | attributes.cs:76:7:76:8 | 42 |
-| attributes.cs:76:2:76:5 | [Args(...)] | 1 | attributes.cs:76:11:76:14 | null |
-| attributes.cs:76:2:76:5 | [Args(...)] | 2 | attributes.cs:76:17:76:25 | typeof(...) |
-| attributes.cs:76:2:76:5 | [Args(...)] | 3 | attributes.cs:76:28:76:30 | access to constant A |
-| attributes.cs:76:2:76:5 | [Args(...)] | 4 | attributes.cs:76:33:76:53 | array creation of type Int32[] |
-| attributes.cs:79:6:79:9 | [Args(...)] | 0 | attributes.cs:79:11:79:16 | ... + ... |
-| attributes.cs:79:6:79:9 | [Args(...)] | 1 | attributes.cs:79:19:79:39 | array creation of type Int32[] |
-| attributes.cs:79:6:79:9 | [Args(...)] | 2 | attributes.cs:79:42:79:45 | null |
-| attributes.cs:79:6:79:9 | [Args(...)] | 3 | attributes.cs:79:48:79:52 | (...) ... |
-| attributes.cs:79:6:79:9 | [Args(...)] | 4 | attributes.cs:79:55:79:58 | null |
+| attributes.cs:58:6:58:8 | [My2(...)] | 0 | attributes.cs:58:28:58:32 | false |
+| attributes.cs:58:6:58:8 | [My2(...)] | 1 | attributes.cs:58:13:58:16 | true |
+| attributes.cs:58:6:58:8 | [My2(...)] | 2 | attributes.cs:58:6:58:8 | 12 |
+| attributes.cs:58:6:58:8 | [My2(...)] | 3 | attributes.cs:58:22:58:22 | 1 |
+| attributes.cs:77:2:77:5 | [Args(...)] | 0 | attributes.cs:77:7:77:8 | 42 |
+| attributes.cs:77:2:77:5 | [Args(...)] | 1 | attributes.cs:77:11:77:14 | null |
+| attributes.cs:77:2:77:5 | [Args(...)] | 2 | attributes.cs:77:17:77:25 | typeof(...) |
+| attributes.cs:77:2:77:5 | [Args(...)] | 3 | attributes.cs:77:28:77:30 | access to constant A |
+| attributes.cs:77:2:77:5 | [Args(...)] | 4 | attributes.cs:77:33:77:53 | array creation of type Int32[] |
+| attributes.cs:80:6:80:9 | [Args(...)] | 0 | attributes.cs:80:11:80:16 | ... + ... |
+| attributes.cs:80:6:80:9 | [Args(...)] | 1 | attributes.cs:80:19:80:39 | array creation of type Int32[] |
+| attributes.cs:80:6:80:9 | [Args(...)] | 2 | attributes.cs:80:42:80:45 | null |
+| attributes.cs:80:6:80:9 | [Args(...)] | 3 | attributes.cs:80:48:80:52 | (...) ... |
+| attributes.cs:80:6:80:9 | [Args(...)] | 4 | attributes.cs:80:55:80:58 | null |
 namedArguments
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | Prop2 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | Prop2 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
@@ -119,5 +128,6 @@ namedArguments
 | attributes.cs:41:10:41:13 | [Args(...)] | Prop | attributes.cs:41:90:41:120 | array creation of type Object[] |
 | attributes.cs:57:6:57:16 | [My(...)] | x | attributes.cs:57:36:57:36 | 0 |
 | attributes.cs:57:6:57:16 | [My(...)] | y | attributes.cs:57:28:57:29 | "" |
-| attributes.cs:76:2:76:5 | [Args(...)] | Prop | attributes.cs:76:63:76:93 | array creation of type Object[] |
-| attributes.cs:79:6:79:9 | [Args(...)] | Prop | attributes.cs:79:68:79:98 | array creation of type Object[] |
+| attributes.cs:58:6:58:8 | [My2(...)] | X | attributes.cs:58:39:58:40 | 42 |
+| attributes.cs:77:2:77:5 | [Args(...)] | Prop | attributes.cs:77:63:77:93 | array creation of type Object[] |
+| attributes.cs:80:6:80:9 | [Args(...)] | Prop | attributes.cs:80:68:80:98 | array creation of type Object[] |

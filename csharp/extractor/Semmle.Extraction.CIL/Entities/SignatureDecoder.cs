@@ -1,6 +1,7 @@
 using System.Reflection.Metadata;
 using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -138,21 +139,28 @@ namespace Semmle.Extraction.CIL.Entities
         private class Modified : ITypeSignature
         {
             private readonly ITypeSignature unmodifiedType;
+            private readonly ITypeSignature modifier;
+            private readonly bool isRequired;
 
-            public Modified(ITypeSignature unmodifiedType)
+            public Modified(ITypeSignature unmodifiedType, ITypeSignature modifier, bool isRequired)
             {
                 this.unmodifiedType = unmodifiedType;
+                this.modifier = modifier;
+                this.isRequired = isRequired;
             }
 
             public void WriteId(TextWriter trapFile, GenericContext gc)
             {
                 unmodifiedType.WriteId(trapFile, gc);
+                trapFile.Write(isRequired ? " modreq(" : " modopt(");
+                modifier.WriteId(trapFile, gc);
+                trapFile.Write(")");
             }
         }
 
         ITypeSignature ISignatureTypeProvider<ITypeSignature, object>.GetModifiedType(ITypeSignature modifier, ITypeSignature unmodifiedType, bool isRequired)
         {
-            return new Modified(unmodifiedType);
+            return new Modified(unmodifiedType, modifier, isRequired);
         }
 
         private class Pinned : ITypeSignature
