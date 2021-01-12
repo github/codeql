@@ -12,9 +12,17 @@ import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.TaintTracking
 
 /*
- * This query is version specific to JXBrowser 6.x.x. The version is indirectly detected.
+ * This query is version specific to JXBrowser < 6.24. The version is indirectly detected.
  * In version 6.x.x the `Browser` class is in a different package compared to version 7.x.x.
  */
+
+/**
+ * Holds if a safe JXBrowser 6.x.x version is used, such as version 6.24.
+ * This is detected by the the presence of the `addBoundsListener` in the `Browser` class.
+ */
+private predicate isSafeJXBrowserVersion() {
+  exists(Method m | m.getDeclaringType() instanceof JXBrowser | m.hasName("addBoundsListener"))
+}
 
 /** The `com.teamdev.jxbrowser.chromium.Browser` class. */
 private class JXBrowser extends RefType {
@@ -69,5 +77,6 @@ private class JXBrowserTaintTracking extends TaintTracking::Configuration {
 from JXBrowserTaintTracking cfg, DataFlow::Node src
 where
   cfg.isSource(src) and
-  not cfg.hasFlow(src, _)
+  not cfg.hasFlow(src, _) and
+  not isSafeJXBrowserVersion()
 select src, "This JXBrowser instance allows man-in-the-middle attacks."
