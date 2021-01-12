@@ -37,16 +37,16 @@ from flask.views import View
 
 class ShowUser(View):
 
-    def dispatch_request(self, user_id):  # $ MISSING: requestHandler routedParameter=user_id
-        return "user_id: {}".format(user_id)
+    def dispatch_request(self, user_id):  # $ requestHandler routedParameter=user_id
+        return "user_id: {}".format(user_id)  # $ HttpResponse
 
-app.add_url_rule("/basic/user/<int:user_id>", view_func=ShowUser.as_view('show_user')) # $routeSetup="/basic/user/<int:user_id>"
+app.add_url_rule("/basic/user/<int:user_id>", view_func=ShowUser.as_view('show_user'))  # $routeSetup="/basic/user/<int:user_id>"
 
 
 class WithoutKnownRoute1(View):
     # For handler without known route, treat all parameters as routed parameters
     # (accepting that there might be a few FPs)
-    def dispatch_request(self, foo, not_routed=42):  # $ MISSING: requestHandler routedParameter=foo
+    def dispatch_request(self, foo, not_routed=42):  # $ requestHandler routedParameter=foo SPURIOUS: routedParameter=not_routed
         pass
 
 
