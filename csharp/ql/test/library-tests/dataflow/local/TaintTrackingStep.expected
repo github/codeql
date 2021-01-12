@@ -524,6 +524,14 @@
 | LocalDataFlow.cs:363:29:363:32 | [post] access to parameter args | LocalDataFlow.cs:364:27:364:30 | access to parameter args |
 | LocalDataFlow.cs:363:29:363:32 | access to parameter args | LocalDataFlow.cs:363:29:363:32 | call to operator implicit conversion |
 | LocalDataFlow.cs:363:29:363:32 | access to parameter args | LocalDataFlow.cs:364:27:364:30 | access to parameter args |
+| LocalDataFlow.cs:367:23:367:24 | b1 | LocalDataFlow.cs:371:13:371:14 | access to parameter b1 |
+| LocalDataFlow.cs:367:32:367:33 | b2 | LocalDataFlow.cs:374:17:374:18 | access to parameter b2 |
+| LocalDataFlow.cs:373:13:373:25 | SSA def(x) | LocalDataFlow.cs:376:35:376:35 | access to local variable x |
+| LocalDataFlow.cs:373:17:373:25 | "tainted" | LocalDataFlow.cs:373:13:373:25 | SSA def(x) |
+| LocalDataFlow.cs:376:35:376:35 | access to local variable x | LocalDataFlow.cs:382:9:382:17 | SSA phi(x) |
+| LocalDataFlow.cs:381:13:381:29 | SSA def(x) | LocalDataFlow.cs:382:9:382:17 | SSA phi(x) |
+| LocalDataFlow.cs:381:17:381:29 | "not tainted" | LocalDataFlow.cs:381:13:381:29 | SSA def(x) |
+| LocalDataFlow.cs:382:9:382:17 | SSA phi(x) | LocalDataFlow.cs:382:15:382:15 | access to local variable x |
 | SSA.cs:5:17:5:17 | SSA entry def(this.S) | SSA.cs:67:9:67:14 | access to field S |
 | SSA.cs:5:17:5:17 | this | SSA.cs:67:9:67:12 | this access |
 | SSA.cs:5:26:5:32 | tainted | SSA.cs:8:24:8:30 | access to parameter tainted |
