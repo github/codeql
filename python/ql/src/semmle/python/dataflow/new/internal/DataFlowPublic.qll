@@ -60,6 +60,17 @@ newtype TNode =
    */
   TKwUnpacked(CallNode call, CallableValue callable, string name) {
     call_unpacks(call, _, callable, name, _)
+  } or
+  /**
+   * A synthetic node representing that there may be an iterable element
+   * for `consumer` to consume.
+   */
+  TIterableElement(SequenceNode consumer) {
+    exists(Assign assign, SequenceNode target | target.getNode() = assign.getATarget() |
+      consumer = target
+      or
+      consumer = target.getAnElement() // use containts for deeper nesting
+    )
   }
 
 /** Helper for `Node::getEnclosingCallable`. */
@@ -317,6 +328,20 @@ class KwUnpacked extends Node, TKwUnpacked {
   override string toString() { result = "KwUnpacked " + name }
 
   override Location getLocation() { result = call.getLocation() }
+}
+
+/**
+ * A synthetic node representing an iterable element. Use for changing content type
+ * for instance from a `ListElement` to a `TupleElement`.
+ */
+class IterableElement extends Node, TIterableElement {
+  SequenceNode consumer;
+
+  IterableElement() { this = TIterableElement(consumer) }
+
+  override string toString() { result = "IterableElement" }
+
+  override Location getLocation() { result = consumer.getLocation() }
 }
 
 /**
