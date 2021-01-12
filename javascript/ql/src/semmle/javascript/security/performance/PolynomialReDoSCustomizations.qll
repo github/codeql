@@ -84,7 +84,13 @@ module PolynomialReDoS {
    */
   class StringLengthLimiter extends Sanitizer {
     StringLengthLimiter() {
-      this.(StringReplaceCall).isGlobal()
+      this.(StringReplaceCall).isGlobal() and
+      // not char classes - they don't remove any repeated pattern.
+      not exists(RegExpTerm root | root = this.(StringReplaceCall).getRegExp().getRoot() |
+        root instanceof RegExpCharacterClass
+        or
+        root instanceof RegExpCharacterClassEscape
+      )
       or
       exists(string name | name = "slice" or name = "substring" or name = "substr" |
         this.(DataFlow::MethodCallNode).getMethodName() = name
