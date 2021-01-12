@@ -59,7 +59,7 @@ from flask.views import MethodView
 
 class UserAPI(MethodView):
 
-    def get(self, user_id):  # $ MISSING: requestHandler routedParameter=user_id
+    def get(self, user_id):  # $ requestHandler routedParameter=user_id
         if user_id is None:
             # return a list of users
             pass
@@ -67,15 +67,15 @@ class UserAPI(MethodView):
             # expose a single user
             pass
 
-    def post(self):  # $ MISSING: requestHandler
+    def post(self):  # $ requestHandler
         # create a new user
         pass
 
-    def delete(self, user_id):  # $ MISSING: requestHandler routedParameter=user_id
+    def delete(self, user_id):  # $ requestHandler routedParameter=user_id
         # delete a single user
         pass
 
-    def put(self, user_id):  # $ MISSING: requestHandler routedParameter=user_id
+    def put(self, user_id):  # $ requestHandler routedParameter=user_id
         # update a single user
         pass
 
@@ -89,7 +89,7 @@ app.add_url_rule("/users/<int:user_id>", view_func=user_view, methods=["GET", "P
 class WithoutKnownRoute2(MethodView):
     # For handler without known route, treat all parameters as routed parameters
     # (accepting that there might be a few FPs)
-    def get(self, foo, not_routed=42):  # $ MISSING: requestHandler routedParameter=foo
+    def get(self, foo, not_routed=42):  # $ requestHandler routedParameter=foo SPURIOUS: routedParameter=not_routed
         pass
 
 

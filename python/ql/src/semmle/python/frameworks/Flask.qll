@@ -256,6 +256,27 @@ private module FlaskModel {
         /** Gets a reference to the `flask.views.View` class or any subclass. */
         DataFlow::Node subclassRef() { result = subclassRef(DataFlow::TypeTracker::end()) }
       }
+
+      /**
+       * Provides models for the `flask.views.MethodView` class and subclasses.
+       *
+       * See https://flask.palletsprojects.com/en/1.1.x/views/#method-based-dispatching.
+       */
+      module MethodView {
+        /** Gets a reference to the `flask.views.View` class or any subclass. */
+        private DataFlow::Node subclassRef(DataFlow::TypeTracker t) {
+          t.start() and
+          result = views_attr("MethodView")
+          or
+          // subclasses in project code
+          result.asExpr().(ClassExpr).getABase() = subclassRef(t.continue()).asExpr()
+          or
+          exists(DataFlow::TypeTracker t2 | result = subclassRef(t2).track(t2, t))
+        }
+
+        /** Gets a reference to the `flask.views.View` class or any subclass. */
+        DataFlow::Node subclassRef() { result = subclassRef(DataFlow::TypeTracker::end()) }
+      }
     }
   }
 
@@ -375,6 +396,19 @@ private module FlaskModel {
 
     /** Gets a reference to the result of calling the `as_view` classmethod of this class. */
     DataFlow::Node asViewResult() { result = asViewResult(DataFlow::TypeTracker::end()) }
+  }
+
+  class FlaskMethodViewClassDef extends FlaskViewClassDef {
+    FlaskMethodViewClassDef() { this.getABase() = flask::views::MethodView::subclassRef().asExpr() }
+
+    override Function getARequestHandler() {
+      result = super.getARequestHandler()
+      or
+      // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
+      // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
+      result = this.getAMethod() and
+      result.getName() = HTTP::httpVerbLower()
+    }
   }
 
   private string werkzeug_rule_re() {
