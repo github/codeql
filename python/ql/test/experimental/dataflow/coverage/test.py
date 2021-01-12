@@ -524,6 +524,32 @@ def test_unpacking_assignment():
     SINK_F(b)
 
 
+@expects(3)
+def test_nested_unpacking_assignment():
+    t = (SOURCE, (NONSOURCE, SOURCE))
+    a, (b, c) = t
+    SINK(a)
+    SINK_F(b)
+    SINK(c)  # Flow not found
+
+
+@expects(2)
+def test_deeply_nested_unpacking_assignment():
+    t = [[[[SOURCE]]], NONSOURCE]
+    [[[a]]], b = t
+    SINK(a)  # Flow not found
+    SINK_F(b)
+
+
+@expects(3)
+def test_iterated_unpacking_assignment():
+    t = (SOURCE, SOURCE, NONSOURCE)
+    a, *b, c = t
+    SINK(a)
+    SINK(b[0])  # Flow not found
+    SINK_F(c)
+
+
 def test_deep_callgraph():
     # port of python/ql/test/library-tests/taint/general/deep.py
 
