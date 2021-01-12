@@ -1128,7 +1128,7 @@ private module Cached {
   ) {
     exists(Ssa::Definition def0, ControlFlow::BasicBlock bb, int i |
       def = def0.getAnUltimateDefinition() and
-      lastRef(def0, bb, i) and
+      lastRefExit(def0, bb, i) and
       capturedReadOut(bb, i, def0.getSourceVariable(), cdef.getSourceVariable(), cdef.getCall(),
         additionalCalls)
     )
@@ -1197,22 +1197,41 @@ private module Cached {
     variableRead(bb2, i2, _, any(ReadKind rk | rk.isPseudo()))
   }
 
-  private predicate reachesLastRef(Definition def, ControlFlow::BasicBlock bb, int i) {
-    lastRef(def, bb, i)
+  private predicate reachesLastRefExit(Definition def, ControlFlow::BasicBlock bb, int i) {
+    lastRefExit(def, bb, i)
     or
     exists(ControlFlow::BasicBlock bb0, int i0 |
-      reachesLastRef(def, bb0, i0) and
-      variableRead(bb0, i0, _, any(ReadKind rk | rk.isPseudo())) and
+      reachesLastRefExit(def, bb0, i0) and
+      adjacentDefPseudoRead(def, bb, i, bb0, i0)
+    )
+  }
+
+  private predicate reachesLastRefRedef(
+    Definition def, ControlFlow::BasicBlock bb, int i, Definition next
+  ) {
+    lastRefRedef(def, bb, i, next)
+    or
+    exists(ControlFlow::BasicBlock bb0, int i0 |
+      reachesLastRefRedef(def, bb0, i0, next) and
       adjacentDefPseudoRead(def, bb, i, bb0, i0)
     )
   }
 
   cached
+  predicate lastRefBeforeRedef(Definition def, ControlFlow::BasicBlock bb, int i, Definition next) {
+    reachesLastRefRedef(def, bb, i, next) and
+    not variableRead(bb, i, def.getSourceVariable(), any(ReadKind rk | rk.isPseudo()))
+  }
+
+  cached
   predicate lastReadSameVar(Definition def, ControlFlow::Node cfn) {
     exists(ControlFlow::BasicBlock bb, int i |
-      reachesLastRef(def, bb, i) and
       variableRead(bb, i, _, ActualRead()) and
       cfn = bb.getNode(i)
+    |
+      reachesLastRefExit(def, bb, i)
+      or
+      lastRefBeforeRedef(def, bb, i, _)
     )
   }
 
@@ -1221,9 +1240,12 @@ private module Cached {
     p.isOutOrRef() and
     exists(Ssa::Definition def0, ControlFlow::BasicBlock bb, int i |
       def = def0.getAnUltimateDefinition() and
-      reachesLastRef(def0, bb, i) and
       variableRead(bb, i, def0.getSourceVariable(), OutRefExitRead()) and
       p = def0.getSourceVariable().getAssignable()
+    |
+      reachesLastRefExit(def0, bb, i)
+      or
+      lastRefBeforeRedef(def0, bb, i, _)
     )
   }
 }
