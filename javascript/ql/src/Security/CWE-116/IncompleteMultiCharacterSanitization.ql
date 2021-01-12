@@ -89,13 +89,13 @@ predicate matchesDangerousPrefix(EmptyReplaceRegExpTerm t, string prefix, string
     kind = "path injection" and
     // upwards navigation
     prefix = ["/..", "../"] and
-    not t.getSuccessor*().getAMatchedString().regexpMatch("(?i).*[a-z0-9_-]+.*") // explicit path name mentions make this an unlikely sanitizer
+    not t.getSuccessor*().getAMatchedString().regexpMatch("(?is).*[a-z0-9_-].*") // explicit path name mentions make this an unlikely sanitizer
     or
     kind = "HTML element injection" and
     (
       // comments
       prefix = "<!--" and
-      not t.getSuccessor*().getAMatchedString().regexpMatch("(?i).*[a-z0-9_]+.*") // explicit comment content mentions make this an unlikely sanitizer
+      not t.getSuccessor*().getAMatchedString().regexpMatch("(?is).*[a-z0-9_].*") // explicit comment content mentions make this an unlikely sanitizer
       or
       // specific tags
       prefix = "<" + ["iframe", "script", "cript", "scrip", "style"] // the `cript|scrip` case has been observed in the wild several times
@@ -159,6 +159,5 @@ where
   not replace.getAMethodCall*().flowsTo(replace.getReceiver()) and
   // avoid anchored terms
   not exists(RegExpAnchor a | regexp = a.getRootTerm())
-select replace,
-  "This string may still contain a substring that starts matching at $@, which may cause a " + kind +
-    " vulnerability.", dangerous, prefix
+select replace, "This string may still contain $@, which may cause a " + kind + " vulnerability.",
+  dangerous, prefix
