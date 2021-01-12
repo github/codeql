@@ -2,7 +2,7 @@
 #define NULL ((void*)0)
 
 #define assert(x) if (!(x)) __assert_fail(#x,__FILE__,__LINE__)
-void __assert_fail(const char *assertion, const char *file, int line) {  }
+void __assert_fail(const char *assertion, const char *file, int line);
 
 void aFakeFailed_1(int file, int line)
 {
