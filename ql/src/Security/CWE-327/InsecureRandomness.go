@@ -9,7 +9,7 @@ var charset = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
 func generatePassword() string {
 	s := make([]rune, 20)
 	for i := range s {
-		s[i] = charset[rand.Intn(len(charset))] // BAD: weak RNG used to generate password
+		s[i] = charset[rand.Intn(len(charset))]
 	}
 	return string(s)
 }

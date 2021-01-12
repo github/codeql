@@ -9,10 +9,11 @@
  */
 
 import go
-import InsecureRandomnessCustomizations::InsecureRandomness
+import semmle.go.security.InsecureRandomness::InsecureRandomness
 import DataFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ is a weak key used in cryptographic algorithm.",
-  source.getNode(), "Random number"
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, string kind
+where cfg.hasFlowPath(source, sink) and cfg.isSink(sink.getNode(), kind)
+select sink.getNode(), source, sink,
+  "$@ generated with a cryptographically weak RNG is used in $@.", source.getNode(),
+  "A random number", sink.getNode(), kind

@@ -1,10 +1,20 @@
 edges
-| InsecureRandomness.go:24:12:24:40 | call to New : pointer type | InsecureRandomness.go:27:25:27:29 | nonce |
-| InsecureRandomness.go:24:12:24:40 | call to New : pointer type | InsecureRandomness.go:27:32:27:36 | nonce |
+| sample.go:15:24:15:63 | type conversion : string | sample.go:16:9:16:15 | slice expression : slice type |
+| sample.go:15:49:15:61 | call to Uint32 : uint32 | sample.go:15:24:15:63 | type conversion : string |
+| sample.go:16:9:16:15 | slice expression : slice type | sample.go:26:25:26:30 | call to Guid |
+| sample.go:34:12:34:40 | call to New : pointer type | sample.go:37:25:37:29 | nonce |
+| sample.go:34:12:34:40 | call to New : pointer type | sample.go:37:32:37:36 | nonce |
 nodes
-| InsecureRandomness.go:24:12:24:40 | call to New : pointer type | semmle.label | call to New : pointer type |
-| InsecureRandomness.go:27:25:27:29 | nonce | semmle.label | nonce |
-| InsecureRandomness.go:27:32:27:36 | nonce | semmle.label | nonce |
+| InsecureRandomness.go:12:18:12:40 | call to Intn | semmle.label | call to Intn |
+| sample.go:15:24:15:63 | type conversion : string | semmle.label | type conversion : string |
+| sample.go:15:49:15:61 | call to Uint32 : uint32 | semmle.label | call to Uint32 : uint32 |
+| sample.go:16:9:16:15 | slice expression : slice type | semmle.label | slice expression : slice type |
+| sample.go:26:25:26:30 | call to Guid | semmle.label | call to Guid |
+| sample.go:34:12:34:40 | call to New : pointer type | semmle.label | call to New : pointer type |
+| sample.go:37:25:37:29 | nonce | semmle.label | nonce |
+| sample.go:37:32:37:36 | nonce | semmle.label | nonce |
 #select
-| InsecureRandomness.go:27:25:27:29 | nonce | InsecureRandomness.go:24:12:24:40 | call to New : pointer type | InsecureRandomness.go:27:25:27:29 | nonce | $@ is a weak key used in cryptographic algorithm. | InsecureRandomness.go:24:12:24:40 | call to New | Random number |
-| InsecureRandomness.go:27:32:27:36 | nonce | InsecureRandomness.go:24:12:24:40 | call to New : pointer type | InsecureRandomness.go:27:32:27:36 | nonce | $@ is a weak key used in cryptographic algorithm. | InsecureRandomness.go:24:12:24:40 | call to New | Random number |
+| InsecureRandomness.go:12:18:12:40 | call to Intn | InsecureRandomness.go:12:18:12:40 | call to Intn | InsecureRandomness.go:12:18:12:40 | call to Intn | $@ generated with a cryptographically weak RNG is used in $@. | InsecureRandomness.go:12:18:12:40 | call to Intn | A random number | InsecureRandomness.go:12:18:12:40 | call to Intn | a password-related function |
+| sample.go:26:25:26:30 | call to Guid | sample.go:15:49:15:61 | call to Uint32 : uint32 | sample.go:26:25:26:30 | call to Guid | $@ generated with a cryptographically weak RNG is used in $@. | sample.go:15:49:15:61 | call to Uint32 | A random number | sample.go:26:25:26:30 | call to Guid | this cryptographic algorithm |
+| sample.go:37:25:37:29 | nonce | sample.go:34:12:34:40 | call to New : pointer type | sample.go:37:25:37:29 | nonce | $@ generated with a cryptographically weak RNG is used in $@. | sample.go:34:12:34:40 | call to New | A random number | sample.go:37:25:37:29 | nonce | this cryptographic algorithm |
+| sample.go:37:32:37:36 | nonce | sample.go:34:12:34:40 | call to New : pointer type | sample.go:37:32:37:36 | nonce | $@ generated with a cryptographically weak RNG is used in $@. | sample.go:34:12:34:40 | call to New | A random number | sample.go:37:32:37:36 | nonce | this cryptographic algorithm |
