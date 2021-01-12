@@ -272,3 +272,50 @@ unsigned char * noBadResize_2_7(unsigned char * buffer,size_t currentSize,size_t
 	myASSERT_2(buffer);
 	return buffer;
 }
+
+unsigned char *goodResize_3_1(unsigned char *buffer, size_t currentSize, size_t newSize)
+{
+	// GOOD: this way we will exclude possible memory leak [FALSE POSITIVE]
+	unsigned char *tmp = buffer;
+	if (currentSize < newSize)
+	{
+		buffer = (unsigned char *)realloc(buffer, newSize);
+		if (buffer == NULL)
+		{
+			free(tmp);
+			return NULL;
+		} 
+	}
+
+	return buffer;
+}
+
+unsigned char *goodResize_3_2(unsigned char *buffer, size_t currentSize, size_t newSize)
+{
+	// GOOD: this way we will exclude possible memory leak [FALSE POSITIVE]
+	unsigned char *tmp = buffer;
+	if (currentSize < newSize)
+	{
+		tmp = (unsigned char *)realloc(tmp, newSize);
+		if (tmp != 0)
+		{
+			buffer = tmp;
+		} 
+	}
+
+	return buffer;
+}
+
+void abort(void);
+
+unsigned char *noBadResize_4_1(unsigned char *buffer, size_t currentSize, size_t newSize)
+{
+	// GOOD: program to end [FALSE POSITIVE]
+	if (currentSize < newSize)
+	{
+		if (buffer = (unsigned char *)realloc(buffer, newSize))
+			abort();
+	}
+
+	return buffer;
+}
