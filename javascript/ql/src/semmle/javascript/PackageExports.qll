@@ -7,6 +7,16 @@
 import javascript
 
 /**
+ * Gets a parameter that is a library input to a top-level package.
+ */
+DataFlow::ParameterNode getAnLibraryInputParameter() {
+  exists(int bound, DataFlow::FunctionNode func |
+    func = getAValueExportedBy(getTopmostPackageJSON()).getABoundFunctionValue(bound) and
+    result = func.getParameter(any(int arg | arg >= bound))
+  )
+}
+
+/**
  * Gets the number of occurrences of "/" in `path`.
  */
 bindingset[path]

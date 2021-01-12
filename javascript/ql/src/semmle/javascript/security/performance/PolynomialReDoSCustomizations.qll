@@ -122,14 +122,7 @@ module PolynomialReDoS {
    * A parameter of an exported function, seen as a source for polynomial-redos.
    */
   class ExternalInputSource extends Source, DataFlow::ParameterNode {
-    ExternalInputSource() {
-      exists(int bound, DataFlow::FunctionNode func |
-        func =
-          Exports::getAValueExportedBy(Exports::getTopmostPackageJSON())
-              .getABoundFunctionValue(bound) and
-        this = func.getParameter(any(int arg | arg >= bound))
-      )
-    }
+    ExternalInputSource() { this = Exports::getAnLibraryInputParameter() }
 
     override string getKind() { result = "library" }
 
