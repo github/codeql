@@ -95,6 +95,13 @@ class InstanceVariable extends Variable, TInstanceVariable {
   final override InstanceVariableAccess getAnAccess() { result.getVariable() = this }
 }
 
+/** A class variable. */
+class ClassVariable extends Variable, TClassVariable {
+  override ClassVariable::Range range;
+
+  final override ClassVariableAccess getAnAccess() { result.getVariable() = this }
+}
+
 /** An access to a variable. */
 class VariableAccess extends Expr {
   override VariableAccess::Range range;
@@ -213,3 +220,12 @@ class InstanceVariableAccess extends VariableAccess, @token_instance_variable {
   final override string getAPrimaryQlClass() { result = "InstanceVariableAccess" }
 }
 
+/** An access to a class variable. */
+class ClassVariableAccess extends VariableAccess, @token_class_variable {
+  final override ClassVariableAccess::Range range;
+
+  /** Gets the variable this identifier refers to. */
+  final override ClassVariable getVariable() { result = range.getVariable() }
+
+  final override string getAPrimaryQlClass() { result = "ClassVariableAccess" }
+}

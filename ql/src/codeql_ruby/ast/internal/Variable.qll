@@ -145,6 +145,7 @@ private module Cached {
   cached
   newtype TVariable =
     TGlobalVariable(string name) { name = any(Generated::GlobalVariable var).getValue() } or
+    TClassVariable(VariableScope scope, string name, Generated::AstNode decl) { none() } or
     TInstanceVariable(VariableScope scope, string name, boolean instance, Generated::AstNode decl) {
       decl =
         min(Generated::InstanceVariable other |
@@ -477,6 +478,22 @@ module InstanceVariable {
   }
 }
 
+module ClassVariable {
+  class Range extends Variable::Range, TClassVariable {
+    private ModuleOrClassScope scope;
+    private string name;
+    private Generated::AstNode decl;
+
+    Range() { this = TClassVariable(scope, name, decl) }
+
+    final override string getName() { result = name }
+
+    final override Location getLocation() { result = decl.getLocation() }
+
+    final override VariableScope getDeclaringScope() { result = scope }
+  }
+}
+
 module VariableAccess {
   abstract class Range extends Expr::Range {
     abstract Variable getVariable();
@@ -525,5 +542,15 @@ module InstanceVariableAccess {
     }
 
     final override InstanceVariable getVariable() { result = variable }
+  }
+}
+
+module ClassVariableAccess {
+  class Range extends VariableAccess::Range, @token_class_variable {
+    ClassVariable variable;
+
+    Range() { this.(Generated::ClassVariable).getValue() = variable.getName() }
+
+    final override ClassVariable getVariable() { result = variable }
   }
 }
