@@ -441,6 +441,28 @@ private module Cached {
   }
 
   /**
+   * Holds if the node at index `i` in `bb` is a last reference to SSA definition
+   * `def`. The reference is last because it can reach another write `next`,
+   * without passing through another read or write.
+   */
+  cached
+  predicate lastRefRedef(Definition def, BasicBlock bb, int i, Definition next) {
+    exists(int rnk, SourceVariable v, int j | rnk = ssaDefRank(def, v, bb, i, _) |
+      // Next reference to `v` inside `bb` is a write
+      next.definesAt(v, bb, j) and
+      rnk + 1 = ssaRefRank(bb, j, v, SsaDef())
+      or
+      // Can reach a write using one or more steps
+      rnk = maxSsaRefRank(bb, v) and
+      exists(BasicBlock bb2 |
+        varBlockReaches(def, bb, bb2) and
+        next.definesAt(v, bb2, j) and
+        1 = ssaRefRank(bb2, j, v, SsaDef())
+      )
+    )
+  }
+
+  /**
    * Holds if the node at index `i` in `bb` is a last reference to SSA
    * definition `def`.
    *
@@ -450,24 +472,16 @@ private module Cached {
    */
   cached
   predicate lastRef(Definition def, BasicBlock bb, int i) {
-    exists(int rnk, SourceVariable v | rnk = ssaDefRank(def, v, bb, i, _) |
-      // Next reference to `v` inside `bb` is a write
-      rnk + 1 = ssaRefRank(bb, _, v, SsaDef())
+    lastRefRedef(def, bb, i, _)
+    or
+    exists(SourceVariable v | ssaDefRank(def, v, bb, i, _) = maxSsaRefRank(bb, v) |
+      // Can reach exit directly
+      bb instanceof ExitBasicBlock
       or
-      // No more references to `v` inside `bb`
-      rnk = maxSsaRefRank(bb, v) and
-      (
-        // Can reach exit directly
-        bb instanceof ExitBasicBlock
-        or
-        exists(BasicBlock bb2 | varBlockReaches(def, bb, bb2) |
-          // Can reach a write using one or more steps
-          1 = ssaRefRank(bb2, _, def.getSourceVariable(), SsaDef())
-          or
-          // Can reach a block using one or more steps, where `def` is no longer live
-          not defOccursInBlock(def, bb2, _) and
-          not ssaDefReachesEndOfBlock(bb2, def, _)
-        )
+      // Can reach a block using one or more steps, where `def` is no longer live
+      exists(BasicBlock bb2 | varBlockReaches(def, bb, bb2) |
+        not defOccursInBlock(def, bb2, _) and
+        not ssaDefReachesEndOfBlock(bb2, def, _)
       )
     )
   }

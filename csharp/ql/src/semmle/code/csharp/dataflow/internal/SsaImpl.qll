@@ -6,7 +6,7 @@ import csharp
 import SsaImplCommon
 
 /** A classification of variable reads. */
-newtype TReadKind =
+private newtype TReadKind =
   /** An actual read. */
   ActualRead() or
   /**
@@ -49,7 +49,7 @@ newtype TReadKind =
   RefReadBeforeWrite()
 
 /** A classification of variable reads. */
-class ReadKind extends TReadKind {
+private class ReadKind extends TReadKind {
   string toString() {
     this = ActualRead() and
     result = "ActualRead"
@@ -199,7 +199,7 @@ private module SourceVariableImpl {
     rk = RefReadBeforeWrite()
   }
 
-  private predicate outRefExitRead(ControlFlow::BasicBlock bb, int i, LocalScopeSourceVariable v) {
+  predicate outRefExitRead(ControlFlow::BasicBlock bb, int i, LocalScopeSourceVariable v) {
     exists(ControlFlow::Nodes::AnnotatedExitNode exit |
       exit.isNormal() and
       exists(LocalScopeVariable lsv |
@@ -1130,7 +1130,6 @@ private module Cached {
   ) {
     exists(Ssa::Definition def0, ControlFlow::BasicBlock bb, int i |
       def = def0.getAnUltimateDefinition() and
-      lastRef(def0, bb, i) and
       capturedReadOut(bb, i, def0.getSourceVariable(), cdef.getSourceVariable(), cdef.getCall(),
         additionalCalls)
     )
@@ -1199,12 +1198,28 @@ private module Cached {
     variableRead(bb2, i2, _, any(ReadKind rk | rk.isPseudo()))
   }
 
+  private predicate reachesLastRefRedef(
+    Definition def, ControlFlow::BasicBlock bb, int i, Definition next
+  ) {
+    lastRefRedef(def, bb, i, next)
+    or
+    exists(ControlFlow::BasicBlock bb0, int i0 |
+      reachesLastRefRedef(def, bb0, i0, next) and
+      adjacentDefPseudoRead(def, bb, i, bb0, i0)
+    )
+  }
+
+  cached
+  predicate lastRefBeforeRedef(Definition def, ControlFlow::BasicBlock bb, int i, Definition next) {
+    reachesLastRefRedef(def, bb, i, next) and
+    not variableRead(bb, i, def.getSourceVariable(), any(ReadKind rk | rk.isPseudo()))
+  }
+
   private predicate reachesLastRef(Definition def, ControlFlow::BasicBlock bb, int i) {
     lastRef(def, bb, i)
     or
     exists(ControlFlow::BasicBlock bb0, int i0 |
       reachesLastRef(def, bb0, i0) and
-      variableRead(bb0, i0, _, any(ReadKind rk | rk.isPseudo())) and
       adjacentDefPseudoRead(def, bb, i, bb0, i0)
     )
   }
@@ -1221,11 +1236,12 @@ private module Cached {
   cached
   predicate isLiveOutRefParameterDefinition(Ssa::Definition def, Parameter p) {
     p.isOutOrRef() and
-    exists(Ssa::Definition def0, ControlFlow::BasicBlock bb, int i |
+    exists(Ssa::SourceVariable v, Ssa::Definition def0, ControlFlow::BasicBlock bb, int i |
+      v = def.getSourceVariable() and
+      p = v.getAssignable() and
       def = def0.getAnUltimateDefinition() and
-      reachesLastRef(def0, bb, i) and
-      variableRead(bb, i, def0.getSourceVariable(), OutRefExitRead()) and
-      p = def0.getSourceVariable().getAssignable()
+      ssaDefReachesRead(_, def0, bb, i) and
+      outRefExitRead(bb, i, v)
     )
   }
 }
