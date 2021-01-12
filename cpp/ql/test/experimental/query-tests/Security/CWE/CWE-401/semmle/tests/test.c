@@ -310,7 +310,7 @@ void abort(void);
 
 unsigned char *noBadResize_4_1(unsigned char *buffer, size_t currentSize, size_t newSize)
 {
-	// GOOD: program to end [FALSE POSITIVE]
+	// GOOD: program to end
 	if (currentSize < newSize)
 	{
 		if (buffer = (unsigned char *)realloc(buffer, newSize))
