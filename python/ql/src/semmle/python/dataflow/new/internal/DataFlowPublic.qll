@@ -472,6 +472,8 @@ newtype TContent =
   /** An object attribute. */
   TAttributeContent(string attr) { attr = any(Attribute a).getName() }
 
+class AbstractedContent = TListElementContent or TSetElementContent or TDictionaryElementAnyContent;
+
 /**
  * A data-flow value can have associated content.
  * If the value is a collection, it can have elements,

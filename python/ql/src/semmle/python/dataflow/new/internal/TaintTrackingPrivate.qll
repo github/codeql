@@ -57,7 +57,7 @@ predicate concatStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
  * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to subscripting.
  */
 predicate subscriptStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
-  nodeTo.getNode().(SubscriptNode).getObject() = nodeFrom.getNode()
+  subscriptReadStep(nodeFrom, any(DataFlow::AbstractedContent c), nodeTo)
 }
 
 /**
