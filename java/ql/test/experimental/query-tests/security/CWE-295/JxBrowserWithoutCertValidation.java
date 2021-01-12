@@ -3,7 +3,7 @@ import com.teamdev.jxbrowser.chromium.LoadHandler;
 import com.teamdev.jxbrowser.chromium.LoadParams;
 import com.teamdev.jxbrowser.chromium.CertificateErrorParams;
 
-public class JXBrowserWithoutCertValidation {
+public class JxBrowserWithoutCertValidation {
 
     public static void main(String[] args) {
 
