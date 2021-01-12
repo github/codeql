@@ -5,10 +5,10 @@ void sink(...);
 class MyValue
 {
 public:
-	MyValue(int _x) : x(_x) {}; // taint flows directly from _x to x
-	MyValue(int _x, bool ex) : MyValue(_x) {}; // taint flows indirectly from _x to x
-	MyValue(int _x, int _y) : MyValue(_x + _y) {}; // taint flows indirectly from _x to x
-	MyValue(int _x, bool ex1, bool ex2) : MyValue(0) {}; // taint doesn't flow to _x
+	MyValue(int _x) : x(_x) {}; // taint flows from parameter `_x` to member variable `x`
+	MyValue(int _x, bool ex) : MyValue(_x) {}; // taint flows from parameter `_x` to member variable `x`
+	MyValue(int _x, int _y) : MyValue(_x + _y) {}; // taint flows from parameters `_x` and `_y` to member variable `x`
+	MyValue(int _x, bool ex1, bool ex2) : MyValue(0) {}; // taint doesn't flow from parameter `_x`
 
 	int x;
 };
@@ -16,7 +16,7 @@ public:
 class MyDerivedValue : public MyValue
 {
 public:
-	MyDerivedValue(bool ex, int _x) : MyValue(_x) {}; // taint flows indirectly from _x to x
+	MyDerivedValue(bool ex, int _x) : MyValue(_x) {}; // taint flows from parameter `_x` to member variable `x`
 };
 
 void test_inits()
