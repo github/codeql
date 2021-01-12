@@ -905,6 +905,8 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   posOverflowStoreStep(nodeFrom, c, nodeTo)
   or
   kwOverflowStoreStep(nodeFrom, c, nodeTo)
+  or
+  jsonLoadsStoreStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from an element of a list to the list. */
@@ -1023,6 +1025,21 @@ predicate kwOverflowStoreStep(CfgNode nodeFrom, DictionaryElementContent c, Node
     nodeFrom.asCfgNode() = getKeywordOverflowArg(call, callable, key) and
     nodeTo = TKwOverflowNode(call, callable) and
     c.getKey() = key
+  )
+}
+
+/**
+ * Simulation of flow summary for `json.loads`.
+ */
+predicate jsonLoadsStoreStep(CfgNode nodeFrom, Content c, Node nodeTo) {
+  exists(CallNode call, ControlFlowNode json |
+    json.isAttribute() and
+    json.getNode().(Attribute).getName() = "loads" and
+    json.getNode().(Attribute).getObject().(Name).getId() = "json" and
+    call.getFunction() = json and
+    nodeFrom.asCfgNode() = call.getArg(0) and
+    nodeTo.asCfgNode() = call and
+    c instanceof ListElementContent
   )
 }
 
