@@ -60,4 +60,23 @@ module Couchbase {
       inp.isParameter(0) and outp.isResult()
     }
   }
+
+  /**
+   * A query used in an API function acting on a `Bucket` or `Cluster` struct of v1 of
+   * the official Couchbase Go library, gocb.
+   */
+  private class CouchbaseV1Query extends NoSQL::Query::Range {
+    CouchbaseV1Query() {
+      // func (b *Bucket) ExecuteAnalyticsQuery(q *AnalyticsQuery, params interface{}) (AnalyticsResults, error)
+      // func (b *Bucket) ExecuteN1qlQuery(q *N1qlQuery, params interface{}) (QueryResults, error)
+      // func (c *Cluster) ExecuteAnalyticsQuery(q *AnalyticsQuery, params interface{}) (AnalyticsResults, error)
+      // func (c *Cluster) ExecuteN1qlQuery(q *N1qlQuery, params interface{}) (QueryResults, error)
+      exists(Method meth, string structName, string methodName |
+        structName in ["Bucket", "Cluster"] and
+        methodName in ["ExecuteN1qlQuery", "ExecuteAnalyticsQuery"] and
+        meth.hasQualifiedName(packagePathV1(), structName, methodName) and
+        this = meth.getACall().getArgument(0)
+      )
+    }
+  }
 }
