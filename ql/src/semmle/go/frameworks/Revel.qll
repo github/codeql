@@ -64,8 +64,7 @@ module Revel {
   private class UserControlledRequestMethod extends UntrustedFlowSource::Range,
     DataFlow::MethodCallNode {
     UserControlledRequestMethod() {
-      this
-          .getTarget()
+      this.getTarget()
           .hasQualifiedName(packagePath(), "Request",
             [
               "FormValue", "PostFormValue", "GetQuery", "GetForm", "GetMultipartForm", "GetBody",

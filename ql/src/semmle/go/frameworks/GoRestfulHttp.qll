@@ -9,12 +9,11 @@ private module GoRestfulHttp {
    */
   private class GoRestfulSourceMethod extends Method {
     GoRestfulSourceMethod() {
-      this
-          .hasQualifiedName(package("github.com/emicklei/go-restful", ""), "Request",
-            [
-              "QueryParameters", "QueryParameter", "BodyParameter", "HeaderParameter",
-              "PathParameter", "PathParameters"
-            ])
+      this.hasQualifiedName(package("github.com/emicklei/go-restful", ""), "Request",
+        [
+          "QueryParameters", "QueryParameter", "BodyParameter", "HeaderParameter", "PathParameter",
+          "PathParameters"
+        ])
     }
   }
 
@@ -31,8 +30,7 @@ private module GoRestfulHttp {
   private class GoRestfulReadEntitySource extends UntrustedFlowSource::Range {
     GoRestfulReadEntitySource() {
       exists(DataFlow::MethodCallNode call |
-        call
-            .getTarget()
+        call.getTarget()
             .hasQualifiedName(package("github.com/emicklei/go-restful", ""), "Request", "ReadEntity")
       |
         this = FunctionOutput::parameter(0).getExitNode(call)

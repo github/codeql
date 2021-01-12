@@ -73,9 +73,8 @@ module BeegoOrm {
   private class StringFieldSource extends StoredXss::Source {
     StringFieldSource() {
       exists(Method m |
-        m
-            .hasQualifiedName(packagePath(), ["JSONField", "JsonbField", "TextField"],
-              ["RawValue", "String", "Value"])
+        m.hasQualifiedName(packagePath(), ["JSONField", "JsonbField", "TextField"],
+          ["RawValue", "String", "Value"])
       |
         this = m.getACall().getResult()
       )
@@ -86,12 +85,11 @@ module BeegoOrm {
     SeterSource() {
       exists(Method impl |
         // All and One are exclusive to QuerySeter, QueryRow[s] are exclusive to RawSeter, the rest are common.
-        impl
-            .implements(packagePath(), ["QuerySeter", "RawSeter"],
-              [
-                "All", "One", "Values", "ValuesList", "ValuesFlat", "RowsToMap", "RowsToStruct",
-                "QueryRow", "QueryRows"
-              ])
+        impl.implements(packagePath(), ["QuerySeter", "RawSeter"],
+          [
+            "All", "One", "Values", "ValuesList", "ValuesFlat", "RowsToMap", "RowsToStruct",
+            "QueryRow", "QueryRows"
+          ])
       |
         this = FunctionOutput::parameter(0).getExitNode(impl.getACall())
       )
