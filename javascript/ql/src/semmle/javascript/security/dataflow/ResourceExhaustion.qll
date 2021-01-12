@@ -19,34 +19,27 @@ module ResourceExhaustion {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "ResourceExhaustion" }
 
-    override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-      source.(Source).getAFlowLabel() = label
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-      sink.(Sink).getAFlowLabel() = label
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isAdditionalFlowStep(
-      DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,
-      DataFlow::FlowLabel dstlabel
-    ) {
-      dstlabel instanceof Label::Number and
+    override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node dst) {
       isNumericFlowStep(src, dst)
       or
       // reuse most existing taint steps
-      super.isAdditionalFlowStep(src, dst) and
-      not dst.asExpr() instanceof AddExpr and
-      if dst.(DataFlow::MethodCallNode).calls(src, "toString")
-      then dstlabel.isTaint()
-      else srclabel = dstlabel
+      isRestrictedAdditionalTaintStep(src, dst)
     }
 
     override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
       guard instanceof LoopBoundInjection::LengthCheckSanitizerGuard or
-      guard instanceof UpperBoundsCheckSanitizerGuard or
-      guard instanceof TypeTestGuard
+      guard instanceof UpperBoundsCheckSanitizerGuard
     }
+  }
+
+  predicate isRestrictedAdditionalTaintStep(DataFlow::Node src, DataFlow::Node dst) {
+    any(TaintTracking::AdditionalTaintStep dts).step(src, dst) and
+    not dst.asExpr() instanceof AddExpr and
+    not dst.(DataFlow::MethodCallNode).calls(src, "toString")
   }
 
   /**
