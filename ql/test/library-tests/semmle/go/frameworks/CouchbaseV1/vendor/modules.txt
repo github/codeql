@@ -1,0 +1,33 @@
+# github.com/golang/snappy v0.0.2
+## explicit
+github.com/golang/snappy
+# github.com/google/uuid v1.1.4
+## explicit
+github.com/google/uuid
+# github.com/opentracing/opentracing-go v1.2.0
+## explicit
+github.com/opentracing/opentracing-go
+# github.com/pkg/errors v0.9.1
+## explicit
+github.com/pkg/errors
+# golang.org/x/net v0.0.0-20201224014010-6772e930b67b
+## explicit
+golang.org/x/net
+# golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
+## explicit
+golang.org/x/sync
+# gopkg.in/couchbase/gocb.v1 v1.6.7
+## explicit
+gopkg.in/couchbase/gocb.v1
+# gopkg.in/couchbase/gocbcore.v7 v7.1.18
+## explicit
+gopkg.in/couchbase/gocbcore.v7
+# gopkg.in/couchbaselabs/gocbconnstr.v1 v1.0.4
+## explicit
+gopkg.in/couchbaselabs/gocbconnstr.v1
+# gopkg.in/couchbaselabs/gojcbmock.v1 v1.0.4
+## explicit
+gopkg.in/couchbaselabs/gojcbmock.v1
+# gopkg.in/couchbaselabs/jsonx.v1 v1.0.0
+## explicit
+gopkg.in/couchbaselabs/jsonx.v1
