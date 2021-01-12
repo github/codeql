@@ -25,4 +25,5 @@ where
     sink.getNode().(Sink).getRegExp().(PolynomialBackTrackingTerm).isAtEndLine()
   )
 select sink.getNode(), source, sink, "This expensive $@ use depends on $@.",
-  sink.getNode().(Sink).getRegExp(), "regular expression", source.getNode(), "a user-provided value"
+  sink.getNode().(Sink).getRegExp(), "regular expression", source.getNode(),
+  source.getNode().(Source).describe()

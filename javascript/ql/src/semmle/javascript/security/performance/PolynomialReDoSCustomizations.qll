@@ -13,10 +13,17 @@ module PolynomialReDoS {
    */
   abstract class Source extends DataFlow::Node {
     /**
-     * Gets the kind of source that is being accesed. See `HTTP::RequestInputAccess::getKind()`.
-     * Can be one of "parameter", "header", "body", "url", "cookie".
+     * Gets the kind of source that is being accesed.
+     *
+     * Is either a kind from `HTTP::RequestInputAccess::getKind()`, or "library".
      */
     abstract string getKind();
+
+    /**
+     * Gets a string that describes the source.
+     * For use in the alert message
+     */
+    string describe() { result = "a user-provided value" }
   }
 
   /**
@@ -107,5 +114,25 @@ module PolynomialReDoS {
       outcome = polarity and
       e = input.asExpr()
     }
+  }
+
+  private import semmle.javascript.PackageExports as Exports
+
+  /**
+   * A parameter of an exported function, seen as a source for polynomial-redos.
+   */
+  class ExternalInputSource extends Source, DataFlow::ParameterNode {
+    ExternalInputSource() {
+      exists(int bound, DataFlow::FunctionNode func |
+        func =
+          Exports::getAValueExportedBy(Exports::getTopmostPackageJSON())
+              .getABoundFunctionValue(bound) and
+        this = func.getParameter(any(int arg | arg >= bound))
+      )
+    }
+
+    override string getKind() { result = "library" }
+
+    override string describe() { result = "library input" }
   }
 }

@@ -24,6 +24,7 @@
 | highlight.js:38:54:38:59 | [^()]* | Strings starting with 'A((' and with many repetitions of ''' can start matching anywhere after the start of the preceeding [^()]* |
 | highlight.js:38:64:38:69 | [^()]* | Strings starting with 'A(' and with many repetitions of ''' can start matching anywhere after the start of the preceeding [^()]* |
 | highlight.js:39:22:39:24 | \\w* | Strings starting with 'A' and with many repetitions of 'A' can start matching anywhere after the start of the preceeding [a-zA-Z_]\\w*\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)\\s*\\{ |
+| lib/lib.js:1:15:1:16 | a* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding a*b |
 | polynomial-redos.js:7:24:7:26 | \\s+ | Strings with many repetitions of ' ' can start matching anywhere after the start of the preceeding \\s+$ |
 | polynomial-redos.js:8:17:8:18 |  * | Strings with many repetitions of ' ' can start matching anywhere after the start of the preceeding  *, * |
 | polynomial-redos.js:9:19:9:21 | \\s* | Strings with many repetitions of ' ' can start matching anywhere after the start of the preceeding \\s*\\n\\s* |
