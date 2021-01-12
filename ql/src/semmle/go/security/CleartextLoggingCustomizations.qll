@@ -61,8 +61,7 @@ module CleartextLogging {
       )
       or
       // avoid i18n strings
-      this
-          .(DataFlow::FieldReadNode)
+      this.(DataFlow::FieldReadNode)
           .getBase()
           .asExpr()
           .(Ident)

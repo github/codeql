@@ -12,15 +12,14 @@ module K8sIoApimachineryPkgRuntime {
 
   private class ConvertTypeToType extends TaintTracking::FunctionModel {
     ConvertTypeToType() {
-      this
-          .hasQualifiedName(packagePath(),
-            [
-              "Convert_Slice_string_To_Pointer_int64", "Convert_Slice_string_To_int",
-              "Convert_Slice_string_To_int64", "Convert_Slice_string_To_string",
-              "Convert_runtime_Object_To_runtime_RawExtension",
-              "Convert_runtime_RawExtension_To_runtime_Object", "Convert_string_To_Pointer_int64",
-              "Convert_string_To_int64"
-            ])
+      this.hasQualifiedName(packagePath(),
+        [
+          "Convert_Slice_string_To_Pointer_int64", "Convert_Slice_string_To_int",
+          "Convert_Slice_string_To_int64", "Convert_Slice_string_To_string",
+          "Convert_runtime_Object_To_runtime_RawExtension",
+          "Convert_runtime_RawExtension_To_runtime_Object", "Convert_string_To_Pointer_int64",
+          "Convert_string_To_int64"
+        ])
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
