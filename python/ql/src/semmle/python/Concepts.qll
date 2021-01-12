@@ -313,7 +313,11 @@ module HTTP {
       /** Gets the URL pattern for this route, if it can be statically determined. */
       string getUrlPattern() { result = range.getUrlPattern() }
 
-      /** Gets a function that will handle incoming requests for this route, if any. */
+      /**
+       * Gets a function that will handle incoming requests for this route, if any.
+       *
+       * NOTE: This will be modified in the near future to have a `RequestHandler` result, instead of a `Function`.
+       */
       Function getARequestHandler() { result = range.getARequestHandler() }
 
       /**
@@ -343,7 +347,11 @@ module HTTP {
           )
         }
 
-        /** Gets a function that will handle incoming requests for this route, if any. */
+        /**
+         * Gets a function that will handle incoming requests for this route, if any.
+         *
+         * NOTE: This will be modified in the near future to have a `RequestHandler` result, instead of a `Function`.
+         */
         abstract Function getARequestHandler();
 
         /**
