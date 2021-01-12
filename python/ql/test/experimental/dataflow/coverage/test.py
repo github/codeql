@@ -556,25 +556,25 @@ def test_unpacking_assignment_conversion():
 
     # tuple
     ((a1, a2, a3), b, c) = ll
-    SINK(a1)
+    SINK(a1)  # Flow not found
     SINK_F(a2)  # We expect an FP as all elements are tainted
-    SINK(a3)
+    SINK(a3)  # Flow not found
     SINK_F(b)  # The list itself is not tainted
     SINK_F(c)
 
     # mixed
     [(a1, a2, a3), b, c] = ll
-    SINK(a1)
+    SINK(a1)  # Flow not found
     SINK_F(a2)  # We expect an FP as all elements are tainted
-    SINK(a3)
+    SINK(a3)  # Flow not found
     SINK_F(b)  # The list itself is not tainted
     SINK_F(c)
 
     # mixed differently
     ([a1, a2, a3], b, c) = ll
-    SINK(a1)
+    SINK(a1)  # Flow not found
     SINK_F(a2)  # We expect an FP as all elements are tainted
-    SINK(a3)
+    SINK(a3)  # Flow not found
     SINK_F(b)  # The list itself is not tainted
     SINK_F(c)
 
