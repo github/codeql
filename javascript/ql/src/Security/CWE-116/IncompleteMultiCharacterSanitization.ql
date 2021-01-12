@@ -147,13 +147,16 @@ from
 where
   regexp = replace.getRegExp().getRoot() and
   dangerous.getRootTerm() = regexp and
+  // skip leading optional elements
+  not dangerous.isNullable() and
   // only warn about the longest match (presumably the most descriptive)
   prefix = max(string m | matchesDangerousPrefix(dangerous, m, kind) | m order by m.length()) and
   // only warn once per kind
   not exists(EmptyReplaceRegExpTerm other |
     other = dangerous.getAChild+() or other = dangerous.getPredecessor+()
   |
-    matchesDangerousPrefix(other, _, kind)
+    matchesDangerousPrefix(other, _, kind) and
+    not other.isNullable()
   ) and
   // don't flag replace operations in a loop
   not replace.getAMethodCall*().flowsTo(replace.getReceiver()) and
