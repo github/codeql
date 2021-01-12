@@ -2,9 +2,12 @@ package main
 
 //go:generate depstubber -vendor go.mongodb.org/mongo-driver/bson/primitive D
 //go:generate depstubber -vendor go.mongodb.org/mongo-driver/mongo Collection,Pipeline
+//go:generate depstubber -vendor  gopkg.in/couchbase/gocb.v1 Bucket,Cluster
 
 import (
 	"context"
+
+	gocbv1 "gopkg.in/couchbase/gocb.v1"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -47,6 +50,13 @@ func test(coll *mongo.Collection, filter interface{}, models []mongo.WriteModel,
 	coll.UpdateMany(ctx, filter, update) // $nosqlquery=filter
 	coll.UpdateOne(ctx, filter, update)  // $nosqlquery=filter
 	coll.Watch(ctx, pipeline)            // $nosqlquery=pipeline
+}
+
+func testGocbV1(bucket gocbv1.Bucket, cluster gocbv1.Cluster, aq *gocbv1.AnalyticsQuery, nq *gocbv1.N1qlQuery) {
+	bucket.ExecuteAnalyticsQuery(aq, nil)  // $nosqlquery=aq
+	cluster.ExecuteAnalyticsQuery(aq, nil) // $nosqlquery=aq
+	bucket.ExecuteN1qlQuery(nq, nil)       // $nosqlquery=nq
+	cluster.ExecuteN1qlQuery(nq, nil)      // $nosqlquery=nq
 }
 
 func main() {}
