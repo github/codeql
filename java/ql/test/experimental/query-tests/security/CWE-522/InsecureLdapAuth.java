@@ -48,6 +48,21 @@ public class InsecureLdapAuth {
 		DirContext dirContext = new InitialDirContext(environment);
 	}
 
+	// GOOD - Test LDAP authentication over SSL.
+	public void testSslLdapAuth2(String ldapUserName, String password) {
+		String ldapUrl = "ldap://ad.your-server.com:636";
+		Hashtable<String, String> environment = new Hashtable<String, String>();
+		environment.put(Context.INITIAL_CONTEXT_FACTORY,
+			"com.sun.jndi.ldap.LdapCtxFactory");
+		environment.put(Context.PROVIDER_URL, ldapUrl);
+		environment.put(Context.REFERRAL, "follow");
+		environment.put(Context.SECURITY_AUTHENTICATION, "simple");
+		environment.put(Context.SECURITY_PRINCIPAL, ldapUserName);
+		environment.put(Context.SECURITY_CREDENTIALS, password);
+		environment.put(Context.SECURITY_PROTOCOL, "ssl");
+		DirContext dirContext = new InitialDirContext(environment);
+	}
+
 	// GOOD - Test LDAP authentication with SASL authentication.
 	public void testSaslLdapAuth(String ldapUserName, String password) {
 		String ldapUrl = "ldap://ad.your-server.com:389";
