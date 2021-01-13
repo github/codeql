@@ -1,4 +1,12 @@
 variableAccess
+| class_variables.rb:1:1:1:3 | @@x | class_variables.rb:1:1:1:3 | @@x | class_variables.rb:1:1:29:4 | top-level scope |
+| class_variables.rb:3:3:3:5 | @@x | class_variables.rb:1:1:1:3 | @@x | class_variables.rb:1:1:29:4 | top-level scope |
+| class_variables.rb:6:4:6:6 | @@x | class_variables.rb:1:1:1:3 | @@x | class_variables.rb:1:1:29:4 | top-level scope |
+| class_variables.rb:11:7:11:9 | @@x | class_variables.rb:11:7:11:9 | @@x | class_variables.rb:9:1:16:3 | class scope |
+| class_variables.rb:14:6:14:8 | @@x | class_variables.rb:11:7:11:9 | @@x | class_variables.rb:9:1:16:3 | class scope |
+| class_variables.rb:19:3:19:5 | @@x | class_variables.rb:19:3:19:5 | @@x | class_variables.rb:18:1:20:3 | class scope |
+| class_variables.rb:23:3:23:5 | @@x | class_variables.rb:23:3:23:5 | @@x | class_variables.rb:22:1:24:3 | module scope |
+| class_variables.rb:28:5:28:7 | @@x | class_variables.rb:28:5:28:7 | @@x | class_variables.rb:26:1:29:3 | module scope |
 | instance_variables.rb:1:1:1:4 | @top | instance_variables.rb:1:1:1:4 | @top | instance_variables.rb:1:1:44:4 | top-level scope |
 | instance_variables.rb:4:3:4:6 | @foo | instance_variables.rb:4:3:4:6 | @foo | instance_variables.rb:1:1:44:4 | top-level scope |
 | instance_variables.rb:8:8:8:11 | @foo | instance_variables.rb:4:3:4:6 | @foo | instance_variables.rb:1:1:44:4 | top-level scope |
@@ -234,6 +242,14 @@ implicitWrite
 | ssa.rb:64:8:64:8 | a |
 | ssa.rb:66:15:66:15 | a |
 readAccess
+| class_variables.rb:1:1:1:3 | @@x |
+| class_variables.rb:3:3:3:5 | @@x |
+| class_variables.rb:6:4:6:6 | @@x |
+| class_variables.rb:11:7:11:9 | @@x |
+| class_variables.rb:14:6:14:8 | @@x |
+| class_variables.rb:19:3:19:5 | @@x |
+| class_variables.rb:23:3:23:5 | @@x |
+| class_variables.rb:28:5:28:7 | @@x |
 | instance_variables.rb:1:1:1:4 | @top |
 | instance_variables.rb:4:3:4:6 | @foo |
 | instance_variables.rb:8:8:8:11 | @foo |

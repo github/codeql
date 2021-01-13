@@ -22,6 +22,11 @@ private predicate instanceVariableAccess(
   else instance = false
 }
 
+private predicate classVariableAccess(Generated::ClassVariable var, string name, VariableScope scope) {
+  name = var.getValue() and
+  scope = enclosingModuleOrClass(var)
+}
+
 private VariableScope enclosingMethod(Generated::AstNode node) {
   exists(VariableScope scope, Callable c |
     scope = outerScope*(enclosingScope(node)) and
@@ -145,7 +150,14 @@ private module Cached {
   cached
   newtype TVariable =
     TGlobalVariable(string name) { name = any(Generated::GlobalVariable var).getValue() } or
-    TClassVariable(VariableScope scope, string name, Generated::AstNode decl) { none() } or
+    TClassVariable(VariableScope scope, string name, Generated::AstNode decl) {
+      decl =
+        min(Generated::ClassVariable other |
+          classVariableAccess(other, name, scope)
+        |
+          other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
+        )
+    } or
     TInstanceVariable(VariableScope scope, string name, boolean instance, Generated::AstNode decl) {
       decl =
         min(Generated::InstanceVariable other |
@@ -549,7 +561,12 @@ module ClassVariableAccess {
   class Range extends VariableAccess::Range, @token_class_variable {
     ClassVariable variable;
 
-    Range() { this.(Generated::ClassVariable).getValue() = variable.getName() }
+    Range() {
+      exists(VariableScope scope, string name |
+        variable = TClassVariable(scope, name, _) and
+        classVariableAccess(this, name, scope)
+      )
+    }
 
     final override ClassVariable getVariable() { result = variable }
   }
