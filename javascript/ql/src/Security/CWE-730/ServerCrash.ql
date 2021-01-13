@@ -3,7 +3,7 @@
  * @description A server that can be forced to crash may be vulnerable to denial-of-service
  *              attacks.
  * @kind path-problem
- * @problem.severity error
+ * @problem.severity warning
  * @precision high
  * @id js/server-crash
  * @tags security
@@ -13,144 +13,114 @@
 import javascript
 
 /**
- * A call that appears to be asynchronous (heuristic).
+ * Gets a function that indirectly invokes an asynchronous callback through `async`, where the callback throws an uncaught exception at `thrower`.
  */
-class AsyncCall extends DataFlow::CallNode {
-  DataFlow::FunctionNode callback;
+Function invokesCallbackThatThrowsUncaughtException(
+  AsyncSentinelCall async, LikelyExceptionThrower thrower
+) {
+  async.getAsyncCallee() = throwsUncaughtExceptionInAsyncContext(thrower) and
+  result = async.getEnclosingFunction()
+  or
+  exists(DataFlow::InvokeNode invk, Function fun |
+    fun = invokesCallbackThatThrowsUncaughtException(async, thrower) and
+    // purposely not checking for `getEnclosingTryCatchStmt`. An async callback called from inside a try-catch can still crash the server.
+    result = invk.getEnclosingFunction()
+  |
+    invk.getACallee() = fun
+    or
+    // traverse a slightly extended call graph to get additional TPs
+    invk.(AsyncSentinelCall).getAsyncCallee() = fun
+  )
+}
 
-  AsyncCall() {
-    callback.flowsTo(getLastArgument()) and
-    callback.getParameter(0).getName() = ["e", "err", "error"] and
-    callback.getNumParameter() = 2 and
-    not exists(callback.getAReturn())
+/**
+ * Gets a callee of an invocation `invk` that is not guarded by a try statement.
+ */
+Function getUncaughtExceptionRethrowerCallee(DataFlow::InvokeNode invk) {
+  not exists(invk.asExpr().getEnclosingStmt().getEnclosingTryCatchStmt()) and
+  result = invk.getACallee()
+}
+
+/**
+ * Holds if `thrower` is not guarded by a try statement.
+ */
+predicate isUncaughtExceptionThrower(LikelyExceptionThrower thrower) {
+  not exists([thrower.(Expr).getEnclosingStmt(), thrower.(Stmt)].getEnclosingTryCatchStmt())
+}
+
+/**
+ * Gets a function that may throw an uncaught exception originating at `thrower`, which then may escape in an asynchronous calling context.
+ */
+Function throwsUncaughtExceptionInAsyncContext(LikelyExceptionThrower thrower) {
+  (
+    isUncaughtExceptionThrower(thrower) and
+    result = thrower.getContainer()
+    or
+    exists(DataFlow::InvokeNode invk |
+      getUncaughtExceptionRethrowerCallee(invk) = throwsUncaughtExceptionInAsyncContext(thrower) and
+      result = invk.getEnclosingFunction()
+    )
+  ) and
+  // Anti-case:
+  // An exception from an `async` function results in a rejected promise.
+  // Unhandled promises requires `node --unhandled-rejections=strict ...` to terminate the process
+  // without that flag, the DEP0018 deprecation warning is printed instead (node.js version 14 and below)
+  not result.isAsync() and
+  // pruning optimization since this predicate always is related to `invokesCallbackThatThrowsUncaughtException`
+  result = reachableFromAsyncCallback()
+}
+
+/**
+ * Holds if `result` is reachable from a callback that is invoked asynchronously.
+ */
+Function reachableFromAsyncCallback() {
+  result instanceof AsyncCallback
+  or
+  exists(DataFlow::InvokeNode invk |
+    invk.getEnclosingFunction() = reachableFromAsyncCallback() and
+    result = invk.getACallee()
+  )
+}
+
+/**
+ * The main predicate of this query: used for both result display and path computation.
+ */
+predicate main(
+  HTTP::RouteHandler rh, AsyncSentinelCall async, AsyncCallback cb, LikelyExceptionThrower thrower
+) {
+  async.getAsyncCallee() = cb and
+  rh.getAstNode() = invokesCallbackThatThrowsUncaughtException(async, thrower)
+}
+
+/**
+ * A call that may cause a function to be invoked in an asynchronous context outside of the visible source code.
+ */
+class AsyncSentinelCall extends DataFlow::CallNode {
+  Function asyncCallee;
+
+  AsyncSentinelCall() {
+    exists(DataFlow::FunctionNode node | node.getAstNode() = asyncCallee |
+      // manual models
+      exists(string memberName |
+        not "Sync" = memberName.suffix(memberName.length() - 4) and
+        this = NodeJSLib::FS::moduleMember(memberName).getACall() and
+        node = this.getCallback([1 .. 2])
+      )
+      // (add additional cases here to improve the query)
+    )
   }
 
   /**
-   * Gets the callback that is invoked asynchronously.
+   * Gets the callee that is invoked in an asynchronous context.
    */
-  DataFlow::FunctionNode getCallback() { result = callback }
+  Function getAsyncCallee() { result = asyncCallee }
 }
 
 /**
- * Gets a function that is invoked as a consequence of invoking a route handler `rh`.
+ * A callback provided to an asynchronous call (heuristic).
  */
-Function invokedByRouteHandler(HTTP::RouteHandler rh) {
-  rh = result.flow()
-  or
-  // follow the immediate call graph
-  exists(DataFlow::InvokeNode invk |
-    result = invk.getACallee() and
-    // purposely not checking for `getEnclosingTryCatchStmt`. An async callback called from inside a try-catch can still crash the server.
-    invk.getEnclosingFunction() = invokedByRouteHandler(rh)
-  )
-  // if new edges are added here, the `edges` predicate should be updated accordingly
-}
-
-/**
- * A callback provided to an asynchronous call.
- */
-class AsyncCallback extends DataFlow::FunctionNode {
-  AsyncCallback() { this = any(AsyncCall c).getCallback() }
-}
-
-/**
- * Gets a function that is in a call stack that starts at an asynchronous `callback`, calls in the call stack occur outside of `try` blocks.
- */
-Function inUnguardedAsyncCallStack(AsyncCallback callback) {
-  callback = result.flow()
-  or
-  exists(DataFlow::InvokeNode invk |
-    result = invk.getACallee() and
-    not exists(invk.asExpr().getEnclosingStmt().getEnclosingTryCatchStmt()) and
-    invk.getEnclosingFunction() = inUnguardedAsyncCallStack(callback)
-  )
-}
-
-/**
- * Gets a function that is invoked by `asyncCallback` without any try-block wrapping, `asyncCallback` is in turn is called indirectly by `routeHandler`.
- *
- * If the result throws an excection, the server of `routeHandler` will crash.
- */
-Function getAPotentialServerCrasher(
-  HTTP::RouteHandler routeHandler, AsyncCall asyncCall, AsyncCallback asyncCallback
-) {
-  // the route handler transitively calls an async function
-  asyncCall.getEnclosingFunction() = invokedByRouteHandler(routeHandler) and
-  asyncCallback = asyncCall.getCallback() and
-  // the async function transitively calls a function that may throw an exception out of the the async function
-  result = inUnguardedAsyncCallStack(asyncCallback)
-}
-
-/**
- * Gets a node that is likely to throw an uncaught exception in `fun`.
- */
-LikelyExceptionThrower getALikelyUncaughtExceptionThrower(Function fun) {
-  result.getContainer() = fun and
-  not exists([result.(Expr).getEnclosingStmt(), result.(Stmt)].getEnclosingTryCatchStmt())
-}
-
-/**
- * Edges that builds an explanatory graph that follows the mental model of how the the exception flows.
- *
- * - step 1. exception is thrown
- * - step 2. exception exits the enclosing function
- * - step 3. exception follows the call graph backwards until an async callee is encountered
- * - step 4. (at this point, the program crashes)
- * - step 5. if the program had not crashed, the exception would conceptually follow the call graph backwards to a route handler
- */
-query predicate edges(ASTNode pred, ASTNode succ) {
-  nodes(pred) and
-  nodes(succ) and
-  (
-    // the first step from the alert location to the enclosing function
-    pred = getALikelyUncaughtExceptionThrower(_) and
-    succ = pred.getContainer()
-    or
-    // ordinary flow graph
-    exists(DataFlow::InvokeNode invoke, Function f |
-      invoke.getACallee() = f and
-      succ = invoke.getAstNode() and
-      pred = f
-      or
-      invoke.getContainer() = f and
-      succ = f and
-      pred = invoke.getAstNode()
-    )
-    or
-    // the async step
-    exists(DataFlow::Node predNode, DataFlow::Node succNode |
-      exists(getAPotentialServerCrasher(_, predNode, succNode)) and
-      predNode.getAstNode() = succ and
-      succNode.getAstNode() = pred
-    )
-  )
-}
-
-/**
- * Nodes for building an explanatory graph that follows the mental model of how the the exception flows.
- */
-query predicate nodes(ASTNode node) {
-  exists(HTTP::RouteHandler rh, Function fun |
-    main(rh, _, _) and
-    fun = invokedByRouteHandler(rh)
-  |
-    node = any(DataFlow::InvokeNode invk | invk.getACallee() = fun).getAstNode() or
-    node = fun
-  )
-  or
-  exists(AsyncCallback cb, Function fun |
-    main(_, cb, _) and
-    fun = inUnguardedAsyncCallStack(cb)
-  |
-    node = any(DataFlow::InvokeNode invk | invk.getACallee() = fun).getAstNode() or
-    node = fun
-  )
-  or
-  main(_, _, node)
-}
-
-predicate main(HTTP::RouteHandler rh, AsyncCallback asyncCallback, ExprOrStmt crasher) {
-  crasher = getALikelyUncaughtExceptionThrower(getAPotentialServerCrasher(rh, _, asyncCallback))
+class AsyncCallback extends Function {
+  AsyncCallback() { any(AsyncSentinelCall c).getAsyncCallee() = this }
 }
 
 /**
@@ -172,8 +142,48 @@ class CompilerConfusingExceptionThrower extends LikelyExceptionThrower {
   CompilerConfusingExceptionThrower() { none() }
 }
 
-from HTTP::RouteHandler rh, AsyncCallback asyncCallback, ExprOrStmt crasher
-where main(rh, asyncCallback, crasher)
-select crasher, crasher, rh.getAstNode(),
-  "When an exception is thrown here and later escapes at $@, the server of $@ will crash.",
-  asyncCallback, "this asynchronous callback", rh, "this route handler"
+/**
+ * Edges that builds an explanatory graph that follows the mental model of how the the exception flows.
+ *
+ * - step 1. exception is thrown
+ * - step 2. exception escapes the enclosing function
+ * - step 3. exception follows the call graph backwards until an async callee is encountered
+ * - step 4. (at this point, the program crashes)
+ */
+query predicate edges(ASTNode pred, ASTNode succ) {
+  exists(LikelyExceptionThrower thrower | main(_, _, _, thrower) |
+    pred = thrower and
+    succ = thrower.getContainer()
+    or
+    exists(DataFlow::InvokeNode invk, Function fun |
+      fun = throwsUncaughtExceptionInAsyncContext(thrower)
+    |
+      succ = invk.getAstNode() and
+      pred = invk.getACallee() and
+      pred = fun
+      or
+      succ = fun and
+      succ = invk.getContainer() and
+      pred = invk.getAstNode()
+    )
+  )
+}
+
+/**
+ * A node in the `edge/2` relation above.
+ */
+query predicate nodes(ASTNode node) {
+  edges(node, _) or
+  edges(_, node)
+}
+
+from
+  HTTP::RouteHandler rh, AsyncSentinelCall async, DataFlow::Node callbackArg, AsyncCallback cb,
+  ExprOrStmt crasher
+where
+  main(rh, async, cb, crasher) and
+  callbackArg.getALocalSource().getAstNode() = cb and
+  async.getAnArgument() = callbackArg
+select crasher, crasher, cb,
+  "The server of $@ will terminate when an uncaught exception from here escapes this $@", rh,
+  "this route handler", callbackArg, "asynchronous callback"
