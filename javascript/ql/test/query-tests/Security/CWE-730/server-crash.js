@@ -70,4 +70,13 @@ app.get("/async-throw", (req, res) => {
   fs.readFile("/WHATEVER", (err, x) => {
     res.setHeader("reflected", unknown); // OK
   });
+
+  try {
+    indirection7();
+  } catch (e) {}
 });
+function indirection7() {
+  fs.readFile("/foo", (err, x) => {
+    throw err; // NOT OK
+  });
+}
