@@ -546,6 +546,7 @@ def test_iterated_unpacking_assignment():
     t = (SOURCE, SOURCE, NONSOURCE)
     a, *b, c = t
     SINK(a)
+    SINK_F(b)  # FP
     SINK(b[0])
     SINK_F(c)
 
@@ -577,6 +578,46 @@ def test_unpacking_assignment_conversion():
     SINK(a3)
     SINK_F(b)  # The list itself is not tainted
     SINK_F(c)
+
+
+def test_iterated_unpacking_assignment_conversion():
+    tt = ((SOURCE, NONSOURCE, SOURCE),NONSOURCE)
+
+    # list
+    [[a1, *a2], *b] = tt
+    SINK(a1)
+    SINK_F(a2)  # FP, The list itself is not tainted
+    SINK(a2[0])
+    SINK_F(a1[0])  # FP here due to list abstraction
+    SINK_F(b)  # The list itself is not tainted
+    SINK_F(b[0])  # FP here due to list abstraction
+
+    # tuple
+    ((a1, *a2), *b) = tt
+    SINK(a1)
+    SINK_F(a2)  # The list itself is not tainted
+    SINK(a2[0])  # Flow not found
+    SINK_F(a1[0])
+    SINK_F(b)  # The list itself is not tainted
+    SINK_F(b[0])
+
+    # mixed
+    [(a1, *a2), *b] = tt
+    SINK(a1)
+    SINK_F(a2)  # The list itself is not tainted
+    SINK(a2[0])  # Flow not found
+    SINK_F(a1[0])  # FP
+    SINK_F(b)  # The list itself is not tainted
+    SINK_F(b[0])  # FP here due to list abstraction
+
+    # mixed differently
+    ([a1, *a2], *b) = tt
+    SINK(a1)
+    SINK_F(a2)  # The list itself is not tainted
+    SINK(a2[0])  # Flow not found
+    SINK_F(a1[0])  # Expect FP here due to list abstraction
+    SINK_F(b)  # The list itself is not tainted
+    SINK_F(b[0])
 
 
 def test_deep_callgraph():
