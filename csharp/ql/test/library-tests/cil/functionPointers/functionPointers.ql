@@ -4,6 +4,7 @@ import semmle.code.cil.Type
 bindingset[kind]
 private string getKind(int kind) { if kind = 1 then result = "modreq" else result = "modopt" }
 
+bindingset[t, e]
 private string getAnnotatedType(Type t, Element e) {
   cil_type_annotation(e, 32) and result = t.toString() + "&"
   or
