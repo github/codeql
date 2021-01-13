@@ -79,4 +79,4 @@ where
   cfg.isSource(src) and
   not cfg.hasFlow(src, _) and
   not isSafeJxBrowserVersion()
-select src, "This JxBrowser instance allows man-in-the-middle attacks."
+select src, "This JxBrowser instance may not check HTTPS certificates."
