@@ -339,6 +339,10 @@ class IterableSequence extends Node, TIterableSequence {
 
   override string toString() { result = "IterableSequence" }
 
+  override DataFlowCallable getEnclosingCallable() {
+    result = any(CfgNode node | node = TCfgNode(consumer)).getEnclosingCallable()
+  }
+
   override Location getLocation() { result = consumer.getLocation() }
 }
 
@@ -352,6 +356,10 @@ class IterableElement extends Node, TIterableElement {
   IterableElement() { this = TIterableElement(consumer) }
 
   override string toString() { result = "IterableElement" }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result = any(CfgNode node | node = TCfgNode(consumer)).getEnclosingCallable()
+  }
 
   override Location getLocation() { result = consumer.getLocation() }
 }

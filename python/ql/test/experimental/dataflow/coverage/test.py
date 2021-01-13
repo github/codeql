@@ -530,7 +530,7 @@ def test_nested_unpacking_assignment():
     a, (b, c) = t
     SINK(a)
     SINK_F(b)
-    SINK(c)  # Flow not found
+    SINK(c)
 
 
 @expects(2)
@@ -588,13 +588,13 @@ def test_iterated_unpacking_assignment_conversion():
     SINK(a1)
     SINK_F(a2)  # The list itself is not tainted
     SINK_F(a2[0])  # FP here due to list abstraction
-    SINK(a2[1])  # FP here due to list abstraction
+    SINK(a2[1])
     SINK_F(b)  # The list itself is not tainted
     SINK_F(b[0])  # Expected FP here due to list abstraction
 
     # tuple
     ((a1, *a2), *b) = tt
-    SINK(a1)  # Flow not found
+    SINK(a1)
     SINK_F(a2)  # The list itself is not tainted
     SINK_F(a2[0])
     SINK(a2[1])  # Flow not found
@@ -603,19 +603,19 @@ def test_iterated_unpacking_assignment_conversion():
 
     # mixed
     [(a1, *a2), *b] = tt
-    SINK(a1)  # Flow not found
+    SINK(a1)
     SINK_F(a2)  # The list itself is not tainted
     SINK_F(a2[0])
     SINK(a2[1])  # Flow not found
     SINK_F(b)  # The list itself is not tainted
-    SINK_F(b[0])  # FP here due to list abstraction
+    SINK_F(b[0])  # Expected FP here due to list abstraction
 
     # mixed differently
     ([a1, *a2], *b) = tt
     SINK(a1)
     SINK_F(a2)  # The list itself is not tainted
-    SINK_F(a2[0])
-    SINK(a2[1])  # FP here due to list abstraction
+    SINK_F(a2[0])  # FP here due to list abstraction
+    SINK(a2[1])
     SINK_F(b)  # The list itself is not tainted
     SINK_F(b[0])
 
