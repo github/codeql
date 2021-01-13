@@ -40,6 +40,7 @@ Function invokedByRouteHandler(HTTP::RouteHandler rh) {
   // follow the immediate call graph
   exists(DataFlow::InvokeNode invk |
     result = invk.getACallee() and
+    // purposely not checking for `getEnclosingTryCatchStmt`. An async callback called from inside a try-catch can still crash the server.
     invk.getEnclosingFunction() = invokedByRouteHandler(rh)
   )
   // if new edges are added here, the `edges` predicate should be updated accordingly
