@@ -1,108 +1,116 @@
-// Automatically generated from TypeScript type definitions provided by
-// DefinitelyTyped (https://github.com/DefinitelyTyped/DefinitelyTyped),
-// which is licensed under the MIT license; see file DefinitelyTyped-LICENSE
-// in parent directory.
-// Type definitions for Node.js 10.5.x
-// Project: http://nodejs.org/
-// Definitions by: Microsoft TypeScript <http://typescriptlang.org>
-//                 DefinitelyTyped <https://github.com/DefinitelyTyped/DefinitelyTyped>
-//                 Parambir Singh <https://github.com/parambirs>
-//                 Christian Vaagland Tellnes <https://github.com/tellnes>
-//                 Wilco Bakker <https://github.com/WilcoBakker>
-//                 Nicolas Voigt <https://github.com/octo-sniffle>
-//                 Chigozirim C. <https://github.com/smac89>
-//                 Flarna <https://github.com/Flarna>
-//                 Mariusz Wiktorczyk <https://github.com/mwiktorczyk>
-//                 wwwy3y3 <https://github.com/wwwy3y3>
-//                 Deividas Bakanas <https://github.com/DeividasBakanas>
-//                 Kelvin Jin <https://github.com/kjin>
-//                 Alvis HT Tang <https://github.com/alvis>
-//                 Sebastian Silbermann <https://github.com/eps1lon>
-//                 Hannes Magnusson <https://github.com/Hannes-Magnusson-CK>
-//                 Alberto Schiabel <https://github.com/jkomyno>
-//                 Klaus Meinhardt <https://github.com/ajafff>
-//                 Huw <https://github.com/hoo29>
-//                 Nicolas Even <https://github.com/n-e>
-//                 Bruno Scheufler <https://github.com/brunoscheufler>
-//                 Mohsen Azimi <https://github.com/mohsen1>
-//                 Hoàng Văn Khải <https://github.com/KSXGitHub>
-//                 Alexander T. <https://github.com/a-tarasyuk>
-//                 Lishude <https://github.com/islishude>
-//                 Andrew Makarov <https://github.com/r3nya>
-//                 Zane Hannan AU <https://github.com/ZaneHannanAU>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-
-/**
- * @externs
- * @fileoverview Definitions for module "net"
+/*
+ * Copyright 2012 The Closure Compiler Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
+/**
+ * @fileoverview Definitions for node's net module. Depends on the events and buffer modules.
+ * @see http://nodejs.org/api/net.html
+ * @see https://github.com/joyent/node/blob/master/lib/net.js
+ */
+
+var events = require('events');
+
+/**
+ * @const
+ */
 var net = {};
 
 /**
- * @interface
- * @extends {internal.Duplex}
+ * @typedef {{allowHalfOpen: ?boolean}}
  */
-net.Socket = function() {};
+net.CreateOptions;
 
 /**
- * @param {Buffer} buffer
- * @return {boolean}
+ * @param {(net.CreateOptions|function(...))=} options
+ * @param {function(...)=} connectionListener
+ * @return {net.Server}
  */
-net.Socket.prototype.write = function(buffer) {};
+net.createServer;
 
 /**
- * @param {Buffer} buffer
- * @param {Function=} cb
- * @return {boolean}
+ * @typedef {{port: ?number, host: ?string, localAddress: ?string, path: ?string, allowHalfOpen: ?boolean}}
  */
-net.Socket.prototype.write = function(buffer, cb) {};
+net.ConnectOptions;
 
 /**
- * @param {string} str
- * @param {Function=} cb
- * @return {boolean}
- */
-net.Socket.prototype.write = function(str, cb) {};
-
-/**
- * @param {string} str
- * @param {string=} encoding
- * @param {Function=} cb
- * @return {boolean}
- */
-net.Socket.prototype.write = function(str, encoding, cb) {};
-
-/**
- * @param {string} str
- * @param {string=} encoding
- * @param {string=} fd
- * @return {boolean}
- */
-net.Socket.prototype.write = function(str, encoding, fd) {};
-
-/**
- * @param {*} data
- * @param {string=} encoding
- * @param {Function=} callback
+ * @param {net.ConnectOptions|number|string} arg1
+ * @param {(function(...)|string)=} arg2
+ * @param {function(...)=} arg3
  * @return {void}
  */
-net.Socket.prototype.write = function(data, encoding, callback) {};
+net.connect;
 
 /**
- * @param {number} port
- * @param {string=} host
- * @param {Function=} connectionListener
+ * @param {net.ConnectOptions|number|string} arg1
+ * @param {(function(...)|string)=} arg2
+ * @param {function(...)=} arg3
  * @return {void}
  */
-net.Socket.prototype.connect = function(port, host, connectionListener) {};
+net.createConnection;
 
 /**
- * @param {string} path
- * @param {Function=} connectionListener
+ * @constructor
+ * @extends events.EventEmitter
+ */
+net.Server = function() {};
+
+/**
+ *
+ * @param {number|*} port
+ * @param {(string|number|function(...))=} host
+ * @param {(number|function(...))=} backlog
+ * @param {function(...)=} callback
  * @return {void}
  */
-net.Socket.prototype.connect = function(path, connectionListener) {};
+net.Server.prototype.listen;
+
+/**
+ * @param {function(...)=} callback
+ * @return {void}
+ */
+net.Server.prototype.close;
+
+/**
+ * @return {{port: number, family: string, address: string}}
+ */
+net.Server.prototype.address;
+
+/**
+ * @type {number}
+ */
+net.Server.prototype.maxConnectinos;
+
+/**
+ * @type {number}
+ */
+net.Server.prototype.connections;
+
+/**
+ * @constructor
+ * @param {{fd: ?*, type: ?string, allowHalfOpen: ?boolean}=} options
+ * @extends events.EventEmitter
+ */
+net.Socket = function(options) {};
+
+/**
+ * @param {number|string|function(...)} port
+ * @param {(string|function(...))=} host
+ * @param {function(...)=} connectListener
+ * @return {void}
+ */
+net.Socket.prototype.connect;
 
 /**
  * @type {number}
@@ -110,10 +118,25 @@ net.Socket.prototype.connect = function(path, connectionListener) {};
 net.Socket.prototype.bufferSize;
 
 /**
+ * @param {?string=} encoding
+ * @return {void}
+ */
+net.Socket.prototype.setEncoding;
+
+/**
+ * @param {string|Buffer} data
+ * @param {(string|function(...))=}encoding
+ * @param {function(...)=} callback
+ * @return {void}
+ */
+net.Socket.prototype.write;
+
+/**
+ * @param {(string|Buffer)=}data
  * @param {string=} encoding
  * @return {void}
  */
-net.Socket.prototype.setEncoding = function(encoding) {};
+net.Socket.prototype.end;
 
 /**
  * @return {void}
@@ -121,74 +144,49 @@ net.Socket.prototype.setEncoding = function(encoding) {};
 net.Socket.prototype.destroy = function() {};
 
 /**
- * @return {net.Socket}
+ * @return {void}
  */
 net.Socket.prototype.pause = function() {};
 
 /**
- * @return {net.Socket}
+ * @return {void}
  */
-net.Socket.prototype.resume = function() {};
+net.Socket.prototype.resume;
 
 /**
  * @param {number} timeout
- * @param {Function=} callback
+ * @param {function(...)=} callback
  * @return {void}
  */
-net.Socket.prototype.setTimeout = function(timeout, callback) {};
+net.Socket.prototype.setTimeout;
 
 /**
  * @param {boolean=} noDelay
  * @return {void}
  */
-net.Socket.prototype.setNoDelay = function(noDelay) {};
+net.Socket.prototype.setNoDelay;
 
 /**
- * @param {boolean=} enable
+ * @param {(boolean|number)=} enable
  * @param {number=} initialDelay
  * @return {void}
  */
-net.Socket.prototype.setKeepAlive = function(enable, initialDelay) {};
+net.Socket.prototype.setKeepAlive;
 
 /**
- * @return {{port: number, family: string, address: string}}
+ * @return {string}
  */
-net.Socket.prototype.address = function() {};
+net.Socket.prototype.address;
 
 /**
- * @return {void}
- */
-net.Socket.prototype.unref = function() {};
-
-/**
- * @return {void}
- */
-net.Socket.prototype.ref = function() {};
-
-/**
- * @type {string}
+ * @type {?string}
  */
 net.Socket.prototype.remoteAddress;
 
 /**
- * @type {string}
- */
-net.Socket.prototype.remoteFamily;
-
-/**
- * @type {number}
+ * @type {?number}
  */
 net.Socket.prototype.remotePort;
-
-/**
- * @type {string}
- */
-net.Socket.prototype.localAddress;
-
-/**
- * @type {number}
- */
-net.Socket.prototype.localPort;
 
 /**
  * @type {number}
@@ -201,288 +199,21 @@ net.Socket.prototype.bytesRead;
 net.Socket.prototype.bytesWritten;
 
 /**
- * @return {void}
- */
-net.Socket.prototype.end = function() {};
-
-/**
- * @param {Buffer} buffer
- * @param {Function=} cb
- * @return {void}
- */
-net.Socket.prototype.end = function(buffer, cb) {};
-
-/**
- * @param {string} str
- * @param {Function=} cb
- * @return {void}
- */
-net.Socket.prototype.end = function(str, cb) {};
-
-/**
- * @param {string} str
- * @param {string=} encoding
- * @param {Function=} cb
- * @return {void}
- */
-net.Socket.prototype.end = function(str, encoding, cb) {};
-
-/**
- * @param {*=} data
- * @param {string=} encoding
- * @return {void}
- */
-net.Socket.prototype.end = function(data, encoding) {};
-
-/**
- * @type {(function(new: net.Socket, {fd: string, type: string, allowHalfOpen: boolean}=))}
- */
-net.Socket;
-
-/**
- * @interface
- */
-net.ListenOptions = function() {};
-
-/**
- * @type {number}
- */
-net.ListenOptions.prototype.port;
-
-/**
- * @type {string}
- */
-net.ListenOptions.prototype.host;
-
-/**
- * @type {number}
- */
-net.ListenOptions.prototype.backlog;
-
-/**
- * @type {string}
- */
-net.ListenOptions.prototype.path;
-
-/**
- * @type {boolean}
- */
-net.ListenOptions.prototype.exclusive;
-
-/**
- * @interface
- * @extends {net.Socket}
- */
-net.Server = function() {};
-
-/**
- * @param {number} port
- * @param {string=} hostname
- * @param {number=} backlog
- * @param {Function=} listeningListener
- * @return {net.Server}
- */
-net.Server.prototype.listen = function(port, hostname, backlog, listeningListener) {};
-
-/**
- * @param {number} port
- * @param {string=} hostname
- * @param {Function=} listeningListener
- * @return {net.Server}
- */
-net.Server.prototype.listen = function(port, hostname, listeningListener) {};
-
-/**
- * @param {number} port
- * @param {number=} backlog
- * @param {Function=} listeningListener
- * @return {net.Server}
- */
-net.Server.prototype.listen = function(port, backlog, listeningListener) {};
-
-/**
- * @param {number} port
- * @param {Function=} listeningListener
- * @return {net.Server}
- */
-net.Server.prototype.listen = function(port, listeningListener) {};
-
-/**
- * @param {string} path
- * @param {number=} backlog
- * @param {Function=} listeningListener
- * @return {net.Server}
- */
-net.Server.prototype.listen = function(path, backlog, listeningListener) {};
-
-/**
- * @param {string} path
- * @param {Function=} listeningListener
- * @return {net.Server}
- */
-net.Server.prototype.listen = function(path, listeningListener) {};
-
-/**
- * @param {*} handle
- * @param {number=} backlog
- * @param {Function=} listeningListener
- * @return {net.Server}
- */
-net.Server.prototype.listen = function(handle, backlog, listeningListener) {};
-
-/**
- * @param {*} handle
- * @param {Function=} listeningListener
- * @return {net.Server}
- */
-net.Server.prototype.listen = function(handle, listeningListener) {};
-
-/**
- * @param {net.ListenOptions} options
- * @param {Function=} listeningListener
- * @return {net.Server}
- */
-net.Server.prototype.listen = function(options, listeningListener) {};
-
-/**
- * @param {Function=} callback
- * @return {net.Server}
- */
-net.Server.prototype.close = function(callback) {};
-
-/**
- * @return {{port: number, family: string, address: string}}
- */
-net.Server.prototype.address = function() {};
-
-/**
- * @param {(function(Error, number): void)} cb
- * @return {void}
- */
-net.Server.prototype.getConnections = function(cb) {};
-
-/**
- * @return {net.Server}
- */
-net.Server.prototype.ref = function() {};
-
-/**
- * @return {net.Server}
- */
-net.Server.prototype.unref = function() {};
-
-/**
- * @type {number}
- */
-net.Server.prototype.maxConnections;
-
-/**
- * @type {number}
- */
-net.Server.prototype.connections;
-
-/**
- * @param {(function(net.Socket): void)=} connectionListener
- * @return {net.Server}
- */
-net.createServer = function(connectionListener) {};
-
-/**
- * @param {{allowHalfOpen: boolean}=} options
- * @param {(function(net.Socket): void)=} connectionListener
- * @return {net.Server}
- */
-net.createServer = function(options, connectionListener) {};
-
-/**
- * @param {{port: number, host: string, localAddress: string, localPort: string, family: number, allowHalfOpen: boolean}} options
- * @param {Function=} connectionListener
- * @return {net.Socket}
- */
-net.connect = function(options, connectionListener) {};
-
-/**
- * @param {number} port
- * @param {string=} host
- * @param {Function=} connectionListener
- * @return {net.Socket}
- */
-net.connect = function(port, host, connectionListener) {};
-
-/**
- * @param {string} path
- * @param {Function=} connectionListener
- * @return {net.Socket}
- */
-net.connect = function(path, connectionListener) {};
-
-/**
- * @param {{port: number, host: string, localAddress: string, localPort: string, family: number, allowHalfOpen: boolean}} options
- * @param {Function=} connectionListener
- * @return {net.Socket}
- */
-net.createConnection = function(options, connectionListener) {};
-
-/**
- * @param {number} port
- * @param {string=} host
- * @param {Function=} connectionListener
- * @return {net.Socket}
- */
-net.createConnection = function(port, host, connectionListener) {};
-
-/**
- * @param {string} path
- * @param {Function=} connectionListener
- * @return {net.Socket}
- */
-net.createConnection = function(path, connectionListener) {};
-
-/**
- * @param {string} input
+ * @param {*} input
  * @return {number}
  */
-net.isIP = function(input) {};
+net.isIP;
 
 /**
- * @param {string} input
+ * @param {*} input
  * @return {boolean}
  */
-net.isIPv4 = function(input) {};
+net.isIPv4;
 
 /**
- * @param {string} input
+ * @param {*} input
  * @return {boolean}
  */
-net.isIPv6 = function(input) {};
+net.isIPv6;
 
-module.exports.Socket = net.Socket;
-
-module.exports.Socket = net.Socket;
-
-module.exports.ListenOptions = net.ListenOptions;
-
-module.exports.Server = net.Server;
-
-module.exports.createServer = net.createServer;
-
-module.exports.createServer = net.createServer;
-
-module.exports.connect = net.connect;
-
-module.exports.connect = net.connect;
-
-module.exports.connect = net.connect;
-
-module.exports.createConnection = net.createConnection;
-
-module.exports.createConnection = net.createConnection;
-
-module.exports.createConnection = net.createConnection;
-
-module.exports.isIP = net.isIP;
-
-module.exports.isIPv4 = net.isIPv4;
-
-module.exports.isIPv6 = net.isIPv6;
-
+module.exports = net;

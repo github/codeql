@@ -1,238 +1,109 @@
-// Automatically generated from TypeScript type definitions provided by
-// DefinitelyTyped (https://github.com/DefinitelyTyped/DefinitelyTyped),
-// which is licensed under the MIT license; see file DefinitelyTyped-LICENSE
-// in parent directory.
-// Type definitions for Node.js 10.5.x
-// Project: http://nodejs.org/
-// Definitions by: Microsoft TypeScript <http://typescriptlang.org>
-//                 DefinitelyTyped <https://github.com/DefinitelyTyped/DefinitelyTyped>
-//                 Parambir Singh <https://github.com/parambirs>
-//                 Christian Vaagland Tellnes <https://github.com/tellnes>
-//                 Wilco Bakker <https://github.com/WilcoBakker>
-//                 Nicolas Voigt <https://github.com/octo-sniffle>
-//                 Chigozirim C. <https://github.com/smac89>
-//                 Flarna <https://github.com/Flarna>
-//                 Mariusz Wiktorczyk <https://github.com/mwiktorczyk>
-//                 wwwy3y3 <https://github.com/wwwy3y3>
-//                 Deividas Bakanas <https://github.com/DeividasBakanas>
-//                 Kelvin Jin <https://github.com/kjin>
-//                 Alvis HT Tang <https://github.com/alvis>
-//                 Sebastian Silbermann <https://github.com/eps1lon>
-//                 Hannes Magnusson <https://github.com/Hannes-Magnusson-CK>
-//                 Alberto Schiabel <https://github.com/jkomyno>
-//                 Klaus Meinhardt <https://github.com/ajafff>
-//                 Huw <https://github.com/hoo29>
-//                 Nicolas Even <https://github.com/n-e>
-//                 Bruno Scheufler <https://github.com/brunoscheufler>
-//                 Mohsen Azimi <https://github.com/mohsen1>
-//                 Hoàng Văn Khải <https://github.com/KSXGitHub>
-//                 Alexander T. <https://github.com/a-tarasyuk>
-//                 Lishude <https://github.com/islishude>
-//                 Andrew Makarov <https://github.com/r3nya>
-//                 Zane Hannan AU <https://github.com/ZaneHannanAU>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-
-/**
- * @externs
- * @fileoverview Definitions for module "dgram"
+/*
+ * Copyright 2012 The Closure Compiler Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
+/**
+ * @fileoverview Definitions for node's dgram module. Depends on the events module.
+ * @see http://nodejs.org/api/dgram.html
+ * @see https://github.com/joyent/node/blob/master/lib/dgram.js
+ */
+
+var events = require('events');
+
+/**
+ * @const
+ */
 var dgram = {};
-
-var events = require("events");
-
-/**
- * @interface
- */
-function RemoteInfo() {}
-
-/**
- * @type {string}
- */
-RemoteInfo.prototype.address;
-
-/**
- * @type {number}
- */
-RemoteInfo.prototype.port;
-
-/**
- * @type {number}
- */
-RemoteInfo.prototype.size;
-
-/**
- * @interface
- */
-function AddressInfo() {}
-
-/**
- * @type {string}
- */
-AddressInfo.prototype.address;
-
-/**
- * @type {string}
- */
-AddressInfo.prototype.family;
-
-/**
- * @type {number}
- */
-AddressInfo.prototype.port;
-
-/**
- * @interface
- */
-function BindOptions() {}
-
-/**
- * @type {number}
- */
-BindOptions.prototype.port;
-
-/**
- * @type {string}
- */
-BindOptions.prototype.address;
-
-/**
- * @type {boolean}
- */
-BindOptions.prototype.exclusive;
-
-/**
- * @interface
- */
-function SocketOptions() {}
-
-/**
- * @type {(string)}
- */
-SocketOptions.prototype.type;
-
-/**
- * @type {boolean}
- */
-SocketOptions.prototype.reuseAddr;
 
 /**
  * @param {string} type
- * @param {(function(Buffer, dgram.RemoteInfo): void)=} callback
+ * @param {function(...)=} callback
  * @return {dgram.Socket}
  */
-dgram.createSocket = function(type, callback) {};
+dgram.createSocket;
 
 /**
- * @param {dgram.SocketOptions} options
- * @param {(function(Buffer, dgram.RemoteInfo): void)=} callback
- * @return {dgram.Socket}
- */
-dgram.createSocket = function(options, callback) {};
-
-/**
- * @interface
- * @extends {events.EventEmitter}
+ * @constructor
+ * @extends events.EventEmitter
  */
 dgram.Socket = function() {};
 
 /**
- * @param {(Buffer|String|Array<*>)} msg
- * @param {number} port
- * @param {string} address
- * @param {(function(Error, number): void)=} callback
- * @return {void}
- */
-dgram.Socket.prototype.send = function(msg, port, address, callback) {};
-
-/**
- * @param {(Buffer|String|Array<*>)} msg
+ * @param {Buffer} buf
  * @param {number} offset
  * @param {number} length
  * @param {number} port
  * @param {string} address
- * @param {(function(Error, number): void)=} callback
+ * @param {function(...)=} callback
  * @return {void}
  */
-dgram.Socket.prototype.send = function(msg, offset, length, port, address, callback) {};
+dgram.Socket.prototype.send;
 
 /**
- * @param {number=} port
+ * @param {number} port
  * @param {string=} address
- * @param {(function(): void)=} callback
  * @return {void}
  */
-dgram.Socket.prototype.bind = function(port, address, callback) {};
+dgram.Socket.prototype.bind;
 
 /**
- * @param {dgram.BindOptions} options
- * @param {Function=} callback
  * @return {void}
  */
-dgram.Socket.prototype.bind = function(options, callback) {};
+dgram.Socket.prototype.close;
 
 /**
- * @param {*=} callback
- * @return {void}
+ * @return {string}
  */
-dgram.Socket.prototype.close = function(callback) {};
-
-/**
- * @return {dgram.AddressInfo}
- */
-dgram.Socket.prototype.address = function() {};
+dgram.Socket.prototype.address;
 
 /**
  * @param {boolean} flag
  * @return {void}
  */
-dgram.Socket.prototype.setBroadcast = function(flag) {};
+dgram.Socket.prototype.setBroadcast;
 
 /**
  * @param {number} ttl
- * @return {void}
+ * @return {number}
  */
-dgram.Socket.prototype.setTTL = function(ttl) {};
+dgram.Socket.prototype.setTTL;
 
 /**
  * @param {number} ttl
- * @return {void}
+ * @return {number}
  */
-dgram.Socket.prototype.setMulticastTTL = function(ttl) {};
+dgram.Socket.prototype.setMulticastTTL;
 
 /**
  * @param {boolean} flag
  * @return {void}
  */
-dgram.Socket.prototype.setMulticastLoopback = function(flag) {};
+dgram.Socket.prototype.setMulticastLoopback;
 
 /**
  * @param {string} multicastAddress
  * @param {string=} multicastInterface
  * @return {void}
  */
-dgram.Socket.prototype.addMembership = function(multicastAddress, multicastInterface) {};
+dgram.Socket.prototype.addMembership;
 
 /**
  * @param {string} multicastAddress
  * @param {string=} multicastInterface
  * @return {void}
  */
-dgram.Socket.prototype.dropMembership = function(multicastAddress, multicastInterface) {};
+dgram.Socket.prototype.dropMembership;
 
-/**
- * @return {void}
- */
-dgram.Socket.prototype.ref = function() {};
-
-/**
- * @return {void}
- */
-dgram.Socket.prototype.unref = function() {};
-
-module.exports.createSocket = dgram.createSocket;
-
-module.exports.createSocket = dgram.createSocket;
-
-module.exports.Socket = dgram.Socket;
-
+module.exports = dgram;

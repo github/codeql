@@ -1,149 +1,100 @@
-// Automatically generated from TypeScript type definitions provided by
-// DefinitelyTyped (https://github.com/DefinitelyTyped/DefinitelyTyped),
-// which is licensed under the MIT license; see file DefinitelyTyped-LICENSE
-// in parent directory.
-// Type definitions for Node.js 10.5.x
-// Project: http://nodejs.org/
-// Definitions by: Microsoft TypeScript <http://typescriptlang.org>
-//                 DefinitelyTyped <https://github.com/DefinitelyTyped/DefinitelyTyped>
-//                 Parambir Singh <https://github.com/parambirs>
-//                 Christian Vaagland Tellnes <https://github.com/tellnes>
-//                 Wilco Bakker <https://github.com/WilcoBakker>
-//                 Nicolas Voigt <https://github.com/octo-sniffle>
-//                 Chigozirim C. <https://github.com/smac89>
-//                 Flarna <https://github.com/Flarna>
-//                 Mariusz Wiktorczyk <https://github.com/mwiktorczyk>
-//                 wwwy3y3 <https://github.com/wwwy3y3>
-//                 Deividas Bakanas <https://github.com/DeividasBakanas>
-//                 Kelvin Jin <https://github.com/kjin>
-//                 Alvis HT Tang <https://github.com/alvis>
-//                 Sebastian Silbermann <https://github.com/eps1lon>
-//                 Hannes Magnusson <https://github.com/Hannes-Magnusson-CK>
-//                 Alberto Schiabel <https://github.com/jkomyno>
-//                 Klaus Meinhardt <https://github.com/ajafff>
-//                 Huw <https://github.com/hoo29>
-//                 Nicolas Even <https://github.com/n-e>
-//                 Bruno Scheufler <https://github.com/brunoscheufler>
-//                 Mohsen Azimi <https://github.com/mohsen1>
-//                 Hoàng Văn Khải <https://github.com/KSXGitHub>
-//                 Alexander T. <https://github.com/a-tarasyuk>
-//                 Lishude <https://github.com/islishude>
-//                 Andrew Makarov <https://github.com/r3nya>
-//                 Zane Hannan AU <https://github.com/ZaneHannanAU>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-
-/**
- * @externs
- * @fileoverview Definitions for module "events"
+/*
+ * Copyright 2012 The Closure Compiler Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-var events = function() {};
+/**
+ * @fileoverview Definitions for node's "events" module.
+ * @externs
+ *
+ * @see http://nodejs.org/api/events.html
+ * @see https://github.com/joyent/node/blob/master/lib/events.js
+ */
+
+/**
+ * @const
+ */
+var events = {};
 
 /**
  * @constructor
- * @extends {NodeJS.EventEmitter}
  */
-events.EventEmitter;
-
-/**
- * @type {events.EventEmitter}
- */
-events.EventEmitter.EventEmitter;
-
-/**
- * @param {events.EventEmitter} emitter
- * @param {string} event
- * @return {number}
- */
-events.EventEmitter.listenerCount = function(emitter, event) {};
-
-/**
- * @type {number}
- */
-events.EventEmitter.defaultMaxListeners;
+events.EventEmitter = function() {};
 
 /**
  * @param {string} event
- * @param {Function} listener
- * @return {*}
+ * @param {function(...)} listener
+ * @return {events.EventEmitter}
  */
-events.EventEmitter.prototype.addListener = function(event, listener) {};
+events.EventEmitter.prototype.addListener;
 
 /**
  * @param {string} event
- * @param {Function} listener
- * @return {*}
+ * @param {function(...)} listener
+ * @return {events.EventEmitter}
  */
-events.EventEmitter.prototype.on = function(event, listener) {};
+events.EventEmitter.prototype.on;
 
 /**
  * @param {string} event
- * @param {Function} listener
- * @return {*}
+ * @param {function(...)} listener
+ * @return {events.EventEmitter}
  */
-events.EventEmitter.prototype.once = function(event, listener) {};
+events.EventEmitter.prototype.once;
 
 /**
  * @param {string} event
- * @param {Function} listener
- * @return {*}
+ * @param {function(...)} listener
+ * @return {events.EventEmitter}
  */
-events.EventEmitter.prototype.prependListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {Function} listener
- * @return {*}
- */
-events.EventEmitter.prototype.prependOnceListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {Function} listener
- * @return {*}
- */
-events.EventEmitter.prototype.removeListener = function(event, listener) {};
+events.EventEmitter.prototype.removeListener;
 
 /**
  * @param {string=} event
- * @return {*}
+ * @return {events.EventEmitter}
  */
-events.EventEmitter.prototype.removeAllListeners = function(event) {};
+events.EventEmitter.prototype.removeAllListeners;
 
 /**
  * @param {number} n
- * @return {*}
+ * @return {void}
  */
-events.EventEmitter.prototype.setMaxListeners = function(n) {};
-
-/**
- * @return {number}
- */
-events.EventEmitter.prototype.getMaxListeners = function() {};
+events.EventEmitter.prototype.setMaxListeners;
 
 /**
  * @param {string} event
- * @return {Array<Function>}
+ * @return {Array.<function(...)>}
  */
-events.EventEmitter.prototype.listeners = function(event) {};
+events.EventEmitter.prototype.listeners;
 
 /**
  * @param {string} event
- * @param {...*} args
+ * @param {...*} var_args
  * @return {boolean}
  */
-events.EventEmitter.prototype.emit = function(event, args) {};
+events.EventEmitter.prototype.emit;
+
+// Undocumented
 
 /**
- * @return {Array<string>}
+ * @type {boolean}
  */
-events.EventEmitter.prototype.eventNames = function() {};
+events.usingDomains;
 
 /**
+ * @param {events.EventEmitter} emitter
  * @param {string} type
- * @return {number}
+ * @return {void}
  */
-events.EventEmitter.prototype.listenerCount = function(type) {};
-
-module.exports = events;
-
+events.EventEmitter.listenerCount;

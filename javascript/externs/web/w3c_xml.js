@@ -25,8 +25,7 @@
  *    XMLHttpRequest - Fully type annotated
  *
  * @see http://www.w3.org/TR/DOM-Level-3-XPath/xpath.html
- * @see http://www.w3.org/TR/XMLHttpRequest/
- * @see http://www.w3.org/TR/XMLHttpRequest2/
+ * @see https://xhr.spec.whatwg.org/
  *
  * @externs
  * @author stevey@google.com (Steve Yegge)
@@ -40,16 +39,16 @@
 function XPathException() {}
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/DOM-Level-3-XPath/xpath.html#INVALID_EXPRESSION_ERR
  */
-XPathException.INVALID_EXPRESSION_ERR = 52;
+XPathException.INVALID_EXPRESSION_ERR;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/DOM-Level-3-XPath/xpath.html#TYPE_ERR
  */
-XPathException.TYPE_ERR = 52;
+XPathException.TYPE_ERR;
 
 /**
  * @type {number}
@@ -133,7 +132,6 @@ XPathNSResolver.prototype.lookupNamespaceURI = function(prefix) {};
  * XPath is a language for addressing parts of an XML document, designed to be
  * used by both XSLT and XPointer.
  *
- * @noalias
  * @constructor
  * @see http://www.w3.org/TR/DOM-Level-3-XPath/xpath.html#XPathResult
  */
@@ -203,64 +201,64 @@ XPathResult.prototype.iterateNext = function() {};
 XPathResult.prototype.snapshotItem = function(index) {};
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/DOM-Level-3-XPath/xpath.html#XPathResult-ANY-TYPE
  */
-XPathResult.ANY_TYPE = 0;
+XPathResult.ANY_TYPE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/DOM-Level-3-XPath/xpath.html#XPathResult-NUMBER-TYPE
  */
-XPathResult.NUMBER_TYPE = 1;
+XPathResult.NUMBER_TYPE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/DOM-Level-3-XPath/xpath.html#XPathResult-STRING-TYPE
  */
-XPathResult.STRING_TYPE = 2;
+XPathResult.STRING_TYPE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/DOM-Level-3-XPath/xpath.html#XPathResult-BOOLEAN-TYPE
  */
-XPathResult.BOOLEAN_TYPE = 3;
+XPathResult.BOOLEAN_TYPE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/DOM-Level-3-XPath/xpath.html#XPathResult-UNORDERED-NODE-ITERATOR-TYPE
  */
-XPathResult.UNORDERED_NODE_ITERATOR_TYPE = 4;
+XPathResult.UNORDERED_NODE_ITERATOR_TYPE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/DOM-Level-3-XPath/xpath.html#XPathResult-ORDERED-NODE-ITERATOR-TYPE
  */
-XPathResult.ORDERED_NODE_ITERATOR_TYPE = 5;
+XPathResult.ORDERED_NODE_ITERATOR_TYPE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/DOM-Level-3-XPath/xpath.html#XPathResult-UNORDERED-NODE-SNAPSHOT-TYPE
  */
-XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE = 6;
+XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/DOM-Level-3-XPath/xpath.html#XPathResult-ORDERED-NODE-SNAPSHOT-TYPE
  */
-XPathResult.ORDERED_NODE_SNAPSHOT_TYPE = 7;
+XPathResult.ORDERED_NODE_SNAPSHOT_TYPE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/DOM-Level-3-XPath/xpath.html#XPathResult-ANY-UNORDERED-NODE-TYPE
  */
-XPathResult.ANY_UNORDERED_NODE_TYPE = 8;
+XPathResult.ANY_UNORDERED_NODE_TYPE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/DOM-Level-3-XPath/xpath.html#XPathResult-FIRST-ORDERED-NODE-TYPE
  */
-XPathResult.FIRST_ORDERED_NODE_TYPE = 9;
+XPathResult.FIRST_ORDERED_NODE_TYPE;
 
 /**
  * @constructor
@@ -276,13 +274,13 @@ function XPathNamespace() {}
 XPathNamespace.prototype.ownerElement;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/DOM-Level-3-XPath/xpath.html#XPATH_NAMESPACE_NODE
  */
-XPathNamespace.XPATH_NAMESPACE_NODE = 13;
+XPathNamespace.XPATH_NAMESPACE_NODE;
 
 /**
- * From http://www.w3.org/TR/XMLHttpRequest/
+ * From https://xhr.spec.whatwg.org/#xmlhttprequest
  *
  * (Draft)
  *
@@ -292,30 +290,19 @@ XPathNamespace.XPATH_NAMESPACE_NODE = 13;
  *
  * @constructor
  * @implements {EventTarget}
- * @see http://www.w3.org/TR/XMLHttpRequest/#xmlhttprequest-object
+ * @see https://xhr.spec.whatwg.org/#xmlhttprequest
  */
 function XMLHttpRequest() {}
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-XMLHttpRequest.prototype.addEventListener =
-    function(type, listener, opt_useCapture) {};
+/** @override */
+XMLHttpRequest.prototype.addEventListener = function(
+    type, listener, opt_options) {};
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-XMLHttpRequest.prototype.removeEventListener =
-    function(type, listener, opt_useCapture) {};
+/** @override */
+XMLHttpRequest.prototype.removeEventListener = function(
+    type, listener, opt_options) {};
 
-/**
- * @override
- * @return {boolean}
- */
+/** @override */
 XMLHttpRequest.prototype.dispatchEvent = function(evt) {};
 
 /**
@@ -325,7 +312,7 @@ XMLHttpRequest.prototype.dispatchEvent = function(evt) {};
  * @param {?string=} opt_user
  * @param {?string=} opt_password
  * @return {undefined}
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-open()-method
+ * @see https://xhr.spec.whatwg.org/#the-open()-method
  */
 XMLHttpRequest.prototype.open = function(method, url, opt_async, opt_user,
     opt_password) {};
@@ -334,130 +321,213 @@ XMLHttpRequest.prototype.open = function(method, url, opt_async, opt_user,
  * @param {string} header
  * @param {string} value
  * @return {undefined}
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-setrequestheader()-method
+ * @see https://xhr.spec.whatwg.org/#the-setrequestheader()-method
  */
 XMLHttpRequest.prototype.setRequestHeader = function(header, value) {};
 
 /**
  * @param {ArrayBuffer|ArrayBufferView|Blob|Document|FormData|string=} opt_data
  * @return {undefined}
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-send()-method
+ * @see https://xhr.spec.whatwg.org/#the-send()-method
  */
 XMLHttpRequest.prototype.send = function(opt_data) {};
 
 /**
  * @return {undefined}
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-abort()-method
+ * @see https://xhr.spec.whatwg.org/#the-abort()-method
  */
 XMLHttpRequest.prototype.abort = function() {};
 
 /**
  * @return {string}
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-getallresponseheaders()-method
+ * @see https://xhr.spec.whatwg.org/#the-getallresponseheaders()-method
  */
 XMLHttpRequest.prototype.getAllResponseHeaders = function() {};
 
 /**
  * @param {string} header
- * @return {string}
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-getresponseheader()-method
+ * @return {?string}
+ * @see https://xhr.spec.whatwg.org/#the-getresponseheader()-method
  */
 XMLHttpRequest.prototype.getResponseHeader = function(header) {};
 
 /**
  * @type {string}
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-responsetext-attribute
+ * @see https://xhr.spec.whatwg.org/#the-responsetext-attribute
  */
 XMLHttpRequest.prototype.responseText;
 
 /**
  * This is not supported in any IE browser (as of August 2016).
  * @type {string}
- * @see https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseURL
+ * @see https://xhr.spec.whatwg.org/#the-responseurl-attribute
  */
 XMLHttpRequest.prototype.responseURL;
 
 /**
  * @type {Document}
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-responsexml-attribute
+ * @see https://xhr.spec.whatwg.org/#the-responsexml-attribute
  */
 XMLHttpRequest.prototype.responseXML;
 
 /**
  * @type {number}
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-readystate-attribute
+ * @see https://xhr.spec.whatwg.org/#dom-xmlhttprequest-readystate
  */
 XMLHttpRequest.prototype.readyState;
 
 /**
  * @type {number}
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-status-attribute
+ * @see https://xhr.spec.whatwg.org/#the-status-attribute
  */
 XMLHttpRequest.prototype.status;
 
 /**
  * @type {string}
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-statustext-attribute
+ * @see https://xhr.spec.whatwg.org/#the-statustext-attribute
  */
 XMLHttpRequest.prototype.statusText;
 
 /**
- * @type {Function}
- * @see http://www.w3.org/TR/XMLHttpRequest/#handler-xhr-onreadystatechange
+ * @type {number}
+ * @see https://xhr.spec.whatwg.org/#the-timeout-attribute
+ */
+XMLHttpRequest.prototype.timeout;
+
+/**
+ * @type {?function(!Event)}
+ * @see https://xhr.spec.whatwg.org/#event-handlers
  */
 XMLHttpRequest.prototype.onreadystatechange;
 
 /**
- * @type {Function}
- * @see http://www.w3.org/TR/XMLHttpRequest/#handler-xhr-onerror
+ * @type {?function(!Event)}
+ * @see https://xhr.spec.whatwg.org/#event-handlers
  */
 XMLHttpRequest.prototype.onerror;
 
 /**
- * @type {number}
- * @see https://www.w3.org/TR/XMLHttpRequest/#states
+ * @const {number}
+ * @see https://xhr.spec.whatwg.org/#states
  */
 XMLHttpRequest.UNSENT;
 
 /**
- * @type {number}
- * @see https://www.w3.org/TR/XMLHttpRequest/#states
+ * @const {number}
+ * @see https://xhr.spec.whatwg.org/#states
+ */
+XMLHttpRequest.prototype.UNSENT;
+
+/**
+ * @const {number}
+ * @see https://xhr.spec.whatwg.org/#states
  */
 XMLHttpRequest.OPENED;
 
 /**
- * @type {number}
- * @see https://www.w3.org/TR/XMLHttpRequest/#states
+ * @const {number}
+ * @see https://xhr.spec.whatwg.org/#states
+ */
+XMLHttpRequest.prototype.OPENED;
+
+/**
+ * @const {number}
+ * @see https://xhr.spec.whatwg.org/#states
  */
 XMLHttpRequest.HEADERS_RECEIVED;
 
 /**
- * @type {number}
- * @see https://www.w3.org/TR/XMLHttpRequest/#states
+ * @const {number}
+ * @see https://xhr.spec.whatwg.org/#states
+ */
+XMLHttpRequest.prototype.HEADERS_RECEIVED;
+
+/**
+ * @const {number}
+ * @see https://xhr.spec.whatwg.org/#states
  */
 XMLHttpRequest.LOADING;
 
 /**
- * @type {number}
- * @see https://www.w3.org/TR/XMLHttpRequest/#states
+ * @const {number}
+ * @see https://xhr.spec.whatwg.org/#states
+ */
+XMLHttpRequest.prototype.LOADING;
+
+/**
+ * @const {number}
+ * @see https://xhr.spec.whatwg.org/#states
  */
 XMLHttpRequest.DONE;
+
+/**
+ * @const {number}
+ * @see https://xhr.spec.whatwg.org/#states
+ */
+XMLHttpRequest.prototype.DONE;
+
+
+/**
+ * @see https://xhr.spec.whatwg.org/#formdataentryvalue
+ * @typedef {!File|string}
+ */
+var FormDataEntryValue;
 
 /**
  * The FormData object represents an ordered collection of entries. Each entry
  * has a name and value.
  *
- * @param {?Element=} opt_form An optional form to use for constructing the form
+ * @param {?Element=} form An optional form to use for constructing the form
  *     data set.
  * @constructor
- * @see http://www.w3.org/TR/XMLHttpRequest2/#the-formdata-interface
+ * @implements {Iterable<!Array<!FormDataEntryValue>>}
+ * @see https://xhr.spec.whatwg.org/#interface-formdata
  */
-function FormData(opt_form) {}
+function FormData(form) {}
 
 /**
  * @param {string} name
- * @param {Blob|string} value
- * @param {string=} opt_filename
+ * @param {?Blob|string} value
+ * @param {string=} filename
  * @return {undefined}
+ * @see https://xhr.spec.whatwg.org/#dom-formdata-append
  */
-FormData.prototype.append = function(name, value, opt_filename) {};
+FormData.prototype.append = function(name, value, filename) {};
+
+/**
+ * @param {string} name
+ * @return {undefined}
+ * @see https://xhr.spec.whatwg.org/#dom-formdata-delete
+ */
+FormData.prototype.delete = function(name) {};
+
+/**
+ * @param {string} name
+ * @return {?FormDataEntryValue}
+ * @see https://xhr.spec.whatwg.org/#dom-formdata-get
+ */
+FormData.prototype.get = function(name) {};
+
+/**
+ * @param {string} name
+ * @return {!Array<!FormDataEntryValue>}
+ * @see https://xhr.spec.whatwg.org/#dom-formdata-getall
+ */
+FormData.prototype.getAll = function(name) {};
+
+/**
+ * @param {string} name
+ * @return {boolean}
+ * @see https://xhr.spec.whatwg.org/#dom-formdata-has
+ */
+FormData.prototype.has = function(name) {};
+
+/**
+ * @param {string} name
+ * @param {!Blob|string} value
+ * @param {string=} filename
+ * @return {undefined}
+ * @see https://xhr.spec.whatwg.org/#dom-formdata-set
+ */
+FormData.prototype.set = function(name, value, filename) {};
+

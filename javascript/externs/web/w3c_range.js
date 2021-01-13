@@ -32,6 +32,58 @@
  */
 function Range() {}
 
+// constants on the constructor
+
+/**
+ * @const {number}
+ * @see http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level2-Range-compareHow
+ */
+Range.START_TO_START;
+
+/**
+ * @const {number}
+ * @see http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level2-Range-compareHow
+ */
+Range.START_TO_END;
+
+/**
+ * @const {number}
+ * @see http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level2-Range-compareHow
+ */
+Range.END_TO_END;
+
+/**
+ * @const {number}
+ * @see http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level2-Range-compareHow
+ */
+Range.END_TO_START;
+
+// constants repeated on the prototype
+
+/**
+ * @const {number}
+ * @see http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level2-Range-compareHow
+ */
+Range.prototype.START_TO_START;
+
+/**
+ * @const {number}
+ * @see http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level2-Range-compareHow
+ */
+Range.prototype.START_TO_END;
+
+/**
+ * @const {number}
+ * @see http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level2-Range-compareHow
+ */
+Range.prototype.END_TO_END;
+
+/**
+ * @const {number}
+ * @see http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level2-Range-compareHow
+ */
+Range.prototype.END_TO_START;
+
 /**
  * @type {Node}
  * @see http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level-2-Range-attr-startParent
@@ -134,30 +186,6 @@ Range.prototype.selectNode = function(refNode) {};
 Range.prototype.selectNodeContents = function(refNode) {};
 
 /**
- * @type {number}
- * @see http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level2-Range-compareHow
- */
-Range.prototype.START_TO_START = 0;
-
-/**
- * @type {number}
- * @see http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level2-Range-compareHow
- */
-Range.prototype.START_TO_END = 1;
-
-/**
- * @type {number}
- * @see http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level2-Range-compareHow
- */
-Range.prototype.END_TO_END = 2;
-
-/**
- * @type {number}
- * @see http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level2-Range-compareHow
- */
-Range.prototype.END_TO_START = 3;
-
-/**
  * @param {number} how
  * @param {Range} sourceRange
  * @return {number}
@@ -211,7 +239,7 @@ Range.prototype.detach = function() {};
 
 // Introduced in DOM Level 2:
 /**
- * @constructor
+ * @interface
  * @see http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level-2-DocumentRange-idl
  */
 function DocumentRange() {}
@@ -221,28 +249,3 @@ function DocumentRange() {}
  * @see http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level2-DocumentRange-method-createRange
  */
 DocumentRange.prototype.createRange = function() {};
-
-// Introduced in DOM Level 2:
-/**
- * @constructor
- * @see http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#RangeException
- */
-function RangeException() {}
-
-/**
- * @type {number}
- * @see http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#RangeExceptionCode
- */
-RangeException.prototype.code;
-
-/**
- * @type {number}
- * @see http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#RangeExceptionCode
- */
-RangeException.prototype.BAD_BOUNDARYPOINTS_ERR = 1;
-
-/**
- * @type {number}
- * @see http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#RangeExceptionCode
- */
-RangeException.prototype.INVALID_NODE_TYPE_ERR = 2;

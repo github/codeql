@@ -22,29 +22,12 @@
  * @externs
  */
 
-
 /**
  * @param {boolean=} opt_center
  * @see https://bugzilla.mozilla.org/show_bug.cgi?id=403510
  * @return {undefined}
  */
 Element.prototype.scrollIntoViewIfNeeded = function(opt_center) {};
-
-/**
- * @constructor
- * @see http://trac.webkit.org/browser/trunk/Source/WebCore/page/MemoryInfo.idl
- * @see http://trac.webkit.org/browser/trunk/Source/WebCore/page/MemoryInfo.cpp
- */
-function MemoryInfo() {};
-
-/** @type {number} */
-MemoryInfo.prototype.totalJSHeapSize;
-
-/** @type {number} */
-MemoryInfo.prototype.usedJSHeapSize;
-
-/** @type {number} */
-MemoryInfo.prototype.jsHeapSizeLimit;
 
 /**
  * @constructor
@@ -95,200 +78,10 @@ ScriptProfile.prototype.uid;
 ScriptProfile.prototype.head;
 
 /**
- * @constructor
- * @see http://trac.webkit.org/browser/trunk/Source/WebCore/page/Console.idl
- * @see http://trac.webkit.org/browser/trunk/Source/WebCore/page/Console.cpp
- */
-function Console() {};
-
-/**
- * @param {*} condition
- * @param {...*} var_args
- * @return {undefined}
- */
-Console.prototype.assert = function(condition, var_args) {};
-
-/**
- * @param {...*} var_args
- * @return {undefined}
- */
-Console.prototype.error = function(var_args) {};
-
-/**
- * @param {...*} var_args
- * @return {undefined}
- */
-Console.prototype.info = function(var_args) {};
-
-/**
- * @param {...*} var_args
- * @return {undefined}
- */
-Console.prototype.log = function(var_args) {};
-
-/**
- * @param {...*} var_args
- * @return {undefined}
- */
-Console.prototype.warn = function(var_args) {};
-
-/**
- * @param {...*} var_args
- * @return {undefined}
- */
-Console.prototype.debug = function(var_args) {};
-
-/**
- * @param {*} value
- * @return {undefined}
- */
-Console.prototype.dir = function(value) {};
-
-/**
- * @param {...*} var_args
- * @return {undefined}
- */
-Console.prototype.dirxml = function(var_args) {};
-
-/**
- * @param {!Object} data
- * @param {*=} opt_columns
- * @return {undefined}
- */
-Console.prototype.table = function(data, opt_columns) {};
-
-/**
- * @param {...*} var_args
- * @return {undefined}
- */
-Console.prototype.trace = function(var_args) {};
-
-/**
- * @param {*} value
- * @return {undefined}
- */
-Console.prototype.count = function(value) {};
-
-/**
- * @param {*} value
- * @return {undefined}
- */
-Console.prototype.markTimeline = function(value) {};
-
-/**
- * @param {string=} opt_title
- * @return {undefined}
- */
-Console.prototype.profile = function(opt_title) {};
-
-/** @type {Array<ScriptProfile>} */
-Console.prototype.profiles;
-
-/**
- * @param {string=} opt_title
- * @return {undefined}
- */
-Console.prototype.profileEnd = function(opt_title) {};
-
-/**
- * @param {string} name
- * @return {undefined}
- */
-Console.prototype.time = function(name) {};
-
-/**
- * @param {string} name
- * @return {undefined}
- */
-Console.prototype.timeEnd = function(name) {};
-
-/**
- * @param {*} value
- * @return {undefined}
- */
-Console.prototype.timeStamp = function(value) {};
-
-/**
- * @param {...*} var_args
- * @return {undefined}
- */
-Console.prototype.group = function(var_args) {};
-
-/**
- * @param {...*} var_args
- * @return {undefined}
- */
-Console.prototype.groupCollapsed = function(var_args) {};
-
-Console.prototype.groupEnd = function() {};
-
-Console.prototype.clear = function() {};
-
-/** @type {MemoryInfo} */
-Console.prototype.memory;
-
-/** @type {!Console} */
-Window.prototype.console;
-
-/**
- * @type {!Console}
- * @suppress {duplicate}
- */
-var console;
-
-/**
  * @type {number}
  * @see http://developer.android.com/reference/android/webkit/WebView.html
  */
 Window.prototype.devicePixelRatio;
-
-/** @type {Node} */
-Selection.prototype.baseNode;
-
-/** @type {number} */
-Selection.prototype.baseOffset;
-
-/** @type {Node} */
-Selection.prototype.extentNode;
-
-/** @type {number} */
-Selection.prototype.extentOffset;
-
-/** @type {string} */
-Selection.prototype.type;
-
-/**
- * @return {undefined}
- */
-Selection.prototype.empty = function() {};
-
-/**
- * @param {Node} baseNode
- * @param {number} baseOffset
- * @param {Node} extentNode
- * @param {number} extentOffset
- * @return {undefined}
- */
-Selection.prototype.setBaseAndExtent =
- function(baseNode, baseOffset, extentNode, extentOffset) {};
-
-/**
- * @param {string} alter
- * @param {string} direction
- * @param {string} granularity
- * @return {undefined}
- */
-Selection.prototype.modify = function(alter, direction, granularity) {};
-
-/**
- * @param {Element} element
- * @param {string} pseudoElement
- * @param {boolean=} opt_authorOnly
- * @return {CSSRuleList}
- * @nosideeffects
- */
-ViewCSS.prototype.getMatchedCSSRules =
-    function(element, pseudoElement, opt_authorOnly) {};
 
 /**
  * @param {string} contextId
@@ -309,3 +102,17 @@ Document.prototype.getCSSCanvasContext =
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Document/caretRangeFromPoint
  */
 Document.prototype.caretRangeFromPoint = function(x, y) {};
+
+/**
+ * @return {!Promise<boolean>}
+ * @nosideeffects
+ * @see https://webkit.org/blog/8124/introducing-storage-access-api
+ */
+Document.prototype.hasStorageAccess = function() {};
+
+/**
+ * @return {!Promise<void>}
+ * @see https://webkit.org/blog/8124/introducing-storage-access-api
+ * @see https://developer.mozilla.org/docs/Web/API/Document/requestStorageAccess#Syntax
+ */
+Document.prototype.requestStorageAccess = function() {};

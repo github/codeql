@@ -22,9 +22,9 @@
 
 
 /**
- * @param {Object|undefined} selfObj Specifies the object to which |this| should
- *     point when the function is run. If the value is null or undefined, it
- *     will default to the global object.
+ * @param {?Object|undefined} selfObj Specifies the object to which |this|
+ *     should point when the function is run. If the value is null or undefined,
+ *     it will default to the global object.
  * @param {...*} var_args Additional arguments that are partially
  *     applied to fn.
  * @return {!Function} A partially-applied form of the Function on which
@@ -66,13 +66,12 @@ String.prototype.trimRight = function() {};
  * A object property descriptor used by Object.create, Object.defineProperty,
  * Object.defineProperties, Object.getOwnPropertyDescriptor.
  *
- * Note: not a real constructor.
- * @constructor
+ * @record
  * @template THIS
  */
 function ObjectPropertyDescriptor() {}
 
-/** @type {*} */
+/** @type {(*|undefined)} */
 ObjectPropertyDescriptor.prototype.value;
 
 /** @type {(function(this: THIS):?)|undefined} */
@@ -92,29 +91,33 @@ ObjectPropertyDescriptor.prototype.configurable;
 
 
 /**
- * @param {Object} proto
- * @param {Object=} opt_properties  A map of ObjectPropertyDescriptors.
+ * @param {?Object} proto
+ * @param {?Object<string|symbol, !ObjectPropertyDescriptor<?>>=} properties
+ *     A map of ObjectPropertyDescriptors.
  * @return {!Object}
  * @nosideeffects
  * @see https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/create
  */
-Object.create = function(proto, opt_properties) {};
+Object.create = function(proto, properties) {};
 
 
 /**
- * @param {!Object} obj
- * @param {string} prop
- * @param {!Object} descriptor A ObjectPropertyDescriptor.
- * @return {!Object}
+ * @template T
+ * @param {T} obj
+ * @param {string|symbol} prop
+ * @param {!ObjectPropertyDescriptor<T>} descriptor A ObjectPropertyDescriptor.
+ * @return {T}
  * @see https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/defineProperty
  */
 Object.defineProperty = function(obj, prop, descriptor) {};
 
 
 /**
- * @param {!Object} obj
- * @param {!Object} props A map of ObjectPropertyDescriptors.
- * @return {!Object}
+ * @template T
+ * @param {T} obj
+ * @param {!Object<string|symbol, !ObjectPropertyDescriptor<T>>} props A map of
+ *     ObjectPropertyDescriptors.
+ * @return {T}
  * @see https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/defineProperties
  */
 Object.defineProperties = function(obj, props) {};
@@ -122,7 +125,7 @@ Object.defineProperties = function(obj, props) {};
 
 /**
  * @param {T} obj
- * @param {string} prop
+ * @param {string|symbol} prop
  * @return {!ObjectPropertyDescriptor<T>|undefined}
  * @nosideeffects
  * @template T
@@ -213,10 +216,20 @@ Object.isFrozen = function(obj) {};
 
 
 /**
+ * We acknowledge that this function does not exist on the `Object.prototype`
+ * and is declared in this file for other reasons.
+ *
+ * When `toJSON` is defined as a property on an object it can be used in
+ * conjunction with the JSON.stringify() function.
+ *
+ * It is defined here to:
+ * (1) Prevent the compiler from renaming the property on internal classes.
+ * (2) Enforce that the signature is correct for users defining it.
+ *
  * @param {string=} opt_key The JSON key for this object.
  * @return {*} The serializable representation of this object. Note that this
  *     need not be a string. See http://goo.gl/PEUvs.
- * @see https://es5.github.io/#x15.12.3
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#toJSON()_behavior
  */
 Object.prototype.toJSON = function(opt_key) {};
 
@@ -238,7 +251,7 @@ Date.prototype.toJSON = function(opt_ignoredKey) {};
 
 /**
  * @param {string} jsonStr The string to parse.
- * @param {(function(string, *) : *)=} opt_reviver
+ * @param {(function(this:?, string, *) : *)=} opt_reviver
  * @return {*} The JSON object.
  * @throws {Error}
  */
@@ -247,7 +260,7 @@ JSON.parse = function(jsonStr, opt_reviver) {};
 
 /**
  * @param {*} jsonObj Input object.
- * @param {(Array<string>|(function(string, *) : *)|null)=} opt_replacer
+ * @param {(Array<string>|(function(this:?, string, *) : *)|null)=} opt_replacer
  * @param {(number|string)=} opt_space
  * @return {string} JSON string which represents jsonObj.
  * @throws {Error}

@@ -1,292 +1,112 @@
-// Automatically generated from TypeScript type definitions provided by
-// DefinitelyTyped (https://github.com/DefinitelyTyped/DefinitelyTyped),
-// which is licensed under the MIT license; see file DefinitelyTyped-LICENSE
-// in parent directory.
-// Type definitions for Node.js 10.5.x
-// Project: http://nodejs.org/
-// Definitions by: Microsoft TypeScript <http://typescriptlang.org>
-//                 DefinitelyTyped <https://github.com/DefinitelyTyped/DefinitelyTyped>
-//                 Parambir Singh <https://github.com/parambirs>
-//                 Christian Vaagland Tellnes <https://github.com/tellnes>
-//                 Wilco Bakker <https://github.com/WilcoBakker>
-//                 Nicolas Voigt <https://github.com/octo-sniffle>
-//                 Chigozirim C. <https://github.com/smac89>
-//                 Flarna <https://github.com/Flarna>
-//                 Mariusz Wiktorczyk <https://github.com/mwiktorczyk>
-//                 wwwy3y3 <https://github.com/wwwy3y3>
-//                 Deividas Bakanas <https://github.com/DeividasBakanas>
-//                 Kelvin Jin <https://github.com/kjin>
-//                 Alvis HT Tang <https://github.com/alvis>
-//                 Sebastian Silbermann <https://github.com/eps1lon>
-//                 Hannes Magnusson <https://github.com/Hannes-Magnusson-CK>
-//                 Alberto Schiabel <https://github.com/jkomyno>
-//                 Klaus Meinhardt <https://github.com/ajafff>
-//                 Huw <https://github.com/hoo29>
-//                 Nicolas Even <https://github.com/n-e>
-//                 Bruno Scheufler <https://github.com/brunoscheufler>
-//                 Mohsen Azimi <https://github.com/mohsen1>
-//                 Hoàng Văn Khải <https://github.com/KSXGitHub>
-//                 Alexander T. <https://github.com/a-tarasyuk>
-//                 Lishude <https://github.com/islishude>
-//                 Andrew Makarov <https://github.com/r3nya>
-//                 Zane Hannan AU <https://github.com/ZaneHannanAU>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-
-/**
- * @externs
- * @fileoverview Definitions for module "util"
+/*
+ * Copyright 2012 The Closure Compiler Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
+/**
+ * @fileoverview Definitions for node's util module. Depends on the stream module.
+ * @see http://nodejs.org/api/util.html
+ * @see https://github.com/joyent/node/blob/master/lib/util.js
+ */
+
+/**
+ * @const
+ */
 var util = {};
 
 /**
- * @interface
- */
-util.InspectOptions = function() {};
-
-/**
- * @type {boolean}
- */
-util.InspectOptions.prototype.showHidden;
-
-/**
- * @type {number}
- */
-util.InspectOptions.prototype.depth;
-
-/**
- * @type {boolean}
- */
-util.InspectOptions.prototype.colors;
-
-/**
- * @type {boolean}
- */
-util.InspectOptions.prototype.customInspect;
-
-/**
- * @param {*} format
- * @param {...*} param
+ * @param {string} format
+ * @param {...*} var_args
  * @return {string}
+ * @nosideeffects
  */
-util.format = function(format, param) {};
+util.format;
 
 /**
  * @param {string} string
  * @return {void}
  */
-util.debug = function(string) {};
+util.debug;
 
 /**
- * @param {...*} param
+ * @param {...*} var_args
  * @return {void}
  */
-util.error = function(param) {};
+util.error;
 
 /**
- * @param {...*} param
+ * @param {...*} var_args
  * @return {void}
  */
-util.puts = function(param) {};
+util.puts;
 
 /**
- * @param {...*} param
+ * @param {...*} var_args
  * @return {void}
  */
-util.print = function(param) {};
+util.print;
 
 /**
  * @param {string} string
  * @return {void}
  */
-util.log = function(string) {};
+util.log;
 
 /**
  * @param {*} object
- * @param {boolean=} showHidden
- * @param {number=} depth
- * @param {boolean=} color
+ * @param {{showHidden: (boolean|undefined),
+ *          depth: (number|null|undefined),
+ *          colors: (boolean|undefined),
+ *          customInspect: (boolean|undefined)}=} options
  * @return {string}
+ * @nosideeffects
  */
-util.inspect = function(object, showHidden, depth, color) {};
-
-/**
- * @param {*} object
- * @param {util.InspectOptions} options
- * @return {string}
- */
-util.inspect = function(object, options) {};
+util.inspect;
 
 /**
  * @param {*} object
  * @return {boolean}
+ * @nosideeffects
  */
-util.isArray = function(object) {};
+util.isArray;
 
 /**
  * @param {*} object
  * @return {boolean}
+ * @nosideeffects
  */
-util.isRegExp = function(object) {};
+util.isRegExp;
 
 /**
  * @param {*} object
  * @return {boolean}
+ * @nosideeffects
  */
-util.isDate = function(object) {};
+util.isDate;
 
 /**
  * @param {*} object
  * @return {boolean}
+ * @nosideeffects
  */
-util.isError = function(object) {};
+util.isError;
 
 /**
- * @param {*} constructor
- * @param {*} superConstructor
+ * @param {Function} constructor
+ * @param {Function} superConstructor
  * @return {void}
  */
-util.inherits = function(constructor, superConstructor) {};
+util.inherits;
 
-/**
- * @param {string} key
- * @return {(function(string, ...*): void)}
- */
-util.debuglog = function(key) {};
-
-/**
- * @param {*} object
- * @return {boolean}
- */
-util.isBoolean = function(object) {};
-
-/**
- * @param {*} object
- * @return {boolean}
- */
-util.isBuffer = function(object) {};
-
-/**
- * @param {*} object
- * @return {boolean}
- */
-util.isFunction = function(object) {};
-
-/**
- * @param {*} object
- * @return {boolean}
- */
-util.isNull = function(object) {};
-
-/**
- * @param {*} object
- * @return {boolean}
- */
-util.isNullOrUndefined = function(object) {};
-
-/**
- * @param {*} object
- * @return {boolean}
- */
-util.isNumber = function(object) {};
-
-/**
- * @param {*} object
- * @return {boolean}
- */
-util.isObject = function(object) {};
-
-/**
- * @param {*} object
- * @return {boolean}
- */
-util.isPrimitive = function(object) {};
-
-/**
- * @param {*} object
- * @return {boolean}
- */
-util.isString = function(object) {};
-
-/**
- * @param {*} object
- * @return {boolean}
- */
-util.isSymbol = function(object) {};
-
-/**
- * @param {*} object
- * @return {boolean}
- */
-util.isUndefined = function(object) {};
-
-/**
- * @param {Function} fn
- * @param {string} message
- * @return {Function}
- */
-util.deprecate = function(fn, message) {};
-
-module.exports.InspectOptions = util.InspectOptions;
-
-module.exports.format = util.format;
-
-module.exports.debug = util.debug;
-
-module.exports.error = util.error;
-
-module.exports.puts = util.puts;
-
-module.exports.print = util.print;
-
-module.exports.log = util.log;
-
-module.exports.inspect = util.inspect;
-
-module.exports.inspect = util.inspect;
-
-module.exports.isArray = util.isArray;
-
-module.exports.isRegExp = util.isRegExp;
-
-module.exports.isDate = util.isDate;
-
-module.exports.isError = util.isError;
-
-module.exports.inherits = util.inherits;
-
-module.exports.debuglog = util.debuglog;
-
-module.exports.isBoolean = util.isBoolean;
-
-module.exports.isBuffer = util.isBuffer;
-
-module.exports.isFunction = util.isFunction;
-
-module.exports.isNull = util.isNull;
-
-module.exports.isNullOrUndefined = util.isNullOrUndefined;
-
-module.exports.isNumber = util.isNumber;
-
-module.exports.isObject = util.isObject;
-
-module.exports.isPrimitive = util.isPrimitive;
-
-module.exports.isString = util.isString;
-
-module.exports.isSymbol = util.isSymbol;
-
-module.exports.isUndefined = util.isUndefined;
-
-module.exports.deprecate = util.deprecate;
-
-/**
- * @param {Object} destination
- * @param {Object} source
- * @return {Object}
- */
-util._extend = function(destination, source) {};
-
-module.exports._extend = util._extend;
-
+module.exports = util;

@@ -34,7 +34,7 @@ function TextDecoder(encoding, options) {}
 /**
  * @param {!BufferSource=} input
  * @param {?Object=} options
- * @return {!string}
+ * @return {string}
  * @see https://encoding.spec.whatwg.org/#textdecoder
  */
 TextDecoder.prototype.decode = function decode(input, options) {};
@@ -52,3 +52,10 @@ function TextEncoder(utfLabel) {}
  * @return {!Uint8Array}
  */
 TextEncoder.prototype.encode = function(input) {};
+
+/**
+ * @param {string} input
+ * @param {!Uint8Array} uint8Array
+ * @return {{read: number, written: number}}
+ */
+TextEncoder.prototype.encodeInto = function(input, uint8Array) {};

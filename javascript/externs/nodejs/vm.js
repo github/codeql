@@ -1,214 +1,86 @@
-// Automatically generated from TypeScript type definitions provided by
-// DefinitelyTyped (https://github.com/DefinitelyTyped/DefinitelyTyped),
-// which is licensed under the MIT license; see file DefinitelyTyped-LICENSE
-// in parent directory.
-// Type definitions for Node.js 10.5.x
-// Project: http://nodejs.org/
-// Definitions by: Microsoft TypeScript <http://typescriptlang.org>
-//                 DefinitelyTyped <https://github.com/DefinitelyTyped/DefinitelyTyped>
-//                 Parambir Singh <https://github.com/parambirs>
-//                 Christian Vaagland Tellnes <https://github.com/tellnes>
-//                 Wilco Bakker <https://github.com/WilcoBakker>
-//                 Nicolas Voigt <https://github.com/octo-sniffle>
-//                 Chigozirim C. <https://github.com/smac89>
-//                 Flarna <https://github.com/Flarna>
-//                 Mariusz Wiktorczyk <https://github.com/mwiktorczyk>
-//                 wwwy3y3 <https://github.com/wwwy3y3>
-//                 Deividas Bakanas <https://github.com/DeividasBakanas>
-//                 Kelvin Jin <https://github.com/kjin>
-//                 Alvis HT Tang <https://github.com/alvis>
-//                 Sebastian Silbermann <https://github.com/eps1lon>
-//                 Hannes Magnusson <https://github.com/Hannes-Magnusson-CK>
-//                 Alberto Schiabel <https://github.com/jkomyno>
-//                 Klaus Meinhardt <https://github.com/ajafff>
-//                 Huw <https://github.com/hoo29>
-//                 Nicolas Even <https://github.com/n-e>
-//                 Bruno Scheufler <https://github.com/brunoscheufler>
-//                 Mohsen Azimi <https://github.com/mohsen1>
-//                 Hoàng Văn Khải <https://github.com/KSXGitHub>
-//                 Alexander T. <https://github.com/a-tarasyuk>
-//                 Lishude <https://github.com/islishude>
-//                 Andrew Makarov <https://github.com/r3nya>
-//                 Zane Hannan AU <https://github.com/ZaneHannanAU>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-
-/**
- * @externs
- * @fileoverview Definitions for module "vm"
+/*
+ * Copyright 2012 The Closure Compiler Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
+/**
+ * @fileoverview Definitions for node's vm module.
+ * @see http://nodejs.org/api/vm.html
+ * @see https://github.com/joyent/node/blob/master/lib/vm.js
+ */
+
+/**
+ * @const
+ */
 var vm = {};
 
 /**
- * @interface
- */
-vm.Context = function() {};
-
-/**
- * @interface
- */
-vm.ScriptOptions = function() {};
-
-/**
- * @type {string}
- */
-vm.ScriptOptions.prototype.filename;
-
-/**
- * @type {number}
- */
-vm.ScriptOptions.prototype.lineOffset;
-
-/**
- * @type {number}
- */
-vm.ScriptOptions.prototype.columnOffset;
-
-/**
- * @type {boolean}
- */
-vm.ScriptOptions.prototype.displayErrors;
-
-/**
- * @type {number}
- */
-vm.ScriptOptions.prototype.timeout;
-
-/**
- * @type {Buffer}
- */
-vm.ScriptOptions.prototype.cachedData;
-
-/**
- * @type {boolean}
- */
-vm.ScriptOptions.prototype.produceCachedData;
-
-/**
- * @interface
- */
-vm.RunningScriptOptions = function() {};
-
-/**
- * @type {string}
- */
-vm.RunningScriptOptions.prototype.filename;
-
-/**
- * @type {number}
- */
-vm.RunningScriptOptions.prototype.lineOffset;
-
-/**
- * @type {number}
- */
-vm.RunningScriptOptions.prototype.columnOffset;
-
-/**
- * @type {boolean}
- */
-vm.RunningScriptOptions.prototype.displayErrors;
-
-/**
- * @type {number}
- */
-vm.RunningScriptOptions.prototype.timeout;
-
-/**
- * @param {string} code
- * @param {vm.ScriptOptions=} options
- * @return {vm.Script}
  * @constructor
  */
-vm.Script = function(code, options) {};
+vm.Context = function() {}; // Does not really exist
 
 /**
- * @param {vm.Context} contextifiedSandbox
- * @param {vm.RunningScriptOptions=} options
- * @return {*}
+ * @param {string} code
+ * @param {string=} filename
  */
-vm.Script.prototype.runInContext = function(contextifiedSandbox, options) {};
+vm.runInThisContext;
 
 /**
- * @param {vm.Context=} sandbox
- * @param {vm.RunningScriptOptions=} options
- * @return {*}
+ * @param {string} code
+ * @param {Object.<string,*>=} sandbox
+ * @param {string=} filename
+ * @return {void}
  */
-vm.Script.prototype.runInNewContext = function(sandbox, options) {};
+vm.runInNewContext;
 
 /**
- * @param {vm.RunningScriptOptions=} options
- * @return {*}
+ * @param {string} code
+ * @param {vm.Context} context
+ * @param {string=} filename
+ * @return {void}
  */
-vm.Script.prototype.runInThisContext = function(options) {};
+vm.runInContext;
 
 /**
- * @param {vm.Context=} sandbox
+ * @param {Object.<string,*>=} initSandbox
  * @return {vm.Context}
+ * @nosideeffects
  */
-vm.createContext = function(sandbox) {};
+vm.createContext;
 
 /**
- * @param {vm.Context} sandbox
- * @return {boolean}
+ * @constructor
  */
-vm.isContext = function(sandbox) {};
-
-/**
- * @param {string} code
- * @param {vm.Context} contextifiedSandbox
- * @param {vm.RunningScriptOptions=} options
- * @return {*}
- */
-vm.runInContext = function(code, contextifiedSandbox, options) {};
-
-/**
- * @param {string} code
- * @return {*}
- */
-vm.runInDebugContext = function(code) {};
-
-/**
- * @param {string} code
- * @param {vm.Context=} sandbox
- * @param {vm.RunningScriptOptions=} options
- * @return {*}
- */
-vm.runInNewContext = function(code, sandbox, options) {};
-
-/**
- * @param {string} code
- * @param {vm.RunningScriptOptions=} options
- * @return {*}
- */
-vm.runInThisContext = function(code, options) {};
-
-module.exports.Context = vm.Context;
-
-module.exports.ScriptOptions = vm.ScriptOptions;
-
-module.exports.RunningScriptOptions = vm.RunningScriptOptions;
-
-module.exports.Script = vm.Script;
-
-module.exports.createContext = vm.createContext;
-
-module.exports.isContext = vm.isContext;
-
-module.exports.runInContext = vm.runInContext;
-
-module.exports.runInDebugContext = vm.runInDebugContext;
-
-module.exports.runInNewContext = vm.runInNewContext;
-
-module.exports.runInThisContext = vm.runInThisContext;
+vm.Script = function() {};
 
 /**
  * @param {string} code
  * @param {string=} filename
  * @return {vm.Script}
+ * @nosideeffects
  */
-vm.createScript = function(code, filename) {};
+vm.createScript;
 
-module.exports.createScript = vm.createScript;
+/**
+ * @return {void}
+ */
+vm.Script.prototype.runInThisContext;
 
+/**
+ * @param {Object.<string,*>=} sandbox
+ * @return {void}
+ */
+vm.Script.prototype.runInNewContext;
+
+module.exports = vm;

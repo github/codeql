@@ -29,6 +29,14 @@
  * @externs
  */
 
+/** @type {?HTMLSlotElement} */
+Node.prototype.assignedSlot;
+
+/**
+ * @type {string}
+ * @see https://dom.spec.whatwg.org/#dom-element-slot
+ */
+Element.prototype.slot;
 
 /**
  * Note: In IE, the contains() method only exists on Elements, not Nodes.
@@ -43,6 +51,38 @@
  */
 Node.prototype.contains = function(n) {};
 
+/** @type {boolean} */
+Node.prototype.isConnected;
+
+/**
+ * @type {boolean}
+ * @see https://html.spec.whatwg.org/multipage/scripting.html#the-script-element
+ */
+HTMLScriptElement.prototype.async;
+
+/**
+ * @type {string?}
+ * @see https://html.spec.whatwg.org/multipage/scripting.html#the-script-element
+ */
+HTMLScriptElement.prototype.crossOrigin;
+
+/**
+ * @type {string}
+ * @see https://html.spec.whatwg.org/multipage/scripting.html#the-script-element
+ */
+HTMLScriptElement.prototype.integrity;
+
+/**
+ * @type {boolean}
+ * @see https://html.spec.whatwg.org/multipage/scripting.html#the-script-element
+ */
+HTMLScriptElement.prototype.noModule;
+
+/**
+ * @type {string}
+ * @see https://html.spec.whatwg.org/multipage/scripting.html#the-script-element
+ */
+HTMLScriptElement.prototype.referrerPolicy;
 
 /**
  * @constructor
@@ -75,6 +115,7 @@ HTMLCanvasElement.prototype.toBlob = function(callback, opt_type, var_args) {};
 HTMLCanvasElement.prototype.toDataURL = function(opt_type, var_args) {};
 
 /**
+ * @modifies {this}
  * @param {string} contextId
  * @param {Object=} opt_args
  * @return {Object}
@@ -90,10 +131,94 @@ HTMLCanvasElement.prototype.getContext = function(contextId, opt_args) {};
 HTMLCanvasElement.prototype.captureStream = function(opt_framerate) {};
 
 /**
+ * @see https://html.spec.whatwg.org/multipage/canvas.html#dom-canvas-transfercontroltooffscreen
+ * @return {!OffscreenCanvas}
+ * @throws {Error}
+ * */
+HTMLCanvasElement.prototype.transferControlToOffscreen = function() {};
+
+
+/**
+ * @interface
+ * @extends {MediaStreamTrack}
+ * @see https://w3c.github.io/mediacapture-fromelement/#the-canvascapturemediastreamtrack
+ */
+function CanvasCaptureMediaStreamTrack() {}
+
+/**
+ * The canvas element that this media stream captures.
+ * @type {!HTMLCanvasElement}
+ */
+CanvasCaptureMediaStreamTrack.prototype.canvas;
+
+/**
+ * Allows applications to manually request that a frame from the canvas be
+ * captured and rendered into the track.
+ * @return {undefined}
+ */
+CanvasCaptureMediaStreamTrack.prototype.requestFrame = function() {};
+
+
+/**
+ * @see https://html.spec.whatwg.org/multipage/canvas.html#the-offscreencanvas-interface
+ * @implements {EventTarget}
+ * @implements {Transferable}
+ * @param {number} width
+ * @param {number} height
+ * @nosideeffects
+ * @constructor
+ */
+function OffscreenCanvas(width, height) {}
+
+/** @override */
+OffscreenCanvas.prototype.addEventListener = function(
+    type, listener, opt_options) {};
+
+/** @override */
+OffscreenCanvas.prototype.removeEventListener = function(
+    type, listener, opt_options) {};
+
+/** @override */
+OffscreenCanvas.prototype.dispatchEvent = function(evt) {};
+
+/** @type {number} */
+OffscreenCanvas.prototype.width;
+
+/** @type {number} */
+OffscreenCanvas.prototype.height;
+
+/**
+ * @param {string} contextId
+ * @param {!Object=} opt_options
+ * @modifies {this}
+ * @return {!Object}
+ */
+OffscreenCanvas.prototype.getContext = function(contextId, opt_options) {};
+
+/**
+ * @return {!ImageBitmap}
+ */
+OffscreenCanvas.prototype.transferToImageBitmap = function() {};
+
+/**
+ * @param {{type: (string|undefined), quality: (number|undefined)}=} opt_options
+ * @return {!Promise<!Blob>}
+ */
+OffscreenCanvas.prototype.convertToBlob = function(opt_options) {};
+
+// TODO(tjgq): Find a way to add SVGImageElement to this typedef without making
+// svg.js part of core.
+/**
+ * @typedef {HTMLImageElement|HTMLVideoElement|HTMLCanvasElement|ImageBitmap|
+ *     OffscreenCanvas}
+ */
+var CanvasImageSource;
+
+/**
  * @interface
  * @see https://www.w3.org/TR/2dcontext/#canvaspathmethods
  */
-function CanvasPathMethods() {};
+function CanvasPathMethods() {}
 
 /**
  * @return {undefined}
@@ -166,141 +291,19 @@ CanvasPathMethods.prototype.rect = function(x, y, w, h) {};
 CanvasPathMethods.prototype.arc = function(
     x, y, radius, startAngle, endAngle, opt_anticlockwise) {};
 
-
 /**
  * @constructor
+ * @param {!Path2D|string=} arg
  * @implements {CanvasPathMethods}
- * @see http://www.w3.org/TR/2dcontext/#canvasrenderingcontext2d
+ * @see https://html.spec.whatwg.org/multipage/scripting.html#path2d-objects
  */
-function CanvasRenderingContext2D() {}
-
-/** @type {!HTMLCanvasElement} */
-CanvasRenderingContext2D.prototype.canvas;
-
-/**
- * @return {undefined}
- */
-CanvasRenderingContext2D.prototype.save = function() {};
-
-/**
- * @return {undefined}
- */
-CanvasRenderingContext2D.prototype.restore = function() {};
-
-/**
- * @param {number} x
- * @param {number} y
- * @return {undefined}
- */
-CanvasRenderingContext2D.prototype.scale = function(x, y) {};
-
-/**
- * @param {number} angle
- * @return {undefined}
- */
-CanvasRenderingContext2D.prototype.rotate = function(angle) {};
-
-/**
- * @param {number} x
- * @param {number} y
- * @return {undefined}
- */
-CanvasRenderingContext2D.prototype.translate = function(x, y) {};
-
-/**
- * @param {number} m11
- * @param {number} m12
- * @param {number} m21
- * @param {number} m22
- * @param {number} dx
- * @param {number} dy
- * @return {undefined}
- */
-CanvasRenderingContext2D.prototype.transform = function(
-    m11, m12, m21, m22, dx, dy) {};
-
-/**
- * @param {number} m11
- * @param {number} m12
- * @param {number} m21
- * @param {number} m22
- * @param {number} dx
- * @param {number} dy
- * @return {undefined}
- */
-CanvasRenderingContext2D.prototype.setTransform = function(
-    m11, m12, m21, m22, dx, dy) {};
-
-/**
- * @param {number} x0
- * @param {number} y0
- * @param {number} x1
- * @param {number} y1
- * @return {CanvasGradient}
- * @throws {Error}
- */
-CanvasRenderingContext2D.prototype.createLinearGradient = function(
-    x0, y0, x1, y1) {};
-
-/**
- * @param {number} x0
- * @param {number} y0
- * @param {number} r0
- * @param {number} x1
- * @param {number} y1
- * @param {number} r1
- * @return {CanvasGradient}
- * @throws {Error}
- */
-CanvasRenderingContext2D.prototype.createRadialGradient = function(
-    x0, y0, r0, x1, y1, r1) {};
-
-/**
- * @param {HTMLImageElement|HTMLCanvasElement} image
- * @param {string} repetition
- * @return {CanvasPattern}
- * @throws {Error}
- */
-CanvasRenderingContext2D.prototype.createPattern = function(
-    image, repetition) {};
-
-/**
- * @param {number} x
- * @param {number} y
- * @param {number} w
- * @param {number} h
- * @return {undefined}
- */
-CanvasRenderingContext2D.prototype.clearRect = function(x, y, w, h) {};
-
-/**
- * @param {number} x
- * @param {number} y
- * @param {number} w
- * @param {number} h
- * @return {undefined}
- */
-CanvasRenderingContext2D.prototype.fillRect = function(x, y, w, h) {};
-
-/**
- * @param {number} x
- * @param {number} y
- * @param {number} w
- * @param {number} h
- * @return {undefined}
- */
-CanvasRenderingContext2D.prototype.strokeRect = function(x, y, w, h) {};
-
-/**
- * @return {undefined}
- */
-CanvasRenderingContext2D.prototype.beginPath = function() {};
+function Path2D(arg) {}
 
 /**
  * @return {undefined}
  * @override
  */
-CanvasRenderingContext2D.prototype.closePath = function() {};
+Path2D.prototype.closePath = function() {};
 
 /**
  * @param {number} x
@@ -308,7 +311,7 @@ CanvasRenderingContext2D.prototype.closePath = function() {};
  * @return {undefined}
  * @override
  */
-CanvasRenderingContext2D.prototype.moveTo = function(x, y) {};
+Path2D.prototype.moveTo = function(x, y) {};
 
 /**
  * @param {number} x
@@ -316,7 +319,7 @@ CanvasRenderingContext2D.prototype.moveTo = function(x, y) {};
  * @return {undefined}
  * @override
  */
-CanvasRenderingContext2D.prototype.lineTo = function(x, y) {};
+Path2D.prototype.lineTo = function(x, y) {};
 
 /**
  * @param {number} cpx
@@ -326,7 +329,263 @@ CanvasRenderingContext2D.prototype.lineTo = function(x, y) {};
  * @return {undefined}
  * @override
  */
-CanvasRenderingContext2D.prototype.quadraticCurveTo = function(
+Path2D.prototype.quadraticCurveTo = function(cpx, cpy, x, y) {};
+
+/**
+ * @param {number} cp1x
+ * @param {number} cp1y
+ * @param {number} cp2x
+ * @param {number} cp2y
+ * @param {number} x
+ * @param {number} y
+ * @return {undefined}
+ * @override
+ */
+Path2D.prototype.bezierCurveTo = function(
+    cp1x, cp1y, cp2x, cp2y, x, y) {};
+
+/**
+ * @param {number} x1
+ * @param {number} y1
+ * @param {number} x2
+ * @param {number} y2
+ * @param {number} radius
+ * @return {undefined}
+ * @override
+ */
+Path2D.prototype.arcTo = function(x1, y1, x2, y2, radius) {};
+
+/**
+ * @param {number} x
+ * @param {number} y
+ * @param {number} w
+ * @param {number} h
+ * @return {undefined}
+ * @override
+ */
+Path2D.prototype.rect = function(x, y, w, h) {};
+
+/**
+ * @param {number} x
+ * @param {number} y
+ * @param {number} radius
+ * @param {number} startAngle
+ * @param {number} endAngle
+ * @param {boolean=} optAnticlockwise
+ * @return {undefined}
+ * @override
+ */
+Path2D.prototype.arc = function(
+    x, y, radius, startAngle, endAngle, optAnticlockwise) {};
+
+/**
+ * @param {Path2D} path
+ * @return {undefined}
+ */
+Path2D.prototype.addPath = function(path) {};
+
+/**
+ * @interface
+ * @see https://www.w3.org/TR/2dcontext/#canvasdrawingstyles
+ */
+function CanvasDrawingStyles() {}
+
+/** @type {number} */
+CanvasDrawingStyles.prototype.lineWidth;
+
+/** @type {string} */
+CanvasDrawingStyles.prototype.lineCap;
+
+/** @type {string} */
+CanvasDrawingStyles.prototype.lineJoin;
+
+/** @type {number} */
+CanvasDrawingStyles.prototype.miterLimit;
+
+/**
+ * @param {Array<number>} segments
+ * @return {undefined}
+ */
+CanvasDrawingStyles.prototype.setLineDash = function(segments) {};
+
+/**
+ * @return {!Array<number>}
+ */
+CanvasDrawingStyles.prototype.getLineDash = function() {};
+
+/** @type {string} */
+CanvasDrawingStyles.prototype.font;
+
+/** @type {string} */
+CanvasDrawingStyles.prototype.textAlign;
+
+/** @type {string} */
+CanvasDrawingStyles.prototype.textBaseline;
+
+// TODO(dramaix): replace this with @record.
+/**
+ * @constructor
+ * @abstract
+ * @implements {CanvasDrawingStyles}
+ * @implements {CanvasPathMethods}
+ * @see http://www.w3.org/TR/2dcontext/#canvasrenderingcontext2d
+ */
+function BaseRenderingContext2D() {}
+
+/** @const {!HTMLCanvasElement|!OffscreenCanvas} */
+BaseRenderingContext2D.prototype.canvas;
+
+/**
+ * @return {undefined}
+ */
+BaseRenderingContext2D.prototype.save = function() {};
+
+/**
+ * @return {undefined}
+ */
+BaseRenderingContext2D.prototype.restore = function() {};
+
+/**
+ * @param {number} x
+ * @param {number} y
+ * @return {undefined}
+ */
+BaseRenderingContext2D.prototype.scale = function(x, y) {};
+
+/**
+ * @param {number} angle
+ * @return {undefined}
+ */
+BaseRenderingContext2D.prototype.rotate = function(angle) {};
+
+/**
+ * @param {number} x
+ * @param {number} y
+ * @return {undefined}
+ */
+BaseRenderingContext2D.prototype.translate = function(x, y) {};
+
+/**
+ * @param {number} m11
+ * @param {number} m12
+ * @param {number} m21
+ * @param {number} m22
+ * @param {number} dx
+ * @param {number} dy
+ * @return {undefined}
+ */
+BaseRenderingContext2D.prototype.transform = function(
+    m11, m12, m21, m22, dx, dy) {};
+
+/**
+ * @param {number} m11
+ * @param {number} m12
+ * @param {number} m21
+ * @param {number} m22
+ * @param {number} dx
+ * @param {number} dy
+ * @return {undefined}
+ */
+BaseRenderingContext2D.prototype.setTransform = function(
+    m11, m12, m21, m22, dx, dy) {};
+
+/**
+ * @param {number} x0
+ * @param {number} y0
+ * @param {number} x1
+ * @param {number} y1
+ * @return {!CanvasGradient}
+ * @throws {Error}
+ */
+BaseRenderingContext2D.prototype.createLinearGradient = function(
+    x0, y0, x1, y1) {};
+
+/**
+ * @param {number} x0
+ * @param {number} y0
+ * @param {number} r0
+ * @param {number} x1
+ * @param {number} y1
+ * @param {number} r1
+ * @return {!CanvasGradient}
+ * @throws {Error}
+ */
+BaseRenderingContext2D.prototype.createRadialGradient = function(
+    x0, y0, r0, x1, y1, r1) {};
+
+/**
+ * @param {CanvasImageSource} image
+ * @param {string} repetition
+ * @return {?CanvasPattern}
+ * @throws {Error}
+ * @see https://html.spec.whatwg.org/multipage/scripting.html#dom-context-2d-createpattern
+ */
+BaseRenderingContext2D.prototype.createPattern = function(
+    image, repetition) {};
+
+/**
+ * @param {number} x
+ * @param {number} y
+ * @param {number} w
+ * @param {number} h
+ * @return {undefined}
+ */
+BaseRenderingContext2D.prototype.clearRect = function(x, y, w, h) {};
+
+/**
+ * @param {number} x
+ * @param {number} y
+ * @param {number} w
+ * @param {number} h
+ * @return {undefined}
+ */
+BaseRenderingContext2D.prototype.fillRect = function(x, y, w, h) {};
+
+/**
+ * @param {number} x
+ * @param {number} y
+ * @param {number} w
+ * @param {number} h
+ * @return {undefined}
+ */
+BaseRenderingContext2D.prototype.strokeRect = function(x, y, w, h) {};
+
+/**
+ * @return {undefined}
+ */
+BaseRenderingContext2D.prototype.beginPath = function() {};
+
+/**
+ * @return {undefined}
+ * @override
+ */
+BaseRenderingContext2D.prototype.closePath = function() {};
+
+/**
+ * @param {number} x
+ * @param {number} y
+ * @return {undefined}
+ * @override
+ */
+BaseRenderingContext2D.prototype.moveTo = function(x, y) {};
+
+/**
+ * @param {number} x
+ * @param {number} y
+ * @return {undefined}
+ * @override
+ */
+BaseRenderingContext2D.prototype.lineTo = function(x, y) {};
+
+/**
+ * @param {number} cpx
+ * @param {number} cpy
+ * @param {number} x
+ * @param {number} y
+ * @return {undefined}
+ * @override
+ */
+BaseRenderingContext2D.prototype.quadraticCurveTo = function(
     cpx, cpy, x, y) {};
 
 /**
@@ -339,7 +598,7 @@ CanvasRenderingContext2D.prototype.quadraticCurveTo = function(
  * @return {undefined}
  * @override
  */
-CanvasRenderingContext2D.prototype.bezierCurveTo = function(
+BaseRenderingContext2D.prototype.bezierCurveTo = function(
     cp1x, cp1y, cp2x, cp2y, x, y) {};
 
 /**
@@ -351,7 +610,7 @@ CanvasRenderingContext2D.prototype.bezierCurveTo = function(
  * @return {undefined}
  * @override
  */
-CanvasRenderingContext2D.prototype.arcTo = function(x1, y1, x2, y2, radius) {};
+BaseRenderingContext2D.prototype.arcTo = function(x1, y1, x2, y2, radius) {};
 
 /**
  * @param {number} x
@@ -361,7 +620,7 @@ CanvasRenderingContext2D.prototype.arcTo = function(x1, y1, x2, y2, radius) {};
  * @return {undefined}
  * @override
  */
-CanvasRenderingContext2D.prototype.rect = function(x, y, w, h) {};
+BaseRenderingContext2D.prototype.rect = function(x, y, w, h) {};
 
 /**
  * @param {number} x
@@ -373,7 +632,7 @@ CanvasRenderingContext2D.prototype.rect = function(x, y, w, h) {};
  * @return {undefined}
  * @override
  */
-CanvasRenderingContext2D.prototype.arc = function(
+BaseRenderingContext2D.prototype.arc = function(
     x, y, radius, startAngle, endAngle, opt_anticlockwise) {};
 
 /**
@@ -388,26 +647,35 @@ CanvasRenderingContext2D.prototype.arc = function(
  * @return {undefined}
  * @see http://developer.mozilla.org/en/docs/Web/API/CanvasRenderingContext2D/ellipse
  */
-CanvasRenderingContext2D.prototype.ellipse = function(
+BaseRenderingContext2D.prototype.ellipse = function(
     x, y, radiusX, radiusY, rotation, startAngle, endAngle, opt_anticlockwise) {
 };
 
 /**
- * @param {string=} opt_fillRule
+ * @param {Path2D|string=} optFillRuleOrPath
+ * @param {string=} optFillRule
  * @return {undefined}
  */
-CanvasRenderingContext2D.prototype.fill = function(opt_fillRule) {};
+BaseRenderingContext2D.prototype.fill = function(optFillRuleOrPath, optFillRule) {};
 
 /**
+ * @param {Path2D=} optStroke
  * @return {undefined}
  */
-CanvasRenderingContext2D.prototype.stroke = function() {};
+BaseRenderingContext2D.prototype.stroke = function(optStroke) {};
 
 /**
- * @param {string=} opt_fillRule
+ * @param {Element} element
  * @return {undefined}
  */
-CanvasRenderingContext2D.prototype.clip = function(opt_fillRule) {};
+BaseRenderingContext2D.prototype.drawFocusIfNeeded = function(element) {};
+
+/**
+ * @param {Path2D|string=} optFillRuleOrPath
+ * @param {string=} optFillRule
+ * @return {undefined}
+ */
+BaseRenderingContext2D.prototype.clip = function(optFillRuleOrPath, optFillRule) {};
 
 /**
  * @param {number} x
@@ -416,7 +684,7 @@ CanvasRenderingContext2D.prototype.clip = function(opt_fillRule) {};
  * @nosideeffects
  * @see http://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPointInStroke
  */
-CanvasRenderingContext2D.prototype.isPointInStroke = function(x, y) {};
+BaseRenderingContext2D.prototype.isPointInStroke = function(x, y) {};
 
 /**
  * @param {number} x
@@ -425,7 +693,7 @@ CanvasRenderingContext2D.prototype.isPointInStroke = function(x, y) {};
  * @return {boolean}
  * @nosideeffects
  */
-CanvasRenderingContext2D.prototype.isPointInPath = function(
+BaseRenderingContext2D.prototype.isPointInPath = function(
     x, y, opt_fillRule) {};
 
 /**
@@ -435,7 +703,7 @@ CanvasRenderingContext2D.prototype.isPointInPath = function(
  * @param {number=} opt_maxWidth
  * @return {undefined}
  */
-CanvasRenderingContext2D.prototype.fillText = function(
+BaseRenderingContext2D.prototype.fillText = function(
     text, x, y, opt_maxWidth) {};
 
 /**
@@ -445,18 +713,18 @@ CanvasRenderingContext2D.prototype.fillText = function(
  * @param {number=} opt_maxWidth
  * @return {undefined}
  */
-CanvasRenderingContext2D.prototype.strokeText = function(
+BaseRenderingContext2D.prototype.strokeText = function(
     text, x, y, opt_maxWidth) {};
 
 /**
  * @param {string} text
- * @return {TextMetrics}
+ * @return {!TextMetrics}
  * @nosideeffects
  */
-CanvasRenderingContext2D.prototype.measureText = function(text) {};
+BaseRenderingContext2D.prototype.measureText = function(text) {};
 
 /**
- * @param {HTMLImageElement|HTMLCanvasElement|Image|HTMLVideoElement} image
+ * @param {CanvasImageSource} image
  * @param {number} dx Destination x coordinate.
  * @param {number} dy Destination y coordinate.
  * @param {number=} opt_dw Destination box width.  Defaults to the image width.
@@ -472,26 +740,27 @@ CanvasRenderingContext2D.prototype.measureText = function(text) {};
  *     the source image to draw.  Defaults to the full image height.
  * @return {undefined}
  */
-CanvasRenderingContext2D.prototype.drawImage = function(
+BaseRenderingContext2D.prototype.drawImage = function(
     image, dx, dy, opt_dw, opt_dh, opt_sx, opt_sy, opt_sw, opt_sh) {};
 
 /**
  * @param {number} sw
  * @param {number} sh
- * @return {ImageData}
+ * @return {!ImageData}
+ * @throws {Error}
  * @nosideeffects
  */
-CanvasRenderingContext2D.prototype.createImageData = function(sw, sh) {};
+BaseRenderingContext2D.prototype.createImageData = function(sw, sh) {};
 
 /**
  * @param {number} sx
  * @param {number} sy
  * @param {number} sw
  * @param {number} sh
- * @return {ImageData}
+ * @return {!ImageData}
  * @throws {Error}
  */
-CanvasRenderingContext2D.prototype.getImageData = function(sx, sy, sw, sh) {};
+BaseRenderingContext2D.prototype.getImageData = function(sx, sy, sw, sh) {};
 
 /**
  * @param {ImageData} imagedata
@@ -503,7 +772,7 @@ CanvasRenderingContext2D.prototype.getImageData = function(sx, sy, sw, sh) {};
  * @param {number=} opt_dirtyHeight
  * @return {undefined}
  */
-CanvasRenderingContext2D.prototype.putImageData = function(imagedata, dx, dy,
+BaseRenderingContext2D.prototype.putImageData = function(imagedata, dx, dy,
     opt_dirtyX, opt_dirtyY, opt_dirtyWidth, opt_dirtyHeight) {};
 
 /**
@@ -515,8 +784,10 @@ CanvasRenderingContext2D.prototype.putImageData = function(imagedata, dx, dy,
  * @param {number=} opt_e
  * @see http://developer.apple.com/library/safari/#documentation/appleapplications/reference/WebKitDOMRef/CanvasRenderingContext2D_idl/Classes/CanvasRenderingContext2D/index.html
  * @return {undefined}
+ * @deprecated
  */
-CanvasRenderingContext2D.prototype.setFillColor;
+BaseRenderingContext2D.prototype.setFillColor = function(
+    opt_a, opt_b, opt_c, opt_d, opt_e) {};
 
 /**
  * Note: WebKit only
@@ -527,81 +798,108 @@ CanvasRenderingContext2D.prototype.setFillColor;
  * @param {number=} opt_e
  * @see http://developer.apple.com/library/safari/#documentation/appleapplications/reference/WebKitDOMRef/CanvasRenderingContext2D_idl/Classes/CanvasRenderingContext2D/index.html
  * @return {undefined}
+ * @deprecated
  */
-CanvasRenderingContext2D.prototype.setStrokeColor;
+BaseRenderingContext2D.prototype.setStrokeColor = function(
+    opt_a, opt_b, opt_c, opt_d, opt_e) {};
 
 /**
- * @return {Array<number>}
+ * @return {!Array<number>}
+ * @override
  */
-CanvasRenderingContext2D.prototype.getLineDash;
+BaseRenderingContext2D.prototype.getLineDash = function() {};
 
 /**
  * @param {Array<number>} segments
  * @return {undefined}
+ * @override
  */
-CanvasRenderingContext2D.prototype.setLineDash;
+BaseRenderingContext2D.prototype.setLineDash = function(segments) {};
 
 /** @type {string} */
-CanvasRenderingContext2D.prototype.fillColor;
+BaseRenderingContext2D.prototype.fillColor;
 
 /**
  * @type {string|!CanvasGradient|!CanvasPattern}
  * @see https://html.spec.whatwg.org/multipage/scripting.html#fill-and-stroke-styles:dom-context-2d-fillstyle
  * @implicitCast
  */
-CanvasRenderingContext2D.prototype.fillStyle;
+BaseRenderingContext2D.prototype.fillStyle;
 
 /** @type {string} */
-CanvasRenderingContext2D.prototype.font;
+BaseRenderingContext2D.prototype.font;
 
 /** @type {number} */
-CanvasRenderingContext2D.prototype.globalAlpha;
+BaseRenderingContext2D.prototype.globalAlpha;
 
 /** @type {string} */
-CanvasRenderingContext2D.prototype.globalCompositeOperation;
+BaseRenderingContext2D.prototype.globalCompositeOperation;
 
 /** @type {number} */
-CanvasRenderingContext2D.prototype.lineWidth;
+BaseRenderingContext2D.prototype.lineWidth;
 
 /** @type {string} */
-CanvasRenderingContext2D.prototype.lineCap;
+BaseRenderingContext2D.prototype.lineCap;
 
 /** @type {string} */
-CanvasRenderingContext2D.prototype.lineJoin;
+BaseRenderingContext2D.prototype.lineJoin;
 
 /** @type {number} */
-CanvasRenderingContext2D.prototype.miterLimit;
+BaseRenderingContext2D.prototype.miterLimit;
 
 /** @type {number} */
-CanvasRenderingContext2D.prototype.shadowBlur;
+BaseRenderingContext2D.prototype.shadowBlur;
 
 /** @type {string} */
-CanvasRenderingContext2D.prototype.shadowColor;
+BaseRenderingContext2D.prototype.shadowColor;
 
 /** @type {number} */
-CanvasRenderingContext2D.prototype.shadowOffsetX;
+BaseRenderingContext2D.prototype.shadowOffsetX;
 
 /** @type {number} */
-CanvasRenderingContext2D.prototype.shadowOffsetY;
+BaseRenderingContext2D.prototype.shadowOffsetY;
+
+/** @type {boolean} */
+BaseRenderingContext2D.prototype.imageSmoothingEnabled;
 
 /**
  * @type {string|!CanvasGradient|!CanvasPattern}
  * @see https://html.spec.whatwg.org/multipage/scripting.html#fill-and-stroke-styles:dom-context-2d-strokestyle
  * @implicitCast
  */
-CanvasRenderingContext2D.prototype.strokeStyle;
+BaseRenderingContext2D.prototype.strokeStyle;
 
 /** @type {string} */
-CanvasRenderingContext2D.prototype.strokeColor;
+BaseRenderingContext2D.prototype.strokeColor;
 
 /** @type {string} */
-CanvasRenderingContext2D.prototype.textAlign;
+BaseRenderingContext2D.prototype.textAlign;
 
 /** @type {string} */
-CanvasRenderingContext2D.prototype.textBaseline;
+BaseRenderingContext2D.prototype.textBaseline;
 
 /** @type {number} */
-CanvasRenderingContext2D.prototype.lineDashOffset;
+BaseRenderingContext2D.prototype.lineDashOffset;
+
+/**
+ * @constructor
+ * @extends {BaseRenderingContext2D}
+ * @see http://www.w3.org/TR/2dcontext/#canvasrenderingcontext2d
+ */
+function CanvasRenderingContext2D() {}
+
+/** @const {!HTMLCanvasElement} */
+CanvasRenderingContext2D.prototype.canvas;
+
+/**
+ * @constructor
+ * @extends {BaseRenderingContext2D}
+ * @see http://www.w3.org/TR/2dcontext/#canvasrenderingcontext2d
+ */
+function OffscreenCanvasRenderingContext2D() {}
+
+/** @const {!OffscreenCanvas} */
+OffscreenCanvasRenderingContext2D.prototype.canvas;
 
 /**
  * @constructor
@@ -625,11 +923,23 @@ function CanvasPattern() {}
  */
 function TextMetrics() {}
 
-/** @type {number} */
+/** @const {number} */
 TextMetrics.prototype.width;
 
+/** @const {number|undefined} */
+TextMetrics.prototype.actualBoundingBoxAscent;
+
+/** @const {number|undefined} */
+TextMetrics.prototype.actualBoundingBoxDescent;
+
+/** @const {number|undefined} */
+TextMetrics.prototype.actualBoundingBoxLeft;
+
+/** @const {number|undefined} */
+TextMetrics.prototype.actualBoundingBoxRight;
+
 /**
- * @param {Uint8ClampedArray|number} dataOrWidth In the first form, this is the
+ * @param {!Uint8ClampedArray|number} dataOrWidth In the first form, this is the
  *     array of pixel data.  In the second form, this is the image width.
  * @param {number} widthOrHeight In the first form, this is the image width.  In
  *     the second form, this is the image height.
@@ -640,14 +950,70 @@ TextMetrics.prototype.width;
  */
 function ImageData(dataOrWidth, widthOrHeight, opt_height) {}
 
-/** @type {Uint8ClampedArray} */
+/** @const {!Uint8ClampedArray} */
 ImageData.prototype.data;
 
-/** @type {number} */
+/** @const {number} */
 ImageData.prototype.width;
 
-/** @type {number} */
+/** @const {number} */
 ImageData.prototype.height;
+
+/**
+ * @see https://www.w3.org/TR/html51/webappapis.html#webappapis-images
+ * @interface
+ */
+function ImageBitmap() {}
+
+/**
+ * @const {number}
+ */
+ImageBitmap.prototype.width;
+
+/**
+ * @const {number}
+ */
+ImageBitmap.prototype.height;
+
+/**
+ * Releases ImageBitmap's underlying bitmap data.
+ * @return {undefined}
+ * @see https://html.spec.whatwg.org/multipage/imagebitmap-and-animations.html#images-2
+ */
+ImageBitmap.prototype.close = function() {};
+
+/**
+ * @typedef {!CanvasImageSource | !Blob | !ImageData}
+ * @see https://html.spec.whatwg.org/multipage/imagebitmap-and-animations.html#imagebitmapsource
+ */
+var ImageBitmapSource;
+
+/**
+ * @typedef {{
+ *   imageOrientation: (string|undefined),
+ *   premultiplyAlpha: (string|undefined),
+ *   colorSpaceConversion: (string|undefined),
+ *   resizeWidth: (number|undefined),
+ *   resizeHeight: (number|undefined),
+ *   resizeQuality: (string|undefined)
+ * }}
+ * @see https://html.spec.whatwg.org/multipage/imagebitmap-and-animations.html#images-2
+ */
+var ImageBitmapOptions;
+
+/**
+ * @param {!ImageBitmapSource} image
+ * @param {(number|!ImageBitmapOptions)=} sxOrOptions
+ * @param {number=} sy
+ * @param {number=} sw
+ * @param {number=} sh
+ * @param {!ImageBitmapOptions=} options
+ * @return {!Promise<!ImageBitmap>}
+ * @see https://html.spec.whatwg.org/multipage/imagebitmap-and-animations.html#dom-createimagebitmap
+ * @see https://html.spec.whatwg.org/multipage/webappapis.html#windoworworkerglobalscope-mixin
+ */
+function createImageBitmap(image, sxOrOptions, sy, sw, sh, options) {}
+
 
 /**
  * @constructor
@@ -778,7 +1144,7 @@ SQLResultSet.prototype.insertId;
 SQLResultSet.prototype.rowsAffected;
 
 /**
- * @type {SQLResultSetRowList}
+ * @type {!SQLResultSetRowList}
  */
 SQLResultSet.prototype.rows;
 
@@ -807,7 +1173,7 @@ SQLResultSetRowList.prototype.item = function(index) {};
  * @param {string} description
  * @param {number} size
  * @param {(DatabaseCallback|function(Database))=} opt_callback
- * @return {Database}
+ * @return {!Database}
  */
 function openDatabase(name, version, description, size, opt_callback) {}
 
@@ -817,7 +1183,7 @@ function openDatabase(name, version, description, size, opt_callback) {}
  * @param {string} description
  * @param {number} size
  * @param {(DatabaseCallback|function(Database))=} opt_callback
- * @return {Database}
+ * @return {!Database}
  */
 Window.prototype.openDatabase =
     function(name, version, description, size, opt_callback) {};
@@ -847,6 +1213,25 @@ HTMLImageElement.prototype.naturalHeight;
 HTMLImageElement.prototype.crossOrigin;
 
 /**
+ * @type {string}
+ * @see https://html.spec.whatwg.org/multipage/embedded-content.html#dom-img-currentsrc
+ */
+HTMLImageElement.prototype.currentSrc;
+
+/**
+ * @type {string}
+ * @see https://html.spec.whatwg.org/multipage/images.html#image-decoding-hint
+ */
+HTMLImageElement.prototype.decoding;
+
+/**
+ * @return {!Promise<undefined>}
+ * @see https://html.spec.whatwg.org/multipage/embedded-content.html#dom-img-decode
+ */
+HTMLImageElement.prototype.decode;
+
+
+/**
  * This is a superposition of the Window and Worker postMessage methods.
  * @param {*} message
  * @param {(string|!Array<!Transferable>)=} opt_targetOriginOrTransfer
@@ -856,6 +1241,15 @@ HTMLImageElement.prototype.crossOrigin;
  */
 function postMessage(message, opt_targetOriginOrTransfer,
     opt_targetOriginOrPortsOrTransfer) {}
+
+/**
+ * @param {*} message
+ * @param {string=} targetOrigin
+ * @param {(!Array<!Transferable>)=} transfer
+ * @return {void}
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage
+ */
+Window.prototype.postMessage = function(message, targetOrigin, transfer) {};
 
 /**
  * The postMessage method (as implemented in Opera).
@@ -871,240 +1265,226 @@ Document.prototype.postMessage = function(message) {};
 Document.prototype.head;
 
 /**
- * @see https://developer.apple.com/webapps/docs/documentation/AppleApplications/Reference/SafariJSRef/DOMApplicationCache/DOMApplicationCache.html
+ * @type {string}
+ * @see https://html.spec.whatwg.org/multipage/dom.html#current-document-readiness
+ */
+Document.prototype.readyState;
+
+/**
+ * @see https://html.spec.whatwg.org/#application-cache-api
  * @constructor
  * @implements {EventTarget}
  */
-function DOMApplicationCache() {}
+function ApplicationCache() {}
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-DOMApplicationCache.prototype.addEventListener = function(
-    type, listener, opt_useCapture) {};
+/** @override */
+ApplicationCache.prototype.addEventListener = function(
+    type, listener, opt_options) {};
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-DOMApplicationCache.prototype.removeEventListener = function(
-    type, listener, opt_useCapture) {};
+/** @override */
+ApplicationCache.prototype.removeEventListener = function(
+    type, listener, opt_options) {};
 
-/**
- * @override
- * @return {boolean}
- */
-DOMApplicationCache.prototype.dispatchEvent = function(evt) {};
+/** @override */
+ApplicationCache.prototype.dispatchEvent = function(evt) {};
 
 /**
  * The object isn't associated with an application cache. This can occur if the
  * update process fails and there is no previous cache to revert to, or if there
  * is no manifest file.
- * @type {number}
+ * @const {number}
  */
-DOMApplicationCache.prototype.UNCACHED = 0;
+ApplicationCache.prototype.UNCACHED;
+
+/**
+ * The object isn't associated with an application cache. This can occur if the
+ * update process fails and there is no previous cache to revert to, or if there
+ * is no manifest file.
+ * @const {number}
+ */
+ApplicationCache.UNCACHED;
 
 /**
  * The cache is idle.
- * @type {number}
+ * @const {number}
  */
-DOMApplicationCache.prototype.IDLE = 1;
+ApplicationCache.prototype.IDLE;
+
+/**
+ * The cache is idle.
+ * @const {number}
+ */
+ApplicationCache.IDLE;
 
 /**
  * The update has started but the resources are not downloaded yet - for
  * example, this can happen when the manifest file is fetched.
- * @type {number}
+ * @const {number}
  */
-DOMApplicationCache.prototype.CHECKING = 2;
+ApplicationCache.prototype.CHECKING;
+
+/**
+ * The update has started but the resources are not downloaded yet - for
+ * example, this can happen when the manifest file is fetched.
+ * @const {number}
+ */
+ApplicationCache.CHECKING;
 
 /**
  * The resources are being downloaded into the cache.
- * @type {number}
+ * @const {number}
  */
-DOMApplicationCache.prototype.DOWNLOADING = 3;
+ApplicationCache.prototype.DOWNLOADING;
+
+/**
+ * The resources are being downloaded into the cache.
+ * @const {number}
+ */
+ApplicationCache.DOWNLOADING;
 
 /**
  * Resources have finished downloading and the new cache is ready to be used.
- * @type {number}
+ * @const {number}
  */
-DOMApplicationCache.prototype.UPDATEREADY = 4;
+ApplicationCache.prototype.UPDATEREADY;
+
+/**
+ * Resources have finished downloading and the new cache is ready to be used.
+ * @const {number}
+ */
+ApplicationCache.UPDATEREADY;
 
 /**
  * The cache is obsolete.
- * @type {number}
+ * @const {number}
  */
-DOMApplicationCache.prototype.OBSOLETE = 5;
+ApplicationCache.prototype.OBSOLETE;
+
+/**
+ * The cache is obsolete.
+ * @const {number}
+ */
+ApplicationCache.OBSOLETE;
 
 /**
  * The current status of the application cache.
  * @type {number}
  */
-DOMApplicationCache.prototype.status;
+ApplicationCache.prototype.status;
 
 /**
  * Sent when the update process finishes for the first time; that is, the first
  * time an application cache is saved.
- * @type {?function(!Event)}
+ * @type {?function(!Event): void}
  */
-DOMApplicationCache.prototype.oncached;
+ApplicationCache.prototype.oncached;
 
 /**
  * Sent when the cache update process begins.
- * @type {?function(!Event)}
+ * @type {?function(!Event): void}
  */
-DOMApplicationCache.prototype.onchecking;
+ApplicationCache.prototype.onchecking;
 
 /**
  * Sent when the update process begins downloading resources in the manifest
  * file.
- * @type {?function(!Event)}
+ * @type {?function(!Event): void}
  */
-DOMApplicationCache.prototype.ondownloading;
+ApplicationCache.prototype.ondownloading;
 
 /**
  * Sent when an error occurs.
- * @type {?function(!Event)}
+ * @type {?function(!Event): void}
  */
-DOMApplicationCache.prototype.onerror;
+ApplicationCache.prototype.onerror;
 
 /**
  * Sent when the update process finishes but the manifest file does not change.
- * @type {?function(!Event)}
+ * @type {?function(!Event): void}
  */
-DOMApplicationCache.prototype.onnoupdate;
+ApplicationCache.prototype.onnoupdate;
 
 /**
  * Sent when each resource in the manifest file begins to download.
- * @type {?function(!Event)}
+ * @type {?function(!Event): void}
  */
-DOMApplicationCache.prototype.onprogress;
+ApplicationCache.prototype.onprogress;
 
 /**
  * Sent when there is an existing application cache, the update process
  * finishes, and there is a new application cache ready for use.
- * @type {?function(!Event)}
+ * @type {?function(!Event): void}
  */
-DOMApplicationCache.prototype.onupdateready;
+ApplicationCache.prototype.onupdateready;
 
 /**
  * Replaces the active cache with the latest version.
  * @throws {DOMException}
  * @return {undefined}
  */
-DOMApplicationCache.prototype.swapCache = function() {};
+ApplicationCache.prototype.swapCache = function() {};
 
 /**
  * Manually triggers the update process.
  * @throws {DOMException}
  * @return {undefined}
  */
-DOMApplicationCache.prototype.update = function() {};
+ApplicationCache.prototype.update = function() {};
 
-/** @type {DOMApplicationCache} */
+/** @type {?ApplicationCache} */
 var applicationCache;
 
-/** @type {DOMApplicationCache} */
+/** @type {ApplicationCache} */
 Window.prototype.applicationCache;
 
 /**
  * @see https://developer.mozilla.org/En/DOM/Worker/Functions_available_to_workers
- * @param {...string} var_args
+ * @param {...!TrustedScriptURL|string} var_args
  * @return {undefined}
  */
 Window.prototype.importScripts = function(var_args) {};
 
 /**
+ * Decodes a string of data which has been encoded using base-64 encoding.
+ *
+ * @param {string} encodedData
+ * @return {string}
+ * @nosideeffects
+ * @see https://html.spec.whatwg.org/multipage/webappapis.html#dom-atob
+ */
+function atob(encodedData) {}
+
+/**
+ * @param {string} stringToEncode
+ * @return {string}
+ * @nosideeffects
+ * @see https://html.spec.whatwg.org/multipage/webappapis.html#dom-btoa
+ */
+function btoa(stringToEncode) {}
+
+/**
  * @see https://developer.mozilla.org/En/DOM/Worker/Functions_available_to_workers
- * @param {...string} var_args
+ * @param {...!TrustedScriptURL|string} var_args
  * @return {undefined}
  */
 function importScripts(var_args) {}
 
 /**
  * @see http://dev.w3.org/html5/workers/
+ * @param {!TrustedScriptURL|string} scriptURL
+ * @param {!WorkerOptions=} opt_options
  * @constructor
  * @implements {EventTarget}
  */
-function WebWorker() {}
+function Worker(scriptURL, opt_options) {}
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-WebWorker.prototype.addEventListener = function(
-    type, listener, opt_useCapture) {};
+/** @override */
+Worker.prototype.addEventListener = function(type, listener, opt_options) {};
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-WebWorker.prototype.removeEventListener = function(
-    type, listener, opt_useCapture) {};
+/** @override */
+Worker.prototype.removeEventListener = function(type, listener, opt_options) {};
 
-/**
- * @override
- * @return {boolean}
- */
-WebWorker.prototype.dispatchEvent = function(evt) {};
-
-/**
- * Stops the worker process
- * @return {undefined}
- */
-WebWorker.prototype.terminate = function() {};
-
-/**
- * Posts a message to the worker thread.
- * @param {string} message
- * @return {undefined}
- */
-WebWorker.prototype.postMessage = function(message) {};
-
-/**
- * Sent when the worker thread posts a message to its creator.
- * @type {?function(!MessageEvent<*>)}
- */
-WebWorker.prototype.onmessage;
-
-/**
- * Sent when the worker thread encounters an error.
- * TODO(tbreisacher): Should this change to function(!ErrorEvent)?
- * @type {?function(!Event)}
- */
-WebWorker.prototype.onerror;
-
-/**
- * @see http://dev.w3.org/html5/workers/
- * @constructor
- * @implements {EventTarget}
- */
-function Worker(opt_arg0) {}
-
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-Worker.prototype.addEventListener = function(
-    type, listener, opt_useCapture) {};
-
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-Worker.prototype.removeEventListener = function(
-    type, listener, opt_useCapture) {};
-
-/**
- * @override
- * @return {boolean}
- */
+/** @override */
 Worker.prototype.dispatchEvent = function(evt) {};
 
 /**
@@ -1131,47 +1511,62 @@ Worker.prototype.webkitPostMessage = function(message, opt_transfer) {};
 
 /**
  * Sent when the worker thread posts a message to its creator.
- * @type {?function(!MessageEvent<*>)}
+ * @type {?function(!MessageEvent<*>): void}
  */
 Worker.prototype.onmessage;
 
 /**
  * Sent when the worker thread encounters an error.
- * TODO(tbreisacher): Should this change to function(!ErrorEvent)?
- * @type {?function(!Event)}
+ * @type {?function(!ErrorEvent): void}
  */
 Worker.prototype.onerror;
 
 /**
  * @see http://dev.w3.org/html5/workers/
- * @param {string} scriptURL The URL of the script to run in the SharedWorker.
- * @param {string=} opt_name A name that can later be used to obtain a
- *     reference to the same SharedWorker.
+ * @record
+ */
+function WorkerOptions() {}
+
+/**
+ * Defines a name for the new global environment of the worker, primarily for
+ * debugging purposes.
+ * @type {string|undefined}
+ */
+WorkerOptions.prototype.name;
+
+/**
+ * 'classic' or 'module'. Default: 'classic'.
+ * Specifying 'module' ensures the worker environment supports JavaScript
+ * modules.
+ * @type {string|undefined}
+ */
+WorkerOptions.prototype.type;
+
+// WorkerOptions.prototype.credentials is defined in fetchapi.js.
+// if type = 'module', it specifies how scriptURL is fetched.
+
+/**
+ * @see http://dev.w3.org/html5/workers/
+ * @param {!TrustedScriptURL|string} scriptURL The URL of the script to run in
+ *     the SharedWorker.
+ * @param {(string|!WorkerOptions)=} options A name that can
+ *     later be used to obtain a reference to the same SharedWorker or a
+ *     WorkerOptions object which can be be used to specify how scriptURL is
+ *     fetched through the credentials option.
  * @constructor
  * @implements {EventTarget}
  */
-function SharedWorker(scriptURL, opt_name) {}
+function SharedWorker(scriptURL, options) {}
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
+/** @override */
 SharedWorker.prototype.addEventListener = function(
-    type, listener, opt_useCapture) {};
+    type, listener, opt_options) {};
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
+/** @override */
 SharedWorker.prototype.removeEventListener = function(
-    type, listener, opt_useCapture) {};
+    type, listener, opt_options) {};
 
-/**
- * @override
- * @return {boolean}
- */
+/** @override */
 SharedWorker.prototype.dispatchEvent = function(evt) {};
 
 /**
@@ -1181,8 +1576,7 @@ SharedWorker.prototype.port;
 
 /**
  * Called on network errors for loading the initial script.
- * TODO(tbreisacher): Should this change to function(!ErrorEvent)?
- * @type {?function(!Event)}
+ * @type {?function(!ErrorEvent): void}
  */
 SharedWorker.prototype.onerror;
 
@@ -1227,10 +1621,10 @@ WorkerLocation.prototype.hash;
  */
 function WorkerGlobalScope() {}
 
-/** @type {WorkerGlobalScope} */
+/** @type {!WorkerGlobalScope} */
 WorkerGlobalScope.prototype.self;
 
-/** @type {WorkerLocation} */
+/** @type {!WorkerLocation} */
 WorkerGlobalScope.prototype.location;
 
 /**
@@ -1241,21 +1635,35 @@ WorkerGlobalScope.prototype.close = function() {};
 
 /**
  * Sent when the worker encounters an error.
- * @type {?function(!Event)}
+ * @type {?function(string, string, number, number, !Error): void}
  */
 WorkerGlobalScope.prototype.onerror;
 
 /**
  * Sent when the worker goes offline.
- * @type {?function(!Event)}
+ * @type {?function(!Event): void}
  */
 WorkerGlobalScope.prototype.onoffline;
 
 /**
  * Sent when the worker goes online.
- * @type {?function(!Event)}
+ * @type {?function(!Event): void}
  */
 WorkerGlobalScope.prototype.ononline;
+
+/** @type {!WorkerPerformance} */
+WorkerGlobalScope.prototype.performance;
+
+/** @type {!WorkerNavigator} */
+WorkerGlobalScope.prototype.navigator;
+
+/**
+ * Worker postMessage method.
+ * @param {*} message
+ * @param {(!Array<!Transferable>)=} transfer
+ * @return {void}
+ */
+WorkerGlobalScope.prototype.postMessage = function(message, transfer) {};
 
 /**
  * @see http://dev.w3.org/html5/workers/
@@ -1284,7 +1692,7 @@ DedicatedWorkerGlobalScope.prototype.webkitPostMessage =
 
 /**
  * Sent when the creator posts a message to this worker.
- * @type {?function(!MessageEvent<*>)}
+ * @type {?function(!MessageEvent<*>): void}
  */
 DedicatedWorkerGlobalScope.prototype.onmessage;
 
@@ -1304,8 +1712,37 @@ SharedWorkerGlobalScope.prototype.name;
  */
 SharedWorkerGlobalScope.prototype.onconnect;
 
+/** @type {!Array<string>|undefined} */
+HTMLElement.observedAttributes;
+
+/**
+ * @param {!Document} oldDocument
+ * @param {!Document} newDocument
+ */
+HTMLElement.prototype.adoptedCallback = function(oldDocument, newDocument) {};
+
+/**
+ * @param {!{mode: string}} options
+ * @return {!ShadowRoot}
+ */
+HTMLElement.prototype.attachShadow = function(options) {};
+
+/**
+ * @param {string} attributeName
+ * @param {?string} oldValue
+ * @param {?string} newValue
+ * @param {?string} namespace
+ */
+HTMLElement.prototype.attributeChangedCallback = function(attributeName, oldValue, newValue, namespace) {};
+
+/** @type {function()|undefined} */
+HTMLElement.prototype.connectedCallback;
+
 /** @type {Element} */
 HTMLElement.prototype.contextMenu;
+
+/** @type {function()|undefined} */
+HTMLElement.prototype.disconnectedCallback;
 
 /** @type {boolean} */
 HTMLElement.prototype.draggable;
@@ -1315,19 +1752,9 @@ HTMLElement.prototype.draggable;
  * interface isn't currently defined and no known browsers implement this
  * feature, just define the property for now.
  *
- * @const
- * @type {Object}
+ * @const {Object}
  */
 HTMLElement.prototype.dropzone;
-
-/**
- * @see http://www.w3.org/TR/html5/dom.html#dom-getelementsbyclassname
- * @param {string} classNames
- * @return {!NodeList<!Element>}
- * @nosideeffects
- */
-HTMLElement.prototype.getElementsByClassName = function(classNames) {};
-// NOTE: Document.prototype.getElementsByClassName is in gecko_dom.js
 
 /** @type {boolean} */
 HTMLElement.prototype.hidden;
@@ -1346,7 +1773,7 @@ var GetRootNodeOptions;
 /**
  * @see https://dom.spec.whatwg.org/#dom-node-getrootnode
  * @param {GetRootNodeOptions=} opt_options
- * @return {?Node}
+ * @return {!Node}
  */
 Node.prototype.getRootNode = function(opt_options) {};
 
@@ -1392,6 +1819,13 @@ HTMLElement.prototype.attachedCallback;
  */
 HTMLElement.prototype.detachedCallback;
 
+/**
+ * Cryptographic nonce used by Content Security Policy.
+ * @see https://html.spec.whatwg.org/multipage/dom.html#elements-in-the-dom:noncedelement
+ * @type {?string}
+ */
+HTMLElement.prototype.nonce;
+
 /** @type {string} */
 HTMLAnchorElement.prototype.download;
 
@@ -1423,6 +1857,9 @@ HTMLAnchorElement.prototype.port;
 /** @type {string} */
 HTMLAnchorElement.prototype.protocol;
 
+/** @type {!DOMTokenList} */
+HTMLAnchorElement.prototype.relList;
+
 /** @type {string} */
 HTMLAnchorElement.prototype.search;
 
@@ -1437,15 +1874,28 @@ HTMLAreaElement.prototype.ping;
 
 /**
  * @type {string}
+ * @implicitCast
  * @see http://www.w3.org/TR/html-markup/iframe.html#iframe.attrs.srcdoc
  */
 HTMLIFrameElement.prototype.srcdoc;
 
 /**
- * @type {?string}
+ * @type {?DOMTokenList}
  * @see http://www.w3.org/TR/2012/WD-html5-20121025/the-iframe-element.html#attr-iframe-sandbox
  */
 HTMLIFrameElement.prototype.sandbox;
+
+/**
+ * @type {string}
+ * @see https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-allow
+ */
+HTMLIFrameElement.prototype.allow;
+
+/**
+ * @type {Window}
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement/contentWindow
+ */
+HTMLIFrameElement.prototype.contentWindow;
 
 /** @type {string} */
 HTMLInputElement.prototype.autocomplete;
@@ -1518,39 +1968,117 @@ HTMLInputElement.prototype.stepUp = function(opt_n) {};
 function HTMLMediaElement() {}
 
 /**
- * @type {number}
- * @const
+ * @see https://html.spec.whatwg.org/multipage/media.html#dom-media-network_empty
+ * @const {number}
  */
-HTMLMediaElement.HAVE_NOTHING;  // = 0
+HTMLMediaElement.NETWORK_EMPTY;
 
 /**
- * @type {number}
- * @const
+ * @see https://html.spec.whatwg.org/multipage/media.html#dom-media-network_empty
+ * @const {number}
  */
-HTMLMediaElement.HAVE_METADATA;  // = 1
+HTMLMediaElement.prototype.NETWORK_EMPTY;
 
 /**
- * @type {number}
- * @const
+ * @see https://html.spec.whatwg.org/multipage/media.html#dom-media-network_idle
+ * @const {number}
  */
-HTMLMediaElement.HAVE_CURRENT_DATA;  // = 2
+HTMLMediaElement.NETWORK_IDLE;
 
 /**
- * @type {number}
- * @const
+ * @see https://html.spec.whatwg.org/multipage/media.html#dom-media-network_idle
+ * @const {number}
  */
-HTMLMediaElement.HAVE_FUTURE_DATA;  // = 3
+HTMLMediaElement.prototype.NETWORK_IDLE;
 
 /**
- * @type {number}
- * @const
+ * @see https://html.spec.whatwg.org/multipage/media.html#dom-media-network_loading
+ * @const {number}
  */
-HTMLMediaElement.HAVE_ENOUGH_DATA;  // = 4
+HTMLMediaElement.NETWORK_LOADING;
+
+/**
+ * @see https://html.spec.whatwg.org/multipage/media.html#dom-media-network_loading
+ * @const {number}
+ */
+HTMLMediaElement.prototype.NETWORK_LOADING;
+
+/**
+ * @see https://html.spec.whatwg.org/multipage/media.html#dom-media-network_no_source
+ * @const {number}
+ */
+HTMLMediaElement.NETWORK_NO_SOURCE;
+
+/**
+ * @see https://html.spec.whatwg.org/multipage/media.html#dom-media-network_no_source
+ * @const {number}
+ */
+HTMLMediaElement.prototype.NETWORK_NO_SOURCE;
+
+/**
+ * @see https://html.spec.whatwg.org/multipage/media.html#dom-media-have_nothing
+ * @const {number}
+ */
+HTMLMediaElement.HAVE_NOTHING;
+
+/**
+ * @see https://html.spec.whatwg.org/multipage/media.html#dom-media-have_nothing
+ * @const {number}
+ */
+HTMLMediaElement.prototype.HAVE_NOTHING;
+
+/**
+ * @see https://html.spec.whatwg.org/multipage/media.html#dom-media-have_metadata
+ * @const {number}
+ */
+HTMLMediaElement.HAVE_METADATA;
+
+/**
+ * @see https://html.spec.whatwg.org/multipage/media.html#dom-media-have_metadata
+ * @const {number}
+ */
+HTMLMediaElement.prototype.HAVE_METADATA;
+
+/**
+ * @see https://html.spec.whatwg.org/multipage/media.html#dom-media-have_current_data
+ * @const {number}
+ */
+HTMLMediaElement.HAVE_CURRENT_DATA;
+
+/**
+ * @see https://html.spec.whatwg.org/multipage/media.html#dom-media-have_current_data
+ * @const {number}
+ */
+HTMLMediaElement.prototype.HAVE_CURRENT_DATA;
+
+/**
+ * @see https://html.spec.whatwg.org/multipage/media.html#dom-media-have_future_data
+ * @const {number}
+ */
+HTMLMediaElement.HAVE_FUTURE_DATA;
+
+/**
+ * @see https://html.spec.whatwg.org/multipage/media.html#dom-media-have_future_data
+ * @const {number}
+ */
+HTMLMediaElement.prototype.HAVE_FUTURE_DATA;
+
+/**
+ * @see https://html.spec.whatwg.org/multipage/media.html#dom-media-have_enough_data
+ * @const {number}
+ */
+HTMLMediaElement.HAVE_ENOUGH_DATA;
+
+/**
+ * @see https://html.spec.whatwg.org/multipage/media.html#dom-media-have_enough_data
+ * @const {number}
+ */
+HTMLMediaElement.prototype.HAVE_ENOUGH_DATA;
 
 /** @type {MediaError} */
 HTMLMediaElement.prototype.error;
 
-/** @type {string} */
+/** @type {string} @implicitCast */
 HTMLMediaElement.prototype.src;
 
 /** @type {string} */
@@ -1562,8 +2090,11 @@ HTMLMediaElement.prototype.networkState;
 /** @type {boolean} */
 HTMLMediaElement.prototype.autobuffer;
 
-/** @type {TimeRanges} */
+/** @type {!TimeRanges} */
 HTMLMediaElement.prototype.buffered;
+
+/** @type {?MediaStream} */
+HTMLMediaElement.prototype.srcObject;
 
 /**
  * Loads the media element.
@@ -1652,11 +2183,20 @@ HTMLImageElement.prototype.onload;
 /** @type {?function(Event)} */
 HTMLImageElement.prototype.onerror;
 
+/** @type {string} */
+HTMLMediaElement.prototype.preload;
+
 /** @type {number} */
 HTMLMediaElement.prototype.readyState;
 
 /** @type {boolean} */
 HTMLMediaElement.prototype.seeking;
+
+/**
+ * @type {string}
+ * @see https://html.spec.whatwg.org/multipage/media.html#dom-media-crossorigin
+ */
+HTMLMediaElement.prototype.crossOrigin;
 
 /**
  * The current time, in seconds.
@@ -1702,7 +2242,9 @@ HTMLMediaElement.prototype.loop;
 
 /**
  * Starts playing the media.
- * @return {undefined}
+ * @return {?Promise<undefined>} This is a *nullable* Promise on purpose unlike
+ *     the HTML5 spec because supported older browsers (incl. Smart TVs) don't
+ *     return a Promise.
  */
 HTMLMediaElement.prototype.play = function() {};
 
@@ -1729,13 +2271,63 @@ HTMLMediaElement.prototype.muted;
  * @param {string} kind Kind of the text track.
  * @param {string=} opt_label Label of the text track.
  * @param {string=} opt_language Language of the text track.
- * @return {TextTrack} TextTrack object added to the media element.
+ * @return {!TextTrack} TextTrack object added to the media element.
  */
 HTMLMediaElement.prototype.addTextTrack =
     function(kind, opt_label, opt_language) {};
 
-/** @type {TextTrackList} */
+/** @type {!TextTrackList} */
 HTMLMediaElement.prototype.textTracks;
+
+/**
+ * The ID of the audio device through which output is being delivered, or an
+ * empty string if using the default device.
+ *
+ * Implemented as a draft spec in Chrome 49+.
+ *
+ * @see https://w3c.github.io/mediacapture-output/#htmlmediaelement-extensions
+ * @type {string}
+ */
+HTMLMediaElement.prototype.sinkId;
+
+/**
+ * Sets the audio device through which output should be delivered.
+ *
+ * Implemented as a draft spec in Chrome 49+.
+ *
+ * @param {string} sinkId The ID of the audio output device, or empty string
+ * for default device.
+ *
+ * @see https://w3c.github.io/mediacapture-output/#htmlmediaelement-extensions
+ * @return {!Promise<void>}
+ */
+HTMLMediaElement.prototype.setSinkId = function(sinkId) {};
+
+
+/**
+ * Produces a real-time capture of the media that is rendered to the media
+ * element.
+ * @return {!MediaStream}
+ * @see https://w3c.github.io/mediacapture-fromelement/#html-media-element-media-capture-extensions
+ */
+HTMLMediaElement.prototype.captureStream = function() {};
+
+/**
+ * The Firefox flavor of captureStream.
+ * @return {!MediaStream}
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/captureStream#Browser_compatibility
+ */
+HTMLMediaElement.prototype.mozCaptureStream = function() {};
+
+/**
+ * @constructor
+ * @extends {HTMLElement}
+ * @see https://html.spec.whatwg.org/multipage/dom.html#htmlunknownelement
+ * @see https://html.spec.whatwg.org/multipage/scripting.html#customized-built-in-element-restrictions
+ * @see https://w3c.github.io/webcomponents/spec/custom/#custom-elements-api
+ */
+function HTMLUnknownElement() {}
+
 
 
 /**
@@ -1748,6 +2340,7 @@ Text.prototype.getDestinationInsertionPoints = function() {};
 /**
  * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/the-video-element.html#texttracklist
  * @constructor
+ * @implements {EventTarget}
  * @implements {IArrayLike<!TextTrack>}
  */
 function TextTrackList() {}
@@ -1761,6 +2354,16 @@ TextTrackList.prototype.length;
  */
 TextTrackList.prototype.getTrackById = function(id) {};
 
+/** @override */
+TextTrackList.prototype.addEventListener = function(
+    type, listener, opt_useCapture) {};
+
+/** @override */
+TextTrackList.prototype.dispatchEvent = function(evt) {};
+
+/** @override */
+TextTrackList.prototype.removeEventListener = function(
+    type, listener, opt_options) {};
 
 /**
  * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/the-video-element.html#texttrack
@@ -1796,24 +2399,16 @@ TextTrack.prototype.cues;
  */
 TextTrack.prototype.mode;
 
-/**
- * @override
- * @return {undefined}
- */
-TextTrack.prototype.addEventListener = function(type, listener, useCapture) {};
+/** @override */
+TextTrack.prototype.addEventListener = function(
+    type, listener, opt_useCapture) {};
 
-/**
- * @override
- * @return {boolean}
- */
+/** @override */
 TextTrack.prototype.dispatchEvent = function(evt) {};
 
-/**
- * @override
- * @return {undefined}
- */
-TextTrack.prototype.removeEventListener = function(type, listener, useCapture)
-    {};
+/** @override */
+TextTrack.prototype.removeEventListener = function(
+    type, listener, opt_options) {};
 
 
 
@@ -1857,12 +2452,96 @@ TextTrackCue.prototype.endTime;
 TextTrackCue.prototype.text;
 
 
+
+/**
+ * @see https://w3c.github.io/webvtt/#vttregion
+ * @constructor
+ */
+function VTTRegion() {}
+
+/** @type {string} */
+VTTRegion.prototype.id;
+
+/** @type {number} */
+VTTRegion.prototype.width;
+
+/** @type {number} */
+VTTRegion.prototype.lines;
+
+/** @type {number} */
+VTTRegion.prototype.regionAnchorX;
+
+/** @type {number} */
+VTTRegion.prototype.regionAnchorY;
+
+/** @type {number} */
+VTTRegion.prototype.viewportAnchorX;
+
+/** @type {number} */
+VTTRegion.prototype.viewportAnchorY;
+
+/**
+ * @see https://w3c.github.io/webvtt/#enumdef-scrollsetting
+ * @type {string}
+ */
+VTTRegion.prototype.scroll;
+
+
+
 /**
  * @see http://dev.w3.org/html5/webvtt/#the-vttcue-interface
  * @constructor
  * @extends {TextTrackCue}
+ * @param {number} startTime
+ * @param {number} endTime
+ * @param {string} text
  */
 function VTTCue(startTime, endTime, text) {}
+
+/** @type {?VTTRegion} */
+VTTCue.prototype.region;
+
+/**
+ * @see https://w3c.github.io/webvtt/#enumdef-directionsetting
+ * @type {string}
+ */
+VTTCue.prototype.vertical;
+
+/** @type {boolean} */
+VTTCue.prototype.snapToLines;
+
+/** @type {(number|string)} */
+VTTCue.prototype.line;
+
+/**
+ * @see https://w3c.github.io/webvtt/#enumdef-linealignsetting
+ * @type {string}
+ */
+VTTCue.prototype.lineAlign;
+
+/** @type {(number|string)} */
+VTTCue.prototype.position;
+
+/**
+ * @see https://w3c.github.io/webvtt/#enumdef-positionalignsetting
+ * @type {string}
+ */
+VTTCue.prototype.positionAlign;
+
+/** @type {number} */
+VTTCue.prototype.size;
+
+/**
+ * @see https://w3c.github.io/webvtt/#enumdef-alignsetting
+ * @type {string}
+ */
+VTTCue.prototype.align;
+
+/** @type {string} */
+VTTCue.prototype.text;
+
+/** @return {!DocumentFragment} */
+VTTCue.prototype.getCueAsHTML = function() {};
 
 
 /**
@@ -1875,7 +2554,7 @@ function HTMLAudioElement() {}
  * @constructor
  * @extends {HTMLMediaElement}
  * The webkit-prefixed attributes are defined in
- * https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/core/html/HTMLVideoElement.idl
+ * https://cs.chromium.org/chromium/src/third_party/WebKit/Source/core/html/media/HTMLMediaElement.idl
  */
 function HTMLVideoElement() {}
 
@@ -1936,7 +2615,8 @@ HTMLVideoElement.prototype.webkitDroppedFrameCount;
  *    totalVideoFrames: number,
  *    droppedVideoFrames: number,
  *    corruptedVideoFrames: number,
- *    totalFrameDelay: number
+ *    totalFrameDelay: number,
+ *    displayCompositedVideoFrames: (number|undefined)
  * }}
  */
 var VideoPlaybackQuality;
@@ -1949,37 +2629,139 @@ HTMLVideoElement.prototype.getVideoPlaybackQuality = function() {};
 
 
 /**
+ * The metadata provided by the callback given to
+ * HTMLVideoElement.requestVideoFrameCallback().
+ *
+ * See https://wicg.github.io/video-rvfc/#video-frame-metadata
+ *
+ * @record
+ */
+function VideoFrameMetadata() {};
+
+/**
+ * The time at which the user agent submitted the frame for composition.
+ * @const {number}
+ */
+VideoFrameMetadata.prototype.presentationTime;
+
+/**
+ * The time at which the user agent expects the frame to be visible.
+ * @const {number}
+ */
+VideoFrameMetadata.prototype.expectedDisplayTime;
+
+/**
+ * The width of the video frame, in media pixels.
+ * @const {number}
+ */
+VideoFrameMetadata.prototype.width;
+
+/**
+ * The height of the video frame, in media pixels.
+ * @const {number}
+ */
+VideoFrameMetadata.prototype.height;
+
+/**
+ * The media presentation timestamp (PTS) in seconds of the frame presented
+ * (e.g. its timestamp on the video.currentTime timeline).
+ * @const {number}
+ */
+VideoFrameMetadata.prototype.mediaTime;
+
+/**
+ * A count of the number of frames submitted for composition.
+ * @const {number}
+ */
+VideoFrameMetadata.prototype.presentedFrames;
+
+/**
+ * The elapsed duration in seconds from submission of the encoded packet with
+ * the same presentation timestamp (PTS) as this frame (e.g. same as the
+ * mediaTime) to the decoder until the decoded frame was ready for presentation.
+ * @const {number|undefined}
+ */
+VideoFrameMetadata.prototype.processingDuration;
+
+/**
+ * For video frames coming from either a local or remote source, this is the
+ * time at which the frame was captured by the camera.
+ * @const {number|undefined}
+ */
+VideoFrameMetadata.prototype.captureTime;
+
+/**
+ * For video frames coming from a remote source, this is the time the encoded
+ * frame was received by the platform, i.e., the time at which the last packet
+ * belonging to this frame was received over the network.
+ * @const {number|undefined}
+ */
+VideoFrameMetadata.prototype.receiveTime;
+
+/**
+ * The RTP timestamp associated with this video frame.
+ * @const {number|undefined}
+ */
+VideoFrameMetadata.prototype.rtpTimestamp;
+
+/**
+ * @typedef {function(number,  ?VideoFrameMetadata): undefined}
+ * @see https://wicg.github.io/video-rvfc/#dom-htmlvideoelement-requestvideoframecallback
+ */
+var VideoFrameRequestCallback;
+
+/**
+ * Registers a callback to be fired the next time a frame is presented to the
+ * compositor.
+ * @param {!VideoFrameRequestCallback} callback
+ * @return {number}
+ */
+HTMLVideoElement.prototype.requestVideoFrameCallback = function(callback) {};
+
+/**
+ * Cancels an existing video frame request callback given its handle.
+ * @param {number} handle
+ * @return {undefined}
+ */
+HTMLVideoElement.prototype.cancelVideoFrameCallback = function(handle) {};
+
+
+/**
  * @constructor
+ * @see https://html.spec.whatwg.org/multipage/media.html#error-codes
  */
 function MediaError() {}
 
 /** @type {number} */
 MediaError.prototype.code;
 
+/** @type {string} */
+MediaError.prototype.message;
+
 /**
  * The fetching process for the media resource was aborted by the user agent at
  * the user's request.
- * @type {number}
+ * @const {number}
  */
 MediaError.MEDIA_ERR_ABORTED;
 
 /**
  * A network error of some description caused the user agent to stop fetching
  * the media resource, after the resource was established to be usable.
- * @type {number}
+ * @const {number}
  */
 MediaError.MEDIA_ERR_NETWORK;
 
 /**
  * An error of some description occurred while decoding the media resource,
  * after the resource was established to be usable.
- * @type {number}
+ * @const {number}
  */
 MediaError.MEDIA_ERR_DECODE;
 
 /**
  * The media resource indicated by the src attribute was not suitable.
- * @type {number}
+ * @const {number}
  */
 MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED;
 
@@ -2011,26 +2793,15 @@ MessageChannel.prototype.port2;
  */
 function MessagePort() {}
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-MessagePort.prototype.addEventListener = function(
-    type, listener, opt_useCapture) {};
+/** @override */
+MessagePort.prototype.addEventListener = function(type, listener, opt_options) {
+};
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
+/** @override */
 MessagePort.prototype.removeEventListener = function(
-    type, listener, opt_useCapture) {};
+    type, listener, opt_options) {};
 
-/**
- * @override
- * @return {boolean}
- */
+/** @override */
 MessagePort.prototype.dispatchEvent = function(evt) {};
 
 
@@ -2058,20 +2829,51 @@ MessagePort.prototype.close = function() {};
 
 /**
  * TODO(blickly): Change this to MessageEvent<*> and add casts as needed
- * @type {?function(!MessageEvent<?>)}
+ * @type {?function(!MessageEvent<?>): void}
  */
 MessagePort.prototype.onmessage;
 
 // HTML5 MessageEvent class
 /**
- * @see http://dev.w3.org/html5/spec/comms.html#messageevent
+ * @typedef {Window|MessagePort|ServiceWorker}
+ * @see https://html.spec.whatwg.org/multipage/comms.html#messageeventsource
+ */
+var MessageEventSource;
+
+
+/**
+ * @record
+ * @extends {EventInit}
+ * @template T
+ * @see https://html.spec.whatwg.org/multipage/comms.html#messageeventinit
+ */
+function MessageEventInit() {}
+
+/** @type {T|undefined} */
+MessageEventInit.prototype.data;
+
+/** @type {(string|undefined)} */
+MessageEventInit.prototype.origin;
+
+/** @type {(string|undefined)} */
+MessageEventInit.prototype.lastEventId;
+
+/** @type {(?MessageEventSource|undefined)} */
+MessageEventInit.prototype.source;
+
+/** @type {(!Array<MessagePort>|undefined)} */
+MessageEventInit.prototype.ports;
+
+
+/**
+ * @see https://html.spec.whatwg.org/multipage/comms.html#messageevent
  * @constructor
  * @extends {Event}
- * @template T
  * @param {string} type
- * @param {Object=} init
+ * @param {MessageEventInit<T>=} opt_eventInitDict
+ * @template T
  */
-function MessageEvent(type, init) {}
+function MessageEvent(type, opt_eventInitDict) {}
 
 /**
  * The data payload of the message.
@@ -2101,7 +2903,7 @@ MessageEvent.prototype.source;
 /**
  * The Array of MessagePorts sent with the message, for cross-document
  * messaging and channel messaging.
- * @type {Array<MessagePort>}
+ * @type {!Array<MessagePort>}
  */
 MessageEvent.prototype.ports;
 
@@ -2109,13 +2911,13 @@ MessageEvent.prototype.ports;
  * Initializes the event in a manner analogous to the similarly-named methods in
  * the DOM Events interfaces.
  * @param {string} typeArg
- * @param {boolean} canBubbleArg
- * @param {boolean} cancelableArg
- * @param {T} dataArg
- * @param {string} originArg
- * @param {string} lastEventIdArg
- * @param {Window} sourceArg
- * @param {Array<MessagePort>} portsArg
+ * @param {boolean=} canBubbleArg
+ * @param {boolean=} cancelableArg
+ * @param {T=} dataArg
+ * @param {string=} originArg
+ * @param {string=} lastEventIdArg
+ * @param {?MessageEventSource=} sourceArg
+ * @param {!Array<MessagePort>=} portsArg
  * @return {undefined}
  */
 MessageEvent.prototype.initMessageEvent = function(typeArg, canBubbleArg,
@@ -2125,19 +2927,64 @@ MessageEvent.prototype.initMessageEvent = function(typeArg, canBubbleArg,
  * Initializes the event in a manner analogous to the similarly-named methods in
  * the DOM Events interfaces.
  * @param {string} namespaceURI
- * @param {string} typeArg
- * @param {boolean} canBubbleArg
- * @param {boolean} cancelableArg
- * @param {T} dataArg
- * @param {string} originArg
- * @param {string} lastEventIdArg
- * @param {Window} sourceArg
- * @param {Array<MessagePort>} portsArg
+ * @param {string=} typeArg
+ * @param {boolean=} canBubbleArg
+ * @param {boolean=} cancelableArg
+ * @param {T=} dataArg
+ * @param {string=} originArg
+ * @param {string=} lastEventIdArg
+ * @param {?MessageEventSource=} sourceArg
+ * @param {!Array<MessagePort>=} portsArg
  * @return {undefined}
  */
 MessageEvent.prototype.initMessageEventNS = function(namespaceURI, typeArg,
     canBubbleArg, cancelableArg, dataArg, originArg, lastEventIdArg, sourceArg,
     portsArg) {};
+
+/**
+ * @record
+ * @extends {EventInit}
+ * @see https://html.spec.whatwg.org/multipage/web-sockets.html#the-closeevent-interface
+ */
+function CloseEventInit() {}
+
+/**
+ * @type {undefined|boolean}
+ */
+CloseEventInit.prototype.wasClean;
+
+/**
+ * @type {undefined|number}
+ */
+CloseEventInit.prototype.code;
+
+/**
+ * @type {undefined|string}
+ */
+CloseEventInit.prototype.reason;
+
+/**
+ * @constructor
+ * @extends {Event}
+ * @param {string} type
+ * @param {!CloseEventInit=} opt_init
+ */
+var CloseEvent = function(type, opt_init) {};
+
+/**
+ * @type {boolean}
+ */
+CloseEvent.prototype.wasClean;
+
+/**
+ * @type {number}
+ */
+CloseEvent.prototype.code;
+
+/**
+ * @type {string}
+ */
+CloseEvent.prototype.reason;
 
 /**
  * HTML5 BroadcastChannel class.
@@ -2154,25 +3001,25 @@ function BroadcastChannel(channelName) {}
  * listening to the same channel.
  * @param {*} message
  */
-BroadcastChannel.prototype.postMessage;
+BroadcastChannel.prototype.postMessage = function(message) {};
 
 /**
  * Closes the channel object, indicating it won't get any new messages, and
  * allowing it to be, eventually, garbage collected.
  * @return {void}
  */
-BroadcastChannel.prototype.close;
+BroadcastChannel.prototype.close = function() {};
 
 /** @override */
 BroadcastChannel.prototype.addEventListener = function(
-    type, listener, useCapture) {};
+    type, listener, opt_options) {};
 
 /** @override */
 BroadcastChannel.prototype.dispatchEvent = function(evt) {};
 
 /** @override */
 BroadcastChannel.prototype.removeEventListener = function(
-    type, listener, useCapture) {};
+    type, listener, opt_options) {};
 
 /**
  * An EventHandler property that specifies the function to execute when a
@@ -2190,15 +3037,10 @@ BroadcastChannel.prototype.name;
 /**
  * HTML5 DataTransfer class.
  *
- * We say that this extends ClipboardData, because Event.prototype.clipboardData
- * is a DataTransfer on WebKit but a ClipboardData on IE. The interfaces are so
- * similar that it's easier to merge them.
- *
  * @see http://www.w3.org/TR/2011/WD-html5-20110113/dnd.html
  * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/dnd.html
  * @see http://developers.whatwg.org/dnd.html#datatransferitem
  * @constructor
- * @extends {ClipboardData}
  */
 function DataTransfer() {}
 
@@ -2208,15 +3050,14 @@ DataTransfer.prototype.dropEffect;
 /** @type {string} */
 DataTransfer.prototype.effectAllowed;
 
-/** @type {Array<string>} */
+/** @type {!Array<string>} */
 DataTransfer.prototype.types;
 
-/** @type {FileList} */
+/** @type {!FileList} */
 DataTransfer.prototype.files;
 
 /**
  * @param {string=} opt_format Format for which to remove data.
- * @override
  * @return {undefined}
  */
 DataTransfer.prototype.clearData = function(opt_format) {};
@@ -2224,7 +3065,6 @@ DataTransfer.prototype.clearData = function(opt_format) {};
 /**
  * @param {string} format Format for which to set data.
  * @param {string} data Data to add.
- * @override
  * @return {boolean}
  */
 DataTransfer.prototype.setData = function(format, data) {};
@@ -2232,7 +3072,6 @@ DataTransfer.prototype.setData = function(format, data) {};
 /**
  * @param {string} format Format for which to set data.
  * @return {string} Data for the given format.
- * @override
  */
 DataTransfer.prototype.getData = function(format) { return ''; };
 
@@ -2285,13 +3124,13 @@ WheelEventInit.prototype.deltaMode;
  */
 function WheelEvent(type, opt_eventInitDict) {}
 
-/** @type {number} */
+/** @const {number} */
 WheelEvent.DOM_DELTA_PIXEL;
 
-/** @type {number} */
+/** @const {number} */
 WheelEvent.DOM_DELTA_LINE;
 
-/** @type {number} */
+/** @const {number} */
 WheelEvent.DOM_DELTA_PAGE;
 
 /** @const {number} */
@@ -2333,14 +3172,6 @@ DataTransferItem.prototype.getAsString = function(callback) {};
  * @nosideeffects
  */
 DataTransferItem.prototype.getAsFile = function() { return null; };
-
-/**
- * @return {?Entry} The Entry corresponding to this item, or null. Note that
- * despite its name,this method only works in Chrome, and will eventually
- * be renamed to {@code getAsEntry}.
- * @nosideeffects
- */
-DataTransferItem.prototype.webkitGetAsEntry = function() { return null; };
 
 /**
  * HTML5 DataTransferItemList class. There are some discrepancies in the docs
@@ -2432,12 +3263,19 @@ ProgressEventInit.prototype.total;
 
 /**
  * @constructor
+ * @template TARGET
  * @param {string} type
  * @param {ProgressEventInit=} opt_progressEventInitDict
  * @extends {Event}
  * @see https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent
  */
 function ProgressEvent(type, opt_progressEventInitDict) {}
+
+/**
+ * @override
+ * @type {TARGET}
+ */
+ProgressEvent.prototype.target;
 
 /** @type {number} */
 ProgressEvent.prototype.total;
@@ -2474,58 +3312,70 @@ TimeRanges.prototype.end = function(index) { return 0; };
 
 // HTML5 Web Socket class
 /**
- * @see http://dev.w3.org/html5/websockets/
+ * @see https://html.spec.whatwg.org/multipage/web-sockets.html
  * @constructor
  * @param {string} url
- * @param {string=} opt_protocol
+ * @param {(string|!Array<string>)=} opt_protocol
  * @implements {EventTarget}
  */
 function WebSocket(url, opt_protocol) {}
 
 /**
  * The connection has not yet been established.
- * @type {number}
+ * @const {number}
  */
-WebSocket.CONNECTING = 0;
+WebSocket.CONNECTING;
+
+/**
+ * The connection has not yet been established.
+ * @const {number}
+ */
+WebSocket.prototype.CONNECTING;
 
 /**
  * The WebSocket connection is established and communication is possible.
- * @type {number}
+ * @const {number}
  */
-WebSocket.OPEN = 1;
+WebSocket.OPEN;
+
+/**
+ * The WebSocket connection is established and communication is possible.
+ * @const {number}
+ */
+WebSocket.prototype.OPEN;
 
 /**
  * The connection is going through the closing handshake, or the close() method has been invoked.
- * @type {number}
+ * @const {number}
  */
-WebSocket.CLOSING = 2;
+WebSocket.CLOSING;
+
+/**
+ * The connection is going through the closing handshake, or the close() method has been invoked.
+ * @const {number}
+ */
+WebSocket.prototype.CLOSING;
 
 /**
  * The connection has been closed or could not be opened.
- * @type {number}
+ * @const {number}
  */
-WebSocket.CLOSED = 3;
+WebSocket.CLOSED;
 
 /**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
+ * The connection has been closed or could not be opened.
+ * @const {number}
  */
-WebSocket.prototype.addEventListener = function(
-    type, listener, opt_useCapture) {};
+WebSocket.prototype.CLOSED;
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
+/** @override */
+WebSocket.prototype.addEventListener = function(type, listener, opt_options) {};
+
+/** @override */
 WebSocket.prototype.removeEventListener = function(
-    type, listener, opt_useCapture) {};
+    type, listener, opt_options) {};
 
-/**
- * @override
- * @return {boolean}
- */
+/** @override */
 WebSocket.prototype.dispatchEvent = function(evt) {};
 
 /**
@@ -2547,28 +3397,33 @@ WebSocket.prototype.readyState;
 WebSocket.prototype.bufferedAmount;
 
 /**
+ * An event handler called on error event.
+ * @type {?function(!Event): void}
+ */
+WebSocket.prototype.onerror;
+
+/**
  * An event handler called on open event.
- * @type {?function(!Event)}
+ * @type {?function(!Event): void}
  */
 WebSocket.prototype.onopen;
 
 /**
  * An event handler called on message event.
- * TODO(blickly): Change this to MessageEvent<*> and add casts as needed
- * @type {?function(!MessageEvent<?>)}
+ * @type {?function(!MessageEvent<string|!ArrayBuffer|!Blob>): void}
  */
 WebSocket.prototype.onmessage;
 
 /**
  * An event handler called on close event.
- * @type {?function(!Event)}
+ * @type {?function(!CloseEvent): void}
  */
 WebSocket.prototype.onclose;
 
 /**
  * Transmits data using the connection.
- * @param {string|ArrayBuffer|ArrayBufferView} data
- * @return {boolean}
+ * @param {string|!ArrayBuffer|!ArrayBufferView|!Blob} data
+ * @return {void}
  */
 WebSocket.prototype.send = function(data) {};
 
@@ -2588,8 +3443,44 @@ WebSocket.prototype.binaryType;
 // HTML5 History
 /**
  * @constructor
+ * @see http://w3c.github.io/html/browsers.html#the-history-interface
  */
 function History() {}
+
+/**
+ * Goes back one step in the joint session history.
+ * If there is no previous page, does nothing.
+ *
+ * @see https://html.spec.whatwg.org/multipage/history.html#dom-history-back
+ *
+ * @return {undefined}
+ */
+History.prototype.back = function() {};
+
+/**
+ * Goes forward one step in the joint session history.
+ * If there is no next page, does nothing.
+ *
+ * @return {undefined}
+ */
+History.prototype.forward = function() {};
+
+/**
+ * The number of entries in the joint session history.
+ *
+ * @type {number}
+ */
+History.prototype.length;
+
+/**
+ * Goes back or forward the specified number of steps in the joint session
+ * history. A zero delta will reload the current page. If the delta is out of
+ * range, does nothing.
+ *
+ * @param {number} delta The number of entries to go back.
+ * @return {undefined}
+ */
+History.prototype.go = function(delta) {};
 
 /**
  * Pushes a new state into the session history.
@@ -2629,6 +3520,128 @@ History.prototype.state;
  * @type {string}
  */
 History.prototype.scrollRestoration;
+
+/**
+ * Add history property to Window.
+ *
+ * @type {!History}
+ */
+Window.prototype.history;
+
+/**
+ * @constructor
+ * @see https://html.spec.whatwg.org/multipage/history.html#the-location-interface
+ */
+function Location() {}
+
+/**
+ * Returns the Location object's URL. Can be set, to navigate to the given URL.
+ * @implicitCast
+ * @type {string}
+ * @see https://html.spec.whatwg.org/multipage/history.html#dom-location-href
+ */
+Location.prototype.href;
+
+/**
+ * Returns the Location object's URL's origin.
+ * @const {string}
+ * @see https://html.spec.whatwg.org/multipage/history.html#dom-location-origin
+ */
+Location.prototype.origin;
+
+/**
+ * Returns the Location object's URL's scheme. Can be set, to navigate to the
+ * same URL with a changed scheme.
+ * @type {string}
+ * @see https://html.spec.whatwg.org/multipage/history.html#dom-location-protocol
+ */
+Location.prototype.protocol;
+
+/**
+ * Returns the Location object's URL's host and port (if different from the
+ * default port for the scheme). Can be set, to navigate to the same URL with
+ * a changed host and port.
+ * @type {string}
+ * @see https://html.spec.whatwg.org/multipage/history.html#dom-location-host
+ */
+Location.prototype.host;
+
+/**
+ * Returns the Location object's URL's host. Can be set, to navigate to the
+ * same URL with a changed host.
+ * @type {string}
+ * @see https://html.spec.whatwg.org/multipage/history.html#dom-location-hostname
+ */
+Location.prototype.hostname;
+
+/**
+ * Returns the Location object's URL's port. Can be set, to navigate to the
+ * same URL with a changed port.
+ * @type {string}
+ * @see https://html.spec.whatwg.org/multipage/history.html#the-location-interface:dom-location-port
+ */
+Location.prototype.port;
+
+/**
+ * Returns the Location object's URL's path. Can be set, to navigate to the
+ * same URL with a changed path.
+ * @type {string}
+ * @see https://html.spec.whatwg.org/multipage/history.html#dom-location-pathname
+ */
+Location.prototype.pathname;
+
+/**
+ * Returns the Location object's URL's query (includes leading "?" if
+ * non-empty). Can be set, to navigate to the same URL with a changed query
+ * (ignores leading "?").
+ * @type {string}
+ * @see https://html.spec.whatwg.org/multipage/history.html#dom-location-search
+ */
+Location.prototype.search;
+
+/**
+ * Returns the Location object's URL's fragment (includes leading "#" if
+ * non-empty). Can be set, to navigate to the same URL with a changed fragment
+ * (ignores leading "#").
+ * @type {string}
+ * @see https://html.spec.whatwg.org/multipage/history.html#dom-location-hash
+ */
+Location.prototype.hash;
+
+/**
+ * Navigates to the given page.
+ * @param {string} url
+ * @return {undefined}
+ * @see https://html.spec.whatwg.org/multipage/history.html#dom-location-assign
+ */
+Location.prototype.assign = function(url) {};
+
+/**
+ * Removes the current page from the session history and navigates to the given
+ * page.
+ * @param {string} url
+ * @return {undefined}
+ * @see https://html.spec.whatwg.org/multipage/history.html#dom-location-replace
+ */
+Location.prototype.replace = function(url) {};
+
+/**
+ * Reloads the current page.
+ * @param {boolean=} forceReload If true, reloads the page from
+ *     the server. Defaults to false.
+ * @return {undefined}
+ * @see https://html.spec.whatwg.org/multipage/history.html#dom-location-reload
+ */
+Location.prototype.reload = function(forceReload) {};
+
+/**
+ * Returns a DOMStringList object listing the origins of the ancestor browsing
+ * contexts, from the parent browsing context to the top-level browsing
+ * context.
+ * @type {DOMStringList}
+ * @see https://html.spec.whatwg.org/multipage/history.html#dom-location-ancestororigins
+ */
+Location.prototype.ancestorOrigins;
 
 /**
  * @see http://www.whatwg.org/specs/web-apps/current-work/#popstateevent
@@ -2812,26 +3825,15 @@ XMLHttpRequest.prototype.mozResponseArrayBuffer;
  */
 function XMLHttpRequestEventTarget() {}
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
+/** @override */
 XMLHttpRequestEventTarget.prototype.addEventListener = function(
-    type, listener, opt_useCapture) {};
+    type, listener, opt_options) {};
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
+/** @override */
 XMLHttpRequestEventTarget.prototype.removeEventListener = function(
-    type, listener, opt_useCapture) {};
+    type, listener, opt_options) {};
 
-/**
- * @override
- * @return {boolean}
- */
+/** @override */
 XMLHttpRequestEventTarget.prototype.dispatchEvent = function(evt) {};
 
 /**
@@ -2861,8 +3863,7 @@ function Image(opt_width, opt_height) {}
  * Dataset collection.
  * This is really a DOMStringMap but it behaves close enough to an object to
  * pass as an object.
- * @type {Object}
- * @const
+ * @const {!Object<string, string>}
  */
 HTMLElement.prototype.dataset;
 
@@ -2879,6 +3880,12 @@ function DOMTokenList() {}
  * @type {number}
  */
 DOMTokenList.prototype.length;
+
+/**
+ * Returns the string value applied to this Element.
+ * @type {string|undefined}
+ */
+DOMTokenList.prototype.value;
 
 /**
  * @param {number} index The index of the item to return.
@@ -2907,6 +3914,22 @@ DOMTokenList.prototype.add = function(var_args) {};
 DOMTokenList.prototype.remove = function(var_args) {};
 
 /**
+ * Replaces token with newToken.
+ * @param {string} token The CSS class to replace.
+ * @param {string} newToken The new CSS class to use.
+ * @return {undefined}
+ */
+DOMTokenList.prototype.replace = function(token, newToken) {};
+
+/**
+ * @param {string} token The token to query for.
+ * @return {boolean} Whether the token was found.
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList/supports
+ * @nosideeffects
+ */
+DOMTokenList.prototype.supports = function(token) {};
+
+/**
  * @param {string} token The CSS class to toggle from this element.
  * @param {boolean=} opt_force True to add the class whether it exists
  *     or not. False to remove the class whether it exists or not.
@@ -2925,10 +3948,17 @@ DOMTokenList.prototype.toggle = function(token, opt_force) {};
 DOMTokenList.prototype.toString = function() {};
 
 /**
+ * @return {!IteratorIterable<string>} An iterator to go through all values of
+ *     the key/value pairs contained in this object.
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList/values
+ */
+DOMTokenList.prototype.values = function() {};
+
+/**
  * A better interface to CSS classes than className.
- * @type {!DOMTokenList}
+ * @const {!DOMTokenList}
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/classList
- * @const
  */
 Element.prototype.classList;
 
@@ -2987,8 +4017,9 @@ ValidityState.prototype.valueMissing;
 HTMLButtonElement.prototype.autofocus;
 
 /**
- * @const
- * @type {NodeList<!HTMLLabelElement>}
+ * Can return null when hidden.
+ * See https://html.spec.whatwg.org/multipage/forms.html#dom-lfe-labels
+ * @const {?NodeList<!HTMLLabelElement>}
  */
 HTMLButtonElement.prototype.labels;
 
@@ -2996,8 +4027,7 @@ HTMLButtonElement.prototype.labels;
 HTMLButtonElement.prototype.validationMessage;
 
 /**
- * @const
- * @type {ValidityState}
+ * @const {ValidityState}
  */
 HTMLButtonElement.prototype.validity;
 
@@ -3018,6 +4048,7 @@ HTMLButtonElement.prototype.setCustomValidity = function(message) {};
 
 /**
  * @type {string}
+ * @implicitCast
  * @see http://www.w3.org/TR/html5/forms.html#attr-fs-formaction
  */
 HTMLButtonElement.prototype.formAction;
@@ -3048,6 +4079,7 @@ HTMLInputElement.prototype.formNoValidate;
 
 /**
  * @type {string}
+ * @implicitCast
  * @see http://www.w3.org/TR/html5/forms.html#attr-fs-formaction
  */
 HTMLInputElement.prototype.formAction;
@@ -3071,8 +4103,9 @@ HTMLInputElement.prototype.formMethod;
 HTMLInputElement.prototype.formTarget;
 
 /**
- * @const
- * @type {NodeList<!HTMLLabelElement>}
+ * Can return null when hidden.
+ * See https://html.spec.whatwg.org/multipage/forms.html#dom-lfe-labels
+ * @const {?NodeList<!HTMLLabelElement>}
  */
 HTMLInputElement.prototype.labels;
 
@@ -3080,8 +4113,42 @@ HTMLInputElement.prototype.labels;
 HTMLInputElement.prototype.validationMessage;
 
 /**
- * @const
- * @type {ValidityState}
+ * @type {number}
+ * @implicitCast
+ */
+HTMLInputElement.prototype.selectionStart;
+
+/**
+ * @type {number}
+ * @implicitCast
+ */
+HTMLInputElement.prototype.selectionEnd;
+
+/** @type {string} */
+HTMLInputElement.prototype.selectionDirection;
+
+/**
+ * @param {number} start
+ * @param {number} end
+ * @param {string=} direction
+ * @see https://html.spec.whatwg.org/#dom-textarea/input-setselectionrange
+ * @return {undefined}
+ */
+HTMLInputElement.prototype.setSelectionRange = function(start, end, direction) {};
+
+/**
+ * @param {string} replacement
+ * @param {number=} start
+ * @param {number=} end
+ * @param {string=} selectionMode
+ * @see https://html.spec.whatwg.org/#dom-textarea/input-setrangetext
+ * @return {undefined}
+ */
+HTMLInputElement.prototype.setRangeText =
+    function(replacement, start, end, selectionMode) {};
+
+/**
+ * @const {ValidityState}
  */
 HTMLInputElement.prototype.validity;
 
@@ -3107,8 +4174,9 @@ HTMLLabelElement.prototype.control;
 HTMLSelectElement.prototype.autofocus;
 
 /**
- * @const
- * @type {NodeList<!HTMLLabelElement>}
+ * Can return null when hidden.
+ * See https://html.spec.whatwg.org/multipage/forms.html#dom-lfe-labels
+ * @const {?NodeList<!HTMLLabelElement>}
  */
 HTMLSelectElement.prototype.labels;
 
@@ -3119,8 +4187,7 @@ HTMLSelectElement.prototype.selectedOptions;
 HTMLSelectElement.prototype.validationMessage;
 
 /**
- * @const
- * @type {ValidityState}
+ * @const {ValidityState}
  */
 HTMLSelectElement.prototype.validity;
 
@@ -3143,17 +4210,29 @@ HTMLSelectElement.prototype.setCustomValidity = function(message) {};
 HTMLTextAreaElement.prototype.autofocus;
 
 /**
- * @const
- * @type {NodeList<!HTMLLabelElement>}
+ * Can return null when hidden.
+ * See https://html.spec.whatwg.org/multipage/forms.html#dom-lfe-labels
+ * @const {?NodeList<!HTMLLabelElement>}
  */
 HTMLTextAreaElement.prototype.labels;
+
+/** @type {number} */
+HTMLTextAreaElement.prototype.maxLength;
+
+/** @type {number} */
+HTMLTextAreaElement.prototype.minLength;
+
+/** @type {string} */
+HTMLTextAreaElement.prototype.placeholder;
+
+/** @type {number} */
+HTMLTextAreaElement.prototype.textLength;
 
 /** @type {string} */
 HTMLTextAreaElement.prototype.validationMessage;
 
 /**
- * @const
- * @type {ValidityState}
+ * @const {ValidityState}
  */
 HTMLTextAreaElement.prototype.validity;
 
@@ -3193,6 +4272,7 @@ HTMLEmbedElement.prototype.height;
 
 /**
  * @type {string}
+ * @implicitCast
  * @see http://www.w3.org/TR/html5/the-embed-element.html#dom-embed-src
  */
 HTMLEmbedElement.prototype.src;
@@ -3206,10 +4286,20 @@ HTMLEmbedElement.prototype.type;
 // Fullscreen APIs.
 
 /**
- * @see http://www.w3.org/TR/2012/WD-fullscreen-20120703/#dom-element-requestfullscreen
- * @return {undefined}
+ * @record
+ * @see https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions
  */
-Element.prototype.requestFullscreen = function() {};
+function FullscreenOptions() {}
+
+/** @type {string} */
+FullscreenOptions.prototype.navigationUI;
+
+/**
+ * @see https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen
+ * @param {!FullscreenOptions=} options
+ * @return {!Promise<undefined>}
+ */
+Element.prototype.requestFullscreen = function(options) {};
 
 /**
  * @type {boolean}
@@ -3288,7 +4378,7 @@ Document.prototype.webkitFullScreenKeyboardInputAllowed;
 Element.prototype.msRequestFullscreen = function() {};
 
 /** @return {void} */
-Element.prototype.msExitFullscreen = function() {};
+Document.prototype.msExitFullscreen = function() {};
 
 /** @type {boolean} */
 Document.prototype.msFullscreenEnabled;
@@ -3296,11 +4386,11 @@ Document.prototype.msFullscreenEnabled;
 /** @type {Element} */
 Document.prototype.msFullscreenElement;
 
-/** @type {number} */
-Element.ALLOW_KEYBOARD_INPUT = 1;
+/** @const {number} */
+Element.ALLOW_KEYBOARD_INPUT;
 
-/** @type {number} */
-Element.prototype.ALLOW_KEYBOARD_INPUT = 1;
+/** @const {number} */
+Element.prototype.ALLOW_KEYBOARD_INPUT;
 
 
 /**
@@ -3326,16 +4416,16 @@ MutationRecord.prototype.type;
 /** @type {Node} */
 MutationRecord.prototype.target;
 
-/** @type {NodeList<!Node>} */
+/** @type {!NodeList<!Node>} */
 MutationRecord.prototype.addedNodes;
 
-/** @type {NodeList<!Node>} */
+/** @type {!NodeList<!Node>} */
 MutationRecord.prototype.removedNodes;
 
-/** @type {Node} */
+/** @type {?Node} */
 MutationRecord.prototype.previousSibling;
 
-/** @type {Node} */
+/** @type {?Node} */
 MutationRecord.prototype.nextSibling;
 
 /** @type {?string} */
@@ -3350,7 +4440,7 @@ MutationRecord.prototype.oldValue;
 
 /**
  * @see http://www.w3.org/TR/domcore/#mutation-observers
- * @param {function(Array<MutationRecord>, MutationObserver)} callback
+ * @param {function(!Array<!MutationRecord>, !MutationObserver)} callback
  * @constructor
  */
 function MutationObserver(callback) {}
@@ -3426,19 +4516,20 @@ Document.prototype.msHidden;
  * @see http://www.w3.org/TR/components-intro/
  * @see http://w3c.github.io/webcomponents/spec/custom/#extensions-to-document-interface-to-register
  * @param {string} type
- * @param {{extends: (string|undefined), prototype: (Object|undefined)}=} options
- * @return {!Function} a constructor for the new tag. A generic function is the best we
- *     can do here as it allows the return value to be annotated properly
- *     at the call site.
+ * @param {{extends: (string|undefined), prototype: (Object|undefined)}=}
+ *     options
+ * @return {function(new:Element, ...*)} a constructor for the new tag.
+ * @deprecated document.registerElement() is deprecated in favor of
+ *     customElements.define()
  */
 Document.prototype.registerElement = function(type, options) {};
 
 /**
- * This method is deprecated and should be removed by the end of 2014.
  * @see http://www.w3.org/TR/components-intro/
  * @see http://w3c.github.io/webcomponents/spec/custom/#extensions-to-document-interface-to-register
  * @param {string} type
  * @param {{extends: (string|undefined), prototype: (Object|undefined)}} options
+ * @deprecated This method has been removed and will be removed soon from this file.
  */
 Document.prototype.register = function(type, options) {};
 
@@ -3450,6 +4541,7 @@ Document.prototype.fonts;
 
 
 /**
+ * @type {?HTMLScriptElement}
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Document/currentScript
  */
 Document.prototype.currentScript;
@@ -3482,31 +4574,6 @@ ShadowRoot.prototype.getElementById = function(id) {};
 
 
 /**
- * @param {string} className
- * @return {!NodeList<!Element>}
- * @nosideeffects
- */
-ShadowRoot.prototype.getElementsByClassName = function(className) {};
-
-
-/**
- * @param {string} tagName
- * @return {!NodeList<!Element>}
- * @nosideeffects
- */
-ShadowRoot.prototype.getElementsByTagName = function(tagName) {};
-
-
-/**
- * @param {string} namespace
- * @param {string} localName
- * @return {!NodeList<!Element>}
- * @nosideeffects
- */
-ShadowRoot.prototype.getElementsByTagNameNS = function(namespace, localName) {};
-
-
-/**
  * @return {Selection}
  * @nosideeffects
  */
@@ -3523,31 +4590,36 @@ ShadowRoot.prototype.elementFromPoint = function(x, y) {};
 
 
 /**
- * @type {boolean}
+ * @param {number} x
+ * @param {number} y
+ * @return {!IArrayLike<!Element>}
+ * @nosideeffects
  */
-ShadowRoot.prototype.applyAuthorStyles;
+ShadowRoot.prototype.elementsFromPoint = function(x, y) {};
 
 
 /**
- * @type {boolean}
- */
-ShadowRoot.prototype.resetStyleInheritance;
-
-
-/**
- * @type {Element}
+ * @type {?Element}
  */
 ShadowRoot.prototype.activeElement;
 
 
 /**
+ * @type {string}
+ */
+ShadowRoot.prototype.mode;
+
+
+/**
  * @type {?ShadowRoot}
+ * @deprecated
  */
 ShadowRoot.prototype.olderShadowRoot;
 
 
 /**
  * @type {string}
+ * @implicitCast
  */
 ShadowRoot.prototype.innerHTML;
 
@@ -3567,7 +4639,7 @@ ShadowRoot.prototype.styleSheets;
 function HTMLContentElement() {}
 
 /**
- * @type {!string}
+ * @type {string}
  */
 HTMLContentElement.prototype.select;
 
@@ -3669,7 +4741,7 @@ HTMLSourceElement.prototype.media;
 /** @type {string} */
 HTMLSourceElement.prototype.sizes;
 
-/** @type {string} */
+/** @type {string} @implicitCast */
 HTMLSourceElement.prototype.src;
 
 /** @type {string} */
@@ -3851,6 +4923,19 @@ HTMLTemplateElement.prototype.content;
  */
 HTMLLinkElement.prototype.import;
 
+/**
+ * @type {string}
+ * @see https://html.spec.whatwg.org/#attr-link-as
+ * @see https://w3c.github.io/preload/#as-attribute
+ */
+HTMLLinkElement.prototype.as;
+
+/**
+ * @see https://html.spec.whatwg.org/#attr-link-crossorigin
+ * @type {string}
+ */
+HTMLLinkElement.prototype.crossOrigin;
+
 
 /**
  * @return {boolean}
@@ -3909,6 +4994,11 @@ HTMLFieldSetElement.prototype.willValidate;
  */
 function RadioNodeList() {}
 
+/**
+ * @type {string}
+ * @see https://html.spec.whatwg.org/multipage/infrastructure.html#radionodelist
+ */
+RadioNodeList.prototype.value;
 
 
 /**
@@ -3922,6 +5012,37 @@ function HTMLDataListElement() {}
 /** @type {HTMLCollection<!HTMLOptionElement>} */
 HTMLDataListElement.prototype.options;
 
+
+/**
+ * @return {boolean}
+ * @see https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element
+ */
+HTMLObjectElement.prototype.checkValidity;
+
+/**
+ * @param {string} message
+ * @see https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element
+ * @return {undefined}
+ */
+HTMLObjectElement.prototype.setCustomValidity;
+
+/**
+ * @type {string}
+ * @see https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element
+ */
+HTMLObjectElement.prototype.validationMessage;
+
+/**
+ * @type {!ValidityState}
+ * @see https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element
+ */
+HTMLObjectElement.prototype.validity;
+
+/**
+ * @type {boolean}
+ * @see https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element
+ */
+HTMLObjectElement.prototype.willValidate;
 
 
 /**
@@ -3962,7 +5083,7 @@ HTMLOutputElement.prototype.defaultValue;
 HTMLOutputElement.prototype.value;
 
 /**
- * @const {NodeList<!HTMLLabelElement>}
+ * @const {?NodeList<!HTMLLabelElement>}
  */
 HTMLOutputElement.prototype.labels;
 
@@ -4008,7 +5129,7 @@ HTMLProgressElement.prototype.max;
 HTMLProgressElement.prototype.position;
 
 
-/** @type {NodeList<!Node>} */
+/** @type {?NodeList<!Node>} */
 HTMLProgressElement.prototype.labels;
 
 
@@ -4025,7 +5146,7 @@ function HTMLTrackElement() {}
 HTMLTrackElement.prototype.kind;
 
 
-/** @type {string} */
+/** @type {string} @implicitCast */
 HTMLTrackElement.prototype.src;
 
 
@@ -4045,7 +5166,7 @@ HTMLTrackElement.prototype.default;
 HTMLTrackElement.prototype.readyState;
 
 
-/** @const {TextTrack} */
+/** @const {!TextTrack} */
 HTMLTrackElement.prototype.track;
 
 
@@ -4082,15 +5203,28 @@ HTMLMeterElement.prototype.high;
 HTMLMeterElement.prototype.optimum;
 
 
-/** @type {NodeList<!Node>} */
+/** @type {?NodeList<!Node>} */
 HTMLMeterElement.prototype.labels;
 
 
 /**
+ * @interface
+ * @see https://storage.spec.whatwg.org/#api
+ */
+function NavigatorStorage() {};
+
+/**
+ * @type {!StorageManager}
+ */
+NavigatorStorage.prototype.storage;
+
+/**
  * @constructor
+ * @implements NavigatorStorage
  * @see https://www.w3.org/TR/html5/webappapis.html#navigator
  */
 function Navigator() {}
+
 /**
  * @type {string}
  * @see https://www.w3.org/TR/html5/webappapis.html#dom-navigator-appcodename
@@ -4182,13 +5316,13 @@ Navigator.prototype.unregisterProtocolHandler = function(scheme, url) {}
 Navigator.prototype.unregisterContentHandler = function(mimeType, url) {}
 
 /**
- * @type {MimeTypeArray}
+ * @type {!MimeTypeArray}
  * @see https://www.w3.org/TR/html5/webappapis.html#dom-navigator-mimetypes
  */
 Navigator.prototype.mimeTypes;
 
 /**
- * @type {PluginArray}
+ * @type {!PluginArray}
  * @see https://www.w3.org/TR/html5/webappapis.html#dom-navigator-plugins
  */
 Navigator.prototype.plugins;
@@ -4200,6 +5334,79 @@ Navigator.prototype.plugins;
  */
 Navigator.prototype.javaEnabled = function() {};
 
+/**
+ * @type {number}
+ * @see https://developers.google.com/web/updates/2017/12/device-memory
+ * https://github.com/w3c/device-memory
+ */
+Navigator.prototype.deviceMemory;
+
+/**
+ * @type {!StorageManager}
+ * @see https://storage.spec.whatwg.org
+ */
+Navigator.prototype.storage;
+
+/**
+ * @param {!ShareData=} data
+ * @return {boolean}
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/Navigator/canShare
+ */
+Navigator.prototype.canShare = function(data) {};
+
+/**
+ * @param {!ShareData=} data
+ * @return {!Promise<undefined>}
+ * @see https://wicg.github.io/web-share/#share-method
+ */
+Navigator.prototype.share = function(data) {};
+
+/**
+ * @type {number}
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/NavigatorConcurrentHardware/hardwareConcurrency
+ */
+Navigator.prototype.hardwareConcurrency;
+
+/**
+ * @constructor
+ * @implements NavigatorStorage
+ * @see https://html.spec.whatwg.org/multipage/workers.html#the-workernavigator-object
+ */
+function WorkerNavigator() {}
+
+/**
+ * @type {number}
+ * @see https://developers.google.com/web/updates/2017/12/device-memory
+ * https://github.com/w3c/device-memory
+ */
+WorkerNavigator.prototype.deviceMemory;
+
+/**
+ * @type {number}
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/NavigatorConcurrentHardware/hardwareConcurrency
+ */
+WorkerNavigator.prototype.hardwareConcurrency;
+
+/**
+ * @type {!StorageManager}
+ * @see https://storage.spec.whatwg.org
+ */
+WorkerNavigator.prototype.storage;
+
+/**
+ * @record
+ * @see https://wicg.github.io/web-share/#sharedata-dictionary
+ */
+function ShareData() {}
+
+/** @type {string|undefined} */
+ShareData.prototype.title;
+
+/** @type {string|undefined} */
+ShareData.prototype.text;
+
+/** @type {string|undefined} */
+ShareData.prototype.url;
 
 /**
  * @constructor
@@ -4291,3 +5498,187 @@ Plugin.prototype.length;
 
 /** @type {string} */
 Plugin.prototype.name;
+
+/**
+ * @see https://html.spec.whatwg.org/multipage/custom-elements.html#customelementregistry
+ * @constructor
+ */
+function CustomElementRegistry() {}
+
+/**
+ * @param {string} tagName
+ * @param {function(new:HTMLElement)} klass
+ * @param {{extends: string}=} options
+ * @return {undefined}
+ */
+CustomElementRegistry.prototype.define = function (tagName, klass, options) {};
+
+/**
+ * @param {string} tagName
+ * @return {function(new:HTMLElement)|undefined}
+ */
+CustomElementRegistry.prototype.get = function(tagName) {};
+
+/**
+ * @param {string} tagName
+ * @return {!Promise<undefined>}
+ */
+CustomElementRegistry.prototype.whenDefined = function(tagName) {};
+
+/**
+ * @param {!Node} root
+ * @return {undefined}
+ */
+CustomElementRegistry.prototype.upgrade = function(root) {};
+
+/** @type {!CustomElementRegistry} */
+var customElements;
+
+/**
+ * @constructor
+ * @extends {HTMLElement}
+ */
+function HTMLSlotElement() {}
+
+/** @typedef {{flatten: boolean}} */
+var AssignedNodesOptions;
+
+/**
+ * @param {!AssignedNodesOptions=} options
+ * @return {!Array<!Node>}
+ */
+HTMLSlotElement.prototype.assignedNodes = function(options) {};
+
+/**
+ * @param {!AssignedNodesOptions=} options
+ * @return {!Array<!HTMLElement>}
+ */
+HTMLSlotElement.prototype.assignedElements = function(options) {};
+
+/** @type {boolean} */
+Event.prototype.composed;
+
+/**
+ * @return {!Array<!EventTarget>}
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/Event/composedPath
+ */
+Event.prototype.composedPath = function() {};
+
+/**
+ * @constructor
+ * @param {{
+ *     firesTouchEvents: (string|undefined),
+ *     pointerMovementScrolls: (string|undefined)
+ *   }=} opt_options
+ */
+function InputDeviceCapabilities(opt_options){}
+
+/** @type {boolean} */
+InputDeviceCapabilities.prototype.firesTouchEvents;
+
+/** @type {boolean} */
+InputDeviceCapabilities.prototype.pointerMovementScrolls;
+
+/** @type {?InputDeviceCapabilities} */
+MouseEvent.prototype.sourceCapabilities;
+
+/**
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/VisualViewport
+ * @constructor
+ * @implements {EventTarget}
+ */
+function VisualViewport() {}
+
+/** @type {number} */
+VisualViewport.prototype.offsetLeft;
+
+/** @type {number} */
+VisualViewport.prototype.offsetTop;
+
+/** @type {number} */
+VisualViewport.prototype.pageLeft;
+
+/** @type {number} */
+VisualViewport.prototype.pageTop;
+
+/** @type {number} */
+VisualViewport.prototype.width;
+
+/** @type {number} */
+VisualViewport.prototype.height;
+
+/** @type {number} */
+VisualViewport.prototype.scale;
+
+/** @override */
+VisualViewport.prototype.addEventListener = function(type, listener,
+    opt_options) {};
+
+/** @override */
+VisualViewport.prototype.removeEventListener = function(type, listener,
+    opt_options) {};
+
+/** @override */
+VisualViewport.prototype.dispatchEvent = function(evt) {};
+
+/** @type {?function(!Event)} */
+VisualViewport.prototype.onresize;
+
+/** @type {?function(!Event)} */
+VisualViewport.prototype.onscroll;
+
+/**
+ * @see https://storage.spec.whatwg.org/
+ * @constructor
+ */
+function StorageManager() {}
+
+/** @return {!Promise<boolean>} */
+StorageManager.prototype.persisted = function() {};
+
+/** @return {!Promise<boolean>} */
+StorageManager.prototype.persist = function() {};
+
+/** @return {!Promise<StorageEstimate>} */
+StorageManager.prototype.estimate = function() {};
+
+/**
+ * @see https://storage.spec.whatwg.org/
+ * @typedef {{
+ *   usage: number,
+ *   quota: number
+ * }}
+ */
+var StorageEstimate;
+
+/*
+ * Focus Management APIs
+ *
+ * See https://html.spec.whatwg.org/multipage/interaction.html#focus-management-apis
+ */
+
+
+/**
+ * @type {?Element}
+ * @see https://html.spec.whatwg.org/multipage/interaction.html#dom-document-activeelement
+ */
+Document.prototype.activeElement;
+
+/**
+ * @see https://html.spec.whatwg.org/multipage/interaction.html#dom-document-hasfocus
+ * @return {boolean}
+ */
+Document.prototype.hasFocus = function() {};
+
+/**
+ * @param {{preventScroll: boolean}=} options
+ * @return {undefined}
+ * @see https://html.spec.whatwg.org/multipage/interaction.html#dom-focus
+ */
+Element.prototype.focus = function(options) {};
+
+/**
+ * @return {undefined}
+ * @see https://html.spec.whatwg.org/multipage/interaction.html#dom-blur
+ */
+Element.prototype.blur = function() {};

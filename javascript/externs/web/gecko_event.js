@@ -24,12 +24,11 @@
 
 // TODO: Almost all of it has not been annotated with types.
 
-/** @type {number} */ Event.prototype.HORIZONTAL_AXIS;
-/** @type {number} */ Event.prototype.VERTICAL_AXIS;
+/** @const {number} */ Event.prototype.HORIZONTAL_AXIS;
+/** @const {number} */ Event.prototype.VERTICAL_AXIS;
 /** @type {boolean} */ Event.prototype.altKey;
 /** @type {number} */ Event.prototype.axis;
 /** @type {number} */ Event.prototype.button;
-/** @type {boolean} */ Event.prototype.cancelBubble;
 /** @type {number} */ Event.prototype.charCode;
 /** @type {number} */ Event.prototype.clientX;
 /** @type {number} */ Event.prototype.clientY;
@@ -51,12 +50,36 @@
 /** @type {Window} */ Event.prototype.view;
 /** @type {number} */ Event.prototype.which;
 
+/**
+ * @type {boolean}
+ * @deprecated cancelBubble is obsolete and is no-op in modern browsers. Use
+ *     stopPropagation() instead.
+ */
+Event.prototype.cancelBubble;
+
 /** @constructor */ function nsIDOMPageTransitionEvent() {}
 /** @type {boolean} */ nsIDOMPageTransitionEvent.prototype.persisted;
 
 //Methods
 Event.prototype.initKeyEvent;
-Event.prototype.initMouseEvent;
+/**
+ * @param {string} typeArg
+ * @param {boolean=} canBubbleArg
+ * @param {boolean=} cancelableArg
+ * @param {?Window=} viewArg
+ * @param {?number=} detailArg
+ * @param {number=} screenXArg
+ * @param {number=} screenYArg
+ * @param {number=} clientXArg
+ * @param {number=} clientYArg
+ * @param {boolean=} ctrlKeyArg
+ * @param {boolean=} altKeyArg
+ * @param {boolean=} shiftKeyArg
+ * @param {boolean=} metaKeyArg
+ * @param {?number=} buttonArg
+ * @param {?EventTarget=} relatedTargetArg
+ */
+Event.prototype.initMouseEvent = function(typeArg, canBubbleArg, cancelableArg, viewArg, detailArg, screenXArg, screenYArg, clientXArg, clientYArg, ctrlKeyArg, altKeyArg, shiftKeyArg, metaKeyArg, buttonArg, relatedTargetArg) {};
 Event.prototype.initUIEvent;
 Event.prototype.initMessageEvent;
 Event.prototype.preventBubble;

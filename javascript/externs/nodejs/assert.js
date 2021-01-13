@@ -1,87 +1,52 @@
-// Automatically generated from TypeScript type definitions provided by
-// DefinitelyTyped (https://github.com/DefinitelyTyped/DefinitelyTyped),
-// which is licensed under the MIT license; see file DefinitelyTyped-LICENSE
-// in parent directory.
-// Type definitions for Node.js 10.5.x
-// Project: http://nodejs.org/
-// Definitions by: Microsoft TypeScript <http://typescriptlang.org>
-//                 DefinitelyTyped <https://github.com/DefinitelyTyped/DefinitelyTyped>
-//                 Parambir Singh <https://github.com/parambirs>
-//                 Christian Vaagland Tellnes <https://github.com/tellnes>
-//                 Wilco Bakker <https://github.com/WilcoBakker>
-//                 Nicolas Voigt <https://github.com/octo-sniffle>
-//                 Chigozirim C. <https://github.com/smac89>
-//                 Flarna <https://github.com/Flarna>
-//                 Mariusz Wiktorczyk <https://github.com/mwiktorczyk>
-//                 wwwy3y3 <https://github.com/wwwy3y3>
-//                 Deividas Bakanas <https://github.com/DeividasBakanas>
-//                 Kelvin Jin <https://github.com/kjin>
-//                 Alvis HT Tang <https://github.com/alvis>
-//                 Sebastian Silbermann <https://github.com/eps1lon>
-//                 Hannes Magnusson <https://github.com/Hannes-Magnusson-CK>
-//                 Alberto Schiabel <https://github.com/jkomyno>
-//                 Klaus Meinhardt <https://github.com/ajafff>
-//                 Huw <https://github.com/hoo29>
-//                 Nicolas Even <https://github.com/n-e>
-//                 Bruno Scheufler <https://github.com/brunoscheufler>
-//                 Mohsen Azimi <https://github.com/mohsen1>
-//                 Hoàng Văn Khải <https://github.com/KSXGitHub>
-//                 Alexander T. <https://github.com/a-tarasyuk>
-//                 Lishude <https://github.com/islishude>
-//                 Andrew Makarov <https://github.com/r3nya>
-//                 Zane Hannan AU <https://github.com/ZaneHannanAU>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+/*
+ * Copyright 2012 The Closure Compiler Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 /**
- * @externs
- * @fileoverview Definitions for module "assert"
+ * @fileoverview Definitions for node's assert module
+ * @see http://nodejs.org/api/assert.html
+ * @see https://github.com/joyent/node/blob/master/lib/assert.js
  */
+
+/**
+ * @param {*} value
+ * @param {string} message
+ * @return {void}
+ * @throws {assert.AssertionError}
+ */
+var assert = function(value, message) {};
+
+/**
+ * @param {{message: string, actual: *, expected: *, operator: string}} options
+ * @constructor
+ * @extends Error
+ */
+assert.AssertionError = function(options) {};
+
+/**
+ * @return {string}
+ */
+assert.AssertionError.prototype.toString;
 
 /**
  * @param {*} value
  * @param {string=} message
  * @return {void}
+ * @throws {assert.AssertionError}
  */
-var internal = function(value, message) {};
-
-var internal = internal || {};
-
-/**
- * @param {{message: string, actual: *, expected: *, operator: string, stackStartFunction: Function}=} options
- * @return {internal.AssertionError}
- * @constructor
- */
-internal.AssertionError = function(options) {};
-
-/**
- * @type {string}
- */
-internal.AssertionError.prototype.name;
-
-/**
- * @type {string}
- */
-internal.AssertionError.prototype.message;
-
-/**
- * @type {*}
- */
-internal.AssertionError.prototype.actual;
-
-/**
- * @type {*}
- */
-internal.AssertionError.prototype.expected;
-
-/**
- * @type {string}
- */
-internal.AssertionError.prototype.operator;
-
-/**
- * @type {boolean}
- */
-internal.AssertionError.prototype.generatedMessage;
+assert.ok;
 
 /**
  * @param {*} actual
@@ -89,96 +54,89 @@ internal.AssertionError.prototype.generatedMessage;
  * @param {string} message
  * @param {string} operator
  * @return {void}
+ * @throws {assert.AssertionError}
  */
-internal.fail = function(actual, expected, message, operator) {};
-
-/**
- * @param {*} value
- * @param {string=} message
- * @return {void}
- */
-internal.ok = function(value, message) {};
+assert.fail;
 
 /**
  * @param {*} actual
  * @param {*} expected
- * @param {string=} message
+ * @param {string} message
  * @return {void}
+ * @throws {assert.AssertionError}
  */
-internal.equal = function(actual, expected, message) {};
+assert.equal;
 
 /**
  * @param {*} actual
  * @param {*} expected
- * @param {string=} message
+ * @param {string} message
  * @return {void}
+ * @throws {assert.AssertionError}
  */
-internal.notEqual = function(actual, expected, message) {};
+assert.notEqual;
 
 /**
  * @param {*} actual
  * @param {*} expected
- * @param {string=} message
+ * @param {string} message
  * @return {void}
+ * @throws {assert.AssertionError}
  */
-internal.deepEqual = function(actual, expected, message) {};
-
-/**
- * @param {*} acutal
- * @param {*} expected
- * @param {string=} message
- * @return {void}
- */
-internal.notDeepEqual = function(acutal, expected, message) {};
+assert.deepEqual;
 
 /**
  * @param {*} actual
  * @param {*} expected
- * @param {string=} message
+ * @param {string} message
  * @return {void}
+ * @throws {assert.AssertionError}
  */
-internal.strictEqual = function(actual, expected, message) {};
+assert.notDeepEqual;
 
 /**
  * @param {*} actual
  * @param {*} expected
- * @param {string=} message
+ * @param {string} message
  * @return {void}
+ * @throws {assert.AssertionError}
  */
-internal.notStrictEqual = function(actual, expected, message) {};
+assert.strictEqual;
 
 /**
  * @param {*} actual
  * @param {*} expected
+ * @param {string} message
+ * @return {void}
+ * @throws {assert.AssertionError}
+ */
+assert.notStrictEqual;
+
+/**
+ * @name assert.throws
+ * @function
+ * @param {function()} block
+ * @param {Function|RegExp|function(*)} error
  * @param {string=} message
  * @return {void}
+ * @throws {assert.AssertionError}
  */
-internal.deepStrictEqual = function(actual, expected, message) {};
+assert.throws;
 
 /**
- * @param {*} actual
- * @param {*} expected
+ * @param {function()} block
+ * @param {Function|RegExp|function(*)} error
  * @param {string=} message
  * @return {void}
+ * @throws {assert.AssertionError}
  */
-internal.notDeepStrictEqual = function(actual, expected, message) {};
-
-/**
- * @type {(function(Function, string=): void)|(function(Function, Function, string=): void)|(function(Function, RegExp, string=): void)|(function(Function, (function(*): boolean), string=): void)}
- */
-internal.throws;
-
-/**
- * @type {(function(Function, string=): void)|(function(Function, Function, string=): void)|(function(Function, RegExp, string=): void)|(function(Function, (function(*): boolean), string=): void)}
- */
-internal.doesNotThrow;
+assert.doesNotThrow;
 
 /**
  * @param {*} value
  * @return {void}
+ * @throws {assert.AssertionError}
  */
-internal.ifError = function(value) {};
+assert.ifError;
 
-
-module.exports = internal;
-
+module.exports = assert;

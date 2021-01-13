@@ -26,33 +26,38 @@
 
 /**
  * @interface
+ * @see https://dom.spec.whatwg.org/#interface-eventtarget
  */
 function EventTarget() {}
 
 /**
- * TODO(tbreisacher): Change the type of useCapture to be
- * {boolean|!EventListenerOptions}, here and in removeEventListener.
- *
  * @param {string} type
- * @param {EventListener|function(!Event):(boolean|undefined)} listener
- * @param {boolean} useCapture
+ * @param {EventListener|function(this:THIS, !Event):*} listener
+ * @param {(boolean|!AddEventListenerOptions)=} opt_options
  * @return {undefined}
+ * @this {THIS}
+ * @template THIS
+ * @see https://dom.spec.whatwg.org/#dom-eventtarget-addeventlistener
  */
-EventTarget.prototype.addEventListener = function(type, listener, useCapture)
-    {};
+EventTarget.prototype.addEventListener = function(type, listener, opt_options) {
+};
 
 /**
  * @param {string} type
- * @param {EventListener|function(!Event):(boolean|undefined)} listener
- * @param {boolean} useCapture
+ * @param {EventListener|function(this:THIS, !Event):*} listener
+ * @param {(boolean|!EventListenerOptions)=} opt_options
  * @return {undefined}
+ * @this {THIS}
+ * @template THIS
+ * @see https://dom.spec.whatwg.org/#dom-eventtarget-removeeventlistener
  */
-EventTarget.prototype.removeEventListener = function(type, listener, useCapture)
-    {};
+EventTarget.prototype.removeEventListener = function(
+    type, listener, opt_options) {};
 
 /**
  * @param {!Event} evt
  * @return {boolean}
+ * @see https://dom.spec.whatwg.org/#dom-eventtarget-dispatchevent
  */
 EventTarget.prototype.dispatchEvent = function(evt) {};
 
@@ -99,23 +104,22 @@ EventInit.prototype.composed;
 function Event(type, opt_eventInitDict) {}
 
 /**
- * @type {number}
+ * @const {number}
+ * @see http://www.w3.org/TR/DOM-Level-2-Events/ecma-script-binding.html
+ */
+Event.CAPTURING_PHASE;
+
+/**
+ * @const {number}
  * @see http://www.w3.org/TR/DOM-Level-2-Events/ecma-script-binding.html
  */
 Event.AT_TARGET;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/DOM-Level-2-Events/ecma-script-binding.html
  */
 Event.BUBBLING_PHASE;
-
-/**
- * @type {number}
- * @see http://www.w3.org/TR/DOM-Level-2-Events/ecma-script-binding.html
- */
-Event.CAPTURING_PHASE;
-
 
 /** @type {string} */
 Event.prototype.type;
@@ -163,8 +167,8 @@ Event.prototype.preventDefault = function() {};
 
 /**
  * @param {string} eventTypeArg
- * @param {boolean} canBubbleArg
- * @param {boolean} cancelableArg
+ * @param {boolean=} canBubbleArg
+ * @param {boolean=} cancelableArg
  * @return {undefined}
  */
 Event.prototype.initEvent = function(eventTypeArg, canBubbleArg, cancelableArg) {};
@@ -172,18 +176,20 @@ Event.prototype.initEvent = function(eventTypeArg, canBubbleArg, cancelableArg) 
 /**
  * @record
  * @extends {EventInit}
+ * @template T
  * @see https://dom.spec.whatwg.org/#dictdef-customeventinit
  */
 function CustomEventInit() {}
 
-/** @type {(*|undefined)} */
+/** @type {(T|undefined)} */
 CustomEventInit.prototype.detail;
 
 /**
  * @constructor
  * @extends {Event}
  * @param {string} type
- * @param {CustomEventInit=} opt_eventInitDict
+ * @param {CustomEventInit<T>=} opt_eventInitDict
+ * @template T
  * @see http://www.w3.org/TR/DOM-Level-3-Events/#interface-CustomEvent
  */
 function CustomEvent(type, opt_eventInitDict) {}
@@ -192,14 +198,14 @@ function CustomEvent(type, opt_eventInitDict) {}
  * @param {string} eventType
  * @param {boolean} bubbles
  * @param {boolean} cancelable
- * @param {*} detail
+ * @param {T} detail
  * @return {undefined}
  */
 CustomEvent.prototype.initCustomEvent = function(
     eventType, bubbles, cancelable, detail) {};
 
 /**
- * @type {*}
+ * @type {T}
  */
 CustomEvent.prototype.detail;
 
@@ -430,6 +436,7 @@ KeyboardEventInit.prototype.char;
 KeyboardEventInit.prototype.locale;
 
 /**
+ * @see https://w3c.github.io/uievents/#idl-keyboardevent
  * @constructor
  * @extends {UIEvent}
  * @param {string} type
@@ -451,6 +458,18 @@ KeyboardEvent.prototype.altKey;
 
 /** @type {boolean} */
 KeyboardEvent.prototype.metaKey;
+
+/** @type {number} */
+KeyboardEvent.DOM_KEY_LOCATION_STANDARD;
+
+/** @type {number} */
+KeyboardEvent.DOM_KEY_LOCATION_LEFT;
+
+/** @type {number} */
+KeyboardEvent.DOM_KEY_LOCATION_RIGHT;
+
+/** @type {number} */
+KeyboardEvent.DOM_KEY_LOCATION_NUMPAD;
 
 /**
  * @param {string} keyIdentifierArg
@@ -552,3 +571,33 @@ InputEvent.prototype.inputType;
 
 /** @type {?DataTransfer} */
 InputEvent.prototype.dataTransfer;
+
+
+/**
+ * @record
+ * @extends {EventInit}
+ * @see https://html.spec.whatwg.org/multipage/webappapis.html#promiserejectioneventinit
+ */
+function PromiseRejectionEventInit() {}
+
+/** @type {undefined|!Promise<*>} */
+PromiseRejectionEventInit.prototype.promise;
+
+/** @type {*} */
+PromiseRejectionEventInit.prototype.reason;
+
+
+/**
+ * @constructor
+ * @extends {Event}
+ * @param {string} type
+ * @param {PromiseRejectionEventInit=} eventInitDict
+ * @see https://html.spec.whatwg.org/multipage/webappapis.html#promiserejectionevent
+ */
+function PromiseRejectionEvent(type, eventInitDict) {}
+
+/** @type {!Promise<*>} */
+PromiseRejectionEvent.prototype.promise;
+
+/** @type {*} */
+PromiseRejectionEvent.prototype.reason;

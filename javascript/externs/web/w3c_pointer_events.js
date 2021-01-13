@@ -43,6 +43,26 @@ Navigator.prototype.maxTouchPoints;
 
 
 /**
+ * @param {number} pointerId
+ * @see https://www.w3.org/TR/pointerevents/#widl-Element-setPointerCapture-void-long-pointerId
+ */
+Element.prototype.setPointerCapture = function(pointerId) {};
+
+/**
+ * @param {number} pointerId
+ * @see https://www.w3.org/TR/pointerevents/#widl-Element-releasePointerCapture-void-long-pointerId
+ */
+Element.prototype.releasePointerCapture = function(pointerId) {};
+
+/**
+ * @param {number} pointerId
+ * @see https://www.w3.org/TR/pointerevents/#dom-element-haspointercapture
+ * @return {boolean}
+ */
+Element.prototype.hasPointerCapture = function(pointerId) {};
+
+
+/**
  * @record
  * @extends {MouseEventInit}
  * @see https://www.w3.org/TR/pointerevents/#idl-def-PointerEventInit
@@ -107,11 +127,18 @@ PointerEvent.prototype.pointerType;
 PointerEvent.prototype.isPrimary;
 
 // Microsoft pointerType values
-/** @type {string} */
+/** @const {string} */
 PointerEvent.prototype.MSPOINTER_TYPE_TOUCH;
 
-/** @type {string} */
+/** @const {string} */
 PointerEvent.prototype.MSPOINTER_TYPE_PEN;
 
-/** @type {string} */
+/** @const {string} */
 PointerEvent.prototype.MSPOINTER_TYPE_MOUSE;
+
+/**
+ * @see https://w3c.github.io/pointerevents/extension.html
+ * @return {!Array<!PointerEvent>}
+ */
+PointerEvent.prototype.getCoalescedEvents = function() {};
+

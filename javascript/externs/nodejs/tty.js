@@ -1,55 +1,47 @@
-// Automatically generated from TypeScript type definitions provided by
-// DefinitelyTyped (https://github.com/DefinitelyTyped/DefinitelyTyped),
-// which is licensed under the MIT license; see file DefinitelyTyped-LICENSE
-// in parent directory.
-// Type definitions for Node.js 10.5.x
-// Project: http://nodejs.org/
-// Definitions by: Microsoft TypeScript <http://typescriptlang.org>
-//                 DefinitelyTyped <https://github.com/DefinitelyTyped/DefinitelyTyped>
-//                 Parambir Singh <https://github.com/parambirs>
-//                 Christian Vaagland Tellnes <https://github.com/tellnes>
-//                 Wilco Bakker <https://github.com/WilcoBakker>
-//                 Nicolas Voigt <https://github.com/octo-sniffle>
-//                 Chigozirim C. <https://github.com/smac89>
-//                 Flarna <https://github.com/Flarna>
-//                 Mariusz Wiktorczyk <https://github.com/mwiktorczyk>
-//                 wwwy3y3 <https://github.com/wwwy3y3>
-//                 Deividas Bakanas <https://github.com/DeividasBakanas>
-//                 Kelvin Jin <https://github.com/kjin>
-//                 Alvis HT Tang <https://github.com/alvis>
-//                 Sebastian Silbermann <https://github.com/eps1lon>
-//                 Hannes Magnusson <https://github.com/Hannes-Magnusson-CK>
-//                 Alberto Schiabel <https://github.com/jkomyno>
-//                 Klaus Meinhardt <https://github.com/ajafff>
-//                 Huw <https://github.com/hoo29>
-//                 Nicolas Even <https://github.com/n-e>
-//                 Bruno Scheufler <https://github.com/brunoscheufler>
-//                 Mohsen Azimi <https://github.com/mohsen1>
-//                 Hoàng Văn Khải <https://github.com/KSXGitHub>
-//                 Alexander T. <https://github.com/a-tarasyuk>
-//                 Lishude <https://github.com/islishude>
-//                 Andrew Makarov <https://github.com/r3nya>
-//                 Zane Hannan AU <https://github.com/ZaneHannanAU>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-
-/**
- * @externs
- * @fileoverview Definitions for module "tty"
+/*
+ * Copyright 2012 The Closure Compiler Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
+/**
+ * @fileoverview Definitions for node's tty module. Depends on the net module.
+ * @see http://nodejs.org/api/tty.html
+ * @see https://github.com/joyent/node/blob/master/lib/tty.js
+ */
+
+var net = require('net');
+
+/**
+ * @const
+ */
 var tty = {};
 
-var net = require("net");
-
 /**
- * @param {number} fd
+ * @param {*} fd
  * @return {boolean}
  */
-tty.isatty = function(fd) {};
+tty.isatty;
 
 /**
- * @interface
- * @extends {net.Socket}
+ * @param {boolean} mode
+ * @return {void}
+ */
+tty.setRawMode;
+
+/**
+ * @constructor
+ * @extends net.Socket
  */
 tty.ReadStream = function() {};
 
@@ -62,16 +54,11 @@ tty.ReadStream.prototype.isRaw;
  * @param {boolean} mode
  * @return {void}
  */
-tty.ReadStream.prototype.setRawMode = function(mode) {};
+tty.ReadStream.prototype.setRawMode;
 
 /**
- * @type {boolean}
- */
-tty.ReadStream.prototype.isTTY;
-
-/**
- * @interface
- * @extends {net.Socket}
+ * @constructor
+ * @extends net.Socket
  */
 tty.WriteStream = function() {};
 
@@ -85,49 +72,4 @@ tty.WriteStream.prototype.columns;
  */
 tty.WriteStream.prototype.rows;
 
-/**
- * @type {boolean}
- */
-tty.WriteStream.prototype.isTTY;
-
-module.exports.isatty = tty.isatty;
-
-module.exports.ReadStream = tty.ReadStream;
-
-module.exports.WriteStream = tty.WriteStream;
-
-/**
- * @param {boolean} mode
- * @return {void}
- */
-tty.setRawMode = function(mode) {};
-
-/**
- * @param {string} path
- * @param {Array<string>=} args
- * @return {Array<*>}
- */
-tty.open = function(path, args) {};
-
-/**
- * @param {*} fd
- * @param {number} row
- * @param {number} col
- * @return {*}
- */
-tty.setWindowSize = function(fd, row, col) {};
-
-/**
- * @param {*} fd
- * @return {Array<number>}
- */
-tty.getWindowSize = function(fd) {};
-
-module.exports.setRawMode = tty.setRawMode;
-
-module.exports.open = tty.open;
-
-module.exports.setWindowSize = tty.setWindowSize;
-
-module.exports.getWindowSize = tty.getWindowSize;
-
+module.exports = tty;

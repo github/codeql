@@ -37,8 +37,8 @@ var ReferrerPolicy;
 
 
 /**
- * @typedef {!Headers|!Array<!Array<string>>|!IObject<string,string>}
- * @see https://fetch.spec.whatwg.org/#headersinit
+ * @typedef {!Headers|!Array<!Array<string>>|!Object<string,string>}
+ * @see https://fetch.spec.whatwg.org/#typedefdef-headersinit
  */
 var HeadersInit;
 
@@ -64,7 +64,7 @@ Headers.prototype.append = function(name, value) {};
  */
 Headers.prototype.delete = function(name) {};
 
-/** @return {!Iterator<!Array<string>>} */
+/** @return {!IteratorIterable<!Array<string>>} */
 Headers.prototype.entries = function() {};
 
 /**
@@ -85,7 +85,7 @@ Headers.prototype.getAll = function(name) {};
  */
 Headers.prototype.has = function(name) {};
 
-/** @return {!Iterator<string>} */
+/** @return {!IteratorIterable<string>} */
 Headers.prototype.keys = function() {};
 
 /**
@@ -103,7 +103,8 @@ Headers.prototype[Symbol.iterator] = function() {};
 
 
 /**
- * @typedef {!Blob|!BufferSource|!FormData|string}
+ * @typedef {
+ *     !Blob|!BufferSource|!FormData|!URLSearchParams|!ReadableStream|string}
  * @see https://fetch.spec.whatwg.org/#bodyinit
  */
 var BodyInit;
@@ -208,6 +209,12 @@ Request.prototype.redirect;
 /** @type {string} */
 Request.prototype.integrity;
 
+/** @type {boolean} */
+Request.prototype.isHistoryNavigation;
+
+/** @type {(undefined|boolean)} */
+Request.prototype.keepalive;
+
 /** @return {!Request} */
 Request.prototype.clone = function() {};
 
@@ -247,6 +254,12 @@ RequestInit.prototype.redirect;
 
 /** @type {(undefined|string)} */
 RequestInit.prototype.integrity;
+
+/** @type {(undefined|!AbortSignal)} */
+RequestInit.prototype.signal;
+
+/** @type {(undefined|boolean)} */
+RequestInit.prototype.keepalive;
 
 /** @type {(undefined|null)} */
 RequestInit.prototype.window;
@@ -418,3 +431,10 @@ Window.prototype.fetch = function(input, opt_init) {};
  * @see https://fetch.spec.whatwg.org/#fetch-method
  */
 WorkerGlobalScope.prototype.fetch = function(input, opt_init) {};
+
+/**
+ * if WorkerOptions.type = 'module', it specifies how `scriptURL` is fetched.
+ * WorkerOptions is defined in html5.js.
+ * @type {!RequestCredentials|undefined}
+ */
+WorkerOptions.prototype.credentials;

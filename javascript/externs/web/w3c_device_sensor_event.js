@@ -25,10 +25,31 @@
  */
 
 /**
+ * @record
+ * @extends {EventInit}
+ * @see https://w3c.github.io/deviceorientation/spec-source-orientation.html#deviceorientation
+ */
+function DeviceOrientationEventInit() {}
+
+/** @type {number|undefined} */
+DeviceOrientationEventInit.prototype.alpha;
+
+/** @type {number|undefined} */
+DeviceOrientationEventInit.prototype.beta;
+
+/** @type {number|undefined} */
+DeviceOrientationEventInit.prototype.gamma;
+
+/** @type {boolean|undefined} */
+DeviceOrientationEventInit.prototype.absolute;
+
+/**
  * @constructor
  * @extends {Event}
+ * @param {string} type
+ * @param {!DeviceOrientationEventInit=} opt_eventInitDict
  */
-function DeviceOrientationEvent() {}
+function DeviceOrientationEvent(type, opt_eventInitDict) {}
 
 /** @type {?number} */
 DeviceOrientationEvent.prototype.alpha;

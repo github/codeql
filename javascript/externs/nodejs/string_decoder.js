@@ -1,80 +1,52 @@
-// Automatically generated from TypeScript type definitions provided by
-// DefinitelyTyped (https://github.com/DefinitelyTyped/DefinitelyTyped),
-// which is licensed under the MIT license; see file DefinitelyTyped-LICENSE
-// in parent directory.
-// Type definitions for Node.js 10.5.x
-// Project: http://nodejs.org/
-// Definitions by: Microsoft TypeScript <http://typescriptlang.org>
-//                 DefinitelyTyped <https://github.com/DefinitelyTyped/DefinitelyTyped>
-//                 Parambir Singh <https://github.com/parambirs>
-//                 Christian Vaagland Tellnes <https://github.com/tellnes>
-//                 Wilco Bakker <https://github.com/WilcoBakker>
-//                 Nicolas Voigt <https://github.com/octo-sniffle>
-//                 Chigozirim C. <https://github.com/smac89>
-//                 Flarna <https://github.com/Flarna>
-//                 Mariusz Wiktorczyk <https://github.com/mwiktorczyk>
-//                 wwwy3y3 <https://github.com/wwwy3y3>
-//                 Deividas Bakanas <https://github.com/DeividasBakanas>
-//                 Kelvin Jin <https://github.com/kjin>
-//                 Alvis HT Tang <https://github.com/alvis>
-//                 Sebastian Silbermann <https://github.com/eps1lon>
-//                 Hannes Magnusson <https://github.com/Hannes-Magnusson-CK>
-//                 Alberto Schiabel <https://github.com/jkomyno>
-//                 Klaus Meinhardt <https://github.com/ajafff>
-//                 Huw <https://github.com/hoo29>
-//                 Nicolas Even <https://github.com/n-e>
-//                 Bruno Scheufler <https://github.com/brunoscheufler>
-//                 Mohsen Azimi <https://github.com/mohsen1>
-//                 Hoàng Văn Khải <https://github.com/KSXGitHub>
-//                 Alexander T. <https://github.com/a-tarasyuk>
-//                 Lishude <https://github.com/islishude>
-//                 Andrew Makarov <https://github.com/r3nya>
-//                 Zane Hannan AU <https://github.com/ZaneHannanAU>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-
-/**
- * @externs
- * @fileoverview Definitions for module "string_decoder"
+/*
+ * Copyright 2012 The Closure Compiler Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-var string_decoder = {};
+/**
+ * @fileoverview Definitions for node's string_decoder module. Depends on the buffer module.
+ * @see http://nodejs.org/api/string_decoder.html
+ * @see https://github.com/joyent/node/blob/master/lib/string_decoder.js
+ */
 
 /**
- * @interface
+ * @param {string} encoding
+ * @constructor
  */
-string_decoder.NodeStringDecoder = function() {};
+var StringDecoder = function(encoding) {};
 
 /**
  * @param {Buffer} buffer
  * @return {string}
  */
-string_decoder.NodeStringDecoder.prototype.write = function(buffer) {};
+StringDecoder.prototype.write;
 
 /**
- * @param {Buffer=} buffer
  * @return {string}
  */
-string_decoder.NodeStringDecoder.prototype.end = function(buffer) {};
-
-/**
- * @type {(function(new: string_decoder.NodeStringDecoder, string=))}
- */
-string_decoder.StringDecoder;
-
-module.exports.NodeStringDecoder = string_decoder.NodeStringDecoder;
-
-module.exports.StringDecoder = string_decoder.StringDecoder;
-
-/**
- * @interface
- */
-string_decoder.NodeStringDecoder = function() {};
+StringDecoder.prototype.toString;
 
 /**
  * @param {Buffer} buffer
  * @return {number}
  */
-string_decoder.NodeStringDecoder.prototype.detectIncompleteChar = function(buffer) {};
+StringDecoder.prototype.detectIncompleteChar;
 
-module.exports.NodeStringDecoder = string_decoder.NodeStringDecoder;
+/**
+ * @param {Buffer} buffer
+ * @return {string}
+ */
+StringDecoder.prototype.end;
 
+module.exports = StringDecoder;

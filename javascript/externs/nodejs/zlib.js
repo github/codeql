@@ -1,533 +1,386 @@
-// Automatically generated from TypeScript type definitions provided by
-// DefinitelyTyped (https://github.com/DefinitelyTyped/DefinitelyTyped),
-// which is licensed under the MIT license; see file DefinitelyTyped-LICENSE
-// in parent directory.
-// Type definitions for Node.js 10.5.x
-// Project: http://nodejs.org/
-// Definitions by: Microsoft TypeScript <http://typescriptlang.org>
-//                 DefinitelyTyped <https://github.com/DefinitelyTyped/DefinitelyTyped>
-//                 Parambir Singh <https://github.com/parambirs>
-//                 Christian Vaagland Tellnes <https://github.com/tellnes>
-//                 Wilco Bakker <https://github.com/WilcoBakker>
-//                 Nicolas Voigt <https://github.com/octo-sniffle>
-//                 Chigozirim C. <https://github.com/smac89>
-//                 Flarna <https://github.com/Flarna>
-//                 Mariusz Wiktorczyk <https://github.com/mwiktorczyk>
-//                 wwwy3y3 <https://github.com/wwwy3y3>
-//                 Deividas Bakanas <https://github.com/DeividasBakanas>
-//                 Kelvin Jin <https://github.com/kjin>
-//                 Alvis HT Tang <https://github.com/alvis>
-//                 Sebastian Silbermann <https://github.com/eps1lon>
-//                 Hannes Magnusson <https://github.com/Hannes-Magnusson-CK>
-//                 Alberto Schiabel <https://github.com/jkomyno>
-//                 Klaus Meinhardt <https://github.com/ajafff>
-//                 Huw <https://github.com/hoo29>
-//                 Nicolas Even <https://github.com/n-e>
-//                 Bruno Scheufler <https://github.com/brunoscheufler>
-//                 Mohsen Azimi <https://github.com/mohsen1>
-//                 Hoàng Văn Khải <https://github.com/KSXGitHub>
-//                 Alexander T. <https://github.com/a-tarasyuk>
-//                 Lishude <https://github.com/islishude>
-//                 Andrew Makarov <https://github.com/r3nya>
-//                 Zane Hannan AU <https://github.com/ZaneHannanAU>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-
-/**
- * @externs
- * @fileoverview Definitions for module "zlib"
+/*
+ * Copyright 2012 The Closure Compiler Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
+/**
+ * @fileoverview Definitions for node's zlib module. Depends on the events and buffer modules.
+ * @see http://nodejs.org/api/zlib.html
+ * @see https://github.com/joyent/node/blob/master/lib/zlib.js
+ */
+
+var stream = require('stream');
+
+/**
+ * @const
+ */
 var zlib = {};
 
 /**
- * @interface
+ * @typedef {{chunkSize: ?number, windowBits: ?number, level: ?number, memLevel: ?number, strategy: ?number, dictionary: ?Object}}
  */
-zlib.ZlibOptions = function() {};
+zlib.Options;
+
+
 
 /**
- * @type {number}
+ * @constructor
+ * @extends stream.Transform
  */
-zlib.ZlibOptions.prototype.chunkSize;
+zlib.Zlib = function() {};
 
 /**
- * @type {number}
+ * @param {zlib.Options} options
+ * @constructor
+ * @extends zlib.Zlib
  */
-zlib.ZlibOptions.prototype.windowBits;
+zlib.Gzip = function(options) {};
 
 /**
- * @type {number}
+ * @param {zlib.Options} options
+ * @constructor
+ * @extends zlib.Zlib
  */
-zlib.ZlibOptions.prototype.level;
+zlib.Gunzip = function(options) {};
 
 /**
- * @type {number}
+ * @param {zlib.Options} options
+ * @constructor
+ * @extends zlib.Zlib
  */
-zlib.ZlibOptions.prototype.memLevel;
+zlib.Deflate = function(options) {};
 
 /**
- * @type {number}
+ * @param {zlib.Options} options
+ * @constructor
+ * @extends zlib.Zlib
  */
-zlib.ZlibOptions.prototype.strategy;
+zlib.Inflate = function(options) {};
 
 /**
- * @type {*}
+ * @param {zlib.Options} options
+ * @constructor
+ * @extends zlib.Zlib
  */
-zlib.ZlibOptions.prototype.dictionary;
+zlib.DeflateRaw = function(options) {};
 
 /**
- * @interface
- * @extends {internal.Transform}
+ * @param {zlib.Options} options
+ * @constructor
+ * @extends zlib.Zlib
  */
-zlib.Gzip = function() {};
+zlib.InflateRaw = function(options) {};
 
 /**
- * @interface
- * @extends {internal.Transform}
+ * @param {zlib.Options} options
+ * @constructor
+ * @extends zlib.Zlib
  */
-zlib.Gunzip = function() {};
+zlib.Unzip = function(options) {};
+
+
 
 /**
- * @interface
- * @extends {internal.Transform}
- */
-zlib.Deflate = function() {};
-
-/**
- * @interface
- * @extends {internal.Transform}
- */
-zlib.Inflate = function() {};
-
-/**
- * @interface
- * @extends {internal.Transform}
- */
-zlib.DeflateRaw = function() {};
-
-/**
- * @interface
- * @extends {internal.Transform}
- */
-zlib.InflateRaw = function() {};
-
-/**
- * @interface
- * @extends {internal.Transform}
- */
-zlib.Unzip = function() {};
-
-/**
- * @param {zlib.ZlibOptions=} options
+ * @param {zlib.Options} options
  * @return {zlib.Gzip}
  */
-zlib.createGzip = function(options) {};
+zlib.createGzip;
 
 /**
- * @param {zlib.ZlibOptions=} options
+ * @param {zlib.Options} options
  * @return {zlib.Gunzip}
  */
-zlib.createGunzip = function(options) {};
+zlib.createGunzip;
 
 /**
- * @param {zlib.ZlibOptions=} options
+ * @param {zlib.Options} options
  * @return {zlib.Deflate}
  */
-zlib.createDeflate = function(options) {};
-
+zlib.createDeflate;
 /**
- * @param {zlib.ZlibOptions=} options
+ * @param {zlib.Options} options
  * @return {zlib.Inflate}
  */
-zlib.createInflate = function(options) {};
+zlib.createInflate;
 
 /**
- * @param {zlib.ZlibOptions=} options
+ * @param {zlib.Options} options
  * @return {zlib.DeflateRaw}
  */
-zlib.createDeflateRaw = function(options) {};
+zlib.createDeflateRaw;
 
 /**
- * @param {zlib.ZlibOptions=} options
+ * @param {zlib.Options} options
  * @return {zlib.InflateRaw}
  */
-zlib.createInflateRaw = function(options) {};
+zlib.createInflateRaw;
 
 /**
- * @param {zlib.ZlibOptions=} options
+ * @param {zlib.Options} options
  * @return {zlib.Unzip}
  */
-zlib.createUnzip = function(options) {};
+zlib.createUnzip;
+
+
 
 /**
- * @param {Buffer} buf
- * @param {(function(Error, *): void)} callback
+ * @param {string|Buffer} buf
+ * @param {function(...)} callback
  * @return {void}
  */
-zlib.deflate = function(buf, callback) {};
+zlib.deflate;
 
 /**
- * @param {Buffer} buf
- * @param {zlib.ZlibOptions=} options
- * @return {*}
- */
-zlib.deflateSync = function(buf, options) {};
-
-/**
- * @param {Buffer} buf
- * @param {(function(Error, *): void)} callback
+ * @param {string|Buffer} buf
+ * @param {function(...)} callback
  * @return {void}
  */
-zlib.deflateRaw = function(buf, callback) {};
+zlib.deflateRaw;
 
 /**
- * @param {Buffer} buf
- * @param {zlib.ZlibOptions=} options
- * @return {*}
- */
-zlib.deflateRawSync = function(buf, options) {};
-
-/**
- * @param {Buffer} buf
- * @param {(function(Error, *): void)} callback
+ * @param {string|Buffer} buf
+ * @param {function(...)} callback
  * @return {void}
  */
-zlib.gzip = function(buf, callback) {};
+zlib.gzip;
 
 /**
- * @param {Buffer} buf
- * @param {zlib.ZlibOptions=} options
- * @return {*}
- */
-zlib.gzipSync = function(buf, options) {};
-
-/**
- * @param {Buffer} buf
- * @param {(function(Error, *): void)} callback
+ * @param {string|Buffer} buf
+ * @param {function(...)} callback
  * @return {void}
  */
-zlib.gunzip = function(buf, callback) {};
+zlib.gunzip;
 
 /**
- * @param {Buffer} buf
- * @param {zlib.ZlibOptions=} options
- * @return {*}
- */
-zlib.gunzipSync = function(buf, options) {};
-
-/**
- * @param {Buffer} buf
- * @param {(function(Error, *): void)} callback
+ * @param {string|Buffer} buf
+ * @param {function(...)} callback
  * @return {void}
  */
-zlib.inflate = function(buf, callback) {};
+zlib.inflate;
 
 /**
- * @param {Buffer} buf
- * @param {zlib.ZlibOptions=} options
- * @return {*}
- */
-zlib.inflateSync = function(buf, options) {};
-
-/**
- * @param {Buffer} buf
- * @param {(function(Error, *): void)} callback
+ * @param {string|Buffer} buf
+ * @param {function(...)} callback
  * @return {void}
  */
-zlib.inflateRaw = function(buf, callback) {};
+zlib.inflateRaw;
 
 /**
- * @param {Buffer} buf
- * @param {zlib.ZlibOptions=} options
- * @return {*}
- */
-zlib.inflateRawSync = function(buf, options) {};
-
-/**
- * @param {Buffer} buf
- * @param {(function(Error, *): void)} callback
+ * @param {string|Buffer} buf
+ * @param {function(...)} callback
  * @return {void}
  */
-zlib.unzip = function(buf, callback) {};
+zlib.unzip;
 
-/**
- * @param {Buffer} buf
- * @param {zlib.ZlibOptions=} options
- * @return {*}
- */
-zlib.unzipSync = function(buf, options) {};
+
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_NO_FLUSH;
+zlib.Z_NO_FLUSH = 0;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_PARTIAL_FLUSH;
+zlib.Z_PARTIAL_FLUSH = 1;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_SYNC_FLUSH;
+zlib.Z_SYNC_FLUSH = 2;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_FULL_FLUSH;
+zlib.Z_FULL_FLUSH = 3;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_FINISH;
+zlib.Z_FINISH = 4;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_BLOCK;
+zlib.Z_BLOCK = 5;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_TREES;
+zlib.Z_TREES = 6;
+
+
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_OK;
+zlib.Z_OK = 0;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_STREAM_END;
+zlib.Z_STREAM_END = 1;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_NEED_DICT;
+zlib.Z_NEED_DICT = 2;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_ERRNO;
+zlib.Z_ERRNO = -1;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_STREAM_ERROR;
+zlib.Z_STREAM_ERROR = -2;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_DATA_ERROR;
+zlib.Z_DATA_ERROR = -3;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_MEM_ERROR;
+zlib.Z_MEM_ERROR = -4;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_BUF_ERROR;
+zlib.Z_BUF_ERROR = -5;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_VERSION_ERROR;
+zlib.Z_VERSION_ERROR = -6;
+
+
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_NO_COMPRESSION;
+zlib.Z_NO_COMPRESSION = 0;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_BEST_SPEED;
+zlib.Z_BEST_SPEED = 1;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_BEST_COMPRESSION;
+zlib.Z_BEST_COMPRESSION = 9;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_DEFAULT_COMPRESSION;
+zlib.Z_DEFAULT_COMPRESSION = -1;
+
+
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_FILTERED;
+zlib.Z_FILTERED = 1;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_HUFFMAN_ONLY;
+zlib.Z_HUFFMAN_ONLY = 2;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_RLE;
+zlib.Z_RLE = 3;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_FIXED;
+zlib.Z_FIXED = 4;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_DEFAULT_STRATEGY;
+zlib.Z_DEFAULT_STRATEGY = 0;
+
+
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_BINARY;
+zlib.Z_BINARY = 0;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_TEXT;
+zlib.Z_TEXT = 1;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_ASCII;
+zlib.Z_ASCII = 1;
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_UNKNOWN;
+zlib.Z_UNKNOWN = 2;
+
+
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_DEFLATED;
+zlib.Z_DEFLATED = 8;
+
+
 
 /**
  * @type {number}
+ * @const
  */
-zlib.Z_NULL;
+zlib.Z_NULL = 0;
 
-module.exports.ZlibOptions = zlib.ZlibOptions;
-
-module.exports.Gzip = zlib.Gzip;
-
-module.exports.Gunzip = zlib.Gunzip;
-
-module.exports.Deflate = zlib.Deflate;
-
-module.exports.Inflate = zlib.Inflate;
-
-module.exports.DeflateRaw = zlib.DeflateRaw;
-
-module.exports.InflateRaw = zlib.InflateRaw;
-
-module.exports.Unzip = zlib.Unzip;
-
-module.exports.createGzip = zlib.createGzip;
-
-module.exports.createGunzip = zlib.createGunzip;
-
-module.exports.createDeflate = zlib.createDeflate;
-
-module.exports.createInflate = zlib.createInflate;
-
-module.exports.createDeflateRaw = zlib.createDeflateRaw;
-
-module.exports.createInflateRaw = zlib.createInflateRaw;
-
-module.exports.createUnzip = zlib.createUnzip;
-
-module.exports.deflate = zlib.deflate;
-
-module.exports.deflateSync = zlib.deflateSync;
-
-module.exports.deflateRaw = zlib.deflateRaw;
-
-module.exports.deflateRawSync = zlib.deflateRawSync;
-
-module.exports.gzip = zlib.gzip;
-
-module.exports.gzipSync = zlib.gzipSync;
-
-module.exports.gunzip = zlib.gunzip;
-
-module.exports.gunzipSync = zlib.gunzipSync;
-
-module.exports.inflate = zlib.inflate;
-
-module.exports.inflateSync = zlib.inflateSync;
-
-module.exports.inflateRaw = zlib.inflateRaw;
-
-module.exports.inflateRawSync = zlib.inflateRawSync;
-
-module.exports.unzip = zlib.unzip;
-
-module.exports.unzipSync = zlib.unzipSync;
-
-module.exports.Z_NO_FLUSH = zlib.Z_NO_FLUSH;
-
-module.exports.Z_PARTIAL_FLUSH = zlib.Z_PARTIAL_FLUSH;
-
-module.exports.Z_SYNC_FLUSH = zlib.Z_SYNC_FLUSH;
-
-module.exports.Z_FULL_FLUSH = zlib.Z_FULL_FLUSH;
-
-module.exports.Z_FINISH = zlib.Z_FINISH;
-
-module.exports.Z_BLOCK = zlib.Z_BLOCK;
-
-module.exports.Z_TREES = zlib.Z_TREES;
-
-module.exports.Z_OK = zlib.Z_OK;
-
-module.exports.Z_STREAM_END = zlib.Z_STREAM_END;
-
-module.exports.Z_NEED_DICT = zlib.Z_NEED_DICT;
-
-module.exports.Z_ERRNO = zlib.Z_ERRNO;
-
-module.exports.Z_STREAM_ERROR = zlib.Z_STREAM_ERROR;
-
-module.exports.Z_DATA_ERROR = zlib.Z_DATA_ERROR;
-
-module.exports.Z_MEM_ERROR = zlib.Z_MEM_ERROR;
-
-module.exports.Z_BUF_ERROR = zlib.Z_BUF_ERROR;
-
-module.exports.Z_VERSION_ERROR = zlib.Z_VERSION_ERROR;
-
-module.exports.Z_NO_COMPRESSION = zlib.Z_NO_COMPRESSION;
-
-module.exports.Z_BEST_SPEED = zlib.Z_BEST_SPEED;
-
-module.exports.Z_BEST_COMPRESSION = zlib.Z_BEST_COMPRESSION;
-
-module.exports.Z_DEFAULT_COMPRESSION = zlib.Z_DEFAULT_COMPRESSION;
-
-module.exports.Z_FILTERED = zlib.Z_FILTERED;
-
-module.exports.Z_HUFFMAN_ONLY = zlib.Z_HUFFMAN_ONLY;
-
-module.exports.Z_RLE = zlib.Z_RLE;
-
-module.exports.Z_FIXED = zlib.Z_FIXED;
-
-module.exports.Z_DEFAULT_STRATEGY = zlib.Z_DEFAULT_STRATEGY;
-
-module.exports.Z_BINARY = zlib.Z_BINARY;
-
-module.exports.Z_TEXT = zlib.Z_TEXT;
-
-module.exports.Z_ASCII = zlib.Z_ASCII;
-
-module.exports.Z_UNKNOWN = zlib.Z_UNKNOWN;
-
-module.exports.Z_DEFLATED = zlib.Z_DEFLATED;
-
-module.exports.Z_NULL = zlib.Z_NULL;
-
+module.exports = zlib;

@@ -23,7 +23,13 @@
  */
 
 /**
- * @param {function(number)} callback
+ * @typedef {function(number): undefined}
+ * @see https://html.spec.whatwg.org/multipage/imagebitmap-and-animations.html#framerequestcallback
+ */
+var FrameRequestCallback;
+
+/**
+ * @param {!FrameRequestCallback} callback
  * @param {Element=} opt_element In early versions of this API, the callback
  *     was invoked only if the element was visible.
  * @return {number}
@@ -41,80 +47,3 @@ function cancelRequestAnimationFrame(handle) {};
  * @return {undefined}
  */
 function cancelAnimationFrame(handle) {};
-
-/**
- * @param {function(number)} callback
- * @param {Element=} opt_element
- * @return {number}
- */
-function webkitRequestAnimationFrame(callback, opt_element) {};
-
-/**
- * @param {number} handle
- * @return {undefined}
- */
-function webkitCancelRequestAnimationFrame(handle) {};
-
-/**
- * @param {number} handle
- * @return {undefined}
- */
-function webkitCancelAnimationFrame(handle) {};
-
-/**
- * @param {?function(number)} callback It's legitimate to pass a null
- *     callback and listen on the MozBeforePaint event instead.
- * @param {Element=} opt_element
- * @return {number}
- */
-function mozRequestAnimationFrame(callback, opt_element) {};
-
-/**
- * @param {number} handle
- * @return {undefined}
- */
-function mozCancelRequestAnimationFrame(handle) {};
-
-/**
- * @param {number} handle
- * @return {undefined}
- */
-function mozCancelAnimationFrame(handle) {};
-
-/**
- * @param {function(number)} callback
- * @param {Element=} opt_element
- * @return {number}
- */
-function msRequestAnimationFrame(callback, opt_element) {};
-
-/**
- * @param {number} handle
- * @return {undefined}
- */
-function msCancelRequestAnimationFrame(handle) {};
-
-/**
- * @param {number} handle
- * @return {undefined}
- */
-function msCancelAnimationFrame(handle) {};
-
-/**
- * @param {function(number)} callback
- * @param {Element=} opt_element
- * @return {number}
- */
-function oRequestAnimationFrame(callback, opt_element) {};
-
-/**
- * @param {number} handle
- * @return {undefined}
- */
-function oCancelRequestAnimationFrame(handle) {};
-
-/**
- * @param {number} handle
- * @return {undefined}
- */
-function oCancelAnimationFrame(handle) {};

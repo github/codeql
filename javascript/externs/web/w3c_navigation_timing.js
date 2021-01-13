@@ -58,6 +58,7 @@ function PerformanceEntry() {}
 /** @type {number} */ PerformanceEntry.prototype.duration;
 
 /**
+ * https://www.w3.org/TR/resource-timing-2/#performanceresourcetiming
  * @constructor
  * @extends {PerformanceEntry}
  */
@@ -75,27 +76,138 @@ PerformanceResourceTiming.prototype.secureConnectionStart;
 /** @type {number} */ PerformanceResourceTiming.prototype.responseStart;
 /** @type {number} */ PerformanceResourceTiming.prototype.responseEnd;
 /** @type {string} */ PerformanceResourceTiming.prototype.initiatorType;
+/** @type {number|undefined} */
+PerformanceResourceTiming.prototype.transferSize;
+/** @type {number|undefined} */
+PerformanceResourceTiming.prototype.encodedBodySize;
+/** @type {number|undefined} */
+PerformanceResourceTiming.prototype.decodedBodySize;
+/** @type {number|undefined} */
+PerformanceResourceTiming.prototype.workerStart;
+/** @type {string} */ PerformanceResourceTiming.prototype.nextHopProtocol;
+
+/**
+ * Possible values are 'navigate', 'reload', 'back_forward', and 'prerender'.
+ * See https://w3c.github.io/navigation-timing/#sec-performance-navigation-types
+ * @typedef {string}
+ */
+var NavigationType;
+
+/**
+ * https://w3c.github.io/navigation-timing/#sec-PerformanceNavigationTiming
+ * @constructor
+ * @extends {PerformanceResourceTiming}
+ */
+function PerformanceNavigationTiming() {}
+/** @type {number} */ PerformanceNavigationTiming.prototype.unloadEventStart;
+/** @type {number} */ PerformanceNavigationTiming.prototype.unloadEventEnd;
+/** @type {number} */ PerformanceNavigationTiming.prototype.domInteractive;
+/** @type {number} */ PerformanceNavigationTiming.prototype
+    .domContentLoadedEventStart;
+/** @type {number} */ PerformanceNavigationTiming.prototype
+    .domContentLoadedEventEnd;
+/** @type {number} */ PerformanceNavigationTiming.prototype.domComplete;
+/** @type {number} */ PerformanceNavigationTiming.prototype.loadEventStart;
+/** @type {number} */ PerformanceNavigationTiming.prototype.loadEventEnd;
+/** @type {NavigationType} */ PerformanceNavigationTiming.prototype.type;
+/** @type {number} */ PerformanceNavigationTiming.prototype.redirectCount;
+
+/**
+ * https://w3c.github.io/paint-timing/#sec-PerformancePaintTiming
+ * @constructor
+ * @extends {PerformanceEntry}
+ */
+function PerformancePaintTiming() {}
 
 /** @constructor */
 function PerformanceNavigation() {}
-/** @type {number} */ PerformanceNavigation.prototype.TYPE_NAVIGATE = 0;
-/** @type {number} */ PerformanceNavigation.prototype.TYPE_RELOAD = 1;
-/** @type {number} */ PerformanceNavigation.prototype.TYPE_BACK_FORWARD = 2;
-/** @type {number} */ PerformanceNavigation.prototype.TYPE_RESERVED = 255;
+/** @const {number} */ PerformanceNavigation.TYPE_NAVIGATE;
+/** @const {number} */ PerformanceNavigation.prototype.TYPE_NAVIGATE;
+/** @const {number} */ PerformanceNavigation.TYPE_RELOAD;
+/** @const {number} */ PerformanceNavigation.prototype.TYPE_RELOAD;
+/** @const {number} */ PerformanceNavigation.TYPE_BACK_FORWARD;
+/** @const {number} */ PerformanceNavigation.prototype.TYPE_BACK_FORWARD;
+/** @const {number} */ PerformanceNavigation.TYPE_RESERVED;
+/** @const {number} */ PerformanceNavigation.prototype.TYPE_RESERVED;
 /** @type {number} */ PerformanceNavigation.prototype.type;
 /** @type {number} */ PerformanceNavigation.prototype.redirectCount;
 
-// Only available in WebKit, and only with the --enable-memory-info flag.
-/** @constructor */
-function PerformanceMemory() {}
-/** @type {number} */ PerformanceMemory.prototype.jsHeapSizeLimit;
-/** @type {number} */ PerformanceMemory.prototype.totalJSHeapSize;
-/** @type {number} */ PerformanceMemory.prototype.usedJSHeapSize;
+/**
+ * https://w3c.github.io/longtasks/#taskattributiontiming
+ * @constructor
+ * @extends {PerformanceEntry}
+ */
+function TaskAttributionTiming() {}
+/** @type {string} */ TaskAttributionTiming.prototype.containerId;
+/** @type {string} */ TaskAttributionTiming.prototype.containerName;
+/** @type {string} */ TaskAttributionTiming.prototype.containerSrc;
+/** @type {string} */ TaskAttributionTiming.prototype.containerType;
+
+/**
+ * https://w3c.github.io/longtasks/#performancelongtasktiming
+ * @constructor
+ * @extends {PerformanceEntry}
+ */
+function PerformanceLongTaskTiming() {}
+/** @type {!Array<!TaskAttributionTiming>} */
+PerformanceLongTaskTiming.prototype.attribution;
+
+/**
+ * https://wicg.github.io/layout-instability/#sec-layout-shift
+ * @constructor
+ * @extends {PerformanceEntry}
+ */
+function LayoutShift() {}
+/** @type {number} */ LayoutShift.prototype.value;
+/** @type {boolean} */ LayoutShift.prototype.hadRecentInput;
+/** @type {number} */ LayoutShift.prototype.lastInputTime;
+/** @type {!Array<!LayoutShiftAttribution>} */ LayoutShift.prototype.sources;
+
+/**
+ * https://wicg.github.io/layout-instability/#sec-layout-shift
+ * @constructor
+ */
+function LayoutShiftAttribution() {}
+/** @type {?Node} */ LayoutShiftAttribution.prototype.node;
+/** @type {!DOMRectReadOnly} */ LayoutShiftAttribution.prototype.previousRect;
+/** @type {!DOMRectReadOnly} */ LayoutShiftAttribution.prototype.currentRect;
+
+/**
+ * https://wicg.github.io/largest-contentful-paint/#largestcontentfulpaint
+ * @constructor
+ * @extends {PerformanceEntry}
+ */
+function LargestContentfulPaint() {}
+/** @type {number} */ LargestContentfulPaint.prototype.renderTime;
+/** @type {number} */ LargestContentfulPaint.prototype.loadTime;
+/** @type {number} */ LargestContentfulPaint.prototype.size;
+/** @type {string} */ LargestContentfulPaint.prototype.id;
+/** @type {string} */ LargestContentfulPaint.prototype.url;
+/** @type {?Element} */ LargestContentfulPaint.prototype.element;
+
+/**
+ * https://wicg.github.io/event-timing/#sec-performance-event-timing
+ * @constructor
+ * @extends {PerformanceEntry}
+ */
+function PerformanceEventTiming() {}
+/** @type {number} */ PerformanceEventTiming.prototype.processingStart;
+/** @type {number} */ PerformanceEventTiming.prototype.processingEnd;
+/** @type {boolean} */ PerformanceEventTiming.prototype.cancelable;
+/** @type {?Node} */ PerformanceEventTiming.prototype.target;
 
 /** @constructor */
 function Performance() {}
-/** @type {PerformanceTiming} */ Performance.prototype.timing;
-/** @type {PerformanceNavigation} */ Performance.prototype.navigation;
+
+/** @type {PerformanceTiming} */
+Performance.prototype.timing;
+
+/** @type {PerformanceNavigation} */
+Performance.prototype.navigation;
+
+/** @type {number} */
+Performance.prototype.timeOrigin;
+
 
 /**
  * Clears the buffer used to store the current list of
@@ -105,10 +217,10 @@ function Performance() {}
 Performance.prototype.clearResourceTimings = function() {};
 
 /**
- * Clear out the buffer of performance timing events for webkit browsers.
- * @return {undefined}
+ * A callback that is invoked when the resourcetimingbufferfull event is fired.
+ * @type {?function(Event)}
  */
-Performance.prototype.webkitClearResourceTimings = function() {};
+Performance.prototype.onresourcetimingbufferfull = function() {};
 
 /**
  * Set the maximum number of PerformanceResourceTiming resources that may be
@@ -119,45 +231,36 @@ Performance.prototype.webkitClearResourceTimings = function() {};
 Performance.prototype.setResourceTimingBufferSize = function(maxSize) {};
 
 /**
- * @return {Array<PerformanceEntry>} A copy of the PerformanceEntry list,
+ * @return {!Array<!PerformanceEntry>} A copy of the PerformanceEntry list,
  *     in chronological order with respect to startTime.
  * @nosideeffects
  */
 Performance.prototype.getEntries = function() {};
 
 /**
- * @param {string} entryType Only return {@code PerformanceEntry}s with this
+ * @param {string} entryType Only return `PerformanceEntry`s with this
  *     entryType.
- * @return {Array<PerformanceEntry>} A copy of the PerformanceEntry list,
+ * @return {!Array<!PerformanceEntry>} A copy of the PerformanceEntry list,
  *     in chronological order with respect to startTime.
  * @nosideeffects
  */
 Performance.prototype.getEntriesByType = function(entryType) {};
 
 /**
- * @param {string} name Only return {@code PerformanceEntry}s with this name.
- * @param {string=} opt_entryType Only return {@code PerformanceEntry}s with
+ * @param {string} name Only return `PerformanceEntry`s with this name.
+ * @param {string=} opt_entryType Only return `PerformanceEntry`s with
  *     this entryType.
- * @return {Array<PerformanceEntry>} PerformanceEntry list in chronological
+ * @return {!Array<!PerformanceEntry>} PerformanceEntry list in chronological
  *     order with respect to startTime.
  * @nosideeffects
  */
 Performance.prototype.getEntriesByName = function(name, opt_entryType) {};
-
-// Only available in WebKit, and only with the --enable-memory-info flag.
-/** @type {PerformanceMemory} */ Performance.prototype.memory;
 
 /**
  * @return {number}
  * @nosideeffects
  */
 Performance.prototype.now = function() {};
-
-/**
- * @return {number}
- * @nosideeffects
- */
-Performance.prototype.webkitNow = function() {};
 
 /**
  * @param {string} markName
@@ -177,8 +280,8 @@ Performance.prototype.clearMarks = function(opt_markName) {};
  * @param {string=} opt_endMark
  * @return {undefined}
  */
-Performance.prototype.measure =
-    function(measureName, opt_startMark, opt_endMark) {};
+Performance.prototype.measure = function(
+    measureName, opt_startMark, opt_endMark) {};
 
 /**
  * @param {string=} opt_measureName
@@ -194,3 +297,73 @@ Window.prototype.performance;
  * @suppress {duplicate}
  */
 var performance;
+
+/**
+ * @constructor
+ * @extends {Performance}
+ */
+function WorkerPerformance() {}
+
+/**
+ * @typedef {function(!PerformanceObserverEntryList, !PerformanceObserver): void}
+ */
+var PerformanceObserverCallback;
+
+/**
+ * See:
+ * https://w3c.github.io/performance-timeline/#the-performanceobserver-interface
+ * @constructor
+ * @param {!PerformanceObserverCallback} callback
+ */
+function PerformanceObserver(callback) {}
+
+/**
+ * @param {!PerformanceObserverInit} options
+ */
+PerformanceObserver.prototype.observe = function(options) {};
+
+/** @return {void} */
+PerformanceObserver.prototype.disconnect = function() {};
+
+/**
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/PerformanceObserver/takeRecords
+ * @see https://www.w3.org/TR/performance-timeline-2/#takerecords-method
+ * @return {!Array<!PerformanceEntry>} The current PerformanceEntry list stored
+ *     in the performance observer buffer, emptying it out.
+ */
+PerformanceObserver.prototype.takeRecords = function() {};
+
+/** @const {!Array<string>} */
+PerformanceObserver.prototype.supportedEntryTypes;
+
+/**
+ * @record
+ */
+function PerformanceObserverInit() {}
+
+/** @type {undefined|!Array<string>} */
+PerformanceObserverInit.prototype.entryTypes;
+/** @type {undefined|string} */
+PerformanceObserverInit.prototype.type;
+/** @type {undefined|boolean} */
+PerformanceObserverInit.prototype.buffered;
+
+/**
+ * @constructor
+ */
+function PerformanceObserverEntryList() {}
+
+/** @return {!Array<!PerformanceEntry>} */
+PerformanceObserverEntryList.prototype.getEntries = function() {};
+/**
+ * @param {string} type
+ * @return {!Array<!PerformanceEntry>}
+ */
+PerformanceObserverEntryList.prototype.getEntriesByName = function(type) {};
+/**
+ * @param {string} name
+ * @param {string=} opt_type
+ * @return {!Array<!PerformanceEntry>}
+ */
+PerformanceObserverEntryList.prototype.getEntriesByType = function(
+    name, opt_type) {};

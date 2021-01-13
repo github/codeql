@@ -29,6 +29,15 @@ function CallSite() {}
 
 
 /**
+ * Runs the garbage collector, provided that you start V8 with --expose-gc or
+ * Chrome with --js-flags="--expose-gc".
+ * See https://v8.dev/docs/memory-leaks
+ * @type {undefined|function()}
+ */
+CallSite.prototype.gc;
+
+
+/**
  * Returns the value of this.
  * @return {Object|undefined}
  */

@@ -1,130 +1,66 @@
-// Automatically generated from TypeScript type definitions provided by
-// DefinitelyTyped (https://github.com/DefinitelyTyped/DefinitelyTyped),
-// which is licensed under the MIT license; see file DefinitelyTyped-LICENSE
-// in parent directory.
-// Type definitions for Node.js 10.5.x
-// Project: http://nodejs.org/
-// Definitions by: Microsoft TypeScript <http://typescriptlang.org>
-//                 DefinitelyTyped <https://github.com/DefinitelyTyped/DefinitelyTyped>
-//                 Parambir Singh <https://github.com/parambirs>
-//                 Christian Vaagland Tellnes <https://github.com/tellnes>
-//                 Wilco Bakker <https://github.com/WilcoBakker>
-//                 Nicolas Voigt <https://github.com/octo-sniffle>
-//                 Chigozirim C. <https://github.com/smac89>
-//                 Flarna <https://github.com/Flarna>
-//                 Mariusz Wiktorczyk <https://github.com/mwiktorczyk>
-//                 wwwy3y3 <https://github.com/wwwy3y3>
-//                 Deividas Bakanas <https://github.com/DeividasBakanas>
-//                 Kelvin Jin <https://github.com/kjin>
-//                 Alvis HT Tang <https://github.com/alvis>
-//                 Sebastian Silbermann <https://github.com/eps1lon>
-//                 Hannes Magnusson <https://github.com/Hannes-Magnusson-CK>
-//                 Alberto Schiabel <https://github.com/jkomyno>
-//                 Klaus Meinhardt <https://github.com/ajafff>
-//                 Huw <https://github.com/hoo29>
-//                 Nicolas Even <https://github.com/n-e>
-//                 Bruno Scheufler <https://github.com/brunoscheufler>
-//                 Mohsen Azimi <https://github.com/mohsen1>
-//                 Hoàng Văn Khải <https://github.com/KSXGitHub>
-//                 Alexander T. <https://github.com/a-tarasyuk>
-//                 Lishude <https://github.com/islishude>
-//                 Andrew Makarov <https://github.com/r3nya>
-//                 Zane Hannan AU <https://github.com/ZaneHannanAU>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-
-/**
- * @externs
- * @fileoverview Definitions for module "querystring"
+/*
+ * Copyright 2012 The Closure Compiler Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
+/**
+ * @fileoverview Definitions for node's querystring module.
+ * @see http://nodejs.org/api/querystring.html
+ * @see https://github.com/joyent/node/blob/master/lib/querystring.js
+ */
+
+/**
+ * @const
+ */
 var querystring = {};
 
 /**
- * @interface
- */
-querystring.StringifyOptions = function() {};
-
-/**
- * @type {Function}
- */
-querystring.StringifyOptions.prototype.encodeURIComponent;
-
-/**
- * @interface
- */
-querystring.ParseOptions = function() {};
-
-/**
- * @type {number}
- */
-querystring.ParseOptions.prototype.maxKeys;
-
-/**
- * @type {Function}
- */
-querystring.ParseOptions.prototype.decodeURIComponent;
-
-/**
- * @template T
- * @param {T} obj
+ * @param {Object.<string,*>} obj
  * @param {string=} sep
  * @param {string=} eq
- * @param {querystring.StringifyOptions=} options
  * @return {string}
+ * @nosideeffects
  */
-querystring.stringify = function(obj, sep, eq, options) {};
+querystring.stringify;
 
 /**
  * @param {string} str
  * @param {string=} sep
  * @param {string=} eq
- * @param {querystring.ParseOptions=} options
- * @return {*}
+ * @param {*=} options
+ * @return {Object.<string|!Array.<string>>}
+ * @nosideeffects
  */
-querystring.parse = function(str, sep, eq, options) {};
-
-/**
- * @template T
- * @param {string} str
- * @param {string=} sep
- * @param {string=} eq
- * @param {querystring.ParseOptions=} options
- * @return {T}
- */
-querystring.parse = function(str, sep, eq, options) {};
+querystring.parse;
 
 /**
  * @param {string} str
  * @return {string}
  */
-querystring.escape = function(str) {};
+querystring.escape;
 
 /**
  * @param {string} str
  * @return {string}
  */
-querystring.unescape = function(str) {};
-
-module.exports.StringifyOptions = querystring.StringifyOptions;
-
-module.exports.ParseOptions = querystring.ParseOptions;
-
-module.exports.stringify = querystring.stringify;
-
-module.exports.parse = querystring.parse;
-
-module.exports.parse = querystring.parse;
-
-module.exports.escape = querystring.escape;
-
-module.exports.unescape = querystring.unescape;
+querystring.unescape;
 
 /**
  * @param {Buffer} s
  * @param {boolean} decodeSpaces
  * @return {void}
  */
-querystring.unescapeBuffer = function(s, decodeSpaces) {};
+querystring.unescapeBuffer;
 
-module.exports.unescapeBuffer = querystring.unescapeBuffer;
-
+module.exports = querystring;

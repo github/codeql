@@ -1,879 +1,253 @@
-// Automatically generated from TypeScript type definitions provided by
-// DefinitelyTyped (https://github.com/DefinitelyTyped/DefinitelyTyped),
-// which is licensed under the MIT license; see file DefinitelyTyped-LICENSE
-// in parent directory.
-// Type definitions for Node.js 10.5.x
-// Project: http://nodejs.org/
-// Definitions by: Microsoft TypeScript <http://typescriptlang.org>
-//                 DefinitelyTyped <https://github.com/DefinitelyTyped/DefinitelyTyped>
-//                 Parambir Singh <https://github.com/parambirs>
-//                 Christian Vaagland Tellnes <https://github.com/tellnes>
-//                 Wilco Bakker <https://github.com/WilcoBakker>
-//                 Nicolas Voigt <https://github.com/octo-sniffle>
-//                 Chigozirim C. <https://github.com/smac89>
-//                 Flarna <https://github.com/Flarna>
-//                 Mariusz Wiktorczyk <https://github.com/mwiktorczyk>
-//                 wwwy3y3 <https://github.com/wwwy3y3>
-//                 Deividas Bakanas <https://github.com/DeividasBakanas>
-//                 Kelvin Jin <https://github.com/kjin>
-//                 Alvis HT Tang <https://github.com/alvis>
-//                 Sebastian Silbermann <https://github.com/eps1lon>
-//                 Hannes Magnusson <https://github.com/Hannes-Magnusson-CK>
-//                 Alberto Schiabel <https://github.com/jkomyno>
-//                 Klaus Meinhardt <https://github.com/ajafff>
-//                 Huw <https://github.com/hoo29>
-//                 Nicolas Even <https://github.com/n-e>
-//                 Bruno Scheufler <https://github.com/brunoscheufler>
-//                 Mohsen Azimi <https://github.com/mohsen1>
-//                 Hoàng Văn Khải <https://github.com/KSXGitHub>
-//                 Alexander T. <https://github.com/a-tarasyuk>
-//                 Lishude <https://github.com/islishude>
-//                 Andrew Makarov <https://github.com/r3nya>
-//                 Zane Hannan AU <https://github.com/ZaneHannanAU>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+/*
+ * Copyright 2012 The Closure Compiler Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 /**
+ * @fileoverview Definitions for node's stream module. Depends on the events
+ * module.
  * @externs
- * @fileoverview Definitions for module "stream"
+ *
+ * @see http://nodejs.org/api/stream.html
+ * @see https://github.com/joyent/node/blob/master/lib/stream.js
  */
 
-var events = require("events");
+/** @const */
+var stream = {};
 
 /**
  * @constructor
- * @extends {events.EventEmitter}
+ * @param {Object=} options
+ * @extends events.EventEmitter
  */
-function internal() {}
+stream.Stream = function(options) {};
 
 /**
- * @template T
- * @param {T} destination
- * @param {{end: boolean}=} options
- * @return {T}
+ * @param {stream.Writable} dest
+ * @param {{end: boolean}=} pipeOpts
+ * @return {stream.Writable}
  */
-internal.prototype.pipe = function(destination, options) {};
-
-var internal = internal || {};
+stream.Stream.prototype.pipe;
 
 /**
  * @constructor
- * @extends {internal}
+ * @param {Object=} options
+ * @extends stream.Stream
  */
-internal.Stream;
-
-/**
- * @interface
- */
-internal.ReadableOptions = function() {};
-
-/**
- * @type {number}
- */
-internal.ReadableOptions.prototype.highWaterMark;
-
-/**
- * @type {string}
- */
-internal.ReadableOptions.prototype.encoding;
+stream.Readable = function(options) {};
 
 /**
  * @type {boolean}
+ * @deprecated
  */
-internal.ReadableOptions.prototype.objectMode;
+stream.Readable.prototype.readable;
 
 /**
- * @type {(function(number=): *)}
+ * @protected
+ * @param {string|Buffer|null} chunk
+ * @return {boolean}
  */
-internal.ReadableOptions.prototype.read;
+stream.Readable.prototype.push;
 
 /**
- * @param {internal.ReadableOptions=} opts
- * @return {internal.Readable}
- * @constructor
+ * @param {string|Buffer|null} chunk
+ * @return {boolean}
  */
-internal.Readable = function(opts) {};
+stream.Readable.prototype.unshift;
 
 /**
- * @type {boolean}
- */
-internal.Readable.prototype.readable;
-
-/**
- * @param {number} size
+ * @param {string} enc
  * @return {void}
  */
-internal.Readable.prototype._read = function(size) {};
+stream.Readable.prototype.setEncoding;
 
 /**
- * @param {number=} size
- * @return {*}
+ * @param {number=} n
+ * @return {Buffer|string|null}
  */
-internal.Readable.prototype.read = function(size) {};
+stream.Readable.prototype.read;
 
 /**
+ * @protected
+ * @param {number} n
+ * @return {void}
+ */
+stream.Readable.prototype._read;
+
+/**
+ * @param {stream.Writable=} dest
+ * @return {stream.Readable}
+ */
+stream.Readable.prototype.unpipe;
+
+/**
+ * @return {void}
+ */
+stream.Readable.prototype.resume;
+
+/**
+ * @return {void}
+ */
+stream.Readable.prototype.pause;
+
+/**
+ * @param {stream.Stream} stream
+ * @return {stream.Readable}
+ */
+stream.Readable.prototype.wrap;
+
+/**
+ * @constructor
+ * @extends stream.Readable
+ */
+stream.ReadableStream = function() {};
+
+/**
+ * @type {boolean}
+ */
+stream.ReadableStream.prototype.readable;
+
+/**
+ * @param {string=} encoding
+ * @return {void}
+ */
+stream.ReadableStream.prototype.setEncoding;
+
+/**
+ * @return {void}
+ */
+stream.ReadableStream.prototype.destroy;
+
+/**
+ * @constructor
+ * @param {Object=} options
+ * @extends stream.Stream
+ */
+stream.Writable = function(options) {};
+
+/**
+ * @deprecated
+ * @type {boolean}
+ */
+stream.Writable.prototype.writable;
+
+/**
+ * @param {string|Buffer} chunk
+ * @param {string=} encoding
+ * @param {function(*=)=} cb
+ * @return {boolean}
+ */
+stream.Writable.prototype.write;
+
+/**
+ * @protected
+ * @param {string|Buffer} chunk
  * @param {string} encoding
+ * @param {function(*=)} cb
  * @return {void}
  */
-internal.Readable.prototype.setEncoding = function(encoding) {};
+stream.Writable.prototype._write;
 
 /**
- * @return {internal.Readable}
- */
-internal.Readable.prototype.pause = function() {};
-
-/**
- * @return {internal.Readable}
- */
-internal.Readable.prototype.resume = function() {};
-
-/**
- * @template T
- * @param {T} destination
- * @param {{end: boolean}=} options
- * @return {T}
- */
-internal.Readable.prototype.pipe = function(destination, options) {};
-
-/**
- * @template T
- * @param {T=} destination
- * @return {void}
- */
-internal.Readable.prototype.unpipe = function(destination) {};
-
-/**
- * @param {*} chunk
- * @return {void}
- */
-internal.Readable.prototype.unshift = function(chunk) {};
-
-/**
- * @param {NodeJS.ReadableStream} oldStream
- * @return {NodeJS.ReadableStream}
- */
-internal.Readable.prototype.wrap = function(oldStream) {};
-
-/**
- * @param {*} chunk
+ * @param {string|Buffer=} chunk
  * @param {string=} encoding
- * @return {boolean}
- */
-internal.Readable.prototype.push = function(chunk, encoding) {};
-
-/**
- * @param {string} event
- * @param {Function} listener
- * @return {*}
- */
-internal.Readable.prototype.addListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(): void)} listener
- * @return {*}
- */
-internal.Readable.prototype.addListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function((Buffer|string)): void)} listener
- * @return {*}
- */
-internal.Readable.prototype.addListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(Error): void)} listener
- * @return {*}
- */
-internal.Readable.prototype.addListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {...*} args
- * @return {boolean}
- */
-internal.Readable.prototype.emit = function(event, args) {};
-
-/**
- * @param {string} event
- * @return {boolean}
- */
-internal.Readable.prototype.emit = function(event) {};
-
-/**
- * @param {string} event
- * @param {(Buffer|string)} chunk
- * @return {boolean}
- */
-internal.Readable.prototype.emit = function(event, chunk) {};
-
-/**
- * @param {string} event
- * @param {Error} err
- * @return {boolean}
- */
-internal.Readable.prototype.emit = function(event, err) {};
-
-/**
- * @param {string} event
- * @param {Function} listener
- * @return {*}
- */
-internal.Readable.prototype.on = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(): void)} listener
- * @return {*}
- */
-internal.Readable.prototype.on = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function((Buffer|string)): void)} listener
- * @return {*}
- */
-internal.Readable.prototype.on = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(Error): void)} listener
- * @return {*}
- */
-internal.Readable.prototype.on = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {Function} listener
- * @return {*}
- */
-internal.Readable.prototype.once = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(): void)} listener
- * @return {*}
- */
-internal.Readable.prototype.once = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function((Buffer|string)): void)} listener
- * @return {*}
- */
-internal.Readable.prototype.once = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(Error): void)} listener
- * @return {*}
- */
-internal.Readable.prototype.once = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {Function} listener
- * @return {*}
- */
-internal.Readable.prototype.prependListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(): void)} listener
- * @return {*}
- */
-internal.Readable.prototype.prependListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function((Buffer|string)): void)} listener
- * @return {*}
- */
-internal.Readable.prototype.prependListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(Error): void)} listener
- * @return {*}
- */
-internal.Readable.prototype.prependListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {Function} listener
- * @return {*}
- */
-internal.Readable.prototype.prependOnceListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(): void)} listener
- * @return {*}
- */
-internal.Readable.prototype.prependOnceListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function((Buffer|string)): void)} listener
- * @return {*}
- */
-internal.Readable.prototype.prependOnceListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(Error): void)} listener
- * @return {*}
- */
-internal.Readable.prototype.prependOnceListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {Function} listener
- * @return {*}
- */
-internal.Readable.prototype.removeListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(): void)} listener
- * @return {*}
- */
-internal.Readable.prototype.removeListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function((Buffer|string)): void)} listener
- * @return {*}
- */
-internal.Readable.prototype.removeListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(Error): void)} listener
- * @return {*}
- */
-internal.Readable.prototype.removeListener = function(event, listener) {};
-
-/**
- * @interface
- */
-internal.WritableOptions = function() {};
-
-/**
- * @type {number}
- */
-internal.WritableOptions.prototype.highWaterMark;
-
-/**
- * @type {boolean}
- */
-internal.WritableOptions.prototype.decodeStrings;
-
-/**
- * @type {boolean}
- */
-internal.WritableOptions.prototype.objectMode;
-
-/**
- * @type {(function((string|Buffer), string, Function): *)}
- */
-internal.WritableOptions.prototype.write;
-
-/**
- * @type {(function(Array<{chunk: (string|Buffer), encoding: string}>, Function): *)}
- */
-internal.WritableOptions.prototype.writev;
-
-/**
- * @param {internal.WritableOptions=} opts
- * @return {internal.Writable}
- * @constructor
- */
-internal.Writable = function(opts) {};
-
-/**
- * @type {boolean}
- */
-internal.Writable.prototype.writable;
-
-/**
- * @param {*} chunk
- * @param {string} encoding
- * @param {Function} callback
+ * @param {function(*=)=} cb
  * @return {void}
  */
-internal.Writable.prototype._write = function(chunk, encoding, callback) {};
-
-/**
- * @param {*} chunk
- * @param {Function=} cb
- * @return {boolean}
- */
-internal.Writable.prototype.write = function(chunk, cb) {};
-
-/**
- * @param {*} chunk
- * @param {string=} encoding
- * @param {Function=} cb
- * @return {boolean}
- */
-internal.Writable.prototype.write = function(chunk, encoding, cb) {};
-
-/**
- * @return {void}
- */
-internal.Writable.prototype.end = function() {};
-
-/**
- * @param {*} chunk
- * @param {Function=} cb
- * @return {void}
- */
-internal.Writable.prototype.end = function(chunk, cb) {};
-
-/**
- * @param {*} chunk
- * @param {string=} encoding
- * @param {Function=} cb
- * @return {void}
- */
-internal.Writable.prototype.end = function(chunk, encoding, cb) {};
-
-/**
- * @param {string} event
- * @param {Function} listener
- * @return {*}
- */
-internal.Writable.prototype.addListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(): void)} listener
- * @return {*}
- */
-internal.Writable.prototype.addListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(Error): void)} listener
- * @return {*}
- */
-internal.Writable.prototype.addListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(internal.Readable): void)} listener
- * @return {*}
- */
-internal.Writable.prototype.addListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {...*} args
- * @return {boolean}
- */
-internal.Writable.prototype.emit = function(event, args) {};
-
-/**
- * @param {string} event
- * @return {boolean}
- */
-internal.Writable.prototype.emit = function(event) {};
-
-/**
- * @param {string} event
- * @param {(Buffer|string)} chunk
- * @return {boolean}
- */
-internal.Writable.prototype.emit = function(event, chunk) {};
-
-/**
- * @param {string} event
- * @param {Error} err
- * @return {boolean}
- */
-internal.Writable.prototype.emit = function(event, err) {};
-
-/**
- * @param {string} event
- * @param {internal.Readable} src
- * @return {boolean}
- */
-internal.Writable.prototype.emit = function(event, src) {};
-
-/**
- * @param {string} event
- * @param {Function} listener
- * @return {*}
- */
-internal.Writable.prototype.on = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(): void)} listener
- * @return {*}
- */
-internal.Writable.prototype.on = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(Error): void)} listener
- * @return {*}
- */
-internal.Writable.prototype.on = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(internal.Readable): void)} listener
- * @return {*}
- */
-internal.Writable.prototype.on = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {Function} listener
- * @return {*}
- */
-internal.Writable.prototype.once = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(): void)} listener
- * @return {*}
- */
-internal.Writable.prototype.once = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(Error): void)} listener
- * @return {*}
- */
-internal.Writable.prototype.once = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(internal.Readable): void)} listener
- * @return {*}
- */
-internal.Writable.prototype.once = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {Function} listener
- * @return {*}
- */
-internal.Writable.prototype.prependListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(): void)} listener
- * @return {*}
- */
-internal.Writable.prototype.prependListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(Error): void)} listener
- * @return {*}
- */
-internal.Writable.prototype.prependListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(internal.Readable): void)} listener
- * @return {*}
- */
-internal.Writable.prototype.prependListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {Function} listener
- * @return {*}
- */
-internal.Writable.prototype.prependOnceListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(): void)} listener
- * @return {*}
- */
-internal.Writable.prototype.prependOnceListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(Error): void)} listener
- * @return {*}
- */
-internal.Writable.prototype.prependOnceListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(internal.Readable): void)} listener
- * @return {*}
- */
-internal.Writable.prototype.prependOnceListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {Function} listener
- * @return {*}
- */
-internal.Writable.prototype.removeListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(): void)} listener
- * @return {*}
- */
-internal.Writable.prototype.removeListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(Error): void)} listener
- * @return {*}
- */
-internal.Writable.prototype.removeListener = function(event, listener) {};
-
-/**
- * @param {string} event
- * @param {(function(internal.Readable): void)} listener
- * @return {*}
- */
-internal.Writable.prototype.removeListener = function(event, listener) {};
-
-/**
- * @interface
- * @extends {internal.ReadableOptions}
- * @extends {internal.WritableOptions}
- */
-internal.DuplexOptions = function() {};
-
-/**
- * @type {boolean}
- */
-internal.DuplexOptions.prototype.allowHalfOpen;
-
-/**
- * @type {boolean}
- */
-internal.DuplexOptions.prototype.readableObjectMode;
-
-/**
- * @type {boolean}
- */
-internal.DuplexOptions.prototype.writableObjectMode;
-
-/**
- * @param {internal.DuplexOptions=} opts
- * @return {internal.Duplex}
- * @constructor
- */
-internal.Duplex = function(opts) {};
-
-/**
- * @return {internal.Duplex}
- */
-internal.Duplex.prototype.pause = function() {};
-
-/**
- * @return {internal.Duplex}
- */
-internal.Duplex.prototype.resume = function() {};
-
-/**
- * @type {boolean}
- */
-internal.Duplex.prototype.writable;
-
-/**
- * @param {*} chunk
- * @param {string} encoding
- * @param {Function} callback
- * @return {void}
- */
-internal.Duplex.prototype._write = function(chunk, encoding, callback) {};
-
-/**
- * @param {*} chunk
- * @param {Function=} cb
- * @return {boolean}
- */
-internal.Duplex.prototype.write = function(chunk, cb) {};
-
-/**
- * @param {*} chunk
- * @param {string=} encoding
- * @param {Function=} cb
- * @return {boolean}
- */
-internal.Duplex.prototype.write = function(chunk, encoding, cb) {};
-
-/**
- * @return {void}
- */
-internal.Duplex.prototype.end = function() {};
-
-/**
- * @param {*} chunk
- * @param {Function=} cb
- * @return {void}
- */
-internal.Duplex.prototype.end = function(chunk, cb) {};
-
-/**
- * @param {*} chunk
- * @param {string=} encoding
- * @param {Function=} cb
- * @return {void}
- */
-internal.Duplex.prototype.end = function(chunk, encoding, cb) {};
-
-/**
- * @interface
- * @extends {internal.ReadableOptions}
- * @extends {internal.WritableOptions}
- */
-internal.TransformOptions = function() {};
-
-/**
- * @type {(function((string|Buffer), string, Function): *)}
- */
-internal.TransformOptions.prototype.transform;
-
-/**
- * @type {(function(Function): *)}
- */
-internal.TransformOptions.prototype.flush;
-
-/**
- * @param {internal.TransformOptions=} opts
- * @return {internal.Transform}
- * @constructor
- */
-internal.Transform = function(opts) {};
-
-/**
- * @type {boolean}
- */
-internal.Transform.prototype.readable;
-
-/**
- * @type {boolean}
- */
-internal.Transform.prototype.writable;
-
-/**
- * @param {*} chunk
- * @param {string} encoding
- * @param {Function} callback
- * @return {void}
- */
-internal.Transform.prototype._transform = function(chunk, encoding, callback) {};
-
-/**
- * @param {Function} callback
- * @return {void}
- */
-internal.Transform.prototype._flush = function(callback) {};
-
-/**
- * @param {number=} size
- * @return {*}
- */
-internal.Transform.prototype.read = function(size) {};
-
-/**
- * @param {string} encoding
- * @return {void}
- */
-internal.Transform.prototype.setEncoding = function(encoding) {};
-
-/**
- * @return {internal.Transform}
- */
-internal.Transform.prototype.pause = function() {};
-
-/**
- * @return {internal.Transform}
- */
-internal.Transform.prototype.resume = function() {};
-
-/**
- * @template T
- * @param {T} destination
- * @param {{end: boolean}=} options
- * @return {T}
- */
-internal.Transform.prototype.pipe = function(destination, options) {};
-
-/**
- * @template T
- * @param {T=} destination
- * @return {void}
- */
-internal.Transform.prototype.unpipe = function(destination) {};
-
-/**
- * @param {*} chunk
- * @return {void}
- */
-internal.Transform.prototype.unshift = function(chunk) {};
-
-/**
- * @param {NodeJS.ReadableStream} oldStream
- * @return {NodeJS.ReadableStream}
- */
-internal.Transform.prototype.wrap = function(oldStream) {};
-
-/**
- * @param {*} chunk
- * @param {string=} encoding
- * @return {boolean}
- */
-internal.Transform.prototype.push = function(chunk, encoding) {};
-
-/**
- * @param {*} chunk
- * @param {Function=} cb
- * @return {boolean}
- */
-internal.Transform.prototype.write = function(chunk, cb) {};
-
-/**
- * @param {*} chunk
- * @param {string=} encoding
- * @param {Function=} cb
- * @return {boolean}
- */
-internal.Transform.prototype.write = function(chunk, encoding, cb) {};
-
-/**
- * @return {void}
- */
-internal.Transform.prototype.end = function() {};
-
-/**
- * @param {*} chunk
- * @param {Function=} cb
- * @return {void}
- */
-internal.Transform.prototype.end = function(chunk, cb) {};
-
-/**
- * @param {*} chunk
- * @param {string=} encoding
- * @param {Function=} cb
- * @return {void}
- */
-internal.Transform.prototype.end = function(chunk, encoding, cb) {};
+stream.Writable.prototype.end;
 
 /**
  * @constructor
- * @extends {internal.Transform}
+ * @extends stream.Writable
  */
-internal.PassThrough;
+stream.WritableStream = function() {};
+
+/**
+ * @return {void}
+ */
+stream.WritableStream.prototype.drain;
+
+/**
+ * @type {boolean}
+ */
+stream.WritableStream.prototype.writable;
+
+/**
+ * @param {string|Buffer} buffer
+ * @param {string=} encoding
+ * @return {void}
+ */
+stream.WritableStream.prototype.write;
+
+/**
+ * @param {string|Buffer=} buffer
+ * @param {string=} encoding
+ * @param {function(*=)=} cb
+ * @return {void}
+ */
+stream.WritableStream.prototype.end;
+
+/**
+ * @return {void}
+ */
+stream.WritableStream.prototype.destroy;
+
+/**
+ * @return {void}
+ */
+stream.WritableStream.prototype.destroySoon;
+
+/**
+ * @constructor
+ * @param {Object=} options
+ * @extends stream.Readable
+ * Xextends stream.Writable
+ */
+stream.Duplex = function(options) {};
+
+/**
+ * @type {boolean}
+ */
+stream.Duplex.prototype.allowHalfOpen;
 
 
-module.exports = internal;
+/**
+ * @param {Object=} options
+ * @constructor
+ * @extends stream.Duplex
+ */
+stream.Transform = function(options) {};
 
+/**
+ * @protected
+ * @param {string|Buffer} chunk
+ * @param {string} encoding
+ * @param {function(*=)} cb
+ * @return {void}
+ */
+stream.Transform._transform;
+
+/**
+ * @protected
+ * @param {function(*=)} cb
+ * @return {void}
+ */
+stream.Transform._flush;
+
+/**
+ * @param {Object=} options
+ * @constructor
+ * @extends stream.Transform
+ */
+stream.PassThrough = function(options) {};
