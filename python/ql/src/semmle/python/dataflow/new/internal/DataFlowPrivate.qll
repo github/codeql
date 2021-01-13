@@ -127,9 +127,14 @@ module EssaFlow {
       nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getValue()
     or
     // Definition
-    //   `a, b = iterable`
+    //   `[a, b] = iterable`
     //   nodeFrom = `iterable`, cfg node
-    //   nodeTo = `a, b`, cfg node
+    //   nodeTo = `TIterableSequence([a, b])`
+    exists(UnpackingAssignmentDirectTarget target |
+      nodeFrom.asExpr() = target.getValue() and
+      nodeTo = TIterableSequence(target)
+    )
+    or
     exists(Assign assign, SequenceNode target | target.getNode() = assign.getATarget() |
       nodeFrom.asExpr() = assign.getValue() and
       nodeTo.asCfgNode() = target
@@ -170,7 +175,7 @@ module EssaFlow {
     // If expressions
     nodeFrom.asCfgNode() = nodeTo.asCfgNode().(IfExprNode).getAnOperand()
     or
-    unpackingAssignmentDirectFlowStep(nodeFrom, nodeTo)
+    unpackingAssignmentFlowStep(nodeFrom, nodeTo)
     or
     // Overflow keyword argument
     exists(CallNode call, CallableValue callable |
@@ -1023,115 +1028,117 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
   )
 }
 
+/**
+ * The unpacking assignment takes the general form
+ * ```python
+ *   sequence = iterable
+ * ```
+ * where `sequence` is either a tuple or a list and it can contain wildcards.
+ * The iterable can be any iterable, which means that content will need to change type
+ * if it should be transferred from the LHS to the RHS.
+ *
+ * We may for instance have
+ * ```python
+ *    (a, b) = ["a", "tainted string"]  # RHS has content `ListElement`
+ * ```
+ * Due to the abstraction for list content, we do not know whether `"tainted string"`
+ * ends up in `a` or in `b`, so we want to overapproximate and see it in both.
+ *
+ * Using wildcards we may have
+ * ```python
+ *   (a, *b) = ("a", "b", "tainted string")  # RHS has content `TupleElement(2)`
+ * ```
+ * Since the starred variables are always assigned type list, `*b` will be
+ * `["b", "tainted string]`, and we will agsin overapproximate and assign it
+ * content corresponding to anything found in the RHS.
+ *
+ * For a precise transfer
+ * ```python
+ *    (a, b) = ("a", "tainted string")  # RHS has content `TupleElement(1)`
+ * ```
+ * we wish to keep the precision, so only `b` receives the tuple content at index 1.
+ *
+ * Finally, `sequence` is actually a pattern and can have a more complicated structure,
+ * such as
+ * ```python
+ *   (a, [b, *c]) = ("a", ("tainted string", "c"))  # RHS has content `TupleElement(1); TupleElement(0)`
+ * ```
+ * where `a` should not receive content, but `b` and `c` should. `c` will be `["c"]` so
+ * should have the content converted and transferred, while `b` should read it.
+ *
+ * The strategy for converting content type is to break the transfer up into a read step
+ * and a store step, together creating a converting transfer step.
+ * For this we need a synthetic node in the middle, which we call `TIterableElement(receiver)`.
+ * It is associated with the receiver of the transfer, because we know the receiver type from the syntax.
+ * Since we sometimes need a converting read step (in the example above, `[b, *c]` reads the content
+ * `TupleElement(0)` but should have content `ListElement`), we actually need a second synthetic node.
+ * A converting read step is a read step followed by a converting transfer.
+ * We can have a uniform treatment by always having two synthetic nodes and so we can view it as
+ * two stages of the same node. So we read into (or transfer to) `TIterableSequence(receiver)`,
+ * from which we take a read step to `TIterableElement(receiver)` and then a store step to `receiver`.
+ * In order to preserve precise content, we also take a flow step from `TIterableSequence(receiver)`
+ * directly to `receiver`.
+ *
+ * The strategy is then via several read-, store-, and flow steps:
+ * 1. [Flow] Content is transferred from `iterable` to `TIterableSequence(sequence)` via a
+ *    flow step. From here, everything happens on the LHS.
+ *
+ * 1. [Flow] Content is transferred from `TIterableSequence(sequence)` to `sequence` via a
+ *    flow step.
+ *
+ * 1. [Read] Content is read from `TIterableSequence(sequence)` into  `TIterableElement(sequence)`.
+ *    If `sequence` is of type tuple, we will not read tuple content as that would allow
+ *    cross talk.
+ *
+ * 1. [Store] Content is stored from `TIterableElement(sequence)` to `sequence`.
+ *    Here the content type is chosen according to the type of sequence.
+ *
+ * 1. [Read] Content is read from `sequence` to its elements according to the type of `sequence`.
+ *    If the element is a plain variable, the target is the corresponding essa node.
+ *    If the element is itelf a sequence, with control-flow node `seq`, the target is `TIterableSequence(seq)`.
+ *    If the element is a starred variable, with control-flow node `v`, the target is `TIterableElement(v)`.
+ *
+ * 1. [Store] Content is stored from `TIterableElement(v)` to the essa variable for `v`, with
+ *    content type `ListElement`.
+ *
+ * 1. [Flow, Read, Store] The last 5 steps are repeated for all recursive elements which are sequences.
+ */
 module unpackinAssignment {
-  /** Data flows from an iterable to an assigned variable. */
-  predicate unpackingAssignmentReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
-    unpackingAssignmentToplevelReadStep(nodeFrom, c, nodeTo)
-    or
-    unpackingAssignmentInternalReadStep(nodeFrom, c, nodeTo)
-    or
-    unpackingAssignmentConvertingReadStep(nodeFrom, c, nodeTo)
-    or
-    unpackingAssignmentConvertingInternalReadStep(nodeFrom, c, nodeTo)
+  /** A direct (or top-level) target of an unpacking assignment */
+  class UnpackingAssignmentDirectTarget extends ControlFlowNode {
+    Expr value;
+
+    UnpackingAssignmentDirectTarget() {
+      this instanceof SequenceNode and
+      exists(Assign assign | this.getNode() = assign.getATarget() | value = assign.getValue())
+    }
+
+    Expr getValue() { result = value }
   }
 
-  predicate unpackingAssignmentStoreStep(Node nodeFrom, Content c, CfgNode nodeTo) {
-    unpackingAssignmentConvertingStoreStep(nodeFrom, c, nodeTo)
-    or
-    unpackingAssignmentConvertingInternalStoreStep(nodeFrom, c, nodeTo)
+  /** A (possibly recursive) target of an unpacking assignment */
+  class UnpackingAssignmentTarget extends ControlFlowNode {
+    UnpackingAssignmentTarget() {
+      this instanceof UnpackingAssignmentDirectTarget
+      or
+      exists(UnpackingAssignmentTarget parent | this = parent.getAnElement())
+    }
+
+    ControlFlowNode getElement(int i) { result = this.(SequenceNode).getElement(i) }
+
+    ControlFlowNode getAnElement() { result = this.getElement(_) }
   }
 
-  predicate unpackingAssignmentRead(CfgNode nodeFrom, Content c, ControlFlowNode readNode) {
-    // `a, b = iterable`
-    // nodeFrom = `a, b`
-    // readNode = `a`
-    // c is compatible with type of `a, b` (so tuple if it was `(a, b)`)
-    exists(Assign assign, SequenceNode target, int index | target.getNode() = assign.getATarget() |
-      nodeFrom.getNode() = target and
-      readNode = target.getElement(index) and
-      (
-        target instanceof ListNode and
-        c instanceof ListElementContent
-        or
-        target instanceof TupleNode and
-        c.(TupleElementContent).getIndex() = index
-      )
+  predicate unpackingAssignmentFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(UnpackingAssignmentTarget target | target instanceof SequenceNode |
+      nodeFrom = TIterableSequence(target) and
+      nodeTo.asCfgNode() = target
     )
   }
 
-  predicate unpackingAssignmentInternalReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
-    // iterable unpacking
-    //   `a, (b, (c, d)) = iterable`
-    //   nodeFrom is `(b, (c, d))`, cfg node
-    //   nodeTo is `b`, essa var
-    //     or `(c, d)`, cfg node
-    //   c is compatible with `b`s (or `(c, d)`s) index
-    exists(
-      Assign assign, SequenceNode target, SequenceNode readFrom, int index, ControlFlowNode readTo
-    |
-      target.getNode() = assign.getATarget() and
-      readFrom = target.getAnElement() // use contains to get deeper nesting
-    |
-      nodeFrom.getNode() = readFrom and
-      readTo = readFrom.getElement(index) and
-      (
-        readTo instanceof SequenceNode and
-        nodeTo.asCfgNode() = readTo
-        or
-        not readTo instanceof SequenceNode and
-        nodeTo.asVar().getDefinition().(MultiAssignmentDefinition).getDefiningNode() = readTo
-      ) and
-      (
-        readFrom instanceof ListNode and
-        c instanceof ListElementContent
-        or
-        readFrom instanceof TupleNode and
-        c.(TupleElementContent).getIndex() = index
-      )
-    )
-  }
-
-  /** Data flows from an iterable to an assigned variable. */
-  predicate unpackingAssignmentToplevelReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
-    // iterable unpacking
-    //   `a, (b, c) = iterable`
-    //   nodeFrom is `a, (b, c)`, cfg node
-    //   nodeTo is `a`, essa var
-    //     or `(b, c)`, cfg node
-    //   c is compatible with `a`s (or `(b, c)`s) index
-    exists(ControlFlowNode readNode | unpackingAssignmentRead(nodeFrom, c, readNode) |
-      (
-        readNode instanceof SequenceNode and
-        nodeTo.asCfgNode() = readNode
-        or
-        not readNode instanceof SequenceNode and
-        nodeTo.asVar().getDefinition().(MultiAssignmentDefinition).getDefiningNode() = readNode
-      )
-    )
-    or
-    unpackingAssignmentInternalReadStep(nodeFrom, c, nodeTo)
-  }
-
-  predicate unpackingAssignmentDirectFlowStep(CfgNode nodeFrom, CfgNode nodeTo) {
-    // `a, *b = iterable`
-    // nodeFrom = `a, b`
-    // nodeTo = `*b`
-    exists(Assign assign, SequenceNode target | target.getNode() = assign.getATarget() |
-      nodeFrom.getNode() = target and
-      nodeTo.getNode() = target.getAnElement() and
-      nodeTo.asExpr() instanceof Starred
-    )
-  }
-
-  predicate unpackingAssignmentConvertingReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
-    // iterable unpacking
-    //   `a, b = iterable`
-    //   nodeFrom is `iterable`
-    //   nodeTo is synthetic IterableElement
-    //   c is whatever element content `iterable` might carry
-    //   we wish to consume c, so that we can later write it back in the type of the lhs.
-    exists(Assign assign, SequenceNode target | target.getNode() = assign.getATarget() |
-      nodeFrom.asExpr() = assign.getValue() and
+  predicate unpackingAssignmentConvertingReadStep(Node nodeFrom, Content c, Node nodeTo) {
+    exists(UnpackingAssignmentTarget target | target instanceof SequenceNode |
+      nodeFrom = TIterableSequence(target) and
       nodeTo = TIterableElement(target) and
       (
         c instanceof ListElementContent
@@ -1149,15 +1156,10 @@ module unpackinAssignment {
     )
   }
 
-  predicate unpackingAssignmentConvertingStoreStep(Node nodeFrom, Content c, CfgNode nodeTo) {
-    // iterable unpacking
-    //   `a, b = iterable`
-    //   nodeFrom is synthetic IterableElement
-    //   nodeTo is `a, b`
-    //   c is consistent with the type of the lhs.
-    exists(Assign assign, SequenceNode target | target.getNode() = assign.getATarget() |
+  predicate unpackingAssignmentConvertingStoreStep(Node nodeFrom, Content c, Node nodeTo) {
+    exists(UnpackingAssignmentTarget target | target instanceof SequenceNode |
       nodeFrom = TIterableElement(target) and
-      nodeTo.getNode() = target and
+      nodeTo.asCfgNode() = target and
       (
         target instanceof ListNode and
         c instanceof ListElementContent
@@ -1170,46 +1172,50 @@ module unpackinAssignment {
     )
   }
 
-  predicate unpackingAssignmentConvertingInternalReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
-    exists(Assign assign, SequenceNode target, SequenceNode readFrom |
-      target.getNode() = assign.getATarget() and
-      readFrom = target.getAnElement() // use contains to get deeper nesting
+  predicate unpackingAssignmentElementReadStep(Node nodeFrom, Content c, Node nodeTo) {
+    exists(UnpackingAssignmentTarget target, int index, ControlFlowNode element |
+      target instanceof SequenceNode
     |
-      nodeFrom.getNode() = readFrom and
-      nodeTo = TIterableElement(readFrom) and
+      nodeFrom.asCfgNode() = target and
+      element = target.getElement(index) and
       (
+        target instanceof ListNode and
         c instanceof ListElementContent
         or
-        c instanceof SetElementContent
-        or
-        // do not lose precision by routing tuple content through the `IterableElement`
-        not readFrom instanceof TupleNode and
-        // `index` refers to `nodeFrom`, but only the ones in `target` are relevant.
-        exists(int index | exists(readFrom.getElement(index)) |
-          c.(TupleElementContent).getIndex() = index
-        )
-        // leaving out dict content for now
+        target instanceof TupleNode and
+        c.(TupleElementContent).getIndex() = index
+      ) and
+      (
+        if element instanceof SequenceNode
+        then nodeTo = TIterableSequence(element)
+        else
+          if element.getNode() instanceof Starred
+          then nodeTo = TIterableElement(element)
+          else
+            nodeTo.asVar().getDefinition().(MultiAssignmentDefinition).getDefiningNode() = element
       )
     )
   }
 
-  predicate unpackingAssignmentConvertingInternalStoreStep(Node nodeFrom, Content c, CfgNode nodeTo) {
-    exists(Assign assign, SequenceNode target, SequenceNode readFrom |
-      target.getNode() = assign.getATarget() and
-      readFrom = target.getAnElement() // use contains to get deeper nesting
-    |
-      nodeFrom = TIterableElement(readFrom) and
-      nodeTo.getNode() = readFrom and
-      (
-        readFrom instanceof ListNode and
-        c instanceof ListElementContent
-        or
-        readFrom instanceof TupleNode and
-        exists(int index | exists(readFrom.getElement(index)) |
-          c.(TupleElementContent).getIndex() = index
-        )
-      )
+  predicate unpackingAssignmentStarredElementStoreStep(Node nodeFrom, Content c, Node nodeTo) {
+    exists(ControlFlowNode starred | starred.getNode() instanceof Starred |
+      nodeFrom = TIterableElement(starred) and
+      nodeTo.asVar().getDefinition().(MultiAssignmentDefinition).getDefiningNode() = starred and
+      c instanceof ListElementContent
     )
+  }
+
+  /** Data flows from an iterable to an assigned variable. */
+  predicate unpackingAssignmentReadStep(Node nodeFrom, Content c, Node nodeTo) {
+    unpackingAssignmentElementReadStep(nodeFrom, c, nodeTo)
+    or
+    unpackingAssignmentConvertingReadStep(nodeFrom, c, nodeTo)
+  }
+
+  predicate unpackingAssignmentStoreStep(Node nodeFrom, Content c, Node nodeTo) {
+    unpackingAssignmentStarredElementStoreStep(nodeFrom, c, nodeTo)
+    or
+    unpackingAssignmentConvertingStoreStep(nodeFrom, c, nodeTo)
   }
 }
 

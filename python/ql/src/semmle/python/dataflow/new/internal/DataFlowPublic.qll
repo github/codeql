@@ -62,16 +62,14 @@ newtype TNode =
     call_unpacks(call, _, callable, name, _)
   } or
   /**
+   * A synthetic node representing that an iterable sequence flows to consumer.
+   */
+  TIterableSequence(UnpackingAssignmentTarget consumer) { consumer instanceof SequenceNode } or
+  /**
    * A synthetic node representing that there may be an iterable element
    * for `consumer` to consume.
    */
-  TIterableElement(SequenceNode consumer) {
-    exists(Assign assign, SequenceNode target | target.getNode() = assign.getATarget() |
-      consumer = target
-      or
-      consumer = target.getAnElement() // use containts for deeper nesting
-    )
-  }
+  TIterableElement(UnpackingAssignmentTarget consumer)
 
 /** Helper for `Node::getEnclosingCallable`. */
 private DataFlowCallable getCallableScope(Scope s) {
@@ -331,11 +329,25 @@ class KwUnpacked extends Node, TKwUnpacked {
 }
 
 /**
- * A synthetic node representing an iterable element. Use for changing content type
+ * A synthetic node representing an iterable sequence. Used for changing content type
+ * for instance from a `ListElement` to a `TupleElement`.
+ */
+class IterableSequence extends Node, TIterableSequence {
+  SequenceNode consumer;
+
+  IterableSequence() { this = TIterableSequence(consumer) }
+
+  override string toString() { result = "IterableSequence" }
+
+  override Location getLocation() { result = consumer.getLocation() }
+}
+
+/**
+ * A synthetic node representing an iterable element. Used for changing content type
  * for instance from a `ListElement` to a `TupleElement`.
  */
 class IterableElement extends Node, TIterableElement {
-  SequenceNode consumer;
+  ControlFlowNode consumer;
 
   IterableElement() { this = TIterableElement(consumer) }
 
