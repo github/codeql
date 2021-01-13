@@ -30,7 +30,12 @@ namespace Semmle.Extraction.CSharp.Entities
         public static NamedType CreateNamedTypeFromTupleType(Context cx, INamedTypeSymbol type) =>
             UnderlyingTupleTypeFactory.Instance.CreateEntity(cx, (new SymbolEqualityWrapper(type), typeof(TupleType)), type);
 
-        public override bool NeedsPopulation => base.NeedsPopulation || symbol.TypeKind == TypeKind.Error;
+        public override bool NeedsPopulation => (base.NeedsPopulation || symbol.TypeKind == TypeKind.Error) &&
+            (!symbol.FromSource() || IsNullableOblivious(symbol.IsValueType, symbol.NullableAnnotation));
+
+        private static bool IsNullableOblivious(bool isValueType, NullableAnnotation nullableAnnotation) => isValueType
+            ? nullableAnnotation == NullableAnnotation.NotAnnotated
+            : nullableAnnotation == NullableAnnotation.None;
 
         public override void Populate(TextWriter trapFile)
         {
