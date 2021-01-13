@@ -546,7 +546,7 @@ def test_iterated_unpacking_assignment():
     t = (SOURCE, SOURCE, NONSOURCE)
     a, *b, c = t
     SINK(a)
-    SINK(b[0])  # Flow not found
+    SINK(b[0])
     SINK_F(c)
 
 

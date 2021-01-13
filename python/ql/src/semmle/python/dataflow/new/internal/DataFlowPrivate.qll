@@ -126,6 +126,15 @@ module EssaFlow {
     nodeFrom.(CfgNode).getNode() =
       nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getValue()
     or
+    // Definition
+    //   `a, b = iterable`
+    //   nodeFrom = `iterable`, cfg node
+    //   nodeTo = `a, b`, cfg node
+    exists(Assign assign, SequenceNode target | target.getNode() = assign.getATarget() |
+      nodeFrom.asExpr() = assign.getValue() and
+      nodeTo.asCfgNode() = target
+    )
+    or
     // With definition
     //   `with f(42) as x:`
     //   nodeFrom is `f(42)`, cfg node
@@ -1104,12 +1113,13 @@ module unpackinAssignment {
   }
 
   predicate unpackingAssignmentDirectFlowStep(CfgNode nodeFrom, CfgNode nodeTo) {
-    // `a, b = iterable`
-    // nodeFrom = `iterable`
-    // readNode = `a, b`
+    // `a, *b = iterable`
+    // nodeFrom = `a, b`
+    // nodeTo = `*b`
     exists(Assign assign, SequenceNode target | target.getNode() = assign.getATarget() |
-      nodeFrom.asExpr() = assign.getValue() and
-      nodeTo.getNode() = target
+      nodeFrom.getNode() = target and
+      nodeTo.getNode() = target.getAnElement() and
+      nodeTo.asExpr() instanceof Starred
     )
   }
 
