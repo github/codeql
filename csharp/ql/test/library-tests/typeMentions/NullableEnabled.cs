@@ -20,3 +20,5 @@ public class C1
         I1 i1 = new Str();
     }
 }
+
+// semmle-extractor-options: --separate-compilation
