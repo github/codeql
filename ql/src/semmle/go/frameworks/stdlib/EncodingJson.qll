@@ -14,10 +14,7 @@ module EncodingJson {
 
   /** The `Marshal` or `MarshalIndent` function in the `encoding/json` package. */
   class MarshalFunction extends MarshalingFunction::Range {
-    MarshalFunction() {
-      this.hasQualifiedName("encoding/json", "Marshal") or
-      this.hasQualifiedName("encoding/json", "MarshalIndent")
-    }
+    MarshalFunction() { this.hasQualifiedName("encoding/json", ["Marshal", "MarshalIndent"]) }
 
     override FunctionInput getAnInput() { result.isParameter(0) }
 
@@ -103,14 +100,6 @@ module EncodingJson {
       // signature: func (*Encoder).SetIndent(prefix string, indent string)
       hasQualifiedName("encoding/json", "Encoder", "SetIndent") and
       (inp.isParameter(_) and outp.isReceiver())
-      or
-      // signature: func (RawMessage).MarshalJSON() ([]byte, error)
-      hasQualifiedName("encoding/json", "RawMessage", "MarshalJSON") and
-      (inp.isReceiver() and outp.isResult(0))
-      or
-      // signature: func (*RawMessage).UnmarshalJSON(data []byte) error
-      hasQualifiedName("encoding/json", "RawMessage", "UnmarshalJSON") and
-      (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (Marshaler).MarshalJSON() ([]byte, error)
       implements("encoding/json", "Marshaler", "MarshalJSON") and

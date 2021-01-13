@@ -34,5 +34,7 @@ class Package extends @package {
  */
 bindingset[result, mod, path]
 string package(string mod, string path) {
+  // "\Q" and "\E" start and end a quoted section of a regular expression. Anything like "." or "*" that
+  // "*" that comes between them is not interpreted as it would normally be in a regular expression.
   result.regexpMatch("\\Q" + mod + "\\E([/.]v[^/]+)?($|/)\\Q" + path + "\\E")
 }
