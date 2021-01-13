@@ -21,9 +21,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected override void Populate(TextWriter trapFile)
         {
-            var assembly = Extraction.Entities.Assembly.CreateOutputAssembly(cx);
+            Extraction.Entities.Assembly.CreateOutputAssembly(cx);
 
-            trapFile.compilations(this, FileUtils.ConvertToUnix(cwd), assembly);
+            trapFile.compilations(this, FileUtils.ConvertToUnix(cwd));
 
             // Arguments
             var index = 0;

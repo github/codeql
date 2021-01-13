@@ -35,5 +35,3 @@ references
 | compilation | mscorlib.dll |
 timings
 | compilation |
-assembly
-| compilation | Program.dll:0:0:0:0 | Program, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null |

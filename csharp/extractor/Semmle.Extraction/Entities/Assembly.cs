@@ -58,8 +58,7 @@ namespace Semmle.Extraction.Entities
         }
 
         private static readonly object outputAssemblyCacheKey = new object();
-
-        public static Assembly CreateOutputAssembly(Context cx)
+        public static Location CreateOutputAssembly(Context cx)
         {
             if (cx.Extractor.OutputPath == null)
                 throw new InternalError("Attempting to create the output assembly in standalone extraction mode");
