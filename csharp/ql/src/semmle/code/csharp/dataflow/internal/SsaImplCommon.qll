@@ -338,18 +338,74 @@ private module Cached {
       ssaDefReachesEndOfBlock(bb, def, _)
     }
 
+    pragma[noinline]
+    private predicate varOccursOrIsDeadInBlock(Definition def, BasicBlock bb) {
+      defOccursInBlock(def, bb, _)
+      or
+      (
+        defOccursInBlock(def, getABasicBlockPredecessor(bb), _)
+        or
+        bb = getAMaybeLiveSuccessor(def, _)
+      ) and
+      not defOccursInBlock(def, bb, _) and
+      not ssaDefReachesEndOfBlock(bb, def, _)
+    }
+
+    private newtype DefBB =
+      MkDefBB(Definition def, BasicBlock bb) {
+        defOccursInBlock(def, getABasicBlockPredecessor(bb), _)
+        or
+        bb = getAMaybeLiveSuccessor(def, _)
+      }
+
+    pragma[noinline]
+    private predicate source(Definition def, DefBB source) {
+      exists(BasicBlock bb |
+        defOccursInBlock(def, getABasicBlockPredecessor(bb), _) and
+        source = MkDefBB(def, bb)
+      )
+    }
+
+    pragma[noinline]
+    private predicate sink(Definition def, DefBB sink) {
+      exists(BasicBlock bb |
+        varOccursOrIsDeadInBlock(def, bb) and
+        sink = MkDefBB(def, bb)
+      )
+    }
+
+    private predicate succ(DefBB pred, DefBB succ) {
+      exists(Definition def, BasicBlock bbPred |
+        pred = MkDefBB(def, bbPred) and
+        succ = MkDefBB(def, getAMaybeLiveSuccessor(def, bbPred))
+      )
+    }
+
+    private predicate succPlus(DefBB pred, DefBB succ) = fastTC(succ/2)(pred, succ)
+
+    pragma[noinline]
+    private predicate varBlockReachesPlus(Definition def, DefBB bb1, DefBB bb2) {
+      source(def, bb1) and
+      sink(def, bb2) and
+      succPlus(bb1, bb2)
+    }
+
     /**
      * Holds if `def` is accessed in basic block `bb1` (either a read or a write),
      * `bb2` is a transitive successor of `bb1`, `def` is live at the end of `bb1`,
      * and the underlying variable for `def` is neither read nor written in any block
-     * on the path between `bb1` and `bb2`.
+     * on a path between `bb1` and `bb2`.
+     *
+     * Moreover, either `def` is accessed in `bb2`, or `def` is no longer live in
+     * `bb2`.
      */
-    predicate varBlockReaches(Definition def, BasicBlock bb1, BasicBlock bb2) {
+    private predicate varBlockReaches(Definition def, BasicBlock bb1, BasicBlock bb2) {
       defOccursInBlock(def, bb1, _) and
-      bb2 = getABasicBlockSuccessor(bb1)
-      or
-      exists(BasicBlock mid | varBlockReaches(def, bb1, mid) |
-        bb2 = getAMaybeLiveSuccessor(def, mid)
+      exists(BasicBlock succ | succ = getABasicBlockSuccessor(bb1) |
+        varOccursOrIsDeadInBlock(def, succ) and
+        bb2 = succ
+        or
+        varBlockReachesPlus(def, MkDefBB(def, succ), MkDefBB(def, bb2))
       )
     }
 
@@ -363,6 +419,36 @@ private module Cached {
       varBlockReaches(def, bb1, bb2) and
       ssaRefRank(bb2, i2, def.getSourceVariable(), SsaRead()) = 1 and
       variableRead(bb2, i2, _, _)
+    }
+
+    /**
+     * Holds if `def` is accessed in basic block `bb` (either a read or a write),
+     * the underlying variable is redefined at `redef`, `redef` is in a transitive
+     * successor block of `bb`, and `def` is neither read nor written in any block
+     * on a path between `bb` and `redef`.
+     */
+    predicate defAdjacentRedef(Definition def, BasicBlock bb, Definition redef) {
+      exists(BasicBlock bb2, int j, SourceVariable v |
+        v = def.getSourceVariable() and
+        varBlockReaches(def, bb, bb2) and
+        redef.definesAt(v, bb2, j) and
+        1 = ssaRefRank(bb2, j, v, SsaDef())
+      )
+    }
+
+    pragma[noinline]
+    private predicate isDeadAt(Definition def, BasicBlock bb) {
+      varBlockReaches(def, _, bb) and
+      not defOccursInBlock(def, bb, _)
+    }
+
+    /**
+     * Holds if `def` is accessed in basic block `bb` (either a read or a write) and
+     * `bb` can reach the end of the enclosing callable, without passing through another
+     * read or write.
+     */
+    predicate defDead(Definition def, BasicBlock bb) {
+      exists(BasicBlock bb2 | varBlockReaches(def, bb, bb2) and isDeadAt(def, bb2))
     }
   }
 
@@ -454,18 +540,12 @@ private module Cached {
    */
   cached
   predicate lastRefExit(Definition def, BasicBlock bb, int i) {
-    exists(int rnk, SourceVariable v |
-      rnk = ssaDefRank(def, v, bb, i, _) and
-      rnk = maxSsaRefRank(bb, v)
-    |
+    exists(SourceVariable v | ssaDefRank(def, v, bb, i, _) = maxSsaRefRank(bb, v) |
       // Can reach exit directly
       bb instanceof ExitBasicBlock
       or
       // Can reach a block using one or more steps, where `def` is no longer live
-      exists(BasicBlock bb2 | varBlockReaches(def, bb, bb2) |
-        not defOccursInBlock(def, bb2, _) and
-        not ssaDefReachesEndOfBlock(bb2, def, _)
-      )
+      defDead(def, bb)
     )
   }
 
@@ -476,18 +556,16 @@ private module Cached {
    */
   cached
   predicate lastRefRedef(Definition def, BasicBlock bb, int i, Definition next) {
-    exists(int rnk, SourceVariable v, int j | rnk = ssaDefRank(def, v, bb, i, _) |
+    exists(int rnk, SourceVariable v | rnk = ssaDefRank(def, v, bb, i, _) |
       // Next reference to `v` inside `bb` is a write
-      next.definesAt(v, bb, j) and
-      rnk + 1 = ssaRefRank(bb, j, v, SsaDef())
+      exists(int j |
+        next.definesAt(v, bb, j) and
+        rnk + 1 = ssaRefRank(bb, j, v, SsaDef())
+      )
       or
       // Can reach a write using one or more steps
       rnk = maxSsaRefRank(bb, v) and
-      exists(BasicBlock bb2 |
-        varBlockReaches(def, bb, bb2) and
-        next.definesAt(v, bb2, j) and
-        1 = ssaRefRank(bb2, j, v, SsaDef())
-      )
+      defAdjacentRedef(def, bb, next)
     )
   }
 }
