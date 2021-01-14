@@ -4,6 +4,9 @@
 
 import javascript
 
+/**
+ * Provides default sources, sink, and sanitizers for reasoning about untrusted user input used in log entries.
+ */
 module LogInjection {
   /**
    * A data flow source for user input used in log entries.
@@ -41,44 +44,10 @@ module LogInjection {
   }
 
   /**
-   * An source node representing a logging mechanism.
-   */
-  class ConsoleSource extends DataFlow::SourceNode {
-    ConsoleSource() {
-      exists(DataFlow::SourceNode node |
-        node = this and this = DataFlow::moduleImport("console")
-        or
-        this = DataFlow::globalVarRef("console")
-      )
-    }
-  }
-
-  /**
-   * A call to a logging mechanism. For example, the call could be in the following forms:
-   * `console.log('hello')` or
-   *
-   * `let logger = console.log;`
-   * `logger('hello')` or
-   *
-   * `let logger = {info: console.log};`
-   * `logger.info('hello')`
-   */
-  class LoggingCall extends DataFlow::CallNode {
-    LoggingCall() {
-      exists(DataFlow::SourceNode node, string propName |
-        any(ConsoleSource console).getAPropertyRead() = node.getAPropertySource(propName) and
-        this = node.getAPropertyRead(propName).getACall()
-      )
-      or
-      this = any(LoggerCall call)
-    }
-  }
-
-  /**
    * An argument to a logging mechanism.
    */
   class LoggingSink extends Sink {
-    LoggingSink() { this = any(LoggingCall console).getAnArgument() }
+    LoggingSink() { this = any(LoggerCall console).getAMessageComponent() }
   }
 
   /**

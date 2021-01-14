@@ -18,12 +18,12 @@ arbitrary HTML may be included to spoof log entries.</p>
 User input should be suitably sanitized before it is logged.
 </p>
 <p>
-If the log entries are plain text then line breaks should be removed from user input, using
+If the log entries are in plain text then line breaks should be removed from user input, using
 <code>String.prototype.replace</code> or similar. Care should also be taken that user input is clearly marked
-in log entries, and that a malicious user cannot cause confusion in other ways.
+in log entries.
 </p>
 <p>
-For log entries that will be displayed in HTML, user input should be HTML encoded before being logged, to prevent forgery and
+For log entries that will be displayed in HTML, user input should be HTML-encoded before being logged, to prevent forgery and
 other forms of HTML injection.
 </p>
 
@@ -31,7 +31,7 @@ other forms of HTML injection.
 
 <example>
 <p>In the first example, a username, provided by the user, is logged using `console.info`. In
-the first case, it is logged without any sanitization. In the second case the username is used to build an error that is logged using `console.error`.
+the first case, it is logged without any sanitization. In the second case, the username is used to build an error that is logged using `console.error`.
 If a malicious user provides `username=Guest%0a[INFO]+User:+Admin%0a` as a username parameter, 
 the log entry will be splitted in two different lines, where the second line will be `[INFO]+User:+Admin`.
 </p>
