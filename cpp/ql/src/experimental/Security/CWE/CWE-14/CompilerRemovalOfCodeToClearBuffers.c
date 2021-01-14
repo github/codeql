@@ -1,4 +1,4 @@
-// BAD: the memset call will probably be optimized.
+// BAD: the memset call will probably be removed.
 void getPassword(void) {
   char pwd[64];
   if (GetPassword(pwd, sizeof(pwd))) {
