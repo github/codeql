@@ -18,8 +18,12 @@ namespace Semmle.Extraction.CSharp.Entities
             this.constructUnderlyingTupleType = constructUnderlyingTupleType;
         }
 
-        public static NamedType Create(Context cx, INamedTypeSymbol type) =>
-            NamedTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
+        public static NamedType Create(Context cx, INamedTypeSymbol type)
+        {
+            var ret = NamedTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
+            ret.symbol = type;
+            return ret;
+        }
 
         /// <summary>
         /// Creates a named type entity from a tuple type. Unlike `Create`, this
@@ -27,8 +31,12 @@ namespace Semmle.Extraction.CSharp.Entities
         /// For example, `(int, string)` will result in an entity for
         /// `System.ValueTuple<int, string>`.
         /// </summary>
-        public static NamedType CreateNamedTypeFromTupleType(Context cx, INamedTypeSymbol type) =>
-            UnderlyingTupleTypeFactory.Instance.CreateEntity(cx, (new SymbolEqualityWrapper(type), typeof(TupleType)), type);
+        public static NamedType CreateNamedTypeFromTupleType(Context cx, INamedTypeSymbol type)
+        {
+            var ret = UnderlyingTupleTypeFactory.Instance.CreateEntity(cx, (new SymbolEqualityWrapper(type), typeof(TupleType)), type);
+            ret.symbol = type;
+            return ret;
+        }
 
         public override bool NeedsPopulation => base.NeedsPopulation || symbol.TypeKind == TypeKind.Error;
 

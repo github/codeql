@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Microsoft.CodeAnalysis;
 
@@ -8,10 +9,11 @@ namespace Semmle.Extraction.CSharp.Entities
         private ArrayType(Context cx, IArrayTypeSymbol init)
             : base(cx, init)
         {
-            element = Create(cx, symbol.GetAnnotatedElementType());
+            elementLazy = new Lazy<AnnotatedType>(() => Create(cx, symbol.GetAnnotatedElementType()));
         }
 
-        private readonly AnnotatedType element;
+        private readonly Lazy<AnnotatedType> elementLazy;
+        private AnnotatedType element => elementLazy.Value;
 
         public int Rank => symbol.Rank;
 
@@ -36,7 +38,12 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";type");
         }
 
-        public static ArrayType Create(Context cx, IArrayTypeSymbol symbol) => ArrayTypeFactory.Instance.CreateEntityFromSymbol(cx, symbol);
+        public static ArrayType Create(Context cx, IArrayTypeSymbol symbol)
+        {
+            var ret = ArrayTypeFactory.Instance.CreateEntityFromSymbol(cx, symbol);
+            ret.symbol = symbol;
+            return ret;
+        }
 
         private class ArrayTypeFactory : ICachedEntityFactory<IArrayTypeSymbol, ArrayType>
         {

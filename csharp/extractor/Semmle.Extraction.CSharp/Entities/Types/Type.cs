@@ -331,10 +331,10 @@ namespace Semmle.Extraction.CSharp.Entities
         public override bool Equals(object obj)
         {
             var other = obj as Type;
-            return other?.GetType() == GetType() && SymbolEqualityComparer.IncludeNullability.Equals(other.symbol, symbol);
+            return other?.GetType() == GetType() && SymbolEqualityComparer.Default.Equals(other.symbol, symbol);
         }
 
-        public override int GetHashCode() => SymbolEqualityComparer.IncludeNullability.GetHashCode(symbol);
+        public override int GetHashCode() => SymbolEqualityComparer.Default.GetHashCode(symbol);
     }
 
     internal abstract class Type<T> : Type where T : ITypeSymbol
@@ -342,6 +342,10 @@ namespace Semmle.Extraction.CSharp.Entities
         protected Type(Context cx, T init)
             : base(cx, init) { }
 
-        public new T symbol => (T)base.symbol;
+        public new T symbol
+        {
+            get => (T)base.symbol;
+            protected set => base.symbol = value;
+        }
     }
 }
