@@ -1,8 +1,7 @@
 /**
  * @name Compiler Removal Of Code To Clear Buffers
- * @description --Using the memset function to clear private data as a final expression when working with a variable is potentially dangerous because the compiler can optimize this call.
- *              --For some compilers, optimization is also possible when using calls to free memory after the memset function.
- *              --To clear it, you need to use the RtlSecureZeroMemory or memset_s functions, or compilation flags that exclude optimization of memset calls (-fno-builtin-memset).
+ * @description Using <code>memset</code> the function to clear private data in a variable that has no subsequent use
+ *              is potentially dangerous because the compiler can remove the call.
  * @kind problem
  * @id cpp/compiler-removal-of-code-to-clear-buffers
  * @problem.severity warning
