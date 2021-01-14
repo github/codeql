@@ -18,7 +18,7 @@ import semmle.code.cpp.dataflow.DataFlow
  */
 class CompilerRemovaMemset extends FunctionCall {
   CompilerRemovaMemset() {
-    this.getTarget().hasName("memset") and
+    this.getTarget().hasGlobalOrStdName("memset") and
     exists(DataFlow::Node source, DataFlow::Node sink, LocalVariable isv, Expr exp |
       DataFlow::localFlow(source, sink) and
       this.getArgument(0) = isv.getAnAccess() and
