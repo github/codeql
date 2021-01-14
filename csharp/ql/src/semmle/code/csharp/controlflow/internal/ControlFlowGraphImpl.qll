@@ -1302,7 +1302,7 @@ module Statements {
   /** Gets a child of `cfe` that is in CFG scope `scope`. */
   pragma[noinline]
   private ControlFlowElement getAChildInScope(ControlFlowElement cfe, Callable scope) {
-    result = cfe.getAChild() and
+    result = [cfe.getAChild(), cfe.(AssignOperation).getExpandedAssignment()] and
     scope = result.getEnclosingCallable()
   }
 
