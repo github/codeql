@@ -377,7 +377,17 @@ private predicate entryBB(BasicBlock bb) {
  * an annotated exit node.
  */
 class AnnotatedExitBasicBlock extends BasicBlock {
-  AnnotatedExitBasicBlock() { this.getANode() instanceof ControlFlow::Nodes::AnnotatedExitNode }
+  private boolean isNormal;
+
+  AnnotatedExitBasicBlock() {
+    this.getANode() =
+      any(ControlFlow::Nodes::AnnotatedExitNode n |
+        if n.isNormal() then isNormal = true else isNormal = false
+      )
+  }
+
+  /** Holds if this block represents a normal exit. */
+  predicate isNormal() { isNormal = true }
 }
 
 /**

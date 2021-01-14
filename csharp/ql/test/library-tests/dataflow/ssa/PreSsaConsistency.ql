@@ -77,7 +77,7 @@ query predicate phiInconsistency(
         edef = phi.getAnUltimateDefinition()
       |
         edef.getADefinition() = adef and
-        phi.definesAt(bb, _) and
+        phi.definesAt(_, bb, _) and
         cfe = bb.getFirstNode().getElement()
       )
     )
@@ -88,7 +88,7 @@ query predicate phiInconsistency(
     |
       edef = phi.getAnUltimateDefinition() and
       edef.getADefinition() = adef and
-      phi.definesAt(bb, _) and
+      phi.definesAt(_, bb, _) and
       cfe = bb.getFirstNode().getElement() and
       not exists(PreSsa::Definition def |
         adef = def.getAPhiInput+().getDefinition() and
