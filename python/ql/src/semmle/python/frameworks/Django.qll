@@ -1676,7 +1676,7 @@ private module Django {
     DjangoViewClassDef() { this.getABase() = django::views::generic::View::subclassRef().asExpr() }
 
     /** Gets a function that could handle incoming requests, if any. */
-    DjangoRouteHandler getARouteHandler() {
+    DjangoRouteHandler getARequestHandler() {
       // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
       // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
       result = this.getAMethod() and
@@ -1725,7 +1725,7 @@ private module Django {
     DjangoRouteHandler() {
       exists(djangoRouteHandlerFunctionTracker(this))
       or
-      any(DjangoViewClassDef vc).getARouteHandler() = this
+      any(DjangoViewClassDef vc).getARequestHandler() = this
     }
 
     /** Gets the index of the request parameter. */
@@ -1746,13 +1746,30 @@ private module Django {
     /** Gets the data-flow node that is used as the argument for the view handler. */
     abstract DataFlow::Node getViewArg();
 
-    final override DjangoRouteHandler getARouteHandler() {
+    final override DjangoRouteHandler getARequestHandler() {
       djangoRouteHandlerFunctionTracker(result) = getViewArg()
       or
       exists(DjangoViewClassDef vc |
         getViewArg() = vc.asViewResult() and
-        result = vc.getARouteHandler()
+        result = vc.getARequestHandler()
       )
+    }
+  }
+
+  /** A request handler defined in a django view class, that has no known route. */
+  private class DjangoViewClassHandlerWithoutKnownRoute extends HTTP::Server::RequestHandler::Range,
+    DjangoRouteHandler {
+    DjangoViewClassHandlerWithoutKnownRoute() {
+      exists(DjangoViewClassDef vc | vc.getARequestHandler() = this) and
+      not exists(DjangoRouteSetup setup | setup.getARequestHandler() = this)
+    }
+
+    override Parameter getARoutedParameter() {
+      // Since we don't know the URL pattern, we simply mark all parameters as a routed
+      // parameter. This should give us more RemoteFlowSources but could also lead to
+      // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
+      result in [this.getArg(_), this.getArgByName(_)] and
+      not result = any(int i | i <= this.getRequestParamIndex() | this.getArg(i))
     }
   }
 
@@ -1787,14 +1804,14 @@ private module Django {
       // If we don't know the URL pattern, we simply mark all parameters as a routed
       // parameter. This should give us more RemoteFlowSources but could also lead to
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
-      exists(DjangoRouteHandler routeHandler | routeHandler = this.getARouteHandler() |
+      exists(DjangoRouteHandler routeHandler | routeHandler = this.getARequestHandler() |
         not exists(this.getUrlPattern()) and
         result in [routeHandler.getArg(_), routeHandler.getArgByName(_)] and
         not result = any(int i | i <= routeHandler.getRequestParamIndex() | routeHandler.getArg(i))
       )
       or
       exists(string name |
-        result = this.getARouteHandler().getArgByName(name) and
+        result = this.getARequestHandler().getArgByName(name) and
         exists(string match |
           match = this.getUrlPattern().regexpFind(pathRoutedParameterRegex(), _, _) and
           name = match.regexpCapture(pathRoutedParameterRegex(), 2)
@@ -1809,14 +1826,14 @@ private module Django {
       // If we don't know the URL pattern, we simply mark all parameters as a routed
       // parameter. This should give us more RemoteFlowSources but could also lead to
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
-      exists(DjangoRouteHandler routeHandler | routeHandler = this.getARouteHandler() |
+      exists(DjangoRouteHandler routeHandler | routeHandler = this.getARequestHandler() |
         not exists(this.getUrlPattern()) and
         result in [routeHandler.getArg(_), routeHandler.getArgByName(_)] and
         not result = any(int i | i <= routeHandler.getRequestParamIndex() | routeHandler.getArg(i))
       )
       or
       exists(DjangoRouteHandler routeHandler, DjangoRouteRegex regex |
-        routeHandler = this.getARouteHandler() and
+        routeHandler = this.getARequestHandler() and
         regex.getRouteSetup() = this
       |
         // either using named capture groups (passed as keyword arguments) or using
@@ -1888,10 +1905,13 @@ private module Django {
   // ---------------------------------------------------------------------------
   // HttpRequest taint modeling
   // ---------------------------------------------------------------------------
-  class DjangoRouteHandlerRequestParam extends django::http::request::HttpRequest::InstanceSource,
+  /** A parameter that will receive the django `HttpRequest` instance when a request handler is invoked. */
+  private class DjangoRequestHandlerRequestParam extends django::http::request::HttpRequest::InstanceSource,
     RemoteFlowSource::Range, DataFlow::ParameterNode {
-    DjangoRouteHandlerRequestParam() {
-      this.getParameter() = any(DjangoRouteSetup setup).getARouteHandler().getRequestParam()
+    DjangoRequestHandlerRequestParam() {
+      this.getParameter() = any(DjangoRouteSetup setup).getARequestHandler().getRequestParam()
+      or
+      this.getParameter() = any(DjangoViewClassHandlerWithoutKnownRoute setup).getRequestParam()
     }
 
     override string getSourceType() { result = "django.http.request.HttpRequest" }

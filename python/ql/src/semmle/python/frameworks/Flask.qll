@@ -275,10 +275,10 @@ private module FlaskModel {
       // parameter. This should give us more RemoteFlowSources but could also lead to
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
       not exists(this.getUrlPattern()) and
-      result = this.getARouteHandler().getArgByName(_)
+      result = this.getARequestHandler().getArgByName(_)
       or
       exists(string name |
-        result = this.getARouteHandler().getArgByName(name) and
+        result = this.getARequestHandler().getArgByName(name) and
         exists(string match |
           match = this.getUrlPattern().regexpFind(werkzeug_rule_re(), _, _) and
           name = match.regexpCapture(werkzeug_rule_re(), 4)
@@ -301,7 +301,7 @@ private module FlaskModel {
       result.asCfgNode() in [node.getArg(0), node.getArgByName("rule")]
     }
 
-    override Function getARouteHandler() { result.getADecorator().getAFlowNode() = node }
+    override Function getARequestHandler() { result.getADecorator().getAFlowNode() = node }
   }
 
   /**
@@ -318,7 +318,7 @@ private module FlaskModel {
       result.asCfgNode() in [node.getArg(0), node.getArgByName("rule")]
     }
 
-    override Function getARouteHandler() {
+    override Function getARequestHandler() {
       exists(DataFlow::Node view_func_arg, DataFlow::LocalSourceNode func_src |
         view_func_arg.asCfgNode() in [node.getArg(2), node.getArgByName("view_func")] and
         func_src.flowsTo(view_func_arg) and
@@ -484,7 +484,7 @@ private module FlaskModel {
   private class FlaskRouteHandlerReturn extends HTTP::Server::HttpResponse::Range, DataFlow::CfgNode {
     FlaskRouteHandlerReturn() {
       exists(Function routeHandler |
-        routeHandler = any(FlaskRouteSetup rs).getARouteHandler() and
+        routeHandler = any(FlaskRouteSetup rs).getARequestHandler() and
         node = routeHandler.getAReturnValueFlowNode()
       )
     }
