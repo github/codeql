@@ -14,7 +14,7 @@ import cpp
 import semmle.code.cpp.dataflow.DataFlow
 
 /**
- * A call to `memset` , for some local variable.
+ * A call to `memset` of the form `memset(ptr, value, num)`, for some local variable `ptr`.
  */
 class CompilerRemovaMemset extends FunctionCall {
   CompilerRemovaMemset() {
