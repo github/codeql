@@ -1010,6 +1010,10 @@ case @expr.kind of
 | 120 = @suppress_nullable_warning_expr
 | 121 = @namespace_access_expr
 /* C# 9.0 */
+| 122 = @lt_pattern_expr
+| 123 = @gt_pattern_expr
+| 124 = @le_pattern_expr
+| 125 = @ge_pattern_expr
 | 126 = @not_pattern_expr
 ;
 
@@ -1017,6 +1021,7 @@ case @expr.kind of
 @case = @case_stmt | @switch_case_expr;
 @pattern_match = @case | @is_expr;
 @unary_pattern_expr = @not_pattern_expr;
+@relational_pattern_expr = @gt_pattern_expr | @lt_pattern_expr | @ge_pattern_expr | @le_pattern_expr;
 
 @integer_literal_expr = @int_literal_expr | @long_literal_expr | @uint_literal_expr | @ulong_literal_expr;
 @real_literal_expr = @float_literal_expr | @double_literal_expr | @decimal_literal_expr;
