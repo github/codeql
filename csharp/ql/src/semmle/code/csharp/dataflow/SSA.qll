@@ -19,7 +19,7 @@ module Ssa {
       }
 
       /**
-       * Holds if the this field or any of the fields part of the qualifier
+       * Holds if this field or any of the fields part of the qualifier
        * are volatile.
        */
       predicate isVolatile() { this.(Field).isVolatile() }
@@ -605,7 +605,7 @@ module Ssa {
 
     /**
      * Holds if the `i`th node of basic block `bb` is a reference to `v`,
-     * either a read (when `k` is `Read()`) or an SSA definition (when `k`
+     * either a read (when `k` is `SsaRead()`) or an SSA definition (when `k`
      * is `SsaDef()`).
      */
     private predicate ssaRef(BasicBlock bb, int i, SourceVariable v, SsaRefKind k) {
