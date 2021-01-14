@@ -21,11 +21,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 case SyntaxKind.DefaultLiteralExpression:
                     return ExprKind.DEFAULT;
                 case SyntaxKind.NullLiteralExpression:
-                    info.Type = Entities.NullType.Create(info.Context);  // Don't use converted type.
+                    info.SetType(null);  // Don't use converted type.
                     return ExprKind.NULL_LITERAL;
             }
 
-            var type = info.Type.Type.symbol;
+            var type = info.Type?.Symbol;
             return GetExprKind(type, info.Node, info.Context);
         }
 
@@ -82,7 +82,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             var info = new ExpressionInfo(
                 cx,
-                new AnnotatedType(Entities.Type.Create(cx, type), NullableAnnotation.None),
+                AnnotatedTypeSymbol.CreateNotAnnotated(type),
                 location,
                 GetExprKind(type, null, cx),
                 parent,
@@ -97,7 +97,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             var info = new ExpressionInfo(
                 cx,
-                NullType.Create(cx),
+                null,
                 location,
                 ExprKind.NULL_LITERAL,
                 parent,

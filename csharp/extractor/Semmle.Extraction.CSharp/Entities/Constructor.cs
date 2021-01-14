@@ -42,16 +42,16 @@ namespace Semmle.Extraction.CSharp.Entities
             if (initializer == null)
                 return;
 
-            Type initializerType;
+            ITypeSymbol initializerType;
             var symbolInfo = Context.GetSymbolInfo(initializer);
 
             switch (initializer.Kind())
             {
                 case SyntaxKind.BaseConstructorInitializer:
-                    initializerType = Type.Create(Context, symbol.ContainingType.BaseType);
+                    initializerType = symbol.ContainingType.BaseType;
                     break;
                 case SyntaxKind.ThisConstructorInitializer:
-                    initializerType = ContainingType;
+                    initializerType = symbol.ContainingType;
                     break;
                 default:
                     Context.ModelError(initializer, "Unknown initializer");
@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             var initInfo = new ExpressionInfo(Context,
-                new AnnotatedType(initializerType, NullableAnnotation.None),
+                AnnotatedTypeSymbol.CreateNotAnnotated(initializerType),
                 Context.Create(initializer.ThisOrBaseKeyword.GetLocation()),
                 Kinds.ExprKind.CONSTRUCTOR_INIT,
                 this,

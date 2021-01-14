@@ -46,7 +46,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     // The expression may need to reference parameters in the getter.
                     // So we need to arrange that the expression is populated after the getter.
-                    Context.PopulateLater(() => Expression.CreateFromNode(new ExpressionNodeInfo(Context, expressionBody, this, 0) { Type = Type.Create(Context, symbol.GetAnnotatedType()) }));
+                    Context.PopulateLater(() => Expression.CreateFromNode(new ExpressionNodeInfo(Context, expressionBody, this, 0).SetType(symbol.GetAnnotatedType())));
                 }
             }
 
