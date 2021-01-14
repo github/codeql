@@ -1,8 +1,7 @@
 /**
  * @name Polynomial regular expression used on uncontrolled data
  * @description A regular expression that can require polynomial time
- *              to match user-provided values may be
- *              vulnerable to denial-of-service attacks.
+ *              to match may be vulnerable to denial-of-service attacks.
  * @kind path-problem
  * @problem.severity warning
  * @precision high
