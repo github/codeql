@@ -1011,9 +1011,7 @@ class ClassNode extends DataFlow::SourceNode {
   /**
    * Gets a decorator applied to this class.
    */
-  DataFlow::Node getADecorator() {
-    result = impl.getADecorator()
-  }
+  DataFlow::Node getADecorator() { result = impl.getADecorator() }
 }
 
 module ClassNode {

@@ -20,7 +20,10 @@ import semmle.javascript.RestrictedLocations
  * Holds if the `rel` attribute may be injected by an Angular2 directive.
  */
 predicate maybeInjectedByAngular() {
-  DataFlow::moduleMember("@angular/core", "HostBinding").getACall().getArgument(0).mayHaveStringValue("attr.rel")
+  DataFlow::moduleMember("@angular/core", "HostBinding")
+      .getACall()
+      .getArgument(0)
+      .mayHaveStringValue("attr.rel")
 }
 
 /**

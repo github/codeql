@@ -1320,9 +1320,7 @@ module DataFlow {
    * Certain framework models may need this node to model the behavior of
    * class and field decorators.
    */
-  DataFlow::Node fieldDeclarationNode(FieldDeclaration field) {
-    result = TPropNode(field)
-  }
+  DataFlow::Node fieldDeclarationNode(FieldDeclaration field) { result = TPropNode(field) }
 
   /**
    * Gets the data flow node corresponding the given l-value expression, if

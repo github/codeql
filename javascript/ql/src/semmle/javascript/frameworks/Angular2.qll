@@ -233,16 +233,12 @@ module Angular2 {
    */
   class PipeRefExpr extends Expr, @angular_pipe_ref {
     /** Gets the identifier node naming the pipe. */
-    Identifier getIdentifier() {
-      result = getChildExpr(0)
-    }
+    Identifier getIdentifier() { result = getChildExpr(0) }
 
     /** Gets the name of the pipe being referenced. */
     string getName() { result = getIdentifier().getName() }
 
-    override string getAPrimaryQlClass() {
-      result = "Angular2::PipeRefExpr"
-    }
+    override string getAPrimaryQlClass() { result = "Angular2::PipeRefExpr" }
   }
 
   /**
@@ -252,14 +248,10 @@ module Angular2 {
    * `f` is a `PipeRefExpr` and the call itself is a `PipeCallExpr`.
    */
   class PipeCallExpr extends CallExpr {
-    PipeCallExpr() {
-      getCallee() instanceof PipeRefExpr
-    }
+    PipeCallExpr() { getCallee() instanceof PipeRefExpr }
 
     /** Gets the name of the pipe being invoked, such as `f` in `x | f`. */
-    string getPipeName() {
-      result = getCallee().(PipeRefExpr).getName()
-    }
+    string getPipeName() { result = getCallee().(PipeRefExpr).getName() }
   }
 
   /**
@@ -267,17 +259,13 @@ module Angular2 {
    * to a property on the component class.
    */
   class TemplateVarRefExpr extends Expr {
-    TemplateVarRefExpr() {
-      this = any(TemplateTopLevel tl).getScope().getAVariable().getAnAccess()
-    }
+    TemplateVarRefExpr() { this = any(TemplateTopLevel tl).getScope().getAVariable().getAnAccess() }
   }
 
   /** The top-level containing an Angular expression. */
   class TemplateTopLevel extends TopLevel, @angular_template_toplevel {
     /** Gets the expression in this top-level. */
-    Expr getExpression() {
-      result = getChildStmt(0).(ExprStmt).getExpr()
-    }
+    Expr getExpression() { result = getChildStmt(0).(ExprStmt).getExpr() }
 
     /** Gets the data flow node representing the initialization of the given variable in this scope. */
     DataFlow::Node getVariableInit(string name) {
@@ -299,9 +287,7 @@ module Angular2 {
       )
     }
 
-    override string getValue() {
-      result = this.(Expr).getStringValue()
-    }
+    override string getValue() { result = this.(Expr).getStringValue() }
   }
 
   /**
@@ -365,18 +351,15 @@ module Angular2 {
     /**
      * Gets the `selector` property of the `@Component` decorator.
      */
-    string getSelector() {
-      decorator.getOptionArgument(0, "selector").mayHaveStringValue(result)
-    }
+    string getSelector() { decorator.getOptionArgument(0, "selector").mayHaveStringValue(result) }
 
     /** Gets an HTML element that instantiates this component. */
-    HTML::Element getATemplateInstantiation() {
-      result.getName() = getSelector()
-    }
+    HTML::Element getATemplateInstantiation() { result.getName() = getSelector() }
 
     /** Gets an argument that flows into the `name` field of this component. */
     DataFlow::Node getATemplateArgument(string name) {
-      result = getAttributeValueAsNode(getATemplateInstantiation().getAttributeByName("[" + name + "]"))
+      result =
+        getAttributeValueAsNode(getATemplateInstantiation().getAttributeByName("[" + name + "]"))
     }
 
     /**
@@ -393,14 +376,20 @@ module Angular2 {
     HTML::Element getATemplateElement() {
       result.getFile() = getTemplateFile()
       or
-      result.getParent*() = HTML::getHtmlElementFromExpr(decorator.getOptionArgument(0, "template").asExpr(), _)
+      result.getParent*() =
+        HTML::getHtmlElementFromExpr(decorator.getOptionArgument(0, "template").asExpr(), _)
     }
 
     /**
      * Gets an access to the given template variable within the template body of this component.
      */
     DataFlow::SourceNode getATemplateVarAccess(string name) {
-      result = getATemplateElement().getAnAttribute().getCodeInAttribute().(TemplateTopLevel).getAVariableUse(name)
+      result =
+        getATemplateElement()
+            .getAnAttribute()
+            .getCodeInAttribute()
+            .(TemplateTopLevel)
+            .getAVariableUse(name)
     }
   }
 
@@ -414,14 +403,10 @@ module Angular2 {
     }
 
     /** Gets the value of the `name` option passed to the `@Pipe` decorator. */
-    string getPipeName() {
-      decorator.getOptionArgument(0, "name").mayHaveStringValue(result)
-    }
+    string getPipeName() { decorator.getOptionArgument(0, "name").mayHaveStringValue(result) }
 
     /** Gets a reference to this pipe. */
-    DataFlow::Node getAPipeRef() {
-      result.asExpr().(PipeRefExpr).getName() = getPipeName()
-    }
+    DataFlow::Node getAPipeRef() { result.asExpr().(PipeRefExpr).getName() = getPipeName() }
   }
 
   private class ComponentSteps extends PreCallGraphStep {
@@ -464,28 +449,25 @@ module Angular2 {
    * attribute. There is no AST node for the implied for-of loop.
    */
   private class ForLoopAttribute extends HTML::Attribute {
-    ForLoopAttribute() {
-      getName() = "*ngFor"
-    }
+    ForLoopAttribute() { getName() = "*ngFor" }
 
     /** Gets a data-flow node holding the value being iterated over. */
-    DataFlow::Node getIterationDomain() {
-      result = getAttributeValueAsNode(this)
-    }
+    DataFlow::Node getIterationDomain() { result = getAttributeValueAsNode(this) }
 
     /** Gets the name of the variable holding the element of the current iteration. */
-    string getIteratorName() {
-      result = getValue().regexpCapture(" *let +(\\w+).*", 1)
-    }
+    string getIteratorName() { result = getValue().regexpCapture(" *let +(\\w+).*", 1) }
 
     /** Gets an HTML element in which the iterator variable is in scope. */
-    HTML::Element getAnElementInScope() {
-      result.getParent*() = getElement()
-    }
+    HTML::Element getAnElementInScope() { result.getParent*() = getElement() }
 
     /** Gets a reference to the iterator variable. */
     DataFlow::Node getAnIteratorAccess() {
-      result = getAnElementInScope().getAnAttribute().getCodeInAttribute().(TemplateTopLevel).getAVariableUse(getIteratorName())
+      result =
+        getAnElementInScope()
+            .getAnAttribute()
+            .getCodeInAttribute()
+            .(TemplateTopLevel)
+            .getAVariableUse(getIteratorName())
     }
   }
 
@@ -496,9 +478,7 @@ module Angular2 {
   private class ForLoopStep extends TaintTracking::AdditionalTaintStep {
     ForLoopAttribute attrib;
 
-    ForLoopStep() {
-      this = attrib.getIterationDomain()
-    }
+    ForLoopStep() { this = attrib.getIterationDomain() }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       pred = this and
@@ -528,14 +508,17 @@ module Angular2 {
   private class BuiltinPipeStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
     string name;
 
-    BuiltinPipeStep() {
-      this = getAPipeCall(name)
-    }
+    BuiltinPipeStep() { this = getAPipeCall(name) }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       succ = this and
       exists(int i | pred = getArgument(i) |
-        i = 0 and name = ["async", "i18nPlural", "json", "keyvalue", "lowercase", "uppercase", "titlecase", "slice"]
+        i = 0 and
+        name =
+          [
+            "async", "i18nPlural", "json", "keyvalue", "lowercase", "uppercase", "titlecase",
+            "slice"
+          ]
         or
         i = 1 and name = "date" // date format string
       )
@@ -551,9 +534,7 @@ module Angular2 {
    * A `<mat-table>` element.
    */
   class MatTableElement extends HTML::Element {
-    MatTableElement() {
-      getName() = "mat-table"
-    }
+    MatTableElement() { getName() = "mat-table" }
 
     /** Gets the data flow node corresponding to the `[dataSource]` attribute. */
     DataFlow::Node getDataSourceNode() {
@@ -566,13 +547,20 @@ module Angular2 {
     HTML::Element getATableCell(string rowBinding) {
       result.getName() = "mat-cell" and
       result.getParent+() = this and
-      rowBinding = result.getAttributeByName("*matCellDef").getValue().regexpCapture(" *let +(\\w+).*", 1)
+      rowBinding =
+        result.getAttributeByName("*matCellDef").getValue().regexpCapture(" *let +(\\w+).*", 1)
     }
 
     /** Gets a data flow node that refers to one of the rows from the data source. */
     DataFlow::Node getARowRef() {
       exists(string rowBinding |
-        result = getATableCell(rowBinding).getChild*().getAnAttribute().getCodeInAttribute().(TemplateTopLevel).getAVariableUse(rowBinding)
+        result =
+          getATableCell(rowBinding)
+              .getChild*()
+              .getAnAttribute()
+              .getCodeInAttribute()
+              .(TemplateTopLevel)
+              .getAVariableUse(rowBinding)
       )
     }
   }
@@ -590,9 +578,7 @@ module Angular2 {
   private class MatTableTaintStep extends TaintTracking::AdditionalTaintStep {
     MatTableElement table;
 
-    MatTableTaintStep() {
-      this = table.getDataSourceNode()
-    }
+    MatTableTaintStep() { this = table.getDataSourceNode() }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       pred = this and
@@ -614,7 +600,8 @@ module Angular2 {
   /** A taint step into the data array of a `MatTableDataSource` instance. */
   private class MatTableDataSourceStep extends TaintTracking::AdditionalTaintStep, DataFlow::NewNode {
     MatTableDataSourceStep() {
-      this = DataFlow::moduleMember("@angular/material/table", "MatTableDataSource").getAnInstantiation()
+      this =
+        DataFlow::moduleMember("@angular/material/table", "MatTableDataSource").getAnInstantiation()
     }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {

@@ -29,9 +29,7 @@ module HTML {
   }
 
   /** Gets `i`th root node of the HTML fragment embedded in the given expression, if any. */
-  Element getHtmlElementFromExpr(Expr e, int i) {
-    xml_element_parent_expression(result, e, i)
-  }
+  Element getHtmlElementFromExpr(Expr e, int i) { xml_element_parent_expression(result, e, i) }
 
   /**
    * An HTML element.
@@ -127,9 +125,7 @@ module HTML {
     /**
      * Gets the inline script of this attribute, if any.
      */
-    CodeInAttribute getCodeInAttribute() {
-      toplevel_parent_xml_node(result, this)
-    }
+    CodeInAttribute getCodeInAttribute() { toplevel_parent_xml_node(result, this) }
 
     /**
      * Gets the element to which this attribute belongs.

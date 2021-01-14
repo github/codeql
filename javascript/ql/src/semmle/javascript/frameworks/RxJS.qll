@@ -1,15 +1,14 @@
 /**
  * Provides taint steps modeling flow through `rxjs` Observable objects.
  */
+
 private import javascript
 
 /**
  * A step `x -> y` in `x.subscribe(y => ...)`, modeling flow out of an rxjs Observable.
  */
 private class RxJsSubscribeStep extends TaintTracking::AdditionalTaintStep, DataFlow::MethodCallNode {
-  RxJsSubscribeStep() {
-    getMethodName() = "subscribe"
-  }
+  RxJsSubscribeStep() { getMethodName() = "subscribe" }
 
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     pred = getReceiver() and
@@ -50,9 +49,7 @@ private predicate isIdentityPipe(DataFlow::CallNode pipe) {
  * A step in or out of the map callback in a call of form `x.pipe(map(y => ...))`.
  */
 private class RxJsPipeMapStep extends TaintTracking::AdditionalTaintStep, DataFlow::MethodCallNode {
-  RxJsPipeMapStep() {
-    getMethodName() = "pipe"
-  }
+  RxJsPipeMapStep() { getMethodName() = "pipe" }
 
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     pred = getReceiver() and
