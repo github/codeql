@@ -907,6 +907,16 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   kwOverflowStoreStep(nodeFrom, c, nodeTo)
   or
   jsonLoadsStoreStep(nodeFrom, c, nodeTo)
+  or
+  recursiveStoreStep(nodeFrom, c, nodeTo)
+}
+
+predicate recursiveStoreStep(Node nodeFrom, Content c, Node nodeTo) {
+  exists(Node readFrom |
+    nonRecursiveReadStep(readFrom, _, nodeTo) and
+    nodeFrom = TRecursiveElement(readFrom) and
+    c instanceof RecursiveElementContent
+  )
 }
 
 /** Data flows from an element of a list to the list. */
@@ -1039,14 +1049,14 @@ predicate jsonLoadsStoreStep(CfgNode nodeFrom, Content c, Node nodeTo) {
     call.getFunction() = json and
     nodeFrom.asCfgNode() = call.getArg(0) and
     nodeTo.asCfgNode() = call and
-    c instanceof ListElementContent
+    c instanceof RecursiveElementContent
   )
 }
 
 /**
  * Holds if data can flow from `nodeFrom` to `nodeTo` via a read of content `c`.
  */
-predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
+predicate nonRecursiveReadStep(Node nodeFrom, Content c, Node nodeTo) {
   subscriptReadStep(nodeFrom, c, nodeTo)
   or
   iterableUnpackingReadStep(nodeFrom, c, nodeTo)
@@ -1058,6 +1068,17 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   attributeReadStep(nodeFrom, c, nodeTo)
   or
   kwUnpackReadStep(nodeFrom, c, nodeTo)
+}
+
+predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
+  nonRecursiveReadStep(nodeFrom, c, nodeTo)
+  or
+  nonRecursiveReadStep(nodeFrom, _, _) and
+  nodeTo = TRecursiveElement(nodeFrom) and
+  c instanceof RecursiveElementContent
+  or
+  nonRecursiveReadStep(nodeFrom, _, nodeTo) and
+  c instanceof RecursiveElementContent
 }
 
 /** Data flows from a sequence to a subscript of the sequence. */
@@ -1339,7 +1360,7 @@ module IterableUnpacking {
    */
   predicate iterableUnpackingForReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
     exists(ForTarget target |
-      nodeFrom.asExpr() = target.getSource() and
+      nodeFrom.getNode().getNode() = target.getSource() and
       target instanceof SequenceNode and
       nodeTo = TIterableSequenceNode(target)
     ) and
@@ -1406,7 +1427,7 @@ module IterableUnpacking {
    *
    *    c) If the element is a starred variable, with control-flow node `v`, `toNode` is `TIterableElement(v)`.
    */
-  predicate iterableUnpackingElementReadStep(Node nodeFrom, Content c, Node nodeTo) {
+  predicate iterableUnpackingElementReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
     exists(
       UnpackingAssignmentSequenceTarget target, int index, ControlFlowNode element, int starIndex
     |
@@ -1415,7 +1436,7 @@ module IterableUnpacking {
       not exists(target.getAnElement().(StarredNode)) and
       starIndex = -1
     |
-      nodeFrom.asCfgNode() = target and
+      nodeFrom.getNode() = target and
       element = target.getElement(index) and
       (
         if starIndex = -1 or index < starIndex
@@ -1438,7 +1459,9 @@ module IterableUnpacking {
             nodeTo = TIterableElementNode(element)
           else
             // Step 5a
-            nodeTo.asVar().getDefinition().(MultiAssignmentDefinition).getDefiningNode() = element
+            exists(EssaVariable var | nodeTo = TEssaNode(var) |
+              var.getDefinition().(MultiAssignmentDefinition).getDefiningNode() = element
+            )
       )
     )
   }
@@ -1516,10 +1539,10 @@ predicate popReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
   )
 }
 
-predicate forReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
+predicate forReadStep(CfgNode nodeFrom, Content c, EssaNode nodeTo) {
   exists(ForTarget target |
-    nodeFrom.asExpr() = target.getSource() and
-    nodeTo.asVar().(EssaNodeDefinition).getDefiningNode() = target
+    nodeFrom.getNode().getNode() = target.getSource() and
+    nodeTo.getVar().(EssaNodeDefinition).getDefiningNode() = target
   ) and
   (
     c instanceof ListElementContent
@@ -1611,4 +1634,4 @@ predicate isImmutableOrUnobservable(Node n) { none() }
 int accessPathLimit() { result = 5 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { none() }
+predicate nodeIsHidden(Node n) { n instanceof RecursiveElement }

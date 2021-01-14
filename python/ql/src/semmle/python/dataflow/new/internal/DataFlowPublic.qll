@@ -69,7 +69,11 @@ newtype TNode =
    * A synthetic node representing that there may be an iterable element
    * for `consumer` to consume.
    */
-  TIterableElementNode(UnpackingAssignmentTarget consumer)
+  TIterableElementNode(UnpackingAssignmentTarget consumer) or
+  /**
+   * A synthethis node for transferring recursive content.
+   */
+  TRecursiveElement(Node node) { nonRecursiveReadStep(node, _, _) }
 
 /** Helper for `Node::getEnclosingCallable`. */
 private DataFlowCallable getCallableScope(Scope s) {
@@ -401,6 +405,18 @@ class IterableElementNode extends Node, TIterableElementNode {
   override Location getLocation() { result = consumer.getLocation() }
 }
 
+class RecursiveElement extends Node, TRecursiveElement {
+  Node consumer;
+
+  RecursiveElement() { this = TRecursiveElement(consumer) }
+
+  override string toString() { result = "RecursiveElement" }
+
+  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+
+  override Location getLocation() { result = consumer.getLocation() }
+}
+
 /**
  * A node that controls whether other nodes are evaluated.
  */
@@ -470,7 +486,9 @@ newtype TContent =
   /** An element of a dictionary under any key. */
   TDictionaryElementAnyContent() or
   /** An object attribute. */
-  TAttributeContent(string attr) { attr = any(Attribute a).getName() }
+  TAttributeContent(string attr) { attr = any(Attribute a).getName() } or
+  /** All recursive elements of a collection */
+  TRecursiveElementContent()
 
 class AbstractedContent = TListElementContent or TSetElementContent or TDictionaryElementAnyContent;
 
@@ -533,4 +551,9 @@ class AttributeContent extends TAttributeContent, Content {
   string getAttribute() { result = attr }
 
   override string toString() { result = "Attribute " + attr }
+}
+
+/** All recursive elements of a collection. */
+class RecursiveElementContent extends TRecursiveElementContent, Content {
+  override string toString() { result = "All recursive elements" }
 }
