@@ -31,6 +31,11 @@ module PolynomialReDoS {
    */
   abstract class Sink extends DataFlow::Node {
     abstract RegExpTerm getRegExp();
+
+    /**
+     * Gets the node to highlight in the alert message.
+     */
+    DataFlow::Node getHighlight() { result = this }
   }
 
   /**
@@ -54,9 +59,10 @@ module PolynomialReDoS {
    */
   class PolynomialBackTrackingTermUse extends Sink {
     PolynomialBackTrackingTerm term;
+    DataFlow::MethodCallNode mcn;
 
     PolynomialBackTrackingTermUse() {
-      exists(DataFlow::MethodCallNode mcn, DataFlow::Node regexp, string name |
+      exists(DataFlow::Node regexp, string name |
         term.getRootTerm() = RegExp::getRegExpFromNode(regexp)
       |
         this = mcn.getArgument(0) and
@@ -77,6 +83,8 @@ module PolynomialReDoS {
     }
 
     override RegExpTerm getRegExp() { result = term }
+
+    override DataFlow::Node getHighlight() { result = mcn }
   }
 
   /**

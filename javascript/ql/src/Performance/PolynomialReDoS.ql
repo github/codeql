@@ -16,13 +16,13 @@ import semmle.javascript.security.performance.PolynomialReDoS::PolynomialReDoS
 import semmle.javascript.security.performance.SuperlinearBackTracking
 import DataFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode
 where
   cfg.hasFlowPath(source, sink) and
+  sinkNode = sink.getNode() and
   not (
     source.getNode().(Source).getKind() = "url" and
-    sink.getNode().(Sink).getRegExp().(PolynomialBackTrackingTerm).isAtEndLine()
+    sinkNode.getRegExp().(PolynomialBackTrackingTerm).isAtEndLine()
   )
-select sink.getNode(), source, sink, "This expensive $@ use depends on $@.",
-  sink.getNode().(Sink).getRegExp(), "regular expression", source.getNode(),
-  source.getNode().(Source).describe()
+select sinkNode.getHighlight(), source, sink, "This expensive $@ use depends on $@.",
+  sinkNode.getRegExp(), "regular expression", source.getNode(), source.getNode().(Source).describe()
