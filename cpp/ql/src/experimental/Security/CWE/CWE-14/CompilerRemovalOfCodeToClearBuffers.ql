@@ -98,10 +98,10 @@ class CompilerRemovaMemset extends FunctionCall {
     exists(Compilation c |
       c.getAFileCompiled() = this.getFile() and
       (
-        c.getArgument(2).toString().matches("%gcc%") or
-        c.getArgument(2).toString().matches("%g++%") or
-        c.getArgument(2).toString().matches("%clang%") or
-        c.getArgument(2).toString() = "--force-recompute"
+        c.getArgument(2).matches("%gcc%") or
+        c.getArgument(2).matches("%g++%") or
+        c.getArgument(2).matches("%clang%") or
+        c.getArgument(2) = "--force-recompute"
       )
     )
   }
