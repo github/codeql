@@ -1,15 +1,21 @@
-# go.mongodb.org/mongo-driver v1.3.2
+# github.com/golang/snappy v0.0.2
 ## explicit
-go.mongodb.org/mongo-driver
-# github.com/couchbase/gocb/v2 v2.2.0
-## explicit
-github.com/couchbase/gocb/v2
+github.com/golang/snappy
 # github.com/google/uuid v1.1.4
 ## explicit
 github.com/google/uuid
 # github.com/opentracing/opentracing-go v1.2.0
 ## explicit
 github.com/opentracing/opentracing-go
+# github.com/pkg/errors v0.9.1
+## explicit
+github.com/pkg/errors
+# golang.org/x/net v0.0.0-20201224014010-6772e930b67b
+## explicit
+golang.org/x/net
+# golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
+## explicit
+golang.org/x/sync
 # gopkg.in/couchbase/gocb.v1 v1.6.7
 ## explicit
 gopkg.in/couchbase/gocb.v1

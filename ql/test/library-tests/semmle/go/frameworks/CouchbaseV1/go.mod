@@ -1,12 +1,14 @@
-module main
-
 go 1.14
 
+module test
+
 require (
-	github.com/couchbase/gocb/v2 v2.2.0
+	github.com/golang/snappy v0.0.2 // indirect
 	github.com/google/uuid v1.1.4 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
-	go.mongodb.org/mongo-driver v1.3.2
+	github.com/pkg/errors v0.9.1 // indirect
+	golang.org/x/net v0.0.0-20201224014010-6772e930b67b // indirect
+	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9 // indirect
 	gopkg.in/couchbase/gocb.v1 v1.6.7
 	gopkg.in/couchbase/gocbcore.v7 v7.1.18 // indirect
 	gopkg.in/couchbaselabs/gocbconnstr.v1 v1.0.4 // indirect
