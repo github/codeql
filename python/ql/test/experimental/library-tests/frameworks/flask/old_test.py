@@ -11,7 +11,7 @@ from flask.views import MethodView
 
 class MyView(MethodView):
 
-    def get(self, user_id): # $ MISSING: requestHandler
+    def get(self, user_id): # $ requestHandler
         if user_id is None:
             # return a list of users
             pass
