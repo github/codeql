@@ -18,10 +18,7 @@ module Ssa {
         this instanceof Property
       }
 
-      /**
-       * Holds if this field or any of the fields part of the qualifier
-       * are volatile.
-       */
+      /** Holds if this is a volatile field. */
       predicate isVolatile() { this.(Field).isVolatile() }
     }
 
