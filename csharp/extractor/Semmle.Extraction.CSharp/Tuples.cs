@@ -111,6 +111,11 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("compilations", compilation, cwd);
         }
 
+        internal static void compilation_assembly(this TextWriter trapFile, Compilation compilation, Assembly assembly)
+        {
+            trapFile.WriteTuple("compilation_assembly", compilation, assembly);
+        }
+
         internal static void compiler_generated(this TextWriter trapFile, IEntity entity)
         {
             trapFile.WriteTuple("compiler_generated", entity);

@@ -10,14 +10,11 @@ namespace Semmle.Extraction
         private readonly IAssemblySymbol assembly;
         private readonly string filepath;
 
-        public AssemblyScope(IAssemblySymbol symbol, string path, bool isOutput)
+        public AssemblyScope(IAssemblySymbol symbol, string path)
         {
             assembly = symbol;
             filepath = path;
-            IsGlobalScope = isOutput;
         }
-
-        public bool IsGlobalScope { get; }
 
         public bool InFileScope(string path) => path == filepath;
 
