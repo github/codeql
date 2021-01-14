@@ -8,20 +8,18 @@ import go
  * Provides models of commonly used functions in the official Couchbase Go SDK library.
  */
 module Couchbase {
-  /** Gets a package name for v1 of the official Couchbase Go SDK library. */
-  string packagePathV1() { result = modulePath() + ["/", "."] + "v1" }
-
-  /** Gets a package name for v2 of the official Couchbase Go SDK library. */
-  string packagePathV2() {
-    result = modulePath() or
-    result = modulePath() + ["/", "."] + "v2"
-  }
-
-  /** Gets a module path for the official Couchbase Go SDK library. */
-  private string modulePath() {
-    result in [
-        "gopkg.in/couchbase/gocb", "github.com/couchbase/gocb", "github.com/couchbaselabs/gocb"
-      ]
+  /**
+   * Gets a package path for the official Couchbase Go SDK library.
+   *
+   * Note that v1 and v2 have different APIs, but the names are disjoint so there is no need to
+   * distinguish between them.
+   */
+  bindingset[result]
+  string packagePath() {
+    result =
+      package([
+          "gopkg.in/couchbase/gocb", "github.com/couchbase/gocb", "github.com/couchbaselabs/gocb"
+        ], "")
   }
 
   /**
@@ -42,7 +40,7 @@ module Couchbase {
             "Profile", "ReadOnly", "ScanCap", "Timeout"
           ]
       |
-        this.hasQualifiedName(packagePathV1(), queryTypeName, methodName)
+        this.hasQualifiedName(packagePath(), queryTypeName, methodName)
       )
     }
 
@@ -53,7 +51,7 @@ module Couchbase {
 
   private class QueryFromN1qlStatementV1 extends TaintTracking::FunctionModel {
     QueryFromN1qlStatementV1() {
-      this.hasQualifiedName(packagePathV1(), ["NewAnalyticsQuery", "NewN1qlQuery"])
+      this.hasQualifiedName(packagePath(), ["NewAnalyticsQuery", "NewN1qlQuery"])
     }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
@@ -74,7 +72,7 @@ module Couchbase {
       exists(Method meth, string structName, string methodName |
         structName in ["Bucket", "Cluster"] and
         methodName in ["ExecuteN1qlQuery", "ExecuteAnalyticsQuery"] and
-        meth.hasQualifiedName(packagePathV1(), structName, methodName) and
+        meth.hasQualifiedName(packagePath(), structName, methodName) and
         this = meth.getACall().getArgument(0)
       )
     }
@@ -93,7 +91,7 @@ module Couchbase {
       exists(Method meth, string structName, string methodName |
         structName in ["Cluster", "Scope"] and
         methodName in ["AnalyticsQuery", "Query"] and
-        meth.hasQualifiedName(packagePathV2(), structName, methodName) and
+        meth.hasQualifiedName(packagePath(), structName, methodName) and
         this = meth.getACall().getArgument(0)
       )
     }
