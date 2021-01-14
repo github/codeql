@@ -15,7 +15,7 @@ void getPassword(void) {
   }
   memset_s(pwd, 0, sizeof(pwd));
 }
-// GOOD: in this case the memset will not be optimized.
+// GOOD: in this case the memset will not be removed.
 void getPassword(void) {
   char pwd[64];
   if (retrievePassword(pwd, sizeof(pwd))) {
