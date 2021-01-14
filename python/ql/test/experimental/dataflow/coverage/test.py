@@ -596,8 +596,8 @@ def test_iterated_unpacking_assignment_conversion():
     ((a1, *a2), *b) = tt
     SINK(a1)
     SINK_F(a2)  # The list itself is not tainted
-    SINK_F(a2[0])
-    SINK(a2[1])  # Flow not found since `*a2` does not know to read from index 2
+    SINK_F(a2[0])  # FP here due to list abstraction
+    SINK(a2[1])
     SINK_F(b)  # The list itself is not tainted
     SINK_F(b[0])
 
@@ -605,8 +605,8 @@ def test_iterated_unpacking_assignment_conversion():
     [(a1, *a2), *b] = tt
     SINK(a1)
     SINK_F(a2)  # The list itself is not tainted
-    SINK_F(a2[0])
-    SINK(a2[1])  # Flow not found since `*a2` does not know to read from index 2
+    SINK_F(a2[0])  # FP here due to list abstraction
+    SINK(a2[1])
     SINK_F(b)  # The list itself is not tainted
     SINK_F(b[0])  # Expected FP here due to list abstraction
 

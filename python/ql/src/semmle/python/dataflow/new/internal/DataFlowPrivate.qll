@@ -1173,7 +1173,7 @@ module unpackinAssignment {
   }
 
   predicate unpackingAssignmentElementReadStep(Node nodeFrom, Content c, Node nodeTo) {
-    exists(UnpackingAssignmentTarget target, int index, ControlFlowNode element |
+    exists(UnpackingAssignmentTarget target, int index, ControlFlowNode element, boolean precise |
       target instanceof SequenceNode
     |
       nodeFrom.asCfgNode() = target and
@@ -1183,16 +1183,24 @@ module unpackinAssignment {
         c instanceof ListElementContent
         or
         target instanceof TupleNode and
-        c.(TupleElementContent).getIndex() = index
+        if precise = true
+        then c.(TupleElementContent).getIndex() = index
+        else c instanceof TupleElementContent // This could get big if big tuples exist
       ) and
       (
         if element instanceof SequenceNode
-        then nodeTo = TIterableSequence(element)
+        then
+          nodeTo = TIterableSequence(element) and
+          precise = true
         else
           if element.getNode() instanceof Starred
-          then nodeTo = TIterableElement(element)
-          else
-            nodeTo.asVar().getDefinition().(MultiAssignmentDefinition).getDefiningNode() = element
+          then
+            nodeTo = TIterableElement(element) and
+            precise = false
+          else (
+            nodeTo.asVar().getDefinition().(MultiAssignmentDefinition).getDefiningNode() = element and
+            precise = true
+          )
       )
     )
   }
