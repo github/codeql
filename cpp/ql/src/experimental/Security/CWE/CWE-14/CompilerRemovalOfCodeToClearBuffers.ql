@@ -29,7 +29,7 @@ class CompilerRemovaMemset extends FunctionCall {
   }
 
   predicate isExistsAllocForThisVariable() {
-    exists(FunctionCall alloc, Variable v |
+    exists(AllocationExpr alloc, Variable v |
       alloc = v.getAnAssignedValue() and
       this.getArgument(0) = v.getAnAccess() and
       alloc.getASuccessor+() = this
