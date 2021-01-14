@@ -880,6 +880,9 @@ class FunctionPointerType extends Type, Parameterizable, @function_pointer_type 
   /** Gets an unmanaged calling convention. */
   Type getAnUnmanagedCallingConvention() { result = getUnmanagedCallingConvention(_) }
 
+  /** Gets the annotated return type of this function pointer type. */
+  AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
+
   override string getAPrimaryQlClass() { result = "FunctionPointerType" }
 }
 

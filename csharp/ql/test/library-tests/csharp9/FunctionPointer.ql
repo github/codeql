@@ -1,7 +1,7 @@
 import csharp
 
 query predicate type(FunctionPointerType fpt, string returnType, string callingConvention) {
-  fpt.getReturnType().toString() = returnType and
+  fpt.getAnnotatedReturnType().toString() = returnType and
   fpt.getCallingConvention().toString() = callingConvention
 }
 
@@ -10,7 +10,7 @@ query predicate unmanagedCallingConvention(FunctionPointerType fpt, int i, strin
 }
 
 query predicate parameter(FunctionPointerType fpt, int i, Parameter p, string t) {
-  fpt.getParameter(i) = p and p.getType().toString() = t
+  fpt.getParameter(i) = p and p.getAnnotatedType().toString() = t
 }
 
 query predicate invocation(FunctionPointerCall fpc) { any() }
