@@ -12,7 +12,8 @@ import go
 /** Provides models of commonly used functions in the `golang.org/x/net/html` subpackage. */
 module XNetHtml {
   /** Gets the package name `golang.org/x/net/html`. */
-  string packagePath() { result = "golang.org/x/net/html" }
+  bindingset[result]
+  string packagePath() { result = package("golang.org/x/net", "html") }
 
   private class EscapeString extends HtmlEscapeFunction, TaintTracking::FunctionModel {
     EscapeString() { this.hasQualifiedName(packagePath(), "EscapeString") }

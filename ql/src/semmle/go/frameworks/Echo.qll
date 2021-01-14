@@ -6,7 +6,7 @@
 import go
 
 private module Echo {
-  /** Gets an Echo package name. */
+  /** Gets the package name `github.com/labstack/echo`. */
   bindingset[result]
   private string packagePath() { result = package("github.com/labstack/echo", "") }
 

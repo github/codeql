@@ -6,7 +6,8 @@ import go
 
 private module Gin {
   /** Gets the package name `github.com/gin-gonic/gin`. */
-  private string packagePath() { result = "github.com/gin-gonic/gin" }
+  bindingset[result]
+  string packagePath() { result = package("github.com/gin-gonic/gin", "") }
 
   /**
    * Data from a `Context` struct, considered as a source of untrusted flow.

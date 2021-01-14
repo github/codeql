@@ -6,7 +6,7 @@ import go
  * Provides models of commonly used functions in the `k8s.io/api/core/v1` package.
  */
 module K8sIoApiCoreV1 {
-  /** Gets the package name. */
+  /** Gets the package name `k8s.io/api/core/v1`. */
   bindingset[result]
   string packagePath() { result = package("k8s.io/api", "core/v1") }
 

@@ -44,7 +44,10 @@ module EmailData {
   }
 
   /** Gets the package name `github.com/sendgrid/sendgrid-go/helpers/mail`. */
-  private string sendgridMail() { result = "github.com/sendgrid/sendgrid-go/helpers/mail" }
+  bindingset[result]
+  private string sendgridMail() {
+    result = package("github.com/sendgrid/sendgrid-go", "helpers/mail")
+  }
 
   private class NewContent extends TaintTracking::FunctionModel {
     NewContent() {

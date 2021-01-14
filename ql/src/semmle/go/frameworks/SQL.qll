@@ -83,8 +83,7 @@ module SQL {
       SquirrelQueryString() {
         exists(Function fn |
           exists(string sq |
-            sq = "github.com/Masterminds/squirrel" or
-            sq = "github.com/lann/squirrel"
+            sq = package(["github.com/Masterminds", "github.com/lann"], "squirrel")
           |
             // first argument to `squirrel.Expr`
             fn.hasQualifiedName(sq, "Expr")
@@ -207,7 +206,7 @@ module SQL {
   private class SqlxSink extends SQL::QueryString::Range {
     SqlxSink() {
       exists(Method meth, string name, int n |
-        meth.hasQualifiedName("github.com/jmoiron/sqlx", ["DB", "Tx"], name) and
+        meth.hasQualifiedName(package("github.com/jmoiron", "sqlx"), ["DB", "Tx"], name) and
         this = meth.getACall().getArgument(n)
       |
         name = ["Select", "Get"] and n = 1
@@ -219,7 +218,7 @@ module SQL {
 }
 
 module Gorm {
-  /** Gets the package name. */
+  /** Gets the package name for Gorm. */
   bindingset[result]
   string packagePath() {
     result = package(["github.com/jinzhu/gorm", "github.com/go-gorm/gorm", "gorm.io/gorm"], "")

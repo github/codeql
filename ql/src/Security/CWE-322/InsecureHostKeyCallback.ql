@@ -14,14 +14,14 @@ import DataFlow::PathGraph
 /** The `ssh.InsecureIgnoreHostKey` function, which allows connecting to any host regardless of its host key. */
 class InsecureIgnoreHostKey extends Function {
   InsecureIgnoreHostKey() {
-    this.hasQualifiedName("golang.org/x/crypto/ssh", "InsecureIgnoreHostKey")
+    this.hasQualifiedName(CryptoSsh::packagePath(), "InsecureIgnoreHostKey")
   }
 }
 
 /** An SSH host-key checking function. */
 class HostKeyCallbackFunc extends DataFlow::Node {
   HostKeyCallbackFunc() {
-    exists(NamedType nt | nt.hasQualifiedName("golang.org/x/crypto/ssh", "HostKeyCallback") |
+    exists(NamedType nt | nt.hasQualifiedName(CryptoSsh::packagePath(), "HostKeyCallback") |
       getType().getUnderlyingType() = nt.getUnderlyingType()
     ) and
     // Restrict possible sources to either function definitions or
@@ -66,7 +66,7 @@ class HostKeyCallbackAssignmentConfig extends DataFlow::Configuration {
    */
   predicate isSink(DataFlow::Node sink, Write write) {
     exists(Field f |
-      f.hasQualifiedName("golang.org/x/crypto/ssh", "ClientConfig", "HostKeyCallback") and
+      f.hasQualifiedName(CryptoSsh::packagePath(), "ClientConfig", "HostKeyCallback") and
       write.writesField(_, f, sink)
     )
   }

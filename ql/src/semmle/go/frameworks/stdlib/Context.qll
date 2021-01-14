@@ -12,7 +12,8 @@ module Context {
    * The two packages are identical; before Go 1.7 it was only available
    * under `golang.org/x`; as of Go 1.7 it is included in the standard library.
    */
-  private string packagePath() { result = ["context", "golang.org/x/net/context"] }
+  bindingset[result]
+  private string packagePath() { result = ["context", package("golang.org/x/net", "context")] }
 
   private class FunctionModels extends TaintTracking::FunctionModel {
     FunctionInput inp;

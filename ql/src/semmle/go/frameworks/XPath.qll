@@ -32,17 +32,17 @@ module XPath {
     private class AntchfxXpathXPathExpressionString extends Range {
       AntchfxXpathXPathExpressionString() {
         exists(Function f, string name | name.matches("Compile%") |
-          f.hasQualifiedName("github.com/antchfx/xpath", name) and
+          f.hasQualifiedName(package("github.com/antchfx/xpath", ""), name) and
           this = f.getACall().getArgument(0)
         )
         or
         exists(Function f, string name | name.matches("MustCompile%") |
-          f.hasQualifiedName("github.com/antchfx/xpath", name) and
+          f.hasQualifiedName(package("github.com/antchfx/xpath", ""), name) and
           this = f.getACall().getArgument(0)
         )
         or
         exists(Function f, string name | name.matches("Select%") |
-          f.hasQualifiedName("github.com/antchfx/xpath", name) and
+          f.hasQualifiedName(package("github.com/antchfx/xpath", ""), name) and
           this = f.getACall().getArgument(1)
         )
       }
@@ -52,12 +52,12 @@ module XPath {
     private class AntchfxHtmlqueryXPathExpressionString extends Range {
       AntchfxHtmlqueryXPathExpressionString() {
         exists(Function f, string name | name.matches("Find%") |
-          f.hasQualifiedName("github.com/antchfx/htmlquery", name) and
+          f.hasQualifiedName(package("github.com/antchfx/htmlquery", ""), name) and
           this = f.getACall().getArgument(1)
         )
         or
         exists(Function f, string name | name.matches("Query%") |
-          f.hasQualifiedName("github.com/antchfx/htmlquery", name) and
+          f.hasQualifiedName(package("github.com/antchfx/htmlquery", ""), name) and
           this = f.getACall().getArgument(1)
         )
       }
@@ -67,17 +67,17 @@ module XPath {
     private class AntchfxXmlqueryXPathExpressionString extends Range {
       AntchfxXmlqueryXPathExpressionString() {
         exists(Function f, string name | name.matches("Find%") |
-          f.hasQualifiedName("github.com/antchfx/xmlquery", name) and
+          f.hasQualifiedName(package("github.com/antchfx/xmlquery", ""), name) and
           this = f.getACall().getArgument(1)
         )
         or
         exists(Function f, string name | name.matches("Query%") |
-          f.hasQualifiedName("github.com/antchfx/xmlquery", name) and
+          f.hasQualifiedName(package("github.com/antchfx/xmlquery", ""), name) and
           this = f.getACall().getArgument(1)
         )
         or
         exists(Method m, string name | name.matches("Select%") |
-          m.hasQualifiedName("github.com/antchfx/xmlquery", "Node", name) and
+          m.hasQualifiedName(package("github.com/antchfx/xmlquery", ""), "Node", name) and
           this = m.getACall().getArgument(0)
         )
       }
@@ -87,12 +87,12 @@ module XPath {
     private class AntchfxJsonqueryXPathExpressionString extends Range {
       AntchfxJsonqueryXPathExpressionString() {
         exists(Function f, string name | name.matches("Find%") |
-          f.hasQualifiedName("github.com/antchfx/jsonquery", name) and
+          f.hasQualifiedName(package("github.com/antchfx/jsonquery", ""), name) and
           this = f.getACall().getArgument(1)
         )
         or
         exists(Function f, string name | name.matches("Query%") |
-          f.hasQualifiedName("github.com/antchfx/jsonquery", name) and
+          f.hasQualifiedName(package("github.com/antchfx/jsonquery", ""), name) and
           this = f.getACall().getArgument(1)
         )
       }
@@ -102,12 +102,12 @@ module XPath {
     private class GoXmlpathXmlpathXPathExpressionString extends Range {
       GoXmlpathXmlpathXPathExpressionString() {
         exists(Function f, string name | name.matches("Compile%") |
-          f.hasQualifiedName("github.com/go-xmlpath/xmlpath", name) and
+          f.hasQualifiedName(package("github.com/go-xmlpath/xmlpath", ""), name) and
           this = f.getACall().getArgument(0)
         )
         or
         exists(Function f, string name | name.matches("MustCompile%") |
-          f.hasQualifiedName("github.com/go-xmlpath/xmlpath", name) and
+          f.hasQualifiedName(package("github.com/go-xmlpath/xmlpath", ""), name) and
           this = f.getACall().getArgument(0)
         )
       }
@@ -117,12 +117,12 @@ module XPath {
     private class ChrisTrenkampGoxpathXPathExpressionString extends Range {
       ChrisTrenkampGoxpathXPathExpressionString() {
         exists(Function f, string name | name.matches("Parse%") |
-          f.hasQualifiedName("github.com/ChrisTrenkamp/goxpath", name) and
+          f.hasQualifiedName(package("github.com/ChrisTrenkamp/goxpath", ""), name) and
           this = f.getACall().getArgument(0)
         )
         or
         exists(Function f, string name | name.matches("MustParse%") |
-          f.hasQualifiedName("github.com/ChrisTrenkamp/goxpath", name) and
+          f.hasQualifiedName(package("github.com/ChrisTrenkamp/goxpath", ""), name) and
           this = f.getACall().getArgument(0)
         )
       }
@@ -132,12 +132,12 @@ module XPath {
     private class SanthoshTekuriXpathparserXPathExpressionString extends Range {
       SanthoshTekuriXpathparserXPathExpressionString() {
         exists(Function f, string name | name.matches("Parse%") |
-          f.hasQualifiedName("github.com/santhosh-tekuri/xpathparser", name) and
+          f.hasQualifiedName(package("github.com/santhosh-tekuri/xpathparser", ""), name) and
           this = f.getACall().getArgument(0)
         )
         or
         exists(Function f, string name | name.matches("MustParse%") |
-          f.hasQualifiedName("github.com/santhosh-tekuri/xpathparser", name) and
+          f.hasQualifiedName(package("github.com/santhosh-tekuri/xpathparser", ""), name) and
           this = f.getACall().getArgument(0)
         )
       }
@@ -147,17 +147,17 @@ module XPath {
     private class JbowtieGokogiriXPathExpressionString extends Range {
       JbowtieGokogiriXPathExpressionString() {
         exists(Function f, string name | name.matches("Compile%") |
-          f.hasQualifiedName("github.com/jbowtie/gokogiri/xpath", name) and
+          f.hasQualifiedName(package("github.com/jbowtie/gokogiri", "xpath"), name) and
           this = f.getACall().getArgument(0)
         )
         or
         exists(Method m, string name | name.matches("Search%") |
-          m.hasQualifiedName("github.com/jbowtie/gokogiri/xml", "Node", name) and
+          m.hasQualifiedName(package("github.com/jbowtie/gokogiri", "xml"), "Node", name) and
           this = m.getACall().getArgument(0)
         )
         or
         exists(Method m, string name | name.matches("EvalXPath%") |
-          m.hasQualifiedName("github.com/jbowtie/gokogiri/xml", "Node", name) and
+          m.hasQualifiedName(package("github.com/jbowtie/gokogiri", "xml"), "Node", name) and
           this = m.getACall().getArgument(0)
         )
       }
