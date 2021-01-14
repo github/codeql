@@ -347,15 +347,11 @@ predicate isPumpable(State pivot, State succ, string pump) {
 /**
  * Holds if repetitions of `pump` at `t` will cause polynomial backtracking.
  */
-predicate polynimalReDoS(RegExpTerm t, string msg) {
-  exists(string pump, State s, string prefixMsg |
+predicate polynimalReDoS(RegExpTerm t, string pump, string prefixMsg, RegExpTerm prev) {
+  exists(State s, State pivot |
     hasReDoSResult(t, pump, s, prefixMsg) and
-    exists(State pivot |
-      isPumpable(pivot, s, _) and
-      msg =
-        "Strings " + prefixMsg + "with many repetitions of '" + pump +
-          "' can start matching anywhere after the start of the preceeding " + pivot.getRepr()
-    )
+    isPumpable(pivot, s, _) and
+    prev = pivot.getRepr()
   )
 }
 
@@ -389,16 +385,29 @@ private predicate matchesEpsilon(RegExpTerm t) {
 }
 
 /**
+ * Gets a message for why `term` can cause polynomial backtracking.
+ */
+string getReasonString(RegExpTerm term, string pump, string prefixMsg, RegExpTerm prev) {
+  polynimalReDoS(term, pump, prefixMsg, prev) and
+  result =
+    "Strings " + prefixMsg + "with many repetitions of '" + pump +
+      "' can start matching anywhere after the start of the preceeding " + prev
+}
+
+/**
  * A term that may cause a regular expression engine to perform a
  * polynomial number of match attempts, relative to the input length.
  */
 class PolynomialBackTrackingTerm extends InfiniteRepetitionQuantifier {
   string reason;
+  string pump;
+  string prefixMsg;
+  RegExpTerm prev;
 
   PolynomialBackTrackingTerm() {
-    polynimalReDoS(this, _) and
+    reason = getReasonString(this, pump, prefixMsg, prev) and
     // there might be many reasons for this term to have polynomial backtracking - we pick an arbitary one.
-    reason = min(string msg | polynimalReDoS(this, msg))
+    reason = min(string msg | msg = getReasonString(this, _, _, _))
   }
 
   /**
@@ -409,6 +418,21 @@ class PolynomialBackTrackingTerm extends InfiniteRepetitionQuantifier {
       succ instanceof RegExpDollar
     )
   }
+
+  /**
+   * Gets the string that should be repeated to cause this regular expression to perform polynomially.
+   */
+  string getPumpString() { result = pump }
+
+  /**
+   * Gets a message for which prefix a matching string must start with for this term to cause polynomial backtracking.
+   */
+  string getPrefixMessage() { result = prefixMsg }
+
+  /**
+   * Gets a predecessor to `this`, which also loops on the pump string, and thereby causes polynomial backtracking.
+   */
+  RegExpTerm getPreviousLoop() { result = prev }
 
   /**
    * Gets the reason for the number of match attempts.
