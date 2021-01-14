@@ -407,7 +407,7 @@ class PolynomialBackTrackingTerm extends InfiniteRepetitionQuantifier {
   PolynomialBackTrackingTerm() {
     reason = getReasonString(this, pump, prefixMsg, prev) and
     // there might be many reasons for this term to have polynomial backtracking - we pick an arbitary one.
-    reason = min(string msg | msg = getReasonString(this, _, _, _))
+    reason = min(string msg | msg = getReasonString(this, _, _, _) | msg order by msg.length(), msg)
   }
 
   /**
