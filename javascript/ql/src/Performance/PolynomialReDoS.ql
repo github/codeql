@@ -16,13 +16,18 @@ import semmle.javascript.security.performance.PolynomialReDoS::PolynomialReDoS
 import semmle.javascript.security.performance.SuperlinearBackTracking
 import DataFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode
+from
+  Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode,
+  PolynomialBackTrackingTerm regexp
 where
   cfg.hasFlowPath(source, sink) and
   sinkNode = sink.getNode() and
+  regexp = sinkNode.getRegExp() and
   not (
     source.getNode().(Source).getKind() = "url" and
-    sinkNode.getRegExp().(PolynomialBackTrackingTerm).isAtEndLine()
+    regexp.isAtEndLine()
   )
-select sinkNode.getHighlight(), source, sink, "This expensive $@ use depends on $@.",
-  sinkNode.getRegExp(), "regular expression", source.getNode(), source.getNode().(Source).describe()
+select sinkNode.getHighlight(), source, sink,
+  "This $@ that depends on $@ may run slow on strings " + regexp.getPrefixMessage() +
+    "with many repetitions of '" + regexp.getPumpString() + "'.", regexp, "regular expression",
+  source.getNode(), source.getNode().(Source).describe()
