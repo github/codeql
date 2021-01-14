@@ -101,7 +101,7 @@ private class StdStringData extends TaintFunction {
  */
 private class StdStringPush extends TaintFunction {
   StdStringPush() {
-    this.getDeclaringType().(ClassTemplateInstantiation) instanceof StdBasicString and
+    this.getDeclaringType() instanceof StdBasicString and
     this.hasName("push_back")
   }
 
