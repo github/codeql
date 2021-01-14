@@ -278,49 +278,7 @@ namespace Semmle.Extraction.CSharp
 
         private static void BuildFunctionPointerTypeId(this IFunctionPointerTypeSymbol funptr, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined)
         {
-            trapFile.Write("delegate* ");
-            trapFile.Write(funptr.Signature.CallingConvention.ToString().ToLowerInvariant());
-            if (funptr.Signature.UnmanagedCallingConventionTypes.Any())
-            {
-                trapFile.Write('[');
-                trapFile.BuildList(",", funptr.Signature.UnmanagedCallingConventionTypes,
-                    (ta, tb0) => ta.BuildOrWriteId(cx, tb0, symbolBeingDefined)
-                    );
-                trapFile.Write("]");
-            }
-
-            trapFile.Write('<');
-            trapFile.BuildList(",", funptr.Signature.Parameters,
-                (p, trap) =>
-                {
-                    p.Type.BuildOrWriteId(cx, trap, symbolBeingDefined);
-                    switch (p.RefKind)
-                    {
-                        case RefKind.Out:
-                            trap.Write(" out");
-                            break;
-                        case RefKind.In:
-                            trap.Write(" in");
-                            break;
-                        case RefKind.Ref:
-                            trap.Write(" ref");
-                            break;
-                    }
-                });
-
-            if (funptr.Signature.Parameters.Any())
-            {
-                trapFile.Write(",");
-            }
-
-            funptr.Signature.ReturnType.BuildOrWriteId(cx, trapFile, symbolBeingDefined);
-
-            if (funptr.Signature.ReturnsByRef)
-                trapFile.Write(" ref");
-            if (funptr.Signature.ReturnsByRefReadonly)
-                trapFile.Write(" readonly ref");
-
-            trapFile.Write('>');
+            BuildFunctionPointerSignature(funptr, trapFile, (s, tw) => s.BuildOrWriteId(cx, tw, symbolBeingDefined));
         }
 
         private static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType)
@@ -468,7 +426,8 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        private static void BuildFunctionPointerTypeDisplayName(this IFunctionPointerTypeSymbol funptr, Context cx, TextWriter trapFile)
+        public static void BuildFunctionPointerSignature(IFunctionPointerTypeSymbol funptr, TextWriter trapFile,
+            Action<ITypeSymbol, TextWriter> buildNested)
         {
             trapFile.Write("delegate* ");
             trapFile.Write(funptr.Signature.CallingConvention.ToString().ToLowerInvariant());
@@ -476,10 +435,7 @@ namespace Semmle.Extraction.CSharp
             if (funptr.Signature.UnmanagedCallingConventionTypes.Any())
             {
                 trapFile.Write('[');
-                trapFile.BuildList(
-                    ",",
-                    funptr.Signature.UnmanagedCallingConventionTypes,
-                    (t, tb0) => t.BuildDisplayName(cx, tb0));
+                trapFile.BuildList(",", funptr.Signature.UnmanagedCallingConventionTypes, buildNested);
                 trapFile.Write("]");
             }
 
@@ -487,7 +443,7 @@ namespace Semmle.Extraction.CSharp
             trapFile.BuildList(",", funptr.Signature.Parameters,
                 (p, trap) =>
                 {
-                    p.Type.BuildDisplayName(cx, trapFile);
+                    buildNested(p.Type, trap);
                     switch (p.RefKind)
                     {
                         case RefKind.Out:
@@ -507,14 +463,19 @@ namespace Semmle.Extraction.CSharp
                 trapFile.Write(",");
             }
 
-            funptr.Signature.ReturnType.BuildDisplayName(cx, trapFile);
+            buildNested(funptr.Signature.ReturnType, trapFile);
 
             if (funptr.Signature.ReturnsByRef)
                 trapFile.Write(" ref");
             if (funptr.Signature.ReturnsByRefReadonly)
-                trapFile.Write(" readonly ref");
+                trapFile.Write(" ref readonly");
 
             trapFile.Write('>');
+        }
+
+        private static void BuildFunctionPointerTypeDisplayName(this IFunctionPointerTypeSymbol funptr, Context cx, TextWriter trapFile)
+        {
+            BuildFunctionPointerSignature(funptr, trapFile, (s, tw) => s.BuildDisplayName(cx, tw));
         }
 
         private static void BuildNamedTypeDisplayName(this INamedTypeSymbol namedType, Context cx, TextWriter trapFile, bool constructUnderlyingTupleType)

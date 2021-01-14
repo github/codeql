@@ -1,13 +1,13 @@
 type
-| file://:0:0:0:0 | delegate* default<A,B> | B | 0 |
-| file://:0:0:0:0 | delegate* default<B,A> | A | 0 |
-| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 in,Int32 ref> | Int32 | 0 |
-| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32> | Int32 | 0 |
-| file://:0:0:0:0 | delegate* default<Int32*,Void*> | Void* | 0 |
-| file://:0:0:0:0 | delegate* default<Int32> | Int32 | 0 |
-| file://:0:0:0:0 | delegate* default<T,Int32> | Int32 | 0 |
-| file://:0:0:0:0 | delegate* default<Void*,Int32*> | Int32* | 0 |
-| file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | Void | 2 |
+| file://:0:0:0:0 | delegate* default<A,B> | B | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* default<B,A> | A | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 in,Int32 ref> | Int32 | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 ref readonly> | Int32 | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* default<Int32*,Void*> | Void* | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* default<Int32> | Int32 | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* default<T,Int32> | Int32 | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* default<Void*,Int32*> | Int32* | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | Void | StdCallCallingConvention |
 unmanagedCallingConvention
 parameter
 | file://:0:0:0:0 | delegate* default<A,B> | 0 | file://:0:0:0:0 |  | A |
@@ -15,8 +15,8 @@ parameter
 | file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 in,Int32 ref> | 0 | file://:0:0:0:0 |  | Int32 |
 | file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 in,Int32 ref> | 1 | file://:0:0:0:0 | `1 | Object |
 | file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 in,Int32 ref> | 2 | file://:0:0:0:0 | `2 | Int32 |
-| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32> | 0 | file://:0:0:0:0 |  | Int32 |
-| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32> | 1 | file://:0:0:0:0 | `1 | Object |
+| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 ref readonly> | 0 | file://:0:0:0:0 |  | Int32 |
+| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 ref readonly> | 1 | file://:0:0:0:0 | `1 | Object |
 | file://:0:0:0:0 | delegate* default<Int32*,Void*> | 0 | file://:0:0:0:0 |  | Int32* |
 | file://:0:0:0:0 | delegate* default<T,Int32> | 0 | file://:0:0:0:0 |  | T |
 | file://:0:0:0:0 | delegate* default<Void*,Int32*> | 0 | file://:0:0:0:0 |  | Void* |

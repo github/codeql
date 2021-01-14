@@ -1,8 +1,8 @@
 import csharp
 
-query predicate type(FunctionPointerType fpt, string returnType, int callingConvention) {
+query predicate type(FunctionPointerType fpt, string returnType, string callingConvention) {
   fpt.getReturnType().toString() = returnType and
-  fpt.getCallingConvention() = callingConvention
+  fpt.getCallingConvention().toString() = callingConvention
 }
 
 query predicate unmanagedCallingConvention(FunctionPointerType fpt, int i, string callingConvention) {

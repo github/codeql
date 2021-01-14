@@ -21,12 +21,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            var unmanagedCallingConventionTypes = symbol.Signature.UnmanagedCallingConventionTypes.Select(nt => Create(Context, nt)).ToArray();
-
             trapFile.function_pointer_calling_conventions(this, (int)symbol.Signature.CallingConvention);
-            for (var i = 0; i < unmanagedCallingConventionTypes.Length; i++)
+            foreach (var (conv, i) in symbol.Signature.UnmanagedCallingConventionTypes.Select((nt, i) => (Create(Context, nt), i)))
             {
-                trapFile.has_unmanaged_calling_conventions(this, i, unmanagedCallingConventionTypes[i].TypeRef);
+                trapFile.has_unmanaged_calling_conventions(this, i, conv.TypeRef);
             }
 
             PopulateType(trapFile);

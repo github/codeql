@@ -13,7 +13,7 @@ public class FnPointer
             return 0;
         }
 
-        static void M1(delegate*<ref int, out object?, int> f)
+        static void M1(delegate*<ref int, out object?, ref readonly int> f)
         {
             int i = 42;
             int j = f(ref i, out object? o);
