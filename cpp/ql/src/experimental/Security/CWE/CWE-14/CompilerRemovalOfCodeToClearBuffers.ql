@@ -38,10 +38,9 @@ class CompilerRemovaMemset extends FunctionCall {
   }
 
   predicate isExistsFreeForThisVariable() {
-    exists(FunctionCall free, Variable v |
-      free instanceof DeallocationExpr and
+    exists(DeallocationExpr free, Variable v |
       this.getArgument(0) = v.getAnAccess() and
-      free.getArgument(0) = v.getAnAccess() and
+      free.getFreedExpr() = v.getAnAccess() and
       this.getASuccessor+() = free
     )
   }
