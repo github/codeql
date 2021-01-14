@@ -12,7 +12,7 @@ For some compilers, optimization is also possible when using calls to free memor
 </overview>
 <recommendation>
 
-<p>We recommend to use the <code>RtlSecureZeroMemory</code> or <code>memset_s</code> functions, or compilation flags that exclude optimization of <code>memset</code> calls (-fno-builtin-memset).</p>
+<p>We recommend to use the <code>RtlSecureZeroMemory</code> or <code>memset_s</code> functions, or compilation flags that exclude optimization of <code>memset</code> calls (e.g. -fno-builtin-memset).</p>
 
 </recommendation>
 <example>
