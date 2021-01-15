@@ -442,7 +442,6 @@
 | tst.js:221:15:221:22 | ([^X]b)+ | Strings with many repetitions of 'Wb' can start matching anywhere after the start of the preceeding (([^X]b)+)* |
 | tst.js:227:15:227:22 | ([^X]b)+ | Strings with many repetitions of 'Wb' can start matching anywhere after the start of the preceeding (([^X]b)+)* |
 | tst.js:239:15:239:19 | (ab)+ | Strings with many repetitions of 'ab' can start matching anywhere after the start of the preceeding ((ab)+)* |
-| tst.js:245:15:245:21 | [\\n\\s]+ | Strings with many repetitions of '\\n' can start matching anywhere after the start of the preceeding ([\\n\\s]+)* |
 | tst.js:248:18:248:19 | A* | Strings with many repetitions of 'A' can start matching anywhere after the start of the preceeding A* |
 | tst.js:254:15:254:17 | \\w* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding \\d* |
 | tst.js:254:27:254:29 | \\w* | Strings starting with 'foobarbaz' and with many repetitions of 'foobarbaz' can start matching anywhere after the start of the preceeding \\d* |

@@ -209,11 +209,20 @@ predicate step(
  */
 pragma[noinline]
 string getAThreewayIntersect(InputSymbol s1, InputSymbol s2, InputSymbol s3) {
-  result = intersect(s1, s2) and result = [intersect(s2, s3), intersect(s1, s3)]
+  result = minAndMaxIntersect(s1, s2) and result = [intersect(s2, s3), intersect(s1, s3)]
   or
-  result = intersect(s1, s3) and result = [intersect(s2, s3), intersect(s1, s2)]
+  result = minAndMaxIntersect(s1, s3) and result = [intersect(s2, s3), intersect(s1, s2)]
   or
-  result = intersect(s2, s3) and result = [intersect(s1, s2), intersect(s1, s3)]
+  result = minAndMaxIntersect(s2, s3) and result = [intersect(s1, s2), intersect(s1, s3)]
+}
+
+/**
+ * Gets the minimum and maximum characters that intersect between `a` and `b`.
+ * This predicate is used to limit the size of `getAThreewayIntersect`.
+ */
+pragma[noinline]
+string minAndMaxIntersect(InputSymbol a, InputSymbol b) {
+  result = [min(intersect(a, b)), max(intersect(a, b))]
 }
 
 private newtype TTrace =
