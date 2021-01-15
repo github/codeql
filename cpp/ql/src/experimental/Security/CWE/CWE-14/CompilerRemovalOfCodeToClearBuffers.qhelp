@@ -5,7 +5,7 @@
 <overview>
 <p>Compiler optimization will exclude the cleaning of private information.
 Using the <code>memset</code> function to clear private data in a variable that has no subsequent use is potentially dangerous, since the compiler can remove the call.
-For some compilers, optimization is also possible when using calls to free memory after the <code>memset</codee> function.</p>
+For some compilers, optimization is also possible when using calls to free memory after the <code>memset</code> function.</p>
 
 <p>It is possible to miss detection of vulnerabilities if used to clear fields of structures or parts of a buffer.</p>
 
