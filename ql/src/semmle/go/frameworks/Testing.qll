@@ -76,11 +76,11 @@ module TestFile {
         is.getFile() = this
       |
         pkg in [
-            "gen/thrifttest", "github.com/golang/mock/gomock", "github.com/onsi/ginkgo",
-            "github.com/onsi/gomega", "github.com/stretchr/testify/assert",
-            "github.com/stretchr/testify/http", "github.com/stretchr/testify/mock",
-            "github.com/stretchr/testify/require", "github.com/stretchr/testify/suite",
-            "gotest.tools/assert", "k8s.io/client-go/testing", "net/http/httptest", "testing"
+            "gen/thrifttest", package("github.com/golang/mock", "gomock"), Ginkgo::packagePath(),
+            package("github.com/onsi/gomega", ""),
+            package("github.com/stretchr/testify", ["assert", "http", "mock", "require", "suite"]),
+            package("gotest.tools", "assert"), package("k8s.io/client-go", "testing"),
+            "net/http/httptest", "testing"
           ]
       )
     }
@@ -89,9 +89,13 @@ module TestFile {
 
 /** Provides classes modelling Ginkgo. */
 module Ginkgo {
+  /** Gets the package path `github.com/onsi/ginkgo`. */
+  bindingset[result]
+  string packagePath() { result = package("github.com/onsi/ginkgo", "") }
+
   /** The Ginkgo `Fail` function, which always panics. */
   private class FailFunction extends Function {
-    FailFunction() { hasQualifiedName("github.com/onsi/ginkgo", "Fail") }
+    FailFunction() { hasQualifiedName(packagePath(), "Fail") }
 
     override predicate mustPanic() { any() }
   }

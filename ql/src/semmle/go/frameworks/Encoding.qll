@@ -4,14 +4,17 @@
 
 import go
 
+/** Gets the package name `github.com/json-iterator/go`. */
+bindingset[result]
+private string packagePath() { result = package("github.com/json-iterator/go", "") }
+
 /** A model of json-iterator's `Unmarshal` function, propagating taint from the JSON input to the decoded object. */
 private class JsonIteratorUnmarshalFunction extends TaintTracking::FunctionModel,
   UnmarshalingFunction::Range {
   JsonIteratorUnmarshalFunction() {
-    this.hasQualifiedName("github.com/json-iterator/go", ["Unmarshal", "UnmarshalFromString"])
+    this.hasQualifiedName(packagePath(), ["Unmarshal", "UnmarshalFromString"])
     or
-    this.(Method)
-        .implements("github.com/json-iterator/go", "API", ["Unmarshal", "UnmarshalFromString"])
+    this.(Method).implements(packagePath(), "API", ["Unmarshal", "UnmarshalFromString"])
   }
 
   override DataFlow::FunctionInput getAnInput() { result.isParameter(0) }

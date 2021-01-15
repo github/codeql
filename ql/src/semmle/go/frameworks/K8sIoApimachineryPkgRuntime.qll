@@ -6,7 +6,7 @@ import go
  * Provides models of commonly used functions in the `k8s.io/apimachinery/pkg/runtime` package.
  */
 module K8sIoApimachineryPkgRuntime {
-  /** Gets the package name. */
+  /** Gets the package name `k8s.io/apimachinery/pkg/runtime`. */
   bindingset[result]
   string packagePath() { result = package("k8s.io/apimachinery", "pkg/runtime") }
 

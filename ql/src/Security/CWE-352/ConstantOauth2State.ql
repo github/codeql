@@ -18,7 +18,9 @@ import DataFlow::PathGraph
  * to the OAuth 2.0 authorization dialog of the provider.
  */
 class AuthCodeURL extends Method {
-  AuthCodeURL() { this.hasQualifiedName("golang.org/x/oauth2", "Config", "AuthCodeURL") }
+  AuthCodeURL() {
+    this.hasQualifiedName(package("golang.org/x/oauth2", ""), "Config", "AuthCodeURL")
+  }
 }
 
 /**
@@ -52,7 +54,9 @@ class ConstantStateFlowConf extends DataFlow::Configuration {
  * This propagates flow from the RedirectURL field to the whole Config object.
  */
 predicate isUrlTaintingConfigStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(Write w, Field f | f.hasQualifiedName("golang.org/x/oauth2", "Config", "RedirectURL") |
+  exists(Write w, Field f |
+    f.hasQualifiedName(package("golang.org/x/oauth2", ""), "Config", "RedirectURL")
+  |
     w.writesField(succ.(DataFlow::PostUpdateNode).getPreUpdateNode(), f, pred)
   )
 }

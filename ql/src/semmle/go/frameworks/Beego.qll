@@ -8,19 +8,19 @@ import semmle.go.security.Xss
 private import semmle.go.security.SafeUrlFlowCustomizations
 
 module Beego {
-  /** Gets the package name. */
+  /** Gets the package name `github.com/astaxie/beego`. */
   bindingset[result]
   string packagePath() { result = package("github.com/astaxie/beego", "") }
 
-  /** Gets the context subpackage name. */
+  /** Gets the context subpackage name `github.com/astaxie/beego/context`. */
   bindingset[result]
   string contextPackagePath() { result = package("github.com/astaxie/beego", "context") }
 
-  /** Gets the logs subpackage name. */
+  /** Gets the logs subpackage name `github.com/astaxie/beego/logs`. */
   bindingset[result]
   string logsPackagePath() { result = package("github.com/astaxie/beego", "logs") }
 
-  /** Gets the utils subpackage name. */
+  /** Gets the utils subpackage name `github.com/astaxie/beego/utils`. */
   bindingset[result]
   string utilsPackagePath() { result = package("github.com/astaxie/beego", "utils") }
 

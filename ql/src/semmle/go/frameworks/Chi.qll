@@ -5,12 +5,16 @@
 import go
 
 private module Chi {
+  /** Gets the package name `github.com/go-chi/chi`. */
+  bindingset[result]
+  string packagePath() { result = package("github.com/go-chi/chi", "") }
+
   /**
    * Functions that extract URL parameters, considered as a source of untrusted flow.
    */
   private class UserControlledFunction extends UntrustedFlowSource::Range, DataFlow::CallNode {
     UserControlledFunction() {
-      this.getTarget().hasQualifiedName("github.com/go-chi/chi", ["URLParam", "URLParamFromCtx"])
+      this.getTarget().hasQualifiedName(packagePath(), ["URLParam", "URLParamFromCtx"])
     }
   }
 
@@ -20,7 +24,7 @@ private module Chi {
   private class UserControlledRequestMethod extends UntrustedFlowSource::Range,
     DataFlow::MethodCallNode {
     UserControlledRequestMethod() {
-      this.getTarget().hasQualifiedName("github.com/go-chi/chi", "Context", "URLParam")
+      this.getTarget().hasQualifiedName(packagePath(), "Context", "URLParam")
     }
   }
 }

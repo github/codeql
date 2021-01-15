@@ -8,7 +8,9 @@ import go
  * Provides models of commonly used functions in the `github.com/davecgh/go-spew/spew` package.
  */
 module Spew {
-  private string packagePath() { result = "github.com/davecgh/go-spew/spew" }
+  /** Gets the package path `github.com/davecgh/go-spew/spew`. */
+  bindingset[result]
+  private string packagePath() { result = package("github.com/davecgh/go-spew", "spew") }
 
   private class SpewCall extends LoggerCall::Range, DataFlow::CallNode {
     int firstPrintedArg;

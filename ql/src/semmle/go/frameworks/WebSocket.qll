@@ -90,12 +90,12 @@ module WebSocketRequestCall {
     GobwasWsDialFunc() {
       //  func (d Dialer) Dial(ctx context.Context, urlstr string) (conn net.Conn, br *bufio.Reader, hs Handshake, err error)
       exists(Method m |
-        m.hasQualifiedName(package("github.com/gobwas", "ws"), "Dialer", "Dial") and
+        m.hasQualifiedName(GobwasWs::packagePath(), "Dialer", "Dial") and
         m = this.getTarget()
       )
       or
       // func Dial(ctx context.Context, urlstr string) (net.Conn, *bufio.Reader, Handshake, error)
-      this.getTarget().hasQualifiedName(package("github.com/gobwas", "ws"), "Dial")
+      this.getTarget().hasQualifiedName(GobwasWs::packagePath(), "Dial")
     }
 
     override DataFlow::Node getRequestUrl() { result = this.getArgument(1) }
@@ -107,7 +107,7 @@ module WebSocketRequestCall {
   private class NhooyrWebSocketDialFunc extends Range {
     NhooyrWebSocketDialFunc() {
       // func Dial(ctx context.Context, u string, opts *DialOptions) (*Conn, *http.Response, error)
-      this.getTarget().hasQualifiedName(package("nhooyr.io", "websocket"), "Dial")
+      this.getTarget().hasQualifiedName(NhooyrWebSocket::packagePath(), "Dial")
     }
 
     override DataFlow::Node getRequestUrl() { result = this.getArgument(1) }
@@ -120,7 +120,8 @@ module WebSocketRequestCall {
     SacOO7DialFunc() {
       // func BuildProxy(Url string) func(*http.Request) (*url.URL, error)
       // func New(url string) Socket
-      this.getTarget().hasQualifiedName("github.com/sacOO7/gowebsocket", ["BuildProxy", "New"])
+      this.getTarget()
+          .hasQualifiedName(package("github.com/sacOO7/gowebsocket", ""), ["BuildProxy", "New"])
     }
 
     override DataFlow::Node getRequestUrl() { result = this.getArgument(0) }
@@ -194,7 +195,7 @@ module WebSocketReader {
   private class NhooyrWebSocketRead extends Range, Method {
     NhooyrWebSocketRead() {
       // func (c *Conn) Read(ctx context.Context) (MessageType, []byte, error)
-      this.hasQualifiedName("nhooyr.io/websocket", "Conn", "Read")
+      this.hasQualifiedName(NhooyrWebSocket::packagePath(), "Conn", "Read")
     }
 
     override FunctionOutput getAnOutput() { result.isResult(1) }
@@ -206,7 +207,7 @@ module WebSocketReader {
   private class NhooyrWebSocketReader extends Range, Method {
     NhooyrWebSocketReader() {
       // func (c *Conn) Reader(ctx context.Context) (MessageType, io.Reader, error)
-      this.hasQualifiedName("nhooyr.io/websocket", "Conn", "Reader")
+      this.hasQualifiedName(NhooyrWebSocket::packagePath(), "Conn", "Reader")
     }
 
     override FunctionOutput getAnOutput() { result.isResult(1) }
@@ -218,7 +219,7 @@ module WebSocketReader {
   private class GobwasWsReadFrame extends Range {
     GobwasWsReadFrame() {
       // func ReadFrame(r io.Reader) (f Frame, err error)
-      this.hasQualifiedName("github.com/gobwas/ws", "ReadFrame")
+      this.hasQualifiedName(GobwasWs::packagePath(), "ReadFrame")
     }
 
     override FunctionOutput getAnOutput() { result.isResult(0) }
@@ -230,7 +231,7 @@ module WebSocketReader {
   private class GobwasWsReadHeader extends Range {
     GobwasWsReadHeader() {
       // func ReadHeader(r io.Reader) (h Header, err error)
-      this.hasQualifiedName("github.com/gobwas/ws", "ReadHeader")
+      this.hasQualifiedName(GobwasWs::packagePath(), "ReadHeader")
     }
 
     override FunctionOutput getAnOutput() { result.isResult(0) }
@@ -298,13 +299,25 @@ module WebSocketReader {
 }
 
 module GorillaWebsocket {
-  /** Gets the package name. */
+  /** Gets the package name `github.com/gorilla/websocket`. */
   bindingset[result]
   string packagePath() { result = package("github.com/gorilla", "websocket") }
 }
 
 module GolangOrgXNetWebsocket {
-  /** Gets the package name. */
+  /** Gets the package name `golang.org/x/net/websocket`. */
   bindingset[result]
   string packagePath() { result = package("golang.org/x/net", "websocket") }
+}
+
+module NhooyrWebSocket {
+  /** Gets the package name `nhooyr.io/websocket/`. */
+  bindingset[result]
+  string packagePath() { result = package("nhooyr.io/websocket", "") }
+}
+
+module GobwasWs {
+  /** Gets the package name `github.com/gobwas/ws`. */
+  bindingset[result]
+  string packagePath() { result = package("github.com/gobwas", "ws") }
 }

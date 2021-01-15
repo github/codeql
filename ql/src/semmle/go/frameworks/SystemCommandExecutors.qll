@@ -57,7 +57,7 @@ private class SystemCommandExecutors extends SystemCommandExecution::Range, Data
  */
 private class GoShCommandExecution extends SystemCommandExecution::Range, DataFlow::CallNode {
   GoShCommandExecution() {
-    exists(string packagePath | packagePath = "github.com/codeskyblue/go-sh" |
+    exists(string packagePath | packagePath = package("github.com/codeskyblue/go-sh", "") |
       // Catch method calls on the `Session` object:
       exists(Method method |
         method.hasQualifiedName(packagePath, "Session", "Call")
@@ -77,28 +77,34 @@ private class GoShCommandExecution extends SystemCommandExecution::Range, DataFl
   override DataFlow::Node getCommandName() { result = this.getArgument(0) }
 }
 
-/**
- * A call to a method on a `Session` object from the [ssh](golang.org/x/crypto/ssh)
- * package, viewed as a system-command execution.
- */
-private class SshCommandExecution extends SystemCommandExecution::Range, DataFlow::CallNode {
-  SshCommandExecution() {
-    // Catch method calls on the `Session` object:
-    exists(Method method, string methodName |
-      methodName = "CombinedOutput"
-      or
-      methodName = "Output"
-      or
-      methodName = "Run"
-      or
-      methodName = "Start"
-    |
-      method.hasQualifiedName("golang.org/x/crypto/ssh", "Session", methodName) and
-      this = method.getACall()
-    )
-  }
+module CryptoSsh {
+  /** Gets the package path `golang.org/x/crypto/ssh`. */
+  bindingset[result]
+  string packagePath() { result = package("golang.org/x/crypto", "ssh") }
 
-  override DataFlow::Node getCommandName() { result = this.getArgument(0) }
+  /**
+   * A call to a method on a `Session` object from the [ssh](golang.org/x/crypto/ssh)
+   * package, viewed as a system-command execution.
+   */
+  private class SshCommandExecution extends SystemCommandExecution::Range, DataFlow::CallNode {
+    SshCommandExecution() {
+      // Catch method calls on the `Session` object:
+      exists(Method method, string methodName |
+        methodName = "CombinedOutput"
+        or
+        methodName = "Output"
+        or
+        methodName = "Run"
+        or
+        methodName = "Start"
+      |
+        method.hasQualifiedName(packagePath(), "Session", methodName) and
+        this = method.getACall()
+      )
+    }
+
+    override DataFlow::Node getCommandName() { result = this.getArgument(0) }
+  }
 }
 
 /**

@@ -4,8 +4,11 @@ import go
 
 /** Provides models of commonly used functions in the `github.com/sirupsen/logrus` package. */
 module Logrus {
-  /** Gets the package name. */
-  string packagePath() { result in ["github.com/sirupsen/logrus", "github.com/Sirupsen/logrus"] }
+  /** Gets the package name `github.com/sirupsen/logrus`. */
+  bindingset[result]
+  string packagePath() {
+    result = package(["github.com/sirupsen/logrus", "github.com/Sirupsen/logrus"], "")
+  }
 
   bindingset[result]
   private string getALogResultName() {

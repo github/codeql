@@ -1,10 +1,11 @@
 /**
- * Provides classes modeling github.com/evanphx/json-patch.
+ * Provides classes modeling `github.com/evanphx/json-patch`.
  */
 
 import go
 
 private module EvanphxJsonPatch {
+  /** Gets the package name `github.com/evanphx/json-patch`. */
   bindingset[result]
   private string packagePath() { result = package("github.com/evanphx/json-patch", "") }
 
