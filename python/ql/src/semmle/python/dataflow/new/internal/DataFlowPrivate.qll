@@ -135,11 +135,6 @@ module EssaFlow {
       nodeTo = TIterableSequence(target)
     )
     or
-    exists(Assign assign, SequenceNode target | target.getNode() = assign.getATarget() |
-      nodeFrom.asExpr() = assign.getValue() and
-      nodeTo.asCfgNode() = target
-    )
-    or
     // With definition
     //   `with f(42) as x:`
     //   nodeFrom is `f(42)`, cfg node
@@ -153,6 +148,10 @@ module EssaFlow {
       contextManager.strictlyDominates(var)
     )
     or
+    // Paramter definition
+    //   `def foo(x):`
+    //   nodeFrom is `x`, cfgNode
+    //   nodeTo is `x`, essa var
     exists(ParameterDefinition pd |
       nodeFrom.asCfgNode() = pd.getDefiningNode() and
       nodeTo.asVar() = pd.getVariable()
@@ -175,6 +174,7 @@ module EssaFlow {
     // If expressions
     nodeFrom.asCfgNode() = nodeTo.asCfgNode().(IfExprNode).getAnOperand()
     or
+    // Flow inside an unpacking assignment
     unpackingAssignmentFlowStep(nodeFrom, nodeTo)
     or
     // Overflow keyword argument
@@ -1039,7 +1039,7 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  *
  * We may for instance have
  * ```python
- *    (a, b) = ["a", "tainted string"]  # RHS has content `ListElement`
+ *    (a, b) = ["a", "tainted string"]  # RHS has content `ListElementContent`
  * ```
  * Due to the abstraction for list content, we do not know whether `"tainted string"`
  * ends up in `a` or in `b`, so we want to overapproximate and see it in both.
@@ -1054,14 +1054,14 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  *
  * For a precise transfer
  * ```python
- *    (a, b) = ("a", "tainted string")  # RHS has content `TupleElement(1)`
+ *    (a, b) = ("a", "tainted string")  # RHS has content `TupleElementContent(1)`
  * ```
  * we wish to keep the precision, so only `b` receives the tuple content at index 1.
  *
  * Finally, `sequence` is actually a pattern and can have a more complicated structure,
  * such as
  * ```python
- *   (a, [b, *c]) = ("a", ("tainted string", "c"))  # RHS has content `TupleElement(1); TupleElement(0)`
+ *   (a, [b, *c]) = ("a", ("tainted string", "c"))  # RHS has content `TupleElementContent(1); TupleElementContent(0)`
  * ```
  * where `a` should not receive content, but `b` and `c` should. `c` will be `["c"]` so
  * should have the content converted and transferred, while `b` should read it.
@@ -1071,7 +1071,7 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  * For this we need a synthetic node in the middle, which we call `TIterableElement(receiver)`.
  * It is associated with the receiver of the transfer, because we know the receiver type from the syntax.
  * Since we sometimes need a converting read step (in the example above, `[b, *c]` reads the content
- * `TupleElement(0)` but should have content `ListElement`), we actually need a second synthetic node.
+ * `TupleElementContent(0)` but should have content `ListElementContent`), we actually need a second synthetic node.
  * A converting read step is a read step followed by a converting transfer.
  * We can have a uniform treatment by always having two synthetic nodes and so we can view it as
  * two stages of the same node. So we read into (or transfer to) `TIterableSequence(receiver)`,
@@ -1079,7 +1079,12 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  * In order to preserve precise content, we also take a flow step from `TIterableSequence(receiver)`
  * directly to `receiver`.
  *
- * The strategy is then via several read-, store-, and flow steps:
+ * The strategy is then via several read-, store-, and flow steps, illustrated on the assignment
+ *
+ * ```python
+ *   (a, [b, *c]) = ["a", [SOURCE]]
+ * ```
+ *
  * 1. [Flow] Content is transferred from `iterable` to `TIterableSequence(sequence)` via a
  *    flow step. From here, everything happens on the LHS.
  *
@@ -1094,17 +1099,61 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  *    Here the content type is chosen according to the type of sequence.
  *
  * 5. [Read] Content is read from `sequence` to its elements according to the type of `sequence`.
- *    If the element is a plain variable, the target is the corresponding essa node.
- *    If the element is itelf a sequence, with control-flow node `seq`, the target is `TIterableSequence(seq)`.
- *    If the element is a starred variable, with control-flow node `v`, the target is `TIterableElement(v)`.
+ *    a) If the element is a plain variable, the target is the corresponding essa node.
+ *
+ *    b) If the element is itelf a sequence, with control-flow node `seq`, the target is `TIterableSequence(seq)`.
+ *
+ *    c) If the element is a starred variable, with control-flow node `v`, the target is `TIterableElement(v)`.
  *
  * 6. [Store] Content is stored from `TIterableElement(v)` to the essa variable for `v`, with
- *    content type `ListElement`.
+ *    content type `ListElementContent`.
+ *    (We will see this in step 7)
  *
- * 7. [Flow, Read, Store] The last 5 steps are repeated for all recursive elements which are sequences.
+ * 7. [Flow, Read, Store] Steps 2 through 7 are repeated for all recursive elements which are sequences.
+ *
+ *
+ * We illustrate the above steps on the assignment
+ * ```python
+ *   (a, [b, *c]) = ["a", [SOURCE]]
+ * ```
+ * where the path to `c` is
+ *
+ *   `["a", [SOURCE]]`: [ListElementContent; ListElementContent]
+ *
+ * --Step 1-->
+ *
+ *   `TIterableSequence((a, [b, *c]))`: [ListElementContent; ListElementContent]
+ *
+ * --Step 3-->
+ *
+ *   `TIterableElement((a, [b, *c]))`: [ListElementContent]
+ *
+ * --Step 4-->
+ *
+ *   `(a, [b, *c])`: [TupleElementContent(1); ListElementContent]
+ *
+ * --Step 5b-->
+ *
+ *   `TIterableSequence([b, *c])`: [ListElementContent]
+ *
+ * --Step 3-->
+ *
+ *   `TIterableElement([b, *c])`: []
+ *
+ * --Step 4-->
+ *
+ *   `[b, *c]`: [ListElementContent]
+ *
+ * --Step 5c-->
+ *
+ *   `TIterableElement(c)`: []
+ *
+ * --Step 6-->
+ *
+ *  `c`: [ListElementContent]
  */
 module UnpackingAssignment {
-  /** A direct (or top-level) target of an unpacking assignment */
+  /** A direct (or top-level) target of an unpacking assignment. */
   class UnpackingAssignmentDirectTarget extends ControlFlowNode {
     Expr value;
 
@@ -1116,7 +1165,7 @@ module UnpackingAssignment {
     Expr getValue() { result = value }
   }
 
-  /** A (possibly recursive) target of an unpacking assignment */
+  /** A (possibly recursive) target of an unpacking assignment. */
   class UnpackingAssignmentTarget extends ControlFlowNode {
     UnpackingAssignmentTarget() {
       this instanceof UnpackingAssignmentDirectTarget
@@ -1129,15 +1178,22 @@ module UnpackingAssignment {
     ControlFlowNode getAnElement() { result = this.getElement(_) }
   }
 
+  /** A (possibly recursive) target of an unpacking assignment which is also a sequence. */
+  class UnpackingAssignmentSequenceTarget extends UnpackingAssignmentTarget {
+    UnpackingAssignmentSequenceTarget() { this instanceof SequenceNode }
+  }
+
+  /** Step 2 */
   predicate unpackingAssignmentFlowStep(Node nodeFrom, Node nodeTo) {
-    exists(UnpackingAssignmentTarget target | target instanceof SequenceNode |
+    exists(UnpackingAssignmentSequenceTarget target |
       nodeFrom = TIterableSequence(target) and
       nodeTo.asCfgNode() = target
     )
   }
 
+  /** Step 3 */
   predicate unpackingAssignmentConvertingReadStep(Node nodeFrom, Content c, Node nodeTo) {
-    exists(UnpackingAssignmentTarget target | target instanceof SequenceNode |
+    exists(UnpackingAssignmentSequenceTarget target |
       nodeFrom = TIterableSequence(target) and
       nodeTo = TIterableElement(target) and
       (
@@ -1156,8 +1212,9 @@ module UnpackingAssignment {
     )
   }
 
+  /** Step 4 */
   predicate unpackingAssignmentConvertingStoreStep(Node nodeFrom, Content c, Node nodeTo) {
-    exists(UnpackingAssignmentTarget target | target instanceof SequenceNode |
+    exists(UnpackingAssignmentSequenceTarget target |
       nodeFrom = TIterableElement(target) and
       nodeTo.asCfgNode() = target and
       (
@@ -1172,6 +1229,7 @@ module UnpackingAssignment {
     )
   }
 
+  /** Step 5 */
   predicate unpackingAssignmentElementReadStep(Node nodeFrom, Content c, Node nodeTo) {
     exists(UnpackingAssignmentTarget target, int index, ControlFlowNode element, boolean precise |
       target instanceof SequenceNode
@@ -1190,14 +1248,17 @@ module UnpackingAssignment {
       (
         if element instanceof SequenceNode
         then
+          // Step 5b
           nodeTo = TIterableSequence(element) and
           precise = true
         else
           if element.getNode() instanceof Starred
           then
+            // Step 5c
             nodeTo = TIterableElement(element) and
             precise = false
           else (
+            // Step 5a
             nodeTo.asVar().getDefinition().(MultiAssignmentDefinition).getDefiningNode() = element and
             precise = true
           )
@@ -1205,6 +1266,7 @@ module UnpackingAssignment {
     )
   }
 
+  /** Step 6 */
   predicate unpackingAssignmentStarredElementStoreStep(Node nodeFrom, Content c, Node nodeTo) {
     exists(ControlFlowNode starred | starred.getNode() instanceof Starred |
       nodeFrom = TIterableElement(starred) and
@@ -1213,13 +1275,14 @@ module UnpackingAssignment {
     )
   }
 
-  /** Data flows from an iterable to an assigned variable. */
+  /** All read steps associated with unpacking assignment. */
   predicate unpackingAssignmentReadStep(Node nodeFrom, Content c, Node nodeTo) {
     unpackingAssignmentElementReadStep(nodeFrom, c, nodeTo)
     or
     unpackingAssignmentConvertingReadStep(nodeFrom, c, nodeTo)
   }
 
+  /** All store steps associated with unpacking assignment. */
   predicate unpackingAssignmentStoreStep(Node nodeFrom, Content c, Node nodeTo) {
     unpackingAssignmentStarredElementStoreStep(nodeFrom, c, nodeTo)
     or

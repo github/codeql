@@ -330,7 +330,10 @@ class KwUnpacked extends Node, TKwUnpacked {
 
 /**
  * A synthetic node representing an iterable sequence. Used for changing content type
- * for instance from a `ListElement` to a `TupleElement`.
+ * for instance from a `ListElement` to a `TupleElement`, especially if the content is
+ * transferred via a read step which cannot be broken up into a read and a store. The
+ * read step then targets TIterableSequence, and the conversion can happen via a read
+ * step to TIterableElement followed by a store step to the target.
  */
 class IterableSequence extends Node, TIterableSequence {
   SequenceNode consumer;
@@ -348,7 +351,8 @@ class IterableSequence extends Node, TIterableSequence {
 
 /**
  * A synthetic node representing an iterable element. Used for changing content type
- * for instance from a `ListElement` to a `TupleElement`.
+ * for instance from a `ListElement` to a `TupleElement`. This would happen via a
+ * read step from the list to IterableElement followed by a store step to the tuple.
  */
 class IterableElement extends Node, TIterableElement {
   ControlFlowNode consumer;
