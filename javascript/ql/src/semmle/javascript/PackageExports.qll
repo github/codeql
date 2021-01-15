@@ -9,7 +9,7 @@ import javascript
 /**
  * Gets a parameter that is a library input to a top-level package.
  */
-DataFlow::ParameterNode getAnLibraryInputParameter() {
+DataFlow::ParameterNode getALibraryInputParameter() {
   exists(int bound, DataFlow::FunctionNode func |
     func = getAValueExportedBy(getTopmostPackageJSON()).getABoundFunctionValue(bound) and
     result = func.getParameter(any(int arg | arg >= bound))

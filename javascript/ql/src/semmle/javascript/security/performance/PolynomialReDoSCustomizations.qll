@@ -21,7 +21,7 @@ module PolynomialReDoS {
 
     /**
      * Gets a string that describes the source.
-     * For use in the alert message
+     * For use in the alert message.
      */
     string describe() { result = "a user-provided value" }
   }
@@ -93,7 +93,7 @@ module PolynomialReDoS {
   class StringLengthLimiter extends Sanitizer {
     StringLengthLimiter() {
       this.(StringReplaceCall).isGlobal() and
-      // not char classes - they don't remove any repeated pattern.
+      // not lone char classes - they don't remove any repeated pattern.
       not exists(RegExpTerm root | root = this.(StringReplaceCall).getRegExp().getRoot() |
         root instanceof RegExpCharacterClass
         or
@@ -136,7 +136,7 @@ module PolynomialReDoS {
    * A parameter of an exported function, seen as a source for polynomial-redos.
    */
   class ExternalInputSource extends Source, DataFlow::ParameterNode {
-    ExternalInputSource() { this = Exports::getAnLibraryInputParameter() }
+    ExternalInputSource() { this = Exports::getALibraryInputParameter() }
 
     override string getKind() { result = "library" }
 
