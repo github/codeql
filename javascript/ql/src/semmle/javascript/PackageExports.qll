@@ -28,7 +28,7 @@ private int countSlashes(string path) { result = count(path.splitAt("/")) - 1 }
  * There can be multiple results if the there exists multiple package.json that are equally deeply nested in the folder structure.
  * Results are limited to package.json files that are at most nested 2 directories deep.
  */
-private PackageJSON getTopmostPackageJSON() {
+PackageJSON getTopmostPackageJSON() {
   result =
     min(PackageJSON j |
       countSlashes(j.getFile().getRelativePath()) <= 3 and
