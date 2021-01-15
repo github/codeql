@@ -3,24 +3,24 @@ import com.teamdev.jxbrowser.chromium.LoadHandler;
 import com.teamdev.jxbrowser.chromium.LoadParams;
 import com.teamdev.jxbrowser.chromium.CertificateErrorParams;
 
-public class JxBrowserWithoutCertValidation {
+public class JxBrowserWithoutCertValidationV6_24 {
 
     public static void main(String[] args) {
 
-        badUsage();
-
         goodUsage();
 
-    }
+        goodUsage2();
 
-    private static void badUsage() {
-        Browser browser = new Browser();
-        browser.loadURL("https://example.com");
-        // no further calls
-        // BAD: The browser ignores any certificate error by default!
     }
 
     private static void goodUsage() {
+        Browser browser = new Browser();
+        browser.loadURL("https://example.com");
+        // no further calls
+        // GOOD: On version 6.24 the browser properly validates certificates by default!
+    }
+
+    private static void goodUsage2() {
         Browser browser = new Browser();
         browser.setLoadHandler(new LoadHandler() {
             public boolean onLoad(LoadParams params) {

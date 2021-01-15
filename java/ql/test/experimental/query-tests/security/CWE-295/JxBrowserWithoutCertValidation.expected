@@ -1,1 +1,0 @@
-| JxBrowserWithoutCertValidation.java:17:27:17:39 | new Browser(...) | This JxBrowser instance allows man-in-the-middle attacks. |
