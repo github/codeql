@@ -119,4 +119,37 @@ public class InsecureLdapAuth {
 		environment.put("java.naming.security.credentials", password);
 		DirContext dirContext = new InitialDirContext(environment);
 	}
+
+	private void setSSL(Hashtable env) {
+		env.put(Context.SECURITY_PROTOCOL, "ssl");
+	}
+
+	private void setBasicAuth(Hashtable env, String ldapUserName, String password) {
+		env.put(Context.SECURITY_AUTHENTICATION, "simple");
+		env.put(Context.SECURITY_PRINCIPAL, ldapUserName);
+		env.put(Context.SECURITY_CREDENTIALS, password);
+	}
+
+	// GOOD - Test LDAP authentication with `ssl` configuration and basic authentication.
+	public void testCleartextLdapAuth5(String ldapUserName, String password, String serverName) {
+		String ldapUrl = "ldap://"+serverName+":389";
+		Hashtable<String, String> environment = new Hashtable<String, String>();
+		setSSL(environment);
+		environment.put(Context.INITIAL_CONTEXT_FACTORY,
+			"com.sun.jndi.ldap.LdapCtxFactory");
+		environment.put(Context.PROVIDER_URL, ldapUrl);
+		setBasicAuth(environment, ldapUserName, password);
+		DirContext dirContext = new InitialLdapContext(environment, null);
+	}
+
+	// BAD - Test LDAP authentication with basic authentication.
+	public void testCleartextLdapAuth6(String ldapUserName, String password, String serverName) {
+		String ldapUrl = "ldap://"+serverName+":389";
+		Hashtable<String, String> environment = new Hashtable<String, String>();
+		environment.put(Context.INITIAL_CONTEXT_FACTORY,
+			"com.sun.jndi.ldap.LdapCtxFactory");
+		environment.put(Context.PROVIDER_URL, ldapUrl);
+		setBasicAuth(environment, ldapUserName, password);
+		DirContext dirContext = new InitialLdapContext(environment, null);
+	}
 }

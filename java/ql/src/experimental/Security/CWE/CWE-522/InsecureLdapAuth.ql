@@ -110,7 +110,7 @@ predicate hasEnvWithValue(MethodAccess ma, string fieldName, string fieldValue, 
 /**
  * Holds if `ma` sets `java.naming.security.authentication` (also known as `Context.SECURITY_AUTHENTICATION`) to `simple` in some `Hashtable`.
  */
-predicate isSimpleAuthEnv(MethodAccess ma) {
+predicate isBasicAuthEnv(MethodAccess ma) {
   hasEnvWithValue(ma, "SECURITY_AUTHENTICATION", "java.naming.security.authentication", "simple")
 }
 
@@ -122,32 +122,103 @@ predicate isSSLEnv(MethodAccess ma) {
 }
 
 /**
- * A taint-tracking configuration for cleartext credentials in LDAP authentication.
+ * A taint-tracking configuration for `ldap://` URL in LDAP authentication.
  */
-class LdapAuthFlowConfig extends TaintTracking::Configuration {
-  LdapAuthFlowConfig() { this = "InsecureLdapAuth:LdapAuthFlowConfig" }
+class InsecureUrlFlowConfig extends TaintTracking::Configuration {
+  InsecureUrlFlowConfig() { this = "InsecureLdapAuth:InsecureUrlFlowConfig" }
 
-  /** Source of non-private LDAP connection string */
+  /** Source of `ldap://` connection string. */
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof InsecureLdapUrl }
 
-  /** Sink of provider URL with simple authentication */
+  /** Sink of directory context creation. */
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess pma |
-      sink.asExpr() = pma.getArgument(1) and
-      isProviderUrlSetter(pma) and
-      exists(MethodAccess sma |
-        sma.getQualifier() = pma.getQualifier().(VarAccess).getVariable().getAnAccess() and
-        isSimpleAuthEnv(sma)
-      ) and
-      not exists(MethodAccess sma |
-        sma.getQualifier() = pma.getQualifier().(VarAccess).getVariable().getAnAccess() and
-        isSSLEnv(sma)
-      )
+    exists(ConstructorCall cc |
+      cc.getConstructedType().getASupertype*() instanceof TypeDirContext and
+      sink.asExpr() = cc.getArgument(0)
+    )
+  }
+
+  /** Method call of `env.put()`. */
+  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(MethodAccess ma |
+      pred.asExpr() = ma.getArgument(1) and
+      isProviderUrlSetter(ma) and
+      succ.asExpr() = ma.getQualifier()
     )
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, LdapAuthFlowConfig config
-where config.hasFlowPath(source, sink)
+/**
+ * A taint-tracking configuration for `simple` basic-authentication in LDAP configuration.
+ */
+class BasicAuthFlowConfig extends TaintTracking::Configuration {
+  BasicAuthFlowConfig() { this = "InsecureLdapAuth:BasicAuthFlowConfig" }
+
+  /** Source of `simple` configuration. */
+  override predicate isSource(DataFlow::Node src) {
+    src.asExpr().(CompileTimeConstantExpr).getStringValue() = "simple"
+  }
+
+  /** Sink of directory context creation. */
+  override predicate isSink(DataFlow::Node sink) {
+    exists(ConstructorCall cc |
+      cc.getConstructedType().getASupertype*() instanceof TypeDirContext and
+      sink.asExpr() = cc.getArgument(0)
+    )
+  }
+
+  /** Method call of `env.put()`. */
+  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(MethodAccess ma |
+      pred.asExpr() = ma.getArgument(1) and
+      isBasicAuthEnv(ma) and
+      succ.asExpr() = ma.getQualifier()
+    )
+  }
+}
+
+/**
+ * A taint-tracking configuration for `ssl` configuration in LDAP authentication.
+ */
+class SSLFlowConfig extends TaintTracking::Configuration {
+  SSLFlowConfig() { this = "InsecureLdapAuth:SSLFlowConfig" }
+
+  /** Source of `ssl` configuration. */
+  override predicate isSource(DataFlow::Node src) {
+    src.asExpr().(CompileTimeConstantExpr).getStringValue() = "ssl"
+  }
+
+  /** Sink of directory context creation. */
+  override predicate isSink(DataFlow::Node sink) {
+    exists(ConstructorCall cc |
+      cc.getConstructedType().getASupertype*() instanceof TypeDirContext and
+      sink.asExpr() = cc.getArgument(0)
+    )
+  }
+
+  /** Method call of `env.put()`. */
+  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(MethodAccess ma |
+      pred.asExpr() = ma.getArgument(1) and
+      isSSLEnv(ma) and
+      succ.asExpr() = ma.getQualifier()
+    )
+  }
+}
+
+from DataFlow::PathNode source, DataFlow::PathNode sink, InsecureUrlFlowConfig config, VarAccess va
+where
+  config.hasFlowPath(source, sink) and
+  sink.getNode().asExpr() = va and
+  exists(BasicAuthFlowConfig bc, DataFlow::PathNode source2, DataFlow::PathNode sink2 |
+    bc.hasFlowPath(source2, sink2) and
+    source2.getNode().asExpr().(CompileTimeConstantExpr).getStringValue() = "simple" and
+    sink2.getNode().asExpr() = va
+  ) and
+  not exists(SSLFlowConfig sc, DataFlow::PathNode source3, DataFlow::PathNode sink3 |
+    sc.hasFlowPath(source3, sink3) and
+    source3.getNode().asExpr().(CompileTimeConstantExpr).getStringValue() = "ssl" and
+    sink3.getNode().asExpr() = va.getVariable().getAnAccess()
+  )
 select sink.getNode(), source, sink, "Insecure LDAP authentication from $@.", source.getNode(),
   "LDAP connection string"
