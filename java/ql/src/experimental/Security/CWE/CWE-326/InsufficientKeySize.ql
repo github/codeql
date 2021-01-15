@@ -40,6 +40,9 @@ int getECKeySize(string algorithm) {
   or
   algorithm.matches("X9.62%") and //specification such as "X9.62 prime192v2"
   result = algorithm.regexpCapture("X9\\.62 .*[a-zA-Z](\\d+)[a-zA-Z].*", 1).toInt()
+  or
+  (algorithm.matches("prime%") or algorithm.matches("c2tnb%")) and //specification such as "prime192v2"
+  result = algorithm.regexpCapture(".*[a-zA-Z](\\d+)[a-zA-Z].*", 1).toInt()
 }
 
 /** Taint configuration tracking flow from a key generator to a `init` method call. */
@@ -102,7 +105,7 @@ predicate hasShortAsymmetricKeyPair(MethodAccess ma, string msg, string type) {
     JavaSecurityKeyPairGenerator jpg, KeyPairGeneratorInitConfiguration kc,
     DataFlow::PathNode source, DataFlow::PathNode dest
   |
-    jpg.getAlgoSpec().(StringLiteral).getValue() = type and
+    jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase() = type and
     source.getNode().asExpr() = jpg and
     dest.getNode().asExpr() = ma.getQualifier() and
     kc.hasFlowPath(source, dest)
@@ -113,7 +116,7 @@ predicate hasShortAsymmetricKeyPair(MethodAccess ma, string msg, string type) {
 
 /** Holds if a DSA `KeyPairGenerator` initialized by `ma` uses an insufficient key size. `msg` provides a human-readable description of the problem. */
 predicate hasShortDSAKeyPair(MethodAccess ma, string msg) {
-  hasShortAsymmetricKeyPair(ma, msg, "DSA")
+  hasShortAsymmetricKeyPair(ma, msg, "DSA") or hasShortAsymmetricKeyPair(ma, msg, "DH")
 }
 
 /** Holds if a RSA `KeyPairGenerator` initialized by `ma` uses an insufficient key size. `msg` provides a human-readable description of the problem. */
@@ -134,9 +137,9 @@ predicate hasShortECKeyPair(MethodAccess ma, string msg) {
     kc.hasFlowPath(source, dest) and
     DataFlow::localExprFlow(cie, ma.getArgument(0)) and
     ma.getArgument(0).getType() instanceof ECGenParameterSpec and
-    getECKeySize(cie.getArgument(0).(StringLiteral).getRepresentedString()) < 224
+    getECKeySize(cie.getArgument(0).(StringLiteral).getRepresentedString()) < 256
   ) and
-  msg = "Key size should be at least 224 bits for EC encryption."
+  msg = "Key size should be at least 256 bits for EC encryption."
 }
 
 from Expr e, string msg
