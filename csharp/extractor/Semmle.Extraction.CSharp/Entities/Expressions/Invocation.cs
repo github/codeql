@@ -136,7 +136,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         private static bool IsDelegateLikeCall(ExpressionNodeInfo info)
         {
-            return IsDelegateLikeCall(info, IsDelegateLikeCall);
+            return IsDelegateLikeCall(info, symbol => IsFunctionPointer(symbol) || IsDelegateInvoke(symbol));
         }
 
         private static bool IsDelegateInvokeCall(ExpressionNodeInfo info)
@@ -165,12 +165,6 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
 
             return check(si.Symbol);
-        }
-
-        private static bool IsDelegateLikeCall(ISymbol symbol)
-        {
-            return IsFunctionPointer(symbol) ||
-                IsDelegateInvoke(symbol);
         }
 
         private static bool IsFunctionPointer(ISymbol symbol)

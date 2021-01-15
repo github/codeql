@@ -805,6 +805,7 @@ private newtype TCallingConvention =
  * signature are passed from the caller to the callee.
  */
 class CallingConvention extends TCallingConvention {
+  /** Gets a textual representation of this calling convention. */
   string toString() { result = "CallingConvention" }
 }
 
@@ -853,7 +854,6 @@ class VarArgsCallingConvention extends CallingConvention {
   override string toString() { result = "VarArgsCallingConvention" }
 }
 
-// Add sub classes
 /**
  * A function pointer type, for example
  *
