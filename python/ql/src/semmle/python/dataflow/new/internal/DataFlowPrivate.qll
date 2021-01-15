@@ -1049,7 +1049,7 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  *   (a, *b) = ("a", "b", "tainted string")  # RHS has content `TupleElement(2)`
  * ```
  * Since the starred variables are always assigned type list, `*b` will be
- * `["b", "tainted string]`, and we will agsin overapproximate and assign it
+ * `["b", "tainted string]`, and we will again overapproximate and assign it
  * content corresponding to anything found in the RHS.
  *
  * For a precise transfer
@@ -1103,7 +1103,7 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  *
  * 1. [Flow, Read, Store] The last 5 steps are repeated for all recursive elements which are sequences.
  */
-module unpackinAssignment {
+module UnpackingAssignment {
   /** A direct (or top-level) target of an unpacking assignment */
   class UnpackingAssignmentDirectTarget extends ControlFlowNode {
     Expr value;
@@ -1121,7 +1121,7 @@ module unpackinAssignment {
     UnpackingAssignmentTarget() {
       this instanceof UnpackingAssignmentDirectTarget
       or
-      exists(UnpackingAssignmentTarget parent | this = parent.getAnElement())
+      this = any(UnpackingAssignmentTarget parent).getAnElement()
     }
 
     ControlFlowNode getElement(int i) { result = this.(SequenceNode).getElement(i) }
@@ -1227,7 +1227,7 @@ module unpackinAssignment {
   }
 }
 
-import unpackinAssignment
+import UnpackingAssignment
 
 /** Data flows from a sequence to a call to `pop` on the sequence. */
 predicate popReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
