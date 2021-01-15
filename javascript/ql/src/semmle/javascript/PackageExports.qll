@@ -11,7 +11,7 @@ import javascript
  */
 DataFlow::ParameterNode getALibraryInputParameter() {
   exists(int bound, DataFlow::FunctionNode func |
-    func = getAValueExportedBy(getTopmostPackageJSON()).getABoundFunctionValue(bound) and
+    func = getAValueExportedByPackage().getABoundFunctionValue(bound) and
     result = func.getParameter(any(int arg | arg >= bound))
   )
 }
@@ -28,7 +28,7 @@ private int countSlashes(string path) { result = count(path.splitAt("/")) - 1 }
  * There can be multiple results if the there exists multiple package.json that are equally deeply nested in the folder structure.
  * Results are limited to package.json files that are at most nested 2 directories deep.
  */
-PackageJSON getTopmostPackageJSON() {
+private PackageJSON getTopmostPackageJSON() {
   result =
     min(PackageJSON j |
       countSlashes(j.getFile().getRelativePath()) <= 3 and
@@ -39,33 +39,33 @@ PackageJSON getTopmostPackageJSON() {
 }
 
 /**
- * Gets a value exported by the main module from the package.json `packageJSON`.
+ * Gets a value exported by the main module from one of the topmost `package.json` files (see `getTopmostPackageJSON`).
  * The value is either directly the `module.exports` value, a nested property of `module.exports`, or a method on an exported class.
  */
-DataFlow::Node getAValueExportedBy(PackageJSON packageJSON) {
-  result = getAnExportFromModule(packageJSON.getMainModule())
+private DataFlow::Node getAValueExportedByPackage() {
+  result = getAnExportFromModule(getTopmostPackageJSON().getMainModule())
   or
-  result = getAValueExportedBy(packageJSON).(DataFlow::PropWrite).getRhs()
+  result = getAValueExportedByPackage().(DataFlow::PropWrite).getRhs()
   or
   exists(DataFlow::SourceNode callee |
-    callee = getAValueExportedBy(packageJSON).(DataFlow::NewNode).getCalleeNode().getALocalSource()
+    callee = getAValueExportedByPackage().(DataFlow::NewNode).getCalleeNode().getALocalSource()
   |
     result = callee.getAPropertyRead("prototype").getAPropertyWrite().getRhs()
     or
     result = callee.(DataFlow::ClassNode).getAnInstanceMethod()
   )
   or
-  result = getAValueExportedBy(packageJSON).getALocalSource()
+  result = getAValueExportedByPackage().getALocalSource()
   or
-  result = getAValueExportedBy(packageJSON).(DataFlow::SourceNode).getAPropertyReference()
+  result = getAValueExportedByPackage().(DataFlow::SourceNode).getAPropertyReference()
   or
   exists(Module mod |
-    mod = getAValueExportedBy(packageJSON).getEnclosingExpr().(Import).getImportedModule()
+    mod = getAValueExportedByPackage().getEnclosingExpr().(Import).getImportedModule()
   |
     result = getAnExportFromModule(mod)
   )
   or
-  exists(DataFlow::ClassNode cla | cla = getAValueExportedBy(packageJSON) |
+  exists(DataFlow::ClassNode cla | cla = getAValueExportedByPackage() |
     result = cla.getAnInstanceMethod() or
     result = cla.getAStaticMethod() or
     result = cla.getConstructor()
