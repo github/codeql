@@ -23,6 +23,7 @@ pipeClassRef
 | TestPipe.ts:4:8:9:1 | class T ... ;\\n  }\\n} | source.component.html:6:19:6:26 | testPipe |
 taintFlow
 | inline.component.ts:15:22:15:29 | source() | sink.component.ts:27:48:27:57 | this.sink7 |
+| source.component.ts:14:22:14:29 | source() | TestPipe.ts:6:31:6:35 | value |
 | source.component.ts:14:22:14:29 | source() | sink.component.ts:21:48:21:57 | this.sink1 |
 | source.component.ts:14:22:14:29 | source() | sink.component.ts:24:48:24:57 | this.sink4 |
 | source.component.ts:14:22:14:29 | source() | sink.component.ts:25:48:25:57 | this.sink5 |
