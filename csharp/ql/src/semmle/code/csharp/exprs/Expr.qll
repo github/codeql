@@ -295,6 +295,12 @@ private predicate hasChildPattern(ControlFlowElement pm, Expr child) {
     child = mid.getChild(2).getAChildExpr() or
     child = mid.getChild(3).getAChildExpr()
   )
+  or
+  exists(Expr mid |
+    hasChildPattern(pm, mid) and
+    mid instanceof @unary_pattern_expr and
+    child = mid.getChild(0)
+  )
 }
 
 /**
@@ -442,6 +448,19 @@ class PositionalPatternExpr extends Expr, @positional_pattern_expr {
   PatternExpr getPattern(int n) { result = this.getChild(n) }
 
   override string getAPrimaryQlClass() { result = "PositionalPatternExpr" }
+}
+
+/** A unary pattern. For example, `not 1`. */
+class UnaryPatternExpr extends PatternExpr, @unary_pattern_expr {
+  /** Gets the underlying pattern. */
+  PatternExpr getPattern() { result = this.getChild(0) }
+}
+
+/** A not pattern. For example, `not 1`. */
+class NotPatternExpr extends UnaryPatternExpr, @not_pattern_expr {
+  override string toString() { result = "not ..." }
+
+  override string getAPrimaryQlClass() { result = "NotPatternExpr" }
 }
 
 /**

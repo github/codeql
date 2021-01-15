@@ -764,3 +764,59 @@ TypePattern.cs:
 #   14|             0: [VariablePatternExpr] Object o
 #   14|               0: [TypeMention] object
 #   14|             2: [LocalVariableAccess] access to local variable o
+UnaryPattern.cs:
+#    3| [Class] UnaryPattern
+#    5|   5: [Property] P1
+#    5|     -1: [TypeMention] int
+#    5|     3: [Getter] get_P1
+#    5|     4: [Setter] set_P1
+#-----|       2: (Parameters)
+#    5|         0: [Parameter] value
+#    7|   6: [Method] M1
+#    7|     -1: [TypeMention] bool
+#-----|     2: (Parameters)
+#    7|       0: [Parameter] c
+#    7|         -1: [TypeMention] char
+#    8|     4: [IsExpr] ... is ...
+#    8|       0: [ParameterAccess] access to parameter c
+#    8|       1: [NotPatternExpr] not ...
+#    8|         0: [CharLiteral,ConstantPatternExpr] a
+#    9|   7: [Method] M2
+#    9|     -1: [TypeMention] bool
+#-----|     2: (Parameters)
+#    9|       0: [Parameter] c
+#    9|         -1: [TypeMention] object
+#   10|     4: [IsExpr] ... is ...
+#   10|       0: [ParameterAccess] access to parameter c
+#   10|       1: [NotPatternExpr] not ...
+#   10|         0: [ConstantPatternExpr,NullLiteral] null
+#   11|   8: [Method] M3
+#   11|     -1: [TypeMention] bool
+#-----|     2: (Parameters)
+#   11|       0: [Parameter] c
+#   11|         -1: [TypeMention] object
+#   12|     4: [IsExpr] ... is ...
+#   12|       0: [ParameterAccess] access to parameter c
+#   12|       1: [NotPatternExpr] not ...
+#   12|         0: [RecursivePatternExpr] { ... }
+#   12|           0: [LocalVariableDeclExpr] UnaryPattern u
+#   12|           1: [TypeAccess] access to type UnaryPattern
+#   12|             0: [TypeMention] UnaryPattern
+#   12|           3: [PropertyPatternExpr] { ... }
+#   12|             0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 1
+#   14|   9: [Method] M4
+#   14|     -1: [TypeMention] string
+#-----|     2: (Parameters)
+#   14|       0: [Parameter] i
+#   14|         -1: [TypeMention] int
+#   15|     4: [BlockStmt] {...}
+#   16|       0: [ReturnStmt] return ...;
+#   16|         0: [SwitchExpr] ... switch { ... }
+#   16|           -1: [ParameterAccess] access to parameter i
+#   18|           0: [SwitchCaseExpr] ... => ...
+#   18|             0: [NotPatternExpr] not ...
+#   18|               0: [ConstantPatternExpr,IntLiteral] 1
+#   18|             2: [StringLiteral] "not 1"
+#   19|           1: [SwitchCaseExpr] ... => ...
+#   19|             0: [DiscardPatternExpr] _
+#   19|             2: [StringLiteral] "other"
