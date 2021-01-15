@@ -91,19 +91,11 @@ predicate isProviderUrlSetter(MethodAccess ma) {
 /**
  * Holds if `ma` sets `fieldValue` with attribute name `fieldName` to `envValue` in some `Hashtable`.
  */
-bindingset[fieldName, fieldValue, envValue]
-predicate hasEnvWithValue(MethodAccess ma, string fieldName, string fieldValue, string envValue) {
+bindingset[fieldValue, envValue]
+predicate hasEnvWithValue(MethodAccess ma, string fieldValue, string envValue) {
   ma.getMethod().getDeclaringType().getAnAncestor() instanceof TypeHashtable and
   (ma.getMethod().hasName("put") or ma.getMethod().hasName("setProperty")) and
-  (
-    ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = fieldValue
-    or
-    exists(Field f |
-      ma.getArgument(0) = f.getAnAccess() and
-      f.hasName(fieldName) and
-      f.getDeclaringType() instanceof TypeNamingContext
-    )
-  ) and
+  ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = fieldValue and
   ma.getArgument(1).(CompileTimeConstantExpr).getStringValue() = envValue
 }
 
@@ -111,15 +103,13 @@ predicate hasEnvWithValue(MethodAccess ma, string fieldName, string fieldValue, 
  * Holds if `ma` sets `java.naming.security.authentication` (also known as `Context.SECURITY_AUTHENTICATION`) to `simple` in some `Hashtable`.
  */
 predicate isBasicAuthEnv(MethodAccess ma) {
-  hasEnvWithValue(ma, "SECURITY_AUTHENTICATION", "java.naming.security.authentication", "simple")
+  hasEnvWithValue(ma, "java.naming.security.authentication", "simple")
 }
 
 /**
  * Holds if `ma` sets `java.naming.security.protocol` (also known as `Context.SECURITY_PROTOCOL`) to `ssl` in some `Hashtable`.
  */
-predicate isSSLEnv(MethodAccess ma) {
-  hasEnvWithValue(ma, "SECURITY_PROTOCOL", "java.naming.security.protocol", "ssl")
-}
+predicate isSSLEnv(MethodAccess ma) { hasEnvWithValue(ma, "java.naming.security.protocol", "ssl") }
 
 /**
  * A taint-tracking configuration for `ldap://` URL in LDAP authentication.
