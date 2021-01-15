@@ -52,6 +52,23 @@ public class HashWithoutSalt {
 		return Base64.getEncoder().encodeToString(cipherBytes);
 	}
 
+	// GOOD - Hash with a given salt stored somewhere else.
+	public String getSHA256Hash(String password, String salt) throws NoSuchAlgorithmException {
+		return hash(password+salt);
+	}
+
+	// GOOD - Hash with a salt for a variable named passwordHash, whose value is a hash used as an input for a hashing function.
+	public String getSHA256Hash3(String passwordHash) throws NoSuchAlgorithmException {
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		byte[] messageDigest = md.digest(passwordHash.getBytes());
+		return Base64.getEncoder().encodeToString(messageDigest);
+	}
+
+	private String hash(String payload) {
+		MessageDigest alg = MessageDigest.getInstance("SHA-256");
+		return Base64.getEncoder().encodeToString(alg.digest(payload.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+	}
+
 	public static byte[] getSalt() throws NoSuchAlgorithmException {
 		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
 		byte[] salt = new byte[16];
