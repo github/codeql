@@ -1034,7 +1034,7 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  *   sequence = iterable
  * ```
  * where `sequence` is either a tuple or a list and it can contain wildcards.
- * The iterable can be any iterable, which means that content will need to change type
+ * The iterable can be any iterable, which means that (CodeQL modeling of) content will need to change type
  * if it should be transferred from the LHS to the RHS.
  *
  * We may for instance have
@@ -1046,7 +1046,7 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  *
  * Using wildcards we may have
  * ```python
- *   (a, *b) = ("a", "b", "tainted string")  # RHS has content `TupleElement(2)`
+ *   (a, *b) = ("a", "b", "tainted string")  # RHS has content `TupleElementContent(2)`
  * ```
  * Since the starred variables are always assigned type list, `*b` will be
  * `["b", "tainted string]`, and we will again overapproximate and assign it
@@ -1083,25 +1083,25 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  * 1. [Flow] Content is transferred from `iterable` to `TIterableSequence(sequence)` via a
  *    flow step. From here, everything happens on the LHS.
  *
- * 1. [Flow] Content is transferred from `TIterableSequence(sequence)` to `sequence` via a
+ * 2. [Flow] Content is transferred from `TIterableSequence(sequence)` to `sequence` via a
  *    flow step.
  *
- * 1. [Read] Content is read from `TIterableSequence(sequence)` into  `TIterableElement(sequence)`.
+ * 3. [Read] Content is read from `TIterableSequence(sequence)` into  `TIterableElement(sequence)`.
  *    If `sequence` is of type tuple, we will not read tuple content as that would allow
  *    cross talk.
  *
- * 1. [Store] Content is stored from `TIterableElement(sequence)` to `sequence`.
+ * 4. [Store] Content is stored from `TIterableElement(sequence)` to `sequence`.
  *    Here the content type is chosen according to the type of sequence.
  *
- * 1. [Read] Content is read from `sequence` to its elements according to the type of `sequence`.
+ * 5. [Read] Content is read from `sequence` to its elements according to the type of `sequence`.
  *    If the element is a plain variable, the target is the corresponding essa node.
  *    If the element is itelf a sequence, with control-flow node `seq`, the target is `TIterableSequence(seq)`.
  *    If the element is a starred variable, with control-flow node `v`, the target is `TIterableElement(v)`.
  *
- * 1. [Store] Content is stored from `TIterableElement(v)` to the essa variable for `v`, with
+ * 6. [Store] Content is stored from `TIterableElement(v)` to the essa variable for `v`, with
  *    content type `ListElement`.
  *
- * 1. [Flow, Read, Store] The last 5 steps are repeated for all recursive elements which are sequences.
+ * 7. [Flow, Read, Store] The last 5 steps are repeated for all recursive elements which are sequences.
  */
 module UnpackingAssignment {
   /** A direct (or top-level) target of an unpacking assignment */
@@ -1151,7 +1151,7 @@ module UnpackingAssignment {
         exists(int index | exists(target.getElement(index)) |
           c.(TupleElementContent).getIndex() = index
         )
-        // leaving out dict content for now
+        // TODO: dict content in iterable unpacking not handled
       )
     )
   }
