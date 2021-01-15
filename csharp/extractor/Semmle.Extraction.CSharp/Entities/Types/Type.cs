@@ -7,36 +7,11 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    /// <summary>
-    /// Represents an annotated type consisting of a type entity and nullability information.
-    /// </summary>
-    public struct AnnotatedType
-    {
-        public AnnotatedType(Type t, NullableAnnotation n)
-        {
-            Type = t;
-            annotation = n;
-        }
-
-        /// <summary>
-        /// The underlying type.
-        /// </summary>
-        public Type Type { get; private set; }
-
-        private readonly NullableAnnotation annotation;
-
-        /// <summary>
-        /// Gets the annotated type symbol of this annotated type.
-        /// </summary>
-        public AnnotatedTypeSymbol Symbol => new AnnotatedTypeSymbol(Type.symbol, annotation);
-    }
-
     public abstract class Type : CachedSymbol<ITypeSymbol>
     {
         protected Type(Context cx, ITypeSymbol init)
             : base(cx, init) { }
 
-        public virtual AnnotatedType ElementType => default(AnnotatedType);
 
         public override bool NeedsPopulation =>
             base.NeedsPopulation || symbol.TypeKind == TypeKind.Dynamic || symbol.TypeKind == TypeKind.TypeParameter;
@@ -277,12 +252,12 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             type = type.DisambiguateType();
             return type == null
-                ? NullType.Create(cx).Type
+                ? NullType.Create(cx)
                 : (Type)cx.CreateEntity(type);
         }
 
-        public static AnnotatedType Create(Context cx, AnnotatedTypeSymbol type) =>
-            new AnnotatedType(Create(cx, type.Symbol), type.Nullability);
+        public static Type Create(Context cx, AnnotatedTypeSymbol? type) =>
+            Create(cx, type?.Symbol);
 
         public virtual int Dimension => 0;
 
@@ -342,10 +317,6 @@ namespace Semmle.Extraction.CSharp.Entities
         protected Type(Context cx, T init)
             : base(cx, init) { }
 
-        public new T symbol
-        {
-            get => (T)base.symbol;
-            protected set => base.symbol = value;
-        }
+        public new T symbol => (T)base.symbol;
     }
 }

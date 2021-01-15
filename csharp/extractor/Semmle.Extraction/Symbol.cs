@@ -44,8 +44,6 @@ namespace Semmle.Extraction
         public TSymbol symbol
         {
             get;
-
-            protected set;
         }
 
         object? ICachedEntity.UnderlyingObject => symbol;
