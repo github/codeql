@@ -121,7 +121,7 @@ FunctionPointer.cs:
 #   16|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   16|         0: [Parameter] f
-#   16|           -1: [TypeMention] delegate* default<Int32 ref,Object out,Int32>
+#   16|           -1: [TypeMention] delegate* default<Int32 ref,Object out,Int32 ref readonly>
 #   17|       4: [BlockStmt] {...}
 #   18|         0: [LocalVariableDeclStmt] ... ...;
 #   18|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
