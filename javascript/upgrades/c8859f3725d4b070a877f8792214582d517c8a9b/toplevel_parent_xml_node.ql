@@ -8,9 +8,7 @@ class XmlNode extends @xmllocatable {
 
 // Based on previous implementation on HTMLNode.getCodeInAttribute and getInlineScript
 from
-  TopLevel top, XmlNode xml,
-  @file f,
-  @location l1, int sl1, int sc1, int el1, int ec1,
+  TopLevel top, XmlNode xml, @file f, @location l1, int sl1, int sc1, int el1, int ec1,
   @location l2, int sl2, int sc2, int el2, int ec2
 where
   xmllocations(xml, l1) and
