@@ -1,0 +1,52 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      By directly updating a DOM element via ElementRef's nativeElement property in Angular2,
+      a developer may make their application more vulnerable to code injection, assuming
+      user input is directly injected into the nativeElement property without proper
+      sanitization.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>
+      When updating a DOM element, avoid using ElementRef's nativeElement.
+      Instead, utilize Renderer2 to properly update the DOM element instead of ElementRef's
+      nativeElement.
+    </p>
+
+    <p>
+      If you must use ElementRef's nativeElement to update a DOM element, use Angular's
+      DOMSanitizer to sanitize input before passing it into ElementRef's nativeElement object.
+    </p>
+  </recommendation>
+
+  <example>
+    <p>
+      In the example below the <code>el</code> object, an instance of <code>ElementRef</code>, is
+      updated via the <code>nativeElement</code> property object. This can result in a Javascript
+      code injection.
+    </p>
+
+    <sample src="AngularNativeElementBad.js" />
+
+    <p>The corrected version utilizes Renderer2 to update the DOM element.</p>
+
+    <sample src="AngularNativeElementGood.js" />
+
+    <p>
+    An alternative corrected version utilizes DomSanitizer to sanitize the input
+    before injecting input into ElementRef's nativeElement property.
+    </p>
+
+    <sample src="AngularNativeElementGood2.js" />
+  </example>
+
+  <references>
+    <li>
+      Angular 2 Documentation:
+      <a href="https://angular.io/api/core/ElementRef#properties">ElementRef nativeElement property</a>.
+    </li>
+  </references>
+</qhelp>
