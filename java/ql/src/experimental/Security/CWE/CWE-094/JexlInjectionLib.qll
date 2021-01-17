@@ -11,6 +11,7 @@ class JexlInjectionConfig extends TaintTracking::Configuration {
   JexlInjectionConfig() { this = "JexlInjectionConfig" }
 
   override predicate isSource(DataFlow::Node source) {
+    source instanceof TaintedSpringRequestBody or
     source instanceof RemoteFlowSource or
     source instanceof UserInput or
     source instanceof EnvInput
@@ -22,7 +23,18 @@ class JexlInjectionConfig extends TaintTracking::Configuration {
     creatingTaintedJexlExpression(node1, node2) or
     creatingTaintedJexlTemplate(node1, node2) or
     creatingTaintedJexlScript(node1, node2) or
-    creatingTaintedJexlCallable(node1, node2)
+    creatingTaintedJexlCallable(node1, node2) or
+    returningTaintedDataFromBean(node1, node2)
+  }
+}
+
+/**
+ * A data flow source for parameters that have
+ * a Spring framework annotation indicating remote user input from servlets.
+ */
+class TaintedSpringRequestBody extends DataFlow::Node {
+  TaintedSpringRequestBody() {
+    exists(SpringServletInputAnnotation a | this.asParameter().getAnAnnotation() = a)
   }
 }
 
@@ -116,6 +128,18 @@ predicate creatingTaintedJexlCallable(DataFlow::Node node1, DataFlow::Node node2
     (m instanceof JexlExpressionCallableMethod or m instanceof JexlScriptCallableMethod) and
     ma.getQualifier() = node1.asExpr() and
     node2.asExpr() = ma
+  )
+}
+
+/**
+ * Holds if `node1` to `node2` is a dataflow step that returns data from
+ * a tainted bean by calling one of its getters.
+ */
+predicate returningTaintedDataFromBean(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(MethodAccess ma, Method m | ma.getMethod() = m |
+    m instanceof GetterMethod and
+    ma.getQualifier() = node1.asExpr() and
+    ma = node2.asExpr()
   )
 }
 

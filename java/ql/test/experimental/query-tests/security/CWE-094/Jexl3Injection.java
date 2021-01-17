@@ -4,6 +4,11 @@ import java.net.Socket;
 import java.util.function.Consumer;
 
 import org.apache.commons.jexl3.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 public class Jexl3Injection {
 
@@ -131,5 +136,59 @@ public class Jexl3Injection {
 
     public static void testWithJexlExpressionCallable() throws Exception {
         testWithSocket(Jexl3Injection::runJexlExpressionViaCallable);
+    }
+
+    @PostMapping("/request")
+    public ResponseEntity testWithSpringControllerThatEvaluatesJexlFromPathVariable(
+            @PathVariable String expr) {
+
+        runJexlExpression(expr);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PostMapping("/request")
+    public ResponseEntity testWithSpringControllerThatEvaluatesJexlFromRequestBody(
+            @RequestBody Data data) {
+
+        String expr = data.getExpr();
+        runJexlExpression(expr);
+
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PostMapping("/request")
+    public ResponseEntity testWithSpringControllerThatEvaluatesJexlFromRequestBodyWithNestedObjects(
+            @RequestBody CustomRequest customRequest) {
+
+        String expr = customRequest.getData().getExpr();
+        runJexlExpression(expr);
+
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    public static class CustomRequest {
+
+        private Data data;
+
+        CustomRequest(Data data) {
+            this.data = data;
+        }
+
+        public Data getData() {
+            return data;
+        }
+    }
+
+    public static class Data {
+
+        private String expr;
+
+        Data(String expr) {
+            this.expr = expr;
+        }
+
+        public String getExpr() {
+            return expr;
+        }
     }
 }

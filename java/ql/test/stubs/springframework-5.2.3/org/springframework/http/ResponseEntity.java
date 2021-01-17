@@ -9,4 +9,8 @@ public class ResponseEntity<T> extends org.springframework.http.HttpEntity {
 
     // public ResponseEntity(T body, org.springframework.http.HttpStatus status) {
     // }
+
+    public static <T> ResponseEntity<T> ok(T body) {
+        return null;
+    }
  }
