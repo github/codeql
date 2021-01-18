@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Semmle.Util;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -21,6 +20,7 @@ namespace Semmle.Extraction.CIL.Entities
         private readonly Type[]? thisTypeArguments;
         private readonly Type unboundGenericType;
         private readonly Type? containingType;
+        private readonly Namespace? containingNamespace;
 
         private readonly NamedTypeIdWriter idWriter;
 
@@ -53,13 +53,20 @@ namespace Semmle.Extraction.CIL.Entities
                 ? null
                 : new NoMetadataHandleType(Cx, containerName);
 
+            containingNamespace = isContainerNamespace
+                ? containerName == Cx.GlobalNamespace.Name
+                    ? Cx.GlobalNamespace
+                    : containerName == Cx.SystemNamespace.Name
+                        ? Cx.SystemNamespace
+                        : new Namespace(Cx, containerName)
+                : null;
+
             Populate();
         }
 
         private void Populate()
         {
-            if (isContainerNamespace &&
-                !ContainingNamespace!.IsGlobalNamespace)
+            if (isContainerNamespace)
             {
                 Cx.Populate(ContainingNamespace);
             }
@@ -100,11 +107,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override string Name => GenericsHelper.GetNonGenericName(name);
 
-        public override Namespace? ContainingNamespace => isContainerNamespace
-            ? containerName == Cx.GlobalNamespace.Name
-                ? Cx.GlobalNamespace
-                : new Namespace(Cx, containerName)
-            : null;
+        public override Namespace? ContainingNamespace => containingNamespace;
 
         public override Type? ContainingType => containingType;
 
