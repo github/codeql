@@ -879,6 +879,7 @@ predicate listStoreStep(CfgNode nodeFrom, ListElementContent c, CfgNode nodeTo) 
   //   nodeTo is the list, `[..., 42, ...]`, cfg node
   //   c denotes element of list
   nodeTo.getNode().(ListNode).getAnElement() = nodeFrom.getNode() and
+  not nodeTo.getNode() instanceof UnpackingAssignmentSequenceTarget and
   // Suppress unused variable warning
   c = c
 }
@@ -904,6 +905,7 @@ predicate tupleStoreStep(CfgNode nodeFrom, TupleElementContent c, CfgNode nodeTo
   //   c denotes element of tuple and index of nodeFrom
   exists(int n |
     nodeTo.getNode().(TupleNode).getElement(n) = nodeFrom.getNode() and
+    not nodeTo.getNode() instanceof UnpackingAssignmentSequenceTarget and
     c.getIndex() = n
   )
 }
