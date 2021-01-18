@@ -89,13 +89,15 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
       ma.getArgument(0) = node.asExpr() and // Detect wrapper methods that invoke `md.update(salt)`
       ma != mua and
       (
+        ma.getQualifier().getType() instanceof Interface
+        or
         mua.getQualifier().(VarAccess).getVariable().getAnAccess() = ma.getQualifier()
         or
         mua.getAnArgument().(VarAccess).getVariable().getAnAccess() = ma.getQualifier()
         or
         mua.getQualifier().(VarAccess).getVariable().getAnAccess() = ma.getAnArgument()
         or
-        mua.getAnArgument().(VarAccess).getVariable().getAnAccess() = ma.getAnArgument()
+        mua.getArgument(0).(VarAccess).getVariable().getAnAccess() = ma.getAnArgument()
       ) and
       isMDUpdateCall(mua.getMethod())
     )

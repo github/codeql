@@ -100,6 +100,22 @@ public class HashWithoutSalt {
 		return Base64.getEncoder().encodeToString(sha256.digest());
 	}
 
+	// GOOD - Invoke a wrapper implementation with a salt, which is only detectable when a class type is declared (not interface).
+	public String getSHA256Hash7(byte[] passphrase) throws NoSuchAlgorithmException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+		Class c = Class.forName("SHA256");
+		HASH sha256 = (HASH) (c.newInstance());
+		byte[] tmp = new byte[4];
+		byte[] key = new byte[32 * 2];
+		for (int i = 0; i < 2; i++) {
+			sha256.init();
+			tmp[3] = (byte) i;
+			sha256.update(tmp, 0, tmp.length);
+			sha256.update(passphrase, 0, passphrase.length);
+			System.arraycopy(sha256.digest(), 0, key, i * 32, 32);
+		}
+		return Base64.getEncoder().encodeToString(key);
+	}
+
 	private String hash(String payload) throws NoSuchAlgorithmException {
 		MessageDigest alg = MessageDigest.getInstance("SHA-256");
 		return Base64.getEncoder().encodeToString(alg.digest(payload.getBytes(java.nio.charset.StandardCharsets.UTF_8)));

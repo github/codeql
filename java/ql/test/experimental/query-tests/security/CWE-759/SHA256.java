@@ -1,7 +1,7 @@
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class SHA256 {
+public class SHA256 implements HASH {
   MessageDigest md;
   public int getBlockSize() {return 32;}
   public void init() throws NoSuchAlgorithmException {

@@ -1,11 +1,19 @@
 edges
 | HashWithoutSalt.java:10:36:10:43 | password : String | HashWithoutSalt.java:10:36:10:54 | getBytes(...) |
 | HashWithoutSalt.java:17:13:17:20 | password : String | HashWithoutSalt.java:17:13:17:31 | getBytes(...) |
+| HashWithoutSalt.java:98:22:98:29 | password : String | HashWithoutSalt.java:99:17:99:25 | passBytes : byte[] |
+| HashWithoutSalt.java:99:17:99:25 | passBytes : byte[] | SHA256.java:14:22:14:31 | foo : byte[] |
+| SHA256.java:14:22:14:31 | foo : byte[] | SHA256.java:15:15:15:17 | foo |
 nodes
 | HashWithoutSalt.java:10:36:10:43 | password : String | semmle.label | password : String |
 | HashWithoutSalt.java:10:36:10:54 | getBytes(...) | semmle.label | getBytes(...) |
 | HashWithoutSalt.java:17:13:17:20 | password : String | semmle.label | password : String |
 | HashWithoutSalt.java:17:13:17:31 | getBytes(...) | semmle.label | getBytes(...) |
+| HashWithoutSalt.java:98:22:98:29 | password : String | semmle.label | password : String |
+| HashWithoutSalt.java:99:17:99:25 | passBytes : byte[] | semmle.label | passBytes : byte[] |
+| SHA256.java:14:22:14:31 | foo : byte[] | semmle.label | foo : byte[] |
+| SHA256.java:15:15:15:17 | foo | semmle.label | foo |
 #select
 | HashWithoutSalt.java:10:36:10:54 | getBytes(...) | HashWithoutSalt.java:10:36:10:43 | password : String | HashWithoutSalt.java:10:36:10:54 | getBytes(...) | $@ is hashed without a salt. | HashWithoutSalt.java:10:36:10:43 | password | The password |
 | HashWithoutSalt.java:17:13:17:31 | getBytes(...) | HashWithoutSalt.java:17:13:17:20 | password : String | HashWithoutSalt.java:17:13:17:31 | getBytes(...) | $@ is hashed without a salt. | HashWithoutSalt.java:17:13:17:20 | password | The password |
+| SHA256.java:15:15:15:17 | foo | HashWithoutSalt.java:98:22:98:29 | password : String | SHA256.java:15:15:15:17 | foo | $@ is hashed without a salt. | HashWithoutSalt.java:98:22:98:29 | password | The password |
