@@ -15,50 +15,50 @@ nodes
 | addEventListener.js:12:24:12:28 | event |
 | addEventListener.js:12:24:12:33 | event.data |
 | addEventListener.js:12:24:12:33 | event.data |
-| angular2-client.ts:21:44:21:66 | \\u0275getDOM ... ation() |
-| angular2-client.ts:21:44:21:66 | \\u0275getDOM ... ation() |
-| angular2-client.ts:21:44:21:71 | \\u0275getDOM ... ().href |
-| angular2-client.ts:21:44:21:71 | \\u0275getDOM ... ().href |
-| angular2-client.ts:23:44:23:69 | this.ro ... .params |
-| angular2-client.ts:23:44:23:69 | this.ro ... .params |
-| angular2-client.ts:23:44:23:73 | this.ro ... ams.foo |
-| angular2-client.ts:23:44:23:73 | this.ro ... ams.foo |
-| angular2-client.ts:24:44:24:74 | this.ro ... yParams |
-| angular2-client.ts:24:44:24:74 | this.ro ... yParams |
-| angular2-client.ts:24:44:24:78 | this.ro ... ams.foo |
-| angular2-client.ts:24:44:24:78 | this.ro ... ams.foo |
-| angular2-client.ts:25:44:25:71 | this.ro ... ragment |
-| angular2-client.ts:25:44:25:71 | this.ro ... ragment |
-| angular2-client.ts:25:44:25:71 | this.ro ... ragment |
-| angular2-client.ts:26:44:26:82 | this.ro ... ('foo') |
-| angular2-client.ts:26:44:26:82 | this.ro ... ('foo') |
-| angular2-client.ts:26:44:26:82 | this.ro ... ('foo') |
-| angular2-client.ts:27:44:27:87 | this.ro ... ('foo') |
-| angular2-client.ts:27:44:27:87 | this.ro ... ('foo') |
-| angular2-client.ts:27:44:27:87 | this.ro ... ('foo') |
-| angular2-client.ts:29:46:29:59 | map.get('foo') |
-| angular2-client.ts:29:46:29:59 | map.get('foo') |
-| angular2-client.ts:29:46:29:59 | map.get('foo') |
-| angular2-client.ts:32:44:32:74 | this.ro ... 1].path |
-| angular2-client.ts:32:44:32:74 | this.ro ... 1].path |
-| angular2-client.ts:32:44:32:74 | this.ro ... 1].path |
-| angular2-client.ts:33:44:33:80 | this.ro ... ameters |
-| angular2-client.ts:33:44:33:80 | this.ro ... ameters |
-| angular2-client.ts:33:44:33:82 | this.ro ... eters.x |
-| angular2-client.ts:33:44:33:82 | this.ro ... eters.x |
-| angular2-client.ts:34:44:34:91 | this.ro ... et('x') |
-| angular2-client.ts:34:44:34:91 | this.ro ... et('x') |
-| angular2-client.ts:34:44:34:91 | this.ro ... et('x') |
-| angular2-client.ts:35:44:35:89 | this.ro ... .params |
-| angular2-client.ts:35:44:35:89 | this.ro ... .params |
-| angular2-client.ts:35:44:35:91 | this.ro ... arams.x |
-| angular2-client.ts:35:44:35:91 | this.ro ... arams.x |
-| angular2-client.ts:37:44:37:58 | this.router.url |
-| angular2-client.ts:37:44:37:58 | this.router.url |
-| angular2-client.ts:37:44:37:58 | this.router.url |
-| angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
-| angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
-| angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
+| angular2-client.ts:22:44:22:66 | \\u0275getDOM ... ation() |
+| angular2-client.ts:22:44:22:66 | \\u0275getDOM ... ation() |
+| angular2-client.ts:22:44:22:71 | \\u0275getDOM ... ().href |
+| angular2-client.ts:22:44:22:71 | \\u0275getDOM ... ().href |
+| angular2-client.ts:24:44:24:69 | this.ro ... .params |
+| angular2-client.ts:24:44:24:69 | this.ro ... .params |
+| angular2-client.ts:24:44:24:73 | this.ro ... ams.foo |
+| angular2-client.ts:24:44:24:73 | this.ro ... ams.foo |
+| angular2-client.ts:25:44:25:74 | this.ro ... yParams |
+| angular2-client.ts:25:44:25:74 | this.ro ... yParams |
+| angular2-client.ts:25:44:25:78 | this.ro ... ams.foo |
+| angular2-client.ts:25:44:25:78 | this.ro ... ams.foo |
+| angular2-client.ts:26:44:26:71 | this.ro ... ragment |
+| angular2-client.ts:26:44:26:71 | this.ro ... ragment |
+| angular2-client.ts:26:44:26:71 | this.ro ... ragment |
+| angular2-client.ts:27:44:27:82 | this.ro ... ('foo') |
+| angular2-client.ts:27:44:27:82 | this.ro ... ('foo') |
+| angular2-client.ts:27:44:27:82 | this.ro ... ('foo') |
+| angular2-client.ts:28:44:28:87 | this.ro ... ('foo') |
+| angular2-client.ts:28:44:28:87 | this.ro ... ('foo') |
+| angular2-client.ts:28:44:28:87 | this.ro ... ('foo') |
+| angular2-client.ts:30:46:30:59 | map.get('foo') |
+| angular2-client.ts:30:46:30:59 | map.get('foo') |
+| angular2-client.ts:30:46:30:59 | map.get('foo') |
+| angular2-client.ts:33:44:33:74 | this.ro ... 1].path |
+| angular2-client.ts:33:44:33:74 | this.ro ... 1].path |
+| angular2-client.ts:33:44:33:74 | this.ro ... 1].path |
+| angular2-client.ts:34:44:34:80 | this.ro ... ameters |
+| angular2-client.ts:34:44:34:80 | this.ro ... ameters |
+| angular2-client.ts:34:44:34:82 | this.ro ... eters.x |
+| angular2-client.ts:34:44:34:82 | this.ro ... eters.x |
+| angular2-client.ts:35:44:35:91 | this.ro ... et('x') |
+| angular2-client.ts:35:44:35:91 | this.ro ... et('x') |
+| angular2-client.ts:35:44:35:91 | this.ro ... et('x') |
+| angular2-client.ts:36:44:36:89 | this.ro ... .params |
+| angular2-client.ts:36:44:36:89 | this.ro ... .params |
+| angular2-client.ts:36:44:36:91 | this.ro ... arams.x |
+| angular2-client.ts:36:44:36:91 | this.ro ... arams.x |
+| angular2-client.ts:38:44:38:58 | this.router.url |
+| angular2-client.ts:38:44:38:58 | this.router.url |
+| angular2-client.ts:38:44:38:58 | this.router.url |
+| angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
+| angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
+| angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
 | classnames.js:7:31:7:84 | `<span  ... <span>` |
 | classnames.js:7:31:7:84 | `<span  ... <span>` |
 | classnames.js:7:47:7:69 | classNa ... w.name) |
@@ -681,34 +681,34 @@ edges
 | addEventListener.js:10:21:10:25 | event | addEventListener.js:12:24:12:28 | event |
 | addEventListener.js:12:24:12:28 | event | addEventListener.js:12:24:12:33 | event.data |
 | addEventListener.js:12:24:12:28 | event | addEventListener.js:12:24:12:33 | event.data |
-| angular2-client.ts:21:44:21:66 | \\u0275getDOM ... ation() | angular2-client.ts:21:44:21:71 | \\u0275getDOM ... ().href |
-| angular2-client.ts:21:44:21:66 | \\u0275getDOM ... ation() | angular2-client.ts:21:44:21:71 | \\u0275getDOM ... ().href |
-| angular2-client.ts:21:44:21:66 | \\u0275getDOM ... ation() | angular2-client.ts:21:44:21:71 | \\u0275getDOM ... ().href |
-| angular2-client.ts:21:44:21:66 | \\u0275getDOM ... ation() | angular2-client.ts:21:44:21:71 | \\u0275getDOM ... ().href |
-| angular2-client.ts:23:44:23:69 | this.ro ... .params | angular2-client.ts:23:44:23:73 | this.ro ... ams.foo |
-| angular2-client.ts:23:44:23:69 | this.ro ... .params | angular2-client.ts:23:44:23:73 | this.ro ... ams.foo |
-| angular2-client.ts:23:44:23:69 | this.ro ... .params | angular2-client.ts:23:44:23:73 | this.ro ... ams.foo |
-| angular2-client.ts:23:44:23:69 | this.ro ... .params | angular2-client.ts:23:44:23:73 | this.ro ... ams.foo |
-| angular2-client.ts:24:44:24:74 | this.ro ... yParams | angular2-client.ts:24:44:24:78 | this.ro ... ams.foo |
-| angular2-client.ts:24:44:24:74 | this.ro ... yParams | angular2-client.ts:24:44:24:78 | this.ro ... ams.foo |
-| angular2-client.ts:24:44:24:74 | this.ro ... yParams | angular2-client.ts:24:44:24:78 | this.ro ... ams.foo |
-| angular2-client.ts:24:44:24:74 | this.ro ... yParams | angular2-client.ts:24:44:24:78 | this.ro ... ams.foo |
-| angular2-client.ts:25:44:25:71 | this.ro ... ragment | angular2-client.ts:25:44:25:71 | this.ro ... ragment |
-| angular2-client.ts:26:44:26:82 | this.ro ... ('foo') | angular2-client.ts:26:44:26:82 | this.ro ... ('foo') |
-| angular2-client.ts:27:44:27:87 | this.ro ... ('foo') | angular2-client.ts:27:44:27:87 | this.ro ... ('foo') |
-| angular2-client.ts:29:46:29:59 | map.get('foo') | angular2-client.ts:29:46:29:59 | map.get('foo') |
-| angular2-client.ts:32:44:32:74 | this.ro ... 1].path | angular2-client.ts:32:44:32:74 | this.ro ... 1].path |
-| angular2-client.ts:33:44:33:80 | this.ro ... ameters | angular2-client.ts:33:44:33:82 | this.ro ... eters.x |
-| angular2-client.ts:33:44:33:80 | this.ro ... ameters | angular2-client.ts:33:44:33:82 | this.ro ... eters.x |
-| angular2-client.ts:33:44:33:80 | this.ro ... ameters | angular2-client.ts:33:44:33:82 | this.ro ... eters.x |
-| angular2-client.ts:33:44:33:80 | this.ro ... ameters | angular2-client.ts:33:44:33:82 | this.ro ... eters.x |
-| angular2-client.ts:34:44:34:91 | this.ro ... et('x') | angular2-client.ts:34:44:34:91 | this.ro ... et('x') |
-| angular2-client.ts:35:44:35:89 | this.ro ... .params | angular2-client.ts:35:44:35:91 | this.ro ... arams.x |
-| angular2-client.ts:35:44:35:89 | this.ro ... .params | angular2-client.ts:35:44:35:91 | this.ro ... arams.x |
-| angular2-client.ts:35:44:35:89 | this.ro ... .params | angular2-client.ts:35:44:35:91 | this.ro ... arams.x |
-| angular2-client.ts:35:44:35:89 | this.ro ... .params | angular2-client.ts:35:44:35:91 | this.ro ... arams.x |
-| angular2-client.ts:37:44:37:58 | this.router.url | angular2-client.ts:37:44:37:58 | this.router.url |
-| angular2-client.ts:41:44:41:76 | routeSn ... ('foo') | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
+| angular2-client.ts:22:44:22:66 | \\u0275getDOM ... ation() | angular2-client.ts:22:44:22:71 | \\u0275getDOM ... ().href |
+| angular2-client.ts:22:44:22:66 | \\u0275getDOM ... ation() | angular2-client.ts:22:44:22:71 | \\u0275getDOM ... ().href |
+| angular2-client.ts:22:44:22:66 | \\u0275getDOM ... ation() | angular2-client.ts:22:44:22:71 | \\u0275getDOM ... ().href |
+| angular2-client.ts:22:44:22:66 | \\u0275getDOM ... ation() | angular2-client.ts:22:44:22:71 | \\u0275getDOM ... ().href |
+| angular2-client.ts:24:44:24:69 | this.ro ... .params | angular2-client.ts:24:44:24:73 | this.ro ... ams.foo |
+| angular2-client.ts:24:44:24:69 | this.ro ... .params | angular2-client.ts:24:44:24:73 | this.ro ... ams.foo |
+| angular2-client.ts:24:44:24:69 | this.ro ... .params | angular2-client.ts:24:44:24:73 | this.ro ... ams.foo |
+| angular2-client.ts:24:44:24:69 | this.ro ... .params | angular2-client.ts:24:44:24:73 | this.ro ... ams.foo |
+| angular2-client.ts:25:44:25:74 | this.ro ... yParams | angular2-client.ts:25:44:25:78 | this.ro ... ams.foo |
+| angular2-client.ts:25:44:25:74 | this.ro ... yParams | angular2-client.ts:25:44:25:78 | this.ro ... ams.foo |
+| angular2-client.ts:25:44:25:74 | this.ro ... yParams | angular2-client.ts:25:44:25:78 | this.ro ... ams.foo |
+| angular2-client.ts:25:44:25:74 | this.ro ... yParams | angular2-client.ts:25:44:25:78 | this.ro ... ams.foo |
+| angular2-client.ts:26:44:26:71 | this.ro ... ragment | angular2-client.ts:26:44:26:71 | this.ro ... ragment |
+| angular2-client.ts:27:44:27:82 | this.ro ... ('foo') | angular2-client.ts:27:44:27:82 | this.ro ... ('foo') |
+| angular2-client.ts:28:44:28:87 | this.ro ... ('foo') | angular2-client.ts:28:44:28:87 | this.ro ... ('foo') |
+| angular2-client.ts:30:46:30:59 | map.get('foo') | angular2-client.ts:30:46:30:59 | map.get('foo') |
+| angular2-client.ts:33:44:33:74 | this.ro ... 1].path | angular2-client.ts:33:44:33:74 | this.ro ... 1].path |
+| angular2-client.ts:34:44:34:80 | this.ro ... ameters | angular2-client.ts:34:44:34:82 | this.ro ... eters.x |
+| angular2-client.ts:34:44:34:80 | this.ro ... ameters | angular2-client.ts:34:44:34:82 | this.ro ... eters.x |
+| angular2-client.ts:34:44:34:80 | this.ro ... ameters | angular2-client.ts:34:44:34:82 | this.ro ... eters.x |
+| angular2-client.ts:34:44:34:80 | this.ro ... ameters | angular2-client.ts:34:44:34:82 | this.ro ... eters.x |
+| angular2-client.ts:35:44:35:91 | this.ro ... et('x') | angular2-client.ts:35:44:35:91 | this.ro ... et('x') |
+| angular2-client.ts:36:44:36:89 | this.ro ... .params | angular2-client.ts:36:44:36:91 | this.ro ... arams.x |
+| angular2-client.ts:36:44:36:89 | this.ro ... .params | angular2-client.ts:36:44:36:91 | this.ro ... arams.x |
+| angular2-client.ts:36:44:36:89 | this.ro ... .params | angular2-client.ts:36:44:36:91 | this.ro ... arams.x |
+| angular2-client.ts:36:44:36:89 | this.ro ... .params | angular2-client.ts:36:44:36:91 | this.ro ... arams.x |
+| angular2-client.ts:38:44:38:58 | this.router.url | angular2-client.ts:38:44:38:58 | this.router.url |
+| angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
 | classnames.js:7:47:7:69 | classNa ... w.name) | classnames.js:7:31:7:84 | `<span  ... <span>` |
 | classnames.js:7:47:7:69 | classNa ... w.name) | classnames.js:7:31:7:84 | `<span  ... <span>` |
 | classnames.js:7:58:7:68 | window.name | classnames.js:7:47:7:69 | classNa ... w.name) |
