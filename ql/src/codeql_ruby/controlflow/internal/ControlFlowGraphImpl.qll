@@ -782,12 +782,8 @@ module Trees {
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
       succ = this and
-      (
-        last(operand, pred, c.(BooleanCompletion).getDual())
-        or
-        last(operand, pred, c) and
-        c instanceof SimpleCompletion
-      )
+      last(operand, pred, c) and
+      c instanceof NormalCompletion
     }
   }
 

@@ -2479,21 +2479,11 @@ ifs.rb:
 #   41| If
 #-----|  -> exit constant_condition (normal)
 
-#   41| Unary
+#   41| [false] Unary
 #-----| false -> If
-#-----| true -> puts
 
 #   41| true
-#-----| false -> Unary
-
-#   42| Call
-#-----|  -> If
-
-#   42| puts
-#-----|  -> String
-
-#   42| String
-#-----|  -> Call
+#-----| true -> [false] Unary
 
 loops.rb:
 #    1| Method
