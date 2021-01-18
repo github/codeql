@@ -1170,17 +1170,17 @@ module UnpackingAssignment {
     UnpackingAssignmentTarget() {
       this instanceof UnpackingAssignmentDirectTarget
       or
-      this = any(UnpackingAssignmentTarget parent).getAnElement()
+      this = any(UnpackingAssignmentSequenceTarget parent).getAnElement()
     }
-
-    ControlFlowNode getElement(int i) { result = this.(SequenceNode).getElement(i) }
-
-    ControlFlowNode getAnElement() { result = this.getElement(_) }
   }
 
   /** A (possibly recursive) target of an unpacking assignment which is also a sequence. */
   class UnpackingAssignmentSequenceTarget extends UnpackingAssignmentTarget {
     UnpackingAssignmentSequenceTarget() { this instanceof SequenceNode }
+
+    ControlFlowNode getElement(int i) { result = this.(SequenceNode).getElement(i) }
+
+    ControlFlowNode getAnElement() { result = this.getElement(_) }
   }
 
   /** Step 2 */
@@ -1231,8 +1231,8 @@ module UnpackingAssignment {
 
   /** Step 5 */
   predicate unpackingAssignmentElementReadStep(Node nodeFrom, Content c, Node nodeTo) {
-    exists(UnpackingAssignmentTarget target, int index, ControlFlowNode element, boolean precise |
-      target instanceof SequenceNode
+    exists(
+      UnpackingAssignmentSequenceTarget target, int index, ControlFlowNode element, boolean precise
     |
       nodeFrom.asCfgNode() = target and
       element = target.getElement(index) and
