@@ -200,6 +200,12 @@ def test_nested_comprehension_paren():
     SINK(x[0])
 
 
+# Iterable unpacking in comprehensions
+def test_unpacking_comprehension():
+    x = [a for (a, b) in [(SOURCE, NONSOURCE)]]
+    SINK(x[0])  # Flow missing
+
+
 # 6.2.8. Generator expressions
 def test_generator():
     x = (SOURCE for y in [NONSOURCE])
@@ -618,6 +624,23 @@ def test_iterated_unpacking_assignment_conversion():
     SINK(a2[1])
     SINK_F(b)  # The list itself is not tainted
     SINK_F(b[0])
+
+
+@expects(4)
+def test_iterable_unpacking_in_for():
+    tl = [(SOURCE, NONSOURCE), (SOURCE, NONSOURCE)]
+    for x,y in tl:
+        SINK(x)  # Flow missing
+        SINK_F(y)
+
+
+@expects(6)
+def test_iterable_star_unpacking_in_for():
+    tl = [(SOURCE, NONSOURCE), (SOURCE, NONSOURCE)]
+    for *x,y in tl:
+        SINK_F(x)
+        SINK(x[0])  # Flow missing
+        SINK_F(y)
 
 
 def test_deep_callgraph():
