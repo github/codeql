@@ -1872,7 +1872,22 @@ private module Django {
   private class DjangoUrlsRePathCall extends DjangoRegexRouteSetup {
     override CallNode node;
 
-    DjangoUrlsRePathCall() { node.getFunction() = django::urls::re_path().asCfgNode() }
+    DjangoUrlsRePathCall() {
+      node.getFunction() = django::urls::re_path().asCfgNode() and
+      // `django.conf.urls.url` (which we support directly with
+      // `DjangoConfUrlsUrlCall`), is implemented in Django 2+ as backward compatibility
+      // using `django.urls.re_path`. See
+      // https://github.com/django/django/blob/stable/3.2.x/django/conf/urls/__init__.py#L22
+      // Since we're still installing dependencies and analyzing their source code,
+      // without explicitly filtering out this call, we would be double-counting such
+      // route-setups :( One practical negative side effect of double-counting it, is
+      // that since we can't figure out the URL, we mark ANY parameter as being a
+      // routed-parameter, which can lead to FPs.
+      not exists(Module mod |
+        mod.getName() = "django.conf.urls.__init__" and
+        node.getEnclosingModule() = mod
+      )
+    }
 
     override DataFlow::Node getUrlPatternArg() {
       result.asCfgNode() = [node.getArg(0), node.getArgByName("route")]
