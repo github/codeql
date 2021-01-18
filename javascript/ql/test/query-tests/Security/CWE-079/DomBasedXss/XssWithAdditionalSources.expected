@@ -56,6 +56,9 @@ nodes
 | angular2-client.ts:38:44:38:58 | this.router.url |
 | angular2-client.ts:38:44:38:58 | this.router.url |
 | angular2-client.ts:38:44:38:58 | this.router.url |
+| angular2-client.ts:40:45:40:59 | this.router.url |
+| angular2-client.ts:40:45:40:59 | this.router.url |
+| angular2-client.ts:40:45:40:59 | this.router.url |
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
@@ -708,6 +711,7 @@ edges
 | angular2-client.ts:36:44:36:89 | this.ro ... .params | angular2-client.ts:36:44:36:91 | this.ro ... arams.x |
 | angular2-client.ts:36:44:36:89 | this.ro ... .params | angular2-client.ts:36:44:36:91 | this.ro ... arams.x |
 | angular2-client.ts:38:44:38:58 | this.router.url | angular2-client.ts:38:44:38:58 | this.router.url |
+| angular2-client.ts:40:45:40:59 | this.router.url | angular2-client.ts:40:45:40:59 | this.router.url |
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
 | classnames.js:7:47:7:69 | classNa ... w.name) | classnames.js:7:31:7:84 | `<span  ... <span>` |
 | classnames.js:7:47:7:69 | classNa ... w.name) | classnames.js:7:31:7:84 | `<span  ... <span>` |

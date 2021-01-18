@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
     private router: Router,
-    // private sanitizer2: DomSanitizer2
+    private sanitizer2: DomSanitizer2
   ) {}
 
   ngOnInit() {
@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
 
     this.sanitizer.bypassSecurityTrustHtml(this.router.url); // NOT OK
 
-    // this.sanitizer2.bypassSecurityTrustHtml(this.router.url); // NOT OK
+    this.sanitizer2.bypassSecurityTrustHtml(this.router.url); // NOT OK
   }
 
   someMethod(routeSnapshot: ActivatedRouteSnapshot) {

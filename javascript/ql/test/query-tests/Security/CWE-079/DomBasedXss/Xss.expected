@@ -56,6 +56,9 @@ nodes
 | angular2-client.ts:38:44:38:58 | this.router.url |
 | angular2-client.ts:38:44:38:58 | this.router.url |
 | angular2-client.ts:38:44:38:58 | this.router.url |
+| angular2-client.ts:40:45:40:59 | this.router.url |
+| angular2-client.ts:40:45:40:59 | this.router.url |
+| angular2-client.ts:40:45:40:59 | this.router.url |
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
@@ -697,6 +700,7 @@ edges
 | angular2-client.ts:36:44:36:89 | this.ro ... .params | angular2-client.ts:36:44:36:91 | this.ro ... arams.x |
 | angular2-client.ts:36:44:36:89 | this.ro ... .params | angular2-client.ts:36:44:36:91 | this.ro ... arams.x |
 | angular2-client.ts:38:44:38:58 | this.router.url | angular2-client.ts:38:44:38:58 | this.router.url |
+| angular2-client.ts:40:45:40:59 | this.router.url | angular2-client.ts:40:45:40:59 | this.router.url |
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
 | classnames.js:7:47:7:69 | classNa ... w.name) | classnames.js:7:31:7:84 | `<span  ... <span>` |
 | classnames.js:7:47:7:69 | classNa ... w.name) | classnames.js:7:31:7:84 | `<span  ... <span>` |
@@ -1238,6 +1242,7 @@ edges
 | angular2-client.ts:35:44:35:91 | this.ro ... et('x') | angular2-client.ts:35:44:35:91 | this.ro ... et('x') | angular2-client.ts:35:44:35:91 | this.ro ... et('x') | Cross-site scripting vulnerability due to $@. | angular2-client.ts:35:44:35:91 | this.ro ... et('x') | user-provided value |
 | angular2-client.ts:36:44:36:91 | this.ro ... arams.x | angular2-client.ts:36:44:36:89 | this.ro ... .params | angular2-client.ts:36:44:36:91 | this.ro ... arams.x | Cross-site scripting vulnerability due to $@. | angular2-client.ts:36:44:36:89 | this.ro ... .params | user-provided value |
 | angular2-client.ts:38:44:38:58 | this.router.url | angular2-client.ts:38:44:38:58 | this.router.url | angular2-client.ts:38:44:38:58 | this.router.url | Cross-site scripting vulnerability due to $@. | angular2-client.ts:38:44:38:58 | this.router.url | user-provided value |
+| angular2-client.ts:40:45:40:59 | this.router.url | angular2-client.ts:40:45:40:59 | this.router.url | angular2-client.ts:40:45:40:59 | this.router.url | Cross-site scripting vulnerability due to $@. | angular2-client.ts:40:45:40:59 | this.router.url | user-provided value |
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | Cross-site scripting vulnerability due to $@. | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | user-provided value |
 | classnames.js:7:31:7:84 | `<span  ... <span>` | classnames.js:7:58:7:68 | window.name | classnames.js:7:31:7:84 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:7:58:7:68 | window.name | user-provided value |
 | classnames.js:8:31:8:85 | `<span  ... <span>` | classnames.js:8:59:8:69 | window.name | classnames.js:8:31:8:85 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:8:59:8:69 | window.name | user-provided value |
