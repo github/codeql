@@ -123,4 +123,6 @@ app.use(function(req, res) {
 		result += replaced;
 		result = result.replace(/^\s+|\s+$/g, ''); // NOT OK
 	})();
+
+	tainted.match(/(https?:\/\/[^\s]+)/gm); // OK
 });
