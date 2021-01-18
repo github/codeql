@@ -200,3 +200,26 @@ abstract class DefaultTaintSanitizerGuard extends DataFlow::BarrierGuard { }
 predicate isDefaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) {
   guard instanceof DefaultTaintSanitizerGuard
 }
+
+/**
+ * An equality test acting as a sanitizer guard for `nonConstNode` by
+ * restricting it to a known value.
+ *
+ * Note that comparisons to `nil` are excluded. This is needed for performance
+ * reasons.
+ */
+class EqualityTestGuard extends DefaultTaintSanitizerGuard, DataFlow::EqualityTestNode {
+  DataFlow::Node nonConstNode;
+
+  EqualityTestGuard() {
+    this.getAnOperand().isConst() and
+    nonConstNode = this.getAnOperand() and
+    not nonConstNode.isConst() and
+    not this.getAnOperand() = Builtin::nil().getARead()
+  }
+
+  override predicate checks(Expr e, boolean outcome) {
+    e = nonConstNode.asExpr() and
+    outcome = this.getPolarity()
+  }
+}
