@@ -113,9 +113,7 @@ private class StdStringPush extends TaintFunction {
  * The `std::string` functions `front` and `back`.
  */
 private class StdStringFrontBack extends TaintFunction {
-  StdStringFrontBack() {
-    this.getDeclaringType() instanceof StdBasicString and this.hasName(["front", "back"])
-  }
+  StdStringFrontBack() { this.getClassAndName(["front", "back"]) instanceof StdBasicString }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from object to returned reference
@@ -150,8 +148,7 @@ private class StdStringPlus extends TaintFunction {
  */
 private class StdStringAppend extends TaintFunction {
   StdStringAppend() {
-    this.getDeclaringType() instanceof StdBasicString and
-    this.hasName(["operator+=", "append", "insert", "replace"])
+    this.getClassAndName(["operator+=", "append", "insert", "replace"]) instanceof StdBasicString
   }
 
   /**
@@ -266,9 +263,7 @@ private class StdBasicStringStream extends ClassTemplateInstantiation {
  * The `std::string` functions `at` and `operator[]`.
  */
 private class StdStringAt extends TaintFunction {
-  StdStringAt() {
-    this.getDeclaringType() instanceof StdBasicString and this.hasName(["at", "operator[]"])
-  }
+  StdStringAt() { this.getClassAndName(["at", "operator[]"]) instanceof StdBasicString }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to referenced return value
@@ -342,8 +337,7 @@ private class StdIStreamInNonMember extends DataFlowFunction, TaintFunction {
  */
 private class StdIStreamGet extends TaintFunction {
   StdIStreamGet() {
-    this.getDeclaringType() instanceof StdBasicIStream and
-    this.hasName(["get", "peek"]) and
+    this.getClassAndName(["get", "peek"]) instanceof StdBasicIStream and
     this.getNumberOfParameters() = 0
   }
 
@@ -359,8 +353,7 @@ private class StdIStreamGet extends TaintFunction {
  */
 private class StdIStreamRead extends DataFlowFunction, TaintFunction {
   StdIStreamRead() {
-    this.getDeclaringType() instanceof StdBasicIStream and
-    this.hasName(["get", "read"]) and
+    this.getClassAndName(["get", "read"]) instanceof StdBasicIStream and
     this.getNumberOfParameters() > 0
   }
 
@@ -486,8 +479,7 @@ private class StdBasicOStream extends ClassTemplateInstantiation {
  */
 private class StdOStreamOut extends DataFlowFunction, TaintFunction {
   StdOStreamOut() {
-    this.getDeclaringType() instanceof StdBasicOStream and
-    this.hasName(["operator<<", "put", "write"])
+    this.getClassAndName(["operator<<", "put", "write"]) instanceof StdBasicOStream
   }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
@@ -602,10 +594,9 @@ private class StdBasicIOS extends ClassTemplateInstantiation {
  */
 private class StdStreamFunction extends DataFlowFunction, TaintFunction {
   StdStreamFunction() {
-    this.getDeclaringType() instanceof StdBasicIStream and
-    this.hasName(["ignore", "unget", "seekg"])
+    this.getClassAndName(["ignore", "unget", "seekg"]) instanceof StdBasicIStream
     or
-    this.getDeclaringType() instanceof StdBasicOStream and this.hasName(["seekp", "flush"])
+    this.getClassAndName(["seekp", "flush"]) instanceof StdBasicOStream
     or
     this.getClassAndName("copyfmt") instanceof StdBasicIOS
   }
