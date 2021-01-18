@@ -64,7 +64,43 @@ public class HashWithoutSalt {
 		return Base64.getEncoder().encodeToString(messageDigest);
 	}
 
-	private String hash(String payload) {
+	public void update(SHA256 sha256, byte[] foo, int start, int len) throws NoSuchAlgorithmException {
+		sha256.update(foo, start, len);
+	}
+
+	public void update2(SHA256 sha256, byte[] foo, int start, int len) throws NoSuchAlgorithmException {
+		sha256.update(foo, start, len);
+	}
+	
+	// GOOD - Invoke a wrapper implementation with a salt.
+	public String getSHA256Hash4(String password) throws NoSuchAlgorithmException {
+		SHA256 sha256 = new SHA256();
+		byte[] salt = getSalt();
+		byte[] passBytes = password.getBytes();
+		sha256.update(passBytes, 0, passBytes.length);
+		sha256.update(salt, 0, salt.length);
+		return Base64.getEncoder().encodeToString(sha256.digest());
+	}
+
+	// GOOD - Invoke a wrapper implementation with a salt.
+	public String getSHA256Hash5(String password) throws NoSuchAlgorithmException {
+		SHA256 sha256 = new SHA256();
+		byte[] salt = getSalt();
+		byte[] passBytes = password.getBytes();
+		sha256.update(passBytes, 0, passBytes.length);
+		update(sha256, salt, 0, salt.length);
+		return Base64.getEncoder().encodeToString(sha256.digest());
+	}
+
+	// BAD - Invoke a wrapper implementation without a salt.
+	public String getSHA256Hash6(String password) throws NoSuchAlgorithmException {
+		SHA256 sha256 = new SHA256();
+		byte[] passBytes = password.getBytes();
+		sha256.update(passBytes, 0, passBytes.length);
+		return Base64.getEncoder().encodeToString(sha256.digest());
+	}
+
+	private String hash(String payload) throws NoSuchAlgorithmException {
 		MessageDigest alg = MessageDigest.getInstance("SHA-256");
 		return Base64.getEncoder().encodeToString(alg.digest(payload.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
 	}

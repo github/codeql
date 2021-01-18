@@ -55,29 +55,17 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(
-      MethodAccess mua, MethodAccess mda // invoke `md.digest()` with only one call of `md.update(password)`, that is, without the call of `md.update(digest)`
+      MethodAccess mua // invoke `md.update(password)` without the call of `md.update(digest)`
     |
       sink.asExpr() = mua.getArgument(0) and
-      mua.getMethod() instanceof MDUpdateMethod and // md.update(password)
-      mda.getMethod() instanceof MDDigestMethod and
-      mda.getNumArgument() = 0 and // md.digest()
-      mda.getQualifier() = mua.getQualifier().(VarAccess).getVariable().getAnAccess() and
-      not exists(MethodAccess mua2 |
-        mua2.getMethod() instanceof MDUpdateMethod and // md.update(salt)
-        mua2.getQualifier() = mua.getQualifier().(VarAccess).getVariable().getAnAccess() and
-        mua2 != mua
-      )
+      mua.getMethod() instanceof MDUpdateMethod // md.update(password)
     )
     or
     // invoke `md.digest(password)` without another call of `md.update(salt)`
     exists(MethodAccess mda |
       sink.asExpr() = mda.getArgument(0) and
       mda.getMethod() instanceof MDDigestMethod and // md.digest(password)
-      mda.getNumArgument() = 1 and
-      not exists(MethodAccess mua |
-        mua.getMethod() instanceof MDUpdateMethod and // md.update(salt)
-        mua.getQualifier() = mda.getQualifier().(VarAccess).getVariable().getAnAccess()
-      )
+      mda.getNumArgument() = 1
     )
   }
 
@@ -96,7 +84,35 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
     ) // System.arraycopy(password.getBytes(), ...)
     or
     exists(AddExpr e | node.asExpr() = e.getAnOperand()) // password+salt
+    or
+    exists(MethodAccess mua, MethodAccess ma |
+      ma.getArgument(0) = node.asExpr() and // Detect wrapper methods that invoke `md.update(salt)`
+      ma != mua and
+      (
+        mua.getQualifier().(VarAccess).getVariable().getAnAccess() = ma.getQualifier()
+        or
+        mua.getAnArgument().(VarAccess).getVariable().getAnAccess() = ma.getQualifier()
+        or
+        mua.getQualifier().(VarAccess).getVariable().getAnAccess() = ma.getAnArgument()
+        or
+        mua.getAnArgument().(VarAccess).getVariable().getAnAccess() = ma.getAnArgument()
+      ) and
+      isMDUpdateCall(mua.getMethod())
+    )
   }
+}
+
+/** Holds if a method invokes `md.update(salt)`. */
+predicate isMDUpdateCall(Callable caller) {
+  caller instanceof MDUpdateMethod
+  or
+  exists(Callable callee |
+    caller.polyCalls(callee) and
+    (
+      callee instanceof MDUpdateMethod or
+      isMDUpdateCall(callee)
+    )
+  )
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, HashWithoutSaltConfiguration c

@@ -1,20 +1,21 @@
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class SHA256 {
   MessageDigest md;
   public int getBlockSize() {return 32;}
-  public void init() throws Exception {
+  public void init() throws NoSuchAlgorithmException {
     try { md = MessageDigest.getInstance("SHA-256"); }
     catch (Exception e){
       System.err.println(e);
     }
   }
 
-  public void update(byte[] foo, int start, int len) throws Exception {
+  public void update(byte[] foo, int start, int len) throws NoSuchAlgorithmException {
     md.update(foo, start, len);
   }
 
-  public byte[] digest() throws Exception {
+  public byte[] digest() throws NoSuchAlgorithmException {
     return md.digest();
   }
 }
