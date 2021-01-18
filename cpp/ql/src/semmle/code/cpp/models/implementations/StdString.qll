@@ -69,7 +69,7 @@ private class StdStringConstructor extends Constructor, TaintFunction {
  * The `std::string` function `c_str`.
  */
 private class StdStringCStr extends TaintFunction {
-  StdStringCStr() { this.getDeclaringType() instanceof StdBasicString and this.hasName("c_str") }
+  StdStringCStr() { this.getClassAndName("c_str") instanceof StdBasicString }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string itself (qualifier) to return value
