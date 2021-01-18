@@ -36,3 +36,9 @@ end
 def conditional_method_def()
   puts "bla"
 end unless 1 == 2
+
+def constant_condition()
+  if !true
+    puts "Impossible"
+  end
+end
