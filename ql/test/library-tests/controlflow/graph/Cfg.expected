@@ -103,6 +103,9 @@ ifs.rb:
 #   36| enter conditional_method_def
 #-----|  -> puts
 
+#   40| enter constant_condition
+#-----|  -> true
+
 loops.rb:
 #    1| enter top-level
 #-----|  -> m1
@@ -2440,7 +2443,7 @@ ifs.rb:
 #-----|  -> If
 
 #   36| UnlessModifier
-#-----|  -> exit top-level (normal)
+#-----|  -> constant_condition
 
 #   36| Method
 #-----|  -> UnlessModifier
@@ -2466,6 +2469,21 @@ ifs.rb:
 
 #   38| 2
 #-----|  -> Binary
+
+#   40| Method
+#-----|  -> exit top-level (normal)
+
+#   40| constant_condition
+#-----|  -> Method
+
+#   41| If
+#-----|  -> exit constant_condition (normal)
+
+#   41| [false] Unary
+#-----| false -> If
+
+#   41| true
+#-----| true -> [false] Unary
 
 loops.rb:
 #    1| Method
@@ -3771,6 +3789,8 @@ ifs.rb:
 
 #   36| exit conditional_method_def
 
+#   40| exit constant_condition
+
 loops.rb:
 #    1| exit top-level
 
@@ -3925,6 +3945,9 @@ ifs.rb:
 
 #   36| exit conditional_method_def (normal)
 #-----|  -> exit conditional_method_def
+
+#   40| exit constant_condition (normal)
+#-----|  -> exit constant_condition
 
 loops.rb:
 #    1| exit top-level (normal)
