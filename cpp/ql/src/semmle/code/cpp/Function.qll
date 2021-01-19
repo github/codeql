@@ -335,14 +335,14 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   }
 
   /**
-   * Gets the class of which this function, called `name`, is a member.
+   * Gets the class of which this function, called `memberName`, is a member.
    *
    * Prefer to use `getDeclaringType()` or `getName()` directly if you do not
    * need to reason about both.
    */
   pragma[nomagic]
-  Class getClassAndName(string myName) {
-    this.hasName(myName) and
+  Class getClassAndName(string memberName) {
+    this.hasName(memberName) and
     this.getDeclaringType() = result
   }
 
