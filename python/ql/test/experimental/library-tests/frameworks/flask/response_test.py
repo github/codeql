@@ -180,7 +180,7 @@ def app_response_class():  # $requestHandler
 @app.route("/redirect-simple")  # $routeSetup="/redirect-simple"
 def redirect_simple():  # $requestHandler
     next = request.args['next']
-    resp = redirect(next) # $ MISSING: HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation=next
+    resp = redirect(next) # $ HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation=next
     return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
 
 
