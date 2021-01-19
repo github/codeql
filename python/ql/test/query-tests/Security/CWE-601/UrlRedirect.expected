@@ -3,5 +3,50 @@ edges
 | test.py:7:14:7:25 | dict of externally controlled string | test.py:7:14:7:43 | externally controlled string |
 | test.py:7:14:7:43 | externally controlled string | test.py:8:21:8:26 | externally controlled string |
 | test.py:7:14:7:43 | externally controlled string | test.py:8:21:8:26 | externally controlled string |
+| test.py:30:17:30:28 | dict of externally controlled string | test.py:30:17:30:46 | externally controlled string |
+| test.py:30:17:30:28 | dict of externally controlled string | test.py:30:17:30:46 | externally controlled string |
+| test.py:30:17:30:46 | externally controlled string | test.py:31:41:31:49 | externally controlled string |
+| test.py:30:17:30:46 | externally controlled string | test.py:31:41:31:49 | externally controlled string |
+| test.py:31:12:31:50 | externally controlled string | test.py:32:21:32:24 | externally controlled string |
+| test.py:31:12:31:50 | externally controlled string | test.py:32:21:32:24 | externally controlled string |
+| test.py:31:41:31:49 | externally controlled string | test.py:31:12:31:50 | externally controlled string |
+| test.py:31:41:31:49 | externally controlled string | test.py:31:12:31:50 | externally controlled string |
+| test.py:37:17:37:28 | dict of externally controlled string | test.py:37:17:37:46 | externally controlled string |
+| test.py:37:17:37:28 | dict of externally controlled string | test.py:37:17:37:46 | externally controlled string |
+| test.py:37:17:37:46 | externally controlled string | test.py:38:32:38:40 | externally controlled string |
+| test.py:37:17:37:46 | externally controlled string | test.py:38:32:38:40 | externally controlled string |
+| test.py:38:12:38:42 | externally controlled string | test.py:39:21:39:24 | externally controlled string |
+| test.py:38:12:38:42 | externally controlled string | test.py:39:21:39:24 | externally controlled string |
+| test.py:38:32:38:40 | externally controlled string | test.py:38:12:38:42 | externally controlled string |
+| test.py:38:32:38:40 | externally controlled string | test.py:38:12:38:42 | externally controlled string |
+| test.py:53:17:53:28 | dict of externally controlled string | test.py:53:17:53:46 | externally controlled string |
+| test.py:53:17:53:28 | dict of externally controlled string | test.py:53:17:53:46 | externally controlled string |
+| test.py:53:17:53:46 | externally controlled string | test.py:54:14:54:22 | externally controlled string |
+| test.py:53:17:53:46 | externally controlled string | test.py:54:14:54:22 | externally controlled string |
+| test.py:54:14:54:22 | externally controlled string | test.py:54:14:54:41 | externally controlled string |
+| test.py:54:14:54:22 | externally controlled string | test.py:54:14:54:41 | externally controlled string |
+| test.py:54:14:54:41 | externally controlled string | test.py:55:21:55:26 | externally controlled string |
+| test.py:54:14:54:41 | externally controlled string | test.py:55:21:55:26 | externally controlled string |
+| test.py:60:17:60:28 | dict of externally controlled string | test.py:60:17:60:46 | externally controlled string |
+| test.py:60:17:60:28 | dict of externally controlled string | test.py:60:17:60:46 | externally controlled string |
+| test.py:60:17:60:46 | externally controlled string | test.py:61:40:61:48 | externally controlled string |
+| test.py:60:17:60:46 | externally controlled string | test.py:61:40:61:48 | externally controlled string |
+| test.py:61:14:61:49 | externally controlled string | test.py:62:21:62:26 | externally controlled string |
+| test.py:61:14:61:49 | externally controlled string | test.py:62:21:62:26 | externally controlled string |
+| test.py:61:40:61:48 | externally controlled string | test.py:61:14:61:49 | externally controlled string |
+| test.py:61:40:61:48 | externally controlled string | test.py:61:14:61:49 | externally controlled string |
+| test.py:67:17:67:28 | dict of externally controlled string | test.py:67:17:67:46 | externally controlled string |
+| test.py:67:17:67:28 | dict of externally controlled string | test.py:67:17:67:46 | externally controlled string |
+| test.py:67:17:67:46 | externally controlled string | test.py:68:17:68:25 | externally controlled string |
+| test.py:67:17:67:46 | externally controlled string | test.py:68:17:68:25 | externally controlled string |
+| test.py:68:14:68:41 | externally controlled string | test.py:69:21:69:26 | externally controlled string |
+| test.py:68:14:68:41 | externally controlled string | test.py:69:21:69:26 | externally controlled string |
+| test.py:68:17:68:25 | externally controlled string | test.py:68:14:68:41 | externally controlled string |
+| test.py:68:17:68:25 | externally controlled string | test.py:68:14:68:41 | externally controlled string |
 #select
 | test.py:8:21:8:26 | target | test.py:7:14:7:25 | dict of externally controlled string | test.py:8:21:8:26 | externally controlled string | Untrusted URL redirection due to $@. | test.py:7:14:7:25 | Attribute | a user-provided value |
+| test.py:32:21:32:24 | safe | test.py:30:17:30:28 | dict of externally controlled string | test.py:32:21:32:24 | externally controlled string | Untrusted URL redirection due to $@. | test.py:30:17:30:28 | Attribute | a user-provided value |
+| test.py:39:21:39:24 | safe | test.py:37:17:37:28 | dict of externally controlled string | test.py:39:21:39:24 | externally controlled string | Untrusted URL redirection due to $@. | test.py:37:17:37:28 | Attribute | a user-provided value |
+| test.py:55:21:55:26 | unsafe | test.py:53:17:53:28 | dict of externally controlled string | test.py:55:21:55:26 | externally controlled string | Untrusted URL redirection due to $@. | test.py:53:17:53:28 | Attribute | a user-provided value |
+| test.py:62:21:62:26 | unsafe | test.py:60:17:60:28 | dict of externally controlled string | test.py:62:21:62:26 | externally controlled string | Untrusted URL redirection due to $@. | test.py:60:17:60:28 | Attribute | a user-provided value |
+| test.py:69:21:69:26 | unsafe | test.py:67:17:67:28 | dict of externally controlled string | test.py:69:21:69:26 | externally controlled string | Untrusted URL redirection due to $@. | test.py:67:17:67:28 | Attribute | a user-provided value |
