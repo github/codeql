@@ -620,5 +620,10 @@ namespace Semmle.Extraction.CSharp
         {
             trapFile.WriteTuple("pragma_checksums", pragma, file, guid, bytes);
         }
+
+        internal static void directive_defines(this TextWriter trapFile, DefineDirective directive, string name)
+        {
+            trapFile.WriteTuple("directive_defines", directive, name);
+        }
     }
 }

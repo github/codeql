@@ -22,5 +22,10 @@ namespace Semmle.Extraction.CSharp.Populators
         {
             new Entities.PragmaChecksumDirective(cx, node);
         }
+
+        public override void VisitDefineDirectiveTrivia(DefineDirectiveTriviaSyntax node)
+        {
+            new Entities.DefineDirective(cx, node);
+        }
     }
 }
