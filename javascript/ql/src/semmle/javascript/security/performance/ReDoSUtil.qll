@@ -905,6 +905,10 @@ private module SuffixConstruction {
     exists(ascii(result))
     or
     exists(InputSymbol s | belongsTo(s, root) | result = intersect(s, _))
+    or
+    // The characters from `hasSimpleRejectEdge`. Only `\n` is really needed (as `\n` is not in the `ascii` relation).
+    // The three chars must be kept in sync with `hasSimpleRejectEdge`.
+    result = ["|", "\n", "Z"]
   }
 
   /**
@@ -923,7 +927,7 @@ private module SuffixConstruction {
    * This predicate is used as a cheap pre-processing to speed up `hasRejectEdge`.
    */
   private predicate hasSimpleRejectEdge(State s) {
-    // The three chars were chosen arbitrarily.
+    // The three chars were chosen arbitrarily. The three chars must be kept in sync with `relevant`.
     exists(string char | char = ["|", "\n", "Z"] | not deltaClosedChar(s, char, _))
   }
 
