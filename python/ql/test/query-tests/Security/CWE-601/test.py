@@ -46,6 +46,13 @@ def ok5():
     return redirect(safe, code=302) # FP
 
 
+@app.route('/const-str-compare')
+def const_str_compare():
+    target = request.args.get('target', '')
+    if target == "example.com/":
+        return redirect(target, code=302)
+
+
 # Check that our sanitizer is not too broad
 
 @app.route('/not_ok1')
