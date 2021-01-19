@@ -374,9 +374,9 @@ namespace Semmle.Extraction.CSharp
                     if (!upToDate)
                     {
                         var cx = extractor.CreateContext(compilation.Clone(), trapWriter, new SourceScope(tree), AddAssemblyTrapPrefix);
-                        Populators.CompilationUnit.Extract(cx, tree.GetRoot());
+                        CompilationUnitVisitor.Extract(cx, tree.GetRoot());
                         cx.PopulateAll();
-                        cx.ExtractComments(cx.CommentGenerator);
+                        TriviaPopulator.ExtractCommentBlocks(cx, cx.CommentGenerator);
                         cx.PopulateAll();
                     }
                 }
