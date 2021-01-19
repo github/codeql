@@ -46,3 +46,15 @@ class PragmaChecksumDirective extends PreprocessorDirective, @pragma_checksum {
 
   override string getAPrimaryQlClass() { result = "PragmaChecksumDirective" }
 }
+
+/**
+ * An `#define` directive.
+ */
+class DefineDirective extends PreprocessorDirective, @directive_define {
+  /** Gets the name of the preprocessor symbol that is being set by this directive. */
+  string getName() { directive_defines(this, result) }
+
+  override string toString() { result = "#define ..." }
+
+  override string getAPrimaryQlClass() { result = "DefineDirective" }
+}
