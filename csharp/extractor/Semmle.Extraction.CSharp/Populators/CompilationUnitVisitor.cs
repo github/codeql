@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Populators
             }
 
             // Gather comments:
-            foreach (var trivia in compilationUnit.DescendantTrivia(compilationUnit.Span))
+            foreach (var trivia in compilationUnit.DescendantTrivia(compilationUnit.Span, descendIntoTrivia: true))
             {
                 TriviaPopulator.ExtractTrivia(cx, trivia);
             }
