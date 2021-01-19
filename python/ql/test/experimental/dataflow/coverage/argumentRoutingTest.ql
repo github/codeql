@@ -1,9 +1,9 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
-import experimental.dataflow.TestUtil.FlowTest
+import experimental.dataflow.TestUtil.RoutingTest
 
-class Argument1RoutingTest extends FlowTest {
+class Argument1RoutingTest extends RoutingTest {
   Argument1RoutingTest() { this = "Argument1RoutingTest" }
 
   override string flowTag() { result = "arg1" }
@@ -46,7 +46,7 @@ class Argument1RoutingConfig extends DataFlow::Configuration {
   override predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
-class Argument2RoutingTest extends FlowTest {
+class Argument2RoutingTest extends RoutingTest {
   Argument2RoutingTest() { this = "Argument2RoutingTest" }
 
   override string flowTag() { result = "arg2" }
@@ -82,7 +82,7 @@ class Argument2RoutingConfig extends DataFlow::Configuration {
   override predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
-class Argument3RoutingTest extends FlowTest {
+class Argument3RoutingTest extends RoutingTest {
   Argument3RoutingTest() { this = "Argument3RoutingTest" }
 
   override string flowTag() { result = "arg3" }
@@ -118,7 +118,7 @@ class Argument3RoutingConfig extends DataFlow::Configuration {
   override predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
-class Argument4RoutingTest extends FlowTest {
+class Argument4RoutingTest extends RoutingTest {
   Argument4RoutingTest() { this = "Argument4RoutingTest" }
 
   override string flowTag() { result = "arg4" }
@@ -154,7 +154,7 @@ class Argument4RoutingConfig extends DataFlow::Configuration {
   override predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
-class Argument5RoutingTest extends FlowTest {
+class Argument5RoutingTest extends RoutingTest {
   Argument5RoutingTest() { this = "Argument5RoutingTest" }
 
   override string flowTag() { result = "arg5" }
@@ -190,7 +190,7 @@ class Argument5RoutingConfig extends DataFlow::Configuration {
   override predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
-class Argument6RoutingTest extends FlowTest {
+class Argument6RoutingTest extends RoutingTest {
   Argument6RoutingTest() { this = "Argument6RoutingTest" }
 
   override string flowTag() { result = "arg6" }
@@ -226,7 +226,7 @@ class Argument6RoutingConfig extends DataFlow::Configuration {
   override predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
-class Argument7RoutingTest extends FlowTest {
+class Argument7RoutingTest extends RoutingTest {
   Argument7RoutingTest() { this = "Argument7RoutingTest" }
 
   override string flowTag() { result = "arg7" }

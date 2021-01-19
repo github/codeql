@@ -26,8 +26,15 @@ abstract class FlowTest extends InlineExpectationsTest {
 
   pragma[inline]
   private string lineStr(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    if fromNode.getLocation().getStartLine() = toNode.getLocation().getStartLine()
-    then result = ""
-    else result = ", l:" + fromNode.getLocation().getStartLine()
+    exists(int delta |
+      delta = fromNode.getLocation().getStartLine() - toNode.getLocation().getStartLine()
+    |
+      if delta = 0
+      then result = ""
+      else
+        if delta > 0
+        then result = ", l:+" + delta.toString()
+        else result = ", l:" + delta.toString()
+    )
   }
 }

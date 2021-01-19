@@ -153,7 +153,7 @@ class Customized:
 
 # testing __new__ and __init__
 customized = Customized()
-SINK(Customized.a)
+SINK(Customized.a)  #$ MISSING:flow="SOURCE, l:-8 -> customized.a"
 SINK_F(Customized.b)
-SINK(customized.a)
-SINK(customized.b)  #$ flow="SOURCE, l:152 -> customized.b"
+SINK(customized.a)  #$ MISSING:flow="SOURCE, l:-10 -> customized.a"
+SINK(customized.b)  #$ flow="SOURCE, l:-7 -> customized.b"

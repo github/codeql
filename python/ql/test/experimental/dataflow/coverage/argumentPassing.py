@@ -72,78 +72,78 @@ def argument_passing(
     f,
     **g,
 ):
-    SINK1(a) #$ arg1="arg1, l:89 -> a" arg1="arg1, l:94 -> a"
-    SINK2(b) #$ arg2="arg2, l:94 -> b" MISSING:arg2="arg2, l:89 -> b"
-    SINK3(c) #$ arg3="arg3, l:94 -> c" MISSING: arg3="arg3, l:89 -> c"
-    SINK4(d) #$ MISSING: arg4="arg4, l:89 -> d"
-    SINK5(e) #$ MISSING: arg5="arg5, l:89 -> e"
-    SINK6(f) #$ MISSING: arg6="arg6, l:89 -> f"
+    SINK1(a)
+    SINK2(b)
+    SINK3(c)
+    SINK4(d)
+    SINK5(e)
+    SINK6(f)
     try:
-        SINK7(g["g"]) #$ arg7="arg7, l:89 -> g['g']"
+        SINK7(g["g"])
     except:
         print("OK")
 
 
 @expects(7)
 def test_argument_passing1():
-    argument_passing(arg1, *(arg2, arg3, arg4), e=arg5, **{"f": arg6, "g": arg7})
+    argument_passing(arg1, *(arg2, arg3, arg4), e=arg5, **{"f": arg6, "g": arg7})  #$ arg1="arg1" arg7="arg7" func=argument_passing MISSING: arg2="arg2" arg3="arg3 arg4="arg4" arg5="arg5" arg6="arg6"
 
 
 @expects(7)
 def test_argument_passing2():
-    argument_passing(arg1, arg2, arg3, f=arg6)
+    argument_passing(arg1, arg2, arg3, f=arg6)  #$ arg1="arg1" arg2="arg2" arg3="arg3" func=argument_passing
 
 
 def with_pos_only(a, /, b):
-    SINK1(a) #$ arg1="arg1, l:104 -> a" arg1="arg1, l:105 -> a" arg1="arg1, l:106 -> a"
-    SINK2(b) #$ arg2="arg2, l:104 -> b" arg2="arg2, l:105 -> b" MISSING: arg2="arg2, l:106 -> b"
+    SINK1(a)
+    SINK2(b)
 
 
 @expects(6)
 def test_pos_only():
-    with_pos_only(arg1, arg2)
-    with_pos_only(arg1, b=arg2)
-    with_pos_only(arg1, *(arg2,))
+    with_pos_only(arg1, arg2)  #$ arg1="arg1" arg2="arg2" func=with_pos_only
+    with_pos_only(arg1, b=arg2)  #$ arg1="arg1" arg2="arg2" func=with_pos_only
+    with_pos_only(arg1, *(arg2,))  #$ arg1="arg1" func=with_pos_only MISSING: arg2="arg2"
 
 
 def with_multiple_kw_args(a, b, c):
-    SINK1(a) #$ arg1="arg1, l:117 -> a" arg1="arg1, l:118 -> a" arg1="arg1, l:119 -> a" arg1="arg1, l:120 -> a"
-    SINK2(b) #$ arg2="arg2, l:117 -> b" arg2="arg2, l:120 -> b" MISSING: arg2="arg2, l:118 -> b" arg2="arg2, l:119 -> b"
-    SINK3(c) #$ arg3="arg3, l:117 -> c" arg3="arg3, l:119 -> c" arg3="arg3, l:120 -> c" MISSING: arg3="arg3, l:118 -> c"
+    SINK1(a)
+    SINK2(b)
+    SINK3(c)
 
 
 @expects(9)
 def test_multiple_kw_args():
-    with_multiple_kw_args(b=arg2, c=arg3, a=arg1)
-    with_multiple_kw_args(arg1, *(arg2,), arg3)
-    with_multiple_kw_args(arg1, **{"c": arg3}, b=arg2)
-    with_multiple_kw_args(**{"b": arg2}, **{"c": arg3}, **{"a": arg1})
+    with_multiple_kw_args(b=arg2, c=arg3, a=arg1)  #$ arg1="arg1" arg2="arg2" arg3="arg3" func=with_multiple_kw_args
+    with_multiple_kw_args(arg1, *(arg2,), arg3)  #$ arg1="arg1" func=with_multiple_kw_args MISSING: arg2="arg2" arg3="arg3"
+    with_multiple_kw_args(arg1, **{"c": arg3}, b=arg2)  #$ arg1="arg1" arg3="arg3" func=with_multiple_kw_args MISSING: arg2="arg2"
+    with_multiple_kw_args(**{"b": arg2}, **{"c": arg3}, **{"a": arg1})  #$ arg1="arg1" arg2="arg2" arg3="arg3" func=with_multiple_kw_args
 
 
-def with_default_arguments(a=arg1, b=arg2, c=arg3):
-    SINK1(a) #$ arg1="arg1, l:132 -> a" MISSING:arg1="arg1, l:123 -> a"
-    SINK2(b) #$ arg2="arg2, l:133 -> b" MISSING: arg2="arg2, l:123 -> b"
-    SINK3(c) #$ arg3="arg3, l:134 -> c" MISSING: arg3="arg3, l:123 -> c"
+def with_default_arguments(a=arg1, b=arg2, c=arg3):  # Need a mechanism to test default arguments
+    SINK1(a)
+    SINK2(b)
+    SINK3(c)
 
 
 @expects(12)
 def test_default_arguments():
     with_default_arguments()
-    with_default_arguments(arg1)
-    with_default_arguments(b=arg2)
-    with_default_arguments(**{"c": arg3})
+    with_default_arguments(arg1)  #$ arg1="arg1" func=with_default_arguments
+    with_default_arguments(b=arg2)  #$ arg2="arg2" func=with_default_arguments
+    with_default_arguments(**{"c": arg3})  #$ arg3="arg3" func=with_default_arguments
 
 
 # Nested constructor pattern
 def grab_foo_bar_baz(foo, **kwargs):
-    SINK1(foo) #$ arg1="arg1, l:160 -> foo"
+    SINK1(foo)
     grab_bar_baz(**kwargs)
 
 
 # It is not possible to pass `bar` into `kwargs`,
 # since `bar` is a valid keyword argument.
 def grab_bar_baz(bar, **kwargs):
-    SINK2(bar) #$ arg2="arg2, l:160 -> bar"
+    SINK2(bar)
     try:
         SINK2_F(kwargs["bar"])
     except:
@@ -152,60 +152,60 @@ def grab_bar_baz(bar, **kwargs):
 
 
 def grab_baz(baz):
-    SINK3(baz) #$ arg3="arg3, l:160 -> baz"
+    SINK3(baz)
 
 
 @expects(4)
 def test_grab():
-    grab_foo_bar_baz(baz=arg3, bar=arg2, foo=arg1)
+    grab_foo_bar_baz(baz=arg3, bar=arg2, foo=arg1)  #$ arg1="arg1" arg2="arg2" arg3="arg3" func=grab_foo_bar_baz func=grab_bar_baz func=grab_baz
 
 
 # All combinations
 def test_pos_pos():
     def with_pos(a):
-        SINK1(a) #$ arg1="arg1, l:168 -> a"
+        SINK1(a)
 
-    with_pos(arg1)
+    with_pos(arg1)  #$ arg1="arg1" func=test_pos_pos.with_pos
 
 
 def test_pos_pos_only():
     def with_pos_only(a, /):
-        SINK1(a) #$ arg1="arg1, l:175 -> a"
+        SINK1(a)
 
-    with_pos_only(arg1)
+    with_pos_only(arg1)  #$ arg1="arg1" func=test_pos_pos_only.with_pos_only
 
 
 def test_pos_star():
     def with_star(*a):
         if len(a) > 0:
-            SINK1(a[0]) #$ arg1="arg1, l:183 -> a[0]"
+            SINK1(a[0])
 
-    with_star(arg1)
+    with_star(arg1)  #$ arg1="arg1" func=test_pos_star.with_star
 
 
 def test_pos_kw():
     def with_kw(a=""):
-        SINK1(a) #$ arg1="arg1, l:190 -> a"
+        SINK1(a)
 
-    with_kw(arg1)
+    with_kw(arg1)  #$ arg1="arg1" func=test_pos_kw.with_kw
 
 
 def test_kw_pos():
     def with_pos(a):
-        SINK1(a) #$ arg1="arg1, l:197 -> a"
+        SINK1(a)
 
-    with_pos(a=arg1)
+    with_pos(a=arg1)  #$ arg1="arg1" func=test_kw_pos.with_pos
 
 
 def test_kw_kw():
     def with_kw(a=""):
-        SINK1(a) #$ arg1="arg1, l:204 -> a"
+        SINK1(a)
 
-    with_kw(a=arg1)
+    with_kw(a=arg1)  #$ arg1="arg1" func=test_kw_kw.with_kw
 
 
 def test_kw_doublestar():
     def with_doublestar(**a):
-        SINK1(a["a"]) #$ arg1="arg1, l:211 -> a['a']"
+        SINK1(a["a"])
 
-    with_doublestar(a=arg1)
+    with_doublestar(a=arg1)  #$ arg1="arg1" func=test_kw_doublestar.with_doublestar

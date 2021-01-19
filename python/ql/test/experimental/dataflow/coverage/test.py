@@ -41,7 +41,7 @@ def SINK_F(x):
 def test_tuple_with_local_flow():
     x = (NONSOURCE, SOURCE)
     y = x[1]
-    SINK(y) #$ flow="SOURCE, l:42 -> y"
+    SINK(y) #$ flow="SOURCE, l:-2 -> y"
 
 
 def test_tuple_negative():
@@ -53,45 +53,45 @@ def test_tuple_negative():
 # 6.2.1. Identifiers (Names)
 def test_names():
     x = SOURCE
-    SINK(x) #$ flow="SOURCE, l:55 -> x"
+    SINK(x) #$ flow="SOURCE, l:-1 -> x"
 
 
 # 6.2.2. Literals
 def test_string_literal():
     x = "source"
-    SINK(x) #$ flow="'source', l:61 -> x"
+    SINK(x) #$ flow="'source', l:-1 -> x"
 
 
 def test_bytes_literal():
     x = b"source"
-    SINK(x) #$ flow="b'source', l:66 -> x"
+    SINK(x) #$ flow="b'source', l:-1 -> x"
 
 
 def test_integer_literal():
     x = 42
-    SINK(x) #$ flow="42, l:71 -> x"
+    SINK(x) #$ flow="42, l:-1 -> x"
 
 
 def test_floatnumber_literal():
     x = 42.0
-    SINK(x) #$ flow="42.0, l:76 -> x"
+    SINK(x) #$ flow="42.0, l:-1 -> x"
 
 
 def test_imagnumber_literal():
     x = 42j
-    SINK(x) #$ MISSING:flow="42j, l:81 -> x"
+    SINK(x) #$ MISSING:flow="42j, l:-1 -> x"
 
 
 # 6.2.3. Parenthesized forms
 def test_parenthesized_form():
     x = (SOURCE)
-    SINK(x) #$ flow="SOURCE, l:87 -> x"
+    SINK(x) #$ flow="SOURCE, l:-1 -> x"
 
 
 # 6.2.5. List displays
 def test_list_display():
     x = [SOURCE]
-    SINK(x[0]) #$ flow="SOURCE, l:93 -> x[0]"
+    SINK(x[0]) #$ flow="SOURCE, l:-1 -> x[0]"
 
 
 def test_list_display_negative():
@@ -101,103 +101,103 @@ def test_list_display_negative():
 
 def test_list_comprehension():
     x = [SOURCE for y in [NONSOURCE]]
-    SINK(x[0]) #$ flow="SOURCE, l:103 -> x[0]"
+    SINK(x[0]) #$ flow="SOURCE, l:-1 -> x[0]"
 
 
 def test_list_comprehension_flow():
     x = [y for y in [SOURCE]]
-    SINK(x[0]) #$  flow="SOURCE, l:108 -> x[0]"
+    SINK(x[0]) #$  flow="SOURCE, l:-1 -> x[0]"
 
 
 def test_list_comprehension_inflow():
     l = [SOURCE]
     x = [y for y in l]
-    SINK(x[0]) #$ flow="SOURCE, l:113 -> x[0]"
+    SINK(x[0]) #$ flow="SOURCE, l:-2 -> x[0]"
 
 
 def test_nested_list_display():
     x = [*[SOURCE]]
-    SINK(x[0]) #$ MISSING:flow="SOURCE, l:119 -> x[0]"
+    SINK(x[0]) #$ MISSING:flow="SOURCE, l:-1 -> x[0]"
 
 
 # 6.2.6. Set displays
 def test_set_display():
     x = {SOURCE}
-    SINK(x.pop()) #$ flow="SOURCE, l:125 -> x.pop()"
+    SINK(x.pop()) #$ flow="SOURCE, l:-1 -> x.pop()"
 
 
 def test_set_comprehension():
     x = {SOURCE for y in [NONSOURCE]}
-    SINK(x.pop()) #$ flow="SOURCE, l:130 -> x.pop()"
+    SINK(x.pop()) #$ flow="SOURCE, l:-1 -> x.pop()"
 
 
 def test_set_comprehension_flow():
     x = {y for y in [SOURCE]}
-    SINK(x.pop()) #$ flow="SOURCE, l:135 -> x.pop()"
+    SINK(x.pop()) #$ flow="SOURCE, l:-1 -> x.pop()"
 
 
 def test_set_comprehension_inflow():
     l = {SOURCE}
     x = {y for y in l}
-    SINK(x.pop()) #$ flow="SOURCE, l:140 -> x.pop()"
+    SINK(x.pop()) #$ flow="SOURCE, l:-2 -> x.pop()"
 
 
 def test_nested_set_display():
     x = {*{SOURCE}}
-    SINK(x.pop()) #$ MISSING:flow="SOURCE, l:146 -> x.pop()"
+    SINK(x.pop()) #$ MISSING:flow="SOURCE, l:-1 -> x.pop()"
 
 
 # 6.2.7. Dictionary displays
 def test_dict_display():
     x = {"s": SOURCE}
-    SINK(x["s"]) #$ flow="SOURCE, l:152 -> x['s']"
+    SINK(x["s"]) #$ flow="SOURCE, l:-1 -> x['s']"
 
 
 def test_dict_display_pop():
     x = {"s": SOURCE}
-    SINK(x.pop("s")) #$ flow="SOURCE, l:157 -> x.pop(..)"
+    SINK(x.pop("s")) #$ flow="SOURCE, l:-1 -> x.pop(..)"
 
 
 def test_dict_comprehension():
     x = {y: SOURCE for y in ["s"]}
-    SINK(x["s"]) #$ MISSING:flow="SOURCE, l:152 -> x['s']"
+    SINK(x["s"]) #$ MISSING:flow="SOURCE, l:-1 -> x['s']"
 
 
 def test_dict_comprehension_pop():
     x = {y: SOURCE for y in ["s"]}
-    SINK(x.pop("s")) #$ MISSING:flow="SOURCE, l:167 -> x.pop()"
+    SINK(x.pop("s")) #$ MISSING:flow="SOURCE, l:-1 -> x.pop()"
 
 
 def test_nested_dict_display():
     x = {**{"s": SOURCE}}
-    SINK(x["s"]) #$ MISSING:flow="SOURCE, l:172 -> x['s']"
+    SINK(x["s"]) #$ MISSING:flow="SOURCE, l:-1 -> x['s']"
 
 
 def test_nested_dict_display_pop():
     x = {**{"s": SOURCE}}
-    SINK(x.pop("s")) #$ MISSING:flow="SOURCE, l:177 -> x.pop()"
+    SINK(x.pop("s")) #$ MISSING:flow="SOURCE, l:-1 -> x.pop()"
 
 
 # Nested comprehensions
 def test_nested_comprehension():
     x = [y for z in [[SOURCE]] for y in z]
-    SINK(x[0]) #$ flow="SOURCE, l:183 -> x[0]"
+    SINK(x[0]) #$ flow="SOURCE, l:-1 -> x[0]"
 
 
 def test_nested_comprehension_deep_with_local_flow():
     x = [y for v in [[[[SOURCE]]]] for u in v for z in u for y in z]
-    SINK(x[0]) #$ flow="SOURCE, l:188 -> x[0]"
+    SINK(x[0]) #$ flow="SOURCE, l:-1 -> x[0]"
 
 
 def test_nested_comprehension_dict():
     d = {"s": [SOURCE]}
     x = [y for k, v in d.items() for y in v]
-    SINK(x[0]) #$ MISSING:flow="SOURCE, l:193 -> x[0]"
+    SINK(x[0]) #$ MISSING:flow="SOURCE, l:-1 -> x[0]"
 
 
 def test_nested_comprehension_paren():
     x = [y for y in (z for z in [SOURCE])]
-    SINK(x[0]) #$ flow="SOURCE, l:199 -> x[0]"
+    SINK(x[0]) #$ flow="SOURCE, l:-1 -> x[0]"
 
 
 # 6.2.8. Generator expressions
@@ -228,7 +228,7 @@ def test_yield_from():
 # a statement rather than an expression, but related to generators
 def test_for():
     for x in gen(SOURCE):
-        SINK(x) #$ MISSING:flow="SOURCE, l:230 -> x"
+        SINK(x) #$ MISSING:flow="SOURCE, l:-1 -> x"
 
 
 # 6.2.9.1. Generator-iterator methods
@@ -508,12 +508,12 @@ def test_lambda_extra_keyword_flow():
 def test_swap():
     a = SOURCE
     b = NONSOURCE
-    SINK(a) #$ flow="SOURCE, l:509 -> a"
+    SINK(a) #$ flow="SOURCE, l:-2 -> a"
     SINK_F(b)
 
     a, b = b, a
     SINK_F(a)
-    SINK(b) #$ flow="SOURCE, l:509 -> b"
+    SINK(b) #$ flow="SOURCE, l:-7 -> b"
 
 
 def test_deep_callgraph():
@@ -538,7 +538,7 @@ def test_deep_callgraph():
         return f5(arg)
 
     x = f6(SOURCE)
-    SINK(x) #$ MISSING:flow="SOURCE, l:540 -> x"
+    SINK(x) #$ MISSING:flow="SOURCE, l:-1 -> x"
 
 
 @expects(2)
