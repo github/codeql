@@ -1872,6 +1872,22 @@ conditionBlock
 | Patterns.cs:69:13:69:17 | [no-match] not ... | Patterns.cs:70:13:70:13 | 2 | false |
 | Patterns.cs:69:13:69:17 | [no-match] not ... | Patterns.cs:70:18:70:27 | "possible" | false |
 | Patterns.cs:70:13:70:13 | 2 | Patterns.cs:70:18:70:27 | "possible" | true |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:78:20:78:24 | "> 1" | true |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:79:15:79:15 | 0 | false |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:79:20:79:24 | "< 0" | false |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:80:13:80:13 | 1 | false |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:80:18:80:20 | "1" | false |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:81:13:81:13 | _ | false |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:81:18:81:20 | "0" | false |
+| Patterns.cs:79:15:79:15 | 0 | Patterns.cs:79:20:79:24 | "< 0" | true |
+| Patterns.cs:79:15:79:15 | 0 | Patterns.cs:80:13:80:13 | 1 | false |
+| Patterns.cs:79:15:79:15 | 0 | Patterns.cs:80:18:80:20 | "1" | false |
+| Patterns.cs:79:15:79:15 | 0 | Patterns.cs:81:13:81:13 | _ | false |
+| Patterns.cs:79:15:79:15 | 0 | Patterns.cs:81:18:81:20 | "0" | false |
+| Patterns.cs:80:13:80:13 | 1 | Patterns.cs:80:18:80:20 | "1" | true |
+| Patterns.cs:80:13:80:13 | 1 | Patterns.cs:81:13:81:13 | _ | false |
+| Patterns.cs:80:13:80:13 | 1 | Patterns.cs:81:18:81:20 | "0" | false |
+| Patterns.cs:81:13:81:13 | _ | Patterns.cs:81:18:81:20 | "0" | true |
 | PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:12:13:12:21 | [false] ... is ... | false |
 | PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:12:13:12:21 | [true] ... is ... | true |
 | PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:13:13:13:19 | return ...; | true |

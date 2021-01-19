@@ -2959,6 +2959,27 @@
 | Patterns.cs:70:13:70:13 | 2 | Patterns.cs:70:13:70:13 | 2 | match |
 | Patterns.cs:70:13:70:27 | ... => ... | Patterns.cs:70:13:70:27 | ... => ... | normal |
 | Patterns.cs:70:18:70:27 | "possible" | Patterns.cs:70:18:70:27 | "possible" | normal |
+| Patterns.cs:75:5:83:5 | {...} | Patterns.cs:76:9:82:10 | return ...; | return |
+| Patterns.cs:76:9:82:10 | return ...; | Patterns.cs:76:9:82:10 | return ...; | return |
+| Patterns.cs:76:16:76:16 | access to parameter i | Patterns.cs:76:16:76:16 | access to parameter i | normal |
+| Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:76:16:82:9 | ... switch { ... } | normal |
+| Patterns.cs:78:13:78:15 | > ... | Patterns.cs:78:13:78:15 | > ... | match |
+| Patterns.cs:78:13:78:15 | > ... | Patterns.cs:78:13:78:15 | > ... | no-match |
+| Patterns.cs:78:13:78:24 | ... => ... | Patterns.cs:78:13:78:24 | ... => ... | normal |
+| Patterns.cs:78:15:78:15 | 1 | Patterns.cs:78:15:78:15 | 1 | normal |
+| Patterns.cs:78:20:78:24 | "> 1" | Patterns.cs:78:20:78:24 | "> 1" | normal |
+| Patterns.cs:79:13:79:15 | < ... | Patterns.cs:79:13:79:15 | < ... | match |
+| Patterns.cs:79:13:79:15 | < ... | Patterns.cs:79:13:79:15 | < ... | no-match |
+| Patterns.cs:79:13:79:24 | ... => ... | Patterns.cs:79:13:79:24 | ... => ... | normal |
+| Patterns.cs:79:15:79:15 | 0 | Patterns.cs:79:15:79:15 | 0 | normal |
+| Patterns.cs:79:20:79:24 | "< 0" | Patterns.cs:79:20:79:24 | "< 0" | normal |
+| Patterns.cs:80:13:80:13 | 1 | Patterns.cs:80:13:80:13 | 1 | match |
+| Patterns.cs:80:13:80:13 | 1 | Patterns.cs:80:13:80:13 | 1 | no-match |
+| Patterns.cs:80:13:80:20 | ... => ... | Patterns.cs:80:13:80:20 | ... => ... | normal |
+| Patterns.cs:80:18:80:20 | "1" | Patterns.cs:80:18:80:20 | "1" | normal |
+| Patterns.cs:81:13:81:13 | _ | Patterns.cs:81:13:81:13 | _ | match |
+| Patterns.cs:81:13:81:20 | ... => ... | Patterns.cs:81:13:81:20 | ... => ... | normal |
+| Patterns.cs:81:18:81:20 | "0" | Patterns.cs:81:18:81:20 | "0" | normal |
 | PostDominance.cs:6:5:8:5 | {...} | PostDominance.cs:7:9:7:28 | call to method WriteLine | normal |
 | PostDominance.cs:7:9:7:28 | call to method WriteLine | PostDominance.cs:7:9:7:28 | call to method WriteLine | normal |
 | PostDominance.cs:7:9:7:29 | ...; | PostDominance.cs:7:9:7:28 | call to method WriteLine | normal |

@@ -970,6 +970,15 @@
 | Patterns.cs:69:13:69:17 | [no-match] not ... | Patterns.cs:69:13:69:17 | [no-match] not ... | 1 |
 | Patterns.cs:70:13:70:13 | 2 | Patterns.cs:70:13:70:13 | 2 | 1 |
 | Patterns.cs:70:18:70:27 | "possible" | Patterns.cs:65:26:65:27 | exit M6 | 6 |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:78:13:78:15 | > ... | 5 |
+| Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:74:26:74:27 | exit M7 | 4 |
+| Patterns.cs:78:20:78:24 | "> 1" | Patterns.cs:78:13:78:24 | ... => ... | 2 |
+| Patterns.cs:79:15:79:15 | 0 | Patterns.cs:79:13:79:15 | < ... | 2 |
+| Patterns.cs:79:20:79:24 | "< 0" | Patterns.cs:79:13:79:24 | ... => ... | 2 |
+| Patterns.cs:80:13:80:13 | 1 | Patterns.cs:80:13:80:13 | 1 | 1 |
+| Patterns.cs:80:18:80:20 | "1" | Patterns.cs:80:13:80:20 | ... => ... | 2 |
+| Patterns.cs:81:13:81:13 | _ | Patterns.cs:81:13:81:13 | _ | 1 |
+| Patterns.cs:81:18:81:20 | "0" | Patterns.cs:81:13:81:20 | ... => ... | 2 |
 | PostDominance.cs:5:10:5:11 | enter M1 | PostDominance.cs:5:10:5:11 | exit M1 | 7 |
 | PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:12:18:12:21 | null | 5 |
 | PostDominance.cs:10:10:10:11 | exit M2 (normal) | PostDominance.cs:10:10:10:11 | exit M2 | 2 |

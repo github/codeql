@@ -3177,6 +3177,25 @@ dominance
 | Patterns.cs:70:13:70:13 | 2 | Patterns.cs:70:18:70:27 | "possible" |
 | Patterns.cs:70:13:70:27 | ... => ... | Patterns.cs:67:16:71:9 | ... switch { ... } |
 | Patterns.cs:70:18:70:27 | "possible" | Patterns.cs:70:13:70:27 | ... => ... |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:75:5:83:5 | {...} |
+| Patterns.cs:74:26:74:27 | exit M7 (normal) | Patterns.cs:74:26:74:27 | exit M7 |
+| Patterns.cs:75:5:83:5 | {...} | Patterns.cs:76:16:76:16 | access to parameter i |
+| Patterns.cs:76:9:82:10 | return ...; | Patterns.cs:74:26:74:27 | exit M7 (normal) |
+| Patterns.cs:76:16:76:16 | access to parameter i | Patterns.cs:78:15:78:15 | 1 |
+| Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:76:9:82:10 | return ...; |
+| Patterns.cs:78:13:78:15 | > ... | Patterns.cs:78:20:78:24 | "> 1" |
+| Patterns.cs:78:13:78:15 | > ... | Patterns.cs:79:15:79:15 | 0 |
+| Patterns.cs:78:15:78:15 | 1 | Patterns.cs:78:13:78:15 | > ... |
+| Patterns.cs:78:20:78:24 | "> 1" | Patterns.cs:78:13:78:24 | ... => ... |
+| Patterns.cs:79:13:79:15 | < ... | Patterns.cs:79:20:79:24 | "< 0" |
+| Patterns.cs:79:13:79:15 | < ... | Patterns.cs:80:13:80:13 | 1 |
+| Patterns.cs:79:15:79:15 | 0 | Patterns.cs:79:13:79:15 | < ... |
+| Patterns.cs:79:20:79:24 | "< 0" | Patterns.cs:79:13:79:24 | ... => ... |
+| Patterns.cs:80:13:80:13 | 1 | Patterns.cs:80:18:80:20 | "1" |
+| Patterns.cs:80:13:80:13 | 1 | Patterns.cs:81:13:81:13 | _ |
+| Patterns.cs:80:18:80:20 | "1" | Patterns.cs:80:13:80:20 | ... => ... |
+| Patterns.cs:81:13:81:13 | _ | Patterns.cs:81:18:81:20 | "0" |
+| Patterns.cs:81:18:81:20 | "0" | Patterns.cs:81:13:81:20 | ... => ... |
 | PostDominance.cs:5:10:5:11 | enter M1 | PostDominance.cs:6:5:8:5 | {...} |
 | PostDominance.cs:5:10:5:11 | exit M1 (normal) | PostDominance.cs:5:10:5:11 | exit M1 |
 | PostDominance.cs:6:5:8:5 | {...} | PostDominance.cs:7:9:7:29 | ...; |
@@ -7170,6 +7189,23 @@ postDominance
 | Patterns.cs:70:13:70:13 | 2 | Patterns.cs:69:13:69:17 | [no-match] not ... |
 | Patterns.cs:70:13:70:27 | ... => ... | Patterns.cs:70:18:70:27 | "possible" |
 | Patterns.cs:70:18:70:27 | "possible" | Patterns.cs:70:13:70:13 | 2 |
+| Patterns.cs:74:26:74:27 | exit M7 | Patterns.cs:74:26:74:27 | exit M7 (normal) |
+| Patterns.cs:74:26:74:27 | exit M7 (normal) | Patterns.cs:76:9:82:10 | return ...; |
+| Patterns.cs:75:5:83:5 | {...} | Patterns.cs:74:26:74:27 | enter M7 |
+| Patterns.cs:76:9:82:10 | return ...; | Patterns.cs:76:16:82:9 | ... switch { ... } |
+| Patterns.cs:76:16:76:16 | access to parameter i | Patterns.cs:75:5:83:5 | {...} |
+| Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:78:13:78:24 | ... => ... |
+| Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:79:13:79:24 | ... => ... |
+| Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:80:13:80:20 | ... => ... |
+| Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:81:13:81:20 | ... => ... |
+| Patterns.cs:78:13:78:15 | > ... | Patterns.cs:78:15:78:15 | 1 |
+| Patterns.cs:78:13:78:24 | ... => ... | Patterns.cs:78:20:78:24 | "> 1" |
+| Patterns.cs:78:15:78:15 | 1 | Patterns.cs:76:16:76:16 | access to parameter i |
+| Patterns.cs:79:13:79:15 | < ... | Patterns.cs:79:15:79:15 | 0 |
+| Patterns.cs:79:13:79:24 | ... => ... | Patterns.cs:79:20:79:24 | "< 0" |
+| Patterns.cs:80:13:80:20 | ... => ... | Patterns.cs:80:18:80:20 | "1" |
+| Patterns.cs:81:13:81:20 | ... => ... | Patterns.cs:81:18:81:20 | "0" |
+| Patterns.cs:81:18:81:20 | "0" | Patterns.cs:81:13:81:13 | _ |
 | PostDominance.cs:5:10:5:11 | exit M1 | PostDominance.cs:5:10:5:11 | exit M1 (normal) |
 | PostDominance.cs:5:10:5:11 | exit M1 (normal) | PostDominance.cs:7:9:7:28 | call to method WriteLine |
 | PostDominance.cs:6:5:8:5 | {...} | PostDominance.cs:5:10:5:11 | enter M1 |
@@ -11682,6 +11718,32 @@ blockDominance
 | Patterns.cs:70:13:70:13 | 2 | Patterns.cs:70:13:70:13 | 2 |
 | Patterns.cs:70:13:70:13 | 2 | Patterns.cs:70:18:70:27 | "possible" |
 | Patterns.cs:70:18:70:27 | "possible" | Patterns.cs:70:18:70:27 | "possible" |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:74:26:74:27 | enter M7 |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:76:16:82:9 | ... switch { ... } |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:78:20:78:24 | "> 1" |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:79:15:79:15 | 0 |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:79:20:79:24 | "< 0" |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:80:13:80:13 | 1 |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:80:18:80:20 | "1" |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:81:13:81:13 | _ |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:81:18:81:20 | "0" |
+| Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:76:16:82:9 | ... switch { ... } |
+| Patterns.cs:78:20:78:24 | "> 1" | Patterns.cs:78:20:78:24 | "> 1" |
+| Patterns.cs:79:15:79:15 | 0 | Patterns.cs:79:15:79:15 | 0 |
+| Patterns.cs:79:15:79:15 | 0 | Patterns.cs:79:20:79:24 | "< 0" |
+| Patterns.cs:79:15:79:15 | 0 | Patterns.cs:80:13:80:13 | 1 |
+| Patterns.cs:79:15:79:15 | 0 | Patterns.cs:80:18:80:20 | "1" |
+| Patterns.cs:79:15:79:15 | 0 | Patterns.cs:81:13:81:13 | _ |
+| Patterns.cs:79:15:79:15 | 0 | Patterns.cs:81:18:81:20 | "0" |
+| Patterns.cs:79:20:79:24 | "< 0" | Patterns.cs:79:20:79:24 | "< 0" |
+| Patterns.cs:80:13:80:13 | 1 | Patterns.cs:80:13:80:13 | 1 |
+| Patterns.cs:80:13:80:13 | 1 | Patterns.cs:80:18:80:20 | "1" |
+| Patterns.cs:80:13:80:13 | 1 | Patterns.cs:81:13:81:13 | _ |
+| Patterns.cs:80:13:80:13 | 1 | Patterns.cs:81:18:81:20 | "0" |
+| Patterns.cs:80:18:80:20 | "1" | Patterns.cs:80:18:80:20 | "1" |
+| Patterns.cs:81:13:81:13 | _ | Patterns.cs:81:13:81:13 | _ |
+| Patterns.cs:81:13:81:13 | _ | Patterns.cs:81:18:81:20 | "0" |
+| Patterns.cs:81:18:81:20 | "0" | Patterns.cs:81:18:81:20 | "0" |
 | PostDominance.cs:5:10:5:11 | enter M1 | PostDominance.cs:5:10:5:11 | enter M1 |
 | PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:10:10:10:11 | enter M2 |
 | PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:10:10:10:11 | exit M2 (normal) |
@@ -15024,6 +15086,24 @@ postBlockDominance
 | Patterns.cs:70:18:70:27 | "possible" | Patterns.cs:69:13:69:17 | [no-match] not ... |
 | Patterns.cs:70:18:70:27 | "possible" | Patterns.cs:70:13:70:13 | 2 |
 | Patterns.cs:70:18:70:27 | "possible" | Patterns.cs:70:18:70:27 | "possible" |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:74:26:74:27 | enter M7 |
+| Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:74:26:74:27 | enter M7 |
+| Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:76:16:82:9 | ... switch { ... } |
+| Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:78:20:78:24 | "> 1" |
+| Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:79:15:79:15 | 0 |
+| Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:79:20:79:24 | "< 0" |
+| Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:80:13:80:13 | 1 |
+| Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:80:18:80:20 | "1" |
+| Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:81:13:81:13 | _ |
+| Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:81:18:81:20 | "0" |
+| Patterns.cs:78:20:78:24 | "> 1" | Patterns.cs:78:20:78:24 | "> 1" |
+| Patterns.cs:79:15:79:15 | 0 | Patterns.cs:79:15:79:15 | 0 |
+| Patterns.cs:79:20:79:24 | "< 0" | Patterns.cs:79:20:79:24 | "< 0" |
+| Patterns.cs:80:13:80:13 | 1 | Patterns.cs:80:13:80:13 | 1 |
+| Patterns.cs:80:18:80:20 | "1" | Patterns.cs:80:18:80:20 | "1" |
+| Patterns.cs:81:13:81:13 | _ | Patterns.cs:81:13:81:13 | _ |
+| Patterns.cs:81:18:81:20 | "0" | Patterns.cs:81:13:81:13 | _ |
+| Patterns.cs:81:18:81:20 | "0" | Patterns.cs:81:18:81:20 | "0" |
 | PostDominance.cs:5:10:5:11 | enter M1 | PostDominance.cs:5:10:5:11 | enter M1 |
 | PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:10:10:10:11 | enter M2 |
 | PostDominance.cs:10:10:10:11 | exit M2 (normal) | PostDominance.cs:10:10:10:11 | enter M2 |

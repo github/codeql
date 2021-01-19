@@ -70,4 +70,15 @@ class Patterns
             2 => "possible"
         };
     }
+
+    public static string M7(int i)
+    {
+        return i switch
+        {
+            > 1 => "> 1",
+            < 0 => "< 0",
+            1 => "1",
+            _ => "0"
+        };
+    }
 }

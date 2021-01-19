@@ -1224,6 +1224,7 @@ entryPoint
 | Patterns.cs:53:24:53:25 | M4 | Patterns.cs:54:9:54:9 | access to parameter c |
 | Patterns.cs:56:26:56:27 | M5 | Patterns.cs:57:5:63:5 | {...} |
 | Patterns.cs:65:26:65:27 | M6 | Patterns.cs:66:5:72:5 | {...} |
+| Patterns.cs:74:26:74:27 | M7 | Patterns.cs:75:5:83:5 | {...} |
 | PostDominance.cs:5:10:5:11 | M1 | PostDominance.cs:6:5:8:5 | {...} |
 | PostDominance.cs:10:10:10:11 | M2 | PostDominance.cs:11:5:15:5 | {...} |
 | PostDominance.cs:17:10:17:11 | M3 | PostDominance.cs:18:5:22:5 | {...} |
