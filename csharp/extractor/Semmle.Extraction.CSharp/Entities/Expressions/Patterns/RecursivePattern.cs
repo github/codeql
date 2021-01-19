@@ -15,7 +15,6 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         /// <param name="syntax">The syntax node of the recursive pattern.</param>
         /// <param name="parent">The parent pattern/expression.</param>
         /// <param name="child">The child index of this pattern.</param>
-        /// <param name="isTopLevel">If this pattern is in the top level of a case/is. In that case, the variable and type access are populated elsewhere.</param>
         public RecursivePattern(Context cx, RecursivePatternSyntax syntax, IExpressionParentEntity parent, int child) :
             base(new ExpressionInfo(cx, null, cx.Create(syntax.GetLocation()), ExprKind.RECURSIVE_PATTERN, parent, child, false, null))
         {

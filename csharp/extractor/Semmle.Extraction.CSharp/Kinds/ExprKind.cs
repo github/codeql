@@ -116,6 +116,10 @@ namespace Semmle.Extraction.Kinds
         ASSIGN_COALESCE = 119,
         SUPPRESS_NULLABLE_WARNING = 120,
         NAMESPACE_ACCESS = 121,
+        LT_PATTERN = 122,
+        GT_PATTERN = 123,
+        LE_PATTERN = 124,
+        GE_PATTERN = 125,
         NOT_PATTERN = 126
     }
 }
