@@ -58,3 +58,15 @@ class DefineDirective extends PreprocessorDirective, @directive_define {
 
   override string getAPrimaryQlClass() { result = "DefineDirective" }
 }
+
+/**
+ * An `#undef` directive.
+ */
+class UndefineDirective extends PreprocessorDirective, @directive_undefine {
+  /** Gets the name of the preprocessor symbol that is being unset by this directive. */
+  string getName() { directive_undefines(this, result) }
+
+  override string toString() { result = "#undef ..." }
+
+  override string getAPrimaryQlClass() { result = "UndefineDirective" }
+}
