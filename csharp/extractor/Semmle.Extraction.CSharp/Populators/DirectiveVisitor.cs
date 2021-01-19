@@ -27,5 +27,10 @@ namespace Semmle.Extraction.CSharp.Populators
         {
             new Entities.DefineDirective(cx, node);
         }
+
+        public override void VisitUndefDirectiveTrivia(UndefDirectiveTriviaSyntax node)
+        {
+            new Entities.UndefineDirective(cx, node);
+        }
     }
 }
