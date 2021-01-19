@@ -206,6 +206,11 @@ def test_unpacking_comprehension():
     SINK(x[0])  # Flow missing
 
 
+def test_star_unpacking_comprehension():
+    x = [a[0] for (*a, b) in [(SOURCE, NONSOURCE)]]
+    SINK(x[0])  # Flow missing
+
+
 # 6.2.8. Generator expressions
 def test_generator():
     x = (SOURCE for y in [NONSOURCE])
@@ -624,6 +629,14 @@ def test_iterated_unpacking_assignment_conversion():
     SINK(a2[1])
     SINK_F(b)  # The list itself is not tainted
     SINK_F(b[0])
+
+
+@expects(3)
+def test_iterable_repacking():
+    a, *(b, c) = (SOURCE, NONSOURCE, SOURCE)
+    SINK(a)
+    SINK_F(b)
+    SINK(c)  # Flow not found
 
 
 @expects(4)
