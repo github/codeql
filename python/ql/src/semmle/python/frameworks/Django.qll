@@ -724,7 +724,8 @@ private module Django {
            *
            * Use the predicate `HttpResponseRedirect::instance()` to get references to instances of `django.http.response.HttpResponseRedirect`.
            */
-          abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
+          abstract class InstanceSource extends HttpResponse::InstanceSource,
+            HTTP::Server::HttpRedirectResponse::Range, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.HttpResponseRedirect`. */
           private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
@@ -737,6 +738,10 @@ private module Django {
               // content of a redirect, it is possible to observe the body (for example,
               // with cURL).
               result.asCfgNode() in [node.getArg(1), node.getArgByName("content")]
+            }
+
+            override DataFlow::Node getRedirectLocation() {
+              result.asCfgNode() in [node.getArg(0), node.getArgByName("redirect_to")]
             }
 
             // How to support the `headers` argument here?
@@ -790,7 +795,8 @@ private module Django {
            *
            * Use the predicate `HttpResponsePermanentRedirect::instance()` to get references to instances of `django.http.response.HttpResponsePermanentRedirect`.
            */
-          abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
+          abstract class InstanceSource extends HttpResponse::InstanceSource,
+            HTTP::Server::HttpRedirectResponse::Range, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.HttpResponsePermanentRedirect`. */
           private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
@@ -803,6 +809,10 @@ private module Django {
               // content of a redirect, it is possible to observe the body (for example,
               // with cURL).
               result.asCfgNode() in [node.getArg(1), node.getArgByName("content")]
+            }
+
+            override DataFlow::Node getRedirectLocation() {
+              result.asCfgNode() in [node.getArg(0), node.getArgByName("redirect_to")]
             }
 
             // How to support the `headers` argument here?

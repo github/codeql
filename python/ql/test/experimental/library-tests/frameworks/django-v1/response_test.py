@@ -19,22 +19,22 @@ def safe__manual_content_type(request):
 # Note: This should be an open-redirect sink, but not an XSS sink.
 def or__redirect(request):
     next = request.GET.get("next")
-    return HttpResponseRedirect(next)  # $HttpResponse mimetype=text/html MISSING: HttpRedirectResponse redirectLocation=next
+    return HttpResponseRedirect(next)  # $HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation=next
 
 def information_exposure_through_redirect(request, as_kw=False, perm_redirect=False):
     # This is a contrived example, but possible
     private = "private"
     next = request.GET.get("next")
     if as_kw:
-        return HttpResponseRedirect(next, content=private)  # $HttpResponse mimetype=text/html responseBody=private MISSING: HttpRedirectResponse redirectLocation=next
+        return HttpResponseRedirect(next, content=private)  # $HttpResponse mimetype=text/html responseBody=private HttpRedirectResponse redirectLocation=next
     else:
-        return HttpResponseRedirect(next, private)  # $ HttpResponse mimetype=text/html responseBody=private MISSING: HttpRedirectResponse redirectLocation=next
+        return HttpResponseRedirect(next, private)  # $ HttpResponse mimetype=text/html responseBody=private HttpRedirectResponse redirectLocation=next
 
 
 def perm_redirect(request):
     private = "private"
     next = request.GET.get("next")
-    return HttpResponsePermanentRedirect(next, private) # $ HttpResponse mimetype=text/html responseBody=private MISSING: HttpRedirectResponse redirectLocation=next
+    return HttpResponsePermanentRedirect(next, private) # $ HttpResponse mimetype=text/html responseBody=private HttpRedirectResponse redirectLocation=next
 
 
 def redirect_through_normal_response(request):
