@@ -463,7 +463,7 @@ class ArrayCreationExpr extends Expr, @arraycreationexpr {
  *
  * This expression type matches array initializers representing the values for
  * annotation elements as well, despite the Java Language Specification considering
- * them a separate type, *ElementValueArrayInitializer*. It does however not match
+ * them a separate type, `ElementValueArrayInitializer`. It does however not match
  * values for an array annotation element which consist of a single element
  * without enclosing curly brackets (as per JLS).
  */
@@ -480,7 +480,7 @@ class ArrayInit extends Expr, @arrayinit {
   Expr getInit(int index) { result = this.getAnInit() and result.getIndex() = index }
 
   /**
-   * Gets the number of expressions in this initializer, i.e. the size the
+   * Gets the number of expressions in this initializer, that is, the size the
    * created array will have.
    */
   int getSize() { result = count(getAnInit()) }
