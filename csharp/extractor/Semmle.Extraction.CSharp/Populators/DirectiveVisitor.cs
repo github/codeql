@@ -17,5 +17,10 @@ namespace Semmle.Extraction.CSharp.Populators
         {
             new Entities.PragmaWarningDirective(cx, node);
         }
+
+        public override void VisitPragmaChecksumDirectiveTrivia(PragmaChecksumDirectiveTriviaSyntax node)
+        {
+            new Entities.PragmaChecksumDirective(cx, node);
+        }
     }
 }

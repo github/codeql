@@ -1,3 +1,4 @@
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CommentProcessing;
 using Semmle.Extraction.CSharp.Entities;
 using Semmle.Extraction.Entities;
@@ -591,12 +592,16 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("using_static_directives", @using, type);
         }
 
-        internal static void preprocessor_directive_location(this TextWriter trapFile, IPreprocessorDirective directive, Location location)
+        internal static void preprocessor_directive_location<TDirective>(this TextWriter trapFile,
+            PreprocessorDirective<TDirective> directive, Location location)
+            where TDirective : DirectiveTriviaSyntax
         {
             trapFile.WriteTuple("preprocessor_directive_location", directive, location);
         }
 
-        internal static void preprocessor_directive_assembly(this TextWriter trapFile, IPreprocessorDirective directive, Assembly assembly)
+        internal static void preprocessor_directive_assembly<TDirective>(this TextWriter trapFile,
+            PreprocessorDirective<TDirective> directive, Assembly assembly)
+            where TDirective : DirectiveTriviaSyntax
         {
             trapFile.WriteTuple("preprocessor_directive_assembly", directive, assembly);
         }
@@ -609,6 +614,11 @@ namespace Semmle.Extraction.CSharp
         internal static void pragma_warning_error_codes(this TextWriter trapFile, PragmaWarningDirective pragma, string errorCode, int child)
         {
             trapFile.WriteTuple("pragma_warning_error_codes", pragma, errorCode, child);
+        }
+
+        internal static void pragma_checksums(this TextWriter trapFile, PragmaChecksumDirective pragma, string file, string guid, string bytes)
+        {
+            trapFile.WriteTuple("pragma_checksums", pragma, file, guid, bytes);
         }
     }
 }
