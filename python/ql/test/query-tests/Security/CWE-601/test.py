@@ -15,14 +15,14 @@ def ok():
     untrusted = request.args.get('target', '')
     safe = "https://safe.com/"
     safe += untrusted
-    return redirect(safe, code=302)
+    return redirect(safe, code=302) # FP
 
 
 @app.route('/ok2')
 def ok2():
     untrusted = request.args.get('target', '')
     safe = "https://safe.com/" + untrusted
-    return redirect(safe, code=302)
+    return redirect(safe, code=302) # FP
 
 
 @app.route('/ok3')
@@ -43,7 +43,7 @@ def ok4():
 def ok5():
     untrusted = request.args.get('target', '')
     safe = "https://safe.com/%s" % untrusted
-    return redirect(safe, code=302)
+    return redirect(safe, code=302) # FP
 
 
 # Check that our sanitizer is not too broad
@@ -73,4 +73,4 @@ def not_ok3():
 def not_ok4():
     untrusted = request.args.get('target', '')
     unsafe = "%s?login=success" % untrusted
-    return redirect(unsafe, code=302) # Missing result
+    return redirect(unsafe, code=302)
