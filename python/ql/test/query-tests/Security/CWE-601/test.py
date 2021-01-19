@@ -15,14 +15,14 @@ def ok():
     untrusted = request.args.get('target', '')
     safe = "https://safe.com/"
     safe += untrusted
-    return redirect(safe, code=302) # FP
+    return redirect(safe, code=302)
 
 
 @app.route('/ok2')
 def ok2():
     untrusted = request.args.get('target', '')
     safe = "https://safe.com/" + untrusted
-    return redirect(safe, code=302) # FP
+    return redirect(safe, code=302)
 
 
 @app.route('/ok3')
