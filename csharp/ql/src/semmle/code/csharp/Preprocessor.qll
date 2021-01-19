@@ -28,3 +28,21 @@ class PragmaWarningDirective extends PreprocessorDirective, @pragma_warning {
 
   override string getAPrimaryQlClass() { result = "PragmaWarningDirective" }
 }
+
+/**
+ * A `#pragma checksum` directive.
+ */
+class PragmaChecksumDirective extends PreprocessorDirective, @pragma_checksum {
+  /** Gets the file name of this directive. */
+  string getFileName() { pragma_checksums(this, result, _, _) }
+
+  /** Gets the GUID of this directive. */
+  string getGuid() { pragma_checksums(this, _, result, _) }
+
+  /** Gets the checksum bytes of this directive. */
+  string getBytes() { pragma_checksums(this, _, _, result) }
+
+  override string toString() { result = "#pragma checksum ..." }
+
+  override string getAPrimaryQlClass() { result = "PragmaChecksumDirective" }
+}
