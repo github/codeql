@@ -380,6 +380,7 @@ namespace Semmle.Extraction.CSharp
 
                         var csNode = (CSharpSyntaxNode)root;
                         csNode.Accept(new CompilationUnitVisitor(cx));
+                        csNode.Accept(new DirectiveVisitor(cx));
                         cx.PopulateAll();
                         CommentPopulator.ExtractCommentBlocks(cx, cx.CommentGenerator);
                         cx.PopulateAll();

@@ -590,5 +590,25 @@ namespace Semmle.Extraction.CSharp
         {
             trapFile.WriteTuple("using_static_directives", @using, type);
         }
+
+        internal static void preprocessor_directive_location(this TextWriter trapFile, IPreprocessorDirective directive, Location location)
+        {
+            trapFile.WriteTuple("preprocessor_directive_location", directive, location);
+        }
+
+        internal static void preprocessor_directive_assembly(this TextWriter trapFile, IPreprocessorDirective directive, Assembly assembly)
+        {
+            trapFile.WriteTuple("preprocessor_directive_assembly", directive, assembly);
+        }
+
+        internal static void pragma_warnings(this TextWriter trapFile, PragmaWarningDirective pragma, int kind)
+        {
+            trapFile.WriteTuple("pragma_warnings", pragma, kind);
+        }
+
+        internal static void pragma_warning_error_codes(this TextWriter trapFile, PragmaWarningDirective pragma, string errorCode, int child)
+        {
+            trapFile.WriteTuple("pragma_warning_error_codes", pragma, errorCode, child);
+        }
     }
 }

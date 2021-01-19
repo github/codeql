@@ -217,7 +217,7 @@ tokens(
 
 @element = @declaration | @stmt | @expr | @modifier | @attribute | @namespace_declaration
          | @using_directive | @type_parameter_constraints | @external_element
-         | @xmllocatable | @asp_element | @namespace;
+         | @xmllocatable | @asp_element | @namespace | @preprocessor_directive;
 
 @declaration = @callable | @generic | @assignable | @namespace;
 
@@ -330,6 +330,26 @@ using_static_directives(
 using_directive_location(
   unique int id: @using_directive ref,
   int loc: @location ref);
+
+@preprocessor_directive = @pragma_warning;
+
+pragma_warnings(
+  unique int id: @pragma_warning,
+  int kind: int ref /* 0 = disable, 1 = restore */);
+
+#keyset[id, index]
+pragma_warning_error_codes(
+  int id: @pragma_warning ref,
+  string errorCode: string ref,
+  int index: int ref);
+
+preprocessor_directive_location(
+  unique int id: @preprocessor_directive ref,
+  int loc: @location ref);
+
+preprocessor_directive_assembly(
+  unique int id: @preprocessor_directive ref,
+  int loc: @assembly ref);
 
 /** TYPES **/
 
