@@ -6,7 +6,9 @@ private import SsaImpl as SsaImpl
 
 class BasicBlock = ControlFlow::BasicBlock;
 
-BasicBlock getImmediateDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
+BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
+
+BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
 class ExitBasicBlock = ControlFlow::BasicBlocks::ExitBlock;
 

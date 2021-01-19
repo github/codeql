@@ -5,6 +5,8 @@
 
 private import SsaImplSpecific
 
+private BasicBlock getABasicBlockPredecessor(BasicBlock bb) { getABasicBlockSuccessor(result) = bb }
+
 cached
 private module Cached {
   /**
@@ -109,7 +111,7 @@ private module Cached {
      * The read that witnesses the liveness of `v` is of kind `rk`.
      */
     predicate liveAtExit(BasicBlock bb, SourceVariable v, ReadKind rk) {
-      liveAtEntry(bb.getASuccessor(), v, rk)
+      liveAtEntry(getABasicBlockSuccessor(bb), v, rk)
     }
 
     /**
@@ -144,6 +146,26 @@ private module Cached {
 
   private import Liveness
 
+  /** Holds if `bb1` strictly dominates `bb2`. */
+  private predicate strictlyDominates(BasicBlock bb1, BasicBlock bb2) {
+    bb1 = getImmediateBasicBlockDominator+(bb2)
+  }
+
+  /** Holds if `bb1` dominates a predecessor of `bb2`. */
+  private predicate dominatesPredecessor(BasicBlock bb1, BasicBlock bb2) {
+    exists(BasicBlock pred | pred = getABasicBlockPredecessor(bb2) |
+      bb1 = pred
+      or
+      strictlyDominates(bb1, pred)
+    )
+  }
+
+  /** Holds if `df` is in the dominance frontier of `bb`. */
+  private predicate inDominanceFrontier(BasicBlock bb, BasicBlock df) {
+    dominatesPredecessor(bb, df) and
+    not strictlyDominates(bb, df)
+  }
+
   /**
    * Holds if `bb` is in the dominance frontier of a block containing a
    * definition of `v`.
@@ -152,7 +174,7 @@ private module Cached {
   private predicate inDefDominanceFrontier(BasicBlock bb, SourceVariable v) {
     exists(BasicBlock defbb, Definition def |
       def.definesAt(v, defbb, _) and
-      defbb.inDominanceFrontier(bb)
+      inDominanceFrontier(defbb, bb)
     )
   }
 
@@ -311,7 +333,7 @@ private module Cached {
 
     pragma[noinline]
     private BasicBlock getAMaybeLiveSuccessor(Definition def, BasicBlock bb) {
-      result = bb.getASuccessor() and
+      result = getABasicBlockSuccessor(bb) and
       not defOccursInBlock(_, bb, def.getSourceVariable()) and
       ssaDefReachesEndOfBlock(bb, def, _)
     }
@@ -324,7 +346,7 @@ private module Cached {
      */
     predicate varBlockReaches(Definition def, BasicBlock bb1, BasicBlock bb2) {
       defOccursInBlock(def, bb1, _) and
-      bb2 = bb1.getASuccessor()
+      bb2 = getABasicBlockSuccessor(bb1)
       or
       exists(BasicBlock mid | varBlockReaches(def, bb1, mid) |
         bb2 = getAMaybeLiveSuccessor(def, mid)
@@ -355,7 +377,7 @@ private module Cached {
       // the node. If two definitions dominate a node then one must dominate the
       // other, so therefore the definition of _closest_ is given by the dominator
       // tree. Thus, reaching definitions can be calculated in terms of dominance.
-      idom = getImmediateDominator(bb)
+      idom = getImmediateBasicBlockDominator(bb)
     )
   }
 
@@ -386,7 +408,7 @@ private module Cached {
     ssaDefReachesReadWithinBlock(v, def, bb, i, rk)
     or
     variableRead(bb, i, v, rk) and
-    ssaDefReachesEndOfBlock(bb.getAPredecessor(), def, v) and
+    ssaDefReachesEndOfBlock(getABasicBlockPredecessor(bb), def, v) and
     not ssaDefReachesReadWithinBlock(v, _, bb, i, _)
   }
 
@@ -402,7 +424,7 @@ private module Cached {
     or
     exists(BasicBlock bb |
       redef.definesAt(v, bb, _) and
-      ssaDefReachesEndOfBlock(bb.getAPredecessor(), def, v) and
+      ssaDefReachesEndOfBlock(getABasicBlockPredecessor(bb), def, v) and
       not ssaDefReachesUncertainDefWithinBlock(v, _, redef)
     )
   }
@@ -526,7 +548,7 @@ class PhiNode extends Definition, TPhiNode {
   Definition getAnInput() {
     exists(BasicBlock bb, BasicBlock pred, SourceVariable v |
       this.definesAt(v, bb, _) and
-      bb.getAPredecessor() = pred and
+      getABasicBlockPredecessor(bb) = pred and
       ssaDefReachesEndOfBlock(pred, result, v)
     )
   }
@@ -534,7 +556,7 @@ class PhiNode extends Definition, TPhiNode {
   /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
   predicate hasInputFromBlock(Definition inp, BasicBlock bb) {
     inp = this.getAnInput() and
-    this.getBasicBlock().getAPredecessor() = bb and
+    getABasicBlockPredecessor(this.getBasicBlock()) = bb and
     ssaDefReachesEndOfBlock(bb, inp, _)
   }
 
