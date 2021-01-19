@@ -30,7 +30,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         {
                             if (cx.GetModel(syntax).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
                             {
-                                var type = Type.Create(cx, symbol.GetAnnotatedType());
+                                var type = symbol.GetAnnotatedType();
                                 return VariableDeclaration.Create(cx, symbol, type, declPattern.Type, cx.Create(syntax.GetLocation()), false, parent, child);
                             }
                             if (designation is DiscardDesignationSyntax)
@@ -53,7 +53,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         case SingleVariableDesignationSyntax varDesignation:
                             if (cx.GetModel(syntax).GetDeclaredSymbol(varDesignation) is ILocalSymbol symbol)
                             {
-                                var type = Type.Create(cx, symbol.GetAnnotatedType());
+                                var type = symbol.GetAnnotatedType();
 
                                 return VariableDeclaration.Create(cx, symbol, type, null, cx.Create(syntax.GetLocation()), true, parent, child);
                             }

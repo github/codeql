@@ -15,7 +15,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 case SyntaxKind.SimpleMemberAccessExpression:
                     var maes = (MemberAccessExpressionSyntax)Syntax;
-                    if (Type.Type.ContainingType == null)
+                    if (Type?.Symbol.ContainingType is null)
                     {
                         // namespace qualifier
                         TypeMention.Create(cx, maes.Name, this, Type, Syntax.GetLocation());
@@ -39,7 +39,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             var typeAccessInfo = new ExpressionInfo(
                 cx,
-                new AnnotatedType(Entities.Type.Create(cx, type), Microsoft.CodeAnalysis.NullableAnnotation.None),
+                AnnotatedTypeSymbol.CreateNotAnnotated(type),
                 location,
                 ExprKind.TYPE_ACCESS,
                 parent,

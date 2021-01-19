@@ -46,10 +46,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 switch (Syntax.Initializer.Kind())
                 {
                     case SyntaxKind.CollectionInitializerExpression:
-                        CollectionInitializer.Create(new ExpressionNodeInfo(cx, Syntax.Initializer, this, -1) { Type = Type });
+                        CollectionInitializer.Create(new ExpressionNodeInfo(cx, Syntax.Initializer, this, -1).SetType(Type));
                         break;
                     case SyntaxKind.ObjectInitializerExpression:
-                        ObjectInitializer.Create(new ExpressionNodeInfo(cx, Syntax.Initializer, this, -1) { Type = Type });
+                        ObjectInitializer.Create(new ExpressionNodeInfo(cx, Syntax.Initializer, this, -1).SetType(Type));
                         break;
                     default:
                         cx.ModelError("Unhandled initializer in object creation");

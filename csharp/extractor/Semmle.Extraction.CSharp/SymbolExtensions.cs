@@ -23,6 +23,9 @@ namespace Semmle.Extraction.CSharp
             Symbol = symbol;
             Nullability = nullability;
         }
+
+        public static AnnotatedTypeSymbol? CreateNotAnnotated(ITypeSymbol symbol) =>
+            symbol is null ? (AnnotatedTypeSymbol?)null : new AnnotatedTypeSymbol(symbol, NullableAnnotation.None);
     }
 
     internal static class SymbolExtensions
@@ -497,13 +500,13 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Holds if this symbol is a source declaration.
         /// </summary>
-        public static bool IsSourceDeclaration(this ISymbol symbol) => SymbolEqualityComparer.IncludeNullability.Equals(symbol, symbol.OriginalDefinition);
+        public static bool IsSourceDeclaration(this ISymbol symbol) => SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition);
 
         /// <summary>
         /// Holds if this method is a source declaration.
         /// </summary>
         public static bool IsSourceDeclaration(this IMethodSymbol method) =>
-            IsSourceDeclaration((ISymbol)method) && SymbolEqualityComparer.IncludeNullability.Equals(method, method.ConstructedFrom) && method.ReducedFrom == null;
+            IsSourceDeclaration((ISymbol)method) && SymbolEqualityComparer.Default.Equals(method, method.ConstructedFrom) && method.ReducedFrom == null;
 
         /// <summary>
         /// Holds if this parameter is a source declaration.
