@@ -25,11 +25,8 @@ module ClientSideUrlRedirect {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "ClientSideUrlRedirect" }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
     override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel lbl) {
-      source = DOM::locationSource() and
-      lbl instanceof DocumentUrl
+      source.(Source).getAFlowLabel() = lbl
     }
 
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }

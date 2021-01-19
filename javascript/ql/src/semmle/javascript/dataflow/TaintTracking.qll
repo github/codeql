@@ -239,6 +239,35 @@ module TaintTracking {
     }
   }
 
+  /** Gets a data flow node referring to the client side URL. */
+  private DataFlow::SourceNode clientSideUrlRef(DataFlow::TypeTracker t) {
+    t.start() and
+    result.(ClientSideRemoteFlowSource).getKind().isUrl()
+    or
+    exists(DataFlow::TypeTracker t2 | result = clientSideUrlRef(t2).track(t2, t))
+  }
+
+  /** Gets a data flow node referring to the client side URL. */
+  private DataFlow::SourceNode clientSideUrlRef() {
+    result = clientSideUrlRef(DataFlow::TypeTracker::end())
+  }
+
+  /**
+   * Holds if `read` reads a property of the client-side URL, which is not tainted.
+   * In this case, the read is excluded from the default set of taint steps.
+   */
+  private predicate isSafeClientSideUrlProperty(DataFlow::PropRead read) {
+    // Block all properties of client-side URLs, as .hash and .search are considered sources of their own
+    read = clientSideUrlRef().getAPropertyRead()
+    or
+    exists(StringSplitCall c |
+      c.getBaseString().getALocalSource() =
+        [DOM::locationRef(), DOM::locationRef().getAPropertyRead("href")] and
+      c.getSeparator() = "?" and
+      read = c.getAPropertyRead("0")
+    )
+  }
+
   /**
    * Holds if there is taint propagation through the heap from `pred` to `succ`.
    */
@@ -264,7 +293,8 @@ module TaintTracking {
     or
     // reading from a tainted object yields a tainted result
     succ.(DataFlow::PropRead).getBase() = pred and
-    not AccessPath::DominatingPaths::hasDominatingWrite(succ)
+    not AccessPath::DominatingPaths::hasDominatingWrite(succ) and
+    not isSafeClientSideUrlProperty(succ)
     or
     // iterating over a tainted iterator taints the loop variable
     exists(ForOfStmt fos |

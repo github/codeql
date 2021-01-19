@@ -33,7 +33,13 @@ module RequestForgery {
 
   /** A source of remote user input, considered as a flow source for request forgery. */
   private class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
+    RemoteFlowSourceAsSource() {
+      // Reduce FPs by excluding sources from client-side path or URL
+      exists(RemoteFlowSource src |
+        this = src and
+        not src.(ClientSideRemoteFlowSource).getKind().isPathOrUrl()
+      )
+    }
   }
 
   /**

@@ -59,14 +59,6 @@ module ExternalAPIUsedWithUntrustedData {
     RemoteFlowAsSource() { this instanceof RemoteFlowSource }
   }
 
-  private class LocationSource extends Source {
-    LocationSource() {
-      this = DOM::locationRef().getAPropertyRead(["hash", "search"])
-      or
-      this = DOM::locationSource()
-    }
-  }
-
   /**
    * A package name whose entire API is considered "safe" for the purpose of this query.
    */

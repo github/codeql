@@ -686,14 +686,24 @@ private DataFlow::SourceNode reactRouterDom() {
   result = DataFlow::moduleImport("react-router-dom")
 }
 
-private class ReactRouterSource extends RemoteFlowSource {
+private class ReactRouterSource extends ClientSideRemoteFlowSource {
+  ClientSideRemoteFlowKind kind;
+
   ReactRouterSource() {
-    this = reactRouterDom().getAMemberCall("useParams")
+    this = reactRouterDom().getAMemberCall("useParams") and kind.isPath()
     or
-    this = reactRouterDom().getAMemberCall("useRouteMatch").getAPropertyRead(["params", "url"])
+    exists(string prop |
+      this = reactRouterDom().getAMemberCall("useRouteMatch").getAPropertyRead(prop)
+    |
+      prop = "params" and kind.isPath()
+      or
+      prop = "url" and kind.isUrl()
+    )
   }
 
   override string getSourceType() { result = "react-router path parameters" }
+
+  override ClientSideRemoteFlowKind getKind() { result = kind }
 }
 
 /**

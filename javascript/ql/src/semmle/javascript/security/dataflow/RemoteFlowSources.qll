@@ -10,7 +10,7 @@ private import semmle.javascript.internal.CachedStages
 /** A data flow source of remote user input. */
 cached
 abstract class RemoteFlowSource extends DataFlow::Node {
-  /** Gets a string that describes the type of this remote flow source. */
+  /** Gets a human-readable string that describes the type of this remote flow source. */
   cached
   abstract string getSourceType();
 
@@ -19,6 +19,57 @@ abstract class RemoteFlowSource extends DataFlow::Node {
    */
   cached
   predicate isUserControlledObject() { none() }
+}
+
+/**
+ * A type of remote flow source that is specific to the browser environment.
+ */
+class ClientSideRemoteFlowKind extends string {
+  ClientSideRemoteFlowKind() { this = ["query", "fragment", "path", "url", "name"] }
+
+  /**
+   * Holds if this is the `query` kind, describing sources derived from the query parameters of the browser URL,
+   * such as `location.search`.
+   */
+  predicate isQuery() { this = "query" }
+
+  /**
+   * Holds if this is the `frgament` kind, describing sources derived from the fragment part of the browser URL,
+   * such as `location.hash`.
+   */
+  predicate isFragment() { this = "fragment" }
+
+  /**
+   * Holds if this is the `path` kind, describing sources derived from the pathname of the browser URL,
+   * such as `location.pathname`.
+   */
+  predicate isPath() { this = "path" }
+
+  /**
+   * Holds if this is the `url` kind, describing sources derived from the browser URL,
+   * where the untrusted part of the URL is prefixed by trusted data, such as the scheme and hostname.
+   */
+  predicate isUrl() { this = "url" }
+
+  /** Holds if this is the `query` or `fragment` kind. */
+  predicate isQueryOrFragment() { this.isQuery() or this.isFragment() }
+
+  /** Holds if this is the `path`, `query`, or `fragment` kind. */
+  predicate isPathOrQueryOrFragment() { this.isPath() or this.isQuery() or this.isFragment() }
+
+  /** Holds if this is the `path` or `url` kind. */
+  predicate isPathOrUrl() { this.isPath() or this.isUrl() }
+
+  /** Holds if this is the `name` kind, describing sources derived from the window name, such as `window.name`. */
+  predicate isWindowName() { this = "name" }
+}
+
+/**
+ * A source of remote input in a web browser environment.
+ */
+abstract class ClientSideRemoteFlowSource extends RemoteFlowSource {
+  /** Gets a string indicating what part of the browser environment this was derived from. */
+  abstract ClientSideRemoteFlowKind getKind();
 }
 
 /**
