@@ -13,7 +13,7 @@
 import csharp
 
 predicate defTargetsField(AssignableDefinition def, Field f) {
-  def.getTarget().getSourceDeclaration() = f
+  def.getTarget().getUnboundDeclaration() = f
 }
 
 predicate isReadonlyCompatibleDefinition(AssignableDefinition def, Field f) {

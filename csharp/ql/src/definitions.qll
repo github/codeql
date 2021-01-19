@@ -83,7 +83,7 @@ private class MethodUse extends Use, QualifiableExpr {
     )
   }
 
-  override Method getDefinition() { result = getQualifiedDeclaration().getSourceDeclaration() }
+  override Method getDefinition() { result = getQualifiedDeclaration().getUnboundDeclaration() }
 
   override string getUseType() { result = "M" }
 
@@ -122,7 +122,7 @@ private class AccessUse extends Access, Use {
     Use.super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
-  override Declaration getDefinition() { result = this.getTarget().getSourceDeclaration() }
+  override Declaration getDefinition() { result = this.getTarget().getUnboundDeclaration() }
 
   override string getUseType() {
     if this instanceof Call or this instanceof LocalFunctionAccess
@@ -169,7 +169,7 @@ private class TypeMentionUse extends Use, TypeMention {
     Use.super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
-  override Type getDefinition() { result = this.getType().getSourceDeclaration() }
+  override Type getDefinition() { result = this.getType().getUnboundDeclaration() }
 
   override string getUseType() {
     if this.getTarget() instanceof ObjectCreation

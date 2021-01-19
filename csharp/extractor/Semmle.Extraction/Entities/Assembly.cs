@@ -35,8 +35,7 @@ namespace Semmle.Extraction.Entities
             }
         }
 
-        public override bool NeedsPopulation =>
-            !SymbolEqualityComparer.Default.Equals(assembly, Context.Compilation.Assembly) || !Context.IsGlobalContext;
+        public override bool NeedsPopulation => true;
 
         public override int GetHashCode() =>
             symbol == null ? 91187354 : symbol.GetHashCode();
@@ -59,7 +58,8 @@ namespace Semmle.Extraction.Entities
         }
 
         private static readonly object outputAssemblyCacheKey = new object();
-        public static Location CreateOutputAssembly(Context cx)
+
+        public static Assembly CreateOutputAssembly(Context cx)
         {
             if (cx.Extractor.OutputPath == null)
                 throw new InternalError("Attempting to create the output assembly in standalone extraction mode");

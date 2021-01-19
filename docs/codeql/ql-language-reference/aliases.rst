@@ -1,4 +1,7 @@
+:tocdepth: 1
+
 .. index:: alias
+
 .. _aliases:
 
 Aliases
@@ -30,7 +33,9 @@ to the name that it aliases.
 Module aliases
 ==============
 
-Use the following syntax to define an alias for a :ref:`module <modules>`::
+Use the following syntax to define an alias for a :ref:`module <modules>`:
+
+.. code-block:: ql
 
     module ModAlias = ModuleName;
 
@@ -49,14 +54,18 @@ a deprecation warning is displayed.
 Type aliases
 ============
 
-Use the following syntax to define an alias for a :ref:`type <types>`::
+Use the following syntax to define an alias for a :ref:`type <types>`:
+
+.. code-block:: ql
 
     class TypeAlias = TypeName;
 
 Note that ``class`` is just a keyword. You can define an alias for any type—namely, :ref:`primitive types <primitive-types>`,
 :ref:`database types <database-types>` and user-defined :ref:`classes <classes>`.
 
-For example, you can use an alias to abbreviate the name of the primitive type ``boolean`` to ``bool``::
+For example, you can use an alias to abbreviate the name of the primitive type ``boolean`` to ``bool``:
+
+.. code-block:: ql
 
     class bool = boolean;
 
@@ -77,21 +86,27 @@ Or, to use a class ``OneTwo`` defined in a :ref:`module <explicit-modules>` ``M`
 Predicate aliases
 =================
 
-Use the following syntax to define an alias for a :ref:`non-member predicate <non-member-predicates>`::
+Use the following syntax to define an alias for a :ref:`non-member predicate <non-member-predicates>`:
+
+.. code-block:: ql
 
     predicate PredAlias = PredicateName/Arity;
 
 This works for predicates :ref:`with <predicates-with-result>` or :ref:`without <predicates-without-result>` result. 
 
 For example, suppose you frequently use the following predicate, which calculates the successor of a positive integer 
-less than ten::
+less than ten:
+
+.. code-block:: ql
     
     int getSuccessor(int i) {
       result = i + 1 and
       i in [1 .. 9]
     }
     
-You can use an alias to abbreviate the name to ``succ``::
+You can use an alias to abbreviate the name to ``succ``:
+
+.. code-block:: ql
 
     predicate succ = getSuccessor/1;
 

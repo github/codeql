@@ -83,8 +83,7 @@ class NodeModule extends Module {
     // a re-export using spread-operator. E.g. `const foo = require("./foo"); module.exports = {bar: bar, ...foo};`
     exists(ObjectExpr obj | obj = getAModuleExportsNode().asExpr() |
       result =
-        obj
-            .getAProperty()
+        obj.getAProperty()
             .(SpreadProperty)
             .getInit()
             .(SpreadElement)

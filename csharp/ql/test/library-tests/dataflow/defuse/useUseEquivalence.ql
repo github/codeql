@@ -34,7 +34,7 @@ private TLocalScopeVariableReadOrSsaDef getANextReadOrDef(TLocalScopeVariableRea
       ssaDef.getARead() = read
     |
       pseudoDef.getAnInput() = ssaDef and
-      pseudoDef.definesAt(bb, i) and
+      pseudoDef.definesAt(_, bb, i) and
       cfn = read.getAReachableElement().getAControlFlowNode() and
       (
         cfn = bb.getNode(i)

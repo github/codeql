@@ -8,6 +8,7 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.Concepts
 import semmle.python.dataflow.new.RemoteFlowSources
+import semmle.python.dataflow.new.BarrierGuards
 
 /**
  * A taint-tracking configuration for detecting command injection vulnerabilities.
@@ -47,5 +48,9 @@ class CommandInjectionConfiguration extends TaintTracking::Configuration {
     // https://github.com/python/cpython/blob/fa7ce080175f65d678a7d5756c94f82887fc9803/Lib/os.py#L974
     // https://github.com/python/cpython/blob/fa7ce080175f65d678a7d5756c94f82887fc9803/Lib/subprocess.py#L341
     not sink.getScope().getEnclosingModule().getName() in ["os", "subprocess", "platform", "popen2"]
+  }
+
+  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof StringConstCompare
   }
 }

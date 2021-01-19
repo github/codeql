@@ -18,7 +18,7 @@ where
     compareTo = any(SystemIComparableInterface i).getCompareToMethod()
     or
     compareTo = any(SystemIComparableTInterface i).getAConstructedGeneric().getAMethod() and
-    compareTo.getSourceDeclaration() = any(SystemIComparableTInterface i).getCompareToMethod()
+    compareTo.getUnboundDeclaration() = any(SystemIComparableTInterface i).getCompareToMethod()
   ) and
   compareToImpl = c.getAMethod() and
   compareToImpl = compareTo.getAnUltimateImplementor() and

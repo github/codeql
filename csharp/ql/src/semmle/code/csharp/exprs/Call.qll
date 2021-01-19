@@ -410,11 +410,11 @@ class ConstructorInitializer extends Call, @constructor_init_expr {
   override string getAPrimaryQlClass() { result = "ConstructorInitializer" }
 
   private ValueOrRefType getTargetType() {
-    result = this.getTarget().getDeclaringType().getSourceDeclaration()
+    result = this.getTarget().getDeclaringType().getUnboundDeclaration()
   }
 
   private ValueOrRefType getConstructorType() {
-    result = this.getConstructor().getDeclaringType().getSourceDeclaration()
+    result = this.getConstructor().getDeclaringType().getUnboundDeclaration()
   }
 
   /**

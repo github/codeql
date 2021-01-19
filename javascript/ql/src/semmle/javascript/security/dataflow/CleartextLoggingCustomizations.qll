@@ -63,8 +63,7 @@ module CleartextLogging {
       )
       or
       // avoid i18n strings
-      this
-          .(DataFlow::PropRead)
+      this.(DataFlow::PropRead)
           .getBase()
           .asExpr()
           .(VarRef)
@@ -205,6 +204,7 @@ module CleartextLogging {
     |
       not exists(write.getPropertyName()) and
       not exists(read.getPropertyName()) and
+      not isFilteredPropertyName(read.getPropertyNameExpr().flow().getALocalSource()) and
       src = read.getBase() and
       trg = write.getBase().getALocalSource()
     )
@@ -215,6 +215,26 @@ module CleartextLogging {
       f = call.getACallee() and
       not call.isImprecise() and
       trg.asExpr() = f.getArgumentsVariable().getAnAccess()
+    )
+  }
+
+  /**
+   * Holds if `name` is filtered by e.g. a regular-expression test or a filter call.
+   */
+  private predicate isFilteredPropertyName(DataFlow::Node name) {
+    exists(DataFlow::MethodCallNode reduceCall |
+      reduceCall.getABoundCallbackParameter(0, 1).flowsTo(name) and
+      reduceCall.getMethodName() = "reduce"
+    |
+      reduceCall.getReceiver+().(DataFlow::MethodCallNode).getMethodName() = "filter"
+    )
+    or
+    exists(StringOps::RegExpTest test |
+      test.getStringOperand().getALocalSource() = name.getALocalSource()
+    )
+    or
+    exists(MembershipCandidate test |
+      test.getAMemberNode().getALocalSource() = name.getALocalSource()
     )
   }
 }

@@ -287,6 +287,13 @@ class PosOverflowNode extends Node, TPosOverflowNode {
 
   override string toString() { result = "PosOverflowNode for " + call.getNode().toString() }
 
+  override DataFlowCallable getEnclosingCallable() {
+    exists(Node node |
+      node = TCfgNode(call) and
+      result = node.getEnclosingCallable()
+    )
+  }
+
   override Location getLocation() { result = call.getLocation() }
 }
 
@@ -300,6 +307,13 @@ class KwOverflowNode extends Node, TKwOverflowNode {
   KwOverflowNode() { this = TKwOverflowNode(call, _) }
 
   override string toString() { result = "KwOverflowNode for " + call.getNode().toString() }
+
+  override DataFlowCallable getEnclosingCallable() {
+    exists(Node node |
+      node = TCfgNode(call) and
+      result = node.getEnclosingCallable()
+    )
+  }
 
   override Location getLocation() { result = call.getLocation() }
 }
@@ -315,6 +329,13 @@ class KwUnpacked extends Node, TKwUnpacked {
   KwUnpacked() { this = TKwUnpacked(call, _, name) }
 
   override string toString() { result = "KwUnpacked " + name }
+
+  override DataFlowCallable getEnclosingCallable() {
+    exists(Node node |
+      node = TCfgNode(call) and
+      result = node.getEnclosingCallable()
+    )
+  }
 
   override Location getLocation() { result = call.getLocation() }
 }
@@ -353,6 +374,19 @@ class BarrierGuard extends GuardNode {
       this.controlsBlock(result.asCfgNode().getBasicBlock(), branch)
     )
   }
+}
+
+/**
+ * A data flow node that is a source of local flow. This includes things like
+ * - Expressions
+ * - Function parameters
+ */
+class LocalSourceNode extends Node {
+  LocalSourceNode() { not simpleLocalFlowStep(_, this) }
+
+  /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
+  cached
+  predicate flowsTo(Node nodeTo) { simpleLocalFlowStep*(this, nodeTo) }
 }
 
 /**

@@ -49,7 +49,7 @@ module SsaChecks {
     exists(Definition def, BasicBlock bb, ControlFlow::Node rnode, ControlFlow::Node dnode, int i |
       def.getAReadAtNode(rnode) = read
     |
-      def.definesAt(bb, i) and
+      def.definesAt(_, bb, i) and
       dnode = bb.getNode(max(int j | j = i or j = 0)) and
       not dnode.dominates(rnode)
     ) and

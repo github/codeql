@@ -1,3 +1,5 @@
+:tocdepth: 1
+
 .. _modules:
 
 Modules
@@ -15,7 +17,9 @@ Defining a module
 
 There are various ways to define modules—here is an example of the simplest way, declaring an
 :ref:`explicit module  <explicit-modules>` named ``Example`` containing 
-a class ``OneTwoThree``::
+a class ``OneTwoThree``:
+
+.. code-block:: ql
 
     module Example {
       class OneTwoThree extends int {
@@ -25,7 +29,7 @@ a class ``OneTwoThree``::
       }
     } 
 
-The name of a module can be any `identifier <ql-language-specification#identifiers>`_
+The name of a module can be any `identifier <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#identifiers>`_
 that starts with an uppercase or lowercase letter. 
 
 ``.ql`` or ``.qll`` files also implicitly define modules.
@@ -113,7 +117,9 @@ the module name, and then the module body enclosed in braces. It can contain any
 of the elements listed in ":ref:`module-bodies`" below, apart from select clauses. 
 
 For example, you could add the following QL snippet to the library file **OneTwoThreeLib.qll** 
-defined :ref:`above <library-modules>`::
+defined :ref:`above <library-modules>`:
+
+.. code-block:: ql
 
     ...
     module M {
@@ -180,5 +186,5 @@ for example ``import javascript as js``.
 The ``<module_expression>`` itself can be a module name, a selection, or a qualified
 reference. For more information, see ":ref:`name-resolution`."
 
-For information about how import statements are looked up, see "`Module resolution <ql-language-specification#module-resolution>`__"
+For information about how import statements are looked up, see "`Module resolution <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#module-resolution>`__"
 in the QL language specification. 

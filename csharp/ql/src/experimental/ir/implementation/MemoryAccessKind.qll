@@ -10,7 +10,6 @@ private newtype TMemoryAccessKind =
   TEntireAllocationMemoryAccess() or
   TEscapedMemoryAccess() or
   TNonLocalMemoryAccess() or
-  TEscapedInitializationMemoryAccess() or
   TPhiMemoryAccess() or
   TUnmodeledMemoryAccess() or
   TChiTotalMemoryAccess() or
@@ -75,14 +74,6 @@ class EscapedMemoryAccess extends MemoryAccessKind, TEscapedMemoryAccess {
  */
 class NonLocalMemoryAccess extends MemoryAccessKind, TNonLocalMemoryAccess {
   override string toString() { result = "nonlocal" }
-}
-
-/**
- * The operand or result accesses all memory whose address has escaped and can define read-only
- * memory (such as string constants).
- */
-class EscapedInitializationMemoryAccess extends MemoryAccessKind, TEscapedInitializationMemoryAccess {
-  override string toString() { result = "escaped(init)" }
 }
 
 /**

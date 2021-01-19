@@ -11,6 +11,7 @@
 
 import java
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.frameworks.Networking
 import DataFlow::PathGraph
 
 class HTTPString extends StringLiteral {
@@ -26,18 +27,6 @@ class HTTPString extends StringLiteral {
       ) and
       not s.matches("%/localhost%")
     )
-  }
-}
-
-class URLConstructor extends ClassInstanceExpr {
-  URLConstructor() { this.getConstructor().getDeclaringType().getQualifiedName() = "java.net.URL" }
-
-  Expr protocolArg() {
-    // In all cases except where the first parameter is a URL, the argument
-    // containing the protocol is the first one, otherwise it is the second.
-    if this.getConstructor().getParameter(0).getType().getName() = "URL"
-    then result = this.getArgument(1)
-    else result = this.getArgument(0)
   }
 }
 
@@ -63,7 +52,7 @@ class HTTPStringToURLOpenMethodFlowConfig extends TaintTracking::Configuration {
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(URLConstructor u |
+    exists(UrlConstructorCall u |
       node1.asExpr() = u.protocolArg() and
       node2.asExpr() = u
     )

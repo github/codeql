@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The code compares the unsigned difference with zero. 
+It is highly probable that the condition is wrong if the difference expression has the unsigned type.  
+The condition holds in all the cases when difference is not equal to zero. 
+It means that we may use condition not equal. But the programmer probably wanted to compare the difference of elements.</p>
+
+<p>False positives include code in which the first difference element is always greater than or equal to the second. 
+For comparison, ">" such conditions are equivalent to "! =", And are recommended for replacement. 
+For comparison "> =", the conditions are always true and are recommended to be excluded.</p>
+
+</overview>
+<recommendation>
+
+<p>Use a simple comparison of two elements, instead of comparing their difference to zero.</p>
+
+</recommendation>
+<example>
+<p>The following example demonstrates an erroneous and corrected use of comparison.</p>
+<sample src="UnsignedDifferenceExpressionComparedZero.c" />
+
+</example>
+<references>
+
+<li>CERT C Coding Standard:
+<a href="https://wiki.sei.cmu.edu/confluence/display/c/INT02-C.+Understand+integer+conversion+rules">INT02-C. Understand integer conversion rules</a>.
+</li>
+
+</references>
+</qhelp>

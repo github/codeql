@@ -120,7 +120,7 @@ module Angular2 {
 
   /** Gets a reference to a `DomSanitizer` object. */
   DataFlow::SourceNode domSanitizer() {
-    result.hasUnderlyingType("@angular/platform-browser", "DomSanitizer")
+    result.hasUnderlyingType(["@angular/platform-browser", "@angular/core"], "DomSanitizer")
   }
 
   /** A value that is about to be promoted to a trusted HTML or CSS value. */

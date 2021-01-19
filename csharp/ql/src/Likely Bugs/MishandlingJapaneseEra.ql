@@ -51,12 +51,10 @@ predicate isDateFromJapaneseCalendarCreation(ObjectCreation cr) {
     cr.getType().hasQualifiedName("System.DateTimeOffset")
   ) and
   (
-    cr
-        .getArgumentForName("calendar")
+    cr.getArgumentForName("calendar")
         .getType()
         .hasQualifiedName("System.Globalization.JapaneseCalendar") or
-    cr
-        .getArgumentForName("calendar")
+    cr.getArgumentForName("calendar")
         .getType()
         .hasQualifiedName("System.Globalization.JapaneseLunisolarCalendar")
   ) and

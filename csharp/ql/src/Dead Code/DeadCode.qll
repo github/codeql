@@ -36,8 +36,8 @@ Expr getAnAccessByDynamicCall(Method m) {
 Expr getAMethodAccess(Method m) {
   result = getAnAccessByDynamicCall(m) or
   result = getAnAccessByReflection(m) or
-  result.(MethodCall).getTarget().getSourceDeclaration() = m or
-  result.(MethodAccess).getTarget().getSourceDeclaration() = m
+  result.(MethodCall).getTarget().getUnboundDeclaration() = m or
+  result.(MethodAccess).getTarget().getUnboundDeclaration() = m
 }
 
 predicate potentiallyAccessedByForEach(Method m) {
@@ -63,7 +63,7 @@ predicate isRecursivelyLiveMethod(Method m) {
   or
   potentiallyAccessedByForEach(m)
   or
-  isRecursivelyLiveMethod(m.(ConstructedMethod).getSourceDeclaration())
+  isRecursivelyLiveMethod(m.(ConstructedMethod).getUnboundDeclaration())
   or
   nunitValueSource(m)
   or
@@ -78,7 +78,7 @@ predicate nunitValueSource(Method m) {
 }
 
 predicate nunitTestCaseSource(Declaration f) {
-  exists(TestCaseSourceAttribute attribute | attribute.getSourceDeclaration() = f)
+  exists(TestCaseSourceAttribute attribute | attribute.getUnboundDeclaration() = f)
 }
 
 predicate isDeadMethod(Method m) {
@@ -89,9 +89,9 @@ predicate isDeadMethod(Method m) {
 predicate isDeadField(Field f) {
   f.isPrivate() and
   not f.getDeclaringType() instanceof AnonymousClass and
-  f.getSourceDeclaration() = f and
+  f.getUnboundDeclaration() = f and
   not nunitTestCaseSource(f) and
-  forall(FieldAccess fc | fc.getTarget().getSourceDeclaration() = f |
+  forall(FieldAccess fc | fc.getTarget().getUnboundDeclaration() = f |
     isDeadMethod(fc.getEnclosingCallable())
     or
     not fc instanceof FieldRead and not fc.isRefArgument()

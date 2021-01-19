@@ -124,6 +124,7 @@ edges
 | test.py:499:39:499:44 | ControlFlowNode for SOURCE | test.py:499:10:499:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] |
 | test.py:511:9:511:14 | ControlFlowNode for SOURCE | test.py:513:10:513:10 | ControlFlowNode for a |
 | test.py:511:9:511:14 | ControlFlowNode for SOURCE | test.py:518:10:518:10 | ControlFlowNode for b |
+| test.py:590:16:590:21 | ControlFlowNode for SOURCE | test.py:593:10:593:36 | ControlFlowNode for return_from_inner_scope() |
 nodes
 | datamodel.py:38:6:38:17 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
 | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
@@ -293,6 +294,8 @@ nodes
 | test.py:511:9:511:14 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:513:10:513:10 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
 | test.py:518:10:518:10 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| test.py:590:16:590:21 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:593:10:593:36 | ControlFlowNode for return_from_inner_scope() | semmle.label | ControlFlowNode for return_from_inner_scope() |
 #select
 | datamodel.py:38:6:38:17 | ControlFlowNode for f() | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:38:6:38:17 | ControlFlowNode for f() | Flow found |
 | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | Flow found |
@@ -338,3 +341,4 @@ nodes
 | test.py:499:10:499:45 | ControlFlowNode for f_extra_keyword() | test.py:499:39:499:44 | ControlFlowNode for SOURCE | test.py:499:10:499:45 | ControlFlowNode for f_extra_keyword() | Flow found |
 | test.py:513:10:513:10 | ControlFlowNode for a | test.py:511:9:511:14 | ControlFlowNode for SOURCE | test.py:513:10:513:10 | ControlFlowNode for a | Flow found |
 | test.py:518:10:518:10 | ControlFlowNode for b | test.py:511:9:511:14 | ControlFlowNode for SOURCE | test.py:518:10:518:10 | ControlFlowNode for b | Flow found |
+| test.py:593:10:593:36 | ControlFlowNode for return_from_inner_scope() | test.py:590:16:590:21 | ControlFlowNode for SOURCE | test.py:593:10:593:36 | ControlFlowNode for return_from_inner_scope() | Flow found |

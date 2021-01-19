@@ -153,8 +153,7 @@ private class TemplateFieldNgSourceProvider extends NgSourceProvider {
   TemplateFieldNgSourceProvider() {
     this = directive.getMember("template").asExpr() and
     source =
-      this
-          .(ConstantString)
+      this.(ConstantString)
           .getStringValue()
           .regexpFind(getInterpolatedExpressionPattern(), _, offset)
   }

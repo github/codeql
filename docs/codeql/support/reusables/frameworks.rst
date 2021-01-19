@@ -27,6 +27,8 @@ Go built-in support
    :widths: auto
 
    Name, Category
+   Chi, Web framework
+   Echo, Web framework
    Gin, Web framework
    glog, Logging library
    go-restful, Web application framework
@@ -51,6 +53,9 @@ Go built-in support
    mux, HTTP request router and dispatcher
    nhooyr.io/websocket, Network communicator
    pg, Database
+   proto, Serialization
+   Revel, Web framework
+   Spew, Logging library
    sqlx, Database
    SendGrid, Email library
    Squirrel, Database

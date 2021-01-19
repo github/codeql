@@ -5,8 +5,6 @@ CodeQL for Visual Studio Code
 
 The CodeQL extension for Visual Studio Code adds rich language support for CodeQL and allows you to easily find problems in codebases.
 
-See the following help topics for more information:
-
 - :doc:`About CodeQL for Visual Studio Code
   <about-codeql-for-visual-studio-code>`: CodeQL for Visual Studio
   Code is an extension that lets you write, run, and test CodeQL queries in Visual

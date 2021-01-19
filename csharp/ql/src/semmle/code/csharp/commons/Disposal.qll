@@ -23,7 +23,7 @@ private predicate disposedCilVariable(CIL::Variable variable) {
   )
   or
   // A parameter is disposed if its source declaration is disposed
-  disposedCilVariable(variable.(CIL::Parameter).getSourceDeclaration())
+  disposedCilVariable(variable.(CIL::Parameter).getUnboundDeclaration())
   or
   // A variable is disposed if it's assigned to another variable
   // that may be disposed.
@@ -59,7 +59,7 @@ private predicate disposedCSharpVariable(Variable variable) {
   )
   or
   // A parameter is disposed if its source declaration is disposed
-  disposedCSharpVariable(variable.(Parameter).getSourceDeclaration())
+  disposedCSharpVariable(variable.(Parameter).getUnboundDeclaration())
   or
   // A variable is disposed if it's assigned to another variable that is disposed
   exists(AssignableDefinition assign |

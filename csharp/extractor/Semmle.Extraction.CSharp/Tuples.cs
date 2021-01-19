@@ -26,6 +26,11 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("accessors", accessorKey, kind, name, propKey, unboundAccessor);
         }
 
+        internal static void init_only_accessors(this TextWriter trapFile, Accessor accessorKey)
+        {
+            trapFile.WriteTuple("init_only_accessors", accessorKey);
+        }
+
         internal static void array_element_type(this TextWriter trapFile, ArrayType array, int dimension, int rank, Type elementType)
         {
             trapFile.WriteTuple("array_element_type", array, dimension, rank, elementType);
@@ -104,6 +109,11 @@ namespace Semmle.Extraction.CSharp
         internal static void compilations(this TextWriter trapFile, Compilation compilation, string cwd)
         {
             trapFile.WriteTuple("compilations", compilation, cwd);
+        }
+
+        internal static void compilation_assembly(this TextWriter trapFile, Compilation compilation, Assembly assembly)
+        {
+            trapFile.WriteTuple("compilation_assembly", compilation, assembly);
         }
 
         internal static void compiler_generated(this TextWriter trapFile, IEntity entity)
@@ -266,6 +276,11 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("extend", type, super);
         }
 
+        internal static void anonymous_types(this TextWriter trapFile, Type type)
+        {
+            trapFile.WriteTuple("anonymous_types", type);
+        }
+
         internal static void field_location(this TextWriter trapFile, Field field, Location location)
         {
             trapFile.WriteTuple("field_location", field, location);
@@ -294,6 +309,11 @@ namespace Semmle.Extraction.CSharp
         internal static void implicitly_typed_array_creation(this TextWriter trapFile, Expression array)
         {
             trapFile.WriteTuple("implicitly_typed_array_creation", array);
+        }
+
+        internal static void implicitly_typed_object_creation(this TextWriter trapFile, Expression expression)
+        {
+            trapFile.WriteTuple("implicitly_typed_object_creation", expression);
         }
 
         internal static void indexer_location(this TextWriter trapFile, Indexer indexer, Location location)

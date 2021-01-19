@@ -77,7 +77,7 @@ namespace Semmle.Extraction
         {
             if (idLabelCache.ContainsKey(id))
             {
-                ExtractionError("Label collision for " + id, entity.Label.ToString(), Entities.Location.Create(this, entity.ReportingLocation), "", Severity.Warning);
+                this.Extractor.Message(new Message("Label collision for " + id, entity.Label.ToString(), Entities.Location.Create(this, entity.ReportingLocation), "", Severity.Warning));
             }
             else
             {
@@ -169,7 +169,7 @@ namespace Semmle.Extraction
 #endif
 
         private readonly IDictionary<object, ICachedEntity> objectEntityCache = new Dictionary<object, ICachedEntity>();
-        private readonly IDictionary<ISymbol, ICachedEntity> symbolEntityCache = new Dictionary<ISymbol, ICachedEntity>(10000, SymbolEqualityComparer.IncludeNullability);
+        private readonly IDictionary<ISymbol, ICachedEntity> symbolEntityCache = new Dictionary<ISymbol, ICachedEntity>(10000, SymbolEqualityComparer.Default);
         private readonly HashSet<Label> extractedGenerics = new HashSet<Label>();
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace Semmle.Extraction
                 }
                 catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    ExtractionError("Uncaught exception", ex.Message, GeneratedLocation.Create(this), ex.StackTrace);
+                    ExtractionError("Uncaught exception", ex.Message, Entities.Location.Create(this), ex.StackTrace);
                 }
             }
         }
@@ -244,11 +244,11 @@ namespace Semmle.Extraction
 
         public bool FromSource => scope.FromSource;
 
-        public bool IsGlobalContext => scope.IsGlobalScope;
-
         public ICommentGenerator CommentGenerator { get; } = new CommentProcessor();
 
         private IExtractionScope scope { get; }
+
+        public SyntaxTree? SourceTree => scope is SourceScope sc ? sc.SourceTree : null;
 
         /// <summary>
         ///     Whether the given symbol needs to be defined in this context.
@@ -451,7 +451,7 @@ namespace Semmle.Extraction
             }
             else
             {
-                ExtractionError(message, "", GeneratedLocation.Create(this));
+                ExtractionError(message, "", Entities.Location.Create(this));
             }
         }
 
@@ -522,13 +522,21 @@ namespace Semmle.Extraction
                 Message message;
 
                 if (node != null)
+                {
                     message = Message.Create(context, ex.Message, node, ex.StackTrace);
+                }
                 else if (symbol != null)
+                {
                     message = Message.Create(context, ex.Message, symbol, ex.StackTrace);
+                }
                 else if (ex is InternalError ie)
+                {
                     message = new Message(ie.Text, ie.EntityText, Entities.Location.Create(context, ie.Location), ex.StackTrace);
+                }
                 else
-                    message = new Message("Uncaught exception", ex.Message, GeneratedLocation.Create(context), ex.StackTrace);
+                {
+                    message = new Message("Uncaught exception", ex.Message, Entities.Location.Create(context), ex.StackTrace);
+                }
 
                 context.ExtractionError(message);
             }

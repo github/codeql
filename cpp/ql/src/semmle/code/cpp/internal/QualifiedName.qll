@@ -59,7 +59,7 @@ class Namespace extends @namespace {
   }
 }
 
-abstract class Declaration extends @declaration {
+class Declaration extends @declaration {
   string toString() { result = "QualifiedName Declaration" }
 
   /** Gets the name of this declaration. */

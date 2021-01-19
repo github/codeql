@@ -6,6 +6,7 @@ import com.semmle.js.ast.INode;
 import com.semmle.js.ast.Identifier;
 import com.semmle.js.ast.Literal;
 import com.semmle.js.ast.MemberExpression;
+import com.semmle.js.ast.TemplateElement;
 import com.semmle.js.extractor.ASTExtractor.IdContext;
 import com.semmle.ts.ast.ArrayTypeExpr;
 import com.semmle.ts.ast.ConditionalTypeExpr;
@@ -22,6 +23,7 @@ import com.semmle.ts.ast.OptionalTypeExpr;
 import com.semmle.ts.ast.ParenthesizedTypeExpr;
 import com.semmle.ts.ast.PredicateTypeExpr;
 import com.semmle.ts.ast.RestTypeExpr;
+import com.semmle.ts.ast.TemplateLiteralTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeParameter;
 import com.semmle.ts.ast.TypeofTypeExpr;
@@ -67,6 +69,7 @@ public class TypeExprKinds {
   private static final int restTypeExpr = 34;
   private static final int bigintLiteralTypeExpr = 35;
   private static final int readonlyTypeExpr = 36;
+  private static final int templateLiteralTypeExpr = 37;
 
   public static int getTypeExprKind(final INode type, final IdContext idcontext) {
     Integer kind =
@@ -240,6 +243,16 @@ public class TypeExprKinds {
               @Override
               public Integer visit(RestTypeExpr nd, Void c) {
                 return restTypeExpr;
+              }
+
+              @Override
+              public Integer visit(TemplateLiteralTypeExpr nd, Void c) {
+                return templateLiteralTypeExpr;
+              }
+
+              @Override
+              public Integer visit(TemplateElement nd, Void c) {
+                return stringLiteralTypeExpr;
               }
             },
             null);

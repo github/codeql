@@ -48,31 +48,6 @@ public class UnsafeCertTrustTest {
 		}
 	}
 
-	/**
-	 * Test the implementation of trusting all hostnames as an anonymous class
-	 */
-	public void testTrustAllHostnameOfAnonymousClass() {
-		HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
-			@Override
-			public boolean verify(String hostname, SSLSession session) {
-				return true; // Noncompliant
-			}
-		});
-	}
-
-	/**
-	 * Test the implementation of trusting all hostnames as a variable
-	 */
-	public void testTrustAllHostnameOfVariable() {
-		HostnameVerifier verifier = new HostnameVerifier() {
-			@Override
-			public boolean verify(String hostname, SSLSession session) {
-				return true; // Noncompliant
-			}
-		};
-		HttpsURLConnection.setDefaultHostnameVerifier(verifier);
-	}
-
 	private static final X509TrustManager TRUST_ALL_CERTIFICATES = new X509TrustManager() {
 		@Override
 		public void checkClientTrusted(final X509Certificate[] chain, final String authType)
@@ -106,13 +81,6 @@ public class UnsafeCertTrustTest {
 		@Override
 		public X509Certificate[] getAcceptedIssuers() {
 			return null; // Noncompliant
-		}
-	};
-
-	public static final HostnameVerifier ALLOW_ALL_HOSTNAME_VERIFIER = new HostnameVerifier() {
-		@Override
-		public boolean verify(String hostname, SSLSession session) {
-			return true; // Noncompliant
 		}
 	};
 

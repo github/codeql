@@ -311,12 +311,3 @@ class ThisAliasTest {
     this->x = arg;
   }
 };
-
-int staticLocalInit(int x) {
-    static int a = 0;  // Constant initialization
-    static int b = sizeof(x);  // Constant initialization
-    static int c = x;  // Dynamic initialization
-    static int d;  // Zero initialization
-
-    return a + b + c + d;
-}

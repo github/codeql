@@ -4,7 +4,8 @@ import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
 
 /** Pure string functions. */
-class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideEffectFunction {
+private class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction,
+  SideEffectFunction {
   PureStrFunction() {
     hasGlobalOrStdName([
         "atof", "atoi", "atol", "atoll", "strcasestr", "strchnul", "strchr", "strchrnul", "strstr",
@@ -60,7 +61,7 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideE
 }
 
 /** String standard `strlen` function, and related functions for computing string lengths. */
-class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFunction {
+private class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFunction {
   StrLenFunction() {
     hasGlobalOrStdName(["strlen", "strnlen", "wcslen"])
     or
@@ -94,7 +95,7 @@ class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFunction {
 }
 
 /** Pure functions. */
-class PureFunction extends TaintFunction, SideEffectFunction {
+private class PureFunction extends TaintFunction, SideEffectFunction {
   PureFunction() { hasGlobalOrStdName(["abs", "labs"]) }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -111,7 +112,8 @@ class PureFunction extends TaintFunction, SideEffectFunction {
 }
 
 /** Pure raw-memory functions. */
-class PureMemFunction extends AliasFunction, ArrayFunction, TaintFunction, SideEffectFunction {
+private class PureMemFunction extends AliasFunction, ArrayFunction, TaintFunction,
+  SideEffectFunction {
   PureMemFunction() { hasGlobalOrStdName(["memchr", "memrchr", "rawmemchr", "memcmp", "memmem"]) }
 
   override predicate hasArrayInput(int bufParam) {

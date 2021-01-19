@@ -2,7 +2,8 @@ import csharp
 import semmle.code.csharp.controlflow.internal.Completion
 import semmle.code.csharp.controlflow.internal.PreBasicBlocks
 import ControlFlow
-import ControlFlow::Internal
+import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
+import semmle.code.csharp.controlflow.internal.Splitting
 
 predicate bbStartInconsistency(ControlFlowElement cfe) {
   exists(ControlFlow::BasicBlock bb | bb.getFirstNode() = cfe.getAControlFlowNode()) and
@@ -57,7 +58,7 @@ query predicate nonUniqueSetRepresentation(Splits s1, Splits s2) {
 
 query predicate breakInvariant2(
   ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
-  SplitInternal split, Completion c
+  SplitImpl split, Completion c
 ) {
   succSplits(pred, predSplits, succ, succSplits, c) and
   split = predSplits.getASplit() and
@@ -67,7 +68,7 @@ query predicate breakInvariant2(
 
 query predicate breakInvariant3(
   ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
-  SplitInternal split, Completion c
+  SplitImpl split, Completion c
 ) {
   succSplits(pred, predSplits, succ, succSplits, c) and
   split = predSplits.getASplit() and
@@ -78,7 +79,7 @@ query predicate breakInvariant3(
 
 query predicate breakInvariant4(
   ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
-  SplitInternal split, Completion c
+  SplitImpl split, Completion c
 ) {
   succSplits(pred, predSplits, succ, succSplits, c) and
   split.hasEntry(pred, succ, c) and
@@ -88,7 +89,7 @@ query predicate breakInvariant4(
 
 query predicate breakInvariant5(
   ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
-  SplitInternal split, Completion c
+  SplitImpl split, Completion c
 ) {
   succSplits(pred, predSplits, succ, succSplits, c) and
   split = succSplits.getASplit() and

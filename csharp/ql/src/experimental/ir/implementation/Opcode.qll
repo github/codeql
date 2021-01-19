@@ -979,8 +979,19 @@ module Opcode {
   class AliasedDefinition extends Opcode, TAliasedDefinition {
     final override string toString() { result = "AliasedDefinition" }
 
+    final override MemoryAccessKind getWriteMemoryAccess() { result instanceof EscapedMemoryAccess }
+  }
+
+  /**
+   * The `Opcode` for an `InitializeNonLocalInstruction`.
+   *
+   * See the `InitializeNonLocalInstruction` documentation for more details.
+   */
+  class InitializeNonLocal extends Opcode, TInitializeNonLocal {
+    final override string toString() { result = "InitializeNonLocal" }
+
     final override MemoryAccessKind getWriteMemoryAccess() {
-      result instanceof EscapedInitializationMemoryAccess
+      result instanceof NonLocalMemoryAccess
     }
   }
 

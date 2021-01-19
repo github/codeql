@@ -1214,6 +1214,29 @@ class InferTypeExpr extends @infer_typeexpr, TypeParameterized, TypeExpr {
 }
 
 /**
+ * A template literal used as a type.
+ */
+class TemplateLiteralTypeExpr extends @template_literal_typeexpr, TypeExpr {
+  /**
+   * Gets the `i`th element of this template literal, which may either
+   * be a type expression or a constant template element.
+   */
+  ExprOrType getElement(int i) { result = getChild(i) }
+
+  /**
+   * Gets an element of this template literal.
+   */
+  ExprOrType getAnElement() { result = getElement(_) }
+
+  /**
+   * Gets the number of elements of this template literal.
+   */
+  int getNumElement() { result = count(getAnElement()) }
+
+  override string getAPrimaryQlClass() { result = "TemplateLiteralTypeExpr" }
+}
+
+/**
  * A scope induced by a conditional type expression whose `extends` type
  * contains `infer` types.
  */

@@ -22,10 +22,17 @@ class Declaration extends DotNet::Declaration, Element, @cil_declaration {
     result = toCSharpTypeParameter(this)
   }
 
-  override Declaration getSourceDeclaration() { result = this }
+  override Declaration getUnboundDeclaration() { result = this }
 
   /** Holds if this declaration is a source declaration. */
-  final predicate isSourceDeclaration() { this = getSourceDeclaration() }
+  final predicate isUnboundDeclaration() { this = getUnboundDeclaration() }
+
+  /**
+   * DEPRECATED: Use `isUnboundDeclaration()` instead.
+   *
+   * Holds if this declaration is a source declaration.
+   */
+  deprecated final predicate isSourceDeclaration() { this.isUnboundDeclaration() }
 }
 
 private CS::Declaration toCSharpNonTypeParameter(Declaration d) { result.matchesHandle(d) }
@@ -75,7 +82,7 @@ class Member extends DotNet::Member, Declaration, @cil_member {
 }
 
 /** A property. */
-class Property extends DotNet::Property, Member, @cil_property {
+class Property extends DotNet::Property, Member, CustomModifierReceiver, @cil_property {
   override string getName() { cil_property(this, _, result, _) }
 
   /** Gets the type of this property. */

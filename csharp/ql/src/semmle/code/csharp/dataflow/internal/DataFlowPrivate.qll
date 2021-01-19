@@ -459,9 +459,9 @@ private predicate fieldOrPropertyStore(Expr e, Content c, Expr src, Expr q, bool
 
 /** Holds if property `p1` overrides or implements source declaration property `p2`. */
 private predicate overridesOrImplementsSourceDecl(Property p1, Property p2) {
-  p1.getOverridee*().getSourceDeclaration() = p2
+  p1.getOverridee*().getUnboundDeclaration() = p2
   or
-  p1.getAnUltimateImplementee().getSourceDeclaration() = p2
+  p1.getAnUltimateImplementee().getUnboundDeclaration() = p2
 }
 
 /**
@@ -706,8 +706,8 @@ private module Cached {
 
   cached
   newtype TContent =
-    TFieldContent(Field f) { f = f.getSourceDeclaration() } or
-    TPropertyContent(Property p) { p = p.getSourceDeclaration() } or
+    TFieldContent(Field f) { f.isUnboundDeclaration() } or
+    TPropertyContent(Property p) { p.isUnboundDeclaration() } or
     TElementContent()
 
   /**
@@ -760,9 +760,8 @@ private module Cached {
       c instanceof ElementContent
       or
       exists(ForeachStmt fs, Ssa::ExplicitDefinition def |
-        x
-            .hasDefPath(fs.getIterableExpr(), node1.getControlFlowNode(), def.getADefinition(),
-              def.getControlFlowNode()) and
+        x.hasDefPath(fs.getIterableExpr(), node1.getControlFlowNode(), def.getADefinition(),
+          def.getControlFlowNode()) and
         node2.(SsaDefinitionNode).getDefinition() = def and
         c instanceof ElementContent
       )
@@ -1268,8 +1267,7 @@ private module ArgumentNodes {
 
     override DotNet::Type getTypeImpl() {
       result =
-        c
-            .getParameter(delegateIndex)
+        c.getParameter(delegateIndex)
             .getType()
             .(SystemLinqExpressions::DelegateExtType)
             .getDelegateType()
@@ -1448,7 +1446,7 @@ private module OutNodes {
   /** A valid return type for a method that uses `yield return`. */
   private class YieldReturnType extends Type {
     YieldReturnType() {
-      exists(Type t | t = this.getSourceDeclaration() |
+      exists(Type t | t = this.getUnboundDeclaration() |
         t instanceof SystemCollectionsIEnumerableInterface
         or
         t instanceof SystemCollectionsIEnumeratorInterface
@@ -1562,7 +1560,7 @@ private module OutNodes {
     override DataFlowCall getCall(ReturnKind kind) {
       result = csharpCall(_, cfn) and
       exists(Parameter p |
-        p.getSourceDeclaration().getPosition() = kind.(OutRefReturnKind).getPosition() and
+        p.getUnboundDeclaration().getPosition() = kind.(OutRefReturnKind).getPosition() and
         outRefDef.getTargetAccess() = result.getExpr().(Call).getArgumentForParameter(p)
       )
     }
@@ -1583,8 +1581,7 @@ private module OutNodes {
 
     override DotNet::Type getTypeImpl() {
       result =
-        c
-            .getParameter(pos)
+        c.getParameter(pos)
             .getType()
             .(SystemLinqExpressions::DelegateExtType)
             .getDelegateType()
@@ -1674,9 +1671,9 @@ class FieldOrProperty extends Assignable, Modifiable {
 
   /** Gets the content that matches this field or property. */
   Content getContent() {
-    result.(FieldContent).getField() = this.getSourceDeclaration()
+    result.(FieldContent).getField() = this.getUnboundDeclaration()
     or
-    result.(PropertyContent).getProperty() = this.getSourceDeclaration()
+    result.(PropertyContent).getProperty() = this.getUnboundDeclaration()
   }
 }
 
@@ -1694,8 +1691,6 @@ private class FieldOrPropertyRead extends FieldOrPropertyAccess, AssignableRead 
    * SSA updates.
    */
   predicate hasNonlocalValue() {
-    this = any(Ssa::ImplicitUntrackedDefinition udef).getARead()
-    or
     exists(Ssa::Definition def, Ssa::ImplicitDefinition idef |
       def.getARead() = this and
       idef = def.getAnUltimateDefinition()
@@ -1948,6 +1943,15 @@ private predicate viableConstantBooleanParamArg(
 }
 
 int accessPathLimit() { result = 5 }
+
+/** The unit type. */
+private newtype TUnit = TMkUnit()
+
+/** The trivial type with a single element. */
+class Unit extends TUnit {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "unit" }
+}
 
 /**
  * Holds if `n` does not require a `PostUpdateNode` as it either cannot be

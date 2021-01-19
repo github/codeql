@@ -11,9 +11,24 @@
 
 import csharp
 private import AssignableDefinitions
-private import semmle.code.csharp.controlflow.internal.PreBasicBlocks
-private import semmle.code.csharp.controlflow.ControlFlowGraph::ControlFlow::Internal::Successor
+private import PreBasicBlocks
+private import ControlFlowGraphImpl
 private import semmle.code.csharp.controlflow.Guards as Guards
+
+pragma[noinline]
+private predicate assignableNoCapturing(Assignable a, Callable c) {
+  exists(AssignableAccess aa | aa.getTarget() = a | c = aa.getEnclosingCallable()) and
+  forall(AssignableDefinition def | def.getTarget() = a |
+    c = def.getEnclosingCallable()
+    or
+    def.getEnclosingCallable() instanceof Constructor
+  )
+}
+
+pragma[noinline]
+private predicate assignableNoComplexQualifiers(Assignable a) {
+  forall(QualifiableExpr qe | qe.(AssignableAccess).getTarget() = a | qe.targetIsThisInstance())
+}
 
 /**
  * A simple assignable. Either a local scope variable or a field/property
@@ -30,15 +45,8 @@ class SimpleAssignable extends Assignable {
       or
       this = any(TrivialProperty tp | not tp.isOverridableOrImplementable())
     ) and
-    forall(AssignableDefinition def | def.getTarget() = this |
-      c = def.getEnclosingCallable()
-      or
-      def.getEnclosingCallable() instanceof Constructor
-    ) and
-    exists(AssignableAccess aa | aa.getTarget() = this | c = aa.getEnclosingCallable()) and
-    forall(QualifiableExpr qe | qe.(AssignableAccess).getTarget() = this |
-      qe.targetIsThisInstance()
-    )
+    assignableNoCapturing(this, c) and
+    assignableNoComplexQualifiers(this)
   }
 
   /** Gets a callable in which this simple assignable can be analyzed. */
@@ -132,7 +140,7 @@ class Definition extends TPreSsaDef {
 predicate implicitEntryDef(Callable c, PreBasicBlock bb, SimpleAssignable a) {
   not a instanceof LocalScopeVariable and
   c = a.getACallable() and
-  bb = succEntry(c)
+  scopeFirst(c, bb)
 }
 
 private predicate assignableDefAt(
@@ -149,7 +157,7 @@ private predicate assignableDefAt(
   or
   def.(ImplicitParameterDefinition).getParameter() = a and
   exists(Callable c | a = c.getAParameter() |
-    bb = succEntry(c) and
+    scopeFirst(c, bb) and
     i = -1
   )
 }
@@ -161,7 +169,7 @@ private predicate readAt(PreBasicBlock bb, int i, AssignableRead read, SimpleAss
 
 pragma[noinline]
 private predicate exitBlock(PreBasicBlock bb, Callable c) {
-  exists(succExit(bb.getLastElement(), _)) and
+  scopeLast(c, bb.getLastElement(), _) and
   c = bb.getEnclosingCallable()
 }
 

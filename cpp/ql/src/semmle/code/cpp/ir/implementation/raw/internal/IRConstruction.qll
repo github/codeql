@@ -166,6 +166,8 @@ predicate hasModeledMemoryResult(Instruction instruction) { none() }
 
 predicate hasConflatedMemoryResult(Instruction instruction) {
   instruction instanceof AliasedDefinitionInstruction
+  or
+  instruction.getOpcode() instanceof Opcode::InitializeNonLocal
 }
 
 Instruction getRegisterOperandDefinition(Instruction instruction, RegisterOperandTag tag) {

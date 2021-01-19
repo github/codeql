@@ -742,6 +742,8 @@ private DataFlow::SourceNode higherOrderComponentBuilder() {
   or
   result = DataFlow::moduleMember("react-redux", "connect").getACall()
   or
+  result = DataFlow::moduleMember(["react-hot-loader", "react-hot-loader/root"], "hot").getACall()
+  or
   result = reactRouterDom().getAPropertyRead("withRouter")
   or
   exists(FunctionCompositionCall compose |

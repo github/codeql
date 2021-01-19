@@ -145,6 +145,7 @@ import com.semmle.ts.ast.OptionalTypeExpr;
 import com.semmle.ts.ast.ParenthesizedTypeExpr;
 import com.semmle.ts.ast.PredicateTypeExpr;
 import com.semmle.ts.ast.RestTypeExpr;
+import com.semmle.ts.ast.TemplateLiteralTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.TypeAssertion;
@@ -576,6 +577,8 @@ public class TypeScriptASTConverter {
       case "TemplateMiddle":
       case "TemplateTail":
         return convertTemplateElement(node, kind, loc);
+      case "TemplateLiteralType":
+        return convertTemplateLiteralType(node, loc);
       case "ThisKeyword":
         return convertThisKeyword(loc);
       case "ThisType":
@@ -1423,17 +1426,11 @@ public class TypeScriptASTConverter {
       }
     }
 
-    Node rawPath = convertChild(node, "argument");
-    ITypeExpression path;
-    if (rawPath instanceof ITypeExpression) {
-      path = (ITypeExpression)rawPath;
-    } else if (rawPath instanceof TemplateLiteral) {
-      // this is a type-error, so we just fall back to some behavior that does not crash the extractor.
-      path = new Literal(rawPath.getLoc(), TokenType.string, ((TemplateLiteral)rawPath).getQuasis().stream().map(q -> q.getRaw()).collect(Collectors.joining("")));
-    } else {
+    ITypeExpression path = convertChildAsType(node, "argument");
+    if (path == null) {
       throw new ParseError("Unsupported syntax in import", getSourceLocation(node).getStart());
     }
-    
+
     // Find the ending parenthesis in `import(path)` by skipping whitespace after `path`.
     String endSrc =
         loc.getSource().substring(path.getLoc().getEnd().getOffset() - loc.getStart().getOffset());
@@ -2150,6 +2147,19 @@ public class TypeScriptASTConverter {
       quasis.add(convertChild(templateSpan, "literal"));
     }
     return new TemplateLiteral(loc, expressions, quasis);
+  }
+
+  private Node convertTemplateLiteralType(JsonObject node, SourceLocation loc) throws ParseError {
+    List<TemplateElement> quasis;
+    List<ITypeExpression> expressions = new ArrayList<>();
+    quasis = new ArrayList<>();
+    quasis.add(convertChild(node, "head"));
+    for (JsonElement elt : node.get("templateSpans").getAsJsonArray()) {
+      JsonObject templateSpan = (JsonObject) elt;
+      expressions.add(convertChildAsType(templateSpan, "type"));
+      quasis.add(convertChild(templateSpan, "literal"));
+    }
+    return new TemplateLiteralTypeExpr(loc, expressions, quasis);
   }
 
   private Node convertTemplateElement(JsonObject node, String kind, SourceLocation loc) {

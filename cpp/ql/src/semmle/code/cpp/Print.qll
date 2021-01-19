@@ -60,7 +60,7 @@ private string getTemplateArgumentString(Declaration d, int i) {
 /**
  * A `Declaration` extended to add methods for generating strings useful only for dumps and debugging.
  */
-abstract private class DumpDeclaration extends Declaration {
+private class DumpDeclaration extends Declaration {
   DumpDeclaration() { shouldPrintDeclaration(this) }
 
   /**
@@ -385,7 +385,7 @@ private class DumpFunction extends DumpDeclaration, Function {
 
   private string getACVQualifier() {
     result = getASpecifier().getName() and
-    (result = "const" or result = "volatile")
+    result = ["const", "volatile"]
   }
 
   private string getDeclaratorSuffix() {
