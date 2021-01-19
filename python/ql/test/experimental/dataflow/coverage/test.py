@@ -203,7 +203,7 @@ def test_nested_comprehension_paren():
 # 6.2.8. Generator expressions
 def test_generator():
     x = (SOURCE for y in [NONSOURCE])
-    SINK([*x][0]) #$ MISSING:flow="SOURCE, l:205 -> List[0]"
+    SINK([*x][0]) #$ MISSING:flow="SOURCE, l:-1 -> List[0]"
 
 
 # 6.2.9. Yield expressions
@@ -213,7 +213,7 @@ def gen(x):
 
 def test_yield():
     g = gen(SOURCE)
-    SINK(next(g)) #$ MISSING:flow="SOURCE, l:215 -> next()"
+    SINK(next(g)) #$ MISSING:flow="SOURCE, l:-1 -> next()"
 
 
 def gen_from(x):
@@ -222,7 +222,7 @@ def gen_from(x):
 
 def test_yield_from():
     g = gen_from(SOURCE)
-    SINK(next(g)) #$ MISSING:flow="SOURCE, l:224 -> next()"
+    SINK(next(g)) #$ MISSING:flow="SOURCE, l:-1 -> next()"
 
 
 # a statement rather than an expression, but related to generators
@@ -234,7 +234,7 @@ def test_for():
 # 6.2.9.1. Generator-iterator methods
 def test___next__():
     g = gen(SOURCE)
-    SINK(g.__next__()) #$ MISSING:flow="SOURCE, l:236 -> g.__next__()"
+    SINK(g.__next__()) #$ MISSING:flow="SOURCE, l:-1 -> g.__next__()"
 
 
 def gen2(x):
@@ -259,7 +259,7 @@ def gen_ex(x):
 def test_throw():
     g = gen_ex(SOURCE)
     n = next(g)
-    SINK(g.throw(TypeError)) #$ MISSING:flow="SOURCE, l:260 -> g.throw()"
+    SINK(g.throw(TypeError)) #$ MISSING:flow="SOURCE, l:-2 -> g.throw()"
 
 
 # no `test_close` as `close` involves no data flow
@@ -280,7 +280,7 @@ def runa(a):
 
 async def atest___anext__():
     g = agen(SOURCE)
-    SINK(await g.__anext__()) #$ MISSING:flow="SOURCE, l:282 -> g.__anext__()"
+    SINK(await g.__anext__()) #$ MISSING:flow="SOURCE, l:-1 -> g.__anext__()"
 
 
 def test___anext__():
@@ -313,7 +313,7 @@ async def agen_ex(x):
 async def atest_athrow():
     g = agen_ex(SOURCE)
     n = await g.__anext__()
-    SINK(await g.athrow(TypeError)) #$ MISSING:flow="SOURCE, l:314 -> g.athrow()"
+    SINK(await g.athrow(TypeError)) #$ MISSING:flow="SOURCE, l:-2 -> g.athrow()"
 
 
 def test_athrow():
@@ -326,7 +326,7 @@ class C:
 
 
 def test_attribute_reference():
-    SINK(C.a) #$ MISSING:flow="SOURCE, l:325 -> C.a"
+    SINK(C.a) #$ MISSING:flow="SOURCE, l:-4 -> C.a"
 
 
 # overriding __getattr__ should be tested by the class coverage tests
@@ -376,7 +376,7 @@ def test_call_keyword():
 
 
 def test_call_unpack_iterable():
-    SINK(second(NONSOURCE, *[SOURCE])) #$ MISSING:flow="SOURCE -> second(..)" MISING:flow="'source', l:20 -> second(..)"
+    SINK(second(NONSOURCE, *[SOURCE])) #$ MISSING:flow="SOURCE -> second(..)"
 
 
 def test_call_unpack_mapping():
@@ -547,7 +547,7 @@ def test_dynamic_tuple_creation_1():
     tup += (SOURCE,)
     tup += (NONSOURCE,)
 
-    SINK(tup[0]) #$ MISSING:flow="SOURCE, l:547 -> tup[0]" MISING:flow="'source', l:20 -> tup[0]"
+    SINK(tup[0]) #$ MISSING:flow="SOURCE, l:-3 -> tup[0]"
     SINK_F(tup[1])
 
 
@@ -557,7 +557,7 @@ def test_dynamic_tuple_creation_2():
     tup += (SOURCE,)
     tup += (NONSOURCE,)
 
-    SINK(tup[0]) #$ MISSING:flow="SOURCE, l:557 -> tup[0]" MISING:flow="'source', l:20 -> tup[0]"
+    SINK(tup[0]) #$ MISSING:flow="SOURCE, l:-3 -> tup[0]"
     SINK_F(tup[1])
 
 
@@ -567,7 +567,7 @@ def test_dynamic_tuple_creation_3():
     tup2 = (NONSOURCE,)
     tup = tup1 + tup2
 
-    SINK(tup[0]) #$ MISSING:flow="SOURCE, l:566 -> tup[0]" MISING:flow="'source', l:20 -> tup[0]"
+    SINK(tup[0]) #$ MISSING:flow="SOURCE, l:-4 -> tup[0]"
     SINK_F(tup[1])
 
 
@@ -578,5 +578,5 @@ def test_dynamic_tuple_creation_4():
     for item in [SOURCE, NONSOURCE]:
         tup += (item,)
 
-    SINK(tup[0]) #$ MISSING:flow="SOURCE, l:578 -> tup[0]" MISING:flow="'source', l:20 -> tup[0]"
+    SINK(tup[0]) #$ MISSING:flow="SOURCE, l:-3 -> tup[0]"
     SINK_F(tup[1])

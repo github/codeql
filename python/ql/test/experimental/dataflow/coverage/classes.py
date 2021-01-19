@@ -421,7 +421,7 @@ def test_set_name():
 # classmethod object.__init_subclass__(cls)
 class With_init_subclass:
     def __init_subclass__(cls):
-        SINK1(cls)  #$ MISSING: arg1="Tuple[0], l:429 -> cls"
+        SINK1(cls)  #$ MISSING: arg1="Tuple[0], l:+5 -> cls"
         OK()  # Call not found
 
 
@@ -441,7 +441,7 @@ class With_prepare(type):
     def __prepare__(name, bases, **kwds):
         SINK3(kwds)  # Flow not tested
         SINK2(bases)  # Flow not tested
-        SINK1(name)  #$ MISSING: arg1="arg1, l:450 -> name"
+        SINK1(name)  #$ MISSING: arg1="arg1, l:+6 -> name"
         OK()  # Call not found
         return kwds
 
@@ -871,7 +871,7 @@ def test_or():
 # object.__radd__(self, other)
 class With_radd:
     def __radd__(self, other):
-        SINK2(other)  #$ MISSING: arg2="arg2, l:882 -> other"
+        SINK2(other)  #$ MISSING: arg2="arg2, l:+8 -> other"
         SINK1(self)
         OK()  # Call not found
         return self
