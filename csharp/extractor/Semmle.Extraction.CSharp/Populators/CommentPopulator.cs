@@ -7,9 +7,9 @@ using System;
 namespace Semmle.Extraction.CSharp.Populators
 {
     /// <summary>
-    /// Populators for trivias.
+    /// Populators for comments.
     /// </summary>
-    public static class TriviaPopulator
+    public static class CommentPopulator
     {
         public static void ExtractCommentBlocks(Context cx, ICommentGenerator gen)
         {
@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CSharp.Populators
             });
         }
 
-        public static void ExtractTrivia(Context cx, SyntaxTrivia trivia)
+        public static void ExtractComment(Context cx, SyntaxTrivia trivia)
         {
             switch (trivia.Kind())
             {

@@ -374,9 +374,14 @@ namespace Semmle.Extraction.CSharp
                     if (!upToDate)
                     {
                         var cx = extractor.CreateContext(compilation.Clone(), trapWriter, new SourceScope(tree), AddAssemblyTrapPrefix);
-                        CompilationUnitVisitor.Extract(cx, tree.GetRoot());
+                        // Ensure that the file itself is populated in case the source file is totally empty
+                        var root = tree.GetRoot();
+                        Extraction.Entities.File.Create(cx, root.SyntaxTree.FilePath);
+
+                        var csNode = (CSharpSyntaxNode)root;
+                        csNode.Accept(new CompilationUnitVisitor(cx));
                         cx.PopulateAll();
-                        TriviaPopulator.ExtractCommentBlocks(cx, cx.CommentGenerator);
+                        CommentPopulator.ExtractCommentBlocks(cx, cx.CommentGenerator);
                         cx.PopulateAll();
                     }
                 }

@@ -7,7 +7,7 @@ namespace Semmle.Extraction.CSharp.Populators
 {
     internal class CompilationUnitVisitor : TypeOrNamespaceVisitor
     {
-        private CompilationUnitVisitor(Context cx)
+        public CompilationUnitVisitor(Context cx)
             : base(cx, cx.TrapWriter.Writer, null) { }
 
         public override void VisitExternAliasDirective(ExternAliasDirectiveSyntax node)
@@ -26,26 +26,18 @@ namespace Semmle.Extraction.CSharp.Populators
             // Gather comments:
             foreach (var trivia in compilationUnit.DescendantTrivia(compilationUnit.Span, descendIntoTrivia: true))
             {
-                TriviaPopulator.ExtractTrivia(cx, trivia);
+                CommentPopulator.ExtractComment(cx, trivia);
             }
 
             foreach (var trivia in compilationUnit.GetLeadingTrivia())
             {
-                TriviaPopulator.ExtractTrivia(cx, trivia);
+                CommentPopulator.ExtractComment(cx, trivia);
             }
 
             foreach (var trivia in compilationUnit.GetTrailingTrivia())
             {
-                TriviaPopulator.ExtractTrivia(cx, trivia);
+                CommentPopulator.ExtractComment(cx, trivia);
             }
-        }
-
-        public static void Extract(Context cx, SyntaxNode unit)
-        {
-            // Ensure that the file itself is populated in case the source file is totally empty
-            Extraction.Entities.File.Create(cx, unit.SyntaxTree.FilePath);
-
-            ((CSharpSyntaxNode)unit).Accept(new CompilationUnitVisitor(cx));
         }
     }
 }
