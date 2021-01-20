@@ -24,7 +24,7 @@ class Tr1
         float f;
 #line hidden // numbering not affected
         string s;
-#line default
+#line 300
         double d;
     }
 }

@@ -1,0 +1,13 @@
+default
+| trivia.cs:21:1:21:13 | #line default |
+hidden
+| trivia.cs:25:1:25:38 | #line hidden |
+lines
+| trivia.cs:18:1:18:19 | #line ... | 200 | Special |
+| trivia.cs:27:1:27:9 | #line ... | 300 |  |
+succ
+| trivia.cs:18:1:18:19 | #line ... | trivia.cs:21:1:21:13 | #line default |
+| trivia.cs:21:1:21:13 | #line default | trivia.cs:25:1:25:38 | #line hidden |
+| trivia.cs:25:1:25:38 | #line hidden | trivia.cs:27:1:27:9 | #line ... |
+last
+| trivia.cs:27:1:27:9 | #line ... |
