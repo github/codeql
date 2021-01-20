@@ -1,0 +1,60 @@
+| trivia.cs:4:1:4:13 | #define ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:4:1:4:13 | #define ... | trivia.cs:4:1:4:13 | trivia.cs:4:1:4:13 | active |
+| trivia.cs:6:1:6:12 | #undef ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:6:1:6:12 | #undef ... | trivia.cs:6:1:6:12 | trivia.cs:6:1:6:12 | active |
+| trivia.cs:12:1:12:35 | #pragma warning ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:12:1:12:35 | #pragma warning ... | trivia.cs:12:1:12:35 | trivia.cs:12:1:12:35 | active |
+| trivia.cs:13:1:13:98 | #pragma checksum ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:13:1:13:98 | #pragma checksum ... | trivia.cs:13:1:13:98 | trivia.cs:13:1:13:98 | active |
+| trivia.cs:18:1:18:19 | #line ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:18:1:18:19 | #line ... | trivia.cs:18:1:18:19 | trivia.cs:18:1:18:19 | active |
+| trivia.cs:21:1:21:13 | #line default | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:21:1:21:13 | #line default | trivia.cs:21:1:21:13 | trivia.cs:21:1:21:13 | active |
+| trivia.cs:23:1:23:23 | #pragma warning ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:23:1:23:23 | #pragma warning ... | trivia.cs:23:1:23:23 | trivia.cs:23:1:23:23 | active |
+| trivia.cs:25:1:25:38 | #line hidden | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:25:1:25:38 | #line hidden | trivia.cs:25:1:25:38 | trivia.cs:25:1:25:38 | active |
+| trivia.cs:27:1:27:9 | #line ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:27:1:27:9 | #line ... | trivia.cs:27:1:27:9 | trivia.cs:27:1:27:9 | active |
+| trivia.cs:36:9:36:22 | #region ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:36:9:36:22 | #region ... | trivia.cs:36:9:36:22 | trivia.cs:36:9:36:22 | active |
+| trivia.cs:38:9:38:22 | #region ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:38:9:38:22 | #region ... | trivia.cs:38:9:38:22 | trivia.cs:38:9:38:22 | active |
+| trivia.cs:40:9:40:18 | #endregion | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:40:9:40:18 | #endregion | trivia.cs:40:9:40:18 | trivia.cs:40:9:40:18 | active |
+| trivia.cs:41:9:41:18 | #endregion | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:41:9:41:18 | #endregion | trivia.cs:41:9:41:18 | trivia.cs:41:9:41:18 | active |
+| trivia.cs:49:1:49:82 | #nullable ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:49:1:49:82 | #nullable ... | trivia.cs:49:1:49:82 | trivia.cs:49:1:49:82 | active |
+| trivia.cs:50:1:50:80 | #nullable ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:50:1:50:80 | #nullable ... | trivia.cs:50:1:50:80 | trivia.cs:50:1:50:80 | active |
+| trivia.cs:51:1:51:94 | #nullable ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:51:1:51:94 | #nullable ... | trivia.cs:51:1:51:94 | trivia.cs:51:1:51:94 | active |
+| trivia.cs:52:1:52:81 | #nullable ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:52:1:52:81 | #nullable ... | trivia.cs:52:1:52:81 | trivia.cs:52:1:52:81 | active |
+| trivia.cs:53:1:53:79 | #nullable ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:53:1:53:79 | #nullable ... | trivia.cs:53:1:53:79 | trivia.cs:53:1:53:79 | active |
+| trivia.cs:54:1:54:93 | #nullable ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:54:1:54:93 | #nullable ... | trivia.cs:54:1:54:93 | trivia.cs:54:1:54:93 | active |
+| trivia.cs:55:1:55:75 | #nullable ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:55:1:55:75 | #nullable ... | trivia.cs:55:1:55:75 | trivia.cs:55:1:55:75 | active |
+| trivia.cs:56:1:56:73 | #nullable ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:56:1:56:73 | #nullable ... | trivia.cs:56:1:56:73 | trivia.cs:56:1:56:73 | active |
+| trivia.cs:57:1:57:87 | #nullable ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:57:1:57:87 | #nullable ... | trivia.cs:57:1:57:87 | trivia.cs:57:1:57:87 | active |
+| trivia.cs:65:1:65:9 | #if ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:65:1:65:9 | #if ... | trivia.cs:65:1:65:9 | trivia.cs:65:1:65:9 | active |
+| trivia.cs:66:1:66:23 | #error ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | inactive |
+| trivia.cs:66:1:66:23 | #error ... | trivia.cs:66:1:66:23 | trivia.cs:66:1:66:23 | inactive |
+| trivia.cs:68:1:68:10 | #if ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | inactive |
+| trivia.cs:68:1:68:10 | #if ... | trivia.cs:68:1:68:10 | trivia.cs:68:1:68:10 | inactive |
+| trivia.cs:70:1:70:6 | #endif | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | inactive |
+| trivia.cs:70:1:70:6 | #endif | trivia.cs:70:1:70:6 | trivia.cs:70:1:70:6 | inactive |
+| trivia.cs:71:1:71:35 | #elif ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:71:1:71:35 | #elif ... | trivia.cs:71:1:71:35 | trivia.cs:71:1:71:35 | active |
+| trivia.cs:72:1:72:43 | #warning ... | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:72:1:72:43 | #warning ... | trivia.cs:72:1:72:43 | trivia.cs:72:1:72:43 | active |
+| trivia.cs:74:1:74:5 | #else | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:74:1:74:5 | #else | trivia.cs:74:1:74:5 | trivia.cs:74:1:74:5 | active |
+| trivia.cs:76:1:76:6 | #endif | comments2.dll:0:0:0:0 | comments2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null | active |
+| trivia.cs:76:1:76:6 | #endif | trivia.cs:76:1:76:6 | trivia.cs:76:1:76:6 | active |

@@ -435,6 +435,10 @@ preprocessor_directive_assembly(
   unique int id: @preprocessor_directive ref,
   int loc: @assembly ref);
 
+preprocessor_directive_active(
+  unique int id: @preprocessor_directive ref,
+  int active: int ref);  /* 0: false, 1: true */
+
 /** TYPES **/
 
 types(

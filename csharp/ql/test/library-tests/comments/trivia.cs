@@ -1,4 +1,4 @@
-//  semmle-extractor-options: --standalone
+//
 // Start of trivia.cs
 // Unassociated
 #define DEBUG
@@ -63,13 +63,13 @@ class Tr4
     static void M1()
     {
 #if DEBUG
-#warning DEBUG is defined
+#error DEBUG is defined
         var i = 0;
 #if NESTED
         i--;
 #endif
 #elif (NOTDEBUG == true) || !(TEST)
-#error NOTDEBUG is defined or TEST is not
+#warning NOTDEBUG is defined or TEST is not
         var i = 1;
 #else
         var i = 2;
