@@ -105,6 +105,6 @@ Viewing the current version of the CodeQL documentation
 *******************************************************
 
 The documentation for the most recent release is 
-published to `help.semmle.com <https://help.semmle.com>`__. 
+published to `codeql.github.com <https://codeql.github.com>`__. 
 There, you can find the documentation for the CodeQL queries,
-the CodeQL standard libraries, and LGTM Enterprise. 
+the CodeQL standard libraries, and can learn about CodeQL. 
