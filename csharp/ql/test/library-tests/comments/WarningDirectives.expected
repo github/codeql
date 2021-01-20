@@ -1,1 +1,1 @@
-| trivia.cs:66:1:66:25 | #warning ... | DEBUG is defined |
+| trivia.cs:72:1:72:43 | #warning ... | NOTDEBUG is defined or TEST is not |

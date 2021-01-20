@@ -607,6 +607,13 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("preprocessor_directive_assembly", directive, assembly);
         }
 
+        internal static void preprocessor_directive_active<TDirective>(this TextWriter trapFile,
+            PreprocessorDirective<TDirective> directive, bool isActive)
+            where TDirective : DirectiveTriviaSyntax
+        {
+            trapFile.WriteTuple("preprocessor_directive_active", directive, isActive ? 1 : 0);
+        }
+
         internal static void pragma_warnings(this TextWriter trapFile, PragmaWarningDirective pragma, int kind)
         {
             trapFile.WriteTuple("pragma_warnings", pragma, kind);
@@ -706,7 +713,5 @@ namespace Semmle.Extraction.CSharp
         {
             trapFile.WriteTuple("directive_define_symbols", symb, name);
         }
-
-
     }
 }

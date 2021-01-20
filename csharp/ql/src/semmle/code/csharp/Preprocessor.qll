@@ -5,7 +5,11 @@
 import Element
 
 class PreprocessorDirective extends Element, @preprocessor_directive {
-  override Location getALocation() { preprocessor_directive_location(this, result) }
+  predicate active() { preprocessor_directive_active(this, 1) }
+
+  override Location getALocation() {
+    preprocessor_directive_location(this, result) or preprocessor_directive_assembly(this, result)
+  }
 }
 
 /**
