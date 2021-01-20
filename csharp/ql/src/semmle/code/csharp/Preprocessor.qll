@@ -140,3 +140,72 @@ class NullableDirective extends PreprocessorDirective, @directive_nullable {
 
   override string getAPrimaryQlClass() { result = "NullableDirective" }
 }
+
+/**
+ * A `#line` directive, such as `#line default`, `#line hidden`, or `#line`
+ * directive with line number.
+ */
+class LineDirective extends PreprocessorDirective, @directive_line {
+  /** Gets the succeeding `#line` directive in the file, if any. */
+  LineDirective getSuccLineDirective() {
+    result =
+      rank[1](LineDirective next |
+        next.getFile() = this.getFile() and
+        next.getLocation().getStartLine() > this.getLocation().getStartLine()
+      |
+        next order by next.getLocation().getStartLine()
+      )
+  }
+
+  /** Holds if there is a succeeding `#line` directive in the file. */
+  predicate hasSuccLineDirective() {
+    exists(LineDirective other |
+      other.getFile() = this.getFile() and
+      other.getLocation().getStartLine() > this.getLocation().getStartLine()
+    )
+  }
+
+  override string toString() { result = "#line ..." }
+
+  override string getAPrimaryQlClass() { result = "LineDirective" }
+}
+
+/**
+ * A `#line default` directive.
+ */
+class DefaultLineDirective extends LineDirective {
+  DefaultLineDirective() { directive_lines(this, 0) }
+
+  override string toString() { result = "#line default" }
+
+  override string getAPrimaryQlClass() { result = "DefaultLineDirective" }
+}
+
+/**
+ * A `#line hidden` directive.
+ */
+class HiddenLineDirective extends LineDirective {
+  HiddenLineDirective() { directive_lines(this, 1) }
+
+  override string toString() { result = "#line hidden" }
+
+  override string getAPrimaryQlClass() { result = "HiddenLineDirective" }
+}
+
+/**
+ * A numeric `#line` directive, such as `#line 200 file`
+ */
+class NumericLineDirective extends LineDirective {
+  NumericLineDirective() { directive_lines(this, 2) }
+
+  /** Gets the line number of this directive. */
+  int getLine() { directive_line_values(this, result, _) }
+
+  /** Holds if this directive specifies a file name. */
+  predicate hasFileName() { this.getFileName() != "" }
+
+  /** Gets the file name of this directive. */
+  string getFileName() { directive_line_values(this, _, result) }
+
+  override string getAPrimaryQlClass() { result = "NumericLineDirective" }
+}

@@ -332,7 +332,16 @@ using_directive_location(
   int loc: @location ref);
 
 @preprocessor_directive = @pragma_warning | @pragma_checksum | @directive_define | @directive_undefine | @directive_warning
-  | @directive_error | @directive_nullable;
+  | @directive_error | @directive_nullable | @directive_line;
+
+directive_lines(
+  unique int id: @directive_line,
+  int kind: int ref); /* 0: default, 1: hidden, 2: numeric */
+
+directive_line_values(
+  unique int id: @directive_line ref,
+  int line: int ref,
+  string file: string ref);
 
 directive_nullables(
   unique int id: @directive_nullable,
