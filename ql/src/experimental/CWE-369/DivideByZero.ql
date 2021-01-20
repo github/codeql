@@ -17,18 +17,17 @@ import semmle.go.dataflow.internal.TaintTrackingUtil
 class DivideByZeroSanitizeGuard extends DataFlow::BarrierGuard {
   override predicate checks(Expr e, boolean branch) {
     exists(
-      DataFlow::Node zero, DataFlow::Node sink, DataFlow::EqualityTestNode eqNode,
+      DataFlow::Node zero, DataFlow::Node checked, DataFlow::EqualityTestNode eqNode,
       DataFlow::RelationalComparisonNode compNode
     |
       zero.getNumericValue() = 0 and
       (
-        sink.getType().getUnderlyingType() instanceof IntegerType
+        checked.getType().getUnderlyingType() instanceof IntegerType
       ) and
       (
-        eqNode.eq(branch.booleanNot(), sink, zero) or
-        compNode.leq(branch.booleanNot(), sink, zero, 0)
-      ) and
-      globalValueNumber(DataFlow::exprNode(e)) = globalValueNumber(sink)
+        this.(DataFlow::EqualityTestNode).eq(branch.booleanNot(), checked, zero) or
+        this.(RelationalComparisonNode).leq(branch.booleanNot(), checked, zero, 0)
+      )
     )
   }
 }
@@ -41,9 +40,9 @@ class DivideByZeroCheckConfig extends TaintTracking::Configuration {
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(Function f |
       (
-        f.getName() = "Atoi" or
-        f.getName() = "ParseInt" or
-        f.getName() = "ParseUint"
+        f.hasQualifiedName() = "Atoi" or
+        f.hasQualifiedName() = "ParseInt" or
+        f.hasQualifiedName() = "ParseUint"
       ) and
       node1 = f.getACall().getArgument(0) and
       node2 = f.getACall().getResult(0)
