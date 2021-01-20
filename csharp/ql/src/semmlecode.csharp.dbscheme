@@ -332,7 +332,19 @@ using_directive_location(
   int loc: @location ref);
 
 @preprocessor_directive = @pragma_warning | @pragma_checksum | @directive_define | @directive_undefine | @directive_warning
-  | @directive_error | @directive_nullable | @directive_line;
+  | @directive_error | @directive_nullable | @directive_line | @directive_region | @directive_endregion;
+
+directive_regions(
+  unique int id: @directive_region,
+  string name: string ref);
+
+directive_endregions(
+  unique int id: @directive_endregion);
+
+#keyset[start, end]
+regions(
+  unique int start: @directive_region ref,
+  unique int end: @directive_endregion ref);
 
 directive_lines(
   unique int id: @directive_line,
