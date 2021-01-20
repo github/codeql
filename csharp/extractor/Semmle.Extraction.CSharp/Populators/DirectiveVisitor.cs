@@ -42,5 +42,10 @@ namespace Semmle.Extraction.CSharp.Populators
         {
             new Entities.ErrorDirective(cx, node);
         }
+
+        public override void VisitNullableDirectiveTrivia(NullableDirectiveTriviaSyntax node)
+        {
+            new Entities.NullableDirective(cx, node);
+        }
     }
 }

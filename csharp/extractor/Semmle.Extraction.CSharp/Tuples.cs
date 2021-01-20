@@ -640,5 +640,10 @@ namespace Semmle.Extraction.CSharp
         {
             trapFile.WriteTuple("directive_errors", directive, message);
         }
+
+        internal static void directive_nullables(this TextWriter trapFile, NullableDirective directive, int setting, int target)
+        {
+            trapFile.WriteTuple("directive_nullables", directive, setting, target);
+        }
     }
 }
