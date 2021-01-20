@@ -4,6 +4,7 @@
  */
 
 import go
+import semmle.go.dataflow.BarrierGuardUtil
 
 /**
  * Provides extension points for customizing the taint tracking configuration for reasoning about
@@ -133,18 +134,5 @@ module TaintedPath {
    *
    * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
    */
-  class RegexpCheck extends SanitizerGuard {
-    RegexpMatchFunction matchfn;
-    DataFlow::CallNode call;
-
-    RegexpCheck() {
-      matchfn.getACall() = call and
-      this = matchfn.getResult().getNode(call).getASuccessor*()
-    }
-
-    override predicate checks(Expr e, boolean branch) {
-      e = matchfn.getValue().getNode(call).asExpr() and
-      (branch = false or branch = true)
-    }
-  }
+  class RegexpCheckAsSanitizerGuard extends RegexpCheck, SanitizerGuard { }
 }
