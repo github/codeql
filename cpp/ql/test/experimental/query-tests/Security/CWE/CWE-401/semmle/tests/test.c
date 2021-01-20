@@ -322,7 +322,7 @@ unsigned char *noBadResize_4_1(unsigned char *buffer, size_t currentSize, size_t
 
 unsigned char * badResize_5_2(unsigned char *buffer, size_t currentSize, size_t newSize, int cond)
 {
-	// BAD: on unsuccessful call to realloc, we will lose a pointer to a valid memory block [NOT DETECTED]
+	// BAD: on unsuccessful call to realloc, we will lose a pointer to a valid memory block
 	if (currentSize < newSize)
 	{
 		buffer = (unsigned char *)realloc(buffer, newSize);
@@ -336,7 +336,7 @@ unsigned char * badResize_5_2(unsigned char *buffer, size_t currentSize, size_t 
 
 unsigned char * badResize_5_1(unsigned char *buffer, size_t currentSize, size_t newSize, int cond)
 {
-	// BAD: on unsuccessful call to realloc, we will lose a pointer to a valid memory block [NOT DETECTED]
+	// BAD: on unsuccessful call to realloc, we will lose a pointer to a valid memory block
 	if (currentSize < newSize)
 	{
 		buffer = (unsigned char *)realloc(buffer, newSize);
