@@ -825,4 +825,27 @@ func test() {
 		}
 	}
 
+	// Note we can also assign the result of a guarding function to a variable and use that in
+	// the conditional.
+
+	{
+		s := source()
+		isInvalid := guardBool(s)
+		if isInvalid {
+			sink(s) // $dataflow=s
+		} else {
+			sink(s)
+		}
+	}
+
+	{
+		s := source()
+		isValid := !guardBool(s)
+		if isValid {
+			sink(s) // $f+:dataflow=s
+		} else {
+			sink(s) // $dataflow=s
+		}
+	}
+
 }
