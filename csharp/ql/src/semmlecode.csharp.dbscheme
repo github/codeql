@@ -332,7 +332,12 @@ using_directive_location(
   int loc: @location ref);
 
 @preprocessor_directive = @pragma_warning | @pragma_checksum | @directive_define | @directive_undefine | @directive_warning
-  | @directive_error;
+  | @directive_error | @directive_nullable;
+
+directive_nullables(
+  unique int id: @directive_nullable,
+  int setting: int ref, /* 0: disable, 1: enable, 2: restore */
+  int target: int ref); /* 0: none, 1: annotations, 2: warnings */
 
 directive_warnings(
   unique int id: @directive_warning,

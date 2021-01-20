@@ -94,3 +94,49 @@ class ErrorDirective extends PreprocessorDirective, @directive_error {
 
   override string getAPrimaryQlClass() { result = "ErrorDirective" }
 }
+
+/**
+ * A `#nullable` directive.
+ */
+class NullableDirective extends PreprocessorDirective, @directive_nullable {
+  /** Holds if this is a `#nullable disable` directive. */
+  predicate disable() { directive_nullables(this, 0, _) }
+
+  /** Holds if this is a `#nullable enable` directive. */
+  predicate enable() { directive_nullables(this, 1, _) }
+
+  /** Holds if this is a `#nullable restore` directive. */
+  predicate restore() { directive_nullables(this, 2, _) }
+
+  /** Holds if this directive targets all nullable contexts. */
+  predicate targetsAll() { directive_nullables(this, _, 0) }
+
+  /** Holds if this directive targets nullable annotation context. */
+  predicate targetsAnnotations() { directive_nullables(this, _, 1) }
+
+  /** Holds if this directive targets nullable warning context. */
+  predicate targetsWarnings() { directive_nullables(this, _, 2) }
+
+  /** Gets the succeeding `#nullable` directive in the file, if any. */
+  NullableDirective getSuccNullableDirective() {
+    result =
+      rank[1](NullableDirective next |
+        next.getFile() = this.getFile() and
+        next.getLocation().getStartLine() > this.getLocation().getStartLine()
+      |
+        next order by next.getLocation().getStartLine()
+      )
+  }
+
+  /** Holds if there is a succeeding `#nullable` directive in the file. */
+  predicate hasSuccNullableDirective() {
+    exists(NullableDirective other |
+      other.getFile() = this.getFile() and
+      other.getLocation().getStartLine() > this.getLocation().getStartLine()
+    )
+  }
+
+  override string toString() { result = "#nullable ..." }
+
+  override string getAPrimaryQlClass() { result = "NullableDirective" }
+}
