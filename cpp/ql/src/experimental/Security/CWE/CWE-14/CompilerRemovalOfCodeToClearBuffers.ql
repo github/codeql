@@ -12,6 +12,7 @@
 
 import cpp
 import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.dataflow.StackAddress
 
 /**
  * A call to `memset` of the form `memset(ptr, value, num)`, for some local variable `ptr`.
@@ -34,6 +35,8 @@ class CompilerRemovaMemset extends FunctionCall {
       this.getArgument(0) = v.getAnAccess() and
       alloc.getASuccessor+() = this
     )
+    or
+    not stackPointerFlowsToUse(this.getArgument(0), _, _, _)
   }
 
   predicate isExistsFreeForThisVariable() {
