@@ -78,10 +78,7 @@ private DataFlow::Node getAValueExportedByPackage() {
 private DataFlow::Node getAnExportFromModule(Module mod) {
   result.analyze().getAValue() = mod.(NodeModule).getAModuleExportsValue()
   or
-  exists(Variable var | var = mod.(Closure::ClosureModule).getExportsVariable() |
-    result.asExpr() = var.getAReference() or
-    result.asExpr() = var.getAnAssignedExpr()
-  )
+  result = mod.(Closure::ClosureModule).getExportsVariable().getAnAssignedExpr().flow()
   or
   result.analyze().getAValue() = mod.(AmdModule).getDefine().getAModuleExportsValue()
   or

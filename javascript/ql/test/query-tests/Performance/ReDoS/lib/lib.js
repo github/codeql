@@ -11,3 +11,5 @@ function bar(reg, name) {
 if (typeof define !== 'undefined' && define.amd) { // AMD
     define([], function () {return bar});
 }
+
+module.exports.closure = require("./closure")
