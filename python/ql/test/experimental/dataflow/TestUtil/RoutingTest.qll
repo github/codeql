@@ -28,8 +28,19 @@ abstract class RoutingTest extends InlineExpectationsTest {
         value = "\"" + prettyNode(fromNode).replaceAll("\"", "'") + "\""
         or
         tag = "func" and
-        value = toNode.getEnclosingCallable().getCallableValue().getScope().getQualifiedName() // TODO: More robust pretty printing?
+        not fromFunc(fromNode) = toFunc(toNode) and
+        value = toFunc(toNode)
       )
     )
+  }
+
+  pragma[inline]
+  private string fromFunc(DataFlow::ArgumentNode fromNode) {
+    result = fromNode.getCall().getNode().(CallNode).getFunction().getNode().(Name).getId()
+  }
+
+  pragma[inline]
+  private string toFunc(DataFlow::Node toNode) {
+    result = toNode.getEnclosingCallable().getCallableValue().getScope().getQualifiedName() // TODO: More robust pretty printing?
   }
 }

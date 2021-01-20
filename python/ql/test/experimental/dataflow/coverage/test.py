@@ -590,4 +590,4 @@ def return_from_inner_scope(x):
         return SOURCE
 
 def test_return_from_inner_scope():
-    SINK(return_from_inner_scope([]))
+    SINK(return_from_inner_scope([]))  #$ flow="SOURCE, l:-3 -> return_from_inner_scope(..)"

@@ -91,7 +91,7 @@ def test_argument_passing1():
 
 @expects(7)
 def test_argument_passing2():
-    argument_passing(arg1, arg2, arg3, f=arg6)  #$ arg1="arg1" arg2="arg2" arg3="arg3" func=argument_passing
+    argument_passing(arg1, arg2, arg3, f=arg6)  #$ arg1="arg1" arg2="arg2" arg3="arg3"
 
 
 def with_pos_only(a, /, b):
@@ -101,9 +101,9 @@ def with_pos_only(a, /, b):
 
 @expects(6)
 def test_pos_only():
-    with_pos_only(arg1, arg2)  #$ arg1="arg1" arg2="arg2" func=with_pos_only
-    with_pos_only(arg1, b=arg2)  #$ arg1="arg1" arg2="arg2" func=with_pos_only
-    with_pos_only(arg1, *(arg2,))  #$ arg1="arg1" func=with_pos_only MISSING: arg2="arg2"
+    with_pos_only(arg1, arg2)  #$ arg1="arg1" arg2="arg2"
+    with_pos_only(arg1, b=arg2)  #$ arg1="arg1" arg2="arg2"
+    with_pos_only(arg1, *(arg2,))  #$ arg1="arg1" MISSING: arg2="arg2"
 
 
 def with_multiple_kw_args(a, b, c):
@@ -114,8 +114,8 @@ def with_multiple_kw_args(a, b, c):
 
 @expects(12)
 def test_multiple_kw_args():
-    with_multiple_kw_args(b=arg2, c=arg3, a=arg1)  #$ arg1="arg1" arg2="arg2" arg3="arg3" func=with_multiple_kw_args
-    with_multiple_kw_args(arg1, *(arg2,), arg3)  #$ arg1="arg1" func=with_multiple_kw_args MISSING: arg2="arg2" arg3="arg3"
+    with_multiple_kw_args(b=arg2, c=arg3, a=arg1)  #$ arg1="arg1" arg2="arg2" arg3="arg3"
+    with_multiple_kw_args(arg1, *(arg2,), arg3)  #$ arg1="arg1" MISSING: arg2="arg2" arg3="arg3"
     with_multiple_kw_args(arg1, **{"c": arg3}, b=arg2)  #$ arg1="arg1" arg3="arg3" func=with_multiple_kw_args MISSING: arg2="arg2"
     with_multiple_kw_args(**{"b": arg2}, **{"c": arg3}, **{"a": arg1})  #$ arg1="arg1" arg2="arg2" arg3="arg3" func=with_multiple_kw_args
 
@@ -129,8 +129,8 @@ def with_default_arguments(a=arg1, b=arg2, c=arg3):  # Need a mechanism to test 
 @expects(12)
 def test_default_arguments():
     with_default_arguments()
-    with_default_arguments(arg1)  #$ arg1="arg1" func=with_default_arguments
-    with_default_arguments(b=arg2)  #$ arg2="arg2" func=with_default_arguments
+    with_default_arguments(arg1)  #$ arg1="arg1"
+    with_default_arguments(b=arg2)  #$ arg2="arg2"
     with_default_arguments(**{"c": arg3})  #$ arg3="arg3" func=with_default_arguments
 
 
@@ -157,7 +157,7 @@ def grab_baz(baz):
 
 @expects(4)
 def test_grab():
-    grab_foo_bar_baz(baz=arg3, bar=arg2, foo=arg1)  #$ arg1="arg1" arg2="arg2" arg3="arg3" func=grab_foo_bar_baz func=grab_bar_baz func=grab_baz
+    grab_foo_bar_baz(baz=arg3, bar=arg2, foo=arg1)  #$ arg1="arg1" arg2="arg2" arg3="arg3" func=grab_bar_baz func=grab_baz
 
 
 # All combinations
