@@ -630,5 +630,15 @@ namespace Semmle.Extraction.CSharp
         {
             trapFile.WriteTuple("directive_undefines", directive, name);
         }
+
+        internal static void directive_warnings(this TextWriter trapFile, WarningDirective directive, string message)
+        {
+            trapFile.WriteTuple("directive_warnings", directive, message);
+        }
+
+        internal static void directive_errors(this TextWriter trapFile, ErrorDirective directive, string message)
+        {
+            trapFile.WriteTuple("directive_errors", directive, message);
+        }
     }
 }

@@ -331,7 +331,16 @@ using_directive_location(
   unique int id: @using_directive ref,
   int loc: @location ref);
 
-@preprocessor_directive = @pragma_warning | @pragma_checksum | @directive_define | @directive_undefine;
+@preprocessor_directive = @pragma_warning | @pragma_checksum | @directive_define | @directive_undefine | @directive_warning
+  | @directive_error;
+
+directive_warnings(
+  unique int id: @directive_warning,
+  string message: string ref);
+
+directive_errors(
+  unique int id: @directive_error,
+  string message: string ref);
 
 directive_undefines(
   unique int id: @directive_undefine,

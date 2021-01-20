@@ -70,3 +70,27 @@ class UndefineDirective extends PreprocessorDirective, @directive_undefine {
 
   override string getAPrimaryQlClass() { result = "UndefineDirective" }
 }
+
+/**
+ * A `#warning` directive.
+ */
+class WarningDirective extends PreprocessorDirective, @directive_warning {
+  /** Gets the text of the warning. */
+  string getMessage() { directive_warnings(this, result) }
+
+  override string toString() { result = "#warning ..." }
+
+  override string getAPrimaryQlClass() { result = "WarningDirective" }
+}
+
+/**
+ * An `#error` directive.
+ */
+class ErrorDirective extends PreprocessorDirective, @directive_error {
+  /** Gets the text of the error. */
+  string getMessage() { directive_errors(this, result) }
+
+  override string toString() { result = "#error ..." }
+
+  override string getAPrimaryQlClass() { result = "ErrorDirective" }
+}
