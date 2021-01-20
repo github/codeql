@@ -32,5 +32,15 @@ namespace Semmle.Extraction.CSharp.Populators
         {
             new Entities.UndefineDirective(cx, node);
         }
+
+        public override void VisitWarningDirectiveTrivia(WarningDirectiveTriviaSyntax node)
+        {
+            new Entities.WarningDirective(cx, node);
+        }
+
+        public override void VisitErrorDirectiveTrivia(ErrorDirectiveTriviaSyntax node)
+        {
+            new Entities.ErrorDirective(cx, node);
+        }
     }
 }
