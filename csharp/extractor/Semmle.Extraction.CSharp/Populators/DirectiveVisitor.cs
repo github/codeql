@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -51,6 +53,27 @@ namespace Semmle.Extraction.CSharp.Populators
         public override void VisitLineDirectiveTrivia(LineDirectiveTriviaSyntax node)
         {
             new Entities.LineDirective(cx, node);
+        }
+
+        private readonly Stack<Entities.RegionDirective> regionStarts = new Stack<Entities.RegionDirective>();
+
+        public override void VisitRegionDirectiveTrivia(RegionDirectiveTriviaSyntax node)
+        {
+            var region = new Entities.RegionDirective(cx, node);
+            regionStarts.Push(region);
+        }
+
+        public override void VisitEndRegionDirectiveTrivia(EndRegionDirectiveTriviaSyntax node)
+        {
+            var endregion = new Entities.EndRegionDirective(cx, node);
+            if (regionStarts.Count == 0)
+            {
+                cx.ExtractionError("Couldn't find start region", null,
+                    Extraction.Entities.Location.Create(cx, node.GetLocation()), null, Util.Logging.Severity.Warning);
+                return;
+            }
+            var start = regionStarts.Pop();
+            Entities.EndRegionDirective.WriteRegionBlock(cx, start, endregion);
         }
     }
 }

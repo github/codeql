@@ -209,3 +209,30 @@ class NumericLineDirective extends LineDirective {
 
   override string getAPrimaryQlClass() { result = "NumericLineDirective" }
 }
+
+/**
+ * A `#region` directive.
+ */
+class RegionDirective extends PreprocessorDirective, @directive_region {
+  /** Gets the name of this region. */
+  string getName() { directive_regions(this, result) }
+
+  /** Gets the closing `#endregion` directive. */
+  EndRegionDirective getEnd() { regions(this, result) }
+
+  override string toString() { result = "#region ..." }
+
+  override string getAPrimaryQlClass() { result = "RegionDirective" }
+}
+
+/**
+ * A `#endregion` directive.
+ */
+class EndRegionDirective extends PreprocessorDirective, @directive_endregion {
+  /** Gets the opening `#region` directive. */
+  RegionDirective getStart() { regions(result, this) }
+
+  override string toString() { result = "#endregion" }
+
+  override string getAPrimaryQlClass() { result = "EndRegionDirective" }
+}
