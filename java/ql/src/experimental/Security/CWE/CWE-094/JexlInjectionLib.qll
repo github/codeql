@@ -20,11 +20,11 @@ class JexlInjectionConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof JexlEvaluationSink }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    creatingTaintedJexlExpression(node1, node2) or
-    creatingTaintedJexlTemplate(node1, node2) or
-    creatingTaintedJexlScript(node1, node2) or
-    creatingTaintedJexlCallable(node1, node2) or
-    returningTaintedDataFromBean(node1, node2)
+    createsJexlExpression(node1, node2) or
+    createsJexlTemplate(node1, node2) or
+    createsJexlScript(node1, node2) or
+    createsJexlCallable(node1, node2) or
+    returnsDataFromBean(node1, node2)
   }
 }
 
@@ -55,7 +55,7 @@ class JexlEvaluationSink extends DataFlow::ExprNode {
 /**
  * Holds if `node1` to `node2` is a dataflow step that creates a Jexl expression.
  */
-predicate creatingTaintedJexlExpression(DataFlow::Node node1, DataFlow::Node node2) {
+predicate createsJexlExpression(DataFlow::Node node1, DataFlow::Node node2) {
   exists(MethodAccess ma, Method m | ma.getMethod() = m |
     (
       m instanceof JxltEngineCreateExpressionMethod or
@@ -69,40 +69,29 @@ predicate creatingTaintedJexlExpression(DataFlow::Node node1, DataFlow::Node nod
 }
 
 /**
- * Holds if `node1` to `node2` is a dataflow step that creates a Jexl expression.
- */
-predicate creatingTaintedJxltEngineExpression(DataFlow::Node node1, DataFlow::Node node2) {
-  exists(MethodAccess ma, Method m | ma.getMethod() = m |
-    (m instanceof JxltEngineCreateExpressionMethod or m instanceof UnifiedJexlParseMethod) and
-    ma.getAnArgument().getType() instanceof TypeString and
-    ma.getAnArgument() = node1.asExpr() and
-    node2.asExpr() = ma
-  )
-}
-
-/**
  * Holds if `node1` to `node2` is a dataflow step that creates a Jexl template.
  */
-predicate creatingTaintedJexlTemplate(DataFlow::Node node1, DataFlow::Node node2) {
+predicate createsJexlTemplate(DataFlow::Node node1, DataFlow::Node node2) {
   exists(MethodAccess ma, Method m | ma.getMethod() = m |
     (m instanceof JxltEngineCreateTemplateMethod or m instanceof UnifiedJexlCreateTemplateMethod) and
     (
-      isCreateTemplateSourceArg(ma, 0, node1.asExpr()) or
-      isCreateTemplateSourceArg(ma, 1, node1.asExpr())
+      node1.asExpr().getType() instanceof TypeString or
+      node1.asExpr().getType() instanceof Reader
     ) and
+    ma.getArgument([0, 1]) = node1.asExpr() and
     node2.asExpr() = ma
   )
 }
 
 /**
  * Holds if:
- * - `expr` is an argument with the `index`
+ * - `expr` is the `index`th argument to `ma`
  * - `expr` is a string or an instance of `Reader`
  */
-predicate isCreateTemplateSourceArg(MethodAccess ma, int index, Expr expr) {
+predicate toberemoved(MethodAccess ma, int index, Expr expr) {
   (
-    ma.getArgument(index).getType() instanceof TypeString or
-    ma.getArgument(index).getType() instanceof Reader
+    expr.getType() instanceof TypeString or
+    expr.getType() instanceof Reader
   ) and
   ma.getArgument(index) = expr
 }
@@ -110,7 +99,7 @@ predicate isCreateTemplateSourceArg(MethodAccess ma, int index, Expr expr) {
 /**
  * Holds if `node1` to `node2` is a dataflow step that creates a Jexl script.
  */
-predicate creatingTaintedJexlScript(DataFlow::Node node1, DataFlow::Node node2) {
+predicate createsJexlScript(DataFlow::Node node1, DataFlow::Node node2) {
   exists(MethodAccess ma, Method m | ma.getMethod() = m |
     m instanceof JexlEngineCreateScriptMethod and
     ma.getArgument(0).getType() instanceof TypeString and
@@ -123,7 +112,7 @@ predicate creatingTaintedJexlScript(DataFlow::Node node1, DataFlow::Node node2) 
  * Holds if `node1` to `node2` is a dataflow step
  * that creates a callable from a Jexl expression or script.
  */
-predicate creatingTaintedJexlCallable(DataFlow::Node node1, DataFlow::Node node2) {
+predicate createsJexlCallable(DataFlow::Node node1, DataFlow::Node node2) {
   exists(MethodAccess ma, Method m | ma.getMethod() = m |
     (m instanceof JexlExpressionCallableMethod or m instanceof JexlScriptCallableMethod) and
     ma.getQualifier() = node1.asExpr() and
@@ -135,7 +124,7 @@ predicate creatingTaintedJexlCallable(DataFlow::Node node1, DataFlow::Node node2
  * Holds if `node1` to `node2` is a dataflow step that returns data from
  * a tainted bean by calling one of its getters.
  */
-predicate returningTaintedDataFromBean(DataFlow::Node node1, DataFlow::Node node2) {
+predicate returnsDataFromBean(DataFlow::Node node1, DataFlow::Node node2) {
   exists(MethodAccess ma, Method m | ma.getMethod() = m |
     m instanceof GetterMethod and
     ma.getQualifier() = node1.asExpr() and
@@ -144,7 +133,7 @@ predicate returningTaintedDataFromBean(DataFlow::Node node1, DataFlow::Node node
 }
 
 /**
- * Holds if `expr` is a call to one of the methods that execute a Jexl script.
+ * Holds if `expr` calls one of the methods that execute a Jexl script against qualifier `expr`.
  */
 predicate isJexlScriptExecuteCall(Expr expr) {
   exists(MethodAccess ma, Method m | m = ma.getMethod() |
@@ -154,7 +143,8 @@ predicate isJexlScriptExecuteCall(Expr expr) {
 }
 
 /**
- * Holds if `expr` is a call of the `Callable.call()` method.
+ * Holds if `expr` is the qualifier when calling the `Callable.call()` method
+ * such as `expr.call()`.
  */
 predicate isCallableCall(Expr expr) {
   exists(MethodAccess ma, Method m | m = ma.getMethod() |
