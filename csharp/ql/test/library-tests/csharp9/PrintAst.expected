@@ -103,6 +103,126 @@ Discard.cs:
 #   10|             4: [BlockStmt] {...}
 #   10|               0: [ReturnStmt] return ...;
 #   10|                 0: [IntLiteral] 0
+FunctionPointer.cs:
+#    5| [Class] FnPointer
+#    7|   5: [Class] Program
+#    9|     5: [Field] pointer
+#    9|       -1: [TypeMention] delegate* default<Int32>
+#    9|       1: [AssignExpr] ... = ...
+#    9|         0: [FieldAccess] access to field pointer
+#    9|         1: [AddressOfExpr] &...
+#    9|           0: [MethodAccess] access to method M0
+#   11|     6: [Method] M0
+#   11|       -1: [TypeMention] int
+#   12|       4: [BlockStmt] {...}
+#   13|         0: [ReturnStmt] return ...;
+#   13|           0: [IntLiteral] 0
+#   16|     7: [Method] M1
+#   16|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   16|         0: [Parameter] f
+#   16|           -1: [TypeMention] delegate* default<Int32 ref,Object out,Int32 ref readonly>
+#   17|       4: [BlockStmt] {...}
+#   18|         0: [LocalVariableDeclStmt] ... ...;
+#   18|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#   18|             -1: [TypeMention] int
+#   18|             0: [LocalVariableAccess] access to local variable i
+#   18|             1: [IntLiteral] 42
+#   19|         1: [LocalVariableDeclStmt] ... ...;
+#   19|           0: [LocalVariableDeclAndInitExpr] Int32 j = ...
+#   19|             -1: [TypeMention] int
+#   19|             0: [LocalVariableAccess] access to local variable j
+#   19|             1: [FunctionPointerCall] function pointer call
+#   19|               -1: [ParameterAccess] access to parameter f
+#   19|               0: [LocalVariableAccess] access to local variable i
+#   19|               1: [LocalVariableAccess,LocalVariableDeclExpr] Object o
+#   22|     8: [Method] M2
+#   22|       -1: [TypeMention] Void
+#-----|       1: (Type parameters)
+#   22|         0: [TypeParameter] T
+#-----|       2: (Parameters)
+#   22|         0: [Parameter] f
+#   22|           -1: [TypeMention] delegate* stdcall<Int32 ref,Object out,T,Void>
+#   23|       4: [BlockStmt] {...}
+#   24|         0: [LocalVariableDeclStmt] ... ...;
+#   24|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#   24|             -1: [TypeMention] int
+#   24|             0: [LocalVariableAccess] access to local variable i
+#   24|             1: [IntLiteral] 42
+#   25|         1: [ExprStmt] ...;
+#   25|           0: [FunctionPointerCall] function pointer call
+#   25|             -1: [ParameterAccess] access to parameter f
+#   25|             0: [LocalVariableAccess] access to local variable i
+#   25|             1: [LocalVariableAccess,LocalVariableDeclExpr] Object o
+#   25|             2: [ObjectCreation] object creation of type T
+#   25|               0: [TypeMention] T
+#   28|     9: [Method] M3
+#   28|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   28|         0: [Parameter] f
+#   28|           -1: [TypeMention] delegate* default<Int32 ref,Object out,Int32 in,Int32 ref>
+#   29|       4: [BlockStmt] {...}
+#   30|         0: [LocalVariableDeclStmt] ... ...;
+#   30|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#   30|             -1: [TypeMention] int
+#   30|             0: [LocalVariableAccess] access to local variable i
+#   30|             1: [IntLiteral] 42
+#   31|         1: [LocalVariableDeclStmt] ... ...;
+#   31|           0: [LocalVariableDeclAndInitExpr] Int32 j = ...
+#   31|             -1: [TypeMention] null
+#   31|             0: [LocalVariableAccess] access to local variable j
+#   31|             1: [RefExpr] ref ...
+#   31|               0: [FunctionPointerCall] function pointer call
+#   31|                 -1: [ParameterAccess] access to parameter f
+#   31|                 0: [LocalVariableAccess] access to local variable i
+#   31|                 1: [LocalVariableAccess,LocalVariableDeclExpr] Object o
+#   31|                 2: [LocalVariableAccess] access to local variable i
+#   34|     10: [Method] M4
+#   34|       -1: [TypeMention] Void
+#-----|       1: (Type parameters)
+#   34|         0: [TypeParameter] T
+#-----|       2: (Parameters)
+#   34|         0: [Parameter] f
+#   34|           -1: [TypeMention] delegate* default<T,Int32>
+#   35|       4: [BlockStmt] {...}
+#   36|         0: [LocalVariableDeclStmt] ... ...;
+#   36|           0: [LocalVariableDeclAndInitExpr] Int32 j = ...
+#   36|             -1: [TypeMention] int
+#   36|             0: [LocalVariableAccess] access to local variable j
+#   36|             1: [FunctionPointerCall] function pointer call
+#   36|               -1: [ParameterAccess] access to parameter f
+#   36|               0: [ObjectCreation] object creation of type T
+#   36|                 0: [TypeMention] T
+#   39|     11: [Method] M5
+#   39|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   39|         0: [Parameter] f
+#   39|           -1: [TypeMention] delegate* default<B,A>
+#   39|         1: [Parameter] ff
+#   39|           -1: [TypeMention] delegate* default<A,B>
+#   40|       4: [BlockStmt] {...}
+#   41|         0: [ExprStmt] ...;
+#   41|           0: [MethodCall] call to method M5
+#   41|             0: [CastExpr] (...) ...
+#   41|               1: [ParameterAccess] access to parameter ff
+#   41|             1: [ParameterAccess] access to parameter ff
+#   44|     12: [Method] M6
+#   44|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   44|         0: [Parameter] f
+#   44|           -1: [TypeMention] delegate* default<Int32*,Void*>
+#   44|         1: [Parameter] ff
+#   44|           -1: [TypeMention] delegate* default<Void*,Int32*>
+#   45|       4: [BlockStmt] {...}
+#   46|         0: [ExprStmt] ...;
+#   46|           0: [MethodCall] call to method M6
+#   46|             0: [CastExpr] (...) ...
+#   46|               1: [ParameterAccess] access to parameter ff
+#   46|             1: [ParameterAccess] access to parameter ff
+#   49|     13: [Class] A
+#   50|     14: [Class] B
+#-----|       3: (Base types)
+#   50|         0: [TypeMention] A
 InitOnlyProperty.cs:
 #    3| [NamespaceDeclaration] namespace ... { ... }
 #    5|   1: [Class] IsExternalInit

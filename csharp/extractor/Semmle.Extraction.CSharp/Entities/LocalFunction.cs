@@ -39,7 +39,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var originalDefinition = IsSourceDeclaration ? this : Create(Context, symbol.OriginalDefinition);
             var returnType = Type.Create(Context, symbol.ReturnType);
             trapFile.local_functions(this, symbol.Name, returnType, originalDefinition);
-            ExtractRefReturn(trapFile);
+            ExtractRefReturn(trapFile, symbol, this);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NeedsLabel;

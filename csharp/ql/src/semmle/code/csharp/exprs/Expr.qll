@@ -617,7 +617,7 @@ class Cast extends Expr {
   TypeAccess getTypeAccess() { result = this.getChild(1) }
 
   /** Gets the type that the underlying expression is being cast to. */
-  Type getTargetType() { result = this.getTypeAccess().getTarget() }
+  Type getTargetType() { result = this.getType() }
 
   /** Gets the type of the underlying expression. */
   Type getSourceType() { result = this.getExpr().getType() }

@@ -120,6 +120,7 @@ namespace Semmle.Extraction.Kinds
         GT_PATTERN = 123,
         LE_PATTERN = 124,
         GE_PATTERN = 125,
-        NOT_PATTERN = 126
+        NOT_PATTERN = 126,
+        FUNCTION_POINTER_INVOCATION = 129,
     }
 }
