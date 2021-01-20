@@ -185,54 +185,66 @@ class OperandNode extends Node, TOperandNode {
   override string toString() { result = this.getOperand().toString() }
 }
 
-/** An abstract class that defines conversion-like instructions. */
-abstract private class SkippableInstruction extends Instruction {
-  abstract Instruction getSourceInstruction();
-}
-
 /**
- * Gets the instruction that is propaged through a non-empty sequence of conversion-like instructions.
+ * INTERNAL: do not use. Encapsulates the details of getting a `FieldNode` from
+ * an `Instruction` or an `Operand`.
  */
-private Instruction skipSkippableInstructionsRec(SkippableInstruction skip) {
-  result = skip.getSourceInstruction() and not result instanceof SkippableInstruction
-  or
-  result = skipSkippableInstructionsRec(skip.getSourceInstruction())
-}
+module GetFieldNode {
+  /** An abstract class that defines conversion-like instructions. */
+  abstract private class SkippableInstruction extends Instruction {
+    abstract Instruction getSourceInstruction();
+  }
 
-/**
- * Gets the instruction that is propagated through a (possibly empty) sequence of conversion-like
- * instructions.
- */
-private Instruction skipSkippableInstructions(Instruction instr) {
-  result = instr and not result instanceof SkippableInstruction
-  or
-  result = skipSkippableInstructionsRec(instr)
-}
+  /**
+   * Gets the instruction that is propaged through a non-empty sequence of conversion-like instructions.
+   */
+  private Instruction skipSkippableInstructionsRec(SkippableInstruction skip) {
+    result = skip.getSourceInstruction() and not result instanceof SkippableInstruction
+    or
+    result = skipSkippableInstructionsRec(skip.getSourceInstruction())
+  }
 
-private class SkippableCopyValueInstruction extends SkippableInstruction, CopyValueInstruction {
-  override Instruction getSourceInstruction() { result = this.getSourceValue() }
-}
+  /**
+   * Gets the instruction that is propagated through a (possibly empty) sequence of conversion-like
+   * instructions.
+   */
+  private Instruction skipSkippableInstructions(Instruction instr) {
+    result = instr and not result instanceof SkippableInstruction
+    or
+    result = skipSkippableInstructionsRec(instr)
+  }
 
-private class SkippableConvertInstruction extends SkippableInstruction, ConvertInstruction {
-  override Instruction getSourceInstruction() { result = this.getUnary() }
-}
+  private class SkippableCopyValueInstruction extends SkippableInstruction, CopyValueInstruction {
+    override Instruction getSourceInstruction() { result = this.getSourceValue() }
+  }
 
-private class SkippableCheckedConvertInstruction extends SkippableInstruction,
-  CheckedConvertOrNullInstruction {
-  override Instruction getSourceInstruction() { result = this.getUnary() }
-}
+  private class SkippableConvertInstruction extends SkippableInstruction, ConvertInstruction {
+    override Instruction getSourceInstruction() { result = this.getUnary() }
+  }
 
-private class SkippableInheritanceConversionInstruction extends SkippableInstruction,
-  InheritanceConversionInstruction {
-  override Instruction getSourceInstruction() { result = this.getUnary() }
-}
+  private class SkippableCheckedConvertInstruction extends SkippableInstruction,
+    CheckedConvertOrNullInstruction {
+    override Instruction getSourceInstruction() { result = this.getUnary() }
+  }
 
-/**
- * INTERNAL: do not use. Gets the `FieldNode` corresponding to `instr`, if
- * `instr` is an instruction that propagates an address of a `FieldAddressInstruction`.
- */
-FieldNode getFieldNodeForFieldInstruction(Instruction instr) {
-  result.getFieldInstruction() = skipSkippableInstructions(instr)
+  private class SkippableInheritanceConversionInstruction extends SkippableInstruction,
+    InheritanceConversionInstruction {
+    override Instruction getSourceInstruction() { result = this.getUnary() }
+  }
+
+  /**
+   * INTERNAL: do not use. Gets the `FieldNode` corresponding to `instr`, if
+   * `instr` is an instruction that propagates an address of a `FieldAddressInstruction`.
+   */
+  FieldNode fromInstruction(Instruction instr) {
+    result.getFieldInstruction() = skipSkippableInstructions(instr)
+  }
+
+  /**
+   * INTERNAL: do not use. Gets the `FieldNode` corresponding to `op`, if the definition
+   * of `op` is an instruction that propagates an address of a `FieldAddressInstruction`.
+   */
+  FieldNode fromOperand(Operand op) { result = fromInstruction(op.getDef()) }
 }
 
 /**
@@ -265,7 +277,7 @@ class FieldNode extends Node, TFieldNode {
    * gives the `FieldNode` of `b`, and `f.getObjectNode().getObjectNode()` has no result as `a` is
    * not a field.
    */
-  FieldNode getObjectNode() { result = getFieldNodeForFieldInstruction(field.getObjectAddress()) }
+  FieldNode getObjectNode() { result = GetFieldNode::fromInstruction(field.getObjectAddress()) }
 
   /**
    * Gets the `FieldNode` that has this `FieldNode` as parent, if any.
@@ -683,7 +695,7 @@ private predicate flowOutOfPostUpdate(PartialDefinitionNode nodeFrom, Node nodeT
   exists(AddressOperand addressOperand, PartialFieldDefinition pd |
     pd = nodeFrom.getPartialDefinition() and
     not exists(pd.getPreUpdateNode().getObjectNode()) and
-    pd.getPreUpdateNode().getNextNode*() = getFieldNodeForFieldInstruction(addressOperand.getDef()) and
+    pd.getPreUpdateNode().getNextNode*() = GetFieldNode::fromOperand(addressOperand) and
     (
       exists(ChiInstruction chi |
         nodeTo.asInstruction() = chi and
@@ -711,7 +723,7 @@ private predicate flowOutOfPostUpdate(PartialDefinitionNode nodeFrom, Node nodeT
  */
 private FieldNode getOutermostFieldNode(Instruction address) {
   not exists(result.getObjectNode()) and
-  result.getNextNode*() = getFieldNodeForFieldInstruction(address)
+  result.getNextNode*() = GetFieldNode::fromInstruction(address)
 }
 
 private predicate flowIntoReadNode(Node nodeFrom, FieldNode nodeTo) {

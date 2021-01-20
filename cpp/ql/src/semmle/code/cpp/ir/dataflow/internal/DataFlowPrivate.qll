@@ -240,7 +240,7 @@ private predicate instrToFieldNodeStoreStepNoChi(
   exists(StoreInstruction store, PartialFieldDefinition pd |
     pd = node2.getPartialDefinition() and
     not exists(ChiInstruction chi | chi.getPartial() = store) and
-    pd.getPreUpdateNode() = getFieldNodeForFieldInstruction(store.getDestinationAddress()) and
+    pd.getPreUpdateNode() = GetFieldNode::fromInstruction(store.getDestinationAddress()) and
     store.getSourceValueOperand() = node1.asOperand() and
     f.getADirectField() = pd.getPreUpdateNode().getField()
   )
@@ -262,7 +262,7 @@ private predicate instrToFieldNodeStoreStepChi(
     node1.asOperand() = operand and
     chi.getPartialOperand() = operand and
     store = operand.getDef() and
-    pd.getPreUpdateNode() = getFieldNodeForFieldInstruction(store.getDestinationAddress()) and
+    pd.getPreUpdateNode() = GetFieldNode::fromInstruction(store.getDestinationAddress()) and
     f.getADirectField() = pd.getPreUpdateNode().getField()
   )
 }
@@ -277,7 +277,7 @@ private predicate callableWithoutDefinitionStoreStep(
     chi.getPartial() = write and
     not chi.isResultConflated() and
     pd = node2.getPartialDefinition() and
-    pd.getPreUpdateNode() = getFieldNodeForFieldInstruction(write.getDestinationAddress()) and
+    pd.getPreUpdateNode() = GetFieldNode::fromInstruction(write.getDestinationAddress()) and
     f.getADirectField() = pd.getPreUpdateNode().getField() and
     call = write.getPrimaryInstruction() and
     callable = call.getStaticCallTarget() and
@@ -346,24 +346,6 @@ private class ArrayToPointerConvertInstruction extends ConvertInstruction {
   }
 }
 
-/**
- * These two predicates look like copy-paste from the two predicates with the same name in DataFlowUtil,
- * but crucially they only skip past `CopyValueInstruction`s. This is because we use a special case of
- * a `ConvertInstruction` to detect some read steps from arrays that undergoes array-to-pointer
- * conversion.
- */
-private Instruction skipOneCopyValueInstructionRec(CopyValueInstruction copy) {
-  copy.getUnary() = result and not result instanceof CopyValueInstruction
-  or
-  result = skipOneCopyValueInstructionRec(copy.getUnary())
-}
-
-private Instruction skipCopyValueInstructions(Operand op) {
-  not result instanceof CopyValueInstruction and result = op.getDef()
-  or
-  result = skipOneCopyValueInstructionRec(op.getDef())
-}
-
 private class InexactLoadOperand extends LoadOperand {
   InexactLoadOperand() { this.isDefinitionInexact() }
 }
@@ -407,12 +389,12 @@ private predicate instrToFieldNodeReadStep(FieldNode node1, FieldContent f, Node
     (
       exists(LoadInstruction load |
         node2.asInstruction() = load and
-        node1 = getFieldNodeForFieldInstruction(load.getSourceAddress())
+        node1 = GetFieldNode::fromInstruction(load.getSourceAddress())
       )
       or
       exists(ReadSideEffectInstruction read |
         node2.asOperand() = read.getSideEffectOperand() and
-        node1 = getFieldNodeForFieldInstruction(read.getArgumentDef())
+        node1 = GetFieldNode::fromInstruction(read.getArgumentDef())
       )
     )
   ) and
@@ -424,7 +406,7 @@ private int unbindInt(int i) { i <= result and i >= result }
 
 pragma[noinline]
 private FieldNode getFieldNodeFromLoadOperand(LoadOperand loadOperand) {
-  result = getFieldNodeForFieldInstruction(loadOperand.getAddressOperand().getDef())
+  result = GetFieldNode::fromOperand(loadOperand.getAddressOperand())
 }
 
 /**
