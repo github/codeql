@@ -4,3 +4,4 @@ libraryPathDependencies:
   - codeql-ruby
   - codeql-ruby-examples
 extractor: ruby
+tests: .

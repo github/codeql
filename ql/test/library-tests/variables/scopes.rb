@@ -8,7 +8,7 @@ a = 6
 puts a
 1.times do | x |
    puts a # local variable from top-level
-   a = 3
+   a += 3
    puts a # local variable from top-level
    a, b, (c, d) = [4, 5, [6, 7]]
    puts a # local variable from top-level

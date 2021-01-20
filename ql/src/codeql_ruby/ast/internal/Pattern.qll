@@ -3,43 +3,49 @@ private import TreeSitter
 private import codeql_ruby.ast.internal.Variable
 private import codeql.Locations
 
-private predicate tuplePatternNode(Generated::AstNode n, boolean parameter) {
-  n instanceof Generated::DestructuredParameter and
-  parameter = true
-  or
-  n instanceof Generated::DestructuredLeftAssignment and
-  parameter = false
-  or
-  n instanceof Generated::LeftAssignmentList and
-  parameter = false
-  or
-  tuplePatternNode(n.getParent(), parameter)
-}
-
-private predicate patternNode(Generated::AstNode n, boolean parameter) {
-  tuplePatternNode(n, parameter)
-  or
-  parameter = true and
-  n = any(Callable c).getAParameter()
-  or
-  parameter = false and
-  n in [
-      any(Generated::Assignment assign).getLeft(),
-      any(Generated::OperatorAssignment assign).getLeft(),
-      any(Generated::ExceptionVariable exceptionVariable).getChild(),
-      any(Generated::For for).getPattern()
-    ]
-}
-
 /**
- * Holds if a variable is assigned at `i`. `parameter` indicates whether it is
- * an implicit parameter assignment.
+ * Holds if `n` is in the left-hand-side of an explicit assignment `assignment`.
  */
-predicate assignment(Generated::Identifier i, boolean parameter) { patternNode(i, parameter) }
+predicate explicitAssignmentNode(Generated::AstNode n, Generated::AstNode assignment) {
+  n = assignment.(Generated::Assignment).getLeft()
+  or
+  n = assignment.(Generated::OperatorAssignment).getLeft()
+  or
+  exists(Generated::AstNode parent |
+    parent = n.getParent() and
+    explicitAssignmentNode(parent, assignment)
+  |
+    parent instanceof Generated::DestructuredLeftAssignment
+    or
+    parent instanceof Generated::LeftAssignmentList
+  )
+}
+
+/** Holds if `n` is inside an implicit assignment. */
+predicate implicitAssignmentNode(Generated::AstNode n) {
+  n = any(Generated::ExceptionVariable ev).getChild()
+  or
+  n = any(Generated::For for).getPattern()
+  or
+  implicitAssignmentNode(n.getParent())
+}
+
+/** Holds if `n` is inside a parameter. */
+predicate implicitParameterAssignmentNode(Generated::AstNode n, Callable c) {
+  n = c.getAParameter()
+  or
+  implicitParameterAssignmentNode(n.getParent().(Generated::DestructuredParameter), c)
+}
 
 module Pattern {
   abstract class Range extends AstNode {
-    Range() { patternNode(this, _) }
+    Range() {
+      explicitAssignmentNode(this, _)
+      or
+      implicitAssignmentNode(this)
+      or
+      implicitParameterAssignmentNode(this, _)
+    }
 
     abstract Variable getAVariable();
   }

@@ -17,8 +17,7 @@ private VariableScope enclosingScope(Generated::AstNode node) {
 private predicate parameterAssignment(
   CallableScope::Range scope, string name, Generated::Identifier i
 ) {
-  assignment(i, true) and
-  scope = enclosingScope(i) and
+  implicitParameterAssignmentNode(i, scope.getScopeElement()) and
   name = i.getValue()
 }
 
@@ -50,7 +49,7 @@ private predicate scopeDefinesParameterVariable(
 
 /** Holds if `name` is assigned in `scope` at `i`. */
 private predicate scopeAssigns(VariableScope scope, string name, Generated::Identifier i) {
-  assignment(i, false) and
+  (explicitAssignmentNode(i, _) or implicitAssignmentNode(i)) and
   name = i.getValue() and
   scope = enclosingScope(i)
 }
@@ -142,6 +141,22 @@ private module Cached {
         enclosingScope(access).(CapturingScope).inherits(name, declScope)
       )
     )
+  }
+
+  private class Access extends Generated::Token {
+    Access() { access(this, _) or this instanceof Generated::GlobalVariable }
+  }
+
+  cached
+  predicate explicitWriteAccess(Access access, Generated::AstNode assignment) {
+    explicitAssignmentNode(access, assignment)
+  }
+
+  cached
+  predicate implicitWriteAccess(Access access) {
+    implicitAssignmentNode(access)
+    or
+    scopeDefinesParameterVariable(_, _, access)
   }
 }
 
