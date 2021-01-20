@@ -332,7 +332,42 @@ using_directive_location(
   int loc: @location ref);
 
 @preprocessor_directive = @pragma_warning | @pragma_checksum | @directive_define | @directive_undefine | @directive_warning
-  | @directive_error | @directive_nullable | @directive_line | @directive_region | @directive_endregion;
+  | @directive_error | @directive_nullable | @directive_line | @directive_region | @directive_endregion | @directive_if
+  | @directive_elif | @directive_else | @directive_endif;
+
+directive_ifs(
+  unique int id: @directive_if,
+  int branchTaken: int ref,     /* 0: false, 1: true */
+  int conditionValue: int ref); /* 0: false, 1: true */
+
+directive_elifs(
+  unique int id: @directive_elif,
+  int branchTaken: int ref,     /* 0: false, 1: true */
+  int conditionValue: int ref); /* 0: false, 1: true */
+
+directive_elses(
+  unique int id: @directive_else,
+  int branchTaken: int ref);  /* 0: false, 1: true */
+
+directive_endifs(
+  unique int id: @directive_endif);
+
+#keyset[start, end]
+directive_if_endif(
+  unique int start: @directive_if ref,
+  unique int end: @directive_endif ref);
+
+@directive_if_sibling = @directive_else | @directive_elif;
+
+#keyset[start, index]
+directive_if_siblings(
+  int start: @directive_if ref,
+  int sibling: @directive_if_sibling ref,
+  int index: int ref);
+
+directive_define_symbols(
+  unique int id: @define_symbol_expr ref,
+  string name: string ref);
 
 directive_regions(
   unique int id: @directive_region,
@@ -955,7 +990,7 @@ expr_parent(
   int index: int ref,
   int parent: @control_flow_element ref);
 
-@top_level_expr_parent = @attribute | @field | @property | @indexer | @parameter;
+@top_level_expr_parent = @attribute | @field | @property | @indexer | @parameter | @directive_if | @directive_elif;
 
 @top_level_exprorstmt_parent = @top_level_expr_parent | @top_level_stmt_parent;
 
@@ -1104,6 +1139,8 @@ case @expr.kind of
 | 127 = @and_pattern_expr
 | 128 = @or_pattern_expr
 | 129 = @function_pointer_invocation_expr
+/* Preprocessor */
+| 999 = @define_symbol_expr
 ;
 
 @switch = @switch_stmt | @switch_expr;

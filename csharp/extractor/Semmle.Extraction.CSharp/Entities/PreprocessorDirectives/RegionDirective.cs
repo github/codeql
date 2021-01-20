@@ -1,4 +1,5 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities

@@ -1134,3 +1134,21 @@ class SuppressNullableWarningExpr extends Expr, @suppress_nullable_warning_expr 
 
   override string getAPrimaryQlClass() { result = "SuppressNullableWarningExpr" }
 }
+
+/**
+ * A preprocessor symbol inside an expression, such as DEBUG in line 2
+ * ```csharp
+ * #define DEBUG
+ * #if (DEBUG == true)
+ *   Console.WriteLine("Debug version");
+ * #endif
+ * ```
+ */
+class DefineSymbolExpr extends Expr, @define_symbol_expr {
+  /** Gets the name of the symbol. */
+  string getName() { directive_define_symbols(this, result) }
+
+  override string toString() { result = getName() }
+
+  override string getAPrimaryQlClass() { result = "DefineSymbolExpr" }
+}

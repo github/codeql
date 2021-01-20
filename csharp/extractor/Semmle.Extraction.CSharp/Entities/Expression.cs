@@ -529,7 +529,17 @@ namespace Semmle.Extraction.CSharp.Entities
             get
             {
                 var c = Model.GetConstantValue(Node);
-                return c.HasValue ? Expression.ValueAsString(c.Value) : null;
+                if (c.HasValue)
+                {
+                    return Expression.ValueAsString(c.Value);
+                }
+
+                if (TryGetBoolValueInsideIfDirective(out var val))
+                {
+                    return Expression.ValueAsString(val);
+                }
+
+                return null;
             }
         }
 
@@ -593,5 +603,31 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         public NullableFlowState FlowState => TypeInfo.Nullability.FlowState;
+
+        public bool IsInsideIfDirective()
+        {
+            return Node.Ancestors().Any(a => a is ElifDirectiveTriviaSyntax || a is IfDirectiveTriviaSyntax);
+        }
+
+        public bool TryGetBoolValueInsideIfDirective(out bool val)
+        {
+            var isTrue = Node.IsKind(SyntaxKind.TrueLiteralExpression);
+            var isFalse = Node.IsKind(SyntaxKind.FalseLiteralExpression);
+
+            if (!isTrue && !isFalse)
+            {
+                val = false;
+                return false;
+            }
+
+            if (!IsInsideIfDirective())
+            {
+                val = false;
+                return false;
+            }
+
+            val = isTrue;
+            return true;
+        }
     }
 }
