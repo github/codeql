@@ -148,7 +148,7 @@ module EssaFlow {
       contextManager.strictlyDominates(var)
     )
     or
-    // Paramter definition
+    // Parameter definition
     //   `def foo(x):`
     //   nodeFrom is `x`, cfgNode
     //   nodeTo is `x`, essa var

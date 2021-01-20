@@ -64,7 +64,7 @@ newtype TNode =
   /**
    * A synthetic node representing that an iterable sequence flows to consumer.
    */
-  TIterableSequence(UnpackingAssignmentTarget consumer) { consumer instanceof SequenceNode } or
+  TIterableSequence(UnpackingAssignmentSequenceTarget consumer) or
   /**
    * A synthetic node representing that there may be an iterable element
    * for `consumer` to consume.
