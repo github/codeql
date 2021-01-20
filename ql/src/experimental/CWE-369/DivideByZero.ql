@@ -22,8 +22,7 @@ class DivideByZeroSanitizeGuard extends DataFlow::BarrierGuard {
     |
       zero.getNumericValue() = 0 and
       (
-        sink.getType().getUnderlyingType() instanceof SignedIntegerType or
-        sink.getType().getUnderlyingType() instanceof UnsignedIntegerType
+        sink.getType().getUnderlyingType() instanceof IntegerType
       ) and
       (
         eqNode.eq(branch.booleanNot(), sink, zero) or
