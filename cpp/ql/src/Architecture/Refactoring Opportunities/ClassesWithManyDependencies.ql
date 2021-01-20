@@ -4,9 +4,6 @@
  * @kind problem
  * @id cpp/architecture/classes-with-many-dependencies
  * @problem.severity recommendation
- * @workingset jhotdraw
- * @result succeed 20
- * @result_ondemand succeed 20
  * @tags maintainability
  *       statistical
  *       non-attributable

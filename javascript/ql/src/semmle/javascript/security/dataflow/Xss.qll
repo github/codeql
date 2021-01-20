@@ -63,8 +63,7 @@ module Shared {
   class QuoteGuard extends SanitizerGuard, StringOps::Includes {
     QuoteGuard() {
       this.getSubstring().mayHaveStringValue("\"") and
-      this
-          .getBaseString()
+      this.getBaseString()
           .getALocalSource()
           .flowsTo(any(IncompleteHTML::HtmlAttributeConcatenation attributeConcat))
     }

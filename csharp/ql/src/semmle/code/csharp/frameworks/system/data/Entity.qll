@@ -97,8 +97,7 @@ module SystemDataEntityInfrastructure {
   /** A class that extends or is constructed from `System.Entity.Data.Infrastructure.DbRawSqlQuery`. */
   class DbRawSqlQuery extends Class {
     DbRawSqlQuery() {
-      this
-          .getABaseType*()
+      this.getABaseType*()
           .getUnboundDeclaration()
           .(csharp::UnboundGenericClass)
           .getNameWithoutBrackets() = "DbRawSqlQuery"

@@ -202,6 +202,7 @@ module EssaFlow {
  * data flow. It is a strict subset of the `localFlowStep` predicate, as it
  * excludes SSA flow through instance fields.
  */
+cached
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // If there is ESSA-flow out of a node `node`, we want flow
   // both out of `node` and any post-update node of `node`.
@@ -235,12 +236,9 @@ private predicate localEssaStep(EssaNode nodeFrom, EssaNode nodeTo) {
  * Holds if `result` is either `node`, or the post-update node for `node`.
  */
 private Node update(Node node) {
-  exists(PostUpdateNode pun |
-    node = pun.getPreUpdateNode() and
-    result = pun
-  )
-  or
   result = node
+  or
+  result.(PostUpdateNode).getPreUpdateNode() = node
 }
 
 // TODO: Make modules for these headings
@@ -1436,15 +1434,6 @@ predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { non
 predicate isImmutableOrUnobservable(Node n) { none() }
 
 int accessPathLimit() { result = 5 }
-
-/** The unit type. */
-private newtype TUnit = TMkUnit()
-
-/** The trivial type with a single element. */
-class Unit extends TUnit {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "unit" }
-}
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) { none() }

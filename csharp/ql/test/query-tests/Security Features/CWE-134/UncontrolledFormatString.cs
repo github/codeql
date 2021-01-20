@@ -21,6 +21,9 @@ public class TaintedPathHandler : IHttpHandler
 
         // GOOD: Not the format string.
         String.Format((IFormatProvider)null, "Do not do this", path);
+
+        // GOOD: Not a formatting call
+        Console.WriteLine(path);
     }
 
     System.Windows.Forms.TextBox box1;

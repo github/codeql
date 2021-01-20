@@ -26,6 +26,11 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("accessors", accessorKey, kind, name, propKey, unboundAccessor);
         }
 
+        internal static void init_only_accessors(this TextWriter trapFile, Accessor accessorKey)
+        {
+            trapFile.WriteTuple("init_only_accessors", accessorKey);
+        }
+
         internal static void array_element_type(this TextWriter trapFile, ArrayType array, int dimension, int rank, Type elementType)
         {
             trapFile.WriteTuple("array_element_type", array, dimension, rank, elementType);
@@ -106,6 +111,11 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("compilations", compilation, cwd);
         }
 
+        internal static void compilation_assembly(this TextWriter trapFile, Compilation compilation, Assembly assembly)
+        {
+            trapFile.WriteTuple("compilation_assembly", compilation, assembly);
+        }
+
         internal static void compiler_generated(this TextWriter trapFile, IEntity entity)
         {
             trapFile.WriteTuple("compiler_generated", entity);
@@ -139,6 +149,11 @@ namespace Semmle.Extraction.CSharp
         internal static void delegate_return_type(this TextWriter trapFile, Type delegateKey, Type returnType)
         {
             trapFile.WriteTuple("delegate_return_type", delegateKey, returnType);
+        }
+
+        internal static void function_pointer_return_type(this TextWriter trapFile, Type functionPointer, Type returnType)
+        {
+            trapFile.WriteTuple("function_pointer_return_type", functionPointer, returnType);
         }
 
         internal static void destructor_location(this TextWriter trapFile, Destructor destructor, Location location)
@@ -266,6 +281,11 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("extend", type, super);
         }
 
+        internal static void anonymous_types(this TextWriter trapFile, Type type)
+        {
+            trapFile.WriteTuple("anonymous_types", type);
+        }
+
         internal static void field_location(this TextWriter trapFile, Field field, Location location)
         {
             trapFile.WriteTuple("field_location", field, location);
@@ -294,6 +314,11 @@ namespace Semmle.Extraction.CSharp
         internal static void implicitly_typed_array_creation(this TextWriter trapFile, Expression array)
         {
             trapFile.WriteTuple("implicitly_typed_array_creation", array);
+        }
+
+        internal static void implicitly_typed_object_creation(this TextWriter trapFile, Expression expression)
+        {
+            trapFile.WriteTuple("implicitly_typed_object_creation", expression);
         }
 
         internal static void indexer_location(this TextWriter trapFile, Indexer indexer, Location location)
@@ -454,6 +479,16 @@ namespace Semmle.Extraction.CSharp
         internal static void specific_type_parameter_nullability(this TextWriter trapFile, TypeParameterConstraints constraints, Type baseType, NullabilityEntity nullability)
         {
             trapFile.WriteTuple("specific_type_parameter_nullability", constraints, baseType, nullability);
+        }
+
+        internal static void function_pointer_calling_conventions(this TextWriter trapFile, FunctionPointerType type, int kind)
+        {
+            trapFile.WriteTuple("function_pointer_calling_conventions", type, kind);
+        }
+
+        internal static void has_unmanaged_calling_conventions(this TextWriter trapFile, FunctionPointerType type, int index, Type convention)
+        {
+            trapFile.WriteTuple("has_unmanaged_calling_conventions", type, index, convention);
         }
 
         internal static void stackalloc_array_creation(this TextWriter trapFile, Expression array)

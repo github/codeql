@@ -58,8 +58,7 @@ private class IteratorByTraits extends Iterator {
 private FunctionInput getIteratorArgumentInput(Operator op, int index) {
   exists(Type t |
     t =
-      op
-          .getACallToThisFunction()
+      op.getACallToThisFunction()
           .getArgument(index)
           .getExplicitlyConverted()
           .getType()
@@ -307,11 +306,10 @@ private class IteratorAssignmentMemberOperator extends MemberFunction, TaintFunc
  */
 private class BeginOrEndFunction extends MemberFunction, TaintFunction, GetIteratorFunction {
   BeginOrEndFunction() {
-    this
-        .hasName([
-            "begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend", "before_begin",
-            "cbefore_begin"
-          ]) and
+    this.hasName([
+        "begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend", "before_begin",
+        "cbefore_begin"
+      ]) and
     this.getType().getUnspecifiedType() instanceof Iterator
   }
 

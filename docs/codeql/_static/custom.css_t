@@ -34,6 +34,10 @@ article {
     min-height: calc(100vh - 145px); /* Makes sure GitHub footer stays at bottom of viewport */
 }
 
+article ul, article ol {
+    margin-left: 18px; /* Aligns list items with other text */
+}
+
 /* -- SIDEBAR ------------------------------------------------------------------------------- */
 
 .SideNav {
@@ -181,6 +185,11 @@ table.docutils.footnote {
     margin-left: 10px;
 }
 
+table.footnote td.label {
+    padding-right: 10px;
+    display: table-cell;
+}
+
 /* -- STYLE PULL-QUOTE AS ADMONITION WHILE DOCS STILL PARSED FOR LGTM EMBEDDED HELP------------------------- */
 
 blockquote.pull-quote {
@@ -191,7 +200,7 @@ blockquote.pull-quote {
     border-radius: 5px;
 } 
 
-blockquote.pull-quote p:first-of-type {
+blockquote.pull-quote:first-line {
     font-weight: bold;
     margin-top: 0px;
 }
@@ -213,10 +222,12 @@ blockquote.pull-quote > :last-child {
 
 .toggle .name:after {
     content: " ▶";
+    font-family: "monospace";
 }
 
 .toggle .name.open:after {
     content: " ▼";
+    font-family: "monospace";
 }
 
 /* -- PRINT VIEW ----------------------------------------------------------------------------*/

@@ -87,6 +87,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 foreach (var l in Locations)
                     trapFile.type_location(this, l);
             }
+
+            if (symbol.IsAnonymousType)
+            {
+                trapFile.anonymous_types(this);
+            }
         }
 
         private readonly Lazy<Type[]> typeArgumentsLazy;
@@ -144,36 +149,6 @@ namespace Semmle.Extraction.CSharp.Entities
                 base.WriteQuotedId(trapFile);
         }
 
-        /// <summary>
-        /// Returns the element type in an Enumerable/IEnumerable
-        /// </summary>
-        /// <param name="cx">Extraction context.</param>
-        /// <param name="type">The enumerable type.</param>
-        /// <returns>The element type, or null.</returns>
-        private static AnnotatedTypeSymbol GetElementType(Context cx, INamedTypeSymbol type)
-        {
-            var et = GetEnumerableType(cx, type);
-            if (et.Symbol != null)
-                return et;
-
-            return type.AllInterfaces
-                .Where(i => i.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T)
-                .Concat(type.AllInterfaces.Where(i => i.SpecialType == SpecialType.System_Collections_IEnumerable))
-                .Select(i => GetEnumerableType(cx, i))
-                .FirstOrDefault();
-        }
-
-        private static AnnotatedTypeSymbol GetEnumerableType(Context cx, INamedTypeSymbol type)
-        {
-            return type.SpecialType == SpecialType.System_Collections_IEnumerable
-                ? cx.Compilation.ObjectType.WithAnnotation(NullableAnnotation.NotAnnotated)
-                : type.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T
-                    ? type.GetAnnotatedTypeArguments().First()
-                    : default(AnnotatedTypeSymbol);
-        }
-
-        public override AnnotatedType ElementType => Type.Create(Context, GetElementType(Context, symbol));
-
         private class NamedTypeFactory : ICachedEntityFactory<INamedTypeSymbol, NamedType>
         {
             public static NamedTypeFactory Instance { get; } = new NamedTypeFactory();
@@ -230,5 +205,5 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             trapFile.typerefs(this, symbol.Name);
         }
-    };
+    }
 }

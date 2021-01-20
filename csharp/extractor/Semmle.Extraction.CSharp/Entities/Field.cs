@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CSharp.Entities
         private Field(Context cx, IFieldSymbol init)
             : base(cx, init)
         {
-            type = new Lazy<AnnotatedType>(() => Entities.Type.Create(cx, symbol.GetAnnotatedType()));
+            type = new Lazy<Type>(() => Entities.Type.Create(cx, symbol.Type));
         }
 
         public static Field Create(Context cx, IFieldSymbol field) => FieldFactory.Instance.CreateEntityFromSymbol(cx, field);
@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateNullability(trapFile, symbol.GetAnnotatedType());
 
             var unboundFieldKey = Field.Create(Context, symbol.OriginalDefinition);
-            trapFile.fields(this, (symbol.IsConst ? 2 : 1), symbol.Name, ContainingType, Type.Type.TypeRef, unboundFieldKey);
+            trapFile.fields(this, (symbol.IsConst ? 2 : 1), symbol.Name, ContainingType, Type.TypeRef, unboundFieldKey);
 
             PopulateModifiers(trapFile);
 
@@ -71,7 +71,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
                     if (!symbol.IsStatic)
                     {
-                        This.CreateImplicit(Context, Entities.Type.Create(Context, symbol.ContainingType), Location, fieldAccess, -1);
+                        This.CreateImplicit(Context, symbol.ContainingType, Location, fieldAccess, -1);
                     }
                 });
             }
@@ -107,19 +107,20 @@ namespace Semmle.Extraction.CSharp.Entities
         private Expression AddInitializerAssignment(TextWriter trapFile, ExpressionSyntax initializer, Extraction.Entities.Location loc,
             string constValue, ref int child)
         {
-            var simpleAssignExpr = new Expression(new ExpressionInfo(Context, Type, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, constValue));
+            var type = symbol.GetAnnotatedType();
+            var simpleAssignExpr = new Expression(new ExpressionInfo(Context, type, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, constValue));
             Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer, simpleAssignExpr, 0));
-            var access = new Expression(new ExpressionInfo(Context, Type, Location, ExprKind.FIELD_ACCESS, simpleAssignExpr, 1, false, constValue));
+            var access = new Expression(new ExpressionInfo(Context, type, Location, ExprKind.FIELD_ACCESS, simpleAssignExpr, 1, false, constValue));
             trapFile.expr_access(access, this);
             return access;
         }
 
-        private readonly Lazy<AnnotatedType> type;
-        public AnnotatedType Type => type.Value;
+        private readonly Lazy<Type> type;
+        public Type Type => type.Value;
 
         public override void WriteId(TextWriter trapFile)
         {
-            trapFile.WriteSubId(Type.Type);
+            trapFile.WriteSubId(Type);
             trapFile.Write(" ");
             trapFile.WriteSubId(ContainingType);
             trapFile.Write('.');

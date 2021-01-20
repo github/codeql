@@ -25,8 +25,7 @@ class ApacheHttpEntityGetContent extends Method {
  */
 class ApacheHttpRequest extends RefType {
   ApacheHttpRequest() {
-    this
-        .getASourceSupertype*()
+    this.getASourceSupertype*()
         .hasQualifiedName("org.apache.http.client.methods", "HttpRequestBase") or
     this.getASourceSupertype*().hasQualifiedName("org.apache.http.message", "BasicHttpRequest")
   }

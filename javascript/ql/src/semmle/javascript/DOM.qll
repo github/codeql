@@ -298,6 +298,23 @@ module DOM {
       )
     }
 
+    /**
+     * A data flow node that might refer to some form.
+     * Either by a read like `document.forms[0]`, or a property read from `document` with some constant property-name.
+     * E.g. if `<form name="foobar">..</form>` exists, then `document.foobar` refers to that form.
+     */
+    private DataFlow::SourceNode forms() {
+      result = documentRef().getAPropertyRead("forms").getAPropertyRead()
+      or
+      exists(DataFlow::PropRead read |
+        read = documentRef().getAPropertyRead() and
+        result = read
+      |
+        read.mayHavePropertyName(_) and
+        not read.mayHavePropertyName(getADomPropertyName())
+      )
+    }
+
     private class DefaultRange extends Range {
       DefaultRange() {
         this.asExpr().(VarAccess).getVariable() instanceof DOMGlobalVariable
@@ -316,6 +333,14 @@ module DOM {
         this = domElementCreationOrQuery()
         or
         this = domElementCollection()
+        or
+        this = forms()
+        or
+        // reading property `foo` - where a child has `name="foo"` - resolves to that child.
+        // We only look for such properties on forms/document, to avoid potential false positives.
+        exists(DataFlow::SourceNode form | form = [forms(), documentRef()] |
+          this = form.getAPropertyRead(any(string s | not s = getADomPropertyName()))
+        )
         or
         exists(JQuery::MethodCall call | this = call and call.getMethodName() = "get" |
           call.getNumArgument() = 1 and

@@ -746,7 +746,7 @@ class Class extends RefType, @class_type {
  * ```
  */
 class AnonymousClass extends Class {
-  AnonymousClass() { this.getName().matches("<%") }
+  AnonymousClass() { anonymous_types(this) }
 }
 
 /**
@@ -795,6 +795,95 @@ class DelegateType extends RefType, Parameterizable, @delegate_type {
   AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
 
   override string getAPrimaryQlClass() { result = "DelegateType" }
+}
+
+private newtype TCallingConvention =
+  MkCallingConvention(int i) { function_pointer_calling_conventions(_, i) }
+
+/**
+ * Represents a signature calling convention. Specifies how arguments in a given
+ * signature are passed from the caller to the callee.
+ */
+class CallingConvention extends TCallingConvention {
+  /** Gets a textual representation of this calling convention. */
+  string toString() { result = "CallingConvention" }
+}
+
+/** Managed calling convention with fixed-length argument list. */
+class DefaultCallingConvention extends CallingConvention {
+  DefaultCallingConvention() { this = MkCallingConvention(0) }
+
+  override string toString() { result = "DefaultCallingConvention" }
+}
+
+/** Unmanaged C/C++-style calling convention where the call stack is cleaned by the caller. */
+class CDeclCallingConvention extends CallingConvention {
+  CDeclCallingConvention() { this = MkCallingConvention(1) }
+
+  override string toString() { result = "CDeclCallingConvention" }
+}
+
+/** Unmanaged calling convention where call stack is cleaned up by the callee. */
+class StdCallCallingConvention extends CallingConvention {
+  StdCallCallingConvention() { this = MkCallingConvention(2) }
+
+  override string toString() { result = "StdCallCallingConvention" }
+}
+
+/**
+ * Unmanaged C++-style calling convention for calling instance member functions
+ * with a fixed argument list.
+ */
+class ThisCallCallingConvention extends CallingConvention {
+  ThisCallCallingConvention() { this = MkCallingConvention(3) }
+
+  override string toString() { result = "ThisCallCallingConvention" }
+}
+
+/** Unmanaged calling convention where arguments are passed in registers when possible. */
+class FastCallCallingConvention extends CallingConvention {
+  FastCallCallingConvention() { this = MkCallingConvention(4) }
+
+  override string toString() { result = "FastCallCallingConvention" }
+}
+
+/** Managed calling convention for passing extra arguments. */
+class VarArgsCallingConvention extends CallingConvention {
+  VarArgsCallingConvention() { this = MkCallingConvention(5) }
+
+  override string toString() { result = "VarArgsCallingConvention" }
+}
+
+/**
+ * A function pointer type, for example
+ *
+ * ```csharp
+ * delegate*<int, void>
+ * ```
+ */
+class FunctionPointerType extends Type, Parameterizable, @function_pointer_type {
+  /** Gets the return type of this function pointer. */
+  Type getReturnType() { function_pointer_return_type(this, getTypeRef(result)) }
+
+  /** Gets the calling convention. */
+  CallingConvention getCallingConvention() {
+    exists(int i |
+      function_pointer_calling_conventions(this, i) and result = MkCallingConvention(i)
+    )
+  }
+
+  /** Gets the unmanaged calling convention at index `i`. */
+  Type getUnmanagedCallingConvention(int i) {
+    has_unmanaged_calling_conventions(this, i, getTypeRef(result))
+  }
+
+  /** Gets an unmanaged calling convention. */
+  Type getAnUnmanagedCallingConvention() { result = getUnmanagedCallingConvention(_) }
+
+  /** Gets the annotated return type of this function pointer type. */
+  AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
+
+  override string getAPrimaryQlClass() { result = "FunctionPointerType" }
 }
 
 /**

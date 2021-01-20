@@ -23,11 +23,11 @@ import csharp
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.Constants
 private import semmle.code.csharp.frameworks.System
+private import ControlFlowGraphImpl
 private import NonReturning
 private import SuccessorType
 private import SuccessorTypes
 
-// Internal representation of completions
 private newtype TCompletion =
   TSimpleCompletion() or
   TBooleanCompletion(boolean b) { b = true or b = false } or
@@ -40,25 +40,32 @@ private newtype TCompletion =
   TGotoCompletion(string label) { label = any(GotoStmt gs).getLabel() } or
   TThrowCompletion(ExceptionClass ec) or
   TExitCompletion() or
-  TNestedCompletion(Completion inner, Completion outer) {
-    inner instanceof NormalCompletion and
-    (
-      outer = TReturnCompletion()
-      or
-      outer = TBreakCompletion()
-      or
-      outer = TContinueCompletion()
-      or
-      outer = TGotoCompletion(_)
-      or
-      outer = TThrowCompletion(_)
-      or
-      outer = TExitCompletion()
-    )
-    or
+  TNestedCompletion(Completion inner, Completion outer, int nestLevel) {
     inner = TBreakCompletion() and
-    outer instanceof NonNestedNormalCompletion
+    outer instanceof NonNestedNormalCompletion and
+    nestLevel = 0
+    or
+    inner instanceof NormalCompletion and
+    nestedFinallyCompletion(outer, nestLevel)
   }
+
+pragma[noinline]
+private predicate nestedFinallyCompletion(Completion outer, int nestLevel) {
+  (
+    outer = TReturnCompletion()
+    or
+    outer = TBreakCompletion()
+    or
+    outer = TContinueCompletion()
+    or
+    outer = TGotoCompletion(_)
+    or
+    outer = TThrowCompletion(_)
+    or
+    outer = TExitCompletion()
+  ) and
+  nestLevel = any(Statements::TryStmtTree t).nestLevel()
+}
 
 pragma[noinline]
 private predicate completionIsValidForStmt(Stmt s, Completion c) {
@@ -347,9 +354,6 @@ private class TriedControlFlowElement extends ControlFlowElement {
     or
     this instanceof DynamicExpr and
     result instanceof SystemExceptionClass
-    or
-    this instanceof StringLiteral and
-    result instanceof SystemOutOfMemoryExceptionClass
   }
 
   private CoreLib getCoreLibFromACatchClause() {
@@ -388,9 +392,16 @@ private class TriedControlFlowElement extends ControlFlowElement {
   }
 }
 
-pragma[noinline]
+pragma[nomagic]
+private ValueOrRefType getACastExprBaseType(CastExpr ce) {
+  result = ce.getType().(ValueOrRefType).getABaseType()
+  or
+  result = getACastExprBaseType(ce).getABaseType()
+}
+
+pragma[nomagic]
 private predicate invalidCastCandidate(CastExpr ce) {
-  ce.getType() = ce.getExpr().getType().(ValueOrRefType).getASubType+()
+  ce.getExpr().getType() = getACastExprBaseType(ce)
 }
 
 private predicate assertion(Assertion a, int i, AssertMethod am, Expr e) {
@@ -667,13 +678,17 @@ class EmptinessCompletion extends ConditionalCompletion, TEmptinessCompletion {
 class NestedCompletion extends Completion, TNestedCompletion {
   Completion inner;
   Completion outer;
+  int nestLevel;
 
-  NestedCompletion() { this = TNestedCompletion(inner, outer) }
+  NestedCompletion() { this = TNestedCompletion(inner, outer, nestLevel) }
 
   /** Gets a completion that is compatible with the inner completion. */
   Completion getAnInnerCompatibleCompletion() {
     result.getOuterCompletion() = this.getInnerCompletion()
   }
+
+  /** Gets the level of this nested completion. */
+  int getNestLevel() { result = nestLevel }
 
   override Completion getInnerCompletion() { result = inner }
 
@@ -681,7 +696,7 @@ class NestedCompletion extends Completion, TNestedCompletion {
 
   override SuccessorType getAMatchingSuccessorType() { none() }
 
-  override string toString() { result = outer + " [" + inner + "]" }
+  override string toString() { result = outer + " [" + inner + "] (" + nestLevel + ")" }
 }
 
 /**
@@ -718,13 +733,13 @@ class NestedBreakCompletion extends NormalCompletion, NestedCompletion {
 
   override BreakCompletion getInnerCompletion() { result = inner }
 
-  override SimpleCompletion getOuterCompletion() { result = outer }
+  override NonNestedNormalCompletion getOuterCompletion() { result = outer }
 
   override Completion getAnInnerCompatibleCompletion() {
     result = inner and
     outer = TSimpleCompletion()
     or
-    result = TNestedCompletion(outer, inner)
+    result = TNestedCompletion(outer, inner, _)
   }
 
   override SuccessorType getAMatchingSuccessorType() {
@@ -742,7 +757,7 @@ class NestedBreakCompletion extends NormalCompletion, NestedCompletion {
 class ReturnCompletion extends Completion {
   ReturnCompletion() {
     this = TReturnCompletion() or
-    this = TNestedCompletion(_, TReturnCompletion())
+    this = TNestedCompletion(_, TReturnCompletion(), _)
   }
 
   override ReturnSuccessor getAMatchingSuccessorType() { any() }
@@ -761,7 +776,7 @@ class ReturnCompletion extends Completion {
 class BreakCompletion extends Completion {
   BreakCompletion() {
     this = TBreakCompletion() or
-    this = TNestedCompletion(_, TBreakCompletion())
+    this = TNestedCompletion(_, TBreakCompletion(), _)
   }
 
   override BreakSuccessor getAMatchingSuccessorType() { any() }
@@ -780,7 +795,7 @@ class BreakCompletion extends Completion {
 class ContinueCompletion extends Completion {
   ContinueCompletion() {
     this = TContinueCompletion() or
-    this = TNestedCompletion(_, TContinueCompletion())
+    this = TNestedCompletion(_, TContinueCompletion(), _)
   }
 
   override ContinueSuccessor getAMatchingSuccessorType() { any() }
@@ -800,7 +815,7 @@ class GotoCompletion extends Completion {
 
   GotoCompletion() {
     this = TGotoCompletion(label) or
-    this = TNestedCompletion(_, TGotoCompletion(label))
+    this = TNestedCompletion(_, TGotoCompletion(label), _)
   }
 
   /** Gets the label of the `goto` completion. */
@@ -823,7 +838,7 @@ class ThrowCompletion extends Completion {
 
   ThrowCompletion() {
     this = TThrowCompletion(ec) or
-    this = TNestedCompletion(_, TThrowCompletion(ec))
+    this = TNestedCompletion(_, TThrowCompletion(ec), _)
   }
 
   /** Gets the type of the exception being thrown. */
@@ -849,7 +864,7 @@ class ThrowCompletion extends Completion {
 class ExitCompletion extends Completion {
   ExitCompletion() {
     this = TExitCompletion() or
-    this = TNestedCompletion(_, TExitCompletion())
+    this = TNestedCompletion(_, TExitCompletion(), _)
   }
 
   override ExitSuccessor getAMatchingSuccessorType() { any() }

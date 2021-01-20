@@ -229,7 +229,7 @@ class SprintfBW extends BufferWriteCall {
     result = this.(FormattingFunctionCall).getFormatArgument(_)
   }
 
-  override Expr getDest() { result = getArgument(f.getOutputParameterIndex()) }
+  override Expr getDest() { result = getArgument(f.getOutputParameterIndex(false)) }
 
   override int getMaxData() {
     exists(FormatLiteral fl |

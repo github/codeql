@@ -24,13 +24,13 @@ module Werkzeug {
        */
       module MultiDict {
         /**
-         * A source of an instance of `werkzeug.datastructures.MultiDict`.
+         * A source of instances of `werkzeug.datastructures.MultiDict`, extend this class to model new instances.
          *
-         * This can include instantiation of the class, return value from function
-         * calls, or a special parameter that will be set when functions are call by external
+         * This can include instantiations of the class, return values from function
+         * calls, or a special parameter that will be set when functions are called by an external
          * library.
          *
-         * Use `MultiDict::instance()` predicate to get references to instances of `werkzeug.datastructures.MultiDict`.
+         * Use the predicate `MultiDict::instance()` to get references to instances of `werkzeug.datastructures.MultiDict`.
          */
         abstract class InstanceSource extends DataFlow::Node { }
 
@@ -72,13 +72,13 @@ module Werkzeug {
        */
       module FileStorage {
         /**
-         * A source of an instance of `werkzeug.datastructures.FileStorage`.
+         * A source of instances of `werkzeug.datastructures.FileStorage`, extend this class to model new instances.
          *
-         * This can include instantiation of the class, return value from function
+         * This can include instantiations of the class, return values from function
          * calls, or a special parameter that will be set when functions are called by an external
          * library.
          *
-         * Use `FileStorage::instance()` predicate to get references to instances of `werkzeug.datastructures.FileStorage`.
+         * Use the predicate `FileStorage::instance()` to get references to instances of `werkzeug.datastructures.FileStorage`.
          */
         abstract class InstanceSource extends DataFlow::Node { }
 

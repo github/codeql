@@ -261,6 +261,12 @@ module AbstractValues {
 
 private import AbstractValues
 
+pragma[nomagic]
+private predicate typePattern(PatternMatch pm, TypePatternExpr tpe, Type t) {
+  tpe = pm.getPattern() and
+  t = pm.getExpr().getType()
+}
+
 /**
  * An expression that evaluates to a value that can be dereferenced. That is,
  * an expression that may evaluate to `null`.
@@ -337,19 +343,23 @@ class DereferenceableExpr extends Expr {
       or
       result =
         any(PatternMatch pm |
-          pm.getExpr() = this and
-          if pm.getPattern() instanceof NullLiteral
-          then
+          this = pm.getExpr() and
+          (
             // E.g. `x is null`
+            pm.getPattern() instanceof NullLiteral and
             isNull = branch
-          else (
-            // E.g. `x is string` or `x is ""`
-            branch = true and isNull = false
             or
-            // E.g. `x is string` where `x` has type `string`
-            pm.getPattern().(TypePatternExpr).getCheckedType() = pm.getExpr().getType() and
-            branch = false and
-            isNull = true
+            // E.g. `x is string` or `x is ""`
+            not pm.getPattern() instanceof NullLiteral and
+            branch = true and
+            isNull = false
+            or
+            exists(TypePatternExpr tpe |
+              // E.g. `x is string` where `x` has type `string`
+              typePattern(result, tpe, tpe.getCheckedType()) and
+              branch = false and
+              isNull = true
+            )
           )
         )
       or
@@ -481,8 +491,7 @@ class CollectionExpr extends Expr {
     result =
       any(PropertyRead pr |
         this = pr.getQualifier() and
-        pr
-            .getTarget()
+        pr.getTarget()
             .overridesOrImplementsOrEquals(any(Property p |
                 p.getUnboundDeclaration() =
                   any(SystemCollectionsGenericICollectionInterface x).getCountProperty()
@@ -612,8 +621,7 @@ private Ssa::Definition getAnSsaQualifier(Expr e, ControlFlow::Node cfn) {
 }
 
 private AssignableAccess getATrackedAccess(Ssa::Definition def, ControlFlow::Node cfn) {
-  result = def.getAReadAtNode(cfn) and
-  not def instanceof Ssa::ImplicitUntrackedDefinition
+  result = def.getAReadAtNode(cfn)
   or
   result = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess() and
   cfn = def.getControlFlowNode()
@@ -1249,6 +1257,7 @@ module Internal {
       )
     }
 
+    pragma[nomagic]
     private Expr getAnEqualityCheckVal(Expr e, AbstractValue v, AbstractValue vExpr) {
       result = getAnEqualityCheck(e, v, vExpr.getAnExpr())
     }

@@ -15,8 +15,7 @@ import java
 from MethodAccess call
 where
   call.getMethod().hasName("disable") and
-  call
-      .getReceiverType()
+  call.getReceiverType()
       .hasQualifiedName("org.springframework.security.config.annotation.web.configurers",
         "CsrfConfigurer<HttpSecurity>")
 select call, "CSRF vulnerability due to protection being disabled."

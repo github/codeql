@@ -325,6 +325,8 @@
 | LocalDataFlow.cs:243:9:243:17 | access to local variable nonSink10 | LocalDataFlow.cs:244:15:244:23 | access to local variable nonSink10 |
 | LocalDataFlow.cs:247:13:247:52 | SSA def(taintedDataContract) | LocalDataFlow.cs:248:22:248:40 | access to local variable taintedDataContract |
 | LocalDataFlow.cs:247:13:247:52 | SSA qualifier def(taintedDataContract.AList) | LocalDataFlow.cs:250:22:250:46 | access to property AList |
+| LocalDataFlow.cs:247:13:247:52 | SSA qualifier def(taintedDataContract.AString) | LocalDataFlow.cs:248:22:248:48 | access to property AString |
+| LocalDataFlow.cs:247:13:247:52 | SSA qualifier def(taintedDataContract.AnInt) | LocalDataFlow.cs:257:20:257:44 | access to property AnInt |
 | LocalDataFlow.cs:247:35:247:52 | object creation of type DataContract | LocalDataFlow.cs:247:13:247:52 | SSA def(taintedDataContract) |
 | LocalDataFlow.cs:248:13:248:48 | SSA def(sink53) | LocalDataFlow.cs:249:15:249:20 | access to local variable sink53 |
 | LocalDataFlow.cs:248:22:248:40 | [post] access to local variable taintedDataContract | LocalDataFlow.cs:250:22:250:40 | access to local variable taintedDataContract |
@@ -337,6 +339,7 @@
 | LocalDataFlow.cs:250:22:250:46 | access to property AList | LocalDataFlow.cs:259:20:259:44 | access to property AList |
 | LocalDataFlow.cs:250:22:250:57 | access to property AString | LocalDataFlow.cs:250:13:250:57 | SSA def(sink54) |
 | LocalDataFlow.cs:254:13:254:55 | SSA def(nonTaintedDataContract) | LocalDataFlow.cs:255:20:255:41 | access to local variable nonTaintedDataContract |
+| LocalDataFlow.cs:254:13:254:55 | SSA qualifier def(nonTaintedDataContract.AString) | LocalDataFlow.cs:255:20:255:49 | access to property AString |
 | LocalDataFlow.cs:254:38:254:55 | object creation of type DataContract | LocalDataFlow.cs:254:13:254:55 | SSA def(nonTaintedDataContract) |
 | LocalDataFlow.cs:255:9:255:49 | SSA def(nonSink0) | LocalDataFlow.cs:256:15:256:22 | access to local variable nonSink0 |
 | LocalDataFlow.cs:255:20:255:49 | access to property AString | LocalDataFlow.cs:255:9:255:49 | SSA def(nonSink0) |
@@ -347,10 +350,12 @@
 | LocalDataFlow.cs:259:9:259:53 | SSA def(nonSink2) | LocalDataFlow.cs:260:15:260:22 | access to local variable nonSink2 |
 | LocalDataFlow.cs:259:20:259:53 | access to property AnInt | LocalDataFlow.cs:259:9:259:53 | SSA def(nonSink2) |
 | LocalDataFlow.cs:263:17:263:37 | SSA def(taintedTextBox) | LocalDataFlow.cs:264:22:264:35 | access to local variable taintedTextBox |
+| LocalDataFlow.cs:263:17:263:37 | SSA qualifier def(taintedTextBox.Text) | LocalDataFlow.cs:264:22:264:40 | access to property Text |
 | LocalDataFlow.cs:263:34:263:37 | null | LocalDataFlow.cs:263:17:263:37 | SSA def(taintedTextBox) |
 | LocalDataFlow.cs:264:13:264:40 | SSA def(sink60) | LocalDataFlow.cs:265:15:265:20 | access to local variable sink60 |
 | LocalDataFlow.cs:264:22:264:40 | access to property Text | LocalDataFlow.cs:264:13:264:40 | SSA def(sink60) |
 | LocalDataFlow.cs:268:17:268:40 | SSA def(nonTaintedTextBox) | LocalDataFlow.cs:269:20:269:36 | access to local variable nonTaintedTextBox |
+| LocalDataFlow.cs:268:17:268:40 | SSA qualifier def(nonTaintedTextBox.Text) | LocalDataFlow.cs:269:20:269:41 | access to property Text |
 | LocalDataFlow.cs:268:37:268:40 | null | LocalDataFlow.cs:268:17:268:40 | SSA def(nonTaintedTextBox) |
 | LocalDataFlow.cs:269:9:269:41 | SSA def(nonSink0) | LocalDataFlow.cs:270:15:270:22 | access to local variable nonSink0 |
 | LocalDataFlow.cs:269:20:269:41 | access to property Text | LocalDataFlow.cs:269:9:269:41 | SSA def(nonSink0) |
@@ -396,6 +401,7 @@
 | LocalDataFlow.cs:314:22:314:26 | access to local variable sink0 | LocalDataFlow.cs:314:22:314:38 | ... ?? ... |
 | LocalDataFlow.cs:314:22:314:38 | ... ?? ... | LocalDataFlow.cs:314:13:314:38 | SSA def(sink74) |
 | LocalDataFlow.cs:314:31:314:38 | access to local variable nonSink0 | LocalDataFlow.cs:314:22:314:38 | ... ?? ... |
+| LocalDataFlow.cs:334:28:334:30 | SSA entry def(this.anInt) | LocalDataFlow.cs:334:41:334:45 | access to field anInt |
 | LocalDataFlow.cs:334:28:334:30 | this | LocalDataFlow.cs:334:41:334:45 | this access |
 | LocalDataFlow.cs:334:50:334:52 | this | LocalDataFlow.cs:334:56:334:60 | this access |
 | LocalDataFlow.cs:334:50:334:52 | value | LocalDataFlow.cs:334:64:334:68 | access to parameter value |

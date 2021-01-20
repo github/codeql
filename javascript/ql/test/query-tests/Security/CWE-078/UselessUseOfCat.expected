@@ -58,8 +58,9 @@ syncCommand
 | other.js:12:5:12:30 | require ... nc(cmd) |
 | other.js:30:5:30:36 | require ... ")(cmd) |
 | third-party-command-injection.js:6:9:6:28 | cp.execSync(command) |
-| tst_shell-command-injection-from-environment.js:4:2:4:62 | cp.exec ... emp")]) |
-| tst_shell-command-injection-from-environment.js:5:2:5:54 | cp.exec ... temp")) |
+| tst_shell-command-injection-from-environment.js:5:2:5:62 | cp.exec ... emp")]) |
+| tst_shell-command-injection-from-environment.js:6:2:6:54 | cp.exec ... temp")) |
+| tst_shell-command-injection-from-environment.js:9:2:9:58 | execa.s ... temp")) |
 | uselesscat.js:16:1:16:29 | execSyn ... uinfo') |
 | uselesscat.js:18:1:18:26 | execSyn ... path}`) |
 | uselesscat.js:20:1:20:36 | execSyn ... wc -l') |

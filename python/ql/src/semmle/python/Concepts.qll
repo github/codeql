@@ -295,6 +295,8 @@ module SqlExecution {
 
 /** Provides classes for modeling HTTP-related APIs. */
 module HTTP {
+  import semmle.python.web.HttpConstants
+
   /** Provides classes for modeling HTTP servers. */
   module Server {
     /**
@@ -311,8 +313,12 @@ module HTTP {
       /** Gets the URL pattern for this route, if it can be statically determined. */
       string getUrlPattern() { result = range.getUrlPattern() }
 
-      /** Gets a function that will handle incoming requests for this route, if any. */
-      Function getARouteHandler() { result = range.getARouteHandler() }
+      /**
+       * Gets a function that will handle incoming requests for this route, if any.
+       *
+       * NOTE: This will be modified in the near future to have a `RequestHandler` result, instead of a `Function`.
+       */
+      Function getARequestHandler() { result = range.getARequestHandler() }
 
       /**
        * Gets a parameter that will receive parts of the url when handling incoming
@@ -336,13 +342,17 @@ module HTTP {
         /** Gets the URL pattern for this route, if it can be statically determined. */
         string getUrlPattern() {
           exists(StrConst str |
-            DataFlow::localFlow(DataFlow::exprNode(str), this.getUrlPatternArg()) and
+            DataFlow::exprNode(str).(DataFlow::LocalSourceNode).flowsTo(this.getUrlPatternArg()) and
             result = str.getText()
           )
         }
 
-        /** Gets a function that will handle incoming requests for this route, if any. */
-        abstract Function getARouteHandler();
+        /**
+         * Gets a function that will handle incoming requests for this route, if any.
+         *
+         * NOTE: This will be modified in the near future to have a `RequestHandler` result, instead of a `Function`.
+         */
+        abstract Function getARequestHandler();
 
         /**
          * Gets a parameter that will receive parts of the url when handling incoming
@@ -352,8 +362,57 @@ module HTTP {
       }
     }
 
+    /**
+     * A function that will handle incoming HTTP requests.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `RequestHandler::Range` instead.
+     */
+    class RequestHandler extends Function {
+      RequestHandler::Range range;
+
+      RequestHandler() { this = range }
+
+      /**
+       * Gets a parameter that could receive parts of the url when handling incoming
+       * requests, if any. These automatically become a `RemoteFlowSource`.
+       */
+      Parameter getARoutedParameter() { result = range.getARoutedParameter() }
+    }
+
+    /** Provides a class for modeling new HTTP request handlers. */
+    module RequestHandler {
+      /**
+       * A function that will handle incoming HTTP requests.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `RequestHandler` instead.
+       *
+       * Only extend this class if you can't provide a `RouteSetup`, since we handle that case automatically.
+       */
+      abstract class Range extends Function {
+        /**
+         * Gets a parameter that could receive parts of the url when handling incoming
+         * requests, if any. These automatically become a `RemoteFlowSource`.
+         */
+        abstract Parameter getARoutedParameter();
+      }
+    }
+
+    private class RequestHandlerFromRouteSetup extends RequestHandler::Range {
+      RouteSetup rs;
+
+      RequestHandlerFromRouteSetup() { this = rs.getARequestHandler() }
+
+      override Parameter getARoutedParameter() {
+        result = rs.getARoutedParameter() and
+        result in [this.getArg(_), this.getArgByName(_)]
+      }
+    }
+
+    /** A parameter that will receive parts of the url when handling an incoming request. */
     private class RoutedParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
-      RoutedParameter() { this.getParameter() = any(RouteSetup setup).getARoutedParameter() }
+      RoutedParameter() { this.getParameter() = any(RequestHandler handler).getARoutedParameter() }
 
       override string getSourceType() { result = "RoutedParameter" }
     }
@@ -403,7 +462,9 @@ module HTTP {
         /** Gets the mimetype of this HTTP response, if it can be statically determined. */
         string getMimetype() {
           exists(StrConst str |
-            DataFlow::localFlow(DataFlow::exprNode(str), this.getMimetypeOrContentTypeArg()) and
+            DataFlow::exprNode(str)
+                .(DataFlow::LocalSourceNode)
+                .flowsTo(this.getMimetypeOrContentTypeArg()) and
             result = str.getText().splitAt(";", 0)
           )
           or

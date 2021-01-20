@@ -8,14 +8,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A property.
     /// </summary>
-    internal interface IProperty : IExtractedEntity
-    {
-    }
-
-    /// <summary>
-    /// A property.
-    /// </summary>
-    internal sealed class Property : LabelledEntity, IProperty
+    internal sealed class Property : LabelledEntity, ICustomModifierReceiver
     {
         private readonly Handle handle;
         private readonly Type type;
@@ -61,7 +54,15 @@ namespace Semmle.Extraction.CIL.Entities
                 yield return Tuples.metadata_handle(this, Cx.Assembly, MetadataTokens.GetToken(handle));
                 var sig = pd.DecodeSignature(Cx.TypeSignatureDecoder, type);
 
-                yield return Tuples.cil_property(this, type, Cx.ShortName(pd.Name), sig.ReturnType);
+                var name = Cx.ShortName(pd.Name);
+
+                var t = sig.ReturnType;
+                if (t is ModifiedType mt)
+                {
+                    t = mt.Unmodified;
+                    yield return Tuples.cil_custom_modifiers(this, mt.Modifier, mt.IsRequired);
+                }
+                yield return Tuples.cil_property(this, type, name, t);
 
                 var accessors = pd.GetAccessors();
                 if (!accessors.Getter.IsNil)
