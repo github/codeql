@@ -4,7 +4,7 @@ import TestUtilities.InlineExpectationsTest
 import experimental.dataflow.TestUtil.PrintNode
 
 /**
- * A routing test is designed to test that vlues are routed to the
+ * A routing test is designed to test that values are routed to the
  * correct arguments of the correct functions. It is assumed that
  * the functions tested sink their arguments sequentially, that is
  * `SINK1(arg1)`, etc.
