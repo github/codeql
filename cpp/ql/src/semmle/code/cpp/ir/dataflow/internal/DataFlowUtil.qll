@@ -185,15 +185,54 @@ class OperandNode extends Node, TOperandNode {
   override string toString() { result = this.getOperand().toString() }
 }
 
+/** An abstract class that defines conversion-like instructions. */
+abstract private class SkippableInstruction extends Instruction {
+  abstract Instruction getSourceInstruction();
+}
+
+/**
+ * Gets the instruction that is propaged through a non-empty sequence of conversion-like instructions.
+ */
+private Instruction skipSkippableInstructionsRec(SkippableInstruction skip) {
+  result = skip.getSourceInstruction() and not result instanceof SkippableInstruction
+  or
+  result = skipSkippableInstructionsRec(skip.getSourceInstruction())
+}
+
+/**
+ * Gets the instruction that is propagated through a (possibly empty) sequence of conversion-like
+ * instructions.
+ */
+private Instruction skipSkippableInstructions(Instruction instr) {
+  result = instr and not result instanceof SkippableInstruction
+  or
+  result = skipSkippableInstructionsRec(instr)
+}
+
+private class SkippableCopyValueInstruction extends SkippableInstruction, CopyValueInstruction {
+  override Instruction getSourceInstruction() { result = this.getSourceValue() }
+}
+
+private class SkippableConvertInstruction extends SkippableInstruction, ConvertInstruction {
+  override Instruction getSourceInstruction() { result = this.getUnary() }
+}
+
+private class SkippableCheckedConvertInstruction extends SkippableInstruction,
+  CheckedConvertOrNullInstruction {
+  override Instruction getSourceInstruction() { result = this.getUnary() }
+}
+
+private class SkippableInheritanceConversionInstruction extends SkippableInstruction,
+  InheritanceConversionInstruction {
+  override Instruction getSourceInstruction() { result = this.getUnary() }
+}
+
 /**
  * INTERNAL: do not use. Gets the `FieldNode` corresponding to `instr`, if
  * `instr` is an instruction that propagates an address of a `FieldAddressInstruction`.
  */
 FieldNode getFieldNodeForFieldInstruction(Instruction instr) {
-  result.getFieldInstruction() =
-    any(FieldAddressInstruction fai |
-      longestRegisterInstructionOperandLocalFlowStep(instructionNode(fai), instructionNode(instr))
-    )
+  result.getFieldInstruction() = skipSkippableInstructions(instr)
 }
 
 /**
@@ -585,11 +624,6 @@ class VariableNode extends Node, TVariableNode {
 InstructionNode instructionNode(Instruction instr) { result.getInstruction() = instr }
 
 /**
- * Gets the node corresponding to `operand`.
- */
-OperandNode operandNode(Operand operand) { result.getOperand() = operand }
-
-/**
  * DEPRECATED: use `definitionByReferenceNodeFromArgument` instead.
  *
  * Gets the `Node` corresponding to a definition by reference of the variable
@@ -706,47 +740,6 @@ private predicate flowIntoReadNode(Node nodeFrom, FieldNode nodeTo) {
   )
 }
 
-/** Holds if `node` holds an `Instruction` or `Operand` that has a register result. */
-private predicate hasRegisterResult(Node node) {
-  node.asOperand() instanceof RegisterOperand
-  or
-  exists(Instruction i | i = node.asInstruction() and not i.hasMemoryResult())
-}
-
-/**
- * Holds if there is a `Instruction` or `Operand` flow step from `nodeFrom` to `nodeTo` and both
- * `nodeFrom` and `nodeTo` wraps register results.
- */
-private predicate registerInstructionOperandLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  hasRegisterResult(nodeFrom) and
-  hasRegisterResult(nodeTo) and
-  instructionOperandLocalFlowStep(nodeFrom, nodeTo)
-}
-
-/**
- * INTERNAL: do not use.
- * Holds if `nodeFrom` has no incoming local `Operand` or `Instruction` register flow and `nodeFrom` can
- * reach `nodeTo` using only local `Instruction` or `Operand` register flow steps.
- */
-bindingset[nodeTo]
-private predicate longestRegisterInstructionOperandLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  registerInstructionOperandLocalFlowStep*(nodeFrom, nodeTo) and
-  not registerInstructionOperandLocalFlowStep(_, nodeFrom)
-}
-
-/**
- * INTERNAL: do not use.
- * Holds if `nodeFrom` is an operand and `nodeTo` is an instruction node that uses this operand, or
- * if `nodeFrom` is an instruction and `nodeTo` is an operand that refers to this instruction.
- */
-private predicate instructionOperandLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  // Operand -> Instruction flow
-  simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
-  or
-  // Instruction -> Operand flow
-  simpleOperandLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asOperand())
-}
-
 /**
  * INTERNAL: do not use.
  *
@@ -755,7 +748,11 @@ private predicate instructionOperandLocalFlowStep(Node nodeFrom, Node nodeTo) {
  */
 cached
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  instructionOperandLocalFlowStep(nodeFrom, nodeTo)
+  // Operand -> Instruction flow
+  simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
+  or
+  // Instruction -> Operand flow
+  simpleOperandLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asOperand())
   or
   flowIntoReadNode(nodeFrom, nodeTo)
   or

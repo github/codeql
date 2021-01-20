@@ -346,6 +346,24 @@ private class ArrayToPointerConvertInstruction extends ConvertInstruction {
   }
 }
 
+/**
+ * These two predicates look like copy-paste from the two predicates with the same name in DataFlowUtil,
+ * but crucially they only skip past `CopyValueInstruction`s. This is because we use a special case of
+ * a `ConvertInstruction` to detect some read steps from arrays that undergoes array-to-pointer
+ * conversion.
+ */
+private Instruction skipOneCopyValueInstructionRec(CopyValueInstruction copy) {
+  copy.getUnary() = result and not result instanceof CopyValueInstruction
+  or
+  result = skipOneCopyValueInstructionRec(copy.getUnary())
+}
+
+private Instruction skipCopyValueInstructions(Operand op) {
+  not result instanceof CopyValueInstruction and result = op.getDef()
+  or
+  result = skipOneCopyValueInstructionRec(op.getDef())
+}
+
 private class InexactLoadOperand extends LoadOperand {
   InexactLoadOperand() { this.isDefinitionInexact() }
 }
