@@ -236,3 +236,95 @@ class EndRegionDirective extends PreprocessorDirective, @directive_endregion {
 
   override string getAPrimaryQlClass() { result = "EndRegionDirective" }
 }
+
+/**
+ * A branching preprocessor directive, such as `IfDirective`, `ElifDirective`, or
+ * `ElseDirective`.
+ */
+class BranchDirective extends PreprocessorDirective {
+  /** Holds if the branch is taken by the preprocessor. */
+  predicate branchTaken() { none() }
+}
+
+/**
+ * A preprocessor directive with a branching condition, such as `IfDirective` or
+ * `ElifDirective`.
+ */
+class ConditionalDirective extends BranchDirective {
+  /** Gets the condition. */
+  Expr getCondition() { result = this.getChild(0) }
+
+  /** Holds if the condition is matched. */
+  predicate conditionMatched() { none() }
+}
+
+/**
+ * An `#if` preprocessor directive.
+ */
+class IfDirective extends ConditionalDirective, @directive_if {
+  override predicate branchTaken() { directive_ifs(this, 1, _) }
+
+  override predicate conditionMatched() { directive_ifs(this, _, 1) }
+
+  /** Gets the closing `#endif` preprocessor directive. */
+  EndifDirective getEndifDirective() { directive_if_endif(this, result) }
+
+  /** Gets the sibling `#elif` or `#else` preprocessor directive at index `sibling`. */
+  BranchDirective getSiblingDirective(int sibling) { directive_if_siblings(this, result, sibling) }
+
+  /** Gets a sibling `#elif` or `#else` preprocessor directive. */
+  BranchDirective getASiblingDirective() { result = getSiblingDirective(_) }
+
+  override string toString() { result = "#if ..." }
+
+  override string getAPrimaryQlClass() { result = "IfDirective" }
+}
+
+/**
+ * An `#elif` preprocessor directive.
+ */
+class ElifDirective extends ConditionalDirective, @directive_elif {
+  override predicate branchTaken() { directive_elifs(this, 1, _) }
+
+  override predicate conditionMatched() { directive_elifs(this, _, 1) }
+
+  /** Gets the opening `#if` preprocessor directive. */
+  IfDirective getIfDirective() { directive_if_siblings(result, this, _) }
+
+  /** Gets the successive branching preprocessor directive (`#elif` or `#else`), if any. */
+  BranchDirective getSuccSiblingDirective() {
+    exists(IfDirective i, int index |
+      directive_if_siblings(i, this, index) and directive_if_siblings(i, result, index + 1)
+    )
+  }
+
+  override string toString() { result = "#elif ..." }
+
+  override string getAPrimaryQlClass() { result = "ElifDirective" }
+}
+
+/**
+ * An `#else` preprocessor directive.
+ */
+class ElseDirective extends BranchDirective, @directive_else {
+  /** Gets the opening `#if` preprocessor directive. */
+  IfDirective getIfDirective() { directive_if_siblings(result, this, _) }
+
+  override predicate branchTaken() { directive_elses(this, 1) }
+
+  override string toString() { result = "#else" }
+
+  override string getAPrimaryQlClass() { result = "ElseDirective" }
+}
+
+/**
+ * An `#endif` preprocessor directive.
+ */
+class EndifDirective extends PreprocessorDirective, @directive_endif {
+  /** Gets the opening `#if` preprocessor directive. */
+  IfDirective getIfDirective() { directive_if_endif(result, this) }
+
+  override string toString() { result = "#endif" }
+
+  override string getAPrimaryQlClass() { result = "EndifDirective" }
+}

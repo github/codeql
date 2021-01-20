@@ -25,6 +25,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     return ExprKind.NULL_LITERAL;
             }
 
+            if (info.TryGetBoolValueInsideIfDirective(out var _))
+            {
+                return ExprKind.BOOL_LITERAL;
+            }
+
             var type = info.Type?.Symbol;
             return GetExprKind(type, info.Node, info.Context);
         }

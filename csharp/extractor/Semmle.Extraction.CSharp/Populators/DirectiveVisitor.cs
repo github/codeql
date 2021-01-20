@@ -75,5 +75,52 @@ namespace Semmle.Extraction.CSharp.Populators
             var start = regionStarts.Pop();
             Entities.EndRegionDirective.WriteRegionBlock(cx, start, endregion);
         }
+
+        private readonly Stack<Entities.IfDirective> ifStarts = new Stack<Entities.IfDirective>();
+
+        public override void VisitIfDirectiveTrivia(IfDirectiveTriviaSyntax node)
+        {
+            var ifStart = new Entities.IfDirective(cx, node);
+            ifStarts.Push(ifStart);
+        }
+
+        public override void VisitEndIfDirectiveTrivia(EndIfDirectiveTriviaSyntax node)
+        {
+            var endif = new Entities.EndIfDirective(cx, node);
+            if (ifStarts.Count == 0)
+            {
+                cx.ExtractionError("Couldn't find start if", null,
+                    Extraction.Entities.Location.Create(cx, node.GetLocation()), null, Util.Logging.Severity.Warning);
+                return;
+            }
+            var start = ifStarts.Pop();
+            start.WriteBranches(endif);
+        }
+
+        public override void VisitElifDirectiveTrivia(ElifDirectiveTriviaSyntax node)
+        {
+            var elif = new Entities.ElifDirective(cx, node);
+            if (ifStarts.Count == 0)
+            {
+                cx.ExtractionError("Couldn't find start if", null,
+                    Extraction.Entities.Location.Create(cx, node.GetLocation()), null, Util.Logging.Severity.Warning);
+                return;
+            }
+            var start = ifStarts.Peek();
+            start.Add(elif);
+        }
+
+        public override void VisitElseDirectiveTrivia(ElseDirectiveTriviaSyntax node)
+        {
+            var elseDirective = new Entities.ElseDirective(cx, node);
+            if (ifStarts.Count == 0)
+            {
+                cx.ExtractionError("Couldn't find start if", null,
+                    Extraction.Entities.Location.Create(cx, node.GetLocation()), null, Util.Logging.Severity.Warning);
+                return;
+            }
+            var start = ifStarts.Peek();
+            start.Add(elseDirective);
+        }
     }
 }

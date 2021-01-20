@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
@@ -26,8 +27,15 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             if (target == null)
             {
-                info.Context.ModelError(info.Node, "Failed to resolve name");
-                return new Unknown(info);
+                if (info.IsInsideIfDirective())
+                {
+                    return DefineSymbol.Create(info);
+                }
+                else
+                {
+                    info.Context.ModelError(info.Node, "Failed to resolve name");
+                    return new Unknown(info);
+                }
             }
 
             // There is a very strange bug in Microsoft.CodeAnalysis whereby

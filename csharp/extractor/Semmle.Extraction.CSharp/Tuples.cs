@@ -1,6 +1,7 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CommentProcessing;
 using Semmle.Extraction.CSharp.Entities;
+using Semmle.Extraction.CSharp.Entities.Expressions;
 using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
 using Semmle.Util;
@@ -670,5 +671,42 @@ namespace Semmle.Extraction.CSharp
         {
             trapFile.WriteTuple("regions", start, end);
         }
+
+        internal static void directive_ifs(this TextWriter trapFile, IfDirective directive, bool branchTaken, bool conditionValue)
+        {
+            trapFile.WriteTuple("directive_ifs", directive, branchTaken ? 1 : 0, conditionValue ? 1 : 0);
+        }
+
+        internal static void directive_elifs(this TextWriter trapFile, ElifDirective directive, bool branchTaken, bool conditionValue)
+        {
+            trapFile.WriteTuple("directive_elifs", directive, branchTaken ? 1 : 0, conditionValue ? 1 : 0);
+        }
+
+        internal static void directive_elses(this TextWriter trapFile, ElseDirective directive, bool branchTaken)
+        {
+            trapFile.WriteTuple("directive_elses", directive, branchTaken ? 1 : 0);
+        }
+
+        internal static void directive_endifs(this TextWriter trapFile, EndIfDirective directive)
+        {
+            trapFile.WriteTuple("directive_endifs", directive);
+        }
+
+        internal static void directive_if_endif(this TextWriter trapFile, IfDirective start, EndIfDirective end)
+        {
+            trapFile.WriteTuple("directive_if_endif", start, end);
+        }
+
+        internal static void directive_if_siblings(this TextWriter trapFile, IfDirective start, IIfSiblingDirective siblingDirective, int index)
+        {
+            trapFile.WriteTuple("directive_if_siblings", start, siblingDirective, index);
+        }
+
+        internal static void directive_define_symbols(this TextWriter trapFile, DefineSymbol symb, string name)
+        {
+            trapFile.WriteTuple("directive_define_symbols", symb, name);
+        }
+
+
     }
 }

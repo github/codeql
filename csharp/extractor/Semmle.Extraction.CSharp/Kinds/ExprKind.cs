@@ -122,5 +122,7 @@ namespace Semmle.Extraction.Kinds
         GE_PATTERN = 125,
         NOT_PATTERN = 126,
         FUNCTION_POINTER_INVOCATION = 129,
+
+        DEFINE_SYMBOL = 999
     }
 }
