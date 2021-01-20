@@ -22,19 +22,17 @@ class HashAlgorithmProvider extends RefType {
   }
 }
 
-/** The method call `ComputeHash()` declared in `System.Security.Cryptography.SHA...`. */
-class ComputeHashMethodCall extends MethodCall {
-  ComputeHashMethodCall() {
-    this.getQualifier().getType() instanceof SHA and
-    this.getTarget().hasName("ComputeHash")
-  }
-}
-
-/** The method call `ComputeHash()` declared in `System.Security.Cryptography.SHA...`. */
-class HashDataMethodCall extends MethodCall {
-  HashDataMethodCall() {
-    this.getQualifier().getType() instanceof HashAlgorithmProvider and
-    this.getTarget().hasName("HashData")
+/**
+ * The method `ComputeHash()` declared in `System.Security.Cryptography.SHA...` and
+ * the method `HashData()` declared in `Windows.Security.Cryptography.Core.HashAlgorithmProvider`.
+ */
+class HashMethod extends Method {
+  HashMethod() {
+    this.getDeclaringType() instanceof SHA and
+    this.hasName("ComputeHash")
+    or
+    this.getDeclaringType() instanceof HashAlgorithmProvider and
+    this.hasName("HashData")
   }
 }
 
@@ -55,11 +53,9 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof PasswordVarExpr }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(ComputeHashMethodCall mc |
-      sink.asExpr() = mc.getArgument(0) // sha256Hash.ComputeHash(rawDatabytes)
-    ) or
-    exists(HashDataMethodCall mc |
-      sink.asExpr() = mc.getArgument(0) // algProv.HashData(rawDatabytes)
+    exists(MethodCall mc |
+      sink.asExpr() = mc.getArgument(0) and
+      mc.getTarget() instanceof HashMethod
     )
   }
 
