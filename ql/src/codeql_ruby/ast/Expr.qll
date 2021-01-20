@@ -20,9 +20,9 @@ class Expr extends AstNode {
 class Literal extends Expr {
   override Literal::Range range;
 
-  override string toString() { result = this.getValueText() }
+  override string toString() { result = range.toString() }
 
-  /** Gets the source text for this literal. */
+  /** Gets the source text for this literal, if it is constant. */
   final string getValueText() { result = range.getValueText() }
 }
 
@@ -74,6 +74,35 @@ class RegexLiteral extends Literal, @regex {
   final override string getAPrimaryQlClass() { result = "RegexLiteral" }
 }
 
+/**
+ * A string literal.
+ * ```rb
+ * 'hello'
+ * "hello, #{name}"
+ * ```
+ * TODO: expand this minimal placeholder.
+ */
+class StringLiteral extends Literal, @string__ {
+  final override StringLiteral::Range range;
+
+  final override string getAPrimaryQlClass() { result = "StringLiteral" }
+}
+
+/**
+ * A symbol literal.
+ * ```rb
+ * :foo
+ * :"foo bar"
+ * :"foo bar #{baz}"
+ * ```
+ * TODO: expand this minimal placeholder.
+ */
+class SymbolLiteral extends Literal {
+  final override SymbolLiteral::Range range;
+
+  final override string getAPrimaryQlClass() { result = "SymbolLiteral" }
+}
+
 /** A sequence of expressions. */
 class ExprSequence extends Expr {
   override ExprSequence::Range range;
@@ -96,4 +125,79 @@ class ExprSequence extends Expr {
 
   /** Holds if this sequence has no expressions. */
   final predicate isEmpty() { this.getNumberOfExpressions() = 0 }
+}
+
+/**
+ * A scope resolution, typically used to access constants defined in a class or
+ * module.
+ * ```rb
+ * Foo::Bar
+ * ```
+ */
+class ScopeResolution extends Expr, @scope_resolution {
+  final override ScopeResolution::Range range;
+
+  final override string getAPrimaryQlClass() { result = "ScopeResolution" }
+
+  final override string toString() { result = "...::" + this.getName() }
+
+  /**
+   * Gets the expression representing the scope, if any. In the following
+   * example, the scope is the `Expr` for `Foo`:
+   * ```rb
+   * Foo::Bar
+   * ```
+   * However, in the following example, accessing the `Bar` constant in the
+   * `Object` class, there is no result:
+   * ```rb
+   * ::Bar
+   * ```
+   */
+  final Expr getScope() { result = range.getScope() }
+
+  /**
+   * Gets the name being resolved. For example, in `Foo::Bar`, the result is
+   * `"Bar"`.
+   */
+  final string getName() { result = range.getName() }
+}
+
+/**
+ * A pair expression. For example, in a hash:
+ * ```rb
+ * { foo: bar }
+ * ```
+ * Or a keyword argument:
+ * ```rb
+ * baz(qux: 1)
+ * ```
+ */
+class Pair extends Expr, @pair {
+  final override Pair::Range range;
+
+  final override string getAPrimaryQlClass() { result = "Pair" }
+
+  final override string toString() { result = "Pair" }
+
+  /**
+   * Gets the key expression of this pair. For example, the `SymbolLiteral`
+   * representing the keyword `foo` in the following example:
+   * ```rb
+   * bar(foo: 123)
+   * ```
+   * Or the `StringLiteral` for `'foo'` in the following hash pair:
+   * ```rb
+   * { 'foo' => 123 }
+   * ```
+   */
+  final Expr getKey() { result = range.getKey() }
+
+  /**
+   * Gets the value expression of this pair. For example, the `InteralLiteral`
+   * 123 in the following hash pair:
+   * ```rb
+   * { 'foo' => 123 }
+   * ```
+   */
+  final Expr getValue() { result = range.getValue() }
 }

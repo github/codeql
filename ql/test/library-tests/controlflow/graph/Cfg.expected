@@ -58,10 +58,10 @@ cfg.rb:
 #  153| enter two_parameters
 #-----|  -> a
 
-#  185| enter run_block
+#  187| enter run_block
 #-----|  -> Yield
 
-#  189| enter block
+#  191| enter block
 #-----|  -> x
 
 exit.rb:
@@ -674,12 +674,12 @@ cfg.rb:
 #-----|  -> Proc
 
 #   27| puts
-#-----|  -> Symbol
+#-----|  -> :puts
 
 #   27| BlockArgument
 #-----|  -> Call
 
-#   27| Symbol
+#   27| :puts
 #-----|  -> BlockArgument
 
 #   29| Call
@@ -1202,9 +1202,18 @@ cfg.rb:
 #-----|  -> Pair
 
 #   97| Pair
-#-----|  -> Hash
+#-----|  -> e
 
 #   97| String
+#-----|  -> String
+
+#   97| String
+#-----|  -> Pair
+
+#   97| Pair
+#-----|  -> Hash
+
+#   97| e
 #-----|  -> String
 
 #   97| String
@@ -1700,7 +1709,7 @@ cfg.rb:
 #-----|  -> Array
 
 #  157| Assignment
-#-----|  -> Symbol
+#-----|  -> :hello
 
 #  157| scriptfile
 #-----|  -> Assignment
@@ -1715,89 +1724,89 @@ cfg.rb:
 #-----|  -> Interpolation
 
 #  159| Assignment
-#-----|  -> true
+#-----|  -> 12
 
 #  159| symbol
 #-----|  -> Assignment
 
-#  159| Symbol
+#  159| :hello
 #-----|  -> symbol
 
 #  161| Assignment
 #-----|  -> true
 
-#  161| x
+#  161| delimited_symbol
 #-----|  -> Assignment
 
-#  161| true
-#-----|  -> x
+#  161| DelimitedSymbol
+#-----|  -> delimited_symbol
 
-#  162| Assignment
-#-----|  -> 42
+#  161| Interpolation
+#-----|  -> DelimitedSymbol
 
-#  162| x
-#-----|  -> Assignment
+#  161| Binary
+#-----|  -> Interpolation
 
-#  162| Unary
-#-----|  -> x
+#  161| 12
+#-----|  -> 13
 
-#  162| true
-#-----|  -> Unary
+#  161| 13
+#-----|  -> Binary
 
 #  163| Assignment
-#-----|  -> Undef
+#-----|  -> true
 
 #  163| x
 #-----|  -> Assignment
 
-#  163| Unary
+#  163| true
 #-----|  -> x
 
-#  163| 42
+#  164| Assignment
+#-----|  -> 42
+
+#  164| x
+#-----|  -> Assignment
+
+#  164| Unary
+#-----|  -> x
+
+#  164| true
 #-----|  -> Unary
 
-#  165| Undef
+#  165| Assignment
+#-----|  -> Undef
+
+#  165| x
+#-----|  -> Assignment
+
+#  165| Unary
+#-----|  -> x
+
+#  165| 42
+#-----|  -> Unary
+
+#  167| Undef
 #-----|  -> two_parameters
 
-#  165| two_parameters
+#  167| two_parameters
 #-----|  -> x
 
-#  167| Unless
+#  169| Unless
 #-----|  -> x
 
-#  167| Binary
+#  169| Binary
 #-----| false -> puts
 #-----| true -> puts
 
-#  167| x
+#  169| x
 #-----|  -> 10
 
-#  167| 10
+#  169| 10
 #-----|  -> Binary
 
-#  167| Call
-#-----|  -> Unless
-
-#  167| puts
-#-----|  -> String
-
-#  167| String
-#-----|  -> Call
-
-#  167| Call
-#-----|  -> Unless
-
-#  167| puts
-#-----|  -> String
-
-#  167| String
-#-----|  -> Call
-
-#  169| UnlessModifier
-#-----|  -> Until
-
 #  169| Call
-#-----|  -> UnlessModifier
+#-----|  -> Unless
 
 #  169| puts
 #-----|  -> String
@@ -1805,40 +1814,20 @@ cfg.rb:
 #  169| String
 #-----|  -> Call
 
-#  169| Binary
-#-----| true -> UnlessModifier
-#-----| false -> puts
+#  169| Call
+#-----|  -> Unless
 
-#  169| x
-#-----|  -> 0
+#  169| puts
+#-----|  -> String
 
-#  169| 0
-#-----|  -> Binary
+#  169| String
+#-----|  -> Call
 
-#  171| Until
-#-----|  -> x
-
-#  171| Binary
-#-----| false -> x
-#-----| true -> 0
-
-#  171| x
-#-----|  -> 10
-
-#  171| 10
-#-----|  -> Binary
-
-#  171| OperatorAssignment
-#-----|  -> puts
-
-#  171| x
-#-----|  -> 10
-
-#  171| 10
-#-----|  -> OperatorAssignment
+#  171| UnlessModifier
+#-----|  -> Until
 
 #  171| Call
-#-----|  -> x
+#-----|  -> UnlessModifier
 
 #  171| puts
 #-----|  -> String
@@ -1846,169 +1835,210 @@ cfg.rb:
 #  171| String
 #-----|  -> Call
 
-#  173| Assignment
-#-----|  -> UntilModifier
+#  171| Binary
+#-----| true -> UnlessModifier
+#-----| false -> puts
 
-#  173| i
-#-----|  -> Assignment
+#  171| x
+#-----|  -> 0
 
-#  173| 0
-#-----|  -> i
+#  171| 0
+#-----|  -> Binary
 
-#  174| UntilModifier
-#-----|  -> i
+#  173| Until
+#-----|  -> x
 
-#  174| ParenthesizedStatements
-#-----|  -> i
+#  173| Binary
+#-----| false -> x
+#-----| true -> 0
 
-#  174| Call
-#-----|  -> i
+#  173| x
+#-----|  -> 10
 
-#  174| puts
-#-----|  -> String
+#  173| 10
+#-----|  -> Binary
 
-#  174| String
-#-----|  -> Call
+#  173| OperatorAssignment
+#-----|  -> puts
 
-#  174| OperatorAssignment
-#-----|  -> ParenthesizedStatements
+#  173| x
+#-----|  -> 10
 
-#  174| i
-#-----|  -> 1
-
-#  174| 1
+#  173| 10
 #-----|  -> OperatorAssignment
 
-#  174| Binary
+#  173| Call
+#-----|  -> x
+
+#  173| puts
+#-----|  -> String
+
+#  173| String
+#-----|  -> Call
+
+#  175| Assignment
+#-----|  -> UntilModifier
+
+#  175| i
+#-----|  -> Assignment
+
+#  175| 0
+#-----|  -> i
+
+#  176| UntilModifier
+#-----|  -> i
+
+#  176| ParenthesizedStatements
+#-----|  -> i
+
+#  176| Call
+#-----|  -> i
+
+#  176| puts
+#-----|  -> String
+
+#  176| String
+#-----|  -> Call
+
+#  176| OperatorAssignment
+#-----|  -> ParenthesizedStatements
+
+#  176| i
+#-----|  -> 1
+
+#  176| 1
+#-----|  -> OperatorAssignment
+
+#  176| Binary
 #-----| false -> puts
 #-----| true -> 0
 
-#  174| i
+#  176| i
 #-----|  -> 10
 
-#  174| 10
+#  176| 10
 #-----|  -> Binary
 
-#  176| Assignment
+#  178| Assignment
 #-----|  -> While
 
-#  176| x
+#  178| x
 #-----|  -> Assignment
 
-#  176| 0
+#  178| 0
 #-----|  -> x
 
-#  177| While
+#  179| While
 #-----|  -> x
 
-#  177| Binary
+#  179| Binary
 #-----| true -> x
 #-----| false -> WhileModifier
 
-#  177| x
+#  179| x
 #-----|  -> 10
 
-#  177| 10
+#  179| 10
 #-----|  -> Binary
 
-#  178| OperatorAssignment
-#-----|  -> x
-
-#  178| x
-#-----|  -> 1
-
-#  178| 1
-#-----|  -> OperatorAssignment
-
-#  179| If
-#-----|  -> puts
-
-#  179| Binary
-#-----| false -> If
-#-----| true -> Redo
-
-#  179| x
-#-----|  -> 5
-
-#  179| 5
-#-----|  -> Binary
-
-#  179| Redo
-#-----| redo -> x
-
-#  180| Call
-#-----|  -> x
-
-#  180| puts
+#  180| OperatorAssignment
 #-----|  -> x
 
 #  180| x
-#-----|  -> Call
-
-#  183| WhileModifier
-#-----|  -> i
-
-#  183| ParenthesizedStatements
-#-----|  -> i
-
-#  183| Call
-#-----|  -> i
-
-#  183| puts
-#-----|  -> String
-
-#  183| String
-#-----|  -> Call
-
-#  183| OperatorAssignment
-#-----|  -> ParenthesizedStatements
-
-#  183| i
 #-----|  -> 1
 
-#  183| 1
+#  180| 1
 #-----|  -> OperatorAssignment
 
-#  183| Binary
+#  181| If
+#-----|  -> puts
+
+#  181| Binary
+#-----| false -> If
+#-----| true -> Redo
+
+#  181| x
+#-----|  -> 5
+
+#  181| 5
+#-----|  -> Binary
+
+#  181| Redo
+#-----| redo -> x
+
+#  182| Call
+#-----|  -> x
+
+#  182| puts
+#-----|  -> x
+
+#  182| x
+#-----|  -> Call
+
+#  185| WhileModifier
+#-----|  -> i
+
+#  185| ParenthesizedStatements
+#-----|  -> i
+
+#  185| Call
+#-----|  -> i
+
+#  185| puts
+#-----|  -> String
+
+#  185| String
+#-----|  -> Call
+
+#  185| OperatorAssignment
+#-----|  -> ParenthesizedStatements
+
+#  185| i
+#-----|  -> 1
+
+#  185| 1
+#-----|  -> OperatorAssignment
+
+#  185| Binary
 #-----| true -> puts
 #-----| false -> run_block
 
-#  183| i
+#  185| i
 #-----|  -> 0
 
-#  183| 0
+#  185| 0
 #-----|  -> Binary
 
-#  185| Method
+#  187| Method
 #-----|  -> run_block
 
-#  185| run_block
+#  187| run_block
 #-----|  -> Method
 
-#  186| Yield
+#  188| Yield
 #-----|  -> 42
 
-#  186| 42
+#  188| 42
 
-#  189| Call
+#  191| Call
 #-----|  -> exit top-level (normal)
 
-#  189| run_block
+#  191| run_block
 #-----|  -> Block
 
-#  189| Block
+#  191| Block
 #-----|  -> Call
 
-#  189| x
+#  191| x
 #-----|  -> puts
 
-#  189| Call
+#  191| Call
 #-----|  -> exit block (normal)
 
-#  189| puts
+#  191| puts
 #-----|  -> x
 
-#  189| x
+#  191| x
 #-----|  -> Call
 
 exit.rb:
@@ -3760,7 +3790,7 @@ cfg.rb:
 
 #  153| exit two_parameters
 
-#  189| exit block
+#  191| exit block
 
 exit.rb:
 #    1| exit top-level
@@ -3898,7 +3928,7 @@ cfg.rb:
 #  153| exit two_parameters (normal)
 #-----|  -> exit two_parameters
 
-#  189| exit block (normal)
+#  191| exit block (normal)
 #-----|  -> exit block
 
 exit.rb:

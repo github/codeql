@@ -15,8 +15,7 @@ module Method {
 
     string getName() {
       result = generated.getName().(Generated::Token).getValue() or
-      // TODO: use hand-written Symbol class
-      result = generated.getName().(Generated::Symbol).toString() or
+      result = generated.getName().(SymbolLiteral).getValueText() or
       result = generated.getName().(Generated::Setter).getName().getValue() + "="
     }
   }
@@ -30,8 +29,7 @@ module SingletonMethod {
 
     string getName() {
       result = generated.getName().(Generated::Token).getValue() or
-      // TODO: use hand-written Symbol class
-      result = generated.getName().(Generated::Symbol).toString() or
+      result = generated.getName().(SymbolLiteral).getValueText() or
       result = generated.getName().(Generated::Setter).getName().getValue() + "="
     }
   }

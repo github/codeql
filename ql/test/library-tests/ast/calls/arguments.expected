@@ -1,0 +1,10 @@
+blockArguments
+| calls.rb:201:5:201:8 | &... | calls.rb:201:6:201:8 | call to bar |
+splatArguments
+| calls.rb:204:5:204:8 | *... | calls.rb:204:6:204:8 | call to bar |
+hashSplatArguments
+| calls.rb:207:5:207:9 | **... | calls.rb:207:7:207:9 | call to bar |
+keywordArguments
+| calls.rb:210:5:210:13 | Pair | calls.rb:210:5:210:8 | :blah | calls.rb:210:11:210:13 | call to bar |
+keywordArgumentsByKeyword
+| calls.rb:210:1:210:14 | call to foo | blah | calls.rb:210:11:210:13 | call to bar |

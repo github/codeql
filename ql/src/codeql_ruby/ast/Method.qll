@@ -80,7 +80,7 @@ class DoBlock extends Block, @do_block {
 
   final override string getAPrimaryQlClass() { result = "DoBlock" }
 
-  final override string toString() { result = "| ... |" }
+  final override string toString() { result = "do ... end" }
 }
 
 /**

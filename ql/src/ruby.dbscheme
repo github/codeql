@@ -50,9 +50,9 @@ sourceLocationPrefix(
 
 @underscore_lhs = @call | @element_reference | @scope_resolution | @token_false | @token_nil | @token_true | @underscore_variable
 
-@underscore_method_name = @setter | @symbol | @token_class_variable | @token_constant | @token_global_variable | @token_identifier | @token_instance_variable | @token_operator
+@underscore_method_name = @delimited_symbol | @setter | @token_class_variable | @token_constant | @token_global_variable | @token_identifier | @token_instance_variable | @token_operator | @token_simple_symbol
 
-@underscore_primary = @array | @begin | @break | @case__ | @chained_string | @class | @for | @hash | @if | @lambda | @method | @module | @next | @parenthesized_statements | @rational | @redo | @regex | @retry | @return | @singleton_class | @singleton_method | @string__ | @string_array | @subshell | @symbol | @symbol_array | @token_character | @token_complex | @token_float | @token_heredoc_beginning | @token_integer | @unary | @underscore_lhs | @unless | @until | @while | @yield
+@underscore_primary = @array | @begin | @break | @case__ | @chained_string | @class | @delimited_symbol | @for | @hash | @if | @lambda | @method | @module | @next | @parenthesized_statements | @rational | @redo | @regex | @retry | @return | @singleton_class | @singleton_method | @string__ | @string_array | @subshell | @symbol_array | @token_character | @token_complex | @token_float | @token_heredoc_beginning | @token_integer | @token_simple_symbol | @unary | @underscore_lhs | @unless | @until | @while | @yield
 
 @underscore_statement = @alias | @assignment | @begin_block | @binary | @break | @call | @end_block | @if_modifier | @next | @operator_assignment | @rescue_modifier | @return | @unary | @undef | @underscore_arg | @unless_modifier | @until_modifier | @while_modifier | @yield
 
@@ -393,6 +393,23 @@ conditional_def(
   int alternative: @underscore_arg ref,
   int condition: @underscore_arg ref,
   int consequence: @underscore_arg ref,
+  int loc: @location ref
+);
+
+@delimited_symbol_child_type = @interpolation | @token_escape_sequence | @token_string_content
+
+#keyset[delimited_symbol, index]
+delimited_symbol_child(
+  int delimited_symbol: @delimited_symbol ref,
+  int index: int ref,
+  unique int child: @delimited_symbol_child_type ref
+);
+
+#keyset[parent, parent_index]
+delimited_symbol_def(
+  unique int id: @delimited_symbol,
+  int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -886,7 +903,7 @@ optional_parameter_def(
   int loc: @location ref
 );
 
-@pair_key_type = @string__ | @symbol | @underscore_arg
+@pair_key_type = @string__ | @token_hash_key_symbol | @underscore_arg
 
 #keyset[parent, parent_index]
 pair_def(
@@ -1241,23 +1258,6 @@ superclass_def(
   int loc: @location ref
 );
 
-@symbol_child_type = @interpolation | @token_escape_sequence | @token_string_content
-
-#keyset[symbol, index]
-symbol_child(
-  int symbol: @symbol ref,
-  int index: int ref,
-  unique int child: @symbol_child_type ref
-);
-
-#keyset[parent, parent_index]
-symbol_def(
-  unique int id: @symbol,
-  int parent: @ast_node_parent ref,
-  int parent_index: int ref,
-  int loc: @location ref
-);
-
 #keyset[symbol_array, index]
 symbol_array_child(
   int symbol_array: @symbol_array ref,
@@ -1461,23 +1461,25 @@ case @token.kind of
 | 8 = @token_false
 | 9 = @token_float
 | 10 = @token_global_variable
-| 11 = @token_heredoc_beginning
-| 12 = @token_heredoc_content
-| 13 = @token_heredoc_end
-| 14 = @token_identifier
-| 15 = @token_instance_variable
-| 16 = @token_integer
-| 17 = @token_nil
-| 18 = @token_operator
-| 19 = @token_self
-| 20 = @token_string_content
-| 21 = @token_super
-| 22 = @token_true
-| 23 = @token_uninterpreted
+| 11 = @token_hash_key_symbol
+| 12 = @token_heredoc_beginning
+| 13 = @token_heredoc_content
+| 14 = @token_heredoc_end
+| 15 = @token_identifier
+| 16 = @token_instance_variable
+| 17 = @token_integer
+| 18 = @token_nil
+| 19 = @token_operator
+| 20 = @token_self
+| 21 = @token_simple_symbol
+| 22 = @token_string_content
+| 23 = @token_super
+| 24 = @token_true
+| 25 = @token_uninterpreted
 ;
 
 
-@ast_node = @alias | @argument_list | @array | @assignment | @bare_string | @bare_symbol | @begin | @begin_block | @binary | @block | @block_argument | @block_parameter | @block_parameters | @break | @call | @case__ | @chained_string | @class | @conditional | @destructured_left_assignment | @destructured_parameter | @do | @do_block | @element_reference | @else | @elsif | @end_block | @ensure | @exception_variable | @exceptions | @for | @hash | @hash_splat_argument | @hash_splat_parameter | @heredoc_body | @if | @if_modifier | @in | @interpolation | @keyword_parameter | @lambda | @lambda_parameters | @left_assignment_list | @method | @method_parameters | @module | @next | @operator_assignment | @optional_parameter | @pair | @parenthesized_statements | @pattern | @program | @range | @rational | @redo | @regex | @rescue | @rescue_modifier | @rest_assignment | @retry | @return | @right_assignment_list | @scope_resolution | @setter | @singleton_class | @singleton_method | @splat_argument | @splat_parameter | @string__ | @string_array | @subshell | @superclass | @symbol | @symbol_array | @then | @token | @unary | @undef | @unless | @unless_modifier | @until | @until_modifier | @when | @while | @while_modifier | @yield
+@ast_node = @alias | @argument_list | @array | @assignment | @bare_string | @bare_symbol | @begin | @begin_block | @binary | @block | @block_argument | @block_parameter | @block_parameters | @break | @call | @case__ | @chained_string | @class | @conditional | @delimited_symbol | @destructured_left_assignment | @destructured_parameter | @do | @do_block | @element_reference | @else | @elsif | @end_block | @ensure | @exception_variable | @exceptions | @for | @hash | @hash_splat_argument | @hash_splat_parameter | @heredoc_body | @if | @if_modifier | @in | @interpolation | @keyword_parameter | @lambda | @lambda_parameters | @left_assignment_list | @method | @method_parameters | @module | @next | @operator_assignment | @optional_parameter | @pair | @parenthesized_statements | @pattern | @program | @range | @rational | @redo | @regex | @rescue | @rescue_modifier | @rest_assignment | @retry | @return | @right_assignment_list | @scope_resolution | @setter | @singleton_class | @singleton_method | @splat_argument | @splat_parameter | @string__ | @string_array | @subshell | @superclass | @symbol_array | @then | @token | @unary | @undef | @unless | @unless_modifier | @until | @until_modifier | @when | @while | @while_modifier | @yield
 
 @ast_node_parent = @ast_node | @file
 

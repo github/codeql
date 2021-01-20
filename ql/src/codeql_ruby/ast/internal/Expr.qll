@@ -1,5 +1,6 @@
 private import codeql_ruby.AST
 private import codeql_ruby.ast.internal.TreeSitter
+private import codeql_ruby.ast.internal.Variable
 
 module Expr {
   abstract class Range extends AstNode { }
@@ -16,6 +17,8 @@ module IntegerLiteral {
     final override Generated::Integer generated;
 
     final override string getValueText() { result = generated.getValue() }
+
+    final override string toString() { result = getValueText() }
   }
 }
 
@@ -24,6 +27,8 @@ module NilLiteral {
     final override Generated::Nil generated;
 
     final override string getValueText() { result = generated.getValue() }
+
+    final override string toString() { result = getValueText() }
   }
 }
 
@@ -34,6 +39,8 @@ module BooleanLiteral {
     final override Generated::Token generated;
 
     final override string getValueText() { result = generated.getValue() }
+
+    final override string toString() { result = getValueText() }
 
     predicate isTrue() { this instanceof @token_true }
 
@@ -47,6 +54,16 @@ module RegexLiteral {
     final override Generated::Regex generated;
 
     final override string getValueText() {
+      forall(AstNode n | n = generated.getChild(_) | n instanceof Generated::Token) and
+      result =
+        concat(int i, string s |
+          s = generated.getChild(i).(Generated::Token).getValue()
+        |
+          s order by i
+        )
+    }
+
+    final override string toString() {
       result =
         concat(AstNode c, int i, string s |
           c = generated.getChild(i) and
@@ -57,6 +74,109 @@ module RegexLiteral {
           s order by i
         )
     }
+  }
+}
+
+// TODO: expand this minimal placeholder.
+module StringLiteral {
+  class Range extends Literal::Range, @string__ {
+    final override Generated::String generated;
+
+    final override string getValueText() {
+      count(generated.getChild(_)) = 1 and
+      generated.getChild(0) instanceof Generated::Token and
+      result = generated.getChild(0).(Generated::Token).getValue()
+    }
+
+    final override string toString() {
+      result =
+        concat(AstNode c, int i, string s |
+          c = generated.getChild(i) and
+          if c instanceof Generated::Token
+          then s = c.(Generated::Token).getValue()
+          else s = "#{...}"
+        |
+          s order by i
+        )
+    }
+  }
+}
+
+// TODO: expand this minimal placeholder.
+module SymbolLiteral {
+  abstract class Range extends Literal::Range { }
+
+  class SimpleSymbolRange extends SymbolLiteral::Range {
+    final override Generated::SimpleSymbol generated;
+
+    // Tree-sitter gives us value text including the colon, which we skip.
+    final override string getValueText() { result = generated.getValue().suffix(1) }
+
+    final override string toString() { result = generated.getValue() }
+  }
+
+  class DelimitedSymbolRange extends SymbolLiteral::Range, @delimited_symbol {
+    final override Generated::DelimitedSymbol generated;
+
+    final override string getValueText() {
+      count(generated.getChild(_)) = 1 and
+      generated.getChild(0) instanceof Generated::Token and
+      result = generated.getChild(0).(Generated::Token).getValue()
+    }
+
+    private string summaryString() {
+      result =
+        concat(AstNode c, int i, string s |
+          c = generated.getChild(i) and
+          if c instanceof Generated::Token
+          then s = c.(Generated::Token).getValue()
+          else s = "#{...}"
+        |
+          s order by i
+        )
+    }
+
+    final override string toString() {
+      if summaryString().regexpMatch("[a-zA-z_][a-zA-Z_0-9]*")
+      then result = ":" + summaryString()
+      else result = ":\"" + summaryString() + "\""
+    }
+  }
+
+  class BareSymbolRange extends SymbolLiteral::Range, @bare_symbol {
+    final override Generated::BareSymbol generated;
+
+    final override string getValueText() {
+      count(generated.getChild(_)) = 1 and
+      generated.getChild(0) instanceof Generated::Token and
+      result = generated.getChild(0).(Generated::Token).getValue()
+    }
+
+    private string summaryString() {
+      result =
+        concat(AstNode c, int i, string s |
+          c = generated.getChild(i) and
+          if c instanceof Generated::Token
+          then s = c.(Generated::Token).getValue()
+          else s = "#{...}"
+        |
+          s order by i
+        )
+    }
+
+    final override string toString() {
+      if summaryString().regexpMatch("[a-zA-z_][a-zA-Z_0-9]*")
+      then result = ":" + summaryString()
+      else result = ":\"" + summaryString() + "\""
+    }
+  }
+
+  class HashKeySymbolRange extends SymbolLiteral::Range, @token_hash_key_symbol {
+    final override Generated::HashKeySymbol generated;
+
+    final override string getValueText() { result = generated.getValue() }
+
+    final override string toString() { result = ":" + getValueText() }
   }
 }
 
@@ -87,5 +207,25 @@ module DoExpr {
     final override Generated::Do generated;
 
     final override Expr getExpr(int n) { result = generated.getChild(n) }
+  }
+}
+
+module ScopeResolution {
+  class Range extends Expr::Range, @scope_resolution {
+    final override Generated::ScopeResolution generated;
+
+    final Expr getScope() { result = generated.getScope() }
+
+    final string getName() { result = generated.getName().(Generated::Token).getValue() }
+  }
+}
+
+module Pair {
+  class Range extends Expr::Range, @pair {
+    final override Generated::Pair generated;
+
+    final Expr getKey() { result = generated.getKey() }
+
+    final Expr getValue() { result = generated.getValue() }
   }
 }
