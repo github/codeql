@@ -1881,8 +1881,9 @@ private module Django {
       // Since we're still installing dependencies and analyzing their source code,
       // without explicitly filtering out this call, we would be double-counting such
       // route-setups :( One practical negative side effect of double-counting it, is
-      // that since we can't figure out the URL, we mark ANY parameter as being a
-      // routed-parameter, which can lead to FPs.
+      // that since we can't figure out the URL in the library code calling `django.urls.re_path`
+      // (because we only consider local flow), we will for all those cases mark ANY parameter
+      // as being a routed-parameter, which can lead to FPs.
       not exists(Module mod |
         mod.getName() = "django.conf.urls.__init__" and
         node.getEnclosingModule() = mod
