@@ -25,13 +25,18 @@ abstract class RoutingTest extends InlineExpectationsTest {
       element = fromNode.toString() and
       (
         tag = this.flowTag() and
-        value = "\"" + prettyNode(fromNode).replaceAll("\"", "'") + "\""
+        if "\"" + tag + "\"" = fromValue(fromNode) then value = "" else value = fromValue(fromNode)
         or
         tag = "func" and
-        not fromFunc(fromNode) = toFunc(toNode) and
-        value = toFunc(toNode)
+        value = toFunc(toNode) and
+        not value = fromFunc(fromNode)
       )
     )
+  }
+
+  pragma[inline]
+  private string fromValue(DataFlow::Node fromNode) {
+    result = "\"" + prettyNode(fromNode).replaceAll("\"", "'") + "\""
   }
 
   pragma[inline]
