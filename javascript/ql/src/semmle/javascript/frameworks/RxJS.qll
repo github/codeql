@@ -17,7 +17,10 @@ private class RxJsSubscribeStep extends TaintTracking::AdditionalTaintStep, Data
 }
 
 /**
- * Holds if a tainted value sent into the given `pipe` should propagate to `arg`.
+ * Gets a data flow node that can take the value of any input sent to `pipe`.
+ *
+ * For example, in `map(x => ...)`, `x` refers to any value sent to the pipe
+ * created by the `map` call.
  */
 private DataFlow::Node pipeInput(DataFlow::CallNode pipe) {
   pipe = DataFlow::moduleMember("rxjs/operators", ["map", "filter"]).getACall() and
@@ -25,7 +28,10 @@ private DataFlow::Node pipeInput(DataFlow::CallNode pipe) {
 }
 
 /**
- * Holds if a tainted value in `output` should propagate to the output of the given pipe.
+ * Gets a data flow node whose value becomes the output of the given `pipe`.
+ *
+ * For example, in `map(x => x + 1)`, the `x + 1` node becomes the output of
+ * the pipe.
  */
 private DataFlow::Node pipeOutput(DataFlow::CallNode pipe) {
   pipe = DataFlow::moduleMember("rxjs/operators", "map").getACall() and
