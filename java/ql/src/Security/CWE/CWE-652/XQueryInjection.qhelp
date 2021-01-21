@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The software uses external input to dynamically construct an XQuery expression used to retrieve data from an XML database, but it does not neutralize or incorrectly neutralizes that input. 
+This allows an attacker to control the structure of the query.</p>
+
+</overview>
+<recommendation>
+
+<p>Use parameterized queries. This will help ensure separation between data plane and control plane.</p>
+
+</recommendation>
+<example>
+
+<p>This example is a comparison of unused parameterized query and using parameterized query. 
+Parameterized query through <code>bindString</code>.</p>
+
+<sample src="XQueryInjection.java" />
+
+</example>
+<references>
+
+<li>cwe description: 
+<a href="https://cwe.mitre.org/data/definitions/652.html">XQuery Injection</a>.</li>
+
+
+
+<!--  LocalWords:  CWE
+ -->
+
+</references>
+</qhelp>
