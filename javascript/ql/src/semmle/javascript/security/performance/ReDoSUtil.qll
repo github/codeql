@@ -113,7 +113,7 @@ class RegExpRoot extends RegExpTerm {
     not exists(RegExpLookbehind lbh | getRoot(lbh) = this) and
     // is actually used as a RegExp
     isUsedAsRegExp() and
-    // is not inside a minified file.
+    // pragmatic performance optimization: ignore minified files.
     not getRootTerm().getParent().(Expr).getTopLevel().isMinified()
   }
 }
