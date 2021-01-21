@@ -388,10 +388,10 @@ private class AnalyzedUpdateExpr extends DataFlow::AnalyzedValueNode {
 /**
  * Flow analysis for compound assignments.
  */
-private class AnalyzedCompoundAssignExpr extends DataFlow::AnalyzedValueNode {
+private class AnalyzedCompoundNumericAssignExpr extends DataFlow::AnalyzedValueNode {
   override CompoundAssignExpr astNode;
 
-  AnalyzedCompoundAssignExpr() { astNode.isNumeric() }
+  AnalyzedCompoundNumericAssignExpr() { astNode.isNumeric() }
 
   override AbstractValue getALocalValue() { result = abstractValueOfType(TTNumber()) }
 }
