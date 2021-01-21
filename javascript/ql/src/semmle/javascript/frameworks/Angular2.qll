@@ -242,19 +242,6 @@ module Angular2 {
   }
 
   /**
-   * A call derived from a pipe expression.
-   *
-   * For example, the expression `x | f: y` is desugared to `f(x, y)` where
-   * `f` is a `PipeRefExpr` and the call itself is a `PipeCallExpr`.
-   */
-  class PipeCallExpr extends CallExpr {
-    PipeCallExpr() { getCallee() instanceof PipeRefExpr }
-
-    /** Gets the name of the pipe being invoked, such as `f` in `x | f`. */
-    string getPipeName() { result = getCallee().(PipeRefExpr).getName() }
-  }
-
-  /**
    * A reference to a variable in a template expression, corresponding
    * to a property on the component class.
    */
