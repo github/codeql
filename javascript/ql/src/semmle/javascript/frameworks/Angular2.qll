@@ -343,13 +343,13 @@ module Angular2 {
     /** Gets an HTML element that instantiates this component. */
     HTML::Element getATemplateInstantiation() { result.getName() = getSelector() }
 
-    /** 
-      * Gets an argument that flows into the `name` field of this component. 
-      * 
-      * For example, if the selector for this component is `"my-class"`, then this  
-      * predicate can match an attribute like: `<my-class [foo]="1+2"/>`.  
-      * The result of this predicate would be the `1+2` expression, and `name` would be `"foo"`. 
-      */
+    /**
+     * Gets an argument that flows into the `name` field of this component.
+     *
+     * For example, if the selector for this component is `"my-class"`, then this
+     * predicate can match an attribute like: `<my-class [foo]="1+2"/>`.
+     * The result of this predicate would be the `1+2` expression, and `name` would be `"foo"`.
+     */
     DataFlow::Node getATemplateArgument(string name) {
       result =
         getAttributeValueAsNode(getATemplateInstantiation().getAttributeByName("[" + name + "]"))
