@@ -339,8 +339,8 @@ private class LeftToRightPostOrderNodes =
       @hash_splat_argument or @heredoc_body or @interpolation or @left_assignment_list or @next or
       @operator_assignment or @pair or @parenthesized_statements or @range or @redo or @regex or
       @rest_assignment or @retry or @return or @right_assignment_list or @scope_resolution or
-      @token_simple_symbol or @splat_argument or @splat_parameter or @string__ or @string_array or
-      @subshell or @superclass or @symbol_array or @token_hash_key_symbol or @unary;
+      @token_simple_symbol or @splat_argument or @string__ or @string_array or @subshell or
+      @superclass or @symbol_array or @token_hash_key_symbol or @unary;
 
 private class LeftToRightPostOrderTree extends StandardPostOrderTree, LeftToRightPostOrderNodes {
   LeftToRightPostOrderTree() {
@@ -439,7 +439,9 @@ module Trees {
     }
   }
 
-  private class BlockParameterTree extends LeafTree, BlockParameter { }
+  private class BlockParameterTree extends ComplexParameterTree, BlockParameter {
+    final override Identifier getIdentifier() { result = this.getName() }
+  }
 
   private class CaseTree extends PreOrderTree, Case {
     final override predicate propagatesAbnormal(AstNode child) {
@@ -498,30 +500,47 @@ module Trees {
 
   private class ComplexTree extends LeafTree, Complex { }
 
+  abstract private class ComplexParameterTree extends ControlFlowTree {
+    abstract Identifier getIdentifier();
+
+    final override predicate propagatesAbnormal(AstNode child) { none() }
+
+    final override predicate first(AstNode first) { first(this.getIdentifier(), first) }
+
+    final override predicate last(AstNode last, Completion c) {
+      last(this.getIdentifier(), last, c)
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
+  }
+
   private class ConstantTree extends LeafTree, Constant { }
 
   /** A parameter that may have a default value. */
-  abstract class DefaultValueParameterTree extends PreOrderTree {
+  abstract class DefaultValueParameterTree extends ControlFlowTree {
     abstract AstNode getDefaultValue();
+
+    abstract Identifier getIdentifier();
 
     predicate hasDefaultValue() { exists(this.getDefaultValue()) }
 
     final override predicate propagatesAbnormal(AstNode child) { child = this.getDefaultValue() }
 
+    final override predicate first(AstNode first) { first(this.getIdentifier(), first) }
+
     final override predicate last(AstNode last, Completion c) {
-      last = this and
-      exists(this.getDefaultValue()) and
+      last(this.getIdentifier(), last, c) and
       c.(MatchingCompletion).getValue() = true
       or
       last(this.getDefaultValue(), last, c)
       or
-      last = this and
-      not exists(this.getDefaultValue()) and
-      c instanceof SimpleCompletion
+      last(this.getIdentifier(), last, c) and
+      not this.hasDefaultValue() and
+      c instanceof NormalCompletion
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      pred = this and
+      last(this.getIdentifier(), pred, c) and
       first(this.getDefaultValue(), succ) and
       c.(MatchingCompletion).getValue() = false
     }
@@ -657,7 +676,9 @@ module Trees {
 
   private class GlobalVariableTree extends LeafTree, GlobalVariable { }
 
-  private class HashSplatParameterTree extends LeafTree, HashSplatParameter { }
+  private class HashSplatParameterTree extends ComplexParameterTree, HashSplatParameter {
+    final override Identifier getIdentifier() { result = this.getName() }
+  }
 
   private HeredocBody heredoc(HeredocBeginning start) {
     exists(int i, File f |
@@ -683,13 +704,7 @@ module Trees {
     }
   }
 
-  private class IdentifierTree extends LeafTree, Identifier {
-    IdentifierTree() {
-      not this = any(SplatParameter p).getName() and
-      not this = any(KeywordParameter p).getName() and
-      not this = any(OptionalParameter p).getName()
-    }
-  }
+  private class IdentifierTree extends LeafTree, Identifier { }
 
   private class IfElsifTree extends PostOrderTree, IfElsifAstNode {
     final override predicate propagatesAbnormal(AstNode child) {
@@ -721,6 +736,8 @@ module Trees {
 
   private class KeywordParameterTree extends DefaultValueParameterTree, KeywordParameter {
     final override AstNode getDefaultValue() { result = this.getValue() }
+
+    final override Identifier getIdentifier() { result = this.getName() }
   }
 
   class LambdaTree extends LeafTree, Lambda {
@@ -819,6 +836,8 @@ module Trees {
 
   private class OptionalParameterTree extends DefaultValueParameterTree, OptionalParameter {
     final override AstNode getDefaultValue() { result = this.getValue() }
+
+    final override Identifier getIdentifier() { result = this.getName() }
   }
 
   private class RationalTree extends LeafTree, Rational { }
@@ -1179,7 +1198,9 @@ module Trees {
     }
   }
 
-  private class SplatParameterTree extends LeafTree, SplatParameter { }
+  private class SplatParameterTree extends ComplexParameterTree, SplatParameter {
+    final override Identifier getIdentifier() { result = this.getName() }
+  }
 
   private class SuperTree extends LeafTree, Super { }
 
