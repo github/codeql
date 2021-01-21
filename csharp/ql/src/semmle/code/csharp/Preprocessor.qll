@@ -4,7 +4,17 @@
 
 import Element
 
+/**
+ * A preprocessor directive, such as `PragmaWarningDirective`, `PragmaChecksumDirective`,
+ * `DefineDirective`, `UndefineDirective`, `WarningDirective`, `ErrorDirective`,
+ * `NullableDirective`, `LineDirective`, `RegionDirective`, `EndRegionDirective`,
+ * `BranchDirective`, or `EndifDirective`.
+ */
 class PreprocessorDirective extends Element, @preprocessor_directive {
+  /**
+   * Holds if this directive is processed by the preprocessor, such as any directive
+   * that is not inside a not taken `BranchDirective`.
+   */
   predicate active() { preprocessor_directive_active(this, 1) }
 
   override Location getALocation() {
