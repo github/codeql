@@ -132,7 +132,7 @@ module EssaFlow {
     //   nodeTo = `TIterableSequence([a, b])`
     exists(UnpackingAssignmentDirectTarget target |
       nodeFrom.asExpr() = target.getValue() and
-      nodeTo = TIterableSequence(target)
+      nodeTo = TIterableSequenceNode(target)
     )
     or
     // With definition
@@ -435,7 +435,7 @@ module ArgumentPassing {
       // argument unpacked from dict
       exists(string name |
         call_unpacks(call, mapping, callable, name, paramN) and
-        result = TKwUnpacked(call, callable, name)
+        result = TKwUnpackedNode(call, callable, name)
       )
     )
   }
@@ -1186,7 +1186,7 @@ module UnpackingAssignment {
   /** Step 2 */
   predicate unpackingAssignmentFlowStep(Node nodeFrom, Node nodeTo) {
     exists(UnpackingAssignmentSequenceTarget target |
-      nodeFrom = TIterableSequence(target) and
+      nodeFrom = TIterableSequenceNode(target) and
       nodeTo.asCfgNode() = target
     )
   }
@@ -1194,8 +1194,8 @@ module UnpackingAssignment {
   /** Step 3 */
   predicate unpackingAssignmentConvertingReadStep(Node nodeFrom, Content c, Node nodeTo) {
     exists(UnpackingAssignmentSequenceTarget target |
-      nodeFrom = TIterableSequence(target) and
-      nodeTo = TIterableElement(target) and
+      nodeFrom = TIterableSequenceNode(target) and
+      nodeTo = TIterableElementNode(target) and
       (
         c instanceof ListElementContent
         or
@@ -1215,7 +1215,7 @@ module UnpackingAssignment {
   /** Step 4 */
   predicate unpackingAssignmentConvertingStoreStep(Node nodeFrom, Content c, Node nodeTo) {
     exists(UnpackingAssignmentSequenceTarget target |
-      nodeFrom = TIterableElement(target) and
+      nodeFrom = TIterableElementNode(target) and
       nodeTo.asCfgNode() = target and
       (
         target instanceof ListNode and
@@ -1249,13 +1249,13 @@ module UnpackingAssignment {
         if element instanceof SequenceNode
         then
           // Step 5b
-          nodeTo = TIterableSequence(element) and
+          nodeTo = TIterableSequenceNode(element) and
           precise = true
         else
           if element.getNode() instanceof Starred
           then
             // Step 5c
-            nodeTo = TIterableElement(element) and
+            nodeTo = TIterableElementNode(element) and
             precise = false
           else (
             // Step 5a
@@ -1269,7 +1269,7 @@ module UnpackingAssignment {
   /** Step 6 */
   predicate unpackingAssignmentStarredElementStoreStep(Node nodeFrom, Content c, Node nodeTo) {
     exists(ControlFlowNode starred | starred.getNode() instanceof Starred |
-      nodeFrom = TIterableElement(starred) and
+      nodeFrom = TIterableElementNode(starred) and
       nodeTo.asVar().getDefinition().(MultiAssignmentDefinition).getDefiningNode() = starred and
       c instanceof ListElementContent
     )
@@ -1378,7 +1378,7 @@ predicate attributeReadStep(CfgNode nodeFrom, AttributeContent c, CfgNode nodeTo
 predicate kwUnpackReadStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
   exists(CallNode call, CallableValue callable, string name |
     nodeFrom.asCfgNode() = call.getNode().getKwargs().getAFlowNode() and
-    nodeTo = TKwUnpacked(call, callable, name) and
+    nodeTo = TKwUnpackedNode(call, callable, name) and
     name = c.getKey()
   )
 }
