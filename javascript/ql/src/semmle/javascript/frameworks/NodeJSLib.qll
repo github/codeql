@@ -826,7 +826,7 @@ module NodeJSLib {
   /**
    * A model of a URL request in the Node.js `http` library.
    */
-  private class NodeHttpUrlRequest extends NodeJSClientRequest::Range {
+  private class NodeHttpUrlRequest extends NodeJSClientRequest::Range, NodeJSEventEmitter {
     DataFlow::Node url;
 
     NodeHttpUrlRequest() {
@@ -881,8 +881,11 @@ module NodeJSLib {
       exists(DataFlow::MethodCallNode mcn |
         clientRequest.getAMethodCall(EventEmitter::on()) = mcn and
         mcn.getArgument(0).mayHaveStringValue(handledEvent) and
-        flowsTo(mcn.getArgument(1))
+        this.flowsTo(mcn.getArgument(1))
       )
+      or
+      this.flowsTo(clientRequest.(DataFlow::CallNode).getLastArgument()) and
+      handledEvent = "connection"
     }
 
     /**
@@ -1057,6 +1060,15 @@ module NodeJSLib {
       result = NodeJSEventEmitter.super.ref() and not this = clazz
       or
       result = clazz.getAReceiverNode()
+    }
+  }
+
+  private class ClientRequestEventEmitter extends NodeJSEventEmitter {
+    ClientRequestEventEmitter() {
+      exists(ClientRequestHandler handler |
+        not handler.getAHandledEvent() = "error" and
+        this = handler.getAParameter()
+      )
     }
   }
 
