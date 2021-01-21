@@ -1,13 +1,13 @@
 nodes
-| documentation_examples/ResourceExhaustion_timeout.js:5:6:5:59 | delay |
-| documentation_examples/ResourceExhaustion_timeout.js:5:14:5:59 | parseIn ... .delay) |
-| documentation_examples/ResourceExhaustion_timeout.js:5:23:5:46 | url.par ... , true) |
-| documentation_examples/ResourceExhaustion_timeout.js:5:23:5:52 | url.par ... ).query |
-| documentation_examples/ResourceExhaustion_timeout.js:5:23:5:58 | url.par ... y.delay |
-| documentation_examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url |
-| documentation_examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url |
-| documentation_examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay |
-| documentation_examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:6:5:59 | delay |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:14:5:59 | parseIn ... .delay) |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:46 | url.par ... , true) |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:52 | url.par ... ).query |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:58 | url.par ... y.delay |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url |
+| documentaion-examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay |
+| documentaion-examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay |
 | resource-exhaustion.js:9:7:9:42 | s |
 | resource-exhaustion.js:9:11:9:34 | url.par ... , true) |
 | resource-exhaustion.js:9:11:9:40 | url.par ... ).query |
@@ -30,14 +30,14 @@ nodes
 | resource-exhaustion.js:88:18:88:18 | s |
 | resource-exhaustion.js:88:18:88:18 | s |
 edges
-| documentation_examples/ResourceExhaustion_timeout.js:5:6:5:59 | delay | documentation_examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay |
-| documentation_examples/ResourceExhaustion_timeout.js:5:6:5:59 | delay | documentation_examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay |
-| documentation_examples/ResourceExhaustion_timeout.js:5:14:5:59 | parseIn ... .delay) | documentation_examples/ResourceExhaustion_timeout.js:5:6:5:59 | delay |
-| documentation_examples/ResourceExhaustion_timeout.js:5:23:5:46 | url.par ... , true) | documentation_examples/ResourceExhaustion_timeout.js:5:23:5:52 | url.par ... ).query |
-| documentation_examples/ResourceExhaustion_timeout.js:5:23:5:52 | url.par ... ).query | documentation_examples/ResourceExhaustion_timeout.js:5:23:5:58 | url.par ... y.delay |
-| documentation_examples/ResourceExhaustion_timeout.js:5:23:5:58 | url.par ... y.delay | documentation_examples/ResourceExhaustion_timeout.js:5:14:5:59 | parseIn ... .delay) |
-| documentation_examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url | documentation_examples/ResourceExhaustion_timeout.js:5:23:5:46 | url.par ... , true) |
-| documentation_examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url | documentation_examples/ResourceExhaustion_timeout.js:5:23:5:46 | url.par ... , true) |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:6:5:59 | delay | documentaion-examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:6:5:59 | delay | documentaion-examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:14:5:59 | parseIn ... .delay) | documentaion-examples/ResourceExhaustion_timeout.js:5:6:5:59 | delay |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:46 | url.par ... , true) | documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:52 | url.par ... ).query |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:52 | url.par ... ).query | documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:58 | url.par ... y.delay |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:58 | url.par ... y.delay | documentaion-examples/ResourceExhaustion_timeout.js:5:14:5:59 | parseIn ... .delay) |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url | documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:46 | url.par ... , true) |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url | documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:46 | url.par ... , true) |
 | resource-exhaustion.js:9:7:9:42 | s | resource-exhaustion.js:10:20:10:20 | s |
 | resource-exhaustion.js:9:7:9:42 | s | resource-exhaustion.js:39:12:39:12 | s |
 | resource-exhaustion.js:9:7:9:42 | s | resource-exhaustion.js:39:12:39:12 | s |
@@ -59,7 +59,7 @@ edges
 | resource-exhaustion.js:10:11:10:21 | parseInt(s) | resource-exhaustion.js:10:7:10:21 | n |
 | resource-exhaustion.js:10:20:10:20 | s | resource-exhaustion.js:10:11:10:21 | parseInt(s) |
 #select
-| documentation_examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay | documentation_examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url | documentation_examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay | This creates a timer with a user-controlled duration from $@. | documentation_examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url | here |
+| documentaion-examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay | documentaion-examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url | documentaion-examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay | This creates a timer with a user-controlled duration from $@. | documentaion-examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url | here |
 | resource-exhaustion.js:38:12:38:12 | n | resource-exhaustion.js:9:21:9:27 | req.url | resource-exhaustion.js:38:12:38:12 | n | This creates a string with a user-controlled length from $@. | resource-exhaustion.js:9:21:9:27 | req.url | here |
 | resource-exhaustion.js:39:12:39:12 | s | resource-exhaustion.js:9:21:9:27 | req.url | resource-exhaustion.js:39:12:39:12 | s | This creates a string with a user-controlled length from $@. | resource-exhaustion.js:9:21:9:27 | req.url | here |
 | resource-exhaustion.js:85:17:85:17 | n | resource-exhaustion.js:9:21:9:27 | req.url | resource-exhaustion.js:85:17:85:17 | n | This creates a timer with a user-controlled duration from $@. | resource-exhaustion.js:9:21:9:27 | req.url | here |
