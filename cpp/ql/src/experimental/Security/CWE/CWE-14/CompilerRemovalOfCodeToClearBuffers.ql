@@ -23,7 +23,12 @@ class CompilerRemovaMemset extends FunctionCall {
     exists(DataFlow::Node source, DataFlow::Node sink, LocalVariable isv, Expr exp |
       DataFlow::localFlow(source, sink) and
       this.getArgument(0) = isv.getAnAccess() and
-      source.asExpr() = exp and
+      (
+        source.asExpr() = exp
+        or
+        // handle the case where exp is defined by an address being passed into some function.
+        source.asDefiningArgument() = exp
+      ) and
       exp.getLocation().getEndLine() < this.getArgument(0).getLocation().getStartLine() and
       sink.asExpr() = this.getArgument(0)
     )
