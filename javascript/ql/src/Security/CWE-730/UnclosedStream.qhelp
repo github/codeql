@@ -1,0 +1,69 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+
+	<p>
+
+		Callback-based input streams generate calls until they are empty or
+		closed explicitly, and they will take up system resources until
+		that point in time.
+
+	</p>
+
+	<p>
+
+		Forgetting to close a stream that no longer is useful can cause
+		unnecessary exhaustion of system resources, which may cause the
+		application to be unresponsive or even crash.
+
+	</p>
+
+</overview>
+
+<recommendation>
+
+	<p>
+
+		Close input streams explicitly when there is no interest in their
+		remaining content.
+
+	</p>
+
+</recommendation>
+
+<example>
+
+	<p>
+
+In the following example, an array stores the content of a stream
+until the array becomes too big. When that happens, an error message
+is generated, and the stream processing is supposed to end.
+
+	</p>
+
+	<sample src="examples/UnclosedStream.js"/>
+
+	<p>
+
+The stream will however keep invoking the callback until it becomes
+empty, regardless of the programmers intention to not process
+additional content. This means that the array will grow indefinitely, if a malicious actor keep sending data.
+
+Close the stream to remedy this:
+
+	</p>
+
+	<sample src="examples/UnclosedStream_fixed.js"/>
+
+</example>
+
+<references>
+
+	<li>Node.js: <a href="https://nodejs.org/api/stream.html">Stream</a></li>
+
+</references>
+
+</qhelp>
