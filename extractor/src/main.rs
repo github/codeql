@@ -135,11 +135,17 @@ fn main() -> std::io::Result<()> {
         let path = PathBuf::from(line).canonicalize()?;
         let trap_file = path_for(&trap_dir, &path, trap_compression.extension());
         let src_archive_file = path_for(&src_archive_dir, &path, "");
-        let source = std::fs::read(&path)?;
+        let mut source = std::fs::read(&path)?;
         let code_ranges;
         if path.extension().map_or(false, |x| x == "erb") {
             tracing::info!("scanning: {}", path.display());
-            code_ranges = scan_erb(erb, &source);
+            let (ranges, line_breaks) = scan_erb(erb, &source);
+            for i in line_breaks {
+                if i < source.len() {
+                    source[i] = b'\n';
+                }
+            }
+            code_ranges = ranges;
         } else {
             code_ranges = vec![];
         }
@@ -159,18 +165,25 @@ fn main() -> std::io::Result<()> {
     })
 }
 
-fn scan_erb(erb: Language, source: &std::vec::Vec<u8>) -> Vec<Range> {
+fn scan_erb(erb: Language, source: &std::vec::Vec<u8>) -> (Vec<Range>, Vec<usize>) {
     let mut parser = Parser::new();
     parser.set_language(erb).unwrap();
     let tree = parser.parse(&source, None).expect("Failed to parse file");
     let mut result = Vec::new();
+    let mut line_breaks = vec![];
 
     for n in tree.root_node().children(&mut tree.walk()) {
         let kind = n.kind();
         if kind == "directive" || kind == "output_directive" {
             for c in n.children(&mut tree.walk()) {
                 if c.kind() == "code" {
-                    result.push(c.range());
+                    let mut range = c.range();
+                    if range.end_byte < source.len() {
+                        line_breaks.push(range.end_byte);
+                        range.end_byte += 1;
+                        range.end_point.column += 1;
+                    }
+                    result.push(range);
                 }
             }
         }
@@ -185,7 +198,7 @@ fn scan_erb(erb: Language, source: &std::vec::Vec<u8>) -> Vec<Range> {
             end_point: root.end_position(),
         });
     }
-    result
+    (result, line_breaks)
 }
 
 fn path_for(dir: &Path, path: &Path, ext: &str) -> PathBuf {
