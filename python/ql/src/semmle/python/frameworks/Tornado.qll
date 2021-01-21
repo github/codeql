@@ -216,6 +216,17 @@ private module Tornado {
         /** Gets a reference to one of the methods `get_arguments`, `get_body_arguments`, `get_query_arguments`. */
         DataFlow::Node argumentsMethod() { result = argumentsMethod(DataFlow::TypeTracker::end()) }
 
+        /** Gets a reference the `redirect` method. */
+        private DataFlow::Node redirectMethod(DataFlow::TypeTracker t) {
+          t.startInAttr("redirect") and
+          result = instance()
+          or
+          exists(DataFlow::TypeTracker t2 | result = redirectMethod(t2).track(t2, t))
+        }
+
+        /** Gets a reference the `redirect` method. */
+        DataFlow::Node redirectMethod() { result = redirectMethod(DataFlow::TypeTracker::end()) }
+
         private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
           override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
             // Method access
@@ -539,5 +550,32 @@ private module Tornado {
       result in [this.getArg(_), this.getArgByName(_)] and
       not result = this.getArg(0)
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Response modeling
+  // ---------------------------------------------------------------------------
+  /**
+   * A call to `tornado.web.RequestHandler.write` method.
+   *
+   * See https://www.tornadoweb.org/en/stable/web.html?highlight=write#tornado.web.RequestHandler.write
+   */
+  private class TornadoRequestHandlerRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
+    DataFlow::CfgNode {
+    override CallNode node;
+
+    TornadoRequestHandlerRedirectCall() {
+      node.getFunction() = tornado::web::RequestHandler::redirectMethod().asCfgNode()
+    }
+
+    override DataFlow::Node getRedirectLocation() {
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("url")]
+    }
+
+    override DataFlow::Node getBody() { none() }
+
+    override string getMimetypeDefault() { none() }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
   }
 }
