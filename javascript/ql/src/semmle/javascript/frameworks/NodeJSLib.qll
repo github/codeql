@@ -1063,6 +1063,18 @@ module NodeJSLib {
     }
   }
 
+  /**
+   * An HTTP request event handler parameter as an EventEmitter, for
+   * example the function `emitter` in either of the following:
+   *
+   * ```
+   * http.request(x, emitter => {...})
+   * ```
+   *
+   * ```
+   * http.request(...).on(y, emitter => { ...})
+   * ```
+   */
   private class ClientRequestEventEmitter extends NodeJSEventEmitter {
     ClientRequestEventEmitter() {
       exists(ClientRequestHandler handler |
