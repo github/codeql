@@ -24,7 +24,7 @@ class UrlRedirectConfiguration extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) {
     // Url redirection is a problem only if the user controls the prefix of the URL.
-    // This is a copy of the taint-sanitizer from the old points-to query, which doesn't
+    // TODO: This is a copy of the taint-sanitizer from the old points-to query, which doesn't
     // cover formatting.
     exists(BinaryExprNode string_concat | string_concat.getOp() instanceof Add |
       string_concat.getRight() = node.asCfgNode()
