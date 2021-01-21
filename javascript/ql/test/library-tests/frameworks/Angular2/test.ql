@@ -27,3 +27,8 @@ class TaintConfig extends TaintTracking::Configuration {
 query predicate taintFlow(DataFlow::Node source, DataFlow::Node sink) {
   any(TaintConfig c).hasFlow(source, sink)
 }
+
+query predicate testAttrSourceLocation(HTML::Attribute attrib, Angular2::TemplateTopLevel top) {
+  attrib.getName() = "[testAttr]" and
+  top = attrib.getCodeInAttribute()
+}

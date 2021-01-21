@@ -5,7 +5,7 @@ import { Input, Component } from '@angular/core';
     template: `
         <sink-component [sink7]="taint"></sink-component>
 
-        \n<sink-component [sink7]="taint"></sink-component>
+        \n<sink-component [sink9]="taint" [testAttr]="taint"></sink-component>
 `
 })
 export class InlineComponent {
