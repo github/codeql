@@ -21,7 +21,7 @@ def or__redirect(request):
     next = request.GET.get("next")
     return HttpResponseRedirect(next)  # $HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation=next
 
-def information_exposure_through_redirect(request, as_kw=False, perm_redirect=False):
+def information_exposure_through_redirect(request, as_kw=False):
     # This is a contrived example, but possible
     private = "private"
     next = request.GET.get("next")
