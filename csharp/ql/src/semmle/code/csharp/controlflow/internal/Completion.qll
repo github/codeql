@@ -269,18 +269,15 @@ private predicate typePatternCommonSubType(Type t, Type strippedType) {
  * constantly non-matches (`value = false`).
  */
 private predicate isMatchingConstant(PatternExpr pe, boolean value) {
-  exists(Expr e | mustHaveMatchingCompletion(e, pe) |
-    exists(Expr stripped | stripped = e.stripCasts() |
-      exists(string strippedValue, string patternValue |
-        strippedValue = stripped.getValue() and
-        patternValue = pe.getValue() and
-        if strippedValue = patternValue then value = true else value = false
-      )
-    )
-    or
-    pe instanceof DiscardPatternExpr and
-    value = true
+  exists(Expr e, string exprValue, string patternValue |
+    mustHaveMatchingCompletion(e, pe) and
+    exprValue = e.stripCasts().getValue() and
+    patternValue = pe.getValue() and
+    if exprValue = patternValue then value = true else value = false
   )
+  or
+  pe instanceof DiscardPatternExpr and
+  value = true
   or
   exists(Type t, Type strippedType |
     typePatternMustHaveMatchingCompletion(pe, t, strippedType) and
