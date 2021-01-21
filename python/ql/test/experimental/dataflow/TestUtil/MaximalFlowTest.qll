@@ -35,7 +35,7 @@ class MaximalFlowsConfig extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node node) {
     exists(node.getLocation().getFile().getRelativePath()) and
     not any(CallNode c).getArg(_) = node.asCfgNode() and
-    not node instanceof ArgumentNode and
+    not node instanceof DataFlow::ArgumentNode and
     not node.asCfgNode().(NameNode).getId().matches("SINK%") and
     not exists(DataFlow::Node succ | DataFlow::localFlowStep(node, succ))
   }
