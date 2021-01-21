@@ -15,6 +15,7 @@ export class SinkComponent {
     sink7: string;
     sink8: string;
 
+
     constructor(private sanitizer: DomSanitizer) {}
 
     foo() {
