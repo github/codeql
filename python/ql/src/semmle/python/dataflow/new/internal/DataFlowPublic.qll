@@ -357,15 +357,13 @@ class KwUnpackedNode extends Node, TKwUnpackedNode {
  * step to TIterableElement followed by a store step to the target.
  */
 class IterableSequenceNode extends Node, TIterableSequenceNode {
-  SequenceNode consumer;
+  CfgNode consumer;
 
-  IterableSequenceNode() { this = TIterableSequenceNode(consumer) }
+  IterableSequenceNode() { this = TIterableSequenceNode(consumer.getNode()) }
 
   override string toString() { result = "IterableSequence" }
 
-  override DataFlowCallable getEnclosingCallable() {
-    result = any(CfgNode node | node = TCfgNode(consumer)).getEnclosingCallable()
-  }
+  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
 
   override Location getLocation() { result = consumer.getLocation() }
 }
