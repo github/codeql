@@ -225,15 +225,11 @@ abstract private class PostOrderTree extends ControlFlowTree {
 }
 
 abstract private class SwitchTree extends ControlFlowTree, Switch {
-  Expr expr;
-
-  SwitchTree() { expr = this.getExpr() }
-
-  override predicate propagatesAbnormal(ControlFlowElement child) { child = expr }
+  override predicate propagatesAbnormal(ControlFlowElement child) { child = this.getExpr() }
 
   override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
     // Flow from last element of switch expression to first element of first case
-    last(expr, pred, c) and
+    last(this.getExpr(), pred, c) and
     c instanceof NormalCompletion and
     first(this.getCase(0), succ)
     or
@@ -254,17 +250,12 @@ abstract private class SwitchTree extends ControlFlowTree, Switch {
 }
 
 abstract private class CaseTree extends ControlFlowTree, Case {
-  PatternExpr pattern;
-  ControlFlowElement body;
-
-  CaseTree() { pattern = this.getPattern() and body = this.getBody() }
-
   final override predicate propagatesAbnormal(ControlFlowElement child) {
-    child in [pattern, this.getCondition().(ControlFlowElement), body]
+    child in [this.getPattern(), this.getCondition().(ControlFlowElement), this.getBody()]
   }
 
   override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-    last(pattern, pred, c) and
+    last(this.getPattern(), pred, c) and
     c.(MatchingCompletion).isMatch() and
     (
       if exists(this.getCondition())
@@ -273,13 +264,13 @@ abstract private class CaseTree extends ControlFlowTree, Case {
         first(this.getCondition(), succ)
       else
         // Flow from last element of pattern to first element of body
-        first(body, succ)
+        first(this.getBody(), succ)
     )
     or
     // Flow from last element of condition to first element of body
     last(this.getCondition(), pred, c) and
     c instanceof TrueCompletion and
-    first(body, succ)
+    first(this.getBody(), succ)
   }
 }
 
@@ -427,13 +418,11 @@ module Expressions {
     }
   }
 
+  private class StatOrDynAccessorCall_ =
+    @dynamic_member_access_expr or @dynamic_element_access_expr or @call_access_expr;
+
   /** A normal or a (potential) dynamic call to an accessor. */
-  private class StatOrDynAccessorCall extends Expr {
-    StatOrDynAccessorCall() {
-      this instanceof AccessorCall or
-      this instanceof DynamicAccess
-    }
-  }
+  private class StatOrDynAccessorCall extends Expr, StatOrDynAccessorCall_ { }
 
   /**
    * An expression that writes via an accessor call, for example `x.Prop = 0`,
@@ -528,120 +517,101 @@ module Expressions {
   }
 
   private class LogicalAndExprTree extends PostOrderTree, LogicalAndExpr {
-    private Expr left;
-    private Expr right;
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child in [this.getLeftOperand(), this.getRightOperand()]
+    }
 
-    LogicalAndExprTree() { left = this.getLeftOperand() and right = this.getRightOperand() }
-
-    final override predicate propagatesAbnormal(ControlFlowElement child) { child in [left, right] }
-
-    final override predicate first(ControlFlowElement first) { first(left, first) }
+    final override predicate first(ControlFlowElement first) { first(this.getLeftOperand(), first) }
 
     final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       // Flow from last element of left operand to first element of right operand
-      last(left, pred, c) and
+      last(this.getLeftOperand(), pred, c) and
       c instanceof TrueCompletion and
-      first(right, succ)
+      first(this.getRightOperand(), succ)
       or
       // Post-order: flow from last element of left operand to element itself
-      last(left, pred, c) and
+      last(this.getLeftOperand(), pred, c) and
       c instanceof FalseCompletion and
       succ = this
       or
       // Post-order: flow from last element of right operand to element itself
-      last(right, pred, c) and
+      last(this.getRightOperand(), pred, c) and
       c instanceof NormalCompletion and
       succ = this
     }
   }
 
   private class LogicalOrExprTree extends PostOrderTree, LogicalOrExpr {
-    private Expr left;
-    private Expr right;
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child in [this.getLeftOperand(), this.getRightOperand()]
+    }
 
-    LogicalOrExprTree() { left = this.getLeftOperand() and right = this.getRightOperand() }
-
-    final override predicate propagatesAbnormal(ControlFlowElement child) { child in [left, right] }
-
-    final override predicate first(ControlFlowElement first) { first(left, first) }
+    final override predicate first(ControlFlowElement first) { first(this.getLeftOperand(), first) }
 
     final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       // Flow from last element of left operand to first element of right operand
-      last(left, pred, c) and
+      last(this.getLeftOperand(), pred, c) and
       c instanceof FalseCompletion and
-      first(right, succ)
+      first(this.getRightOperand(), succ)
       or
       // Post-order: flow from last element of left operand to element itself
-      last(left, pred, c) and
+      last(this.getLeftOperand(), pred, c) and
       c instanceof TrueCompletion and
       succ = this
       or
       // Post-order: flow from last element of right operand to element itself
-      last(right, pred, c) and
+      last(this.getRightOperand(), pred, c) and
       c instanceof NormalCompletion and
       succ = this
     }
   }
 
   private class NullCoalescingExprTree extends PostOrderTree, NullCoalescingExpr {
-    private Expr left;
-    private Expr right;
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child in [this.getLeftOperand(), this.getRightOperand()]
+    }
 
-    NullCoalescingExprTree() { left = this.getLeftOperand() and right = this.getRightOperand() }
-
-    final override predicate propagatesAbnormal(ControlFlowElement child) { child in [left, right] }
-
-    final override predicate first(ControlFlowElement first) { first(left, first) }
+    final override predicate first(ControlFlowElement first) { first(this.getLeftOperand(), first) }
 
     final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       // Flow from last element of left operand to first element of right operand
-      last(left, pred, c) and
+      last(this.getLeftOperand(), pred, c) and
       c.(NullnessCompletion).isNull() and
-      first(right, succ)
+      first(getRightOperand(), succ)
       or
       // Post-order: flow from last element of left operand to element itself
-      last(left, pred, c) and
+      last(this.getLeftOperand(), pred, c) and
       succ = this and
       c instanceof NormalCompletion and
       not c.(NullnessCompletion).isNull()
       or
       // Post-order: flow from last element of right operand to element itself
-      last(right, pred, c) and
+      last(getRightOperand(), pred, c) and
       c instanceof NormalCompletion and
       succ = this
     }
   }
 
   private class ConditionalExprTree extends PostOrderTree, ConditionalExpr {
-    private Expr condition;
-    private Expr thenBranch;
-    private Expr elseBranch;
-
-    ConditionalExprTree() {
-      condition = this.getCondition() and
-      thenBranch = this.getThen() and
-      elseBranch = this.getElse()
-    }
-
     final override predicate propagatesAbnormal(ControlFlowElement child) {
-      child in [condition, thenBranch, elseBranch]
+      child in [this.getCondition(), this.getThen(), this.getElse()]
     }
 
-    final override predicate first(ControlFlowElement first) { first(condition, first) }
+    final override predicate first(ControlFlowElement first) { first(this.getCondition(), first) }
 
     final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       // Flow from last element of condition to first element of then branch
-      last(condition, pred, c) and
+      last(this.getCondition(), pred, c) and
       c instanceof TrueCompletion and
-      first(thenBranch, succ)
+      first(this.getThen(), succ)
       or
       // Flow from last element of condition to first element of else branch
-      last(condition, pred, c) and
+      last(this.getCondition(), pred, c) and
       c instanceof FalseCompletion and
-      first(elseBranch, succ)
+      first(this.getElse(), succ)
       or
       // Post-order: flow from last element of a branch to element itself
-      last([thenBranch, elseBranch], pred, c) and
+      last([this.getThen(), this.getElse()], pred, c) and
       c instanceof NormalCompletion and
       succ = this
     }
@@ -653,15 +623,13 @@ module Expressions {
    * tracking.
    */
   private class AssignOperationWithExpandedAssignment extends AssignOperation, ControlFlowTree {
-    private Expr expanded;
-
-    AssignOperationWithExpandedAssignment() { expanded = this.getExpandedAssignment() }
-
-    final override predicate first(ControlFlowElement first) { first(expanded, first) }
+    final override predicate first(ControlFlowElement first) {
+      first(this.getExpandedAssignment(), first)
+    }
 
     final override predicate last(ControlFlowElement last, Completion c) {
-      last = expanded and
-      last(expanded, last, c)
+      last = this.getExpandedAssignment() and
+      last(this.getExpandedAssignment(), last, c)
     }
 
     final override predicate propagatesAbnormal(ControlFlowElement child) { none() }
@@ -711,16 +679,12 @@ module Expressions {
   }
 
   private class ThrowExprTree extends PostOrderTree, ThrowExpr {
-    private Expr expr;
+    final override predicate propagatesAbnormal(ControlFlowElement child) { child = this.getExpr() }
 
-    ThrowExprTree() { expr = this.getExpr() }
-
-    final override predicate propagatesAbnormal(ControlFlowElement child) { child = expr }
-
-    final override predicate first(ControlFlowElement first) { first(expr, first) }
+    final override predicate first(ControlFlowElement first) { first(this.getExpr(), first) }
 
     final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      last(expr, pred, c) and
+      last(this.getExpr(), pred, c) and
       c instanceof NormalCompletion and
       succ = this
     }
@@ -827,7 +791,7 @@ module Expressions {
       child = this.getACase()
     }
 
-    final override predicate first(ControlFlowElement first) { first(expr, first) }
+    final override predicate first(ControlFlowElement first) { first(this.getExpr(), first) }
 
     final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       SwitchTree.super.succ(pred, succ, c)
@@ -839,7 +803,7 @@ module Expressions {
   }
 
   private class SwitchCaseExprTree extends PostOrderTree, CaseTree, SwitchCaseExpr {
-    final override predicate first(ControlFlowElement first) { first(pattern, first) }
+    final override predicate first(ControlFlowElement first) { first(this.getPattern(), first) }
 
     final override predicate last(ControlFlowElement last, Completion c) {
       PostOrderTree.super.last(last, c)
@@ -849,7 +813,7 @@ module Expressions {
         this = se.getCase(i) and
         not this.matchesAll() and
         not exists(se.getCase(i + 1)) and
-        last([pattern, this.getCondition()], last, cc) and
+        last([this.getPattern(), this.getCondition()], last, cc) and
         (cc.(MatchingCompletion).isNonMatch() or cc instanceof FalseCompletion) and
         c =
           any(NestedCompletion nc |
@@ -866,7 +830,7 @@ module Expressions {
     final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       CaseTree.super.succ(pred, succ, c)
       or
-      last(body, pred, c) and
+      last(this.getBody(), pred, c) and
       succ = this and
       c instanceof NormalCompletion
     }
@@ -922,17 +886,15 @@ module Expressions {
   }
 
   private class NotPatternExprTree extends PostOrderTree, NotPatternExpr {
-    private PatternExpr operand;
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child = this.getPattern()
+    }
 
-    NotPatternExprTree() { operand = this.getPattern() }
-
-    final override predicate propagatesAbnormal(ControlFlowElement child) { child = operand }
-
-    final override predicate first(ControlFlowElement first) { first(operand, first) }
+    final override predicate first(ControlFlowElement first) { first(this.getPattern(), first) }
 
     final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       succ = this and
-      last(operand, pred, c) and
+      last(this.getPattern(), pred, c) and
       c instanceof NormalCompletion
     }
   }
@@ -1003,15 +965,13 @@ module Statements {
   }
 
   private class IfStmtTree extends PreOrderTree, IfStmt {
-    private Expr condition;
-
-    IfStmtTree() { condition = this.getCondition() }
-
-    final override predicate propagatesAbnormal(ControlFlowElement child) { child = condition }
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child = this.getCondition()
+    }
 
     final override predicate last(ControlFlowElement last, Completion c) {
       // Condition exits with a false completion and there is no `else` branch
-      last(condition, last, c) and
+      last(this.getCondition(), last, c) and
       c instanceof FalseCompletion and
       not exists(this.getElse())
       or
@@ -1025,10 +985,10 @@ module Statements {
     final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       // Pre-order: flow from statement itself to first element of condition
       pred = this and
-      first(condition, succ) and
+      first(this.getCondition(), succ) and
       c instanceof SimpleCompletion
       or
-      last(condition, pred, c) and
+      last(this.getCondition(), pred, c) and
       (
         // Flow from last element of condition to first element of then branch
         c instanceof TrueCompletion and first(this.getThen(), succ)
@@ -1043,7 +1003,7 @@ module Statements {
     final override predicate last(ControlFlowElement last, Completion c) {
       // Switch expression exits normally and there are no cases
       not exists(this.getACase()) and
-      last(expr, last, c) and
+      last(this.getExpr(), last, c) and
       c instanceof NormalCompletion
       or
       // A statement exits with a `break` completion
@@ -1075,7 +1035,7 @@ module Statements {
       or
       // Pre-order: flow from statement itself to first switch expression
       pred = this and
-      first(expr, succ) and
+      first(this.getExpr(), succ) and
       c instanceof SimpleCompletion
       or
       // Flow from last element of non-`case` statement `i` to first element of statement `i+1`
@@ -1100,27 +1060,23 @@ module Statements {
       c instanceof FalseCompletion
       or
       // Case pattern exits with a non-match
-      last(pattern, last, c) and
+      last(this.getPattern(), last, c) and
       not c.(MatchingCompletion).isMatch()
       or
       // Case body exits with any completion
-      last(body, last, c)
+      last(this.getBody(), last, c)
     }
 
     final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       CaseTree.super.succ(pred, succ, c)
       or
       pred = this and
-      first(pattern, succ) and
+      first(this.getPattern(), succ) and
       c instanceof SimpleCompletion
     }
   }
 
   abstract private class LoopStmtTree extends PreOrderTree, LoopStmt {
-    Stmt body;
-
-    LoopStmtTree() { body = this.getBody() }
-
     final override predicate propagatesAbnormal(ControlFlowElement child) {
       child = this.getCondition()
     }
@@ -1131,10 +1087,10 @@ module Statements {
       c instanceof FalseCompletion
       or
       // Body exits with a break completion
-      last(body, last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion())
+      last(this.getBody(), last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion())
       or
       // Body exits with a completion that does not continue the loop
-      last(body, last, c) and
+      last(this.getBody(), last, c) and
       not c instanceof BreakCompletion and
       not c.continuesLoop()
     }
@@ -1143,11 +1099,11 @@ module Statements {
       // Flow from last element of condition to first element of loop body
       last(this.getCondition(), pred, c) and
       c instanceof TrueCompletion and
-      first(body, succ)
+      first(this.getBody(), succ)
       or
       // Flow from last element of loop body back to first element of condition
       not this instanceof ForStmt and
-      last(body, pred, c) and
+      last(this.getBody(), pred, c) and
       c.continuesLoop() and
       first(this.getCondition(), succ)
     }
@@ -1168,7 +1124,7 @@ module Statements {
       LoopStmtTree.super.succ(pred, succ, c)
       or
       pred = this and
-      first(body, succ) and
+      first(this.getBody(), succ) and
       c instanceof SimpleCompletion
     }
   }
@@ -1179,7 +1135,7 @@ module Statements {
       result = this.getCondition()
       or
       not exists(this.getCondition()) and
-      result = body
+      result = this.getBody()
     }
 
     final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
@@ -1214,11 +1170,11 @@ module Statements {
       // Flow from last element of condition into first element of loop body
       last(this.getCondition(), pred, c) and
       c instanceof TrueCompletion and
-      first(body, succ)
+      first(this.getBody(), succ)
       or
       // Flow from last element of loop body to first element of update/condition/self
       exists(ControlFlowElement next |
-        last(body, pred, c) and
+        last(this.getBody(), pred, c) and
         c.continuesLoop() and
         first(next, succ) and
         if exists(this.getUpdate(0))
@@ -1318,8 +1274,6 @@ module Statements {
   }
 
   class TryStmtTree extends PreOrderTree, TryStmt {
-    ControlFlowTree body;
-
     final override predicate propagatesAbnormal(ControlFlowElement child) {
       child = this.getFinally()
     }
