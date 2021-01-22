@@ -1,6 +1,6 @@
 // ...
 express().post("/save", async (req, res) => {
-  if (await fs.promises.exists(rootDir)) {
+  if (!(await fs.promises.exists(rootDir))) {
     console.error(`Server setup is corrupted, ${rootDir} does not exist!`);
     res.status(500);
     res.end();
