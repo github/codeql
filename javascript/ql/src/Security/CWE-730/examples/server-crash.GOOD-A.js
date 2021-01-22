@@ -1,6 +1,6 @@
 // ...
 express().post("/save", (req, res) => {
-  fs.access(rootDir, (err) => {
+  fs.exists(rootDir, (exists) => {
     // ...
     try {
       save(rootDir, req.query.path, req.body); // GOOD no uncaught exception
