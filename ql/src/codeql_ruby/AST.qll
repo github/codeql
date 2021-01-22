@@ -13,6 +13,7 @@ private import ast.internal.TreeSitter
  * A node in the abstract syntax tree. This class is the base class for all Ruby
  * program elements.
  */
+// TODO: Replace base class with an abstract range class once we have full coverage
 class AstNode extends @ast_node {
   Generated::AstNode generated;
 

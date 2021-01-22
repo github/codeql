@@ -1,6 +1,7 @@
 /** Provides classes representing the control flow graph. */
 
 private import codeql.Locations
+private import codeql_ruby.AST as AST
 private import codeql_ruby.ast.internal.TreeSitter::Generated
 private import codeql_ruby.controlflow.BasicBlocks
 private import SuccessorTypes
@@ -133,9 +134,18 @@ module CfgNodes {
     final override AstNode getNode() { result = n }
 
     final override string toString() {
-      result = "[" + this.getSplitsString() + "] " + n.toString()
-      or
-      not exists(this.getSplitsString()) and result = n.toString()
+      exists(string s |
+        // TODO: Remove once the SSA implementation is based on the AST layer
+        s = n.(AST::AstNode).toString() and
+        s != "AstNode"
+        or
+        n.(AST::AstNode).toString() = "AstNode" and
+        s = n.toString()
+      |
+        result = "[" + this.getSplitsString() + "] " + s
+        or
+        not exists(this.getSplitsString()) and result = s
+      )
     }
 
     /** Gets a comma-separated list of strings for each split in this node, if any. */
