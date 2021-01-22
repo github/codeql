@@ -432,6 +432,20 @@ module Generated {
     override string getAPrimaryQlClass() { result = "Constant" }
   }
 
+  class DelimitedSymbol extends @delimited_symbol, AstNode {
+    override string getAPrimaryQlClass() { result = "DelimitedSymbol" }
+
+    override Location getLocation() { delimited_symbol_def(this, _, _, result) }
+
+    AstNode getChild(int i) { delimited_symbol_child(this, i, result) }
+
+    override AstNode getParent() { delimited_symbol_def(this, result, _, _) }
+
+    override int getParentIndex() { delimited_symbol_def(this, _, result, _) }
+
+    override AstNode getAFieldOrChild() { delimited_symbol_child(this, _, result) }
+  }
+
   class DestructuredLeftAssignment extends @destructured_left_assignment, AstNode {
     override string getAPrimaryQlClass() { result = "DestructuredLeftAssignment" }
 
@@ -656,6 +670,10 @@ module Generated {
     override int getParentIndex() { hash_def(this, _, result, _) }
 
     override AstNode getAFieldOrChild() { hash_child(this, _, result) }
+  }
+
+  class HashKeySymbol extends @token_hash_key_symbol, Token {
+    override string getAPrimaryQlClass() { result = "HashKeySymbol" }
   }
 
   class HashSplatArgument extends @hash_splat_argument, AstNode {
@@ -1244,6 +1262,10 @@ module Generated {
     override AstNode getAFieldOrChild() { setter_def(this, _, _, result, _) }
   }
 
+  class SimpleSymbol extends @token_simple_symbol, Token {
+    override string getAPrimaryQlClass() { result = "SimpleSymbol" }
+  }
+
   class SingletonClass extends @singleton_class, AstNode {
     override string getAPrimaryQlClass() { result = "SingletonClass" }
 
@@ -1377,20 +1399,6 @@ module Generated {
     override int getParentIndex() { superclass_def(this, _, result, _, _) }
 
     override AstNode getAFieldOrChild() { superclass_def(this, _, _, result, _) }
-  }
-
-  class Symbol extends @symbol, AstNode {
-    override string getAPrimaryQlClass() { result = "Symbol" }
-
-    override Location getLocation() { symbol_def(this, _, _, result) }
-
-    AstNode getChild(int i) { symbol_child(this, i, result) }
-
-    override AstNode getParent() { symbol_def(this, result, _, _) }
-
-    override int getParentIndex() { symbol_def(this, _, result, _) }
-
-    override AstNode getAFieldOrChild() { symbol_child(this, _, result) }
   }
 
   class SymbolArray extends @symbol_array, AstNode {

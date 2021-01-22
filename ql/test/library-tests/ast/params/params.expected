@@ -84,16 +84,16 @@ paramsInMethods
 | params.rb:58:1:59:3 | method_with_optional_params | 2 | params.rb:58:49:58:58 | val3 | OptionalParameter |
 | params.rb:62:1:64:3 | use_block_with_optional | 0 | params.rb:62:29:62:34 | &block | BlockParameter |
 paramsInBlocks
-| params.rb:9:11:11:3 | \| ... \| | 0 | params.rb:9:15:9:17 | key | SimpleParameter |
-| params.rb:9:11:11:3 | \| ... \| | 1 | params.rb:9:20:9:24 | value | SimpleParameter |
+| params.rb:9:11:11:3 | do ... end | 0 | params.rb:9:15:9:17 | key | SimpleParameter |
+| params.rb:9:11:11:3 | do ... end | 1 | params.rb:9:20:9:24 | value | SimpleParameter |
 | params.rb:22:12:22:32 | { ... } | 0 | params.rb:22:15:22:20 | (..., ...) | TuplePatternParameter |
-| params.rb:34:12:35:3 | \| ... \| | 0 | params.rb:34:16:34:18 | val | SimpleParameter |
-| params.rb:34:12:35:3 | \| ... \| | 1 | params.rb:34:21:34:26 | *splat | SplatParameter |
-| params.rb:34:12:35:3 | \| ... \| | 2 | params.rb:34:29:34:42 | **double_splat | HashSplatParameter |
-| params.rb:49:24:51:3 | \| ... \| | 0 | params.rb:49:28:49:30 | xx | KeywordParameter |
-| params.rb:49:24:51:3 | \| ... \| | 1 | params.rb:49:33:49:39 | yy | KeywordParameter |
-| params.rb:65:25:67:3 | \| ... \| | 0 | params.rb:65:29:65:32 | name | SimpleParameter |
-| params.rb:65:25:67:3 | \| ... \| | 1 | params.rb:65:35:65:42 | age | OptionalParameter |
+| params.rb:34:12:35:3 | do ... end | 0 | params.rb:34:16:34:18 | val | SimpleParameter |
+| params.rb:34:12:35:3 | do ... end | 1 | params.rb:34:21:34:26 | *splat | SplatParameter |
+| params.rb:34:12:35:3 | do ... end | 2 | params.rb:34:29:34:42 | **double_splat | HashSplatParameter |
+| params.rb:49:24:51:3 | do ... end | 0 | params.rb:49:28:49:30 | xx | KeywordParameter |
+| params.rb:49:24:51:3 | do ... end | 1 | params.rb:49:33:49:39 | yy | KeywordParameter |
+| params.rb:65:25:67:3 | do ... end | 0 | params.rb:65:29:65:32 | name | SimpleParameter |
+| params.rb:65:25:67:3 | do ... end | 1 | params.rb:65:35:65:42 | age | OptionalParameter |
 paramsInLambdas
 | params.rb:14:7:14:33 | -> { ... } | 0 | params.rb:14:11:14:13 | foo | SimpleParameter |
 | params.rb:14:7:14:33 | -> { ... } | 1 | params.rb:14:16:14:18 | bar | SimpleParameter |

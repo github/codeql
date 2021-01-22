@@ -94,7 +94,7 @@ end
 
 $global = 42
 
-map1 = { 'a' => 'b', 'c': 'd', }
+map1 = { 'a' => 'b', 'c': 'd', e: 'f' }
 map2 = { **map1, 'x' => 'y', **map1}
 
 
@@ -157,6 +157,8 @@ two_parameters(*[1,2])
 scriptfile = `cat "#{__FILE__}"`
 
 symbol = :hello
+
+delimited_symbol = :"goodbye-#{ 12 + 13 }"
 
 x = true
 x = ! true
