@@ -114,18 +114,18 @@ module SymbolLiteral {
     final override string toString() { result = generated.getValue() }
   }
 
-  class DelimitedSymbolRange extends SymbolLiteral::Range, @delimited_symbol {
-    final override Generated::DelimitedSymbol generated;
+  abstract private class ComplexSymbolRange extends SymbolLiteral::Range {
+    abstract Generated::AstNode getChild(int i);
 
     final override string getValueText() {
-      strictcount(generated.getChild(_)) = 1 and
-      result = generated.getChild(0).(Generated::Token).getValue()
+      strictcount(this.getChild(_)) = 1 and
+      result = this.getChild(0).(Generated::Token).getValue()
     }
 
     private string summaryString() {
       result =
         concat(AstNode c, int i, string s |
-          c = generated.getChild(i) and
+          c = this.getChild(i) and
           if c instanceof Generated::Token
           then s = c.(Generated::Token).getValue()
           else s = "#{...}"
@@ -141,31 +141,16 @@ module SymbolLiteral {
     }
   }
 
-  class BareSymbolRange extends SymbolLiteral::Range, @bare_symbol {
+  class DelimitedSymbolRange extends ComplexSymbolRange, @delimited_symbol {
+    final override Generated::DelimitedSymbol generated;
+
+    final override Generated::AstNode getChild(int i) { result = generated.getChild(i) }
+  }
+
+  class BareSymbolRange extends ComplexSymbolRange, @bare_symbol {
     final override Generated::BareSymbol generated;
 
-    final override string getValueText() {
-      strictcount(generated.getChild(_)) = 1 and
-      result = generated.getChild(0).(Generated::Token).getValue()
-    }
-
-    private string summaryString() {
-      result =
-        concat(AstNode c, int i, string s |
-          c = generated.getChild(i) and
-          if c instanceof Generated::Token
-          then s = c.(Generated::Token).getValue()
-          else s = "#{...}"
-        |
-          s order by i
-        )
-    }
-
-    final override string toString() {
-      if summaryString().regexpMatch("[a-zA-z_][a-zA-Z_0-9]*")
-      then result = ":" + summaryString()
-      else result = ":\"" + summaryString() + "\""
-    }
+    final override Generated::AstNode getChild(int i) { result = generated.getChild(i) }
   }
 
   class HashKeySymbolRange extends SymbolLiteral::Range, @token_hash_key_symbol {
