@@ -1023,57 +1023,61 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  *   sequence = iterable
  * ```
  * where `sequence` is either a tuple or a list and it can contain wildcards.
- * The iterable can be any iterable, which means that (CodeQL modeling of) content will need to change type
- * if it should be transferred from the LHS to the RHS.
+ * The iterable can be any iterable, which means that (CodeQL modeling of) content
+ * will need to change type if it should be transferred from the LHS to the RHS.
+ *
+ * Note that (CodeQL modeling of) content does not have to change type on data-flow
+ * path _inside_ the LHS, as the different allowed syntaxes here are merely a convenience.
+ * Consequently, we model all LHS sequences as tuples, which have the more precise content
+ * model, making flow to the elements more precise. If an element is a starred varibale,
+ * we will have to mutate the content type to be list content.
  *
  * We may for instance have
  * ```python
- *    (a, b) = ["a", "tainted string"]  # RHS has content `ListElementContent`
+ *    (a, b) = ["a", SOURCE]  # RHS has content `ListElementContent`
  * ```
- * Due to the abstraction for list content, we do not know whether `"tainted string"`
+ * Due to the abstraction for list content, we do not know whether `SOURCE`
  * ends up in `a` or in `b`, so we want to overapproximate and see it in both.
  *
  * Using wildcards we may have
  * ```python
- *   (a, *b) = ("a", "b", "tainted string")  # RHS has content `TupleElementContent(2)`
+ *   (a, *b) = ("a", "b", SOURCE)  # RHS has content `TupleElementContent(2)`
  * ```
- * Since the starred variables are always assigned type list, `*b` will be
- * `["b", "tainted string]`, and we will again overapproximate and assign it
+ * Since the starred variables are always assigned (Python-)type list, `*b` will be
+ * `["b", SOURCE]`, and we will again overapproximate and assign it
  * content corresponding to anything found in the RHS.
  *
  * For a precise transfer
  * ```python
- *    (a, b) = ("a", "tainted string")  # RHS has content `TupleElementContent(1)`
+ *    (a, b) = ("a", SOURCE)  # RHS has content `TupleElementContent(1)`
  * ```
  * we wish to keep the precision, so only `b` receives the tuple content at index 1.
  *
  * Finally, `sequence` is actually a pattern and can have a more complicated structure,
  * such as
  * ```python
- *   (a, [b, *c]) = ("a", ("tainted string", "c"))  # RHS has content `TupleElementContent(1); TupleElementContent(0)`
+ *   (a, [b, *c]) = ("a", ["b", SOURCE])  # RHS has content `TupleElementContent(1); ListElementContent`
  * ```
- * where `a` should not receive content, but `b` and `c` should. `c` will be `["c"]` so
+ * where `a` should not receive content, but `b` and `c` should. `c` will be `[SOURCE]` so
  * should have the content converted and transferred, while `b` should read it.
  *
  * The strategy for converting content type is to break the transfer up into a read step
  * and a store step, together creating a converting transfer step.
  * For this we need a synthetic node in the middle, which we call `TIterableElement(receiver)`.
- * It is associated with the receiver of the transfer, because we know the receiver type from the syntax.
+ * It is associated with the receiver of the transfer, because we know the receiver type (tuple) from the syntax.
  * Since we sometimes need a converting read step (in the example above, `[b, *c]` reads the content
- * `TupleElementContent(0)` but should have content `ListElementContent`), we actually need a second synthetic node.
- * A converting read step is a read step followed by a converting transfer.
+ * `ListElementContent` but should have content `TupleElementContent(0)` and `TupleElementContent(0)`),
+ * we actually need a second synthetic node. A converting read step is a read step followed by a
+ * converting transfer.
+ *
  * We can have a uniform treatment by always having two synthetic nodes and so we can view it as
  * two stages of the same node. So we read into (or transfer to) `TIterableSequence(receiver)`,
  * from which we take a read step to `TIterableElement(receiver)` and then a store step to `receiver`.
+ *
  * In order to preserve precise content, we also take a flow step from `TIterableSequence(receiver)`
  * directly to `receiver`.
  *
- * The strategy is then via several read-, store-, and flow steps, illustrated on the assignment
- *
- * ```python
- *   (a, [b, *c]) = ["a", [SOURCE]]
- * ```
- *
+ * The strategy is then via several read-, store-, and flow steps:
  * 1. [Flow] Content is transferred from `iterable` to `TIterableSequence(sequence)` via a
  *    flow step. From here, everything happens on the LHS.
  *
@@ -1081,13 +1085,15 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  *    flow step.
  *
  * 3. [Read] Content is read from `TIterableSequence(sequence)` into  `TIterableElement(sequence)`.
- *    If `sequence` is of type tuple, we will not read tuple content as that would allow
+ *    As `sequence` is modelled as a tuple, we will not read tuple content as that would allow
  *    cross talk.
  *
  * 4. [Store] Content is stored from `TIterableElement(sequence)` to `sequence`.
- *    Here the content type is chosen according to the type of sequence.
+ *    Content type is `TupleElementContent` with indices taken from the syntax.
+ *    For instance, if `sequence` is `(a, *b, c)`, content is written to index 0, 1, and 2.
+ *    This is adequate as the route through `TIterableElement(sequence)` does not transfer precise content.
  *
- * 5. [Read] Content is read from `sequence` to its elements according to the type of `sequence`.
+ * 5. [Read] Content is read from `sequence` to its elements.
  *    a) If the element is a plain variable, the target is the corresponding essa node.
  *
  *    b) If the element is itelf a sequence, with control-flow node `seq`, the target is `TIterableSequence(seq)`.
@@ -1130,7 +1136,7 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  *
  * --Step 4-->
  *
- *   `[b, *c]`: [ListElementContent]
+ *   `[b, *c]`: [TupleElementContent(1)]
  *
  * --Step 5c-->
  *
@@ -1185,7 +1191,7 @@ module UnpackingAssignment {
   /**
    * Step 3
    * Data flows from `TIterableSequence(sequence)` into  `TIterableElement(sequence)`.
-   * If `sequence` is of type tuple, we will not read tuple content as that would allow
+   * As `sequence` is modelled as a tuple, we will not read tuple content as that would allow
    * cross talk.
    */
   predicate unpackingAssignmentConvertingReadStep(Node nodeFrom, Content c, Node nodeTo) {
@@ -1196,13 +1202,6 @@ module UnpackingAssignment {
         c instanceof ListElementContent
         or
         c instanceof SetElementContent
-        or
-        // do not lose precision by routing tuple content through the `IterableElement`
-        not target instanceof TupleNode and
-        // `index` refers to `nodeFrom`, but only the ones in `target` are relevant.
-        exists(int index | exists(target.getElement(index)) |
-          c.(TupleElementContent).getIndex() = index
-        )
         // TODO: dict content in iterable unpacking not handled
       )
     )
@@ -1211,20 +1210,15 @@ module UnpackingAssignment {
   /**
    * Step 4
    * Data flows from `TIterableElement(sequence)` to `sequence`.
-   * The content type is chosen according to the type of sequence.
+   * Content type is `TupleElementContent` with indices taken from the syntax.
+   * For instance, if `sequence` is `(a, *b, c)`, content is written to index 0, 1, and 2.
    */
   predicate unpackingAssignmentConvertingStoreStep(Node nodeFrom, Content c, Node nodeTo) {
     exists(UnpackingAssignmentSequenceTarget target |
       nodeFrom = TIterableElementNode(target) and
       nodeTo.asCfgNode() = target and
-      (
-        target instanceof ListNode and
-        c instanceof ListElementContent
-        or
-        target instanceof TupleNode and
-        exists(int index | exists(target.getElement(index)) |
-          c.(TupleElementContent).getIndex() = index
-        )
+      exists(int index | exists(target.getElement(index)) |
+        c.(TupleElementContent).getIndex() = index
       )
     )
   }
@@ -1241,36 +1235,37 @@ module UnpackingAssignment {
    */
   predicate unpackingAssignmentElementReadStep(Node nodeFrom, Content c, Node nodeTo) {
     exists(
-      UnpackingAssignmentSequenceTarget target, int index, ControlFlowNode element, boolean precise
+      UnpackingAssignmentSequenceTarget target, int index, ControlFlowNode element, int starIndex
+    |
+      target.getElement(starIndex) instanceof StarredNode
+      or
+      not exists(target.getAnElement().(StarredNode)) and
+      starIndex = -1
     |
       nodeFrom.asCfgNode() = target and
       element = target.getElement(index) and
       (
-        target instanceof ListNode and
-        c instanceof ListElementContent
-        or
-        target instanceof TupleNode and
-        if precise = true
+        if starIndex = -1 or index < starIndex
         then c.(TupleElementContent).getIndex() = index
-        else c instanceof TupleElementContent // This could get big if big tuples exist
+        else
+          // This could get big if big tuples exist
+          if index = starIndex
+          then c.(TupleElementContent).getIndex() >= index
+          else c.(TupleElementContent).getIndex() >= index - 1
       ) and
       (
         if element instanceof SequenceNode
         then
           // Step 5b
-          nodeTo = TIterableSequenceNode(element) and
-          precise = true
+          nodeTo = TIterableSequenceNode(element)
         else
-          if element.getNode() instanceof Starred
+          if element instanceof StarredNode
           then
             // Step 5c
-            nodeTo = TIterableElementNode(element) and
-            precise = false
-          else (
+            nodeTo = TIterableElementNode(element)
+          else
             // Step 5a
-            nodeTo.asVar().getDefinition().(MultiAssignmentDefinition).getDefiningNode() = element and
-            precise = true
-          )
+            nodeTo.asVar().getDefinition().(MultiAssignmentDefinition).getDefiningNode() = element
       )
     )
   }

@@ -561,7 +561,16 @@ def test_iterated_unpacking_assignment():
     SINK(a) #$ flow="SOURCE, l:-2 -> a"
     SINK_F(b)
     SINK(b[0]) #$ flow="SOURCE, l:-4 -> b[0]"
-    SINK_F(c)
+    SINK_F(c) #$ SPURIOUS: flow="SOURCE, l:-5 -> c"  # We do not track tuple sizes
+
+
+@expects(4)
+def test_iterated_unpacking_assignment_shrink():
+    t = (SOURCE, SOURCE)
+    a, *b, c = t
+    SINK(a) #$ flow="SOURCE, l:-2 -> a"
+    SINK_F(b)
+    SINK(c) #$ flow="SOURCE, l:-4 -> c"
 
 
 @expects(15)
@@ -603,7 +612,7 @@ def test_iterated_unpacking_assignment_conversion():
     SINK_F(a2[0]) #$ SPURIOUS: flow="SOURCE, l:-6 -> a2[0]"  # FP here due to list abstraction
     SINK(a2[1]) #$ flow="SOURCE, l:-7 -> a2[1]"
     SINK_F(b)  # The list itself is not tainted
-    SINK_F(b[0])  # Expected FP here due to list abstraction
+    SINK_F(b[0])
 
     # tuple
     ((a1, *a2), *b) = tt
@@ -621,7 +630,7 @@ def test_iterated_unpacking_assignment_conversion():
     SINK_F(a2[0]) #$ SPURIOUS: flow="SOURCE, l:-24 -> a2[0]"  # FP here due to list abstraction
     SINK(a2[1]) #$ flow="SOURCE, l:-25 -> a2[1]"
     SINK_F(b)  # The list itself is not tainted
-    SINK_F(b[0])  # Expected FP here due to list abstraction
+    SINK_F(b[0])
 
     # mixed differently
     ([a1, *a2], *b) = tt
