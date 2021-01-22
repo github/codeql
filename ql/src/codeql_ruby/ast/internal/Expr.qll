@@ -18,7 +18,7 @@ module IntegerLiteral {
 
     final override string getValueText() { result = generated.getValue() }
 
-    final override string toString() { result = getValueText() }
+    final override string toString() { result = this.getValueText() }
   }
 }
 
@@ -28,7 +28,7 @@ module NilLiteral {
 
     final override string getValueText() { result = generated.getValue() }
 
-    final override string toString() { result = getValueText() }
+    final override string toString() { result = this.getValueText() }
   }
 }
 
@@ -40,7 +40,7 @@ module BooleanLiteral {
 
     final override string getValueText() { result = generated.getValue() }
 
-    final override string toString() { result = getValueText() }
+    final override string toString() { result = this.getValueText() }
 
     predicate isTrue() { this instanceof @token_true }
 
@@ -83,8 +83,7 @@ module StringLiteral {
     final override Generated::String generated;
 
     final override string getValueText() {
-      count(generated.getChild(_)) = 1 and
-      generated.getChild(0) instanceof Generated::Token and
+      strictcount(generated.getChild(_)) = 1 and
       result = generated.getChild(0).(Generated::Token).getValue()
     }
 
@@ -119,8 +118,7 @@ module SymbolLiteral {
     final override Generated::DelimitedSymbol generated;
 
     final override string getValueText() {
-      count(generated.getChild(_)) = 1 and
-      generated.getChild(0) instanceof Generated::Token and
+      strictcount(generated.getChild(_)) = 1 and
       result = generated.getChild(0).(Generated::Token).getValue()
     }
 
@@ -147,8 +145,7 @@ module SymbolLiteral {
     final override Generated::BareSymbol generated;
 
     final override string getValueText() {
-      count(generated.getChild(_)) = 1 and
-      generated.getChild(0) instanceof Generated::Token and
+      strictcount(generated.getChild(_)) = 1 and
       result = generated.getChild(0).(Generated::Token).getValue()
     }
 
@@ -176,7 +173,7 @@ module SymbolLiteral {
 
     final override string getValueText() { result = generated.getValue() }
 
-    final override string toString() { result = ":" + getValueText() }
+    final override string toString() { result = ":" + this.getValueText() }
   }
 }
 

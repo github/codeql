@@ -30,107 +30,129 @@ module Call {
    * ```
    */
   private predicate vcall(Generated::Identifier i) {
-    exists(Generated::ArgumentList x | x.getChild(_) = i)
+    i = any(Generated::ArgumentList x).getChild(_)
     or
-    exists(Generated::Array x | x.getChild(_) = i)
+    i = any(Generated::Array x).getChild(_)
     or
-    exists(Generated::Assignment x | x.getRight() = i)
+    i = any(Generated::Assignment x).getRight()
     or
-    exists(Generated::Begin x | x.getChild(_) = i)
+    i = any(Generated::Begin x).getChild(_)
     or
-    exists(Generated::BeginBlock x | x.getChild(_) = i)
+    i = any(Generated::BeginBlock x).getChild(_)
     or
-    exists(Generated::Binary x | x.getLeft() = i or x.getRight() = i)
+    i = any(Generated::Binary x).getLeft()
     or
-    exists(Generated::Block x | x.getChild(_) = i)
+    i = any(Generated::Binary x).getRight()
     or
-    exists(Generated::BlockArgument x | x.getChild() = i)
+    i = any(Generated::Block x).getChild(_)
     or
-    exists(Generated::Call x | x.getReceiver() = i)
+    i = any(Generated::BlockArgument x).getChild()
     or
-    exists(Generated::Case x | x.getValue() = i)
+    i = any(Generated::Call x).getReceiver()
     or
-    exists(Generated::Class x | x.getChild(_) = i)
+    i = any(Generated::Case x).getValue()
     or
-    exists(Generated::Conditional x |
-      x.getCondition() = i or x.getConsequence() = i or x.getAlternative() = i
-    )
+    i = any(Generated::Class x).getChild(_)
     or
-    exists(Generated::Do x | x.getChild(_) = i)
+    i = any(Generated::Conditional x).getCondition()
     or
-    exists(Generated::DoBlock x | x.getChild(_) = i)
+    i = any(Generated::Conditional x).getConsequence()
     or
-    exists(Generated::ElementReference x | x.getChild(_) = i or x.getObject() = i)
+    i = any(Generated::Conditional x).getAlternative()
     or
-    exists(Generated::Else x | x.getChild(_) = i)
+    i = any(Generated::Do x).getChild(_)
     or
-    exists(Generated::Elsif x | x.getCondition() = i)
+    i = any(Generated::DoBlock x).getChild(_)
     or
-    exists(Generated::EndBlock x | x.getChild(_) = i)
+    i = any(Generated::ElementReference x).getChild(_)
     or
-    exists(Generated::Ensure x | x.getChild(_) = i)
+    i = any(Generated::ElementReference x).getObject()
     or
-    exists(Generated::Exceptions x | x.getChild(_) = i)
+    i = any(Generated::Else x).getChild(_)
     or
-    exists(Generated::HashSplatArgument x | x.getChild() = i)
+    i = any(Generated::Elsif x).getCondition()
     or
-    exists(Generated::If x | x.getCondition() = i)
+    i = any(Generated::EndBlock x).getChild(_)
     or
-    exists(Generated::IfModifier x | x.getCondition() = i or x.getBody() = i)
+    i = any(Generated::Ensure x).getChild(_)
     or
-    exists(Generated::In x | x.getChild() = i)
+    i = any(Generated::Exceptions x).getChild(_)
     or
-    exists(Generated::Interpolation x | x.getChild() = i)
+    i = any(Generated::HashSplatArgument x).getChild()
     or
-    exists(Generated::KeywordParameter x | x.getValue() = i)
+    i = any(Generated::If x).getCondition()
     or
-    exists(Generated::Method x | x.getChild(_) = i)
+    i = any(Generated::IfModifier x).getCondition()
     or
-    exists(Generated::Module x | x.getChild(_) = i)
+    i = any(Generated::IfModifier x).getBody()
     or
-    exists(Generated::OperatorAssignment x | x.getRight() = i)
+    i = any(Generated::In x).getChild()
     or
-    exists(Generated::OptionalParameter x | x.getValue() = i)
+    i = any(Generated::Interpolation x).getChild()
     or
-    exists(Generated::Pair x | x.getKey() = i or x.getValue() = i)
+    i = any(Generated::KeywordParameter x).getValue()
     or
-    exists(Generated::ParenthesizedStatements x | x.getChild(_) = i)
+    i = any(Generated::Method x).getChild(_)
     or
-    exists(Generated::Pattern x | x.getChild() = i)
+    i = any(Generated::Module x).getChild(_)
     or
-    exists(Generated::Program x | x.getChild(_) = i)
+    i = any(Generated::OperatorAssignment x).getRight()
     or
-    exists(Generated::Range x | x.getChild(_) = i)
+    i = any(Generated::OptionalParameter x).getValue()
     or
-    exists(Generated::RescueModifier x | x.getBody() = i or x.getHandler() = i)
+    i = any(Generated::Pair x).getKey()
     or
-    exists(Generated::RightAssignmentList x | x.getChild(_) = i)
+    i = any(Generated::Pair x).getValue()
     or
-    exists(Generated::ScopeResolution x | x.getScope() = i)
+    i = any(Generated::ParenthesizedStatements x).getChild(_)
     or
-    exists(Generated::SingletonClass x | x.getValue() = i or x.getChild(_) = i)
+    i = any(Generated::Pattern x).getChild()
     or
-    exists(Generated::SingletonMethod x | x.getChild(_) = i or x.getObject() = i)
+    i = any(Generated::Program x).getChild(_)
     or
-    exists(Generated::SplatArgument x | x.getChild() = i)
+    i = any(Generated::Range x).getChild(_)
     or
-    exists(Generated::Superclass x | x.getChild() = i)
+    i = any(Generated::RescueModifier x).getBody()
     or
-    exists(Generated::Then x | x.getChild(_) = i)
+    i = any(Generated::RescueModifier x).getHandler()
     or
-    exists(Generated::Unary x | x.getOperand() = i)
+    i = any(Generated::RightAssignmentList x).getChild(_)
     or
-    exists(Generated::Unless x | x.getCondition() = i)
+    i = any(Generated::ScopeResolution x).getScope()
     or
-    exists(Generated::UnlessModifier x | x.getCondition() = i or x.getBody() = i)
+    i = any(Generated::SingletonClass x).getValue()
     or
-    exists(Generated::Until x | x.getCondition() = i)
+    i = any(Generated::SingletonClass x).getChild(_)
     or
-    exists(Generated::UntilModifier x | x.getCondition() = i or x.getBody() = i)
+    i = any(Generated::SingletonMethod x).getChild(_)
     or
-    exists(Generated::While x | x.getCondition() = i)
+    i = any(Generated::SingletonMethod x).getObject()
     or
-    exists(Generated::WhileModifier x | x.getCondition() = i or x.getBody() = i)
+    i = any(Generated::SplatArgument x).getChild()
+    or
+    i = any(Generated::Superclass x).getChild()
+    or
+    i = any(Generated::Then x).getChild(_)
+    or
+    i = any(Generated::Unary x).getOperand()
+    or
+    i = any(Generated::Unless x).getCondition()
+    or
+    i = any(Generated::UnlessModifier x).getCondition()
+    or
+    i = any(Generated::UnlessModifier x).getBody()
+    or
+    i = any(Generated::Until x).getCondition()
+    or
+    i = any(Generated::UntilModifier x).getCondition()
+    or
+    i = any(Generated::UntilModifier x).getBody()
+    or
+    i = any(Generated::While x).getCondition()
+    or
+    i = any(Generated::WhileModifier x).getCondition()
+    or
+    i = any(Generated::WhileModifier x).getBody()
   }
 
   private class IdentifierCallRange extends Call::Range, @token_identifier {
@@ -156,7 +178,7 @@ module Call {
 
     final override string getMethodName() {
       result = generated.getMethod().(Generated::Token).getValue() or
-      result = getMethodScopeResolution().getName()
+      result = this.getMethodScopeResolution().getName()
     }
 
     final override ScopeResolution getMethodScopeResolution() { result = generated.getMethod() }

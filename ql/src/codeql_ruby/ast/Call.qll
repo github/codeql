@@ -2,7 +2,7 @@ private import codeql_ruby.AST
 private import internal.Call
 
 /**
- * A method call.
+ * A call.
  */
 class Call extends Expr {
   override Call::Range range;
@@ -12,7 +12,7 @@ class Call extends Expr {
   final override string toString() { result = "call to " + this.getMethodName() }
 
   /**
-   * Gets the receiver of the call, if any. For example:
+   * Gets the receiver of this call, if any. For example:
    * ```rb
    * foo.bar
    * baz()
@@ -39,7 +39,12 @@ class Call extends Expr {
   final string getMethodName() { result = range.getMethodName() }
 
   /**
-   * Gets the method name if it is a `ScopeResolution`.
+   * Gets the scope resolution of this call, if any. In the following example,
+   * the result is the `ScopeResolution` for `Foo::bar`, while
+   * `getMethodName()` returns `"bar"`.
+   * ```rb
+   * Foo::bar()
+   * ```
    */
   final ScopeResolution getMethodScopeResolution() { result = range.getMethodScopeResolution() }
 
@@ -71,7 +76,7 @@ class Call extends Expr {
    */
   final Expr getKeywordArgument(string keyword) {
     exists(Pair p |
-      p = getAnArgument() and
+      p = this.getAnArgument() and
       p.getKey().(SymbolLiteral).getValueText() = keyword and
       result = p.getValue()
     )
