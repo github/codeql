@@ -44,18 +44,14 @@ module Lambda {
 }
 
 module Block {
-  abstract class Range extends Callable::Range {
-    Generated::BlockParameters params;
-
-    final override Parameter getParameter(int n) { result = params.getChild(n) }
-  }
+  abstract class Range extends Callable::Range { }
 }
 
 module DoBlock {
   class Range extends Block::Range, @do_block {
     final override Generated::DoBlock generated;
 
-    Range() { params = generated.getParameters() }
+    final override Parameter getParameter(int n) { result = generated.getParameters().getChild(n) }
   }
 }
 
@@ -63,6 +59,6 @@ module BraceBlock {
   class Range extends Block::Range, @block {
     final override Generated::Block generated;
 
-    Range() { params = generated.getParameters() }
+    final override Parameter getParameter(int n) { result = generated.getParameters().getChild(n) }
   }
 }

@@ -16,9 +16,7 @@ callsWithNoReceiverArgumentsOrBlock
 | calls.rb:74:1:74:3 | call to foo | foo |
 | calls.rb:74:7:74:9 | call to bar | bar |
 | calls.rb:77:2:77:4 | call to foo | foo |
-| calls.rb:80:1:80:13 | call to foo | foo |
 | calls.rb:80:9:80:11 | call to bar | bar |
-| calls.rb:83:1:83:16 | call to foo | foo |
 | calls.rb:83:10:83:12 | call to bar | bar |
 | calls.rb:86:1:86:3 | call to foo | foo |
 | calls.rb:90:6:90:8 | call to foo | foo |
@@ -96,6 +94,8 @@ callsWithBlock
 | calls.rb:14:1:14:17 | call to foo | calls.rb:14:5:14:17 | { ... } |
 | calls.rb:17:1:19:3 | call to foo | calls.rb:17:5:19:3 | do ... end |
 | calls.rb:22:1:24:3 | call to bar | calls.rb:22:16:24:3 | do ... end |
+| calls.rb:80:1:80:13 | call to foo | calls.rb:80:7:80:13 | { ... } |
+| calls.rb:83:1:83:16 | call to foo | calls.rb:83:7:83:16 | do ... end |
 yieldCalls
 | calls.rb:28:3:28:7 | call to yield |
 | calls.rb:33:3:33:16 | call to yield |
