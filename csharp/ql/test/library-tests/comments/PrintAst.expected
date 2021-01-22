@@ -132,11 +132,15 @@ trivia.cs:
 #   16|   5: [Method] M1
 #   16|     -1: [TypeMention] Void
 #   17|     4: [BlockStmt] {...}
-#   19|       0: [LocalVariableDeclStmt] ... ...;
-#   19|         0: [LocalVariableDeclExpr] Int32 i
+comments1.cs:
+#    1|       0: [LocalVariableDeclStmt] ... ...;
+#    1|         0: [LocalVariableDeclExpr] Int32 i
+trivia.cs:
 #   19|           0: [TypeMention] int
-#   20|       1: [LocalVariableDeclStmt] ... ...;
-#   20|         0: [LocalVariableDeclExpr] Int32 j
+comments1.cs:
+#    2|       1: [LocalVariableDeclStmt] ... ...;
+#    2|         0: [LocalVariableDeclExpr] Int32 j
+trivia.cs:
 #   20|           0: [TypeMention] int
 #   22|       2: [LocalVariableDeclStmt] ... ...;
 #   22|         0: [LocalVariableDeclExpr] Char c

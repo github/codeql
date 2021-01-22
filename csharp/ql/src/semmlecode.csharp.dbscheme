@@ -247,6 +247,10 @@ locations_default(
   int endLine: int ref,
   int endColumn: int ref);
 
+locations_mapped(
+  unique int id: @location_default ref,
+  int mapped_to: @location_default ref);
+
 @sourceline = @file | @callable | @xmllocatable;
 
 numlines(
@@ -378,10 +382,14 @@ directive_lines(
   unique int id: @directive_line,
   int kind: int ref); /* 0: default, 1: hidden, 2: numeric */
 
-directive_line_values(
+directive_line_value(
   unique int id: @directive_line ref,
-  int line: int ref,
-  string file: string ref);
+  int line: int ref);
+
+directive_line_file(
+  unique int id: @directive_line ref,
+  int file: @file ref
+)
 
 directive_nullables(
   unique int id: @directive_nullable,
@@ -406,7 +414,7 @@ directive_defines(
 
 pragma_checksums(
   unique int id: @pragma_checksum,
-  string file: string ref,
+  int file: @file ref,
   string guid: string ref,
   string bytes: string ref);
 

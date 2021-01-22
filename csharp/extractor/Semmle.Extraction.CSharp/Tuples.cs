@@ -624,7 +624,7 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("pragma_warning_error_codes", pragma, errorCode, child);
         }
 
-        internal static void pragma_checksums(this TextWriter trapFile, PragmaChecksumDirective pragma, string file, string guid, string bytes)
+        internal static void pragma_checksums(this TextWriter trapFile, PragmaChecksumDirective pragma, Extraction.Entities.File file, string guid, string bytes)
         {
             trapFile.WriteTuple("pragma_checksums", pragma, file, guid, bytes);
         }
@@ -659,9 +659,14 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("directive_lines", directive, kind);
         }
 
-        internal static void directive_line_values(this TextWriter trapFile, LineDirective directive, int line, string file)
+        internal static void directive_line_value(this TextWriter trapFile, LineDirective directive, int line)
         {
-            trapFile.WriteTuple("directive_line_values", directive, line, file);
+            trapFile.WriteTuple("directive_line_value", directive, line);
+        }
+
+        internal static void directive_line_file(this TextWriter trapFile, LineDirective directive, Extraction.Entities.File file)
+        {
+            trapFile.WriteTuple("directive_line_file", directive, file);
         }
 
         internal static void directive_regions(this TextWriter trapFile, RegionDirective directive, string name)

@@ -50,7 +50,7 @@ class PragmaWarningDirective extends PreprocessorDirective, @pragma_warning {
  */
 class PragmaChecksumDirective extends PreprocessorDirective, @pragma_checksum {
   /** Gets the file name of this directive. */
-  string getFileName() { pragma_checksums(this, result, _, _) }
+  File getReferencedFile() { pragma_checksums(this, result, _, _) }
 
   /** Gets the GUID of this directive. */
   string getGuid() { pragma_checksums(this, _, result, _) }
@@ -215,13 +215,10 @@ class NumericLineDirective extends LineDirective {
   NumericLineDirective() { directive_lines(this, 2) }
 
   /** Gets the line number of this directive. */
-  int getLine() { directive_line_values(this, result, _) }
+  int getLine() { directive_line_value(this, result) }
 
-  /** Holds if this directive specifies a file name. */
-  predicate hasFileName() { exists(this.getFileName()) }
-
-  /** Gets the file name of this directive, if any. */
-  string getFileName() { directive_line_values(this, _, result) and result != "" }
+  /** Gets the referenced file of this directive. */
+  File getReferencedFile() { directive_line_file(this, result) }
 
   override string getAPrimaryQlClass() { result = "NumericLineDirective" }
 }

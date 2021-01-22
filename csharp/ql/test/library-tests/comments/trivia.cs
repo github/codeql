@@ -10,12 +10,12 @@ using System.Collections;
 using System.Collections.Generic;
 
 #pragma warning disable 414, CS3021
-#pragma checksum "file.cs" "{406EA660-64CF-4C82-B6F0-42D48172A799}" "ab007f1d23d9" // New checksum
+#pragma checksum "comments1.cs" "{406EA660-64CF-4C82-B6F0-42D48172A799}" "ab007f1d23d9" // New checksum
 class Tr1
 {
     static void M1()
     {
-#line 200 "Special"
+#line 1 "comments1.cs"
         int i;
         int j;
 #line default
@@ -24,7 +24,7 @@ class Tr1
         float f;
 #line hidden // numbering not affected
         string s;
-#line 300
+#line 5
         double d;
     }
 }

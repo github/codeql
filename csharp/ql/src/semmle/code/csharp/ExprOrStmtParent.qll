@@ -57,7 +57,14 @@ cached
 private module Cached {
   cached
   Location bestLocation(Element e) {
-    result = e.getALocation().(SourceLocation)
+    result = e.getALocation().(SourceLocation) and
+    (
+      not exists(e.getALocation().(SourceLocation).getMappedLocation()) or
+      e instanceof LineDirective
+    )
+    or
+    result = e.getALocation().(SourceLocation).getMappedLocation() and
+    not e instanceof LineDirective
     or
     hasNoSourceLocation(e) and
     result = min(Location l | l = e.getALocation() | l order by l.getFile().toString())

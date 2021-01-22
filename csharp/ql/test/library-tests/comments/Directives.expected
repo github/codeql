@@ -2,12 +2,12 @@ directives
 | trivia.cs:4:1:4:13 | #define ... | trivia.cs:4:1:4:13 | trivia.cs:4:1:4:13 | active |
 | trivia.cs:6:1:6:12 | #undef ... | trivia.cs:6:1:6:12 | trivia.cs:6:1:6:12 | active |
 | trivia.cs:12:1:12:35 | #pragma warning ... | trivia.cs:12:1:12:35 | trivia.cs:12:1:12:35 | active |
-| trivia.cs:13:1:13:98 | #pragma checksum ... | trivia.cs:13:1:13:98 | trivia.cs:13:1:13:98 | active |
-| trivia.cs:18:1:18:19 | #line ... | trivia.cs:18:1:18:19 | trivia.cs:18:1:18:19 | active |
+| trivia.cs:13:1:13:103 | #pragma checksum ... | trivia.cs:13:1:13:103 | trivia.cs:13:1:13:103 | active |
+| trivia.cs:18:1:18:22 | #line ... | trivia.cs:18:1:18:22 | trivia.cs:18:1:18:22 | active |
 | trivia.cs:21:1:21:13 | #line default | trivia.cs:21:1:21:13 | trivia.cs:21:1:21:13 | active |
 | trivia.cs:23:1:23:23 | #pragma warning ... | trivia.cs:23:1:23:23 | trivia.cs:23:1:23:23 | active |
 | trivia.cs:25:1:25:38 | #line hidden | trivia.cs:25:1:25:38 | trivia.cs:25:1:25:38 | active |
-| trivia.cs:27:1:27:9 | #line ... | trivia.cs:27:1:27:9 | trivia.cs:27:1:27:9 | active |
+| trivia.cs:27:1:27:7 | #line ... | trivia.cs:27:1:27:7 | trivia.cs:27:1:27:7 | active |
 | trivia.cs:36:9:36:22 | #region ... | trivia.cs:36:9:36:22 | trivia.cs:36:9:36:22 | active |
 | trivia.cs:38:9:38:22 | #region ... | trivia.cs:38:9:38:22 | trivia.cs:38:9:38:22 | active |
 | trivia.cs:40:9:40:18 | #endregion | trivia.cs:40:9:40:18 | trivia.cs:40:9:40:18 | active |
@@ -33,12 +33,12 @@ comp
 | trivia.cs:4:1:4:13 | #define ... | compilation |
 | trivia.cs:6:1:6:12 | #undef ... | compilation |
 | trivia.cs:12:1:12:35 | #pragma warning ... | compilation |
-| trivia.cs:13:1:13:98 | #pragma checksum ... | compilation |
-| trivia.cs:18:1:18:19 | #line ... | compilation |
+| trivia.cs:13:1:13:103 | #pragma checksum ... | compilation |
+| trivia.cs:18:1:18:22 | #line ... | compilation |
 | trivia.cs:21:1:21:13 | #line default | compilation |
 | trivia.cs:23:1:23:23 | #pragma warning ... | compilation |
 | trivia.cs:25:1:25:38 | #line hidden | compilation |
-| trivia.cs:27:1:27:9 | #line ... | compilation |
+| trivia.cs:27:1:27:7 | #line ... | compilation |
 | trivia.cs:36:9:36:22 | #region ... | compilation |
 | trivia.cs:38:9:38:22 | #region ... | compilation |
 | trivia.cs:40:9:40:18 | #endregion | compilation |

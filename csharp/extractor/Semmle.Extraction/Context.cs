@@ -262,12 +262,6 @@ namespace Semmle.Extraction
             !SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) ||
             scope.InScope(symbol);
 
-        /// <summary>
-        /// Whether the current extraction context defines a given file.
-        /// </summary>
-        /// <param name="path">The path to query.</param>
-        public bool DefinesFile(string path) => scope.InFileScope(path);
-
         private int currentRecursiveDepth = 0;
         private const int maxRecursiveDepth = 150;
 
