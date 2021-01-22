@@ -27,7 +27,7 @@ public class TypeScriptExtractor implements IExtractor {
     try {
       FileSnippet snippet = state.getSnippets().get(sourceFile.toPath());
       SourceType sourceType = snippet != null ? snippet.getSourceType() : jsExtractor.establishSourceType(source, false);
-      TopLevelKind toplevelKind = snippet != null ? snippet.getTopLevelKind() : TopLevelKind.script;
+      TopLevelKind toplevelKind = snippet != null ? snippet.getTopLevelKind() : TopLevelKind.SCRIPT;
       return jsExtractor.extract(textualExtractor, source, toplevelKind, scopeManager, sourceType, res).snd();
     } catch (ParseError e) {
       e.setPosition(locationManager.translatePosition(e.getPosition()));

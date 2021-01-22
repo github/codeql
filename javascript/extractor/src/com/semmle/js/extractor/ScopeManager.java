@@ -106,7 +106,7 @@ public class ScopeManager {
 
   public ScopeManager(TrapWriter trapWriter, ECMAVersion ecmaVersion) {
     this.trapWriter = trapWriter;
-    this.toplevelScope = enterScope(ScopeKind.global, trapWriter.globalID("global_scope"), null);
+    this.toplevelScope = enterScope(ScopeKind.GLOBAL, trapWriter.globalID("global_scope"), null);
     this.ecmaVersion = ecmaVersion;
     this.implicitVariableScope = toplevelScope; 
   }
@@ -176,29 +176,29 @@ public class ScopeManager {
   private static final Map<String, ScopeKind> scopeKinds = new LinkedHashMap<String, ScopeKind>();
 
   static {
-    scopeKinds.put("Program", ScopeKind.global);
-    scopeKinds.put("FunctionDeclaration", ScopeKind.function);
-    scopeKinds.put("FunctionExpression", ScopeKind.function);
-    scopeKinds.put("ArrowFunctionExpression", ScopeKind.function);
-    scopeKinds.put("CatchClause", ScopeKind.catch_);
-    scopeKinds.put("Module", ScopeKind.module);
-    scopeKinds.put("BlockStatement", ScopeKind.block);
-    scopeKinds.put("SwitchStatement", ScopeKind.block);
-    scopeKinds.put("ForStatement", ScopeKind.for_);
-    scopeKinds.put("ForInStatement", ScopeKind.forIn);
-    scopeKinds.put("ForOfStatement", ScopeKind.forIn);
-    scopeKinds.put("ComprehensionBlock", ScopeKind.comprehensionBlock);
-    scopeKinds.put("LetStatement", ScopeKind.block);
-    scopeKinds.put("LetExpression", ScopeKind.block);
-    scopeKinds.put("ClassExpression", ScopeKind.classExpr);
-    scopeKinds.put("NamespaceDeclaration", ScopeKind.namespace);
-    scopeKinds.put("ClassDeclaration", ScopeKind.classDecl);
-    scopeKinds.put("InterfaceDeclaration", ScopeKind.interface_);
-    scopeKinds.put("TypeAliasDeclaration", ScopeKind.typeAlias);
-    scopeKinds.put("MappedTypeExpr", ScopeKind.mappedType);
-    scopeKinds.put("EnumDeclaration", ScopeKind.enum_);
-    scopeKinds.put("ExternalModuleDeclaration", ScopeKind.externalModule);
-    scopeKinds.put("ConditionalTypeExpr", ScopeKind.conditionalType);
+    scopeKinds.put("Program", ScopeKind.GLOBAL);
+    scopeKinds.put("FunctionDeclaration", ScopeKind.FUNCTION);
+    scopeKinds.put("FunctionExpression", ScopeKind.FUNCTION);
+    scopeKinds.put("ArrowFunctionExpression", ScopeKind.FUNCTION);
+    scopeKinds.put("CatchClause", ScopeKind.CATCH);
+    scopeKinds.put("Module", ScopeKind.MODULE);
+    scopeKinds.put("BlockStatement", ScopeKind.BLOCK);
+    scopeKinds.put("SwitchStatement", ScopeKind.BLOCK);
+    scopeKinds.put("ForStatement", ScopeKind.FOR);
+    scopeKinds.put("ForInStatement", ScopeKind.FOR_IN);
+    scopeKinds.put("ForOfStatement", ScopeKind.FOR_IN);
+    scopeKinds.put("ComprehensionBlock", ScopeKind.COMPREHENSION_BLOCK);
+    scopeKinds.put("LetStatement", ScopeKind.BLOCK);
+    scopeKinds.put("LetExpression", ScopeKind.BLOCK);
+    scopeKinds.put("ClassExpression", ScopeKind.CLASS_EXPR);
+    scopeKinds.put("NamespaceDeclaration", ScopeKind.NAMESPACE);
+    scopeKinds.put("ClassDeclaration", ScopeKind.CLASS_DECL);
+    scopeKinds.put("InterfaceDeclaration", ScopeKind.INTERFACE);
+    scopeKinds.put("TypeAliasDeclaration", ScopeKind.TYPE_ALIAS);
+    scopeKinds.put("MappedTypeExpr", ScopeKind.MAPPED_TYPE);
+    scopeKinds.put("EnumDeclaration", ScopeKind.ENUM);
+    scopeKinds.put("ExternalModuleDeclaration", ScopeKind.EXTERNAL_MODULE);
+    scopeKinds.put("ConditionalTypeExpr", ScopeKind.CONDITIONAL_TYPE);
   }
 
   /**

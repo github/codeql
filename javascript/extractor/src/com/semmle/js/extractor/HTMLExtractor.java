@@ -74,7 +74,7 @@ public class HTMLExtractor implements IExtractor {
           source = source.replace("<![CDATA[", "         ").replace("]]>", "   ");
           if (!source.trim().isEmpty()) {
             extractSnippet(
-                TopLevelKind.inlineScript,
+                TopLevelKind.INLINE_SCRIPT,
                 config.withSourceType(sourceType),
                 scopeManager,
                 textualExtractor,
@@ -97,7 +97,7 @@ public class HTMLExtractor implements IExtractor {
             int valueStart = attr.getValueSegment().getBegin();
             if (JS_ATTRIBUTE.matcher(attr.getName()).matches()) {
               extractSnippet(
-                  TopLevelKind.eventHandler,
+                  TopLevelKind.EVENT_HANDLER,
                   config,
                   scopeManager,
                   textualExtractor,
@@ -118,7 +118,7 @@ public class HTMLExtractor implements IExtractor {
                 }
               }
               extractSnippet(
-                  TopLevelKind.angularTemplate,
+                  TopLevelKind.ANGULAR_TEMPLATE,
                   config.withSourceType(SourceType.ANGULAR_TEMPLATE),
                   scopeManager,
                   textualExtractor,
@@ -130,7 +130,7 @@ public class HTMLExtractor implements IExtractor {
             } else if (source.startsWith("javascript:")) {
               source = source.substring(11);
               extractSnippet(
-                  TopLevelKind.javascriptUrl,
+                  TopLevelKind.JAVASCRIPT_URL,
                   config,
                   scopeManager,
                   textualExtractor,

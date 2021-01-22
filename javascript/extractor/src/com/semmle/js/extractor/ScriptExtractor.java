@@ -82,7 +82,7 @@ public class ScriptExtractor implements IExtractor {
     LoCInfo loc;
     try {
       Pair<Label, LoCInfo> res =
-          new JSExtractor(config).extract(textualExtractor, source, TopLevelKind.script, scopeManager);
+          new JSExtractor(config).extract(textualExtractor, source, TopLevelKind.SCRIPT, scopeManager);
       toplevelLabel = res.fst();
       loc = res.snd();
     } catch (ParseError e) {

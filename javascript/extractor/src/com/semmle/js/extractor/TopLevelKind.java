@@ -4,11 +4,11 @@ package com.semmle.js.extractor;
  * A kind of top-level, corresponding to the <code>@toplevel</code> type in the dbscheme.
  */
 public enum TopLevelKind {
-  script(0),
-  inlineScript(1),
-  eventHandler(2),
-  javascriptUrl(3),
-  angularTemplate(4);
+  SCRIPT(0),
+  INLINE_SCRIPT(1),
+  EVENT_HANDLER(2),
+  JAVASCRIPT_URL(3),
+  ANGULAR_TEMPLATE(4);
   
   private int value;
   
