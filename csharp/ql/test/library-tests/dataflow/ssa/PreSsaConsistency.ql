@@ -1,6 +1,7 @@
 import csharp
 import semmle.code.csharp.controlflow.internal.PreSsa as PreSsa
 import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
+import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 
 class CallableWithSplitting extends Callable {
   CallableWithSplitting() { this = any(SplitControlFlowElement e).getEnclosingCallable() }
@@ -46,13 +47,11 @@ query predicate readReadInconsistency(
     b = true and
     a = read1.getTarget() and
     PreSsa::adjacentReadPairSameVar(read1, read2) and
-    not Ssa::Internal::adjacentReadPairSameVar(_, read1.getAControlFlowNode(),
-      read2.getAControlFlowNode())
+    not SsaImpl::adjacentReadPairSameVar(_, read1.getAControlFlowNode(), read2.getAControlFlowNode())
     or
     b = false and
     a = read1.getTarget() and
-    Ssa::Internal::adjacentReadPairSameVar(_, read1.getAControlFlowNode(),
-      read2.getAControlFlowNode()) and
+    SsaImpl::adjacentReadPairSameVar(_, read1.getAControlFlowNode(), read2.getAControlFlowNode()) and
     read1.getTarget() instanceof PreSsa::SimpleAssignable and
     not PreSsa::adjacentReadPairSameVar(read1, read2) and
     // Exclude split CFG elements because SSA may be more precise than pre-SSA

@@ -202,6 +202,17 @@ class ParameterNode extends CfgNode {
   Parameter getParameter() { result = def.getParameter() }
 }
 
+/** A data flow node that represents a call argument. */
+class ArgumentNode extends Node {
+  ArgumentNode() { this = any(DataFlowCall c).getArg(_) }
+
+  /** Holds if this argument occurs at the given position in the given call. */
+  predicate argumentOf(DataFlowCall call, int pos) { this = call.getArg(pos) }
+
+  /** Gets the call in which this node is an argument. */
+  final DataFlowCall getCall() { this.argumentOf(result, _) }
+}
+
 /**
  * A node associated with an object after an operation that might have
  * changed its state.

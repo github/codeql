@@ -12,6 +12,7 @@
  */
 
 import cpp
+import semmle.code.cpp.controlflow.Guards
 
 /**
  * A function call that potentially does not return (such as `exit`).
@@ -48,7 +49,11 @@ class ReallocCallLeak extends FunctionCall {
    * example a call to `exit()`.
    */
   predicate mayHandleByTermination() {
-    this.(ControlFlowNode).getASuccessor*() instanceof CallMayNotReturn
+    exists(GuardCondition guard, CallMayNotReturn exit |
+      this.(ControlFlowNode).getASuccessor*() = guard and
+      guard.getAChild*() = v.getAnAccess() and
+      guard.controls(exit.getBasicBlock(), _)
+    )
   }
 }
 
