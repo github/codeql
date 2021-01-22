@@ -242,6 +242,8 @@
 | by_reference.cpp:134:29:134:29 | a | AST only |
 | by_reference.cpp:135:27:135:27 | a | AST only |
 | by_reference.cpp:136:16:136:16 | a | AST only |
+| by_reference.cpp:140:3:140:5 | * ... | AST only |
+| by_reference.cpp:145:15:145:16 | & ... | AST only |
 | complex.cpp:9:20:9:21 | this | IR only |
 | complex.cpp:10:20:10:21 | this | IR only |
 | complex.cpp:11:22:11:23 | a_ | AST only |

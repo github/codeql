@@ -123,6 +123,9 @@ postWithInFlow
 | by_reference.cpp:108:24:108:24 | a [inner post update] | PostUpdateNode should not be the target of local flow. |
 | by_reference.cpp:123:28:123:36 | inner_ptr [inner post update] | PostUpdateNode should not be the target of local flow. |
 | by_reference.cpp:127:30:127:38 | inner_ptr [inner post update] | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:140:3:140:5 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:140:4:140:5 | pa [inner post update] | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:145:16:145:16 | s [inner post update] | PostUpdateNode should not be the target of local flow. |
 | complex.cpp:11:22:11:23 | a_ [post update] | PostUpdateNode should not be the target of local flow. |
 | complex.cpp:12:22:12:23 | b_ [post update] | PostUpdateNode should not be the target of local flow. |
 | conflated.cpp:10:3:10:7 | * ... [post update] | PostUpdateNode should not be the target of local flow. |

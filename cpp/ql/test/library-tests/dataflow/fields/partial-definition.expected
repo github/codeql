@@ -352,6 +352,8 @@
 | by_reference.cpp:135:27:135:27 | a |
 | by_reference.cpp:136:8:136:13 | pouter |
 | by_reference.cpp:136:16:136:16 | a |
+| by_reference.cpp:140:3:140:5 | * ... |
+| by_reference.cpp:145:15:145:16 | & ... |
 | complex.cpp:11:22:11:23 | a_ |
 | complex.cpp:11:22:11:23 | this |
 | complex.cpp:12:22:12:23 | b_ |

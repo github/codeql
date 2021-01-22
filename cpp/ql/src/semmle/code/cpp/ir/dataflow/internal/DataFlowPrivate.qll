@@ -451,7 +451,7 @@ Type getResultTypeOfSourceValue(CopyValueInstruction copy) {
  * pops the `ArrayContent` off the access path when a value-to-pointer or value-to-reference conversion
  * happens on the argument that is ends up as the target of such a store.
  */
-private predicate innerReadSteap(Node node1, Content a, Node node2) {
+private predicate innerReadStep(Node node1, Content a, Node node2) {
   a = TArrayContent() and
   exists(WriteSideEffectInstruction write, CallInstruction call, CopyValueInstruction copyValue |
     write.getPrimaryInstruction() = call and
@@ -463,8 +463,9 @@ private predicate innerReadSteap(Node node1, Content a, Node node2) {
     ) and
     node2.asInstruction() = write and
     copyValue = call.getArgument(write.getIndex()) and
-    [getPointerType(copyValue).getBaseType(), getReferenceType(copyValue).getBaseType()] =
-      getResultTypeOfSourceValue(copyValue)
+    // Check that `copyValue` is actually doing a T to a T* conversion.
+    [getPointerType(copyValue).getBaseType(), getReferenceType(copyValue).getBaseType()].stripType() =
+      getResultTypeOfSourceValue(copyValue).stripType()
   )
 }
 
@@ -477,7 +478,7 @@ predicate readStep(Node node1, Content f, Node node2) {
   aliasedReadStep(node1, f, node2) or
   arrayReadStep(node1, f, node2) or
   instrToFieldNodeReadStep(node1, f, node2) or
-  innerReadSteap(node1, f, node2)
+  innerReadStep(node1, f, node2)
 }
 
 /**
