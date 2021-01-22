@@ -1114,10 +1114,12 @@ private module Cached {
     Ssa::ExplicitDefinition def, Ssa::ImplicitEntryDefinition edef,
     ControlFlow::Nodes::ElementNode c, boolean additionalCalls
   ) {
-    exists(Definition def0, ControlFlow::BasicBlock bb, int i |
-      capturedReadIn(_, _, def.getSourceVariable(), edef.getSourceVariable(), c, additionalCalls) and
+    exists(Ssa::SourceVariable v, Definition def0, ControlFlow::BasicBlock bb, int i |
+      v = def.getSourceVariable() and
+      capturedReadIn(_, _, v, edef.getSourceVariable(), c, additionalCalls) and
       def = def0.getAnUltimateDefinition() and
-      ssaDefReachesRead(_, def0, bb, i, CapturedVarCallRead()) and
+      ssaDefReachesRead(_, def0, bb, i) and
+      variableRead(bb, i, v, CapturedVarCallRead()) and
       c = bb.getNode(i)
     )
   }
