@@ -247,7 +247,7 @@ public class ASTExtractor {
 
     /**
      * An identifier that is part of a type, but should not bind to a type name. Unlike {@link
-     * #label}, this will not result in an expression.
+     * #LABEL}, this will not result in an expression.
      */
     TYPE_LABEL,
 
