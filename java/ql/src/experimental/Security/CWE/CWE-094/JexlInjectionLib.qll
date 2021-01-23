@@ -196,10 +196,16 @@ private class CallableCallMethod extends Method {
   CallableCallMethod() { getDeclaringType() instanceof CallableInterface and hasName("call") }
 }
 
+/**
+ * Defines methods that create a Jexl script.
+ */
 private class CreateJexlScriptMethod extends Method {
   CreateJexlScriptMethod() { getDeclaringType() instanceof JexlEngine and hasName("createScript") }
 }
 
+/**
+ * Defines methods that creates a `Callable` for a Jexl expression or script.
+ */
 private class CreateJexlCallableMethod extends Method {
   CreateJexlCallableMethod() {
     (getDeclaringType() instanceof JexlExpression or getDeclaringType() instanceof JexlScript) and
@@ -207,6 +213,9 @@ private class CreateJexlCallableMethod extends Method {
   }
 }
 
+/**
+ * Defines methods that create a Jexl template.
+ */
 private class CreateJexlTemplateMethod extends Method {
   CreateJexlTemplateMethod() {
     (getDeclaringType() instanceof JxltEngine or getDeclaringType() instanceof UnifiedJexl) and
@@ -214,6 +223,9 @@ private class CreateJexlTemplateMethod extends Method {
   }
 }
 
+/**
+ * Defines methods that create a Jexl expression.
+ */
 private class CreateJexlExpressionMethod extends Method {
   CreateJexlExpressionMethod() {
     (getDeclaringType() instanceof JexlEngine or getDeclaringType() instanceof JxltEngine) and
@@ -223,33 +235,28 @@ private class CreateJexlExpressionMethod extends Method {
   }
 }
 
-private class JexlExpression extends RefType {
-  JexlExpression() {
-    hasQualifiedName("org.apache.commons.jexl3", "JexlExpression") or
-    hasQualifiedName("org.apache.commons.jexl2", "Expression")
-  }
+private class JexlRefType extends RefType {
+  JexlRefType() { getPackage().hasName(["org.apache.commons.jexl2", "org.apache.commons.jexl3"]) }
 }
 
-private class JexlScript extends RefType {
-  JexlScript() {
-    hasQualifiedName("org.apache.commons.jexl3", "JexlScript") or
-    hasQualifiedName("org.apache.commons.jexl2", "Script")
-  }
+private class JexlExpression extends JexlRefType {
+  JexlExpression() { hasName(["Expression", "JexlExpression"]) }
 }
 
-private class JexlEngine extends RefType {
-  JexlEngine() {
-    hasQualifiedName("org.apache.commons.jexl3", "JexlEngine") or
-    hasQualifiedName("org.apache.commons.jexl2", "JexlEngine")
-  }
+private class JexlScript extends JexlRefType {
+  JexlScript() { hasName(["Script", "JexlScript"]) }
 }
 
-private class JxltEngine extends RefType {
-  JxltEngine() { hasQualifiedName("org.apache.commons.jexl3", "JxltEngine") }
+private class JexlEngine extends JexlRefType {
+  JexlEngine() { hasName("JexlEngine") }
 }
 
-private class UnifiedJexl extends RefType {
-  UnifiedJexl() { hasQualifiedName("org.apache.commons.jexl2", "UnifiedJEXL") }
+private class JxltEngine extends JexlRefType {
+  JxltEngine() { hasName("JxltEngine") }
+}
+
+private class UnifiedJexl extends JexlRefType {
+  UnifiedJexl() { hasName("UnifiedJEXL") }
 }
 
 private class JxltEngineExpression extends NestedType {
