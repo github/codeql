@@ -68,11 +68,11 @@ private module CleverGo {
       )
       or
       // Interfaces of package: clevergo.tech/clevergo@v0.5.2
-      exists(string methodName, Method mtd, FunctionOutput outp |
-        this = outp.getExitNode(mtd.getACall())
+      exists(string interfaceName, string methodName, Method mtd, FunctionOutput outp |
+        this = outp.getExitNode(mtd.getACall()) and
+        mtd.implements(packagePath(), interfaceName, methodName)
       |
-        // Interface: Decoder
-        mtd.implements(packagePath(), "Decoder", methodName) and
+        interfaceName = "Decoder" and
         (
           // Method: func (Decoder).Decode(req *net/http.Request, v interface{}) error
           methodName = "Decode" and
