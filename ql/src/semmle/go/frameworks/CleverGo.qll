@@ -8,23 +8,17 @@ import go
  * Provides classes for working with concepts from the [`clevergo.tech/clevergo@v0.5.2`](https://pkg.go.dev/clevergo.tech/clevergo@v0.5.2) package.
  */
 private module CleverGo {
-  /** Gets the package path. */
-  bindingset[result]
-  string packagePath() {
-    result = package(["clevergo.tech/clevergo", "github.com/clevergo/clevergo"], "")
-  }
-
   /**
    * Provides models of untrusted flow sources.
    */
   private class UntrustedSources extends UntrustedFlowSource::Range {
     UntrustedSources() {
       // Methods on types of package: clevergo.tech/clevergo@v0.5.2
-      exists(string methodName, Method mtd, FunctionOutput outp |
-        this = outp.getExitNode(mtd.getACall())
+      exists(string receiverName, string methodName, Method mtd, FunctionOutput outp |
+        this = outp.getExitNode(mtd.getACall()) and
+        mtd.hasQualifiedName(package("clevergo.tech/clevergo", ""), receiverName, methodName)
       |
-        // Receiver: Context
-        mtd.hasQualifiedName(packagePath(), "Context", methodName) and
+        receiverName = "Context" and
         (
           // Method: func (*Context).BasicAuth() (username string, password string, ok bool)
           methodName = "BasicAuth" and
@@ -59,8 +53,7 @@ private module CleverGo {
           outp.isResult()
         )
         or
-        // Receiver: Params
-        mtd.hasQualifiedName(packagePath(), "Params", methodName) and
+        receiverName = "Params" and
         (
           // Method: func (Params).String(name string) string
           methodName = "String" and
@@ -73,7 +66,7 @@ private module CleverGo {
         this = outp.getExitNode(mtd.getACall())
       |
         // Interface: Decoder
-        mtd.implements(packagePath(), "Decoder", methodName) and
+        mtd.implements(package("clevergo.tech/clevergo", ""), "Decoder", methodName) and
         (
           // Method: func (Decoder).Decode(req *net/http.Request, v interface{}) error
           methodName = "Decode" and
@@ -84,16 +77,18 @@ private module CleverGo {
       // Structs of package: clevergo.tech/clevergo@v0.5.2
       exists(DataFlow::Field fld |
         // Struct: Context
-        fld.hasQualifiedName(packagePath(), "Context", "Params")
+        fld.hasQualifiedName(package("clevergo.tech/clevergo", ""), "Context", "Params")
         or
         // Struct: Param
-        fld.hasQualifiedName(packagePath(), "Param", ["Key", "Value"])
+        fld.hasQualifiedName(package("clevergo.tech/clevergo", ""), "Param", ["Key", "Value"])
       |
         this = fld.getARead()
       )
       or
       // Types of package: clevergo.tech/clevergo@v0.5.2
-      exists(ValueEntity v | v.getType().hasQualifiedName(packagePath(), "Params") |
+      exists(ValueEntity v |
+        v.getType().hasQualifiedName(package("clevergo.tech/clevergo", ""), "Params")
+      |
         this = v.getARead()
       )
     }
@@ -108,7 +103,7 @@ private module CleverGo {
       // Taint-tracking models for package: clevergo.tech/clevergo@v0.5.2
       (
         // Function: func CleanPath(p string) string
-        this.hasQualifiedName(packagePath(), "CleanPath") and
+        this.hasQualifiedName(package("clevergo.tech/clevergo", ""), "CleanPath") and
         inp.isParameter(0) and
         out.isResult()
       )
@@ -129,19 +124,19 @@ private module CleverGo {
       (
         // Receiver: Application
         // Method: func (*Application).RouteURL(name string, args ...string) (*net/url.URL, error)
-        this.hasQualifiedName(packagePath(), "Application", "RouteURL") and
+        this.hasQualifiedName(package("clevergo.tech/clevergo", ""), "Application", "RouteURL") and
         inp.isParameter(_) and
         out.isResult(0)
         or
         // Receiver: Decoder
         // Method: func (Decoder).Decode(req *net/http.Request, v interface{}) error
-        this.implements(packagePath(), "Decoder", "Decode") and
+        this.implements(package("clevergo.tech/clevergo", ""), "Decoder", "Decode") and
         inp.isParameter(0) and
         out.isParameter(1)
         or
         // Receiver: Renderer
         // Method: func (Renderer).Render(w io.Writer, name string, data interface{}, c *Context) error
-        this.implements(packagePath(), "Renderer", "Render") and
+        this.implements(package("clevergo.tech/clevergo", ""), "Renderer", "Render") and
         inp.isParameter(2) and
         out.isParameter(0)
       )
