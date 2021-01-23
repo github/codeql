@@ -38,15 +38,19 @@ private class TaintedSpringRequestBody extends DataFlow::Node {
 
 /**
  * A sink for Expresssion Language injection vulnerabilities via Jexl,
- * i.e. methods that run evaluation of a Jexl expression.
+ * i.e. method calls that run evaluation of a Jexl expression.
  */
 private class JexlEvaluationSink extends DataFlow::ExprNode {
   JexlEvaluationSink() {
-    isJexlExpressionEvaluationCall(asExpr()) or
-    isJexlTemplateEvaluationCall(asExpr()) or
-    isJexlScriptExecuteCall(asExpr()) or
-    isJexlGetSetPropertyCall(asExpr()) or
-    isCallableCall(asExpr())
+    exists(MethodAccess ma, Method m, Expr tainted | ma.getMethod() = m and tainted = asExpr() |
+      m instanceof DirectJexlEvaluationMethod and ma.getQualifier() = tainted
+      or
+      m instanceof CallableCallMethod and ma.getQualifier() = tainted
+      or
+      m instanceof JexlEngineGetSetPropertyMethod and
+      ma.getAnArgument().getType() instanceof TypeString and
+      ma.getAnArgument() = tainted
+    )
   }
 }
 
@@ -137,71 +141,24 @@ private predicate returnsDataFromBean(DataFlow::Node fromNode, DataFlow::Node to
 }
 
 /**
- * Holds if `expr` calls one of the methods that execute a Jexl script against qualifier `expr`.
+ * Method in the `JexlEngine` class that get or set a property with a Jexl expression.
  */
-private predicate isJexlScriptExecuteCall(Expr expr) {
-  exists(MethodAccess ma, Method m | m = ma.getMethod() |
-    m instanceof JexlScriptExecuteMethod and
-    ma.getQualifier() = expr
-  )
+private class JexlEngineGetSetPropertyMethod extends Method {
+  JexlEngineGetSetPropertyMethod() {
+    getDeclaringType() instanceof JexlEngine and
+    hasName(["getProperty", "setProperty"])
+  }
 }
 
 /**
- * Holds if `expr` is the qualifier when calling the `Callable.call()` method
- * such as `expr.call()`.
+ * Defines methods that triggers direct evaluation of Jexl expressions.
  */
-private predicate isCallableCall(Expr expr) {
-  exists(MethodAccess ma, Method m | m = ma.getMethod() |
-    m instanceof CallableCallMethod and
-    ma.getQualifier() = expr
-  )
-}
-
-/**
- * Holds if `expr` is an argument in a call to one of the methods
- * that get or set a property via a Jexl expression.
- */
-private predicate isJexlGetSetPropertyCall(Expr expr) {
-  exists(MethodAccess ma, Method m | m = ma.getMethod() |
-    (m instanceof JexlEngineGetPropertyMethod or m instanceof JexlEngineSetPropertyMethod) and
-    ma.getAnArgument().getType() instanceof TypeString and
-    ma.getAnArgument() = expr
-  )
-}
-
-/**
- * Holds if `expr` is a call to one of the methods that trigger evaluation of a Jexl expression.
- */
-private predicate isJexlExpressionEvaluationCall(Expr expr) {
-  exists(MethodAccess ma, Method m | m = ma.getMethod() |
-    (
-      m instanceof JexlExpressionEvaluateMethod or
-      m instanceof JxltEngineExpressionEvaluateMethod or
-      m instanceof JxltEngineExpressionPrepareMethod or
-      m instanceof UnifiedJexlExpressionEvaluateMethod or
-      m instanceof UnifiedJexlExpressionPrepareMethod
-    ) and
-    ma.getQualifier() = expr
-  )
-}
-
-/**
- * Holds if `expr` is a call to one of the methods that evaluates a Jexl template.
- */
-private predicate isJexlTemplateEvaluationCall(Expr expr) {
-  exists(MethodAccess ma, Method m | m = ma.getMethod() |
-    (
-      m instanceof JxltEngineTemplateEvaluateMethod or
-      m instanceof UnifiedJexlTemplateEvaluateMethod
-    ) and
-    ma.getQualifier() = expr
-  )
-}
+abstract private class DirectJexlEvaluationMethod extends Method { }
 
 /**
  * A method in the `JexlExpression` class that evaluates a Jexl expression.
  */
-private class JexlExpressionEvaluateMethod extends Method {
+private class JexlExpressionEvaluateMethod extends DirectJexlEvaluationMethod {
   JexlExpressionEvaluateMethod() {
     getDeclaringType() instanceof JexlExpression and
     hasName("evaluate")
@@ -209,32 +166,72 @@ private class JexlExpressionEvaluateMethod extends Method {
 }
 
 /**
- * A method in the `JexlEngine` class that gets a property with a Jexl expression.
- */
-private class JexlEngineGetPropertyMethod extends Method {
-  JexlEngineGetPropertyMethod() {
-    getDeclaringType() instanceof JexlEngine and
-    hasName("getProperty")
-  }
-}
-
-/**
- * A method in the `JexlEngine` class that sets a property with a Jexl expression.
- */
-private class JexlEngineSetPropertyMethod extends Method {
-  JexlEngineSetPropertyMethod() {
-    getDeclaringType() instanceof JexlEngine and
-    hasName("setProperty")
-  }
-}
-
-/**
  * A method in the `JexlScript` class that executes a Jexl script.
  */
-private class JexlScriptExecuteMethod extends Method {
+private class JexlScriptExecuteMethod extends DirectJexlEvaluationMethod {
   JexlScriptExecuteMethod() {
     getDeclaringType() instanceof JexlScript and
     hasName("execute")
+  }
+}
+
+/**
+ * A method in the `JxltEngine.Expression` class that evaluates an expression.
+ */
+private class JxltEngineExpressionEvaluateMethod extends DirectJexlEvaluationMethod {
+  JxltEngineExpressionEvaluateMethod() {
+    getDeclaringType() instanceof JxltEngineExpression and
+    hasName("evaluate")
+  }
+}
+
+/**
+ * A method in the `JxltEngine.Expression` class that evaluates the immediate sub-expressions.
+ */
+private class JxltEngineExpressionPrepareMethod extends DirectJexlEvaluationMethod {
+  JxltEngineExpressionPrepareMethod() {
+    getDeclaringType() instanceof JxltEngineExpression and
+    hasName("prepare")
+  }
+}
+
+/**
+ * A method in the `JxltEngine.Template` class that evaluates a template.
+ */
+private class JxltEngineTemplateEvaluateMethod extends DirectJexlEvaluationMethod {
+  JxltEngineTemplateEvaluateMethod() {
+    getDeclaringType() instanceof JxltEngineTemplate and
+    hasName("evaluate")
+  }
+}
+
+/**
+ * A method in the `UnifiedJEXL.Expression` class that evaluates a template.
+ */
+private class UnifiedJexlExpressionEvaluateMethod extends DirectJexlEvaluationMethod {
+  UnifiedJexlExpressionEvaluateMethod() {
+    getDeclaringType() instanceof UnifiedJexlExpression and
+    hasName("evaluate")
+  }
+}
+
+/**
+ * A method in the `UnifiedJEXL.Expression` class that evaluates the immediate sub-expressions.
+ */
+private class UnifiedJexlExpressionPrepareMethod extends DirectJexlEvaluationMethod {
+  UnifiedJexlExpressionPrepareMethod() {
+    getDeclaringType() instanceof UnifiedJexlExpression and
+    hasName("prepare")
+  }
+}
+
+/**
+ * A method in the `UnifiedJEXL.Template` class that evaluates a template.
+ */
+private class UnifiedJexlTemplateEvaluateMethod extends DirectJexlEvaluationMethod {
+  UnifiedJexlTemplateEvaluateMethod() {
+    getDeclaringType() instanceof UnifiedJexlTemplate and
+    hasName("evaluate")
   }
 }
 
@@ -245,66 +242,6 @@ private class CallableCallMethod extends Method {
   CallableCallMethod() {
     getDeclaringType() instanceof CallableInterface and
     hasName("call")
-  }
-}
-
-/**
- * A method in the `JxltEngine.Expression` class that evaluates an expression.
- */
-private class JxltEngineExpressionEvaluateMethod extends Method {
-  JxltEngineExpressionEvaluateMethod() {
-    getDeclaringType() instanceof JxltEngineExpression and
-    hasName("evaluate")
-  }
-}
-
-/**
- * A method in the `JxltEngine.Expression` class that evaluates the immediate sub-expressions.
- */
-private class JxltEngineExpressionPrepareMethod extends Method {
-  JxltEngineExpressionPrepareMethod() {
-    getDeclaringType() instanceof JxltEngineExpression and
-    hasName("prepare")
-  }
-}
-
-/**
- * A method in the `JxltEngine.Template` class that evaluates a template.
- */
-private class JxltEngineTemplateEvaluateMethod extends Method {
-  JxltEngineTemplateEvaluateMethod() {
-    getDeclaringType() instanceof JxltEngineTemplate and
-    hasName("evaluate")
-  }
-}
-
-/**
- * A method in the `UnifiedJEXL.Expression` class that evaluates a template.
- */
-private class UnifiedJexlExpressionEvaluateMethod extends Method {
-  UnifiedJexlExpressionEvaluateMethod() {
-    getDeclaringType() instanceof UnifiedJexlExpression and
-    hasName("evaluate")
-  }
-}
-
-/**
- * A method in the `UnifiedJEXL.Expression` class that evaluates the immediate sub-expressions.
- */
-private class UnifiedJexlExpressionPrepareMethod extends Method {
-  UnifiedJexlExpressionPrepareMethod() {
-    getDeclaringType() instanceof UnifiedJexlExpression and
-    hasName("prepare")
-  }
-}
-
-/**
- * A method in the `UnifiedJEXL.Template` class that evaluates a template.
- */
-private class UnifiedJexlTemplateEvaluateMethod extends Method {
-  UnifiedJexlTemplateEvaluateMethod() {
-    getDeclaringType() instanceof UnifiedJexlTemplate and
-    hasName("evaluate")
   }
 }
 
