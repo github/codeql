@@ -127,19 +127,19 @@ private module CleverGo {
     TaintTrackingMethodModels() {
       // Taint-tracking models for package: clevergo.tech/clevergo@v0.5.2
       (
-        // Receiver: Application
+        // Receiver type: Application
         // signature: func (*Application).RouteURL(name string, args ...string) (*net/url.URL, error)
         this.hasQualifiedName(packagePath(), "Application", "RouteURL") and
         inp.isParameter(_) and
         out.isResult(0)
         or
-        // Receiver: Decoder
+        // Receiver interface: Decoder
         // signature: func (Decoder).Decode(req *net/http.Request, v interface{}) error
         this.implements(packagePath(), "Decoder", "Decode") and
         inp.isParameter(0) and
         out.isParameter(1)
         or
-        // Receiver: Renderer
+        // Receiver interface: Renderer
         // signature: func (Renderer).Render(w io.Writer, name string, data interface{}, c *Context) error
         this.implements(packagePath(), "Renderer", "Render") and
         inp.isParameter(2) and
