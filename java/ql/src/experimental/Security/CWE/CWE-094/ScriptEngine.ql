@@ -15,7 +15,7 @@ import DataFlow::PathGraph
 
 class ScriptEngineMethod extends Method {
   ScriptEngineMethod() {
-    this.getDeclaringType().hasQualifiedName("javax.script", "ScriptEngine") and
+    this.getDeclaringType().getASupertype*().hasQualifiedName("javax.script", "ScriptEngine") and
     this.hasName("eval")
   }
 }

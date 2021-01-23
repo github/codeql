@@ -15,6 +15,7 @@ It allows applications to interact with scripts written in languages such as Jav
 <example>
 <p>The following code could execute random JavaScript code</p>
 <sample src="ScriptEngine.java" />
+<sample src="NashornScriptEngine.java" />
 </example>
 
 <references>
