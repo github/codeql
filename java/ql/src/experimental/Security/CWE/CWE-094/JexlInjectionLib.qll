@@ -59,29 +59,26 @@ private class JexlEvaluationSink extends DataFlow::ExprNode {
  * from Jexl library.
  */
 private class TaintPropagatingJexlMethodCall extends MethodAccess {
-  string methodName;
-  RefType instanceType;
   Expr taintFromExpr;
 
   TaintPropagatingJexlMethodCall() {
-    exists(Method m |
+    exists(Method m, RefType taintType |
       this.getMethod() = m and
-      m.getDeclaringType() = instanceType and
-      m.hasName(methodName)
+      taintType = taintFromExpr.getType()
     |
-      isMethodForCreatingJexlScript(instanceType, methodName) and
+      m instanceof CreateJexlScriptMethod and
       taintFromExpr = this.getArgument(0) and
-      taintFromExpr.getType() instanceof TypeString
+      taintType instanceof TypeString
       or
-      isMethodForCreatingJexlCallable(instanceType, methodName) and
+      m instanceof CreateJexlCallableMethod and
       taintFromExpr = this.getQualifier()
       or
-      isMethodForCreatingJexlExpression(instanceType, methodName) and
+      m instanceof CreateJexlExpressionMethod and
       taintFromExpr = this.getAnArgument() and
-      taintFromExpr.getType() instanceof TypeString
+      taintType instanceof TypeString
       or
-      isMethodForCreatingJexlTemplate(instanceType, methodName) and
-      (taintFromExpr.getType() instanceof TypeString or taintFromExpr.getType() instanceof Reader) and
+      m instanceof CreateJexlTemplateMethod and
+      (taintType instanceof TypeString or taintType instanceof Reader) and
       taintFromExpr = this.getArgument([0, 1])
     )
   }
@@ -93,39 +90,6 @@ private class TaintPropagatingJexlMethodCall extends MethodAccess {
   predicate taintFlow(DataFlow::Node fromNode, DataFlow::Node toNode) {
     fromNode.asExpr() = taintFromExpr and toNode.asExpr() = this
   }
-}
-
-/**
- * Checks if `instanceType.methodName()` method creates a Jexl script.
- */
-private predicate isMethodForCreatingJexlScript(RefType instanceType, string methodName) {
-  instanceType instanceof JexlEngine and methodName = "createScript"
-}
-
-/**
- * Checks if `instanceType.methodName()` method creates a `Callable` for a Jexl expression or script.
- */
-private predicate isMethodForCreatingJexlCallable(RefType instanceType, string methodName) {
-  (instanceType instanceof JexlExpression or instanceType instanceof JexlScript) and
-  methodName = "callable"
-}
-
-/**
- * Checks if `instanceType.methodName()` method creates a Jexl template.
- */
-private predicate isMethodForCreatingJexlTemplate(RefType instanceType, string methodName) {
-  (instanceType instanceof JxltEngine or instanceType instanceof UnifiedJexl) and
-  methodName = "createTemplate"
-}
-
-/**
- * Checks if `instanceType.methodName()` method creates a Jexl expression.
- */
-private predicate isMethodForCreatingJexlExpression(RefType instanceType, string methodName) {
-  (instanceType instanceof JexlEngine or instanceType instanceof JxltEngine) and
-  methodName = "createExpression"
-  or
-  instanceType instanceof UnifiedJexl and methodName = "parse"
 }
 
 /**
@@ -160,8 +124,7 @@ abstract private class DirectJexlEvaluationMethod extends Method { }
  */
 private class JexlExpressionEvaluateMethod extends DirectJexlEvaluationMethod {
   JexlExpressionEvaluateMethod() {
-    getDeclaringType() instanceof JexlExpression and
-    hasName("evaluate")
+    getDeclaringType() instanceof JexlExpression and hasName("evaluate")
   }
 }
 
@@ -169,10 +132,7 @@ private class JexlExpressionEvaluateMethod extends DirectJexlEvaluationMethod {
  * A method in the `JexlScript` class that executes a Jexl script.
  */
 private class JexlScriptExecuteMethod extends DirectJexlEvaluationMethod {
-  JexlScriptExecuteMethod() {
-    getDeclaringType() instanceof JexlScript and
-    hasName("execute")
-  }
+  JexlScriptExecuteMethod() { getDeclaringType() instanceof JexlScript and hasName("execute") }
 }
 
 /**
@@ -180,8 +140,7 @@ private class JexlScriptExecuteMethod extends DirectJexlEvaluationMethod {
  */
 private class JxltEngineExpressionEvaluateMethod extends DirectJexlEvaluationMethod {
   JxltEngineExpressionEvaluateMethod() {
-    getDeclaringType() instanceof JxltEngineExpression and
-    hasName("evaluate")
+    getDeclaringType() instanceof JxltEngineExpression and hasName("evaluate")
   }
 }
 
@@ -190,8 +149,7 @@ private class JxltEngineExpressionEvaluateMethod extends DirectJexlEvaluationMet
  */
 private class JxltEngineExpressionPrepareMethod extends DirectJexlEvaluationMethod {
   JxltEngineExpressionPrepareMethod() {
-    getDeclaringType() instanceof JxltEngineExpression and
-    hasName("prepare")
+    getDeclaringType() instanceof JxltEngineExpression and hasName("prepare")
   }
 }
 
@@ -200,8 +158,7 @@ private class JxltEngineExpressionPrepareMethod extends DirectJexlEvaluationMeth
  */
 private class JxltEngineTemplateEvaluateMethod extends DirectJexlEvaluationMethod {
   JxltEngineTemplateEvaluateMethod() {
-    getDeclaringType() instanceof JxltEngineTemplate and
-    hasName("evaluate")
+    getDeclaringType() instanceof JxltEngineTemplate and hasName("evaluate")
   }
 }
 
@@ -210,8 +167,7 @@ private class JxltEngineTemplateEvaluateMethod extends DirectJexlEvaluationMetho
  */
 private class UnifiedJexlExpressionEvaluateMethod extends DirectJexlEvaluationMethod {
   UnifiedJexlExpressionEvaluateMethod() {
-    getDeclaringType() instanceof UnifiedJexlExpression and
-    hasName("evaluate")
+    getDeclaringType() instanceof UnifiedJexlExpression and hasName("evaluate")
   }
 }
 
@@ -220,8 +176,7 @@ private class UnifiedJexlExpressionEvaluateMethod extends DirectJexlEvaluationMe
  */
 private class UnifiedJexlExpressionPrepareMethod extends DirectJexlEvaluationMethod {
   UnifiedJexlExpressionPrepareMethod() {
-    getDeclaringType() instanceof UnifiedJexlExpression and
-    hasName("prepare")
+    getDeclaringType() instanceof UnifiedJexlExpression and hasName("prepare")
   }
 }
 
@@ -230,8 +185,7 @@ private class UnifiedJexlExpressionPrepareMethod extends DirectJexlEvaluationMet
  */
 private class UnifiedJexlTemplateEvaluateMethod extends DirectJexlEvaluationMethod {
   UnifiedJexlTemplateEvaluateMethod() {
-    getDeclaringType() instanceof UnifiedJexlTemplate and
-    hasName("evaluate")
+    getDeclaringType() instanceof UnifiedJexlTemplate and hasName("evaluate")
   }
 }
 
@@ -239,9 +193,33 @@ private class UnifiedJexlTemplateEvaluateMethod extends DirectJexlEvaluationMeth
  * A method in the `Callable` class that executes the `Callable`.
  */
 private class CallableCallMethod extends Method {
-  CallableCallMethod() {
-    getDeclaringType() instanceof CallableInterface and
-    hasName("call")
+  CallableCallMethod() { getDeclaringType() instanceof CallableInterface and hasName("call") }
+}
+
+private class CreateJexlScriptMethod extends Method {
+  CreateJexlScriptMethod() { getDeclaringType() instanceof JexlEngine and hasName("createScript") }
+}
+
+private class CreateJexlCallableMethod extends Method {
+  CreateJexlCallableMethod() {
+    (getDeclaringType() instanceof JexlExpression or getDeclaringType() instanceof JexlScript) and
+    hasName("callable")
+  }
+}
+
+private class CreateJexlTemplateMethod extends Method {
+  CreateJexlTemplateMethod() {
+    (getDeclaringType() instanceof JxltEngine or getDeclaringType() instanceof UnifiedJexl) and
+    hasName("createTemplate")
+  }
+}
+
+private class CreateJexlExpressionMethod extends Method {
+  CreateJexlExpressionMethod() {
+    (getDeclaringType() instanceof JexlEngine or getDeclaringType() instanceof JxltEngine) and
+    hasName("createExpression")
+    or
+    getDeclaringType() instanceof UnifiedJexl and hasName("parse")
   }
 }
 
@@ -275,31 +253,19 @@ private class UnifiedJexl extends RefType {
 }
 
 private class JxltEngineExpression extends NestedType {
-  JxltEngineExpression() {
-    getEnclosingType() instanceof JxltEngine and
-    hasName("Expression")
-  }
+  JxltEngineExpression() { getEnclosingType() instanceof JxltEngine and hasName("Expression") }
 }
 
 private class JxltEngineTemplate extends NestedType {
-  JxltEngineTemplate() {
-    getEnclosingType() instanceof JxltEngine and
-    hasName("Template")
-  }
+  JxltEngineTemplate() { getEnclosingType() instanceof JxltEngine and hasName("Template") }
 }
 
 private class UnifiedJexlExpression extends NestedType {
-  UnifiedJexlExpression() {
-    getEnclosingType() instanceof UnifiedJexl and
-    hasName("Expression")
-  }
+  UnifiedJexlExpression() { getEnclosingType() instanceof UnifiedJexl and hasName("Expression") }
 }
 
 private class UnifiedJexlTemplate extends NestedType {
-  UnifiedJexlTemplate() {
-    getEnclosingType() instanceof UnifiedJexl and
-    hasName("Template")
-  }
+  UnifiedJexlTemplate() { getEnclosingType() instanceof UnifiedJexl and hasName("Template") }
 }
 
 private class CallableInterface extends RefType {
