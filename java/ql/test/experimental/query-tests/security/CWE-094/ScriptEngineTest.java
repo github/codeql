@@ -15,7 +15,7 @@ public class ScriptEngineTest {
 	public void testNashornWithScriptEngineReference(String input) throws ScriptException {
 		NashornScriptEngineFactory factory = new NashornScriptEngineFactory();
 		// Create Nashorn with ScriptEngine reference
-		NashornScriptEngine engine = (NashornScriptEngine) factory.getScriptEngine(new String[] { "-scripting"});
+		ScriptEngine engine = (NashornScriptEngine) factory.getScriptEngine(new String[] { "-scripting" });
 		Object result = engine.eval(input);
 	}
 
@@ -23,16 +23,14 @@ public class ScriptEngineTest {
 	public void testNashornWithNashornScriptEngineReference(String input) throws ScriptException {
 		NashornScriptEngineFactory factory = new NashornScriptEngineFactory();
 		// Create Nashorn with NashornScriptEngine reference
-		NashornScriptEngine engine = (NashornScriptEngine) factory.getScriptEngine(new String[] { "-scripting"});
-		
+		NashornScriptEngine engine = (NashornScriptEngine) factory.getScriptEngine(new String[] { "-scripting" });
 		Object result = engine.eval(input);
 	}
 	
 	public void testCustomScriptEngineReference(String input) throws ScriptException {
 		MyCustomFactory factory = new MyCustomFactory();
 		//Create with Custom Script Engine reference
-		MyCustomScriptEngine engine = (MyCustomScriptEngine) factory.getScriptEngine(new String[] { "-scripting"});
-		
+		MyCustomScriptEngine engine = (MyCustomScriptEngine) factory.getScriptEngine(new String[] { "-scripting" });
 		Object result = engine.eval(input);
 	}
 	
