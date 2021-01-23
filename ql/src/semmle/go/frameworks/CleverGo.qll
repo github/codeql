@@ -81,14 +81,15 @@ private module CleverGo {
       )
       or
       // Structs of package: clevergo.tech/clevergo@v0.5.2
-      exists(DataFlow::Field fld |
-        // Struct: Context
-        fld.hasQualifiedName(packagePath(), "Context", "Params")
-        or
-        // Struct: Param
-        fld.hasQualifiedName(packagePath(), "Param", ["Key", "Value"])
+      exists(string structName, string fields, DataFlow::Field fld |
+        this = fld.getARead() and
+        fld.hasQualifiedName(packagePath(), structName, fields)
       |
-        this = fld.getARead()
+        structName = "Context" and
+        fields = "Params"
+        or
+        structName = "Param" and
+        fields = ["Value", "Key"]
       )
       or
       // Types of package: clevergo.tech/clevergo@v0.5.2
