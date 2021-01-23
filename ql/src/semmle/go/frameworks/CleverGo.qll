@@ -20,63 +20,63 @@ private module CleverGo {
   private class UntrustedSources extends UntrustedFlowSource::Range {
     UntrustedSources() {
       // Methods on types of package: clevergo.tech/clevergo@v0.5.2
-      exists(string receiverName, string methodName, Method mtd, FunctionOutput outp |
-        this = outp.getExitNode(mtd.getACall()) and
+      exists(string receiverName, string methodName, Method mtd, FunctionOutput out |
+        this = out.getExitNode(mtd.getACall()) and
         mtd.hasQualifiedName(packagePath(), receiverName, methodName)
       |
         receiverName = "Context" and
         (
           // signature: func (*Context).BasicAuth() (username string, password string, ok bool)
           methodName = "BasicAuth" and
-          outp.isResult([0, 1])
+          out.isResult([0, 1])
           or
           // signature: func (*Context).Decode(v interface{}) (err error)
           methodName = "Decode" and
-          outp.isParameter(0)
+          out.isParameter(0)
           or
           // signature: func (*Context).DefaultQuery(key string, defaultVlue string) string
           methodName = "DefaultQuery" and
-          outp.isResult()
+          out.isResult()
           or
           // signature: func (*Context).FormValue(key string) string
           methodName = "FormValue" and
-          outp.isResult()
+          out.isResult()
           or
           // signature: func (*Context).GetHeader(name string) string
           methodName = "GetHeader" and
-          outp.isResult()
+          out.isResult()
           or
           // signature: func (*Context).PostFormValue(key string) string
           methodName = "PostFormValue" and
-          outp.isResult()
+          out.isResult()
           or
           // signature: func (*Context).QueryParam(key string) string
           methodName = "QueryParam" and
-          outp.isResult()
+          out.isResult()
           or
           // signature: func (*Context).QueryString() string
           methodName = "QueryString" and
-          outp.isResult()
+          out.isResult()
         )
         or
         receiverName = "Params" and
         (
           // signature: func (Params).String(name string) string
           methodName = "String" and
-          outp.isResult()
+          out.isResult()
         )
       )
       or
       // Interfaces of package: clevergo.tech/clevergo@v0.5.2
-      exists(string interfaceName, string methodName, Method mtd, FunctionOutput outp |
-        this = outp.getExitNode(mtd.getACall()) and
+      exists(string interfaceName, string methodName, Method mtd, FunctionOutput out |
+        this = out.getExitNode(mtd.getACall()) and
         mtd.implements(packagePath(), interfaceName, methodName)
       |
         interfaceName = "Decoder" and
         (
           // signature: func (Decoder).Decode(req *net/http.Request, v interface{}) error
           methodName = "Decode" and
-          outp.isParameter(1)
+          out.isParameter(1)
         )
       )
       or
