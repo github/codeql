@@ -4,9 +4,10 @@
  * @kind path-problem
  * @problem.severity warning
  * @precision very-high
- * @id java/local-information-disclosure
+ * @id java/local-temp-file-or-directory-information-disclosure-path
  * @tags security
  *       external/cwe/cwe-200
+ *       external/cwe/cwe-732
  */
 
 import TempDirUtils
@@ -24,6 +25,9 @@ private class MethodFileSystemFileCreation extends Method {
 
 abstract private class FileCreationSink extends DataFlow::Node { }
 
+/**
+ * Sink for tainted `File` having a file or directory creation method called on it.
+ */
 private class FileFileCreationSink extends FileCreationSink {
   FileFileCreationSink() {
     exists(MethodAccess ma |
@@ -33,12 +37,19 @@ private class FileFileCreationSink extends FileCreationSink {
   }
 }
 
+/**
+ * Sink for if tained File/Path having some `Files` method called on it that creates a file or directory.
+ */
 private class FilesFileCreationSink extends FileCreationSink {
   FilesFileCreationSink() {
     exists(FilesVulnerableCreationMethodAccess ma | ma.getArgument(0) = this.asExpr())
   }
 }
 
+/**
+ * Captures all of the vulnerable methods on `Files` that create files/directories without explicitly
+ * setting the permissions.
+ */
 private class FilesVulnerableCreationMethodAccess extends MethodAccess {
   FilesVulnerableCreationMethodAccess() {
     getMethod().getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
@@ -54,7 +65,7 @@ private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Conf
   TempDirSystemGetPropertyToCreateConfig() { this = "TempDirSystemGetPropertyToCreateConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof MethodAccessSystemGetPropertyTempDir
+    source.asExpr() instanceof MethodAccessSystemGetPropertyTempDirTainted
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {

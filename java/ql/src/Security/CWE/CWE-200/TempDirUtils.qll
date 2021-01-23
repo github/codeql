@@ -1,8 +1,32 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 
-class MethodAccessSystemGetPropertyTempDir extends MethodAccessSystemGetProperty {
-  MethodAccessSystemGetPropertyTempDir() { this.hasCompileTimeConstantGetPropertyName("java.io.tmpdir") }
+/**
+ * A method that returns a `String` or `File` that has been tainted by `System.getProperty("java.io.tmpdir")`.
+ */
+abstract class MethodAccessSystemGetPropertyTempDirTainted extends MethodAccess { }
+
+/**
+ * Method access `System.getProperty("java.io.tmpdir")`.
+ */
+private class MethodAccessSystemGetPropertyTempDir extends MethodAccessSystemGetPropertyTempDirTainted,
+  MethodAccessSystemGetProperty {
+  MethodAccessSystemGetPropertyTempDir() {
+    this.hasCompileTimeConstantGetPropertyName("java.io.tmpdir")
+  }
+}
+
+/**
+ * A method call to the `org.apache.commons.io.FileUtils` methods `getTempDirectory` or `getTempDirectoryPath`.
+ */
+private class MethodAccessApacheFileUtilsTempDir extends MethodAccessSystemGetPropertyTempDirTainted {
+  MethodAccessApacheFileUtilsTempDir() {
+    exists(Method m |
+      m.getDeclaringType().hasQualifiedName("org.apache.commons.io", "FileUtils") and
+      m.hasName(["getTempDirectory", "getTempDirectoryPath"]) and
+      this.getMethod() = m
+    )
+  }
 }
 
 /**
@@ -20,7 +44,7 @@ private predicate isTaintedFileCreation(Expr expSource, Expr exprDest) {
 }
 
 /**
- * Any `File` methods that 
+ * Any `File` methods that
  */
 private class TaintFollowingFileMethod extends Method {
   TaintFollowingFileMethod() {

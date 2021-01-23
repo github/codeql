@@ -87,6 +87,7 @@ public class Test {
     }
 
     void safeFileCreateTempFilesCreateFile() throws IOException {
+        // Clear permissions intentions by setting the 'OWNER_READ' and 'OWNER_WRITE' permissions.
         File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-file.txt");
         Files.createFile(
             tempDirChild.toPath(),
@@ -96,11 +97,11 @@ public class Test {
 
     void vulnerableFileCreateDirectory() throws IOException {
         File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
-        Files.createDirectory(tempDirChild.toPath());
+        Files.createDirectory(tempDirChild.toPath()); // Creates with permissions 'drwxr-xr-x'
     }
 
     void vulnerableFileCreateDirectories() throws IOException {
         File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directories/child");
-        Files.createDirectories(tempDirChild.toPath());
+        Files.createDirectories(tempDirChild.toPath()); // Creates with permissions 'drwxr-xr-x'
     }
 }
