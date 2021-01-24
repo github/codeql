@@ -12,9 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 
 public class CorsFilter implements Filter {
-    public void init(FilterConfig filterConfig) throws ServletException {
-        // init
-    }
+    public void init(FilterConfig filterConfig) throws ServletException {}
 
     public void doFilter(ServletRequest req, ServletResponse res,
             FilterChain chain) throws IOException, ServletException {
@@ -23,7 +21,7 @@ public class CorsFilter implements Filter {
         String url = request.getHeader("Origin");
 
         if (!StringUtils.isEmpty(url)) {
-            String val = response.getHeader("Access-Control-Allow-Origin");
+            String val = response.getHeader("Access-Control-Allow-Origin"); // BAD -> User controlled CORS header.
 
             if (StringUtils.isEmpty(val)) {
                 response.addHeader("Access-Control-Allow-Origin", url);
@@ -34,7 +32,5 @@ public class CorsFilter implements Filter {
         chain.doFilter(req, res);
     }
 
-    public void destroy() {
-        // destroy
-    }
+    public void destroy() {}
 }

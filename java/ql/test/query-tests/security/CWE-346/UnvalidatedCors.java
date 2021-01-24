@@ -1,5 +1,3 @@
-package com.mossle.core.servlet;
-
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -13,19 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
-/**
- * <pre>
- * <script>
- *   $(function () {
- *     $.ajaxSetup({crossDomain: true, xhrFields: {withCredentials: true}});
- *   });
- * </script>
- * </pre>
- */
 public class UnvalidatedCors implements Filter {
-    public void init(FilterConfig filterConfig) throws ServletException {
-        // init
-    }
+    public void init(FilterConfig filterConfig) throws ServletException {}
 
     public void doFilter(ServletRequest req, ServletResponse res,
             FilterChain chain) throws IOException, ServletException {
@@ -45,8 +32,6 @@ public class UnvalidatedCors implements Filter {
         chain.doFilter(req, res);
     }
 
-    public void destroy() {
-        // destroy
-    }
+    public void destroy() {}
 }
 

@@ -28,7 +28,7 @@ predicate checkAccessControlAllowOriginHeader(Expr expr) {
 }
 
 class CorsOriginConfig extends TaintTracking::Configuration {
-  CorsOriginConfig() { this = "CORSOriginConfig" }
+  CorsOriginConfig() { this = "CorsOriginConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 

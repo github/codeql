@@ -1,7 +1,7 @@
 edges
-| UnvalidatedCors.java:34:22:34:48 | getHeader(...) : String | UnvalidatedCors.java:40:67:40:69 | url |
+| UnvalidatedCors.java:21:22:21:48 | getHeader(...) : String | UnvalidatedCors.java:27:67:27:69 | url |
 nodes
-| UnvalidatedCors.java:34:22:34:48 | getHeader(...) : String | semmle.label | getHeader(...) : String |
-| UnvalidatedCors.java:40:67:40:69 | url | semmle.label | url |
+| UnvalidatedCors.java:21:22:21:48 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| UnvalidatedCors.java:27:67:27:69 | url | semmle.label | url |
 #select
-| UnvalidatedCors.java:40:67:40:69 | url | UnvalidatedCors.java:34:22:34:48 | getHeader(...) : String | UnvalidatedCors.java:40:67:40:69 | url | Cors header is being set using user controlled value $@. | UnvalidatedCors.java:34:22:34:48 | getHeader(...) | user-provided value |
+| UnvalidatedCors.java:27:67:27:69 | url | UnvalidatedCors.java:21:22:21:48 | getHeader(...) : String | UnvalidatedCors.java:27:67:27:69 | url | Cors header is being set using user controlled value $@. | UnvalidatedCors.java:21:22:21:48 | getHeader(...) | user-provided value |
