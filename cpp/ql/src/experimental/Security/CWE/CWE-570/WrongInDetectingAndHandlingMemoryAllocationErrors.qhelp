@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>when using the new operator to allocate memory, you need to pay attention to the different way of detecting errors. so <code> ::operator new(std::size_t) </code> throws an exception on error, and <code> ::operator new(std::size_t, const std::nothrow_t &) </code> returns zero on error. the programmer can get confused and check the error that occurs when allocating memory incorrectly. That can lead to an unhandled program termination or to a violation of the program logic.</p>
+
+<p>Loss of detection probably refers to use cases where memory allocation using your own solutions with strong nesting. It is also possible when using a buffer in the form of fields of different structures with the same names.</p>
+
+</overview>
+<recommendation>
+
+<p>We recommend using the error detection method, depending on the selected memory allocation method.</code>.</p>
+
+</recommendation>
+<example>
+<p>The following file demonstrates various approaches to detecting memory allocation errors using the new operator.</p>
+<sample src="WrongInDetectingAndHandlingMemoryAllocationErrors.cpp" />
+
+</example>
+<references>
+
+<li>
+  CERT C++ Coding Standard:
+<a href="https://wiki.sei.cmu.edu/confluence/display/cplusplus/MEM52-CPP.+Detect+and+handle+memory+allocation+errors">MEM52-CPP. Detect and handle memory allocation errors</a>.
+</li>
+
+</references>
+</qhelp>
