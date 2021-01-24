@@ -21,10 +21,10 @@ public class CorsFilter implements Filter {
         String url = request.getHeader("Origin");
 
         if (!StringUtils.isEmpty(url)) {
-            String val = response.getHeader("Access-Control-Allow-Origin"); // BAD -> User controlled CORS header.
+            String val = response.getHeader("Access-Control-Allow-Origin");
 
             if (StringUtils.isEmpty(val)) {
-                response.addHeader("Access-Control-Allow-Origin", url);
+                response.addHeader("Access-Control-Allow-Origin", url); // BAD -> User controlled CORS header being set here.
                 response.addHeader("Access-Control-Allow-Credentials", "true");
             }
         }
