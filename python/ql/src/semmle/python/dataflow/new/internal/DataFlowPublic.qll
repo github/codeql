@@ -179,7 +179,11 @@ ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
 class ParameterNode extends CfgNode {
   ParameterDefinition def;
 
-  ParameterNode() { node = def.getDefiningNode() }
+  ParameterNode() {
+    node = def.getDefiningNode() and
+    // Disregard parameters to the function the extractor has synthesised for comprehensions
+    not def.getScope() = any(Comp comp).getNthInnerLoop(0).getIter().getScope()
+  }
 
   /**
    * Holds if this node is the parameter of callable `c` at the
