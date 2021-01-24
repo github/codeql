@@ -181,8 +181,8 @@ class ParameterNode extends CfgNode {
 
   ParameterNode() {
     node = def.getDefiningNode() and
-    // Disregard parameters to the function the extractor has synthesised for comprehensions
-    not def.getScope() = any(Comp comp).getNthInnerLoop(0).getIter().getScope()
+    // Disregard parameters that we cannot resolve
+    exists(DataFlowCallable c | node = c.getParameter(_))
   }
 
   /**
