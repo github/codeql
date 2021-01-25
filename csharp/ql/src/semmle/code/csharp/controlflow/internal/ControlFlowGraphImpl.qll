@@ -623,14 +623,13 @@ module Expressions {
    * tracking.
    */
   private class AssignOperationWithExpandedAssignment extends AssignOperation, ControlFlowTree {
-    final override predicate first(ControlFlowElement first) {
-      first(this.getExpandedAssignment(), first)
-    }
+    private Expr expanded;
 
-    final override predicate last(ControlFlowElement last, Completion c) {
-      last = this.getExpandedAssignment() and
-      last(this.getExpandedAssignment(), last, c)
-    }
+    AssignOperationWithExpandedAssignment() { expanded = this.getExpandedAssignment() }
+
+    final override predicate first(ControlFlowElement first) { first(expanded, first) }
+
+    final override predicate last(ControlFlowElement last, Completion c) { last(expanded, last, c) }
 
     final override predicate propagatesAbnormal(ControlFlowElement child) { none() }
 
