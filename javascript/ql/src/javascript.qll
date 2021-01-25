@@ -105,6 +105,7 @@ import semmle.javascript.frameworks.PropertyProjection
 import semmle.javascript.frameworks.Puppeteer
 import semmle.javascript.frameworks.React
 import semmle.javascript.frameworks.ReactNative
+import semmle.javascript.frameworks.Redux
 import semmle.javascript.frameworks.Request
 import semmle.javascript.frameworks.RxJS
 import semmle.javascript.frameworks.ServerLess
