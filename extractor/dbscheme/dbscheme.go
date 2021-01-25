@@ -362,6 +362,15 @@ func NewUnionType(name string, parents ...*UnionType) *UnionType {
 	return tp
 }
 
+// AddChild adds the type with given `name` to the union type.
+// This is useful if a type defined in a snippet should be a child of a type defined in Go.
+func (parent *UnionType) AddChild(name string) bool {
+	tp := &PrimaryKeyType{name}
+	// don't add tp to types; it's expected that it's already in the db somehow.
+	parent.components = append(parent.components, tp)
+	return true
+}
+
 // NewAliasType constructs a new alias type with the given `name` that aliases `underlying`
 func NewAliasType(name string, underlying Type) *AliasType {
 	tp := &AliasType{name, underlying}

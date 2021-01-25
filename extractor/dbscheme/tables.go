@@ -44,11 +44,90 @@ snapshotDate(unique date snapshotDate : date ref);
 sourceLocationPrefix(varchar(900) prefix : string ref);
 `)
 
+// Copied directly from the XML dbscheme
+var xmlSnippet = AddDefaultSnippet(`
+/*
+ * XML Files
+ */
+
+xmlEncoding(
+  unique int id: @file ref,
+  string encoding: string ref
+);
+
+xmlDTDs(
+  unique int id: @xmldtd,
+  string root: string ref,
+  string publicId: string ref,
+  string systemId: string ref,
+  int fileid: @file ref
+);
+
+xmlElements(
+  unique int id: @xmlelement,
+  string name: string ref,
+  int parentid: @xmlparent ref,
+  int idx: int ref,
+  int fileid: @file ref
+);
+
+xmlAttrs(
+  unique int id: @xmlattribute,
+  int elementid: @xmlelement ref,
+  string name: string ref,
+  string value: string ref,
+  int idx: int ref,
+  int fileid: @file ref
+);
+
+xmlNs(
+  int id: @xmlnamespace,
+  string prefixName: string ref,
+  string URI: string ref,
+  int fileid: @file ref
+);
+
+xmlHasNs(
+  int elementId: @xmlnamespaceable ref,
+  int nsId: @xmlnamespace ref,
+  int fileid: @file ref
+);
+
+xmlComments(
+  unique int id: @xmlcomment,
+  string text: string ref,
+  int parentid: @xmlparent ref,
+  int fileid: @file ref
+);
+
+xmlChars(
+  unique int id: @xmlcharacters,
+  string text: string ref,
+  int parentid: @xmlparent ref,
+  int idx: int ref,
+  int isCDATA: int ref,
+  int fileid: @file ref
+);
+
+@xmlparent = @file | @xmlelement;
+@xmlnamespaceable = @xmlelement | @xmlattribute;
+
+xmllocations(
+  int xmlElement: @xmllocatable ref,
+  int location: @location_default ref
+);
+
+@xmllocatable = @xmlcharacters | @xmlelement | @xmlcomment | @xmlattribute | @xmldtd | @file | @xmlnamespace;
+`)
+
 // ContainerType is the type of files and folders
 var ContainerType = NewUnionType("@container")
 
 // LocatableType is the type of program entities that have locations
 var LocatableType = NewUnionType("@locatable")
+
+// Adds xmllocatable as a locatable
+var XmlLocatableAsLocatable = LocatableType.AddChild("@xmllocatable")
 
 // NodeType is the type of AST nodes
 var NodeType = NewUnionType("@node", LocatableType)

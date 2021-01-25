@@ -12,6 +12,7 @@ import semmle.go.Errors
 import semmle.go.Expr
 import semmle.go.Files
 import semmle.go.GoMod
+import semmle.go.HTML
 import semmle.go.Locations
 import semmle.go.Packages
 import semmle.go.Scopes
