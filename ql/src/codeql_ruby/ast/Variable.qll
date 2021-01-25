@@ -73,7 +73,54 @@ class VariableAccess extends Expr {
   /** Gets the variable this identifier refers to. */
   Variable getVariable() { result = range.getVariable() }
 
+  /**
+   * Holds if this access is a write access belonging to the explicit
+   * assignment `assignment`. For example, in
+   *
+   * ```rb
+   * a, b = foo
+   * ```
+   *
+   * both `a` and `b` are write accesses belonging to the same assignment.
+   */
+  predicate isExplicitWrite(AstNode assignment) { explicitWriteAccess(this, assignment) }
+
+  /**
+   * Holds if this access is a write access belonging to an implicit assignment.
+   * For example, in
+   *
+   * ```rb
+   * def m elements
+   *   for e in elements do
+   *     puts e
+   *   end
+   * end
+   * ```
+   *
+   * the access to `elements` in the parameter list is an implicit assignment,
+   * as is the first access to `e`.
+   */
+  predicate isImplicitWrite() { implicitWriteAccess(this) }
+
   final override string toString() { result = this.getVariable().getName() }
+}
+
+/** An access to a variable where the value is updated. */
+class VariableWriteAccess extends VariableAccess {
+  VariableWriteAccess() {
+    this.isExplicitWrite(_) or
+    this.isImplicitWrite()
+  }
+}
+
+/** An access to a variable where the value is read. */
+class VariableReadAccess extends VariableAccess {
+  VariableReadAccess() {
+    not this instanceof VariableWriteAccess
+    or
+    // `x` in `x += y` is considered both a read and a write
+    this = any(AssignOperation a).getLhs()
+  }
 }
 
 /** An access to a local variable. */
@@ -88,6 +135,12 @@ class LocalVariableAccess extends VariableAccess, @token_identifier {
   }
 }
 
+/** An access to a local variable where the value is updated. */
+class LocalVariableWriteAccess extends LocalVariableAccess, VariableWriteAccess { }
+
+/** An access to a local variable where the value is read. */
+class LocalVariableReadAccess extends LocalVariableAccess, VariableReadAccess { }
+
 /** An access to a local variable. */
 class GlobalVariableAccess extends VariableAccess, @token_global_variable {
   final override GlobalVariableAccess::Range range;
@@ -97,3 +150,9 @@ class GlobalVariableAccess extends VariableAccess, @token_global_variable {
 
   final override string getAPrimaryQlClass() { result = "GlobalVariableAccess" }
 }
+
+/** An access to a global variable where the value is updated. */
+class GlobalVariableWriteAccess extends GlobalVariableAccess, VariableWriteAccess { }
+
+/** An access to a global variable where the value is read. */
+class GlobalVariableReadAccess extends GlobalVariableAccess, VariableReadAccess { }
