@@ -93,7 +93,9 @@ private module CleverGo {
       )
       or
       // Types of package: clevergo.tech/clevergo@v0.5.2
-      exists(ValueEntity v | v.getType().hasQualifiedName(packagePath(), "Params") |
+      exists(ValueEntity v |
+        v.getType().hasQualifiedName(packagePath(), "Params")
+      |
         this = v.getARead()
       )
     }
@@ -150,5 +152,26 @@ private module CleverGo {
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
       input = inp and output = out
     }
+  }
+
+  // Models HTTP redirects.
+  private class HttpRedirect extends HTTP::Redirect::Range, DataFlow::CallNode {
+    string package;
+    DataFlow::Node urlNode;
+
+    HttpRedirect() {
+      // HTTP redirect models for package: clevergo.tech/clevergo@v0.5.2
+      package = packagePath() and
+      // Receiver type: Context
+      (
+        // signature: func (*Context).Redirect(code int, url string) error
+        this = any(Method m | m.hasQualifiedName(package, "Context", "Redirect")).getACall() and
+        urlNode = this.getArgument(1)
+      )
+    }
+
+    override DataFlow::Node getUrl() { result = urlNode }
+
+    override HTTP::ResponseWriter getResponseWriter() { none() }
   }
 }
