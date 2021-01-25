@@ -3,21 +3,21 @@ import tornado.web
 
 class BasicHandler(tornado.web.RequestHandler):
     def get(self):  # $ requestHandler
-        self.write("BasicHandler " + self.get_argument("xss"))
+        self.write("BasicHandler " + self.get_argument("xss")) # $ HttpResponse
 
     def post(self):  # $ requestHandler
-        self.write("BasicHandler (POST)")
+        self.write("BasicHandler (POST)") # $ HttpResponse
 
 
 class DeepInheritance(BasicHandler):
     def get(self):  # $ requestHandler
-        self.write("DeepInheritance" + self.get_argument("also_xss"))
+        self.write("DeepInheritance" + self.get_argument("also_xss")) # $ HttpResponse
 
 
 class FormHandler(tornado.web.RequestHandler):
     def post(self):  # $ requestHandler
         name = self.get_body_argument("name")
-        self.write(name)
+        self.write(name) # $ HttpResponse
 
 
 class RedirectHandler(tornado.web.RequestHandler):
@@ -30,7 +30,7 @@ class RedirectHandler(tornado.web.RequestHandler):
 
 class BaseReverseInheritance(tornado.web.RequestHandler):
     def get(self):  # $ requestHandler
-        self.write("hello from BaseReverseInheritance")
+        self.write("hello from BaseReverseInheritance") # $ HttpResponse
 
 
 class ReverseInheritance(BaseReverseInheritance):
