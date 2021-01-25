@@ -4,10 +4,8 @@ private import internal.TreeSitter
 private import internal.Method
 
 /** A callable. */
-class Callable extends AstNode, CfgScope {
-  Callable::Range range;
-
-  Callable() { range = this }
+class Callable extends Expr, CfgScope {
+  override Callable::Range range;
 
   /** Gets the number of parameters of this callable. */
   final int getNumberOfParameters() { result = count(this.getAParameter()) }
@@ -22,7 +20,6 @@ class Callable extends AstNode, CfgScope {
 /** A method. */
 class Method extends Callable, @method {
   final override Method::Range range;
-  final override Generated::Method generated;
 
   final override string getAPrimaryQlClass() { result = "Method" }
 
@@ -41,7 +38,7 @@ class Method extends Callable, @method {
    * end
    * ```
    */
-  final predicate isSetter() { generated.getName() instanceof Generated::Setter }
+  final predicate isSetter() { range.isSetter() }
 }
 
 /** A singleton method. */

@@ -383,6 +383,8 @@ module Generated {
 
     AstNode getName() { class_def(this, _, _, result, _) }
 
+    Superclass getSuperclass() { class_superclass(this, result) }
+
     AstNode getChild(int i) { class_child(this, i, result) }
 
     override AstNode getParent() { class_def(this, result, _, _, _) }
@@ -390,7 +392,9 @@ module Generated {
     override int getParentIndex() { class_def(this, _, result, _, _) }
 
     override AstNode getAFieldOrChild() {
-      class_def(this, _, _, result, _) or class_child(this, _, result)
+      class_def(this, _, _, result, _) or
+      class_superclass(this, result) or
+      class_child(this, _, result)
     }
   }
 

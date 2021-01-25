@@ -1,8 +1,9 @@
 private import codeql_ruby.AST
+private import codeql_ruby.ast.internal.Expr
 private import TreeSitter
 
 module Callable {
-  abstract class Range extends AstNode {
+  abstract class Range extends Expr::Range {
     abstract Parameter getParameter(int n);
   }
 }
@@ -18,6 +19,8 @@ module Method {
       result = generated.getName().(SymbolLiteral).getValueText() or
       result = generated.getName().(Generated::Setter).getName().getValue() + "="
     }
+
+    final predicate isSetter() { generated.getName() instanceof Generated::Setter }
   }
 }
 
