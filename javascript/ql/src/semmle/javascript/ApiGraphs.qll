@@ -750,6 +750,18 @@ module API {
         )
       )
       or
+      exists(ObjectExpr obj |
+        obj = trackDefNode(nd, t.continue()).asExpr() and
+        result =
+          obj.getAProperty()
+              .(SpreadProperty)
+              .getInit()
+              .(SpreadElement)
+              .getOperand()
+              .flow()
+              .getALocalSource()
+      )
+      or
       t = defStep(nd, result)
     }
 
