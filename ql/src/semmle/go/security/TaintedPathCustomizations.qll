@@ -85,7 +85,7 @@ module TaintedPath {
    * }
    * ```
    */
-  class PathContainmentCheck extends SanitizerGuard {
+  class PathContainmentCheck extends SanitizerGuard, DataFlow::EqualityTestNode {
     DataFlow::Node path;
     boolean outcome;
 
