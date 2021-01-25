@@ -103,15 +103,4 @@ module SharedXss {
       )
     }
   }
-
-  /**
-   * A check against a constant value, considered a barrier for XSS.
-   */
-  class EqualityTestGuard extends SanitizerGuard, DataFlow::EqualityTestNode {
-    override predicate checks(Expr e, boolean outcome) {
-      this.getAnOperand().isConst() and
-      e = this.getAnOperand().asExpr() and
-      outcome = this.getPolarity()
-    }
-  }
 }
