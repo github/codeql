@@ -15,25 +15,21 @@ import semmle.code.java.dataflow.FlowSources
 import XQueryInjectionLib
 import DataFlow::PathGraph
 
-class XQueryInjectionConfig extends DataFlow::Configuration {
+class XQueryInjectionConfig extends TaintTracking::Configuration {
   XQueryInjectionConfig() { this = "XQueryInjectionConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof XQueryInjectionSource }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof XQueryInjectionSink }
+  override predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() = any(XQueryExecuteCall execute).getPreparedExpression()
+  }
 
-  override predicate isBarrier(DataFlow::Node node) {
-    exists(MethodAccess ma, Method m, BindParameterRemoteFlowConf conf, DataFlow::Node node1 |
-      m = ma.getMethod()
-    |
-      node.asExpr() = ma and
-      m.hasName("bindString") and
-      m.getDeclaringType()
-          .getASourceSupertype*()
-          .hasQualifiedName("javax.xml.xquery", "XQDynamicContext") and
-      ma.getArgument(1) = node1.asExpr() and
-      conf.hasFlowTo(node1)
-    )
+  /**
+   * Conveys taint from the input to a `prepareExpression` call to the returned prepared expression.
+   */
+  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(XQueryParserCall parser |
+      pred.asExpr() = parser.getInput() and succ.asExpr() = parser)
   }
 }
 
