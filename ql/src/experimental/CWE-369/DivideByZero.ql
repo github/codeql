@@ -15,23 +15,21 @@ import DataFlow::PathGraph
 import semmle.go.dataflow.internal.TaintTrackingUtil
 
 class DivideByZeroSanitizeGuard extends DataFlow::BarrierGuard {
-
   DivideByZeroSanitizeGuard() {
     this.(DataFlow::EqualityTestNode).getAnOperand().getNumericValue() = 0 or
     this.(DataFlow::RelationalComparisonNode).getAnOperand().getNumericValue() = 0
   }
 
   override predicate checks(Expr e, boolean branch) {
-    exists(DataFlow::Node zero, DataFlow::Node checked
-      |
-        zero.getNumericValue() = 0 and
-        e = checked.asExpr() and
-        checked.getType().getUnderlyingType() instanceof IntegerType and
-        (
-          this.(DataFlow::EqualityTestNode).eq(branch.booleanNot(), checked, zero) or
-          this.(DataFlow::RelationalComparisonNode).leq(branch.booleanNot(), checked, zero, 0)
-        )
+    exists(DataFlow::Node zero, DataFlow::Node checked |
+      zero.getNumericValue() = 0 and
+      e = checked.asExpr() and
+      checked.getType().getUnderlyingType() instanceof IntegerType and
+      (
+        this.(DataFlow::EqualityTestNode).eq(branch.booleanNot(), checked, zero) or
+        this.(DataFlow::RelationalComparisonNode).leq(branch.booleanNot(), checked, zero, 0)
       )
+    )
   }
 }
 
@@ -42,11 +40,14 @@ class DivideByZeroCheckConfig extends TaintTracking::Configuration {
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(Function f |
-      (
-        f.hasQualifiedName("strconv", ["Atoi", "ParseInt", "ParseUint", "ParseFloat"])
-      ) and
+      f.hasQualifiedName("strconv", ["Atoi", "ParseInt", "ParseUint", "ParseFloat"]) and
       node1 = f.getACall().getArgument(0) and
       node2 = f.getACall().getResult(0)
+    )
+    or
+    exists(ConversionExpr ce | ce.getType().getUnderlyingType() instanceof IntegerType |
+      node1.asExpr() = ce.getOperand() and
+      node2.asExpr() = ce.getAChildExpr()
     )
   }
 
