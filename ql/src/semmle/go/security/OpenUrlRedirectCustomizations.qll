@@ -7,7 +7,9 @@
 import go
 import UrlConcatenation
 import SafeUrlFlowCustomizations
-import semmle.go.dataflow.BarrierGuardUtil
+import semmle.go.dataflow.barrierguardutil.RedirectCheckBarrierGuard
+import semmle.go.dataflow.barrierguardutil.RegexpCheck
+import semmle.go.dataflow.barrierguardutil.UrlCheck
 
 /**
  * Provides extension points for customizing the taint-tracking configuration for reasoning about
