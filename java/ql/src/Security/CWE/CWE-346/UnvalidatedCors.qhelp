@@ -7,7 +7,7 @@
 	<p>
 
 		A server can send the
-		<code>"Access-Control-Allow-Credentials"</code> CORS header to control
+		<code>Access-Control-Allow-Credentials</code> CORS header to control
 		when a browser may send user credentials in Cross-Origin HTTP
 		requests.
 
@@ -15,12 +15,12 @@
 	<p>
 
 		When the <code>Access-Control-Allow-Credentials</code> header
-		is <code>"true"</code>, the <code>Access-Control-Allow-Origin</code>
-		header must have a value different from <code>"*"</code> in order to
+		is <code>true</code>, the <code>Access-Control-Allow-Origin</code>
+		header must have a value different from <code>*</code> in order to
 		make browsers accept the header. Therefore, to allow multiple origins
 		for Cross-Origin requests with credentials, the server must
 		dynamically compute the value of the
-		<code>"Access-Control-Allow-Origin"</code> header. Computing this
+		<code>Access-Control-Allow-Origin</code> header. Computing this
 		header value from information in the request to the server can
 		therefore potentially allow an attacker to control the origins that
 		the browser sends credentials to.
@@ -35,7 +35,7 @@
 	<p>
 
 		When the <code>Access-Control-Allow-Credentials</code> header
-		value is <code>"true"</code>, a dynamic computation of the
+		value is <code>true</code>, a dynamic computation of the
 		<code>Access-Control-Allow-Origin</code> header must involve
 		sanitization if it relies on user-controlled input.
 
@@ -43,11 +43,12 @@
 	</p>
 	<p>
 
-		Since the <code>"null"</code> origin is easy to obtain for an
-		attacker, it is never safe to use <code>"null"</code> as the value of
+		Since the <code>null</code> origin is easy to obtain for an
+		attacker, it is never safe to use <code>null</code> as the value of
 		the <code>Access-Control-Allow-Origin</code> header when the
 		<code>Access-Control-Allow-Credentials</code> header value is
-		<code>"true"</code>.
+		<code>true</code>.This can be done using a sandboxed iframe. A more detailed
+		explanation is available in the portswigger blogpost.
 
 	</p>
 </recommendation>
