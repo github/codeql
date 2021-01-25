@@ -571,11 +571,12 @@ final class TypeNode extends ElementNode {
     result.(BaseTypesNode).getValueOrRefType() = type
     or
     result.(ElementNode).getElement() =
-      rank[childIndex - 3](Member m, string file, int line, int column |
+      rank[childIndex - 3](Member m, string file, int line, int column, string name |
         m = type.getAMember() and
+        name = m.getName() and
         locationSortKeys(m, file, line, column)
       |
-        m order by file, line, column
+        m order by file, line, column, name
       )
   }
 }
