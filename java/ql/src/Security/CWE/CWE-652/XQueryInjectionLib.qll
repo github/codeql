@@ -14,8 +14,8 @@ class XQueryParserCall extends MethodAccess {
       m.hasName("prepareExpression")
     )
   }
-  // return the first parameter of the `bindString` method and use it as a sink
-  Expr getSink() { result = this.getArgument(0) }
+  /** Returns the first parameter of the `bindString` method. */
+  Expr getInput() { result = this.getArgument(0) }
 }
 
 /** A call to `XQDynamicContext.bindString`. */
