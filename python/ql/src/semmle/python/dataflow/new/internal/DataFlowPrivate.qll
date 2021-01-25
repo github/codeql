@@ -77,7 +77,9 @@ class ReadPreUpdateNode extends NeedsSyntheticPostUpdateNode, CfgNode {
       a.getCtx() instanceof Load
     )
     or
-    exists(SubscriptNode s | node = s.getObject())
+    node = any(SubscriptNode s).getObject()
+    or
+    node.getNode() = any(Call call).getKwargs()
   }
 
   override string label() { result = "read" }
