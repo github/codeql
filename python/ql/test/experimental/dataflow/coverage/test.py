@@ -564,7 +564,7 @@ def test_iterated_unpacking_assignment():
     SINK_F(c) #$ SPURIOUS: flow="SOURCE, l:-5 -> c"  # We do not track tuple sizes
 
 
-@expects(4)
+@expects(3)
 def test_iterated_unpacking_assignment_shrink():
     t = (SOURCE, SOURCE)
     a, *b, c = t
