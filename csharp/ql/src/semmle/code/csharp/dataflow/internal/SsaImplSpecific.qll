@@ -16,6 +16,4 @@ class SourceVariable = SsaImpl::TSourceVariable;
 
 predicate variableWrite = SsaImpl::variableWrite/4;
 
-predicate variableRead(BasicBlock bb, int i, SourceVariable v) {
-  SsaImpl::variableRead(bb, i, v, _)
-}
+predicate variableRead = SsaImpl::variableRead/3;
