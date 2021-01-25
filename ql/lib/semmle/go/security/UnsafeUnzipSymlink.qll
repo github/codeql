@@ -3,8 +3,8 @@
  * from archive files.
  *
  * Note: for performance reasons, only import this file if `UnsafeUnzipSymlink::EvalSymlinksConfiguration`
- * and/or `UnsafeUnzipSymlink::SymlinkConfiguration` is needed, otherwise `ZipSlipCustomizations` should be
- * imported instead.
+ * and/or `UnsafeUnzipSymlink::SymlinkConfiguration` is needed, otherwise
+ * `UnsafeUnzipSymlinkCustomizations` should be imported instead.
  */
 
 import go
