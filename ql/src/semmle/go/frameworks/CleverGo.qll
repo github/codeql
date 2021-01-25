@@ -93,9 +93,7 @@ private module CleverGo {
       )
       or
       // Types of package: clevergo.tech/clevergo@v0.5.2
-      exists(ValueEntity v |
-        v.getType().hasQualifiedName(packagePath(), "Params")
-      |
+      exists(ValueEntity v | v.getType().hasQualifiedName(packagePath(), "Params") |
         this = v.getARead()
       )
     }
