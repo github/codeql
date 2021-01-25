@@ -804,7 +804,6 @@ private module Redis {
      * For getter-like methods it is not generally possible to gain access "outside" of where you are supposed to have access,
      * it is at most possible to get a Redis call to return more results than expected (e.g. by adding more members to [`geohash`](https://redis.io/commands/geohash)).
      */
-    bindingset[argIndex]
     predicate argumentIsAmbiguousKey(string method, int argIndex) {
       method =
         [
@@ -815,7 +814,8 @@ private module Redis {
         ] and
       argIndex = 0
       or
-      method = ["bitop", "hmset", "mset", "msetnx", "geoadd"] and argIndex >= 0
+      method = ["bitop", "hmset", "mset", "msetnx", "geoadd"] and
+      argIndex in [0 .. any(DataFlow::InvokeNode invk).getNumArgument() - 1]
     }
   }
 
@@ -825,31 +825,9 @@ private module Redis {
   class RedisKeyArgument extends NoSQL::Query {
     RedisKeyArgument() {
       exists(string method, int argIndex |
-        QuerySignatures::argumentIsAmbiguousKey(method, argIndex)
-      |
-        this =
-          [promisify(redis().getMember(method)), redis().getMember(method)]
-              .getACall()
-              .getArgument(argIndex)
-              .asExpr()
+        QuerySignatures::argumentIsAmbiguousKey(method, argIndex) and
+        this = redis().getMember(method).getParameter(argIndex).getARhs().asExpr()
       )
     }
-  }
-
-  /**
-   * Gets a promisified version of `method`.
-   */
-  private API::Node promisify(API::Node method) {
-    exists(API::Node promisify |
-      promisify = API::moduleImport(["util", "bluebird"]).getMember("promisify").getReturn() and
-      method
-          .getAnImmediateUse()
-          .flowsTo(promisify.getAnImmediateUse().(DataFlow::CallNode).getArgument(0))
-    |
-      result = promisify
-      or
-      result = promisify.getMember("bind").getReturn() and
-      result.getAnImmediateUse().(DataFlow::CallNode).getNumArgument() = 1
-    )
   }
 }

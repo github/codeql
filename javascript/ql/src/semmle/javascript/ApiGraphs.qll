@@ -206,7 +206,8 @@ module API {
       this = Impl::MkClassInstance(result) or
       this = Impl::MkUse(result) or
       this = Impl::MkDef(result) or
-      this = Impl::MkAsyncFuncResult(result)
+      this = Impl::MkAsyncFuncResult(result) or
+      this = Impl::MkSyntheticCallbackArg(_, _, result)
     }
 
     /**
@@ -389,12 +390,16 @@ module API {
       MkCanonicalNameUse(CanonicalName n) {
         not n.isRoot() and
         isUsed(n)
+      } or
+      MkSyntheticCallbackArg(DataFlow::Node src, int bound, DataFlow::InvokeNode nd) {
+        trackUseNode(src, true, bound).flowsTo(nd.getCalleeNode())
       }
 
     class TDef = MkModuleDef or TNonModuleDef;
 
     class TNonModuleDef =
-      MkModuleExport or MkClassInstance or MkAsyncFuncResult or MkDef or MkCanonicalNameDef;
+      MkModuleExport or MkClassInstance or MkAsyncFuncResult or MkDef or MkCanonicalNameDef or
+          MkSyntheticCallbackArg;
 
     class TUse = MkModuleUse or MkModuleImport or MkUse or MkCanonicalNameUse;
 
@@ -523,18 +528,20 @@ module API {
      * The receiver is considered to be argument -1.
      */
     private predicate argumentPassing(TApiNode base, int i, DataFlow::Node arg) {
-      exists(DataFlow::SourceNode use, DataFlow::SourceNode pred |
-        use(base, use) and pred = trackUseNode(use)
+      exists(DataFlow::Node use, DataFlow::SourceNode pred, int bound |
+        use(base, use) and pred = trackUseNode(use, _, bound)
       |
-        arg = pred.getAnInvocation().getArgument(i)
+        arg = pred.getAnInvocation().getArgument(i - bound)
         or
         arg = pred.getACall().getReceiver() and
+        bound = 0 and
         i = -1
         or
         exists(DataFlow::PartialInvokeNode pin, DataFlow::Node callback | pred.flowsTo(callback) |
-          pin.isPartialArgument(callback, arg, i)
+          pin.isPartialArgument(callback, arg, i - bound)
           or
           arg = pin.getBoundReceiver(callback) and
+          bound = 0 and
           i = -1
         )
       )
@@ -609,6 +616,12 @@ module API {
           lbl = Label::instance() and
           ref = getANodeWithType(tn)
         )
+        or
+        exists(DataFlow::InvokeNode call |
+          base = MkSyntheticCallbackArg(_, _, call) and
+          lbl = Label::parameter(1) and
+          ref = awaited(call)
+        )
       )
     }
 
@@ -672,12 +685,62 @@ module API {
       )
     }
 
-    private DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd, DataFlow::TypeTracker t) {
+    /**
+     * Gets a data-flow node to which `nd`, which is a use of an API-graph node, flows.
+     *
+     * The flow from `nd` to that node may be inter-procedural. If `promisified` is `true`, the
+     * flow goes through a promisification, and `boundArgs` indicates how many arguments have been
+     * bound throughout the flow. (To ensure termination, we somewhat arbitrarily constrain the
+     * number of bound arguments to be at most ten.)
+     */
+    private DataFlow::SourceNode trackUseNode(
+      DataFlow::SourceNode nd, boolean promisified, int boundArgs, DataFlow::TypeTracker t
+    ) {
       t.start() and
       use(_, nd) and
-      result = nd
+      result = nd and
+      promisified = false and
+      boundArgs = 0
       or
-      exists(DataFlow::TypeTracker t2 | result = trackUseNode(nd, t2).track(t2, t))
+      exists(DataFlow::CallNode promisify |
+        promisify = DataFlow::moduleImport(["util", "bluebird"]).getAMemberCall("promisify")
+      |
+        trackUseNode(nd, false, boundArgs, t.continue()).flowsTo(promisify.getArgument(0)) and
+        promisified = true and
+        result = promisify
+      )
+      or
+      exists(DataFlow::PartialInvokeNode pin, DataFlow::Node pred, int predBoundArgs |
+        trackUseNode(nd, promisified, predBoundArgs, t.continue()).flowsTo(pred) and
+        result = pin.getBoundFunction(pred, boundArgs - predBoundArgs) and
+        boundArgs in [0 .. 10]
+      )
+      or
+      exists(StepSummary summary |
+        t = useStep(nd, promisified, boundArgs, result, summary).append(summary)
+      )
+    }
+
+    private import semmle.javascript.dataflow.internal.StepSummary
+
+    /**
+     * Holds if `nd`, which is a use of an API-graph node, flows in zero or more potentially
+     * inter-procedural steps to some intermediate node, and then from that intermediate node to
+     * `res` in one step described by `summary`.
+     *
+     * This predicate exists solely to enforce a better join order in `trackUseNode` above.
+     */
+    pragma[noinline]
+    private DataFlow::TypeTracker useStep(
+      DataFlow::Node nd, boolean promisified, int boundArgs, DataFlow::Node res, StepSummary summary
+    ) {
+      StepSummary::step(trackUseNode(nd, promisified, boundArgs, result), res, summary)
+    }
+
+    private DataFlow::SourceNode trackUseNode(
+      DataFlow::SourceNode nd, boolean promisified, int boundArgs
+    ) {
+      result = trackUseNode(nd, promisified, boundArgs, DataFlow::TypeTracker::end())
     }
 
     /**
@@ -685,7 +748,7 @@ module API {
      */
     cached
     DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) {
-      result = trackUseNode(nd, DataFlow::TypeTracker::end())
+      result = trackUseNode(nd, false, 0)
     }
 
     private DataFlow::SourceNode trackDefNode(DataFlow::Node nd, DataFlow::TypeBackTracker t) {
@@ -712,6 +775,21 @@ module API {
     cached
     DataFlow::SourceNode trackDefNode(DataFlow::Node nd) {
       result = trackDefNode(nd, DataFlow::TypeBackTracker::end())
+    }
+
+    private DataFlow::SourceNode awaited(DataFlow::InvokeNode call, DataFlow::TypeTracker t) {
+      t.startInPromise() and
+      exists(MkSyntheticCallbackArg(_, _, call)) and
+      result = call
+      or
+      exists(DataFlow::TypeTracker t2 | result = awaited(call, t2).track(t2, t))
+    }
+
+    /**
+     * Gets a node holding the resolved value of promise `call`.
+     */
+    private DataFlow::Node awaited(DataFlow::InvokeNode call) {
+      result = awaited(call, DataFlow::TypeTracker::end())
     }
 
     private DataFlow::SourceNode getANodeWithType(TypeName tn) {
@@ -773,6 +851,12 @@ module API {
         f = trackDefNode(nd) and
         lbl = Label::return() and
         succ = MkAsyncFuncResult(f)
+      )
+      or
+      exists(DataFlow::SourceNode src, int bound, DataFlow::InvokeNode call |
+        use(pred, src) and
+        lbl = Label::parameter(bound + call.getNumArgument()) and
+        succ = MkSyntheticCallbackArg(src, bound, call)
       )
     }
 
