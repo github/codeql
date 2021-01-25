@@ -19,18 +19,18 @@ private module Cached {
      * (certain or uncertain) writes.
      */
     private newtype TRefKind =
-      Read(ReadKind rk) or
+      Read() or
       Write(boolean certain) { certain = true or certain = false }
 
     private class RefKind extends TRefKind {
       string toString() {
-        exists(ReadKind rk | this = Read(rk) and result = "read (" + rk + ")")
+        this = Read() and result = "read"
         or
         exists(boolean certain | this = Write(certain) and result = "write (" + certain + ")")
       }
 
       int getOrder() {
-        this = Read(_) and
+        this = Read() and
         result = 0
         or
         this = Write(_) and
@@ -42,7 +42,7 @@ private module Cached {
      * Holds if the `i`th node of basic block `bb` is a reference to `v` of kind `k`.
      */
     private predicate ref(BasicBlock bb, int i, SourceVariable v, RefKind k) {
-      exists(ReadKind rk | variableRead(bb, i, v, rk) | k = Read(rk))
+      variableRead(bb, i, v) and k = Read()
       or
       exists(boolean certain | variableWrite(bb, i, v, certain) | k = Write(certain))
     }
@@ -94,40 +94,38 @@ private module Cached {
 
     /**
      * Holds if source variable `v` is live at the beginning of basic block `bb`.
-     * The read that witnesses the liveness of `v` is of kind `rk`.
      */
-    predicate liveAtEntry(BasicBlock bb, SourceVariable v, ReadKind rk) {
+    predicate liveAtEntry(BasicBlock bb, SourceVariable v) {
       // The first read or certain write to `v` inside `bb` is a read
-      refRank(bb, _, v, Read(rk)) = firstReadOrCertainWrite(bb, v)
+      refRank(bb, _, v, Read()) = firstReadOrCertainWrite(bb, v)
       or
       // There is no certain write to `v` inside `bb`, but `v` is live at entry
       // to a successor basic block of `bb`
       not exists(firstReadOrCertainWrite(bb, v)) and
-      liveAtExit(bb, v, rk)
+      liveAtExit(bb, v)
     }
 
     /**
      * Holds if source variable `v` is live at the end of basic block `bb`.
-     * The read that witnesses the liveness of `v` is of kind `rk`.
      */
-    predicate liveAtExit(BasicBlock bb, SourceVariable v, ReadKind rk) {
-      liveAtEntry(getABasicBlockSuccessor(bb), v, rk)
+    predicate liveAtExit(BasicBlock bb, SourceVariable v) {
+      liveAtEntry(getABasicBlockSuccessor(bb), v)
     }
 
     /**
      * Holds if variable `v` is live in basic block `bb` at index `i`.
      * The rank of `i` is `rnk` as defined by `refRank()`.
      */
-    private predicate liveAtRank(BasicBlock bb, int i, SourceVariable v, int rnk, ReadKind rk) {
+    private predicate liveAtRank(BasicBlock bb, int i, SourceVariable v, int rnk) {
       exists(RefKind kind | rnk = refRank(bb, i, v, kind) |
         rnk = maxRefRank(bb, v) and
-        liveAtExit(bb, v, rk)
+        liveAtExit(bb, v)
         or
         ref(bb, i, v, kind) and
-        kind = Read(rk)
+        kind = Read()
         or
         exists(RefKind nextKind |
-          liveAtRank(bb, _, v, rnk + 1, rk) and
+          liveAtRank(bb, _, v, rnk + 1) and
           rnk + 1 = refRank(bb, _, v, nextKind) and
           nextKind != Write(true)
         )
@@ -136,11 +134,10 @@ private module Cached {
 
     /**
      * Holds if variable `v` is live after the (certain or uncertain) write at
-     * index `i` inside basic block `bb`. The read that witnesses the liveness of
-     * `v` is of kind `rk`.
+     * index `i` inside basic block `bb`.
      */
-    predicate liveAfterWrite(BasicBlock bb, int i, SourceVariable v, ReadKind rk) {
-      exists(int rnk | rnk = refRank(bb, i, v, Write(_)) | liveAtRank(bb, i, v, rnk, rk))
+    predicate liveAfterWrite(BasicBlock bb, int i, SourceVariable v) {
+      exists(int rnk | rnk = refRank(bb, i, v, Write(_)) | liveAtRank(bb, i, v, rnk))
     }
   }
 
@@ -182,11 +179,11 @@ private module Cached {
   newtype TDefinition =
     TWriteDef(SourceVariable v, BasicBlock bb, int i) {
       variableWrite(bb, i, v, _) and
-      liveAfterWrite(bb, i, v, _)
+      liveAfterWrite(bb, i, v)
     } or
     TPhiNode(SourceVariable v, BasicBlock bb) {
       inDefDominanceFrontier(bb, v) and
-      liveAtEntry(bb, v, _)
+      liveAtEntry(bb, v)
     }
 
   private module SsaDefReaches {
@@ -223,7 +220,7 @@ private module Cached {
      * Unlike `Liveness::ref`, this includes `phi` nodes.
      */
     predicate ssaRef(BasicBlock bb, int i, SourceVariable v, SsaRefKind k) {
-      variableRead(bb, i, v, _) and
+      variableRead(bb, i, v) and
       k = SsaRead()
       or
       exists(Definition def | def.definesAt(v, bb, i)) and
@@ -287,16 +284,12 @@ private module Cached {
     /**
      * Holds if the SSA definition of `v` at `def` reaches index `i` in the same
      * basic block `bb`, without crossing another SSA definition of `v`.
-     *
-     * The read at `i` is of kind `rk`.
      */
-    predicate ssaDefReachesReadWithinBlock(
-      SourceVariable v, Definition def, BasicBlock bb, int i, ReadKind rk
-    ) {
+    predicate ssaDefReachesReadWithinBlock(SourceVariable v, Definition def, BasicBlock bb, int i) {
       exists(int rnk |
         ssaDefReachesRank(bb, def, rnk, v) and
         rnk = ssaRefRank(bb, i, v, SsaRead()) and
-        variableRead(bb, i, v, rk)
+        variableRead(bb, i, v)
       )
     }
 
@@ -321,7 +314,7 @@ private module Cached {
       v = def.getSourceVariable() and
       result = ssaRefRank(bb, i, v, k) and
       (
-        ssaDefReachesRead(_, def, bb, i, _)
+        ssaDefReachesRead(_, def, bb, i)
         or
         def.definesAt(_, bb, i)
       )
@@ -362,7 +355,7 @@ private module Cached {
     predicate defAdjacentRead(Definition def, BasicBlock bb1, BasicBlock bb2, int i2) {
       varBlockReaches(def, bb1, bb2) and
       ssaRefRank(bb2, i2, def.getSourceVariable(), SsaRead()) = 1 and
-      variableRead(bb2, i2, _, _)
+      variableRead(bb2, i2, _)
     }
   }
 
@@ -390,11 +383,11 @@ private module Cached {
   predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def, SourceVariable v) {
     exists(int last | last = maxSsaRefRank(bb, v) |
       ssaDefReachesRank(bb, def, last, v) and
-      liveAtExit(bb, v, _)
+      liveAtExit(bb, v)
     )
     or
     ssaDefReachesEndOfBlockRec(bb, def, v) and
-    liveAtExit(bb, v, _) and
+    liveAtExit(bb, v) and
     not ssaRef(bb, _, v, SsaDef())
   }
 
@@ -404,12 +397,12 @@ private module Cached {
    * is of kind `rk`.
    */
   cached
-  predicate ssaDefReachesRead(SourceVariable v, Definition def, BasicBlock bb, int i, ReadKind rk) {
-    ssaDefReachesReadWithinBlock(v, def, bb, i, rk)
+  predicate ssaDefReachesRead(SourceVariable v, Definition def, BasicBlock bb, int i) {
+    ssaDefReachesReadWithinBlock(v, def, bb, i)
     or
-    variableRead(bb, i, v, rk) and
+    variableRead(bb, i, v) and
     ssaDefReachesEndOfBlock(getABasicBlockPredecessor(bb), def, v) and
-    not ssaDefReachesReadWithinBlock(v, _, bb, i, _)
+    not ssaDefReachesReadWithinBlock(v, _, bb, i)
   }
 
   /**
@@ -439,7 +432,7 @@ private module Cached {
     exists(int rnk |
       rnk = ssaDefRank(def, _, bb1, i1, _) and
       rnk + 1 = ssaDefRank(def, _, bb1, i2, SsaRead()) and
-      variableRead(bb1, i2, _, _) and
+      variableRead(bb1, i2, _) and
       bb2 = bb1
     )
     or

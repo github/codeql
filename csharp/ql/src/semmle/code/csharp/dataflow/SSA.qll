@@ -233,10 +233,11 @@ module Ssa {
      *   node between lines 9 and 10.
      */
     final AssignableRead getAReadAtNode(ControlFlow::Node cfn) {
-      exists(ControlFlow::BasicBlock bb, int i |
-        SsaImpl::ssaDefReachesRead(_, this, bb, i, SsaImpl::ActualRead()) and
+      exists(SourceVariable v, ControlFlow::BasicBlock bb, int i |
+        SsaImpl::ssaDefReachesRead(v, this, bb, i) and
         cfn = bb.getNode(i) and
-        result.getAControlFlowNode() = cfn
+        cfn = result.getAControlFlowNode() and
+        result = v.getAnAccess().(AssignableRead)
       )
     }
 
