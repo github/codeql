@@ -35,7 +35,7 @@ cfg.rb:
 #-----|  -> x
 
 #   29| enter block
-#-----|  -> &x
+#-----|  -> x
 
 #   63| enter pattern
 #-----|  -> a
@@ -53,7 +53,7 @@ cfg.rb:
 #-----|  -> puts
 
 #  149| enter method
-#-----|  -> *x
+#-----|  -> x
 
 #  153| enter two_parameters
 #-----|  -> a
@@ -694,7 +694,7 @@ cfg.rb:
 #   29| { ... }
 #-----|  -> call to new
 
-#   29| &x
+#   29| x
 #-----|  -> x
 
 #   29| call to call
@@ -1263,9 +1263,9 @@ cfg.rb:
 #-----|  -> key
 
 #  101| key
-#-----|  -> **kwargs
+#-----|  -> kwargs
 
-#  101| **kwargs
+#  101| kwargs
 #-----|  -> puts
 
 #  102| call to puts
@@ -1666,7 +1666,7 @@ cfg.rb:
 #  149| method
 #-----|  -> method
 
-#  149| *x
+#  149| x
 #-----|  -> puts
 
 #  150| call to puts

@@ -215,7 +215,7 @@ private predicate inMatchingContext(AstNode n) {
     w.getPattern(_).getChild() = n
   )
   or
-  n.(Trees::DefaultValueParameterTree).hasDefaultValue()
+  n = any(Trees::DefaultValueParameterTree t | t.hasDefaultValue()).getIdentifier()
 }
 
 /**
