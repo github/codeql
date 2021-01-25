@@ -29,8 +29,8 @@ class XQueryBindStringCall extends MethodAccess {
       m.hasName("bindString")
     )
   }
-  // return the second parameter of the `bindString` method and use it as a sink
-  Expr getSink() { result = this.getArgument(1) }
+  /** Returns the second parameter of the `bindString` method. */
+  Expr getInput() { result = this.getArgument(1) }
 }
 
 /** Used to determine whether to call the `prepareExpression` method, and the first parameter value can be remotely controlled. */
