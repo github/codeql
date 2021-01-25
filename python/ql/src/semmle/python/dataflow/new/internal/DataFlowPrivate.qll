@@ -1027,7 +1027,7 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  * will need to change type if it should be transferred from the LHS to the RHS.
  *
  * Note that (CodeQL modeling of) content does not have to change type on data-flow
- * path _inside_ the LHS, as the different allowed syntaxes here are merely a convenience.
+ * paths _inside_ the LHS, as the different allowed syntaxes here are merely a convenience.
  * Consequently, we model all LHS sequences as tuples, which have the more precise content
  * model, making flow to the elements more precise. If an element is a starred varibale,
  * we will have to mutate the content type to be list content.
@@ -1085,8 +1085,8 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  *    flow step.
  *
  * 3. [Read] Content is read from `TIterableSequence(sequence)` into  `TIterableElement(sequence)`.
- *    As `sequence` is modelled as a tuple, we will not read tuple content as that would allow
- *    cross talk.
+ *    As `sequence` is modeled as a tuple, we will not read tuple content as that would allow
+ *    crosstalk.
  *
  * 4. [Store] Content is stored from `TIterableElement(sequence)` to `sequence`.
  *    Content type is `TupleElementContent` with indices taken from the syntax.
@@ -1096,7 +1096,7 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  * 5. [Read] Content is read from `sequence` to its elements.
  *    a) If the element is a plain variable, the target is the corresponding essa node.
  *
- *    b) If the element is itelf a sequence, with control-flow node `seq`, the target is `TIterableSequence(seq)`.
+ *    b) If the element is itself a sequence, with control-flow node `seq`, the target is `TIterableSequence(seq)`.
  *
  *    c) If the element is a starred variable, with control-flow node `v`, the target is `TIterableElement(v)`.
  *
@@ -1191,8 +1191,8 @@ module UnpackingAssignment {
   /**
    * Step 3
    * Data flows from `TIterableSequence(sequence)` into  `TIterableElement(sequence)`.
-   * As `sequence` is modelled as a tuple, we will not read tuple content as that would allow
-   * cross talk.
+   * As `sequence` is modeled as a tuple, we will not read tuple content as that would allow
+   * crosstalk.
    */
   predicate unpackingAssignmentConvertingReadStep(Node nodeFrom, Content c, Node nodeTo) {
     exists(UnpackingAssignmentSequenceTarget target |
@@ -1229,7 +1229,7 @@ module UnpackingAssignment {
    * three cases for what `toNode` should be:
    *    a) If the element is a plain variable, `toNode` is the corresponding essa node.
    *
-   *    b) If the element is itelf a sequence, with control-flow node `seq`, `toNode` is `TIterableSequence(seq)`.
+   *    b) If the element is itself a sequence, with control-flow node `seq`, `toNode` is `TIterableSequence(seq)`.
    *
    *    c) If the element is a starred variable, with control-flow node `v`, `toNode` is `TIterableElement(v)`.
    */

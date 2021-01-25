@@ -385,15 +385,13 @@ class IterableSequenceNode extends Node, TIterableSequenceNode {
  * read step from the list to IterableElement followed by a store step to the tuple.
  */
 class IterableElementNode extends Node, TIterableElementNode {
-  ControlFlowNode consumer;
+  CfgNode consumer;
 
-  IterableElementNode() { this = TIterableElementNode(consumer) }
+  IterableElementNode() { this = TIterableElementNode(consumer.getNode()) }
 
   override string toString() { result = "IterableElement" }
 
-  override DataFlowCallable getEnclosingCallable() {
-    result = any(CfgNode node | node = TCfgNode(consumer)).getEnclosingCallable()
-  }
+  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
 
   override Location getLocation() { result = consumer.getLocation() }
 }
