@@ -4,12 +4,7 @@
  */
 
 private import javascript
-
-private newtype TUnit = MkUnit()
-
-private class Unit extends TUnit {
-  string toString() { result = "unit" }
-}
+private import semmle.javascript.Unit
 
 /**
  * Internal extension point for adding flow edges prior to call graph construction
