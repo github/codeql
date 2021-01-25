@@ -1115,7 +1115,10 @@ predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
  * characteristic predicate precisely specifying the guard, and override
  * `checks` to specify what is being validated and in which branch.
  *
- * It is important that all extending classes in scope are disjoint.
+ * When using a data-flow or taint-flow configuration `cfg`, it is important
+ * that any classes extending BarrierGuard in scope which are not used in `cfg`
+ * are disjoint from any classes extending BarrierGuard in scope which are used
+ * in `cfg`.
  */
 abstract class BarrierGuard extends Node {
   /** Holds if this guard validates `e` upon evaluating to `branch`. */
