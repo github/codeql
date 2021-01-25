@@ -69,3 +69,35 @@ def redefine_test():
     expects_int(x) # $int
     x = str("Hello") # $str
     expects_string(x) # $str
+
+# ------------------------------------------------------------------------------
+# Tracking of self in methods
+# ------------------------------------------------------------------------------
+
+class Foo(object):
+
+    def meth1(self):
+        do_stuff(self)
+
+    def meth2(self): # $ MISSING: tracked_self
+        do_stuff(self) # $ MISSING: tracked_self
+
+    def meth3(self): # $ MISSING: tracked_self
+        do_stuff(self) # $ MISSING: tracked_self
+
+
+class Bar(Foo):
+
+    def meth1(self): # $ tracked_self
+        do_stuff(self) # $ tracked_self
+
+    def meth2(self):
+        do_stuff(self)
+
+    def meth3(self):
+        do_stuff(self)
+
+    def track_self(self): # $ tracked_self
+        self.meth1() # $ tracked_self
+        super().meth2()
+        super(Bar, self).foo3() # $ tracked_self
