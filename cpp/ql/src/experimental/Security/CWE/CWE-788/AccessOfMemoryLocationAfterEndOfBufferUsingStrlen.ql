@@ -12,13 +12,12 @@
  */
 
 import cpp
-import semmle.code.cpp.valuenumbering.HashCons
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 from FunctionCall fc, AssignExpr expr, ArrayExpr exprarr
 where
-  fc.getTarget().hasGlobalOrStdName("strlen") and
   exprarr = expr.getLValue() and
   expr.getRValue().getValue().toInt() = 0 and
   exprarr.getArrayOffset() = fc and
-  hashCons(fc.getArgument(0)) = hashCons(exprarr.getArrayBase())
-select expr, "use a different method to calculate the length."
+  globalValueNumber(fc.getArgument(0)) = globalValueNumber(exprarr.getArrayBase())
+select expr, "potential unsafe or redundant assignment."
