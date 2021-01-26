@@ -13,8 +13,8 @@ public class UnaryTypeExpr extends TypeExpression {
   private final Kind kind;
 
   public enum Kind {
-    Keyof,
-    Readonly
+    KEYOF,
+    READONLY
   }
 
   public UnaryTypeExpr(SourceLocation loc, Kind kind, ITypeExpression elementType) {

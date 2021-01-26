@@ -10,6 +10,10 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import com.semmle.extractor.html.HtmlPopulator;
+import com.semmle.jcorn.AngularExpressionParser;
+import com.semmle.jcorn.CustomParser;
+import com.semmle.jcorn.Options;
+import com.semmle.jcorn.Parser;
 import com.semmle.js.parser.JcornWrapper;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.exception.UserError;
@@ -78,6 +82,9 @@ public class ExtractorConfig {
     /** A CommonJS module that is not also an ES2015 module. */
     COMMONJS_MODULE,
 
+    /** An Angular template expression. */
+    ANGULAR_TEMPLATE,
+
     /** Automatically determined source type. */
     AUTO;
 
@@ -87,11 +94,31 @@ public class ExtractorConfig {
     }
 
     /**
+     * Gets the parser to use for parsing this source type.
+     */
+    public Parser createParser(Options options, String input, int startPos) {
+      switch (this) {
+      case ANGULAR_TEMPLATE:
+        return new AngularExpressionParser(options, input, startPos);
+      default:
+        return new CustomParser(options, input, startPos);
+      }
+    }
+
+    /**
      * Returns true if this source is executed directly in the global scope, or false if it has its
      * own local scope.
      */
     public boolean hasLocalScope() {
       return this != SCRIPT;
+    }
+
+    /**
+     * Returns true if this source type cannot access the global scope directly, and undeclared
+     * variables are implicitly declared in its local scope. Implies {@link #hasLocalScope()}.
+     */
+    public boolean hasNoGlobalScope() {
+      return this == ANGULAR_TEMPLATE;
     }
 
     /** Returns true if this source is implicitly in strict mode. */

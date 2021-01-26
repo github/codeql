@@ -2256,10 +2256,10 @@ public class TypeScriptASTConverter {
   private Node convertTypeOperator(JsonObject node, SourceLocation loc) throws ParseError {
     String operator = metadata.getSyntaxKindName(node.get("operator").getAsInt());
     if (operator.equals("KeyOfKeyword")) {
-      return new UnaryTypeExpr(loc, UnaryTypeExpr.Kind.Keyof, convertChildAsType(node, "type"));
+      return new UnaryTypeExpr(loc, UnaryTypeExpr.Kind.KEYOF, convertChildAsType(node, "type"));
     }
     if (operator.equals("ReadonlyKeyword")) {
-      return new UnaryTypeExpr(loc, UnaryTypeExpr.Kind.Readonly, convertChildAsType(node, "type"));
+      return new UnaryTypeExpr(loc, UnaryTypeExpr.Kind.READONLY, convertChildAsType(node, "type"));
     }
     if (operator.equals("UniqueKeyword")) {
       return new KeywordTypeExpr(loc, "unique symbol");

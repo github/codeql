@@ -307,6 +307,11 @@ class AnalyzedNegativeConditionGuard extends AnalyzedRefinement {
   }
 }
 
+/** Holds if `v` is a variable in an Angular template. */
+private predicate isAngularTemplateVariable(LocalVariable v) {
+  v = any(Angular2::TemplateTopLevel tl).getScope().getAVariable()
+}
+
 /**
  * Gets the abstract value representing the initial value of variable `v`.
  *
@@ -325,7 +330,10 @@ private AbstractValue getImplicitInitValue(LocalVariable v) {
       then
         // model hoisting
         result = TAbstractFunction(getAFunDecl(v))
-      else result = TAbstractUndefined()
+      else
+        if isAngularTemplateVariable(v)
+        then result = TIndefiniteAbstractValue("heap")
+        else result = TAbstractUndefined()
 }
 
 /**
