@@ -15,7 +15,7 @@ class PreprocessorDirective extends Element, @preprocessor_directive {
    * Holds if this directive is processed by the preprocessor, such as any directive
    * that is not inside a not taken `BranchDirective`.
    */
-  predicate active() { preprocessor_directive_active(this, 1) }
+  predicate isActive() { preprocessor_directive_active(this, 1) }
 
   override Location getALocation() {
     preprocessor_directive_location(this, result) or preprocessor_directive_assembly(this, result)
