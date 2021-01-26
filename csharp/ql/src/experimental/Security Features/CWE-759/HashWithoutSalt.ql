@@ -11,24 +11,25 @@ import csharp
 import semmle.code.csharp.dataflow.TaintTracking
 import DataFlow::PathGraph
 
-/** The C# class `System.Security.Cryptography.SHA...` other than the weak `SHA1`. */
-class SHA extends RefType {
-  SHA() { this.getQualifiedName().regexpMatch("System\\.Security\\.Cryptography\\.SHA\\d{2,3}") }
-}
-
+/** The C# class `Windows.Security.Cryptography.Core.HashAlgorithmProvider`. */
 class HashAlgorithmProvider extends RefType {
   HashAlgorithmProvider() {
     this.hasQualifiedName("Windows.Security.Cryptography.Core", "HashAlgorithmProvider")
   }
 }
 
+/** The C# class `System.Security.Cryptography.HashAlgorithm`. */
+class HashAlgorithm extends RefType {
+  HashAlgorithm() { this.hasQualifiedName("System.Security.Cryptography", "HashAlgorithm") }
+}
+
 /**
- * The method `ComputeHash()` declared in `System.Security.Cryptography.SHA...` and
+ * The method `ComputeHash()` declared in `System.Security.Cryptography.HashAlgorithm` and
  * the method `HashData()` declared in `Windows.Security.Cryptography.Core.HashAlgorithmProvider`.
  */
 class HashMethod extends Method {
   HashMethod() {
-    this.getDeclaringType() instanceof SHA and
+    this.getDeclaringType() instanceof HashAlgorithm and
     this.hasName("ComputeHash")
     or
     this.getDeclaringType() instanceof HashAlgorithmProvider and
