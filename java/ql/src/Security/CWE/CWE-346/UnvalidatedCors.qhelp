@@ -48,7 +48,7 @@
 		the <code>Access-Control-Allow-Origin</code> header when the
 		<code>Access-Control-Allow-Credentials</code> header value is
 		<code>true</code>.This can be done using a sandboxed iframe. A more detailed
-		explanation is available in the portswigger blogpost.
+		explanation is available in the portswigger blogpost referenced below.
 
 	</p>
 </recommendation>

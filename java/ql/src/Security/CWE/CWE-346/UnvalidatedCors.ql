@@ -19,6 +19,10 @@ import DataFlow::PathGraph
  *  Holds if `header` sets `Access-Control-Allow-Credentials` to `true`. This ensures fair chances of exploitability.
  */
 private predicate setsAllowCredentials(MethodAccess header) {
+  (
+    header.getMethod() instanceof ResponseSetHeaderMethod or
+    header.getMethod() instanceof ResponseAddHeaderMethod
+  ) and
   header.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() =
     "access-control-allow-credentials" and
   header.getArgument(1).(CompileTimeConstantExpr).getStringValue() = "true"
@@ -38,10 +42,6 @@ class CorsOriginConfig extends TaintTracking::Configuration {
       (
         corsheader.getMethod() instanceof ResponseSetHeaderMethod or
         corsheader.getMethod() instanceof ResponseAddHeaderMethod
-      ) and
-      (
-        allowcredentialsheader.getMethod() instanceof ResponseSetHeaderMethod or
-        allowcredentialsheader.getMethod() instanceof ResponseAddHeaderMethod
       ) and
       getAccessControlAllowOriginHeaderName() = corsheader.getArgument(0) and
       setsAllowCredentials(allowcredentialsheader) and
