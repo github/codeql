@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Runtime.ExceptionServices;
 
 class ExitMethods
 {
@@ -134,6 +135,15 @@ class ExitMethods
     {
         AssertFalse(true);
         var x = 0; // dead
+    }
+
+    public void ExceptionDispatchInfoThrow(bool b, ArgumentException e)
+    {
+        if (b)
+            ExceptionDispatchInfo.Throw(e);
+        else
+            ExceptionDispatchInfo.Capture(e).Throw();
+        Console.WriteLine("dead");
     }
 }
 
