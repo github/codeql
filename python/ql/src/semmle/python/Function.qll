@@ -39,6 +39,12 @@ class Function extends Function_, Scope, AstNode {
     exists(YieldFrom y | y.getScope() = this)
   }
 
+  /**
+   * Whether this is a lambda.
+   * We detect this by comparing its name to the one the extractor gives to lambdas.
+   */
+  predicate isLambda() { this.getName() = "lambda" }
+
   /** Whether this function is declared in a class and is named `__init__` */
   predicate isInitMethod() { this.isMethod() and this.getName() = "__init__" }
 

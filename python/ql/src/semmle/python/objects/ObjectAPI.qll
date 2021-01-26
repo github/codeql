@@ -720,6 +720,9 @@ abstract class FunctionValue extends CallableValue {
 
   /** Gets a class that this function may return */
   abstract ClassValue getAnInferredReturnType();
+
+  /** Wheter this is a lambda function */
+  predicate isLambda() { this.getOrigin().getNode() instanceof Lambda }
 }
 
 /** Class representing Python functions */

@@ -499,12 +499,11 @@ import ArgumentPassing
 newtype TDataFlowCallable =
   TCallableValue(CallableValue callable) {
     callable instanceof FunctionValue and
-    // TODO: push into FunctionValue
-    not callable.(FunctionValue).getOrigin().getNode() instanceof Lambda
+    not callable.(FunctionValue).isLambda()
     or
     callable instanceof ClassValue
   } or
-  TLambda(Function lambda) { lambda.getName() = "lambda" } or
+  TLambda(Function lambda) { lambda.isLambda() } or
   TModule(Module m)
 
 /** Represents a callable. */
