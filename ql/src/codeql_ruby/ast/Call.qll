@@ -109,6 +109,22 @@ class YieldCall extends Call, @yield {
 }
 
 /**
+ * A call to `super`.
+ * ```rb
+ * class Foo < Bar
+ *   def baz
+ *     super
+ *   end
+ * end
+ * ```
+ */
+class SuperCall extends Call {
+  final override SuperCall::Range range;
+
+  final override string getAPrimaryQlClass() { result = "SuperCall" }
+}
+
+/**
  * A block argument in a method call.
  * ```rb
  * foo(&block)

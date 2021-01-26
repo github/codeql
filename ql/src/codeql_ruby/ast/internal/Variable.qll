@@ -125,6 +125,11 @@ private module Cached {
       not scope.(CapturingScope).inherits(name, _)
     }
 
+  // Token types that can be accesses/vcalls
+  private class AccessTokenUnion = @token_identifier or @token_super;
+
+  private class AccessToken extends Generated::Token, AccessTokenUnion { }
+
   /**
    * Holds if `i` is an `identifier` node occurring in the context where it
    * should be considered a VCALL. VCALL is the term that MRI/Ripper uses
@@ -139,7 +144,7 @@ private module Cached {
    * ```
    */
   cached
-  predicate vcall(Generated::Identifier i) {
+  predicate vcall(AccessToken i) {
     i = any(Generated::ArgumentList x).getChild(_)
     or
     i = any(Generated::Array x).getChild(_)
@@ -266,7 +271,7 @@ private module Cached {
   }
 
   cached
-  predicate access(Generated::Identifier access, Variable variable) {
+  predicate access(AccessToken access, Variable variable) {
     exists(string name | name = access.getValue() |
       variable = enclosingScope(access).getVariable(name) and
       not strictlyBefore(access.getLocation(), variable.getLocation()) and

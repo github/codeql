@@ -208,3 +208,19 @@ foo(**bar)
 
 # the value in a keyword argument
 foo(blah: bar)
+
+# ------------------------------------------------------------------------------
+# calls to `super`
+
+class MyClass
+  def my_method
+    super
+    super()
+    super 'blah'
+    super 1, 2, 3
+    super { |x| x + 1 }
+    super do |x| x * 2 end
+    super 4, 5 { |x| x + 100 }
+    super 6, 7 do |x| x + 200 end
+  end
+end

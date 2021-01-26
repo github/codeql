@@ -66,6 +66,47 @@ module YieldCall {
   }
 }
 
+module SuperCall {
+  abstract class Range extends Call::Range { }
+
+  private class SuperTokenCallRange extends SuperCall::Range, @token_super {
+    final override Generated::Super generated;
+
+    SuperTokenCallRange() { vcall(this) and not access(this, _) }
+
+    final override Expr getReceiver() { none() }
+
+    final override string getMethodName() { result = generated.getValue() }
+
+    final override ScopeResolution getMethodScopeResolution() { none() }
+
+    final override Expr getArgument(int n) { none() }
+
+    final override Block getBlock() { none() }
+  }
+
+  private class RegularSuperCallRange extends SuperCall::Range, @call {
+    final override Generated::Call generated;
+
+    RegularSuperCallRange() {
+      generated = this and
+      generated.getMethod() instanceof Generated::Super
+    }
+
+    final override Expr getReceiver() { result = generated.getReceiver() }
+
+    final override string getMethodName() {
+      result = generated.getMethod().(Generated::Super).getValue()
+    }
+
+    final override ScopeResolution getMethodScopeResolution() { none() }
+
+    final override Expr getArgument(int n) { result = generated.getArguments().getChild(n) }
+
+    final override Block getBlock() { result = generated.getBlock() }
+  }
+}
+
 module BlockArgument {
   class Range extends Expr::Range, @block_argument {
     final override Generated::BlockArgument generated;
