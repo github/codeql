@@ -69,13 +69,27 @@ class StorePreUpdateNode extends NeedsSyntheticPostUpdateNode, CfgNode {
   override string label() { result = "store" }
 }
 
-/** A node marking the state change of an object after a read. */
+/**
+ * A node marking the state change of an object after a read.
+ *
+ * A reverse read happens when the result of a read is modified, e.g. in
+ * ```python
+ * l = [ mutable ]
+ * l[0].mutate()
+ * ```
+ * we may now have changed the content of `l`. To track this, there must be
+ * a postupdate node for `l`.
+ */
 class ReadPreUpdateNode extends NeedsSyntheticPostUpdateNode, CfgNode {
   ReadPreUpdateNode() {
     exists(Attribute a |
       node = a.getObject().getAFlowNode() and
       a.getCtx() instanceof Load
     )
+    or
+    node = any(SubscriptNode s).getObject()
+    or
+    node.getNode() = any(Call call).getKwargs()
   }
 
   override string label() { result = "read" }

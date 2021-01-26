@@ -591,3 +591,35 @@ def return_from_inner_scope(x):
 
 def test_return_from_inner_scope():
     SINK(return_from_inner_scope([]))  #$ flow="SOURCE, l:-3 -> return_from_inner_scope(..)"
+
+
+# Inspired by reverse read inconsistency check
+def insertAtA(d):
+    d["a"] = SOURCE
+
+def test_reverse_read_subscript():
+    d = {"a": NONSOURCE}
+    l = [d]
+    insertAtA(l[0])
+    SINK(d["a"])  #$ MISSING:flow="SOURCE, l-6 -> d['a']""
+
+def test_reverse_read_dict_arg():
+    d = {"a": NONSOURCE}
+    dd = {"d": d}
+    insertAtA(**dd)
+    SINK(d["a"])  #$ MISSING:flow="SOURCE, l-12 -> d['a']""
+
+
+class WithA:
+    def setA(self, v):
+        self.a = v
+
+    def __init__(self):
+        self.a = ""
+
+
+def test_reverse_read_subscript_cls():
+    withA = WithA()
+    l = [withA]
+    l[0].setA(SOURCE)
+    SINK(withA.a) #$ MISSING:flow="SOURCE, l:-1 -> self.a"
