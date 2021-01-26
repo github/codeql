@@ -14,7 +14,7 @@ import go
 import DataFlow::PathGraph
 import semmle.go.dataflow.internal.TaintTrackingUtil
 
-class DivideByZeroSanitizeGuard extends DataFlow::BarrierGuard {
+class DivideByZeroSanitizerGuard extends DataFlow::BarrierGuard {
   DivideByZeroSanitizeGuard() {
     this.(DataFlow::EqualityTestNode).getAnOperand().getNumericValue() = 0 or
     this.(DataFlow::RelationalComparisonNode).getAnOperand().getNumericValue() = 0
@@ -38,7 +38,7 @@ class DivideByZeroCheckConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(Function f |
       f.hasQualifiedName("strconv", ["Atoi", "ParseInt", "ParseUint", "ParseFloat"]) and
       node1 = f.getACall().getArgument(0) and
@@ -63,5 +63,5 @@ class DivideByZeroCheckConfig extends TaintTracking::Configuration {
 from DataFlow::PathNode source, DataFlow::PathNode sink, DivideByZeroCheckConfig cfg
 where cfg.hasFlowPath(source, sink)
 select sink, source, sink,
-  "Variable $@, which is used at division statement might be zero and leads to division by zero exception.",
+  "Variable $@, which is used at division statement might be zero leading to a division-by-zero panic.",
   sink, sink.getNode().toString()
