@@ -1544,7 +1544,7 @@ class FunctionPointerIshType extends DerivedType {
 /**
  * A C++ pointer to data member. See 15.5.
  * ```
- * class C { int m; };
+ * class C { public: int m; };
  * int C::* p = &C::m;          // pointer to data member m of class C
  * class C c;
  * int val = c.*p;              // access data member
