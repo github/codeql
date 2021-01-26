@@ -376,13 +376,10 @@ directive_regions(
   unique int id: @directive_region,
   string name: string ref);
 
+#keyset[id, start]
 directive_endregions(
-  unique int id: @directive_endregion);
-
-#keyset[start, end]
-regions(
-  unique int start: @directive_region ref,
-  unique int end: @directive_endregion ref);
+  unique int id: @directive_endregion,
+  unique int start: @directive_region ref);
 
 directive_lines(
   unique int id: @directive_line,
