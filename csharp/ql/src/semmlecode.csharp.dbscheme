@@ -335,6 +335,9 @@ using_directive_location(
   | @directive_error | @directive_nullable | @directive_line | @directive_region | @directive_endregion | @directive_if
   | @directive_elif | @directive_else | @directive_endif;
 
+@conditional_directive = @directive_if | @directive_elif;
+@branch_directive = @directive_if | @directive_elif | @directive_else;
+
 directive_ifs(
   unique int id: @directive_if,
   int branchTaken: int ref,     /* 0: false, 1: true */

@@ -255,7 +255,7 @@ class EndRegionDirective extends PreprocessorDirective, @directive_endregion {
  * A branching preprocessor directive, such as `IfDirective`, `ElifDirective`, or
  * `ElseDirective`.
  */
-class BranchDirective extends PreprocessorDirective {
+class BranchDirective extends PreprocessorDirective, @branch_directive {
   /** Holds if the branch is taken by the preprocessor. */
   predicate branchTaken() { none() }
 }
@@ -264,7 +264,7 @@ class BranchDirective extends PreprocessorDirective {
  * A preprocessor directive with a branching condition, such as `IfDirective` or
  * `ElifDirective`.
  */
-class ConditionalDirective extends BranchDirective {
+class ConditionalDirective extends BranchDirective, @conditional_directive {
   /** Gets the condition. */
   Expr getCondition() { result = this.getChild(0) }
 
