@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A method entity.
     /// </summary>
-    internal abstract class Method : TypeContainer, IMember, ICustomModifierReceiver
+    internal abstract class Method : TypeContainer, IMember, ICustomModifierReceiver, IParameterizable
     {
         protected MethodTypeParameter[]? genericParams;
         protected GenericContext gc;
@@ -86,15 +86,34 @@ namespace Semmle.Extraction.CIL.Entities
                 yield return Cx.Populate(new Parameter(Cx, this, i++, DeclaringType));
             }
 
+            foreach (var p in GetParameterExtractionProducts(parameterTypes, this, this, Cx, i))
+            {
+                yield return p;
+            }
+        }
+
+        internal static IEnumerable<IExtractionProduct> GetParameterExtractionProducts(IEnumerable<Type> parameterTypes, IParameterizable parameterizable, ICustomModifierReceiver receiver, Context cx, int firstChildIndex)
+        {
+            var i = firstChildIndex;
             foreach (var p in parameterTypes)
             {
                 var t = p;
                 if (t is ModifiedType mt)
                 {
                     t = mt.Unmodified;
-                    yield return Tuples.cil_custom_modifiers(this, mt.Modifier, mt.IsRequired);
+                    yield return Tuples.cil_custom_modifiers(receiver, mt.Modifier, mt.IsRequired);
                 }
-                yield return Cx.Populate(new Parameter(Cx, this, i++, t));
+                if (t is ByRefType brt)
+                {
+                    t = brt.ElementType;
+                    var parameter = cx.Populate(new Parameter(cx, parameterizable, i++, t));
+                    yield return parameter;
+                    yield return Tuples.cil_type_annotation(parameter, TypeAnnotation.Ref);
+                }
+                else
+                {
+                    yield return cx.Populate(new Parameter(cx, parameterizable, i++, t));
+                }
             }
         }
 
@@ -105,6 +124,11 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 t = mt.Unmodified;
                 yield return Tuples.cil_custom_modifiers(this, mt.Modifier, mt.IsRequired);
+            }
+            if (t is ByRefType brt)
+            {
+                t = brt.ElementType;
+                yield return Tuples.cil_type_annotation(this, TypeAnnotation.Ref);
             }
             yield return Tuples.cil_method(this, name, declaringType, t);
         }

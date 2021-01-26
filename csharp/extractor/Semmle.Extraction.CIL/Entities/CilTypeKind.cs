@@ -8,6 +8,7 @@ namespace Semmle.Extraction.CIL.Entities
         ValueOrRefType,
         TypeParameter,
         Array,
-        Pointer
+        Pointer,
+        FunctionPointer
     }
 }

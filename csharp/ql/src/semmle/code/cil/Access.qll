@@ -37,7 +37,7 @@ class WriteAccess extends VariableAccess, @cil_write_access {
 
 /** An instruction that accesses a parameter. */
 class ParameterAccess extends StackVariableAccess, @cil_arg_access {
-  override Parameter getTarget() { result = StackVariableAccess.super.getTarget() }
+  override MethodParameter getTarget() { result = StackVariableAccess.super.getTarget() }
 }
 
 /** An instruction that reads a parameter. */
