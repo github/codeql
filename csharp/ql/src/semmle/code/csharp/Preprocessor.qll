@@ -27,13 +27,13 @@ class PreprocessorDirective extends Element, @preprocessor_directive {
  */
 class PragmaWarningDirective extends PreprocessorDirective, @pragma_warning {
   /** Holds if this is a `#pragma warning restore` directive. */
-  predicate restore() { pragma_warnings(this, 1) }
+  predicate isRestore() { pragma_warnings(this, 1) }
 
   /** Holds if this is a `#pragma warning disable` directive. */
-  predicate disable() { pragma_warnings(this, 0) }
+  predicate isDisable() { pragma_warnings(this, 0) }
 
   /** Holds if this directive specifies error codes. */
-  predicate hasErrorCodes() { exists(string s | pragma_warning_error_codes(this, s, _)) }
+  predicate hasErrorCodes() { pragma_warning_error_codes(this, _, _) }
 
   /** Gets a specified error code from this directive. */
   string getAnErrorCode() { pragma_warning_error_codes(this, result, _) }
