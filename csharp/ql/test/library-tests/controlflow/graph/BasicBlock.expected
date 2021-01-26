@@ -415,9 +415,9 @@
 | ExitMethods.cs:134:17:134:33 | enter FailingAssertion3 | ExitMethods.cs:136:21:136:24 | true | 5 |
 | ExitMethods.cs:136:9:136:25 | [assertion failure] call to method AssertFalse | ExitMethods.cs:134:17:134:33 | exit FailingAssertion3 | 3 |
 | ExitMethods.cs:140:17:140:42 | enter ExceptionDispatchInfoThrow | ExitMethods.cs:142:13:142:13 | access to parameter b | 4 |
+| ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow (abnormal) | ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow | 2 |
 | ExitMethods.cs:143:13:143:43 | ...; | ExitMethods.cs:143:13:143:42 | call to method Throw | 3 |
 | ExitMethods.cs:145:13:145:53 | ...; | ExitMethods.cs:145:13:145:52 | call to method Throw | 4 |
-| ExitMethods.cs:146:9:146:34 | ...; | ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow | 5 |
 | Extensions.cs:5:23:5:29 | enter ToInt32 | Extensions.cs:5:23:5:29 | exit ToInt32 | 7 |
 | Extensions.cs:10:24:10:29 | enter ToBool | Extensions.cs:10:24:10:29 | exit ToBool | 8 |
 | Extensions.cs:15:23:15:33 | enter CallToInt32 | Extensions.cs:15:23:15:33 | exit CallToInt32 | 5 |

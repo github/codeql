@@ -1645,7 +1645,7 @@ dominance
 | ExitMethods.cs:136:9:136:26 | ...; | ExitMethods.cs:136:9:136:25 | this access |
 | ExitMethods.cs:136:21:136:24 | true | ExitMethods.cs:136:9:136:25 | [assertion failure] call to method AssertFalse |
 | ExitMethods.cs:140:17:140:42 | enter ExceptionDispatchInfoThrow | ExitMethods.cs:141:5:147:5 | {...} |
-| ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow (normal) | ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow |
+| ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow (abnormal) | ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow |
 | ExitMethods.cs:141:5:147:5 | {...} | ExitMethods.cs:142:9:145:53 | if (...) ... |
 | ExitMethods.cs:142:9:145:53 | if (...) ... | ExitMethods.cs:142:13:142:13 | access to parameter b |
 | ExitMethods.cs:142:13:142:13 | access to parameter b | ExitMethods.cs:143:13:143:43 | ...; |
@@ -1655,9 +1655,6 @@ dominance
 | ExitMethods.cs:145:13:145:44 | call to method Capture | ExitMethods.cs:145:13:145:52 | call to method Throw |
 | ExitMethods.cs:145:13:145:53 | ...; | ExitMethods.cs:145:43:145:43 | access to parameter e |
 | ExitMethods.cs:145:43:145:43 | access to parameter e | ExitMethods.cs:145:13:145:44 | call to method Capture |
-| ExitMethods.cs:146:9:146:33 | call to method WriteLine | ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow (normal) |
-| ExitMethods.cs:146:9:146:34 | ...; | ExitMethods.cs:146:27:146:32 | "dead" |
-| ExitMethods.cs:146:27:146:32 | "dead" | ExitMethods.cs:146:9:146:33 | call to method WriteLine |
 | Extensions.cs:5:23:5:29 | enter ToInt32 | Extensions.cs:6:5:8:5 | {...} |
 | Extensions.cs:5:23:5:29 | exit ToInt32 (normal) | Extensions.cs:5:23:5:29 | exit ToInt32 |
 | Extensions.cs:6:5:8:5 | {...} | Extensions.cs:7:28:7:28 | access to parameter s |
@@ -5737,8 +5734,7 @@ postDominance
 | ExitMethods.cs:136:9:136:25 | this access | ExitMethods.cs:136:9:136:26 | ...; |
 | ExitMethods.cs:136:9:136:26 | ...; | ExitMethods.cs:135:5:138:5 | {...} |
 | ExitMethods.cs:136:21:136:24 | true | ExitMethods.cs:136:9:136:25 | this access |
-| ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow | ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow (normal) |
-| ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow (normal) | ExitMethods.cs:146:9:146:33 | call to method WriteLine |
+| ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow | ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow (abnormal) |
 | ExitMethods.cs:141:5:147:5 | {...} | ExitMethods.cs:140:17:140:42 | enter ExceptionDispatchInfoThrow |
 | ExitMethods.cs:142:9:145:53 | if (...) ... | ExitMethods.cs:141:5:147:5 | {...} |
 | ExitMethods.cs:142:13:142:13 | access to parameter b | ExitMethods.cs:142:9:145:53 | if (...) ... |
@@ -5747,10 +5743,6 @@ postDominance
 | ExitMethods.cs:145:13:145:44 | call to method Capture | ExitMethods.cs:145:43:145:43 | access to parameter e |
 | ExitMethods.cs:145:13:145:52 | call to method Throw | ExitMethods.cs:145:13:145:44 | call to method Capture |
 | ExitMethods.cs:145:43:145:43 | access to parameter e | ExitMethods.cs:145:13:145:53 | ...; |
-| ExitMethods.cs:146:9:146:33 | call to method WriteLine | ExitMethods.cs:146:27:146:32 | "dead" |
-| ExitMethods.cs:146:9:146:34 | ...; | ExitMethods.cs:143:13:143:42 | call to method Throw |
-| ExitMethods.cs:146:9:146:34 | ...; | ExitMethods.cs:145:13:145:52 | call to method Throw |
-| ExitMethods.cs:146:27:146:32 | "dead" | ExitMethods.cs:146:9:146:34 | ...; |
 | Extensions.cs:5:23:5:29 | exit ToInt32 | Extensions.cs:5:23:5:29 | exit ToInt32 (normal) |
 | Extensions.cs:5:23:5:29 | exit ToInt32 (normal) | Extensions.cs:7:9:7:30 | return ...; |
 | Extensions.cs:6:5:8:5 | {...} | Extensions.cs:5:23:5:29 | enter ToInt32 |
@@ -9990,12 +9982,12 @@ blockDominance
 | ExitMethods.cs:134:17:134:33 | enter FailingAssertion3 | ExitMethods.cs:136:9:136:25 | [assertion failure] call to method AssertFalse |
 | ExitMethods.cs:136:9:136:25 | [assertion failure] call to method AssertFalse | ExitMethods.cs:136:9:136:25 | [assertion failure] call to method AssertFalse |
 | ExitMethods.cs:140:17:140:42 | enter ExceptionDispatchInfoThrow | ExitMethods.cs:140:17:140:42 | enter ExceptionDispatchInfoThrow |
+| ExitMethods.cs:140:17:140:42 | enter ExceptionDispatchInfoThrow | ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow (abnormal) |
 | ExitMethods.cs:140:17:140:42 | enter ExceptionDispatchInfoThrow | ExitMethods.cs:143:13:143:43 | ...; |
 | ExitMethods.cs:140:17:140:42 | enter ExceptionDispatchInfoThrow | ExitMethods.cs:145:13:145:53 | ...; |
-| ExitMethods.cs:140:17:140:42 | enter ExceptionDispatchInfoThrow | ExitMethods.cs:146:9:146:34 | ...; |
+| ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow (abnormal) | ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow (abnormal) |
 | ExitMethods.cs:143:13:143:43 | ...; | ExitMethods.cs:143:13:143:43 | ...; |
 | ExitMethods.cs:145:13:145:53 | ...; | ExitMethods.cs:145:13:145:53 | ...; |
-| ExitMethods.cs:146:9:146:34 | ...; | ExitMethods.cs:146:9:146:34 | ...; |
 | Extensions.cs:5:23:5:29 | enter ToInt32 | Extensions.cs:5:23:5:29 | enter ToInt32 |
 | Extensions.cs:10:24:10:29 | enter ToBool | Extensions.cs:10:24:10:29 | enter ToBool |
 | Extensions.cs:15:23:15:33 | enter CallToInt32 | Extensions.cs:15:23:15:33 | enter CallToInt32 |
@@ -13910,12 +13902,9 @@ postBlockDominance
 | ExitMethods.cs:134:17:134:33 | enter FailingAssertion3 | ExitMethods.cs:134:17:134:33 | enter FailingAssertion3 |
 | ExitMethods.cs:136:9:136:25 | [assertion failure] call to method AssertFalse | ExitMethods.cs:136:9:136:25 | [assertion failure] call to method AssertFalse |
 | ExitMethods.cs:140:17:140:42 | enter ExceptionDispatchInfoThrow | ExitMethods.cs:140:17:140:42 | enter ExceptionDispatchInfoThrow |
+| ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow (abnormal) | ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow (abnormal) |
 | ExitMethods.cs:143:13:143:43 | ...; | ExitMethods.cs:143:13:143:43 | ...; |
 | ExitMethods.cs:145:13:145:53 | ...; | ExitMethods.cs:145:13:145:53 | ...; |
-| ExitMethods.cs:146:9:146:34 | ...; | ExitMethods.cs:140:17:140:42 | enter ExceptionDispatchInfoThrow |
-| ExitMethods.cs:146:9:146:34 | ...; | ExitMethods.cs:143:13:143:43 | ...; |
-| ExitMethods.cs:146:9:146:34 | ...; | ExitMethods.cs:145:13:145:53 | ...; |
-| ExitMethods.cs:146:9:146:34 | ...; | ExitMethods.cs:146:9:146:34 | ...; |
 | Extensions.cs:5:23:5:29 | enter ToInt32 | Extensions.cs:5:23:5:29 | enter ToInt32 |
 | Extensions.cs:10:24:10:29 | enter ToBool | Extensions.cs:10:24:10:29 | enter ToBool |
 | Extensions.cs:15:23:15:33 | enter CallToInt32 | Extensions.cs:15:23:15:33 | enter CallToInt32 |

@@ -1599,17 +1599,19 @@
 | ExitMethods.cs:137:9:137:18 | ... ...; | ExitMethods.cs:137:13:137:17 | Int32 x = ... | normal |
 | ExitMethods.cs:137:13:137:17 | Int32 x = ... | ExitMethods.cs:137:13:137:17 | Int32 x = ... | normal |
 | ExitMethods.cs:137:17:137:17 | 0 | ExitMethods.cs:137:17:137:17 | 0 | normal |
+| ExitMethods.cs:141:5:147:5 | {...} | ExitMethods.cs:143:13:143:42 | call to method Throw | throw(ArgumentException) |
+| ExitMethods.cs:141:5:147:5 | {...} | ExitMethods.cs:145:13:145:52 | call to method Throw | throw(Exception) |
 | ExitMethods.cs:141:5:147:5 | {...} | ExitMethods.cs:146:9:146:33 | call to method WriteLine | normal |
-| ExitMethods.cs:142:9:145:53 | if (...) ... | ExitMethods.cs:143:13:143:42 | call to method Throw | normal |
-| ExitMethods.cs:142:9:145:53 | if (...) ... | ExitMethods.cs:145:13:145:52 | call to method Throw | normal |
+| ExitMethods.cs:142:9:145:53 | if (...) ... | ExitMethods.cs:143:13:143:42 | call to method Throw | throw(ArgumentException) |
+| ExitMethods.cs:142:9:145:53 | if (...) ... | ExitMethods.cs:145:13:145:52 | call to method Throw | throw(Exception) |
 | ExitMethods.cs:142:13:142:13 | access to parameter b | ExitMethods.cs:142:13:142:13 | access to parameter b | false |
 | ExitMethods.cs:142:13:142:13 | access to parameter b | ExitMethods.cs:142:13:142:13 | access to parameter b | true |
-| ExitMethods.cs:143:13:143:42 | call to method Throw | ExitMethods.cs:143:13:143:42 | call to method Throw | normal |
-| ExitMethods.cs:143:13:143:43 | ...; | ExitMethods.cs:143:13:143:42 | call to method Throw | normal |
+| ExitMethods.cs:143:13:143:42 | call to method Throw | ExitMethods.cs:143:13:143:42 | call to method Throw | throw(ArgumentException) |
+| ExitMethods.cs:143:13:143:43 | ...; | ExitMethods.cs:143:13:143:42 | call to method Throw | throw(ArgumentException) |
 | ExitMethods.cs:143:41:143:41 | access to parameter e | ExitMethods.cs:143:41:143:41 | access to parameter e | normal |
 | ExitMethods.cs:145:13:145:44 | call to method Capture | ExitMethods.cs:145:13:145:44 | call to method Capture | normal |
-| ExitMethods.cs:145:13:145:52 | call to method Throw | ExitMethods.cs:145:13:145:52 | call to method Throw | normal |
-| ExitMethods.cs:145:13:145:53 | ...; | ExitMethods.cs:145:13:145:52 | call to method Throw | normal |
+| ExitMethods.cs:145:13:145:52 | call to method Throw | ExitMethods.cs:145:13:145:52 | call to method Throw | throw(Exception) |
+| ExitMethods.cs:145:13:145:53 | ...; | ExitMethods.cs:145:13:145:52 | call to method Throw | throw(Exception) |
 | ExitMethods.cs:145:43:145:43 | access to parameter e | ExitMethods.cs:145:43:145:43 | access to parameter e | normal |
 | ExitMethods.cs:146:9:146:33 | call to method WriteLine | ExitMethods.cs:146:9:146:33 | call to method WriteLine | normal |
 | ExitMethods.cs:146:9:146:34 | ...; | ExitMethods.cs:146:9:146:33 | call to method WriteLine | normal |
