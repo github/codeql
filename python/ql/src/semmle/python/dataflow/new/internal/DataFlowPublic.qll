@@ -179,7 +179,12 @@ ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
 class ParameterNode extends CfgNode {
   ParameterDefinition def;
 
-  ParameterNode() { node = def.getDefiningNode() }
+  ParameterNode() {
+    node = def.getDefiningNode() and
+    // Disregard parameters that we cannot resolve
+    // TODO: Make this unnecessary
+    exists(DataFlowCallable c | node = c.getParameter(_))
+  }
 
   /**
    * Holds if this node is the parameter of callable `c` at the
