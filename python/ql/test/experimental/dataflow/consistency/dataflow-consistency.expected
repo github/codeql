@@ -1,11 +1,16 @@
 uniqueEnclosingCallable
+| test.py:256:18:256:18 | ControlFlowNode for x | Node should have one enclosing callable but has 2. |
+| test.py:256:18:256:18 | SSA variable x | Node should have one enclosing callable but has 2. |
+| test.py:256:21:256:25 | ControlFlowNode for False | Node should have one enclosing callable but has 2. |
 uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
 missingToString
 parameterCallable
+| test.py:256:18:256:18 | ControlFlowNode for x | Callable mismatch for parameter. |
 localFlowIsLocal
+| test.py:256:18:256:18 | ControlFlowNode for x | test.py:256:18:256:18 | SSA variable x | Local flow step does not preserve enclosing callable. |
 compatibleTypesReflexive
 unreachableNodeCCtx
 localCallNodes
