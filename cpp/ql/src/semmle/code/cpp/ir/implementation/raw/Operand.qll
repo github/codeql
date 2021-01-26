@@ -272,7 +272,7 @@ class RegisterOperand extends NonPhiOperand, TRegisterOperand {
 /**
  * A memory operand other than the operand of a `Phi` instruction.
  */
-class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand {
+class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, TNonPhiMemoryOperand {
   override MemoryOperandTag tag;
 
   NonPhiMemoryOperand() {

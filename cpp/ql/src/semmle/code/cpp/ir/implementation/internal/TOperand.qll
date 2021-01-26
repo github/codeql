@@ -100,6 +100,8 @@ module RawOperands {
 
   class TChiOperand = Internal::TNoOperand;
 
+  class TNonPhiMemoryOperand = TNonSSAMemoryOperand or TChiOperand;
+
   /**
    * Returns the Phi operand with the specified parameters.
    */
@@ -129,6 +131,7 @@ module UnaliasedSSAOperands {
 
   class TChiOperand = Internal::TNoOperand;
 
+  class TNonPhiMemoryOperand = TNonSSAMemoryOperand or TChiOperand;
   /**
    * Returns the Phi operand with the specified parameters.
    */
@@ -158,6 +161,7 @@ module AliasedSSAOperands {
 
   class TChiOperand = Internal::TAliasedChiOperand;
 
+  class TNonPhiMemoryOperand = TNonSSAMemoryOperand or TChiOperand;
   /**
    * Returns the Phi operand with the specified parameters.
    */
