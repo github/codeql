@@ -516,7 +516,6 @@ module Angular2 {
         i = 1 and name = "date" // date format string
       )
       or
-      // Arguments to translate are assumed to be included in the result somewhere
       name = "translate" and
       succ = this and
       pred = [getArgument(1), getOptionArgument(1, _)]
