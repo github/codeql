@@ -669,9 +669,9 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("directive_regions", directive, name);
         }
 
-        internal static void directive_endregions(this TextWriter trapFile, EndRegionDirective directive)
+        internal static void directive_endregions(this TextWriter trapFile, EndRegionDirective directive, RegionDirective start)
         {
-            trapFile.WriteTuple("directive_endregions", directive);
+            trapFile.WriteTuple("directive_endregions", directive, start);
         }
 
         internal static void regions(this TextWriter trapFile, RegionDirective start, EndRegionDirective end)

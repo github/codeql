@@ -232,7 +232,7 @@ class RegionDirective extends PreprocessorDirective, @directive_region {
   string getName() { directive_regions(this, result) }
 
   /** Gets the closing `#endregion` directive. */
-  EndRegionDirective getEnd() { regions(this, result) }
+  EndRegionDirective getEnd() { directive_endregions(result, this) }
 
   override string toString() { result = "#region ..." }
 

@@ -65,15 +65,15 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void VisitEndRegionDirectiveTrivia(EndRegionDirectiveTriviaSyntax node)
         {
-            var endregion = new Entities.EndRegionDirective(cx, node);
             if (regionStarts.Count == 0)
             {
                 cx.ExtractionError("Couldn't find start region", null,
                     Extraction.Entities.Location.Create(cx, node.GetLocation()), null, Util.Logging.Severity.Warning);
                 return;
             }
+
             var start = regionStarts.Pop();
-            Entities.EndRegionDirective.WriteRegionBlock(cx, start, endregion);
+            new Entities.EndRegionDirective(cx, node, start);
         }
 
         private readonly Stack<Entities.IfDirective> ifStarts = new Stack<Entities.IfDirective>();

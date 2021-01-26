@@ -8,11 +8,14 @@ namespace Semmle.Extraction.CSharp.Entities
     {
         protected readonly TDirective trivia;
 
-        protected PreprocessorDirective(Context cx, TDirective trivia)
+        protected PreprocessorDirective(Context cx, TDirective trivia, bool populateFromBase = true)
             : base(cx)
         {
             this.trivia = trivia;
-            TryPopulate();
+            if (populateFromBase)
+            {
+                TryPopulate();
+            }
         }
 
         protected sealed override void Populate(TextWriter trapFile)
