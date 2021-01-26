@@ -578,17 +578,6 @@ module Angular2 {
     }
   }
 
-  /** Like `MatTableTaintStep` but as a value-preserving load step. */
-  private class MatTableLoadStep extends PreCallGraphStep {
-    override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      exists(MatTableElement table |
-        pred = table.getDataSourceNode() and
-        succ = table.getARowRef() and
-        prop = DataFlow::PseudoProperties::arrayElement()
-      )
-    }
-  }
-
   /** A taint step into the data array of a `MatTableDataSource` instance. */
   private class MatTableDataSourceStep extends TaintTracking::AdditionalTaintStep, DataFlow::NewNode {
     MatTableDataSourceStep() {
