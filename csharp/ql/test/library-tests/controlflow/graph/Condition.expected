@@ -1890,6 +1890,46 @@ conditionBlock
 | Patterns.cs:80:13:80:13 | 1 | Patterns.cs:81:13:81:13 | _ | false |
 | Patterns.cs:80:13:80:13 | 1 | Patterns.cs:81:18:81:20 | "0" | false |
 | Patterns.cs:81:13:81:13 | _ | Patterns.cs:81:18:81:20 | "0" | true |
+| Patterns.cs:85:26:85:27 | enter M8 | Patterns.cs:85:39:85:53 | [false] ... is ... | false |
+| Patterns.cs:85:26:85:27 | enter M8 | Patterns.cs:85:44:85:53 | [no-match] ... or ... | false |
+| Patterns.cs:85:26:85:27 | enter M8 | Patterns.cs:85:49:85:53 | [match] not ... | false |
+| Patterns.cs:85:26:85:27 | enter M8 | Patterns.cs:85:49:85:53 | [no-match] not ... | false |
+| Patterns.cs:85:26:85:27 | enter M8 | Patterns.cs:85:53:85:53 | 2 | false |
+| Patterns.cs:85:26:85:27 | enter M8 | Patterns.cs:85:67:85:69 | "2" | false |
+| Patterns.cs:85:39:85:53 | [false] ... is ... | Patterns.cs:85:67:85:69 | "2" | false |
+| Patterns.cs:85:39:85:53 | [true] ... is ... | Patterns.cs:85:57:85:63 | "not 2" | true |
+| Patterns.cs:85:44:85:53 | [match] ... or ... | Patterns.cs:85:39:85:53 | [true] ... is ... | true |
+| Patterns.cs:85:44:85:53 | [match] ... or ... | Patterns.cs:85:57:85:63 | "not 2" | true |
+| Patterns.cs:85:44:85:53 | [no-match] ... or ... | Patterns.cs:85:39:85:53 | [false] ... is ... | false |
+| Patterns.cs:85:44:85:53 | [no-match] ... or ... | Patterns.cs:85:67:85:69 | "2" | false |
+| Patterns.cs:85:49:85:53 | [no-match] not ... | Patterns.cs:85:39:85:53 | [false] ... is ... | false |
+| Patterns.cs:85:49:85:53 | [no-match] not ... | Patterns.cs:85:44:85:53 | [no-match] ... or ... | false |
+| Patterns.cs:85:49:85:53 | [no-match] not ... | Patterns.cs:85:67:85:69 | "2" | false |
+| Patterns.cs:85:53:85:53 | 2 | Patterns.cs:85:39:85:53 | [false] ... is ... | true |
+| Patterns.cs:85:53:85:53 | 2 | Patterns.cs:85:44:85:53 | [no-match] ... or ... | true |
+| Patterns.cs:85:53:85:53 | 2 | Patterns.cs:85:49:85:53 | [match] not ... | false |
+| Patterns.cs:85:53:85:53 | 2 | Patterns.cs:85:49:85:53 | [no-match] not ... | true |
+| Patterns.cs:85:53:85:53 | 2 | Patterns.cs:85:67:85:69 | "2" | true |
+| Patterns.cs:87:26:87:27 | enter M9 | Patterns.cs:87:39:87:54 | [true] ... is ... | true |
+| Patterns.cs:87:26:87:27 | enter M9 | Patterns.cs:87:44:87:54 | [match] ... and ... | true |
+| Patterns.cs:87:26:87:27 | enter M9 | Patterns.cs:87:50:87:54 | [match] not ... | true |
+| Patterns.cs:87:26:87:27 | enter M9 | Patterns.cs:87:50:87:54 | [no-match] not ... | true |
+| Patterns.cs:87:26:87:27 | enter M9 | Patterns.cs:87:54:87:54 | 2 | true |
+| Patterns.cs:87:26:87:27 | enter M9 | Patterns.cs:87:58:87:60 | "1" | true |
+| Patterns.cs:87:39:87:54 | [false] ... is ... | Patterns.cs:87:64:87:70 | "not 1" | false |
+| Patterns.cs:87:39:87:54 | [true] ... is ... | Patterns.cs:87:58:87:60 | "1" | true |
+| Patterns.cs:87:44:87:54 | [match] ... and ... | Patterns.cs:87:39:87:54 | [true] ... is ... | true |
+| Patterns.cs:87:44:87:54 | [match] ... and ... | Patterns.cs:87:58:87:60 | "1" | true |
+| Patterns.cs:87:44:87:54 | [no-match] ... and ... | Patterns.cs:87:39:87:54 | [false] ... is ... | false |
+| Patterns.cs:87:44:87:54 | [no-match] ... and ... | Patterns.cs:87:64:87:70 | "not 1" | false |
+| Patterns.cs:87:50:87:54 | [match] not ... | Patterns.cs:87:39:87:54 | [true] ... is ... | true |
+| Patterns.cs:87:50:87:54 | [match] not ... | Patterns.cs:87:44:87:54 | [match] ... and ... | true |
+| Patterns.cs:87:50:87:54 | [match] not ... | Patterns.cs:87:58:87:60 | "1" | true |
+| Patterns.cs:87:54:87:54 | 2 | Patterns.cs:87:39:87:54 | [true] ... is ... | false |
+| Patterns.cs:87:54:87:54 | 2 | Patterns.cs:87:44:87:54 | [match] ... and ... | false |
+| Patterns.cs:87:54:87:54 | 2 | Patterns.cs:87:50:87:54 | [match] not ... | false |
+| Patterns.cs:87:54:87:54 | 2 | Patterns.cs:87:50:87:54 | [no-match] not ... | true |
+| Patterns.cs:87:54:87:54 | 2 | Patterns.cs:87:58:87:60 | "1" | false |
 | PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:12:13:12:21 | [false] ... is ... | false |
 | PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:12:13:12:21 | [true] ... is ... | true |
 | PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:13:13:13:19 | return ...; | true |
@@ -2798,6 +2838,10 @@ conditionFlow
 | Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:27:13:27:24 | case ...: | false |
 | Patterns.cs:51:9:51:21 | [false] ... is ... | Patterns.cs:51:34:51:34 | access to parameter c | false |
 | Patterns.cs:51:9:51:21 | [true] ... is ... | Patterns.cs:51:25:51:25 | access to parameter c | true |
+| Patterns.cs:85:39:85:53 | [false] ... is ... | Patterns.cs:85:67:85:69 | "2" | false |
+| Patterns.cs:85:39:85:53 | [true] ... is ... | Patterns.cs:85:57:85:63 | "not 2" | true |
+| Patterns.cs:87:39:87:54 | [false] ... is ... | Patterns.cs:87:64:87:70 | "not 1" | false |
+| Patterns.cs:87:39:87:54 | [true] ... is ... | Patterns.cs:87:58:87:60 | "1" | true |
 | PostDominance.cs:12:13:12:21 | [false] ... is ... | PostDominance.cs:14:9:14:29 | ...; | false |
 | PostDominance.cs:12:13:12:21 | [true] ... is ... | PostDominance.cs:13:13:13:19 | return ...; | true |
 | PostDominance.cs:19:13:19:21 | [false] ... is ... | PostDominance.cs:21:9:21:29 | ...; | false |

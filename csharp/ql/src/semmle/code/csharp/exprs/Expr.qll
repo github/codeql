@@ -509,6 +509,9 @@ class NotPatternExpr extends UnaryPatternExpr, @not_pattern_expr {
 
 /** A binary pattern. For example, `1 or 2`. */
 class BinaryPatternExpr extends PatternExpr, @binary_pattern_expr {
+  /** Gets a pattern. */
+  PatternExpr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
+
   /** Gets the left pattern. */
   PatternExpr getLeftOperand() { result = this.getChild(0) }
 

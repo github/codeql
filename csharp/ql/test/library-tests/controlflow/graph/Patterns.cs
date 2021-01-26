@@ -81,4 +81,8 @@ class Patterns
             _ => "0"
         };
     }
+
+    public static string M8(int i) => i is 1 or not 2 ? "not 2" : "2";
+
+    public static string M9(int i) => i is 1 and not 2 ? "1" : "not 1";
 }

@@ -360,7 +360,9 @@ module Expressions {
       not this instanceof SwitchExpr and
       not this instanceof SwitchCaseExpr and
       not this instanceof ConstructorInitializer and
-      not this instanceof NotPatternExpr
+      not this instanceof NotPatternExpr and
+      not this instanceof OrPatternExpr and
+      not this instanceof AndPatternExpr
     }
 
     final override ControlFlowElement getChildElement(int i) { result = getExprChild(this, i) }
@@ -900,6 +902,56 @@ module Expressions {
       succ = this and
       last(this.getPattern(), pred, c) and
       c instanceof NormalCompletion
+    }
+  }
+
+  private class AndPatternExprTree extends PostOrderTree, AndPatternExpr {
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child = this.getAnOperand()
+    }
+
+    final override predicate first(ControlFlowElement first) { first(this.getLeftOperand(), first) }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      // Flow from last element of left operand to first element of right operand
+      last(this.getLeftOperand(), pred, c) and
+      c.(MatchingCompletion).getValue() = true and
+      first(this.getRightOperand(), succ)
+      or
+      // Post-order: flow from last element of left operand to element itself
+      last(this.getLeftOperand(), pred, c) and
+      c.(MatchingCompletion).getValue() = false and
+      succ = this
+      or
+      // Post-order: flow from last element of right operand to element itself
+      last(this.getRightOperand(), pred, c) and
+      c instanceof MatchingCompletion and
+      succ = this
+    }
+  }
+
+  private class OrPatternExprTree extends PostOrderTree, OrPatternExpr {
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child = this.getAnOperand()
+    }
+
+    final override predicate first(ControlFlowElement first) { first(this.getLeftOperand(), first) }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      // Flow from last element of left operand to first element of right operand
+      last(this.getLeftOperand(), pred, c) and
+      c.(MatchingCompletion).getValue() = false and
+      first(this.getRightOperand(), succ)
+      or
+      // Post-order: flow from last element of left operand to element itself
+      last(this.getLeftOperand(), pred, c) and
+      c.(MatchingCompletion).getValue() = true and
+      succ = this
+      or
+      // Post-order: flow from last element of right operand to element itself
+      last(this.getRightOperand(), pred, c) and
+      c instanceof MatchingCompletion and
+      succ = this
     }
   }
 }

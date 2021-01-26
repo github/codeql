@@ -2997,6 +2997,34 @@
 | Patterns.cs:81:13:81:13 | _ | Patterns.cs:81:13:81:13 | _ | match |
 | Patterns.cs:81:13:81:20 | ... => ... | Patterns.cs:81:13:81:20 | ... => ... | normal |
 | Patterns.cs:81:18:81:20 | "0" | Patterns.cs:81:18:81:20 | "0" | normal |
+| Patterns.cs:85:39:85:39 | access to parameter i | Patterns.cs:85:39:85:39 | access to parameter i | normal |
+| Patterns.cs:85:39:85:53 | ... is ... | Patterns.cs:85:39:85:53 | ... is ... | false |
+| Patterns.cs:85:39:85:53 | ... is ... | Patterns.cs:85:39:85:53 | ... is ... | true |
+| Patterns.cs:85:39:85:69 | ... ? ... : ... | Patterns.cs:85:39:85:69 | ... ? ... : ... | normal |
+| Patterns.cs:85:44:85:44 | 1 | Patterns.cs:85:44:85:44 | 1 | match |
+| Patterns.cs:85:44:85:44 | 1 | Patterns.cs:85:44:85:44 | 1 | no-match |
+| Patterns.cs:85:44:85:53 | ... or ... | Patterns.cs:85:44:85:53 | ... or ... | match |
+| Patterns.cs:85:44:85:53 | ... or ... | Patterns.cs:85:44:85:53 | ... or ... | no-match |
+| Patterns.cs:85:49:85:53 | not ... | Patterns.cs:85:49:85:53 | not ... | match |
+| Patterns.cs:85:49:85:53 | not ... | Patterns.cs:85:49:85:53 | not ... | no-match |
+| Patterns.cs:85:53:85:53 | 2 | Patterns.cs:85:53:85:53 | 2 | match |
+| Patterns.cs:85:53:85:53 | 2 | Patterns.cs:85:53:85:53 | 2 | no-match |
+| Patterns.cs:85:57:85:63 | "not 2" | Patterns.cs:85:57:85:63 | "not 2" | normal |
+| Patterns.cs:85:67:85:69 | "2" | Patterns.cs:85:67:85:69 | "2" | normal |
+| Patterns.cs:87:39:87:39 | access to parameter i | Patterns.cs:87:39:87:39 | access to parameter i | normal |
+| Patterns.cs:87:39:87:54 | ... is ... | Patterns.cs:87:39:87:54 | ... is ... | false |
+| Patterns.cs:87:39:87:54 | ... is ... | Patterns.cs:87:39:87:54 | ... is ... | true |
+| Patterns.cs:87:39:87:70 | ... ? ... : ... | Patterns.cs:87:39:87:70 | ... ? ... : ... | normal |
+| Patterns.cs:87:44:87:44 | 1 | Patterns.cs:87:44:87:44 | 1 | match |
+| Patterns.cs:87:44:87:44 | 1 | Patterns.cs:87:44:87:44 | 1 | no-match |
+| Patterns.cs:87:44:87:54 | ... and ... | Patterns.cs:87:44:87:54 | ... and ... | match |
+| Patterns.cs:87:44:87:54 | ... and ... | Patterns.cs:87:44:87:54 | ... and ... | no-match |
+| Patterns.cs:87:50:87:54 | not ... | Patterns.cs:87:50:87:54 | not ... | match |
+| Patterns.cs:87:50:87:54 | not ... | Patterns.cs:87:50:87:54 | not ... | no-match |
+| Patterns.cs:87:54:87:54 | 2 | Patterns.cs:87:54:87:54 | 2 | match |
+| Patterns.cs:87:54:87:54 | 2 | Patterns.cs:87:54:87:54 | 2 | no-match |
+| Patterns.cs:87:58:87:60 | "1" | Patterns.cs:87:58:87:60 | "1" | normal |
+| Patterns.cs:87:64:87:70 | "not 1" | Patterns.cs:87:64:87:70 | "not 1" | normal |
 | PostDominance.cs:6:5:8:5 | {...} | PostDominance.cs:7:9:7:28 | call to method WriteLine | normal |
 | PostDominance.cs:7:9:7:28 | call to method WriteLine | PostDominance.cs:7:9:7:28 | call to method WriteLine | normal |
 | PostDominance.cs:7:9:7:29 | ...; | PostDominance.cs:7:9:7:28 | call to method WriteLine | normal |

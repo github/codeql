@@ -471,6 +471,12 @@ module ConditionalCompletionSplitting {
         or
         last(succ.(IsExpr).getPattern(), pred, c) and
         completion.(BooleanCompletion).getValue() = c.(MatchingCompletion).getValue()
+        or
+        last(succ.(AndPatternExpr).getAnOperand(), pred, c) and
+        completion = c
+        or
+        last(succ.(OrPatternExpr).getAnOperand(), pred, c) and
+        completion = c
       )
     }
 

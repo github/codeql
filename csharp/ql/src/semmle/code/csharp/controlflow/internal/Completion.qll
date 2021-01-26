@@ -552,6 +552,8 @@ private predicate mustHaveMatchingCompletion(Expr e, PatternExpr pe) {
   pe = any(IsExpr ie | inBooleanContext(ie) and e = ie.getExpr()).getPattern()
   or
   pe = any(UnaryPatternExpr upe | mustHaveMatchingCompletion(e, upe)).getPattern()
+  or
+  pe = any(BinaryPatternExpr bpe | mustHaveMatchingCompletion(e, bpe)).getAnOperand()
 }
 
 /**
