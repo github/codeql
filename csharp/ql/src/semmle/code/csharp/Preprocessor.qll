@@ -163,7 +163,7 @@ class LineDirective extends PreprocessorDirective, @directive_line {
   /** Gets the succeeding `#line` directive in the file, if any. */
   LineDirective getSuccLineDirective() {
     result =
-      rank[1](LineDirective next |
+      min(LineDirective next |
         next.getFile() = this.getFile() and
         next.getLocation().getStartLine() > this.getLocation().getStartLine()
       |
@@ -216,10 +216,10 @@ class NumericLineDirective extends LineDirective {
   int getLine() { directive_line_values(this, result, _) }
 
   /** Holds if this directive specifies a file name. */
-  predicate hasFileName() { this.getFileName() != "" }
+  predicate hasFileName() { exists(this.getFileName()) }
 
-  /** Gets the file name of this directive. */
-  string getFileName() { directive_line_values(this, _, result) }
+  /** Gets the file name of this directive, if any. */
+  string getFileName() { directive_line_values(this, _, result) and result != "" }
 
   override string getAPrimaryQlClass() { result = "NumericLineDirective" }
 }
