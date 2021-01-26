@@ -12,6 +12,7 @@
 
 import cpp
 import semmle.code.cpp.valuenumbering.HashCons
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /**
  * A call to `strncat` of the form `strncat(buff, str, someExpr - strlen(buf))`, for some expression `someExpr` equal to `sizeof(buff)`.
@@ -22,8 +23,8 @@ class WrongCallStrncat extends FunctionCall {
   WrongCallStrncat() {
     this.getTarget().hasGlobalOrStdName("strncat") and
     // the expression of the first argument in `strncat` and `strnlen` is identical
-    hashCons(this.getArgument(0)) =
-      hashCons(this.getArgument(2).(SubExpr).getRightOperand().(StrlenCall).getStringExpr()) and
+    globalValueNumber(this.getArgument(0)) =
+      globalValueNumber(this.getArgument(2).(SubExpr).getRightOperand().(StrlenCall).getStringExpr()) and
     // using a string constant often speaks of manually calculating the length of the required buffer.
     (
       not this.getArgument(1) instanceof StringLiteral and
