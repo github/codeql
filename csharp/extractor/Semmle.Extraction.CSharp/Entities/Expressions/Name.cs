@@ -27,15 +27,13 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             if (target == null)
             {
-                if (info.IsInsideIfDirective())
+                if (IsInsideIfDirective(info.Node))
                 {
                     return DefineSymbol.Create(info);
                 }
-                else
-                {
-                    info.Context.ModelError(info.Node, "Failed to resolve name");
-                    return new Unknown(info);
-                }
+
+                info.Context.ModelError(info.Node, "Failed to resolve name");
+                return new Unknown(info);
             }
 
             // There is a very strange bug in Microsoft.CodeAnalysis whereby
@@ -71,6 +69,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 default:
                     throw new InternalError(info.Node, $"Unhandled identifier kind '{target.Kind}'");
             }
+        }
+
+        private static bool IsInsideIfDirective(ExpressionSyntax node)
+        {
+            return node.Ancestors().Any(a => a is ElifDirectiveTriviaSyntax || a is IfDirectiveTriviaSyntax);
         }
     }
 }

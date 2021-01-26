@@ -25,7 +25,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     return ExprKind.NULL_LITERAL;
             }
 
-            if (info.TryGetBoolValueInsideIfDirective(out var _))
+            // short circuit bool literals, because they have no type in `#if A = true`
+            if (info.IsBoolLiteral())
             {
                 return ExprKind.BOOL_LITERAL;
             }
