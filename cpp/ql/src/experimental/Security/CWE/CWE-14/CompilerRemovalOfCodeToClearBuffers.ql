@@ -124,4 +124,4 @@ where
   not fc.isVariableUseBoundWithArgumentFunction() and
   not fc.isVariableUseBoundWithGlobalVariable() and
   not fc.isExistsCompilationFlagsBlockingRemoval()
-select fc.getArgument(0), "this variable will not be cleared"
+select fc.getArgument(0), "This variable will not be cleared."
