@@ -182,6 +182,7 @@ class ParameterNode extends CfgNode {
   ParameterNode() {
     node = def.getDefiningNode() and
     // Disregard parameters that we cannot resolve
+    // TODO: Make this unnecessary
     exists(DataFlowCallable c | node = c.getParameter(_))
   }
 
