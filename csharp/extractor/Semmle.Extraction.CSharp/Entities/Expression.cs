@@ -534,7 +534,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     return Expression.ValueAsString(c.Value);
                 }
 
-                if (TryGetBoolValueInsideIfDirective(out var val))
+                if (TryGetBoolValueFromLiteral(out var val))
                 {
                     return Expression.ValueAsString(val);
                 }
@@ -604,30 +604,18 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public NullableFlowState FlowState => TypeInfo.Nullability.FlowState;
 
-        public bool IsInsideIfDirective()
-        {
-            return Node.Ancestors().Any(a => a is ElifDirectiveTriviaSyntax || a is IfDirectiveTriviaSyntax);
-        }
-
-        public bool TryGetBoolValueInsideIfDirective(out bool val)
+        private bool TryGetBoolValueFromLiteral(out bool val)
         {
             var isTrue = Node.IsKind(SyntaxKind.TrueLiteralExpression);
             var isFalse = Node.IsKind(SyntaxKind.FalseLiteralExpression);
 
-            if (!isTrue && !isFalse)
-            {
-                val = false;
-                return false;
-            }
-
-            if (!IsInsideIfDirective())
-            {
-                val = false;
-                return false;
-            }
-
             val = isTrue;
-            return true;
+            return isTrue || isFalse;
+        }
+
+        public bool IsBoolLiteral()
+        {
+            return TryGetBoolValueFromLiteral(out var _);
         }
     }
 }
