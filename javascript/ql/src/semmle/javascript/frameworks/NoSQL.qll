@@ -62,22 +62,20 @@ private module MongoDB {
   }
 
   /** A call to a MongoDB query method. */
-  private class QueryCall extends DatabaseAccess, DataFlow::CallNode {
+  private class QueryCall extends DatabaseAccess, API::CallNode {
     int queryArgIdx;
-    API::Node callee;
 
     QueryCall() {
       exists(string method |
         CollectionMethodSignatures::interpretsArgumentAsQuery(method, queryArgIdx) and
-        callee = getACollection().getMember(method)
-      ) and
-      this = callee.getACall()
+        this = getACollection().getMember(method).getACall()
+      )
     }
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(queryArgIdx) }
 
     DataFlow::Node getACodeOperator() {
-      result = getADollarWhereProperty(callee.getParameter(queryArgIdx))
+      result = getADollarWhereProperty(getParameter(queryArgIdx))
     }
   }
 
@@ -679,14 +677,18 @@ private module Minimongo {
   }
 
   /** A call to a Minimongo query method. */
-  private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
+  private class QueryCall extends DatabaseAccess, API::CallNode {
     int queryArgIdx;
-    API::Node callee;
 
     QueryCall() {
       exists(string m |
-        callee = API::moduleImport("minimongo").getAMember().getReturn().getAMember().getMember(m) and
-        this = callee.getACall() and
+        this =
+          API::moduleImport("minimongo")
+              .getAMember()
+              .getReturn()
+              .getAMember()
+              .getMember(m)
+              .getACall() and
         CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
       )
     }
@@ -694,7 +696,7 @@ private module Minimongo {
     override DataFlow::Node getAQueryArgument() { result = getArgument(queryArgIdx) }
 
     DataFlow::Node getACodeOperator() {
-      result = getADollarWhereProperty(callee.getParameter(queryArgIdx))
+      result = getADollarWhereProperty(getParameter(queryArgIdx))
     }
   }
 
@@ -715,14 +717,13 @@ private module Minimongo {
  */
 private module MarsDB {
   /** A call to a MarsDB query method. */
-  private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
+  private class QueryCall extends DatabaseAccess, API::CallNode {
     int queryArgIdx;
-    API::Node callee;
 
     QueryCall() {
       exists(string m |
-        callee = API::moduleImport("marsdb").getMember("Collection").getInstance().getMember(m) and
-        this = callee.getACall() and
+        this =
+          API::moduleImport("marsdb").getMember("Collection").getInstance().getMember(m).getACall() and
         // implements parts of the Minimongo interface
         Minimongo::CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
       )
@@ -731,7 +732,7 @@ private module MarsDB {
     override DataFlow::Node getAQueryArgument() { result = getArgument(queryArgIdx) }
 
     DataFlow::Node getACodeOperator() {
-      result = getADollarWhereProperty(callee.getParameter(queryArgIdx))
+      result = getADollarWhereProperty(getParameter(queryArgIdx))
     }
   }
 
