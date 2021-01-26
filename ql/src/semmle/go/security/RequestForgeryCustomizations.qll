@@ -5,7 +5,9 @@
 import go
 import UrlConcatenation
 import SafeUrlFlowCustomizations
-import semmle.go.dataflow.BarrierGuardUtil
+import semmle.go.dataflow.barrierguardutil.RedirectCheckBarrierGuard
+import semmle.go.dataflow.barrierguardutil.RegexpCheck
+import semmle.go.dataflow.barrierguardutil.UrlCheck
 
 /** Provides classes and predicates for the request forgery query. */
 module RequestForgery {

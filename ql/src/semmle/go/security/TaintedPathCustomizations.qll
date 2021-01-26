@@ -4,7 +4,7 @@
  */
 
 import go
-import semmle.go.dataflow.BarrierGuardUtil
+import semmle.go.dataflow.barrierguardutil.RegexpCheck
 
 /**
  * Provides extension points for customizing the taint tracking configuration for reasoning about
