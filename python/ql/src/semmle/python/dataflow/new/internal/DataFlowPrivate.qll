@@ -1127,7 +1127,7 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  * 
  *   `(a, b)`: [TupleElementContent(0)]
  *
- * --Step 5c-->
+ * --Step 5a-->
  *
  *   `a`: []
  * 
