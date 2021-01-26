@@ -240,11 +240,11 @@ class RegionDirective extends PreprocessorDirective, @directive_region {
 }
 
 /**
- * A `#endregion` directive.
+ * An `#endregion` directive.
  */
 class EndRegionDirective extends PreprocessorDirective, @directive_endregion {
   /** Gets the opening `#region` directive. */
-  RegionDirective getStart() { regions(result, this) }
+  RegionDirective getStart() { result.getEnd() = this }
 
   override string toString() { result = "#endregion" }
 
