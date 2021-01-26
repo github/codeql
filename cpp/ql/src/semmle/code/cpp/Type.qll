@@ -274,7 +274,7 @@ class Type extends Locatable, @type {
 
   /**
    * Gets this type with any typedefs resolved. For example, given
-   * `typedef C T`, this would resolve `const T&amp;` to `const C&amp;`.
+   * `typedef C T`, this would resolve `const T&` to `const C&`.
    * Note that this will only work if the resolved type actually appears
    * on its own elsewhere in the program.
    */
