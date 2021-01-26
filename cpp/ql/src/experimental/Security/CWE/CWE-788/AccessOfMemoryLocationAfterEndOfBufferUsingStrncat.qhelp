@@ -3,18 +3,17 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>The standard library function <code> strncat </code> appends the source string to the target string. The third argument specifies the maximum number of characters to add and must be less than the remaining space in the target buffer. Calls of the form <code> strncat (dest, src, sizeof (dest) - strlen (dest)) </code> set the third argument to one more than possible. So when the buffer is full, the expression <code> sizeof (dest) - strlen (dest) </code> will be equal to one, and not zero as the programmer might think. Making a call of this type may result in a zero byte being written just outside the buffer.</p>
+<p>The standard library function <code>strncat(dest, source, count)</code> appends the <code>source</code> string to the <code>dest</code> string. <code>count</code> specifies the maximum number of characters to append and must be less than the remaining space in the target buffer. Calls of the form <code> strncat (dest, source, sizeof (dest) - strlen (dest)) </code> set the third argument to one more than possible. So when the <code>dest</code> is full, the expression <code> sizeof (dest) - strlen (dest) </code> will be equal to one, and not zero as the programmer might think. Making a call of this type may result in a zero byte being written just outside the <code>dest</code> buffer.</p>
 
-<p>Loss of detection includes cases of use of situations when memory allocation for a buffer occurs with a strong nesting or outside the limits of the function. It is also worth paying attention to the exclusion from the detection of situations when the second argument of the function is a constant string, since this situation creates a large number of false detection.</p>
 
 </overview>
 <recommendation>
 
-<p>We recommend using an extra byte call. for example <code> strncat(dest, src, sizeof(dest)-strlen(dest)-1) </code>.</p>
+<p>We recommend subtracting one from the third argument. For example, replace <code>strncat(dest, source, sizeof(dest)-strlen(dest))</code> with <code>strncat(dest, source, sizeof(dest)-strlen(dest)-1)</code>.</p>
 
 </recommendation>
 <example>
-<p>The following example demonstrates an erroneous and corrected use of the strncat function.</p>
+<p>The following example demonstrates an erroneous and corrected use of the <code>strncat</code> function.</p>
 <sample src="AccessOfMemoryLocationAfterEndOfBufferUsingStrncat.c" />
 
 </example>

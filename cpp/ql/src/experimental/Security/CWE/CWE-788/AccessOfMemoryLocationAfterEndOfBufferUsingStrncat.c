@@ -1,4 +1,4 @@
  
-strncat(dest, src, sizeof(dest) - strlen(dest)); //bad:
+strncat(dest, source, sizeof(dest) - strlen(dest)); // BAD: writes a zero byte past the `dest` buffer.
 
-strncat(dest, src, sizeof(dest) - strlen(dest) -1); //good:
+strncat(dest, source, sizeof(dest) - strlen(dest) -1); // GOOD: Reserves space for the zero byte.
