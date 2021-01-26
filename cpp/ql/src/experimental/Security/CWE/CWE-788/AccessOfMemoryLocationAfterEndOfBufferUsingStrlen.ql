@@ -14,7 +14,7 @@
 import cpp
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
-from FunctionCall fc, AssignExpr expr, ArrayExpr exprarr
+from StrlenCall fc, AssignExpr expr, ArrayExpr exprarr
 where
   exprarr = expr.getLValue() and
   expr.getRValue().getValue().toInt() = 0 and
