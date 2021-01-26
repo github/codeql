@@ -307,6 +307,38 @@ private module Internal {
     }
 
     /**
+     * Holds if `v` occurs in `b1` and `b2` is one of `b1`'s successors.
+     *
+     * Factored out of `varBlockReaches` to force join order compared to the larger
+     * set `blockPrecedesVar(v, b2)`.
+     */
+    pragma[noinline]
+    private predicate varBlockReachesBaseCand(
+      SsaSourceVariable v, ReachableBasicBlock b1, ReachableBasicBlock b2
+    ) {
+      varOccursInBlock(v, b1) and
+      b2 = b1.getASuccessor()
+    }
+
+    /**
+     * Holds if `b2` is a transitive successor of `b1` and `v` occurs in `b1` and
+     * in `b2` or one of its transitive successors but not in any block on the path
+     * between `b1` and `b2`. Unlike `varBlockReaches` this may include blocks `b2`
+     * where `v` is dead.
+     *
+     * Factored out of `varBlockReaches` to force join order compared to the larger
+     * set `blockPrecedesVar(v, b2)`.
+     */
+    pragma[noinline]
+    private predicate varBlockReachesRecCand(
+      SsaSourceVariable v, ReachableBasicBlock b1, ReachableBasicBlock mid, ReachableBasicBlock b2
+    ) {
+      varBlockReaches(v, b1, mid) and
+      not varOccursInBlock(v, mid) and
+      b2 = mid.getASuccessor()
+    }
+
+    /**
      * Holds if `b2` is a transitive successor of `b1` and `v` occurs in `b1` and
      * in `b2` or one of its transitive successors but not in any block on the path
      * between `b1` and `b2`.
@@ -314,14 +346,11 @@ private module Internal {
     private predicate varBlockReaches(
       SsaSourceVariable v, ReachableBasicBlock b1, ReachableBasicBlock b2
     ) {
-      varOccursInBlock(v, b1) and
-      b2 = b1.getASuccessor() and
+      varBlockReachesBaseCand(v, b1, b2) and
       blockPrecedesVar(v, b2)
       or
       exists(ReachableBasicBlock mid |
-        varBlockReaches(v, b1, mid) and
-        b2 = mid.getASuccessor() and
-        not varOccursInBlock(v, mid) and
+        varBlockReachesRecCand(v, b1, mid, b2) and
         blockPrecedesVar(v, b2)
       )
     }
