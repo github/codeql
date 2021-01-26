@@ -40,6 +40,4 @@ query predicate mayHaveStringValue(DataFlow::Node node, string value) {
   node.mayHaveStringValue(value)
 }
 
-query string getStringValue(DataFlow::Node node) {
-  result = node.getStringValue()
-}
+query string getStringValue(DataFlow::Node node) { result = node.getStringValue() }

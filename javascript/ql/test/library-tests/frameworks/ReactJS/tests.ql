@@ -10,6 +10,4 @@ import ReactComponent
 import ReactComponent_getAPropRead
 import ReactName
 
-query DataFlow::SourceNode locationSource() {
-  result = DOM::locationSource()
-}
+query DataFlow::SourceNode locationSource() { result = DOM::locationSource() }
