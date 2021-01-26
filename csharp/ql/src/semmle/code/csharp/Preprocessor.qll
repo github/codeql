@@ -62,7 +62,7 @@ class PragmaChecksumDirective extends PreprocessorDirective, @pragma_checksum {
 }
 
 /**
- * An `#define` directive.
+ * A `#define` directive.
  */
 class DefineDirective extends PreprocessorDirective, @directive_define {
   /** Gets the name of the preprocessor symbol that is being set by this directive. */
