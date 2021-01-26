@@ -1029,7 +1029,7 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  * Note that (CodeQL modeling of) content does not have to change type on data-flow
  * paths _inside_ the LHS, as the different allowed syntaxes here are merely a convenience.
  * Consequently, we model all LHS sequences as tuples, which have the more precise content
- * model, making flow to the elements more precise. If an element is a starred varibale,
+ * model, making flow to the elements more precise. If an element is a starred variable,
  * we will have to mutate the content type to be list content.
  *
  * We may for instance have
@@ -1107,6 +1107,33 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  *
  *
  * We illustrate the above steps on the assignment
+ * 
+ * ```python
+ * (a, b) = ["a", SOURCE]
+ * ```
+ *
+ * Looking at the content propagation to `a`:
+ *   `["a", SOURCE]`: [ListElementContent]
+ *
+ * --Step 1-->
+ * 
+ *   `TIterableSequence((a, b))`: [ListElementContent]
+ *
+ * --Step 3-->
+ * 
+ *   `TIterableElement((a, b))`: []
+ *
+ * --Step 4-->
+ * 
+ *   `(a, b)`: [TupleElementContent(0)]
+ *
+ * --Step 5c-->
+ *
+ *   `a`: []
+ * 
+ * Meaning there is data-flow from the RHS to `a` (an over approximation). The same logic would be applied to show there is data-flow to `b`. Note that _Step 3_ and _Step 4_ would not have been needed if the RHS had been a tuple (since that would have been able to use _Step 2_ instead).
+ * 
+ * Another, more complicated example:
  * ```python
  *   (a, [b, *c]) = ["a", [SOURCE]]
  * ```
