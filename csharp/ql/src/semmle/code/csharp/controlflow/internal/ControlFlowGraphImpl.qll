@@ -804,6 +804,12 @@ module Expressions {
   private class SwitchCaseExprTree extends PostOrderTree, CaseTree, SwitchCaseExpr {
     final override predicate first(ControlFlowElement first) { first(this.getPattern(), first) }
 
+    pragma[noinline]
+    private predicate lastNoMatch(ControlFlowElement last, ConditionalCompletion cc) {
+      last([this.getPattern(), this.getCondition()], last, cc) and
+      (cc.(MatchingCompletion).isNonMatch() or cc instanceof FalseCompletion)
+    }
+
     final override predicate last(ControlFlowElement last, Completion c) {
       PostOrderTree.super.last(last, c)
       or
@@ -812,8 +818,7 @@ module Expressions {
         this = se.getCase(i) and
         not this.matchesAll() and
         not exists(se.getCase(i + 1)) and
-        last([this.getPattern(), this.getCondition()], last, cc) and
-        (cc.(MatchingCompletion).isNonMatch() or cc instanceof FalseCompletion) and
+        this.lastNoMatch(last, cc) and
         c =
           any(NestedCompletion nc |
             nc.getNestLevel() = 0 and
@@ -1372,11 +1377,16 @@ module Statements {
       or
       // If the `finally` block completes normally, it inherits any non-normal
       // completion that was current before the `finally` block was entered
-      c =
-        any(NestedCompletion nc |
-          this.lastFinally(last, nc.getAnInnerCompatibleCompletion(), nc.getOuterCompletion(),
-            nc.getNestLevel())
-        )
+      exists(int nestLevel |
+        c =
+          any(NestedCompletion nc |
+            this.lastFinally(last, nc.getAnInnerCompatibleCompletion(), nc.getOuterCompletion(),
+              nestLevel) and
+            // unbind
+            nc.getNestLevel() >= nestLevel and
+            nc.getNestLevel() <= nestLevel
+          )
+      )
     }
 
     /**
