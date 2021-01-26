@@ -1546,7 +1546,7 @@ class FunctionPointerIshType extends DerivedType {
  * ```
  * class C { int m; };
  * int C::* p = &C::m;          // pointer to data member m of class C
- * class C *;
+ * class C c;
  * int val = c.*p;              // access data member
  * ```
  */
