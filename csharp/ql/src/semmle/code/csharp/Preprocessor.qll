@@ -114,13 +114,13 @@ class ErrorDirective extends PreprocessorDirective, @directive_error {
  */
 class NullableDirective extends PreprocessorDirective, @directive_nullable {
   /** Holds if this is a `#nullable disable` directive. */
-  predicate disable() { directive_nullables(this, 0, _) }
+  predicate isDisable() { directive_nullables(this, 0, _) }
 
   /** Holds if this is a `#nullable enable` directive. */
-  predicate enable() { directive_nullables(this, 1, _) }
+  predicate isEnable() { directive_nullables(this, 1, _) }
 
   /** Holds if this is a `#nullable restore` directive. */
-  predicate restore() { directive_nullables(this, 2, _) }
+  predicate isRestore() { directive_nullables(this, 2, _) }
 
   /** Holds if this directive targets all nullable contexts. */
   predicate targetsAll() { directive_nullables(this, _, 0) }
@@ -134,7 +134,7 @@ class NullableDirective extends PreprocessorDirective, @directive_nullable {
   /** Gets the succeeding `#nullable` directive in the file, if any. */
   NullableDirective getSuccNullableDirective() {
     result =
-      rank[1](NullableDirective next |
+      min(NullableDirective next |
         next.getFile() = this.getFile() and
         next.getLocation().getStartLine() > this.getLocation().getStartLine()
       |
