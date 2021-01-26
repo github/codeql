@@ -17,7 +17,7 @@ If terminal zero is present, then the specified expression is meaningless.</p>
 </recommendation>
 <example>
 <p>The following example demonstrates an erroneous and corrected use of the strlen function.</p>
-<sample src="AccessOfMemoryLocationAfterEndOfBuffer.c" />
+<sample src="AccessOfMemoryLocationAfterEndOfBufferUsingStrlen.c" />
 
 </example>
 <references>
