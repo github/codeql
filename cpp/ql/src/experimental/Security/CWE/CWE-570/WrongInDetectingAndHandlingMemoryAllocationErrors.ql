@@ -44,14 +44,8 @@ class WrongCheckErrorOperatorNew extends FunctionCall {
    * Holds if handler `try ... catch` exists.
    */
   predicate isExistsTryCatchBlock() {
-    exists(TryStmt tb, AssignExpr aex, Initializer it |
-      tb.getAChild*() = exp
-      or
-      exp = it.getExpr() and
-      tb.getAChild*().(DeclStmt).getADeclaration() = it.getDeclaration()
-      or
-      aex.getAChild*() = exp and
-      tb.getAChild*().(AssignExpr) = aex
+    exists(TryStmt ts |
+      this.getEnclosingStmt() = ts.getStmt().getAChild*()
     )
   }
 
