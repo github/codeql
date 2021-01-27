@@ -215,14 +215,12 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Extracts compilation-wide entities, such as compilations and compiler diagnostics.
         /// </summary>
-        public void AnalyseCompilation(string cwd, string[] args)
+        public void AnalyseCompilation()
         {
-            extractionTasks.Add(() => DoAnalyseCompilation(cwd, args));
+            extractionTasks.Add(() => DoAnalyseCompilation());
         }
 
-
-
-        private void DoAnalyseCompilation(string cwd, string[] args)
+        private void DoAnalyseCompilation()
         {
             try
             {
@@ -234,7 +232,7 @@ namespace Semmle.Extraction.CSharp
                 compilationTrapFile = trapWriter;  // Dispose later
                 var cx = extractor.CreateContext(compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath), AddAssemblyTrapPrefix);
 
-                compilationEntity = new Entities.Compilation(cx, cwd, args);
+                compilationEntity = Entities.Compilation.Create(cx);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {

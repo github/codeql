@@ -600,11 +600,11 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("preprocessor_directive_location", directive, location);
         }
 
-        internal static void preprocessor_directive_assembly<TDirective>(this TextWriter trapFile,
-            PreprocessorDirective<TDirective> directive, Assembly assembly)
+        internal static void preprocessor_directive_compilation<TDirective>(this TextWriter trapFile,
+            PreprocessorDirective<TDirective> directive, Compilation compilation)
             where TDirective : DirectiveTriviaSyntax
         {
-            trapFile.WriteTuple("preprocessor_directive_assembly", directive, assembly);
+            trapFile.WriteTuple("preprocessor_directive_compilation", directive, compilation);
         }
 
         internal static void preprocessor_directive_active<TDirective>(this TextWriter trapFile,

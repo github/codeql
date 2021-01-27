@@ -3,6 +3,7 @@
  */
 
 import Element
+private import semmle.code.csharp.commons.Compilation
 
 /**
  * A preprocessor directive, such as `PragmaWarningDirective`, `PragmaChecksumDirective`,
@@ -17,9 +18,10 @@ class PreprocessorDirective extends Element, @preprocessor_directive {
    */
   predicate isActive() { preprocessor_directive_active(this, 1) }
 
-  override Location getALocation() {
-    preprocessor_directive_location(this, result) or preprocessor_directive_assembly(this, result)
-  }
+  override Location getALocation() { preprocessor_directive_location(this, result) }
+
+  /** Gets the compilation this directive belongs to, if any. */
+  Compilation getCompilation() { preprocessor_directive_compilation(this, result) }
 }
 
 /**

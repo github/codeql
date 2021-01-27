@@ -27,8 +27,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (!cx.Extractor.Standalone)
             {
-                var assembly = Assembly.CreateOutputAssembly(cx);
-                trapFile.preprocessor_directive_assembly(this, assembly);
+                var compilation = Compilation.Create(cx);
+                trapFile.preprocessor_directive_compilation(this, compilation);
             }
         }
 
