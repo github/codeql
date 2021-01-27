@@ -74,6 +74,9 @@ callsWithNoReceiverArgumentsOrBlock
 | calls.rb:210:11:210:13 | call to bar | bar |
 | calls.rb:217:5:217:9 | call to super | super |
 | calls.rb:218:5:218:11 | call to super | super |
+| calls.rb:234:5:234:7 | call to foo | foo |
+| calls.rb:235:5:235:14 | call to super | super |
+| calls.rb:236:5:236:9 | call to super | super |
 callsWithScopeResolutionName
 | calls.rb:5:1:5:10 | call to bar | calls.rb:5:1:5:8 | ...::bar |
 callsWithArguments
@@ -100,6 +103,8 @@ callsWithReceiver
 | calls.rb:8:1:8:7 | call to bar | calls.rb:8:1:8:3 | 123 |
 | calls.rb:22:1:24:3 | call to bar | calls.rb:22:1:22:3 | 123 |
 | calls.rb:86:1:86:9 | call to bar | calls.rb:86:1:86:3 | call to foo |
+| calls.rb:234:5:234:13 | call to super | calls.rb:234:5:234:7 | call to foo |
+| calls.rb:236:5:236:15 | call to super | calls.rb:236:5:236:9 | call to super |
 callsWithBlock
 | calls.rb:14:1:14:17 | call to foo | calls.rb:14:5:14:17 | { ... } |
 | calls.rb:17:1:19:3 | call to foo | calls.rb:17:5:19:3 | do ... end |
@@ -122,6 +127,7 @@ superCalls
 | calls.rb:222:5:222:26 | call to super |
 | calls.rb:223:5:223:30 | call to super |
 | calls.rb:224:5:224:33 | call to super |
+| calls.rb:236:5:236:9 | call to super |
 superCallsWithArguments
 | calls.rb:219:5:219:16 | call to super | 0 | calls.rb:219:11:219:16 | blah |
 | calls.rb:220:5:220:17 | call to super | 0 | calls.rb:220:11:220:11 | 1 |
