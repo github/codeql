@@ -1305,21 +1305,23 @@ conditionBlock
 | Conditions.cs:143:10:143:12 | enter M11 | Conditions.cs:149:13:149:49 | ...; | false |
 | Conditions.cs:145:21:145:23 | [b (line 143): true] "a" | Conditions.cs:147:13:147:49 | ...; | true |
 | Conditions.cs:145:27:145:29 | [b (line 143): false] "b" | Conditions.cs:149:13:149:49 | ...; | false |
-| ExitMethods.cs:43:9:46:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:47:9:50:9 | [exception: Exception] catch (...) {...} | false |
-| ExitMethods.cs:43:9:46:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:48:9:50:9 | {...} | false |
-| ExitMethods.cs:47:9:50:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:48:9:50:9 | {...} | true |
-| ExitMethods.cs:65:17:65:26 | enter ErrorMaybe | ExitMethods.cs:65:17:65:26 | exit ErrorMaybe (normal) | false |
-| ExitMethods.cs:65:17:65:26 | enter ErrorMaybe | ExitMethods.cs:68:19:68:33 | object creation of type Exception | true |
-| ExitMethods.cs:71:17:71:27 | enter ErrorAlways | ExitMethods.cs:74:19:74:33 | object creation of type Exception | true |
-| ExitMethods.cs:71:17:71:27 | enter ErrorAlways | ExitMethods.cs:76:41:76:43 | "b" | false |
-| ExitMethods.cs:109:13:109:21 | enter ThrowExpr | ExitMethods.cs:111:29:111:29 | 1 | true |
-| ExitMethods.cs:109:13:109:21 | enter ThrowExpr | ExitMethods.cs:111:69:111:75 | "input" | false |
-| ExitMethods.cs:114:16:114:34 | enter ExtensionMethodCall | ExitMethods.cs:116:34:116:34 | 0 | true |
-| ExitMethods.cs:114:16:114:34 | enter ExtensionMethodCall | ExitMethods.cs:116:38:116:38 | 1 | false |
-| ExitMethods.cs:119:17:119:32 | enter FailingAssertion | ExitMethods.cs:121:9:121:28 | [assertion failure] call to method IsTrue | false |
-| ExitMethods.cs:131:10:131:20 | enter AssertFalse | ExitMethods.cs:131:33:131:49 | [assertion failure] call to method IsFalse | true |
-| ExitMethods.cs:131:10:131:20 | enter AssertFalse | ExitMethods.cs:131:33:131:49 | [assertion success] call to method IsFalse | false |
-| ExitMethods.cs:133:17:133:33 | enter FailingAssertion3 | ExitMethods.cs:135:9:135:25 | [assertion failure] call to method AssertFalse | true |
+| ExitMethods.cs:44:9:47:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:48:9:51:9 | [exception: Exception] catch (...) {...} | false |
+| ExitMethods.cs:44:9:47:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:49:9:51:9 | {...} | false |
+| ExitMethods.cs:48:9:51:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:49:9:51:9 | {...} | true |
+| ExitMethods.cs:66:17:66:26 | enter ErrorMaybe | ExitMethods.cs:66:17:66:26 | exit ErrorMaybe (normal) | false |
+| ExitMethods.cs:66:17:66:26 | enter ErrorMaybe | ExitMethods.cs:69:19:69:33 | object creation of type Exception | true |
+| ExitMethods.cs:72:17:72:27 | enter ErrorAlways | ExitMethods.cs:75:19:75:33 | object creation of type Exception | true |
+| ExitMethods.cs:72:17:72:27 | enter ErrorAlways | ExitMethods.cs:77:41:77:43 | "b" | false |
+| ExitMethods.cs:110:13:110:21 | enter ThrowExpr | ExitMethods.cs:112:29:112:29 | 1 | true |
+| ExitMethods.cs:110:13:110:21 | enter ThrowExpr | ExitMethods.cs:112:69:112:75 | "input" | false |
+| ExitMethods.cs:115:16:115:34 | enter ExtensionMethodCall | ExitMethods.cs:117:34:117:34 | 0 | true |
+| ExitMethods.cs:115:16:115:34 | enter ExtensionMethodCall | ExitMethods.cs:117:38:117:38 | 1 | false |
+| ExitMethods.cs:120:17:120:32 | enter FailingAssertion | ExitMethods.cs:122:9:122:28 | [assertion failure] call to method IsTrue | false |
+| ExitMethods.cs:132:10:132:20 | enter AssertFalse | ExitMethods.cs:132:33:132:49 | [assertion failure] call to method IsFalse | true |
+| ExitMethods.cs:132:10:132:20 | enter AssertFalse | ExitMethods.cs:132:33:132:49 | [assertion success] call to method IsFalse | false |
+| ExitMethods.cs:134:17:134:33 | enter FailingAssertion3 | ExitMethods.cs:136:9:136:25 | [assertion failure] call to method AssertFalse | true |
+| ExitMethods.cs:140:17:140:42 | enter ExceptionDispatchInfoThrow | ExitMethods.cs:143:13:143:43 | ...; | true |
+| ExitMethods.cs:140:17:140:42 | enter ExceptionDispatchInfoThrow | ExitMethods.cs:145:13:145:53 | ...; | false |
 | Finally.cs:26:9:29:9 | [exception: Exception] catch (...) {...} | Finally.cs:26:38:26:39 | [exception: Exception] IOException ex | true |
 | Finally.cs:26:9:29:9 | [exception: Exception] catch (...) {...} | Finally.cs:27:9:29:9 | {...} | true |
 | Finally.cs:26:9:29:9 | [exception: Exception] catch (...) {...} | Finally.cs:30:9:40:9 | [exception: Exception] catch (...) {...} | false |
@@ -2551,18 +2553,20 @@ conditionFlow
 | Conditions.cs:145:17:145:17 | access to parameter b | Conditions.cs:145:27:145:29 | [b (line 143): false] "b" | false |
 | Conditions.cs:146:13:146:13 | [b (line 143): false] access to parameter b | Conditions.cs:149:13:149:49 | ...; | false |
 | Conditions.cs:146:13:146:13 | [b (line 143): true] access to parameter b | Conditions.cs:147:13:147:49 | ...; | true |
-| ExitMethods.cs:67:13:67:13 | access to parameter b | ExitMethods.cs:65:17:65:26 | exit ErrorMaybe (normal) | false |
-| ExitMethods.cs:67:13:67:13 | access to parameter b | ExitMethods.cs:68:19:68:33 | object creation of type Exception | true |
-| ExitMethods.cs:73:13:73:13 | access to parameter b | ExitMethods.cs:74:19:74:33 | object creation of type Exception | true |
-| ExitMethods.cs:73:13:73:13 | access to parameter b | ExitMethods.cs:76:41:76:43 | "b" | false |
-| ExitMethods.cs:111:16:111:25 | ... != ... | ExitMethods.cs:111:29:111:29 | 1 | true |
-| ExitMethods.cs:111:16:111:25 | ... != ... | ExitMethods.cs:111:69:111:75 | "input" | false |
-| ExitMethods.cs:116:16:116:30 | call to method Contains | ExitMethods.cs:116:34:116:34 | 0 | true |
-| ExitMethods.cs:116:16:116:30 | call to method Contains | ExitMethods.cs:116:38:116:38 | 1 | false |
-| ExitMethods.cs:121:23:121:27 | false | ExitMethods.cs:121:9:121:28 | [assertion failure] call to method IsTrue | false |
-| ExitMethods.cs:131:48:131:48 | access to parameter b | ExitMethods.cs:131:33:131:49 | [assertion failure] call to method IsFalse | true |
-| ExitMethods.cs:131:48:131:48 | access to parameter b | ExitMethods.cs:131:33:131:49 | [assertion success] call to method IsFalse | false |
-| ExitMethods.cs:135:21:135:24 | true | ExitMethods.cs:135:9:135:25 | [assertion failure] call to method AssertFalse | true |
+| ExitMethods.cs:68:13:68:13 | access to parameter b | ExitMethods.cs:66:17:66:26 | exit ErrorMaybe (normal) | false |
+| ExitMethods.cs:68:13:68:13 | access to parameter b | ExitMethods.cs:69:19:69:33 | object creation of type Exception | true |
+| ExitMethods.cs:74:13:74:13 | access to parameter b | ExitMethods.cs:75:19:75:33 | object creation of type Exception | true |
+| ExitMethods.cs:74:13:74:13 | access to parameter b | ExitMethods.cs:77:41:77:43 | "b" | false |
+| ExitMethods.cs:112:16:112:25 | ... != ... | ExitMethods.cs:112:29:112:29 | 1 | true |
+| ExitMethods.cs:112:16:112:25 | ... != ... | ExitMethods.cs:112:69:112:75 | "input" | false |
+| ExitMethods.cs:117:16:117:30 | call to method Contains | ExitMethods.cs:117:34:117:34 | 0 | true |
+| ExitMethods.cs:117:16:117:30 | call to method Contains | ExitMethods.cs:117:38:117:38 | 1 | false |
+| ExitMethods.cs:122:23:122:27 | false | ExitMethods.cs:122:9:122:28 | [assertion failure] call to method IsTrue | false |
+| ExitMethods.cs:132:48:132:48 | access to parameter b | ExitMethods.cs:132:33:132:49 | [assertion failure] call to method IsFalse | true |
+| ExitMethods.cs:132:48:132:48 | access to parameter b | ExitMethods.cs:132:33:132:49 | [assertion success] call to method IsFalse | false |
+| ExitMethods.cs:136:21:136:24 | true | ExitMethods.cs:136:9:136:25 | [assertion failure] call to method AssertFalse | true |
+| ExitMethods.cs:142:13:142:13 | access to parameter b | ExitMethods.cs:143:13:143:43 | ...; | true |
+| ExitMethods.cs:142:13:142:13 | access to parameter b | ExitMethods.cs:145:13:145:53 | ...; | false |
 | Finally.cs:26:48:26:51 | [exception: Exception] true | Finally.cs:27:9:29:9 | {...} | true |
 | Finally.cs:34:21:34:24 | true | Finally.cs:34:27:34:32 | throw ...; | true |
 | Finally.cs:61:48:61:51 | [exception: Exception] true | Finally.cs:62:9:64:9 | {...} | true |
