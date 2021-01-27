@@ -1,5 +1,5 @@
 /**
- * @name Everything trusting `TrustManager`
+ * @name `TrustManager` that accepts all certificates
  * @description Trusting all certificates allows an attacker to perform a machine-in-the-middle attack.
  * @kind path-problem
  * @problem.severity error

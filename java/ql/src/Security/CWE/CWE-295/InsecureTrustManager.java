@@ -25,7 +25,7 @@ public static void main(String[] args) throws Exception {
 		File certificateFile = new File("path/to/self-signed-certificate");
 		// Create a `KeyStore` with default type
 		KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-		// This causes `keyStore` to be empty
+		// `keyStore` is initially empty
 		keyStore.load(null, null);
 		X509Certificate generatedCertificate;
 		try (InputStream cert = new FileInputStream(certificateFile)) {
@@ -36,7 +36,7 @@ public static void main(String[] args) throws Exception {
 		keyStore.setCertificateEntry(certificateFile.getName(), generatedCertificate);
 		// Get default `TrustManagerFactory`
 		TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-		// Use it with our modified key store that trusts our self-signed certificate
+		// Use it with our key store that trusts our self-signed certificate
 		tmf.init(keyStore);
 		TrustManager[] trustManagers = tmf.getTrustManagers();
 		context.init(null, trustManagers, null); // GOOD, we are not using a custom `TrustManager` but instead have
