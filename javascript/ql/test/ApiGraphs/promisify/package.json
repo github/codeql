@@ -1,6 +1,0 @@
-{
-    "name": "promisify-test",
-    "dependencies": {
-        "bluebird": "*"
-    }
-}
