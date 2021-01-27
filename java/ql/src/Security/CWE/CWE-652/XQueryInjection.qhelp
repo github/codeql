@@ -21,8 +21,8 @@ This allows an attacker to control the structure of the query.</p>
 </example>
 <references>
 
-<li>CWE description: 
-<a href="https://cwe.mitre.org/data/definitions/652.html">XQuery Injection</a>.</li>
+<li>Introduction to XQuery Injection: 
+<a href="https://www.balisage.net/Proceedings/vol7/html/Vlist02/BalisageVol7-Vlist02.html">Balisage Paper: XQuery Injection</a>.</li>
 
 
 
