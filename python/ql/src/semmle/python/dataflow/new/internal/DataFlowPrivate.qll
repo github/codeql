@@ -416,12 +416,6 @@ module ArgumentPassing {
    *
    * NOT SUPPORTED: Keyword-only parameters.
    */
-  Node testGetArg(CallNode call, int n, DataFlowCallable callable) {
-    result.getLocation().getStartLine() = 685 and
-    result.getLocation().getFile().getBaseName() = "ElementTree.py" and
-    result = getArg(call, TNoShift(), callable.getCallableValue(), n)
-  }
-
   Node getArg(CallNode call, ArgParamMapping mapping, CallableValue callable, int paramN) {
     connects(call, callable) and
     (
