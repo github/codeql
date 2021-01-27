@@ -11,7 +11,6 @@
  */
 
 import cpp
-import semmle.code.cpp.valuenumbering.HashCons
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /**
@@ -39,7 +38,7 @@ class WrongCallStrncat extends FunctionCall {
    */
   predicate isExpressionEqualSizeof() {
     // the left side of the expression `someExpr` is `sizeof(buf)`.
-    hashCons(this.getArgument(0)) = hashCons(leftsomeExpr.(SizeofExprOperator).getExprOperand())
+    globalValueNumber(this.getArgument(0)) = globalValueNumber(leftsomeExpr.(SizeofExprOperator).getExprOperand())
     or
     // value of the left side of the expression `someExpr` equal  `sizeof(buf)` value, and `buf` is array.
     leftsomeExpr.getValue().toInt() = this.getArgument(0).getType().getSize()
