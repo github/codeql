@@ -9,7 +9,7 @@
 
 import java
 import semmle.code.java.security.Encryption
-import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.DataFlow
 
 /*
  * This query is version specific to JxBrowser < 6.24. The version is indirectly detected.
@@ -57,8 +57,8 @@ private class JxBrowserSafeLoadHandler extends RefType {
   }
 }
 
-private class JxBrowserTaintTracking extends TaintTracking::Configuration {
-  JxBrowserTaintTracking() { this = "JxBrowserTaintTracking" }
+private class JxBrowserFlowConfiguration extends DataFlow::Configuration {
+  JxBrowserFlowConfiguration() { this = "JxBrowserFlowConfiguration" }
 
   override predicate isSource(DataFlow::Node src) {
     exists(ClassInstanceExpr newJxBrowser | newJxBrowser.getConstructedType() instanceof JxBrowser |
@@ -74,7 +74,7 @@ private class JxBrowserTaintTracking extends TaintTracking::Configuration {
   }
 }
 
-from JxBrowserTaintTracking cfg, DataFlow::Node src
+from JxBrowserFlowConfiguration cfg, DataFlow::Node src
 where
   cfg.isSource(src) and
   not cfg.hasFlow(src, _) and
