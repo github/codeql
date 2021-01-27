@@ -6,6 +6,7 @@
 import semmle.code.cpp.Function
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.DataFlow
+import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
 import semmle.code.cpp.models.interfaces.Taint
 
@@ -13,7 +14,8 @@ import semmle.code.cpp.models.interfaces.Taint
  * The standard functions `memcpy`, `memmove` and `bcopy`; and the gcc variant
  * `__builtin___memcpy_chk`.
  */
-private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffectFunction {
+private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffectFunction,
+  AliasFunction {
   MemcpyFunction() {
     // memcpy(dest, src, num)
     // memmove(dest, src, num)
@@ -81,5 +83,20 @@ private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffect
       i = getParamDest() or
       i = getParamSrc()
     )
+  }
+
+  override predicate parameterNeverEscapes(int index) {
+    index = getParamSrc()
+    or
+    this.hasGlobalName("bcopy") and index = getParamDest()
+  }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) {
+    not this.hasGlobalName("bcopy") and index = getParamDest()
+  }
+
+  override predicate parameterIsAlwaysReturned(int index) {
+    not this.hasGlobalName("bcopy") and
+    index = getParamDest()
   }
 }
