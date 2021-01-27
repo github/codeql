@@ -2,7 +2,7 @@
  * @kind graph
  */
 
-import codeql_ruby.controlflow.ControlFlowGraph
+import codeql_ruby.CFG
 
 query predicate nodes(CfgNode n) { any() }
 

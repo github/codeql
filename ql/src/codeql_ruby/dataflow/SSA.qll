@@ -7,11 +7,11 @@
  */
 module Ssa {
   private import codeql.Locations
+  private import codeql_ruby.CFG
   private import codeql_ruby.ast.Variable
-  private import codeql_ruby.controlflow.BasicBlocks
-  private import codeql_ruby.controlflow.ControlFlowGraph
   private import internal.SsaImplCommon as SsaImplCommon
   private import internal.SsaImpl as SsaImpl
+  private import CfgNodes::ExprNodes
 
   /** A static single assignment (SSA) definition. */
   class Definition extends SsaImplCommon::Definition {
@@ -26,7 +26,6 @@ module Ssa {
 
     /**
      * Gets a control-flow node that reads the value of this SSA definition.
-     * The corresponding AST node for the read is `read`.
      *
      * Example:
      *
@@ -49,19 +48,18 @@ module Ssa {
      * end
      * ```
      */
-    final CfgNodes::AstCfgNode getARead(VariableReadAccess read) {
+    final VariableReadAccessCfgNode getARead() {
       exists(LocalVariable v, BasicBlock bb, int i |
         SsaImplCommon::ssaDefReachesRead(v, this, bb, i) and
         SsaImpl::variableReadActual(bb, i, v) and
-        result = bb.getNode(i) and
-        read = result.getNode()
+        result = bb.getNode(i)
       )
     }
 
     /**
      * Gets a first control-flow node that reads the value of this SSA definition.
-     * The corresponding AST node for the read is `first`. That is, `first` can
-     * be reached from this definition without passing through other reads.
+     * That is, a read that can be reached from this definition without passing
+     * through other reads.
      *
      * Example:
      *
@@ -84,16 +82,12 @@ module Ssa {
      * end
      * ```
      */
-    final CfgNodes::AstCfgNode getAFirstRead(VariableReadAccess first) {
-      SsaImpl::firstRead(this, result) and
-      first = result.getNode()
-    }
+    final VariableReadAccessCfgNode getAFirstRead() { SsaImpl::firstRead(this, result) }
 
     /**
      * Gets a last control-flow node that reads the value of this SSA definition.
-     * The corresponding AST node for the read is `last`. That is, `last` can
-     * reach the end of the enclosing CFG scope, or another SSA definition for
-     * the source variable, without passing through any other read.
+     * That is, a read that can reach the end of the enclosing CFG scope, or another
+     * SSA definition for the source variable, without passing through any other read.
      *
      * Example:
      *
@@ -116,10 +110,7 @@ module Ssa {
      * end
      * ```
      */
-    final CfgNodes::AstCfgNode getALastRead(VariableReadAccess last) {
-      SsaImpl::lastRead(this, result) and
-      last = result.getNode()
-    }
+    final VariableReadAccessCfgNode getALastRead() { SsaImpl::lastRead(this, result) }
 
     /**
      * Holds if `read1` and `read2` are adjacent reads of this SSA definition.
@@ -146,7 +137,9 @@ module Ssa {
      * end
      * ```
      */
-    final predicate hasAdjacentReads(CfgNodes::AstCfgNode read1, CfgNodes::AstCfgNode read2) {
+    final predicate hasAdjacentReads(
+      VariableReadAccessCfgNode read1, VariableReadAccessCfgNode read2
+    ) {
       SsaImpl::adjacentReadPair(this, read1, read2)
     }
 

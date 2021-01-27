@@ -1,5 +1,5 @@
 private import codeql_ruby.ast.internal.TreeSitter::Generated
-private import codeql_ruby.controlflow.ControlFlowGraph
+private import codeql_ruby.CFG
 private import Completion
 private import Splitting
 

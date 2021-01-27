@@ -27,6 +27,6 @@ where
   v = read.getVariable() and
   exists(Ssa::Definition def |
     def.getAnUltimateDefinition() instanceof Ssa::UninitializedDefinition and
-    exists(def.getARead(read))
+    read = def.getARead().getExpr()
   )
 select read, "Local variable $@ may be used before it is initialized.", v, v.getName()

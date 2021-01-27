@@ -1,20 +1,20 @@
 import codeql_ruby.AST
+import codeql_ruby.CFG
 import codeql_ruby.ast.Variable
-import codeql_ruby.controlflow.ControlFlowGraph
 import codeql_ruby.dataflow.SSA
 
 query predicate definition(Ssa::Definition def, Variable v) { def.getSourceVariable() = v }
 
 query predicate read(Ssa::Definition def, Variable v, CfgNode read) {
-  def.getSourceVariable() = v and read = def.getARead(_)
+  def.getSourceVariable() = v and read = def.getARead()
 }
 
 query predicate firstRead(Ssa::Definition def, Variable v, CfgNode read) {
-  def.getSourceVariable() = v and read = def.getAFirstRead(_)
+  def.getSourceVariable() = v and read = def.getAFirstRead()
 }
 
 query predicate lastRead(Ssa::Definition def, Variable v, CfgNode read) {
-  def.getSourceVariable() = v and read = def.getALastRead(_)
+  def.getSourceVariable() = v and read = def.getALastRead()
 }
 
 query predicate adjacentReads(Ssa::Definition def, Variable v, CfgNode read1, CfgNode read2) {

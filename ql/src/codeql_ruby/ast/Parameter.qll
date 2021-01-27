@@ -22,10 +22,10 @@ class Parameter extends AstNode {
   final int getPosition() { result = pos }
 
   /** Gets a variable introduced by this parameter. */
-  Variable getAVariable() { none() }
+  LocalVariable getAVariable() { none() }
 
   /** Gets the variable named `name` introduced by this parameter. */
-  final Variable getVariable(string name) {
+  final LocalVariable getVariable(string name) {
     result = this.getAVariable() and
     result.getName() = name
   }
@@ -37,7 +37,7 @@ class Parameter extends AstNode {
  * This includes both simple parameters and tuple parameters.
  */
 class PatternParameter extends Parameter, Pattern {
-  override Variable getAVariable() { result = Pattern.super.getAVariable() }
+  override LocalVariable getAVariable() { result = Pattern.super.getAVariable() }
 }
 
 /** A parameter defined using a tuple pattern. */
@@ -53,9 +53,9 @@ class NamedParameter extends Parameter {
   string getName() { none() }
 
   /** Gets the variable introduced by this parameter. */
-  Variable getVariable() { none() }
+  LocalVariable getVariable() { none() }
 
-  override Variable getAVariable() { result = this.getVariable() }
+  override LocalVariable getAVariable() { result = this.getVariable() }
 
   /** Gets an access to this parameter. */
   final VariableAccess getAnAccess() { result = this.getVariable().getAnAccess() }
@@ -65,9 +65,9 @@ class NamedParameter extends Parameter {
 class SimpleParameter extends NamedParameter, PatternParameter, VariablePattern {
   final override string getName() { result = range.getVariableName() }
 
-  final override Variable getVariable() { result = TLocalVariable(_, _, this) }
+  final override LocalVariable getVariable() { result = TLocalVariable(_, _, this) }
 
-  final override Variable getAVariable() { result = this.getVariable() }
+  final override LocalVariable getAVariable() { result = this.getVariable() }
 
   final override string getAPrimaryQlClass() { result = "SimpleParameter" }
 
@@ -85,7 +85,7 @@ class SimpleParameter extends NamedParameter, PatternParameter, VariablePattern 
 class BlockParameter extends @block_parameter, NamedParameter {
   final override Generated::BlockParameter generated;
 
-  final override Variable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
+  final override LocalVariable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
 
   final override string getAPrimaryQlClass() { result = "BlockParameter" }
 
@@ -106,7 +106,7 @@ class BlockParameter extends @block_parameter, NamedParameter {
 class HashSplatParameter extends @hash_splat_parameter, NamedParameter {
   final override Generated::HashSplatParameter generated;
 
-  final override Variable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
+  final override LocalVariable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
 
   final override string getAPrimaryQlClass() { result = "HashSplatParameter" }
 
@@ -129,7 +129,7 @@ class HashSplatParameter extends @hash_splat_parameter, NamedParameter {
 class KeywordParameter extends @keyword_parameter, NamedParameter {
   final override Generated::KeywordParameter generated;
 
-  final override Variable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
+  final override LocalVariable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
 
   final override string getAPrimaryQlClass() { result = "KeywordParameter" }
 
@@ -164,7 +164,7 @@ class KeywordParameter extends @keyword_parameter, NamedParameter {
 class OptionalParameter extends @optional_parameter, NamedParameter {
   final override Generated::OptionalParameter generated;
 
-  final override Variable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
+  final override LocalVariable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
 
   final override string getAPrimaryQlClass() { result = "OptionalParameter" }
 
@@ -191,7 +191,7 @@ class OptionalParameter extends @optional_parameter, NamedParameter {
 class SplatParameter extends @splat_parameter, NamedParameter {
   final override Generated::SplatParameter generated;
 
-  final override Variable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
+  final override LocalVariable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
 
   final override string getAPrimaryQlClass() { result = "SplatParameter" }
 

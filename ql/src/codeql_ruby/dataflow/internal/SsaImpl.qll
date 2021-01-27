@@ -1,8 +1,8 @@
 private import SsaImplCommon
 private import codeql_ruby.AST
+private import codeql_ruby.CFG
 private import codeql_ruby.ast.Variable
-private import codeql_ruby.controlflow.BasicBlocks
-private import codeql_ruby.controlflow.ControlFlowGraph
+private import CfgNodes::ExprNodes
 
 /** Holds if `v` is uninitialized at index `i` in entry block `bb`. */
 predicate uninitializedWrite(EntryBasicBlock bb, int i, LocalVariable v) {
@@ -170,7 +170,6 @@ private predicate reachesLastRef(Definition def, BasicBlock bb, int i) {
   or
   exists(BasicBlock bb0, int i0 |
     reachesLastRef(def, bb0, i0) and
-    variableReadPseudo(bb0, i0, _) and
     adjacentDefPseudoRead(def, bb, i, bb0, i0)
   )
 }
@@ -217,7 +216,7 @@ private module Cached {
    * without passing through any other non-pseudo read.
    */
   cached
-  predicate firstRead(Definition def, CfgNode read) {
+  predicate firstRead(Definition def, VariableReadAccessCfgNode read) {
     exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
       def.definesAt(_, bb1, i1) and
       adjacentDefActualRead(def, bb1, i1, bb2, i2) and
@@ -231,7 +230,9 @@ private module Cached {
    * passing through another non-pseudo read.
    */
   cached
-  predicate adjacentReadPair(Definition def, CfgNode read1, CfgNode read2) {
+  predicate adjacentReadPair(
+    Definition def, VariableReadAccessCfgNode read1, VariableReadAccessCfgNode read2
+  ) {
     exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
       read1 = bb1.getNode(i1) and
       variableReadActual(bb1, i1, _) and
@@ -246,7 +247,7 @@ private module Cached {
    * the end of the CFG scope, without passing through another non-pseudo read.
    */
   cached
-  predicate lastRead(Definition def, CfgNode read) {
+  predicate lastRead(Definition def, VariableReadAccessCfgNode read) {
     exists(BasicBlock bb, int i |
       reachesLastRef(def, bb, i) and
       variableReadActual(bb, i, _) and

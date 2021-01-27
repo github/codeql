@@ -50,13 +50,6 @@ class Variable extends TVariable {
 
   /** Gets an access to this variable. */
   VariableAccess getAnAccess() { result.getVariable() = this }
-
-  /**
-   * Gets the access where this variable is first introduced, if any.
-   *
-   * Global variables do not have a defining access.
-   */
-  VariableAccess getDefiningAccess() { result = range.getDefiningAccess() }
 }
 
 /** A local variable. */
@@ -64,6 +57,9 @@ class LocalVariable extends Variable, TLocalVariable {
   override LocalVariable::Range range;
 
   final override LocalVariableAccess getAnAccess() { result.getVariable() = this }
+
+  /** Gets the access where this local variable is first introduced. */
+  VariableAccess getDefiningAccess() { result = range.getDefiningAccess() }
 
   /**
    * Holds if this variable is captured. For example in

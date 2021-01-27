@@ -1,5 +1,5 @@
 private import codeql_ruby.AST
-private import codeql_ruby.controlflow.ControlFlowGraph
+private import codeql_ruby.CFG
 private import internal.Expr
 private import internal.Variable
 private import codeql_ruby.controlflow.internal.ControlFlowGraphImpl

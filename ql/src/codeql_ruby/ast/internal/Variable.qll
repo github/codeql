@@ -378,8 +378,6 @@ module Variable {
     abstract Location getLocation();
 
     abstract VariableScope getDeclaringScope();
-
-    abstract VariableAccess getDefiningAccess();
   }
 }
 
@@ -397,7 +395,7 @@ module LocalVariable {
 
     final override VariableScope getDeclaringScope() { result = scope }
 
-    final override VariableAccess getDefiningAccess() { result = i }
+    final VariableAccess getDefiningAccess() { result = i }
   }
 }
 
@@ -412,8 +410,6 @@ module GlobalVariable {
     final override Location getLocation() { none() }
 
     final override VariableScope getDeclaringScope() { result = TGlobalScope() }
-
-    final override VariableAccess getDefiningAccess() { none() }
   }
 }
 
