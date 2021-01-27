@@ -1,9 +1,10 @@
 private import codeql_ruby.AST
+private import codeql_ruby.controlflow.ControlFlowGraph
 private import internal.TreeSitter
 private import internal.Method
 
 /** A callable. */
-class Callable extends AstNode {
+class Callable extends AstNode, CfgScope {
   Callable::Range range;
 
   Callable() { range = this }

@@ -50,6 +50,13 @@ class Variable extends TVariable {
 
   /** Gets an access to this variable. */
   VariableAccess getAnAccess() { result.getVariable() = this }
+
+  /**
+   * Gets the access where this variable is first introduced, if any.
+   *
+   * Global variables do not have a defining access.
+   */
+  VariableAccess getDefiningAccess() { result = range.getDefiningAccess() }
 }
 
 /** A local variable. */
@@ -57,6 +64,22 @@ class LocalVariable extends Variable, TLocalVariable {
   override LocalVariable::Range range;
 
   final override LocalVariableAccess getAnAccess() { result.getVariable() = this }
+
+  /**
+   * Holds if this variable is captured. For example in
+   *
+   * ```rb
+   * def m x
+   *   x.times do |y|
+   *     puts x
+   *   end
+   *   puts x
+   * end
+   * ```
+   *
+   * `x` is a captured variable, whereas `y` is not.
+   */
+  predicate isCaptured() { this.getAnAccess().isCapturedAccess() }
 }
 
 /** A global variable. */
@@ -133,6 +156,23 @@ class LocalVariableAccess extends VariableAccess, @token_identifier {
   final override string getAPrimaryQlClass() {
     not this instanceof SimpleParameter and result = "LocalVariableAccess"
   }
+
+  /**
+   * Holds if this access is a captured variable access. For example in
+   *
+   * ```rb
+   * def m x
+   *   x.times do |y|
+   *     puts x
+   *   end
+   *   puts x
+   * end
+   * ```
+   *
+   * the access to `x` in the first `puts x` is a captured access, while
+   * the access to `x` in the second `puts x` is not.
+   */
+  final predicate isCapturedAccess() { isCapturedAccess(this) }
 }
 
 /** An access to a local variable where the value is updated. */

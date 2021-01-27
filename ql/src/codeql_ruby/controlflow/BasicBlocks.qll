@@ -330,7 +330,17 @@ class EntryBasicBlock extends BasicBlock {
  * an annotated exit node.
  */
 class AnnotatedExitBasicBlock extends BasicBlock {
-  AnnotatedExitBasicBlock() { this.getANode() instanceof CfgNodes::AnnotatedExitNode }
+  private boolean normal;
+
+  AnnotatedExitBasicBlock() {
+    exists(CfgNodes::AnnotatedExitNode n |
+      n = this.getANode() and
+      if n.isNormal() then normal = true else normal = false
+    )
+  }
+
+  /** Holds if this block represent a normal exit. */
+  final predicate isNormal() { normal = true }
 }
 
 /**

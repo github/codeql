@@ -1,5 +1,8 @@
 private import codeql_ruby.AST
+private import codeql_ruby.controlflow.ControlFlowGraph
 private import internal.Expr
+private import internal.Variable
+private import codeql_ruby.controlflow.internal.ControlFlowGraphImpl
 
 /**
  * An expression.
@@ -10,6 +13,18 @@ class Expr extends AstNode {
   Expr::Range range;
 
   Expr() { this = range }
+
+  /** Gets a control-flow node for this expression, if any. */
+  CfgNodes::AstCfgNode getAControlFlowNode() { result.getNode() = this }
+
+  /** Gets the control-flow scope of this expression, if any. */
+  CfgScope getCfgScope() { result = getCfgScope(this) }
+
+  /** Gets the variable scope that this expression belongs to. */
+  VariableScope getVariableScope() { result = enclosingScope(this) }
+
+  /** Gets the enclosing callable, if any. */
+  Callable getEnclosingCallable() { result = this.getCfgScope() }
 }
 
 /**

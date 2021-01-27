@@ -10,13 +10,16 @@ private import internal.Splitting
 private import internal.Completion
 
 /** An AST node with an associated control-flow graph. */
-class CfgScope extends AstNode {
-  CfgScope::Range_ range;
+class CfgScope extends AST::AstNode {
+  CfgScope() { this instanceof CfgScope::Range_ }
 
-  CfgScope() { range = this }
-
-  /** Gets the name of this scope. */
-  string getName() { result = range.getName() }
+  /** Gets the CFG scope that this scope is nested under, if any. */
+  final CfgScope getOuterCfgScope() {
+    exists(AstNode parent |
+      parent.getAFieldOrChild() = this and
+      result = getCfgScope(parent)
+    )
+  }
 }
 
 /**
@@ -77,7 +80,7 @@ module CfgNodes {
 
     final override Location getLocation() { result = scope.getLocation() }
 
-    final override string toString() { result = "enter " + scope.getName() }
+    final override string toString() { result = "enter " + scope }
   }
 
   /** An exit node for a given scope, annotated with the type of exit. */
@@ -102,7 +105,7 @@ module CfgNodes {
         or
         normal = false and s = "abnormal"
       |
-        result = "exit " + scope.getName() + " (" + s + ")"
+        result = "exit " + scope + " (" + s + ")"
       )
     }
   }
@@ -115,7 +118,7 @@ module CfgNodes {
 
     final override Location getLocation() { result = scope.getLocation() }
 
-    final override string toString() { result = "exit " + scope.getName() }
+    final override string toString() { result = "exit " + scope }
   }
 
   /**

@@ -1,5 +1,5 @@
 break_ensure.rb:
-#    1| enter top-level
+#    1| enter AstNode
 #-----|  -> m1
 
 #    1| enter m1
@@ -15,26 +15,26 @@ break_ensure.rb:
 #-----|  -> elements
 
 case.rb:
-#    1| enter top-level
+#    1| enter AstNode
 #-----|  -> if_in_case
 
 #    1| enter if_in_case
 #-----|  -> case ...
 
 cfg.rb:
-#    1| enter top-level
+#    1| enter AstNode
 #-----|  -> bar
 
-#   15| enter BEGIN block
+#   15| enter AstNode
 #-----|  -> puts
 
-#   19| enter END block
+#   19| enter AstNode
 #-----|  -> puts
 
-#   25| enter block
+#   25| enter { ... }
 #-----|  -> x
 
-#   29| enter block
+#   29| enter { ... }
 #-----|  -> x
 
 #   63| enter pattern
@@ -46,7 +46,7 @@ cfg.rb:
 #  101| enter parameters
 #-----|  -> value
 
-#  120| enter lambda
+#  120| enter -> { ... }
 #-----|  -> x
 
 #  142| enter print
@@ -61,11 +61,11 @@ cfg.rb:
 #  187| enter run_block
 #-----|  -> call to yield
 
-#  191| enter block
+#  191| enter { ... }
 #-----|  -> x
 
 exit.rb:
-#    1| enter top-level
+#    1| enter AstNode
 #-----|  -> m1
 
 #    1| enter m1
@@ -75,14 +75,14 @@ exit.rb:
 #-----|  -> x
 
 heredoc.rb:
-#    1| enter top-level
+#    1| enter AstNode
 #-----|  -> double_heredoc
 
 #    1| enter double_heredoc
 #-----|  -> puts
 
 ifs.rb:
-#    1| enter top-level
+#    1| enter AstNode
 #-----|  -> m1
 
 #    1| enter m1
@@ -107,7 +107,7 @@ ifs.rb:
 #-----|  -> true
 
 loops.rb:
-#    1| enter top-level
+#    1| enter AstNode
 #-----|  -> m1
 
 #    1| enter m1
@@ -119,11 +119,11 @@ loops.rb:
 #   24| enter m3
 #-----|  -> 1
 
-#   25| enter do block
+#   25| enter do ... end
 #-----|  -> x
 
 raise.rb:
-#    1| enter top-level
+#    1| enter AstNode
 #-----|  -> Class
 
 #    7| enter m1
@@ -168,7 +168,7 @@ raise.rb:
 #  154| enter m14
 #-----|  -> element
 
-#  155| enter block
+#  155| enter { ... }
 #-----|  -> elem
 
 break_ensure.rb:
@@ -410,7 +410,7 @@ break_ensure.rb:
 #-----|  -> call to puts
 
 #   44| m4
-#-----|  -> exit top-level (normal)
+#-----|  -> exit AstNode (normal)
 
 #   44| m4
 #-----|  -> m4
@@ -496,7 +496,7 @@ break_ensure.rb:
 
 case.rb:
 #    1| if_in_case
-#-----|  -> exit top-level (normal)
+#-----|  -> exit AstNode (normal)
 
 #    1| if_in_case
 #-----|  -> if_in_case
@@ -617,7 +617,7 @@ cfg.rb:
 #-----|  -> EndBlock
 
 #   16| call to puts
-#-----|  -> exit BEGIN block (normal)
+#-----|  -> exit AstNode (normal)
 
 #   16| puts
 #-----|  -> hello
@@ -629,7 +629,7 @@ cfg.rb:
 #-----|  -> 41
 
 #   20| call to puts
-#-----|  -> exit END block (normal)
+#-----|  -> exit AstNode (normal)
 
 #   20| puts
 #-----|  -> world
@@ -662,7 +662,7 @@ cfg.rb:
 #-----|  -> puts
 
 #   25| call to puts
-#-----|  -> exit block (normal)
+#-----|  -> exit { ... } (normal)
 
 #   25| puts
 #-----|  -> x
@@ -698,7 +698,7 @@ cfg.rb:
 #-----|  -> x
 
 #   29| call to call
-#-----|  -> exit block (normal)
+#-----|  -> exit { ... } (normal)
 
 #   29| x
 #-----|  -> call
@@ -1399,7 +1399,7 @@ cfg.rb:
 #-----|  -> (..., ...)
 
 #  120| Array
-#-----|  -> exit lambda (normal)
+#-----|  -> exit -> { ... } (normal)
 
 #  120| y
 #-----|  -> x
@@ -2021,7 +2021,7 @@ cfg.rb:
 #  188| 42
 
 #  191| call to run_block
-#-----|  -> exit top-level (normal)
+#-----|  -> exit AstNode (normal)
 
 #  191| run_block
 #-----|  -> { ... }
@@ -2033,7 +2033,7 @@ cfg.rb:
 #-----|  -> puts
 
 #  191| call to puts
-#-----|  -> exit block (normal)
+#-----|  -> exit { ... } (normal)
 
 #  191| puts
 #-----|  -> x
@@ -2083,7 +2083,7 @@ exit.rb:
 #-----|  -> call to puts
 
 #    8| m2
-#-----|  -> exit top-level (normal)
+#-----|  -> exit AstNode (normal)
 
 #    8| m2
 #-----|  -> m2
@@ -2124,7 +2124,7 @@ exit.rb:
 
 heredoc.rb:
 #    1| double_heredoc
-#-----|  -> exit top-level (normal)
+#-----|  -> exit AstNode (normal)
 
 #    1| double_heredoc
 #-----|  -> double_heredoc
@@ -2501,7 +2501,7 @@ ifs.rb:
 #-----|  -> ... == ...
 
 #   40| constant_condition
-#-----|  -> exit top-level (normal)
+#-----|  -> exit AstNode (normal)
 
 #   40| constant_condition
 #-----|  -> constant_condition
@@ -2663,7 +2663,7 @@ loops.rb:
 #-----|  -> call to puts
 
 #   24| m3
-#-----|  -> exit top-level (normal)
+#-----|  -> exit AstNode (normal)
 
 #   24| m3
 #-----|  -> m3
@@ -2693,7 +2693,7 @@ loops.rb:
 #-----|  -> puts
 
 #   26| call to puts
-#-----|  -> exit do block (normal)
+#-----|  -> exit do ... end (normal)
 
 #   26| puts
 #-----|  -> x
@@ -3704,7 +3704,7 @@ raise.rb:
 #-----|  -> exit m13 (normal)
 
 #  154| m14
-#-----|  -> exit top-level (normal)
+#-----|  -> exit AstNode (normal)
 
 #  154| m14
 #-----|  -> m14
@@ -3728,10 +3728,10 @@ raise.rb:
 #-----|  -> element
 
 #  155| ... if ...
-#-----|  -> exit block (normal)
+#-----|  -> exit { ... } (normal)
 
 #  155| call to raise
-#-----| raise -> exit block (abnormal)
+#-----| raise -> exit { ... } (abnormal)
 
 #  155| raise
 #-----|  -> 
@@ -3750,7 +3750,7 @@ raise.rb:
 #-----|  -> call to nil?
 
 break_ensure.rb:
-#    1| exit top-level
+#    1| exit AstNode
 
 #    1| exit m1
 
@@ -3761,20 +3761,20 @@ break_ensure.rb:
 #   44| exit m4
 
 case.rb:
-#    1| exit top-level
+#    1| exit AstNode
 
 #    1| exit if_in_case
 
 cfg.rb:
-#    1| exit top-level
+#    1| exit AstNode
 
-#   15| exit BEGIN block
+#   15| exit AstNode
 
-#   19| exit END block
+#   19| exit AstNode
 
-#   25| exit block
+#   25| exit { ... }
 
-#   29| exit block
+#   29| exit { ... }
 
 #   63| exit pattern
 
@@ -3782,7 +3782,7 @@ cfg.rb:
 
 #  101| exit parameters
 
-#  120| exit lambda
+#  120| exit -> { ... }
 
 #  142| exit print
 
@@ -3790,22 +3790,22 @@ cfg.rb:
 
 #  153| exit two_parameters
 
-#  191| exit block
+#  191| exit { ... }
 
 exit.rb:
-#    1| exit top-level
+#    1| exit AstNode
 
 #    1| exit m1
 
 #    8| exit m2
 
 heredoc.rb:
-#    1| exit top-level
+#    1| exit AstNode
 
 #    1| exit double_heredoc
 
 ifs.rb:
-#    1| exit top-level
+#    1| exit AstNode
 
 #    1| exit m1
 
@@ -3822,7 +3822,7 @@ ifs.rb:
 #   40| exit constant_condition
 
 loops.rb:
-#    1| exit top-level
+#    1| exit AstNode
 
 #    1| exit m1
 
@@ -3830,10 +3830,10 @@ loops.rb:
 
 #   24| exit m3
 
-#   25| exit do block
+#   25| exit do ... end
 
 raise.rb:
-#    1| exit top-level
+#    1| exit AstNode
 
 #    7| exit m1
 
@@ -3863,11 +3863,11 @@ raise.rb:
 
 #  154| exit m14
 
-#  155| exit block
+#  155| exit { ... }
 
 break_ensure.rb:
-#    1| exit top-level (normal)
-#-----|  -> exit top-level
+#    1| exit AstNode (normal)
+#-----|  -> exit AstNode
 
 #    1| exit m1 (normal)
 #-----|  -> exit m1
@@ -3885,27 +3885,27 @@ break_ensure.rb:
 #-----|  -> exit m4
 
 case.rb:
-#    1| exit top-level (normal)
-#-----|  -> exit top-level
+#    1| exit AstNode (normal)
+#-----|  -> exit AstNode
 
 #    1| exit if_in_case (normal)
 #-----|  -> exit if_in_case
 
 cfg.rb:
-#    1| exit top-level (normal)
-#-----|  -> exit top-level
+#    1| exit AstNode (normal)
+#-----|  -> exit AstNode
 
-#   15| exit BEGIN block (normal)
-#-----|  -> exit BEGIN block
+#   15| exit AstNode (normal)
+#-----|  -> exit AstNode
 
-#   19| exit END block (normal)
-#-----|  -> exit END block
+#   19| exit AstNode (normal)
+#-----|  -> exit AstNode
 
-#   25| exit block (normal)
-#-----|  -> exit block
+#   25| exit { ... } (normal)
+#-----|  -> exit { ... }
 
-#   29| exit block (normal)
-#-----|  -> exit block
+#   29| exit { ... } (normal)
+#-----|  -> exit { ... }
 
 #   63| exit pattern (normal)
 #-----|  -> exit pattern
@@ -3916,8 +3916,8 @@ cfg.rb:
 #  101| exit parameters (normal)
 #-----|  -> exit parameters
 
-#  120| exit lambda (normal)
-#-----|  -> exit lambda
+#  120| exit -> { ... } (normal)
+#-----|  -> exit -> { ... }
 
 #  142| exit print (normal)
 #-----|  -> exit print
@@ -3928,12 +3928,12 @@ cfg.rb:
 #  153| exit two_parameters (normal)
 #-----|  -> exit two_parameters
 
-#  191| exit block (normal)
-#-----|  -> exit block
+#  191| exit { ... } (normal)
+#-----|  -> exit { ... }
 
 exit.rb:
-#    1| exit top-level (normal)
-#-----|  -> exit top-level
+#    1| exit AstNode (normal)
+#-----|  -> exit AstNode
 
 #    1| exit m1 (abnormal)
 #-----|  -> exit m1
@@ -3948,15 +3948,15 @@ exit.rb:
 #-----|  -> exit m2
 
 heredoc.rb:
-#    1| exit top-level (normal)
-#-----|  -> exit top-level
+#    1| exit AstNode (normal)
+#-----|  -> exit AstNode
 
 #    1| exit double_heredoc (normal)
 #-----|  -> exit double_heredoc
 
 ifs.rb:
-#    1| exit top-level (normal)
-#-----|  -> exit top-level
+#    1| exit AstNode (normal)
+#-----|  -> exit AstNode
 
 #    1| exit m1 (normal)
 #-----|  -> exit m1
@@ -3980,8 +3980,8 @@ ifs.rb:
 #-----|  -> exit constant_condition
 
 loops.rb:
-#    1| exit top-level (normal)
-#-----|  -> exit top-level
+#    1| exit AstNode (normal)
+#-----|  -> exit AstNode
 
 #    1| exit m1 (normal)
 #-----|  -> exit m1
@@ -3992,12 +3992,12 @@ loops.rb:
 #   24| exit m3 (normal)
 #-----|  -> exit m3
 
-#   25| exit do block (normal)
-#-----|  -> exit do block
+#   25| exit do ... end (normal)
+#-----|  -> exit do ... end
 
 raise.rb:
-#    1| exit top-level (normal)
-#-----|  -> exit top-level
+#    1| exit AstNode (normal)
+#-----|  -> exit AstNode
 
 #    7| exit m1 (abnormal)
 #-----|  -> exit m1
@@ -4065,8 +4065,8 @@ raise.rb:
 #  154| exit m14 (normal)
 #-----|  -> exit m14
 
-#  155| exit block (abnormal)
-#-----|  -> exit block
+#  155| exit { ... } (abnormal)
+#-----|  -> exit { ... }
 
-#  155| exit block (normal)
-#-----|  -> exit block
+#  155| exit { ... } (normal)
+#-----|  -> exit { ... }

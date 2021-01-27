@@ -41,24 +41,18 @@ private import codeql.files.FileSystem
 
 module CfgScope {
   abstract class Range_ extends AstNode {
-    abstract string getName();
-
     abstract predicate entry(AstNode first);
 
     abstract predicate exit(AstNode last, Completion c);
   }
 
   private class ProgramScope extends Range_, Program {
-    final override string getName() { result = "top-level" }
-
     final override predicate entry(AstNode first) { first(this, first) }
 
     final override predicate exit(AstNode last, Completion c) { last(this, last, c) }
   }
 
   private class BeginBlockScope extends Range_, BeginBlock {
-    final override string getName() { result = "BEGIN block" }
-
     final override predicate entry(AstNode first) {
       first(this.(Trees::BeginBlockTree).getFirstChildNode(), first)
     }
@@ -69,8 +63,6 @@ module CfgScope {
   }
 
   private class EndBlockScope extends Range_, EndBlock {
-    final override string getName() { result = "END block" }
-
     final override predicate entry(AstNode first) {
       first(this.(Trees::EndBlockTree).getFirstChildNode(), first)
     }
@@ -82,8 +74,6 @@ module CfgScope {
 
   private class MethodScope extends Range_, AstNode {
     MethodScope() { this instanceof Method }
-
-    final override string getName() { result = this.(Method).getName().toString() }
 
     final override predicate entry(AstNode first) {
       this.(Trees::RescueEnsureBlockTree).firstInner(first)
@@ -97,8 +87,6 @@ module CfgScope {
   private class SingletonMethodScope extends Range_, AstNode {
     SingletonMethodScope() { this instanceof SingletonMethod }
 
-    final override string getName() { result = this.(SingletonMethod).getName().toString() }
-
     final override predicate entry(AstNode first) {
       this.(Trees::RescueEnsureBlockTree).firstInner(first)
     }
@@ -110,8 +98,6 @@ module CfgScope {
 
   private class DoBlockScope extends Range_, DoBlock {
     DoBlockScope() { not this.getParent() instanceof Lambda }
-
-    final override string getName() { result = "do block" }
 
     final override predicate entry(AstNode first) {
       this.(Trees::RescueEnsureBlockTree).firstInner(first)
@@ -125,8 +111,6 @@ module CfgScope {
   private class BlockScope extends Range_, Block {
     BlockScope() { not this.getParent() instanceof Lambda }
 
-    final override string getName() { result = "block" }
-
     final override predicate entry(AstNode first) {
       first(this.(Trees::BlockTree).getFirstChildNode(), first)
     }
@@ -137,8 +121,6 @@ module CfgScope {
   }
 
   private class LambdaScope extends Range_, Lambda {
-    final override string getName() { result = "lambda" }
-
     final override predicate entry(AstNode first) {
       first(this.getParameters(), first)
       or
@@ -167,9 +149,6 @@ private AstNode parent(AstNode n) {
   result.getAFieldOrChild() = n and
   not n instanceof CfgScope
 }
-
-/** Gets the CFG scope of node `n`. */
-CfgScope getScope(AstNode n) { result = unique(CfgScope scope | scope = parent+(n)) }
 
 abstract private class ControlFlowTree extends AstNode {
   /**
@@ -913,7 +892,7 @@ module Trees {
   pragma[noinline]
   private AstNode getAChildInScope(AstNode n, CfgScope scope) {
     result.getParent() = n and
-    scope = getScope(result)
+    scope = getCfgScope(result)
   }
 
   /** A block that may contain `rescue`/`ensure`. */
@@ -962,7 +941,7 @@ module Trees {
       or
       exists(AstNode mid |
         mid = this.getAnEnsureDescendant() and
-        result = getAChildInScope(mid, getScope(mid)) and
+        result = getAChildInScope(mid, getCfgScope(mid)) and
         not exists(RescueEnsureBlockTree nestedBlock |
           result = nestedBlock.getEnsure() and
           nestedBlock != this
@@ -976,7 +955,7 @@ module Trees {
      */
     private predicate nestedEnsure(RescueEnsureBlockTree innerBlock) {
       exists(Ensure innerEnsure |
-        innerEnsure = getAChildInScope(this.getAnEnsureDescendant(), getScope(this)) and
+        innerEnsure = getAChildInScope(this.getAnEnsureDescendant(), getCfgScope(this)) and
         innerEnsure = innerBlock.getEnsure()
       )
     }
@@ -1279,6 +1258,10 @@ module Trees {
 
 cached
 private module Cached {
+  /** Gets the CFG scope of node `n`. */
+  cached
+  CfgScope getCfgScope(AstNode n) { result = unique(CfgScope scope | scope = parent+(n)) }
+
   private predicate isAbnormalExitType(SuccessorType t) {
     t instanceof RaiseSuccessor or t instanceof ExitSuccessor
   }
