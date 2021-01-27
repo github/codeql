@@ -37,7 +37,7 @@ class ClassView(View, Foo):
         return HttpResponse('ClassView get: {}'.format(untrusted))  # $HttpResponse
 
 
-# direct import with full path to `View` class (not supported)
+# direct import with full path to `View` class (previously not supported)
 class ClassView2(django.views.generic.base.View):
     def get(self, request): # $ MISSING: requestHandler
         pass
