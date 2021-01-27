@@ -72,7 +72,9 @@ module SuperCall {
   private class SuperTokenCallRange extends SuperCall::Range, @token_super {
     final override Generated::Super generated;
 
-    SuperTokenCallRange() { vcall(this) and not access(this, _) }
+    // N.B. `super` tokens can never be accesses, so any vcall with `super` must
+    // be a call.
+    SuperTokenCallRange() { vcall(this) }
 
     final override Expr getReceiver() { none() }
 

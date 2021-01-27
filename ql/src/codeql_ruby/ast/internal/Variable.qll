@@ -125,10 +125,8 @@ private module Cached {
       not scope.(CapturingScope).inherits(name, _)
     }
 
-  // Token types that can be accesses/vcalls
-  private class AccessTokenUnion = @token_identifier or @token_super;
-
-  private class AccessToken extends Generated::Token, AccessTokenUnion { }
+  // Token types that can be vcalls
+  private class VcallToken = @token_identifier or @token_super;
 
   /**
    * Holds if `i` is an `identifier` node occurring in the context where it
@@ -144,7 +142,7 @@ private module Cached {
    * ```
    */
   cached
-  predicate vcall(AccessToken i) {
+  predicate vcall(VcallToken i) {
     i = any(Generated::ArgumentList x).getChild(_)
     or
     i = any(Generated::Array x).getChild(_)
@@ -271,7 +269,7 @@ private module Cached {
   }
 
   cached
-  predicate access(AccessToken access, Variable variable) {
+  predicate access(Generated::Identifier access, Variable variable) {
     exists(string name | name = access.getValue() |
       variable = enclosingScope(access).getVariable(name) and
       not strictlyBefore(access.getLocation(), variable.getLocation()) and
