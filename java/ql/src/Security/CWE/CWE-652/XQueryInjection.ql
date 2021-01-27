@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id java/XQuery-injection
+ * @id java/xquery-injection
  * @tags security
  *       external/cwe/cwe-652
  */
