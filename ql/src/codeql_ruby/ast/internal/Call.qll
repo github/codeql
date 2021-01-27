@@ -95,7 +95,7 @@ module SuperCall {
       generated.getMethod() instanceof Generated::Super
     }
 
-    final override Expr getReceiver() { result = generated.getReceiver() }
+    final override Expr getReceiver() { none() }
 
     final override string getMethodName() {
       result = generated.getMethod().(Generated::Super).getValue()
