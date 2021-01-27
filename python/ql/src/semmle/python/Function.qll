@@ -40,8 +40,12 @@ class Function extends Function_, Scope, AstNode {
   }
 
   /**
-   * Whether this is a lambda.
-   * We detect this by comparing its name to the one the extractor gives to lambdas.
+   * Holds if this function represents a lambda.
+   *
+   * The extractor reifies each lambda expression as a (local) function with the name 
+   * "lambda". As `lambda` is a keyword in Python, it's impossible to create a function with this 
+   * name otherwise, and so it's impossible to get a non-lambda function accidentally
+   * classified as a lambda.
    */
   predicate isLambda() { this.getName() = "lambda" }
 

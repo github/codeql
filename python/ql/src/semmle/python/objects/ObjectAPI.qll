@@ -721,7 +721,7 @@ abstract class FunctionValue extends CallableValue {
   /** Gets a class that this function may return */
   abstract ClassValue getAnInferredReturnType();
 
-  /** Wheter this is a lambda function */
+  /** Holds if this function represents a lambda. */
   predicate isLambda() { this.getOrigin().getNode() instanceof Lambda }
 }
 
