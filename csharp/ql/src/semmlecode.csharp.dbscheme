@@ -346,27 +346,20 @@ directive_ifs(
 directive_elifs(
   unique int id: @directive_elif,
   int branchTaken: int ref,     /* 0: false, 1: true */
-  int conditionValue: int ref); /* 0: false, 1: true */
+  int conditionValue: int ref,  /* 0: false, 1: true */
+  int parent: @directive_if ref,
+  int index: int ref);
 
 directive_elses(
   unique int id: @directive_else,
-  int branchTaken: int ref);  /* 0: false, 1: true */
-
-directive_endifs(
-  unique int id: @directive_endif);
-
-#keyset[start, end]
-directive_if_endif(
-  unique int start: @directive_if ref,
-  unique int end: @directive_endif ref);
-
-@directive_if_sibling = @directive_else | @directive_elif;
-
-#keyset[start, index]
-directive_if_siblings(
-  int start: @directive_if ref,
-  int sibling: @directive_if_sibling ref,
+  int branchTaken: int ref,   /* 0: false, 1: true */
+  int parent: @directive_if ref,
   int index: int ref);
+
+#keyset[id, start]
+directive_endifs(
+  unique int id: @directive_endif,
+  unique int start: @directive_if ref);
 
 directive_define_symbols(
   unique int id: @define_symbol_expr ref,

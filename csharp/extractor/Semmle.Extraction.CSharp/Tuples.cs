@@ -684,29 +684,21 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("directive_ifs", directive, branchTaken ? 1 : 0, conditionValue ? 1 : 0);
         }
 
-        internal static void directive_elifs(this TextWriter trapFile, ElifDirective directive, bool branchTaken, bool conditionValue)
+        internal static void directive_elifs(this TextWriter trapFile, ElifDirective directive, bool branchTaken, bool conditionValue,
+            IfDirective start, int index)
         {
-            trapFile.WriteTuple("directive_elifs", directive, branchTaken ? 1 : 0, conditionValue ? 1 : 0);
+            trapFile.WriteTuple("directive_elifs", directive, branchTaken ? 1 : 0, conditionValue ? 1 : 0, start, index);
         }
 
-        internal static void directive_elses(this TextWriter trapFile, ElseDirective directive, bool branchTaken)
+        internal static void directive_elses(this TextWriter trapFile, ElseDirective directive, bool branchTaken,
+            IfDirective start, int index)
         {
-            trapFile.WriteTuple("directive_elses", directive, branchTaken ? 1 : 0);
+            trapFile.WriteTuple("directive_elses", directive, branchTaken ? 1 : 0, start, index);
         }
 
-        internal static void directive_endifs(this TextWriter trapFile, EndIfDirective directive)
+        internal static void directive_endifs(this TextWriter trapFile, EndIfDirective directive, IfDirective start)
         {
-            trapFile.WriteTuple("directive_endifs", directive);
-        }
-
-        internal static void directive_if_endif(this TextWriter trapFile, IfDirective start, EndIfDirective end)
-        {
-            trapFile.WriteTuple("directive_if_endif", start, end);
-        }
-
-        internal static void directive_if_siblings(this TextWriter trapFile, IfDirective start, IIfSiblingDirective siblingDirective, int index)
-        {
-            trapFile.WriteTuple("directive_if_siblings", start, siblingDirective, index);
+            trapFile.WriteTuple("directive_endifs", directive, start);
         }
 
         internal static void directive_define_symbols(this TextWriter trapFile, DefineSymbol symb, string name)

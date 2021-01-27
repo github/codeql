@@ -76,51 +76,63 @@ namespace Semmle.Extraction.CSharp.Populators
             new Entities.EndRegionDirective(cx, node, start);
         }
 
-        private readonly Stack<Entities.IfDirective> ifStarts = new Stack<Entities.IfDirective>();
+        private class IfDirectiveStackElement
+        {
+            public Entities.IfDirective Entity { get; }
+            public int SiblingCount { get; set; }
+
+
+            public IfDirectiveStackElement(Entities.IfDirective entity)
+            {
+                Entity = entity;
+            }
+        }
+
+        private readonly Stack<IfDirectiveStackElement> ifStarts = new Stack<IfDirectiveStackElement>();
 
         public override void VisitIfDirectiveTrivia(IfDirectiveTriviaSyntax node)
         {
             var ifStart = new Entities.IfDirective(cx, node);
-            ifStarts.Push(ifStart);
+            ifStarts.Push(new IfDirectiveStackElement(ifStart));
         }
 
         public override void VisitEndIfDirectiveTrivia(EndIfDirectiveTriviaSyntax node)
         {
-            var endif = new Entities.EndIfDirective(cx, node);
             if (ifStarts.Count == 0)
             {
                 cx.ExtractionError("Couldn't find start if", null,
                     Extraction.Entities.Location.Create(cx, node.GetLocation()), null, Util.Logging.Severity.Warning);
                 return;
             }
+
             var start = ifStarts.Pop();
-            start.WriteBranches(endif);
+            new Entities.EndIfDirective(cx, node, start.Entity);
         }
 
         public override void VisitElifDirectiveTrivia(ElifDirectiveTriviaSyntax node)
         {
-            var elif = new Entities.ElifDirective(cx, node);
             if (ifStarts.Count == 0)
             {
                 cx.ExtractionError("Couldn't find start if", null,
                     Extraction.Entities.Location.Create(cx, node.GetLocation()), null, Util.Logging.Severity.Warning);
                 return;
             }
+
             var start = ifStarts.Peek();
-            start.Add(elif);
+            new Entities.ElifDirective(cx, node, start.Entity, start.SiblingCount++);
         }
 
         public override void VisitElseDirectiveTrivia(ElseDirectiveTriviaSyntax node)
         {
-            var elseDirective = new Entities.ElseDirective(cx, node);
             if (ifStarts.Count == 0)
             {
                 cx.ExtractionError("Couldn't find start if", null,
                     Extraction.Entities.Location.Create(cx, node.GetLocation()), null, Util.Logging.Severity.Warning);
                 return;
             }
+
             var start = ifStarts.Peek();
-            start.Add(elseDirective);
+            new Entities.ElseDirective(cx, node, start.Entity, start.SiblingCount++);
         }
     }
 }

@@ -281,10 +281,13 @@ class IfDirective extends ConditionalDirective, @directive_if {
   override predicate conditionMatched() { directive_ifs(this, _, 1) }
 
   /** Gets the closing `#endif` preprocessor directive. */
-  EndifDirective getEndifDirective() { directive_if_endif(this, result) }
+  EndifDirective getEndifDirective() { directive_endifs(result, this) }
 
   /** Gets the sibling `#elif` or `#else` preprocessor directive at index `sibling`. */
-  BranchDirective getSiblingDirective(int sibling) { directive_if_siblings(this, result, sibling) }
+  BranchDirective getSiblingDirective(int sibling) {
+    directive_elifs(result, _, _, this, sibling) or
+    directive_elses(result, _, this, sibling)
+  }
 
   /** Gets a sibling `#elif` or `#else` preprocessor directive. */
   BranchDirective getASiblingDirective() { result = getSiblingDirective(_) }
@@ -298,17 +301,18 @@ class IfDirective extends ConditionalDirective, @directive_if {
  * An `#elif` preprocessor directive.
  */
 class ElifDirective extends ConditionalDirective, @directive_elif {
-  override predicate branchTaken() { directive_elifs(this, 1, _) }
+  override predicate branchTaken() { directive_elifs(this, 1, _, _, _) }
 
-  override predicate conditionMatched() { directive_elifs(this, _, 1) }
+  override predicate conditionMatched() { directive_elifs(this, _, 1, _, _) }
 
   /** Gets the opening `#if` preprocessor directive. */
-  IfDirective getIfDirective() { directive_if_siblings(result, this, _) }
+  IfDirective getIfDirective() { directive_elifs(this, _, _, result, _) }
 
   /** Gets the successive branching preprocessor directive (`#elif` or `#else`), if any. */
   BranchDirective getSuccSiblingDirective() {
     exists(IfDirective i, int index |
-      directive_if_siblings(i, this, index) and directive_if_siblings(i, result, index + 1)
+      this = i.getSiblingDirective(index) and
+      result = i.getSiblingDirective(index + 1)
     )
   }
 
@@ -322,9 +326,9 @@ class ElifDirective extends ConditionalDirective, @directive_elif {
  */
 class ElseDirective extends BranchDirective, @directive_else {
   /** Gets the opening `#if` preprocessor directive. */
-  IfDirective getIfDirective() { directive_if_siblings(result, this, _) }
+  IfDirective getIfDirective() { directive_elses(this, _, result, _) }
 
-  override predicate branchTaken() { directive_elses(this, 1) }
+  override predicate branchTaken() { directive_elses(this, 1, _, _) }
 
   override string toString() { result = "#else" }
 
@@ -336,7 +340,7 @@ class ElseDirective extends BranchDirective, @directive_else {
  */
 class EndifDirective extends PreprocessorDirective, @directive_endif {
   /** Gets the opening `#if` preprocessor directive. */
-  IfDirective getIfDirective() { directive_if_endif(result, this) }
+  IfDirective getIfDirective() { directive_endifs(this, result) }
 
   override string toString() { result = "#endif" }
 
