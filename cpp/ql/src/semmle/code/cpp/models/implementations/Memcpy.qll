@@ -18,22 +18,22 @@ private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffect
     // memcpy(dest, src, num)
     // memmove(dest, src, num)
     // memmove(dest, src, num, remaining)
-    this.hasName(["memcpy", "memmove", "__builtin___memcpy_chk"])
+    this.hasGlobalOrStdName(["memcpy", "memmove"])
     or
     // bcopy(src, dest, num)
-    this.hasGlobalOrStdName("bcopy")
+    this.hasGlobalName(["bcopy", "__builtin___memcpy_chk"])
   }
 
   /**
    * Gets the index of the parameter that is the source buffer for the copy.
    */
-  int getParamSrc() { if this.hasGlobalOrStdName("bcopy") then result = 0 else result = 1 }
+  int getParamSrc() { if this.hasGlobalName("bcopy") then result = 0 else result = 1 }
 
   /**
    * Gets the index of the parameter that is the destination buffer for the
    * copy.
    */
-  int getParamDest() { if this.hasGlobalOrStdName("bcopy") then result = 1 else result = 0 }
+  int getParamDest() { if this.hasGlobalName("bcopy") then result = 1 else result = 0 }
 
   /**
    * Gets the index of the parameter that is the size of the copy (in bytes).
