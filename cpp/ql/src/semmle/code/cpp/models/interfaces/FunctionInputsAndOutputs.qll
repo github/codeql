@@ -109,6 +109,16 @@ class FunctionInput extends TFunctionInput {
   predicate isQualifierAddress() { none() }
 
   /**
+   * Holds if `i >= 0` and `isParameter(i)` holds for this value, or
+   * if `i = -1` and `isQualifierAddress()` holds for this value.
+   */
+  final predicate isParameterOrQualifierAddress(ParameterIndex i) {
+    i >= 0 and this.isParameter(i)
+    or
+    i = -1 and this.isQualifierAddress()
+  }
+
+  /**
    * Holds if this is the input value pointed to by the return value of a
    * function, if the function returns a pointer, or the input value referred
    * to by the return value of a function, if the function returns a reference.
@@ -134,7 +144,7 @@ class FunctionInput extends TFunctionInput {
   predicate isReturnValueDeref() { none() }
 
   /**
-   * Holds if `i >= 0` and `isParameterDeref(i)` holds for this is value, or
+   * Holds if `i >= 0` and `isParameterDeref(i)` holds for this value, or
    * if `i = -1` and `isQualifierObject()` holds for this value.
    */
   final predicate isParameterDerefOrQualifierObject(ParameterIndex i) {
