@@ -519,14 +519,14 @@ class BinaryPatternExpr extends PatternExpr, @binary_pattern_expr {
   PatternExpr getRightOperand() { result = this.getChild(1) }
 }
 
-/** A binary or pattern. For example, `1 or 2`. */
+/** A binary `or` pattern. For example, `1 or 2`. */
 class OrPatternExpr extends BinaryPatternExpr, @or_pattern_expr {
   override string toString() { result = "... or ..." }
 
   override string getAPrimaryQlClass() { result = "OrPatternExpr" }
 }
 
-/** A binary and pattern. For example, `< 1 and > 2`. */
+/** A binary `and` pattern. For example, `< 1 and > 2`. */
 class AndPatternExpr extends BinaryPatternExpr, @and_pattern_expr {
   override string toString() { result = "... and ..." }
 
