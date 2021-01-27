@@ -18,6 +18,7 @@ void workFunction_2_0(char *s) {
   strncat(buf, s, len-strlen(buf)-1); // GOOD
   strncat(buf, s, len-strlen(buf));  // BAD
   strncat(buf, "fix", len-strlen(buf)); // BAD [NOT DETECTED]
+}
 void workFunction_2_1(char *s) {
   char * buf;
   int len=80;
