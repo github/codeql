@@ -5,14 +5,18 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class EndIfDirective : PreprocessorDirective<EndIfDirectiveTriviaSyntax>
     {
-        public EndIfDirective(Context cx, EndIfDirectiveTriviaSyntax trivia)
-            : base(cx, trivia)
+        private readonly IfDirective start;
+
+        public EndIfDirective(Context cx, EndIfDirectiveTriviaSyntax trivia, IfDirective start)
+            : base(cx, trivia, populateFromBase: false)
         {
+            this.start = start;
+            TryPopulate();
         }
 
         protected override void PopulatePreprocessor(TextWriter trapFile)
         {
-            trapFile.directive_endifs(this);
+            trapFile.directive_endifs(this, start);
         }
     }
 }
