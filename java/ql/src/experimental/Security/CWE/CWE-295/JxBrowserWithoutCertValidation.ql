@@ -57,6 +57,10 @@ private class JxBrowserSafeLoadHandler extends RefType {
   }
 }
 
+/**
+ * Models flow from the source `new Browser()` to a sink `browser.setLoadHandler(loadHandler)` where `loadHandler`
+ * has been determined to be safe.
+ */
 private class JxBrowserFlowConfiguration extends DataFlow::Configuration {
   JxBrowserFlowConfiguration() { this = "JxBrowserFlowConfiguration" }
 
