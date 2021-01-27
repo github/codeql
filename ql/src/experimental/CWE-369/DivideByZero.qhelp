@@ -2,8 +2,7 @@
 <qhelp>
     <overview>
         <p>
-        Divide by zero is division where the divisor (denominator) is zero. 
-        In Go, integer divide by zero leads to a panic, which might interrupt execution of the program and lead to program termination.
+        In Go, dividing an integer by zero leads to a panic, which might interrupt execution of the program and lead to program termination.
         </p>
     </overview>
     <recommendation>
@@ -18,5 +17,9 @@ The following example shows data received from user input being used as a diviso
 possibly causing a divide-by-zero panic.
         </p>
         <sample src="DivideByZeroBad.go" />
+        <p>
+This can be fixed by testing the divisor against against zero:
+        </p>
+        <sample src="DivideByZeroGood.go" />
     </example>
 </qhelp>

@@ -1,8 +1,6 @@
 /**
  * @name Divide by zero
- * @description Converting the result of `strconv.Atoi`, `strconv.ParseInt`,
- *              and `strconv.ParseUint` to integer types or use of integer types for division without checks
- *              might lead to division by zero and panic, which cause denial of service.
+ * @description Dividing an integer by a user-controlled value may lead to division by zero and an unexpected panic.
  * @kind path-problem
  * @problem.severity error
  * @id go/divide-by-zero
@@ -63,6 +61,5 @@ class DivideByZeroCheckConfig extends TaintTracking::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, DivideByZeroCheckConfig cfg
 where cfg.hasFlowPath(source, sink)
-select sink, source, sink,
-  "Variable $@ might be zero leading to a division-by-zero panic.",
-  sink, sink.getNode().toString()
+select sink, source, sink, "Variable $@ might be zero leading to a division-by-zero panic.", sink,
+  sink.getNode().toString()
