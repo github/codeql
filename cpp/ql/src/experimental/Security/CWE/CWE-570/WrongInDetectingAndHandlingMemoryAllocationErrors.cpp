@@ -1,32 +1,31 @@
-// BAD: no memory allocation errors are detected
-void f(const int *array, std::size_t size) noexcept {
-  int *copy = new int[size];
-  std::memcpy(copy, array, size * sizeof(*copy));
-  // ...
-  delete [] copy;
+// BAD: on memory allocation error, the program terminates.
+void badFunction(const int *source, std::size_t length) noexcept {
+  int * dest = new int[length];
+  std::memset(dest, 0, length);
+// ..
 }
-// GOOD: memory allocation errors are detected
-void f(const int *array, std::size_t size) noexcept {
-  int *copy;
+// GOOD: memory allocation error will be handled.
+void goodFunction(const int *source, std::size_t length) noexcept {
   try {
-    copy = new int[size];
-  } catch(std::bad_alloc) {
-    // Handle error
-    return;
-  }
-  // At this point, copy has been initialized to allocated memory
-  std::memcpy(copy, array, size * sizeof(*copy));
-  // ...
-  delete [] copy;
+       int * dest = new int[length];
+  } catch(std::bad_alloc)
+  std::memset(dest, 0, length);
+// ..
 }
-// GOOD: memory allocation errors are detected
-void f(const int *array, std::size_t size) noexcept {
-  int *copy = new (std::nothrow) int[size];
-  if (!copy) {
-    // Handle error
-    return;
+// BAD: memory allocation error will not be handled.
+void badFunction(const int *source, std::size_t length) noexcept {
+  try {
+       int * dest = new (std::nothrow) int[length];
+  } catch(std::bad_alloc)
+  std::memset(dest, 0, length);
+// ..
+}
+// GOOD: memory allocation error will be handled.
+void goodFunction(const int *source, std::size_t length) noexcept {
+  int * dest = new (std::nothrow) int[length];
+  if (!dest) {
+      return;
   }
-  std::memcpy(copy, array, size * sizeof(*copy));
-  // ...
-  delete [] copy;
+  std::memset(dest, 0, length);
+// ..
 }
