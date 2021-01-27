@@ -15,6 +15,9 @@ import semmle.code.java.dataflow.FlowSources
 import XQueryInjectionLib
 import DataFlow::PathGraph
 
+/**
+ * Taint-tracking configuration tracing flow from remote sources, through an XQuery parser, to its eventual execution.
+ */
 class XQueryInjectionConfig extends TaintTracking::Configuration {
   XQueryInjectionConfig() { this = "XQueryInjectionConfig" }
 
