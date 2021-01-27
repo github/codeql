@@ -3,6 +3,9 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TypeTracker
 import TestUtilities.InlineExpectationsTest
 
+// -----------------------------------------------------------------------------
+// tracked
+// -----------------------------------------------------------------------------
 DataFlow::Node tracked(TypeTracker t) {
   t.start() and
   result.asCfgNode() = any(NameNode n | n.getId() = "tracked")
@@ -28,6 +31,9 @@ class TrackedTest extends InlineExpectationsTest {
   }
 }
 
+// -----------------------------------------------------------------------------
+// int + str
+// -----------------------------------------------------------------------------
 DataFlow::Node int_type(TypeTracker t) {
   t.start() and
   result.asCfgNode() = any(CallNode c | c.getFunction().(NameNode).getId() = "int")
@@ -74,6 +80,9 @@ class TrackedStringTest extends InlineExpectationsTest {
   }
 }
 
+// -----------------------------------------------------------------------------
+// tracked_self
+// -----------------------------------------------------------------------------
 DataFlow::Node tracked_self(TypeTracker t) {
   t.start() and
   exists(Function f |
@@ -98,6 +107,67 @@ class TrackedSelfTest extends InlineExpectationsTest {
       tag = "tracked_self" and
       location = e.getLocation() and
       value = t.getAttr() and
+      element = e.toString()
+    )
+  }
+}
+
+// -----------------------------------------------------------------------------
+// tracked_foo_bar_baz
+// -----------------------------------------------------------------------------
+// This modeling follows the same pattern that we currently use in our real library modeling.
+/** Gets a reference to `foo` (fictive module). */
+private DataFlow::Node foo(DataFlow::TypeTracker t) {
+  t.start() and
+  result = DataFlow::importNode("foo")
+  or
+  exists(DataFlow::TypeTracker t2 | result = foo(t2).track(t2, t))
+}
+
+/** Gets a reference to `foo` (fictive module). */
+DataFlow::Node foo() { result = foo(DataFlow::TypeTracker::end()) }
+
+/** Gets a reference to `foo.bar` (fictive module). */
+private DataFlow::Node foo_bar(DataFlow::TypeTracker t) {
+  t.start() and
+  result = DataFlow::importNode("foo.bar")
+  or
+  t.startInAttr("bar") and
+  result = foo()
+  or
+  exists(DataFlow::TypeTracker t2 | result = foo_bar(t2).track(t2, t))
+}
+
+/** Gets a reference to `foo.bar` (fictive module). */
+DataFlow::Node foo_bar() { result = foo_bar(DataFlow::TypeTracker::end()) }
+
+/** Gets a reference to `foo.bar.baz` (fictive attribute on `foo.bar` module). */
+private DataFlow::Node foo_bar_baz(DataFlow::TypeTracker t) {
+  t.start() and
+  result = DataFlow::importNode("foo.bar.baz")
+  or
+  t.startInAttr("baz") and
+  result = foo_bar()
+  or
+  exists(DataFlow::TypeTracker t2 | result = foo_bar_baz(t2).track(t2, t))
+}
+
+/** Gets a reference to `foo.bar.baz` (fictive attribute on `foo.bar` module). */
+DataFlow::Node foo_bar_baz() { result = foo_bar_baz(DataFlow::TypeTracker::end()) }
+
+class TrackedFooBarBaz extends InlineExpectationsTest {
+  TrackedFooBarBaz() { this = "TrackedFooBarBaz" }
+
+  override string getARelevantTag() { result = "tracked_foo_bar_baz" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(DataFlow::Node e |
+      e = foo_bar_baz() and
+      // Module variables have no sensible location, and hence can't be annotated.
+      not e instanceof DataFlow::ModuleVariableNode and
+      tag = "tracked_foo_bar_baz" and
+      location = e.getLocation() and
+      value = "" and
       element = e.toString()
     )
   }

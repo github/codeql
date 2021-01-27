@@ -101,3 +101,22 @@ class Bar(Foo):
         self.meth1() # $ tracked_self
         super().meth2()
         super(Bar, self).foo3() # $ tracked_self
+
+# ------------------------------------------------------------------------------
+# Tracking of attribute lookup after "long" import chain
+# ------------------------------------------------------------------------------
+
+def test_long_import_chain():
+    import foo.bar
+    foo.baz # $ SPURIOUS: tracked_foo_bar_baz
+    x = foo.bar.baz # $ tracked_foo_bar_baz
+    do_stuff(x) # $ tracked_foo_bar_baz
+
+    class Example(foo.bar.baz): # $ tracked_foo_bar_baz
+        pass
+
+
+def test_long_import_chain_full_path():
+    from foo.bar import baz # $ tracked_foo_bar_baz
+    x = baz # $ tracked_foo_bar_baz
+    do_stuff(x) # $ tracked_foo_bar_baz
