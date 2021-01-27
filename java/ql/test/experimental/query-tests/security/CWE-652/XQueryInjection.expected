@@ -1,0 +1,19 @@
+edges
+| XQueryInjection.java:26:37:26:65 | prepareExpression(...) : XQPreparedExpression | XQueryInjection.java:27:35:27:38 | xqpe |
+| XQueryInjection.java:41:37:41:65 | prepareExpression(...) : XQPreparedExpression | XQueryInjection.java:42:35:42:38 | xqpe |
+| XQueryInjection.java:53:37:53:64 | prepareExpression(...) : XQPreparedExpression | XQueryInjection.java:54:35:54:38 | xqpe |
+| XQueryInjection.java:66:37:66:62 | prepareExpression(...) : XQPreparedExpression | XQueryInjection.java:67:35:67:38 | xqpe |
+nodes
+| XQueryInjection.java:26:37:26:65 | prepareExpression(...) : XQPreparedExpression | semmle.label | prepareExpression(...) : XQPreparedExpression |
+| XQueryInjection.java:27:35:27:38 | xqpe | semmle.label | xqpe |
+| XQueryInjection.java:41:37:41:65 | prepareExpression(...) : XQPreparedExpression | semmle.label | prepareExpression(...) : XQPreparedExpression |
+| XQueryInjection.java:42:35:42:38 | xqpe | semmle.label | xqpe |
+| XQueryInjection.java:53:37:53:64 | prepareExpression(...) : XQPreparedExpression | semmle.label | prepareExpression(...) : XQPreparedExpression |
+| XQueryInjection.java:54:35:54:38 | xqpe | semmle.label | xqpe |
+| XQueryInjection.java:66:37:66:62 | prepareExpression(...) : XQPreparedExpression | semmle.label | prepareExpression(...) : XQPreparedExpression |
+| XQueryInjection.java:67:35:67:38 | xqpe | semmle.label | xqpe |
+#select
+| XQueryInjection.java:27:35:27:38 | xqpe | XQueryInjection.java:26:37:26:65 | prepareExpression(...) : XQPreparedExpression | XQueryInjection.java:27:35:27:38 | xqpe | XQuery query might include code from $@. | XQueryInjection.java:26:37:26:65 | prepareExpression(...) | this user input |
+| XQueryInjection.java:42:35:42:38 | xqpe | XQueryInjection.java:41:37:41:65 | prepareExpression(...) : XQPreparedExpression | XQueryInjection.java:42:35:42:38 | xqpe | XQuery query might include code from $@. | XQueryInjection.java:41:37:41:65 | prepareExpression(...) | this user input |
+| XQueryInjection.java:54:35:54:38 | xqpe | XQueryInjection.java:53:37:53:64 | prepareExpression(...) : XQPreparedExpression | XQueryInjection.java:54:35:54:38 | xqpe | XQuery query might include code from $@. | XQueryInjection.java:53:37:53:64 | prepareExpression(...) | this user input |
+| XQueryInjection.java:67:35:67:38 | xqpe | XQueryInjection.java:66:37:66:62 | prepareExpression(...) : XQPreparedExpression | XQueryInjection.java:67:35:67:38 | xqpe | XQuery query might include code from $@. | XQueryInjection.java:66:37:66:62 | prepareExpression(...) | this user input |
