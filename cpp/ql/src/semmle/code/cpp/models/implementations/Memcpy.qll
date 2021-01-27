@@ -23,7 +23,8 @@ private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffect
     this.hasGlobalOrStdName(["memcpy", "memmove"])
     or
     // bcopy(src, dest, num)
-    this.hasGlobalName(["bcopy", "__builtin___memcpy_chk"])
+    // mempcpy(dest, src, num)
+    this.hasGlobalName(["bcopy", mempcpy(), "__builtin___memcpy_chk"])
   }
 
   /**
@@ -96,7 +97,9 @@ private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffect
   }
 
   override predicate parameterIsAlwaysReturned(int index) {
-    not this.hasGlobalName("bcopy") and
+    not this.hasGlobalName(["bcopy", mempcpy()]) and
     index = getParamDest()
   }
 }
+
+private string mempcpy() { result = ["mempcpy", "wmempcpy"] }
