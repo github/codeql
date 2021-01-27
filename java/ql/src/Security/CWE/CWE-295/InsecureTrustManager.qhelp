@@ -5,7 +5,7 @@
 <overview>
 <p>
 If the <code>checkServerTrusted</code> method of a <code>TrustManager</code> never throws a <code>CertificateException</code> it trusts every certificate.
-This allows an attacker to perform a Man-in-the-middle attack against the application therefore breaking any security Transport Layer Security (TLS) gives.
+This allows an attacker to perform a machine-in-the-middle attack against the application therefore breaking any security Transport Layer Security (TLS) gives.
 
 An attack would look like this:
 1. The program connects to <code>https://example.com</code>.
@@ -29,7 +29,7 @@ See below for an example of how to do this.
 <example>
 <p>
 In the first (bad) example, the <code>TrustManager</code> never throws a <code>CertificateException</code> thereby trusting any certificate.
-This allows an attacker to perform a man-in-the-middle attack.
+This allows an attacker to perform a machine-in-the-middle attack.
 In the second (good) example, no custom <code>TrustManager</code> is used. Instead, the self-signed certificate that should be trusted
 is explicitly trusted by loading it into a <code>KeyStore</code>.
 </p>
