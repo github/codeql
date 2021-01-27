@@ -691,8 +691,28 @@ typedefbase(
     int type_id: @type ref
 );
 
+/**
+ * An instance of the C++11 `decltype` operator.  For example:
+ * ```
+ * int a;
+ * decltype(1+a) b;
+ * ```
+ * Here `expr` is `1+a`.
+ *
+ * Sometimes an additional pair of parentheses around the expression
+ * would change the semantics of this decltype, e.g.
+ * ```
+ * struct A { double x; };
+ * const A* a = new A();
+ * decltype( a->x ); // type is double
+ * decltype((a->x)); // type is const double&
+ * ```
+ * (Please consult the C++11 standard for more details).
+ * `parentheses_would_change_meaning` is `true` iff that is the case.
+ */
+#keyset[id, expr]
 decltypes(
-    unique int id: @decltype,
+    int id: @decltype,
     int expr: @expr ref,
     int base_type: @type ref,
     boolean parentheses_would_change_meaning: boolean ref
