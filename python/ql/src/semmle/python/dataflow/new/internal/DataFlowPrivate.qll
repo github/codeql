@@ -562,8 +562,8 @@ class DataFlowLambda extends DataFlowCallable, TLambda {
 
   override string getName() { result = "Lambda callable" }
 
-  override CallableValue getCallableValue() {
-    result.(FunctionValue).getOrigin().getNode() = lambda.getDefinition()
+  override FunctionValue getCallableValue() {
+    result.getOrigin().getNode() = lambda.getDefinition()
   }
 }
 
