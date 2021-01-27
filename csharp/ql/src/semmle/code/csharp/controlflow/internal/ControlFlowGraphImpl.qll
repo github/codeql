@@ -51,12 +51,21 @@ private import Splitting
 private import semmle.code.csharp.ExprOrStmtParent
 
 /** An element that defines a new CFG scope. */
-class CfgScope extends Element, @top_level_exprorstmt_parent { }
+class CfgScope extends Element, @top_level_exprorstmt_parent {
+  CfgScope() { not this instanceof Attribute }
+}
 
 module ControlFlowTree {
   private class Range_ = @callable or @control_flow_element;
 
-  class Range extends Element, Range_ { }
+  class Range extends Element, Range_ {
+    Range() { this = getAChild*(any(CfgScope scope)) }
+  }
+
+  private Element getAChild(Element p) {
+    result = p.getAChild() or
+    result = p.(AssignOperation).getExpandedAssignment()
+  }
 
   private predicate id(Range x, Range y) { x = y }
 

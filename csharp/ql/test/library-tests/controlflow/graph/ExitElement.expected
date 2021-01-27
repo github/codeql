@@ -189,7 +189,6 @@
 | AccessorCalls.cs:58:22:58:25 | this access | AccessorCalls.cs:58:22:58:25 | this access | normal |
 | AccessorCalls.cs:58:22:58:30 | access to property Prop | AccessorCalls.cs:58:22:58:25 | this access | normal |
 | AccessorCalls.cs:58:33:58:44 | (..., ...) | AccessorCalls.cs:58:33:58:44 | (..., ...) | normal |
-| AccessorCalls.cs:58:34:58:34 | 1 | AccessorCalls.cs:58:34:58:34 | 1 | normal |
 | AccessorCalls.cs:58:37:58:40 | this access | AccessorCalls.cs:58:37:58:40 | this access | normal |
 | AccessorCalls.cs:58:37:58:43 | access to indexer | AccessorCalls.cs:58:42:58:42 | 0 | normal |
 | AccessorCalls.cs:58:42:58:42 | 0 | AccessorCalls.cs:58:42:58:42 | 0 | normal |
@@ -788,8 +787,6 @@
 | Assert.cs:128:9:128:36 | ...; | Assert.cs:128:9:128:35 | call to method WriteLine | normal |
 | Assert.cs:128:27:128:27 | access to local variable s | Assert.cs:128:27:128:27 | access to local variable s | normal |
 | Assert.cs:128:27:128:34 | access to property Length | Assert.cs:128:27:128:34 | access to property Length | normal |
-| Assert.cs:132:61:132:65 | false | Assert.cs:132:61:132:65 | false | normal |
-| Assert.cs:133:61:133:64 | true | Assert.cs:133:61:133:64 | true | normal |
 | Assert.cs:135:5:136:5 | {...} | Assert.cs:135:5:136:5 | {...} | normal |
 | Assert.cs:139:5:142:5 | {...} | Assert.cs:140:9:140:35 | call to method AssertTrueFalse | throw(Exception) |
 | Assert.cs:139:5:142:5 | {...} | Assert.cs:141:9:141:15 | return ...; | return |
@@ -2298,9 +2295,7 @@
 | Foreach.cs:25:5:28:5 | {...} | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | empty |
 | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | empty |
 | Foreach.cs:26:18:26:31 | (..., ...) | Foreach.cs:26:18:26:31 | (..., ...) | normal |
-| Foreach.cs:26:19:26:23 | 1 | Foreach.cs:26:19:26:23 | 1 | normal |
 | Foreach.cs:26:23:26:23 | String x | Foreach.cs:26:23:26:23 | String x | normal |
-| Foreach.cs:26:26:26:30 | 1 | Foreach.cs:26:26:26:30 | 1 | normal |
 | Foreach.cs:26:30:26:30 | Int32 y | Foreach.cs:26:30:26:30 | Int32 y | normal |
 | Foreach.cs:26:36:26:39 | access to parameter args | Foreach.cs:26:36:26:39 | access to parameter args | normal |
 | Foreach.cs:27:11:27:11 | ; | Foreach.cs:27:11:27:11 | ; | normal |

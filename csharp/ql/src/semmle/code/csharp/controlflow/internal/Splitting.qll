@@ -1541,11 +1541,7 @@ predicate succEntrySplits(CfgScope pred, ControlFlowElement succ, Splits succSpl
   exists(int rnk |
     scopeFirst(pred, succ) and
     t instanceof NormalSuccessor and
-    succEntrySplitsFromRank(pred, succ, succSplits, rnk) and
-    // Attribute arguments in assemblies are represented as expressions, even though
-    // they are not from source. We are not interested in constructing a CFG for such
-    // expressions.
-    succ.fromSource()
+    succEntrySplitsFromRank(pred, succ, succSplits, rnk)
   |
     rnk = 0 and
     not any(SplitImpl split).hasEntryScope(pred, succ)
