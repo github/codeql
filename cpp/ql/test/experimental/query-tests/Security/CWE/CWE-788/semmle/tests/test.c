@@ -10,30 +10,30 @@ void badFunc0(){
   struct buffers buffAll;
   struct buffers * buffAll1;
   
-  buff1[strlen(buff1)]=0;
-  buffAll.buff1[strlen(buffAll.buff1)]=0;
-  buffAll.buff2[strlen(buffAll.buff2)]=0;
-  buffAll1->buff1[strlen(buffAll1->buff1)]=0;
-  buffAll1->buff2[strlen(buffAll1->buff2)]=0;
-  globalBuff1.buff1[strlen(globalBuff1.buff1)]=0;
-  globalBuff1.buff2[strlen(globalBuff1.buff2)]=0;
-  globalBuff2->buff1[strlen(globalBuff2->buff1)]=0;
-  globalBuff2->buff2[strlen(globalBuff2->buff2)]=0;
+  buff1[strlen(buff1)]=0; // BAD
+  buffAll.buff1[strlen(buffAll.buff1)]=0; // BAD
+  buffAll.buff2[strlen(buffAll.buff2)]=0; // BAD
+  buffAll1->buff1[strlen(buffAll1->buff1)]=0; // BAD
+  buffAll1->buff2[strlen(buffAll1->buff2)]=0; // BAD
+  globalBuff1.buff1[strlen(globalBuff1.buff1)]=0; // BAD
+  globalBuff1.buff2[strlen(globalBuff1.buff2)]=0; // BAD
+  globalBuff2->buff1[strlen(globalBuff2->buff1)]=0; // BAD
+  globalBuff2->buff2[strlen(globalBuff2->buff2)]=0; // BAD
 }
 void noBadFunc0(){
   unsigned char buff1[12],buff1_c[12];
   struct buffers buffAll,buffAll_c;
   struct buffers * buffAll1,*buffAll1_c;
   
-  buff1[strlen(buff1_c)]=0;
-  buffAll.buff1[strlen(buffAll_c.buff1)]=0;
-  buffAll.buff2[strlen(buffAll.buff1)]=0;
-  buffAll1->buff1[strlen(buffAll1_c->buff1)]=0;
-  buffAll1->buff2[strlen(buffAll1->buff1)]=0;
-  globalBuff1.buff1[strlen(globalBuff1_c.buff1)]=0;
-  globalBuff1.buff2[strlen(globalBuff1.buff1)]=0;
-  globalBuff2->buff1[strlen(globalBuff2_c->buff1)]=0;
-  globalBuff2->buff2[strlen(globalBuff2->buff1)]=0;
+  buff1[strlen(buff1_c)]=0; // GOOD
+  buffAll.buff1[strlen(buffAll_c.buff1)]=0; // GOOD
+  buffAll.buff2[strlen(buffAll.buff1)]=0; // GOOD
+  buffAll1->buff1[strlen(buffAll1_c->buff1)]=0; // GOOD
+  buffAll1->buff2[strlen(buffAll1->buff1)]=0; // GOOD
+  globalBuff1.buff1[strlen(globalBuff1_c.buff1)]=0; // GOOD
+  globalBuff1.buff2[strlen(globalBuff1.buff1)]=0; // GOOD
+  globalBuff2->buff1[strlen(globalBuff2_c->buff1)]=0; // GOOD
+  globalBuff2->buff2[strlen(globalBuff2->buff1)]=0; // GOOD
 }
 void goodFunc0(){
   unsigned char buffer[12];
