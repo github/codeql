@@ -16,9 +16,10 @@
 | CSharp7.cs:256:18:256:20 | "x" | CSharp7.cs:256:27:256:27 | access to local variable o | semmle.label | match |
 | CSharp7.cs:256:18:256:20 | "x" | CSharp7.cs:259:13:259:36 | case ...: | semmle.label | no-match |
 | CSharp7.cs:256:27:256:27 | access to local variable o | CSharp7.cs:256:32:256:40 | String s4 | semmle.label | successor |
-| CSharp7.cs:256:27:256:40 | ... is ... | CSharp7.cs:257:17:257:45 | ...; | semmle.label | true |
-| CSharp7.cs:256:27:256:40 | ... is ... | CSharp7.cs:259:13:259:36 | case ...: | semmle.label | false |
-| CSharp7.cs:256:32:256:40 | String s4 | CSharp7.cs:256:27:256:40 | ... is ... | semmle.label | successor |
+| CSharp7.cs:256:27:256:40 | [false] ... is ... | CSharp7.cs:259:13:259:36 | case ...: | semmle.label | false |
+| CSharp7.cs:256:27:256:40 | [true] ... is ... | CSharp7.cs:257:17:257:45 | ...; | semmle.label | true |
+| CSharp7.cs:256:32:256:40 | String s4 | CSharp7.cs:256:27:256:40 | [false] ... is ... | semmle.label | no-match |
+| CSharp7.cs:256:32:256:40 | String s4 | CSharp7.cs:256:27:256:40 | [true] ... is ... | semmle.label | match |
 | CSharp7.cs:257:17:257:44 | call to method WriteLine | CSharp7.cs:258:17:258:22 | break; | semmle.label | successor |
 | CSharp7.cs:257:17:257:45 | ...; | CSharp7.cs:257:37:257:38 | "x " | semmle.label | successor |
 | CSharp7.cs:257:35:257:43 | $"..." | CSharp7.cs:257:17:257:44 | call to method WriteLine | semmle.label | successor |

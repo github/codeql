@@ -146,9 +146,10 @@
 | patterns.cs:140:17:140:24 | Object y | patterns.cs:141:17:141:22 | access to type String | semmle.label | no-match |
 | patterns.cs:140:17:140:42 | ... => ... | patterns.cs:136:17:143:13 | ... switch { ... } | semmle.label | successor |
 | patterns.cs:140:31:140:31 | access to local variable y | patterns.cs:140:36:140:37 | { ... } | semmle.label | successor |
-| patterns.cs:140:31:140:37 | ... is ... | patterns.cs:140:42:140:42 | 4 | semmle.label | true |
-| patterns.cs:140:31:140:37 | ... is ... | patterns.cs:141:17:141:22 | access to type String | semmle.label | false |
-| patterns.cs:140:36:140:37 | { ... } | patterns.cs:140:31:140:37 | ... is ... | semmle.label | successor |
+| patterns.cs:140:31:140:37 | [false] ... is ... | patterns.cs:141:17:141:22 | access to type String | semmle.label | false |
+| patterns.cs:140:31:140:37 | [true] ... is ... | patterns.cs:140:42:140:42 | 4 | semmle.label | true |
+| patterns.cs:140:36:140:37 | { ... } | patterns.cs:140:31:140:37 | [false] ... is ... | semmle.label | no-match |
+| patterns.cs:140:36:140:37 | { ... } | patterns.cs:140:31:140:37 | [true] ... is ... | semmle.label | match |
 | patterns.cs:140:36:140:37 | { ... } | patterns.cs:140:36:140:37 | { ... } | semmle.label | successor |
 | patterns.cs:140:42:140:42 | 4 | patterns.cs:140:17:140:42 | ... => ... | semmle.label | successor |
 | patterns.cs:141:17:141:22 | access to type String | patterns.cs:141:29:141:29 | 5 | semmle.label | match |

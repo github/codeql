@@ -465,6 +465,12 @@ module ConditionalCompletionSplitting {
         or
         last(succ.(SwitchCaseExpr).getBody(), pred, c) and
         completion = c
+        or
+        last(succ.(NotPatternExpr).getPattern(), pred, c) and
+        completion.(MatchingCompletion).getDual() = c
+        or
+        last(succ.(IsExpr).getPattern(), pred, c) and
+        completion.(BooleanCompletion).getValue() = c.(MatchingCompletion).getValue()
       )
     }
 
