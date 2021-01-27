@@ -40,9 +40,7 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, Sid
   /**
    * Holds if this is one of the `strcpy_s` variants.
    */
-  private predicate isSVariant() {
-    exists(string name | name = getName() | name.suffix(name.length() - 2) = "_s")
-  }
+  private predicate isSVariant() { getName().matches("%\\_s") }
 
   /**
    * Gets the index of the parameter that is the maximum size of the copy (in characters).
