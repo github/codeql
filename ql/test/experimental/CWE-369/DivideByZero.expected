@@ -9,5 +9,5 @@ nodes
 | DivideByZero.go:18:11:18:24 | type conversion : uint8 | semmle.label | type conversion : uint8 |
 | DivideByZero.go:19:16:19:20 | value | semmle.label | value |
 #select
-| DivideByZero.go:12:16:12:20 | value | DivideByZero.go:10:12:10:16 | selection of URL : pointer type | DivideByZero.go:12:16:12:20 | value | Variable $@, which is used at division statement might be zero and leads to division by zero exception. | DivideByZero.go:12:16:12:20 | value | value |
-| DivideByZero.go:19:16:19:20 | value | DivideByZero.go:17:12:17:16 | selection of URL : pointer type | DivideByZero.go:19:16:19:20 | value | Variable $@, which is used at division statement might be zero and leads to division by zero exception. | DivideByZero.go:19:16:19:20 | value | value |
+| DivideByZero.go:12:16:12:20 | value | DivideByZero.go:10:12:10:16 | selection of URL : pointer type | DivideByZero.go:12:16:12:20 | value | Variable $@, which is used at division statement might be zero leading to a division-by-zero panic. | DivideByZero.go:12:16:12:20 | value | value |
+| DivideByZero.go:19:16:19:20 | value | DivideByZero.go:17:12:17:16 | selection of URL : pointer type | DivideByZero.go:19:16:19:20 | value | Variable $@, which is used at division statement might be zero leading to a division-by-zero panic. | DivideByZero.go:19:16:19:20 | value | value |

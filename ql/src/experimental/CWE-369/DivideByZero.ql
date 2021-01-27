@@ -14,8 +14,11 @@ import go
 import DataFlow::PathGraph
 import semmle.go.dataflow.internal.TaintTrackingUtil
 
+/**
+ * A barrier-guard, which represents comparison and equality with zero.
+ */
 class DivideByZeroSanitizerGuard extends DataFlow::BarrierGuard {
-  DivideByZeroSanitizeGuard() {
+  DivideByZeroSanitizerGuard() {
     this.(DataFlow::EqualityTestNode).getAnOperand().getNumericValue() = 0 or
     this.(DataFlow::RelationalComparisonNode).getAnOperand().getNumericValue() = 0
   }
@@ -33,6 +36,9 @@ class DivideByZeroSanitizerGuard extends DataFlow::BarrierGuard {
   }
 }
 
+/**
+ * A taint-tracking configuration for reasoning about division by zero, where divisor is user-controlled and unchecked.
+ */
 class DivideByZeroCheckConfig extends TaintTracking::Configuration {
   DivideByZeroCheckConfig() { this = "DivideByZeroCheckConfig" }
 
@@ -41,27 +47,22 @@ class DivideByZeroCheckConfig extends TaintTracking::Configuration {
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(Function f |
       f.hasQualifiedName("strconv", ["Atoi", "ParseInt", "ParseUint", "ParseFloat"]) and
-      node1 = f.getACall().getArgument(0) and
-      node2 = f.getACall().getResult(0)
-    )
-    or
-    exists(ConversionExpr ce | ce.getType().getUnderlyingType() instanceof IntegerType |
-      node1.asExpr() = ce.getOperand() and
-      node2.asExpr() = ce.getAChildExpr()
+      pred = f.getACall().getArgument(0) and
+      succ = f.getACall().getResult(0)
     )
   }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof DivideByZeroSanitizeGuard
+    guard instanceof DivideByZeroSanitizerGuard
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(QuoExpr e | sink.asExpr().getParent().(QuoExpr).getRightOperand() = e.getAnOperand())
+    sink = DataFlow::exprNode(any(QuoExpr e).getRightOperand())
   }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, DivideByZeroCheckConfig cfg
 where cfg.hasFlowPath(source, sink)
 select sink, source, sink,
-  "Variable $@, which is used at division statement might be zero leading to a division-by-zero panic.",
+  "Variable $@ might be zero leading to a division-by-zero panic.",
   sink, sink.getNode().toString()
