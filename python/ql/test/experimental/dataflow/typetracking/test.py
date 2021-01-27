@@ -108,7 +108,7 @@ class Bar(Foo):
 
 def test_long_import_chain():
     import foo.bar
-    foo.baz # $ SPURIOUS: tracked_foo_bar_baz
+    foo.baz
     x = foo.bar.baz # $ tracked_foo_bar_baz
     do_stuff(x) # $ tracked_foo_bar_baz
 
