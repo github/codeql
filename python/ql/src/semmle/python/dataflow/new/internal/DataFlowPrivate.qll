@@ -32,68 +32,82 @@ class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
   override Location getLocation() { result = post.getLocation() }
 }
 
-/** A data flow node for which we should synthesise an associated post-update node. */
-abstract class NeedsSyntheticPostUpdateNode extends Node {
-  /** A label for this kind of node. This will figure in the textual representation of the synthesized post-update node. */
-  abstract string label();
-}
+/** A module collecting the different reasons for synthesising a post-update node. */
+module needsSyntheticPostUpdateNode {
+  /** A data flow node for which we should synthesise an associated post-update node. */
+  class NeedsSyntheticPostUpdateNode extends Node {
+    NeedsSyntheticPostUpdateNode() {
+      this = argumentPreUpdateNode()
+      or
+      this = storePreUpdateNode()
+      or
+      this = readPreUpdateNode()
+    }
 
-/** An argument might have its value changed as a result of a call. */
-class ArgumentPreUpdateNode extends NeedsSyntheticPostUpdateNode, ArgumentNode {
-  // Certain arguments, such as implicit self arguments are already post-update nodes
-  // and should not have an extra node synthesised.
-  ArgumentPreUpdateNode() {
-    this = any(FunctionCall c).getArg(_)
-    or
-    // Avoid argument 0 of method calls as those have read post-update nodes.
-    exists(MethodCall c, int n | n > 0 | this = c.getArg(n))
-    or
-    this = any(SpecialCall c).getArg(_)
-    or
-    // Avoid argument 0 of class calls as those have non-synthetic post-update nodes.
-    exists(ClassCall c, int n | n > 0 | this = c.getArg(n))
+    /**
+     * A label for this kind of node. This will figure in the textual representation of the synthesized post-update node.
+     * We favour being an arguments as the reason for the post-update node in case multiple reasons apply.
+     */
+    string label() {
+      if this = argumentPreUpdateNode()
+      then result = "arg"
+      else
+        if this = storePreUpdateNode()
+        then result = "store"
+        else result = "read"
+    }
   }
 
-  override string label() { result = "arg" }
-}
+  /**
+   * An argument might have its value changed as a result of a call.
+   * Certain arguments, such as implicit self arguments are already post-update nodes
+   * and should not have an extra node synthesised.
+   */
+  ArgumentNode argumentPreUpdateNode() {
+    result = any(FunctionCall c).getArg(_)
+    or
+    // Avoid argument 0 of method calls as those have read post-update nodes.
+    exists(MethodCall c, int n | n > 0 | result = c.getArg(n))
+    or
+    result = any(SpecialCall c).getArg(_)
+    or
+    // Avoid argument 0 of class calls as those have non-synthetic post-update nodes.
+    exists(ClassCall c, int n | n > 0 | result = c.getArg(n))
+  }
 
-/** An object might have its value changed after a store. */
-class StorePreUpdateNode extends NeedsSyntheticPostUpdateNode, CfgNode {
-  StorePreUpdateNode() {
+  /** An object might have its value changed after a store. */
+  CfgNode storePreUpdateNode() {
     exists(Attribute a |
-      node = a.getObject().getAFlowNode() and
+      result.getNode() = a.getObject().getAFlowNode() and
       a.getCtx() instanceof Store
     )
   }
 
-  override string label() { result = "store" }
-}
-
-/**
- * A node marking the state change of an object after a read.
- *
- * A reverse read happens when the result of a read is modified, e.g. in
- * ```python
- * l = [ mutable ]
- * l[0].mutate()
- * ```
- * we may now have changed the content of `l`. To track this, there must be
- * a postupdate node for `l`.
- */
-class ReadPreUpdateNode extends NeedsSyntheticPostUpdateNode, CfgNode {
-  ReadPreUpdateNode() {
+  /**
+   * A node marking the state change of an object after a read.
+   *
+   * A reverse read happens when the result of a read is modified, e.g. in
+   * ```python
+   * l = [ mutable ]
+   * l[0].mutate()
+   * ```
+   * we may now have changed the content of `l`. To track this, there must be
+   * a postupdate node for `l`.
+   */
+  CfgNode readPreUpdateNode() {
     exists(Attribute a |
-      node = a.getObject().getAFlowNode() and
+      result.getNode() = a.getObject().getAFlowNode() and
       a.getCtx() instanceof Load
     )
     or
-    node = any(SubscriptNode s).getObject()
+    result.getNode() = any(SubscriptNode s).getObject()
     or
-    node.getNode() = any(Call call).getKwargs()
+    // The dictionary argument is read from if the callable has parameters matching the keys.
+    result.getNode().getNode() = any(Call call).getKwargs()
   }
-
-  override string label() { result = "read" }
 }
+
+import needsSyntheticPostUpdateNode
 
 /** A post-update node is synthesized for all nodes which satisfy `NeedsSyntheticPostUpdateNode`. */
 class SyntheticPostUpdateNode extends PostUpdateNode, TSyntheticPostUpdateNode {
@@ -402,6 +416,12 @@ module ArgumentPassing {
    *
    * NOT SUPPORTED: Keyword-only parameters.
    */
+  Node testGetArg(CallNode call, int n, DataFlowCallable callable) {
+    result.getLocation().getStartLine() = 685 and
+    result.getLocation().getFile().getBaseName() = "ElementTree.py" and
+    result = getArg(call, TNoShift(), callable.getCallableValue(), n)
+  }
+
   Node getArg(CallNode call, ArgParamMapping mapping, CallableValue callable, int paramN) {
     connects(call, callable) and
     (
