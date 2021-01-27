@@ -19,7 +19,7 @@ import DataFlow::PathGraph
 
 /**
  * Models an insecure `X509TrustManager`.
- * An `X509TrustManager` is considered insecure if it never throws a `CertificatException` thereby accepting any certificate as valid.
+ * An `X509TrustManager` is considered insecure if it never throws a `CertificateException` thereby accepting any certificate as valid.
  */
 class InsecureX509TrustManager extends RefType {
   InsecureX509TrustManager() {
@@ -33,26 +33,26 @@ class InsecureX509TrustManager extends RefType {
 }
 
 /** The `java.security.cert.CertificateException` class. */
-private class CertificatException extends RefType {
-  CertificatException() { hasQualifiedName("java.security.cert", "CertificateException") }
+private class CertificateException extends RefType {
+  CertificateException() { hasQualifiedName("java.security.cert", "CertificateException") }
 }
 
 /**
- *Holds if:
- * - `m` may `throw` an `CertificatException`
+ * Holds if:
+ * - `m` may `throw` a `CertificateException`
  * - `m` calls another method that may throw
- * - `m` calls a method that declares to throw an `CertificatExceptio`, but for which no source is available
+ * - `m` calls a method declared to throw a `CertificateException`, but for which no source is available
  */
 private predicate mayThrowCertificateException(Method m) {
   exists(Stmt stmt | m.getBody().getAChild*() = stmt |
-    stmt.(ThrowStmt).getThrownExceptionType().getASupertype*() instanceof CertificatException
+    stmt.(ThrowStmt).getThrownExceptionType().getASupertype*() instanceof CertificateException
   )
   or
   exists(Method otherMethod | m.polyCalls(otherMethod) |
     mayThrowCertificateException(otherMethod)
     or
     not otherMethod.fromSource() and
-    otherMethod.getAnException().getType().getASupertype*() instanceof CertificatException
+    otherMethod.getAnException().getType().getASupertype*() instanceof CertificateException
   )
 }
 
