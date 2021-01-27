@@ -99,7 +99,9 @@ private module CleverGo {
     }
   }
 
-  // Models taint-tracking through functions.
+  /**
+   * Models taint-tracking through functions.
+   */
   private class TaintTrackingFunctionModels extends TaintTracking::FunctionModel {
     FunctionInput inp;
     FunctionOutput out;
@@ -119,7 +121,9 @@ private module CleverGo {
     }
   }
 
-  // Models taint-tracking through method calls.
+  /**
+   * Models taint-tracking through method calls.
+   */
   private class TaintTrackingMethodModels extends TaintTracking::FunctionModel, Method {
     FunctionInput inp;
     FunctionOutput out;
@@ -152,7 +156,9 @@ private module CleverGo {
     }
   }
 
-  // Models HTTP redirects.
+  /**
+   * Models HTTP redirects.
+   */
   private class HttpRedirect extends HTTP::Redirect::Range, DataFlow::CallNode {
     string package;
     DataFlow::Node urlNode;
@@ -173,7 +179,9 @@ private module CleverGo {
     override HTTP::ResponseWriter getResponseWriter() { none() }
   }
 
-  // Models HTTP ResponseBody.
+  /**
+   * Models HTTP ResponseBody.
+   */
   private class HttpResponseBody extends HTTP::ResponseBody::Range {
     string package;
     DataFlow::CallNode call;
