@@ -172,4 +172,93 @@ private module CleverGo {
 
     override HTTP::ResponseWriter getResponseWriter() { none() }
   }
+
+  // Models HTTP ResponseBody.
+  private class HttpResponseBody extends HTTP::ResponseBody::Range {
+    string package;
+    DataFlow::CallNode call;
+    string contentType;
+
+    HttpResponseBody() {
+      // HTTP ResponseBody models for package: clevergo.tech/clevergo@v0.5.2
+      package = packagePath() and
+      // Receiver type: Context
+      (
+        // signature: func (*Context).Error(code int, msg string) error
+        call = any(Method m | m.hasQualifiedName(package, "Context", "Error")).getACall() and
+        this = call.getArgument(1) and
+        contentType = "text/plain"
+        or
+        // signature: func (*Context).HTML(code int, html string) error
+        call = any(Method m | m.hasQualifiedName(package, "Context", "HTML")).getACall() and
+        this = call.getArgument(1) and
+        contentType = "text/html"
+        or
+        // signature: func (*Context).HTMLBlob(code int, bs []byte) error
+        call = any(Method m | m.hasQualifiedName(package, "Context", "HTMLBlob")).getACall() and
+        this = call.getArgument(1) and
+        contentType = "text/html"
+        or
+        // signature: func (*Context).JSON(code int, data interface{}) error
+        call = any(Method m | m.hasQualifiedName(package, "Context", "JSON")).getACall() and
+        this = call.getArgument(1) and
+        contentType = "application/json"
+        or
+        // signature: func (*Context).JSONBlob(code int, bs []byte) error
+        call = any(Method m | m.hasQualifiedName(package, "Context", "JSONBlob")).getACall() and
+        this = call.getArgument(1) and
+        contentType = "application/json"
+        or
+        // signature: func (*Context).JSONP(code int, data interface{}) error
+        call = any(Method m | m.hasQualifiedName(package, "Context", "JSONP")).getACall() and
+        this = call.getArgument(1) and
+        contentType = "application/javascript"
+        or
+        // signature: func (*Context).JSONPBlob(code int, bs []byte) error
+        call = any(Method m | m.hasQualifiedName(package, "Context", "JSONPBlob")).getACall() and
+        this = call.getArgument(1) and
+        contentType = "application/javascript"
+        or
+        // signature: func (*Context).JSONPCallback(code int, callback string, data interface{}) error
+        call = any(Method m | m.hasQualifiedName(package, "Context", "JSONPCallback")).getACall() and
+        this = call.getArgument(2) and
+        contentType = "application/javascript"
+        or
+        // signature: func (*Context).JSONPCallbackBlob(code int, callback string, bs []byte) (err error)
+        call =
+          any(Method m | m.hasQualifiedName(package, "Context", "JSONPCallbackBlob")).getACall() and
+        this = call.getArgument(2) and
+        contentType = "application/javascript"
+        or
+        // signature: func (*Context).String(code int, s string) error
+        call = any(Method m | m.hasQualifiedName(package, "Context", "String")).getACall() and
+        this = call.getArgument(1) and
+        contentType = "text/plain"
+        or
+        // signature: func (*Context).StringBlob(code int, bs []byte) error
+        call = any(Method m | m.hasQualifiedName(package, "Context", "StringBlob")).getACall() and
+        this = call.getArgument(1) and
+        contentType = "text/plain"
+        or
+        // signature: func (*Context).Stringf(code int, format string, a ...interface{}) error
+        call = any(Method m | m.hasQualifiedName(package, "Context", "Stringf")).getACall() and
+        this = call.getArgument([1, any(int i | i >= 2)]) and
+        contentType = "text/plain"
+        or
+        // signature: func (*Context).XML(code int, data interface{}) error
+        call = any(Method m | m.hasQualifiedName(package, "Context", "XML")).getACall() and
+        this = call.getArgument(1) and
+        contentType = "text/xml"
+        or
+        // signature: func (*Context).XMLBlob(code int, bs []byte) error
+        call = any(Method m | m.hasQualifiedName(package, "Context", "XMLBlob")).getACall() and
+        this = call.getArgument(1) and
+        contentType = "text/xml"
+      )
+    }
+
+    override string getAContentType() { result = contentType }
+
+    override HTTP::ResponseWriter getResponseWriter() { none() }
+  }
 }
