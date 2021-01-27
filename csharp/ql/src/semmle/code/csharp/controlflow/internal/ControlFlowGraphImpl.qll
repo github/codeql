@@ -62,7 +62,7 @@ module ControlFlowTree {
     Range() { this = getAChild*(any(CfgScope scope)) }
   }
 
-  private Element getAChild(Element p) {
+  Element getAChild(Element p) {
     result = p.getAChild() or
     result = p.(AssignOperation).getExpandedAssignment()
   }
@@ -1334,7 +1334,7 @@ module Statements {
   /** Gets a child of `cfe` that is in CFG scope `scope`. */
   pragma[noinline]
   private ControlFlowElement getAChildInScope(ControlFlowElement cfe, Callable scope) {
-    result = [cfe.getAChild(), cfe.(AssignOperation).getExpandedAssignment()] and
+    result = ControlFlowTree::getAChild(cfe) and
     scope = result.getEnclosingCallable()
   }
 
