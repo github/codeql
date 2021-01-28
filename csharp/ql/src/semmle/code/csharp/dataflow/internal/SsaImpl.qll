@@ -5,70 +5,11 @@
 import csharp
 import SsaImplCommon
 
-/** A classification of variable reads. */
-newtype TReadKind =
-  /** An actual read. */
-  ActualRead() or
-  /**
-   * A pseudo read for a `ref` or `out` variable at the end of the variable's enclosing
-   * callable. A pseudo read is inserted to make assignments to `out`/`ref` variables
-   * live, for example line 1 in
-   *
-   * ```csharp
-   * void M(out int i) {
-   *   i = 0;
-   * }
-   * ```
-   */
-  OutRefExitRead() or
-  /**
-   * A pseudo read for a captured variable at the end of the capturing
-   * callable. A write to a captured variable needs to be live for the same reasons
-   * as a write to a `ref` or `out` variable (see above).
-   */
-  CapturedVarExitRead() or
-  /**
-   * A pseudo read for a captured variable via a call.
-   */
-  CapturedVarCallRead() or
-  /**
-   * A pseudo read for a `ref` variable, just prior to an update of the referenced value.
-   * A pseudo read is inserted to make assignments to the `ref` variable live, for example
-   * line 2 in
-   *
-   * ```csharp
-   * void M() {
-   *   ref int i = ref GetRef();
-   *   i = 0;
-   * }
-   * ```
-   *
-   * The pseudo read is inserted at the CFG node `i` on the left-hand side of the
-   * assignment on line 3.
-   */
-  RefReadBeforeWrite()
-
-/** A classification of variable reads. */
-class ReadKind extends TReadKind {
-  string toString() {
-    this = ActualRead() and
-    result = "ActualRead"
-    or
-    this = OutRefExitRead() and
-    result = "OutRefExitRead"
-    or
-    this = CapturedVarExitRead() and
-    result = "CapturedVarExitRead"
-    or
-    this = CapturedVarCallRead() and
-    result = "CapturedVarCallRead"
-    or
-    this = RefReadBeforeWrite() and
-    result = "RefReadBeforeWrite"
-  }
-
-  /** Holds if this kind represents a pseudo read. */
-  predicate isPseudo() { this != ActualRead() }
+/**
+ * Holds if the `i`th node of basic block `bb` reads source variable `v`.
+ */
+predicate variableReadActual(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v) {
+  v.getAnAccess().(AssignableRead) = bb.getNode(i).getElement()
 }
 
 private module SourceVariableImpl {
@@ -183,23 +124,17 @@ private module SourceVariableImpl {
   }
 
   /**
-   * Holds if the `i`th node of basic block `bb` reads source variable `v`.
-   * The read is of kind `rk`.
+   * Holds if a pseudo read for `ref` or `out` variable `v` happens at index `i`
+   * in basic block `bb`. A pseudo read is inserted to make assignments to
+   * `out`/`ref` variables live, for example line 1 in
    *
-   * This excludes implicit reads via calls.
+   * ```csharp
+   * void M(out int i) {
+   *   i = 0;
+   * }
+   * ```
    */
-  predicate variableReadDirect(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, ReadKind rk) {
-    v.getAnAccess().(AssignableRead) = bb.getNode(i).getElement() and
-    rk = ActualRead()
-    or
-    outRefExitRead(bb, i, v) and
-    rk = OutRefExitRead()
-    or
-    refReadBeforeWrite(bb, i, v) and
-    rk = RefReadBeforeWrite()
-  }
-
-  private predicate outRefExitRead(ControlFlow::BasicBlock bb, int i, LocalScopeSourceVariable v) {
+  predicate outRefExitRead(ControlFlow::BasicBlock bb, int i, LocalScopeSourceVariable v) {
     exists(ControlFlow::Nodes::AnnotatedExitNode exit |
       exit.isNormal() and
       exists(LocalScopeVariable lsv |
@@ -215,7 +150,23 @@ private module SourceVariableImpl {
     )
   }
 
-  private predicate refReadBeforeWrite(ControlFlow::BasicBlock bb, int i, LocalScopeSourceVariable v) {
+  /**
+   * Holds if a pseudo read for `ref` variable `v` happens at index `i` in basic
+   * block `bb`, just prior to an update of the referenced value. A pseudo read
+   * is inserted to make assignments to the `ref` variable live, for example
+   * line 2 in
+   *
+   * ```csharp
+   * void M() {
+   *   ref int i = ref GetRef();
+   *   i = 0;
+   * }
+   * ```
+   *
+   * The pseudo read is inserted at the CFG node `i` on the left-hand side of the
+   * assignment on line 3.
+   */
+  predicate refReadBeforeWrite(ControlFlow::BasicBlock bb, int i, LocalScopeSourceVariable v) {
     exists(AssignableDefinitions::AssignmentDefinition def, LocalVariable lv |
       def.getTarget() = lv and
       lv.isRef() and
@@ -812,10 +763,13 @@ private module CapturedVariableLivenessImpl {
    */
   private predicate capturerReads(Callable c, LocalScopeVariable v) {
     exists(LocalScopeSourceVariable sv |
-      variableReadDirect(_, _, sv, _) and
       c = sv.getEnclosingCallable() and
       v = sv.getAssignable() and
       v.getCallable() != c
+    |
+      variableReadActual(_, _, sv)
+      or
+      refReadBeforeWrite(_, _, sv)
     )
   }
 
@@ -985,20 +939,25 @@ private module CapturedVariableLivenessImpl {
 
 private import CapturedVariableLivenessImpl
 
+private predicate variableReadPseudo(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v) {
+  outRefExitRead(bb, i, v)
+  or
+  refReadBeforeWrite(bb, i, v)
+  or
+  capturedReadOut(bb, i, v, _, _, _)
+  or
+  capturedReadIn(bb, i, v, _, _, _)
+}
+
 /**
  * Holds if the `i`th of basic block `bb` reads source variable `v`.
- * The read is of kind `rk`.
  *
  * This includes implicit reads via calls.
  */
-predicate variableRead(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, ReadKind rk) {
-  variableReadDirect(bb, i, v, rk)
+predicate variableRead(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v) {
+  variableReadActual(bb, i, v)
   or
-  capturedReadOut(bb, i, v, _, _, _) and
-  rk = CapturedVarExitRead()
-  or
-  capturedReadIn(bb, i, v, _, _, _) and
-  rk = CapturedVarCallRead()
+  variableReadPseudo(bb, i, v)
 }
 
 cached
@@ -1119,7 +1078,7 @@ private module Cached {
       capturedReadIn(_, _, v, edef.getSourceVariable(), c, additionalCalls) and
       def = def0.getAnUltimateDefinition() and
       ssaDefReachesRead(_, def0, bb, i) and
-      variableRead(bb, i, v, CapturedVarCallRead()) and
+      capturedReadIn(bb, i, v, _, _, _) and
       c = bb.getNode(i)
     )
   }
@@ -1130,7 +1089,6 @@ private module Cached {
   ) {
     exists(Ssa::Definition def0, ControlFlow::BasicBlock bb, int i |
       def = def0.getAnUltimateDefinition() and
-      lastRef(def0, bb, i) and
       capturedReadOut(bb, i, def0.getSourceVariable(), cdef.getSourceVariable(), cdef.getCall(),
         additionalCalls)
     )
@@ -1151,7 +1109,7 @@ private module Cached {
     or
     exists(ControlFlow::BasicBlock bb3, int i3 |
       adjacentDefReaches(def, bb1, i1, bb3, i3) and
-      variableRead(bb3, i3, _, any(ReadKind rk | rk.isPseudo())) and
+      variableReadPseudo(bb3, i3, _) and
       adjacentDefRead(def, bb3, i3, bb2, i2)
     )
   }
@@ -1161,7 +1119,7 @@ private module Cached {
     Definition def, ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2
   ) {
     adjacentDefReaches(def, bb1, i1, bb2, i2) and
-    variableRead(bb2, i2, _, ActualRead())
+    variableReadActual(bb2, i2, _)
   }
 
   /**
@@ -1186,7 +1144,7 @@ private module Cached {
   predicate adjacentReadPairSameVar(Definition def, ControlFlow::Node cfn1, ControlFlow::Node cfn2) {
     exists(ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2 |
       cfn1 = bb1.getNode(i1) and
-      variableRead(bb1, i1, _, ActualRead()) and
+      variableReadActual(bb1, i1, _) and
       adjacentDefActualRead(def, bb1, i1, bb2, i2) and
       cfn2 = bb2.getNode(i2)
     )
@@ -1196,7 +1154,24 @@ private module Cached {
     Definition def, ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2
   ) {
     adjacentDefReaches(def, bb1, i1, bb2, i2) and
-    variableRead(bb2, i2, _, any(ReadKind rk | rk.isPseudo()))
+    variableReadPseudo(bb2, i2, _)
+  }
+
+  private predicate reachesLastRefRedef(
+    Definition def, ControlFlow::BasicBlock bb, int i, Definition next
+  ) {
+    lastRefRedef(def, bb, i, next)
+    or
+    exists(ControlFlow::BasicBlock bb0, int i0 |
+      reachesLastRefRedef(def, bb0, i0, next) and
+      adjacentDefPseudoRead(def, bb, i, bb0, i0)
+    )
+  }
+
+  cached
+  predicate lastRefBeforeRedef(Definition def, ControlFlow::BasicBlock bb, int i, Definition next) {
+    reachesLastRefRedef(def, bb, i, next) and
+    not variableReadPseudo(bb, i, def.getSourceVariable())
   }
 
   private predicate reachesLastRef(Definition def, ControlFlow::BasicBlock bb, int i) {
@@ -1204,7 +1179,6 @@ private module Cached {
     or
     exists(ControlFlow::BasicBlock bb0, int i0 |
       reachesLastRef(def, bb0, i0) and
-      variableRead(bb0, i0, _, any(ReadKind rk | rk.isPseudo())) and
       adjacentDefPseudoRead(def, bb, i, bb0, i0)
     )
   }
@@ -1213,7 +1187,7 @@ private module Cached {
   predicate lastReadSameVar(Definition def, ControlFlow::Node cfn) {
     exists(ControlFlow::BasicBlock bb, int i |
       reachesLastRef(def, bb, i) and
-      variableRead(bb, i, _, ActualRead()) and
+      variableReadActual(bb, i, _) and
       cfn = bb.getNode(i)
     )
   }
@@ -1221,11 +1195,12 @@ private module Cached {
   cached
   predicate isLiveOutRefParameterDefinition(Ssa::Definition def, Parameter p) {
     p.isOutOrRef() and
-    exists(Ssa::Definition def0, ControlFlow::BasicBlock bb, int i |
+    exists(Ssa::SourceVariable v, Ssa::Definition def0, ControlFlow::BasicBlock bb, int i |
+      v = def.getSourceVariable() and
+      p = v.getAssignable() and
       def = def0.getAnUltimateDefinition() and
-      reachesLastRef(def0, bb, i) and
-      variableRead(bb, i, def0.getSourceVariable(), OutRefExitRead()) and
-      p = def0.getSourceVariable().getAssignable()
+      ssaDefReachesRead(_, def0, bb, i) and
+      outRefExitRead(bb, i, v)
     )
   }
 }
