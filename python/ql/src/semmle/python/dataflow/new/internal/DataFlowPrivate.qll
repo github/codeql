@@ -1059,30 +1059,36 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  *   (a, [b, *c]) = ("a", ["b", SOURCE])  # RHS has content `TupleElementContent(1); ListElementContent`
  * ```
  * where `a` should not receive content, but `b` and `c` should. `c` will be `[SOURCE]` so
- * should have the content converted and transferred, while `b` should read it.
+ * should have the content transferred, while `b` should read it.
  *
- * The strategy for converting content type is to break the transfer up into a read step
- * and a store step, together creating a converting transfer step.
- * For this we need a synthetic node in the middle, which we call `TIterableElement(receiver)`.
- * It is associated with the receiver of the transfer, because we know the receiver type (tuple) from the syntax.
- * Since we sometimes need a converting read step (in the example above, `[b, *c]` reads the content
- * `ListElementContent` but should have content `TupleElementContent(0)` and `TupleElementContent(0)`),
- * we actually need a second synthetic node. A converting read step is a read step followed by a
- * converting transfer.
+ * To transfer content from RHS to the elements of the LHS in the expression `sequence = iterable`,
+ * we use two synthetic nodes:
  *
- * We can have a uniform treatment by always having two synthetic nodes and so we can view it as
- * two stages of the same node. So we read into (or transfer to) `TIterableSequence(receiver)`,
- * from which we take a read step to `TIterableElement(receiver)` and then a store step to `receiver`.
+ * - `TIterableSequence(sequence)` which captures the content-modeling the entire `sequence` will have
+ * (essentially just a copy of the content-modeling the RHS has)
  *
- * In order to preserve precise content, we also take a flow step from `TIterableSequence(receiver)`
- * directly to `receiver`.
+ * - `TIterableElement(sequence)` which captures the content-modeling that will be assigned to an element.
+ * Note that an empty access path means that the value we are tracking flows directly to the element.
+ *
+ *
+ * The `TIterableSequence(sequence)` is at this point superflous but becomes useful when handling recursive
+ * structures in the LHS, where `sequence` is some internal sequence node. We can have a uniform treatment
+ * by always having these two synthetic nodes. So we transfer to (or, in the recursive case, read into)
+ * `TIterableSequence(sequence)`, from which we take a read step to `TIterableElement(sequence)` and then a
+ * store step to `sequence`.
+ *
+ * This allows the unknown content from the RHS to be read into `TIterableElement(sequence)` and tuple content
+ * to then be stored into `sequence`. If the content is already tuple content, this inderection creates crosstalk
+ * between indices. Therefore, tuple content is never read into `TIterableElement(sequence)`; it is instead
+ * transferred directly from `TIterableSequence(sequence)` to `sequence` via a flow step. Such a flow step will
+ * also transfer other content, but only tuple content is further read from `sequence` into its elements.
  *
  * The strategy is then via several read-, store-, and flow steps:
  * 1. [Flow] Content is transferred from `iterable` to `TIterableSequence(sequence)` via a
  *    flow step. From here, everything happens on the LHS.
  *
  * 2. [Flow] Content is transferred from `TIterableSequence(sequence)` to `sequence` via a
- *    flow step.
+ *    flow step. (Here only tuple content is relevant.)
  *
  * 3. [Read] Content is read from `TIterableSequence(sequence)` into  `TIterableElement(sequence)`.
  *    As `sequence` is modeled as a tuple, we will not read tuple content as that would allow
