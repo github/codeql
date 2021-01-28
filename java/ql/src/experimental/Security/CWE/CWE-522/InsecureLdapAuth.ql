@@ -202,13 +202,11 @@ where
   sink.getNode().asExpr() = va and
   exists(BasicAuthFlowConfig bc, DataFlow::PathNode source2, DataFlow::PathNode sink2 |
     bc.hasFlowPath(source2, sink2) and
-    source2.getNode().asExpr().(CompileTimeConstantExpr).getStringValue() = "simple" and
     sink2.getNode().asExpr() = va
   ) and
   not exists(SSLFlowConfig sc, DataFlow::PathNode source3, DataFlow::PathNode sink3 |
     sc.hasFlowPath(source3, sink3) and
-    source3.getNode().asExpr().(CompileTimeConstantExpr).getStringValue() = "ssl" and
-    sink3.getNode().asExpr() = va.getVariable().getAnAccess()
+    sink3.getNode().asExpr() = va
   )
 select sink.getNode(), source, sink, "Insecure LDAP authentication from $@.", source.getNode(),
   "LDAP connection string"
