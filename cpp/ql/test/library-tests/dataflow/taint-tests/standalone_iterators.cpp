@@ -38,13 +38,13 @@ public:
 
 void test_typedefs(int_iterator_by_typedefs source1) {
     sink(*source1); // $ ast,ir
-    sink(*(source1++)); // $ ast MISSING: ir
+    sink(*(source1++)); // $ ast,ir
     sink(*(++source1)); // $ ast MISSING: ir
 }
 
 void test_trait(int_iterator_by_trait source1) {
     sink(*source1); // $ ast,ir
-    sink(*(source1++)); // $ ast MISSING: ir
+    sink(*(source1++)); // $ ast,ir
     sink(*(++source1)); // $ ast MISSING: ir
 }
 
