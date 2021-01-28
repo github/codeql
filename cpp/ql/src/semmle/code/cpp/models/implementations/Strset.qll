@@ -34,7 +34,7 @@ private class StrsetFunction extends ArrayFunction, DataFlowFunction, AliasFunct
     (
       output.isReturnValueDeref()
       or
-      output.isParameterDeref(1)
+      output.isParameterDeref(0)
     )
     or
     // flow from the input string to the output string

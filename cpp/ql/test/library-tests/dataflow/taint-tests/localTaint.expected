@@ -5874,6 +5874,7 @@
 | taint.cpp:504:10:504:12 | ref arg ptr | taint.cpp:505:7:505:9 | ptr |  |
 | taint.cpp:504:10:504:12 | ref arg ptr | taint.cpp:506:8:506:10 | ptr |  |
 | taint.cpp:504:15:504:20 | source | taint.cpp:504:2:504:8 | call to _strset | TAINT |
+| taint.cpp:504:15:504:20 | source | taint.cpp:504:10:504:12 | ref arg ptr |  |
 | taint.cpp:505:7:505:9 | ref arg ptr | taint.cpp:506:8:506:10 | ptr |  |
 | taint.cpp:506:8:506:10 | ptr | taint.cpp:506:7:506:10 | * ... | TAINT |
 | taint.cpp:509:26:509:31 | source | taint.cpp:510:10:510:15 | source |  |
@@ -5881,6 +5882,7 @@
 | taint.cpp:510:10:510:15 | ref arg source | taint.cpp:511:7:511:12 | source |  |
 | taint.cpp:510:10:510:15 | source | taint.cpp:510:2:510:8 | call to _strset |  |
 | taint.cpp:510:18:510:18 | 0 | taint.cpp:510:2:510:8 | call to _strset | TAINT |
+| taint.cpp:510:18:510:18 | 0 | taint.cpp:510:10:510:15 | ref arg source |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |

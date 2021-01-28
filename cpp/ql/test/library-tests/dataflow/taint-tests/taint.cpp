@@ -502,8 +502,8 @@ char *_strset(char *str, int c);
 
 void test_strset_1(char* ptr, char source) {
 	_strset(ptr, source);
-	sink(ptr);
-	sink(*ptr); // $ MISSING: ast,ir
+	sink(ptr); // $ SPURIOUS: ast,ir
+	sink(*ptr); // $ ast,ir
 }
 
 void test_strset_2(char* source) {
