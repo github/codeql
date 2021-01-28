@@ -54,27 +54,34 @@ module CallGraph {
     PreCallGraphStep::step(any(DataFlow::Node n | function.flowsTo(n)), result)
     or
     imprecision = 0 and
+    result = callgraphStep(function, t)
+  }
+
+  /**
+   * Gets a reference to `function` type-tracked by `t`.
+   * Only considers callgraph specific steps.
+   */
+  cached
+  DataFlow::SourceNode callgraphStep(DataFlow::FunctionNode function, DataFlow::TypeTracker t) {
     exists(DataFlow::ClassNode cls |
       exists(string name |
         function = cls.getInstanceMethod(name) and
-        cls.getAnInstanceMemberAccess(name, t.continue()).flowsTo(result)
+        cls.getAnInstanceMemberAccess(name, t.continue()) = result
         or
         function = cls.getStaticMethod(name) and
-        cls.getAClassReference(t.continue()).getAPropertyRead(name).flowsTo(result)
+        cls.getAClassReference(t.continue()).getAPropertyRead(name) = result
       )
       or
       function = cls.getConstructor() and
-      cls.getAClassReference(t.continue()).flowsTo(result)
+      cls.getAClassReference(t.continue()) = result
     )
     or
-    imprecision = 0 and
     exists(DataFlow::FunctionNode outer |
       result = getAFunctionReference(outer, 0, t.continue()).getAnInvocation() and
       locallyReturnedFunction(outer, function)
     )
   }
 
-  cached
   private predicate locallyReturnedFunction(
     DataFlow::FunctionNode outer, DataFlow::FunctionNode inner
   ) {
