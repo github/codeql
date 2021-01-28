@@ -3,9 +3,10 @@
  * @description Using insufficient randomness as the key of a cryptographic algorithm can allow an attacker to compromise security.
  * @kind path-problem
  * @problem.severity error
+ * @precision high
  * @id go/insecure-randomness
  * @tags security
- *      external/cwe/cwe-327
+ *       external/cwe/cwe-338
  */
 
 import go

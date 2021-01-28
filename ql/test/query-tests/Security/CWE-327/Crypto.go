@@ -9,7 +9,7 @@ import (
 	"crypto/sha256"
 )
 
-func main() {
+func crypto() {
 	public := []byte("hello")
 
 	password := []byte("123456")
