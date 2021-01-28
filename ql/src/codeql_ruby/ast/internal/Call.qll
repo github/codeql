@@ -90,10 +90,7 @@ module SuperCall {
   private class RegularSuperCallRange extends SuperCall::Range, @call {
     final override Generated::Call generated;
 
-    RegularSuperCallRange() {
-      generated = this and
-      generated.getMethod() instanceof Generated::Super
-    }
+    RegularSuperCallRange() { generated.getMethod() instanceof Generated::Super }
 
     final override Expr getReceiver() { none() }
 
