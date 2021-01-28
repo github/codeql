@@ -15,6 +15,8 @@ private import implementations.Strcat
 private import implementations.Strcpy
 private import implementations.Strdup
 private import implementations.Strftime
+private import implementations.Strtok
+private import implementations.Strset
 private import implementations.StdContainer
 private import implementations.StdPair
 private import implementations.StdMap
