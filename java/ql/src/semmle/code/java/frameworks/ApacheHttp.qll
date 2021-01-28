@@ -39,3 +39,17 @@ class TypeApacheHttpRequestBuilder extends Class {
     this.hasQualifiedName("org.apache.http.client.methods", "RequestBuilder")
   }
 }
+
+/**
+ * The `request` parameter of an implementation of `org.apache.http.protocol.HttpRequestHandler.handle`
+ */
+class ApacheHttpRequestHandlerParameter extends Parameter {
+  ApacheHttpRequestHandlerParameter() {
+    exists(Method m, Interface i |
+      i.hasQualifiedName("org.apache.http.protocol", "HttpRequestHandler") and
+      m.getDeclaringType().extendsOrImplements+(i) and
+      m.hasName("handle") and
+      this = m.getParameter(0)
+    )
+  }
+}
