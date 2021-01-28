@@ -2,6 +2,7 @@ test_isCreateServer
 | createServer.js:2:1:2:42 | https.c ... es) {}) |
 | createServer.js:3:1:3:45 | https.c ... es) {}) |
 | createServer.js:4:1:4:47 | require ...  => {}) |
+| createServer.js:31:17:31:58 | http.cr ... dler()) |
 | src/http.js:4:14:10:2 | http.cr ... foo;\\n}) |
 | src/http.js:12:1:16:2 | http.cr ... r");\\n}) |
 | src/http.js:57:1:57:31 | http.cr ... dler()) |
@@ -87,6 +88,7 @@ test_RouteSetup_getServer
 | createServer.js:2:1:2:42 | https.c ... es) {}) | createServer.js:2:1:2:42 | https.c ... es) {}) |
 | createServer.js:3:1:3:45 | https.c ... es) {}) | createServer.js:3:1:3:45 | https.c ... es) {}) |
 | createServer.js:4:1:4:47 | require ...  => {}) | createServer.js:4:1:4:47 | require ...  => {}) |
+| createServer.js:31:17:31:58 | http.cr ... dler()) | createServer.js:31:17:31:58 | http.cr ... dler()) |
 | src/http.js:4:14:10:2 | http.cr ... foo;\\n}) | src/http.js:4:14:10:2 | http.cr ... foo;\\n}) |
 | src/http.js:12:1:16:2 | http.cr ... r");\\n}) | src/http.js:12:1:16:2 | http.cr ... r");\\n}) |
 | src/http.js:57:1:57:31 | http.cr ... dler()) | src/http.js:57:1:57:31 | http.cr ... dler()) |
@@ -114,6 +116,7 @@ test_ServerDefinition
 | createServer.js:2:1:2:42 | https.c ... es) {}) |
 | createServer.js:3:1:3:45 | https.c ... es) {}) |
 | createServer.js:4:1:4:47 | require ...  => {}) |
+| createServer.js:31:17:31:58 | http.cr ... dler()) |
 | src/http.js:4:14:10:2 | http.cr ... foo;\\n}) |
 | src/http.js:12:1:16:2 | http.cr ... r");\\n}) |
 | src/http.js:57:1:57:31 | http.cr ... dler()) |
@@ -204,6 +207,10 @@ test_RouteSetup_getARouteHandler
 | createServer.js:2:1:2:42 | https.c ... es) {}) | createServer.js:2:20:2:41 | functio ... res) {} |
 | createServer.js:3:1:3:45 | https.c ... es) {}) | createServer.js:3:23:3:44 | functio ... res) {} |
 | createServer.js:4:1:4:47 | require ...  => {}) | createServer.js:4:31:4:46 | (req, res) => {} |
+| createServer.js:31:17:31:58 | http.cr ... dler()) | createServer.js:22:41:24:5 | return of anonymous function |
+| createServer.js:31:17:31:58 | http.cr ... dler()) | createServer.js:23:16:23:33 | this.handleRequest |
+| createServer.js:31:17:31:58 | http.cr ... dler()) | createServer.js:23:16:23:44 | this.ha ... d(this) |
+| createServer.js:31:17:31:58 | http.cr ... dler()) | createServer.js:31:35:31:57 | app.get ... ndler() |
 | src/http.js:4:14:10:2 | http.cr ... foo;\\n}) | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
 | src/http.js:12:1:16:2 | http.cr ... r");\\n}) | src/http.js:12:19:16:1 | functio ... ar");\\n} |
 | src/http.js:57:1:57:31 | http.cr ... dler()) | src/http.js:54:1:56:1 | return of function getHandler |
