@@ -64,10 +64,17 @@ module HTTP {
       /** Gets the (lower-case) name of a header set by this definition. */
       string getHeaderName() { result = this.getName().getStringValue().toLowerCase() }
 
+      /** Gets the value of the header set by this definition. */
+      string getHeaderValue() {
+        result = this.getValue().getStringValue()
+        or
+        result = this.getValue().getIntValue().toString()
+      }
+
       /** Holds if this header write defines the header `header`. */
       predicate definesHeader(string header, string value) {
         header = this.getHeaderName() and
-        value = this.getValue().getStringValue()
+        value = this.getHeaderValue()
       }
 
       /**
@@ -100,6 +107,9 @@ module HTTP {
 
     /** Gets the (lower-case) name of a header set by this definition. */
     string getHeaderName() { result = self.getHeaderName() }
+
+    /** Gets the value of the header set by this definition. */
+    string getHeaderValue() { result = self.getHeaderValue() }
 
     /** Holds if this header write defines the header `header`. */
     predicate definesHeader(string header, string value) { self.definesHeader(header, value) }
@@ -301,5 +311,34 @@ module HTTP {
 
     /** Gets the response writer that this redirect is sent on, if any. */
     ResponseWriter getResponseWriter() { result = self.getResponseWriter() }
+  }
+
+  /** Provides a class for modeling new HTTP handler APIs. */
+  module RequestHandler {
+    /**
+     * An HTTP request handler.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `HTTP::RequestHandler` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /** Gets a node that is used in a check that is tested before this handler is run. */
+      abstract predicate guardedBy(DataFlow::Node check);
+    }
+  }
+
+  /**
+   * An HTTP request handler.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `HTTP::RequestHandler::Range` instead.
+   */
+  class RequestHandler extends DataFlow::Node {
+    RequestHandler::Range self;
+
+    RequestHandler() { this = self }
+
+    /** Gets a node that is used in a check that is tested before this handler is run. */
+    predicate guardedBy(DataFlow::Node check) { self.guardedBy(check) }
   }
 }

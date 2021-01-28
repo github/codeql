@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"html"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -55,4 +56,10 @@ func main() {
 
 	resp, _ := http.Get("https://example.com")
 	resp.Header.Set("This-Makes", "No sense")
+
+	http.HandleFunc("/foo", handler) // $handler="/foo"
+
+	http.HandleFunc("/bar", func(w http.ResponseWriter, r *http.Request) { // $handler="/bar"
+		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
+	})
 }

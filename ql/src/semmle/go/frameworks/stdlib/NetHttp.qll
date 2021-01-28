@@ -108,15 +108,23 @@ module NetHttp {
 
     override string getHeaderName() { result = "status" }
 
-    override predicate definesHeader(string header, string value) {
-      header = "status" and value = this.getValue().getIntValue().toString()
-    }
-
     override DataFlow::Node getName() { none() }
 
     override DataFlow::Node getValue() { result = this.getArgument(0) }
 
     override HTTP::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
+  }
+
+  private class ResponseErrorCall extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
+    ResponseErrorCall() { this.getTarget().hasQualifiedName("net/http", "Error") }
+
+    override string getHeaderName() { result = "status" }
+
+    override DataFlow::Node getName() { none() }
+
+    override DataFlow::Node getValue() { result = this.getArgument(2) }
+
+    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = this.getArgument(0) }
   }
 
   private class RequestBody extends HTTP::RequestBody::Range, DataFlow::ExprNode {
@@ -225,6 +233,20 @@ module NetHttp {
         methName = ["Cookie", "Cookies", "MultipartReader", "PostFormValue", "Referer", "UserAgent"]
       )
     }
+  }
+
+  private class Handler extends HTTP::RequestHandler::Range {
+    DataFlow::CallNode handlerReg;
+
+    Handler() {
+      exists(Function regFn | regFn = handlerReg.getTarget() |
+        regFn.hasQualifiedName("net/http", ["Handle", "HandleFunc"]) or
+        regFn.(Method).hasQualifiedName("net/http", "ServeMux", ["Handle", "HandleFunc"])
+      ) and
+      this = handlerReg.getArgument(1)
+    }
+
+    override predicate guardedBy(DataFlow::Node check) { check = handlerReg.getArgument(0) }
   }
 
   private class FunctionModels extends TaintTracking::FunctionModel {
