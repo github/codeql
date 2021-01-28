@@ -35,9 +35,9 @@ private class Strtok extends ArrayFunction, AliasFunction, TaintFunction, SideEf
     input.isParameter(0) and output.isReturnValue()
   }
 
-  override predicate hasOnlySpecificReadSideEffects() { any() }
+  override predicate hasOnlySpecificReadSideEffects() { none() }
 
-  override predicate hasOnlySpecificWriteSideEffects() { any() }
+  override predicate hasOnlySpecificWriteSideEffects() { none() }
 
   override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
     i = 0 and buffer = true and mustWrite = false

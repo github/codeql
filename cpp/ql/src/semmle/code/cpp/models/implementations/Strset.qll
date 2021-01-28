@@ -22,6 +22,12 @@ private class StrsetFunction extends ArrayFunction, DataFlowFunction, AliasFunct
       ])
   }
 
+  override predicate hasArrayWithNullTerminator(int bufParam) { bufParam = 0 }
+
+  override predicate hasArrayInput(int bufParam) { bufParam = 0 }
+
+  override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
+
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     // flow from the character that overrides the string
     input.isParameter(1) and
@@ -48,5 +54,9 @@ private class StrsetFunction extends ArrayFunction, DataFlowFunction, AliasFunct
 
   override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
     i = 0 and buffer = true and mustWrite = true
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = 0 and buffer = true
   }
 }
