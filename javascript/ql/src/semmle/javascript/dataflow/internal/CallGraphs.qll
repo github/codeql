@@ -57,7 +57,7 @@ module CallGraph {
     exists(DataFlow::ClassNode cls |
       exists(string name |
         function = cls.getInstanceMethod(name) and
-        getAnInstanceMemberAccess(cls, name, t.continue()).flowsTo(result)
+        cls.getAnInstanceMemberAccess(name, t.continue()).flowsTo(result)
         or
         function = cls.getStaticMethod(name) and
         cls.getAClassReference(t.continue()).getAPropertyRead(name).flowsTo(result)
@@ -130,26 +130,6 @@ module CallGraph {
       result = getABoundFunctionReferenceAux(function, boundArgs, t) and
       t.end() and
       contextDependent = t.hasCall()
-    )
-  }
-
-  /**
-   * Gets a property read that accesses the property `name` on an instance of this class.
-   *
-   * Concretely, this holds when the base is an instance of this class or a subclass thereof.
-   *
-   * This predicate may be overridden to customize the class hierarchy analysis.
-   */
-  pragma[nomagic]
-  private DataFlow::PropRead getAnInstanceMemberAccess(
-    DataFlow::ClassNode cls, string name, DataFlow::TypeTracker t
-  ) {
-    result = cls.getAnInstanceReference(t.continue()).getAPropertyRead(name)
-    or
-    exists(DataFlow::ClassNode subclass |
-      result = getAnInstanceMemberAccess(subclass, name, t) and
-      not exists(subclass.getInstanceMember(name, _)) and
-      cls = subclass.getADirectSuperClass()
     )
   }
 
