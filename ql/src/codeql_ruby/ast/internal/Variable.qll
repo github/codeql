@@ -14,12 +14,7 @@ private predicate instanceVariableAccess(
 ) {
   name = var.getValue() and
   scope = enclosingModuleOrClass(var) and
-  if
-    exists(VariableScope method |
-      method = enclosingMethod(var) and scope = enclosingScope(method.getScopeElement())
-    )
-  then instance = true
-  else instance = false
+  if exists(enclosingMethod(var)) then instance = true else instance = false
 }
 
 private predicate classVariableAccess(Generated::ClassVariable var, string name, VariableScope scope) {
@@ -27,21 +22,31 @@ private predicate classVariableAccess(Generated::ClassVariable var, string name,
   scope = enclosingModuleOrClass(var)
 }
 
-private VariableScope enclosingMethod(Generated::AstNode node) {
-  exists(VariableScope scope, Callable c |
-    scope = outerScope*(enclosingScope(node)) and
-    scope = TCallableScope(c) and
-    (c instanceof Method or c instanceof SingletonMethod) and
-    result = scope
+private Callable enclosingMethod(Generated::AstNode node) {
+  parentCallableScope*(enclosingScope(node)) = TCallableScope(result) and
+  (
+    result instanceof Method or
+    result instanceof SingletonMethod
   )
 }
 
-private VariableScope enclosingModuleOrClass(Generated::AstNode node) {
-  exists(VariableScope scope | scope = enclosingScope(node) |
-    if scope instanceof ModuleOrClassScope
-    then result = scope
-    else result = enclosingModuleOrClass(scope.getScopeElement())
+private TCallableScope parentCallableScope(TCallableScope scope) {
+  exists(Callable c |
+    scope = TCallableScope(c) and
+    not c instanceof Method and
+    not c instanceof SingletonMethod
+  |
+    result = outerScope(scope)
   )
+}
+
+private VariableScope parentScope(VariableScope scope) {
+  not scope instanceof ModuleOrClassScope and
+  result = outerScope(scope)
+}
+
+private ModuleOrClassScope enclosingModuleOrClass(Generated::AstNode node) {
+  result = parentScope*(enclosingScope(node))
 }
 
 private predicate parameterAssignment(

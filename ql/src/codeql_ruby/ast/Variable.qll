@@ -163,7 +163,6 @@ class VariableReadAccess extends VariableAccess {
 class LocalVariableAccess extends VariableAccess, @token_identifier {
   final override LocalVariableAccess::Range range;
 
-  /** Gets the variable this identifier refers to. */
   final override LocalVariable getVariable() { result = range.getVariable() }
 
   final override string getAPrimaryQlClass() {
@@ -198,7 +197,6 @@ class LocalVariableReadAccess extends LocalVariableAccess, VariableReadAccess { 
 class GlobalVariableAccess extends VariableAccess, @token_global_variable {
   final override GlobalVariableAccess::Range range;
 
-  /** Gets the variable this identifier refers to. */
   final override GlobalVariable getVariable() { result = range.getVariable() }
 
   final override string getAPrimaryQlClass() { result = "GlobalVariableAccess" }
@@ -214,7 +212,6 @@ class GlobalVariableReadAccess extends GlobalVariableAccess, VariableReadAccess 
 class InstanceVariableAccess extends VariableAccess, @token_instance_variable {
   final override InstanceVariableAccess::Range range;
 
-  /** Gets the variable this identifier refers to. */
   final override InstanceVariable getVariable() { result = range.getVariable() }
 
   final override string getAPrimaryQlClass() { result = "InstanceVariableAccess" }
@@ -224,7 +221,6 @@ class InstanceVariableAccess extends VariableAccess, @token_instance_variable {
 class ClassVariableAccess extends VariableAccess, @token_class_variable {
   final override ClassVariableAccess::Range range;
 
-  /** Gets the variable this identifier refers to. */
   final override ClassVariable getVariable() { result = range.getVariable() }
 
   final override string getAPrimaryQlClass() { result = "ClassVariableAccess" }
