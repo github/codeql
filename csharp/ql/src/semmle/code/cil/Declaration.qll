@@ -24,9 +24,6 @@ class Declaration extends DotNet::Declaration, Element, @cil_declaration {
 
   override Declaration getUnboundDeclaration() { result = this }
 
-  /** Holds if this declaration is a source declaration. */
-  final predicate isUnboundDeclaration() { this = getUnboundDeclaration() }
-
   /**
    * DEPRECATED: Use `isUnboundDeclaration()` instead.
    *
