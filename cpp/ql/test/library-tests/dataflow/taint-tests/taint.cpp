@@ -484,3 +484,29 @@ void test_getdelim(FILE* source1) {
 
 	sink(line); // $ ir,ast
 }
+
+// --- strtok ---
+
+char *strtok(char *str, const char *delim);
+
+void test_strtok(char *source) {
+	const char* delim = ",.-;:_";
+	char* tokenized = strtok(source, delim);
+	sink(tokenized); // $ ast,ir
+	sink(delim);
+}
+
+// --- strset ---
+
+char *_strset(char *str, int c);
+
+void test_strset_1(char* ptr, char source) {
+	_strset(ptr, source);
+	sink(ptr); // $ SPURIOUS: ast,ir
+	sink(*ptr); // $ ast,ir
+}
+
+void test_strset_2(char* source) {
+	_strset(source, 0);
+	sink(source); // $ ast,ir
+}
