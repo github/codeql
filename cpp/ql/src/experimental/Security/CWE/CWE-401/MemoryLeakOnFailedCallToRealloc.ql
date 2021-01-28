@@ -36,7 +36,7 @@ class ReallocCallLeak extends FunctionCall {
 
   ReallocCallLeak() {
     exists(AssignExpr ex |
-     this.getTarget().hasGlobalOrStdName("realloc") and
+      this.getTarget().hasGlobalOrStdName("realloc") and
       this = ex.getRValue() and
       hashCons(ex.getLValue()) = hashCons(this.getArgument(0)) and
       v.getAnAccess() = this.getArgument(0)
