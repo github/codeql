@@ -311,6 +311,7 @@ class ReachableBasicBlock extends BasicBlock {
    *
    * This predicate is reflexive: each reachable basic block dominates itself.
    */
+  pragma[inline]
   predicate dominates(ReachableBasicBlock bb) {
     bb = this or
     strictlyDominates(bb)
