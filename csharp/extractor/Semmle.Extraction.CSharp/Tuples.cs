@@ -111,6 +111,11 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("compilations", compilation, cwd);
         }
 
+        internal static void compilation_assembly(this TextWriter trapFile, Compilation compilation, Assembly assembly)
+        {
+            trapFile.WriteTuple("compilation_assembly", compilation, assembly);
+        }
+
         internal static void compiler_generated(this TextWriter trapFile, IEntity entity)
         {
             trapFile.WriteTuple("compiler_generated", entity);
@@ -144,6 +149,11 @@ namespace Semmle.Extraction.CSharp
         internal static void delegate_return_type(this TextWriter trapFile, Type delegateKey, Type returnType)
         {
             trapFile.WriteTuple("delegate_return_type", delegateKey, returnType);
+        }
+
+        internal static void function_pointer_return_type(this TextWriter trapFile, Type functionPointer, Type returnType)
+        {
+            trapFile.WriteTuple("function_pointer_return_type", functionPointer, returnType);
         }
 
         internal static void destructor_location(this TextWriter trapFile, Destructor destructor, Location location)
@@ -469,6 +479,16 @@ namespace Semmle.Extraction.CSharp
         internal static void specific_type_parameter_nullability(this TextWriter trapFile, TypeParameterConstraints constraints, Type baseType, NullabilityEntity nullability)
         {
             trapFile.WriteTuple("specific_type_parameter_nullability", constraints, baseType, nullability);
+        }
+
+        internal static void function_pointer_calling_conventions(this TextWriter trapFile, FunctionPointerType type, int kind)
+        {
+            trapFile.WriteTuple("function_pointer_calling_conventions", type, kind);
+        }
+
+        internal static void has_unmanaged_calling_conventions(this TextWriter trapFile, FunctionPointerType type, int index, Type convention)
+        {
+            trapFile.WriteTuple("has_unmanaged_calling_conventions", type, index, convention);
         }
 
         internal static void stackalloc_array_creation(this TextWriter trapFile, Expression array)

@@ -78,13 +78,13 @@ public class TypeExprKinds {
               @Override
               public Integer visit(Identifier nd, Void c) {
                 switch (idcontext) {
-                  case typeDecl:
+                  case TYPE_DECL:
                     return TypeExprKinds.typeDecl;
-                  case typeBind:
+                  case TYPE_BIND:
                     return simpleTypeAccess;
-                  case varInTypeBind:
+                  case VAR_IN_TYPE_BIND:
                     return simpleVarTypeAccess;
-                  case namespaceBind:
+                  case NAMESPACE_BIND:
                     return simpleNamespaceAccess;
                   default:
                     return typeLabel;
@@ -93,7 +93,7 @@ public class TypeExprKinds {
 
               @Override
               public Integer visit(KeywordTypeExpr nd, Void c) {
-                if (idcontext == IdContext.varInTypeBind && nd.getKeyword().equals("this")) {
+                if (idcontext == IdContext.VAR_IN_TYPE_BIND && nd.getKeyword().equals("this")) {
                   return thisVarTypeAccess;
                 }
                 return keywordTypeExpr;
@@ -132,9 +132,9 @@ public class TypeExprKinds {
               @Override
               public Integer visit(UnaryTypeExpr nd, Void c) {
                 switch (nd.getKind()) {
-                  case Keyof:
+                  case KEYOF:
                     return keyofTypeExpr;
-                  case Readonly:
+                  case READONLY:
                     return readonlyTypeExpr;
                 }
                 throw new CatastrophicError("Unhandled UnaryTypeExpr kind: " + nd.getKind());
@@ -142,9 +142,9 @@ public class TypeExprKinds {
 
               @Override
               public Integer visit(MemberExpression nd, Void c) {
-                if (idcontext == IdContext.varInTypeBind) {
+                if (idcontext == IdContext.VAR_IN_TYPE_BIND) {
                   return qualifiedVarTypeAccess;
-                } else if (idcontext == IdContext.namespaceBind) {
+                } else if (idcontext == IdContext.NAMESPACE_BIND) {
                   return qualifiedNamespaceAccess;
                 } else {
                   return qualifiedTypeAccess;
@@ -224,11 +224,11 @@ public class TypeExprKinds {
               @Override
               public Integer visit(ImportTypeExpr nd, Void c) {
                 switch (idcontext) {
-                  case namespaceBind:
+                  case NAMESPACE_BIND:
                     return importNamespaceAccess;
-                  case typeBind:
+                  case TYPE_BIND:
                     return importTypeAccess;
-                  case varInTypeBind:
+                  case VAR_IN_TYPE_BIND:
                     return importVarTypeAccess;
                   default:
                     return importTypeAccess;

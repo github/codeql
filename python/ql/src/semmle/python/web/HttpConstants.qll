@@ -1,4 +1,4 @@
-/** Gets an HTTP verb */
+/** Gets an HTTP verb, in upper case */
 string httpVerb() {
   result = "GET" or
   result = "POST" or

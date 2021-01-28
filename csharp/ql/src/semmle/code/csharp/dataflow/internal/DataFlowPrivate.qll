@@ -10,6 +10,7 @@ private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.Caching
 private import semmle.code.csharp.Conversion
+private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.Unification
 private import semmle.code.csharp.controlflow.Guards
@@ -265,16 +266,15 @@ module LocalFlow {
   }
 
   /**
-   * Holds if `nodeFrom` is a last node referencing SSA definition `def`.
-   * Either an SSA definition node for `def` when there is no read of `def`,
-   * or a last read of `def`.
+   * Holds if `nodeFrom` is a last node referencing SSA definition `def`, which
+   * can reach `next`.
    */
-  private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def) {
-    def = nodeFrom.(SsaDefinitionNode).getDefinition() and
-    not exists(def.getARead())
-    or
-    exists(AssignableRead read, ControlFlow::Node cfn | read = nodeFrom.asExprAtNode(cfn) |
-      def.getALastReadAtNode(cfn) = read
+  private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def, Ssa::Definition next) {
+    exists(ControlFlow::BasicBlock bb, int i | SsaImpl::lastRefBeforeRedef(def, bb, i, next) |
+      def = nodeFrom.(SsaDefinitionNode).getDefinition() and
+      def.definesAt(_, bb, i)
+      or
+      nodeFrom.asExprAtNode(bb.getNode(i)) instanceof AssignableRead
     )
   }
 
@@ -291,7 +291,7 @@ module LocalFlow {
     or
     // Flow from read to next read
     exists(ControlFlow::Node cfnFrom, ControlFlow::Node cfnTo |
-      Ssa::Internal::adjacentReadPairSameVar(def, cfnFrom, cfnTo) and
+      SsaImpl::adjacentReadPairSameVar(def, cfnFrom, cfnTo) and
       nodeTo = TExprNode(cfnTo)
     |
       nodeFrom = TExprNode(cfnFrom)
@@ -299,16 +299,16 @@ module LocalFlow {
       cfnFrom = nodeFrom.(PostUpdateNode).getPreUpdateNode().getControlFlowNode()
     )
     or
-    // Flow into SSA pseudo definition
-    exists(Ssa::PseudoDefinition pseudo |
-      localFlowSsaInput(nodeFrom, def) and
-      pseudo = nodeTo.(SsaDefinitionNode).getDefinition() and
-      def = pseudo.getAnInput()
+    // Flow into phi node
+    exists(Ssa::PhiNode phi |
+      localFlowSsaInput(nodeFrom, def, phi) and
+      phi = nodeTo.(SsaDefinitionNode).getDefinition() and
+      def = phi.getAnInput()
     )
     or
     // Flow into uncertain SSA definition
     exists(LocalFlow::UncertainExplicitSsaDefinition uncertain |
-      localFlowSsaInput(nodeFrom, def) and
+      localFlowSsaInput(nodeFrom, def, uncertain) and
       uncertain = nodeTo.(SsaDefinitionNode).getDefinition() and
       def = uncertain.getPriorDefinition()
     )
@@ -319,7 +319,7 @@ module LocalFlow {
    */
   predicate usesInstanceField(Ssa::Definition def) {
     exists(Ssa::SourceVariables::FieldOrPropSourceVariable fp | fp = def.getSourceVariable() |
-      not fp.getAssignable().isStatic()
+      not fp.getAssignable().(Modifiable).isStatic()
     )
   }
 
@@ -571,7 +571,7 @@ private module Cached {
     TCilExprNode(CIL::Expr e) { e.getImplementation() instanceof CIL::BestImplementation } or
     TSsaDefinitionNode(Ssa::Definition def) or
     TInstanceParameterNode(Callable c) { c.hasBody() and not c.(Modifiable).isStatic() } or
-    TCilParameterNode(CIL::Parameter p) { p.getMethod().hasBody() } or
+    TCilParameterNode(CIL::MethodParameter p) { p.getMethod().hasBody() } or
     TYieldReturnNode(ControlFlow::Nodes::ElementNode cfn) {
       any(Callable c).canYieldReturn(cfn.getElement())
     } or
@@ -867,7 +867,7 @@ private module Cached {
   cached
   predicate nodeIsHidden(Node n) {
     exists(Ssa::Definition def | def = n.(SsaDefinitionNode).getDefinition() |
-      def instanceof Ssa::PseudoDefinition
+      def instanceof Ssa::PhiNode
       or
       def instanceof Ssa::ImplicitEntryDefinition
       or
@@ -1691,8 +1691,6 @@ private class FieldOrPropertyRead extends FieldOrPropertyAccess, AssignableRead 
    * SSA updates.
    */
   predicate hasNonlocalValue() {
-    this = any(Ssa::ImplicitUntrackedDefinition udef).getARead()
-    or
     exists(Ssa::Definition def, Ssa::ImplicitDefinition idef |
       def.getARead() = this and
       idef = def.getAnUltimateDefinition()

@@ -69,13 +69,27 @@ class StorePreUpdateNode extends NeedsSyntheticPostUpdateNode, CfgNode {
   override string label() { result = "store" }
 }
 
-/** A node marking the state change of an object after a read. */
+/**
+ * A node marking the state change of an object after a read.
+ *
+ * A reverse read happens when the result of a read is modified, e.g. in
+ * ```python
+ * l = [ mutable ]
+ * l[0].mutate()
+ * ```
+ * we may now have changed the content of `l`. To track this, there must be
+ * a postupdate node for `l`.
+ */
 class ReadPreUpdateNode extends NeedsSyntheticPostUpdateNode, CfgNode {
   ReadPreUpdateNode() {
     exists(Attribute a |
       node = a.getObject().getAFlowNode() and
       a.getCtx() instanceof Load
     )
+    or
+    node = any(SubscriptNode s).getObject()
+    or
+    node.getNode() = any(Call call).getKwargs()
   }
 
   override string label() { result = "read" }
@@ -701,17 +715,6 @@ class SpecialCall extends DataFlowCall, TSpecialCall {
   override DataFlowCallable getEnclosingCallable() {
     result.getScope() = special.getNode().getScope()
   }
-}
-
-/** A data flow node that represents a call argument. */
-class ArgumentNode extends Node {
-  ArgumentNode() { this = any(DataFlowCall c).getArg(_) }
-
-  /** Holds if this argument occurs at the given position in the given call. */
-  predicate argumentOf(DataFlowCall call, int pos) { this = call.getArg(pos) }
-
-  /** Gets the call in which this node is an argument. */
-  final DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
 /** Gets a viable run-time target for the call `call`. */

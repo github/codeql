@@ -23,6 +23,7 @@ private import internal.CallableReturns
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.controlflow.Guards as G
 private import semmle.code.csharp.controlflow.Guards::AbstractValues
+private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.Test
 
@@ -177,7 +178,7 @@ private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) 
     exists(G::DereferenceableExpr de | de = def.getARead() |
       reason = de.getANullCheck(_, true) and
       msg = "as suggested by $@ null check" and
-      not de = any(Ssa::PseudoDefinition pdef).getARead() and
+      not de = any(Ssa::PhiNode phi).getARead() and
       strictcount(Element e | e = any(Ssa::Definition def0 | de = def0.getARead()).getElement()) = 1 and
       // Don't use a check as reason if there is a `null` assignment
       // or argument
@@ -205,7 +206,7 @@ private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) 
     // A variable of nullable type may be null
     exists(Dereference d | dereferenceAt(_, _, def, d) |
       d.hasNullableType() and
-      not def instanceof Ssa::PseudoDefinition and
+      not def instanceof Ssa::PhiNode and
       reason = def.getSourceVariable().getAssignable() and
       msg = "because it has a nullable type"
     )
@@ -236,13 +237,13 @@ private predicate defNullImpliesStep(
   Ssa::Definition def1, BasicBlock bb1, Ssa::Definition def2, BasicBlock bb2
 ) {
   exists(Ssa::SourceVariable v | defNullImpliesStep0(v, def1, bb1, bb2) |
-    def2.(Ssa::PseudoDefinition).getAnInput() = def1 and
+    def2.(Ssa::PhiNode).getAnInput() = def1 and
     bb2 = def2.getBasicBlock()
     or
     def2 = def1 and
-    not exists(Ssa::PseudoDefinition def |
-      def.getSourceVariable() = v and
-      bb2 = def.getBasicBlock()
+    not exists(Ssa::PhiNode phi |
+      phi.getSourceVariable() = v and
+      bb2 = phi.getBasicBlock()
     )
   ) and
   not exists(SuccessorTypes::ConditionalSuccessor s, NullValue nv |
@@ -426,14 +427,14 @@ module PathGraph {
 }
 
 private Ssa::Definition getAPseudoInput(Ssa::Definition def) {
-  result = def.(Ssa::PseudoDefinition).getAnInput()
+  result = def.(Ssa::PhiNode).getAnInput()
 }
 
 // `def.getAnUltimateDefinition()` includes inputs into uncertain
 // definitions, but we only want inputs into pseudo nodes
 private Ssa::Definition getAnUltimateDefinition(Ssa::Definition def) {
   result = getAPseudoInput*(def) and
-  not result instanceof Ssa::PseudoDefinition
+  not result instanceof Ssa::PhiNode
 }
 
 /**
@@ -446,7 +447,7 @@ private predicate defReaches(Ssa::Definition def, ControlFlow::Node cfn, boolean
   (always = true or always = false)
   or
   exists(ControlFlow::Node mid | defReaches(def, mid, always) |
-    Ssa::Internal::adjacentReadPairSameVar(_, mid, cfn) and
+    SsaImpl::adjacentReadPairSameVar(_, mid, cfn) and
     not mid =
       any(Dereference d |
         if always = true

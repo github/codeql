@@ -1,5 +1,4 @@
 uniqueEnclosingCallable
-| test.py:239:27:239:27 | ControlFlowNode for p | Node should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
 missingLocation

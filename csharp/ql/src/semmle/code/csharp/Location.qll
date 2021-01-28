@@ -14,6 +14,7 @@
 
 import File
 private import Attribute
+private import semmle.code.csharp.commons.Compilation
 
 /**
  * A location of a program element.
@@ -170,6 +171,9 @@ class Assembly extends Location, Attributable, @assembly {
 
   /** Gets the version of this assembly. */
   Version getVersion() { assemblies(this, _, _, _, result) }
+
+  /** Gets the compilation producing this assembly, if any. */
+  Compilation getCompilation() { compilation_assembly(result, this) }
 
   override File getFile() { assemblies(this, result, _, _, _) }
 

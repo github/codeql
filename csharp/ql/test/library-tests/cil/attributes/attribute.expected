@@ -406,7 +406,6 @@ attrNoArg
 | System.Resources.ResourceReader.<>c | [CompilerGeneratedAttribute(...)] |
 | System.Resources.ResourceReader.<>c__DisplayClass49_0`1 | [CompilerGeneratedAttribute(...)] |
 | System.Resources.SatelliteContractVersionAttribute.<Version>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| System.Runtime.AssemblyTargetedPatchBandAttribute | [AttributeUsageAttribute(...)] |
 | System.Runtime.AssemblyTargetedPatchBandAttribute.<TargetedPatchBand>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.AccessedThroughPropertyAttribute.<PropertyName>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.AsyncMethodBuilderAttribute.<BuilderType>k__BackingField | [CompilerGeneratedAttribute(...)] |
@@ -431,7 +430,6 @@ attrNoArg
 | System.Runtime.CompilerServices.DefaultDependencyAttribute.<LoadHint>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.DependencyAttribute.<DependentAssembly>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.DependencyAttribute.<LoadHint>k__BackingField | [CompilerGeneratedAttribute(...)] |
-| System.Runtime.CompilerServices.EnumeratorCancellationAttribute | [AttributeUsageAttribute(...)] |
 | System.Runtime.CompilerServices.FixedBufferAttribute.<ElementType>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.FixedBufferAttribute.<Length>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.InternalsVisibleToAttribute.<AllInternalsVisible>k__BackingField | [CompilerGeneratedAttribute(...)] |
@@ -439,13 +437,10 @@ attrNoArg
 | System.Runtime.CompilerServices.JitHelpers | [ExtensionAttribute(...)] |
 | System.Runtime.CompilerServices.MethodImplAttribute.<Value>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.MethodImplOptions | [FlagsAttribute(...)] |
-| System.Runtime.CompilerServices.NullableAttribute | [AttributeUsageAttribute(...)] |
 | System.Runtime.CompilerServices.NullableAttribute | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.NullableAttribute | [EmbeddedAttribute(...)] |
-| System.Runtime.CompilerServices.NullableContextAttribute | [AttributeUsageAttribute(...)] |
 | System.Runtime.CompilerServices.NullableContextAttribute | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.NullableContextAttribute | [EmbeddedAttribute(...)] |
-| System.Runtime.CompilerServices.NullablePublicOnlyAttribute | [AttributeUsageAttribute(...)] |
 | System.Runtime.CompilerServices.NullablePublicOnlyAttribute | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.CompilerServices.NullablePublicOnlyAttribute | [EmbeddedAttribute(...)] |
 | System.Runtime.CompilerServices.ReferenceAssemblyAttribute.<Description>k__BackingField | [CompilerGeneratedAttribute(...)] |
@@ -463,7 +458,6 @@ attrNoArg
 | System.Runtime.CompilerServices.YieldAwaitable | [IsReadOnlyAttribute(...)] |
 | System.Runtime.CompilerServices.YieldAwaitable.YieldAwaiter | [IsReadOnlyAttribute(...)] |
 | System.Runtime.CompilerServices.YieldAwaitable.YieldAwaiter.<>c | [CompilerGeneratedAttribute(...)] |
-| System.Runtime.ConstrainedExecution.PrePrepareMethodAttribute | [AttributeUsageAttribute(...)] |
 | System.Runtime.ConstrainedExecution.ReliabilityContractAttribute.<Cer>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.ConstrainedExecution.ReliabilityContractAttribute.<ConsistencyGuarantee>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs.<Exception>k__BackingField | [CompilerGeneratedAttribute(...)] |
@@ -565,7 +559,6 @@ attrNoArg
 | System.Runtime.Serialization.SerializationInfo.<IsFullTypeNameSetExplicit>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.Runtime.Serialization.StreamingContext | [IsReadOnlyAttribute(...)] |
 | System.Runtime.Serialization.StreamingContextStates | [FlagsAttribute(...)] |
-| System.Runtime.TargetedPatchingOptOutAttribute | [AttributeUsageAttribute(...)] |
 | System.Runtime.TargetedPatchingOptOutAttribute.<Reason>k__BackingField | [CompilerGeneratedAttribute(...)] |
 | System.RuntimeArgumentHandle | [IsByRefLikeAttribute(...)] |
 | System.RuntimeType.RuntimeTypeCache.Filter | [IsReadOnlyAttribute(...)] |
@@ -805,6 +798,7 @@ attrArgNamed
 | System.Reflection.ObfuscationAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Resources.NeutralResourcesLanguageAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Resources.SatelliteContractVersionAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
+| System.Runtime.AssemblyTargetedPatchBandAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.CompilerServices.AsyncIteratorStateMachineAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.CompilerServices.AsyncIteratorStateMachineAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.CompilerServices.AsyncMethodBuilderAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
@@ -823,6 +817,7 @@ attrArgNamed
 | System.Runtime.CompilerServices.DependencyAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | True |
 | System.Runtime.CompilerServices.DisablePrivateReflectionAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.CompilerServices.DisablePrivateReflectionAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.CompilerServices.EnumeratorCancellationAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.CompilerServices.FixedBufferAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.CompilerServices.IndexerNameAttribute | [AttributeUsageAttribute(...)] | Inherited | True |
 | System.Runtime.CompilerServices.InternalsVisibleToAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | True |
@@ -850,6 +845,7 @@ attrArgNamed
 | System.Runtime.CompilerServices.TypeForwardedFromAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.CompilerServices.TypeForwardedToAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | True |
 | System.Runtime.CompilerServices.TypeForwardedToAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.ConstrainedExecution.PrePrepareMethodAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.ConstrainedExecution.ReliabilityContractAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
@@ -887,6 +883,8 @@ attrArgNamed
 | System.Runtime.Serialization.OnSerializedAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.Serialization.OnSerializingAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.Serialization.OptionalFieldAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
+| System.Runtime.TargetedPatchingOptOutAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
+| System.Runtime.TargetedPatchingOptOutAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.Versioning.NonVersionableAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
 | System.Runtime.Versioning.NonVersionableAttribute | [AttributeUsageAttribute(...)] | Inherited | False |
 | System.Runtime.Versioning.TargetFrameworkAttribute | [AttributeUsageAttribute(...)] | AllowMultiple | False |
@@ -1910,6 +1908,7 @@ attrArgPositional
 | System.Runtime.AmbiguousImplementationException | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.AmbiguousImplementationException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Runtime.AmbiguousImplementationException | [TypeForwardedFromAttribute(...)] | 0 | System.Runtime, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
+| System.Runtime.AssemblyTargetedPatchBandAttribute | [AttributeUsageAttribute(...)] | 0 | 1 |
 | System.Runtime.AssemblyTargetedPatchBandAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.AssemblyTargetedPatchBandAttribute | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.CompilerServices.AccessedThroughPropertyAttribute | [AttributeUsageAttribute(...)] | 0 | 256 |
@@ -1959,6 +1958,7 @@ attrArgPositional
 | System.Runtime.CompilerServices.DependencyAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.CompilerServices.DependencyAttribute | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.CompilerServices.DisablePrivateReflectionAttribute | [AttributeUsageAttribute(...)] | 0 | 1 |
+| System.Runtime.CompilerServices.EnumeratorCancellationAttribute | [AttributeUsageAttribute(...)] | 0 | 2048 |
 | System.Runtime.CompilerServices.ExtensionAttribute | [AttributeUsageAttribute(...)] | 0 | 69 |
 | System.Runtime.CompilerServices.FixedAddressValueTypeAttribute | [AttributeUsageAttribute(...)] | 0 | 256 |
 | System.Runtime.CompilerServices.FixedBufferAttribute | [AttributeUsageAttribute(...)] | 0 | 256 |
@@ -2014,6 +2014,7 @@ attrArgPositional
 | System.Runtime.CompilerServices.TypeForwardedToAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.CompilerServices.TypeForwardedToAttribute | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.CompilerServices.UnsafeValueTypeAttribute | [AttributeUsageAttribute(...)] | 0 | 8 |
+| System.Runtime.ConstrainedExecution.PrePrepareMethodAttribute | [AttributeUsageAttribute(...)] | 0 | 96 |
 | System.Runtime.ConstrainedExecution.ReliabilityContractAttribute | [AttributeUsageAttribute(...)] | 0 | 1133 |
 | System.Runtime.ExceptionServices.ExceptionDispatchInfo | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.ExceptionServices.ExceptionDispatchInfo | [NullableContextAttribute(...)] | 0 | 1 |
@@ -2246,6 +2247,7 @@ attrArgPositional
 | System.Runtime.Serialization.SerializationInfoEnumerator | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.Serialization.StreamingContext | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.Serialization.StreamingContext | [NullableContextAttribute(...)] | 0 | 2 |
+| System.Runtime.TargetedPatchingOptOutAttribute | [AttributeUsageAttribute(...)] | 0 | 96 |
 | System.Runtime.TargetedPatchingOptOutAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.TargetedPatchingOptOutAttribute | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Runtime.Versioning.NonVersionableAttribute | [AttributeUsageAttribute(...)] | 0 | 108 |

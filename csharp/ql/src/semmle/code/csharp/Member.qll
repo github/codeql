@@ -316,18 +316,10 @@ class Virtualizable extends Member, @virtualizable {
  * A parameterizable declaration. Either a callable (`Callable`), a delegate
  * type (`DelegateType`), or an indexer (`Indexer`).
  */
-class Parameterizable extends Declaration, @parameterizable {
-  /** Gets a parameter of this declaration, if any. */
-  Parameter getAParameter() { result = getParameter(_) }
+class Parameterizable extends DotNet::Parameterizable, Declaration, @parameterizable {
+  override Parameter getRawParameter(int i) { params(result, _, _, i, _, this, _) }
 
-  /** Gets the `i`th parameter of this declaration. */
-  Parameter getParameter(int i) { params(result, _, _, i, _, this, _) }
-
-  /** Gets the number of parameters of this declaration. */
-  int getNumberOfParameters() { result = count(this.getAParameter()) }
-
-  /** Holds if this declaration has no parameters. */
-  predicate hasNoParameters() { not exists(this.getAParameter()) }
+  override Parameter getParameter(int i) { params(result, _, _, i, _, this, _) }
 
   /**
    * Gets the name of this parameter followed by its type, possibly prefixed

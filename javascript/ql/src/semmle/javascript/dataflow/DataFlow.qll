@@ -1309,6 +1309,20 @@ module DataFlow {
   }
 
   /**
+   * INTERNAL: Do not use outside standard library.
+   *
+   * Gets a data flow node unique to the given field declaration.
+   *
+   * Note that this node defaults to being disconnected from the data flow
+   * graph, as the individual property reads and writes affecting the field are
+   * analyzed independently of the field declaration.
+   *
+   * Certain framework models may need this node to model the behavior of
+   * class and field decorators.
+   */
+  DataFlow::Node fieldDeclarationNode(FieldDeclaration field) { result = TPropNode(field) }
+
+  /**
    * Gets the data flow node corresponding the given l-value expression, if
    * such a node exists.
    *
@@ -1592,7 +1606,8 @@ module DataFlow {
       e instanceof E4X::XMLAttributeSelector or
       e instanceof E4X::XMLDotDotExpression or
       e instanceof E4X::XMLFilterExpression or
-      e instanceof E4X::XMLQualifiedIdentifier
+      e instanceof E4X::XMLQualifiedIdentifier or
+      e instanceof Angular2::PipeRefExpr
     )
     or
     exists(Expr e | e = nd.asExpr() |

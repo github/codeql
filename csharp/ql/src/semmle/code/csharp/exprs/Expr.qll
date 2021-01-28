@@ -295,6 +295,12 @@ private predicate hasChildPattern(ControlFlowElement pm, Expr child) {
     child = mid.getChild(2).getAChildExpr() or
     child = mid.getChild(3).getAChildExpr()
   )
+  or
+  exists(Expr mid |
+    hasChildPattern(pm, mid) and
+    mid instanceof @unary_pattern_expr and
+    child = mid.getChild(0)
+  )
 }
 
 /**
@@ -337,6 +343,45 @@ class ConstantPatternExpr extends PatternExpr {
   ConstantPatternExpr() { this.hasValue() }
 
   override string getAPrimaryQlClass() { result = "ConstantPatternExpr" }
+}
+
+/** A relational pattern, for example `>1` in `x is >1`. */
+class RelationalPatternExpr extends PatternExpr, @relational_pattern_expr {
+  /** Gets the name of the operator in this pattern. */
+  string getOperator() { none() }
+
+  /** Gets the expression of this relational pattern. */
+  Expr getExpr() { result = this.getChild(0) }
+
+  override string toString() { result = getOperator() + " ..." }
+}
+
+/** A less-than pattern, for example `< 10` in `x is < 10`. */
+class LTPattern extends RelationalPatternExpr, @lt_pattern_expr {
+  override string getOperator() { result = "<" }
+
+  override string getAPrimaryQlClass() { result = "LTPattern" }
+}
+
+/** A greater-than pattern, for example `> 10` in `x is > 10`. */
+class GTPattern extends RelationalPatternExpr, @gt_pattern_expr {
+  override string getOperator() { result = ">" }
+
+  override string getAPrimaryQlClass() { result = "GTPattern" }
+}
+
+/** A less-than or equals pattern, for example `<= 10` in `x is <= 10`. */
+class LEPattern extends RelationalPatternExpr, @le_pattern_expr {
+  override string getOperator() { result = "<=" }
+
+  override string getAPrimaryQlClass() { result = "LEPattern" }
+}
+
+/** A greater-than or equals pattern, for example `>= 10` in `x is >= 10` */
+class GEPattern extends RelationalPatternExpr, @ge_pattern_expr {
+  override string getOperator() { result = ">=" }
+
+  override string getAPrimaryQlClass() { result = "GEPattern" }
 }
 
 /**
@@ -442,6 +487,19 @@ class PositionalPatternExpr extends Expr, @positional_pattern_expr {
   PatternExpr getPattern(int n) { result = this.getChild(n) }
 
   override string getAPrimaryQlClass() { result = "PositionalPatternExpr" }
+}
+
+/** A unary pattern. For example, `not 1`. */
+class UnaryPatternExpr extends PatternExpr, @unary_pattern_expr {
+  /** Gets the underlying pattern. */
+  PatternExpr getPattern() { result = this.getChild(0) }
+}
+
+/** A not pattern. For example, `not 1`. */
+class NotPatternExpr extends UnaryPatternExpr, @not_pattern_expr {
+  override string toString() { result = "not ..." }
+
+  override string getAPrimaryQlClass() { result = "NotPatternExpr" }
 }
 
 /**
@@ -559,7 +617,7 @@ class Cast extends Expr {
   TypeAccess getTypeAccess() { result = this.getChild(1) }
 
   /** Gets the type that the underlying expression is being cast to. */
-  Type getTargetType() { result = this.getTypeAccess().getTarget() }
+  Type getTargetType() { result = this.getType() }
 
   /** Gets the type of the underlying expression. */
   Type getSourceType() { result = this.getExpr().getType() }

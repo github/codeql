@@ -78,7 +78,7 @@ class MyHandler(BaseHTTPRequestHandler):
         ensure_tainted(form)
 
 
-    def do_GET(self):
+    def do_GET(self): # $ requestHandler
         # send_response will log a line to stderr
         self.send_response(200)
         self.send_header("Content-type", "text/plain; charset=utf-8")
@@ -88,7 +88,7 @@ class MyHandler(BaseHTTPRequestHandler):
         print(self.headers)
 
 
-    def do_POST(self):
+    def do_POST(self): # $ requestHandler
         form = cgi.FieldStorage(
             self.rfile,
             self.headers,

@@ -34,7 +34,7 @@ private module FlaskModel {
    * WARNING: Only holds for a few predefined attributes.
    */
   private DataFlow::Node flask_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["request", "make_response", "Response"] and
+    attr_name in ["request", "make_response", "Response", "views"] and
     (
       t.start() and
       result = DataFlow::importNode("flask" + "." + attr_name)
@@ -187,6 +187,97 @@ private module FlaskModel {
        */
       DataFlow::Node response_class() { result = response_class(DataFlow::TypeTracker::end()) }
     }
+
+    // -------------------------------------------------------------------------
+    // flask.views
+    // -------------------------------------------------------------------------
+    /** Gets a reference to the `flask.views` module. */
+    DataFlow::Node views() { result = flask_attr("views") }
+
+    /** Provides models for the `flask.views` module */
+    module views {
+      /**
+       * Gets a reference to the attribute `attr_name` of the `flask.views` module.
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node views_attr(DataFlow::TypeTracker t, string attr_name) {
+        attr_name in ["View", "MethodView"] and
+        (
+          t.start() and
+          result = DataFlow::importNode("flask.views" + "." + attr_name)
+          or
+          t.startInAttr(attr_name) and
+          result = views()
+        )
+        or
+        // Due to bad performance when using normal setup with `views_attr(t2, attr_name).track(t2, t)`
+        // we have inlined that code and forced a join
+        exists(DataFlow::TypeTracker t2 |
+          exists(DataFlow::StepSummary summary |
+            views_attr_first_join(t2, attr_name, result, summary) and
+            t = t2.append(summary)
+          )
+        )
+      }
+
+      pragma[nomagic]
+      private predicate views_attr_first_join(
+        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+        DataFlow::StepSummary summary
+      ) {
+        DataFlow::StepSummary::step(views_attr(t2, attr_name), res, summary)
+      }
+
+      /**
+       * Gets a reference to the attribute `attr_name` of the `flask.views` module.
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node views_attr(string attr_name) {
+        result = views_attr(DataFlow::TypeTracker::end(), attr_name)
+      }
+
+      /**
+       * Provides models for the `flask.views.View` class and subclasses.
+       *
+       * See https://flask.palletsprojects.com/en/1.1.x/views/#basic-principle.
+       */
+      module View {
+        /** Gets a reference to the `flask.views.View` class or any subclass. */
+        private DataFlow::Node subclassRef(DataFlow::TypeTracker t) {
+          t.start() and
+          result = views_attr(["View", "MethodView"])
+          or
+          // subclasses in project code
+          result.asExpr().(ClassExpr).getABase() = subclassRef(t.continue()).asExpr()
+          or
+          exists(DataFlow::TypeTracker t2 | result = subclassRef(t2).track(t2, t))
+        }
+
+        /** Gets a reference to the `flask.views.View` class or any subclass. */
+        DataFlow::Node subclassRef() { result = subclassRef(DataFlow::TypeTracker::end()) }
+      }
+
+      /**
+       * Provides models for the `flask.views.MethodView` class and subclasses.
+       *
+       * See https://flask.palletsprojects.com/en/1.1.x/views/#method-based-dispatching.
+       */
+      module MethodView {
+        /** Gets a reference to the `flask.views.View` class or any subclass. */
+        private DataFlow::Node subclassRef(DataFlow::TypeTracker t) {
+          t.start() and
+          result = views_attr("MethodView")
+          or
+          // subclasses in project code
+          result.asExpr().(ClassExpr).getABase() = subclassRef(t.continue()).asExpr()
+          or
+          exists(DataFlow::TypeTracker t2 | result = subclassRef(t2).track(t2, t))
+        }
+
+        /** Gets a reference to the `flask.views.View` class or any subclass. */
+        DataFlow::Node subclassRef() { result = subclassRef(DataFlow::TypeTracker::end()) }
+      }
+    }
   }
 
   /**
@@ -261,6 +352,65 @@ private module FlaskModel {
   // ---------------------------------------------------------------------------
   // routing modeling
   // ---------------------------------------------------------------------------
+  /** A flask View class defined in project code. */
+  class FlaskViewClassDef extends Class {
+    FlaskViewClassDef() { this.getABase() = flask::views::View::subclassRef().asExpr() }
+
+    /** Gets a function that could handle incoming requests, if any. */
+    Function getARequestHandler() {
+      // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
+      // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
+      result = this.getAMethod() and
+      result.getName() = "dispatch_request"
+    }
+
+    /** Gets a reference to this class. */
+    private DataFlow::Node getARef(DataFlow::TypeTracker t) {
+      t.start() and
+      result.asExpr().(ClassExpr) = this.getParent()
+      or
+      exists(DataFlow::TypeTracker t2 | result = this.getARef(t2).track(t2, t))
+    }
+
+    /** Gets a reference to this class. */
+    DataFlow::Node getARef() { result = this.getARef(DataFlow::TypeTracker::end()) }
+
+    /** Gets a reference to the `as_view` classmethod of this class. */
+    private DataFlow::Node asViewRef(DataFlow::TypeTracker t) {
+      t.startInAttr("as_view") and
+      result = this.getARef()
+      or
+      exists(DataFlow::TypeTracker t2 | result = this.asViewRef(t2).track(t2, t))
+    }
+
+    /** Gets a reference to the `as_view` classmethod of this class. */
+    DataFlow::Node asViewRef() { result = this.asViewRef(DataFlow::TypeTracker::end()) }
+
+    /** Gets a reference to the result of calling the `as_view` classmethod of this class. */
+    private DataFlow::Node asViewResult(DataFlow::TypeTracker t) {
+      t.start() and
+      result.asCfgNode().(CallNode).getFunction() = this.asViewRef().asCfgNode()
+      or
+      exists(DataFlow::TypeTracker t2 | result = asViewResult(t2).track(t2, t))
+    }
+
+    /** Gets a reference to the result of calling the `as_view` classmethod of this class. */
+    DataFlow::Node asViewResult() { result = asViewResult(DataFlow::TypeTracker::end()) }
+  }
+
+  class FlaskMethodViewClassDef extends FlaskViewClassDef {
+    FlaskMethodViewClassDef() { this.getABase() = flask::views::MethodView::subclassRef().asExpr() }
+
+    override Function getARequestHandler() {
+      result = super.getARequestHandler()
+      or
+      // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
+      // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
+      result = this.getAMethod() and
+      result.getName() = HTTP::httpVerbLower()
+    }
+  }
+
   private string werkzeug_rule_re() {
     // since flask uses werkzeug internally, we are using its routing rules from
     // https://github.com/pallets/werkzeug/blob/4dc8d6ab840d4b78cbd5789cef91b01e3bde01d5/src/werkzeug/routing.py#L138-L151
@@ -275,10 +425,10 @@ private module FlaskModel {
       // parameter. This should give us more RemoteFlowSources but could also lead to
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
       not exists(this.getUrlPattern()) and
-      result = this.getARouteHandler().getArgByName(_)
+      result = this.getARequestHandler().getArgByName(_)
       or
       exists(string name |
-        result = this.getARouteHandler().getArgByName(name) and
+        result = this.getARequestHandler().getArgByName(name) and
         exists(string match |
           match = this.getUrlPattern().regexpFind(werkzeug_rule_re(), _, _) and
           name = match.regexpCapture(werkzeug_rule_re(), 4)
@@ -301,7 +451,7 @@ private module FlaskModel {
       result.asCfgNode() in [node.getArg(0), node.getArgByName("rule")]
     }
 
-    override Function getARouteHandler() { result.getADecorator().getAFlowNode() = node }
+    override Function getARequestHandler() { result.getADecorator().getAFlowNode() = node }
   }
 
   /**
@@ -318,12 +468,36 @@ private module FlaskModel {
       result.asCfgNode() in [node.getArg(0), node.getArgByName("rule")]
     }
 
-    override Function getARouteHandler() {
-      exists(DataFlow::Node view_func_arg, DataFlow::LocalSourceNode func_src |
-        view_func_arg.asCfgNode() in [node.getArg(2), node.getArgByName("view_func")] and
-        func_src.flowsTo(view_func_arg) and
+    DataFlow::Node getViewArg() {
+      result.asCfgNode() in [node.getArg(2), node.getArgByName("view_func")]
+    }
+
+    override Function getARequestHandler() {
+      exists(DataFlow::LocalSourceNode func_src |
+        func_src.flowsTo(getViewArg()) and
         func_src.asExpr().(CallableExpr) = result.getDefinition()
       )
+      or
+      exists(FlaskViewClassDef vc |
+        getViewArg() = vc.asViewResult() and
+        result = vc.getARequestHandler()
+      )
+    }
+  }
+
+  /** A request handler defined in a django view class, that has no known route. */
+  private class FlaskViewClassHandlerWithoutKnownRoute extends HTTP::Server::RequestHandler::Range {
+    FlaskViewClassHandlerWithoutKnownRoute() {
+      exists(FlaskViewClassDef vc | vc.getARequestHandler() = this) and
+      not exists(FlaskRouteSetup setup | setup.getARequestHandler() = this)
+    }
+
+    override Parameter getARoutedParameter() {
+      // Since we don't know the URL pattern, we simply mark all parameters as a routed
+      // parameter. This should give us more RemoteFlowSources but could also lead to
+      // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
+      result in [this.getArg(_), this.getArgByName(_)] and
+      not result = this.getArg(0)
     }
   }
 
@@ -484,7 +658,7 @@ private module FlaskModel {
   private class FlaskRouteHandlerReturn extends HTTP::Server::HttpResponse::Range, DataFlow::CfgNode {
     FlaskRouteHandlerReturn() {
       exists(Function routeHandler |
-        routeHandler = any(FlaskRouteSetup rs).getARouteHandler() and
+        routeHandler = any(FlaskRouteSetup rs).getARequestHandler() and
         node = routeHandler.getAReturnValueFlowNode()
       )
     }

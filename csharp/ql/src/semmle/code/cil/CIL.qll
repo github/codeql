@@ -19,3 +19,4 @@ import DataFlow
 import Attribute
 import Stubs
 import CustomModifierReceiver
+import Parameterizable

@@ -470,6 +470,8 @@ A QLDoc comment is a *qldoc comment start*, followed by a *qldoc comment body*, 
 
 The "content" of a QLDoc comment is the comment body of the comment, omitting the initial ``/**``, the trailing ``*/``, and the leading whitespace followed by ``*`` on each internal line.
 
+For more information about how the content is interpreted, see see "`QLDoc <#qldoc>`__" below.
+
 Keywords
 ~~~~~~~~
 
