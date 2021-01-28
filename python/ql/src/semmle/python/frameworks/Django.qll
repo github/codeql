@@ -35,7 +35,7 @@ private module Django {
    * WARNING: Only holds for a few predefined attributes.
    */
   private DataFlow::Node django_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["db", "urls", "http", "conf"] and
+    attr_name in ["db", "urls", "http", "conf", "views"] and
     (
       t.start() and
       result = DataFlow::importNode("django" + "." + attr_name)

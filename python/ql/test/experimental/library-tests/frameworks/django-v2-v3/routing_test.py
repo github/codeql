@@ -39,7 +39,7 @@ class ClassView(View, Foo):
 
 # direct import with full path to `View` class (previously not supported)
 class ClassView2(django.views.generic.base.View):
-    def get(self, request): # $ MISSING: requestHandler
+    def get(self, request): # $ requestHandler
         pass
 
 
