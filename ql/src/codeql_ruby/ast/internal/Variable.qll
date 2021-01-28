@@ -125,6 +125,9 @@ private module Cached {
       not scope.(CapturingScope).inherits(name, _)
     }
 
+  // Token types that can be vcalls
+  private class VcallToken = @token_identifier or @token_super;
+
   /**
    * Holds if `i` is an `identifier` node occurring in the context where it
    * should be considered a VCALL. VCALL is the term that MRI/Ripper uses
@@ -139,7 +142,7 @@ private module Cached {
    * ```
    */
   cached
-  predicate vcall(Generated::Identifier i) {
+  predicate vcall(VcallToken i) {
     i = any(Generated::ArgumentList x).getChild(_)
     or
     i = any(Generated::Array x).getChild(_)

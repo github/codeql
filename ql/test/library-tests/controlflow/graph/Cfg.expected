@@ -1631,12 +1631,12 @@ cfg.rb:
 #-----|  -> exit print (normal)
 
 #  144| puts
-#-----|  -> super
+#-----|  -> call to super
 
 #  144| call to print
 #-----|  -> call to puts
 
-#  144| super
+#  144| call to super
 #-----|  -> print
 
 #  144| print

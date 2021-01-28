@@ -208,3 +208,31 @@ foo(**bar)
 
 # the value in a keyword argument
 foo(blah: bar)
+
+# ------------------------------------------------------------------------------
+# calls to `super`
+
+class MyClass
+  def my_method
+    super
+    super()
+    super 'blah'
+    super 1, 2, 3
+    super { |x| x + 1 }
+    super do |x| x * 2 end
+    super 4, 5 { |x| x + 100 }
+    super 6, 7 do |x| x + 200 end
+  end
+end
+
+# ------------------------------------------------------------------------------
+# calls to methods simply named `super`, i.e. *not* calls to the same method in
+# a parent classs, so these should be Call but not SuperCall
+
+class AnotherClass
+  def another_method
+    foo.super
+    self.super # TODO: this shows up as a call without a receiver, but that should be fixed once we handle `self` expressions
+    super.super # we expect the receiver to be a SuperCall, while the outer call should not (it's just a regular Call)
+  end
+end
