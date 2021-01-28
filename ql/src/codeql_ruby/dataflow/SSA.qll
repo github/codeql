@@ -299,6 +299,7 @@ module Ssa {
    *   x = 0
    * else
    *   x = 1
+   * end
    * puts x
    * ```
    *
@@ -306,7 +307,7 @@ module Ssa {
    */
   class PhiNode extends Definition, SsaImplCommon::PhiNode {
     /**
-     * Gets an input of this phi node. Example:
+     * Gets an input of this phi node.
      *
      * Example:
      *
