@@ -8,7 +8,9 @@ void badFunction(const int *source, std::size_t length) noexcept {
 void goodFunction(const int *source, std::size_t length) noexcept {
   try {
        int * dest = new int[length];
-  } catch(std::bad_alloc)
+  } catch(std::bad_alloc) {
+    // ...
+  }
   std::memset(dest, 0, length);
 // ..
 }
@@ -16,7 +18,9 @@ void goodFunction(const int *source, std::size_t length) noexcept {
 void badFunction(const int *source, std::size_t length) noexcept {
   try {
        int * dest = new (std::nothrow) int[length];
-  } catch(std::bad_alloc)
+  } catch(std::bad_alloc) {
+    // ...
+  }
   std::memset(dest, 0, length);
 // ..
 }
