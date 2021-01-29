@@ -177,6 +177,16 @@ module Ssa {
     }
 
     /**
+     * Holds is this SSA definition is live at the end of basic block `bb`.
+     * That is, this definition reaches the end of basic block `bb`, at which
+     * point it is still live, without crossing another SSA definition of the
+     * same source variable.
+     */
+    final predicate isLiveAtEndOfBlock(ControlFlow::BasicBlock bb) {
+      SsaImpl::isLiveAtEndOfBlock(this, bb)
+    }
+
+    /**
      * Gets a read of the source variable underlying this SSA definition that
      * can be reached from this SSA definition without passing through any
      * other SSA definitions. Example:
@@ -233,12 +243,7 @@ module Ssa {
      *   node between lines 9 and 10.
      */
     final AssignableRead getAReadAtNode(ControlFlow::Node cfn) {
-      exists(SourceVariable v, ControlFlow::BasicBlock bb, int i |
-        SsaImpl::ssaDefReachesRead(v, this, bb, i) and
-        SsaImpl::variableReadActual(bb, i, v) and
-        cfn = bb.getNode(i) and
-        result.getAControlFlowNode() = cfn
-      )
+      result = SsaImpl::getAReadAtNode(this, cfn)
     }
 
     /**

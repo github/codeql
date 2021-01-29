@@ -174,15 +174,34 @@ private predicate inDefDominanceFrontier(BasicBlock bb, SourceVariable v) {
 }
 
 cached
-newtype TDefinition =
-  TWriteDef(SourceVariable v, BasicBlock bb, int i) {
-    variableWrite(bb, i, v, _) and
-    liveAfterWrite(bb, i, v)
-  } or
-  TPhiNode(SourceVariable v, BasicBlock bb) {
-    inDefDominanceFrontier(bb, v) and
-    liveAtEntry(bb, v)
+private module Cached {
+  cached
+  newtype TDefinition =
+    TWriteDef(SourceVariable v, BasicBlock bb, int i) {
+      variableWrite(bb, i, v, _) and
+      liveAfterWrite(bb, i, v)
+    } or
+    TPhiNode(SourceVariable v, BasicBlock bb) {
+      inDefDominanceFrontier(bb, v) and
+      liveAtEntry(bb, v)
+    }
+
+  cached
+  predicate uncertainWriteDefinitionInput(UncertainWriteDefinition def, Definition inp) {
+    lastRefRedef(inp, _, _, def)
   }
+
+  cached
+  predicate phiHasInputFromBlock(PhiNode phi, Definition inp, BasicBlock bb) {
+    exists(SourceVariable v, BasicBlock bbDef |
+      phi.definesAt(v, bbDef, _) and
+      getABasicBlockPredecessor(bbDef) = bb and
+      ssaDefReachesEndOfBlock(bb, inp, v)
+    )
+  }
+}
+
+import Cached
 
 private module SsaDefReaches {
   newtype TSsaRefKind =
@@ -369,11 +388,12 @@ private predicate ssaDefReachesEndOfBlockRec(BasicBlock bb, Definition def, Sour
 }
 
 /**
+ * NB: If this predicate is exposed, it should be cached.
+ *
  * Holds if the SSA definition of `v` at `def` reaches the end of basic
  * block `bb`, at which point it is still live, without crossing another
  * SSA definition of `v`.
  */
-cached
 predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def, SourceVariable v) {
   exists(int last | last = maxSsaRefRank(bb, v) |
     ssaDefReachesRank(bb, def, last, v) and
@@ -386,11 +406,12 @@ predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def, SourceVariable 
 }
 
 /**
+ * NB: If this predicate is exposed, it should be cached.
+ *
  * Holds if the SSA definition of `v` at `def` reaches a read at index `i` in
  * basic block `bb`, without crossing another SSA definition of `v`. The read
  * is of kind `rk`.
  */
-cached
 predicate ssaDefReachesRead(SourceVariable v, Definition def, BasicBlock bb, int i) {
   ssaDefReachesReadWithinBlock(v, def, bb, i)
   or
@@ -400,26 +421,12 @@ predicate ssaDefReachesRead(SourceVariable v, Definition def, BasicBlock bb, int
 }
 
 /**
- * Holds if the SSA definition of `v` at `def` reaches uncertain SSA definition
- * `redef` without crossing another SSA definition of `v`.
- */
-cached
-predicate ssaDefReachesUncertainDef(SourceVariable v, Definition def, UncertainWriteDefinition redef) {
-  ssaDefReachesUncertainDefWithinBlock(v, def, redef)
-  or
-  exists(BasicBlock bb |
-    redef.definesAt(v, bb, _) and
-    ssaDefReachesEndOfBlock(getABasicBlockPredecessor(bb), def, v) and
-    not ssaDefReachesUncertainDefWithinBlock(v, _, redef)
-  )
-}
-
-/**
+ * NB: If this predicate is exposed, it should be cached.
+ *
  * Holds if `def` is accessed at index `i1` in basic block `bb1` (either a read
  * or a write), `def` is read at index `i2` in basic block `bb2`, and there is a
  * path between them without any read of `def`.
  */
-cached
 predicate adjacentDefRead(Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2) {
   exists(int rnk |
     rnk = ssaDefRank(def, _, bb1, i1, _) and
@@ -433,11 +440,12 @@ predicate adjacentDefRead(Definition def, BasicBlock bb1, int i1, BasicBlock bb2
 }
 
 /**
+ * NB: If this predicate is exposed, it should be cached.
+ *
  * Holds if the node at index `i` in `bb` is a last reference to SSA definition
  * `def`. The reference is last because it can reach another write `next`,
  * without passing through another read or write.
  */
-cached
 predicate lastRefRedef(Definition def, BasicBlock bb, int i, Definition next) {
   exists(int rnk, SourceVariable v, int j | rnk = ssaDefRank(def, v, bb, i, _) |
     // Next reference to `v` inside `bb` is a write
@@ -455,6 +463,8 @@ predicate lastRefRedef(Definition def, BasicBlock bb, int i, Definition next) {
 }
 
 /**
+ * NB: If this predicate is exposed, it should be cached.
+ *
  * Holds if the node at index `i` in `bb` is a last reference to SSA
  * definition `def`.
  *
@@ -462,7 +472,6 @@ predicate lastRefRedef(Definition def, BasicBlock bb, int i, Definition next) {
  * SSA definition for the underlying source variable, without passing through
  * another read.
  */
-cached
 predicate lastRef(Definition def, BasicBlock bb, int i) {
   lastRefRedef(def, bb, i, _)
   or
@@ -482,14 +491,6 @@ predicate lastRef(Definition def, BasicBlock bb, int i) {
 class Definition extends TDefinition {
   /** Gets the source variable underlying this SSA definition. */
   SourceVariable getSourceVariable() { this.definesAt(result, _, _) }
-
-  /**
-   * Holds is this SSA definition is live at the end of basic block `bb`.
-   * That is, this definition reaches the end of basic block `bb`, at which
-   * point it is still live, without crossing another SSA definition of the
-   * same source variable.
-   */
-  final predicate isLiveAtEndOfBlock(BasicBlock bb) { ssaDefReachesEndOfBlock(bb, this, _) }
 
   /**
    * Holds if this SSA definition defines `v` at index `i` in basic block `bb`.
@@ -541,20 +542,10 @@ class WriteDefinition extends Definition, TWriteDef {
 /** A phi node. */
 class PhiNode extends Definition, TPhiNode {
   /** Gets an input of this phi node. */
-  Definition getAnInput() {
-    exists(BasicBlock bb, BasicBlock pred, SourceVariable v |
-      this.definesAt(v, bb, _) and
-      getABasicBlockPredecessor(bb) = pred and
-      ssaDefReachesEndOfBlock(pred, result, v)
-    )
-  }
+  Definition getAnInput() { this.hasInputFromBlock(result, _) }
 
   /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
-  predicate hasInputFromBlock(Definition inp, BasicBlock bb) {
-    inp = this.getAnInput() and
-    getABasicBlockPredecessor(this.getBasicBlock()) = bb and
-    ssaDefReachesEndOfBlock(bb, inp, _)
-  }
+  predicate hasInputFromBlock(Definition inp, BasicBlock bb) { phiHasInputFromBlock(this, inp, bb) }
 
   override string toString() { result = "Phi" }
 }
@@ -575,5 +566,5 @@ class UncertainWriteDefinition extends WriteDefinition {
    * Gets the immediately preceding definition. Since this update is uncertain,
    * the value from the preceding definition might still be valid.
    */
-  Definition getPriorDefinition() { ssaDefReachesUncertainDef(_, result, this) }
+  Definition getPriorDefinition() { uncertainWriteDefinitionInput(this, result) }
 }
