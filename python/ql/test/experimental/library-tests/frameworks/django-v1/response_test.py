@@ -51,7 +51,7 @@ def redirect_through_normal_response(request):
 
 def redirect_shortcut(request):
     next = request.GET.get("next")
-    return django.shortcuts.redirect(next) # $ MISSING: HttpResponse HttpRedirectResponse redirectLocation=next
+    return django.shortcuts.redirect(next) # $ HttpResponse HttpRedirectResponse redirectLocation=next
 
 
 # Ensure that simple subclasses are still vuln to XSS
