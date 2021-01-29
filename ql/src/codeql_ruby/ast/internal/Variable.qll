@@ -9,11 +9,6 @@ private Generated::AstNode parent(Generated::AstNode n) {
   not n = any(VariableScope s).getScopeElement()
 }
 
-/** Gets the enclosing scope for `node`. */
-private VariableScope enclosingScope(Generated::AstNode node) {
-  result.getScopeElement() = parent*(node.getParent())
-}
-
 private predicate parameterAssignment(
   CallableScope::Range scope, string name, Generated::Identifier i
 ) {
@@ -98,6 +93,12 @@ private class CapturingScope extends VariableScope {
 
 cached
 private module Cached {
+  /** Gets the enclosing scope for `node`. */
+  cached
+  VariableScope enclosingScope(Generated::AstNode node) {
+    result.getScopeElement() = parent*(node.getParent())
+  }
+
   cached
   newtype TScope =
     TGlobalScope() or
@@ -301,6 +302,11 @@ private module Cached {
     or
     scopeDefinesParameterVariable(_, _, access)
   }
+
+  cached
+  predicate isCapturedAccess(LocalVariableAccess::Range access) {
+    access.getVariable().getDeclaringScope() != enclosingScope(access)
+  }
 }
 
 import Cached
@@ -391,6 +397,8 @@ module LocalVariable {
     final override Location getLocation() { result = i.getLocation() }
 
     final override VariableScope getDeclaringScope() { result = scope }
+
+    final VariableAccess getDefiningAccess() { result = i }
   }
 }
 

@@ -1,1 +1,6 @@
-{}
+{
+    "SSA": [
+        "codeql/csharp/ql/src/semmle/code/csharp/dataflow/internal/SsaImplCommon.qll",
+        "ql/src/codeql_ruby/dataflow/internal/SsaImplCommon.qll"
+    ]
+}

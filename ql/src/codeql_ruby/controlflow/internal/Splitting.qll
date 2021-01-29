@@ -74,7 +74,7 @@ private predicate overlapping(CfgScope scope, SplitKind sk1, SplitKind sk2) {
   exists(AstNode n |
     sk1.appliesTo(n) and
     sk2.appliesTo(n) and
-    scope = getScope(n)
+    scope = getCfgScope(n)
   )
 }
 
@@ -106,7 +106,7 @@ abstract private class SplitKind extends TSplitKind {
    */
   predicate isEnabled(AstNode n) {
     this.appliesTo(n) and
-    this.getRank(getScope(n)) <= maxSplits()
+    this.getRank(getCfgScope(n)) <= maxSplits()
   }
 
   /**

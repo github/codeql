@@ -4,6 +4,7 @@ private import codeql.Locations
 private import codeql_ruby.ast.internal.TreeSitter::Generated
 private import codeql_ruby.controlflow.ControlFlowGraph
 private import internal.ControlFlowGraphImpl
+private import CfgNodes
 private import SuccessorTypes
 
 /**
@@ -286,9 +287,7 @@ private module Cached {
   private predicate predBB(BasicBlock succ, BasicBlock pred) { succBB(pred, succ) }
 
   /** Holds if `bb` is an exit basic block that represents normal exit. */
-  private predicate normalExitBB(BasicBlock bb) {
-    bb.getANode().(CfgNodes::AnnotatedExitNode).isNormal()
-  }
+  private predicate normalExitBB(BasicBlock bb) { bb.getANode().(AnnotatedExitNode).isNormal() }
 
   /** Holds if `dom` is an immediate post-dominator of `bb`. */
   cached
@@ -313,7 +312,7 @@ private module Cached {
 private import Cached
 
 /** Holds if `bb` is an entry basic block. */
-private predicate entryBB(BasicBlock bb) { bb.getFirstNode() instanceof CfgNodes::EntryNode }
+private predicate entryBB(BasicBlock bb) { bb.getFirstNode() instanceof EntryNode }
 
 /**
  * An entry basic block, that is, a basic block whose first node is
@@ -330,7 +329,17 @@ class EntryBasicBlock extends BasicBlock {
  * an annotated exit node.
  */
 class AnnotatedExitBasicBlock extends BasicBlock {
-  AnnotatedExitBasicBlock() { this.getANode() instanceof CfgNodes::AnnotatedExitNode }
+  private boolean normal;
+
+  AnnotatedExitBasicBlock() {
+    exists(AnnotatedExitNode n |
+      n = this.getANode() and
+      if n.isNormal() then normal = true else normal = false
+    )
+  }
+
+  /** Holds if this block represent a normal exit. */
+  final predicate isNormal() { normal = true }
 }
 
 /**
@@ -338,12 +347,10 @@ class AnnotatedExitBasicBlock extends BasicBlock {
  * an exit node.
  */
 class ExitBasicBlock extends BasicBlock {
-  ExitBasicBlock() { this.getLastNode() instanceof CfgNodes::ExitNode }
+  ExitBasicBlock() { this.getLastNode() instanceof ExitNode }
 }
 
 private module JoinBlockPredecessors {
-  private import CfgNodes
-
   private predicate id(AstNode x, AstNode y) { x = y }
 
   private predicate idOf(AstNode x, int y) = equivalenceRelation(id/2)(x, y)

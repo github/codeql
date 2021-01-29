@@ -10,13 +10,16 @@ private import internal.Splitting
 private import internal.Completion
 
 /** An AST node with an associated control-flow graph. */
-class CfgScope extends AstNode {
-  CfgScope::Range_ range;
+class CfgScope extends AST::AstNode {
+  CfgScope() { this instanceof CfgScope::Range_ }
 
-  CfgScope() { range = this }
-
-  /** Gets the name of this scope. */
-  string getName() { result = range.getName() }
+  /** Gets the CFG scope that this scope is nested under, if any. */
+  final CfgScope getOuterCfgScope() {
+    exists(AstNode parent |
+      parent.getAFieldOrChild() = this and
+      result = getCfgScope(parent)
+    )
+  }
 }
 
 /**
@@ -32,7 +35,7 @@ class CfgNode extends TCfgNode {
   string toString() { none() }
 
   /** Gets the AST node that this node corresponds to, if any. */
-  AstNode getNode() { none() }
+  AST::AstNode getNode() { none() }
 
   /** Gets the location of this control flow node. */
   Location getLocation() { result = this.getNode().getLocation() }
@@ -63,100 +66,6 @@ class CfgNode extends TCfgNode {
 
   /** Holds if this node has more than one successor. */
   final predicate isBranch() { strictcount(this.getASuccessor()) > 1 }
-}
-
-/** Provides different types of control flow nodes. */
-module CfgNodes {
-  /** An entry node for a given scope. */
-  class EntryNode extends CfgNode, TEntryNode {
-    private CfgScope scope;
-
-    EntryNode() { this = TEntryNode(scope) }
-
-    final override EntryBasicBlock getBasicBlock() { result = CfgNode.super.getBasicBlock() }
-
-    final override Location getLocation() { result = scope.getLocation() }
-
-    final override string toString() { result = "enter " + scope.getName() }
-  }
-
-  /** An exit node for a given scope, annotated with the type of exit. */
-  class AnnotatedExitNode extends CfgNode, TAnnotatedExitNode {
-    private CfgScope scope;
-    private boolean normal;
-
-    AnnotatedExitNode() { this = TAnnotatedExitNode(scope, normal) }
-
-    /** Holds if this node represent a normal exit. */
-    final predicate isNormal() { normal = true }
-
-    final override AnnotatedExitBasicBlock getBasicBlock() {
-      result = CfgNode.super.getBasicBlock()
-    }
-
-    final override Location getLocation() { result = scope.getLocation() }
-
-    final override string toString() {
-      exists(string s |
-        normal = true and s = "normal"
-        or
-        normal = false and s = "abnormal"
-      |
-        result = "exit " + scope.getName() + " (" + s + ")"
-      )
-    }
-  }
-
-  /** An exit node for a given scope. */
-  class ExitNode extends CfgNode, TExitNode {
-    private CfgScope scope;
-
-    ExitNode() { this = TExitNode(scope) }
-
-    final override Location getLocation() { result = scope.getLocation() }
-
-    final override string toString() { result = "exit " + scope.getName() }
-  }
-
-  /**
-   * A node for an AST node.
-   *
-   * Each AST node maps to zero or more `AstCfgNode`s: zero when the node in unreachable
-   * (dead) code or not important for control flow, and multiple when there are different
-   * splits for the AST node.
-   */
-  class AstCfgNode extends CfgNode, TAstNode {
-    private Splits splits;
-    private AstNode n;
-
-    AstCfgNode() { this = TAstNode(n, splits) }
-
-    final override AstNode getNode() { result = n }
-
-    final override string toString() {
-      exists(string s |
-        // TODO: Remove once the SSA implementation is based on the AST layer
-        s = n.(AST::AstNode).toString() and
-        s != "AstNode"
-        or
-        n.(AST::AstNode).toString() = "AstNode" and
-        s = n.toString()
-      |
-        result = "[" + this.getSplitsString() + "] " + s
-        or
-        not exists(this.getSplitsString()) and result = s
-      )
-    }
-
-    /** Gets a comma-separated list of strings for each split in this node, if any. */
-    final string getSplitsString() {
-      result = splits.toString() and
-      result != ""
-    }
-
-    /** Gets a split for this control flow node, if any. */
-    final Split getASplit() { result = splits.getASplit() }
-  }
 }
 
 /** The type of a control flow successor. */

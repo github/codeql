@@ -29,6 +29,7 @@ class AstNode extends @ast_node {
   string getAPrimaryQlClass() { result = "???" }
 
   /** Gets a textual representation of this node. */
+  cached
   string toString() { result = "AstNode" }
 
   /** Gets the location of this node. */
