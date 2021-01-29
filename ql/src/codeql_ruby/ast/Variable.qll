@@ -28,6 +28,9 @@ class VariableScope extends TScope {
     result = this.getAVariable() and
     result.getName() = name
   }
+
+  /** Gets the scope in which this scope is nested, if any. */
+  VariableScope getOuterScope() { result = enclosingScope(this.getScopeElement()) }
 }
 
 /** A variable declared in a scope. */
@@ -83,6 +86,23 @@ class GlobalVariable extends Variable, TGlobalVariable {
   override GlobalVariable::Range range;
 
   final override GlobalVariableAccess getAnAccess() { result.getVariable() = this }
+}
+
+/** An instance variable. */
+class InstanceVariable extends Variable, TInstanceVariable {
+  override InstanceVariable::Range range;
+
+  /** Holds is this variable is a class instance variable. */
+  final predicate isClassInstanceVariable() { range.isClassInstanceVariable() }
+
+  final override InstanceVariableAccess getAnAccess() { result.getVariable() = this }
+}
+
+/** A class variable. */
+class ClassVariable extends Variable, TClassVariable {
+  override ClassVariable::Range range;
+
+  final override ClassVariableAccess getAnAccess() { result.getVariable() = this }
 }
 
 /** An access to a variable. */
@@ -146,7 +166,6 @@ class VariableReadAccess extends VariableAccess {
 class LocalVariableAccess extends VariableAccess, @token_identifier {
   final override LocalVariableAccess::Range range;
 
-  /** Gets the variable this identifier refers to. */
   final override LocalVariable getVariable() { result = range.getVariable() }
 
   final override string getAPrimaryQlClass() {
@@ -177,11 +196,10 @@ class LocalVariableWriteAccess extends LocalVariableAccess, VariableWriteAccess 
 /** An access to a local variable where the value is read. */
 class LocalVariableReadAccess extends LocalVariableAccess, VariableReadAccess { }
 
-/** An access to a local variable. */
+/** An access to a global variable. */
 class GlobalVariableAccess extends VariableAccess, @token_global_variable {
   final override GlobalVariableAccess::Range range;
 
-  /** Gets the variable this identifier refers to. */
   final override GlobalVariable getVariable() { result = range.getVariable() }
 
   final override string getAPrimaryQlClass() { result = "GlobalVariableAccess" }
@@ -192,3 +210,21 @@ class GlobalVariableWriteAccess extends GlobalVariableAccess, VariableWriteAcces
 
 /** An access to a global variable where the value is read. */
 class GlobalVariableReadAccess extends GlobalVariableAccess, VariableReadAccess { }
+
+/** An access to an instance variable. */
+class InstanceVariableAccess extends VariableAccess, @token_instance_variable {
+  final override InstanceVariableAccess::Range range;
+
+  final override InstanceVariable getVariable() { result = range.getVariable() }
+
+  final override string getAPrimaryQlClass() { result = "InstanceVariableAccess" }
+}
+
+/** An access to a class variable. */
+class ClassVariableAccess extends VariableAccess, @token_class_variable {
+  final override ClassVariableAccess::Range range;
+
+  final override ClassVariable getVariable() { result = range.getVariable() }
+
+  final override string getAPrimaryQlClass() { result = "ClassVariableAccess" }
+}
