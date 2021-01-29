@@ -519,10 +519,12 @@ import ArgumentPassing
  */
 newtype TDataFlowCallable =
   TCallableValue(CallableValue callable) {
-    callable instanceof FunctionValue
+    callable instanceof FunctionValue and
+    not callable.(FunctionValue).isLambda()
     or
     callable instanceof ClassValue
   } or
+  TLambda(Function lambda) { lambda.isLambda() } or
   TModule(Module m)
 
 /** Represents a callable. */
@@ -563,6 +565,27 @@ class DataFlowCallableValue extends DataFlowCallable, TCallableValue {
   override string getName() { result = callable.getName() }
 
   override CallableValue getCallableValue() { result = callable }
+}
+
+/** A class representing a callable lambda. */
+class DataFlowLambda extends DataFlowCallable, TLambda {
+  Function lambda;
+
+  DataFlowLambda() { this = TLambda(lambda) }
+
+  override string toString() { result = lambda.toString() }
+
+  override CallNode getACall() { result = getCallableValue().getACall() }
+
+  override Scope getScope() { result = lambda.getEvaluatingScope() }
+
+  override NameNode getParameter(int n) { result = getParameter(getCallableValue(), n) }
+
+  override string getName() { result = "Lambda callable" }
+
+  override FunctionValue getCallableValue() {
+    result.getOrigin().getNode() = lambda.getDefinition()
+  }
 }
 
 /** A class representing the scope in which a `ModuleVariableNode` appears. */
