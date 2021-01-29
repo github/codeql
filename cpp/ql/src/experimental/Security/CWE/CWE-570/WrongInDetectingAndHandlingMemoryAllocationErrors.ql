@@ -22,6 +22,9 @@ class IfCompareWithZero extends IfStmt {
     or
     this.getCondition().(NEExpr).getAChild().getValue() = "0" and
     this.hasElse()
+    or
+    this.getCondition().(NEExpr).getAChild().getValue() = "0" and
+    this.getThen().getAChild*() instanceof ReturnStmt
   }
 }
 
