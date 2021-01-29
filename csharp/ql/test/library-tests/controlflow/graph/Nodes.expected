@@ -1228,6 +1228,7 @@ entryPoint
 | Patterns.cs:74:26:74:27 | M7 | Patterns.cs:75:5:83:5 | {...} |
 | Patterns.cs:85:26:85:27 | M8 | Patterns.cs:85:39:85:39 | access to parameter i |
 | Patterns.cs:87:26:87:27 | M9 | Patterns.cs:87:39:87:39 | access to parameter i |
+| Patterns.cs:93:17:93:19 | M10 | Patterns.cs:94:5:99:5 | {...} |
 | PostDominance.cs:5:10:5:11 | M1 | PostDominance.cs:6:5:8:5 | {...} |
 | PostDominance.cs:10:10:10:11 | M2 | PostDominance.cs:11:5:15:5 | {...} |
 | PostDominance.cs:17:10:17:11 | M3 | PostDominance.cs:18:5:22:5 | {...} |

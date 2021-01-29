@@ -85,4 +85,16 @@ class Patterns
     public static string M8(int i) => i is 1 or not 2 ? "not 2" : "2";
 
     public static string M9(int i) => i is 1 and not 2 ? "1" : "not 1";
+
+    public E Prop { get; set; }
+
+    public enum E { A, B, C }
+
+    public void M10()
+    {
+        if (this is { Prop: E.A or E.B })
+        {
+            Console.WriteLine("not C");
+        }
+    }
 }

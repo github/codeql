@@ -2304,6 +2304,19 @@
 | Patterns.cs:87:54:87:54 | 2 | Patterns.cs:87:54:87:54 | 2 |
 | Patterns.cs:87:58:87:60 | "1" | Patterns.cs:87:58:87:60 | "1" |
 | Patterns.cs:87:64:87:70 | "not 1" | Patterns.cs:87:64:87:70 | "not 1" |
+| Patterns.cs:94:5:99:5 | {...} | Patterns.cs:94:5:99:5 | {...} |
+| Patterns.cs:95:9:98:9 | if (...) ... | Patterns.cs:95:9:98:9 | if (...) ... |
+| Patterns.cs:95:13:95:16 | this access | Patterns.cs:95:13:95:16 | this access |
+| Patterns.cs:95:13:95:40 | ... is ... | Patterns.cs:95:13:95:16 | this access |
+| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:29:95:31 | access to constant A |
+| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:29:95:31 | access to constant A |
+| Patterns.cs:95:29:95:31 | access to constant A | Patterns.cs:95:29:95:31 | access to constant A |
+| Patterns.cs:95:29:95:38 | ... or ... | Patterns.cs:95:29:95:31 | access to constant A |
+| Patterns.cs:95:36:95:38 | access to constant B | Patterns.cs:95:36:95:38 | access to constant B |
+| Patterns.cs:96:9:98:9 | {...} | Patterns.cs:96:9:98:9 | {...} |
+| Patterns.cs:97:13:97:38 | call to method WriteLine | Patterns.cs:97:31:97:37 | "not C" |
+| Patterns.cs:97:13:97:39 | ...; | Patterns.cs:97:13:97:39 | ...; |
+| Patterns.cs:97:31:97:37 | "not C" | Patterns.cs:97:31:97:37 | "not C" |
 | PostDominance.cs:6:5:8:5 | {...} | PostDominance.cs:6:5:8:5 | {...} |
 | PostDominance.cs:7:9:7:28 | call to method WriteLine | PostDominance.cs:7:27:7:27 | access to parameter s |
 | PostDominance.cs:7:9:7:29 | ...; | PostDominance.cs:7:9:7:29 | ...; |
