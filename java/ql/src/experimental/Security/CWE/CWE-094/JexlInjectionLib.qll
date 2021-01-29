@@ -12,8 +12,7 @@ class JexlInjectionConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) {
     source instanceof TaintedSpringRequestBody or
-    source instanceof RemoteFlowSource or
-    source instanceof LocalUserInput
+    source instanceof RemoteFlowSource
   }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof JexlEvaluationSink }
