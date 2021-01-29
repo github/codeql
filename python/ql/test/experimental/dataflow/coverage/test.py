@@ -672,8 +672,7 @@ def test_iterable_star_unpacking_in_for_2():
     tl = [(SOURCE, NONSOURCE), (SOURCE, NONSOURCE)]
     for x,*y,z in tl:
         SINK(x) #$ flow="SOURCE, l:-2 -> x"
-        SINK_F(y)
-        SINK_F(y[0])
+        SINK_F(y)  # The list itself is not tainted (and is here empty)
         SINK_F(z)
 
 
