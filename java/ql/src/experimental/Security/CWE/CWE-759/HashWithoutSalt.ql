@@ -8,12 +8,24 @@
  */
 
 import java
+import semmle.code.java.dataflow.DataFlow3
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.TaintTracking2
+import semmle.code.java.dataflow.TaintTracking3
 import DataFlow::PathGraph
 
 /** The Java class `java.security.MessageDigest`. */
 class MessageDigest extends RefType {
   MessageDigest() { this.hasQualifiedName("java.security", "MessageDigest") }
+}
+
+class MDConstructor extends StaticMethodAccess {
+  MDConstructor() {
+    exists(Method m | m = this.getMethod() |
+      m.getDeclaringType() instanceof MessageDigest and
+      m.hasName("getInstance")
+    )
+  }
 }
 
 /** The method `digest()` declared in `java.security.MessageDigest`. */
@@ -48,24 +60,20 @@ class PasswordVarExpr extends Expr {
 }
 
 /** Taint configuration tracking flow from an expression whose name suggests it holds password data to a method call that generates a hash without a salt. */
-class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
-  HashWithoutSaltConfiguration() { this = "HashWithoutSaltConfiguration" }
+class PasswordHashConfiguration extends TaintTracking3::Configuration {
+  PasswordHashConfiguration() { this = "PasswordHashConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof PasswordVarExpr }
+  override predicate isSource(DataFlow3::Node source) { source.asExpr() instanceof PasswordVarExpr }
 
-  override predicate isSink(DataFlow::Node sink) {
+  override predicate isSink(DataFlow3::Node sink) {
     exists(
-      MethodAccess mua // invoke `md.update(password)` without the call of `md.update(digest)`
+      MethodAccess ma // invoke `md.update(password)` without the call of `md.update(digest)`
     |
-      sink.asExpr() = mua.getArgument(0) and
-      mua.getMethod() instanceof MDUpdateMethod // md.update(password)
-    )
-    or
-    // invoke `md.digest(password)` without another call of `md.update(salt)`
-    exists(MethodAccess mda |
-      sink.asExpr() = mda.getArgument(0) and
-      mda.getMethod() instanceof MDDigestMethod and // md.digest(password)
-      mda.getNumArgument() = 1
+      sink.asExpr() = ma.getArgument(0) and
+      (
+        ma.getMethod() instanceof MDUpdateMethod or // md.update(password)
+        ma.getMethod() instanceof MDDigestMethod // md.digest(password)
+      )
     )
   }
 
@@ -76,7 +84,7 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
    *  `byte[] messageDigest = md.digest(allBytes);`
    * Or the password is concatenated with a salt as a string.
    */
-  override predicate isSanitizer(DataFlow::Node node) {
+  override predicate isSanitizer(DataFlow3::Node node) {
     exists(MethodAccess ma |
       ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "System") and
       ma.getMethod().hasName("arraycopy") and
@@ -84,40 +92,56 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
     ) // System.arraycopy(password.getBytes(), ...)
     or
     exists(AddExpr e | node.asExpr() = e.getAnOperand()) // password+salt
-    or
-    exists(MethodAccess mua, MethodAccess ma |
-      ma.getArgument(0) = node.asExpr() and // Detect wrapper methods that invoke `md.update(salt)`
-      ma != mua and
+  }
+}
+
+class PasswordDigestConfiguration extends TaintTracking2::Configuration {
+  PasswordDigestConfiguration() { this = "PasswordDigestConfiguration" }
+
+  override predicate isSource(DataFlow2::Node source) {
+    exists(MDConstructor mc | source.asExpr() = mc)
+  }
+
+  override predicate isSink(DataFlow2::Node sink) {
+    exists(MethodAccess ma |
       (
-        ma.getQualifier().getType() instanceof Interface
-        or
-        mua.getQualifier().(VarAccess).getVariable().getAnAccess() = ma.getQualifier()
-        or
-        mua.getAnArgument().(VarAccess).getVariable().getAnAccess() = ma.getQualifier()
-        or
-        mua.getQualifier().(VarAccess).getVariable().getAnAccess() = ma.getAnArgument()
-        or
-        mua.getArgument(0).(VarAccess).getVariable().getAnAccess() = ma.getAnArgument()
+        ma.getMethod() instanceof MDUpdateMethod or
+        ma.getMethod() instanceof MDDigestMethod
       ) and
-      isMDUpdateCall(mua.getMethod())
+      exists(PasswordHashConfiguration cc | cc.hasFlowToExpr(ma.getAnArgument())) and
+      sink.asExpr() = ma.getQualifier()
     )
   }
 }
 
-/** Holds if a method invokes `md.update(salt)`. */
-predicate isMDUpdateCall(Callable caller) {
-  caller instanceof MDUpdateMethod
-  or
-  exists(Callable callee |
-    caller.polyCalls(callee) and
-    (
-      callee instanceof MDUpdateMethod or
-      isMDUpdateCall(callee)
+class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
+  HashWithoutSaltConfiguration() { this = "HashWithoutSaltConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) {
+    exists(PasswordDigestConfiguration pc | pc.hasFlow(source, _))
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof MDDigestMethod and // md.digest(password)
+      sink.asExpr() = ma.getQualifier()
     )
-  )
+  }
+
+  /** Holds if `md.update` or `md.digest` calls integrate something other than the password, perhaps a salt. */
+  override predicate isSanitizer(DataFlow::Node node) {
+    exists(MethodAccess ma |
+      (
+        ma.getMethod() instanceof MDUpdateMethod
+        or
+        ma.getMethod() instanceof MDDigestMethod and ma.getNumArgument() != 0
+      ) and
+      node.asExpr() = ma.getQualifier() and
+      not exists(PasswordHashConfiguration cc | cc.hasFlowToExpr(ma.getAnArgument()))
+    )
+  }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, HashWithoutSaltConfiguration c
-where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ is hashed without a salt.", source.getNode(),
-  "The password"
+from DataFlow::PathNode source, DataFlow::PathNode sink, HashWithoutSaltConfiguration cc
+where cc.hasFlowPath(source, sink)
+select sink, source, sink, "$@ is hashed without a salt.", source, "The password"
