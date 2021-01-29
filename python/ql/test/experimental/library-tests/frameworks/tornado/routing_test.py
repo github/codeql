@@ -4,47 +4,47 @@ import tornado.routing
 
 class FooHandler(tornado.web.RequestHandler):
     def get(self, x, y=None, not_used=None):  # $ requestHandler routedParameter=x routedParameter=y
-        self.write("FooHandler {} {}".format(x, y))
+        self.write("FooHandler {} {}".format(x, y)) # $ HttpResponse
 
 
 class BarHandler(tornado.web.RequestHandler):
     def get(self, x, y=None, not_used=None):  # $ requestHandler routedParameter=x routedParameter=y SPURIOUS: routedParameter=not_used
-        self.write("BarHandler {} {}".format(x, y))
+        self.write("BarHandler {} {}".format(x, y)) # $ HttpResponse
 
 
 class BazHandler(tornado.web.RequestHandler):
     def get(self, x, y=None, not_used=None):  # $ requestHandler routedParameter=x routedParameter=y SPURIOUS: routedParameter=not_used
-        self.write("BazHandler {} {}".format(x, y))
+        self.write("BazHandler {} {}".format(x, y)) # $ HttpResponse
 
 
 class KwArgs(tornado.web.RequestHandler):
     def get(self, *, x, y=None, not_used=None):  # $ requestHandler routedParameter=x routedParameter=y
-        self.write("KwArgs {} {}".format(x, y))
+        self.write("KwArgs {} {}".format(x, y)) # $ HttpResponse
 
 
 class OnlyLocalhost(tornado.web.RequestHandler):
     def get(self):  # $ requestHandler
-        self.write("OnlyLocalhost")
+        self.write("OnlyLocalhost") # $ HttpResponse
 
 
 class One(tornado.web.RequestHandler):
     def get(self):  # $ requestHandler
-        self.write("One")
+        self.write("One") # $ HttpResponse
 
 
 class Two(tornado.web.RequestHandler):
     def get(self):  # $ requestHandler
-        self.write("Two")
+        self.write("Two") # $ HttpResponse
 
 
 class Three(tornado.web.RequestHandler):
     def get(self):  # $ requestHandler
-        self.write("Three")
+        self.write("Three") # $ HttpResponse
 
 
 class AddedLater(tornado.web.RequestHandler):
     def get(self, x, y=None, not_used=None):  # $ requestHandler routedParameter=x routedParameter=y
-        self.write("AddedLater {} {}".format(x, y))
+        self.write("AddedLater {} {}".format(x, y)) # $ HttpResponse
 
 
 class PossiblyNotRouted(tornado.web.RequestHandler):
@@ -52,7 +52,7 @@ class PossiblyNotRouted(tornado.web.RequestHandler):
     # consider it to be a handle incoming HTTP requests
 
     def get(self):  # $ requestHandler
-        self.write("NotRouted")
+        self.write("NotRouted") # $ HttpResponse
 
 
 def make_app():

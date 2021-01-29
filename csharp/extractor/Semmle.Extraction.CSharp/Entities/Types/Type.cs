@@ -1,42 +1,18 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Util;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    /// <summary>
-    /// Represents an annotated type consisting of a type entity and nullability information.
-    /// </summary>
-    public struct AnnotatedType
-    {
-        public AnnotatedType(Type t, NullableAnnotation n)
-        {
-            Type = t;
-            annotation = n;
-        }
-
-        /// <summary>
-        /// The underlying type.
-        /// </summary>
-        public Type Type { get; private set; }
-
-        private readonly NullableAnnotation annotation;
-
-        /// <summary>
-        /// Gets the annotated type symbol of this annotated type.
-        /// </summary>
-        public AnnotatedTypeSymbol Symbol => new AnnotatedTypeSymbol(Type.symbol, annotation);
-    }
-
     public abstract class Type : CachedSymbol<ITypeSymbol>
     {
         protected Type(Context cx, ITypeSymbol init)
             : base(cx, init) { }
 
-        public virtual AnnotatedType ElementType => default(AnnotatedType);
 
         public override bool NeedsPopulation =>
             base.NeedsPopulation || symbol.TypeKind == TypeKind.Dynamic || symbol.TypeKind == TypeKind.TypeParameter;
@@ -82,6 +58,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         case TypeKind.Enum: return Kinds.TypeKind.ENUM;
                         case TypeKind.Delegate: return Kinds.TypeKind.DELEGATE;
                         case TypeKind.Pointer: return Kinds.TypeKind.POINTER;
+                        case TypeKind.FunctionPointer: return Kinds.TypeKind.FUNCTION_POINTER;
                         case TypeKind.Error: return Kinds.TypeKind.UNKNOWN;
                         default:
                             cx.ModelError(t, $"Unhandled type kind '{t.TypeKind}'");
@@ -156,23 +133,14 @@ namespace Semmle.Extraction.CSharp.Entities
                 // This is a delegate.
                 // The method "Invoke" has the return type.
                 var invokeMethod = ((INamedTypeSymbol)symbol).DelegateInvokeMethod;
+                ExtractParametersForDelegateLikeType(trapFile, invokeMethod,
+                    t => trapFile.delegate_return_type(this, t));
+            }
 
-                // Copy the parameters from the "Invoke" method to the delegate type
-                for (var i = 0; i < invokeMethod.Parameters.Length; ++i)
-                {
-                    var param = invokeMethod.Parameters[i];
-                    var originalParam = invokeMethod.OriginalDefinition.Parameters[i];
-                    var originalParamEntity = SymbolEqualityComparer.Default.Equals(param, originalParam) ? null :
-                        DelegateTypeParameter.Create(Context, originalParam, Create(Context, ((INamedTypeSymbol)symbol).OriginalDefinition));
-                    DelegateTypeParameter.Create(Context, param, this, originalParamEntity);
-                }
-
-                var returnKey = Create(Context, invokeMethod.ReturnType);
-                trapFile.delegate_return_type(this, returnKey.TypeRef);
-                if (invokeMethod.ReturnsByRef)
-                    trapFile.type_annotation(this, Kinds.TypeAnnotation.Ref);
-                if (invokeMethod.ReturnsByRefReadonly)
-                    trapFile.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef);
+            if (symbol is IFunctionPointerTypeSymbol functionPointer)
+            {
+                ExtractParametersForDelegateLikeType(trapFile, functionPointer.Signature,
+                    t => trapFile.function_pointer_return_type(this, t));
             }
 
             Modifier.ExtractModifiers(Context, trapFile, this, symbol);
@@ -193,6 +161,23 @@ namespace Semmle.Extraction.CSharp.Entities
                         (s, t) => TypeMention.Create(Context, s.Type, this, t))
                     .Enumerate();
             }
+        }
+
+        private void ExtractParametersForDelegateLikeType(TextWriter trapFile, IMethodSymbol invokeMethod, Action<Type> storeReturnType)
+        {
+            for (var i = 0; i < invokeMethod.Parameters.Length; ++i)
+            {
+                var param = invokeMethod.Parameters[i];
+                var originalParam = invokeMethod.OriginalDefinition.Parameters[i];
+                var originalParamEntity = SymbolEqualityComparer.Default.Equals(param, originalParam)
+                    ? null
+                    : DelegateTypeParameter.Create(Context, originalParam, Create(Context, ((INamedTypeSymbol)symbol).OriginalDefinition));
+                DelegateTypeParameter.Create(Context, param, this, originalParamEntity);
+            }
+
+            var returnKey = Create(Context, invokeMethod.ReturnType);
+            storeReturnType(returnKey.TypeRef);
+            Method.ExtractRefReturn(trapFile, invokeMethod, this);
         }
 
         /// <summary>
@@ -277,12 +262,12 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             type = type.DisambiguateType();
             return type == null
-                ? NullType.Create(cx).Type
+                ? NullType.Create(cx)
                 : (Type)cx.CreateEntity(type);
         }
 
-        public static AnnotatedType Create(Context cx, AnnotatedTypeSymbol type) =>
-            new AnnotatedType(Create(cx, type.Symbol), type.Nullability);
+        public static Type Create(Context cx, AnnotatedTypeSymbol? type) =>
+            Create(cx, type?.Symbol);
 
         public virtual int Dimension => 0;
 
@@ -290,8 +275,7 @@ namespace Semmle.Extraction.CSharp.Entities
             symbol != null && symbol.TypeKind == TypeKind.Delegate;
 
         /// <summary>
-        /// A copy of a delegate "Invoke" method parameter used for the delgate
-        /// type.
+        /// A copy of a delegate "Invoke" method or function pointer parameter.
         /// </summary>
         private class DelegateTypeParameter : Parameter
         {
@@ -331,10 +315,10 @@ namespace Semmle.Extraction.CSharp.Entities
         public override bool Equals(object obj)
         {
             var other = obj as Type;
-            return other?.GetType() == GetType() && SymbolEqualityComparer.IncludeNullability.Equals(other.symbol, symbol);
+            return other?.GetType() == GetType() && SymbolEqualityComparer.Default.Equals(other.symbol, symbol);
         }
 
-        public override int GetHashCode() => SymbolEqualityComparer.IncludeNullability.GetHashCode(symbol);
+        public override int GetHashCode() => SymbolEqualityComparer.Default.GetHashCode(symbol);
     }
 
     internal abstract class Type<T> : Type where T : ITypeSymbol

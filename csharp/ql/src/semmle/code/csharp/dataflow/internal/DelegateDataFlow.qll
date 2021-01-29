@@ -10,6 +10,7 @@ private import semmle.code.csharp.dataflow.CallContext
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.DataFlowPublic
+private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 
@@ -102,9 +103,10 @@ class DelegateCallExpr extends DelegateFlowSink, DataFlow::ExprNode {
 }
 
 /** A parameter of delegate type belonging to a callable with a flow summary. */
-class SummaryDelegateParameterSink extends DelegateFlowSink, SummaryParameterNode {
+class SummaryDelegateParameterSink extends DelegateFlowSink, ParameterNode {
   SummaryDelegateParameterSink() {
-    this.getType() instanceof SystemLinqExpressions::DelegateExtType
+    this.getType() instanceof SystemLinqExpressions::DelegateExtType and
+    this.isParameterOf(any(SummarizedCallable c), _)
   }
 }
 

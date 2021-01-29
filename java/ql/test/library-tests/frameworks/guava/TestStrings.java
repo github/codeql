@@ -6,7 +6,7 @@ import com.google.common.base.Joiner;
 import java.util.Map;
 import java.util.HashMap;
 
-class Test {
+class TestStrings {
     String taint() { return "tainted"; }
 
     void sink(Object o) {}

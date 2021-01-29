@@ -7,6 +7,7 @@ private import semmle.javascript.security.dataflow.Xss
 private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 private import semmle.javascript.security.dataflow.ClientSideUrlRedirectCustomizations
 private import semmle.javascript.DynamicPropertyAccess
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
 
 /**
  * Provides classes for working with Angular (also known as Angular 2.x) applications.
@@ -120,7 +121,7 @@ module Angular2 {
 
   /** Gets a reference to a `DomSanitizer` object. */
   DataFlow::SourceNode domSanitizer() {
-    result.hasUnderlyingType("@angular/platform-browser", "DomSanitizer")
+    result.hasUnderlyingType(["@angular/platform-browser", "@angular/core"], "DomSanitizer")
   }
 
   /** A value that is about to be promoted to a trusted HTML or CSS value. */
@@ -196,6 +197,10 @@ module Angular2 {
       or
       result = getOptionArgument(argumentOffset + 1, "body")
     }
+
+    override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+      result = this and responseType = "rxjs.observable" and promise = false
+    }
   }
 
   private string getInternalName(string name) {
@@ -217,5 +222,372 @@ module Angular2 {
   /** A reference to the DOM location obtained through `DomAdapter.getLocation()`. */
   private class DomAdapterLocation extends DOM::LocationSource::Range {
     DomAdapterLocation() { this = domAdapter().getAMethodCall("getLocation") }
+  }
+
+  /**
+   * A reference to a pipe function, occurring in an Angular pipe expression
+   * that has been desugared to a function call.
+   *
+   * For example, the expression `x | f: y` is desugared to `f(x, y)` where
+   * `f` is a `PipeRefExpr`.
+   */
+  class PipeRefExpr extends Expr, @angular_pipe_ref {
+    /** Gets the identifier node naming the pipe. */
+    Identifier getIdentifier() { result = getChildExpr(0) }
+
+    /** Gets the name of the pipe being referenced. */
+    string getName() { result = getIdentifier().getName() }
+
+    override string getAPrimaryQlClass() { result = "Angular2::PipeRefExpr" }
+  }
+
+  /**
+   * A reference to a variable in a template expression, corresponding
+   * to a property on the component class.
+   */
+  class TemplateVarRefExpr extends Expr {
+    TemplateVarRefExpr() { this = any(TemplateTopLevel tl).getScope().getAVariable().getAnAccess() }
+  }
+
+  /** The top-level containing an Angular expression. */
+  class TemplateTopLevel extends TopLevel, @angular_template_toplevel {
+    /** Gets the expression in this top-level. */
+    Expr getExpression() { result = getChildStmt(0).(ExprStmt).getExpr() }
+
+    /** Gets the data flow node representing the initialization of the given variable in this scope. */
+    DataFlow::Node getVariableInit(string name) {
+      result = DataFlow::ssaDefinitionNode(SSA::implicitInit(getScope().getVariable(name)))
+    }
+
+    /** Gets a data flow node corresponding to a use of the given template variable within this top-level. */
+    DataFlow::SourceNode getAVariableUse(string name) {
+      result = getScope().getVariable(name).getAnAccess().flow()
+    }
+  }
+
+  /** The RHS of a `templateUrl` property, seen as a path expression. */
+  private class TemplateUrlPath extends PathExpr {
+    TemplateUrlPath() {
+      exists(Property prop |
+        prop.getName() = "templateUrl" and
+        this = prop.getInit()
+      )
+    }
+
+    override string getValue() { result = this.(Expr).getStringValue() }
+  }
+
+  /**
+   * Holds if the value of `attrib` is interpreted as an Angular expression.
+   */
+  predicate isAngularExpressionAttribute(HTML::Attribute attrib) {
+    attrib.getName().matches("(%)") or
+    attrib.getName().matches("[%]") or
+    attrib.getName().matches("*ng%")
+  }
+
+  private DataFlow::Node getAttributeValueAsNode(HTML::Attribute attrib) {
+    result = attrib.getCodeInAttribute().(TemplateTopLevel).getExpression().flow()
+  }
+
+  /**
+   * The class for an Angular component.
+   */
+  class ComponentClass extends DataFlow::ClassNode {
+    DataFlow::CallNode decorator;
+
+    ComponentClass() {
+      decorator = getADecorator() and
+      decorator = DataFlow::moduleMember("@angular/core", "Component").getACall()
+    }
+
+    /**
+     * Gets a data flow node representing the value of the declared
+     * instance field of the given name.
+     */
+    DataFlow::Node getFieldNode(string name) {
+      exists(FieldDeclaration f |
+        f.getName() = name and
+        f.getDeclaringClass().flow() = this and
+        result = DataFlow::fieldDeclarationNode(f)
+      )
+    }
+
+    /**
+     * Gets a data flow node representing data flowing into a field of
+     * this component.
+     */
+    DataFlow::Node getFieldInputNode(string name) {
+      result = getFieldNode(name)
+      or
+      result = getInstanceMember(name, DataFlow::MemberKind::setter()).getParameter(0)
+    }
+
+    /**
+     * Gets a data flow node representing data flowing out of a field
+     * of this component.
+     */
+    DataFlow::Node getFieldOutputNode(string name) {
+      result = getFieldNode(name)
+      or
+      result = getInstanceMember(name, DataFlow::MemberKind::getter()).getReturnNode()
+      or
+      result = getInstanceMethod(name)
+    }
+
+    /**
+     * Gets the `selector` property of the `@Component` decorator.
+     */
+    string getSelector() { decorator.getOptionArgument(0, "selector").mayHaveStringValue(result) }
+
+    /** Gets an HTML element that instantiates this component. */
+    HTML::Element getATemplateInstantiation() { result.getName() = getSelector() }
+
+    /**
+     * Gets an argument that flows into the `name` field of this component.
+     *
+     * For example, if the selector for this component is `"my-class"`, then this
+     * predicate can match an attribute like: `<my-class [foo]="1+2"/>`.
+     * The result of this predicate would be the `1+2` expression, and `name` would be `"foo"`.
+     */
+    DataFlow::Node getATemplateArgument(string name) {
+      result =
+        getAttributeValueAsNode(getATemplateInstantiation().getAttributeByName("[" + name + "]"))
+    }
+
+    /**
+     * Gets the file referred to by `templateUrl`.
+     *
+     * Has no result if the template is given inline via a `template` property.
+     */
+    pragma[noinline]
+    File getTemplateFile() {
+      result = decorator.getOptionArgument(0, "templateUrl").asExpr().(PathExpr).resolve()
+    }
+
+    /** Gets an element in the HTML template of this component. */
+    HTML::Element getATemplateElement() {
+      result.getFile() = getTemplateFile()
+      or
+      result.getParent*() =
+        HTML::getHtmlElementFromExpr(decorator.getOptionArgument(0, "template").asExpr(), _)
+    }
+
+    /**
+     * Gets an access to the given template variable within the template body of this component.
+     */
+    DataFlow::SourceNode getATemplateVarAccess(string name) {
+      result =
+        getATemplateElement()
+            .getAnAttribute()
+            .getCodeInAttribute()
+            .(TemplateTopLevel)
+            .getAVariableUse(name)
+    }
+  }
+
+  /** A class with the `@Pipe` decorator. */
+  class PipeClass extends DataFlow::ClassNode {
+    DataFlow::CallNode decorator;
+
+    PipeClass() {
+      decorator = DataFlow::moduleMember("@angular/core", "Pipe").getACall() and
+      decorator = getADecorator()
+    }
+
+    /** Gets the value of the `name` option passed to the `@Pipe` decorator. */
+    string getPipeName() { decorator.getOptionArgument(0, "name").mayHaveStringValue(result) }
+
+    /** Gets a reference to this pipe. */
+    DataFlow::Node getAPipeRef() { result.asExpr().(PipeRefExpr).getName() = getPipeName() }
+  }
+
+  private class ComponentSteps extends PreCallGraphStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(ComponentClass cls, string name |
+        // From <my-class [foo]="bar"/> to `foo` field in class
+        pred = cls.getATemplateArgument(name) and
+        succ = cls.getFieldInputNode(name)
+        or
+        // From `foo` field in class to <other-component [baz]="foo"/>
+        pred = cls.getFieldOutputNode(name) and
+        succ = cls.getATemplateVarAccess(name)
+        or
+        // From property write to the field input node
+        pred = cls.getAReceiverNode().getAPropertyWrite(name).getRhs() and
+        succ = cls.getFieldInputNode(name)
+        or
+        // From the field node to property read.
+        // We use `getFieldNode` instead of `getFieldOutputNode` as the other two cases
+        // from `getFieldOutputNode` are already handled by the general data flow library.
+        pred = cls.getFieldNode(name) and
+        succ = cls.getAReceiverNode().getAPropertyRead(name)
+      )
+    }
+  }
+
+  private class PipeSteps extends PreCallGraphStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(PipeClass cls |
+        pred = cls.getInstanceMethod("transform") and
+        succ = cls.getAPipeRef()
+      )
+    }
+  }
+
+  /**
+   * An attribute of form `*ngFor="let var of EXPR"`.
+   *
+   * The `EXPR` has been extracted as the sole `CodeInAttribute` top-level for this
+   * attribute. There is no AST node for the implied for-of loop.
+   */
+  private class ForLoopAttribute extends HTML::Attribute {
+    ForLoopAttribute() { getName() = "*ngFor" }
+
+    /** Gets a data-flow node holding the value being iterated over. */
+    DataFlow::Node getIterationDomain() { result = getAttributeValueAsNode(this) }
+
+    /** Gets the name of the variable holding the element of the current iteration. */
+    string getIteratorName() { result = getValue().regexpCapture(" *let +(\\w+).*", 1) }
+
+    /** Gets an HTML element in which the iterator variable is in scope. */
+    HTML::Element getAnElementInScope() { result.getParent*() = getElement() }
+
+    /** Gets a reference to the iterator variable. */
+    DataFlow::Node getAnIteratorAccess() {
+      result =
+        getAnElementInScope()
+            .getAnAttribute()
+            .getCodeInAttribute()
+            .(TemplateTopLevel)
+            .getAVariableUse(getIteratorName())
+    }
+  }
+
+  /**
+   * A taint step `array -> elem` in `*ngFor="let elem of array"`, or more precisely,
+   * a step from `array` to each access to `elem`.
+   */
+  private class ForLoopStep extends TaintTracking::AdditionalTaintStep {
+    ForLoopAttribute attrib;
+
+    ForLoopStep() { this = attrib.getIterationDomain() }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = this and
+      succ = attrib.getAnIteratorAccess()
+    }
+  }
+
+  private class AnyCastStep extends PreCallGraphStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode call |
+        call = any(TemplateTopLevel tl).getAVariableUse("$any").getACall() and
+        pred = call.getArgument(0) and
+        succ = call
+      )
+    }
+  }
+
+  /**
+   * Gets an invocation of the pipe of the given name.
+   *
+   * For example, the call generated from `items | async` would be found by `getAPipeCall("async")`.
+   */
+  DataFlow::CallNode getAPipeCall(string name) {
+    result.getCalleeNode().asExpr().(PipeRefExpr).getName() = name
+  }
+
+  private class BuiltinPipeStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
+    string name;
+
+    BuiltinPipeStep() { this = getAPipeCall(name) }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      succ = this and
+      exists(int i | pred = getArgument(i) |
+        i = 0 and
+        name =
+          [
+            "async", "i18nPlural", "json", "keyvalue", "lowercase", "uppercase", "titlecase",
+            "slice"
+          ]
+        or
+        i = 1 and name = "date" // date format string
+      )
+      or
+      name = "translate" and
+      succ = this and
+      pred = [getArgument(1), getOptionArgument(1, _)]
+    }
+  }
+
+  /**
+   * A `<mat-table>` element.
+   */
+  class MatTableElement extends HTML::Element {
+    MatTableElement() { getName() = "mat-table" }
+
+    /** Gets the data flow node corresponding to the `[dataSource]` attribute. */
+    DataFlow::Node getDataSourceNode() {
+      result = getAttributeValueAsNode(getAttributeByName("[dataSource]"))
+    }
+
+    /**
+     * Gets an element of form `<mat-cell *matCellDef="let rowBinding">` in this table.
+     */
+    HTML::Element getATableCell(string rowBinding) {
+      result.getName() = "mat-cell" and
+      result.getParent+() = this and
+      rowBinding =
+        result.getAttributeByName("*matCellDef").getValue().regexpCapture(" *let +(\\w+).*", 1)
+    }
+
+    /** Gets a data flow node that refers to one of the rows from the data source. */
+    DataFlow::Node getARowRef() {
+      exists(string rowBinding |
+        result =
+          getATableCell(rowBinding)
+              .getChild*()
+              .getAnAttribute()
+              .getCodeInAttribute()
+              .(TemplateTopLevel)
+              .getAVariableUse(rowBinding)
+      )
+    }
+  }
+
+  /**
+   * A taint step from `x -> y` in code of form:
+   * ```
+   * <mat-table [dataSource]="x">
+   *   <mat-cell *matCellDef="let y">
+   *     <foo [prop]="y"/>
+   *   </mat-cell>
+   * </mat-table>
+   * ```
+   */
+  private class MatTableTaintStep extends TaintTracking::AdditionalTaintStep {
+    MatTableElement table;
+
+    MatTableTaintStep() { this = table.getDataSourceNode() }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = this and
+      succ = table.getARowRef()
+    }
+  }
+
+  /** A taint step into the data array of a `MatTableDataSource` instance. */
+  private class MatTableDataSourceStep extends TaintTracking::AdditionalTaintStep, DataFlow::NewNode {
+    MatTableDataSourceStep() {
+      this =
+        DataFlow::moduleMember("@angular/material/table", "MatTableDataSource").getAnInstantiation()
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = [getArgument(0), getAPropertyWrite("data").getRhs()] and
+      succ = this
+    }
   }
 }

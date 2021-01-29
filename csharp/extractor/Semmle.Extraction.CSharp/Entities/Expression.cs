@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Entities
     internal class Expression : FreshEntity, IExpressionParentEntity
     {
         private readonly IExpressionInfo info;
-        public AnnotatedType Type { get; }
+        public AnnotatedTypeSymbol? Type { get; }
         public Extraction.Entities.Location Location { get; }
         public ExprKind Kind { get; }
 
@@ -33,25 +33,23 @@ namespace Semmle.Extraction.CSharp.Entities
             Location = info.Location;
             Kind = info.Kind;
             Type = info.Type;
-            if (Type.Type is null)
-                Type = NullType.Create(cx);
 
             TryPopulate();
         }
 
         protected sealed override void Populate(TextWriter trapFile)
         {
-            trapFile.expressions(this, Kind, Type.Type.TypeRef);
+            var type = Type.HasValue ? Entities.Type.Create(cx, Type.Value) : NullType.Create(cx);
+            trapFile.expressions(this, Kind, type.TypeRef);
             if (info.Parent.IsTopLevelParent)
                 trapFile.expr_parent_top_level(this, info.Child, info.Parent);
             else
                 trapFile.expr_parent(this, info.Child, info.Parent);
             trapFile.expr_location(this, Location);
 
-            var annotatedType = Type.Symbol;
-            if (!annotatedType.HasObliviousNullability())
+            if (Type.HasValue && !Type.Value.HasObliviousNullability())
             {
-                var n = NullabilityEntity.Create(cx, Nullability.Create(annotatedType));
+                var n = NullabilityEntity.Create(cx, Nullability.Create(Type.Value));
                 trapFile.type_nullability(this, n);
             }
 
@@ -66,7 +64,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (info.ExprValue is string value)
                 trapFile.expr_value(this, value);
 
-            Type.Type.PopulateGenerics();
+            type.PopulateGenerics();
         }
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => Location.symbol;
@@ -318,6 +316,11 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         public static ExprKind AdjustKind(this Expression.CallType ct, ExprKind k)
         {
+            if (k == ExprKind.ADDRESS_OF)
+            {
+                return k;
+            }
+
             switch (ct)
             {
                 case Expression.CallType.Dynamic:
@@ -367,7 +370,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// The type of the expression.
         /// </summary>
-        AnnotatedType Type { get; }
+        AnnotatedTypeSymbol? Type { get; }
 
         /// <summary>
         /// The location of the expression.
@@ -411,7 +414,7 @@ namespace Semmle.Extraction.CSharp.Entities
     internal class ExpressionInfo : IExpressionInfo
     {
         public Context Context { get; }
-        public AnnotatedType Type { get; }
+        public AnnotatedTypeSymbol? Type { get; }
         public Extraction.Entities.Location Location { get; }
         public ExprKind Kind { get; }
         public IExpressionParentEntity Parent { get; }
@@ -419,7 +422,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public bool IsCompilerGenerated { get; }
         public string ExprValue { get; }
 
-        public ExpressionInfo(Context cx, AnnotatedType type, Extraction.Entities.Location location, ExprKind kind,
+        public ExpressionInfo(Context cx, AnnotatedTypeSymbol? type, Extraction.Entities.Location location, ExprKind kind,
             IExpressionParentEntity parent, int child, bool isCompilerGenerated, string value)
         {
             Context = cx;
@@ -466,10 +469,15 @@ namespace Semmle.Extraction.CSharp.Entities
         public AnnotatedTypeSymbol ResolvedType => new AnnotatedTypeSymbol(TypeInfo.Type.DisambiguateType(), TypeInfo.Nullability.Annotation);
         public AnnotatedTypeSymbol ConvertedType => new AnnotatedTypeSymbol(TypeInfo.ConvertedType.DisambiguateType(), TypeInfo.ConvertedNullability.Annotation);
 
-        public AnnotatedTypeSymbol ExpressionType
+        private AnnotatedTypeSymbol? cachedType;
+        private bool cachedTypeSet;
+        public AnnotatedTypeSymbol? Type
         {
             get
             {
+                if (cachedTypeSet)
+                    return cachedType;
+
                 var type = ResolvedType;
 
                 if (type.Symbol == null)
@@ -490,6 +498,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
                     Context.ModelError(Node, "Failed to determine type");
                 }
+
+                cachedType = type;
+                cachedTypeSet = true;
 
                 return type;
             }
@@ -519,22 +530,6 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 var c = Model.GetConstantValue(Node);
                 return c.HasValue ? Expression.ValueAsString(c.Value) : null;
-            }
-        }
-
-        private AnnotatedType cachedType;
-
-        public AnnotatedType Type
-        {
-            get
-            {
-                if (cachedType.Type == null)
-                    cachedType = Entities.Type.Create(Context, ExpressionType);
-                return cachedType;
-            }
-            set
-            {
-                cachedType = value;
             }
         }
 
@@ -572,9 +567,10 @@ namespace Semmle.Extraction.CSharp.Entities
             return this;
         }
 
-        public ExpressionNodeInfo SetType(AnnotatedType type)
+        public ExpressionNodeInfo SetType(AnnotatedTypeSymbol? type)
         {
-            Type = type;
+            cachedType = type;
+            cachedTypeSet = true;
             return this;
         }
 

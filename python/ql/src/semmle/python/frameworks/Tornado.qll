@@ -227,6 +227,17 @@ private module Tornado {
         /** Gets a reference the `redirect` method. */
         DataFlow::Node redirectMethod() { result = redirectMethod(DataFlow::TypeTracker::end()) }
 
+        /** Gets a reference to the `write` method. */
+        private DataFlow::Node writeMethod(DataFlow::TypeTracker t) {
+          t.startInAttr("write") and
+          result = instance()
+          or
+          exists(DataFlow::TypeTracker t2 | result = writeMethod(t2).track(t2, t))
+        }
+
+        /** Gets a reference to the `write` method. */
+        DataFlow::Node writeMethod() { result = writeMethod(DataFlow::TypeTracker::end()) }
+
         private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
           override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
             // Method access
@@ -575,6 +586,26 @@ private module Tornado {
     override DataFlow::Node getBody() { none() }
 
     override string getMimetypeDefault() { none() }
+  }
+
+  /**
+   * A call to `tornado.web.RequestHandler.write` method.
+   *
+   * See https://www.tornadoweb.org/en/stable/web.html?highlight=write#tornado.web.RequestHandler.write
+   */
+  private class TornadoRequestHandlerWriteCall extends HTTP::Server::HttpResponse::Range,
+    DataFlow::CfgNode {
+    override CallNode node;
+
+    TornadoRequestHandlerWriteCall() {
+      node.getFunction() = tornado::web::RequestHandler::writeMethod().asCfgNode()
+    }
+
+    override DataFlow::Node getBody() {
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("chunk")]
+    }
+
+    override string getMimetypeDefault() { result = "text/html" }
 
     override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
   }

@@ -12,6 +12,21 @@
  */
 
 import cpp
+import semmle.code.cpp.controlflow.Guards
+import semmle.code.cpp.valuenumbering.HashCons
+
+/**
+ * A function call that potentially does not return (such as `exit`).
+ */
+class CallMayNotReturn extends FunctionCall {
+  CallMayNotReturn() {
+    // call that is known to not return
+    not exists(this.(ControlFlowNode).getASuccessor())
+    or
+    // call to another function that may not return
+    exists(CallMayNotReturn exit | getTarget() = exit.getEnclosingFunction())
+  }
+}
 
 /**
  * A call to `realloc` of the form `v = realloc(v, size)`, for some variable `v`.
@@ -20,50 +35,27 @@ class ReallocCallLeak extends FunctionCall {
   Variable v;
 
   ReallocCallLeak() {
-    exists(AssignExpr ex, VariableAccess va1, VariableAccess va2 |
-      this.getTarget().hasName("realloc") and
+    exists(AssignExpr ex |
+      this.getTarget().hasGlobalOrStdName("realloc") and
       this = ex.getRValue() and
-      va1 = ex.getLValue() and
-      va2 = this.getArgument(0) and
-      va1 = v.getAnAccess() and
-      va2 = v.getAnAccess()
+      hashCons(ex.getLValue()) = hashCons(this.getArgument(0)) and
+      v.getAnAccess() = this.getArgument(0)
     )
   }
 
-  predicate isExistsIfWithExitCall() {
-    exists(IfStmt ifc |
-      this.getArgument(0) = v.getAnAccess() and
-      ifc.getCondition().getAChild*() = v.getAnAccess() and
-      ifc.getEnclosingFunction() = this.getEnclosingFunction() and
-      ifc.getLocation().getStartLine() >= this.getArgument(0).getLocation().getStartLine() and
-      exists(FunctionCall fc |
-        fc.getTarget().hasName("exit") and
-        fc.getEnclosingFunction() = this.getEnclosingFunction() and
-        (ifc.getThen().getAChild*() = fc or ifc.getElse().getAChild*() = fc)
-      )
-      or
-      exists(FunctionCall fc, FunctionCall ftmp1, FunctionCall ftmp2 |
-        ftmp1.getTarget().hasName("exit") and
-        ftmp2.(ControlFlowNode).getASuccessor*() = ftmp1 and
-        fc = ftmp2.getEnclosingFunction().getACallToThisFunction() and
-        fc.getEnclosingFunction() = this.getEnclosingFunction() and
-        (ifc.getThen().getAChild*() = fc or ifc.getElse().getAChild*() = fc)
-      )
-    )
-  }
-
-  predicate isExistsAssertWithArgumentCall() {
-    exists(FunctionCall fc |
-      fc.getTarget().hasName("__assert_fail") and
-      this.getEnclosingFunction() = fc.getEnclosingFunction() and
-      fc.getLocation().getStartLine() > this.getArgument(0).getLocation().getEndLine() and
-      fc.getArgument(0).toString().matches("%" + this.getArgument(0).toString() + "%")
+  /**
+   * Holds if failure of this allocation may be handled by termination, for
+   * example a call to `exit()`.
+   */
+  predicate mayHandleByTermination() {
+    exists(GuardCondition guard, CallMayNotReturn exit |
+      this.(ControlFlowNode).getASuccessor*() = guard and
+      guard.getAChild*() = v.getAnAccess() and
+      guard.controls(exit.getBasicBlock(), _)
     )
   }
 }
 
 from ReallocCallLeak rcl
-where
-  not rcl.isExistsIfWithExitCall() and
-  not rcl.isExistsAssertWithArgumentCall()
+where not rcl.mayHandleByTermination()
 select rcl, "possible loss of original pointer on unsuccessful call realloc"

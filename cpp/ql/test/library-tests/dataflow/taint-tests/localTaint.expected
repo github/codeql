@@ -5861,6 +5861,28 @@
 | taint.cpp:483:18:483:19 | ref arg & ... | taint.cpp:483:19:483:19 | n [inner post update] |  |
 | taint.cpp:483:19:483:19 | n | taint.cpp:483:18:483:19 | & ... |  |
 | taint.cpp:483:28:483:34 | source1 | taint.cpp:483:11:483:15 | ref arg & ... | TAINT |
+| taint.cpp:492:24:492:29 | source | taint.cpp:494:27:494:32 | source |  |
+| taint.cpp:493:22:493:29 | ,.-;:_ | taint.cpp:494:35:494:39 | delim |  |
+| taint.cpp:493:22:493:29 | ,.-;:_ | taint.cpp:496:7:496:11 | delim |  |
+| taint.cpp:494:20:494:25 | call to strtok | taint.cpp:495:7:495:15 | tokenized |  |
+| taint.cpp:494:27:494:32 | source | taint.cpp:494:20:494:25 | call to strtok | TAINT |
+| taint.cpp:503:26:503:28 | ptr | taint.cpp:504:10:504:12 | ptr |  |
+| taint.cpp:503:26:503:28 | ptr | taint.cpp:505:7:505:9 | ptr |  |
+| taint.cpp:503:26:503:28 | ptr | taint.cpp:506:8:506:10 | ptr |  |
+| taint.cpp:503:36:503:41 | source | taint.cpp:504:15:504:20 | source |  |
+| taint.cpp:504:10:504:12 | ptr | taint.cpp:504:2:504:8 | call to _strset |  |
+| taint.cpp:504:10:504:12 | ref arg ptr | taint.cpp:505:7:505:9 | ptr |  |
+| taint.cpp:504:10:504:12 | ref arg ptr | taint.cpp:506:8:506:10 | ptr |  |
+| taint.cpp:504:15:504:20 | source | taint.cpp:504:2:504:8 | call to _strset | TAINT |
+| taint.cpp:504:15:504:20 | source | taint.cpp:504:10:504:12 | ref arg ptr |  |
+| taint.cpp:505:7:505:9 | ref arg ptr | taint.cpp:506:8:506:10 | ptr |  |
+| taint.cpp:506:8:506:10 | ptr | taint.cpp:506:7:506:10 | * ... | TAINT |
+| taint.cpp:509:26:509:31 | source | taint.cpp:510:10:510:15 | source |  |
+| taint.cpp:509:26:509:31 | source | taint.cpp:511:7:511:12 | source |  |
+| taint.cpp:510:10:510:15 | ref arg source | taint.cpp:511:7:511:12 | source |  |
+| taint.cpp:510:10:510:15 | source | taint.cpp:510:2:510:8 | call to _strset |  |
+| taint.cpp:510:18:510:18 | 0 | taint.cpp:510:2:510:8 | call to _strset | TAINT |
+| taint.cpp:510:18:510:18 | 0 | taint.cpp:510:10:510:15 | ref arg source |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |

@@ -87,7 +87,7 @@ module Private {
   NodeImpl inputNode(SummarizableCallable c, SummaryInput input) {
     exists(int i |
       input = TParameterSummaryInput(i) and
-      result = DataFlowPrivate::TSummaryParameterNode(c, i)
+      result.(ParameterNode).isParameterOf(c, i)
     )
     or
     exists(int i |

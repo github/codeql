@@ -236,6 +236,7 @@ abstract class Import extends ASTNode {
    * behavior of Node.js imports, which prefer core modules such as `fs` over any
    * source module of the same name.
    */
+  cached
   Module getImportedModule() {
     if exists(resolveExternsImport())
     then result = resolveExternsImport()

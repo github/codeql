@@ -116,4 +116,13 @@ app.use(function(req, res) {
 	tainted.match(/\/\*[\d\D]*?\*\//g); // NOT OK
 
 	tainted.match(/(#\d+)+/); // OK - but still flagged due to insufficient suffix-checking.
+
+	(function foo() {
+		var replaced = tainted.replace(/[^\w\s\-\.\_~]/g, '');
+		var result = ""
+		result += replaced;
+		result = result.replace(/^\s+|\s+$/g, ''); // NOT OK
+	})();
+
+	tainted.match(/(https?:\/\/[^\s]+)/gm); // OK
 });
