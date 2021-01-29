@@ -8,6 +8,7 @@ import Expr
 import semmle.code.csharp.Callable
 import semmle.code.csharp.dataflow.CallContext as CallContext
 private import semmle.code.csharp.dataflow.internal.DelegateDataFlow
+private import semmle.code.csharp.dataflow.internal.FunctionPointerDataFlow
 private import semmle.code.csharp.dispatch.Dispatch
 private import dotnet
 
@@ -618,7 +619,23 @@ class DelegateCall extends Call, @delegate_invocation_expr {
 class FunctionPointerCall extends Call, @function_pointer_invocation_expr {
   override Callable getTarget() { none() }
 
+  /**
+   * Gets a potential run-time target of this function pointer call in the given
+   * call context `cc`.
+   */
+  Callable getARuntimeTarget(CallContext::CallContext cc) {
+    exists(FunctionPointerCallExpr call |
+      this = call.getFunctionPointerCall() and
+      result = call.getARuntimeTarget(cc)
+    )
+  }
+
+  override Callable getARuntimeTarget() { result = getARuntimeTarget(_) }
+
   override Expr getRuntimeArgument(int i) { result = getArgument(i) }
+
+  /** Gets the function pointer expression of this call. */
+  Expr getFunctionPointerExpr() { result = this.getChild(-1) }
 
   override string toString() { result = "function pointer call" }
 
