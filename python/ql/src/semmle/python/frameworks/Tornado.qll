@@ -556,9 +556,9 @@ private module Tornado {
   // Response modeling
   // ---------------------------------------------------------------------------
   /**
-   * A call to `tornado.web.RequestHandler.write` method.
+   * A call to `tornado.web.RequestHandler.redirect` method.
    *
-   * See https://www.tornadoweb.org/en/stable/web.html?highlight=write#tornado.web.RequestHandler.write
+   * See https://www.tornadoweb.org/en/stable/web.html?highlight=write#tornado.web.RequestHandler.redirect
    */
   private class TornadoRequestHandlerRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
     DataFlow::CfgNode {
