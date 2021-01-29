@@ -58,9 +58,18 @@ newtype TNode =
    * That is, `call` contains argument `**{"foo": bar}` which is passed
    * to parameter `foo` of `callable`.
    */
-  TKwUnpacked(CallNode call, CallableValue callable, string name) {
+  TKwUnpackedNode(CallNode call, CallableValue callable, string name) {
     call_unpacks(call, _, callable, name, _)
-  }
+  } or
+  /**
+   * A synthetic node representing that an iterable sequence flows to consumer.
+   */
+  TIterableSequenceNode(UnpackingAssignmentSequenceTarget consumer) or
+  /**
+   * A synthetic node representing that there may be an iterable element
+   * for `consumer` to consume.
+   */
+  TIterableElementNode(UnpackingAssignmentTarget consumer)
 
 /** Helper for `Node::getEnclosingCallable`. */
 private DataFlowCallable getCallableScope(Scope s) {
@@ -338,11 +347,11 @@ class KwOverflowNode extends Node, TKwOverflowNode {
  * The node representing the synthetic argument of a call that is unpacked from a dictionary
  * argument.
  */
-class KwUnpacked extends Node, TKwUnpacked {
+class KwUnpackedNode extends Node, TKwUnpackedNode {
   CallNode call;
   string name;
 
-  KwUnpacked() { this = TKwUnpacked(call, _, name) }
+  KwUnpackedNode() { this = TKwUnpackedNode(call, _, name) }
 
   override string toString() { result = "KwUnpacked " + name }
 
@@ -354,6 +363,42 @@ class KwUnpacked extends Node, TKwUnpacked {
   }
 
   override Location getLocation() { result = call.getLocation() }
+}
+
+/**
+ * A synthetic node representing an iterable sequence. Used for changing content type
+ * for instance from a `ListElement` to a `TupleElement`, especially if the content is
+ * transferred via a read step which cannot be broken up into a read and a store. The
+ * read step then targets TIterableSequence, and the conversion can happen via a read
+ * step to TIterableElement followed by a store step to the target.
+ */
+class IterableSequenceNode extends Node, TIterableSequenceNode {
+  CfgNode consumer;
+
+  IterableSequenceNode() { this = TIterableSequenceNode(consumer.getNode()) }
+
+  override string toString() { result = "IterableSequence" }
+
+  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+
+  override Location getLocation() { result = consumer.getLocation() }
+}
+
+/**
+ * A synthetic node representing an iterable element. Used for changing content type
+ * for instance from a `ListElement` to a `TupleElement`. This would happen via a
+ * read step from the list to IterableElement followed by a store step to the tuple.
+ */
+class IterableElementNode extends Node, TIterableElementNode {
+  CfgNode consumer;
+
+  IterableElementNode() { this = TIterableElementNode(consumer.getNode()) }
+
+  override string toString() { result = "IterableElement" }
+
+  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+
+  override Location getLocation() { result = consumer.getLocation() }
 }
 
 /**

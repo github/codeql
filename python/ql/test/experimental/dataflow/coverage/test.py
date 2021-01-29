@@ -200,6 +200,17 @@ def test_nested_comprehension_paren():
     SINK(x[0]) #$ flow="SOURCE, l:-1 -> x[0]"
 
 
+# Iterable unpacking in comprehensions
+def test_unpacking_comprehension():
+    x = [a for (a, b) in [(SOURCE, NONSOURCE)]]
+    SINK(x[0])  # Flow missing
+
+
+def test_star_unpacking_comprehension():
+    x = [a[0] for (*a, b) in [(SOURCE, NONSOURCE)]]
+    SINK(x[0])  # Flow missing
+
+
 # 6.2.8. Generator expressions
 def test_generator():
     x = (SOURCE for y in [NONSOURCE])
@@ -516,6 +527,144 @@ def test_swap():
     a, b = b, a
     SINK_F(a)
     SINK(b) #$ flow="SOURCE, l:-7 -> b"
+
+
+@expects(2)
+def test_unpacking_assignment():
+    t = (SOURCE, NONSOURCE)
+    a, b = t
+    SINK(a) #$ flow="SOURCE, l:-2 -> a"
+    SINK_F(b)
+
+
+@expects(3)
+def test_nested_unpacking_assignment():
+    t = (SOURCE, (NONSOURCE, SOURCE))
+    a, (b, c) = t
+    SINK(a) #$ flow="SOURCE, l:-2 -> a"
+    SINK_F(b)
+    SINK(c) #$ flow="SOURCE, l:-4 -> c"
+
+
+@expects(2)
+def test_deeply_nested_unpacking_assignment():
+    t = [[[[SOURCE]]], NONSOURCE]
+    [[[a]]], b = t
+    SINK(a) #$ flow="SOURCE, l:-2 -> a"
+    SINK_F(b)
+
+
+@expects(4)
+def test_iterated_unpacking_assignment():
+    t = (SOURCE, SOURCE, NONSOURCE)
+    a, *b, c = t
+    SINK(a) #$ flow="SOURCE, l:-2 -> a"
+    SINK_F(b)
+    SINK(b[0]) #$ flow="SOURCE, l:-4 -> b[0]"
+    SINK_F(c) #$ SPURIOUS: flow="SOURCE, l:-5 -> c"  # We do not track tuple sizes
+
+
+@expects(3)
+def test_iterated_unpacking_assignment_shrink():
+    t = (SOURCE, SOURCE)
+    a, *b, c = t
+    SINK(a) #$ flow="SOURCE, l:-2 -> a"
+    SINK_F(b)
+    SINK(c) #$ flow="SOURCE, l:-4 -> c"
+
+
+@expects(15)
+def test_unpacking_assignment_conversion():
+    ll = [[SOURCE, NONSOURCE, SOURCE], [SOURCE], [NONSOURCE]]
+
+    # tuple
+    ((a1, a2, a3), b, c) = ll
+    SINK(a1) #$ flow="SOURCE, l:-4 -> a1"
+    SINK_F(a2) #$ SPURIOUS: flow="SOURCE, l:-5 -> a2"  # We expect an FP as all elements are tainted
+    SINK(a3) #$ flow="SOURCE, l:-6 -> a3"
+    SINK_F(b)  # The list itself is not tainted
+    SINK_F(c)
+
+    # mixed
+    [(a1, a2, a3), b, c] = ll
+    SINK(a1) #$ flow="SOURCE, l:-12 -> a1"
+    SINK_F(a2) #$ SPURIOUS: flow="SOURCE, l:-13 -> a2"  # We expect an FP as all elements are tainted
+    SINK(a3) #$ flow="SOURCE, l:-14 -> a3"
+    SINK_F(b)  # The list itself is not tainted
+    SINK_F(c)
+
+    # mixed differently
+    ([a1, a2, a3], b, c) = ll
+    SINK(a1) #$ flow="SOURCE, l:-20 -> a1"
+    SINK_F(a2) #$ SPURIOUS: flow="SOURCE, l:-21 -> a2"  # We expect an FP as all elements are tainted
+    SINK(a3) #$ flow="SOURCE, l:-22 -> a3"
+    SINK_F(b)  # The list itself is not tainted
+    SINK_F(c)
+
+@expects(24)
+def test_iterated_unpacking_assignment_conversion():
+    tt = ((SOURCE, NONSOURCE, SOURCE),NONSOURCE)
+
+    # list
+    [[a1, *a2], *b] = tt
+    SINK(a1) #$ flow="SOURCE, l:-4 -> a1"
+    SINK_F(a2)  # The list itself is not tainted
+    SINK_F(a2[0]) #$ SPURIOUS: flow="SOURCE, l:-6 -> a2[0]"  # FP here due to list abstraction
+    SINK(a2[1]) #$ flow="SOURCE, l:-7 -> a2[1]"
+    SINK_F(b)  # The list itself is not tainted
+    SINK_F(b[0])
+
+    # tuple
+    ((a1, *a2), *b) = tt
+    SINK(a1) #$ flow="SOURCE, l:-13 -> a1"
+    SINK_F(a2)  # The list itself is not tainted
+    SINK_F(a2[0]) #$ SPURIOUS: flow="SOURCE, l:-15 -> a2[0]"  # FP here due to list abstraction
+    SINK(a2[1]) #$ flow="SOURCE, l:-16 -> a2[1]"
+    SINK_F(b)  # The list itself is not tainted
+    SINK_F(b[0])
+
+    # mixed
+    [(a1, *a2), *b] = tt
+    SINK(a1) #$ flow="SOURCE, l:-22 -> a1"
+    SINK_F(a2)  # The list itself is not tainted
+    SINK_F(a2[0]) #$ SPURIOUS: flow="SOURCE, l:-24 -> a2[0]"  # FP here due to list abstraction
+    SINK(a2[1]) #$ flow="SOURCE, l:-25 -> a2[1]"
+    SINK_F(b)  # The list itself is not tainted
+    SINK_F(b[0])
+
+    # mixed differently
+    ([a1, *a2], *b) = tt
+    SINK(a1) #$ flow="SOURCE, l:-31 -> a1"
+    SINK_F(a2)  # The list itself is not tainted
+    SINK_F(a2[0]) #$ SPURIOUS: flow="SOURCE, l:-33 -> a2[0]"  # FP here due to list abstraction
+    SINK(a2[1]) #$ flow="SOURCE, l:-34 -> a2[1]"
+    SINK_F(b)  # The list itself is not tainted
+    SINK_F(b[0])
+
+
+@expects(3)
+def test_iterable_repacking():
+    a, *(b, c) = (SOURCE, NONSOURCE, SOURCE)
+    SINK(a) #$ flow="SOURCE, l:-1 -> a"
+    SINK_F(b)
+    SINK(c) #$ MISSING: flow="SOURCE, l:-3 -> c"
+
+
+@expects(4)
+def test_iterable_unpacking_in_for():
+    tl = [(SOURCE, NONSOURCE), (SOURCE, NONSOURCE)]
+    for x,y in tl:
+        SINK(x) #$ MISSING: flow="SOURCE, l:-2 -> x"
+        SINK_F(y)
+
+
+@expects(6)
+def test_iterable_star_unpacking_in_for():
+    tl = [(SOURCE, NONSOURCE), (SOURCE, NONSOURCE)]
+    for *x,y in tl:
+        SINK_F(x)
+        SINK(x[0]) #$ MISSING: flow="SOURCE, l:-3 -> x[0]"
+        SINK_F(y)
 
 
 def test_deep_callgraph():
