@@ -14,7 +14,7 @@ private predicate instanceVariableAccess(
 ) {
   name = var.getValue() and
   scope = enclosingModuleOrClass(var) and
-  if exists(enclosingMethod(var)) then instance = true else instance = false
+  if hasEnclosingMethod(var) then instance = true else instance = false
 }
 
 private predicate classVariableAccess(Generated::ClassVariable var, string name, VariableScope scope) {
@@ -22,11 +22,10 @@ private predicate classVariableAccess(Generated::ClassVariable var, string name,
   scope = enclosingModuleOrClass(var)
 }
 
-private Callable enclosingMethod(Generated::AstNode node) {
-  parentCallableScope*(enclosingScope(node)) = TCallableScope(result) and
-  (
-    result instanceof Method or
-    result instanceof SingletonMethod
+predicate hasEnclosingMethod(Generated::AstNode node) {
+  exists(Callable method | parentCallableScope*(enclosingScope(node)) = TCallableScope(method) |
+    method instanceof Method or
+    method instanceof SingletonMethod
   )
 }
 
@@ -36,13 +35,13 @@ private TCallableScope parentCallableScope(TCallableScope scope) {
     not c instanceof Method and
     not c instanceof SingletonMethod
   |
-    result = outerScope(scope)
+    result = scope.(VariableScope).getOuterScope()
   )
 }
 
 private VariableScope parentScope(VariableScope scope) {
   not scope instanceof ModuleOrClassScope and
-  result = outerScope(scope)
+  result = scope.getOuterScope()
 }
 
 private ModuleOrClassScope enclosingModuleOrClass(Generated::AstNode node) {
@@ -96,10 +95,6 @@ private predicate strictlyBefore(Location one, Location two) {
   one.getStartLine() = two.getStartLine() and one.getStartColumn() < two.getStartColumn()
 }
 
-private VariableScope outerScope(VariableScope scope) {
-  result = enclosingScope(scope.getScopeElement())
-}
-
 /** A scope that may capture outer local variables. */
 private class CapturingScope extends VariableScope {
   CapturingScope() {
@@ -111,9 +106,6 @@ private class CapturingScope extends VariableScope {
       c instanceof Lambda // TODO: Check if this is actually the case
     )
   }
-
-  /** Gets the scope in which this scope is nested, if any. */
-  VariableScope getOuterScope() { result = outerScope(this) }
 
   /** Holds if this scope inherits `name` from an outer scope `outer`. */
   predicate inherits(string name, VariableScope outer) {
@@ -365,6 +357,22 @@ private module Cached {
   predicate isCapturedAccess(LocalVariableAccess::Range access) {
     access.getVariable().getDeclaringScope() != enclosingScope(access)
   }
+
+  cached
+  predicate instanceVariableAccess(Generated::InstanceVariable var, InstanceVariable v) {
+    exists(string name, VariableScope scope, boolean instance |
+      v = TInstanceVariable(scope, name, instance, _) and
+      instanceVariableAccess(var, name, scope, instance)
+    )
+  }
+
+  cached
+  predicate classVariableAccess(Generated::ClassVariable var, ClassVariable variable) {
+    exists(VariableScope scope, string name |
+      variable = TClassVariable(scope, name, _) and
+      classVariableAccess(var, name, scope)
+    )
+  }
 }
 
 import Cached
@@ -551,12 +559,7 @@ module InstanceVariableAccess {
   class Range extends VariableAccess::Range, @token_instance_variable {
     InstanceVariable variable;
 
-    Range() {
-      exists(boolean instance, VariableScope scope, string name |
-        variable = TInstanceVariable(scope, name, instance, _) and
-        instanceVariableAccess(this, name, scope, instance)
-      )
-    }
+    Range() { instanceVariableAccess(this, variable) }
 
     final override InstanceVariable getVariable() { result = variable }
   }
@@ -566,12 +569,7 @@ module ClassVariableAccess {
   class Range extends VariableAccess::Range, @token_class_variable {
     ClassVariable variable;
 
-    Range() {
-      exists(VariableScope scope, string name |
-        variable = TClassVariable(scope, name, _) and
-        classVariableAccess(this, name, scope)
-      )
-    }
+    Range() { classVariableAccess(this, variable) }
 
     final override ClassVariable getVariable() { result = variable }
   }

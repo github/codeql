@@ -28,6 +28,9 @@ class VariableScope extends TScope {
     result = this.getAVariable() and
     result.getName() = name
   }
+
+  /** Gets the scope in which this scope is nested, if any. */
+  VariableScope getOuterScope() { result = enclosingScope(this.getScopeElement()) }
 }
 
 /** A variable declared in a scope. */
