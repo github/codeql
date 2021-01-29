@@ -397,8 +397,16 @@ class BarrierGuard extends GuardNode {
  * - Expressions
  * - Function parameters
  */
-class LocalSourceNode extends Node {
-  LocalSourceNode() { not simpleLocalFlowStep(_, this) }
+class LocalSourceNode extends CfgNode {
+  LocalSourceNode() {
+    not simpleLocalFlowStep(_, this) and
+    // Currently, the left hand side of an assignment `x = ...` contains a `ControlFlowNode`
+    // that doesn't have any flow _into_ it. This means such nodes would be incorrectly classified
+    // as `LocalSourceNode`s. To avoid this, we explicitly filter out any node that corresponds to a
+    // store.
+    // TODO: Remove the following line.
+    not this.asCfgNode().isStore()
+  }
 
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
   cached
