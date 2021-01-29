@@ -1,4 +1,5 @@
 from django.http.response import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect, JsonResponse, HttpResponseNotFound
+import django.shortcuts
 
 # Not an XSS sink, since the Content-Type is not "text/html"
 # FP reported in https://github.com/github/codeql-python-team/issues/38
@@ -46,6 +47,11 @@ def redirect_through_normal_response(request):
     resp['Location'] = next # $ MISSING: redirectLocation=next
     resp.content = private # $ MISSING: responseBody=private
     return resp
+
+
+def redirect_shortcut(request):
+    next = request.GET.get("next")
+    return django.shortcuts.redirect(next) # $ MISSING: HttpResponse HttpRedirectResponse redirectLocation=next
 
 
 # Ensure that simple subclasses are still vuln to XSS
