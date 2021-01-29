@@ -18,12 +18,11 @@ private predicate arrayIndexInLoop(IndexExpr arr, Variable base, Expr idx, ForSt
  * operators, increments, decrements, type assertions, parentheses, sequence expressions,
  * and assignments.
  */
-private Expr unwrap(Expr e) {
-  result = e or
-  result = unwrap(e.(UpdateExpr).getOperand()) or
-  result = unwrap(e.(UnaryExpr).getOperand()) or
-  result = unwrap(e.(BinaryExpr).getAnOperand()) or
-  result = unwrap(e.getUnderlyingValue())
+private Expr unwrap1Step(Expr e) {
+  result = e.(UpdateExpr).getOperand() or
+  result = e.(UnaryExpr).getOperand() or
+  result = e.(BinaryExpr).getAnOperand() or
+  result = e.getUnderlyingValue()
 }
 
 /**
@@ -33,7 +32,7 @@ private Expr unwrap(Expr e) {
  */
 predicate unusedIndexVariable(RelationalComparison rel, Variable idx, Variable v) {
   exists(ForStmt fs | fs.getTest() = rel |
-    unwrap(rel.getLesserOperand()) = idx.getAnAccess() and
+    unwrap1Step*(rel.getLesserOperand()) = idx.getAnAccess() and
     rel.getGreaterOperand().(PropAccess).accesses(v.getAnAccess(), "length") and
     forex(IndexExpr arr, Expr e | arrayIndexInLoop(arr, v, e, fs) | exists(e.getIntValue()))
   )
