@@ -335,6 +335,18 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   }
 
   /**
+   * Gets the class of which this function, called `memberName`, is a member.
+   *
+   * Prefer to use `getDeclaringType()` or `getName()` directly if you do not
+   * need to reason about both.
+   */
+  pragma[nomagic]
+  Class getClassAndName(string memberName) {
+    this.hasName(memberName) and
+    this.getDeclaringType() = result
+  }
+
+  /**
    * Implements `ControlFlowNode.getControlFlowScope`. The `Function` is
    * used to represent the exit node of the control flow graph, so it is
    * its own scope.

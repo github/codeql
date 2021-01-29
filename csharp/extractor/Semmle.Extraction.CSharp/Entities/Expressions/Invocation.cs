@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Extraction.Kinds;
 using System.IO;
+using System;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -55,7 +56,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         // Implicit `this` qualifier; add explicitly
 
                         if (cx.GetModel(Syntax).GetEnclosingSymbol(Location.symbol.SourceSpan.Start) is IMethodSymbol callingMethod)
-                            This.CreateImplicit(cx, Entities.Type.Create(cx, callingMethod.ContainingType), Location, this, child++);
+                            This.CreateImplicit(cx, callingMethod.ContainingType, Location, this, child++);
                         else
                             cx.ModelError(Syntax, "Couldn't determine implicit this type");
                     }
@@ -66,7 +67,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     }
                     break;
                 default:
-                    // Delegate call; `d()`
+                    // Delegate or function pointer call; `d()`
                     Create(cx, Syntax.Expression, this, child++);
                     break;
             }
@@ -84,7 +85,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             if (target == null)
             {
-                if (!isDynamicCall && !IsDelegateCall(info))
+                if (!isDynamicCall && !IsDelegateLikeCall(info))
                     cx.ModelError(Syntax, "Unable to resolve target for call. (Compilation error?)");
                 return;
             }
@@ -98,7 +99,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             // Either the qualifier (Expression) is dynamic,
             // or one of the arguments is dynamic.
             var node = (InvocationExpressionSyntax)info.Node;
-            return !IsDelegateCall(info) &&
+            return !IsDelegateLikeCall(info) &&
                 (IsDynamic(info.Context, node.Expression) || node.ArgumentList.Arguments.Any(arg => IsDynamic(info.Context, arg.Expression)));
         }
 
@@ -133,12 +134,22 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        private static bool IsDelegateCall(ExpressionNodeInfo info)
+        private static bool IsDelegateLikeCall(ExpressionNodeInfo info)
+        {
+            return IsDelegateLikeCall(info, symbol => IsFunctionPointer(symbol) || IsDelegateInvoke(symbol));
+        }
+
+        private static bool IsDelegateInvokeCall(ExpressionNodeInfo info)
+        {
+            return IsDelegateLikeCall(info, IsDelegateInvoke);
+        }
+
+        private static bool IsDelegateLikeCall(ExpressionNodeInfo info, Func<ISymbol, bool> check)
         {
             var si = info.SymbolInfo;
 
             if (si.CandidateReason == CandidateReason.OverloadResolutionFailure &&
-                si.CandidateSymbols.OfType<IMethodSymbol>().All(s => s.MethodKind == MethodKind.DelegateInvoke))
+                si.CandidateSymbols.All(check))
             {
                 return true;
             }
@@ -153,9 +164,20 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 return true;
             }
 
-            return si.Symbol != null &&
-                si.Symbol.Kind == SymbolKind.Method &&
-                ((IMethodSymbol)si.Symbol).MethodKind == MethodKind.DelegateInvoke;
+            return check(si.Symbol);
+        }
+
+        private static bool IsFunctionPointer(ISymbol symbol)
+        {
+            return symbol != null &&
+                symbol.Kind == SymbolKind.FunctionPointerType;
+        }
+
+        private static bool IsDelegateInvoke(ISymbol symbol)
+        {
+            return symbol != null &&
+                symbol.Kind == SymbolKind.Method &&
+                ((IMethodSymbol)symbol).MethodKind == MethodKind.DelegateInvoke;
         }
 
         private static bool IsLocalFunctionInvocation(ExpressionNodeInfo info)
@@ -168,8 +190,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             return IsNameof((InvocationExpressionSyntax)info.Node)
                 ? ExprKind.NAMEOF
-                : IsDelegateCall(info)
-                    ? ExprKind.DELEGATE_INVOCATION
+                : IsDelegateLikeCall(info)
+                    ? IsDelegateInvokeCall(info)
+                        ? ExprKind.DELEGATE_INVOCATION
+                        : ExprKind.FUNCTION_POINTER_INVOCATION
                     : IsLocalFunctionInvocation(info)
                         ? ExprKind.LOCAL_FUNCTION_INVOCATION
                         : ExprKind.METHOD_INVOCATION;

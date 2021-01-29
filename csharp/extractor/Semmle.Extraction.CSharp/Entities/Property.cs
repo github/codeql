@@ -85,14 +85,14 @@ namespace Semmle.Extraction.CSharp.Entities
                     Context.PopulateLater(() =>
                     {
                         var loc = Context.Create(initializer.GetLocation());
-                        var annotatedType = new AnnotatedType(type, NullableAnnotation.None);
+                        var annotatedType = AnnotatedTypeSymbol.CreateNotAnnotated(symbol.Type);
                         var simpleAssignExpr = new Expression(new ExpressionInfo(Context, annotatedType, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, null));
                         Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer.Value, simpleAssignExpr, 0));
                         var access = new Expression(new ExpressionInfo(Context, annotatedType, Location, ExprKind.PROPERTY_ACCESS, simpleAssignExpr, 1, false, null));
                         trapFile.expr_access(access, this);
                         if (!symbol.IsStatic)
                         {
-                            This.CreateImplicit(Context, Type.Create(Context, symbol.ContainingType), Location, access, -1);
+                            This.CreateImplicit(Context, symbol.ContainingType, Location, access, -1);
                         }
                     });
                 }

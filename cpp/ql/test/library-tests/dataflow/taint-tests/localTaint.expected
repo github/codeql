@@ -135,6 +135,28 @@
 | arrayassignment.cpp:145:12:145:12 | 5 | arrayassignment.cpp:145:7:145:13 | access to array | TAINT |
 | arrayassignment.cpp:146:7:146:10 | arr3 | arrayassignment.cpp:146:7:146:13 | access to array |  |
 | arrayassignment.cpp:146:12:146:12 | 5 | arrayassignment.cpp:146:7:146:13 | access to array | TAINT |
+| constructor_delegation.cpp:8:2:8:8 | this | constructor_delegation.cpp:8:20:8:24 | constructor init of field x [pre-this] |  |
+| constructor_delegation.cpp:8:14:8:15 | _x | constructor_delegation.cpp:8:22:8:23 | _x |  |
+| constructor_delegation.cpp:8:22:8:23 | _x | constructor_delegation.cpp:8:20:8:24 | constructor init of field x | TAINT |
+| constructor_delegation.cpp:9:37:9:38 | _x | constructor_delegation.cpp:9:29:9:39 | call to MyValue | TAINT |
+| constructor_delegation.cpp:10:36:10:37 | _x | constructor_delegation.cpp:10:36:10:42 | ... + ... | TAINT |
+| constructor_delegation.cpp:10:36:10:42 | ... + ... | constructor_delegation.cpp:10:28:10:43 | call to MyValue | TAINT |
+| constructor_delegation.cpp:10:41:10:42 | _y | constructor_delegation.cpp:10:36:10:42 | ... + ... | TAINT |
+| constructor_delegation.cpp:11:48:11:48 | 0 | constructor_delegation.cpp:11:40:11:49 | call to MyValue | TAINT |
+| constructor_delegation.cpp:19:44:19:45 | _x | constructor_delegation.cpp:19:36:19:46 | call to MyValue | TAINT |
+| constructor_delegation.cpp:24:13:24:13 | 0 | constructor_delegation.cpp:24:13:24:14 | call to MyValue | TAINT |
+| constructor_delegation.cpp:24:13:24:14 | call to MyValue | constructor_delegation.cpp:36:7:36:8 | v1 |  |
+| constructor_delegation.cpp:25:13:25:18 | call to source | constructor_delegation.cpp:25:13:25:21 | call to MyValue | TAINT |
+| constructor_delegation.cpp:25:13:25:21 | call to MyValue | constructor_delegation.cpp:37:7:37:8 | v2 |  |
+| constructor_delegation.cpp:26:13:26:20 | call to MyValue | constructor_delegation.cpp:38:7:38:8 | v3 |  |
+| constructor_delegation.cpp:27:13:27:27 | call to MyValue | constructor_delegation.cpp:39:7:39:8 | v4 |  |
+| constructor_delegation.cpp:28:13:28:17 | call to MyValue | constructor_delegation.cpp:40:7:40:8 | v5 |  |
+| constructor_delegation.cpp:29:13:29:24 | call to MyValue | constructor_delegation.cpp:41:7:41:8 | v6 |  |
+| constructor_delegation.cpp:30:13:30:24 | call to MyValue | constructor_delegation.cpp:42:7:42:8 | v7 |  |
+| constructor_delegation.cpp:31:13:31:26 | call to MyValue | constructor_delegation.cpp:43:7:43:8 | v8 |  |
+| constructor_delegation.cpp:32:13:32:33 | call to MyValue | constructor_delegation.cpp:44:7:44:8 | v9 |  |
+| constructor_delegation.cpp:33:21:33:28 | call to MyDerivedValue | constructor_delegation.cpp:45:7:45:9 | v10 |  |
+| constructor_delegation.cpp:34:21:34:35 | call to MyDerivedValue | constructor_delegation.cpp:46:7:46:9 | v11 |  |
 | copyableclass.cpp:8:2:8:16 | this | copyableclass.cpp:8:28:8:32 | constructor init of field v [pre-this] |  |
 | copyableclass.cpp:8:22:8:23 | _v | copyableclass.cpp:8:30:8:31 | _v |  |
 | copyableclass.cpp:8:30:8:31 | _v | copyableclass.cpp:8:28:8:32 | constructor init of field v | TAINT |
@@ -5839,6 +5861,28 @@
 | taint.cpp:483:18:483:19 | ref arg & ... | taint.cpp:483:19:483:19 | n [inner post update] |  |
 | taint.cpp:483:19:483:19 | n | taint.cpp:483:18:483:19 | & ... |  |
 | taint.cpp:483:28:483:34 | source1 | taint.cpp:483:11:483:15 | ref arg & ... | TAINT |
+| taint.cpp:492:24:492:29 | source | taint.cpp:494:27:494:32 | source |  |
+| taint.cpp:493:22:493:29 | ,.-;:_ | taint.cpp:494:35:494:39 | delim |  |
+| taint.cpp:493:22:493:29 | ,.-;:_ | taint.cpp:496:7:496:11 | delim |  |
+| taint.cpp:494:20:494:25 | call to strtok | taint.cpp:495:7:495:15 | tokenized |  |
+| taint.cpp:494:27:494:32 | source | taint.cpp:494:20:494:25 | call to strtok | TAINT |
+| taint.cpp:503:26:503:28 | ptr | taint.cpp:504:10:504:12 | ptr |  |
+| taint.cpp:503:26:503:28 | ptr | taint.cpp:505:7:505:9 | ptr |  |
+| taint.cpp:503:26:503:28 | ptr | taint.cpp:506:8:506:10 | ptr |  |
+| taint.cpp:503:36:503:41 | source | taint.cpp:504:15:504:20 | source |  |
+| taint.cpp:504:10:504:12 | ptr | taint.cpp:504:2:504:8 | call to _strset |  |
+| taint.cpp:504:10:504:12 | ref arg ptr | taint.cpp:505:7:505:9 | ptr |  |
+| taint.cpp:504:10:504:12 | ref arg ptr | taint.cpp:506:8:506:10 | ptr |  |
+| taint.cpp:504:15:504:20 | source | taint.cpp:504:2:504:8 | call to _strset | TAINT |
+| taint.cpp:504:15:504:20 | source | taint.cpp:504:10:504:12 | ref arg ptr |  |
+| taint.cpp:505:7:505:9 | ref arg ptr | taint.cpp:506:8:506:10 | ptr |  |
+| taint.cpp:506:8:506:10 | ptr | taint.cpp:506:7:506:10 | * ... | TAINT |
+| taint.cpp:509:26:509:31 | source | taint.cpp:510:10:510:15 | source |  |
+| taint.cpp:509:26:509:31 | source | taint.cpp:511:7:511:12 | source |  |
+| taint.cpp:510:10:510:15 | ref arg source | taint.cpp:511:7:511:12 | source |  |
+| taint.cpp:510:10:510:15 | source | taint.cpp:510:2:510:8 | call to _strset |  |
+| taint.cpp:510:18:510:18 | 0 | taint.cpp:510:2:510:8 | call to _strset | TAINT |
+| taint.cpp:510:18:510:18 | 0 | taint.cpp:510:10:510:15 | ref arg source |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |

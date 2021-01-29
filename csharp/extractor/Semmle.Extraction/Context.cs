@@ -169,7 +169,7 @@ namespace Semmle.Extraction
 #endif
 
         private readonly IDictionary<object, ICachedEntity> objectEntityCache = new Dictionary<object, ICachedEntity>();
-        private readonly IDictionary<ISymbol, ICachedEntity> symbolEntityCache = new Dictionary<ISymbol, ICachedEntity>(10000, SymbolEqualityComparer.IncludeNullability);
+        private readonly IDictionary<ISymbol, ICachedEntity> symbolEntityCache = new Dictionary<ISymbol, ICachedEntity>(10000, SymbolEqualityComparer.Default);
         private readonly HashSet<Label> extractedGenerics = new HashSet<Label>();
 
         /// <summary>
@@ -243,8 +243,6 @@ namespace Semmle.Extraction
         }
 
         public bool FromSource => scope.FromSource;
-
-        public bool IsGlobalContext => scope.IsGlobalScope;
 
         public ICommentGenerator CommentGenerator { get; } = new CommentProcessor();
 

@@ -274,7 +274,7 @@ class Type extends Locatable, @type {
 
   /**
    * Gets this type with any typedefs resolved. For example, given
-   * `typedef C T`, this would resolve `const T&amp;` to `const C&amp;`.
+   * `typedef C T`, this would resolve `const T&` to `const C&`.
    * Note that this will only work if the resolved type actually appears
    * on its own elsewhere in the program.
    */
@@ -1544,9 +1544,9 @@ class FunctionPointerIshType extends DerivedType {
 /**
  * A C++ pointer to data member. See 15.5.
  * ```
- * class C { int m; };
+ * class C { public: int m; };
  * int C::* p = &C::m;          // pointer to data member m of class C
- * class C *;
+ * class C c;
  * int val = c.*p;              // access data member
  * ```
  */

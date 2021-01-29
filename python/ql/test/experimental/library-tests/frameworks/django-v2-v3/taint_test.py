@@ -3,7 +3,7 @@ from django.urls import path
 from django.http import HttpRequest
 
 
-def test_taint(request: HttpRequest, foo, bar, baz=None):  # $routeHandler routedParameter=foo routedParameter=bar
+def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler routedParameter=foo routedParameter=bar
     ensure_tainted(foo, bar)
     ensure_not_tainted(baz)
 

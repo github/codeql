@@ -2,7 +2,7 @@
 #define NULL ((void*)0)
 
 #define assert(x) if (!(x)) __assert_fail(#x,__FILE__,__LINE__)
-void __assert_fail(const char *assertion, const char *file, int line) {  }
+void __assert_fail(const char *assertion, const char *file, int line);
 
 void aFakeFailed_1(int file, int line)
 {
@@ -270,5 +270,77 @@ unsigned char * noBadResize_2_7(unsigned char * buffer,size_t currentSize,size_t
 		buffer = (unsigned char *)realloc(buffer, newSize);
 	}
 	myASSERT_2(buffer);
+	return buffer;
+}
+
+unsigned char *goodResize_3_1(unsigned char *buffer, size_t currentSize, size_t newSize)
+{
+	// GOOD: this way we will exclude possible memory leak [FALSE POSITIVE]
+	unsigned char *tmp = buffer;
+	if (currentSize < newSize)
+	{
+		buffer = (unsigned char *)realloc(buffer, newSize);
+		if (buffer == NULL)
+		{
+			free(tmp);
+			return NULL;
+		} 
+	}
+
+	return buffer;
+}
+
+unsigned char *goodResize_3_2(unsigned char *buffer, size_t currentSize, size_t newSize)
+{
+	// GOOD: this way we will exclude possible memory leak [FALSE POSITIVE]
+	unsigned char *tmp = buffer;
+	if (currentSize < newSize)
+	{
+		tmp = (unsigned char *)realloc(tmp, newSize);
+		if (tmp != 0)
+		{
+			buffer = tmp;
+		} 
+	}
+
+	return buffer;
+}
+
+void abort(void);
+
+unsigned char *noBadResize_4_1(unsigned char *buffer, size_t currentSize, size_t newSize)
+{
+	// GOOD: program to end
+	if (currentSize < newSize)
+	{
+		if (buffer = (unsigned char *)realloc(buffer, newSize))
+			abort();
+	}
+
+	return buffer;
+}
+
+unsigned char * badResize_5_2(unsigned char *buffer, size_t currentSize, size_t newSize, int cond)
+{
+	// BAD: on unsuccessful call to realloc, we will lose a pointer to a valid memory block
+	if (currentSize < newSize)
+	{
+		buffer = (unsigned char *)realloc(buffer, newSize);
+	}
+	if (cond)
+	{
+		abort(); // irrelevant
+	}
+	return buffer;
+}
+
+unsigned char * badResize_5_1(unsigned char *buffer, size_t currentSize, size_t newSize, int cond)
+{
+	// BAD: on unsuccessful call to realloc, we will lose a pointer to a valid memory block
+	if (currentSize < newSize)
+	{
+		buffer = (unsigned char *)realloc(buffer, newSize);
+		assert(cond); // irrelevant
+	}
 	return buffer;
 }

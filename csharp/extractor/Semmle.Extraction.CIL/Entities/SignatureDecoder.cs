@@ -41,17 +41,27 @@ namespace Semmle.Extraction.CIL.Entities
 
             public void WriteId(TextWriter trapFile, GenericContext gc)
             {
-                trapFile.Write("ref ");
                 elementType.WriteId(trapFile, gc);
+                trapFile.Write('&');
             }
         }
 
         private struct FnPtr : ITypeSignature
         {
+            private readonly MethodSignature<ITypeSignature> signature;
+
+            public FnPtr(MethodSignature<ITypeSignature> signature)
+            {
+                this.signature = signature;
+            }
 
             public void WriteId(TextWriter trapFile, GenericContext gc)
             {
-                trapFile.Write("<method signature>");
+                FunctionPointerType.WriteName(
+                    trapFile.Write,
+                    t => t.WriteId(trapFile, gc),
+                    signature
+                );
             }
         }
 
@@ -62,7 +72,7 @@ namespace Semmle.Extraction.CIL.Entities
             new ByRef(elementType);
 
         ITypeSignature ISignatureTypeProvider<ITypeSignature, object>.GetFunctionPointerType(MethodSignature<ITypeSignature> signature) =>
-            new FnPtr();
+            new FnPtr(signature);
 
         private class Instantiation : ITypeSignature
         {
@@ -163,25 +173,9 @@ namespace Semmle.Extraction.CIL.Entities
             return new Modified(unmodifiedType, modifier, isRequired);
         }
 
-        private class Pinned : ITypeSignature
-        {
-            private readonly ITypeSignature elementType;
-
-            public Pinned(ITypeSignature elementType)
-            {
-                this.elementType = elementType;
-            }
-
-            public void WriteId(TextWriter trapFile, GenericContext gc)
-            {
-                trapFile.Write("pinned ");
-                elementType.WriteId(trapFile, gc);
-            }
-        }
-
         ITypeSignature ISignatureTypeProvider<ITypeSignature, object>.GetPinnedType(ITypeSignature elementType)
         {
-            return new Pinned(elementType);
+            return elementType;
         }
 
         private class PointerType : ITypeSignature

@@ -179,7 +179,12 @@ ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
 class ParameterNode extends CfgNode {
   ParameterDefinition def;
 
-  ParameterNode() { node = def.getDefiningNode() }
+  ParameterNode() {
+    node = def.getDefiningNode() and
+    // Disregard parameters that we cannot resolve
+    // TODO: Make this unnecessary
+    exists(DataFlowCallable c | node = c.getParameter(_))
+  }
 
   /**
    * Holds if this node is the parameter of callable `c` at the
@@ -191,6 +196,17 @@ class ParameterNode extends CfgNode {
 
   /** Gets the `Parameter` this `ParameterNode` represents. */
   Parameter getParameter() { result = def.getParameter() }
+}
+
+/** A data flow node that represents a call argument. */
+class ArgumentNode extends Node {
+  ArgumentNode() { this = any(DataFlowCall c).getArg(_) }
+
+  /** Holds if this argument occurs at the given position in the given call. */
+  predicate argumentOf(DataFlowCall call, int pos) { this = call.getArg(pos) }
+
+  /** Gets the call in which this node is an argument. */
+  final DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
 /**

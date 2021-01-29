@@ -74,7 +74,7 @@ private predicate localExactStep(DataFlowNode src, DataFlowNode sink) {
   or
   src = sink.(ConditionalBranch).getAnOperand()
   or
-  src = sink.(Parameter).getAWrite()
+  src = sink.(MethodParameter).getAWrite()
   or
   exists(VariableUpdate update |
     update.getVariable().(Parameter) = sink and src = update.getSource()

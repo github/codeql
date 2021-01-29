@@ -11,6 +11,27 @@ module HTML {
   }
 
   /**
+   * A file that may contain HTML elements.
+   *
+   * This is either an `.html` file or a source code file containing
+   * embedded HTML snippets.
+   */
+  private class FileContainingHtml extends File {
+    FileContainingHtml() {
+      getFileType().isHtml()
+      or
+      // The file contains an expression containing an HTML element
+      exists(Expr e |
+        e.getFile() = this and
+        xml_element_parent_expression(_, e, _)
+      )
+    }
+  }
+
+  /** Gets `i`th root node of the HTML fragment embedded in the given expression, if any. */
+  Element getHtmlElementFromExpr(Expr e, int i) { xml_element_parent_expression(result, e, i) }
+
+  /**
    * An HTML element.
    *
    * Example:
@@ -20,7 +41,7 @@ module HTML {
    * ```
    */
   class Element extends Locatable, @xmlelement {
-    Element() { exists(HtmlFile f | xmlElements(this, _, _, _, f)) }
+    Element() { exists(FileContainingHtml f | xmlElements(this, _, _, _, f)) }
 
     override Location getLocation() { xmllocations(this, result) }
 
@@ -97,9 +118,14 @@ module HTML {
    * ```
    */
   class Attribute extends Locatable, @xmlattribute {
-    Attribute() { exists(HtmlFile f | xmlAttrs(this, _, _, _, _, f)) }
+    Attribute() { exists(FileContainingHtml f | xmlAttrs(this, _, _, _, _, f)) }
 
     override Location getLocation() { xmllocations(this, result) }
+
+    /**
+     * Gets the inline script of this attribute, if any.
+     */
+    CodeInAttribute getCodeInAttribute() { toplevel_parent_xml_node(result, this) }
 
     /**
      * Gets the element to which this attribute belongs.
@@ -126,32 +152,6 @@ module HTML {
     string getValue() { xmlAttrs(this, _, _, result, _, _) }
 
     override string toString() { result = getName() + "=" + getValue() }
-
-    /**
-     * Gets the inline script of this attribute, if any.
-     */
-    CodeInAttribute getCodeInAttribute() {
-      exists(
-        string f, Location l1, int sl1, int sc1, int el1, int ec1, Location l2, int sl2, int sc2,
-        int el2, int ec2
-      |
-        l1 = getLocation() and
-        l2 = result.getLocation() and
-        l1.hasLocationInfo(f, sl1, sc1, el1, ec1) and
-        l2.hasLocationInfo(f, sl2, sc2, el2, ec2)
-      |
-        (
-          sl1 = sl2 and sc1 < sc2
-          or
-          sl1 < sl2
-        ) and
-        (
-          el1 = el2 and ec1 > ec2
-          or
-          el1 > el2
-        )
-      )
-    }
 
     override string getAPrimaryQlClass() { result = "HTML::Attribute" }
   }
@@ -226,26 +226,7 @@ module HTML {
      * Gets the inline script of this script element, if any.
      */
     private InlineScript getInlineScript() {
-      exists(
-        string f, Location l1, int sl1, int sc1, int el1, int ec1, Location l2, int sl2, int sc2,
-        int el2, int ec2
-      |
-        l1 = getLocation() and
-        l2 = result.getLocation() and
-        l1.hasLocationInfo(f, sl1, sc1, el1, ec1) and
-        l2.hasLocationInfo(f, sl2, sc2, el2, ec2)
-      |
-        (
-          sl1 = sl2 and sc1 < sc2
-          or
-          sl1 < sl2
-        ) and
-        (
-          el1 = el2 and ec1 > ec2
-          or
-          el1 > el2
-        )
-      ) and
+      toplevel_parent_xml_node(result, this) and
       // the src attribute has precedence
       not exists(getSourcePath())
     }
@@ -295,7 +276,7 @@ module HTML {
    * Note that instances of this class are only available if extraction is done with `--html all` or `--experimental`.
    */
   class TextNode extends Locatable, @xmlcharacters {
-    TextNode() { exists(HtmlFile f | xmlChars(this, _, _, _, _, f)) }
+    TextNode() { exists(FileContainingHtml f | xmlChars(this, _, _, _, _, f)) }
 
     override string toString() { result = getText() }
 
@@ -334,7 +315,7 @@ module HTML {
    * ```
    */
   class CommentNode extends Locatable, @xmlcomment {
-    CommentNode() { exists(HtmlFile f | xmlComments(this, _, _, f)) }
+    CommentNode() { exists(FileContainingHtml f | xmlComments(this, _, _, f)) }
 
     /** Gets the element in which this comment occurs. */
     Element getParent() { xmlComments(this, _, result, _) }

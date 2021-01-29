@@ -52,6 +52,9 @@ class Declaration extends NamedElement, @dotnet_declaration {
    * | `C<int>.Method<string>` | `C<>.Method<>`      |
    */
   Declaration getUnboundDeclaration() { result = this }
+
+  /** Holds if this declaration is unbound. */
+  final predicate isUnboundDeclaration() { this.getUnboundDeclaration() = this }
 }
 
 /** A member of a type. */

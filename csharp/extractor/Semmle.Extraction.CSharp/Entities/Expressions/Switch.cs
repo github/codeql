@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     {
         internal SwitchCase(Context cx, SwitchExpressionArmSyntax arm, Switch parent, int child) :
             base(new ExpressionInfo(
-                cx, Entities.Type.Create(cx, cx.GetType(arm.Expression)), cx.Create(arm.GetLocation()),
+                cx, cx.GetType(arm.Expression), cx.Create(arm.GetLocation()),
                 ExprKind.SWITCH_CASE, parent, child, false, null))
         {
             Expressions.Pattern.Create(cx, arm.Pattern, this, 0);

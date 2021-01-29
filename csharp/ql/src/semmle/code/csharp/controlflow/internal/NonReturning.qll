@@ -45,6 +45,18 @@ private class ThrowingCall extends NonReturningCall {
         c.getExceptionClass().matchesHandle(ex) and
         not m.isVirtual()
       )
+      or
+      this =
+        any(MethodCall mc |
+          mc.getTarget()
+              .hasQualifiedName("System.Runtime.ExceptionServices.ExceptionDispatchInfo", "Throw") and
+          (
+            mc.hasNoArguments() and
+            c.getExceptionClass() instanceof SystemExceptionClass
+            or
+            c.getExceptionClass() = mc.getArgument(0).getType()
+          )
+        )
     )
   }
 
