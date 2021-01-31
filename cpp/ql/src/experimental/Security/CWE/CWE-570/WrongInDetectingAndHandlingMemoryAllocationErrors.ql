@@ -58,7 +58,7 @@ class WrongCheckErrorOperatorNew extends FunctionCall {
   predicate isExistsIfCondition() {
     exists(IfCompareWithZero ifc, AssignExpr aex, Initializer it |
       // call `operator new` directly from the condition of `operator if`.
-      this = ifc.getCondition().getAChild()
+      this = ifc.getCondition().getAChild*()
       or
       // check results call `operator new` with variable appropriation
       postDominates(ifc, this) and
