@@ -13,11 +13,22 @@
 
 import cpp
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
+import semmle.code.cpp.dataflow.DataFlow
 
 from StrlenCall fc, AssignExpr expr, ArrayExpr exprarr
 where
   exprarr = expr.getLValue() and
   expr.getRValue().getValue().toInt() = 0 and
-  exprarr.getArrayOffset() = fc and
+  globalValueNumber(exprarr.getArrayOffset()) = globalValueNumber(fc) and
+  not exists(Expr exptmp |
+    (
+      DataFlow::localExprFlow(fc, exptmp) or
+      exptmp.getAChild*() = fc.getArgument(0).(VariableAccess).getTarget().getAnAccess()
+    ) and
+    dominates(exptmp, expr) and
+    postDominates(exptmp, fc) and
+    not exptmp.getEnclosingStmt() = fc.getEnclosingStmt() and
+    not exptmp.getEnclosingStmt() = expr.getEnclosingStmt()
+  ) and
   globalValueNumber(fc.getArgument(0)) = globalValueNumber(exprarr.getArrayBase())
 select expr, "potential unsafe or redundant assignment."
