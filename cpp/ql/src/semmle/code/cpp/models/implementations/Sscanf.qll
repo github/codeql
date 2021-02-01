@@ -70,7 +70,7 @@ private class SscanfModel extends ArrayFunction, TaintFunction, AliasFunction, S
     buffer = true and
     i =
       [
-        this.(ScanfFunction).getFormatParameterIndex(),
+        this.(ScanfFunction).getInputParameterIndex(),
         this.(ScanfFunction).getFormatParameterIndex(), getLocaleParameterIndex()
       ]
   }
