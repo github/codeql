@@ -378,23 +378,27 @@
 | format.cpp:114:37:114:50 | call to source | format.cpp:114:18:114:23 | ref arg buffer | TAINT |
 | format.cpp:119:10:119:11 | 0 | format.cpp:120:29:120:29 | i |  |
 | format.cpp:119:10:119:11 | 0 | format.cpp:121:8:121:8 | i |  |
+| format.cpp:120:15:120:19 | 123 | format.cpp:120:28:120:29 | ref arg & ... | TAINT |
 | format.cpp:120:28:120:29 | ref arg & ... | format.cpp:120:29:120:29 | i [inner post update] |  |
 | format.cpp:120:28:120:29 | ref arg & ... | format.cpp:121:8:121:8 | i |  |
 | format.cpp:120:29:120:29 | i | format.cpp:120:28:120:29 | & ... |  |
 | format.cpp:124:10:124:11 | 0 | format.cpp:125:40:125:40 | i |  |
 | format.cpp:124:10:124:11 | 0 | format.cpp:126:8:126:8 | i |  |
+| format.cpp:125:15:125:28 | call to source | format.cpp:125:39:125:40 | ref arg & ... | TAINT |
 | format.cpp:125:39:125:40 | ref arg & ... | format.cpp:125:40:125:40 | i [inner post update] |  |
 | format.cpp:125:39:125:40 | ref arg & ... | format.cpp:126:8:126:8 | i |  |
 | format.cpp:125:40:125:40 | i | format.cpp:125:39:125:40 | & ... |  |
 | format.cpp:129:21:129:24 | {...} | format.cpp:130:32:130:37 | buffer |  |
 | format.cpp:129:21:129:24 | {...} | format.cpp:131:8:131:13 | buffer |  |
 | format.cpp:129:23:129:23 | 0 | format.cpp:129:21:129:24 | {...} | TAINT |
+| format.cpp:130:15:130:22 | Hello. | format.cpp:130:31:130:37 | ref arg & ... | TAINT |
 | format.cpp:130:31:130:37 | ref arg & ... | format.cpp:130:32:130:37 | buffer [inner post update] |  |
 | format.cpp:130:31:130:37 | ref arg & ... | format.cpp:131:8:131:13 | buffer |  |
 | format.cpp:130:32:130:37 | buffer | format.cpp:130:31:130:37 | & ... |  |
 | format.cpp:134:21:134:24 | {...} | format.cpp:135:40:135:45 | buffer |  |
 | format.cpp:134:21:134:24 | {...} | format.cpp:136:8:136:13 | buffer |  |
 | format.cpp:134:23:134:23 | 0 | format.cpp:134:21:134:24 | {...} | TAINT |
+| format.cpp:135:15:135:28 | call to source | format.cpp:135:39:135:45 | ref arg & ... | TAINT |
 | format.cpp:135:39:135:45 | ref arg & ... | format.cpp:135:40:135:45 | buffer [inner post update] |  |
 | format.cpp:135:39:135:45 | ref arg & ... | format.cpp:136:8:136:13 | buffer |  |
 | format.cpp:135:40:135:45 | buffer | format.cpp:135:39:135:45 | & ... |  |
