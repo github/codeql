@@ -51,12 +51,21 @@ private import Splitting
 private import semmle.code.csharp.ExprOrStmtParent
 
 /** An element that defines a new CFG scope. */
-class CfgScope extends Element, @top_level_exprorstmt_parent { }
+class CfgScope extends Element, @top_level_exprorstmt_parent {
+  CfgScope() { not this instanceof Attribute }
+}
 
 module ControlFlowTree {
   private class Range_ = @callable or @control_flow_element;
 
-  class Range extends Element, Range_ { }
+  class Range extends Element, Range_ {
+    Range() { this = getAChild*(any(CfgScope scope)) }
+  }
+
+  Element getAChild(Element p) {
+    result = p.getAChild() or
+    result = p.(AssignOperation).getExpandedAssignment()
+  }
 
   private predicate id(Range x, Range y) { x = y }
 
@@ -360,7 +369,9 @@ module Expressions {
       not this instanceof SwitchExpr and
       not this instanceof SwitchCaseExpr and
       not this instanceof ConstructorInitializer and
-      not this instanceof NotPatternExpr
+      not this instanceof NotPatternExpr and
+      not this instanceof OrPatternExpr and
+      not this instanceof AndPatternExpr
     }
 
     final override ControlFlowElement getChildElement(int i) { result = getExprChild(this, i) }
@@ -902,6 +913,56 @@ module Expressions {
       c instanceof NormalCompletion
     }
   }
+
+  private class AndPatternExprTree extends PostOrderTree, AndPatternExpr {
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child = this.getAnOperand()
+    }
+
+    final override predicate first(ControlFlowElement first) { first(this.getLeftOperand(), first) }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      // Flow from last element of left operand to first element of right operand
+      last(this.getLeftOperand(), pred, c) and
+      c.(MatchingCompletion).getValue() = true and
+      first(this.getRightOperand(), succ)
+      or
+      // Post-order: flow from last element of left operand to element itself
+      last(this.getLeftOperand(), pred, c) and
+      c.(MatchingCompletion).getValue() = false and
+      succ = this
+      or
+      // Post-order: flow from last element of right operand to element itself
+      last(this.getRightOperand(), pred, c) and
+      c instanceof MatchingCompletion and
+      succ = this
+    }
+  }
+
+  private class OrPatternExprTree extends PostOrderTree, OrPatternExpr {
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child = this.getAnOperand()
+    }
+
+    final override predicate first(ControlFlowElement first) { first(this.getLeftOperand(), first) }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      // Flow from last element of left operand to first element of right operand
+      last(this.getLeftOperand(), pred, c) and
+      c.(MatchingCompletion).getValue() = false and
+      first(this.getRightOperand(), succ)
+      or
+      // Post-order: flow from last element of left operand to element itself
+      last(this.getLeftOperand(), pred, c) and
+      c.(MatchingCompletion).getValue() = true and
+      succ = this
+      or
+      // Post-order: flow from last element of right operand to element itself
+      last(this.getRightOperand(), pred, c) and
+      c instanceof MatchingCompletion and
+      succ = this
+    }
+  }
 }
 
 module Statements {
@@ -1273,7 +1334,7 @@ module Statements {
   /** Gets a child of `cfe` that is in CFG scope `scope`. */
   pragma[noinline]
   private ControlFlowElement getAChildInScope(ControlFlowElement cfe, Callable scope) {
-    result = [cfe.getAChild(), cfe.(AssignOperation).getExpandedAssignment()] and
+    result = ControlFlowTree::getAChild(cfe) and
     scope = result.getEnclosingCallable()
   }
 

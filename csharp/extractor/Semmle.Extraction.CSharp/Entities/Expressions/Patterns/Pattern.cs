@@ -23,6 +23,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 case UnaryPatternSyntax unaryPattern:
                     return new UnaryPattern(cx, unaryPattern, parent, child);
 
+                case BinaryPatternSyntax binaryPattern:
+                    return new BinaryPattern(cx, binaryPattern, parent, child);
+
                 case DeclarationPatternSyntax declPattern:
                     // Creates a single local variable declaration.
                     {

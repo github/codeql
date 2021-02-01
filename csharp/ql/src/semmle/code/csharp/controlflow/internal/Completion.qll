@@ -551,7 +551,17 @@ private predicate mustHaveMatchingCompletion(Expr e, PatternExpr pe) {
   or
   pe = any(IsExpr ie | inBooleanContext(ie) and e = ie.getExpr()).getPattern()
   or
+  pe = any(RecursivePatternExpr rpe | mustHaveMatchingCompletion(e, rpe)).getPositionalPatterns()
+  or
+  pe = any(RecursivePatternExpr rpe | mustHaveMatchingCompletion(e, rpe)).getPropertyPatterns()
+  or
+  pe = any(PositionalPatternExpr ppe | mustHaveMatchingCompletion(e, ppe)).getPattern(_)
+  or
+  pe = any(PropertyPatternExpr ppe | mustHaveMatchingCompletion(e, ppe)).getPattern(_)
+  or
   pe = any(UnaryPatternExpr upe | mustHaveMatchingCompletion(e, upe)).getPattern()
+  or
+  pe = any(BinaryPatternExpr bpe | mustHaveMatchingCompletion(e, bpe)).getAnOperand()
 }
 
 /**
