@@ -1,7 +1,22 @@
+/**
+ * Provides an implementation of  _API graphs_, which are an abstract representation of the API
+ * surface used and/or defined by a code base.
+ *
+ * The nodes of the API graph represent definitions and uses of API components. The edges are
+ * directed and labeled; they specify how the components represented by nodes relate to each other.
+ */
+
 import python
 import semmle.python.dataflow.new.DataFlow
 
+/**
+ * Provides classes and predicates for working with APIs used in a database.
+ */
 module API {
+  /**
+   * An abstract representation of a definition or use of an API component such as a function
+   * exported by a Python package, or its result.
+   */
   class Node extends Impl::TApiNode {
     /**
      * Gets a data-flow node corresponding to a use of the API component represented by this node.
