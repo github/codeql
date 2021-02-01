@@ -566,6 +566,4 @@ class IndexerProperty extends Property {
     // ```
     result.getIndexer() = i
   }
-
-  override string getAPrimaryQlClass() { result = "IndexerProperty" }
 }
