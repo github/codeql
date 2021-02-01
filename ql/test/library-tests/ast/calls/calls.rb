@@ -141,9 +141,7 @@ end
 # in a singleton method object or body
 def foo.some_method
   bar
-end
-def X::foo.some_method
-  X::bar
+  X::baz
 end
 
 # in the default value for a keyword parameter

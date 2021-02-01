@@ -37,8 +37,6 @@ module AstNode {
       or
       this instanceof Generated::Rescue
       or
-      this instanceof Generated::Constant
-      or
       this instanceof Generated::RestAssignment
       or
       this = any(Generated::RestAssignment ra).getChild()

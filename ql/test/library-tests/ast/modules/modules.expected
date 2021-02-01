@@ -9,6 +9,7 @@ modules
 | modules.rb:48:1:57:3 | Bar | Module | Bar |
 | modules.rb:60:1:61:3 | MyModuleInGlobalScope | Module | MyModuleInGlobalScope |
 modulesWithScopeExprs
+| modules.rb:48:1:57:3 | Bar | modules.rb:48:8:48:10 | Foo |
 modulesWithGlobalNameScopeExprs
 | modules.rb:60:1:61:3 | MyModuleInGlobalScope |
 exprsInModules

@@ -1,5 +1,6 @@
 private import codeql_ruby.AST
 private import codeql_ruby.ast.internal.AST
+private import codeql_ruby.ast.internal.Pattern
 private import codeql_ruby.ast.internal.TreeSitter
 private import codeql_ruby.ast.internal.Variable
 

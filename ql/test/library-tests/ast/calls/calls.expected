@@ -51,99 +51,166 @@ callsWithNoReceiverArgumentsOrBlock
 | calls.rb:138:3:138:8 | call to bar | bar |
 | calls.rb:142:5:142:7 | call to foo | foo |
 | calls.rb:143:3:143:5 | call to bar | bar |
-| calls.rb:146:3:146:8 | call to bar | bar |
-| calls.rb:150:40:150:42 | call to foo | foo |
-| calls.rb:152:41:152:46 | call to foo | foo |
-| calls.rb:156:40:156:42 | call to foo | foo |
-| calls.rb:158:41:158:46 | call to foo | foo |
-| calls.rb:163:3:163:5 | call to foo | foo |
-| calls.rb:164:3:164:8 | call to bar | bar |
-| calls.rb:168:1:168:3 | call to foo | foo |
-| calls.rb:168:7:168:9 | call to bar | bar |
-| calls.rb:168:13:168:15 | call to baz | baz |
-| calls.rb:169:1:169:6 | call to foo | foo |
-| calls.rb:169:10:169:15 | call to bar | bar |
-| calls.rb:169:19:169:24 | call to baz | baz |
-| calls.rb:172:4:172:6 | call to foo | foo |
-| calls.rb:173:3:173:8 | call to wibble | wibble |
-| calls.rb:174:7:174:9 | call to bar | bar |
-| calls.rb:175:3:175:8 | call to wobble | wobble |
-| calls.rb:177:3:177:8 | call to wabble | wabble |
-| calls.rb:179:4:179:9 | call to foo | foo |
-| calls.rb:180:3:180:11 | call to wibble | wibble |
-| calls.rb:181:7:181:12 | call to bar | bar |
-| calls.rb:182:3:182:11 | call to wobble | wobble |
-| calls.rb:184:3:184:11 | call to wabble | wabble |
-| calls.rb:188:1:188:3 | call to bar | bar |
-| calls.rb:188:8:188:10 | call to foo | foo |
-| calls.rb:189:1:189:6 | call to bar | bar |
-| calls.rb:189:11:189:16 | call to foo | foo |
-| calls.rb:192:8:192:10 | call to foo | foo |
-| calls.rb:193:3:193:5 | call to bar | bar |
-| calls.rb:195:8:195:13 | call to foo | foo |
-| calls.rb:196:3:196:8 | call to bar | bar |
-| calls.rb:200:1:200:3 | call to bar | bar |
-| calls.rb:200:12:200:14 | call to foo | foo |
-| calls.rb:201:1:201:6 | call to bar | bar |
-| calls.rb:201:15:201:20 | call to foo | foo |
-| calls.rb:204:7:204:9 | call to foo | foo |
-| calls.rb:205:3:205:5 | call to bar | bar |
-| calls.rb:207:7:207:12 | call to foo | foo |
-| calls.rb:208:3:208:8 | call to bar | bar |
-| calls.rb:212:1:212:3 | call to bar | bar |
-| calls.rb:212:11:212:13 | call to foo | foo |
-| calls.rb:213:1:213:6 | call to bar | bar |
-| calls.rb:213:14:213:19 | call to foo | foo |
-| calls.rb:216:7:216:9 | call to foo | foo |
-| calls.rb:217:3:217:5 | call to bar | bar |
-| calls.rb:219:7:219:12 | call to foo | foo |
-| calls.rb:220:3:220:8 | call to bar | bar |
-| calls.rb:224:1:224:3 | call to bar | bar |
-| calls.rb:224:11:224:13 | call to foo | foo |
-| calls.rb:225:1:225:6 | call to bar | bar |
-| calls.rb:225:14:225:19 | call to foo | foo |
-| calls.rb:228:10:228:12 | call to bar | bar |
-| calls.rb:229:3:229:5 | call to baz | baz |
-| calls.rb:231:10:231:15 | call to bar | bar |
-| calls.rb:232:3:232:8 | call to baz | baz |
-| calls.rb:236:1:236:3 | call to foo | foo |
-| calls.rb:236:5:236:7 | call to bar | bar |
-| calls.rb:237:1:237:6 | call to foo | foo |
-| calls.rb:237:8:237:13 | call to bar | bar |
-| calls.rb:240:8:240:10 | call to bar | bar |
-| calls.rb:240:15:240:20 | call to baz | baz |
-| calls.rb:243:1:243:3 | call to foo | foo |
-| calls.rb:244:1:244:6 | call to foo | foo |
-| calls.rb:247:1:247:3 | call to foo | foo |
-| calls.rb:247:6:247:8 | call to bar | bar |
-| calls.rb:248:1:248:6 | call to foo | foo |
-| calls.rb:248:9:248:14 | call to bar | bar |
-| calls.rb:251:3:251:5 | call to foo | foo |
-| calls.rb:251:10:251:12 | call to bar | bar |
-| calls.rb:251:15:251:20 | call to foo | foo |
-| calls.rb:251:25:251:30 | call to bar | bar |
-| calls.rb:255:8:255:10 | call to foo | foo |
-| calls.rb:256:8:256:10 | call to bar | bar |
-| calls.rb:259:8:259:13 | call to foo | foo |
-| calls.rb:260:8:260:13 | call to bar | bar |
-| calls.rb:264:1:264:3 | call to foo | foo |
-| calls.rb:264:12:264:14 | call to bar | bar |
-| calls.rb:265:1:265:6 | call to foo | foo |
-| calls.rb:265:15:265:20 | call to bar | bar |
-| calls.rb:268:6:268:8 | call to bar | bar |
-| calls.rb:269:6:269:11 | call to bar | bar |
-| calls.rb:272:6:272:8 | call to bar | bar |
-| calls.rb:273:6:273:11 | call to bar | bar |
-| calls.rb:276:7:276:9 | call to bar | bar |
-| calls.rb:277:7:277:12 | call to bar | bar |
-| calls.rb:280:11:280:13 | call to bar | bar |
-| calls.rb:281:11:281:16 | call to bar | bar |
-| calls.rb:288:5:288:9 | call to super | super |
-| calls.rb:289:5:289:11 | call to super | super |
-| calls.rb:305:5:305:7 | call to foo | foo |
-| calls.rb:306:5:306:14 | call to super | super |
-| calls.rb:307:5:307:9 | call to super | super |
+| calls.rb:144:3:144:8 | call to baz | baz |
+| calls.rb:148:40:148:42 | call to foo | foo |
+| calls.rb:150:41:150:46 | call to foo | foo |
+| calls.rb:154:40:154:42 | call to foo | foo |
+| calls.rb:156:41:156:46 | call to foo | foo |
+| calls.rb:161:3:161:5 | call to foo | foo |
+| calls.rb:162:3:162:8 | call to bar | bar |
+| calls.rb:166:1:166:3 | call to foo | foo |
+| calls.rb:166:7:166:9 | call to bar | bar |
+| calls.rb:166:13:166:15 | call to baz | baz |
+| calls.rb:167:1:167:6 | call to foo | foo |
+| calls.rb:167:10:167:15 | call to bar | bar |
+| calls.rb:167:19:167:24 | call to baz | baz |
+| calls.rb:170:4:170:6 | call to foo | foo |
+| calls.rb:171:3:171:8 | call to wibble | wibble |
+| calls.rb:172:7:172:9 | call to bar | bar |
+| calls.rb:173:3:173:8 | call to wobble | wobble |
+| calls.rb:175:3:175:8 | call to wabble | wabble |
+| calls.rb:177:4:177:9 | call to foo | foo |
+| calls.rb:178:3:178:11 | call to wibble | wibble |
+| calls.rb:179:7:179:12 | call to bar | bar |
+| calls.rb:180:3:180:11 | call to wobble | wobble |
+| calls.rb:182:3:182:11 | call to wabble | wabble |
+| calls.rb:186:1:186:3 | call to bar | bar |
+| calls.rb:186:8:186:10 | call to foo | foo |
+| calls.rb:187:1:187:6 | call to bar | bar |
+| calls.rb:187:11:187:16 | call to foo | foo |
+| calls.rb:190:8:190:10 | call to foo | foo |
+| calls.rb:191:3:191:5 | call to bar | bar |
+| calls.rb:193:8:193:13 | call to foo | foo |
+| calls.rb:194:3:194:8 | call to bar | bar |
+| calls.rb:198:1:198:3 | call to bar | bar |
+| calls.rb:198:12:198:14 | call to foo | foo |
+| calls.rb:199:1:199:6 | call to bar | bar |
+| calls.rb:199:15:199:20 | call to foo | foo |
+| calls.rb:202:7:202:9 | call to foo | foo |
+| calls.rb:203:3:203:5 | call to bar | bar |
+| calls.rb:205:7:205:12 | call to foo | foo |
+| calls.rb:206:3:206:8 | call to bar | bar |
+| calls.rb:210:1:210:3 | call to bar | bar |
+| calls.rb:210:11:210:13 | call to foo | foo |
+| calls.rb:211:1:211:6 | call to bar | bar |
+| calls.rb:211:14:211:19 | call to foo | foo |
+| calls.rb:214:7:214:9 | call to foo | foo |
+| calls.rb:215:3:215:5 | call to bar | bar |
+| calls.rb:217:7:217:12 | call to foo | foo |
+| calls.rb:218:3:218:8 | call to bar | bar |
+| calls.rb:222:1:222:3 | call to bar | bar |
+| calls.rb:222:11:222:13 | call to foo | foo |
+| calls.rb:223:1:223:6 | call to bar | bar |
+| calls.rb:223:14:223:19 | call to foo | foo |
+| calls.rb:226:10:226:12 | call to bar | bar |
+| calls.rb:227:3:227:5 | call to baz | baz |
+| calls.rb:229:10:229:15 | call to bar | bar |
+| calls.rb:230:3:230:8 | call to baz | baz |
+| calls.rb:234:1:234:3 | call to foo | foo |
+| calls.rb:234:5:234:7 | call to bar | bar |
+| calls.rb:235:1:235:6 | call to foo | foo |
+| calls.rb:235:8:235:13 | call to bar | bar |
+| calls.rb:238:8:238:10 | call to bar | bar |
+| calls.rb:238:15:238:20 | call to baz | baz |
+| calls.rb:241:1:241:3 | call to foo | foo |
+| calls.rb:242:1:242:6 | call to foo | foo |
+| calls.rb:245:1:245:3 | call to foo | foo |
+| calls.rb:245:6:245:8 | call to bar | bar |
+| calls.rb:246:1:246:6 | call to foo | foo |
+| calls.rb:246:9:246:14 | call to bar | bar |
+| calls.rb:249:3:249:5 | call to foo | foo |
+| calls.rb:249:10:249:12 | call to bar | bar |
+| calls.rb:249:15:249:20 | call to foo | foo |
+| calls.rb:249:25:249:30 | call to bar | bar |
+| calls.rb:253:8:253:10 | call to foo | foo |
+| calls.rb:254:8:254:10 | call to bar | bar |
+| calls.rb:257:8:257:13 | call to foo | foo |
+| calls.rb:258:8:258:13 | call to bar | bar |
+| calls.rb:262:1:262:3 | call to foo | foo |
+| calls.rb:262:12:262:14 | call to bar | bar |
+| calls.rb:263:1:263:6 | call to foo | foo |
+| calls.rb:263:15:263:20 | call to bar | bar |
+| calls.rb:266:6:266:8 | call to bar | bar |
+| calls.rb:267:6:267:11 | call to bar | bar |
+| calls.rb:270:6:270:8 | call to bar | bar |
+| calls.rb:271:6:271:11 | call to bar | bar |
+| calls.rb:274:7:274:9 | call to bar | bar |
+| calls.rb:275:7:275:12 | call to bar | bar |
+| calls.rb:278:11:278:13 | call to bar | bar |
+| calls.rb:279:11:279:16 | call to bar | bar |
+| calls.rb:286:5:286:9 | call to super | super |
+| calls.rb:287:5:287:11 | call to super | super |
+| calls.rb:303:5:303:7 | call to foo | foo |
+| calls.rb:304:5:304:14 | call to super | super |
+| calls.rb:305:5:305:9 | call to super | super |
 callsWithNameScopeExpr
+| calls.rb:5:1:5:10 | call to bar | calls.rb:5:1:5:3 | Foo |
+| calls.rb:47:1:47:6 | call to foo | calls.rb:47:1:47:1 | X |
+| calls.rb:51:2:51:7 | call to foo | calls.rb:51:2:51:2 | X |
+| calls.rb:55:11:55:16 | call to foo | calls.rb:55:11:55:11 | X |
+| calls.rb:59:2:59:7 | call to foo | calls.rb:59:2:59:2 | X |
+| calls.rb:63:8:63:13 | call to foo | calls.rb:63:8:63:8 | X |
+| calls.rb:67:9:67:14 | call to bar | calls.rb:67:9:67:9 | X |
+| calls.rb:70:13:70:18 | call to bar | calls.rb:70:13:70:13 | X |
+| calls.rb:75:3:75:8 | call to foo | calls.rb:75:3:75:3 | X |
+| calls.rb:79:14:79:19 | call to bar | calls.rb:79:14:79:14 | X |
+| calls.rb:82:12:82:17 | call to bar | calls.rb:82:12:82:12 | X |
+| calls.rb:85:7:85:12 | call to bar | calls.rb:85:7:85:7 | X |
+| calls.rb:89:2:89:7 | call to bar | calls.rb:89:2:89:2 | X |
+| calls.rb:92:14:92:19 | call to baz | calls.rb:92:14:92:14 | X |
+| calls.rb:97:3:97:8 | call to baz | calls.rb:97:3:97:3 | X |
+| calls.rb:110:6:110:11 | call to foo | calls.rb:110:6:110:6 | X |
+| calls.rb:111:6:111:11 | call to bar | calls.rb:111:6:111:6 | X |
+| calls.rb:112:3:112:8 | call to baz | calls.rb:112:3:112:3 | X |
+| calls.rb:118:3:118:8 | call to bar | calls.rb:118:3:118:3 | X |
+| calls.rb:124:18:124:23 | call to foo | calls.rb:124:18:124:18 | X |
+| calls.rb:131:10:131:15 | call to foo | calls.rb:131:10:131:10 | X |
+| calls.rb:132:3:132:8 | call to bar | calls.rb:132:3:132:3 | X |
+| calls.rb:138:3:138:8 | call to bar | calls.rb:138:3:138:3 | X |
+| calls.rb:144:3:144:8 | call to baz | calls.rb:144:3:144:3 | X |
+| calls.rb:150:41:150:46 | call to foo | calls.rb:150:41:150:41 | X |
+| calls.rb:156:41:156:46 | call to foo | calls.rb:156:41:156:41 | X |
+| calls.rb:162:3:162:8 | call to bar | calls.rb:162:3:162:3 | X |
+| calls.rb:167:1:167:6 | call to foo | calls.rb:167:1:167:1 | X |
+| calls.rb:167:10:167:15 | call to bar | calls.rb:167:10:167:10 | X |
+| calls.rb:167:19:167:24 | call to baz | calls.rb:167:19:167:19 | X |
+| calls.rb:177:4:177:9 | call to foo | calls.rb:177:4:177:4 | X |
+| calls.rb:178:3:178:11 | call to wibble | calls.rb:178:3:178:3 | X |
+| calls.rb:179:7:179:12 | call to bar | calls.rb:179:7:179:7 | X |
+| calls.rb:180:3:180:11 | call to wobble | calls.rb:180:3:180:3 | X |
+| calls.rb:182:3:182:11 | call to wabble | calls.rb:182:3:182:3 | X |
+| calls.rb:187:1:187:6 | call to bar | calls.rb:187:1:187:1 | X |
+| calls.rb:187:11:187:16 | call to foo | calls.rb:187:11:187:11 | X |
+| calls.rb:193:8:193:13 | call to foo | calls.rb:193:8:193:8 | X |
+| calls.rb:194:3:194:8 | call to bar | calls.rb:194:3:194:3 | X |
+| calls.rb:199:1:199:6 | call to bar | calls.rb:199:1:199:1 | X |
+| calls.rb:199:15:199:20 | call to foo | calls.rb:199:15:199:15 | X |
+| calls.rb:205:7:205:12 | call to foo | calls.rb:205:7:205:7 | X |
+| calls.rb:206:3:206:8 | call to bar | calls.rb:206:3:206:3 | X |
+| calls.rb:211:1:211:6 | call to bar | calls.rb:211:1:211:1 | X |
+| calls.rb:211:14:211:19 | call to foo | calls.rb:211:14:211:14 | X |
+| calls.rb:217:7:217:12 | call to foo | calls.rb:217:7:217:7 | X |
+| calls.rb:218:3:218:8 | call to bar | calls.rb:218:3:218:3 | X |
+| calls.rb:223:1:223:6 | call to bar | calls.rb:223:1:223:1 | X |
+| calls.rb:223:14:223:19 | call to foo | calls.rb:223:14:223:14 | X |
+| calls.rb:229:10:229:15 | call to bar | calls.rb:229:10:229:10 | X |
+| calls.rb:230:3:230:8 | call to baz | calls.rb:230:3:230:3 | X |
+| calls.rb:235:1:235:6 | call to foo | calls.rb:235:1:235:1 | X |
+| calls.rb:235:8:235:13 | call to bar | calls.rb:235:8:235:8 | X |
+| calls.rb:238:15:238:20 | call to baz | calls.rb:238:15:238:15 | X |
+| calls.rb:242:1:242:6 | call to foo | calls.rb:242:1:242:1 | X |
+| calls.rb:246:1:246:6 | call to foo | calls.rb:246:1:246:1 | X |
+| calls.rb:246:9:246:14 | call to bar | calls.rb:246:9:246:9 | X |
+| calls.rb:249:15:249:20 | call to foo | calls.rb:249:15:249:15 | X |
+| calls.rb:249:25:249:30 | call to bar | calls.rb:249:25:249:25 | X |
+| calls.rb:257:8:257:13 | call to foo | calls.rb:257:8:257:8 | X |
+| calls.rb:258:8:258:13 | call to bar | calls.rb:258:8:258:8 | X |
+| calls.rb:263:1:263:6 | call to foo | calls.rb:263:1:263:1 | X |
+| calls.rb:263:15:263:20 | call to bar | calls.rb:263:15:263:15 | X |
+| calls.rb:267:6:267:11 | call to bar | calls.rb:267:6:267:6 | X |
+| calls.rb:271:6:271:11 | call to bar | calls.rb:271:6:271:6 | X |
+| calls.rb:275:7:275:12 | call to bar | calls.rb:275:7:275:7 | X |
+| calls.rb:279:11:279:16 | call to bar | calls.rb:279:11:279:11 | X |
 callsWithGlobalNameScopeExpr
 | calls.rb:8:1:8:7 | call to bar |
 callsWithArguments
@@ -155,63 +222,63 @@ callsWithArguments
 | calls.rb:36:3:36:16 | call to yield | yield | 1 | calls.rb:36:14:36:16 | 200 |
 | calls.rb:54:1:54:14 | call to some_func | some_func | 0 | calls.rb:54:11:54:13 | call to foo |
 | calls.rb:55:1:55:17 | call to some_func | some_func | 0 | calls.rb:55:11:55:16 | call to foo |
-| calls.rb:268:1:268:9 | call to foo | foo | 0 | calls.rb:268:5:268:8 | &... |
-| calls.rb:269:1:269:12 | call to foo | foo | 0 | calls.rb:269:5:269:11 | &... |
-| calls.rb:272:1:272:9 | call to foo | foo | 0 | calls.rb:272:5:272:8 | *... |
-| calls.rb:273:1:273:12 | call to foo | foo | 0 | calls.rb:273:5:273:11 | *... |
-| calls.rb:276:1:276:10 | call to foo | foo | 0 | calls.rb:276:5:276:9 | **... |
-| calls.rb:277:1:277:13 | call to foo | foo | 0 | calls.rb:277:5:277:12 | **... |
-| calls.rb:280:1:280:14 | call to foo | foo | 0 | calls.rb:280:5:280:13 | Pair |
-| calls.rb:281:1:281:17 | call to foo | foo | 0 | calls.rb:281:5:281:16 | Pair |
-| calls.rb:290:5:290:16 | call to super | super | 0 | calls.rb:290:11:290:16 | blah |
-| calls.rb:291:5:291:17 | call to super | super | 0 | calls.rb:291:11:291:11 | 1 |
-| calls.rb:291:5:291:17 | call to super | super | 1 | calls.rb:291:14:291:14 | 2 |
-| calls.rb:291:5:291:17 | call to super | super | 2 | calls.rb:291:17:291:17 | 3 |
-| calls.rb:294:5:294:30 | call to super | super | 0 | calls.rb:294:11:294:11 | 4 |
-| calls.rb:294:5:294:30 | call to super | super | 1 | calls.rb:294:14:294:14 | 5 |
-| calls.rb:295:5:295:33 | call to super | super | 0 | calls.rb:295:11:295:11 | 6 |
-| calls.rb:295:5:295:33 | call to super | super | 1 | calls.rb:295:14:295:14 | 7 |
+| calls.rb:266:1:266:9 | call to foo | foo | 0 | calls.rb:266:5:266:8 | &... |
+| calls.rb:267:1:267:12 | call to foo | foo | 0 | calls.rb:267:5:267:11 | &... |
+| calls.rb:270:1:270:9 | call to foo | foo | 0 | calls.rb:270:5:270:8 | *... |
+| calls.rb:271:1:271:12 | call to foo | foo | 0 | calls.rb:271:5:271:11 | *... |
+| calls.rb:274:1:274:10 | call to foo | foo | 0 | calls.rb:274:5:274:9 | **... |
+| calls.rb:275:1:275:13 | call to foo | foo | 0 | calls.rb:275:5:275:12 | **... |
+| calls.rb:278:1:278:14 | call to foo | foo | 0 | calls.rb:278:5:278:13 | Pair |
+| calls.rb:279:1:279:17 | call to foo | foo | 0 | calls.rb:279:5:279:16 | Pair |
+| calls.rb:288:5:288:16 | call to super | super | 0 | calls.rb:288:11:288:16 | blah |
+| calls.rb:289:5:289:17 | call to super | super | 0 | calls.rb:289:11:289:11 | 1 |
+| calls.rb:289:5:289:17 | call to super | super | 1 | calls.rb:289:14:289:14 | 2 |
+| calls.rb:289:5:289:17 | call to super | super | 2 | calls.rb:289:17:289:17 | 3 |
+| calls.rb:292:5:292:30 | call to super | super | 0 | calls.rb:292:11:292:11 | 4 |
+| calls.rb:292:5:292:30 | call to super | super | 1 | calls.rb:292:14:292:14 | 5 |
+| calls.rb:293:5:293:33 | call to super | super | 0 | calls.rb:293:11:293:11 | 6 |
+| calls.rb:293:5:293:33 | call to super | super | 1 | calls.rb:293:14:293:14 | 7 |
 callsWithReceiver
 | calls.rb:11:1:11:7 | call to bar | calls.rb:11:1:11:3 | 123 |
 | calls.rb:25:1:27:3 | call to bar | calls.rb:25:1:25:3 | 123 |
 | calls.rb:101:1:101:9 | call to bar | calls.rb:101:1:101:3 | call to foo |
 | calls.rb:102:1:102:9 | call to baz | calls.rb:102:1:102:3 | call to bar |
-| calls.rb:305:5:305:13 | call to super | calls.rb:305:5:305:7 | call to foo |
-| calls.rb:307:5:307:15 | call to super | calls.rb:307:5:307:9 | call to super |
+| calls.rb:303:5:303:13 | call to super | calls.rb:303:5:303:7 | call to foo |
+| calls.rb:305:5:305:15 | call to super | calls.rb:305:5:305:9 | call to super |
 callsWithBlock
 | calls.rb:17:1:17:17 | call to foo | calls.rb:17:5:17:17 | { ... } |
 | calls.rb:20:1:22:3 | call to foo | calls.rb:20:5:22:3 | do ... end |
 | calls.rb:25:1:27:3 | call to bar | calls.rb:25:16:27:3 | do ... end |
 | calls.rb:92:1:92:21 | call to foo | calls.rb:92:7:92:21 | { ... } |
 | calls.rb:95:1:98:3 | call to foo | calls.rb:95:7:98:3 | do ... end |
-| calls.rb:292:5:292:23 | call to super | calls.rb:292:11:292:23 | { ... } |
-| calls.rb:293:5:293:26 | call to super | calls.rb:293:11:293:26 | do ... end |
-| calls.rb:294:5:294:30 | call to super | calls.rb:294:16:294:30 | { ... } |
-| calls.rb:295:5:295:33 | call to super | calls.rb:295:16:295:33 | do ... end |
+| calls.rb:290:5:290:23 | call to super | calls.rb:290:11:290:23 | { ... } |
+| calls.rb:291:5:291:26 | call to super | calls.rb:291:11:291:26 | do ... end |
+| calls.rb:292:5:292:30 | call to super | calls.rb:292:16:292:30 | { ... } |
+| calls.rb:293:5:293:33 | call to super | calls.rb:293:16:293:33 | do ... end |
 yieldCalls
 | calls.rb:31:3:31:7 | call to yield |
 | calls.rb:36:3:36:16 | call to yield |
 superCalls
-| calls.rb:288:5:288:9 | call to super |
-| calls.rb:289:5:289:11 | call to super |
-| calls.rb:290:5:290:16 | call to super |
-| calls.rb:291:5:291:17 | call to super |
-| calls.rb:292:5:292:23 | call to super |
-| calls.rb:293:5:293:26 | call to super |
-| calls.rb:294:5:294:30 | call to super |
-| calls.rb:295:5:295:33 | call to super |
-| calls.rb:307:5:307:9 | call to super |
+| calls.rb:286:5:286:9 | call to super |
+| calls.rb:287:5:287:11 | call to super |
+| calls.rb:288:5:288:16 | call to super |
+| calls.rb:289:5:289:17 | call to super |
+| calls.rb:290:5:290:23 | call to super |
+| calls.rb:291:5:291:26 | call to super |
+| calls.rb:292:5:292:30 | call to super |
+| calls.rb:293:5:293:33 | call to super |
+| calls.rb:305:5:305:9 | call to super |
 superCallsWithArguments
-| calls.rb:290:5:290:16 | call to super | 0 | calls.rb:290:11:290:16 | blah |
-| calls.rb:291:5:291:17 | call to super | 0 | calls.rb:291:11:291:11 | 1 |
-| calls.rb:291:5:291:17 | call to super | 1 | calls.rb:291:14:291:14 | 2 |
-| calls.rb:291:5:291:17 | call to super | 2 | calls.rb:291:17:291:17 | 3 |
-| calls.rb:294:5:294:30 | call to super | 0 | calls.rb:294:11:294:11 | 4 |
-| calls.rb:294:5:294:30 | call to super | 1 | calls.rb:294:14:294:14 | 5 |
-| calls.rb:295:5:295:33 | call to super | 0 | calls.rb:295:11:295:11 | 6 |
-| calls.rb:295:5:295:33 | call to super | 1 | calls.rb:295:14:295:14 | 7 |
+| calls.rb:288:5:288:16 | call to super | 0 | calls.rb:288:11:288:16 | blah |
+| calls.rb:289:5:289:17 | call to super | 0 | calls.rb:289:11:289:11 | 1 |
+| calls.rb:289:5:289:17 | call to super | 1 | calls.rb:289:14:289:14 | 2 |
+| calls.rb:289:5:289:17 | call to super | 2 | calls.rb:289:17:289:17 | 3 |
+| calls.rb:292:5:292:30 | call to super | 0 | calls.rb:292:11:292:11 | 4 |
+| calls.rb:292:5:292:30 | call to super | 1 | calls.rb:292:14:292:14 | 5 |
+| calls.rb:293:5:293:33 | call to super | 0 | calls.rb:293:11:293:11 | 6 |
+| calls.rb:293:5:293:33 | call to super | 1 | calls.rb:293:14:293:14 | 7 |
 superCallsWithBlock
-| calls.rb:292:5:292:23 | call to super | calls.rb:292:11:292:23 | { ... } |
-| calls.rb:293:5:293:26 | call to super | calls.rb:293:11:293:26 | do ... end |
-| calls.rb:294:5:294:30 | call to super | calls.rb:294:16:294:30 | { ... } |
-| calls.rb:295:5:295:33 | call to super | calls.rb:295:16:295:33 | do ... end |
+| calls.rb:290:5:290:23 | call to super | calls.rb:290:11:290:23 | { ... } |
+| calls.rb:291:5:291:26 | call to super | calls.rb:291:11:291:26 | do ... end |
+| calls.rb:292:5:292:30 | call to super | calls.rb:292:16:292:30 | { ... } |
+| calls.rb:293:5:293:33 | call to super | calls.rb:293:16:293:33 | do ... end |
