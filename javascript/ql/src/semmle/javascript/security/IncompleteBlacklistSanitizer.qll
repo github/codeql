@@ -23,7 +23,9 @@ abstract class IncompleteBlacklistSanitizer extends DataFlow::Node {
  * Describes the characters represented by `rep`.
  */
 string describeCharacters(string rep) {
-  rep = ["\"", "'"] and result = "quotes"
+  rep = "\"" and result = "double quotes"
+  or
+  rep = "'" and result = "single quotes"
   or
   rep = "&" and result = "ampersands"
   or
