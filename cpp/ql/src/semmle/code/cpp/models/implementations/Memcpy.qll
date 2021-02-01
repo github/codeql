@@ -24,7 +24,8 @@ private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffect
     or
     // bcopy(src, dest, num)
     // mempcpy(dest, src, num)
-    this.hasGlobalName(["bcopy", mempcpy(), "__builtin___memcpy_chk"])
+    // memccpy(dest, src, c, n)
+    this.hasGlobalName(["bcopy", mempcpy(), "memccpy", "__builtin___memcpy_chk"])
   }
 
   /**
@@ -41,7 +42,7 @@ private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffect
   /**
    * Gets the index of the parameter that is the size of the copy (in bytes).
    */
-  int getParamSize() { result = 2 }
+  int getParamSize() { if this.hasGlobalName("memccpy") then result = 3 else result = 2 }
 
   override predicate hasArrayInput(int bufParam) { bufParam = getParamSrc() }
 
@@ -71,7 +72,10 @@ private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffect
   override predicate hasOnlySpecificWriteSideEffects() { any() }
 
   override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
-    i = getParamDest() and buffer = true and mustWrite = true
+    i = getParamDest() and
+    buffer = true and
+    // memccpy only writes until a given character `c` is found
+    (if this.hasGlobalName("memccpy") then mustWrite = false else mustWrite = true)
   }
 
   override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
@@ -97,7 +101,7 @@ private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffect
   }
 
   override predicate parameterIsAlwaysReturned(int index) {
-    not this.hasGlobalName(["bcopy", mempcpy()]) and
+    not this.hasGlobalName(["bcopy", mempcpy(), "memccpy"]) and
     index = getParamDest()
   }
 }

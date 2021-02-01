@@ -21,7 +21,9 @@ class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, Sid
         "_mbscat", // _mbscat(dst, src)
         "wcsncat", // wcsncat(dst, src, max_amount)
         "_mbsncat", // _mbsncat(dst, src, max_amount)
-        "_mbsncat_l" // _mbsncat_l(dst, src, max_amount, locale)
+        "_mbsncat_l", // _mbsncat_l(dst, src, max_amount, locale)
+        "_mbsnbcat", // _mbsnbcat(dest, src, count)
+        "_mbsnbcat_l" // _mbsnbcat_l(dest, src, count, locale)
       ]
   }
 
@@ -50,7 +52,7 @@ class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, Sid
     input.isParameter(2) and
     output.isParameterDeref(0)
     or
-    getName() = "_mbsncat_l" and
+    getName() = ["_mbsncat_l", "_mbsnbcat_l"] and
     input.isParameter(3) and
     output.isParameterDeref(0)
     or

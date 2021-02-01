@@ -5883,6 +5883,75 @@
 | taint.cpp:510:10:510:15 | source | taint.cpp:510:2:510:8 | call to _strset |  |
 | taint.cpp:510:18:510:18 | 0 | taint.cpp:510:2:510:8 | call to _strset | TAINT |
 | taint.cpp:510:18:510:18 | 0 | taint.cpp:510:10:510:15 | ref arg source |  |
+| taint.cpp:518:24:518:29 | source | taint.cpp:520:14:520:19 | source |  |
+| taint.cpp:519:6:519:6 | x | taint.cpp:520:11:520:11 | x |  |
+| taint.cpp:519:6:519:6 | x | taint.cpp:521:7:521:7 | x |  |
+| taint.cpp:520:10:520:11 | & ... | taint.cpp:520:2:520:8 | call to mempcpy |  |
+| taint.cpp:520:10:520:11 | ref arg & ... | taint.cpp:520:11:520:11 | x [inner post update] |  |
+| taint.cpp:520:10:520:11 | ref arg & ... | taint.cpp:521:7:521:7 | x |  |
+| taint.cpp:520:11:520:11 | x | taint.cpp:520:10:520:11 | & ... |  |
+| taint.cpp:520:14:520:19 | source | taint.cpp:520:2:520:8 | call to mempcpy | TAINT |
+| taint.cpp:520:14:520:19 | source | taint.cpp:520:10:520:11 | ref arg & ... | TAINT |
+| taint.cpp:528:24:528:29 | source | taint.cpp:530:16:530:21 | source |  |
+| taint.cpp:529:6:529:9 | dest | taint.cpp:530:10:530:13 | dest |  |
+| taint.cpp:529:6:529:9 | dest | taint.cpp:530:35:530:38 | dest |  |
+| taint.cpp:529:6:529:9 | dest | taint.cpp:531:7:531:10 | dest |  |
+| taint.cpp:530:10:530:13 | dest | taint.cpp:530:2:530:8 | call to memccpy |  |
+| taint.cpp:530:10:530:13 | ref arg dest | taint.cpp:531:7:531:10 | dest |  |
+| taint.cpp:530:16:530:21 | source | taint.cpp:530:2:530:8 | call to memccpy | TAINT |
+| taint.cpp:530:16:530:21 | source | taint.cpp:530:10:530:13 | ref arg dest | TAINT |
+| taint.cpp:538:24:538:28 | dest1 | taint.cpp:539:9:539:13 | dest1 |  |
+| taint.cpp:538:24:538:28 | dest1 | taint.cpp:540:7:540:11 | dest1 |  |
+| taint.cpp:538:37:538:41 | dest2 | taint.cpp:542:9:542:13 | dest2 |  |
+| taint.cpp:538:37:538:41 | dest2 | taint.cpp:543:7:543:11 | dest2 |  |
+| taint.cpp:538:50:538:54 | clean | taint.cpp:542:16:542:20 | clean |  |
+| taint.cpp:538:63:538:68 | source | taint.cpp:539:16:539:21 | source |  |
+| taint.cpp:539:9:539:13 | dest1 | taint.cpp:539:2:539:7 | call to strcat |  |
+| taint.cpp:539:9:539:13 | dest1 | taint.cpp:539:9:539:13 | ref arg dest1 | TAINT |
+| taint.cpp:539:9:539:13 | ref arg dest1 | taint.cpp:540:7:540:11 | dest1 |  |
+| taint.cpp:539:16:539:21 | source | taint.cpp:539:9:539:13 | ref arg dest1 | TAINT |
+| taint.cpp:542:9:542:13 | dest2 | taint.cpp:542:2:542:7 | call to strcat |  |
+| taint.cpp:542:9:542:13 | dest2 | taint.cpp:542:9:542:13 | ref arg dest2 | TAINT |
+| taint.cpp:542:9:542:13 | ref arg dest2 | taint.cpp:543:7:543:11 | dest2 |  |
+| taint.cpp:542:16:542:20 | clean | taint.cpp:542:9:542:13 | ref arg dest2 | TAINT |
+| taint.cpp:550:37:550:41 | dest1 | taint.cpp:552:36:552:40 | dest1 |  |
+| taint.cpp:550:37:550:41 | dest1 | taint.cpp:553:7:553:11 | dest1 |  |
+| taint.cpp:550:37:550:41 | dest1 | taint.cpp:554:8:554:12 | dest1 |  |
+| taint.cpp:550:65:550:67 | ptr | taint.cpp:552:43:552:45 | ptr |  |
+| taint.cpp:550:65:550:67 | ptr | taint.cpp:558:43:558:45 | ptr |  |
+| taint.cpp:550:85:550:89 | dest3 | taint.cpp:558:36:558:40 | dest3 |  |
+| taint.cpp:550:85:550:89 | dest3 | taint.cpp:559:7:559:11 | dest3 |  |
+| taint.cpp:550:85:550:89 | dest3 | taint.cpp:560:8:560:12 | dest3 |  |
+| taint.cpp:551:32:551:36 | clean | taint.cpp:558:51:558:55 | clean |  |
+| taint.cpp:551:49:551:54 | source | taint.cpp:552:51:552:56 | source |  |
+| taint.cpp:551:61:551:61 | n | taint.cpp:552:48:552:48 | n |  |
+| taint.cpp:551:61:551:61 | n | taint.cpp:558:48:558:48 | n |  |
+| taint.cpp:552:25:552:34 | call to _mbsncat_l | taint.cpp:555:7:555:11 | dest2 |  |
+| taint.cpp:552:25:552:34 | call to _mbsncat_l | taint.cpp:556:8:556:12 | dest2 |  |
+| taint.cpp:552:36:552:40 | dest1 | taint.cpp:552:25:552:34 | call to _mbsncat_l |  |
+| taint.cpp:552:36:552:40 | dest1 | taint.cpp:552:36:552:40 | ref arg dest1 | TAINT |
+| taint.cpp:552:36:552:40 | ref arg dest1 | taint.cpp:553:7:553:11 | dest1 |  |
+| taint.cpp:552:36:552:40 | ref arg dest1 | taint.cpp:554:8:554:12 | dest1 |  |
+| taint.cpp:552:43:552:45 | ptr | taint.cpp:552:36:552:40 | ref arg dest1 | TAINT |
+| taint.cpp:552:48:552:48 | n | taint.cpp:552:36:552:40 | ref arg dest1 | TAINT |
+| taint.cpp:552:51:552:56 | source | taint.cpp:552:36:552:40 | ref arg dest1 | TAINT |
+| taint.cpp:553:7:553:11 | ref arg dest1 | taint.cpp:554:8:554:12 | dest1 |  |
+| taint.cpp:554:8:554:12 | dest1 | taint.cpp:554:7:554:12 | * ... | TAINT |
+| taint.cpp:555:7:555:11 | ref arg dest2 | taint.cpp:556:8:556:12 | dest2 |  |
+| taint.cpp:556:8:556:12 | dest2 | taint.cpp:556:7:556:12 | * ... | TAINT |
+| taint.cpp:558:25:558:34 | call to _mbsncat_l | taint.cpp:561:7:561:11 | dest4 |  |
+| taint.cpp:558:25:558:34 | call to _mbsncat_l | taint.cpp:562:8:562:12 | dest4 |  |
+| taint.cpp:558:36:558:40 | dest3 | taint.cpp:558:25:558:34 | call to _mbsncat_l |  |
+| taint.cpp:558:36:558:40 | dest3 | taint.cpp:558:36:558:40 | ref arg dest3 | TAINT |
+| taint.cpp:558:36:558:40 | ref arg dest3 | taint.cpp:559:7:559:11 | dest3 |  |
+| taint.cpp:558:36:558:40 | ref arg dest3 | taint.cpp:560:8:560:12 | dest3 |  |
+| taint.cpp:558:43:558:45 | ptr | taint.cpp:558:36:558:40 | ref arg dest3 | TAINT |
+| taint.cpp:558:48:558:48 | n | taint.cpp:558:36:558:40 | ref arg dest3 | TAINT |
+| taint.cpp:558:51:558:55 | clean | taint.cpp:558:36:558:40 | ref arg dest3 | TAINT |
+| taint.cpp:559:7:559:11 | ref arg dest3 | taint.cpp:560:8:560:12 | dest3 |  |
+| taint.cpp:560:8:560:12 | dest3 | taint.cpp:560:7:560:12 | * ... | TAINT |
+| taint.cpp:561:7:561:11 | ref arg dest4 | taint.cpp:562:8:562:12 | dest4 |  |
+| taint.cpp:562:8:562:12 | dest4 | taint.cpp:562:7:562:12 | * ... | TAINT |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |
