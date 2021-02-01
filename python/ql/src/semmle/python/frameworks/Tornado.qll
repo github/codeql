@@ -586,6 +586,8 @@ private module Tornado {
     override DataFlow::Node getBody() { none() }
 
     override string getMimetypeDefault() { none() }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
   }
 
   /**
