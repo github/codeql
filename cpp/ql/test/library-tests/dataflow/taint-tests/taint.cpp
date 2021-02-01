@@ -510,3 +510,54 @@ void test_strset_2(char* source) {
 	_strset(source, 0);
 	sink(source); // $ ast,ir
 }
+
+// --- mempcpy ---
+
+void *mempcpy(void *dest, const void *src, size_t n);
+
+void test_mempcpy(int *source) {
+	int x;
+	mempcpy(&x, source, sizeof(int));
+	sink(x); // $ ast=518:24 MISSING: ir SPURIOUS: ast=519:6
+}
+
+// --- memccpy ---
+
+void *memccpy(void *dest, const void *src, int c, size_t n);
+
+void test_memccpy(int *source) {
+	int dest[16];
+	memccpy(dest, source, 42, sizeof(dest));
+	sink(dest); // $ ast=528:24 MISSING: ir SPURIOUS: ast=529:6
+}
+
+// --- strcat and related functions ---
+
+char* strcat (char*, const char*);
+
+void test_strcat(char* dest1, char* dest2, char* clean, char* source) {
+	strcat(dest1, source);
+	sink(dest1); // $ ast,ir
+
+	strcat(dest2, clean);
+	sink(dest2);
+}
+
+typedef void* _locale_t;
+
+unsigned char *_mbsncat_l(unsigned char *, const unsigned char *, int, _locale_t);
+
+void test__mbsncat_l(unsigned char* dest1, unsigned const char* ptr, unsigned char* dest3,
+                     _locale_t clean, _locale_t source, int n) {
+	unsigned char* dest2 = _mbsncat_l(dest1, ptr, n, source);
+	sink(dest1); // $ SPURIOUS: ast,ir
+	sink(*dest1); // $ ast,ir
+	sink(dest2); // $ SPURIOUS: ir
+	sink(*dest2); // $ ir
+
+	unsigned char* dest4 = _mbsncat_l(dest3, ptr, n, clean);
+	sink(dest3);
+	sink(*dest3);
+	sink(dest4);
+	sink(*dest4);
+}
