@@ -4,6 +4,7 @@
  */
 
 import semmle.code.cpp.Function
+import semmle.code.cpp.commons.Scanf
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.Alias
@@ -12,53 +13,32 @@ import semmle.code.cpp.models.interfaces.SideEffect
 /**
  * The standard function `sscanf`, `fscanf` and its assorted variants
  */
-private class Sscanf extends ArrayFunction, TaintFunction, AliasFunction, SideEffectFunction {
-  Sscanf() {
-    this.hasGlobalOrStdName([
-        "sscanf", // sscanf(src, format, args...)
-        "swscanf", // swscanf(src, format, args...)
-        "fscanf", // fscanf(src_stream, format, args...)
-        "fwscanf" // fwscanf(src_stream, format, args...)
-      ]) or
-    this.hasGlobalName([
-        "_sscanf_l", // _sscanf_l(src, format, locale, args...)
-        "_swscanf_l", // _swscanf_l(src, format, locale, args...)
-        "_snscanf", // _snscanf(src, length, format, args...)
-        "_snscanf_l", // _snscanf_l(src, length, format, locale, args...)
-        "_snwscanf", // _snwscanf(src, length, format, args...)
-        "_snwscanf_l", // _snwscanf_l(src, length, format, locale, args...)
-        "_fscanf_l", // _fscanf_l(src_stream, format, locale, args...)
-        "_fwscanf_l" // _fwscanf_l(src_stream, format, locale, args...)
-      ])
-  }
-
-  private predicate isSscanf() { this.getName().regexpMatch(".*sn?w?scanf.*") }
+private class SscanfModel extends ArrayFunction, TaintFunction, AliasFunction, SideEffectFunction {
+  SscanfModel() { this instanceof Sscanf or this instanceof Fscanf or this instanceof Snscanf }
 
   override predicate hasArrayWithNullTerminator(int bufParam) {
-    bufParam = getFormatPosition()
+    bufParam = this.(ScanfFunction).getFormatParameterIndex()
     or
-    isSscanf() and
-    bufParam = 0
+    bufParam = this.(Sscanf).getInputParameterIndex()
   }
 
   override predicate hasArrayInput(int bufParam) { hasArrayWithNullTerminator(bufParam) }
 
-  private int getLengthPosition() {
-    this.getName().matches("\\_sn%") and
-    result = 1
-  }
+  private int getLengthParameterIndex() { result = this.(Snscanf).getInputLengthParameterIndex() }
 
-  private int getLocalePosition() {
+  private int getLocaleParameterIndex() {
     this.getName().matches("%\\_l") and
-    (if exists(getLengthPosition()) then result = getLengthPosition() + 2 else result = 2)
+    (
+      if exists(getLengthParameterIndex())
+      then result = getLengthParameterIndex() + 2
+      else result = 2
+    )
   }
-
-  private int getFormatPosition() { if exists(getLengthPosition()) then result = 2 else result = 1 }
 
   private int getArgsStartPosition() {
     exists(int nLength, int nLocale |
-      (if exists(getLocalePosition()) then nLocale = 1 else nLocale = 0) and
-      (if exists(getLengthPosition()) then nLength = 1 else nLength = 0) and
+      (if exists(getLocaleParameterIndex()) then nLocale = 1 else nLocale = 0) and
+      (if exists(getLengthParameterIndex()) then nLength = 1 else nLength = 0) and
       result = 2 + nLocale + nLength
     )
   }
@@ -88,6 +68,10 @@ private class Sscanf extends ArrayFunction, TaintFunction, AliasFunction, SideEf
 
   override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
     buffer = true and
-    i = [0, getFormatPosition(), getLocalePosition()]
+    i =
+      [
+        this.(ScanfFunction).getFormatParameterIndex(),
+        this.(ScanfFunction).getFormatParameterIndex(), getLocaleParameterIndex()
+      ]
   }
 }
