@@ -198,15 +198,3 @@ members
 | Record.cs:41:1:52:1 | Dog | System.Object.Object() | no location |
 | Record.cs:41:1:52:1 | Dog | System.Object.ReferenceEquals(object, object) | no location |
 | Record.cs:41:1:52:1 | Dog | System.Object.~Object() | no location |
-| Record.cs:54:14:54:20 | Record1 | Record1.M1() | Record.cs:56:17:56:18 |
-| Record.cs:54:14:54:20 | Record1 | Record1.M2() | Record.cs:64:17:64:18 |
-| Record.cs:54:14:54:20 | Record1 | Record1.Record1() | no location |
-| Record.cs:54:14:54:20 | Record1 | System.Object.Equals(object) | no location |
-| Record.cs:54:14:54:20 | Record1 | System.Object.Equals(object, object) | no location |
-| Record.cs:54:14:54:20 | Record1 | System.Object.GetHashCode() | no location |
-| Record.cs:54:14:54:20 | Record1 | System.Object.GetType() | no location |
-| Record.cs:54:14:54:20 | Record1 | System.Object.MemberwiseClone() | no location |
-| Record.cs:54:14:54:20 | Record1 | System.Object.Object() | no location |
-| Record.cs:54:14:54:20 | Record1 | System.Object.ReferenceEquals(object, object) | no location |
-| Record.cs:54:14:54:20 | Record1 | System.Object.ToString() | no location |
-| Record.cs:54:14:54:20 | Record1 | System.Object.~Object() | no location |
