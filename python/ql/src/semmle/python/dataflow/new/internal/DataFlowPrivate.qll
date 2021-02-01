@@ -1260,7 +1260,7 @@ module IterableUnpacking {
     Expr getSource() { result = source }
   }
 
-  /** The LHS of an assignemnt, it also records the assigned value. */
+  /** The LHS of an assignment, it also records the assigned value. */
   class AssignmentTarget extends ControlFlowNode {
     Expr value;
 
