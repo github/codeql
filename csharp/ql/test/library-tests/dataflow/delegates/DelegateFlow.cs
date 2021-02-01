@@ -116,12 +116,12 @@ class DelegateFlow
 
     public unsafe void M17()
     {
-        M16(&M2, (i) => {});    // MISSING: a(0) in M2 is calling this lambda
+        M16(&M2, (i) => { });
     }
 
     public unsafe void M18()
     {
         delegate*<Action<int>, void> fnptr = &M2;
-        fnptr((i) => {});       // MISSING: a(0) in M2 is calling this lambda
+        fnptr((i) => { });
     }
 }

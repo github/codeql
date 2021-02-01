@@ -245,7 +245,7 @@ private module CallGraph {
      * a library callable and `e` is a delegate argument.
      */
     private predicate delegateCall(Call c, Expr e, boolean libraryDelegateCall) {
-      c = any(DelegateCall dc | e = dc.getDelegateExpr()) and
+      c = any(DelegateCall dc | e = dc.getExpr()) and
       libraryDelegateCall = false
       or
       c.getTarget().fromLibrary() and

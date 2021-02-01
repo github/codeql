@@ -14,8 +14,14 @@ private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 
+/** A source of flow for a delegate or function pointer expression. */
+private class DelegateLikeFlowSource extends DataFlow::ExprNode {
+  /** Gets the callable that is referenced in this delegate or function pointer flow source. */
+  Callable getCallable() { none() }
+}
+
 /** A source of flow for a delegate expression. */
-private class DelegateFlowSource extends DataFlow::ExprNode {
+private class DelegateFlowSource extends DelegateLikeFlowSource {
   Callable c;
 
   DelegateFlowSource() {
@@ -27,11 +33,26 @@ private class DelegateFlowSource extends DataFlow::ExprNode {
   }
 
   /** Gets the callable that is referenced in this delegate flow source. */
-  Callable getCallable() { result = c }
+  override Callable getCallable() { result = c }
 }
 
-/** A sink of flow for a delegate expression. */
-abstract private class DelegateFlowSink extends DataFlow::Node {
+/** A source of flow for a function pointer expression. */
+private class FunctionPointerFlowSource extends DelegateLikeFlowSource {
+  Callable c;
+
+  FunctionPointerFlowSource() {
+    this.getExpr() =
+      any(Expr e |
+        c = e.(AddressOfExpr).getOperand().(CallableAccess).getTarget().getUnboundDeclaration()
+      )
+  }
+
+  /** Gets the callable that is referenced in this function pointer flow source. */
+  override Callable getCallable() { result = c }
+}
+
+/** A sink of flow for a delegate or function pointer expression. */
+abstract private class DelegateLikeFlowSink extends DataFlow::Node {
   /**
    * Gets an actual run-time target of this delegate call in the given call
    * context, if any. The call context records the *last* call required to
@@ -85,25 +106,41 @@ abstract private class DelegateFlowSink extends DataFlow::Node {
    */
   cached
   Callable getARuntimeTarget(CallContext context) {
-    exists(DelegateFlowSource dfs |
+    exists(DelegateLikeFlowSource dfs |
       flowsFrom(this, dfs, _, context) and
       result = dfs.getCallable()
     )
   }
 }
 
+/** A delegate or function pointer call expression. */
+class DelegateLikeCallExpr extends DelegateLikeFlowSink, DataFlow::ExprNode {
+  /** Gets the delegate or function pointer call that this expression belongs to. */
+  DelegateLikeCall getCall() { none() }
+}
+
 /** A delegate call expression. */
-class DelegateCallExpr extends DelegateFlowSink, DataFlow::ExprNode {
+class DelegateCallExpr extends DelegateLikeCallExpr {
   DelegateCall dc;
 
-  DelegateCallExpr() { this.getExpr() = dc.getDelegateExpr() }
+  DelegateCallExpr() { this.getExpr() = dc.getExpr() }
 
   /** Gets the delegate call that this expression belongs to. */
-  DelegateCall getDelegateCall() { result = dc }
+  override DelegateCall getCall() { result = dc }
+}
+
+/** A function pointer call expression. */
+class FunctionPointerCallExpr extends DelegateLikeCallExpr {
+  FunctionPointerCall fptrc;
+
+  FunctionPointerCallExpr() { this.getExpr() = fptrc.getExpr() }
+
+  /** Gets the function pointer call that this expression belongs to. */
+  override FunctionPointerCall getCall() { result = fptrc }
 }
 
 /** A parameter of delegate type belonging to a callable with a flow summary. */
-class SummaryDelegateParameterSink extends DelegateFlowSink, ParameterNode {
+class SummaryDelegateParameterSink extends DelegateLikeFlowSink, ParameterNode {
   SummaryDelegateParameterSink() {
     this.getType() instanceof SystemLinqExpressions::DelegateExtType and
     this.isParameterOf(any(SummarizedCallable c), _)
@@ -111,7 +148,7 @@ class SummaryDelegateParameterSink extends DelegateFlowSink, ParameterNode {
 }
 
 /** A delegate expression that is added to an event. */
-class AddEventSource extends DelegateFlowSink, DataFlow::ExprNode {
+class AddEventSource extends DelegateLikeFlowSink, DataFlow::ExprNode {
   AddEventExpr ae;
 
   AddEventSource() { this.getExpr() = ae.getRValue() }
@@ -150,7 +187,7 @@ private class NormalReturnNode extends Node {
  * records the last call on the path from `node` to `sink`, if any.
  */
 private predicate flowsFrom(
-  DelegateFlowSink sink, DataFlow::Node node, boolean isReturned, CallContext lastCall
+  DelegateLikeFlowSink sink, DataFlow::Node node, boolean isReturned, CallContext lastCall
 ) {
   // Base case
   sink = node and
@@ -188,7 +225,8 @@ private predicate flowsFrom(
   or
   // Flow into a callable (delegate call)
   exists(
-    ParameterNode mid, CallContext prevLastCall, DelegateCall call, Callable c, Parameter p, int i
+    ParameterNode mid, CallContext prevLastCall, DelegateLikeCall call, Callable c, Parameter p,
+    int i
   |
     flowsFrom(sink, mid, isReturned, prevLastCall) and
     isReturned = false and
@@ -238,14 +276,14 @@ private predicate flowIntoNonDelegateCall(NonDelegateCall call, Expr arg, DotNet
 }
 
 pragma[noinline]
-private predicate flowIntoDelegateCall(DelegateCall call, Callable c, Expr arg, int i) {
-  exists(DelegateFlowSource dfs, DelegateCallExpr dce |
+private predicate flowIntoDelegateCall(DelegateLikeCall call, Callable c, Expr arg, int i) {
+  exists(DelegateLikeFlowSource dfs, DelegateLikeCallExpr dce |
     // the call context is irrelevant because the delegate call
     // itself will be the context
     flowsFrom(dce, dfs, _, _) and
     arg = call.getArgument(i) and
     c = dfs.getCallable() and
-    call = dce.getDelegateCall()
+    call = dce.getCall()
   )
 }
 
@@ -255,11 +293,13 @@ private predicate flowOutOfNonDelegateCall(NonDelegateCall call, NormalReturnNod
 }
 
 pragma[noinline]
-private predicate flowOutOfDelegateCall(DelegateCall dc, NormalReturnNode ret, CallContext lastCall) {
-  exists(DelegateFlowSource dfs, DelegateCallExpr dce, Callable c |
+private predicate flowOutOfDelegateCall(
+  DelegateLikeCall dc, NormalReturnNode ret, CallContext lastCall
+) {
+  exists(DelegateLikeFlowSource dfs, DelegateLikeCallExpr dce, Callable c |
     flowsFrom(dce, dfs, _, lastCall) and
     ret.getEnclosingCallable() = c and
     c = dfs.getCallable() and
-    dc = dce.getDelegateCall()
+    dc = dce.getCall()
   )
 }
