@@ -2242,6 +2242,7 @@
 | Patterns.cs:54:9:54:9 | access to parameter c | Patterns.cs:54:9:54:9 | access to parameter c |
 | Patterns.cs:54:9:54:37 | ... is ... | Patterns.cs:54:9:54:9 | access to parameter c |
 | Patterns.cs:54:14:54:37 | not ... | Patterns.cs:54:18:54:37 | Patterns u |
+| Patterns.cs:54:18:54:25 | access to type Patterns | Patterns.cs:54:18:54:25 | access to type Patterns |
 | Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:54:18:54:37 | Patterns u |
 | Patterns.cs:54:18:54:37 | { ... } | Patterns.cs:54:18:54:37 | Patterns u |
 | Patterns.cs:54:27:54:35 | { ... } | Patterns.cs:54:33:54:33 | 1 |

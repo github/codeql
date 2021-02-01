@@ -1859,6 +1859,11 @@ conditionBlock
 | Patterns.cs:51:14:51:21 | [match] not ... | Patterns.cs:51:25:51:25 | access to parameter c | true |
 | Patterns.cs:51:14:51:21 | [no-match] not ... | Patterns.cs:51:9:51:21 | [false] ... is ... | false |
 | Patterns.cs:51:14:51:21 | [no-match] not ... | Patterns.cs:51:34:51:34 | access to parameter c | false |
+| Patterns.cs:53:24:53:25 | enter M4 | Patterns.cs:54:27:54:35 | [match] { ... } | true |
+| Patterns.cs:53:24:53:25 | enter M4 | Patterns.cs:54:27:54:35 | [no-match] { ... } | true |
+| Patterns.cs:53:24:53:25 | enter M4 | Patterns.cs:54:33:54:33 | 1 | true |
+| Patterns.cs:54:33:54:33 | 1 | Patterns.cs:54:27:54:35 | [match] { ... } | true |
+| Patterns.cs:54:33:54:33 | 1 | Patterns.cs:54:27:54:35 | [no-match] { ... } | false |
 | Patterns.cs:56:26:56:27 | enter M5 | Patterns.cs:60:13:60:17 | [match] not ... | false |
 | Patterns.cs:56:26:56:27 | enter M5 | Patterns.cs:60:13:60:17 | [no-match] not ... | true |
 | Patterns.cs:56:26:56:27 | enter M5 | Patterns.cs:60:22:60:28 | "not 1" | false |
@@ -1930,22 +1935,30 @@ conditionBlock
 | Patterns.cs:87:54:87:54 | 2 | Patterns.cs:87:50:87:54 | [match] not ... | false |
 | Patterns.cs:87:54:87:54 | 2 | Patterns.cs:87:50:87:54 | [no-match] not ... | true |
 | Patterns.cs:87:54:87:54 | 2 | Patterns.cs:87:58:87:60 | "1" | false |
+| Patterns.cs:93:17:93:19 | enter M10 | Patterns.cs:95:13:95:40 | [false] ... is ... | false |
+| Patterns.cs:93:17:93:19 | enter M10 | Patterns.cs:95:21:95:40 | [no-match] { ... } | false |
+| Patterns.cs:93:17:93:19 | enter M10 | Patterns.cs:95:21:95:40 | [no-match] { ... } | false |
 | Patterns.cs:93:17:93:19 | enter M10 | Patterns.cs:95:29:95:38 | [no-match] ... or ... | false |
 | Patterns.cs:93:17:93:19 | enter M10 | Patterns.cs:95:36:95:38 | access to constant B | false |
 | Patterns.cs:95:13:95:40 | [true] ... is ... | Patterns.cs:96:9:98:9 | {...} | true |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:93:17:93:19 | exit M10 (normal) | false |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:93:17:93:19 | exit M10 (normal) | true |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:13:95:40 | [false] ... is ... | false |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:13:95:40 | [false] ... is ... | false |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:13:95:40 | [false] ... is ... | true |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:13:95:40 | [true] ... is ... | false |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:13:95:40 | [true] ... is ... | true |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:13:95:40 | [true] ... is ... | true |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:21:95:40 | { ... } | false |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:21:95:40 | { ... } | true |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:96:9:98:9 | {...} | false |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:96:9:98:9 | {...} | true |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:96:9:98:9 | {...} | true |
+| Patterns.cs:95:21:95:40 | [match] { ... } | Patterns.cs:95:13:95:40 | [true] ... is ... | true |
+| Patterns.cs:95:21:95:40 | [match] { ... } | Patterns.cs:95:13:95:40 | [true] ... is ... | true |
+| Patterns.cs:95:21:95:40 | [match] { ... } | Patterns.cs:95:21:95:40 | [match] { ... } | true |
+| Patterns.cs:95:21:95:40 | [match] { ... } | Patterns.cs:96:9:98:9 | {...} | true |
+| Patterns.cs:95:21:95:40 | [match] { ... } | Patterns.cs:96:9:98:9 | {...} | true |
+| Patterns.cs:95:21:95:40 | [no-match] { ... } | Patterns.cs:95:13:95:40 | [false] ... is ... | false |
+| Patterns.cs:95:21:95:40 | [no-match] { ... } | Patterns.cs:95:13:95:40 | [false] ... is ... | false |
+| Patterns.cs:95:21:95:40 | [no-match] { ... } | Patterns.cs:95:21:95:40 | [no-match] { ... } | false |
+| Patterns.cs:95:29:95:38 | [match] ... or ... | Patterns.cs:95:13:95:40 | [true] ... is ... | true |
+| Patterns.cs:95:29:95:38 | [match] ... or ... | Patterns.cs:95:21:95:40 | [match] { ... } | true |
+| Patterns.cs:95:29:95:38 | [match] ... or ... | Patterns.cs:95:21:95:40 | [match] { ... } | true |
+| Patterns.cs:95:29:95:38 | [match] ... or ... | Patterns.cs:96:9:98:9 | {...} | true |
+| Patterns.cs:95:29:95:38 | [no-match] ... or ... | Patterns.cs:95:13:95:40 | [false] ... is ... | false |
+| Patterns.cs:95:29:95:38 | [no-match] ... or ... | Patterns.cs:95:21:95:40 | [no-match] { ... } | false |
+| Patterns.cs:95:29:95:38 | [no-match] ... or ... | Patterns.cs:95:21:95:40 | [no-match] { ... } | false |
+| Patterns.cs:95:36:95:38 | access to constant B | Patterns.cs:95:13:95:40 | [false] ... is ... | false |
+| Patterns.cs:95:36:95:38 | access to constant B | Patterns.cs:95:21:95:40 | [no-match] { ... } | false |
+| Patterns.cs:95:36:95:38 | access to constant B | Patterns.cs:95:21:95:40 | [no-match] { ... } | false |
 | Patterns.cs:95:36:95:38 | access to constant B | Patterns.cs:95:29:95:38 | [no-match] ... or ... | false |
 | PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:12:13:12:21 | [false] ... is ... | false |
 | PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:12:13:12:21 | [true] ... is ... | true |

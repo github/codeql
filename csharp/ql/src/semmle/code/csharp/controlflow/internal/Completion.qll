@@ -540,6 +540,28 @@ predicate switchMatching(Switch s, Case c, PatternExpr pe) {
 }
 
 /**
+ * Holds if a normal completion of `cfe` must be a matching completion. Thats is,
+ * whether `cfe` determines a match in a `switch/if` statement or `catch` clause.
+ */
+private predicate mustHaveMatchingCompletion(ControlFlowElement cfe) {
+  switchMatching(_, _, cfe)
+  or
+  cfe instanceof SpecificCatchClause
+  or
+  cfe = any(IsExpr ie | inBooleanContext(ie)).getPattern()
+  or
+  cfe = any(RecursivePatternExpr rpe).getAChildExpr()
+  or
+  cfe = any(PositionalPatternExpr ppe).getPattern(_)
+  or
+  cfe = any(PropertyPatternExpr ppe).getPattern(_)
+  or
+  cfe = any(UnaryPatternExpr upe | mustHaveMatchingCompletion(upe)).getPattern()
+  or
+  cfe = any(BinaryPatternExpr bpe).getAnOperand()
+}
+
+/**
  * Holds if `pe` must have a matching completion, and `e` is the expression
  * that is being matched.
  */
@@ -549,29 +571,16 @@ private predicate mustHaveMatchingCompletion(Expr e, PatternExpr pe) {
     e = s.getExpr()
   )
   or
-  pe = any(IsExpr ie | inBooleanContext(ie) and e = ie.getExpr()).getPattern()
+  e = any(IsExpr ie | pe = ie.getPattern()).getExpr() and
+  mustHaveMatchingCompletion(pe)
   or
-  pe = any(RecursivePatternExpr rpe | mustHaveMatchingCompletion(e, rpe)).getPositionalPatterns()
-  or
-  pe = any(RecursivePatternExpr rpe | mustHaveMatchingCompletion(e, rpe)).getPropertyPatterns()
-  or
-  pe = any(PositionalPatternExpr ppe | mustHaveMatchingCompletion(e, ppe)).getPattern(_)
-  or
-  pe = any(PropertyPatternExpr ppe | mustHaveMatchingCompletion(e, ppe)).getPattern(_)
-  or
-  pe = any(UnaryPatternExpr upe | mustHaveMatchingCompletion(e, upe)).getPattern()
-  or
-  pe = any(BinaryPatternExpr bpe | mustHaveMatchingCompletion(e, bpe)).getAnOperand()
-}
-
-/**
- * Holds if a normal completion of `cfe` must be a matching completion. Thats is,
- * whether `cfe` determines a match in a `switch` statement or `catch` clause.
- */
-private predicate mustHaveMatchingCompletion(ControlFlowElement cfe) {
-  mustHaveMatchingCompletion(_, cfe)
-  or
-  cfe instanceof SpecificCatchClause
+  exists(PatternExpr mid | mustHaveMatchingCompletion(e, mid) |
+    pe = mid.(UnaryPatternExpr).getPattern()
+    or
+    pe = mid.(RecursivePatternExpr).getAChildExpr()
+    or
+    pe = mid.(BinaryPatternExpr).getAnOperand()
+  )
 }
 
 /**

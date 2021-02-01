@@ -3635,10 +3635,13 @@
 | Patterns.cs:54:9:54:9 | access to parameter c | Patterns.cs:54:18:54:37 | Patterns u | semmle.label | successor |
 | Patterns.cs:54:9:54:37 | ... is ... | Patterns.cs:53:24:53:25 | exit M4 (normal) | semmle.label | successor |
 | Patterns.cs:54:14:54:37 | not ... | Patterns.cs:54:9:54:37 | ... is ... | semmle.label | successor |
-| Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:54:33:54:33 | 1 | semmle.label | successor |
+| Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:54:18:54:37 | { ... } | semmle.label | no-match |
+| Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:54:33:54:33 | 1 | semmle.label | match |
 | Patterns.cs:54:18:54:37 | { ... } | Patterns.cs:54:14:54:37 | not ... | semmle.label | successor |
-| Patterns.cs:54:27:54:35 | { ... } | Patterns.cs:54:18:54:37 | { ... } | semmle.label | successor |
-| Patterns.cs:54:33:54:33 | 1 | Patterns.cs:54:27:54:35 | { ... } | semmle.label | successor |
+| Patterns.cs:54:27:54:35 | [match] { ... } | Patterns.cs:54:18:54:37 | { ... } | semmle.label | match |
+| Patterns.cs:54:27:54:35 | [no-match] { ... } | Patterns.cs:54:18:54:37 | { ... } | semmle.label | no-match |
+| Patterns.cs:54:33:54:33 | 1 | Patterns.cs:54:27:54:35 | [match] { ... } | semmle.label | match |
+| Patterns.cs:54:33:54:33 | 1 | Patterns.cs:54:27:54:35 | [no-match] { ... } | semmle.label | no-match |
 | Patterns.cs:56:26:56:27 | enter M5 | Patterns.cs:57:5:63:5 | {...} | semmle.label | successor |
 | Patterns.cs:56:26:56:27 | exit M5 (normal) | Patterns.cs:56:26:56:27 | exit M5 | semmle.label | successor |
 | Patterns.cs:57:5:63:5 | {...} | Patterns.cs:58:16:58:16 | access to parameter i | semmle.label | successor |
@@ -3727,14 +3730,14 @@
 | Patterns.cs:95:13:95:16 | this access | Patterns.cs:95:29:95:31 | access to constant A | semmle.label | successor |
 | Patterns.cs:95:13:95:40 | [false] ... is ... | Patterns.cs:93:17:93:19 | exit M10 (normal) | semmle.label | false |
 | Patterns.cs:95:13:95:40 | [true] ... is ... | Patterns.cs:96:9:98:9 | {...} | semmle.label | true |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:13:95:40 | [false] ... is ... | semmle.label | no-match |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:13:95:40 | [true] ... is ... | semmle.label | match |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:21:95:40 | { ... } | semmle.label | match |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:21:95:40 | { ... } | semmle.label | no-match |
+| Patterns.cs:95:21:95:40 | [match] { ... } | Patterns.cs:95:13:95:40 | [true] ... is ... | semmle.label | match |
+| Patterns.cs:95:21:95:40 | [match] { ... } | Patterns.cs:95:21:95:40 | [match] { ... } | semmle.label | match |
+| Patterns.cs:95:21:95:40 | [no-match] { ... } | Patterns.cs:95:13:95:40 | [false] ... is ... | semmle.label | no-match |
+| Patterns.cs:95:21:95:40 | [no-match] { ... } | Patterns.cs:95:21:95:40 | [no-match] { ... } | semmle.label | no-match |
 | Patterns.cs:95:29:95:31 | access to constant A | Patterns.cs:95:29:95:38 | [match] ... or ... | semmle.label | match |
 | Patterns.cs:95:29:95:31 | access to constant A | Patterns.cs:95:36:95:38 | access to constant B | semmle.label | no-match |
-| Patterns.cs:95:29:95:38 | [match] ... or ... | Patterns.cs:95:21:95:40 | { ... } | semmle.label | match |
-| Patterns.cs:95:29:95:38 | [no-match] ... or ... | Patterns.cs:95:21:95:40 | { ... } | semmle.label | no-match |
+| Patterns.cs:95:29:95:38 | [match] ... or ... | Patterns.cs:95:21:95:40 | [match] { ... } | semmle.label | match |
+| Patterns.cs:95:29:95:38 | [no-match] ... or ... | Patterns.cs:95:21:95:40 | [no-match] { ... } | semmle.label | no-match |
 | Patterns.cs:95:36:95:38 | access to constant B | Patterns.cs:95:29:95:38 | [match] ... or ... | semmle.label | match |
 | Patterns.cs:95:36:95:38 | access to constant B | Patterns.cs:95:29:95:38 | [no-match] ... or ... | semmle.label | no-match |
 | Patterns.cs:96:9:98:9 | {...} | Patterns.cs:97:13:97:39 | ...; | semmle.label | successor |
