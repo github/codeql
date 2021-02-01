@@ -15,7 +15,7 @@ import semmle.code.cpp.models.interfaces.SideEffect
 private class Sscanf extends ArrayFunction, TaintFunction, AliasFunction, SideEffectFunction {
   Sscanf() {
     this.hasGlobalOrStdName([
-        "sscanf", // sscanf(src_stream, format, args...)
+        "sscanf", // sscanf(src, format, args...)
         "swscanf", // swscanf(src, format, args...)
         "fscanf", // fscanf(src_stream, format, args...)
         "fwscanf" // fwscanf(src_stream, format, args...)
@@ -32,11 +32,16 @@ private class Sscanf extends ArrayFunction, TaintFunction, AliasFunction, SideEf
       ])
   }
 
+  private predicate isSscanf() { this.getName().regexpMatch(".*sn?w?scanf.*") }
+
   override predicate hasArrayWithNullTerminator(int bufParam) {
-    bufParam = [0, getFormatPosition()]
+    bufParam = getFormatPosition()
+    or
+    isSscanf() and
+    bufParam = 0
   }
 
-  override predicate hasArrayInput(int bufParam) { bufParam = [0, getFormatPosition()] }
+  override predicate hasArrayInput(int bufParam) { hasArrayWithNullTerminator(bufParam) }
 
   private int getLengthPosition() {
     this.getName().matches("\\_sn%") and
