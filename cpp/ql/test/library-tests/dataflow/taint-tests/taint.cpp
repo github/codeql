@@ -625,7 +625,7 @@ unsigned int _strnextc(const char*);
 void test__strnextc(const char* source) {
 	unsigned c = 0;
 	do {
-		c = _strnextc(source);
+		c = _strnextc(source++);
 		sink(c); // $ ast,ir
 	} while(c != '\0');
 	c = _strnextc("");
