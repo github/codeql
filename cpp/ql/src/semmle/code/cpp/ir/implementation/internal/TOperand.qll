@@ -43,8 +43,8 @@ private module Internal {
     } or
     //// ALIASED
     ////
-    // If we share SSA, these will be all the phis there are. Otherwise these
-    // will add to the ones that are already there.
+    // Until we share SSA, these will be all the phis there are. With SSA
+    // sharing, these will add to the ones that are already there.
     // If we share SSA, be careful with the case where we remove all possible
     // indirect writes to a variable because they're dead code. In that case it's
     // important that we use the same definition of "is variable aliased" across
@@ -56,7 +56,6 @@ private module Internal {
       defInstr = AliasedConstruction::getPhiOperandDefinition(useInstr, predecessorBlock, overlap)
     } or
     TAliasedChiOperand(TAliasedSSAChiInstruction useInstr, ChiOperandTag tag) {
-      // TODO: any further restrictions here?
       any()
     }
 }
