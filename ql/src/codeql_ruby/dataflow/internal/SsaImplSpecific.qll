@@ -31,8 +31,4 @@ predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain)
   certain = false
 }
 
-predicate variableRead(BasicBlock bb, int i, SourceVariable v) {
-  SsaImpl::variableReadActual(bb, i, v)
-  or
-  SsaImpl::variableReadPseudo(bb, i, v)
-}
+predicate variableRead = SsaImpl::variableRead/4;

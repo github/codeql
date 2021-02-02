@@ -102,23 +102,22 @@ private predicate hasCapturedWrite(Variable v, CfgScope scope) {
 }
 
 /** Holds if `v` is read at index `i` in basic block `bb`. */
-predicate variableReadActual(BasicBlock bb, int i, LocalVariable v) {
+private predicate variableReadActual(BasicBlock bb, int i, LocalVariable v) {
   exists(VariableReadAccess read |
     read.getVariable() = v and
     read = bb.getNode(i).getNode()
   )
 }
 
-/**
- * Holds if a pseudo read of `v` is inserted at index `i` in basic block `bb`.
- *
- * Pseudo reads are used to make otherwise dead assignments live, as they will
- * otherwise not get an SSA definition.
- */
-predicate variableReadPseudo(BasicBlock bb, int i, LocalVariable v) {
-  capturedCallRead(bb, i, v)
+predicate variableRead(BasicBlock bb, int i, LocalVariable v, boolean certain) {
+  variableReadActual(bb, i, v) and
+  certain = true
   or
-  capturedExitRead(bb, i, v)
+  capturedCallRead(bb, i, v) and
+  certain = false
+  or
+  capturedExitRead(bb, i, v) and
+  certain = false
 }
 
 pragma[noinline]
@@ -128,49 +127,6 @@ private predicate hasVariableReadWithCapturedWrite(BasicBlock bb, LocalVariable 
     read = bb.getANode().getNode() and
     read.getVariable() = v and
     bb.getScope() = scope.getOuterCfgScope()
-  )
-}
-
-private predicate adjacentDefReaches(Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2) {
-  adjacentDefRead(def, bb1, i1, bb2, i2)
-  or
-  exists(BasicBlock bb3, int i3 |
-    adjacentDefReaches(def, bb1, i1, bb3, i3) and
-    variableReadPseudo(bb3, i3, _) and
-    adjacentDefRead(def, bb3, i3, bb2, i2)
-  )
-}
-
-pragma[noinline]
-private predicate adjacentDefActualRead(
-  Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-) {
-  adjacentDefReaches(def, bb1, i1, bb2, i2) and
-  variableReadActual(bb2, i2, _)
-}
-
-private predicate adjacentDefPseudoRead(
-  Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-) {
-  adjacentDefReaches(def, bb1, i1, bb2, i2) and
-  variableReadPseudo(bb2, i2, _)
-}
-
-private predicate reachesLastRefRedef(Definition def, BasicBlock bb, int i, Definition next) {
-  lastRefRedef(def, bb, i, next)
-  or
-  exists(BasicBlock bb0, int i0 |
-    reachesLastRefRedef(def, bb0, i0, next) and
-    adjacentDefPseudoRead(def, bb, i, bb0, i0)
-  )
-}
-
-private predicate reachesLastRef(Definition def, BasicBlock bb, int i) {
-  lastRef(def, bb, i)
-  or
-  exists(BasicBlock bb0, int i0 |
-    reachesLastRef(def, bb0, i0) and
-    adjacentDefPseudoRead(def, bb, i, bb0, i0)
   )
 }
 
@@ -211,6 +167,20 @@ private module Cached {
     )
   }
 
+  cached
+  VariableReadAccessCfgNode getARead(Definition def) {
+    exists(LocalVariable v, BasicBlock bb, int i |
+      ssaDefReachesRead(v, def, bb, i) and
+      variableReadActual(bb, i, v) and
+      result = bb.getNode(i)
+    )
+  }
+
+  cached
+  Definition phiHasInputFromBlock(PhiNode phi, BasicBlock bb) {
+    phiHasInputFromBlock(phi, result, bb)
+  }
+
   /**
    * Holds if the value defined at SSA definition `def` can reach a read at `read`,
    * without passing through any other non-pseudo read.
@@ -219,7 +189,7 @@ private module Cached {
   predicate firstRead(Definition def, VariableReadAccessCfgNode read) {
     exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
       def.definesAt(_, bb1, i1) and
-      adjacentDefActualRead(def, bb1, i1, bb2, i2) and
+      adjacentDefNoUncertainReads(def, bb1, i1, bb2, i2) and
       read = bb2.getNode(i2)
     )
   }
@@ -236,7 +206,7 @@ private module Cached {
     exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
       read1 = bb1.getNode(i1) and
       variableReadActual(bb1, i1, _) and
-      adjacentDefActualRead(def, bb1, i1, bb2, i2) and
+      adjacentDefNoUncertainReads(def, bb1, i1, bb2, i2) and
       read2 = bb2.getNode(i2)
     )
   }
@@ -249,7 +219,7 @@ private module Cached {
   cached
   predicate lastRead(Definition def, VariableReadAccessCfgNode read) {
     exists(BasicBlock bb, int i |
-      reachesLastRef(def, bb, i) and
+      lastRefNoUncertainReads(def, bb, i) and
       variableReadActual(bb, i, _) and
       read = bb.getNode(i)
     )
@@ -264,8 +234,12 @@ private module Cached {
    */
   cached
   predicate lastRefBeforeRedef(Definition def, BasicBlock bb, int i, Definition next) {
-    reachesLastRefRedef(def, bb, i, next) and
-    not variableReadPseudo(bb, i, def.getSourceVariable())
+    lastRefRedefNoUncertainReads(def, bb, i, next)
+  }
+
+  cached
+  Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def) {
+    uncertainWriteDefinitionInput(def, result)
   }
 }
 
