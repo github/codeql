@@ -12,16 +12,7 @@ int	vswprintf(WCHAR *dest, WCHAR *format, va_list args) {
 	return 0;
 }
 
-int swprintf(WCHAR *dest, WCHAR *format, ...) {
-	va_list args;
-	va_start(args, format);
-
-	int ret = vswprintf(dest, format, args);
-
-	va_end(args);
-
-	return ret;
-}
+int swprintf(WCHAR *dest, WCHAR *format, ...);
 
 int sprintf(char *dest, char *format, ...);
 
@@ -30,13 +21,13 @@ int sprintf(char *dest, char *format, ...);
 void test1() {
 	WCHAR string[20];
 
-	swprintf(string, u"test %s", u"test"); // BAD: `char16_t` string parameter read as `char` string [NOT DETECTED]
+	swprintf(string, u"test %s", u"test"); // BAD: `char16_t` string parameter read as `char` string
 }
 
 void test2() {
 	char string[20];
 
-	sprintf(string, "test %S", u"test"); // GOOD [FALSE POSITIVE]
+	sprintf(string, "test %S", u"test"); // GOOD
 }
 
 void test3() {
@@ -49,5 +40,5 @@ void test3() {
 void test4() {
 	char string[20];
 
-	sprintf(string, "test %S", L"test"); // BAD: `wchar_t` string parameter read as `char16_t` string [NOT DETECTED]
+	sprintf(string, "test %S", L"test"); // BAD: `wchar_t` string parameter read as `char16_t` string
 }
