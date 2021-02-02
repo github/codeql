@@ -30,13 +30,13 @@ int sprintf(char *dest, char *format, ...);
 void test1() {
 	WCHAR string[20];
 
-	swprintf(string, u"test %s", u"test"); // BAD: `char16_t` string parameter read as `char` string
+	swprintf(string, u"test %s", u"test"); // BAD: `char16_t` string parameter read as `char` string [NOT DETECTED]
 }
 
 void test2() {
 	char string[20];
 
-	sprintf(string, "test %S", u"test"); // GOOD
+	sprintf(string, "test %S", u"test"); // GOOD [FALSE POSITIVE]
 }
 
 void test3() {
@@ -49,5 +49,5 @@ void test3() {
 void test4() {
 	char string[20];
 
-	sprintf(string, "test %S", L"test"); // BAD: `wchar_t` string parameter read as `char16_t` string
+	sprintf(string, "test %S", L"test"); // BAD: `wchar_t` string parameter read as `char16_t` string [NOT DETECTED]
 }
