@@ -527,17 +527,24 @@ class MutatorOperatorCall extends OperatorCall {
   predicate isPostfix() { mutator_invocation_mode(this, 2) }
 }
 
+private class DelegateLikeCall_ = @delegate_invocation_expr or @function_pointer_invocation_expr;
+
 /**
  * A function pointer or delegate call.
  */
-abstract class DelegateLikeCall extends Call {
+class DelegateLikeCall extends Call, DelegateLikeCall_ {
   override Callable getTarget() { none() }
 
   /**
    * Gets a potential run-time target of this delegate or function pointer call in the given
    * call context `cc`.
    */
-  Callable getARuntimeTarget(CallContext::CallContext cc) { none() }
+  Callable getARuntimeTarget(CallContext::CallContext cc) {
+    exists(DelegateLikeCallExpr call |
+      this = call.getCall() and
+      result = call.getARuntimeTarget(cc)
+    )
+  }
 
   /**
    * Gets the delegate or function pointer expression of this call. For example, the
@@ -579,10 +586,7 @@ class DelegateCall extends DelegateLikeCall, @delegate_invocation_expr {
    * call context `cc`.
    */
   override Callable getARuntimeTarget(CallContext::CallContext cc) {
-    exists(DelegateCallExpr call |
-      this = call.getCall() and
-      result = call.getARuntimeTarget(cc)
-    )
+    result = DelegateLikeCall.super.getARuntimeTarget(cc)
     or
     exists(AddEventSource aes, CallContext::CallContext cc2 |
       aes = this.getAnAddEventSource(_) and
@@ -634,17 +638,6 @@ class DelegateCall extends DelegateLikeCall, @delegate_invocation_expr {
  * ```
  */
 class FunctionPointerCall extends DelegateLikeCall, @function_pointer_invocation_expr {
-  /**
-   * Gets a potential run-time target of this function pointer call in the given
-   * call context `cc`.
-   */
-  override Callable getARuntimeTarget(CallContext::CallContext cc) {
-    exists(FunctionPointerCallExpr call |
-      this = call.getCall() and
-      result = call.getARuntimeTarget(cc)
-    )
-  }
-
   override string toString() { result = "function pointer call" }
 
   override string getAPrimaryQlClass() { result = "FunctionPointerCall" }

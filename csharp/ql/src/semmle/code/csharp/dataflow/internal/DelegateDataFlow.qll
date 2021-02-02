@@ -15,9 +15,9 @@ private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 
 /** A source of flow for a delegate or function pointer expression. */
-private class DelegateLikeFlowSource extends DataFlow::ExprNode {
+abstract private class DelegateLikeFlowSource extends DataFlow::ExprNode {
   /** Gets the callable that is referenced in this delegate or function pointer flow source. */
-  Callable getCallable() { none() }
+  abstract Callable getCallable();
 }
 
 /** A source of flow for a delegate expression. */
@@ -41,10 +41,13 @@ private class FunctionPointerFlowSource extends DelegateLikeFlowSource {
   Callable c;
 
   FunctionPointerFlowSource() {
-    this.getExpr() =
-      any(Expr e |
-        c = e.(AddressOfExpr).getOperand().(CallableAccess).getTarget().getUnboundDeclaration()
-      )
+    c =
+      this.getExpr()
+          .(AddressOfExpr)
+          .getOperand()
+          .(CallableAccess)
+          .getTarget()
+          .getUnboundDeclaration()
   }
 
   /** Gets the callable that is referenced in this function pointer flow source. */
@@ -115,28 +118,12 @@ abstract private class DelegateLikeFlowSink extends DataFlow::Node {
 
 /** A delegate or function pointer call expression. */
 class DelegateLikeCallExpr extends DelegateLikeFlowSink, DataFlow::ExprNode {
+  DelegateLikeCall dc;
+
+  DelegateLikeCallExpr() { this.getExpr() = dc.getExpr() }
+
   /** Gets the delegate or function pointer call that this expression belongs to. */
-  DelegateLikeCall getCall() { none() }
-}
-
-/** A delegate call expression. */
-class DelegateCallExpr extends DelegateLikeCallExpr {
-  DelegateCall dc;
-
-  DelegateCallExpr() { this.getExpr() = dc.getExpr() }
-
-  /** Gets the delegate call that this expression belongs to. */
-  override DelegateCall getCall() { result = dc }
-}
-
-/** A function pointer call expression. */
-class FunctionPointerCallExpr extends DelegateLikeCallExpr {
-  FunctionPointerCall fptrc;
-
-  FunctionPointerCallExpr() { this.getExpr() = fptrc.getExpr() }
-
-  /** Gets the function pointer call that this expression belongs to. */
-  override FunctionPointerCall getCall() { result = fptrc }
+  DelegateLikeCall getCall() { result = dc }
 }
 
 /** A parameter of delegate type belonging to a callable with a flow summary. */

@@ -82,12 +82,8 @@ class DelegateLikeCallArgumentCallContext extends ArgumentCallContext {
 
 /** An argument of a delegate call. */
 class DelegateCallArgumentCallContext extends DelegateLikeCallArgumentCallContext,
-  TArgDelegateCallContext {
-  DelegateCallArgumentCallContext() { this = TArgDelegateCallContext(dc, arg) }
-}
+  TArgDelegateCallContext { }
 
 /** An argument of a function pointer call. */
 class FunctionPointerCallArgumentCallContext extends DelegateLikeCallArgumentCallContext,
-  TArgFunctionPointerCallContext {
-  FunctionPointerCallArgumentCallContext() { this = TArgFunctionPointerCallContext(dc, arg) }
-}
+  TArgFunctionPointerCallContext { }
