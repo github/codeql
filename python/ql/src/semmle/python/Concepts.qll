@@ -293,6 +293,41 @@ module SqlExecution {
   }
 }
 
+/**
+ * A data-flow node that carries information about an error. Such information should
+ * rarely be exposed directly to the user.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `ErrorInfoSource::Range` instead.
+ */
+class ErrorInfoSource extends DataFlow::Node {
+  ErrorInfoSource::Range range;
+
+  ErrorInfoSource() { this = range }
+}
+
+/** Provides a class for modeling new sources of error information, say via APIs. */
+module ErrorInfoSource {
+  abstract class Range extends DataFlow::Node { }
+}
+
+/**
+ * A data-flow node that represents the creation or introduction of an exception.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `ExceptionSource::Range` instead.
+ */
+class ExceptionSource extends ErrorInfoSource::Range {
+  ExceptionSource::Range range;
+
+  ExceptionSource() { this = range }
+}
+
+/** Provides a class for modeling new sources of exceptions, say via APIs. */
+module ExceptionSource {
+  abstract class Range extends DataFlow::Node { }
+}
+
 /** Provides classes for modeling HTTP-related APIs. */
 module HTTP {
   import semmle.python.web.HttpConstants
