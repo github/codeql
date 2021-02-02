@@ -6032,6 +6032,16 @@
 | taint.cpp:616:26:616:30 | clean | taint.cpp:616:10:616:16 | call to _strdec | TAINT |
 | taint.cpp:617:7:617:11 | ref arg dest3 | taint.cpp:618:8:618:12 | dest3 |  |
 | taint.cpp:618:8:618:12 | dest3 | taint.cpp:618:7:618:12 | * ... | TAINT |
+| taint.cpp:625:33:625:38 | source | taint.cpp:628:17:628:22 | source |  |
+| taint.cpp:628:7:628:15 | call to _strnextc | taint.cpp:628:3:628:25 | ... = ... |  |
+| taint.cpp:628:7:628:15 | call to _strnextc | taint.cpp:629:8:629:8 | c |  |
+| taint.cpp:628:7:628:15 | call to _strnextc | taint.cpp:630:10:630:10 | c |  |
+| taint.cpp:628:17:628:22 | source | taint.cpp:628:17:628:24 | ... ++ |  |
+| taint.cpp:628:17:628:24 | ... ++ | taint.cpp:628:7:628:15 | call to _strnextc | TAINT |
+| taint.cpp:628:17:628:24 | ... ++ | taint.cpp:628:17:628:22 | source | TAINT |
+| taint.cpp:631:6:631:14 | call to _strnextc | taint.cpp:631:2:631:18 | ... = ... |  |
+| taint.cpp:631:6:631:14 | call to _strnextc | taint.cpp:632:7:632:7 | c |  |
+| taint.cpp:631:16:631:17 |  | taint.cpp:631:6:631:14 | call to _strnextc | TAINT |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |
