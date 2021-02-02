@@ -1,5 +1,5 @@
 /**
- * Provides implementation classes modeling `strinc`, `strdec` and their variants.
+ * Provides implementation classes modeling `_strinc`, `_strdec` and their variants.
  * See `semmle.code.cpp.models.Models` for usage information.
  */
 
