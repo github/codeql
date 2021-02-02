@@ -5,7 +5,7 @@ from Crypto.Cipher import PKCS1_OAEP
 from Crypto.Signature import pss
 from Crypto.Hash import SHA256
 
-private_key = RSA.generate(2048) # $ MISSING: PublicKeyGeneration keySize=2048
+private_key = RSA.generate(2048) # $ PublicKeyGeneration keySize=2048
 public_key = private_key.publickey()
 
 # ------------------------------------------------------------------------------

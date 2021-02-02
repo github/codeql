@@ -6,7 +6,7 @@ from Crypto.Signature import DSS
 from Crypto.Hash import SHA256
 
 
-private_key = DSA.generate(2048) # $ MISSING: PublicKeyGeneration keySize=2048
+private_key = DSA.generate(2048) # $ PublicKeyGeneration keySize=2048
 public_key = private_key.publickey()
 
 # ------------------------------------------------------------------------------

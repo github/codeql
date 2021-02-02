@@ -19,28 +19,28 @@ private module CryptodomeModel {
   // ---------------------------------------------------------------------------
   // Cryptodome
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `Cryptodome` module. */
+  /** Gets a reference to the `Cryptodome`/`Crypto` module. */
   private DataFlow::Node cryptodome(DataFlow::TypeTracker t) {
     t.start() and
-    result = DataFlow::importNode("Cryptodome")
+    result = DataFlow::importNode(["Cryptodome", "Crypto"])
     or
     exists(DataFlow::TypeTracker t2 | result = cryptodome(t2).track(t2, t))
   }
 
-  /** Gets a reference to the `Cryptodome` module. */
+  /** Gets a reference to the `Cryptodome`/`Crypto` module. */
   DataFlow::Node cryptodome() { result = cryptodome(DataFlow::TypeTracker::end()) }
 
-  /** Provides models for the `Cryptodome` module. */
+  /** Provides models for the `Cryptodome`/`Crypto` module. */
   module Cryptodome {
     /**
-     * Gets a reference to the attribute `attr_name` of the `Cryptodome` module.
+     * Gets a reference to the attribute `attr_name` of the `Cryptodome`/`Crypto` module.
      * WARNING: Only holds for a few predefined attributes.
      */
     private DataFlow::Node cryptodome_attr(DataFlow::TypeTracker t, string attr_name) {
       attr_name in ["PublicKey"] and
       (
         t.start() and
-        result = DataFlow::importNode("Cryptodome" + "." + attr_name)
+        result = DataFlow::importNode(["Cryptodome", "Crypto"] + "." + attr_name)
         or
         t.startInAttr(attr_name) and
         result = cryptodome()
@@ -64,7 +64,7 @@ private module CryptodomeModel {
     }
 
     /**
-     * Gets a reference to the attribute `attr_name` of the `Cryptodome` module.
+     * Gets a reference to the attribute `attr_name` of the `Cryptodome`/`Crypto` module.
      * WARNING: Only holds for a few predefined attributes.
      */
     private DataFlow::Node cryptodome_attr(string attr_name) {
@@ -74,20 +74,20 @@ private module CryptodomeModel {
     // -------------------------------------------------------------------------
     // Cryptodome.PublicKey
     // -------------------------------------------------------------------------
-    /** Gets a reference to the `Cryptodome.PublicKey` module. */
+    /** Gets a reference to the `Cryptodome.PublicKey`/`Crypto.PublicKey` module. */
     DataFlow::Node publicKey() { result = cryptodome_attr("PublicKey") }
 
-    /** Provides models for the `Cryptodome.PublicKey` module */
+    /** Provides models for the `Cryptodome.PublicKey`/`Crypto.PublicKey` module */
     module PublicKey {
       /**
-       * Gets a reference to the attribute `attr_name` of the `Cryptodome.PublicKey` module.
+       * Gets a reference to the attribute `attr_name` of the `Cryptodome.PublicKey`/`Crypto.PublicKey` module.
        * WARNING: Only holds for a few predefined attributes.
        */
       private DataFlow::Node publicKey_attr(DataFlow::TypeTracker t, string attr_name) {
         attr_name in ["RSA", "DSA", "ECC"] and
         (
           t.start() and
-          result = DataFlow::importNode("Cryptodome.PublicKey" + "." + attr_name)
+          result = DataFlow::importNode(["Cryptodome", "Crypto"] + ".PublicKey" + "." + attr_name)
           or
           t.startInAttr(attr_name) and
           result = publicKey()
@@ -112,7 +112,7 @@ private module CryptodomeModel {
       }
 
       /**
-       * Gets a reference to the attribute `attr_name` of the `Cryptodome.PublicKey` module.
+       * Gets a reference to the attribute `attr_name` of the `Cryptodome.PublicKey`/`Crypto.PublicKey` module.
        * WARNING: Only holds for a few predefined attributes.
        */
       private DataFlow::Node publicKey_attr(string attr_name) {
@@ -122,20 +122,21 @@ private module CryptodomeModel {
       // -------------------------------------------------------------------------
       // Cryptodome.PublicKey.RSA
       // -------------------------------------------------------------------------
-      /** Gets a reference to the `Cryptodome.PublicKey.RSA` module. */
+      /** Gets a reference to the `Cryptodome.PublicKey.RSA`/`Crypto.PublicKey.RSA` module. */
       DataFlow::Node rsa() { result = publicKey_attr("RSA") }
 
-      /** Provides models for the `Cryptodome.PublicKey.RSA` module */
+      /** Provides models for the `Cryptodome.PublicKey.RSA`/`Crypto.PublicKey.RSA` module */
       module RSA {
         /**
-         * Gets a reference to the attribute `attr_name` of the `Cryptodome.PublicKey.RSA` module.
+         * Gets a reference to the attribute `attr_name` of the `Cryptodome.PublicKey.RSA`/`Crypto.PublicKey.RSA` module.
          * WARNING: Only holds for a few predefined attributes.
          */
         private DataFlow::Node rsa_attr(DataFlow::TypeTracker t, string attr_name) {
           attr_name in ["generate"] and
           (
             t.start() and
-            result = DataFlow::importNode("Cryptodome.PublicKey.RSA" + "." + attr_name)
+            result =
+              DataFlow::importNode(["Cryptodome", "Crypto"] + ".PublicKey.RSA" + "." + attr_name)
             or
             t.startInAttr(attr_name) and
             result = rsa()
@@ -160,34 +161,35 @@ private module CryptodomeModel {
         }
 
         /**
-         * Gets a reference to the attribute `attr_name` of the `Cryptodome.PublicKey.RSA` module.
+         * Gets a reference to the attribute `attr_name` of the `Cryptodome.PublicKey.RSA`/`Crypto.PublicKey.RSA` module.
          * WARNING: Only holds for a few predefined attributes.
          */
         private DataFlow::Node rsa_attr(string attr_name) {
           result = rsa_attr(DataFlow::TypeTracker::end(), attr_name)
         }
 
-        /** Gets a reference to the `Cryptodome.PublicKey.RSA.generate` function. */
+        /** Gets a reference to the `Cryptodome.PublicKey.RSA.generate`/`Crypto.PublicKey.RSA.generate` function. */
         DataFlow::Node generate() { result = rsa_attr("generate") }
       }
 
       // -------------------------------------------------------------------------
       // Cryptodome.PublicKey.DSA
       // -------------------------------------------------------------------------
-      /** Gets a reference to the `Cryptodome.PublicKey.DSA` module. */
+      /** Gets a reference to the `Cryptodome.PublicKey.DSA`/`Crypto.PublicKey.DSA` module. */
       DataFlow::Node dsa() { result = publicKey_attr("DSA") }
 
-      /** Provides models for the `Cryptodome.PublicKey.DSA` module */
+      /** Provides models for the `Cryptodome.PublicKey.DSA`/`Crypto.PublicKey.DSA` module */
       module DSA {
         /**
-         * Gets a reference to the attribute `attr_name` of the `Cryptodome.PublicKey.DSA` module.
+         * Gets a reference to the attribute `attr_name` of the `Cryptodome.PublicKey.DSA`/`Crypto.PublicKey.DSA` module.
          * WARNING: Only holds for a few predefined attributes.
          */
         private DataFlow::Node dsa_attr(DataFlow::TypeTracker t, string attr_name) {
           attr_name in ["generate"] and
           (
             t.start() and
-            result = DataFlow::importNode("Cryptodome.PublicKey.DSA" + "." + attr_name)
+            result =
+              DataFlow::importNode(["Cryptodome", "Crypto"] + ".PublicKey.DSA" + "." + attr_name)
             or
             t.startInAttr(attr_name) and
             result = dsa()
@@ -212,34 +214,35 @@ private module CryptodomeModel {
         }
 
         /**
-         * Gets a reference to the attribute `attr_name` of the `Cryptodome.PublicKey.DSA` module.
+         * Gets a reference to the attribute `attr_name` of the `Cryptodome.PublicKey.DSA`/`Crypto.PublicKey.DSA` module.
          * WARNING: Only holds for a few predefined attributes.
          */
         private DataFlow::Node dsa_attr(string attr_name) {
           result = dsa_attr(DataFlow::TypeTracker::end(), attr_name)
         }
 
-        /** Gets a reference to the `Cryptodome.PublicKey.DSA.generate` function. */
+        /** Gets a reference to the `Cryptodome.PublicKey.DSA.generate`/`Crypto.PublicKey.DSA.generate` function. */
         DataFlow::Node generate() { result = dsa_attr("generate") }
       }
 
       // -------------------------------------------------------------------------
       // Cryptodome.PublicKey.ECC
       // -------------------------------------------------------------------------
-      /** Gets a reference to the `Cryptodome.PublicKey.ECC` module. */
+      /** Gets a reference to the `Cryptodome.PublicKey.ECC`/`Crypto.PublicKey.ECC` module. */
       DataFlow::Node ecc() { result = publicKey_attr("ECC") }
 
-      /** Provides models for the `Cryptodome.PublicKey.ECC` module */
+      /** Provides models for the `Cryptodome.PublicKey.ECC`/`Crypto.PublicKey.ECC` module */
       module ECC {
         /**
-         * Gets a reference to the attribute `attr_name` of the `Cryptodome.PublicKey.ECC` module.
+         * Gets a reference to the attribute `attr_name` of the `Cryptodome.PublicKey.ECC`/`Crypto.PublicKey.ECC` module.
          * WARNING: Only holds for a few predefined attributes.
          */
         private DataFlow::Node ecc_attr(DataFlow::TypeTracker t, string attr_name) {
           attr_name in ["generate"] and
           (
             t.start() and
-            result = DataFlow::importNode("Cryptodome.PublicKey.ECC" + "." + attr_name)
+            result =
+              DataFlow::importNode(["Cryptodome", "Crypto"] + ".PublicKey.ECC" + "." + attr_name)
             or
             t.startInAttr(attr_name) and
             result = ecc()
@@ -264,14 +267,14 @@ private module CryptodomeModel {
         }
 
         /**
-         * Gets a reference to the attribute `attr_name` of the `Cryptodome.PublicKey.ECC` module.
+         * Gets a reference to the attribute `attr_name` of the `Cryptodome.PublicKey.ECC`/`Crypto.PublicKey.ECC` module.
          * WARNING: Only holds for a few predefined attributes.
          */
         private DataFlow::Node ecc_attr(string attr_name) {
           result = ecc_attr(DataFlow::TypeTracker::end(), attr_name)
         }
 
-        /** Gets a reference to the `Cryptodome.PublicKey.ECC.generate` function. */
+        /** Gets a reference to the `Cryptodome.PublicKey.ECC.generate`/`Crypto.PublicKey.ECC.generate` function. */
         DataFlow::Node generate() { result = ecc_attr("generate") }
       }
     }
@@ -279,7 +282,7 @@ private module CryptodomeModel {
 
   // ---------------------------------------------------------------------------
   /**
-   * A call to `Cryptodome.PublicKey.RSA.generate`
+   * A call to `Cryptodome.PublicKey.RSA.generate`/`Crypto.PublicKey.RSA.generate`
    *
    * See https://pycryptodome.readthedocs.io/en/latest/src/public_key/rsa.html#Crypto.PublicKey.RSA.generate
    */
@@ -297,7 +300,7 @@ private module CryptodomeModel {
   }
 
   /**
-   * A call to `Cryptodome.PublicKey.DSA.generate`
+   * A call to `Cryptodome.PublicKey.DSA.generate`/`Crypto.PublicKey.DSA.generate`
    *
    * See https://pycryptodome.readthedocs.io/en/latest/src/public_key/dsa.html#Crypto.PublicKey.DSA.generate
    */
@@ -315,7 +318,7 @@ private module CryptodomeModel {
   }
 
   /**
-   * A call to `Cryptodome.PublicKey.ECC.generate`
+   * A call to `Cryptodome.PublicKey.ECC.generate`/`Crypto.PublicKey.ECC.generate`
    *
    * See https://pycryptodome.readthedocs.io/en/latest/src/public_key/ecc.html#Crypto.PublicKey.ECC.generate
    */
