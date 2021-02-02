@@ -1,4 +1,5 @@
 import java
+import InjectionLib
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 
@@ -149,18 +150,6 @@ private predicate createsJexlEngine(DataFlow::Node fromNode, DataFlow::Node toNo
     cc.getConstructedType() instanceof UnifiedJexl and
     cc.getArgument(0) = fromNode.asExpr() and
     cc = toNode.asExpr()
-  )
-}
-
-/**
- * Holds if `fromNode` to `toNode` is a dataflow step that returns data from
- * a bean by calling one of its getters.
- */
-private predicate returnsDataFromBean(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  exists(MethodAccess ma, Method m | ma.getMethod() = m |
-    m instanceof GetterMethod and
-    ma.getQualifier() = fromNode.asExpr() and
-    ma = toNode.asExpr()
   )
 }
 

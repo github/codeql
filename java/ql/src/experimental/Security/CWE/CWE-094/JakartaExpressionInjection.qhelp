@@ -1,0 +1,65 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Jakarta Expression Language (EL) is an expression language for Java applications.
+There are a single language specification and multiple implementations
+such as Glassfish, Juel, Apache Commons EL, etc.
+The language allows invocation of methods available in the JVM.
+If an expression is built using attacker-controlled data,
+and then evaluated, then it may allow the attacker to run arbitrary code.
+</p>
+</overview>
+
+<recommendation>
+<p>
+It is generally recommended to avoid using untrusted data in an EL expression.
+Before using untrusted data to build an EL expressoin, the data should be validated
+to ensure it is not evaluated as expression language. If the EL implementaion offers
+configuring a sandbox for EL expression, they should be run in a restircitive sandbox
+that allows accessing only explicitly allowed classes. If the EL implementation
+does not allow sandboxing, consider using other expressiong language implementations
+with sandboxing capabilities such as Apache Commons JEXL or the Spring Expression Language.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows how untrusted data is used to build and run an expression
+using the JUEL interpreter:
+</p>
+<sample src="UnsafeExpressionEvaluationWithJUEL.java" />
+
+<p>
+JUEL does not allow to run expression in a sandbox. To prevent running arbitrary code,
+incoming data has to be checked before including to an expression. The next example
+uses a Regex pattern to check whether a user tries to run an allowed exression or not:
+</p>
+<sample src="SaferExpressionEvaluationWithJUEL.java" />
+
+</example>
+
+<references>
+<li>
+  Eclipse Foundation:
+  <a href="https://projects.eclipse.org/projects/ee4j.el">Jakarta Expression Language</a>.
+</li>
+<li>
+  Jakarta EE documentation:
+  <a href="https://javadoc.io/doc/jakarta.el/jakarta.el-api/latest/index.html">Jakarta Expression Language API</a>
+</li>
+<li>
+  OWASP:
+  <a href="https://owasp.org/www-community/vulnerabilities/Expression_Language_Injection">Expression Language Injection</a>.
+</li>
+<li>
+  JUEL:
+  <a href="http://juel.sourceforge.net">Home page</a>
+</li>
+<li>
+  Apache Foundation:
+  <a href="https://commons.apache.org/dormant/commons-el/">Apache Commons EL</a>
+</li>
+</references>
+</qhelp>
