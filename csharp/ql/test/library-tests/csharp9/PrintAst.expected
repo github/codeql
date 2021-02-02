@@ -83,8 +83,8 @@ BinaryPattern.cs:
 #   10|         0: [VariablePatternExpr] Object o
 #   10|           0: [TypeMention] object
 #   10|         1: [RecursivePatternExpr] { ... }
-#   10|           0: [LocalVariableDeclExpr] BinaryPattern u
-#   10|           1: [TypeAccess] access to type BinaryPattern
+#   10|           0: [VariablePatternExpr] BinaryPattern u
+#   10|           1: [TypeAccessPatternExpr] access to type BinaryPattern
 #   10|             0: [TypeMention] BinaryPattern
 #   10|           3: [PropertyPatternExpr] { ... }
 #   10|             0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 1
@@ -608,14 +608,14 @@ ParenthesizedPattern.cs:
 #    9|         0: [IsExpr] ... is ...
 #    9|           0: [ParameterAccess] access to parameter o
 #    9|           1: [RecursivePatternExpr] { ... }
-#    9|             0: [LocalVariableDeclExpr] Object p1
+#    9|             0: [VariablePatternExpr] Object p1
 #    9|             3: [PropertyPatternExpr] { ... }
 #   10|         1: [BlockStmt] {...}
 #   13|       1: [IfStmt] if (...) ...
 #   13|         0: [IsExpr] ... is ...
 #   13|           0: [ParameterAccess] access to parameter o
 #   13|           1: [RecursivePatternExpr] { ... }
-#   13|             0: [LocalVariableDeclExpr] Object p2
+#   13|             0: [VariablePatternExpr] Object p2
 #   13|             3: [PropertyPatternExpr] { ... }
 #   14|         1: [BlockStmt] {...}
 #   19|   6: [Method] M2
@@ -1039,8 +1039,8 @@ UnaryPattern.cs:
 #   12|       0: [ParameterAccess] access to parameter c
 #   12|       1: [NotPatternExpr] not ...
 #   12|         0: [RecursivePatternExpr] { ... }
-#   12|           0: [LocalVariableDeclExpr] UnaryPattern u
-#   12|           1: [TypeAccess] access to type UnaryPattern
+#   12|           0: [VariablePatternExpr] UnaryPattern u
+#   12|           1: [TypeAccessPatternExpr] access to type UnaryPattern
 #   12|             0: [TypeMention] UnaryPattern
 #   12|           3: [PropertyPatternExpr] { ... }
 #   12|             0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 1
