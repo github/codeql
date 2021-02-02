@@ -6,7 +6,7 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.exceptions import InvalidSignature
 
 
-private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048) # $ MISSING: PublicKeyGeneration keySize=2048
+private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048) # $ PublicKeyGeneration keySize=2048
 public_key = private_key.public_key()
 
 HASH_ALGORITHM = hashes.SHA256()

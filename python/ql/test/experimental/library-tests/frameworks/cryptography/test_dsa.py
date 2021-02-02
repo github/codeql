@@ -7,7 +7,7 @@ from cryptography.exceptions import InvalidSignature
 
 HASH_ALGORITHM = hashes.SHA256()
 
-private_key = dsa.generate_private_key(key_size=2048) # $ MISSING: PublicKeyGeneration keySize=2048
+private_key = dsa.generate_private_key(key_size=2048) # $ PublicKeyGeneration keySize=2048
 public_key = private_key.public_key()
 
 message = b"message"
