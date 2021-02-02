@@ -6,7 +6,7 @@ are vulnerable to brute force attack when too small a key size is used.</p>
     </overview>
 
     <recommendation>
-        <p>The key should be at least 2048 bits long when using RSA and DSA encryption, 224 bits long when using EC encryption, and 128 bits long when using 
+        <p>The key should be at least 2048 bits long when using RSA and DSA encryption, 256 bits long when using EC encryption, and 128 bits long when using 
 symmetric encryption.</p>
     </recommendation>
     
