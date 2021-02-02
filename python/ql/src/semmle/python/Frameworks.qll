@@ -2,6 +2,7 @@
  * Helper file that imports all framework modeling.
  */
 
+private import semmle.python.frameworks.Cryptodome
 private import semmle.python.frameworks.Cryptography
 private import semmle.python.frameworks.Dill
 private import semmle.python.frameworks.Django
