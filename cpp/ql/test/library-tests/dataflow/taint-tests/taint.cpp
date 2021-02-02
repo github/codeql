@@ -574,3 +574,46 @@ void test_strsep(char *source) {
     sink(*tokenized); // $ ast,ir
   }
 }
+
+// --- _strinc and related functions ---
+
+char* _strinc(const char*, _locale_t);
+unsigned char* _mbsinc(const unsigned char*);
+unsigned char *_strdec(const unsigned char*, const unsigned char*);
+
+void test__strinc(char* source, char* clean, char* dest1, char* dest2, _locale_t locale) {
+	dest1 = _strinc(source, locale);
+	sink(dest1); // $ ast,ir
+	sink(*dest1); // $ ast,ir
+
+	dest2 = _strinc(clean, locale);
+	sink(dest2);
+	sink(*dest2);
+}
+
+void test__mbsinc(unsigned char* source_unsigned, char* source, unsigned char* dest_unsigned, char* dest) {
+	dest_unsigned = _mbsinc(source_unsigned);
+	sink(dest_unsigned); // $ ast,ir
+	sink(*dest_unsigned); // $ ast,ir
+
+	dest = (char*)_mbsinc((unsigned char*)source);
+	sink(dest); // $ ast,ir
+	sink(*dest); // $ ast,ir
+}
+
+void test__strdec(const unsigned char* source, unsigned char* clean, unsigned char* dest1, unsigned char* dest2, unsigned char* dest3) {
+	dest1 = _strdec(source + 12, source);
+	sink(dest1); // $ ast,ir
+	sink(*dest1); // $ ast,ir
+
+	// If `clean` does not precede `source` this technically breaks the precondition of _strdec.
+	// We would still like to have taint, though.
+	dest2 = _strdec(clean, source);
+	sink(dest2); // $ ast,ir
+	sink(*dest2); // $ ast,ir
+
+	// Also breaks the precondition on _strdec.
+	dest3 = _strdec(source, clean);
+	sink(dest3); // $ ast,ir
+	sink(*dest3); // $ ast,ir
+}

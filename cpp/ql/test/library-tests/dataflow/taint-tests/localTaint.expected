@@ -5970,6 +5970,68 @@
 | taint.cpp:572:37:572:41 | delim | taint.cpp:572:21:572:26 | call to strsep | TAINT |
 | taint.cpp:573:10:573:18 | ref arg tokenized | taint.cpp:574:11:574:19 | tokenized |  |
 | taint.cpp:574:11:574:19 | tokenized | taint.cpp:574:10:574:19 | * ... | TAINT |
+| taint.cpp:584:25:584:30 | source | taint.cpp:585:18:585:23 | source |  |
+| taint.cpp:584:39:584:43 | clean | taint.cpp:589:18:589:22 | clean |  |
+| taint.cpp:584:82:584:87 | locale | taint.cpp:585:26:585:31 | locale |  |
+| taint.cpp:584:82:584:87 | locale | taint.cpp:589:25:589:30 | locale |  |
+| taint.cpp:585:10:585:16 | call to _strinc | taint.cpp:585:2:585:32 | ... = ... |  |
+| taint.cpp:585:10:585:16 | call to _strinc | taint.cpp:586:7:586:11 | dest1 |  |
+| taint.cpp:585:10:585:16 | call to _strinc | taint.cpp:587:8:587:12 | dest1 |  |
+| taint.cpp:585:18:585:23 | source | taint.cpp:585:10:585:16 | call to _strinc | TAINT |
+| taint.cpp:585:26:585:31 | locale | taint.cpp:585:10:585:16 | call to _strinc | TAINT |
+| taint.cpp:585:26:585:31 | ref arg locale | taint.cpp:589:25:589:30 | locale |  |
+| taint.cpp:586:7:586:11 | ref arg dest1 | taint.cpp:587:8:587:12 | dest1 |  |
+| taint.cpp:587:8:587:12 | dest1 | taint.cpp:587:7:587:12 | * ... | TAINT |
+| taint.cpp:589:10:589:16 | call to _strinc | taint.cpp:589:2:589:31 | ... = ... |  |
+| taint.cpp:589:10:589:16 | call to _strinc | taint.cpp:590:7:590:11 | dest2 |  |
+| taint.cpp:589:10:589:16 | call to _strinc | taint.cpp:591:8:591:12 | dest2 |  |
+| taint.cpp:589:18:589:22 | clean | taint.cpp:589:10:589:16 | call to _strinc | TAINT |
+| taint.cpp:589:25:589:30 | locale | taint.cpp:589:10:589:16 | call to _strinc | TAINT |
+| taint.cpp:590:7:590:11 | ref arg dest2 | taint.cpp:591:8:591:12 | dest2 |  |
+| taint.cpp:591:8:591:12 | dest2 | taint.cpp:591:7:591:12 | * ... | TAINT |
+| taint.cpp:594:34:594:48 | source_unsigned | taint.cpp:595:26:595:40 | source_unsigned |  |
+| taint.cpp:594:57:594:62 | source | taint.cpp:599:40:599:45 | source |  |
+| taint.cpp:595:18:595:24 | call to _mbsinc | taint.cpp:595:2:595:41 | ... = ... |  |
+| taint.cpp:595:18:595:24 | call to _mbsinc | taint.cpp:596:7:596:19 | dest_unsigned |  |
+| taint.cpp:595:18:595:24 | call to _mbsinc | taint.cpp:597:8:597:20 | dest_unsigned |  |
+| taint.cpp:595:26:595:40 | source_unsigned | taint.cpp:595:18:595:24 | call to _mbsinc | TAINT |
+| taint.cpp:596:7:596:19 | ref arg dest_unsigned | taint.cpp:597:8:597:20 | dest_unsigned |  |
+| taint.cpp:597:8:597:20 | dest_unsigned | taint.cpp:597:7:597:20 | * ... | TAINT |
+| taint.cpp:599:16:599:22 | call to _mbsinc | taint.cpp:599:2:599:46 | ... = ... |  |
+| taint.cpp:599:16:599:22 | call to _mbsinc | taint.cpp:600:7:600:10 | dest |  |
+| taint.cpp:599:16:599:22 | call to _mbsinc | taint.cpp:601:8:601:11 | dest |  |
+| taint.cpp:599:40:599:45 | source | taint.cpp:599:16:599:22 | call to _mbsinc | TAINT |
+| taint.cpp:600:7:600:10 | ref arg dest | taint.cpp:601:8:601:11 | dest |  |
+| taint.cpp:601:8:601:11 | dest | taint.cpp:601:7:601:11 | * ... | TAINT |
+| taint.cpp:604:40:604:45 | source | taint.cpp:605:18:605:23 | source |  |
+| taint.cpp:604:40:604:45 | source | taint.cpp:605:31:605:36 | source |  |
+| taint.cpp:604:40:604:45 | source | taint.cpp:611:25:611:30 | source |  |
+| taint.cpp:604:40:604:45 | source | taint.cpp:616:18:616:23 | source |  |
+| taint.cpp:604:63:604:67 | clean | taint.cpp:611:18:611:22 | clean |  |
+| taint.cpp:604:63:604:67 | clean | taint.cpp:616:26:616:30 | clean |  |
+| taint.cpp:605:10:605:16 | call to _strdec | taint.cpp:605:2:605:37 | ... = ... |  |
+| taint.cpp:605:10:605:16 | call to _strdec | taint.cpp:606:7:606:11 | dest1 |  |
+| taint.cpp:605:10:605:16 | call to _strdec | taint.cpp:607:8:607:12 | dest1 |  |
+| taint.cpp:605:18:605:23 | source | taint.cpp:605:18:605:28 | ... + ... | TAINT |
+| taint.cpp:605:18:605:28 | ... + ... | taint.cpp:605:10:605:16 | call to _strdec | TAINT |
+| taint.cpp:605:27:605:28 | 12 | taint.cpp:605:18:605:28 | ... + ... | TAINT |
+| taint.cpp:605:31:605:36 | source | taint.cpp:605:10:605:16 | call to _strdec | TAINT |
+| taint.cpp:606:7:606:11 | ref arg dest1 | taint.cpp:607:8:607:12 | dest1 |  |
+| taint.cpp:607:8:607:12 | dest1 | taint.cpp:607:7:607:12 | * ... | TAINT |
+| taint.cpp:611:10:611:16 | call to _strdec | taint.cpp:611:2:611:31 | ... = ... |  |
+| taint.cpp:611:10:611:16 | call to _strdec | taint.cpp:612:7:612:11 | dest2 |  |
+| taint.cpp:611:10:611:16 | call to _strdec | taint.cpp:613:8:613:12 | dest2 |  |
+| taint.cpp:611:18:611:22 | clean | taint.cpp:611:10:611:16 | call to _strdec | TAINT |
+| taint.cpp:611:25:611:30 | source | taint.cpp:611:10:611:16 | call to _strdec | TAINT |
+| taint.cpp:612:7:612:11 | ref arg dest2 | taint.cpp:613:8:613:12 | dest2 |  |
+| taint.cpp:613:8:613:12 | dest2 | taint.cpp:613:7:613:12 | * ... | TAINT |
+| taint.cpp:616:10:616:16 | call to _strdec | taint.cpp:616:2:616:31 | ... = ... |  |
+| taint.cpp:616:10:616:16 | call to _strdec | taint.cpp:617:7:617:11 | dest3 |  |
+| taint.cpp:616:10:616:16 | call to _strdec | taint.cpp:618:8:618:12 | dest3 |  |
+| taint.cpp:616:18:616:23 | source | taint.cpp:616:10:616:16 | call to _strdec | TAINT |
+| taint.cpp:616:26:616:30 | clean | taint.cpp:616:10:616:16 | call to _strdec | TAINT |
+| taint.cpp:617:7:617:11 | ref arg dest3 | taint.cpp:618:8:618:12 | dest3 |  |
+| taint.cpp:618:8:618:12 | dest3 | taint.cpp:618:7:618:12 | * ... | TAINT |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |
