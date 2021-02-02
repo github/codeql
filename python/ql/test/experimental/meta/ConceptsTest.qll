@@ -319,3 +319,25 @@ class SafeAccessCheckTest extends InlineExpectationsTest {
     )
   }
 }
+
+class PublicKeyGenerationTest extends InlineExpectationsTest {
+  PublicKeyGenerationTest() { this = "PublicKeyGenerationTest" }
+
+  override string getARelevantTag() { result in ["PublicKeyGeneration", "keySize"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(Cryptography::PublicKey::KeyGeneration keyGen |
+      location = keyGen.getLocation() and
+      (
+        element = keyGen.toString() and
+        value = "" and
+        tag = "PublicKeyGeneration"
+        or
+        element = keyGen.toString() and
+        value = keyGen.getKeySizeWithOrigin(_).toString() and
+        tag = "keySize"
+      )
+    )
+  }
+}

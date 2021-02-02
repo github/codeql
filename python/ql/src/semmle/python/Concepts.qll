@@ -526,3 +526,90 @@ module HTTP {
     }
   }
 }
+
+/** Provides models for cryptographic things. */
+module Cryptography {
+  /** Provides models for public-key cryptography, also called asymmetric cryptography. */
+  module PublicKey {
+    /**
+     * A data-flow node that generates a new key-pair for use with public-key cryptography.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `KeyGeneration::Range` instead.
+     */
+    class KeyGeneration extends DataFlow::Node {
+      KeyGeneration::Range range;
+
+      KeyGeneration() { this = range }
+
+      /** Gets the name of the cryptographic algorithm (for example `"RSA"` or `"AES"`). */
+      string getName() { result = range.getName() }
+
+      /** Gets the argument that specifies size of the key in bits, if available. */
+      DataFlow::Node getKeySizeArg() { result = range.getKeySizeArg() }
+
+      /**
+       * Gets the size of the key generated (in bits), as well as the `origin` that
+       * explains how we obtained this specific key size.
+       */
+      int getKeySizeWithOrigin(DataFlow::Node origin) {
+        result = range.getKeySizeWithOrigin(origin)
+      }
+
+      /** Gets the minimum key size (in bits) for this algorithm to be considered secure. */
+      int minimumSecureKeySize() { result = range.minimumSecureKeySize() }
+    }
+
+    /** Provides classes for modeling new key-pair generation APIs. */
+    module KeyGeneration {
+      /**
+       * A data-flow node that generates a new key-pair for use with public-key cryptography.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `KeyGeneration` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /** Gets the name of the cryptographic algorithm (for example `"RSA"`). */
+        abstract string getName();
+
+        /** Gets the argument that specifies size of the key in bits, if available. */
+        abstract DataFlow::Node getKeySizeArg();
+
+        /**
+         * Gets the size of the key generated (in bits), as well as the `origin` that
+         * explains how we obtained this specific key size.
+         */
+        int getKeySizeWithOrigin(DataFlow::Node origin) {
+          exists(IntegerLiteral size | origin = DataFlow::exprNode(size) |
+            origin.(DataFlow::LocalSourceNode).flowsTo(this.getKeySizeArg()) and
+            result = size.getValue()
+          )
+        }
+
+        /** Gets the minimum key size (in bits) for this algorithm to be considered secure. */
+        abstract int minimumSecureKeySize();
+      }
+
+      /** A data-flow node that generates a new RSA key-pair. */
+      abstract class RSARange extends Range {
+        override string getName() { result = "RSA" }
+
+        override int minimumSecureKeySize() { result = 2048 }
+      }
+
+      /** A data-flow node that generates a new DSA key-pair. */
+      abstract class DSARange extends Range {
+        override string getName() { result = "DSA" }
+
+        override int minimumSecureKeySize() { result = 2048 }
+      }
+
+      /** A data-flow node that generates a new ECC key-pair. */
+      abstract class ECCRange extends Range {
+        override string getName() { result = "ECC" }
+
+        override int minimumSecureKeySize() { result = 224 }
+      }
+    }
+  }
+}
