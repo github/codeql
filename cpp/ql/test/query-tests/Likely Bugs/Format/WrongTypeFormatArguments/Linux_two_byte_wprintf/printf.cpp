@@ -8,11 +8,18 @@ typedef void *va_list;
 #define va_start(va, other)
 #define va_end(args)
 
-int	vswprintf(WCHAR *dest, WCHAR *format, va_list args) {
-	return 0;
-}
+int	vswprintf(WCHAR *dest, WCHAR *format, va_list args);
 
-int swprintf(WCHAR *dest, WCHAR *format, ...);
+int swprintf(WCHAR *dest, WCHAR *format, ...) {
+	va_list args;
+	va_start(args, format);
+
+	int ret = vswprintf(dest, format, args);
+
+	va_end(args);
+
+	return ret;
+}
 
 int sprintf(char *dest, char *format, ...);
 
