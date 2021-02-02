@@ -905,6 +905,8 @@ module IR {
 
     ReturnInstruction() { this = MkReturnNode(ret) }
 
+    ReturnStmt getReturnStmt() { result = ret }
+
     /** Holds if this statement returns multiple results. */
     predicate returnsMultipleResults() { exists(MkExtractNode(ret, _)) or ret.getNumExpr() > 1 }
 
