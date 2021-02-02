@@ -19,7 +19,8 @@ private class SscanfModel extends ArrayFunction, TaintFunction, AliasFunction, S
   override predicate hasArrayWithNullTerminator(int bufParam) {
     bufParam = this.(ScanfFunction).getFormatParameterIndex()
     or
-    bufParam = this.(Sscanf).getInputParameterIndex()
+    not this instanceof Fscanf and
+    bufParam = this.(ScanfFunction).getInputParameterIndex()
   }
 
   override predicate hasArrayInput(int bufParam) { hasArrayWithNullTerminator(bufParam) }
@@ -35,16 +36,10 @@ private class SscanfModel extends ArrayFunction, TaintFunction, AliasFunction, S
     )
   }
 
-  private int getArgsStartPosition() {
-    exists(int nLength, int nLocale |
-      (if exists(getLocaleParameterIndex()) then nLocale = 1 else nLocale = 0) and
-      (if exists(getLengthParameterIndex()) then nLength = 1 else nLength = 0) and
-      result = 2 + nLocale + nLength
-    )
-  }
+  private int getArgsStartPosition() { result = this.getNumberOfParameters() }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameterDeref(0) and
+    input.isParameterDeref(this.(ScanfFunction).getInputParameterIndex()) and
     output.isParameterDeref(any(int i | i >= getArgsStartPosition()))
   }
 
