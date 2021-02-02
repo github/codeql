@@ -423,22 +423,23 @@ private module CryptographyModel {
               result = ec_attr("BrainpoolP512R1") and keySize = 512
             }
 
-            /** Gets a predefined curve class instance with a specific key size (in bits). */
+            /** Gets a reference to a predefined curve class instance with a specific key size (in bits), as well as the origin of the class. */
             private DataFlow::Node curveClassInstanceWithKeySize(
-              DataFlow::TypeTracker t, int keySize
+              DataFlow::TypeTracker t, int keySize, DataFlow::Node origin
             ) {
               t.start() and
               result.asCfgNode().(CallNode).getFunction() =
-                curveClassWithKeySize(keySize).asCfgNode()
+                curveClassWithKeySize(keySize).asCfgNode() and
+              origin = result
               or
               exists(DataFlow::TypeTracker t2 |
-                result = curveClassInstanceWithKeySize(t2, keySize).track(t2, t)
+                result = curveClassInstanceWithKeySize(t2, keySize, origin).track(t2, t)
               )
             }
 
-            /** Gets a predefined curve class instance with a specific key size (in bits). */
-            DataFlow::Node curveClassInstanceWithKeySize(int keySize) {
-              result = curveClassInstanceWithKeySize(DataFlow::TypeTracker::end(), keySize)
+            /** Gets a reference to a predefined curve class instance with a specific key size (in bits), as well as the origin of the class. */
+            DataFlow::Node curveClassInstanceWithKeySize(int keySize, DataFlow::Node origin) {
+              result = curveClassInstanceWithKeySize(DataFlow::TypeTracker::end(), keySize, origin)
             }
           }
         }
@@ -505,9 +506,9 @@ private module CryptographyModel {
     }
 
     override int getKeySizeWithOrigin(DataFlow::Node origin) {
-      origin = this.getCurveArg() and
-      origin =
-        cryptography::hazmat::primitives::asymmetric::ec::curveClassInstanceWithKeySize(result)
+      this.getCurveArg() =
+        cryptography::hazmat::primitives::asymmetric::ec::curveClassInstanceWithKeySize(result,
+          origin)
     }
 
     // Note: There is not really a key-size argument, since it's always specified by the curve.
