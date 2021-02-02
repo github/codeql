@@ -36,8 +36,3 @@ methodsInModules
 | modules.rb:37:1:46:3 | Bar | modules.rb:38:3:39:5 | method_a |
 | modules.rb:37:1:46:3 | Bar | modules.rb:41:3:42:5 | method_b |
 | modules.rb:48:1:57:3 | Bar | modules.rb:52:3:53:5 | method_in_another_definition_of_foo_bar |
-classesInModules
-| modules.rb:4:1:24:3 | Foo | modules.rb:19:3:20:5 | ClassInFoo |
-| modules.rb:5:3:14:5 | Bar | modules.rb:6:5:7:7 | ClassInFooBar |
-| modules.rb:26:1:35:3 | Foo | modules.rb:30:3:31:5 | ClassInAnotherDefinitionOfFoo |
-| modules.rb:48:1:57:3 | Bar | modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar |

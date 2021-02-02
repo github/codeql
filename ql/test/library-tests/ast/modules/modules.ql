@@ -13,5 +13,3 @@ query predicate exprsInModules(Module m, int i, Expr e, string eClass) {
 }
 
 query predicate methodsInModules(Module mod, Method method) { method = mod.getAMethod() }
-
-query predicate classesInModules(Module m, Class c) { c = m.getAClass() }
