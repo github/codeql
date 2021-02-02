@@ -8,7 +8,7 @@ import SsaImplCommon
 /**
  * Holds if the `i`th node of basic block `bb` reads source variable `v`.
  */
-predicate variableReadActual(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v) {
+private predicate variableReadActual(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v) {
   v.getAnAccess().(AssignableRead) = bb.getNode(i).getElement()
 }
 
@@ -1102,6 +1102,11 @@ private module Cached {
     )
   }
 
+  cached
+  predicate isLiveAtEndOfBlock(Definition def, ControlFlow::BasicBlock bb) {
+    ssaDefReachesEndOfBlock(bb, def, _)
+  }
+
   private predicate adjacentDefReaches(
     Definition def, ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2
   ) {
@@ -1120,6 +1125,16 @@ private module Cached {
   ) {
     adjacentDefReaches(def, bb1, i1, bb2, i2) and
     variableReadActual(bb2, i2, _)
+  }
+
+  cached
+  AssignableRead getAReadAtNode(Definition def, ControlFlow::Node cfn) {
+    exists(Ssa::SourceVariable v, ControlFlow::BasicBlock bb, int i |
+      ssaDefReachesRead(v, def, bb, i) and
+      variableReadActual(bb, i, v) and
+      cfn = bb.getNode(i) and
+      result.getAControlFlowNode() = cfn
+    )
   }
 
   /**
