@@ -5956,6 +5956,20 @@
 | taint.cpp:560:8:560:12 | dest3 | taint.cpp:560:7:560:12 | * ... | TAINT |
 | taint.cpp:561:7:561:11 | ref arg dest4 | taint.cpp:562:8:562:12 | dest4 |  |
 | taint.cpp:562:8:562:12 | dest4 | taint.cpp:562:7:562:12 | * ... | TAINT |
+| taint.cpp:569:24:569:29 | source | taint.cpp:572:29:572:34 | source |  |
+| taint.cpp:570:23:570:30 | ,.-;:_ | taint.cpp:572:37:572:41 | delim |  |
+| taint.cpp:572:9:572:17 | tokenized | taint.cpp:572:9:572:42 | ... = ... |  |
+| taint.cpp:572:21:572:26 | call to strsep | taint.cpp:572:9:572:42 | ... = ... |  |
+| taint.cpp:572:21:572:26 | call to strsep | taint.cpp:573:10:573:18 | tokenized |  |
+| taint.cpp:572:21:572:26 | call to strsep | taint.cpp:574:11:574:19 | tokenized |  |
+| taint.cpp:572:28:572:34 | & ... | taint.cpp:572:21:572:26 | call to strsep | TAINT |
+| taint.cpp:572:28:572:34 | ref arg & ... | taint.cpp:572:29:572:34 | source |  |
+| taint.cpp:572:28:572:34 | ref arg & ... | taint.cpp:572:29:572:34 | source [inner post update] |  |
+| taint.cpp:572:29:572:34 | source | taint.cpp:572:21:572:26 | call to strsep | TAINT |
+| taint.cpp:572:29:572:34 | source | taint.cpp:572:28:572:34 | & ... |  |
+| taint.cpp:572:37:572:41 | delim | taint.cpp:572:21:572:26 | call to strsep | TAINT |
+| taint.cpp:573:10:573:18 | ref arg tokenized | taint.cpp:574:11:574:19 | tokenized |  |
+| taint.cpp:574:11:574:19 | tokenized | taint.cpp:574:10:574:19 | * ... | TAINT |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |

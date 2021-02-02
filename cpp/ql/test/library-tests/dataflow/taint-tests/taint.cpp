@@ -561,3 +561,16 @@ void test__mbsncat_l(unsigned char* dest1, unsigned const char* ptr, unsigned ch
 	sink(dest4);
 	sink(*dest4);
 }
+
+// --- strsep ---
+
+char *strsep(char**, const char *);
+
+void test_strsep(char *source) {
+  const char* delim = ",.-;:_";
+  char* tokenized;
+  while(tokenized = strsep(&source, delim)) {
+    sink(tokenized); // $ ast,ir
+    sink(*tokenized); // $ ast,ir
+  }
+}

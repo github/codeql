@@ -47,3 +47,42 @@ private class Strtok extends ArrayFunction, AliasFunction, TaintFunction, SideEf
     i = [0, 1] and buffer = true
   }
 }
+
+/**
+ * The function `strtok` is a variant of `strtok` that takes a `char**` parameter instead of
+ * a `char*` as the first parameter.
+ */
+private class Strsep extends ArrayFunction, AliasFunction, TaintFunction, SideEffectFunction {
+  Strsep() { this.hasGlobalName("strsep") }
+
+  override predicate hasArrayWithNullTerminator(int bufParam) { bufParam = 1 }
+
+  override predicate hasArrayInput(int bufParam) { bufParam = 1 }
+
+  override predicate parameterNeverEscapes(int index) { index = [0, 1] }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate parameterIsAlwaysReturned(int index) { none() }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // NOTE: What we really want here is: (input.isParameterDerefDeref(0) or input.isParameterDeref(1))
+    // as the first conjunct.
+    input.isParameterDeref([0, 1]) and
+    (output.isReturnValue() or output.isReturnValueDeref())
+  }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = 0 and buffer = false and mustWrite = false
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = 0 and buffer = false
+    or
+    i = 1 and buffer = true
+  }
+}
