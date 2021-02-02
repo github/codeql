@@ -1320,3 +1320,126 @@ private predicate onlyPossibleReturnOfNil(FuncDecl fd, FunctionOutput res, DataF
     isCertainlyNotNil(otherRet)
   )
 }
+
+/**
+ * Gets a predecessor of `succ` without following edges corresponding to
+ * passing constant case tests in the switch block which is switching on
+ * `protectedExpr`.
+ */
+private ControlFlow::Node getANonTestPassingPredecessor(ControlFlow::Node succ, Expr protectedExpr) {
+  result = succ.getAPredecessor() and
+  not exists(Expr testExpr |
+    ControlFlow::isSwitchCaseTestPassingEdge(result, succ, protectedExpr, testExpr) and
+    testExpr.isConst()
+  )
+}
+
+private ControlFlow::Node getANonTestPassingReachingNodeRecursive(
+  ControlFlow::Node n, Expr protectedExpr
+) {
+  result = n or
+  result =
+    getANonTestPassingReachingNodeRecursive(getANonTestPassingPredecessor(n, protectedExpr),
+      protectedExpr)
+}
+
+/**
+ * Gets a node by following predecessors from `ret` without following edges
+ * corresponding to passing constant test cases in switch blocks.
+ */
+private ControlFlow::Node getANonTestPassingReachingNodeBase(
+  IR::ReturnInstruction ret, Expr protectedExpr
+) {
+  protectedExpr.getEnclosingFunction() = ret.getReturnStmt().getEnclosingFunction() and
+  result = getANonTestPassingReachingNodeRecursive(ret, protectedExpr)
+}
+
+/**
+ * Holds if every way to get from the entry node of the function to `ret`
+ * involves passing a constant test case in the switch statement switching on
+ * `protectedExpr`.
+ */
+private predicate mustPassConstantCaseTestToReach(IR::ReturnInstruction ret, Expr protectedExpr) {
+  not exists(ControlFlow::Node entry | entry = ret.getRoot().getEntryNode() |
+    entry = getANonTestPassingReachingNodeBase(ret, protectedExpr)
+  )
+}
+
+/**
+ * Holds if whenever `outp` of function `f` satisfies `p`, the input `inp` of
+ * `f` was compared to a constant in a case clause of a switch statement.
+ *
+ * We check this by looking for guards on `inp` that dominate a `return` statement that
+ * is the only `return` in `f` that can return `true`. This means that if `f` returns `true`,
+ * the guard must have been satisfied. (Similar reasoning is applied for statements returning
+ * `false`, `nil` or a non-`nil` value.)
+ */
+predicate isListOfConstantsComparisonUsingFunctionSwitch(
+  Function f, FunctionInput inp, FunctionOutput outp, DataFlow::Property p
+) {
+  outp.isResult(_) and
+  exists(FuncDecl fd, ExpressionSwitchStmt ess, Node exprNode |
+    fd.getFunction() = f and
+    exprNode.asExpr() = ess.getExpr() and
+    localFlow(inp.getExitNode(fd), exprNode)
+  |
+    exists(boolean b |
+      p.isBoolean(b) and
+      forex(DataFlow::Node ret, IR::ReturnInstruction ri |
+        ret = outp.getEntryNode(f.getFuncDecl()) and
+        ri.getReturnStmt().getAnExpr() = ret.asExpr() and
+        possiblyReturnsBool(fd, outp, ret, b)
+      |
+        mustPassConstantCaseTestToReach(ri, ess.getExpr())
+      )
+    )
+    or
+    p.isNonNil() and
+    forex(DataFlow::Node ret, IR::ReturnInstruction ri |
+      ret = outp.getEntryNode(f.getFuncDecl()) and
+      ri.getReturnStmt().getAnExpr() = ret.asExpr() and
+      possiblyReturnsNonNil(fd, outp, ret)
+    |
+      mustPassConstantCaseTestToReach(ri, ess.getExpr())
+    )
+    or
+    p.isNil() and
+    forex(DataFlow::Node ret, IR::ReturnInstruction ri |
+      ret = outp.getEntryNode(f.getFuncDecl()) and
+      ri.getReturnStmt().getAnExpr() = ret.asExpr() and
+      ret.asExpr() = Builtin::nil().getAReference()
+    |
+      mustPassConstantCaseTestToReach(ri, ess.getExpr())
+    )
+  )
+}
+
+/**
+ * A comparison against a list of constants, acting as a sanitizer guard for
+ * `guardedExpr` by restricting it to a known value.
+ *
+ * Currently this only looks for functions containing a switch statement, but
+ * it could equally look for a check for membership of a constant map or
+ * constant array, which does not need to be in its own function.
+ */
+class ListOfConstantsComparisonSanitizerGuard extends TaintTracking::DefaultTaintSanitizerGuard {
+  DataFlow::Node guardedExpr;
+  boolean outcome;
+
+  ListOfConstantsComparisonSanitizerGuard() {
+    exists(
+      Function f, FunctionInput inp, FunctionOutput outp, DataFlow::CallNode call,
+      DataFlow::Property p, DataFlow::Node res
+    |
+      isListOfConstantsComparisonUsingFunctionSwitch(f, inp, outp, p) and
+      call = f.getACall() and
+      guardedExpr = inp.getNode(call) and
+      p.checkOn(this, outcome, res) and
+      DataFlow::localFlow(outp.getNode(call), res)
+    )
+  }
+
+  override predicate checks(Expr e, boolean branch) {
+    e = guardedExpr.asExpr() and branch = outcome
+  }
+}
