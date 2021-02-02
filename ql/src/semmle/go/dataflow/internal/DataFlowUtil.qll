@@ -1184,8 +1184,8 @@ abstract class BarrierGuard extends Node {
       fd.getFunction() = f and
       localFlow(inp.getExitNode(fd), arg) and
       ret = outp.getEntryNode(fd) and
-      // Case: a function like "if someBarrierGuard(arg) { return true } else { return false }"
       (
+        // Case: a function like "if someBarrierGuard(arg) { return true } else { return false }"
         exists(ControlFlow::ConditionGuardNode guard |
           guards(guard, arg) and
           guard.dominates(ret.getBasicBlock())
