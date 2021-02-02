@@ -392,6 +392,8 @@ FunctionPointer.cs:
 GlobalStmt.cs:
 #    7| [Class] <Program>$
 #    7|   4: [Method] <Main>$
+#-----|     2: (Parameters)
+#    1|       0: [Parameter] args
 #    7|     4: [BlockStmt] {...}
 #   11|       0: [ExprStmt] ...;
 #   11|         0: [MethodCall] call to method WriteLine
