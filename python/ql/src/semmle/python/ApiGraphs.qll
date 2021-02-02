@@ -230,14 +230,52 @@ module API {
       /** The root of the API graph. */
       MkRoot() or
       /** An abstract representative for imports of the module called `name`. */
-      MkModuleImport(string name) { imports(_, name) } or
+      MkModuleImport(string name) {
+        imports(_, name) or name = any(ImportExpr e | not e.isRelative()).getAnImportedModuleName()
+      } or
       /** A use of an API member at the node `nd`. */
       MkUse(DataFlow::Node nd) { use(_, _, nd) }
 
     class TUse = MkModuleImport or MkUse;
 
+    /**
+     * Holds if the dotted module name `sub` refers to the `member` member of `base`.
+     *
+     * For instance, `prefix_member("foo.bar", "baz", "foo.bar.baz")` would hold.
+     */
+    private predicate prefix_member(TApiNode base, string member, TApiNode sub) {
+      exists(string base_str, string sub_str |
+        base = MkModuleImport(base_str) and
+        sub = MkModuleImport(sub_str)
+      |
+        base_str + "." + member = sub_str and
+        not member.matches("%.%")
+      )
+    }
+
     /** Holds if `imp` is an import of a module named `name` */
-    private predicate imports(DataFlow::Node imp, string name) { imp = DataFlow::importNode(name) }
+    private predicate imports(DataFlow::Node import_node, string name) {
+      exists(Variable var, Import imp, Alias alias |
+        alias = imp.getAName() and
+        alias.getAsname() = var.getAStore() and
+        (
+          name = alias.getValue().(ImportMember).getImportedModuleName()
+          or
+          name = alias.getValue().(ImportExpr).getImportedModuleName() and
+          not alias.getValue().(ImportExpr).isRelative()
+        ) and
+        import_node.asExpr() = alias.getValue()
+      )
+      or
+      exists(ImportExpr imp_expr |
+        not imp_expr.isRelative() and
+        imp_expr.getName() = name and
+        import_node.asCfgNode().getNode() = imp_expr and
+        // in `import foo.bar` we DON'T want to give a result for `importNode("foo.bar")`,
+        // only for `importNode("foo")`. We exclude those cases with the following clause.
+        not exists(Import imp | imp.getAName().getValue() = imp_expr)
+      )
+    }
 
     /**
      * Holds if `ref` is a use of a node that should have an incoming edge from `base` labeled
@@ -248,9 +286,11 @@ module API {
       exists(DataFlow::LocalSourceNode src, DataFlow::LocalSourceNode pred |
         use(base, src) and pred = trackUseNode(src)
       |
+        // Reading an attribute on a node that is a use of `base`:
         lbl = Label::memberFromRef(ref) and
         ref = pred.getAnAttributeRead()
         or
+        // Calling a node that is a use of `base`
         lbl = Label::return() and
         ref = pred.getAnInvocation()
       )
@@ -263,7 +303,7 @@ module API {
     predicate use(TApiNode nd, DataFlow::Node ref) {
       exists(string name |
         nd = MkModuleImport(name) and
-        ref = DataFlow::importNode(name)
+        imports(ref, name)
       )
       or
       nd = MkUse(ref)
@@ -310,7 +350,15 @@ module API {
         pred = MkRoot() and
         lbl = Label::mod(m)
       |
-        succ = MkModuleImport(m)
+        succ = MkModuleImport(m) and
+        // Only allow undotted names to count as base modules.
+        not m.matches("%.%")
+      )
+      or
+      /* Step from the dotted module name `foo.bar` to `foo.bar.baz` along an edge labeled `baz` */
+      exists(string member |
+        prefix_member(pred, member, succ) and
+        lbl = Label::member(member)
       )
       or
       /* Every node that is a use of an API component is itself added to the API graph. */
