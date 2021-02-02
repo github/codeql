@@ -1187,7 +1187,7 @@ abstract class BarrierGuard extends Node {
       (
         // Case: a function like "if someBarrierGuard(arg) { return true } else { return false }"
         exists(ControlFlow::ConditionGuardNode guard |
-          guards(guard, arg) and
+          this.guards(guard, arg) and
           guard.dominates(ret.getBasicBlock())
         |
           exists(boolean b |
@@ -1221,7 +1221,7 @@ abstract class BarrierGuard extends Node {
           DataFlow::Property outpProp
         |
           not exists(DataFlow::Node otherRet | otherRet = outp.getEntryNode(fd) | otherRet != ret) and
-          guardingFunction(f2, inp2, outp2, outpProp) and
+          this.guardingFunction(f2, inp2, outp2, outpProp) and
           c = f2.getACall() and
           arg = inp2.getNode(c) and
           (
