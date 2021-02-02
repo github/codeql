@@ -6,7 +6,7 @@ from Cryptodome.Signature import DSS
 from Cryptodome.Hash import SHA256
 
 
-private_key = DSA.generate(2048)
+private_key = DSA.generate(2048) # $ MISSING: PublicKeyGeneration keySize=2048
 public_key = private_key.publickey()
 
 # ------------------------------------------------------------------------------

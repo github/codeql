@@ -3,7 +3,7 @@ from Crypto.Signature import DSS
 from Crypto.Hash import SHA256
 
 
-private_key = ECC.generate(curve="P-256")
+private_key = ECC.generate(curve="P-256") # $ MISSING: PublicKeyGeneration keySize=256
 public_key = private_key.public_key()
 
 # ------------------------------------------------------------------------------
