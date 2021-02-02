@@ -25,12 +25,12 @@ public class InsufficientKeySize {
         keyPairGen4.initialize(2048);
 
         KeyPairGenerator keyPairGen5 = KeyPairGenerator.getInstance("EC");
-        // BAD: Key size is less than 224
+        // BAD: Key size is less than 256
         ECGenParameterSpec ecSpec1 = new ECGenParameterSpec("secp112r1");
         keyPairGen5.initialize(ecSpec1);
 
         KeyPairGenerator keyPairGen6 = KeyPairGenerator.getInstance("EC");
-        // GOOD: Key size is no less than 224
+        // GOOD: Key size is no less than 256
         ECGenParameterSpec ecSpec2 = new ECGenParameterSpec("secp256r1");
         keyPairGen6.initialize(ecSpec2);
     }

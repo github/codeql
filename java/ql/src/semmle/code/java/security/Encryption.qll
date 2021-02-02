@@ -315,7 +315,7 @@ class JavaSecuritySignature extends JavaSecurityAlgoSpec {
   override Expr getAlgoSpec() { result = this.(ConstructorCall).getArgument(0) }
 }
 
-/** Method call to the Java class `java.security.KeyPairGenerator`. */
+/** A method call to the Java class `java.security.KeyPairGenerator`. */
 class JavaSecurityKeyPairGenerator extends JavaxCryptoAlgoSpec {
   JavaSecurityKeyPairGenerator() {
     exists(Method m | m.getAReference() = this |
