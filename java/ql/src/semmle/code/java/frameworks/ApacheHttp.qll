@@ -3,6 +3,7 @@
  */
 
 import java
+private import semmle.code.java.dataflow.FlowSteps
 
 class ApacheHttpGetParams extends Method {
   ApacheHttpGetParams() {
@@ -52,4 +53,64 @@ class ApacheHttpRequestHandlerParameter extends Parameter {
       this = m.getParameter(0)
     )
   }
+}
+
+private class ApacheHttpGetter extends TaintPreservingCallable {
+  ApacheHttpGetter() {
+    exists(string pkg, string ty, string mtd, Method m |
+      this.(Method).overrides*(m) and
+      m.getDeclaringType().hasQualifiedName(pkg, ty) and
+      m.hasName(mtd)
+    |
+      pkg = "org.apache.http" and
+      (
+        ty = "HttpMessage" and
+        mtd =
+          [
+            "getAllHeaders", "getFirstHeader", "getHeaders", "getLastHeader", "getParams",
+            "headerIterator"
+          ]
+        or
+        ty = "HttpRequest" and
+        mtd = "getRequestLine"
+        or
+        ty = "HttpEntityEnclosingRequest" and
+        mtd = "getEntity"
+        or
+        ty = "Header" and
+        mtd = "getElements"
+        or
+        ty = "HeaderElement" and
+        mtd = ["getName", "getParameter", "getParameterByName", "getParameters", "getValue"]
+        or
+        ty = "NameValuePair" and
+        mtd = ["getName", "getValue"]
+        or
+        ty = "HeaderIterator" and
+        mtd = "nextHeader"
+        or
+        ty = "HttpEntity" and
+        mtd = ["getContent", "getContentEncoding", "getContentType"]
+        or
+        ty = "RequestLine" and
+        mtd = ["getMethod", "getUri"]
+      )
+      or
+      pkg = "org.apache.http.params" and
+      ty = "HttpParams" and
+      mtd.matches("get%Parameter")
+    )
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = -1 }
+}
+
+private class EntityUtilMethod extends TaintPreservingCallable {
+  EntityUtilMethod() {
+    this.getDeclaringType().hasQualifiedName("org.apache.http.util", "EntityUtils") and
+    this.isStatic() and
+    this.hasName(["toString", "toByteArray"])
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = 0 }
 }

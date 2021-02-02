@@ -17,6 +17,7 @@ module Frameworks {
   private import semmle.code.java.frameworks.Protobuf
   private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.frameworks.apache.Lang
+  private import semmle.code.java.frameworks.ApacheHttp
 }
 
 /**
