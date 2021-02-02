@@ -1,5 +1,5 @@
 private import codeql_ruby.AST
-private import internal.Class
+private import internal.Module
 
 /**
  * A class definition.
@@ -199,5 +199,4 @@ class Module extends ExprSequence, @module {
    * ```
    */
   final Method getAMethod() { result = this.getAnExpr() }
-
 }
