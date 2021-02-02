@@ -174,34 +174,15 @@ private predicate inDefDominanceFrontier(BasicBlock bb, SourceVariable v) {
 }
 
 cached
-private module Cached {
-  cached
-  newtype TDefinition =
-    TWriteDef(SourceVariable v, BasicBlock bb, int i) {
-      variableWrite(bb, i, v, _) and
-      liveAfterWrite(bb, i, v)
-    } or
-    TPhiNode(SourceVariable v, BasicBlock bb) {
-      inDefDominanceFrontier(bb, v) and
-      liveAtEntry(bb, v)
-    }
-
-  cached
-  predicate uncertainWriteDefinitionInput(UncertainWriteDefinition def, Definition inp) {
-    lastRefRedef(inp, _, _, def)
+newtype TDefinition =
+  TWriteDef(SourceVariable v, BasicBlock bb, int i) {
+    variableWrite(bb, i, v, _) and
+    liveAfterWrite(bb, i, v)
+  } or
+  TPhiNode(SourceVariable v, BasicBlock bb) {
+    inDefDominanceFrontier(bb, v) and
+    liveAtEntry(bb, v)
   }
-
-  cached
-  predicate phiHasInputFromBlock(PhiNode phi, Definition inp, BasicBlock bb) {
-    exists(SourceVariable v, BasicBlock bbDef |
-      phi.definesAt(v, bbDef, _) and
-      getABasicBlockPredecessor(bbDef) = bb and
-      ssaDefReachesEndOfBlock(bb, inp, v)
-    )
-  }
-}
-
-import Cached
 
 private module SsaDefReaches {
   newtype TSsaRefKind =
@@ -409,6 +390,20 @@ predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def, SourceVariable 
 /**
  * NB: If this predicate is exposed, it should be cached.
  *
+ * Holds if `inp` is an input to the phi node `phi` along the edge originating in `bb`.
+ */
+pragma[nomagic]
+predicate phiHasInputFromBlock(PhiNode phi, Definition inp, BasicBlock bb) {
+  exists(SourceVariable v, BasicBlock bbDef |
+    phi.definesAt(v, bbDef, _) and
+    getABasicBlockPredecessor(bbDef) = bb and
+    ssaDefReachesEndOfBlock(bb, inp, v)
+  )
+}
+
+/**
+ * NB: If this predicate is exposed, it should be cached.
+ *
  * Holds if the SSA definition of `v` at `def` reaches a read at index `i` in
  * basic block `bb`, without crossing another SSA definition of `v`. The read
  * is of kind `rk`.
@@ -446,7 +441,11 @@ private predicate adjacentDefReachesRead(
   Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
 ) {
   adjacentDefRead(def, bb1, i1, bb2, i2) and
-  not variableRead(bb1, i1, def.getSourceVariable(), false)
+  exists(SourceVariable v | v = def.getSourceVariable() |
+    ssaRef(bb1, i1, v, SsaDef())
+    or
+    variableRead(bb1, i1, v, true)
+  )
   or
   exists(BasicBlock bb3, int i3 |
     adjacentDefReachesRead(def, bb1, i1, bb3, i3) and
@@ -488,6 +487,18 @@ predicate lastRefRedef(Definition def, BasicBlock bb, int i, Definition next) {
       1 = ssaRefRank(bb2, j, v, SsaDef())
     )
   )
+}
+
+/**
+ * NB: If this predicate is exposed, it should be cached.
+ *
+ * Holds if `inp` is an immediately preceding definition of uncertain definition
+ * `def`. Since `def` is uncertain, the value from the preceding definition might
+ * still be valid.
+ */
+pragma[nomagic]
+predicate uncertainWriteDefinitionInput(UncertainWriteDefinition def, Definition inp) {
+  lastRefRedef(inp, _, _, def)
 }
 
 private predicate adjacentDefReachesUncertainRead(
@@ -574,24 +585,6 @@ class Definition extends TDefinition {
   /** Gets the basic block to which this SSA definition belongs. */
   final BasicBlock getBasicBlock() { this.definesAt(_, result, _) }
 
-  /**
-   * Gets an SSA definition whose value can flow to this one in one step. This
-   * includes inputs to phi nodes and the prior definitions of uncertain writes.
-   */
-  private Definition getAPseudoInputOrPriorDefinition() {
-    result = this.(PhiNode).getAnInput() or
-    result = this.(UncertainWriteDefinition).getPriorDefinition()
-  }
-
-  /**
-   * Gets a definition that ultimately defines this SSA definition and is
-   * not itself a phi node.
-   */
-  Definition getAnUltimateDefinition() {
-    result = this.getAPseudoInputOrPriorDefinition*() and
-    not result instanceof PhiNode
-  }
-
   /** Gets a textual representation of this SSA definition. */
   string toString() { none() }
 }
@@ -609,12 +602,6 @@ class WriteDefinition extends Definition, TWriteDef {
 
 /** A phi node. */
 class PhiNode extends Definition, TPhiNode {
-  /** Gets an input of this phi node. */
-  Definition getAnInput() { this.hasInputFromBlock(result, _) }
-
-  /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
-  predicate hasInputFromBlock(Definition inp, BasicBlock bb) { phiHasInputFromBlock(this, inp, bb) }
-
   override string toString() { result = "Phi" }
 }
 
@@ -629,10 +616,4 @@ class UncertainWriteDefinition extends WriteDefinition {
       variableWrite(bb, i, v, false)
     )
   }
-
-  /**
-   * Gets the immediately preceding definition. Since this update is uncertain,
-   * the value from the preceding definition might still be valid.
-   */
-  Definition getPriorDefinition() { uncertainWriteDefinitionInput(this, result) }
 }

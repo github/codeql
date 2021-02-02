@@ -1075,7 +1075,7 @@ private module Cached {
     Ssa::ExplicitDefinition def, Ssa::ImplicitEntryDefinition edef,
     ControlFlow::Nodes::ElementNode c, boolean additionalCalls
   ) {
-    exists(Ssa::SourceVariable v, Definition def0, ControlFlow::BasicBlock bb, int i |
+    exists(Ssa::SourceVariable v, Ssa::Definition def0, ControlFlow::BasicBlock bb, int i |
       v = def.getSourceVariable() and
       capturedReadIn(_, _, v, edef.getSourceVariable(), c, additionalCalls) and
       def = def0.getAnUltimateDefinition() and
@@ -1107,6 +1107,11 @@ private module Cached {
   cached
   predicate isLiveAtEndOfBlock(Definition def, ControlFlow::BasicBlock bb) {
     ssaDefReachesEndOfBlock(bb, def, _)
+  }
+
+  cached
+  Definition phiHasInputFromBlock(PhiNode phi, ControlFlow::BasicBlock bb) {
+    phiHasInputFromBlock(phi, result, bb)
   }
 
   cached
@@ -1159,6 +1164,11 @@ private module Cached {
       variableReadActual(bb, i, _) and
       cfn = bb.getNode(i)
     )
+  }
+
+  cached
+  Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def) {
+    uncertainWriteDefinitionInput(def, result)
   }
 
   cached
