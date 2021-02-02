@@ -2,6 +2,7 @@
 from django.urls import path, re_path
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseNotFound
 from django.views import View
+import django.views.generic.base
 
 
 def url_match_xss(request, foo, bar, no_taint=None):  # $requestHandler routedParameter=foo routedParameter=bar
@@ -34,6 +35,12 @@ class ClassView(View, Foo):
 
     def get(self, request, untrusted):  # $ requestHandler routedParameter=untrusted
         return HttpResponse('ClassView get: {}'.format(untrusted))  # $HttpResponse
+
+
+# direct import with full path to `View` class
+class ClassView2(django.views.generic.base.View):
+    def get(self, request): # $ requestHandler
+        pass
 
 
 def show_articles(request, page_number=1):  # $requestHandler routedParameter=page_number

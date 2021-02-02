@@ -74,10 +74,10 @@ AsyncStreams.cs:
 #   42|         1: [TypeMention] bool
 DefaultInterfaceMethods.cs:
 #    3| [Interface] IPerson
-#    5|   4: [IndexerProperty] Name
+#    5|   4: [Property] Name
 #    5|     -1: [TypeMention] string
 #    5|     3: [Getter] get_Name
-#    7|   5: [IndexerProperty] Greeting
+#    7|   5: [Property] Greeting
 #    7|     -1: [TypeMention] string
 #    9|     3: [Getter] get_Greeting
 #    9|       4: [StringLiteral] "Hello"
@@ -95,7 +95,7 @@ DefaultInterfaceMethods.cs:
 #   13|         0: [PropertyCall] access to property Greeting
 #   13|         1: [StringLiteral] " "
 #   13|       1: [ParameterAccess] access to parameter name
-#   15|   7: [IndexerProperty] GreetingString
+#   15|   7: [Property] GreetingString
 #   15|     -1: [TypeMention] string
 #   15|     3: [Getter] get_GreetingString
 #   15|       4: [MethodCall] call to method Greet
@@ -105,11 +105,11 @@ DefaultInterfaceMethods.cs:
 #   20| [Class] Person
 #-----|   3: (Base types)
 #   20|     1: [TypeMention] IPerson
-#   22|   5: [IndexerProperty] Name
+#   22|   5: [Property] Name
 #   22|     -1: [TypeMention] string
 #   22|     3: [Getter] get_Name
 #   22|       4: [StringLiteral] "Petra"
-#   24|   6: [IndexerProperty] Greeting
+#   24|   6: [Property] Greeting
 #   24|     -1: [TypeMention] IPerson
 #   24|     -1: [TypeMention] string
 #   24|     3: [Getter] get_Greeting
@@ -141,11 +141,11 @@ NullableRefTypes.cs:
 #    9|     -1: [TypeMention] MyClass
 #   10|   6: [Field] B
 #   10|     -1: [TypeMention] MyClass
-#   13|   7: [IndexerProperty] C
+#   13|   7: [Property] C
 #   13|     -1: [TypeMention] MyClass
 #   13|     3: [Getter] get_C
 #   13|       4: [NullLiteral] null
-#   14|   8: [IndexerProperty] D
+#   14|   8: [Property] D
 #   14|     -1: [TypeMention] MyClass
 #   14|     3: [Getter] get_D
 #   14|       4: [ThisAccess] this access
@@ -417,7 +417,7 @@ NullableRefTypes.cs:
 #  110|       0: [NullLiteral] null
 #  112|   12: [Field] Property
 #  112|     -1: [TypeMention] MyClass
-#  113|   13: [IndexerProperty] RefProperty
+#  113|   13: [Property] RefProperty
 #  113|     -1: [TypeMention] MyClass
 #  113|     3: [Getter] get_RefProperty
 #  113|       4: [RefExpr] ref ...
@@ -502,7 +502,7 @@ NullableRefTypes.cs:
 #  154| [Class] DisabledNullability
 #  156|   5: [Field] f1
 #  156|     -1: [TypeMention] MyClass
-#  157|   6: [IndexerProperty] P
+#  157|   6: [Property] P
 #  157|     -1: [TypeMention] MyClass
 #  157|     3: [Getter] get_P
 #  157|       4: [ObjectCreation] object creation of type MyClass

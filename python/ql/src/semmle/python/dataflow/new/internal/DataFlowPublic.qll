@@ -143,7 +143,7 @@ class EssaNode extends Node, TEssaNode {
 
   override Scope getScope() { result = var.getScope() }
 
-  override Location getLocation() { result = var.getDefinition().getLocation() }
+  override Location getLocation() { result = var.getLocation() }
 }
 
 /** A data-flow node corresponding to a control-flow node. */

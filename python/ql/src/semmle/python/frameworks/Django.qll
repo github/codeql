@@ -35,7 +35,7 @@ private module Django {
    * WARNING: Only holds for a few predefined attributes.
    */
   private DataFlow::Node django_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["db", "urls", "http", "conf", "shortcuts"] and
+    attr_name in ["db", "urls", "http", "conf", "views", "shortcuts"] and
     (
       t.start() and
       result = DataFlow::importNode("django" + "." + attr_name)
@@ -1577,7 +1577,9 @@ private module Django {
               "View", "TemplateView", "RedirectView", "ArchiveIndexView", "YearArchiveView",
               "MonthArchiveView", "WeekArchiveView", "DayArchiveView", "TodayArchiveView",
               "DateDetailView", "DetailView", "FormView", "CreateView", "UpdateView", "DeleteView",
-              "ListView", "GenericViewError"
+              "ListView", "GenericViewError",
+              // modules
+              "base", "dates", "detail", "edit", "list"
             ] and
           (
             t.start() and
@@ -1613,6 +1615,254 @@ private module Django {
           result = generic_attr(DataFlow::TypeTracker::end(), attr_name)
         }
 
+        // -------------------------------------------------------------------------
+        // django.views.generic.base
+        // -------------------------------------------------------------------------
+        /** Gets a reference to the `django.views.generic.base` module. */
+        DataFlow::Node base() { result = generic_attr("base") }
+
+        /** Provides models for the `django.views.generic.base` module */
+        module base {
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.base` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          private DataFlow::Node base_attr(DataFlow::TypeTracker t, string attr_name) {
+            attr_name in ["RedirectView", "TemplateView", "View"] and
+            (
+              t.start() and
+              result = DataFlow::importNode("django.views.generic.base" + "." + attr_name)
+              or
+              t.startInAttr(attr_name) and
+              result = base()
+            )
+            or
+            // Due to bad performance when using normal setup with `base_attr(t2, attr_name).track(t2, t)`
+            // we have inlined that code and forced a join
+            exists(DataFlow::TypeTracker t2 |
+              exists(DataFlow::StepSummary summary |
+                base_attr_first_join(t2, attr_name, result, summary) and
+                t = t2.append(summary)
+              )
+            )
+          }
+
+          pragma[nomagic]
+          private predicate base_attr_first_join(
+            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+            DataFlow::StepSummary summary
+          ) {
+            DataFlow::StepSummary::step(base_attr(t2, attr_name), res, summary)
+          }
+
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.base` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          DataFlow::Node base_attr(string attr_name) {
+            result = base_attr(DataFlow::TypeTracker::end(), attr_name)
+          }
+        }
+
+        // -------------------------------------------------------------------------
+        // django.views.generic.dates
+        // -------------------------------------------------------------------------
+        /** Gets a reference to the `django.views.generic.dates` module. */
+        DataFlow::Node dates() { result = generic_attr("dates") }
+
+        /** Provides models for the `django.views.generic.dates` module */
+        module dates {
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.dates` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          private DataFlow::Node dates_attr(DataFlow::TypeTracker t, string attr_name) {
+            attr_name in [
+                "ArchiveIndexView", "DateDetailView", "DayArchiveView", "MonthArchiveView",
+                "TodayArchiveView", "WeekArchiveView", "YearArchiveView"
+              ] and
+            (
+              t.start() and
+              result = DataFlow::importNode("django.views.generic.dates" + "." + attr_name)
+              or
+              t.startInAttr(attr_name) and
+              result = dates()
+            )
+            or
+            // Due to bad performance when using normal setup with `dates_attr(t2, attr_name).track(t2, t)`
+            // we have inlined that code and forced a join
+            exists(DataFlow::TypeTracker t2 |
+              exists(DataFlow::StepSummary summary |
+                dates_attr_first_join(t2, attr_name, result, summary) and
+                t = t2.append(summary)
+              )
+            )
+          }
+
+          pragma[nomagic]
+          private predicate dates_attr_first_join(
+            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+            DataFlow::StepSummary summary
+          ) {
+            DataFlow::StepSummary::step(dates_attr(t2, attr_name), res, summary)
+          }
+
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.dates` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          DataFlow::Node dates_attr(string attr_name) {
+            result = dates_attr(DataFlow::TypeTracker::end(), attr_name)
+          }
+        }
+
+        // -------------------------------------------------------------------------
+        // django.views.generic.detail
+        // -------------------------------------------------------------------------
+        /** Gets a reference to the `django.views.generic.detail` module. */
+        DataFlow::Node detail() { result = generic_attr("detail") }
+
+        /** Provides models for the `django.views.generic.detail` module */
+        module detail {
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.detail` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          private DataFlow::Node detail_attr(DataFlow::TypeTracker t, string attr_name) {
+            attr_name in ["DetailView"] and
+            (
+              t.start() and
+              result = DataFlow::importNode("django.views.generic.detail" + "." + attr_name)
+              or
+              t.startInAttr(attr_name) and
+              result = detail()
+            )
+            or
+            // Due to bad performance when using normal setup with `detail_attr(t2, attr_name).track(t2, t)`
+            // we have inlined that code and forced a join
+            exists(DataFlow::TypeTracker t2 |
+              exists(DataFlow::StepSummary summary |
+                detail_attr_first_join(t2, attr_name, result, summary) and
+                t = t2.append(summary)
+              )
+            )
+          }
+
+          pragma[nomagic]
+          private predicate detail_attr_first_join(
+            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+            DataFlow::StepSummary summary
+          ) {
+            DataFlow::StepSummary::step(detail_attr(t2, attr_name), res, summary)
+          }
+
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.detail` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          DataFlow::Node detail_attr(string attr_name) {
+            result = detail_attr(DataFlow::TypeTracker::end(), attr_name)
+          }
+        }
+
+        // -------------------------------------------------------------------------
+        // django.views.generic.edit
+        // -------------------------------------------------------------------------
+        /** Gets a reference to the `django.views.generic.edit` module. */
+        DataFlow::Node edit() { result = generic_attr("edit") }
+
+        /** Provides models for the `django.views.generic.edit` module */
+        module edit {
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.edit` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          private DataFlow::Node edit_attr(DataFlow::TypeTracker t, string attr_name) {
+            attr_name in ["CreateView", "DeleteView", "FormView", "UpdateView"] and
+            (
+              t.start() and
+              result = DataFlow::importNode("django.views.generic.edit" + "." + attr_name)
+              or
+              t.startInAttr(attr_name) and
+              result = edit()
+            )
+            or
+            // Due to bad performance when using normal setup with `edit_attr(t2, attr_name).track(t2, t)`
+            // we have inlined that code and forced a join
+            exists(DataFlow::TypeTracker t2 |
+              exists(DataFlow::StepSummary summary |
+                edit_attr_first_join(t2, attr_name, result, summary) and
+                t = t2.append(summary)
+              )
+            )
+          }
+
+          pragma[nomagic]
+          private predicate edit_attr_first_join(
+            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+            DataFlow::StepSummary summary
+          ) {
+            DataFlow::StepSummary::step(edit_attr(t2, attr_name), res, summary)
+          }
+
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.edit` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          DataFlow::Node edit_attr(string attr_name) {
+            result = edit_attr(DataFlow::TypeTracker::end(), attr_name)
+          }
+        }
+
+        // -------------------------------------------------------------------------
+        // django.views.generic.list
+        // -------------------------------------------------------------------------
+        /** Gets a reference to the `django.views.generic.list` module. */
+        DataFlow::Node list() { result = generic_attr("list") }
+
+        /** Provides models for the `django.views.generic.list` module */
+        module list {
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.list` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          private DataFlow::Node list_attr(DataFlow::TypeTracker t, string attr_name) {
+            attr_name in ["ListView"] and
+            (
+              t.start() and
+              result = DataFlow::importNode("django.views.generic.list" + "." + attr_name)
+              or
+              t.startInAttr(attr_name) and
+              result = list()
+            )
+            or
+            // Due to bad performance when using normal setup with `list_attr(t2, attr_name).track(t2, t)`
+            // we have inlined that code and forced a join
+            exists(DataFlow::TypeTracker t2 |
+              exists(DataFlow::StepSummary summary |
+                list_attr_first_join(t2, attr_name, result, summary) and
+                t = t2.append(summary)
+              )
+            )
+          }
+
+          pragma[nomagic]
+          private predicate list_attr_first_join(
+            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+            DataFlow::StepSummary summary
+          ) {
+            DataFlow::StepSummary::step(list_attr(t2, attr_name), res, summary)
+          }
+
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.list` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          DataFlow::Node list_attr(string attr_name) {
+            result = list_attr(DataFlow::TypeTracker::end(), attr_name)
+          }
+        }
+
         /**
          * Provides models for the `django.views.generic.View` class and subclasses.
          *
@@ -1634,9 +1884,27 @@ private module Django {
                   "DeleteView", "ListView"
                 ])
             or
-            // `django.views.View` alias
+            // aliases
             t.start() and
-            result = views_attr("View")
+            (
+              // django.views.View
+              result = views_attr("View")
+              or
+              // django.views.generic.base.*
+              result = base::base_attr(_)
+              or
+              // django.views.generic.dates.*
+              result = dates::dates_attr(_)
+              or
+              // django.views.generic.detail.*
+              result = detail::detail_attr(_)
+              or
+              // django.views.generic.edit.*
+              result = edit::edit_attr(_)
+              or
+              // django.views.generic.list.*
+              result = list::list_attr(_)
+            )
             or
             // subclasses in project code
             result.asExpr().(ClassExpr).getABase() = subclassRef(t.continue()).asExpr()
