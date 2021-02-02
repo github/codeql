@@ -15,11 +15,6 @@ module Class {
 
     final ScopeResolution getNameScopeResolution() { result = generated.getName() }
 
-    final string getSuperclassName() {
-      result = generated.getSuperclass().getChild().(Generated::Token).getValue() or
-      result = generated.getSuperclass().getChild().(ScopeResolution).getName()
-    }
-
     final Expr getSuperclassExpr() { result = generated.getSuperclass().getChild() }
   }
 }
@@ -32,8 +27,6 @@ module SingletonClass {
 
     final Expr getValue() { result = generated.getValue() }
 
-    // TODO: delete me
-    final AstNode getAstNodeValue() { result = generated.getValue() }
   }
 }
 

@@ -66,11 +66,6 @@ class Class extends ExprSequence {
   final Method getAMethod() { result = this.getAnExpr() }
 
   /**
-   * DEPRECATED: temporary placeholder until we have a `ConstantAccess` class.
-   */
-  deprecated final string getSuperclassName() { result = range.getSuperclassName() }
-
-  /**
    * Gets the `Expr` used as the superclass in the class definition, if any.
    *
    * TODO: add example for `class A < Foo` once we have `ConstantAccess`
@@ -205,14 +200,4 @@ class Module extends ExprSequence, @module {
    */
   final Method getAMethod() { result = this.getAnExpr() }
 
-  /**
-   * Gets a class defined in this module.
-   * ```rb
-   * module Foo
-   *   class Bar
-   *   end
-   * end
-   * ```
-   */
-  final Class getAClass() { result = this.getAnExpr() }
 }
