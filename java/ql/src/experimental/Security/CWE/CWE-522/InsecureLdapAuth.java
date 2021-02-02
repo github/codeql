@@ -15,7 +15,7 @@ public class InsecureLdapAuth {
 		environment.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
 		environment.put(Context.PROVIDER_URL, ldapUrl);
 		environment.put(Context.REFERRAL, "follow");
-		env.put(Context.SECURITY_AUTHENTICATION, "simple");
+		environment.put(Context.SECURITY_AUTHENTICATION, "simple");
 		environment.put(Context.SECURITY_PRINCIPAL, ldapUserName);
 		environment.put(Context.SECURITY_CREDENTIALS, password);
 		DirContext dirContext = new InitialDirContext(environment);
