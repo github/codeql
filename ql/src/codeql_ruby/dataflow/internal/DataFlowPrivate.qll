@@ -123,7 +123,7 @@ private module Cached {
   predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
     exists(Ssa::Definition def | LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo))
     or
-    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::AssignmentCfgNode).getRhs()
+    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
   }
 
   cached

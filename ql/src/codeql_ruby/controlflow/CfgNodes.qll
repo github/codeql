@@ -193,6 +193,11 @@ module ExprNodes {
     final ExprCfgNode getRhs() { e.hasCfgChild(e.getRhs(), this, result) }
   }
 
+  /** A control-flow node that wraps an `AssignExpr` AST expression. */
+  class AssignExprCfgNode extends AssignmentCfgNode {
+    AssignExprCfgNode() { this.getExpr() instanceof AssignExpr }
+  }
+
   private class BinaryOperationExprChildMapping extends ExprChildMapping, BinaryOperation {
     override predicate relevantChild(Expr e) { e = this.getAnOperand() }
   }
