@@ -292,7 +292,7 @@ module API {
         or
         // Calling a node that is a use of `base`
         lbl = Label::return() and
-        ref = pred.getAnInvocation()
+        ref = pred.getACall()
       )
     }
 

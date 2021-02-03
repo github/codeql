@@ -477,9 +477,9 @@ class LocalSourceNode extends Node {
   AttrRead getAnAttributeRead() { result = getAnAttributeReference() }
 
   /**
-   * Gets an invocation (with our without `new`) of this node.
+   * Gets a call to this node.
    */
-  Node getAnInvocation() { Cached::invocation(this, result) }
+  Node getACall() { Cached::call(this, result) }
 }
 
 cached
@@ -521,12 +521,12 @@ private module Cached {
   }
 
   /**
-   * Holds if `func` flows to the callee of `invoke`.
+   * Holds if `func` flows to the callee of `call`.
    */
   cached
-  predicate invocation(LocalSourceNode func, Node invoke) {
-    exists(CfgNode n, CallNode call |
-      invoke.asCfgNode() = call and n.asCfgNode() = call.getFunction()
+  predicate call(LocalSourceNode func, Node call) {
+    exists(CfgNode n, CallNode call_node |
+      call.asCfgNode() = call_node and n.asCfgNode() = call_node.getFunction()
     |
       hasLocalSource(n, func)
     )
