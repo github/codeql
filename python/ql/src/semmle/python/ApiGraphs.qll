@@ -282,6 +282,13 @@ module API {
     cached
     predicate use(TApiNode base, string lbl, DataFlow::Node ref) {
       exists(DataFlow::LocalSourceNode src, DataFlow::LocalSourceNode pred |
+        // First, we find a predecessor of the node `ref` that we want to determine. The predecessor
+        // is any node that is a type-tracked use of a data flow node (`src`), which is itself a
+        // reference to the API node `base`.
+        //
+        // Once we have identified the predecessor, we define its relation to the successor `ref` as
+        // well as the label on the edge from `pred` to `ref`. This label describes the nature of
+        // the relationship between `pred` and `ref`.
         use(base, src) and pred = trackUseNode(src)
       |
         // Reading an attribute on a node that is a use of `base`:
