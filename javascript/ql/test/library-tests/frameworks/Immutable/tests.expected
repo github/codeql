@@ -1,0 +1,5 @@
+| immutable.js:1:16:1:26 | source("a") | immutable.js:2:6:2:13 | obj["a"] |
+| immutable.js:1:16:1:26 | source("a") | immutable.js:11:6:11:18 | map1.get("a") |
+| immutable.js:1:16:1:26 | source("a") | immutable.js:12:6:12:18 | map2.get("a") |
+| immutable.js:1:32:1:43 | source("b1") | immutable.js:8:6:8:18 | map1.get("b") |
+| immutable.js:1:32:1:43 | source("b1") | immutable.js:13:6:13:18 | map2.get("b") |
