@@ -9,6 +9,7 @@
  */
 
 import java
+import DataFlow
 import semmle.code.java.frameworks.Jndi
 import semmle.code.java.frameworks.Networking
 import semmle.code.java.dataflow.TaintTracking
@@ -167,7 +168,9 @@ class BasicAuthFlowConfig extends DataFlow::Configuration {
 
   /** Source of `simple` configuration. */
   override predicate isSource(DataFlow::Node src) {
-    exists(MethodAccess ma | isBasicAuthEnv(ma) and ma.getQualifier() = src.asExpr())
+    exists(MethodAccess ma |
+      isBasicAuthEnv(ma) and ma.getQualifier() = src.(PostUpdateNode).getPreUpdateNode().asExpr()
+    )
   }
 
   /** Sink of directory context creation. */
@@ -187,7 +190,9 @@ class SSLFlowConfig extends DataFlow::Configuration {
 
   /** Source of `ssl` configuration. */
   override predicate isSource(DataFlow::Node src) {
-    exists(MethodAccess ma | isSSLEnv(ma) and ma.getQualifier() = src.asExpr())
+    exists(MethodAccess ma |
+      isSSLEnv(ma) and ma.getQualifier() = src.(PostUpdateNode).getPreUpdateNode().asExpr()
+    )
   }
 
   /** Sink of directory context creation. */
