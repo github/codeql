@@ -12,4 +12,6 @@ sink(map1.get("a")); // NOT OK
 sink(map2.get("a")); // NOT OK
 sink(map2.get("b")); // OK - but still flagged [INCONSISTENCY]
 
-
+const map3 = map2.set("d", source("d"));
+sink(map1.get("d")); // OK
+sink(map3.get("d")); // NOT OK

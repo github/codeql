@@ -50,7 +50,12 @@ private module Immutable {
       pred = call.getOptionArgument(0, key) and
       result = call
     )
-    // TODO: map set.
+    or
+    exists(DataFlow::CallNode call | call = immutableMap().getMember("set").getACall() |
+      prop = mapValue(call.getArgument(0)) and
+      pred = call.getArgument(1) and
+      result = call
+    )
   }
 
   /**
