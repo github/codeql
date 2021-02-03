@@ -1682,6 +1682,112 @@ private module Stdlib {
   }
 }
 
+/**
+ * Provides models for the `Stdlib.BaseException` class
+ *
+ * See https://docs.python.org/3/library/exceptions.html#BaseException.
+ */
+module BaseException {
+  /** Gets a reference to the `Stdlib.BaseException` class. */
+  private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+    t.start() and
+    result.asExpr().(Name).getId() = "BaseException"
+    or
+    exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `Stdlib.BaseException` class. */
+  DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+  /**
+   * A source of an instance of `Stdlib.BaseException`.
+   *
+   * This can include instantiation of the class, return value from function
+   * calls, or a special parameter that will be set when functions are call by external
+   * library.
+   *
+   * Use `BaseException::instance()` predicate to get references to instances of `Stdlib.BaseException`.
+   */
+  abstract class InstanceSource extends DataFlow::Node { }
+
+  /** A direct instantiation of `Stdlib.BaseException`. */
+  private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+    override CallNode node;
+
+    ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+  }
+
+  /** Gets a reference to an instance of `Stdlib.BaseException`. */
+  private DataFlow::Node instance(DataFlow::TypeTracker t) {
+    t.start() and
+    result instanceof InstanceSource
+    or
+    exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+  }
+
+  /** Gets a reference to an instance of `Stdlib.BaseException`. */
+  DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+}
+
+/**
+ * Provides models for the `BaseException` class and subclasses.
+ */
+private module Exception {
+  /** Gets a reference to the `BaseHTTPRequestHandler` class or any subclass. */
+  private DataFlow::Node subclassRef(DataFlow::TypeTracker t) {
+    t.start() and
+    result = BaseException::classRef()
+    or
+    // subclasses in project code
+    result.asExpr().(ClassExpr).getABase() = subclassRef(t.continue()).asExpr()
+    or
+    exists(DataFlow::TypeTracker t2 | result = subclassRef(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `BaseException` class or any subclass. */
+  DataFlow::Node subclassRef() { result = subclassRef(DataFlow::TypeTracker::end()) }
+
+  /** A HTTPRequestHandler class definition (most likely in project code). */
+  class ExceptionClassDef extends Class {
+    ExceptionClassDef() { this.getParent() = subclassRef().asExpr() }
+  }
+
+  /**
+   * A source of instances of the `BaseException` class or any subclass, extend this class to model new instances.
+   *
+   * This can include instantiations of the class, return values from function
+   * calls, or a special parameter that will be set when functions are called by an external
+   * library.
+   *
+   * Use the predicate `classname::instance()` to get references to instances of the `Exception` class or any subclass.
+   */
+  abstract class InstanceSource extends DataFlow::Node { }
+
+  /** The `self` parameter in a method on the `BaseException` class or any subclass. */
+  private class SelfParam extends InstanceSource, DataFlow::ParameterNode {
+    SelfParam() { exists(ExceptionClassDef cls | cls.getAMethod().getArg(0) = this.getParameter()) }
+  }
+
+  /** Gets a reference to an instance of the `BaseException` class or any subclass. */
+  private DataFlow::Node instance(DataFlow::TypeTracker t) {
+    t.start() and
+    result instanceof InstanceSource
+    or
+    exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+  }
+
+  /** Gets a reference to an instance of the `BaseException` class or any subclass. */
+  DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+}
+
+private class Exception extends ExceptionSource::Range {
+  Exception() {
+    this = Exception::instance()
+    or
+    this.asExpr() = any(ExceptStmt s).getName()
+  }
+}
+
 // ---------------------------------------------------------------------------
 // OTHER
 // ---------------------------------------------------------------------------
