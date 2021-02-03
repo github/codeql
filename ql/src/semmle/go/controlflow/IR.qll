@@ -905,6 +905,7 @@ module IR {
 
     ReturnInstruction() { this = MkReturnNode(ret) }
 
+    /** Gets the corresponding `ReturnStmt`. */
     ReturnStmt getReturnStmt() { result = ret }
 
     /** Holds if this statement returns multiple results. */

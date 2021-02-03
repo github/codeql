@@ -1367,14 +1367,15 @@ private predicate mustPassConstantCaseTestToReach(IR::ReturnInstruction ret, Exp
 
 /**
  * Holds if whenever `outp` of function `f` satisfies `p`, the input `inp` of
- * `f` was compared to a constant in a case clause of a switch statement.
+ * `f` matched a constant in a case clause of a switch statement.
  *
- * We check this by looking for guards on `inp` that dominate a `return` statement that
- * is the only `return` in `f` that can return `true`. This means that if `f` returns `true`,
- * the guard must have been satisfied. (Similar reasoning is applied for statements returning
- * `false`, `nil` or a non-`nil` value.)
+ * We check this by looking for guards on `inp` that collectively dominate a
+ * `return` statement that is the only `return` in `f` that can return `true`.
+ * This means that if `f` returns `true`, one of the guards must have been
+ * satisfied. (Similar reasoning is applied for statements returning `false`,
+ * `nil` or a non-`nil` value.)
  */
-predicate isListOfConstantsComparisonUsingFunctionSwitch(
+predicate functionEnsuresInputIsConstant(
   Function f, FunctionInput inp, FunctionOutput outp, DataFlow::Property p
 ) {
   outp.isResult(_) and
@@ -1431,7 +1432,7 @@ class ListOfConstantsComparisonSanitizerGuard extends TaintTracking::DefaultTain
       Function f, FunctionInput inp, FunctionOutput outp, DataFlow::CallNode call,
       DataFlow::Property p, DataFlow::Node res
     |
-      isListOfConstantsComparisonUsingFunctionSwitch(f, inp, outp, p) and
+      functionEnsuresInputIsConstant(f, inp, outp, p) and
       call = f.getACall() and
       guardedExpr = inp.getNode(call) and
       p.checkOn(this, outcome, res) and
