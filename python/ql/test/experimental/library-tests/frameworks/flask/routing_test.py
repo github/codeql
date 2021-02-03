@@ -99,18 +99,18 @@ class WithoutKnownRoute2(MethodView):
 
 bp1 = flask.Blueprint("bp1", __name__)
 
-@bp1.route("/bp1/example/<foo>") # $ MISSING: routeSetup="/bp1/example/<foo>"
-def bp1_example(foo): # $ MISSING: requestHandler routedParameter=foo
-    return "bp 1 example foo={}".format(foo)
+@bp1.route("/bp1/example/<foo>") # $ routeSetup="/bp1/example/<foo>"
+def bp1_example(foo): # $ requestHandler routedParameter=foo
+    return "bp 1 example foo={}".format(foo) # $ HttpResponse
 
 app.register_blueprint(bp1) # by default, URL of blueprints are not changed
 
 
 bp2 = flask.Blueprint("bp2", __name__)
 
-@bp2.route("/example") # $ MISSING: routeSetup="/example"
-def bp2_example(): # $ MISSING: requestHandler
-    return "bp 2 example"
+@bp2.route("/example") # $ routeSetup="/example"
+def bp2_example(): # $ requestHandler
+    return "bp 2 example" # $ HttpResponse
 
 app.register_blueprint(bp2, url_prefix="/bp2") # but it is possible to add a url_prefix
 
