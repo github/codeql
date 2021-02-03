@@ -9,9 +9,20 @@ app.post('/path', function(req, res) {
     res.render('template', queryParameter); // NOT OK
 
     if (typeof bodyParameter === "string") {
-        res.render('template', bodyParameter); // OK - but still flagged [INCONSISTENCY]
+        res.render('template', bodyParameter); // OK
     }
-    res.render('template', queryParameter + ""); // OK - but still flagged [INCONSISTENCY]
+    res.render('template', queryParameter + ""); // OK
 
     res.render('template', {profile: bodyParameter}); // OK
+
+    indirect(res, queryParameter);
 }); 
+
+function indirect(res, obj) {
+    res.render("template", obj); // NOT OK
+
+    const str = obj + "";
+    res.render("template", str); // OK 
+
+    res.render("template", JSON.parse(str)); // NOT OK
+}

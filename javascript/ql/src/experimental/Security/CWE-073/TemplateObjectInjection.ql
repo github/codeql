@@ -11,8 +11,8 @@
  */
 
 import javascript
-import DataFlow
-import PathGraph
+import DataFlow::PathGraph
+import semmle.javascript.security.TaintedObject
 
 predicate isUsingHbsEngine() {
   Express::appCreation().getAMethodCall("set").getArgument(1).mayHaveStringValue("hbs")
@@ -21,19 +21,34 @@ predicate isUsingHbsEngine() {
 class HbsLFRTaint extends TaintTracking::Configuration {
   HbsLFRTaint() { this = "HbsLFRTaint" }
 
-  override predicate isSource(Node node) { node instanceof RemoteFlowSource }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(Node node) {
+  override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
+    TaintedObject::isSource(source, label)
+  }
+
+  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
+    label = TaintedObject::label() and
     exists(MethodCallExpr mc |
       Express::isResponse(mc.getReceiver()) and
       mc.getMethodName() = "render" and
-      node.asExpr() = mc.getArgument(1) and
+      sink.asExpr() = mc.getArgument(1) and
       isUsingHbsEngine()
     )
   }
+
+  override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
+    guard instanceof TaintedObject::SanitizerGuard
+  }
+
+  override predicate isAdditionalFlowStep(
+    DataFlow::Node src, DataFlow::Node trg, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl
+  ) {
+    TaintedObject::step(src, trg, inlbl, outlbl)
+  }
 }
 
-from HbsLFRTaint cfg, PathNode source, PathNode sink
+from HbsLFRTaint cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Template object injection due to $@.", source.getNode(),
   "user-provided value"
