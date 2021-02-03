@@ -196,11 +196,11 @@ module API {
   /** Gets the root node. */
   Root root() { any() }
 
-  /** 
-   * Gets a node corresponding to an import of module `m`. 
+  /**
+   * Gets a node corresponding to an import of module `m`.
    *
    * Note: You should only use this predicate for top level modules. If you want nodes corresponding to a submodule,
-   * you should use `.getMember` on the parent module. For example, for nodes corresponding to the module `foo.bar`, 
+   * you should use `.getMember` on the parent module. For example, for nodes corresponding to the module `foo.bar`,
    * use `moduleImport("foo").getMember("bar")`.
    */
   Node moduleImport(string m) { result = Impl::MkModuleImport(m) }
