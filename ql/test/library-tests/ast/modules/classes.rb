@@ -16,7 +16,7 @@ module MyModule; end
 class MyModule::MyClass
 end
 
-# a class with some methods and some other arbitrary expressions
+# a class with various expressions
 class Wibble
   def method_a
     puts 'a'
@@ -28,6 +28,12 @@ class Wibble
 
   some_method_call()
   $global_var = 123
+
+  class ClassInWibble
+  end
+
+  module ModuleInWibble
+  end
 end
 
 # a singleton class with some methods and some other arbitrary expressions

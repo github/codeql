@@ -1,4 +1,6 @@
 modules
+| classes.rb:15:1:15:20 | MyModule | Module | MyModule |
+| classes.rb:35:3:36:5 | ModuleInWibble | Module | ModuleInWibble |
 | modules.rb:1:1:2:3 | Empty | Module | Empty |
 | modules.rb:4:1:24:3 | Foo | Module | Foo |
 | modules.rb:5:3:14:5 | Bar | Module | Bar |
@@ -30,9 +32,16 @@ exprsInModules
 | modules.rb:48:1:57:3 | Bar | 2 | modules.rb:55:3:55:30 | call to puts | Call |
 | modules.rb:48:1:57:3 | Bar | 3 | modules.rb:56:3:56:17 | ... = ... | AssignExpr |
 methodsInModules
-| modules.rb:4:1:24:3 | Foo | modules.rb:16:3:17:5 | method_in_foo |
-| modules.rb:5:3:14:5 | Bar | modules.rb:9:5:10:7 | method_in_foo_bar |
-| modules.rb:26:1:35:3 | Foo | modules.rb:27:3:28:5 | method_in_another_definition_of_foo |
-| modules.rb:37:1:46:3 | Bar | modules.rb:38:3:39:5 | method_a |
-| modules.rb:37:1:46:3 | Bar | modules.rb:41:3:42:5 | method_b |
-| modules.rb:48:1:57:3 | Bar | modules.rb:52:3:53:5 | method_in_another_definition_of_foo_bar |
+| modules.rb:4:1:24:3 | Foo | modules.rb:16:3:17:5 | method_in_foo | method_in_foo |
+| modules.rb:5:3:14:5 | Bar | modules.rb:9:5:10:7 | method_in_foo_bar | method_in_foo_bar |
+| modules.rb:26:1:35:3 | Foo | modules.rb:27:3:28:5 | method_in_another_definition_of_foo | method_in_another_definition_of_foo |
+| modules.rb:37:1:46:3 | Bar | modules.rb:38:3:39:5 | method_a | method_a |
+| modules.rb:37:1:46:3 | Bar | modules.rb:41:3:42:5 | method_b | method_b |
+| modules.rb:48:1:57:3 | Bar | modules.rb:52:3:53:5 | method_in_another_definition_of_foo_bar | method_in_another_definition_of_foo_bar |
+classesInModules
+| modules.rb:4:1:24:3 | Foo | modules.rb:19:3:20:5 | ClassInFoo | ClassInFoo |
+| modules.rb:5:3:14:5 | Bar | modules.rb:6:5:7:7 | ClassInFooBar | ClassInFooBar |
+| modules.rb:26:1:35:3 | Foo | modules.rb:30:3:31:5 | ClassInAnotherDefinitionOfFoo | ClassInAnotherDefinitionOfFoo |
+| modules.rb:48:1:57:3 | Bar | modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar | ClassInAnotherDefinitionOfFooBar |
+modulesInModules
+| modules.rb:4:1:24:3 | Foo | modules.rb:5:3:14:5 | Bar | Bar |

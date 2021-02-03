@@ -1,0 +1,40 @@
+moduleBases
+| classes.rb:3:1:4:3 | Foo | Class |
+| classes.rb:7:1:8:3 | Bar | Class |
+| classes.rb:11:1:12:3 | Baz | Class |
+| classes.rb:15:1:15:20 | MyModule | Module |
+| classes.rb:16:1:17:3 | MyClass | Class |
+| classes.rb:20:1:37:3 | Wibble | Class |
+| classes.rb:32:3:33:5 | ClassInWibble | Class |
+| classes.rb:35:3:36:5 | ModuleInWibble | Module |
+| classes.rb:41:1:52:3 | class << ... | Class |
+| modules.rb:1:1:2:3 | Empty | Module |
+| modules.rb:4:1:24:3 | Foo | Module |
+| modules.rb:5:3:14:5 | Bar | Module |
+| modules.rb:6:5:7:7 | ClassInFooBar | Class |
+| modules.rb:19:3:20:5 | ClassInFoo | Class |
+| modules.rb:26:1:35:3 | Foo | Module |
+| modules.rb:30:3:31:5 | ClassInAnotherDefinitionOfFoo | Class |
+| modules.rb:37:1:46:3 | Bar | Module |
+| modules.rb:48:1:57:3 | Bar | Module |
+| modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar | Class |
+moduleBaseClasses
+| classes.rb:20:1:37:3 | Wibble | classes.rb:32:3:33:5 | ClassInWibble |
+| modules.rb:4:1:24:3 | Foo | modules.rb:19:3:20:5 | ClassInFoo |
+| modules.rb:5:3:14:5 | Bar | modules.rb:6:5:7:7 | ClassInFooBar |
+| modules.rb:26:1:35:3 | Foo | modules.rb:30:3:31:5 | ClassInAnotherDefinitionOfFoo |
+| modules.rb:48:1:57:3 | Bar | modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar |
+moduleBaseMethods
+| classes.rb:20:1:37:3 | Wibble | classes.rb:21:3:23:5 | method_a |
+| classes.rb:20:1:37:3 | Wibble | classes.rb:25:3:27:5 | method_b |
+| classes.rb:41:1:52:3 | class << ... | classes.rb:42:3:44:5 | length |
+| classes.rb:41:1:52:3 | class << ... | classes.rb:46:3:48:5 | wibble |
+| modules.rb:4:1:24:3 | Foo | modules.rb:16:3:17:5 | method_in_foo |
+| modules.rb:5:3:14:5 | Bar | modules.rb:9:5:10:7 | method_in_foo_bar |
+| modules.rb:26:1:35:3 | Foo | modules.rb:27:3:28:5 | method_in_another_definition_of_foo |
+| modules.rb:37:1:46:3 | Bar | modules.rb:38:3:39:5 | method_a |
+| modules.rb:37:1:46:3 | Bar | modules.rb:41:3:42:5 | method_b |
+| modules.rb:48:1:57:3 | Bar | modules.rb:52:3:53:5 | method_in_another_definition_of_foo_bar |
+moduleBaseModules
+| classes.rb:20:1:37:3 | Wibble | classes.rb:35:3:36:5 | ModuleInWibble |
+| modules.rb:4:1:24:3 | Foo | modules.rb:5:3:14:5 | Bar |

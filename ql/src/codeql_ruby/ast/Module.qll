@@ -2,6 +2,31 @@ private import codeql_ruby.AST
 private import internal.Module
 
 /**
+ * The base class for classes, singleton classes, and modules.
+ */
+class ModuleBase extends BodyStatement {
+  override ModuleBase::Range range;
+
+  /** Gets a method defined in this module/class. */
+  Method getAMethod() { result = this.getAnExpr() }
+
+  /** Gets the method named `name` in this module/class, if any. */
+  Method getMethod(string name) { result = this.getAMethod() and result.getName() = name }
+
+  /** Gets a class defined in this module/class. */
+  Class getAClass() { result = this.getAnExpr() }
+
+  /** Gets the class named `name` in this module/class, if any. */
+  Class getClass(string name) { result = this.getAClass() and result.getName() = name }
+
+  /** Gets a module defined in this module/class. */
+  Module getAModule() { result = this.getAnExpr() }
+
+  /** Gets the module named `name` in this module/class, if any. */
+  Module getModule(string name) { result = this.getAModule() and result.getName() = name }
+}
+
+/**
  * A class definition.
  *
  * ```rb
@@ -11,7 +36,7 @@ private import internal.Module
  * end
  * ```
  */
-class Class extends ExprSequence {
+class Class extends ModuleBase {
   final override Class::Range range;
 
   final override string getAPrimaryQlClass() { result = "Class" }
@@ -55,17 +80,6 @@ class Class extends ExprSequence {
   final ScopeResolution getNameScopeResolution() { result = range.getNameScopeResolution() }
 
   /**
-   * Gets a method defined in this class.
-   * ```rb
-   * class Foo
-   *   def bar
-   *   end
-   * end
-   * ```
-   */
-  final Method getAMethod() { result = this.getAnExpr() }
-
-  /**
    * Gets the `Expr` used as the superclass in the class definition, if any.
    *
    * TODO: add example for `class A < Foo` once we have `ConstantAccess`
@@ -91,7 +105,7 @@ class Class extends ExprSequence {
  * end
  * ```
  */
-class SingletonClass extends ExprSequence, @singleton_class {
+class SingletonClass extends ModuleBase, @singleton_class {
   final override SingletonClass::Range range;
 
   final override string getAPrimaryQlClass() { result = "Class" }
@@ -108,17 +122,6 @@ class SingletonClass extends ExprSequence, @singleton_class {
    * ```
    */
   final Expr getValue() { result = range.getValue() }
-
-  /**
-   * Gets a method defined in this singleton class.
-   * ```rb
-   * class << foo
-   *   def bar
-   *   end
-   * end
-   * ```
-   */
-  final Method getAMethod() { result = this.getAnExpr() }
 }
 
 /**
@@ -146,7 +149,7 @@ class SingletonClass extends ExprSequence, @singleton_class {
  * end
  * ```
  */
-class Module extends ExprSequence, @module {
+class Module extends ModuleBase, @module {
   final override Module::Range range;
 
   final override string getAPrimaryQlClass() { result = "Module" }
@@ -188,15 +191,4 @@ class Module extends ExprSequence, @module {
    * ```
    */
   final ScopeResolution getNameScopeResolution() { result = range.getNameScopeResolution() }
-
-  /**
-   * Gets a method defined in this module.
-   * ```rb
-   * module Foo
-   *   def bar
-   *   end
-   * end
-   * ```
-   */
-  final Method getAMethod() { result = this.getAnExpr() }
 }

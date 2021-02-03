@@ -143,6 +143,15 @@ class ExprSequence extends Expr {
 }
 
 /**
+ * A sequence of expressions representing the body of a method, class, module,
+ * or do-block. That is, any body that may also include rescue/ensure/else
+ * statements.
+ */
+class BodyStatement extends ExprSequence {
+  override BodyStatement::Range range;
+}
+
+/**
  * A scope resolution, typically used to access constants defined in a class or
  * module.
  * ```rb

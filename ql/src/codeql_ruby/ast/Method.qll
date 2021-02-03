@@ -18,7 +18,7 @@ class Callable extends Expr, CfgScope {
 }
 
 /** A method. */
-class Method extends Callable, @method {
+class Method extends Callable, BodyStatement, @method {
   final override Method::Range range;
 
   final override string getAPrimaryQlClass() { result = "Method" }
@@ -42,7 +42,7 @@ class Method extends Callable, @method {
 }
 
 /** A singleton method. */
-class SingletonMethod extends Callable, @singleton_method {
+class SingletonMethod extends Callable, BodyStatement, @singleton_method {
   final override SingletonMethod::Range range;
 
   final override string getAPrimaryQlClass() { result = "SingletonMethod" }
@@ -73,7 +73,7 @@ class Block extends AstNode, Callable {
 }
 
 /** A block enclosed within `do` and `end`. */
-class DoBlock extends Block, @do_block {
+class DoBlock extends Block, BodyStatement, @do_block {
   final override DoBlock::Range range;
 
   final override string getAPrimaryQlClass() { result = "DoBlock" }
