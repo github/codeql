@@ -286,11 +286,11 @@ private module CryptodomeModel {
    *
    * See https://pycryptodome.readthedocs.io/en/latest/src/public_key/rsa.html#Crypto.PublicKey.RSA.generate
    */
-  class CryptodomePublicKeyRSAGenerateCall extends Cryptography::PublicKey::KeyGeneration::RSARange,
+  class CryptodomePublicKeyRsaGenerateCall extends Cryptography::PublicKey::KeyGeneration::RsaRange,
     DataFlow::CfgNode {
     override CallNode node;
 
-    CryptodomePublicKeyRSAGenerateCall() {
+    CryptodomePublicKeyRsaGenerateCall() {
       node.getFunction() = Cryptodome::PublicKey::RSA::generate().asCfgNode()
     }
 
@@ -304,11 +304,11 @@ private module CryptodomeModel {
    *
    * See https://pycryptodome.readthedocs.io/en/latest/src/public_key/dsa.html#Crypto.PublicKey.DSA.generate
    */
-  class CryptodomePublicKeyDSAGenerateCall extends Cryptography::PublicKey::KeyGeneration::DSARange,
+  class CryptodomePublicKeyDsaGenerateCall extends Cryptography::PublicKey::KeyGeneration::DsaRange,
     DataFlow::CfgNode {
     override CallNode node;
 
-    CryptodomePublicKeyDSAGenerateCall() {
+    CryptodomePublicKeyDsaGenerateCall() {
       node.getFunction() = Cryptodome::PublicKey::DSA::generate().asCfgNode()
     }
 
@@ -322,7 +322,7 @@ private module CryptodomeModel {
    *
    * See https://pycryptodome.readthedocs.io/en/latest/src/public_key/ecc.html#Crypto.PublicKey.ECC.generate
    */
-  class CryptodomePublicKeyEccGenerateCall extends Cryptography::PublicKey::KeyGeneration::ECCRange,
+  class CryptodomePublicKeyEccGenerateCall extends Cryptography::PublicKey::KeyGeneration::EccRange,
     DataFlow::CfgNode {
     override CallNode node;
 

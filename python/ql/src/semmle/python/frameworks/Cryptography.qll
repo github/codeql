@@ -453,11 +453,11 @@ private module CryptographyModel {
    *
    * See https://cryptography.io/en/latest/hazmat/primitives/asymmetric/rsa.html#cryptography.hazmat.primitives.asymmetric.rsa.generate_private_key
    */
-  class CryptographyRSAGeneratePrivateKeyCall extends Cryptography::PublicKey::KeyGeneration::RSARange,
+  class CryptographyRsaGeneratePrivateKeyCall extends Cryptography::PublicKey::KeyGeneration::RsaRange,
     DataFlow::CfgNode {
     override CallNode node;
 
-    CryptographyRSAGeneratePrivateKeyCall() {
+    CryptographyRsaGeneratePrivateKeyCall() {
       node.getFunction() =
         cryptography::hazmat::primitives::asymmetric::rsa::generate_private_key().asCfgNode()
     }
@@ -472,11 +472,11 @@ private module CryptographyModel {
    *
    * See https://cryptography.io/en/latest/hazmat/primitives/asymmetric/dsa.html#cryptography.hazmat.primitives.asymmetric.dsa.generate_private_key
    */
-  class CryptographyDSAGeneratePrivateKeyCall extends Cryptography::PublicKey::KeyGeneration::DSARange,
+  class CryptographyDsaGeneratePrivateKeyCall extends Cryptography::PublicKey::KeyGeneration::DsaRange,
     DataFlow::CfgNode {
     override CallNode node;
 
-    CryptographyDSAGeneratePrivateKeyCall() {
+    CryptographyDsaGeneratePrivateKeyCall() {
       node.getFunction() =
         cryptography::hazmat::primitives::asymmetric::dsa::generate_private_key().asCfgNode()
     }
@@ -491,11 +491,11 @@ private module CryptographyModel {
    *
    * See https://cryptography.io/en/latest/hazmat/primitives/asymmetric/ec.html#cryptography.hazmat.primitives.asymmetric.ec.generate_private_key
    */
-  class CryptographyECGeneratePrivateKeyCall extends Cryptography::PublicKey::KeyGeneration::ECCRange,
+  class CryptographyEcGeneratePrivateKeyCall extends Cryptography::PublicKey::KeyGeneration::EccRange,
     DataFlow::CfgNode {
     override CallNode node;
 
-    CryptographyECGeneratePrivateKeyCall() {
+    CryptographyEcGeneratePrivateKeyCall() {
       node.getFunction() =
         cryptography::hazmat::primitives::asymmetric::ec::generate_private_key().asCfgNode()
     }
