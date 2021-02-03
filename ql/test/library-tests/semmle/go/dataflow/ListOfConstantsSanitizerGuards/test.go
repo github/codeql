@@ -67,7 +67,7 @@ func switchStatementReturningNonNilOnlyWhenConstant(s string) (string, error) {
 	case getRandomString():
 		return "no error", nil
 	case "another string literal":
-		return "no error", nil
+		fallthrough
 	default:
 		return "no error", nil
 	}
@@ -77,8 +77,10 @@ func switchStatementReturningNilOnlyWhenConstant(s string) *string {
 	t := s
 	switch t {
 	case "string literal":
+		fallthrough
+	case constantGlobalVariable:
 		return nil
-	case constantGlobalVariable, "another string literal":
+	case "another string literal":
 		str := "matches random string"
 		return &str
 	}
