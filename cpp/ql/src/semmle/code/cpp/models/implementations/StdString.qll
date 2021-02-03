@@ -293,6 +293,9 @@ private class StdIStreamIn extends DataFlowFunction, TaintFunction {
     // returns reference to `*this`
     input.isQualifierAddress() and
     output.isReturnValue()
+    or
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -319,6 +322,9 @@ private class StdIStreamInNonMember extends DataFlowFunction, TaintFunction {
     // flow from first parameter to return value
     input.isParameter(0) and
     output.isReturnValue()
+    or
+    input.isParameterDeref(0) and
+    output.isReturnValueDeref()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -361,6 +367,9 @@ private class StdIStreamRead extends DataFlowFunction, TaintFunction {
     // returns reference to `*this`
     input.isQualifierAddress() and
     output.isReturnValue()
+    or
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -397,6 +406,9 @@ private class StdIStreamPutBack extends DataFlowFunction, TaintFunction {
     // returns reference to `*this`
     input.isQualifierAddress() and
     output.isReturnValue()
+    or
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -430,6 +442,9 @@ private class StdIStreamGetLine extends DataFlowFunction, TaintFunction {
     // returns reference to `*this`
     input.isQualifierAddress() and
     output.isReturnValue()
+    or
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -453,6 +468,9 @@ private class StdGetLine extends DataFlowFunction, TaintFunction {
     // flow from first parameter to return value
     input.isParameter(0) and
     output.isReturnValue()
+    or
+    input.isParameterDeref(0) and
+    output.isReturnValueDeref()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -486,6 +504,9 @@ private class StdOStreamOut extends DataFlowFunction, TaintFunction {
     // returns reference to `*this`
     input.isQualifierAddress() and
     output.isReturnValue()
+    or
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -522,6 +543,9 @@ private class StdOStreamOutNonMember extends DataFlowFunction, TaintFunction {
     // flow from first parameter to return value
     input.isParameter(0) and
     output.isReturnValue()
+    or
+    input.isParameterDeref(0) and
+    output.isReturnValueDeref()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -605,6 +629,9 @@ private class StdStreamFunction extends DataFlowFunction, TaintFunction {
     // returns reference to `*this`
     input.isQualifierAddress() and
     output.isReturnValue()
+    or
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

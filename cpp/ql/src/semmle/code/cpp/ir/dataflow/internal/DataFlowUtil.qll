@@ -911,27 +911,6 @@ private predicate modelFlow(Operand opFrom, Instruction iTo) {
       )
     )
   )
-  or
-  impliedModelFlow(opFrom, iTo)
-}
-
-/**
- * When a `DataFlowFunction` specifies dataflow from a parameter `p` to the return value there should
- * also be dataflow from the parameter dereference (i.e., `*p`) to the return value dereference.
- */
-private predicate impliedModelFlow(Operand opFrom, Instruction iTo) {
-  exists(
-    CallInstruction call, DataFlowFunction func, FunctionInput modelIn, FunctionOutput modelOut,
-    int index
-  |
-    call.getStaticCallTarget() = func and
-    func.hasDataFlow(modelIn, modelOut)
-  |
-    modelIn.isParameterOrQualifierAddress(index) and
-    modelOut.isReturnValue() and
-    opFrom = getSideEffectFor(call, index).(ReadSideEffectInstruction).getSideEffectOperand() and
-    iTo = call // TODO: Add write side effects for return values
-  )
 }
 
 /**

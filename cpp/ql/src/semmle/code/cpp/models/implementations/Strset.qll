@@ -40,6 +40,9 @@ private class StrsetFunction extends ArrayFunction, DataFlowFunction, AliasFunct
     // flow from the input string to the output string
     input.isParameter(0) and
     output.isReturnValue()
+    or
+    input.isParameterDeref(0) and
+    output.isReturnValueDeref()
   }
 
   override predicate parameterNeverEscapes(int index) { none() }

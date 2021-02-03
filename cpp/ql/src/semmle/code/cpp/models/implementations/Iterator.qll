@@ -109,6 +109,8 @@ private class IteratorCrementOperator extends Operator, DataFlowFunction {
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input = iteratorInput and
     output.isReturnValue()
+    or
+    input.isParameterDeref(0) and output.isReturnValueDeref()
   }
 }
 
@@ -159,6 +161,8 @@ private class IteratorAssignArithmeticOperator extends Operator, DataFlowFunctio
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isParameter(0) and
     output.isReturnValue()
+    or
+    input.isParameterDeref(0) and output.isReturnValueDeref()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -201,6 +205,9 @@ private class IteratorCrementMemberOperator extends MemberFunction, DataFlowFunc
     or
     input.isReturnValueDeref() and
     output.isQualifierObject()
+    or
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
