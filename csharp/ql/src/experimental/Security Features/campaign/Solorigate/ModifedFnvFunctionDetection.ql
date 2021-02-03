@@ -14,19 +14,19 @@ import Solorigate
 import microsoft.code.csharp.Cryptography.NonCryptographicHashes
 
 from Variable v, Literal l, LoopStmt loop, Expr additional_xor
-where maybeUsedInFNVFunction( v, _, _, loop)
-	and (
-		exists( BitwiseXorExpr xor2 |
-		 	xor2.getAnOperand() = l and additional_xor = xor2 |
-	 		loop.getAControlFlowNode().getASuccessor*() = xor2.getAControlFlowNode()
-	 		and xor2.getAnOperand() = v.getAnAccess()
-	 	) or exists( AssignXorExpr xor2 |
-		 	xor2.getAnOperand() = l and additional_xor = xor2  |
-	 		loop.getAControlFlowNode().getASuccessor*() = xor2.getAControlFlowNode()
-	 		and xor2.getAnOperand() = v.getAnAccess()
-	 	)
-	 )
- select l, "The variable $@ seems to be used as part of a FNV-like hash calculation, that is modified by an additional $@ expression using literal $@."
-	, v, v.toString()
-	, additional_xor, "xor"
-	, l, l.toString()
+where
+  maybeUsedInFNVFunction(v, _, _, loop) and
+  (
+    exists(BitwiseXorExpr xor2 | xor2.getAnOperand() = l and additional_xor = xor2 |
+      loop.getAControlFlowNode().getASuccessor*() = xor2.getAControlFlowNode() and
+      xor2.getAnOperand() = v.getAnAccess()
+    )
+    or
+    exists(AssignXorExpr xor2 | xor2.getAnOperand() = l and additional_xor = xor2 |
+      loop.getAControlFlowNode().getASuccessor*() = xor2.getAControlFlowNode() and
+      xor2.getAnOperand() = v.getAnAccess()
+    )
+  )
+select l,
+  "The variable $@ seems to be used as part of a FNV-like hash calculation, that is modified by an additional $@ expression using literal $@.",
+  v, v.toString(), additional_xor, "xor", l, l.toString()

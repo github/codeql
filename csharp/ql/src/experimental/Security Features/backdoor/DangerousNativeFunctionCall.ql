@@ -20,34 +20,35 @@ predicate isDangerousMethod(Method m) {
   m.getName().matches("LogonUser%") or
   m.getName().matches("WNetAddConnection%") or
   m.getName() = "DeviceIoControl" or
-  m.getName().matches ("LoadLibrary%") or
+  m.getName().matches("LoadLibrary%") or
   m.getName() = "GetProcAddress" or
-  m.getName().matches ("CreateProcess%") or
-  m.getName().matches ("InitiateSystemShutdown%") or
+  m.getName().matches("CreateProcess%") or
+  m.getName().matches("InitiateSystemShutdown%") or
   m.getName() = "GetCurrentProcess" or
   m.getName() = "GetCurrentProcessToken" or
   m.getName() = "GetCurrentThreadToken" or
   m.getName() = "GetCurrentThreadEffectiveToken" or
   m.getName() = "OpenThreadToken" or
   m.getName() = "SetTokenInformation" or
-  m.getName().matches ("LookupPrivilegeValue%") or
+  m.getName().matches("LookupPrivilegeValue%") or
   m.getName() = "AdjustTokenPrivileges" or
   m.getName() = "SetProcessPrivilege" or
   m.getName() = "ImpersonateLoggedOnUser" or
-  m.getName().matches ("Add%Ace%")
+  m.getName().matches("Add%Ace%")
 }
 
 predicate isExternMethod(Method externMethod) {
   externMethod.isExtern()
   or
   externMethod.getAnAttribute().getType() instanceof
-      SystemRuntimeInteropServicesDllImportAttributeClass
+    SystemRuntimeInteropServicesDllImportAttributeClass
   or
   externMethod.getDeclaringType().getAnAttribute().getType() instanceof
-      SystemRuntimeInteropServicesComImportAttributeClass
+    SystemRuntimeInteropServicesComImportAttributeClass
 }
-  
+
 from MethodCall mc
-where isExternMethod(mc.getTarget()) 
-and isDangerousMethod(mc.getTarget())
+where
+  isExternMethod(mc.getTarget()) and
+  isDangerousMethod(mc.getTarget())
 select mc, "Call to an external method $@", mc, mc.toString()
