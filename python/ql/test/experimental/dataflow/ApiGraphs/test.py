@@ -22,9 +22,11 @@ abc = ab.c #$ use=moduleImport("a").getMember("b").getMember("c")
 
 abcd = abc.d #$ use=moduleImport("a").getMember("b").getMember("c").getMember("d")
 
-x5 = abcd() #$ use=moduleImport("a").getMember("b").getMember("c").getMember("d").getReturn()
+x5 = abcd.method() #$ use=moduleImport("a").getMember("b").getMember("c").getMember("d").getMember("method").getReturn()
 
-y5 = x5.method() #$ use=moduleImport("a").getMember("b").getMember("c").getMember("d").getReturn().getMember("method").getReturn()
+from a6 import m6 #$ use=moduleImport("a6").getMember("m6")
+
+x6 = m6().foo().bar() #$ use=moduleImport("a6").getMember("m6").getReturn().getMember("foo").getReturn().getMember("bar").getReturn()
 
 
 # Relative imports. These are ignored
@@ -32,3 +34,34 @@ y5 = x5.method() #$ use=moduleImport("a").getMember("b").getMember("c").getMembe
 from .foo import bar
 
 from ..foobar import baz
+
+
+# Use of imports across scopes
+
+def use_m4():
+    x = m4.blah4 #$ use=moduleImport("a4").getMember("b4").getMember("c4").getMember("blah4")
+
+def local_import_use():
+    from foo import bar #$ use=moduleImport("foo").getMember("bar")
+
+    x = bar() #$ use=moduleImport("foo").getMember("bar").getReturn()
+
+from eggs import ham as spam #$ use=moduleImport("eggs").getMember("ham")
+
+def bbb():
+    f = spam #$ use=moduleImport("eggs").getMember("ham")
+
+from danger import SOURCE #$ use=moduleImport("danger").getMember("SOURCE")
+
+foo = SOURCE #$ use=moduleImport("danger").getMember("SOURCE")
+
+def change_foo():
+    global foo
+    foo = SOURCE #$ use=moduleImport("danger").getMember("SOURCE")
+
+def f():
+    global foo
+    sink(foo) #$ use=moduleImport("danger").getMember("SOURCE")
+    foo = NONSOURCE
+    change_foo()
+    sink(foo) #$ MISSING: use=moduleImport("danger").getMember("SOURCE")
