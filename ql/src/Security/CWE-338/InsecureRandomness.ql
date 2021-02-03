@@ -14,7 +14,21 @@ import semmle.go.security.InsecureRandomness::InsecureRandomness
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, string kind
-where cfg.hasFlowPath(source, sink) and cfg.isSink(sink.getNode(), kind)
+where
+  cfg.hasFlowPath(source, sink) and
+  cfg.isSink(sink.getNode(), kind) and
+  (
+    kind != "a password-related function"
+    or
+    sink =
+      min(DataFlow::PathNode sink2, int line |
+        cfg.hasFlowPath(_, sink2) and
+        sink2.getNode().getEnclosingCallable() = sink.getNode().getEnclosingCallable() and
+        sink2.hasLocationInfo(_, line, _, _, _)
+      |
+        sink2 order by line
+      )
+  )
 select sink.getNode(), source, sink,
   "$@ generated with a cryptographically weak RNG is used in $@.", source.getNode(),
   "A random number", sink.getNode(), kind

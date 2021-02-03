@@ -37,3 +37,13 @@ func encrypt(data []byte, password string) []byte {
 	ciphertext := gcm.Seal(nonce, nonce, data, nil) // BAD: use of an insecure rng to generate a nonce
 	return ciphertext
 }
+
+func makePasswordFiveChar() string {
+	s := make([]rune, 5)
+	s[0] = charset[rand.Intn(len(charset))] // BAD: weak RNG used to generate salt
+	s[1] = charset[rand.Intn(len(charset))] // Rest OK because the only the first result is caught
+	s[2] = charset[rand.Intn(len(charset))]
+	s[3] = charset[rand.Intn(len(charset))]
+	s[4] = charset[rand.Intn(len(charset))]
+	return string(s)
+}
