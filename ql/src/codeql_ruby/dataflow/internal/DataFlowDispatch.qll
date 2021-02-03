@@ -39,8 +39,8 @@ DataFlowCallable viableCallable(DataFlowCall call) { none() }
 /**
  * Holds if the set of viable implementations that can be called by `call`
  * might be improved by knowing the call context. This is the case if the
- * call is a delegate call, or if the qualifier accesses a parameter of
- * the enclosing callable `c` (including the implicit `this` parameter).
+ * qualifier accesses a parameter of the enclosing callable `c` (including
+ * the implicit `self` parameter).
  */
 predicate mayBenefitFromCallContext(DataFlowCall call, Callable c) { none() }
 

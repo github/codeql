@@ -217,7 +217,7 @@ abstract class ReturnNode extends Node {
 private module ReturnNodes {
   /**
    * A data-flow node that represents an expression returned by a callable,
-   * either using a (`yield`) `return` statement or an expression body (`=>`).
+   * either using an explict `return` statement or as the expression of a method body.
    */
   class ExprReturnNode extends ReturnNode, ExprNode {
     ExprReturnNode() {
@@ -240,7 +240,7 @@ abstract class OutNode extends Node {
 private module OutNodes {
   /**
    * A data-flow node that reads a value returned directly by a callable,
-   * either via a C# call or a CIL call.
+   * either via a call or a `yield` of a block.
    */
   class ExprOutNode extends OutNode, ExprNode {
     private DataFlowCall call;
@@ -297,8 +297,7 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
  * an update to the field.
  *
  * Nodes corresponding to AST elements, for example `ExprNode`, usually refer
- * to the value before the update with the exception of `ObjectCreation`,
- * which represents the value after the constructor has run.
+ * to the value before the update.
  */
 abstract class PostUpdateNode extends Node {
   /** Gets the node before the state update. */
@@ -355,7 +354,10 @@ predicate isImmutableOrUnobservable(Node n) { none() }
  */
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() }
 
-class BarrierGuard extends AstNode {
+/**
+ * A guard that validates some expression.
+ */
+class BarrierGuard extends Expr {
   BarrierGuard() { none() }
 
   Node getAGuardedNode() { none() }
