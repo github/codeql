@@ -18,8 +18,8 @@ predicate isUsingHbsEngine() {
   Express::appCreation().getAMethodCall("set").getArgument(1).mayHaveStringValue("hbs")
 }
 
-class HbsLFRTaint extends TaintTracking::Configuration {
-  HbsLFRTaint() { this = "HbsLFRTaint" }
+class TemplateObjInjectionConfig extends TaintTracking::Configuration {
+  TemplateObjInjectionConfig() { this = "TemplateObjInjectionConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
@@ -48,7 +48,7 @@ class HbsLFRTaint extends TaintTracking::Configuration {
   }
 }
 
-from HbsLFRTaint cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Template object injection due to $@.", source.getNode(),
   "user-provided value"
