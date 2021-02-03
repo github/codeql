@@ -1,0 +1,12 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>This query detects if there is an enum that includes various of the values used for the Solorigate commands.</p>
+    <p>Please notice that by themselves the names of these enum constants are not malign.</p>
+  </overview>
+
+  <include src="Solorigate.qhelp" />
+
+</qhelp>

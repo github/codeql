@@ -1,0 +1,8 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>This query finds native calls to external functions that are often used in creating backdoors or are generally attributed to unsafe code practices.</p>
+  </overview>
+</qhelp>

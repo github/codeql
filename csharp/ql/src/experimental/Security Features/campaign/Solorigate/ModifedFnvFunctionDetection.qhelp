@@ -1,0 +1,12 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>The malicious code included hash values calculated using a standard FNV-1A 64-bit hash with an additional XOR by 6605813339339102567 after computing the FNV-1A.</p>
+    <p>This query detects FNV-like hash calculations where there is an additional xor (with any static value) after the hash calculation loop.</p>
+  </overview>
+
+  <include src="Solorigate.qhelp" />
+
+</qhelp>

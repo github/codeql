@@ -1,0 +1,13 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+ <overview>
+  <p>The nation-state supply chain attack on SolarWinds known as Solorigate or SunBurst gave nation-state actors access to some victims' networks.</p>
+  <p>The purpose of these rules is to identify poetntially tampered code that requires further analysis</p>
+</overview> 
+<recommendation>
+  <p>Any findings from these rules are only intended to indicate suspicious code that shares similarities with known portions of code used for this attack, but no certainty that the code is related or part of any attack.</p>
+  <p>For more information, please visit https://aka.ms/solorigate. </p>
+</recommendation>
+</qhelp>
