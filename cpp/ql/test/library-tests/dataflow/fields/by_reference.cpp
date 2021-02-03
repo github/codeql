@@ -1,4 +1,4 @@
-void sink(void *o); void sink(const char *o);
+void sink(void *o);
 void *user_input(void);
 
 struct S {
@@ -134,14 +134,4 @@ void test_outer_with_ref(Outer *pouter) {
   sink(pouter->inner_nested.a); // $ ast,ir
   sink(pouter->inner_ptr->a); // $ ast MISSING: ir
   sink(pouter->a); // $ ast,ir
-}
-
-void taint_a_ptr(const char **pa) {
-  *pa = (char*)user_input();
-}
-
-void test_const_char_ref() {
-  const char* s;
-  taint_a_ptr(&s);
-  sink(s); // $ ast ir=140:9 ir=140:16
 }
