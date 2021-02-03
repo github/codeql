@@ -1,7 +1,7 @@
 var obj = { a: source("a"), b: source("b1") };
 sink(obj["a"]); // NOT OK
 
-const { Map } = require('immutable');
+const { Map, fromJS } = require('immutable');
 
 const map1 = Map(obj);
 
@@ -18,3 +18,5 @@ sink(map3.get("d")); // NOT OK
 
 
 sink(map3.toJS()["a"]); // NOT OK
+
+sink(fromJS({"e": source("e")}).get("e")); // NOT OK
