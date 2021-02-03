@@ -16,11 +16,6 @@
 
   <references>
     <li>
-      CWE:
-      <a href="https://cwe.mitre.org/data/definitions/522">CWE-522: Insufficiently Protected Credentials</a>
-      <a href="https://cwe.mitre.org/data/definitions/319">CWE-319: Cleartext Transmission of Sensitive Information</a>
-    </li>
-    <li>
       Oracle:
       <a href="https://docs.oracle.com/javase/jndi/tutorial/ldap/misc/url.html">LDAP and LDAPS URLs</a>
     </li>
