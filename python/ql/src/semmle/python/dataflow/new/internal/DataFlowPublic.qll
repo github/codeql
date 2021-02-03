@@ -443,7 +443,10 @@ class BarrierGuard extends GuardNode {
  * - Function parameters
  */
 class LocalSourceNode extends Node {
-  LocalSourceNode() { not simpleLocalFlowStep(_, this) }
+  LocalSourceNode() {
+    not simpleLocalFlowStep+(any(CfgNode n), this) and
+    not this instanceof ModuleVariableNode
+  }
 
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
   cached
