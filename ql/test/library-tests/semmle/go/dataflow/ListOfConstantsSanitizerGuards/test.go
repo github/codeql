@@ -86,6 +86,25 @@ func switchStatementReturningNilOnlyWhenConstant(s string) *string {
 	return &str
 }
 
+func multipleSwitchStatementReturningTrueOnlyWhenConstant(s string, t string) bool {
+	switch s {
+	case constantGlobalVariable, "string literal":
+		return true
+	case getRandomString():
+		return false
+	}
+	switch s {
+	case "another string literal":
+		return true
+	}
+	switch t {
+	case "another string literal":
+		return false
+	default:
+		return false
+	}
+}
+
 func switchStatementWithoutUsefulInfo(s string) bool {
 	switch s {
 	case constantGlobalVariable, "string literal":
@@ -143,6 +162,15 @@ func main() {
 	{
 		s := source()
 		if switchStatementReturningNilOnlyWhenConstant(s) == nil {
+			sink(s)
+		} else {
+			sink(s) // $dataflow=s
+		}
+	}
+
+	{
+		s := source()
+		if multipleSwitchStatementReturningTrueOnlyWhenConstant(s, getRandomString()) {
 			sink(s)
 		} else {
 			sink(s) // $dataflow=s
