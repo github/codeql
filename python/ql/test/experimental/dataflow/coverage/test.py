@@ -203,12 +203,12 @@ def test_nested_comprehension_paren():
 # Iterable unpacking in comprehensions
 def test_unpacking_comprehension():
     x = [a for (a, b) in [(SOURCE, NONSOURCE)]]
-    SINK(x[0]) #$ MISSING:flow="SOURCE, l:-1 -> x[0]"
+    SINK(x[0]) #$ flow="SOURCE, l:-1 -> x[0]"
 
 
 def test_star_unpacking_comprehension():
     x = [a[0] for (*a, b) in [(SOURCE, NONSOURCE)]]
-    SINK(x[0]) #$ MISSING:flow="SOURCE, l:-1 -> x[0]"
+    SINK(x[0]) #$ flow="SOURCE, l:-1 -> x[0]"
 
 
 # 6.2.8. Generator expressions

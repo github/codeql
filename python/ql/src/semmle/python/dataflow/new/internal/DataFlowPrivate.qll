@@ -1253,7 +1253,7 @@ module IterableUnpacking {
       or
       exists(Comp comp |
         source = comp.getIterable() and
-        this.getNode() = comp.getIterationVariable(0).getAStore()
+        this.getNode() = comp.getNthInnerLoop(0).getTarget()
       )
     }
 
