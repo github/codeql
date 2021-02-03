@@ -1,10 +1,10 @@
 /**
- * @name Express-Hbs Local File Read and Potential RCE
- * @description Writing user input directly to res.render of ExpressJS used with Hbs can lead to LFR
+ * @name Template Object Injection
+ * @description Instantiating a template using a user-controlled object is vulnerable to local file read and potential remote code execution.
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id js/express-hbs-lfr
+ * @id js/template-object-injection
  * @tags security
  *       external/cwe/cwe-073
  *       external/cwe/cwe-094
@@ -13,15 +13,9 @@
 import javascript
 import DataFlow
 import PathGraph
-import Express
-import semmle.javascript.DynamicPropertyAccess
 
 predicate isUsingHbsEngine() {
-  exists(MethodCallExpr method |
-    method.getMethodName() = "set" and
-    Express::appCreation().flowsToExpr(method.getReceiver()) and
-    method.getArgument(1).getStringValue().matches("hbs")
-  )
+  Express::appCreation().getAMethodCall("set").getArgument(1).mayHaveStringValue("hbs")
 }
 
 class HbsLFRTaint extends TaintTracking::Configuration {
@@ -39,6 +33,7 @@ class HbsLFRTaint extends TaintTracking::Configuration {
   }
 }
 
-from HbsLFRTaint cfg, Node source, Node sink
-where cfg.hasFlow(source, sink)
-select source, sink
+from HbsLFRTaint cfg, PathNode source, PathNode sink
+where cfg.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "Template object injection due to $@.", source.getNode(),
+  "user-provided value"
