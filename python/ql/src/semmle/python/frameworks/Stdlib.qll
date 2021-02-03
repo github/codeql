@@ -1654,6 +1654,32 @@ private module Stdlib {
   class Sqlite3 extends PEP249Module {
     Sqlite3() { this = sqlite3() }
   }
+
+  // ---------------------------------------------------------------------------
+  // traceback
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `traceback` module. */
+  API::Node traceback() { result = API::moduleImport("traceback") }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `traceback` module.
+   */
+  private API::Node traceback_attr(string attr_name) { result = traceback().getMember(attr_name) }
+
+  /** Provides models for the `traceback` module. */
+  module traceback {
+    private class TracebackFunctionCall extends ErrorInfoSource::Range, DataFlow::CfgNode {
+      override CallNode node;
+
+      TracebackFunctionCall() {
+        node.getFunction() =
+          traceback_attr([
+              "extract_tb", "extract_stack", "format_list", "format_exception_only",
+              "format_exception", "format_exc", "format_tb", "format_stack"
+            ]).getAUse().asCfgNode()
+      }
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------
