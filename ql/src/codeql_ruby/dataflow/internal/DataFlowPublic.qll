@@ -1,0 +1,110 @@
+private import ruby
+private import DataFlowDispatch
+private import DataFlowPrivate
+private import codeql_ruby.CFG
+
+/**
+ * An element, viewed as a node in a data flow graph. Either an expression
+ * (`ExprNode`) or a parameter (`ParameterNode`).
+ */
+class Node extends TNode {
+  /** Gets the expression corresponding to this node, if any. */
+  CfgNodes::ExprCfgNode asExpr() { result = this.(ExprNode).getExprNode() }
+
+  /** Gets the parameter corresponding to this node, if any. */
+  Parameter asParameter() { result = this.(ParameterNode).getParameter() }
+
+  /** Gets a textual representation of this node. */
+  // TODO: cache
+  final string toString() { result = this.(NodeImpl).toStringImpl() }
+
+  /** Gets the location of this node. */
+  // TODO: cache
+  final Location getLocation() { result = this.(NodeImpl).getLocationImpl() }
+
+  final DataFlowCallable getEnclosingCallable() { result = this.(NodeImpl).getCfgScope() }
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+}
+
+/**
+ * An expression, viewed as a node in a data flow graph.
+ *
+ * Note that because of control-flow splitting, one `Expr` may correspond
+ * to multiple `ExprNode`s, just like it may correspond to multiple
+ * `ControlFlow::Node`s.
+ */
+class ExprNode extends Node, TExprNode {
+  private CfgNodes::ExprCfgNode n;
+
+  ExprNode() { this = TExprNode(n) }
+
+  /** Gets the expression corresponding to this node. */
+  CfgNodes::ExprCfgNode getExprNode() { result = n }
+}
+
+/**
+ * The value of a parameter at function entry, viewed as a node in a data
+ * flow graph.
+ */
+class ParameterNode extends Node, TParameterNode {
+  private Parameter p;
+
+  ParameterNode() { this = TParameterNode(p) }
+
+  /** Gets the parameter corresponding to this node, if any. */
+  Parameter getParameter() { result = p }
+
+  /**
+   * Holds if this node is the parameter of callable `c` at the specified
+   * (zero-based) position.
+   */
+  predicate isParameterOf(Callable c, int i) { p = c.getParameter(i) }
+}
+
+/** Gets a node corresponding to expression `e`. */
+ExprNode exprNode(CfgNodes::ExprCfgNode e) { result.getExprNode() = e }
+
+/**
+ * Gets the node corresponding to the value of parameter `p` at function entry.
+ */
+ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
+
+predicate localFlowStep = simpleLocalFlowStep/2;
+
+/**
+ * Holds if data flows from `source` to `sink` in zero or more local
+ * (intra-procedural) steps.
+ */
+predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
+
+/**
+ * Holds if data can flow from `e1` to `e2` in zero or more
+ * local (intra-procedural) steps.
+ */
+predicate localExprFlow(CfgNodes::ExprCfgNode e1, CfgNodes::ExprCfgNode e2) {
+  localFlow(exprNode(e1), exprNode(e2))
+}
+
+/**
+ * A reference contained in an object. This is either a field, a property,
+ * or an element in a collection.
+ */
+class Content extends TContent {
+  /** Gets a textual representation of this content. */
+  string toString() { none() }
+
+  /** Gets the location of this content. */
+  Location getLocation() { none() }
+}

@@ -176,6 +176,23 @@ abstract private class ExprChildMapping extends Expr {
 /** Provides classes for control-flow nodes that wrap AST expressions. */
 module ExprNodes {
   // TODO: Add more classes
+  private class AssignmentExprChildMapping extends ExprChildMapping, Assignment {
+    override predicate relevantChild(Expr e) { e = this.getAnOperand() }
+  }
+
+  /** A control-flow node that wraps an `Assignment` AST expression. */
+  class AssignmentCfgNode extends ExprCfgNode {
+    override AssignmentExprChildMapping e;
+
+    final override Assignment getExpr() { result = ExprCfgNode.super.getExpr() }
+
+    /** Gets the LHS of this assignment. */
+    final ExprCfgNode getLhs() { e.hasCfgChild(e.getLhs(), this, result) }
+
+    /** Gets the RHS of this assignment. */
+    final ExprCfgNode getRhs() { e.hasCfgChild(e.getRhs(), this, result) }
+  }
+
   private class BinaryOperationExprChildMapping extends ExprChildMapping, BinaryOperation {
     override predicate relevantChild(Expr e) { e = this.getAnOperand() }
   }
@@ -191,6 +208,40 @@ module ExprNodes {
 
     /** Gets the right operand of this binary operation. */
     final ExprCfgNode getRightOperand() { e.hasCfgChild(e.getRightOperand(), this, result) }
+  }
+
+  private class CallExprChildMapping extends ExprChildMapping, Call {
+    override predicate relevantChild(Expr e) { e = [this.getAnArgument(), this.getReceiver()] }
+  }
+
+  /** A control-flow node that wraps a `Call` AST expression. */
+  class CallCfgNode extends ExprCfgNode {
+    override CallExprChildMapping e;
+
+    final override Call getExpr() { result = ExprCfgNode.super.getExpr() }
+
+    /** Gets the `n`th argument of this call. */
+    final ExprCfgNode getArgument(int n) { e.hasCfgChild(e.getArgument(n), this, result) }
+
+    /** Gets the receiver of this call. */
+    final ExprCfgNode getReceiver() { e.hasCfgChild(e.getReceiver(), this, result) }
+  }
+
+  private class ExprSequenceChildMapping extends ExprChildMapping, ExprSequence {
+    override predicate relevantChild(Expr e) { e = this.getAnExpr() }
+  }
+
+  /** A control-flow node that wraps an `ExprSequence` AST expression. */
+  class ExprSequenceCfgNode extends ExprCfgNode {
+    override ExprSequenceChildMapping e;
+
+    final override ExprSequence getExpr() { result = ExprCfgNode.super.getExpr() }
+
+    /** Gets the last expression in this sequence, if any. */
+    final ExprCfgNode getLastExpr() { e.hasCfgChild(e.getLastExpr(), this, result) }
+
+    /** Gets the 'n'th expression of this expression sequence. */
+    final ExprCfgNode getExpr(int n) { e.hasCfgChild(e.getExpr(n), this, result) }
   }
 
   /** A control-flow node that wraps a `VariableReadAccess` AST expression. */
