@@ -1323,7 +1323,8 @@ module IterableUnpacking {
   predicate iterableUnpackingForReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
     exists(ForTarget target |
       nodeFrom.asExpr() = target.getSource() and
-      nodeTo = TIterableSequenceNode(target.(SequenceNode))
+      target instanceof SequenceNode and
+      nodeTo = TIterableSequenceNode(target)
     ) and
     (
       c instanceof ListElementContent
