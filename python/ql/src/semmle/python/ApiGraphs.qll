@@ -290,7 +290,7 @@ module API {
       exists(DataFlow::LocalSourceNode src, DataFlow::LocalSourceNode pred |
         // First, we find a predecessor of the node `ref` that we want to determine. The predecessor
         // is any node that is a type-tracked use of a data flow node (`src`), which is itself a
-        // reference to the API node `base`.
+        // reference to the API node `base`. Thus, `pred` and `src` both represent uses of `base`.
         //
         // Once we have identified the predecessor, we define its relation to the successor `ref` as
         // well as the label on the edge from `pred` to `ref`. This label describes the nature of
