@@ -41,8 +41,6 @@ class Class extends ModuleBase {
 
   final override string getAPrimaryQlClass() { result = "Class" }
 
-  final override string toString() { result = this.getName() }
-
   /**
    * Gets the name of the class. In the following example, the result is
    * `"Foo"`.
@@ -110,8 +108,6 @@ class SingletonClass extends ModuleBase, @singleton_class {
 
   final override string getAPrimaryQlClass() { result = "Class" }
 
-  final override string toString() { result = "class << ..." }
-
   /**
    * Gets the expression resulting in the object on which the singleton class
    * is defined. In the following example, the result is the `Expr` for `foo`:
@@ -153,8 +149,6 @@ class Module extends ModuleBase, @module {
   final override Module::Range range;
 
   final override string getAPrimaryQlClass() { result = "Module" }
-
-  final override string toString() { result = this.getName() }
 
   /**
    * Gets the name of the module. In the following example, the result is

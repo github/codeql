@@ -8,17 +8,16 @@ import ast.Parameter
 import ast.Operation
 import ast.Pattern
 import ast.Variable
-private import ast.internal.TreeSitter
+private import ast.internal.AST
 
 /**
  * A node in the abstract syntax tree. This class is the base class for all Ruby
  * program elements.
  */
-// TODO: Replace base class with an abstract range class once we have full coverage
 class AstNode extends @ast_node {
-  Generated::AstNode generated;
+  AstNode::Range range;
 
-  AstNode() { generated = this }
+  AstNode() { range = this }
 
   /**
    * Gets the name of a primary CodeQL class to which this node belongs.
@@ -30,9 +29,8 @@ class AstNode extends @ast_node {
   string getAPrimaryQlClass() { result = "???" }
 
   /** Gets a textual representation of this node. */
-  cached
-  string toString() { result = "AstNode" }
+  final string toString() { result = range.toString() }
 
   /** Gets the location of this node. */
-  Location getLocation() { result = generated.getLocation() }
+  final Location getLocation() { result = range.getLocation() }
 }

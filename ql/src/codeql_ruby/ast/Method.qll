@@ -1,5 +1,6 @@
 private import codeql_ruby.AST
 private import codeql_ruby.controlflow.ControlFlowGraph
+private import internal.AST
 private import internal.TreeSitter
 private import internal.Method
 
@@ -23,8 +24,6 @@ class Method extends Callable, BodyStatement, @method {
 
   final override string getAPrimaryQlClass() { result = "Method" }
 
-  final override string toString() { result = this.getName() }
-
   /** Gets the name of this method. */
   final string getName() { result = range.getName() }
 
@@ -47,8 +46,6 @@ class SingletonMethod extends Callable, BodyStatement, @singleton_method {
 
   final override string getAPrimaryQlClass() { result = "SingletonMethod" }
 
-  final override string toString() { result = this.getName() }
-
   /** Gets the name of this method. */
   final string getName() { result = range.getName() }
 }
@@ -63,12 +60,10 @@ class Lambda extends Callable, @lambda {
   final override Lambda::Range range;
 
   final override string getAPrimaryQlClass() { result = "Lambda" }
-
-  final override string toString() { result = "-> { ... }" }
 }
 
 /** A block. */
-class Block extends AstNode, Callable {
+class Block extends Callable {
   override Block::Range range;
 }
 
@@ -77,8 +72,6 @@ class DoBlock extends Block, BodyStatement, @do_block {
   final override DoBlock::Range range;
 
   final override string getAPrimaryQlClass() { result = "DoBlock" }
-
-  final override string toString() { result = "do ... end" }
 }
 
 /**
@@ -91,6 +84,4 @@ class BraceBlock extends Block, @block {
   final override BraceBlock::Range range;
 
   final override string getAPrimaryQlClass() { result = "BraceBlock" }
-
-  final override string toString() { result = "{ ... }" }
 }
