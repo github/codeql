@@ -477,6 +477,12 @@ module ConditionalCompletionSplitting {
         or
         last(succ.(OrPatternExpr).getAnOperand(), pred, c) and
         completion = c
+        or
+        last(succ.(RecursivePatternExpr).getAChildExpr(), pred, c) and
+        completion = c
+        or
+        last(succ.(PropertyPatternExpr).getPattern(_), pred, c) and
+        completion = c
       )
     }
 

@@ -2942,10 +2942,15 @@
 | Patterns.cs:54:9:54:9 | access to parameter c | Patterns.cs:54:9:54:9 | access to parameter c | normal |
 | Patterns.cs:54:9:54:37 | ... is ... | Patterns.cs:54:9:54:37 | ... is ... | normal |
 | Patterns.cs:54:14:54:37 | not ... | Patterns.cs:54:14:54:37 | not ... | normal |
-| Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:54:18:54:37 | Patterns u | normal |
+| Patterns.cs:54:18:54:25 | access to type Patterns | Patterns.cs:54:18:54:25 | access to type Patterns | match |
+| Patterns.cs:54:18:54:25 | access to type Patterns | Patterns.cs:54:18:54:25 | access to type Patterns | no-match |
+| Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:54:18:54:37 | Patterns u | match |
+| Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:54:18:54:37 | Patterns u | no-match |
 | Patterns.cs:54:18:54:37 | { ... } | Patterns.cs:54:18:54:37 | { ... } | normal |
-| Patterns.cs:54:27:54:35 | { ... } | Patterns.cs:54:27:54:35 | { ... } | normal |
-| Patterns.cs:54:33:54:33 | 1 | Patterns.cs:54:33:54:33 | 1 | normal |
+| Patterns.cs:54:27:54:35 | { ... } | Patterns.cs:54:27:54:35 | { ... } | match |
+| Patterns.cs:54:27:54:35 | { ... } | Patterns.cs:54:27:54:35 | { ... } | no-match |
+| Patterns.cs:54:33:54:33 | 1 | Patterns.cs:54:33:54:33 | 1 | match |
+| Patterns.cs:54:33:54:33 | 1 | Patterns.cs:54:33:54:33 | 1 | no-match |
 | Patterns.cs:57:5:63:5 | {...} | Patterns.cs:58:9:62:10 | return ...; | return |
 | Patterns.cs:58:9:62:10 | return ...; | Patterns.cs:58:9:62:10 | return ...; | return |
 | Patterns.cs:58:16:58:16 | access to parameter i | Patterns.cs:58:16:58:16 | access to parameter i | normal |

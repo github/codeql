@@ -303,18 +303,18 @@ private predicate hasChildPattern(ControlFlowElement pm, Expr child) {
   exists(Expr mid |
     hasChildPattern(pm, mid) and
     mid instanceof @recursive_pattern_expr and
-    child = mid.getChild([2, 3])
+    child = mid.getAChildExpr()
   )
   or
   exists(Expr mid |
     hasChildPattern(pm, mid) and
     mid instanceof @unary_pattern_expr and
-    child = mid.getChild(0)
+    child = mid.getChildExpr(0)
   )
   or
   exists(Expr mid | hasChildPattern(pm, mid) and mid instanceof @binary_pattern_expr |
-    child = mid.getChild(0) or
-    child = mid.getChild(1)
+    child = mid.getChildExpr(0) or
+    child = mid.getChildExpr(1)
   )
 }
 

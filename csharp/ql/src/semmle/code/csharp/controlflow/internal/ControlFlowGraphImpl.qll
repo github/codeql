@@ -290,7 +290,7 @@ module Expressions {
   private class SimpleNoNodeExpr extends NoNodeExpr {
     SimpleNoNodeExpr() {
       this instanceof TypeAccess and
-      not this = any(PatternMatch pm).getPattern()
+      not this instanceof TypeAccessPatternExpr
     }
   }
 
@@ -371,7 +371,10 @@ module Expressions {
       not this instanceof ConstructorInitializer and
       not this instanceof NotPatternExpr and
       not this instanceof OrPatternExpr and
-      not this instanceof AndPatternExpr
+      not this instanceof AndPatternExpr and
+      not this instanceof RecursivePatternExpr and
+      not this instanceof PositionalPatternExpr and
+      not this instanceof PropertyPatternExpr
     }
 
     final override ControlFlowElement getChildElement(int i) { result = getExprChild(this, i) }
@@ -962,6 +965,117 @@ module Expressions {
       c instanceof MatchingCompletion and
       succ = this
     }
+  }
+}
+
+private class RecursivePatternExprTree extends PostOrderTree, RecursivePatternExpr {
+  private Expr getTypeExpr() {
+    result = this.getVariableDeclExpr()
+    or
+    not exists(this.getVariableDeclExpr()) and
+    result = this.getTypeAccess()
+  }
+
+  private PatternExpr getChildPattern() {
+    result = this.getPositionalPatterns()
+    or
+    result = this.getPropertyPatterns()
+  }
+
+  final override predicate propagatesAbnormal(ControlFlowElement child) {
+    child = this.getChildPattern()
+  }
+
+  final override predicate first(ControlFlowElement first) {
+    first(this.getTypeExpr(), first)
+    or
+    not exists(this.getTypeExpr()) and
+    first(this.getChildPattern(), first)
+  }
+
+  final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+    // Flow from type test to child pattern
+    last(this.getTypeExpr(), pred, c) and
+    first(this.getChildPattern(), succ) and
+    c.(MatchingCompletion).getValue() = true
+    or
+    // Flow from type test to self
+    last(this.getTypeExpr(), pred, c) and
+    succ = this and
+    c.(MatchingCompletion).getValue() = false
+    or
+    // Flow from child pattern to self
+    last(this.getChildPattern(), pred, c) and
+    succ = this and
+    c instanceof MatchingCompletion
+  }
+}
+
+private class PositionalPatternExprTree extends PreOrderTree, PositionalPatternExpr {
+  final override predicate propagatesAbnormal(ControlFlowElement child) {
+    child = this.getPattern(_)
+  }
+
+  final override predicate last(ControlFlowElement last, Completion c) {
+    last = this and
+    c.(MatchingCompletion).getValue() = false
+    or
+    last(this.getPattern(_), last, c) and
+    c.(MatchingCompletion).getValue() = false
+    or
+    exists(int lst |
+      last(this.getPattern(lst), last, c) and
+      not exists(this.getPattern(lst + 1))
+    )
+  }
+
+  final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+    // Flow from self to first pattern
+    pred = this and
+    c.(MatchingCompletion).getValue() = true and
+    first(this.getPattern(0), succ)
+    or
+    // Flow from one pattern to the next
+    exists(int i |
+      last(this.getPattern(i), pred, c) and
+      c.(MatchingCompletion).getValue() = true and
+      first(this.getPattern(i + 1), succ)
+    )
+  }
+}
+
+private class PropertyPatternExprExprTree extends PostOrderTree, PropertyPatternExpr {
+  final override predicate propagatesAbnormal(ControlFlowElement child) {
+    child = this.getPattern(_)
+  }
+
+  final override predicate first(ControlFlowElement first) {
+    first(this.getPattern(0), first)
+    or
+    not exists(this.getPattern(0)) and
+    first = this
+  }
+
+  final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+    // Flow from one pattern to the next
+    exists(int i |
+      last(this.getPattern(i), pred, c) and
+      c.(MatchingCompletion).getValue() = true and
+      first(this.getPattern(i + 1), succ)
+    )
+    or
+    // Post-order: flow from last element of failing pattern to element itself
+    last(this.getPattern(_), pred, c) and
+    c.(MatchingCompletion).getValue() = false and
+    succ = this
+    or
+    // Post-order: flow from last element of last pattern to element itself
+    exists(int last |
+      last(this.getPattern(last), pred, c) and
+      not exists(this.getPattern(last + 1)) and
+      c instanceof MatchingCompletion and
+      succ = this
+    )
   }
 }
 
