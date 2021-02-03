@@ -15,3 +15,6 @@ sink(map2.get("b")); // OK - but still flagged [INCONSISTENCY]
 const map3 = map2.set("d", source("d"));
 sink(map1.get("d")); // OK
 sink(map3.get("d")); // NOT OK
+
+
+sink(map3.toJS()["a"]); // NOT OK

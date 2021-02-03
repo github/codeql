@@ -8,8 +8,6 @@ import javascript
  * Provides classes implementing data-flow for Immutable.
  */
 private module Immutable {
-  private import DataFlow::PseudoProperties
-
   /**
    * An API entrypoint for the global `Immutable` variable.
    */
@@ -40,33 +38,35 @@ private module Immutable {
   }
 
   /**
-   * Gets the immutable collection where `pred` has been stored using the pseudoproperty `prop`.
+   * An instance of any immutable collection.
+   */
+  API::Node immutableCollection() { result = immutableMap() }
+
+  /**
+   * Gets the immutable collection where `pred` has been stored using the name `prop`.
    */
   DataFlow::SourceNode storeStep(DataFlow::Node pred, string prop) {
-    exists(DataFlow::CallNode call, string key |
-      call = immutableImport().getMember("Map").getACall()
-    |
-      prop = mapValueKey(key) and
-      pred = call.getOptionArgument(0, key) and
+    exists(DataFlow::CallNode call | call = immutableImport().getMember("Map").getACall() |
+      pred = call.getOptionArgument(0, prop) and
       result = call
     )
     or
     exists(DataFlow::CallNode call | call = immutableMap().getMember("set").getACall() |
-      prop = mapValue(call.getArgument(0)) and
+      call.getArgument(0).mayHaveStringValue(prop) and
       pred = call.getArgument(1) and
       result = call
     )
   }
 
   /**
-   * Gets the value that was stored in the immutable collection `pred` under the pseudoproperty `prop`.
+   * Gets the value that was stored in the immutable collection `pred` under the name `prop`.
    */
   DataFlow::Node loadStep(DataFlow::Node pred, string prop) {
     // map.get()
     exists(DataFlow::MethodCallNode call | call = immutableMap().getMember("get").getACall() |
+      call.getArgument(0).mayHaveStringValue(prop) and
       pred = call.getReceiver() and
-      result = call and
-      prop = mapValue(call.getArgument(0))
+      result = call
     )
   }
 
@@ -76,6 +76,12 @@ private module Immutable {
   DataFlow::Node step(DataFlow::Node pred) {
     // map.set() copies all existing values
     exists(DataFlow::CallNode call | call = immutableMap().getMember("set").getACall() |
+      pred = call.getReceiver() and
+      result = call
+    )
+    or
+    // toJS() or any immutable collection converts it to a plain JavaScript object/array.
+    exists(DataFlow::CallNode call | call = immutableCollection().getMember("toJS").getACall() |
       pred = call.getReceiver() and
       result = call
     )
