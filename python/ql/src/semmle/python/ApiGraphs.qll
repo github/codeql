@@ -146,9 +146,7 @@ module API {
     /**
      * Gets a textual representation of this node.
      */
-    string toString() {
-      none() // defined in subclasses
-    }
+    abstract string toString();
 
     /**
      * Gets a path of the given `length` from the root to this node.
