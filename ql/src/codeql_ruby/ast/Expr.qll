@@ -122,9 +122,9 @@ class SymbolLiteral extends Literal {
 class ExprSequence extends Expr {
   override ExprSequence::Range range;
 
-  final override string getAPrimaryQlClass() { result = "ExprSequence" }
+  override string getAPrimaryQlClass() { result = "ExprSequence" }
 
-  final override string toString() { result = "...; ..." }
+  override string toString() { result = "...; ..." }
 
   /** Gets the `n`th expression in this sequence. */
   final Expr getExpr(int n) { result = range.getExpr(n) }
@@ -140,6 +140,15 @@ class ExprSequence extends Expr {
 
   /** Holds if this sequence has no expressions. */
   final predicate isEmpty() { this.getNumberOfExpressions() = 0 }
+}
+
+/**
+ * A sequence of expressions representing the body of a method, class, module,
+ * or do-block. That is, any body that may also include rescue/ensure/else
+ * statements.
+ */
+class BodyStatement extends ExprSequence {
+  override BodyStatement::Range range;
 }
 
 /**

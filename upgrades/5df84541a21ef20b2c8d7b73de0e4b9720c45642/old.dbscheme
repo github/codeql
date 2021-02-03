@@ -367,12 +367,7 @@ chained_string_def(
 
 @class_name_type = @scope_resolution | @token_constant
 
-class_superclass(
-  unique int class: @class ref,
-  unique int superclass: @superclass ref
-);
-
-@class_child_type = @else | @ensure | @rescue | @token_empty_statement | @underscore_statement
+@class_child_type = @else | @ensure | @rescue | @superclass | @token_empty_statement | @underscore_statement
 
 #keyset[class, index]
 class_child(

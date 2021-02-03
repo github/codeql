@@ -168,6 +168,10 @@ module ExprSequence {
   }
 }
 
+module BodyStatement {
+  abstract class Range extends ExprSequence::Range { }
+}
+
 module ThenExpr {
   class Range extends ExprSequence::Range, @then {
     final override Generated::Then generated;

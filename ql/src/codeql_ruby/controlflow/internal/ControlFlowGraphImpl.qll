@@ -469,7 +469,9 @@ module Trees {
     final override AstNode getChildNode(int i, boolean rescuable) {
       result = this.getName() and i = 0 and rescuable = false
       or
-      result = this.getChild(i - 1) and rescuable = true
+      result = this.getSuperclass() and i = 1 and rescuable = true
+      or
+      result = this.getChild(i - 2) and rescuable = true
     }
 
     final override predicate last(AstNode last, Completion c) { this.lastInner(last, c) }

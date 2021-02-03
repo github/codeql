@@ -2,6 +2,7 @@ private import TreeSitter
 private import codeql.Locations
 private import codeql_ruby.AST
 private import codeql_ruby.ast.internal.Expr
+private import codeql_ruby.ast.internal.Method
 private import codeql_ruby.ast.internal.Pattern
 
 private Generated::AstNode parent(Generated::AstNode n) {
@@ -23,17 +24,19 @@ private predicate classVariableAccess(Generated::ClassVariable var, string name,
 }
 
 predicate hasEnclosingMethod(Generated::AstNode node) {
-  exists(Callable method | parentCallableScope*(enclosingScope(node)) = TCallableScope(method) |
-    method instanceof Method or
-    method instanceof SingletonMethod
+  exists(Callable::Range method |
+    parentCallableScope*(enclosingScope(node)) = TCallableScope(method)
+  |
+    method instanceof Method::Range or
+    method instanceof SingletonMethod::Range
   )
 }
 
 private TCallableScope parentCallableScope(TCallableScope scope) {
-  exists(Callable c |
+  exists(Callable::Range c |
     scope = TCallableScope(c) and
-    not c instanceof Method and
-    not c instanceof SingletonMethod
+    not c instanceof Method::Range and
+    not c instanceof SingletonMethod::Range
   |
     result = scope.(VariableScope).getOuterScope()
   )
@@ -69,7 +72,7 @@ private predicate scopeDefinesParameterVariable(
     )
   or
   exists(Parameter p |
-    p = scope.getScopeElement().getAParameter() and
+    p = scope.getScopeElement().getParameter(_) and
     name = p.(NamedParameter).getName()
   |
     i = p.(Generated::BlockParameter).getName() or
@@ -98,12 +101,12 @@ private predicate strictlyBefore(Location one, Location two) {
 /** A scope that may capture outer local variables. */
 private class CapturingScope extends VariableScope {
   CapturingScope() {
-    exists(Callable c | c = this.getScopeElement() |
-      c instanceof Block
+    exists(Callable::Range c | c = this.getScopeElement() |
+      c instanceof Block::Range
       or
-      c instanceof DoBlock
+      c instanceof DoBlock::Range
       or
-      c instanceof Lambda // TODO: Check if this is actually the case
+      c instanceof Lambda::Range // TODO: Check if this is actually the case
     )
   }
 
@@ -142,7 +145,7 @@ private module Cached {
     TClassScope(AstNode cls) {
       cls instanceof Generated::Class or cls instanceof Generated::SingletonClass
     } or
-    TCallableScope(Callable c)
+    TCallableScope(Callable::Range c)
 
   cached
   newtype TVariable =
@@ -419,7 +422,7 @@ module ClassScope {
 
 module CallableScope {
   class Range extends VariableScope::Range, TCallableScope {
-    private Callable c;
+    private Callable::Range c;
 
     Range() { this = TCallableScope(c) }
 
@@ -434,7 +437,7 @@ module CallableScope {
       result = "block scope"
     }
 
-    override Callable getScopeElement() { TCallableScope(result) = this }
+    override Callable::Range getScopeElement() { TCallableScope(result) = this }
   }
 }
 

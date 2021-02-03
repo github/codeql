@@ -1,0 +1,29 @@
+classes
+| classes.rb:3:1:4:3 | Foo | Class | Foo |
+| classes.rb:7:1:8:3 | Bar | Class | Bar |
+| classes.rb:11:1:12:3 | Baz | Class | Baz |
+| classes.rb:16:1:17:3 | MyClass | Class | MyClass |
+| classes.rb:20:1:37:3 | Wibble | Class | Wibble |
+| classes.rb:32:3:33:5 | ClassInWibble | Class | ClassInWibble |
+| modules.rb:6:5:7:7 | ClassInFooBar | Class | ClassInFooBar |
+| modules.rb:19:3:20:5 | ClassInFoo | Class | ClassInFoo |
+| modules.rb:30:3:31:5 | ClassInAnotherDefinitionOfFoo | Class | ClassInAnotherDefinitionOfFoo |
+| modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar | Class | ClassInAnotherDefinitionOfFooBar |
+classesWithScopeResolutionNames
+| classes.rb:16:1:17:3 | MyClass | classes.rb:16:7:16:23 | ...::MyClass |
+exprsInClasses
+| classes.rb:20:1:37:3 | Wibble | 0 | classes.rb:21:3:23:5 | method_a | Method |
+| classes.rb:20:1:37:3 | Wibble | 1 | classes.rb:25:3:27:5 | method_b | Method |
+| classes.rb:20:1:37:3 | Wibble | 2 | classes.rb:29:3:29:20 | call to some_method_call | Call |
+| classes.rb:20:1:37:3 | Wibble | 3 | classes.rb:30:3:30:19 | ... = ... | AssignExpr |
+| classes.rb:20:1:37:3 | Wibble | 4 | classes.rb:32:3:33:5 | ClassInWibble | Class |
+| classes.rb:20:1:37:3 | Wibble | 5 | classes.rb:35:3:36:5 | ModuleInWibble | Module |
+methodsInClasses
+| classes.rb:20:1:37:3 | Wibble | classes.rb:21:3:23:5 | method_a | method_a |
+| classes.rb:20:1:37:3 | Wibble | classes.rb:25:3:27:5 | method_b | method_b |
+classesInClasses
+| classes.rb:20:1:37:3 | Wibble | classes.rb:32:3:33:5 | ClassInWibble | ClassInWibble |
+modulesInClasses
+| classes.rb:20:1:37:3 | Wibble | classes.rb:35:3:36:5 | ModuleInWibble | ModuleInWibble |
+classesWithASuperclass
+| classes.rb:11:1:12:3 | Baz | classes.rb:11:13:11:32 | call to superclass_for |

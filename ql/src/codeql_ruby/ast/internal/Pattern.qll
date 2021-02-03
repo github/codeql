@@ -1,6 +1,7 @@
 private import codeql_ruby.AST
 private import TreeSitter
 private import codeql_ruby.ast.internal.Variable
+private import codeql_ruby.ast.internal.Method
 private import codeql.Locations
 
 /**
@@ -31,8 +32,8 @@ predicate implicitAssignmentNode(Generated::AstNode n) {
 }
 
 /** Holds if `n` is inside a parameter. */
-predicate implicitParameterAssignmentNode(Generated::AstNode n, Callable c) {
-  n = c.getAParameter()
+predicate implicitParameterAssignmentNode(Generated::AstNode n, Callable::Range c) {
+  n = c.getParameter(_)
   or
   implicitParameterAssignmentNode(n.getParent().(Generated::DestructuredParameter), c)
 }

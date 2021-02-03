@@ -124,7 +124,7 @@ loops.rb:
 
 raise.rb:
 #    1| enter AstNode
-#-----|  -> Class
+#-----|  -> ExceptionA
 
 #    7| enter m1
 #-----|  -> x
@@ -870,7 +870,7 @@ cfg.rb:
 #-----|  -> chained
 
 #   54| ... = ...
-#-----|  -> Class
+#-----|  -> Silly
 
 #   54| character
 #-----|  -> ... = ...
@@ -878,7 +878,7 @@ cfg.rb:
 #   54| ?\x40
 #-----|  -> character
 
-#   58| Class
+#   58| Silly
 #-----|  -> Silly
 
 #   58| Silly
@@ -1335,7 +1335,7 @@ cfg.rb:
 #-----|  -> Interpolation
 
 #  113| ... if ...
-#-----|  -> Class
+#-----|  -> C
 
 #  113| call to puts
 #-----|  -> ... if ...
@@ -1356,7 +1356,7 @@ cfg.rb:
 #  113| 10
 #-----|  -> ... > ...
 
-#  115| Class
+#  115| C
 #-----|  -> C
 
 #  115| C
@@ -1381,7 +1381,7 @@ cfg.rb:
 #-----|  -> @@static_field
 
 #  120| ... = ...
-#-----|  -> Module
+#-----|  -> M
 
 #  120| swap
 #-----|  -> ... = ...
@@ -1407,7 +1407,7 @@ cfg.rb:
 #  120| x
 #-----|  -> Array
 
-#  122| Module
+#  122| M
 #-----|  -> M
 
 #  122| M
@@ -1580,7 +1580,7 @@ cfg.rb:
 #-----|  -> ...::Constant
 
 #  138| ...::Constant
-#-----|  -> SingletonClass
+#-----|  -> class << ...
 
 #  138| call to itself
 #-----|  -> Constant
@@ -1594,7 +1594,7 @@ cfg.rb:
 #  138| Constant
 #-----|  -> ...::Constant
 
-#  140| SingletonClass
+#  140| class << ...
 #-----|  -> Silly
 
 #  140| call to itself
@@ -2702,19 +2702,19 @@ loops.rb:
 #-----|  -> call to puts
 
 raise.rb:
-#    1| Class
+#    1| ExceptionA
 #-----|  -> ExceptionA
 
 #    1| ExceptionA
 #-----|  -> Exception
 
 #    1| Superclass
-#-----|  -> Class
+#-----|  -> ExceptionB
 
 #    1| Exception
 #-----|  -> Superclass
 
-#    4| Class
+#    4| ExceptionB
 #-----|  -> ExceptionB
 
 #    4| ExceptionB
