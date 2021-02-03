@@ -393,7 +393,7 @@ namespace Semmle.Extraction.CSharp
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                extractor.Message(new Message("Unhandled exception processing syntax tree", tree.FilePath, null, ex.StackTrace));
+                extractor.Message(new Message($"Unhandled exception processing syntax tree. {ex.Message}", tree.FilePath, null, ex.StackTrace));
             }
         }
 

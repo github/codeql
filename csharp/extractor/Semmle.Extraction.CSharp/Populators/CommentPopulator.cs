@@ -117,10 +117,6 @@ namespace Semmle.Extraction.CSharp.Populators
                         currentLocation = nextLineLocation;
                     }
                     break;
-                // Strangely, these are reported as SingleLineCommentTrivia.
-                case SyntaxKind.DocumentationCommentExteriorTrivia:
-                    cx.ModelError($"Unhandled comment type {trivia.Kind()} for {trivia}");
-                    break;
             }
         }
     }
