@@ -44,7 +44,7 @@ predicate potentiallyAccessedByForEach(Method m) {
   m.hasName("GetEnumerator") and
   m.getDeclaringType().getABaseType+().hasQualifiedName("System.Collections.IEnumerable")
   or
-  foreach_stmt_info(_, _, m, _, _, _, _)
+  foreach_stmt_desugar(_, m, 1)
 }
 
 predicate isRecursivelyLiveExpression(Expr e) {

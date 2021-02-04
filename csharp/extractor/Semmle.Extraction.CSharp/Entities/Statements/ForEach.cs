@@ -8,6 +8,15 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 {
     internal class ForEach : Statement<ForEachStatementSyntax>
     {
+        internal enum ForeachSymbolType
+        {
+            GetEnumeratorMethod = 1,
+            CurrentProperty,
+            MoveNextMethod,
+            DisposeMethod,
+            ElementType
+        }
+
         private ForEach(Context cx, ForEachStatementSyntax stmt, IStatementParentEntity parent, int child)
             : base(cx, stmt, StmtKind.FOREACH, parent, child) { }
 
@@ -33,13 +42,44 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             Statement.Create(cx, Stmt.Statement, this, 2);
 
             var info = semanticModel.GetForEachStatementInfo(Stmt);
-            var getEnumerator = Method.Create(cx, info.GetEnumeratorMethod);
-            var currentProp = Property.Create(cx, info.CurrentProperty);
-            var moveNext = Method.Create(cx, info.MoveNextMethod);
-            var dispose = Method.Create(cx, info.DisposeMethod);
-            var elementType = Type.Create(cx, info.ElementType);
 
-            trapFile.foreach_stmt_info(this, elementType, getEnumerator, moveNext, dispose, currentProp, info.IsAsynchronous);
+            if (info.Equals(default))
+            {
+                cx.ExtractionError("Could not get foreach statement info", null, Location.Create(cx, this.ReportingLocation), severity: Util.Logging.Severity.Info);
+                return;
+            }
+
+            trapFile.foreach_stmt_info(this, info.IsAsynchronous);
+
+            if (info.GetEnumeratorMethod != null)
+            {
+                var m = Method.Create(cx, info.GetEnumeratorMethod);
+                trapFile.foreach_stmt_desugar(this, m, ForeachSymbolType.GetEnumeratorMethod);
+            }
+
+            if (info.MoveNextMethod != null)
+            {
+                var m = Method.Create(cx, info.MoveNextMethod);
+                trapFile.foreach_stmt_desugar(this, m, ForeachSymbolType.MoveNextMethod);
+            }
+
+            if (info.DisposeMethod != null)
+            {
+                var m = Method.Create(cx, info.DisposeMethod);
+                trapFile.foreach_stmt_desugar(this, m, ForeachSymbolType.DisposeMethod);
+            }
+
+            if (info.CurrentProperty != null)
+            {
+                var p = Property.Create(cx, info.CurrentProperty);
+                trapFile.foreach_stmt_desugar(this, p, ForeachSymbolType.CurrentProperty);
+            }
+
+            if (info.ElementType != null)
+            {
+                var t = Type.Create(cx, info.ElementType);
+                trapFile.foreach_stmt_desugar(this, t, ForeachSymbolType.ElementType);
+            }
         }
     }
 
