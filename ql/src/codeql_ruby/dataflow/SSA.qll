@@ -48,13 +48,7 @@ module Ssa {
      * end
      * ```
      */
-    final VariableReadAccessCfgNode getARead() {
-      exists(LocalVariable v, BasicBlock bb, int i |
-        SsaImplCommon::ssaDefReachesRead(v, this, bb, i) and
-        SsaImpl::variableReadActual(bb, i, v) and
-        result = bb.getNode(i)
-      )
-    }
+    final VariableReadAccessCfgNode getARead() { result = SsaImpl::getARead(this) }
 
     /**
      * Gets a first control-flow node that reads the value of this SSA definition.
@@ -144,6 +138,15 @@ module Ssa {
     }
 
     /**
+     * Gets an SSA definition whose value can flow to this one in one step. This
+     * includes inputs to phi nodes and the prior definitions of uncertain writes.
+     */
+    private Definition getAPhiInputOrPriorDefinition() {
+      result = this.(PhiNode).getAnInput() or
+      result = this.(CapturedCallDefinition).getPriorDefinition()
+    }
+
+    /**
      * Gets a definition that ultimately defines this SSA definition and is
      * not itself a phi node.
      *
@@ -168,8 +171,9 @@ module Ssa {
      * end
      * ```
      */
-    final override Definition getAnUltimateDefinition() {
-      result = SsaImplCommon::Definition.super.getAnUltimateDefinition()
+    final Definition getAnUltimateDefinition() {
+      result = this.getAPhiInputOrPriorDefinition*() and
+      not result instanceof PhiNode
     }
 
     override string toString() { result = this.getControlFlowNode().toString() }
@@ -284,9 +288,11 @@ module Ssa {
       )
     }
 
-    final override Definition getPriorDefinition() {
-      result = SsaImplCommon::UncertainWriteDefinition.super.getPriorDefinition()
-    }
+    /**
+     * Gets the immediately preceding definition. Since this update is uncertain,
+     * the value from the preceding definition might still be valid.
+     */
+    final Definition getPriorDefinition() { result = SsaImpl::uncertainWriteDefinitionInput(this) }
 
     override string toString() { result = this.getControlFlowNode().toString() }
   }
@@ -330,7 +336,12 @@ module Ssa {
      * end
      * ```
      */
-    final override Definition getAnInput() { result = SsaImplCommon::PhiNode.super.getAnInput() }
+    final Definition getAnInput() { this.hasInputFromBlock(result, _) }
+
+    /** Holds if `inp` is an input to this phi node along the edge originating in `bb`. */
+    predicate hasInputFromBlock(Definition inp, BasicBlock bb) {
+      inp = SsaImpl::phiHasInputFromBlock(this, bb)
+    }
 
     private string getSplitString() {
       result = this.getBasicBlock().getFirstNode().(CfgNodes::AstCfgNode).getSplitsString()
