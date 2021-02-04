@@ -38,9 +38,17 @@ private module Immutable {
   API::Node immutableCollection() {
     // keep this predicate in sync with the constructors defined in `storeStep`/`step`.
     result =
-      immutableImport().getMember(["Map", "OrderedMap", "List", "fromJS", "merge"]).getReturn()
+      immutableImport()
+          .getMember(["Map", "OrderedMap", "List", "Stack", "Set", "OrderedSet", "fromJS", "merge"])
+          .getReturn()
     or
     result = immutableImport().getMember("Record").getReturn().getReturn()
+    or
+    result =
+      immutableImport()
+          .getMember(["List", "Set", "OrderedSet", "Stack"])
+          .getMember("of")
+          .getReturn()
     or
     result = immutableCollection().getMember(["set", "map", "filter", "push", "merge"]).getReturn()
   }
@@ -59,7 +67,7 @@ private module Immutable {
     or
     // Immutable.List()
     exists(DataFlow::CallNode call, DataFlow::ArrayCreationNode arr |
-      call = immutableImport().getMember("List").getACall()
+      call = immutableImport().getMember(["List", "Stack", "Set", "OrderedSet"]).getACall()
     |
       arr = call.getArgument(0).getALocalSource() and
       exists(int i |
@@ -90,6 +98,19 @@ private module Immutable {
     |
       pred = [factoryCall, recordCall].getOptionArgument(0, prop) and
       result = recordCall
+    )
+    or
+    // List/Set/Stack.of(values)
+    exists(API::CallNode call |
+      call =
+        immutableImport()
+            .getMember(["List", "Set", "OrderedSet", "Stack"])
+            .getMember("of")
+            .getACall()
+    |
+      pred = call.getAnArgument() and
+      result = call and
+      prop = DataFlow::PseudoProperties::arrayElement()
     )
   }
 
