@@ -125,8 +125,11 @@ private module Cached {
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
     or
-    nodeFrom.asExpr() =
-      nodeTo.asExpr().(CfgNodes::ExprNodes::ParenthesizedExprCfgNode).getLastExpr()
+    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ExprSequenceCfgNode).getLastExpr()
+    or
+    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ConditionalExprCfgNode).getBranch(_)
+    or
+    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::CaseExprCfgNode).getBranch(_)
   }
 
   cached

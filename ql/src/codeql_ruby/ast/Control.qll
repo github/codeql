@@ -17,7 +17,7 @@ class ControlExpr extends Expr {
  * A conditional expression: `if`/`unless` (including expression-modifier
  * variants), and ternary-if (`?:`) expressions.
  */
-class ConditionalExpr extends Expr {
+class ConditionalExpr extends ControlExpr {
   override ConditionalExpr::Range range;
 
   /**

@@ -232,6 +232,45 @@ module ExprNodes {
     final ExprCfgNode getReceiver() { e.hasCfgChild(e.getReceiver(), this, result) }
   }
 
+  private class CaseExprChildMapping extends ExprChildMapping, CaseExpr {
+    override predicate relevantChild(Expr e) { e = this.getValue() or e = this.getBranch(_) }
+  }
+
+  /** A control-flow node that wraps an `CaseExpr` AST expression. */
+  class CaseExprCfgNode extends ExprCfgNode {
+    override CaseExprChildMapping e;
+
+    final override CaseExpr getExpr() { result = ExprCfgNode.super.getExpr() }
+
+    /** Gets the expression being compared, if any. */
+    final ExprCfgNode getValue() { e.hasCfgChild(e.getValue(), this, result) }
+
+    /**
+     * Gets the `n`th branch of this case expression,
+     */
+    final ExprCfgNode getBranch(int i) { e.hasCfgChild(e.getBranch(i), this, result) }
+  }
+
+  private class ConditionalExprChildMapping extends ExprChildMapping, ConditionalExpr {
+    override predicate relevantChild(Expr e) { e = this.getCondition() or e = this.getBranch(_) }
+  }
+
+  /** A control-flow node that wraps an `ConditionalExpr` AST expression. */
+  class ConditionalExprCfgNode extends ExprCfgNode {
+    override ConditionalExprChildMapping e;
+
+    final override ConditionalExpr getExpr() { result = ExprCfgNode.super.getExpr() }
+
+    /** Gets the condition expression. */
+    final ExprCfgNode getCondition() { e.hasCfgChild(e.getCondition(), this, result) }
+
+    /**
+     * Gets the branch of this conditional expression that is taken when the condition
+     * evaluates to cond, if any.
+     */
+    final ExprCfgNode getBranch(boolean cond) { e.hasCfgChild(e.getBranch(cond), this, result) }
+  }
+
   private class ExprSequenceChildMapping extends ExprChildMapping, ExprSequence {
     override predicate relevantChild(Expr e) { e = this.getAnExpr() }
   }
@@ -249,7 +288,7 @@ module ExprNodes {
     final ExprCfgNode getExpr(int n) { e.hasCfgChild(e.getExpr(n), this, result) }
   }
 
-  /** A control-flow node that wraps an `ExprSequence` AST expression. */
+  /** A control-flow node that wraps an `ParenthesizedExpr` AST expression. */
   class ParenthesizedExprCfgNode extends ExprSequenceCfgNode {
     ParenthesizedExprCfgNode() { this.getExpr() instanceof ParenthesizedExpr }
   }
