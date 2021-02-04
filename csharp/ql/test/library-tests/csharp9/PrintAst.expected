@@ -669,10 +669,10 @@ Record.cs:
 #    4|       1: [Parameter] r2
 #    4|   13: [Property] EqualityContract
 #    4|     3: [Getter] get_EqualityContract
-#    6|   14: [IndexerProperty] LastName
+#    6|   14: [Property] LastName
 #    6|     -1: [TypeMention] string
 #    6|     3: [Getter] get_LastName
-#    7|   15: [IndexerProperty] FirstName
+#    7|   15: [Property] FirstName
 #    7|     -1: [TypeMention] string
 #    7|     3: [Getter] get_FirstName
 #    9|   16: [InstanceConstructor] Person
@@ -699,7 +699,7 @@ Record.cs:
 #   12|       1: [Parameter] r2
 #   12|   14: [Property] EqualityContract
 #   12|     3: [Getter] get_EqualityContract
-#   14|   15: [IndexerProperty] Subject
+#   14|   15: [Property] Subject
 #   14|     -1: [TypeMention] string
 #   14|     3: [Getter] get_Subject
 #   16|   16: [InstanceConstructor] Teacher
@@ -761,12 +761,12 @@ Record.cs:
 #   27|         -1: [TypeMention] string
 #   27|       1: [Parameter] LastName
 #   27|         -1: [TypeMention] string
-#   27|   16: [IndexerProperty] FirstName
+#   27|   16: [Property] FirstName
 #   27|     3: [Getter] get_FirstName
 #   27|     4: [Setter] set_FirstName
 #-----|       2: (Parameters)
 #   27|         0: [Parameter] value
-#   27|   17: [IndexerProperty] LastName
+#   27|   17: [Property] LastName
 #   27|     3: [Getter] get_LastName
 #   27|     4: [Setter] set_LastName
 #-----|       2: (Parameters)
@@ -790,7 +790,7 @@ Record.cs:
 #   29|         -1: [TypeMention] string
 #   29|       2: [Parameter] Subject
 #   29|         -1: [TypeMention] string
-#   29|   17: [IndexerProperty] Subject
+#   29|   17: [Property] Subject
 #   29|     3: [Getter] get_Subject
 #   29|     4: [Setter] set_Subject
 #-----|       2: (Parameters)
@@ -834,7 +834,7 @@ Record.cs:
 #-----|     2: (Parameters)
 #   35|       0: [Parameter] Name
 #   35|         -1: [TypeMention] string
-#   35|   16: [IndexerProperty] Name
+#   35|   16: [Property] Name
 #   35|     3: [Getter] get_Name
 #   35|     4: [Setter] set_Name
 #-----|       2: (Parameters)
