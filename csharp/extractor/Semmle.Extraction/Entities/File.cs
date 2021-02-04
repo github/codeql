@@ -62,7 +62,7 @@ namespace Semmle.Extraction.Entities
                 }
                 catch (Exception exc)
                 {
-                    Context.ExtractionError($"Couldn't read file", originalPath, null, exc.StackTrace);
+                    Context.ExtractionError($"Couldn't read file: {originalPath}", null, null, exc.StackTrace);
                 }
             }
 
