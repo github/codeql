@@ -29,7 +29,6 @@ class Specifier extends Element, @specifier {
 
 /**
  * A C/C++ function specifier: `inline`, `virtual`, or `explicit`.
- * TODO
  */
 class FunctionSpecifier extends Specifier {
   FunctionSpecifier() {
@@ -44,7 +43,6 @@ class FunctionSpecifier extends Specifier {
 /**
  * A C/C++ storage class specifier: `auto`, `register`, `static`, `extern`,
  * or `mutable".
- * TODO
  */
 class StorageClassSpecifier extends Specifier {
   StorageClassSpecifier() {
@@ -60,7 +58,6 @@ class StorageClassSpecifier extends Specifier {
 
 /**
  * A C++ access specifier: `public`, `protected`, or `private`.
- * TODO
  */
 class AccessSpecifier extends Specifier {
   AccessSpecifier() {
@@ -149,14 +146,12 @@ class Attribute extends Element, @attribute {
 /**
  * An attribute introduced by GNU's `__attribute__((name))` syntax, for
  * example: `__attribute__((__noreturn__))`.
- * TODO
  */
 class GnuAttribute extends Attribute, @gnuattribute { }
 
 /**
  * An attribute introduced by the C++11 standard `[[name]]` syntax, for
  * example: `[[clang::fallthrough]]`.
- * TODO
  */
 class StdAttribute extends Attribute, @stdattribute {
   /**
@@ -185,11 +180,7 @@ class StdAttribute extends Attribute, @stdattribute {
 class Declspec extends Attribute, @declspec { }
 
 /**
- * An attribute introduced by Microsoft's "[name]" syntax. For example
- * ```
- * [SA_Pre(Deref=1,Access=SA_Read)]
- * TODO
- * ```
+ * An attribute introduced by Microsoft's "[name]" syntax, for example "[SA_Pre(Deref=1,Access=SA_Read)]".
  */
 class MicrosoftAttribute extends Attribute, @msattribute {
   AttributeArgument getNamedArgument(string name) {
