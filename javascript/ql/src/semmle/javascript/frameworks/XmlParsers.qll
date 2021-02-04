@@ -169,6 +169,31 @@ module XML {
     override predicate resolvesEntities(XML::EntityKind kind) { kind = InternalEntity() }
   }
 
+  /**
+   * An invocation of `xml2js`.
+   */
+  private class Xml2JSInvocation extends XML::ParserInvocation {
+    js::DataFlow::CallNode call;
+
+    Xml2JSInvocation() {
+      exists(js::API::Node imp | imp = js::API::moduleImport("xml2js") |
+        call = [imp, imp.getMember("Parser").getInstance()].getMember("parseString").getACall() and
+        this = call.asExpr()
+      )
+    }
+
+    override js::Expr getSourceArgument() { result = getArgument(0) }
+
+    override predicate resolvesEntities(XML::EntityKind kind) {
+      // sax-js (the parser used) does not expand entities.
+      none()
+    }
+
+    override js::DataFlow::Node getAResult() {
+      result = call.getABoundCallbackParameter(call.getNumArgument() - 1, 1)
+    }
+  }
+
   private class XMLParserTaintStep extends js::TaintTracking::AdditionalTaintStep {
     XML::ParserInvocation parser;
 

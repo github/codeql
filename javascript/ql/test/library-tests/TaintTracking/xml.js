@@ -7,4 +7,9 @@
     parser.on("text", text => {
         sink(text); // NOT OK
     });
+
+    var parseString = require('xml2js').parseString;
+    parseString(source(), function (err, result) {
+        sink(result); // NOT OK
+    });
 })();
