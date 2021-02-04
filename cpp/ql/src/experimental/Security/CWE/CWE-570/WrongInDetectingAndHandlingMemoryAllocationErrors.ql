@@ -1,5 +1,5 @@
 /**
- * @name Сonfusion In Detecting And Handling Memory Allocation Errors
+ * @name onfusion In Detecting And Handling Memory Allocation Errors
  * @description --::operator new(std::size_t) throws an exception on error, and ::operator new(std::size_t, const std::nothrow_t &) returns zero on error.
  *              --the programmer can get confused when check the error that occurs when allocating memory incorrectly.
  * @kind problem
@@ -47,9 +47,7 @@ class WrongCheckErrorOperatorNew extends FunctionCall {
    * Holds if handler `try ... catch` exists.
    */
   predicate isExistsTryCatchBlock() {
-    exists(TryStmt ts |
-      this.getEnclosingStmt() = ts.getStmt().getAChild*()
-    )
+    exists(TryStmt ts | this.getEnclosingStmt() = ts.getStmt().getAChild*())
   }
 
   /**
