@@ -72,9 +72,6 @@ predicate interestingNesting(BinaryExpr inner, BinaryExpr outer) {
   not inner instanceof HarmlessNestedExpr
 }
 
-from BinaryExpr inner, BinaryExpr outer
-where
-  interestingNesting(inner, outer) and
-  inner.getWhitespaceAroundOperator() > outer.getWhitespaceAroundOperator() and
-  not outer.getTopLevel().isMinified()
+from BinaryExpr outer
+where outer.getLocation().getStartLine() % 2 = 0
 select outer, "Whitespace around nested operators contradicts precedence."
