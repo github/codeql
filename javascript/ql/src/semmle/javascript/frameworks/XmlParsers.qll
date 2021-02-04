@@ -194,6 +194,38 @@ module XML {
     }
   }
 
+  /**
+   * An invocation of `sax`.
+   */
+  private class SaxInvocation extends XML::ParserInvocation {
+    js::DataFlow::InvokeNode parser;
+
+    SaxInvocation() {
+      exists(js::API::Node imp | imp = js::API::moduleImport("sax") |
+        parser = imp.getMember("parser").getACall()
+        or
+        parser = imp.getMember("SAXParser").getAnInstantiation()
+      ) and
+      this = parser.getAMemberCall("write").asExpr()
+    }
+
+    override js::Expr getSourceArgument() { result = getArgument(0) }
+
+    override predicate resolvesEntities(XML::EntityKind kind) {
+      // sax-js does not expand entities.
+      none()
+    }
+
+    override js::DataFlow::Node getAResult() {
+      result =
+        parser
+            .getAPropertyWrite(any(string s | s.matches("on%")))
+            .getRhs()
+            .getAFunctionValue()
+            .getAParameter()
+    }
+  }
+
   private class XMLParserTaintStep extends js::TaintTracking::AdditionalTaintStep {
     XML::ParserInvocation parser;
 
