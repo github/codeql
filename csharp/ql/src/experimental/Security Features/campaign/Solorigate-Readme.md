@@ -1,10 +1,10 @@
 # Working with Solorigate queries
 
-These queries hunt for Indicators of Compromise (IoCs) associated with the malicious implant code that was inserted into the SolarWinds Orion product.  
+In early December, 2020 a sophisticated compromise campaign was uncovered, dubbed [Solorigate](https://aka.ms/solorigate).  A key feature of the campaign was a malicious software implant inserted into SolarWinds' Orion product on the build server. Studying the coding patterns and techniques used in the implant, Microsoft authored CodeQL queries as part of a larger effort to analyze our source code for any malicious modification - a brief summary of those efforts can be [found here](https://aka.ms/Solorigate-CodeQL-Blog). These queries here represent a mixture of techniques to look for code that shares features with the malicious Implant code.
 
 This ReadMe walks through what each query does and limitations of the approaches taken, suggestions for modifications, and general advice on using CodeQL to author backdoor hunting queries.  There are two approaches taken with the queries; the first is to look for syntactic characteristics used in the malicious implant, things like names and particular literals.  The second approach looks for semantic patterns – particular functionality and flow associated with the implant.  
 
-When editing this queries for open sourcing, we tried to find the right balance between detection capability and false positive rate, mindful that different organizations have differing resources to review the findings.  
+When editing this queries for open sourcing, we tried to find the right balance between detection capability and false positive rate, mindful that different organizations have differing resources to review the findings.  We also excluded queries that we found to be resource intensive when executing without providing significant detective value over these queries here.  In the coming weeks we will post on [our blog](https://aka.ms/CST-SE-Blog) a walk through of our experience authoring and tuning these queries, as well as discussing the challenges we saw with the queries we didn't open source.
 
 ## Syntactic queries
 
@@ -107,15 +107,15 @@ While the results of this query are useful on their own, both to cast a wide net
 
 The malicious modifications of SolarWinds’ code took place on the build server (more details from [CrowdStrike](https://www.crowdstrike.com/blog/sunspot-malware-technical-analysis/)), so CodeQL databases used for analysis should ideally be built from the same build servers.  CodeQL utilizes the same Roslyn Compiler as MSBuild, so absent the malicious actor specifically building checks for the presence of CodeQL, it is likely the injection technique utilized by the malicious actor would replicate when CodeQL was run.  Alternatively, if building CodeQL databases in an independent environment, other techniques can be used to validate that the code that was compiled into the final binaries is the same as the source code in the source repository.
 
-> ### FYI
->
-> While the step-by-step details are outside the scope of this ReadMe, if the build environment is configured to perform deterministic builds (not all compilers support this, nor default to this if they do), the binaries produced by the build environment can be compared to binaries produced from the same source compiled in a distinct environment.  Additionally, some compilers can be configured to emit a manifest of the source code hashes for the source files that were compiled (MSBuild puts them in the PDB files emitted during compilation), which can be compared to source hashes created in an independent environment.  If the comparison of either the deterministically built binaries or source hashes do not match, that is a clear indicator that further investigation is warranted.  These two techniques can be automated to provide ongoing validation of the build output.  
->
->If comparing source hashes, it is strongly recommended that SHA256 rather than weaker hashes be used.  This can be configured in the following Microsoft compilers by using the specified compiler flags below:
->
-> * cl.exe /ZH:SHA_256
-> * ml.exe /ZH:SHA_256
-> * ml64.exe /ZH:SHA_256
-> * armasm.exe -gh:SHA_256
-> * armasm64.exe -gh:SHA_256
-> * csc.exe /checksumalgorithm:SHA256
+### FYI
+
+While the step-by-step details are outside the scope of this ReadMe, if the build environment is configured to perform deterministic builds (not all compilers support this, nor default to this if they do), the binaries produced by the build environment can be compared to binaries produced from the same source compiled in a distinct environment.  Additionally, some compilers can be configured to emit a manifest of the source code hashes for the source files that were compiled (MSBuild puts them in the PDB files emitted during compilation), which can be compared to source hashes created in an independent environment.  If the comparison of either the deterministically built binaries or source hashes do not match, that is a clear indicator that further investigation is warranted.  These two techniques can be automated to provide ongoing validation of the build output.  
+
+If comparing source hashes, it is strongly recommended that SHA256 rather than weaker hashes be used.  This can be configured in the following Microsoft compilers by using the specified compiler flags below:
+
+* cl.exe /ZH:SHA_256
+* ml.exe /ZH:SHA_256
+* ml64.exe /ZH:SHA_256
+* armasm.exe -gh:SHA_256
+* armasm64.exe -gh:SHA_256
+* csc.exe /checksumalgorithm:SHA256
