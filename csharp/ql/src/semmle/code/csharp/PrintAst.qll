@@ -48,6 +48,8 @@ private predicate isNotNeeded(Element e) {
   or
   e instanceof TupleType
   or
+  e instanceof ConditionalDirective
+  or
   isNotNeeded(e.(Declaration).getDeclaringType())
   or
   isNotNeeded(e.(Parameter).getDeclaringElement())

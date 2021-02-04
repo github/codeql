@@ -28,8 +28,17 @@ namespace Semmle.Extraction.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.locations_default(this, FileEntity, Position.Span.Start.Line + 1, Position.Span.Start.Character + 1,
-                    Position.Span.End.Line + 1, Position.Span.End.Character);
+            trapFile.locations_default(this, FileEntity,
+                Position.Span.Start.Line + 1, Position.Span.Start.Character + 1,
+                Position.Span.End.Line + 1, Position.Span.End.Character);
+
+            var mapped = symbol.GetMappedLineSpan();
+            if (mapped.HasMappedPath && mapped.IsValid)
+            {
+                var mappedLoc = Create(Context, Microsoft.CodeAnalysis.Location.Create(mapped.Path, default, mapped.Span));
+
+                trapFile.locations_mapped(this, mappedLoc);
+            }
         }
 
         public FileLinePositionSpan Position

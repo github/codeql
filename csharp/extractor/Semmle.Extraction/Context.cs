@@ -246,7 +246,9 @@ namespace Semmle.Extraction
 
         public ICommentGenerator CommentGenerator { get; } = new CommentProcessor();
 
-        private IExtractionScope scope { get; }
+        private IExtractionScope scope;
+
+        public bool IsAssemblyScope => scope is AssemblyScope;
 
         public SyntaxTree? SourceTree => scope is SourceScope sc ? sc.SourceTree : null;
 
@@ -259,12 +261,6 @@ namespace Semmle.Extraction
         public bool Defines(ISymbol symbol) =>
             !SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) ||
             scope.InScope(symbol);
-
-        /// <summary>
-        /// Whether the current extraction context defines a given file.
-        /// </summary>
-        /// <param name="path">The path to query.</param>
-        public bool DefinesFile(string path) => scope.InFileScope(path);
 
         private int currentRecursiveDepth = 0;
         private const int maxRecursiveDepth = 150;
@@ -368,9 +364,9 @@ namespace Semmle.Extraction
                     throw new InternalError("Unexpected TrapStackBehaviour");
             }
 
-            var a = duplicationGuard && this.Create(entity.ReportingLocation) is NonGeneratedSourceLocation loc ?
-                (Action)(() => WithDuplicationGuard(new Key(entity, loc), () => entity.Populate(TrapWriter.Writer))) :
-                (Action)(() => this.Try(null, optionalSymbol, () => entity.Populate(TrapWriter.Writer)));
+            var a = duplicationGuard && this.Create(entity.ReportingLocation) is NonGeneratedSourceLocation loc
+                ? (Action)(() => WithDuplicationGuard(new Key(entity, loc), () => entity.Populate(TrapWriter.Writer)))
+                : (Action)(() => this.Try(null, optionalSymbol, () => entity.Populate(TrapWriter.Writer)));
 
             if (deferred)
                 populateQueue.Enqueue(a);
@@ -384,7 +380,7 @@ namespace Semmle.Extraction
         /// </summary>
         public void WithDuplicationGuard(Key key, Action a)
         {
-            if (scope is AssemblyScope)
+            if (IsAssemblyScope)
             {
                 // No need for a duplication guard when extracting assemblies,
                 // and the duplication guard could lead to method bodies being missed

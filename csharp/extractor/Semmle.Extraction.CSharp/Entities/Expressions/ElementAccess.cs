@@ -30,12 +30,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
             else
             {
-                var child = -1;
-                Create(cx, qualifier, this, child++);
-                foreach (var a in argumentList.Arguments)
-                {
-                    cx.Extract(a, this, child++);
-                }
+                Create(cx, qualifier, this, -1);
+                PopulateArguments(trapFile, argumentList, 0);
 
                 var symbolInfo = cx.GetSymbolInfo(base.Syntax);
 

@@ -529,7 +529,17 @@ namespace Semmle.Extraction.CSharp.Entities
             get
             {
                 var c = Model.GetConstantValue(Node);
-                return c.HasValue ? Expression.ValueAsString(c.Value) : null;
+                if (c.HasValue)
+                {
+                    return Expression.ValueAsString(c.Value);
+                }
+
+                if (TryGetBoolValueFromLiteral(out var val))
+                {
+                    return Expression.ValueAsString(val);
+                }
+
+                return null;
             }
         }
 
@@ -593,5 +603,19 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         public NullableFlowState FlowState => TypeInfo.Nullability.FlowState;
+
+        private bool TryGetBoolValueFromLiteral(out bool val)
+        {
+            var isTrue = Node.IsKind(SyntaxKind.TrueLiteralExpression);
+            var isFalse = Node.IsKind(SyntaxKind.FalseLiteralExpression);
+
+            val = isTrue;
+            return isTrue || isFalse;
+        }
+
+        public bool IsBoolLiteral()
+        {
+            return TryGetBoolValueFromLiteral(out var _);
+        }
     }
 }
