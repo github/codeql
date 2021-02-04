@@ -9,7 +9,7 @@ where
   m.hasName("MainDelegateAndMethodAccesses") and
   e.getEnclosingCallable() = m and
   e.getNumberOfArguments() = 1 and
-  e.getDelegateExpr() = a and
+  e.getExpr() = a and
   a.getTarget().hasName("cd7") and
   e.getArgument(0).(AddExpr).getRightOperand().(LocalVariableAccess).getTarget().hasName("x")
 select m, e, a
