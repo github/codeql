@@ -7,7 +7,6 @@
 | DuplicateSwitchCase.go:4:2:4:2 | true | DuplicateSwitchCase.go:5:7:5:9 | msg |
 | DuplicateSwitchCase.go:5:7:5:9 | msg | DuplicateSwitchCase.go:5:14:5:20 | "start" |
 | DuplicateSwitchCase.go:5:7:5:20 | ...==... | DuplicateSwitchCase.go:5:7:5:20 | case ...==... |
-| DuplicateSwitchCase.go:5:7:5:20 | ...==... | DuplicateSwitchCase.go:12:1:12:1 | exit |
 | DuplicateSwitchCase.go:5:7:5:20 | case ...==... | DuplicateSwitchCase.go:5:20:5:20 | ...==... is false |
 | DuplicateSwitchCase.go:5:7:5:20 | case ...==... | DuplicateSwitchCase.go:5:20:5:20 | ...==... is true |
 | DuplicateSwitchCase.go:5:14:5:20 | "start" | DuplicateSwitchCase.go:5:7:5:20 | ...==... |
@@ -17,7 +16,6 @@
 | DuplicateSwitchCase.go:6:3:6:9 | call to start | DuplicateSwitchCase.go:12:1:12:1 | exit |
 | DuplicateSwitchCase.go:7:7:7:9 | msg | DuplicateSwitchCase.go:7:14:7:20 | "start" |
 | DuplicateSwitchCase.go:7:7:7:20 | ...==... | DuplicateSwitchCase.go:7:7:7:20 | case ...==... |
-| DuplicateSwitchCase.go:7:7:7:20 | ...==... | DuplicateSwitchCase.go:12:1:12:1 | exit |
 | DuplicateSwitchCase.go:7:7:7:20 | case ...==... | DuplicateSwitchCase.go:7:20:7:20 | ...==... is false |
 | DuplicateSwitchCase.go:7:7:7:20 | case ...==... | DuplicateSwitchCase.go:7:20:7:20 | ...==... is true |
 | DuplicateSwitchCase.go:7:14:7:20 | "start" | DuplicateSwitchCase.go:7:7:7:20 | ...==... |
@@ -36,6 +34,76 @@
 | DuplicateSwitchCase.go:16:1:16:14 | function declaration | DuplicateSwitchCase.go:0:0:0:0 | exit |
 | DuplicateSwitchCase.go:16:6:16:9 | skip | DuplicateSwitchCase.go:16:1:16:14 | function declaration |
 | DuplicateSwitchCase.go:16:13:16:14 | skip | DuplicateSwitchCase.go:16:14:16:14 | exit |
+| equalitytests.go:0:0:0:0 | entry | equalitytests.go:3:1:5:1 | skip |
+| equalitytests.go:3:1:5:1 | skip | equalitytests.go:7:1:9:1 | skip |
+| equalitytests.go:7:1:9:1 | skip | equalitytests.go:11:6:11:18 | skip |
+| equalitytests.go:11:1:11:1 | entry | equalitytests.go:11:20:11:21 | argument corresponding to i1 |
+| equalitytests.go:11:1:13:1 | function declaration | equalitytests.go:0:0:0:0 | exit |
+| equalitytests.go:11:6:11:18 | skip | equalitytests.go:11:1:13:1 | function declaration |
+| equalitytests.go:11:20:11:21 | argument corresponding to i1 | equalitytests.go:11:20:11:21 | initialization of i1 |
+| equalitytests.go:11:20:11:21 | initialization of i1 | equalitytests.go:11:28:11:29 | argument corresponding to i2 |
+| equalitytests.go:11:28:11:29 | argument corresponding to i2 | equalitytests.go:11:28:11:29 | initialization of i2 |
+| equalitytests.go:11:28:11:29 | initialization of i2 | equalitytests.go:11:36:11:37 | argument corresponding to e1 |
+| equalitytests.go:11:36:11:37 | argument corresponding to e1 | equalitytests.go:11:36:11:37 | initialization of e1 |
+| equalitytests.go:11:36:11:37 | initialization of e1 | equalitytests.go:11:46:11:47 | argument corresponding to e2 |
+| equalitytests.go:11:46:11:47 | argument corresponding to e2 | equalitytests.go:11:46:11:47 | initialization of e2 |
+| equalitytests.go:11:46:11:47 | initialization of e2 | equalitytests.go:11:56:11:57 | argument corresponding to s1 |
+| equalitytests.go:11:56:11:57 | argument corresponding to s1 | equalitytests.go:11:56:11:57 | initialization of s1 |
+| equalitytests.go:11:56:11:57 | initialization of s1 | equalitytests.go:11:83:11:84 | argument corresponding to s2 |
+| equalitytests.go:11:83:11:84 | argument corresponding to s2 | equalitytests.go:11:83:11:84 | initialization of s2 |
+| equalitytests.go:11:83:11:84 | initialization of s2 | equalitytests.go:11:110:11:111 | argument corresponding to s3 |
+| equalitytests.go:11:110:11:111 | argument corresponding to s3 | equalitytests.go:11:110:11:111 | initialization of s3 |
+| equalitytests.go:11:110:11:111 | initialization of s3 | equalitytests.go:11:134:11:135 | argument corresponding to s4 |
+| equalitytests.go:11:134:11:135 | argument corresponding to s4 | equalitytests.go:11:134:11:135 | initialization of s4 |
+| equalitytests.go:11:134:11:135 | initialization of s4 | equalitytests.go:11:158:11:159 | argument corresponding to a1 |
+| equalitytests.go:11:158:11:159 | argument corresponding to a1 | equalitytests.go:11:158:11:159 | initialization of a1 |
+| equalitytests.go:11:158:11:159 | initialization of a1 | equalitytests.go:11:171:11:172 | argument corresponding to a2 |
+| equalitytests.go:11:171:11:172 | argument corresponding to a2 | equalitytests.go:11:171:11:172 | initialization of a2 |
+| equalitytests.go:11:171:11:172 | initialization of a2 | equalitytests.go:11:184:11:185 | argument corresponding to a3 |
+| equalitytests.go:11:184:11:185 | argument corresponding to a3 | equalitytests.go:11:184:11:185 | initialization of a3 |
+| equalitytests.go:11:184:11:185 | initialization of a3 | equalitytests.go:11:195:11:196 | argument corresponding to a4 |
+| equalitytests.go:11:195:11:196 | argument corresponding to a4 | equalitytests.go:11:195:11:196 | initialization of a4 |
+| equalitytests.go:11:195:11:196 | initialization of a4 | equalitytests.go:12:9:12:10 | i1 |
+| equalitytests.go:12:2:12:76 | return statement | equalitytests.go:13:1:13:1 | exit |
+| equalitytests.go:12:9:12:10 | i1 | equalitytests.go:12:15:12:16 | i2 |
+| equalitytests.go:12:9:12:16 | ...==... | equalitytests.go:12:16:12:16 | ...==... is false |
+| equalitytests.go:12:9:12:16 | ...==... | equalitytests.go:12:16:12:16 | ...==... is true |
+| equalitytests.go:12:9:12:76 | ...&&... | equalitytests.go:12:2:12:76 | return statement |
+| equalitytests.go:12:15:12:16 | i2 | equalitytests.go:12:9:12:16 | ...==... |
+| equalitytests.go:12:16:12:16 | ...==... is false | equalitytests.go:12:28:12:28 | ...&&... is false |
+| equalitytests.go:12:16:12:16 | ...==... is true | equalitytests.go:12:21:12:22 | e1 |
+| equalitytests.go:12:21:12:22 | e1 | equalitytests.go:12:27:12:28 | e2 |
+| equalitytests.go:12:21:12:28 | ...==... | equalitytests.go:12:28:12:28 | ...&&... is false |
+| equalitytests.go:12:21:12:28 | ...==... | equalitytests.go:12:28:12:28 | ...&&... is true |
+| equalitytests.go:12:21:12:28 | ...==... | equalitytests.go:13:1:13:1 | exit |
+| equalitytests.go:12:27:12:28 | e2 | equalitytests.go:12:21:12:28 | ...==... |
+| equalitytests.go:12:28:12:28 | ...&&... is false | equalitytests.go:12:40:12:40 | ...&&... is false |
+| equalitytests.go:12:28:12:28 | ...&&... is true | equalitytests.go:12:33:12:34 | s1 |
+| equalitytests.go:12:33:12:34 | s1 | equalitytests.go:12:39:12:40 | s2 |
+| equalitytests.go:12:33:12:40 | ...==... | equalitytests.go:12:40:12:40 | ...&&... is false |
+| equalitytests.go:12:33:12:40 | ...==... | equalitytests.go:12:40:12:40 | ...&&... is true |
+| equalitytests.go:12:33:12:40 | ...==... | equalitytests.go:13:1:13:1 | exit |
+| equalitytests.go:12:39:12:40 | s2 | equalitytests.go:12:33:12:40 | ...==... |
+| equalitytests.go:12:40:12:40 | ...&&... is false | equalitytests.go:12:52:12:52 | ...&&... is false |
+| equalitytests.go:12:40:12:40 | ...&&... is true | equalitytests.go:12:45:12:46 | s3 |
+| equalitytests.go:12:45:12:46 | s3 | equalitytests.go:12:51:12:52 | s4 |
+| equalitytests.go:12:45:12:52 | ...==... | equalitytests.go:12:52:12:52 | ...&&... is false |
+| equalitytests.go:12:45:12:52 | ...==... | equalitytests.go:12:52:12:52 | ...&&... is true |
+| equalitytests.go:12:45:12:52 | ...==... | equalitytests.go:13:1:13:1 | exit |
+| equalitytests.go:12:51:12:52 | s4 | equalitytests.go:12:45:12:52 | ...==... |
+| equalitytests.go:12:52:12:52 | ...&&... is false | equalitytests.go:12:64:12:64 | ...&&... is false |
+| equalitytests.go:12:52:12:52 | ...&&... is true | equalitytests.go:12:57:12:58 | a1 |
+| equalitytests.go:12:57:12:58 | a1 | equalitytests.go:12:63:12:64 | a2 |
+| equalitytests.go:12:57:12:64 | ...==... | equalitytests.go:12:64:12:64 | ...&&... is false |
+| equalitytests.go:12:57:12:64 | ...==... | equalitytests.go:12:64:12:64 | ...&&... is true |
+| equalitytests.go:12:57:12:64 | ...==... | equalitytests.go:13:1:13:1 | exit |
+| equalitytests.go:12:63:12:64 | a2 | equalitytests.go:12:57:12:64 | ...==... |
+| equalitytests.go:12:64:12:64 | ...&&... is false | equalitytests.go:12:9:12:76 | ...&&... |
+| equalitytests.go:12:64:12:64 | ...&&... is true | equalitytests.go:12:69:12:70 | a3 |
+| equalitytests.go:12:69:12:70 | a3 | equalitytests.go:12:75:12:76 | a4 |
+| equalitytests.go:12:69:12:76 | ...==... | equalitytests.go:12:9:12:76 | ...&&... |
+| equalitytests.go:12:69:12:76 | ...==... | equalitytests.go:13:1:13:1 | exit |
+| equalitytests.go:12:75:12:76 | a4 | equalitytests.go:12:69:12:76 | ...==... |
 | exprs.go:0:0:0:0 | entry | exprs.go:3:1:3:29 | skip |
 | exprs.go:3:1:3:29 | skip | exprs.go:5:6:5:9 | skip |
 | exprs.go:5:1:5:1 | entry | exprs.go:6:6:6:6 | skip |
@@ -701,7 +769,6 @@
 | noretfunctions.go:13:5:13:5 | x | noretfunctions.go:13:10:13:10 | 0 |
 | noretfunctions.go:13:5:13:10 | ...!=... | noretfunctions.go:13:10:13:10 | ...!=... is false |
 | noretfunctions.go:13:5:13:10 | ...!=... | noretfunctions.go:13:10:13:10 | ...!=... is true |
-| noretfunctions.go:13:5:13:10 | ...!=... | noretfunctions.go:16:1:16:1 | exit |
 | noretfunctions.go:13:10:13:10 | 0 | noretfunctions.go:13:5:13:10 | ...!=... |
 | noretfunctions.go:13:10:13:10 | ...!=... is false | noretfunctions.go:16:1:16:1 | exit |
 | noretfunctions.go:13:10:13:10 | ...!=... is true | noretfunctions.go:14:3:14:9 | selection of Exit |
@@ -1042,7 +1109,6 @@
 | stmts.go:29:14:29:14 | i | stmts.go:29:19:29:19 | 9 |
 | stmts.go:29:14:29:19 | ...!=... | stmts.go:29:19:29:19 | ...!=... is false |
 | stmts.go:29:14:29:19 | ...!=... | stmts.go:29:19:29:19 | ...!=... is true |
-| stmts.go:29:14:29:19 | ...!=... | stmts.go:43:1:43:1 | exit |
 | stmts.go:29:19:29:19 | 9 | stmts.go:29:14:29:19 | ...!=... |
 | stmts.go:29:19:29:19 | ...!=... is false | stmts.go:31:14:31:14 | i |
 | stmts.go:29:19:29:19 | ...!=... is true | stmts.go:30:5:30:18 | skip |
