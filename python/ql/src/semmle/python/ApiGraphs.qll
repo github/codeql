@@ -88,7 +88,7 @@ module API {
      * Gets a node representing the result of the function represented by this node.
      *
      * This predicate may have multiple results when there are multiple invocations of this API component.
-     * Consider using `getACall()` if there is a need to distingiush between individual calls.
+     * Consider using `getACall()` if there is a need to distinguish between individual calls.
      */
     Node getReturn() { result = getASuccessor(Label::return()) }
 
