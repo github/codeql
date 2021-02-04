@@ -5,9 +5,9 @@
 <overview>
 <p>
 This rule finds relational comparisons between the result of an unsigned subtraction and the value <code>0</code>.
-Such comparisons are likely wrong as the value of an unsigned subtraction can never be negative. So the
+Such comparisons are likely to be wrong as the value of an unsigned subtraction can never be negative. So the
 relational comparison ends up checking whether the result of the subtraction is equal to <code>0</code>.
-This is likely not what the programmer intended.
+This is probably not what the programmer intended.
 </p>
 </overview>
 <recommendation>
@@ -23,7 +23,7 @@ This is likely not what the programmer intended.
 </example>
 <references>
 
-<li>CERT C Coding Standard:
+<li>SEI CERT C Coding Standard:
 <a href="https://wiki.sei.cmu.edu/confluence/display/c/INT02-C.+Understand+integer+conversion+rules">INT02-C. Understand integer conversion rules</a>.
 </li>
 
