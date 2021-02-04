@@ -273,7 +273,7 @@ module API {
       exists(ImportExprNode iexpr |
         imp.asCfgNode() = iexpr and
         not iexpr.getNode().isRelative() and
-        name = iexpr.getNode().getName()
+        name = iexpr.getNode().getImportedModuleName()
       )
     }
 
