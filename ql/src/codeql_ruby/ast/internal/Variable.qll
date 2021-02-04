@@ -5,7 +5,7 @@ private import codeql_ruby.ast.internal.Expr
 private import codeql_ruby.ast.internal.Method
 private import codeql_ruby.ast.internal.Pattern
 
-private Generated::AstNode parentOf(Generated::AstNode n) {
+Generated::AstNode parentOf(Generated::AstNode n) {
   exists(Generated::AstNode parent | parent = n.getParent() |
     if
       n =

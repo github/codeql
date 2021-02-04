@@ -33,6 +33,7 @@
 
 private import codeql_ruby.ast.internal.TreeSitter::Generated
 private import AstNodes
+private import codeql_ruby.ast.internal.Variable
 private import codeql_ruby.controlflow.ControlFlowGraph
 private import Completion
 private import SuccessorTypes
@@ -146,7 +147,7 @@ module CfgScope {
 }
 
 private AstNode parent(AstNode n) {
-  result.getAFieldOrChild() = n and
+  result = parentOf(n) and
   not n instanceof CfgScope
 }
 
@@ -1262,7 +1263,7 @@ cached
 private module Cached {
   /** Gets the CFG scope of node `n`. */
   cached
-  CfgScope getCfgScope(AstNode n) { result = unique(CfgScope scope | scope = parent+(n)) }
+  CfgScope getCfgScope(AstNode n) { result = unique(CfgScope scope | scope = parent*(parentOf(n))) }
 
   private predicate isAbnormalExitType(SuccessorType t) {
     t instanceof RaiseSuccessor or t instanceof ExitSuccessor
