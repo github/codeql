@@ -1,13 +1,12 @@
 /**
  * @name Unsigned difference expression compared to zero
- * @description It is highly probable that the condition is wrong if the difference expression has the unsigned type.
- *              The condition holds in all the cases when difference is not equal to zero. It means that we may use condition not equal.
- *              But the programmer probably wanted to compare the difference of elements.
+ * @description A subtraction with an unsigned result can never be negative. Using such an expression in a relational comparison with `0` is likely to be wrong.
  * @kind problem
  * @id cpp/unsigned-difference-expression-compared-zero
  * @problem.severity warning
  * @precision medium
  * @tags security
+ *       correctness
  *       external/cwe/cwe-191
  */
 
@@ -33,8 +32,9 @@ predicate nonNegative(SubExpr sub) {
 from RelationalOperation ro, SubExpr sub
 where
   not isFromMacroDefinition(ro) and
+  not isFromMacroDefinition(sub) and
   ro.getLesserOperand().getValue().toInt() = 0 and
   ro.getGreaterOperand() = sub and
   sub.getFullyConverted().getUnspecifiedType().(IntegralType).isUnsigned() and
   not nonNegative(sub)
-select ro, "Difference in condition is always greater than or equal to zero"
+select ro, "Unsigned subtraction can never be negative."
