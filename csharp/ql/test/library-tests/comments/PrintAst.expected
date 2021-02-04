@@ -38,7 +38,7 @@ comments2.cs:
 #   34|           0: [LocalVariableAccess] access to local variable z
 #   34|           1: [IntLiteral] 0
 #   40|   8: [Class] C3
-#   48|   9: [IndexerProperty] S1
+#   48|   9: [Property] S1
 #   48|     -1: [TypeMention] string
 #   52|     3: [Getter] get_S1
 #   52|       4: [BlockStmt] {...}
