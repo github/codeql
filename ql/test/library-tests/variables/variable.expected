@@ -58,6 +58,11 @@
 | scopes.rb:13:11:13:11 | c |
 | scopes.rb:13:14:13:14 | d |
 | scopes.rb:24:1:24:6 | script |
+| scopes.rb:27:1:27:1 | x |
+| scopes.rb:29:3:29:3 | x |
+| scopes.rb:32:3:32:3 | x |
+| scopes.rb:35:3:35:3 | x |
+| scopes.rb:38:3:38:3 | x |
 | ssa.rb:1:7:1:7 | b |
 | ssa.rb:2:3:2:3 | i |
 | ssa.rb:18:8:18:8 | x |

@@ -47,9 +47,14 @@
 | parameters.rb:49:1:51:3 | method scope |
 | parameters.rb:54:9:57:3 | block scope |
 | scopes.rb:1:1:1:15 | method scope |
-| scopes.rb:1:1:24:12 | top-level scope |
+| scopes.rb:1:1:40:1 | top-level scope |
 | scopes.rb:2:9:6:3 | block scope |
 | scopes.rb:9:9:18:3 | block scope |
+| scopes.rb:26:1:26:12 | class scope |
+| scopes.rb:28:1:30:3 | module scope |
+| scopes.rb:31:1:33:3 | class scope |
+| scopes.rb:34:1:36:3 | class scope |
+| scopes.rb:37:1:39:3 | method scope |
 | ssa.rb:1:1:16:3 | method scope |
 | ssa.rb:1:1:88:3 | top-level scope |
 | ssa.rb:18:1:23:3 | method scope |

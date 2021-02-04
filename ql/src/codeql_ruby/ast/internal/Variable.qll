@@ -5,8 +5,23 @@ private import codeql_ruby.ast.internal.Expr
 private import codeql_ruby.ast.internal.Method
 private import codeql_ruby.ast.internal.Pattern
 
-private Generated::AstNode parent(Generated::AstNode n) {
-  result = n.getParent() and
+private Generated::AstNode parentOf(Generated::AstNode n) {
+  exists(Generated::AstNode parent | parent = n.getParent() |
+    if
+      n =
+        [
+          parent.(Generated::Module).getName(), parent.(Generated::Class).getName(),
+          parent.(Generated::Class).getSuperclass(), parent.(Generated::SingletonClass).getValue(),
+          parent.(Generated::Method).getName(), parent.(Generated::SingletonMethod).getName(),
+          parent.(Generated::SingletonMethod).getObject()
+        ]
+    then result = parent.getParent()
+    else result = parent
+  )
+}
+
+private Generated::AstNode parentOfNoScope(Generated::AstNode n) {
+  result = parentOf(n) and
   not n = any(VariableScope s).getScopeElement()
 }
 
@@ -134,7 +149,7 @@ private module Cached {
   /** Gets the enclosing scope for `node`. */
   cached
   VariableScope enclosingScope(Generated::AstNode node) {
-    result.getScopeElement() = parent*(node.getParent())
+    result.getScopeElement() = parentOfNoScope*(parentOf(node))
   }
 
   cached

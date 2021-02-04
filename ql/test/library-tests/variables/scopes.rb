@@ -22,3 +22,19 @@ $global = 42
 
 # use of a pre-defined global variable
 script = $0
+
+class A; end
+x = A
+module x::B
+  x = 1
+end
+class << x
+  x = 2
+end
+class x::C < x
+  x = 3
+end
+def x.foo
+  x = 4
+end
+
