@@ -128,25 +128,29 @@ module API {
     DataFlow::Node getInducingNode() { this = Impl::MkUse(result) }
 
     /**
-     * Holds if this node is located in file `path` between line `startline`, column `startcol`,
-     * and line `endline`, column `endcol`.
-     *
-     * For nodes that do not have a meaningful location, `path` is the empty string and all other
-     * parameters are zero.
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/locations.html).
      */
-    predicate hasLocationInfo(string path, int startline, int startcol, int endline, int endcol) {
-      getInducingNode().hasLocationInfo(path, startline, startcol, endline, endcol)
+    predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      getInducingNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
       or
+      // For nodes that do not have a meaningful location, `path` is the empty string and all other
+      // parameters are zero.
       not exists(getInducingNode()) and
-      path = "" and
+      filepath = "" and
       startline = 0 and
-      startcol = 0 and
+      startcolumn = 0 and
       endline = 0 and
-      endcol = 0
+      endcolumn = 0
     }
 
     /**
-     * Gets a textual representation of this node.
+     * Gets a textual representation of this element.
      */
     abstract string toString();
 
