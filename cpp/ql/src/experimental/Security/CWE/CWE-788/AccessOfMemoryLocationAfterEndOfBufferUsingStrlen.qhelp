@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Potentially dangerous use of the strlen function to calculate the length of a string.
+The expression <code>buffer[strlen(buffer)] = 0</code> is potentially dangerous, if the variable buffer does not have a terminal zero, then access beyond the bounds of the allocated memory is possible, which will lead to undefined behavior.
+If terminal zero is present, then the specified expression is meaningless.</p>
+
+<p>False positives include heavily nested strlen. This situation is unlikely.</p>
+
+</overview>
+<recommendation>
+
+<p>We recommend using another method for calculating the string length</p>
+
+</recommendation>
+<example>
+<p>The following example demonstrates an erroneous and corrected use of the strlen function.</p>
+<sample src="AccessOfMemoryLocationAfterEndOfBufferUsingStrlen.c" />
+
+</example>
+<references>
+
+<li>
+  CERT C Coding Standard:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/STR32-C.+Do+not+pass+a+non-null-terminated+character+sequence+to+a+library+function+that+expects+a+string">STR32-C. Do not pass a non-null-terminated character sequence to a library function that expects a string</a>.
+</li>
+
+</references>
+</qhelp>
