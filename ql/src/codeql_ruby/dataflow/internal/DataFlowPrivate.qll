@@ -124,6 +124,9 @@ private module Cached {
     exists(Ssa::Definition def | LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo))
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
+    or
+    nodeFrom.asExpr() =
+      nodeTo.asExpr().(CfgNodes::ExprNodes::ParenthesizedExprCfgNode).getLastExpr()
   }
 
   cached

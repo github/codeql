@@ -249,6 +249,11 @@ module ExprNodes {
     final ExprCfgNode getExpr(int n) { e.hasCfgChild(e.getExpr(n), this, result) }
   }
 
+  /** A control-flow node that wraps an `ExprSequence` AST expression. */
+  class ParenthesizedExprCfgNode extends ExprSequenceCfgNode {
+    ParenthesizedExprCfgNode() { this.getExpr() instanceof ParenthesizedExpr }
+  }
+
   /** A control-flow node that wraps a `VariableReadAccess` AST expression. */
   class VariableReadAccessCfgNode extends ExprCfgNode {
     override VariableReadAccess e;
