@@ -231,6 +231,60 @@ module API {
    */
   cached
   private module Impl {
+    /*
+     * Modeling imports is slightly tricky because of the way we handle dotted name imports in our
+     * libraries. In dotted imports such as
+     *
+     * ```python
+     * import foo.bar.baz as fbb
+     * from foo.bar.baz import quux as fbbq
+     * ```
+     *
+     * the dotted name is simply represented as a string. We would like `fbb.quux` and `fbbq` to
+     * be represented as API graph nodes with the following path:
+     *
+     * ```ql
+     * moduleImport("foo").getMember("bar").getMember("baz").getMember("quux")
+     * ```
+     *
+     * To do this, we produce an API graph node for each dotted name prefix we find in the set of
+     * imports. Thus, for the above two imports, we would get nodes for
+     *
+     * ```python
+     * foo
+     * foo.bar
+     * foo.bar.baz
+     * ```
+     *
+     * Only the first of these can act as the beginning of a path (and become a
+     * `moduleImport`-labeled edge from the global root node).
+     *
+     * (Using prefixes rather than simply `foo`, `bar`, and `baz` is important. We don't want
+     * potential crosstalk between `foo.bar.baz` and `ham.bar.eggs`.)
+     *
+     * We then add `getMember` edges between these prefixes: `foo` steps to `foo.bar` via an edge
+     * labeled `getMember("bar")` and so on.
+     *
+     * When we then see `import foo.bar.baz as fbb`, the data-flow node `fbb` gets marked as a use
+     * of the API graph node corresponding to the prefix `foo.bar.baz`. Because of the edges leading to
+     * this node, it is reachable via `moduleImport("foo").getMember("bar").getMember("baz")` and
+     * thus `fbb.quux` is reachable via the path mentioned above.
+     *
+     * When we see `from foo.bar.baz import quux as fbb` a similar thing happens. First, `foo.bar.baz`
+     * is seen as a use of the API graph node as before. Then `import quux as fbbq` is seen as
+     * a member lookup of `quux` on the API graph node for `foo.bar.baz`, and then finally the
+     * data-flow node `fbbq` is marked as a use of the same path mentioned above.
+     *
+     * Finally, in a non-aliased import such as
+     *
+     * ```python
+     * import foo.bar.baz
+     * ```
+     *
+     * we only consider this as a definition of the name `foo` (thus making it a use of the corresponding
+     * API graph node for the prefix `foo`), in accordance with the usual semantics of Python.
+     */
+
     cached
     newtype TApiNode =
       /** The root of the API graph. */
