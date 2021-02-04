@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Semmle.Util.Logging;
