@@ -25,6 +25,9 @@ module XML {
 
     /** Holds if this call to the XML parser resolves entities of the given `kind`. */
     abstract predicate resolvesEntities(EntityKind kind);
+
+    /** Gets a reference to a value resulting from parsing the XML. */
+    js::DataFlow::Node getAResult() { none() }
   }
 
   /**
@@ -98,10 +101,11 @@ module XML {
    * An invocation of `expat.Parser.parse` or `expat.Parser.write`.
    */
   class ExpatParserInvocation extends ParserInvocation {
+    js::DataFlow::NewNode parser;
+
     ExpatParserInvocation() {
-      exists(string m | m = "parse" or m = "write" |
-        this = moduleMethodCall("node-expat", "Parser", m)
-      )
+      parser = js::DataFlow::moduleMember("node-expat", "Parser").getAnInstantiation() and
+      this = parser.getAMemberCall(["parse", "write"]).asExpr()
     }
 
     override js::Expr getSourceArgument() { result = getArgument(0) }
@@ -109,6 +113,10 @@ module XML {
     override predicate resolvesEntities(EntityKind kind) {
       // only internal entities are resolved by default
       kind = InternalEntity()
+    }
+
+    override js::DataFlow::Node getAResult() {
+      result = parser.getAMemberCall("on").getABoundCallbackParameter(1, _)
     }
   }
 
@@ -159,5 +167,16 @@ module XML {
     override js::Expr getSourceArgument() { result = getArgument(0) }
 
     override predicate resolvesEntities(XML::EntityKind kind) { kind = InternalEntity() }
+  }
+
+  private class XMLParserTaintStep extends js::TaintTracking::AdditionalTaintStep {
+    XML::ParserInvocation parser;
+
+    XMLParserTaintStep() { this.asExpr() = parser }
+
+    override predicate step(js::DataFlow::Node pred, js::DataFlow::Node succ) {
+      pred.asExpr() = parser.getSourceArgument() and
+      succ = parser.getAResult()
+    }
   }
 }
