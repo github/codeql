@@ -6,3 +6,7 @@
 | immutable.js:1:32:1:43 | source("b1") | immutable.js:13:6:13:18 | map2.get("b") |
 | immutable.js:15:28:15:38 | source("d") | immutable.js:17:6:17:18 | map3.get("d") |
 | immutable.js:22:19:22:29 | source("e") | immutable.js:22:6:22:40 | fromJS( ... et("e") |
+| immutable.js:24:18:24:25 | source() | immutable.js:25:22:25:22 | x |
+| immutable.js:29:25:29:32 | source() | immutable.js:29:53:29:53 | x |
+| immutable.js:31:7:31:14 | source() | immutable.js:31:75:31:75 | x |
+| immutable.js:33:21:33:28 | source() | immutable.js:33:49:33:49 | x |

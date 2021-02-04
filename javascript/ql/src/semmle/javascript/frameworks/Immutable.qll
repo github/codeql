@@ -6,6 +6,8 @@ import javascript
 
 /**
  * Provides classes implementing data-flow for Immutable.
+ *
+ * The implemention rely on the flowsteps implemented in `Collections.qll`.
  */
 private module Immutable {
   /**
@@ -32,15 +34,17 @@ private module Immutable {
    * An instance of any immutable collection.
    */
   API::Node immutableCollection() {
-    result = immutableImport().getMember(["Map", "fromJS"]).getReturn()
+    // keep this list in sync with the constructors defined in `storeStep`.
+    result = immutableImport().getMember(["Map", "List", "fromJS"]).getReturn()
     or
-    result.getAnImmediateUse() = step(immutableCollection().getAUse())
+    result = immutableCollection().getMember(["set", "map", "filter", "push"]).getReturn()
   }
 
   /**
    * Gets the immutable collection where `pred` has been stored using the name `prop`.
    */
   DataFlow::SourceNode storeStep(DataFlow::Node pred, string prop) {
+    // Immutable.Map() and Immutable.fromJS().
     exists(DataFlow::CallNode call |
       call = immutableImport().getMember(["Map", "fromJS"]).getACall()
     |
@@ -48,10 +52,30 @@ private module Immutable {
       result = call
     )
     or
+    // Immutable.List()
+    exists(DataFlow::CallNode call, DataFlow::ArrayCreationNode arr |
+      call = immutableImport().getMember("List").getACall()
+    |
+      arr = call.getArgument(0).getALocalSource() and
+      exists(int i |
+        prop = DataFlow::PseudoProperties::arrayElement(i) and
+        pred = arr.getElement(i) and
+        result = call
+      )
+    )
+    or
+    // collection.set(key, value)
     exists(DataFlow::CallNode call | call = immutableCollection().getMember("set").getACall() |
       call.getArgument(0).mayHaveStringValue(prop) and
       pred = call.getArgument(1) and
       result = call
+    )
+    or
+    // list.push(x)
+    exists(DataFlow::CallNode call | call = immutableCollection().getMember("push").getACall() |
+      pred = call.getArgument(0) and
+      result = call and
+      prop = DataFlow::PseudoProperties::arrayElement()
     )
   }
 
@@ -73,14 +97,18 @@ private module Immutable {
    * Gets an immutable collection that contains all the elements from `pred`.
    */
   DataFlow::SourceNode step(DataFlow::Node pred) {
-    // map.set() copies all existing values
-    exists(DataFlow::CallNode call | call = immutableCollection().getMember("set").getACall() |
+    // map.set() / list.push() copies all existing values
+    exists(DataFlow::CallNode call |
+      call = immutableCollection().getMember(["set", "push"]).getACall()
+    |
       pred = call.getReceiver() and
       result = call
     )
     or
-    // toJS() or any immutable collection converts it to a plain JavaScript object/array (and vice versa for `fromJS`).
-    exists(DataFlow::CallNode call | call = immutableCollection().getMember("toJS").getACall() |
+    // toJS()/toList() on any immutable collection converts it to a plain JavaScript object/array (and vice versa for `fromJS`).
+    exists(DataFlow::CallNode call |
+      call = immutableCollection().getMember(["toJS", "toList"]).getACall()
+    |
       pred = call.getReceiver() and
       result = call
     )

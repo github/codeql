@@ -1,7 +1,7 @@
 var obj = { a: source("a"), b: source("b1") };
 sink(obj["a"]); // NOT OK
 
-const { Map, fromJS } = require('immutable');
+const { Map, fromJS, List } = require('immutable');
 
 const map1 = Map(obj);
 
@@ -20,3 +20,14 @@ sink(map3.get("d")); // NOT OK
 sink(map3.toJS()["a"]); // NOT OK
 
 sink(fromJS({"e": source("e")}).get("e")); // NOT OK
+
+const l1 = List([source(), "foobar"]);
+l1.forEach(x => sink(x)); // NOT OK
+
+l1.map(x => "safe").forEach(x => sink(x)); // OK
+
+List(["safe"]).map(x => source()).forEach(x => sink(x)); // NOT OK
+
+List([source()]).map(x => x).filter(x => true).toList().forEach(x => sink(x)); // NOT OK
+
+List(["safe"]).push(source()).forEach(x => sink(x)); // NOT OK
