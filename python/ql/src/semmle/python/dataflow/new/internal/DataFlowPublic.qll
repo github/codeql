@@ -446,6 +446,8 @@ class LocalSourceNode extends Node {
   LocalSourceNode() {
     not simpleLocalFlowStep+(any(CfgNode n), this) and
     not this instanceof ModuleVariableNode
+    or
+    this = any(ModuleVariableNode mvn).getARead()
   }
 
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */

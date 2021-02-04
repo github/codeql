@@ -72,7 +72,7 @@ def f():
     sink(foo) #$ use=moduleImport("danger").getMember("SOURCE")
     foo = NONSOURCE
     change_foo()
-    sink(foo) #$ MISSING: use=moduleImport("danger").getMember("SOURCE")
+    sink(foo) #$ use=moduleImport("danger").getMember("SOURCE")
 
 # Star imports
 
