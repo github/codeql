@@ -17,7 +17,7 @@ import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.controlflow.Guards
 
-/** Holds if `sub` will never be nonnegative. */
+/** Holds if `sub` will never be negative. */
 predicate nonNegative(SubExpr sub) {
   not exprMightOverflowNegatively(sub.getFullyConverted())
   or
