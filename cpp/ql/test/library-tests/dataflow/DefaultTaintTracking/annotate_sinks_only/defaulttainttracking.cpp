@@ -21,7 +21,7 @@ int main() {
   char buf[100] = "VAR = ";
   sink(strcat(buf, getenv("VAR"))); // $ ast,ir
 
-  sink(buf); // $ ast,ir
+  sink(buf); // $ ast MISSING: ir
   sink(untainted_buf); // the two buffers would be conflated if we added flow through all partial chi inputs
 
   return 0;
@@ -186,11 +186,11 @@ void test_pointers1()
 	ptr3 = buffer;
 	ptr4 = &ptr3;
 
-	sink(buffer); // $ ast,ir
-	sink(ptr1); // $ ast,ir
+	sink(buffer); // $ ast MISSING: ir
+	sink(ptr1); // $ ast MISSING: ir
 	sink(ptr2); // $ SPURIOUS: ast
 	sink(*ptr2); // $ ast MISSING: ir
-	sink(ptr3); // $ ast,ir
+	sink(ptr3); // $ ast MISSING: ir
 	sink(ptr4); // $ SPURIOUS: ast
 	sink(*ptr4); // $ ast MISSING: ir
 }

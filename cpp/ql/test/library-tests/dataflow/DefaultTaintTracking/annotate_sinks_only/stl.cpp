@@ -71,7 +71,7 @@ void test_string()
 
 	sink(a); // $ ast,ir
 	sink(b); // clean
-	sink(c); // $ ir MISSING: ast
+	sink(c); // $ MISSING: ast,ir
 	sink(b.c_str()); // clean
 	sink(c.c_str()); // $ MISSING: ast,ir
 }
@@ -88,10 +88,10 @@ void test_stringstream()
 	ss5 << t;
 
 	sink(ss1);
-	sink(ss2); // $ ir MISSING: ast
+	sink(ss2); // $ MISSING: ast,ir
 	sink(ss3); // $ MISSING: ast,ir
-	sink(ss4); // $ ir MISSING: ast
-	sink(ss5); // $ ir MISSING: ast
+	sink(ss4); // $ MISSING: ast,ir
+	sink(ss5); // $ MISSING: ast,ir
 	sink(ss1.str());
 	sink(ss2.str()); // $ MISSING: ast,ir
 	sink(ss3.str()); // $ MISSING: ast,ir
@@ -141,7 +141,7 @@ void test_string3()
 	std::string ss(cs);
 
 	sink(cs); // $ ast,ir
-	sink(ss); // $ ir MISSING: ast
+	sink(ss); // $ MISSING: ast,ir
 }
 
 void test_string4()
@@ -155,5 +155,5 @@ void test_string4()
 	cs = ss.c_str();
 
 	sink(cs); // $ ast MISSING: ir
-	sink(ss); // $ ir MISSING: ast
+	sink(ss); // $ MISSING: ast,ir
 }
