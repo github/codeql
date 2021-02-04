@@ -6,7 +6,7 @@
 <overview>
 <p>The ability to override the class dictionary using a <code>__slots__</code> declaration
 is supported only by new-style classes. When you add a <code>__slots__</code> declaration to an 
-old-style class it just creates a class attribute called '__slots__'.</p>
+old-style class it just creates a class attribute called <code>__slots__</code>.</p>
 
 </overview>
 <recommendation>
@@ -17,9 +17,9 @@ You can convert an old-style class to a new-style class by inheriting from <code
 </recommendation>
 <example>
 <p>In the following example the <code>KeyedRef</code> class is an old-style class (no inheritance). The 
-<code>__slots__</code> declaration in this class creates a class attribute called '__slots__', the class 
 dictionary is unaffected. The <code>KeyedRef2</code> class is a new-style class so the 
 <code>__slots__</code> declaration causes special compact attributes to be created for each name in 
+<code>__slots__</code> declaration in this class creates a class attribute called <code>__slots__</code>, the class
 the slots list and saves space by not creating attribute dictionaries.</p>
 
 <sample src="SlotsInOldStyleClass.py" />
