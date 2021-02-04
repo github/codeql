@@ -32,10 +32,14 @@ private module Immutable {
 
   /**
    * An instance of any immutable collection.
+   *
+   * This predicate keeps track of which values in the program are Immutable collections.
    */
   API::Node immutableCollection() {
-    // keep this list in sync with the constructors defined in `storeStep`.
+    // keep this predicate in sync with the constructors defined in `storeStep`.
     result = immutableImport().getMember(["Map", "OrderedMap", "List", "fromJS"]).getReturn()
+    or
+    result = immutableImport().getMember("Record").getReturn().getReturn()
     or
     result = immutableCollection().getMember(["set", "map", "filter", "push"]).getReturn()
   }
@@ -76,6 +80,15 @@ private module Immutable {
       pred = call.getArgument(0) and
       result = call and
       prop = DataFlow::PseudoProperties::arrayElement()
+    )
+    or
+    // Immutable.Record({defaults})({values}).
+    exists(API::CallNode factoryCall, API::CallNode recordCall |
+      factoryCall = immutableImport().getMember("Record").getACall() and
+      recordCall = factoryCall.getReturn().getACall()
+    |
+      pred = [factoryCall, recordCall].getOptionArgument(0, prop) and
+      result = recordCall
     )
   }
 
