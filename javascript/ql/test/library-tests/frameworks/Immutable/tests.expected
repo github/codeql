@@ -13,3 +13,5 @@
 | immutable.js:36:38:36:45 | source() | immutable.js:37:6:37:18 | map4.get("f") |
 | immutable.js:39:25:39:32 | source() | immutable.js:40:6:40:18 | map5.get("a") |
 | immutable.js:39:58:39:65 | source() | immutable.js:41:6:41:18 | map5.get("b") |
+| immutable.js:44:40:44:47 | source() | immutable.js:45:6:45:18 | map6.get("a") |
+| immutable.js:47:33:47:40 | source() | immutable.js:48:6:48:18 | map7.get("b") |

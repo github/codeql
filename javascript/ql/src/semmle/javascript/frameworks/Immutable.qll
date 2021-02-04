@@ -36,12 +36,13 @@ private module Immutable {
    * This predicate keeps track of which values in the program are Immutable collections.
    */
   API::Node immutableCollection() {
-    // keep this predicate in sync with the constructors defined in `storeStep`.
-    result = immutableImport().getMember(["Map", "OrderedMap", "List", "fromJS"]).getReturn()
+    // keep this predicate in sync with the constructors defined in `storeStep`/`step`.
+    result =
+      immutableImport().getMember(["Map", "OrderedMap", "List", "fromJS", "merge"]).getReturn()
     or
     result = immutableImport().getMember("Record").getReturn().getReturn()
     or
-    result = immutableCollection().getMember(["set", "map", "filter", "push"]).getReturn()
+    result = immutableCollection().getMember(["set", "map", "filter", "push", "merge"]).getReturn()
   }
 
   /**
@@ -123,6 +124,18 @@ private module Immutable {
       call = immutableCollection().getMember(["toJS", "toList"]).getACall()
     |
       pred = call.getReceiver() and
+      result = call
+    )
+    or
+    // Immutable.merge(x, y)
+    exists(DataFlow::CallNode call | call = immutableImport().getMember("merge").getACall() |
+      pred = call.getAnArgument() and
+      result = call
+    )
+    or
+    // collection.merge(other)
+    exists(DataFlow::CallNode call | call = immutableCollection().getMember("merge").getACall() |
+      pred = [call.getAnArgument(), call.getReceiver()] and
       result = call
     )
   }
