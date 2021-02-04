@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
   <overview>
-    <p>This query detects code flow from PorcessName property on the Process class into a hash function.</p>
+    <p>This query detects code flow from ProcessName property on the Process class into a hash function.</p>
     <p>Such flow is often used in code backdoors to detect runnig processes and compare them to an obfuscated list of antivirus processes to aviod detection.</p>
   </overview>
 </qhelp>

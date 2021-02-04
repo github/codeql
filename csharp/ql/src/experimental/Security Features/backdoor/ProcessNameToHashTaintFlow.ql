@@ -1,6 +1,7 @@
 /**
  * @name ProcessName to hash function flow
  * @description Flow from a function retrieving process name to a hash function
+ *              NOTE: This query is an example of a query that may be useful for detecting potential backdoors, and Solorigate is just one such example that uses this mechanism.
  * @kind problem
  * @tags security
  *       solorigate

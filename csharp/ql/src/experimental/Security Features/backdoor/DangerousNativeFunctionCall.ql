@@ -1,6 +1,7 @@
 /**
  * @name Potential dangerous use of native functions
  * @description Please review code for possible malicious intent or unsafe handling.
+ *              NOTE: This query is an example of a query that may be useful for detecting potential backdoors, and Solorigate is just one such example that uses this mechanism.
  * @kind problem
  * @problem.severity warning
  * @precision low

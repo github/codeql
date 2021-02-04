@@ -1,0 +1,8 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>This query finds if there exists a DataFlow from a file last modification date (very likely implant installation time) and an offset to a condition statement (the trigger) that controls code execution.</p>
+  </overview>
+</qhelp>
