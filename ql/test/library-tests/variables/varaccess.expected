@@ -98,23 +98,33 @@ variableAccess
 | scopes.rb:2:14:2:14 | x | scopes.rb:2:14:2:14 | x | scopes.rb:2:9:6:3 | block scope |
 | scopes.rb:4:4:4:4 | a | scopes.rb:4:4:4:4 | a | scopes.rb:2:9:6:3 | block scope |
 | scopes.rb:5:9:5:9 | a | scopes.rb:4:4:4:4 | a | scopes.rb:2:9:6:3 | block scope |
-| scopes.rb:7:1:7:1 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:24:12 | top-level scope |
-| scopes.rb:8:6:8:6 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:24:12 | top-level scope |
+| scopes.rb:7:1:7:1 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:40:1 | top-level scope |
+| scopes.rb:8:6:8:6 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:40:1 | top-level scope |
 | scopes.rb:9:14:9:14 | x | scopes.rb:9:14:9:14 | x | scopes.rb:9:9:18:3 | block scope |
-| scopes.rb:10:9:10:9 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:24:12 | top-level scope |
-| scopes.rb:11:4:11:4 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:24:12 | top-level scope |
-| scopes.rb:12:9:12:9 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:24:12 | top-level scope |
-| scopes.rb:13:4:13:4 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:24:12 | top-level scope |
+| scopes.rb:10:9:10:9 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:40:1 | top-level scope |
+| scopes.rb:11:4:11:4 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:40:1 | top-level scope |
+| scopes.rb:12:9:12:9 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:40:1 | top-level scope |
+| scopes.rb:13:4:13:4 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:40:1 | top-level scope |
 | scopes.rb:13:7:13:7 | b | scopes.rb:13:7:13:7 | b | scopes.rb:9:9:18:3 | block scope |
 | scopes.rb:13:11:13:11 | c | scopes.rb:13:11:13:11 | c | scopes.rb:9:9:18:3 | block scope |
 | scopes.rb:13:14:13:14 | d | scopes.rb:13:14:13:14 | d | scopes.rb:9:9:18:3 | block scope |
-| scopes.rb:14:9:14:9 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:24:12 | top-level scope |
+| scopes.rb:14:9:14:9 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:40:1 | top-level scope |
 | scopes.rb:15:9:15:9 | b | scopes.rb:13:7:13:7 | b | scopes.rb:9:9:18:3 | block scope |
 | scopes.rb:16:9:16:9 | c | scopes.rb:13:11:13:11 | c | scopes.rb:9:9:18:3 | block scope |
 | scopes.rb:17:9:17:9 | d | scopes.rb:13:14:13:14 | d | scopes.rb:9:9:18:3 | block scope |
 | scopes.rb:21:1:21:7 | $global | file://:0:0:0:0 | $global | file://:0:0:0:0 | global scope |
-| scopes.rb:24:1:24:6 | script | scopes.rb:24:1:24:6 | script | scopes.rb:1:1:24:12 | top-level scope |
+| scopes.rb:24:1:24:6 | script | scopes.rb:24:1:24:6 | script | scopes.rb:1:1:40:1 | top-level scope |
 | scopes.rb:24:10:24:11 | $0 | file://:0:0:0:0 | $0 | file://:0:0:0:0 | global scope |
+| scopes.rb:27:1:27:1 | x | scopes.rb:27:1:27:1 | x | scopes.rb:1:1:40:1 | top-level scope |
+| scopes.rb:28:8:28:8 | x | scopes.rb:27:1:27:1 | x | scopes.rb:1:1:40:1 | top-level scope |
+| scopes.rb:29:3:29:3 | x | scopes.rb:29:3:29:3 | x | scopes.rb:28:1:30:3 | module scope |
+| scopes.rb:31:10:31:10 | x | scopes.rb:27:1:27:1 | x | scopes.rb:1:1:40:1 | top-level scope |
+| scopes.rb:32:3:32:3 | x | scopes.rb:32:3:32:3 | x | scopes.rb:31:1:33:3 | class scope |
+| scopes.rb:34:7:34:7 | x | scopes.rb:27:1:27:1 | x | scopes.rb:1:1:40:1 | top-level scope |
+| scopes.rb:34:14:34:14 | x | scopes.rb:27:1:27:1 | x | scopes.rb:1:1:40:1 | top-level scope |
+| scopes.rb:35:3:35:3 | x | scopes.rb:35:3:35:3 | x | scopes.rb:34:1:36:3 | class scope |
+| scopes.rb:37:5:37:5 | x | scopes.rb:27:1:27:1 | x | scopes.rb:1:1:40:1 | top-level scope |
+| scopes.rb:38:3:38:3 | x | scopes.rb:38:3:38:3 | x | scopes.rb:37:1:39:3 | method scope |
 | ssa.rb:1:7:1:7 | b | ssa.rb:1:7:1:7 | b | ssa.rb:1:1:16:3 | method scope |
 | ssa.rb:2:3:2:3 | i | ssa.rb:2:3:2:3 | i | ssa.rb:1:1:16:3 | method scope |
 | ssa.rb:3:8:3:8 | i | ssa.rb:2:3:2:3 | i | ssa.rb:1:1:16:3 | method scope |
@@ -190,6 +200,11 @@ explicitWrite
 | scopes.rb:13:14:13:14 | d | scopes.rb:13:4:13:32 | ... = ... |
 | scopes.rb:21:1:21:7 | $global | scopes.rb:21:1:21:12 | ... = ... |
 | scopes.rb:24:1:24:6 | script | scopes.rb:24:1:24:11 | ... = ... |
+| scopes.rb:27:1:27:1 | x | scopes.rb:27:1:27:5 | ... = ... |
+| scopes.rb:29:3:29:3 | x | scopes.rb:29:3:29:7 | ... = ... |
+| scopes.rb:32:3:32:3 | x | scopes.rb:32:3:32:7 | ... = ... |
+| scopes.rb:35:3:35:3 | x | scopes.rb:35:3:35:7 | ... = ... |
+| scopes.rb:38:3:38:3 | x | scopes.rb:38:3:38:7 | ... = ... |
 | ssa.rb:2:3:2:3 | i | ssa.rb:2:3:2:7 | ... = ... |
 | ssa.rb:6:5:6:5 | i | ssa.rb:6:5:6:9 | ... = ... |
 | ssa.rb:10:5:10:5 | i | ssa.rb:10:5:10:9 | ... = ... |
@@ -310,6 +325,11 @@ readAccess
 | scopes.rb:16:9:16:9 | c |
 | scopes.rb:17:9:17:9 | d |
 | scopes.rb:24:10:24:11 | $0 |
+| scopes.rb:28:8:28:8 | x |
+| scopes.rb:31:10:31:10 | x |
+| scopes.rb:34:7:34:7 | x |
+| scopes.rb:34:14:34:14 | x |
+| scopes.rb:37:5:37:5 | x |
 | ssa.rb:3:8:3:8 | i |
 | ssa.rb:4:8:4:8 | i |
 | ssa.rb:5:6:5:6 | b |

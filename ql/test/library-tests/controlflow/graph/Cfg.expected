@@ -1643,7 +1643,7 @@ cfg.rb:
 #-----|  -> call to print
 
 #  148| ... = ...
-#-----|  -> call to silly
+#-----|  -> silly
 
 #  148| silly
 #-----|  -> ... = ...
@@ -1660,7 +1660,7 @@ cfg.rb:
 #  149| method
 #-----|  -> two_parameters
 
-#  149| call to silly
+#  149| silly
 #-----|  -> method
 
 #  149| method
