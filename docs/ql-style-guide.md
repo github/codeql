@@ -212,7 +212,7 @@ class Type extends ... {
   /** ... */
   Type getATypeParameter() { ... }
   
-  /** ... */
+  /** Gets the HTTP connection ... */
   predicate getHttpConnection() { ... }
 }
 ```
