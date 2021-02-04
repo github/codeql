@@ -28,6 +28,14 @@ from a6 import m6 #$ use=moduleImport("a6").getMember("m6")
 
 x6 = m6().foo().bar() #$ use=moduleImport("a6").getMember("m6").getReturn().getMember("foo").getReturn().getMember("bar").getReturn()
 
+import foo.baz.baz as fbb #$ use=moduleImport("foo").getMember("baz").getMember("baz")
+from foo.bar.baz import quux as fbbq #$ use=moduleImport("foo").getMember("bar").getMember("baz").getMember("quux")
+from ham.bar.eggs import spam as hbes #$ use=moduleImport("ham").getMember("bar").getMember("eggs").getMember("spam")
+fbb.quux #$ use=moduleImport("foo").getMember("baz").getMember("baz").getMember("quux")
+fbbq #$ use=moduleImport("foo").getMember("bar").getMember("baz").getMember("quux")
+hbes #$ use=moduleImport("ham").getMember("bar").getMember("eggs").getMember("spam")
+
+import foo.bar.baz #$ use=moduleImport("foo")
 
 # Relative imports. These are ignored
 
@@ -65,3 +73,9 @@ def f():
     foo = NONSOURCE
     change_foo()
     sink(foo) #$ MISSING: use=moduleImport("danger").getMember("SOURCE")
+
+# Star imports
+
+from unknown import * #$ use=moduleImport("unknown")
+
+hello() #$ MISSING: use=moduleImport("unknown").getMember("hello").getReturn()
