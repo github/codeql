@@ -60,8 +60,10 @@ module API {
     /**
      * Gets a node representing member `m` of this API component.
      *
-     * For example, modules have an `exports` member representing their exports, and objects have
-     * their properties as members.
+     * For example, a member can be:
+     *
+     * - A submodule of a module
+     * - An attribute of an object
      */
     bindingset[m]
     bindingset[result]
@@ -235,7 +237,11 @@ module API {
       MkRoot() or
       /** An abstract representative for imports of the module called `name`. */
       MkModuleImport(string name) {
-        imports(_, name) or name = any(ImportExpr e | not e.isRelative()).getAnImportedModuleName()
+        imports(_, name)
+        or
+        // When we `import foo.bar.baz` we want to create API graph nodes also for the prefixes
+        // `foo` and `foo.bar`:
+        name = any(ImportExpr e | not e.isRelative()).getAnImportedModuleName()
       } or
       /** A use of an API member at the node `nd`. */
       MkUse(DataFlow::Node nd) { use(_, _, nd) }
