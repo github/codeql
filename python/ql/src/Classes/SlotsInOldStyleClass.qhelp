@@ -16,9 +16,9 @@ You can convert an old-style class to a new-style class by inheriting from <code
 
 </recommendation>
 <example>
-<p>In the following example the <code>KeyedRef</code> class is an old-style class (no inheritance). The
+<p>In the following example the <code>Point</code> class is an old-style class (no inheritance). The
 <code>__slots__</code> declaration in this class creates a class attribute called <code>__slots__</code>, the class
-dictionary is unaffected. The <code>KeyedRef2</code> class is a new-style class so the
+dictionary is unaffected. The <code>Point2</code> class is a new-style class so the
 <code>__slots__</code> declaration causes special compact attributes to be created for each name in
 the slots list and saves space by not creating attribute dictionaries.</p>
 
