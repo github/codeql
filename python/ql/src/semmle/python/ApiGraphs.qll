@@ -258,67 +258,16 @@ module API {
     }
 
     /**
-     * Holds if `import_node` is an import of a module named `name`
+     * Holds if `imp` is a data-flow node inside an import statement that refers to a module by the
+     * name `name`.
      *
-     * Ignores relative imports (`from ..foo import bar`).
-     *
-     * Note that for the statement `import pkg.mod`, the new variable introduced is `pkg` that is a
-     * reference to the module `pkg`.
-     *
-     * This predicate handles (with optional `... as <new-name>`):
-     * 1. `import <name>`
-     * 2. `from <package> import <module>` when `<name> = <package> + "." + <module>`
-     * 3. `from <module> import <member>` when `<name> = <module> + "." + <member>`
-     *
-     * Finally, in `from <module> import <member>` we consider the `ImportExpr` corresponding to
-     * `<module>` to be a reference to that module.
-     *
-     * Note:
-     * While it is technically possible that `import mypkg.foo` and `from mypkg import foo` can give different values,
-     * it's highly unlikely that this will be a problem in production level code.
-     *   Example: If `mypkg/__init__.py` contains `foo = 42`, then `from mypkg import foo` will not import the module
-     *   `mypkg/foo.py` but the variable `foo` containing `42` -- however, `import mypkg.foo` will always cause `mypkg.foo`
-     *   to refer to the module.
+     * Ignores relative imports, such as `from ..foo.bar import baz`.
      */
-    private predicate imports(DataFlow::Node import_node, string name) {
-      exists(Variable var, Import imp, Alias alias |
-        alias = imp.getAName() and
-        alias.getAsname() = var.getAStore() and
-        (
-          name = alias.getValue().(ImportMember).getImportedModuleName()
-          or
-          name = alias.getValue().(ImportExpr).getImportedModuleName() and
-          not alias.getValue().(ImportExpr).isRelative()
-        ) and
-        import_node.asExpr() = alias.getValue()
-      )
-      or
-      // Although it may seem superfluous to consider the `foo` part of `from foo import bar as baz` to
-      // be a reference to a module (since that reference only makes sense locally within the `import`
-      // statement), it's important for our use of type trackers to consider this local reference to
-      // also refer to the `foo` module. That way, if one wants to track references to the `bar`
-      // attribute using a type tracker, one can simply write
-      //
-      // ```ql
-      // DataFlow::Node bar_attr_tracker(TypeTracker t) {
-      //   t.startInAttr("bar") and
-      //   result = foo_module_tracker()
-      //   or
-      //   exists(TypeTracker t2 | result = bar_attr_tracker(t2).track(t2, t))
-      // }
-      // ```
-      //
-      // Where `foo_module_tracker` is a type tracker that tracks references to the `foo` module.
-      // Because named imports are modelled as `AttrRead`s, the statement `from foo import bar as baz`
-      // is interpreted as if it was an assignment `baz = foo.bar`, which means `baz` gets tracked as a
-      // reference to `foo.bar`, as desired.
-      exists(ImportExpr imp_expr |
-        not imp_expr.isRelative() and
-        imp_expr.getName() = name and
-        import_node.asCfgNode().getNode() = imp_expr and
-        // in `import foo.bar` we DON'T want to give a result for `importNode("foo.bar")`,
-        // only for `importNode("foo")`. We exclude those cases with the following clause.
-        not exists(Import imp | imp.getAName().getValue() = imp_expr)
+    private predicate imports(DataFlow::Node imp, string name) {
+      exists(ImportExprNode iexpr |
+        imp.asCfgNode() = iexpr and
+        not iexpr.getNode().isRelative() and
+        name = iexpr.getNode().getName()
       )
     }
 
