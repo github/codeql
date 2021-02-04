@@ -31,6 +31,7 @@ predicate nonNegative(SubExpr sub) {
   or
   // The subtraction is guarded by a check of the form `left >= right`.
   exists(GVN left, GVN right |
+    // This is basically a poor man's version of a directional unbind operator.
     strictcount([left, globalValueNumber(sub.getLeftOperand())]) = 1 and
     strictcount([right, globalValueNumber(sub.getRightOperand())]) = 1 and
     isGuarded(sub, left.getAnExpr(), right.getAnExpr())
