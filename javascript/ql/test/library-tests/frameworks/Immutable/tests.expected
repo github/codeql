@@ -10,3 +10,4 @@
 | immutable.js:29:25:29:32 | source() | immutable.js:29:53:29:53 | x |
 | immutable.js:31:7:31:14 | source() | immutable.js:31:75:31:75 | x |
 | immutable.js:33:21:33:28 | source() | immutable.js:33:49:33:49 | x |
+| immutable.js:36:38:36:45 | source() | immutable.js:37:6:37:18 | map4.get("f") |

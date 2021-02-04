@@ -1,7 +1,7 @@
 var obj = { a: source("a"), b: source("b1") };
 sink(obj["a"]); // NOT OK
 
-const { Map, fromJS, List } = require('immutable');
+const { Map, fromJS, List, OrderedMap } = require('immutable');
 
 const map1 = Map(obj);
 
@@ -31,3 +31,7 @@ List(["safe"]).map(x => source()).forEach(x => sink(x)); // NOT OK
 List([source()]).map(x => x).filter(x => true).toList().forEach(x => sink(x)); // NOT OK
 
 List(["safe"]).push(source()).forEach(x => sink(x)); // NOT OK
+
+
+const map4 = OrderedMap({}).set("f", source());
+sink(map4.get("f")); // NOT OK

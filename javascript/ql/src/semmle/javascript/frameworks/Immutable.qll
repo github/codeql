@@ -35,7 +35,7 @@ private module Immutable {
    */
   API::Node immutableCollection() {
     // keep this list in sync with the constructors defined in `storeStep`.
-    result = immutableImport().getMember(["Map", "List", "fromJS"]).getReturn()
+    result = immutableImport().getMember(["Map", "OrderedMap", "List", "fromJS"]).getReturn()
     or
     result = immutableCollection().getMember(["set", "map", "filter", "push"]).getReturn()
   }
@@ -46,7 +46,7 @@ private module Immutable {
   DataFlow::SourceNode storeStep(DataFlow::Node pred, string prop) {
     // Immutable.Map() and Immutable.fromJS().
     exists(DataFlow::CallNode call |
-      call = immutableImport().getMember(["Map", "fromJS"]).getACall()
+      call = immutableImport().getMember(["Map", "OrderedMap", "fromJS"]).getACall()
     |
       pred = call.getOptionArgument(0, prop) and
       result = call
