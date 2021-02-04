@@ -226,6 +226,27 @@ module XML {
     }
   }
 
+  /**
+   * An invocation of `xml-js`.
+   */
+  private class XmlJSInvocation extends XML::ParserInvocation {
+    XmlJSInvocation() {
+      this =
+        js::DataFlow::moduleMember("xml-js", ["xml2json", "xml2js", "json2xml", "js2xml"])
+            .getACall()
+            .asExpr()
+    }
+
+    override js::Expr getSourceArgument() { result = getArgument(0) }
+
+    override predicate resolvesEntities(XML::EntityKind kind) {
+      // xml-js does not expand custom entities.
+      none()
+    }
+
+    override js::DataFlow::Node getAResult() { result.asExpr() = this }
+  }
+
   private class XMLParserTaintStep extends js::TaintTracking::AdditionalTaintStep {
     XML::ParserInvocation parser;
 

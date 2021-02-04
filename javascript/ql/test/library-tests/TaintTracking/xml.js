@@ -22,4 +22,7 @@
     
     parser.write(source()).close();
 
+    var convert = require('xml-js');
+    sink(convert.xml2json(source(), {})); // NOT OK
+
 })();

@@ -148,3 +148,4 @@ typeInferenceMismatch
 | xml.js:5:18:5:25 | source() | xml.js:8:14:8:17 | text |
 | xml.js:12:17:12:24 | source() | xml.js:13:14:13:19 | result |
 | xml.js:23:18:23:25 | source() | xml.js:20:14:20:17 | attr |
+| xml.js:26:27:26:34 | source() | xml.js:26:10:26:39 | convert ... (), {}) |
