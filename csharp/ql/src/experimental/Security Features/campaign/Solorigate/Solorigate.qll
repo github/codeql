@@ -193,7 +193,6 @@ predicate isSolorigateSuspiciousMethodName(Method m) {
   m.getName() = solorigateSuspiciousMethodNames()
 }
 
-
 /*
  * Returns a list of enum values used by Solorigate to represent commands
  *
@@ -203,9 +202,9 @@ predicate isSolorigateSuspiciousMethodName(Method m) {
 string solorigateSuspiciousCommandsInEnum() {
   result =
     [
-          "Idle", "Exit", "SetTime", "CollectSystemDescription", "UploadSystemDescription",
-          "RunTask", "GetProcessByDescription", "KillTask", "GetFileSystemEntries", "WriteFile",
-          "FileExists", "DeleteFile", "GetFileHash", "ReadRegistryValue", "SetRegistryValue",
-          "DeleteRegistryValue", "GetRegistrySubKeyAndValueNames", "Reboot", "None"
+      "Idle", "Exit", "SetTime", "CollectSystemDescription", "UploadSystemDescription", "RunTask",
+      "GetProcessByDescription", "KillTask", "GetFileSystemEntries", "WriteFile", "FileExists",
+      "DeleteFile", "GetFileHash", "ReadRegistryValue", "SetRegistryValue", "DeleteRegistryValue",
+      "GetRegistrySubKeyAndValueNames", "Reboot", "None"
     ]
 }
