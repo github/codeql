@@ -13,6 +13,15 @@
 import csharp
 import Solorigate
 
+/*
+ * Returns the total number of Solorigate-related method names found in the project
+ */
+
+int countSolorigateSuspiciousMethodNames() {
+  result =
+    count(string s | exists(Method m | s = m.getName() and s = solorigateSuspiciousMethodNames()))
+}
+
 from Method m, int total, int threshold
 where
   total = countSolorigateSuspiciousMethodNames() and

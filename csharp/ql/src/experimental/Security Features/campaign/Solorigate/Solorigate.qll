@@ -11,7 +11,7 @@ import csharp
  * and https://github.com/fireeye/sunburst_countermeasures/blob/main/fnv1a_xor_hashes.txt
  */
 
-private string solorigateSuspiciousHashes() {
+string solorigateSuspiciousHashes() {
   result =
     [
       "10063651499895178962", "10235971842993272939", "10296494671777307979",
@@ -95,22 +95,13 @@ private string solorigateSuspiciousHashes() {
 predicate isSolorigateHash(Literal l) { l.getValue() = solorigateSuspiciousHashes() }
 
 /*
- * Returns the total number of Solorigate-related literales found in the project
- */
-
-int countSolorigateSuspiciousHash() {
-  result =
-    count(string s | exists(Literal l | s = l.getValue() and s = solorigateSuspiciousHashes()))
-}
-
-/*
  * Returns a list of Literals used by Solorigate
  *
  * This data was extracted from https://github.com/ITAYC0HEN/SUNBURST-Cracked/tree/a01f358965525bee34ad026acd9dfda3d488fdd8
  * and https://github.com/fireeye/sunburst_countermeasures/blob/main/fnv1a_xor_hashes.txt
  */
 
-private string solorigateSuspiciousLiterals() {
+string solorigateSuspiciousLiterals() {
   result =
     [
       "(?i)([^a-z]|^)(test)([^a-z]|$)", "(?i)(solarwinds)", "[{0,5}] {1,-16} {2}\t{3,5} {4}\\{5}\n",
@@ -158,21 +149,12 @@ private string solorigateSuspiciousLiterals() {
 predicate isSolorigateLiteral(Literal l) { l.getValue() = solorigateSuspiciousLiterals() }
 
 /*
- * Returns the total number of Solorigate-related literales found in the project
- */
-
-int countSolorigateSuspiciousLiterals() {
-  result =
-    count(string s | exists(Literal l | s = l.getValue() and s = solorigateSuspiciousLiterals()))
-}
-
-/*
  * Returns a list of method names used by Solorigate
  *
  * This data was extracted from https://github.com/ITAYC0HEN/SUNBURST-Cracked/tree/a01f358965525bee34ad026acd9dfda3d488fdd8
  */
 
-private string solorigateSuspiciousMethodNames() {
+string solorigateSuspiciousMethodNames() {
   result =
     [
       "Abort", "AddFileExecutionEngine", "AddRegistryExecutionEngine", "AdjustTokenPrivileges",
@@ -211,32 +193,19 @@ predicate isSolorigateSuspiciousMethodName(Method m) {
   m.getName() = solorigateSuspiciousMethodNames()
 }
 
-/*
- * Returns the total number of Solorigate-related method names found in the project
- */
-
-int countSolorigateSuspiciousMethodNames() {
-  result =
-    count(string s | exists(Method m | s = m.getName() and s = solorigateSuspiciousMethodNames()))
-}
 
 /*
- * Returns the total number of Solorigate-related commands in the given enum
+ * Returns a list of enum values used by Solorigate to represent commands
  *
- * This command list is described at https://www.fireeye.com/blog/products-and-services/2020/12/global-intrusion-campaign-leverages-software-supply-chain-compromise.html
- * and the enum names are based from https://github.com/ITAYC0HEN/SUNBURST-Cracked/tree/a01f358965525bee34ad026acd9dfda3d488fdd8
+ * This data was extracted from https://github.com/ITAYC0HEN/SUNBURST-Cracked/tree/a01f358965525bee34ad026acd9dfda3d488fdd8
  */
 
-int countSolorigateCommandInEnum(Enum e) {
+string solorigateSuspiciousCommandsInEnum() {
   result =
-    count(string s, EnumConstant ec |
-      e.getAnEnumConstant() = ec and
-      s = ec.getName() and
-      s in [
+    [
           "Idle", "Exit", "SetTime", "CollectSystemDescription", "UploadSystemDescription",
           "RunTask", "GetProcessByDescription", "KillTask", "GetFileSystemEntries", "WriteFile",
           "FileExists", "DeleteFile", "GetFileHash", "ReadRegistryValue", "SetRegistryValue",
           "DeleteRegistryValue", "GetRegistrySubKeyAndValueNames", "Reboot", "None"
-        ]
-    )
+    ]
 }

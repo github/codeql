@@ -52,4 +52,4 @@ from MethodCall mc
 where
   isExternMethod(mc.getTarget()) and
   isDangerousMethod(mc.getTarget())
-select mc, "Call to an external method $@", mc, mc.toString()
+select mc, "Call to an external method '" + mc.getTarget().getName() + "'."

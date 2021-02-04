@@ -13,6 +13,22 @@
 import csharp
 import Solorigate
 
+/*
+ * Returns the total number of Solorigate-related commands in the given enum
+ *
+ * This command list is described at https://www.fireeye.com/blog/products-and-services/2020/12/global-intrusion-campaign-leverages-software-supply-chain-compromise.html
+ * and the enum names are based from https://github.com/ITAYC0HEN/SUNBURST-Cracked/tree/a01f358965525bee34ad026acd9dfda3d488fdd8
+ */
+
+int countSolorigateCommandInEnum(Enum e) {
+  result =
+    count(string s, EnumConstant ec |
+      e.getAnEnumConstant() = ec and
+      s = ec.getName() and
+      s = solorigateSuspiciousCommandsInEnum()
+    )
+}
+
 from Enum e, int total
 where
   total = countSolorigateCommandInEnum(e) and

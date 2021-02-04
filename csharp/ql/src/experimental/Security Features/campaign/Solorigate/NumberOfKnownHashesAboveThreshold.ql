@@ -13,6 +13,15 @@
 import csharp
 import Solorigate
 
+/*
+ * Returns the total number of Solorigate-related literales found in the project
+ */
+
+int countSolorigateSuspiciousHash() {
+  result =
+    count(string s | exists(Literal l | s = l.getValue() and s = solorigateSuspiciousHashes()))
+}
+
 from Literal l, int total, int threshold
 where
   total = countSolorigateSuspiciousHash() and
