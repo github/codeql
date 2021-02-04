@@ -514,11 +514,11 @@ case.rb:
 #-----| match -> call to x2
 #-----| no-match -> when ...
 
-#    3| ParenthesizedStatements
+#    3| (if ...)
 #-----|  -> exit if_in_case (normal)
 
 #    3| if ...
-#-----|  -> ParenthesizedStatements
+#-----|  -> (if ...)
 
 #    3| call to x2
 #-----| false -> if ...
@@ -1313,14 +1313,14 @@ cfg.rb:
 #  108| puts
 #-----|  -> <<SQL
 
-#  108| ParenthesizedStatements
+#  108| ()
 #-----|  -> call to puts
 
 #  108| <<SQL
 #-----|  -> call to table
 
 #  108| HeredocBody
-#-----|  -> ParenthesizedStatements
+#-----|  -> ()
 
 #  109| Interpolation
 #-----|  -> call to type
@@ -1446,7 +1446,7 @@ cfg.rb:
 #  126| last
 #-----|  -> ... = ...
 
-#  126| ParenthesizedStatements
+#  126| (...; ...)
 #-----|  -> last
 
 #  126| 2
@@ -1456,7 +1456,7 @@ cfg.rb:
 #-----|  -> 7
 
 #  126| 7
-#-----|  -> ParenthesizedStatements
+#-----|  -> (...; ...)
 
 #  127| ... = ...
 #-----|  -> 1
@@ -1888,7 +1888,7 @@ cfg.rb:
 #  176| ... until ...
 #-----|  -> i
 
-#  176| ParenthesizedStatements
+#  176| (...; ...)
 #-----|  -> i
 
 #  176| call to puts
@@ -1901,7 +1901,7 @@ cfg.rb:
 #-----|  -> call to puts
 
 #  176| ... += ...
-#-----|  -> ParenthesizedStatements
+#-----|  -> (...; ...)
 
 #  176| i
 #-----|  -> 1
@@ -1978,7 +1978,7 @@ cfg.rb:
 #  185| ... while ...
 #-----|  -> i
 
-#  185| ParenthesizedStatements
+#  185| (...; ...)
 #-----|  -> i
 
 #  185| call to puts
@@ -1991,7 +1991,7 @@ cfg.rb:
 #-----|  -> call to puts
 
 #  185| ... -= ...
-#-----|  -> ParenthesizedStatements
+#-----|  -> (...; ...)
 
 #  185| i
 #-----|  -> 1
@@ -2220,15 +2220,15 @@ ifs.rb:
 #    4| [true] ! ...
 #-----| true -> [true] ... and ...
 
-#    4| [false] ParenthesizedStatements
+#    4| [false] (... == ...)
 #-----| false -> [true] ! ...
 
-#    4| [true] ParenthesizedStatements
+#    4| [true] (... == ...)
 #-----| true -> [false] ! ...
 
 #    4| ... == ...
-#-----| false -> [false] ParenthesizedStatements
-#-----| true -> [true] ParenthesizedStatements
+#-----| false -> [false] (... == ...)
+#-----| true -> [true] (... == ...)
 
 #    4| x
 #-----|  -> 5
@@ -2374,17 +2374,17 @@ ifs.rb:
 #   29| ... ? ... : ...
 #-----|  -> Return
 
-#   29| [false] ParenthesizedStatements
+#   29| [false] (... ? ... : ...)
 #-----| false -> !b2 || !b3
 
-#   29| [true] ParenthesizedStatements
+#   29| [true] (... ? ... : ...)
 #-----| true -> b2 || b3
 
 #   29| [false] ... ? ... : ...
-#-----| false -> [false] ParenthesizedStatements
+#-----| false -> [false] (... ? ... : ...)
 
 #   29| [true] ... ? ... : ...
-#-----| true -> [true] ParenthesizedStatements
+#-----| true -> [true] (... ? ... : ...)
 
 #   29| b1
 #-----| true -> b2
@@ -2428,17 +2428,17 @@ ifs.rb:
 #   33| if ...
 #-----|  -> exit m5 (normal)
 
-#   33| [false] ParenthesizedStatements
+#   33| [false] (if ...)
 #-----| false -> !b2 || !b4 || !b5
 
-#   33| [true] ParenthesizedStatements
+#   33| [true] (if ...)
 #-----| true -> b2 || b4 || b5
 
 #   33| [false] if ...
-#-----| false -> [false] ParenthesizedStatements
+#-----| false -> [false] (if ...)
 
 #   33| [true] if ...
-#-----| true -> [true] ParenthesizedStatements
+#-----| true -> [true] (if ...)
 
 #   33| b1
 #-----| true -> b2

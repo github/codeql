@@ -124,7 +124,15 @@ class ExprSequence extends Expr {
 
   override string getAPrimaryQlClass() { result = "ExprSequence" }
 
-  override string toString() { result = "...; ..." }
+  override string toString() {
+    exists(int c | c = this.getNumberOfExpressions() |
+      c = 0 and result = ";"
+      or
+      c = 1 and result = this.getExpr(0).toString()
+      or
+      c > 1 and result = "...; ..."
+    )
+  }
 
   /** Gets the `n`th expression in this sequence. */
   final Expr getExpr(int n) { result = range.getExpr(n) }
@@ -149,6 +157,35 @@ class ExprSequence extends Expr {
  */
 class BodyStatement extends ExprSequence {
   override BodyStatement::Range range;
+}
+
+/**
+ * A parenthesized expression sequence, typically containing a single expression:
+ * ```rb
+ * (x + 1)
+ * ```
+ * However, they can also contain multiple expressions (the value of the parenthesized
+ * expression is the last expression):
+ * ```rb
+ * (foo; bar)
+ * ```
+ * or even an empty sequence (value is `nil`):
+ * ```rb
+ * ()
+ * ```
+ */
+class ParenthesizedExpr extends ExprSequence, @parenthesized_statements {
+  final override ParenthesizedExpr::Range range;
+
+  final override string getAPrimaryQlClass() { result = "ParenthesizedExpr" }
+
+  final override string toString() {
+    exists(int c | c = this.getNumberOfExpressions() |
+      c = 0 and result = "()"
+      or
+      c > 0 and result = "(" + ExprSequence.super.toString() + ")"
+    )
+  }
 }
 
 /**

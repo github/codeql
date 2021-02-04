@@ -172,6 +172,14 @@ module BodyStatement {
   abstract class Range extends ExprSequence::Range { }
 }
 
+module ParenthesizedExpr {
+  class Range extends ExprSequence::Range, @parenthesized_statements {
+    final override Generated::ParenthesizedStatements generated;
+
+    final override Expr getExpr(int n) { result = generated.getChild(n) }
+  }
+}
+
 module ThenExpr {
   class Range extends ExprSequence::Range, @then {
     final override Generated::Then generated;
