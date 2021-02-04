@@ -25,4 +25,13 @@
     var convert = require('xml-js');
     sink(convert.xml2json(source(), {})); // NOT OK
 
+    const htmlparser2 = require("htmlparser2");
+    const parser = new htmlparser2.Parser({
+        onopentag(name, attributes) {
+            sink(name) // NOT OK
+        }
+    });
+    parser.write(source());
+    parser.end();
+
 })();

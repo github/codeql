@@ -247,6 +247,35 @@ module XML {
     override js::DataFlow::Node getAResult() { result.asExpr() = this }
   }
 
+  /**
+   * An invocation of `htmlparser2`.
+   */
+  private class HtmlParser2Invocation extends XML::ParserInvocation {
+    js::DataFlow::NewNode parser;
+
+    HtmlParser2Invocation() {
+      parser = js::DataFlow::moduleMember("htmlparser2", "Parser").getAnInstantiation() and
+      this = parser.getAMemberCall("write").asExpr()
+    }
+
+    override js::Expr getSourceArgument() { result = getArgument(0) }
+
+    override predicate resolvesEntities(XML::EntityKind kind) {
+      // htmlparser2 does not expand entities.
+      none()
+    }
+
+    override js::DataFlow::Node getAResult() {
+      result =
+        parser
+            .getArgument(0)
+            .getALocalSource()
+            .getAPropertySource()
+            .getAFunctionValue()
+            .getAParameter()
+    }
+  }
+
   private class XMLParserTaintStep extends js::TaintTracking::AdditionalTaintStep {
     XML::ParserInvocation parser;
 
