@@ -16,16 +16,24 @@ import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.controlflow.Guards
 
+/** Holds if `sub` is guarded by a condition which ensures that `left >= right`. */
+pragma[noinline]
+predicate isGuarded(SubExpr sub, Expr left, Expr right) {
+  exists(GuardCondition guard |
+    guard.controls(sub.getBasicBlock(), true) and
+    guard.ensuresLt(left, right, 0, sub.getBasicBlock(), false)
+  )
+}
+
 /** Holds if `sub` will never be negative. */
 predicate nonNegative(SubExpr sub) {
   not exprMightOverflowNegatively(sub.getFullyConverted())
   or
   // The subtraction is guarded by a check of the form `left >= right`.
-  exists(GuardCondition guard, Expr left, Expr right |
-    left = globalValueNumber(sub.getLeftOperand()).getAnExpr() and
-    right = globalValueNumber(sub.getRightOperand()).getAnExpr() and
-    guard.controls(sub.getBasicBlock(), true) and
-    guard.ensuresLt(left, right, 0, sub.getBasicBlock(), false)
+  exists(GVN left, GVN right |
+    strictcount([left, globalValueNumber(sub.getLeftOperand())]) = 1 and
+    strictcount([right, globalValueNumber(sub.getRightOperand())]) = 1 and
+    isGuarded(sub, left.getAnExpr(), right.getAnExpr())
   )
 }
 
