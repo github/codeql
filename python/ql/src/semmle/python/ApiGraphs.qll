@@ -356,9 +356,9 @@ module API {
         // the relationship between `pred` and `ref`.
         use(base, src) and pred = trackUseNode(src)
       |
-        // Reading an attribute on a node that is a use of `base`:
+        // Referring to an attribute on a node that is a use of `base`:
         lbl = Label::memberFromRef(ref) and
-        ref = pred.getAnAttributeRead()
+        ref = pred.getAnAttributeReference()
         or
         // Calling a node that is a use of `base`
         lbl = Label::return() and

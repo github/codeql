@@ -86,13 +86,17 @@ hello() #$ MISSING: use=moduleImport("unknown").getMember("hello").getReturn()
 from flask.views import View #$ use=moduleImport("flask").getMember("views").getMember("View")
 
 class MyView(View): #$ use=moduleImport("flask").getMember("views").getMember("View").getASubclass()
-    pass
+    myvar = 45 #$ use=moduleImport("flask").getMember("views").getMember("View").getASubclass().getMember("myvar")
+    def my_method(self): #$ use=moduleImport("flask").getMember("views").getMember("View").getASubclass().getMember("my_method")
+        pass
 
 instance = MyView() #$ use=moduleImport("flask").getMember("views").getMember("View").getASubclass().getReturn()
 
 def internal():
     from pflask.views import View #$ use=moduleImport("pflask").getMember("views").getMember("View")
     class IntMyView(View): #$ use=moduleImport("pflask").getMember("views").getMember("View").getASubclass()
-        pass
+        my_internal_var = 35 #$ use=moduleImport("pflask").getMember("views").getMember("View").getASubclass().getMember("my_internal_var")
+        def my_internal_method(self): #$ use=moduleImport("pflask").getMember("views").getMember("View").getASubclass().getMember("my_internal_method")
+            pass
 
     int_instance = IntMyView() #$ use=moduleImport("pflask").getMember("views").getMember("View").getASubclass().getReturn()
