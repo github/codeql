@@ -331,7 +331,10 @@ public class HTMLExtractor implements IExtractor {
               textualExtractor.getMetrics(),
               textualExtractor.getExtractedFile());
       Pair<Label, LoCInfo> result = extractor.extract(tx, source, toplevelKind, scopeManager);
-      emitTopLevelXmlNodeBinding(parentHtmlNode, result.fst(), context, trapWriter);
+      Label toplevelLabel = result.fst();
+      if (toplevelLabel != null) { // can be null when script ends up being parsed as JSON
+        emitTopLevelXmlNodeBinding(parentHtmlNode, toplevelLabel, context, trapWriter);
+      }
       locInfo.add(result.snd());
     } catch (ParseError e) {
       e.setPosition(scriptLocationManager.translatePosition(e.getPosition()));
