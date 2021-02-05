@@ -5,4 +5,10 @@
   <overview>
     <p>This query finds native calls to external functions that are often used in creating backdoors or are generally attributed to unsafe code practices.</p>
   </overview>
+
+  <recommendation>
+    <p>Any findings from this rules is only intended to indicate suspicious code that shares similarities with known portions of code used for the Solorigate attack, but no certainty that the code is related or part of any attack.</p>
+    <p>For more information about Solorigate, please visit https://aka.ms/solorigate. </p>
+  </recommendation>
+
 </qhelp>
