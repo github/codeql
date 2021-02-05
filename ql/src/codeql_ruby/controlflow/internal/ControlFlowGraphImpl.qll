@@ -338,7 +338,7 @@ private class LeftToRightPostOrderTree extends StandardPostOrderTree, LeftToRigh
 }
 
 private class LeftToRightPreOrderNodes =
-  @alias or @block_parameters or @class or @do or @else or @ensure or @in or @lambda_parameters or
+  @alias or @block_parameters or @class or @do or @else or @ensure or @lambda_parameters or
       @method_parameters or @pattern or @program or @then or @undef or @yield;
 
 private class LeftToRightPreOrderTree extends StandardPreOrderTree, LeftToRightPreOrderNodes {
@@ -346,7 +346,6 @@ private class LeftToRightPreOrderTree extends StandardPreOrderTree, LeftToRightP
     this instanceof BlockParameters or
     this instanceof Do or
     this instanceof Else or
-    this instanceof In or
     this instanceof LambdaParameters or
     this instanceof MethodParameters or
     this instanceof Pattern or
@@ -592,7 +591,7 @@ module Trees {
    * ```
    *           args
    *            |
-   *          for------<-----
+   *           in------<-----
    *           / \           \
    *          /   \          |
    *         /     \         |
@@ -600,58 +599,63 @@ module Trees {
    *     empty    non-empty  |
    *       |          \      |
    *  puts "done"      \     |
-   *                  arg    |
-   *                    |    |
-   *                puts arg |
+   *       |          arg    |
+   *       |            |    |
+   *      for       puts arg |
    *                     \___/
    * ```
    */
-  private class ForTree extends ControlFlowTree, For {
+  private class ForTree extends PostOrderTree, For {
     final override predicate propagatesAbnormal(AstNode child) {
-      child = this.getPattern() or child = this.getValue()
+      child = this.getPattern() or child = this.getArray()
     }
 
-    final override predicate first(AstNode node) { node = this.getValue() }
+    final override predicate first(AstNode first) { first(this.getArray(), first) }
 
-    final override predicate last(AstNode last, Completion c) {
-      last = this and
-      c.(EmptinessCompletion).getValue() = true
-      or
-      last(this.getBody(), last, c) and
-      not c.continuesLoop() and
-      not c instanceof BreakCompletion and
-      not c instanceof RedoCompletion
-      or
-      last(this.getBody(), last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion())
-    }
+    private In getIn() { result = this.getValue() }
+
+    private UnderscoreArg getArray() { result = this.getValue().getChild() }
 
     /**
      * for pattern in value do body end
      * ```
-     * value +-> for +--[non empty]--> pattern -> body -> for
-     *               |--[empty]--> exit
+     * array +-> in +--[non empty]--> pattern -> body -> in
+     *              |--[empty]--> for
      * ```
      */
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      last(this.getValue(), pred, c) and
-      succ = this and
+      last(this.getArray(), pred, c) and
+      first(this.getIn(), succ) and
       c instanceof SimpleCompletion
       or
-      pred = this and
+      last(this.getIn(), pred, c) and
       first(this.getPattern(), succ) and
       c.(EmptinessCompletion).getValue() = false
       or
-      first(this.getBody(), succ) and
       last(this.getPattern(), pred, c) and
+      first(this.getBody(), succ) and
       c instanceof NormalCompletion
       or
       last(this.getBody(), pred, c) and
-      succ = this and
+      first(this.getIn(), succ) and
       c.continuesLoop()
       or
       last(this.getBody(), pred, c) and
       first(this.getBody(), succ) and
       c instanceof RedoCompletion
+      or
+      succ = this and
+      (
+        last(this.getIn(), pred, c) and
+        c.(EmptinessCompletion).getValue() = true
+        or
+        last(this.getBody(), pred, c) and
+        not c.continuesLoop() and
+        not c instanceof BreakCompletion and
+        not c instanceof RedoCompletion
+        or
+        last(this.getBody(), pred, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion())
+      )
     }
   }
 
@@ -710,6 +714,8 @@ module Trees {
       c instanceof NormalCompletion
     }
   }
+
+  private class InTree extends LeafTree, In { }
 
   private class InstanceVariableTree extends LeafTree, InstanceVariable { }
 
