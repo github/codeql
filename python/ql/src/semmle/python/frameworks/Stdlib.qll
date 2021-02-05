@@ -7,6 +7,7 @@ private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.RemoteFlowSources
+private import semmle.python.ApiGraphs
 private import semmle.python.Concepts
 private import PEP249
 
@@ -1786,6 +1787,11 @@ private class Exception extends ExceptionSource::Range {
     or
     this.asExpr() = any(ExceptStmt s).getName()
   }
+}
+
+/** A call to `sys.exc_info` */
+private class SysExcInfoCall extends ErrorInfoSource::Range, DataFlow::CfgNode {
+  SysExcInfoCall() { this = API::moduleImport("sys").getMember("exc_info").getACall() }
 }
 
 // ---------------------------------------------------------------------------
