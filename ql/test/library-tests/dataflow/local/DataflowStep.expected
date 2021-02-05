@@ -1,0 +1,19 @@
+| local_dataflow.rb:1:9:1:9 | a | local_dataflow.rb:2:7:2:7 | a |
+| local_dataflow.rb:2:3:2:7 | ... = ... | local_dataflow.rb:3:13:3:13 | b |
+| local_dataflow.rb:2:7:2:7 | a | local_dataflow.rb:2:3:2:7 | ... = ... |
+| local_dataflow.rb:2:7:2:7 | a | local_dataflow.rb:2:3:2:7 | ... = ... |
+| local_dataflow.rb:2:7:2:7 | a | local_dataflow.rb:3:10:3:10 | a |
+| local_dataflow.rb:3:7:3:14 | (...; ...) | local_dataflow.rb:3:3:3:14 | ... = ... |
+| local_dataflow.rb:3:10:3:10 | [post] a | local_dataflow.rb:4:11:4:11 | a |
+| local_dataflow.rb:3:10:3:10 | a | local_dataflow.rb:4:11:4:11 | a |
+| local_dataflow.rb:3:13:3:13 | b | local_dataflow.rb:3:7:3:14 | (...; ...) |
+| local_dataflow.rb:3:13:3:13 | b | local_dataflow.rb:6:13:6:13 | b |
+| local_dataflow.rb:4:7:4:11 | ... = ... | local_dataflow.rb:4:3:4:11 | ... = ... |
+| local_dataflow.rb:4:11:4:11 | a | local_dataflow.rb:4:7:4:11 | ... = ... |
+| local_dataflow.rb:4:11:4:11 | a | local_dataflow.rb:5:12:5:12 | a |
+| local_dataflow.rb:5:7:5:13 | (... = ...) | local_dataflow.rb:5:3:5:13 | ... = ... |
+| local_dataflow.rb:5:8:5:12 | ... = ... | local_dataflow.rb:5:7:5:13 | (... = ...) |
+| local_dataflow.rb:5:12:5:12 | a | local_dataflow.rb:5:8:5:12 | ... = ... |
+| local_dataflow.rb:5:12:5:12 | a | local_dataflow.rb:6:8:6:8 | a |
+| local_dataflow.rb:6:7:6:14 | (... += ...) | local_dataflow.rb:6:3:6:14 | ... = ... |
+| local_dataflow.rb:6:8:6:13 | ... += ... | local_dataflow.rb:6:7:6:14 | (... += ...) |

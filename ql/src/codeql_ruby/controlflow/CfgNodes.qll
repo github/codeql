@@ -193,6 +193,11 @@ module ExprNodes {
     final ExprCfgNode getRhs() { e.hasCfgChild(e.getRhs(), this, result) }
   }
 
+  /** A control-flow node that wraps an `AssignExpr` AST expression. */
+  class AssignExprCfgNode extends AssignmentCfgNode {
+    AssignExprCfgNode() { this.getExpr() instanceof AssignExpr }
+  }
+
   private class BinaryOperationExprChildMapping extends ExprChildMapping, BinaryOperation {
     override predicate relevantChild(Expr e) { e = this.getAnOperand() }
   }
@@ -242,6 +247,11 @@ module ExprNodes {
 
     /** Gets the 'n'th expression of this expression sequence. */
     final ExprCfgNode getExpr(int n) { e.hasCfgChild(e.getExpr(n), this, result) }
+  }
+
+  /** A control-flow node that wraps an `ExprSequence` AST expression. */
+  class ParenthesizedExprCfgNode extends ExprSequenceCfgNode {
+    ParenthesizedExprCfgNode() { this.getExpr() instanceof ParenthesizedExpr }
   }
 
   /** A control-flow node that wraps a `VariableReadAccess` AST expression. */
