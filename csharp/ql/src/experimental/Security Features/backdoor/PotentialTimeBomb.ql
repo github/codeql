@@ -11,7 +11,32 @@
 
 import csharp
 import DataFlow
-import DataFlow::PathGraph
+
+query predicate nodes = PathGraph::nodes/3;
+
+query predicate edges(DataFlow::PathNode a, DataFlow::PathNode b) {
+  PathGraph::edges(a, b)
+  or
+  exists(
+    FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable conf1,
+    FlowsFromTimeSpanArithmeticToTimeComparisonCallable conf2
+  |
+    conf1 = a.getConfiguration() and
+    conf1.isSink(a.getNode()) and
+    conf2 = b.getConfiguration() and
+    b.isSource()
+  )
+  or
+  exists(
+    FlowsFromTimeSpanArithmeticToTimeComparisonCallable conf1,
+    FlowsFromTimeComparisonCallableToSelectionStatementCondition conf2
+  |
+    conf1 = a.getConfiguration() and
+    conf1.isSink(a.getNode()) and
+    conf2 = b.getConfiguration() and
+    b.isSource()
+  )
+}
 
 /**
  * Class that will help to find the source for the trigger file-modification date.
