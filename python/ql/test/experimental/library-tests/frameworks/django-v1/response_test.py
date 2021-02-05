@@ -1,4 +1,5 @@
-from django.http.response import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseNotFound
+from django.http.response import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect, JsonResponse, HttpResponseNotFound
+import django.shortcuts
 
 # Not an XSS sink, since the Content-Type is not "text/html"
 # FP reported in https://github.com/github/codeql-python-team/issues/38
@@ -18,15 +19,40 @@ def safe__manual_content_type(request):
 # XSS FP reported in https://github.com/github/codeql/issues/3466
 # Note: This should be an open-redirect sink, but not an XSS sink.
 def or__redirect(request):
-    return HttpResponseRedirect(request.GET.get("next"))  # $HttpResponse mimetype=text/html
+    next = request.GET.get("next")
+    return HttpResponseRedirect(next)  # $HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation=next
 
 def information_exposure_through_redirect(request, as_kw=False):
     # This is a contrived example, but possible
     private = "private"
+    next = request.GET.get("next")
     if as_kw:
-        return HttpResponseRedirect(request.GET.get("next"), content=private)  # $HttpResponse mimetype=text/html responseBody=private
+        return HttpResponseRedirect(next, content=private)  # $HttpResponse mimetype=text/html responseBody=private HttpRedirectResponse redirectLocation=next
     else:
-        return HttpResponseRedirect(request.GET.get("next"), private)  # $HttpResponse mimetype=text/html responseBody=private
+        return HttpResponseRedirect(next, private)  # $ HttpResponse mimetype=text/html responseBody=private HttpRedirectResponse redirectLocation=next
+
+
+def perm_redirect(request):
+    private = "private"
+    next = request.GET.get("next")
+    return HttpResponsePermanentRedirect(next, private) # $ HttpResponse mimetype=text/html responseBody=private HttpRedirectResponse redirectLocation=next
+
+
+def redirect_through_normal_response(request):
+    private = "private"
+    next = request.GET.get("next")
+
+    resp = HttpResponse() # $ HttpResponse mimetype=text/html
+    resp.status_code = 302
+    resp['Location'] = next # $ MISSING: redirectLocation=next
+    resp.content = private # $ MISSING: responseBody=private
+    return resp
+
+
+def redirect_shortcut(request):
+    next = request.GET.get("next")
+    return django.shortcuts.redirect(next) # $ HttpResponse HttpRedirectResponse redirectLocation=next
+
 
 # Ensure that simple subclasses are still vuln to XSS
 def xss__not_found(request):

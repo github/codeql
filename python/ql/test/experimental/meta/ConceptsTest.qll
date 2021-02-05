@@ -239,6 +239,31 @@ class HttpServerHttpResponseTest extends InlineExpectationsTest {
   }
 }
 
+class HttpServerHttpRedirectResponseTest extends InlineExpectationsTest {
+  HttpServerHttpRedirectResponseTest() { this = "HttpServerHttpRedirectResponseTest" }
+
+  override string getARelevantTag() { result in ["HttpRedirectResponse", "redirectLocation"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    (
+      exists(HTTP::Server::HttpRedirectResponse redirect |
+        location = redirect.getLocation() and
+        element = redirect.toString() and
+        value = "" and
+        tag = "HttpRedirectResponse"
+      )
+      or
+      exists(HTTP::Server::HttpRedirectResponse redirect |
+        location = redirect.getLocation() and
+        element = redirect.toString() and
+        value = value_from_expr(redirect.getRedirectLocation().asExpr()) and
+        tag = "redirectLocation"
+      )
+    )
+  }
+}
+
 class FileSystemAccessTest extends InlineExpectationsTest {
   FileSystemAccessTest() { this = "FileSystemAccessTest" }
 
