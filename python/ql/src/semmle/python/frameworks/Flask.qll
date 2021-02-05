@@ -128,7 +128,7 @@ private module FlaskModel {
     private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
       override CallNode node;
 
-      ClassInstantiation() { node = classRef().getACall().asCfgNode() }
+      ClassInstantiation() { this = classRef().getACall() }
 
       override DataFlow::Node getBody() { result.asCfgNode() = node.getArg(0) }
 
