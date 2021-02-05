@@ -76,17 +76,10 @@ private module FlaskModel {
     // flask.views
     // -------------------------------------------------------------------------
     /** Gets a reference to the `flask.views` module. */
-    DataFlow::Node views() { result = flask_attr("views").getAUse() }
+    API::Node views() { result = flask_attr("views") }
 
     /** Provides models for the `flask.views` module */
     module views {
-      /**
-       * Gets a reference to the attribute `attr_name` of the `flask.views` module.
-       */
-      private DataFlow::Node views_attr(string attr_name) {
-        result = flask().getMember("views").getMember(attr_name).getAUse()
-      }
-
       /**
        * Provides models for the `flask.views.View` class and subclasses.
        *
@@ -94,18 +87,9 @@ private module FlaskModel {
        */
       module View {
         /** Gets a reference to the `flask.views.View` class or any subclass. */
-        private DataFlow::Node subclassRef(DataFlow::TypeTracker t) {
-          t.start() and
-          result = views_attr(["View", "MethodView"])
-          or
-          // subclasses in project code
-          result.asExpr().(ClassExpr).getABase() = subclassRef(t.continue()).asExpr()
-          or
-          exists(DataFlow::TypeTracker t2 | result = subclassRef(t2).track(t2, t))
+        API::Node subclassRef() {
+          result = views().getMember(["View", "MethodView"]).getASubclass*()
         }
-
-        /** Gets a reference to the `flask.views.View` class or any subclass. */
-        DataFlow::Node subclassRef() { result = subclassRef(DataFlow::TypeTracker::end()) }
       }
 
       /**
@@ -114,19 +98,8 @@ private module FlaskModel {
        * See https://flask.palletsprojects.com/en/1.1.x/views/#method-based-dispatching.
        */
       module MethodView {
-        /** Gets a reference to the `flask.views.View` class or any subclass. */
-        private DataFlow::Node subclassRef(DataFlow::TypeTracker t) {
-          t.start() and
-          result = views_attr("MethodView")
-          or
-          // subclasses in project code
-          result.asExpr().(ClassExpr).getABase() = subclassRef(t.continue()).asExpr()
-          or
-          exists(DataFlow::TypeTracker t2 | result = subclassRef(t2).track(t2, t))
-        }
-
-        /** Gets a reference to the `flask.views.View` class or any subclass. */
-        DataFlow::Node subclassRef() { result = subclassRef(DataFlow::TypeTracker::end()) }
+        /** Gets a reference to the `flask.views.MethodView` class or any subclass. */
+        API::Node subclassRef() { result = views().getMember("MethodView").getASubclass*() }
       }
     }
   }
@@ -155,7 +128,7 @@ private module FlaskModel {
     private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
       override CallNode node;
 
-      ClassInstantiation() { node.getFunction() = classRef().getAUse().asCfgNode() }
+      ClassInstantiation() { node = classRef().getACall().asCfgNode() }
 
       override DataFlow::Node getBody() { result.asCfgNode() = node.getArg(0) }
 
@@ -189,7 +162,12 @@ private module FlaskModel {
   // ---------------------------------------------------------------------------
   /** A flask View class defined in project code. */
   class FlaskViewClassDef extends Class {
-    FlaskViewClassDef() { this.getABase() = flask::views::View::subclassRef().asExpr() }
+    API::Node api_node;
+
+    FlaskViewClassDef() {
+      this.getABase() = flask::views::View::subclassRef().getAUse().asExpr() and
+      api_node.getAnImmediateUse().asExpr().(ClassExpr) = this.getParent()
+    }
 
     /** Gets a function that could handle incoming requests, if any. */
     Function getARequestHandler() {
@@ -199,42 +177,15 @@ private module FlaskModel {
       result.getName() = "dispatch_request"
     }
 
-    /** Gets a reference to this class. */
-    private DataFlow::Node getARef(DataFlow::TypeTracker t) {
-      t.start() and
-      result.asExpr().(ClassExpr) = this.getParent()
-      or
-      exists(DataFlow::TypeTracker t2 | result = this.getARef(t2).track(t2, t))
-    }
-
-    /** Gets a reference to this class. */
-    DataFlow::Node getARef() { result = this.getARef(DataFlow::TypeTracker::end()) }
-
-    /** Gets a reference to the `as_view` classmethod of this class. */
-    private DataFlow::Node asViewRef(DataFlow::TypeTracker t) {
-      t.startInAttr("as_view") and
-      result = this.getARef()
-      or
-      exists(DataFlow::TypeTracker t2 | result = this.asViewRef(t2).track(t2, t))
-    }
-
-    /** Gets a reference to the `as_view` classmethod of this class. */
-    DataFlow::Node asViewRef() { result = this.asViewRef(DataFlow::TypeTracker::end()) }
-
     /** Gets a reference to the result of calling the `as_view` classmethod of this class. */
-    private DataFlow::Node asViewResult(DataFlow::TypeTracker t) {
-      t.start() and
-      result.asCfgNode().(CallNode).getFunction() = this.asViewRef().asCfgNode()
-      or
-      exists(DataFlow::TypeTracker t2 | result = asViewResult(t2).track(t2, t))
-    }
-
-    /** Gets a reference to the result of calling the `as_view` classmethod of this class. */
-    DataFlow::Node asViewResult() { result = asViewResult(DataFlow::TypeTracker::end()) }
+    API::Node asViewResult() { result = api_node.getMember("as_view").getReturn() }
   }
 
   class FlaskMethodViewClassDef extends FlaskViewClassDef {
-    FlaskMethodViewClassDef() { this.getABase() = flask::views::MethodView::subclassRef().asExpr() }
+    FlaskMethodViewClassDef() {
+      this.getABase() = flask::views::MethodView::subclassRef().getAUse().asExpr() and
+      api_node.getAnImmediateUse().asExpr().(ClassExpr) = this.getParent()
+    }
 
     override Function getARequestHandler() {
       result = super.getARequestHandler()
@@ -316,7 +267,7 @@ private module FlaskModel {
       )
       or
       exists(FlaskViewClassDef vc |
-        getViewArg() = vc.asViewResult() and
+        getViewArg() = vc.asViewResult().getAUse() and
         result = vc.getARequestHandler()
       )
     }
