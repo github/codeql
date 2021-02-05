@@ -2314,6 +2314,13 @@ private module Django {
 
     DjangoShortcutsRedirectCall() { node.getFunction() = django::shortcuts::redirect().asCfgNode() }
 
+    /**
+     * Gets the data-flow node that specifies the location of this HTTP redirect response.
+     *
+     * Note: For `django.shortcuts.redirect`, the result might not be a full URL
+     * (as usually expected by this method), but could be a relative URL,
+     * a string identifying a view, or a Django model.
+     */
     override DataFlow::Node getRedirectLocation() {
       result.asCfgNode() in [node.getArg(0), node.getArgByName("to")]
     }
