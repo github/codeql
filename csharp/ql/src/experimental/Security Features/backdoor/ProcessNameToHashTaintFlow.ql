@@ -2,7 +2,7 @@
  * @name ProcessName to hash function flow
  * @description Flow from a function retrieving process name to a hash function
  *              NOTE: This query is an example of a query that may be useful for detecting potential backdoors, and Solorigate is just one such example that uses this mechanism.
- * @kind problem
+ * @kind path-problem
  * @tags security
  *       solorigate
  * @problem.severity warning
@@ -11,7 +11,7 @@
  */
 
 import csharp
-import DataFlow
+import DataFlow::PathGraph
 import experimental.code.csharp.Cryptography.NonCryptographicHashes
 
 class DataFlowFromMethodToHash extends TaintTracking::Configuration {
@@ -49,8 +49,8 @@ predicate isSuspiciousPropertyName(PropertyRead pr) {
   pr.getTarget().getQualifiedName() = "System.Diagnostics.Process.ProcessName"
 }
 
-from Node src, Node sink, DataFlowFromMethodToHash conf
-where conf.hasFlow(src, sink)
-select src,
+from DataFlow::PathNode src, DataFlow::PathNode sink, DataFlowFromMethodToHash conf
+where conf.hasFlow(src.getNode(), sink.getNode())
+select src.getNode(), src, sink,
   "The hash is calculated on the process name $@, may be related to a backdoor. Please review the code for possible malicious intent.",
-  sink, "here"
+  sink.getNode(), "here"

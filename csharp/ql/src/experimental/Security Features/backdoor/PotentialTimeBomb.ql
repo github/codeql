@@ -122,16 +122,15 @@ private class FlowsFromTimeComparisonCallableToSelectionStatementCondition exten
  * which is then used for a DateTime comparison timeComparisonCall and the result flows to a Selection statement which is likely a TimeBomb trigger
  */
 predicate isPotentialTimeBomb(
-  DataFlow::PathNode pathSource, DataFlow::PathNode pathSink,
-  Call getLastWriteTimeMethodCall, Call timeArithmeticCall, Call timeComparisonCall,
-  SelectionStmt selStatement
+  DataFlow::PathNode pathSource, DataFlow::PathNode pathSink, Call getLastWriteTimeMethodCall,
+  Call timeArithmeticCall, Call timeComparisonCall, SelectionStmt selStatement
 ) {
   exists(
     FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable config1, Node sink,
     DateTimeStruct dateTime, FlowsFromTimeSpanArithmeticToTimeComparisonCallable config2,
     Node sink2, FlowsFromTimeComparisonCallableToSelectionStatementCondition config3, Node sink3
   |
-    pathSource.getNode() = exprNode(getLastWriteTimeMethodCall) and 
+    pathSource.getNode() = exprNode(getLastWriteTimeMethodCall) and
     config1.hasFlow(exprNode(getLastWriteTimeMethodCall), sink) and
     timeArithmeticCall = dateTime.getATimeSpanArtithmeticCallable().getACall() and
     timeArithmeticCall.getAChild*() = sink.asExpr() and
@@ -144,13 +143,13 @@ predicate isPotentialTimeBomb(
   )
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink,
-  Call getLastWriteTimeMethodCall, Call timeArithmeticCall, Call timeComparisonCall,
-  SelectionStmt selStatement
+from
+  DataFlow::PathNode source, DataFlow::PathNode sink, Call getLastWriteTimeMethodCall,
+  Call timeArithmeticCall, Call timeComparisonCall, SelectionStmt selStatement
 where
-  isPotentialTimeBomb(source, sink, getLastWriteTimeMethodCall, timeArithmeticCall, timeComparisonCall,
-    selStatement)
-select selStatement, source, sink, 
+  isPotentialTimeBomb(source, sink, getLastWriteTimeMethodCall, timeArithmeticCall,
+    timeComparisonCall, selStatement)
+select selStatement, source, sink,
   "Possible TimeBomb logic triggered by $@ that takes into account $@ from the $@ as part of the potential trigger.",
   timeComparisonCall, timeComparisonCall.toString(), timeArithmeticCall, "an offset",
   getLastWriteTimeMethodCall, "last modification time of a file"
