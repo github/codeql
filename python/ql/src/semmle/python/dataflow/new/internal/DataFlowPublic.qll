@@ -451,7 +451,7 @@ class LocalSourceNode extends Node {
   }
 
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
-  cached
+  pragma[inline]
   predicate flowsTo(Node nodeTo) { Cached::hasLocalSource(nodeTo, this) }
 
   /**
@@ -509,7 +509,7 @@ private module Cached {
    */
   cached
   predicate namedAttrRef(LocalSourceNode base, string attr, AttrRef ref) {
-    hasLocalSource(ref.getObject(), base) and
+    base.flowsTo(ref.getObject()) and
     ref.getAttributeName() = attr
   }
 
@@ -518,7 +518,7 @@ private module Cached {
    */
   cached
   predicate dynamicAttrRef(LocalSourceNode base, AttrRef ref) {
-    hasLocalSource(ref.getObject(), base) and
+    base.flowsTo(ref.getObject()) and
     not exists(ref.getAttributeName())
   }
 
@@ -530,7 +530,7 @@ private module Cached {
     exists(CfgNode n, CallNode call_node |
       call.asCfgNode() = call_node and n.asCfgNode() = call_node.getFunction()
     |
-      hasLocalSource(n, func)
+      func.flowsTo(n)
     )
   }
 }
