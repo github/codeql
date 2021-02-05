@@ -19,7 +19,7 @@ namespace Semmle.Extraction.Entities
             }
             else
             {
-                assembly = init.MetadataModule.ContainingAssembly;
+                assembly = init.MetadataModule!.ContainingAssembly;
                 var identity = assembly.Identity;
                 var idString = identity.Name + " " + identity.Version;
                 assemblyPath = cx.Extractor.GetAssemblyFile(idString);

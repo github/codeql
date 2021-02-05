@@ -215,7 +215,7 @@ namespace Semmle.Extraction
                 }
                 catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    ExtractionError("Uncaught exception", ex.Message, Entities.Location.Create(this), ex.StackTrace);
+                    ExtractionError($"Uncaught exception. {ex.Message}", null, Entities.Location.Create(this), ex.StackTrace);
                 }
             }
         }
@@ -246,7 +246,7 @@ namespace Semmle.Extraction
 
         public ICommentGenerator CommentGenerator { get; } = new CommentProcessor();
 
-        private IExtractionScope scope;
+        private readonly IExtractionScope scope;
 
         public bool IsAssemblyScope => scope is AssemblyScope;
 
@@ -423,7 +423,7 @@ namespace Semmle.Extraction
         /// <param name="location">The location of the error.</param>
         /// <param name="stackTrace">An optional stack trace of the error, or null.</param>
         /// <param name="severity">The severity of the error.</param>
-        public void ExtractionError(string message, string entityText, Entities.Location location, string? stackTrace = null, Severity severity = Severity.Error)
+        public void ExtractionError(string message, string? entityText, Entities.Location? location, string? stackTrace = null, Severity severity = Severity.Error)
         {
             var msg = new Message(message, entityText, location, stackTrace, severity);
             ExtractionError(msg);
@@ -447,7 +447,7 @@ namespace Semmle.Extraction
             }
             else
             {
-                ExtractionError(message, "", Entities.Location.Create(this));
+                ExtractionError(message, null, Entities.Location.Create(this));
             }
         }
 
@@ -531,7 +531,7 @@ namespace Semmle.Extraction
                 }
                 else
                 {
-                    message = new Message("Uncaught exception", ex.Message, Entities.Location.Create(context), ex.StackTrace);
+                    message = new Message($"Uncaught exception. {ex.Message}", null, Entities.Location.Create(context), ex.StackTrace);
                 }
 
                 context.ExtractionError(message);

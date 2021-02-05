@@ -15,11 +15,9 @@ namespace Semmle.Extraction.Entities
 
     public class NonGeneratedSourceLocation : SourceLocation
     {
-        protected NonGeneratedSourceLocation(Context cx, Microsoft.CodeAnalysis.Location? init)
+        protected NonGeneratedSourceLocation(Context cx, Microsoft.CodeAnalysis.Location init)
             : base(cx, init)
         {
-            if (init is null)
-                throw new ArgumentException("Location may not be null", nameof(init));
             Position = init.GetLineSpan();
             FileEntity = File.Create(Context, Position.Path);
         }
@@ -32,7 +30,7 @@ namespace Semmle.Extraction.Entities
                 Position.Span.Start.Line + 1, Position.Span.Start.Character + 1,
                 Position.Span.End.Line + 1, Position.Span.End.Character);
 
-            var mapped = symbol.GetMappedLineSpan();
+            var mapped = symbol!.GetMappedLineSpan();
             if (mapped.HasMappedPath && mapped.IsValid)
             {
                 var mappedLoc = Create(Context, Microsoft.CodeAnalysis.Location.Create(mapped.Path, default, mapped.Span));

@@ -66,7 +66,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         private void Populate()
         {
-            if (isContainerNamespace)
+            if (ContainingNamespace is object)
             {
                 Cx.Populate(ContainingNamespace);
             }

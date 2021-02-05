@@ -1,6 +1,4 @@
 using Semmle.Extraction.CommentProcessing;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Extraction.Entities;
 using System.IO;
 
@@ -21,7 +19,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public string Text { get { return symbol.Item2; } }
         public string RawText { get; private set; }
 
-        private Extraction.Entities.Location location;
+        private Location location;
 
         public override void Populate(TextWriter trapFile)
         {
