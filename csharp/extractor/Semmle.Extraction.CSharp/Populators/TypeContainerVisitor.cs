@@ -43,6 +43,11 @@ namespace Semmle.Extraction.CSharp.Populators
             Entities.NamedType.Create(cx, cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(trapFile, parent);
         }
 
+        public override void VisitRecordDeclaration(RecordDeclarationSyntax node)
+        {
+            Entities.Type.Create(cx, cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(trapFile, parent);
+        }
+
         public override void VisitClassDeclaration(ClassDeclarationSyntax classDecl)
         {
             Entities.Type.Create(cx, cx.GetModel(classDecl).GetDeclaredSymbol(classDecl)).ExtractRecursive(trapFile, parent);
