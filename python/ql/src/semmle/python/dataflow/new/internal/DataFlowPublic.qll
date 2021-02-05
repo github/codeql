@@ -443,11 +443,95 @@ class BarrierGuard extends GuardNode {
  * - Function parameters
  */
 class LocalSourceNode extends Node {
-  LocalSourceNode() { not simpleLocalFlowStep(_, this) }
+  LocalSourceNode() {
+    not simpleLocalFlowStep+(any(CfgNode n), this) and
+    not this instanceof ModuleVariableNode
+    or
+    this = any(ModuleVariableNode mvn).getARead()
+  }
 
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
+  pragma[inline]
+  predicate flowsTo(Node nodeTo) { Cached::hasLocalSource(nodeTo, this) }
+
+  /**
+   * Gets a reference (read or write) of attribute `attrName` on this node.
+   */
+  AttrRef getAnAttributeReference(string attrName) { Cached::namedAttrRef(this, attrName, result) }
+
+  /**
+   * Gets a read of attribute `attrName` on this node.
+   */
+  AttrRead getAnAttributeRead(string attrName) { result = getAnAttributeReference(attrName) }
+
+  /**
+   * Gets a reference (read or write) of any attribute on this node.
+   */
+  AttrRef getAnAttributeReference() {
+    Cached::namedAttrRef(this, _, result)
+    or
+    Cached::dynamicAttrRef(this, result)
+  }
+
+  /**
+   * Gets a read of any attribute on this node.
+   */
+  AttrRead getAnAttributeRead() { result = getAnAttributeReference() }
+
+  /**
+   * Gets a call to this node.
+   */
+  Node getACall() { Cached::call(this, result) }
+}
+
+cached
+private module Cached {
+  /**
+   * Holds if `source` is a `LocalSourceNode` that can reach `sink` via local flow steps.
+   *
+   * The slightly backwards parametering ordering is to force correct indexing.
+   */
   cached
-  predicate flowsTo(Node nodeTo) { simpleLocalFlowStep*(this, nodeTo) }
+  predicate hasLocalSource(Node sink, Node source) {
+    // Declaring `source` to be a `SourceNode` currently causes a redundant check in the
+    // recursive case, so instead we check it explicitly here.
+    source = sink and
+    source instanceof LocalSourceNode
+    or
+    exists(Node mid |
+      hasLocalSource(mid, source) and
+      simpleLocalFlowStep(mid, sink)
+    )
+  }
+
+  /**
+   * Holds if `base` flows to the base of `ref` and `ref` has attribute name `attr`.
+   */
+  cached
+  predicate namedAttrRef(LocalSourceNode base, string attr, AttrRef ref) {
+    base.flowsTo(ref.getObject()) and
+    ref.getAttributeName() = attr
+  }
+
+  /**
+   * Holds if `base` flows to the base of `ref` and `ref` has no known attribute name.
+   */
+  cached
+  predicate dynamicAttrRef(LocalSourceNode base, AttrRef ref) {
+    base.flowsTo(ref.getObject()) and
+    not exists(ref.getAttributeName())
+  }
+
+  /**
+   * Holds if `func` flows to the callee of `call`.
+   */
+  cached
+  predicate call(LocalSourceNode func, Node call) {
+    exists(CfgNode n |
+      func.flowsTo(n) and
+      n.asCfgNode() = call.asCfgNode().(CallNode).getFunction()
+    )
+  }
 }
 
 /**
