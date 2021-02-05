@@ -527,10 +527,9 @@ private module Cached {
    */
   cached
   predicate call(LocalSourceNode func, Node call) {
-    exists(CfgNode n, CallNode call_node |
-      call.asCfgNode() = call_node and n.asCfgNode() = call_node.getFunction()
-    |
-      func.flowsTo(n)
+    exists(CfgNode n |
+      func.flowsTo(n) and
+      n.asCfgNode() = call.asCfgNode().(CallNode).getFunction()
     )
   }
 }
