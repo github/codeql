@@ -287,26 +287,18 @@ private module CleverGo {
   }
 
   /**
-   * Models HTTP header writes.
+   * Models HTTP header writers model for package: clevergo.tech/clevergo@v0.5.2
    */
   private class HeaderWrite extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
-    DataFlow::Node nameNode;
-    DataFlow::Node valueNode;
-
     HeaderWrite() {
-      // HTTP header write model for package: clevergo.tech/clevergo@v0.5.2
       // Receiver type: Context
-      (
-        // signature: func (*Context).SetHeader(key string, value string)
-        this = any(Method m | m.hasQualifiedName(packagePath(), "Context", "SetHeader")).getACall() and
-        nameNode = this.getArgument(0) and
-        valueNode = this.getArgument(1)
-      )
+      // signature: func (*Context).SetHeader(key string, value string)
+      this = any(Method m | m.hasQualifiedName(packagePath(), "Context", "SetHeader")).getACall()
     }
 
-    override DataFlow::Node getName() { result = nameNode }
+    override DataFlow::Node getName() { result = this.getArgument(0) }
 
-    override DataFlow::Node getValue() { result = valueNode }
+    override DataFlow::Node getValue() { result = this.getArgument(1) }
 
     override HTTP::ResponseWriter getResponseWriter() { none() }
   }
