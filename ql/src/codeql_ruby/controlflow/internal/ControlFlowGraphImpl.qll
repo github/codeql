@@ -1223,26 +1223,12 @@ module Trees {
     }
   }
 
-  private class ConditionalLoopTree extends PreOrderTree, ConditionalLoopAstNode {
+  private class ConditionalLoopTree extends PostOrderTree, ConditionalLoopAstNode {
     final override predicate propagatesAbnormal(AstNode child) { child = this.getConditionNode() }
 
-    final override predicate last(AstNode last, Completion c) {
-      last(this.getConditionNode(), last, c) and
-      this.endLoop(c)
-      or
-      last(this.getBodyNode(), last, c) and
-      not c.continuesLoop() and
-      not c instanceof BreakCompletion and
-      not c instanceof RedoCompletion
-      or
-      last(this.getBodyNode(), last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion())
-    }
+    final override predicate first(AstNode first) { first(this.getConditionNode(), first) }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      pred = this and
-      first(this.getConditionNode(), succ) and
-      c instanceof SimpleCompletion
-      or
       last(this.getConditionNode(), pred, c) and
       this.continueLoop(c) and
       first(this.getBodyNode(), succ)
@@ -1254,6 +1240,19 @@ module Trees {
       last(this.getBodyNode(), pred, c) and
       first(this.getBodyNode(), succ) and
       c instanceof RedoCompletion
+      or
+      succ = this and
+      (
+        last(this.getConditionNode(), pred, c) and
+        this.endLoop(c)
+        or
+        last(this.getBodyNode(), pred, c) and
+        not c.continuesLoop() and
+        not c instanceof BreakCompletion and
+        not c instanceof RedoCompletion
+        or
+        last(this.getBodyNode(), pred, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion())
+      )
     }
   }
 }
