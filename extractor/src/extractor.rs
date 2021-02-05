@@ -4,7 +4,7 @@ use std::collections::BTreeSet as Set;
 use std::fmt;
 use std::path::Path;
 use tracing::{error, info, span, Level};
-use tree_sitter::{Language, Node, Parser, Tree};
+use tree_sitter::{Language, Node, Parser, Range, Tree};
 
 struct TrapWriter {
     /// The accumulated trap entries
@@ -149,7 +149,13 @@ impl TrapWriter {
 }
 
 /// Extracts the source file at `path`, which is assumed to be canonicalized.
-pub fn extract(language: Language, schema: &NodeTypeMap, path: &Path) -> std::io::Result<Program> {
+pub fn extract(
+    language: Language,
+    schema: &NodeTypeMap,
+    path: &Path,
+    source: &Vec<u8>,
+    ranges: &[Range],
+) -> std::io::Result<Program> {
     let span = span!(
         Level::TRACE,
         "extract",
@@ -162,7 +168,7 @@ pub fn extract(language: Language, schema: &NodeTypeMap, path: &Path) -> std::io
 
     let mut parser = Parser::new();
     parser.set_language(language).unwrap();
-    let source = std::fs::read(&path)?;
+    parser.set_included_ranges(&ranges).unwrap();
     let tree = parser.parse(&source, None).expect("Failed to parse file");
     let mut trap_writer = new_trap_writer();
     trap_writer.comment(format!("Auto-generated TRAP file for {}", path.display()));

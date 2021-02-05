@@ -8,6 +8,7 @@ use rayon::prelude::*;
 use std::fs;
 use std::io::{BufRead, BufWriter, Write};
 use std::path::{Path, PathBuf};
+use tree_sitter::{Language, Parser, Range};
 
 enum TrapCompression {
     None,
@@ -126,6 +127,7 @@ fn main() -> std::io::Result<()> {
     let file_list = fs::File::open(file_list)?;
 
     let language = tree_sitter_ruby::language();
+    let erb = tree_sitter_embedded_template::language();
     let schema = node_types::read_node_types_str(tree_sitter_ruby::NODE_TYPES)?;
     let lines: std::io::Result<Vec<String>> = std::io::BufReader::new(file_list).lines().collect();
     let lines = lines?;
@@ -133,22 +135,70 @@ fn main() -> std::io::Result<()> {
         let path = PathBuf::from(line).canonicalize()?;
         let trap_file = path_for(&trap_dir, &path, trap_compression.extension());
         let src_archive_file = path_for(&src_archive_dir, &path, "");
-        let trap = extractor::extract(language, &schema, &path)?;
+        let mut source = std::fs::read(&path)?;
+        let code_ranges;
+        if path.extension().map_or(false, |x| x == "erb") {
+            tracing::info!("scanning: {}", path.display());
+            let (ranges, line_breaks) = scan_erb(erb, &source);
+            for i in line_breaks {
+                if i < source.len() {
+                    source[i] = b'\n';
+                }
+            }
+            code_ranges = ranges;
+        } else {
+            code_ranges = vec![];
+        }
+        let trap = extractor::extract(language, &schema, &path, &source, &code_ranges)?;
         std::fs::create_dir_all(&src_archive_file.parent().unwrap())?;
         std::fs::copy(&path, &src_archive_file)?;
         std::fs::create_dir_all(&trap_file.parent().unwrap())?;
         let trap_file = std::fs::File::create(&trap_file)?;
         let mut trap_file = BufWriter::new(trap_file);
         match trap_compression {
-            TrapCompression::None => {
-                write!(trap_file, "{}", trap)
-            }
+            TrapCompression::None => write!(trap_file, "{}", trap),
             TrapCompression::Gzip => {
                 let mut compressed_writer = GzEncoder::new(trap_file, flate2::Compression::fast());
                 write!(compressed_writer, "{}", trap)
             }
         }
     })
+}
+
+fn scan_erb(erb: Language, source: &std::vec::Vec<u8>) -> (Vec<Range>, Vec<usize>) {
+    let mut parser = Parser::new();
+    parser.set_language(erb).unwrap();
+    let tree = parser.parse(&source, None).expect("Failed to parse file");
+    let mut result = Vec::new();
+    let mut line_breaks = vec![];
+
+    for n in tree.root_node().children(&mut tree.walk()) {
+        let kind = n.kind();
+        if kind == "directive" || kind == "output_directive" {
+            for c in n.children(&mut tree.walk()) {
+                if c.kind() == "code" {
+                    let mut range = c.range();
+                    if range.end_byte < source.len() {
+                        line_breaks.push(range.end_byte);
+                        range.end_byte += 1;
+                        range.end_point.column += 1;
+                    }
+                    result.push(range);
+                }
+            }
+        }
+    }
+    if result.len() == 0 {
+        let root = tree.root_node();
+        // Add an empty range at the end of the file
+        result.push(Range {
+            start_byte: root.end_byte(),
+            end_byte: root.end_byte(),
+            start_point: root.end_position(),
+            end_point: root.end_position(),
+        });
+    }
+    (result, line_breaks)
 }
 
 fn path_for(dir: &Path, path: &Path, ext: &str) -> PathBuf {
