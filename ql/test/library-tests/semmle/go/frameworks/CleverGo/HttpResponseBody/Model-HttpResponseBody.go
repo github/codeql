@@ -18,88 +18,88 @@ func ClevergoTechClevergov052() {
 		{
 			// func (*Context).Error(code int, msg string) error
 			{
-				bodyString707 := source().(string)
+				bodyString145 := source().(string)
 				var rece clevergo.Context
-				rece.Error(0, bodyString707) // $contentType=text/plain $responseBody=bodyString707
+				rece.Error(0, bodyString145) // $contentType=text/plain $responseBody=bodyString145
 			}
 			// func (*Context).HTML(code int, html string) error
 			{
-				bodyString912 := source().(string)
+				bodyString817 := source().(string)
 				var rece clevergo.Context
-				rece.HTML(0, bodyString912) // $contentType=text/html $responseBody=bodyString912
+				rece.HTML(0, bodyString817) // $contentType=text/html $responseBody=bodyString817
 			}
 			// func (*Context).HTMLBlob(code int, bs []byte) error
 			{
-				bodyByte718 := source().([]byte)
+				bodyByte474 := source().([]byte)
 				var rece clevergo.Context
-				rece.HTMLBlob(0, bodyByte718) // $contentType=text/html $responseBody=bodyByte718
+				rece.HTMLBlob(0, bodyByte474) // $contentType=text/html $responseBody=bodyByte474
 			}
 			// func (*Context).JSON(code int, data interface{}) error
 			{
-				bodyInterface972 := source().(interface{})
+				bodyInterface832 := source().(interface{})
 				var rece clevergo.Context
-				rece.JSON(0, bodyInterface972) // $contentType=application/json $responseBody=bodyInterface972
+				rece.JSON(0, bodyInterface832) // $contentType=application/json $responseBody=bodyInterface832
 			}
 			// func (*Context).JSONBlob(code int, bs []byte) error
 			{
-				bodyByte633 := source().([]byte)
+				bodyByte378 := source().([]byte)
 				var rece clevergo.Context
-				rece.JSONBlob(0, bodyByte633) // $contentType=application/json $responseBody=bodyByte633
+				rece.JSONBlob(0, bodyByte378) // $contentType=application/json $responseBody=bodyByte378
 			}
 			// func (*Context).JSONP(code int, data interface{}) error
 			{
-				bodyInterface316 := source().(interface{})
+				bodyInterface541 := source().(interface{})
 				var rece clevergo.Context
-				rece.JSONP(0, bodyInterface316) // $contentType=application/javascript $responseBody=bodyInterface316
+				rece.JSONP(0, bodyInterface541) // $contentType=application/javascript $responseBody=bodyInterface541
 			}
 			// func (*Context).JSONPBlob(code int, bs []byte) error
 			{
-				bodyByte145 := source().([]byte)
+				bodyByte139 := source().([]byte)
 				var rece clevergo.Context
-				rece.JSONPBlob(0, bodyByte145) // $contentType=application/javascript $responseBody=bodyByte145
+				rece.JSONPBlob(0, bodyByte139) // $contentType=application/javascript $responseBody=bodyByte139
 			}
 			// func (*Context).JSONPCallback(code int, callback string, data interface{}) error
 			{
-				bodyInterface817 := source().(interface{})
+				bodyInterface814 := source().(interface{})
 				var rece clevergo.Context
-				rece.JSONPCallback(0, "", bodyInterface817) // $contentType=application/javascript $responseBody=bodyInterface817
+				rece.JSONPCallback(0, "", bodyInterface814) // $contentType=application/javascript $responseBody=bodyInterface814
 			}
 			// func (*Context).JSONPCallbackBlob(code int, callback string, bs []byte) (err error)
 			{
-				bodyByte474 := source().([]byte)
+				bodyByte768 := source().([]byte)
 				var rece clevergo.Context
-				rece.JSONPCallbackBlob(0, "", bodyByte474) // $contentType=application/javascript $responseBody=bodyByte474
+				rece.JSONPCallbackBlob(0, "", bodyByte768) // $contentType=application/javascript $responseBody=bodyByte768
 			}
 			// func (*Context).String(code int, s string) error
 			{
-				bodyString832 := source().(string)
+				bodyString468 := source().(string)
 				var rece clevergo.Context
-				rece.String(0, bodyString832) // $contentType=text/plain $responseBody=bodyString832
+				rece.String(0, bodyString468) // $contentType=text/plain $responseBody=bodyString468
 			}
 			// func (*Context).StringBlob(code int, bs []byte) error
 			{
-				bodyByte378 := source().([]byte)
+				bodyByte736 := source().([]byte)
 				var rece clevergo.Context
-				rece.StringBlob(0, bodyByte378) // $contentType=text/plain $responseBody=bodyByte378
+				rece.StringBlob(0, bodyByte736) // $contentType=text/plain $responseBody=bodyByte736
 			}
 			// func (*Context).Stringf(code int, format string, a ...interface{}) error
 			{
-				bodyString541 := source().(string)
-				bodyInterface139 := source().(interface{})
+				bodyString516 := source().(string)
+				bodyInterface246 := source().(interface{})
 				var rece clevergo.Context
-				rece.Stringf(0, bodyString541, bodyInterface139) // $contentType=text/plain $responseBody=bodyString541 $responseBody=bodyInterface139
+				rece.Stringf(0, bodyString516, bodyInterface246) // $contentType=text/plain $responseBody=bodyString516 $responseBody=bodyInterface246
 			}
 			// func (*Context).XML(code int, data interface{}) error
 			{
-				bodyInterface814 := source().(interface{})
+				bodyInterface679 := source().(interface{})
 				var rece clevergo.Context
-				rece.XML(0, bodyInterface814) // $contentType=text/xml $responseBody=bodyInterface814
+				rece.XML(0, bodyInterface679) // $contentType=text/xml $responseBody=bodyInterface679
 			}
 			// func (*Context).XMLBlob(code int, bs []byte) error
 			{
-				bodyByte768 := source().([]byte)
+				bodyByte736 := source().([]byte)
 				var rece clevergo.Context
-				rece.XMLBlob(0, bodyByte768) // $contentType=text/xml $responseBody=bodyByte768
+				rece.XMLBlob(0, bodyByte736) // $contentType=text/xml $responseBody=bodyByte736
 			}
 		}
 	}

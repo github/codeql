@@ -24,9 +24,9 @@ func ClevergoTechClevergov052() {
 	{
 		// func CleanPath(p string) string
 		{
-			fromString246 := source().(string)
-			intoString898 := clevergo.CleanPath(fromString246)
-			sink(intoString898) // $taintSink
+			fromString598 := source().(string)
+			intoString631 := clevergo.CleanPath(fromString598)
+			sink(intoString631) // $taintSink
 		}
 	}
 	// Taint-tracking through method calls.
@@ -36,17 +36,35 @@ func ClevergoTechClevergov052() {
 			// func (*Application).RouteURL(name string, args ...string) (*net/url.URL, error)
 			{
 				{
-					fromString598 := source().(string)
-					var mediumObjCQL clevergo.Application
-					intoURL631, _ := mediumObjCQL.RouteURL(fromString598, "")
-					sink(intoURL631) // $taintSink
-				}
-				{
 					fromString165 := source().(string)
 					var mediumObjCQL clevergo.Application
-					intoURL150, _ := mediumObjCQL.RouteURL("", fromString165)
+					intoURL150, _ := mediumObjCQL.RouteURL(fromString165, "")
 					sink(intoURL150) // $taintSink
 				}
+				{
+					fromString340 := source().(string)
+					var mediumObjCQL clevergo.Application
+					intoURL471, _ := mediumObjCQL.RouteURL("", fromString340)
+					sink(intoURL471) // $taintSink
+				}
+			}
+		}
+		// Taint-tracking through method calls on clevergo.tech/clevergo.Context.
+		{
+			// func (*Context).Context() context.Context
+			{
+				fromContext290 := source().(clevergo.Context)
+				intoContext758 := fromContext290.Context()
+				sink(intoContext758) // $taintSink
+			}
+		}
+		// Taint-tracking through method calls on clevergo.tech/clevergo.Params.
+		{
+			// func (Params).String(name string) string
+			{
+				fromParams396 := source().(clevergo.Params)
+				intoString707 := fromParams396.String("")
+				sink(intoString707) // $taintSink
 			}
 		}
 	}
@@ -56,22 +74,22 @@ func ClevergoTechClevergov052() {
 		{
 			// func (Decoder).Decode(req *net/http.Request, v interface{}) error
 			{
-				fromRequest340 := source().(*http.Request)
-				var intoInterface471 interface{}
+				fromRequest912 := source().(*http.Request)
+				var intoInterface718 interface{}
 				var mediumObjCQL clevergo.Decoder
-				mediumObjCQL.Decode(fromRequest340, intoInterface471)
-				sink(intoInterface471) // $taintSink
+				mediumObjCQL.Decode(fromRequest912, intoInterface718)
+				sink(intoInterface718) // $taintSink
 			}
 		}
 		// Taint-tracking through method calls on clevergo.tech/clevergo.Renderer interface.
 		{
 			// func (Renderer).Render(w io.Writer, name string, data interface{}, c *Context) error
 			{
-				fromInterface290 := source().(interface{})
-				var intoWriter758 io.Writer
+				fromInterface972 := source().(interface{})
+				var intoWriter633 io.Writer
 				var mediumObjCQL clevergo.Renderer
-				mediumObjCQL.Render(intoWriter758, "", fromInterface290, nil)
-				sink(intoWriter758) // $taintSink
+				mediumObjCQL.Render(intoWriter633, "", fromInterface972, nil)
+				sink(intoWriter633) // $taintSink
 			}
 		}
 	}

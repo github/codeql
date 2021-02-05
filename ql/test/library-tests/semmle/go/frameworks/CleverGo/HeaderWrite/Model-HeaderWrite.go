@@ -12,15 +12,16 @@ func source() interface{} {
 
 // Package clevergo.tech/clevergo@v0.5.2
 func ClevergoTechClevergov052() {
-	// Redirect via method calls.
+	// Header write via method calls.
 	{
-		// Redirect via method calls on clevergo.tech/clevergo.Context.
+		// Header write via method calls on clevergo.tech/clevergo.Context.
 		{
-			// func (*Context).Redirect(code int, url string) error
+			// func (*Context).SetHeader(key string, value string)
 			{
-				urlString316 := source().(string)
+				keyString839 := source().(string)
+				valString273 := source().(string)
 				var rece clevergo.Context
-				rece.Redirect(0, urlString316) // $redirectUrl=urlString316
+				rece.SetHeader(keyString839, valString273) // $headerKey=keyString839 $headerVal=valString273
 			}
 		}
 	}

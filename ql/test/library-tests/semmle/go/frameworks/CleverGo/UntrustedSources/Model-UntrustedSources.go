@@ -60,20 +60,26 @@ func ClevergoTechClevergov052() {
 				result991 := receiverContext584.QueryParam("")
 				sink(result991) // $untrustedFlowSource
 			}
-			// func (*Context).QueryString() string
+			// func (*Context).QueryParams() net/url.Values
 			{
 				var receiverContext881 clevergo.Context
-				result186 := receiverContext881.QueryString()
+				result186 := receiverContext881.QueryParams()
 				sink(result186) // $untrustedFlowSource
+			}
+			// func (*Context).QueryString() string
+			{
+				var receiverContext284 clevergo.Context
+				result908 := receiverContext284.QueryString()
+				sink(result908) // $untrustedFlowSource
 			}
 		}
 		// Untrusted flow sources from method calls on clevergo.tech/clevergo.Params.
 		{
 			// func (Params).String(name string) string
 			{
-				var receiverParams284 clevergo.Params
-				result908 := receiverParams284.String("")
-				sink(result908) // $untrustedFlowSource
+				var receiverParams137 clevergo.Params
+				result494 := receiverParams137.String("")
+				sink(result494) // $untrustedFlowSource
 			}
 		}
 	}
@@ -83,10 +89,10 @@ func ClevergoTechClevergov052() {
 		{
 			// func (Decoder).Decode(req *net/http.Request, v interface{}) error
 			{
-				var receiverDecoder137 clevergo.Decoder
-				var paramV494 interface{}
-				receiverDecoder137.Decode(nil, paramV494)
-				sink(paramV494) // $untrustedFlowSource
+				var receiverDecoder873 clevergo.Decoder
+				var paramV599 interface{}
+				receiverDecoder873.Decode(nil, paramV599)
+				sink(paramV599) // $untrustedFlowSource
 			}
 		}
 	}
@@ -94,23 +100,23 @@ func ClevergoTechClevergov052() {
 	{
 		// Untrusted flow sources from clevergo.tech/clevergo.Context struct fields.
 		{
-			structContext873 := new(clevergo.Context)
-			sink(structContext873.Params) // $untrustedFlowSource
+			structContext409 := new(clevergo.Context)
+			sink(structContext409.Params) // $untrustedFlowSource
 		}
 		// Untrusted flow sources from clevergo.tech/clevergo.Param struct fields.
 		{
-			structParam599 := new(clevergo.Param)
+			structParam246 := new(clevergo.Param)
 			sink(
-				structParam599.Key,   // $untrustedFlowSource
-				structParam599.Value, // $untrustedFlowSource
+				structParam246.Key,   // $untrustedFlowSource
+				structParam246.Value, // $untrustedFlowSource
 			)
 		}
 	}
 	// Untrusted flow sources from types.
 	{
 		{
-			var typeParams409 clevergo.Params
-			sink(typeParams409) // $untrustedFlowSource
+			var typeParams898 clevergo.Params
+			sink(typeParams898) // $untrustedFlowSource
 		}
 	}
 }

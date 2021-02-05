@@ -54,6 +54,10 @@ private module CleverGo {
           methodName = "QueryParam" and
           out.isResult()
           or
+          // signature: func (*Context).QueryParams() net/url.Values
+          methodName = "QueryParams" and
+          out.isResult()
+          or
           // signature: func (*Context).QueryString() string
           methodName = "QueryString" and
           out.isResult()
@@ -136,6 +140,18 @@ private module CleverGo {
         this.hasQualifiedName(packagePath(), "Application", "RouteURL") and
         inp.isParameter(_) and
         out.isResult(0)
+        or
+        // Receiver type: Context
+        // signature: func (*Context).Context() context.Context
+        this.hasQualifiedName(packagePath(), "Context", "Context") and
+        inp.isReceiver() and
+        out.isResult()
+        or
+        // Receiver type: Params
+        // signature: func (Params).String(name string) string
+        this.hasQualifiedName(packagePath(), "Params", "String") and
+        inp.isReceiver() and
+        out.isResult()
         or
         // Receiver interface: Decoder
         // signature: func (Decoder).Decode(req *net/http.Request, v interface{}) error
@@ -266,6 +282,31 @@ private module CleverGo {
     }
 
     override string getAContentType() { result = contentType }
+
+    override HTTP::ResponseWriter getResponseWriter() { none() }
+  }
+
+  /**
+   * Models HTTP header writes.
+   */
+  private class HeaderWrite extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
+    DataFlow::Node nameNode;
+    DataFlow::Node valueNode;
+
+    HeaderWrite() {
+      // HTTP header write model for package: clevergo.tech/clevergo@v0.5.2
+      // Receiver type: Context
+      (
+        // signature: func (*Context).SetHeader(key string, value string)
+        this = any(Method m | m.hasQualifiedName(packagePath(), "Context", "SetHeader")).getACall() and
+        nameNode = this.getArgument(0) and
+        valueNode = this.getArgument(1)
+      )
+    }
+
+    override DataFlow::Node getName() { result = nameNode }
+
+    override DataFlow::Node getValue() { result = valueNode }
 
     override HTTP::ResponseWriter getResponseWriter() { none() }
   }
