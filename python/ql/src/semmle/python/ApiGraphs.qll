@@ -274,7 +274,7 @@ module API {
      * this node, it is reachable via `moduleImport("foo").getMember("bar").getMember("baz")` and
      * thus `fbb.quux` is reachable via the path mentioned above.
      *
-     * When we see `from foo.bar.baz import quux as fbb` a similar thing happens. First, `foo.bar.baz`
+     * When we see `from foo.bar.baz import quux as fbbq` a similar thing happens. First, `foo.bar.baz`
      * is seen as a use of the API graph node as before. Then `import quux as fbbq` is seen as
      * a member lookup of `quux` on the API graph node for `foo.bar.baz`, and then finally the
      * data-flow node `fbbq` is marked as a use of the same path mentioned above.
