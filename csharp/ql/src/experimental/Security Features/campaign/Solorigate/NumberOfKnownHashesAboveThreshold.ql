@@ -1,7 +1,7 @@
 /**
- * @name Number of Solorigate-related Hashes as literals is above the threshold
- * @description The total number of Solorigate-related hash literals found in the code is above a threshold, which may indicate that the code may have been tampered by an external agent.
- *      It is recommended to review the code and verify that there is no unexpected code in this project, however it is highly unlikely the hash values would be present coincideentally
+ * @name Number of Solorigate-related hashes as literals is above the threshold
+ * @description The total number of Solorigate-related hash literals found in the code is above a threshold, which may indicate that an external agent has tampered with the code.
+ *      It is recommended to review the code and verify that there is no unexpected code in this project, however it is highly unlikely the hash values would be present coincidentally.
  * @kind problem
  * @tags security
  *       solorigate
@@ -14,7 +14,7 @@ import csharp
 import Solorigate
 
 /*
- * Returns the total number of Solorigate-related literales found in the project
+ * Returns the total number of Solorigate-related hashes found in the project
  */
 
 int countSolorigateSuspiciousHash() {

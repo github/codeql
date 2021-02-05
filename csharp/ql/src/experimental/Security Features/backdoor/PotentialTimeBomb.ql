@@ -1,6 +1,6 @@
 /**
  * @name Potential Timebomb
- * @description Flow from a file last modification date (very likely implant installation time) and an offset to condition statement (the trigger)
+ * @description If there is data flow from a file's last modification date and an offset to a condition statement, this could trigger a "time bomb".
  * @kind path-problem
  * @precision Low
  * @problem.severity warning

@@ -3,8 +3,8 @@
   "qhelp.dtd">
 <qhelp>
   <overview>
-    <p>This query detects if there is an enum that includes various of the values used for the Solorigate commands.</p>
-    <p>Please notice that by themselves the names of these enum constants are not malign.</p>
+    <p>This query detects enumerations that include various commands that were also used in the Solorigate implant.</p>
+    <p>By themselves, the names of these enumeration constants are not malicious, so the query only detects enumerations that includes at least 10 of the 18 Solorigate commands.</p>
   </overview>
 
   <include src="Solorigate.qhelp" />

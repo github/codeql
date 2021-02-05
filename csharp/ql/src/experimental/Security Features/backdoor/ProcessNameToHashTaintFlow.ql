@@ -1,7 +1,6 @@
 /**
  * @name ProcessName to hash function flow
- * @description Flow from a function retrieving process name to a hash function
- *              NOTE: This query is an example of a query that may be useful for detecting potential backdoors, and Solorigate is just one such example that uses this mechanism.
+ * @description Flow from a function retrieving process name to a hash function.
  * @kind path-problem
  * @tags security
  *       solorigate
@@ -20,12 +19,12 @@ class DataFlowFromMethodToHash extends TaintTracking::Configuration {
   /**
    * Holds if `source` is a relevant data flow source.
    */
-  override predicate isSource(Node source) { isSuspiciousPropertyName(source.asExpr()) }
+  override predicate isSource(DataFlow::Node source) { isSuspiciousPropertyName(source.asExpr()) }
 
   /**
    * Holds if `sink` is a relevant data flow sink.
    */
-  override predicate isSink(Node sink) { isGetHash(sink.asExpr()) }
+  override predicate isSink(DataFlow::Node sink) { isGetHash(sink.asExpr()) }
 }
 
 predicate isGetHash(Expr arg) {

@@ -1,6 +1,6 @@
 /**
  * @name Number of Solorigate-related method names is above the threshold
- * @description The total number of Solorigate-related method names found in the code is above a threshold, which may indicate that the code may have been tampered by an external agent.
+ * @description The total number of Solorigate-related method names found in the code is above a threshold, which may indicate that an external agent has tampered with the code.
  *      It is recommended to review the code and verify that there is no unexpected code in this project.
  * @kind problem
  * @tags security
