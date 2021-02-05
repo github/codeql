@@ -11,7 +11,7 @@
 
 import csharp
 import Solorigate
-import microsoft.code.csharp.Cryptography.NonCryptographicHashes
+import experimental.code.csharp.Cryptography.NonCryptographicHashes
 
 from Variable v, Literal l, LoopStmt loop, Expr additional_xor
 where

@@ -1,7 +1,7 @@
 /**
  * @name Potential Timebomb
  * @description Flow from a file last modification date (very likely implant installation time) and an offset to condition statement (the trigger)
- * @kind problem
+ * @kind path-problem
  * @precision Low
  * @problem.severity warning
  * @id cs/backdoor/potential-time-bomb
@@ -11,6 +11,7 @@
 
 import csharp
 import DataFlow
+import DataFlow::PathGraph
 
 /**
  * Class that will help to find the source for the trigger file-modification date.
@@ -121,6 +122,7 @@ private class FlowsFromTimeComparisonCallableToSelectionStatementCondition exten
  * which is then used for a DateTime comparison timeComparisonCall and the result flows to a Selection statement which is likely a TimeBomb trigger
  */
 predicate isPotentialTimeBomb(
+  DataFlow::PathNode pathSource, DataFlow::PathNode pathSink,
   Call getLastWriteTimeMethodCall, Call timeArithmeticCall, Call timeComparisonCall,
   SelectionStmt selStatement
 ) {
@@ -129,6 +131,7 @@ predicate isPotentialTimeBomb(
     DateTimeStruct dateTime, FlowsFromTimeSpanArithmeticToTimeComparisonCallable config2,
     Node sink2, FlowsFromTimeComparisonCallableToSelectionStatementCondition config3, Node sink3
   |
+    pathSource.getNode() = exprNode(getLastWriteTimeMethodCall) and 
     config1.hasFlow(exprNode(getLastWriteTimeMethodCall), sink) and
     timeArithmeticCall = dateTime.getATimeSpanArtithmeticCallable().getACall() and
     timeArithmeticCall.getAChild*() = sink.asExpr() and
@@ -136,17 +139,18 @@ predicate isPotentialTimeBomb(
     timeComparisonCall = dateTime.getAComparisonCallable().getACall() and
     timeComparisonCall.getAnArgument().getAChild*() = sink2.asExpr() and
     config3.hasFlow(exprNode(timeComparisonCall), sink3) and
-    selStatement.getCondition().getAChild*() = sink3.asExpr()
+    selStatement.getCondition().getAChild*() = sink3.asExpr() and
+    pathSink.getNode() = sink3
   )
 }
 
-from
+from DataFlow::PathNode source, DataFlow::PathNode sink,
   Call getLastWriteTimeMethodCall, Call timeArithmeticCall, Call timeComparisonCall,
   SelectionStmt selStatement
 where
-  isPotentialTimeBomb(getLastWriteTimeMethodCall, timeArithmeticCall, timeComparisonCall,
+  isPotentialTimeBomb(source, sink, getLastWriteTimeMethodCall, timeArithmeticCall, timeComparisonCall,
     selStatement)
-select selStatement,
+select selStatement, source, sink, 
   "Possible TimeBomb logic triggered by $@ that takes into account $@ from the $@ as part of the potential trigger.",
   timeComparisonCall, timeComparisonCall.toString(), timeArithmeticCall, "an offset",
   getLastWriteTimeMethodCall, "last modification time of a file"

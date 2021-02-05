@@ -12,7 +12,7 @@
 
 import csharp
 import DataFlow
-import microsoft.code.csharp.Cryptography.NonCryptographicHashes
+import experimental.code.csharp.Cryptography.NonCryptographicHashes
 
 class DataFlowFromMethodToHash extends TaintTracking::Configuration {
   DataFlowFromMethodToHash() { this = "DataFlowFromMethodNameToHashFunction" }
