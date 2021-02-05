@@ -79,3 +79,20 @@ def f():
 from unknown import * #$ use=moduleImport("unknown")
 
 hello() #$ MISSING: use=moduleImport("unknown").getMember("hello").getReturn()
+
+
+# Subclasses
+
+from flask.views import View #$ use=moduleImport("flask").getMember("views").getMember("View")
+
+class MyView(View): #$ use=moduleImport("flask").getMember("views").getMember("View").getASubclass()
+    pass
+
+instance = MyView() #$ use=moduleImport("flask").getMember("views").getMember("View").getASubclass().getReturn()
+
+def internal():
+    from pflask.views import View #$ use=moduleImport("pflask").getMember("views").getMember("View")
+    class IntMyView(View): #$ use=moduleImport("pflask").getMember("views").getMember("View").getASubclass()
+        pass
+
+    int_instance = IntMyView() #$ use=moduleImport("pflask").getMember("views").getMember("View").getASubclass().getReturn()

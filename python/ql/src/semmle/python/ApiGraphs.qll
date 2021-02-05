@@ -93,6 +93,11 @@ module API {
     Node getReturn() { result = getASuccessor(Label::return()) }
 
     /**
+     * Gets a node representing a subclass of the class represented by this node.
+     */
+    Node getASubclass() { result = getASuccessor(Label::subclass()) }
+
+    /**
      * Gets a string representation of the lexicographically least among all shortest access paths
      * from the root to this node.
      */
@@ -358,6 +363,12 @@ module API {
         // Calling a node that is a use of `base`
         lbl = Label::return() and
         ref = pred.getACall()
+        or
+        // Subclassing a node
+        lbl = Label::subclass() and
+        exists(DataFlow::Node superclass | pred.flowsTo(superclass) |
+          ref.asExpr().(ClassExpr).getABase() = superclass.asExpr()
+        )
       )
     }
 
@@ -468,4 +479,6 @@ private module Label {
 
   /** Gets the `return` edge label. */
   string return() { result = "getReturn()" }
+
+  string subclass() { result = "getASubclass()" }
 }
