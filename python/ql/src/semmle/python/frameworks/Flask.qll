@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.frameworks.Werkzeug
+private import semmle.python.ApiGraphs
 
 /**
  * Provides models for the `flask` PyPI package.
@@ -19,62 +20,20 @@ private module FlaskModel {
   // flask
   // ---------------------------------------------------------------------------
   /** Gets a reference to the `flask` module. */
-  private DataFlow::Node flask(DataFlow::TypeTracker t) {
-    t.start() and
-    result = DataFlow::importNode("flask")
-    or
-    exists(DataFlow::TypeTracker t2 | result = flask(t2).track(t2, t))
-  }
-
-  /** Gets a reference to the `flask` module. */
-  DataFlow::Node flask() { result = flask(DataFlow::TypeTracker::end()) }
+  API::Node flask() { result = API::moduleImport("flask") }
 
   /**
    * Gets a reference to the attribute `attr_name` of the `flask` module.
-   * WARNING: Only holds for a few predefined attributes.
    */
-  private DataFlow::Node flask_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["request", "make_response", "Response", "views"] and
-    (
-      t.start() and
-      result = DataFlow::importNode("flask" + "." + attr_name)
-      or
-      t.startInAttr(attr_name) and
-      result = flask()
-    )
-    or
-    // Due to bad performance when using normal setup with `flask_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        flask_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate flask_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(flask_attr(t2, attr_name), res, summary)
-  }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `flask` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private DataFlow::Node flask_attr(string attr_name) {
-    result = flask_attr(DataFlow::TypeTracker::end(), attr_name)
-  }
+  private API::Node flask_attr(string attr_name) { result = flask().getMember(attr_name) }
 
   /** Provides models for the `flask` module. */
   module flask {
     /** Gets a reference to the `flask.request` object. */
-    DataFlow::Node request() { result = flask_attr("request") }
+    API::Node request() { result = flask_attr("request") }
 
     /** Gets a reference to the `flask.make_response` function. */
-    DataFlow::Node make_response() { result = flask_attr("make_response") }
+    DataFlow::Node make_response() { result = flask_attr("make_response").getAUse() }
 
     /**
      * Provides models for the `flask.Flask` class
@@ -83,157 +42,49 @@ private module FlaskModel {
      */
     module Flask {
       /** Gets a reference to the `flask.Flask` class. */
-      private DataFlow::Node classRef(DataFlow::TypeTracker t) {
-        t.start() and
-        result = DataFlow::importNode("flask.Flask")
-        or
-        t.startInAttr("Flask") and
-        result = flask()
-        or
-        exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
-      }
-
-      /** Gets a reference to the `flask.Flask` class. */
-      DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
-
-      /**
-       * A source of instances of `flask.Flask`, extend this class to model new instances.
-       *
-       * This can include instantiations of the class, return values from function
-       * calls, or a special parameter that will be set when functions are called by an external
-       * library.
-       *
-       * Use the predicate `Flask::instance()` to get references to instances of `flask.Flask`.
-       */
-      abstract class InstanceSource extends DataFlow::Node { }
-
-      /** A direct instantiation of `flask.Flask`. */
-      private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
-        override CallNode node;
-
-        ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
-      }
+      API::Node classRef() { result = flask().getMember("Flask") }
 
       /** Gets a reference to an instance of `flask.Flask` (a flask application). */
-      private DataFlow::Node instance(DataFlow::TypeTracker t) {
-        t.start() and
-        result instanceof InstanceSource
-        or
-        exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
-      }
-
-      /** Gets a reference to an instance of `flask.Flask` (a flask application). */
-      DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+      API::Node instance() { result = classRef().getReturn() }
 
       /**
        * Gets a reference to the attribute `attr_name` of an instance of `flask.Flask` (a flask application).
-       * WARNING: Only holds for a few predefined attributes.
        */
-      private DataFlow::Node instance_attr(DataFlow::TypeTracker t, string attr_name) {
-        attr_name in ["route", "add_url_rule", "make_response"] and
-        t.startInAttr(attr_name) and
-        result = flask::Flask::instance()
-        or
-        // Due to bad performance when using normal setup with `instance_attr(t2, attr_name).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            instance_attr_first_join(t2, attr_name, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate instance_attr_first_join(
-        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(instance_attr(t2, attr_name), res, summary)
-      }
-
-      /**
-       * Gets a reference to the attribute `attr_name` of an instance of `flask.Flask` (a flask application).
-       * WARNING: Only holds for a few predefined attributes.
-       */
-      private DataFlow::Node instance_attr(string attr_name) {
-        result = instance_attr(DataFlow::TypeTracker::end(), attr_name)
-      }
+      private API::Node instance_attr(string attr_name) { result = instance().getMember(attr_name) }
 
       /** Gets a reference to the `route` method on an instance of `flask.Flask`. */
-      DataFlow::Node route() { result = instance_attr("route") }
+      API::Node route() { result = instance_attr("route") }
 
       /** Gets a reference to the `add_url_rule` method on an instance of `flask.Flask`. */
-      DataFlow::Node add_url_rule() { result = instance_attr("add_url_rule") }
+      API::Node add_url_rule() { result = instance_attr("add_url_rule") }
 
       /** Gets a reference to the `make_response` method on an instance of `flask.Flask`. */
       // HACK: We can't call this predicate `make_response` since shadowing is
       // completely disallowed in QL. I added an underscore to move things forward for
       // now :(
-      DataFlow::Node make_response_() { result = instance_attr("make_response") }
-
-      /** Gets a reference to the `response_class` attribute on the `flask.Flask` class or an instance. */
-      private DataFlow::Node response_class(DataFlow::TypeTracker t) {
-        t.startInAttr("response_class") and
-        result in [classRef(), instance()]
-        or
-        exists(DataFlow::TypeTracker t2 | result = response_class(t2).track(t2, t))
-      }
+      API::Node make_response_() { result = instance_attr("make_response") }
 
       /**
        * Gets a reference to the `response_class` attribute on the `flask.Flask` class or an instance.
        *
        * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.response_class
        */
-      DataFlow::Node response_class() { result = response_class(DataFlow::TypeTracker::end()) }
+      API::Node response_class() { result = [classRef(), instance()].getMember("response_class") }
     }
 
     // -------------------------------------------------------------------------
     // flask.views
     // -------------------------------------------------------------------------
     /** Gets a reference to the `flask.views` module. */
-    DataFlow::Node views() { result = flask_attr("views") }
+    DataFlow::Node views() { result = flask_attr("views").getAUse() }
 
     /** Provides models for the `flask.views` module */
     module views {
       /**
        * Gets a reference to the attribute `attr_name` of the `flask.views` module.
-       * WARNING: Only holds for a few predefined attributes.
-       */
-      private DataFlow::Node views_attr(DataFlow::TypeTracker t, string attr_name) {
-        attr_name in ["View", "MethodView"] and
-        (
-          t.start() and
-          result = DataFlow::importNode("flask.views" + "." + attr_name)
-          or
-          t.startInAttr(attr_name) and
-          result = views()
-        )
-        or
-        // Due to bad performance when using normal setup with `views_attr(t2, attr_name).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            views_attr_first_join(t2, attr_name, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate views_attr_first_join(
-        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(views_attr(t2, attr_name), res, summary)
-      }
-
-      /**
-       * Gets a reference to the attribute `attr_name` of the `flask.views` module.
-       * WARNING: Only holds for a few predefined attributes.
        */
       private DataFlow::Node views_attr(string attr_name) {
-        result = views_attr(DataFlow::TypeTracker::end(), attr_name)
+        result = flask().getMember("views").getMember(attr_name).getAUse()
       }
 
       /**
@@ -287,15 +138,7 @@ private module FlaskModel {
    */
   module Response {
     /** Gets a reference to the `flask.Response` class. */
-    private DataFlow::Node classRef(DataFlow::TypeTracker t) {
-      t.start() and
-      result in [flask_attr("Response"), flask::Flask::response_class()]
-      or
-      exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
-    }
-
-    /** Gets a reference to the `flask.Response` class. */
-    DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+    API::Node classRef() { result = [flask_attr("Response"), flask::Flask::response_class()] }
 
     /**
      * A source of instances of `flask.Response`, extend this class to model new instances.
@@ -312,7 +155,7 @@ private module FlaskModel {
     private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
       override CallNode node;
 
-      ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+      ClassInstantiation() { node.getFunction() = classRef().getAUse().asCfgNode() }
 
       override DataFlow::Node getBody() { result.asCfgNode() = node.getArg(0) }
 
@@ -338,15 +181,7 @@ private module FlaskModel {
     }
 
     /** Gets a reference to an instance of `flask.Response`. */
-    private DataFlow::Node instance(DataFlow::TypeTracker t) {
-      t.start() and
-      result instanceof InstanceSource
-      or
-      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
-    }
-
-    /** Gets a reference to an instance of `flask.Response`. */
-    DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+    API::Node instance() { result = classRef().getReturn() }
   }
 
   // ---------------------------------------------------------------------------
@@ -445,7 +280,7 @@ private module FlaskModel {
   private class FlaskAppRouteCall extends FlaskRouteSetup, DataFlow::CfgNode {
     override CallNode node;
 
-    FlaskAppRouteCall() { node.getFunction() = flask::Flask::route().asCfgNode() }
+    FlaskAppRouteCall() { node.getFunction() = flask::Flask::route().getAUse().asCfgNode() }
 
     override DataFlow::Node getUrlPatternArg() {
       result.asCfgNode() in [node.getArg(0), node.getArgByName("rule")]
@@ -462,7 +297,9 @@ private module FlaskModel {
   private class FlaskAppAddUrlRuleCall extends FlaskRouteSetup, DataFlow::CfgNode {
     override CallNode node;
 
-    FlaskAppAddUrlRuleCall() { node.getFunction() = flask::Flask::add_url_rule().asCfgNode() }
+    FlaskAppAddUrlRuleCall() {
+      node.getFunction() = flask::Flask::add_url_rule().getAUse().asCfgNode()
+    }
 
     override DataFlow::Node getUrlPatternArg() {
       result.asCfgNode() in [node.getArg(0), node.getArgByName("rule")]
@@ -511,41 +348,16 @@ private module FlaskModel {
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Request
    */
   private class RequestSource extends RemoteFlowSource::Range {
-    RequestSource() { this = flask::request() }
+    RequestSource() { this = flask::request().getAUse() }
 
     override string getSourceType() { result = "flask.request" }
   }
 
   private module FlaskRequestTracking {
-    /** Gets a reference to the `get_data` attribute of a Flask request. */
-    private DataFlow::Node get_data(DataFlow::TypeTracker t) {
-      t.startInAttr("get_data") and
-      result = flask::request()
-      or
-      exists(DataFlow::TypeTracker t2 | result = get_data(t2).track(t2, t))
-    }
-
-    /** Gets a reference to the `get_data` attribute of a Flask request. */
-    DataFlow::Node get_data() { result = get_data(DataFlow::TypeTracker::end()) }
-
-    /** Gets a reference to the `get_json` attribute of a Flask request. */
-    private DataFlow::Node get_json(DataFlow::TypeTracker t) {
-      t.startInAttr("get_json") and
-      result = flask::request()
-      or
-      exists(DataFlow::TypeTracker t2 | result = get_json(t2).track(t2, t))
-    }
-
-    /** Gets a reference to the `get_json` attribute of a Flask request. */
-    DataFlow::Node get_json() { result = get_json(DataFlow::TypeTracker::end()) }
-
     /** Gets a reference to either of the `get_json` or `get_data` attributes of a Flask request. */
     DataFlow::Node tainted_methods(string attr_name) {
-      result = get_data() and
-      attr_name = "get_data"
-      or
-      result = get_json() and
-      attr_name = "get_json"
+      attr_name in ["get_data", "get_json"] and
+      result = flask::request().getMember(attr_name).getAUse()
     }
   }
 
@@ -560,7 +372,8 @@ private module FlaskModel {
     RequestInputAccess() {
       // attributes
       exists(AttrNode attr |
-        this.asCfgNode() = attr and attr.getObject(attr_name) = flask::request().asCfgNode()
+        this.asCfgNode() = attr and
+        attr.getObject(attr_name) = flask::request().getAUse().asCfgNode()
       |
         attr_name in [
             // str
@@ -645,7 +458,7 @@ private module FlaskModel {
     FlaskMakeResponseCall() {
       node.getFunction() = flask::make_response().asCfgNode()
       or
-      node.getFunction() = flask::Flask::make_response_().asCfgNode()
+      node.getFunction() = flask::Flask::make_response_().getAUse().asCfgNode()
     }
 
     override DataFlow::Node getBody() { result.asCfgNode() = node.getArg(0) }
