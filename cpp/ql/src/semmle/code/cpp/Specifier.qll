@@ -207,7 +207,7 @@ class AlignAs extends Attribute, @alignas {
  * A GNU `format` attribute of the form `__attribute__((format(archetype, format-index, first-arg)))`
  * that declares a function to accept a `printf` style format string.  For example the attribute
  * on the following declaration:
- * ``` 
+ * ```
  * int myPrintf(const char *format, ...) __attribute__((format(printf, 1, 2)));
  * ```
  */
