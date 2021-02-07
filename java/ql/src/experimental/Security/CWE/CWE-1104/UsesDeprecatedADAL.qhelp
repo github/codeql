@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<a href="https://techcommunity.microsoft.com/t5/azure-active-directory-identity/update-your-applications-to-use-microsoft-authentication-library/ba-p/1257363">Microsoft is no longer supporting Azure Active Directory (Azure AD) Authentication Library (ADAL) as of June 30th, 2020</a>
+
+<p>Reliance on ADAL which is no longer maintained meets the definition of CWE-1104: Use of Unmaintained Third Party Components, "difficult or impossible to fix significant bugs, vulnerabilities, or quality issues. In effect, unmaintained code can become obsolete."</p>
+
+</overview>
+<recommendation>
+
+<p>Microsoft recommends that users migrate to the supported <a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-overview#languages-and-frameworks">Microsoft Authentication Library (MSAL)</a></p>
+
+<p>A helpful migration guide has been <a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-migration">published</a> by Microsoft.</p>
+</recommendation>
+<example>
+
+<p>In the example below, the original version of <code>Login</code> is using ADAL.</p>
+
+<sample src="UsesADAL.java" />
+
+<p>The corrected version of <code>Login</code> has migrated to MSAL.</p>
+
+<sample src="UsesMSAL.java" />
+
+</example>
+<references>
+
+<li>
+  ADAL deprecation notice:
+  <a href="https://techcommunity.microsoft.com/t5/azure-active-directory-identity/update-your-applications-to-use-microsoft-authentication-library/ba-p/1257363">Statement</a>.
+</li>
+<li>
+  ADAL -> MSAL migration guide:
+  <a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-migration">Documentation</a>.
+</li>
+<li>
+  CWE-1104:
+  <a href="https://cwe.mitre.org/data/definitions/1104.html">mitre.org</a>.
+</li>
+
+</references>
+</qhelp>

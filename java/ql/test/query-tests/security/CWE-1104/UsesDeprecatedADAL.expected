@@ -1,0 +1,1 @@
+| UsesDeprecatedADAL.java:30 | Azure Active Directory Authentication Library (ADAL) is deprecated. Miscrosoft suggests using Microsoft Authentication Library (MSAL). |
