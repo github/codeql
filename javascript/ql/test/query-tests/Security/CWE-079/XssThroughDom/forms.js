@@ -37,3 +37,18 @@ const FormikEnhanced = withFormik({
     $("#id").html(submitForm.email); // OK 
 })
 
+import { Form } from 'react-final-form'
+
+const App = () => (
+  <Form
+    onSubmit={async values => {
+      $("#id").html(values.stooge); // NOT OK
+    }}
+    initialValues={{ stooge: 'larry', employed: false }}
+    render={({ handleSubmit, form, submitting, pristine, values }) => (
+      <form onSubmit={handleSubmit}>
+        <input type="text" name="stooge"></input>
+      </form>
+    )}
+  />
+)

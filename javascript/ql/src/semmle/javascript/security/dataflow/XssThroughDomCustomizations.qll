@@ -136,5 +136,23 @@ module XssThroughDom {
         this = formik().getAMemberCall("useFormikContext").getAPropertyRead("values")
       }
     }
+
+    /**
+     * An object containing input values from a form build with `react-final-form`.
+     */
+    class ReactFinalFormSource extends Source {
+      ReactFinalFormSource() {
+        exists(JSXElement elem |
+          DataFlow::moduleMember("react-final-form", "Form").flowsToExpr(elem.getNameExpr())
+        |
+          this =
+            elem.getAttributeByName("onSubmit")
+                .getValue()
+                .flow()
+                .getAFunctionValue()
+                .getParameter(0)
+        )
+      }
+    }
   }
 }
