@@ -96,4 +96,45 @@ module XssThroughDom {
       e = operand
     }
   }
+
+  /**
+   * A module for form inputs seen as sources for xss-through-dom.
+   */
+  module Forms {
+    /**
+     * A reference to an import of `Formik`.
+     */
+    private DataFlow::SourceNode formik() {
+      result = DataFlow::moduleImport("formik")
+      or
+      result = DataFlow::globalVarRef("Formik")
+    }
+
+    /**
+     * An object containing input values from a form build with `Formik`.
+     */
+    class FormikSource extends Source {
+      FormikSource() {
+        exists(JSXElement elem |
+          formik().getAPropertyRead("Formik").flowsToExpr(elem.getNameExpr())
+        |
+          this =
+            elem.getAttributeByName(["validate", "onSubmit"])
+                .getValue()
+                .flow()
+                .getAFunctionValue()
+                .getParameter(0)
+        )
+        or
+        this =
+          formik()
+              .getAMemberCall("withFormik")
+              .getOptionArgument(0, ["validate", "handleSubmit"])
+              .getAFunctionValue()
+              .getParameter(0)
+        or
+        this = formik().getAMemberCall("useFormikContext").getAPropertyRead("values")
+      }
+    }
+  }
 }
