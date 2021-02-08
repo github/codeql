@@ -51,22 +51,6 @@ func TaintStepTest_HtmlTemplateURLQueryEscaper_B0I0O0(sourceCQL interface{}) int
 	return intoString584
 }
 
-func TaintStepTest_HtmlTemplateTemplateExecute_B0I0O0(sourceCQL interface{}) interface{} {
-	fromInterface991 := sourceCQL.(interface{})
-	var intoWriter881 io.Writer
-	var mediumObjCQL template.Template
-	mediumObjCQL.Execute(intoWriter881, fromInterface991)
-	return intoWriter881
-}
-
-func TaintStepTest_HtmlTemplateTemplateExecuteTemplate_B0I0O0(sourceCQL interface{}) interface{} {
-	fromInterface186 := sourceCQL.(interface{})
-	var intoWriter284 io.Writer
-	var mediumObjCQL template.Template
-	mediumObjCQL.ExecuteTemplate(intoWriter284, "", fromInterface186)
-	return intoWriter284
-}
-
 func RunAllTaints_HtmlTemplate() {
 	{
 		source := newSource(0)
@@ -102,15 +86,5 @@ func RunAllTaints_HtmlTemplate() {
 		source := newSource(6)
 		out := TaintStepTest_HtmlTemplateURLQueryEscaper_B0I0O0(source)
 		sink(6, out)
-	}
-	{
-		source := newSource(7)
-		out := TaintStepTest_HtmlTemplateTemplateExecute_B0I0O0(source)
-		sink(7, out)
-	}
-	{
-		source := newSource(8)
-		out := TaintStepTest_HtmlTemplateTemplateExecuteTemplate_B0I0O0(source)
-		sink(8, out)
 	}
 }
