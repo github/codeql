@@ -44,6 +44,12 @@ nodes
 | forms.js:93:25:93:30 | values |
 | forms.js:93:25:93:35 | values.name |
 | forms.js:93:25:93:35 | values.name |
+| forms.js:103:23:103:36 | e.target.value |
+| forms.js:103:23:103:36 | e.target.value |
+| forms.js:103:23:103:36 | e.target.value |
+| forms.js:107:23:107:36 | e.target.value |
+| forms.js:107:23:107:36 | e.target.value |
+| forms.js:107:23:107:36 | e.target.value |
 | xss-through-dom.js:2:16:2:34 | $("textarea").val() |
 | xss-through-dom.js:2:16:2:34 | $("textarea").val() |
 | xss-through-dom.js:2:16:2:34 | $("textarea").val() |
@@ -130,6 +136,8 @@ edges
 | forms.js:92:26:92:36 | getValues() | forms.js:92:17:92:36 | values |
 | forms.js:93:25:93:30 | values | forms.js:93:25:93:35 | values.name |
 | forms.js:93:25:93:30 | values | forms.js:93:25:93:35 | values.name |
+| forms.js:103:23:103:36 | e.target.value | forms.js:103:23:103:36 | e.target.value |
+| forms.js:107:23:107:36 | e.target.value | forms.js:107:23:107:36 | e.target.value |
 | xss-through-dom.js:2:16:2:34 | $("textarea").val() | xss-through-dom.js:2:16:2:34 | $("textarea").val() |
 | xss-through-dom.js:4:16:4:40 | $(".som ... .text() | xss-through-dom.js:4:16:4:40 | $(".som ... .text() |
 | xss-through-dom.js:8:16:8:53 | $(".som ... arget") | xss-through-dom.js:8:16:8:53 | $(".som ... arget") |
@@ -159,6 +167,8 @@ edges
 | forms.js:57:19:57:32 | e.target.value | forms.js:57:19:57:32 | e.target.value | forms.js:57:19:57:32 | e.target.value | $@ is reinterpreted as HTML without escaping meta-characters. | forms.js:57:19:57:32 | e.target.value | DOM text |
 | forms.js:72:19:72:27 | data.name | forms.js:71:21:71:24 | data | forms.js:72:19:72:27 | data.name | $@ is reinterpreted as HTML without escaping meta-characters. | forms.js:71:21:71:24 | data | DOM text |
 | forms.js:93:25:93:35 | values.name | forms.js:92:26:92:36 | getValues() | forms.js:93:25:93:35 | values.name | $@ is reinterpreted as HTML without escaping meta-characters. | forms.js:92:26:92:36 | getValues() | DOM text |
+| forms.js:103:23:103:36 | e.target.value | forms.js:103:23:103:36 | e.target.value | forms.js:103:23:103:36 | e.target.value | $@ is reinterpreted as HTML without escaping meta-characters. | forms.js:103:23:103:36 | e.target.value | DOM text |
+| forms.js:107:23:107:36 | e.target.value | forms.js:107:23:107:36 | e.target.value | forms.js:107:23:107:36 | e.target.value | $@ is reinterpreted as HTML without escaping meta-characters. | forms.js:107:23:107:36 | e.target.value | DOM text |
 | xss-through-dom.js:2:16:2:34 | $("textarea").val() | xss-through-dom.js:2:16:2:34 | $("textarea").val() | xss-through-dom.js:2:16:2:34 | $("textarea").val() | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:2:16:2:34 | $("textarea").val() | DOM text |
 | xss-through-dom.js:4:16:4:40 | $(".som ... .text() | xss-through-dom.js:4:16:4:40 | $(".som ... .text() | xss-through-dom.js:4:16:4:40 | $(".som ... .text() | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:4:16:4:40 | $(".som ... .text() | DOM text |
 | xss-through-dom.js:8:16:8:53 | $(".som ... arget") | xss-through-dom.js:8:16:8:53 | $(".som ... arget") | xss-through-dom.js:8:16:8:53 | $(".som ... arget") | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:8:16:8:53 | $(".som ... arget") | DOM text |

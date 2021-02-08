@@ -361,8 +361,18 @@ module DOM {
    * Gets a reference to a DOM event.
    */
   private DataFlow::SourceNode domEventSource() {
+    // e.g. <form onSubmit={e => e.target}/>
     exists(JSXAttribute attr | attr.getName().matches("on%") |
       result = attr.getValue().flow().getABoundFunctionValue(0).getParameter(0)
+    )
+    or
+    // node.addEventListener("submit", e => e.target)
+    result = domValueRef().getAMethodCall("addEventListener").getABoundCallbackParameter(1, 0)
+    or
+    // node.onSubmit = (e => e.target);
+    exists(DataFlow::PropWrite write | write = domValueRef().getAPropertyWrite() |
+      write.getPropertyName().matches("on%") and
+      result = write.getRhs().getAFunctionValue().getParameter(0)
     )
   }
 
@@ -377,7 +387,6 @@ module DOM {
     t.start() and
     result = domValueRef().getAMethodCall(["item", "namedItem"])
     or
-    // e.g. <form onSubmit={e => e.target}/>
     t.startInProp("target") and
     result = domEventSource()
     or

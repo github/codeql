@@ -97,4 +97,13 @@ function HookForm2() {
     </form>
   );
 }
-  
+
+function vanillaJS() {
+    document.querySelector("form.myform").addEventListener("submit", e => {
+        $("#id").html(e.target.value); // NOT OK
+    });
+
+    document.querySelector("form.myform").onsubmit = function (e) {
+        $("#id").html(e.target.value); // NOT OK
+    }
+}
