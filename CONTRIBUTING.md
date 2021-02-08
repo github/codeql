@@ -53,6 +53,11 @@ Experimental queries and libraries may not be actively maintained as the [suppor
 
 After the experimental query is merged, we welcome pull requests to improve it. Before a query can be moved out of the `experimental` subdirectory, it must satisfy [the requirements for being a supported query](docs/supported-queries.md).
 
+6. **Query Help Files and Unit Tests**
+
+	- Query help (`.qhelp`) files and unit tests are optional (but strongly encouraged!) for queries in the `experimental` directories.
+	- see [Supported CodeQL queries and libraries](docs/supported-queries.md) for more information about contributing query help files and unit tests.
+
 ## Using your personal data
 
 If you contribute to this project, we will record your name and email address (as provided by you with your contributions) as part of the code repositories, which are public. We might also use this information to contact you in relation to your contributions, as well as in the normal course of software development. We also store records of CLA agreements signed in the past, but no longer require contributors to sign a CLA. Under GDPR legislation, we do this on the basis of our legitimate interest in creating the CodeQL product. 
