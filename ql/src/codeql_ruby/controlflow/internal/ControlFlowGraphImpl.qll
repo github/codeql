@@ -598,10 +598,10 @@ module Trees {
    *        /       \        |
    *     empty    non-empty  |
    *       |          \      |
-   *  puts "done"      \     |
+   *      for          \     |
    *       |          arg    |
    *       |            |    |
-   *      for       puts arg |
+   *  puts "done"   puts arg |
    *                     \___/
    * ```
    */
@@ -617,7 +617,7 @@ module Trees {
     private UnderscoreArg getArray() { result = this.getValue().getChild() }
 
     /**
-     * for pattern in value do body end
+     * for pattern in array do body end
      * ```
      * array +-> in +--[non empty]--> pattern -> body -> in
      *              |--[empty]--> for
