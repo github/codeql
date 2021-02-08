@@ -49,14 +49,14 @@ If you have an idea for a query that you would like to share with other CodeQL u
 
     - The query must have at least one true positive result on some revision of a real project.
 
-Experimental queries and libraries may not be actively maintained as the [supported](docs/supported-queries.md) libraries evolve. They may also be changed in backwards-incompatible ways or may be removed entirely in the future without deprecation warnings.
-
-After the experimental query is merged, we welcome pull requests to improve it. Before a query can be moved out of the `experimental` subdirectory, it must satisfy [the requirements for being a supported query](docs/supported-queries.md).
-
 6. **Query Help Files and Unit Tests**
 
 	- Query help (`.qhelp`) files and unit tests are optional (but strongly encouraged!) for queries in the `experimental` directories.
 	- see [Supported CodeQL queries and libraries](docs/supported-queries.md) for more information about contributing query help files and unit tests.
+
+Experimental queries and libraries may not be actively maintained as the [supported](docs/supported-queries.md) libraries evolve. They may also be changed in backwards-incompatible ways or may be removed entirely in the future without deprecation warnings.
+
+After the experimental query is merged, we welcome pull requests to improve it. Before a query can be moved out of the `experimental` subdirectory, it must satisfy [the requirements for being a supported query](docs/supported-queries.md).
 
 ## Using your personal data
 
