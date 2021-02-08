@@ -7,6 +7,7 @@ import ast.Module
 import ast.Parameter
 import ast.Operation
 import ast.Pattern
+import ast.Statement
 import ast.Variable
 private import ast.internal.TreeSitter
 
