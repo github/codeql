@@ -209,12 +209,14 @@ module API {
 
   /**
    * Gets a node corresponding to an import of module `m`.
-   *
-   * Note: You should only use this predicate for top level modules. If you want nodes corresponding to a submodule,
-   * you should use `.getMember` on the parent module. For example, for nodes corresponding to the module `foo.bar`,
-   * use `moduleImport("foo").getMember("bar")`.
    */
-  Node moduleImport(string m) { result = Impl::MkModuleImport(m) }
+  Node moduleImport(string m) {
+    result = Impl::MkModuleImport(m)
+    or
+    exists(string before_dot, string after_dot | before_dot + "." + after_dot = m |
+      result = moduleImport(before_dot).getMember(after_dot)
+    )
+  }
 
   /**
    * Provides the actual implementation of API graphs, cached for performance.
