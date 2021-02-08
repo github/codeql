@@ -106,6 +106,19 @@ class ExprCfgNode extends AstCfgNode {
   Expr getExpr() { result = e }
 }
 
+/** A control-flow node that wraps a return-like statement. */
+class ReturningCfgNode extends AstCfgNode {
+  ReturningStatement s;
+
+  ReturningCfgNode() { s = this.getNode() }
+
+  /** Gets the node of the returned value, if any. */
+  ExprCfgNode getReturnedValueNode() {
+    result = this.getAPredecessor() and
+    result.getNode() = s.getValue()
+  }
+}
+
 /**
  * A class for mapping parent-child AST nodes to parent-child CFG nodes.
  */
@@ -286,6 +299,20 @@ module ExprNodes {
 
     /** Gets the 'n'th expression of this expression sequence. */
     final ExprCfgNode getExpr(int n) { e.hasCfgChild(e.getExpr(n), this, result) }
+  }
+
+  private class ForExprChildMapping extends ExprChildMapping, ForExpr {
+    override predicate relevantChild(Expr e) { e = this.getValue() }
+  }
+
+  /** A control-flow node that wraps an `ForExpr` AST expression. */
+  class ForExprCfgNode extends ExprCfgNode {
+    override ForExprChildMapping e;
+
+    final override ForExpr getExpr() { result = ExprCfgNode.super.getExpr() }
+
+    /** Gets the value being iterated over. */
+    final ExprCfgNode getValue() { e.hasCfgChild(e.getValue(), this, result) }
   }
 
   /** A control-flow node that wraps an `ParenthesizedExpr` AST expression. */

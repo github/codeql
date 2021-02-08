@@ -109,6 +109,7 @@ private module Cached {
   cached
   newtype TNode =
     TExprNode(CfgNodes::ExprCfgNode n) or
+    TReturningNode(CfgNodes::ReturningCfgNode n) or
     TSsaDefinitionNode(Ssa::Definition def) or
     TParameterNode(Parameter p) or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) { n.getNode() instanceof Argument }
@@ -130,6 +131,22 @@ private module Cached {
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ConditionalExprCfgNode).getBranch(_)
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::CaseExprCfgNode).getBranch(_)
+    or
+    exists(CfgNodes::ExprCfgNode exprTo, ExprReturnNode n |
+      nodeFrom = n and exprTo = nodeTo.asExpr() and n.getKind() instanceof BreakReturnKind
+    |
+      exprTo.getNode() instanceof Loop and
+      nodeTo.asExpr().getAPredecessor(any(SuccessorTypes::BreakSuccessor s)) = n.getExprNode()
+    )
+    or
+    nodeFrom.asExpr() = nodeTo.(ExprReturnNode).getExprNode().getReturnedValueNode()
+    or
+    exists(CfgNodes::ExprNodes::ForExprCfgNode for | for = nodeTo.asExpr() |
+      exists(SuccessorType s, CfgNode n | not s instanceof SuccessorTypes::BreakSuccessor |
+        for.getAPredecessor(s) = n
+      ) and
+      nodeFrom.asExpr() = for.getValue()
+    )
   }
 
   cached
@@ -225,12 +242,25 @@ private module ReturnNodes {
    * A data-flow node that represents an expression returned by a callable,
    * either using an explict `return` statement or as the expression of a method body.
    */
-  class ExprReturnNode extends ReturnNode, ExprNode {
-    ExprReturnNode() {
-      none() // TODO
+  class ExprReturnNode extends ReturnNode, NodeImpl, TReturningNode {
+    private CfgNodes::ReturningCfgNode n;
+
+    ExprReturnNode() { this = TReturningNode(n) }
+
+    /** Gets the statement corresponding to this node. */
+    CfgNodes::ReturningCfgNode getExprNode() { result = n }
+
+    override ReturnKind getKind() {
+      if n.getNode() instanceof BreakStmt
+      then result instanceof BreakReturnKind
+      else result instanceof NormalReturnKind
     }
 
-    override ReturnKind getKind() { result instanceof NormalReturnKind }
+    override CfgScope getCfgScope() { result = n.getScope() }
+
+    override Location getLocationImpl() { result = n.getLocation() }
+
+    override string toStringImpl() { result = n.toString() }
   }
 }
 

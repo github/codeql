@@ -2,7 +2,9 @@ private import ruby
 private import codeql_ruby.CFG
 private import DataFlowPrivate
 
-newtype TReturnKind = TNormalReturnKind()
+newtype TReturnKind =
+  TNormalReturnKind() or
+  TBreakReturnKind()
 
 /**
  * Gets a node that can read the value returned from `call` with return kind
@@ -25,6 +27,13 @@ abstract class ReturnKind extends TReturnKind {
  */
 class NormalReturnKind extends ReturnKind, TNormalReturnKind {
   override string toString() { result = "return" }
+}
+
+/**
+ * A value returned from a callable using a `break` statement.
+ */
+class BreakReturnKind extends ReturnKind, TBreakReturnKind {
+  override string toString() { result = "break" }
 }
 
 class DataFlowCallable = CfgScope;
