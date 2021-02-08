@@ -20,7 +20,7 @@ The process must begin with the first step and must conclude with the final step
 
    Query help files explain the purpose of your query to other users. Write your query help in a `.qhelp` file and save it in the same directory as your query. For more information on writing query help, see the [Query help style guide](query-help-style-guide.md).
 
-   - Note, in particular, that almost all queries need to have a pair of "before" and "after" examples demonstrating the kind of problem the query identifies and how to fix it. Make sure that the examples are actually consistent with what the query does, for example by including them in your unit tests.
+   - Note, in particular, that almost all queries need to have a pair of "before" and "after" examples demonstrating the kind of problem the query identifies and how to fix it. Make sure that the examples are actually consistent with what the query does, for example by including them in your unit tests. Examples must be original, not copied from third-party sources.
    - At the time of writing, there is no way of previewing help locally. Once you've opened a PR, a preview will be created as part of the CI checks. A GitHub employee will review this and let you know of any problems.
 
 3. **Write unit tests**
