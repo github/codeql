@@ -93,7 +93,8 @@ JavaScript and TypeScript built-in support
    :widths: auto
 
    Name, Category
-   angularjs, HTML framework
+   angular (modern version), HTML framework
+   angular.js (legacy version), HTML framework
    axios, Network communicator
    browser, Runtime environment
    electron, Runtime environment
