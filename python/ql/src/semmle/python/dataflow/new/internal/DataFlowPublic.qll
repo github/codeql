@@ -165,6 +165,23 @@ class CfgNode extends Node, TCfgNode {
   override Location getLocation() { result = node.getLocation() }
 }
 
+/** A data-flow node corresponding to a `CallNode` in the control-flow graph. */
+class CallCfgNode extends CfgNode {
+  override CallNode node;
+
+  /**
+   * Gets the data-flow node for the function component of the call corresponding to this data-flow
+   * node.
+   */
+  Node getFunction() { result.asCfgNode() = node.getFunction() }
+
+  /** Gets the data-flow node corresponding to the nth argument of the call corresponding to this data-flow node */
+  Node getArg(int i) { result.asCfgNode() = node.getArg(i) }
+
+  /** Gets the data-flow node corresponding to the named argument of the call corresponding to this data-flow node */
+  Node getArgByName(string name) { result.asCfgNode() = node.getArgByName(name) }
+}
+
 /**
  * An expression, viewed as a node in a data flow graph.
  *
@@ -481,7 +498,7 @@ class LocalSourceNode extends Node {
   /**
    * Gets a call to this node.
    */
-  Node getACall() { Cached::call(this, result) }
+  CallCfgNode getACall() { Cached::call(this, result) }
 }
 
 cached
@@ -526,10 +543,10 @@ private module Cached {
    * Holds if `func` flows to the callee of `call`.
    */
   cached
-  predicate call(LocalSourceNode func, Node call) {
+  predicate call(LocalSourceNode func, CallCfgNode call) {
     exists(CfgNode n |
       func.flowsTo(n) and
-      n.asCfgNode() = call.asCfgNode().(CallNode).getFunction()
+      n = call.getFunction()
     )
   }
 }

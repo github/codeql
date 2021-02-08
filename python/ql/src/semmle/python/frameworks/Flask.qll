@@ -125,23 +125,21 @@ private module FlaskModel {
     abstract class InstanceSource extends HTTP::Server::HttpResponse::Range, DataFlow::Node { }
 
     /** A direct instantiation of `flask.Response`. */
-    private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
-      override CallNode node;
-
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
       ClassInstantiation() { this = classRef().getACall() }
 
-      override DataFlow::Node getBody() { result.asCfgNode() = node.getArg(0) }
+      override DataFlow::Node getBody() { result = this.getArg(0) }
 
       override string getMimetypeDefault() { result = "text/html" }
 
       /** Gets the argument passed to the `mimetype` parameter, if any. */
       private DataFlow::Node getMimetypeArg() {
-        result.asCfgNode() in [node.getArg(3), node.getArgByName("mimetype")]
+        result in [this.getArg(3), this.getArgByName("mimetype")]
       }
 
       /** Gets the argument passed to the `content_type` parameter, if any. */
       private DataFlow::Node getContentTypeArg() {
-        result.asCfgNode() in [node.getArg(4), node.getArgByName("content_type")]
+        result in [this.getArg(4), this.getArgByName("content_type")]
       }
 
       override DataFlow::Node getMimetypeOrContentTypeArg() {
@@ -228,13 +226,11 @@ private module FlaskModel {
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.route
    */
-  private class FlaskAppRouteCall extends FlaskRouteSetup, DataFlow::CfgNode {
-    override CallNode node;
-
-    FlaskAppRouteCall() { node.getFunction() = flask::Flask::route().getAUse().asCfgNode() }
+  private class FlaskAppRouteCall extends FlaskRouteSetup, DataFlow::CallCfgNode {
+    FlaskAppRouteCall() { this.getFunction() = flask::Flask::route().getAUse() }
 
     override DataFlow::Node getUrlPatternArg() {
-      result.asCfgNode() in [node.getArg(0), node.getArgByName("rule")]
+      result in [this.getArg(0), this.getArgByName("rule")]
     }
 
     override Function getARequestHandler() { result.getADecorator().getAFlowNode() = node }
@@ -245,20 +241,14 @@ private module FlaskModel {
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.add_url_rule
    */
-  private class FlaskAppAddUrlRuleCall extends FlaskRouteSetup, DataFlow::CfgNode {
-    override CallNode node;
-
-    FlaskAppAddUrlRuleCall() {
-      node.getFunction() = flask::Flask::add_url_rule().getAUse().asCfgNode()
-    }
+  private class FlaskAppAddUrlRuleCall extends FlaskRouteSetup, DataFlow::CallCfgNode {
+    FlaskAppAddUrlRuleCall() { this.getFunction() = flask::Flask::add_url_rule().getAUse() }
 
     override DataFlow::Node getUrlPatternArg() {
-      result.asCfgNode() in [node.getArg(0), node.getArgByName("rule")]
+      result in [this.getArg(0), this.getArgByName("rule")]
     }
 
-    DataFlow::Node getViewArg() {
-      result.asCfgNode() in [node.getArg(2), node.getArgByName("view_func")]
-    }
+    DataFlow::Node getViewArg() { result in [this.getArg(2), this.getArgByName("view_func")] }
 
     override Function getARequestHandler() {
       exists(DataFlow::LocalSourceNode func_src |
@@ -375,7 +365,7 @@ private module FlaskModel {
       // NOTE: `request -> request.tainted_method` part is handled as part of RequestInputAccess
       // tainted_method -> tainted_method()
       nodeFrom = FlaskRequestTracking::tainted_methods(_).getAUse() and
-      nodeTo.asCfgNode().(CallNode).getFunction() = nodeFrom.asCfgNode()
+      nodeTo.(DataFlow::CallCfgNode).getFunction() = nodeFrom
     }
   }
 
@@ -403,16 +393,15 @@ private module FlaskModel {
    * - https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.make_response
    * - https://flask.palletsprojects.com/en/1.1.x/api/#flask.make_response
    */
-  private class FlaskMakeResponseCall extends HTTP::Server::HttpResponse::Range, DataFlow::CfgNode {
-    override CallNode node;
-
+  private class FlaskMakeResponseCall extends HTTP::Server::HttpResponse::Range,
+    DataFlow::CallCfgNode {
     FlaskMakeResponseCall() {
-      node.getFunction() = flask::make_response().getAUse().asCfgNode()
+      this.getFunction() = flask::make_response().getAUse()
       or
-      node.getFunction() = flask::Flask::make_response_().getAUse().asCfgNode()
+      this.getFunction() = flask::Flask::make_response_().getAUse()
     }
 
-    override DataFlow::Node getBody() { result.asCfgNode() = node.getArg(0) }
+    override DataFlow::Node getBody() { result = this.getArg(0) }
 
     override string getMimetypeDefault() { result = "text/html" }
 
@@ -440,13 +429,11 @@ private module FlaskModel {
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.redirect
    */
   private class FlaskRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
-    DataFlow::CfgNode {
-    override CallNode node;
-
-    FlaskRedirectCall() { node.getFunction() = flask_attr("redirect").getAUse().asCfgNode() }
+    DataFlow::CallCfgNode {
+    FlaskRedirectCall() { this.getFunction() = flask_attr("redirect").getAUse() }
 
     override DataFlow::Node getRedirectLocation() {
-      result.asCfgNode() in [node.getArg(0), node.getArgByName("location")]
+      result in [this.getArg(0), this.getArgByName("location")]
     }
 
     override DataFlow::Node getBody() { none() }
