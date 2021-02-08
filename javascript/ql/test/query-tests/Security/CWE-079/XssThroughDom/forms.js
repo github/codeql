@@ -51,4 +51,15 @@ const App = () => (
       </form>
     )}
   />
+);
+
+function plainSubmit(e) {
+    $("#id").html(e.target.value); // NOT OK
+}
+
+const plainReact = () => (
+    <form onSubmit={e => plainSubmit(e)}>
+        <input type="text" value={this.state.value} onChange={this.handleChange} />
+        <input type="submit" value="Submit" />
+    </form>
 )

@@ -357,6 +357,15 @@ module DOM {
     }
   }
 
+  /**
+   * Gets a reference to a DOM event.
+   */
+  private DataFlow::SourceNode domEventSource() {
+    exists(JSXAttribute attr | attr.getName().matches("on%") |
+      result = attr.getValue().flow().getABoundFunctionValue(0).getParameter(0)
+    )
+  }
+
   /** Gets a data flow node that refers directly to a value from the DOM. */
   DataFlow::SourceNode domValueSource() { result instanceof DomValueSource::Range }
 
@@ -367,6 +376,10 @@ module DOM {
     or
     t.start() and
     result = domValueRef().getAMethodCall(["item", "namedItem"])
+    or
+    // e.g. <form onSubmit={e => e.target}/>
+    t.startInProp("target") and
+    result = domEventSource()
     or
     exists(DataFlow::TypeTracker t2 | result = domValueRef(t2).track(t2, t))
   }
