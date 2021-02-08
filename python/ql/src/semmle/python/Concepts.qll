@@ -473,5 +473,40 @@ module HTTP {
         }
       }
     }
+
+    /**
+     * A data-flow node that creates a HTTP redirect response on a server.
+     *
+     * Note: we don't require that this redirect must be sent to a client (a kind of
+     * "if a tree falls in a forest and nobody hears it" situation).
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `HttpRedirectResponse::Range` instead.
+     */
+    class HttpRedirectResponse extends HttpResponse {
+      override HttpRedirectResponse::Range range;
+
+      HttpRedirectResponse() { this = range }
+
+      /** Gets the data-flow node that specifies the location of this HTTP redirect response. */
+      DataFlow::Node getRedirectLocation() { result = range.getRedirectLocation() }
+    }
+
+    /** Provides a class for modeling new HTTP redirect response APIs. */
+    module HttpRedirectResponse {
+      /**
+       * A data-flow node that creates a HTTP redirect response on a server.
+       *
+       * Note: we don't require that this redirect must be sent to a client (a kind of
+       * "if a tree falls in a forest and nobody hears it" situation).
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `HttpResponse` instead.
+       */
+      abstract class Range extends HTTP::Server::HttpResponse::Range {
+        /** Gets the data-flow node that specifies the location of this HTTP redirect response. */
+        abstract DataFlow::Node getRedirectLocation();
+      }
+    }
   }
 }

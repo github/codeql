@@ -433,4 +433,31 @@ private module FlaskModel {
 
     override string getMimetypeDefault() { result = "text/html" }
   }
+
+  /**
+   * A call to the `flask.redirect` function.
+   *
+   * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.redirect
+   */
+  private class FlaskRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
+    DataFlow::CfgNode {
+    override CallNode node;
+
+    FlaskRedirectCall() { node.getFunction() = flask_attr("redirect").asCfgNode() }
+
+    override DataFlow::Node getRedirectLocation() {
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("location")]
+    }
+
+    override DataFlow::Node getBody() { none() }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+    override string getMimetypeDefault() {
+      // note that while you're not able to set content yourself, the function will
+      // actually fill out some default content, that is served with mimetype
+      // `text/html`.
+      result = "text/html"
+    }
+  }
 }

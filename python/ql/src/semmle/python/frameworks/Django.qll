@@ -35,7 +35,7 @@ private module Django {
    * WARNING: Only holds for a few predefined attributes.
    */
   private DataFlow::Node django_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["db", "urls", "http", "conf", "views"] and
+    attr_name in ["db", "urls", "http", "conf", "views", "shortcuts"] and
     (
       t.start() and
       result = DataFlow::importNode("django" + "." + attr_name)
@@ -724,7 +724,8 @@ private module Django {
            *
            * Use the predicate `HttpResponseRedirect::instance()` to get references to instances of `django.http.response.HttpResponseRedirect`.
            */
-          abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
+          abstract class InstanceSource extends HttpResponse::InstanceSource,
+            HTTP::Server::HttpRedirectResponse::Range, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.HttpResponseRedirect`. */
           private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
@@ -737,6 +738,10 @@ private module Django {
               // content of a redirect, it is possible to observe the body (for example,
               // with cURL).
               result.asCfgNode() in [node.getArg(1), node.getArgByName("content")]
+            }
+
+            override DataFlow::Node getRedirectLocation() {
+              result.asCfgNode() in [node.getArg(0), node.getArgByName("redirect_to")]
             }
 
             // How to support the `headers` argument here?
@@ -790,7 +795,8 @@ private module Django {
            *
            * Use the predicate `HttpResponsePermanentRedirect::instance()` to get references to instances of `django.http.response.HttpResponsePermanentRedirect`.
            */
-          abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
+          abstract class InstanceSource extends HttpResponse::InstanceSource,
+            HTTP::Server::HttpRedirectResponse::Range, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.HttpResponsePermanentRedirect`. */
           private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
@@ -803,6 +809,10 @@ private module Django {
               // content of a redirect, it is possible to observe the body (for example,
               // with cURL).
               result.asCfgNode() in [node.getArg(1), node.getArgByName("content")]
+            }
+
+            override DataFlow::Node getRedirectLocation() {
+              result.asCfgNode() in [node.getArg(0), node.getArgByName("redirect_to")]
             }
 
             // How to support the `headers` argument here?
@@ -1907,6 +1917,62 @@ private module Django {
         }
       }
     }
+
+    // -------------------------------------------------------------------------
+    // django.shortcuts
+    // -------------------------------------------------------------------------
+    /** Gets a reference to the `django.shortcuts` module. */
+    DataFlow::Node shortcuts() { result = django_attr("shortcuts") }
+
+    /** Provides models for the `django.shortcuts` module */
+    module shortcuts {
+      /**
+       * Gets a reference to the attribute `attr_name` of the `django.shortcuts` module.
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node shortcuts_attr(DataFlow::TypeTracker t, string attr_name) {
+        attr_name in ["redirect"] and
+        (
+          t.start() and
+          result = DataFlow::importNode("django.shortcuts" + "." + attr_name)
+          or
+          t.startInAttr(attr_name) and
+          result = shortcuts()
+        )
+        or
+        // Due to bad performance when using normal setup with `shortcuts_attr(t2, attr_name).track(t2, t)`
+        // we have inlined that code and forced a join
+        exists(DataFlow::TypeTracker t2 |
+          exists(DataFlow::StepSummary summary |
+            shortcuts_attr_first_join(t2, attr_name, result, summary) and
+            t = t2.append(summary)
+          )
+        )
+      }
+
+      pragma[nomagic]
+      private predicate shortcuts_attr_first_join(
+        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+        DataFlow::StepSummary summary
+      ) {
+        DataFlow::StepSummary::step(shortcuts_attr(t2, attr_name), res, summary)
+      }
+
+      /**
+       * Gets a reference to the attribute `attr_name` of the `django.shortcuts` module.
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node shortcuts_attr(string attr_name) {
+        result = shortcuts_attr(DataFlow::TypeTracker::end(), attr_name)
+      }
+
+      /**
+       * Gets a reference to the `django.shortcuts.redirect` function
+       *
+       * See https://docs.djangoproject.com/en/3.1/topics/http/shortcuts/#redirect
+       */
+      DataFlow::Node redirect() { result = shortcuts_attr("redirect") }
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -2229,5 +2295,40 @@ private module Django {
         // TODO: Handle that a HttpRequest is iterable
       )
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // django.shortcuts.redirect
+  // ---------------------------------------------------------------------------
+  /**
+   * A call to `django.shortcuts.redirect`.
+   *
+   * Note: This works differently depending on what argument is used.
+   * _One_ option is to redirect to a full URL.
+   *
+   * See https://docs.djangoproject.com/en/3.1/topics/http/shortcuts/#redirect
+   */
+  private class DjangoShortcutsRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
+    DataFlow::CfgNode {
+    override CallNode node;
+
+    DjangoShortcutsRedirectCall() { node.getFunction() = django::shortcuts::redirect().asCfgNode() }
+
+    /**
+     * Gets the data-flow node that specifies the location of this HTTP redirect response.
+     *
+     * Note: For `django.shortcuts.redirect`, the result might not be a full URL
+     * (as usually expected by this method), but could be a relative URL,
+     * a string identifying a view, or a Django model.
+     */
+    override DataFlow::Node getRedirectLocation() {
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("to")]
+    }
+
+    override DataFlow::Node getBody() { none() }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+    override string getMimetypeDefault() { none() }
   }
 }

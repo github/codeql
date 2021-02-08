@@ -33,7 +33,8 @@ class ExplicitContentType(tornado.web.RequestHandler):
 
 class ExampleRedirect(tornado.web.RequestHandler):
     def get(self): # $ requestHandler
-        self.redirect("http://example.com") # TODO: Model redirect
+        url = "http://example.com"
+        self.redirect(url) # $ HttpRedirectResponse HttpResponse redirectLocation=url
 
 
 class ExampleConnectionWrite(tornado.web.RequestHandler):
