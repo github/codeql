@@ -154,5 +154,21 @@ module XssThroughDom {
         )
       }
     }
+
+    /**
+     * An object containing input values from a form build with `react-hook-form`.
+     */
+    class ReactHookFormSource extends Source {
+      ReactHookFormSource() {
+        exists(API::Node useForm |
+          useForm = API::moduleImport("react-hook-form").getMember("useForm").getReturn()
+        |
+          this =
+            useForm.getMember("handleSubmit").getParameter(0).getParameter(0).getAnImmediateUse()
+          or
+          this = useForm.getMember("getValues").getACall()
+        )
+      }
+    }
   }
 }

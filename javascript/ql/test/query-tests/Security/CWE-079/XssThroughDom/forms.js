@@ -63,3 +63,38 @@ const plainReact = () => (
         <input type="submit" value="Submit" />
     </form>
 )
+
+import { useForm } from 'react-hook-form';
+
+function HookForm() {
+  const { register, handleSubmit, errors } = useForm(); // initialize the hook
+  const onSubmit = (data) => {
+    $("#id").html(data.name); // NOT OK 
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+        <input name="name" ref={register({ required: true })} />
+        <input type="submit" />
+    </form>
+  );
+}
+
+function HookForm2() {
+  const { register, getValues } = useForm();
+  
+  return (
+    <form>
+      <input name="name" ref={register} />
+      <button
+        type="button"
+        onClick={() => {
+          const values = getValues(); // { test: "test-input", test1: "test1-input" }
+          $("#id").html(values.name); // NOT OK
+        }}
+      >
+      </button>
+    </form>
+  );
+}
+  
