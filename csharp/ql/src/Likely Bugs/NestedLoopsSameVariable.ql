@@ -27,6 +27,12 @@ class NestedForConditions extends SC::StructuralComparisonConfiguration {
   }
 }
 
+private predicate hasChild(Stmt outer, Element child) {
+  outer = child.getParent()
+  or
+  hasChild(outer, child.getParent())
+}
+
 /** A nested `for` statement that shares the same iteration variable as an outer `for` statement. */
 class NestedForLoopSameVariable extends ForStmt {
   ForStmt outer;
@@ -35,7 +41,7 @@ class NestedForLoopSameVariable extends ForStmt {
   MutatorOperation outerUpdate;
 
   NestedForLoopSameVariable() {
-    outer = this.getParent+() and
+    hasChild(outer, this) and
     innerUpdate = this.getAnUpdate() and
     outerUpdate = outer.getAnUpdate() and
     innerUpdate.getOperand() = iteration.getAnAccess() and
@@ -88,7 +94,7 @@ class NestedForLoopSameVariable extends ForStmt {
 
   /** Finds elements inside the outer loop that are no longer guarded by the loop invariant. */
   private ControlFlow::Node getAnUnguardedNode() {
-    result.getElement().getParent+() = getOuterForStmt().getBody() and
+    hasChild(getOuterForStmt().getBody(), result.getElement()) and
     (
       result =
         this.getCondition().(ControlFlowElement).getAControlFlowExitNode().getAFalseSuccessor()
