@@ -14,3 +14,15 @@ app.post('/photos/upload', upload.array('photos', 12), function (req, res, next)
     exec("touch " + file.originalname); // NOT OK
   })
 });
+
+
+var http = require('http');
+var Busboy = require('busboy');
+
+http.createServer(function (req, res) {
+  var busboy = new Busboy({ headers: req.headers });
+  busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+    exec("touch " + filename); // NOT OK
+  });
+  req.pipe(busboy);
+}).listen(8000);

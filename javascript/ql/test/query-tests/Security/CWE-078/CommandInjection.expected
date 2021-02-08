@@ -100,6 +100,11 @@ nodes
 | form-parsers.js:14:10:14:37 | "touch  ... nalname |
 | form-parsers.js:14:21:14:24 | file |
 | form-parsers.js:14:21:14:37 | file.originalname |
+| form-parsers.js:24:48:24:55 | filename |
+| form-parsers.js:24:48:24:55 | filename |
+| form-parsers.js:25:10:25:28 | "touch " + filename |
+| form-parsers.js:25:10:25:28 | "touch " + filename |
+| form-parsers.js:25:21:25:28 | filename |
 | lib/subLib/index.js:7:32:7:35 | name |
 | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name |
 | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name |
@@ -244,6 +249,10 @@ edges
 | form-parsers.js:14:21:14:24 | file | form-parsers.js:14:21:14:37 | file.originalname |
 | form-parsers.js:14:21:14:37 | file.originalname | form-parsers.js:14:10:14:37 | "touch  ... nalname |
 | form-parsers.js:14:21:14:37 | file.originalname | form-parsers.js:14:10:14:37 | "touch  ... nalname |
+| form-parsers.js:24:48:24:55 | filename | form-parsers.js:25:21:25:28 | filename |
+| form-parsers.js:24:48:24:55 | filename | form-parsers.js:25:21:25:28 | filename |
+| form-parsers.js:25:21:25:28 | filename | form-parsers.js:25:10:25:28 | "touch " + filename |
+| form-parsers.js:25:21:25:28 | filename | form-parsers.js:25:10:25:28 | "touch " + filename |
 | lib/subLib/index.js:7:32:7:35 | name | lib/subLib/index.js:8:22:8:25 | name |
 | lib/subLib/index.js:8:22:8:25 | name | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name |
 | lib/subLib/index.js:8:22:8:25 | name | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name |
@@ -317,6 +326,7 @@ edges
 | execSeries.js:14:41:14:47 | command | execSeries.js:18:34:18:40 | req.url | execSeries.js:14:41:14:47 | command | This command depends on $@. | execSeries.js:18:34:18:40 | req.url | a user-provided value |
 | form-parsers.js:9:8:9:39 | "touch  ... nalname | form-parsers.js:9:19:9:26 | req.file | form-parsers.js:9:8:9:39 | "touch  ... nalname | This command depends on $@. | form-parsers.js:9:19:9:26 | req.file | a user-provided value |
 | form-parsers.js:14:10:14:37 | "touch  ... nalname | form-parsers.js:13:3:13:11 | req.files | form-parsers.js:14:10:14:37 | "touch  ... nalname | This command depends on $@. | form-parsers.js:13:3:13:11 | req.files | a user-provided value |
+| form-parsers.js:25:10:25:28 | "touch " + filename | form-parsers.js:24:48:24:55 | filename | form-parsers.js:25:10:25:28 | "touch " + filename | This command depends on $@. | form-parsers.js:24:48:24:55 | filename | a user-provided value |
 | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name | child_process-test.js:85:37:85:54 | req.query.fileName | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name | This command depends on $@. | child_process-test.js:85:37:85:54 | req.query.fileName | a user-provided value |
 | other.js:7:33:7:35 | cmd | other.js:5:25:5:31 | req.url | other.js:7:33:7:35 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
 | other.js:8:28:8:30 | cmd | other.js:5:25:5:31 | req.url | other.js:8:28:8:30 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
