@@ -33,7 +33,7 @@ private module FlaskModel {
     API::Node request() { result = flask_attr("request") }
 
     /** Gets a reference to the `flask.make_response` function. */
-    DataFlow::Node make_response() { result = flask_attr("make_response").getAUse() }
+    API::Node make_response() { result = flask_attr("make_response") }
 
     /**
      * Provides models for the `flask.Flask` class
@@ -407,7 +407,7 @@ private module FlaskModel {
     override CallNode node;
 
     FlaskMakeResponseCall() {
-      node.getFunction() = flask::make_response().asCfgNode()
+      node.getFunction() = flask::make_response().getAUse().asCfgNode()
       or
       node.getFunction() = flask::Flask::make_response_().getAUse().asCfgNode()
     }
