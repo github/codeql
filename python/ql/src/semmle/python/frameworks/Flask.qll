@@ -306,9 +306,9 @@ private module FlaskModel {
 
   private module FlaskRequestTracking {
     /** Gets a reference to either of the `get_json` or `get_data` attributes of a Flask request. */
-    DataFlow::Node tainted_methods(string attr_name) {
+    API::Node tainted_methods(string attr_name) {
       attr_name in ["get_data", "get_json"] and
-      result = flask::request().getMember(attr_name).getAUse()
+      result = flask::request().getMember(attr_name)
     }
   }
 
@@ -364,7 +364,7 @@ private module FlaskModel {
       )
       or
       // methods (needs special handling to track bound-methods -- see `FlaskRequestMethodCallsAdditionalTaintStep` below)
-      this = FlaskRequestTracking::tainted_methods(attr_name)
+      this = FlaskRequestTracking::tainted_methods(attr_name).getAUse()
     }
 
     override string getSourceType() { result = "flask.request input" }
@@ -374,7 +374,7 @@ private module FlaskModel {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       // NOTE: `request -> request.tainted_method` part is handled as part of RequestInputAccess
       // tainted_method -> tainted_method()
-      nodeFrom = FlaskRequestTracking::tainted_methods(_) and
+      nodeFrom = FlaskRequestTracking::tainted_methods(_).getAUse() and
       nodeTo.asCfgNode().(CallNode).getFunction() = nodeFrom.asCfgNode()
     }
   }
@@ -443,7 +443,7 @@ private module FlaskModel {
     DataFlow::CfgNode {
     override CallNode node;
 
-    FlaskRedirectCall() { node.getFunction() = flask_attr("redirect").asCfgNode() }
+    FlaskRedirectCall() { node.getFunction() = flask_attr("redirect").getAUse().asCfgNode() }
 
     override DataFlow::Node getRedirectLocation() {
       result.asCfgNode() in [node.getArg(0), node.getArgByName("location")]
