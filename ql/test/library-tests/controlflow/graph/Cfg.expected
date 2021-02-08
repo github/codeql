@@ -182,17 +182,20 @@ break_ensure.rb:
 #-----|  -> elements
 
 #    2| for ... in ...
-#-----| non-empty -> element
-#-----| empty -> Ensure
+#-----|  -> Ensure
 
 #    2| element
 #-----|  -> element
 
+#    2| In
+#-----| empty -> for ... in ...
+#-----| non-empty -> element
+
 #    2| elements
-#-----|  -> for ... in ...
+#-----|  -> In
 
 #    3| if ...
-#-----|  -> for ... in ...
+#-----|  -> In
 
 #    3| ... > ...
 #-----| false -> if ...
@@ -205,7 +208,7 @@ break_ensure.rb:
 #-----|  -> ... > ...
 
 #    4| Break
-#-----| break -> Ensure
+#-----| break -> for ... in ...
 
 #    7| Ensure
 #-----|  -> elements
@@ -242,14 +245,17 @@ break_ensure.rb:
 #-----|  -> elements
 
 #   14| for ... in ...
-#-----| non-empty -> element
-#-----| empty -> exit m2 (normal)
+#-----|  -> exit m2 (normal)
 
 #   14| element
 #-----|  -> element
 
+#   14| In
+#-----| empty -> for ... in ...
+#-----| non-empty -> element
+
 #   14| elements
-#-----|  -> for ... in ...
+#-----|  -> In
 
 #   16| if ...
 #-----|  -> Ensure
@@ -274,10 +280,10 @@ break_ensure.rb:
 #-----|  -> [ensure: break] elements
 
 #   20| if ...
-#-----|  -> for ... in ...
+#-----|  -> In
 
 #   20| [ensure: break] if ...
-#-----| break -> exit m2 (normal)
+#-----| break -> for ... in ...
 
 #   20| call to nil?
 #-----| false -> if ...
@@ -349,11 +355,9 @@ break_ensure.rb:
 #-----|  -> [ensure: return] elements
 
 #   33| for ... in ...
-#-----| non-empty -> element
-#-----| empty -> puts
+#-----|  -> puts
 
 #   33| [ensure: return] for ... in ...
-#-----| non-empty -> [ensure: return] element
 #-----| return -> exit m3 (normal)
 
 #   33| element
@@ -362,17 +366,25 @@ break_ensure.rb:
 #   33| [ensure: return] element
 #-----|  -> [ensure: return] call to x
 
+#   33| In
+#-----| empty -> for ... in ...
+#-----| non-empty -> element
+
+#   33| [ensure: return] In
+#-----| empty -> [ensure: return] for ... in ...
+#-----| non-empty -> [ensure: return] element
+
 #   33| elements
-#-----|  -> for ... in ...
+#-----|  -> In
 
 #   33| [ensure: return] elements
-#-----|  -> [ensure: return] for ... in ...
+#-----|  -> [ensure: return] In
 
 #   35| if ...
-#-----|  -> for ... in ...
+#-----|  -> In
 
 #   35| [ensure: return] if ...
-#-----|  -> [ensure: return] for ... in ...
+#-----|  -> [ensure: return] In
 
 #   35| ... > ...
 #-----| false -> if ...
@@ -395,10 +407,10 @@ break_ensure.rb:
 #-----|  -> [ensure: return] ... > ...
 
 #   36| Break
-#-----| break -> puts
+#-----| break -> for ... in ...
 
 #   36| [ensure: return] Break
-#-----| return -> exit m3 (normal)
+#-----| break -> [ensure: return] for ... in ...
 
 #   41| call to puts
 #-----|  -> exit m3 (normal)
@@ -419,14 +431,17 @@ break_ensure.rb:
 #-----|  -> elements
 
 #   45| for ... in ...
-#-----| non-empty -> element
-#-----| empty -> exit m4 (normal)
+#-----|  -> exit m4 (normal)
 
 #   45| element
 #-----|  -> element
 
+#   45| In
+#-----| empty -> for ... in ...
+#-----| non-empty -> element
+
 #   45| elements
-#-----|  -> for ... in ...
+#-----|  -> In
 
 #   47| if ...
 #-----|  -> Ensure
@@ -457,10 +472,10 @@ break_ensure.rb:
 #-----|  -> [ensure: raise] element
 
 #   51| if ...
-#-----|  -> for ... in ...
+#-----|  -> In
 
 #   51| [ensure: raise] if ...
-#-----| raise -> exit m4 (abnormal)
+#-----| raise -> for ... in ...
 
 #   51| ... > ...
 #-----| false -> if ...
@@ -483,10 +498,10 @@ break_ensure.rb:
 #-----|  -> [ensure: raise] ... > ...
 
 #   52| Break
-#-----| break -> exit m4 (normal)
+#-----| break -> for ... in ...
 
 #   52| [ensure: raise] Break
-#-----| break -> exit m4 (normal)
+#-----| break -> for ... in ...
 
 #   52| 10
 #-----|  -> Break
@@ -683,7 +698,7 @@ cfg.rb:
 #-----|  -> &...
 
 #   29| call to new
-#-----|  -> while ...
+#-----|  -> true
 
 #   29| Proc
 #-----|  -> new
@@ -707,13 +722,13 @@ cfg.rb:
 #-----|  -> call to call
 
 #   31| while ...
-#-----|  -> true
+#-----|  -> false
 
 #   31| true
 #-----| true -> 1
 
 #   32| Break
-#-----| break -> false
+#-----| break -> while ...
 
 #   32| 1
 #-----|  -> Break
@@ -1131,14 +1146,17 @@ cfg.rb:
 #-----|  -> Interpolation
 
 #   90| for ... in ...
-#-----| non-empty -> x
-#-----| empty -> 42
+#-----|  -> 42
 
 #   90| x
 #-----|  -> x
 
+#   90| In
+#-----| empty -> for ... in ...
+#-----| non-empty -> x
+
 #   90| Array
-#-----|  -> for ... in ...
+#-----|  -> In
 
 #   90| 1.4
 #-----|  -> 2.5
@@ -1163,10 +1181,10 @@ cfg.rb:
 #-----|  -> ... > ...
 
 #   91| Next
-#-----| next -> for ... in ...
+#-----| next -> In
 
 #   92| call to puts
-#-----|  -> for ... in ...
+#-----|  -> In
 
 #   92| puts
 #-----|  -> x
@@ -1824,7 +1842,7 @@ cfg.rb:
 #-----|  -> call to puts
 
 #  171| ... unless ...
-#-----|  -> until ...
+#-----|  -> x
 
 #  171| call to puts
 #-----|  -> ... unless ...
@@ -1846,11 +1864,11 @@ cfg.rb:
 #-----|  -> ... == ...
 
 #  173| until ...
-#-----|  -> x
+#-----|  -> 0
 
 #  173| ... > ...
+#-----| true -> until ...
 #-----| false -> x
-#-----| true -> 0
 
 #  173| x
 #-----|  -> 10
@@ -1877,7 +1895,7 @@ cfg.rb:
 #-----|  -> call to puts
 
 #  175| ... = ...
-#-----|  -> ... until ...
+#-----|  -> i
 
 #  175| i
 #-----|  -> ... = ...
@@ -1886,7 +1904,7 @@ cfg.rb:
 #-----|  -> i
 
 #  176| ... until ...
-#-----|  -> i
+#-----|  -> 0
 
 #  176| (...; ...)
 #-----|  -> i
@@ -1910,8 +1928,8 @@ cfg.rb:
 #-----|  -> ... += ...
 
 #  176| ... == ...
+#-----| true -> ... until ...
 #-----| false -> puts
-#-----| true -> 0
 
 #  176| i
 #-----|  -> 10
@@ -1920,7 +1938,7 @@ cfg.rb:
 #-----|  -> ... == ...
 
 #  178| ... = ...
-#-----|  -> while ...
+#-----|  -> x
 
 #  178| x
 #-----|  -> ... = ...
@@ -1929,11 +1947,11 @@ cfg.rb:
 #-----|  -> x
 
 #  179| while ...
-#-----|  -> x
+#-----|  -> i
 
 #  179| ... < ...
+#-----| false -> while ...
 #-----| true -> x
-#-----| false -> ... while ...
 
 #  179| x
 #-----|  -> 10
@@ -1976,7 +1994,7 @@ cfg.rb:
 #-----|  -> call to puts
 
 #  185| ... while ...
-#-----|  -> i
+#-----|  -> run_block
 
 #  185| (...; ...)
 #-----|  -> i
@@ -2000,8 +2018,8 @@ cfg.rb:
 #-----|  -> ... -= ...
 
 #  185| ... != ...
+#-----| false -> ... while ...
 #-----| true -> puts
-#-----| false -> run_block
 
 #  185| i
 #-----|  -> 0
@@ -2523,14 +2541,14 @@ loops.rb:
 #-----|  -> m1
 
 #    1| x
-#-----|  -> while ...
-
-#    2| while ...
 #-----|  -> x
 
+#    2| while ...
+#-----|  -> exit m1 (normal)
+
 #    2| ... >= ...
+#-----| false -> while ...
 #-----| true -> puts
-#-----| false -> exit m1 (normal)
 
 #    2| x
 #-----|  -> 0
@@ -2563,14 +2581,14 @@ loops.rb:
 #-----|  -> m2
 
 #    8| x
-#-----|  -> while ...
-
-#    9| while ...
 #-----|  -> x
 
+#    9| while ...
+#-----|  -> puts
+
 #    9| ... >= ...
+#-----| false -> while ...
 #-----| true -> puts
-#-----| false -> puts
 
 #    9| x
 #-----|  -> 0
@@ -2610,7 +2628,7 @@ loops.rb:
 #-----|  -> ... > ...
 
 #   13| Break
-#-----| break -> puts
+#-----| break -> while ...
 
 #   14| elsif ...
 #-----|  -> if ...
@@ -3877,9 +3895,6 @@ break_ensure.rb:
 
 #   27| exit m3 (normal)
 #-----|  -> exit m3
-
-#   44| exit m4 (abnormal)
-#-----|  -> exit m4
 
 #   44| exit m4 (normal)
 #-----|  -> exit m4
