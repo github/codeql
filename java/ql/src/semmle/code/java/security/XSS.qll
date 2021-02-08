@@ -5,6 +5,7 @@ import semmle.code.java.frameworks.Servlets
 import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.spring.SpringController
 import semmle.code.java.frameworks.spring.SpringHttp
+import semmle.code.java.frameworks.ApacheHttp
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking2
 
@@ -94,6 +95,8 @@ private class DefaultXssSink extends XssSink {
         returnType instanceof RawClass
       )
     )
+    or
+    this.asExpr() = any(ApacheHttpResponseSetEntityCall c).getEntity()
   }
 }
 

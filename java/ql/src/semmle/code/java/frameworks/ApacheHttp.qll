@@ -42,7 +42,7 @@ class TypeApacheHttpRequestBuilder extends Class {
 }
 
 /**
- * The `request` parameter of an implementation of `org.apache.http.protocol.HttpRequestHandler.handle`
+ * The `request` parameter of an implementation of `org.apache.http.protocol.HttpRequestHandler.handle`.
  */
 class ApacheHttpRequestHandlerParameter extends Parameter {
   ApacheHttpRequestHandlerParameter() {
@@ -53,6 +53,30 @@ class ApacheHttpRequestHandlerParameter extends Parameter {
       this = m.getParameter(0)
     )
   }
+}
+
+/**
+ * A call that sets the entity of an instance of `org.apache.http.HttpResponse`.
+ */
+class ApacheHttpResponseSetEntityCall extends MethodAccess {
+  int arg;
+
+  ApacheHttpResponseSetEntityCall() {
+    exists(Method m | this.getMethod().overrides*(m) |
+      m.getDeclaringType().hasQualifiedName("org.apache.http", "HttpResponse") and
+      m.hasName("setEntity") and
+      arg = 0
+      or
+      m.getDeclaringType().hasQualifiedName("org.apache.http.util", "EntityUtils") and
+      m.hasName("updateEntity") and
+      arg = 1
+    )
+  }
+
+  /**
+   * Gets the entity that is set by this call.
+   */
+  Expr getEntity() { result = this.getArgument(arg) }
 }
 
 private class ApacheHttpGetter extends TaintPreservingCallable {
@@ -105,12 +129,69 @@ private class ApacheHttpGetter extends TaintPreservingCallable {
   override predicate returnsTaintFrom(int arg) { arg = -1 }
 }
 
-private class EntityUtilMethod extends TaintPreservingCallable {
-  EntityUtilMethod() {
-    this.getDeclaringType().hasQualifiedName("org.apache.http.util", "EntityUtils") and
-    this.isStatic() and
-    this.hasName(["toString", "toByteArray"])
+private class UtilMethod extends TaintPreservingCallable {
+  UtilMethod() {
+    exists(string ty, string mtd |
+      this.isStatic() and
+      this.getDeclaringType().hasQualifiedName("org.apache.http.util", ty) and
+      this.hasName(mtd)
+    |
+      ty = "EntityUtils" and
+      mtd = ["toString", "toByteArray"]
+      or
+      ty = "EncodingUtils" and
+      mtd = ["getAsciiBytes", "getAsciiString", "getBytes", "getString"]
+      or
+      ty = "Args" and
+      mtd = ["containsNoBlanks", "notBlank", "notEmpty", "notNull"]
+    )
   }
 
   override predicate returnsTaintFrom(int arg) { arg = 0 }
+}
+
+private class EntitySetter extends TaintPreservingCallable {
+  EntitySetter() {
+    this.getDeclaringType()
+        .getASourceSupertype*()
+        .hasQualifiedName("org.apache.http.entity", "BasicHttpEntity") and
+    this.hasName("setContent")
+  }
+
+  override predicate transfersTaint(int src, int sink) { src = 0 and sink = -1 }
+}
+
+private class EntityConsructor extends TaintPreservingCallable, Constructor {
+  EntityConsructor() {
+    this.getDeclaringType()
+        .hasQualifiedName("org.apache.http.entity",
+          [
+            "BufferedHttpEntity", "ByteArrayEntity", "HttpEntityWrapper", "InputStreamEntity",
+            "StringEntity"
+          ])
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = 0 }
+}
+
+private class BufferMethod extends TaintPreservingCallable {
+  BufferMethod() {
+    exists(Method m |
+      this.(Method).overrides*(m) and
+      m.getDeclaringType()
+          .hasQualifiedName("org.apache.http.util", ["ByteArrayBuffer", "CharArrayBuffer"]) and
+      m.hasName([
+          "append", "buffer", "subSequence", "substring", "substringTrimmed", "toByteAray",
+          "toCharArray", "toString"
+        ])
+    )
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = -1 }
+
+  override predicate transfersTaint(int src, int sink) {
+    this.hasName("append") and
+    src = 0 and
+    sink = -1
+  }
 }
