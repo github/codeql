@@ -588,7 +588,7 @@ class ForeachStmt extends LoopStmt, @foreach_stmt {
   /** Gets the called `MoveNext` or `MoveNextAsync` method. */
   Method getMoveNext() { foreach_stmt_desugar(this, result, 3) }
 
-  /** Gets the called `Dispose` or `DisposeAsync` method. */
+  /** Gets the called `Dispose` or `DisposeAsync` method, if any. */
   Method getDispose() { foreach_stmt_desugar(this, result, 4) }
 
   /** Gets the called `Current` property. */
