@@ -210,9 +210,16 @@ module LocalFlow {
         scope = e2 and
         isSuccessor = true
         or
-        e1 = e2.(WithExpr).getExpr() and
-        scope = e2 and
-        isSuccessor = true
+        exists(WithExpr we |
+          scope = we and
+          isSuccessor = true
+        |
+          e1 = we.getExpr() and
+          e2 = we.getInitializer()
+          or
+          e1 = we.getInitializer() and
+          e2 = we
+        )
       )
     }
 
@@ -799,8 +806,6 @@ private module Cached {
   predicate clearsContent(Node n, Content c) {
     fieldOrPropertyStore(_, c, _, n.asExpr(), true)
     or
-    fieldOrPropertyStore(_, c, _, n.asExpr().(WithExpr), false)
-    or
     fieldOrPropertyStore(_, c, _, n.(ObjectInitializerNode).getInitializer(), false)
     or
     FlowSummaryImpl::Private::storeStep(n, c, _) and
@@ -810,6 +815,13 @@ private module Cached {
       FlowSummaryImpl::Private::clearsContent(input, call, c) and
       input = SummaryInput::parameter(i) and
       n.(ArgumentNode).argumentOf(call, i)
+    )
+    or
+    exists(WithExpr we, ObjectInitializer oi, FieldOrProperty f |
+      oi = we.getInitializer() and
+      n.asExpr() = oi and
+      f = oi.getAMemberInitializer().getInitializedMember() and
+      c = f.getContent()
     )
   }
 
@@ -904,6 +916,8 @@ private module Cached {
     n instanceof SummaryNodeImpl
     or
     n instanceof ParamsArgumentNode
+    or
+    n.asExpr() = any(WithExpr we).getInitializer()
   }
 }
 
