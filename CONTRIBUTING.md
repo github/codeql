@@ -49,7 +49,7 @@ If you have an idea for a query that you would like to share with other CodeQL u
 
     - The query must have at least one true positive result on some revision of a real project.
 
-6. **Query Help Files and Unit Tests**
+6. **Query help files and unit tests**
 
 	- Query help (`.qhelp`) files and unit tests are optional (but strongly encouraged!) for queries in the `experimental` directories.
 	- see [Supported CodeQL queries and libraries](docs/supported-queries.md) for more information about contributing query help files and unit tests.
