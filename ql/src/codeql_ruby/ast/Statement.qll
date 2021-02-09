@@ -11,8 +11,6 @@ private import codeql_ruby.controlflow.internal.ControlFlowGraphImpl
 class Stmt extends AstNode {
   override Stmt::Range range;
 
-  Stmt() { this = range }
-
   /** Gets a control-flow node for this statement, if any. */
   CfgNodes::AstCfgNode getAControlFlowNode() { result.getNode() = this }
 

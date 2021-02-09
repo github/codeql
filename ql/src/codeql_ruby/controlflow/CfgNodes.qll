@@ -135,14 +135,16 @@ abstract private class ExprChildMapping extends Expr {
    */
   abstract predicate relevantChild(Expr child);
 
-  private AstNode getAChildStar() {
+  private Generated::AstNode getAChildStar() {
     result = this
     or
     result.(Generated::AstNode).getParent() = this.getAChildStar()
   }
 
   pragma[noinline]
-  private BasicBlock getABasicBlockInScope() { result.getANode().getNode() = this.getAChildStar() }
+  private BasicBlock getABasicBlockInScope() {
+    result.getANode() = TAstNode(this.getAChildStar(), _)
+  }
 
   pragma[nomagic]
   private predicate reachesBasicBlockBase(Expr child, CfgNode cfn, BasicBlock bb) {
