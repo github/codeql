@@ -41,3 +41,23 @@ app.post('/api/upload', (req, res, next) => {
     exec("touch " + fields.name); // NOT OK
   });
 });
+
+var multiparty = require('multiparty');
+var http = require('http');
+
+http.createServer(function (req, res) {
+  // parse a file upload
+  var form = new multiparty.Form();
+
+  form.parse(req, function (err, fields, files) {
+    exec("touch " + fields.name); // NOT OK
+  });
+
+
+  var form2 = new multiparty.Form();
+  form2.on('part', function (part) { // / file / field
+    exec("touch " + part.filename); // NOT OK
+  });
+  form2.parse(req);
+
+}).listen(8080);
