@@ -43,10 +43,10 @@ class DivideByZeroCheckConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(Function f |
+    exists(Function f, DataFlow::CallNode cn | cn = f.getACall() |
       f.hasQualifiedName("strconv", ["Atoi", "ParseInt", "ParseUint", "ParseFloat"]) and
-      pred = f.getACall().getArgument(0) and
-      succ = f.getACall().getResult(0)
+      pred = cn.getArgument(0) and
+      succ = cn.getResult(0)
     )
   }
 
