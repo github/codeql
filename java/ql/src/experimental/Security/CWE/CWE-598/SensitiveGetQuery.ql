@@ -17,7 +17,8 @@ import DataFlow::PathGraph
 class SensitiveInfoExpr extends Expr {
   SensitiveInfoExpr() {
     exists(Variable v | this = v.getAnAccess() |
-      v.getName().regexpMatch(getCommonSensitiveInfoRegex())
+      v.getName().regexpMatch(getCommonSensitiveInfoRegex()) and
+      not v.getName().regexpMatch("token.*") // exclude ^token$ and ^token.* since sensitive tokens are in the form of accessToken, authToken, ...
     )
   }
 }
