@@ -9,7 +9,7 @@ private import codeql_ruby.controlflow.internal.ControlFlowGraphImpl
  * This is the root QL class for all statements.
  */
 class Stmt extends AstNode {
-  Stmt::Range range;
+  override Stmt::Range range;
 
   Stmt() { this = range }
 
@@ -37,8 +37,6 @@ class Stmt extends AstNode {
  */
 class ReturningStmt extends Stmt {
   override ReturningStmt::Range range;
-
-  final override string toString() { result = range.toString() }
 
   /** Gets the returned value, if any. */
   final Expr getValue() { result = range.getValue() }

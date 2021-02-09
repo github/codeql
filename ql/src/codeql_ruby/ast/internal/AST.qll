@@ -43,10 +43,6 @@ module AstNode {
       or
       this = any(Generated::RestAssignment ra).getChild()
       or
-      this instanceof Generated::Return
-      or
-      this instanceof Generated::Break
-      or
       this instanceof Generated::Alias
       or
       this instanceof Generated::SymbolArray
@@ -64,8 +60,6 @@ module AstNode {
       this instanceof Generated::Superclass
       or
       this instanceof Generated::EmptyStatement
-      or
-      this instanceof Generated::Next
       or
       this instanceof Generated::Redo
       or

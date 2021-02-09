@@ -1,8 +1,9 @@
 private import codeql_ruby.AST
+private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.ast.internal.TreeSitter
 
 module Stmt {
-  abstract class Range extends AstNode { }
+  abstract class Range extends AstNode::Range { }
 }
 
 module ReturningStmt {
