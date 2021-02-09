@@ -39,11 +39,7 @@ class Statement extends AstNode {
 class ReturningStatement extends Statement {
   override ReturningStatement::Range range;
 
-  final override string toString() {
-    not exists(getValue()) and result = range.getStatementName()
-    or
-    result = range.getStatementName() + " " + getValue().toString()
-  }
+  final override string toString() { result = range.toString() }
 
   /** Gets the returned value, if any. */
   final Expr getValue() {

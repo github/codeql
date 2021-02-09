@@ -133,20 +133,23 @@ private module Cached {
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::CaseExprCfgNode).getBranch(_)
     or
     exists(CfgNodes::ExprCfgNode exprTo, ExprReturnNode n |
-      nodeFrom = n and exprTo = nodeTo.asExpr() and n.getKind() instanceof BreakReturnKind
-    |
+      nodeFrom = n and
+      exprTo = nodeTo.asExpr() and
+      n.getKind() instanceof BreakReturnKind and
       exprTo.getNode() instanceof Loop and
       nodeTo.asExpr().getAPredecessor(any(SuccessorTypes::BreakSuccessor s)) = n.getExprNode()
     )
     or
     nodeFrom.asExpr() = nodeTo.(ExprReturnNode).getExprNode().getReturnedValueNode()
     or
-    exists(CfgNodes::ExprNodes::ForExprCfgNode for | for = nodeTo.asExpr() |
-      exists(SuccessorType s, CfgNode n | not s instanceof SuccessorTypes::BreakSuccessor |
-        for.getAPredecessor(s) = n
-      ) and
-      nodeFrom.asExpr() = for.getValue()
-    )
+    nodeTo.asExpr() =
+      any(CfgNodes::ExprNodes::ForExprCfgNode for |
+        exists(SuccessorType s |
+          not s instanceof SuccessorTypes::BreakSuccessor and
+          exists(for.getAPredecessor(s))
+        ) and
+        nodeFrom.asExpr() = for.getValue()
+      )
   }
 
   cached

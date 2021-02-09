@@ -199,7 +199,7 @@ break_ensure.rb:
 
 #    3| ... > ...
 #-----| false -> if ...
-#-----| true -> Break
+#-----| true -> break
 
 #    3| element
 #-----|  -> 0
@@ -207,7 +207,7 @@ break_ensure.rb:
 #    3| 0
 #-----|  -> ... > ...
 
-#    4| Break
+#    4| break
 #-----| break -> for ... in ...
 
 #    7| Ensure
@@ -262,7 +262,7 @@ break_ensure.rb:
 
 #   16| ... > ...
 #-----| false -> if ...
-#-----| true -> Break
+#-----| true -> break
 
 #   16| element
 #-----|  -> 0
@@ -270,7 +270,7 @@ break_ensure.rb:
 #   16| 0
 #-----|  -> ... > ...
 
-#   17| Break
+#   17| break
 #-----| break -> [ensure: break] Ensure
 
 #   19| Ensure
@@ -337,7 +337,7 @@ break_ensure.rb:
 
 #   29| call to nil?
 #-----| false -> if ...
-#-----| true -> Return
+#-----| true -> return
 
 #   29| elements
 #-----|  -> nil?
@@ -345,7 +345,7 @@ break_ensure.rb:
 #   29| nil?
 #-----|  -> call to nil?
 
-#   30| Return
+#   30| return
 #-----| return -> [ensure: return] Ensure
 
 #   32| Ensure
@@ -388,11 +388,11 @@ break_ensure.rb:
 
 #   35| ... > ...
 #-----| false -> if ...
-#-----| true -> Break
+#-----| true -> break
 
 #   35| [ensure: return] ... > ...
 #-----| false -> [ensure: return] if ...
-#-----| true -> [ensure: return] Break
+#-----| true -> [ensure: return] break
 
 #   35| call to x
 #-----|  -> 0
@@ -406,10 +406,10 @@ break_ensure.rb:
 #   35| [ensure: return] 0
 #-----|  -> [ensure: return] ... > ...
 
-#   36| Break
+#   36| break
 #-----| break -> for ... in ...
 
-#   36| [ensure: return] Break
+#   36| [ensure: return] break
 #-----| break -> [ensure: return] for ... in ...
 
 #   41| call to puts
@@ -497,17 +497,17 @@ break_ensure.rb:
 #   51| [ensure: raise] 0
 #-----|  -> [ensure: raise] ... > ...
 
-#   52| Break
+#   52| break
 #-----| break -> for ... in ...
 
-#   52| [ensure: raise] Break
+#   52| [ensure: raise] break
 #-----| break -> for ... in ...
 
 #   52| 10
-#-----|  -> Break
+#-----|  -> break
 
 #   52| [ensure: raise] 10
-#-----|  -> [ensure: raise] Break
+#-----|  -> [ensure: raise] break
 
 case.rb:
 #    1| if_in_case
@@ -727,11 +727,11 @@ cfg.rb:
 #   31| true
 #-----| true -> 1
 
-#   32| Break
+#   32| break
 #-----| break -> while ...
 
 #   32| 1
-#-----|  -> Break
+#-----|  -> break
 
 #   35| if ...
 #-----|  -> self
@@ -1172,7 +1172,7 @@ cfg.rb:
 
 #   91| ... > ...
 #-----| false -> if ...
-#-----| true -> Next
+#-----| true -> next
 
 #   91| x
 #-----|  -> 3
@@ -1180,7 +1180,7 @@ cfg.rb:
 #   91| 3
 #-----|  -> ... > ...
 
-#   91| Next
+#   91| next
 #-----| next -> In
 
 #   92| call to puts
@@ -1295,11 +1295,11 @@ cfg.rb:
 #  102| value
 #-----|  -> call to puts
 
-#  103| Return
+#  103| return
 #-----| return -> exit parameters (normal)
 
 #  103| ElementReference
-#-----|  -> Return
+#-----|  -> return
 
 #  103| kwargs
 #-----|  -> key
@@ -2288,17 +2288,17 @@ ifs.rb:
 #-----| false -> if ...
 #-----| true -> 0
 
-#   13| Return
+#   13| return
 #-----| return -> exit m2 (normal)
 
 #   13| 0
-#-----|  -> Return
+#-----|  -> return
 
-#   15| Return
+#   15| return
 #-----| return -> exit m2 (normal)
 
 #   15| 1
-#-----|  -> Return
+#-----|  -> return
 
 #   18| m3
 #-----|  -> m4
@@ -2386,11 +2386,11 @@ ifs.rb:
 #   28| b3
 #-----|  -> b1
 
-#   29| Return
+#   29| return
 #-----| return -> exit m4 (normal)
 
 #   29| ... ? ... : ...
-#-----|  -> Return
+#-----|  -> return
 
 #   29| [false] (... ? ... : ...)
 #-----| false -> !b2 || !b3
@@ -2618,7 +2618,7 @@ loops.rb:
 #-----|  -> puts
 
 #   12| ... > ...
-#-----| true -> Break
+#-----| true -> break
 #-----| false -> x
 
 #   12| x
@@ -2627,14 +2627,14 @@ loops.rb:
 #   12| 100
 #-----|  -> ... > ...
 
-#   13| Break
+#   13| break
 #-----| break -> while ...
 
 #   14| elsif ...
 #-----|  -> if ...
 
 #   14| ... > ...
-#-----| true -> Next
+#-----| true -> next
 #-----| false -> x
 
 #   14| x
@@ -2643,7 +2643,7 @@ loops.rb:
 #   14| 50
 #-----|  -> ... > ...
 
-#   15| Next
+#   15| next
 #-----| next -> x
 
 #   16| elsif ...
@@ -3070,11 +3070,11 @@ raise.rb:
 #   71| 0
 #-----|  -> ... < ...
 
-#   72| Return
+#   72| return
 #-----| return -> [ensure: return] Ensure
 
 #   72| x < 0
-#-----|  -> Return
+#-----|  -> return
 
 #   74| call to puts
 #-----|  -> Ensure
@@ -3174,11 +3174,11 @@ raise.rb:
 #   84| 0
 #-----|  -> ... < ...
 
-#   85| Return
+#   85| return
 #-----| return -> [ensure: return] Ensure
 
 #   85| x < 0
-#-----|  -> Return
+#-----|  -> return
 
 #   87| call to puts
 #-----|  -> Ensure
@@ -3293,11 +3293,11 @@ raise.rb:
 #   99| 0
 #-----|  -> ... < ...
 
-#  100| Return
+#  100| return
 #-----| return -> [ensure: return] Ensure
 
 #  100| x < 0
-#-----|  -> Return
+#-----|  -> return
 
 #  102| call to puts
 #-----|  -> Ensure
@@ -3700,17 +3700,17 @@ raise.rb:
 #  146| [ensure: raise] Ensure
 #-----|  -> [ensure: raise] 3
 
-#  147| Return
+#  147| return
 #-----| return -> exit m12 (normal)
 
-#  147| [ensure: raise] Return
+#  147| [ensure: raise] return
 #-----| return -> exit m12 (normal)
 
 #  147| 3
-#-----|  -> Return
+#-----|  -> return
 
 #  147| [ensure: raise] 3
-#-----|  -> [ensure: raise] Return
+#-----|  -> [ensure: raise] return
 
 #  150| m13
 #-----|  -> m14
