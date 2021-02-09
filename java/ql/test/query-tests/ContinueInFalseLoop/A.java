@@ -32,14 +32,14 @@ public class A {
 
     // --- while, for loops ---
 
-    while (false) {
+    while (c.cond()) {
       if (c.cond())
         continue; // GOOD [never reached, if the condition changed so it was then the result would no longer apply]
       if (c.cond())
         break;
     }
 
-    for (i = 0; false; i++) {
+    for (i = 0; c.cond(); i++) {
       if (c.cond())
         continue; // GOOD [never reached, if the condition changed so it was then the result would no longer apply]
       if (c.cond())
