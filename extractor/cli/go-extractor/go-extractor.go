@@ -69,7 +69,7 @@ func parseFlags(args []string, mimic bool) ([]string, []string) {
 			}
 		case "-i":
 		case "-p", "-asmflags", "-buildmode", "-compiler", "-gccgoflags", "-gcflags", "-installsuffix",
-			"-ldflags", "-mod", "-modfile", "-pkgdir", "-tags", "-toolexec":
+			"-ldflags", "-mod", "-modfile", "-pkgdir", "-tags", "-toolexec", "-overlay":
 			if i+1 < len(args) {
 				buildFlags = append(buildFlags, args[i], args[i+1])
 				i++
