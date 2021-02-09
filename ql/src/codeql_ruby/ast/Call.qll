@@ -9,8 +9,6 @@ class Call extends Expr {
 
   override string getAPrimaryQlClass() { result = "Call" }
 
-  final override string toString() { result = "call to " + this.getMethodName() }
-
   /**
    * Gets the receiver of this call, if any. For example:
    * ```rb
@@ -135,8 +133,6 @@ class BlockArgument extends Expr, @block_argument {
 
   final override string getAPrimaryQlClass() { result = "BlockArgument" }
 
-  final override string toString() { result = "&..." }
-
   /**
    * Gets the underlying expression representing the block. In the following
    * example, the result is the `Expr` for `bar`:
@@ -158,8 +154,6 @@ class SplatArgument extends Expr, @splat_argument {
 
   final override string getAPrimaryQlClass() { result = "SplatArgument" }
 
-  final override string toString() { result = "*..." }
-
   /**
    * Gets the underlying expression. In the following example, the result is
    * the `Expr` for `bar`:
@@ -180,8 +174,6 @@ class HashSplatArgument extends Expr, @hash_splat_argument {
   final override HashSplatArgument::Range range;
 
   final override string getAPrimaryQlClass() { result = "HashSplatArgument" }
-
-  final override string toString() { result = "**..." }
 
   /**
    * Gets the underlying expression. In the following example, the result is

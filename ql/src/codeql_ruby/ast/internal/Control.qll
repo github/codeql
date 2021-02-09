@@ -20,6 +20,10 @@ module IfExpr {
     abstract ExprSequence getThen();
 
     abstract Expr getElse();
+
+    final override string toString() {
+      if this instanceof @elsif then result = "elsif ..." else result = "if ..."
+    }
   }
 
   private class IfRange extends IfExpr::Range, @if {
@@ -70,6 +74,8 @@ module UnlessExpr {
       or
       cond = true and result = getElse()
     }
+
+    final override string toString() { result = "unless ..." }
   }
 }
 
@@ -82,6 +88,8 @@ module IfModifierExpr {
     final Expr getExpr() { result = generated.getBody() }
 
     final override Expr getBranch(boolean cond) { cond = true and result = getExpr() }
+
+    final override string toString() { result = "... if ..." }
   }
 }
 
@@ -94,6 +102,8 @@ module UnlessModifierExpr {
     final Expr getExpr() { result = generated.getBody() }
 
     final override Expr getBranch(boolean cond) { cond = false and result = getExpr() }
+
+    final override string toString() { result = "... unless ..." }
   }
 }
 
@@ -112,6 +122,8 @@ module TernaryIfExpr {
       or
       cond = false and result = getElse()
     }
+
+    final override string toString() { result = "... ? ... : ..." }
   }
 }
 
@@ -122,6 +134,8 @@ module CaseExpr {
     final Expr getValue() { result = generated.getValue() }
 
     final Expr getBranch(int n) { result = generated.getChild(n) }
+
+    final override string toString() { result = "case ..." }
   }
 }
 
@@ -132,6 +146,8 @@ module WhenExpr {
     final ExprSequence getBody() { result = generated.getBody() }
 
     final Expr getPattern(int n) { result = generated.getPattern(n).getChild() }
+
+    final override string toString() { result = "when ..." }
   }
 }
 
@@ -154,6 +170,8 @@ module WhileExpr {
     final override ExprSequence getBody() { result = generated.getBody() }
 
     final override Expr getCondition() { result = generated.getCondition() }
+
+    final override string toString() { result = "while ..." }
   }
 }
 
@@ -164,6 +182,8 @@ module UntilExpr {
     final override ExprSequence getBody() { result = generated.getBody() }
 
     final override Expr getCondition() { result = generated.getCondition() }
+
+    final override string toString() { result = "until ..." }
   }
 }
 
@@ -174,6 +194,8 @@ module WhileModifierExpr {
     final override Expr getBody() { result = generated.getBody() }
 
     final override Expr getCondition() { result = generated.getCondition() }
+
+    final override string toString() { result = "... while ..." }
   }
 }
 
@@ -184,6 +206,8 @@ module UntilModifierExpr {
     final override Expr getBody() { result = generated.getBody() }
 
     final override Expr getCondition() { result = generated.getCondition() }
+
+    final override string toString() { result = "... until ..." }
   }
 }
 
@@ -196,5 +220,7 @@ module ForExpr {
     final Pattern getPattern() { result = generated.getPattern() }
 
     final Expr getValue() { result = generated.getValue().getChild() }
+
+    final override string toString() { result = "for ... in ..." }
   }
 }

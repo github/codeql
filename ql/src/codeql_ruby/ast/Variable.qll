@@ -140,8 +140,6 @@ class VariableAccess extends Expr {
    * as is the first access to `e`.
    */
   predicate isImplicitWrite() { implicitWriteAccess(this) }
-
-  final override string toString() { result = this.getVariable().getName() }
 }
 
 /** An access to a variable where the value is updated. */

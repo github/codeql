@@ -20,6 +20,8 @@ module Class {
     final ScopeResolution getNameScopeResolution() { result = generated.getName() }
 
     final Expr getSuperclassExpr() { result = generated.getSuperclass().getChild() }
+
+    final override string toString() { result = this.getName() }
   }
 }
 
@@ -30,6 +32,8 @@ module SingletonClass {
     final override Expr getExpr(int i) { result = generated.getChild(i) }
 
     final Expr getValue() { result = generated.getValue() }
+
+    final override string toString() { result = "class << ..." }
   }
 }
 
@@ -45,5 +49,7 @@ module Module {
     }
 
     final ScopeResolution getNameScopeResolution() { result = generated.getName() }
+
+    final override string toString() { result = this.getName() }
   }
 }
