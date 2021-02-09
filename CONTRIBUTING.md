@@ -51,8 +51,7 @@ If you have an idea for a query that you would like to share with other CodeQL u
 
 6. **Query help files and unit tests**
 
-	- Query help (`.qhelp`) files and unit tests are optional (but strongly encouraged!) for queries in the `experimental` directories.
-	- see [Supported CodeQL queries and libraries](docs/supported-queries.md) for more information about contributing query help files and unit tests.
+	- Query help (`.qhelp`) files and unit tests are optional (but strongly encouraged!) for queries in the `experimental` directories. For more information about contributing query help files and unit tests, see [Supported CodeQL queries and libraries](docs/supported-queries.md).
 
 Experimental queries and libraries may not be actively maintained as the supported libraries evolve. They may also be changed in backwards-incompatible ways or may be removed entirely in the future without deprecation warnings.
 
