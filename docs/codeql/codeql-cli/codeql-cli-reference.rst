@@ -13,7 +13,7 @@ Learn more about the files you can use when running CodeQL processes and the res
    query-reference-files
    sarif-output
    exit-codes
-
+   ../manual
 
 - :doc:`About QL packs <about-ql-packs>`: QL packs are used to organize the files used in CodeQL analysis. They
   contain queries, library files, query suites, and important metadata. 
