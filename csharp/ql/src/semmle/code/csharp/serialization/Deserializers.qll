@@ -4,6 +4,7 @@
  */
 
 import csharp
+import semmle.code.csharp.frameworks.JsonNET::JsonNET
 
 /** An unsafe deserializer. */
 abstract class UnsafeDeserializer extends Callable { }
@@ -50,6 +51,11 @@ class MicrosoftDeserializer extends UnsafeDeserializer {
   MicrosoftDeserializer() {
     this.hasQualifiedName("Microsoft.Web.Design.Remote.ProxyObject", "DecodeValue")
   }
+}
+
+/** An unsafe deserializer method in the `Newton.Json.*` namespace. */
+class NewtonJsonDeserializer extends UnsafeDeserializer {
+  NewtonJsonDeserializer() { exists(JsonConvertClass c | c.getADeserializeMethod() = this) }
 }
 
 /**
