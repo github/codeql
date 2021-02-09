@@ -14,10 +14,6 @@ import javascript
 import DataFlow::PathGraph
 import semmle.javascript.security.TaintedObject
 
-predicate isUsingHbsEngine() {
-  Express::appCreation().getAMethodCall("set").getArgument(1).mayHaveStringValue("hbs")
-}
-
 class TemplateObjInjectionConfig extends TaintTracking::Configuration {
   TemplateObjInjectionConfig() { this = "TemplateObjInjectionConfig" }
 
@@ -32,8 +28,7 @@ class TemplateObjInjectionConfig extends TaintTracking::Configuration {
     exists(MethodCallExpr mc |
       Express::isResponse(mc.getReceiver()) and
       mc.getMethodName() = "render" and
-      sink.asExpr() = mc.getArgument(1) and
-      isUsingHbsEngine()
+      sink.asExpr() = mc.getArgument(1)
     )
   }
 
