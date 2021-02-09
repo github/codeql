@@ -100,7 +100,7 @@ void local_references(int &source1, int clean1) {
     int t = source();
     int &ref = t;
     t = clean1;
-    sink(ref); // $ SPURIOUS: ast
+    sink(ref); // $ SPURIOUS: ast,ir
   }
 
   {
@@ -346,7 +346,7 @@ namespace FlowThroughGlobals {
   int taintAndCall() {
     globalVar = source();
     calledAfterTaint();
-    sink(globalVar); // $ ast MISSING: ir
+    sink(globalVar); // $ ast,ir
   }
 }
 

@@ -192,7 +192,7 @@ void test_pointers1()
 	sink(*ptr2); // $ ast MISSING: ir
 	sink(ptr3); // $ ast,ir
 	sink(ptr4); // $ SPURIOUS: ast
-	sink(*ptr4); // $ ast MISSING: ir
+	sink(*ptr4); // $ ast,ir
 }
 
 void test_pointers2()
@@ -211,7 +211,7 @@ void test_pointers2()
 	sink(buffer); // $ MISSING: ast,ir
 	sink(ptr1); // $ ast MISSING: ir
 	sink(ptr2); // $ SPURIOUS: ast
-	sink(*ptr2); // $ ast MISSING: ir
+	sink(*ptr2); // $ ast,ir
 	sink(ptr3); // $ MISSING: ast,ir
 	sink(ptr4); // clean
 	sink(*ptr4); // $ MISSING: ast,ir

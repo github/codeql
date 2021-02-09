@@ -84,7 +84,7 @@ void test_pair()
 	sink(make_pair("123", "456").first);
 	sink(make_pair("123", "456").second);
 	sink(make_pair(source(), "456")); // $ MISSING: ast,ir
-	sink(make_pair(source(), "456").first); // $ ast,ir
+	sink(make_pair(source(), "456").first); // $ ast MISSING: ir
 	sink(make_pair(source(), "456").second);
 	sink(make_pair("123", source())); // $ ast,ir
 	sink(make_pair("123", source()).first); // $ SPURIOUS: ir

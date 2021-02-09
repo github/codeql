@@ -11,11 +11,11 @@ void test_lambdas()
 	int w = 0;
 
 	auto a = [t, u]() -> int {
-		sink(t); // $ ast,ir
+		sink(t); // $ ast MISSING: ir
 		sink(u);
 		return t;
 	};
-	sink(a()); // $ ast,ir
+	sink(a()); // $ ast MISSING: ir
 
 	auto b = [&] {
 		sink(t); // $ ast MISSING: ir
@@ -26,7 +26,7 @@ void test_lambdas()
 	sink(v); // $ MISSING: ast,ir
 
 	auto c = [=] {
-		sink(t); // $ ast,ir
+		sink(t); // $ ast MISSING: ir
 		sink(u);
 	};
 	c();

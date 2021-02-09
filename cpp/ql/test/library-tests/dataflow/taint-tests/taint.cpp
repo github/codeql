@@ -38,9 +38,9 @@ void do_source()
 	global10 = zero(source());
 
 	sink(global6);
-	sink(global7); // $ ast MISSING: ir
-	sink(global8); // $ ast MISSING: ir
-	sink(global9); // $ ast MISSING: ir
+	sink(global7); // $ ast,ir
+	sink(global8); // $ ast,ir
+	sink(global9); // $ ast,ir
 	sink(global10);
 }
 
@@ -134,7 +134,7 @@ void pointer_test() {
 	sink(*p3); // $ ast,ir
 
 	*p3 = 0;
-	sink(*p3); // $ SPURIOUS: ast
+	sink(*p3); // $ SPURIOUS: ast,ir
 }
 
 // --- return values ---
@@ -226,11 +226,11 @@ void test_lambdas()
 	int w = 0;
 
 	auto a = [t, u]() -> int {
-		sink(t); // $ ast,ir
+		sink(t); // $ ast MISSING: ir
 		sink(u); // clean
 		return t;
 	};
-	sink(a()); // $ ast,ir
+	sink(a()); // $ ast MISSING: ir
 
 	auto b = [&] {
 		sink(t); // $ ast MISSING: ir
@@ -241,7 +241,7 @@ void test_lambdas()
 	sink(v); // $ MISSING: ast,ir
 
 	auto c = [=] {
-		sink(t); // $ ast,ir
+		sink(t); // $ ast MISSING: ir
 		sink(u); // clean
 	};
 	c();

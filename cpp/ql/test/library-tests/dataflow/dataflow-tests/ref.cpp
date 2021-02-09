@@ -56,13 +56,13 @@ namespace withoutFields {
     sink(x1); // $ ast=55:23 ir SPURIOUS: ast=53:9
 
     notAssign(x2, source());
-    sink(x2); // $ SPURIOUS: ast,ir
+    sink(x2); // $ SPURIOUS: ast
 
     sourceToParamWrapper(x3);
     sink(x3); // $ ast=29:11 ir SPURIOUS: ast=53:17
 
     notSource(x4);
-    sink(x4); // $ SPURIOUS: ast,ir
+    sink(x4); // $ SPURIOUS: ast
   }
 }
 
@@ -123,12 +123,12 @@ namespace withFields {
     sink(x1.val); // $ ast,ir
 
     notAssign(x2, source());
-    sink(x2.val); // $ SPURIOUS: ast,ir
+    sink(x2.val); // $ SPURIOUS: ast
 
     sourceToParamWrapper(x3);
     sink(x3.val); // $ ast,ir
 
     notSource(x4);
-    sink(x4.val); // $ SPURIOUS: ast,ir
+    sink(x4.val); // $ SPURIOUS: ast
   }
 }
