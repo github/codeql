@@ -200,84 +200,158 @@ private module CleverGo {
    */
   private class HttpResponseBody extends HTTP::ResponseBody::Range {
     string package;
-    DataFlow::CallNode call;
+    DataFlow::CallNode bodySetterCall;
     string contentType;
 
     HttpResponseBody() {
       // HTTP ResponseBody models for package: clevergo.tech/clevergo@v0.5.2
       package = packagePath() and
-      // Receiver type: Context
       (
-        // signature: func (*Context).Error(code int, msg string) error
-        call = any(Method m | m.hasQualifiedName(package, "Context", "Error")).getACall() and
-        this = call.getArgument(1) and
-        contentType = "text/plain"
+        // One call sets both body and content-type (which is implicit in the func name).
+        // Receiver type: Context
+        exists(string methodName, Method m |
+          m.hasQualifiedName(package, "Context", methodName) and
+          bodySetterCall = m.getACall()
+        |
+          // signature: func (*Context).Error(code int, msg string) error
+          methodName = "Error" and
+          this = bodySetterCall.getArgument(1) and
+          contentType = "text/plain"
+          or
+          // signature: func (*Context).HTML(code int, html string) error
+          methodName = "HTML" and
+          this = bodySetterCall.getArgument(1) and
+          contentType = "text/html"
+          or
+          // signature: func (*Context).HTMLBlob(code int, bs []byte) error
+          methodName = "HTMLBlob" and
+          this = bodySetterCall.getArgument(1) and
+          contentType = "text/html"
+          or
+          // signature: func (*Context).JSON(code int, data interface{}) error
+          methodName = "JSON" and
+          this = bodySetterCall.getArgument(1) and
+          contentType = "application/json"
+          or
+          // signature: func (*Context).JSONBlob(code int, bs []byte) error
+          methodName = "JSONBlob" and
+          this = bodySetterCall.getArgument(1) and
+          contentType = "application/json"
+          or
+          // signature: func (*Context).JSONP(code int, data interface{}) error
+          methodName = "JSONP" and
+          this = bodySetterCall.getArgument(1) and
+          contentType = "application/javascript"
+          or
+          // signature: func (*Context).JSONPBlob(code int, bs []byte) error
+          methodName = "JSONPBlob" and
+          this = bodySetterCall.getArgument(1) and
+          contentType = "application/javascript"
+          or
+          // signature: func (*Context).JSONPCallback(code int, callback string, data interface{}) error
+          methodName = "JSONPCallback" and
+          this = bodySetterCall.getArgument(2) and
+          contentType = "application/javascript"
+          or
+          // signature: func (*Context).JSONPCallbackBlob(code int, callback string, bs []byte) (err error)
+          methodName = "JSONPCallbackBlob" and
+          this = bodySetterCall.getArgument(2) and
+          contentType = "application/javascript"
+          or
+          // signature: func (*Context).String(code int, s string) error
+          methodName = "String" and
+          this = bodySetterCall.getArgument(1) and
+          contentType = "text/plain"
+          or
+          // signature: func (*Context).StringBlob(code int, bs []byte) error
+          methodName = "StringBlob" and
+          this = bodySetterCall.getArgument(1) and
+          contentType = "text/plain"
+          or
+          // signature: func (*Context).Stringf(code int, format string, a ...interface{}) error
+          methodName = "Stringf" and
+          this = bodySetterCall.getArgument([1, any(int i | i >= 2)]) and
+          contentType = "text/plain"
+          or
+          // signature: func (*Context).XML(code int, data interface{}) error
+          methodName = "XML" and
+          this = bodySetterCall.getArgument(1) and
+          contentType = "text/xml"
+          or
+          // signature: func (*Context).XMLBlob(code int, bs []byte) error
+          methodName = "XMLBlob" and
+          this = bodySetterCall.getArgument(1) and
+          contentType = "text/xml"
+        )
         or
-        // signature: func (*Context).HTML(code int, html string) error
-        call = any(Method m | m.hasQualifiedName(package, "Context", "HTML")).getACall() and
-        this = call.getArgument(1) and
-        contentType = "text/html"
+        // One call sets both body and content-type (both are parameters in the func call).
+        // Receiver type: Context
+        exists(string methodName, Method m |
+          m.hasQualifiedName(package, "Context", methodName) and
+          bodySetterCall = m.getACall()
+        |
+          // signature: func (*Context).Blob(code int, contentType string, bs []byte) (err error)
+          methodName = "Blob" and
+          this = bodySetterCall.getArgument(2) and
+          contentType = bodySetterCall.getArgument(1).getStringValue()
+          or
+          // signature: func (*Context).Emit(code int, contentType string, body string) (err error)
+          methodName = "Emit" and
+          this = bodySetterCall.getArgument(2) and
+          contentType = bodySetterCall.getArgument(1).getStringValue()
+        )
         or
-        // signature: func (*Context).HTMLBlob(code int, bs []byte) error
-        call = any(Method m | m.hasQualifiedName(package, "Context", "HTMLBlob")).getACall() and
-        this = call.getArgument(1) and
-        contentType = "text/html"
-        or
-        // signature: func (*Context).JSON(code int, data interface{}) error
-        call = any(Method m | m.hasQualifiedName(package, "Context", "JSON")).getACall() and
-        this = call.getArgument(1) and
-        contentType = "application/json"
-        or
-        // signature: func (*Context).JSONBlob(code int, bs []byte) error
-        call = any(Method m | m.hasQualifiedName(package, "Context", "JSONBlob")).getACall() and
-        this = call.getArgument(1) and
-        contentType = "application/json"
-        or
-        // signature: func (*Context).JSONP(code int, data interface{}) error
-        call = any(Method m | m.hasQualifiedName(package, "Context", "JSONP")).getACall() and
-        this = call.getArgument(1) and
-        contentType = "application/javascript"
-        or
-        // signature: func (*Context).JSONPBlob(code int, bs []byte) error
-        call = any(Method m | m.hasQualifiedName(package, "Context", "JSONPBlob")).getACall() and
-        this = call.getArgument(1) and
-        contentType = "application/javascript"
-        or
-        // signature: func (*Context).JSONPCallback(code int, callback string, data interface{}) error
-        call = any(Method m | m.hasQualifiedName(package, "Context", "JSONPCallback")).getACall() and
-        this = call.getArgument(2) and
-        contentType = "application/javascript"
-        or
-        // signature: func (*Context).JSONPCallbackBlob(code int, callback string, bs []byte) (err error)
-        call =
-          any(Method m | m.hasQualifiedName(package, "Context", "JSONPCallbackBlob")).getACall() and
-        this = call.getArgument(2) and
-        contentType = "application/javascript"
-        or
-        // signature: func (*Context).String(code int, s string) error
-        call = any(Method m | m.hasQualifiedName(package, "Context", "String")).getACall() and
-        this = call.getArgument(1) and
-        contentType = "text/plain"
-        or
-        // signature: func (*Context).StringBlob(code int, bs []byte) error
-        call = any(Method m | m.hasQualifiedName(package, "Context", "StringBlob")).getACall() and
-        this = call.getArgument(1) and
-        contentType = "text/plain"
-        or
-        // signature: func (*Context).Stringf(code int, format string, a ...interface{}) error
-        call = any(Method m | m.hasQualifiedName(package, "Context", "Stringf")).getACall() and
-        this = call.getArgument([1, any(int i | i >= 2)]) and
-        contentType = "text/plain"
-        or
-        // signature: func (*Context).XML(code int, data interface{}) error
-        call = any(Method m | m.hasQualifiedName(package, "Context", "XML")).getACall() and
-        this = call.getArgument(1) and
-        contentType = "text/xml"
-        or
-        // signature: func (*Context).XMLBlob(code int, bs []byte) error
-        call = any(Method m | m.hasQualifiedName(package, "Context", "XMLBlob")).getACall() and
-        this = call.getArgument(1) and
-        contentType = "text/xml"
+        // Two calls, one to set the response body and one to set the content-type.
+        // Receiver type: Context
+        exists(string methodName, Method m |
+          m.hasQualifiedName(package, "Context", methodName) and
+          bodySetterCall = m.getACall()
+        |
+          // signature: func (*Context).Write(data []byte) (int, error)
+          methodName = "Write" and
+          this = bodySetterCall.getArgument(0)
+          or
+          // signature: func (*Context).WriteString(data string) (int, error)
+          methodName = "WriteString" and
+          this = bodySetterCall.getArgument(0)
+        ) and
+        (
+          // Receiver type: Context
+          exists(string methodName, Method m, DataFlow::CallNode contentTypeSetterCall |
+            m.hasQualifiedName(package, "Context", methodName) and
+            contentTypeSetterCall = m.getACall() and
+            contentTypeSetterCall.getReceiver().getAPredecessor*() =
+              bodySetterCall.getReceiver().getAPredecessor*()
+          |
+            // signature: func (*Context).SetContentType(v string)
+            methodName = "SetContentType" and
+            contentType = contentTypeSetterCall.getArgument(0).getStringValue()
+          )
+          or
+          // Receiver type: Context
+          exists(string methodName, Method m, DataFlow::CallNode contentTypeSetterCall |
+            m.hasQualifiedName(package, "Context", methodName) and
+            contentTypeSetterCall = m.getACall() and
+            contentTypeSetterCall.getReceiver().getAPredecessor*() =
+              bodySetterCall.getReceiver().getAPredecessor*()
+          |
+            // signature: func (*Context).SetContentTypeHTML()
+            methodName = "SetContentTypeHTML" and
+            contentType = "text/html"
+            or
+            // signature: func (*Context).SetContentTypeJSON()
+            methodName = "SetContentTypeJSON" and
+            contentType = "application/json"
+            or
+            // signature: func (*Context).SetContentTypeText()
+            methodName = "SetContentTypeText" and
+            contentType = "text/plain"
+            or
+            // signature: func (*Context).SetContentTypeXML()
+            methodName = "SetContentTypeXML" and
+            contentType = "text/xml"
+          )
+        )
       )
     }
 
@@ -287,7 +361,7 @@ private module CleverGo {
   }
 
   /**
-   * Models HTTP header writers model for package: clevergo.tech/clevergo@v0.5.2
+   * Models a HTTP header writer model for package: clevergo.tech/clevergo@v0.5.2
    */
   private class HeaderWrite extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
     HeaderWrite() {

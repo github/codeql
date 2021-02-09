@@ -18,10 +18,10 @@ func ClevergoTechClevergov052() {
 		{
 			// func (*Context).SetHeader(key string, value string)
 			{
-				keyString839 := source().(string)
-				valString273 := source().(string)
+				keyString566 := source().(string)
+				valString497 := source().(string)
 				var rece clevergo.Context
-				rece.SetHeader(keyString839, valString273) // $headerKey=keyString839 $headerVal=valString273
+				rece.SetHeader(keyString566, valString497) // $headerKey=keyString566 $headerVal=valString497
 			}
 		}
 	}

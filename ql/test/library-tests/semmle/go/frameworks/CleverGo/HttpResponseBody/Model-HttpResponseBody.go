@@ -12,9 +12,9 @@ func source() interface{} {
 
 // Package clevergo.tech/clevergo@v0.5.2
 func ClevergoTechClevergov052() {
-	// Set ResponseBody via method calls.
+	// Response body is set via a method call (the content-type is implicit in the method name).
 	{
-		// Set ResponseBody via method calls on clevergo.tech/clevergo.Context.
+		// Response body is set via a method call on the clevergo.tech/clevergo.Context type (the content-type is implicit in the method name).
 		{
 			// func (*Context).Error(code int, msg string) error
 			{
@@ -100,6 +100,92 @@ func ClevergoTechClevergov052() {
 				bodyByte736 := source().([]byte)
 				var rece clevergo.Context
 				rece.XMLBlob(0, bodyByte736) // $contentType=text/xml $responseBody=bodyByte736
+			}
+		}
+	}
+	// Response body and content-type are both set via a single call of a method.
+	{
+		// Response body and content-type are both set via a single call of a method on the clevergo.tech/clevergo.Context type.
+		{
+			// func (*Context).Blob(code int, contentType string, bs []byte) (err error)
+			{
+				bodyByte839 := source().([]byte)
+				var rece clevergo.Context
+				rece.Blob(0, "application/json", bodyByte839) // $contentType=application/json $responseBody=bodyByte839
+			}
+			// func (*Context).Emit(code int, contentType string, body string) (err error)
+			{
+				bodyString273 := source().(string)
+				var rece clevergo.Context
+				rece.Emit(0, "application/json", bodyString273) // $contentType=application/json $responseBody=bodyString273
+			}
+		}
+	}
+	// Response body and content-type are set via calls of different methods.
+	{
+		// Response body and content-type are set via calls of different methods on the clevergo.tech/clevergo.Context type.
+		{
+			// func (*Context).Write(data []byte) (int, error)
+			{
+				bodyByte982 := source().([]byte)
+				var rece clevergo.Context
+				rece.SetContentType("application/json")
+				rece.Write(bodyByte982) // $contentType=application/json $responseBody=bodyByte982
+			}
+			{
+				bodyByte458 := source().([]byte)
+				var rece clevergo.Context
+				rece.SetContentTypeHTML()
+				rece.Write(bodyByte458) // $contentType=text/html $responseBody=bodyByte458
+			}
+			{
+				bodyByte506 := source().([]byte)
+				var rece clevergo.Context
+				rece.SetContentTypeJSON()
+				rece.Write(bodyByte506) // $contentType=application/json $responseBody=bodyByte506
+			}
+			{
+				bodyByte213 := source().([]byte)
+				var rece clevergo.Context
+				rece.SetContentTypeText()
+				rece.Write(bodyByte213) // $contentType=text/plain $responseBody=bodyByte213
+			}
+			{
+				bodyByte468 := source().([]byte)
+				var rece clevergo.Context
+				rece.SetContentTypeXML()
+				rece.Write(bodyByte468) // $contentType=text/xml $responseBody=bodyByte468
+			}
+			// func (*Context).WriteString(data string) (int, error)
+			{
+				bodyString219 := source().(string)
+				var rece clevergo.Context
+				rece.SetContentType("application/json")
+				rece.WriteString(bodyString219) // $contentType=application/json $responseBody=bodyString219
+			}
+			{
+				bodyString265 := source().(string)
+				var rece clevergo.Context
+				rece.SetContentTypeHTML()
+				rece.WriteString(bodyString265) // $contentType=text/html $responseBody=bodyString265
+			}
+			{
+				bodyString971 := source().(string)
+				var rece clevergo.Context
+				rece.SetContentTypeJSON()
+				rece.WriteString(bodyString971) // $contentType=application/json $responseBody=bodyString971
+			}
+			{
+				bodyString320 := source().(string)
+				var rece clevergo.Context
+				rece.SetContentTypeText()
+				rece.WriteString(bodyString320) // $contentType=text/plain $responseBody=bodyString320
+			}
+			{
+				bodyString545 := source().(string)
+				var rece clevergo.Context
+				rece.SetContentTypeXML()
+				rece.WriteString(bodyString545) // $contentType=text/xml $responseBody=bodyString545
 			}
 		}
 	}
