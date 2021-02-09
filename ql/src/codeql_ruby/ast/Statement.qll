@@ -9,10 +9,10 @@ private import codeql_ruby.ast.internal.TreeSitter
  *
  * This is the root QL class for all statements.
  */
-class Statement extends AstNode {
-  Statement::Range range;
+class Stmt extends AstNode {
+  Stmt::Range range;
 
-  Statement() { this = range }
+  Stmt() { this = range }
 
   /** Gets a control-flow node for this statement, if any. */
   CfgNodes::AstCfgNode getAControlFlowNode() { result.getNode() = this }
@@ -36,8 +36,8 @@ class Statement extends AstNode {
  * next value
  * ```
  */
-class ReturningStatement extends Statement {
-  override ReturningStatement::Range range;
+class ReturningStmt extends Stmt {
+  override ReturningStmt::Range range;
 
   final override string toString() { result = range.toString() }
 
@@ -60,7 +60,7 @@ class ReturningStatement extends Statement {
  * return value
  * ```
  */
-class ReturnStmt extends ReturningStatement, @return {
+class ReturnStmt extends ReturningStmt, @return {
   final override ReturnStmt::Range range;
 
   final override string getAPrimaryQlClass() { result = "ReturnStmt" }
@@ -73,7 +73,7 @@ class ReturnStmt extends ReturningStatement, @return {
  * break value
  * ```
  */
-class BreakStmt extends ReturningStatement, @break {
+class BreakStmt extends ReturningStmt, @break {
   final override BreakStmt::Range range;
 
   final override string getAPrimaryQlClass() { result = "BreakStmt" }
@@ -86,7 +86,7 @@ class BreakStmt extends ReturningStatement, @break {
  * next value
  * ```
  */
-class NextStmt extends ReturningStatement, @next {
+class NextStmt extends ReturningStmt, @next {
   final override NextStmt::Range range;
 
   final override string getAPrimaryQlClass() { result = "NextStmt" }

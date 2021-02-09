@@ -108,7 +108,7 @@ class ExprCfgNode extends AstCfgNode {
 
 /** A control-flow node that wraps a return-like statement. */
 class ReturningCfgNode extends AstCfgNode {
-  ReturningStatement s;
+  ReturningStmt s;
 
   ReturningCfgNode() { s = this.getNode() }
 

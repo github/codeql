@@ -1,18 +1,18 @@
 private import codeql_ruby.AST
 private import codeql_ruby.ast.internal.TreeSitter
 
-module Statement {
+module Stmt {
   abstract class Range extends AstNode { }
 }
 
-module ReturningStatement {
-  abstract class Range extends Statement::Range {
+module ReturningStmt {
+  abstract class Range extends Stmt::Range {
     abstract Generated::ArgumentList getArgumentList();
   }
 }
 
 module ReturnStmt {
-  class Range extends ReturningStatement::Range, @return {
+  class Range extends ReturningStmt::Range, @return {
     final override Generated::Return generated;
 
     final override string toString() { result = "return" }
@@ -22,7 +22,7 @@ module ReturnStmt {
 }
 
 module BreakStmt {
-  class Range extends ReturningStatement::Range, @break {
+  class Range extends ReturningStmt::Range, @break {
     final override Generated::Break generated;
 
     final override string toString() { result = "break" }
@@ -32,7 +32,7 @@ module BreakStmt {
 }
 
 module NextStmt {
-  class Range extends ReturningStatement::Range, @next {
+  class Range extends ReturningStmt::Range, @next {
     final override Generated::Next generated;
 
     final override string toString() { result = "next" }
