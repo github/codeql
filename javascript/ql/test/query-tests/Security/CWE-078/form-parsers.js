@@ -26,3 +26,18 @@ http.createServer(function (req, res) {
   });
   req.pipe(busboy);
 }).listen(8000);
+
+
+const formidable = require('formidable'); 
+app.post('/api/upload', (req, res, next) => {
+  let form = formidable({ multiples: true });
+ 
+  form.parse(req, (err, fields, files) => {
+    exec("touch " + fields.name); // NOT OK
+  });
+
+  let form2 = new formidable.IncomingForm();
+  form2.parse(req, (err, fields, files) => {
+    exec("touch " + fields.name); // NOT OK
+  });
+});

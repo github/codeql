@@ -7,7 +7,7 @@ import javascript
 /**
  * Classes and predicate modelling the `Busboy` library.
  */
-module Busboy {
+private module Busboy {
   /**
    * A `Busboy` instance that has request data flowing into it.
    */
@@ -27,4 +27,26 @@ module Busboy {
 
     override string getSourceType() { result = "Busbuy parsed user value" }
   }
+}
+
+/**
+ * A source of remote flow from the `Formidable` library parsing a HTTP request.
+ */
+private class FormidableRemoteFlow extends RemoteFlowSource {
+  FormidableRemoteFlow() {
+    exists(DataFlow::CallNode parse, DataFlow::InvokeNode formidable |
+      formidable = DataFlow::moduleImport("formidable").getACall()
+      or
+      formidable = DataFlow::moduleMember("formidable", "formidable").getACall()
+      or
+      formidable =
+        DataFlow::moduleMember("formidable", ["IncomingForm", "Formidable"]).getAnInstantiation()
+    |
+      parse = formidable.getAMemberCall("parse") and
+      parse.getArgument(0).asExpr() instanceof HTTP::RequestExpr and
+      this = parse.getABoundCallbackParameter(1, any(int i | i > 0))
+    )
+  }
+
+  override string getSourceType() { result = "Formidable parsed user value" }
 }
