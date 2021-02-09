@@ -112,6 +112,19 @@ class ExprCfgNode extends AstCfgNode {
   Expr getExpr() { result = e }
 }
 
+/** A control-flow node that wraps a return-like statement. */
+class ReturningCfgNode extends AstCfgNode {
+  ReturningStmt s;
+
+  ReturningCfgNode() { s = this.getNode() }
+
+  /** Gets the node of the returned value, if any. */
+  ExprCfgNode getReturnedValueNode() {
+    result = this.getAPredecessor() and
+    result.getNode() = s.getValue()
+  }
+}
+
 /**
  * A class for mapping parent-child AST nodes to parent-child CFG nodes.
  */
@@ -122,14 +135,16 @@ abstract private class ExprChildMapping extends Expr {
    */
   abstract predicate relevantChild(Expr child);
 
-  private AstNode getAChildStar() {
+  private Generated::AstNode getAChildStar() {
     result = this
     or
     result.(Generated::AstNode).getParent() = this.getAChildStar()
   }
 
   pragma[noinline]
-  private BasicBlock getABasicBlockInScope() { result.getANode().getNode() = this.getAChildStar() }
+  private BasicBlock getABasicBlockInScope() {
+    result.getANode() = TAstNode(this.getAChildStar(), _)
+  }
 
   pragma[nomagic]
   private predicate reachesBasicBlockBase(Expr child, CfgNode cfn, BasicBlock bb) {
@@ -238,6 +253,45 @@ module ExprNodes {
     final ExprCfgNode getReceiver() { e.hasCfgChild(e.getReceiver(), this, result) }
   }
 
+  private class CaseExprChildMapping extends ExprChildMapping, CaseExpr {
+    override predicate relevantChild(Expr e) { e = this.getValue() or e = this.getBranch(_) }
+  }
+
+  /** A control-flow node that wraps a `CaseExpr` AST expression. */
+  class CaseExprCfgNode extends ExprCfgNode {
+    override CaseExprChildMapping e;
+
+    final override CaseExpr getExpr() { result = ExprCfgNode.super.getExpr() }
+
+    /** Gets the expression being compared, if any. */
+    final ExprCfgNode getValue() { e.hasCfgChild(e.getValue(), this, result) }
+
+    /**
+     * Gets the `n`th branch of this case expression.
+     */
+    final ExprCfgNode getBranch(int n) { e.hasCfgChild(e.getBranch(n), this, result) }
+  }
+
+  private class ConditionalExprChildMapping extends ExprChildMapping, ConditionalExpr {
+    override predicate relevantChild(Expr e) { e = this.getCondition() or e = this.getBranch(_) }
+  }
+
+  /** A control-flow node that wraps a `ConditionalExpr` AST expression. */
+  class ConditionalExprCfgNode extends ExprCfgNode {
+    override ConditionalExprChildMapping e;
+
+    final override ConditionalExpr getExpr() { result = ExprCfgNode.super.getExpr() }
+
+    /** Gets the condition expression. */
+    final ExprCfgNode getCondition() { e.hasCfgChild(e.getCondition(), this, result) }
+
+    /**
+     * Gets the branch of this conditional expression that is taken when the condition
+     * evaluates to cond, if any.
+     */
+    final ExprCfgNode getBranch(boolean cond) { e.hasCfgChild(e.getBranch(cond), this, result) }
+  }
+
   private class ExprSequenceChildMapping extends ExprChildMapping, ExprSequence {
     override predicate relevantChild(Expr e) { e = this.getAnExpr() }
   }
@@ -255,7 +309,21 @@ module ExprNodes {
     final ExprCfgNode getExpr(int n) { e.hasCfgChild(e.getExpr(n), this, result) }
   }
 
-  /** A control-flow node that wraps an `ExprSequence` AST expression. */
+  private class ForExprChildMapping extends ExprChildMapping, ForExpr {
+    override predicate relevantChild(Expr e) { e = this.getValue() }
+  }
+
+  /** A control-flow node that wraps a `ForExpr` AST expression. */
+  class ForExprCfgNode extends ExprCfgNode {
+    override ForExprChildMapping e;
+
+    final override ForExpr getExpr() { result = ExprCfgNode.super.getExpr() }
+
+    /** Gets the value being iterated over. */
+    final ExprCfgNode getValue() { e.hasCfgChild(e.getValue(), this, result) }
+  }
+
+  /** A control-flow node that wraps a `ParenthesizedExpr` AST expression. */
   class ParenthesizedExprCfgNode extends ExprSequenceCfgNode {
     ParenthesizedExprCfgNode() { this.getExpr() instanceof ParenthesizedExpr }
   }
