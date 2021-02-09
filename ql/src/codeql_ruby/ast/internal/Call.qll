@@ -14,6 +14,8 @@ module Call {
     abstract Expr getArgument(int n);
 
     abstract Block getBlock();
+
+    final override string toString() { result = "call to " + this.getMethodName() }
   }
 
   private class IdentifierCallRange extends Call::Range, @token_identifier {
@@ -111,6 +113,8 @@ module BlockArgument {
     final override Generated::BlockArgument generated;
 
     final Expr getExpr() { result = generated.getChild() }
+
+    final override string toString() { result = "&..." }
   }
 }
 
@@ -119,6 +123,8 @@ module SplatArgument {
     final override Generated::SplatArgument generated;
 
     final Expr getExpr() { result = generated.getChild() }
+
+    final override string toString() { result = "*..." }
   }
 }
 
@@ -127,5 +133,7 @@ module HashSplatArgument {
     final override Generated::HashSplatArgument generated;
 
     final Expr getExpr() { result = generated.getChild() }
+
+    final override string toString() { result = "**..." }
   }
 }

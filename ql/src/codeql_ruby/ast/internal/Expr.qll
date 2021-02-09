@@ -1,14 +1,17 @@
 private import codeql_ruby.AST
+private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.ast.internal.TreeSitter
 private import codeql_ruby.ast.internal.Variable
 
 module Expr {
-  abstract class Range extends AstNode { }
+  abstract class Range extends AstNode::Range { }
 }
 
 module Literal {
   abstract class Range extends Expr::Range {
     abstract string getValueText();
+
+    override string toString() { result = this.getValueText() }
   }
 }
 
@@ -65,7 +68,7 @@ module RegexLiteral {
 
     final override string toString() {
       result =
-        concat(AstNode c, int i, string s |
+        concat(Generated::AstNode c, int i, string s |
           c = generated.getChild(i) and
           if c instanceof Generated::Token
           then s = c.(Generated::Token).getValue()
@@ -89,7 +92,7 @@ module StringLiteral {
 
     final override string toString() {
       result =
-        concat(AstNode c, int i, string s |
+        concat(Generated::AstNode c, int i, string s |
           c = generated.getChild(i) and
           if c instanceof Generated::Token
           then s = c.(Generated::Token).getValue()
@@ -124,7 +127,7 @@ module SymbolLiteral {
 
     private string summaryString() {
       result =
-        concat(AstNode c, int i, string s |
+        concat(Generated::AstNode c, int i, string s |
           c = this.getChild(i) and
           if c instanceof Generated::Token
           then s = c.(Generated::Token).getValue()
@@ -165,6 +168,18 @@ module SymbolLiteral {
 module ExprSequence {
   abstract class Range extends Expr::Range {
     abstract Expr getExpr(int n);
+
+    int getNumberOfExpressions() { result = count(this.getExpr(_)) }
+
+    override string toString() {
+      exists(int c | c = this.getNumberOfExpressions() |
+        c = 0 and result = ";"
+        or
+        c = 1 and result = this.getExpr(0).toString()
+        or
+        c > 1 and result = "...; ..."
+      )
+    }
   }
 }
 
@@ -177,6 +192,14 @@ module ParenthesizedExpr {
     final override Generated::ParenthesizedStatements generated;
 
     final override Expr getExpr(int n) { result = generated.getChild(n) }
+
+    final override string toString() {
+      exists(int c | c = this.getNumberOfExpressions() |
+        c = 0 and result = "()"
+        or
+        c > 0 and result = "(" + ExprSequence::Range.super.toString() + ")"
+      )
+    }
   }
 }
 
@@ -211,6 +234,8 @@ module ScopeResolution {
     final Expr getScope() { result = generated.getScope() }
 
     final string getName() { result = generated.getName().(Generated::Token).getValue() }
+
+    final override string toString() { result = "...::" + this.getName() }
   }
 }
 
@@ -221,5 +246,7 @@ module Pair {
     final Expr getKey() { result = generated.getKey() }
 
     final Expr getValue() { result = generated.getValue() }
+
+    final override string toString() { result = "Pair" }
   }
 }

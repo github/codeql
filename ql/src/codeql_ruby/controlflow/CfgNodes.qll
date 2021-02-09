@@ -71,14 +71,20 @@ class AstCfgNode extends CfgNode, TAstNode {
 
   final override AstNode getNode() { result = n }
 
+  override Location getLocation() { result = n.getLocation() }
+
   final override string toString() {
     exists(string s |
-      // TODO: Remove once the SSA implementation is based on the AST layer
+      // TODO: Replace the two disjuncts below with `s = n.(AstNode).toString()` once
+      // `RemoveWhenFullCoverage` has been removed
       s = n.(AstNode).toString() and
       s != "AstNode"
       or
       n.(AstNode).toString() = "AstNode" and
       s = n.toString()
+      or
+      n = any(Generated::For f).getValue() and
+      s = "In"
     |
       result = "[" + this.getSplitsString() + "] " + s
       or

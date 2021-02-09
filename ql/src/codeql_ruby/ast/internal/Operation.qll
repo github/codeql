@@ -19,6 +19,8 @@ module UnaryOperation {
     Expr getOperand() { result = generated.getOperand() }
 
     final override Expr getAnOperand() { result = this.getOperand() }
+
+    override string toString() { result = this.getOperator() + " ..." }
   }
 }
 
@@ -69,6 +71,8 @@ module BinaryOperation {
     final override Expr getAnOperand() {
       result = this.getLeftOperand() or result = this.getRightOperand()
     }
+
+    override string toString() { result = "... " + this.getOperator() + " ..." }
   }
 }
 
@@ -219,6 +223,8 @@ module Assignment {
     abstract Expr getRhs();
 
     final override Expr getAnOperand() { result = this.getLhs() or result = this.getRhs() }
+
+    override string toString() { result = "... " + this.getOperator() + " ..." }
   }
 }
 

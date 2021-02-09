@@ -53,8 +53,6 @@ class IfExpr extends ConditionalExpr {
 
   final override string getAPrimaryQlClass() { result = "IfExpr" }
 
-  final override string toString() { if isElsif() then result = "elsif ..." else result = "if ..." }
-
   /** Holds if this is an `elsif` expression. */
   final predicate isElsif() { this instanceof @elsif }
 
@@ -108,8 +106,6 @@ class UnlessExpr extends ConditionalExpr, @unless {
 
   final override string getAPrimaryQlClass() { result = "UnlessExpr" }
 
-  final override string toString() { result = "unless ..." }
-
   /**
    * Gets the 'then' branch of this `unless` expression. In the following
    * example, the result is the `ExprSequence` containing `foo`.
@@ -148,8 +144,6 @@ class IfModifierExpr extends ConditionalExpr, @if_modifier {
 
   final override string getAPrimaryQlClass() { result = "IfModifierExpr" }
 
-  final override string toString() { result = "... if ..." }
-
   /**
    * Gets the expression that is conditionally evaluated. In the following
    * example, the result is the `Expr` for `foo`.
@@ -170,8 +164,6 @@ class UnlessModifierExpr extends ConditionalExpr, @unless_modifier {
   final override UnlessModifierExpr::Range range;
 
   final override string getAPrimaryQlClass() { result = "UnlessModifierExpr" }
-
-  final override string toString() { result = "... unless ..." }
 
   /**
    * Gets the expression that is conditionally evaluated. In the following
@@ -194,8 +186,6 @@ class TernaryIfExpr extends ConditionalExpr, @conditional {
 
   final override string getAPrimaryQlClass() { result = "TernaryIfExpr" }
 
-  final override string toString() { result = "... ? ... : ..." }
-
   /** Gets the 'then' branch of this ternary if expression. */
   final Expr getThen() { result = range.getThen() }
 
@@ -207,8 +197,6 @@ class CaseExpr extends ControlExpr, @case__ {
   final override CaseExpr::Range range;
 
   final override string getAPrimaryQlClass() { result = "CaseExpr" }
-
-  final override string toString() { result = "case ..." }
 
   /**
    * Gets the expression being compared, if any. For example, `foo` in the following example.
@@ -267,8 +255,6 @@ class WhenExpr extends Expr, @when {
   final override WhenExpr::Range range;
 
   final override string getAPrimaryQlClass() { result = "WhenExpr" }
-
-  final override string toString() { result = "when ..." }
 
   /** Gets the body of this case-when expression. */
   final ExprSequence getBody() { result = range.getBody() }
@@ -333,8 +319,6 @@ class WhileExpr extends ConditionalLoop, @while {
 
   final override string getAPrimaryQlClass() { result = "WhileExpr" }
 
-  final override string toString() { result = "while ..." }
-
   /** Gets the body of this `while` loop. */
   final override ExprSequence getBody() { result = range.getBody() }
 }
@@ -353,8 +337,6 @@ class UntilExpr extends ConditionalLoop, @until {
 
   final override string getAPrimaryQlClass() { result = "UntilExpr" }
 
-  final override string toString() { result = "until ..." }
-
   /** Gets the body of this `until` loop. */
   final override ExprSequence getBody() { result = range.getBody() }
 }
@@ -369,8 +351,6 @@ class WhileModifierExpr extends ConditionalLoop, @while_modifier {
   final override WhileModifierExpr::Range range;
 
   final override string getAPrimaryQlClass() { result = "WhileModifierExpr" }
-
-  final override string toString() { result = "... while ..." }
 }
 
 /**
@@ -383,8 +363,6 @@ class UntilModifierExpr extends ConditionalLoop, @until_modifier {
   final override UntilModifierExpr::Range range;
 
   final override string getAPrimaryQlClass() { result = "UntilModifierExpr" }
-
-  final override string toString() { result = "... until ..." }
 }
 
 /**
@@ -399,8 +377,6 @@ class ForExpr extends Loop, @for {
   final override ForExpr::Range range;
 
   final override string getAPrimaryQlClass() { result = "ForExpr" }
-
-  final override string toString() { result = "for ... in ..." }
 
   /** Gets the body of this `for` loop. */
   final override Expr getBody() { result = range.getBody() }

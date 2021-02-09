@@ -6,7 +6,7 @@ private import internal.Variable
 
 /** A pattern. */
 class Pattern extends AstNode {
-  Pattern::Range range;
+  override Pattern::Range range;
 
   Pattern() { range = this }
 
@@ -16,13 +16,10 @@ class Pattern extends AstNode {
 
 /** A simple variable pattern. */
 class VariablePattern extends Pattern {
-  final override VariablePattern::Range range;
-  final override Generated::Identifier generated;
+  override VariablePattern::Range range;
 
   /** Gets the variable used in (or introduced by) this pattern. */
   Variable getVariable() { access(this, result) }
-
-  override string toString() { result = range.getVariableName() }
 }
 
 /**
@@ -31,13 +28,11 @@ class VariablePattern extends Pattern {
  * This includes both tuple patterns in parameters and assignments.
  */
 class TuplePattern extends Pattern {
-  final override TuplePattern::Range range;
+  override TuplePattern::Range range;
 
   /** Gets the `i`th pattern in this tuple pattern. */
   final Pattern getElement(int i) { result = range.getElement(i) }
 
   /** Gets a sub pattern in this tuple pattern. */
   final Pattern getAnElement() { result = this.getElement(_) }
-
-  final override string toString() { result = "(..., ...)" }
 }

@@ -38,7 +38,7 @@ class CfgNode extends TCfgNode {
   AST::AstNode getNode() { none() }
 
   /** Gets the location of this control flow node. */
-  Location getLocation() { result = this.getNode().getLocation() }
+  Location getLocation() { none() }
 
   /** Holds if this control flow node has conditional successors. */
   final predicate isCondition() { exists(this.getASuccessor(any(BooleanSuccessor bs))) }

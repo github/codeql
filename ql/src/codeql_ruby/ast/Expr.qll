@@ -10,7 +10,7 @@ private import codeql_ruby.controlflow.internal.ControlFlowGraphImpl
  * This is the root QL class for all expressions.
  */
 class Expr extends AstNode {
-  Expr::Range range;
+  override Expr::Range range;
 
   Expr() { this = range }
 
@@ -34,8 +34,6 @@ class Expr extends AstNode {
  */
 class Literal extends Expr {
   override Literal::Range range;
-
-  override string toString() { result = range.toString() }
 
   /** Gets the source text for this literal, if it is constant. */
   final string getValueText() { result = range.getValueText() }
@@ -124,16 +122,6 @@ class ExprSequence extends Expr {
 
   override string getAPrimaryQlClass() { result = "ExprSequence" }
 
-  override string toString() {
-    exists(int c | c = this.getNumberOfExpressions() |
-      c = 0 and result = ";"
-      or
-      c = 1 and result = this.getExpr(0).toString()
-      or
-      c > 1 and result = "...; ..."
-    )
-  }
-
   /** Gets the `n`th expression in this sequence. */
   final Expr getExpr(int n) { result = range.getExpr(n) }
 
@@ -178,14 +166,6 @@ class ParenthesizedExpr extends ExprSequence, @parenthesized_statements {
   final override ParenthesizedExpr::Range range;
 
   final override string getAPrimaryQlClass() { result = "ParenthesizedExpr" }
-
-  final override string toString() {
-    exists(int c | c = this.getNumberOfExpressions() |
-      c = 0 and result = "()"
-      or
-      c > 0 and result = "(" + ExprSequence.super.toString() + ")"
-    )
-  }
 }
 
 /**
@@ -199,8 +179,6 @@ class ScopeResolution extends Expr, @scope_resolution {
   final override ScopeResolution::Range range;
 
   final override string getAPrimaryQlClass() { result = "ScopeResolution" }
-
-  final override string toString() { result = "...::" + this.getName() }
 
   /**
    * Gets the expression representing the scope, if any. In the following
@@ -237,8 +215,6 @@ class Pair extends Expr, @pair {
   final override Pair::Range range;
 
   final override string getAPrimaryQlClass() { result = "Pair" }
-
-  final override string toString() { result = "Pair" }
 
   /**
    * Gets the key expression of this pair. For example, the `SymbolLiteral`

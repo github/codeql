@@ -2,27 +2,20 @@ private import codeql_ruby.AST
 private import internal.Pattern
 private import internal.TreeSitter
 private import internal.Variable
+private import internal.Parameter
 
 /** A parameter. */
 class Parameter extends AstNode {
-  private int pos;
-
-  Parameter() {
-    this = any(Generated::BlockParameters bp).getChild(pos)
-    or
-    this = any(Generated::MethodParameters mp).getChild(pos)
-    or
-    this = any(Generated::LambdaParameters lp).getChild(pos)
-  }
+  override Parameter::Range range;
 
   /** Gets the callable that this parameter belongs to. */
   final Callable getCallable() { result.getAParameter() = this }
 
   /** Gets the zero-based position of this parameter. */
-  final int getPosition() { result = pos }
+  final int getPosition() { result = range.getPosition() }
 
   /** Gets a variable introduced by this parameter. */
-  LocalVariable getAVariable() { none() }
+  LocalVariable getAVariable() { result = range.getAVariable() }
 
   /** Gets the variable named `name` introduced by this parameter. */
   final LocalVariable getVariable(string name) {
@@ -37,23 +30,27 @@ class Parameter extends AstNode {
  * This includes both simple parameters and tuple parameters.
  */
 class PatternParameter extends Parameter, Pattern {
+  override PatternParameter::Range range;
+
   override LocalVariable getAVariable() { result = Pattern.super.getAVariable() }
 }
 
 /** A parameter defined using a tuple pattern. */
 class TuplePatternParameter extends PatternParameter, TuplePattern {
+  override TuplePatternParameter::Range range;
+
   final override string getAPrimaryQlClass() { result = "TuplePatternParameter" }
 }
 
 /** A named parameter. */
 class NamedParameter extends Parameter {
-  NamedParameter() { not this instanceof TuplePattern }
+  override NamedParameter::Range range;
 
   /** Gets the name of this parameter. */
-  string getName() { none() }
+  final string getName() { result = range.getName() }
 
   /** Gets the variable introduced by this parameter. */
-  LocalVariable getVariable() { none() }
+  LocalVariable getVariable() { result = range.getVariable() }
 
   override LocalVariable getAVariable() { result = this.getVariable() }
 
@@ -63,15 +60,13 @@ class NamedParameter extends Parameter {
 
 /** A simple (normal) parameter. */
 class SimpleParameter extends NamedParameter, PatternParameter, VariablePattern {
-  final override string getName() { result = range.getVariableName() }
+  override SimpleParameter::Range range;
 
-  final override LocalVariable getVariable() { result = TLocalVariable(_, _, this) }
+  final override LocalVariable getVariable() { result = range.getVariable() }
 
-  final override LocalVariable getAVariable() { result = this.getVariable() }
+  final override LocalVariable getAVariable() { result = range.getAVariable() }
 
   final override string getAPrimaryQlClass() { result = "SimpleParameter" }
-
-  final override string toString() { result = this.getName() }
 }
 
 /**
@@ -83,15 +78,11 @@ class SimpleParameter extends NamedParameter, PatternParameter, VariablePattern 
  * ```
  */
 class BlockParameter extends @block_parameter, NamedParameter {
-  final override Generated::BlockParameter generated;
+  final override BlockParameter::Range range;
 
-  final override LocalVariable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
+  final override LocalVariable getVariable() { result = range.getVariable() }
 
   final override string getAPrimaryQlClass() { result = "BlockParameter" }
-
-  final override string toString() { result = "&" + this.getName() }
-
-  final override string getName() { result = generated.getName().getValue() }
 }
 
 /**
@@ -104,15 +95,9 @@ class BlockParameter extends @block_parameter, NamedParameter {
  * ```
  */
 class HashSplatParameter extends @hash_splat_parameter, NamedParameter {
-  final override Generated::HashSplatParameter generated;
-
-  final override LocalVariable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
+  final override HashSplatParameter::Range range;
 
   final override string getAPrimaryQlClass() { result = "HashSplatParameter" }
-
-  final override string toString() { result = "**" + this.getName() }
-
-  final override string getName() { result = generated.getName().getValue() }
 }
 
 /**
@@ -127,13 +112,9 @@ class HashSplatParameter extends @hash_splat_parameter, NamedParameter {
  * ```
  */
 class KeywordParameter extends @keyword_parameter, NamedParameter {
-  final override Generated::KeywordParameter generated;
-
-  final override LocalVariable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
+  final override KeywordParameter::Range range;
 
   final override string getAPrimaryQlClass() { result = "KeywordParameter" }
-
-  final override string getName() { result = generated.getName().getValue() }
 
   /**
    * Gets the default value, i.e. the value assigned to the parameter when one
@@ -141,15 +122,13 @@ class KeywordParameter extends @keyword_parameter, NamedParameter {
    * have a default value, this predicate has no result.
    * TODO: better return type (Expr?)
    */
-  final AstNode getDefaultValue() { result = generated.getValue() }
+  final AstNode getDefaultValue() { result = range.getDefaultValue() }
 
   /**
    * Holds if the parameter is optional. That is, there is a default value that
    * is used when the caller omits this parameter.
    */
   final predicate isOptional() { exists(this.getDefaultValue()) }
-
-  final override string toString() { result = this.getName() }
 }
 
 /**
@@ -162,22 +141,16 @@ class KeywordParameter extends @keyword_parameter, NamedParameter {
  * ```
  */
 class OptionalParameter extends @optional_parameter, NamedParameter {
-  final override Generated::OptionalParameter generated;
-
-  final override LocalVariable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
+  final override OptionalParameter::Range range;
 
   final override string getAPrimaryQlClass() { result = "OptionalParameter" }
-
-  final override string toString() { result = this.getName() }
-
-  final override string getName() { result = generated.getName().getValue() }
 
   /**
    * Gets the default value, i.e. the value assigned to the parameter when one
    * is not provided by the caller.
    * TODO: better return type (Expr?)
    */
-  final AstNode getDefaultValue() { result = generated.getValue() }
+  final AstNode getDefaultValue() { result = range.getDefaultValue() }
 }
 
 /**
@@ -189,13 +162,7 @@ class OptionalParameter extends @optional_parameter, NamedParameter {
  * ```
  */
 class SplatParameter extends @splat_parameter, NamedParameter {
-  final override Generated::SplatParameter generated;
-
-  final override LocalVariable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
+  final override SplatParameter::Range range;
 
   final override string getAPrimaryQlClass() { result = "SplatParameter" }
-
-  final override string toString() { result = "*" + this.getName() }
-
-  final override string getName() { result = generated.getName().getValue() }
 }

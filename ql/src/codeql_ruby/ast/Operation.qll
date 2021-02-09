@@ -22,8 +22,6 @@ class UnaryOperation extends Operation, @unary {
 
   /** Gets the operand of this unary operation. */
   final Expr getOperand() { result = range.getOperand() }
-
-  override string toString() { result = this.getOperator() + " ..." }
 }
 
 /** A unary logical operation. */
@@ -105,8 +103,6 @@ class DefinedExpr extends UnaryOperation, @unary_definedquestion {
 /** A binary operation. */
 class BinaryOperation extends Operation, @binary {
   override BinaryOperation::Range range;
-
-  override string toString() { result = "... " + this.getOperator() + " ..." }
 
   /** Gets the left operand of this binary operation. */
   final Expr getLeftOperand() { result = range.getLeftOperand() }
@@ -447,8 +443,6 @@ class NoRegexMatchExpr extends BinaryOperation, @binary_bangtilde {
  */
 class Assignment extends Operation {
   override Assignment::Range range;
-
-  override string toString() { result = "... " + this.getOperator() + " ..." }
 
   /** Gets the left hand side of this assignment. */
   final Expr getLhs() { result = range.getLhs() }

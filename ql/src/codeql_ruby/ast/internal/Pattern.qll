@@ -1,5 +1,6 @@
 private import codeql_ruby.AST
 private import TreeSitter
+private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.ast.internal.Variable
 private import codeql_ruby.ast.internal.Method
 private import codeql.Locations
@@ -39,7 +40,7 @@ predicate implicitParameterAssignmentNode(Generated::AstNode n, Callable::Range 
 }
 
 module Pattern {
-  abstract class Range extends AstNode {
+  class Range extends AstNode::Range {
     cached
     Range() {
       explicitAssignmentNode(this, _)
@@ -49,42 +50,39 @@ module Pattern {
       implicitParameterAssignmentNode(this, _)
     }
 
-    abstract Variable getAVariable();
+    Variable getAVariable() { none() }
+
+    override string toString() { none() }
   }
 }
 
 module VariablePattern {
-  class Range extends Pattern::Range {
+  class Range extends Pattern::Range, @token_identifier {
     override Generated::Identifier generated;
 
     string getVariableName() { result = generated.getValue() }
 
     override Variable getAVariable() { access(this, result) }
+
+    override string toString() { result = this.getVariableName() }
   }
 }
 
 module TuplePattern {
-  abstract class Range extends Pattern::Range {
-    abstract Pattern::Range getElement(int i);
+  private class Range_ =
+    @destructured_parameter or @destructured_left_assignment or @left_assignment_list;
+
+  class Range extends Pattern::Range, Range_ {
+    Pattern::Range getElement(int i) {
+      result = this.(Generated::DestructuredParameter).getChild(i)
+      or
+      result = this.(Generated::DestructuredLeftAssignment).getChild(i)
+      or
+      result = this.(Generated::LeftAssignmentList).getChild(i)
+    }
 
     override Variable getAVariable() { result = this.getElement(_).getAVariable() }
-  }
 
-  private class ParameterTuplePatternRange extends Range {
-    override Generated::DestructuredParameter generated;
-
-    override Pattern::Range getElement(int i) { result = generated.getChild(i) }
-  }
-
-  private class AssignmentTuplePatternRange extends Range {
-    override Generated::DestructuredLeftAssignment generated;
-
-    override Pattern::Range getElement(int i) { result = generated.getChild(i) }
-  }
-
-  private class AssignmentListPatternRange extends Range {
-    override Generated::LeftAssignmentList generated;
-
-    override Pattern::Range getElement(int i) { result = generated.getChild(i) }
+    override string toString() { result = "(..., ...)" }
   }
 }
