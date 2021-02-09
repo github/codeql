@@ -14,7 +14,7 @@ public class ParsedProject {
     this.allFiles = allFiles;
   }
 
-  /** Returns the <tt>tsconfig.json</tt> file that defines this project. */
+  /** Returns the <code>tsconfig.json</code> file that defines this project. */
   public File getTsConfigFile() {
     return tsConfigFile;
   }

@@ -4,7 +4,7 @@ import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 import java.util.List;
 
-/** An instantiation of a named type, such as <tt>Array&lt;number&gt;</tt> */
+/** An instantiation of a named type, such as <code>Array&lt;number&gt;</code> */
 public class GenericTypeExpr extends TypeExpression {
   private final ITypeExpression typeName; // Always Identifier or MemberExpression
   private final List<ITypeExpression> typeArguments;
