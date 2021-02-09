@@ -1,13 +1,7 @@
 * SQL injection example
 ** Setup and sample run
-   Note: The Python call 
-   : conn.execute(query)
-   to sqlite3 only allows one statement and produces an exception:
-   : sqlite3.Warning: You can only execute one statement at a time.
-   This makes it safer than the raw
-   : sqlite3_exec() 
-   or Python's
-   : conn.executescript
+   Execute the following in a bourne-style shell, one block at a time to see
+   results. 
 
   #+BEGIN_SRC sh
     # Prepare db
@@ -50,3 +44,35 @@
    #+END_SRC
    # Versions:
    # ~/local/db/python-sqli-6a5a10d
+
+** Queries
+   Written against v1.26.0 of the libraries, using v2.4.3 of the cli.  For
+   example, using 
+   #+BEGIN_SRC sh
+     cd ~/local/vmsync/ql
+     git checkout v1.26.0
+   #+END_SRC
+   you should add the =ql/= tree 
+   : ~/local/vmsync/ql
+   to the VS Code workspace.
+** Reading Order
+   The queries introduce CodeQL concepts and should be read bottom-up in this
+   order:
+   1. =source.ql=: introduces Value, ControlFlowNode and DataFlow::Node
+   2. =sink.ql=: introduces AstNode
+   3. =TaintFlowTemplate.ql=: introduce the taint flow template
+   4. =TaintFlow.ql=: taint flow with endpoints only
+   5. =TaintFlowPath.ql=: taint flow with full path
+
+
+** Note on the Python code
+   The Python call 
+   : conn.execute(query)
+   to sqlite3 only allows one statement and produces an exception:
+   : sqlite3.Warning: You can only execute one statement at a time.
+   This makes it safer than the raw
+   : sqlite3_exec() 
+   or Python's
+   : conn.executescript
+   
+   For this tutorial, we use the multi-statement =executescript()= call.
