@@ -1437,6 +1437,22 @@ predicate functionEnsuresInputIsConstant(
 }
 
 /**
+ * Holds if whenever `outputNode` satisfies `p`, `inputNode` matched a constant
+ * in a case clause of a switch statement.
+ */
+pragma[noinline]
+predicate inputIsConstantIfOutputHasProperty(
+  DataFlow::Node inputNode, DataFlow::Node outputNode, DataFlow::Property p
+) {
+  exists(Function f, FunctionInput inp, FunctionOutput outp, DataFlow::CallNode call |
+    functionEnsuresInputIsConstant(f, inp, outp, p) and
+    call = f.getACall() and
+    inputNode = inp.getNode(call) and
+    DataFlow::localFlow(outp.getNode(call), outputNode)
+  )
+}
+
+/**
  * A comparison against a list of constants, acting as a sanitizer guard for
  * `guardedExpr` by restricting it to a known value.
  *
@@ -1449,15 +1465,9 @@ class ListOfConstantsComparisonSanitizerGuard extends TaintTracking::DefaultTain
   boolean outcome;
 
   ListOfConstantsComparisonSanitizerGuard() {
-    exists(
-      Function f, FunctionInput inp, FunctionOutput outp, DataFlow::CallNode call,
-      DataFlow::Property p, DataFlow::Node res
-    |
-      functionEnsuresInputIsConstant(f, inp, outp, p) and
-      call = f.getACall() and
-      guardedExpr = inp.getNode(call) and
-      p.checkOn(this, outcome, res) and
-      DataFlow::localFlow(outp.getNode(call), res)
+    exists(DataFlow::Node outputNode, DataFlow::Property p |
+      inputIsConstantIfOutputHasProperty(guardedExpr, outputNode, p) and
+      p.checkOn(this, outcome, outputNode)
     )
   }
 
