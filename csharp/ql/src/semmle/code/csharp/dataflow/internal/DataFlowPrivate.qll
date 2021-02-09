@@ -209,6 +209,10 @@ module LocalFlow {
         e1 = e2.(SwitchExpr).getACase().getBody() and
         scope = e2 and
         isSuccessor = true
+        or
+        e1 = e2.(WithExpr).getExpr() and
+        scope = e2 and
+        isSuccessor = true
       )
     }
 
@@ -451,10 +455,23 @@ private predicate fieldOrPropertyStore(Expr e, Content c, Expr src, Expr q, bool
       postUpdate = true
     )
     or
+    // `with` expression initializer, `x with { f = src }`
+    e =
+      any(WithExpr we |
+        exists(MemberInitializer mi |
+          q = we and
+          mi = we.getInitializer().getAMemberInitializer() and
+          f = mi.getInitializedMember() and
+          src = mi.getRValue() and
+          postUpdate = false
+        )
+      )
+    or
     // Object initializer, `new C() { f = src }`
     exists(MemberInitializer mi |
       e = q and
       mi = q.(ObjectInitializer).getAMemberInitializer() and
+      q.getParent() instanceof ObjectCreation and
       f = mi.getInitializedMember() and
       src = mi.getRValue() and
       postUpdate = false
@@ -781,6 +798,8 @@ private module Cached {
   cached
   predicate clearsContent(Node n, Content c) {
     fieldOrPropertyStore(_, c, _, n.asExpr(), true)
+    or
+    fieldOrPropertyStore(_, c, _, n.asExpr().(WithExpr), false)
     or
     fieldOrPropertyStore(_, c, _, n.(ObjectInitializerNode).getInitializer(), false)
     or
