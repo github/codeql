@@ -2,7 +2,6 @@ private import codeql_ruby.AST
 private import codeql_ruby.CFG
 private import internal.Statement
 private import codeql_ruby.controlflow.internal.ControlFlowGraphImpl
-private import codeql_ruby.ast.internal.TreeSitter
 
 /**
  * A statement.
@@ -42,15 +41,7 @@ class ReturningStmt extends Stmt {
   final override string toString() { result = range.toString() }
 
   /** Gets the returned value, if any. */
-  final Expr getValue() {
-    exists(Generated::ArgumentList a, int c |
-      a = range.getArgumentList() and c = count(a.getChild(_))
-    |
-      result = a.getChild(0) and c = 1
-      or
-      result = a and c > 1
-    )
-  }
+  final Expr getValue() { result = range.getValue() }
 }
 
 /**

@@ -8,6 +8,16 @@ module Stmt {
 module ReturningStmt {
   abstract class Range extends Stmt::Range {
     abstract Generated::ArgumentList getArgumentList();
+
+    final Expr getValue() {
+      exists(Generated::ArgumentList a, int c |
+        a = this.getArgumentList() and c = count(a.getChild(_))
+      |
+        result = a.getChild(0) and c = 1
+        or
+        result = a and c > 1
+      )
+    }
   }
 }
 
