@@ -56,6 +56,41 @@ def test_import():
     y # $tracked
     mymodule.z # $tracked
 
+
+def to_inner_scope():
+    x = tracked # $tracked
+    def foo():
+        y = x # $ MISSING: tracked
+        return y # $ MISSING: tracked
+    also_x = foo() # $ MISSING: tracked
+    print(also_x) # $ MISSING: tracked
+
+
+def my_decorator(func):
+    # This part doesn't make any sense in a normal decorator, but just shows how we
+    # handle type-tracking
+
+    func() # $tracked
+
+    def wrapper():
+        print("before function call")
+        val = func() # $ MISSING: tracked
+        print("after function call")
+        return val # $ MISSING: tracked
+    return wrapper
+
+@my_decorator
+def get_tracked2():
+    return tracked # $tracked
+
+@my_decorator
+def unrelated_func():
+    return "foo"
+
+def use_funcs_with_decorators():
+    x = get_tracked2() # $ MISSING: tracked
+    y = unrelated_func()
+
 # ------------------------------------------------------------------------------
 
 def expects_int(x): # $int
