@@ -51,6 +51,8 @@ module Pattern {
     }
 
     Variable getAVariable() { none() }
+
+    override string toString() { none() }
   }
 }
 
@@ -81,6 +83,6 @@ module TuplePattern {
 
     override Variable getAVariable() { result = this.getElement(_).getAVariable() }
 
-    final override string toString() { result = "(..., ...)" }
+    override string toString() { result = "(..., ...)" }
   }
 }

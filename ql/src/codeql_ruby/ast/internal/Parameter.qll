@@ -21,6 +21,8 @@ module Parameter {
     final int getPosition() { result = pos }
 
     LocalVariable getAVariable() { none() }
+
+    override string toString() { none() }
   }
 }
 
@@ -49,12 +51,16 @@ module SimpleParameter {
 module PatternParameter {
   class Range extends Parameter::Range, Pattern::Range {
     override LocalVariable getAVariable() { result = this.(Pattern::Range).getAVariable() }
+
+    override string toString() { none() }
   }
 }
 
 module TuplePatternParameter {
   class Range extends PatternParameter::Range, TuplePattern::Range {
     override LocalVariable getAVariable() { result = TuplePattern::Range.super.getAVariable() }
+
+    override string toString() { result = TuplePattern::Range.super.toString() }
   }
 }
 

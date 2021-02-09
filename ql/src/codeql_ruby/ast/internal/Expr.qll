@@ -68,7 +68,7 @@ module RegexLiteral {
 
     final override string toString() {
       result =
-        concat(AstNode c, int i, string s |
+        concat(Generated::AstNode c, int i, string s |
           c = generated.getChild(i) and
           if c instanceof Generated::Token
           then s = c.(Generated::Token).getValue()
@@ -92,7 +92,7 @@ module StringLiteral {
 
     final override string toString() {
       result =
-        concat(AstNode c, int i, string s |
+        concat(Generated::AstNode c, int i, string s |
           c = generated.getChild(i) and
           if c instanceof Generated::Token
           then s = c.(Generated::Token).getValue()
@@ -127,7 +127,7 @@ module SymbolLiteral {
 
     private string summaryString() {
       result =
-        concat(AstNode c, int i, string s |
+        concat(Generated::AstNode c, int i, string s |
           c = this.getChild(i) and
           if c instanceof Generated::Token
           then s = c.(Generated::Token).getValue()
