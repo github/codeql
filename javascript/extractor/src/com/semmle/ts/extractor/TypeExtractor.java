@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Extracts type and symbol information into TRAP files.
  *
- * <p>This is closely coupled with the <tt>type_table.ts</tt> file in the parser-wrapper. Type
+ * <p>This is closely coupled with the <code>type_table.ts</code> file in the parser-wrapper. Type
  * strings and symbol strings generated in that file are parsed here. See that file for reference
  * and documentation.
  */

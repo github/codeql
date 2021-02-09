@@ -253,7 +253,7 @@ public class ASTExtractor {
 
     /**
      * An identifier that refers to a variable from inside a type, i.e. the operand to a
-     * <tt>typeof</tt> type or left operand to an <tt>is</tt> type.
+     * <code>typeof</code> type or left operand to an <code>is</code> type.
      *
      * <p>This is generally treated as a type, except a variable binding will be emitted for it.
      */
@@ -288,7 +288,7 @@ public class ASTExtractor {
     VAR_AND_TYPE_AND_NAMESPACE_DECL,
 
     /**
-     * An identifier that occurs as part of a named export, such as <tt>export { A }</tt>.
+     * An identifier that occurs as part of a named export, such as <code>export { A }</code>.
      *
      * <p>This may refer to a variable, type, and/or a namespace, and will export exactly those that
      * can be resolved.
@@ -301,7 +301,7 @@ public class ASTExtractor {
 
     /**
      * An identifier that occurs as a qualified name in a default export expression, such as
-     * <tt>A</tt> in <tt>export default A.B</tt>.
+     * <code>A</code> in <code>export default A.B</code>.
      *
      * <p>This acts like {@link #EXPORT}, except it cannot refer to a type (i.e. it must be a
      * variable and/or a namespace).
