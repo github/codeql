@@ -62,23 +62,4 @@ module HtmlTemplate {
       input = inp and output = outp
     }
   }
-
-  private class MethodModels extends TaintTracking::FunctionModel, Method {
-    FunctionInput inp;
-    FunctionOutput outp;
-
-    MethodModels() {
-      // signature: func (*Template).Execute(wr io.Writer, data interface{}) error
-      hasQualifiedName("html/template", "Template", "Execute") and
-      (inp.isParameter(1) and outp.isParameter(0))
-      or
-      // signature: func (*Template).ExecuteTemplate(wr io.Writer, name string, data interface{}) error
-      hasQualifiedName("html/template", "Template", "ExecuteTemplate") and
-      (inp.isParameter(2) and outp.isParameter(0))
-    }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input = inp and output = outp
-    }
-  }
 }
