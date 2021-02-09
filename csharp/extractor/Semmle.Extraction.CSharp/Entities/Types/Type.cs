@@ -155,7 +155,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 baseLists
                     .Where(bl => bl != null)
-                    .SelectMany(bl => bl.Types)
+                    .SelectMany(bl => bl!.Types)
                     .Zip(
                         baseTypes.Where(bt => bt.symbol.SpecialType != SpecialType.System_Object),
                         (s, t) => TypeMention.Create(Context, s.Type, this, t))
@@ -291,8 +291,8 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 public static DelegateTypeParameterFactory Instance { get; } = new DelegateTypeParameterFactory();
 
-                public DelegateTypeParameter Create(Context cx, (IParameterSymbol, IEntity, Parameter) init) =>
-                    new DelegateTypeParameter(cx, init.Item1, init.Item2, init.Item3);
+                public DelegateTypeParameter Create(Extraction.Context cx, (IParameterSymbol, IEntity, Parameter) init) =>
+                    new DelegateTypeParameter((Context)cx, init.Item1, init.Item2, init.Item3);
             }
         }
 

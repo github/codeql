@@ -102,7 +102,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static IndexerFactory Instance { get; } = new IndexerFactory();
 
-            public Indexer Create(Context cx, IPropertySymbol init) => new Indexer(cx, init);
+            public Indexer Create(Extraction.Context cx, IPropertySymbol init) => new Indexer((Context)cx, init);
         }
     }
 }

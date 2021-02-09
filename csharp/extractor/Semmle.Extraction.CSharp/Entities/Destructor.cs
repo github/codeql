@@ -30,7 +30,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static DestructorFactory Instance { get; } = new DestructorFactory();
 
-            public Destructor Create(Context cx, IMethodSymbol init) => new Destructor(cx, init);
+            public Destructor Create(Extraction.Context cx, IMethodSymbol init) => new Destructor((Context)cx, init);
         }
     }
 }

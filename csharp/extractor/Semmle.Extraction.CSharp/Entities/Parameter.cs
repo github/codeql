@@ -110,7 +110,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent, Original);
 
             foreach (var l in symbol.Locations)
-                trapFile.param_location(this, Context.Create(l));
+                trapFile.param_location(this, Context.CreateLocation(l));
 
             if (!IsSourceDeclaration || !symbol.FromSource())
                 return;
@@ -173,7 +173,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static ParameterFactory Instance { get; } = new ParameterFactory();
 
-            public Parameter Create(Context cx, (IParameterSymbol, IEntity, Parameter) init) => new Parameter(cx, init.Item1, init.Item2, init.Item3);
+            public Parameter Create(Extraction.Context cx, (IParameterSymbol, IEntity, Parameter) init) => new Parameter((Context)cx, init.Item1, init.Item2, init.Item3);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
@@ -214,7 +214,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static VarargsTypeFactory Instance { get; } = new VarargsTypeFactory();
 
-            public VarargsType Create(Context cx, string init) => new VarargsType(cx);
+            public VarargsType Create(Extraction.Context cx, string init) => new VarargsType((Context)cx);
         }
     }
 
@@ -249,7 +249,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static VarargsParamFactory Instance { get; } = new VarargsParamFactory();
 
-            public VarargsParam Create(Context cx, Method init) => new VarargsParam(cx, init);
+            public VarargsParam Create(Extraction.Context cx, Method init) => new VarargsParam((Context)cx, init);
         }
     }
 
@@ -277,8 +277,8 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static ExtensionParamFactory Instance { get; } = new ExtensionParamFactory();
 
-            public ConstructedExtensionParameter Create(Context cx, (Method, Parameter) init) =>
-                new ConstructedExtensionParameter(cx, init.Item1, init.Item2);
+            public ConstructedExtensionParameter Create(Extraction.Context cx, (Method, Parameter) init) =>
+                new ConstructedExtensionParameter((Context)cx, init.Item1, init.Item2);
         }
     }
 }

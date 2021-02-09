@@ -2,7 +2,7 @@ using System.IO;
 
 namespace Semmle.Extraction.Entities
 {
-    internal sealed class Folder : CachedEntity<PathTransformer.ITransformedPath>
+    public sealed class Folder : CachedEntity<PathTransformer.ITransformedPath>
     {
         private Folder(Context cx, PathTransformer.ITransformedPath init) : base(cx, init) { }
 

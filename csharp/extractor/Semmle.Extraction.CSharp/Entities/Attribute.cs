@@ -118,7 +118,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private Semmle.Extraction.Entities.Location location;
         private Semmle.Extraction.Entities.Location Location =>
-            location ?? (location = Semmle.Extraction.Entities.Location.Create(Context, attributeSyntax is null ? entity.ReportingLocation : attributeSyntax.Name.GetLocation()));
+            location ?? (location = Context.CreateLocation(attributeSyntax is null ? entity.ReportingLocation : attributeSyntax.Name.GetLocation()));
 
         public override bool NeedsPopulation => true;
 
@@ -140,8 +140,8 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static readonly AttributeFactory Instance = new AttributeFactory();
 
-            public Attribute Create(Context cx, (AttributeData attributeData, IEntity receiver) init) =>
-                new Attribute(cx, init.attributeData, init.receiver);
+            public Attribute Create(Extraction.Context cx, (AttributeData attributeData, IEntity receiver) init) =>
+                new Attribute((Context)cx, init.attributeData, init.receiver);
         }
     }
 }

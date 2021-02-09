@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
     internal class Do : Statement<DoStatementSyntax>
     {
         private Do(Context cx, DoStatementSyntax node, IStatementParentEntity parent, int child)
-            : base(cx, node, StmtKind.DO, parent, child, cx.Create(node.GetLocation())) { }
+            : base(cx, node, StmtKind.DO, parent, child, cx.CreateLocation(node.GetLocation())) { }
 
         public static Do Create(Context cx, DoStatementSyntax node, IStatementParentEntity parent, int child)
         {

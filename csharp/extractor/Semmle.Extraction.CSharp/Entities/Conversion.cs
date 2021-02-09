@@ -30,7 +30,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static ConversionFactory Instance { get; } = new ConversionFactory();
 
-            public Conversion Create(Context cx, IMethodSymbol init) => new Conversion(cx, init);
+            public Conversion Create(Extraction.Context cx, IMethodSymbol init) => new Conversion((Context)cx, init);
         }
     }
 }

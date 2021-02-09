@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            location = Context.Create(Location);
+            location = Context.CreateLocation(Location);
             trapFile.commentline(this, Type == CommentLineType.MultilineContinuation ? CommentLineType.Multiline : Type, Text, RawText);
             trapFile.commentline_location(this, location);
         }
@@ -34,7 +34,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            trapFile.WriteSubId(Context.Create(Location));
+            trapFile.WriteSubId(Context.CreateLocation(Location));
             trapFile.Write(";commentline");
         }
 
@@ -48,8 +48,8 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static CommentLineFactory Instance { get; } = new CommentLineFactory();
 
-            public CommentLine Create(Context cx, (Microsoft.CodeAnalysis.Location, CommentLineType, string, string) init) =>
-                new CommentLine(cx, init.Item1, init.Item2, init.Item3, init.Item4);
+            public CommentLine Create(Extraction.Context cx, (Microsoft.CodeAnalysis.Location, CommentLineType, string, string) init) =>
+                new CommentLine((Context)cx, init.Item1, init.Item2, init.Item3, init.Item4);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;

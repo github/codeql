@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static LocalFunctionFactory Instance { get; } = new LocalFunctionFactory();
 
-            public LocalFunction Create(Context cx, IMethodSymbol init) => new LocalFunction(cx, init);
+            public LocalFunction Create(Extraction.Context cx, IMethodSymbol init) => new LocalFunction((Context)cx, init);
         }
 
         public override void Populate(TextWriter trapFile)

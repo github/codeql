@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp
     /// </summary>
     public sealed class Analyser : IDisposable
     {
-        private IExtractor extractor;
+        private Extraction.Extractor extractor;
         private CSharpCompilation compilation;
         private Layout layout;
         private bool init;
@@ -230,7 +230,7 @@ namespace Semmle.Extraction.CSharp
                 var projectLayout = layout.LookupProjectOrDefault(transformedAssemblyPath);
                 var trapWriter = projectLayout.CreateTrapWriter(Logger, transformedAssemblyPath, options.TrapCompression, discardDuplicates: false);
                 compilationTrapFile = trapWriter;  // Dispose later
-                var cx = extractor.CreateContext(compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath), AddAssemblyTrapPrefix);
+                var cx = new CSharp.Context(extractor, compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath), AddAssemblyTrapPrefix);
 
                 compilationEntity = Entities.Compilation.Create(cx);
             }
@@ -285,14 +285,14 @@ namespace Semmle.Extraction.CSharp
 
                     if (c.GetAssemblyOrModuleSymbol(r) is IAssemblySymbol assembly)
                     {
-                        var cx = extractor.CreateContext(c, trapWriter, new AssemblyScope(assembly, assemblyPath), AddAssemblyTrapPrefix);
+                        var cx = new CSharp.Context(extractor, c, trapWriter, new AssemblyScope(assembly, assemblyPath), AddAssemblyTrapPrefix);
 
                         foreach (var module in assembly.Modules)
                         {
                             AnalyseNamespace(cx, module.GlobalNamespace);
                         }
 
-                        Entities.Attribute.ExtractAttributes(cx, assembly, Extraction.Entities.Assembly.Create(cx, assembly.GetSymbolLocation()));
+                        Entities.Attribute.ExtractAttributes(cx, assembly, Entities.Assembly.Create(cx, assembly.GetSymbolLocation()));
 
                         cx.PopulateAll();
                     }
@@ -371,10 +371,10 @@ namespace Semmle.Extraction.CSharp
 
                     if (!upToDate)
                     {
-                        var cx = extractor.CreateContext(compilation.Clone(), trapWriter, new SourceScope(tree), AddAssemblyTrapPrefix);
+                        var cx = new CSharp.Context(extractor, compilation.Clone(), trapWriter, new SourceScope(tree), AddAssemblyTrapPrefix);
                         // Ensure that the file itself is populated in case the source file is totally empty
                         var root = tree.GetRoot();
-                        Extraction.Entities.File.Create(cx, root.SyntaxTree.FilePath);
+                        Entities.File.Create(cx, root.SyntaxTree.FilePath);
 
                         var csNode = (CSharpSyntaxNode)root;
                         csNode.Accept(new CompilationUnitVisitor(cx));

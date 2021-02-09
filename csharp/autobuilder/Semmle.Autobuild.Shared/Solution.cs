@@ -45,6 +45,7 @@ namespace Semmle.Autobuild.Shared
         private readonly SolutionFile? solution;
 
         private readonly IEnumerable<Project> includedProjects;
+
         public override IEnumerable<IProjectOrSolution> IncludedProjects => includedProjects;
 
         public IEnumerable<SolutionConfigurationInSolution> Configurations =>
@@ -86,6 +87,8 @@ namespace Semmle.Autobuild.Shared
 
         private IEnumerable<Version> ToolsVersions => includedProjects.Where(p => p.ValidToolsVersion).Select(p => p.ToolsVersion);
 
-        public Version ToolsVersion => ToolsVersions.Any() ? ToolsVersions.Max() : new Version();
+        public Version ToolsVersion => ToolsVersions.Any()
+            ? ToolsVersions.Max()!
+            : new Version();
     }
 }

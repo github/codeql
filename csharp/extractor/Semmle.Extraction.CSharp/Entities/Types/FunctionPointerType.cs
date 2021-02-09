@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static FunctionPointerTypeFactory Instance { get; } = new FunctionPointerTypeFactory();
 
-            public FunctionPointerType Create(Context cx, IFunctionPointerTypeSymbol init) => new FunctionPointerType(cx, init);
+            public FunctionPointerType Create(Extraction.Context cx, IFunctionPointerTypeSymbol init) => new FunctionPointerType((Context)cx, init);
         }
     }
 }

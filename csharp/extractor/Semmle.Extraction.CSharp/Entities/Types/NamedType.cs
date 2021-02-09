@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// For example, `(int, string)` will result in an entity for
         /// `System.ValueTuple<int, string>`.
         /// </summary>
-        public static NamedType CreateNamedTypeFromTupleType(Context cx, INamedTypeSymbol type) =>
+        public static NamedType CreateNamedTypeFromTupleType(Extraction.Context cx, INamedTypeSymbol type) =>
             UnderlyingTupleTypeFactory.Instance.CreateEntity(cx, (new SymbolEqualityWrapper(type), typeof(TupleType)), type);
 
         public override bool NeedsPopulation => base.NeedsPopulation || symbol.TypeKind == TypeKind.Error;
@@ -106,7 +106,7 @@ namespace Semmle.Extraction.CSharp.Entities
             get
             {
                 foreach (var l in GetLocations(symbol))
-                    yield return Context.Create(l);
+                    yield return Context.CreateLocation(l);
 
                 if (Context.Extractor.OutputPath != null && symbol.DeclaringSyntaxReferences.Any())
                     yield return Assembly.CreateOutputAssembly(Context);
@@ -153,14 +153,14 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static NamedTypeFactory Instance { get; } = new NamedTypeFactory();
 
-            public NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init, false);
+            public NamedType Create(Extraction.Context cx, INamedTypeSymbol init) => new NamedType((Context)cx, init, false);
         }
 
         private class UnderlyingTupleTypeFactory : ICachedEntityFactory<INamedTypeSymbol, NamedType>
         {
             public static UnderlyingTupleTypeFactory Instance { get; } = new UnderlyingTupleTypeFactory();
 
-            public NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init, true);
+            public NamedType Create(Extraction.Context cx, INamedTypeSymbol init) => new NamedType((Context)cx, init, true);
         }
 
         // Do not create typerefs of constructed generics as they are always in the current trap file.
@@ -190,7 +190,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static NamedTypeRefFactory Instance { get; } = new NamedTypeRefFactory();
 
-            public NamedTypeRef Create(Context cx, INamedTypeSymbol init) => new NamedTypeRef(cx, init);
+            public NamedTypeRef Create(Extraction.Context cx, INamedTypeSymbol init) => new NamedTypeRef((Context)cx, init);
         }
 
         public override bool NeedsPopulation => true;

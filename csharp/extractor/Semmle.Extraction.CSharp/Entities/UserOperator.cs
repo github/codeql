@@ -189,7 +189,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static UserOperatorFactory Instance { get; } = new UserOperatorFactory();
 
-            public UserOperator Create(Context cx, IMethodSymbol init) => new UserOperator(cx, init);
+            public UserOperator Create(Extraction.Context cx, IMethodSymbol init) => new UserOperator((Context)cx, init);
         }
     }
 }

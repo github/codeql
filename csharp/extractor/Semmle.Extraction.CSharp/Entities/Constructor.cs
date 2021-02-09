@@ -60,7 +60,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             var initInfo = new ExpressionInfo(Context,
                 AnnotatedTypeSymbol.CreateNotAnnotated(initializerType),
-                Context.Create(initializer.ThisOrBaseKeyword.GetLocation()),
+                Context.CreateLocation(initializer.ThisOrBaseKeyword.GetLocation()),
                 Kinds.ExprKind.CONSTRUCTOR_INIT,
                 this,
                 -1,
@@ -149,7 +149,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static ConstructorFactory Instance { get; } = new ConstructorFactory();
 
-            public Constructor Create(Context cx, IMethodSymbol init) => new Constructor(cx, init);
+            public Constructor Create(Extraction.Context cx, IMethodSymbol init) => new Constructor((Context)cx, init);
         }
     }
 }

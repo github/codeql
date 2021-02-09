@@ -57,7 +57,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static LocalVariableFactory Instance { get; } = new LocalVariableFactory();
 
-            public LocalVariable Create(Context cx, ISymbol init) => new LocalVariable(cx, init);
+            public LocalVariable Create(Extraction.Context cx, ISymbol init) => new LocalVariable((Context)cx, init);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NeedsLabel;

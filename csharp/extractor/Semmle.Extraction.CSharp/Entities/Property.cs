@@ -84,7 +84,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     Context.PopulateLater(() =>
                     {
-                        var loc = Context.Create(initializer.GetLocation());
+                        var loc = Context.CreateLocation(initializer!.GetLocation());
                         var annotatedType = AnnotatedTypeSymbol.CreateNotAnnotated(symbol.Type);
                         var simpleAssignExpr = new Expression(new ExpressionInfo(Context, annotatedType, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, null));
                         Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer.Value, simpleAssignExpr, 0));
@@ -128,7 +128,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static PropertyFactory Instance { get; } = new PropertyFactory();
 
-            public Property Create(Context cx, IPropertySymbol init) => new Property(cx, init);
+            public Property Create(Extraction.Context cx, IPropertySymbol init) => new Property((Context)cx, init);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;

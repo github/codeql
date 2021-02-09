@@ -27,8 +27,8 @@ namespace Semmle.Autobuild.Shared
             {
                 var firstSolution = builder.ProjectsOrSolutionsToBuild.OfType<ISolution>().FirstOrDefault();
                 vsTools = firstSolution != null
-                                ? BuildTools.FindCompatibleVcVars(builder.Actions, firstSolution)
-                                : BuildTools.VcVarsAllBatFiles(builder.Actions).OrderByDescending(b => b.ToolsVersion).FirstOrDefault();
+                    ? BuildTools.FindCompatibleVcVars(builder.Actions, firstSolution)
+                    : BuildTools.VcVarsAllBatFiles(builder.Actions).OrderByDescending(b => b.ToolsVersion).FirstOrDefault();
             }
 
             if (vsTools == null && builder.Actions.IsWindows())

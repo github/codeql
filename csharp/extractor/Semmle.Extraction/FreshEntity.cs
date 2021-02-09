@@ -7,7 +7,7 @@ namespace Semmle.Extraction
     /// </summary>
     public abstract class FreshEntity : IEntity
     {
-        protected Context cx { get; }
+        protected virtual Context cx { get; }
 
         protected FreshEntity(Context cx)
         {

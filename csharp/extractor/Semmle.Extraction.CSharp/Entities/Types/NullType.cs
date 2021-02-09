@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static NullTypeFactory Instance { get; } = new NullTypeFactory();
 
-            public NullType Create(Context cx, ITypeSymbol init) => new NullType(cx);
+            public NullType Create(Extraction.Context cx, ITypeSymbol init) => new NullType((Context)cx);
         }
     }
 }

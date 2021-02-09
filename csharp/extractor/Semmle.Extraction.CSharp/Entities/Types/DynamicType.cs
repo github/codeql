@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static DynamicTypeFactory Instance { get; } = new DynamicTypeFactory();
 
-            public DynamicType Create(Context cx, IDynamicTypeSymbol init) => new DynamicType(cx, init);
+            public DynamicType Create(Extraction.Context cx, IDynamicTypeSymbol init) => new DynamicType((Context)cx, init);
         }
     }
 }

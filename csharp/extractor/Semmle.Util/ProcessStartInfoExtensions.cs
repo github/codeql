@@ -16,7 +16,7 @@ namespace Semmle.Util
             string? s;
             do
             {
-                s = process.StandardOutput.ReadLine();
+                s = process!.StandardOutput.ReadLine();
                 if (s != null)
                     stdout.Add(s);
             }

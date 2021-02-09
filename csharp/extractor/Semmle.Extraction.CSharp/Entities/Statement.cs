@@ -6,14 +6,6 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    /// <summary>
-    /// Whether this entity is the parent of a top-level statement.
-    /// </summary>
-    public interface IStatementParentEntity : IEntity
-    {
-        bool IsTopLevelParent { get; }
-    }
-
     internal abstract class Statement : FreshEntity, IExpressionParentEntity, IStatementParentEntity
     {
         protected Statement(Context cx) : base(cx) { }
@@ -73,7 +65,7 @@ namespace Semmle.Extraction.CSharp.Entities
         protected abstract void PopulateStatement(TextWriter trapFile);
 
         protected Statement(Context cx, TSyntax stmt, Kinds.StmtKind kind, IStatementParentEntity parent, int child)
-            : this(cx, stmt, kind, parent, child, cx.Create(stmt.FixedLocation())) { }
+            : this(cx, stmt, kind, parent, child, cx.CreateLocation(stmt.FixedLocation())) { }
 
         public override string ToString() => Label.ToString();
     }

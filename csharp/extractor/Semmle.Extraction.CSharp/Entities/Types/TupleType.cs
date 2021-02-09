@@ -19,7 +19,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static TupleTypeFactory Instance { get; } = new TupleTypeFactory();
 
-            public TupleType Create(Context cx, INamedTypeSymbol init) => new TupleType(cx, init);
+            public TupleType Create(Extraction.Context cx, INamedTypeSymbol init) => new TupleType((Context)cx, init);
         }
 
         private TupleType(Context cx, INamedTypeSymbol init) : base(cx, init)
@@ -53,7 +53,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // about what locations are available for a tuple type.
             // Sometimes it's the source code, and sometimes it's empty.
             foreach (var l in symbol.Locations)
-                trapFile.type_location(this, Context.Create(l));
+                trapFile.type_location(this, Context.CreateLocation(l));
         }
 
         private readonly Lazy<Field[]> tupleElementsLazy;

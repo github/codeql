@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static EventAccessorFactory Instance { get; } = new EventAccessorFactory();
 
-            public EventAccessor Create(Context cx, IMethodSymbol init) => new EventAccessor(cx, init);
+            public EventAccessor Create(Extraction.Context cx, IMethodSymbol init) => new EventAccessor((Context)cx, init);
         }
     }
 }

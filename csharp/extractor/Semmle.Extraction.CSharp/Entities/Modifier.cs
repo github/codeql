@@ -3,12 +3,12 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal class Modifier : Extraction.CachedEntity<string>
+    internal class Modifier : CachedEntity<string>
     {
         private Modifier(Context cx, string init)
             : base(cx, init) { }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => null;
+        public override Location ReportingLocation => null;
 
         public override void WriteId(TextWriter trapFile)
         {
@@ -144,7 +144,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static ModifierFactory Instance { get; } = new ModifierFactory();
 
-            public Modifier Create(Context cx, string init) => new Modifier(cx, init);
+            public Modifier Create(Extraction.Context cx, string init) => new Modifier((Context)cx, init);
         }
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }

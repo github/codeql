@@ -131,7 +131,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static NullabilityFactory Instance { get; } = new NullabilityFactory();
 
-            public NullabilityEntity Create(Context cx, Nullability init) => new NullabilityEntity(cx, init);
+            public NullabilityEntity Create(Extraction.Context cx, Nullability init) => new NullabilityEntity((Context)cx, init);
         }
     }
 

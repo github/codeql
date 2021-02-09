@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static NamespaceFactory Instance { get; } = new NamespaceFactory();
 
-            public Namespace Create(Context cx, INamespaceSymbol init) => new Namespace(cx, init);
+            public Namespace Create(Extraction.Context cx, INamespaceSymbol init) => new Namespace((Context)cx, init);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;

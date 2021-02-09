@@ -1,14 +1,16 @@
 using Microsoft.CodeAnalysis;
 using System.IO;
 
-namespace Semmle.Extraction.Entities
+namespace Semmle.Extraction.CSharp.Entities
 {
-    public class Assembly : Location
+    public class Assembly : Extraction.Entities.Location
     {
         private readonly string assemblyPath;
         private readonly IAssemblySymbol assembly;
 
-        private Assembly(Context cx, Microsoft.CodeAnalysis.Location? init)
+        public override Context Context => (Context)base.Context;
+
+        private Assembly(CSharp.Context cx, Microsoft.CodeAnalysis.Location init)
             : base(cx, init)
         {
             if (init == null)
@@ -40,7 +42,7 @@ namespace Semmle.Extraction.Entities
         public override int GetHashCode() =>
             symbol == null ? 91187354 : symbol.GetHashCode();
 
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is Assembly other && other.GetType() == typeof(Assembly))
                 return Equals(symbol, other.symbol);
@@ -48,13 +50,13 @@ namespace Semmle.Extraction.Entities
             return false;
         }
 
-        public static new Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => AssemblyConstructorFactory.Instance.CreateEntity(cx, loc, loc);
+        public static Extraction.Entities.Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => AssemblyConstructorFactory.Instance.CreateEntity(cx, loc, loc);
 
-        private class AssemblyConstructorFactory : ICachedEntityFactory<Microsoft.CodeAnalysis.Location?, Assembly>
+        private class AssemblyConstructorFactory : ICachedEntityFactory<Microsoft.CodeAnalysis.Location, Assembly>
         {
             public static AssemblyConstructorFactory Instance { get; } = new AssemblyConstructorFactory();
 
-            public Assembly Create(Context cx, Microsoft.CodeAnalysis.Location? init) => new Assembly(cx, init);
+            public Assembly Create(Extraction.Context cx, Microsoft.CodeAnalysis.Location init) => new Assembly((CSharp.Context)cx, init);
         }
 
         private static readonly object outputAssemblyCacheKey = new object();

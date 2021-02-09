@@ -90,7 +90,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static AccessorFactory Instance { get; } = new AccessorFactory();
 
-            public Accessor Create(Context cx, IMethodSymbol init) => new Accessor(cx, init);
+            public Accessor Create(Extraction.Context cx, IMethodSymbol init) => new Accessor((Context)cx, init);
         }
     }
 }

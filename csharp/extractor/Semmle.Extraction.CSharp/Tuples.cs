@@ -18,6 +18,16 @@ namespace Semmle.Extraction.CSharp
     /// </remarks>
     internal static class Tuples
     {
+        public static void assemblies(this TextWriter trapFile, Assembly assembly, Extraction.Entities.File file, string identifier, string name, string version)
+        {
+            trapFile.WriteTuple("assemblies", assembly, file, identifier, name, version);
+        }
+
+        public static void file_extraction_mode(this System.IO.TextWriter trapFile, Entities.File file, int mode)
+        {
+            trapFile.WriteTuple("file_extraction_mode", file, mode);
+        }
+
         internal static void accessor_location(this TextWriter trapFile, Accessor accessorKey, Location location)
         {
             trapFile.WriteTuple("accessor_location", accessorKey, location);

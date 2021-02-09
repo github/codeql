@@ -1,13 +1,13 @@
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.CSharp.Populators;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public abstract class Method : CachedSymbol<IMethodSymbol>, IExpressionParentEntity, IStatementParentEntity
+    public abstract partial class Method : CachedSymbol<IMethodSymbol>, IExpressionParentEntity, IStatementParentEntity
     {
         protected Method(Context cx, IMethodSymbol init)
             : base(cx, init) { }
@@ -83,8 +83,18 @@ namespace Semmle.Extraction.CSharp.Entities
                        else
                            Expression.Create(Context, expr, this, 0);
 
-                       Context.NumberOfLines(trapFile, BodyDeclaringSymbol, this);
+                       NumberOfLines(trapFile, BodyDeclaringSymbol, this);
                    });
+            }
+        }
+
+        public static void NumberOfLines(TextWriter trapFile, ISymbol symbol, IEntity callable)
+        {
+            foreach (var decl in symbol.DeclaringSyntaxReferences)
+            {
+                var node = (CSharpSyntaxNode)decl.GetSyntax();
+                var lineCounts = node.Accept(new AstLineCounter());
+                trapFile.numlines(callable, lineCounts);
             }
         }
 

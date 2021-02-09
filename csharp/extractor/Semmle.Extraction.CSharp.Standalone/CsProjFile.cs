@@ -88,6 +88,11 @@ namespace Semmle.BuildAnalyser
             var projDir = fileName.Directory;
             var root = projFile.DocumentElement;
 
+            if (root is null)
+            {
+                throw new NotSupportedException("Project file without root is not supported.");
+            }
+
             // Figure out if it's dotnet core
 
             var netCoreProjectFile = root.GetAttribute("Sdk") == "Microsoft.NET.Sdk";
@@ -96,34 +101,48 @@ namespace Semmle.BuildAnalyser
             {
                 var explicitCsFiles = root
                     .SelectNodes("/Project/ItemGroup/Compile/@Include", mgr)
-                    .NodeList()
+                    ?.NodeList()
                     .Select(node => node.Value)
-                    .Select(cs => Path.DirectorySeparatorChar == '/' ? cs.Replace("\\", "/") : cs)
-                    .Select(f => Path.GetFullPath(Path.Combine(projDir.FullName, f)));
+                    .Select(cs => GetFullPath(cs, projDir))
+                    .Where(s => s is not null)
+                    ?? Array.Empty<string>();
 
                 var additionalCsFiles = System.IO.Directory.GetFiles(directoryName, "*.cs", SearchOption.AllDirectories);
 
-                return (explicitCsFiles.Concat(additionalCsFiles).ToArray(), Array.Empty<string>());
+                return ((string[])explicitCsFiles.Concat(additionalCsFiles).ToArray()!, Array.Empty<string>());
             }
 
             var references = root
                 .SelectNodes("/msbuild:Project/msbuild:ItemGroup/msbuild:Reference/@Include", mgr)
-                .NodeList()
+                ?.NodeList()
                 .Select(node => node.Value)
-                .ToArray();
+                .Where(s => s is not null)
+                .ToArray()
+                ?? Array.Empty<string>();
 
             var relativeCsIncludes = root
                 .SelectNodes("/msbuild:Project/msbuild:ItemGroup/msbuild:Compile/@Include", mgr)
-                .NodeList()
+                ?.NodeList()
                 .Select(node => node.Value)
-                .ToArray();
+                .ToArray()
+                ?? Array.Empty<string>();
 
             var csFiles = relativeCsIncludes
-                .Select(cs => Path.DirectorySeparatorChar == '/' ? cs.Replace("\\", "/") : cs)
-                .Select(f => Path.GetFullPath(Path.Combine(projDir.FullName, f)))
+                .Select(cs => GetFullPath(cs, projDir))
+                .Where(s => s is not null)
                 .ToArray();
 
-            return (csFiles, references);
+            return ((string[])csFiles!, (string[])references!);
+        }
+
+        private static string? GetFullPath(string? file, DirectoryInfo? projDir)
+        {
+            if (file is null)
+            {
+                return null;
+            }
+
+            return Path.GetFullPath(Path.Combine(projDir?.FullName ?? string.Empty, Path.DirectorySeparatorChar == '/' ? file.Replace("\\", "/") : file));
         }
 
         private readonly string[] references;

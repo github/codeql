@@ -17,7 +17,7 @@ namespace Semmle.Extraction
 
         public Label Label { get; set; }
 
-        public abstract Microsoft.CodeAnalysis.Location? ReportingLocation { get; }
+        public abstract Location? ReportingLocation { get; }
 
         public override string ToString() => Label.ToString();
 
@@ -36,7 +36,7 @@ namespace Semmle.Extraction
             }
         }
 
-        public Context Context
+        public virtual Context Context
         {
             get;
         }

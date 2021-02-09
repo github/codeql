@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Populators
         public override void VisitExternAliasDirective(ExternAliasDirectiveSyntax node)
         {
             // This information is not yet extracted.
-            cx.ExtractionError("Not implemented extern alias directive", node.ToFullString(), Extraction.Entities.Location.Create(cx, node.GetLocation()), "", Severity.Info);
+            cx.ExtractionError("Not implemented extern alias directive", node.ToFullString(), cx.CreateLocation(node.GetLocation()), "", Severity.Info);
         }
 
         public override void VisitCompilationUnit(CompilationUnitSyntax compilationUnit)

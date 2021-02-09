@@ -44,7 +44,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static ArrayTypeFactory Instance { get; } = new ArrayTypeFactory();
 
-            public ArrayType Create(Context cx, IArrayTypeSymbol init) => new ArrayType(cx, init);
+            public ArrayType Create(Extraction.Context cx, IArrayTypeSymbol init) => new ArrayType((Context)cx, init);
         }
     }
 }

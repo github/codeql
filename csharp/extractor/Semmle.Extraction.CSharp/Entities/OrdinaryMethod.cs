@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static OrdinaryMethodFactory Instance { get; } = new OrdinaryMethodFactory();
 
-            public OrdinaryMethod Create(Context cx, IMethodSymbol init) => new OrdinaryMethod(cx, init);
+            public OrdinaryMethod Create(Extraction.Context cx, IMethodSymbol init) => new OrdinaryMethod((Context)cx, init);
         }
     }
 }

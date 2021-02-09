@@ -113,7 +113,7 @@ namespace Semmle.BuildAnalyser
             {
                 using var p = Process.Start(pi);
 
-                var output = p.StandardOutput.ReadToEnd();
+                var output = p!.StandardOutput.ReadToEnd();
                 var error = p.StandardError.ReadToEnd();
 
                 p.WaitForExit();

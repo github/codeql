@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>Semmle.Autobuild.CSharp</AssemblyName>
     <RootNamespace>Semmle.Autobuild.CSharp</RootNamespace>
     <ApplicationIcon />

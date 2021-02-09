@@ -69,7 +69,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static EventFactory Instance { get; } = new EventFactory();
 
-            public Event Create(Context cx, IEventSymbol init) => new Event(cx, init);
+            public Event Create(Extraction.Context cx, IEventSymbol init) => new Event((Context)cx, init);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;

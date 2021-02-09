@@ -54,7 +54,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             foreach (var l in symbol.Locations)
             {
-                trapFile.type_location(this, Context.Create(l));
+                trapFile.type_location(this, Context.CreateLocation(l));
             }
 
             if (IsSourceDeclaration)
@@ -63,7 +63,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     .Select(d => d.GetSyntax())
                     .Select(s => s.Parent)
                     .Where(p => p != null)
-                    .Select(p => p.Parent)
+                    .Select(p => p!.Parent)
                     .ToArray();
                 var clauses = declSyntaxReferences.OfType<MethodDeclarationSyntax>().SelectMany(m => m.ConstraintClauses);
                 clauses = clauses.Concat(declSyntaxReferences.OfType<ClassDeclarationSyntax>().SelectMany(c => c.ConstraintClauses));
@@ -131,7 +131,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static TypeParameterFactory Instance { get; } = new TypeParameterFactory();
 
-            public TypeParameter Create(Context cx, ITypeParameterSymbol init) => new TypeParameter(cx, init);
+            public TypeParameter Create(Extraction.Context cx, ITypeParameterSymbol init) => new TypeParameter((Context)cx, init);
         }
     }
 }
