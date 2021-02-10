@@ -5,90 +5,9 @@ using Semmle.Util.Logging;
 namespace Semmle.Extraction
 {
     /// <summary>
-    /// Provides common extraction functions for use during extraction.
-    /// </summary>
-    ///
-    /// <remarks>
-    /// This is held in the <see cref="Context"/> passed to each entity.
-    /// </remarks>
-    public interface IExtractor
-    {
-        /// <summary>
-        /// Logs a message (to csharp.log).
-        /// Increases the error count if msg.severity is Error.
-        /// </summary>
-        /// <param name="msg">The message to log.</param>
-        void Message(Message msg);
-
-        /// <summary>
-        /// Cache assembly names.
-        /// </summary>
-        /// <param name="assembly">The assembly name.</param>
-        /// <param name="file">The file defining the assembly.</param>
-        void SetAssemblyFile(string assembly, string file);
-
-        /// <summary>
-        /// Maps assembly names to file names.
-        /// </summary>
-        /// <param name="assembly">The assembly name</param>
-        /// <returns>The file defining the assmebly.</returns>
-        string GetAssemblyFile(string assembly);
-
-        /// <summary>
-        /// How many errors encountered during extraction?
-        /// </summary>
-        int Errors { get; }
-
-        /// <summary>
-        /// The extraction is standalone - meaning there will be a lot of errors.
-        /// </summary>
-        bool Standalone { get; }
-
-        /// <summary>
-        /// Record a new error type.
-        /// </summary>
-        /// <param name="fqn">The display name of the type, qualified where possible.</param>
-        /// <param name="fromSource">If the missing type was referenced from a source file.</param>
-        void MissingType(string fqn, bool fromSource);
-
-        /// <summary>
-        /// Record an unresolved `using namespace` directive.
-        /// </summary>
-        /// <param name="fqn">The full name of the namespace.</param>
-        /// <param name="fromSource">If the missing namespace was referenced from a source file.</param>
-        void MissingNamespace(string fqn, bool fromSource);
-
-        /// <summary>
-        /// The list of missing types.
-        /// </summary>
-        IEnumerable<string> MissingTypes { get; }
-
-        /// <summary>
-        /// The list of missing namespaces.
-        /// </summary>
-        IEnumerable<string> MissingNamespaces { get; }
-
-        /// <summary>
-        /// The full path of the generated DLL/EXE.
-        /// null if not specified.
-        /// </summary>
-        string OutputPath { get; }
-
-        /// <summary>
-        /// The object used for logging.
-        /// </summary>
-        ILogger Logger { get; }
-
-        /// <summary>
-        /// The path transformer to apply.
-        /// </summary>
-        PathTransformer PathTransformer { get; }
-    }
-
-    /// <summary>
     /// Implementation of the main extractor state.
     /// </summary>
-    public class Extractor : IExtractor
+    public class Extractor
     {
         public bool Standalone
         {

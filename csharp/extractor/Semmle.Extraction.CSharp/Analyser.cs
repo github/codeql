@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp
     /// </summary>
     public sealed class Analyser : IDisposable
     {
-        private IExtractor extractor;
+        private Extraction.Extractor extractor;
         private CSharpCompilation compilation;
         private Layout layout;
         private bool init;

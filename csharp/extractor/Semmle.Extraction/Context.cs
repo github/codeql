@@ -18,7 +18,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// Access various extraction functions, e.g. logger, trap writer.
         /// </summary>
-        public IExtractor Extractor { get; }
+        public Extractor Extractor { get; }
 
         /// <summary>
         /// The program database provided by Roslyn.
@@ -51,7 +51,7 @@ namespace Semmle.Extraction
         // A recursion guard against writing to the trap file whilst writing an id to the trap file.
         private bool writingLabel = false;
 
-        public void DefineLabel(IEntity entity, TextWriter trapFile, IExtractor extractor)
+        public void DefineLabel(IEntity entity, TextWriter trapFile, Extractor extractor)
         {
             if (writingLabel)
             {
@@ -225,7 +225,7 @@ namespace Semmle.Extraction
         /// </summary>
         public Compilation Compilation { get; }
 
-        public Context(IExtractor e, Compilation c, TrapWriter trapWriter, IExtractionScope scope, bool addAssemblyTrapPrefix)
+        public Context(Extractor e, Compilation c, TrapWriter trapWriter, IExtractionScope scope, bool addAssemblyTrapPrefix)
         {
             Extractor = e;
             Compilation = c;
@@ -234,7 +234,7 @@ namespace Semmle.Extraction
             ShouldAddAssemblyTrapPrefix = addAssemblyTrapPrefix;
         }
 
-        public Context(IExtractor e, TrapWriter trapWriter)
+        public Context(Extractor e, TrapWriter trapWriter)
             : this(e, null, trapWriter, null, false)
         {
         }
