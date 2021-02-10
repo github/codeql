@@ -22,3 +22,14 @@ app.get('/user/:id', function(req, res) {
   res.send(req.body); // NOT OK
   res.send(marked(req.body)); // NOT OK
 });
+
+
+var table = require('markdown-table')
+app.get('/user/:id', function(req, res) {
+  res.send(req.body); // NOT OK
+  var mytable = table([
+    ['Name', 'Content'],
+    ['body', req.body]
+  ]);
+  res.send(mytable); // NOT OK
+});

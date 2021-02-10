@@ -2,6 +2,8 @@
 | ReflectedXss.js:17:12:17:39 | "Unknow ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:17:31:17:39 | params.id | user-provided value |
 | ReflectedXss.js:22:12:22:19 | req.body | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:22:12:22:19 | req.body | user-provided value |
 | ReflectedXss.js:23:12:23:27 | marked(req.body) | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:23:19:23:26 | req.body | user-provided value |
+| ReflectedXss.js:29:12:29:19 | req.body | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:29:12:29:19 | req.body | user-provided value |
+| ReflectedXss.js:34:12:34:18 | mytable | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:32:14:32:21 | req.body | user-provided value |
 | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | user-provided value |
 | ReflectedXssContentTypes.js:20:14:20:36 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXssContentTypes.js:20:24:20:36 | req.params.id | user-provided value |
 | ReflectedXssContentTypes.js:39:13:39:35 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXssContentTypes.js:39:23:39:35 | req.params.id | user-provided value |

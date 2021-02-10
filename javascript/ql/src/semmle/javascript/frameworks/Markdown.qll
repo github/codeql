@@ -16,6 +16,18 @@ private class MarkedStep extends TaintTracking::AdditionalTaintStep, DataFlow::C
 
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     succ = this and
-    pred = this.getAnArgument()
+    pred = this.getArgument(0)
+  }
+}
+
+/**
+ * A taint step for the `markdown-table` library.
+ */
+private class MarkdownTableStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
+  MarkdownTableStep() { this = DataFlow::moduleImport("markdown-table").getACall() }
+
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    succ = this and
+    pred = this.getArgument(0)
   }
 }
