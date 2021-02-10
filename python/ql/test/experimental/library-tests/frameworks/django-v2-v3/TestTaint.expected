@@ -80,9 +80,9 @@
 | taint_test.py:145 | ok   | test_taint | request.get_signed_cookie(..) |
 | taint_test.py:149 | fail | test_taint | request.get_signed_cookie(..) |
 | taint_test.py:150 | fail | test_taint | request.get_signed_cookie(..) |
-| taint_test.py:157 | fail | some_method | self.request |
-| taint_test.py:158 | fail | some_method | self.request.GET["key"] |
-| taint_test.py:160 | fail | some_method | self.args |
-| taint_test.py:161 | fail | some_method | self.args[0] |
-| taint_test.py:163 | fail | some_method | self.kwargs |
-| taint_test.py:164 | fail | some_method | self.kwargs["key"] |
+| taint_test.py:157 | ok   | some_method | self.request |
+| taint_test.py:158 | ok   | some_method | self.request.GET["key"] |
+| taint_test.py:160 | ok   | some_method | self.args |
+| taint_test.py:161 | ok   | some_method | self.args[0] |
+| taint_test.py:163 | ok   | some_method | self.kwargs |
+| taint_test.py:164 | ok   | some_method | self.kwargs["key"] |

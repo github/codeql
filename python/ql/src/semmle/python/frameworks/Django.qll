@@ -2069,6 +2069,29 @@ private module Django {
       result = this.getAMethod() and
       result.getName() = HTTP::httpVerbLower()
     }
+
+    /**
+     * Gets a reference to instances of this class, originating from a self parameter of
+     * a method defined on this class.
+     *
+     * Note: TODO: This doesn't take MRO into account
+     * Note: TODO: This doesn't take staticmethod/classmethod into account
+     */
+    private DataFlow::Node getASelfRef(DataFlow::TypeTracker t) {
+      t.start() and
+      result.(DataFlow::ParameterNode).getParameter() = this.getAMethod().getArg(0)
+      or
+      exists(DataFlow::TypeTracker t2 | result = this.getASelfRef(t2).track(t2, t))
+    }
+
+    /**
+     * Gets a reference to instances of this class, originating from a self parameter of
+     * a method defined on this class.
+     *
+     * Note: TODO: This doesn't take MRO into account
+     * Note: TODO: This doesn't take staticmethod/classmethod into account
+     */
+    DataFlow::Node getASelfRef() { result = this.getASelfRef(DataFlow::TypeTracker::end()) }
   }
 
   /**
@@ -2305,6 +2328,46 @@ private module Django {
     }
 
     override string getSourceType() { result = "django.http.request.HttpRequest" }
+  }
+
+  /**
+   * A read of the `request` attribute on a reference to an instance of a View class,
+   * which is the request being processed currently.
+   *
+   * See https://docs.djangoproject.com/en/3.1/topics/class-based-views/generic-display/#dynamic-filtering
+   */
+  private class DjangoViewClassRequestAttributeRead extends django::http::request::HttpRequest::InstanceSource,
+    RemoteFlowSource::Range, DataFlow::Node {
+    DjangoViewClassRequestAttributeRead() {
+      exists(DataFlow::AttrRead read | this = read |
+        read.getObject() = any(DjangoViewClass vc).getASelfRef() and
+        read.getAttributeName() = "request"
+      )
+    }
+
+    override string getSourceType() {
+      result = "django.http.request.HttpRequest (attribute on self in View class)"
+    }
+  }
+
+  /**
+   * A read of the `args` or `kwargs` attribute on a reference to an instance of a View class,
+   * which contains the routed parameters captured from the URL route.
+   *
+   * See https://docs.djangoproject.com/en/3.1/topics/class-based-views/generic-display/#dynamic-filtering
+   */
+  private class DjangoViewClassRoutedParamsAttributeRead extends RemoteFlowSource::Range,
+    DataFlow::Node {
+    DjangoViewClassRoutedParamsAttributeRead() {
+      exists(DataFlow::AttrRead read | this = read |
+        read.getObject() = any(DjangoViewClass vc).getASelfRef() and
+        read.getAttributeName() in ["args", "kwargs"]
+      )
+    }
+
+    override string getSourceType() {
+      result = "django routed param from attribute on self in View class"
+    }
   }
 
   private class DjangoHttpRequstAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
