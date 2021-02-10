@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
   <overview>
-    <p>This query checks for data flow from a file's last modification date and a condition statement that controls code execution. A malicious actor could have implanted code that triggers after a certain time, leading to a "time bomb".</p>
+    <p>This query detects situations in which an offset to a last file modification time is used to conditionally execute a particular block of code. This is a common pattern in backdoors, where the file's modification timestamp is the time at which the backdoor was planted, and the time offset is used as a time bomb before a particular code block is executed.</p>
   </overview>
 
   <recommendation>

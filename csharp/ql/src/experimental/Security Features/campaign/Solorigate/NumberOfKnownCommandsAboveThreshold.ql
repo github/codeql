@@ -1,6 +1,6 @@
 /**
  * @name Number of Solorigate-related command names in enum is above the threshold
- * @description The enum contains several values that look similar to command and control command names, which may indicate that the code may have been tampered by an external agent.
+ * @description The enum contains several values that look similar to command and control command names, which may indicate that the code may have been tampered with by an external agent.
  *      It is recommended to review the code and verify that there is no unexpected code in this project.
  * @kind problem
  * @tags security
