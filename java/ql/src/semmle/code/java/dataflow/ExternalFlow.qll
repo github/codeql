@@ -1,3 +1,9 @@
+/**
+ * INTERNAL use only. This is an experimental API subject to change without notice.
+ *
+ * Provides classes and predicates for dealing with flow models specified in CSV format.
+ */
+
 import java
 private import semmle.code.java.dataflow.DataFlow::DataFlow
 private import internal.DataFlowPrivate
@@ -32,15 +38,33 @@ private predicate sinkModelCsv(string row) { none() }
 
 private predicate summaryModelCsv(string row) { none() }
 
+/**
+ * A unit class for adding additional source model rows.
+ *
+ * Extend this class to add additional source definitions.
+ */
 class SourceModelCsv extends Unit {
+  /** Holds if `row` specifies a source definition. */
   abstract predicate row(string row);
 }
 
+/**
+ * A unit class for adding additional sink model rows.
+ *
+ * Extend this class to add additional sink definitions.
+ */
 class SinkModelCsv extends Unit {
+  /** Holds if `row` specifies a sink definition. */
   abstract predicate row(string row);
 }
 
+/**
+ * A unit class for adding additional summary model rows.
+ *
+ * Extend this class to add additional flow summary definitions.
+ */
 class SummaryModelCsv extends Unit {
+  /** Holds if `row` specifies a summary definition. */
   abstract predicate row(string row);
 }
 
@@ -60,15 +84,15 @@ private predicate summaryModel(string row) {
 }
 
 private predicate sourceModel(
-  string namespace, string type, boolean overrides, string name, string signature, string ext,
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
   string output, string kind
 ) {
   exists(string row |
     sourceModel(row) and
     row.splitAt(";", 0) = namespace and
     row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = overrides.toString() and
-    overrides = [true, false] and
+    row.splitAt(";", 2) = subtypes.toString() and
+    subtypes = [true, false] and
     row.splitAt(";", 3) = name and
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
@@ -78,15 +102,15 @@ private predicate sourceModel(
 }
 
 private predicate sinkModel(
-  string namespace, string type, boolean overrides, string name, string signature, string ext,
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
   string input, string kind
 ) {
   exists(string row |
     sinkModel(row) and
     row.splitAt(";", 0) = namespace and
     row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = overrides.toString() and
-    overrides = [true, false] and
+    row.splitAt(";", 2) = subtypes.toString() and
+    subtypes = [true, false] and
     row.splitAt(";", 3) = name and
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
@@ -96,15 +120,15 @@ private predicate sinkModel(
 }
 
 private predicate summaryModel(
-  string namespace, string type, boolean overrides, string name, string signature, string ext,
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
   string input, string output, string kind
 ) {
   exists(string row |
     summaryModel(row) and
     row.splitAt(";", 0) = namespace and
     row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = overrides.toString() and
-    overrides = [true, false] and
+    row.splitAt(";", 2) = subtypes.toString() and
+    subtypes = [true, false] and
     row.splitAt(";", 3) = name and
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
@@ -114,7 +138,9 @@ private predicate summaryModel(
   )
 }
 
+/** Provides a query predicate to check the CSV data for validation errors. */
 module CsvValidation {
+  /** Holds if some row in a CSV-based flow model appears to contain typos. */
   query predicate invalidModelRow(string msg) {
     exists(string pred, string namespace, string type, string name, string signature, string ext |
       sourceModel(namespace, type, _, name, signature, ext, _, _) and pred = "source"
@@ -187,18 +213,18 @@ module CsvValidation {
 }
 
 private predicate elementSpec(
-  string namespace, string type, boolean overrides, string name, string signature, string ext
+  string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
-  sourceModel(namespace, type, overrides, name, signature, ext, _, _) or
-  sinkModel(namespace, type, overrides, name, signature, ext, _, _) or
-  summaryModel(namespace, type, overrides, name, signature, ext, _, _, _)
+  sourceModel(namespace, type, subtypes, name, signature, ext, _, _) or
+  sinkModel(namespace, type, subtypes, name, signature, ext, _, _) or
+  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _)
 }
 
-bindingset[namespace, type, overrides]
-private RefType interpretType(string namespace, string type, boolean overrides) {
+bindingset[namespace, type, subtypes]
+private RefType interpretType(string namespace, string type, boolean subtypes) {
   exists(RefType t |
     t.hasQualifiedName(namespace, type) and
-    if overrides = true then result.getASourceSupertype*() = t else result = t
+    if subtypes = true then result.getASourceSupertype*() = t else result = t
   )
 }
 
@@ -219,10 +245,10 @@ private string paramsString(Callable c) {
 }
 
 private Element interpretElement0(
-  string namespace, string type, boolean overrides, string name, string signature
+  string namespace, string type, boolean subtypes, string name, string signature
 ) {
-  elementSpec(namespace, type, overrides, name, signature, _) and
-  exists(RefType t | t = interpretType(namespace, type, overrides) |
+  elementSpec(namespace, type, subtypes, name, signature, _) and
+  exists(RefType t | t = interpretType(namespace, type, subtypes) |
     exists(Member m |
       result = m and
       m.getDeclaringType() = t and
@@ -240,10 +266,10 @@ private Element interpretElement0(
 }
 
 private Element interpretElement(
-  string namespace, string type, boolean overrides, string name, string signature, string ext
+  string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
-  elementSpec(namespace, type, overrides, name, signature, ext) and
-  exists(Element e | e = interpretElement0(namespace, type, overrides, name, signature) |
+  elementSpec(namespace, type, subtypes, name, signature, ext) and
+  exists(Element e | e = interpretElement0(namespace, type, subtypes, name, signature) |
     ext = "" and result = e
     or
     ext = "Annotated" and result.(Annotatable).getAnAnnotation().getType() = e
@@ -252,28 +278,28 @@ private Element interpretElement(
 
 private predicate sourceElement(Element e, string output, string kind) {
   exists(
-    string namespace, string type, boolean overrides, string name, string signature, string ext
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
-    sourceModel(namespace, type, overrides, name, signature, ext, output, kind) and
-    e = interpretElement(namespace, type, overrides, name, signature, ext)
+    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind) and
+    e = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
 }
 
 private predicate sinkElement(Element e, string input, string kind) {
   exists(
-    string namespace, string type, boolean overrides, string name, string signature, string ext
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
-    sinkModel(namespace, type, overrides, name, signature, ext, input, kind) and
-    e = interpretElement(namespace, type, overrides, name, signature, ext)
+    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind) and
+    e = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
 }
 
 private predicate summaryElement(Element e, string input, string output, string kind) {
   exists(
-    string namespace, string type, boolean overrides, string name, string signature, string ext
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
-    summaryModel(namespace, type, overrides, name, signature, ext, input, output, kind) and
-    e = interpretElement(namespace, type, overrides, name, signature, ext)
+    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind) and
+    e = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
 }
 
@@ -396,6 +422,10 @@ private predicate interpretInput(string input, int idx, Top ref, TAstOrNode node
   )
 }
 
+/**
+ * Holds if `node` is specified as a source with the given kind in a CSV flow
+ * model.
+ */
 predicate sourceNode(Node node, string kind) {
   exists(Top ref, string output |
     sourceElementRef(ref, output, kind) and
@@ -403,6 +433,10 @@ predicate sourceNode(Node node, string kind) {
   )
 }
 
+/**
+ * Holds if `node` is specified as a sink with the given kind in a CSV flow
+ * model.
+ */
 predicate sinkNode(Node node, string kind) {
   exists(Top ref, string input |
     sinkElementRef(ref, input, kind) and
@@ -410,6 +444,10 @@ predicate sinkNode(Node node, string kind) {
   )
 }
 
+/**
+ * Holds if `node1` to `node2` is specified as a flow step with the given kind
+ * in a CSV flow model.
+ */
 predicate summaryStep(Node node1, Node node2, string kind) {
   exists(Top ref, string input, string output |
     summaryElementRef(ref, input, output, kind) and
