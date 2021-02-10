@@ -58,5 +58,6 @@ import semmle.go.frameworks.Testing
 import semmle.go.frameworks.WebSocket
 import semmle.go.frameworks.XNetHtml
 import semmle.go.frameworks.XPath
+import semmle.go.frameworks.Yaml
 import semmle.go.frameworks.Zap
 import semmle.go.security.FlowSources
