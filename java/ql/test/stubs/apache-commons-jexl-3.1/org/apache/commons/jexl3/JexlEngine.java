@@ -1,5 +1,7 @@
 package org.apache.commons.jexl3;
 
+import org.apache.commons.jexl3.introspection.*;
+
 public abstract class JexlEngine {
 
     public JexlExpression createExpression(JexlInfo info, String expression) {
@@ -29,6 +31,10 @@ public abstract class JexlEngine {
     public void setProperty(Object bean, String expr, Object value) {}
 
     public Object getProperty(Object bean, String expr) {
+        return null;
+    }
+
+    public JexlUberspect getUberspect() {
         return null;
     }
 }

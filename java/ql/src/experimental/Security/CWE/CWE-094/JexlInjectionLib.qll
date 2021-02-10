@@ -47,8 +47,10 @@ private class JexlEvaluationSink extends DataFlow::ExprNode {
       m instanceof CallableCallMethod and ma.getQualifier() = taintFrom
       or
       m instanceof JexlEngineGetSetPropertyMethod and
-      ma.getAnArgument().getType() instanceof TypeString and
-      ma.getAnArgument() = taintFrom
+      exists(Expr arg, int index | arg = ma.getArgument(index) and index = [1, 2] |
+        arg.getType() instanceof TypeString and
+        arg = taintFrom
+      )
     )
   }
 }
@@ -67,18 +69,21 @@ private class TaintPropagatingJexlMethodCall extends MethodAccess {
     |
       m instanceof CreateJexlScriptMethod and
       taintFromExpr = this.getArgument(0) and
-      taintType instanceof TypeString
+      taintType instanceof TypeString and
+      isUnsafeEngine(this.getQualifier())
       or
       m instanceof CreateJexlCallableMethod and
       taintFromExpr = this.getQualifier()
       or
       m instanceof CreateJexlExpressionMethod and
       taintFromExpr = this.getAnArgument() and
-      taintType instanceof TypeString
+      taintType instanceof TypeString and
+      isUnsafeEngine(this.getQualifier())
       or
       m instanceof CreateJexlTemplateMethod and
       (taintType instanceof TypeString or taintType instanceof Reader) and
-      taintFromExpr = this.getArgument([0, 1])
+      taintFromExpr = this.getArgument([0, 1]) and
+      isUnsafeEngine(this.getQualifier())
     )
   }
 
@@ -89,6 +94,51 @@ private class TaintPropagatingJexlMethodCall extends MethodAccess {
   predicate taintFlow(DataFlow::Node fromNode, DataFlow::Node toNode) {
     fromNode.asExpr() = taintFromExpr and toNode.asExpr() = this
   }
+}
+
+/**
+ * Holds if `expr` is one of the Jexl engines that is not configured with a sandbox.
+ */
+private predicate isUnsafeEngine(Expr expr) {
+  not exists(SandboxedJexlFlowConfig config | config.hasFlowTo(DataFlow::exprNode(expr)))
+}
+
+/**
+ * A configuration for a tracking sandboxed Jexl engines.
+ */
+private class SandboxedJexlFlowConfig extends DataFlow2::Configuration {
+  SandboxedJexlFlowConfig() { this = "JexlInjection::SandboxedJexlFlowConfig" }
+
+  override predicate isSource(DataFlow::Node node) {
+    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+      m.getDeclaringType() instanceof JexlBuilder and
+      m.hasName(["uberspect", "sandbox"]) and
+      m.getReturnType() instanceof JexlBuilder and
+      (ma = node.asExpr() or ma.getQualifier() = node.asExpr())
+    )
+  }
+
+  override predicate isSink(DataFlow::Node node) {
+    node.asExpr().getType() instanceof JexlEngine or
+    node.asExpr().getType() instanceof JxltEngine or
+    node.asExpr().getType() instanceof UnifiedJexl
+  }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+    createsJexlEngine(fromNode, toNode)
+  }
+}
+
+/**
+ * Holds if `fromNode` to `toNode` is a dataflow step that creates one of the Jexl engines.
+ */
+private predicate createsJexlEngine(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    (m.getDeclaringType() instanceof JexlBuilder or m.getDeclaringType() instanceof JexlEngine) and
+    m.hasName(["create", "createJxltEngine"]) and
+    ma.getQualifier() = fromNode.asExpr() and
+    ma = toNode.asExpr()
+  )
 }
 
 /**
@@ -188,6 +238,10 @@ private class JexlExpression extends JexlRefType {
 
 private class JexlScript extends JexlRefType {
   JexlScript() { hasName(["Script", "JexlScript"]) }
+}
+
+private class JexlBuilder extends JexlRefType {
+  JexlBuilder() { hasName("JexlBuilder") }
 }
 
 private class JexlEngine extends JexlRefType {
