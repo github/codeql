@@ -4,6 +4,9 @@ foo()
 # call whose name is a scope resolution
 Foo::bar()
 
+# call whose name is a global scope resolution
+::bar()
+
 # call with a receiver, no arguments or block
 123.bar
 
@@ -35,55 +38,68 @@ end
 
 # ------------------------------------------------------------------------------
 # Calls without parentheses or arguments are parsed by tree-sitter simply as
-# `identifier` nodes, so here we test that our AST library correctly represents
-# them as calls in all the following contexts.
+# `identifier` nodes (or `scope_resolution` nodes whose `name` field is an
+# `identifier), so here we test that our AST library correctly represents them
+# as calls in all the following contexts.
 
 # root level (child of program)
 foo
+X::foo
 
 # in a parenthesized statement
 (foo)
+(X::foo)
 
 # in an argument list
 some_func(foo)
+some_func(X::foo)
 
 # in an array
 [foo]
+[X::foo]
 
 # RHS of an assignment
 var1 = foo
+var1 = X::foo
 
 # RHS an operator assignment
 var1 += bar
+var1 += X::bar
 
 # RHS assignment list
-var1 = foo, bar
+var1 = foo, X::bar
 
 # in a begin-end block
 begin
   foo
+  X::foo
 end
 
 # in a BEGIN block
-BEGIN { foo }
+BEGIN { foo; X::bar }
 
 # in an END block
-END { foo }
+END { foo; X::bar }
 
 # both operands of a binary operation
-foo + bar
+foo + X::bar
 
 # unary operand
 !foo
+~X::bar
 
 # in a curly brace block
-foo() { bar }
+foo() { bar; X::baz }
 
 # in a do-end block
-foo() do bar end
+foo() do
+  bar
+  X::baz
+end
 
 # the receiver in a call can itself be a call
 foo.bar()
+bar.baz()
 
 # the value for a case expr
 # and the when pattern and body
@@ -91,46 +107,66 @@ case foo
 when bar
   baz
 end
+case X::foo
+when X::bar
+  X::baz
+end
 
 # in a class definition
 class MyClass
   foo
+  X::bar
 end
 
 # in a superclass
 class MyClass < foo
+end
+class MyClass2 < X::foo
 end
 
 # in a singleton class value or body
 class << foo
   bar
 end
+class << X::foo
+  X::bar
+end
 
 # in a method body
 def some_method
   foo
+  X::bar
 end
 
 # in a singleton method object or body
 def foo.some_method
   bar
 end
+def X::foo.some_method
+  X::bar
+end
 
 # in the default value for a keyword parameter
 def method_with_keyword_param(keyword: foo)
+end
+def method_with_keyword_param2(keyword: X::foo)
 end
 
 # in the default value for an optional parameter
 def method_with_optional_param(param = foo)
 end
+def method_with_optional_param2(param = X::foo)
+end
 
 # in a module
 module SomeModule
   foo
+  X::bar
 end
 
 # ternary if: condition, consequence, and alternative can all be calls
 foo ? bar : baz
+X::foo ? X::bar : X::baz
 
 # if/elsif/else conditions and bodies
 if foo
@@ -140,74 +176,109 @@ elsif bar
 else
   wabble
 end
+if X::foo
+  X::wibble
+elsif X::bar
+  X::wobble
+else
+  X::wabble
+end
 
 # if-modifier condition/body
 bar if foo
+X::bar if X::foo
 
 # unless condition/body
 unless foo
   bar
 end
+unless X::foo
+  X::bar
+end
 
 # unless-modifier condition/body
 bar unless foo
+X::bar unless X::foo
 
 # while loop condition/body
 while foo do
   bar
 end
+while X::foo do
+  X::bar
+end
 
 # while-modifier loop condition/body
 bar while foo
+X::bar while X::foo
 
 # until loop condition/body
 until foo do
   bar
 end
+until X::foo do
+  X::bar
+end
 
 # until-modifier loop condition/body
 bar until foo
+X::bar until X::foo
 
 # the collection being iterated over in a for loop, and the body
 for x in bar
   baz
 end
+for x in X::bar
+  X::baz
+end
 
 # in an array indexing operation, both the object and the index can be calls
 foo[bar]
+X::foo[X::bar]
 
 # interpolation
-"foo-#{bar}"
+"foo-#{bar}-#{X::baz}"
 
 # the scope in a scope resolution
 foo::Bar
+X::foo::Bar
 
 # in a range
 foo..bar
+X::foo..X::bar
 
 # the key/value in a hash pair
-{ foo => bar }
+{ foo => bar, X::foo => X::bar }
 
 # rescue exceptions and ensure
 begin
 rescue foo
 ensure bar
 end
+begin
+rescue X::foo
+ensure X::bar
+end
 
 # rescue-modifier body and handler
 foo rescue bar
+X::foo rescue X::bar
 
 # block argument
 foo(&bar)
+foo(&X::bar)
 
 # splat argument
 foo(*bar)
+foo(*X::bar)
 
 # hash-splat argument
 foo(**bar)
+foo(**X::bar)
 
 # the value in a keyword argument
 foo(blah: bar)
+foo(blah: X::bar)
 
 # ------------------------------------------------------------------------------
 # calls to `super`

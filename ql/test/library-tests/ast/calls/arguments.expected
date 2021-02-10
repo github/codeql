@@ -1,10 +1,15 @@
 blockArguments
-| calls.rb:201:5:201:8 | &... | calls.rb:201:6:201:8 | call to bar |
+| calls.rb:268:5:268:8 | &... | calls.rb:268:6:268:8 | call to bar |
+| calls.rb:269:5:269:11 | &... | calls.rb:269:6:269:11 | call to bar |
 splatArguments
-| calls.rb:204:5:204:8 | *... | calls.rb:204:6:204:8 | call to bar |
+| calls.rb:272:5:272:8 | *... | calls.rb:272:6:272:8 | call to bar |
+| calls.rb:273:5:273:11 | *... | calls.rb:273:6:273:11 | call to bar |
 hashSplatArguments
-| calls.rb:207:5:207:9 | **... | calls.rb:207:7:207:9 | call to bar |
+| calls.rb:276:5:276:9 | **... | calls.rb:276:7:276:9 | call to bar |
+| calls.rb:277:5:277:12 | **... | calls.rb:277:7:277:12 | call to bar |
 keywordArguments
-| calls.rb:210:5:210:13 | Pair | calls.rb:210:5:210:8 | :blah | calls.rb:210:11:210:13 | call to bar |
+| calls.rb:280:5:280:13 | Pair | calls.rb:280:5:280:8 | :blah | calls.rb:280:11:280:13 | call to bar |
+| calls.rb:281:5:281:16 | Pair | calls.rb:281:5:281:8 | :blah | calls.rb:281:11:281:16 | call to bar |
 keywordArgumentsByKeyword
-| calls.rb:210:1:210:14 | call to foo | blah | calls.rb:210:11:210:13 | call to bar |
+| calls.rb:280:1:280:14 | call to foo | blah | calls.rb:280:11:280:13 | call to bar |
+| calls.rb:281:1:281:17 | call to foo | blah | calls.rb:281:11:281:16 | call to bar |

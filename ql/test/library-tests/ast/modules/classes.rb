@@ -50,3 +50,7 @@ class << x
   another_method_call
   $global_var2 = 456
 end
+
+# a class where the name is a scope resolution using the global scope
+class ::MyClassInGlobalScope
+end

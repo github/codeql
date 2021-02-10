@@ -14,10 +14,20 @@ module Class {
 
     final string getName() {
       result = generated.getName().(Generated::Token).getValue() or
-      result = this.getNameScopeResolution().getName()
+      result =
+        generated.getName().(Generated::ScopeResolution).getName().(Generated::Token).getValue()
     }
 
-    final ScopeResolution getNameScopeResolution() { result = generated.getName() }
+    final Expr getNameScopeExpr() {
+      result = generated.getName().(Generated::ScopeResolution).getScope()
+    }
+
+    final predicate nameHasGlobalScope() {
+      exists(Generated::ScopeResolution sr |
+        sr = generated.getName() and
+        not exists(sr.getScope())
+      )
+    }
 
     final Expr getSuperclassExpr() { result = generated.getSuperclass().getChild() }
 
@@ -45,10 +55,20 @@ module Module {
 
     final string getName() {
       result = generated.getName().(Generated::Token).getValue() or
-      result = this.getNameScopeResolution().getName()
+      result =
+        generated.getName().(Generated::ScopeResolution).getName().(Generated::Token).getValue()
     }
 
-    final ScopeResolution getNameScopeResolution() { result = generated.getName() }
+    final Expr getNameScopeExpr() {
+      result = generated.getName().(Generated::ScopeResolution).getScope()
+    }
+
+    final predicate nameHasGlobalScope() {
+      exists(Generated::ScopeResolution sr |
+        sr = generated.getName() and
+        not exists(sr.getScope())
+      )
+    }
 
     final override string toString() { result = this.getName() }
   }

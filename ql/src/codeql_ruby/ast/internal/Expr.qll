@@ -227,18 +227,6 @@ module DoExpr {
   }
 }
 
-module ScopeResolution {
-  class Range extends Expr::Range, @scope_resolution {
-    final override Generated::ScopeResolution generated;
-
-    final Expr getScope() { result = generated.getScope() }
-
-    final string getName() { result = generated.getName().(Generated::Token).getValue() }
-
-    final override string toString() { result = "...::" + this.getName() }
-  }
-}
-
 module Pair {
   class Range extends Expr::Range, @pair {
     final override Generated::Pair generated;

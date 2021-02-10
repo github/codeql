@@ -9,7 +9,9 @@ module Call {
 
     abstract string getMethodName();
 
-    abstract ScopeResolution getMethodScopeResolution();
+    abstract Expr getMethodNameScopeExpr();
+
+    abstract predicate methodNameHasGlobalScope();
 
     abstract Expr getArgument(int n);
 
@@ -27,7 +29,32 @@ module Call {
 
     final override string getMethodName() { result = generated.getValue() }
 
-    final override ScopeResolution getMethodScopeResolution() { none() }
+    final override Expr getMethodNameScopeExpr() { none() }
+
+    final override predicate methodNameHasGlobalScope() { none() }
+
+    final override Expr getArgument(int n) { none() }
+
+    final override Block getBlock() { none() }
+  }
+
+  private class ScopeResolutionIdentifierCallRange extends Call::Range, @scope_resolution {
+    final override Generated::ScopeResolution generated;
+    Generated::Identifier identifier;
+
+    ScopeResolutionIdentifierCallRange() {
+      identifier = generated.getName() and
+      vcall(this) and
+      not access(identifier, _)
+    }
+
+    final override Expr getReceiver() { none() }
+
+    final override string getMethodName() { result = identifier.getValue() }
+
+    final override Expr getMethodNameScopeExpr() { result = generated.getScope() }
+
+    final override predicate methodNameHasGlobalScope() { not exists(generated.getScope()) }
 
     final override Expr getArgument(int n) { none() }
 
@@ -41,10 +68,20 @@ module Call {
 
     final override string getMethodName() {
       result = generated.getMethod().(Generated::Token).getValue() or
-      result = this.getMethodScopeResolution().getName()
+      result =
+        generated.getMethod().(Generated::ScopeResolution).getName().(Generated::Token).getValue()
     }
 
-    final override ScopeResolution getMethodScopeResolution() { result = generated.getMethod() }
+    final override Expr getMethodNameScopeExpr() {
+      result = generated.getMethod().(Generated::ScopeResolution).getScope()
+    }
+
+    final override predicate methodNameHasGlobalScope() {
+      exists(Generated::ScopeResolution sr |
+        sr = generated.getMethod() and
+        not exists(sr.getScope())
+      )
+    }
 
     final override Expr getArgument(int n) { result = generated.getArguments().getChild(n) }
 
@@ -60,7 +97,9 @@ module YieldCall {
 
     final override string getMethodName() { result = "yield" }
 
-    final override ScopeResolution getMethodScopeResolution() { none() }
+    final override Expr getMethodNameScopeExpr() { none() }
+
+    final override predicate methodNameHasGlobalScope() { none() }
 
     final override Expr getArgument(int n) { result = generated.getChild().getChild(n) }
 
@@ -82,7 +121,9 @@ module SuperCall {
 
     final override string getMethodName() { result = generated.getValue() }
 
-    final override ScopeResolution getMethodScopeResolution() { none() }
+    final override Expr getMethodNameScopeExpr() { none() }
+
+    final override predicate methodNameHasGlobalScope() { none() }
 
     final override Expr getArgument(int n) { none() }
 
@@ -100,7 +141,9 @@ module SuperCall {
       result = generated.getMethod().(Generated::Super).getValue()
     }
 
-    final override ScopeResolution getMethodScopeResolution() { none() }
+    final override Expr getMethodNameScopeExpr() { none() }
+
+    final override predicate methodNameHasGlobalScope() { none() }
 
     final override Expr getArgument(int n) { result = generated.getArguments().getChild(n) }
 

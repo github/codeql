@@ -22,14 +22,16 @@ class Call extends Expr {
 
   /**
    * Gets the name of the method being called. For example, in:
+   *
    * ```rb
    * foo.bar x, y
    * ```
    * the result is `"bar"`.
    *
-   * N.B. in the following example, where the method name is a scope
-   * resolution, the result is the name being resolved, i.e. `"bar"`. Use
-   * `getMethodScopeResolution` to get the complete `ScopeResolution`.
+   * N.B. in the following example, where the method name uses the scope
+   * resolution operator, the result is the name being resolved, i.e. `"bar"`.
+   * Use `getMethodNameScopeExpr` to get the expression for `Foo`.
+   *
    * ```rb
    * Foo::bar x, y
    * ```
@@ -37,14 +39,33 @@ class Call extends Expr {
   final string getMethodName() { result = range.getMethodName() }
 
   /**
-   * Gets the scope resolution of this call, if any. In the following example,
-   * the result is the `ScopeResolution` for `Foo::bar`, while
-   * `getMethodName()` returns `"bar"`.
+   * Gets the scope expression used in the method name's scope resolution
+   * operation, if any.
+   *
+   * In the following example, the result is the `Expr` for `Foo`.
+   *
    * ```rb
    * Foo::bar()
    * ```
+   *
+   * However, there is no result for the following example, since there is no
+   * scope resolution operation.
+   *
+   * ```rb
+   * baz()
+   * ```
    */
-  final ScopeResolution getMethodScopeResolution() { result = range.getMethodScopeResolution() }
+  final Expr getMethodNameScopeExpr() { result = range.getMethodNameScopeExpr() }
+
+  /**
+   * Holds if the method name uses the scope resolution operator to access the
+   * global scope, as in this example:
+   *
+   * ```rb
+   * ::foo
+   * ```
+   */
+  final predicate methodNameHasGlobalScope() { range.methodNameHasGlobalScope() }
 
   /**
    * Gets the `n`th argument of this method call. In the following example, the

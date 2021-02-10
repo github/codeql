@@ -8,6 +8,7 @@ moduleBases
 | classes.rb:32:3:33:5 | ClassInWibble | Class |
 | classes.rb:35:3:36:5 | ModuleInWibble | Module |
 | classes.rb:41:1:52:3 | class << ... | Class |
+| classes.rb:55:1:56:3 | MyClassInGlobalScope | Class |
 | modules.rb:1:1:2:3 | Empty | Module |
 | modules.rb:4:1:24:3 | Foo | Module |
 | modules.rb:5:3:14:5 | Bar | Module |
@@ -18,6 +19,7 @@ moduleBases
 | modules.rb:37:1:46:3 | Bar | Module |
 | modules.rb:48:1:57:3 | Bar | Module |
 | modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar | Class |
+| modules.rb:60:1:61:3 | MyModuleInGlobalScope | Module |
 moduleBaseClasses
 | classes.rb:20:1:37:3 | Wibble | classes.rb:32:3:33:5 | ClassInWibble |
 | modules.rb:4:1:24:3 | Foo | modules.rb:19:3:20:5 | ClassInFoo |
