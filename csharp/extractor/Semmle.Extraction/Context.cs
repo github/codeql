@@ -242,7 +242,7 @@ namespace Semmle.Extraction
             ShouldAddAssemblyTrapPrefix = addAssemblyTrapPrefix;
         }
 
-        public bool FromSource => scope.FromSource;
+        public bool FromSource => scope is SourceScope;
 
         public ICommentGenerator CommentGenerator { get; } = new CommentProcessor();
 

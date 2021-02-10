@@ -19,7 +19,5 @@ namespace Semmle.Extraction
         public bool InFileScope(string path) => path == SourceTree.FilePath;
 
         public bool InScope(ISymbol symbol) => symbol.Locations.Any(loc => loc.SourceTree == SourceTree);
-
-        public bool FromSource => true;
     }
 }
