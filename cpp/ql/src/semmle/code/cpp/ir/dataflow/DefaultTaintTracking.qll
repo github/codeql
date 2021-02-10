@@ -432,6 +432,7 @@ private Element adjustedSink(DataFlow::Node sink) {
   // Taint `e1 += e2`, `e &= e2` and friends when `e1` or `e2` is tainted.
   result.(AssignOperation).getAnOperand() = sink.asExpr()
   or
+  // Taint an argument (and a parameter) if there is flow to the `ReadSideEffect` of that parameter.
   exists(ReadSideEffectInstruction read, CallInstruction call, int i |
     i = read.getIndex() and
     read.getPrimaryInstruction() = call and

@@ -1,4 +1,6 @@
 edges
+| test.cpp:54:17:54:20 | argv | test.cpp:58:25:58:29 | Argument 2 indirection |
+| test.cpp:54:17:54:20 | argv | test.cpp:58:25:58:29 | Argument 2 indirection |
 | test.cpp:54:17:54:20 | argv | test.cpp:58:25:58:29 | input |
 | test.cpp:54:17:54:20 | argv | test.cpp:58:25:58:29 | input |
 | test.cpp:54:17:54:20 | argv | test.cpp:58:25:58:29 | input |
@@ -6,6 +8,8 @@ edges
 nodes
 | test.cpp:54:17:54:20 | argv | semmle.label | argv |
 | test.cpp:54:17:54:20 | argv | semmle.label | argv |
+| test.cpp:58:25:58:29 | Argument 2 indirection | semmle.label | Argument 2 indirection |
+| test.cpp:58:25:58:29 | Argument 2 indirection | semmle.label | Argument 2 indirection |
 | test.cpp:58:25:58:29 | input | semmle.label | input |
 | test.cpp:58:25:58:29 | input | semmle.label | input |
 | test.cpp:58:25:58:29 | input | semmle.label | input |
