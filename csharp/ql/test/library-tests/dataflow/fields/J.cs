@@ -10,7 +10,7 @@ public class J
     private void M1()
     {
         var o = new object();
-        var r1 = new Record(o, null) { Prop1 = o }; // todo: ctor should be enough
+        var r1 = new Record(o, null);
         Sink(r1.Prop1); // flow
         Sink(r1.Prop2); // no flow
 

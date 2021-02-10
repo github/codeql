@@ -238,12 +238,12 @@ edges
 | I.cs:37:23:37:23 | i [Field1] : Object | I.cs:39:9:39:9 | access to parameter i [Field1] : Object |
 | I.cs:39:9:39:9 | access to parameter i [Field1] : Object | I.cs:40:14:40:14 | access to parameter i [Field1] : Object |
 | I.cs:40:14:40:14 | access to parameter i [Field1] : Object | I.cs:40:14:40:21 | access to field Field1 |
-| J.cs:12:17:12:28 | object creation of type Object : Object | J.cs:13:48:13:48 | access to local variable o : Object |
+| J.cs:12:17:12:28 | object creation of type Object : Object | J.cs:13:29:13:29 | access to local variable o : Object |
 | J.cs:12:17:12:28 | object creation of type Object : Object | J.cs:21:36:21:36 | access to local variable o : Object |
-| J.cs:13:38:13:50 | { ..., ... } [Prop1] : Object | J.cs:14:14:14:15 | access to local variable r1 [Prop1] : Object |
-| J.cs:13:38:13:50 | { ..., ... } [Prop1] : Object | J.cs:18:14:18:15 | access to local variable r2 [Prop1] : Object |
-| J.cs:13:38:13:50 | { ..., ... } [Prop1] : Object | J.cs:22:14:22:15 | access to local variable r3 [Prop1] : Object |
-| J.cs:13:48:13:48 | access to local variable o : Object | J.cs:13:38:13:50 | { ..., ... } [Prop1] : Object |
+| J.cs:13:18:13:36 | object creation of type Record [Prop1] : Object | J.cs:14:14:14:15 | access to local variable r1 [Prop1] : Object |
+| J.cs:13:18:13:36 | object creation of type Record [Prop1] : Object | J.cs:18:14:18:15 | access to local variable r2 [Prop1] : Object |
+| J.cs:13:18:13:36 | object creation of type Record [Prop1] : Object | J.cs:22:14:22:15 | access to local variable r3 [Prop1] : Object |
+| J.cs:13:29:13:29 | access to local variable o : Object | J.cs:13:18:13:36 | object creation of type Record [Prop1] : Object |
 | J.cs:14:14:14:15 | access to local variable r1 [Prop1] : Object | J.cs:14:14:14:21 | access to property Prop1 |
 | J.cs:18:14:18:15 | access to local variable r2 [Prop1] : Object | J.cs:18:14:18:21 | access to property Prop1 |
 | J.cs:21:18:21:38 | ... with { ... } [Prop2] : Object | J.cs:23:14:23:15 | access to local variable r3 [Prop2] : Object |
@@ -526,8 +526,8 @@ nodes
 | I.cs:40:14:40:14 | access to parameter i [Field1] : Object | semmle.label | access to parameter i [Field1] : Object |
 | I.cs:40:14:40:21 | access to field Field1 | semmle.label | access to field Field1 |
 | J.cs:12:17:12:28 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| J.cs:13:38:13:50 | { ..., ... } [Prop1] : Object | semmle.label | { ..., ... } [Prop1] : Object |
-| J.cs:13:48:13:48 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| J.cs:13:18:13:36 | object creation of type Record [Prop1] : Object | semmle.label | object creation of type Record [Prop1] : Object |
+| J.cs:13:29:13:29 | access to local variable o : Object | semmle.label | access to local variable o : Object |
 | J.cs:14:14:14:15 | access to local variable r1 [Prop1] : Object | semmle.label | access to local variable r1 [Prop1] : Object |
 | J.cs:14:14:14:21 | access to property Prop1 | semmle.label | access to property Prop1 |
 | J.cs:18:14:18:15 | access to local variable r2 [Prop1] : Object | semmle.label | access to local variable r2 [Prop1] : Object |
