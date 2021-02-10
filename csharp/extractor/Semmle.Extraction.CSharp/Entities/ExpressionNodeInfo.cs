@@ -118,7 +118,7 @@ namespace Semmle.Extraction.CSharp.Entities
             get
             {
                 if (cachedLocation == null)
-                    cachedLocation = Context.Create(CodeAnalysisLocation);
+                    cachedLocation = Context.CreateLocation(CodeAnalysisLocation);
                 return cachedLocation;
             }
 

@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             var typeSymbol = semanticModel.GetDeclaredSymbol(Stmt);
             var type = typeSymbol.GetAnnotatedType();
 
-            var location = cx.Create(Stmt.Identifier.GetLocation());
+            var location = cx.CreateLocation(Stmt.Identifier.GetLocation());
 
             Expressions.VariableDeclaration.Create(cx, typeSymbol, type, Stmt.Type, location, Stmt.Type.IsVar, this, 0);
 

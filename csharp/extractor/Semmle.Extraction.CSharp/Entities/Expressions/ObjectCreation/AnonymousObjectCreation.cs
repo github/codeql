@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 var property = cx.GetModel(init).GetDeclaredSymbol(init);
                 var propEntity = Property.Create(cx, property);
                 var type = property.GetAnnotatedType();
-                var loc = cx.Create(init.GetLocation());
+                var loc = cx.CreateLocation(init.GetLocation());
 
                 var assignment = new Expression(new ExpressionInfo(cx, type, loc, ExprKind.SIMPLE_ASSIGN, objectInitializer, child++, false, null));
                 Create(cx, init.Expression, assignment, 0);

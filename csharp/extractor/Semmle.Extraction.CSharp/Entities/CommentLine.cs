@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            location = Context.Create(Location);
+            location = Context.CreateLocation(Location);
             trapFile.commentline(this, Type == CommentLineType.MultilineContinuation ? CommentLineType.Multiline : Type, Text, RawText);
             trapFile.commentline_location(this, location);
         }
@@ -34,7 +34,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            trapFile.WriteSubId(Context.Create(Location));
+            trapFile.WriteSubId(Context.CreateLocation(Location));
             trapFile.Write(";commentline");
         }
 

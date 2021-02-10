@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Entities
         protected abstract void PopulateStatement(TextWriter trapFile);
 
         protected Statement(Context cx, TSyntax stmt, Kinds.StmtKind kind, IStatementParentEntity parent, int child)
-            : this(cx, stmt, kind, parent, child, cx.Create(stmt.FixedLocation())) { }
+            : this(cx, stmt, kind, parent, child, cx.CreateLocation(stmt.FixedLocation())) { }
 
         public override string ToString() => Label.ToString();
     }

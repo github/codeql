@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     case SyntaxKind.InterpolatedStringText:
                         // Create a string literal
                         var interpolatedText = (InterpolatedStringTextSyntax)c;
-                        new Expression(new ExpressionInfo(cx, Type, cx.Create(c.GetLocation()), ExprKind.STRING_LITERAL, this, child++, false, interpolatedText.TextToken.Text));
+                        new Expression(new ExpressionInfo(cx, Type, cx.CreateLocation(c.GetLocation()), ExprKind.STRING_LITERAL, this, child++, false, interpolatedText.TextToken.Text));
                         break;
                     default:
                         throw new InternalError(c, $"Unhandled interpolation kind {c.Kind()}");

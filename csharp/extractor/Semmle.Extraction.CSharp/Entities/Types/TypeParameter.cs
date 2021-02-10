@@ -54,7 +54,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             foreach (var l in symbol.Locations)
             {
-                trapFile.type_location(this, Context.Create(l));
+                trapFile.type_location(this, Context.CreateLocation(l));
             }
 
             if (IsSourceDeclaration)

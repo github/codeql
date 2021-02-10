@@ -118,7 +118,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private Semmle.Extraction.Entities.Location location;
         private Semmle.Extraction.Entities.Location Location =>
-            location ?? (location = Semmle.Extraction.Entities.Location.Create(Context, attributeSyntax is null ? entity.ReportingLocation : attributeSyntax.Name.GetLocation()));
+            location ?? (location = Context.CreateLocation(attributeSyntax is null ? entity.ReportingLocation : attributeSyntax.Name.GetLocation()));
 
         public override bool NeedsPopulation => true;
 

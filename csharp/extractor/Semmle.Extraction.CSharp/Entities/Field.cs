@@ -65,7 +65,7 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 Context.PopulateLater(() =>
                 {
-                    var loc = Context.Create(initializer.GetLocation());
+                    var loc = Context.CreateLocation(initializer.GetLocation());
 
                     var fieldAccess = AddInitializerAssignment(trapFile, initializer.Initializer.Value, loc, null, ref child);
 
@@ -86,7 +86,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     ? Expression.ValueAsString(symbol.ConstantValue)
                     : null;
 
-                var loc = Context.Create(initializer.GetLocation());
+                var loc = Context.CreateLocation(initializer.GetLocation());
 
                 AddInitializerAssignment(trapFile, initializer.EqualsValue.Value, loc, constValue, ref child);
             }

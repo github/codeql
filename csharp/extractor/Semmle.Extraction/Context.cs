@@ -77,7 +77,7 @@ namespace Semmle.Extraction
         {
             if (idLabelCache.ContainsKey(id))
             {
-                this.Extractor.Message(new Message("Label collision for " + id, entity.Label.ToString(), Entities.Location.Create(this, entity.ReportingLocation), "", Severity.Warning));
+                this.Extractor.Message(new Message("Label collision for " + id, entity.Label.ToString(), CreateLocation(entity.ReportingLocation), "", Severity.Warning));
             }
             else
             {
@@ -211,11 +211,11 @@ namespace Semmle.Extraction
                 }
                 catch (InternalError ex)
                 {
-                    ExtractionError(new Message(ex.Text, ex.EntityText, Entities.Location.Create(this, ex.Location), ex.StackTrace));
+                    ExtractionError(new Message(ex.Text, ex.EntityText, CreateLocation(ex.Location), ex.StackTrace));
                 }
                 catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    ExtractionError($"Uncaught exception. {ex.Message}", null, Entities.Location.Create(this), ex.StackTrace);
+                    ExtractionError($"Uncaught exception. {ex.Message}", null, CreateLocation(), ex.StackTrace);
                 }
             }
         }
@@ -361,7 +361,7 @@ namespace Semmle.Extraction
                     throw new InternalError("Unexpected TrapStackBehaviour");
             }
 
-            var a = duplicationGuard && this.Create(entity.ReportingLocation) is NonGeneratedSourceLocation loc
+            var a = duplicationGuard && CreateLocation(entity.ReportingLocation) is NonGeneratedSourceLocation loc
                 ? (Action)(() => WithDuplicationGuard(new Key(entity, loc), () => entity.Populate(TrapWriter.Writer)))
                 : (Action)(() => this.Try(null, optionalSymbol, () => entity.Populate(TrapWriter.Writer)));
 
@@ -436,15 +436,15 @@ namespace Semmle.Extraction
         {
             if (!(optionalSymbol is null))
             {
-                ExtractionError(message, optionalSymbol.ToDisplayString(), Entities.Location.Create(this, optionalSymbol.Locations.FirstOrDefault()));
+                ExtractionError(message, optionalSymbol.ToDisplayString(), CreateLocation(optionalSymbol.Locations.FirstOrDefault()));
             }
             else if (!(optionalEntity is null))
             {
-                ExtractionError(message, optionalEntity.Label.ToString(), Entities.Location.Create(this, optionalEntity.ReportingLocation));
+                ExtractionError(message, optionalEntity.Label.ToString(), CreateLocation(optionalEntity.ReportingLocation));
             }
             else
             {
-                ExtractionError(message, null, Entities.Location.Create(this));
+                ExtractionError(message, null, CreateLocation());
             }
         }
 
@@ -517,11 +517,11 @@ namespace Semmle.Extraction
                 }
                 else if (ex is InternalError ie)
                 {
-                    message = new Message(ie.Text, ie.EntityText, Entities.Location.Create(this, ie.Location), ex.StackTrace);
+                    message = new Message(ie.Text, ie.EntityText, CreateLocation(ie.Location), ex.StackTrace);
                 }
                 else
                 {
-                    message = new Message($"Uncaught exception. {ex.Message}", null, Entities.Location.Create(this), ex.StackTrace);
+                    message = new Message($"Uncaught exception. {ex.Message}", null, CreateLocation(), ex.StackTrace);
                 }
 
                 ExtractionError(message);
@@ -535,6 +535,22 @@ namespace Semmle.Extraction
         public void Emit(Tuple tuple)
         {
             TrapWriter.Emit(tuple);
+        }
+
+        public Entities.Location CreateLocation()
+        {
+            return SourceTree == null
+                ? GeneratedLocation.Create(this)
+                : CreateLocation(Microsoft.CodeAnalysis.Location.Create(SourceTree, Microsoft.CodeAnalysis.Text.TextSpan.FromBounds(0, 0)));
+        }
+
+        public Entities.Location CreateLocation(Microsoft.CodeAnalysis.Location? location)
+        {
+            return (location == null || location.Kind == LocationKind.None)
+                ? GeneratedLocation.Create(this)
+                : location.IsInSource
+                    ? NonGeneratedSourceLocation.Create(this, location)
+                    : Assembly.Create(this, location);
         }
     }
 }
