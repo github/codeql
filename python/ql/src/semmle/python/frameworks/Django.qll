@@ -2029,7 +2029,7 @@ private module Django {
     DjangoViewClassDef() { this.getABase() = django::views::generic::View::subclassRef().asExpr() }
 
     /** Gets a function that could handle incoming requests, if any. */
-    DjangoRouteHandler getARequestHandler() {
+    Function getARequestHandler() {
       // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
       // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
       result = this.getAMethod() and
@@ -2076,7 +2076,7 @@ private module Django {
    */
   private class DjangoRouteHandler extends Function {
     DjangoRouteHandler() {
-      exists(djangoRouteHandlerFunctionTracker(this))
+      exists(DjangoRouteSetup route | route.getViewArg() = djangoRouteHandlerFunctionTracker(this))
       or
       any(DjangoViewClassDef vc).getARequestHandler() = this
     }
