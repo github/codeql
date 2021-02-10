@@ -16,3 +16,9 @@ app.get('/user/:id', function(req, res) {
 function moreBadStuff(params, res) {
   res.send("Unknown user: " + params.id); // NOT OK
 }
+
+var marked = require("marked");
+app.get('/user/:id', function(req, res) {
+  res.send(req.body); // NOT OK
+  res.send(marked(req.body)); // NOT OK
+});
