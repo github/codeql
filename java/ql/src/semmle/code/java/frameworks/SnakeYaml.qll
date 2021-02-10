@@ -8,13 +8,6 @@ import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.DataFlow3
 
 /**
- * The class `org.yaml.snakeyaml.constructor.Constructor`.
- */
-class SnakeYamlConstructor extends RefType {
-  SnakeYamlConstructor() { this.hasQualifiedName("org.yaml.snakeyaml.constructor", "Constructor") }
-}
-
-/**
  * The class `org.yaml.snakeyaml.constructor.SafeConstructor`.
  */
 class SnakeYamlSafeConstructor extends RefType {
@@ -24,14 +17,11 @@ class SnakeYamlSafeConstructor extends RefType {
 }
 
 /**
- * An instance of `SafeConstructor` or a `Constructor` that only allows the type that is passed into its argument.
+ * An instance of `SafeConstructor`
  */
 class SafeSnakeYamlConstruction extends ClassInstanceExpr {
   SafeSnakeYamlConstruction() {
     this.getConstructedType() instanceof SnakeYamlSafeConstructor
-    or
-    this.getConstructedType() instanceof SnakeYamlConstructor and
-    this.getNumArgument() > 0
   }
 }
 
