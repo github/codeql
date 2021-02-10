@@ -862,11 +862,23 @@ module CFG {
   private class BinaryExprTree extends PostOrderTree, BinaryExpr {
     override ControlFlow::Node getNode() { result = MkExprNode(this) }
 
+    private predicate equalityTestMayPanic() {
+      this instanceof EqualityTestExpr and
+      exists(Type t |
+        t = this.getAnOperand().getType().getUnderlyingType() and
+        (
+          t instanceof InterfaceType or // panic due to comparison of incomparable interface values
+          t instanceof StructType or // may contain an interface-typed field
+          t instanceof ArrayType // may be an array of interface values
+        )
+      )
+    }
+
     override Completion getCompletion() {
       result = PostOrderTree.super.getCompletion()
       or
       // runtime panic due to division by zero or comparison of incomparable interface values
-      (this instanceof DivExpr or this instanceof EqualityTestExpr) and
+      (this instanceof DivExpr or equalityTestMayPanic()) and
       not this.(Expr).isConst() and
       result = Panic()
     }
