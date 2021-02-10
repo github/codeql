@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p><a href="https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/">Bintray and JCenter are shutting down on May 1st, 2021</a>.
+<p><a href="https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/">Bintray and JCenter are shutting down on February 1st, 2022</a>.
 Relying upon repositories that are deprecated or slated to be shutdown can have unintended consequences;
 for example, artifacts being resolved from different artifact server or total breakage of the CI build.</p>
 
