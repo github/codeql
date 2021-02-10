@@ -80,3 +80,6 @@
 | thisAssignments.js:4:17:4:24 | source() | thisAssignments.js:5:10:5:18 | obj.field |
 | thisAssignments.js:7:19:7:26 | source() | thisAssignments.js:8:10:8:20 | this.field2 |
 | tst.js:2:13:2:20 | source() | tst.js:4:10:4:10 | x |
+| tst.js:2:13:2:20 | source() | tst.js:50:7:50:12 | x && y |
+| tst.js:2:13:2:20 | source() | tst.js:51:7:51:12 | x && x |
+| tst.js:2:13:2:20 | source() | tst.js:52:7:52:12 | y && x |

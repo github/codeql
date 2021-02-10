@@ -46,4 +46,8 @@ function test() {
 
     sink(Buffer.from(x, 'hex')); // NOT OK
     sink(new Buffer(x));         // NOT OK
+
+	sink(x && y);         // OK
+	sink(x && x);         // NOT OK
+	sink(y && x);         // NOT OK
 }

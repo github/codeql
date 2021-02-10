@@ -83,7 +83,8 @@ module TaintTracking {
 
     /** Holds if the edge from `pred` to `succ` is a taint sanitizer for data labelled with `lbl`. */
     predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel lbl) {
-      none()
+      // sanitize the falsy LHS of `LHS && RHS` by default
+      pred.asExpr() = any(LogAndExpr e).getLeftOperand() and lbl.isTaint()
     }
 
     /**
