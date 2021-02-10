@@ -56,14 +56,14 @@ class SingletonMethod extends Callable, BodyStatement, @singleton_method {
  * -> (x) { x + 1 }
  * ```
  */
-class Lambda extends Callable, @lambda {
+class Lambda extends Callable, BodyStatement, @lambda {
   final override Lambda::Range range;
 
   final override string getAPrimaryQlClass() { result = "Lambda" }
 }
 
 /** A block. */
-class Block extends Callable {
+class Block extends Callable, ExprSequence {
   override Block::Range range;
 }
 
