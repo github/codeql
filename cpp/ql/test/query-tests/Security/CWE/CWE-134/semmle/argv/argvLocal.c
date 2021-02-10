@@ -110,28 +110,28 @@ int main(int argc, char **argv) {
 	printf(*i2);
 	printWrapper(*i2);
 
-	// BAD [NOT DETECTED by IR]: i3 value comes from argv
+	// BAD: i3 value comes from argv
 	char i3[5012];
 	memcpy(i3, argv[1], 5012);
 	printf(i3);
 	printWrapper(i3);
 
-	// BAD [NOT DETECTED by IR]: i4 value comes from argv
+	// BAD: i4 value comes from argv
 	char *i4 = i3;
 	printf(i4);
 	printWrapper(i4);
 
-	// BAD [NOT DETECTED by IR]: i5 value comes from argv
+	// BAD: i5 value comes from argv
 	char i5[5012];
 	i5[0] = argv[1][0];
 	printf(i5);
 	printWrapper(i5);
 	
-	// BAD [NOT DETECTED by IR]: i5 value comes from argv
+	// BAD: i5 value comes from argv
 	printf(i5 + 1);
 	printWrapper(i5 + 1);
 	
-	// BAD [NOT DETECTED by IR]: i4 value comes from argv
+	// BAD: i4 value comes from argv
 	printf(i4++);
 	printWrapper(--i4);
 
@@ -150,14 +150,14 @@ int main(int argc, char **argv) {
 	printf(i8);
 	printWrapper(i8);
 
-	// BAD [NOT DETECTED by IR]: i9 value comes from argv
+	// BAD: i9 value comes from argv
 	char i9buf[32];
 	char *i9 = i9buf;
 	memcpy(1 ? ++i9 : 0, argv[1], 1);
 	printf(i9);
 	printWrapper(i9);
 
-	// BAD [NOT DETECTED by IR]: i91 value comes from argv
+	// BAD: i91 value comes from argv
 	char i91buf[64];
 	char *i91 = &i91buf[0];
 	memcpy(0 ? 0 : i91, argv[1] + 1, 1);

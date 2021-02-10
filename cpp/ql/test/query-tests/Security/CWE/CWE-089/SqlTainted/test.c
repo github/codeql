@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
   // a string from the user is injected directly into an SQL query.
   char query1[1000] = {0};
   snprintf(query1, 1000, "SELECT UID FROM USERS where name = \"%s\"", userName);
-  mysql_query(0, query1); // BAD [NOT DETECTED by IR]
+  mysql_query(0, query1); // BAD
   
   // the user string is encoded by a library routine.
   char userNameSanitized[1000] = {0};

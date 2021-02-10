@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
     // a command.
     char command1[1000] = {0};
     sprintf(command1, "userinfo -v \"%s\"", userName);
-    system(command1); // BAD [NOT DETECTED by ir]
+    system(command1);
   }
 
   {  

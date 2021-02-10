@@ -59,8 +59,8 @@ void testReferencePointer1()
 		char *&dataref = data;
 		char *data2 = dataref;
 
-		system(buffer); // BAD [NOT DETECTED by IR]
-		system(data); // BAD [NOT DETECTED by IR]
+		system(buffer); // BAD
+		system(data); // BAD
 		system(dataref); // BAD [NOT DETECTED]
 		system(data2); // BAD [NOT DETECTED]
 	}
@@ -75,8 +75,8 @@ void testReferencePointer2()
 
 	if (fgets(buffer, 1024, stdin) != 0)
 	{
-		system(buffer); // BAD [NOT DETECTED by IR]
-		system(data); // BAD [NOT DETECTED by IR]
+		system(buffer); // BAD
+		system(data); // BAD
 		system(dataref); // BAD [NOT DETECTED]
 		system(data2); // BAD [NOT DETECTED]
 	}

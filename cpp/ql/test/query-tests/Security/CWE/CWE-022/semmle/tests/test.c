@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
     char *fileName = fileBuffer;
     size_t len = strlen(fileName);
     strncat(fileName+len, userAndFile, FILENAME_MAX-len-1);
-    // BAD [NOT DETECTED by IR]: a string from the user is used in a filename
+    // BAD: a string from the user is used in a filename
     fopen(fileName, "wb+");
   }
 

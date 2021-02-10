@@ -431,6 +431,18 @@ private Element adjustedSink(DataFlow::Node sink) {
   or
   // Taint `e1 += e2`, `e &= e2` and friends when `e1` or `e2` is tainted.
   result.(AssignOperation).getAnOperand() = sink.asExpr()
+  or
+  exists(ReadSideEffectInstruction read, CallInstruction call, int i |
+    i = read.getIndex() and
+    read.getPrimaryInstruction() = call and
+    sink.asOperand() = read.getSideEffectOperand() and
+    result =
+      [
+        call.getArgument(i).getUnconvertedResultExpression().getConversion*(),
+        // For compatibility, send flow from arguments to parameters, even for functions with no body.
+        resolveCall(call.getUnconvertedResultExpression()).getParameter(i).(Element)
+      ]
+  )
 }
 
 /**
