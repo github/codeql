@@ -225,14 +225,6 @@ namespace Semmle.Extraction
         /// </summary>
         public Compilation Compilation { get; }
 
-        /// <summary>
-        /// Create a new context, one per source file/assembly.
-        /// </summary>
-        /// <param name="e">The extractor.</param>
-        /// <param name="c">The Roslyn compilation.</param>
-        /// <param name="extractedEntity">Name of the source/dll file.</param>
-        /// <param name="scope">Defines which symbols are included in the trap file (e.g. AssemblyScope or SourceScope)</param>
-        /// <param name="addAssemblyTrapPrefix">Whether to add assembly prefixes to TRAP labels.</param>
         public Context(IExtractor e, Compilation c, TrapWriter trapWriter, IExtractionScope scope, bool addAssemblyTrapPrefix)
         {
             Extractor = e;
@@ -240,6 +232,11 @@ namespace Semmle.Extraction
             this.scope = scope;
             TrapWriter = trapWriter;
             ShouldAddAssemblyTrapPrefix = addAssemblyTrapPrefix;
+        }
+
+        public Context(IExtractor e, TrapWriter trapWriter)
+            : this(e, null, trapWriter, null, false)
+        {
         }
 
         public bool FromSource => scope is SourceScope;

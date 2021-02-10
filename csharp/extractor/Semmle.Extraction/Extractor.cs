@@ -83,16 +83,6 @@ namespace Semmle.Extraction
         /// The path transformer to apply.
         /// </summary>
         PathTransformer PathTransformer { get; }
-
-        /// <summary>
-        /// Creates a new context.
-        /// </summary>
-        /// <param name="c">The C# compilation.</param>
-        /// <param name="trapWriter">The trap writer.</param>
-        /// <param name="scope">The extraction scope (what to include in this trap file).</param>
-        /// <param name="addAssemblyTrapPrefix">Whether to add assembly prefixes to TRAP labels.</param>
-        /// <returns></returns>
-        Context CreateContext(Compilation c, TrapWriter trapWriter, IExtractionScope scope, bool addAssemblyTrapPrefix);
     }
 
     /// <summary>
@@ -187,11 +177,6 @@ namespace Semmle.Extraction
                 lock (mutex)
                     missingNamespaces.Add(fqdn);
             }
-        }
-
-        public Context CreateContext(Compilation c, TrapWriter trapWriter, IExtractionScope scope, bool addAssemblyTrapPrefix)
-        {
-            return new Context(this, c, trapWriter, scope, addAssemblyTrapPrefix);
         }
 
         public IEnumerable<string> MissingTypes => missingTypes;
