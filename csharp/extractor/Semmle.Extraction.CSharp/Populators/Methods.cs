@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Populators
             public override LineCounts DefaultVisit(SyntaxNode node)
             {
                 var text = node.SyntaxTree.GetText().GetSubText(node.GetLocation().SourceSpan).ToString();
-                return Semmle.Util.LineCounter.ComputeLineCounts(text);
+                return LineCounter.ComputeLineCounts(text);
             }
 
             public override LineCounts VisitMethodDeclaration(MethodDeclarationSyntax method)
@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Populators
                 var textSpan = new Microsoft.CodeAnalysis.Text.TextSpan(start, end - start);
 
                 var text = body.SyntaxTree.GetText().GetSubText(textSpan) + "\r\n";
-                return Semmle.Util.LineCounter.ComputeLineCounts(text);
+                return LineCounter.ComputeLineCounts(text);
             }
 
             public override LineCounts VisitConstructorDeclaration(ConstructorDeclarationSyntax method)
@@ -52,14 +52,10 @@ namespace Semmle.Extraction.CSharp.Populators
         {
             foreach (var decl in symbol.DeclaringSyntaxReferences)
             {
-                cx.NumberOfLines(trapFile, (CSharpSyntaxNode)decl.GetSyntax(), callable);
+                var node = (CSharpSyntaxNode)decl.GetSyntax();
+                var lineCounts = node.Accept(new AstLineCounter());
+                trapFile.numlines(callable, lineCounts);
             }
-        }
-
-        public static void NumberOfLines(this Context cx, TextWriter trapFile, CSharpSyntaxNode node, IEntity callable)
-        {
-            var lineCounts = node.Accept(new AstLineCounter());
-            trapFile.numlines(callable, lineCounts);
         }
     }
 }
