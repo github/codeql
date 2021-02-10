@@ -4,7 +4,7 @@
  * @kind problem
  * @id java/jxbrowser/disabled-certificate-validation
  * @tags security
- *       external/cwe-295
+ *       external/cwe/cwe-295
  */
 
 import java
