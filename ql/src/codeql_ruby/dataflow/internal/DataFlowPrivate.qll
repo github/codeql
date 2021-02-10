@@ -132,15 +132,15 @@ private module Cached {
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::CaseExprCfgNode).getBranch(_)
     or
-    exists(CfgNodes::ExprCfgNode exprTo, ExprReturnNode n |
+    exists(CfgNodes::ExprCfgNode exprTo, ReturningStatementNode n |
       nodeFrom = n and
       exprTo = nodeTo.asExpr() and
-      n.getKind() instanceof BreakReturnKind and
+      n.getExprNode().getNode() instanceof BreakStmt and
       exprTo.getNode() instanceof Loop and
       nodeTo.asExpr().getAPredecessor(any(SuccessorTypes::BreakSuccessor s)) = n.getExprNode()
     )
     or
-    nodeFrom.asExpr() = nodeTo.(ExprReturnNode).getExprNode().getReturnedValueNode()
+    nodeFrom.asExpr() = nodeTo.(ReturningStatementNode).getExprNode().getReturnedValueNode()
     or
     nodeTo.asExpr() =
       any(CfgNodes::ExprNodes::ForExprCfgNode for |
@@ -180,6 +180,28 @@ class SsaDefinitionNode extends NodeImpl, TSsaDefinitionNode {
   override Location getLocationImpl() { result = def.getLocation() }
 
   override string toStringImpl() { result = def.toString() }
+}
+
+/**
+ * An value returning statement, viewed as a node in a data flow graph.
+ *
+ * Note that because of control-flow splitting, one `ReturningStmt` may correspond
+ * to multiple `ReturningStatementNode`s, just like it may correspond to multiple
+ * `ControlFlow::Node`s.
+ */
+class ReturningStatementNode extends NodeImpl, TReturningNode {
+  private CfgNodes::ReturningCfgNode n;
+
+  ReturningStatementNode() { this = TReturningNode(n) }
+
+  /** Gets the expression corresponding to this node. */
+  CfgNodes::ReturningCfgNode getExprNode() { result = n }
+
+  override CfgScope getCfgScope() { result = n.getScope() }
+
+  override Location getLocationImpl() { result = n.getLocation() }
+
+  override string toStringImpl() { result = n.toString() }
 }
 
 private module ParameterNodes {
@@ -241,29 +263,49 @@ abstract class ReturnNode extends Node {
 }
 
 private module ReturnNodes {
+  private predicate isValid(CfgNodes::ReturningCfgNode node) {
+    exists(ReturningStmt stmt, Callable scope |
+      stmt = node.getNode() and
+      scope = node.getScope()
+    |
+      stmt instanceof ReturnStmt and
+      (scope instanceof Method or scope instanceof SingletonMethod or scope instanceof Lambda)
+      or
+      stmt instanceof NextStmt and
+      (scope instanceof Block or scope instanceof Lambda)
+      or
+      stmt instanceof BreakStmt and
+      (scope instanceof Block or scope instanceof Lambda)
+    )
+  }
+
   /**
    * A data-flow node that represents an expression returned by a callable,
    * either using an explict `return` statement or as the expression of a method body.
    */
-  class ExprReturnNode extends ReturnNode, NodeImpl, TReturningNode {
+  class ExplicitReturnNode extends ReturnNode, ReturningStatementNode {
     private CfgNodes::ReturningCfgNode n;
 
-    ExprReturnNode() { this = TReturningNode(n) }
-
-    /** Gets the statement corresponding to this node. */
-    CfgNodes::ReturningCfgNode getExprNode() { result = n }
+    ExplicitReturnNode() {
+      isValid(this.getExprNode()) and
+      n.getASuccessor().(CfgNodes::AnnotatedExitNode).isNormal() and
+      n.getScope() instanceof Callable
+    }
 
     override ReturnKind getKind() {
       if n.getNode() instanceof BreakStmt
       then result instanceof BreakReturnKind
       else result instanceof NormalReturnKind
     }
+  }
 
-    override CfgScope getCfgScope() { result = n.getScope() }
+  class ExprReturnNode extends ReturnNode, ExprNode {
+    ExprReturnNode() {
+      this.getExprNode().getASuccessor().(CfgNodes::AnnotatedExitNode).isNormal() and
+      this.getEnclosingCallable() instanceof Callable
+    }
 
-    override Location getLocationImpl() { result = n.getLocation() }
-
-    override string toStringImpl() { result = n.toString() }
+    override ReturnKind getKind() { result instanceof NormalReturnKind }
   }
 }
 
