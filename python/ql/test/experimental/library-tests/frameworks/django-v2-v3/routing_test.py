@@ -144,7 +144,7 @@ urlpatterns = [
 class UnknownViewSubclass(UnknownViewSuperclass):
     # Although we don't know for certain that this class is a django view class, the fact that it's
     # used with `as_view()` in the routing setup should be enough that we treat it as such.
-    def get(self, request): # $ MISSING: requestHandler
+    def get(self, request): # $ requestHandler
         pass
 
 urlpatterns = [

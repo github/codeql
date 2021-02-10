@@ -2024,18 +2024,8 @@ private module Django {
     result = djangoRouteHandlerFunctionTracker(DataFlow::TypeTracker::end(), func)
   }
 
-  /** A django View class defined in project code. */
-  class DjangoViewClassDef extends Class {
-    DjangoViewClassDef() { this.getABase() = django::views::generic::View::subclassRef().asExpr() }
-
-    /** Gets a function that could handle incoming requests, if any. */
-    Function getARequestHandler() {
-      // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
-      // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
-      result = this.getAMethod() and
-      result.getName() = HTTP::httpVerbLower()
-    }
-
+  /** A class that might be a django View class. */
+  class PossibleDjangoViewClass extends Class {
     /** Gets a reference to this class. */
     private DataFlow::Node getARef(DataFlow::TypeTracker t) {
       t.start() and
@@ -2070,6 +2060,37 @@ private module Django {
     DataFlow::Node asViewResult() { result = asViewResult(DataFlow::TypeTracker::end()) }
   }
 
+  /** A class that we consider a django View class. */
+  abstract class DjangoViewClass extends PossibleDjangoViewClass {
+    /** Gets a function that could handle incoming requests, if any. */
+    Function getARequestHandler() {
+      // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
+      // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
+      result = this.getAMethod() and
+      result.getName() = HTTP::httpVerbLower()
+    }
+  }
+
+  /**
+   * A class that is used in a route-setup, with `<class>.as_view()`, therefore being
+   * considered a django View class.
+   */
+  class DjangoViewClassFromRouteSetup extends DjangoViewClass {
+    DjangoViewClassFromRouteSetup() {
+      exists(DjangoRouteSetup setup | setup.getViewArg() = this.asViewResult())
+    }
+  }
+
+  /**
+   * A class that has a super-type which is a django View class, therefore also
+   * becoming a django View class.
+   */
+  class DjangoViewClassFromSuperClass extends DjangoViewClass {
+    DjangoViewClassFromSuperClass() {
+      this.getABase() = django::views::generic::View::subclassRef().asExpr()
+    }
+  }
+
   /**
    * A function that is a django route handler, meaning it handles incoming requests
    * with the django framework.
@@ -2078,7 +2099,7 @@ private module Django {
     DjangoRouteHandler() {
       exists(DjangoRouteSetup route | route.getViewArg() = djangoRouteHandlerFunctionTracker(this))
       or
-      any(DjangoViewClassDef vc).getARequestHandler() = this
+      any(DjangoViewClass vc).getARequestHandler() = this
     }
 
     /** Gets the index of the request parameter. */
@@ -2102,7 +2123,7 @@ private module Django {
     final override DjangoRouteHandler getARequestHandler() {
       djangoRouteHandlerFunctionTracker(result) = getViewArg()
       or
-      exists(DjangoViewClassDef vc |
+      exists(DjangoViewClass vc |
         getViewArg() = vc.asViewResult() and
         result = vc.getARequestHandler()
       )
@@ -2113,7 +2134,7 @@ private module Django {
   private class DjangoViewClassHandlerWithoutKnownRoute extends HTTP::Server::RequestHandler::Range,
     DjangoRouteHandler {
     DjangoViewClassHandlerWithoutKnownRoute() {
-      exists(DjangoViewClassDef vc | vc.getARequestHandler() = this) and
+      exists(DjangoViewClass vc | vc.getARequestHandler() = this) and
       not exists(DjangoRouteSetup setup | setup.getARequestHandler() = this)
     }
 
