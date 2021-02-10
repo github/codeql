@@ -1,0 +1,23 @@
+| A.java:12:28:12:42 | req | A.java:13:20:13:39 | getRequestLine(...) |
+| A.java:12:28:12:42 | req | A.java:14:20:14:48 | getUri(...) |
+| A.java:12:28:12:42 | req | A.java:15:20:15:51 | getMethod(...) |
+| A.java:12:28:12:42 | req | A.java:16:20:16:38 | getAllHeaders(...) |
+| A.java:12:28:12:42 | req | A.java:18:20:18:28 | next(...) |
+| A.java:12:28:12:42 | req | A.java:19:20:19:34 | nextHeader(...) |
+| A.java:12:28:12:42 | req | A.java:21:20:21:30 | getName(...) |
+| A.java:12:28:12:42 | req | A.java:22:20:22:31 | getValue(...) |
+| A.java:12:28:12:42 | req | A.java:24:20:24:31 | getName(...) |
+| A.java:12:28:12:42 | req | A.java:25:20:25:32 | getValue(...) |
+| A.java:12:28:12:42 | req | A.java:26:20:26:37 | getParameters(...) |
+| A.java:12:28:12:42 | req | A.java:27:20:27:58 | getValue(...) |
+| A.java:12:28:12:42 | req | A.java:28:20:28:47 | getName(...) |
+| A.java:12:28:12:42 | req | A.java:30:20:30:35 | getContent(...) |
+| A.java:12:28:12:42 | req | A.java:31:20:31:43 | getContentEncoding(...) |
+| A.java:12:28:12:42 | req | A.java:32:20:32:39 | getContentType(...) |
+| A.java:12:28:12:42 | req | A.java:33:20:33:44 | toString(...) |
+| A.java:12:28:12:42 | req | A.java:34:20:34:47 | toByteArray(...) |
+| A.java:12:28:12:42 | req | A.java:35:20:35:53 | getContentCharSet(...) |
+| A.java:12:28:12:42 | req | A.java:36:20:36:54 | getContentMimeType(...) |
+| A.java:12:28:12:42 | req | A.java:37:27:37:99 | new StringEntity(...) |
+| A.java:12:28:12:42 | req | A.java:38:43:38:91 | new ByteArrayEntity(...) |
+| A.java:30:20:30:35 | getContent(...) | A.java:30:20:30:35 | getContent(...) |

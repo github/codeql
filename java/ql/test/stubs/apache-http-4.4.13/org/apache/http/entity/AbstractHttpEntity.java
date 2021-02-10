@@ -25,29 +25,50 @@
  *
  */
 
-package org.apache.http;
+package org.apache.http.entity;
 
-/**
- * Represents an HTTP header field.
- *
- * <p>The HTTP header fields follow the same generic format as
- * that given in Section 3.1 of RFC 822. Each header field consists
- * of a name followed by a colon (":") and the field value. Field names
- * are case-insensitive. The field value MAY be preceded by any amount
- * of LWS, though a single SP is preferred.
- *
- *<pre>
- *     message-header = field-name ":" [ field-value ]
- *     field-name     = token
- *     field-value    = *( field-content | LWS )
- *     field-content  = &lt;the OCTETs making up the field-value
- *                      and consisting of either *TEXT or combinations
- *                      of token, separators, and quoted-string&gt;
- *</pre>
- *
- * @since 4.0
- */
-public interface Header extends NameValuePair {
-    HeaderElement[] getElements() throws ParseException;
+import java.io.IOException;
+import org.apache.http.HttpEntity;
+import org.apache.http.Header;
+
+public abstract class AbstractHttpEntity implements HttpEntity {
+    @Override
+    public Header getContentType() {
+      return null;
+    }
+
+    @Override
+    public Header getContentEncoding() {
+      return null;
+    }
+
+    @Override
+    public boolean isChunked() {
+      return false;
+    }
+
+    public void setContentType(final Header contentType) {
+    }
+
+    public void setContentType(final String ctString) {
+    }
+
+    public void setContentEncoding(final Header contentEncoding) {
+    }
+
+    public void setContentEncoding(final String ceString) {
+    }
+
+    public void setChunked(final boolean b) {
+    }
+
+    @Override
+    public void consumeContent() throws IOException {
+    }
+
+    @Override
+    public String toString() {
+      return null;
+    }
 
 }

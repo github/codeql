@@ -137,7 +137,7 @@ private class UtilMethod extends TaintPreservingCallable {
       this.hasName(mtd)
     |
       ty = "EntityUtils" and
-      mtd = ["toString", "toByteArray"]
+      mtd = ["toString", "toByteArray", "getContentCharSet", "getContentMimeType"]
       or
       ty = "EncodingUtils" and
       mtd = ["getAsciiBytes", "getAsciiString", "getBytes", "getString"]
