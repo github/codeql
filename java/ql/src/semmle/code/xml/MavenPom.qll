@@ -366,6 +366,17 @@ class PomProperty extends PomElement {
 }
 
 /**
+ * A repository block inside of a maven pom.
+ */
+class DeclaredRepository extends PomElement {
+  DeclaredRepository() {
+    this.getName() = ["repository", "snapshotRepository", "pluginRepository"]
+  }
+
+  string getUrl() { result = getAChild("url").(PomElement).getValue() }
+}
+
+/**
  * A folder that represents a maven local repository using the standard layout. Any folder called
  * "repository" with a parent name ".m2" is considered to be a maven repository.
  */

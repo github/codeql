@@ -12,22 +12,11 @@
 import java
 import semmle.code.xml.MavenPom
 
-private class DeclaredRepository extends PomElement {
-  DeclaredRepository() {
-    this.getName() = "repository" or
-    this.getName() = "snapshotRepository" or
-    this.getName() = "pluginRepository"
-  }
-
-  string getUrl() { result = getAChild("url").(PomElement).getValue() }
-
-  predicate isBintrayRepositoryUsage() {
-    getUrl().matches("%.bintray.com%")
-  }
+predicate isBintrayRepositoryUsage(DeclaredRepository repository) {
+  repository.getUrl().matches("%.bintray.com%")
 }
 
 from DeclaredRepository repository
-where repository.isBintrayRepositoryUsage()
+where isBintrayRepositoryUsage(repository)
 select repository,
-  "Downloading or uploading artifacts to deprecated repository " +
-    repository.getUrl()
+  "Downloading or uploading artifacts to deprecated repository " + repository.getUrl()
