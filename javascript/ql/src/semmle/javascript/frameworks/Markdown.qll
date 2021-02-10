@@ -31,3 +31,20 @@ private class MarkdownTableStep extends TaintTracking::AdditionalTaintStep, Data
     pred = this.getArgument(0)
   }
 }
+
+/**
+ * A taint step for the `showdown` library.
+ */
+private class ShowDownStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
+  ShowDownStep() {
+    this =
+      [DataFlow::globalVarRef("showdown"), DataFlow::moduleImport("showdown")]
+          .getAConstructorInvocation("Converter")
+          .getAMemberCall(["makeHtml", "makeMd"])
+  }
+
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    succ = this and
+    pred = this.getArgument(0)
+  }
+}

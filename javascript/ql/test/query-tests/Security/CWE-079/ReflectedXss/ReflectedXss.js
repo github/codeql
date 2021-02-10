@@ -33,3 +33,11 @@ app.get('/user/:id', function(req, res) {
   ]);
   res.send(mytable); // NOT OK
 });
+
+var showdown  = require('showdown');
+var converter = new showdown.Converter();
+
+app.get('/user/:id', function(req, res) {
+  res.send(req.body); // NOT OK
+  res.send(converter.makeHtml(req.body)); // NOT OK
+});
