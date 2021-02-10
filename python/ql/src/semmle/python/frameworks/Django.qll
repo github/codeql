@@ -1975,6 +1975,14 @@ private module Django {
     }
   }
 
+  /**
+   * Gets the last decorator call for the function `func`, if `func` has decorators.
+   */
+  private Expr lastDecoratorCall(Function func) {
+    result = func.getDefinition().(FunctionExpr).getADecoratorCall() and
+    not exists(Call other_decorator | other_decorator.getArg(0) = result)
+  }
+
   // ---------------------------------------------------------------------------
   // routing modeling
   // ---------------------------------------------------------------------------
@@ -1987,7 +1995,18 @@ private module Django {
    */
   private DataFlow::Node djangoRouteHandlerFunctionTracker(DataFlow::TypeTracker t, Function func) {
     t.start() and
-    result = DataFlow::exprNode(func.getDefinition())
+    (
+      not exists(func.getADecorator()) and
+      result.asExpr() = func.getDefinition()
+      or
+      // If the function has decorators, we still want to model the function as being
+      // the request handler for a route setup. In such situations, we must track the
+      // last decorator call instead of the function itself.
+      //
+      // Note that this means that we blindly ignore what the decorator actually does to
+      // the function, which seems like an OK tradeoff.
+      result.asExpr() = lastDecoratorCall(func)
+    )
     or
     exists(DataFlow::TypeTracker t2 |
       result = djangoRouteHandlerFunctionTracker(t2, func).track(t2, t)

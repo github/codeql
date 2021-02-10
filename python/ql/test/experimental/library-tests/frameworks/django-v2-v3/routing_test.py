@@ -134,7 +134,7 @@ class PossiblyNotRouted(View):
 
 
 @require_GET
-def with_decorator(request, foo):  # $ MISSING: requestHandler routedParameter=foo
+def with_decorator(request, foo):  # $ requestHandler routedParameter=foo
     pass
 
 urlpatterns = [
