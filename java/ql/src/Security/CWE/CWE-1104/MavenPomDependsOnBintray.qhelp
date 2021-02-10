@@ -10,21 +10,21 @@ for example, artifacts being resolved from different artifact server or total br
 <p>When artifact repositories are left unmaintained for a long period of time, vulnerabilities may emerge.
 Theoretically, this could allow attackers to inject malicious code into the artifacts that you are resolving and infect build artifacts
 that are being produced. This can be used by attackers to perform a
-<a href="https://en.wikipedia.org/wiki/Supply_chain_attack">Supply chain attack</a>
+<a href="https://en.wikipedia.org/wiki/Supply_chain_attack">supply chain attack</a>
 against your project's users.
 </p>
 
 </overview>
 <recommendation>
 
-<p>Always use the cononical repository for resolving your dependencies.</p>
+<p>Always use the canonical repository for resolving your dependencies.</p>
 
 </recommendation>
 
 <example>
 
-<p>This examples show examples of locations in Maven POM files where artifact repository upload/download is configured.
-The use of Bintray in any of these locaitons is not advised.
+<p>The following example shows locations in a Maven POM file where artifact repository upload/download is configured.
+The use of Bintray in any of these locations is not advised.
 </p>
 
 <sample src="bad-bintray-pom.xml" />
@@ -32,7 +32,7 @@ The use of Bintray in any of these locaitons is not advised.
 </example>
 <references>
 <li>
-  Blog:
+  JFrog blog:
   <a href="https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/">
     Into the Sunset on May 1st: Bintray, JCenter, GoCenter, and ChartCenter
   </a>
