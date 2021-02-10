@@ -4,9 +4,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Util;
 using System.IO;
 
-namespace Semmle.Extraction.CSharp.Populators
+namespace Semmle.Extraction.CSharp.Entities
 {
-    public static class MethodExtensions
+    public abstract partial class Method
     {
         private class AstLineCounter : CSharpSyntaxVisitor<LineCounts>
         {
@@ -45,16 +45,6 @@ namespace Semmle.Extraction.CSharp.Populators
             public override LineCounts VisitOperatorDeclaration(OperatorDeclarationSyntax node)
             {
                 return Visit(node.OperatorToken, node.Body ?? (SyntaxNode)node.ExpressionBody);
-            }
-        }
-
-        public static void NumberOfLines(this Context cx, TextWriter trapFile, ISymbol symbol, IEntity callable)
-        {
-            foreach (var decl in symbol.DeclaringSyntaxReferences)
-            {
-                var node = (CSharpSyntaxNode)decl.GetSyntax();
-                var lineCounts = node.Accept(new AstLineCounter());
-                trapFile.numlines(callable, lineCounts);
             }
         }
     }
