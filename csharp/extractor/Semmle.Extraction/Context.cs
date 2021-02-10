@@ -457,42 +457,36 @@ namespace Semmle.Extraction
             new Entities.ExtractionMessage(this, msg);
             Extractor.Message(msg);
         }
-    }
 
-    public static class ContextExtensions
-    {
         /// <summary>
         /// Signal an error in the program model.
         /// </summary>
-        /// <param name="cx">The context.</param>
         /// <param name="node">The syntax node causing the failure.</param>
         /// <param name="msg">The error message.</param>
-        public static void ModelError(this Context cx, SyntaxNode node, string msg)
+        public void ModelError(SyntaxNode node, string msg)
         {
-            if (!cx.Extractor.Standalone)
+            if (!Extractor.Standalone)
                 throw new InternalError(node, msg);
         }
 
         /// <summary>
         /// Signal an error in the program model.
         /// </summary>
-        /// <param name="context">The context.</param>
         /// <param name="node">Symbol causing the error.</param>
         /// <param name="msg">The error message.</param>
-        public static void ModelError(this Context cx, ISymbol symbol, string msg)
+        public void ModelError(ISymbol symbol, string msg)
         {
-            if (!cx.Extractor.Standalone)
+            if (!Extractor.Standalone)
                 throw new InternalError(symbol, msg);
         }
 
         /// <summary>
         /// Signal an error in the program model.
         /// </summary>
-        /// <param name="context">The context.</param>
         /// <param name="msg">The error message.</param>
-        public static void ModelError(this Context cx, string msg)
+        public void ModelError(string msg)
         {
-            if (!cx.Extractor.Standalone)
+            if (!Extractor.Standalone)
                 throw new InternalError(msg);
         }
 
@@ -500,11 +494,10 @@ namespace Semmle.Extraction
         /// Tries the supplied action <paramref name="a"/>, and logs an uncaught
         /// exception error if the action fails.
         /// </summary>
-        /// <param name="context">The context.</param>
         /// <param name="node">Optional syntax node for error reporting.</param>
         /// <param name="symbol">Optional symbol for error reporting.</param>
         /// <param name="a">The action to perform.</param>
-        public static void Try(this Context context, SyntaxNode? node, ISymbol? symbol, Action a)
+        public void Try(SyntaxNode? node, ISymbol? symbol, Action a)
         {
             try
             {
@@ -516,33 +509,32 @@ namespace Semmle.Extraction
 
                 if (node != null)
                 {
-                    message = Message.Create(context, ex.Message, node, ex.StackTrace);
+                    message = Message.Create(this, ex.Message, node, ex.StackTrace);
                 }
                 else if (symbol != null)
                 {
-                    message = Message.Create(context, ex.Message, symbol, ex.StackTrace);
+                    message = Message.Create(this, ex.Message, symbol, ex.StackTrace);
                 }
                 else if (ex is InternalError ie)
                 {
-                    message = new Message(ie.Text, ie.EntityText, Entities.Location.Create(context, ie.Location), ex.StackTrace);
+                    message = new Message(ie.Text, ie.EntityText, Entities.Location.Create(this, ie.Location), ex.StackTrace);
                 }
                 else
                 {
-                    message = new Message($"Uncaught exception. {ex.Message}", null, Entities.Location.Create(context), ex.StackTrace);
+                    message = new Message($"Uncaught exception. {ex.Message}", null, Entities.Location.Create(this), ex.StackTrace);
                 }
 
-                context.ExtractionError(message);
+                ExtractionError(message);
             }
         }
 
         /// <summary>
         /// Write the given tuple to the trap file.
         /// </summary>
-        /// <param name="cx">Extractor context.</param>
         /// <param name="tuple">Tuple to write.</param>
-        public static void Emit(this Context cx, Tuple tuple)
+        public void Emit(Tuple tuple)
         {
-            cx.TrapWriter.Emit(tuple);
+            TrapWriter.Emit(tuple);
         }
     }
 }
