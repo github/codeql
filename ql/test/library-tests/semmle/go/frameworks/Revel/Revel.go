@@ -77,6 +77,12 @@ func (c myAppController) accessingParamsJSONIsUnsafe() {
 	useString(val2["name"].(string))
 }
 
+func (c myAppController) rawRead() { // $responsebody=argument corresponding to c
+	c.ViewArgs["Foo"] = "<p>raw HTML</p>" // $responsebody="<p>raw HTML</p>"
+	c.ViewArgs["Bar"] = "<p>not raw HTML</p>"
+	c.Render()
+}
+
 func accessingRequestDirectlyIsUnsafe(c *revel.Controller) {
 	useURLValues(c.Request.GetQuery())               // NOT OK
 	useURLValues(c.Request.Form)                     // NOT OK

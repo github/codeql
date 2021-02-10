@@ -11,6 +11,18 @@ edges
 | EndToEnd.go:69:22:69:29 | selection of Params : pointer type | EndToEnd.go:69:22:69:29 | implicit dereference : Params |
 | EndToEnd.go:69:22:69:29 | selection of Params : pointer type | EndToEnd.go:69:22:69:29 | selection of Params : pointer type |
 | EndToEnd.go:69:22:69:29 | selection of Params : pointer type | EndToEnd.go:69:22:69:51 | call to Get |
+| examples/booking/app/init.go:36:44:36:48 | implicit dereference : URL | examples/booking/app/init.go:36:44:36:48 | implicit dereference : URL |
+| examples/booking/app/init.go:36:44:36:48 | implicit dereference : URL | examples/booking/app/init.go:36:44:36:48 | selection of URL : pointer type |
+| examples/booking/app/init.go:36:44:36:48 | implicit dereference : URL | examples/booking/app/init.go:36:44:36:53 | selection of Path |
+| examples/booking/app/init.go:36:44:36:48 | selection of URL : pointer type | examples/booking/app/init.go:36:44:36:48 | implicit dereference : URL |
+| examples/booking/app/init.go:36:44:36:48 | selection of URL : pointer type | examples/booking/app/init.go:36:44:36:48 | selection of URL : pointer type |
+| examples/booking/app/init.go:36:44:36:48 | selection of URL : pointer type | examples/booking/app/init.go:36:44:36:53 | selection of Path |
+| examples/booking/app/init.go:40:49:40:53 | implicit dereference : URL | examples/booking/app/init.go:40:49:40:53 | implicit dereference : URL |
+| examples/booking/app/init.go:40:49:40:53 | implicit dereference : URL | examples/booking/app/init.go:40:49:40:53 | selection of URL : pointer type |
+| examples/booking/app/init.go:40:49:40:53 | implicit dereference : URL | examples/booking/app/init.go:40:49:40:58 | selection of Path |
+| examples/booking/app/init.go:40:49:40:53 | selection of URL : pointer type | examples/booking/app/init.go:40:49:40:53 | implicit dereference : URL |
+| examples/booking/app/init.go:40:49:40:53 | selection of URL : pointer type | examples/booking/app/init.go:40:49:40:53 | selection of URL : pointer type |
+| examples/booking/app/init.go:40:49:40:53 | selection of URL : pointer type | examples/booking/app/init.go:40:49:40:58 | selection of Path |
 nodes
 | EndToEnd.go:36:18:36:25 | implicit dereference : Params | semmle.label | implicit dereference : Params |
 | EndToEnd.go:36:18:36:25 | selection of Params : pointer type | semmle.label | selection of Params : pointer type |
@@ -18,6 +30,14 @@ nodes
 | EndToEnd.go:69:22:69:29 | implicit dereference : Params | semmle.label | implicit dereference : Params |
 | EndToEnd.go:69:22:69:29 | selection of Params : pointer type | semmle.label | selection of Params : pointer type |
 | EndToEnd.go:69:22:69:51 | call to Get | semmle.label | call to Get |
+| examples/booking/app/init.go:36:44:36:48 | implicit dereference : URL | semmle.label | implicit dereference : URL |
+| examples/booking/app/init.go:36:44:36:48 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| examples/booking/app/init.go:36:44:36:53 | selection of Path | semmle.label | selection of Path |
+| examples/booking/app/init.go:40:49:40:53 | implicit dereference : URL | semmle.label | implicit dereference : URL |
+| examples/booking/app/init.go:40:49:40:53 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| examples/booking/app/init.go:40:49:40:58 | selection of Path | semmle.label | selection of Path |
 #select
 | EndToEnd.go:37:24:37:26 | buf | EndToEnd.go:36:18:36:25 | selection of Params : pointer type | EndToEnd.go:37:24:37:26 | buf | Cross-site scripting vulnerability due to $@. | EndToEnd.go:36:18:36:25 | selection of Params | user-provided value |
 | EndToEnd.go:69:22:69:51 | call to Get | EndToEnd.go:69:22:69:29 | selection of Params : pointer type | EndToEnd.go:69:22:69:51 | call to Get | Cross-site scripting vulnerability due to $@. | EndToEnd.go:69:22:69:29 | selection of Params | user-provided value |
+| examples/booking/app/init.go:36:44:36:53 | selection of Path | examples/booking/app/init.go:36:44:36:48 | selection of URL : pointer type | examples/booking/app/init.go:36:44:36:53 | selection of Path | Cross-site scripting vulnerability due to $@. | examples/booking/app/init.go:36:44:36:48 | selection of URL | user-provided value |
+| examples/booking/app/init.go:40:49:40:58 | selection of Path | examples/booking/app/init.go:40:49:40:53 | selection of URL : pointer type | examples/booking/app/init.go:40:49:40:58 | selection of Path | Cross-site scripting vulnerability due to $@. | examples/booking/app/init.go:40:49:40:53 | selection of URL | user-provided value |

@@ -104,8 +104,7 @@ module Revel {
    * Note these don't actually generate the response, they return a struct which is then returned by the controller
    * method, but it is very likely if a string is being rendered that it will end up sent to the user.
    *
-   * The `Render` and `RenderTemplate` methods are excluded for now because both execute HTML templates, and deciding
-   * whether a particular value is exposed unescaped or not requires parsing the template.
+   * The `Render` and `RenderTemplate` methods are handled by `TemplateRender` below.
    *
    * The `RenderError` method can actually return HTML content, but again only via an HTML template if one exists;
    * we assume it falls back to return plain text as this implies there is probably not an injection opportunity
@@ -214,6 +213,112 @@ module Revel {
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp = input and outp = output
+    }
+  }
+
+  /**
+   * A read in a Revel template that uses Revel's `raw` function.
+   */
+  class RawTemplateRead extends HtmlTemplate::TemplateRead {
+    RawTemplateRead() { parent.getBody().regexpMatch("(?s)raw\\s.*") }
+  }
+
+  /**
+   * A write to a template argument field that is read raw inside of a template.
+   */
+  private class RawTemplateArgument extends HTTP::ResponseBody::Range {
+    RawTemplateArgument() {
+      exists(TemplateRender render, RawTemplateRead read, VariableWithFields var |
+        render.getRenderedFile() = read.getFile() and
+        // if var is a.b.c, any rhs of a write to a, a.b, or a.b.cb
+        this = var.getParent*().getAWrite().getRhs()
+      |
+        var.getParent*() = render.getArgumentVariable() and
+        (
+          var = read.getReadVariable(render.getArgumentVariable())
+          or
+          // if no write or use of that variable exists, no VariableWithFields will be generated
+          // so we try to find a parent VariableWithFields
+          // this isn't covered by the 'getParent*' above because no match would be found at all
+          // for var
+          not exists(read.getReadVariable(render.getArgumentVariable())) and
+          exists(string fieldName | fieldName = read.getFieldName() |
+            var.getQualifiedName() =
+              render.getArgumentVariable().getQualifiedName() +
+                ["." + fieldName.substring(0, fieldName.indexOf(".")), ""]
+          )
+        )
+        or
+        // a revel controller.Render(arg) will set controller.ViewArgs["arg"] = arg
+        exists(Variable arg | arg.getARead() = render.(ControllerRender).getAnArgument() |
+          var.getBaseVariable() = arg and
+          var.getQualifiedName() = read.getFieldName()
+        )
+      )
+    }
+
+    override string getAContentType() { result = "text/html" }
+
+    override HTTP::ResponseWriter getResponseWriter() { none() }
+  }
+
+  /**
+   * A render of a template.
+   */
+  abstract class TemplateRender extends DataFlow::Node, TemplateInstantiation::Range {
+    /** Gets the name of the file that is rendered. */
+    abstract File getRenderedFile();
+
+    /** Gets the variable passed as an argument to the template. */
+    abstract VariableWithFields getArgumentVariable();
+
+    override DataFlow::Node getADataArgument() { result = this.getArgumentVariable().getAUse() }
+  }
+
+  /** A call to `Controller.Render`. */
+  private class ControllerRender extends TemplateRender, DataFlow::MethodCallNode {
+    ControllerRender() { this.getTarget().hasQualifiedName(packagePath(), "Controller", "Render") }
+
+    override DataFlow::Node getTemplateArgument() { none() }
+
+    override File getRenderedFile() {
+      exists(string controllerRe, string handlerRe, string pathRe |
+        controllerRe = "\\Q" + this.getReceiver().getType().getName() + "\\E" and
+        handlerRe = "\\Q" + this.getEnclosingCallable().getName() + "\\E" and
+        // find a file named '/views/<controller>/<handler>(.<template type>).html
+        pathRe = "/views/" + controllerRe + "/" + handlerRe + "(\\..*)?\\.html?"
+      |
+        result.getAbsolutePath().regexpMatch("(?i).*" + pathRe)
+      )
+    }
+
+    override VariableWithFields getArgumentVariable() {
+      exists(VariableWithFields base | base.getAUse().getASuccessor*() = this.getReceiver() |
+        result.getParent() = base and
+        result.getField().getName() = "ViewArgs"
+      )
+    }
+  }
+
+  /** A call to `Controller.RenderTemplate`. */
+  private class ControllerRenderTemplate extends TemplateRender, DataFlow::MethodCallNode {
+    ControllerRenderTemplate() {
+      this.getTarget().hasQualifiedName(packagePath(), "Controller", "RenderTemplate")
+    }
+
+    override DataFlow::Node getTemplateArgument() { result = this.getArgument(0) }
+
+    override File getRenderedFile() {
+      exists(string pathRe | pathRe = "\\Q" + this.getTemplateArgument().getStringValue() + "\\E" |
+        result.getAbsolutePath().regexpMatch(".*/" + pathRe)
+      )
+    }
+
+    override VariableWithFields getArgumentVariable() {
+      exists(VariableWithFields base | base.getAUse().getASuccessor*() = this.getReceiver() |
+        result.getParent() = base and
+        result.getField().getName() = "ViewArgs"
+      )
     }
   }
 }

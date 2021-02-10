@@ -9,6 +9,8 @@ package revel
 
 import (
 	context "context"
+	logger "github.com/revel/revel/logger"
+	session "github.com/revel/revel/session"
 	io "io"
 	multipart "mime/multipart"
 	http "net/http"
@@ -53,6 +55,12 @@ func (_ *ActionDefinition) String() string {
 	return ""
 }
 
+func ActionInvoker(_ *Controller, _ []Filter) {}
+
+func AddHTTPMux(_ string, _ interface{}) {}
+
+func AddInitEventHandler(_ EventHandler) {}
+
 type ContentDisposition string
 
 var (
@@ -73,12 +81,12 @@ type Controller struct {
 	Response      *Response
 	Result        Result
 	Flash         Flash
-	Session       interface{}
+	Session       session.Session
 	Params        *Params
 	Args          map[string]interface{}
 	ViewArgs      map[string]interface{}
 	Validation    *Validation
-	Log           interface{}
+	Log           logger.MultiLogger
 }
 
 func (_ *Controller) Destroy() {}
@@ -230,6 +238,43 @@ func (_ *Error) Error() string {
 
 func (_ *Error) SetLink(_ string) {}
 
+type Event int
+
+const (
+	TEMPLATE_REFRESH_REQUESTED Event = iota
+	TEMPLATE_REFRESH_COMPLETED
+	REVEL_BEFORE_MODULES_LOADED
+	REVEL_AFTER_MODULES_LOADED
+	ENGINE_BEFORE_INITIALIZED
+	ENGINE_STARTED
+	ENGINE_SHUTDOWN_REQUEST
+	ENGINE_SHUTDOWN
+	ROUTE_REFRESH_REQUESTED
+	ROUTE_REFRESH_COMPLETED
+	REVEL_FAILURE
+)
+
+type EventHandler func(typeOf Event, value interface{}) (responseOf EventResponse)
+
+type EventResponse int
+
+type Filter func(c *Controller, filterChain []Filter)
+
+var Filters = []Filter{}
+
+var (
+	PanicFilter             Filter = nil
+	RouterFilter            Filter = nil
+	FilterConfiguringFilter Filter = nil
+	ParamsFilter            Filter = nil
+	SessionFilter           Filter = nil
+	FlashFilter             Filter = nil
+	ValidationFilter        Filter = nil
+	I18nFilter              Filter = nil
+	InterceptorFilter       Filter = nil
+	CompressFilter          Filter = nil
+)
+
 type Flash struct {
 	Data map[string]string
 	Out  map[string]string
@@ -241,6 +286,34 @@ func (_ Flash) Success(_ string, _ ...interface{}) {}
 
 var HTTP_QUERY int = 0
 
+func InterceptMethod(intc InterceptorMethod, when When) {}
+
+type InterceptorMethod interface{}
+
+type Match struct {
+	Regexp *regexp.Regexp
+}
+
+func (_ Match) DefaultMessage() string {
+	return ""
+}
+
+func (_ Match) IsSatisfied(obj interface{}) bool {
+	return false
+}
+
+type MaxSize struct {
+	Max int
+}
+
+func (_ MaxSize) DefaultMessage() string {
+	return ""
+}
+
+func (_ MaxSize) IsSatisfied(obj interface{}) bool {
+	return false
+}
+
 type MethodArg struct {
 	Name string
 	Type reflect.Type
@@ -251,6 +324,18 @@ type MethodType struct {
 	Args           []*MethodArg
 	RenderArgNames map[int][]string
 	Index          int
+}
+
+type MinSize struct {
+	Min int
+}
+
+func (_ MinSize) DefaultMessage() string {
+	return ""
+}
+
+func (_ MinSize) IsSatisfied(obj interface{}) bool {
+	return false
 }
 
 type Module struct {
@@ -275,6 +360,8 @@ type MultipartForm struct {
 	File  map[string][]*multipart.FileHeader
 	Value url.Values
 }
+
+func OnAppStart(_ func(), _ ...int) {}
 
 type OutResponse struct {
 	Server ServerResponse
@@ -396,6 +483,16 @@ func (_ *Request) SetRequest(_ ServerRequest) {}
 
 func (_ *Request) UserAgent() string {
 	return ""
+}
+
+type Required struct{}
+
+func (_ Required) DefaultMessage() string {
+	return ""
+}
+
+func (_ Required) IsSatisfied(obj interface{}) bool {
+	return false
 }
 
 type Response struct {
@@ -695,3 +792,12 @@ type Validator interface {
 	DefaultMessage() string
 	IsSatisfied(_ interface{}) bool
 }
+
+type When int
+
+const (
+	BEFORE When = iota
+	AFTER
+	PANIC
+	FINALLY
+)
