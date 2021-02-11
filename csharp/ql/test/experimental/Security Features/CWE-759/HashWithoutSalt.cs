@@ -62,6 +62,15 @@ public class Test
         return Convert.ToBase64String(dbPassword);
     }
 
+    // BAD - Hash without a salt.
+    public static string HashPassword3(string password)
+    {
+        HashAlgorithm hashAlg = new SHA256CryptoServiceProvider();
+        byte[] passBytes = System.Text.Encoding.ASCII.GetBytes(password);
+        byte[] hashBytes = hashAlg.ComputeHash(passBytes);
+        return Convert.ToBase64String(hashBytes);
+    }
+
     // GOOD - Hash with a salt.
     public bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
     {

@@ -33,15 +33,15 @@ class KeyedHashAlgorithm extends RefType {
 }
 
 /**
- * The method `ComputeHash()` declared in `System.Security.Cryptography.HashAlgorithm` and
+ * The method `ComputeHash()`, `ComputeHashAsync`, `TryComputeHash`, `HashData`, or `TryHashData` declared in `System.Security.Cryptography.HashAlgorithm` and
  * the method `HashData()` declared in `Windows.Security.Cryptography.Core.HashAlgorithmProvider`.
  */
 class HashMethod extends Method {
   HashMethod() {
-    this.getDeclaringType() instanceof HashAlgorithm and
-    this.hasName("ComputeHash")
+    this.getDeclaringType().getABaseType*() instanceof HashAlgorithm and
+    this.getName().matches(["%ComputeHash%", "%HashData"])
     or
-    this.getDeclaringType() instanceof HashAlgorithmProvider and
+    this.getDeclaringType().getABaseType*() instanceof HashAlgorithmProvider and
     this.hasName("HashData")
   }
 }
