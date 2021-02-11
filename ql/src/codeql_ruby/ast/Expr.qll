@@ -124,7 +124,7 @@ class StmtSequence extends Expr {
 }
 
 /**
- * A sequence of expressions representing the body of a method, class, module,
+ * A sequence of statements representing the body of a method, class, module,
  * or do-block. That is, any body that may also include rescue/ensure/else
  * statements.
  */
