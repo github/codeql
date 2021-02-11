@@ -28,12 +28,14 @@ end
 for (key, value) in {foo: 0, bar: 1}
   sum += value
   foo /= value
+  break
 end
 
 # While loop
 while x < y
   x += 1
   z += 1
+  next
 end
 
 # While loop with `do` keyword
