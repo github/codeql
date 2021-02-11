@@ -15,6 +15,10 @@ public class SaxonXQConnection extends SaxonXQDataFactory  implements XQConnecti
     SaxonXQConnection(SaxonXQDataSource dataSource) {
     }
 
+    public XQExpression createExpression() throws XQException {
+        return null;
+    }
+
     public XQPreparedExpression prepareExpression(InputStream xquery) throws XQException {
         return null;
     }

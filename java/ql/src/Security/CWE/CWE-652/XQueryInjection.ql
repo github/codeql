@@ -24,15 +24,15 @@ class XQueryInjectionConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(XQueryExecuteCall execute).getPreparedExpression()
+    sink.asExpr() = any(XQueryPreparedExecuteCall xpec).getPreparedExpression() or
+    sink.asExpr() = any(XQueryExecuteCall xec).getExecuteQueryArgument()
   }
 
   /**
    * Conveys taint from the input to a `prepareExpression` call to the returned prepared expression.
    */
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(XQueryParserCall parser |
-      pred.asExpr() = parser.getInput() and succ.asExpr() = parser)
+    exists(XQueryParserCall parser | pred.asExpr() = parser.getInput() and succ.asExpr() = parser)
   }
 }
 

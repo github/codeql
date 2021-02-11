@@ -20,16 +20,33 @@ class XQueryParserCall extends MethodAccess {
 }
 
 /** A call to `XQPreparedExpression.executeQuery`. */
-class XQueryExecuteCall extends MethodAccess {
-  XQueryExecuteCall() {
-    exists(Method m | this.getMethod() = m and
-    m.hasName("executeQuery") and
-    m.getDeclaringType()
-        .getASourceSupertype*()
-        .hasQualifiedName("javax.xml.xquery", "XQPreparedExpression")
+class XQueryPreparedExecuteCall extends MethodAccess {
+  XQueryPreparedExecuteCall() {
+    exists(Method m |
+      this.getMethod() = m and
+      m.hasName("executeQuery") and
+      m.getDeclaringType()
+          .getASourceSupertype*()
+          .hasQualifiedName("javax.xml.xquery", "XQPreparedExpression")
     )
   }
 
   /** Return this prepared expression. */
   Expr getPreparedExpression() { result = this.getQualifier() }
+}
+
+/** A call to `XQExpression.executeQuery`. */
+class XQueryExecuteCall extends MethodAccess {
+  XQueryExecuteCall() {
+    exists(Method m |
+      this.getMethod() = m and
+      m.hasName("executeQuery") and
+      m.getDeclaringType()
+          .getASourceSupertype*()
+          .hasQualifiedName("javax.xml.xquery", "XQExpression")
+    )
+  }
+
+  /** Return this execute query argument. */
+  Expr getExecuteQueryArgument() { result = this.getArgument(0) }
 }
