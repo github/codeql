@@ -319,12 +319,11 @@ module API {
      * For instance, `prefix_member("foo.bar", "baz", "foo.bar.baz")` would hold.
      */
     private predicate prefix_member(TApiNode base, string member, TApiNode sub) {
-      exists(string base_str, string sub_str |
-        base = MkModuleImport(base_str) and
+      exists(string sub_str, string regexp |
+        regexp = "(.+)[.]([^.]+)" and
+        base = MkModuleImport(sub_str.regexpCapture(regexp, 1)) and
+        member = sub_str.regexpCapture(regexp, 2) and
         sub = MkModuleImport(sub_str)
-      |
-        base_str + "." + member = sub_str and
-        not member.matches("%.%")
       )
     }
 
