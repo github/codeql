@@ -62,6 +62,21 @@ public class Test
         return Convert.ToBase64String(dbPassword);
     }
 
+    // GOOD - Hash with a salt.
+    public bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+    {
+        using(var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
+        {
+            var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            for(int i = 0;i<computedHash.Length;i++)
+            {
+                if (computedHash[i] != passwordHash[i])
+                    return false;
+            }
+            return true;
+        }
+    }
+
     public static byte[] GenerateSalt()
     {
         using (var rng = new RNGCryptoServiceProvider())
@@ -70,5 +85,40 @@ public class Test
             rng.GetBytes(randomNumber);
             return randomNumber;
         }
+    }
+
+    public static byte[] Combine(byte[] first, byte[] second)
+    {
+        // helper to combine two byte arrays
+        byte[] ret = new byte[first.Length + second.Length];
+        Buffer.BlockCopy(first, 0, ret, 0, first.Length);
+        Buffer.BlockCopy(second, 0, ret, first.Length, second.Length);
+        return ret;
+    }
+
+    // GOOD - Hash with a salt.
+    public static byte[] CalculateKeys(string password, string userid)
+    {
+        var utf16pass = System.Text.Encoding.UTF8.GetBytes(password);
+        var utf16sid = System.Text.Encoding.UTF8.GetBytes(userid);
+
+        var utf16sidfinal = new byte[utf16sid.Length + 2];
+        utf16sid.CopyTo(utf16sidfinal, 0);
+        utf16sidfinal[utf16sidfinal.Length - 2] = 0x00;
+
+        byte[] sha1bytes_password;
+        byte[] hmacbytes;
+
+        //Calculate SHA1 from user password
+        using (var sha1 = new SHA1Managed())
+        {
+            sha1bytes_password = sha1.ComputeHash(utf16pass);
+        }
+        var combined = Combine(sha1bytes_password, utf16sidfinal);
+        using (var hmac = new HMACSHA1(sha1bytes_password))
+        {
+            hmacbytes = hmac.ComputeHash(utf16sidfinal);
+        }
+        return hmacbytes;
     }
 }

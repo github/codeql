@@ -8,7 +8,9 @@
  */
 
 import csharp
+import semmle.code.csharp.dataflow.DataFlow2
 import semmle.code.csharp.dataflow.TaintTracking
+import semmle.code.csharp.dataflow.TaintTracking2
 import DataFlow::PathGraph
 
 /** The C# class `Windows.Security.Cryptography.Core.HashAlgorithmProvider`. */
@@ -21,6 +23,13 @@ class HashAlgorithmProvider extends RefType {
 /** The C# class `System.Security.Cryptography.HashAlgorithm`. */
 class HashAlgorithm extends RefType {
   HashAlgorithm() { this.hasQualifiedName("System.Security.Cryptography", "HashAlgorithm") }
+}
+
+/** The C# class `System.Security.Cryptography.KeyedHashAlgorithm`. */
+class KeyedHashAlgorithm extends RefType {
+  KeyedHashAlgorithm() {
+    this.hasQualifiedName("System.Security.Cryptography", "KeyedHashAlgorithm")
+  }
 }
 
 /**
@@ -47,6 +56,20 @@ class PasswordVarExpr extends Expr {
   }
 }
 
+/** Holds if there is another hashing method call. */
+predicate hasAnotherHashCall(MethodCall mc) {
+  exists(Call mc2, DataFlow2::Node src, DataFlow2::Node sink |
+    (
+      mc2.getTarget() instanceof HashMethod or
+      mc2.(ObjectCreation).getObjectType().getABaseType+() instanceof HashAlgorithm
+    ) and
+    mc2 != mc and
+    src.asExpr() = mc.getAReachableElement() and
+    sink.asExpr() = mc2.getAChildExpr() and
+    TaintTracking2::localTaint(src, sink)
+  )
+}
+
 /** Taint configuration tracking flow from an expression whose name suggests it holds password data to a method call that generates a hash without a salt. */
 class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
   HashWithoutSaltConfiguration() { this = "HashWithoutSaltConfiguration" }
@@ -56,7 +79,8 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       sink.asExpr() = mc.getArgument(0) and
-      mc.getTarget() instanceof HashMethod
+      mc.getTarget() instanceof HashMethod and
+      not hasAnotherHashCall(mc)
     )
   }
 
@@ -71,7 +95,7 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
   }
 
   /**
-   * Holds if a password is concatenated with a salt then hashed together through the call `System.Array.CopyTo()`, for example,
+   * Holds if a password is concatenated with a salt then hashed together through calls such as `System.Array.CopyTo()`, for example,
    *  `byte[] rawSalted  = new byte[passBytes.Length + salt.Length];`
    *  `passBytes.CopyTo(rawSalted, 0);`
    *  `salt.CopyTo(rawSalted, passBytes.Length);`
@@ -81,11 +105,27 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) {
     exists(MethodCall mc |
       mc.getTarget().fromLibrary() and
-      mc.getTarget().hasQualifiedName("System.Array", "CopyTo") and
-      mc.getArgument(0) = node.asExpr()
-    ) // passBytes.CopyTo(rawSalted, 0)
+      (
+        mc.getTarget().hasQualifiedName("System.Array", "CopyTo") or // passBytes.CopyTo(rawSalted, 0)
+        mc.getTarget().hasQualifiedName("System.String", "Concat") or // string.Concat(password, saltkey)
+        mc.getTarget().hasQualifiedName("System.Buffer", "BlockCopy") or // Buffer.BlockCopy(salt, 0, allBytes, 0, 20)
+        mc.getTarget().hasQualifiedName("System.String", "Format") // String.Format("{0}:{1}:{2}", username, salt, password)
+      ) and
+      mc.getAnArgument() = node.asExpr()
+    )
     or
     exists(AddExpr e | node.asExpr() = e.getAnOperand()) // password+salt
+    or
+    exists(InterpolatedStringExpr e | node.asExpr() = e.getAnInsert())
+    or
+    // a salt or key is included in subclasses of `KeyedHashAlgorithm`
+    exists(MethodCall mc, Assignment ass, ObjectCreation oc |
+      ass.getRValue() = oc and
+      oc.getObjectType().getABaseType+() instanceof KeyedHashAlgorithm and
+      mc.getTarget() instanceof HashMethod and
+      ass.getLValue() = mc.getQualifier().(VariableAccess).getTarget().getAnAccess() and
+      mc.getArgument(0) = node.asExpr()
+    )
   }
 }
 
