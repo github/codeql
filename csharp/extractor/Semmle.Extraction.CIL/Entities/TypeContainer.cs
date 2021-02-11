@@ -31,8 +31,6 @@ namespace Semmle.Extraction.CIL.Entities
 
         public abstract string IdSuffix { get; }
 
-        Location IEntity.ReportingLocation => throw new NotImplementedException();
-
         public void Extract(Context cx2) { cx2.Populate(this); }
 
         public abstract IEnumerable<IExtractionProduct> Contents { get; }
@@ -44,7 +42,8 @@ namespace Semmle.Extraction.CIL.Entities
             return writer.ToString();
         }
 
-        TrapStackBehaviour IEntity.TrapStackBehaviour => TrapStackBehaviour.NoLabel;
+        public TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
+        public Location ReportingLocation => throw new NotImplementedException();
 
         public abstract IEnumerable<Type> MethodParameters { get; }
         public abstract IEnumerable<Type> TypeParameters { get; }

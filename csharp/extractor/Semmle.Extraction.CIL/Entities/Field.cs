@@ -61,7 +61,7 @@ namespace Semmle.Extraction.CIL.Entities
             cx2.Populate(this);
         }
 
-        TrapStackBehaviour IEntity.TrapStackBehaviour => TrapStackBehaviour.NoLabel;
+        public TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
 
         public abstract IEnumerable<Type> TypeParameters { get; }
 

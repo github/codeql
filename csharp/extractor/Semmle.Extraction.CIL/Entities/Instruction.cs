@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A CIL instruction.
     /// </summary>
-    internal class Instruction : UnlabelledEntity, IEntity
+    internal class Instruction : UnlabelledEntity
     {
         /// <summary>
         /// The additional data following the opcode, if any.
@@ -287,11 +287,6 @@ namespace Semmle.Extraction.CIL.Entities
 
                 return ((int)OpCode > 255 ? 2 : 1) + PayloadSize;
             }
-        }
-
-        Label IEntity.Label
-        {
-            get; set;
         }
 
         private readonly byte[] data;
