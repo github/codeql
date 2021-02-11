@@ -1,5 +1,5 @@
 /**
- * Provides classes and predicates related to `org.apache.http.*`.
+ * Provides classes and predicates related to `org.apache.http.*` and `org.apache.hc.*`.
  */
 
 import java
@@ -42,12 +42,13 @@ class TypeApacheHttpRequestBuilder extends Class {
 }
 
 /**
- * The `request` parameter of an implementation of `org.apache.http.protocol.HttpRequestHandler.handle`.
+ * The `request` parameter of an implementation of `HttpRequestHandler.handle`.
  */
 class ApacheHttpRequestHandlerParameter extends Parameter {
   ApacheHttpRequestHandlerParameter() {
     exists(Method m, Interface i |
-      i.hasQualifiedName("org.apache.http.protocol", "HttpRequestHandler") and
+      i.hasQualifiedName(["org.apache.http.protocol", "org.apache.hc.core5.http.io"],
+        "HttpRequestHandler") and
       m.getDeclaringType().extendsOrImplements+(i) and
       m.hasName("handle") and
       this = m.getParameter(0)
@@ -56,7 +57,7 @@ class ApacheHttpRequestHandlerParameter extends Parameter {
 }
 
 /**
- * A call that sets the entity of an instance of `org.apache.http.HttpResponse`.
+ * A call that sets the entity of an instance of `org.apache.http.HttpResponse` / `org.apache.hc.core5.http.ClassicHttpResponse`.
  */
 class ApacheHttpResponseSetEntityCall extends MethodAccess {
   int arg;
@@ -70,6 +71,10 @@ class ApacheHttpResponseSetEntityCall extends MethodAccess {
       m.getDeclaringType().hasQualifiedName("org.apache.http.util", "EntityUtils") and
       m.hasName("updateEntity") and
       arg = 1
+      or
+      m.getDeclaringType().hasQualifiedName("org.apache.hc.core5.http", "HttpEntityContainer") and
+      m.hasName("setEntity") and
+      arg = 0
     )
   }
 
@@ -79,6 +84,7 @@ class ApacheHttpResponseSetEntityCall extends MethodAccess {
   Expr getEntity() { result = this.getArgument(arg) }
 }
 
+/** A getter that returns tainted data when its qualifier is tainted. */
 private class ApacheHttpGetter extends TaintPreservingCallable {
   ApacheHttpGetter() {
     exists(string pkg, string ty, string mtd, Method m |
@@ -123,6 +129,36 @@ private class ApacheHttpGetter extends TaintPreservingCallable {
       pkg = "org.apache.http.params" and
       ty = "HttpParams" and
       mtd.matches("get%Parameter")
+      or
+      pkg = "org.apache.hc.core5.http" and
+      (
+        ty = "MessageHeaders" and
+        mtd = ["getFirstHeader", "getHeader", "getHeaders", "getLastHeader", "headerIterator"]
+        or
+        ty = "HttpRequest" and
+        mtd = ["getAuthority", "getPath", "getRequestUri", "getScheme", "getUri"]
+        or
+        ty = "HttpEntityContainer" and
+        mtd = "getEntity"
+        or
+        ty = "NameValuePair" and
+        mtd = ["getName", "getValue"]
+        or
+        ty = "HttpEntity" and
+        mtd = ["getContent", "getTrailers"]
+      )
+      or
+      pkg = "org.apache.hc.core5.message" and
+      ty = "RequestLine" and
+      mtd = ["getMethod", "getUri", "toString"]
+      or
+      pkg = "org.apache.hc.core5.function" and
+      ty = "Supplier" and
+      mtd = "get"
+      or
+      pkg = "org.apache.hc.core5.net" and
+      ty = "UriAuthority" and
+      mtd = ["getHostName", "toString"]
     )
   }
 
@@ -131,19 +167,26 @@ private class ApacheHttpGetter extends TaintPreservingCallable {
 
 private class UtilMethod extends TaintPreservingCallable {
   UtilMethod() {
-    exists(string ty, string mtd |
+    exists(string pkg, string ty, string mtd |
       this.isStatic() and
-      this.getDeclaringType().hasQualifiedName("org.apache.http.util", ty) and
+      this.getDeclaringType().hasQualifiedName(pkg, ty) and
       this.hasName(mtd)
     |
+      pkg = ["org.apache.http.util", "org.apache.hc.core5.io.entity"] and
       ty = "EntityUtils" and
-      mtd = ["toString", "toByteArray", "getContentCharSet", "getContentMimeType"]
+      mtd = ["toString", "toByteArray", "getContentCharSet", "getContentMimeType", "parse"]
       or
+      pkg = ["org.apache.http.util", "org.apache.hc.core5.util"] and
       ty = "EncodingUtils" and
       mtd = ["getAsciiBytes", "getAsciiString", "getBytes", "getString"]
       or
+      pkg = ["org.apache.http.util", "org.apache.hc.core5.util"] and
       ty = "Args" and
       mtd = ["containsNoBlanks", "notBlank", "notEmpty", "notNull"]
+      or
+      pkg = "org.apache.hc.core5.io.entity" and
+      ty = "HttpEntities" and
+      mtd = ["create", "createGziped", "createUrlEncoded", "gzip", "withTrailers"]
     )
   }
 
@@ -161,17 +204,25 @@ private class EntitySetter extends TaintPreservingCallable {
   override predicate transfersTaint(int src, int sink) { src = 0 and sink = -1 }
 }
 
-private class EntityConsructor extends TaintPreservingCallable, Constructor {
-  EntityConsructor() {
+private class EntityConstructor extends TaintPreservingCallable, Constructor {
+  EntityConstructor() {
     this.getDeclaringType()
-        .hasQualifiedName("org.apache.http.entity",
+        .hasQualifiedName(["org.apache.http.entity", "org.apache.hc.core5.io.entity"],
           [
-            "BufferedHttpEntity", "ByteArrayEntity", "HttpEntityWrapper", "InputStreamEntity",
-            "StringEntity"
+            "BasicHttpEntity", "BufferedHttpEntity", "ByteArrayEntity", "HttpEntityWrapper",
+            "InputStreamEntity", "StringEntity"
           ])
   }
 
   override predicate returnsTaintFrom(int arg) { arg = 0 }
+}
+
+private class RequestLineConstructor extends TaintPreservingCallable, Constructor {
+  RequestLineConstructor() {
+    this.getDeclaringType().hasQualifiedName("org.apache.hc.core5.http.message", "RequestLine")
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = [0, 1] }
 }
 
 private class BufferMethod extends TaintPreservingCallable {
@@ -179,7 +230,8 @@ private class BufferMethod extends TaintPreservingCallable {
     exists(Method m |
       this.(Method).overrides*(m) and
       m.getDeclaringType()
-          .hasQualifiedName("org.apache.http.util", ["ByteArrayBuffer", "CharArrayBuffer"]) and
+          .hasQualifiedName(["org.apache.http.util", "org.apache.hc.core5.util"],
+            ["ByteArrayBuffer", "CharArrayBuffer"]) and
       m.hasName([
           "append", "buffer", "subSequence", "substring", "substringTrimmed", "toByteAray",
           "toCharArray", "toString"
