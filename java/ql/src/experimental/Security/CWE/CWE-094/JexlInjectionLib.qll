@@ -109,14 +109,7 @@ private predicate isUnsafeEngine(Expr expr) {
 private class SandboxedJexlFlowConfig extends DataFlow2::Configuration {
   SandboxedJexlFlowConfig() { this = "JexlInjection::SandboxedJexlFlowConfig" }
 
-  override predicate isSource(DataFlow::Node node) {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
-      m.getDeclaringType() instanceof JexlBuilder and
-      m.hasName(["uberspect", "sandbox"]) and
-      m.getReturnType() instanceof JexlBuilder and
-      (ma = node.asExpr() or ma.getQualifier() = node.asExpr())
-    )
-  }
+  override predicate isSource(DataFlow::Node node) { node instanceof SandboxedJexlSource }
 
   override predicate isSink(DataFlow::Node node) {
     node.asExpr().getType() instanceof JexlEngine or
@@ -130,6 +123,26 @@ private class SandboxedJexlFlowConfig extends DataFlow2::Configuration {
 }
 
 /**
+ * Defines a data flow source for Jexl engines configured with a sandbox.
+ */
+private class SandboxedJexlSource extends DataFlow::ExprNode {
+  SandboxedJexlSource() {
+    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+      m.getDeclaringType() instanceof JexlBuilder and
+      m.hasName(["uberspect", "sandbox"]) and
+      m.getReturnType() instanceof JexlBuilder and
+      (ma = this.asExpr() or ma.getQualifier() = this.asExpr())
+    )
+    or
+    exists(ConstructorCall cc |
+      cc.getConstructedType() instanceof JexlEngine and
+      cc.getArgument(0).getType() instanceof JexlUberspect and
+      cc = this.asExpr()
+    )
+  }
+}
+
+/**
  * Holds if `fromNode` to `toNode` is a dataflow step that creates one of the Jexl engines.
  */
 private predicate createsJexlEngine(DataFlow::Node fromNode, DataFlow::Node toNode) {
@@ -138,6 +151,12 @@ private predicate createsJexlEngine(DataFlow::Node fromNode, DataFlow::Node toNo
     m.hasName(["create", "createJxltEngine"]) and
     ma.getQualifier() = fromNode.asExpr() and
     ma = toNode.asExpr()
+  )
+  or
+  exists(ConstructorCall cc |
+    cc.getConstructedType() instanceof UnifiedJexl and
+    cc.getArgument(0) = fromNode.asExpr() and
+    cc = toNode.asExpr()
   )
 }
 
@@ -247,6 +266,13 @@ private class JxltEngine extends JexlRefType {
 
 private class UnifiedJexl extends JexlRefType {
   UnifiedJexl() { hasName("UnifiedJEXL") }
+}
+
+private class JexlUberspect extends Interface {
+  JexlUberspect() {
+    hasQualifiedName("org.apache.commons.jexl2.introspection", "Uberspect") or
+    hasQualifiedName("org.apache.commons.jexl3.introspection", "JexlUberspect")
+  }
 }
 
 private class JxltEngineExpression extends NestedType {

@@ -1,6 +1,13 @@
 package org.apache.commons.jexl2;
 
+import java.util.Map;
+import org.apache.commons.jexl2.introspection.*;
+
 public class JexlEngine {
+
+    public JexlEngine() {}
+
+    public JexlEngine(Uberspect uberspect, Object arithmetic, Map<String, Object> functions, Object log) {}
 
     public Expression createExpression(String expression) {
         return null;
