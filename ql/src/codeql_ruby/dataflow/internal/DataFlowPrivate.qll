@@ -135,12 +135,12 @@ private module Cached {
     exists(CfgNodes::ExprCfgNode exprTo, ReturningStatementNode n |
       nodeFrom = n and
       exprTo = nodeTo.asExpr() and
-      n.getExprNode().getNode() instanceof BreakStmt and
+      n.getReturningNode().getNode() instanceof BreakStmt and
       exprTo.getNode() instanceof Loop and
-      nodeTo.asExpr().getAPredecessor(any(SuccessorTypes::BreakSuccessor s)) = n.getExprNode()
+      nodeTo.asExpr().getAPredecessor(any(SuccessorTypes::BreakSuccessor s)) = n.getReturningNode()
     )
     or
-    nodeFrom.asExpr() = nodeTo.(ReturningStatementNode).getExprNode().getReturnedValueNode()
+    nodeFrom.asExpr() = nodeTo.(ReturningStatementNode).getReturningNode().getReturnedValueNode()
     or
     nodeTo.asExpr() =
       any(CfgNodes::ExprNodes::ForExprCfgNode for |
@@ -183,7 +183,7 @@ class SsaDefinitionNode extends NodeImpl, TSsaDefinitionNode {
 }
 
 /**
- * An value returning statement, viewed as a node in a data flow graph.
+ * A value returning statement, viewed as a node in a data flow graph.
  *
  * Note that because of control-flow splitting, one `ReturningStmt` may correspond
  * to multiple `ReturningStatementNode`s, just like it may correspond to multiple
@@ -195,7 +195,7 @@ class ReturningStatementNode extends NodeImpl, TReturningNode {
   ReturningStatementNode() { this = TReturningNode(n) }
 
   /** Gets the expression corresponding to this node. */
-  CfgNodes::ReturningCfgNode getExprNode() { result = n }
+  CfgNodes::ReturningCfgNode getReturningNode() { result = n }
 
   override CfgScope getCfgScope() { result = n.getScope() }
 
@@ -287,7 +287,7 @@ private module ReturnNodes {
     private CfgNodes::ReturningCfgNode n;
 
     ExplicitReturnNode() {
-      isValid(this.getExprNode()) and
+      isValid(this.getReturningNode()) and
       n.getASuccessor().(CfgNodes::AnnotatedExitNode).isNormal() and
       n.getScope() instanceof Callable
     }
