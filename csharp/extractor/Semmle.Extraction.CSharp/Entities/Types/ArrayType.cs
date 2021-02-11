@@ -9,12 +9,12 @@ namespace Semmle.Extraction.CSharp.Entities
         private ArrayType(Context cx, IArrayTypeSymbol init)
             : base(cx, init)
         {
-            elementLazy = new Lazy<Type>(() => Create(cx, symbol.ElementType));
+            elementLazy = new Lazy<Type>(() => Create(cx, Symbol.ElementType));
         }
 
         private readonly Lazy<Type> elementLazy;
 
-        public int Rank => symbol.Rank;
+        public int Rank => Symbol.Rank;
 
         public Type ElementType => elementLazy.Value;
 
@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void WriteId(TextWriter trapFile)
         {
             trapFile.WriteSubId(ElementType);
-            symbol.BuildArraySuffix(trapFile);
+            Symbol.BuildArraySuffix(trapFile);
             trapFile.Write(";type");
         }
 

@@ -110,10 +110,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.nullability(this, symbol.Annotation);
+            trapFile.nullability(this, Symbol.Annotation);
 
             var i = 0;
-            foreach (var s in symbol.NullableParameters)
+            foreach (var s in Symbol.NullableParameters)
             {
                 trapFile.nullability_parent(Create(Context, s), i, this);
                 i++;
@@ -122,7 +122,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            symbol.WriteId(trapFile);
+            Symbol.WriteId(trapFile);
         }
 
         public static NullabilityEntity Create(Context cx, Nullability init) => NullabilityFactory.Instance.CreateEntity(cx, init, init);

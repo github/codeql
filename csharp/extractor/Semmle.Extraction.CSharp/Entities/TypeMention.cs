@@ -48,8 +48,8 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 case ArrayType at:
                     return GetArrayElementType(at.ElementType);
-                case NamedType nt when nt.symbol.IsBoundSpan() ||
-                                       nt.symbol.IsBoundReadOnlySpan():
+                case NamedType nt when nt.Symbol.IsBoundSpan() ||
+                                       nt.Symbol.IsBoundReadOnlySpan():
                     return nt.TypeArguments.Single();
                 case PointerType pt:
                     return GetArrayElementType(pt.PointedAtType);
@@ -71,7 +71,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     var nts = (NullableTypeSyntax)syntax;
                     if (type is NamedType nt)
                     {
-                        if (!nt.symbol.IsReferenceType)
+                        if (!nt.Symbol.IsReferenceType)
                         {
                             Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
                             Create(Context, nts.ElementType, this, nt.TypeArguments[0]);

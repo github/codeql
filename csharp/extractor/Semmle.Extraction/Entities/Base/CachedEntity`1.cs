@@ -30,9 +30,11 @@ namespace Semmle.Extraction
     /// <typeparam name="TSymbol">The type of the symbol.</typeparam>
     public abstract class CachedEntity<TSymbol> : CachedEntity
     {
+        public TSymbol Symbol { get; }
+
         protected CachedEntity(Context context, TSymbol symbol) : base(context)
         {
-            this.symbol = symbol;
+            this.Symbol = symbol;
         }
 
         /// <summary>
@@ -48,23 +50,14 @@ namespace Semmle.Extraction
             }
         }
 
-        public TSymbol symbol
-        {
-            get;
-        }
-
-        //object? ICachedEntity.UnderlyingObject => symbol;
-
-        public TSymbol UnderlyingObject => symbol;
-
         public override bool NeedsPopulation { get; }
 
-        public override int GetHashCode() => symbol is null ? 0 : symbol.GetHashCode();
+        public override int GetHashCode() => Symbol is null ? 0 : Symbol.GetHashCode();
 
         public override bool Equals(object? obj)
         {
             var other = obj as CachedEntity<TSymbol>;
-            return other?.GetType() == GetType() && Equals(other.symbol, symbol);
+            return other?.GetType() == GetType() && Equals(other.Symbol, Symbol);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour { get; }

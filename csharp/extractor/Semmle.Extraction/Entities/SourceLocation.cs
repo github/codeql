@@ -30,7 +30,7 @@ namespace Semmle.Extraction.Entities
                 Position.Span.Start.Line + 1, Position.Span.Start.Character + 1,
                 Position.Span.End.Line + 1, Position.Span.End.Character);
 
-            var mapped = symbol!.GetMappedLineSpan();
+            var mapped = Symbol!.GetMappedLineSpan();
             if (mapped.HasMappedPath && mapped.IsValid)
             {
                 var mappedLoc = Create(Context, Microsoft.CodeAnalysis.Location.Create(mapped.Path, default, mapped.Span));

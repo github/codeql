@@ -38,12 +38,12 @@ namespace Semmle.Extraction.Entities
         public override bool NeedsPopulation => true;
 
         public override int GetHashCode() =>
-            symbol == null ? 91187354 : symbol.GetHashCode();
+            Symbol == null ? 91187354 : Symbol.GetHashCode();
 
         public override bool Equals(object? obj)
         {
             if (obj is Assembly other && other.GetType() == typeof(Assembly))
-                return Equals(symbol, other.symbol);
+                return Equals(Symbol, other.Symbol);
 
             return false;
         }

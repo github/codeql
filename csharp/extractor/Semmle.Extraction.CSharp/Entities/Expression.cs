@@ -57,7 +57,7 @@ namespace Semmle.Extraction.CSharp.Entities
             type.PopulateGenerics();
         }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => Location.symbol;
+        public override Microsoft.CodeAnalysis.Location ReportingLocation => Location.Symbol;
 
         bool IExpressionParentEntity.IsTopLevelParent => false;
 

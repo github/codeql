@@ -55,7 +55,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     {
                         // Implicit `this` qualifier; add explicitly
 
-                        if (Context.GetModel(Syntax).GetEnclosingSymbol(Location.symbol.SourceSpan.Start) is IMethodSymbol callingMethod)
+                        if (Context.GetModel(Syntax).GetEnclosingSymbol(Location.Symbol.SourceSpan.Start) is IMethodSymbol callingMethod)
                             This.CreateImplicit(Context, callingMethod.ContainingType, Location, this, child++);
                         else
                             Context.ModelError(Syntax, "Couldn't determine implicit this type");
