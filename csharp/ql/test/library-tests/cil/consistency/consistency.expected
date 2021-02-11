@@ -1,1 +1,19 @@
+| DispatchTailCalls | No label |
+| EnumCalendarInfo | No label |
 | Finalize | Overridden method from System.Object is not in a base type |
+| Unknown instruction in DispatchTailCalls | Call has invalid target |
+| Unknown instruction in DispatchTailCalls | Cfg node has 0 pop counts |
+| Unknown instruction in DispatchTailCalls | Cfg node has 0 push counts |
+| Unknown instruction in DispatchTailCalls | Inconsistent stack size |
+| Unknown instruction in DispatchTailCalls | Opcode 41 is missing a QL class |
+| bne.un.s | Inconsistent stack size |
+| conv.u | Inconsistent stack size |
+| delegate* managed<IntPtr,IntPtr,IntPtr*,Void> | No label |
+| delegate* unmanaged<Char*,IntPtr,Void> | No label |
+| ldarg.1 | Inconsistent stack size |
+| ldc.i4.0 | Inconsistent stack size |
+| ldfld | Inconsistent stack size |
+| ldloc.3 | Inconsistent stack size |
+| leave.s | Inconsistent stack size |
+| ret | Inconsistent stack size |
+| starg.s | Inconsistent stack size |
