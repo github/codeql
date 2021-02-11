@@ -2,6 +2,7 @@ private import python
 private import DataFlowPublic
 import semmle.python.SpecialMethods
 private import semmle.python.essa.SsaCompute
+private import FlowSummaryImpl as FlowSummaryImpl
 
 //--------
 // Data flow graph
@@ -572,6 +573,8 @@ class DataFlowCallableValue extends DataFlowCallable, TCallableValue {
   override string getName() { result = callable.getName() }
 
   override CallableValue getCallableValue() { result = callable }
+
+  Location getLocation() { result = this.getScope().getLocation() } // Possibly?
 }
 
 /** A class representing a callable lambda. */
@@ -782,20 +785,40 @@ class ReturnKind extends TReturnKind {
   string toString() { result = "return" }
 }
 
-/** A data flow node that represents a value returned by a callable. */
-class ReturnNode extends CfgNode {
-  Return ret;
-
-  // See `TaintTrackingImplementation::returnFlowStep`
-  ReturnNode() { node = ret.getValue().getAFlowNode() }
-
+/** A data-flow node that represents a value returned by a callable. */
+abstract class ReturnNode extends Node {
   /** Gets the kind of this return node. */
   ReturnKind getKind() { any() }
+}
+
+module ReturnNodes {
+  /** A data flow node that represents a value returned by a callable. */
+  class ExplicitReturnNode extends ReturnNode, CfgNode {
+    Return ret;
+
+    // See `TaintTrackingImplementation::returnFlowStep`
+    ExplicitReturnNode() { node = ret.getValue().getAFlowNode() }
+  }
+
+  /** A return node for a callable with a flow summary. */
+  class SummaryReturnNode extends ReturnNode, TSummaryReturnNode {
+    private FlowSummaryImpl::Public::SummarizedCallable sc;
+
+    SummaryReturnNode() { this = TSummaryReturnNode(sc) }
+
+    override DataFlowCallable getEnclosingCallable() { result = sc }
+
+    override Location getLocation() { result = sc.getLocation() }
+
+    override string toString() { result = "[summary] return inside " + sc }
+  }
 }
 
 /** A data flow node that represents the output of a call. */
 class OutNode extends CfgNode {
   OutNode() { node instanceof CallNode }
+
+  DataFlowCall getCall(ReturnKind kind) { this = getAnOutNode(result, kind) }
 }
 
 /**

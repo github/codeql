@@ -4,6 +4,8 @@
 
 private import python
 private import DataFlowPrivate
+private import FlowSummaryImpl as FlowSummaryImpl
+private import FlowSummarySpecific as FlowSummarySpecific
 import semmle.python.dataflow.new.TypeTracker
 import Attributes
 private import semmle.python.essa.SsaCompute
@@ -69,7 +71,18 @@ newtype TNode =
    * A synthetic node representing that there may be an iterable element
    * for `consumer` to consume.
    */
-  TIterableElementNode(UnpackingAssignmentTarget consumer)
+  TIterableElementNode(UnpackingAssignmentTarget consumer) or
+  TSummaryInternalNode(
+    FlowSummaryImpl::Public::SummarizedCallable c,
+    FlowSummaryImpl::Private::SummaryInternalNodeState state
+  ) {
+    FlowSummaryImpl::Private::internalNodeRange(c, state)
+  } or
+  TSummaryReturnNode(FlowSummaryImpl::Public::SummarizedCallable c) {
+    exists(FlowSummarySpecific::Public::SummaryOutput output |
+      FlowSummaryImpl::Private::summary(c, _, _, output, _, _)
+    )
+  }
 
 /** Helper for `Node::getEnclosingCallable`. */
 private DataFlowCallable getCallableScope(Scope s) {
