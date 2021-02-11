@@ -98,3 +98,31 @@ private class ArgvSource extends LocalFlowSource {
 
   override string getSourceType() { result = "a command-line argument" }
 }
+
+/** A remote data flow sink. */
+abstract class RemoteFlowSink extends DataFlow::Node {
+  /** Gets a string that describes the type of this flow sink. */
+  abstract string getSinkType();
+}
+
+private class RemoteParameterSink extends RemoteFlowSink {
+  string sourceType;
+
+  RemoteParameterSink() {
+    exists(RemoteFlowFunctionSink func, FunctionInput input, CallInstruction call, int index |
+      func.hasRemoteFlowSink(input, sourceType) and call.getStaticCallTarget() = func
+    |
+      exists(ReadSideEffectInstruction read |
+        call = read.getPrimaryInstruction() and
+        read.getIndex() = index and
+        this.asOperand() = read.getSideEffectOperand() and
+        input.isParameterDerefOrQualifierObject(index)
+      )
+      or
+      input.isParameterOrQualifierAddress(index) and
+      this.asOperand() = call.getArgumentOperand(index)
+    )
+  }
+
+  override string getSinkType() { result = sourceType }
+}

@@ -216,3 +216,22 @@ void test_pointers2()
 	sink(ptr4); // clean
 	sink(*ptr4); // $ MISSING: ast,ir
 }
+
+// --- recv ---
+
+int recv(int s, char* buf, int len, int flags);
+
+void test_recv() {
+	char buffer[1024];
+	recv(0, buffer, sizeof(buffer), 0);
+	sink(buffer); // $ ast,ir
+	sink(*buffer); // $ ast,ir
+}
+
+// --- send ---
+
+int send(int, const void*, int, int);
+
+void test_send(char* buffer, int length) {
+  send(0, buffer, length, 0); // $ remote
+}

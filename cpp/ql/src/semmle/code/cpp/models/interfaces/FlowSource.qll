@@ -29,3 +29,12 @@ abstract class LocalFlowFunction extends Function {
    */
   abstract predicate hasLocalFlowSource(FunctionOutput output, string description);
 }
+
+/** A library function that sends data over a network connection. */
+abstract class RemoteFlowFunctionSink extends Function {
+  /**
+   * Holds if data described by `description` flows into `input` to a call to this function, and is then
+   * send over a network connection.
+   */
+  abstract predicate hasRemoteFlowSink(FunctionInput input, string description);
+}
