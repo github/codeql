@@ -145,6 +145,14 @@ class ExprSequence extends Expr {
  */
 class BodyStatement extends ExprSequence {
   override BodyStatement::Range range;
+
+  /** Gets the `else` block in this block, if any. */
+  final ExprSequence getElse() { result = range.getElse() }
+
+  /** Gets the `ensure` block in this block, if any. */
+  final ExprSequence getEnsure() { result = range.getEnsure() }
+
+  final predicate hasEnsure() { exists(this.getEnsure()) }
 }
 
 /**

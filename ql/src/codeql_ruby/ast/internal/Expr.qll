@@ -184,7 +184,25 @@ module ExprSequence {
 }
 
 module BodyStatement {
-  abstract class Range extends ExprSequence::Range { }
+  abstract class Range extends ExprSequence::Range {
+    final override Expr getExpr(int n) {
+      result =
+        rank[n + 1](Generated::AstNode node, int i |
+          node = getChild(i) and
+          not node instanceof Generated::Else and
+          not node instanceof Generated::Rescue and
+          not node instanceof Generated::Ensure
+        |
+          node order by i
+        )
+    }
+
+    final ExprSequence getElse() { result = unique(Generated::Else s | s = getChild(_)) }
+
+    final ExprSequence getEnsure() { result = unique(Generated::Ensure s | s = getChild(_)) }
+
+    abstract Generated::AstNode getChild(int i);
+  }
 }
 
 module ParenthesizedExpr {
@@ -224,6 +242,16 @@ module DoExpr {
     final override Generated::Do generated;
 
     final override Expr getExpr(int n) { result = generated.getChild(n) }
+  }
+}
+
+module Ensure {
+  class Range extends ExprSequence::Range, @ensure {
+    final override Generated::Ensure generated;
+
+    final override Expr getExpr(int n) { result = generated.getChild(n) }
+
+    final override string toString() { result = "ensure ... end" }
   }
 }
 

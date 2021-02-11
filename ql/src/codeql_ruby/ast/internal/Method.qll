@@ -23,7 +23,7 @@ module Method {
 
     final predicate isSetter() { generated.getName() instanceof Generated::Setter }
 
-    final override Expr getExpr(int i) { result = generated.getChild(i) }
+    final override Generated::AstNode getChild(int i) { result = generated.getChild(i) }
 
     final override string toString() { result = this.getName() }
   }
@@ -41,7 +41,7 @@ module SingletonMethod {
       result = generated.getName().(Generated::Setter).getName().getValue() + "="
     }
 
-    final override Expr getExpr(int i) { result = generated.getChild(i) }
+    final override Generated::AstNode getChild(int i) { result = generated.getChild(i) }
 
     final override string toString() { result = this.getName() }
   }
@@ -55,7 +55,7 @@ module Lambda {
       result = generated.getParameters().getChild(n)
     }
 
-    final override Expr getExpr(int i) {
+    final override Generated::AstNode getChild(int i) {
       result = generated.getBody().(Generated::DoBlock).getChild(i) or
       result = generated.getBody().(Generated::Block).getChild(i)
     }
@@ -74,7 +74,7 @@ module DoBlock {
   class Range extends Block::Range, BodyStatement::Range, @do_block {
     final override Generated::DoBlock generated;
 
-    final override Expr getExpr(int i) { result = generated.getChild(i) }
+    final override Generated::AstNode getChild(int i) { result = generated.getChild(i) }
 
     final override Parameter::Range getParameter(int n) {
       result = generated.getParameters().getChild(n)

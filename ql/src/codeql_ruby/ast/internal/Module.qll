@@ -10,7 +10,7 @@ module Class {
   class Range extends ModuleBase::Range, @class {
     final override Generated::Class generated;
 
-    final override Expr getExpr(int i) { result = generated.getChild(i) }
+    final override Generated::AstNode getChild(int i) { result = generated.getChild(i) }
 
     final string getName() {
       result = generated.getName().(Generated::Token).getValue() or
@@ -29,7 +29,7 @@ module SingletonClass {
   class Range extends ModuleBase::Range, @singleton_class {
     final override Generated::SingletonClass generated;
 
-    final override Expr getExpr(int i) { result = generated.getChild(i) }
+    final override Generated::AstNode getChild(int i) { result = generated.getChild(i) }
 
     final Expr getValue() { result = generated.getValue() }
 
@@ -41,7 +41,7 @@ module Module {
   class Range extends ModuleBase::Range, @module {
     final override Generated::Module generated;
 
-    final override Expr getExpr(int n) { result = generated.getChild(n) }
+    final override Generated::AstNode getChild(int i) { result = generated.getChild(i) }
 
     final string getName() {
       result = generated.getName().(Generated::Token).getValue() or
