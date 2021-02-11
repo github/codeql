@@ -1,5 +1,6 @@
 private import codeql_ruby.AST
 private import codeql_ruby.ast.internal.AST
+private import codeql_ruby.ast.internal.Pattern
 private import codeql_ruby.ast.internal.TreeSitter
 private import codeql_ruby.ast.internal.Variable
 
@@ -252,18 +253,6 @@ module Ensure {
     final override Expr getExpr(int n) { result = generated.getChild(n) }
 
     final override string toString() { result = "ensure ... end" }
-  }
-}
-
-module ScopeResolution {
-  class Range extends Expr::Range, @scope_resolution {
-    final override Generated::ScopeResolution generated;
-
-    final Expr getScope() { result = generated.getScope() }
-
-    final string getName() { result = generated.getName().(Generated::Token).getValue() }
-
-    final override string toString() { result = "...::" + this.getName() }
   }
 }
 

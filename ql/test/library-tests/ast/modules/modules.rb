@@ -55,3 +55,7 @@ module Foo::Bar
   puts 'module Foo::Bar again'
   $global_var = 4
 end
+
+# a module where the name is a scope resolution using the global scope
+module ::MyModuleInGlobalScope
+end

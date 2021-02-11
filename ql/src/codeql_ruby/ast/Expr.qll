@@ -177,39 +177,6 @@ class ParenthesizedExpr extends ExprSequence, @parenthesized_statements {
 }
 
 /**
- * A scope resolution, typically used to access constants defined in a class or
- * module.
- * ```rb
- * Foo::Bar
- * ```
- */
-class ScopeResolution extends Expr, @scope_resolution {
-  final override ScopeResolution::Range range;
-
-  final override string getAPrimaryQlClass() { result = "ScopeResolution" }
-
-  /**
-   * Gets the expression representing the scope, if any. In the following
-   * example, the scope is the `Expr` for `Foo`:
-   * ```rb
-   * Foo::Bar
-   * ```
-   * However, in the following example, accessing the `Bar` constant in the
-   * `Object` class, there is no result:
-   * ```rb
-   * ::Bar
-   * ```
-   */
-  final Expr getScope() { result = range.getScope() }
-
-  /**
-   * Gets the name being resolved. For example, in `Foo::Bar`, the result is
-   * `"Bar"`.
-   */
-  final string getName() { result = range.getName() }
-}
-
-/**
  * A pair expression. For example, in a hash:
  * ```rb
  * { foo: bar }

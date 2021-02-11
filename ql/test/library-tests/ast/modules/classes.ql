@@ -4,9 +4,9 @@ query predicate classes(Class c, string pClass, string name) {
   pClass = c.getAPrimaryQlClass() and name = c.getName()
 }
 
-query predicate classesWithScopeResolutionNames(Class c, ScopeResolution name) {
-  name = c.getNameScopeResolution()
-}
+query predicate classesWithNameScopeExprs(Class c, Expr se) { se = c.getScopeExpr() }
+
+query predicate classesWithGlobalNameScopeExprs(Class c) { c.hasGlobalScope() }
 
 query predicate exprsInClasses(Class c, int i, Expr e, string eClass) {
   e = c.getExpr(i) and eClass = e.getAPrimaryQlClass()

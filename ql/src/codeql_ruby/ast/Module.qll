@@ -1,4 +1,5 @@
 private import codeql_ruby.AST
+private import codeql_ruby.ast.Constant
 private import internal.Module
 
 /**
@@ -36,7 +37,7 @@ class ModuleBase extends BodyStatement {
  * end
  * ```
  */
-class Class extends ModuleBase {
+class Class extends ModuleBase, ConstantWriteAccess {
   final override Class::Range range;
 
   final override string getAPrimaryQlClass() { result = "Class" }
@@ -49,41 +50,59 @@ class Class extends ModuleBase {
    * end
    * ```
    *
-   * N.B. in the following example, where the class name is a scope resolution,
-   * the result is the name being resolved, i.e. `"Bar"`. Use
-   * `getScopeResolutionName` to get the complete `ScopeResolution`.
+   * N.B. in the following example, where the class name uses the scope
+   * resolution operator, the result is the name being resolved, i.e. `"Bar"`.
+   * Use `getScopeExpr` to get the `Foo` for `Foo`.
    * ```rb
    * class Foo::Bar
    * end
    * ```
    */
-  final string getName() { result = range.getName() }
+  final override string getName() { result = range.getName() }
 
   /**
-   * Gets the scope resolution used to define the class name, if any. In the
-   * following example, the result is the `ScopeResolution` for `Foo::Bar`,
-   * while `getName()` returns `"Bar"`.
+   * Gets the scope expression used in the class name's scope resolution
+   * operation, if any.
+   *
+   * In the following example, the result is the `Expr` for `Foo`.
+   *
    * ```rb
    * class Foo::Bar
    * end
    * ```
    *
-   * In the following example, the name is not a scope resolution, so there is
-   * no result.
+   * However, there is no result for the following example, since there is no
+   * scope resolution operation.
+   *
    * ```rb
    * class Baz
    * end
    * ```
    */
-  final ScopeResolution getNameScopeResolution() { result = range.getNameScopeResolution() }
+  final override Expr getScopeExpr() { result = range.getScopeExpr() }
+
+  /**
+   * Holds if the class name uses the scope resolution operator to access the
+   * global scope, as in this example:
+   *
+   * ```rb
+   * class ::Foo
+   * end
+   * ```
+   */
+  final override predicate hasGlobalScope() { range.hasGlobalScope() }
 
   /**
    * Gets the `Expr` used as the superclass in the class definition, if any.
    *
-   * TODO: add example for `class A < Foo` once we have `ConstantAccess`
+   * In the following example, the result is a `ConstantReadAccess`.
+   * ```rb
+   * class Foo < Bar
+   * end
+   * ```
    *
-   * For example, where the superclass is a call expression, the result is a
-   * `Call`.
+   * In the following example, where the superclass is a call expression, the
+   * result is a `Call`.
    * ```rb
    * class C < foo()
    * end
@@ -145,7 +164,7 @@ class SingletonClass extends ModuleBase, @singleton_class {
  * end
  * ```
  */
-class Module extends ModuleBase, @module {
+class Module extends ModuleBase, ConstantWriteAccess, @module {
   final override Module::Range range;
 
   final override string getAPrimaryQlClass() { result = "Module" }
@@ -158,31 +177,45 @@ class Module extends ModuleBase, @module {
    * end
    * ```
    *
-   * N.B. in the following example, where the module name is a scope
-   * resolution, the result is the name being resolved, i.e. `"Bar"`. Use
-   * `getScopeResolutionName` to get the complete `ScopeResolution`.
+   * N.B. in the following example, where the module name uses the scope
+   * resolution operator, the result is the name being resolved, i.e. `"Bar"`.
+   * Use `getScopeExpr` to get the `Expr` for `Foo`.
    * ```rb
    * module Foo::Bar
    * end
    * ```
    */
-  final string getName() { result = range.getName() }
+  final override string getName() { result = range.getName() }
 
   /**
-   * Gets the scope resolution used to define the module name, if any. In the
-   * following example, the result is the `ScopeResolution` for `Foo::Bar`,
-   * while `getName()` returns `"bar"`.
+   * Gets the scope expression used in the module name's scope resolution
+   * operation, if any.
+   *
+   * In the following example, the result is the `Expr` for `Foo`.
+   *
    * ```rb
    * module Foo::Bar
    * end
    * ```
    *
-   * In the following example, the name is not a scope resolution, so this
-   * predicate has no result:
+   * However, there is no result for the following example, since there is no
+   * scope resolution operation.
+   *
    * ```rb
    * module Baz
    * end
    * ```
    */
-  final ScopeResolution getNameScopeResolution() { result = range.getNameScopeResolution() }
+  final override Expr getScopeExpr() { result = range.getScopeExpr() }
+
+  /**
+   * Holds if the module name uses the scope resolution operator to access the
+   * global scope, as in this example:
+   *
+   * ```rb
+   * class ::Foo
+   * end
+   * ```
+   */
+  final override predicate hasGlobalScope() { range.hasGlobalScope() }
 }

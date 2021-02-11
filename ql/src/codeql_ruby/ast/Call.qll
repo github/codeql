@@ -11,40 +11,29 @@ class Call extends Expr {
 
   /**
    * Gets the receiver of this call, if any. For example:
+   *
    * ```rb
    * foo.bar
-   * baz()
+   * Baz::qux
+   * corge()
    * ```
-   * The result for the call to `bar` is the `Expr` for `foo`, while the call
-   * to `baz` has no result.
+   *
+   * The result for the call to `bar` is the `Expr` for `foo`; the result for
+   * the call to `qux` is the `Expr` for `Baz`; for the call to `corge` there
+   * is no result.
    */
   final Expr getReceiver() { result = range.getReceiver() }
 
   /**
    * Gets the name of the method being called. For example, in:
+   *
    * ```rb
    * foo.bar x, y
    * ```
-   * the result is `"bar"`.
    *
-   * N.B. in the following example, where the method name is a scope
-   * resolution, the result is the name being resolved, i.e. `"bar"`. Use
-   * `getMethodScopeResolution` to get the complete `ScopeResolution`.
-   * ```rb
-   * Foo::bar x, y
-   * ```
+   * the result is `"bar"`.
    */
   final string getMethodName() { result = range.getMethodName() }
-
-  /**
-   * Gets the scope resolution of this call, if any. In the following example,
-   * the result is the `ScopeResolution` for `Foo::bar`, while
-   * `getMethodName()` returns `"bar"`.
-   * ```rb
-   * Foo::bar()
-   * ```
-   */
-  final ScopeResolution getMethodScopeResolution() { result = range.getMethodScopeResolution() }
 
   /**
    * Gets the `n`th argument of this method call. In the following example, the

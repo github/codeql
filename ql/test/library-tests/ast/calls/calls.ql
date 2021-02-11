@@ -8,10 +8,6 @@ query predicate callsWithNoReceiverArgumentsOrBlock(Call c, string name) {
   not exists(c.getBlock())
 }
 
-query predicate callsWithScopeResolutionName(Call c, ScopeResolution sr) {
-  sr = c.getMethodScopeResolution()
-}
-
 query predicate callsWithArguments(Call c, string name, int n, Expr argN) {
   name = c.getMethodName() and
   argN = c.getArgument(n)

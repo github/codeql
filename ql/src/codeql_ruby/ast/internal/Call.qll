@@ -9,8 +9,6 @@ module Call {
 
     abstract string getMethodName();
 
-    abstract ScopeResolution getMethodScopeResolution();
-
     abstract Expr getArgument(int n);
 
     abstract Block getBlock();
@@ -27,7 +25,24 @@ module Call {
 
     final override string getMethodName() { result = generated.getValue() }
 
-    final override ScopeResolution getMethodScopeResolution() { none() }
+    final override Expr getArgument(int n) { none() }
+
+    final override Block getBlock() { none() }
+  }
+
+  private class ScopeResolutionIdentifierCallRange extends Call::Range, @scope_resolution {
+    final override Generated::ScopeResolution generated;
+    Generated::Identifier identifier;
+
+    ScopeResolutionIdentifierCallRange() {
+      identifier = generated.getName() and
+      vcall(this) and
+      not access(identifier, _)
+    }
+
+    final override Expr getReceiver() { result = generated.getScope() }
+
+    final override string getMethodName() { result = identifier.getValue() }
 
     final override Expr getArgument(int n) { none() }
 
@@ -37,14 +52,17 @@ module Call {
   private class RegularCallRange extends Call::Range, @call {
     final override Generated::Call generated;
 
-    final override Expr getReceiver() { result = generated.getReceiver() }
+    final override Expr getReceiver() {
+      if exists(generated.getReceiver())
+      then result = generated.getReceiver()
+      else result = generated.getMethod().(Generated::ScopeResolution).getScope()
+    }
 
     final override string getMethodName() {
       result = generated.getMethod().(Generated::Token).getValue() or
-      result = this.getMethodScopeResolution().getName()
+      result =
+        generated.getMethod().(Generated::ScopeResolution).getName().(Generated::Token).getValue()
     }
-
-    final override ScopeResolution getMethodScopeResolution() { result = generated.getMethod() }
 
     final override Expr getArgument(int n) { result = generated.getArguments().getChild(n) }
 
@@ -59,8 +77,6 @@ module YieldCall {
     final override Expr getReceiver() { none() }
 
     final override string getMethodName() { result = "yield" }
-
-    final override ScopeResolution getMethodScopeResolution() { none() }
 
     final override Expr getArgument(int n) { result = generated.getChild().getChild(n) }
 
@@ -82,8 +98,6 @@ module SuperCall {
 
     final override string getMethodName() { result = generated.getValue() }
 
-    final override ScopeResolution getMethodScopeResolution() { none() }
-
     final override Expr getArgument(int n) { none() }
 
     final override Block getBlock() { none() }
@@ -99,8 +113,6 @@ module SuperCall {
     final override string getMethodName() {
       result = generated.getMethod().(Generated::Super).getValue()
     }
-
-    final override ScopeResolution getMethodScopeResolution() { none() }
 
     final override Expr getArgument(int n) { result = generated.getArguments().getChild(n) }
 
