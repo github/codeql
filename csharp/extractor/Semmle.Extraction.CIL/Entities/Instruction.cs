@@ -385,19 +385,21 @@ namespace Semmle.Extraction.CIL.Entities
                     case Payload.Type:
                     case Payload.Field:
                     case Payload.ValueType:
-                        // A generic EntityHandle.
-                        var handle = MetadataTokens.EntityHandle(payloadValue);
-                        var target = Cx.CreateGeneric(Method, handle);
-                        yield return target;
-                        if (target != null)
                         {
-                            yield return Tuples.cil_access(this, target);
+                            // A generic EntityHandle.
+                            var handle = MetadataTokens.EntityHandle(payloadValue);
+                            var target = Cx.CreateGeneric(Method, handle);
+                            yield return target;
+                            if (target != null)
+                            {
+                                yield return Tuples.cil_access(this, target);
+                            }
+                            else
+                            {
+                                throw new InternalError($"Unable to create payload type {PayloadType} for opcode {OpCode}");
+                            }
+                            break;
                         }
-                        else
-                        {
-                            throw new InternalError($"Unable to create payload type {PayloadType} for opcode {OpCode}");
-                        }
-                        break;
                     case Payload.Arg8:
                     case Payload.Arg16:
                         if (Method.Parameters is object)
@@ -417,10 +419,33 @@ namespace Semmle.Extraction.CIL.Entities
                     case Payload.Target32:
                     case Payload.Switch:
                     case Payload.Ignore8:
-                    case Payload.CallSiteDesc:
                         // These are not handled here.
                         // Some of these are handled by JumpContents().
                         break;
+                    case Payload.CallSiteDesc:
+                        {
+                            var handle = MetadataTokens.EntityHandle(payloadValue);
+                            IExtractedEntity? target = null;
+                            try
+                            {
+                                target = Cx.CreateGeneric(Method, handle);
+                            }
+                            catch (Exception exc)
+                            {
+                                Cx.Cx.Extractor.Logger.Log(Util.Logging.Severity.Warning, $"Couldn't interpret payload of payload type {PayloadType} as a function pointer type. {exc.Message} {exc.StackTrace}");
+                            }
+
+                            if (target != null)
+                            {
+                                yield return target;
+                                yield return Tuples.cil_access(this, target);
+                            }
+                            else
+                            {
+                                throw new InternalError($"Unable to create payload type {PayloadType} for opcode {OpCode}");
+                            }
+                            break;
+                        }
                     default:
                         throw new InternalError($"Unhandled payload type {PayloadType}");
                 }
