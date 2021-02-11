@@ -292,21 +292,18 @@ module ExprNodes {
     final ExprCfgNode getBranch(boolean cond) { e.hasCfgChild(e.getBranch(cond), this, result) }
   }
 
-  private class ExprSequenceChildMapping extends ExprChildMapping, ExprSequence {
-    override predicate relevantChild(Expr e) { e = this.getAnExpr() }
+  private class StmtSequenceChildMapping extends ExprChildMapping, StmtSequence {
+    override predicate relevantChild(Expr e) { e = this.getLastExpr() }
   }
 
-  /** A control-flow node that wraps an `ExprSequence` AST expression. */
-  class ExprSequenceCfgNode extends ExprCfgNode {
-    override ExprSequenceChildMapping e;
+  /** A control-flow node that wraps a `StmtSequence` AST expression. */
+  class StmtSequenceCfgNode extends ExprCfgNode {
+    override StmtSequenceChildMapping e;
 
-    final override ExprSequence getExpr() { result = ExprCfgNode.super.getExpr() }
+    final override StmtSequence getExpr() { result = ExprCfgNode.super.getExpr() }
 
     /** Gets the last expression in this sequence, if any. */
     final ExprCfgNode getLastExpr() { e.hasCfgChild(e.getLastExpr(), this, result) }
-
-    /** Gets the 'n'th expression of this expression sequence. */
-    final ExprCfgNode getExpr(int n) { e.hasCfgChild(e.getExpr(n), this, result) }
   }
 
   private class ForExprChildMapping extends ExprChildMapping, ForExpr {
@@ -324,7 +321,7 @@ module ExprNodes {
   }
 
   /** A control-flow node that wraps a `ParenthesizedExpr` AST expression. */
-  class ParenthesizedExprCfgNode extends ExprSequenceCfgNode {
+  class ParenthesizedExprCfgNode extends StmtSequenceCfgNode {
     ParenthesizedExprCfgNode() { this.getExpr() instanceof ParenthesizedExpr }
   }
 
