@@ -923,7 +923,6 @@
 | Parameter 1 of SetException | parameter | 32 |
 | Parameter 1 of SetNotificationForWaitCompletion | parameter | 32 |
 | Parameter 1 of SetValue | parameter | 32 |
-| Parameter 1 of SkipWhitespace | parameter | 32 |
 | Parameter 1 of SnapForObservation | parameter | 32 |
 | Parameter 1 of SplitName | parameter | 32 |
 | Parameter 1 of Start | parameter | 32 |
@@ -1038,7 +1037,6 @@
 | Parameter 1 of UInt32ToNumber | parameter | 32 |
 | Parameter 1 of UInt64ToNumber | parameter | 32 |
 | Parameter 1 of Unscale | parameter | 32 |
-| Parameter 1 of ValidateVariableAndValue | parameter | 32 |
 | Parameter 1 of VarDecCmp | parameter | 32 |
 | Parameter 1 of VarDecCmpSub | parameter | 32 |
 | Parameter 1 of VarDecDiv | parameter | 32 |
@@ -1318,7 +1316,6 @@
 | Parameter 2 of TryGetStringValue | parameter | 32 |
 | Parameter 2 of TryGetTimeZone | parameter | 32 |
 | Parameter 2 of TryGetTimeZoneFromLocalMachine | parameter | 32 |
-| Parameter 2 of TryGetUserNameFromPasswd | parameter | 32 |
 | Parameter 2 of TryGetValue | parameter | 32 |
 | Parameter 2 of TryGetValueWorker | parameter | 32 |
 | Parameter 2 of TryLoadTzFile | parameter | 32 |
