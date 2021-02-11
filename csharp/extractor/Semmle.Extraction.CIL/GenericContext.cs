@@ -23,34 +23,8 @@ namespace Semmle.Extraction.CIL
         public abstract IEnumerable<Entities.Type> TypeParameters { get; }
 
         /// <summary>
-        /// The list of generic method parameters.
+        /// The list of generic method parameters/arguments.
         /// </summary>
         public abstract IEnumerable<Entities.Type> MethodParameters { get; }
-
-        /// <summary>
-        /// Gets the `p`th type parameter.
-        /// </summary>
-        /// <param name="p">The index of the parameter.</param>
-        /// <returns>
-        /// For constructed types, the supplied type.
-        /// For unbound types, the type parameter.
-        /// </returns>
-        public Entities.Type GetGenericTypeParameter(int p)
-        {
-            return TypeParameters.ElementAt(p);
-        }
-
-        /// <summary>
-        /// Gets the `p`th method type parameter.
-        /// </summary>
-        /// <param name="p">The index of the parameter.</param>
-        /// <returns>
-        /// For constructed types, the supplied type.
-        /// For unbound types, the type parameter.
-        /// </returns>
-        public Entities.Type GetGenericMethodParameter(int p)
-        {
-            return MethodParameters.ElementAt(p);
-        }
     }
 }

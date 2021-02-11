@@ -1,6 +1,7 @@
 using System;
 using System.Reflection.Metadata;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -29,10 +30,10 @@ namespace Semmle.Extraction.CIL.Entities
             genericType.Construct(typeArguments);
 
         Type ISignatureTypeProvider<Type, GenericContext>.GetGenericMethodParameter(GenericContext genericContext, int index) =>
-            genericContext.GetGenericMethodParameter(index);
+            genericContext.MethodParameters.ElementAt(index);
 
         Type ISignatureTypeProvider<Type, GenericContext>.GetGenericTypeParameter(GenericContext genericContext, int index) =>
-            genericContext.GetGenericTypeParameter(index);
+            genericContext.TypeParameters.ElementAt(index);
 
         Type ISignatureTypeProvider<Type, GenericContext>.GetModifiedType(Type modifier, Type unmodifiedType, bool isRequired) =>
             new ModifiedType(cx, unmodifiedType, modifier, isRequired);
