@@ -131,10 +131,16 @@ class StmtSequence extends Expr {
 class BodyStatement extends StmtSequence {
   override BodyStatement::Range range;
 
-  /** Gets the `else` block in this block, if any. */
+  /** Gets the `n`th rescue clause in this block. */
+  final Rescue getRescue(int n) { result = range.getRescue(n) }
+
+  /** Gets a rescue clause in this block. */
+  final Rescue getARescue() { result = this.getRescue(_) }
+
+  /** Gets the `else` clause in this block, if any. */
   final StmtSequence getElse() { result = range.getElse() }
 
-  /** Gets the `ensure` block in this block, if any. */
+  /** Gets the `ensure` clause in this block, if any. */
   final StmtSequence getEnsure() { result = range.getEnsure() }
 
   final predicate hasEnsure() { exists(this.getEnsure()) }
@@ -197,4 +203,59 @@ class Pair extends Expr, @pair {
    * ```
    */
   final Expr getValue() { result = range.getValue() }
+}
+
+/**
+ * A rescue clause. For example:
+ * ```rb
+ * begin
+ *   write_file
+ * rescue StandardError => msg
+ *   puts msg
+ * end
+ */
+class Rescue extends Expr, @rescue {
+  final override Rescue::Range range;
+
+  /**
+   * Gets the `n`th exception to match, if any. For example `FirstError` or `SecondError` in:
+   * ```rb
+   * begin
+   *  do_something
+   * rescue FirstError, SecondError => e
+   *   handle_error(e)
+   * end
+   * ```
+   */
+  final Expr getException(int n) { result = range.getException(n) }
+
+  /**
+   * Gets an exception to match, if any. For example `FirstError` or `SecondError` in:
+   * ```rb
+   * begin
+   *  do_something
+   * rescue FirstError, SecondError => e
+   *   handle_error(e)
+   * end
+   * ```
+   */
+  final Expr getAnException() { result = getException(_) }
+
+  /**
+   * Gets the variable to which to assign the matched exception, if any.
+   * For example `err` in:
+   * ```rb
+   * begin
+   *  do_something
+   * rescue StandardError => err
+   *   handle_error(err)
+   * end
+   * ```
+   */
+  final Expr getVariable() { result = range.getVariable() }
+
+  /**
+   * Gets the exception handler body.
+   */
+  final StmtSequence getBody() { result = range.getBody() }
 }

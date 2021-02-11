@@ -163,7 +163,7 @@ raise.rb:
 #-----|  -> b
 
 #  150| enter m13
-#-----|  -> ensure ... end
+#-----|  -> ensure ...
 
 #  154| enter m14
 #-----|  -> element
@@ -182,7 +182,7 @@ break_ensure.rb:
 #-----|  -> elements
 
 #    2| for ... in ...
-#-----|  -> ensure ... end
+#-----|  -> ensure ...
 
 #    2| element
 #-----|  -> element
@@ -210,7 +210,7 @@ break_ensure.rb:
 #    4| break
 #-----| break -> for ... in ...
 
-#    7| ensure ... end
+#    7| ensure ...
 #-----|  -> elements
 
 #    8| if ...
@@ -258,7 +258,7 @@ break_ensure.rb:
 #-----|  -> In
 
 #   16| if ...
-#-----|  -> ensure ... end
+#-----|  -> ensure ...
 
 #   16| ... > ...
 #-----| false -> if ...
@@ -271,12 +271,12 @@ break_ensure.rb:
 #-----|  -> ... > ...
 
 #   17| break
-#-----| break -> [ensure: break] ensure ... end
+#-----| break -> [ensure: break] ensure ...
 
-#   19| ensure ... end
+#   19| ensure ...
 #-----|  -> elements
 
-#   19| [ensure: break] ensure ... end
+#   19| [ensure: break] ensure ...
 #-----|  -> [ensure: break] elements
 
 #   20| if ...
@@ -333,7 +333,7 @@ break_ensure.rb:
 #-----|  -> elements
 
 #   29| if ...
-#-----|  -> ensure ... end
+#-----|  -> ensure ...
 
 #   29| call to nil?
 #-----| false -> if ...
@@ -346,12 +346,12 @@ break_ensure.rb:
 #-----|  -> call to nil?
 
 #   30| return
-#-----| return -> [ensure: return] ensure ... end
+#-----| return -> [ensure: return] ensure ...
 
-#   32| ensure ... end
+#   32| ensure ...
 #-----|  -> elements
 
-#   32| [ensure: return] ensure ... end
+#   32| [ensure: return] ensure ...
 #-----|  -> [ensure: return] elements
 
 #   33| for ... in ...
@@ -444,7 +444,7 @@ break_ensure.rb:
 #-----|  -> In
 
 #   47| if ...
-#-----|  -> ensure ... end
+#-----|  -> ensure ...
 
 #   47| ... > ...
 #-----| false -> if ...
@@ -457,7 +457,7 @@ break_ensure.rb:
 #-----|  -> ... > ...
 
 #   48| call to raise
-#-----| raise -> [ensure: raise] ensure ... end
+#-----| raise -> [ensure: raise] ensure ...
 
 #   48| raise
 #-----|  -> 
@@ -465,10 +465,10 @@ break_ensure.rb:
 #   48| 
 #-----|  -> call to raise
 
-#   50| ensure ... end
+#   50| ensure ...
 #-----|  -> element
 
-#   50| [ensure: raise] ensure ... end
+#   50| [ensure: raise] ensure ...
 #-----|  -> [ensure: raise] element
 
 #   51| if ...
@@ -1110,7 +1110,7 @@ cfg.rb:
 #-----|  -> puts
 
 #   83| call to puts
-#-----|  -> ensure ... end
+#-----|  -> ensure ...
 
 #   83| puts
 #-----|  -> ok
@@ -1118,7 +1118,7 @@ cfg.rb:
 #   83| ok
 #-----|  -> call to puts
 
-#   84| ensure ... end
+#   84| ensure ...
 #-----|  -> puts
 
 #   85| call to puts
@@ -2801,7 +2801,7 @@ raise.rb:
 #-----| true -> raise
 
 #   17| call to raise
-#-----| raise -> Rescue
+#-----| raise -> rescue ...
 
 #   17| raise
 #-----|  -> ExceptionA
@@ -2809,7 +2809,7 @@ raise.rb:
 #   17| ExceptionA
 #-----|  -> call to raise
 
-#   19| Rescue
+#   19| rescue ...
 #-----|  -> ExceptionA
 
 #   19| ExceptionA
@@ -2851,7 +2851,7 @@ raise.rb:
 #-----| true -> raise
 
 #   28| call to raise
-#-----| raise -> Rescue
+#-----| raise -> rescue ...
 
 #   28| raise
 #-----|  -> ExceptionA
@@ -2859,7 +2859,7 @@ raise.rb:
 #   28| ExceptionA
 #-----|  -> call to raise
 
-#   30| Rescue
+#   30| rescue ...
 #-----|  -> puts
 
 #   31| call to puts
@@ -2897,7 +2897,7 @@ raise.rb:
 #-----| true -> raise
 
 #   39| call to raise
-#-----| raise -> Rescue
+#-----| raise -> rescue ...
 
 #   39| raise
 #-----|  -> ExceptionA
@@ -2905,7 +2905,7 @@ raise.rb:
 #   39| ExceptionA
 #-----|  -> call to raise
 
-#   41| Rescue
+#   41| rescue ...
 #-----|  -> e
 
 #   41| e
@@ -2946,7 +2946,7 @@ raise.rb:
 #-----| true -> raise
 
 #   50| call to raise
-#-----| raise -> Rescue
+#-----| raise -> rescue ...
 
 #   50| raise
 #-----|  -> ExceptionA
@@ -2954,7 +2954,7 @@ raise.rb:
 #   50| ExceptionA
 #-----|  -> call to raise
 
-#   52| Rescue
+#   52| rescue ...
 #-----|  -> e
 
 #   52| e
@@ -2986,7 +2986,7 @@ raise.rb:
 #-----| true -> raise
 
 #   60| call to raise
-#-----| raise -> Rescue
+#-----| raise -> rescue ...
 
 #   60| raise
 #-----|  -> ExceptionA
@@ -2994,7 +2994,7 @@ raise.rb:
 #   60| ExceptionA
 #-----|  -> call to raise
 
-#   62| Rescue
+#   62| rescue ...
 #-----|  -> ExceptionA
 
 #   62| ExceptionA
@@ -3049,7 +3049,7 @@ raise.rb:
 #-----|  -> ... > ...
 
 #   70| call to raise
-#-----| raise -> [ensure: raise] ensure ... end
+#-----| raise -> [ensure: raise] ensure ...
 
 #   70| raise
 #-----|  -> x > 2
@@ -3071,13 +3071,13 @@ raise.rb:
 #-----|  -> ... < ...
 
 #   72| return
-#-----| return -> [ensure: return] ensure ... end
+#-----| return -> [ensure: return] ensure ...
 
 #   72| x < 0
 #-----|  -> return
 
 #   74| call to puts
-#-----|  -> ensure ... end
+#-----|  -> ensure ...
 
 #   74| puts
 #-----|  -> 0 <= x <= 2
@@ -3085,13 +3085,13 @@ raise.rb:
 #   74| 0 <= x <= 2
 #-----|  -> call to puts
 
-#   75| ensure ... end
+#   75| ensure ...
 #-----|  -> puts
 
-#   75| [ensure: return] ensure ... end
+#   75| [ensure: return] ensure ...
 #-----|  -> [ensure: return] puts
 
-#   75| [ensure: raise] ensure ... end
+#   75| [ensure: raise] ensure ...
 #-----|  -> [ensure: raise] puts
 
 #   76| call to puts
@@ -3153,7 +3153,7 @@ raise.rb:
 #-----|  -> ... > ...
 
 #   83| call to raise
-#-----| raise -> [ensure: raise] ensure ... end
+#-----| raise -> [ensure: raise] ensure ...
 
 #   83| raise
 #-----|  -> x > 2
@@ -3175,13 +3175,13 @@ raise.rb:
 #-----|  -> ... < ...
 
 #   85| return
-#-----| return -> [ensure: return] ensure ... end
+#-----| return -> [ensure: return] ensure ...
 
 #   85| x < 0
 #-----|  -> return
 
 #   87| call to puts
-#-----|  -> ensure ... end
+#-----|  -> ensure ...
 
 #   87| puts
 #-----|  -> 0 <= x <= 2
@@ -3189,13 +3189,13 @@ raise.rb:
 #   87| 0 <= x <= 2
 #-----|  -> call to puts
 
-#   88| ensure ... end
+#   88| ensure ...
 #-----|  -> puts
 
-#   88| [ensure: return] ensure ... end
+#   88| [ensure: return] ensure ...
 #-----|  -> [ensure: return] puts
 
-#   88| [ensure: raise] ensure ... end
+#   88| [ensure: raise] ensure ...
 #-----|  -> [ensure: raise] puts
 
 #   89| call to puts
@@ -3272,7 +3272,7 @@ raise.rb:
 #-----|  -> ... > ...
 
 #   98| call to raise
-#-----| raise -> [ensure: raise] ensure ... end
+#-----| raise -> [ensure: raise] ensure ...
 
 #   98| raise
 #-----|  -> x > 2
@@ -3294,13 +3294,13 @@ raise.rb:
 #-----|  -> ... < ...
 
 #  100| return
-#-----| return -> [ensure: return] ensure ... end
+#-----| return -> [ensure: return] ensure ...
 
 #  100| x < 0
 #-----|  -> return
 
 #  102| call to puts
-#-----|  -> ensure ... end
+#-----|  -> ensure ...
 
 #  102| puts
 #-----|  -> 0 <= x <= 2
@@ -3308,13 +3308,13 @@ raise.rb:
 #  102| 0 <= x <= 2
 #-----|  -> call to puts
 
-#  103| ensure ... end
+#  103| ensure ...
 #-----|  -> puts
 
-#  103| [ensure: return] ensure ... end
+#  103| [ensure: return] ensure ...
 #-----|  -> [ensure: return] puts
 
-#  103| [ensure: raise] ensure ... end
+#  103| [ensure: raise] ensure ...
 #-----|  -> [ensure: raise] puts
 
 #  104| call to puts
@@ -3345,13 +3345,13 @@ raise.rb:
 #-----|  -> [ensure: raise] call to puts
 
 #  106| if ...
-#-----|  -> ensure ... end
+#-----|  -> ensure ...
 
 #  106| [ensure: return] if ...
-#-----|  -> [ensure: return] ensure ... end
+#-----|  -> [ensure: return] ensure ...
 
 #  106| [ensure: raise] if ...
-#-----|  -> [ensure: raise] ensure ... end
+#-----|  -> [ensure: raise] ensure ...
 
 #  106| b1
 #-----| false -> if ...
@@ -3366,13 +3366,13 @@ raise.rb:
 #-----| true -> [ensure: raise] raise
 
 #  107| call to raise
-#-----| raise -> [ensure(1): raise] ensure ... end
+#-----| raise -> [ensure(1): raise] ensure ...
 
 #  107| [ensure: return] call to raise
-#-----| raise -> [ensure: return, ensure(1): raise] ensure ... end
+#-----| raise -> [ensure: return, ensure(1): raise] ensure ...
 
 #  107| [ensure: raise] call to raise
-#-----| raise -> [ensure: raise, ensure(1): raise] ensure ... end
+#-----| raise -> [ensure: raise, ensure(1): raise] ensure ...
 
 #  107| raise
 #-----|  -> b1 is true
@@ -3392,41 +3392,41 @@ raise.rb:
 #  107| [ensure: raise] b1 is true
 #-----|  -> [ensure: raise] call to raise
 
-#  109| ensure ... end
+#  109| ensure ...
 #-----|  -> puts
 
-#  109| [ensure(1): raise] ensure ... end
+#  109| [ensure(1): raise] ensure ...
 #-----|  -> [ensure(1): raise] puts
 
-#  109| [ensure: return] ensure ... end
+#  109| [ensure: return] ensure ...
 #-----|  -> [ensure: return] puts
 
-#  109| [ensure: return, ensure(1): raise] ensure ... end
+#  109| [ensure: return, ensure(1): raise] ensure ...
 #-----|  -> [ensure: return, ensure(1): raise] puts
 
-#  109| [ensure: raise] ensure ... end
+#  109| [ensure: raise] ensure ...
 #-----|  -> [ensure: raise] puts
 
-#  109| [ensure: raise, ensure(1): raise] ensure ... end
+#  109| [ensure: raise, ensure(1): raise] ensure ...
 #-----|  -> [ensure: raise, ensure(1): raise] puts
 
 #  110| call to puts
 #-----|  -> puts
 
 #  110| [ensure(1): raise] call to puts
-#-----| raise -> [ensure: raise] ensure ... end
+#-----| raise -> [ensure: raise] ensure ...
 
 #  110| [ensure: return] call to puts
-#-----| return -> [ensure: return] ensure ... end
+#-----| return -> [ensure: return] ensure ...
 
 #  110| [ensure: return, ensure(1): raise] call to puts
-#-----| raise -> [ensure: raise] ensure ... end
+#-----| raise -> [ensure: raise] ensure ...
 
 #  110| [ensure: raise] call to puts
-#-----| raise -> [ensure: raise] ensure ... end
+#-----| raise -> [ensure: raise] ensure ...
 
 #  110| [ensure: raise, ensure(1): raise] call to puts
-#-----| raise -> [ensure: raise] ensure ... end
+#-----| raise -> [ensure: raise] ensure ...
 
 #  110| puts
 #-----|  -> inner ensure
@@ -3465,7 +3465,7 @@ raise.rb:
 #-----|  -> [ensure: raise, ensure(1): raise] call to puts
 
 #  113| call to puts
-#-----|  -> ensure ... end
+#-----|  -> ensure ...
 
 #  113| puts
 #-----|  -> End m9
@@ -3473,13 +3473,13 @@ raise.rb:
 #  113| End m9
 #-----|  -> call to puts
 
-#  114| ensure ... end
+#  114| ensure ...
 #-----|  -> puts
 
-#  114| [ensure: return] ensure ... end
+#  114| [ensure: return] ensure ...
 #-----|  -> [ensure: return] puts
 
-#  114| [ensure: raise] ensure ... end
+#  114| [ensure: raise] ensure ...
 #-----|  -> [ensure: raise] puts
 
 #  115| call to puts
@@ -3565,7 +3565,7 @@ raise.rb:
 
 #  121| p
 #-----| no-match -> raise
-#-----| match -> ensure ... end
+#-----| match -> ensure ...
 
 #  121| call to raise
 #-----| raise -> exit m10 (abnormal)
@@ -3576,7 +3576,7 @@ raise.rb:
 #  121| Exception
 #-----|  -> call to raise
 
-#  124| ensure ... end
+#  124| ensure ...
 #-----|  -> puts
 
 #  125| call to puts
@@ -3598,14 +3598,14 @@ raise.rb:
 #-----|  -> b
 
 #  130| if ...
-#-----|  -> ensure ... end
+#-----|  -> ensure ...
 
 #  130| b
 #-----| false -> if ...
 #-----| true -> raise
 
 #  131| call to raise
-#-----| raise -> Rescue
+#-----| raise -> rescue ...
 
 #  131| raise
 #-----|  -> ExceptionA
@@ -3613,22 +3613,22 @@ raise.rb:
 #  131| ExceptionA
 #-----|  -> call to raise
 
-#  133| Rescue
+#  133| rescue ...
 #-----|  -> ExceptionA
 
 #  133| ExceptionA
-#-----| no-match -> Rescue
-#-----| match -> ensure ... end
+#-----| no-match -> rescue ...
+#-----| match -> ensure ...
 
-#  134| Rescue
+#  134| rescue ...
 #-----|  -> ExceptionB
 
 #  134| ExceptionB
 #-----| match -> puts
-#-----| raise -> [ensure: raise] ensure ... end
+#-----| raise -> [ensure: raise] ensure ...
 
 #  135| call to puts
-#-----|  -> ensure ... end
+#-----|  -> ensure ...
 
 #  135| puts
 #-----|  -> ExceptionB
@@ -3636,10 +3636,10 @@ raise.rb:
 #  135| ExceptionB
 #-----|  -> call to puts
 
-#  136| ensure ... end
+#  136| ensure ...
 #-----|  -> puts
 
-#  136| [ensure: raise] ensure ... end
+#  136| [ensure: raise] ensure ...
 #-----|  -> [ensure: raise] puts
 
 #  137| call to puts
@@ -3679,14 +3679,14 @@ raise.rb:
 #-----|  -> b
 
 #  143| if ...
-#-----|  -> ensure ... end
+#-----|  -> ensure ...
 
 #  143| b
 #-----| false -> if ...
 #-----| true -> raise
 
 #  144| call to raise
-#-----| raise -> [ensure: raise] ensure ... end
+#-----| raise -> [ensure: raise] ensure ...
 
 #  144| raise
 #-----|  -> 
@@ -3694,10 +3694,10 @@ raise.rb:
 #  144| 
 #-----|  -> call to raise
 
-#  146| ensure ... end
+#  146| ensure ...
 #-----|  -> 3
 
-#  146| [ensure: raise] ensure ... end
+#  146| [ensure: raise] ensure ...
 #-----|  -> [ensure: raise] 3
 
 #  147| return
@@ -3718,7 +3718,7 @@ raise.rb:
 #  150| m13
 #-----|  -> m13
 
-#  151| ensure ... end
+#  151| ensure ...
 #-----|  -> exit m13 (normal)
 
 #  154| m14
