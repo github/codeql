@@ -27,6 +27,14 @@ private class IteratorTraits extends Class {
 }
 
 /**
+ * A type that is deduced to be an iterator because there is a corresponding
+ * `std::iterator_traits` instantiation for it.
+ */
+private class IteratorByTraits extends Iterator {
+  IteratorByTraits() { exists(IteratorTraits it | it.getIteratorType() = this) }
+}
+
+/**
  * A type which has the typedefs expected for an iterator.
  */
 private class IteratorByTypedefs extends Iterator, Class {
@@ -48,13 +56,9 @@ private class StdIterator extends Iterator, Class {
 }
 
 /**
- * A type that is deduced to be an iterator because there is a corresponding
- * `std::iterator_traits` instantiation for it.
+ * Gets the `FunctionInput` corresponding to an iterator parameter to
+ * user-defined operator `op`, at `index`.
  */
-private class IteratorByTraits extends Iterator {
-  IteratorByTraits() { exists(IteratorTraits it | it.getIteratorType() = this) }
-}
-
 private FunctionInput getIteratorArgumentInput(Operator op, int index) {
   exists(Type t |
     t =
