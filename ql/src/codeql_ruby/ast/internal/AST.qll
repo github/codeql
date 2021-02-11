@@ -33,8 +33,6 @@ module AstNode {
       this = any(Generated::Call c).getMethod() and
       not this instanceof Generated::ScopeResolution
       or
-      this instanceof Generated::Ensure
-      or
       this instanceof Generated::Rescue
       or
       this instanceof Generated::RestAssignment

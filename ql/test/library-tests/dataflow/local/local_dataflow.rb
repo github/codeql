@@ -23,3 +23,31 @@ end
 while true
  break 5
 end
+
+# string flows to x
+x = module M; "module" end
+# string flows to x
+x = class C; "class" end
+# string does not flow to x because "def" evaluates to a method symbol
+x = def bar; "method" end
+
+def m x 
+  if x == 4
+     return 7
+  end
+  "reachable"
+end
+
+def m x 
+  if x == 4
+     return 7
+  end
+  return 6
+  "unreachable"
+end
+
+m do
+  next "next" if x < 4 
+  break "break" if x < 9
+  "normal"
+end

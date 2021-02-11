@@ -23,7 +23,7 @@ module Method {
 
     final predicate isSetter() { generated.getName() instanceof Generated::Setter }
 
-    final override Expr getExpr(int i) { result = generated.getChild(i) }
+    final override Generated::AstNode getChild(int i) { result = generated.getChild(i) }
 
     final override string toString() { result = this.getName() }
   }
@@ -41,18 +41,23 @@ module SingletonMethod {
       result = generated.getName().(Generated::Setter).getName().getValue() + "="
     }
 
-    final override Expr getExpr(int i) { result = generated.getChild(i) }
+    final override Generated::AstNode getChild(int i) { result = generated.getChild(i) }
 
     final override string toString() { result = this.getName() }
   }
 }
 
 module Lambda {
-  class Range extends Callable::Range, @lambda {
+  class Range extends Callable::Range, BodyStatement::Range, @lambda {
     final override Generated::Lambda generated;
 
     final override Parameter::Range getParameter(int n) {
       result = generated.getParameters().getChild(n)
+    }
+
+    final override Generated::AstNode getChild(int i) {
+      result = generated.getBody().(Generated::DoBlock).getChild(i) or
+      result = generated.getBody().(Generated::Block).getChild(i)
     }
 
     final override string toString() { result = "-> { ... }" }
@@ -60,14 +65,16 @@ module Lambda {
 }
 
 module Block {
-  abstract class Range extends Callable::Range { }
+  abstract class Range extends Callable::Range, ExprSequence::Range {
+    Range() { not generated.getParent() instanceof Generated::Lambda }
+  }
 }
 
 module DoBlock {
   class Range extends Block::Range, BodyStatement::Range, @do_block {
     final override Generated::DoBlock generated;
 
-    final override Expr getExpr(int i) { result = generated.getChild(i) }
+    final override Generated::AstNode getChild(int i) { result = generated.getChild(i) }
 
     final override Parameter::Range getParameter(int n) {
       result = generated.getParameters().getChild(n)
@@ -84,6 +91,8 @@ module BraceBlock {
     final override Parameter::Range getParameter(int n) {
       result = generated.getParameters().getChild(n)
     }
+
+    final override Expr getExpr(int i) { result = generated.getChild(i) }
 
     final override string toString() { result = "{ ... }" }
   }
