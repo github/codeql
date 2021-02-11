@@ -528,7 +528,7 @@ void test_vector_iterator() {
 		it += 1;
 		sink(*it);
 		it += source();
-		sink(*it); // $ MISSING: ast,ir
+		sink(*it); // $ ast,ir
 		sink(vs[1]);
 	}
 }

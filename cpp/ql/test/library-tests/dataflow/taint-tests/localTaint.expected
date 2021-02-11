@@ -3926,10 +3926,12 @@
 | string.cpp:408:8:408:9 | i2 | string.cpp:409:10:409:11 | i7 |  |
 | string.cpp:409:10:409:11 | i7 | string.cpp:409:12:409:12 | call to operator+= |  |
 | string.cpp:409:12:409:12 | call to operator+= | string.cpp:409:8:409:8 | call to operator* | TAINT |
+| string.cpp:409:14:409:14 | 1 | string.cpp:409:10:409:11 | ref arg i7 | TAINT |
 | string.cpp:410:8:410:9 | i2 | string.cpp:410:3:410:9 | ... = ... |  |
 | string.cpp:410:8:410:9 | i2 | string.cpp:411:10:411:11 | i8 |  |
 | string.cpp:411:10:411:11 | i8 | string.cpp:411:12:411:12 | call to operator-= |  |
 | string.cpp:411:12:411:12 | call to operator-= | string.cpp:411:8:411:8 | call to operator* | TAINT |
+| string.cpp:411:14:411:14 | 1 | string.cpp:411:10:411:11 | ref arg i8 | TAINT |
 | string.cpp:413:8:413:9 | s2 | string.cpp:413:11:413:13 | call to end | TAINT |
 | string.cpp:413:11:413:13 | call to end | string.cpp:413:3:413:15 | ... = ... |  |
 | string.cpp:413:11:413:13 | call to end | string.cpp:414:5:414:6 | i9 |  |
@@ -7582,9 +7584,11 @@
 | vector.cpp:528:3:528:4 | ref arg it | vector.cpp:529:9:529:10 | it |  |
 | vector.cpp:528:3:528:4 | ref arg it | vector.cpp:530:3:530:4 | it |  |
 | vector.cpp:528:3:528:4 | ref arg it | vector.cpp:531:9:531:10 | it |  |
+| vector.cpp:528:9:528:9 | 1 | vector.cpp:528:3:528:4 | ref arg it | TAINT |
 | vector.cpp:529:9:529:10 | it | vector.cpp:529:8:529:8 | call to operator* | TAINT |
 | vector.cpp:530:3:530:4 | it | vector.cpp:530:6:530:6 | call to operator+= |  |
 | vector.cpp:530:3:530:4 | ref arg it | vector.cpp:531:9:531:10 | it |  |
+| vector.cpp:530:9:530:14 | call to source | vector.cpp:530:3:530:4 | ref arg it | TAINT |
 | vector.cpp:531:9:531:10 | it | vector.cpp:531:8:531:8 | call to operator* | TAINT |
 | vector.cpp:532:8:532:9 | ref arg vs | vector.cpp:533:2:533:2 | vs |  |
 | vector.cpp:532:8:532:9 | vs | vector.cpp:532:10:532:10 | call to operator[] | TAINT |

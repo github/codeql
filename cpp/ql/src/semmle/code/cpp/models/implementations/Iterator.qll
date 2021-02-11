@@ -167,11 +167,15 @@ private class IteratorAssignArithmeticOperator extends Operator, DataFlowFunctio
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isParameter(0) and
     output.isReturnValue()
-    or
-    input.isParameterDeref(0) and output.isReturnValueDeref()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isParameterDeref(0) and output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the object referenced by the first parameter
+    input.isReturnValueDeref() and
+    output.isParameterDeref(0)
+    or
     input.isParameterDeref(1) and
     output.isParameterDeref(0)
   }
@@ -224,9 +228,7 @@ private class IteratorCrementMemberOperator extends MemberFunction, DataFlowFunc
  * A member `operator->` function for an iterator type.
  */
 private class IteratorFieldMemberOperator extends Operator, TaintFunction {
-  IteratorFieldMemberOperator() {
-    this.getClassAndName("operator->") instanceof Iterator
-  }
+  IteratorFieldMemberOperator() { this.getClassAndName("operator->") instanceof Iterator }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
@@ -260,14 +262,18 @@ private class IteratorAssignArithmeticMemberOperator extends MemberFunction, Dat
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierAddress() and
     output.isReturnValue()
-    or
-    input.isReturnValueDeref() and
-    output.isQualifierObject()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
     output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the qualifier
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
+    or
+    input.isParameterDeref(0) and
+    output.isQualifierObject()
   }
 }
 
@@ -276,9 +282,7 @@ private class IteratorAssignArithmeticMemberOperator extends MemberFunction, Dat
  */
 private class IteratorArrayMemberOperator extends MemberFunction, TaintFunction,
   IteratorReferenceFunction {
-  IteratorArrayMemberOperator() {
-    this.getClassAndName("operator[]") instanceof Iterator
-  }
+  IteratorArrayMemberOperator() { this.getClassAndName("operator[]") instanceof Iterator }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
