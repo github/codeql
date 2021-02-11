@@ -366,7 +366,7 @@ class PomProperty extends PomElement {
 }
 
 /**
- * A repository block inside of a maven pom.
+ * An XML element representing any kind of repository declared inside of a Maven POM XML file.
  */
 class DeclaredRepository extends PomElement {
   DeclaredRepository() {
