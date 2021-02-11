@@ -36,6 +36,11 @@ private class TaintedSpringRequestBody extends DataFlow::Node {
 /**
  * A sink for Expresssion Language injection vulnerabilities via Jexl,
  * i.e. method calls that run evaluation of a Jexl expression.
+ *
+ * Creating a `Callable` from a tainted Jexl expression or script is considered as a sink
+ * although the tainted expression is not executed at this point.
+ * Here we assume that it will get executed at some point,
+ * maybe stored in an object field and then reached by a different flow.
  */
 private class JexlEvaluationSink extends DataFlow::ExprNode {
   JexlEvaluationSink() {
@@ -44,13 +49,11 @@ private class JexlEvaluationSink extends DataFlow::ExprNode {
     |
       m instanceof DirectJexlEvaluationMethod and ma.getQualifier() = taintFrom
       or
-      m instanceof CallableCallMethod and ma.getQualifier() = taintFrom
+      m instanceof CreateJexlCallableMethod and ma.getQualifier() = taintFrom
       or
       m instanceof JexlEngineGetSetPropertyMethod and
-      exists(Expr arg, int index | arg = ma.getArgument(index) and index = [1, 2] |
-        arg.getType() instanceof TypeString and
-        arg = taintFrom
-      )
+      taintFrom.getType() instanceof TypeString and
+      ma.getAnArgument() = taintFrom
     )
   }
 }
@@ -67,23 +70,20 @@ private class TaintPropagatingJexlMethodCall extends MethodAccess {
       this.getMethod() = m and
       taintType = taintFromExpr.getType()
     |
-      m instanceof CreateJexlScriptMethod and
-      taintFromExpr = this.getArgument(0) and
-      taintType instanceof TypeString and
-      isUnsafeEngine(this.getQualifier())
-      or
-      m instanceof CreateJexlCallableMethod and
-      taintFromExpr = this.getQualifier()
-      or
-      m instanceof CreateJexlExpressionMethod and
-      taintFromExpr = this.getAnArgument() and
-      taintType instanceof TypeString and
-      isUnsafeEngine(this.getQualifier())
-      or
-      m instanceof CreateJexlTemplateMethod and
-      (taintType instanceof TypeString or taintType instanceof Reader) and
-      taintFromExpr = this.getArgument([0, 1]) and
-      isUnsafeEngine(this.getQualifier())
+      isUnsafeEngine(this.getQualifier()) and
+      (
+        m instanceof CreateJexlScriptMethod and
+        taintFromExpr = this.getArgument(0) and
+        taintType instanceof TypeString
+        or
+        m instanceof CreateJexlExpressionMethod and
+        taintFromExpr = this.getAnArgument() and
+        taintType instanceof TypeString
+        or
+        m instanceof CreateJexlTemplateMethod and
+        (taintType instanceof TypeString or taintType instanceof Reader) and
+        taintFromExpr = this.getArgument([0, 1])
+      )
     )
   }
 
@@ -97,7 +97,7 @@ private class TaintPropagatingJexlMethodCall extends MethodAccess {
 }
 
 /**
- * Holds if `expr` is one of the Jexl engines that is not configured with a sandbox.
+ * Holds if `expr` is a Jexl engine that is not configured with a sandbox.
  */
 private predicate isUnsafeEngine(Expr expr) {
   not exists(SandboxedJexlFlowConfig config | config.hasFlowTo(DataFlow::exprNode(expr)))
@@ -183,13 +183,6 @@ private class DirectJexlEvaluationMethod extends Method {
 }
 
 /**
- * A method in the `Callable` class that executes the `Callable`.
- */
-private class CallableCallMethod extends Method {
-  CallableCallMethod() { getDeclaringType() instanceof CallableInterface and hasName("call") }
-}
-
-/**
  * Defines methods that create a Jexl script.
  */
 private class CreateJexlScriptMethod extends Method {
@@ -270,14 +263,6 @@ private class UnifiedJexlExpression extends NestedType {
 
 private class UnifiedJexlTemplate extends NestedType {
   UnifiedJexlTemplate() { getEnclosingType() instanceof UnifiedJexl and hasName("Template") }
-}
-
-private class CallableInterface extends RefType {
-  CallableInterface() {
-    getSourceDeclaration()
-        .getASourceSupertype*()
-        .hasQualifiedName("java.util.concurrent", "Callable")
-  }
 }
 
 private class Reader extends RefType {
