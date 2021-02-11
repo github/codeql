@@ -326,6 +326,7 @@ namespace Semmle.Extraction.CSharp.Entities
         protected Type(Context cx, T init)
             : base(cx, init) { }
 
+        // todo: change this with .net 5 to be an override
         public new T symbol => (T)base.symbol;
     }
 }

@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected new Expression TryPopulate()
         {
-            cx.Try(Syntax, null, () => PopulateExpression(cx.TrapWriter.Writer));
+            Context.Try(Syntax, null, () => PopulateExpression(Context.TrapWriter.Writer));
             return this;
         }
     }

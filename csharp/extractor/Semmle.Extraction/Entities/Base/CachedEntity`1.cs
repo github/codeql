@@ -4,24 +4,36 @@ using Microsoft.CodeAnalysis;
 namespace Semmle.Extraction
 {
     /// <summary>
+    /// A cached entity.
+    ///
+    /// The <see cref="Entity.Id"/> property is used as label in caching.
+    /// </summary>
+    public abstract class CachedEntity : LabelledEntity
+    {
+        protected CachedEntity(Context context) : base(context)
+        {
+        }
+
+        /// <summary>
+        /// Populates the <see cref="Label"/> field and generates output in the trap file
+        /// as required. Is only called when <see cref="NeedsPopulation"/> returns
+        /// <code>true</code> and the entity has not already been populated.
+        /// </summary>
+        public abstract void Populate(TextWriter trapFile);
+
+        public abstract bool NeedsPopulation { get; }
+    }
+
+    /// <summary>
     /// An abstract symbol, which encapsulates a data type (such as a C# symbol).
     /// </summary>
     /// <typeparam name="TSymbol">The type of the symbol.</typeparam>
-    public abstract class CachedEntity<TSymbol> : ICachedEntity
+    public abstract class CachedEntity<TSymbol> : CachedEntity
     {
-        protected CachedEntity(Context context, TSymbol init)
+        protected CachedEntity(Context context, TSymbol symbol) : base(context)
         {
-            Context = context;
-            symbol = init;
+            this.symbol = symbol;
         }
-
-        public Label Label { get; set; }
-
-        public abstract Microsoft.CodeAnalysis.Location? ReportingLocation { get; }
-
-        public override string ToString() => Label.ToString();
-
-        public abstract void Populate(TextWriter trapFile);
 
         /// <summary>
         /// For debugging.
@@ -36,33 +48,16 @@ namespace Semmle.Extraction
             }
         }
 
-        public Context Context
-        {
-            get;
-        }
-
         public TSymbol symbol
         {
             get;
         }
 
-        object? ICachedEntity.UnderlyingObject => symbol;
+        //object? ICachedEntity.UnderlyingObject => symbol;
 
         public TSymbol UnderlyingObject => symbol;
 
-        public abstract void WriteId(System.IO.TextWriter trapFile);
-
-        public virtual void WriteQuotedId(TextWriter trapFile)
-        {
-            trapFile.Write("@\"");
-            WriteId(trapFile);
-            trapFile.Write('\"');
-        }
-
-        public abstract bool NeedsPopulation
-        {
-            get;
-        }
+        public override bool NeedsPopulation { get; }
 
         public override int GetHashCode() => symbol is null ? 0 : symbol.GetHashCode();
 
@@ -72,7 +67,7 @@ namespace Semmle.Extraction
             return other?.GetType() == GetType() && Equals(other.symbol, symbol);
         }
 
-        public abstract TrapStackBehaviour TrapStackBehaviour { get; }
+        public override TrapStackBehaviour TrapStackBehaviour { get; }
     }
 
     /// <summary>

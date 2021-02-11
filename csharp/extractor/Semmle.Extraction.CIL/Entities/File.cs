@@ -17,6 +17,7 @@ namespace Semmle.Extraction.CIL.Entities
         public override void WriteId(TextWriter trapFile)
         {
             trapFile.Write(TransformedPath.DatabaseId);
+            trapFile.Write(";sourcefile");
         }
 
         public override bool Equals(object? obj)
@@ -39,7 +40,5 @@ namespace Semmle.Extraction.CIL.Entities
                 yield return Tuples.files(this, TransformedPath.Value, TransformedPath.NameWithoutExtension, TransformedPath.Extension);
             }
         }
-
-        public override string IdSuffix => ";sourcefile";
     }
 }

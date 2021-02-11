@@ -30,7 +30,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
             // For compatibility with the Mono extractor, make insert the labelled statement into the same block
             // as this one. The parent MUST be a block statement.
-            labelledStmt = Statement.Create(cx, Stmt.Statement, parent, child + 1);
+            labelledStmt = Statement.Create(Context, Stmt.Statement, parent, child + 1);
         }
 
         public override int NumberOfStatements => 1 + labelledStmt.NumberOfStatements;

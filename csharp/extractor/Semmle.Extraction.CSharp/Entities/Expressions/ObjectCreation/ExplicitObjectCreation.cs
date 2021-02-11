@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             base.PopulateExpression(trapFile);
 
-            TypeMention.Create(cx, Syntax.Type, this, Type);
+            TypeMention.Create(Context, Syntax.Type, this, Type);
         }
     }
 }

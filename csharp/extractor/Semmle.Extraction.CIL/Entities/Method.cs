@@ -62,9 +62,8 @@ namespace Semmle.Extraction.CIL.Entities
                 param.WriteId(trapFile, this);
             }
             trapFile.Write(')');
+            trapFile.Write(";cil-method");
         }
-
-        public override string IdSuffix => ";cil-method";
 
         protected IEnumerable<IExtractionProduct> PopulateFlags
         {

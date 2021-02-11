@@ -11,7 +11,6 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     public abstract class Type : TypeContainer, IMember
     {
-        public override string IdSuffix => ";cil-type";
         internal const string AssemblyTypeNameSeparator = "::";
         internal const string PrimitiveTypePrefix = "builtin" + AssemblyTypeNameSeparator + "System.";
 
@@ -46,7 +45,12 @@ namespace Semmle.Extraction.CIL.Entities
         /// </param>
         public abstract void WriteId(TextWriter trapFile, bool inContext);
 
-        public sealed override void WriteId(TextWriter trapFile) => WriteId(trapFile, false);
+        public sealed override void WriteId(TextWriter trapFile)
+        {
+            WriteId(trapFile, false);
+            trapFile.Write(";cil-type");
+        }
+
 
         /// <summary>
         /// Returns the friendly qualified name of types, such as

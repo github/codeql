@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CSharp.Entities
         protected Property(Context cx, IPropertySymbol init)
             : base(cx, init)
         {
-            type = new Lazy<Type>(() => Type.Create(Context, symbol.Type));
+            type = new Lazy<Type>(() => Type.Create(base.Context, symbol.Type));
         }
 
         private readonly Lazy<Type> type;

@@ -19,7 +19,7 @@ namespace Semmle.Extraction.Entities
             : base(cx, init)
         {
             Position = init.GetLineSpan();
-            FileEntity = File.Create(Context, Position.Path);
+            FileEntity = File.Create(base.Context, Position.Path);
         }
 
         public static Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => SourceLocationFactory.Instance.CreateEntity(cx, loc, loc);

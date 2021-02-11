@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected sealed override void Populate(TextWriter trapFile)
         {
-            var type = Type.HasValue ? Entities.Type.Create(cx, Type.Value) : NullType.Create(cx);
+            var type = Type.HasValue ? Entities.Type.Create(Context, Type.Value) : NullType.Create(Context);
             trapFile.expressions(this, Kind, type.TypeRef);
             if (info.Parent.IsTopLevelParent)
                 trapFile.expr_parent_top_level(this, info.Child, info.Parent);
@@ -39,7 +39,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (Type.HasValue && !Type.Value.HasObliviousNullability())
             {
-                var n = NullabilityEntity.Create(cx, Nullability.Create(Type.Value));
+                var n = NullabilityEntity.Create(Context, Nullability.Create(Type.Value));
                 trapFile.type_nullability(this, n);
             }
 
@@ -170,10 +170,10 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="node">The expression.</param>
         public void OperatorCall(TextWriter trapFile, ExpressionSyntax node)
         {
-            var @operator = cx.GetSymbolInfo(node);
+            var @operator = Context.GetSymbolInfo(node);
             if (@operator.Symbol is IMethodSymbol method)
             {
-                var callType = GetCallType(cx, node);
+                var callType = GetCallType(Context, node);
                 if (callType == CallType.Dynamic)
                 {
                     UserOperator.OperatorSymbol(method.Name, out var operatorName);
@@ -181,7 +181,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     return;
                 }
 
-                trapFile.expr_call(this, Method.Create(cx, method));
+                trapFile.expr_call(this, Method.Create(Context, method));
             }
         }
 
@@ -267,7 +267,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private void PopulateArgument(TextWriter trapFile, ArgumentSyntax arg, int child)
         {
-            var expr = Create(cx, arg.Expression, this, child);
+            var expr = Create(Context, arg.Expression, this, child);
             int mode;
             switch (arg.RefOrOutKeyword.Kind())
             {

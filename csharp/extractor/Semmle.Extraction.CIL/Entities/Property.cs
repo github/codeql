@@ -13,7 +13,6 @@ namespace Semmle.Extraction.CIL.Entities
         private readonly Handle handle;
         private readonly Type type;
         private readonly PropertyDefinition pd;
-        public override string IdSuffix => ";cil-property";
         private readonly IGenericContext gc;
 
         public Property(IGenericContext gc, Type type, PropertyDefinitionHandle handle) : base(gc.Cx)
@@ -38,6 +37,7 @@ namespace Semmle.Extraction.CIL.Entities
                 param.WriteId(trapFile, gc);
             }
             trapFile.Write(")");
+            trapFile.Write(";cil-property");
         }
 
         public override bool Equals(object? obj)
