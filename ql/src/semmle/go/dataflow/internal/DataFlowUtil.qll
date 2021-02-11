@@ -331,6 +331,20 @@ class FuncLitNode extends FunctionNode::Range, ExprNode {
   override ResultNode getAResult() { result.getRoot() = getExpr() }
 }
 
+/**
+ * Gets a possible target of call `cn`.class
+ *
+ * This is written explicitly like this instead of using `getCalleeNode().getAPredecessor*()`
+ * or `result.getASuccessor*() = cn.getCalleeNode()` because the explicit form inhibits the
+ * optimizer from combining this with other uses of `getASuccessor*()`, which can lead to
+ * recursion through a magic side-condition if those other users call `getACallee()` and thus
+ * pointless recomputation of `getACallee()` each recursive iteration.
+ */
+private DataFlow::Node getACalleeSource(DataFlow::CallNode cn) {
+  result = cn.getCalleeNode() or
+  result.getASuccessor() = getACalleeSource(cn)
+}
+
 /** A data flow node that represents a call. */
 class CallNode extends ExprNode {
   override CallExpr expr;
@@ -338,7 +352,7 @@ class CallNode extends ExprNode {
   /** Gets the declared target of this call */
   Function getTarget() { result = expr.getTarget() }
 
-  private DataFlow::Node getACalleeSource() { result.getASuccessor*() = getCalleeNode() }
+  private DataFlow::Node getACalleeSource() { result = getACalleeSource(this) }
 
   /**
    * Gets the definition of a possible target of this call.
