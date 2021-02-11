@@ -95,11 +95,11 @@ namespace Semmle.Extraction.CIL
         /// <param name="h">The handle of the entity.</param>
         /// <param name="genericContext">The generic context.</param>
         /// <returns></returns>
-        public IExtractedEntity CreateGeneric(GenericContext genericContext, Handle h) => genericHandleFactory[genericContext, h];
+        public IExtractedEntity CreateGeneric(IGenericContext genericContext, Handle h) => genericHandleFactory[genericContext, h];
 
-        private readonly GenericContext defaultGenericContext;
+        private readonly IGenericContext defaultGenericContext;
 
-        private IExtractedEntity CreateGenericHandle(GenericContext gc, Handle handle)
+        private IExtractedEntity CreateGenericHandle(IGenericContext gc, Handle handle)
         {
             IExtractedEntity entity;
             switch (handle.Kind)
@@ -136,7 +136,7 @@ namespace Semmle.Extraction.CIL
             return entity;
         }
 
-        private IExtractedEntity Create(GenericContext gc, MemberReferenceHandle handle)
+        private IExtractedEntity Create(IGenericContext gc, MemberReferenceHandle handle)
         {
             var mr = MdReader.GetMemberReference(handle);
             switch (mr.GetKind())
@@ -228,7 +228,7 @@ namespace Semmle.Extraction.CIL
 
         #endregion
 
-        private readonly CachedFunction<GenericContext, Handle, IExtractedEntity> genericHandleFactory;
+        private readonly CachedFunction<IGenericContext, Handle, IExtractedEntity> genericHandleFactory;
 
         /// <summary>
         /// Gets the short name of a member, without the preceding interface qualifier.

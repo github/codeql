@@ -9,9 +9,9 @@ namespace Semmle.Extraction.CIL.Entities
 {
     internal abstract class TypeParameter : Type
     {
-        protected readonly GenericContext gc;
+        protected readonly IGenericContext gc;
 
-        protected TypeParameter(GenericContext gc) : base(gc.Cx)
+        protected TypeParameter(IGenericContext gc) : base(gc.Cx)
         {
             this.gc = gc;
         }

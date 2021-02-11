@@ -8,10 +8,11 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// An entity representing a field.
     /// </summary>
-    internal abstract class Field : GenericContext, IMember, ICustomModifierReceiver
+    internal abstract class Field : IGenericContext, IMember, ICustomModifierReceiver
     {
-        protected Field(Context cx) : base(cx)
+        protected Field(Context cx)
         {
+            Cx = cx;
         }
 
         public Label Label { get; set; }
@@ -61,5 +62,11 @@ namespace Semmle.Extraction.CIL.Entities
         }
 
         TrapStackBehaviour IEntity.TrapStackBehaviour => TrapStackBehaviour.NoLabel;
+
+        public abstract IEnumerable<Type> TypeParameters { get; }
+
+        public abstract IEnumerable<Type> MethodParameters { get; }
+
+        public Context Cx { get; }
     }
 }

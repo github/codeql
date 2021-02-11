@@ -198,7 +198,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public sealed override IEnumerable<Type> MethodParameters => Enumerable.Empty<Type>();
 
-        public static Type DecodeType(GenericContext gc, TypeSpecificationHandle handle) =>
+        public static Type DecodeType(IGenericContext gc, TypeSpecificationHandle handle) =>
             gc.Cx.MdReader.GetTypeSpecification(handle).DecodeSignature(gc.Cx.TypeSignatureDecoder, gc);
     }
 }

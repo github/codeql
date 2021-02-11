@@ -14,9 +14,9 @@ namespace Semmle.Extraction.CIL.Entities
         private readonly Type type;
         private readonly PropertyDefinition pd;
         public override string IdSuffix => ";cil-property";
-        private readonly GenericContext gc;
+        private readonly IGenericContext gc;
 
-        public Property(GenericContext gc, Type type, PropertyDefinitionHandle handle) : base(gc.Cx)
+        public Property(IGenericContext gc, Type type, PropertyDefinitionHandle handle) : base(gc.Cx)
         {
             this.gc = gc;
             this.handle = handle;

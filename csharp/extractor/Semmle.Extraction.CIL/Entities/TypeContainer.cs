@@ -8,10 +8,13 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// Base class for all type containers (namespaces, types, methods).
     /// </summary>
-    public abstract class TypeContainer : GenericContext, IExtractedEntity
+    public abstract class TypeContainer : IGenericContext, IExtractedEntity
     {
-        protected TypeContainer(Context cx) : base(cx)
+        public Context Cx { get; }
+
+        protected TypeContainer(Context cx)
         {
+            Cx = cx;
         }
 
         public virtual Label Label { get; set; }
@@ -42,5 +45,8 @@ namespace Semmle.Extraction.CIL.Entities
         }
 
         TrapStackBehaviour IEntity.TrapStackBehaviour => TrapStackBehaviour.NoLabel;
+
+        public abstract IEnumerable<Type> MethodParameters { get; }
+        public abstract IEnumerable<Type> TypeParameters { get; }
     }
 }
