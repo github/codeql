@@ -7,8 +7,8 @@ import semmle.code.cpp.models.interfaces.Taint
 /**
  * An instantiation of `std::pair<T1, T2>`.
  */
-class StdPairClass extends ClassTemplateInstantiation {
-  StdPairClass() { getTemplate().hasQualifiedName("std", "pair") }
+class StdPair extends ClassTemplateInstantiation {
+  StdPair() { this.hasQualifiedName("std", "pair") }
 }
 
 /**
@@ -18,9 +18,9 @@ class StdPairClass extends ClassTemplateInstantiation {
  */
 class StdPairCopyishConstructor extends Constructor, TaintFunction {
   StdPairCopyishConstructor() {
-    this.getDeclaringType() instanceof StdPairClass and
+    this.getDeclaringType() instanceof StdPair and
     this.getNumberOfParameters() = 1 and
-    this.getParameter(0).getUnspecifiedType().(ReferenceType).getBaseType() instanceof StdPairClass
+    this.getParameter(0).getUnspecifiedType().(ReferenceType).getBaseType() instanceof StdPair
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
