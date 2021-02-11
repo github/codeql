@@ -11,12 +11,16 @@ class Call extends Expr {
 
   /**
    * Gets the receiver of this call, if any. For example:
+   *
    * ```rb
    * foo.bar
-   * baz()
+   * Baz::qux
+   * corge()
    * ```
-   * The result for the call to `bar` is the `Expr` for `foo`, while the call
-   * to `baz` has no result.
+   *
+   * The result for the call to `bar` is the `Expr` for `foo`; the result for
+   * the call to `qux` is the `Expr` for `Baz`; for the call to `corge` there
+   * is no result.
    */
   final Expr getReceiver() { result = range.getReceiver() }
 
@@ -26,46 +30,10 @@ class Call extends Expr {
    * ```rb
    * foo.bar x, y
    * ```
+   *
    * the result is `"bar"`.
-   *
-   * N.B. in the following example, where the method name uses the scope
-   * resolution operator, the result is the name being resolved, i.e. `"bar"`.
-   * Use `getMethodNameScopeExpr` to get the expression for `Foo`.
-   *
-   * ```rb
-   * Foo::bar x, y
-   * ```
    */
   final string getMethodName() { result = range.getMethodName() }
-
-  /**
-   * Gets the scope expression used in the method name's scope resolution
-   * operation, if any.
-   *
-   * In the following example, the result is the `Expr` for `Foo`.
-   *
-   * ```rb
-   * Foo::bar()
-   * ```
-   *
-   * However, there is no result for the following example, since there is no
-   * scope resolution operation.
-   *
-   * ```rb
-   * baz()
-   * ```
-   */
-  final Expr getMethodNameScopeExpr() { result = range.getMethodNameScopeExpr() }
-
-  /**
-   * Holds if the method name uses the scope resolution operator to access the
-   * global scope, as in this example:
-   *
-   * ```rb
-   * ::foo
-   * ```
-   */
-  final predicate methodNameHasGlobalScope() { range.methodNameHasGlobalScope() }
 
   /**
    * Gets the `n`th argument of this method call. In the following example, the

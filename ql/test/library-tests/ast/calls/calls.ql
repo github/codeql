@@ -8,10 +8,6 @@ query predicate callsWithNoReceiverArgumentsOrBlock(Call c, string name) {
   not exists(c.getBlock())
 }
 
-query predicate callsWithNameScopeExpr(Call c, Expr se) { se = c.getMethodNameScopeExpr() }
-
-query predicate callsWithGlobalNameScopeExpr(Call c) { c.methodNameHasGlobalScope() }
-
 query predicate callsWithArguments(Call c, string name, int n, Expr argN) {
   name = c.getMethodName() and
   argN = c.getArgument(n)
