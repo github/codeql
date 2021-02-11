@@ -36,11 +36,10 @@ predicate isGetHash(Expr arg) {
     mc.getAnArgument() = arg
   )
   or
-  exists(Callable callable, Parameter param, Call call, int i |
+  exists(Callable callable, Parameter param, Call call |
     isCallableAPotentialNonCryptographicHashFunction(callable, param) and
-    callable.getParameter(i) = param and
     call = callable.getACall() and
-    call.getArgument(i) = arg
+    arg = call.getArgumentForParameter(param)
   )
 }
 

@@ -18,8 +18,7 @@ import Solorigate
  */
 
 int countSolorigateSuspiciousMethodNames() {
-  result =
-    count(string s | exists(Method m | s = m.getName() and s = solorigateSuspiciousMethodNames()))
+  result = count(string s | s = any(Method m | isSolorigateSuspiciousMethodName(m)).getName())
 }
 
 from Method m, int total, int threshold
