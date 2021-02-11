@@ -9,19 +9,19 @@ class ModuleBase extends BodyStatement {
   override ModuleBase::Range range;
 
   /** Gets a method defined in this module/class. */
-  Method getAMethod() { result = this.getAnExpr() }
+  Method getAMethod() { result = this.getAStmt() }
 
   /** Gets the method named `name` in this module/class, if any. */
   Method getMethod(string name) { result = this.getAMethod() and result.getName() = name }
 
   /** Gets a class defined in this module/class. */
-  Class getAClass() { result = this.getAnExpr() }
+  Class getAClass() { result = this.getAStmt() }
 
   /** Gets the class named `name` in this module/class, if any. */
   Class getClass(string name) { result = this.getAClass() and result.getName() = name }
 
   /** Gets a module defined in this module/class. */
-  Module getAModule() { result = this.getAnExpr() }
+  Module getAModule() { result = this.getAStmt() }
 
   /** Gets the module named `name` in this module/class, if any. */
   Module getModule(string name) { result = this.getAModule() and result.getName() = name }

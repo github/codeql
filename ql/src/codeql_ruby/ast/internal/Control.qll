@@ -17,7 +17,7 @@ module ConditionalExpr {
 
 module IfExpr {
   abstract class Range extends ConditionalExpr::Range {
-    abstract ExprSequence getThen();
+    abstract StmtSequence getThen();
 
     abstract Expr getElse();
 
@@ -31,7 +31,7 @@ module IfExpr {
 
     final override Expr getCondition() { result = generated.getCondition() }
 
-    final override ExprSequence getThen() { result = generated.getConsequence() }
+    final override StmtSequence getThen() { result = generated.getConsequence() }
 
     final override Expr getElse() { result = generated.getAlternative() }
 
@@ -47,7 +47,7 @@ module IfExpr {
 
     final override Expr getCondition() { result = generated.getCondition() }
 
-    final override ExprSequence getThen() { result = generated.getConsequence() }
+    final override StmtSequence getThen() { result = generated.getConsequence() }
 
     final override Expr getElse() { result = generated.getAlternative() }
 
@@ -65,9 +65,9 @@ module UnlessExpr {
 
     final override Expr getCondition() { result = generated.getCondition() }
 
-    final ExprSequence getThen() { result = generated.getConsequence() }
+    final StmtSequence getThen() { result = generated.getConsequence() }
 
-    final ExprSequence getElse() { result = generated.getAlternative() }
+    final StmtSequence getElse() { result = generated.getAlternative() }
 
     final override Expr getBranch(boolean cond) {
       cond = false and result = getThen()
@@ -143,7 +143,7 @@ module WhenExpr {
   class Range extends Expr::Range, @when {
     final override Generated::When generated;
 
-    final ExprSequence getBody() { result = generated.getBody() }
+    final StmtSequence getBody() { result = generated.getBody() }
 
     final Expr getPattern(int n) { result = generated.getPattern(n).getChild() }
 
@@ -167,7 +167,7 @@ module WhileExpr {
   class Range extends ConditionalLoop::Range, @while {
     final override Generated::While generated;
 
-    final override ExprSequence getBody() { result = generated.getBody() }
+    final override StmtSequence getBody() { result = generated.getBody() }
 
     final override Expr getCondition() { result = generated.getCondition() }
 
@@ -179,7 +179,7 @@ module UntilExpr {
   class Range extends ConditionalLoop::Range, @until {
     final override Generated::Until generated;
 
-    final override ExprSequence getBody() { result = generated.getBody() }
+    final override StmtSequence getBody() { result = generated.getBody() }
 
     final override Expr getCondition() { result = generated.getCondition() }
 
@@ -215,7 +215,7 @@ module ForExpr {
   class Range extends Loop::Range, @for {
     final override Generated::For generated;
 
-    final override ExprSequence getBody() { result = generated.getBody() }
+    final override StmtSequence getBody() { result = generated.getBody() }
 
     final Pattern getPattern() { result = generated.getPattern() }
 

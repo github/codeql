@@ -15,10 +15,10 @@
 | loops.rb:9:1:12:3 | for ... in ... | ForExpr |
 | loops.rb:16:1:19:3 | for ... in ... | ForExpr |
 | loops.rb:22:1:25:3 | for ... in ... | ForExpr |
-| loops.rb:28:1:31:3 | for ... in ... | ForExpr |
-| loops.rb:34:1:37:3 | while ... | WhileExpr |
-| loops.rb:40:1:43:3 | while ... | WhileExpr |
-| loops.rb:46:1:46:19 | ... while ... | WhileModifierExpr |
-| loops.rb:49:1:52:3 | until ... | UntilExpr |
-| loops.rb:55:1:58:3 | until ... | UntilExpr |
-| loops.rb:61:1:61:19 | ... until ... | UntilModifierExpr |
+| loops.rb:28:1:32:3 | for ... in ... | ForExpr |
+| loops.rb:35:1:39:3 | while ... | WhileExpr |
+| loops.rb:42:1:45:3 | while ... | WhileExpr |
+| loops.rb:48:1:48:19 | ... while ... | WhileModifierExpr |
+| loops.rb:51:1:54:3 | until ... | UntilExpr |
+| loops.rb:57:1:60:3 | until ... | UntilExpr |
+| loops.rb:63:1:63:19 | ... until ... | UntilModifierExpr |

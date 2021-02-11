@@ -65,7 +65,7 @@ module Lambda {
 }
 
 module Block {
-  abstract class Range extends Callable::Range, ExprSequence::Range {
+  abstract class Range extends Callable::Range, StmtSequence::Range {
     Range() { not generated.getParent() instanceof Generated::Lambda }
   }
 }
@@ -92,7 +92,7 @@ module BraceBlock {
       result = generated.getParameters().getChild(n)
     }
 
-    final override Expr getExpr(int i) { result = generated.getChild(i) }
+    final override Stmt getStmt(int i) { result = generated.getChild(i) }
 
     final override string toString() { result = "{ ... }" }
   }

@@ -4,13 +4,13 @@ query predicate caseValues(CaseExpr c, Expr value) { value = c.getValue() }
 
 query predicate caseNoValues(CaseExpr c) { not exists(c.getValue()) }
 
-query predicate caseElseBranches(CaseExpr c, ExprSequence elseBranch) {
+query predicate caseElseBranches(CaseExpr c, StmtSequence elseBranch) {
   elseBranch = c.getElseBranch()
 }
 
 query predicate caseNoElseBranches(CaseExpr c) { not exists(c.getElseBranch()) }
 
-query predicate caseWhenBranches(CaseExpr c, WhenExpr when, int pIndex, Expr p, ExprSequence body) {
+query predicate caseWhenBranches(CaseExpr c, WhenExpr when, int pIndex, Expr p, StmtSequence body) {
   when = c.getAWhenBranch() and
   p = when.getPattern(pIndex) and
   body = when.getBody()

@@ -57,11 +57,11 @@ class IfExpr extends ConditionalExpr {
   final predicate isElsif() { this instanceof @elsif }
 
   /** Gets the 'then' branch of this `if`/`elsif` expression. */
-  final ExprSequence getThen() { result = range.getThen() }
+  final StmtSequence getThen() { result = range.getThen() }
 
   /**
    * Gets the `elsif`/`else` branch of this `if`/`elsif` expression, if any. In
-   * the following example, the result is an `ExprSequence` containing `b`.
+   * the following example, the result is a `StmtSequence` containing `b`.
    * ```rb
    * if foo
    *   a
@@ -77,7 +77,7 @@ class IfExpr extends ConditionalExpr {
    * ```
    * There can be at most one result, since `elsif` branches nest. In the
    * following example, `ifExpr.getElse()` returns an `ElsifExpr`, and the
-   * `else` branch is nested inside that. To get the `ExprSequence` for the
+   * `else` branch is nested inside that. To get the `StmtSequence` for the
    * `else` branch, i.e. the one containing `c`, use
    * `getElse().(ElsifExpr).getElse()`.
    * ```rb
@@ -108,7 +108,7 @@ class UnlessExpr extends ConditionalExpr, @unless {
 
   /**
    * Gets the 'then' branch of this `unless` expression. In the following
-   * example, the result is the `ExprSequence` containing `foo`.
+   * example, the result is the `StmtSequence` containing `foo`.
    * ```rb
    * unless a == b then
    *   foo
@@ -117,11 +117,11 @@ class UnlessExpr extends ConditionalExpr, @unless {
    * end
    * ```
    */
-  final ExprSequence getThen() { result = range.getThen() }
+  final StmtSequence getThen() { result = range.getThen() }
 
   /**
    * Gets the 'else' branch of this `unless` expression. In the following
-   * example, the result is the `ExprSequence` containing `bar`.
+   * example, the result is the `StmtSequence` containing `bar`.
    * ```rb
    * unless a == b then
    *   foo
@@ -130,7 +130,7 @@ class UnlessExpr extends ConditionalExpr, @unless {
    * end
    * ```
    */
-  final ExprSequence getElse() { result = range.getElse() }
+  final StmtSequence getElse() { result = range.getElse() }
 }
 
 /**
@@ -220,8 +220,8 @@ class CaseExpr extends ControlExpr, @case__ {
   final Expr getValue() { result = range.getValue() }
 
   /**
-   * Gets the `n`th branch of this case expression, either a `WhenExpr` or an
-   * `ExprSequence`.
+   * Gets the `n`th branch of this case expression, either a `WhenExpr` or a
+   * `StmtSequence`.
    */
   final Expr getBranch(int n) { result = range.getBranch(n) }
 
@@ -235,7 +235,7 @@ class CaseExpr extends ControlExpr, @case__ {
   final WhenExpr getAWhenBranch() { result = getABranch() }
 
   /** Gets the `else` branch of this case expression, if any. */
-  final ExprSequence getElseBranch() { result = getABranch() }
+  final StmtSequence getElseBranch() { result = getABranch() }
 
   /**
    * Gets the number of branches of this case expression.
@@ -257,7 +257,7 @@ class WhenExpr extends Expr, @when {
   final override string getAPrimaryQlClass() { result = "WhenExpr" }
 
   /** Gets the body of this case-when expression. */
-  final ExprSequence getBody() { result = range.getBody() }
+  final StmtSequence getBody() { result = range.getBody() }
 
   /**
    * Gets the `n`th pattern (or condition) in this case-when expression. In the
@@ -320,7 +320,7 @@ class WhileExpr extends ConditionalLoop, @while {
   final override string getAPrimaryQlClass() { result = "WhileExpr" }
 
   /** Gets the body of this `while` loop. */
-  final override ExprSequence getBody() { result = range.getBody() }
+  final override StmtSequence getBody() { result = range.getBody() }
 }
 
 /**
@@ -338,7 +338,7 @@ class UntilExpr extends ConditionalLoop, @until {
   final override string getAPrimaryQlClass() { result = "UntilExpr" }
 
   /** Gets the body of this `until` loop. */
-  final override ExprSequence getBody() { result = range.getBody() }
+  final override StmtSequence getBody() { result = range.getBody() }
 }
 
 /**

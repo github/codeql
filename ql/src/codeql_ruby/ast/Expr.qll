@@ -1,30 +1,15 @@
 private import codeql_ruby.AST
-private import codeql_ruby.CFG
 private import internal.Expr
-private import internal.Variable
-private import codeql_ruby.controlflow.internal.ControlFlowGraphImpl
 
 /**
  * An expression.
  *
  * This is the root QL class for all expressions.
  */
-class Expr extends AstNode {
+class Expr extends Stmt {
   override Expr::Range range;
 
   Expr() { this = range }
-
-  /** Gets a control-flow node for this expression, if any. */
-  CfgNodes::AstCfgNode getAControlFlowNode() { result.getNode() = this }
-
-  /** Gets the control-flow scope of this expression, if any. */
-  CfgScope getCfgScope() { result = getCfgScope(this) }
-
-  /** Gets the variable scope that this expression belongs to. */
-  VariableScope getVariableScope() { result = enclosingScope(this) }
-
-  /** Gets the enclosing callable, if any. */
-  Callable getEnclosingCallable() { result = this.getCfgScope() }
 }
 
 /**
@@ -117,40 +102,40 @@ class SymbolLiteral extends Literal {
 }
 
 /** A sequence of expressions. */
-class ExprSequence extends Expr {
-  override ExprSequence::Range range;
+class StmtSequence extends Expr {
+  override StmtSequence::Range range;
 
-  override string getAPrimaryQlClass() { result = "ExprSequence" }
+  override string getAPrimaryQlClass() { result = "StmtSequence" }
 
-  /** Gets the `n`th expression in this sequence. */
-  final Expr getExpr(int n) { result = range.getExpr(n) }
+  /** Gets the `n`th statement in this sequence. */
+  final Stmt getStmt(int n) { result = range.getStmt(n) }
 
-  /** Gets an expression in this sequence. */
-  final Expr getAnExpr() { result = this.getExpr(_) }
+  /** Gets a statement in this sequence. */
+  final Stmt getAStmt() { result = this.getStmt(_) }
 
   /** Gets the last expression in this sequence, if any. */
-  final Expr getLastExpr() { result = this.getExpr(this.getNumberOfExpressions() - 1) }
+  final Expr getLastExpr() { result = this.getStmt(this.getNumberOfStatements() - 1) }
 
-  /** Gets the number of expressions in this sequence. */
-  final int getNumberOfExpressions() { result = count(this.getAnExpr()) }
+  /** Gets the number of statements in this sequence. */
+  final int getNumberOfStatements() { result = count(this.getAStmt()) }
 
-  /** Holds if this sequence has no expressions. */
-  final predicate isEmpty() { this.getNumberOfExpressions() = 0 }
+  /** Holds if this sequence has no statements. */
+  final predicate isEmpty() { this.getNumberOfStatements() = 0 }
 }
 
 /**
- * A sequence of expressions representing the body of a method, class, module,
+ * A sequence of statements representing the body of a method, class, module,
  * or do-block. That is, any body that may also include rescue/ensure/else
  * statements.
  */
-class BodyStatement extends ExprSequence {
+class BodyStatement extends StmtSequence {
   override BodyStatement::Range range;
 
   /** Gets the `else` block in this block, if any. */
-  final ExprSequence getElse() { result = range.getElse() }
+  final StmtSequence getElse() { result = range.getElse() }
 
   /** Gets the `ensure` block in this block, if any. */
-  final ExprSequence getEnsure() { result = range.getEnsure() }
+  final StmtSequence getEnsure() { result = range.getEnsure() }
 
   final predicate hasEnsure() { exists(this.getEnsure()) }
 }
@@ -170,7 +155,7 @@ class BodyStatement extends ExprSequence {
  * ()
  * ```
  */
-class ParenthesizedExpr extends ExprSequence, @parenthesized_statements {
+class ParenthesizedExpr extends StmtSequence, @parenthesized_statements {
   final override ParenthesizedExpr::Range range;
 
   final override string getAPrimaryQlClass() { result = "ParenthesizedExpr" }

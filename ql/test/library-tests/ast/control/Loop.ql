@@ -13,10 +13,10 @@ query predicate conditionalLoops(
   cond = l.getCondition()
 }
 
-query predicate forExprs(ForExpr f, Pattern p, ExprSequence body, int i, Expr bodyChild) {
+query predicate forExprs(ForExpr f, Pattern p, StmtSequence body, int i, Stmt bodyChild) {
   p = f.getPattern() and
   body = f.getBody() and
-  bodyChild = body.getExpr(i)
+  bodyChild = body.getStmt(i)
 }
 
 query predicate forExprsTuplePatterns(ForExpr f, TuplePattern tp, int i, Pattern cp) {
@@ -24,10 +24,10 @@ query predicate forExprsTuplePatterns(ForExpr f, TuplePattern tp, int i, Pattern
   cp = tp.getElement(i)
 }
 
-query predicate whileExprs(WhileExpr e, Expr cond, ExprSequence body, int i, Expr bodyChild) {
+query predicate whileExprs(WhileExpr e, Expr cond, StmtSequence body, int i, Stmt bodyChild) {
   cond = e.getCondition() and
   body = e.getBody() and
-  bodyChild = body.getExpr(i)
+  bodyChild = body.getStmt(i)
 }
 
 query predicate whileModifierExprs(WhileModifierExpr e, Expr cond, Expr body) {
@@ -35,10 +35,10 @@ query predicate whileModifierExprs(WhileModifierExpr e, Expr cond, Expr body) {
   body = e.getBody()
 }
 
-query predicate untilExprs(UntilExpr e, Expr cond, ExprSequence body, int i, Expr bodyChild) {
+query predicate untilExprs(UntilExpr e, Expr cond, StmtSequence body, int i, Stmt bodyChild) {
   cond = e.getCondition() and
   body = e.getBody() and
-  bodyChild = body.getExpr(i)
+  bodyChild = body.getStmt(i)
 }
 
 query predicate untilModifierExprs(UntilModifierExpr e, Expr cond, Expr body) {

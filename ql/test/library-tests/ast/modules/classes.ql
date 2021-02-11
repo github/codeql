@@ -9,7 +9,7 @@ query predicate classesWithNameScopeExprs(Class c, Expr se) { se = c.getScopeExp
 query predicate classesWithGlobalNameScopeExprs(Class c) { c.hasGlobalScope() }
 
 query predicate exprsInClasses(Class c, int i, Expr e, string eClass) {
-  e = c.getExpr(i) and eClass = e.getAPrimaryQlClass()
+  e = c.getStmt(i) and eClass = e.getAPrimaryQlClass()
 }
 
 query predicate methodsInClasses(Class c, Method m, string name) { m = c.getMethod(name) }

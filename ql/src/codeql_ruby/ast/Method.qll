@@ -63,7 +63,7 @@ class Lambda extends Callable, BodyStatement, @lambda {
 }
 
 /** A block. */
-class Block extends Callable, ExprSequence {
+class Block extends Callable, StmtSequence {
   override Block::Range range;
 }
 

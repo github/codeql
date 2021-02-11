@@ -9,7 +9,7 @@ query predicate conditionalExprs(
 }
 
 query predicate ifExprs(
-  IfExpr e, string pClass, Expr cond, ExprSequence thenExpr, string elseStr, boolean isElsif
+  IfExpr e, string pClass, Expr cond, StmtSequence thenExpr, string elseStr, boolean isElsif
 ) {
   pClass = e.getAPrimaryQlClass() and
   cond = e.getCondition() and
@@ -19,7 +19,7 @@ query predicate ifExprs(
 }
 
 query predicate unlessExprs(
-  UnlessExpr e, string pClass, Expr cond, ExprSequence thenExpr, string elseStr
+  UnlessExpr e, string pClass, Expr cond, StmtSequence thenExpr, string elseStr
 ) {
   pClass = e.getAPrimaryQlClass() and
   cond = e.getCondition() and

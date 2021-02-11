@@ -9,7 +9,7 @@ query predicate modulesWithScopeExprs(Module m, Expr se) { se = m.getScopeExpr()
 query predicate modulesWithGlobalNameScopeExprs(Module m) { m.hasGlobalScope() }
 
 query predicate exprsInModules(Module m, int i, Expr e, string eClass) {
-  e = m.getExpr(i) and eClass = e.getAPrimaryQlClass()
+  e = m.getStmt(i) and eClass = e.getAPrimaryQlClass()
 }
 
 query predicate methodsInModules(Module mod, Method method, string name) {

@@ -1,11 +1,9 @@
 private import codeql_ruby.AST
-private import codeql_ruby.ast.internal.AST
-private import codeql_ruby.ast.internal.Pattern
+private import codeql_ruby.ast.internal.Statement
 private import codeql_ruby.ast.internal.TreeSitter
-private import codeql_ruby.ast.internal.Variable
 
 module Expr {
-  abstract class Range extends AstNode::Range { }
+  abstract class Range extends Stmt::Range { }
 }
 
 module Literal {
@@ -166,17 +164,17 @@ module SymbolLiteral {
   }
 }
 
-module ExprSequence {
+module StmtSequence {
   abstract class Range extends Expr::Range {
-    abstract Expr getExpr(int n);
+    abstract Stmt getStmt(int n);
 
-    int getNumberOfExpressions() { result = count(this.getExpr(_)) }
+    int getNumberOfStatements() { result = count(this.getStmt(_)) }
 
     override string toString() {
-      exists(int c | c = this.getNumberOfExpressions() |
+      exists(int c | c = this.getNumberOfStatements() |
         c = 0 and result = ";"
         or
-        c = 1 and result = this.getExpr(0).toString()
+        c = 1 and result = this.getStmt(0).toString()
         or
         c > 1 and result = "...; ..."
       )
@@ -185,8 +183,8 @@ module ExprSequence {
 }
 
 module BodyStatement {
-  abstract class Range extends ExprSequence::Range {
-    final override Expr getExpr(int n) {
+  abstract class Range extends StmtSequence::Range {
+    final override Stmt getStmt(int n) {
       result =
         rank[n + 1](Generated::AstNode node, int i |
           node = getChild(i) and
@@ -198,59 +196,59 @@ module BodyStatement {
         )
     }
 
-    final ExprSequence getElse() { result = unique(Generated::Else s | s = getChild(_)) }
+    final StmtSequence getElse() { result = unique(Generated::Else s | s = getChild(_)) }
 
-    final ExprSequence getEnsure() { result = unique(Generated::Ensure s | s = getChild(_)) }
+    final StmtSequence getEnsure() { result = unique(Generated::Ensure s | s = getChild(_)) }
 
     abstract Generated::AstNode getChild(int i);
   }
 }
 
 module ParenthesizedExpr {
-  class Range extends ExprSequence::Range, @parenthesized_statements {
+  class Range extends StmtSequence::Range, @parenthesized_statements {
     final override Generated::ParenthesizedStatements generated;
 
-    final override Expr getExpr(int n) { result = generated.getChild(n) }
+    final override Stmt getStmt(int n) { result = generated.getChild(n) }
 
     final override string toString() {
-      exists(int c | c = this.getNumberOfExpressions() |
+      exists(int c | c = this.getNumberOfStatements() |
         c = 0 and result = "()"
         or
-        c > 0 and result = "(" + ExprSequence::Range.super.toString() + ")"
+        c > 0 and result = "(" + StmtSequence::Range.super.toString() + ")"
       )
     }
   }
 }
 
 module ThenExpr {
-  class Range extends ExprSequence::Range, @then {
+  class Range extends StmtSequence::Range, @then {
     final override Generated::Then generated;
 
-    final override Expr getExpr(int n) { result = generated.getChild(n) }
+    final override Stmt getStmt(int n) { result = generated.getChild(n) }
   }
 }
 
 module ElseExpr {
-  class Range extends ExprSequence::Range, @else {
+  class Range extends StmtSequence::Range, @else {
     final override Generated::Else generated;
 
-    final override Expr getExpr(int n) { result = generated.getChild(n) }
+    final override Stmt getStmt(int n) { result = generated.getChild(n) }
   }
 }
 
 module DoExpr {
-  class Range extends ExprSequence::Range, @do {
+  class Range extends StmtSequence::Range, @do {
     final override Generated::Do generated;
 
-    final override Expr getExpr(int n) { result = generated.getChild(n) }
+    final override Stmt getStmt(int n) { result = generated.getChild(n) }
   }
 }
 
 module Ensure {
-  class Range extends ExprSequence::Range, @ensure {
+  class Range extends StmtSequence::Range, @ensure {
     final override Generated::Ensure generated;
 
-    final override Expr getExpr(int n) { result = generated.getChild(n) }
+    final override Stmt getStmt(int n) { result = generated.getChild(n) }
 
     final override string toString() { result = "ensure ... end" }
   }
