@@ -75,3 +75,12 @@ app.get('/user/:id', function (req, res) {
     res.send(f); // NOT OK
   })
 });
+
+import snarkdown from 'snarkdown';
+var snarkdown2 = require("snarkdown");
+
+app.get('/user/:id', function (req, res) {
+  res.send(req.body); // NOT OK
+  res.send(snarkdown(req.body)); // NOT OK
+  res.send(snarkdown2(req.body)); // NOT OK
+});

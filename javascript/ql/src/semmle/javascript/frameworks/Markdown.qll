@@ -106,3 +106,15 @@ private module Unified {
     }
   }
 }
+
+/**
+ * A taint step for the `snarkdown` library.
+ */
+private class SnarkdownStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
+  SnarkdownStep() { this = DataFlow::moduleImport("snarkdown").getACall() }
+
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    this = succ and
+    pred = this.getArgument(0)
+  }
+}
