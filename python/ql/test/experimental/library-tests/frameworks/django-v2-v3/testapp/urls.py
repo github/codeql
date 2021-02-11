@@ -15,4 +15,7 @@ urlpatterns = [
 
     path("basic-view-handler/", views.MyBasicViewHandler.as_view()),  # $routeSetup="basic-view-handler/"
     path("custom-inheritance-view-handler/", views.MyViewHandlerWithCustomInheritance.as_view()),  # $routeSetup="custom-inheritance-view-handler/"
+
+    path("CustomRedirectView/<foo>", views.CustomRedirectView.as_view()),  # $routeSetup="CustomRedirectView/<foo>"
+    path("CustomRedirectView2/<foo>", views.CustomRedirectView2.as_view()),  # $routeSetup="CustomRedirectView2/<foo>"
 ]
