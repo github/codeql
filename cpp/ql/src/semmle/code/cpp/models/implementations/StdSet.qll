@@ -9,7 +9,7 @@ import semmle.code.cpp.models.interfaces.Iterator
  * An instantiation of `std::set` or `std::unordered_set`.
  */
 class StdSet extends ClassTemplateInstantiation {
-  StdSet() { this.hasQualifiedName("std", ["set", "unordered_set"]) }
+  StdSet() { this.hasQualifiedName(["std", "bsl"], ["set", "unordered_set"]) }
 }
 
 /**

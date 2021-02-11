@@ -8,7 +8,7 @@ import semmle.code.cpp.models.interfaces.Taint
  * An instantiation of `std::pair<T1, T2>`.
  */
 class StdPair extends ClassTemplateInstantiation {
-  StdPair() { this.hasQualifiedName("std", "pair") }
+  StdPair() { this.hasQualifiedName(["std", "bsl"], "pair") }
 }
 
 /**
