@@ -85,6 +85,16 @@ class AstCfgNode extends CfgNode, TAstNode {
       or
       n = any(Generated::For f).getValue() and
       s = "In"
+      or
+      // TODO: Remove these nodes from the CFG
+      n = any(Generated::Class c).getName() and
+      s = n.toString()
+      or
+      n = any(Generated::Module m).getName() and
+      s = n.toString()
+      or
+      n = any(Generated::ScopeResolution sc).getName() and
+      s = n.toString()
     |
       result = "[" + this.getSplitsString() + "] " + s
       or

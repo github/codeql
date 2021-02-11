@@ -53,9 +53,10 @@ module Call {
     final override Generated::Call generated;
 
     final override Expr getReceiver() {
-      if exists(generated.getReceiver())
-      then result = generated.getReceiver()
-      else result = generated.getMethod().(Generated::ScopeResolution).getScope()
+      result = generated.getReceiver()
+      or
+      not exists(generated.getReceiver()) and
+      result = generated.getMethod().(Generated::ScopeResolution).getScope()
     }
 
     final override string getMethodName() {

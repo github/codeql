@@ -894,9 +894,9 @@ cfg.rb:
 #-----|  -> character
 
 #   58| Silly
-#-----|  -> (no string representation)
+#-----|  -> Silly
 
-#   58| (no string representation)
+#   58| Silly
 #-----|  -> Object
 
 #   58| Superclass
@@ -1375,9 +1375,9 @@ cfg.rb:
 #-----|  -> ... > ...
 
 #  115| C
-#-----|  -> (no string representation)
+#-----|  -> C
 
-#  115| (no string representation)
+#  115| C
 #-----|  -> 42
 
 #  116| ... = ...
@@ -1426,9 +1426,9 @@ cfg.rb:
 #-----|  -> Array
 
 #  122| M
-#-----|  -> (no string representation)
+#-----|  -> M
 
-#  122| (no string representation)
+#  122| M
 #-----|  -> nil
 
 #  123| ... = ...
@@ -1592,16 +1592,16 @@ cfg.rb:
 #-----|  -> M
 
 #  137| M
-#-----|  -> (no string representation)
+#-----|  -> Constant
 
-#  137| (no string representation)
+#  137| Constant
 #-----|  -> Constant
 
 #  138| Constant
 #-----|  -> class << ...
 
 #  138| call to itself
-#-----|  -> (no string representation)
+#-----|  -> Constant
 
 #  138| M
 #-----|  -> itself
@@ -1609,7 +1609,7 @@ cfg.rb:
 #  138| itself
 #-----|  -> call to itself
 
-#  138| (no string representation)
+#  138| Constant
 #-----|  -> Constant
 
 #  140| class << ...
@@ -2721,9 +2721,9 @@ loops.rb:
 
 raise.rb:
 #    1| ExceptionA
-#-----|  -> (no string representation)
+#-----|  -> ExceptionA
 
-#    1| (no string representation)
+#    1| ExceptionA
 #-----|  -> Exception
 
 #    1| Superclass
@@ -2733,9 +2733,9 @@ raise.rb:
 #-----|  -> Superclass
 
 #    4| ExceptionB
-#-----|  -> (no string representation)
+#-----|  -> ExceptionB
 
-#    4| (no string representation)
+#    4| ExceptionB
 #-----|  -> Exception
 
 #    4| Superclass

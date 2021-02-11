@@ -213,7 +213,7 @@ class Module extends ModuleBase, ConstantWriteAccess, @module {
    * global scope, as in this example:
    *
    * ```rb
-   * class ::Foo
+   * module ::Foo
    * end
    * ```
    */
