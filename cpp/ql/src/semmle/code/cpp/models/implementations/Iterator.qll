@@ -177,8 +177,7 @@ private class IteratorAssignArithmeticOperator extends Operator, DataFlowFunctio
 class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunction,
   IteratorReferenceFunction {
   IteratorPointerDereferenceMemberOperator() {
-    this.hasName("operator*") and
-    this.getDeclaringType() instanceof Iterator
+    this.getClassAndName("operator*") instanceof Iterator
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -195,8 +194,7 @@ class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunc
  */
 private class IteratorCrementMemberOperator extends MemberFunction, DataFlowFunction, TaintFunction {
   IteratorCrementMemberOperator() {
-    this.hasName(["operator++", "operator--"]) and
-    this.getDeclaringType() instanceof Iterator
+    this.getClassAndName(["operator++", "operator--"]) instanceof Iterator
   }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
@@ -221,8 +219,7 @@ private class IteratorCrementMemberOperator extends MemberFunction, DataFlowFunc
  */
 private class IteratorFieldMemberOperator extends Operator, TaintFunction {
   IteratorFieldMemberOperator() {
-    this.hasName("operator->") and
-    this.getDeclaringType() instanceof Iterator
+    this.getClassAndName("operator->") instanceof Iterator
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -236,8 +233,7 @@ private class IteratorFieldMemberOperator extends Operator, TaintFunction {
  */
 private class IteratorBinaryArithmeticMemberOperator extends MemberFunction, TaintFunction {
   IteratorBinaryArithmeticMemberOperator() {
-    this.hasName(["operator+", "operator-"]) and
-    this.getDeclaringType() instanceof Iterator
+    this.getClassAndName(["operator+", "operator-"]) instanceof Iterator
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -252,8 +248,7 @@ private class IteratorBinaryArithmeticMemberOperator extends MemberFunction, Tai
 private class IteratorAssignArithmeticMemberOperator extends MemberFunction, DataFlowFunction,
   TaintFunction {
   IteratorAssignArithmeticMemberOperator() {
-    this.hasName(["operator+=", "operator-="]) and
-    this.getDeclaringType() instanceof Iterator
+    this.getClassAndName(["operator+=", "operator-="]) instanceof Iterator
   }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
@@ -276,8 +271,7 @@ private class IteratorAssignArithmeticMemberOperator extends MemberFunction, Dat
 private class IteratorArrayMemberOperator extends MemberFunction, TaintFunction,
   IteratorReferenceFunction {
   IteratorArrayMemberOperator() {
-    this.hasName("operator[]") and
-    this.getDeclaringType() instanceof Iterator
+    this.getClassAndName("operator[]") instanceof Iterator
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -295,8 +289,7 @@ private class IteratorArrayMemberOperator extends MemberFunction, TaintFunction,
  */
 private class IteratorAssignmentMemberOperator extends MemberFunction, TaintFunction {
   IteratorAssignmentMemberOperator() {
-    this.hasName("operator=") and
-    this.getDeclaringType() instanceof Iterator and
+    this.getClassAndName("operator=") instanceof Iterator and
     not this instanceof CopyAssignmentOperator and
     not this instanceof MoveAssignmentOperator
   }
