@@ -28,7 +28,8 @@ class NestedForConditions extends SC::StructuralComparisonConfiguration {
 }
 
 private predicate hasChild(Stmt outer, Element child) {
-  outer = child.getParent()
+  outer = child.getParent() and
+  (outer instanceof ForStmt or outer = any(ForStmt f).getBody())
   or
   hasChild(outer, child.getParent())
 }
