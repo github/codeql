@@ -7,6 +7,6 @@
     <p>This query detects FNV-like hash calculations where there is an additional XOR (with any static value) after the hash calculation loop.</p>
   </overview>
 
-  <include src="Solorigate.qhelp" />
+  <include src="Solorigate.qhelp.inc" />
 
 </qhelp>

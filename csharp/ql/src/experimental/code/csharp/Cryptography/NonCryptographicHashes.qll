@@ -74,19 +74,10 @@ predicate isCallableAPotentialNonCryptographicHashFunction(Callable callable, Pa
   exists(Variable v, Expr op1, Expr op2, LoopStmt loop |
     maybeANonCryptogrphicHash(callable, v, op1, op2, loop) and
     callable.getAParameter() = param and
-    (
-      param.getAnAccess() = op1.(Operation).getAnOperand().getAChild*()
-      or
-      param.getAnAccess() = op2.(Operation).getAnOperand().getAChild*()
-      or
-      exists(Node source, Node sink |
-        (
-          sink.asExpr() = op1.(Operation).getAChild*() or
-          sink.asExpr() = op2.(Operation).getAChild*()
-        ) and
-        source.asExpr() = param.getAnAccess() and
-        DataFlow::localFlow(source, sink)
-      )
+    exists(ParameterNode p, ExprNode n |
+      p.getParameter() = param and
+      localFlow(p, n) and
+      n.getExpr() in [op1.(Operation).getAChild*(), op2.(Operation).getAChild*()]
     )
   )
 }
