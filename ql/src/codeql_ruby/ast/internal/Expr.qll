@@ -196,6 +196,10 @@ module BodyStatement {
         )
     }
 
+    final Rescue getRescue(int n) {
+      result = rank[n + 1](Generated::Rescue node, int i | node = getChild(i) | node order by i)
+    }
+
     final StmtSequence getElse() { result = unique(Generated::Else s | s = getChild(_)) }
 
     final StmtSequence getEnsure() { result = unique(Generated::Ensure s | s = getChild(_)) }
@@ -250,7 +254,21 @@ module Ensure {
 
     final override Stmt getStmt(int n) { result = generated.getChild(n) }
 
-    final override string toString() { result = "ensure ... end" }
+    final override string toString() { result = "ensure ..." }
+  }
+}
+
+module Rescue {
+  class Range extends Expr::Range, @rescue {
+    final override Generated::Rescue generated;
+
+    final Expr getException(int n) { result = generated.getExceptions().getChild(n) }
+
+    final Expr getVariableExpr() { result = generated.getVariable() }
+
+    final StmtSequence getBody() { result = generated.getBody() }
+
+    final override string toString() { result = "rescue ..." }
   }
 }
 
