@@ -7,6 +7,25 @@ module ModuleBase {
   abstract class Range extends BodyStatement::Range { }
 }
 
+module Toplevel {
+  class Range extends ModuleBase::Range, @program {
+    final override Generated::Program generated;
+
+    Range() { generated.getLocation().getFile().getExtension() != "erb" }
+
+    final override Generated::AstNode getChild(int i) {
+      result = generated.getChild(i) and
+      not result instanceof Generated::BeginBlock
+    }
+
+    final StmtSequence getBeginBlock(int n) {
+      result = rank[n](int i, Generated::BeginBlock b | b = generated.getChild(i) | b order by i)
+    }
+
+    final override string toString() { result = generated.getLocation().getFile().getBaseName() }
+  }
+}
+
 module Class {
   class Range extends ModuleBase::Range, ConstantWriteAccess::Range, @class {
     final override Generated::Class generated;

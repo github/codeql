@@ -20,15 +20,9 @@ module AstNode {
     // an AST node, for example we include the `in` keyword in `for` loops
     // in the CFG, but not the AST
     RemoveWhenFullCoverage() {
-      this instanceof Generated::Program
-      or
       this = any(Generated::Method m).getName()
       or
       this = any(Generated::SingletonMethod m).getName()
-      or
-      this instanceof Generated::BeginBlock
-      or
-      this instanceof Generated::EndBlock
       or
       this = any(Generated::Call c).getMethod() and
       not this instanceof Generated::ScopeResolution

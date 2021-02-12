@@ -1,4 +1,5 @@
 moduleBases
+| classes.rb:2:1:56:3 | classes.rb | Toplevel |
 | classes.rb:3:1:4:3 | Foo | Class |
 | classes.rb:7:1:8:3 | Bar | Class |
 | classes.rb:11:1:12:3 | Baz | Class |
@@ -10,6 +11,7 @@ moduleBases
 | classes.rb:41:1:52:3 | class << ... | Class |
 | classes.rb:55:1:56:3 | MyClassInGlobalScope | Class |
 | modules.rb:1:1:2:3 | Empty | Module |
+| modules.rb:1:1:61:3 | modules.rb | Toplevel |
 | modules.rb:4:1:24:3 | Foo | Module |
 | modules.rb:5:3:14:5 | Bar | Module |
 | modules.rb:6:5:7:7 | ClassInFooBar | Class |
@@ -21,6 +23,12 @@ moduleBases
 | modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar | Class |
 | modules.rb:60:1:61:3 | MyModuleInGlobalScope | Module |
 moduleBaseClasses
+| classes.rb:2:1:56:3 | classes.rb | classes.rb:3:1:4:3 | Foo |
+| classes.rb:2:1:56:3 | classes.rb | classes.rb:7:1:8:3 | Bar |
+| classes.rb:2:1:56:3 | classes.rb | classes.rb:11:1:12:3 | Baz |
+| classes.rb:2:1:56:3 | classes.rb | classes.rb:16:1:17:3 | MyClass |
+| classes.rb:2:1:56:3 | classes.rb | classes.rb:20:1:37:3 | Wibble |
+| classes.rb:2:1:56:3 | classes.rb | classes.rb:55:1:56:3 | MyClassInGlobalScope |
 | classes.rb:20:1:37:3 | Wibble | classes.rb:32:3:33:5 | ClassInWibble |
 | modules.rb:4:1:24:3 | Foo | modules.rb:19:3:20:5 | ClassInFoo |
 | modules.rb:5:3:14:5 | Bar | modules.rb:6:5:7:7 | ClassInFooBar |
@@ -38,5 +46,12 @@ moduleBaseMethods
 | modules.rb:37:1:46:3 | Bar | modules.rb:41:3:42:5 | method_b |
 | modules.rb:48:1:57:3 | Bar | modules.rb:52:3:53:5 | method_in_another_definition_of_foo_bar |
 moduleBaseModules
+| classes.rb:2:1:56:3 | classes.rb | classes.rb:15:1:15:20 | MyModule |
 | classes.rb:20:1:37:3 | Wibble | classes.rb:35:3:36:5 | ModuleInWibble |
+| modules.rb:1:1:61:3 | modules.rb | modules.rb:1:1:2:3 | Empty |
+| modules.rb:1:1:61:3 | modules.rb | modules.rb:4:1:24:3 | Foo |
+| modules.rb:1:1:61:3 | modules.rb | modules.rb:26:1:35:3 | Foo |
+| modules.rb:1:1:61:3 | modules.rb | modules.rb:37:1:46:3 | Bar |
+| modules.rb:1:1:61:3 | modules.rb | modules.rb:48:1:57:3 | Bar |
+| modules.rb:1:1:61:3 | modules.rb | modules.rb:60:1:61:3 | MyModuleInGlobalScope |
 | modules.rb:4:1:24:3 | Foo | modules.rb:5:3:14:5 | Bar |

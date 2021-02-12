@@ -1,5 +1,6 @@
 private import codeql_ruby.AST
 private import codeql_ruby.ast.internal.AST
+private import codeql_ruby.ast.internal.Expr
 private import codeql_ruby.ast.internal.TreeSitter
 
 module Stmt {
@@ -11,6 +12,16 @@ module EmptyStmt {
     final override Generated::EmptyStatement generated;
 
     final override string toString() { result = ";" }
+  }
+}
+
+module EndBlock {
+  class Range extends StmtSequence::Range, @end_block {
+    final override Generated::EndBlock generated;
+
+    final override Stmt getStmt(int n) { result = generated.getChild(n) }
+
+    final override string toString() { result = "END { ... }" }
   }
 }
 
