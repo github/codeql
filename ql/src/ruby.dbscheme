@@ -965,18 +965,28 @@ program_def(
   int loc: @location ref
 );
 
-#keyset[range, index]
-range_child(
-  int range: @range ref,
-  int index: int ref,
-  unique int child: @underscore_arg ref
+range_begin(
+  unique int range: @range ref,
+  unique int begin: @underscore_arg ref
 );
+
+range_end(
+  unique int range: @range ref,
+  unique int end: @underscore_arg ref
+);
+
+case @range.operator of
+  0 = @range_dotdot
+| 1 = @range_dotdotdot
+;
+
 
 #keyset[parent, parent_index]
 range_def(
   unique int id: @range,
   int parent: @ast_node_parent ref,
   int parent_index: int ref,
+  int operator: int ref,
   int loc: @location ref
 );
 

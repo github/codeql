@@ -264,7 +264,9 @@ private module Cached {
     or
     i = any(Generated::Program x).getChild(_)
     or
-    i = any(Generated::Range x).getChild(_)
+    i = any(Generated::Range x).getBegin()
+    or
+    i = any(Generated::Range x).getEnd()
     or
     i = any(Generated::RescueModifier x).getBody()
     or

@@ -24,115 +24,7 @@ class Self extends Expr, @token_self {
   final override string getAPrimaryQlClass() { result = "Self" }
 }
 
-/**
- * A literal.
- *
- * This is the QL root class for all literals.
- */
-class Literal extends Expr {
-  override Literal::Range range;
 
-  /** Gets the source text for this literal, if it is constant. */
-  final string getValueText() { result = range.getValueText() }
-}
-
-/**
- * An integer literal.
- * ```rb
- * x = 123
- * y = 0xff
- * ```
- */
-class IntegerLiteral extends Literal, @token_integer {
-  final override IntegerLiteral::Range range;
-
-  final override string getAPrimaryQlClass() { result = "IntegerLiteral" }
-}
-
-/** A `nil` literal. */
-class NilLiteral extends Literal, @token_nil {
-  final override NilLiteral::Range range;
-
-  final override string getAPrimaryQlClass() { result = "NilLiteral" }
-}
-
-/**
- * A Boolean literal.
- * ```rb
- * true
- * false
- * TRUE
- * FALSE
- * ```
- */
-class BooleanLiteral extends Literal, BooleanLiteral::DbUnion {
-  final override BooleanLiteral::Range range;
-
-  final override string getAPrimaryQlClass() { result = "BooleanLiteral" }
-
-  /** Holds if the Boolean literal is `true` or `TRUE`. */
-  predicate isTrue() { range.isTrue() }
-
-  /** Holds if the Boolean literal is `false` or `FALSE`. */
-  predicate isFalse() { range.isFalse() }
-}
-
-// TODO: expand this. It's a minimal placeholder so we can test `=~` and `!~`.
-class RegexLiteral extends Literal, @regex {
-  final override RegexLiteral::Range range;
-
-  final override string getAPrimaryQlClass() { result = "RegexLiteral" }
-}
-
-/**
- * A string literal.
- * ```rb
- * 'hello'
- * "hello, #{name}"
- * ```
- * TODO: expand this minimal placeholder.
- */
-class StringLiteral extends Literal, @string__ {
-  final override StringLiteral::Range range;
-
-  final override string getAPrimaryQlClass() { result = "StringLiteral" }
-}
-
-/**
- * A symbol literal.
- * ```rb
- * :foo
- * :"foo bar"
- * :"foo bar #{baz}"
- * ```
- * TODO: expand this minimal placeholder.
- */
-class SymbolLiteral extends Literal {
-  final override SymbolLiteral::Range range;
-
-  SymbolLiteral() {
-    not any(UndefStmt u).getAMethodName() = this and
-    not any(AliasStmt a).getNewName() = this and
-    not any(AliasStmt a).getOldName() = this
-  }
-
-  final override string getAPrimaryQlClass() { result = "SymbolLiteral" }
-}
-
-/**
- * A method name literal. For example:
- * ```rb
- * - method_name      # a normal name
- * - +                # an operator
- * - :method_name     # a symbol
- * - :"eval_#{name}"  # a complex symbol
- * ```
- */
-class MethodName extends Literal {
-  final override MethodName::Range range;
-
-  final override string getAPrimaryQlClass() { result = "MethodName" }
-}
 
 /** A sequence of expressions. */
 class StmtSequence extends Expr {
@@ -321,4 +213,53 @@ class RescueModifierExpr extends Expr, @rescue_modifier {
    * ```
    */
   final Stmt getHandler() { result = range.getHandler() }
+}
+
+/**
+ * A concatenation of string literals.
+ *
+ * ```rb
+ * "foo" "bar" "baz"
+ * ```
+ */
+class StringConcatenation extends Expr, @chained_string {
+  final override StringConcatenation::Range range;
+
+  final override string getAPrimaryQlClass() { result = "StringConcatenation" }
+
+  /** Gets the `n`th string literal in this concatenation. */
+  final StringLiteral getString(int n) { result = range.getString(n) }
+
+  /** Gets a string literal in this concatenation. */
+  final StringLiteral getAString() { result = this.getString(_) }
+
+  /** Gets the number of string literals in this concatenation. */
+  final int getNumberOfStrings() { result = count(this.getString(_)) }
+
+  /**
+   * Gets the result of concatenating all the string literals, if and only if
+   * they do not contain any interpolations.
+   *
+   * For the following example, the result is `"foobar"`:
+   *
+   * ```rb
+   * "foo" 'bar'
+   * ```
+   *
+   * And for the following example, where one of the string literals includes
+   * an interpolation, there is no result:
+   *
+   * ```rb
+   * "foo" "bar#{ n }"
+   * ```
+   */
+  final string getConcatenatedValueText() {
+    forall(StringLiteral c | c = this.getString(_) | exists(c.getValueText())) and
+    result =
+      concat(string valueText, int i |
+        valueText = this.getString(i).getValueText()
+      |
+        valueText order by i
+      )
+  }
 }

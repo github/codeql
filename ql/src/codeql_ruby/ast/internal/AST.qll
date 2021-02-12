@@ -31,37 +31,13 @@ module AstNode {
       or
       this = any(Generated::RestAssignment ra).getChild()
       or
-      this instanceof Generated::SymbolArray
-      or
-      this instanceof Generated::Interpolation
-      or
-      this instanceof Generated::StringArray
-      or
-      this instanceof Generated::BareString
-      or
-      this instanceof Generated::Float
-      or
       this instanceof Generated::Superclass
-      or
-      this instanceof Generated::Hash
-      or
-      this instanceof Generated::Array
-      or
-      this instanceof Generated::Complex
-      or
-      this instanceof Generated::Character
       or
       this instanceof Generated::HeredocBody
       or
       this instanceof Generated::HeredocBeginning
       or
       this instanceof Generated::HeredocEnd
-      or
-      this instanceof Generated::Range
-      or
-      this instanceof Generated::Rational
-      or
-      this instanceof Generated::Subshell
     }
 
     override string toString() { result = "AstNode" }

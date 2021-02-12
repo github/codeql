@@ -3,6 +3,7 @@ import ast.Call
 import ast.Control
 import ast.Constant
 import ast.Expr
+import ast.Literal
 import ast.Method
 import ast.Module
 import ast.Parameter
