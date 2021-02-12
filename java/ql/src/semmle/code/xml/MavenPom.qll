@@ -167,7 +167,7 @@ class Pom extends ProtoPom {
   Pom getParentPom() { result = getParentElement().getPom() }
 
   /**
-   * Gets the version specified for dependency _dep_ in a `dependencyManagement`
+   * Gets the version specified for dependency `dep` in a `dependencyManagement`
    * section in this POM or one of its ancestors, or an empty string if no version
    * is specified.
    */
@@ -343,7 +343,7 @@ class DependencyManagement extends PomElement {
 
   /**
    * Gets a dependency declared in this `dependencyManagement` element that has
-   * the same (short) coordinates as _dep_.
+   * the same (short) coordinates as `dep`.
    */
   Dependency getDependency(Dependency dep) {
     result = getADependency() and
@@ -383,7 +383,7 @@ class MavenRepo extends Folder {
   /**
    * Gets any jar artifacts in this repository that match the POM project definition. This is an
    * over approximation. For soft qualifiers (e.g. 1.0) precise matches are returned in preference
-   * to artifact only matches. For hard qualifiers (e.g. [1.0]) only precise matches are returned.
+   * to artifact-only matches. For hard qualifiers (e.g. [1.0]) only precise matches are returned.
    * For all other qualifiers, all matches are returned regardless of version.
    */
   MavenRepoJar getAnArtifact(ProtoPom pom) {
