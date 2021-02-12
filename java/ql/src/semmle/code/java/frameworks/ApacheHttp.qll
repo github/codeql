@@ -57,6 +57,34 @@ class ApacheHttpRequestHandlerParameter extends Parameter {
 }
 
 /**
+ * A call that sets a header of an `HttpResponse`.
+ */
+class ApacheHttpSetHeader extends Call {
+  ApacheHttpSetHeader() {
+    exists(Method m |
+      this.getCallee().(Method).overrides*(m) and
+      m.getDeclaringType()
+          .hasQualifiedName(["org.apache.http", "org.apache.hc.core5.http"], "HttpMessage") and
+      m.hasName(["addHeader", "setHeader"]) and
+      m.getNumberOfParameters() = 2
+    )
+    or
+    exists(Constructor c |
+      this.getCallee() = c and
+      c.getDeclaringType()
+          .hasQualifiedName(["org.apache.http.message", "org.apache.hc.core5.http.message"],
+            "BasicHeader")
+    )
+  }
+
+  /** Gets the expression used as the name of this header. */
+  Expr getName() { result = this.getArgument(0) }
+
+  /** Gets the expression used as the value of this header. */
+  Expr getValue() { result = this.getArgument(1) }
+}
+
+/**
  * A call that sets the entity of an instance of `org.apache.http.HttpResponse` / `org.apache.hc.core5.http.ClassicHttpResponse`.
  */
 class ApacheHttpResponseSetEntityCall extends MethodAccess {
@@ -146,6 +174,9 @@ private class ApacheHttpGetter extends TaintPreservingCallable {
         or
         ty = "HttpEntity" and
         mtd = ["getContent", "getTrailers"]
+        or
+        ty = "EntityDetails" and
+        mtd = ["getContentType", "getTrailerNames"]
       )
       or
       pkg = "org.apache.hc.core5.message" and
