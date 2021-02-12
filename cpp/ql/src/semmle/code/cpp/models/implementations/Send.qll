@@ -10,11 +10,12 @@ import semmle.code.cpp.models.interfaces.FlowSource
 import semmle.code.cpp.models.interfaces.SideEffect
 
 /** The function `send` and its assorted variants */
-private class Send extends AliasFunction, ArrayFunction, SideEffectFunction, RemoteFlowFunctionSink {
+private class Send extends AliasFunction, ArrayFunction, SideEffectFunction, RemoteFlowSinkFunction {
   Send() {
     this.hasGlobalName([
         "send", // send(socket, buf, len, flags)
         "sendto", // sendto(socket, buf, len, flags, to, tolen)
+        "sendmsg", // sendmsg(socket, msg, flags)
         "write" // write(socket, buf, len);
       ])
   }
@@ -28,7 +29,9 @@ private class Send extends AliasFunction, ArrayFunction, SideEffectFunction, Rem
   override predicate parameterIsAlwaysReturned(int index) { none() }
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
-    bufParam = 1 and countParam = 2
+    not this.hasGlobalName("sendmsg") and
+    bufParam = 1 and
+    countParam = 2
   }
 
   override predicate hasArrayInput(int bufParam) { bufParam = 1 }
@@ -44,7 +47,9 @@ private class Send extends AliasFunction, ArrayFunction, SideEffectFunction, Rem
   override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
     i = 1 and buffer = true
     or
-    exists(this.getParameter(4)) and i = 4 and buffer = false
+    this.hasGlobalName("sendto") and i = 4 and buffer = false
+    or
+    this.hasGlobalName("sendmsg") and i = 1 and buffer = true
   }
 
   override ParameterIndex getParameterSizeIndex(ParameterIndex i) { i = 1 and result = 2 }

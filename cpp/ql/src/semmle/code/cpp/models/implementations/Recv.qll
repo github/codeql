@@ -10,11 +10,13 @@ import semmle.code.cpp.models.interfaces.FlowSource
 import semmle.code.cpp.models.interfaces.SideEffect
 
 /** The function `recv` and its assorted variants */
-private class Recv extends AliasFunction, ArrayFunction, SideEffectFunction, RemoteFlowFunction {
+private class Recv extends AliasFunction, ArrayFunction, SideEffectFunction,
+  RemoteFlowSourceFunction {
   Recv() {
     this.hasGlobalName([
         "recv", // recv(socket, dest, len, flags)
         "recvfrom", // recvfrom(socket, dest, len, flags, from, fromlen)
+        "recvmsg", // recvmsg(socket, msg, flags)
         "read", // read(socket, dest, len)
         "pread" // pread(socket, dest, len, offset)
       ])
@@ -29,7 +31,9 @@ private class Recv extends AliasFunction, ArrayFunction, SideEffectFunction, Rem
   override predicate parameterIsAlwaysReturned(int index) { none() }
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
-    bufParam = 1 and countParam = 2
+    not this.hasGlobalName("recvmsg") and
+    bufParam = 1 and
+    countParam = 2
   }
 
   override predicate hasArrayInput(int bufParam) { this.hasGlobalName("recvfrom") and bufParam = 4 }
@@ -47,6 +51,10 @@ private class Recv extends AliasFunction, ArrayFunction, SideEffectFunction, Rem
       or
       i = 5 and buffer = false
     )
+    or
+    this.hasGlobalName("recvmsg") and
+    i = 1 and
+    buffer = true
   }
 
   override ParameterIndex getParameterSizeIndex(ParameterIndex i) { i = 1 and result = 2 }
@@ -67,7 +75,11 @@ private class Recv extends AliasFunction, ArrayFunction, SideEffectFunction, Rem
   override predicate hasOnlySpecificWriteSideEffects() { any() }
 
   override predicate hasRemoteFlowSource(FunctionOutput output, string description) {
-    output.isParameterDeref(1) and
+    (
+      output.isParameterDeref(1)
+      or
+      this.hasGlobalName("recvfrom") and output.isParameterDeref([4, 5])
+    ) and
     description = "Buffer read by " + this.getName()
   }
 }

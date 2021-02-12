@@ -60,17 +60,11 @@ class SecurityOptions extends string {
       or
       functionCall.getTarget().hasGlobalName(fname) and
       exists(functionCall.getArgument(arg)) and
-      (
-        fname = "recvmsg" and arg = 1
-        or
-        fname = "getaddrinfo" and arg = 3
-        or
-        fname = "recvfrom" and
-        (arg = 1 or arg = 4 or arg = 5)
-      )
+      fname = "getaddrinfo" and
+      arg = 3
     )
     or
-    exists(RemoteFlowFunction remote, FunctionOutput output |
+    exists(RemoteFlowSourceFunction remote, FunctionOutput output |
       functionCall.getTarget() = remote and
       output.isParameterDerefOrQualifierObject(arg) and
       remote.hasRemoteFlowSource(output, _)
@@ -89,7 +83,7 @@ class SecurityOptions extends string {
       )
     )
     or
-    exists(RemoteFlowFunction remote, FunctionOutput output |
+    exists(RemoteFlowSourceFunction remote, FunctionOutput output |
       functionCall.getTarget() = remote and
       (output.isReturnValue() or output.isReturnValueDeref()) and
       remote.hasRemoteFlowSource(output, _)
