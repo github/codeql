@@ -15,7 +15,7 @@ import semmle.code.cpp.models.interfaces.Iterator
  */
 private class IteratorTraits extends Class {
   IteratorTraits() {
-    this.hasQualifiedName("std", "iterator_traits") and
+    this.hasQualifiedName(["std", "bsl"], "iterator_traits") and
     not this instanceof TemplateClass and
     exists(TypedefType t |
       this.getAMember() = t and
@@ -44,7 +44,7 @@ private class IteratorByTypedefs extends Iterator, Class {
     this.getAMember().(TypedefType).hasName("pointer") and
     this.getAMember().(TypedefType).hasName("reference") and
     this.getAMember().(TypedefType).hasName("iterator_category") and
-    not this.hasQualifiedName("std", "iterator_traits")
+    not this.hasQualifiedName(["std", "bsl"], "iterator_traits")
   }
 }
 
@@ -52,7 +52,7 @@ private class IteratorByTypedefs extends Iterator, Class {
  * The `std::iterator` class.
  */
 private class StdIterator extends Iterator, Class {
-  StdIterator() { this.hasQualifiedName("std", "iterator") }
+  StdIterator() { this.hasQualifiedName(["std", "bsl"], "iterator") }
 }
 
 /**
@@ -340,7 +340,7 @@ private class BeginOrEndFunction extends MemberFunction, TaintFunction, GetItera
  */
 private class InserterIteratorFunction extends GetIteratorFunction {
   InserterIteratorFunction() {
-    this.hasQualifiedName("std", ["front_inserter", "inserter", "back_inserter"])
+    this.hasQualifiedName(["std", "bsl"], ["front_inserter", "inserter", "back_inserter"])
   }
 
   override predicate getsIterator(FunctionInput input, FunctionOutput output) {
