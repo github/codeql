@@ -7,9 +7,15 @@ import semmle.code.cpp.models.interfaces.Taint
 /**
  * An instantiation of `std::pair<T1, T2>`.
  */
-class StdPair extends ClassTemplateInstantiation {
+private class StdPair extends ClassTemplateInstantiation {
   StdPair() { this.hasQualifiedName(["std", "bsl"], "pair") }
 }
+
+/**
+ * DEPRECATED: This is now called `StdPair` and is a private part of the
+ * library implementation.
+ */
+deprecated class StdPairClass = StdPair;
 
 /**
  * Any of the single-parameter constructors of `std::pair` that takes a reference to an
