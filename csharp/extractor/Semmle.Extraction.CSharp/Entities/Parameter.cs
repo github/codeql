@@ -114,7 +114,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (!symbol.Locations.Any() &&
                 symbol.ContainingSymbol is IMethodSymbol ms &&
-                ms.Name == WellKnownMemberNames.TopLevelStatementsEntryPointMethodName)
+                ms.Name == WellKnownMemberNames.TopLevelStatementsEntryPointMethodName &&
+                ms.ContainingType.Name == WellKnownMemberNames.TopLevelStatementsEntryPointTypeName)
             {
                 trapFile.param_location(this, Context.CreateLocation());
             }
