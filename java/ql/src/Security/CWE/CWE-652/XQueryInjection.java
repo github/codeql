@@ -32,6 +32,15 @@ public void bad1(HttpServletRequest request) throws XQException {
     }
 }
 
+public void bad2(HttpServletRequest request) throws XQException {
+    String name = request.getParameter("name");
+    XQDataSource xqds = new SaxonXQDataSource();
+    XQConnection conn = xqds.getConnection();
+    XQExpression expr = conn.createExpression();
+    //bad code
+    expr.executeCommand(name);
+}
+
 public void good(HttpServletRequest request) throws XQException {
     String name = request.getParameter("name");
     XQDataSource ds = new SaxonXQDataSource();

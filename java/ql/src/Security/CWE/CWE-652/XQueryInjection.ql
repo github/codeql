@@ -25,7 +25,8 @@ class XQueryInjectionConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(XQueryPreparedExecuteCall xpec).getPreparedExpression() or
-    sink.asExpr() = any(XQueryExecuteCall xec).getExecuteQueryArgument()
+    sink.asExpr() = any(XQueryExecuteCall xec).getExecuteQueryArgument() or
+    sink.asExpr() = any(XQueryExecuteCommandCall xecc).getExecuteCommandArgument()
   }
 
   /**

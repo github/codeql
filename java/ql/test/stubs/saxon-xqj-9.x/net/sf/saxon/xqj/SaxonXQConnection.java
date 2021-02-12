@@ -5,6 +5,7 @@ import net.sf.saxon.Configuration;
 import javax.xml.xquery.XQConnection;
 import javax.xml.xquery.XQPreparedExpression;
 import javax.xml.xquery.XQException;
+import javax.xml.xquery.XQExpression;
 import javax.xml.xquery.XQStaticContext;
 import java.io.InputStream;
 

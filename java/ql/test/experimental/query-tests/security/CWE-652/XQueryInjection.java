@@ -1,3 +1,5 @@
+package com.vuln.v2.controller;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,9 +29,10 @@ public class XQueryInjection {
                     + " for $user in doc(\"users.xml\")/Users/User[name=$name] return $user/password";
             conn = xqds.getConnection();
             XQExpression expr = conn.createExpression();
-            expr.bindString(new QName("name"), name, conn.createAtomicType(XQItemType.XQBASETYPE_STRING));
+            expr.bindString(new QName("name"), name,
+                    conn.createAtomicType(XQItemType.XQBASETYPE_STRING));
             XQResultSequence result = expr.executeQuery(query);
-            while (result.next()){
+            while (result.next()) {
                 System.out.println(result.getItemAsString(null));
             }
         } catch (XQException e) {
@@ -42,10 +45,11 @@ public class XQueryInjection {
         String name = request.getParameter("name");
         XQDataSource ds = new SaxonXQDataSource();
         XQConnection conn = ds.getConnection();
-        String query = "for $user in doc(\"users.xml\")/Users/User[name='" + name + "'] return $user/password";
+        String query = "for $user in doc(\"users.xml\")/Users/User[name='" + name
+                + "'] return $user/password";
         XQPreparedExpression xqpe = conn.prepareExpression(query);
         XQResultSequence result = xqpe.executeQuery();
-        while (result.next()){
+        while (result.next()) {
             System.out.println(result.getItemAsString(null));
         }
     }
@@ -54,11 +58,12 @@ public class XQueryInjection {
     public void testRequestbad1(HttpServletRequest request) throws Exception {
         String name = request.getParameter("name");
         XQDataSource xqds = new SaxonXQDataSource();
-        String query = "for $user in doc(\"users.xml\")/Users/User[name='" + name + "'] return $user/password";
+        String query = "for $user in doc(\"users.xml\")/Users/User[name='" + name
+                + "'] return $user/password";
         XQConnection conn = xqds.getConnection();
         XQExpression expr = conn.createExpression();
         XQResultSequence result = expr.executeQuery(query);
-        while (result.next()){
+        while (result.next()) {
             System.out.println(result.getItemAsString(null));
         }
     }
@@ -68,10 +73,11 @@ public class XQueryInjection {
     public void testStringtbad(@RequestParam String nameStr) throws XQException {
         XQDataSource ds = new SaxonXQDataSource();
         XQConnection conn = ds.getConnection();
-        String query = "for $user in doc(\"users.xml\")/Users/User[name='" + nameStr + "'] return $user/password";
+        String query = "for $user in doc(\"users.xml\")/Users/User[name='" + nameStr
+                + "'] return $user/password";
         XQPreparedExpression xqpe = conn.prepareExpression(query);
         XQResultSequence result = xqpe.executeQuery();
-        while (result.next()){
+        while (result.next()) {
             System.out.println(result.getItemAsString(null));
         }
     }
@@ -79,11 +85,12 @@ public class XQueryInjection {
     @RequestMapping
     public void testStringtbad1(@RequestParam String nameStr) throws XQException {
         XQDataSource xqds = new SaxonXQDataSource();
-        String query = "for $user in doc(\"users.xml\")/Users/User[name='" + nameStr + "'] return $user/password";
+        String query = "for $user in doc(\"users.xml\")/Users/User[name='" + nameStr
+                + "'] return $user/password";
         XQConnection conn = xqds.getConnection();
         XQExpression expr = conn.createExpression();
         XQResultSequence result = expr.executeQuery(query);
-        while (result.next()){
+        while (result.next()) {
             System.out.println(result.getItemAsString(null));
         }
     }
@@ -95,7 +102,7 @@ public class XQueryInjection {
         XQConnection conn = ds.getConnection();
         XQPreparedExpression xqpe = conn.prepareExpression(name);
         XQResultSequence result = xqpe.executeQuery();
-        while (result.next()){
+        while (result.next()) {
             System.out.println(result.getItemAsString(null));
         }
     }
@@ -107,7 +114,7 @@ public class XQueryInjection {
         XQConnection conn = xqds.getConnection();
         XQExpression expr = conn.createExpression();
         XQResultSequence result = expr.executeQuery(name);
-        while (result.next()){
+        while (result.next()) {
             System.out.println(result.getItemAsString(null));
         }
     }
@@ -120,7 +127,7 @@ public class XQueryInjection {
         XQConnection conn = ds.getConnection();
         XQPreparedExpression xqpe = conn.prepareExpression(br);
         XQResultSequence result = xqpe.executeQuery();
-        while (result.next()){
+        while (result.next()) {
             System.out.println(result.getItemAsString(null));
         }
     }
@@ -133,9 +140,24 @@ public class XQueryInjection {
         XQConnection conn = xqds.getConnection();
         XQExpression expr = conn.createExpression();
         XQResultSequence result = expr.executeQuery(br);
-        while (result.next()){
+        while (result.next()) {
             System.out.println(result.getItemAsString(null));
         }
+    }
+
+    @RequestMapping
+    public void testExecuteCommandbad(HttpServletRequest request) throws Exception {
+        String name = request.getParameter("name");
+        XQDataSource xqds = new SaxonXQDataSource();
+        XQConnection conn = xqds.getConnection();
+        XQExpression expr = conn.createExpression();
+        //bad code
+        expr.executeCommand(name);
+        //bad code
+        InputStream is = request.getInputStream();
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        expr.executeCommand(br);
+        expr.close();
     }
 
     @RequestMapping
@@ -146,9 +168,10 @@ public class XQueryInjection {
         String query = "declare variable $name as xs:string external;"
                 + " for $user in doc(\"users.xml\")/Users/User[name=$name] return $user/password";
         XQPreparedExpression xqpe = conn.prepareExpression(query);
-        xqpe.bindString(new QName("name"), name, conn.createAtomicType(XQItemType.XQBASETYPE_STRING));
+        xqpe.bindString(new QName("name"), name,
+                conn.createAtomicType(XQItemType.XQBASETYPE_STRING));
         XQResultSequence result = xqpe.executeQuery();
-        while (result.next()){
+        while (result.next()) {
             System.out.println(result.getItemAsString(null));
         }
     }
@@ -161,10 +184,12 @@ public class XQueryInjection {
         XQDataSource xqds = new SaxonXQDataSource();
         XQConnection conn = xqds.getConnection();
         XQExpression expr = conn.createExpression();
-        expr.bindString(new QName("name"), name, conn.createAtomicType(XQItemType.XQBASETYPE_STRING));
+        expr.bindString(new QName("name"), name,
+                conn.createAtomicType(XQItemType.XQBASETYPE_STRING));
         XQResultSequence result = expr.executeQuery(query);
-        while (result.next()){
+        while (result.next()) {
             System.out.println(result.getItemAsString(null));
         }
     }
 }
+
