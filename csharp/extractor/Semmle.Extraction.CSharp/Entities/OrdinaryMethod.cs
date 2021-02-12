@@ -51,11 +51,6 @@ namespace Semmle.Extraction.CSharp.Entities
             Overrides(trapFile);
             ExtractRefReturn(trapFile, symbol, this);
             ExtractCompilerGenerated(trapFile);
-
-            if (SymbolEqualityComparer.Default.Equals(symbol, Context.Compilation.GetEntryPoint(System.Threading.CancellationToken.None)))
-            {
-                trapFile.entry_methods(this);
-            }
         }
 
         public static new OrdinaryMethod Create(Context cx, IMethodSymbol method) => OrdinaryMethodFactory.Instance.CreateEntityFromSymbol(cx, method);

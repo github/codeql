@@ -74,7 +74,9 @@ class BlockStmt extends Stmt, @block_stmt {
   predicate isEmpty() { not exists(this.getAStmt()) }
 
   /** Holds if this block is the container of the global statements. */
-  predicate isGlobalStatementContainer() { global_stmt_block(this) }
+  predicate isGlobalStatementContainer() {
+    this.getEnclosingCallable().hasQualifiedName("<Program>$.<Main>$")
+  }
 
   override Stmt stripSingletonBlocks() {
     if getNumberOfStmts() = 1

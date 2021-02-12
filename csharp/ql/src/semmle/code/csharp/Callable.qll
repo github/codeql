@@ -292,9 +292,6 @@ class Method extends Callable, Virtualizable, Attributable, @method {
   }
 
   override string getAPrimaryQlClass() { result = "Method" }
-
-  /** Holds if this method is the entry method of the compilation. */
-  predicate isEntry() { entry_methods(this) }
 }
 
 /**

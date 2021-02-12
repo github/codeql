@@ -379,11 +379,6 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("methods", method, name, declType, retType, originalDefinition);
         }
 
-        internal static void entry_methods(this TextWriter trapFile, Method method)
-        {
-            trapFile.WriteTuple("entry_methods", method);
-        }
-
         internal static void modifiers(this TextWriter trapFile, Label entity, string modifier)
         {
             trapFile.WriteTuple("modifiers", entity, modifier);
@@ -512,11 +507,6 @@ namespace Semmle.Extraction.CSharp
         internal static void stackalloc_array_creation(this TextWriter trapFile, Expression array)
         {
             trapFile.WriteTuple("stackalloc_array_creation", array);
-        }
-
-        internal static void global_stmt_block(this TextWriter trapFile, Entities.Statements.GlobalStatementsBlock block)
-        {
-            trapFile.WriteTuple("global_stmt_block", block);
         }
 
         internal static void stmt_location(this TextWriter trapFile, Statement stmt, Location location)
