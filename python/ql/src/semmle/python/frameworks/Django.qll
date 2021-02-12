@@ -2024,8 +2024,15 @@ private module Django {
     result = djangoRouteHandlerFunctionTracker(DataFlow::TypeTracker::end(), func)
   }
 
-  /** A class that might be a django View class. */
-  class PossibleDjangoViewClass extends Class {
+  /**
+   * In order to recognize a class as being a django view class, based on the `as_view`
+   * call, we need to be able to track such calls on _any_ class. This is provided by
+   * the member predicates of this QL class.
+   *
+   * As such, a Python class being part of `DjangoViewClassHelper` doesn't signify that
+   * we model it as a django view class.
+   */
+  class DjangoViewClassHelper extends Class {
     /** Gets a reference to this class. */
     private DataFlow::Node getARef(DataFlow::TypeTracker t) {
       t.start() and
@@ -2061,7 +2068,7 @@ private module Django {
   }
 
   /** A class that we consider a django View class. */
-  abstract class DjangoViewClass extends PossibleDjangoViewClass {
+  abstract class DjangoViewClass extends DjangoViewClassHelper {
     /** Gets a function that could handle incoming requests, if any. */
     Function getARequestHandler() {
       // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
