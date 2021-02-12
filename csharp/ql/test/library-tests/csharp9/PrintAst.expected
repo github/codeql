@@ -166,6 +166,109 @@ Discard.cs:
 #   10|             4: [BlockStmt] {...}
 #   10|               0: [ReturnStmt] return ...;
 #   10|                 0: [IntLiteral] 0
+ForeachExtension.cs:
+#    6| [Class] Extensions
+#    8|   4: [ExtensionMethod] GetEnumerator
+#    8|     -1: [TypeMention] IEnumerator<T>
+#    8|       1: [TypeMention] T
+#-----|     1: (Type parameters)
+#    8|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#    8|       0: [Parameter] enumerator
+#    8|         -1: [TypeMention] IEnumerator<T>
+#    8|           1: [TypeMention] T
+#    8|     4: [ParameterAccess] access to parameter enumerator
+#    9|   6: [ExtensionMethod] GetAsyncEnumerator
+#    9|     -1: [TypeMention] IAsyncEnumerator<T>
+#    9|       1: [TypeMention] T
+#-----|     1: (Type parameters)
+#    9|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#    9|       0: [Parameter] enumerator
+#    9|         -1: [TypeMention] IAsyncEnumerator<T>
+#    9|           1: [TypeMention] T
+#    9|     4: [ParameterAccess] access to parameter enumerator
+#   10|   8: [ExtensionMethod] GetEnumerator
+#   10|     -1: [TypeMention] IEnumerator<Int32>
+#   10|       1: [TypeMention] int
+#-----|     2: (Parameters)
+#   10|       0: [Parameter] count
+#   10|         -1: [TypeMention] int
+#   11|     4: [BlockStmt] {...}
+#   12|       0: [ForStmt] for (...;...;...) ...
+#   12|         -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#   12|           -1: [TypeMention] int
+#   12|           0: [LocalVariableAccess] access to local variable i
+#   12|           1: [IntLiteral] 0
+#   12|         0: [LTExpr] ... < ...
+#   12|           0: [LocalVariableAccess] access to local variable i
+#   12|           1: [ParameterAccess] access to parameter count
+#   12|         1: [PostIncrExpr] ...++
+#   12|           0: [LocalVariableAccess] access to local variable i
+#   13|         2: [BlockStmt] {...}
+#   14|           0: [YieldReturnStmt] yield return ...;
+#   14|             0: [LocalVariableAccess] access to local variable i
+#   19| [Class] Program
+#   21|   5: [Method] Main
+#   21|     -1: [TypeMention] Task
+#   22|     4: [BlockStmt] {...}
+#   23|       0: [LocalVariableDeclStmt] ... ...;
+#   23|         0: [LocalVariableDeclAndInitExpr] IEnumerator<Int32> enumerator1 = ...
+#   23|           -1: [TypeMention] IEnumerator<Int32>
+#   23|             1: [TypeMention] int
+#   23|           0: [LocalVariableAccess] access to local variable enumerator1
+#   23|           1: [MethodCall] call to method GetEnumerator
+#   23|             -1: [MethodCall] call to method Range
+#   23|               -1: [TypeAccess] access to type Enumerable
+#   23|                 0: [TypeMention] Enumerable
+#   23|               0: [IntLiteral] 0
+#   23|               1: [IntLiteral] 10
+#   24|       1: [ForeachStmt] foreach (... ... in ...) ...
+#   24|         0: [LocalVariableDeclExpr] Int32 item
+#   24|           0: [TypeMention] int
+#   24|         1: [LocalVariableAccess] access to local variable enumerator1
+#   25|         2: [BlockStmt] {...}
+#   28|       2: [LocalVariableDeclStmt] ... ...;
+#   28|         0: [LocalVariableDeclAndInitExpr] IAsyncEnumerator<Int32> enumerator2 = ...
+#   28|           -1: [TypeMention] IAsyncEnumerator<Int32>
+#   28|             1: [TypeMention] int
+#   28|           0: [LocalVariableAccess] access to local variable enumerator2
+#   28|           1: [MethodCall] call to method GetAsyncEnumerator
+#   29|       3: [ForeachStmt] foreach (... ... in ...) ...
+#   29|         0: [LocalVariableDeclExpr] Int32 item
+#   29|           0: [TypeMention] int
+#   29|         1: [LocalVariableAccess] access to local variable enumerator2
+#   30|         2: [BlockStmt] {...}
+#   33|       4: [ForeachStmt] foreach (... ... in ...) ...
+#   33|         0: [LocalVariableDeclExpr] Int32 item
+#   33|           0: [TypeMention] int
+#   33|         1: [IntLiteral] 42
+#   34|         2: [BlockStmt] {...}
+#   37|       5: [ForeachStmt] foreach (... ... in ...) ...
+#   37|         0: [LocalVariableDeclExpr] Int32 i
+#   37|           0: [TypeMention] int
+#   37|         1: [ArrayCreation] array creation of type Int32[]
+#   37|           -2: [TypeMention] Int32[]
+#   37|             1: [TypeMention] int
+#   37|           -1: [ArrayInitializer] { ..., ... }
+#   37|             0: [IntLiteral] 1
+#   37|             1: [IntLiteral] 2
+#   37|             2: [IntLiteral] 3
+#   38|         2: [BlockStmt] {...}
+#   42|   6: [Method] GetAsyncEnumerator
+#   42|     -1: [TypeMention] IAsyncEnumerator<Int32>
+#   42|       1: [TypeMention] int
+#   43|     4: [BlockStmt] {...}
+#   44|       0: [YieldReturnStmt] yield return ...;
+#   44|         0: [IntLiteral] 0
+#   45|       1: [ExprStmt] ...;
+#   45|         0: [AwaitExpr] await ...
+#   45|           0: [MethodCall] call to method Delay
+#   45|             -1: [TypeAccess] access to type Task
+#   45|               0: [TypeMention] Task
+#   45|             0: [IntLiteral] 1
+#   46|       2: [YieldReturnStmt] yield return ...;
+#   46|         0: [IntLiteral] 1
 FunctionPointer.cs:
 #    5| [Class] FnPointer
 #    7|   5: [Class] Program

@@ -982,18 +982,6 @@ catch_type(
   int type_id: @type_or_ref ref,
   int kind: int ref /* explicit = 1, implicit = 2 */);
 
-foreach_stmt_info(
-  unique int id: @foreach_stmt ref,
-  int kind: int ref /* non-async = 1, async = 2 */);
-
-@foreach_symbol =  @method | @property | @type_or_ref;
-
-#keyset[id, kind]
-foreach_stmt_desugar(
-  int id: @foreach_stmt ref,
-  int symbol: @foreach_symbol ref,
-  int kind: int ref /* GetEnumeratorMethod = 1, CurrentProperty = 2, MoveNextMethod = 3, DisposeMethod = 4, ElementType = 5 */);
-
 /** EXPRESSIONS **/
 
 expressions(
