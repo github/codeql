@@ -40,15 +40,14 @@ predicate implies_v1(Guard g1, boolean b1, Guard g2, boolean b2) {
   )
   or
   exists(ConditionalExpr cond, boolean branch, BooleanLiteral boollit, boolean boolval |
-    cond.getBranchExpr(branch) = boollit
-  |
+    cond.getBranchExpr(branch) = boollit and
     cond = g1 and
     boolval = boollit.getBooleanValue() and
     b1 = boolval.booleanNot() and
     (
       g2 = cond.getCondition() and b2 = branch.booleanNot()
       or
-      g2 = cond.getBranchExpr(_) and b2 = b1
+      g2 = cond.getABranchExpr() and b2 = b1
     )
   )
   or
@@ -212,7 +211,7 @@ private predicate hasPossibleUnknownValue(SsaVariable v) {
  * `ConditionalExpr`s.
  */
 private Expr possibleValue(Expr e) {
-  result = possibleValue(e.(ConditionalExpr).getBranchExpr(_))
+  result = possibleValue(e.(ConditionalExpr).getABranchExpr())
   or
   result = e and not e instanceof ConditionalExpr
 }

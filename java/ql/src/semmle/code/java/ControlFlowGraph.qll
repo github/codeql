@@ -293,7 +293,7 @@ private module ControlFlowGraphImpl {
     exists(ConditionalExpr condexpr |
       condexpr.getCondition() = b
       or
-      condexpr.getBranchExpr(_) = b and
+      condexpr.getABranchExpr() = b and
       inBooleanContext(condexpr)
     )
     or
@@ -706,7 +706,7 @@ private module ControlFlowGraphImpl {
     or
     // The last node of a `ConditionalExpr` is in either of its branches.
     exists(ConditionalExpr condexpr | condexpr = n |
-      last(condexpr.getBranchExpr(_), last, completion)
+      last(condexpr.getABranchExpr(), last, completion)
     )
     or
     exists(InstanceOfExpr ioe | ioe.isPattern() and ioe = n |

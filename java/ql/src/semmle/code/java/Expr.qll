@@ -184,8 +184,7 @@ class CompileTimeConstantExpr extends Expr {
     // Ternary conditional, with compile-time constant condition.
     exists(ConditionalExpr ce, boolean condition |
       ce = this and
-      condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue()
-    |
+      condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue() and
       result = ce.getBranchExpr(condition).(CompileTimeConstantExpr).getStringValue()
     )
     or
@@ -293,9 +292,8 @@ class CompileTimeConstantExpr extends Expr {
     // Ternary expressions, where the `true` and `false` expressions are boolean compile-time constants.
     exists(ConditionalExpr ce, boolean condition |
       ce = this and
-      condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue()
-    |
-      ce.getBranchExpr(condition).(CompileTimeConstantExpr).getBooleanValue()
+      condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue() and
+      result = ce.getBranchExpr(condition).(CompileTimeConstantExpr).getBooleanValue()
     )
     or
     // Simple or qualified names where the variable is final and the initializer is a constant.
@@ -376,8 +374,7 @@ class CompileTimeConstantExpr extends Expr {
       // Ternary conditional, with compile-time constant condition.
       exists(ConditionalExpr ce, boolean condition |
         ce = this and
-        condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue()
-      |
+        condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue() and
         result = ce.getBranchExpr(condition).(CompileTimeConstantExpr).getIntValue()
       )
       or
@@ -1180,7 +1177,7 @@ class ChooseExpr extends Expr {
 
   /** Gets a result expression of this `switch` or conditional expression. */
   Expr getAResultExpr() {
-    result = this.(ConditionalExpr).getBranchExpr(_) or
+    result = this.(ConditionalExpr).getABranchExpr() or
     result = this.(SwitchExpr).getAResult()
   }
 }
@@ -1212,8 +1209,16 @@ class ConditionalExpr extends Expr, @conditionalexpr {
    * it is `getFalseExpr()`.
    */
   Expr getBranchExpr(boolean branch) {
-    if branch = true then result = getTrueExpr() else result = getFalseExpr()
+    branch = true and result = getTrueExpr()
+    or
+    branch = false and result = getFalseExpr()
   }
+
+  /**
+   * Gets the expressions that is evaluated by one of the branches (`true`
+   * or `false` branch) of this conditional expression.
+   */
+  Expr getABranchExpr() { result = getBranchExpr(_) }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...?...:..." }

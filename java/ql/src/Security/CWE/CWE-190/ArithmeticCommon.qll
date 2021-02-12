@@ -148,7 +148,7 @@ predicate upcastToWiderType(Expr e) {
     or
     exists(Parameter p | p.getAnArgument() = e and t2 = p.getType())
     or
-    exists(ConditionalExpr cond | cond.getBranchExpr(_) | t2 = cond.getType())
+    exists(ConditionalExpr cond | cond.getABranchExpr() = e | t2 = cond.getType())
   )
 }
 

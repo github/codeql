@@ -16,7 +16,7 @@ class CharType extends PrimitiveType {
   CharType() { this.hasName("char") }
 }
 
-private Type getABranchType(ConditionalExpr ce) { result = ce.getBranchExpr(_).getType() }
+private Type getABranchType(ConditionalExpr ce) { result = ce.getABranchExpr().getType() }
 
 from ConditionalExpr ce
 where

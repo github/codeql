@@ -11,7 +11,7 @@ private predicate flowsInto(Expr e, Variable v) {
   or
   exists(CastExpr c | flowsInto(c, v) | e = c.getExpr())
   or
-  exists(ConditionalExpr c | flowsInto(c, v) | e = c.getBranchExpr(_))
+  exists(ConditionalExpr c | flowsInto(c, v) | e = c.getABranchExpr())
 }
 
 /**
