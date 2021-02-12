@@ -145,3 +145,8 @@ typeInferenceMismatch
 | tst.js:2:13:2:20 | source() | tst.js:45:10:45:24 | x.map(x2 => x2) |
 | tst.js:2:13:2:20 | source() | tst.js:47:10:47:30 | Buffer. ...  'hex') |
 | tst.js:2:13:2:20 | source() | tst.js:48:10:48:22 | new Buffer(x) |
+| xml.js:5:18:5:25 | source() | xml.js:8:14:8:17 | text |
+| xml.js:12:17:12:24 | source() | xml.js:13:14:13:19 | result |
+| xml.js:23:18:23:25 | source() | xml.js:20:14:20:17 | attr |
+| xml.js:26:27:26:34 | source() | xml.js:26:10:26:39 | convert ... (), {}) |
+| xml.js:34:18:34:25 | source() | xml.js:31:18:31:21 | name |
