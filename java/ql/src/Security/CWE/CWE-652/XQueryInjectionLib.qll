@@ -50,3 +50,19 @@ class XQueryExecuteCall extends MethodAccess {
   /** Return this execute query argument. */
   Expr getExecuteQueryArgument() { result = this.getArgument(0) }
 }
+
+/** A call to `XQExpression.executeCommand`. */
+class XQueryExecuteCommandCall extends MethodAccess {
+  XQueryExecuteCommandCall() {
+    exists(Method m |
+      this.getMethod() = m and
+      m.hasName("executeCommand") and
+      m.getDeclaringType()
+          .getASourceSupertype*()
+          .hasQualifiedName("javax.xml.xquery", "XQExpression")
+    )
+  }
+
+  /** Return this execute command argument. */
+  Expr getExecuteCommandArgument() { result = this.getArgument(0) }
+}
