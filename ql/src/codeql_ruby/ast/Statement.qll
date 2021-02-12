@@ -36,9 +36,21 @@ class EmptyStmt extends Stmt, @token_empty_statement {
 }
 
 /**
+ * An `BEGIN` block.
+ * ```rb
+ * BEGIN { puts "starting ..." }
+ * ```
+ */
+class BeginBlock extends StmtSequence, @begin_block {
+  final override BeginBlock::Range range;
+
+  final override string getAPrimaryQlClass() { result = "BeginBlock" }
+}
+
+/**
  * An `END` block.
  * ```rb
- * END{ puts "shutting down" }
+ * END { puts "shutting down" }
  * ```
  */
 class EndBlock extends StmtSequence, @end_block {

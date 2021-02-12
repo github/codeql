@@ -22,6 +22,7 @@ moduleBases
 | modules.rb:48:1:57:3 | Bar | Module |
 | modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar | Class |
 | modules.rb:60:1:61:3 | MyModuleInGlobalScope | Module |
+| toplevel.rb:1:1:5:23 | toplevel.rb | Toplevel |
 moduleBaseClasses
 | classes.rb:2:1:56:3 | classes.rb | classes.rb:3:1:4:3 | Foo |
 | classes.rb:2:1:56:3 | classes.rb | classes.rb:7:1:8:3 | Bar |

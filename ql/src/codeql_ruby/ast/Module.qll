@@ -43,14 +43,14 @@ class Toplevel extends ModuleBase, @program {
   final override string getAPrimaryQlClass() { result = "Toplevel" }
 
   /**
-   * Get the `n`th `BEGIN` block.
+   * Gets the `n`th `BEGIN` block.
    */
-  final StmtSequence getBeginBlock(int n) { result = range.getBeginBlock(n) }
+  final BeginBlock getBeginBlock(int n) { result = range.getBeginBlock(n) }
 
   /**
-   * Get a `BEGIN` block.
+   * Gets a `BEGIN` block.
    */
-  final StmtSequence getABeginBlock() { result = getBeginBlock(_) }
+  final BeginBlock getABeginBlock() { result = getBeginBlock(_) }
 }
 
 /**
