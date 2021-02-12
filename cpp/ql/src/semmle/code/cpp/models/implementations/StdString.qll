@@ -253,13 +253,6 @@ private class StdStringSubstr extends TaintFunction {
 }
 
 /**
- * The `std::basic_stringstream` template class instantiations.
- */
-private class StdBasicStringStream extends ClassTemplateInstantiation {
-  StdBasicStringStream() { this.hasQualifiedName(["std", "bsl"], "basic_stringstream") }
-}
-
-/**
  * The `std::string` functions `at` and `operator[]`.
  */
 private class StdStringAt extends TaintFunction {
@@ -561,6 +554,13 @@ private class StdOStreamOutNonMember extends DataFlowFunction, TaintFunction {
     input.isReturnValueDeref() and
     output.isParameterDeref(0)
   }
+}
+
+/**
+ * The `std::basic_stringstream` template class instantiations.
+ */
+private class StdBasicStringStream extends ClassTemplateInstantiation {
+  StdBasicStringStream() { this.hasQualifiedName(["std", "bsl"], "basic_stringstream") }
 }
 
 /**
