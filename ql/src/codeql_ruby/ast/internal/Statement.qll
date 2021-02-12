@@ -1,9 +1,28 @@
 private import codeql_ruby.AST
 private import codeql_ruby.ast.internal.AST
+private import codeql_ruby.ast.internal.Expr
 private import codeql_ruby.ast.internal.TreeSitter
 
 module Stmt {
   abstract class Range extends AstNode::Range { }
+}
+
+module EmptyStmt {
+  class Range extends Stmt::Range, @token_empty_statement {
+    final override Generated::EmptyStatement generated;
+
+    final override string toString() { result = ";" }
+  }
+}
+
+module EndBlock {
+  class Range extends StmtSequence::Range, @end_block {
+    final override Generated::EndBlock generated;
+
+    final override Stmt getStmt(int n) { result = generated.getChild(n) }
+
+    final override string toString() { result = "END { ... }" }
+  }
 }
 
 module ReturningStmt {
@@ -49,5 +68,21 @@ module NextStmt {
     final override string toString() { result = "next" }
 
     final override Generated::ArgumentList getArgumentList() { result = generated.getChild() }
+  }
+}
+
+module RedoStmt {
+  class Range extends Stmt::Range, @redo {
+    final override Generated::Redo generated;
+
+    final override string toString() { result = "redo" }
+  }
+}
+
+module RetryStmt {
+  class Range extends Stmt::Range, @retry {
+    final override Generated::Retry generated;
+
+    final override string toString() { result = "retry" }
   }
 }

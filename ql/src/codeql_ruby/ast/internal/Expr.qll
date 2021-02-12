@@ -6,6 +6,14 @@ module Expr {
   abstract class Range extends Stmt::Range { }
 }
 
+module Self {
+  class Range extends Expr::Range, @token_self {
+    final override Generated::Self generated;
+
+    final override string toString() { result = "self" }
+  }
+}
+
 module Literal {
   abstract class Range extends Expr::Range {
     abstract string getValueText();
@@ -221,6 +229,16 @@ module ParenthesizedExpr {
         c > 0 and result = "(" + StmtSequence::Range.super.toString() + ")"
       )
     }
+  }
+}
+
+module BeginBlock {
+  class Range extends StmtSequence::Range, @begin_block {
+    final override Generated::BeginBlock generated;
+
+    final override Stmt getStmt(int n) { result = generated.getChild(n) }
+
+    final override string toString() { result = "BEGIN { ... }" }
   }
 }
 

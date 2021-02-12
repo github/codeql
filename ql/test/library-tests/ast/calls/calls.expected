@@ -74,7 +74,6 @@ callsWithNoReceiverArgumentsOrBlock
 | calls.rb:286:5:286:9 | call to super | super |
 | calls.rb:287:5:287:11 | call to super | super |
 | calls.rb:303:5:303:7 | call to foo | foo |
-| calls.rb:304:5:304:14 | call to super | super |
 | calls.rb:305:5:305:9 | call to super | super |
 callsWithArguments
 | calls.rb:14:1:14:11 | call to foo | foo | 0 | calls.rb:14:5:14:5 | 0 |
@@ -174,6 +173,7 @@ callsWithReceiver
 | calls.rb:275:7:275:12 | call to bar | calls.rb:275:7:275:7 | X |
 | calls.rb:279:11:279:16 | call to bar | calls.rb:279:11:279:11 | X |
 | calls.rb:303:5:303:13 | call to super | calls.rb:303:5:303:7 | call to foo |
+| calls.rb:304:5:304:14 | call to super | calls.rb:304:5:304:8 | self |
 | calls.rb:305:5:305:15 | call to super | calls.rb:305:5:305:9 | call to super |
 callsWithBlock
 | calls.rb:17:1:17:17 | call to foo | calls.rb:17:5:17:17 | { ... } |

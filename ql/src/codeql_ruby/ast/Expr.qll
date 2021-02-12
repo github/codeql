@@ -13,6 +13,18 @@ class Expr extends Stmt {
 }
 
 /**
+ * A reference to the current object. For example:
+ * - `self == other`
+ * - `self.method_name`
+ * - `def self.method_name ... end`
+ */
+class Self extends Expr, @token_self {
+  override Self::Range range;
+
+  final override string getAPrimaryQlClass() { result = "Self" }
+}
+
+/**
  * A literal.
  *
  * This is the QL root class for all literals.

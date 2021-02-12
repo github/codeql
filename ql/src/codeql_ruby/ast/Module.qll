@@ -28,6 +28,32 @@ class ModuleBase extends BodyStatement {
 }
 
 /**
+ * A Ruby source file.
+ *
+ * ```rb
+ * def main
+ *   puts "hello world!"
+ * end
+ * main
+ * ```
+ */
+class Toplevel extends ModuleBase, @program {
+  final override Toplevel::Range range;
+
+  final override string getAPrimaryQlClass() { result = "Toplevel" }
+
+  /**
+   * Gets the `n`th `BEGIN` block.
+   */
+  final BeginBlock getBeginBlock(int n) { result = range.getBeginBlock(n) }
+
+  /**
+   * Gets a `BEGIN` block.
+   */
+  final BeginBlock getABeginBlock() { result = getBeginBlock(_) }
+}
+
+/**
  * A class definition.
  *
  * ```rb

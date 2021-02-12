@@ -1,5 +1,6 @@
 private import codeql_ruby.AST
 private import codeql_ruby.CFG
+private import internal.Expr
 private import internal.Statement
 private import internal.Variable
 private import codeql_ruby.controlflow.internal.ControlFlowGraphImpl
@@ -23,6 +24,39 @@ class Stmt extends AstNode {
 
   /** Gets the enclosing callable, if any. */
   Callable getEnclosingCallable() { result = this.getCfgScope() }
+}
+
+/**
+ * An empty statement (`;`).
+ */
+class EmptyStmt extends Stmt, @token_empty_statement {
+  final override EmptyStmt::Range range;
+
+  final override string getAPrimaryQlClass() { result = "EmptyStmt" }
+}
+
+/**
+ * An `BEGIN` block.
+ * ```rb
+ * BEGIN { puts "starting ..." }
+ * ```
+ */
+class BeginBlock extends StmtSequence, @begin_block {
+  final override BeginBlock::Range range;
+
+  final override string getAPrimaryQlClass() { result = "BeginBlock" }
+}
+
+/**
+ * An `END` block.
+ * ```rb
+ * END { puts "shutting down" }
+ * ```
+ */
+class EndBlock extends StmtSequence, @end_block {
+  final override EndBlock::Range range;
+
+  final override string getAPrimaryQlClass() { result = "EndBlock" }
 }
 
 /**
@@ -81,4 +115,28 @@ class NextStmt extends ReturningStmt, @next {
   final override NextStmt::Range range;
 
   final override string getAPrimaryQlClass() { result = "NextStmt" }
+}
+
+/**
+ * A `redo` statement.
+ * ```rb
+ * redo
+ * ```
+ */
+class RedoStmt extends Stmt, @redo {
+  final override RedoStmt::Range range;
+
+  final override string getAPrimaryQlClass() { result = "RedoStmt" }
+}
+
+/**
+ * A `retry` statement.
+ * ```rb
+ * retry
+ * ```
+ */
+class RetryStmt extends Stmt, @retry {
+  final override RetryStmt::Range range;
+
+  final override string getAPrimaryQlClass() { result = "RetryStmt" }
 }
