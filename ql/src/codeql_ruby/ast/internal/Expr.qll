@@ -264,7 +264,7 @@ module Rescue {
 
     final Expr getException(int n) { result = generated.getExceptions().getChild(n) }
 
-    final Expr getVariable() { result = generated.getVariable() }
+    final Expr getVariableExpr() { result = generated.getVariable() }
 
     final StmtSequence getBody() { result = generated.getBody() }
 

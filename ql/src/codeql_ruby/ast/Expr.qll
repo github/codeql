@@ -252,7 +252,7 @@ class Rescue extends Expr, @rescue {
    * end
    * ```
    */
-  final Expr getVariable() { result = range.getVariable() }
+  final Expr getVariableExpr() { result = range.getVariableExpr() }
 
   /**
    * Gets the exception handler body.
