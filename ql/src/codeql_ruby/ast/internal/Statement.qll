@@ -6,6 +6,14 @@ module Stmt {
   abstract class Range extends AstNode::Range { }
 }
 
+module EmptyStmt {
+  class Range extends Stmt::Range, @token_empty_statement {
+    final override Generated::EmptyStatement generated;
+
+    final override string toString() { result = ";" }
+  }
+}
+
 module ReturningStmt {
   abstract class Range extends Stmt::Range {
     abstract Generated::ArgumentList getArgumentList();
@@ -49,5 +57,21 @@ module NextStmt {
     final override string toString() { result = "next" }
 
     final override Generated::ArgumentList getArgumentList() { result = generated.getChild() }
+  }
+}
+
+module RedoStmt {
+  class Range extends Stmt::Range, @redo {
+    final override Generated::Redo generated;
+
+    final override string toString() { result = "redo" }
+  }
+}
+
+module RetryStmt {
+  class Range extends Stmt::Range, @retry {
+    final override Generated::Retry generated;
+
+    final override string toString() { result = "retry" }
   }
 }

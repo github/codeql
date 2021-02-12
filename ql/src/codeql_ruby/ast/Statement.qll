@@ -26,6 +26,15 @@ class Stmt extends AstNode {
 }
 
 /**
+ * An empty statement (`;`).
+ */
+class EmptyStmt extends Stmt, @token_empty_statement {
+  final override EmptyStmt::Range range;
+
+  final override string getAPrimaryQlClass() { result = "EmptyStmt" }
+}
+
+/**
  * A statement that may return a value: `return`, `break` and `next`.
  *
  * ```rb
@@ -81,4 +90,28 @@ class NextStmt extends ReturningStmt, @next {
   final override NextStmt::Range range;
 
   final override string getAPrimaryQlClass() { result = "NextStmt" }
+}
+
+/**
+ * A `redo` statement.
+ * ```rb
+ * redo
+ * ```
+ */
+class RedoStmt extends Stmt, @redo {
+  final override RedoStmt::Range range;
+
+  final override string getAPrimaryQlClass() { result = "RedoStmt" }
+}
+
+/**
+ * A `retry` statement.
+ * ```rb
+ * retry
+ * ```
+ */
+class RetryStmt extends Stmt, @retry {
+  final override RetryStmt::Range range;
+
+  final override string getAPrimaryQlClass() { result = "RetryStmt" }
 }

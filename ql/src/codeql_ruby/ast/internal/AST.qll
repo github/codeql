@@ -51,10 +51,6 @@ module AstNode {
       or
       this instanceof Generated::Superclass
       or
-      this instanceof Generated::EmptyStatement
-      or
-      this instanceof Generated::Redo
-      or
       this instanceof Generated::Hash
       or
       this instanceof Generated::Array
