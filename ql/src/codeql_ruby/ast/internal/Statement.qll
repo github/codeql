@@ -25,6 +25,28 @@ module EndBlock {
   }
 }
 
+module UndefStmt {
+  class Range extends Stmt::Range, @undef {
+    final override Generated::Undef generated;
+
+    final MethodName getMethodName(int n) { result = generated.getChild(n) }
+
+    final override string toString() { result = "undef ..." }
+  }
+}
+
+module AliasStmt {
+  class Range extends Stmt::Range, @alias {
+    final override Generated::Alias generated;
+
+    final MethodName getNewName() { result = generated.getAlias() }
+
+    final MethodName getOldName() { result = generated.getName() }
+
+    final override string toString() { result = "alias ..." }
+  }
+}
+
 module ReturningStmt {
   abstract class Range extends Stmt::Range {
     abstract Generated::ArgumentList getArgumentList();

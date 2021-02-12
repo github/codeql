@@ -172,6 +172,30 @@ module SymbolLiteral {
   }
 }
 
+module MethodName {
+  class Range extends Literal::Range, @underscore_method_name {
+    final override Generated::UnderscoreMethodName generated;
+
+    Range() {
+      exists(Generated::Undef u | u.getChild(_) = generated)
+      or
+      exists(Generated::Alias a | a.getName() = generated or a.getAlias() = generated)
+    }
+
+    final override string getValueText() {
+      result = generated.(Generated::Token).getValue() or
+      result = generated.(SymbolLiteral).getValueText() or
+      result = generated.(Generated::Setter).getName().getValue() + "="
+    }
+
+    final override string toString() {
+      result = getValueText()
+      or
+      not exists(getValueText()) and result = generated.(SymbolLiteral).toString()
+    }
+  }
+}
+
 module StmtSequence {
   abstract class Range extends Expr::Range {
     abstract Stmt getStmt(int n);

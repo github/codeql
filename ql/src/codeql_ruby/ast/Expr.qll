@@ -113,6 +113,21 @@ class SymbolLiteral extends Literal {
   final override string getAPrimaryQlClass() { result = "SymbolLiteral" }
 }
 
+/**
+ * A method name literal. For example:
+ * ```rb
+ * - method_name      # a normal name
+ * - +                # an operator
+ * - :method_name     # a symbol
+ * - :"eval_#{name}"  # a complex symbol
+ * ```
+ */
+class MethodName extends Literal {
+  final override MethodName::Range range;
+
+  final override string getAPrimaryQlClass() { result = "MethodName" }
+}
+
 /** A sequence of expressions. */
 class StmtSequence extends Expr {
   override StmtSequence::Range range;
