@@ -3,17 +3,18 @@
 import java
 private import semmle.code.java.dataflow.FlowSteps
 
-/** 
- * The class `org.apache.commons.lang.RandomStringUtils` or `org.apache.commons.lang3.RandomStringUtils`. 
+/**
+ * The class `org.apache.commons.lang.RandomStringUtils` or `org.apache.commons.lang3.RandomStringUtils`.
  */
 class TypeApacheRandomStringUtils extends Class {
   TypeApacheRandomStringUtils() {
-    this.hasQualifiedName(["org.apache.commons.lang", "org.apache.commons.lang3"], "RandomStringUtils")
+    this.hasQualifiedName(["org.apache.commons.lang", "org.apache.commons.lang3"],
+      "RandomStringUtils")
   }
 }
 
-/** 
- * The class `org.apache.commons.lang.ArrayUtils` or `org.apache.commons.lang3.ArrayUtils`. 
+/**
+ * The class `org.apache.commons.lang.ArrayUtils` or `org.apache.commons.lang3.ArrayUtils`.
  */
 class TypeApacheArrayUtils extends Class {
   TypeApacheArrayUtils() {
@@ -27,7 +28,9 @@ class TypeApacheArrayUtils extends Class {
  */
 class MethodApacheSerializationUtilsDeserialize extends Method {
   MethodApacheSerializationUtilsDeserialize() {
-    this.getDeclaringType().hasQualifiedName(["org.apache.commons.lang", "org.apache.commons.lang3"], "SerializationUtils") and
+    this.getDeclaringType()
+        .hasQualifiedName(["org.apache.commons.lang", "org.apache.commons.lang3"],
+          "SerializationUtils") and
     this.hasName("deserialize")
   }
 }
@@ -44,12 +47,16 @@ private class ApacheLangArrayUtilsTaintPreservingMethod extends TaintPreservingC
     this.hasName(["addAll", "addFirst"]) and
     src = [0 .. getNumberOfParameters()]
     or
-    this.hasName(["clone", "nullToEmpty", "remove", "removeAll", "removeElement", "removeElements", "reverse", "shift", "shuffle", "subarray", "swap", "toArray", "toMap", "toObject", "toPrimitive", "toString", "toStringArray"]) and
+    this.hasName([
+        "clone", "nullToEmpty", "remove", "removeAll", "removeElement", "removeElements", "reverse",
+        "shift", "shuffle", "subarray", "swap", "toArray", "toMap", "toObject", "toPrimitive",
+        "toString", "toStringArray"
+      ]) and
     src = 0
     or
     this.hasName("add") and
     this.getNumberOfParameters() = 2 and
-    src = [0,1,2]
+    src = [0, 1, 2]
     or
     this.hasName("add") and
     this.getNumberOfParameters() = 3 and
