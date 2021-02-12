@@ -6,6 +6,14 @@ module Expr {
   abstract class Range extends Stmt::Range { }
 }
 
+module Self {
+  class Range extends Expr::Range, @token_self {
+    final override Generated::Self generated;
+
+    final override string toString() { result = "self" }
+  }
+}
+
 module Literal {
   abstract class Range extends Expr::Range {
     abstract string getValueText();

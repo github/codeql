@@ -301,7 +301,7 @@ end
 class AnotherClass
   def another_method
     foo.super
-    self.super # TODO: this shows up as a call without a receiver, but that should be fixed once we handle `self` expressions
+    self.super
     super.super # we expect the receiver to be a SuperCall, while the outer call should not (it's just a regular Call)
   end
 end

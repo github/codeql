@@ -47,8 +47,6 @@ module AstNode {
       or
       this instanceof Generated::BareString
       or
-      this instanceof Generated::Self
-      or
       this instanceof Generated::Float
       or
       this instanceof Generated::Superclass
