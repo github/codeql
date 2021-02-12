@@ -118,3 +118,90 @@ private class ApacheStringUtilsTaintPreservingMethod extends TaintPreservingCall
     not isExcludedParameter(arg)
   }
 }
+
+/**
+ * A method declared on `org.apache.commons.lang3.text.StrBuilder`.
+ */
+abstract class ApacheStrBuilderMethod extends Callable {
+  ApacheStrBuilderMethod() {
+    this.getDeclaringType().hasQualifiedName("org.apache.commons.lang3.text", "StrBuilder")
+  }
+}
+
+/**
+ * An Apache Commons-Lang StrBuilder methods that add taint to the StrBuilder.
+ */
+private class ApacheStrBuilderTaintingMethod extends ApacheStrBuilderMethod, TaintPreservingCallable {
+  ApacheStrBuilderTaintingMethod() {
+    this.hasName([
+        "append", "appendAll", "appendFixedWidthPadLeft", "appendFixedWidthPadRight", "appendln",
+        "appendSeparator", "appendWithSeparators", "insert", "readFrom", "replace", "replaceAll",
+        "replaceFirst"
+      ])
+  }
+
+  private predicate consumesTaintFromAllArgs() {
+    // Specifically the append[ln](String, Object...) overloads also consume taint from its other arguments:
+    this.getName() in ["appendAll", "appendWithSeparators"]
+    or
+    this.getName() = ["append", "appendln"] and this.getAParameter().isVarargs()
+    or
+    this.getName() = "appendSeparator" and this.getParameterType(1) instanceof TypeString
+  }
+
+  override predicate transfersTaint(int fromArg, int toArg) {
+    // Taint the qualifier
+    toArg = -1 and
+    (
+      this.getName().matches(["append%", "readFrom"]) and fromArg = 0
+      or
+      this.getName() = "insert" and fromArg = 1
+      or
+      this.getName().matches("replace%") and
+      (
+        if this.getParameterType(0).(PrimitiveType).getName() = "int"
+        then fromArg = 2
+        else fromArg = 1
+      )
+      or
+      consumesTaintFromAllArgs() and fromArg in [0 .. this.getNumberOfParameters() - 1]
+    )
+  }
+}
+
+/**
+ * An Apache Commons-Lang StrBuilder methods that return taint from the StrBuilder.
+ */
+private class ApacheStrBuilderTaintGetter extends ApacheStrBuilderMethod, TaintPreservingCallable {
+  ApacheStrBuilderTaintGetter() {
+    // Taint getters:
+    this.hasName([
+        "asReader", "asTokenizer", "build", "getChars", "leftString", "midString", "rightString",
+        "subSequence", "substring", "toCharArray", "toString", "toStringBuffer", "toStringBuilder"
+      ])
+    or
+    // Fluent methods that return an alias of `this`:
+    this.getReturnType() = this.getDeclaringType()
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = -1 }
+}
+
+/**
+ * An Apache Commons-Lang StrBuilder methods that write taint from the StrBuilder to some parameter.
+ */
+private class ApacheStrBuilderTaintWriter extends ApacheStrBuilderMethod, TaintPreservingCallable {
+  ApacheStrBuilderTaintWriter() { this.hasName(["appendTo", "getChars"]) }
+
+  override predicate transfersTaint(int fromArg, int toArg) {
+    fromArg = -1 and
+    (
+      // appendTo(Readable) and getChars(char[])
+      if this.getNumberOfParameters() = 1
+      then toArg = 0
+      else
+        // getChars(int, int, char[], int)
+        toArg = 2
+    )
+  }
+}
