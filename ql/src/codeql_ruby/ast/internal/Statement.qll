@@ -39,9 +39,9 @@ module AliasStmt {
   class Range extends Stmt::Range, @alias {
     final override Generated::Alias generated;
 
-    final MethodName getNewName() { result = generated.getAlias() }
+    final MethodName getNewName() { result = generated.getName() }
 
-    final MethodName getOldName() { result = generated.getName() }
+    final MethodName getOldName() { result = generated.getAlias() }
 
     final override string toString() { result = "alias ..." }
   }

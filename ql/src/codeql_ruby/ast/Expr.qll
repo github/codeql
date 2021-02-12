@@ -110,6 +110,12 @@ class StringLiteral extends Literal, @string__ {
 class SymbolLiteral extends Literal {
   final override SymbolLiteral::Range range;
 
+  SymbolLiteral() {
+    not any(UndefStmt u).getAMethodName() = this and
+    not any(AliasStmt a).getNewName() = this and
+    not any(AliasStmt a).getOldName() = this
+  }
+
   final override string getAPrimaryQlClass() { result = "SymbolLiteral" }
 }
 
