@@ -438,13 +438,9 @@ private predicate varConditionallyNull(SsaExplicitUpdate v, ConditionBlock cond,
     v.getDefiningExpr().(VariableAssign).getSource() = condexpr and
     condexpr.getCondition() = cond.getCondition()
   |
-    condexpr.getTrueExpr() = nullExpr() and
+    condexpr.getBranchExpr(branch) = nullExpr() and
     branch = true and
-    not condexpr.getFalseExpr() = nullExpr()
-    or
-    condexpr.getFalseExpr() = nullExpr() and
-    branch = false and
-    not condexpr.getTrueExpr() = nullExpr()
+    not condexpr.getBranchExpr(branch.booleanNot()) = nullExpr()
   )
   or
   v.getDefiningExpr().(VariableAssign).getSource() = nullExpr() and

@@ -186,9 +186,7 @@ class CompileTimeConstantExpr extends Expr {
       ce = this and
       condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue()
     |
-      if condition = true
-      then result = ce.getTrueExpr().(CompileTimeConstantExpr).getStringValue()
-      else result = ce.getFalseExpr().(CompileTimeConstantExpr).getStringValue()
+      result = ce.getBranchExpr(condition).(CompileTimeConstantExpr).getStringValue()
     )
     or
     exists(Variable v | this = v.getAnAccess() |
@@ -297,9 +295,7 @@ class CompileTimeConstantExpr extends Expr {
       ce = this and
       condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue()
     |
-      if condition = true
-      then result = ce.getTrueExpr().(CompileTimeConstantExpr).getBooleanValue()
-      else result = ce.getFalseExpr().(CompileTimeConstantExpr).getBooleanValue()
+      ce.getBranchExpr(condition).(CompileTimeConstantExpr).getBooleanValue()
     )
     or
     // Simple or qualified names where the variable is final and the initializer is a constant.
@@ -382,9 +378,7 @@ class CompileTimeConstantExpr extends Expr {
         ce = this and
         condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue()
       |
-        if condition = true
-        then result = ce.getTrueExpr().(CompileTimeConstantExpr).getIntValue()
-        else result = ce.getFalseExpr().(CompileTimeConstantExpr).getIntValue()
+        result = ce.getBranchExpr(condition).(CompileTimeConstantExpr).getIntValue()
       )
       or
       // If a `Variable` is a `CompileTimeConstantExpr`, its value is its initializer.
@@ -1186,8 +1180,7 @@ class ChooseExpr extends Expr {
 
   /** Gets a result expression of this `switch` or conditional expression. */
   Expr getAResultExpr() {
-    result = this.(ConditionalExpr).getTrueExpr() or
-    result = this.(ConditionalExpr).getFalseExpr() or
+    result = this.(ConditionalExpr).getBranchExpr(_) or
     result = this.(SwitchExpr).getAResult()
   }
 }
@@ -1212,6 +1205,15 @@ class ConditionalExpr extends Expr, @conditionalexpr {
    * conditional expression evaluates to `false`.
    */
   Expr getFalseExpr() { result.isNthChildOf(this, 2) }
+
+  /**
+   * Gets the expression that is evaluated by the specific branch of this
+   * conditional expression. If `true` that is `getTrueExpr()`, if `false`
+   * it is `getFalseExpr()`.
+   */
+  Expr getBranchExpr(boolean branch) {
+    if branch = true then result = getTrueExpr() else result = getFalseExpr()
+  }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...?...:..." }

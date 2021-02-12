@@ -40,9 +40,7 @@ predicate implies_v1(Guard g1, boolean b1, Guard g2, boolean b2) {
   )
   or
   exists(ConditionalExpr cond, boolean branch, BooleanLiteral boollit, boolean boolval |
-    cond.getTrueExpr() = boollit and branch = true
-    or
-    cond.getFalseExpr() = boollit and branch = false
+    cond.getBranchExpr(branch) = boollit
   |
     cond = g1 and
     boolval = boollit.getBooleanValue() and
@@ -50,9 +48,7 @@ predicate implies_v1(Guard g1, boolean b1, Guard g2, boolean b2) {
     (
       g2 = cond.getCondition() and b2 = branch.booleanNot()
       or
-      g2 = cond.getTrueExpr() and b2 = b1
-      or
-      g2 = cond.getFalseExpr() and b2 = b1
+      g2 = cond.getBranchExpr(_) and b2 = b1
     )
   )
   or
@@ -216,9 +212,7 @@ private predicate hasPossibleUnknownValue(SsaVariable v) {
  * `ConditionalExpr`s.
  */
 private Expr possibleValue(Expr e) {
-  result = possibleValue(e.(ConditionalExpr).getTrueExpr())
-  or
-  result = possibleValue(e.(ConditionalExpr).getFalseExpr())
+  result = possibleValue(e.(ConditionalExpr).getBranchExpr(_))
   or
   result = e and not e instanceof ConditionalExpr
 }
@@ -316,9 +310,7 @@ private predicate conditionalAssign(SsaVariable v, Guard guard, boolean branch, 
     v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = c and
     guard = c.getCondition()
   |
-    branch = true and e = c.getTrueExpr()
-    or
-    branch = false and e = c.getFalseExpr()
+    e = c.getBranchExpr(branch)
   )
   or
   exists(SsaExplicitUpdate upd, SsaPhiNode phi |

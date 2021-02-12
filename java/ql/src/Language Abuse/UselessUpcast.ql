@@ -36,7 +36,7 @@ predicate usefulUpcast(CastExpr e) {
   )
   or
   // Upcasts that are performed on an operand of a ternary expression.
-  exists(ConditionalExpr ce | e = ce.getTrueExpr() or e = ce.getFalseExpr())
+  exists(ConditionalExpr ce | e = ce.getBranchExpr(_))
   or
   // Upcasts to raw types.
   e.getType() instanceof RawType
