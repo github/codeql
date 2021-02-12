@@ -37,9 +37,9 @@ class MyViewHandlerWithCustomInheritance(MyCustomViewBaseClass):
 # See docs at https://docs.djangoproject.com/en/3.1/ref/class-based-views/base/#redirectview
 class CustomRedirectView(RedirectView):
 
-    def get_redirect_url(self, foo): # $ MISSING: routedParameter=foo
+    def get_redirect_url(self, foo): # $ requestHandler routedParameter=foo
         next = "https://example.com/{}".format(foo)
-        return next # $ MISSING: HttpResponse HttpRedirectResponse redirectLocation=next
+        return next # $ HttpResponse HttpRedirectResponse redirectLocation=next
 
 
 class CustomRedirectView2(RedirectView):

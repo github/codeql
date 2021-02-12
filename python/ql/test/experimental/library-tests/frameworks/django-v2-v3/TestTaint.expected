@@ -1,3 +1,4 @@
+| response_test.py:61 | ok   | get_redirect_url | foo |
 | taint_test.py:8 | ok   | test_taint | bar |
 | taint_test.py:8 | ok   | test_taint | foo |
 | taint_test.py:9 | ok   | test_taint | baz |

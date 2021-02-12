@@ -57,9 +57,10 @@ def redirect_shortcut(request):
 
 class CustomRedirectView(RedirectView):
 
-    def get_redirect_url(self, foo): # $ MISSING: routedParameter=foo
+    def get_redirect_url(self, foo): # $ requestHandler routedParameter=foo
+        ensure_tainted(foo)
         next = "https://example.com/{}".format(foo)
-        return next # $ MISSING: HttpResponse HttpRedirectResponse redirectLocation=next
+        return next # $ HttpResponse HttpRedirectResponse redirectLocation=next
 
 
 # Ensure that simple subclasses are still vuln to XSS
