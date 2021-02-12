@@ -2129,10 +2129,18 @@ private module Stage4 {
     innercc.(CallContextCall).matchesCall(call)
   }
 
+  pragma[noinline]
+  private predicate getLocalCc0(DataFlowCallable callable, Node node, Configuration config) {
+    localFlowEntry(node, config) and
+    callable = node.getEnclosingCallable()
+  }
+
   bindingset[node, cc, config]
   private LocalCc getLocalCc(Node node, Cc cc, Configuration config) {
-    localFlowEntry(node, config) and
-    result = getLocalCallContext(cc, node.getEnclosingCallable())
+    exists(DataFlowCallable callable |
+      getLocalCc0(callable, node, config) and
+      result = getLocalCallContext(cc, callable)
+    )
   }
 
   private predicate localStep(
