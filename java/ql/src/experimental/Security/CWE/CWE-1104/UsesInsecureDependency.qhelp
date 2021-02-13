@@ -1,0 +1,19 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+A dependency imported into your project is either deprecated or will cease to be supported in the near future.
+
+<p>CWE-1104: Use of Unmaintained Third Party Components, "difficult or impossible to fix significant bugs, vulnerabilities, or quality issues. In effect, unmaintained code can become obsolete."</p>
+</overview>
+<recommendation>
+<p>Check with the author of your dependency to see what you should use to replace your current dependency</p>
+</recommendation>
+<references>
+<li>
+  CWE-1104:
+  <a href="https://cwe.mitre.org/data/definitions/1104.html">mitre.org</a>.
+</li>
+</references>
+</qhelp>
