@@ -3114,17 +3114,27 @@ private class PathNodeSink extends PathNodeImpl, TPathNodeSink {
   override predicate isSource() { config.isSource(node) }
 }
 
+pragma[noinline]
+private predicate localPathStep0(DataFlowCallable callable, Node midnode, Configuration conf) {
+  localFlowBigStep(midnode, _, _, _, conf, _) and
+  callable = midnode.getEnclosingCallable()
+}
+
 /**
  * Holds if data may flow from `mid` to `node`. The last step in or out of
  * a callable is recorded by `cc`.
  */
 private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCtx sc, AccessPath ap) {
-  exists(AccessPath ap0, Node midnode, Configuration conf, LocalCallContext localCC |
+  exists(
+    AccessPath ap0, Node midnode, Configuration conf, LocalCallContext localCC,
+    DataFlowCallable callable
+  |
     midnode = mid.getNode() and
     conf = mid.getConfiguration() and
     cc = mid.getCallContext() and
     sc = mid.getSummaryCtx() and
-    localCC = getLocalCallContext(cc, midnode.getEnclosingCallable()) and
+    localPathStep0(callable, midnode, conf) and
+    localCC = getLocalCallContext(cc, callable) and
     ap0 = mid.getAp()
   |
     localFlowBigStep(midnode, node, true, _, conf, localCC) and
