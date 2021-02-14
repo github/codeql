@@ -166,4 +166,15 @@ module ClientSideUrlRedirect {
       )
     }
   }
+
+  /**
+   * A write to an React attribute which may execute JavaScript code.
+   */
+  class ReactAttributeWriteUrlSink extends ScriptUrlSink {
+    ReactAttributeWriteUrlSink() {
+      exists(JSXAttribute attr | attr.getName() = propertyNameIsInterpretedAsJavaScriptUrl() |
+        this = attr.getValue().flow()
+      )
+    }
+  }
 }

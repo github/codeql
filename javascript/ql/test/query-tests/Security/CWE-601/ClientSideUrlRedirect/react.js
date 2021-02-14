@@ -15,3 +15,8 @@ class Application extends React.Component {
 };
 
 export default Application
+
+import Link from 'next/link'
+export function NextLink() {
+    return <Link href={document.location.hash}><a>this page!</a></Link>;
+}
