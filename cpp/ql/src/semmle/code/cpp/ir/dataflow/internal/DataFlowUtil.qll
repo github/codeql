@@ -10,7 +10,7 @@ private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.DataFlow
-import semmle.code.cpp.ir.internal.CppType
+private import DataFlowPrivate
 
 cached
 private newtype TIRDataFlowNode =
@@ -18,13 +18,16 @@ private newtype TIRDataFlowNode =
   TOperandNode(Operand op) or
   TVariableNode(Variable var) or
   TAddressNode(Instruction i) {
-    addressFlowInstr(i, _) or
-    addressFlowInstr(_, i) or
-    i instanceof VariableInstruction or
-    i instanceof CallInstruction // Needed for the result of allocators
+    AddressFlow::addressFlowInstrTC(i,
+      [
+        any(StoreInstruction store).getDestinationAddress(),
+        any(NonConstWriteSideEffectInstruction write).getDestinationAddress()
+      ])
   } or
-  TPostFieldContentNodeStore(FieldAddressInstruction fai) or
-  TPostFieldContentNodeRead(FieldAddressInstruction fai) or
+  TPostFieldContentNodeStore(FieldAddressInstruction fai) { exists(TAddressNode(fai)) } or
+  TPostFieldContentNodeRead(FieldAddressInstruction fai) {
+    not AddressFlow::addressFlowInstrTC(fai, any(StoreInstruction store).getDestinationAddress())
+  } or
   TConstructorFieldInitNode(FieldAddressInstruction fai) {
     fai.getObjectAddress() instanceof InitializeParameterInstruction
   } or
@@ -41,6 +44,7 @@ class Node extends TIRDataFlowNode {
   /**
    * INTERNAL: Do not use.
    */
+  cached
   final Declaration getEnclosingCallable() {
     result = unique(Declaration d | d = this.getEnclosingCallableImpl() | d)
   }
@@ -65,7 +69,7 @@ class Node extends TIRDataFlowNode {
   Function getFunction() { none() } // overridden in subclasses
 
   /** Gets the type of this node. */
-  CppType getType() { none() } // overridden in subclasses
+  Type getType() { none() } // overridden in subclasses
 
   /** Gets the instruction corresponding to this node, if any. */
   Instruction asInstruction() { result = this.(InstructionNode).getInstruction() }
@@ -131,7 +135,7 @@ class Node extends TIRDataFlowNode {
   /**
    * Gets an upper bound on the type of this node.
    */
-  CppType getTypeBound() { result = getType() }
+  Type getTypeBound() { result = getType() }
 
   /** Gets the location of this element. */
   Location getLocation() { none() } // overridden by subclasses
@@ -166,7 +170,7 @@ class InstructionNode extends Node, TInstructionNode {
 
   override Function getFunction() { result = instr.getEnclosingFunction() }
 
-  override CppType getType() { result = instr.getResultLanguageType() }
+  override Type getType() { result = instr.getResultType().stripType() }
 
   override Location getLocation() { result = instr.getLocation() }
 
@@ -190,7 +194,7 @@ class OperandNode extends Node, TOperandNode {
 
   override Function getFunction() { result = op.getUse().getEnclosingFunction() }
 
-  override CppType getType() { result = op.getLanguageType() }
+  override Type getType() { result = op.getType().stripType() }
 
   override Location getLocation() { result = op.getLocation() }
 
@@ -363,7 +367,7 @@ private class PartialFieldDefinition extends AddressNode, PartialDefinitionNode 
 
   PartialFieldDefinition() {
     fai = this.getInstruction() and
-    addressFlowInstr*(fai,
+    AddressFlow::addressFlowInstrTC(fai,
       [
         any(StoreInstruction store).getDestinationAddress(),
         any(NonConstWriteSideEffectInstruction write).getDestinationAddress()
@@ -380,7 +384,7 @@ private class PartialArrayDefinition extends AddressNode, PartialDefinitionNode 
 
   PartialArrayDefinition() {
     load = this.getInstruction() and
-    addressFlowInstr*(load,
+    AddressFlow::addressFlowInstrTC(load,
       [
         any(StoreInstruction store).getDestinationAddress(),
         any(NonConstWriteSideEffectInstruction write).getDestinationAddress()
@@ -447,7 +451,7 @@ class VariableNode extends Node, TVariableNode {
 
   override Function getFunction() { none() }
 
-  override CppType getType() { result.hasUnspecifiedType(v.getType(), false) }
+  override Type getType() { result = v.getType().stripType() }
 
   override Location getLocation() { result = v.getLocation() }
 
@@ -470,13 +474,11 @@ class AddressNode extends Node, TAddressNode, PostUpdateNode {
 
   override Function getFunction() { result = instr.getEnclosingFunction() }
 
-  override CppType getType() { result = instr.getResultLanguageType() }
+  override Type getType() { result = instr.getResultType().stripType() }
 
   override Location getLocation() { result = instr.getLocation() }
 
-  override string toString() {
-    result = this.getInstruction().getOpcode().toString() + " [address]"
-  }
+  override string toString() { result = "address" }
 
   override Node getPreUpdateNode() { result.asInstruction() = instr }
 }
@@ -497,11 +499,11 @@ class PostFieldContentNodeStore extends Node, TPostFieldContentNodeStore {
 
   override Function getFunction() { result = fai.getEnclosingFunction() }
 
-  override CppType getType() { result = fai.getResultLanguageType() }
+  override Type getType() { result = fai.getResultType().stripType() }
 
   override Location getLocation() { result = fai.getLocation() }
 
-  override string toString() { result = this.getInstruction().getOpcode() + " [post field store]" }
+  override string toString() { result = "post field (store)" }
 }
 
 /**
@@ -520,11 +522,11 @@ class PostFieldContentNodeRead extends Node, TPostFieldContentNodeRead {
 
   override Function getFunction() { result = fai.getEnclosingFunction() }
 
-  override CppType getType() { result = fai.getResultLanguageType() }
+  override Type getType() { result = fai.getResultType().stripType() }
 
   override Location getLocation() { result = fai.getLocation() }
 
-  override string toString() { result = this.getInstruction().getOpcode() + " [post field read]" }
+  override string toString() { result = "post field (read)" }
 }
 
 /**
@@ -544,13 +546,11 @@ class ConstructorFieldInitNode extends Node, TConstructorFieldInitNode {
 
   override Function getFunction() { result = fai.getEnclosingFunction() }
 
-  override CppType getType() { result = fai.getResultLanguageType() }
+  override Type getType() { result = fai.getResultType().stripType() }
 
   override Location getLocation() { result = fai.getLocation() }
 
-  override string toString() {
-    result = this.getInstruction().getOpcode() + " [constructor init field]"
-  }
+  override string toString() { result = "constructor init field" }
 }
 
 /**
@@ -584,11 +584,11 @@ class PointerOutNode extends Node, TPointerOutNode {
 
   override Function getFunction() { result = write.getEnclosingFunction() }
 
-  override CppType getType() { result = write.getResultLanguageType() }
+  override Type getType() { result = write.getResultType().stripType() }
 
   override Location getLocation() { result = write.getLocation() }
 
-  override string toString() { result = this.getInstruction().getOpcode() + " [pointer out]" }
+  override string toString() { result = "pointer out" }
 }
 
 /**
@@ -685,22 +685,15 @@ private predicate flowOutOfPointerOutNode(PointerOutNode nodeFrom, AddressNode n
 }
 
 private predicate addressFlow(AddressNode nodeFrom, AddressNode nodeTo) {
-  nodeTo.getInstruction() = nodeFrom.getInstruction().(CopyValueInstruction).getSourceValue()
-  or
-  nodeTo.getInstruction() = nodeFrom.getInstruction().(ConvertInstruction).getUnary()
-  or
-  nodeTo.getInstruction() = nodeFrom.getInstruction().(PointerOffsetInstruction).getLeft()
-  or
-  nodeTo.getInstruction() = nodeFrom.getInstruction().(CheckedConvertOrNullInstruction).getUnary()
-  or
-  nodeTo.getInstruction() = nodeFrom.getInstruction().(InheritanceConversionInstruction).getUnary()
+  addressFlowInstrStep(nodeTo.getInstruction(), nodeFrom.getInstruction()) and
+  not storeStep(nodeFrom, _, _)
 }
 
 /**
  * Holds if the address computed by `iFrom` is used to compute the
  * address computed by `iTo`.
  */
-predicate addressFlowInstr(Instruction iFrom, Instruction iTo) {
+private predicate addressFlowInstrStep(Instruction iFrom, Instruction iTo) {
   iTo.(FieldAddressInstruction).getObjectAddress() = iFrom
   or
   iTo.(CopyValueInstruction).getSourceValue() = iFrom
@@ -716,6 +709,41 @@ predicate addressFlowInstr(Instruction iFrom, Instruction iTo) {
   iTo.(InheritanceConversionInstruction).getUnary() = iFrom
 }
 
+cached
+module AddressFlow {
+  private predicate isRelevant(Instruction instr) {
+    instr instanceof VariableInstruction
+    or
+    instr instanceof FieldAddressInstruction
+    or
+    instr instanceof CopyValueInstruction
+    or
+    instr instanceof LoadInstruction
+    or
+    instr instanceof ConvertInstruction
+    or
+    instr instanceof PointerOffsetInstruction
+    or
+    instr instanceof CheckedConvertOrNullInstruction
+    or
+    instr instanceof InheritanceConversionInstruction
+  }
+
+  /**
+   * Holds if the address computed by `iFrom` is used to compute the
+   * address computed by `iTo`.
+   */
+  cached
+  predicate addressFlowInstrTC(Instruction iFrom, Instruction iTo) {
+    iFrom = iTo and isRelevant(iFrom)
+    or
+    exists(Instruction i |
+      addressFlowInstrStep(iFrom, i) and
+      addressFlowInstrTC(i, iTo)
+    )
+  }
+}
+
 private predicate flowOutOfAddressNode(AddressNode nodeFrom, Node nodeTo) {
   flowOutOfAddressNodeStore(nodeFrom, nodeTo)
 }
@@ -726,17 +754,19 @@ private predicate flowOutOfAddressNode(AddressNode nodeFrom, Node nodeTo) {
 module DefUse {
   private predicate variableStore(IRBlock bb, int i, IRVariable v, Instruction instr, boolean redef) {
     exists(StoreInstruction store, VariableInstruction var | instr = store |
-      addressFlowInstr*(var, store.getDestinationAddress()) and
+      AddressFlow::addressFlowInstrTC(var, store.getDestinationAddress()) and
       var.getIRVariable() = v and
       store.getBlock() = bb and
       bb.getInstruction(i) = store and
-      if addressFlowInstr*(any(FieldAddressInstruction fai), store.getDestinationAddress())
+      if
+        AddressFlow::addressFlowInstrTC(any(FieldAddressInstruction fai),
+          store.getDestinationAddress())
       then redef = false
       else redef = true
     )
     or
     exists(NonConstWriteSideEffectInstruction write, VariableInstruction var | instr = write |
-      addressFlowInstr*(var, write.getDestinationAddress()) and
+      AddressFlow::addressFlowInstrTC(var, write.getDestinationAddress()) and
       var.getIRVariable() = v and
       write.getBlock() = bb and
       bb.getInstruction(i) = write and
@@ -878,10 +908,11 @@ module DefUse {
  */
 private predicate flowOutOfAddressNodeStore(AddressNode nodeFrom, Node nodeTo) {
   exists(Instruction instr, VariableInstruction var | var = nodeFrom.getInstruction() |
-    (
-      addressFlowInstr*(var, instr.(StoreInstruction).getDestinationAddress()) or
-      addressFlowInstr*(var, instr.(NonConstWriteSideEffectInstruction).getDestinationAddress())
-    ) and
+    AddressFlow::addressFlowInstrTC(var,
+      [
+        instr.(StoreInstruction).getDestinationAddress(),
+        instr.(NonConstWriteSideEffectInstruction).getDestinationAddress()
+      ]) and
     DefUse::adjacentDefRead(instr, nodeTo)
   )
   or
@@ -891,7 +922,7 @@ private predicate flowOutOfAddressNodeStore(AddressNode nodeFrom, Node nodeTo) {
   |
     nodeFrom.getInstruction() = call and
     convert.getUnary() = call and
-    addressFlowInstr*(convert, write.getDestinationAddress()) and
+    AddressFlow::addressFlowInstrTC(convert, write.getDestinationAddress()) and
     nodeTo.asOperand().getDef() = convert and
     // NOTE: This only handles the case where `nodeTo` and `write` are in the same block for now
     block.getInstruction(useIndex) = nodeTo.asOperand().getUse() and

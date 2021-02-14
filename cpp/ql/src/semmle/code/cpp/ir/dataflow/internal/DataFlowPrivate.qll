@@ -349,8 +349,9 @@ predicate arrayContentReadStep(Node node1, Content f, Node node2) {
   or
   exists(Instruction instr, VariableInstruction var | var = node1.(AddressNode).getInstruction() |
     (
-      addressFlowInstr*(var, instr.(StoreInstruction).getDestinationAddress()) or
-      addressFlowInstr*(var, instr.(NonConstWriteSideEffectInstruction).getDestinationAddress())
+      AddressFlow::addressFlowInstrTC(var, instr.(StoreInstruction).getDestinationAddress()) or
+      AddressFlow::addressFlowInstrTC(var,
+        instr.(NonConstWriteSideEffectInstruction).getDestinationAddress())
     ) and
     DefUse::adjacentDefRead(instr, node2.(ReturnIndirectionNode)) and
     f instanceof ArrayContent
@@ -410,7 +411,7 @@ class DataFlowCallable = Declaration;
 
 class DataFlowExpr = Expr;
 
-class DataFlowType = CppType;
+class DataFlowType = Type;
 
 /** A function call relevant for data flow. */
 class DataFlowCall extends CallInstruction {
