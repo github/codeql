@@ -8,10 +8,8 @@
  */
 
 import java
-import semmle.code.java.dataflow.DataFlow3
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.TaintTracking2
-import semmle.code.java.dataflow.TaintTracking3
 import DataFlow::PathGraph
 
 /** The Java class `java.security.MessageDigest`. */
@@ -44,38 +42,91 @@ class MDUpdateMethod extends Method {
   }
 }
 
+/** The hashing method that could taint the input. */
+class MDHashMethodAccess extends MethodAccess {
+  MDHashMethodAccess() {
+    (
+      this.getMethod() instanceof MDDigestMethod or
+      this.getMethod() instanceof MDUpdateMethod
+    ) and
+    this.getNumArgument() != 0
+  }
+}
+
 /** Gets a regular expression for matching common names of variables that indicate the value being held is a password. */
 string getPasswordRegex() { result = "(?i).*pass(wd|word|code|phrase).*" }
 
 /** Finds variables that hold password information judging by their names. */
 class PasswordVarExpr extends Expr {
   PasswordVarExpr() {
-    exists(Variable v | this = v.getAnAccess() |
-      (
-        v.getName().toLowerCase().regexpMatch(getPasswordRegex()) and
-        not v.getName().toLowerCase().matches("%hash%") // Exclude variable names such as `passwordHash` since their values were already hashed
-      )
+    this.(VarAccess).getVariable().getName().toLowerCase().regexpMatch(getPasswordRegex()) and
+    not this.(VarAccess).getVariable().getName().toLowerCase().matches("%hash%") // Exclude variable names such as `passwordHash` since their values were already hashed
+  }
+}
+
+/** Holds if `Expr` e is an operand of `AddExpr`. */
+predicate hasAddExpr(AddExpr ae, Expr e) {
+  ae.getAnOperand() = e or
+  hasAddExpr(ae.getAnOperand(), e)
+}
+
+/** Holds if `MethodAccess` ma has a flow to another `MDHashMethodAccess` call. */
+predicate hasAnotherHashCall(MethodAccess ma) {
+  exists(MethodAccess ma2, DataFlow2::Node node1, DataFlow2::Node node2 |
+    ma2 instanceof MDHashMethodAccess and
+    ma2 != ma and
+    node1.asExpr() = ma.getAChildExpr() and
+    node2.asExpr() = ma2.getAChildExpr() and
+    (
+      TaintTracking2::localTaint(node1, node2) or
+      TaintTracking2::localTaint(node2, node1)
+    )
+  )
+}
+
+/** Holds if `MethodAccess` ma is a hashing call without a sibling node making another hashing call. */
+predicate isSingleHashMethodCall(MethodAccess ma) {
+  (
+    ma instanceof MDHashMethodAccess and
+    not hasAnotherHashCall(ma)
+  )
+}
+
+/** Holds if `MethodAccess` ma is invoked by `MethodAccess` ma2 either directly or indirectly. */
+predicate hasParentCall(MethodAccess ma2, MethodAccess ma) {
+  ma.getCaller() = ma2.getMethod() and
+  not ma2 instanceof MDHashMethodAccess
+  or
+  exists(MethodAccess ma3 |
+    ma.getCaller() = ma3.getMethod() and
+    not ma3 instanceof MDHashMethodAccess and
+    hasParentCall(ma2, ma3)
+  )
+}
+
+/** Holds if `MethodAccess` is a single hashing call. */
+predicate isSink(MethodAccess ma) {
+  isSingleHashMethodCall(ma) and
+  not exists(MethodAccess ma2 | hasParentCall(ma2, ma))
+}
+
+/** Sink of hashing calls. */
+class HashWithoutSaltSink extends DataFlow::ExprNode {
+  HashWithoutSaltSink() {
+    exists(MethodAccess ma |
+      this.asExpr() = ma.getAnArgument() and
+      isSink(ma)
     )
   }
 }
 
 /** Taint configuration tracking flow from an expression whose name suggests it holds password data to a method call that generates a hash without a salt. */
-class PasswordHashConfiguration extends TaintTracking3::Configuration {
-  PasswordHashConfiguration() { this = "PasswordHashConfiguration" }
+class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
+  HashWithoutSaltConfiguration() { this = "HashWithoutSaltConfiguration" }
 
-  override predicate isSource(DataFlow3::Node source) { source.asExpr() instanceof PasswordVarExpr }
+  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof PasswordVarExpr }
 
-  override predicate isSink(DataFlow3::Node sink) {
-    exists(
-      MethodAccess ma // invoke `md.update(password)` without the call of `md.update(digest)`
-    |
-      sink.asExpr() = ma.getArgument(0) and
-      (
-        ma.getMethod() instanceof MDUpdateMethod or // md.update(password)
-        ma.getMethod() instanceof MDDigestMethod // md.digest(password)
-      )
-    )
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof HashWithoutSaltSink }
 
   /**
    * Holds if a password is concatenated with a salt then hashed together through the call `System.arraycopy(password.getBytes(), ...)`, for example,
@@ -84,60 +135,26 @@ class PasswordHashConfiguration extends TaintTracking3::Configuration {
    *  `byte[] messageDigest = md.digest(allBytes);`
    * Or the password is concatenated with a salt as a string.
    */
-  override predicate isSanitizer(DataFlow3::Node node) {
+  override predicate isSanitizer(DataFlow::Node node) {
     exists(MethodAccess ma |
       ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "System") and
       ma.getMethod().hasName("arraycopy") and
       ma.getArgument(0) = node.asExpr()
     ) // System.arraycopy(password.getBytes(), ...)
     or
-    exists(AddExpr e | node.asExpr() = e.getAnOperand()) // password+salt
-  }
-}
-
-class PasswordDigestConfiguration extends TaintTracking2::Configuration {
-  PasswordDigestConfiguration() { this = "PasswordDigestConfiguration" }
-
-  override predicate isSource(DataFlow2::Node source) {
-    exists(MDConstructor mc | source.asExpr() = mc)
-  }
-
-  override predicate isSink(DataFlow2::Node sink) {
+    exists(AddExpr e | hasAddExpr(e, node.asExpr())) // password+salt
+    or
+    exists(ConditionalExpr ce | ce = node.asExpr()) // useSalt?password+":"+salt:password
+    or
     exists(MethodAccess ma |
-      (
-        ma.getMethod() instanceof MDUpdateMethod or
-        ma.getMethod() instanceof MDDigestMethod
-      ) and
-      exists(PasswordHashConfiguration cc | cc.hasFlowToExpr(ma.getAnArgument())) and
-      sink.asExpr() = ma.getQualifier()
+      ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "StringBuilder") and
+      ma.getMethod().hasName("append") and
+      ma.getArgument(0) = node.asExpr() // stringBuilder.append(password).append(salt)
     )
-  }
-}
-
-class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
-  HashWithoutSaltConfiguration() { this = "HashWithoutSaltConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(PasswordDigestConfiguration pc | pc.hasFlow(source, _))
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
+    or
     exists(MethodAccess ma |
-      ma.getMethod() instanceof MDDigestMethod and // md.digest(password)
-      sink.asExpr() = ma.getQualifier()
-    )
-  }
-
-  /** Holds if `md.update` or `md.digest` calls integrate something other than the password, perhaps a salt. */
-  override predicate isSanitizer(DataFlow::Node node) {
-    exists(MethodAccess ma |
-      (
-        ma.getMethod() instanceof MDUpdateMethod
-        or
-        ma.getMethod() instanceof MDDigestMethod and ma.getNumArgument() != 0
-      ) and
-      node.asExpr() = ma.getQualifier() and
-      not exists(PasswordHashConfiguration cc | cc.hasFlowToExpr(ma.getAnArgument()))
+      ma.getQualifier().(VarAccess).getVariable().getType() instanceof Interface and
+      ma.getAnArgument() = node.asExpr() // Method access of interface type variables requires runtime determination
     )
   }
 }
