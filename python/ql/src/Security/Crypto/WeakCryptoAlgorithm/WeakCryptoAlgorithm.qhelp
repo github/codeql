@@ -36,7 +36,7 @@
                example uses AES, which is a stronger modern algorithm.
           </p>
 
-          <sample src="examples/broken_crypto.py" />
+          <sample src="examples/weak_crypto_algorithm.py" />
 
           <p>
                WARNING: Although the second example above is more robust,
