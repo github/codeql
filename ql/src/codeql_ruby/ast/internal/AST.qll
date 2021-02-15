@@ -63,8 +63,6 @@ module AstNode {
       or
       this instanceof Generated::Rational
       or
-      this instanceof Generated::RescueModifier
-      or
       this instanceof Generated::Subshell
     }
 

@@ -1534,7 +1534,7 @@ cfg.rb:
 #-----|  -> Interpolation
 
 #  130| ... = ...
-#-----|  -> RescueModifier
+#-----|  -> ... rescue ...
 
 #  130| Constant
 #-----|  -> ... = ...
@@ -1542,7 +1542,7 @@ cfg.rb:
 #  130| 5
 #-----|  -> Constant
 
-#  133| RescueModifier
+#  133| ... rescue ...
 #-----|  -> 1
 
 #  133| ... / ...
