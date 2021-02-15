@@ -28,3 +28,5 @@ private import implementations.Swap
 private import implementations.GetDelim
 private import implementations.SmartPointer
 private import implementations.Sscanf
+private import implementations.Send
+private import implementations.Recv

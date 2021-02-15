@@ -6,6 +6,7 @@
 import semmle.code.cpp.exprs.Expr
 import semmle.code.cpp.commons.Environment
 import semmle.code.cpp.security.SecurityOptions
+import semmle.code.cpp.models.interfaces.FlowSource
 
 /**
  * Extend this class to customize the security queries for
@@ -59,14 +60,14 @@ class SecurityOptions extends string {
       or
       functionCall.getTarget().hasGlobalName(fname) and
       exists(functionCall.getArgument(arg)) and
-      (
-        fname = ["read", "recv", "recvmsg"] and arg = 1
-        or
-        fname = "getaddrinfo" and arg = 3
-        or
-        fname = "recvfrom" and
-        (arg = 1 or arg = 4 or arg = 5)
-      )
+      fname = "getaddrinfo" and
+      arg = 3
+    )
+    or
+    exists(RemoteFlowSourceFunction remote, FunctionOutput output |
+      functionCall.getTarget() = remote and
+      output.isParameterDerefOrQualifierObject(arg) and
+      remote.hasRemoteFlowSource(output, _)
     )
   }
 
@@ -80,6 +81,12 @@ class SecurityOptions extends string {
         fname = ["fgets", "gets"] or
         userInputReturn(fname)
       )
+    )
+    or
+    exists(RemoteFlowSourceFunction remote, FunctionOutput output |
+      functionCall.getTarget() = remote and
+      (output.isReturnValue() or output.isReturnValueDeref()) and
+      remote.hasRemoteFlowSource(output, _)
     )
   }
 

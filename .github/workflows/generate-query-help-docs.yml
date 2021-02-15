@@ -50,7 +50,7 @@ jobs:
       uses: ammaraskar/sphinx-action@8b4f60114d7fd1faeba1a712269168508d4750d2 # v0.4
       with:
         docs-folder: "query-help/"
-        pre-build-command: "python -m pip install --upgrade recommonmark"
+        pre-build-command: "python -m pip install --upgrade recommonmark && python -m pip install --upgrade sphinx-markdown-tables"
         build-command: "sphinx-build -b dirhtml . _build" 
     - name: Upload HTML artifacts
       uses: actions/upload-artifact@v2

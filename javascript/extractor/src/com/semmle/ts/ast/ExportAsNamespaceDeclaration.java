@@ -5,7 +5,7 @@ import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Statement;
 import com.semmle.js.ast.Visitor;
 
-/** A statement of form <tt>export as namespace X</tt> where <tt>X</tt> is an identifier. */
+/** A statement of form <code>export as namespace X</code> where <code>X</code> is an identifier. */
 public class ExportAsNamespaceDeclaration extends Statement {
   private Identifier id;
 
