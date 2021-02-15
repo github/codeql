@@ -46,6 +46,9 @@ class SingletonMethod extends Callable, BodyStatement, @singleton_method {
 
   final override string getAPrimaryQlClass() { result = "SingletonMethod" }
 
+  /** Gets the object of this singleton method. */
+  final Expr getObject() { result = range.getObject() }
+
   /** Gets the name of this method. */
   final string getName() { result = range.getName() }
 }
