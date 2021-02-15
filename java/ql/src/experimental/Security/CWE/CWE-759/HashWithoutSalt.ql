@@ -64,16 +64,12 @@ class PasswordVarExpr extends Expr {
   }
 }
 
-/** Holds if `Expr` e is an operand of `AddExpr`. */
-predicate hasAddExpr(AddExpr ae, Expr e) {
-  ae.getAnOperand() = e or
-  hasAddExpr(ae.getAnOperand(), e)
-}
+/** Holds if `Expr` e is a direct or indirect operand of `ae`. */
+predicate hasAddExpr(AddExpr ae, Expr e) { ae.getAnOperand+() = e }
 
 /** Holds if `MethodAccess` ma has a flow to another `MDHashMethodAccess` call. */
 predicate hasAnotherHashCall(MethodAccess ma) {
-  exists(MethodAccess ma2, DataFlow2::Node node1, DataFlow2::Node node2 |
-    ma2 instanceof MDHashMethodAccess and
+  exists(MDHashMethodAccess ma2, DataFlow::Node node1, DataFlow::Node node2 |
     ma2 != ma and
     node1.asExpr() = ma.getAChildExpr() and
     node2.asExpr() = ma2.getAChildExpr() and
@@ -85,29 +81,22 @@ predicate hasAnotherHashCall(MethodAccess ma) {
 }
 
 /** Holds if `MethodAccess` ma is a hashing call without a sibling node making another hashing call. */
-predicate isSingleHashMethodCall(MethodAccess ma) {
-  (
-    ma instanceof MDHashMethodAccess and
-    not hasAnotherHashCall(ma)
-  )
-}
+predicate isSingleHashMethodCall(MDHashMethodAccess ma) { not hasAnotherHashCall(ma) }
 
 /** Holds if `MethodAccess` ma is invoked by `MethodAccess` ma2 either directly or indirectly. */
 predicate hasParentCall(MethodAccess ma2, MethodAccess ma) {
-  ma.getCaller() = ma2.getMethod() and
-  not ma2 instanceof MDHashMethodAccess
+  ma.getCaller() = ma2.getMethod()
   or
   exists(MethodAccess ma3 |
     ma.getCaller() = ma3.getMethod() and
-    not ma3 instanceof MDHashMethodAccess and
     hasParentCall(ma2, ma3)
   )
 }
 
-/** Holds if `MethodAccess` is a single hashing call. */
+/** Holds if `MethodAccess` is a single hashing call that is not invoked by a wrapper method. */
 predicate isSink(MethodAccess ma) {
   isSingleHashMethodCall(ma) and
-  not exists(MethodAccess ma2 | hasParentCall(ma2, ma))
+  not exists(MethodAccess ma2 | hasParentCall(ma2, ma)) // Not invoked by a wrapper method which could invoke MDHashMethod in another call stack to reduce FPs
 }
 
 /** Sink of hashing calls. */
