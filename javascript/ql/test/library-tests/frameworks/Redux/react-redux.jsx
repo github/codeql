@@ -35,6 +35,9 @@ function manualReducer(state, action) {
             return { ...state, manualValue: action.payload };
         }
     }
+    if (action.type === 'manualAction') {
+        return { ...state, manualValue2: action.payload };
+    }
     return state;
 }
 const asyncAction = rt.createAsyncThunk('asyncAction', (x) => {
@@ -61,6 +64,7 @@ function MyComponent(props) {
 
     sink(props.propFromToolkitAction); // NOT OK
     sink(props.propFromManualAction); // NOT OK
+    sink(props.propFromManualAction2); // NOT OK
     sink(props.propFromAsync); // NOT OK
 
     return <button onClick={{clickHandler}}/>
@@ -70,7 +74,8 @@ function mapStateToProps(state) {
     return {
         propFromToolkitAction: state.toolkit.value,
         propFromAsync: state.toolkit.asyncValue,
-        propFromManualAction: state.manual.manualValue
+        propFromManualAction: state.manual.manualValue,
+        propFromManualAction2: state.manual.manualValue2
     }
 }
 

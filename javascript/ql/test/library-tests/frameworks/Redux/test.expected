@@ -2,9 +2,9 @@ reducerArg
 | exportedReducer.js:12:12:12:35 | (state, ... > state |
 | react-redux.jsx:12:33:17:9 | (state, ...       } |
 | react-redux.jsx:18:41:23:9 | (state, ...       } |
-| react-redux.jsx:48:30:51:2 | rt.comb ... cer,\\n}) |
-| react-redux.jsx:49:14:49:27 | toolkitReducer |
-| react-redux.jsx:50:13:50:25 | manualReducer |
+| react-redux.jsx:51:30:54:2 | rt.comb ... cer,\\n}) |
+| react-redux.jsx:52:14:52:27 | toolkitReducer |
+| react-redux.jsx:53:13:53:25 | manualReducer |
 | trivial.js:10:10:10:33 | (state, ... > state |
 | trivial.js:11:10:13:5 | {\\n      ... ,\\n    } |
 | trivial.js:12:14:12:37 | (state, ... > state |
@@ -37,14 +37,14 @@ isTypeTagHandler
 | fooAction | trivial.js:32:73:32:96 | (state, ... > state |
 | toolkitAction | react-redux.jsx:12:33:17:9 | (state, ...       } |
 isRootStateHandler
-| react-redux.jsx:48:30:51:2 | rt.comb ... cer,\\n}) |
+| react-redux.jsx:51:30:54:2 | rt.comb ... cer,\\n}) |
 | trivial.js:133:45:133:66 | combine ... Reducer |
 | trivial.js:134:56:134:79 | (state, ... > state |
 | trivial.js:136:14:136:37 | (state, ... > state |
 delegatingReducer
 | exportedReducer.js:11:30:13:2 | combine ... tate\\n}) |
 | react-redux.jsx:10:24:24:2 | rt.crea ...  });\\n}) |
-| react-redux.jsx:48:30:51:2 | rt.comb ... cer,\\n}) |
+| react-redux.jsx:51:30:54:2 | rt.comb ... cer,\\n}) |
 | trivial.js:9:22:14:2 | require ...    }\\n}) |
 | trivial.js:11:10:13:5 | {\\n      ... ,\\n    } |
 | trivial.js:15:26:20:2 | require ...    }\\n}) |
@@ -64,8 +64,8 @@ delegatingReducer
 | trivial.js:129:32:131:2 | require ... te),\\n}) |
 getStateHandlerArg
 | exportedReducer.js:11:30:13:2 | combine ... tate\\n}) | inner | exportedReducer.js:12:12:12:35 | (state, ... > state |
-| react-redux.jsx:48:30:51:2 | rt.comb ... cer,\\n}) | manual | react-redux.jsx:50:13:50:25 | manualReducer |
-| react-redux.jsx:48:30:51:2 | rt.comb ... cer,\\n}) | toolkit | react-redux.jsx:49:14:49:27 | toolkitReducer |
+| react-redux.jsx:51:30:54:2 | rt.comb ... cer,\\n}) | manual | react-redux.jsx:53:13:53:25 | manualReducer |
+| react-redux.jsx:51:30:54:2 | rt.comb ... cer,\\n}) | toolkit | react-redux.jsx:52:14:52:27 | toolkitReducer |
 | trivial.js:9:22:14:2 | require ...    }\\n}) | bar | trivial.js:11:10:13:5 | {\\n      ... ,\\n    } |
 | trivial.js:9:22:14:2 | require ...    }\\n}) | foo | trivial.js:10:10:10:33 | (state, ... > state |
 | trivial.js:11:10:13:5 | {\\n      ... ,\\n    } | baz | trivial.js:12:14:12:37 | (state, ... > state |
@@ -95,34 +95,35 @@ getAPlainHandlerArg
 | trivial.js:42:25:42:109 | require ... cers1]) | trivial.js:42:66:42:89 | (state, ... > state |
 | trivial.js:42:25:42:109 | require ... cers1]) | trivial.js:42:92:42:107 | reducerReducers1 |
 getUseSite
-| react-redux.jsx:10:24:24:2 | rt.crea ...  });\\n}) | react-redux.jsx:49:14:49:27 | toolkitReducer |
-| react-redux.jsx:48:30:51:2 | rt.comb ... cer,\\n}) | react-redux.jsx:48:30:51:2 | rt.comb ... cer,\\n}) |
+| react-redux.jsx:10:24:24:2 | rt.crea ...  });\\n}) | react-redux.jsx:52:14:52:27 | toolkitReducer |
+| react-redux.jsx:51:30:54:2 | rt.comb ... cer,\\n}) | react-redux.jsx:51:30:54:2 | rt.comb ... cer,\\n}) |
 | trivial.js:11:10:13:5 | {\\n      ... ,\\n    } | trivial.js:11:10:13:5 | {\\n      ... ,\\n    } |
 | trivial.js:17:10:19:5 | {\\n      ... ,\\n    } | trivial.js:17:10:19:5 | {\\n      ... ,\\n    } |
 | trivial.js:23:10:25:5 | {\\n      ... ,\\n    } | trivial.js:23:10:25:5 | {\\n      ... ,\\n    } |
 | trivial.js:129:32:131:2 | require ... te),\\n}) | trivial.js:133:45:133:66 | combine ... Reducer |
 storeCreation
-| react-redux.jsx:48:15:51:3 | rt.crea ... er,\\n})) |
+| react-redux.jsx:51:15:54:3 | rt.crea ... er,\\n})) |
 | trivial.js:133:16:133:67 | require ... educer) |
 | trivial.js:134:16:134:80 | require ...  state) |
 | trivial.js:135:16:137:2 | require ... tate\\n}) |
 taintFlow
-| react-redux.jsx:56:29:56:36 | source() | react-redux.jsx:62:10:62:36 | props.p ... tAction |
-| react-redux.jsx:58:31:58:38 | source() | react-redux.jsx:63:10:63:35 | props.p ... lAction |
-| react-redux.jsx:59:30:59:37 | source() | react-redux.jsx:64:10:64:28 | props.propFromAsync |
+| react-redux.jsx:59:29:59:36 | source() | react-redux.jsx:65:10:65:36 | props.p ... tAction |
+| react-redux.jsx:61:31:61:38 | source() | react-redux.jsx:66:10:66:35 | props.p ... lAction |
+| react-redux.jsx:61:31:61:38 | source() | react-redux.jsx:67:10:67:36 | props.p ... Action2 |
+| react-redux.jsx:62:30:62:37 | source() | react-redux.jsx:68:10:68:28 | props.propFromAsync |
 getAffectedStateAccessPath
 | react-redux.jsx:12:33:17:9 | (state, ...       } | toolkit |
 | react-redux.jsx:18:41:23:9 | (state, ...       } | toolkit |
-| react-redux.jsx:49:14:49:27 | toolkitReducer | toolkit |
-| react-redux.jsx:50:13:50:25 | manualReducer | manual |
+| react-redux.jsx:52:14:52:27 | toolkitReducer | toolkit |
+| react-redux.jsx:53:13:53:25 | manualReducer | manual |
 | trivial.js:130:14:130:46 | wrapper ...  state) | wrapped |
 getADispatchFunctionReference
-| react-redux.jsx:54:20:54:32 | useDispatch() |
+| react-redux.jsx:57:20:57:32 | useDispatch() |
 getADispatchedValueSource
 | react-redux.jsx:26:1:31:1 | return of function manualAction |
 | react-redux.jsx:27:12:30:5 | {\\n      ... x\\n    } |
-| react-redux.jsx:58:18:58:39 | manualA ... urce()) |
-| react-redux.jsx:59:18:59:38 | asyncAc ... urce()) |
+| react-redux.jsx:61:18:61:39 | manualA ... urce()) |
+| react-redux.jsx:62:18:62:38 | asyncAc ... urce()) |
 getAnUntypedActionInReducer
 | exportedReducer.js:12:20:12:25 | action |
 | react-redux.jsx:32:31:32:36 | action |
@@ -139,16 +140,19 @@ getAnUntypedActionInReducer
 actionToReducerStep
 | react-redux.jsx:5:56:9:1 | return of anonymous function | react-redux.jsx:14:24:14:37 | action.payload |
 | react-redux.jsx:29:18:29:18 | x | react-redux.jsx:35:45:35:58 | action.payload |
-| react-redux.jsx:56:29:56:36 | source() | react-redux.jsx:5:57:5:57 | x |
-| react-redux.jsx:59:30:59:37 | source() | react-redux.jsx:40:57:40:57 | x |
+| react-redux.jsx:29:18:29:18 | x | react-redux.jsx:39:42:39:55 | action.payload |
+| react-redux.jsx:59:29:59:36 | source() | react-redux.jsx:5:57:5:57 | x |
+| react-redux.jsx:62:30:62:37 | source() | react-redux.jsx:43:57:43:57 | x |
 actionToReducerPromiseStep
-| react-redux.jsx:40:56:46:1 | return of anonymous function | react-redux.jsx:20:29:20:42 | action.payload |
+| react-redux.jsx:43:56:49:1 | return of anonymous function | react-redux.jsx:20:29:20:42 | action.payload |
 reducerToStateStep
-| react-redux.jsx:12:33:17:9 | return of anonymous function | react-redux.jsx:71:32:71:44 | state.toolkit |
-| react-redux.jsx:12:33:17:9 | return of anonymous function | react-redux.jsx:72:24:72:36 | state.toolkit |
-| react-redux.jsx:14:24:14:50 | action. ... itValue | react-redux.jsx:71:32:71:50 | state.toolkit.value |
-| react-redux.jsx:18:41:23:9 | return of anonymous function | react-redux.jsx:71:32:71:44 | state.toolkit |
-| react-redux.jsx:18:41:23:9 | return of anonymous function | react-redux.jsx:72:24:72:36 | state.toolkit |
-| react-redux.jsx:20:29:20:44 | action.payload.x | react-redux.jsx:72:24:72:47 | state.t ... ncValue |
-| react-redux.jsx:32:1:39:1 | return of function manualReducer | react-redux.jsx:73:31:73:42 | state.manual |
-| react-redux.jsx:35:45:35:58 | action.payload | react-redux.jsx:73:31:73:54 | state.m ... alValue |
+| react-redux.jsx:12:33:17:9 | return of anonymous function | react-redux.jsx:75:32:75:44 | state.toolkit |
+| react-redux.jsx:12:33:17:9 | return of anonymous function | react-redux.jsx:76:24:76:36 | state.toolkit |
+| react-redux.jsx:14:24:14:50 | action. ... itValue | react-redux.jsx:75:32:75:50 | state.toolkit.value |
+| react-redux.jsx:18:41:23:9 | return of anonymous function | react-redux.jsx:75:32:75:44 | state.toolkit |
+| react-redux.jsx:18:41:23:9 | return of anonymous function | react-redux.jsx:76:24:76:36 | state.toolkit |
+| react-redux.jsx:20:29:20:44 | action.payload.x | react-redux.jsx:76:24:76:47 | state.t ... ncValue |
+| react-redux.jsx:32:1:42:1 | return of function manualReducer | react-redux.jsx:77:31:77:42 | state.manual |
+| react-redux.jsx:32:1:42:1 | return of function manualReducer | react-redux.jsx:78:32:78:43 | state.manual |
+| react-redux.jsx:35:45:35:58 | action.payload | react-redux.jsx:77:31:77:54 | state.m ... alValue |
+| react-redux.jsx:39:42:39:55 | action.payload | react-redux.jsx:78:32:78:56 | state.m ... lValue2 |
