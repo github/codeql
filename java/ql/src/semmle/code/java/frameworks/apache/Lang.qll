@@ -56,7 +56,7 @@ private class ApacheLangArrayUtilsTaintPreservingMethod extends TaintPreservingC
     or
     this.hasName("add") and
     this.getNumberOfParameters() = 2 and
-    src = [0, 1, 2]
+    src = [0, 1]
     or
     this.hasName("add") and
     this.getNumberOfParameters() = 3 and
