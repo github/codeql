@@ -92,3 +92,8 @@ function mapStateToProps(state) {
 const mapDispatchToProps = { toolkitAction, manualAction };
 
 const ConnectedComponent = connect(mapStateToProps, mapDispatchToProps)(MyComponent);
+
+function connectLike(f, g) {
+    return c => somethingWeirdAndComplicated(f, g)(c);
+}
+const ConnectedComponent2 = connectLike(mapStateToProps, mapDispatchToProps)(MyComponent);
