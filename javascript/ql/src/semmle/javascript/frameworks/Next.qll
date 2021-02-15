@@ -24,12 +24,17 @@ private module NextJS {
   }
 
   /**
+   * Gets a module corrosponding to a `Next.js` page.
+   */
+  Module getAPagesModule() { result.getFile().getParentContainer() = getAPagesFolder() }
+
+  /**
    * Gets a module inside a "pages" folder where `fallback` from `getStaticPaths` is not set to false.
    * In such a module the `getStaticProps` method can be called with user-defined parameters.
    * If `fallback` is set to false, then only values defined by `getStaticPaths` are allowed.
    */
   Module getAModuleWithFallbackPaths() {
-    result.getFile().getParentContainer() = getAPagesFolder() and
+    result = getAPagesModule() and
     exists(DataFlow::FunctionNode staticPaths, Expr fallback |
       staticPaths = result.getAnExportedValue("getStaticPaths").getAFunctionValue() and
       fallback =
@@ -52,5 +57,22 @@ private module NextJS {
     }
 
     override string getSourceType() { result = "Next request parameter" }
+  }
+
+  /**
+   * A step modelling the flow from the server-computed `getStaticProps` to the server/client rendering of the page.
+   */
+  class NextJSStaticPropsStep extends DataFlow::AdditionalFlowStep, DataFlow::FunctionNode {
+    Module pageModule;
+
+    NextJSStaticPropsStep() {
+      pageModule = getAPagesModule() and
+      this = pageModule.getAnExportedValue("getStaticProps").getAFunctionValue()
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = this.getAReturn().getALocalSource().getAPropertyWrite("props").getRhs() and
+      succ = pageModule.getAnExportedValue("default").getAFunctionValue().getParameter(0)
+    }
   }
 }
