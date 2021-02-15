@@ -1,4 +1,4 @@
 import semmle.code.java.frameworks.play.Play
 
-from PlayMVCResultClass m
+from PlayMvcResultClass m
 select m.getQualifiedName()

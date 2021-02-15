@@ -1,52 +1,48 @@
+/**
+ * Provides classes and predicates for working with the `play` package.
+ */
+
 import java
 
 /**
- * Play MVC Framework Result Class
+ * A `play.mvc.Result` class.
  */
-class PlayMVCResultClass extends Class {
-  PlayMVCResultClass() { this.hasQualifiedName("play.mvc", "Result") }
+class PlayMvcResultClass extends Class {
+  PlayMvcResultClass() { this.hasQualifiedName("play.mvc", "Result") }
 }
 
 /**
- * Play MVC Framework Results Class
- *
- * Documentation: https://www.playframework.com/documentation/2.8.x/JavaActions
+ * A `play.mvc.Results` class.
  */
-class PlayMVCResultsClass extends Class {
-  PlayMVCResultsClass() { this.hasQualifiedName("play.mvc", "Results") }
+class PlayMvcResultsClass extends Class {
+  PlayMvcResultsClass() { this.hasQualifiedName("play.mvc", "Results") }
 }
 
 /**
- * Play MVC Framework HTTP Request Header Class
+ * A `play.mvc.Http$RequestHeader` class.
  */
-class PlayMVCHTTPRequestHeader extends RefType {
-  PlayMVCHTTPRequestHeader() { this.hasQualifiedName("play.mvc", "Http$RequestHeader") }
+class PlayMvcHttpRequestHeader extends RefType {
+  PlayMvcHttpRequestHeader() { this.hasQualifiedName("play.mvc", "Http$RequestHeader") }
 }
 
 /**
- * Play Framework Explicit Body Parser Annotation
- *
- * Documentation: https://www.playframework.com/documentation/2.8.x/JavaBodyParsers#Choosing-an-explicit-body-parser
+ * A `play.mvc.BodyParser<>$Of"` annotation.
  */
 class PlayBodyParserAnnotation extends Annotation {
   PlayBodyParserAnnotation() { this.getType().hasQualifiedName("play.mvc", "BodyParser<>$Of") }
 }
 
 /**
- * Play Framework AddCSRFToken Annotation
- *
- * Documentation: https://www.playframework.com/documentation/2.8.x/JavaCsrf
+ * A `play.filters.csrf.AddCSRFToken` annotation.
  */
-class PlayAddCSRFTokenAnnotation extends Annotation {
-  PlayAddCSRFTokenAnnotation() {
+class PlayAddCsrfTokenAnnotation extends Annotation {
+  PlayAddCsrfTokenAnnotation() {
     this.getType().hasQualifiedName("play.filters.csrf", "AddCSRFToken")
   }
 }
 
 /**
- * Play Framework Async Promise - Gets the Promise<Result> Generic Member/Type of (play.libs.F)
- *
- * Documentation: https://www.playframework.com/documentation/2.5.1/api/java/play/libs/F.Promise.html
+ * A member with qualified name `F.Promise<Result>` of package `play.libs.F`.
  */
 class PlayAsyncResultPromise extends Member {
   PlayAsyncResultPromise() {
@@ -59,9 +55,7 @@ class PlayAsyncResultPromise extends Member {
 }
 
 /**
- * Play Framework Async Generic Result - Gets the CompletionStage<Result> Generic Type of (java.util.concurrent)
- *
- * Documentation: https://www.playframework.com/documentation/2.6.x/JavaAsync
+ * A type with qualified name `CompletionStage<Result>` of package `java.util.concurrent`.
  */
 class PlayAsyncResultCompletionStage extends Type {
   PlayAsyncResultCompletionStage() {
@@ -71,7 +65,7 @@ class PlayAsyncResultCompletionStage extends Type {
 }
 
 /**
- * Play Framework Controllers which extends PlayMVCController recursively - Used to find all Controllers
+ * A class which extends PlayMvcController recursively to find all controllers.
  */
 class PlayController extends Class {
   PlayController() {
@@ -80,9 +74,9 @@ class PlayController extends Class {
 }
 
 /**
- * Play Framework Controller Action Methods - Mappings to route files
+ * A method to find PlayFramework controller action methods, these are mapping's to route files.
  *
- * Sample Route - `POST  /login  @com.company.Application.login()`
+ * Sample Route - `POST  /login  @com.company.Application.login()`.
  *
  * Example - class get's `index` & `login` as valid action methods.
  * ```
@@ -96,24 +90,22 @@ class PlayController extends Class {
  *      }
  *    }
  * ```
- *
- * Documentation: https://www.playframework.com/documentation/2.8.x/JavaActions
  */
 class PlayControllerActionMethod extends Method {
   PlayControllerActionMethod() {
     this = any(PlayController c).getAMethod() and
     (
       this.getReturnType() instanceof PlayAsyncResultPromise or
-      this.getReturnType() instanceof PlayMVCResultClass or
+      this.getReturnType() instanceof PlayMvcResultClass or
       this.getReturnType() instanceof PlayAsyncResultCompletionStage
     )
   }
 }
 
 /**
- * Play Action-Method parameters. These are a source of user input
+ * The PlayFramework action method parameters, these are a source of user input.
  *
- * Example - Class get's `username` & `password` as valid parameters
+ * Example - `username` & `password` are marked as valid parameters.
  * ```
  *  public class Application extends Controller {
  *      public Result index(String username, String password) {
@@ -132,15 +124,13 @@ class PlayActionMethodQueryParameter extends Parameter {
 }
 
 /**
- * Play Framework HTTPRequestHeader Methods - `headers`, `getQueryString`, `getHeader`
- *
- * Documentation: https://www.playframework.com/documentation/2.6.0/api/java/play/mvc/Http.RequestHeader.html
+ * A PlayFramework HttpRequestHeader method, some of these are `headers`, `getQueryString`, `getHeader`.
  */
-class PlayMVCHTTPRequestHeaderMethods extends Method {
-  PlayMVCHTTPRequestHeaderMethods() { this.getDeclaringType() instanceof PlayMVCHTTPRequestHeader }
+class PlayMvcHttpRequestHeaderMethods extends Method {
+  PlayMvcHttpRequestHeaderMethods() { this.getDeclaringType() instanceof PlayMvcHttpRequestHeader }
 
   /**
-   * Gets all references to play.mvc.HTTP.RequestHeader `getQueryString` method
+   * A reference to the `getQueryString` method.
    */
   MethodAccess getAQueryStringAccess() {
     this.hasName("getQueryString") and result = this.getAReference()
@@ -148,20 +138,18 @@ class PlayMVCHTTPRequestHeaderMethods extends Method {
 }
 
 /**
- * Play Framework mvc.Results Methods - `ok`, `status`, `redirect`
- *
- * Documentation: https://www.playframework.com/documentation/2.5.8/api/java/play/mvc/Results.html
+ * A PlayFramework results method, some of these are `ok`, `status`, `redirect`.
  */
-class PlayMVCResultsMethods extends Method {
-  PlayMVCResultsMethods() { this.getDeclaringType() instanceof PlayMVCResultsClass }
+class PlayMvcResultsMethods extends Method {
+  PlayMvcResultsMethods() { this.getDeclaringType() instanceof PlayMvcResultsClass }
 
   /**
-   * Gets all references to play.mvc.Results `ok` method
+   * A reference to the play.mvc.Results `ok` method.
    */
   MethodAccess getAnOkAccess() { this.hasName("ok") and result = this.getAReference() }
 
   /**
-   * Gets all references to play.mvc.Results `redirect` method
+   * A reference to the play.mvc.Results `redirect` method.
    */
   MethodAccess getARedirectAccess() { this.hasName("redirect") and result = this.getAReference() }
 }
