@@ -1,0 +1,2 @@
+| InsecureLdapEndpoint.java:17:9:17:92 | setProperty(...) | SSL configuration allows insecure endpoint configuration |
+| InsecureLdapEndpoint.java:48:3:48:34 | setProperties(...) | SSL configuration allows insecure endpoint configuration |
