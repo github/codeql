@@ -312,7 +312,7 @@ private module FlaskModel {
 
     RequestInputAccess() {
       // attributes
-      this = flask::request().getMember(attr_name).getAUse() and
+      this = flask::request().getMember(attr_name).getAnImmediateUse() and
       attr_name in [
           // str
           "path", "full_path", "base_url", "url", "access_control_request_method",
