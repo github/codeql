@@ -373,6 +373,7 @@ module Redux {
      *   }
      * });
      * export default slice.reducer;
+     * export const { actionType1, actionType2 } = slice.actions;
      * ```
      */
     private class CreateSliceReducer extends DelegatingReducer {
@@ -481,13 +482,12 @@ module Redux {
     DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
 
     /**
-     * Holds if `successBlock` is executed when a check has determined that `action` originated from this action creator.
+     * Gets a block that is executed when a check has determined that `action` originated from this action creator.
      */
     private ReachableBasicBlock getASuccessfulTypeCheckBlock(DataFlow::SourceNode action) {
       action = getAnUntypedActionInReducer() and
       result = getASuccessfulTypeCheckBlock(action, getTypeTag())
       or
-      // and ProgramSlicing::areFilesInSameReduxApp(result.getFile(), this.getFile()) -- TODO delete?
       // some action creators implement a .match method for this purpose
       exists(ConditionGuardNode guard, DataFlow::CallNode call |
         call = ref().getAMethodCall("match") and
