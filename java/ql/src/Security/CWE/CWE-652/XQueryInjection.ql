@@ -16,7 +16,7 @@ import XQueryInjectionLib
 import DataFlow::PathGraph
 
 /**
- * Taint-tracking configuration tracing flow from remote sources, through an XQuery parser, to its eventual execution.
+ * A taint-tracking configuration tracing flow from remote sources, through an XQuery parser, to its eventual execution.
  */
 class XQueryInjectionConfig extends TaintTracking::Configuration {
   XQueryInjectionConfig() { this = "XQueryInjectionConfig" }
