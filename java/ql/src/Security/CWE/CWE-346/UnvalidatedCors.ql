@@ -28,6 +28,14 @@ private predicate setsAllowCredentials(MethodAccess header) {
   header.getArgument(1).(CompileTimeConstantExpr).getStringValue() = "true"
 }
 
+class CorsProbableCheckAccess extends MethodAccess {
+  CorsProbableCheckAccess() {
+    getMethod().getName() = ["contains", "equals"] and
+    getMethod().getDeclaringType().getQualifiedName() =
+      ["java.util.List<String>", "java.util.ArrayList<String>", "java.lang.String"]
+  }
+}
+
 private Expr getAccessControlAllowOriginHeaderName() {
   result.(CompileTimeConstantExpr).getStringValue().toLowerCase() = "access-control-allow-origin"
 }
@@ -47,6 +55,21 @@ class CorsOriginConfig extends TaintTracking::Configuration {
       setsAllowCredentials(allowcredentialsheader) and
       corsheader.getEnclosingCallable() = allowcredentialsheader.getEnclosingCallable() and
       sink.asExpr() = corsheader.getArgument(1)
+    )
+  }
+
+  /*
+   * This should ideally check, the origin being validated against a list/array-list.
+   * or function being used to validate the origin, which has a flow from its parameter to any of the CorsProbableCheckAccess functions
+   */
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.asExpr() = any(CorsProbableCheckAccess ma).getAnArgument()
+    or
+    exists(MethodAccess ma, CorsProbableCheckAccess ca |
+      ma.getMethod().calls(ca.getMethod()) and
+      DataFlow::localExprFlow(ma.getMethod().getAParameter().getAnAccess(), ca.getAnArgument()) and
+      (node.asExpr() = ma.getAnArgument() or node.asExpr() = ma.getAnArgument().getAChildExpr())
     )
   }
 }
