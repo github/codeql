@@ -13,12 +13,12 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.SensitiveActions
 import DataFlow::PathGraph
 
-/** Finds variables that hold sensitive information judging by their names. */
+/** A variable that holds sensitive information judging by its name. */
 class SensitiveInfoExpr extends Expr {
   SensitiveInfoExpr() {
     exists(Variable v | this = v.getAnAccess() |
       v.getName().regexpMatch(getCommonSensitiveInfoRegex()) and
-      not v.getName().regexpMatch("token.*") // exclude ^token$ and ^token.* since sensitive tokens are in the form of accessToken, authToken, ...
+      not v.getName().regexpMatch("token.*") // exclude ^token.* since sensitive tokens are usually in the form of accessToken, authToken, ...
     )
   }
 }
@@ -31,14 +31,14 @@ class DoGetServletMethod extends Method {
   DoGetServletMethod() { isGetServletMethod(this) }
 }
 
-/** Holds if `ma` is called from the `doGet` method of `HttpServlet`. */
-predicate isServletGetCall(MethodAccess ma) {
+/** Holds if `ma` is (perhaps indirectly) called from the `doGet` method of `HttpServlet`. */
+predicate isReachableFromServletDoGet(MethodAccess ma) {
   ma.getEnclosingCallable() instanceof DoGetServletMethod
   or
   exists(Method pm, MethodAccess pma |
     ma.getEnclosingCallable() = pm and
     pma.getMethod() = pm and
-    isServletGetCall(pma)
+    isReachableFromServletDoGet(pma)
   )
 }
 
@@ -48,12 +48,12 @@ class RequestGetParamSource extends DataFlow::ExprNode {
     exists(MethodAccess ma |
       isRequestGetParamMethod(ma) and
       ma = this.asExpr() and
-      isServletGetCall(ma)
+      isReachableFromServletDoGet(ma)
     )
   }
 }
 
-/** Taint configuration tracking flow from the `ServletRequest` of a GET request handler to an expression whose name suggests it holds security-sensitive data. */
+/** A taint configuration tracking flow from the `ServletRequest` of a GET request handler to an expression whose name suggests it holds security-sensitive data. */
 class SensitiveGetQueryConfiguration extends TaintTracking::Configuration {
   SensitiveGetQueryConfiguration() { this = "SensitiveGetQueryConfiguration" }
 

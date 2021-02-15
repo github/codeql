@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 
 public class SensitiveGetQuery2 extends HttpServlet {
-	// BAD - Tests sending sensitive information in a GET request.
+	// BAD - Tests retrieving sensitive information through `request.getParameterMap()` in a GET request.
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		Map map = request.getParameterMap();
 		String username = (String) map.get("username");
@@ -19,7 +19,7 @@ public class SensitiveGetQuery2 extends HttpServlet {
 		System.out.println("username = " + username+"; password "+password);
 	}
 
-	// GOOD - Tests sending sensitive information in a POST request.
+	// GOOD - Tests retrieving sensitive information through `request.getParameterMap()` in a POST request.
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		Map map = request.getParameterMap();
 		String username = (String) map.get("username");

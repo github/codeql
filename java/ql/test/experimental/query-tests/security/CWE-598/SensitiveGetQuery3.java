@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 
 public class SensitiveGetQuery3 extends HttpServlet {
-	// BAD - Tests sending sensitive information in a GET request.
+	// BAD - Tests retrieving sensitive information through a wrapper call in a GET request.
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String username = getRequestParameter(request, "username");
 		String password = getRequestParameter(request, "password");
@@ -17,7 +17,7 @@ public class SensitiveGetQuery3 extends HttpServlet {
 		return request.getParameter(paramName);
 	}
 
-	// GOOD - Tests sending sensitive information in a POST request.
+	// GOOD - Tests retrieving sensitive information through a wrapper call in a POST request.
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String username = getRequestParameter(request, "username");
 		String password = getRequestParameter(request, "password");
