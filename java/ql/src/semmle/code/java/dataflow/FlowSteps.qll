@@ -53,6 +53,20 @@ abstract class TaintPreservingCallable extends Callable {
   predicate transfersTaint(int src, int sink) { none() }
 }
 
+/**
+ * A fluent method that preserves taint.
+ *
+ * This sets taint to flow from the qualifier to the return value, and from the return value and/or
+ * its post-update node back to the post-update node of the qualifier.
+ *
+ * The usual use-case is a method that returns `this`, so the return and qualifier are aliased;
+ * the typical pattern in Java resembles `myObject.setX(x).setY(y).writeTaintTo(target); myObject.getTaint()`
+ * where we wish taint from `x` and `y` to reach both `writeTaintTo` and `getTaint`.
+ */
+abstract class TaintPreservingFluentMethod extends TaintPreservingCallable, Method {
+  override predicate returnsTaintFrom(int arg) { arg = -1 }
+}
+
 private class StringTaintPreservingMethod extends TaintPreservingCallable {
   StringTaintPreservingMethod() {
     this.getDeclaringType() instanceof TypeString and

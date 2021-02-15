@@ -34,6 +34,12 @@ predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   localAdditionalTaintStep(src, sink)
 }
 
+private DataFlow::Node getPreUpdateNodeIfPossible(DataFlow::Node src) {
+  if exists(DataFlow::PostUpdateNode pun | pun.getPreUpdateNode() = result)
+  then src.(DataFlow::PostUpdateNode).getPreUpdateNode() = result
+  else result = src
+}
+
 /**
  * Holds if taint can flow in one local step from `src` to `sink` excluding
  * local data flow steps. That is, `src` and `sink` are likely to represent
@@ -43,6 +49,9 @@ predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   localAdditionalTaintExprStep(src.asExpr(), sink.asExpr())
   or
   localAdditionalTaintUpdateStep(src.asExpr(),
+    sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr())
+  or
+  localAdditionalTaintPostUpdateStep(getPreUpdateNodeIfPossible(src).asExpr(),
     sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr())
   or
   exists(Argument arg |
@@ -130,6 +139,22 @@ private predicate localAdditionalTaintUpdateStep(Expr src, Expr sink) {
   argToArgStep(src, sink)
   or
   argToQualifierStep(src, sink)
+}
+
+/**
+ * Holds if taint can flow in one local step from `src` to `sink` excluding
+ * local data flow steps. That is, `src` and `sink` are likely to represent
+ * different objects.
+ * This is restricted to cases where the step conveys taint from either `src`
+ * or its post-update node to `sink`'s post-update node, currently only covering
+ * back-propagation from a fluent method's result to its qualifier.
+ */
+private predicate localAdditionalTaintPostUpdateStep(Expr src, Expr sink) {
+  exists(TaintPreservingFluentMethod m, MethodAccess ma |
+    ma.getMethod() = m and
+    src = ma and
+    sink = ma.getQualifier()
+  )
 }
 
 private class BulkData extends RefType {
