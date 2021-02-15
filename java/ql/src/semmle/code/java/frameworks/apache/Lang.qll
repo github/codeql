@@ -45,7 +45,7 @@ private class ApacheLangArrayUtilsTaintPreservingMethod extends TaintPreservingC
 
   override predicate returnsTaintFrom(int src) {
     this.hasName(["addAll", "addFirst"]) and
-    src = [0 .. getNumberOfParameters()]
+    src = [0 .. getNumberOfParameters() - 1]
     or
     this.hasName([
         "clone", "nullToEmpty", "remove", "removeAll", "removeElement", "removeElements", "reverse",
