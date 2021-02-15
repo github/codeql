@@ -18,7 +18,10 @@ private class Recv extends AliasFunction, ArrayFunction, SideEffectFunction,
         "recvfrom", // recvfrom(socket, dest, len, flags, from, fromlen)
         "recvmsg", // recvmsg(socket, msg, flags)
         "read", // read(socket, dest, len)
-        "pread" // pread(socket, dest, len, offset)
+        "pread", // pread(socket, dest, len, offset)
+        "readv", // readv(socket, dest, len)
+        "preadv", // readv(socket, dest, len, offset)
+        "preadv2" // readv2(socket, dest, len, offset, flags)
       ])
   }
 
