@@ -82,23 +82,11 @@ private class BuilderAddMethod extends TaintPreservingCallable {
 }
 
 /**
- * In a chained call `b.add(x).add(y).add(z)`, represents a flow step from the return value of
- * this expression to the post update node of `b` (valid because the builder add methods return their qualifier).
- * This is sufficient to express flow from `y` and `z` to `b`.
+ * Adds standard fluent-method edges for the method `Builder.add`, such that in a chain
+ * `b.add(x).add(y).add(z)` taint flows from `x`, `y` and `z` to `b`.
  */
-private class ChainedBuilderAddStep extends AdditionalTaintStep {
-  override predicate step(DataFlow::Node src, DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof BuilderAddMethod and
-      src.asExpr() = ma and
-      chainedBuilderMethod+(sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()) = ma
-    )
-  }
-}
-
-private MethodAccess chainedBuilderMethod(Expr e) {
-  result.getQualifier() = e and
-  result.getMethod() instanceof BuilderAddMethod
+private class BuilderAddAsFluentMethod extends TaintPreservingFluentMethod {
+  BuilderAddAsFluentMethod() { this instanceof BuilderAddMethod }
 }
 
 /**

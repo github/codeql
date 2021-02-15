@@ -114,8 +114,6 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
   or
   comparisonStep(src, sink)
   or
-  stringBuilderStep(src, sink)
-  or
   serializationStep(src, sink)
   or
   formatStep(src, sink)
@@ -605,15 +603,6 @@ private predicate comparisonStep(Expr tracked, Expr sink) {
   )
 }
 
-/** Flow through a `StringBuilder`. */
-private predicate stringBuilderStep(Expr tracked, Expr sink) {
-  exists(StringBuilderVar sbvar, MethodAccess input, int arg |
-    input = sbvar.getAnInput(arg) and
-    tracked = input.getArgument(arg) and
-    sink = sbvar.getToStringCall()
-  )
-}
-
 /** Flow through data serialization. */
 private predicate serializationStep(Expr tracked, Expr sink) {
   exists(ObjectOutputStreamVar v, VariableAssign def |
@@ -730,6 +719,45 @@ private class FormatterCallable extends TaintPreservingCallable {
   }
 }
 
+private class StringBuilderOrBuffer extends RefType {
+  StringBuilderOrBuffer() { this instanceof TypeStringBuilder or this instanceof TypeStringBuffer }
+}
+
+private class StringBuilderBufferTaintWriter extends TaintPreservingCallable {
+  int taintFromArg;
+
+  StringBuilderBufferTaintWriter() {
+    this.getDeclaringType() instanceof StringBuilderOrBuffer and
+    (
+      this.getName() = "append" and taintFromArg = 0
+      or
+      this.getName() = "insert" and taintFromArg = 1
+      or
+      this.getName() = "replace" and taintFromArg = 2
+    )
+  }
+
+  override predicate transfersTaint(int src, int sink) { src = taintFromArg and sink = -1 }
+
+  override predicate returnsTaintFrom(int arg) { arg = taintFromArg }
+}
+
+private class StringBuilderBufferTaintGetter extends TaintPreservingCallable {
+  StringBuilderBufferTaintGetter() {
+    this.getDeclaringType() instanceof StringBuilderOrBuffer and
+    this.getName() = "toString"
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = -1 }
+}
+
+private class StringBuilderBufferFluentMethod extends TaintPreservingFluentMethod {
+  StringBuilderBufferFluentMethod() {
+    this.getDeclaringType() instanceof StringBuilderOrBuffer and
+    this.getReturnType() = this.getDeclaringType()
+  }
+}
+
 private import StringBuilderVarModule
 
 module StringBuilderVarModule {
@@ -739,10 +767,7 @@ module StringBuilderVarModule {
    * build up a query using string concatenation.
    */
   class StringBuilderVar extends LocalVariableDecl {
-    StringBuilderVar() {
-      this.getType() instanceof TypeStringBuilder or
-      this.getType() instanceof TypeStringBuffer
-    }
+    StringBuilderVar() { this.getType() instanceof StringBuilderOrBuffer }
 
     /**
      * Gets a call that adds something to this string builder, from the argument at the given index.
