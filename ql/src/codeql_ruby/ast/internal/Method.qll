@@ -17,7 +17,6 @@ module Method {
 
     string getName() {
       result = generated.getName().(Generated::Token).getValue() or
-      result = generated.getName().(SymbolLiteral).getValueText() or
       result = generated.getName().(Generated::Setter).getName().getValue() + "="
     }
 

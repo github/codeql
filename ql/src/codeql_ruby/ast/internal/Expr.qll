@@ -172,6 +172,36 @@ module SymbolLiteral {
   }
 }
 
+module MethodName {
+  private class TokenTypes =
+    @setter or @token_class_variable or @token_constant or @token_global_variable or
+        @token_identifier or @token_instance_variable or @token_operator;
+
+  abstract class Range extends Literal::Range, @underscore_method_name {
+    Range() {
+      exists(Generated::Undef u | u.getChild(_) = generated)
+      or
+      exists(Generated::Alias a | a.getName() = generated or a.getAlias() = generated)
+    }
+  }
+
+  private class TokenMethodName extends MethodName::Range, TokenTypes {
+    final override Generated::UnderscoreMethodName generated;
+
+    final override string getValueText() {
+      result = generated.(Generated::Token).getValue()
+      or
+      result = generated.(Generated::Setter).getName().getValue() + "="
+    }
+  }
+
+  private class SimpleSymbolMethodName extends MethodName::Range, SymbolLiteral::SimpleSymbolRange,
+    @token_simple_symbol { }
+
+  private class DelimitedSymbolMethodName extends MethodName::Range,
+    SymbolLiteral::DelimitedSymbolRange, @delimited_symbol { }
+}
+
 module StmtSequence {
   abstract class Range extends Expr::Range {
     abstract Stmt getStmt(int n);

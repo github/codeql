@@ -60,6 +60,46 @@ class EndBlock extends StmtSequence, @end_block {
 }
 
 /**
+ * An `undef` statement. For example:
+ * ```rb
+ * - undef method_name
+ * - undef &&, :method_name
+ * - undef :"method_#{ name }"
+ * ```
+ */
+class UndefStmt extends Stmt, @undef {
+  final override UndefStmt::Range range;
+
+  /** Gets the `n`th method name to undefine. */
+  final MethodName getMethodName(int n) { result = range.getMethodName(n) }
+
+  /** Gets a method name to undefine. */
+  final MethodName getAMethodName() { result = getMethodName(_) }
+
+  final override string getAPrimaryQlClass() { result = "UndefStmt" }
+}
+
+/**
+ * An `alias` statement. For example:
+ * ```rb
+ * - alias alias_name method_name
+ * - alias foo :method_name
+ * - alias bar :"method_#{ name }"
+ * ```
+ */
+class AliasStmt extends Stmt, @alias {
+  final override AliasStmt::Range range;
+
+  /** Gets the new method name. */
+  final MethodName getNewName() { result = range.getNewName() }
+
+  /** Gets the original method name. */
+  final MethodName getOldName() { result = range.getOldName() }
+
+  final override string getAPrimaryQlClass() { result = "AliasStmt" }
+}
+
+/**
  * A statement that may return a value: `return`, `break` and `next`.
  *
  * ```rb
