@@ -45,7 +45,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
             if (info.Equals(default))
             {
-                cx.ExtractionError("Could not get foreach statement info", null, Location.Create(cx, this.ReportingLocation), severity: Util.Logging.Severity.Info);
+                cx.ExtractionError("Could not get foreach statement info", null, cx.CreateLocation(this.ReportingLocation), severity: Util.Logging.Severity.Info);
                 return;
             }
 
