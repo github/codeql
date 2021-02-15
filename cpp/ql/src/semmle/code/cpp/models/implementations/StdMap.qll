@@ -16,10 +16,7 @@ private class MapOrUnorderedMap extends Class {
  * Additional model for map constructors using iterator inputs.
  */
 private class StdMapConstructor extends Constructor, TaintFunction {
-  StdMapConstructor() {
-    this.hasQualifiedName(["std", "bsl"], "map", "map") or
-    this.hasQualifiedName(["std", "bsl"], "unordered_map", "unordered_map")
-  }
+  StdMapConstructor() { this.getDeclaringType() instanceof MapOrUnorderedMap }
 
   /**
    * Gets the index of a parameter to this function that is an iterator.
