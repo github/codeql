@@ -830,7 +830,7 @@ module Redux {
   /**
    * Holds if `pred -> succ` is step from an action creation to its use in a reducer function.
    */
-  predicate actionToReducerStep(DataFlow::Node pred, DataFlow::SourceNode succ) {
+  predicate actionToReducerStep(DataFlow::Node pred, DataFlow::Node succ) {
     // Actions created by an action creator library
     exists(ActionCreator action |
       exists(DataFlow::CallNode call | call = action.ref().getACall() |
