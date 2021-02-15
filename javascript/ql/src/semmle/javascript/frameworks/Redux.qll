@@ -62,13 +62,10 @@ module Redux {
     StoreCreation() { this = range }
 
     /** Gets a reference to the store. */
-    DataFlow::SourceNode ref() {
-      // We happen to know that all store-creation sources have API nodes, so just reuse the API node type tracking
-      exists(API::Node apiNode |
-        apiNode.getAnImmediateUse() = this and
-        result = apiNode.getAUse()
-      )
-    }
+    DataFlow::SourceNode ref() { result = asApiNode().getAUse() }
+
+    /** Gets an API node that refers to this store creation. */
+    API::Node asApiNode() { result.getAnImmediateUse() = this }
 
     /** Gets the data flow node holding the root reducer for this store. */
     DataFlow::Node getReducerArg() { result = range.getReducerArg() }
@@ -751,57 +748,34 @@ module Redux {
   }
 
   /**
-   * A source of the `dispatch` function, used as starting point for `getADispatchFunctionReference`.
+   * A source of the `dispatch` function, used as starting point for `getADispatchFunctionNode`.
    */
-  abstract private class DispatchFunctionSource extends DataFlow::SourceNode { }
+  abstract private class DispatchFunctionSource extends API::Node { }
 
   /**
    * A value that is dispatched, that is, flows to the first argument of `dispatch`
    * (but where the call to `dispatch` is not necessarily explicit in the code).
    *
-   * Used as starting point for `getADispatchedValueSource`.
+   * Used as starting point for `getADispatchedValueNode`.
    */
-  abstract private class DispatchedValueSink extends DataFlow::Node { }
+  abstract private class DispatchedValueSink extends API::Node { }
 
-  private class StoreDispatchSource extends DispatchFunctionSource {
-    StoreDispatchSource() { this = any(StoreCreation c).ref().getAPropertyRead("dispatch") }
-  }
-
-  /** Gets a data flow node referring to the `dispatch` function. */
-  private DataFlow::SourceNode getADispatchFunctionReference(DataFlow::TypeTracker t) {
-    t.start() and
+  /** Gets an API node referring to the Redux `dispatch` function. */
+  API::Node getADispatchFunctionNode() {
     result instanceof DispatchFunctionSource
     or
-    // When using the redux-thunk middleware, dispatching a function value results in that
-    // function being invoked with (dispatch, getState).
-    // We simply assume redux-thunk middleware is always installed.
-    t.start() and
-    result = getADispatchedValueSource().(DataFlow::FunctionNode).getParameter(0)
-    or
-    exists(DataFlow::TypeTracker t2 | result = getADispatchFunctionReference(t2).track(t2, t))
+    result = getADispatchedValueNode().getParameter(0)
   }
 
-  /** Gets a data flow node referring to the `dispatch` function. */
-  DataFlow::SourceNode getADispatchFunctionReference() {
-    result = getADispatchFunctionReference(DataFlow::TypeTracker::end())
+  /** Gets an API node corresponding to a value being passed to the `dispatch` function. */
+  API::Node getADispatchedValueNode() {
+    result instanceof DispatchedValueSink
+    or
+    result = getADispatchFunctionNode().getParameter(0)
   }
 
-  /** Gets a data flow node that is dispatched as an action. */
-  private DataFlow::SourceNode getADispatchedValueSource(DataFlow::TypeBackTracker t) {
-    t.start() and
-    result = any(DispatchedValueSink d).getALocalSource()
-    or
-    t.start() and
-    result = getADispatchFunctionReference().getACall().getArgument(0).getALocalSource()
-    or
-    exists(DataFlow::TypeBackTracker t2 | result = getADispatchedValueSource(t2).backtrack(t2, t))
-  }
-
-  /**
-   * Gets a data flow node that is dispatched as an action, that is, it flows to the first argument of `dispatch`.
-   */
-  DataFlow::SourceNode getADispatchedValueSource() {
-    result = getADispatchedValueSource(DataFlow::TypeBackTracker::end())
+  private class StoreDispatchSource extends DispatchFunctionSource {
+    StoreDispatchSource() { this = any(StoreCreation c).asApiNode().getMember("dispatch") }
   }
 
   /** Gets the `action` parameter of a reducer that isn't behind an implied type guard. */
@@ -823,7 +797,7 @@ module Redux {
   /** The return value of a function flowing into `bindActionCreators`, seen as a value that is dispatched. */
   private class BindActionDispatchSink extends DispatchedValueSink {
     BindActionDispatchSink() {
-      this = any(BindActionCreatorsCall c).getParameter(0).getAMember().getReturn().getARhs()
+      this = any(BindActionCreatorsCall c).getParameter(0).getAMember().getReturn()
     }
   }
 
@@ -958,7 +932,7 @@ module Redux {
    */
   private DataFlow::ObjectLiteralNode getAManuallyDispatchedValue(string actionType) {
     result.getAPropertyWrite("type").getRhs().mayHaveStringValue(actionType) and
-    result = getADispatchedValueSource()
+    result = getADispatchedValueNode().getAValueReachingRhs()
   }
 
   /**
@@ -1054,8 +1028,7 @@ module Redux {
     /** A call to `useDispatch`, as a source of the `dispatch` function. */
     private class UseDispatchFunctionSource extends DispatchFunctionSource {
       UseDispatchFunctionSource() {
-        this =
-          API::moduleImport("react-redux").getMember("useDispatch").getReturn().getAnImmediateUse()
+        this = API::moduleImport("react-redux").getMember("useDispatch").getReturn()
       }
     }
 
@@ -1136,9 +1109,9 @@ module Redux {
     /**
      * An API entry point corresponding to a `connect` function which we couldn't recognize exactly.
      *
-     * The `connect` call is recognized based on an argument being named either `mapStateToProps` or `mapDispatchToProps`. 
+     * The `connect` call is recognized based on an argument being named either `mapStateToProps` or `mapDispatchToProps`.
      * Used to catch cases where the `connect` function was not recognized by API graphs (usually because of it being
-     * wrapped in another function, which API graphs won't look through). 
+     * wrapped in another function, which API graphs won't look through).
      */
     private class HeuristicConnectEntryPoint extends API::EntryPoint {
       HeuristicConnectEntryPoint() { this = "react-redux-connect" }
@@ -1197,15 +1170,13 @@ module Redux {
 
     /** The first argument to `mapDispatchToProps` as a source of the `dispatch` function */
     private class MapDispatchToPropsArg extends DispatchFunctionSource {
-      MapDispatchToPropsArg() {
-        this = any(ConnectCall c).getMapDispatchToProps().getParameter(0).getAnImmediateUse()
-      }
+      MapDispatchToPropsArg() { this = any(ConnectCall c).getMapDispatchToProps().getParameter(0) }
     }
 
     /** If `mapDispatchToProps` is an object, each method's return value is dispatched. */
     private class MapDispatchToPropsMember extends DispatchedValueSink {
       MapDispatchToPropsMember() {
-        this = any(ConnectCall c).getMapDispatchToProps().getAMember().getReturn().getARhs()
+        this = any(ConnectCall c).getMapDispatchToProps().getAMember().getReturn()
       }
     }
 
