@@ -30,7 +30,7 @@ class XQueryInjectionConfig extends TaintTracking::Configuration {
   }
 
   /**
-   * Conveys taint from the input to a `prepareExpression` call to the returned prepared expression.
+   * Holds if taint from the input `pred` to a `prepareExpression` call flows to the returned prepared expression `succ`.
    */
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(XQueryParserCall parser | pred.asExpr() = parser.getInput() and succ.asExpr() = parser)
