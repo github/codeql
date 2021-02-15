@@ -20,6 +20,8 @@ predicate explicitAssignmentNode(Generated::AstNode n, Generated::AstNode assign
     parent instanceof Generated::DestructuredLeftAssignment
     or
     parent instanceof Generated::LeftAssignmentList
+    or
+    parent instanceof Generated::RestAssignment
   )
 }
 
@@ -74,12 +76,22 @@ module TuplePattern {
 
   class Range extends Pattern::Range, Range_ {
     Pattern::Range getElement(int i) {
+      exists(Generated::AstNode c | c = getChild(i) |
+        result = c.(Generated::RestAssignment).getChild()
+        or
+        not c instanceof Generated::RestAssignment and result = c
+      )
+    }
+
+    private Generated::AstNode getChild(int i) {
       result = this.(Generated::DestructuredParameter).getChild(i)
       or
       result = this.(Generated::DestructuredLeftAssignment).getChild(i)
       or
       result = this.(Generated::LeftAssignmentList).getChild(i)
     }
+
+    int getRestIndex() { result = unique(int i | getChild(i) instanceof Generated::RestAssignment) }
 
     override Variable getAVariable() { result = this.getElement(_).getAVariable() }
 

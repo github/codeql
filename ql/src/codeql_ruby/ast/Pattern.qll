@@ -25,7 +25,12 @@ class VariablePattern extends Pattern {
 /**
  * A tuple pattern.
  *
- * This includes both tuple patterns in parameters and assignments.
+ * This includes both tuple patterns in parameters and assignments. Example patterns:
+ * ```rb
+ * a, self.b = value
+ * (a, b), c[3] = value
+ * a, b, *rest, c, d = value
+ * ```
  */
 class TuplePattern extends Pattern {
   override TuplePattern::Range range;
@@ -35,4 +40,13 @@ class TuplePattern extends Pattern {
 
   /** Gets a sub pattern in this tuple pattern. */
   final Pattern getAnElement() { result = this.getElement(_) }
+
+  /**
+   * Gets the index of the pattern with the `*` marker on it, if it exists.
+   * In the example below the index is `2`.
+   * ```rb
+   * a, b, *rest, c, d = value
+   * ```
+   */
+  final int getRestIndex() { result = range.getRestIndex() }
 }
