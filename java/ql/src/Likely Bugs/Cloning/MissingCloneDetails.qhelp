@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 <p>
-The Java API documentation states that, for an object <code>x</code>, the general intent of the <code>clone</code> method is for it to 
+The Java API Specification states that, for an object <code>x</code>, the general intent of the <code>clone</code> method is for it to 
 satisfy the following three properties:
 </p>
 <ul>

@@ -35,8 +35,8 @@ a check before performing a multiplication.</p>
 </example>
 <references>
 
-<li>The CERT Oracle Secure Coding Standard for Java:
-  <a href="https://www.securecoding.cert.org/confluence/display/java/NUM00-J.+Detect+or+prevent+integer+overflow">NUM00-J. Detect or prevent integer overflow</a>.</li>
+<li>SEI CERT Oracle Coding Standard for Java:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/java/NUM00-J.+Detect+or+prevent+integer+overflow">NUM00-J. Detect or prevent integer overflow</a>.</li>
 
 
 

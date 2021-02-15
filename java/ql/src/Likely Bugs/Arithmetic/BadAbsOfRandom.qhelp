@@ -36,14 +36,14 @@ The example shows how using the two solutions described above means that <code>p
 
 
 <li>
-Java API Documentation:
-<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Math.html#abs%28int%29">Math.abs(int)</a>,
-<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Math.html#abs%28long%29">Math.abs(long)</a>,
-<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Random.html">Random</a>.
+Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Math.html#abs(int)">Math.abs(int)</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Math.html#abs(long)">Math.abs(long)</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Random.html">Random</a>.
 </li>
 <li>
-Java Language Specification, 3rd ed:
-<a href="https://docs.oracle.com/javase/specs/jls/se6/html/typesValues.html#4.2.1">4.2.1 Integral Types and Values</a>.
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-4.html#jls-4.2.1">4.2.1 Integral Types and Values</a>.
 </li>
 
 

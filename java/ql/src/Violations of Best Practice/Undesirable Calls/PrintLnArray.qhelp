@@ -38,10 +38,10 @@ on the array first.</p>
 
 
 <li>
-Java 6 API Documentation:
-<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Arrays.html#toString(java.lang.Object[])">Arrays.toString()</a>,
-<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Arrays.html#deepToString(java.lang.Object[])">Arrays.deepToString()</a>,
-<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#toString()">Object.toString()</a>.
+Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Arrays.html#toString(java.lang.Object[])">Arrays.toString()</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Arrays.html#deepToString(java.lang.Object[])">Arrays.deepToString()</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#toString()">Object.toString()</a>.
 </li>
 
 

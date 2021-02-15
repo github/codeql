@@ -38,8 +38,8 @@ superclass <code>WrongItem</code> does not declare a no-argument constructor. Ho
 
 
 <li>
-Java API Documentation:
-<a href="http://docs.oracle.com/javase/6/docs/api/java/io/Serializable.html">Serializable</a>.
+Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Serializable.html">Serializable</a>.
 </li>
 <li>
   J. Bloch, <em>Effective Java (second edition)</em>, Item 74.

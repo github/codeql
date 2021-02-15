@@ -57,14 +57,16 @@ recommended.</p>
 <li>
   J. Bloch, <em>Effective Java (second edition)</em>, Item 7. Addison-Wesley, 2008.
 </li>
+
+<!-- Method System.runFinalizersOnExit(boolean) has been removed in Java 11; only use API specification links for Java 10 in the following -->
 <li>
-  Java 6 API Documentation:
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/System.html#runFinalizersOnExit%28boolean%29">System.runFinalizersOnExit()</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#finalize%28%29">Object.finalize()</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/javase/10/docs/api/java/lang/System.html#runFinalizersOnExit-boolean-">System.runFinalizersOnExit()</a>,
+  <a href="https://docs.oracle.com/javase/10/docs/api/java/lang/Object.html#finalize--">Object.finalize()</a>.
 </li>
 <li>
-  Java SE Documentation:
-  <a href="http://docs.oracle.com/javase/6/docs/technotes/guides/concurrency/threadPrimitiveDeprecation.html">Java Thread Primitive Deprecation</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/javase/10/docs/api/java/lang/doc-files/threadPrimitiveDeprecation.html">Java Thread Primitive Deprecation</a>.
 </li>
 
 

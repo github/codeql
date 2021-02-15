@@ -91,11 +91,11 @@ necessary for correctness.
 <references>
 
 <li>
-<a href="http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html">The "Double-Checked Locking is Broken" Declaration</a>.
+<a href="https://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html">The "Double-Checked Locking is Broken" Declaration</a>.
 </li>
 <li>
 Java Language Specification:
-<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-17.html#jls-17.4">17.4. Memory Model</a>.
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-17.html#jls-17.4">17.4. Memory Model</a>.
 </li>
 <li>
 Wikipedia: <a href="https://en.wikipedia.org/wiki/Double-checked_locking">Double-checked locking</a>.
