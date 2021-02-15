@@ -22,12 +22,10 @@ module Logrus {
 
   private class LogCall extends LoggerCall::Range, DataFlow::CallNode {
     LogCall() {
-      this.getTarget().hasQualifiedName(packagePath(), getALogResultName()) or
-      this.getTarget().(Method).hasQualifiedName(packagePath(), "Entry", getALogResultName()) or
-      this.getTarget().hasQualifiedName(packagePath(), getAnEntryUpdatingMethodName()) or
-      this.getTarget()
-          .(Method)
-          .hasQualifiedName(packagePath(), "Entry", getAnEntryUpdatingMethodName())
+      exists(string name | name = getALogResultName() or name = getAnEntryUpdatingMethodName() |
+        this.getTarget().hasQualifiedName(packagePath(), name) or
+        this.getTarget().(Method).hasQualifiedName(packagePath(), "Entry", name)
+      )
     }
 
     override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
