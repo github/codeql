@@ -47,8 +47,6 @@ module AstNode {
       or
       this instanceof Generated::Array
       or
-      this instanceof Generated::ElementReference
-      or
       this instanceof Generated::Complex
       or
       this instanceof Generated::Character

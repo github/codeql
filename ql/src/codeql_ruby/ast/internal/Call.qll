@@ -13,7 +13,7 @@ module Call {
 
     abstract Block getBlock();
 
-    final override string toString() { result = "call to " + this.getMethodName() }
+    override string toString() { result = "call to " + this.getMethodName() }
   }
 
   private class IdentifierCallRange extends Call::Range, @token_identifier {
@@ -68,6 +68,22 @@ module Call {
     final override Expr getArgument(int n) { result = generated.getArguments().getChild(n) }
 
     final override Block getBlock() { result = generated.getBlock() }
+  }
+}
+
+module ElementReference {
+  class Range extends Call::Range, @element_reference {
+    final override Generated::ElementReference generated;
+
+    final override Expr getReceiver() { result = generated.getObject() }
+
+    final override string getMethodName() { result = "[]" }
+
+    final override string toString() { result = "...[...]" }
+
+    final override Expr getArgument(int n) { result = generated.getChild(n) }
+
+    final override Block getBlock() { none() }
   }
 }
 

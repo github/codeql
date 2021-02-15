@@ -1038,14 +1038,14 @@ cfg.rb:
 #   68| puts
 #-----|  -> items
 
-#   68| ElementReference
+#   68| ...[...]
 #-----|  -> call to puts
 
 #   68| items
 #-----|  -> 2
 
 #   68| 2
-#-----|  -> ElementReference
+#-----|  -> ...[...]
 
 #   69| print
 #-----|  -> 42
@@ -1298,14 +1298,14 @@ cfg.rb:
 #  103| return
 #-----| return -> exit parameters (normal)
 
-#  103| ElementReference
+#  103| ...[...]
 #-----|  -> return
 
 #  103| kwargs
 #-----|  -> key
 
 #  103| key
-#-----|  -> ElementReference
+#-----|  -> ...[...]
 
 #  106| ... = ...
 #-----|  -> food

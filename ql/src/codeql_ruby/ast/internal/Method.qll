@@ -40,6 +40,8 @@ module SingletonMethod {
       result = generated.getName().(Generated::Setter).getName().getValue() + "="
     }
 
+    final Generated::AstNode getObject() { result = generated.getObject() }
+
     final override Generated::AstNode getChild(int i) { result = generated.getChild(i) }
 
     final override string toString() { result = this.getName() }
