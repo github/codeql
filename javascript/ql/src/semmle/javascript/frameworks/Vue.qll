@@ -35,7 +35,8 @@ module Vue {
     result =
       [
         "beforeCreate", "created", "beforeMount", "mounted", "beforeUpdate", "updated", "activated",
-        "deactivated", "beforeDestroy", "destroyed", "errorCaptured"
+        "deactivated", "beforeDestroy", "destroyed", "errorCaptured", "beforeRouteEnter",
+        "beforeRouteUpdate", "beforeRouteLeave"
       ]
   }
 
@@ -211,6 +212,24 @@ module Vue {
     DataFlow::Node getComputed() { result = getOption("computed") }
 
     /**
+     * Gets the node for the `watch` option of this instance.
+     */
+    DataFlow::Node getWatch() { result = getOption("watch") }
+
+    /**
+     * Gets the function responding to changes to the given `propName`.
+     */
+    DataFlow::FunctionNode getWatchHandler(string propName) {
+      exists(DataFlow::SourceNode watcher |
+        watcher = getWatch().getALocalSource().getAPropertySource(propName)
+      |
+        result = watcher
+        or
+        result = watcher.getAPropertySource("handler")
+      )
+    }
+
+    /**
      * Gets a node for a member of the `methods` option of this instance.
      */
     pragma[noinline]
@@ -269,7 +288,7 @@ module Vue {
      * Gets the node for the life cycle hook of the `hookName` option of this instance.
      */
     pragma[noinline]
-    private DataFlow::Node getALifecycleHook(string hookName) {
+    DataFlow::Node getALifecycleHook(string hookName) {
       hookName = lifecycleHookName() and
       (
         result = getOption(hookName)
@@ -287,6 +306,10 @@ module Vue {
       result = getAnAccessor(_)
       or
       result = getALifecycleHook(_)
+      or
+      result = getOption(_).(DataFlow::FunctionNode)
+      or
+      result = getOption(_).getALocalSource().getAPropertySource().(DataFlow::FunctionNode)
     }
 
     /**
@@ -551,5 +574,68 @@ module Vue {
        */
       HTML::Element getElement() { result = elem }
     }
+  }
+
+  /** An API node referring to a `RouteConfig` being passed to `vue-router`. */
+  private API::Node routeConfig() {
+    result = API::moduleImport("vue-router").getParameter(0).getMember("routes").getAMember()
+    or
+    result = routeConfig().getMember("children").getAMember()
+  }
+
+  /** Gets a data flow node that refers to a `Route` object from `vue-router`. */
+  private DataFlow::SourceNode routeObject(DataFlow::TypeTracker t) {
+    t.start() and
+    (
+      exists(API::Node router | router = API::moduleImport("vue-router") |
+        result = router.getInstance().getMember("currentRoute").getAnImmediateUse()
+        or
+        result =
+          router
+              .getInstance()
+              .getMember(["beforeEach", "beforeResolve", "afterEach"])
+              .getParameter(0)
+              .getParameter([0, 1])
+              .getAnImmediateUse()
+        or
+        result =
+          router
+              .getParameter(0)
+              .getMember("scrollBehavior")
+              .getParameter([0, 1])
+              .getAnImmediateUse()
+      )
+      or
+      result = routeConfig().getMember("beforeEnter").getParameter([0, 1]).getAnImmediateUse()
+      or
+      exists(Instance i |
+        result = i.getABoundFunction().getAFunctionValue().getReceiver().getAPropertyRead("$route")
+        or
+        result =
+          i.getALifecycleHook(["beforeRouteEnter", "beforeRouteUpdate", "beforeRouteLeave"])
+              .getAFunctionValue()
+              .getParameter([0, 1])
+        or
+        result = i.getWatchHandler("$route").getParameter([0, 1])
+      )
+    )
+    or
+    exists(DataFlow::TypeTracker t2 | result = routeObject(t2).track(t2, t))
+  }
+
+  /** Gets a data flow node that refers to a `Route` object from `vue-router`. */
+  DataFlow::SourceNode routeObject() { result = routeObject(DataFlow::TypeTracker::end()) }
+
+  private class VueRouterFlowSource extends RemoteFlowSource {
+    VueRouterFlowSource() {
+      this = routeObject().getAPropertyRead(["params", "query", "hash", "path", "fullPath"])
+      or
+      exists(Instance i, string prop |
+        this = i.getWatchHandler(prop).getParameter([0, 1]) and
+        prop.regexpMatch("\\$route\\.(params|query|hash|path|fullPath)\\b.*")
+      )
+    }
+
+    override string getSourceType() { result = "Vue route parameter" }
   }
 }
