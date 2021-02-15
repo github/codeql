@@ -92,13 +92,25 @@ abstract class Constructor extends Callable { }
 /** A destructor/finalizer. */
 abstract class Destructor extends Callable { }
 
+pragma[nomagic]
+private ValueOrRefType getARecordBaseType(ValueOrRefType t) {
+  exists(Callable c |
+    c.hasName("<Clone>$") and
+    c.getNumberOfParameters() = 0 and
+    t = c.getDeclaringType() and
+    result = t
+  )
+  or
+  result = getARecordBaseType(t).getABaseType()
+}
+
 /** A clone method on a record. */
 class RecordCloneCallable extends Callable {
   RecordCloneCallable() {
     this.getDeclaringType() instanceof ValueOrRefType and
     this.hasName("<Clone>$") and
     this.getNumberOfParameters() = 0 and
-    this.getReturnType() = this.getDeclaringType().(ValueOrRefType).getABaseType*() and
+    this.getReturnType() = getARecordBaseType(this.getDeclaringType()) and
     this.(Member).isPublic() and
     not this.(Member).isStatic()
   }
