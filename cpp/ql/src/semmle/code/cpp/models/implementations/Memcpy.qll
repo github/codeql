@@ -20,7 +20,7 @@ private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffect
     // memcpy(dest, src, num)
     // memmove(dest, src, num)
     // memmove(dest, src, num, remaining)
-    this.hasQualifiedName(["", "std", "bsl"], ["memcpy", "memmove"])
+    this.hasGlobalOrStdishName(["memcpy", "memmove"])
     or
     // bcopy(src, dest, num)
     // mempcpy(dest, src, num)
