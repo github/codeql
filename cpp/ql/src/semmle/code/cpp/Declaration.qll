@@ -139,6 +139,19 @@ class Declaration extends Locatable, @declaration {
     this.hasQualifiedName("std", "", name)
   }
 
+  /**
+   * Holds if this declaration has the given name in the global namespace,
+   * the `std` namespace or the `bsl` namespace.
+   * We treat `std` and `bsl` as the same in a bunch of our models.
+   */
+  predicate hasGlobalOrStdishName(string name) {
+    this.hasGlobalName(name)
+    or
+    this.hasQualifiedName("std", "", name)
+    or
+    this.hasQualifiedName("bsl", "", name)
+  }
+
   /** Gets a specifier of this declaration. */
   Specifier getASpecifier() { none() } // overridden in subclasses
 
