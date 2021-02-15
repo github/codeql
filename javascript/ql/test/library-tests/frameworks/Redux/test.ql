@@ -30,9 +30,9 @@ query Redux::ReducerArg getUseSite(Redux::DelegatingReducer reducer) {
   result = reducer.getUseSite()
 }
 
-query predicate getADispatchFunctionReference = Redux::getADispatchFunctionReference/0;
+query predicate getADispatchFunctionNode = Redux::getADispatchFunctionNode/0;
 
-query predicate getADispatchedValueSource = Redux::getADispatchedValueSource/0;
+query predicate getADispatchedValueNode = Redux::getADispatchedValueNode/0;
 
 query predicate getAnUntypedActionInReducer = Redux::getAnUntypedActionInReducer/0;
 
