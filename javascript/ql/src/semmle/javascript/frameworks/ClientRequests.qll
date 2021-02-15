@@ -844,8 +844,8 @@ module ClientRequest {
     /**
      * A model of a URL request made using apollo-client.
      */
-    class ApolloClientRequeist extends ClientRequest::Range, API::InvokeNode {
-      ApolloClientRequeist() { this = apolloUriCallee().getAnInvocation() }
+    class ApolloClientRequest extends ClientRequest::Range, API::InvokeNode {
+      ApolloClientRequest() { this = apolloUriCallee().getAnInvocation() }
 
       override DataFlow::Node getUrl() { result = getParameter(0).getMember("uri").getARhs() }
 
