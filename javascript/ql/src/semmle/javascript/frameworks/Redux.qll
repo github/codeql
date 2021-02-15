@@ -1134,9 +1134,11 @@ module Redux {
     }
 
     /**
-     * An entry point in the API graphs corresponding to functions named `mapDispatchToProps`,
-     * used to catch cases where the call to `connect` was not found (usually because of it being
-     * wrapped in another function, which API graphs won't look through).
+     * An API entry point corresponding to a `connect` function which we couldn't recognize exactly.
+     *
+     * The `connect` call is recognized based on an argument being named either `mapStateToProps` or `mapDispatchToProps`. 
+     * Used to catch cases where the `connect` function was not recognized by API graphs (usually because of it being
+     * wrapped in another function, which API graphs won't look through). 
      */
     private class HeuristicConnectEntryPoint extends API::EntryPoint {
       HeuristicConnectEntryPoint() { this = "react-redux-connect" }

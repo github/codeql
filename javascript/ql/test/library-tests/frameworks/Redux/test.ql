@@ -59,3 +59,5 @@ class BasicTaint extends TaintTracking::Configuration {
 query predicate taintFlow(DataFlow::Node source, DataFlow::Node sink) {
   any(BasicTaint cfg).hasFlow(source, sink)
 }
+
+query DataFlow::SourceNode reactComponentRef(ReactComponent component) { result = component.getAComponentCreatorReference() }
