@@ -173,6 +173,11 @@ private class ApacheStrBuilderTaintingMethod extends ApacheStrBuilderMethod, Tai
       consumesTaintFromAllArgs() and fromArg in [0 .. this.getNumberOfParameters() - 1]
     )
   }
+
+  override predicate returnsTaintFrom(int arg) {
+    // Anything that taints the qualifier also taints the return value
+    this.transfersTaint(arg, -1)
+  }
 }
 
 /**
@@ -209,5 +214,14 @@ private class ApacheStrBuilderTaintWriter extends ApacheStrBuilderMethod, TaintP
         // getChars(int, int, char[], int)
         toArg = 2
     )
+  }
+}
+
+/**
+ * An Apache Commons-Lang StrBuilder method that returns `this`.
+ */
+private class ApacheStrBuilderFluentMethod extends TaintPreservingFluentMethod {
+  ApacheStrBuilderFluentMethod() {
+    this.getReturnType().(RefType).hasQualifiedName("org.apache.commons.lang3.text", "StrBuilder")
   }
 }
