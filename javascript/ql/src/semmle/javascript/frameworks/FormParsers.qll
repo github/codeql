@@ -5,28 +5,20 @@
 import javascript
 
 /**
- * Classes and predicate modelling the `Busboy` library.
+ * A source of remote flow from the `Busboy` library.
  */
-private module Busboy {
-  /**
-   * A `Busboy` instance that has request data flowing into it.
-   */
-  private DataFlow::NewNode busboy() {
-    result = DataFlow::moduleImport("busboy").getAnInstantiation() and
-    exists(MethodCallExpr pipe |
-      pipe.calls(any(HTTP::RequestExpr req), "pipe") and
-      result.flowsToExpr(pipe.getArgument(0))
-    )
+private class BusBoyRemoteFlow extends RemoteFlowSource {
+  BusBoyRemoteFlow() {
+    this =
+      API::moduleImport("busboy")
+          .getInstance()
+          .getMember("on")
+          .getParameter(1)
+          .getAParameter()
+          .getAnImmediateUse()
   }
 
-  /**
-   * A source of remote flow from the `Busboy` library.
-   */
-  class BusBoyRemoteFlow extends RemoteFlowSource {
-    BusBoyRemoteFlow() { this = busboy().getAMemberCall("on").getABoundCallbackParameter(1, _) }
-
-    override string getSourceType() { result = "parsed user value from Busbuy" }
-  }
+  override string getSourceType() { result = "parsed user value from Busbuy" }
 }
 
 /**
@@ -34,17 +26,16 @@ private module Busboy {
  */
 private class FormidableRemoteFlow extends RemoteFlowSource {
   FormidableRemoteFlow() {
-    exists(DataFlow::CallNode parse, DataFlow::InvokeNode formidable |
-      formidable = DataFlow::moduleImport("formidable").getACall()
+    exists(API::Node formidable |
+      formidable = API::moduleImport("formidable").getReturn()
       or
-      formidable = DataFlow::moduleMember("formidable", "formidable").getACall()
+      formidable = API::moduleImport("formidable").getMember("formidable").getReturn()
       or
       formidable =
-        DataFlow::moduleMember("formidable", ["IncomingForm", "Formidable"]).getAnInstantiation()
+        API::moduleImport("formidable").getMember(["IncomingForm", "Formidable"]).getInstance()
     |
-      parse = formidable.getAMemberCall("parse") and
-      parse.getArgument(0).asExpr() instanceof HTTP::RequestExpr and
-      this = parse.getABoundCallbackParameter(1, any(int i | i > 0))
+      this =
+        formidable.getMember("parse").getACall().getABoundCallbackParameter(1, any(int i | i > 0))
     )
   }
 
@@ -52,34 +43,21 @@ private class FormidableRemoteFlow extends RemoteFlowSource {
 }
 
 /**
- * Predicates and classes modelling the `multiparty` library.
+ * A source of remote flow from the `Multiparty` library.
  */
-private module Multiparty {
-  /**
-   * Gets an instance of of `Multiparty` form parser that parses a HTTP request object.
-   * The `parse` call is the method call that receives the HTTP request object.
-   */
-  private DataFlow::SourceNode form(DataFlow::MethodCallNode parse) {
-    result = DataFlow::moduleMember("multiparty", "Form").getAnInstantiation() and
-    parse = result.getAMethodCall("parse") and
-    parse.getArgument(0).asExpr() instanceof HTTP::RequestExpr
-  }
-
-  /**
-   * A source of remote flow from the `Multiparty` library.
-   */
-  class MultipartyRemoteFlow extends RemoteFlowSource {
-    MultipartyRemoteFlow() {
-      exists(DataFlow::MethodCallNode parse | exists(form(parse)) |
-        this = parse.getABoundCallbackParameter(1, any(int i | i > 0))
+private class MultipartyRemoteFlow extends RemoteFlowSource {
+  MultipartyRemoteFlow() {
+    exists(API::Node form | form = API::moduleImport("multiparty").getMember("Form").getInstance() |
+      exists(API::CallNode parse | parse = form.getMember("parse").getACall() |
+        this = parse.getParameter(1).getAParameter().getAnImmediateUse()
       )
       or
-      exists(DataFlow::MethodCallNode on | on = form(_).getAMethodCall("on") |
+      exists(API::CallNode on | on = form.getMember("on").getACall() |
         on.getArgument(0).mayHaveStringValue(["part", "file", "field"]) and
-        this = on.getABoundCallbackParameter(1, _)
+        this = on.getParameter(1).getAParameter().getAnImmediateUse()
       )
-    }
-
-    override string getSourceType() { result = "parsed user value from Multiparty" }
+    )
   }
+
+  override string getSourceType() { result = "parsed user value from Multiparty" }
 }
