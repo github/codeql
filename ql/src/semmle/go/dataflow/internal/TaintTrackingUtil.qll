@@ -223,3 +223,162 @@ class EqualityTestGuard extends DefaultTaintSanitizerGuard, DataFlow::EqualityTe
     outcome = this.getPolarity()
   }
 }
+
+/**
+ * Holds if data flows from `node` to `switchExprNode`, which is the expression
+ * of a switch statement.
+ */
+private predicate flowsToSwitchExpression(DataFlow::Node node, DataFlow::Node switchExprNode) {
+  switchExprNode.asExpr() = any(ExpressionSwitchStmt ess).getExpr() and
+  DataFlow::localFlow(node, switchExprNode)
+}
+
+/**
+ * Holds if `inputNode` is the exit node of a parameter to `fd` and data flows
+ * from `inputNode` to the expression of a switch statement.
+ */
+private predicate isPossibleInputNode(DataFlow::Node inputNode, FuncDef fd) {
+  inputNode = any(FunctionInput inp | inp.isParameter(_)).getExitNode(fd) and
+  flowsToSwitchExpression(inputNode, _)
+}
+
+/**
+ * Gets a predecessor of `succ` without following edges corresponding to
+ * passing a constant case test in a switch statement which is switching on
+ * an expression which data flows to from `inputNode`.
+ */
+private ControlFlow::Node getANonTestPassingPredecessor(
+  ControlFlow::Node succ, DataFlow::Node inputNode
+) {
+  isPossibleInputNode(inputNode, succ.getRoot().(FuncDef)) and
+  result = succ.getAPredecessor() and
+  not exists(Expr testExpr, DataFlow::Node switchExprNode |
+    flowsToSwitchExpression(inputNode, switchExprNode) and
+    ControlFlow::isSwitchCaseTestPassingEdge(result, succ, switchExprNode.asExpr(), testExpr) and
+    testExpr.isConst()
+  )
+}
+
+private ControlFlow::Node getANonTestPassingReachingNodeRecursive(
+  ControlFlow::Node n, DataFlow::Node inputNode
+) {
+  isPossibleInputNode(inputNode, n.getRoot().(FuncDef)) and
+  (
+    result = n or
+    result =
+      getANonTestPassingReachingNodeRecursive(getANonTestPassingPredecessor(n, inputNode), inputNode)
+  )
+}
+
+/**
+ * Gets a node by following predecessors from `ret` without following edges
+ * corresponding to passing a constant case test in a switch statement which is
+ * switching on an expression which data flows to from `inputNode`.
+ */
+private ControlFlow::Node getANonTestPassingReachingNodeBase(
+  IR::ReturnInstruction ret, DataFlow::Node inputNode
+) {
+  result = getANonTestPassingReachingNodeRecursive(ret, inputNode)
+}
+
+/**
+ * Holds if every way to get from the entry node of the function to `ret`
+ * involves passing a constant test case in a switch statement which is
+ * switching on an expression which data flows to from `inputNode`.
+ */
+private predicate mustPassConstantCaseTestToReach(
+  IR::ReturnInstruction ret, DataFlow::Node inputNode
+) {
+  isPossibleInputNode(inputNode, ret.getRoot().(FuncDef)) and
+  not exists(ControlFlow::Node entry | entry = ret.getRoot().getEntryNode() |
+    entry = getANonTestPassingReachingNodeBase(ret, inputNode)
+  )
+}
+
+/**
+ * Holds if whenever `outp` of function `f` satisfies `p`, the input `inp` of
+ * `f` matched a constant in a case clause of a switch statement.
+ *
+ * We check this by looking for guards on `inp` that collectively dominate all
+ * the `return` statements in `f` that can return `true`. This means that if
+ * `f` returns `true`, one of the guards must have been satisfied. (Similar
+ * reasoning is applied for statements returning `false`, `nil` or a non-`nil`
+ * value.)
+ */
+predicate functionEnsuresInputIsConstant(
+  Function f, FunctionInput inp, FunctionOutput outp, DataFlow::Property p
+) {
+  exists(FuncDecl fd | fd.getFunction() = f |
+    exists(boolean b |
+      p.isBoolean(b) and
+      forex(DataFlow::Node ret, IR::ReturnInstruction ri |
+        ret = outp.getEntryNode(fd) and
+        ri.getReturnStmt().getAnExpr() = ret.asExpr() and
+        DataFlow::possiblyReturnsBool(fd, outp, ret, b)
+      |
+        mustPassConstantCaseTestToReach(ri, inp.getExitNode(fd))
+      )
+    )
+    or
+    p.isNonNil() and
+    forex(DataFlow::Node ret, IR::ReturnInstruction ri |
+      ret = outp.getEntryNode(fd) and
+      ri.getReturnStmt().getAnExpr() = ret.asExpr() and
+      DataFlow::possiblyReturnsNonNil(fd, outp, ret)
+    |
+      mustPassConstantCaseTestToReach(ri, inp.getExitNode(fd))
+    )
+    or
+    p.isNil() and
+    forex(DataFlow::Node ret, IR::ReturnInstruction ri |
+      ret = outp.getEntryNode(fd) and
+      ri.getReturnStmt().getAnExpr() = ret.asExpr() and
+      ret.asExpr() = Builtin::nil().getAReference()
+    |
+      exists(DataFlow::Node exprNode |
+        DataFlow::localFlow(inp.getExitNode(fd), exprNode) and
+        mustPassConstantCaseTestToReach(ri, inp.getExitNode(fd))
+      )
+    )
+  )
+}
+
+/**
+ * Holds if whenever `outputNode` satisfies `p`, `inputNode` matched a constant
+ * in a case clause of a switch statement.
+ */
+pragma[noinline]
+predicate inputIsConstantIfOutputHasProperty(
+  DataFlow::Node inputNode, DataFlow::Node outputNode, DataFlow::Property p
+) {
+  exists(Function f, FunctionInput inp, FunctionOutput outp, DataFlow::CallNode call |
+    functionEnsuresInputIsConstant(f, inp, outp, p) and
+    call = f.getACall() and
+    inputNode = inp.getNode(call) and
+    DataFlow::localFlow(outp.getNode(call), outputNode)
+  )
+}
+
+/**
+ * A comparison against a list of constants, acting as a sanitizer guard for
+ * `guardedExpr` by restricting it to a known value.
+ *
+ * Currently this only looks for functions containing a switch statement, but
+ * it could equally look for a check for membership of a constant map or
+ * constant array, which does not need to be in its own function.
+ */
+class ListOfConstantsComparisonSanitizerGuard extends TaintTracking::DefaultTaintSanitizerGuard {
+  DataFlow::Node guardedExpr;
+  boolean outcome;
+
+  ListOfConstantsComparisonSanitizerGuard() {
+    exists(DataFlow::Node outputNode, DataFlow::Property p |
+      inputIsConstantIfOutputHasProperty(guardedExpr, outputNode, p) and
+      p.checkOn(this, outcome, outputNode)
+    )
+  }
+
+  override predicate checks(Expr e, boolean branch) {
+    e = guardedExpr.asExpr() and branch = outcome
+  }
+}

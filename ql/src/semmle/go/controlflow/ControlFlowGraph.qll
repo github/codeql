@@ -274,6 +274,17 @@ module ControlFlow {
    * cannot return normally, but never fails to hold of a function that can return normally.
    */
   predicate mayReturnNormally(FuncDecl f) { CFG::mayReturnNormally(f.getBody()) }
+
+  /**
+   * Holds if `pred` is the node for the case `testExpr` in an expression
+   * switch statement which is switching on `switchExpr`, and `succ` is the
+   * node to be executed next if the case test succeeds.
+   */
+  predicate isSwitchCaseTestPassingEdge(
+    ControlFlow::Node pred, ControlFlow::Node succ, Expr switchExpr, Expr testExpr
+  ) {
+    CFG::isSwitchCaseTestPassingEdge(pred, succ, switchExpr, testExpr)
+  }
 }
 
 class Write = ControlFlow::WriteNode;

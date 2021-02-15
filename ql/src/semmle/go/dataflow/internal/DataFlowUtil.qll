@@ -331,6 +331,20 @@ class FuncLitNode extends FunctionNode::Range, ExprNode {
   override ResultNode getAResult() { result.getRoot() = getExpr() }
 }
 
+/**
+ * Gets a possible target of call `cn`.class
+ *
+ * This is written explicitly like this instead of using `getCalleeNode().getAPredecessor*()`
+ * or `result.getASuccessor*() = cn.getCalleeNode()` because the explicit form inhibits the
+ * optimizer from combining this with other uses of `getASuccessor*()`, which can lead to
+ * recursion through a magic side-condition if those other users call `getACallee()` and thus
+ * pointless recomputation of `getACallee()` each recursive iteration.
+ */
+private DataFlow::Node getACalleeSource(DataFlow::CallNode cn) {
+  result = cn.getCalleeNode() or
+  result.getASuccessor() = getACalleeSource(cn)
+}
+
 /** A data flow node that represents a call. */
 class CallNode extends ExprNode {
   override CallExpr expr;
@@ -338,7 +352,7 @@ class CallNode extends ExprNode {
   /** Gets the declared target of this call */
   Function getTarget() { result = expr.getTarget() }
 
-  private DataFlow::Node getACalleeSource() { result.getASuccessor*() = getCalleeNode() }
+  private DataFlow::Node getACalleeSource() { result = getACalleeSource(this) }
 
   /**
    * Gets the definition of a possible target of this call.
@@ -1184,10 +1198,10 @@ abstract class BarrierGuard extends Node {
       fd.getFunction() = f and
       localFlow(inp.getExitNode(fd), arg) and
       ret = outp.getEntryNode(fd) and
-      // Case: a function like "if someBarrierGuard(arg) { return true } else { return false }"
       (
+        // Case: a function like "if someBarrierGuard(arg) { return true } else { return false }"
         exists(ControlFlow::ConditionGuardNode guard |
-          guards(guard, arg) and
+          this.guards(guard, arg) and
           guard.dominates(ret.getBasicBlock())
         |
           exists(boolean b |
@@ -1221,7 +1235,7 @@ abstract class BarrierGuard extends Node {
           DataFlow::Property outpProp
         |
           not exists(DataFlow::Node otherRet | otherRet = outp.getEntryNode(fd) | otherRet != ret) and
-          guardingFunction(f2, inp2, outp2, outpProp) and
+          this.guardingFunction(f2, inp2, outp2, outpProp) and
           c = f2.getACall() and
           arg = inp2.getNode(c) and
           (
@@ -1242,7 +1256,7 @@ abstract class BarrierGuard extends Node {
  * Holds if `ret` is a data-flow node whose value contributes to the output `res` of `fd`,
  * and that node may have Boolean value `b`.
  */
-private predicate possiblyReturnsBool(FuncDecl fd, FunctionOutput res, Node ret, Boolean b) {
+predicate possiblyReturnsBool(FuncDecl fd, FunctionOutput res, Node ret, Boolean b) {
   ret = res.getEntryNode(fd) and
   ret.getType().getUnderlyingType() instanceof BoolType and
   not ret.getBoolValue() != b
@@ -1264,7 +1278,7 @@ private predicate onlyPossibleReturnOfBool(FuncDecl fd, FunctionOutput res, Node
  * Holds if `ret` is a data-flow node whose value contributes to the output `res` of `fd`,
  * and that node may evaluate to a value other than `nil`.
  */
-private predicate possiblyReturnsNonNil(FuncDecl fd, FunctionOutput res, Node ret) {
+predicate possiblyReturnsNonNil(FuncDecl fd, FunctionOutput res, Node ret) {
   ret = res.getEntryNode(fd) and
   not ret.asExpr() = Builtin::nil().getAReference()
 }

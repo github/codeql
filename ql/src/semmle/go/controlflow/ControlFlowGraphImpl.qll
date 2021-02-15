@@ -1058,9 +1058,14 @@ module CFG {
         pred = getExprEnd(i, false) and
         succ = getExprStart(i + 1)
         or
-        pred = getExprEnd(i, true) and
-        succ = getBodyStart()
+        isPassingEdge(i, pred, succ, _)
       )
+    }
+
+    predicate isPassingEdge(int i, ControlFlow::Node pred, ControlFlow::Node succ, Expr testExpr) {
+      pred = getExprEnd(i, true) and
+      succ = getBodyStart() and
+      testExpr = getExpr(i)
     }
 
     override ControlFlowTree getChildTree(int i) { result = getStmt(i) }
@@ -1969,6 +1974,20 @@ module CFG {
   cached
   predicate mayReturnNormally(ControlFlowTree root) {
     exists(ControlFlow::Node last, Completion cmpl | lastNode(root, last, cmpl) and cmpl != Panic())
+  }
+
+  /**
+   * Holds if `pred` is the node for the case `testExpr` in an expression
+   * switch statement which is switching on `switchExpr`, and `succ` is the
+   * node to be executed next if the case test succeeds.
+   */
+  cached
+  predicate isSwitchCaseTestPassingEdge(
+    ControlFlow::Node pred, ControlFlow::Node succ, Expr switchExpr, Expr testExpr
+  ) {
+    exists(ExpressionSwitchStmt ess | ess.getExpr() = switchExpr |
+      ess.getACase().(CaseClauseTree).isPassingEdge(_, pred, succ, testExpr)
+    )
   }
 
   /** Gets a successor of `nd`, that is, a node that is executed after `nd`. */
