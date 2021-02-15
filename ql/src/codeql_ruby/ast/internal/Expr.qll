@@ -290,6 +290,18 @@ module Rescue {
   }
 }
 
+module RescueExpr {
+  class Range extends Expr::Range, @rescue_modifier {
+    final override Generated::RescueModifier generated;
+
+    final Stmt getBody() { result = generated.getBody() }
+
+    final Stmt getHandler() { result = generated.getHandler() }
+
+    final override string toString() { result = "... rescue ..." }
+  }
+}
+
 module Pair {
   class Range extends Expr::Range, @pair {
     final override Generated::Pair generated;

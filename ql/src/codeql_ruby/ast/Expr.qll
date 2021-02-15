@@ -229,6 +229,8 @@ class Pair extends Expr, @pair {
 class Rescue extends Expr, @rescue {
   final override Rescue::Range range;
 
+  final override string getAPrimaryQlClass() { result = "Rescue" }
+
   /**
    * Gets the `n`th exception to match, if any. For example `FirstError` or `SecondError` in:
    * ```rb
@@ -270,4 +272,32 @@ class Rescue extends Expr, @rescue {
    * Gets the exception handler body.
    */
   final StmtSequence getBody() { result = range.getBody() }
+}
+
+/**
+ * An expression with a `rescue` modifier. For example:
+ * ```rb
+ * contents = read_file rescue ""
+ * ```
+ */
+class RescueExpr extends Expr, @rescue_modifier {
+  final override RescueExpr::Range range;
+
+  final override string getAPrimaryQlClass() { result = "RescueExpr" }
+
+  /**
+   * Gets the body of this `RescueExpr`.
+   * ```rb
+   * body rescue handler
+   * ```
+   */
+  final Stmt getBody() { result = range.getBody() }
+
+  /**
+   * Gets the exception handler of this `RescueExpr`.
+   * ```rb
+   * body rescue handler
+   * ```
+   */
+  final Stmt getHandler() { result = range.getHandler() }
 }
