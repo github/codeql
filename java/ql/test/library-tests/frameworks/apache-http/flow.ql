@@ -2,6 +2,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.XSS
+import semmle.code.java.security.UrlRedirect
 
 class Conf extends TaintTracking::Configuration {
   Conf() { this = "qltest:frameworks:apache-http" }
@@ -16,6 +17,8 @@ class Conf extends TaintTracking::Configuration {
     exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
     or
     n instanceof XssSink
+    or
+    n instanceof UrlRedirectSink
   }
 }
 

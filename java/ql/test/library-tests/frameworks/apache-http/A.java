@@ -1,5 +1,6 @@
 import org.apache.http.*;
 import org.apache.http.protocol.*;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.util.*;
 import org.apache.http.entity.*;
 
@@ -36,6 +37,28 @@ class A {
             A.sink(EntityUtils.getContentMimeType(ent));
             res.setEntity(new StringEntity("<a href='" + req.getRequestLine().getUri() + "'>a</a>"));
             EntityUtils.updateEntity(res, new ByteArrayEntity(EntityUtils.toByteArray(ent)));
+            res.setHeader("Location", req.getRequestLine().getUri());
+            res.setHeader(new BasicHeader("Location", req.getRequestLine().getUri()));
         }
+    }
+
+    void test2() {
+        ByteArrayBuffer bbuf = new ByteArrayBuffer(42);
+        bbuf.append((byte[]) taint(), 0, 3);
+        sink(bbuf.buffer());
+        sink(bbuf.toByteArray());
+
+        CharArrayBuffer cbuf = new CharArrayBuffer(42);
+        cbuf.append(bbuf.toByteArray(), 0, 3);
+        sink(cbuf.toCharArray());
+        sink(cbuf.toString());
+        sink(cbuf.subSequence(0, 3));
+        sink(cbuf.substring(0, 3));
+        sink(cbuf.substringTrimmed(0, 3));
+
+        sink(Args.notNull(taint(), "x"));
+        sink(Args.notEmpty((String) taint(), "x"));
+        sink(Args.notBlank((String) taint(), "x"));
+        sink(Args.notNull("x", (String) taint())); // Good
     }
 }

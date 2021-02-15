@@ -48,7 +48,7 @@ class ApacheHttpRequestHandlerParameter extends Parameter {
   ApacheHttpRequestHandlerParameter() {
     exists(Method m, Interface i |
       i.hasQualifiedName(["org.apache.http.protocol", "org.apache.hc.core5.http.io"],
-        "HttpRequestHandler") and
+        ["HttpRequestHandler", "HttpServerRequestHandler"]) and
       m.getDeclaringType().extendsOrImplements+(i) and
       m.hasName("handle") and
       this = m.getParameter(0)
@@ -264,7 +264,7 @@ private class BufferMethod extends TaintPreservingCallable {
           .hasQualifiedName(["org.apache.http.util", "org.apache.hc.core5.util"],
             ["ByteArrayBuffer", "CharArrayBuffer"]) and
       m.hasName([
-          "append", "buffer", "subSequence", "substring", "substringTrimmed", "toByteAray",
+          "append", "buffer", "subSequence", "substring", "substringTrimmed", "toByteArray",
           "toCharArray", "toString"
         ])
     )
