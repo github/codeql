@@ -1,17 +1,15 @@
 /**
- * @name Insecure LDAP Endpoint Configuration
- * @description Java application configured to disable LDAP endpoint identification does not validate the SSL certificate to properly ensure that it is actually associated with that host.
+ * @name Insecure LDAPS Endpoint Configuration
+ * @description Java application configured to disable LDAPS endpoint identification does not validate the SSL certificate to properly ensure that it is actually associated with that host.
  * @kind problem
- * @id java/insecure-ldap-endpoint
+ * @id java/insecure-ldaps-endpoint
  * @tags security
  *       external/cwe-297
  */
 
 import java
 
-/**
- * The method to set a system property.
- */
+/** The method to set a system property. */
 class SetSystemPropertyMethod extends Method {
   SetSystemPropertyMethod() {
     this.hasName("setProperty") and
@@ -19,19 +17,22 @@ class SetSystemPropertyMethod extends Method {
   }
 }
 
-/**
- * The method to set Java properties.
- */
-class SetPropertyMethod extends Method {
-  SetPropertyMethod() {
-    this.hasName("setProperty") and
-    this.getDeclaringType().hasQualifiedName("java.util", "Properties")
-  }
+/** The class `java.util.Hashtable`. */
+class TypeHashtable extends Class {
+  TypeHashtable() { this.getSourceDeclaration().hasQualifiedName("java.util", "Hashtable") }
 }
 
 /**
- * The method to set system properties.
+ * The method to set Java properties either through `setProperty` declared in the class `Properties` or `put` declared in its parent class `HashTable`.
  */
+class SetPropertyMethod extends Method {
+  SetPropertyMethod() {
+    this.getDeclaringType().getAnAncestor() instanceof TypeHashtable and
+    this.hasName(["put", "setProperty"])
+  }
+}
+
+/** The method to set system properties. */
 class SetSystemPropertiesMethod extends Method {
   SetSystemPropertiesMethod() {
     this.hasName("setProperties") and
@@ -39,27 +40,62 @@ class SetSystemPropertiesMethod extends Method {
   }
 }
 
+/** Holds if an expression is evaluated to the string literal `com.sun.jndi.ldap.object.disableEndpointIdentification`. */
+predicate isPropertyDisableLdapEndpointId(Expr expr) {
+  expr.(CompileTimeConstantExpr).getStringValue() =
+    "com.sun.jndi.ldap.object.disableEndpointIdentification"
+  or
+  exists(Field f |
+    expr = f.getAnAccess() and
+    f.getAnAssignedValue().(StringLiteral).getValue() =
+      "com.sun.jndi.ldap.object.disableEndpointIdentification"
+  )
+}
+
+/** Holds if an expression is evaluated to the boolean value true. */
+predicate isBooleanTrue(Expr expr) {
+  expr.(CompileTimeConstantExpr).getStringValue() = "true" // "true"
+  or
+  expr.(BooleanLiteral).getBooleanValue() = true // true
+  or
+  exists(MethodAccess ma |
+    expr = ma and
+    ma.getMethod().hasName("toString") and
+    ma.getQualifier().(FieldAccess).getField().hasName("TRUE") and
+    ma.getQualifier()
+        .(FieldAccess)
+        .getField()
+        .getDeclaringType()
+        .hasQualifiedName("java.lang", "Boolean") // Boolean.TRUE.toString()
+  )
+}
+
+/** Holds if `ma` is in a test class or method. */
+predicate isTestMethod(MethodAccess ma) {
+  ma.getMethod() instanceof TestMethod or
+  ma.getEnclosingCallable().getDeclaringType().getPackage().getName().matches("%test%") or
+  ma.getEnclosingCallable().getDeclaringType().getName().toLowerCase().matches("%test%")
+}
+
 /** Holds if `MethodAccess` ma disables SSL endpoint check. */
 predicate isInsecureSSLEndpoint(MethodAccess ma) {
   (
     ma.getMethod() instanceof SetSystemPropertyMethod and
-    (
-      ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() =
-        "com.sun.jndi.ldap.object.disableEndpointIdentification" and
-      ma.getArgument(1).(CompileTimeConstantExpr).getStringValue() = "true" //com.sun.jndi.ldap.object.disableEndpointIdentification=true
-    )
+    isPropertyDisableLdapEndpointId(ma.getArgument(0)) and
+    isBooleanTrue(ma.getArgument(1)) //com.sun.jndi.ldap.object.disableEndpointIdentification=true
     or
     ma.getMethod() instanceof SetSystemPropertiesMethod and
     exists(MethodAccess ma2 |
       ma2.getMethod() instanceof SetPropertyMethod and
-      ma2.getArgument(0).(CompileTimeConstantExpr).getStringValue() =
-        "com.sun.jndi.ldap.object.disableEndpointIdentification" and
-      ma2.getArgument(1).(CompileTimeConstantExpr).getStringValue() = "true" and //com.sun.jndi.ldap.object.disableEndpointIdentification=true
+      isPropertyDisableLdapEndpointId(ma2.getArgument(0)) and
+      isBooleanTrue(ma2.getArgument(1)) and //com.sun.jndi.ldap.object.disableEndpointIdentification=true
       ma2.getQualifier().(VarAccess).getVariable().getAnAccess() = ma.getArgument(0) // systemProps.setProperties(properties)
     )
   )
 }
 
 from MethodAccess ma
-where isInsecureSSLEndpoint(ma)
-select ma, "SSL configuration allows insecure endpoint configuration"
+where
+  isInsecureSSLEndpoint(ma) and
+  not isTestMethod(ma)
+select ma, "LDAPS configuration allows insecure endpoint identification"

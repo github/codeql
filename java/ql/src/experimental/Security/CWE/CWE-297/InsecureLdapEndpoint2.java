@@ -1,4 +1,4 @@
-public class InsecureLdapEndpoint {
+public class InsecureLdapEndpoint2 {
     public Hashtable<String, String> createConnectionEnv() {
         Hashtable<String, String> env = new Hashtable<String, String>();
         env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
@@ -8,9 +8,8 @@ public class InsecureLdapEndpoint {
         env.put(Context.SECURITY_PRINCIPAL, "username");
         env.put(Context.SECURITY_CREDENTIALS, "secpassword");
 
-        // BAD - Test configuration with disabled SSL endpoint check.
+        // GOOD - No configuration to disable SSL endpoint check since it is enabled by default.
         {
-            System.setProperty("com.sun.jndi.ldap.object.disableEndpointIdentification", "true");
         }
 
         return env;
