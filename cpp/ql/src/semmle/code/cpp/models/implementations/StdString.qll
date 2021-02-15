@@ -12,7 +12,7 @@ import semmle.code.cpp.models.interfaces.DataFlow
  * The `std::basic_string` template class instantiations.
  */
 private class StdBasicString extends ClassTemplateInstantiation {
-  StdBasicString() { this.hasQualifiedName("std", "basic_string") }
+  StdBasicString() { this.hasQualifiedName(["std", "bsl"], "basic_string") }
 }
 
 /**
@@ -127,7 +127,7 @@ private class StdStringFrontBack extends TaintFunction {
  */
 private class StdStringPlus extends TaintFunction {
   StdStringPlus() {
-    this.hasQualifiedName("std", "operator+") and
+    this.hasQualifiedName(["std", "bsl"], "operator+") and
     this.getUnspecifiedType() instanceof StdBasicString
   }
 
@@ -253,13 +253,6 @@ private class StdStringSubstr extends TaintFunction {
 }
 
 /**
- * The `std::basic_stringstream` template class instantiations.
- */
-private class StdBasicStringStream extends ClassTemplateInstantiation {
-  StdBasicStringStream() { this.hasQualifiedName("std", "basic_stringstream") }
-}
-
-/**
  * The `std::string` functions `at` and `operator[]`.
  */
 private class StdStringAt extends TaintFunction {
@@ -280,7 +273,7 @@ private class StdStringAt extends TaintFunction {
  * The `std::basic_istream` template class instantiations.
  */
 private class StdBasicIStream extends ClassTemplateInstantiation {
-  StdBasicIStream() { this.hasQualifiedName("std", "basic_istream") }
+  StdBasicIStream() { this.hasQualifiedName(["std", "bsl"], "basic_istream") }
 }
 
 /**
@@ -314,7 +307,7 @@ private class StdIStreamIn extends DataFlowFunction, TaintFunction {
  */
 private class StdIStreamInNonMember extends DataFlowFunction, TaintFunction {
   StdIStreamInNonMember() {
-    this.hasQualifiedName("std", "operator>>") and
+    this.hasQualifiedName(["std", "bsl"], "operator>>") and
     this.getUnspecifiedType().(ReferenceType).getBaseType() instanceof StdBasicIStream
   }
 
@@ -462,7 +455,7 @@ private class StdIStreamGetLine extends DataFlowFunction, TaintFunction {
  * The (non-member) function `std::getline`.
  */
 private class StdGetLine extends DataFlowFunction, TaintFunction {
-  StdGetLine() { this.hasQualifiedName("std", "getline") }
+  StdGetLine() { this.hasQualifiedName(["std", "bsl"], "getline") }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     // flow from first parameter to return value
@@ -488,7 +481,7 @@ private class StdGetLine extends DataFlowFunction, TaintFunction {
  * The `std::basic_ostream` template class instantiations.
  */
 private class StdBasicOStream extends ClassTemplateInstantiation {
-  StdBasicOStream() { this.hasQualifiedName("std", "basic_ostream") }
+  StdBasicOStream() { this.hasQualifiedName(["std", "bsl"], "basic_ostream") }
 }
 
 /**
@@ -535,7 +528,7 @@ private class StdOStreamOut extends DataFlowFunction, TaintFunction {
  */
 private class StdOStreamOutNonMember extends DataFlowFunction, TaintFunction {
   StdOStreamOutNonMember() {
-    this.hasQualifiedName("std", "operator<<") and
+    this.hasQualifiedName(["std", "bsl"], "operator<<") and
     this.getUnspecifiedType().(ReferenceType).getBaseType() instanceof StdBasicOStream
   }
 
@@ -561,6 +554,13 @@ private class StdOStreamOutNonMember extends DataFlowFunction, TaintFunction {
     input.isReturnValueDeref() and
     output.isParameterDeref(0)
   }
+}
+
+/**
+ * The `std::basic_stringstream` template class instantiations.
+ */
+private class StdBasicStringStream extends ClassTemplateInstantiation {
+  StdBasicStringStream() { this.hasQualifiedName(["std", "bsl"], "basic_stringstream") }
 }
 
 /**
@@ -609,7 +609,7 @@ private class StdStringStreamStr extends TaintFunction {
  * The `std::basic_ios` template class instantiations.
  */
 private class StdBasicIOS extends ClassTemplateInstantiation {
-  StdBasicIOS() { this.hasQualifiedName("std", "basic_ios") }
+  StdBasicIOS() { this.hasQualifiedName(["std", "bsl"], "basic_ios") }
 }
 
 /**
