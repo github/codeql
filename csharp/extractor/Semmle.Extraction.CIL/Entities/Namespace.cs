@@ -22,8 +22,9 @@ namespace Semmle.Extraction.CIL.Entities
                 trapFile.Write('.');
             }
             trapFile.Write(Name);
-            trapFile.Write(";namespace");
         }
+
+        public override string IdSuffix => ";namespacee";
 
         public override bool Equals(object? obj)
         {

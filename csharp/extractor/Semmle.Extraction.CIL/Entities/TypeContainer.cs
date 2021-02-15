@@ -1,5 +1,3 @@
-using System;
-using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.IO;
 
@@ -12,6 +10,16 @@ namespace Semmle.Extraction.CIL.Entities
     {
         protected TypeContainer(Context cx) : base(cx)
         {
+        }
+
+        public abstract string IdSuffix { get; }
+
+        public override void WriteQuotedId(TextWriter trapFile)
+        {
+            trapFile.Write("@\"");
+            WriteId(trapFile);
+            trapFile.Write(IdSuffix);
+            trapFile.Write('\"');
         }
 
         public abstract IEnumerable<Type> MethodParameters { get; }

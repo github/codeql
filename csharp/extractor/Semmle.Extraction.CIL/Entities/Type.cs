@@ -45,12 +45,9 @@ namespace Semmle.Extraction.CIL.Entities
         /// </param>
         public abstract void WriteId(TextWriter trapFile, bool inContext);
 
-        public sealed override void WriteId(TextWriter trapFile)
-        {
-            WriteId(trapFile, false);
-            trapFile.Write(";cil-type");
-        }
+        public sealed override void WriteId(TextWriter trapFile) => WriteId(trapFile, false);
 
+        public override string IdSuffix => ";cil-type";
 
         /// <summary>
         /// Returns the friendly qualified name of types, such as
