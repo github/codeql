@@ -16,7 +16,10 @@ private class Send extends AliasFunction, ArrayFunction, SideEffectFunction, Rem
         "send", // send(socket, buf, len, flags)
         "sendto", // sendto(socket, buf, len, flags, to, tolen)
         "sendmsg", // sendmsg(socket, msg, flags)
-        "write" // write(socket, buf, len);
+        "write", // write(socket, buf, len)
+        "writev", // writev(socket, buf, len)
+        "pwritev", // pwritev(socket, buf, len, offset)
+        "pwritev2" // pwritev2(socket, buf, len, offset, flags)
       ])
   }
 
