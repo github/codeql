@@ -83,8 +83,8 @@ class UndefStmt extends Stmt, @undef {
  * An `alias` statement. For example:
  * ```rb
  * - alias alias_name method_name
- * - undef foo :method_name
- * - undef bar :"method_#{ name }"
+ * - alias foo :method_name
+ * - alias bar :"method_#{ name }"
  * ```
  */
 class AliasStmt extends Stmt, @alias {
