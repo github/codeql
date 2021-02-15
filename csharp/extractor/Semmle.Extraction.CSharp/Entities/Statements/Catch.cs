@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         private static readonly string systemExceptionName = typeof(System.Exception).ToString();
 
         private Catch(Context cx, CatchClauseSyntax node, Try parent, int child)
-            : base(cx, node, StmtKind.CATCH, parent, child, cx.Create(node.GetLocation())) { }
+            : base(cx, node, StmtKind.CATCH, parent, child, cx.CreateLocation(node.GetLocation())) { }
 
         protected override void PopulateStatement(TextWriter trapFile)
         {

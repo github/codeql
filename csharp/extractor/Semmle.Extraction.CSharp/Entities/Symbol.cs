@@ -78,7 +78,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 if (loc != null)
                 {
                     // Some built in operators lack locations, so loc is null.
-                    yield return Context.Create(ReportingLocation);
+                    yield return Context.CreateLocation(ReportingLocation);
                     if (Context.Extractor.OutputPath != null && loc.Kind == LocationKind.SourceFile)
                         yield return Assembly.CreateOutputAssembly(Context);
                 }
@@ -124,7 +124,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => Context.Defines(symbol);
 
-        public Extraction.Entities.Location Location => Context.Create(ReportingLocation);
+        public Extraction.Entities.Location Location => Context.CreateLocation(ReportingLocation);
 
         protected void PopulateMetadataHandle(TextWriter trapFile)
         {

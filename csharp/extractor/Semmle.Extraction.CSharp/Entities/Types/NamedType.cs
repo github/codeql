@@ -106,7 +106,7 @@ namespace Semmle.Extraction.CSharp.Entities
             get
             {
                 foreach (var l in GetLocations(symbol))
-                    yield return Context.Create(l);
+                    yield return Context.CreateLocation(l);
 
                 if (Context.Extractor.OutputPath != null && symbol.DeclaringSyntaxReferences.Any())
                     yield return Assembly.CreateOutputAssembly(Context);

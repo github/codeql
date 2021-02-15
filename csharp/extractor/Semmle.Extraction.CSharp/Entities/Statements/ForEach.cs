@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             var typeSymbol = semanticModel.GetDeclaredSymbol(Stmt);
             var type = typeSymbol.GetAnnotatedType();
 
-            var location = cx.Create(Stmt.Identifier.GetLocation());
+            var location = cx.CreateLocation(Stmt.Identifier.GetLocation());
 
             Expressions.VariableDeclaration.Create(cx, typeSymbol, type, Stmt.Type, location, Stmt.Type.IsVar, this, 0);
 
@@ -45,7 +45,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
             if (info.Equals(default))
             {
-                cx.ExtractionError("Could not get foreach statement info", null, Location.Create(cx, this.ReportingLocation), severity: Util.Logging.Severity.Info);
+                cx.ExtractionError("Could not get foreach statement info", null, cx.CreateLocation(this.ReportingLocation), severity: Util.Logging.Severity.Info);
                 return;
             }
 

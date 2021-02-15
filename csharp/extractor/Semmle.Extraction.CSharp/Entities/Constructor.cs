@@ -60,7 +60,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             var initInfo = new ExpressionInfo(Context,
                 AnnotatedTypeSymbol.CreateNotAnnotated(initializerType),
-                Context.Create(initializer.ThisOrBaseKeyword.GetLocation()),
+                Context.CreateLocation(initializer.ThisOrBaseKeyword.GetLocation()),
                 Kinds.ExprKind.CONSTRUCTOR_INIT,
                 this,
                 -1,

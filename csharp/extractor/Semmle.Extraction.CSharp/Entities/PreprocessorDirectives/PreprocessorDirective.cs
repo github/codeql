@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulatePreprocessor(trapFile);
 
             trapFile.preprocessor_directive_active(this, trivia.IsActive);
-            trapFile.preprocessor_directive_location(this, cx.Create(ReportingLocation));
+            trapFile.preprocessor_directive_location(this, cx.CreateLocation(ReportingLocation));
 
             if (!cx.Extractor.Standalone)
             {
