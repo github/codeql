@@ -15,33 +15,21 @@ module Logrus {
     result.matches(["Debug%", "Error%", "Fatal%", "Info%", "Panic%", "Print%", "Trace%", "Warn%"])
   }
 
-  private class LogCall extends LoggerCall::Range, DataFlow::CallNode {
-    LogCall() { this.getTarget().hasQualifiedName(packagePath(), getALogResultName()) }
-
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
+  bindingset[result]
+  private string getAnEntryUpdatingMethodName() {
+    result.regexpMatch("With(Context|Error|Fields?|Time)")
   }
 
-  private class LogEntryCall extends LoggerCall::Range, DataFlow::MethodCallNode {
-    LogEntryCall() {
-      this.getTarget().(Method).hasQualifiedName(packagePath(), "Entry", getALogResultName())
+  private class LogCall extends LoggerCall::Range, DataFlow::CallNode {
+    LogCall() {
+      this.getTarget().hasQualifiedName(packagePath(), getALogResultName()) or
+      this.getTarget().(Method).hasQualifiedName(packagePath(), "Entry", getALogResultName()) or
+      this.getTarget().hasQualifiedName(packagePath(), getAnEntryUpdatingMethodName()) or
+      this.getTarget()
+          .(Method)
+          .hasQualifiedName(packagePath(), "Entry", getAnEntryUpdatingMethodName())
     }
 
-    override DataFlow::Node getAMessageComponent() {
-      result = this.getAnArgument()
-      or
-      exists(DataFlow::MethodCallNode addFieldCall, DataFlow::SsaNode entry |
-        entry.getAUse() = this.getReceiver() and
-        entry.getAUse() = addFieldCall.getReceiver()
-      |
-        addFieldCall.getCalleeName().regexpMatch("With(Context|Error|Fields?|Time)") and
-        result = addFieldCall.getAnArgument()
-      )
-      or
-      exists(DataFlow::CallNode entryBuild |
-        entryBuild.getASuccessor*() = this.getReceiver() and
-        entryBuild.getCalleeName().regexpMatch("With(Context|Error|Fields?|Time)") and
-        result = entryBuild.getAnArgument()
-      )
-    }
+    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
   }
 }

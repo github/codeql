@@ -5,11 +5,12 @@ package main
 import (
 	"context"
 	"errors"
+
 	"github.com/sirupsen/logrus"
 )
 
 func logSomething(entry *logrus.Entry) {
-	entry.Traceln(text) // $logger=text $f-:logger=fields
+	entry.Traceln(text) // $logger=text
 }
 
 func logrusCalls() {
@@ -17,13 +18,13 @@ func logrusCalls() {
 	var fields logrus.Fields = nil
 	var fn logrus.LogFunction = nil
 	var ctx context.Context
-	tmp := logrus.WithContext(ctx)  //
-	tmp.Debugf(fmt, text)           // $logger=ctx $logger=fmt $logger=text
-	tmp = logrus.WithError(err)     //
-	tmp.Warn(text)                  // $logger=err $logger=text
-	tmp = logrus.WithFields(fields) //
-	tmp.Infoln(text)                // $logger=fields $logger=text
-	tmp = logrus.WithFields(fields) //
+	tmp := logrus.WithContext(ctx)  // $logger=ctx
+	tmp.Debugf(fmt, text)           // $logger=fmt $logger=text
+	tmp = logrus.WithError(err)     // $logger=err
+	tmp.Warn(text)                  // $logger=text
+	tmp = logrus.WithFields(fields) // $logger=fields
+	tmp.Infoln(text)                // $logger=text
+	tmp = logrus.WithFields(fields) // $logger=fields
 	logSomething(tmp)
 
 	logrus.Error(text)       // $logger=text
