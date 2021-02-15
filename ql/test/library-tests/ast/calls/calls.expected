@@ -84,6 +84,8 @@ callsWithArguments
 | calls.rb:36:3:36:16 | call to yield | yield | 1 | calls.rb:36:14:36:16 | 200 |
 | calls.rb:54:1:54:14 | call to some_func | some_func | 0 | calls.rb:54:11:54:13 | call to foo |
 | calls.rb:55:1:55:17 | call to some_func | some_func | 0 | calls.rb:55:11:55:16 | call to foo |
+| calls.rb:234:1:234:8 | ...[...] | [] | 0 | calls.rb:234:5:234:7 | call to bar |
+| calls.rb:235:1:235:14 | ...[...] | [] | 0 | calls.rb:235:8:235:13 | call to bar |
 | calls.rb:266:1:266:9 | call to foo | foo | 0 | calls.rb:266:5:266:8 | &... |
 | calls.rb:267:1:267:12 | call to foo | foo | 0 | calls.rb:267:5:267:11 | &... |
 | calls.rb:270:1:270:9 | call to foo | foo | 0 | calls.rb:270:5:270:8 | *... |
@@ -156,7 +158,9 @@ callsWithReceiver
 | calls.rb:223:14:223:19 | call to foo | calls.rb:223:14:223:14 | X |
 | calls.rb:229:10:229:15 | call to bar | calls.rb:229:10:229:10 | X |
 | calls.rb:230:3:230:8 | call to baz | calls.rb:230:3:230:3 | X |
+| calls.rb:234:1:234:8 | ...[...] | calls.rb:234:1:234:3 | call to foo |
 | calls.rb:235:1:235:6 | call to foo | calls.rb:235:1:235:1 | X |
+| calls.rb:235:1:235:14 | ...[...] | calls.rb:235:1:235:6 | call to foo |
 | calls.rb:235:8:235:13 | call to bar | calls.rb:235:8:235:8 | X |
 | calls.rb:238:15:238:20 | call to baz | calls.rb:238:15:238:15 | X |
 | calls.rb:242:1:242:6 | call to foo | calls.rb:242:1:242:1 | X |

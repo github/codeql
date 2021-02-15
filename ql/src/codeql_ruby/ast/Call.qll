@@ -84,6 +84,18 @@ class Call extends Expr {
 }
 
 /**
+ * An element reference; a call to the `[]` method.
+ * ```rb
+ * a[0]
+ * ```
+ */
+class ElementReference extends Call, @element_reference {
+  final override ElementReference::Range range;
+
+  final override string getAPrimaryQlClass() { result = "ElementReference" }
+}
+
+/**
  * A call to `yield`.
  * ```rb
  * yield x, y
