@@ -175,7 +175,7 @@ class CallCfgNode extends CfgNode {
    */
   Node getFunction() { result.asCfgNode() = node.getFunction() }
 
-  /** Gets the data-flow node corresponding to the nth argument of the call corresponding to this data-flow node */
+  /** Gets the data-flow node corresponding to the i'th argument of the call corresponding to this data-flow node */
   Node getArg(int i) { result.asCfgNode() = node.getArg(i) }
 
   /** Gets the data-flow node corresponding to the named argument of the call corresponding to this data-flow node */
