@@ -1,6 +1,6 @@
 /**
  * @name Depending upon JCenter/Bintray as an artifact repository
- * @description JCenter & Bintray are deprecated
+ * @description Using a deprecated artifact repository may eventually give attackers access for a supply chain attack.
  * @kind problem
  * @problem.severity error
  * @precision very-high
