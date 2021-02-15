@@ -1231,7 +1231,7 @@ module Redux {
      * callback collects all the intermediate results into the final result:
      *
      * ```js
-     *   creatorSelector(
+     *   createSelector(
      *     state => state.foo,
      *     state => state.bar,
      *     ([foo, bar]) => {...}
