@@ -316,7 +316,7 @@ private class LeftToRightPostOrderNodes =
   @argument_list or @array or @bare_string or @bare_symbol or @binary or @block_argument or
       @break or @call or @chained_string or @delimited_symbol or @destructured_left_assignment or
       @destructured_parameter or @element_reference or @exception_variable or @hash or
-      @hash_splat_argument or @heredoc_body or @interpolation or @left_assignment_list or @next or
+      @hash_splat_argument or @interpolation or @left_assignment_list or @next or
       @operator_assignment or @pair or @parenthesized_statements or @range or @redo or @regex or
       @rest_assignment or @retry or @return or @right_assignment_list or @scope_resolution or
       @token_simple_symbol or @splat_argument or @string__ or @string_array or @subshell or
@@ -684,10 +684,7 @@ module Trees {
   }
 
   private class HeredocBeginningTree extends StandardPreOrderTree, HeredocBeginning {
-    final override ControlFlowTree getChildNode(int i) {
-      i = 0 and
-      result = heredoc(this)
-    }
+    final override ControlFlowTree getChildNode(int i) { result = heredoc(this).getChild(i) }
   }
 
   private class IdentifierTree extends LeafTree, Identifier { }
