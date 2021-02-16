@@ -599,7 +599,7 @@ dependencies = [
 [[package]]
 name = "tree-sitter-ruby"
 version = "0.17.0"
-source = "git+https://github.com/nickrolfe/tree-sitter-ruby.git?branch=range_fields#ef0fb075c77dbd3cd16f69cf3eff44f4edd55381"
+source = "git+https://github.com/tree-sitter/tree-sitter-ruby.git?rev=2503f005d917c7aa4726dfe19398dc1a4a299d94#2503f005d917c7aa4726dfe19398dc1a4a299d94"
 dependencies = [
  "cc",
  "tree-sitter",

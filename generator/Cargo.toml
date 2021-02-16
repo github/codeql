@@ -10,4 +10,4 @@ edition = "2018"
 node-types = { path = "../node-types" }
 tracing = "0.1"
 tracing-subscriber = { version = "0.2", features = ["env-filter"] }
-tree-sitter-ruby = { git = "https://github.com/nickrolfe/tree-sitter-ruby.git", branch = "range_fields" }
+tree-sitter-ruby = { git = "https://github.com/tree-sitter/tree-sitter-ruby.git", rev = "2503f005d917c7aa4726dfe19398dc1a4a299d94" }
