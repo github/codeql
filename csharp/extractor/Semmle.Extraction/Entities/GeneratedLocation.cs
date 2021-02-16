@@ -9,7 +9,7 @@ namespace Semmle.Extraction.Entities
         private GeneratedLocation(Context cx)
             : base(cx, null)
         {
-            generatedFile = File.CreateGenerated(cx);
+            generatedFile = GeneratedFile.Create(cx);
         }
 
         public override void Populate(TextWriter trapFile)
@@ -30,11 +30,11 @@ namespace Semmle.Extraction.Entities
 
         public static GeneratedLocation Create(Context cx) => GeneratedLocationFactory.Instance.CreateEntity(cx, typeof(GeneratedLocation), null);
 
-        private class GeneratedLocationFactory : ICachedEntityFactory<string?, GeneratedLocation>
+        private class GeneratedLocationFactory : CachedEntityFactory<string?, GeneratedLocation>
         {
             public static GeneratedLocationFactory Instance { get; } = new GeneratedLocationFactory();
 
-            public GeneratedLocation Create(Context cx, string? init) => new GeneratedLocation(cx);
+            public override GeneratedLocation Create(Context cx, string? init) => new GeneratedLocation(cx);
         }
     }
 }

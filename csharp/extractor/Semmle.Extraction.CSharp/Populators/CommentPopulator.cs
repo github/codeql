@@ -1,6 +1,5 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Semmle.Extraction.CommentProcessing;
 using Semmle.Extraction.CSharp.Entities;
 using System;
 
@@ -9,9 +8,9 @@ namespace Semmle.Extraction.CSharp.Populators
     /// <summary>
     /// Populators for comments.
     /// </summary>
-    public static class CommentPopulator
+    internal static class CommentPopulator
     {
-        public static void ExtractCommentBlocks(Context cx, ICommentGenerator gen)
+        public static void ExtractCommentBlocks(Context cx, CommentProcessor gen)
         {
             cx.Try(null, null, () =>
             {

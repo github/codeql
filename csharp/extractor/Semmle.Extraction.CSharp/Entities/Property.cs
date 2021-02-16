@@ -124,11 +124,11 @@ namespace Semmle.Extraction.CSharp.Entities
             return isIndexer ? Indexer.Create(cx, prop) : PropertyFactory.Instance.CreateEntityFromSymbol(cx, prop);
         }
 
-        private class PropertyFactory : ICachedEntityFactory<IPropertySymbol, Property>
+        private class PropertyFactory : CachedEntityFactory<IPropertySymbol, Property>
         {
             public static PropertyFactory Instance { get; } = new PropertyFactory();
 
-            public Property Create(Context cx, IPropertySymbol init) => new Property(cx, init);
+            public override Property Create(Context cx, IPropertySymbol init) => new Property(cx, init);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;

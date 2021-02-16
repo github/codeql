@@ -145,11 +145,11 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        private class ConstructorFactory : ICachedEntityFactory<IMethodSymbol, Constructor>
+        private class ConstructorFactory : CachedEntityFactory<IMethodSymbol, Constructor>
         {
             public static ConstructorFactory Instance { get; } = new ConstructorFactory();
 
-            public Constructor Create(Context cx, IMethodSymbol init) => new Constructor(cx, init);
+            public override Constructor Create(Context cx, IMethodSymbol init) => new Constructor(cx, init);
         }
     }
 }

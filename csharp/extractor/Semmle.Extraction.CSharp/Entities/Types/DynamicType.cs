@@ -27,11 +27,11 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write("dynamic;type");
         }
 
-        private class DynamicTypeFactory : ICachedEntityFactory<IDynamicTypeSymbol, DynamicType>
+        private class DynamicTypeFactory : CachedEntityFactory<IDynamicTypeSymbol, DynamicType>
         {
             public static DynamicTypeFactory Instance { get; } = new DynamicTypeFactory();
 
-            public DynamicType Create(Context cx, IDynamicTypeSymbol init) => new DynamicType(cx, init);
+            public override DynamicType Create(Context cx, IDynamicTypeSymbol init) => new DynamicType(cx, init);
         }
     }
 }

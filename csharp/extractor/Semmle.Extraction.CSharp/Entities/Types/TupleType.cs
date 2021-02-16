@@ -15,11 +15,11 @@ namespace Semmle.Extraction.CSharp.Entities
     {
         public static TupleType Create(Context cx, INamedTypeSymbol type) => TupleTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
 
-        private class TupleTypeFactory : ICachedEntityFactory<INamedTypeSymbol, TupleType>
+        private class TupleTypeFactory : CachedEntityFactory<INamedTypeSymbol, TupleType>
         {
             public static TupleTypeFactory Instance { get; } = new TupleTypeFactory();
 
-            public TupleType Create(Context cx, INamedTypeSymbol init) => new TupleType(cx, init);
+            public override TupleType Create(Context cx, INamedTypeSymbol init) => new TupleType(cx, init);
         }
 
         private TupleType(Context cx, INamedTypeSymbol init) : base(cx, init)

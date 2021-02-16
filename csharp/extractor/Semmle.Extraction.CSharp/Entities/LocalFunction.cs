@@ -22,11 +22,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static new LocalFunction Create(Context cx, IMethodSymbol field) => LocalFunctionFactory.Instance.CreateEntityFromSymbol(cx, field);
 
-        private class LocalFunctionFactory : ICachedEntityFactory<IMethodSymbol, LocalFunction>
+        private class LocalFunctionFactory : CachedEntityFactory<IMethodSymbol, LocalFunction>
         {
             public static LocalFunctionFactory Instance { get; } = new LocalFunctionFactory();
 
-            public LocalFunction Create(Context cx, IMethodSymbol init) => new LocalFunction(cx, init);
+            public override LocalFunction Create(Context cx, IMethodSymbol init) => new LocalFunction(cx, init);
         }
 
         public override void Populate(TextWriter trapFile)

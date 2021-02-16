@@ -185,11 +185,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static new UserOperator Create(Context cx, IMethodSymbol symbol) => UserOperatorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        private class UserOperatorFactory : ICachedEntityFactory<IMethodSymbol, UserOperator>
+        private class UserOperatorFactory : CachedEntityFactory<IMethodSymbol, UserOperator>
         {
             public static UserOperatorFactory Instance { get; } = new UserOperatorFactory();
 
-            public UserOperator Create(Context cx, IMethodSymbol init) => new UserOperator(cx, init);
+            public override UserOperator Create(Context cx, IMethodSymbol init) => new UserOperator(cx, init);
         }
     }
 }

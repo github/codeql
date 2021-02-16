@@ -86,11 +86,11 @@ namespace Semmle.Extraction.CSharp.Entities
         public static new Accessor Create(Context cx, IMethodSymbol symbol) =>
             AccessorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        private class AccessorFactory : ICachedEntityFactory<IMethodSymbol, Accessor>
+        private class AccessorFactory : CachedEntityFactory<IMethodSymbol, Accessor>
         {
             public static AccessorFactory Instance { get; } = new AccessorFactory();
 
-            public Accessor Create(Context cx, IMethodSymbol init) => new Accessor(cx, init);
+            public override Accessor Create(Context cx, IMethodSymbol init) => new Accessor(cx, init);
         }
     }
 }

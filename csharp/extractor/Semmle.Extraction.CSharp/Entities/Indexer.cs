@@ -98,11 +98,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
-        private class IndexerFactory : ICachedEntityFactory<IPropertySymbol, Indexer>
+        private class IndexerFactory : CachedEntityFactory<IPropertySymbol, Indexer>
         {
             public static IndexerFactory Instance { get; } = new IndexerFactory();
 
-            public Indexer Create(Context cx, IPropertySymbol init) => new Indexer(cx, init);
+            public override Indexer Create(Context cx, IPropertySymbol init) => new Indexer(cx, init);
         }
     }
 }

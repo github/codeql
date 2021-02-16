@@ -1,7 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.Entities;
+using Semmle.Extraction.CSharp.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;

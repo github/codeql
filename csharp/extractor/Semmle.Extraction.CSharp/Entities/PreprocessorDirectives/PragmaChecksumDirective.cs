@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected override void PopulatePreprocessor(TextWriter trapFile)
         {
-            var file = Extraction.Entities.File.Create(Context, trivia.File.ValueText);
+            var file = File.Create(Context, trivia.File.ValueText);
             trapFile.pragma_checksums(this, file, trivia.Guid.ToString(), trivia.Bytes.ToString());
         }
     }

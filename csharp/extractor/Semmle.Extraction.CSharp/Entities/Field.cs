@@ -130,11 +130,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
-        private class FieldFactory : ICachedEntityFactory<IFieldSymbol, Field>
+        private class FieldFactory : CachedEntityFactory<IFieldSymbol, Field>
         {
             public static FieldFactory Instance { get; } = new FieldFactory();
 
-            public Field Create(Context cx, IFieldSymbol init) => new Field(cx, init);
+            public override Field Create(Context cx, IFieldSymbol init) => new Field(cx, init);
         }
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;
     }

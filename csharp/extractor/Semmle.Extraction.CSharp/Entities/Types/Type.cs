@@ -287,11 +287,11 @@ namespace Semmle.Extraction.CSharp.Entities
                // `DelegateTypeParameter`s and `Parameter`s
                DelegateTypeParameterFactory.Instance.CreateEntity(cx, (typeof(DelegateTypeParameter), new SymbolEqualityWrapper(param)), (param, parent, original));
 
-            private class DelegateTypeParameterFactory : ICachedEntityFactory<(IParameterSymbol, IEntity, Parameter), DelegateTypeParameter>
+            private class DelegateTypeParameterFactory : CachedEntityFactory<(IParameterSymbol, IEntity, Parameter), DelegateTypeParameter>
             {
                 public static DelegateTypeParameterFactory Instance { get; } = new DelegateTypeParameterFactory();
 
-                public DelegateTypeParameter Create(Context cx, (IParameterSymbol, IEntity, Parameter) init) =>
+                public override DelegateTypeParameter Create(Context cx, (IParameterSymbol, IEntity, Parameter) init) =>
                     new DelegateTypeParameter(cx, init.Item1, init.Item2, init.Item3);
             }
         }

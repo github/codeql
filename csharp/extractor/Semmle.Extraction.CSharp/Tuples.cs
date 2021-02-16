@@ -1,5 +1,4 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.CommentProcessing;
 using Semmle.Extraction.CSharp.Entities;
 using Semmle.Extraction.CSharp.Entities.Expressions;
 using Semmle.Extraction.Entities;
@@ -18,6 +17,11 @@ namespace Semmle.Extraction.CSharp
     /// </remarks>
     internal static class Tuples
     {
+        internal static void assemblies(this System.IO.TextWriter trapFile, Assembly assembly, Extraction.Entities.File file, string identifier, string name, string version)
+        {
+            trapFile.WriteTuple("assemblies", assembly, file, identifier, name, version);
+        }
+
         internal static void accessor_location(this TextWriter trapFile, Accessor accessorKey, Location location)
         {
             trapFile.WriteTuple("accessor_location", accessorKey, location);
@@ -720,6 +724,16 @@ namespace Semmle.Extraction.CSharp
         internal static void directive_define_symbols(this TextWriter trapFile, DefineSymbol symb, string name)
         {
             trapFile.WriteTuple("directive_define_symbols", symb, name);
+        }
+
+        internal static void locations_mapped(this System.IO.TextWriter trapFile, NonGeneratedSourceLocation l1, Location l2)
+        {
+            trapFile.WriteTuple("locations_mapped", l1, l2);
+        }
+
+        internal static void file_extraction_mode(this System.IO.TextWriter trapFile, Entities.File file, int mode)
+        {
+            trapFile.WriteTuple("file_extraction_mode", file, mode);
         }
     }
 }

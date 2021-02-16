@@ -292,7 +292,7 @@ namespace Semmle.Extraction.CSharp
                             AnalyseNamespace(cx, module.GlobalNamespace);
                         }
 
-                        Entities.Attribute.ExtractAttributes(cx, assembly, Extraction.Entities.Assembly.Create(cx, assembly.GetSymbolLocation()));
+                        Entities.Attribute.ExtractAttributes(cx, assembly, Entities.Assembly.Create(cx, assembly.GetSymbolLocation()));
 
                         cx.PopulateAll();
                     }
@@ -374,7 +374,7 @@ namespace Semmle.Extraction.CSharp
                         var cx = new Context(extractor, compilation.Clone(), trapWriter, new SourceScope(tree), AddAssemblyTrapPrefix);
                         // Ensure that the file itself is populated in case the source file is totally empty
                         var root = tree.GetRoot();
-                        Extraction.Entities.File.Create(cx, root.SyntaxTree.FilePath);
+                        Entities.File.Create(cx, root.SyntaxTree.FilePath);
 
                         var csNode = (CSharpSyntaxNode)root;
                         csNode.Accept(new CompilationUnitVisitor(cx));

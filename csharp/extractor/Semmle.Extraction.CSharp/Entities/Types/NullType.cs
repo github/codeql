@@ -29,11 +29,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static Type Create(Context cx) => NullTypeFactory.Instance.CreateEntity(cx, typeof(NullType), null);
 
-        private class NullTypeFactory : ICachedEntityFactory<ITypeSymbol, NullType>
+        private class NullTypeFactory : CachedEntityFactory<ITypeSymbol, NullType>
         {
             public static NullTypeFactory Instance { get; } = new NullTypeFactory();
 
-            public NullType Create(Context cx, ITypeSymbol init) => new NullType(cx);
+            public override NullType Create(Context cx, ITypeSymbol init) => new NullType(cx);
         }
     }
 }

@@ -1,12 +1,11 @@
-using Semmle.Extraction.CommentProcessing;
 using Semmle.Extraction.Entities;
 using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal class CommentBlock : CachedEntity<ICommentBlock>
+    internal class CommentBlock : CachedEntity<Comments.CommentBlock>
     {
-        private CommentBlock(Context cx, ICommentBlock init)
+        private CommentBlock(Context cx, Comments.CommentBlock init)
             : base(cx, init) { }
 
         public override void Populate(TextWriter trapFile)
@@ -35,13 +34,13 @@ namespace Semmle.Extraction.CSharp.Entities
             Context.TrapWriter.Writer.commentblock_binding(this, entity, binding);
         }
 
-        public static CommentBlock Create(Context cx, ICommentBlock block) => CommentBlockFactory.Instance.CreateEntity(cx, block, block);
+        public static CommentBlock Create(Context cx, Comments.CommentBlock block) => CommentBlockFactory.Instance.CreateEntity(cx, block, block);
 
-        private class CommentBlockFactory : ICachedEntityFactory<ICommentBlock, CommentBlock>
+        private class CommentBlockFactory : CachedEntityFactory<Comments.CommentBlock, CommentBlock>
         {
             public static CommentBlockFactory Instance { get; } = new CommentBlockFactory();
 
-            public CommentBlock Create(Context cx, ICommentBlock init) => new CommentBlock(cx, init);
+            public override CommentBlock Create(Context cx, Comments.CommentBlock init) => new CommentBlock(cx, init);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
