@@ -177,4 +177,11 @@ module ClientSideUrlRedirect {
       )
     }
   }
+
+  /**
+   * A call to change the current url with a Next.js router.
+   */
+  class NextRoutePushUrlSink extends ScriptUrlSink {
+    NextRoutePushUrlSink() { this = NextJS::nextRouter().getAMemberCall("push").getArgument(0) }
+  }
 }

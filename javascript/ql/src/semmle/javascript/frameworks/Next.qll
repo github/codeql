@@ -8,7 +8,6 @@ import javascript
  * Provides classes and predicates modelling [Next.js](https://www.npmjs.com/package/next).
  */
 module NextJS {
-  // TODO: Private.
   /**
    * Gets a `package.json` that depends on the `Next.js` library.
    */
@@ -222,5 +221,20 @@ module NextJS {
       or
       kind = "response" and result = getFunction().getParameter(1)
     }
+  }
+
+  /**
+   * Gets a reference to a [Next.js router](https://nextjs.org/docs/api-reference/next/router).
+   */
+  DataFlow::SourceNode nextRouter() {
+    result = DataFlow::moduleMember("next/router", "useRouter").getACall()
+    or
+    result =
+      API::moduleImport("next/router")
+          .getMember("withRouter")
+          .getParameter(0)
+          .getParameter(0)
+          .getMember("router")
+          .getAnImmediateUse()
   }
 }
