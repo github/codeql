@@ -376,6 +376,10 @@ class DeclaredRepository extends PomElement {
     this.getName() = ["repository", "snapshotRepository", "pluginRepository"]
   }
 
+  /**
+   * Gets the url for this repository. If the `url` tag is present, this will
+   * be the string contents of that tag.
+   */
   string getUrl() { result = getAChild("url").(PomElement).getValue() }
 }
 
