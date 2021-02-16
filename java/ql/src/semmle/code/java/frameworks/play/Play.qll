@@ -1,32 +1,32 @@
 /**
- * Provides classes and predicates for working with the `play` package.
+ * Provides classes and predicates for working with the Play framework.
  */
 
 import java
 
 /**
- * A `play.mvc.Result` class.
+ * The `play.mvc.Result` class.
  */
 class PlayMvcResultClass extends Class {
   PlayMvcResultClass() { this.hasQualifiedName("play.mvc", "Result") }
 }
 
 /**
- * A `play.mvc.Results` class.
+ * The `play.mvc.Results` class.
  */
 class PlayMvcResultsClass extends Class {
   PlayMvcResultsClass() { this.hasQualifiedName("play.mvc", "Results") }
 }
 
 /**
- * A `play.mvc.Http$RequestHeader` class.
+ * The `play.mvc.Http$RequestHeader` class.
  */
 class PlayMvcHttpRequestHeader extends RefType {
   PlayMvcHttpRequestHeader() { this.hasQualifiedName("play.mvc", "Http$RequestHeader") }
 }
 
 /**
- * A `play.mvc.BodyParser<>$Of"` annotation.
+ * A `play.mvc.BodyParser<>$Of` annotation.
  */
 class PlayBodyParserAnnotation extends Annotation {
   PlayBodyParserAnnotation() { this.getType().hasQualifiedName("play.mvc", "BodyParser<>$Of") }
@@ -42,7 +42,7 @@ class PlayAddCsrfTokenAnnotation extends Annotation {
 }
 
 /**
- * A member with qualified name `F.Promise<Result>` of package `play.libs.F`.
+ * The type `play.libs.F.Promise<Result>`.
  */
 class PlayAsyncResultPromise extends Member {
   PlayAsyncResultPromise() {
@@ -55,7 +55,7 @@ class PlayAsyncResultPromise extends Member {
 }
 
 /**
- * A type with qualified name `CompletionStage<Result>` of package `java.util.concurrent`.
+ * The type `java.util.concurrent.CompletionStage<Result>`.
  */
 class PlayAsyncResultCompletionStage extends Type {
   PlayAsyncResultCompletionStage() {
@@ -65,7 +65,7 @@ class PlayAsyncResultCompletionStage extends Type {
 }
 
 /**
- * A class which extends PlayMvcController recursively to find all controllers.
+ * The class `play.mvc.Controller` or a class that transitively extends it.
  */
 class PlayController extends Class {
   PlayController() {
@@ -74,21 +74,21 @@ class PlayController extends Class {
 }
 
 /**
- * A method to find PlayFramework controller action methods, these are mapping's to route files.
+ * A Play framework controller action method. These are mappings to route files.
  *
  * Sample Route - `POST  /login  @com.company.Application.login()`.
  *
- * Example - class get's `index` & `login` as valid action methods.
- * ```
+ * Example - class gets `index` and `login` as valid action methods.
+ * ```java
  * public class Application extends Controller {
- *      public Result index(String username, String password) {
- *        return ok("It works!");
- *      }
+ *  public Result index(String username, String password) {
+ *     return ok("It works!");
+ *   }
  *
- *      public Result login() {
- *        return ok("Log me In!");
- *      }
- *    }
+ *   public Result login() {
+ *     return ok("Log me In!");
+ *   }
+ * }
  * ```
  */
 class PlayControllerActionMethod extends Method {
