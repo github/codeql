@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The software uses external input as the function name to wrap JSON data and return it to the client as a request response. When there is a cross-domain problem, 
+there is a problem of sensitive information leakage.</p>
+
+</overview>
+<recommendation>
+
+<p>The function name verification processing for external input can effectively prevent the leakage of sensitive information.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows the case of no verification processing and verification processing for the external input function name.</p>
+
+<sample src="JsonHijacking.java" />
+
+</example>
+<references>
+
+<li>
+OWASPLondon20161124_JSON_Hijacking_Gareth_Heyes: 
+<a href="https://owasp.org/www-chapter-london/assets/slides/OWASPLondon20161124_JSON_Hijacking_Gareth_Heyes.pdf">JSON hijacking</a>.
+</li>
+<li>
+Practical JSONP Injection:
+<a href="https://securitycafe.ro/2017/01/18/practical-jsonp-injection">
+  Completely controllable from the URL (GET variable)
+</a>.
+</li>
+</references>
+</qhelp>

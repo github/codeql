@@ -1,0 +1,27 @@
+edges
+| JsonHijacking.java:32:21:32:54 | ... + ... : String | JsonHijacking.java:33:16:33:24 | resultStr |
+| JsonHijacking.java:42:21:42:80 | ... + ... : String | JsonHijacking.java:44:16:44:24 | resultStr |
+| JsonHijacking.java:53:21:53:55 | ... + ... : String | JsonHijacking.java:54:16:54:24 | resultStr |
+| JsonHijacking.java:63:21:63:54 | ... + ... : String | JsonHijacking.java:64:16:64:24 | resultStr |
+| JsonHijacking.java:79:21:79:54 | ... + ... : String | JsonHijacking.java:80:20:80:28 | resultStr |
+| JsonHijacking.java:94:21:94:54 | ... + ... : String | JsonHijacking.java:95:20:95:28 | resultStr |
+nodes
+| JsonHijacking.java:32:21:32:54 | ... + ... : String | semmle.label | ... + ... : String |
+| JsonHijacking.java:33:16:33:24 | resultStr | semmle.label | resultStr |
+| JsonHijacking.java:42:21:42:80 | ... + ... : String | semmle.label | ... + ... : String |
+| JsonHijacking.java:44:16:44:24 | resultStr | semmle.label | resultStr |
+| JsonHijacking.java:53:21:53:55 | ... + ... : String | semmle.label | ... + ... : String |
+| JsonHijacking.java:54:16:54:24 | resultStr | semmle.label | resultStr |
+| JsonHijacking.java:63:21:63:54 | ... + ... : String | semmle.label | ... + ... : String |
+| JsonHijacking.java:64:16:64:24 | resultStr | semmle.label | resultStr |
+| JsonHijacking.java:79:21:79:54 | ... + ... : String | semmle.label | ... + ... : String |
+| JsonHijacking.java:80:20:80:28 | resultStr | semmle.label | resultStr |
+| JsonHijacking.java:94:21:94:54 | ... + ... : String | semmle.label | ... + ... : String |
+| JsonHijacking.java:95:20:95:28 | resultStr | semmle.label | resultStr |
+#select
+| JsonHijacking.java:33:16:33:24 | resultStr | JsonHijacking.java:32:21:32:54 | ... + ... : String | JsonHijacking.java:33:16:33:24 | resultStr | Json hijacking might include code from $@. | JsonHijacking.java:32:21:32:54 | ... + ... | this user input |
+| JsonHijacking.java:44:16:44:24 | resultStr | JsonHijacking.java:42:21:42:80 | ... + ... : String | JsonHijacking.java:44:16:44:24 | resultStr | Json hijacking might include code from $@. | JsonHijacking.java:42:21:42:80 | ... + ... | this user input |
+| JsonHijacking.java:54:16:54:24 | resultStr | JsonHijacking.java:53:21:53:55 | ... + ... : String | JsonHijacking.java:54:16:54:24 | resultStr | Json hijacking might include code from $@. | JsonHijacking.java:53:21:53:55 | ... + ... | this user input |
+| JsonHijacking.java:64:16:64:24 | resultStr | JsonHijacking.java:63:21:63:54 | ... + ... : String | JsonHijacking.java:64:16:64:24 | resultStr | Json hijacking might include code from $@. | JsonHijacking.java:63:21:63:54 | ... + ... | this user input |
+| JsonHijacking.java:80:20:80:28 | resultStr | JsonHijacking.java:79:21:79:54 | ... + ... : String | JsonHijacking.java:80:20:80:28 | resultStr | Json hijacking might include code from $@. | JsonHijacking.java:79:21:79:54 | ... + ... | this user input |
+| JsonHijacking.java:95:20:95:28 | resultStr | JsonHijacking.java:94:21:94:54 | ... + ... : String | JsonHijacking.java:95:20:95:28 | resultStr | Json hijacking might include code from $@. | JsonHijacking.java:94:21:94:54 | ... + ... | this user input |
