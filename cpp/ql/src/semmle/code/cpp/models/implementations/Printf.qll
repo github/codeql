@@ -15,7 +15,7 @@ private class Printf extends FormattingFunction, AliasFunction {
   Printf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdishName(["printf", "wprintf"]) or
+      hasGlobalOrStdOrBslName(["printf", "wprintf"]) or
       hasGlobalName(["printf_s", "wprintf_s", "g_printf"])
     ) and
     not exists(getDefinition().getFile().getRelativePath())
@@ -41,7 +41,7 @@ private class Fprintf extends FormattingFunction {
   Fprintf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdishName(["fprintf", "fwprintf"]) or
+      hasGlobalOrStdOrBslName(["fprintf", "fwprintf"]) or
       hasGlobalName("g_fprintf")
     ) and
     not exists(getDefinition().getFile().getRelativePath())
@@ -61,7 +61,7 @@ private class Sprintf extends FormattingFunction {
   Sprintf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdishName([
+      hasGlobalOrStdOrBslName([
           "sprintf", // sprintf(dst, format, args...)
           "wsprintf" // wsprintf(dst, format, args...)
         ])
@@ -111,7 +111,7 @@ private class SnprintfImpl extends Snprintf {
   SnprintfImpl() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdishName([
+      hasGlobalOrStdOrBslName([
           "snprintf", // C99 defines snprintf
           "swprintf" // The s version of wide-char printf is also always the n version
         ])

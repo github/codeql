@@ -34,8 +34,8 @@ class Scanf extends ScanfFunction {
   Scanf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdishName("scanf") or // scanf(format, args...)
-      hasGlobalOrStdishName("wscanf") or // wscanf(format, args...)
+      hasGlobalOrStdOrBslName("scanf") or // scanf(format, args...)
+      hasGlobalOrStdOrBslName("wscanf") or // wscanf(format, args...)
       hasGlobalName("_scanf_l") or // _scanf_l(format, locale, args...)
       hasGlobalName("_wscanf_l") // _wscanf_l(format, locale, args...)
     )
@@ -53,8 +53,8 @@ class Fscanf extends ScanfFunction {
   Fscanf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdishName("fscanf") or // fscanf(src_stream, format, args...)
-      hasGlobalOrStdishName("fwscanf") or // fwscanf(src_stream, format, args...)
+      hasGlobalOrStdOrBslName("fscanf") or // fscanf(src_stream, format, args...)
+      hasGlobalOrStdOrBslName("fwscanf") or // fwscanf(src_stream, format, args...)
       hasGlobalName("_fscanf_l") or // _fscanf_l(src_stream, format, locale, args...)
       hasGlobalName("_fwscanf_l") // _fwscanf_l(src_stream, format, locale, args...)
     )
@@ -72,8 +72,8 @@ class Sscanf extends ScanfFunction {
   Sscanf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdishName("sscanf") or // sscanf(src_stream, format, args...)
-      hasGlobalOrStdishName("swscanf") or // swscanf(src, format, args...)
+      hasGlobalOrStdOrBslName("sscanf") or // sscanf(src_stream, format, args...)
+      hasGlobalOrStdOrBslName("swscanf") or // swscanf(src, format, args...)
       hasGlobalName("_sscanf_l") or // _sscanf_l(src, format, locale, args...)
       hasGlobalName("_swscanf_l") // _swscanf_l(src, format, locale, args...)
     )
