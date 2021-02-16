@@ -33,6 +33,9 @@ class Stmt extends ControlFlowElement, @stmt {
 
   override Location getALocation() { stmt_location(this, result) }
 
+  /** Holds if this statement is a global statement. */
+  predicate isGlobal() { this.getParent().(BlockStmt).isGlobalStatementContainer() }
+
   /**
    * Gets the singleton statement contained in this statement, by removing
    * enclosing block statements.
@@ -69,6 +72,11 @@ class BlockStmt extends Stmt, @block_stmt {
 
   /** Holds if this block is an empty block with no statements. */
   predicate isEmpty() { not exists(this.getAStmt()) }
+
+  /** Holds if this block is the container of the global statements. */
+  predicate isGlobalStatementContainer() {
+    this.getEnclosingCallable().hasQualifiedName("<Program>$.<Main>$")
+  }
 
   override Stmt stripSingletonBlocks() {
     if getNumberOfStmts() = 1

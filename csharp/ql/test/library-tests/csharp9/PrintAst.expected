@@ -389,6 +389,39 @@ FunctionPointer.cs:
 #   50|     14: [Class] B
 #-----|       3: (Base types)
 #   50|         0: [TypeMention] A
+GlobalStmt.cs:
+#    7| [Class] <Program>$
+#    7|   4: [Method] <Main>$
+#-----|     2: (Parameters)
+#    1|       0: [Parameter] args
+#    7|     4: [BlockStmt] {...}
+#   11|       0: [ExprStmt] ...;
+#   11|         0: [MethodCall] call to method WriteLine
+#   11|           -1: [TypeAccess] access to type Console
+#   11|             0: [TypeMention] Console
+#   11|           0: [StringLiteral] "1"
+#   12|       1: [ExprStmt] ...;
+#   12|         0: [MethodCall] call to method WriteLine
+#   12|           -1: [TypeAccess] access to type Console
+#   12|             0: [TypeMention] Console
+#   12|           0: [StringLiteral] "2"
+#   13|       2: [ExprStmt] ...;
+#   13|         0: [LocalFunctionCall] call to local function M
+#   13|           -1: [LocalFunctionAccess] access to local function M
+#   15|       3: [LocalFunctionStmt] M(...)
+#   15|         0: [LocalFunction] M
+#   16|           4: [BlockStmt] {...}
+#   19| [Class] Attr
+#-----|   3: (Base types)
+#   19|     0: [TypeMention] Attribute
+#   21|   5: [Method] M1
+#   21|     -1: [TypeMention] Void
+#   22|     4: [BlockStmt] {...}
+#   23|       0: [ExprStmt] ...;
+#   23|         0: [MethodCall] call to method WriteLine
+#   23|           -1: [TypeAccess] access to type Console
+#   23|             0: [TypeMention] Console
+#   23|           0: [StringLiteral] "3"
 InitOnlyProperty.cs:
 #    3| [Class] Base
 #    5|   5: [Property] Prop0

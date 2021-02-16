@@ -134,7 +134,8 @@ private newtype TPrintAstNode =
   TParametersNode(Parameterizable parameterizable) {
     shouldPrint(parameterizable, _) and
     parameterizable.getNumberOfParameters() > 0 and
-    not isNotNeeded(parameterizable)
+    not isNotNeeded(parameterizable) and
+    exists(Parameter p | p.getDeclaringElement() = parameterizable and shouldPrint(p, _))
   } or
   TAttributesNode(Attributable attributable) {
     shouldPrint(attributable, _) and

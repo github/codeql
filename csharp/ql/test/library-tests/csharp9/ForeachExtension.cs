@@ -46,5 +46,3 @@ class Program
         yield return 1;
     }
 }
-
-// semmle-extractor-options: /r:System.Linq.dll

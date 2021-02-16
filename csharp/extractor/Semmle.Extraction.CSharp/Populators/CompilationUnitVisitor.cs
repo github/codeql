@@ -2,6 +2,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Util.Logging;
+using Semmle.Extraction.CSharp.Entities;
+using Semmle.Extraction.CSharp.Entities.Statements;
+using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Populators
 {
@@ -13,30 +16,57 @@ namespace Semmle.Extraction.CSharp.Populators
         public override void VisitExternAliasDirective(ExternAliasDirectiveSyntax node)
         {
             // This information is not yet extracted.
-            cx.ExtractionError("Not implemented extern alias directive", node.ToFullString(), cx.CreateLocation(node.GetLocation()), "", Severity.Info);
+            Cx.ExtractionError("Not implemented extern alias directive", node.ToFullString(), Cx.CreateLocation(node.GetLocation()), "", Severity.Info);
         }
 
         public override void VisitCompilationUnit(CompilationUnitSyntax compilationUnit)
         {
             foreach (var m in compilationUnit.ChildNodes())
             {
-                cx.Try(m, null, () => ((CSharpSyntaxNode)m).Accept(this));
+                Cx.Try(m, null, () => ((CSharpSyntaxNode)m).Accept(this));
             }
+
+            ExtractGlobalStatements(compilationUnit);
 
             // Gather comments:
             foreach (var trivia in compilationUnit.DescendantTrivia(compilationUnit.Span, descendIntoTrivia: true))
             {
-                CommentPopulator.ExtractComment(cx, trivia);
+                CommentPopulator.ExtractComment(Cx, trivia);
             }
 
             foreach (var trivia in compilationUnit.GetLeadingTrivia())
             {
-                CommentPopulator.ExtractComment(cx, trivia);
+                CommentPopulator.ExtractComment(Cx, trivia);
             }
 
             foreach (var trivia in compilationUnit.GetTrailingTrivia())
             {
-                CommentPopulator.ExtractComment(cx, trivia);
+                CommentPopulator.ExtractComment(Cx, trivia);
+            }
+        }
+
+        private void ExtractGlobalStatements(CompilationUnitSyntax compilationUnit)
+        {
+            var globalStatements = compilationUnit
+                .ChildNodes()
+                .OfType<GlobalStatementSyntax>()
+                .ToList();
+
+            if (!globalStatements.Any())
+            {
+                return;
+            }
+
+            var entryPoint = Cx.Compilation.GetEntryPoint(System.Threading.CancellationToken.None);
+            var entryMethod = Method.Create(Cx, entryPoint);
+            var block = GlobalStatementsBlock.Create(Cx, entryMethod);
+
+            for (var i = 0; i < globalStatements.Count; i++)
+            {
+                if (globalStatements[i].Statement is object)
+                {
+                    Statement.Create(Cx, globalStatements[i].Statement, block, i);
+                }
             }
         }
     }
