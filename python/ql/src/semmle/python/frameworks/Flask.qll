@@ -72,6 +72,30 @@ private module FlaskModel {
       API::Node response_class() { result = [classRef(), instance()].getMember("response_class") }
     }
 
+    /**
+     * Provides models for the `flask.Blueprint` class
+     *
+     * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Blueprint.
+     */
+    module Blueprint {
+      /** Gets a reference to the `flask.Blueprint` class. */
+      API::Node classRef() { result = flask().getMember("Blueprint") }
+
+      /** Gets a reference to an instance of `flask.Blueprint`. */
+      API::Node instance() { result = classRef().getReturn() }
+
+      /**
+       * Gets a reference to the attribute `attr_name` of an instance of `flask.Blueprint`.
+       */
+      private API::Node instance_attr(string attr_name) { result = instance().getMember(attr_name) }
+
+      /** Gets a reference to the `route` method on an instance of `flask.Blueprint`. */
+      API::Node route() { result = instance_attr("route") }
+
+      /** Gets a reference to the `add_url_rule` method on an instance of `flask.Blueprint`. */
+      API::Node add_url_rule() { result = instance_attr("add_url_rule") }
+    }
+
     // -------------------------------------------------------------------------
     // flask.views
     // -------------------------------------------------------------------------
@@ -222,12 +246,16 @@ private module FlaskModel {
   }
 
   /**
-   * A call to the `route` method on an instance of `flask.Flask`.
+   * A call to the `route` method on an instance of `flask.Flask` or an instance of `flask.Blueprint`.
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.route
    */
   private class FlaskAppRouteCall extends FlaskRouteSetup, DataFlow::CallCfgNode {
-    FlaskAppRouteCall() { this.getFunction() = flask::Flask::route().getAUse() }
+    FlaskAppRouteCall() {
+      this.getFunction() = flask::Flask::route().getAUse()
+      or
+      this.getFunction() = flask::Blueprint::route().getAUse()
+    }
 
     override DataFlow::Node getUrlPatternArg() {
       result in [this.getArg(0), this.getArgByName("rule")]
@@ -237,12 +265,16 @@ private module FlaskModel {
   }
 
   /**
-   * A call to the `add_url_rule` method on an instance of `flask.Flask`.
+   * A call to the `add_url_rule` method on an instance of `flask.Flask` or an instance of `flask.Blueprint`.
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.add_url_rule
    */
   private class FlaskAppAddUrlRuleCall extends FlaskRouteSetup, DataFlow::CallCfgNode {
-    FlaskAppAddUrlRuleCall() { this.getFunction() = flask::Flask::add_url_rule().getAUse() }
+    FlaskAppAddUrlRuleCall() {
+      this.getFunction() = flask::Flask::add_url_rule().getAUse()
+      or
+      this.getFunction() = flask::Blueprint::add_url_rule().getAUse()
+    }
 
     override DataFlow::Node getUrlPatternArg() {
       result in [this.getArg(0), this.getArgByName("rule")]

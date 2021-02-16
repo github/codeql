@@ -93,5 +93,32 @@ class WithoutKnownRoute2(MethodView):
         pass
 
 
+# Blueprints
+#
+# see https://flask.palletsprojects.com/en/1.1.x/blueprints/
+
+bp1 = flask.Blueprint("bp1", __name__)
+
+@bp1.route("/bp1/example/<foo>") # $ routeSetup="/bp1/example/<foo>"
+def bp1_example(foo): # $ requestHandler routedParameter=foo
+    return "bp 1 example foo={}".format(foo) # $ HttpResponse
+
+app.register_blueprint(bp1) # by default, URLs of blueprints are not prefixed
+
+
+bp2 = flask.Blueprint("bp2", __name__)
+
+@bp2.route("/example") # $ routeSetup="/example"
+def bp2_example(): # $ requestHandler
+    return "bp 2 example" # $ HttpResponse
+
+app.register_blueprint(bp2, url_prefix="/bp2") # but it is possible to add a URL prefix
+
+
+from external_blueprint import bp3
+app.register_blueprint(bp3)
+
+
 if __name__ == "__main__":
+    print(app.url_map)
     app.run(debug=True)
