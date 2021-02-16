@@ -89,11 +89,8 @@ private class StdSequenceContainerConstructor extends Constructor, TaintFunction
  */
 private class StdSequenceContainerData extends TaintFunction {
   StdSequenceContainerData() {
-    this.hasName("data") and
-    (
-      this.getDeclaringType() instanceof Vector or
-      this.getDeclaringType() instanceof Array
-    )
+    this.getClassAndName("data") instanceof Array or
+    this.getClassAndName("data") instanceof Vector
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -113,19 +110,10 @@ private class StdSequenceContainerData extends TaintFunction {
  */
 private class StdSequenceContainerPush extends TaintFunction {
   StdSequenceContainerPush() {
-    this.hasName("push_back") and
-    (
-      this.getDeclaringType() instanceof Array or
-      this.getDeclaringType() instanceof Deque or
-      this.getDeclaringType() instanceof List
-    )
-    or
-    this.hasName("push_front") and
-    (
-      this.getDeclaringType() instanceof Deque or
-      this.getDeclaringType() instanceof ForwardList or
-      this.getDeclaringType() instanceof List
-    )
+    this.getClassAndName("push_back") instanceof Array or
+    this.getClassAndName(["push_back", "push_front"]) instanceof Deque or
+    this.getClassAndName("push_front") instanceof ForwardList or
+    this.getClassAndName("push_back") instanceof List or
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -140,22 +128,11 @@ private class StdSequenceContainerPush extends TaintFunction {
  */
 private class StdSequenceContainerFrontBack extends TaintFunction {
   StdSequenceContainerFrontBack() {
-    this.hasName("front") and
-    (
-      this.getDeclaringType() instanceof Array or
-      this.getDeclaringType() instanceof Deque or
-      this.getDeclaringType() instanceof ForwardList or
-      this.getDeclaringType() instanceof List or
-      this.getDeclaringType() instanceof Vector
-    )
-    or
-    this.hasName("back") and
-    (
-      this.getDeclaringType() instanceof Array or
-      this.getDeclaringType() instanceof Deque or
-      this.getDeclaringType() instanceof List or
-      this.getDeclaringType() instanceof Vector
-    )
+    this.getClassAndName(["front", "back"]) instanceof Array or
+    this.getClassAndName(["front", "back"]) instanceof Deque or
+    this.getClassAndName("front") instanceof ForwardList or
+    this.getClassAndName(["front", "back"]) instanceof List or
+    this.getClassAndName(["front", "back"]) instanceof Vector
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -170,15 +147,10 @@ private class StdSequenceContainerFrontBack extends TaintFunction {
  */
 private class StdSequenceContainerInsert extends TaintFunction {
   StdSequenceContainerInsert() {
-    this.hasName("insert") and
-    (
-      this.getDeclaringType() instanceof Deque or
-      this.getDeclaringType() instanceof List or
-      this.getDeclaringType() instanceof Vector
-    )
-    or
-    this.hasName("insert_after") and
-    this.getDeclaringType() instanceof ForwardList
+    this.getClassAndName("insert") instanceof Deque or
+    this.getClassAndName("insert") instanceof List or
+    this.getClassAndName("insert") instanceof Vector or
+    this.getClassAndName("insert_after") instanceof ForwardList
   }
 
   /**
@@ -214,13 +186,10 @@ private class StdSequenceContainerInsert extends TaintFunction {
  */
 private class StdSequenceContainerAssign extends TaintFunction {
   StdSequenceContainerAssign() {
-    this.hasName("assign") and
-    (
-      this.getDeclaringType() instanceof Deque or
-      this.getDeclaringType() instanceof ForwardList or
-      this.getDeclaringType() instanceof List or
-      this.getDeclaringType() instanceof Vector
-    )
+    this.getClassAndName("assign") instanceof Deque or
+    this.getClassAndName("assign") instanceof ForwardList or
+    this.getClassAndName("assign") instanceof List or
+    this.getClassAndName("assign") instanceof Vector
   }
 
   /**
@@ -252,12 +221,9 @@ private class StdSequenceContainerAssign extends TaintFunction {
  */
 private class StdSequenceContainerAt extends TaintFunction {
   StdSequenceContainerAt() {
-    this.hasName(["at", "operator[]"]) and
-    (
-      this.getDeclaringType() instanceof Array or
-      this.getDeclaringType() instanceof Deque or
-      this.getDeclaringType() instanceof Vector
-    )
+    this.getClassAndName(["at", "operator[]"]) instanceof Array or
+    this.getClassAndName(["at", "operator[]"]) instanceof Deque or
+    this.getClassAndName(["at", "operator[]"]) instanceof Vector
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -275,10 +241,7 @@ private class StdSequenceContainerAt extends TaintFunction {
  * The standard vector `emplace` function.
  */
 class StdVectorEmplace extends TaintFunction {
-  StdVectorEmplace() {
-    this.hasName("emplace") and
-    this.getDeclaringType() instanceof Vector
-  }
+  StdVectorEmplace() { this.getClassAndName("emplace") instanceof Vector }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from any parameter except the position iterator to qualifier and return value
@@ -295,10 +258,7 @@ class StdVectorEmplace extends TaintFunction {
  * The standard vector `emplace_back` function.
  */
 class StdVectorEmplaceBack extends TaintFunction {
-  StdVectorEmplaceBack() {
-    this.hasName("emplace_back") and
-    this.getDeclaringType() instanceof Vector
-  }
+  StdVectorEmplaceBack() { this.getClassAndName("emplace_back") instanceof Vector }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from any parameter to qualifier
