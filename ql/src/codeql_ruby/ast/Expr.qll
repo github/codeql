@@ -24,8 +24,6 @@ class Self extends Expr, @token_self {
   final override string getAPrimaryQlClass() { result = "Self" }
 }
 
-
-
 /** A sequence of expressions. */
 class StmtSequence extends Expr {
   override StmtSequence::Range range;
