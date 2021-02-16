@@ -56,7 +56,19 @@ private class FilesVulnerableCreationMethodAccess extends MethodAccess {
     (
       getMethod().hasName(["write", "newBufferedWriter", "newOutputStream"])
       or
-      getMethod().hasName(["createFile", "createDirectory", "createDirectories"]) and getNumArgument() = 1
+      getMethod().hasName(["createFile", "createDirectory", "createDirectories"]) and
+      getNumArgument() = 1
+    )
+  }
+}
+
+/**
+ * A call to `java.io.File::createTempFile` where the the system temp dir sinks to the last argument.
+ */
+private class FileCreateTempFileSink extends FileCreationSink {
+  FileCreateTempFileSink() {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof MethodFileCreateTempFile and ma.getArgument(2) = this.asExpr()
     )
   }
 }

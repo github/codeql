@@ -30,6 +30,16 @@ private class MethodAccessApacheFileUtilsTempDir extends MethodAccessSystemGetPr
 }
 
 /**
+ * All `java.io.File::createTempFile` methods.
+ */
+class MethodFileCreateTempFile extends Method {
+  MethodFileCreateTempFile() {
+    this.getDeclaringType() instanceof TypeFile and
+    this.hasName("createTempFile")
+  }
+}
+
+/**
  * Find dataflow from the temp directory system property to the `File` constructor.
  * Examples:
  *  - `new File(System.getProperty("java.io.tmpdir"))`
@@ -44,7 +54,7 @@ private predicate isTaintedFileCreation(Expr expSource, Expr exprDest) {
 }
 
 /**
- * Any `File` methods that
+ * Any `File` methods where the temporary directory is still part of the root path.
  */
 private class TaintFollowingFileMethod extends Method {
   TaintFollowingFileMethod() {

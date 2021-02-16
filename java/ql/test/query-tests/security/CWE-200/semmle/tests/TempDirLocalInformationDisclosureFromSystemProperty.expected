@@ -1,5 +1,9 @@
 edges
 | Files.java:10:33:10:68 | getProperty(...) : String | Files.java:15:17:15:23 | tempDir |
+| Test.java:23:33:23:68 | getProperty(...) : String | Test.java:24:59:24:65 | tempDir |
+| Test.java:28:47:28:82 | getProperty(...) : String | Test.java:29:59:29:70 | tempDirChild |
+| Test.java:33:33:33:68 | getProperty(...) : String | Test.java:34:59:34:65 | tempDir |
+| Test.java:38:33:38:68 | getProperty(...) : String | Test.java:39:59:39:65 | tempDir |
 | Test.java:53:38:53:73 | getProperty(...) : String | Test.java:54:9:54:20 | tempDirChild |
 | Test.java:58:38:58:73 | getProperty(...) : String | Test.java:59:9:59:20 | tempDirChild |
 | Test.java:63:38:63:73 | getProperty(...) : String | Test.java:64:21:64:41 | toPath(...) |
@@ -12,6 +16,14 @@ edges
 nodes
 | Files.java:10:33:10:68 | getProperty(...) : String | semmle.label | getProperty(...) : String |
 | Files.java:15:17:15:23 | tempDir | semmle.label | tempDir |
+| Test.java:23:33:23:68 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:24:59:24:65 | tempDir | semmle.label | tempDir |
+| Test.java:28:47:28:82 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:29:59:29:70 | tempDirChild | semmle.label | tempDirChild |
+| Test.java:33:33:33:68 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:34:59:34:65 | tempDir | semmle.label | tempDir |
+| Test.java:38:33:38:68 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:39:59:39:65 | tempDir | semmle.label | tempDir |
 | Test.java:53:38:53:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
 | Test.java:54:9:54:20 | tempDirChild | semmle.label | tempDirChild |
 | Test.java:58:38:58:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
@@ -32,6 +44,10 @@ nodes
 | Test.java:105:33:105:53 | toPath(...) | semmle.label | toPath(...) |
 #select
 | Files.java:10:33:10:68 | getProperty(...) | Files.java:10:33:10:68 | getProperty(...) : String | Files.java:15:17:15:23 | tempDir | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Files.java:10:33:10:68 | getProperty(...) | system temp directory |
+| Test.java:23:33:23:68 | getProperty(...) | Test.java:23:33:23:68 | getProperty(...) : String | Test.java:24:59:24:65 | tempDir | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:23:33:23:68 | getProperty(...) | system temp directory |
+| Test.java:28:47:28:82 | getProperty(...) | Test.java:28:47:28:82 | getProperty(...) : String | Test.java:29:59:29:70 | tempDirChild | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:28:47:28:82 | getProperty(...) | system temp directory |
+| Test.java:33:33:33:68 | getProperty(...) | Test.java:33:33:33:68 | getProperty(...) : String | Test.java:34:59:34:65 | tempDir | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:33:33:33:68 | getProperty(...) | system temp directory |
+| Test.java:38:33:38:68 | getProperty(...) | Test.java:38:33:38:68 | getProperty(...) : String | Test.java:39:59:39:65 | tempDir | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:38:33:38:68 | getProperty(...) | system temp directory |
 | Test.java:53:38:53:73 | getProperty(...) | Test.java:53:38:53:73 | getProperty(...) : String | Test.java:54:9:54:20 | tempDirChild | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:53:38:53:73 | getProperty(...) | system temp directory |
 | Test.java:58:38:58:73 | getProperty(...) | Test.java:58:38:58:73 | getProperty(...) : String | Test.java:59:9:59:20 | tempDirChild | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:58:38:58:73 | getProperty(...) | system temp directory |
 | Test.java:63:38:63:73 | getProperty(...) | Test.java:63:38:63:73 | getProperty(...) : String | Test.java:64:21:64:41 | toPath(...) | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:63:38:63:73 | getProperty(...) | system temp directory |

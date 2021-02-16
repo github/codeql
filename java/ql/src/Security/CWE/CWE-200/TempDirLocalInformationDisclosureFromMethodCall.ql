@@ -12,31 +12,12 @@
 
 import TempDirUtils
 
-/**
- * All `java.io.File::createTempFile` methods.
- */
-class MethodFileCreateTempFile extends Method {
-  MethodFileCreateTempFile() {
-    this.getDeclaringType() instanceof TypeFile and
-    this.hasName("createTempFile")
-  }
+abstract class MethodAccessInsecureFileCreation extends MethodAccess {
+  /**
+   * Docstring describing the file system type (ie. file, directory, ect...) returned.
+   */
+  abstract string getFileSystemType();
 }
-
-class TempDirSystemGetPropertyToAnyConfig extends TaintTracking::Configuration {
-  TempDirSystemGetPropertyToAnyConfig() { this = "TempDirSystemGetPropertyToAnyConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof MethodAccessSystemGetPropertyTempDirTainted
-  }
-
-  override predicate isSink(DataFlow::Node source) { any() }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    isAdditionalFileTaintStep(node1, node2)
-  }
-}
-
-abstract class MethodAccessInsecureFileCreation extends MethodAccess { }
 
 /**
  * Insecure calls to `java.io.File::createTempFile`.
@@ -45,15 +26,14 @@ class MethodAccessInsecureFileCreateTempFile extends MethodAccessInsecureFileCre
   MethodAccessInsecureFileCreateTempFile() {
     this.getMethod() instanceof MethodFileCreateTempFile and
     (
-      this.getNumArgument() = 2 or
+      this.getNumArgument() = 2
+      or
       // Vulnerablilty exists when the last argument is `null`
-      getArgument(2) instanceof NullLiteral or
-      // There exists a flow from the 'java.io.tmpdir' system property to this argument
-      exists(TempDirSystemGetPropertyToAnyConfig config |
-        config.hasFlowTo(DataFlow::exprNode(getArgument(2)))
-      )
+      getArgument(2) instanceof NullLiteral
     )
   }
+
+  override string getFileSystemType() { result = "file" }
 }
 
 class MethodGuavaFilesCreateTempFile extends Method {
@@ -67,8 +47,11 @@ class MethodAccessInsecureGuavaFilesCreateTempFile extends MethodAccessInsecureF
   MethodAccessInsecureGuavaFilesCreateTempFile() {
     getMethod() instanceof MethodGuavaFilesCreateTempFile
   }
+
+  override string getFileSystemType() { result = "directory" }
 }
 
 from MethodAccessInsecureFileCreation methodAccess
 select methodAccess,
-  "Local information disclosure vulnerability due to use of file or directory readable by other local users."
+  "Local information disclosure vulnerability due to use of " + methodAccess.getFileSystemType() +
+    " readable by other local users."
