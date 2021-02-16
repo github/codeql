@@ -486,7 +486,7 @@ pub fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<ql::TopLevel
                 } else {
                     fields
                         .iter()
-                        .filter(|&f| matches!(f.storage, node_types::Storage::Column{..}))
+                        .filter(|&f| matches!(f.storage, node_types::Storage::Column { .. }))
                         .count()
                 };
 
