@@ -234,7 +234,7 @@ module BodyStatement {
         )
     }
 
-    final RescueExpr getRescue(int n) {
+    final RescueClause getRescue(int n) {
       result = rank[n + 1](Generated::Rescue node, int i | node = getChild(i) | node order by i)
     }
 
@@ -306,7 +306,7 @@ module Ensure {
   }
 }
 
-module RescueExpr {
+module RescueClause {
   class Range extends Expr::Range, @rescue {
     final override Generated::Rescue generated;
 
