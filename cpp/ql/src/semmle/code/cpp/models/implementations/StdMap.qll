@@ -150,7 +150,7 @@ private class StdMapFind extends TaintFunction {
  * The standard map `erase` function.
  */
 private class StdMapErase extends TaintFunction {
-  StdMapErase() { this.getCLassAndName("erase") instanceof MapOrUnorderedMap }
+  StdMapErase() { this.getClassAndName("erase") instanceof MapOrUnorderedMap }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to iterator return value
@@ -165,8 +165,7 @@ private class StdMapErase extends TaintFunction {
  */
 private class StdMapEqualRange extends TaintFunction {
   StdMapEqualRange() {
-    this.hasName(["lower_bound", "upper_bound", "equal_range"]) and
-    this.getDeclaringType() instanceof MapOrUnorderedMap
+    this.getClassAndName(["lower_bound", "upper_bound", "equal_range"]) instanceof MapOrUnorderedMap
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
