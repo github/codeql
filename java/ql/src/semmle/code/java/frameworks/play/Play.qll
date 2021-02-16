@@ -81,7 +81,7 @@ class PlayController extends Class {
  * Example - class gets `index` and `login` as valid action methods.
  * ```java
  * public class Application extends Controller {
- *  public Result index(String username, String password) {
+ *   public Result index(String username, String password) {
  *     return ok("It works!");
  *   }
  *
@@ -103,15 +103,15 @@ class PlayControllerActionMethod extends Method {
 }
 
 /**
- * The PlayFramework action method parameters, these are a source of user input.
+ * A Play framework action method parameter. These are a source of user input.
  *
- * Example - `username` & `password` are marked as valid parameters.
- * ```
- *  public class Application extends Controller {
- *      public Result index(String username, String password) {
- *        return ok("It works!");
- *      }
- *    }
+ * Example - `username` and `password` are action method parameters.
+ * ```java
+ * public class Application extends Controller {
+ *   public Result index(String username, String password) {
+ *     return ok("It works!");
+ *   }
+ * }
  * ```
  */
 class PlayActionMethodQueryParameter extends Parameter {
@@ -130,7 +130,7 @@ class PlayMvcHttpRequestHeaderMethods extends Method {
   PlayMvcHttpRequestHeaderMethods() { this.getDeclaringType() instanceof PlayMvcHttpRequestHeader }
 
   /**
-   * A reference to the `getQueryString` method.
+   * Gets a reference to the `getQueryString` method.
    */
   MethodAccess getAQueryStringAccess() {
     this.hasName("getQueryString") and result = this.getAReference()
@@ -144,12 +144,12 @@ class PlayMvcResultsMethods extends Method {
   PlayMvcResultsMethods() { this.getDeclaringType() instanceof PlayMvcResultsClass }
 
   /**
-   * A reference to the play.mvc.Results `ok` method.
+   * Gets a reference to the `play.mvc.Results.ok` method.
    */
   MethodAccess getAnOkAccess() { this.hasName("ok") and result = this.getAReference() }
 
   /**
-   * A reference to the play.mvc.Results `redirect` method.
+   * Gets a reference to the `play.mvc.Results.redirect` method.
    */
   MethodAccess getARedirectAccess() { this.hasName("redirect") and result = this.getAReference() }
 }
