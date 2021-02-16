@@ -6,7 +6,10 @@ from Cryptodome.Signature import pss
 from Cryptodome.Hash import SHA256
 
 private_key = RSA.generate(2048) # $ PublicKeyGeneration keySize=2048
+
+# These 2 methods do the same
 public_key = private_key.publickey()
+public_key = private_key.public_key()
 
 # ------------------------------------------------------------------------------
 # encrypt/decrypt
