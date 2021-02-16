@@ -3583,9 +3583,9 @@ raise.rb:
 #-----|  -> exit m10 (normal)
 
 #  125| puts
-#-----|  -> "Will not get executed if p is not supplied"
+#-----|  -> "Will not get executed if p is..."
 
-#  125| "Will not get executed if p is not supplied"
+#  125| "Will not get executed if p is..."
 #-----|  -> call to puts
 
 #  128| m11
