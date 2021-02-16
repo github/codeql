@@ -94,8 +94,10 @@ module StringComponent {
 }
 
 module StringTextComponent {
-  class Range extends StringComponent::Range, @token_string_content {
-    final override Generated::StringContent generated;
+  class StringContentToken = @token_string_content or @token_heredoc_content;
+
+  class Range extends StringComponent::Range, StringContentToken {
+    final override Generated::Token generated;
 
     final override string toString() { result = generated.getValue() }
 
@@ -282,6 +284,52 @@ module CharacterLiteral {
     final override Generated::Character generated;
 
     final override string getValueText() { result = generated.getValue() }
+
+    final override string toString() { result = generated.getValue() }
+  }
+}
+
+module HereDoc {
+  private Generated::HeredocBody heredoc(Generated::HeredocBeginning start) {
+    exists(int i, File f |
+      start =
+        rank[i](Generated::HeredocBeginning b |
+          f = b.getLocation().getFile()
+        |
+          b order by b.getLocation().getStartLine(), b.getLocation().getStartColumn()
+        ) and
+      result =
+        rank[i](Generated::HeredocBody b |
+          f = b.getLocation().getFile()
+        |
+          b order by b.getLocation().getStartLine(), b.getLocation().getStartColumn()
+        )
+    )
+  }
+
+  class Range extends StringlikeLiteral::Range, @token_heredoc_beginning {
+    final override Generated::HeredocBeginning generated;
+    private Generated::HeredocBody body;
+
+    Range() { body = heredoc(this) }
+
+    final override StringComponent::Range getComponent(int n) { result = body.getChild(n) }
+
+    final string getQuoteStyle() {
+      exists(string s |
+        s = generated.getValue() and
+        s.charAt(s.length() - 1) = result and
+        result = ["'", "`", "\""]
+      )
+    }
+
+    final string getIndentationModifier() {
+      exists(string s |
+        s = generated.getValue() and
+        s.charAt(2) = result and
+        result = ["-", "~"]
+      )
+    }
 
     final override string toString() { result = generated.getValue() }
   }

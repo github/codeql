@@ -195,6 +195,13 @@ allLiterals
 | literals.rb:145:1:145:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | StringLiteral | abcdefghijklmnopqrstuvwxyzabcdef |
 | literals.rb:146:1:146:35 | "foobarfoobarfoobarfoobarfooba..." | StringLiteral | foobarfoobarfoobarfoobarfoobarfoo |
 | literals.rb:147:1:147:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | foobar\\\\foobar\\\\foobar\\\\foobar\\\\foobar |
+| literals.rb:150:9:150:13 | <<SQL | HereDoc | \nselect * from table\n |
+| literals.rb:150:16:150:20 | <<SQL | HereDoc | <none> |
+| literals.rb:157:11:157:16 | <<-BLA | HereDoc | \nsome text\\nand some more\n   |
+| literals.rb:162:9:162:19 | <<~SQUIGGLY | HereDoc | \n   indented stuff\n |
+| literals.rb:166:9:166:15 | <<"DOC" | HereDoc | <none> |
+| literals.rb:171:9:171:15 | <<'DOC' | HereDoc | <none> |
+| literals.rb:175:10:175:19 | <<`SCRIPT` | HereDoc | \n cat file.txt\n |
 stringlikeLiterals
 | literals.rb:46:1:46:2 | "" |  |
 | literals.rb:47:1:47:2 | "" |  |
@@ -285,6 +292,13 @@ stringlikeLiterals
 | literals.rb:145:1:145:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | abcdefghijklmnopqrstuvwxyzabcdef |
 | literals.rb:146:1:146:35 | "foobarfoobarfoobarfoobarfooba..." | foobarfoobarfoobarfoobarfoobarfoo |
 | literals.rb:147:1:147:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | foobar\\\\foobar\\\\foobar\\\\foobar\\\\foobar |
+| literals.rb:150:9:150:13 | <<SQL | \nselect * from table\n |
+| literals.rb:150:16:150:20 | <<SQL | <none> |
+| literals.rb:157:11:157:16 | <<-BLA | \nsome text\\nand some more\n   |
+| literals.rb:162:9:162:19 | <<~SQUIGGLY | \n   indented stuff\n |
+| literals.rb:166:9:166:15 | <<"DOC" | <none> |
+| literals.rb:171:9:171:15 | <<'DOC' | <none> |
+| literals.rb:175:10:175:19 | <<`SCRIPT` | \n cat file.txt\n |
 stringLiterals
 | literals.rb:46:1:46:2 | "" |  |
 | literals.rb:47:1:47:2 | "" |  |
@@ -492,6 +506,21 @@ stringComponents
 | literals.rb:147:1:147:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 6 | literals.rb:147:26:147:31 | foobar | StringTextComponent |
 | literals.rb:147:1:147:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 7 | literals.rb:147:32:147:33 | \\\\ | StringEscapeSequenceComponent |
 | literals.rb:147:1:147:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 8 | literals.rb:147:34:147:39 | foobar | StringTextComponent |
+| literals.rb:150:9:150:13 | <<SQL | HereDoc | 0 | literals.rb:150:22:151:20 | \nselect * from table\n | StringTextComponent |
+| literals.rb:150:16:150:20 | <<SQL | HereDoc | 0 | literals.rb:152:4:153:13 | \nwhere name =  | StringTextComponent |
+| literals.rb:150:16:150:20 | <<SQL | HereDoc | 1 | literals.rb:153:14:153:22 | #{...} | StringInterpolationComponent |
+| literals.rb:150:16:150:20 | <<SQL | HereDoc | 2 | literals.rb:153:23:153:23 | \n | StringTextComponent |
+| literals.rb:157:11:157:16 | <<-BLA | HereDoc | 0 | literals.rb:157:17:158:9 | \nsome text | StringTextComponent |
+| literals.rb:157:11:157:16 | <<-BLA | HereDoc | 1 | literals.rb:158:10:158:11 | \\n | StringEscapeSequenceComponent |
+| literals.rb:157:11:157:16 | <<-BLA | HereDoc | 2 | literals.rb:158:12:159:2 | and some more\n   | StringTextComponent |
+| literals.rb:162:9:162:19 | <<~SQUIGGLY | HereDoc | 0 | literals.rb:162:20:163:18 | \n   indented stuff\n | StringTextComponent |
+| literals.rb:166:9:166:15 | <<"DOC" | HereDoc | 0 | literals.rb:166:16:167:11 | \n text with  | StringTextComponent |
+| literals.rb:166:9:166:15 | <<"DOC" | HereDoc | 1 | literals.rb:167:12:167:29 | #{...} | StringInterpolationComponent |
+| literals.rb:166:9:166:15 | <<"DOC" | HereDoc | 2 | literals.rb:167:30:167:32 |  !\n | StringTextComponent |
+| literals.rb:171:9:171:15 | <<'DOC' | HereDoc | 0 | literals.rb:171:16:172:14 | \n text without  | StringTextComponent |
+| literals.rb:171:9:171:15 | <<'DOC' | HereDoc | 1 | literals.rb:172:15:172:32 | #{...} | StringInterpolationComponent |
+| literals.rb:171:9:171:15 | <<'DOC' | HereDoc | 2 | literals.rb:172:33:172:35 |  !\n | StringTextComponent |
+| literals.rb:175:10:175:19 | <<`SCRIPT` | HereDoc | 0 | literals.rb:175:20:176:14 | \n cat file.txt\n | StringTextComponent |
 stringInterpolations
 | literals.rb:58:10:58:19 | #{...} | 0 | literals.rb:58:13:58:17 | ... + ... | AddExpr |
 | literals.rb:59:12:59:21 | #{...} | 0 | literals.rb:59:15:59:19 | ... + ... | AddExpr |
@@ -505,6 +534,9 @@ stringInterpolations
 | literals.rb:128:10:128:19 | #{...} | 0 | literals.rb:128:13:128:17 | ... - ... | SubExpr |
 | literals.rb:135:5:135:14 | #{...} | 0 | literals.rb:135:8:135:12 | ... + ... | AddExpr |
 | literals.rb:141:7:141:16 | #{...} | 0 | literals.rb:141:10:141:14 | ... + ... | AddExpr |
+| literals.rb:153:14:153:22 | #{...} | 0 | literals.rb:153:17:153:20 | call to name | Call |
+| literals.rb:167:12:167:29 | #{...} | 0 | literals.rb:167:15:167:27 | call to interpolation | Call |
+| literals.rb:172:15:172:32 | #{...} | 0 | literals.rb:172:18:172:30 | call to interpolation | Call |
 concatenatedStrings
 | literals.rb:62:1:62:17 | "..." "..." | foobarbaz | 0 | literals.rb:62:1:62:5 | "foo" |
 | literals.rb:62:1:62:17 | "..." "..." | foobarbaz | 1 | literals.rb:62:7:62:11 | "bar" |

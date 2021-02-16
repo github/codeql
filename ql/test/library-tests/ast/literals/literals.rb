@@ -145,3 +145,34 @@ TRUE
 'abcdefghijklmnopqrstuvwxyzabcdef'  # 32 chars, should not be truncated
 'foobarfoobarfoobarfoobarfoobarfoo' # 33 chars, should be truncated
 "foobar\\foobar\\foobar\\foobar\\foobar" # several short components, but long enough overall to be truncated
+
+# here documents
+run_sql(<<SQL, <<SQL)
+select * from table
+SQL
+where name = #{ name }
+SQL
+
+def m 
+  query = <<-BLA
+some text\nand some more
+  BLA
+end
+
+query = <<~SQUIGGLY
+   indented stuff
+SQUIGGLY
+
+query = <<"DOC"
+ text with #{ interpolation } !
+DOC
+
+# TODO: the parser currently does not handle single quoted heredocs correctly
+query = <<'DOC'
+ text without #{ interpolation } !
+DOC
+
+output = <<`SCRIPT`
+ cat file.txt
+SCRIPT
+
