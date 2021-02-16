@@ -103,7 +103,7 @@ bp1 = flask.Blueprint("bp1", __name__)
 def bp1_example(foo): # $ requestHandler routedParameter=foo
     return "bp 1 example foo={}".format(foo) # $ HttpResponse
 
-app.register_blueprint(bp1) # by default, URL of blueprints are not changed
+app.register_blueprint(bp1) # by default, URLs of blueprints are not prefixed
 
 
 bp2 = flask.Blueprint("bp2", __name__)
@@ -112,7 +112,7 @@ bp2 = flask.Blueprint("bp2", __name__)
 def bp2_example(): # $ requestHandler
     return "bp 2 example" # $ HttpResponse
 
-app.register_blueprint(bp2, url_prefix="/bp2") # but it is possible to add a url_prefix
+app.register_blueprint(bp2, url_prefix="/bp2") # but it is possible to add a URL prefix
 
 
 from external_blueprint import bp3
