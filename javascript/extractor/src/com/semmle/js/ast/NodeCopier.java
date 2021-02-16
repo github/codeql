@@ -1,5 +1,8 @@
 package com.semmle.js.ast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.semmle.js.ast.jsx.JSXAttribute;
 import com.semmle.js.ast.jsx.JSXClosingElement;
 import com.semmle.js.ast.jsx.JSXElement;
@@ -48,8 +51,6 @@ import com.semmle.ts.ast.TypeofTypeExpr;
 import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.data.IntList;
-import java.util.ArrayList;
-import java.util.List;
 
 /** Deep cloning of AST nodes. */
 public class NodeCopier implements Visitor<Void, INode> {
@@ -75,6 +76,11 @@ public class NodeCopier implements Visitor<Void, INode> {
 
   private IntList copy(IntList list) {
     return new IntList(list);
+  }
+
+  @Override
+  public INode visit(AngularPipeRef nd, Void q) {
+    return new AngularPipeRef(nd.getLoc(), copy(nd.getIdentifier()));
   }
 
   @Override

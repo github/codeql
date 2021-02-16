@@ -1,9 +1,10 @@
-
+import re
 import os
 import subprocess
 
 from flask import Flask, request
 app = Flask(__name__)
+
 
 @app.route("/command1")
 def command_injection1():
@@ -31,6 +32,7 @@ def others():
     # Don't let files be `; rm -rf /`
     os.popen("ls " + files)
 
+
 @app.route("/multiple")
 def multiple():
     command = request.args.get('command', '')
@@ -55,3 +57,24 @@ def not_into_sink_impl():
     subprocess.call(command)
     subprocess.check_call(command)
     subprocess.run(command)
+
+
+@app.route("/path-exists-not-sanitizer")
+def path_exists_not_sanitizer():
+    """os.path.exists is not a sanitizer
+
+    This small example is inspired by real world code. Initially, it seems like a good
+    sanitizer. However, if you are able to create files, you can make the
+    `os.path.exists` check succeed, and still be able to run commands. An example is
+    using the filename `not-there || echo pwned`.
+    """
+    path = request.args.get('path', '')
+    if os.path.exists(path):
+        os.system("ls " + path) # NOT OK
+
+
+@app.route("/restricted-characters")
+def restricted_characters():
+    path = request.args.get('path', '')
+    if re.match(r'^[a-zA-Z0-9_-]+$', path):
+        os.system("ls " + path) # OK (TODO: Currently FP)

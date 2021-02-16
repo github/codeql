@@ -8,7 +8,7 @@ import semmle.code.cpp.models.interfaces.FlowSource
 /**
  * The POSIX function `getenv`.
  */
-class Getenv extends LocalFlowFunction {
+class Getenv extends LocalFlowSourceFunction {
   Getenv() { this.hasGlobalName("getenv") }
 
   override predicate hasLocalFlowSource(FunctionOutput output, string description) {

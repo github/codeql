@@ -16,11 +16,11 @@ namespace Semmle.Extraction.CIL.Entities
             this.gc = gc;
         }
 
-        public override Namespace? Namespace => null;
+        public override Namespace? ContainingNamespace => null;
 
         public override Type? ContainingType => null;
 
-        public override int ThisTypeParameters => 0;
+        public override int ThisTypeParameterCount => 0;
 
         public override CilTypeKind Kind => CilTypeKind.TypeParameter;
 

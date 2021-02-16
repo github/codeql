@@ -16,17 +16,15 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override string Name => "!error";
 
-        public override Namespace Namespace => Cx.GlobalNamespace;
+        public override Namespace ContainingNamespace => Cx.GlobalNamespace;
 
         public override Type? ContainingType => null;
 
-        public override int ThisTypeParameters => 0;
+        public override int ThisTypeParameterCount => 0;
 
         public override void WriteAssemblyPrefix(TextWriter trapFile) => throw new NotImplementedException();
 
         public override IEnumerable<Type> TypeParameters => throw new NotImplementedException();
-
-        public override IEnumerable<Type> MethodParameters => throw new NotImplementedException();
 
         public override Type Construct(IEnumerable<Type> typeArguments) => throw new NotImplementedException();
     }

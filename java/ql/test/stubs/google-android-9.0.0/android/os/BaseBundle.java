@@ -97,6 +97,7 @@ public class BaseBundle {
      * @hide
      */
     public String getPairValue() {
+        return null;
     }
 
     /**

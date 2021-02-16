@@ -270,7 +270,7 @@ module ControlFlow {
       /** Gets the callable that this exit applies to. */
       Callable getCallable() { result = c }
 
-      /** Holds if this node represent a normal exit. */
+      /** Holds if this node represents a normal exit. */
       predicate isNormal() { normal = true }
 
       override BasicBlocks::AnnotatedExitBlock getBasicBlock() {

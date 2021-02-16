@@ -76,9 +76,10 @@ namespace Semmle.Extraction.CIL.Entities
 
                 var typeSignature = md.DecodeSignature(Cx.TypeSignatureDecoder, this);
 
-                Parameters = MakeParameters(typeSignature.ParameterTypes).ToArray();
+                var parameters = GetParameterExtractionProducts(typeSignature.ParameterTypes).ToArray();
+                Parameters = parameters.OfType<Parameter>().ToArray();
 
-                foreach (var c in Parameters)
+                foreach (var c in parameters)
                     yield return c;
 
                 foreach (var c in PopulateFlags)
@@ -95,7 +96,12 @@ namespace Semmle.Extraction.CIL.Entities
                 }
 
                 yield return Tuples.metadata_handle(this, Cx.Assembly, MetadataTokens.GetToken(handle));
-                yield return Tuples.cil_method(this, Name, declaringType, typeSignature.ReturnType);
+
+                foreach (var m in GetMethodExtractionProducts(Name, declaringType, typeSignature.ReturnType))
+                {
+                    yield return m;
+                }
+
                 yield return Tuples.cil_method_source_declaration(this, this);
                 yield return Tuples.cil_method_location(this, Cx.Assembly);
 
@@ -115,8 +121,19 @@ namespace Semmle.Extraction.CIL.Entities
 
                         for (var l = 0; l < this.locals.Length; ++l)
                         {
-                            this.locals[l] = Cx.Populate(new LocalVariable(Cx, Implementation, l, localVariableTypes[l]));
-                            yield return this.locals[l];
+                            var t = localVariableTypes[l];
+                            if (t is ByRefType brt)
+                            {
+                                t = brt.ElementType;
+                                this.locals[l] = Cx.Populate(new LocalVariable(Cx, Implementation, l, t));
+                                yield return this.locals[l];
+                                yield return Tuples.cil_type_annotation(this.locals[l], TypeAnnotation.Ref);
+                            }
+                            else
+                            {
+                                this.locals[l] = Cx.Populate(new LocalVariable(Cx, Implementation, l, t));
+                                yield return this.locals[l];
+                            }
                         }
                     }
 
@@ -178,7 +195,7 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        private IEnumerable<IExtractionProduct> Decode(byte[] ilbytes, Dictionary<int, Instruction> jump_table)
+        private IEnumerable<IExtractionProduct> Decode(byte[]? ilbytes, Dictionary<int, Instruction> jump_table)
         {
             // Sequence points are stored in order of offset.
             // We use an enumerator to locate the correct sequence point for each instruction.
@@ -203,9 +220,9 @@ namespace Semmle.Extraction.CIL.Entities
             }
 
             var child = 0;
-            for (var offset = 0; offset < ilbytes.Length;)
+            for (var offset = 0; offset < (ilbytes?.Length ?? 0);)
             {
-                var instruction = new Instruction(Cx, this, ilbytes, offset, child++);
+                var instruction = new Instruction(Cx, this, ilbytes!, offset, child++);
                 yield return instruction;
 
                 if (nextSequencePoint != null && offset >= nextSequencePoint.Current.Offset)
@@ -245,12 +262,12 @@ namespace Semmle.Extraction.CIL.Entities
                     var ilbytes = body.GetILBytes();
 
                     var child = 0;
-                    for (var offset = 0; offset < ilbytes.Length;)
+                    for (var offset = 0; offset < (ilbytes?.Length ?? 0);)
                     {
                         Instruction decoded;
                         try
                         {
-                            decoded = new Instruction(Cx, this, ilbytes, offset, child++);
+                            decoded = new Instruction(Cx, this, ilbytes!, offset, child++);
                             offset += decoded.Width;
                         }
                         catch  // lgtm[cs/catch-of-all-exceptions]

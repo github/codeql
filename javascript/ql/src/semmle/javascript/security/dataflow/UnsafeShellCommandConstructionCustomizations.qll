@@ -7,6 +7,7 @@
 import javascript
 private import semmle.javascript.security.dataflow.RemoteFlowSources
 private import semmle.javascript.PackageExports as Exports
+private import semmle.javascript.dataflow.InferredTypes
 
 /**
  * Module containing sources, sinks, and sanitizers for shell command constructed from library input.
@@ -51,10 +52,7 @@ module UnsafeShellCommandConstruction {
    */
   class ExternalInputSource extends Source, DataFlow::ParameterNode {
     ExternalInputSource() {
-      this =
-        Exports::getAValueExportedBy(Exports::getTopmostPackageJSON())
-            .(DataFlow::FunctionNode)
-            .getAParameter() and
+      this = Exports::getALibraryInputParameter() and
       not this.getName() = ["cmd", "command"] // looks to be on purpose.
     }
   }
@@ -159,15 +157,18 @@ module UnsafeShellCommandConstruction {
   }
 
   /**
+   * Gets an unsafe shell character.
+   */
+  private string getAShellChar() {
+    result = ["&", "`", "$", "|", ">", "<", "#", ";", "(", ")", "[", "]", "\n"]
+  }
+
+  /**
    * A chain of replace calls that replaces all unsafe chars for shell-commands.
    */
   class ChainSanitizer extends Sanitizer, IncompleteBlacklistSanitizer::StringReplaceCallSequence {
     ChainSanitizer() {
-      forall(string char |
-        char = ["&", "`", "$", "|", ">", "<", "#", ";", "(", ")", "[", "]", "\n"]
-      |
-        this.getAMember().getAReplacedString() = char
-      )
+      forall(string char | char = getAShellChar() | this.getAMember().getAReplacedString() = char)
     }
   }
 
@@ -187,6 +188,68 @@ module UnsafeShellCommandConstruction {
         e = getArgument(0).asExpr() or
         e = getArgument(0).(StringOps::ConcatenationRoot).getALeaf().asExpr()
       )
+    }
+  }
+
+  /**
+   * A guard of the form `typeof x === "<T>"`, where <T> is  "number", or "boolean",
+   * which sanitizes `x` in its "then" branch.
+   */
+  class TypeOfSanitizer extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+    Expr x;
+    override EqualityTest astNode;
+
+    TypeOfSanitizer() { TaintTracking::isTypeofGuard(astNode, x, ["number", "boolean"]) }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      outcome = astNode.getPolarity() and
+      e = x
+    }
+  }
+
+  private import semmle.javascript.dataflow.internal.AccessPaths
+  private import semmle.javascript.dataflow.InferredTypes
+
+  /**
+   * Holds if `instance` is an instance of the access-path `ap`, and there exists a guard
+   * that ensures that `instance` is not equal to `char`.
+   *
+   * For example if `ap` is `str[i]` and `char` is `<`:
+   * ```JavaScript
+   * if (str[i] !== "<" && ...) {
+   *   var foo = str[i]; // <- `instance`
+   * }
+   * ```
+   * or
+   * ```JavaScript
+   * if (!(str[i] == "<" || ...)) {
+   *   var foo = str[i]; // <- `instance`
+   * }
+   * ```
+   */
+  private predicate blocksCharInAccess(AccessPath ap, string char, Expr instance) {
+    exists(BasicBlock bb, ConditionGuardNode guard, EqualityTest test |
+      test.getAnOperand().mayHaveStringValue(char) and
+      char = getAShellChar() and
+      guard.getTest() = test and
+      guard.dominates(bb) and
+      test.getAnOperand() = ap.getAnInstance() and
+      instance = ap.getAnInstanceIn(bb) and
+      guard.getOutcome() != test.getPolarity()
+    )
+  }
+
+  /**
+   * A sanitizer for a single character, where the character cannot be an unsafe shell character.
+   */
+  class SanitizedChar extends Sanitizer, DataFlow::ValueNode {
+    override PropAccess astNode;
+
+    SanitizedChar() {
+      exists(AccessPath ap | this.asExpr() = ap.getAnInstance() |
+        forall(string char | char = getAShellChar() | blocksCharInAccess(ap, char, astNode))
+      ) and
+      astNode.getPropertyNameExpr().analyze().getTheType() = TTNumber()
     }
   }
 }

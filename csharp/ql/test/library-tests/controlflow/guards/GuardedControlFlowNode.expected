@@ -242,6 +242,8 @@
 | Guards.cs:343:31:343:31 | access to local variable s | Guards.cs:342:13:342:13 | access to local variable s | Guards.cs:342:13:342:13 | access to local variable s | non-null |
 | Guards.cs:343:31:343:31 | access to local variable s | Guards.cs:342:13:342:21 | ... != ... | Guards.cs:342:13:342:13 | access to local variable s | true |
 | Guards.cs:343:31:343:31 | access to local variable s | Guards.cs:342:13:342:27 | ... && ... | Guards.cs:342:13:342:13 | access to local variable s | true |
+| Guards.cs:349:13:349:13 | access to parameter o | Guards.cs:348:13:348:13 | access to parameter o | Guards.cs:348:13:348:13 | access to parameter o | non-null |
+| Guards.cs:349:13:349:13 | access to parameter o | Guards.cs:348:13:348:25 | ... is ... | Guards.cs:348:13:348:13 | access to parameter o | true |
 | Splitting.cs:13:17:13:17 | [b (line 9): true] access to parameter o | Splitting.cs:12:17:12:17 | access to parameter o | Splitting.cs:12:17:12:17 | access to parameter o | non-null |
 | Splitting.cs:13:17:13:17 | [b (line 9): true] access to parameter o | Splitting.cs:12:17:12:25 | ... != ... | Splitting.cs:12:17:12:17 | access to parameter o | true |
 | Splitting.cs:14:13:14:13 | [b (line 9): false] access to parameter b | Splitting.cs:11:13:11:13 | access to parameter b | Splitting.cs:11:13:11:13 | access to parameter b | false |

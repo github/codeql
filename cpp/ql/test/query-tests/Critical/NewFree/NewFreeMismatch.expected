@@ -18,3 +18,6 @@
 | test.cpp:235:2:235:5 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test.cpp:227:7:227:13 | new | new |
 | test.cpp:239:2:239:5 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test.cpp:228:7:228:17 | new[] | new[] |
 | test.cpp:272:3:272:6 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test.cpp:265:7:265:13 | new | new |
+| test.cpp:441:2:441:10 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:434:13:434:18 | call to strdup | malloc |
+| test.cpp:443:2:443:10 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:436:13:436:19 | call to strndup | malloc |
+| test.cpp:445:2:445:10 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:438:16:438:21 | call to wcsdup | malloc |

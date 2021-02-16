@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
     internal abstract class Case<TSyntax> : Statement<TSyntax> where TSyntax : SwitchLabelSyntax
     {
         protected Case(Context cx, TSyntax node, Switch parent, int child)
-            : base(cx, node, StmtKind.CASE, parent, child, cx.Create(node.GetLocation())) { }
+            : base(cx, node, StmtKind.CASE, parent, child, cx.CreateLocation(node.GetLocation())) { }
 
         public static Statement Create(Context cx, SwitchLabelSyntax node, Switch parent, int child)
         {

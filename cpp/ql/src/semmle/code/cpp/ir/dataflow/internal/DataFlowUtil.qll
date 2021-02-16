@@ -716,21 +716,15 @@ private predicate modelFlow(Operand opFrom, Instruction iTo) {
       iTo = call
       or
       exists(int index, WriteSideEffectInstruction outNode |
-        modelOut.isParameterDeref(index) and
+        modelOut.isParameterDerefOrQualifierObject(index) and
         iTo = outNode and
         outNode = getSideEffectFor(call, index)
-      )
-      or
-      exists(WriteSideEffectInstruction outNode |
-        modelOut.isQualifierObject() and
-        iTo = outNode and
-        outNode = getSideEffectFor(call, -1)
       )
     ) and
     (
       exists(int index |
-        modelIn.isParameter(index) and
-        opFrom = call.getPositionalArgumentOperand(index)
+        modelIn.isParameterOrQualifierAddress(index) and
+        opFrom = call.getArgumentOperand(index)
       )
       or
       exists(int index, ReadSideEffectInstruction read |
@@ -738,9 +732,6 @@ private predicate modelFlow(Operand opFrom, Instruction iTo) {
         read = getSideEffectFor(call, index) and
         opFrom = read.getSideEffectOperand()
       )
-      or
-      modelIn.isQualifierAddress() and
-      opFrom = call.getThisArgumentOperand()
       or
       exists(ReadSideEffectInstruction read |
         modelIn.isQualifierObject() and

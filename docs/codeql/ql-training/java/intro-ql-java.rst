@@ -70,7 +70,7 @@ A simple CodeQL query
 
    A `query <https://help.semmle.com/QL/ql-handbook/queries.html>`__ consists of a “select” clause that indicates what results should be returned. Typically it will also provide a “from” clause to declare some variables, and a “where” clause to state conditions over those variables. For more information on the structure of query files (including links to useful topics in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__), see `About CodeQL queries <https://help.semmle.com/QL/learn-ql/ql/writing-queries/introduction-to-queries.html>`__.
 
-   In our example here, the first line of the query imports the `CodeQL library for Java <https://help.semmle.com/qldoc/java/>`__, which defines concepts like ``IfStmt`` and ``Block``.
+   In our example here, the first line of the query imports the `CodeQL library for Java <https://codeql.github.com/codeql-standard-libraries/java/>`__, which defines concepts like ``IfStmt`` and ``Block``.
    The query proper starts by declaring two variables–ifStmt and block. These variables represent sets of values in the database, according to the type of each of the variables. For example, ``ifStmt`` has the type ``IfStmt``, which means it represents the set of all if statements in the program.
 
    If we simply selected these two variables::

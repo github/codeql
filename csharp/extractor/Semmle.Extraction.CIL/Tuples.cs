@@ -32,6 +32,9 @@ namespace Semmle.Extraction.CIL
         internal static Tuple cil_base_class(Type t, Type @base) =>
             new Tuple("cil_base_class", t, @base);
 
+        internal static Tuple cil_enum_underlying_type(Type t, PrimitiveType underlying) =>
+            new Tuple("cil_enum_underlying_type", t, underlying);
+
         internal static Tuple cil_base_interface(Type t, Type @base) =>
             new Tuple("cil_base_interface", t, @base);
 
@@ -83,6 +86,12 @@ namespace Semmle.Extraction.CIL
         internal static Tuple cil_method(Method method, string name, Type declType, Type returnType) =>
             new Tuple("cil_method", method, name, declType, returnType);
 
+        internal static Tuple cil_function_pointer_return_type(FunctionPointerType fnptr, Type returnType) =>
+            new Tuple("cil_function_pointer_return_type", fnptr, returnType);
+
+        internal static Tuple cil_function_pointer_calling_conventions(FunctionPointerType fnptr, System.Reflection.Metadata.SignatureCallingConvention callingConvention) =>
+            new Tuple("cil_function_pointer_calling_conventions", fnptr, (int)callingConvention);
+
         internal static Tuple cil_method_implementation(MethodImplementation impl, Method method, Assembly assembly) =>
             new Tuple("cil_method_implementation", impl, method, assembly);
 
@@ -98,7 +107,7 @@ namespace Semmle.Extraction.CIL
         internal static Tuple cil_newslot(Method method) =>
             new Tuple("cil_newslot", method);
 
-        internal static Tuple cil_parameter(Parameter p, Method m, int i, Type t) =>
+        internal static Tuple cil_parameter(Parameter p, IParameterizable m, int i, Type t) =>
             new Tuple("cil_parameter", p, m, i, t);
 
         internal static Tuple cil_parameter_in(Parameter p) =>
@@ -184,6 +193,12 @@ namespace Semmle.Extraction.CIL
 
         internal static Tuple cil_virtual(Method method) =>
             new Tuple("cil_virtual", method);
+
+        internal static Tuple cil_custom_modifiers(ICustomModifierReceiver receiver, Type modifier, bool isRequired) =>
+            new Tuple("cil_custom_modifiers", receiver, modifier, isRequired ? 1 : 0);
+
+        internal static Tuple cil_type_annotation(IEntity receiver, TypeAnnotation annotation) =>
+            new Tuple("cil_type_annotation", receiver, (int)annotation);
 
         internal static Tuple containerparent(Folder parent, IFileOrFolder child) =>
             new Tuple("containerparent", parent, child);

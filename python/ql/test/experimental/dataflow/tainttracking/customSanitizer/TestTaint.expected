@@ -34,6 +34,14 @@ test_taint
 | test_logical.py:128 | ok   | test_nesting_not_with_and_true | s |
 | test_logical.py:137 | fail | test_with_return | s |
 | test_logical.py:146 | fail | test_with_exception | s |
+| test_reference.py:31 | fail | test_basic | s2 |
+| test_reference.py:31 | ok   | test_basic | s |
+| test_reference.py:33 | ok   | test_basic | s |
+| test_reference.py:33 | ok   | test_basic | s2 |
+| test_reference.py:41 | fail | test_identical_call | s.strip() |
+| test_reference.py:43 | ok   | test_identical_call | s.strip() |
+| test_reference.py:56 | fail | test_class_attribute_access | c.foo |
+| test_reference.py:58 | ok   | test_class_attribute_access | c.foo |
 isSanitizer
 | TestTaintTrackingConfiguration | test.py:21:39:21:39 | ControlFlowNode for s |
 | TestTaintTrackingConfiguration | test.py:50:10:50:29 | ControlFlowNode for emulated_escaping() |
@@ -48,3 +56,6 @@ isSanitizerGuard
 | TestTaintTrackingConfiguration | test_logical.py:115:12:115:21 | ControlFlowNode for is_safe() |
 | TestTaintTrackingConfiguration | test_logical.py:120:16:120:25 | ControlFlowNode for is_safe() |
 | TestTaintTrackingConfiguration | test_logical.py:125:20:125:29 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_reference.py:30:8:30:17 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_reference.py:40:8:40:25 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_reference.py:55:8:55:21 | ControlFlowNode for is_safe() |

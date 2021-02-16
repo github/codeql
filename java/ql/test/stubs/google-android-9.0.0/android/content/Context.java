@@ -27,6 +27,84 @@ import android.os.Bundle;
  */
 public abstract class Context {
     /**
+     * File creation mode: the default mode, where the created file can only
+     * be accessed by the calling application (or all applications sharing the
+     * same user ID).
+     * @see #MODE_WORLD_READABLE
+     * @see #MODE_WORLD_WRITEABLE
+     */
+    public static final int MODE_PRIVATE = 0x0000;
+
+    /**
+     * @deprecated Creating world-readable files is very dangerous, and likely
+     * to cause security holes in applications.  It is strongly discouraged;
+     * instead, applications should use more formal mechanism for interactions
+     * such as {@link ContentProvider}, {@link BroadcastReceiver}, and
+     * {@link android.app.Service}.  There are no guarantees that this
+     * access mode will remain on a file, such as when it goes through a
+     * backup and restore.
+     * File creation mode: allow all other applications to have read access
+     * to the created file.
+     * @see #MODE_PRIVATE
+     * @see #MODE_WORLD_WRITEABLE
+     */
+    @Deprecated
+    public static final int MODE_WORLD_READABLE = 0x0001;
+
+    /**
+     * @deprecated Creating world-writable files is very dangerous, and likely
+     * to cause security holes in applications.  It is strongly discouraged;
+     * instead, applications should use more formal mechanism for interactions
+     * such as {@link ContentProvider}, {@link BroadcastReceiver}, and
+     * {@link android.app.Service}.  There are no guarantees that this
+     * access mode will remain on a file, such as when it goes through a
+     * backup and restore.
+     * File creation mode: allow all other applications to have write access
+     * to the created file.
+     * @see #MODE_PRIVATE
+     * @see #MODE_WORLD_READABLE
+     */
+    @Deprecated
+    public static final int MODE_WORLD_WRITEABLE = 0x0002;
+
+    /**
+     * File creation mode: for use with {@link #openFileOutput}, if the file
+     * already exists then write data to the end of the existing file
+     * instead of erasing it.
+     * @see #openFileOutput
+     */
+    public static final int MODE_APPEND = 0x8000;
+
+    /**
+     * SharedPreference loading flag: when set, the file on disk will
+     * be checked for modification even if the shared preferences
+     * instance is already loaded in this process.  This behavior is
+     * sometimes desired in cases where the application has multiple
+     * processes, all writing to the same SharedPreferences file.
+     * Generally there are better forms of communication between
+     * processes, though.
+     *
+     * <p>This was the legacy (but undocumented) behavior in and
+     * before Gingerbread (Android 2.3) and this flag is implied when
+     * targetting such releases.  For applications targetting SDK
+     * versions <em>greater than</em> Android 2.3, this flag must be
+     * explicitly set if desired.
+     *
+     * @see #getSharedPreferences
+     */
+    public static final int MODE_MULTI_PROCESS = 0x0004;
+
+    /**
+     * Database open flag: when set, the database is opened with write-ahead
+     * logging enabled by default.
+     *
+     * @see #openOrCreateDatabase(String, int, CursorFactory)
+     * @see #openOrCreateDatabase(String, int, CursorFactory, DatabaseErrorHandler)
+     * @see SQLiteDatabase#enableWriteAheadLogging
+     */
+    public static final int MODE_ENABLE_WRITE_AHEAD_LOGGING = 0x0008;
+
+    /**
      * Return the context of the single, global Application object of the current
      * process. This generally should only be used if you need a Context whose
      * lifecycle is separate from the current context, that is tied to the lifetime
@@ -76,19 +154,42 @@ public abstract class Context {
     public abstract File getFileStreamPath(String name);
 
     /**
-     * Returns the absolute path on the filesystem where a file created with
-     * {@link #getSharedPreferences(String, int)} is stored.
-     * <p>
-     * The returned path may change over time if the calling app is moved to an
-     * adopted storage device, so only relative paths should be persisted.
+     * {@hide}
+     * Return the full path to the shared prefs file for the given prefs group name.
      *
-     * @param name The name of the shared preferences for which you would like to
-     *             get a path.
-     * @return An absolute path to the given file.
-     * @see #getSharedPreferences(String, int)
-     * @removed
+     * <p>Note: this is not generally useful for applications, since they should
+     * not be directly accessing the file system.
      */
-    public abstract File getSharedPreferencesPath(String name);
+    public abstract File getSharedPrefsFile(String name);
+
+    /**
+     * Retrieve and hold the contents of the preferences file 'name', returning
+     * a SharedPreferences through which you can retrieve and modify its
+     * values.  Only one instance of the SharedPreferences object is returned
+     * to any callers for the same name, meaning they will see each other's
+     * edits as soon as they are made.
+     *
+     * @param name Desired preferences file. If a preferences file by this name
+     * does not exist, it will be created when you retrieve an
+     * editor (SharedPreferences.edit()) and then commit changes (Editor.commit()).
+     * @param mode Operating mode.  Use 0 or {@link #MODE_PRIVATE} for the
+     * default operation, {@link #MODE_WORLD_READABLE}
+     * and {@link #MODE_WORLD_WRITEABLE} to control permissions.  The bit
+     * {@link #MODE_MULTI_PROCESS} can also be used if multiple processes
+     * are mutating the same SharedPreferences file.  {@link #MODE_MULTI_PROCESS}
+     * is always on in apps targetting Gingerbread (Android 2.3) and below, and
+     * off by default in later versions.
+     *
+     * @return Returns the single SharedPreferences instance that can be used
+     *         to retrieve and modify the preference values.
+     *
+     * @see #MODE_PRIVATE
+     * @see #MODE_WORLD_READABLE
+     * @see #MODE_WORLD_WRITEABLE
+     * @see #MODE_MULTI_PROCESS
+     */
+    public abstract SharedPreferences getSharedPreferences(String name,
+            int mode);
 
     /**
      * Returns the absolute path to the directory on the filesystem where all

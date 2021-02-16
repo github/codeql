@@ -20,10 +20,10 @@ namespace Semmle.Extraction.CIL.Entities
             cx.Populate(new ArrayType(cx, elementType, shape.Rank));
 
         Type IConstructedTypeProvider<Type>.GetByReferenceType(Type elementType) =>
-            elementType;  // ??
+            new ByRefType(cx, elementType);
 
         Type ISignatureTypeProvider<Type, GenericContext>.GetFunctionPointerType(MethodSignature<Type> signature) =>
-            cx.ErrorType; // Don't know what to do !!
+            cx.Populate(new FunctionPointerType(cx, signature));
 
         Type IConstructedTypeProvider<Type>.GetGenericInstantiation(Type genericType, ImmutableArray<Type> typeArguments) =>
             genericType.Construct(typeArguments);
@@ -35,10 +35,9 @@ namespace Semmle.Extraction.CIL.Entities
             genericContext.GetGenericTypeParameter(index);
 
         Type ISignatureTypeProvider<Type, GenericContext>.GetModifiedType(Type modifier, Type unmodifiedType, bool isRequired) =>
-            unmodifiedType; // !! Not implemented properly
+            new ModifiedType(cx, unmodifiedType, modifier, isRequired);
 
-        Type ISignatureTypeProvider<Type, GenericContext>.GetPinnedType(Type elementType) =>
-            cx.Populate(new PointerType(cx, elementType));
+        Type ISignatureTypeProvider<Type, GenericContext>.GetPinnedType(Type elementType) => elementType;
 
         Type IConstructedTypeProvider<Type>.GetPointerType(Type elementType) =>
             cx.Populate(new PointerType(cx, elementType));

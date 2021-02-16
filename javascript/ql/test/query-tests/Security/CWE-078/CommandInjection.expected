@@ -88,6 +88,47 @@ nodes
 | execSeries.js:18:34:18:40 | req.url |
 | execSeries.js:19:12:19:16 | [cmd] |
 | execSeries.js:19:13:19:15 | cmd |
+| form-parsers.js:9:8:9:39 | "touch  ... nalname |
+| form-parsers.js:9:8:9:39 | "touch  ... nalname |
+| form-parsers.js:9:19:9:26 | req.file |
+| form-parsers.js:9:19:9:26 | req.file |
+| form-parsers.js:9:19:9:39 | req.fil ... nalname |
+| form-parsers.js:13:3:13:11 | req.files |
+| form-parsers.js:13:3:13:11 | req.files |
+| form-parsers.js:13:21:13:24 | file |
+| form-parsers.js:14:10:14:37 | "touch  ... nalname |
+| form-parsers.js:14:10:14:37 | "touch  ... nalname |
+| form-parsers.js:14:21:14:24 | file |
+| form-parsers.js:14:21:14:37 | file.originalname |
+| form-parsers.js:24:48:24:55 | filename |
+| form-parsers.js:24:48:24:55 | filename |
+| form-parsers.js:25:10:25:28 | "touch " + filename |
+| form-parsers.js:25:10:25:28 | "touch " + filename |
+| form-parsers.js:25:21:25:28 | filename |
+| form-parsers.js:35:25:35:30 | fields |
+| form-parsers.js:35:25:35:30 | fields |
+| form-parsers.js:36:10:36:31 | "touch  ... ds.name |
+| form-parsers.js:36:10:36:31 | "touch  ... ds.name |
+| form-parsers.js:36:21:36:26 | fields |
+| form-parsers.js:36:21:36:31 | fields.name |
+| form-parsers.js:40:26:40:31 | fields |
+| form-parsers.js:40:26:40:31 | fields |
+| form-parsers.js:41:10:41:31 | "touch  ... ds.name |
+| form-parsers.js:41:10:41:31 | "touch  ... ds.name |
+| form-parsers.js:41:21:41:26 | fields |
+| form-parsers.js:41:21:41:31 | fields.name |
+| form-parsers.js:52:34:52:39 | fields |
+| form-parsers.js:52:34:52:39 | fields |
+| form-parsers.js:53:10:53:31 | "touch  ... ds.name |
+| form-parsers.js:53:10:53:31 | "touch  ... ds.name |
+| form-parsers.js:53:21:53:26 | fields |
+| form-parsers.js:53:21:53:31 | fields.name |
+| form-parsers.js:58:30:58:33 | part |
+| form-parsers.js:58:30:58:33 | part |
+| form-parsers.js:59:10:59:33 | "touch  ... ilename |
+| form-parsers.js:59:10:59:33 | "touch  ... ilename |
+| form-parsers.js:59:21:59:24 | part |
+| form-parsers.js:59:21:59:33 | part.filename |
 | lib/subLib/index.js:7:32:7:35 | name |
 | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name |
 | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name |
@@ -222,6 +263,40 @@ edges
 | execSeries.js:18:34:18:40 | req.url | execSeries.js:18:13:18:47 | require ... , true) |
 | execSeries.js:19:12:19:16 | [cmd] | execSeries.js:13:19:13:26 | commands |
 | execSeries.js:19:13:19:15 | cmd | execSeries.js:19:12:19:16 | [cmd] |
+| form-parsers.js:9:19:9:26 | req.file | form-parsers.js:9:19:9:39 | req.fil ... nalname |
+| form-parsers.js:9:19:9:26 | req.file | form-parsers.js:9:19:9:39 | req.fil ... nalname |
+| form-parsers.js:9:19:9:39 | req.fil ... nalname | form-parsers.js:9:8:9:39 | "touch  ... nalname |
+| form-parsers.js:9:19:9:39 | req.fil ... nalname | form-parsers.js:9:8:9:39 | "touch  ... nalname |
+| form-parsers.js:13:3:13:11 | req.files | form-parsers.js:13:21:13:24 | file |
+| form-parsers.js:13:3:13:11 | req.files | form-parsers.js:13:21:13:24 | file |
+| form-parsers.js:13:21:13:24 | file | form-parsers.js:14:21:14:24 | file |
+| form-parsers.js:14:21:14:24 | file | form-parsers.js:14:21:14:37 | file.originalname |
+| form-parsers.js:14:21:14:37 | file.originalname | form-parsers.js:14:10:14:37 | "touch  ... nalname |
+| form-parsers.js:14:21:14:37 | file.originalname | form-parsers.js:14:10:14:37 | "touch  ... nalname |
+| form-parsers.js:24:48:24:55 | filename | form-parsers.js:25:21:25:28 | filename |
+| form-parsers.js:24:48:24:55 | filename | form-parsers.js:25:21:25:28 | filename |
+| form-parsers.js:25:21:25:28 | filename | form-parsers.js:25:10:25:28 | "touch " + filename |
+| form-parsers.js:25:21:25:28 | filename | form-parsers.js:25:10:25:28 | "touch " + filename |
+| form-parsers.js:35:25:35:30 | fields | form-parsers.js:36:21:36:26 | fields |
+| form-parsers.js:35:25:35:30 | fields | form-parsers.js:36:21:36:26 | fields |
+| form-parsers.js:36:21:36:26 | fields | form-parsers.js:36:21:36:31 | fields.name |
+| form-parsers.js:36:21:36:31 | fields.name | form-parsers.js:36:10:36:31 | "touch  ... ds.name |
+| form-parsers.js:36:21:36:31 | fields.name | form-parsers.js:36:10:36:31 | "touch  ... ds.name |
+| form-parsers.js:40:26:40:31 | fields | form-parsers.js:41:21:41:26 | fields |
+| form-parsers.js:40:26:40:31 | fields | form-parsers.js:41:21:41:26 | fields |
+| form-parsers.js:41:21:41:26 | fields | form-parsers.js:41:21:41:31 | fields.name |
+| form-parsers.js:41:21:41:31 | fields.name | form-parsers.js:41:10:41:31 | "touch  ... ds.name |
+| form-parsers.js:41:21:41:31 | fields.name | form-parsers.js:41:10:41:31 | "touch  ... ds.name |
+| form-parsers.js:52:34:52:39 | fields | form-parsers.js:53:21:53:26 | fields |
+| form-parsers.js:52:34:52:39 | fields | form-parsers.js:53:21:53:26 | fields |
+| form-parsers.js:53:21:53:26 | fields | form-parsers.js:53:21:53:31 | fields.name |
+| form-parsers.js:53:21:53:31 | fields.name | form-parsers.js:53:10:53:31 | "touch  ... ds.name |
+| form-parsers.js:53:21:53:31 | fields.name | form-parsers.js:53:10:53:31 | "touch  ... ds.name |
+| form-parsers.js:58:30:58:33 | part | form-parsers.js:59:21:59:24 | part |
+| form-parsers.js:58:30:58:33 | part | form-parsers.js:59:21:59:24 | part |
+| form-parsers.js:59:21:59:24 | part | form-parsers.js:59:21:59:33 | part.filename |
+| form-parsers.js:59:21:59:33 | part.filename | form-parsers.js:59:10:59:33 | "touch  ... ilename |
+| form-parsers.js:59:21:59:33 | part.filename | form-parsers.js:59:10:59:33 | "touch  ... ilename |
 | lib/subLib/index.js:7:32:7:35 | name | lib/subLib/index.js:8:22:8:25 | name |
 | lib/subLib/index.js:8:22:8:25 | name | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name |
 | lib/subLib/index.js:8:22:8:25 | name | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name |
@@ -293,6 +368,13 @@ edges
 | exec-sh2.js:10:12:10:57 | cp.spaw ... ptions) | exec-sh2.js:14:25:14:31 | req.url | exec-sh2.js:10:40:10:46 | command | This command depends on $@. | exec-sh2.js:14:25:14:31 | req.url | a user-provided value |
 | exec-sh.js:15:12:15:61 | cp.spaw ... ptions) | exec-sh.js:19:25:19:31 | req.url | exec-sh.js:15:44:15:50 | command | This command depends on $@. | exec-sh.js:19:25:19:31 | req.url | a user-provided value |
 | execSeries.js:14:41:14:47 | command | execSeries.js:18:34:18:40 | req.url | execSeries.js:14:41:14:47 | command | This command depends on $@. | execSeries.js:18:34:18:40 | req.url | a user-provided value |
+| form-parsers.js:9:8:9:39 | "touch  ... nalname | form-parsers.js:9:19:9:26 | req.file | form-parsers.js:9:8:9:39 | "touch  ... nalname | This command depends on $@. | form-parsers.js:9:19:9:26 | req.file | a user-provided value |
+| form-parsers.js:14:10:14:37 | "touch  ... nalname | form-parsers.js:13:3:13:11 | req.files | form-parsers.js:14:10:14:37 | "touch  ... nalname | This command depends on $@. | form-parsers.js:13:3:13:11 | req.files | a user-provided value |
+| form-parsers.js:25:10:25:28 | "touch " + filename | form-parsers.js:24:48:24:55 | filename | form-parsers.js:25:10:25:28 | "touch " + filename | This command depends on $@. | form-parsers.js:24:48:24:55 | filename | a user-provided value |
+| form-parsers.js:36:10:36:31 | "touch  ... ds.name | form-parsers.js:35:25:35:30 | fields | form-parsers.js:36:10:36:31 | "touch  ... ds.name | This command depends on $@. | form-parsers.js:35:25:35:30 | fields | a user-provided value |
+| form-parsers.js:41:10:41:31 | "touch  ... ds.name | form-parsers.js:40:26:40:31 | fields | form-parsers.js:41:10:41:31 | "touch  ... ds.name | This command depends on $@. | form-parsers.js:40:26:40:31 | fields | a user-provided value |
+| form-parsers.js:53:10:53:31 | "touch  ... ds.name | form-parsers.js:52:34:52:39 | fields | form-parsers.js:53:10:53:31 | "touch  ... ds.name | This command depends on $@. | form-parsers.js:52:34:52:39 | fields | a user-provided value |
+| form-parsers.js:59:10:59:33 | "touch  ... ilename | form-parsers.js:58:30:58:33 | part | form-parsers.js:59:10:59:33 | "touch  ... ilename | This command depends on $@. | form-parsers.js:58:30:58:33 | part | a user-provided value |
 | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name | child_process-test.js:85:37:85:54 | req.query.fileName | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name | This command depends on $@. | child_process-test.js:85:37:85:54 | req.query.fileName | a user-provided value |
 | other.js:7:33:7:35 | cmd | other.js:5:25:5:31 | req.url | other.js:7:33:7:35 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
 | other.js:8:28:8:30 | cmd | other.js:5:25:5:31 | req.url | other.js:8:28:8:30 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |

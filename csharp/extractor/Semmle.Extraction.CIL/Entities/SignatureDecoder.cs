@@ -22,7 +22,9 @@ namespace Semmle.Extraction.CIL.Entities
                 elementType.WriteId(trapFile, gc);
                 trapFile.Write('[');
                 for (var i = 1; i < shape.Rank; ++i)
+                {
                     trapFile.Write(',');
+                }
                 trapFile.Write(']');
             }
         }
@@ -38,17 +40,27 @@ namespace Semmle.Extraction.CIL.Entities
 
             public void WriteId(TextWriter trapFile, GenericContext gc)
             {
-                trapFile.Write("ref ");
                 elementType.WriteId(trapFile, gc);
+                trapFile.Write('&');
             }
         }
 
         private struct FnPtr : ITypeSignature
         {
+            private readonly MethodSignature<ITypeSignature> signature;
+
+            public FnPtr(MethodSignature<ITypeSignature> signature)
+            {
+                this.signature = signature;
+            }
 
             public void WriteId(TextWriter trapFile, GenericContext gc)
             {
-                trapFile.Write("<method signature>");
+                FunctionPointerType.WriteName(
+                    trapFile.Write,
+                    t => t.WriteId(trapFile, gc),
+                    signature
+                );
             }
         }
 
@@ -59,7 +71,7 @@ namespace Semmle.Extraction.CIL.Entities
             new ByRef(elementType);
 
         ITypeSignature ISignatureTypeProvider<ITypeSignature, object>.GetFunctionPointerType(MethodSignature<ITypeSignature> signature) =>
-            new FnPtr();
+            new FnPtr(signature);
 
         private class Instantiation : ITypeSignature
         {
@@ -136,42 +148,33 @@ namespace Semmle.Extraction.CIL.Entities
         private class Modified : ITypeSignature
         {
             private readonly ITypeSignature unmodifiedType;
+            private readonly ITypeSignature modifier;
+            private readonly bool isRequired;
 
-            public Modified(ITypeSignature unmodifiedType)
+            public Modified(ITypeSignature unmodifiedType, ITypeSignature modifier, bool isRequired)
             {
                 this.unmodifiedType = unmodifiedType;
+                this.modifier = modifier;
+                this.isRequired = isRequired;
             }
 
             public void WriteId(TextWriter trapFile, GenericContext gc)
             {
                 unmodifiedType.WriteId(trapFile, gc);
+                trapFile.Write(isRequired ? " modreq(" : " modopt(");
+                modifier.WriteId(trapFile, gc);
+                trapFile.Write(")");
             }
         }
 
         ITypeSignature ISignatureTypeProvider<ITypeSignature, object>.GetModifiedType(ITypeSignature modifier, ITypeSignature unmodifiedType, bool isRequired)
         {
-            return new Modified(unmodifiedType);
-        }
-
-        private class Pinned : ITypeSignature
-        {
-            private readonly ITypeSignature elementType;
-
-            public Pinned(ITypeSignature elementType)
-            {
-                this.elementType = elementType;
-            }
-
-            public void WriteId(TextWriter trapFile, GenericContext gc)
-            {
-                trapFile.Write("pinned ");
-                elementType.WriteId(trapFile, gc);
-            }
+            return new Modified(unmodifiedType, modifier, isRequired);
         }
 
         ITypeSignature ISignatureTypeProvider<ITypeSignature, object>.GetPinnedType(ITypeSignature elementType)
         {
-            return new Pinned(elementType);
+            return elementType;
         }
 
         private class PointerType : ITypeSignature

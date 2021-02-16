@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CIL.Entities
         private readonly Type type;
         private readonly int index;
 
-        public TypeTypeParameter(GenericContext cx, Type t, int i) : base(cx)
+        public TypeTypeParameter(Type t, int i) : base(t)
         {
             index = i;
             type = t;
@@ -36,8 +36,6 @@ namespace Semmle.Extraction.CIL.Entities
         public override string Name => "!" + index;
 
         public override IEnumerable<Type> TypeParameters => Enumerable.Empty<Type>();
-
-        public override IEnumerable<Type> MethodParameters => Enumerable.Empty<Type>();
 
         public override IEnumerable<IExtractionProduct> Contents
         {

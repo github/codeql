@@ -19,7 +19,7 @@ namespace Semmle.Extraction.Entities
             }
             else
             {
-                assembly = init.MetadataModule.ContainingAssembly;
+                assembly = init.MetadataModule!.ContainingAssembly;
                 var identity = assembly.Identity;
                 var idString = identity.Name + " " + identity.Version;
                 assemblyPath = cx.Extractor.GetAssemblyFile(idString);
@@ -35,8 +35,7 @@ namespace Semmle.Extraction.Entities
             }
         }
 
-        public override bool NeedsPopulation =>
-            !SymbolEqualityComparer.Default.Equals(assembly, Context.Compilation.Assembly) || !Context.IsGlobalContext;
+        public override bool NeedsPopulation => true;
 
         public override int GetHashCode() =>
             symbol == null ? 91187354 : symbol.GetHashCode();
@@ -49,7 +48,7 @@ namespace Semmle.Extraction.Entities
             return false;
         }
 
-        public static new Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => AssemblyConstructorFactory.Instance.CreateEntity(cx, loc, loc);
+        public static Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => AssemblyConstructorFactory.Instance.CreateEntity(cx, loc, loc);
 
         private class AssemblyConstructorFactory : ICachedEntityFactory<Microsoft.CodeAnalysis.Location?, Assembly>
         {
@@ -59,7 +58,8 @@ namespace Semmle.Extraction.Entities
         }
 
         private static readonly object outputAssemblyCacheKey = new object();
-        public static Location CreateOutputAssembly(Context cx)
+
+        public static Assembly CreateOutputAssembly(Context cx)
         {
             if (cx.Extractor.OutputPath == null)
                 throw new InternalError("Attempting to create the output assembly in standalone extraction mode");

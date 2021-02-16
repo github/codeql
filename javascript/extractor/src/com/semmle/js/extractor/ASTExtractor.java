@@ -1,5 +1,6 @@
 package com.semmle.js.extractor;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Stack;
 import com.semmle.js.ast.AClass;
 import com.semmle.js.ast.AFunction;
 import com.semmle.js.ast.AFunctionExpression;
+import com.semmle.js.ast.AngularPipeRef;
 import com.semmle.js.ast.ArrayExpression;
 import com.semmle.js.ast.ArrayPattern;
 import com.semmle.js.ast.ArrowFunctionExpression;
@@ -153,6 +155,9 @@ import com.semmle.ts.ast.TypeofTypeExpr;
 import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.collections.CollectionUtil;
+import com.semmle.util.data.Pair;
+import com.semmle.util.locations.OffsetTranslation;
+import com.semmle.util.locations.SourceMap;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
 
@@ -165,22 +170,32 @@ public class ASTExtractor {
   private final Label toplevelLabel;
   private final LexicalExtractor lexicalExtractor;
   private final RegExpExtractor regexpExtractor;
+  private final ExtractorConfig config;
 
-  public ASTExtractor(LexicalExtractor lexicalExtractor, ScopeManager scopeManager) {
+  public ASTExtractor(ExtractorConfig config, LexicalExtractor lexicalExtractor, ScopeManager scopeManager) {
+    this.config = config;
     this.trapwriter = lexicalExtractor.getTrapwriter();
     this.locationManager = lexicalExtractor.getLocationManager();
     this.contextManager = new SyntacticContextManager();
     this.scopeManager = scopeManager;
     this.lexicalExtractor = lexicalExtractor;
     this.regexpExtractor = new RegExpExtractor(trapwriter, locationManager);
-    this.toplevelLabel =
-        trapwriter.globalID(
-            "script;{"
-                + locationManager.getFileLabel()
-                + "},"
-                + locationManager.getStartLine()
-                + ','
-                + locationManager.getStartColumn());
+    this.toplevelLabel = makeTopLevelLabel(trapwriter, locationManager.getFileLabel(), locationManager.getStartLine(), locationManager.getStartColumn());
+  }
+
+  /**
+   * Returns the label for the top-level starting at the given location.
+   * <p>
+   * May be used to refer to the top-level before it has been extracted.
+   */
+  public static Label makeTopLevelLabel(TrapWriter trapWriter, Label fileLabel, int startLine, int startColumn) {
+    return trapWriter.globalID(
+        "script;{"
+            + fileLabel
+            + "},"
+            + startLine
+            + ','
+            + startColumn);
   }
 
   public TrapWriter getTrapwriter() {
@@ -210,48 +225,48 @@ public class ASTExtractor {
    */
   public enum IdContext {
     /** An identifier that binds to a variable. */
-    varBind,
+    VAR_BIND,
 
     /** An identifier that declares a variable. */
-    varDecl,
+    VAR_DECL,
 
     /** An identifier that declares both a variable and a type. */
-    varAndTypeDecl,
+    VAR_AND_TYPE_DECL,
 
     /**
      * An identifier that is not associated with variables or types, such as a property name and
      * statement label.
      */
-    label,
+    LABEL,
 
     /** An identifier that binds to a type (and not a variable). */
-    typeBind,
+    TYPE_BIND,
 
     /** An identifier that declares a type (and not a variable). */
-    typeDecl,
+    TYPE_DECL,
 
     /**
      * An identifier that is part of a type, but should not bind to a type name. Unlike {@link
-     * #label}, this will not result in an expression.
+     * #LABEL}, this will not result in an expression.
      */
-    typeLabel,
+    TYPE_LABEL,
 
     /**
      * An identifier that refers to a variable from inside a type, i.e. the operand to a
-     * <tt>typeof</tt> type or left operand to an <tt>is</tt> type.
+     * <code>typeof</code> type or left operand to an <code>is</code> type.
      *
      * <p>This is generally treated as a type, except a variable binding will be emitted for it.
      */
-    varInTypeBind,
+    VAR_IN_TYPE_BIND,
 
     /** An identifier that refers to a namespace from inside a type. */
-    namespaceBind,
+    NAMESPACE_BIND,
 
     /** An identifier that declares a namespace. */
-    namespaceDecl,
+    NAMESPACE_DECL,
 
     /** An identifier that declares a variable and a namespace. */
-    varAndNamespaceDecl,
+    VAR_AND_NAMESPACE_DECL,
 
     /**
      * An identifier that occurs in a type-only import.
@@ -259,7 +274,7 @@ public class ASTExtractor {
      * These may declare a type and/or a namespace, but for compatibility with our AST,
      * must be emitted as a VarDecl (with no variable binding).
      */
-    typeOnlyImport,
+    TYPE_ONLY_IMPORT,
 
     /**
      * An identifier that occurs in a type-only export.
@@ -267,13 +282,13 @@ public class ASTExtractor {
      * These may refer to a type and/or a namespace, but for compatibility with our AST,
      * must be emitted as an ExportVarAccess (with no variable binding).
      */
-    typeOnlyExport,
+    TYPE_ONLY_EXPORT,
 
     /** An identifier that declares a variable, type, and namepsace. */
-    varAndTypeAndNamespaceDecl,
+    VAR_AND_TYPE_AND_NAMESPACE_DECL,
 
     /**
-     * An identifier that occurs as part of a named export, such as <tt>export { A }</tt>.
+     * An identifier that occurs as part of a named export, such as <code>export { A }</code>.
      *
      * <p>This may refer to a variable, type, and/or a namespace, and will export exactly those that
      * can be resolved.
@@ -282,30 +297,30 @@ public class ASTExtractor {
      * explicitly declared, since TypeScript only emits the export code when it refers to a declared
      * variable.
      */
-    export,
+    EXPORT,
 
     /**
      * An identifier that occurs as a qualified name in a default export expression, such as
-     * <tt>A</tt> in <tt>export default A.B</tt>.
+     * <code>A</code> in <code>export default A.B</code>.
      *
-     * <p>This acts like {@link #export}, except it cannot refer to a type (i.e. it must be a
+     * <p>This acts like {@link #EXPORT}, except it cannot refer to a type (i.e. it must be a
      * variable and/or a namespace).
      */
-    exportBase;
+    EXPORT_BASE;
 
     /**
-     * True if this occurs as part of a type annotation, i.e. it is {@link #typeBind} or {@link
-     * #typeDecl}, {@link #typeLabel}, {@link #varInTypeBind}, or {@link #namespaceBind}.
+     * True if this occurs as part of a type annotation, i.e. it is {@link #TYPE_BIND} or {@link
+     * #TYPE_DECL}, {@link #TYPE_LABEL}, {@link #VAR_IN_TYPE_BIND}, or {@link #NAMESPACE_BIND}.
      *
-     * <p>Does not hold for {@link #varAndTypeDecl}, {@link #typeOnlyImport}, or @{link {@link #typeOnlyExport}
+     * <p>Does not hold for {@link #VAR_AND_TYPE_DECL}, {@link #TYPE_ONLY_IMPORT}, or @{link {@link #TYPE_ONLY_EXPORT}
      * as these do not occur in type annotations.
      */
     public boolean isInsideType() {
-      return this == typeBind
-          || this == typeDecl
-          || this == typeLabel
-          || this == varInTypeBind
-          || this == namespaceBind;
+      return this == TYPE_BIND
+          || this == TYPE_DECL
+          || this == TYPE_LABEL
+          || this == VAR_IN_TYPE_BIND
+          || this == NAMESPACE_BIND;
     }
   };
 
@@ -339,11 +354,11 @@ public class ASTExtractor {
     }
 
     private Label visit(INode child, Label parent, int childIndex) {
-      return visit(child, parent, childIndex, IdContext.varBind);
+      return visit(child, parent, childIndex, IdContext.VAR_BIND);
     }
 
     private Label visitAll(List<? extends INode> children, Label parent) {
-      return visitAll(children, parent, IdContext.varBind, 0);
+      return visitAll(children, parent, IdContext.VAR_BIND, 0);
     }
 
     private Label visit(INode child, Label parent, int childIndex, IdContext idContext) {
@@ -426,7 +441,7 @@ public class ASTExtractor {
     public Label visit(InvokeExpression nd, Context c) {
       Label key = super.visit(nd, c);
       visit(nd.getCallee(), key, -1);
-      visitAll(nd.getTypeArguments(), key, IdContext.typeBind, -2, -1);
+      visitAll(nd.getTypeArguments(), key, IdContext.TYPE_BIND, -2, -1);
       visitAll(nd.getArguments(), key);
       if (nd.getResolvedSignatureId() != -1) {
         Label signature = trapwriter.globalID("signature;" + nd.getResolvedSignatureId());
@@ -481,51 +496,51 @@ public class ASTExtractor {
       emitNodeSymbol(nd, key);
       trapwriter.addTuple("literals", name, name, key);
       switch (c.idcontext) {
-        case varBind:
-        case varInTypeBind:
+        case VAR_BIND:
+        case VAR_IN_TYPE_BIND:
           addVariableBinding("bind", key, name);
           break;
-        case varDecl:
+        case VAR_DECL:
           addVariableBinding("decl", key, name);
           break;
-        case varAndTypeDecl:
+        case VAR_AND_TYPE_DECL:
           addVariableBinding("decl", key, name);
           addTypeBinding("typedecl", key, name);
           break;
-        case typeBind:
+        case TYPE_BIND:
           addTypeBinding("typebind", key, name);
           break;
-        case typeDecl:
+        case TYPE_DECL:
           addTypeBinding("typedecl", key, name);
           break;
-        case namespaceBind:
+        case NAMESPACE_BIND:
           addNamespaceBinding("namespacebind", key, name);
           break;
-        case namespaceDecl:
+        case NAMESPACE_DECL:
           addNamespaceBinding("namespacedecl", key, name);
           break;
-        case varAndNamespaceDecl:
+        case VAR_AND_NAMESPACE_DECL:
           addVariableBinding("decl", key, name);
           addNamespaceBinding("namespacedecl", key, name);
           break;
-        case typeOnlyImport:
+        case TYPE_ONLY_IMPORT:
           addTypeBinding("typedecl", key, name);
           addNamespaceBinding("namespacedecl", key, name);
           break;
-        case typeOnlyExport:
+        case TYPE_ONLY_EXPORT:
           addTypeBinding("typebind", key, name);
           addNamespaceBinding("namespacebind", key, name);
           break;
-        case varAndTypeAndNamespaceDecl:
+        case VAR_AND_TYPE_AND_NAMESPACE_DECL:
           addVariableBinding("decl", key, name);
           addTypeBinding("typedecl", key, name);
           addNamespaceBinding("namespacedecl", key, name);
           break;
-        case export:
-        case exportBase:
+        case EXPORT:
+        case EXPORT_BASE:
           // At the time of writing, this kind of export is only allowed at the top-level.
           boolean resolved = false;
-          if (c.idcontext != IdContext.exportBase) {
+          if (c.idcontext != IdContext.EXPORT_BASE) {
             resolved |= addTypeBinding("typebind", key, name);
           }
           resolved |= addNamespaceBinding("namespacebind", key, name);
@@ -534,8 +549,8 @@ public class ASTExtractor {
             addVariableBinding("bind", key, name);
           }
           break;
-        case label:
-        case typeLabel:
+        case LABEL:
+        case TYPE_LABEL:
           break;
       }
       return key;
@@ -647,20 +662,20 @@ public class ASTExtractor {
 
         // The context can either be typeBind, namespaceBind, or varInTypeBind.
         IdContext baseIdContext =
-            c.idcontext == IdContext.varInTypeBind
-                ? IdContext.varInTypeBind
-                : IdContext.namespaceBind;
+            c.idcontext == IdContext.VAR_IN_TYPE_BIND
+                ? IdContext.VAR_IN_TYPE_BIND
+                : IdContext.NAMESPACE_BIND;
         visit(nd.getObject(), key, 0, baseIdContext);
 
         // Ensure the property name is not a TypeAccess, since this would create two
         // TypeAccesses from the same type usage, easily leading to duplicate query
         // results. The qualified access is the one we prefer to select.
-        visit(nd.getProperty(), key, 1, IdContext.typeLabel);
+        visit(nd.getProperty(), key, 1, IdContext.TYPE_LABEL);
       } else {
         IdContext baseIdContext =
-            c.idcontext == IdContext.export ? IdContext.exportBase : IdContext.varBind;
+            c.idcontext == IdContext.EXPORT ? IdContext.EXPORT_BASE : IdContext.VAR_BIND;
         visit(nd.getObject(), key, 0, baseIdContext);
-        visit(nd.getProperty(), key, 1, nd.isComputed() ? IdContext.varBind : IdContext.label);
+        visit(nd.getProperty(), key, 1, nd.isComputed() ? IdContext.VAR_BIND : IdContext.LABEL);
       }
       if (nd.isOptional()) {
         trapwriter.addTuple("isOptionalChaining", key);
@@ -689,7 +704,10 @@ public class ASTExtractor {
                     + locationManager.getStartLine()
                     + ","
                     + locationManager.getStartColumn());
-        scopeManager.enterScope(3, moduleScopeKey, toplevelLabel);
+        Scope moduleScope = scopeManager.enterScope(ScopeKind.MODULE, moduleScopeKey, toplevelLabel);
+        if (sourceType.hasNoGlobalScope()) {
+          scopeManager.setImplicitVariableScope(moduleScope);
+        }
         scopeManager.addVariables(
             sourceType.getPredefinedLocals(platform, locationManager.getSourceFileExtension()));
         trapwriter.addTuple("is_module", toplevelLabel);
@@ -763,7 +781,7 @@ public class ASTExtractor {
           scopeManager.collectDeclaredNames(nd.getLeft(), isStrict, true, DeclKind.var);
       scopeManager.enterScope(nd);
       scopeManager.addNames(lexicals);
-      visit(nd.getLeft(), key, 0, IdContext.varDecl);
+      visit(nd.getLeft(), key, 0, IdContext.VAR_DECL);
       visit(nd.getRight(), key, 1);
       return key;
     }
@@ -771,7 +789,7 @@ public class ASTExtractor {
     @Override
     public Label visit(ComprehensionExpression nd, Context c) {
       Label key = super.visit(nd, c);
-      visitAll(nd.getBlocks(), key, IdContext.varBind, 1);
+      visitAll(nd.getBlocks(), key, IdContext.VAR_BIND, 1);
       visit(nd.getFilter(), key, -1);
       visit(nd.getBody(), key, 0);
       for (int i = nd.getBlocks().size(); i > 0; --i) scopeManager.leaveScope();
@@ -845,7 +863,7 @@ public class ASTExtractor {
       scopeManager.enterScope(nd);
       scopeManager.addNames(lexicals);
       visitAll(head, key);
-      visit(body, key, -1, IdContext.varBind);
+      visit(body, key, -1, IdContext.VAR_BIND);
       scopeManager.leaveScope();
       return key;
     }
@@ -853,9 +871,9 @@ public class ASTExtractor {
     @Override
     public Label visit(VariableDeclarator nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getId(), key, 0, IdContext.varDecl);
+      visit(nd.getId(), key, 0, IdContext.VAR_DECL);
       visit(nd.getInit(), key, 1);
-      visit(nd.getTypeAnnotation(), key, 2, IdContext.typeBind);
+      visit(nd.getTypeAnnotation(), key, 2, IdContext.TYPE_BIND);
       for (int i = 0; i < DeclarationFlags.numberOfFlags; ++i) {
         if (DeclarationFlags.hasNthFlag(nd.getFlags(), i)) {
           trapwriter.addTuple(DeclarationFlags.relationNames.get(i), key);
@@ -913,7 +931,7 @@ public class ASTExtractor {
 
       // The name of a function declaration binds to the outer scope.
       if (nd instanceof FunctionDeclaration) {
-        visit(nd.getId(), key, -1, IdContext.varDecl);
+        visit(nd.getId(), key, -1, IdContext.VAR_DECL);
       }
 
       DeclaredNames locals =
@@ -925,7 +943,7 @@ public class ASTExtractor {
       // The name of a function expression binds to its own scope.
       if (nd.getId() != null && nd instanceof AFunctionExpression) {
         scopeManager.addVariables(nd.getId().getName());
-        visit(nd.getId(), key, -1, IdContext.varDecl);
+        visit(nd.getId(), key, -1, IdContext.VAR_DECL);
       }
 
       for (TypeParameter tp : nd.getTypeParameters()) {
@@ -936,7 +954,7 @@ public class ASTExtractor {
       for (IPattern param : nd.getAllParams()) {
         scopeManager.addNames(
             scopeManager.collectDeclaredNames(param, isStrict, false, DeclKind.var));
-        Label paramKey = visit(param, key, i, IdContext.varDecl);
+        Label paramKey = visit(param, key, i, IdContext.VAR_DECL);
 
         // Extract optional parameters
         if (nd.getOptionalParameterIndices().contains(i)) {
@@ -953,10 +971,10 @@ public class ASTExtractor {
       }
 
       // add return type at index -3
-      visit(nd.getReturnType(), key, -3, IdContext.typeBind);
+      visit(nd.getReturnType(), key, -3, IdContext.TYPE_BIND);
 
       // add 'this' type at index -4
-      visit(nd.getThisParameterType(), key, -4, IdContext.typeBind);
+      visit(nd.getThisParameterType(), key, -4, IdContext.TYPE_BIND);
 
       // add parameter stuff at index -5 and down
       extractParameterDefaultsAndTypes(nd, key, i);
@@ -985,12 +1003,12 @@ public class ASTExtractor {
         if (nd.hasDefault(j)) this.visit(nd.getDefault(j), key, -(4 * j + 5));
         // parameter type annotations are populated at indices -6, -10, ...
         if (nd.hasParameterType(j))
-          this.visit(nd.getParameterType(j), key, -(4 * j + 6), IdContext.typeBind);
+          this.visit(nd.getParameterType(j), key, -(4 * j + 6), IdContext.TYPE_BIND);
       }
       // type parameters are at indices -7, -11, -15, ...
-      visitAll(nd.getTypeParameters(), key, IdContext.typeDecl, -7, -4);
+      visitAll(nd.getTypeParameters(), key, IdContext.TYPE_DECL, -7, -4);
       // parameter decorators are at indices -8, -12, -16, ...
-      visitAll(nd.getParameterDecorators(), key, IdContext.varBind, -8, -4);
+      visitAll(nd.getParameterDecorators(), key, IdContext.VAR_BIND, -8, -4);
     }
 
     @Override
@@ -1043,14 +1061,14 @@ public class ASTExtractor {
        */
       if (!lexicals.isEmpty()) {
         VariableDeclaration decl = (VariableDeclaration) nd.getInit();
-        Label declkey = visit((Statement) decl, new Context(key, 0, IdContext.varBind));
+        Label declkey = visit((Statement) decl, new Context(key, 0, IdContext.VAR_BIND));
         int idx = 0;
         for (VariableDeclarator declarator : decl.getDeclarations()) {
           Label declaratorKey =
-              visit((Expression) declarator, new Context(declkey, idx++, IdContext.varBind));
+              visit((Expression) declarator, new Context(declkey, idx++, IdContext.VAR_BIND));
 
           // the 'let' bound variable lives in the new scope
-          visit(declarator.getId(), declaratorKey, 0, IdContext.varDecl);
+          visit(declarator.getId(), declaratorKey, 0, IdContext.VAR_DECL);
 
           // but its initialiser does not
           scopeManager.leaveScope();
@@ -1092,7 +1110,7 @@ public class ASTExtractor {
     @Override
     public Label visit(ArrayExpression nd, Context c) {
       Label key = super.visit(nd, c);
-      visitAll(nd.getElements(), key, IdContext.varBind, 0);
+      visitAll(nd.getElements(), key, IdContext.VAR_BIND, 0);
       trapwriter.addTuple("array_size", key, nd.getElements().size());
       return key;
     }
@@ -1102,7 +1120,7 @@ public class ASTExtractor {
       Label key = super.visit(nd, c);
       visitAll(nd.getElements(), key, c.idcontext, 0);
       visit(nd.getRest(), key, -1, c.idcontext);
-      visitAll(nd.getDefaults(), key, IdContext.varBind, -2, -1);
+      visitAll(nd.getDefaults(), key, IdContext.VAR_BIND, -2, -1);
       trapwriter.addTuple("array_size", key, nd.getElements().size());
       return key;
     }
@@ -1118,7 +1136,7 @@ public class ASTExtractor {
     @Override
     public Label visit(ObjectExpression nd, Context c) {
       Label key = super.visit(nd, c);
-      visitAll(nd.getProperties(), key, IdContext.varBind, 0);
+      visitAll(nd.getProperties(), key, IdContext.VAR_BIND, 0);
       return key;
     }
 
@@ -1129,13 +1147,79 @@ public class ASTExtractor {
       String tostring = lexicalExtractor.mkToString(nd);
       trapwriter.addTuple("properties", propkey, c.parent, c.childIndex, kind, tostring);
       locationManager.emitNodeLocation(nd, propkey);
-      visitAll(nd.getDecorators(), propkey, IdContext.varBind, -1, -1);
-      visit(nd.getKey(), propkey, 0, nd.isComputed() ? IdContext.varBind : IdContext.label);
-      visit(nd.getValue(), propkey, 1, c.idcontext);
-      visit(nd.getDefaultValue(), propkey, 2, IdContext.varBind);
+      visitAll(nd.getDecorators(), propkey, IdContext.VAR_BIND, -1, -1);
+      visit(nd.getKey(), propkey, 0, nd.isComputed() ? IdContext.VAR_BIND : IdContext.LABEL);
+      Label valueLabel = visit(nd.getValue(), propkey, 1, c.idcontext);
+      visit(nd.getDefaultValue(), propkey, 2, IdContext.VAR_BIND);
       if (nd.isComputed()) trapwriter.addTuple("is_computed", propkey);
       if (nd.isMethod()) trapwriter.addTuple("is_method", propkey);
+
+      // Extract the value of a property named `template` as HTML, in order to support
+      // Angular2 components with an inline template.
+      if (!nd.isComputed() && "template".equals(tryGetIdentifierName(nd.getKey()))) {
+        extractStringValueAsHtml(nd.getValue(), valueLabel);
+      }
+      
       return propkey;
+    }
+
+    /**
+     * Extracts the string value of <code>expr</code> as an HTML snippet.
+     */
+    private void extractStringValueAsHtml(Expression expr, Label exprLabel) {
+      TextualExtractor textualExtractor = lexicalExtractor.getTextualExtractor();
+      if (textualExtractor.isSnippet()) {
+        return; // do not create nested snippets
+      }
+      Pair<String, OffsetTranslation> sourceAndOffset = tryGetStringValueFromExpression(expr);
+      if (sourceAndOffset == null) {
+        return;
+      }
+      String source = sourceAndOffset.fst();
+      SourceLocation loc = expr.getLoc();
+      Path originalFile = textualExtractor.getExtractedFile().toPath();
+      Path vfile = originalFile.resolveSibling(originalFile.getFileName().toString() + "." + loc.getStart().getLine() + "." + loc.getStart().getColumn() + ".html");
+      SourceMap sourceMap = textualExtractor.getSourceMap().offsetBy(loc.getStart().getOffset(), sourceAndOffset.snd());
+      TextualExtractor innerTextualExtractor = new TextualExtractor(
+          trapwriter,
+          locationManager,
+          source,
+          false,
+          getMetrics(),
+          vfile.toFile(),
+          sourceMap);
+      HTMLExtractor html = HTMLExtractor.forEmbeddedHtml(config);
+      List<Label> rootNodes = html.extractEx(innerTextualExtractor).fst();
+      int rootNodeIndex = 0;
+      for (Label rootNode : rootNodes) {
+        trapwriter.addTuple("xml_element_parent_expression", rootNode, exprLabel, rootNodeIndex++);
+      }
+    }
+
+    private String tryGetIdentifierName(Expression e) {
+      return e instanceof Identifier ? ((Identifier)e).getName() : null;
+    }
+
+    private Pair<String, OffsetTranslation> tryGetStringValueFromExpression(Expression e) {
+      if (e instanceof Literal) {
+        Literal lit = (Literal) e;
+        if (!lit.isStringLiteral()) {
+          return null;
+        }
+        return Pair.make((String) lit.getValue(), makeStringLiteralOffsets(lit.getRaw()));
+      }
+      if (e instanceof TemplateLiteral) {
+        TemplateLiteral lit = (TemplateLiteral) e;
+        if (!lit.getExpressions().isEmpty()) {
+          return null;
+        }
+        if (lit.getQuasis().size() != 1) {
+          return null;
+        }
+        TemplateElement element = lit.getQuasis().get(0);
+        return Pair.make((String) element.getCooked(), makeStringLiteralOffsets("`" + element.getRaw() + "`"));
+      }
+      return null;
     }
 
     @Override
@@ -1159,7 +1243,7 @@ public class ASTExtractor {
     @Override
     public Label visit(LabeledStatement nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getLabel(), key, 0, IdContext.label);
+      visit(nd.getLabel(), key, 0, IdContext.LABEL);
       contextManager.enterLabeledStatement(nd);
       visit(nd.getBody(), key, 1);
       contextManager.leaveLabeledStatement(nd);
@@ -1201,7 +1285,7 @@ public class ASTExtractor {
       if (nd.getParam() != null) {
         scopeManager.addNames(
             scopeManager.collectDeclaredNames(nd.getParam(), isStrict, false, DeclKind.var));
-        visit(nd.getParam(), key, 0, IdContext.varDecl);
+        visit(nd.getParam(), key, 0, IdContext.VAR_DECL);
       }
       visit(nd.getGuard(), key, 2);
       visit(nd.getBody(), key, 1);
@@ -1213,7 +1297,7 @@ public class ASTExtractor {
     public Label visit(TryStatement nd, Context c) {
       Label key = super.visit(nd, c);
       visit(nd.getBlock(), key, 0);
-      visitAll(nd.getAllHandlers(), key, IdContext.varBind, 1);
+      visitAll(nd.getAllHandlers(), key, IdContext.VAR_BIND, 1);
       visit(nd.getFinalizer(), key, -1);
       return key;
     }
@@ -1221,7 +1305,7 @@ public class ASTExtractor {
     @Override
     public Label visit(JumpStatement nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getLabel(), key, 0, IdContext.label);
+      visit(nd.getLabel(), key, 0, IdContext.LABEL);
       Label targetKey = trapwriter.localID(contextManager.getTarget(nd));
       trapwriter.addTuple("jump_targets", key, targetKey);
       return key;
@@ -1230,28 +1314,28 @@ public class ASTExtractor {
     @Override
     public Label visit(ReturnStatement nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getArgument(), key, 0, IdContext.varBind);
+      visit(nd.getArgument(), key, 0, IdContext.VAR_BIND);
       return key;
     }
 
     @Override
     public Label visit(ThrowStatement nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getArgument(), key, 0, IdContext.varBind);
+      visit(nd.getArgument(), key, 0, IdContext.VAR_BIND);
       return key;
     }
 
     @Override
     public Label visit(SequenceExpression nd, Context c) {
       Label key = super.visit(nd, c);
-      visitAll(nd.getExpressions(), key, IdContext.varBind, 0);
+      visitAll(nd.getExpressions(), key, IdContext.VAR_BIND, 0);
       return key;
     }
 
     @Override
     public Label visit(ParenthesizedExpression nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getExpression(), key, 0, IdContext.varBind);
+      visit(nd.getExpression(), key, 0, IdContext.VAR_BIND);
       return key;
     }
 
@@ -1260,21 +1344,21 @@ public class ASTExtractor {
       Label key = super.visit(nd, c);
       visit(nd.getTag(), key, 0);
       visit(nd.getQuasi(), key, 1);
-      visitAll(nd.getTypeArguments(), key, IdContext.typeBind, 2);
+      visitAll(nd.getTypeArguments(), key, IdContext.TYPE_BIND, 2);
       return key;
     }
 
     @Override
     public Label visit(TemplateLiteral nd, Context c) {
       Label key = super.visit(nd, c);
-      visitAll(nd.getChildren(), key, IdContext.varBind, 0);
+      visitAll(nd.getChildren(), key, IdContext.VAR_BIND, 0);
       return key;
     }
 
     @Override
     public Label visit(TemplateLiteralTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
-      visitAll(nd.getChildren(), key, IdContext.typeBind, 0);
+      visitAll(nd.getChildren(), key, IdContext.TYPE_BIND, 0);
       return key;
     }
 
@@ -1309,18 +1393,18 @@ public class ASTExtractor {
     @Override
     public Label visit(TypeParameter nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getId(), key, 0, IdContext.typeDecl);
-      visit(nd.getBound(), key, 1, IdContext.typeBind);
-      visit(nd.getDefault(), key, 2, IdContext.typeBind);
+      visit(nd.getId(), key, 0, IdContext.TYPE_DECL);
+      visit(nd.getBound(), key, 1, IdContext.TYPE_BIND);
+      visit(nd.getDefault(), key, 2, IdContext.TYPE_BIND);
       return key;
     }
 
     private Label visit(AClass ac, Label key, Node scopeNode, boolean isClassExpression) {
-      visitAll(ac.getDecorators(), key, IdContext.varBind, -2, -3);
+      visitAll(ac.getDecorators(), key, IdContext.VAR_BIND, -2, -3);
       // The identifier of a class declaration is visited before entering the
       // class scope, since it must resolve to the enclosing block, not its own scope.
       if (!isClassExpression) {
-        visit(ac.getId(), key, 0, IdContext.varAndTypeDecl);
+        visit(ac.getId(), key, 0, IdContext.VAR_AND_TYPE_DECL);
       }
       if (ac.hasId() || ac.hasTypeParameters()) {
         scopeManager.enterScope(scopeNode);
@@ -1336,10 +1420,10 @@ public class ASTExtractor {
         }
       }
       if (isClassExpression) {
-        visit(ac.getId(), key, 0, IdContext.varAndTypeDecl);
+        visit(ac.getId(), key, 0, IdContext.VAR_AND_TYPE_DECL);
       }
-      visitAll(ac.getTypeParameters(), key, IdContext.typeDecl, -3, -3);
-      visitAll(ac.getSuperInterfaces(), key, IdContext.typeBind, -1, -3);
+      visitAll(ac.getTypeParameters(), key, IdContext.TYPE_DECL, -3, -3);
+      visitAll(ac.getSuperInterfaces(), key, IdContext.TYPE_BIND, -1, -3);
       visit(ac.getSuperClass(), key, 1);
       MethodDefinition constructor = ac.getBody().getConstructor();
       if (constructor == null) {
@@ -1366,7 +1450,7 @@ public class ASTExtractor {
       Label lbl = super.visit(nd, c);
       emitNodeSymbol(nd, lbl);
       IdContext context =
-          nd.isInstantiated() ? IdContext.varAndNamespaceDecl : IdContext.namespaceDecl;
+          nd.isInstantiated() ? IdContext.VAR_AND_NAMESPACE_DECL : IdContext.NAMESPACE_DECL;
       visit(nd.getName(), lbl, -1, context);
       if (nd.hasDeclareKeyword()) {
         trapwriter.addTuple("has_declare_keyword", lbl);
@@ -1512,7 +1596,7 @@ public class ASTExtractor {
       String tostring = lexicalExtractor.mkToString(nd);
       trapwriter.addTuple("properties", methkey, c.parent, c.childIndex, kind, tostring);
       locationManager.emitNodeLocation(nd, methkey);
-      visitAll(nd.getDecorators(), methkey, IdContext.varBind, -1, -1);
+      visitAll(nd.getDecorators(), methkey, IdContext.VAR_BIND, -1, -1);
 
       // the name and initialiser expression of an instance field is evaluated as part of
       // the constructor, so we adjust our syntactic context to reflect this
@@ -1523,7 +1607,7 @@ public class ASTExtractor {
         constructorKey = trapwriter.localID(ctor.getValue());
         contextManager.enterContainer(constructorKey);
       }
-      visit(nd.getKey(), methkey, 0, nd.isComputed() ? IdContext.varBind : IdContext.label);
+      visit(nd.getKey(), methkey, 0, nd.isComputed() ? IdContext.VAR_BIND : IdContext.LABEL);
       visit(nd.getValue(), methkey, 1, c.idcontext);
       if (ctor != null) contextManager.leaveContainer();
 
@@ -1542,7 +1626,7 @@ public class ASTExtractor {
           trapwriter.addTuple(
               "parameter_fields", methkey, constructorKey, field.getFieldParameterIndex());
         } else {
-          visit(field.getTypeAnnotation(), methkey, 2, IdContext.typeBind);
+          visit(field.getTypeAnnotation(), methkey, 2, IdContext.TYPE_BIND);
         }
       }
 
@@ -1568,7 +1652,7 @@ public class ASTExtractor {
     @Override
     public Label visit(ExportDefaultDeclaration nd, Context c) {
       Label lbl = super.visit(nd, c);
-      visit(nd.getDeclaration(), lbl, 0, IdContext.export);
+      visit(nd.getDeclaration(), lbl, 0, IdContext.EXPORT);
       return lbl;
     }
 
@@ -1578,9 +1662,9 @@ public class ASTExtractor {
       visit(nd.getDeclaration(), lbl, -1);
       visit(nd.getSource(), lbl, -2);
       IdContext childContext =
-          nd.hasSource() ? IdContext.label :
-          nd.hasTypeKeyword() ? IdContext.typeOnlyExport :
-          IdContext.export;
+          nd.hasSource() ? IdContext.LABEL :
+          nd.hasTypeKeyword() ? IdContext.TYPE_ONLY_EXPORT :
+          IdContext.EXPORT;
       visitAll(nd.getSpecifiers(), lbl, childContext, 0);
       if (nd.hasTypeKeyword()) {
         trapwriter.addTuple("has_type_keyword", lbl);
@@ -1592,7 +1676,7 @@ public class ASTExtractor {
     public Label visit(ExportSpecifier nd, Context c) {
       Label lbl = super.visit(nd, c);
       visit(nd.getLocal(), lbl, 0, c.idcontext);
-      visit(nd.getExported(), lbl, 1, IdContext.label);
+      visit(nd.getExported(), lbl, 1, IdContext.LABEL);
       return lbl;
     }
 
@@ -1600,7 +1684,7 @@ public class ASTExtractor {
     public Label visit(ImportDeclaration nd, Context c) {
       Label lbl = super.visit(nd, c);
       visit(nd.getSource(), lbl, -1);
-      IdContext childContext = nd.hasTypeKeyword() ? IdContext.typeOnlyImport : IdContext.varAndTypeAndNamespaceDecl;
+      IdContext childContext = nd.hasTypeKeyword() ? IdContext.TYPE_ONLY_IMPORT : IdContext.VAR_AND_TYPE_AND_NAMESPACE_DECL;
       visitAll(nd.getSpecifiers(), lbl, childContext, 0);
       emitNodeSymbol(nd, lbl);
       if (nd.hasTypeKeyword()) {
@@ -1612,7 +1696,7 @@ public class ASTExtractor {
     @Override
     public Label visit(ImportSpecifier nd, Context c) {
       Label lbl = super.visit(nd, c);
-      visit(nd.getImported(), lbl, 0, IdContext.label);
+      visit(nd.getImported(), lbl, 0, IdContext.LABEL);
       visit(nd.getLocal(), lbl, 1, c.idcontext);
       return lbl;
     }
@@ -1632,9 +1716,9 @@ public class ASTExtractor {
        * A spread attribute is represented as an attribute without
        * a name, whose value is a spread element.
        */
-      visit(name, lbl, -1, isTagName(name) ? IdContext.label : IdContext.varBind);
-      visitAll(open.getAttributes(), lbl, IdContext.varBind, 0, 1);
-      visitAll(nd.getChildren(), lbl, IdContext.varBind, -2, -1);
+      visit(name, lbl, -1, isTagName(name) ? IdContext.LABEL : IdContext.VAR_BIND);
+      visitAll(open.getAttributes(), lbl, IdContext.VAR_BIND, 0, 1);
+      visitAll(nd.getChildren(), lbl, IdContext.VAR_BIND, -2, -1);
       return lbl;
     }
 
@@ -1664,15 +1748,15 @@ public class ASTExtractor {
     public Label visit(JSXMemberExpression nd, Context c) {
       Label key = super.visit(nd, c);
       visit(nd.getObject(), key, 0);
-      visit(nd.getName(), key, 1, IdContext.label);
+      visit(nd.getName(), key, 1, IdContext.LABEL);
       return key;
     }
 
     @Override
     public Label visit(JSXNamespacedName nd, Context c) {
       Label lbl = super.visit(nd, c);
-      visit(nd.getNamespace(), lbl, 0, IdContext.label);
-      visit(nd.getName(), lbl, 1, IdContext.label);
+      visit(nd.getNamespace(), lbl, 0, IdContext.LABEL);
+      visit(nd.getName(), lbl, 1, IdContext.LABEL);
       return lbl;
     }
 
@@ -1682,7 +1766,7 @@ public class ASTExtractor {
       String tostring = lexicalExtractor.mkToString(nd);
       trapwriter.addTuple("properties", propkey, c.parent, c.childIndex, 3, tostring);
       locationManager.emitNodeLocation(nd, propkey);
-      visit(nd.getName(), propkey, 0, IdContext.label);
+      visit(nd.getName(), propkey, 0, IdContext.LABEL);
       visit(nd.getValue(), propkey, 1, c.idcontext);
       return propkey;
     }
@@ -1705,7 +1789,7 @@ public class ASTExtractor {
       // now populate the spread expression, stripping off the surrounding
       // braces for its tostring
       tostring = tostring.substring(1, tostring.length() - 1).trim();
-      Label valkey = visit(nd, 66, tostring, new Context(propkey, 1, IdContext.varBind));
+      Label valkey = visit(nd, 66, tostring, new Context(propkey, 1, IdContext.VAR_BIND));
       visit(nd.getArgument(), valkey, 0);
       return propkey;
     }
@@ -1745,15 +1829,15 @@ public class ASTExtractor {
     @Override
     public Label visit(ImportWholeDeclaration nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getLhs(), key, 0, IdContext.varAndTypeAndNamespaceDecl);
-      visit(nd.getRhs(), key, 1, IdContext.export);
+      visit(nd.getLhs(), key, 0, IdContext.VAR_AND_TYPE_AND_NAMESPACE_DECL);
+      visit(nd.getRhs(), key, 1, IdContext.EXPORT);
       return key;
     }
 
     @Override
     public Label visit(ExportWholeDeclaration nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getRhs(), key, 0, IdContext.export);
+      visit(nd.getRhs(), key, 0, IdContext.EXPORT);
       return key;
     }
 
@@ -1781,10 +1865,10 @@ public class ASTExtractor {
           scopeManager.addTypeName(tp.getId().getName());
         }
       }
-      visitAll(nd.getTypeParameters(), key, IdContext.typeBind, -2, -2);
-      visitAll(nd.getSuperInterfaces(), key, IdContext.typeBind, -1, -2);
-      visit(nd.getName(), key, 0, IdContext.typeDecl);
-      visitAll(nd.getBody(), key, IdContext.label, 2);
+      visitAll(nd.getTypeParameters(), key, IdContext.TYPE_BIND, -2, -2);
+      visitAll(nd.getSuperInterfaces(), key, IdContext.TYPE_BIND, -1, -2);
+      visit(nd.getName(), key, 0, IdContext.TYPE_DECL);
+      visitAll(nd.getBody(), key, IdContext.LABEL, 2);
       if (nd.hasTypeParameters()) {
         scopeManager.leaveScope();
       }
@@ -1802,36 +1886,36 @@ public class ASTExtractor {
     @Override
     public Label visit(ArrayTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getElementType(), key, 0, IdContext.typeBind);
+      visit(nd.getElementType(), key, 0, IdContext.TYPE_BIND);
       return key;
     }
 
     @Override
     public Label visit(UnionTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
-      visitAll(nd.getElementTypes(), key, IdContext.typeBind, 0);
+      visitAll(nd.getElementTypes(), key, IdContext.TYPE_BIND, 0);
       return key;
     }
 
     @Override
     public Label visit(IndexedAccessTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getObjectType(), key, 0, IdContext.typeBind);
-      visit(nd.getIndexType(), key, 1, IdContext.typeBind);
+      visit(nd.getObjectType(), key, 0, IdContext.TYPE_BIND);
+      visit(nd.getIndexType(), key, 1, IdContext.TYPE_BIND);
       return key;
     }
 
     @Override
     public Label visit(IntersectionTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
-      visitAll(nd.getElementTypes(), key, IdContext.typeBind, 0);
+      visitAll(nd.getElementTypes(), key, IdContext.TYPE_BIND, 0);
       return key;
     }
 
     @Override
     public Label visit(ParenthesizedTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getElementType(), key, 0, IdContext.typeBind);
+      visit(nd.getElementType(), key, 0, IdContext.TYPE_BIND);
       return key;
     }
 
@@ -1840,39 +1924,39 @@ public class ASTExtractor {
       Label key = super.visit(nd, c);
       if (nd.getElementNames() != null) {
         // Element names are index -1, -2, -3...
-        visitAll(nd.getElementNames(), key, IdContext.typeLabel, -1, -1);
+        visitAll(nd.getElementNames(), key, IdContext.TYPE_LABEL, -1, -1);
       }
-      visitAll(nd.getElementTypes(), key, IdContext.typeBind, 0);
+      visitAll(nd.getElementTypes(), key, IdContext.TYPE_BIND, 0);
       return key;
     }
 
     @Override
     public Label visit(UnaryTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getElementType(), key, 0, IdContext.typeBind);
+      visit(nd.getElementType(), key, 0, IdContext.TYPE_BIND);
       return key;
     }
 
     @Override
     public Label visit(GenericTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getTypeName(), key, -1, IdContext.typeBind);
-      visitAll(nd.getTypeArguments(), key, IdContext.typeBind, 0);
+      visit(nd.getTypeName(), key, -1, IdContext.TYPE_BIND);
+      visitAll(nd.getTypeArguments(), key, IdContext.TYPE_BIND, 0);
       return key;
     }
 
     @Override
     public Label visit(TypeofTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getExpression(), key, 0, IdContext.varInTypeBind);
+      visit(nd.getExpression(), key, 0, IdContext.VAR_IN_TYPE_BIND);
       return key;
     }
 
     @Override
     public Label visit(PredicateTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getExpression(), key, 0, IdContext.varInTypeBind);
-      visit(nd.getTypeExpr(), key, 1, IdContext.typeBind);
+      visit(nd.getExpression(), key, 0, IdContext.VAR_IN_TYPE_BIND);
+      visit(nd.getTypeExpr(), key, 1, IdContext.TYPE_BIND);
       if (nd.hasAssertsKeyword()) {
         trapwriter.addTuple("has_asserts_keyword", key);
       }
@@ -1889,8 +1973,8 @@ public class ASTExtractor {
     @Override
     public Label visit(ExpressionWithTypeArguments nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getExpression(), key, -1, IdContext.varBind);
-      visitAll(nd.getTypeArguments(), key, IdContext.typeBind, 0);
+      visit(nd.getExpression(), key, -1, IdContext.VAR_BIND);
+      visitAll(nd.getTypeArguments(), key, IdContext.TYPE_BIND, 0);
       return key;
     }
 
@@ -1905,7 +1989,7 @@ public class ASTExtractor {
     public Label visit(TypeAssertion nd, Context c) {
       Label key = super.visit(nd, c);
       visit(nd.getExpression(), key, 0);
-      visit(nd.getTypeAnnotation(), key, 1, IdContext.typeBind);
+      visit(nd.getTypeAnnotation(), key, 1, IdContext.TYPE_BIND);
       return key;
     }
 
@@ -1914,8 +1998,8 @@ public class ASTExtractor {
       Label key = super.visit(nd, c);
       scopeManager.enterScope(nd);
       scopeManager.addTypeName(nd.getTypeParameter().getId().getName());
-      visit(nd.getTypeParameter(), key, 0, IdContext.typeDecl);
-      visit(nd.getElementType(), key, 1, IdContext.typeBind);
+      visit(nd.getTypeParameter(), key, 0, IdContext.TYPE_DECL);
+      visit(nd.getElementType(), key, 1, IdContext.TYPE_BIND);
       scopeManager.leaveScope();
       return key;
     }
@@ -1923,15 +2007,15 @@ public class ASTExtractor {
     @Override
     public Label visit(TypeAliasDeclaration nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getId(), key, 0, IdContext.typeDecl);
+      visit(nd.getId(), key, 0, IdContext.TYPE_DECL);
       if (nd.hasTypeParameters()) {
         scopeManager.enterScope(nd);
         for (TypeParameter tp : nd.getTypeParameters()) {
           scopeManager.addTypeName(tp.getId().getName());
         }
       }
-      visitAll(nd.getTypeParameters(), key, IdContext.typeDecl, 2, 1);
-      visit(nd.getDefinition(), key, 1, IdContext.typeBind);
+      visitAll(nd.getTypeParameters(), key, IdContext.TYPE_DECL, 2, 1);
+      visit(nd.getDefinition(), key, 1, IdContext.TYPE_BIND);
       if (nd.hasTypeParameters()) {
         scopeManager.leaveScope();
       }
@@ -1942,14 +2026,14 @@ public class ASTExtractor {
     @Override
     public Label visit(EnumDeclaration nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getId(), key, 0, IdContext.varAndTypeAndNamespaceDecl);
-      visitAll(nd.getDecorators(), key, IdContext.varBind, -1, -1);
+      visit(nd.getId(), key, 0, IdContext.VAR_AND_TYPE_AND_NAMESPACE_DECL);
+      visitAll(nd.getDecorators(), key, IdContext.VAR_BIND, -1, -1);
       scopeManager.enterScope(nd);
       for (EnumMember member : nd.getMembers()) {
         scopeManager.addVariables(member.getId().getName());
         scopeManager.addTypeName(member.getId().getName());
       }
-      visitAll(nd.getMembers(), key, IdContext.varAndTypeDecl, 1, 1);
+      visitAll(nd.getMembers(), key, IdContext.VAR_AND_TYPE_DECL, 1, 1);
       scopeManager.leaveScope();
       if (nd.isConst()) {
         trapwriter.addTuple("is_const_enum", key);
@@ -1967,8 +2051,8 @@ public class ASTExtractor {
       String tostring = lexicalExtractor.mkToString(nd);
       trapwriter.addTuple("properties", key, c.parent, c.childIndex, 7, tostring);
       locationManager.emitNodeLocation(nd, key);
-      visit(nd.getId(), key, 0, IdContext.varAndTypeDecl);
-      visit(nd.getInitializer(), key, 1, IdContext.varBind);
+      visit(nd.getId(), key, 0, IdContext.VAR_AND_TYPE_DECL);
+      visit(nd.getInitializer(), key, 1, IdContext.VAR_BIND);
       emitNodeSymbol(nd, key);
       return key;
     }
@@ -1977,7 +2061,7 @@ public class ASTExtractor {
     public Label visit(ExternalModuleDeclaration nd, Context c) {
       Label key = super.visit(nd, c);
       trapwriter.addTuple("has_declare_keyword", key);
-      visit(nd.getName(), key, -1, IdContext.label);
+      visit(nd.getName(), key, -1, IdContext.LABEL);
       DeclaredNames hoistedVars =
           scopeManager.collectDeclaredNames(nd.getBody(), isStrict, false, DeclKind.none);
       DeclaredNames lexicalVars =
@@ -1995,14 +2079,14 @@ public class ASTExtractor {
     @Override
     public Label visit(ExportAsNamespaceDeclaration nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getId(), key, 0, IdContext.label);
+      visit(nd.getId(), key, 0, IdContext.LABEL);
       return key;
     }
 
     @Override
     public Label visit(DecoratorList nd, Context c) {
       Label key = super.visit(nd, c);
-      visitAll(nd.getDecorators(), key, IdContext.varBind, 0);
+      visitAll(nd.getDecorators(), key, IdContext.VAR_BIND, 0);
       return key;
     }
 
@@ -2046,53 +2130,53 @@ public class ASTExtractor {
     @Override
     public Label visit(ConditionalTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getCheckType(), key, 0, IdContext.typeBind);
+      visit(nd.getCheckType(), key, 0, IdContext.TYPE_BIND);
       Set<String> boundTypes = scopeManager.collectDeclaredInferTypes(nd.getExtendsType());
       if (!boundTypes.isEmpty()) {
         scopeManager.enterScope(nd);
         scopeManager.addTypeNames(boundTypes);
       }
-      visit(nd.getExtendsType(), key, 1, IdContext.typeBind);
-      visit(nd.getTrueType(), key, 2, IdContext.typeBind);
+      visit(nd.getExtendsType(), key, 1, IdContext.TYPE_BIND);
+      visit(nd.getTrueType(), key, 2, IdContext.TYPE_BIND);
       if (!boundTypes.isEmpty()) {
         scopeManager.leaveScope();
       }
-      visit(nd.getFalseType(), key, 3, IdContext.typeBind);
+      visit(nd.getFalseType(), key, 3, IdContext.TYPE_BIND);
       return key;
     }
 
     @Override
     public Label visit(InferTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getTypeParameter(), key, 0, IdContext.typeDecl);
+      visit(nd.getTypeParameter(), key, 0, IdContext.TYPE_DECL);
       return key;
     }
 
     @Override
     public Label visit(ImportTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getPath(), key, 0, IdContext.typeBind);
+      visit(nd.getPath(), key, 0, IdContext.TYPE_BIND);
       return key;
     }
 
     @Override
     public Label visit(OptionalTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getElementType(), key, 0, IdContext.typeBind);
+      visit(nd.getElementType(), key, 0, IdContext.TYPE_BIND);
       return key;
     }
 
     @Override
     public Label visit(RestTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getArrayType(), key, 0, IdContext.typeBind);
+      visit(nd.getArrayType(), key, 0, IdContext.TYPE_BIND);
       return key;
     }
 
     @Override
     public Label visit(XMLAttributeSelector nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getAttribute(), key, 0, IdContext.label);
+      visit(nd.getAttribute(), key, 0, IdContext.LABEL);
       return key;
     }
 
@@ -2108,7 +2192,7 @@ public class ASTExtractor {
     public Label visit(XMLQualifiedIdentifier nd, Context c) {
       Label key = super.visit(nd, c);
       visit(nd.getLeft(), key, 0);
-      visit(nd.getRight(), key, 1, nd.isComputed() ? IdContext.varBind : IdContext.label);
+      visit(nd.getRight(), key, 1, nd.isComputed() ? IdContext.VAR_BIND : IdContext.LABEL);
       return key;
     }
 
@@ -2116,7 +2200,7 @@ public class ASTExtractor {
     public Label visit(XMLDotDotExpression nd, Context c) {
       Label key = super.visit(nd, c);
       visit(nd.getLeft(), key, 0);
-      visit(nd.getRight(), key, 1, IdContext.label);
+      visit(nd.getRight(), key, 1, IdContext.LABEL);
       return key;
     }
 
@@ -2126,12 +2210,19 @@ public class ASTExtractor {
           new ParseError("Unexpected assignment pattern.", nd.getLoc().getStart()));
       return super.visit(nd, c);
     }
+
+    @Override
+    public Label visit(AngularPipeRef nd, Context c) {
+      Label key = super.visit(nd, c);
+      visit(nd.getIdentifier(), key, 0, IdContext.LABEL);
+      return key;
+    }
   }
 
   public List<ParseError> extract(
-      Node root, Platform platform, SourceType sourceType, int toplevelKind) {
+      Node root, Platform platform, SourceType sourceType, TopLevelKind toplevelKind) {
     lexicalExtractor.getMetrics().startPhase(ExtractionPhase.ASTExtractor_extract);
-    trapwriter.addTuple("toplevels", toplevelLabel, toplevelKind);
+    trapwriter.addTuple("toplevels", toplevelLabel, toplevelKind.getValue());
     locationManager.emitNodeLocation(root, toplevelLabel);
 
     V visitor = new V(platform, sourceType);

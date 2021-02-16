@@ -6,6 +6,7 @@
 import semmle.code.cpp.exprs.Expr
 import semmle.code.cpp.commons.Environment
 import semmle.code.cpp.security.SecurityOptions
+import semmle.code.cpp.models.interfaces.FlowSource
 
 /**
  * Extend this class to customize the security queries for
@@ -20,36 +21,13 @@ class SecurityOptions extends string {
    * name is a pure function of its arguments.
    */
   predicate isPureFunction(string name) {
-    name = "abs" or
-    name = "atof" or
-    name = "atoi" or
-    name = "atol" or
-    name = "atoll" or
-    name = "labs" or
-    name = "strcasestr" or
-    name = "strcat" or
-    name = "strchnul" or
-    name = "strchr" or
-    name = "strchrnul" or
-    name = "strcmp" or
-    name = "strcpy" or
-    name = "strcspn" or
-    name = "strdup" or
-    name = "strlen" or
-    name = "strncat" or
-    name = "strncmp" or
-    name = "strncpy" or
-    name = "strndup" or
-    name = "strnlen" or
-    name = "strrchr" or
-    name = "strspn" or
-    name = "strstr" or
-    name = "strtod" or
-    name = "strtof" or
-    name = "strtol" or
-    name = "strtoll" or
-    name = "strtoq" or
-    name = "strtoul"
+    name =
+      [
+        "abs", "atof", "atoi", "atol", "atoll", "labs", "strcasestr", "strcat", "strchnul",
+        "strchr", "strchrnul", "strcmp", "strcpy", "strcspn", "strdup", "strlen", "strncat",
+        "strncmp", "strncpy", "strndup", "strnlen", "strrchr", "strspn", "strstr", "strtod",
+        "strtof", "strtol", "strtoll", "strtoq", "strtoul"
+      ]
   }
 
   /**
@@ -73,13 +51,7 @@ class SecurityOptions extends string {
       functionCall.getTarget().hasGlobalOrStdName(fname) and
       exists(functionCall.getArgument(arg)) and
       (
-        fname = "fread" and arg = 0
-        or
-        fname = "fgets" and arg = 0
-        or
-        fname = "fgetws" and arg = 0
-        or
-        fname = "gets" and arg = 0
+        fname = ["fread", "fgets", "fgetws", "gets"] and arg = 0
         or
         fname = "scanf" and arg >= 1
         or
@@ -88,18 +60,14 @@ class SecurityOptions extends string {
       or
       functionCall.getTarget().hasGlobalName(fname) and
       exists(functionCall.getArgument(arg)) and
-      (
-        fname = "read" and arg = 1
-        or
-        fname = "getaddrinfo" and arg = 3
-        or
-        fname = "recv" and arg = 1
-        or
-        fname = "recvfrom" and
-        (arg = 1 or arg = 4 or arg = 5)
-        or
-        fname = "recvmsg" and arg = 1
-      )
+      fname = "getaddrinfo" and
+      arg = 3
+    )
+    or
+    exists(RemoteFlowSourceFunction remote, FunctionOutput output |
+      functionCall.getTarget() = remote and
+      output.isParameterDerefOrQualifierObject(arg) and
+      remote.hasRemoteFlowSource(output, _)
     )
   }
 
@@ -110,10 +78,15 @@ class SecurityOptions extends string {
     exists(string fname |
       functionCall.getTarget().getName() = fname and
       (
-        fname = "fgets" or
-        fname = "gets" or
+        fname = ["fgets", "gets"] or
         userInputReturn(fname)
       )
+    )
+    or
+    exists(RemoteFlowSourceFunction remote, FunctionOutput output |
+      functionCall.getTarget() = remote and
+      (output.isReturnValue() or output.isReturnValueDeref()) and
+      remote.hasRemoteFlowSource(output, _)
     )
   }
 
@@ -132,30 +105,12 @@ class SecurityOptions extends string {
    */
   predicate isProcessOperationArgument(string function, int arg) {
     // POSIX
-    function = "system" and arg = 0
-    or
-    function = "popen" and arg = 0
-    or
-    function = "execl" and arg = 0
-    or
-    function = "execlp" and arg = 0
-    or
-    function = "execle" and arg = 0
-    or
-    function = "execv" and arg = 0
-    or
-    function = "execvp" and arg = 0
-    or
-    function = "execvpe" and arg = 0
-    or
-    function = "dlopen" and arg = 0
+    function =
+      ["system", "popen", "execl", "execlp", "execle", "execv", "execvp", "execvpe", "dlopen"] and
+    arg = 0
     or
     // Windows
-    function = "LoadLibrary" and arg = 0
-    or
-    function = "LoadLibraryA" and arg = 0
-    or
-    function = "LoadLibraryW" and arg = 0
+    function = ["LoadLibrary", "LoadLibraryA", "LoadLibraryW"] and arg = 0
   }
 
   /**

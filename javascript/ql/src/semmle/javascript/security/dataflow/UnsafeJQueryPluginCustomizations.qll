@@ -134,10 +134,7 @@ module UnsafeJQueryPlugin {
             SyntacticConstants::isUndefined(undef)
           )
           or
-          exists(Expr op1, Expr op2 | test.hasOperands(op1, op2) |
-            read.asExpr() = op1.(TypeofExpr).getOperand() and
-            op2.mayHaveStringValue(any(InferredType t | t = TTUndefined()).getTypeofTag())
-          )
+          TaintTracking::isTypeofGuard(test, read.asExpr(), "undefined")
         )
         or
         polarity = true and

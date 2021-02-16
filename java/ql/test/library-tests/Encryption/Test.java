@@ -10,7 +10,9 @@ class Test {
 			"des",
 			"des_function",
 			"function_using_des",
-			"EncryptWithDES");
+			"EncryptWithDES",
+			"AES/ECB/NoPadding",
+			"AES/CBC/PKCS5Padding");
 
 	List<String> goodStrings = Arrays.asList(
 			"AES",

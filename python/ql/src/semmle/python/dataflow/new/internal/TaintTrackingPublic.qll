@@ -35,15 +35,6 @@ predicate localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   localAdditionalTaintStep(nodeFrom, nodeTo)
 }
 
-// AdditionalTaintStep for global taint flow
-private newtype TUnit = TMkUnit()
-
-/** A singleton class containing a single dummy "unit" value. */
-private class Unit extends TUnit {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "unit" }
-}
-
 /**
  * A unit class for adding additional taint steps.
  *

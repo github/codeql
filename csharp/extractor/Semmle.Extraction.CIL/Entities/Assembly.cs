@@ -136,7 +136,7 @@ namespace Semmle.Extraction.CIL.Entities
                 trapFile = trapWriter.TrapFile;
                 if (nocache || !System.IO.File.Exists(trapFile))
                 {
-                    var cx = extractor.CreateContext(null, trapWriter, null, false);
+                    var cx = new Extraction.Context(extractor, trapWriter);
                     ExtractCIL(cx, assemblyPath, extractPdbs);
                     extracted = true;
                 }

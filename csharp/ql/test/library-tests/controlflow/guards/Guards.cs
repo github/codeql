@@ -342,5 +342,11 @@ public class Guards
         if (s != null && !b)
             Console.WriteLine(s.Length); // null guarded
     }
+
+    void M29(object? o)
+    {
+        if (o is not null)
+            o.ToString(); // null guarded
+    }
 }
 

@@ -137,7 +137,7 @@ namespace Semmle.Extraction
             where TSymbol : ISymbol
             where TEntity : ICachedEntity => cx.CreateEntityFromSymbol(factory, init);
 
-        public static void DefineLabel(this IEntity entity, TextWriter trapFile, IExtractor extractor)
+        public static void DefineLabel(this IEntity entity, TextWriter trapFile, Extractor extractor)
         {
             trapFile.WriteLabel(entity);
             trapFile.Write("=");

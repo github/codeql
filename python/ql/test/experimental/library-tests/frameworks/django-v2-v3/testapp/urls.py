@@ -12,4 +12,7 @@ urlpatterns = [
     # line)
     re_path(r"^ba[rz]/", views.bar_baz),  # $routeSetup="^ba[rz]/"
     url(r"^deprecated/", views.deprecated),  # $routeSetup="^deprecated/"
+
+    path("basic-view-handler/", views.MyBasicViewHandler.as_view()),  # $routeSetup="basic-view-handler/"
+    path("custom-inheritance-view-handler/", views.MyViewHandlerWithCustomInheritance.as_view()),  # $routeSetup="custom-inheritance-view-handler/"
 ]

@@ -146,7 +146,8 @@ import com.semmle.util.trap.TrapWriter;
  *       FileType#HTML} (currently ".htm", ".html", ".xhtm", ".xhtml", ".vue").
  *   <li>All YAML files, that is, files with one of the extensions supported by {@link
  *       FileType#YAML} (currently ".raml", ".yaml", ".yml").
- *   <li>Files with base name "package.json".
+ *   <li>Files with base name "package.json" or "tsconfig.json", and files whose base name
+ *       is of the form "codeql-javascript-*.json".
  *   <li>JavaScript, JSON or YAML files whose base name starts with ".eslintrc".
  *   <li>All extension-less files.
  * </ul>
@@ -402,10 +403,12 @@ public class AutoBuild {
     for (FileType filetype : defaultExtract)
       for (String extension : filetype.getExtensions()) patterns.add("**/*" + extension);
 
-    // include .eslintrc files, package.json files, and tsconfig.json files
+    // include .eslintrc files, package.json files, tsconfig.json files, and
+    // codeql-javascript-*.json files
     patterns.add("**/.eslintrc*");
     patterns.add("**/package.json");
     patterns.add("**/tsconfig.json");
+    patterns.add("**/codeql-javascript-*.json");
 
     // include any explicitly specified extensions
     for (String extension : fileTypes.keySet()) patterns.add("**/*" + extension);
@@ -719,13 +722,13 @@ public class AutoBuild {
   }
 
   /**
-   * Prepares <tt>package.json</tt> files in a virtual source root, and, if enabled,
+   * Prepares <code>package.json</code> files in a virtual source root, and, if enabled,
    * installs dependencies for use by the TypeScript type checker.
    * <p>
    * Some packages must be downloaded while others exist within the same repo ("monorepos")
    * but are not in a location where TypeScript would look for it.
    * <p>
-   * Downloaded packages are intalled under <tt>SCRATCH_DIR</tt>, in a mirrored directory hierarchy
+   * Downloaded packages are intalled under <code>SCRATCH_DIR</code>, in a mirrored directory hierarchy
    * we call the "virtual source root".
    * <p>
    * Packages that exists within the repo are not downloaded. Since they are part of the main source tree,

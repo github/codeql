@@ -442,6 +442,7 @@
 | Guards.cs:342:26:342:27 | !... | true | Guards.cs:342:27:342:27 | access to parameter b | false |
 | Guards.cs:343:31:343:31 | access to local variable s | non-null | Guards.cs:341:20:341:32 | ... ? ... : ... | non-null |
 | Guards.cs:343:31:343:31 | access to local variable s | null | Guards.cs:341:20:341:32 | ... ? ... : ... | null |
+| Guards.cs:348:13:348:25 | ... is ... | true | Guards.cs:348:13:348:13 | access to parameter o | non-null |
 | Splitting.cs:12:17:12:25 | ... != ... | false | Splitting.cs:12:17:12:17 | access to parameter o | null |
 | Splitting.cs:12:17:12:25 | ... != ... | true | Splitting.cs:12:17:12:17 | access to parameter o | non-null |
 | Splitting.cs:22:17:22:25 | ... != ... | false | Splitting.cs:22:17:22:17 | access to parameter o | null |

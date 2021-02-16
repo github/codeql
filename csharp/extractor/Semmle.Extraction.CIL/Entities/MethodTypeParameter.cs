@@ -41,8 +41,6 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override IEnumerable<Type> TypeParameters => throw new NotImplementedException();
 
-        public override IEnumerable<Type> MethodParameters => throw new NotImplementedException();
-
         public override IEnumerable<IExtractionProduct> Contents
         {
             get

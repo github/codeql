@@ -588,16 +588,19 @@ predicate implementsEquals(ValueOrRefType t) { getInvokedEqualsMethod(t).getDecl
  * from the `object.Equals(object)` method inherited by `t`.
  */
 Method getInvokedEqualsMethod(ValueOrRefType t) {
-  result = getInheritedEqualsMethod(t) and
+  result = getInheritedEqualsMethod(t, _) and
   not exists(getInvokedIEquatableEqualsMethod(t, result))
   or
   exists(EqualsMethod eq |
     result = getInvokedIEquatableEqualsMethod(t, eq) and
-    getInheritedEqualsMethod(t) = eq
+    getInheritedEqualsMethod(t, _) = eq
   )
 }
 
-private EqualsMethod getInheritedEqualsMethod(ValueOrRefType t) { t.hasMethod(result) }
+pragma[noinline]
+private EqualsMethod getInheritedEqualsMethod(ValueOrRefType t, ValueOrRefType decl) {
+  t.hasMethod(result) and decl = result.getDeclaringType()
+}
 
 /**
  * Equals method `eq` is inherited by `t`, `t` overrides `IEquatable<T>.Equals(T)`
@@ -621,10 +624,9 @@ private EqualsMethod getInheritedEqualsMethod(ValueOrRefType t) { t.hasMethod(re
  */
 private IEquatableEqualsMethod getInvokedIEquatableEqualsMethod(ValueOrRefType t, EqualsMethod eq) {
   t.hasMethod(result) and
-  eq = getInheritedEqualsMethod(t.getBaseClass()) and
   exists(IEquatableEqualsMethod ieem |
     result = ieem.getAnOverrider*() and
-    eq.getDeclaringType() = ieem.getDeclaringType()
+    eq = getInheritedEqualsMethod(t.getBaseClass(), ieem.getDeclaringType())
   |
     not ieem.fromSource()
     or

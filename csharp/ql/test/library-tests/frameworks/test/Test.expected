@@ -1,33 +1,14 @@
-| VisualStudio.cs:9:11:9:21 | MyTestSuite | TestClass | LeafType |
-| VisualStudio.cs:9:11:9:21 | MyTestSuite | TestClass | VSTestClass |
-| VisualStudio.cs:12:21:12:25 | Test1 | TestMethod | CallableOrCFE |
-| VisualStudio.cs:12:21:12:25 | Test1 | TestMethod | InstanceCallable |
-| VisualStudio.cs:12:21:12:25 | Test1 | TestMethod | VSTestMethod |
-| VisualStudio.cs:17:21:17:25 | Test2 | TestMethod | CallableOrCFE |
-| VisualStudio.cs:17:21:17:25 | Test2 | TestMethod | InstanceCallable |
-| VisualStudio.cs:17:21:17:25 | Test2 | TestMethod | VSTestMethod |
-| XUnit.cs:22:11:22:21 | MyTestSuite | TestClass | LeafType |
-| XUnit.cs:22:11:22:21 | MyTestSuite | TestClass | XUnitTestClass |
-| XUnit.cs:25:21:25:25 | Test1 | TestMethod | CallableOrCFE |
-| XUnit.cs:25:21:25:25 | Test1 | TestMethod | InstanceCallable |
-| XUnit.cs:25:21:25:25 | Test1 | TestMethod | XUnitTestMethod |
-| XUnit.cs:30:21:30:25 | Test2 | TestMethod | CallableOrCFE |
-| XUnit.cs:30:21:30:25 | Test2 | TestMethod | InstanceCallable |
-| XUnit.cs:30:21:30:25 | Test2 | TestMethod | XUnitTestMethod |
-| nunit.cs:75:11:75:21 | MyTestSuite | TestClass | LeafType |
-| nunit.cs:75:11:75:21 | MyTestSuite | TestClass | NUnitFixture |
-| nunit.cs:85:21:85:25 | Test1 | TestMethod | CallableOrCFE |
-| nunit.cs:85:21:85:25 | Test1 | TestMethod | InstanceCallable |
-| nunit.cs:85:21:85:25 | Test1 | TestMethod | NUnitTestMethod |
-| nunit.cs:90:21:90:25 | Test2 | TestMethod | CallableOrCFE |
-| nunit.cs:90:21:90:25 | Test2 | TestMethod | InstanceCallable |
-| nunit.cs:90:21:90:25 | Test2 | TestMethod | NUnitTestMethod |
-| nunit.cs:95:21:95:25 | Test3 | TestMethod | CallableOrCFE |
-| nunit.cs:95:21:95:25 | Test3 | TestMethod | InstanceCallable |
-| nunit.cs:95:21:95:25 | Test3 | TestMethod | NUnitTestMethod |
-| nunit.cs:100:21:100:25 | Test4 | TestMethod | CallableOrCFE |
-| nunit.cs:100:21:100:25 | Test4 | TestMethod | InstanceCallable |
-| nunit.cs:100:21:100:25 | Test4 | TestMethod | NUnitTestMethod |
-| nunit.cs:105:21:105:25 | Test5 | TestMethod | CallableOrCFE |
-| nunit.cs:105:21:105:25 | Test5 | TestMethod | InstanceCallable |
-| nunit.cs:105:21:105:25 | Test5 | TestMethod | NUnitTestMethod |
+testClass
+| VisualStudio.cs:9:11:9:21 | MyTestSuite |
+| XUnit.cs:22:11:22:21 | MyTestSuite |
+| nunit.cs:75:11:75:21 | MyTestSuite |
+testMethod
+| VisualStudio.cs:12:21:12:25 | Test1 |
+| VisualStudio.cs:17:21:17:25 | Test2 |
+| XUnit.cs:25:21:25:25 | Test1 |
+| XUnit.cs:30:21:30:25 | Test2 |
+| nunit.cs:85:21:85:25 | Test1 |
+| nunit.cs:90:21:90:25 | Test2 |
+| nunit.cs:95:21:95:25 | Test3 |
+| nunit.cs:100:21:100:25 | Test4 |
+| nunit.cs:105:21:105:25 | Test5 |

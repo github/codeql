@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities
             switch (type)
             {
                 case ArrayType at:
-                    return GetArrayElementType(at.ElementType.Type);
+                    return GetArrayElementType(at.ElementType);
                 case NamedType nt when nt.symbol.IsBoundSpan() ||
                                        nt.symbol.IsBoundReadOnlySpan():
                     return nt.TypeArguments.Single();
@@ -118,7 +118,7 @@ namespace Semmle.Extraction.CSharp.Entities
         private void Emit(TextWriter trapFile, Microsoft.CodeAnalysis.Location loc, IEntity parent, Type type)
         {
             trapFile.type_mention(this, type.TypeRef, parent);
-            trapFile.type_mention_location(this, cx.Create(loc));
+            trapFile.type_mention_location(this, cx.CreateLocation(loc));
         }
 
         public static TypeMention Create(Context cx, TypeSyntax syntax, IEntity parent, Type type, Microsoft.CodeAnalysis.Location loc = null)
@@ -128,8 +128,8 @@ namespace Semmle.Extraction.CSharp.Entities
             return ret;
         }
 
-        public static TypeMention Create(Context cx, TypeSyntax syntax, IEntity parent, AnnotatedType type, Microsoft.CodeAnalysis.Location loc = null) =>
-            Create(cx, syntax, parent, type.Type, loc);
+        public static TypeMention Create(Context cx, TypeSyntax syntax, IEntity parent, AnnotatedTypeSymbol? type, Microsoft.CodeAnalysis.Location loc = null) =>
+            Create(cx, syntax, parent, Type.Create(cx, type?.Symbol), loc);
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }

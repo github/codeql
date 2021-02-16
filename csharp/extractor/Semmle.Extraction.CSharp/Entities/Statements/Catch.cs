@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         private static readonly string systemExceptionName = typeof(System.Exception).ToString();
 
         private Catch(Context cx, CatchClauseSyntax node, Try parent, int child)
-            : base(cx, node, StmtKind.CATCH, parent, child, cx.Create(node.GetLocation())) { }
+            : base(cx, node, StmtKind.CATCH, parent, child, cx.CreateLocation(node.GetLocation())) { }
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
@@ -20,11 +20,11 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             if (hasVariableDeclaration) // A catch clause of the form 'catch(Ex ex) { ... }'
             {
                 var decl = Expressions.VariableDeclaration.Create(cx, Stmt.Declaration, false, this, 0);
-                trapFile.catch_type(this, decl.Type.Type.TypeRef, true);
+                trapFile.catch_type(this, Type.Create(cx, decl.Type).TypeRef, true);
             }
             else if (isSpecificCatchClause) // A catch clause of the form 'catch(Ex) { ... }'
             {
-                trapFile.catch_type(this, Type.Create(cx, cx.GetType(Stmt.Declaration.Type)).Type.TypeRef, true);
+                trapFile.catch_type(this, Type.Create(cx, cx.GetType(Stmt.Declaration.Type)).TypeRef, true);
             }
             else // A catch clause of the form 'catch { ... }'
             {

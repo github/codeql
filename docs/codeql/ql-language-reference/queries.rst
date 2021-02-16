@@ -1,4 +1,7 @@
+:tocdepth: 1
+
 .. index:: query
+
 .. _queries:
 
 Queries
@@ -21,7 +24,9 @@ Select clauses
 **************
 
 When writing a query module, you can include a **select clause** (usually at the end of the
-file) of the following form:: 
+file) of the following form:
+
+.. code-block:: ql
 
     from /* ... variable declarations ... */
     where /* ... logical formula ... */
@@ -102,7 +107,9 @@ This predicate returns the following results:
 
 A benefit of writing a query predicate instead of a select clause is that you can call the
 predicate in other parts of the code too. For example, you can call ``getProduct`` inside
-the body of a :ref:`class <classes>`::
+the body of a :ref:`class <classes>`:
+
+.. code-block:: ql
 
     class MultipleOfThree extends int {
       MultipleOfThree() { this = getProduct(_, _) }

@@ -141,7 +141,7 @@ csharp6.cs:
 #   57|       -1: [TypeMention] Dictionary<Int32, String>
 #   57|         1: [TypeMention] int
 #   57|         2: [TypeMention] string
-#   58|     6: [IndexerProperty] DictionaryProperty
+#   58|     6: [Property] DictionaryProperty
 #   58|       -1: [TypeMention] Dictionary<Int32, String>
 #   58|         1: [TypeMention] int
 #   58|         2: [TypeMention] string

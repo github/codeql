@@ -38,11 +38,22 @@ string getAStandardLoggerMethodName() {
  */
 private module Console {
   /**
-   * Gets a data flow source node for the console library.
+   * An API entrypoint for the global `console` variable.
    */
-  private DataFlow::SourceNode console() {
-    result = DataFlow::moduleImport("console") or
-    result = DataFlow::globalVarRef("console")
+  private class ConsoleGlobalEntry extends API::EntryPoint {
+    ConsoleGlobalEntry() { this = "ConsoleGlobalEntry" }
+
+    override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("console") }
+
+    override DataFlow::Node getARhs() { none() }
+  }
+
+  /**
+   * Gets a api node for the console library.
+   */
+  private API::Node console() {
+    result = API::moduleImport("console") or
+    result = API::root().getASuccessor(any(ConsoleGlobalEntry e))
   }
 
   /**
@@ -56,7 +67,7 @@ private module Console {
         name = getAStandardLoggerMethodName() or
         name = "assert"
       ) and
-      this = console().getAMemberCall(name)
+      this = console().getMember(name).getACall()
     }
 
     override DataFlow::Node getAMessageComponent() {
@@ -85,7 +96,7 @@ private module Loglevel {
    */
   class LoglevelLoggerCall extends LoggerCall {
     LoglevelLoggerCall() {
-      this = DataFlow::moduleMember("loglevel", getAStandardLoggerMethodName()).getACall()
+      this = API::moduleImport("loglevel").getMember(getAStandardLoggerMethodName()).getACall()
     }
 
     override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
@@ -102,9 +113,11 @@ private module Winston {
   class WinstonLoggerCall extends LoggerCall, DataFlow::MethodCallNode {
     WinstonLoggerCall() {
       this =
-        DataFlow::moduleMember("winston", "createLogger")
+        API::moduleImport("winston")
+            .getMember("createLogger")
+            .getReturn()
+            .getMember(getAStandardLoggerMethodName())
             .getACall()
-            .getAMethodCall(getAStandardLoggerMethodName())
     }
 
     override DataFlow::Node getAMessageComponent() {
@@ -125,9 +138,11 @@ private module log4js {
   class Log4jsLoggerCall extends LoggerCall {
     Log4jsLoggerCall() {
       this =
-        DataFlow::moduleMember("log4js", "getLogger")
+        API::moduleImport("log4js")
+            .getMember("getLogger")
+            .getReturn()
+            .getMember(getAStandardLoggerMethodName())
             .getACall()
-            .getAMethodCall(getAStandardLoggerMethodName())
     }
 
     override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
@@ -145,7 +160,7 @@ private module Npmlog {
     string name;
 
     Npmlog() {
-      this = DataFlow::moduleMember("npmlog", name).getACall() and
+      this = API::moduleImport("npmlog").getMember(name).getACall() and
       name = getAStandardLoggerMethodName()
     }
 
@@ -170,8 +185,8 @@ private module Fancylog {
    */
   class Fancylog extends LoggerCall {
     Fancylog() {
-      this = DataFlow::moduleMember("fancy-log", getAStandardLoggerMethodName()).getACall() or
-      this = DataFlow::moduleImport("fancy-log").getACall()
+      this = API::moduleImport("fancy-log").getMember(getAStandardLoggerMethodName()).getACall() or
+      this = API::moduleImport("fancy-log").getACall()
     }
 
     override DataFlow::Node getAMessageComponent() { result = getAnArgument() }

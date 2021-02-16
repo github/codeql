@@ -472,6 +472,9 @@ class Setter extends Accessor, @setter {
     result = Accessor.super.getDeclaration()
   }
 
+  /** Holds if this setter is an `init`-only accessor. */
+  predicate isInitOnly() { init_only_accessors(this) }
+
   override string getAPrimaryQlClass() { result = "Setter" }
 }
 
@@ -563,6 +566,4 @@ class IndexerProperty extends Property {
     // ```
     result.getIndexer() = i
   }
-
-  override string getAPrimaryQlClass() { result = "IndexerProperty" }
 }

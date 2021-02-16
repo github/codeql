@@ -4,11 +4,11 @@ class DelegateFlow
 {
     void M1(int i) { }
 
-    void M2(Action<int> a)
+    static void M2(Action<int> a)
     {
         a(0);
         a = _ => { };
-        a(0);
+        a(1);
     }
 
     void M3()
@@ -108,4 +108,20 @@ class DelegateFlow
     }
 
     public delegate void MyDelegate();
+
+    public unsafe void M16(delegate*<Action<int>, void> fnptr, Action<int> a)
+    {
+        fnptr(a);
+    }
+
+    public unsafe void M17()
+    {
+        M16(&M2, (i) => { });
+    }
+
+    public unsafe void M18()
+    {
+        delegate*<Action<int>, void> fnptr = &M2;
+        fnptr((i) => { });
+    }
 }

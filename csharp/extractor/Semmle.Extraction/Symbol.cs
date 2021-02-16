@@ -79,7 +79,7 @@ namespace Semmle.Extraction
     /// A class used to wrap an `ISymbol` object, which uses `SymbolEqualityComparer.Default`
     /// for comparison.
     /// </summary>
-    public sealed class SymbolEqualityWrapper
+    public struct SymbolEqualityWrapper
     {
         public ISymbol Symbol { get; }
 
@@ -88,6 +88,6 @@ namespace Semmle.Extraction
         public override bool Equals(object? other) =>
             other is SymbolEqualityWrapper sew && SymbolEqualityComparer.Default.Equals(Symbol, sew.Symbol);
 
-        public override int GetHashCode() => 11 * Symbol.GetHashCode();
+        public override int GetHashCode() => 11 * SymbolEqualityComparer.Default.GetHashCode(Symbol);
     }
 }

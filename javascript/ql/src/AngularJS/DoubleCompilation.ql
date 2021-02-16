@@ -7,6 +7,7 @@
  * @id js/angular/double-compilation
  * @tags reliability
  *       frameworks/angularjs
+ *       security
  * @precision very-high
  */
 

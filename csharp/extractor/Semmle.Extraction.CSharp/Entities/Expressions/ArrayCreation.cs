@@ -90,7 +90,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             var info = new ExpressionInfo(
                 cx,
-                new AnnotatedType(Entities.Type.Create(cx, type), NullableAnnotation.None),
+                AnnotatedTypeSymbol.CreateNotAnnotated(type),
                 location,
                 ExprKind.ARRAY_CREATION,
                 parent,

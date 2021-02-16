@@ -51,5 +51,8 @@ where
     or
     // too benign in practice
     e instanceof DefensiveExpressionTest::DefensiveInit
+    or
+    // functions might be written overly general
+    e.getALocalSource() instanceof DataFlow::ParameterNode
   )
 select e, "This guard always evaluates to " + cv + "."

@@ -40,3 +40,54 @@ var server = https.createServer(function (req, res) {
     let pw = url.parse(req.url, true).query.current_password;
     var plugin = new webpack.DefinePlugin({ "process.env.secret": JSON.stringify(pw) }); // NOT OK
 });
+
+(function () {
+    const REACT_APP = /^REACT_APP_/i;
+
+    function getOnlyReactVariables() {
+        const raw = Object.keys(process.env)
+            .filter(key => REACT_APP.test(key)) // This filters makes it safe.
+            .reduce(
+                (env, key) => {
+                    env[key] = process.env[key];
+                    return env;
+                },
+                {}
+            );
+        return raw;
+    }
+
+    new webpack.DefinePlugin(getOnlyReactVariables()); // OK
+
+    function getOnlyReactVariables2() {
+        const raw = Object.keys(process.env)
+            .reduce(
+                (env, key) => {
+                    if (REACT_APP.test(key)) {
+                        env[key] = process.env[key];
+                    }
+                    return env;
+                },
+                {}
+            );
+        return raw;
+    }
+
+    new webpack.DefinePlugin(getOnlyReactVariables2()); // OK
+
+    function getOnlyReactVariables3() {
+        const raw = Object.keys(process.env)
+            .reduce(
+                (env, key) => {
+                    if (key == ["1", "2", "3"]) {
+                        env[key] = process.env[key];
+                    }
+                    return env;
+                },
+                {}
+            );
+        return raw;
+    }
+
+    new webpack.DefinePlugin(getOnlyReactVariables3()); // OK
+})();

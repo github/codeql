@@ -23,11 +23,11 @@ import csharp
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.Constants
 private import semmle.code.csharp.frameworks.System
+private import ControlFlowGraphImpl
 private import NonReturning
 private import SuccessorType
 private import SuccessorTypes
 
-// Internal representation of completions
 private newtype TCompletion =
   TSimpleCompletion() or
   TBooleanCompletion(boolean b) { b = true or b = false } or
@@ -40,25 +40,32 @@ private newtype TCompletion =
   TGotoCompletion(string label) { label = any(GotoStmt gs).getLabel() } or
   TThrowCompletion(ExceptionClass ec) or
   TExitCompletion() or
-  TNestedCompletion(Completion inner, Completion outer) {
-    inner instanceof NormalCompletion and
-    (
-      outer = TReturnCompletion()
-      or
-      outer = TBreakCompletion()
-      or
-      outer = TContinueCompletion()
-      or
-      outer = TGotoCompletion(_)
-      or
-      outer = TThrowCompletion(_)
-      or
-      outer = TExitCompletion()
-    )
-    or
+  TNestedCompletion(Completion inner, Completion outer, int nestLevel) {
     inner = TBreakCompletion() and
-    outer instanceof NonNestedNormalCompletion
+    outer instanceof NonNestedNormalCompletion and
+    nestLevel = 0
+    or
+    inner instanceof NormalCompletion and
+    nestedFinallyCompletion(outer, nestLevel)
   }
+
+pragma[noinline]
+private predicate nestedFinallyCompletion(Completion outer, int nestLevel) {
+  (
+    outer = TReturnCompletion()
+    or
+    outer = TBreakCompletion()
+    or
+    outer = TContinueCompletion()
+    or
+    outer = TGotoCompletion(_)
+    or
+    outer = TThrowCompletion(_)
+    or
+    outer = TExitCompletion()
+  ) and
+  nestLevel = any(Statements::TryStmtTree t).nestLevel()
+}
 
 pragma[noinline]
 private predicate completionIsValidForStmt(Stmt s, Completion c) {
@@ -225,36 +232,57 @@ private Expr getQualifier(QualifiableExpr e) {
   result = e.getChildExpr(-1)
 }
 
+pragma[noinline]
+private predicate typePatternMustHaveMatchingCompletion(
+  TypePatternExpr tpe, Type t, Type strippedType
+) {
+  exists(Expr e, Expr stripped | mustHaveMatchingCompletion(e, tpe) |
+    stripped = e.stripCasts() and
+    t = tpe.getCheckedType() and
+    strippedType = stripped.getType() and
+    not t.containsTypeParameters() and
+    not strippedType.containsTypeParameters()
+  )
+}
+
+pragma[noinline]
+private Type typePatternCommonSubTypeLeft(Type t) {
+  typePatternMustHaveMatchingCompletion(_, t, _) and
+  result.isImplicitlyConvertibleTo(t) and
+  not result instanceof DynamicType
+}
+
+pragma[noinline]
+private Type typePatternCommonSubTypeRight(Type strippedType) {
+  typePatternMustHaveMatchingCompletion(_, _, strippedType) and
+  result.isImplicitlyConvertibleTo(strippedType) and
+  not result instanceof DynamicType
+}
+
+pragma[noinline]
+private predicate typePatternCommonSubType(Type t, Type strippedType) {
+  typePatternCommonSubTypeLeft(t) = typePatternCommonSubTypeRight(strippedType)
+}
+
 /**
- * Holds if expression `e` constantly matches (`value = true`) or constantly
- * non-matches (`value = false`).
+ * Holds if pattern expression `pe` constantly matches (`value = true`) or
+ * constantly non-matches (`value = false`).
  */
-private predicate isMatchingConstant(Expr e, boolean value) {
-  exists(Switch s | mustHaveMatchingCompletion(s, e) |
-    exists(Expr stripped | stripped = s.getExpr().stripCasts() |
-      exists(Case c, string strippedValue |
-        c = s.getACase() and
-        e = c.getPattern() and
-        strippedValue = stripped.getValue()
-      |
-        if strippedValue = e.getValue() then value = true else value = false
-      )
-      or
-      exists(Case c, TypePatternExpr tpe, Type t, Type strippedType | c = s.getACase() |
-        tpe = c.getPattern() and
-        e = tpe and
-        t = tpe.getCheckedType() and
-        strippedType = stripped.getType() and
-        not t.isImplicitlyConvertibleTo(strippedType) and
-        not t instanceof Interface and
-        not t.containsTypeParameters() and
-        not strippedType.containsTypeParameters() and
-        value = false
-      )
-    )
-    or
-    e instanceof DiscardPatternExpr and
-    value = true
+private predicate isMatchingConstant(PatternExpr pe, boolean value) {
+  exists(Expr e, string exprValue, string patternValue |
+    mustHaveMatchingCompletion(e, pe) and
+    exprValue = e.stripCasts().getValue() and
+    patternValue = pe.getValue() and
+    if exprValue = patternValue then value = true else value = false
+  )
+  or
+  pe instanceof DiscardPatternExpr and
+  value = true
+  or
+  exists(Type t, Type strippedType |
+    typePatternMustHaveMatchingCompletion(pe, t, strippedType) and
+    not typePatternCommonSubType(t, strippedType) and
+    value = false
   )
 }
 
@@ -347,9 +375,6 @@ private class TriedControlFlowElement extends ControlFlowElement {
     or
     this instanceof DynamicExpr and
     result instanceof SystemExceptionClass
-    or
-    this instanceof StringLiteral and
-    result instanceof SystemOutOfMemoryExceptionClass
   }
 
   private CoreLib getCoreLibFromACatchClause() {
@@ -514,16 +539,48 @@ predicate switchMatching(Switch s, Case c, PatternExpr pe) {
   pe = c.getPattern()
 }
 
-private predicate mustHaveMatchingCompletion(Switch s, PatternExpr pe) { switchMatching(s, _, pe) }
-
 /**
  * Holds if a normal completion of `cfe` must be a matching completion. Thats is,
- * whether `cfe` determines a match in a `switch` statement or `catch` clause.
+ * whether `cfe` determines a match in a `switch/if` statement or `catch` clause.
  */
 private predicate mustHaveMatchingCompletion(ControlFlowElement cfe) {
-  mustHaveMatchingCompletion(_, cfe)
+  switchMatching(_, _, cfe)
   or
   cfe instanceof SpecificCatchClause
+  or
+  cfe = any(IsExpr ie | inBooleanContext(ie)).getPattern()
+  or
+  cfe = any(RecursivePatternExpr rpe).getAChildExpr()
+  or
+  cfe = any(PositionalPatternExpr ppe).getPattern(_)
+  or
+  cfe = any(PropertyPatternExpr ppe).getPattern(_)
+  or
+  cfe = any(UnaryPatternExpr upe | mustHaveMatchingCompletion(upe)).getPattern()
+  or
+  cfe = any(BinaryPatternExpr bpe).getAnOperand()
+}
+
+/**
+ * Holds if `pe` must have a matching completion, and `e` is the expression
+ * that is being matched.
+ */
+private predicate mustHaveMatchingCompletion(Expr e, PatternExpr pe) {
+  exists(Switch s |
+    switchMatching(s, _, pe) and
+    e = s.getExpr()
+  )
+  or
+  e = any(IsExpr ie | pe = ie.getPattern()).getExpr() and
+  mustHaveMatchingCompletion(pe)
+  or
+  exists(PatternExpr mid | mustHaveMatchingCompletion(e, mid) |
+    pe = mid.(UnaryPatternExpr).getPattern()
+    or
+    pe = mid.(RecursivePatternExpr).getAChildExpr()
+    or
+    pe = mid.(BinaryPatternExpr).getAnOperand()
+  )
 }
 
 /**
@@ -561,7 +618,13 @@ class SimpleCompletion extends NonNestedNormalCompletion, TSimpleCompletion {
  * completion (`NullnessCompletion`), a matching completion (`MatchingCompletion`),
  * or an emptiness completion (`EmptinessCompletion`).
  */
-abstract class ConditionalCompletion extends NonNestedNormalCompletion { }
+abstract class ConditionalCompletion extends NonNestedNormalCompletion {
+  /** Gets the Boolean value of this completion. */
+  abstract boolean getValue();
+
+  /** Gets the dual completion. */
+  abstract ConditionalCompletion getDual();
+}
 
 /**
  * A completion that represents evaluation of an expression
@@ -572,10 +635,9 @@ class BooleanCompletion extends ConditionalCompletion {
 
   BooleanCompletion() { this = TBooleanCompletion(value) }
 
-  /** Gets the Boolean value of this completion. */
-  boolean getValue() { result = value }
+  override boolean getValue() { result = value }
 
-  BooleanCompletion getDual() { result = TBooleanCompletion(value.booleanNot()) }
+  override BooleanCompletion getDual() { result = TBooleanCompletion(value.booleanNot()) }
 
   override BooleanSuccessor getAMatchingSuccessorType() { result.getValue() = value }
 
@@ -607,6 +669,10 @@ class NullnessCompletion extends ConditionalCompletion, TNullnessCompletion {
   /** Holds if the last sub expression of this expression evaluates to a non-`null` value. */
   predicate isNonNull() { value = false }
 
+  override boolean getValue() { result = value }
+
+  override NullnessCompletion getDual() { result = TNullnessCompletion(value.booleanNot()) }
+
   override NullnessSuccessor getAMatchingSuccessorType() { result.getValue() = value }
 
   override string toString() { if this.isNull() then result = "null" else result = "non-null" }
@@ -627,6 +693,10 @@ class MatchingCompletion extends ConditionalCompletion, TMatchingCompletion {
   /** Holds if there is not a match. */
   predicate isNonMatch() { value = false }
 
+  override boolean getValue() { result = value }
+
+  override MatchingCompletion getDual() { result = TMatchingCompletion(value.booleanNot()) }
+
   override MatchingSuccessor getAMatchingSuccessorType() { result.getValue() = value }
 
   override string toString() { if this.isMatch() then result = "match" else result = "no-match" }
@@ -643,6 +713,10 @@ class EmptinessCompletion extends ConditionalCompletion, TEmptinessCompletion {
 
   /** Holds if the emptiness test evaluates to `true`. */
   predicate isEmpty() { value = true }
+
+  override boolean getValue() { result = value }
+
+  override EmptinessCompletion getDual() { result = TEmptinessCompletion(value.booleanNot()) }
 
   override EmptinessSuccessor getAMatchingSuccessorType() { result.getValue() = value }
 
@@ -674,13 +748,17 @@ class EmptinessCompletion extends ConditionalCompletion, TEmptinessCompletion {
 class NestedCompletion extends Completion, TNestedCompletion {
   Completion inner;
   Completion outer;
+  int nestLevel;
 
-  NestedCompletion() { this = TNestedCompletion(inner, outer) }
+  NestedCompletion() { this = TNestedCompletion(inner, outer, nestLevel) }
 
   /** Gets a completion that is compatible with the inner completion. */
   Completion getAnInnerCompatibleCompletion() {
     result.getOuterCompletion() = this.getInnerCompletion()
   }
+
+  /** Gets the level of this nested completion. */
+  int getNestLevel() { result = nestLevel }
 
   override Completion getInnerCompletion() { result = inner }
 
@@ -688,7 +766,7 @@ class NestedCompletion extends Completion, TNestedCompletion {
 
   override SuccessorType getAMatchingSuccessorType() { none() }
 
-  override string toString() { result = outer + " [" + inner + "]" }
+  override string toString() { result = outer + " [" + inner + "] (" + nestLevel + ")" }
 }
 
 /**
@@ -725,13 +803,13 @@ class NestedBreakCompletion extends NormalCompletion, NestedCompletion {
 
   override BreakCompletion getInnerCompletion() { result = inner }
 
-  override SimpleCompletion getOuterCompletion() { result = outer }
+  override NonNestedNormalCompletion getOuterCompletion() { result = outer }
 
   override Completion getAnInnerCompatibleCompletion() {
     result = inner and
     outer = TSimpleCompletion()
     or
-    result = TNestedCompletion(outer, inner)
+    result = TNestedCompletion(outer, inner, _)
   }
 
   override SuccessorType getAMatchingSuccessorType() {
@@ -749,7 +827,7 @@ class NestedBreakCompletion extends NormalCompletion, NestedCompletion {
 class ReturnCompletion extends Completion {
   ReturnCompletion() {
     this = TReturnCompletion() or
-    this = TNestedCompletion(_, TReturnCompletion())
+    this = TNestedCompletion(_, TReturnCompletion(), _)
   }
 
   override ReturnSuccessor getAMatchingSuccessorType() { any() }
@@ -768,7 +846,7 @@ class ReturnCompletion extends Completion {
 class BreakCompletion extends Completion {
   BreakCompletion() {
     this = TBreakCompletion() or
-    this = TNestedCompletion(_, TBreakCompletion())
+    this = TNestedCompletion(_, TBreakCompletion(), _)
   }
 
   override BreakSuccessor getAMatchingSuccessorType() { any() }
@@ -787,7 +865,7 @@ class BreakCompletion extends Completion {
 class ContinueCompletion extends Completion {
   ContinueCompletion() {
     this = TContinueCompletion() or
-    this = TNestedCompletion(_, TContinueCompletion())
+    this = TNestedCompletion(_, TContinueCompletion(), _)
   }
 
   override ContinueSuccessor getAMatchingSuccessorType() { any() }
@@ -807,7 +885,7 @@ class GotoCompletion extends Completion {
 
   GotoCompletion() {
     this = TGotoCompletion(label) or
-    this = TNestedCompletion(_, TGotoCompletion(label))
+    this = TNestedCompletion(_, TGotoCompletion(label), _)
   }
 
   /** Gets the label of the `goto` completion. */
@@ -830,7 +908,7 @@ class ThrowCompletion extends Completion {
 
   ThrowCompletion() {
     this = TThrowCompletion(ec) or
-    this = TNestedCompletion(_, TThrowCompletion(ec))
+    this = TNestedCompletion(_, TThrowCompletion(ec), _)
   }
 
   /** Gets the type of the exception being thrown. */
@@ -856,7 +934,7 @@ class ThrowCompletion extends Completion {
 class ExitCompletion extends Completion {
   ExitCompletion() {
     this = TExitCompletion() or
-    this = TNestedCompletion(_, TExitCompletion())
+    this = TNestedCompletion(_, TExitCompletion(), _)
   }
 
   override ExitSuccessor getAMatchingSuccessorType() { any() }
