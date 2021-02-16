@@ -122,14 +122,14 @@ private class ApacheStringUtilsTaintPreservingMethod extends TaintPreservingCall
 /**
  * A method declared on `org.apache.commons.lang3.text.StrBuilder`.
  */
-abstract class ApacheStrBuilderMethod extends Callable {
+class ApacheStrBuilderMethod extends Method {
   ApacheStrBuilderMethod() {
     this.getDeclaringType().hasQualifiedName("org.apache.commons.lang3.text", "StrBuilder")
   }
 }
 
 /**
- * An Apache Commons-Lang StrBuilder methods that add taint to the StrBuilder.
+ * An Apache Commons Lang StrBuilder method that adds taint to the StrBuilder.
  */
 private class ApacheStrBuilderTaintingMethod extends ApacheStrBuilderMethod, TaintPreservingCallable {
   ApacheStrBuilderTaintingMethod() {
@@ -170,7 +170,7 @@ private class ApacheStrBuilderTaintingMethod extends ApacheStrBuilderMethod, Tai
 }
 
 /**
- * An Apache Commons-Lang StrBuilder methods that return taint from the StrBuilder.
+ * An Apache Commons Lang StrBuilder method that returns taint from the StrBuilder.
  */
 private class ApacheStrBuilderTaintGetter extends ApacheStrBuilderMethod, TaintPreservingCallable {
   ApacheStrBuilderTaintGetter() {
@@ -188,7 +188,7 @@ private class ApacheStrBuilderTaintGetter extends ApacheStrBuilderMethod, TaintP
 }
 
 /**
- * An Apache Commons-Lang StrBuilder methods that write taint from the StrBuilder to some parameter.
+ * An Apache Commons Lang StrBuilder method that writes taint from the StrBuilder to some parameter.
  */
 private class ApacheStrBuilderTaintWriter extends ApacheStrBuilderMethod, TaintPreservingCallable {
   ApacheStrBuilderTaintWriter() { this.hasName(["appendTo", "getChars"]) }
