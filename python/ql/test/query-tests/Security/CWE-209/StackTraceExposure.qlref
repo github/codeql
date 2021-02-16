@@ -1,1 +1,1 @@
-Security/CWE-209/StackTraceExposure.ql
+Security/Exposure/StackTraceExposure/StackTraceExposure.ql

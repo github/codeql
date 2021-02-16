@@ -1,1 +1,1 @@
-Security/CWE-312/CleartextStorage.ql
+Security/Exposure/SensitiveDataExposure/CleartextStorage.ql

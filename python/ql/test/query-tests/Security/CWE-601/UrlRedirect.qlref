@@ -1,2 +1,2 @@
-Security/CWE-601/UrlRedirect.ql
+Security/Injection/OpenRedirect/OpenRedirect.ql
 

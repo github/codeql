@@ -1,1 +1,1 @@
-Security/CWE-022/PathInjection.ql
+Security/Injection/PathInjection/PathInjection.ql

@@ -1,1 +1,1 @@
-Security/CWE-312/CleartextLogging.ql
+Security/Exposure/SensitiveDataExposure/CleartextLogging.ql

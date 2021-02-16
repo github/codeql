@@ -1,1 +1,1 @@
-Security/CWE-079/Jinja2WithoutEscaping.ql
+Security/BadPractice/Jinja2RenderWithoutEscape/Jinja2WithoutEscaping.ql

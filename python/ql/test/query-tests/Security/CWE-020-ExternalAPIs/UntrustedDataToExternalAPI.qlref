@@ -1,1 +1,1 @@
-Security/CWE-020-ExternalAPIs/UntrustedDataToExternalAPI.ql
+POI/ExternalAPIs/UntrustedDataToExternalAPI.ql

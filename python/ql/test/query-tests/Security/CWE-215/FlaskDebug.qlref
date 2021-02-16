@@ -1,1 +1,1 @@
-Security/CWE-215/FlaskDebug.ql
+Security/BadPractice/FlaskRunWithDebug/FlaskDebug.ql

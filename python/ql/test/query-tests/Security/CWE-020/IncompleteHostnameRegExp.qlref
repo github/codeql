@@ -1,1 +1,1 @@
-Security/CWE-020/IncompleteHostnameRegExp.ql
+Security/BadPractice/IncompleteUrlSanitizer/IncompleteHostnameRegExp.ql

@@ -1,1 +1,1 @@
-Security/CWE-089/SqlInjection.ql
+Security/Injection/SqlInjection/SqlInjection.ql

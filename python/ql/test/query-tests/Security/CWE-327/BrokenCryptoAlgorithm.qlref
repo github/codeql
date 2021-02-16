@@ -1,1 +1,1 @@
-Security/CWE-327/BrokenCryptoAlgorithm.ql
+Security/Crypto/WeakCryptoAlgorithm/WeakCryptoAlgorithm.ql

@@ -1,1 +1,1 @@
-Security/CWE-502/UnsafeDeserialization.ql
+Security/Injection/UnsafeDeserialization/UnsafeDeserialization.ql

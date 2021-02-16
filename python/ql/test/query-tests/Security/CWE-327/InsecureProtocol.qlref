@@ -1,1 +1,1 @@
-Security/CWE-327/InsecureProtocol.ql
+Security/Crypto/TLS/InsecureProtocol.ql

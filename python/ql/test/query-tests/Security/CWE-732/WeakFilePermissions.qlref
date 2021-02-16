@@ -1,1 +1,1 @@
-Security/CWE-732/WeakFilePermissions.ql
+Security/BadPractice/WeakFilePermissions/WeakFilePermissions.ql
