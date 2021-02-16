@@ -156,8 +156,8 @@ module StringlikeLiteral {
     }
 
     override string toString() {
-      result =
-        this.getStartDelimiter() +
+      exists(string full, string summary |
+        full =
           concat(StringComponent::Range c, int i, string s |
             c = this.getComponent(i) and
             if c instanceof Generated::Token
@@ -165,7 +165,15 @@ module StringlikeLiteral {
             else s = "#{...}"
           |
             s order by i
-          ) + this.getEndDelimiter()
+          ) and
+        (
+          // summary should be 32 chars max (incl. ellipsis)
+          full.length() > 32 and summary = full.substring(0, 29) + "..."
+          or
+          full.length() <= 32 and summary = full
+        ) and
+        result = this.getStartDelimiter() + summary + this.getEndDelimiter()
+      )
     }
   }
 }

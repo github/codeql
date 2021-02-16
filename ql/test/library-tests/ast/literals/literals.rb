@@ -140,3 +140,8 @@ TRUE
 %r{foo+\sbar\S}
 %r{foo#{ 1 + 1 }bar}  # interpolation
 %r:foo:mxo
+
+# long strings
+'abcdefghijklmnopqrstuvwxyzabcdef'  # 32 chars, should not be truncated
+'foobarfoobarfoobarfoobarfoobarfoo' # 33 chars, should be truncated
+"foobar\\foobar\\foobar\\foobar\\foobar" # several short components, but long enough overall to be truncated

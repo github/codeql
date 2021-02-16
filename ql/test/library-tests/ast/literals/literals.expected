@@ -192,6 +192,9 @@ allLiterals
 | literals.rb:141:10:141:10 | 1 | IntegerLiteral | 1 |
 | literals.rb:141:14:141:14 | 1 | IntegerLiteral | 1 |
 | literals.rb:142:1:142:10 | /foo/ | RegexLiteral | foo |
+| literals.rb:145:1:145:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | StringLiteral | abcdefghijklmnopqrstuvwxyzabcdef |
+| literals.rb:146:1:146:35 | "foobarfoobarfoobarfoobarfooba..." | StringLiteral | foobarfoobarfoobarfoobarfoobarfoo |
+| literals.rb:147:1:147:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | foobar\\\\foobar\\\\foobar\\\\foobar\\\\foobar |
 stringlikeLiterals
 | literals.rb:46:1:46:2 | "" |  |
 | literals.rb:47:1:47:2 | "" |  |
@@ -279,6 +282,9 @@ stringlikeLiterals
 | literals.rb:140:1:140:15 | /foo+\\sbar\\S/ | foo+\\sbar\\S |
 | literals.rb:141:1:141:20 | /foo#{...}bar/ | <none> |
 | literals.rb:142:1:142:10 | /foo/ | foo |
+| literals.rb:145:1:145:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | abcdefghijklmnopqrstuvwxyzabcdef |
+| literals.rb:146:1:146:35 | "foobarfoobarfoobarfoobarfooba..." | foobarfoobarfoobarfoobarfoobarfoo |
+| literals.rb:147:1:147:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | foobar\\\\foobar\\\\foobar\\\\foobar\\\\foobar |
 stringLiterals
 | literals.rb:46:1:46:2 | "" |  |
 | literals.rb:47:1:47:2 | "" |  |
@@ -321,6 +327,9 @@ stringLiterals
 | literals.rb:101:8:101:16 | "bar#{1+1}" | bar#{1+1} |
 | literals.rb:101:18:101:20 | "baz" | baz |
 | literals.rb:112:22:112:26 | "baz" | baz |
+| literals.rb:145:1:145:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | abcdefghijklmnopqrstuvwxyzabcdef |
+| literals.rb:146:1:146:35 | "foobarfoobarfoobarfoobarfooba..." | foobarfoobarfoobarfoobarfoobarfoo |
+| literals.rb:147:1:147:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | foobar\\\\foobar\\\\foobar\\\\foobar\\\\foobar |
 regexLiterals
 | literals.rb:131:1:131:2 | // |  |  |
 | literals.rb:132:1:132:5 | /foo/ | foo |  |
@@ -472,6 +481,17 @@ stringComponents
 | literals.rb:141:1:141:20 | /foo#{...}bar/ | RegexLiteral | 1 | literals.rb:141:7:141:16 | #{...} | StringInterpolationComponent |
 | literals.rb:141:1:141:20 | /foo#{...}bar/ | RegexLiteral | 2 | literals.rb:141:17:141:19 | bar | StringTextComponent |
 | literals.rb:142:1:142:10 | /foo/ | RegexLiteral | 0 | literals.rb:142:4:142:6 | foo | StringTextComponent |
+| literals.rb:145:1:145:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | StringLiteral | 0 | literals.rb:145:2:145:33 | abcdefghijklmnopqrstuvwxyzabcdef | StringTextComponent |
+| literals.rb:146:1:146:35 | "foobarfoobarfoobarfoobarfooba..." | StringLiteral | 0 | literals.rb:146:2:146:34 | foobarfoobarfoobarfoobarfoobarfoo | StringTextComponent |
+| literals.rb:147:1:147:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 0 | literals.rb:147:2:147:7 | foobar | StringTextComponent |
+| literals.rb:147:1:147:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 1 | literals.rb:147:8:147:9 | \\\\ | StringEscapeSequenceComponent |
+| literals.rb:147:1:147:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 2 | literals.rb:147:10:147:15 | foobar | StringTextComponent |
+| literals.rb:147:1:147:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 3 | literals.rb:147:16:147:17 | \\\\ | StringEscapeSequenceComponent |
+| literals.rb:147:1:147:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 4 | literals.rb:147:18:147:23 | foobar | StringTextComponent |
+| literals.rb:147:1:147:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 5 | literals.rb:147:24:147:25 | \\\\ | StringEscapeSequenceComponent |
+| literals.rb:147:1:147:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 6 | literals.rb:147:26:147:31 | foobar | StringTextComponent |
+| literals.rb:147:1:147:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 7 | literals.rb:147:32:147:33 | \\\\ | StringEscapeSequenceComponent |
+| literals.rb:147:1:147:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | StringLiteral | 8 | literals.rb:147:34:147:39 | foobar | StringTextComponent |
 stringInterpolations
 | literals.rb:58:10:58:19 | #{...} | 0 | literals.rb:58:13:58:17 | ... + ... | AddExpr |
 | literals.rb:59:12:59:21 | #{...} | 0 | literals.rb:59:15:59:19 | ... + ... | AddExpr |
