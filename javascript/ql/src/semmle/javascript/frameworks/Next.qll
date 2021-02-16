@@ -7,7 +7,8 @@ import javascript
 /**
  * Provides classes and predicates modelling [Next.js](https://www.npmjs.com/package/next).
  */
-private module NextJS {
+module NextJS {
+  // TODO: Private.
   /**
    * Gets a `package.json` that depends on the `Next.js` library.
    */
@@ -60,6 +61,41 @@ private module NextJS {
   }
 
   /**
+   * Gets the `getStaticProps` function in a Next.js page.
+   * This function is executed at build time, or when a page with a new URL is requested for the first time (if `fallback` is not false).
+   */
+  DataFlow::FunctionNode getStaticPropsFunction(Module pageModule) {
+    pageModule = getAPagesModule() and
+    result = pageModule.getAnExportedValue("getStaticProps").getAFunctionValue()
+  }
+
+  /**
+   * Gets the `getServerSideProps` function in a Next.js page.
+   * This function is executed on the server every time a request for the page is made.
+   * The function receives a context parameter, which includes HTTP request/response objects.
+   */
+  DataFlow::FunctionNode getServerSidePropsFunction(Module pageModule) {
+    pageModule = getAPagesModule() and
+    result = pageModule.getAnExportedValue("getServerSideProps").getAFunctionValue()
+  }
+
+  /**
+   * Gets the `getInitialProps` function in a Next.js page.
+   * This function is executed on the server every time a request for the page is made.
+   * The function receives a context parameter, which includes HTTP request/response objects.
+   */
+  DataFlow::FunctionNode getInitialProps(Module pageModule) {
+    pageModule = getAPagesModule() and
+    result =
+      pageModule
+          .getAnExportedValue("default")
+          .getAFunctionValue()
+          .getAPropertyWrite("getInitialProps")
+          .getRhs()
+          .getAFunctionValue()
+  }
+
+  /**
    * A step modelling the flow from the server-computed `getStaticProps` to the server/client rendering of the page.
    */
   class NextJSStaticPropsStep extends DataFlow::AdditionalFlowStep, DataFlow::FunctionNode {
@@ -73,17 +109,48 @@ private module NextJS {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       (
         pred =
-          pageModule
-              .getAnExportedValue(["getStaticProps", "getServerSideProps"])
-              .getAFunctionValue()
+          [getStaticPropsFunction(pageModule), getServerSidePropsFunction(pageModule)]
               .getAReturn()
               .getALocalSource()
               .getAPropertyWrite("props")
               .getRhs()
         or
-        pred = this.getAPropertyWrite("getInitialProps").getRhs().getAFunctionValue().getAReturn()
+        pred = getInitialProps(pageModule).getAReturn()
       ) and
       succ = this.getParameter(0)
     }
+  }
+
+  /**
+   * A Next.js function that is exected on the server for every request, seen as a routehandler.
+   */
+  class NextHttpRouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+    Module pageModule;
+
+    NextHttpRouteHandler() {
+      this = getServerSidePropsFunction(pageModule) or this = getInitialProps(pageModule)
+    }
+  }
+
+  /**
+   * A NodeJS HTTP request object in a Next.js page.
+   */
+  class NextHttpRequestSource extends NodeJSLib::RequestSource {
+    NextHttpRouteHandler rh;
+
+    NextHttpRequestSource() { this = rh.getParameter(0).getAPropertyRead("req") }
+
+    override HTTP::RouteHandler getRouteHandler() { result = rh }
+  }
+
+  /**
+   * A NodeJS HTTP response object in a Next.js page.
+   */
+  class NextHttpResponseSource extends NodeJSLib::ResponseSource {
+    NextHttpRouteHandler rh;
+
+    NextHttpResponseSource() { this = rh.getParameter(0).getAPropertyRead("res") }
+
+    override HTTP::RouteHandler getRouteHandler() { result = rh }
   }
 }

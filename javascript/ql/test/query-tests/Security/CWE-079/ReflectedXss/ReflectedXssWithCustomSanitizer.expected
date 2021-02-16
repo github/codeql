@@ -21,6 +21,8 @@
 | ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) | Cross-site scripting vulnerability due to $@. | ReflectedXssGood3.js:135:15:135:27 | req.params.id | user-provided value |
 | formatting.js:6:14:6:47 | util.fo ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
 | formatting.js:7:14:7:53 | require ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
+| pages/Next.jsx:8:13:8:19 | req.url | Cross-site scripting vulnerability due to $@. | pages/Next.jsx:8:13:8:19 | req.url | user-provided value |
+| pages/Next.jsx:15:13:15:19 | req.url | Cross-site scripting vulnerability due to $@. | pages/Next.jsx:15:13:15:19 | req.url | user-provided value |
 | partial.js:10:14:10:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:13:42:13:48 | req.url | user-provided value |
 | partial.js:19:14:19:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:22:51:22:57 | req.url | user-provided value |
 | partial.js:28:14:28:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:31:47:31:53 | req.url | user-provided value |
