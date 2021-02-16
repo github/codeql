@@ -36,7 +36,7 @@ For example: <code>PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePerm
 
 <sample src="TempDirUsageVulnerable.java"/>
 
-<p>In the following example, files and directories are created with file permissions protecting their contents.</p>
+<p>In the following example, files and directories are created with file permissions that protect their contents.</p>
 
 <sample src="TempDirUsageSafe.java"/>
 </example>
