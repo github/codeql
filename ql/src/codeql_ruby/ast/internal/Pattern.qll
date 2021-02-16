@@ -42,7 +42,7 @@ predicate implicitParameterAssignmentNode(Generated::AstNode n, Callable::Range 
 }
 
 module Pattern {
-  class Range extends AstNode::Range {
+  abstract class Range extends AstNode::Range {
     cached
     Range() {
       explicitAssignmentNode(this, _)
