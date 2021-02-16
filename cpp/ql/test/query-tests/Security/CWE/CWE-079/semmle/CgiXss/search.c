@@ -26,7 +26,7 @@ void bad_server2(char* query) {
   puts(do_search(query));
 }
 
-void good_server(char* query) {
+void good_server1(char* query) {
   puts("<p>Query results for ");
   // GOOD: Escape HTML characters before adding to a page
   char* query_escaped = escape_html(query);
@@ -37,14 +37,26 @@ void good_server(char* query) {
   puts(do_search(query));
 }
 
+int snprintf(char *, int, const char *, ...);
+
+void good_server2(char* query) {
+  puts("<p>Query results for ");
+  // GOOD: Only an integer is added to the page.
+  int i = 0;
+  snprintf(query, 16, "value=%i", &i);
+  printf("\n<p>%i</p>\n", i);
+}
+
 int main(int argc, char** argv) {
   char* raw_query = getenv("QUERY_STRING");
-  if (strcmp("good", argv[0]) == 0) {
-    good_server(raw_query);
+  if (strcmp("good1", argv[0]) == 0) {
+    good_server1(raw_query);
   } else if (strcmp("bad1", argv[0]) == 0) {
     bad_server1(raw_query);
-  } else {
+  } else if (strcmp("bad2", argv[0]) == 0) {
     bad_server2(raw_query);
+  } else if (strcmp("good2", argv[0]) == 0) {
+    good_server2(raw_query);
   }
 }
 
