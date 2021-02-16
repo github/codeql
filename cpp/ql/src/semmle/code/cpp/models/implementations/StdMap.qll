@@ -6,13 +6,17 @@ import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.Iterator
 
 /**
+ * The `std::map` and `std::unordered_map` template classes.
+ */
+private class MapOrUnorderedMap extends Class {
+  MapOrUnorderedMap() { this.hasQualifiedName(["std", "bsl"], ["map", "unordered_map"]) }
+}
+
+/**
  * Additional model for map constructors using iterator inputs.
  */
 private class StdMapConstructor extends Constructor, TaintFunction {
-  StdMapConstructor() {
-    this.hasQualifiedName("std", "map", "map") or
-    this.hasQualifiedName("std", "unordered_map", "unordered_map")
-  }
+  StdMapConstructor() { this.getDeclaringType() instanceof MapOrUnorderedMap }
 
   /**
    * Gets the index of a parameter to this function that is an iterator.
@@ -37,7 +41,7 @@ private class StdMapConstructor extends Constructor, TaintFunction {
  */
 private class StdMapInsert extends TaintFunction {
   StdMapInsert() {
-    this.hasQualifiedName("std", ["map", "unordered_map"], ["insert", "insert_or_assign"])
+    this.getClassAndName(["insert", "insert_or_assign"]) instanceof MapOrUnorderedMap
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -55,9 +59,7 @@ private class StdMapInsert extends TaintFunction {
  * The standard map `emplace` and `emplace_hint` functions.
  */
 private class StdMapEmplace extends TaintFunction {
-  StdMapEmplace() {
-    this.hasQualifiedName("std", ["map", "unordered_map"], ["emplace", "emplace_hint"])
-  }
+  StdMapEmplace() { this.getClassAndName(["emplace", "emplace_hint"]) instanceof MapOrUnorderedMap }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from the last parameter (which may be the value part used to
@@ -79,7 +81,7 @@ private class StdMapEmplace extends TaintFunction {
  * The standard map `try_emplace` function.
  */
 private class StdMapTryEmplace extends TaintFunction {
-  StdMapTryEmplace() { this.hasQualifiedName("std", ["map", "unordered_map"], "try_emplace") }
+  StdMapTryEmplace() { this.getClassAndName("try_emplace") instanceof MapOrUnorderedMap }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from any parameter apart from the key to qualifier and return value
@@ -106,7 +108,7 @@ private class StdMapTryEmplace extends TaintFunction {
  * The standard map `merge` function.
  */
 private class StdMapMerge extends TaintFunction {
-  StdMapMerge() { this.hasQualifiedName("std", ["map", "unordered_map"], "merge") }
+  StdMapMerge() { this.getClassAndName("merge") instanceof MapOrUnorderedMap }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // container1.merge(container2)
@@ -119,7 +121,7 @@ private class StdMapMerge extends TaintFunction {
  * The standard map functions `at` and `operator[]`.
  */
 private class StdMapAt extends TaintFunction {
-  StdMapAt() { this.hasQualifiedName("std", ["map", "unordered_map"], ["at", "operator[]"]) }
+  StdMapAt() { this.getClassAndName(["at", "operator[]"]) instanceof MapOrUnorderedMap }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to referenced return value
@@ -136,7 +138,7 @@ private class StdMapAt extends TaintFunction {
  * The standard map `find` function.
  */
 private class StdMapFind extends TaintFunction {
-  StdMapFind() { this.hasQualifiedName("std", ["map", "unordered_map"], "find") }
+  StdMapFind() { this.getClassAndName("find") instanceof MapOrUnorderedMap }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
@@ -148,7 +150,7 @@ private class StdMapFind extends TaintFunction {
  * The standard map `erase` function.
  */
 private class StdMapErase extends TaintFunction {
-  StdMapErase() { this.hasQualifiedName("std", ["map", "unordered_map"], "erase") }
+  StdMapErase() { this.getClassAndName("erase") instanceof MapOrUnorderedMap }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to iterator return value
@@ -163,8 +165,7 @@ private class StdMapErase extends TaintFunction {
  */
 private class StdMapEqualRange extends TaintFunction {
   StdMapEqualRange() {
-    this.hasQualifiedName("std", ["map", "unordered_map"],
-      ["lower_bound", "upper_bound", "equal_range"])
+    this.getClassAndName(["lower_bound", "upper_bound", "equal_range"]) instanceof MapOrUnorderedMap
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
