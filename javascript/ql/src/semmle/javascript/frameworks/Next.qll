@@ -74,7 +74,7 @@ private module NextJS {
       (
         pred =
           pageModule
-              .getAnExportedValue("getStaticProps")
+              .getAnExportedValue(["getStaticProps", "getServerSideProps"])
               .getAFunctionValue()
               .getAReturn()
               .getALocalSource()
