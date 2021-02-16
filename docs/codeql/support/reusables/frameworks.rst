@@ -33,6 +33,7 @@ Go built-in support
    glog, Logging library
    go-restful, Web application framework
    go-sh, Utility library
+   GoKit, Microservice toolkit
    Gokogiri, XPath library
    golang.org/x/crypto/ssh, Network communicator
    golang.org/x/net/websocket, Network communicator
