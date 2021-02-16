@@ -44,7 +44,7 @@ class StdPairCopyishConstructor extends Constructor, TaintFunction {
  * Additional model for `std::pair` constructors.
  */
 private class StdPairConstructor extends Constructor, TaintFunction {
-  StdPairConstructor() { this.hasQualifiedName("std", "pair", "pair") }
+  StdPairConstructor() { this.getDeclaringType() instanceof StdPair }
 
   /**
    * Gets the index of a parameter to this function that is a reference to
