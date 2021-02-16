@@ -14,6 +14,21 @@ class Pattern extends AstNode {
   Variable getAVariable() { result = range.getAVariable() }
 }
 
+/**
+ * A "left-hand-side" expression.
+ * ```rb
+ * var = 1
+ * var += 1
+ * E = 1
+ * foo.bar = 1
+ * foo[0] = 1
+ * rescue E => var
+ * ```
+ */
+class LhsExpr extends Pattern, Expr {
+  override LhsExpr::Range range;
+}
+
 /** A simple variable pattern. */
 class VariablePattern extends Pattern {
   override VariablePattern::Range range;

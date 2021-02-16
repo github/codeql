@@ -1,6 +1,7 @@
 private import codeql_ruby.AST
 private import TreeSitter
 private import codeql_ruby.ast.internal.AST
+private import codeql_ruby.ast.internal.Expr
 private import codeql_ruby.ast.internal.Variable
 private import codeql_ruby.ast.internal.Method
 private import codeql.Locations
@@ -58,8 +59,12 @@ module Pattern {
   }
 }
 
+module LhsExpr {
+  abstract class Range extends Pattern::Range, Expr::Range { }
+}
+
 module VariablePattern {
-  class Range extends Pattern::Range, @token_identifier {
+  class Range extends LhsExpr::Range, @token_identifier {
     override Generated::Identifier generated;
 
     string getVariableName() { result = generated.getValue() }
