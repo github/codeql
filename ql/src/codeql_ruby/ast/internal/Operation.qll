@@ -246,7 +246,7 @@ module AssignOperation {
 
     final override string getOperator() { result = generated.getOperator() }
 
-    final override Expr getLhs() { result = generated.getLeft() }
+    final override LhsExpr getLhs() { result = generated.getLeft() }
 
     final override Expr getRhs() { result = generated.getRight() }
   }

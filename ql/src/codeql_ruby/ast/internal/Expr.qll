@@ -123,7 +123,7 @@ module RescueClause {
   class Range extends Expr::Range, @rescue {
     final override Generated::Rescue generated;
 
-    final Expr getException(int n) { result = generated.getExceptions().getChild(n) }
+    final LhsExpr getException(int n) { result = generated.getExceptions().getChild(n) }
 
     final Expr getVariableExpr() { result = generated.getVariable() }
 
