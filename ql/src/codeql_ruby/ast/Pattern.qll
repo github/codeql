@@ -15,7 +15,12 @@ class Pattern extends AstNode {
 }
 
 /**
- * A "left-hand-side" expression.
+ * A "left-hand-side" expression. An `LhsExpr` can occur on the left-hand side of
+ * operator assignments (`AssignOperation`), in patterns (`Pattern`) on the left-hand side of
+ * an assignment (`AssignExpr`) or for loop (`ForExpr`), and as the exception
+ * variable of a `rescue` clause (`RescueClause`).
+ *
+ * An `LhsExpr` can be a simple variable, a constant, a call, or an element reference:
  * ```rb
  * var = 1
  * var += 1
