@@ -165,10 +165,10 @@ class BodyStatement extends StmtSequence {
   override BodyStatement::Range range;
 
   /** Gets the `n`th rescue clause in this block. */
-  final Rescue getRescue(int n) { result = range.getRescue(n) }
+  final RescueExpr getRescue(int n) { result = range.getRescue(n) }
 
   /** Gets a rescue clause in this block. */
-  final Rescue getARescue() { result = this.getRescue(_) }
+  final RescueExpr getARescue() { result = this.getRescue(_) }
 
   /** Gets the `else` clause in this block, if any. */
   final StmtSequence getElse() { result = range.getElse() }
@@ -247,10 +247,10 @@ class Pair extends Expr, @pair {
  *   puts msg
  * end
  */
-class Rescue extends Expr, @rescue {
-  final override Rescue::Range range;
+class RescueExpr extends Expr, @rescue {
+  final override RescueExpr::Range range;
 
-  final override string getAPrimaryQlClass() { result = "Rescue" }
+  final override string getAPrimaryQlClass() { result = "RescueExpr" }
 
   /**
    * Gets the `n`th exception to match, if any. For example `FirstError` or `SecondError` in:
@@ -301,13 +301,13 @@ class Rescue extends Expr, @rescue {
  * contents = read_file rescue ""
  * ```
  */
-class RescueExpr extends Expr, @rescue_modifier {
-  final override RescueExpr::Range range;
+class RescueModifierExpr extends Expr, @rescue_modifier {
+  final override RescueModifierExpr::Range range;
 
-  final override string getAPrimaryQlClass() { result = "RescueExpr" }
+  final override string getAPrimaryQlClass() { result = "RescueModifierExpr" }
 
   /**
-   * Gets the body of this `RescueExpr`.
+   * Gets the body of this `RescueModifierExpr`.
    * ```rb
    * body rescue handler
    * ```
@@ -315,7 +315,7 @@ class RescueExpr extends Expr, @rescue_modifier {
   final Stmt getBody() { result = range.getBody() }
 
   /**
-   * Gets the exception handler of this `RescueExpr`.
+   * Gets the exception handler of this `RescueModifierExpr`.
    * ```rb
    * body rescue handler
    * ```
