@@ -1,13 +1,13 @@
-import org.apache.commons.lang3.text.StrBuilder;
-import org.apache.commons.lang3.text.StrMatcher;
-import org.apache.commons.lang3.text.StrTokenizer;
+import org.apache.commons.text.StrBuilder;
+import org.apache.commons.text.StrMatcher;
+import org.apache.commons.text.StrTokenizer;
 import java.io.StringReader;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-class StrBuilderTest {
+class StrBuilderTextTest {
     String taint() { return "tainted"; }
 
     void sink(Object o) {}

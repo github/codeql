@@ -120,11 +120,14 @@ private class ApacheStringUtilsTaintPreservingMethod extends TaintPreservingCall
 }
 
 /**
- * A method declared on `org.apache.commons.lang3.text.StrBuilder`.
+ * A method declared on Apache Commons Lang's `StrBuilder`, or the same class or its
+ * renamed version `TextStringBuilder` in Commons Text.
  */
 class ApacheStrBuilderMethod extends Method {
   ApacheStrBuilderMethod() {
-    this.getDeclaringType().hasQualifiedName("org.apache.commons.lang3.text", "StrBuilder")
+    this.getDeclaringType().hasQualifiedName("org.apache.commons.lang3.text", "StrBuilder") or
+    this.getDeclaringType()
+        .hasQualifiedName("org.apache.commons.text", ["StrBuilder", "TextStringBuilder"])
   }
 }
 
