@@ -44,10 +44,10 @@ module RationalLiteral {
     final override Generated::Rational generated;
 
     final override string getValueText() {
-      result = generated.getChild().(Generated::Token).getValue()
+      result = generated.getChild().(Generated::Token).getValue() + "r"
     }
 
-    final override string toString() { result = this.getValueText() + "r" }
+    final override string toString() { result = this.getValueText() }
   }
 }
 
