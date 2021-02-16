@@ -5,8 +5,8 @@
 
 <overview>
 <p>Java versions 8u181 or greater have enabled LDAPS endpoint identification by default. Nowadays infrastructure services like LDAP are commonly deployed behind load balancers therefore the LDAP server name can be different from the FQDN of the LDAPS endpoint. If a service certificate does not properly contain a matching DNS name as part of the certificate, Java will reject it by default.</p>
-<p>Instead of addressing the issue properly by having a compliant certificate deployed, frequently developers simply disable LDAPS endpoint check.</p>
-<p>Failing to validate the certificate makes the SSL session susceptible to a man-in-the-middle attack. This query checks whether LDAPS endpoint check is disabled in system properties.</p>
+<p>Instead of addressing the issue properly by having a compliant certificate deployed, frequently developers simply disable the LDAPS endpoint check.</p>
+<p>Failing to validate the certificate makes the SSL session susceptible to a man-in-the-middle attack. This query checks whether the LDAPS endpoint check is disabled in system properties.</p>
 </overview>
 
 <recommendation>

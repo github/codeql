@@ -32,7 +32,7 @@ class SetPropertyMethod extends Method {
   }
 }
 
-/** The method to set system properties. */
+/** The `setProperties` method declared in `java.lang.System`. */
 class SetSystemPropertiesMethod extends Method {
   SetSystemPropertiesMethod() {
     this.hasName("setProperties") and
@@ -40,7 +40,7 @@ class SetSystemPropertiesMethod extends Method {
   }
 }
 
-/** Holds if an expression is evaluated to the string literal `com.sun.jndi.ldap.object.disableEndpointIdentification`. */
+/** Holds if `expr` is evaluated to the string literal `com.sun.jndi.ldap.object.disableEndpointIdentification`. */
 predicate isPropertyDisableLdapEndpointId(Expr expr) {
   expr.(CompileTimeConstantExpr).getStringValue() =
     "com.sun.jndi.ldap.object.disableEndpointIdentification"
@@ -72,7 +72,8 @@ predicate isBooleanTrue(Expr expr) {
 
 /** Holds if `ma` is in a test class or method. */
 predicate isTestMethod(MethodAccess ma) {
-  ma.getMethod() instanceof TestMethod or
+  ma.getEnclosingCallable() instanceof TestMethod or
+  ma.getEnclosingCallable().getDeclaringType() instanceof TestClass or
   ma.getEnclosingCallable().getDeclaringType().getPackage().getName().matches("%test%") or
   ma.getEnclosingCallable().getDeclaringType().getName().toLowerCase().matches("%test%")
 }
