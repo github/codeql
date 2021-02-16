@@ -29,8 +29,6 @@ module AstNode {
       or
       this instanceof Generated::RestAssignment
       or
-      this = any(Generated::RestAssignment ra).getChild()
-      or
       this instanceof Generated::SymbolArray
       or
       this instanceof Generated::Interpolation

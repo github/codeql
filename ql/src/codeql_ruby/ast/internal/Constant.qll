@@ -57,12 +57,14 @@ module ConstantWriteAccess {
 }
 
 module ConstantAssignment {
-  abstract class Range extends ConstantWriteAccess::Range { }
+  abstract class Range extends ConstantWriteAccess::Range, LhsExpr::Range {
+    Range() { explicitAssignmentNode(this, _) }
+
+    override string toString() { result = ConstantWriteAccess::Range.super.toString() }
+  }
 
   private class TokenConstantAssignmentRange extends ConstantAssignment::Range, @token_constant {
     final override Generated::Constant generated;
-
-    TokenConstantAssignmentRange() { explicitAssignmentNode(this, _) }
 
     final override string getName() { result = generated.getValue() }
 
@@ -75,10 +77,7 @@ module ConstantAssignment {
     final override Generated::ScopeResolution generated;
     Generated::Constant constant;
 
-    ScopeResolutionAssignmentRange() {
-      constant = generated.getName() and
-      explicitAssignmentNode(this, _)
-    }
+    ScopeResolutionAssignmentRange() { constant = generated.getName() }
 
     final override string getName() { result = constant.getValue() }
 

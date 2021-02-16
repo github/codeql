@@ -1,6 +1,7 @@
 private import codeql_ruby.AST
 private import TreeSitter
 private import codeql_ruby.ast.internal.AST
+private import codeql_ruby.ast.internal.Expr
 private import codeql_ruby.ast.internal.Variable
 private import codeql_ruby.ast.internal.Method
 private import codeql.Locations
@@ -20,6 +21,8 @@ predicate explicitAssignmentNode(Generated::AstNode n, Generated::AstNode assign
     parent instanceof Generated::DestructuredLeftAssignment
     or
     parent instanceof Generated::LeftAssignmentList
+    or
+    parent instanceof Generated::RestAssignment
   )
 }
 
@@ -40,7 +43,7 @@ predicate implicitParameterAssignmentNode(Generated::AstNode n, Callable::Range 
 }
 
 module Pattern {
-  class Range extends AstNode::Range {
+  abstract class Range extends AstNode::Range {
     cached
     Range() {
       explicitAssignmentNode(this, _)
@@ -56,8 +59,12 @@ module Pattern {
   }
 }
 
+module LhsExpr {
+  abstract class Range extends Pattern::Range, Expr::Range { }
+}
+
 module VariablePattern {
-  class Range extends Pattern::Range, @token_identifier {
+  class Range extends LhsExpr::Range, @token_identifier {
     override Generated::Identifier generated;
 
     string getVariableName() { result = generated.getValue() }
@@ -74,12 +81,22 @@ module TuplePattern {
 
   class Range extends Pattern::Range, Range_ {
     Pattern::Range getElement(int i) {
+      exists(Generated::AstNode c | c = getChild(i) |
+        result = c.(Generated::RestAssignment).getChild()
+        or
+        not c instanceof Generated::RestAssignment and result = c
+      )
+    }
+
+    private Generated::AstNode getChild(int i) {
       result = this.(Generated::DestructuredParameter).getChild(i)
       or
       result = this.(Generated::DestructuredLeftAssignment).getChild(i)
       or
       result = this.(Generated::LeftAssignmentList).getChild(i)
     }
+
+    int getRestIndex() { result = unique(int i | getChild(i) instanceof Generated::RestAssignment) }
 
     override Variable getAVariable() { result = this.getElement(_).getAVariable() }
 
