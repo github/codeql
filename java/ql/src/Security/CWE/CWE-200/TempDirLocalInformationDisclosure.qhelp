@@ -21,9 +21,9 @@ can occur.</p>
 <ul>
     <li><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#createTempDirectory">java.nio.file.Files#createTempDirectory</a></li>
     <li><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#createTempFile">java.nio.file.Files#createTempFile</a></li>
-<ul>
-Otherwise, create the file/directory by manually specificfying the expected posix file permissions.
-Eg. <code>PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE))</code>
+</ul>
+<p>Otherwise, create the file/directory by manually specificfying the expected posix file permissions.
+Eg. <code>PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE))</code></p>
 <ul>
     <li><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#createFile-java.nio.file.Path-java.nio.file.attribute.FileAttribute...-">java.nio.file.Files#createFile</a></li>
     <li><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#createDirectory-java.nio.file.Path-java.nio.file.attribute.FileAttribute...-">java.nio.file.Files#createDirectory</a></li>
@@ -39,9 +39,10 @@ Eg. <code>PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OW
 <p>In the following example, files and directories are created with file permissions protecting their contents.</p>
 
 <sample src="TempDirUsageSafe.java"/>
+</example>
 
 <references>
     <li>OSWAP: <a href="https://owasp.org/www-community/vulnerabilities/Insecure_Temporary_File">Insecure Temporary File</a>.</li>
-    <li>CERT: <a href="https://wiki.sei.cmu.edu/confluence/display/java/FIO00-J.+Do+not+operate+on+files+in+shared+directories">FIO00-J. Do not operate on files in shared directories</a>
+    <li>CERT: <a href="https://wiki.sei.cmu.edu/confluence/display/java/FIO00-J.+Do+not+operate+on+files+in+shared+directories">FIO00-J. Do not operate on files in shared directories</a></li>
 </references>
 </qhelp>
