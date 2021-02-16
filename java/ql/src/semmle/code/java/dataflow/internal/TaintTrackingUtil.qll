@@ -345,7 +345,9 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.getDeclaringType() instanceof TypeUri and
   m.hasName("toURL")
   or
-  m instanceof GetterMethod and m.getDeclaringType() instanceof SpringUntrustedDataType
+  m instanceof GetterMethod and
+  m.getDeclaringType().getASubtype*() instanceof SpringUntrustedDataType and
+  not m.getDeclaringType() instanceof TypeObject
   or
   m.getDeclaringType() instanceof SpringHttpEntity and
   m.getName().regexpMatch("getBody|getHeaders")

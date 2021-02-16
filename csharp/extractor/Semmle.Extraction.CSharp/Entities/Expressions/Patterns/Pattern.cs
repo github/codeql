@@ -23,6 +23,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 case UnaryPatternSyntax unaryPattern:
                     return new UnaryPattern(cx, unaryPattern, parent, child);
 
+                case BinaryPatternSyntax binaryPattern:
+                    return new BinaryPattern(cx, binaryPattern, parent, child);
+
                 case DeclarationPatternSyntax declPattern:
                     // Creates a single local variable declaration.
                     {
@@ -31,7 +34,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                             if (cx.GetModel(syntax).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
                             {
                                 var type = symbol.GetAnnotatedType();
-                                return VariableDeclaration.Create(cx, symbol, type, declPattern.Type, cx.Create(syntax.GetLocation()), false, parent, child);
+                                return VariableDeclaration.Create(cx, symbol, type, declPattern.Type, cx.CreateLocation(syntax.GetLocation()), false, parent, child);
                             }
                             if (designation is DiscardDesignationSyntax)
                             {
@@ -58,7 +61,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                             {
                                 var type = symbol.GetAnnotatedType();
 
-                                return VariableDeclaration.Create(cx, symbol, type, null, cx.Create(syntax.GetLocation()), true, parent, child);
+                                return VariableDeclaration.Create(cx, symbol, type, null, cx.CreateLocation(syntax.GetLocation()), true, parent, child);
                             }
 
                             throw new InternalError(varPattern, "Unable to get the declared symbol of the var pattern designation.");

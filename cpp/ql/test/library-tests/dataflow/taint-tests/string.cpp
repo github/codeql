@@ -415,10 +415,10 @@ void test_string_iterators() {
 		sink(*i9); // $ ast,ir
 
 		i10 = i2;
-		sink(*(i10++)); // $ ast MISSING: ir
+		sink(*(i10++)); // $ ast,ir
 		sink(i10); // $ ast,ir
 		i11 = i2;
-		sink(*(i11--)); // $ ast MISSING: ir
+		sink(*(i11--)); // $ ast,ir
 		sink(i11); // $ ast,ir
 	}
 }

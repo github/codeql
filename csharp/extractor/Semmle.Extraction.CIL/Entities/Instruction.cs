@@ -481,7 +481,7 @@ namespace Semmle.Extraction.CIL.Entities
                 // TODO: Find a solution to this.
 
                 // For now, just log the error
-                Cx.Cx.ExtractionError("A CIL instruction jumps outside the current method", "", Extraction.Entities.GeneratedLocation.Create(Cx.Cx), "", Util.Logging.Severity.Warning);
+                Cx.Cx.ExtractionError("A CIL instruction jumps outside the current method", null, Extraction.Entities.GeneratedLocation.Create(Cx.Cx), "", Util.Logging.Severity.Warning);
             }
         }
     }

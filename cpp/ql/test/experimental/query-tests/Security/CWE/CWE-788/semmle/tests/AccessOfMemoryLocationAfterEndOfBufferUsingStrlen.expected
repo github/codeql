@@ -1,0 +1,9 @@
+| test.c:42:3:42:24 | ... = ... | potential unsafe or redundant assignment. |
+| test.c:43:3:43:40 | ... = ... | potential unsafe or redundant assignment. |
+| test.c:44:3:44:40 | ... = ... | potential unsafe or redundant assignment. |
+| test.c:45:3:45:44 | ... = ... | potential unsafe or redundant assignment. |
+| test.c:46:3:46:44 | ... = ... | potential unsafe or redundant assignment. |
+| test.c:47:3:47:48 | ... = ... | potential unsafe or redundant assignment. |
+| test.c:48:3:48:48 | ... = ... | potential unsafe or redundant assignment. |
+| test.c:49:3:49:50 | ... = ... | potential unsafe or redundant assignment. |
+| test.c:50:3:50:50 | ... = ... | potential unsafe or redundant assignment. |

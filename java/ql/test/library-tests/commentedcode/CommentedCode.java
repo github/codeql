@@ -88,8 +88,8 @@ public class CommentedCode {
 		 * &nbsp ;
 		 * &nbsp ;
 		 */
+		return -1;
 	}
-	
 //	public static int commentedOutMethod(){
 //		
 //		return 123;

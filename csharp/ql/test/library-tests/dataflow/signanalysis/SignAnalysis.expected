@@ -199,8 +199,6 @@
 | SignAnalysis.cs:377:21:377:22 | &... | positive |
 | SignAnalysis.cs:378:18:378:19 | access to local variable dp | positive |
 | SignAnalysis.cs:381:38:381:38 | access to local variable x | strictlyNegative |
-| SignAnalysis.cs:385:50:385:99 | access to constant Explicit | strictlyPositive |
-| SignAnalysis.cs:385:109:385:110 | 15 | strictlyPositive |
 | SignAnalysis.cs:390:13:390:32 | Int32 x = ... | strictlyPositive |
 | SignAnalysis.cs:390:17:390:32 | sizeof(..) | strictlyPositive |
 | SignAnalysis.cs:391:34:391:34 | access to local variable x | strictlyPositive |

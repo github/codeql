@@ -31,7 +31,7 @@ class Test {
 		return true;
 	}
 	
-	public void doConnect(int desiredPort, String username) {
+	public void doConnect(int desiredPort, String username) throws Exception {
 		ServerSocket listenSocket = new ServerSocket(desiredPort);
 
 		if (isAuthenticated(username)) {
@@ -56,7 +56,7 @@ class Test {
 		
 	}
 
-	public void doConnectChannel(int desiredPort, String username) {
+	public void doConnectChannel(int desiredPort, String username) throws Exception {
 		ServerSocketChannel listenChannel = ServerSocketChannel.open();
 		SocketAddress port = new InetSocketAddress(desiredPort);
 		listenChannel.bind(port);

@@ -86,12 +86,12 @@ def argument_passing(
 
 @expects(7)
 def test_argument_passing1():
-    argument_passing(arg1, *(arg2, arg3, arg4), e=arg5, **{"f": arg6, "g": arg7})
+    argument_passing(arg1, *(arg2, arg3, arg4), e=arg5, **{"f": arg6, "g": arg7})  #$ arg1 arg7 func=argument_passing MISSING: arg2 arg3="arg3 arg4 arg5 arg6
 
 
 @expects(7)
 def test_argument_passing2():
-    argument_passing(arg1, arg2, arg3, f=arg6)
+    argument_passing(arg1, arg2, arg3, f=arg6)  #$ arg1 arg2 arg3
 
 
 def with_pos_only(a, /, b):
@@ -101,9 +101,9 @@ def with_pos_only(a, /, b):
 
 @expects(6)
 def test_pos_only():
-    with_pos_only(arg1, arg2)
-    with_pos_only(arg1, b=arg2)
-    with_pos_only(arg1, *(arg2,))
+    with_pos_only(arg1, arg2)  #$ arg1 arg2
+    with_pos_only(arg1, b=arg2)  #$ arg1 arg2
+    with_pos_only(arg1, *(arg2,))  #$ arg1 MISSING: arg2
 
 
 def with_multiple_kw_args(a, b, c):
@@ -114,13 +114,13 @@ def with_multiple_kw_args(a, b, c):
 
 @expects(12)
 def test_multiple_kw_args():
-    with_multiple_kw_args(b=arg2, c=arg3, a=arg1)
-    with_multiple_kw_args(arg1, *(arg2,), arg3)
-    with_multiple_kw_args(arg1, **{"c": arg3}, b=arg2)
-    with_multiple_kw_args(**{"b": arg2}, **{"c": arg3}, **{"a": arg1})
+    with_multiple_kw_args(b=arg2, c=arg3, a=arg1)  #$ arg1 arg2 arg3
+    with_multiple_kw_args(arg1, *(arg2,), arg3)  #$ arg1 MISSING: arg2 arg3
+    with_multiple_kw_args(arg1, **{"c": arg3}, b=arg2)  #$ arg1 arg3 func=with_multiple_kw_args MISSING: arg2
+    with_multiple_kw_args(**{"b": arg2}, **{"c": arg3}, **{"a": arg1})  #$ arg1 arg2 arg3 func=with_multiple_kw_args
 
 
-def with_default_arguments(a=arg1, b=arg2, c=arg3):
+def with_default_arguments(a=arg1, b=arg2, c=arg3):  # Need a mechanism to test default arguments
     SINK1(a)
     SINK2(b)
     SINK3(c)
@@ -129,9 +129,9 @@ def with_default_arguments(a=arg1, b=arg2, c=arg3):
 @expects(12)
 def test_default_arguments():
     with_default_arguments()
-    with_default_arguments(arg1)
-    with_default_arguments(b=arg2)
-    with_default_arguments(**{"c": arg3})
+    with_default_arguments(arg1)  #$ arg1
+    with_default_arguments(b=arg2)  #$ arg2
+    with_default_arguments(**{"c": arg3})  #$ arg3 func=with_default_arguments
 
 
 # Nested constructor pattern
@@ -157,7 +157,7 @@ def grab_baz(baz):
 
 @expects(4)
 def test_grab():
-    grab_foo_bar_baz(baz=arg3, bar=arg2, foo=arg1)
+    grab_foo_bar_baz(baz=arg3, bar=arg2, foo=arg1)  #$ arg1 arg2 arg3 func=grab_bar_baz func=grab_baz
 
 
 # All combinations
@@ -165,14 +165,14 @@ def test_pos_pos():
     def with_pos(a):
         SINK1(a)
 
-    with_pos(arg1)
+    with_pos(arg1)  #$ arg1 func=test_pos_pos.with_pos
 
 
 def test_pos_pos_only():
     def with_pos_only(a, /):
         SINK1(a)
 
-    with_pos_only(arg1)
+    with_pos_only(arg1)  #$ arg1 func=test_pos_pos_only.with_pos_only
 
 
 def test_pos_star():
@@ -180,32 +180,32 @@ def test_pos_star():
         if len(a) > 0:
             SINK1(a[0])
 
-    with_star(arg1)
+    with_star(arg1)  #$ arg1 func=test_pos_star.with_star
 
 
 def test_pos_kw():
     def with_kw(a=""):
         SINK1(a)
 
-    with_kw(arg1)
+    with_kw(arg1)  #$ arg1 func=test_pos_kw.with_kw
 
 
 def test_kw_pos():
     def with_pos(a):
         SINK1(a)
 
-    with_pos(a=arg1)
+    with_pos(a=arg1)  #$ arg1 func=test_kw_pos.with_pos
 
 
 def test_kw_kw():
     def with_kw(a=""):
         SINK1(a)
 
-    with_kw(a=arg1)
+    with_kw(a=arg1)  #$ arg1 func=test_kw_kw.with_kw
 
 
 def test_kw_doublestar():
     def with_doublestar(**a):
         SINK1(a["a"])
 
-    with_doublestar(a=arg1)
+    with_doublestar(a=arg1)  #$ arg1 func=test_kw_doublestar.with_doublestar

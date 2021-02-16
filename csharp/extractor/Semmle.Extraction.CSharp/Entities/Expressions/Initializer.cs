@@ -137,7 +137,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 var addMethod = Method.Create(cx, collectionInfo.Symbol as IMethodSymbol);
                 var voidType = AnnotatedTypeSymbol.CreateNotAnnotated(cx.Compilation.GetSpecialType(SpecialType.System_Void));
 
-                var invocation = new Expression(new ExpressionInfo(cx, voidType, cx.Create(i.GetLocation()), ExprKind.METHOD_INVOCATION, this, child++, false, null));
+                var invocation = new Expression(new ExpressionInfo(cx, voidType, cx.CreateLocation(i.GetLocation()), ExprKind.METHOD_INVOCATION, this, child++, false, null));
 
                 if (addMethod != null)
                     trapFile.expr_call(invocation, addMethod);

@@ -48,6 +48,8 @@ private predicate isNotNeeded(Element e) {
   or
   e instanceof TupleType
   or
+  e instanceof ConditionalDirective
+  or
   isNotNeeded(e.(Declaration).getDeclaringType())
   or
   isNotNeeded(e.(Parameter).getDeclaringElement())
@@ -100,15 +102,16 @@ private ValueOrRefType getAnInterestingBaseType(ValueOrRefType type) {
   not type instanceof ArrayType and
   not type instanceof NullableType and
   result = type.getABaseType() and
-  isInterestingBaseType(result)
+  isInterestingBaseType(type, result)
 }
 
-private predicate isInterestingBaseType(ValueOrRefType base) {
+private predicate isInterestingBaseType(ValueOrRefType type, ValueOrRefType base) {
   not base instanceof ObjectType and
   not base.getQualifiedName() = "System.ValueType" and
   not base.getQualifiedName() = "System.Delegate" and
   not base.getQualifiedName() = "System.MulticastDelegate" and
-  not base.getQualifiedName() = "System.Enum"
+  not base.getQualifiedName() = "System.Enum" and
+  exists(TypeMention tm | tm.getTarget() = type and tm.getType() = base)
 }
 
 /**
@@ -131,7 +134,8 @@ private newtype TPrintAstNode =
   TParametersNode(Parameterizable parameterizable) {
     shouldPrint(parameterizable, _) and
     parameterizable.getNumberOfParameters() > 0 and
-    not isNotNeeded(parameterizable)
+    not isNotNeeded(parameterizable) and
+    exists(Parameter p | p.getDeclaringElement() = parameterizable and shouldPrint(p, _))
   } or
   TAttributesNode(Attributable attributable) {
     shouldPrint(attributable, _) and
@@ -568,11 +572,12 @@ final class TypeNode extends ElementNode {
     result.(BaseTypesNode).getValueOrRefType() = type
     or
     result.(ElementNode).getElement() =
-      rank[childIndex - 3](Member m, string file, int line, int column |
+      rank[childIndex - 3](Member m, string file, int line, int column, string name |
         m = type.getAMember() and
+        name = m.getName() and
         locationSortKeys(m, file, line, column)
       |
-        m order by file, line, column
+        m order by file, line, column, name
       )
   }
 }

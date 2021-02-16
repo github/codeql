@@ -374,7 +374,7 @@ A *variable declaration list* provides a sequence of variables and a type for ea
 
 ::
 
-   var_decls ::= var_decl ("," var_decl)*
+   var_decls ::= (var_decl ("," var_decl)*)?
    var_decl ::= type simpleId
 
 A valid variable declaration list must not include two declarations with the same variable name. Moreover, if the declaration has a typing environment that applies, it must not use a variable name that is already present in that typing environment.
@@ -470,7 +470,7 @@ A QLDoc comment is a *qldoc comment start*, followed by a *qldoc comment body*, 
 
 The "content" of a QLDoc comment is the comment body of the comment, omitting the initial ``/**``, the trailing ``*/``, and the leading whitespace followed by ``*`` on each internal line.
 
-For more information about how the content is interpreted, see see "`QLDoc <#qldoc>`__" below.
+For more information about how the content is interpreted, see "`QLDoc <#qldoc>`__" below.
 
 Keywords
 ~~~~~~~~
@@ -820,7 +820,7 @@ The head of the predicate gives a name, an optional *result type*, and a sequenc
 
 ::
 
-   head ::= ("predicate" | type) predicateName "(" (var_decls)? ")"
+   head ::= ("predicate" | type) predicateName "(" var_decls ")"
 
 The body of a predicate is of one of three forms:
 
@@ -1209,7 +1209,7 @@ An aggregation can be written in one of two forms:
 
 ::
 
-   aggregation ::= aggid ("[" expr "]")? "(" (var_decls)? ("|" (formula)? ("|" as_exprs ("order" "by" aggorderbys)?)?)? ")"
+   aggregation ::= aggid ("[" expr "]")? "(" var_decls ("|" (formula)? ("|" as_exprs ("order" "by" aggorderbys)?)?)? ")"
                |   aggid ("[" expr "]")? "(" as_exprs ("order" "by" aggorderbys)? ")"
                |   "unique" "(" var_decls "|" (formula)? ("|" as_exprs)? ")"
 
@@ -2046,7 +2046,7 @@ The complete grammar for QL is as follows:
                   |   "language" "[" "monotonicAggregates" "]"
                   |   "bindingset" "[" (variable ( "," variable)*)? "]"
 
-   head ::= ("predicate" | type) predicateName "(" (var_decls)? ")"
+   head ::= ("predicate" | type) predicateName "(" var_decls ")"
 
    optbody ::= ";"
            |  "{" formula "}" 
@@ -2070,7 +2070,7 @@ The complete grammar for QL is as follows:
          |  qldoc? annotations "class" classname "=" type ";"
          |  qldoc? annotations "module" modulename "=" moduleId ";"
          
-   var_decls ::= var_decl ("," var_decl)*
+   var_decls ::= (var_decl ("," var_decl)*)?
 
    var_decl ::= type simpleId
 
@@ -2157,7 +2157,7 @@ The complete grammar for QL is as follows:
 
    postfix_cast ::= primary "." "(" type ")"
 
-   aggregation ::= aggid ("[" expr "]")? "(" (var_decls)? ("|" (formula)? ("|" as_exprs ("order" "by" aggorderbys)?)?)? ")"
+   aggregation ::= aggid ("[" expr "]")? "(" var_decls ("|" (formula)? ("|" as_exprs ("order" "by" aggorderbys)?)?)? ")"
                |   aggid ("[" expr "]")? "(" as_exprs ("order" "by" aggorderbys)? ")"
                |   "unique" "(" var_decls "|" (formula)? ("|" as_exprs)? ")"
  

@@ -1603,182 +1603,195 @@ nodeEnclosing
 | Conditions.cs:149:38:149:47 | $"..." | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:149:40:149:43 | "b = " | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:149:45:149:45 | access to local variable s | Conditions.cs:143:10:143:12 | M11 |
-| ExitMethods.cs:7:10:7:11 | enter M1 | ExitMethods.cs:7:10:7:11 | M1 |
-| ExitMethods.cs:7:10:7:11 | exit M1 | ExitMethods.cs:7:10:7:11 | M1 |
-| ExitMethods.cs:7:10:7:11 | exit M1 (normal) | ExitMethods.cs:7:10:7:11 | M1 |
-| ExitMethods.cs:8:5:11:5 | {...} | ExitMethods.cs:7:10:7:11 | M1 |
-| ExitMethods.cs:9:9:9:24 | call to method ErrorMaybe | ExitMethods.cs:7:10:7:11 | M1 |
-| ExitMethods.cs:9:9:9:25 | ...; | ExitMethods.cs:7:10:7:11 | M1 |
-| ExitMethods.cs:9:20:9:23 | true | ExitMethods.cs:7:10:7:11 | M1 |
-| ExitMethods.cs:10:9:10:15 | return ...; | ExitMethods.cs:7:10:7:11 | M1 |
-| ExitMethods.cs:13:10:13:11 | enter M2 | ExitMethods.cs:13:10:13:11 | M2 |
-| ExitMethods.cs:13:10:13:11 | exit M2 | ExitMethods.cs:13:10:13:11 | M2 |
-| ExitMethods.cs:13:10:13:11 | exit M2 (normal) | ExitMethods.cs:13:10:13:11 | M2 |
-| ExitMethods.cs:14:5:17:5 | {...} | ExitMethods.cs:13:10:13:11 | M2 |
-| ExitMethods.cs:15:9:15:25 | call to method ErrorMaybe | ExitMethods.cs:13:10:13:11 | M2 |
-| ExitMethods.cs:15:9:15:26 | ...; | ExitMethods.cs:13:10:13:11 | M2 |
-| ExitMethods.cs:15:20:15:24 | false | ExitMethods.cs:13:10:13:11 | M2 |
-| ExitMethods.cs:16:9:16:15 | return ...; | ExitMethods.cs:13:10:13:11 | M2 |
-| ExitMethods.cs:19:10:19:11 | enter M3 | ExitMethods.cs:19:10:19:11 | M3 |
-| ExitMethods.cs:19:10:19:11 | exit M3 | ExitMethods.cs:19:10:19:11 | M3 |
-| ExitMethods.cs:19:10:19:11 | exit M3 (abnormal) | ExitMethods.cs:19:10:19:11 | M3 |
-| ExitMethods.cs:20:5:23:5 | {...} | ExitMethods.cs:19:10:19:11 | M3 |
-| ExitMethods.cs:21:9:21:25 | call to method ErrorAlways | ExitMethods.cs:19:10:19:11 | M3 |
-| ExitMethods.cs:21:9:21:26 | ...; | ExitMethods.cs:19:10:19:11 | M3 |
-| ExitMethods.cs:21:21:21:24 | true | ExitMethods.cs:19:10:19:11 | M3 |
-| ExitMethods.cs:25:10:25:11 | enter M4 | ExitMethods.cs:25:10:25:11 | M4 |
-| ExitMethods.cs:25:10:25:11 | exit M4 | ExitMethods.cs:25:10:25:11 | M4 |
-| ExitMethods.cs:25:10:25:11 | exit M4 (abnormal) | ExitMethods.cs:25:10:25:11 | M4 |
-| ExitMethods.cs:26:5:29:5 | {...} | ExitMethods.cs:25:10:25:11 | M4 |
-| ExitMethods.cs:27:9:27:14 | call to method Exit | ExitMethods.cs:25:10:25:11 | M4 |
-| ExitMethods.cs:27:9:27:14 | this access | ExitMethods.cs:25:10:25:11 | M4 |
-| ExitMethods.cs:27:9:27:15 | ...; | ExitMethods.cs:25:10:25:11 | M4 |
-| ExitMethods.cs:31:10:31:11 | enter M5 | ExitMethods.cs:31:10:31:11 | M5 |
-| ExitMethods.cs:31:10:31:11 | exit M5 | ExitMethods.cs:31:10:31:11 | M5 |
-| ExitMethods.cs:31:10:31:11 | exit M5 (abnormal) | ExitMethods.cs:31:10:31:11 | M5 |
-| ExitMethods.cs:32:5:35:5 | {...} | ExitMethods.cs:31:10:31:11 | M5 |
-| ExitMethods.cs:33:9:33:25 | call to method ApplicationExit | ExitMethods.cs:31:10:31:11 | M5 |
-| ExitMethods.cs:33:9:33:25 | this access | ExitMethods.cs:31:10:31:11 | M5 |
-| ExitMethods.cs:33:9:33:26 | ...; | ExitMethods.cs:31:10:31:11 | M5 |
-| ExitMethods.cs:37:10:37:11 | enter M6 | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:37:10:37:11 | exit M6 | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:37:10:37:11 | exit M6 (normal) | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:38:5:51:5 | {...} | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:39:9:50:9 | try {...} ... | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:40:9:42:9 | {...} | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:41:13:41:30 | call to method ErrorAlways | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:41:13:41:31 | ...; | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:41:25:41:29 | false | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:43:9:46:9 | [exception: ArgumentException] catch (...) {...} | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:43:9:46:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:44:9:46:9 | {...} | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:45:13:45:19 | return ...; | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:47:9:50:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:48:9:50:9 | {...} | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:49:13:49:19 | return ...; | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:53:10:53:11 | enter M7 | ExitMethods.cs:53:10:53:11 | M7 |
-| ExitMethods.cs:53:10:53:11 | exit M7 | ExitMethods.cs:53:10:53:11 | M7 |
-| ExitMethods.cs:53:10:53:11 | exit M7 (abnormal) | ExitMethods.cs:53:10:53:11 | M7 |
-| ExitMethods.cs:54:5:57:5 | {...} | ExitMethods.cs:53:10:53:11 | M7 |
-| ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 | ExitMethods.cs:53:10:53:11 | M7 |
-| ExitMethods.cs:55:9:55:23 | ...; | ExitMethods.cs:53:10:53:11 | M7 |
-| ExitMethods.cs:59:10:59:11 | enter M8 | ExitMethods.cs:59:10:59:11 | M8 |
-| ExitMethods.cs:59:10:59:11 | exit M8 | ExitMethods.cs:59:10:59:11 | M8 |
-| ExitMethods.cs:59:10:59:11 | exit M8 (abnormal) | ExitMethods.cs:59:10:59:11 | M8 |
-| ExitMethods.cs:60:5:63:5 | {...} | ExitMethods.cs:59:10:59:11 | M8 |
-| ExitMethods.cs:61:9:61:22 | call to method ErrorAlways3 | ExitMethods.cs:59:10:59:11 | M8 |
-| ExitMethods.cs:61:9:61:23 | ...; | ExitMethods.cs:59:10:59:11 | M8 |
-| ExitMethods.cs:65:17:65:26 | enter ErrorMaybe | ExitMethods.cs:65:17:65:26 | ErrorMaybe |
-| ExitMethods.cs:65:17:65:26 | exit ErrorMaybe | ExitMethods.cs:65:17:65:26 | ErrorMaybe |
-| ExitMethods.cs:65:17:65:26 | exit ErrorMaybe (abnormal) | ExitMethods.cs:65:17:65:26 | ErrorMaybe |
-| ExitMethods.cs:65:17:65:26 | exit ErrorMaybe (normal) | ExitMethods.cs:65:17:65:26 | ErrorMaybe |
-| ExitMethods.cs:66:5:69:5 | {...} | ExitMethods.cs:65:17:65:26 | ErrorMaybe |
-| ExitMethods.cs:67:9:68:34 | if (...) ... | ExitMethods.cs:65:17:65:26 | ErrorMaybe |
-| ExitMethods.cs:67:13:67:13 | access to parameter b | ExitMethods.cs:65:17:65:26 | ErrorMaybe |
-| ExitMethods.cs:68:13:68:34 | throw ...; | ExitMethods.cs:65:17:65:26 | ErrorMaybe |
-| ExitMethods.cs:68:19:68:33 | object creation of type Exception | ExitMethods.cs:65:17:65:26 | ErrorMaybe |
-| ExitMethods.cs:71:17:71:27 | enter ErrorAlways | ExitMethods.cs:71:17:71:27 | ErrorAlways |
-| ExitMethods.cs:71:17:71:27 | exit ErrorAlways | ExitMethods.cs:71:17:71:27 | ErrorAlways |
-| ExitMethods.cs:71:17:71:27 | exit ErrorAlways (abnormal) | ExitMethods.cs:71:17:71:27 | ErrorAlways |
-| ExitMethods.cs:72:5:77:5 | {...} | ExitMethods.cs:71:17:71:27 | ErrorAlways |
-| ExitMethods.cs:73:9:76:45 | if (...) ... | ExitMethods.cs:71:17:71:27 | ErrorAlways |
-| ExitMethods.cs:73:13:73:13 | access to parameter b | ExitMethods.cs:71:17:71:27 | ErrorAlways |
-| ExitMethods.cs:74:13:74:34 | throw ...; | ExitMethods.cs:71:17:71:27 | ErrorAlways |
-| ExitMethods.cs:74:19:74:33 | object creation of type Exception | ExitMethods.cs:71:17:71:27 | ErrorAlways |
-| ExitMethods.cs:76:13:76:45 | throw ...; | ExitMethods.cs:71:17:71:27 | ErrorAlways |
-| ExitMethods.cs:76:19:76:44 | object creation of type ArgumentException | ExitMethods.cs:71:17:71:27 | ErrorAlways |
-| ExitMethods.cs:76:41:76:43 | "b" | ExitMethods.cs:71:17:71:27 | ErrorAlways |
-| ExitMethods.cs:79:17:79:28 | enter ErrorAlways2 | ExitMethods.cs:79:17:79:28 | ErrorAlways2 |
-| ExitMethods.cs:79:17:79:28 | exit ErrorAlways2 | ExitMethods.cs:79:17:79:28 | ErrorAlways2 |
-| ExitMethods.cs:79:17:79:28 | exit ErrorAlways2 (abnormal) | ExitMethods.cs:79:17:79:28 | ErrorAlways2 |
-| ExitMethods.cs:80:5:82:5 | {...} | ExitMethods.cs:79:17:79:28 | ErrorAlways2 |
-| ExitMethods.cs:81:9:81:30 | throw ...; | ExitMethods.cs:79:17:79:28 | ErrorAlways2 |
-| ExitMethods.cs:81:15:81:29 | object creation of type Exception | ExitMethods.cs:79:17:79:28 | ErrorAlways2 |
-| ExitMethods.cs:84:17:84:28 | enter ErrorAlways3 | ExitMethods.cs:84:17:84:28 | ErrorAlways3 |
-| ExitMethods.cs:84:17:84:28 | exit ErrorAlways3 | ExitMethods.cs:84:17:84:28 | ErrorAlways3 |
-| ExitMethods.cs:84:17:84:28 | exit ErrorAlways3 (abnormal) | ExitMethods.cs:84:17:84:28 | ErrorAlways3 |
-| ExitMethods.cs:84:35:84:55 | throw ... | ExitMethods.cs:84:17:84:28 | ErrorAlways3 |
-| ExitMethods.cs:84:41:84:55 | object creation of type Exception | ExitMethods.cs:84:17:84:28 | ErrorAlways3 |
-| ExitMethods.cs:86:10:86:13 | enter Exit | ExitMethods.cs:86:10:86:13 | Exit |
-| ExitMethods.cs:86:10:86:13 | exit Exit | ExitMethods.cs:86:10:86:13 | Exit |
-| ExitMethods.cs:86:10:86:13 | exit Exit (abnormal) | ExitMethods.cs:86:10:86:13 | Exit |
-| ExitMethods.cs:87:5:89:5 | {...} | ExitMethods.cs:86:10:86:13 | Exit |
-| ExitMethods.cs:88:9:88:27 | call to method Exit | ExitMethods.cs:86:10:86:13 | Exit |
-| ExitMethods.cs:88:9:88:28 | ...; | ExitMethods.cs:86:10:86:13 | Exit |
-| ExitMethods.cs:88:26:88:26 | 0 | ExitMethods.cs:86:10:86:13 | Exit |
-| ExitMethods.cs:91:10:91:18 | enter ExitInTry | ExitMethods.cs:91:10:91:18 | ExitInTry |
-| ExitMethods.cs:91:10:91:18 | exit ExitInTry | ExitMethods.cs:91:10:91:18 | ExitInTry |
-| ExitMethods.cs:91:10:91:18 | exit ExitInTry (abnormal) | ExitMethods.cs:91:10:91:18 | ExitInTry |
-| ExitMethods.cs:92:5:102:5 | {...} | ExitMethods.cs:91:10:91:18 | ExitInTry |
-| ExitMethods.cs:93:9:101:9 | try {...} ... | ExitMethods.cs:91:10:91:18 | ExitInTry |
-| ExitMethods.cs:94:9:96:9 | {...} | ExitMethods.cs:91:10:91:18 | ExitInTry |
-| ExitMethods.cs:95:13:95:18 | call to method Exit | ExitMethods.cs:91:10:91:18 | ExitInTry |
-| ExitMethods.cs:95:13:95:18 | this access | ExitMethods.cs:91:10:91:18 | ExitInTry |
-| ExitMethods.cs:95:13:95:19 | ...; | ExitMethods.cs:91:10:91:18 | ExitInTry |
-| ExitMethods.cs:104:10:104:24 | enter ApplicationExit | ExitMethods.cs:104:10:104:24 | ApplicationExit |
-| ExitMethods.cs:104:10:104:24 | exit ApplicationExit | ExitMethods.cs:104:10:104:24 | ApplicationExit |
-| ExitMethods.cs:104:10:104:24 | exit ApplicationExit (abnormal) | ExitMethods.cs:104:10:104:24 | ApplicationExit |
-| ExitMethods.cs:105:5:107:5 | {...} | ExitMethods.cs:104:10:104:24 | ApplicationExit |
-| ExitMethods.cs:106:9:106:47 | call to method Exit | ExitMethods.cs:104:10:104:24 | ApplicationExit |
-| ExitMethods.cs:106:9:106:48 | ...; | ExitMethods.cs:104:10:104:24 | ApplicationExit |
-| ExitMethods.cs:109:13:109:21 | enter ThrowExpr | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:109:13:109:21 | exit ThrowExpr | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:109:13:109:21 | exit ThrowExpr (abnormal) | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:109:13:109:21 | exit ThrowExpr (normal) | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:110:5:112:5 | {...} | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:111:9:111:77 | return ...; | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:111:16:111:20 | access to parameter input | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:111:16:111:25 | ... != ... | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:111:16:111:76 | ... ? ... : ... | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:111:25:111:25 | 0 | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:111:25:111:25 | (...) ... | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:111:29:111:29 | 1 | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:111:29:111:29 | (...) ... | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:111:29:111:37 | ... / ... | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:111:33:111:37 | access to parameter input | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:111:41:111:76 | throw ... | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:111:47:111:76 | object creation of type ArgumentException | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:111:69:111:75 | "input" | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:114:16:114:34 | enter ExtensionMethodCall | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
-| ExitMethods.cs:114:16:114:34 | exit ExtensionMethodCall | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
-| ExitMethods.cs:114:16:114:34 | exit ExtensionMethodCall (normal) | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
-| ExitMethods.cs:115:5:117:5 | {...} | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
-| ExitMethods.cs:116:9:116:39 | return ...; | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
-| ExitMethods.cs:116:16:116:16 | access to parameter s | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
-| ExitMethods.cs:116:16:116:30 | call to method Contains | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
-| ExitMethods.cs:116:16:116:38 | ... ? ... : ... | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
-| ExitMethods.cs:116:27:116:29 | - | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
-| ExitMethods.cs:116:34:116:34 | 0 | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
-| ExitMethods.cs:116:38:116:38 | 1 | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
-| ExitMethods.cs:119:17:119:32 | enter FailingAssertion | ExitMethods.cs:119:17:119:32 | FailingAssertion |
-| ExitMethods.cs:119:17:119:32 | exit FailingAssertion | ExitMethods.cs:119:17:119:32 | FailingAssertion |
-| ExitMethods.cs:119:17:119:32 | exit FailingAssertion (abnormal) | ExitMethods.cs:119:17:119:32 | FailingAssertion |
-| ExitMethods.cs:120:5:123:5 | {...} | ExitMethods.cs:119:17:119:32 | FailingAssertion |
-| ExitMethods.cs:121:9:121:28 | [assertion failure] call to method IsTrue | ExitMethods.cs:119:17:119:32 | FailingAssertion |
-| ExitMethods.cs:121:9:121:29 | ...; | ExitMethods.cs:119:17:119:32 | FailingAssertion |
-| ExitMethods.cs:121:23:121:27 | false | ExitMethods.cs:119:17:119:32 | FailingAssertion |
-| ExitMethods.cs:125:17:125:33 | enter FailingAssertion2 | ExitMethods.cs:125:17:125:33 | FailingAssertion2 |
-| ExitMethods.cs:125:17:125:33 | exit FailingAssertion2 | ExitMethods.cs:125:17:125:33 | FailingAssertion2 |
-| ExitMethods.cs:125:17:125:33 | exit FailingAssertion2 (abnormal) | ExitMethods.cs:125:17:125:33 | FailingAssertion2 |
-| ExitMethods.cs:126:5:129:5 | {...} | ExitMethods.cs:125:17:125:33 | FailingAssertion2 |
-| ExitMethods.cs:127:9:127:26 | call to method FailingAssertion | ExitMethods.cs:125:17:125:33 | FailingAssertion2 |
-| ExitMethods.cs:127:9:127:26 | this access | ExitMethods.cs:125:17:125:33 | FailingAssertion2 |
-| ExitMethods.cs:127:9:127:27 | ...; | ExitMethods.cs:125:17:125:33 | FailingAssertion2 |
-| ExitMethods.cs:131:10:131:20 | enter AssertFalse | ExitMethods.cs:131:10:131:20 | AssertFalse |
-| ExitMethods.cs:131:10:131:20 | exit AssertFalse | ExitMethods.cs:131:10:131:20 | AssertFalse |
-| ExitMethods.cs:131:10:131:20 | exit AssertFalse (abnormal) | ExitMethods.cs:131:10:131:20 | AssertFalse |
-| ExitMethods.cs:131:10:131:20 | exit AssertFalse (normal) | ExitMethods.cs:131:10:131:20 | AssertFalse |
-| ExitMethods.cs:131:33:131:49 | [assertion failure] call to method IsFalse | ExitMethods.cs:131:10:131:20 | AssertFalse |
-| ExitMethods.cs:131:33:131:49 | [assertion success] call to method IsFalse | ExitMethods.cs:131:10:131:20 | AssertFalse |
-| ExitMethods.cs:131:48:131:48 | access to parameter b | ExitMethods.cs:131:10:131:20 | AssertFalse |
-| ExitMethods.cs:133:17:133:33 | enter FailingAssertion3 | ExitMethods.cs:133:17:133:33 | FailingAssertion3 |
-| ExitMethods.cs:133:17:133:33 | exit FailingAssertion3 | ExitMethods.cs:133:17:133:33 | FailingAssertion3 |
-| ExitMethods.cs:133:17:133:33 | exit FailingAssertion3 (abnormal) | ExitMethods.cs:133:17:133:33 | FailingAssertion3 |
-| ExitMethods.cs:134:5:137:5 | {...} | ExitMethods.cs:133:17:133:33 | FailingAssertion3 |
-| ExitMethods.cs:135:9:135:25 | [assertion failure] call to method AssertFalse | ExitMethods.cs:133:17:133:33 | FailingAssertion3 |
-| ExitMethods.cs:135:9:135:25 | this access | ExitMethods.cs:133:17:133:33 | FailingAssertion3 |
-| ExitMethods.cs:135:9:135:26 | ...; | ExitMethods.cs:133:17:133:33 | FailingAssertion3 |
-| ExitMethods.cs:135:21:135:24 | true | ExitMethods.cs:133:17:133:33 | FailingAssertion3 |
+| ExitMethods.cs:8:10:8:11 | enter M1 | ExitMethods.cs:8:10:8:11 | M1 |
+| ExitMethods.cs:8:10:8:11 | exit M1 | ExitMethods.cs:8:10:8:11 | M1 |
+| ExitMethods.cs:8:10:8:11 | exit M1 (normal) | ExitMethods.cs:8:10:8:11 | M1 |
+| ExitMethods.cs:9:5:12:5 | {...} | ExitMethods.cs:8:10:8:11 | M1 |
+| ExitMethods.cs:10:9:10:24 | call to method ErrorMaybe | ExitMethods.cs:8:10:8:11 | M1 |
+| ExitMethods.cs:10:9:10:25 | ...; | ExitMethods.cs:8:10:8:11 | M1 |
+| ExitMethods.cs:10:20:10:23 | true | ExitMethods.cs:8:10:8:11 | M1 |
+| ExitMethods.cs:11:9:11:15 | return ...; | ExitMethods.cs:8:10:8:11 | M1 |
+| ExitMethods.cs:14:10:14:11 | enter M2 | ExitMethods.cs:14:10:14:11 | M2 |
+| ExitMethods.cs:14:10:14:11 | exit M2 | ExitMethods.cs:14:10:14:11 | M2 |
+| ExitMethods.cs:14:10:14:11 | exit M2 (normal) | ExitMethods.cs:14:10:14:11 | M2 |
+| ExitMethods.cs:15:5:18:5 | {...} | ExitMethods.cs:14:10:14:11 | M2 |
+| ExitMethods.cs:16:9:16:25 | call to method ErrorMaybe | ExitMethods.cs:14:10:14:11 | M2 |
+| ExitMethods.cs:16:9:16:26 | ...; | ExitMethods.cs:14:10:14:11 | M2 |
+| ExitMethods.cs:16:20:16:24 | false | ExitMethods.cs:14:10:14:11 | M2 |
+| ExitMethods.cs:17:9:17:15 | return ...; | ExitMethods.cs:14:10:14:11 | M2 |
+| ExitMethods.cs:20:10:20:11 | enter M3 | ExitMethods.cs:20:10:20:11 | M3 |
+| ExitMethods.cs:20:10:20:11 | exit M3 | ExitMethods.cs:20:10:20:11 | M3 |
+| ExitMethods.cs:20:10:20:11 | exit M3 (abnormal) | ExitMethods.cs:20:10:20:11 | M3 |
+| ExitMethods.cs:21:5:24:5 | {...} | ExitMethods.cs:20:10:20:11 | M3 |
+| ExitMethods.cs:22:9:22:25 | call to method ErrorAlways | ExitMethods.cs:20:10:20:11 | M3 |
+| ExitMethods.cs:22:9:22:26 | ...; | ExitMethods.cs:20:10:20:11 | M3 |
+| ExitMethods.cs:22:21:22:24 | true | ExitMethods.cs:20:10:20:11 | M3 |
+| ExitMethods.cs:26:10:26:11 | enter M4 | ExitMethods.cs:26:10:26:11 | M4 |
+| ExitMethods.cs:26:10:26:11 | exit M4 | ExitMethods.cs:26:10:26:11 | M4 |
+| ExitMethods.cs:26:10:26:11 | exit M4 (abnormal) | ExitMethods.cs:26:10:26:11 | M4 |
+| ExitMethods.cs:27:5:30:5 | {...} | ExitMethods.cs:26:10:26:11 | M4 |
+| ExitMethods.cs:28:9:28:14 | call to method Exit | ExitMethods.cs:26:10:26:11 | M4 |
+| ExitMethods.cs:28:9:28:14 | this access | ExitMethods.cs:26:10:26:11 | M4 |
+| ExitMethods.cs:28:9:28:15 | ...; | ExitMethods.cs:26:10:26:11 | M4 |
+| ExitMethods.cs:32:10:32:11 | enter M5 | ExitMethods.cs:32:10:32:11 | M5 |
+| ExitMethods.cs:32:10:32:11 | exit M5 | ExitMethods.cs:32:10:32:11 | M5 |
+| ExitMethods.cs:32:10:32:11 | exit M5 (abnormal) | ExitMethods.cs:32:10:32:11 | M5 |
+| ExitMethods.cs:33:5:36:5 | {...} | ExitMethods.cs:32:10:32:11 | M5 |
+| ExitMethods.cs:34:9:34:25 | call to method ApplicationExit | ExitMethods.cs:32:10:32:11 | M5 |
+| ExitMethods.cs:34:9:34:25 | this access | ExitMethods.cs:32:10:32:11 | M5 |
+| ExitMethods.cs:34:9:34:26 | ...; | ExitMethods.cs:32:10:32:11 | M5 |
+| ExitMethods.cs:38:10:38:11 | enter M6 | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:38:10:38:11 | exit M6 | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:38:10:38:11 | exit M6 (normal) | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:39:5:52:5 | {...} | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:40:9:51:9 | try {...} ... | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:41:9:43:9 | {...} | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:42:13:42:30 | call to method ErrorAlways | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:42:13:42:31 | ...; | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:42:25:42:29 | false | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:44:9:47:9 | [exception: ArgumentException] catch (...) {...} | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:44:9:47:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:45:9:47:9 | {...} | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:46:13:46:19 | return ...; | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:48:9:51:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:49:9:51:9 | {...} | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:50:13:50:19 | return ...; | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:54:10:54:11 | enter M7 | ExitMethods.cs:54:10:54:11 | M7 |
+| ExitMethods.cs:54:10:54:11 | exit M7 | ExitMethods.cs:54:10:54:11 | M7 |
+| ExitMethods.cs:54:10:54:11 | exit M7 (abnormal) | ExitMethods.cs:54:10:54:11 | M7 |
+| ExitMethods.cs:55:5:58:5 | {...} | ExitMethods.cs:54:10:54:11 | M7 |
+| ExitMethods.cs:56:9:56:22 | call to method ErrorAlways2 | ExitMethods.cs:54:10:54:11 | M7 |
+| ExitMethods.cs:56:9:56:23 | ...; | ExitMethods.cs:54:10:54:11 | M7 |
+| ExitMethods.cs:60:10:60:11 | enter M8 | ExitMethods.cs:60:10:60:11 | M8 |
+| ExitMethods.cs:60:10:60:11 | exit M8 | ExitMethods.cs:60:10:60:11 | M8 |
+| ExitMethods.cs:60:10:60:11 | exit M8 (abnormal) | ExitMethods.cs:60:10:60:11 | M8 |
+| ExitMethods.cs:61:5:64:5 | {...} | ExitMethods.cs:60:10:60:11 | M8 |
+| ExitMethods.cs:62:9:62:22 | call to method ErrorAlways3 | ExitMethods.cs:60:10:60:11 | M8 |
+| ExitMethods.cs:62:9:62:23 | ...; | ExitMethods.cs:60:10:60:11 | M8 |
+| ExitMethods.cs:66:17:66:26 | enter ErrorMaybe | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
+| ExitMethods.cs:66:17:66:26 | exit ErrorMaybe | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
+| ExitMethods.cs:66:17:66:26 | exit ErrorMaybe (abnormal) | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
+| ExitMethods.cs:66:17:66:26 | exit ErrorMaybe (normal) | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
+| ExitMethods.cs:67:5:70:5 | {...} | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
+| ExitMethods.cs:68:9:69:34 | if (...) ... | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
+| ExitMethods.cs:68:13:68:13 | access to parameter b | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
+| ExitMethods.cs:69:13:69:34 | throw ...; | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
+| ExitMethods.cs:69:19:69:33 | object creation of type Exception | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
+| ExitMethods.cs:72:17:72:27 | enter ErrorAlways | ExitMethods.cs:72:17:72:27 | ErrorAlways |
+| ExitMethods.cs:72:17:72:27 | exit ErrorAlways | ExitMethods.cs:72:17:72:27 | ErrorAlways |
+| ExitMethods.cs:72:17:72:27 | exit ErrorAlways (abnormal) | ExitMethods.cs:72:17:72:27 | ErrorAlways |
+| ExitMethods.cs:73:5:78:5 | {...} | ExitMethods.cs:72:17:72:27 | ErrorAlways |
+| ExitMethods.cs:74:9:77:45 | if (...) ... | ExitMethods.cs:72:17:72:27 | ErrorAlways |
+| ExitMethods.cs:74:13:74:13 | access to parameter b | ExitMethods.cs:72:17:72:27 | ErrorAlways |
+| ExitMethods.cs:75:13:75:34 | throw ...; | ExitMethods.cs:72:17:72:27 | ErrorAlways |
+| ExitMethods.cs:75:19:75:33 | object creation of type Exception | ExitMethods.cs:72:17:72:27 | ErrorAlways |
+| ExitMethods.cs:77:13:77:45 | throw ...; | ExitMethods.cs:72:17:72:27 | ErrorAlways |
+| ExitMethods.cs:77:19:77:44 | object creation of type ArgumentException | ExitMethods.cs:72:17:72:27 | ErrorAlways |
+| ExitMethods.cs:77:41:77:43 | "b" | ExitMethods.cs:72:17:72:27 | ErrorAlways |
+| ExitMethods.cs:80:17:80:28 | enter ErrorAlways2 | ExitMethods.cs:80:17:80:28 | ErrorAlways2 |
+| ExitMethods.cs:80:17:80:28 | exit ErrorAlways2 | ExitMethods.cs:80:17:80:28 | ErrorAlways2 |
+| ExitMethods.cs:80:17:80:28 | exit ErrorAlways2 (abnormal) | ExitMethods.cs:80:17:80:28 | ErrorAlways2 |
+| ExitMethods.cs:81:5:83:5 | {...} | ExitMethods.cs:80:17:80:28 | ErrorAlways2 |
+| ExitMethods.cs:82:9:82:30 | throw ...; | ExitMethods.cs:80:17:80:28 | ErrorAlways2 |
+| ExitMethods.cs:82:15:82:29 | object creation of type Exception | ExitMethods.cs:80:17:80:28 | ErrorAlways2 |
+| ExitMethods.cs:85:17:85:28 | enter ErrorAlways3 | ExitMethods.cs:85:17:85:28 | ErrorAlways3 |
+| ExitMethods.cs:85:17:85:28 | exit ErrorAlways3 | ExitMethods.cs:85:17:85:28 | ErrorAlways3 |
+| ExitMethods.cs:85:17:85:28 | exit ErrorAlways3 (abnormal) | ExitMethods.cs:85:17:85:28 | ErrorAlways3 |
+| ExitMethods.cs:85:35:85:55 | throw ... | ExitMethods.cs:85:17:85:28 | ErrorAlways3 |
+| ExitMethods.cs:85:41:85:55 | object creation of type Exception | ExitMethods.cs:85:17:85:28 | ErrorAlways3 |
+| ExitMethods.cs:87:10:87:13 | enter Exit | ExitMethods.cs:87:10:87:13 | Exit |
+| ExitMethods.cs:87:10:87:13 | exit Exit | ExitMethods.cs:87:10:87:13 | Exit |
+| ExitMethods.cs:87:10:87:13 | exit Exit (abnormal) | ExitMethods.cs:87:10:87:13 | Exit |
+| ExitMethods.cs:88:5:90:5 | {...} | ExitMethods.cs:87:10:87:13 | Exit |
+| ExitMethods.cs:89:9:89:27 | call to method Exit | ExitMethods.cs:87:10:87:13 | Exit |
+| ExitMethods.cs:89:9:89:28 | ...; | ExitMethods.cs:87:10:87:13 | Exit |
+| ExitMethods.cs:89:26:89:26 | 0 | ExitMethods.cs:87:10:87:13 | Exit |
+| ExitMethods.cs:92:10:92:18 | enter ExitInTry | ExitMethods.cs:92:10:92:18 | ExitInTry |
+| ExitMethods.cs:92:10:92:18 | exit ExitInTry | ExitMethods.cs:92:10:92:18 | ExitInTry |
+| ExitMethods.cs:92:10:92:18 | exit ExitInTry (abnormal) | ExitMethods.cs:92:10:92:18 | ExitInTry |
+| ExitMethods.cs:93:5:103:5 | {...} | ExitMethods.cs:92:10:92:18 | ExitInTry |
+| ExitMethods.cs:94:9:102:9 | try {...} ... | ExitMethods.cs:92:10:92:18 | ExitInTry |
+| ExitMethods.cs:95:9:97:9 | {...} | ExitMethods.cs:92:10:92:18 | ExitInTry |
+| ExitMethods.cs:96:13:96:18 | call to method Exit | ExitMethods.cs:92:10:92:18 | ExitInTry |
+| ExitMethods.cs:96:13:96:18 | this access | ExitMethods.cs:92:10:92:18 | ExitInTry |
+| ExitMethods.cs:96:13:96:19 | ...; | ExitMethods.cs:92:10:92:18 | ExitInTry |
+| ExitMethods.cs:105:10:105:24 | enter ApplicationExit | ExitMethods.cs:105:10:105:24 | ApplicationExit |
+| ExitMethods.cs:105:10:105:24 | exit ApplicationExit | ExitMethods.cs:105:10:105:24 | ApplicationExit |
+| ExitMethods.cs:105:10:105:24 | exit ApplicationExit (abnormal) | ExitMethods.cs:105:10:105:24 | ApplicationExit |
+| ExitMethods.cs:106:5:108:5 | {...} | ExitMethods.cs:105:10:105:24 | ApplicationExit |
+| ExitMethods.cs:107:9:107:47 | call to method Exit | ExitMethods.cs:105:10:105:24 | ApplicationExit |
+| ExitMethods.cs:107:9:107:48 | ...; | ExitMethods.cs:105:10:105:24 | ApplicationExit |
+| ExitMethods.cs:110:13:110:21 | enter ThrowExpr | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:110:13:110:21 | exit ThrowExpr | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:110:13:110:21 | exit ThrowExpr (abnormal) | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:110:13:110:21 | exit ThrowExpr (normal) | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:111:5:113:5 | {...} | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:112:9:112:77 | return ...; | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:112:16:112:20 | access to parameter input | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:112:16:112:25 | ... != ... | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:112:16:112:76 | ... ? ... : ... | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:112:25:112:25 | 0 | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:112:25:112:25 | (...) ... | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:112:29:112:29 | 1 | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:112:29:112:29 | (...) ... | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:112:29:112:37 | ... / ... | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:112:33:112:37 | access to parameter input | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:112:41:112:76 | throw ... | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:112:47:112:76 | object creation of type ArgumentException | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:112:69:112:75 | "input" | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:115:16:115:34 | enter ExtensionMethodCall | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
+| ExitMethods.cs:115:16:115:34 | exit ExtensionMethodCall | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
+| ExitMethods.cs:115:16:115:34 | exit ExtensionMethodCall (normal) | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
+| ExitMethods.cs:116:5:118:5 | {...} | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
+| ExitMethods.cs:117:9:117:39 | return ...; | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
+| ExitMethods.cs:117:16:117:16 | access to parameter s | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
+| ExitMethods.cs:117:16:117:30 | call to method Contains | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
+| ExitMethods.cs:117:16:117:38 | ... ? ... : ... | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
+| ExitMethods.cs:117:27:117:29 | - | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
+| ExitMethods.cs:117:34:117:34 | 0 | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
+| ExitMethods.cs:117:38:117:38 | 1 | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
+| ExitMethods.cs:120:17:120:32 | enter FailingAssertion | ExitMethods.cs:120:17:120:32 | FailingAssertion |
+| ExitMethods.cs:120:17:120:32 | exit FailingAssertion | ExitMethods.cs:120:17:120:32 | FailingAssertion |
+| ExitMethods.cs:120:17:120:32 | exit FailingAssertion (abnormal) | ExitMethods.cs:120:17:120:32 | FailingAssertion |
+| ExitMethods.cs:121:5:124:5 | {...} | ExitMethods.cs:120:17:120:32 | FailingAssertion |
+| ExitMethods.cs:122:9:122:28 | [assertion failure] call to method IsTrue | ExitMethods.cs:120:17:120:32 | FailingAssertion |
+| ExitMethods.cs:122:9:122:29 | ...; | ExitMethods.cs:120:17:120:32 | FailingAssertion |
+| ExitMethods.cs:122:23:122:27 | false | ExitMethods.cs:120:17:120:32 | FailingAssertion |
+| ExitMethods.cs:126:17:126:33 | enter FailingAssertion2 | ExitMethods.cs:126:17:126:33 | FailingAssertion2 |
+| ExitMethods.cs:126:17:126:33 | exit FailingAssertion2 | ExitMethods.cs:126:17:126:33 | FailingAssertion2 |
+| ExitMethods.cs:126:17:126:33 | exit FailingAssertion2 (abnormal) | ExitMethods.cs:126:17:126:33 | FailingAssertion2 |
+| ExitMethods.cs:127:5:130:5 | {...} | ExitMethods.cs:126:17:126:33 | FailingAssertion2 |
+| ExitMethods.cs:128:9:128:26 | call to method FailingAssertion | ExitMethods.cs:126:17:126:33 | FailingAssertion2 |
+| ExitMethods.cs:128:9:128:26 | this access | ExitMethods.cs:126:17:126:33 | FailingAssertion2 |
+| ExitMethods.cs:128:9:128:27 | ...; | ExitMethods.cs:126:17:126:33 | FailingAssertion2 |
+| ExitMethods.cs:132:10:132:20 | enter AssertFalse | ExitMethods.cs:132:10:132:20 | AssertFalse |
+| ExitMethods.cs:132:10:132:20 | exit AssertFalse | ExitMethods.cs:132:10:132:20 | AssertFalse |
+| ExitMethods.cs:132:10:132:20 | exit AssertFalse (abnormal) | ExitMethods.cs:132:10:132:20 | AssertFalse |
+| ExitMethods.cs:132:10:132:20 | exit AssertFalse (normal) | ExitMethods.cs:132:10:132:20 | AssertFalse |
+| ExitMethods.cs:132:33:132:49 | [assertion failure] call to method IsFalse | ExitMethods.cs:132:10:132:20 | AssertFalse |
+| ExitMethods.cs:132:33:132:49 | [assertion success] call to method IsFalse | ExitMethods.cs:132:10:132:20 | AssertFalse |
+| ExitMethods.cs:132:48:132:48 | access to parameter b | ExitMethods.cs:132:10:132:20 | AssertFalse |
+| ExitMethods.cs:134:17:134:33 | enter FailingAssertion3 | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
+| ExitMethods.cs:134:17:134:33 | exit FailingAssertion3 | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
+| ExitMethods.cs:134:17:134:33 | exit FailingAssertion3 (abnormal) | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
+| ExitMethods.cs:135:5:138:5 | {...} | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
+| ExitMethods.cs:136:9:136:25 | [assertion failure] call to method AssertFalse | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
+| ExitMethods.cs:136:9:136:25 | this access | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
+| ExitMethods.cs:136:9:136:26 | ...; | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
+| ExitMethods.cs:136:21:136:24 | true | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
+| ExitMethods.cs:140:17:140:42 | enter ExceptionDispatchInfoThrow | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
+| ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
+| ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow (abnormal) | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
+| ExitMethods.cs:141:5:147:5 | {...} | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
+| ExitMethods.cs:142:9:145:53 | if (...) ... | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
+| ExitMethods.cs:142:13:142:13 | access to parameter b | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
+| ExitMethods.cs:143:13:143:42 | call to method Throw | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
+| ExitMethods.cs:143:13:143:43 | ...; | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
+| ExitMethods.cs:143:41:143:41 | access to parameter e | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
+| ExitMethods.cs:145:13:145:44 | call to method Capture | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
+| ExitMethods.cs:145:13:145:52 | call to method Throw | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
+| ExitMethods.cs:145:13:145:53 | ...; | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
+| ExitMethods.cs:145:43:145:43 | access to parameter e | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
 | Extensions.cs:5:23:5:29 | enter ToInt32 | Extensions.cs:5:23:5:29 | ToInt32 |
 | Extensions.cs:5:23:5:29 | exit ToInt32 | Extensions.cs:5:23:5:29 | ToInt32 |
 | Extensions.cs:5:23:5:29 | exit ToInt32 (normal) | Extensions.cs:5:23:5:29 | ToInt32 |
@@ -3484,80 +3497,215 @@ nodeEnclosing
 | NullCoalescing.cs:17:13:17:19 | (...) ... | NullCoalescing.cs:13:10:13:11 | M6 |
 | NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:13:10:13:11 | M6 |
 | NullCoalescing.cs:17:19:17:19 | access to parameter i | NullCoalescing.cs:13:10:13:11 | M6 |
-| Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:5:10:5:13 | exit Test | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:5:10:5:13 | exit Test (normal) | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:6:5:43:5 | {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:7:9:7:24 | ... ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:7:16:7:23 | Object o = ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:7:20:7:23 | null | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:8:9:18:9 | if (...) ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:8:13:8:13 | access to local variable o | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:8:13:8:23 | ... is ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:8:18:8:23 | Int32 i1 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:9:9:11:9 | {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:10:13:10:42 | call to method WriteLine | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:10:13:10:43 | ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:10:31:10:41 | $"..." | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:10:33:10:36 | "int " | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:10:38:10:39 | access to local variable i1 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:12:18:12:18 | access to local variable o | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:12:18:12:31 | ... is ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:13:9:15:9 | {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:14:13:14:45 | call to method WriteLine | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:14:13:14:46 | ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:14:31:14:44 | $"..." | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:14:33:14:39 | "string " | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:14:41:14:42 | access to local variable s1 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:16:14:18:9 | if (...) ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:16:18:16:18 | access to local variable o | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:16:18:16:28 | ... is ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:16:23:16:28 | Object v1 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:17:9:18:9 | {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:20:17:20:17 | access to local variable o | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:22:13:22:23 | case ...: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:22:18:22:22 | "xyz" | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:23:17:23:22 | break; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:24:35:24:35 | 0 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:25:17:25:51 | call to method WriteLine | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:25:17:25:52 | ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:25:35:25:50 | $"..." | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:25:37:25:45 | "positive " | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:25:47:25:48 | access to local variable i2 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:26:17:26:22 | break; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:28:17:28:46 | call to method WriteLine | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:28:17:28:47 | ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:28:35:28:45 | $"..." | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:28:37:28:40 | "int " | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:28:42:28:43 | access to local variable i3 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:29:17:29:22 | break; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:31:17:31:49 | call to method WriteLine | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:31:17:31:50 | ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:31:35:31:48 | $"..." | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:31:37:31:43 | "string " | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:31:45:31:46 | access to local variable s2 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:32:17:32:22 | break; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:34:17:34:22 | break; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:35:13:35:20 | default: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:36:17:36:51 | call to method WriteLine | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:36:17:36:52 | ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:36:35:36:50 | "Something else" | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:37:17:37:22 | break; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:40:17:40:17 | access to local variable o | Patterns.cs:5:10:5:13 | Test |
+| Patterns.cs:5:10:5:11 | enter M1 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:5:10:5:11 | exit M1 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:5:10:5:11 | exit M1 (normal) | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:6:5:43:5 | {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:7:9:7:24 | ... ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:7:16:7:23 | Object o = ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:7:20:7:23 | null | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:8:9:18:9 | if (...) ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:8:13:8:13 | access to local variable o | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:8:13:8:23 | [false] ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:8:13:8:23 | [true] ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:8:18:8:23 | Int32 i1 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:9:9:11:9 | {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:10:13:10:42 | call to method WriteLine | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:10:13:10:43 | ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:10:31:10:41 | $"..." | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:10:33:10:36 | "int " | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:10:38:10:39 | access to local variable i1 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:12:18:12:18 | access to local variable o | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:12:18:12:31 | [false] ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:12:18:12:31 | [true] ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:13:9:15:9 | {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:14:13:14:45 | call to method WriteLine | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:14:13:14:46 | ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:14:31:14:44 | $"..." | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:14:33:14:39 | "string " | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:14:41:14:42 | access to local variable s1 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:16:14:18:9 | if (...) ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:16:18:16:18 | access to local variable o | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:16:18:16:28 | [false] ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:16:18:16:28 | [true] ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:16:23:16:28 | Object v1 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:17:9:18:9 | {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:20:17:20:17 | access to local variable o | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:22:13:22:23 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:22:18:22:22 | "xyz" | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:23:17:23:22 | break; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:24:35:24:35 | 0 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:25:17:25:51 | call to method WriteLine | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:25:17:25:52 | ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:25:35:25:50 | $"..." | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:25:37:25:45 | "positive " | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:25:47:25:48 | access to local variable i2 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:26:17:26:22 | break; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:28:17:28:46 | call to method WriteLine | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:28:17:28:47 | ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:28:35:28:45 | $"..." | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:28:37:28:40 | "int " | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:28:42:28:43 | access to local variable i3 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:29:17:29:22 | break; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:31:17:31:49 | call to method WriteLine | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:31:17:31:50 | ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:31:35:31:48 | $"..." | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:31:37:31:43 | "string " | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:31:45:31:46 | access to local variable s2 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:32:17:32:22 | break; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:34:17:34:22 | break; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:35:13:35:20 | default: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:36:17:36:51 | call to method WriteLine | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:36:17:36:52 | ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:36:35:36:50 | "Something else" | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:37:17:37:22 | break; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:40:17:40:17 | access to local variable o | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:47:24:47:25 | enter M2 | Patterns.cs:47:24:47:25 | M2 |
+| Patterns.cs:47:24:47:25 | exit M2 | Patterns.cs:47:24:47:25 | M2 |
+| Patterns.cs:47:24:47:25 | exit M2 (normal) | Patterns.cs:47:24:47:25 | M2 |
+| Patterns.cs:48:9:48:9 | access to parameter c | Patterns.cs:47:24:47:25 | M2 |
+| Patterns.cs:48:9:48:20 | ... is ... | Patterns.cs:47:24:47:25 | M2 |
+| Patterns.cs:48:14:48:20 | not ... | Patterns.cs:47:24:47:25 | M2 |
+| Patterns.cs:48:18:48:20 | a | Patterns.cs:47:24:47:25 | M2 |
+| Patterns.cs:50:24:50:25 | enter M3 | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:50:24:50:25 | exit M3 | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:50:24:50:25 | exit M3 (normal) | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:9:51:9 | access to parameter c | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:9:51:21 | [false] ... is ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:9:51:21 | [true] ... is ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:9:51:39 | ... ? ... : ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:14:51:21 | [match] not ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:14:51:21 | [no-match] not ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:18:51:21 | null | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:25:51:25 | access to parameter c | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:25:51:30 | ... is ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:30:51:30 | 1 | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:34:51:34 | access to parameter c | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:34:51:39 | ... is ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:39:51:39 | 2 | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:53:24:53:25 | enter M4 | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:53:24:53:25 | exit M4 | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:53:24:53:25 | exit M4 (normal) | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:54:9:54:9 | access to parameter c | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:54:9:54:37 | ... is ... | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:54:14:54:37 | not ... | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:54:18:54:37 | { ... } | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:54:27:54:35 | [match] { ... } | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:54:27:54:35 | [no-match] { ... } | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:54:33:54:33 | 1 | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:56:26:56:27 | enter M5 | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:56:26:56:27 | exit M5 | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:56:26:56:27 | exit M5 (normal) | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:57:5:63:5 | {...} | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:58:9:62:10 | return ...; | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:58:16:58:16 | access to parameter i | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:58:16:62:9 | ... switch { ... } | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:13:60:17 | [match] not ... | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:13:60:17 | [no-match] not ... | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:13:60:28 | ... => ... | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:17:60:17 | 1 | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:22:60:28 | "not 1" | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:61:13:61:13 | _ | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:61:13:61:24 | ... => ... | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:61:18:61:24 | "other" | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:65:26:65:27 | enter M6 | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:65:26:65:27 | exit M6 | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:65:26:65:27 | exit M6 (normal) | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:66:5:72:5 | {...} | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:67:9:71:10 | return ...; | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:67:16:67:16 | 2 | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:67:16:71:9 | ... switch { ... } | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:69:13:69:17 | [no-match] not ... | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:69:17:69:17 | 2 | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:70:13:70:13 | 2 | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:70:13:70:27 | ... => ... | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:70:18:70:27 | "possible" | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:74:26:74:27 | exit M7 | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:74:26:74:27 | exit M7 (normal) | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:75:5:83:5 | {...} | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:76:9:82:10 | return ...; | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:76:16:76:16 | access to parameter i | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:78:13:78:15 | > ... | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:78:13:78:24 | ... => ... | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:78:15:78:15 | 1 | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:78:20:78:24 | "> 1" | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:79:13:79:15 | < ... | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:79:13:79:24 | ... => ... | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:79:15:79:15 | 0 | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:79:20:79:24 | "< 0" | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:80:13:80:13 | 1 | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:80:13:80:20 | ... => ... | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:80:18:80:20 | "1" | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:81:13:81:13 | _ | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:81:13:81:20 | ... => ... | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:81:18:81:20 | "0" | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:85:26:85:27 | enter M8 | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:26:85:27 | exit M8 | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:26:85:27 | exit M8 (normal) | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:39:85:39 | access to parameter i | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:39:85:53 | [false] ... is ... | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:39:85:53 | [true] ... is ... | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:39:85:69 | ... ? ... : ... | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:44:85:44 | 1 | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:44:85:53 | [match] ... or ... | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:44:85:53 | [no-match] ... or ... | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:49:85:53 | [match] not ... | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:49:85:53 | [no-match] not ... | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:53:85:53 | 2 | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:57:85:63 | "not 2" | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:67:85:69 | "2" | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:87:26:87:27 | enter M9 | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:26:87:27 | exit M9 | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:26:87:27 | exit M9 (normal) | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:39:87:39 | access to parameter i | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:39:87:54 | [false] ... is ... | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:39:87:54 | [true] ... is ... | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:39:87:70 | ... ? ... : ... | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:44:87:44 | 1 | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:44:87:54 | [match] ... and ... | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:44:87:54 | [no-match] ... and ... | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:50:87:54 | [match] not ... | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:50:87:54 | [no-match] not ... | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:54:87:54 | 2 | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:58:87:60 | "1" | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:64:87:70 | "not 1" | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:93:17:93:19 | enter M10 | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:93:17:93:19 | exit M10 | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:93:17:93:19 | exit M10 (normal) | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:94:5:99:5 | {...} | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:9:98:9 | if (...) ... | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:13:95:16 | this access | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:13:95:40 | [false] ... is ... | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:13:95:40 | [true] ... is ... | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:21:95:40 | [match] { ... } | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:21:95:40 | [match] { ... } | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:21:95:40 | [no-match] { ... } | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:21:95:40 | [no-match] { ... } | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:29:95:31 | access to constant A | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:29:95:38 | [match] ... or ... | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:29:95:38 | [no-match] ... or ... | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:36:95:38 | access to constant B | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:96:9:98:9 | {...} | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:97:13:97:38 | call to method WriteLine | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:97:13:97:39 | ...; | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:97:31:97:37 | "not C" | Patterns.cs:93:17:93:19 | M10 |
 | PostDominance.cs:5:10:5:11 | enter M1 | PostDominance.cs:5:10:5:11 | M1 |
 | PostDominance.cs:5:10:5:11 | exit M1 | PostDominance.cs:5:10:5:11 | M1 |
 | PostDominance.cs:5:10:5:11 | exit M1 (normal) | PostDominance.cs:5:10:5:11 | M1 |
@@ -3571,7 +3719,8 @@ nodeEnclosing
 | PostDominance.cs:11:5:15:5 | {...} | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:12:9:13:19 | if (...) ... | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:12:13:12:13 | access to parameter s | PostDominance.cs:10:10:10:11 | M2 |
-| PostDominance.cs:12:13:12:21 | ... is ... | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:12:13:12:21 | [false] ... is ... | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:12:13:12:21 | [true] ... is ... | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:12:18:12:21 | null | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:13:13:13:19 | return ...; | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:14:9:14:28 | call to method WriteLine | PostDominance.cs:10:10:10:11 | M2 |
@@ -3584,7 +3733,8 @@ nodeEnclosing
 | PostDominance.cs:18:5:22:5 | {...} | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:19:9:20:55 | if (...) ... | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:19:13:19:13 | access to parameter s | PostDominance.cs:17:10:17:11 | M3 |
-| PostDominance.cs:19:13:19:21 | ... is ... | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:19:13:19:21 | [false] ... is ... | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:19:13:19:21 | [true] ... is ... | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:19:18:19:21 | null | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:20:13:20:55 | throw ...; | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:20:19:20:54 | object creation of type ArgumentNullException | PostDominance.cs:17:10:17:11 | M3 |
@@ -3947,7 +4097,8 @@ nodeEnclosing
 | TypeAccesses.cs:6:13:6:23 | ... as ... | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:7:9:7:25 | if (...) ... | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:7:13:7:13 | access to parameter o | TypeAccesses.cs:3:10:3:10 | M |
-| TypeAccesses.cs:7:13:7:22 | ... is ... | TypeAccesses.cs:3:10:3:10 | M |
+| TypeAccesses.cs:7:13:7:22 | [false] ... is ... | TypeAccesses.cs:3:10:3:10 | M |
+| TypeAccesses.cs:7:13:7:22 | [true] ... is ... | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:7:18:7:22 | Int32 j | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:3:10:3:10 | M |
@@ -5069,50 +5220,54 @@ blockEnclosing
 | Conditions.cs:145:27:145:29 | [b (line 143): false] "b" | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:147:13:147:49 | ...; | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:149:13:149:49 | ...; | Conditions.cs:143:10:143:12 | M11 |
-| ExitMethods.cs:7:10:7:11 | enter M1 | ExitMethods.cs:7:10:7:11 | M1 |
-| ExitMethods.cs:13:10:13:11 | enter M2 | ExitMethods.cs:13:10:13:11 | M2 |
-| ExitMethods.cs:19:10:19:11 | enter M3 | ExitMethods.cs:19:10:19:11 | M3 |
-| ExitMethods.cs:25:10:25:11 | enter M4 | ExitMethods.cs:25:10:25:11 | M4 |
-| ExitMethods.cs:31:10:31:11 | enter M5 | ExitMethods.cs:31:10:31:11 | M5 |
-| ExitMethods.cs:37:10:37:11 | enter M6 | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:37:10:37:11 | exit M6 (normal) | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:43:9:46:9 | [exception: ArgumentException] catch (...) {...} | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:43:9:46:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:44:9:46:9 | {...} | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:47:9:50:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:48:9:50:9 | {...} | ExitMethods.cs:37:10:37:11 | M6 |
-| ExitMethods.cs:53:10:53:11 | enter M7 | ExitMethods.cs:53:10:53:11 | M7 |
-| ExitMethods.cs:59:10:59:11 | enter M8 | ExitMethods.cs:59:10:59:11 | M8 |
-| ExitMethods.cs:65:17:65:26 | enter ErrorMaybe | ExitMethods.cs:65:17:65:26 | ErrorMaybe |
-| ExitMethods.cs:65:17:65:26 | exit ErrorMaybe | ExitMethods.cs:65:17:65:26 | ErrorMaybe |
-| ExitMethods.cs:65:17:65:26 | exit ErrorMaybe (normal) | ExitMethods.cs:65:17:65:26 | ErrorMaybe |
-| ExitMethods.cs:68:19:68:33 | object creation of type Exception | ExitMethods.cs:65:17:65:26 | ErrorMaybe |
-| ExitMethods.cs:71:17:71:27 | enter ErrorAlways | ExitMethods.cs:71:17:71:27 | ErrorAlways |
-| ExitMethods.cs:71:17:71:27 | exit ErrorAlways (abnormal) | ExitMethods.cs:71:17:71:27 | ErrorAlways |
-| ExitMethods.cs:74:19:74:33 | object creation of type Exception | ExitMethods.cs:71:17:71:27 | ErrorAlways |
-| ExitMethods.cs:76:41:76:43 | "b" | ExitMethods.cs:71:17:71:27 | ErrorAlways |
-| ExitMethods.cs:79:17:79:28 | enter ErrorAlways2 | ExitMethods.cs:79:17:79:28 | ErrorAlways2 |
-| ExitMethods.cs:84:17:84:28 | enter ErrorAlways3 | ExitMethods.cs:84:17:84:28 | ErrorAlways3 |
-| ExitMethods.cs:86:10:86:13 | enter Exit | ExitMethods.cs:86:10:86:13 | Exit |
-| ExitMethods.cs:91:10:91:18 | enter ExitInTry | ExitMethods.cs:91:10:91:18 | ExitInTry |
-| ExitMethods.cs:104:10:104:24 | enter ApplicationExit | ExitMethods.cs:104:10:104:24 | ApplicationExit |
-| ExitMethods.cs:109:13:109:21 | enter ThrowExpr | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:109:13:109:21 | exit ThrowExpr | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:111:29:111:29 | 1 | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:111:69:111:75 | "input" | ExitMethods.cs:109:13:109:21 | ThrowExpr |
-| ExitMethods.cs:114:16:114:34 | enter ExtensionMethodCall | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
-| ExitMethods.cs:116:16:116:38 | ... ? ... : ... | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
-| ExitMethods.cs:116:34:116:34 | 0 | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
-| ExitMethods.cs:116:38:116:38 | 1 | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
-| ExitMethods.cs:119:17:119:32 | enter FailingAssertion | ExitMethods.cs:119:17:119:32 | FailingAssertion |
-| ExitMethods.cs:121:9:121:28 | [assertion failure] call to method IsTrue | ExitMethods.cs:119:17:119:32 | FailingAssertion |
-| ExitMethods.cs:125:17:125:33 | enter FailingAssertion2 | ExitMethods.cs:125:17:125:33 | FailingAssertion2 |
-| ExitMethods.cs:131:10:131:20 | enter AssertFalse | ExitMethods.cs:131:10:131:20 | AssertFalse |
-| ExitMethods.cs:131:10:131:20 | exit AssertFalse | ExitMethods.cs:131:10:131:20 | AssertFalse |
-| ExitMethods.cs:131:33:131:49 | [assertion failure] call to method IsFalse | ExitMethods.cs:131:10:131:20 | AssertFalse |
-| ExitMethods.cs:131:33:131:49 | [assertion success] call to method IsFalse | ExitMethods.cs:131:10:131:20 | AssertFalse |
-| ExitMethods.cs:133:17:133:33 | enter FailingAssertion3 | ExitMethods.cs:133:17:133:33 | FailingAssertion3 |
-| ExitMethods.cs:135:9:135:25 | [assertion failure] call to method AssertFalse | ExitMethods.cs:133:17:133:33 | FailingAssertion3 |
+| ExitMethods.cs:8:10:8:11 | enter M1 | ExitMethods.cs:8:10:8:11 | M1 |
+| ExitMethods.cs:14:10:14:11 | enter M2 | ExitMethods.cs:14:10:14:11 | M2 |
+| ExitMethods.cs:20:10:20:11 | enter M3 | ExitMethods.cs:20:10:20:11 | M3 |
+| ExitMethods.cs:26:10:26:11 | enter M4 | ExitMethods.cs:26:10:26:11 | M4 |
+| ExitMethods.cs:32:10:32:11 | enter M5 | ExitMethods.cs:32:10:32:11 | M5 |
+| ExitMethods.cs:38:10:38:11 | enter M6 | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:38:10:38:11 | exit M6 (normal) | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:44:9:47:9 | [exception: ArgumentException] catch (...) {...} | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:44:9:47:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:45:9:47:9 | {...} | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:48:9:51:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:49:9:51:9 | {...} | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:54:10:54:11 | enter M7 | ExitMethods.cs:54:10:54:11 | M7 |
+| ExitMethods.cs:60:10:60:11 | enter M8 | ExitMethods.cs:60:10:60:11 | M8 |
+| ExitMethods.cs:66:17:66:26 | enter ErrorMaybe | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
+| ExitMethods.cs:66:17:66:26 | exit ErrorMaybe | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
+| ExitMethods.cs:66:17:66:26 | exit ErrorMaybe (normal) | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
+| ExitMethods.cs:69:19:69:33 | object creation of type Exception | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
+| ExitMethods.cs:72:17:72:27 | enter ErrorAlways | ExitMethods.cs:72:17:72:27 | ErrorAlways |
+| ExitMethods.cs:72:17:72:27 | exit ErrorAlways (abnormal) | ExitMethods.cs:72:17:72:27 | ErrorAlways |
+| ExitMethods.cs:75:19:75:33 | object creation of type Exception | ExitMethods.cs:72:17:72:27 | ErrorAlways |
+| ExitMethods.cs:77:41:77:43 | "b" | ExitMethods.cs:72:17:72:27 | ErrorAlways |
+| ExitMethods.cs:80:17:80:28 | enter ErrorAlways2 | ExitMethods.cs:80:17:80:28 | ErrorAlways2 |
+| ExitMethods.cs:85:17:85:28 | enter ErrorAlways3 | ExitMethods.cs:85:17:85:28 | ErrorAlways3 |
+| ExitMethods.cs:87:10:87:13 | enter Exit | ExitMethods.cs:87:10:87:13 | Exit |
+| ExitMethods.cs:92:10:92:18 | enter ExitInTry | ExitMethods.cs:92:10:92:18 | ExitInTry |
+| ExitMethods.cs:105:10:105:24 | enter ApplicationExit | ExitMethods.cs:105:10:105:24 | ApplicationExit |
+| ExitMethods.cs:110:13:110:21 | enter ThrowExpr | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:110:13:110:21 | exit ThrowExpr | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:112:29:112:29 | 1 | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:112:69:112:75 | "input" | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:115:16:115:34 | enter ExtensionMethodCall | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
+| ExitMethods.cs:117:16:117:38 | ... ? ... : ... | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
+| ExitMethods.cs:117:34:117:34 | 0 | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
+| ExitMethods.cs:117:38:117:38 | 1 | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
+| ExitMethods.cs:120:17:120:32 | enter FailingAssertion | ExitMethods.cs:120:17:120:32 | FailingAssertion |
+| ExitMethods.cs:122:9:122:28 | [assertion failure] call to method IsTrue | ExitMethods.cs:120:17:120:32 | FailingAssertion |
+| ExitMethods.cs:126:17:126:33 | enter FailingAssertion2 | ExitMethods.cs:126:17:126:33 | FailingAssertion2 |
+| ExitMethods.cs:132:10:132:20 | enter AssertFalse | ExitMethods.cs:132:10:132:20 | AssertFalse |
+| ExitMethods.cs:132:10:132:20 | exit AssertFalse | ExitMethods.cs:132:10:132:20 | AssertFalse |
+| ExitMethods.cs:132:33:132:49 | [assertion failure] call to method IsFalse | ExitMethods.cs:132:10:132:20 | AssertFalse |
+| ExitMethods.cs:132:33:132:49 | [assertion success] call to method IsFalse | ExitMethods.cs:132:10:132:20 | AssertFalse |
+| ExitMethods.cs:134:17:134:33 | enter FailingAssertion3 | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
+| ExitMethods.cs:136:9:136:25 | [assertion failure] call to method AssertFalse | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
+| ExitMethods.cs:140:17:140:42 | enter ExceptionDispatchInfoThrow | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
+| ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow (abnormal) | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
+| ExitMethods.cs:143:13:143:43 | ...; | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
+| ExitMethods.cs:145:13:145:53 | ...; | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
 | Extensions.cs:5:23:5:29 | enter ToInt32 | Extensions.cs:5:23:5:29 | ToInt32 |
 | Extensions.cs:10:24:10:29 | enter ToBool | Extensions.cs:10:24:10:29 | ToBool |
 | Extensions.cs:15:23:15:33 | enter CallToInt32 | Extensions.cs:15:23:15:33 | CallToInt32 |
@@ -5634,32 +5789,110 @@ blockEnclosing
 | NullCoalescing.cs:15:31:15:31 | 0 | NullCoalescing.cs:13:10:13:11 | M6 |
 | NullCoalescing.cs:16:17:16:25 | ... ?? ... | NullCoalescing.cs:13:10:13:11 | M6 |
 | NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:13:10:13:11 | M6 |
-| Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:9:9:11:9 | {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:13:9:15:9 | {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:16:14:18:9 | if (...) ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:17:9:18:9 | {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:23:17:23:22 | break; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:25:17:25:52 | ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:28:17:28:47 | ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:31:17:31:50 | ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:34:17:34:22 | break; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:35:13:35:20 | default: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:5:10:5:13 | Test |
+| Patterns.cs:5:10:5:11 | enter M1 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:8:13:8:23 | [false] ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:8:13:8:23 | [true] ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:9:9:11:9 | {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:12:18:12:31 | [false] ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:12:18:12:31 | [true] ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:13:9:15:9 | {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:16:14:18:9 | if (...) ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:16:18:16:28 | [false] ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:16:18:16:28 | [true] ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:17:9:18:9 | {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:23:17:23:22 | break; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:25:17:25:52 | ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:28:17:28:47 | ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:31:17:31:50 | ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:34:17:34:22 | break; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:35:13:35:20 | default: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:47:24:47:25 | enter M2 | Patterns.cs:47:24:47:25 | M2 |
+| Patterns.cs:50:24:50:25 | enter M3 | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:9:51:21 | [false] ... is ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:9:51:21 | [true] ... is ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:9:51:39 | ... ? ... : ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:14:51:21 | [match] not ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:14:51:21 | [no-match] not ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:25:51:25 | access to parameter c | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:34:51:34 | access to parameter c | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:53:24:53:25 | enter M4 | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:54:18:54:37 | { ... } | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:54:27:54:35 | [match] { ... } | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:54:27:54:35 | [no-match] { ... } | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:54:33:54:33 | 1 | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:56:26:56:27 | enter M5 | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:58:16:62:9 | ... switch { ... } | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:13:60:17 | [match] not ... | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:13:60:17 | [no-match] not ... | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:22:60:28 | "not 1" | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:61:13:61:13 | _ | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:61:18:61:24 | "other" | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:65:26:65:27 | enter M6 | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:69:13:69:17 | [no-match] not ... | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:70:13:70:13 | 2 | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:70:18:70:27 | "possible" | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:74:26:74:27 | enter M7 | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:78:20:78:24 | "> 1" | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:79:15:79:15 | 0 | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:79:20:79:24 | "< 0" | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:80:13:80:13 | 1 | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:80:18:80:20 | "1" | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:81:13:81:13 | _ | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:81:18:81:20 | "0" | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:85:26:85:27 | enter M8 | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:39:85:53 | [false] ... is ... | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:39:85:53 | [true] ... is ... | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:39:85:69 | ... ? ... : ... | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:44:85:53 | [match] ... or ... | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:44:85:53 | [no-match] ... or ... | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:49:85:53 | [match] not ... | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:49:85:53 | [no-match] not ... | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:53:85:53 | 2 | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:57:85:63 | "not 2" | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:67:85:69 | "2" | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:87:26:87:27 | enter M9 | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:39:87:54 | [false] ... is ... | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:39:87:54 | [true] ... is ... | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:39:87:70 | ... ? ... : ... | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:44:87:54 | [match] ... and ... | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:44:87:54 | [no-match] ... and ... | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:50:87:54 | [match] not ... | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:50:87:54 | [no-match] not ... | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:54:87:54 | 2 | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:58:87:60 | "1" | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:64:87:70 | "not 1" | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:93:17:93:19 | enter M10 | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:93:17:93:19 | exit M10 (normal) | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:13:95:40 | [false] ... is ... | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:13:95:40 | [true] ... is ... | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:21:95:40 | [match] { ... } | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:21:95:40 | [match] { ... } | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:21:95:40 | [no-match] { ... } | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:21:95:40 | [no-match] { ... } | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:29:95:38 | [match] ... or ... | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:29:95:38 | [no-match] ... or ... | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:95:36:95:38 | access to constant B | Patterns.cs:93:17:93:19 | M10 |
+| Patterns.cs:96:9:98:9 | {...} | Patterns.cs:93:17:93:19 | M10 |
 | PostDominance.cs:5:10:5:11 | enter M1 | PostDominance.cs:5:10:5:11 | M1 |
 | PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:10:10:10:11 | exit M2 (normal) | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:12:13:12:21 | [false] ... is ... | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:12:13:12:21 | [true] ... is ... | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:13:13:13:19 | return ...; | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:14:9:14:29 | ...; | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:17:10:17:11 | enter M3 | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:17:10:17:11 | exit M3 | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:19:13:19:21 | [false] ... is ... | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:19:13:19:21 | [true] ... is ... | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:20:45:20:53 | nameof(...) | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:21:9:21:29 | ...; | PostDominance.cs:17:10:17:11 | M3 |
 | Qualifiers.cs:7:16:7:21 | enter Method | Qualifiers.cs:7:16:7:21 | Method |
@@ -5776,6 +6009,8 @@ blockEnclosing
 | Switch.cs:158:13:158:49 | ...; | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:160:13:160:49 | ...; | Switch.cs:154:10:154:12 | M15 |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:3:10:3:10 | M |
+| TypeAccesses.cs:7:13:7:22 | [false] ... is ... | TypeAccesses.cs:3:10:3:10 | M |
+| TypeAccesses.cs:7:13:7:22 | [true] ... is ... | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:3:10:3:10 | M |
 | VarDecls.cs:5:18:5:19 | enter M1 | VarDecls.cs:5:18:5:19 | M1 |

@@ -491,8 +491,8 @@ void test_vector_emplace() {
 	std::vector<int> v1(10), v2(10);
 
 	v1.emplace_back(source());
-	sink(v1); // $ ast MISSING: ir
+	sink(v1); // $ ast,ir
 
 	v2.emplace(v2.begin(), source());
-	sink(v2); // $ ast MISSING: ir
+	sink(v2); // $ ast,ir
 }

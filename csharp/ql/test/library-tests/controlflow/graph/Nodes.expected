@@ -1092,27 +1092,28 @@ entryPoint
 | Conditions.cs:113:10:113:11 | M9 | Conditions.cs:114:5:124:5 | {...} |
 | Conditions.cs:129:10:129:12 | M10 | Conditions.cs:130:5:141:5 | {...} |
 | Conditions.cs:143:10:143:12 | M11 | Conditions.cs:144:5:150:5 | {...} |
-| ExitMethods.cs:7:10:7:11 | M1 | ExitMethods.cs:8:5:11:5 | {...} |
-| ExitMethods.cs:13:10:13:11 | M2 | ExitMethods.cs:14:5:17:5 | {...} |
-| ExitMethods.cs:19:10:19:11 | M3 | ExitMethods.cs:20:5:23:5 | {...} |
-| ExitMethods.cs:25:10:25:11 | M4 | ExitMethods.cs:26:5:29:5 | {...} |
-| ExitMethods.cs:31:10:31:11 | M5 | ExitMethods.cs:32:5:35:5 | {...} |
-| ExitMethods.cs:37:10:37:11 | M6 | ExitMethods.cs:38:5:51:5 | {...} |
-| ExitMethods.cs:53:10:53:11 | M7 | ExitMethods.cs:54:5:57:5 | {...} |
-| ExitMethods.cs:59:10:59:11 | M8 | ExitMethods.cs:60:5:63:5 | {...} |
-| ExitMethods.cs:65:17:65:26 | ErrorMaybe | ExitMethods.cs:66:5:69:5 | {...} |
-| ExitMethods.cs:71:17:71:27 | ErrorAlways | ExitMethods.cs:72:5:77:5 | {...} |
-| ExitMethods.cs:79:17:79:28 | ErrorAlways2 | ExitMethods.cs:80:5:82:5 | {...} |
-| ExitMethods.cs:84:17:84:28 | ErrorAlways3 | ExitMethods.cs:84:41:84:55 | object creation of type Exception |
-| ExitMethods.cs:86:10:86:13 | Exit | ExitMethods.cs:87:5:89:5 | {...} |
-| ExitMethods.cs:91:10:91:18 | ExitInTry | ExitMethods.cs:92:5:102:5 | {...} |
-| ExitMethods.cs:104:10:104:24 | ApplicationExit | ExitMethods.cs:105:5:107:5 | {...} |
-| ExitMethods.cs:109:13:109:21 | ThrowExpr | ExitMethods.cs:110:5:112:5 | {...} |
-| ExitMethods.cs:114:16:114:34 | ExtensionMethodCall | ExitMethods.cs:115:5:117:5 | {...} |
-| ExitMethods.cs:119:17:119:32 | FailingAssertion | ExitMethods.cs:120:5:123:5 | {...} |
-| ExitMethods.cs:125:17:125:33 | FailingAssertion2 | ExitMethods.cs:126:5:129:5 | {...} |
-| ExitMethods.cs:131:10:131:20 | AssertFalse | ExitMethods.cs:131:48:131:48 | access to parameter b |
-| ExitMethods.cs:133:17:133:33 | FailingAssertion3 | ExitMethods.cs:134:5:137:5 | {...} |
+| ExitMethods.cs:8:10:8:11 | M1 | ExitMethods.cs:9:5:12:5 | {...} |
+| ExitMethods.cs:14:10:14:11 | M2 | ExitMethods.cs:15:5:18:5 | {...} |
+| ExitMethods.cs:20:10:20:11 | M3 | ExitMethods.cs:21:5:24:5 | {...} |
+| ExitMethods.cs:26:10:26:11 | M4 | ExitMethods.cs:27:5:30:5 | {...} |
+| ExitMethods.cs:32:10:32:11 | M5 | ExitMethods.cs:33:5:36:5 | {...} |
+| ExitMethods.cs:38:10:38:11 | M6 | ExitMethods.cs:39:5:52:5 | {...} |
+| ExitMethods.cs:54:10:54:11 | M7 | ExitMethods.cs:55:5:58:5 | {...} |
+| ExitMethods.cs:60:10:60:11 | M8 | ExitMethods.cs:61:5:64:5 | {...} |
+| ExitMethods.cs:66:17:66:26 | ErrorMaybe | ExitMethods.cs:67:5:70:5 | {...} |
+| ExitMethods.cs:72:17:72:27 | ErrorAlways | ExitMethods.cs:73:5:78:5 | {...} |
+| ExitMethods.cs:80:17:80:28 | ErrorAlways2 | ExitMethods.cs:81:5:83:5 | {...} |
+| ExitMethods.cs:85:17:85:28 | ErrorAlways3 | ExitMethods.cs:85:41:85:55 | object creation of type Exception |
+| ExitMethods.cs:87:10:87:13 | Exit | ExitMethods.cs:88:5:90:5 | {...} |
+| ExitMethods.cs:92:10:92:18 | ExitInTry | ExitMethods.cs:93:5:103:5 | {...} |
+| ExitMethods.cs:105:10:105:24 | ApplicationExit | ExitMethods.cs:106:5:108:5 | {...} |
+| ExitMethods.cs:110:13:110:21 | ThrowExpr | ExitMethods.cs:111:5:113:5 | {...} |
+| ExitMethods.cs:115:16:115:34 | ExtensionMethodCall | ExitMethods.cs:116:5:118:5 | {...} |
+| ExitMethods.cs:120:17:120:32 | FailingAssertion | ExitMethods.cs:121:5:124:5 | {...} |
+| ExitMethods.cs:126:17:126:33 | FailingAssertion2 | ExitMethods.cs:127:5:130:5 | {...} |
+| ExitMethods.cs:132:10:132:20 | AssertFalse | ExitMethods.cs:132:48:132:48 | access to parameter b |
+| ExitMethods.cs:134:17:134:33 | FailingAssertion3 | ExitMethods.cs:135:5:138:5 | {...} |
+| ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow | ExitMethods.cs:141:5:147:5 | {...} |
 | Extensions.cs:5:23:5:29 | ToInt32 | Extensions.cs:6:5:8:5 | {...} |
 | Extensions.cs:10:24:10:29 | ToBool | Extensions.cs:11:5:13:5 | {...} |
 | Extensions.cs:15:23:15:33 | CallToInt32 | Extensions.cs:15:48:15:50 | "0" |
@@ -1218,7 +1219,16 @@ entryPoint
 | NullCoalescing.cs:9:12:9:13 | M4 | NullCoalescing.cs:9:37:9:37 | access to parameter b |
 | NullCoalescing.cs:11:9:11:10 | M5 | NullCoalescing.cs:11:44:11:45 | access to parameter b1 |
 | NullCoalescing.cs:13:10:13:11 | M6 | NullCoalescing.cs:14:5:18:5 | {...} |
-| Patterns.cs:5:10:5:13 | Test | Patterns.cs:6:5:43:5 | {...} |
+| Patterns.cs:5:10:5:11 | M1 | Patterns.cs:6:5:43:5 | {...} |
+| Patterns.cs:47:24:47:25 | M2 | Patterns.cs:48:9:48:9 | access to parameter c |
+| Patterns.cs:50:24:50:25 | M3 | Patterns.cs:51:9:51:9 | access to parameter c |
+| Patterns.cs:53:24:53:25 | M4 | Patterns.cs:54:9:54:9 | access to parameter c |
+| Patterns.cs:56:26:56:27 | M5 | Patterns.cs:57:5:63:5 | {...} |
+| Patterns.cs:65:26:65:27 | M6 | Patterns.cs:66:5:72:5 | {...} |
+| Patterns.cs:74:26:74:27 | M7 | Patterns.cs:75:5:83:5 | {...} |
+| Patterns.cs:85:26:85:27 | M8 | Patterns.cs:85:39:85:39 | access to parameter i |
+| Patterns.cs:87:26:87:27 | M9 | Patterns.cs:87:39:87:39 | access to parameter i |
+| Patterns.cs:93:17:93:19 | M10 | Patterns.cs:94:5:99:5 | {...} |
 | PostDominance.cs:5:10:5:11 | M1 | PostDominance.cs:6:5:8:5 | {...} |
 | PostDominance.cs:10:10:10:11 | M2 | PostDominance.cs:11:5:15:5 | {...} |
 | PostDominance.cs:17:10:17:11 | M3 | PostDominance.cs:18:5:22:5 | {...} |

@@ -319,3 +319,28 @@ unsigned char *noBadResize_4_1(unsigned char *buffer, size_t currentSize, size_t
 
 	return buffer;
 }
+
+unsigned char * badResize_5_2(unsigned char *buffer, size_t currentSize, size_t newSize, int cond)
+{
+	// BAD: on unsuccessful call to realloc, we will lose a pointer to a valid memory block
+	if (currentSize < newSize)
+	{
+		buffer = (unsigned char *)realloc(buffer, newSize);
+	}
+	if (cond)
+	{
+		abort(); // irrelevant
+	}
+	return buffer;
+}
+
+unsigned char * badResize_5_1(unsigned char *buffer, size_t currentSize, size_t newSize, int cond)
+{
+	// BAD: on unsuccessful call to realloc, we will lose a pointer to a valid memory block
+	if (currentSize < newSize)
+	{
+		buffer = (unsigned char *)realloc(buffer, newSize);
+		assert(cond); // irrelevant
+	}
+	return buffer;
+}

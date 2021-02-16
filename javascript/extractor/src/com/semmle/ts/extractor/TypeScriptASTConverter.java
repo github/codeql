@@ -703,14 +703,14 @@ public class TypeScriptASTConverter {
   }
 
   /**
-   * Converts the given child to an AST node of the given type or <tt>null</tt>. A ParseError is
+   * Converts the given child to an AST node of the given type or <code>null</code>. A ParseError is
    * thrown if a different type of node was found.
    *
    * <p>This is used to detect syntax errors that are not reported as syntax errors by the
    * TypeScript parser. Usually they are reported as errors in a later compiler stage, which the
    * extractor does not run.
    *
-   * <p>Returns <tt>null</tt> if the child is absent.
+   * <p>Returns <code>null</code> if the child is absent.
    */
   @SuppressWarnings("unchecked")
   private <T extends Node> T tryConvertChild(JsonObject node, String prop, Class<T> expectedType)
@@ -2256,10 +2256,10 @@ public class TypeScriptASTConverter {
   private Node convertTypeOperator(JsonObject node, SourceLocation loc) throws ParseError {
     String operator = metadata.getSyntaxKindName(node.get("operator").getAsInt());
     if (operator.equals("KeyOfKeyword")) {
-      return new UnaryTypeExpr(loc, UnaryTypeExpr.Kind.Keyof, convertChildAsType(node, "type"));
+      return new UnaryTypeExpr(loc, UnaryTypeExpr.Kind.KEYOF, convertChildAsType(node, "type"));
     }
     if (operator.equals("ReadonlyKeyword")) {
-      return new UnaryTypeExpr(loc, UnaryTypeExpr.Kind.Readonly, convertChildAsType(node, "type"));
+      return new UnaryTypeExpr(loc, UnaryTypeExpr.Kind.READONLY, convertChildAsType(node, "type"));
     }
     if (operator.equals("UniqueKeyword")) {
       return new KeywordTypeExpr(loc, "unique symbol");
@@ -2515,8 +2515,8 @@ public class TypeScriptASTConverter {
   }
 
   /**
-   * Returns a specific modifier from the given node (or <tt>null</tt> if absent), as defined by its
-   * <tt>modifiers</tt> property and the <tt>kind</tt> property of the modifier AST node.
+   * Returns a specific modifier from the given node (or <code>null</code> if absent), as defined by its
+   * <code>modifiers</code> property and the <code>kind</code> property of the modifier AST node.
    */
   private JsonObject getModifier(JsonObject node, String modKind) {
     for (JsonElement mod : getModifiers(node))
@@ -2526,8 +2526,8 @@ public class TypeScriptASTConverter {
   }
 
   /**
-   * Check whether a node has a particular modifier, as defined by its <tt>modifiers</tt> property
-   * and the <tt>kind</tt> property of the modifier AST node.
+   * Check whether a node has a particular modifier, as defined by its <code>modifiers</code> property
+   * and the <code>kind</code> property of the modifier AST node.
    */
   private boolean hasModifier(JsonObject node, String modKind) {
     return getModifier(node, modKind) != null;
@@ -2568,8 +2568,8 @@ public class TypeScriptASTConverter {
   }
 
   /**
-   * Check whether a node has a particular flag, as defined by its <tt>flags</tt> property and the
-   * <tt>ts.NodeFlags</tt> in enum.
+   * Check whether a node has a particular flag, as defined by its <code>flags</code> property and the
+   * <code>ts.NodeFlags</code> in enum.
    */
   private boolean hasFlag(JsonObject node, String flagName) {
     int flagId = metadata.getNodeFlagId(flagName);

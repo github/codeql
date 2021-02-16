@@ -193,7 +193,7 @@ class StdVectorEmplace extends TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from any parameter except the position iterator to qualifier and return value
     // (here we assume taint flow from any constructor parameter to the constructed object)
-    input.isParameter([1 .. getNumberOfParameters() - 1]) and
+    input.isParameterDeref([1 .. getNumberOfParameters() - 1]) and
     (
       output.isQualifierObject() or
       output.isReturnValue()
@@ -210,7 +210,7 @@ class StdVectorEmplaceBack extends TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from any parameter to qualifier
     // (here we assume taint flow from any constructor parameter to the constructed object)
-    input.isParameter([0 .. getNumberOfParameters() - 1]) and
+    input.isParameterDeref([0 .. getNumberOfParameters() - 1]) and
     output.isQualifierObject()
   }
 }

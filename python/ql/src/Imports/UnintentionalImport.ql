@@ -1,7 +1,7 @@
 /**
  * @name 'import *' may pollute namespace
  * @description Importing a module using 'import *' may unintentionally pollute the global
- *              namespace if the module does not define '__all__'
+ *              namespace if the module does not define `__all__`
  * @kind problem
  * @tags maintainability
  *       modularity

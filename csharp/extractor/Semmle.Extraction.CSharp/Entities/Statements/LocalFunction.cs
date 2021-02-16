@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
     internal class LocalFunction : Statement<LocalFunctionStatementSyntax>
     {
         private LocalFunction(Context cx, LocalFunctionStatementSyntax node, IStatementParentEntity parent, int child)
-            : base(cx, node, StmtKind.LOCAL_FUNCTION, parent, child, cx.Create(node.GetLocation())) { }
+            : base(cx, node, StmtKind.LOCAL_FUNCTION, parent, child, cx.CreateLocation(node.GetLocation())) { }
 
         public static LocalFunction Create(Context cx, LocalFunctionStatementSyntax node, IStatementParentEntity parent, int child)
         {

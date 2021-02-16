@@ -19,7 +19,7 @@ namespace Semmle.Extraction.Entities
             }
             else
             {
-                assembly = init.MetadataModule.ContainingAssembly;
+                assembly = init.MetadataModule!.ContainingAssembly;
                 var identity = assembly.Identity;
                 var idString = identity.Name + " " + identity.Version;
                 assemblyPath = cx.Extractor.GetAssemblyFile(idString);
@@ -48,7 +48,7 @@ namespace Semmle.Extraction.Entities
             return false;
         }
 
-        public static new Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => AssemblyConstructorFactory.Instance.CreateEntity(cx, loc, loc);
+        public static Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => AssemblyConstructorFactory.Instance.CreateEntity(cx, loc, loc);
 
         private class AssemblyConstructorFactory : ICachedEntityFactory<Microsoft.CodeAnalysis.Location?, Assembly>
         {

@@ -92,7 +92,9 @@ class Snscanf extends ScanfFunction {
     this instanceof TopLevelFunction and
     (
       hasName("_snscanf") or // _snscanf(src, max_amount, format, args...)
-      hasName("_snwscanf") // _snwscanf(src, max_amount, format, args...)
+      hasName("_snwscanf") or // _snwscanf(src, max_amount, format, args...)
+      hasName("_snscanf_l") or // _snscanf_l(src, max_amount, format, locale, args...)
+      hasName("_snwscanf_l") // _snwscanf_l(src, max_amount, format, locale, args...)
       // note that the max_amount is not a limit on the output length, it's an input length
       // limit used with non null-terminated strings.
     )
@@ -101,6 +103,12 @@ class Snscanf extends ScanfFunction {
   override int getInputParameterIndex() { result = 0 }
 
   override int getFormatParameterIndex() { result = 2 }
+
+  /**
+   * Gets the position at which the maximum number of characters in the
+   * input string is specified.
+   */
+  int getInputLengthParameterIndex() { result = 1 }
 }
 
 /**

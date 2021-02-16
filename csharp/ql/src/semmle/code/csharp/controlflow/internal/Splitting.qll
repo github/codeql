@@ -465,6 +465,24 @@ module ConditionalCompletionSplitting {
         or
         last(succ.(SwitchCaseExpr).getBody(), pred, c) and
         completion = c
+        or
+        last(succ.(NotPatternExpr).getPattern(), pred, c) and
+        completion.(MatchingCompletion).getDual() = c
+        or
+        last(succ.(IsExpr).getPattern(), pred, c) and
+        completion.(BooleanCompletion).getValue() = c.(MatchingCompletion).getValue()
+        or
+        last(succ.(AndPatternExpr).getAnOperand(), pred, c) and
+        completion = c
+        or
+        last(succ.(OrPatternExpr).getAnOperand(), pred, c) and
+        completion = c
+        or
+        last(succ.(RecursivePatternExpr).getAChildExpr(), pred, c) and
+        completion = c
+        or
+        last(succ.(PropertyPatternExpr).getPattern(_), pred, c) and
+        completion = c
       )
     }
 
@@ -1529,11 +1547,7 @@ predicate succEntrySplits(CfgScope pred, ControlFlowElement succ, Splits succSpl
   exists(int rnk |
     scopeFirst(pred, succ) and
     t instanceof NormalSuccessor and
-    succEntrySplitsFromRank(pred, succ, succSplits, rnk) and
-    // Attribute arguments in assemblies are represented as expressions, even though
-    // they are not from source. We are not interested in constructing a CFG for such
-    // expressions.
-    succ.fromSource()
+    succEntrySplitsFromRank(pred, succ, succSplits, rnk)
   |
     rnk = 0 and
     not any(SplitImpl split).hasEntryScope(pred, succ)

@@ -38,6 +38,16 @@ class HostnameVerifier extends RefType {
   HostnameVerifier() { hasQualifiedName("javax.net.ssl", "HostnameVerifier") }
 }
 
+/** The Java class `javax.crypto.KeyGenerator`. */
+class KeyGenerator extends RefType {
+  KeyGenerator() { this.hasQualifiedName("javax.crypto", "KeyGenerator") }
+}
+
+/** The Java class `java.security.KeyPairGenerator`. */
+class KeyPairGenerator extends RefType {
+  KeyPairGenerator() { this.hasQualifiedName("java.security", "KeyPairGenerator") }
+}
+
 /** The `verify` method of the class `javax.net.ssl.HostnameVerifier`. */
 class HostnameVerifierVerify extends Method {
   HostnameVerifierVerify() {
@@ -248,7 +258,7 @@ class JavaxCryptoSecretKey extends JavaxCryptoAlgoSpec {
 class JavaxCryptoKeyGenerator extends JavaxCryptoAlgoSpec {
   JavaxCryptoKeyGenerator() {
     exists(Method m | m.getAReference() = this |
-      m.getDeclaringType().getQualifiedName() = "javax.crypto.KeyGenerator" and
+      m.getDeclaringType() instanceof KeyGenerator and
       m.getName() = "getInstance"
     )
   }
@@ -303,4 +313,16 @@ class JavaSecuritySignature extends JavaSecurityAlgoSpec {
   }
 
   override Expr getAlgoSpec() { result = this.(ConstructorCall).getArgument(0) }
+}
+
+/** A method call to the Java class `java.security.KeyPairGenerator`. */
+class JavaSecurityKeyPairGenerator extends JavaxCryptoAlgoSpec {
+  JavaSecurityKeyPairGenerator() {
+    exists(Method m | m.getAReference() = this |
+      m.getDeclaringType() instanceof KeyPairGenerator and
+      m.getName() = "getInstance"
+    )
+  }
+
+  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
 }

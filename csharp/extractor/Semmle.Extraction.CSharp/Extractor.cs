@@ -68,7 +68,10 @@ namespace Semmle.Extraction.CSharp
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            var commandLineArguments = Options.CreateWithEnvironment(args);
+
+            Entities.Compilation.Settings = (Directory.GetCurrentDirectory(), args);
+
+            var commandLineArguments = Options.CreateWithEnvironment(Entities.Compilation.Settings.Args);
             var fileLogger = new FileLogger(commandLineArguments.Verbosity, GetCSharpLogPath());
             using var logger = commandLineArguments.Console
                 ? new CombinedLogger(new ConsoleLogger(commandLineArguments.Verbosity), fileLogger)
@@ -95,10 +98,9 @@ namespace Semmle.Extraction.CSharp
                     return ExitCode.Ok;
                 }
 
-                var cwd = Directory.GetCurrentDirectory();
                 var compilerArguments = CSharpCommandLineParser.Default.Parse(
                     compilerVersion.ArgsWithResponse,
-                    cwd,
+                    Entities.Compilation.Settings.Cwd,
                     compilerVersion.FrameworkPath,
                     compilerVersion.AdditionalReferenceDirectories
                     );
@@ -106,7 +108,7 @@ namespace Semmle.Extraction.CSharp
                 if (compilerArguments == null)
                 {
                     var sb = new StringBuilder();
-                    sb.Append("  Failed to parse command line: ").AppendList(" ", args);
+                    sb.Append("  Failed to parse command line: ").AppendList(" ", Entities.Compilation.Settings.Args);
                     logger.Log(Severity.Error, sb.ToString());
                     ++analyser.CompilationErrors;
                     return ExitCode.Failed;
@@ -159,7 +161,7 @@ namespace Semmle.Extraction.CSharp
                     );
 
                 analyser.EndInitialize(compilerArguments, commandLineArguments, compilation);
-                analyser.AnalyseCompilation(cwd, args);
+                analyser.AnalyseCompilation();
                 analyser.AnalyseReferences();
 
                 foreach (var tree in compilation.SyntaxTrees)

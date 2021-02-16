@@ -1723,6 +1723,7 @@ module Internal {
   cached
   private module Cached {
     private import semmle.code.csharp.Caching
+    private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 
     /**
      * Holds if basic block `bb` only is reached when guard `g` has abstract value `v`.
@@ -1775,9 +1776,9 @@ module Internal {
     private predicate adjacentReadPairSameVarUniquePredecessor(
       Ssa::Definition def, ControlFlow::Node cfn1, ControlFlow::Node cfn2
     ) {
-      Ssa::Internal::adjacentReadPairSameVar(def, cfn1, cfn2) and
+      SsaImpl::adjacentReadPairSameVar(def, cfn1, cfn2) and
       not exists(ControlFlow::Node other |
-        Ssa::Internal::adjacentReadPairSameVar(def, other, cfn2) and
+        SsaImpl::adjacentReadPairSameVar(def, other, cfn2) and
         other != cfn1 and
         other != cfn2
       )
@@ -1831,7 +1832,7 @@ module Internal {
     private predicate firstReadUniquePredecessor(Ssa::ExplicitDefinition def, ControlFlow::Node cfn) {
       exists(def.getAFirstReadAtNode(cfn)) and
       not exists(ControlFlow::Node other |
-        Ssa::Internal::adjacentReadPairSameVar(def, other, cfn) and
+        SsaImpl::adjacentReadPairSameVar(def, other, cfn) and
         other != cfn
       )
     }

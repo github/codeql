@@ -6,7 +6,6 @@ using Microsoft.DiaSymReader;
 using System.Reflection.Metadata.Ecma335;
 using System.Reflection.Metadata;
 using System.IO;
-using System.Reflection;
 
 namespace Semmle.Extraction.PDB
 {

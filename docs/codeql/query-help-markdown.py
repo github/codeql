@@ -188,10 +188,10 @@ for lang in languages:
             # Build a link to the query source file for display in the query help
             if "go" in prefix_repo_nwo(queryfile):
                 transform_link = prefix_repo_nwo(queryfile).replace(
-                    "codeql-go", "codeql-go/tree/main").replace(" ", "%20").replace("\\", "/")
+                    "codeql-go", "codeql-go/blob/main").replace(" ", "%20").replace("\\", "/")
             else:
                 transform_link = prefix_repo_nwo(queryfile).replace(
-                    "codeql", "codeql/tree/main").replace(" ", "%20").replace("\\", "/")
+                    "codeql", "codeql/blob/main").replace(" ", "%20").replace("\\", "/")
             query_link = "[Click to see the query in the CodeQL repository](https://github.com/" + \
                 transform_link + ")\n"
             

@@ -46,7 +46,7 @@ class UntrustedDataToExternalAPIConfig extends TaintTracking::Configuration {
   UntrustedDataToExternalAPIConfig() { this = "UntrustedDataToExternalAPIConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(RemoteFlowFunction remoteFlow |
+    exists(RemoteFlowSourceFunction remoteFlow |
       remoteFlow = source.asExpr().(Call).getTarget() and
       remoteFlow.hasRemoteFlowSource(_, _)
     )

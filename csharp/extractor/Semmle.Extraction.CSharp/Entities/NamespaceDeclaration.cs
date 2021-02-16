@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            trapFile.WriteSubId(Context.Create(ReportingLocation));
+            trapFile.WriteSubId(Context.CreateLocation(ReportingLocation));
             trapFile.Write(";namespacedeclaration");
         }
 
@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var @namespace = (INamespaceSymbol)Context.GetModel(node).GetSymbolInfo(node.Name).Symbol;
             var ns = Namespace.Create(Context, @namespace);
             trapFile.namespace_declarations(this, ns);
-            trapFile.namespace_declaration_location(this, Context.Create(node.Name.GetLocation()));
+            trapFile.namespace_declaration_location(this, Context.CreateLocation(node.Name.GetLocation()));
 
             var visitor = new Populators.TypeOrNamespaceVisitor(Context, trapFile, this);
 

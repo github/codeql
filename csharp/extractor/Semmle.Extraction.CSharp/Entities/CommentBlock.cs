@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             trapFile.commentblock(this);
             var child = 0;
-            trapFile.commentblock_location(this, Context.Create(symbol.Location));
+            trapFile.commentblock_location(this, Context.CreateLocation(symbol.Location));
             foreach (var l in symbol.CommentLines)
             {
                 trapFile.commentblock_child(this, (CommentLine)l, child++);
@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            trapFile.WriteSubId(Context.Create(symbol.Location));
+            trapFile.WriteSubId(Context.CreateLocation(symbol.Location));
             trapFile.Write(";commentblock");
         }
 

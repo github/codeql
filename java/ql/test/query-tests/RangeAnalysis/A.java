@@ -5,7 +5,7 @@ public class A {
 
   public A(int[] arr2, int n) {
     if (arr2.length % 2 != 0)
-      throw new Exception();
+      throw new Error();
     this.arr2 = arr2;
     this.arr3 = new int[n << 1];
   }
@@ -168,7 +168,7 @@ public class A {
     if (n > 0) {
       a = n > 0 ? new int[3 * n] : null;
     }
-    int sum;
+    int sum = 0;
     if (a != null) {
       for (int i = 0; i < a.length; i += 3) {
         sum += a[i + 2]; // OK

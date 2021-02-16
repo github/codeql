@@ -100,7 +100,7 @@ class CloseReader {
 		private void init(InputStreamReader reader) {
 			fileRd = new BufferedReader(reader);
 		}
-		public void readStuff() {
+		public void readStuff() throws java.io.IOException {
 			System.out.println(fileRd.readLine());
 			fileRd.close();
 		}

@@ -659,8 +659,14 @@ module PseudoProperties {
    */
   pragma[inline]
   string mapValueKnownKey(DataFlow::Node key) {
-    result = pseudoProperty("mapValue", any(string s | key.mayHaveStringValue(s)))
+    result = mapValueKey(any(string s | key.mayHaveStringValue(s)))
   }
+
+  /**
+   * Gets a pseudo-property for the location of a map value where the key is `key`.
+   */
+  bindingset[key]
+  string mapValueKey(string key) { result = pseudoProperty("mapValue", key) }
 
   /**
    * Gets a pseudo-property for the location of a map value where the key is `key`.

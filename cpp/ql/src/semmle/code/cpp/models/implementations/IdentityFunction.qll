@@ -32,5 +32,7 @@ private class IdentityFunction extends DataFlowFunction, SideEffectFunction, Ali
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     // These functions simply return the argument value.
     input.isParameter(0) and output.isReturnValue()
+    or
+    input.isParameterDeref(0) and output.isReturnValueDeref()
   }
 }

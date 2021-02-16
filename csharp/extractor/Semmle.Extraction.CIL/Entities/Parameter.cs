@@ -8,11 +8,11 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     internal sealed class Parameter : LabelledEntity
     {
-        private readonly Method method;
+        private readonly IParameterizable method;
         private readonly int index;
         private readonly Type type;
 
-        public Parameter(Context cx, Method m, int i, Type t) : base(cx)
+        public Parameter(Context cx, IParameterizable m, int i, Type t) : base(cx)
         {
             method = m;
             index = i;

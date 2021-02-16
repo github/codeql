@@ -12,6 +12,8 @@
  */
 
 import cpp
+import semmle.code.cpp.controlflow.Guards
+import semmle.code.cpp.valuenumbering.HashCons
 
 /**
  * A function call that potentially does not return (such as `exit`).
@@ -33,13 +35,11 @@ class ReallocCallLeak extends FunctionCall {
   Variable v;
 
   ReallocCallLeak() {
-    exists(AssignExpr ex, VariableAccess va1, VariableAccess va2 |
-      this.getTarget().hasName("realloc") and
+    exists(AssignExpr ex |
+      this.getTarget().hasGlobalOrStdName("realloc") and
       this = ex.getRValue() and
-      va1 = ex.getLValue() and
-      va2 = this.getArgument(0) and
-      va1 = v.getAnAccess() and
-      va2 = v.getAnAccess()
+      hashCons(ex.getLValue()) = hashCons(this.getArgument(0)) and
+      v.getAnAccess() = this.getArgument(0)
     )
   }
 
@@ -48,7 +48,11 @@ class ReallocCallLeak extends FunctionCall {
    * example a call to `exit()`.
    */
   predicate mayHandleByTermination() {
-    this.(ControlFlowNode).getASuccessor*() instanceof CallMayNotReturn
+    exists(GuardCondition guard, CallMayNotReturn exit |
+      this.(ControlFlowNode).getASuccessor*() = guard and
+      guard.getAChild*() = v.getAnAccess() and
+      guard.controls(exit.getBasicBlock(), _)
+    )
   }
 }
 
