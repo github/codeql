@@ -193,4 +193,34 @@ module NextJS {
 
     override HTTP::RouteHandler getRouteHandler() { result = rh }
   }
+
+  /**
+   * Gets a folder that contains API endpoints for a Next.js application.
+   * These API endpoints act as Express-like route-handlers.
+   */
+  Folder apiFolder() {
+    result = getANextPackage().getFile().getParentContainer().getFolder("pages").getFolder("api")
+    or
+    result = apiFolder().getAFolder()
+  }
+
+  /**
+   * A Next.js route handler for an API endpoint.
+   * The response (res) includes a set of Express.js-like methods,
+   * and we therefore model the routehandler as an Express.js routehandler.
+   */
+  class NextAPIRouteHandler extends DataFlow::FunctionNode, Express::RouteHandler,
+    HTTP::Servers::StandardRouteHandler {
+    NextAPIRouteHandler() {
+      exists(Module mod | mod.getFile().getParentContainer() = apiFolder() |
+        this = mod.getAnExportedValue("default").getAFunctionValue()
+      )
+    }
+
+    override Parameter getRouteHandlerParameter(string kind) {
+      kind = "request" and result = getFunction().getParameter(0)
+      or
+      kind = "response" and result = getFunction().getParameter(1)
+    }
+  }
 }
