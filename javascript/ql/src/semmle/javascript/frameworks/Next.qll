@@ -86,17 +86,46 @@ module NextJS {
    */
   DataFlow::FunctionNode getInitialProps(Module pageModule) {
     pageModule = getAPagesModule() and
-    result =
-      pageModule
-          .getAnExportedValue("default")
-          .getAFunctionValue()
-          .getAPropertyWrite("getInitialProps")
-          .getRhs()
-          .getAFunctionValue()
+    (
+      result =
+        pageModule
+            .getAnExportedValue("default")
+            .getAFunctionValue()
+            .getAPropertyWrite("getInitialProps")
+            .getRhs()
+            .getAFunctionValue()
+      or
+      result =
+        pageModule
+            .getAnExportedValue("default")
+            .getALocalSource()
+            .getAstNode()
+            .(ReactComponent)
+            .getStaticMethod("getInitialProps")
+            .flow()
+    )
   }
 
   /**
-   * A step modelling the flow from the server-computed `getStaticProps` to the server/client rendering of the page.
+   * Gets a reference to a `props` object computed by the Next.js server.
+   * This `props` object is both used both by the server and client to render the page.
+   */
+  DataFlow::Node getAPropsSource(Module pageModule) {
+    pageModule = getAPagesModule() and
+    (
+      result =
+        [getStaticPropsFunction(pageModule), getServerSidePropsFunction(pageModule)]
+            .getAReturn()
+            .getALocalSource()
+            .getAPropertyWrite("props")
+            .getRhs()
+      or
+      result = getInitialProps(pageModule).getAReturn()
+    )
+  }
+
+  /**
+   * A step modelling the flow from the server-computed props object to the default exported function that renders the page.
    */
   class NextJSStaticPropsStep extends DataFlow::AdditionalFlowStep, DataFlow::FunctionNode {
     Module pageModule;
@@ -107,17 +136,28 @@ module NextJS {
     }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      (
-        pred =
-          [getStaticPropsFunction(pageModule), getServerSidePropsFunction(pageModule)]
-              .getAReturn()
-              .getALocalSource()
-              .getAPropertyWrite("props")
-              .getRhs()
-        or
-        pred = getInitialProps(pageModule).getAReturn()
-      ) and
+      pred = getAPropsSource(pageModule) and
       succ = this.getParameter(0)
+    }
+  }
+
+  /**
+   * A step modelling the flow from the server-computed props object to the default exported React component that renders the page.
+   */
+  class NextJSStaticReactComponentPropsStep extends DataFlow::AdditionalFlowStep,
+    DataFlow::ValueNode {
+    Module pageModule;
+    ReactComponent component;
+
+    NextJSStaticReactComponentPropsStep() {
+      pageModule = getAPagesModule() and
+      this.getAstNode() = component and
+      this = pageModule.getAnExportedValue("default").getALocalSource()
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = getAPropsSource(pageModule) and
+      succ = component.getADirectPropsAccess()
     }
   }
 
