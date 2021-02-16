@@ -15,7 +15,12 @@ export async function getStaticProps({ params }) {
     }
 }
 
-export default function Post({ taint }) {
+export default function Post({ taint, stars }) {
     sink(taint);
+    sink(stars);
     return <span />;
+}
+
+Post.getInitialProps = async (ctx) => {
+    return { stars: source(2) }
 }

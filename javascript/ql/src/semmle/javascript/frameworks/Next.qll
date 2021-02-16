@@ -67,12 +67,23 @@ private module NextJS {
 
     NextJSStaticPropsStep() {
       pageModule = getAPagesModule() and
-      this = pageModule.getAnExportedValue("getStaticProps").getAFunctionValue()
+      this = pageModule.getAnExportedValue("default").getAFunctionValue()
     }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = this.getAReturn().getALocalSource().getAPropertyWrite("props").getRhs() and
-      succ = pageModule.getAnExportedValue("default").getAFunctionValue().getParameter(0)
+      (
+        pred =
+          pageModule
+              .getAnExportedValue("getStaticProps")
+              .getAFunctionValue()
+              .getAReturn()
+              .getALocalSource()
+              .getAPropertyWrite("props")
+              .getRhs()
+        or
+        pred = this.getAPropertyWrite("getInitialProps").getRhs().getAFunctionValue().getAReturn()
+      ) and
+      succ = this.getParameter(0)
     }
   }
 }

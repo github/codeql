@@ -2,3 +2,4 @@ remoteFlow
 | pages/[my-fallback-id].jsx:9:40:9:45 | params |
 dataFlow
 | pages/[my-fallback-id].jsx:13:20:13:27 | source() | pages/[my-fallback-id].jsx:19:10:19:14 | taint |
+| pages/[my-fallback-id].jsx:25:21:25:29 | source(2) | pages/[my-fallback-id].jsx:20:10:20:14 | stars |
