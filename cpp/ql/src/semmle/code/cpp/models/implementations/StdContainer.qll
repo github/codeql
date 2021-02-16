@@ -113,7 +113,7 @@ private class StdSequenceContainerPush extends TaintFunction {
     this.getClassAndName("push_back") instanceof Array or
     this.getClassAndName(["push_back", "push_front"]) instanceof Deque or
     this.getClassAndName("push_front") instanceof ForwardList or
-    this.getClassAndName("push_back") instanceof List or
+    this.getClassAndName("push_back") instanceof List
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
