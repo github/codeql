@@ -1,6 +1,6 @@
 /**
- * @name Temporary Directory Local information disclosure
- * @description Detect local information disclosure via the java temporary directory
+ * @name Temporary directory local information disclosure
+ * @description Writing information without explicit permissions to a shared temporary directory may disclose it to other users.
  * @kind problem
  * @problem.severity warning
  * @precision very-high

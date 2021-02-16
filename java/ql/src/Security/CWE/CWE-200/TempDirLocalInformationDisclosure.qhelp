@@ -19,11 +19,11 @@ can occur.</p>
 <recommendation>
 <p>Use JDK methods that specifically protect against this vulnerability:</p>
 <ul>
-    <li><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#createTempDirectory">java.nio.file.Files#createTempDirectory</a></li>
-    <li><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#createTempFile">java.nio.file.Files#createTempFile</a></li>
+    <li><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#createTempDirectory-java.nio.file.Path-java.lang.String-java.nio.file.attribute.FileAttribute...-">java.nio.file.Files#createTempDirectory</a></li>
+    <li><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#createTempFile-java.nio.file.Path-java.lang.String-java.lang.String-java.nio.file.attribute.FileAttribute...-">java.nio.file.Files#createTempFile</a></li>
 </ul>
 <p>Otherwise, create the file/directory by manually specificfying the expected posix file permissions.
-Eg. <code>PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE))</code></p>
+For example: <code>PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE))</code></p>
 <ul>
     <li><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#createFile-java.nio.file.Path-java.nio.file.attribute.FileAttribute...-">java.nio.file.Files#createFile</a></li>
     <li><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#createDirectory-java.nio.file.Path-java.nio.file.attribute.FileAttribute...-">java.nio.file.Files#createDirectory</a></li>
@@ -32,7 +32,7 @@ Eg. <code>PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OW
 </recommendation>
 
 <example>
-<p>In the following example, files and directories are created with file permissions allowing other local users to read their contents.</p>
+<p>In the following example, files and directories are created with file permissions that allow other local users to read their contents.</p>
 
 <sample src="TempDirUsageVulnerable.java"/>
 
