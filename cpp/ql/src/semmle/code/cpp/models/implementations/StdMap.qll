@@ -41,8 +41,7 @@ private class StdMapConstructor extends Constructor, TaintFunction {
  */
 private class StdMapInsert extends TaintFunction {
   StdMapInsert() {
-    this.hasName(["insert", "insert_or_assign"]) and
-    this.getDeclaringType() instanceof MapOrUnorderedMap
+    this.getClassAndName(["insert", "insert_or_assign"]) instanceof MapOrUnorderedMap
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -60,10 +59,7 @@ private class StdMapInsert extends TaintFunction {
  * The standard map `emplace` and `emplace_hint` functions.
  */
 private class StdMapEmplace extends TaintFunction {
-  StdMapEmplace() {
-    this.hasName(["emplace", "emplace_hint"]) and
-    this.getDeclaringType() instanceof MapOrUnorderedMap
-  }
+  StdMapEmplace() { this.getClassAndName(["emplace", "emplace_hint"]) instanceof MapOrUnorderedMap }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from the last parameter (which may be the value part used to
@@ -85,10 +81,7 @@ private class StdMapEmplace extends TaintFunction {
  * The standard map `try_emplace` function.
  */
 private class StdMapTryEmplace extends TaintFunction {
-  StdMapTryEmplace() {
-    this.hasName("try_emplace") and
-    this.getDeclaringType() instanceof MapOrUnorderedMap
-  }
+  StdMapTryEmplace() { this.getClassAndName("try_emplace") instanceof MapOrUnorderedMap }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from any parameter apart from the key to qualifier and return value
@@ -115,10 +108,7 @@ private class StdMapTryEmplace extends TaintFunction {
  * The standard map `merge` function.
  */
 private class StdMapMerge extends TaintFunction {
-  StdMapMerge() {
-    this.hasName("merge") and
-    this.getDeclaringType() instanceof MapOrUnorderedMap
-  }
+  StdMapMerge() { this.getClassAndName("merge") instanceof MapOrUnorderedMap }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // container1.merge(container2)
@@ -131,10 +121,7 @@ private class StdMapMerge extends TaintFunction {
  * The standard map functions `at` and `operator[]`.
  */
 private class StdMapAt extends TaintFunction {
-  StdMapAt() {
-    this.hasName(["at", "operator[]"]) and
-    this.getDeclaringType() instanceof MapOrUnorderedMap
-  }
+  StdMapAt() { this.getClassAndName(["at", "operator[]"]) instanceof MapOrUnorderedMap }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to referenced return value
@@ -151,10 +138,7 @@ private class StdMapAt extends TaintFunction {
  * The standard map `find` function.
  */
 private class StdMapFind extends TaintFunction {
-  StdMapFind() {
-    this.hasName("find") and
-    this.getDeclaringType() instanceof MapOrUnorderedMap
-  }
+  StdMapFind() { this.getClassAndName("find") instanceof MapOrUnorderedMap }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
@@ -166,10 +150,7 @@ private class StdMapFind extends TaintFunction {
  * The standard map `erase` function.
  */
 private class StdMapErase extends TaintFunction {
-  StdMapErase() {
-    this.hasName("erase") and
-    this.getDeclaringType() instanceof MapOrUnorderedMap
-  }
+  StdMapErase() { this.getCLassAndName("erase") instanceof MapOrUnorderedMap }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to iterator return value
