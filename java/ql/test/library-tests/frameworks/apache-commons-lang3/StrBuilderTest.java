@@ -14,6 +14,8 @@ class StrBuilderTest {
 
     void test() throws Exception {
 
+        StrBuilder cons1 = new StrBuilder(taint()); sink(cons1.toString()); // $hasTaintFlow=y
+
         StrBuilder sb1 = new StrBuilder(); sb1.append(taint().toCharArray()); sink(sb1.toString()); // $hasTaintFlow=y
         StrBuilder sb2 = new StrBuilder(); sb2.append(taint().toCharArray(), 0, 0); sink(sb2.toString()); // $hasTaintFlow=y
         StrBuilder sb3 = new StrBuilder(); sb3.append(CharBuffer.wrap(taint().toCharArray())); sink(sb3.toString()); // BAD (but not detected because we don't model CharBuffer yet)

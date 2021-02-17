@@ -123,8 +123,8 @@ private class ApacheStringUtilsTaintPreservingMethod extends TaintPreservingCall
  * A method declared on Apache Commons Lang's `StrBuilder`, or the same class or its
  * renamed version `TextStringBuilder` in Commons Text.
  */
-class ApacheStrBuilderMethod extends Method {
-  ApacheStrBuilderMethod() {
+class ApacheStrBuilderCallable extends Callable {
+  ApacheStrBuilderCallable() {
     this.getDeclaringType().hasQualifiedName("org.apache.commons.lang3.text", "StrBuilder") or
     this.getDeclaringType()
         .hasQualifiedName("org.apache.commons.text", ["StrBuilder", "TextStringBuilder"])
@@ -134,8 +134,11 @@ class ApacheStrBuilderMethod extends Method {
 /**
  * An Apache Commons Lang StrBuilder method that adds taint to the StrBuilder.
  */
-private class ApacheStrBuilderTaintingMethod extends ApacheStrBuilderMethod, TaintPreservingCallable {
+private class ApacheStrBuilderTaintingMethod extends ApacheStrBuilderCallable,
+  TaintPreservingCallable {
   ApacheStrBuilderTaintingMethod() {
+    this instanceof Constructor
+    or
     this.hasName([
         "append", "appendAll", "appendFixedWidthPadLeft", "appendFixedWidthPadRight", "appendln",
         "appendSeparator", "appendWithSeparators", "insert", "readFrom", "replace", "replaceAll",
@@ -170,12 +173,14 @@ private class ApacheStrBuilderTaintingMethod extends ApacheStrBuilderMethod, Tai
       this.consumesTaintFromAllArgs() and fromArg in [0 .. this.getNumberOfParameters() - 1]
     )
   }
+
+  override predicate returnsTaintFrom(int arg) { this instanceof Constructor and arg = 0 }
 }
 
 /**
  * An Apache Commons Lang StrBuilder method that returns taint from the StrBuilder.
  */
-private class ApacheStrBuilderTaintGetter extends ApacheStrBuilderMethod, TaintPreservingCallable {
+private class ApacheStrBuilderTaintGetter extends ApacheStrBuilderCallable, TaintPreservingCallable {
   ApacheStrBuilderTaintGetter() {
     // Taint getters:
     this.hasName([
@@ -193,7 +198,7 @@ private class ApacheStrBuilderTaintGetter extends ApacheStrBuilderMethod, TaintP
 /**
  * An Apache Commons Lang StrBuilder method that writes taint from the StrBuilder to some parameter.
  */
-private class ApacheStrBuilderTaintWriter extends ApacheStrBuilderMethod, TaintPreservingCallable {
+private class ApacheStrBuilderTaintWriter extends ApacheStrBuilderCallable, TaintPreservingCallable {
   ApacheStrBuilderTaintWriter() { this.hasName(["appendTo", "getChars"]) }
 
   override predicate transfersTaint(int fromArg, int toArg) {

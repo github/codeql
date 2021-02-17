@@ -14,6 +14,9 @@ class TextStringBuilderTest {
 
     void test() throws Exception {
 
+        TextStringBuilder cons1 = new TextStringBuilder(taint()); sink(cons1.toString()); // $hasTaintFlow=y
+        TextStringBuilder cons2 = new TextStringBuilder((CharSequence)taint()); sink(cons2.toString()); // $hasTaintFlow=y
+
         TextStringBuilder sb1 = new TextStringBuilder(); sb1.append(taint().toCharArray()); sink(sb1.toString()); // $hasTaintFlow=y
         TextStringBuilder sb2 = new TextStringBuilder(); sb2.append(taint().toCharArray(), 0, 0); sink(sb2.toString()); // $hasTaintFlow=y
         TextStringBuilder sb3 = new TextStringBuilder(); sb3.append(CharBuffer.wrap(taint().toCharArray())); sink(sb3.toString()); // BAD (but not detected because we don't model CharBuffer yet)
