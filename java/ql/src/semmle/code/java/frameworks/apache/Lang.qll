@@ -144,7 +144,7 @@ private class ApacheStrBuilderTaintingMethod extends ApacheStrBuilderMethod, Tai
   }
 
   private predicate consumesTaintFromAllArgs() {
-    // Specifically the append[ln](String, Object...) overloads also consume taint from its other arguments:
+    // Specifically the append[ln](String, Object...) overloads also consume taint from their other arguments:
     this.getName() in ["appendAll", "appendWithSeparators"]
     or
     this.getName() = ["append", "appendln"] and this.getAParameter().isVarargs()
@@ -167,7 +167,7 @@ private class ApacheStrBuilderTaintingMethod extends ApacheStrBuilderMethod, Tai
         else fromArg = 1
       )
       or
-      consumesTaintFromAllArgs() and fromArg in [0 .. this.getNumberOfParameters() - 1]
+      this.consumesTaintFromAllArgs() and fromArg in [0 .. this.getNumberOfParameters() - 1]
     )
   }
 }
