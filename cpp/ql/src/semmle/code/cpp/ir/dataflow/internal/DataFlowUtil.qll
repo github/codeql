@@ -875,7 +875,10 @@ module DefUse {
 
   private predicate defAdjacentRead(IRVariable v, IRBlock bb1, int i1, IRBlock bb2, int i2) {
     varBlockReaches(v, bb1, i1, bb2) and
-    ssaRefRank(bb2, i2, v, false, _) = 1 // NOTE: Use `ssaDefReachesRank` here instead?
+    exists(int useRank |
+      useRank = ssaRefRank(bb2, i2, v, false, _) and
+      not ssaDefRank(v, bb2, _, true) < useRank
+    )
   }
 
   cached
