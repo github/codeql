@@ -30,9 +30,14 @@ private predicate setsAllowCredentials(MethodAccess header) {
 
 class CorsProbableCheckAccess extends MethodAccess {
   CorsProbableCheckAccess() {
-    getMethod().getName() = ["contains", "equals"] and
-    getMethod().getDeclaringType().getQualifiedName() =
-      ["java.util.List<String>", "java.util.ArrayList<String>", "java.lang.String"]
+    getMethod().hasName("contains") and
+    getMethod()
+        .getDeclaringType()
+        .getASourceSupertype*()
+        .hasQualifiedName("java.util", "Collection")
+    or
+    getMethod().hasName("equals") and
+    getQualifier().getType() instanceof TypeString
   }
 }
 
@@ -58,18 +63,23 @@ class CorsOriginConfig extends TaintTracking::Configuration {
     )
   }
 
-  /*
-   * This should ideally check, the origin being validated against a list/array-list.
-   * or function being used to validate the origin, which has a flow from its parameter to any of the CorsProbableCheckAccess functions
+  /**
+   * this sanitizer is oversimplistic:
+   * - it only considers local dataflows
+   * - it will consider any method calling `Collection.contains` or `String.equals` as a sanitizer
+   *   no matter if that check is taken into account and its result reaches the
+   *   return statement of the wrapper.
    */
-
   override predicate isSanitizer(DataFlow::Node node) {
-    node.asExpr() = any(CorsProbableCheckAccess ma).getAnArgument()
-    or
-    exists(MethodAccess ma, CorsProbableCheckAccess ca |
-      ma.getMethod().calls(ca.getMethod()) and
-      DataFlow::localExprFlow(ma.getMethod().getAParameter().getAnAccess(), ca.getAnArgument()) and
-      (node.asExpr() = ma.getAnArgument() or node.asExpr() = ma.getAnArgument().getAChildExpr())
+    exists(CorsProbableCheckAccess check |
+      TaintTracking::localTaint(node, DataFlow::exprNode(check.getAnArgument()))
+      or
+      exists(MethodAccess wrapperAccess, Method wrapper, int i |
+        TaintTracking::localTaint(node, DataFlow::exprNode(wrapperAccess.getArgument(i))) and
+        wrapperAccess.getMethod() = wrapper and
+        TaintTracking::localTaint(DataFlow::parameterNode(wrapper.getParameter(i)),
+          DataFlow::exprNode(check.getAnArgument()))
+      )
     )
   }
 }
