@@ -87,6 +87,46 @@ class ConnectionCall extends ConnectionCreation {
   }
 }
 
+class ProtocolRestriction extends DataFlow::CfgNode {
+  abstract DataFlow::CfgNode getContext();
+
+  abstract string getRestriction();
+}
+
+class OptionsAugOr extends ProtocolRestriction {
+  string restriction;
+
+  OptionsAugOr() {
+    exists(AugAssign aa, AttrNode attr |
+      aa.getOperation().getOp() instanceof BitOr and
+      aa.getTarget() = attr.getNode() and
+      attr.getName() = "options" and
+      attr.getObject() = node and
+      aa.getValue() = API::moduleImport("ssl").getMember(restriction).getAUse().asExpr()
+    )
+  }
+
+  override DataFlow::CfgNode getContext() { result = this }
+
+  override string getRestriction() { result = restriction }
+}
+
+class SetOptionsCall extends ProtocolRestriction {
+  override CallNode node;
+
+  SetOptionsCall() { node.getFunction().(AttrNode).getName() = "set_options" }
+
+  override DataFlow::CfgNode getContext() {
+    result.getNode() = node.getFunction().(AttrNode).getObject()
+  }
+
+  override string getRestriction() {
+    API::moduleImport("PyOpenSSL").getMember("SSL").getMember(result).getAUse().asCfgNode() in [
+        node.getArg(0), node.getArgByName("options")
+      ]
+  }
+}
+
 abstract class TlsLibrary extends string {
   TlsLibrary() { this in ["ssl"] }
 
@@ -121,6 +161,8 @@ abstract class TlsLibrary extends string {
   }
 
   abstract ConnectionCreation connection_creation();
+
+  abstract ProtocolRestriction protocol_restriction();
 }
 
 class Ssl extends TlsLibrary {
@@ -143,6 +185,8 @@ class Ssl extends TlsLibrary {
   override ContextCreation specific_context_creation() { result instanceof SSLContextCreation }
 
   override ConnectionCreation connection_creation() { result instanceof WrapSocketCall }
+
+  override ProtocolRestriction protocol_restriction() { result instanceof OptionsAugOr }
 }
 
 class PyOpenSSL extends TlsLibrary {
@@ -165,6 +209,8 @@ class PyOpenSSL extends TlsLibrary {
   }
 
   override ConnectionCreation connection_creation() { result instanceof ConnectionCall }
+
+  override ProtocolRestriction protocol_restriction() { result instanceof OptionsAugOr }
 }
 
 module ssl {
@@ -212,12 +258,10 @@ class InsecureContextConfiguration extends DataFlow::Configuration {
   abstract string flag();
 
   override predicate isBarrierOut(DataFlow::Node node) {
-    exists(AugAssign aa, AttrNode attr |
-      aa.getOperation().getOp() instanceof BitOr and
-      aa.getTarget() = attr.getNode() and
-      attr.getName() = "options" and
-      attr.getObject() = node.asCfgNode() and
-      aa.getValue() = API::moduleImport("ssl").getMember(flag()).getAUse().asExpr()
+    exists(ProtocolRestriction r |
+      r = library.protocol_restriction() and
+      node = r.getContext() and
+      r.getRestriction() = flag()
     )
   }
 }
@@ -231,7 +275,7 @@ class AllowsTLSv1 extends InsecureContextConfiguration {
 class AllowsTLSv1_1 extends InsecureContextConfiguration {
   AllowsTLSv1_1() { this = library + "AllowsTLSv1_1" }
 
-  override string flag() { result = "OP_NO_TLSv1_2" }
+  override string flag() { result = "OP_NO_TLSv1_1" }
 }
 
 predicate unsafe_connection_creation(DataFlow::Node node) {
