@@ -37,7 +37,7 @@ void good_server1(char* query) {
   puts(do_search(query));
 }
 
-int scanf(const char *, ...);
+int sscanf(const char *s, const char *format, ...);
 
 void good_server2(char* query) {
   puts("<p>Query results for ");
@@ -59,4 +59,3 @@ int main(int argc, char** argv) {
     good_server2(raw_query);
   }
 }
-
