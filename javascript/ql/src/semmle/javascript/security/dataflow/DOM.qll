@@ -122,15 +122,8 @@ class DomPropWriteNode extends Assignment {
    * Holds if the assigned value is interpreted as JavaScript via javascript: protocol.
    */
   predicate interpretsValueAsJavaScriptUrl() {
-    lhs.getPropertyName() = propertyNameIsInterpretedAsJavaScriptUrl()
+    lhs.getPropertyName() = DOM::getAPropertyNameInterpretedAsJavaScriptUrl()
   }
-}
-
-/**
- * Holds if a value assigned to property `name` of a DOM node can be interpreted as JavaScript via the `javascript:` protocol.
- */
-string propertyNameIsInterpretedAsJavaScriptUrl() {
-  result = ["action", "formaction", "href", "src", "data"]
 }
 
 /**

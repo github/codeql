@@ -491,4 +491,11 @@ module DOM {
     or
     result.hasUnderlyingType("Document")
   }
+
+  /**
+   * Holds if a value assigned to property `name` of a DOM node can be interpreted as JavaScript via the `javascript:` protocol.
+   */
+  string getAPropertyNameInterpretedAsJavaScriptUrl() {
+    result = ["action", "formaction", "href", "src", "data"]
+  }
 }
