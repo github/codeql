@@ -6042,6 +6042,21 @@
 | taint.cpp:631:6:631:14 | call to _strnextc | taint.cpp:631:2:631:18 | ... = ... |  |
 | taint.cpp:631:6:631:14 | call to _strnextc | taint.cpp:632:7:632:7 | c |  |
 | taint.cpp:631:16:631:17 |  | taint.cpp:631:6:631:14 | call to _strnextc | TAINT |
+| taint.cpp:640:9:640:12 | this | taint.cpp:640:25:640:29 | this |  |
+| taint.cpp:643:33:643:38 | source | taint.cpp:645:20:645:25 | source |  |
+| taint.cpp:644:30:644:30 | c | taint.cpp:645:10:645:10 | c |  |
+| taint.cpp:644:30:644:30 | c | taint.cpp:646:8:646:8 | c |  |
+| taint.cpp:645:10:645:10 | ref arg c | taint.cpp:646:8:646:8 | c |  |
+| taint.cpp:645:12:645:15 | call to data | taint.cpp:645:3:645:8 | call to memcpy |  |
+| taint.cpp:645:20:645:25 | source | taint.cpp:645:3:645:8 | call to memcpy | TAINT |
+| taint.cpp:645:20:645:25 | source | taint.cpp:645:12:645:15 | ref arg call to data | TAINT |
+| taint.cpp:652:9:652:12 | this | taint.cpp:652:31:652:35 | this |  |
+| taint.cpp:655:35:655:40 | source | taint.cpp:657:20:657:25 | source |  |
+| taint.cpp:656:27:656:27 | c | taint.cpp:657:10:657:10 | c |  |
+| taint.cpp:656:27:656:27 | c | taint.cpp:658:8:658:8 | c |  |
+| taint.cpp:657:12:657:15 | call to data | taint.cpp:657:3:657:8 | call to memcpy |  |
+| taint.cpp:657:20:657:25 | source | taint.cpp:657:3:657:8 | call to memcpy | TAINT |
+| taint.cpp:657:20:657:25 | source | taint.cpp:657:12:657:15 | ref arg call to data | TAINT |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |
