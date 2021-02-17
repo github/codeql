@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CIL
     /// Adds additional context that is specific for CIL extraction.
     /// One context = one DLL/EXE.
     /// </summary>
-    public sealed partial class Context : Extraction.Context, IDisposable
+    internal sealed partial class Context : Extraction.Context, IDisposable
     {
         private readonly FileStream stream;
         private Entities.Assembly? assemblyNull;

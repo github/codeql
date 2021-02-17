@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    public class PdbSourceFile : File
+    internal class PdbSourceFile : File
     {
         private readonly PDB.ISourceFile file;
 

@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// Decodes a type signature and produces a Type, for use by DecodeSignature() and friends.
     /// </summary>
-    public class TypeSignatureDecoder : ISignatureTypeProvider<Type, IGenericContext>
+    internal class TypeSignatureDecoder : ISignatureTypeProvider<Type, IGenericContext>
     {
         private readonly Context cx;
 

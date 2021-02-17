@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public class Parameter : CachedSymbol<IParameterSymbol>, IExpressionParentEntity
+    internal class Parameter : CachedSymbol<IParameterSymbol>, IExpressionParentEntity
     {
         protected IEntity Parent { get; set; }
         protected Parameter Original { get; }

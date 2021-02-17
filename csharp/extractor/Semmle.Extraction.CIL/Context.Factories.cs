@@ -9,11 +9,11 @@ namespace Semmle.Extraction.CIL
     /// <summary>
     /// Provides methods for creating and caching various entities.
     /// </summary>
-    public sealed partial class Context
+    internal sealed partial class Context
     {
         private readonly Dictionary<object, Label> ids = new Dictionary<object, Label>();
 
-        public T Populate<T>(T e) where T : IExtractedEntity
+        internal T Populate<T>(T e) where T : IExtractedEntity
         {
             if (e.Label.Valid)
             {
@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CIL
             else
             {
                 e.Label = GetNewLabel();
-                DefineLabel(e, TrapWriter.Writer, Extractor);
+                DefineLabel(e);
                 ids.Add(e, e.Label);
                 PopulateLater(() =>
                 {
@@ -76,7 +76,7 @@ namespace Semmle.Extraction.CIL
                 {
                     Label = GetNewLabel()
                 };
-                DefineLabel(e, TrapWriter.Writer, Extractor);
+                DefineLabel(e);
                 primitiveTypes[(int)code] = e;
             }
 

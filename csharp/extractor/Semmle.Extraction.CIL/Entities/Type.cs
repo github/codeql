@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A type.
     /// </summary>
-    public abstract class Type : TypeContainer, IMember
+    internal abstract class Type : TypeContainer, IMember
     {
         internal const string AssemblyTypeNameSeparator = "::";
         internal const string PrimitiveTypePrefix = "builtin" + AssemblyTypeNameSeparator + "System.";

@@ -1,6 +1,6 @@
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public abstract class CachedEntity<T> : Extraction.CachedEntity<T>
+    internal abstract class CachedEntity<T> : Extraction.CachedEntity<T>
     {
         // todo: this can be changed to an override after the .NET 5 upgrade
         protected new Context Context => (Context)base.Context;

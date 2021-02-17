@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public abstract class Type : CachedSymbol<ITypeSymbol>
+    internal abstract class Type : CachedSymbol<ITypeSymbol>
     {
         protected Type(Context cx, ITypeSymbol init)
             : base(cx, init) { }

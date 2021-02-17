@@ -7,7 +7,7 @@ namespace Semmle.Extraction.CIL
     /// An entity that has contents to extract. There is no need to populate
     /// a key as it's done in the contructor.
     /// </summary>
-    public abstract class UnlabelledEntity : Extraction.UnlabelledEntity, IExtractedEntity
+    internal abstract class UnlabelledEntity : Extraction.UnlabelledEntity, IExtractedEntity
     {
         // todo: with .NET 5 this can override the base context, and change the return type.
         public Context Cx => (Context)base.Context;

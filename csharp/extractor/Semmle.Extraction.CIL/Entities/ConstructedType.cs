@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A constructed type.
     /// </summary>
-    public sealed class ConstructedType : Type
+    internal sealed class ConstructedType : Type
     {
         private readonly Type unboundGenericType;
 

@@ -6,7 +6,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// Base class for all type containers (namespaces, types, methods).
     /// </summary>
-    public abstract class TypeContainer : LabelledEntity, IGenericContext
+    internal abstract class TypeContainer : LabelledEntity, IGenericContext
     {
         protected TypeContainer(Context cx) : base(cx)
         {

@@ -35,19 +35,19 @@ namespace Semmle.Extraction
         // A recursion guard against writing to the trap file whilst writing an id to the trap file.
         private bool writingLabel = false;
 
-        public void DefineLabel(IEntity entity, TextWriter trapFile, Extractor extractor)
+        protected void DefineLabel(IEntity entity)
         {
             if (writingLabel)
             {
                 // Don't define a label whilst writing a label.
-                PopulateLater(() => DefineLabel(entity, trapFile, extractor));
+                PopulateLater(() => DefineLabel(entity));
             }
             else
             {
                 try
                 {
                     writingLabel = true;
-                    entity.DefineLabel(trapFile, extractor);
+                    entity.DefineLabel(TrapWriter.Writer, Extractor);
                 }
                 finally
                 {
@@ -70,13 +70,13 @@ namespace Semmle.Extraction
         }
 #endif
 
-        public Label GetNewLabel() => new Label(GetNewId());
+        protected Label GetNewLabel() => new Label(GetNewId());
 
-        public TEntity CreateEntity<TInit, TEntity>(CachedEntityFactory<TInit, TEntity> factory, object cacheKey, TInit init)
+        internal TEntity CreateEntity<TInit, TEntity>(CachedEntityFactory<TInit, TEntity> factory, object cacheKey, TInit init)
             where TEntity : CachedEntity =>
                 cacheKey is ISymbol s ? CreateEntity(factory, s, init, symbolEntityCache) : CreateEntity(factory, cacheKey, init, objectEntityCache);
 
-        public TEntity CreateEntityFromSymbol<TSymbol, TEntity>(CachedEntityFactory<TSymbol, TEntity> factory, TSymbol init)
+        internal TEntity CreateEntityFromSymbol<TSymbol, TEntity>(CachedEntityFactory<TSymbol, TEntity> factory, TSymbol init)
             where TSymbol : ISymbol
             where TEntity : CachedEntity => CreateEntity(factory, init, init, symbolEntityCache);
 
@@ -103,7 +103,7 @@ namespace Semmle.Extraction
 
                 dictionary[cacheKey] = entity;
 
-                DefineLabel(entity, TrapWriter.Writer, Extractor);
+                DefineLabel(entity);
                 if (entity.NeedsPopulation)
                     Populate(init as ISymbol, entity);
 
@@ -118,31 +118,10 @@ namespace Semmle.Extraction
         }
 
         /// <summary>
-        /// Should the given entity be extracted?
-        /// A second call to this method will always return false,
-        /// on the assumption that it would have been extracted on the first call.
-        ///
-        /// This is used to track the extraction of generics, which cannot be extracted
-        /// in a top-down manner.
-        /// </summary>
-        /// <param name="entity">The entity to extract.</param>
-        /// <returns>True only on the first call for a particular entity.</returns>
-        public bool ExtractGenerics(CachedEntity entity)
-        {
-            if (extractedGenerics.Contains(entity.Label))
-            {
-                return false;
-            }
-
-            extractedGenerics.Add(entity.Label);
-            return true;
-        }
-
-        /// <summary>
         /// Creates a fresh label with ID "*", and set it on the
         /// supplied <paramref name="entity"/> object.
         /// </summary>
-        public void AddFreshLabel(Entity entity)
+        internal void AddFreshLabel(Entity entity)
         {
             entity.Label = GetNewLabel();
             entity.DefineFreshLabel(TrapWriter.Writer);
@@ -154,7 +133,6 @@ namespace Semmle.Extraction
 
         private readonly IDictionary<object, CachedEntity> objectEntityCache = new Dictionary<object, CachedEntity>();
         private readonly IDictionary<ISymbol, CachedEntity> symbolEntityCache = new Dictionary<ISymbol, CachedEntity>(10000, SymbolEqualityComparer.Default);
-        private readonly HashSet<Label> extractedGenerics = new HashSet<Label>();
 
         /// <summary>
         /// Queue of items to populate later.
@@ -204,11 +182,11 @@ namespace Semmle.Extraction
             }
         }
 
-        public Context(Extractor e, TrapWriter trapWriter, bool addAssemblyTrapPrefix = false)
+        protected Context(Extractor extractor, TrapWriter trapWriter, bool shouldAddAssemblyTrapPrefix = false)
         {
-            Extractor = e;
+            Extractor = extractor;
             TrapWriter = trapWriter;
-            ShouldAddAssemblyTrapPrefix = addAssemblyTrapPrefix;
+            ShouldAddAssemblyTrapPrefix = shouldAddAssemblyTrapPrefix;
         }
 
         private int currentRecursiveDepth = 0;
@@ -277,7 +255,7 @@ namespace Semmle.Extraction
         /// <param name="optionalSymbol">Symbol for reporting errors.</param>
         /// <param name="entity">The entity to populate.</param>
         /// <exception cref="InternalError">Thrown on invalid trap stack behaviour.</exception>
-        public void Populate(ISymbol? optionalSymbol, CachedEntity entity)
+        private void Populate(ISymbol? optionalSymbol, CachedEntity entity)
         {
             if (writingLabel)
             {
@@ -372,7 +350,7 @@ namespace Semmle.Extraction
         /// <param name="message">The text of the message.</param>
         /// <param name="optionalSymbol">The symbol of the error, or null.</param>
         /// <param name="optionalEntity">The entity of the error, or null.</param>
-        public void ExtractionError(string message, ISymbol? optionalSymbol, Entity optionalEntity)
+        private void ExtractionError(string message, ISymbol? optionalSymbol, Entity optionalEntity)
         {
             if (!(optionalSymbol is null))
             {
@@ -392,9 +370,9 @@ namespace Semmle.Extraction
         /// Log an extraction message.
         /// </summary>
         /// <param name="msg">The message to log.</param>
-        public void ExtractionError(Message msg)
+        private void ExtractionError(Message msg)
         {
-            new Entities.ExtractionMessage(this, msg);
+            new ExtractionMessage(this, msg);
             Extractor.Message(msg);
         }
 
@@ -412,7 +390,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// Signal an error in the program model.
         /// </summary>
-        /// <param name="node">Symbol causing the error.</param>
+        /// <param name="symbol">Symbol causing the error.</param>
         /// <param name="msg">The error message.</param>
         public void ModelError(ISymbol symbol, string msg)
         {

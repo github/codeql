@@ -6,7 +6,7 @@ namespace Semmle.Extraction.CIL
     /// When we decode a type/method signature, we need access to
     /// generic parameters.
     /// </summary>
-    public interface IGenericContext
+    internal interface IGenericContext
     {
         Context Cx { get; }
 

@@ -6,7 +6,7 @@ using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public class Compilation : CachedEntity<object>
+    internal class Compilation : CachedEntity<object>
     {
         private static (string Cwd, string[] Args) settings;
         private static int hashCode;

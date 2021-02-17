@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Semmle.Extraction.Entities;
+using System.Collections.Generic;
 
 namespace Semmle.Extraction.CSharp
 {
@@ -9,7 +10,7 @@ namespace Semmle.Extraction.CSharp
     /// State that needs to be available throughout the extraction process.
     /// There is one Context object per trap output file.
     /// </summary>
-    public class Context : Extraction.Context
+    internal class Context : Extraction.Context
     {
         /// <summary>
         /// The program database provided by Roslyn.
@@ -50,7 +51,7 @@ namespace Semmle.Extraction.CSharp
 
         public bool IsAssemblyScope => scope is AssemblyScope;
 
-        public SyntaxTree SourceTree => scope is SourceScope sc ? sc.SourceTree : null;
+        private SyntaxTree SourceTree => scope is SourceScope sc ? sc.SourceTree : null;
 
         /// <summary>
         ///     Whether the given symbol needs to be defined in this context.
@@ -115,6 +116,29 @@ namespace Semmle.Extraction.CSharp
 
             loc = null;
             return false;
+        }
+
+        private readonly HashSet<Label> extractedGenerics = new HashSet<Label>();
+
+        /// <summary>
+        /// Should the given entity be extracted?
+        /// A second call to this method will always return false,
+        /// on the assumption that it would have been extracted on the first call.
+        ///
+        /// This is used to track the extraction of generics, which cannot be extracted
+        /// in a top-down manner.
+        /// </summary>
+        /// <param name="entity">The entity to extract.</param>
+        /// <returns>True only on the first call for a particular entity.</returns>
+        internal bool ExtractGenerics(CachedEntity entity)
+        {
+            if (extractedGenerics.Contains(entity.Label))
+            {
+                return false;
+            }
+
+            extractedGenerics.Add(entity.Label);
+            return true;
         }
     }
 }

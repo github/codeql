@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public class Assembly : Extraction.Entities.Location
+    internal class Assembly : Extraction.Entities.Location
     {
         // todo: this can be changed to an override after the .NET 5 upgrade
         private new Context Context => (Context)base.Context;

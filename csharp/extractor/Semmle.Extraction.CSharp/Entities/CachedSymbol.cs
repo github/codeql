@@ -9,7 +9,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public abstract class CachedSymbol<T> : CachedEntity<T> where T : ISymbol
+    internal abstract class CachedSymbol<T> : CachedEntity<T> where T : ISymbol
     {
         // todo: this can be changed to an override after the .NET 5 upgrade
         protected new Context Context => (Context)base.Context;

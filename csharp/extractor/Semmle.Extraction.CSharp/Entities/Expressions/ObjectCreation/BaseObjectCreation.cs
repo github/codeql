@@ -52,7 +52,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         ObjectInitializer.Create(new ExpressionNodeInfo(Context, Syntax.Initializer, this, -1).SetType(Type));
                         break;
                     default:
-                        Context.ModelError("Unhandled initializer in object creation");
+                        Context.ModelError(Syntax.Initializer, "Unhandled initializer in object creation");
                         break;
                 }
             }

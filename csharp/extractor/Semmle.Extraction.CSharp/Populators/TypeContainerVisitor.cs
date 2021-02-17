@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Populators
 {
-    public class TypeContainerVisitor : CSharpSyntaxVisitor
+    internal class TypeContainerVisitor : CSharpSyntaxVisitor
     {
         protected Context Cx { get; }
         protected IEntity Parent { get; }

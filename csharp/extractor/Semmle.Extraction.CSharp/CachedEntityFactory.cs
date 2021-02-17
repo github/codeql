@@ -1,11 +1,9 @@
-using Microsoft.CodeAnalysis;
-
 namespace Semmle.Extraction.CSharp
 {
     /// <summary>
     /// A factory for creating cached entities.
     /// </summary>
-    public abstract class CachedEntityFactory<TInit, TEntity>
+    internal abstract class CachedEntityFactory<TInit, TEntity>
         : Extraction.CachedEntityFactory<TInit, TEntity> where TEntity : CachedEntity
     {
         /// <summary>

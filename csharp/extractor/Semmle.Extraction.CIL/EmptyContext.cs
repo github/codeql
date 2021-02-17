@@ -5,7 +5,7 @@ namespace Semmle.Extraction.CIL
     /// <summary>
     /// A generic context which does not contain any type parameters.
     /// </summary>
-    public class EmptyContext : IGenericContext
+    internal class EmptyContext : IGenericContext
     {
         public EmptyContext(Context cx)
         {

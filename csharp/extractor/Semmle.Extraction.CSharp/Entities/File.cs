@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public class File : Extraction.Entities.File
+    internal class File : Extraction.Entities.File
     {
         // todo: this can be changed to an override after the .NET 5 upgrade
         private new Context Context => (Context)base.Context;

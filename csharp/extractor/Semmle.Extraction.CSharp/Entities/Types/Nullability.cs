@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public sealed class Nullability
+    internal sealed class Nullability
     {
         public int Annotation { get; }
 
@@ -96,7 +96,7 @@ namespace Semmle.Extraction.CSharp.Entities
         }
     }
 
-    public class NullabilityEntity : CachedEntity<Nullability>
+    internal class NullabilityEntity : CachedEntity<Nullability>
     {
         public NullabilityEntity(Context cx, Nullability init) : base(cx, init)
         {

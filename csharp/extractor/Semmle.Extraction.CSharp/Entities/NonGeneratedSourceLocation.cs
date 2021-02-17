@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public class NonGeneratedSourceLocation : Extraction.Entities.SourceLocation
+    internal class NonGeneratedSourceLocation : Extraction.Entities.SourceLocation
     {
         // todo: this can be changed to an override after the .NET 5 upgrade
         private new Context Context => (Context)base.Context;

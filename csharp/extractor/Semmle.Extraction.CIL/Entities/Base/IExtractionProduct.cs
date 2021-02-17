@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CIL
     /// - Enumerate Contents to produce more extraction products
     /// - Extract these until there is nothing left to extract
     /// </remarks>
-    public interface IExtractionProduct
+    internal interface IExtractionProduct
     {
         /// <summary>
         /// Perform further extraction/population of this item as necessary.

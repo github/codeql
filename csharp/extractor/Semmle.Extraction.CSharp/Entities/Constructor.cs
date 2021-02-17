@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public class Constructor : Method
+    internal class Constructor : Method
     {
         private Constructor(Context cx, IMethodSymbol init)
             : base(cx, init) { }
