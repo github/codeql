@@ -61,6 +61,13 @@ class EssaVariable extends TEssaDefinition {
    * defined by `from ... import *` and the like.
    */
   predicate isMetaVariable() { this.getName() = "$" }
+
+  /**
+   * Gets the location of this variable.
+   *
+   * Yields the location of the corresponding definition of this variable.
+   */
+  Location getLocation() { result = this.getDefinition().getLocation() }
 }
 
 /*

@@ -6,7 +6,7 @@ Valid QL comments are known as QLDoc. This document describes the recommended st
 
 ### General requirements
 
-1. Documentation must adhere to the [QLDoc specification](https://help.semmle.com/QL/ql-handbook/qldoc.html).
+1. Documentation must adhere to the [QLDoc specification](https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#qldoc).
 1. Documentation comments should be appropriate for users of the code.
 1. Documentation for maintainers of the code must use normal comments.
 1. Use `/** ... */` for documentation, even for single line comments.

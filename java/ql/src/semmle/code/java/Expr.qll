@@ -438,7 +438,7 @@ class ArrayCreationExpr extends Expr, @arraycreationexpr {
     result.getIndex() = index
   }
 
-  /** Gets the initializer of this array creation expression. */
+  /** Gets the initializer of this array creation expression, if any. */
   ArrayInit getInit() { result.isNthChildOf(this, -2) }
 
   /**
@@ -446,7 +446,7 @@ class ArrayCreationExpr extends Expr, @arraycreationexpr {
    */
   int getFirstDimensionSize() {
     if exists(getInit())
-    then result = count(getInit().getAnInit())
+    then result = getInit().getSize()
     else result = getDimension(0).(CompileTimeConstantExpr).getIntValue()
   }
 
@@ -456,7 +456,17 @@ class ArrayCreationExpr extends Expr, @arraycreationexpr {
   override string getAPrimaryQlClass() { result = "ArrayCreationExpr" }
 }
 
-/** An array initializer occurs in an array creation expression. */
+/**
+ * An array initializer consisting of an opening and closing curly bracket and
+ * optionally containing expressions (which themselves can be array initializers)
+ * representing the elements of the array. For example: `{ 'a', 'b' }`.
+ *
+ * This expression type matches array initializers representing the values for
+ * annotation elements as well, despite the Java Language Specification considering
+ * them a separate type, `ElementValueArrayInitializer`. It does however not match
+ * values for an array annotation element which consist of a single element
+ * without enclosing curly brackets (as per JLS).
+ */
 class ArrayInit extends Expr, @arrayinit {
   /**
    * An expression occurring in this initializer.
@@ -468,6 +478,12 @@ class ArrayInit extends Expr, @arrayinit {
 
   /** Gets the initializer occurring at the specified (zero-based) position. */
   Expr getInit(int index) { result = this.getAnInit() and result.getIndex() = index }
+
+  /**
+   * Gets the number of expressions in this initializer, that is, the size the
+   * created array will have.
+   */
+  int getSize() { result = count(getAnInit()) }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "{...}" }

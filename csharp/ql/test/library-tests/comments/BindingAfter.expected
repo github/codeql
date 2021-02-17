@@ -55,3 +55,6 @@
 | comments2.cs:118:5:118:21 | // ... | comments2.cs:119:11:119:25 | GenericClass<> | GenericClass<> |
 | comments2.cs:124:5:124:16 | // ... | comments2.cs:125:9:125:20 | GenericFn | GenericFn |
 | comments2.cs:127:20:127:23 | // ... | comments2.cs:128:9:128:17 | return ...; | x |
+| trivia.cs:1:1:3:15 | // ... | trivia.cs:14:7:14:9 | Tr1 |  |
+| trivia.cs:13:89:13:103 | // ... | trivia.cs:14:7:14:9 | Tr1 | New checksum |
+| trivia.cs:25:14:25:38 | // ... | trivia.cs:26:9:26:17 | ... ...; | numbering not affected |

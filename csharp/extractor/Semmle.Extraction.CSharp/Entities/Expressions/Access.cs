@@ -52,7 +52,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             if (implicitThis && !symbol.IsStatic)
             {
-                This.CreateImplicit(cx, Entities.Type.Create(cx, symbol.ContainingType), Location, this, -1);
+                This.CreateImplicit(cx, symbol.ContainingType, Location, this, -1);
             }
         }
 

@@ -50,7 +50,15 @@ predicate primitiveVariadicFormatter(
     then formatParamIndex = f.getNumberOfParameters() - 3
     else formatParamIndex = f.getNumberOfParameters() - 2
   ) and
-  if type = "" then outputParamIndex = -1 else outputParamIndex = 0 // Conveniently, these buffer parameters are all at index 0.
+  (
+    if type = "" then outputParamIndex = -1 else outputParamIndex = 0 // Conveniently, these buffer parameters are all at index 0.
+  ) and
+  not (
+    // exclude functions with an implementation in the snapshot source
+    // directory, as they may not be standard implementations.
+    exists(f.getBlock()) and
+    exists(f.getFile().getRelativePath())
+  )
 }
 
 private predicate callsVariadicFormatter(

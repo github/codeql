@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             var info = new ExpressionInfo(
                 cx,
-                new AnnotatedType(Entities.Type.Create(cx, type), Microsoft.CodeAnalysis.NullableAnnotation.None),
+                AnnotatedTypeSymbol.CreateNotAnnotated(type),
                 location,
                 ExprKind.TYPEOF,
                 parent,

@@ -58,9 +58,18 @@ newtype TNode =
    * That is, `call` contains argument `**{"foo": bar}` which is passed
    * to parameter `foo` of `callable`.
    */
-  TKwUnpacked(CallNode call, CallableValue callable, string name) {
+  TKwUnpackedNode(CallNode call, CallableValue callable, string name) {
     call_unpacks(call, _, callable, name, _)
-  }
+  } or
+  /**
+   * A synthetic node representing that an iterable sequence flows to consumer.
+   */
+  TIterableSequenceNode(UnpackingAssignmentSequenceTarget consumer) or
+  /**
+   * A synthetic node representing that there may be an iterable element
+   * for `consumer` to consume.
+   */
+  TIterableElementNode(UnpackingAssignmentTarget consumer)
 
 /** Helper for `Node::getEnclosingCallable`. */
 private DataFlowCallable getCallableScope(Scope s) {
@@ -134,7 +143,7 @@ class EssaNode extends Node, TEssaNode {
 
   override Scope getScope() { result = var.getScope() }
 
-  override Location getLocation() { result = var.getDefinition().getLocation() }
+  override Location getLocation() { result = var.getLocation() }
 }
 
 /** A data-flow node corresponding to a control-flow node. */
@@ -154,6 +163,23 @@ class CfgNode extends Node, TCfgNode {
   override Scope getScope() { result = node.getScope() }
 
   override Location getLocation() { result = node.getLocation() }
+}
+
+/** A data-flow node corresponding to a `CallNode` in the control-flow graph. */
+class CallCfgNode extends CfgNode {
+  override CallNode node;
+
+  /**
+   * Gets the data-flow node for the function component of the call corresponding to this data-flow
+   * node.
+   */
+  Node getFunction() { result.asCfgNode() = node.getFunction() }
+
+  /** Gets the data-flow node corresponding to the i'th argument of the call corresponding to this data-flow node */
+  Node getArg(int i) { result.asCfgNode() = node.getArg(i) }
+
+  /** Gets the data-flow node corresponding to the named argument of the call corresponding to this data-flow node */
+  Node getArgByName(string name) { result.asCfgNode() = node.getArgByName(name) }
 }
 
 /**
@@ -179,7 +205,12 @@ ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
 class ParameterNode extends CfgNode {
   ParameterDefinition def;
 
-  ParameterNode() { node = def.getDefiningNode() }
+  ParameterNode() {
+    node = def.getDefiningNode() and
+    // Disregard parameters that we cannot resolve
+    // TODO: Make this unnecessary
+    exists(DataFlowCallable c | node = c.getParameter(_))
+  }
 
   /**
    * Holds if this node is the parameter of callable `c` at the
@@ -191,6 +222,17 @@ class ParameterNode extends CfgNode {
 
   /** Gets the `Parameter` this `ParameterNode` represents. */
   Parameter getParameter() { result = def.getParameter() }
+}
+
+/** A data flow node that represents a call argument. */
+class ArgumentNode extends Node {
+  ArgumentNode() { this = any(DataFlowCall c).getArg(_) }
+
+  /** Holds if this argument occurs at the given position in the given call. */
+  predicate argumentOf(DataFlowCall call, int pos) { this = call.getArg(pos) }
+
+  /** Gets the call in which this node is an argument. */
+  final DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
 /**
@@ -322,11 +364,11 @@ class KwOverflowNode extends Node, TKwOverflowNode {
  * The node representing the synthetic argument of a call that is unpacked from a dictionary
  * argument.
  */
-class KwUnpacked extends Node, TKwUnpacked {
+class KwUnpackedNode extends Node, TKwUnpackedNode {
   CallNode call;
   string name;
 
-  KwUnpacked() { this = TKwUnpacked(call, _, name) }
+  KwUnpackedNode() { this = TKwUnpackedNode(call, _, name) }
 
   override string toString() { result = "KwUnpacked " + name }
 
@@ -338,6 +380,42 @@ class KwUnpacked extends Node, TKwUnpacked {
   }
 
   override Location getLocation() { result = call.getLocation() }
+}
+
+/**
+ * A synthetic node representing an iterable sequence. Used for changing content type
+ * for instance from a `ListElement` to a `TupleElement`, especially if the content is
+ * transferred via a read step which cannot be broken up into a read and a store. The
+ * read step then targets TIterableSequence, and the conversion can happen via a read
+ * step to TIterableElement followed by a store step to the target.
+ */
+class IterableSequenceNode extends Node, TIterableSequenceNode {
+  CfgNode consumer;
+
+  IterableSequenceNode() { this = TIterableSequenceNode(consumer.getNode()) }
+
+  override string toString() { result = "IterableSequence" }
+
+  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+
+  override Location getLocation() { result = consumer.getLocation() }
+}
+
+/**
+ * A synthetic node representing an iterable element. Used for changing content type
+ * for instance from a `ListElement` to a `TupleElement`. This would happen via a
+ * read step from the list to IterableElement followed by a store step to the tuple.
+ */
+class IterableElementNode extends Node, TIterableElementNode {
+  CfgNode consumer;
+
+  IterableElementNode() { this = TIterableElementNode(consumer.getNode()) }
+
+  override string toString() { result = "IterableElement" }
+
+  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+
+  override Location getLocation() { result = consumer.getLocation() }
 }
 
 /**
@@ -382,11 +460,95 @@ class BarrierGuard extends GuardNode {
  * - Function parameters
  */
 class LocalSourceNode extends Node {
-  LocalSourceNode() { not simpleLocalFlowStep(_, this) }
+  LocalSourceNode() {
+    not simpleLocalFlowStep+(any(CfgNode n), this) and
+    not this instanceof ModuleVariableNode
+    or
+    this = any(ModuleVariableNode mvn).getARead()
+  }
 
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
+  pragma[inline]
+  predicate flowsTo(Node nodeTo) { Cached::hasLocalSource(nodeTo, this) }
+
+  /**
+   * Gets a reference (read or write) of attribute `attrName` on this node.
+   */
+  AttrRef getAnAttributeReference(string attrName) { Cached::namedAttrRef(this, attrName, result) }
+
+  /**
+   * Gets a read of attribute `attrName` on this node.
+   */
+  AttrRead getAnAttributeRead(string attrName) { result = getAnAttributeReference(attrName) }
+
+  /**
+   * Gets a reference (read or write) of any attribute on this node.
+   */
+  AttrRef getAnAttributeReference() {
+    Cached::namedAttrRef(this, _, result)
+    or
+    Cached::dynamicAttrRef(this, result)
+  }
+
+  /**
+   * Gets a read of any attribute on this node.
+   */
+  AttrRead getAnAttributeRead() { result = getAnAttributeReference() }
+
+  /**
+   * Gets a call to this node.
+   */
+  CallCfgNode getACall() { Cached::call(this, result) }
+}
+
+cached
+private module Cached {
+  /**
+   * Holds if `source` is a `LocalSourceNode` that can reach `sink` via local flow steps.
+   *
+   * The slightly backwards parametering ordering is to force correct indexing.
+   */
   cached
-  predicate flowsTo(Node nodeTo) { simpleLocalFlowStep*(this, nodeTo) }
+  predicate hasLocalSource(Node sink, Node source) {
+    // Declaring `source` to be a `SourceNode` currently causes a redundant check in the
+    // recursive case, so instead we check it explicitly here.
+    source = sink and
+    source instanceof LocalSourceNode
+    or
+    exists(Node mid |
+      hasLocalSource(mid, source) and
+      simpleLocalFlowStep(mid, sink)
+    )
+  }
+
+  /**
+   * Holds if `base` flows to the base of `ref` and `ref` has attribute name `attr`.
+   */
+  cached
+  predicate namedAttrRef(LocalSourceNode base, string attr, AttrRef ref) {
+    base.flowsTo(ref.getObject()) and
+    ref.getAttributeName() = attr
+  }
+
+  /**
+   * Holds if `base` flows to the base of `ref` and `ref` has no known attribute name.
+   */
+  cached
+  predicate dynamicAttrRef(LocalSourceNode base, AttrRef ref) {
+    base.flowsTo(ref.getObject()) and
+    not exists(ref.getAttributeName())
+  }
+
+  /**
+   * Holds if `func` flows to the callee of `call`.
+   */
+  cached
+  predicate call(LocalSourceNode func, CallCfgNode call) {
+    exists(CfgNode n |
+      func.flowsTo(n) and
+      n = call.getFunction()
+    )
+  }
 }
 
 /**

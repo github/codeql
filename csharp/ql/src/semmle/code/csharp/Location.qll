@@ -14,6 +14,7 @@
 
 import File
 private import Attribute
+private import semmle.code.csharp.commons.Compilation
 
 /**
  * A location of a program element.
@@ -61,6 +62,12 @@ class EmptyLocation extends Location {
  * within the file.
  */
 class SourceLocation extends Location, @location_default {
+  /** Gets the location that takes into account `#line` directives, if any. */
+  Location getMappedLocation() {
+    locations_mapped(this, result) and
+    not exists(LineDirective l | l.getALocation() = this)
+  }
+
   override File getFile() { locations_default(this, result, _, _, _, _) }
 
   override predicate hasLocationInfo(
@@ -170,6 +177,9 @@ class Assembly extends Location, Attributable, @assembly {
 
   /** Gets the version of this assembly. */
   Version getVersion() { assemblies(this, _, _, _, result) }
+
+  /** Gets the compilation producing this assembly, if any. */
+  Compilation getCompilation() { compilation_assembly(result, this) }
 
   override File getFile() { assemblies(this, result, _, _, _) }
 

@@ -118,6 +118,10 @@ nodes
 | react-native.js:8:32:8:38 | tainted |
 | react-native.js:10:23:10:29 | tainted |
 | react-native.js:10:23:10:29 | tainted |
+| react.js:10:56:10:72 | document.location |
+| react.js:10:56:10:72 | document.location |
+| react.js:10:56:10:77 | documen ... on.hash |
+| react.js:10:56:10:77 | documen ... on.hash |
 | template-sinks.js:12:9:12:31 | tainted |
 | template-sinks.js:12:19:12:31 | req.query.foo |
 | template-sinks.js:12:19:12:31 | req.query.foo |
@@ -275,6 +279,10 @@ edges
 | react-native.js:7:7:7:33 | tainted | react-native.js:10:23:10:29 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
+| react.js:10:56:10:72 | document.location | react.js:10:56:10:77 | documen ... on.hash |
+| react.js:10:56:10:72 | document.location | react.js:10:56:10:77 | documen ... on.hash |
+| react.js:10:56:10:72 | document.location | react.js:10:56:10:77 | documen ... on.hash |
+| react.js:10:56:10:72 | document.location | react.js:10:56:10:77 | documen ... on.hash |
 | template-sinks.js:12:9:12:31 | tainted | template-sinks.js:14:17:14:23 | tainted |
 | template-sinks.js:12:9:12:31 | tainted | template-sinks.js:14:17:14:23 | tainted |
 | template-sinks.js:12:9:12:31 | tainted | template-sinks.js:15:16:15:22 | tainted |
@@ -352,6 +360,7 @@ edges
 | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | $@ flows to here and is interpreted as code. | module.js:9:16:9:29 | req.query.code | User-provided value |
 | react-native.js:8:32:8:38 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:8:32:8:38 | tainted | $@ flows to here and is interpreted as code. | react-native.js:7:17:7:33 | req.param("code") | User-provided value |
 | react-native.js:10:23:10:29 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:10:23:10:29 | tainted | $@ flows to here and is interpreted as code. | react-native.js:7:17:7:33 | req.param("code") | User-provided value |
+| react.js:10:56:10:77 | documen ... on.hash | react.js:10:56:10:72 | document.location | react.js:10:56:10:77 | documen ... on.hash | $@ flows to here and is interpreted as code. | react.js:10:56:10:72 | document.location | User-provided value |
 | template-sinks.js:14:17:14:23 | tainted | template-sinks.js:12:19:12:31 | req.query.foo | template-sinks.js:14:17:14:23 | tainted | $@ flows to here and is interpreted as a template, which may contain code. | template-sinks.js:12:19:12:31 | req.query.foo | User-provided value |
 | template-sinks.js:15:16:15:22 | tainted | template-sinks.js:12:19:12:31 | req.query.foo | template-sinks.js:15:16:15:22 | tainted | $@ flows to here and is interpreted as a template, which may contain code. | template-sinks.js:12:19:12:31 | req.query.foo | User-provided value |
 | template-sinks.js:16:18:16:24 | tainted | template-sinks.js:12:19:12:31 | req.query.foo | template-sinks.js:16:18:16:24 | tainted | $@ flows to here and is interpreted as a template, which may contain code. | template-sinks.js:12:19:12:31 | req.query.foo | User-provided value |

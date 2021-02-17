@@ -4,10 +4,10 @@
 <qhelp>
 
 <overview>
-<p>Java offers two mechanisms for SSL authentication - trust manager and hostname verifier. Trust manager validates the peer's certificate chain while hostname verification establishes that the hostname in the URL matches the hostname in the server's identification.</p>
+<p>Java offers two mechanisms for SSL authentication - trust manager and hostname verifier (checked by the <code>java/insecure-hostname-verifier</code> query). Trust manager validates the peer's certificate chain while hostname verification establishes that the hostname in the URL matches the hostname in the server's identification.</p>
 <p>And when SSLSocket or SSLEngine is created without a valid parameter of setEndpointIdentificationAlgorithm, hostname verification is disabled by default.</p>
-<p>Unsafe implementation of the interface X509TrustManager, HostnameVerifier, and SSLSocket/SSLEngine ignores all SSL certificate validation errors when establishing an HTTPS connection, thereby making the app vulnerable to man-in-the-middle attacks.</p>
-<p>This query checks whether trust manager is set to trust all certificates, the hostname verifier is turned off, or setEndpointIdentificationAlgorithm is missing. The query also covers a special implementation com.rabbitmq.client.ConnectionFactory.</p>
+<p>Unsafe implementation of the interface X509TrustManager and SSLSocket/SSLEngine ignores all SSL certificate validation errors when establishing an HTTPS connection, thereby making the app vulnerable to man-in-the-middle attacks.</p>
+<p>This query checks whether trust manager is set to trust all certificates or setEndpointIdentificationAlgorithm is missing. The query also covers a special implementation com.rabbitmq.client.ConnectionFactory.</p>
 </overview>
 
 <recommendation>
@@ -15,7 +15,7 @@
 </recommendation>
 
 <example>
-<p>The following two examples show two ways of configuring X509 trust cert manager and hostname verifier. In the 'BAD' case,
+<p>The following two examples show two ways of configuring X509 trust cert manager. In the 'BAD' case,
 no validation is performed thus any certificate is trusted. In the 'GOOD' case, the proper validation is performed.</p>
 <sample src="UnsafeCertTrust.java" />
 </example>

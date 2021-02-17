@@ -1,0 +1,1 @@
+| JxBrowserWithoutCertValidationV6_23_1.java:17:27:17:39 | new Browser(...) | This JxBrowser instance may not check HTTPS certificates. |

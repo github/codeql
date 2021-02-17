@@ -1,4 +1,5 @@
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Populators;
 using System.Collections.Generic;
@@ -40,7 +41,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
             foreach (var p in parameters.Zip(originalParameters, (paramSymbol, originalParam) => new { paramSymbol, originalParam }))
             {
-                var original = SymbolEqualityComparer.Default.Equals(p.paramSymbol, p.originalParam) ? null : Parameter.Create(Context, p.originalParam, originalMethod);
+                var original = SymbolEqualityComparer.Default.Equals(p.paramSymbol, p.originalParam)
+                    ? null
+                    : Parameter.Create(Context, p.originalParam, originalMethod);
                 Parameter.Create(Context, p.paramSymbol, this, original);
             }
 
@@ -81,8 +84,18 @@ namespace Semmle.Extraction.CSharp.Entities
                        else
                            Expression.Create(Context, expr, this, 0);
 
-                       Context.NumberOfLines(trapFile, BodyDeclaringSymbol, this);
+                       NumberOfLines(trapFile, BodyDeclaringSymbol, this);
                    });
+            }
+        }
+
+        public static void NumberOfLines(TextWriter trapFile, ISymbol symbol, IEntity callable)
+        {
+            foreach (var decl in symbol.DeclaringSyntaxReferences)
+            {
+                var node = (CSharpSyntaxNode)decl.GetSyntax();
+                var lineCounts = node.Accept(new AstLineCounter());
+                trapFile.numlines(callable, lineCounts);
             }
         }
 
@@ -110,7 +123,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         ///  Factored out to share logic between `Method` and `UserOperator`.
         /// </summary>
-        protected static void BuildMethodId(Method m, TextWriter trapFile)
+        private static void BuildMethodId(Method m, TextWriter trapFile)
         {
             m.symbol.ReturnType.BuildOrWriteId(m.Context, trapFile, m.symbol);
             trapFile.Write(" ");
@@ -324,12 +337,12 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        protected void ExtractRefReturn(TextWriter trapFile)
+        public static void ExtractRefReturn(TextWriter trapFile, IMethodSymbol method, IEntity element)
         {
-            if (symbol.ReturnsByRef)
-                trapFile.type_annotation(this, Kinds.TypeAnnotation.Ref);
-            if (symbol.ReturnsByRefReadonly)
-                trapFile.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef);
+            if (method.ReturnsByRef)
+                trapFile.type_annotation(element, Kinds.TypeAnnotation.Ref);
+            if (method.ReturnsByRefReadonly)
+                trapFile.type_annotation(element, Kinds.TypeAnnotation.ReadonlyRef);
         }
 
         protected void PopulateMethod(TextWriter trapFile)

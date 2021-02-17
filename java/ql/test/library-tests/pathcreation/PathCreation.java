@@ -18,7 +18,7 @@ class PathCreation {
         File f = new File(new File("dir"), "sub");
     }
 
-    public void testNewFileWithURI() {
+    public void testNewFileWithURI() throws java.net.URISyntaxException {
         File f = new File(new URI("dir"));
     }
 
@@ -27,7 +27,7 @@ class PathCreation {
         Path p2 = Path.of("dir", "sub");
     }
 
-    public void testPathOfWithURI() {
+    public void testPathOfWithURI() throws java.net.URISyntaxException {
         Path p = Path.of(new URI("dir"));
     }
 
@@ -36,7 +36,7 @@ class PathCreation {
         Path p2 = Paths.get("dir", "sub");
     }
 
-    public void testPathsGetWithURI() {
+    public void testPathsGetWithURI() throws java.net.URISyntaxException {
         Path p = Paths.get(new URI("dir"));
     }
 
@@ -53,19 +53,19 @@ class PathCreation {
         Path p = Path.of("dir").resolve("sub");
     }
 
-    public void testNewFileWriterWithString() {
+    public void testNewFileWriterWithString() throws java.io.IOException {
         FileWriter fw = new FileWriter("dir");
     }
 
-    public void testNewFileReaderWithString() {
+    public void testNewFileReaderWithString() throws java.io.FileNotFoundException {
         FileReader fr = new FileReader("dir");
     }
 
-    public void testNewFileOutputStreamWithString() {
+    public void testNewFileOutputStreamWithString() throws java.io.FileNotFoundException {
         FileOutputStream fos = new FileOutputStream("dir");
     }
 
-    public void testNewFileInputStreamWithString() {
+    public void testNewFileInputStreamWithString() throws java.io.FileNotFoundException {
         FileInputStream fis = new FileInputStream("dir");
     }
 }

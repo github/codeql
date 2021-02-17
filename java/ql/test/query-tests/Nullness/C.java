@@ -171,7 +171,7 @@ public class C {
 
   private void verifyBool(boolean b) {
     if (!b) {
-      throw new Exception();
+      throw new Error();
     }
   }
 
@@ -192,7 +192,7 @@ public class C {
 
   private void verifyNotNull(Object obj) {
     if (obj == null) {
-      throw new Exception();
+      throw new Error();
     }
   }
 

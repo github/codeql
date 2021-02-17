@@ -110,7 +110,15 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent, Original);
 
             foreach (var l in symbol.Locations)
-                trapFile.param_location(this, Context.Create(l));
+                trapFile.param_location(this, Context.CreateLocation(l));
+
+            if (!symbol.Locations.Any() &&
+                symbol.ContainingSymbol is IMethodSymbol ms &&
+                ms.Name == WellKnownMemberNames.TopLevelStatementsEntryPointMethodName &&
+                ms.ContainingType.Name == WellKnownMemberNames.TopLevelStatementsEntryPointTypeName)
+            {
+                trapFile.param_location(this, Context.CreateLocation());
+            }
 
             if (!IsSourceDeclaration || !symbol.FromSource())
                 return;

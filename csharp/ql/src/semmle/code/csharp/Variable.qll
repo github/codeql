@@ -177,7 +177,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
   predicate hasExtensionMethodModifier() { params(this, _, _, _, 4, _, _) }
 
   /** Gets the declaring element of this parameter. */
-  Parameterizable getDeclaringElement() { params(this, _, _, _, _, result, _) }
+  override Parameterizable getDeclaringElement() { params(this, _, _, _, _, result, _) }
 
   override Parameter getUnboundDeclaration() { params(this, _, _, _, _, _, result) }
 
@@ -213,7 +213,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
   predicate hasDefaultValue() { exists(getDefaultValue()) }
 
   /** Gets the callable to which this parameter belongs, if any. */
-  override Callable getCallable() { result.getAParameter() = this }
+  override Callable getCallable() { result = this.getDeclaringElement() }
 
   /**
    * Gets an argument which is assigned to this parameter in a call to the

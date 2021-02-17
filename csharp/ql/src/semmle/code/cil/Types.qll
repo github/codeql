@@ -60,6 +60,11 @@ class Class extends ValueOrRefType {
   Class() { this.isClass() }
 }
 
+/** A `record`. */
+class Record extends Class {
+  Record() { this.isRecord() }
+}
+
 /** An `interface`. */
 class Interface extends ValueOrRefType {
   Interface() { this.isInterface() }
@@ -287,4 +292,22 @@ class CharType extends IntegralType {
 /** The type `System.Type`. */
 class SystemType extends ValueOrRefType {
   SystemType() { this.isSystemType("Type") }
+}
+
+/**
+ * A function pointer type, for example
+ *
+ * ```csharp
+ * delegate*<int, void>
+ * ```
+ */
+class FunctionPointerType extends Type, CustomModifierReceiver, Parameterizable,
+  @cil_function_pointer_type {
+  /** Gets the return type of this function pointer. */
+  Type getReturnType() { cil_function_pointer_return_type(this, result) }
+
+  /** Gets the calling convention. */
+  int getCallingConvention() { cil_function_pointer_calling_conventions(this, result) }
+
+  override string toString() { result = Type.super.toString() }
 }

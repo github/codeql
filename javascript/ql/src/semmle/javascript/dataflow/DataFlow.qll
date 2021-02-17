@@ -1079,8 +1079,19 @@ module DataFlow {
 
       override DataFlow::Node getCalleeNode() { result = DataFlow::valueNode(astNode.getCallee()) }
 
+      /**
+       * Whether i is an index that occurs after a spread argument.
+       */
+      pragma[nomagic]
+      private predicate isIndexAfterSpread(int i) {
+        astNode.isSpreadArgument(i)
+        or
+        exists(astNode.getArgument(i)) and
+        isIndexAfterSpread(i - 1)
+      }
+
       override DataFlow::Node getArgument(int i) {
-        not astNode.isSpreadArgument([0 .. i]) and
+        not isIndexAfterSpread(i) and
         result = DataFlow::valueNode(astNode.getArgument(i))
       }
 
@@ -1307,6 +1318,20 @@ module DataFlow {
   predicate functionReturnNode(DataFlow::Node nd, Function function) {
     nd = TFunctionReturnNode(function)
   }
+
+  /**
+   * INTERNAL: Do not use outside standard library.
+   *
+   * Gets a data flow node unique to the given field declaration.
+   *
+   * Note that this node defaults to being disconnected from the data flow
+   * graph, as the individual property reads and writes affecting the field are
+   * analyzed independently of the field declaration.
+   *
+   * Certain framework models may need this node to model the behavior of
+   * class and field decorators.
+   */
+  DataFlow::Node fieldDeclarationNode(FieldDeclaration field) { result = TPropNode(field) }
 
   /**
    * Gets the data flow node corresponding the given l-value expression, if
@@ -1592,7 +1617,8 @@ module DataFlow {
       e instanceof E4X::XMLAttributeSelector or
       e instanceof E4X::XMLDotDotExpression or
       e instanceof E4X::XMLFilterExpression or
-      e instanceof E4X::XMLQualifiedIdentifier
+      e instanceof E4X::XMLQualifiedIdentifier or
+      e instanceof Angular2::PipeRefExpr
     )
     or
     exists(Expr e | e = nd.asExpr() |

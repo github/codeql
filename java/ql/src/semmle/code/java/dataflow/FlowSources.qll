@@ -226,7 +226,7 @@ class EnvInput extends LocalUserInput {
     )
     or
     // Results from various specific methods.
-    this.asExpr().(MethodAccess).getMethod() instanceof EnvTaintedMethod
+    this.asExpr().(MethodAccess).getMethod() instanceof EnvReadMethod
     or
     // Access to `System.in`.
     exists(Field f | this.asExpr() = f.getAnAccess() | f instanceof SystemIn)
@@ -292,8 +292,9 @@ private class SpringWebRequestGetMethod extends Method {
   }
 }
 
-private class EnvTaintedMethod extends Method {
-  EnvTaintedMethod() {
+/** A method that reads from the environment, such as `System.getProperty` or `System.getenv`. */
+class EnvReadMethod extends Method {
+  EnvReadMethod() {
     this instanceof MethodSystemGetenv or
     this instanceof PropertiesGetPropertyMethod or
     this instanceof MethodSystemGetProperty

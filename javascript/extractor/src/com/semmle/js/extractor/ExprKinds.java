@@ -148,23 +148,24 @@ public class ExprKinds {
     exprKinds.put("BindExpression", 97);
     exprKinds.put("ExternalModuleReference", 98);
     exprKinds.put("NonNullAssertion", 105);
+    exprKinds.put("AngularPipeRef", 119);
   }
 
   private static final Map<IdContext, Integer> idKinds =
       new EnumMap<IdContext, Integer>(IdContext.class);
 
   static {
-    idKinds.put(IdContext.label, 0);
-    idKinds.put(IdContext.varDecl, 78);
-    idKinds.put(IdContext.varAndTypeDecl, 78);
-    idKinds.put(IdContext.namespaceDecl, 78);
-    idKinds.put(IdContext.varAndNamespaceDecl, 78);
-    idKinds.put(IdContext.varAndTypeAndNamespaceDecl, 78);
-    idKinds.put(IdContext.typeOnlyImport, 78);
-    idKinds.put(IdContext.typeOnlyExport, 103);
-    idKinds.put(IdContext.varBind, 79);
-    idKinds.put(IdContext.export, 103);
-    idKinds.put(IdContext.exportBase, 103);
+    idKinds.put(IdContext.LABEL, 0);
+    idKinds.put(IdContext.VAR_DECL, 78);
+    idKinds.put(IdContext.VAR_AND_TYPE_DECL, 78);
+    idKinds.put(IdContext.NAMESPACE_DECL, 78);
+    idKinds.put(IdContext.VAR_AND_NAMESPACE_DECL, 78);
+    idKinds.put(IdContext.VAR_AND_TYPE_AND_NAMESPACE_DECL, 78);
+    idKinds.put(IdContext.TYPE_ONLY_IMPORT, 78);
+    idKinds.put(IdContext.TYPE_ONLY_EXPORT, 103);
+    idKinds.put(IdContext.VAR_BIND, 79);
+    idKinds.put(IdContext.EXPORT, 103);
+    idKinds.put(IdContext.EXPORT_BASE, 103);
   }
 
   public static int getExprKind(final Expression expr, final IdContext idContext) {

@@ -6,7 +6,7 @@ module Private {
   private import SsaReadPositionCommon
   private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl as CfgImpl
 
-  class BasicBlock = CS::Ssa::BasicBlock;
+  class BasicBlock = CS::ControlFlow::BasicBlock;
 
   class SsaVariable = SU::SsaVariable;
 

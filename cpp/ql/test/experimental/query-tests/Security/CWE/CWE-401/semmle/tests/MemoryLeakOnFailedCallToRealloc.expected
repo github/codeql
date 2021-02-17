@@ -1,0 +1,8 @@
+| test.c:34:29:34:35 | call to realloc | possible loss of original pointer on unsuccessful call realloc |
+| test.c:63:29:63:35 | call to realloc | possible loss of original pointer on unsuccessful call realloc |
+| test.c:139:29:139:35 | call to realloc | possible loss of original pointer on unsuccessful call realloc |
+| test.c:186:29:186:35 | call to realloc | possible loss of original pointer on unsuccessful call realloc |
+| test.c:282:29:282:35 | call to realloc | possible loss of original pointer on unsuccessful call realloc |
+| test.c:299:26:299:32 | call to realloc | possible loss of original pointer on unsuccessful call realloc |
+| test.c:328:29:328:35 | call to realloc | possible loss of original pointer on unsuccessful call realloc |
+| test.c:342:29:342:35 | call to realloc | possible loss of original pointer on unsuccessful call realloc |

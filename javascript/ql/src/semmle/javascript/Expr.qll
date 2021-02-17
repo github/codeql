@@ -1921,6 +1921,18 @@ private class TCompoundAssignExpr =
  */
 class CompoundAssignExpr extends TCompoundAssignExpr, Assignment {
   override string getAPrimaryQlClass() { result = "CompoundAssignExpr" }
+
+  /**
+   * Holds if this compound assignment always returns a number value.
+   */
+  predicate isNumeric() {
+    not (
+      this instanceof AssignAddExpr or
+      this instanceof AssignLogOrExpr or
+      this instanceof AssignLogAndExpr or
+      this instanceof AssignNullishCoalescingExpr
+    )
+  }
 }
 
 /**

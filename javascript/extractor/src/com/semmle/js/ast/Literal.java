@@ -6,7 +6,7 @@ import com.semmle.ts.ast.ITypeExpression;
 /**
  * A literal constant.
  *
- * <p>A <tt>null</tt> literal may occur as a TypeScript type annotation - other literals are always
+ * <p>A <code>null</code> literal may occur as a TypeScript type annotation - other literals are always
  * expressions.
  */
 public class Literal extends Expression implements ITypeExpression {

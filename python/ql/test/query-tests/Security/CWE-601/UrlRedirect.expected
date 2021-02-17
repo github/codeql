@@ -1,7 +1,0 @@
-edges
-| test.py:7:14:7:25 | dict of externally controlled string | test.py:7:14:7:43 | externally controlled string |
-| test.py:7:14:7:25 | dict of externally controlled string | test.py:7:14:7:43 | externally controlled string |
-| test.py:7:14:7:43 | externally controlled string | test.py:8:21:8:26 | externally controlled string |
-| test.py:7:14:7:43 | externally controlled string | test.py:8:21:8:26 | externally controlled string |
-#select
-| test.py:8:21:8:26 | target | test.py:7:14:7:25 | dict of externally controlled string | test.py:8:21:8:26 | externally controlled string | Untrusted URL redirection due to $@. | test.py:7:14:7:25 | Attribute | a user-provided value |

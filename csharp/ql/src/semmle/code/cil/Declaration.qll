@@ -24,9 +24,6 @@ class Declaration extends DotNet::Declaration, Element, @cil_declaration {
 
   override Declaration getUnboundDeclaration() { result = this }
 
-  /** Holds if this declaration is a source declaration. */
-  final predicate isUnboundDeclaration() { this = getUnboundDeclaration() }
-
   /**
    * DEPRECATED: Use `isUnboundDeclaration()` instead.
    *
@@ -54,29 +51,22 @@ private predicate toCSharpTypeParameterJoin(TypeParameter tp, int i, CS::Unbound
  * A member of a type. Either a type (`Type`), a method (`Method`), a property (`Property`), or an event (`Event`).
  */
 class Member extends DotNet::Member, Declaration, @cil_member {
-  /** Holds if this member is declared `public`. */
-  predicate isPublic() { cil_public(this) }
+  override predicate isPublic() { cil_public(this) }
 
-  /** Holds if this member is declared `protected.` */
-  predicate isProtected() { cil_protected(this) }
+  override predicate isProtected() { cil_protected(this) }
 
-  /** Holds if this member is `private`. */
-  predicate isPrivate() { cil_private(this) }
+  override predicate isPrivate() { cil_private(this) }
 
-  /** Holds if this member is `internal`. */
-  predicate isInternal() { cil_internal(this) }
+  override predicate isInternal() { cil_internal(this) }
 
-  /** Holds if this member is `sealed`. */
-  predicate isSealed() { cil_sealed(this) }
+  override predicate isSealed() { cil_sealed(this) }
 
-  /** Holds if this member is `abstract`. */
-  predicate isAbstract() { cil_abstract(this) }
+  override predicate isAbstract() { cil_abstract(this) }
+
+  override predicate isStatic() { cil_static(this) }
 
   /** Holds if this member has a security attribute. */
   predicate hasSecurity() { cil_security(this) }
-
-  /** Holds if this member is `static`. */
-  predicate isStatic() { cil_static(this) }
 
   override Location getLocation() { result = getDeclaringType().getLocation() }
 }

@@ -1,0 +1,22 @@
+| immutable.js:1:16:1:26 | source("a") | immutable.js:2:6:2:13 | obj["a"] |
+| immutable.js:1:16:1:26 | source("a") | immutable.js:11:6:11:18 | map1.get("a") |
+| immutable.js:1:16:1:26 | source("a") | immutable.js:12:6:12:18 | map2.get("a") |
+| immutable.js:1:16:1:26 | source("a") | immutable.js:20:6:20:21 | map3.toJS()["a"] |
+| immutable.js:1:32:1:43 | source("b1") | immutable.js:8:6:8:18 | map1.get("b") |
+| immutable.js:1:32:1:43 | source("b1") | immutable.js:13:6:13:18 | map2.get("b") |
+| immutable.js:15:28:15:38 | source("d") | immutable.js:17:6:17:18 | map3.get("d") |
+| immutable.js:22:19:22:29 | source("e") | immutable.js:22:6:22:40 | fromJS( ... et("e") |
+| immutable.js:24:18:24:25 | source() | immutable.js:25:22:25:22 | x |
+| immutable.js:29:25:29:32 | source() | immutable.js:29:53:29:53 | x |
+| immutable.js:31:7:31:14 | source() | immutable.js:31:75:31:75 | x |
+| immutable.js:33:21:33:28 | source() | immutable.js:33:49:33:49 | x |
+| immutable.js:36:38:36:45 | source() | immutable.js:37:6:37:18 | map4.get("f") |
+| immutable.js:39:25:39:32 | source() | immutable.js:40:6:40:18 | map5.get("a") |
+| immutable.js:39:58:39:65 | source() | immutable.js:41:6:41:18 | map5.get("b") |
+| immutable.js:44:40:44:47 | source() | immutable.js:45:6:45:18 | map6.get("a") |
+| immutable.js:47:33:47:40 | source() | immutable.js:48:6:48:18 | map7.get("b") |
+| immutable.js:50:10:50:17 | source() | immutable.js:50:48:50:48 | x |
+| immutable.js:52:9:52:16 | source() | immutable.js:52:64:52:64 | x |
+| immutable.js:54:8:54:15 | source() | immutable.js:54:63:54:63 | x |
+| immutable.js:56:6:56:13 | source() | immutable.js:56:62:56:62 | x |
+| immutable.js:58:13:58:20 | source() | immutable.js:58:69:58:69 | x |

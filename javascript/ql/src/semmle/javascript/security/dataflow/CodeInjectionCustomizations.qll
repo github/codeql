@@ -113,6 +113,17 @@ module CodeInjection {
   }
 
   /**
+   * A body element from a script tag inside React code.
+   */
+  class ReactScriptTag extends Sink {
+    ReactScriptTag() {
+      exists(JSXElement element | element.getName() = "script" |
+        this = element.getBodyElement(_).flow()
+      )
+    }
+  }
+
+  /**
    * An event handler attribute as a code injection sink.
    */
   class EventHandlerAttributeSink extends Sink {
