@@ -66,14 +66,7 @@ upgrade_root="upgrades"
 
 check_hash_valid()
 {
-  len=0
-  checking="$2"
-  while [ "x${checking}" != "x" ]; do
-    len=$((len + 1))
-    checking="${checking%?}"
-  done
-
-  if [ ${len} -ne 40 ]; then
+  if [ ${#2} -ne 40 ]; then
     echo "Did not get expected $1 hash: $2" >&2
     exit 2
   fi
