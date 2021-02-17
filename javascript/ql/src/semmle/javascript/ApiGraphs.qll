@@ -790,7 +790,23 @@ module API {
         )
       )
       or
-      exists(DataFlow::TypeBackTracker t2 | result = trackDefNode(nd, t2).backtrack(t2, t))
+      t = defStep(nd, result)
+    }
+
+    /**
+     * Holds if `nd`, which is a def of an API-graph node, flows in zero or more potentially
+     * inter-procedural steps from some intermediate node, and then to that intermediate node from
+     * `prev` in one step described by the resulting TypeTracker.
+     *
+     * This predicate exists solely to enforce a better join order in `trackDefNode` above.
+     */
+    pragma[noopt]
+    private DataFlow::TypeBackTracker defStep(DataFlow::Node nd, DataFlow::SourceNode prev) {
+      exists(DataFlow::TypeBackTracker t, StepSummary summary, DataFlow::Node next |
+        next = trackDefNode(nd, t) and
+        StepSummary::step(prev, next, summary) and
+        result = t.prepend(summary)
+      )
     }
 
     /**
