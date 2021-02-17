@@ -2158,6 +2158,8 @@ private module Django {
         result = vc.getARequestHandler()
       )
     }
+
+    override string getFramework() { result = "Django" }
   }
 
   /** A request handler defined in a django view class, that has no known route. */
@@ -2175,6 +2177,8 @@ private module Django {
       result in [this.getArg(_), this.getArgByName(_)] and
       not result = any(int i | i <= this.getRequestParamIndex() | this.getArg(i))
     }
+
+    override string getFramework() { result = "Django" }
   }
 
   /**

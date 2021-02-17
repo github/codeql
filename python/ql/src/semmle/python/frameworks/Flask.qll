@@ -243,6 +243,8 @@ private module FlaskModel {
         )
       )
     }
+
+    override string getFramework() { result = "Flask" }
   }
 
   /**
@@ -309,6 +311,8 @@ private module FlaskModel {
       result in [this.getArg(_), this.getArgByName(_)] and
       not result = this.getArg(0)
     }
+
+    override string getFramework() { result = "Flask" }
   }
 
   // ---------------------------------------------------------------------------
