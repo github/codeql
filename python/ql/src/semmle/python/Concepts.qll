@@ -592,23 +592,23 @@ module Cryptography {
 
       /** A data-flow node that generates a new RSA key-pair. */
       abstract class RsaRange extends Range {
-        override string getName() { result = "RSA" }
+        final override string getName() { result = "RSA" }
 
-        override int minimumSecureKeySize() { result = 2048 }
+        final override int minimumSecureKeySize() { result = 2048 }
       }
 
       /** A data-flow node that generates a new DSA key-pair. */
       abstract class DsaRange extends Range {
-        override string getName() { result = "DSA" }
+        final override string getName() { result = "DSA" }
 
-        override int minimumSecureKeySize() { result = 2048 }
+        final override int minimumSecureKeySize() { result = 2048 }
       }
 
       /** A data-flow node that generates a new ECC key-pair. */
       abstract class EccRange extends Range {
-        override string getName() { result = "ECC" }
+        final override string getName() { result = "ECC" }
 
-        override int minimumSecureKeySize() { result = 224 }
+        final override int minimumSecureKeySize() { result = 224 }
       }
     }
   }
