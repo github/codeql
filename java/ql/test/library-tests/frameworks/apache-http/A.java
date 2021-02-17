@@ -3,6 +3,7 @@ import org.apache.http.protocol.*;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.*;
 import org.apache.http.entity.*;
+import java.io.IOException;
 
 class A {
     static Object taint() { return null; }
@@ -10,7 +11,7 @@ class A {
     static void sink(Object o) { }
 
     class Test1 implements HttpRequestHandler {
-        public void handle(HttpRequest req, HttpResponse res, HttpContext ctx) {
+        public void handle(HttpRequest req, HttpResponse res, HttpContext ctx) throws IOException {
             A.sink(req.getRequestLine());
             A.sink(req.getRequestLine().getUri());
             A.sink(req.getRequestLine().getMethod());

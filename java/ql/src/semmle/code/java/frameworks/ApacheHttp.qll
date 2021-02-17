@@ -41,6 +41,7 @@ class TypeApacheHttpRequestBuilder extends Class {
   }
 }
 
+// TODO: Other sources
 /**
  * The `request` parameter of an implementation of `HttpRequestHandler.handle`.
  */
@@ -264,8 +265,8 @@ private class BufferMethod extends TaintPreservingCallable {
           .hasQualifiedName(["org.apache.http.util", "org.apache.hc.core5.util"],
             ["ByteArrayBuffer", "CharArrayBuffer"]) and
       m.hasName([
-          "append", "buffer", "subSequence", "substring", "substringTrimmed", "toByteArray",
-          "toCharArray", "toString"
+          "append", "array", "buffer", "subSequence", "substring", "substringTrimmed",
+          "toByteArray", "toCharArray", "toString"
         ])
     )
   }
