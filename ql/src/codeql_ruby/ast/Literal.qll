@@ -310,6 +310,7 @@ class CharacterLiteral extends Literal, @token_character {
  * query = <<SQL
  * SELECT * FROM person
  * WHERE age > 21
+ * SQL
  * ```
  */
 class HereDoc extends StringlikeLiteral {
