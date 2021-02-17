@@ -157,11 +157,9 @@ private class IteratorSubOperator extends Operator, TaintFunction {
  * A non-member `operator+=` or `operator-=` function for an iterator type.
  */
 private class IteratorAssignArithmeticOperator extends Operator, DataFlowFunction, TaintFunction {
-  FunctionInput iteratorInput;
-
   IteratorAssignArithmeticOperator() {
     this.hasName(["operator+=", "operator-="]) and
-    iteratorInput = getIteratorArgumentInput(this, 0)
+    exists(getIteratorArgumentInput(this, 0))
   }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
