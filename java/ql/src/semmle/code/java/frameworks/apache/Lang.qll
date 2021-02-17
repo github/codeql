@@ -211,3 +211,58 @@ private class ApacheStrBuilderTaintWriter extends ApacheStrBuilderCallable, Tain
       toArg = 2
   }
 }
+
+private class ApacheWordUtilsTaintPreservingMethod extends TaintPreservingCallable {
+  ApacheWordUtilsTaintPreservingMethod() {
+    this.getDeclaringType()
+        .hasQualifiedName(["org.apache.commons.lang3.text", "org.apache.commons.text"], "WordUtils") and
+    this.getReturnType() instanceof TypeString
+  }
+
+  override predicate returnsTaintFrom(int arg) {
+    this.getParameterType(arg) instanceof TypeString and
+    arg != 4 // Exclude the wrapOn parameter from `wrap(String, int, String, boolean, String)`
+  }
+}
+
+private class ApacheStrTokenizer extends RefType {
+  ApacheStrTokenizer() {
+    this.hasQualifiedName(["org.apache.commons.lang3.text", "org.apache.commons.text"],
+      "StrTokenizer") or
+    this.hasQualifiedName("org.apache.commons.text", "StringTokenizer")
+  }
+}
+
+/**
+ * A callable that sets the string to be tokenized by an Apache Commons `Str[ing]Tokenizer`.
+ *
+ * Note `reset` is an instance method that taints an existing instance; all others return a fresh instance.
+ */
+private class ApacheStrTokenizerTaintingMethod extends TaintPreservingCallable {
+  ApacheStrTokenizerTaintingMethod() {
+    this.getDeclaringType() instanceof ApacheStrTokenizer and
+    (
+      this instanceof Constructor or
+      this.getName() in ["getCSVInstance", "getTSVInstance", "reset"]
+    )
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = 0 }
+
+  override predicate transfersTaint(int fromArg, int toArg) {
+    this.getName() = "reset" and
+    returnsTaintFrom(fromArg) and
+    toArg = -1
+  }
+}
+
+private class ApacheStrTokenizerTaintGetter extends TaintPreservingCallable {
+  ApacheStrTokenizerTaintGetter() {
+    this.getDeclaringType() instanceof ApacheStrTokenizer and
+    this.getName() in [
+        "getContent", "getTokenArray", "getTokenList", "nextToken", "previousToken", "toString"
+      ]
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = -1 }
+}
