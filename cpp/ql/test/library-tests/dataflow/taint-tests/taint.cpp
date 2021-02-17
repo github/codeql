@@ -655,5 +655,5 @@ public:
 void test_with_const_member(char* source) {
   C_const_member_function c;
   memcpy(c.data(), source, 16);
-  sink(c.data()); // $ MISSING: ast, ir
+  sink(c.data()); // $ ast MISSING: ir
 }
