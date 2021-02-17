@@ -31,10 +31,7 @@ private predicate setsAllowCredentials(MethodAccess header) {
 class CorsProbableCheckAccess extends MethodAccess {
   CorsProbableCheckAccess() {
     getMethod().hasName("contains") and
-    getMethod()
-        .getDeclaringType()
-        .getASourceSupertype*()
-        .hasQualifiedName("java.util", "Collection")
+    getMethod().getDeclaringType().getASourceSupertype*() instanceof CollectionType
     or
     getMethod().hasName("equals") and
     getQualifier().getType() instanceof TypeString
