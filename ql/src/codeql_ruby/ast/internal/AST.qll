@@ -11,6 +11,8 @@ module AstNode {
     abstract string toString();
 
     Location getLocation() { result = generated.getLocation() }
+
+    predicate child(string label, AstNode::Range child) { none() }
   }
 
   // TODO: Remove
