@@ -914,10 +914,16 @@ module API {
     }
 
     /** Gets the API node for the `i`th parameter of this invocation. */
+    pragma[nomagic]
     Node getParameter(int i) {
       result = callee.getParameter(i) and
-      result.getARhs() = getArgument(i)
+      result = getAParameterCandidate(i)
     }
+
+    /**
+     * Gets an API node where a RHS of the node if the `i`th argument to this call.
+     */
+    private Node getAParameterCandidate(int i) { result.getARhs() = getArgument(i) }
 
     /** Gets the API node for a parameter of this invocation. */
     Node getAParameter() { result = getParameter(_) }
