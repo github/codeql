@@ -458,6 +458,7 @@ class TypeBackTracker extends TTypeBackTracker {
   }
 }
 
+/** Provides predicates for implementing custom `TypeBackTracker`s. */
 module TypeBackTracker {
   /**
    * Gets a valid end point of type back-tracking.
