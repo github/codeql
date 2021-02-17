@@ -33,6 +33,9 @@ class CorsProbableCheckAccess extends MethodAccess {
     getMethod().hasName("contains") and
     getMethod().getDeclaringType().getASourceSupertype*() instanceof CollectionType
     or
+    getMethod().hasName("containsKey") and
+    getMethod().getDeclaringType().getASourceSupertype*() instanceof MapType
+    or
     getMethod().hasName("equals") and
     getQualifier().getType() instanceof TypeString
   }
