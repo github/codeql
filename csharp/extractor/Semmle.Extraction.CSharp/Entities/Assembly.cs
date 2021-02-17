@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Entities
         private readonly string assemblyPath;
         private readonly IAssemblySymbol assembly;
 
-        private Assembly(Context cx, Microsoft.CodeAnalysis.Location init)
+        private Assembly(Context cx, Microsoft.CodeAnalysis.Location? init)
             : base(cx, init)
         {
             if (init == null)
@@ -44,7 +44,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public override int GetHashCode() =>
             Symbol == null ? 91187354 : Symbol.GetHashCode();
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is Assembly other && other.GetType() == typeof(Assembly))
                 return Equals(Symbol, other.Symbol);
@@ -54,11 +54,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static Extraction.Entities.Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => AssemblyConstructorFactory.Instance.CreateEntity(cx, loc, loc);
 
-        private class AssemblyConstructorFactory : CachedEntityFactory<Microsoft.CodeAnalysis.Location, Assembly>
+        private class AssemblyConstructorFactory : CachedEntityFactory<Microsoft.CodeAnalysis.Location?, Assembly>
         {
             public static AssemblyConstructorFactory Instance { get; } = new AssemblyConstructorFactory();
 
-            public override Assembly Create(Context cx, Microsoft.CodeAnalysis.Location init) => new Assembly(cx, init);
+            public override Assembly Create(Context cx, Microsoft.CodeAnalysis.Location? init) => new Assembly(cx, init);
         }
 
         private static readonly object outputAssemblyCacheKey = new object();

@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp
 
         private readonly Dictionary<Label, Key> duplicationGuardKeys = new Dictionary<Label, Key>();
 
-        private Key GetDuplicationGuardKey(Label label)
+        private Key? GetDuplicationGuardKey(Label label)
         {
             if (duplicationGuardKeys.TryGetValue(label, out var duplicationGuardKey))
                 return duplicationGuardKey;
@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CSharp
 
         private class LocationComparer : IComparer<Location>
         {
-            public int Compare(Location l1, Location l2) => CommentProcessor.Compare(l1, l2);
+            public int Compare(Location? l1, Location? l2) => CommentProcessor.Compare(l1, l2);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Semmle.Extraction.CSharp
         /// <param name="l1">First location</param>
         /// <param name="l2">Second location</param>
         /// <returns>&lt;0 if l1 before l2, &gt;0 if l1 after l2, else 0.</returns>
-        private static int Compare(Location l1, Location l2)
+        private static int Compare(Location? l1, Location? l2)
         {
             if (object.ReferenceEquals(l1, l2))
                 return 0;
@@ -68,7 +68,7 @@ namespace Semmle.Extraction.CSharp
         /// <param name="elementLabel">The label of the element in the trap file.</param>
         /// <param name="duplicationGuardKey">The duplication guard key of the element, if any.</param>
         /// <param name="loc">The location of the element.</param>
-        public void AddElement(Label elementLabel, Key duplicationGuardKey, Location loc)
+        public void AddElement(Label elementLabel, Key? duplicationGuardKey, Location? loc)
         {
             if (loc != null && loc.IsInSource)
                 elements[loc] = elementLabel;
@@ -265,7 +265,7 @@ namespace Semmle.Extraction.CSharp
             CommentBindingCallback cb
             )
         {
-            Comments.CommentBlock block = null;
+            Comments.CommentBlock? block = null;
 
             // Iterate comments until the commentEnumerator has gone past nextElement
             while (nextElement == null || Compare(commentEnumerator.Current.Value.Location, nextElement.Value.Key) < 0)
@@ -350,5 +350,5 @@ namespace Semmle.Extraction.CSharp
     /// <param name="duplicationGuardKey">The duplication guard key of the element, if any</param>
     /// <param name="commentBlock">The comment block associated with the element</param>
     /// <param name="binding">The relationship between the commentblock and the element</param>
-    internal delegate void CommentBindingCallback(Label elementLabel, Key duplicationGuardKey, Comments.CommentBlock commentBlock, CommentBinding binding);
+    internal delegate void CommentBindingCallback(Label elementLabel, Key? duplicationGuardKey, Comments.CommentBlock commentBlock, CommentBinding binding);
 }

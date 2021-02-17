@@ -15,7 +15,7 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override LineCounts VisitMethodDeclaration(MethodDeclarationSyntax method)
         {
-            return Visit(method.Identifier, method.Body ?? (SyntaxNode)method.ExpressionBody);
+            return Visit(method.Identifier, GetBody(method));
         }
 
         public static LineCounts Visit(SyntaxToken identifier, SyntaxNode body)
@@ -31,17 +31,22 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override LineCounts VisitConstructorDeclaration(ConstructorDeclarationSyntax method)
         {
-            return Visit(method.Identifier, (SyntaxNode)method.Body ?? method.ExpressionBody);
+            return Visit(method.Identifier, GetBody(method));
         }
 
         public override LineCounts VisitDestructorDeclaration(DestructorDeclarationSyntax method)
         {
-            return Visit(method.Identifier, (SyntaxNode)method.Body ?? method.ExpressionBody);
+            return Visit(method.Identifier, GetBody(method));
         }
 
         public override LineCounts VisitOperatorDeclaration(OperatorDeclarationSyntax node)
         {
-            return Visit(node.OperatorToken, node.Body ?? (SyntaxNode)node.ExpressionBody);
+            return Visit(node.OperatorToken, GetBody(node));
+        }
+
+        private static SyntaxNode GetBody(BaseMethodDeclarationSyntax node)
+        {
+            return node.Body ?? (SyntaxNode)node.ExpressionBody!;
         }
     }
 

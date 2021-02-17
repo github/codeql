@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             PopulateMethod(trapFile);
             PopulateModifiers(trapFile);
-            ContainingType.PopulateGenerics();
+            ContainingType!.PopulateGenerics();
 
             trapFile.destructors(this, string.Format("~{0}", Symbol.ContainingType.Name), ContainingType, OriginalDefinition(Context, this, Symbol));
             trapFile.destructor_location(this, Location);

@@ -216,7 +216,10 @@ namespace Semmle.Extraction.CSharp
             // 3) Directories specified by / lib.
             // 4) Directories specified by the LIB environment variable.
 
-            yield return args.BaseDirectory;
+            if (args.BaseDirectory is object)
+            {
+                yield return args.BaseDirectory;
+            }
 
             foreach (var r in args.ReferencePaths)
                 yield return r;
@@ -289,7 +292,7 @@ namespace Semmle.Extraction.CSharp
         /// The constructed syntax trees will be added (thread-safely) to the supplied
         /// list <paramref name="ret"/>.
         /// </summary>
-        private static IEnumerable<Action> ReadSyntaxTrees(IEnumerable<string> sources, Analyser analyser, CSharpParseOptions parseOptions, Encoding encoding, IList<SyntaxTree> ret)
+        private static IEnumerable<Action> ReadSyntaxTrees(IEnumerable<string> sources, Analyser analyser, CSharpParseOptions? parseOptions, Encoding? encoding, IList<SyntaxTree> ret)
         {
             return sources.Select<string, Action>(path => () =>
             {

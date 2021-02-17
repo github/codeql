@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CSharp.Populators
         protected Context Cx { get; }
         protected IEntity Parent { get; }
         protected TextWriter TrapFile { get; }
-        private readonly Lazy<Func<SyntaxNode, AttributeData>> attributeLookup;
+        private readonly Lazy<Func<SyntaxNode, AttributeData?>> attributeLookup;
 
         public TypeContainerVisitor(Context cx, TextWriter trapFile, IEntity parent)
         {
@@ -22,9 +22,9 @@ namespace Semmle.Extraction.CSharp.Populators
             Parent = parent;
             TrapFile = trapFile;
 
-            attributeLookup = new Lazy<Func<SyntaxNode, AttributeData>>(() =>
+            attributeLookup = new Lazy<Func<SyntaxNode, AttributeData?>>(() =>
                 {
-                    var dict = new Dictionary<SyntaxNode, AttributeData>();
+                    var dict = new Dictionary<SyntaxNode, AttributeData?>();
                     foreach (var attributeData in cx.Compilation.Assembly.GetAttributes().Concat(cx.Compilation.Assembly.Modules.SelectMany(m => m.GetAttributes())))
                     {
                         if (attributeData.ApplicationSyntaxReference?.GetSyntax() is SyntaxNode syntax)
@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void VisitDelegateDeclaration(DelegateDeclarationSyntax node)
         {
-            Entities.NamedType.Create(Cx, Cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(TrapFile, Parent);
+            Entities.NamedType.Create(Cx, Cx.GetModel(node).GetDeclaredSymbol(node)!).ExtractRecursive(TrapFile, Parent);
         }
 
         public override void VisitRecordDeclaration(RecordDeclarationSyntax node)

@@ -9,12 +9,12 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// The compiler exe, or null if unspecified.
         /// </summary>
-        public string CompilerName { get; set; }
+        public string? CompilerName { get; set; }
 
         /// <summary>
         /// Specified .Net Framework dir, or null if unspecified.
         /// </summary>
-        public string Framework { get; set; }
+        public string? Framework { get; set; }
 
         /// <summary>
         /// All other arguments passed to the compilation.

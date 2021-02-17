@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Extraction.Entities;
 using System.IO;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -17,7 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             PopulateMethod(trapFile);
             PopulateModifiers(trapFile);
-            ContainingType.PopulateGenerics();
+            ContainingType!.PopulateGenerics();
 
             trapFile.constructors(this, Symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
             trapFile.constructor_location(this, Location);
@@ -48,7 +49,7 @@ namespace Semmle.Extraction.CSharp.Entities
             switch (initializer.Kind())
             {
                 case SyntaxKind.BaseConstructorInitializer:
-                    initializerType = Symbol.ContainingType.BaseType;
+                    initializerType = Symbol.ContainingType.BaseType!;
                     break;
                 case SyntaxKind.ThisConstructorInitializer:
                     initializerType = Symbol.ContainingType;
@@ -69,8 +70,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             var init = new Expression(initInfo);
 
-            var target = Constructor.Create(Context, (IMethodSymbol)symbolInfo.Symbol);
-
+            var target = Constructor.Create(Context, (IMethodSymbol?)symbolInfo.Symbol);
             if (target == null)
             {
                 Context.ModelError(Symbol, "Unable to resolve call");
@@ -97,7 +97,8 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public static new Constructor Create(Context cx, IMethodSymbol constructor)
+        [return: NotNullIfNotNull("constructor")]
+        public static new Constructor? Create(Context cx, IMethodSymbol? constructor)
         {
             if (constructor == null)
                 return null;
@@ -116,7 +117,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (Symbol.IsStatic)
                 trapFile.Write("static");
-            trapFile.WriteSubId(ContainingType);
+            trapFile.WriteSubId(ContainingType!);
             AddParametersToId(Context, trapFile, Symbol);
             trapFile.Write(";constructor");
         }
@@ -124,9 +125,9 @@ namespace Semmle.Extraction.CSharp.Entities
         private ConstructorDeclarationSyntax GetSyntax() =>
             Symbol.DeclaringSyntaxReferences.Select(r => r.GetSyntax()).OfType<ConstructorDeclarationSyntax>().FirstOrDefault();
 
-        public override Microsoft.CodeAnalysis.Location FullLocation => ReportingLocation;
+        public override Microsoft.CodeAnalysis.Location? FullLocation => ReportingLocation;
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation
         {
             get
             {
@@ -138,7 +139,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 if (Symbol.IsImplicitlyDeclared)
                 {
-                    return ContainingType.ReportingLocation;
+                    return ContainingType!.ReportingLocation;
                 }
 
                 return Symbol.ContainingType.Locations.FirstOrDefault();

@@ -9,17 +9,16 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal abstract class CachedSymbol<T> : CachedEntity<T> where T : ISymbol
+    internal abstract class CachedSymbol<T> : CachedEntity<T> where T : class, ISymbol
     {
-        // todo: this can be changed to an override after the .NET 5 upgrade
-        protected new Context Context => (Context)base.Context;
-
-        protected CachedSymbol(Context cx, T init)
+#nullable disable warnings
+        protected CachedSymbol(Context cx, T? init)
             : base(cx, init)
         {
         }
+#nullable restore warnings
 
-        public virtual Type ContainingType => Symbol.ContainingType != null ? Type.Create(Context, Symbol.ContainingType) : null;
+        public virtual Type? ContainingType => Symbol.ContainingType != null ? Type.Create(Context, Symbol.ContainingType) : null;
 
         public void PopulateModifiers(TextWriter trapFile)
         {
@@ -68,12 +67,12 @@ namespace Semmle.Extraction.CSharp.Entities
         /// The location which is stored in the database and is used when highlighing source code.
         /// It's generally short, e.g. a method name.
         /// </summary>
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => Symbol.Locations.FirstOrDefault();
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => Symbol.Locations.FirstOrDefault();
 
         /// <summary>
         /// The full text span of the entity, e.g. for binding comments.
         /// </summary>
-        public virtual Microsoft.CodeAnalysis.Location FullLocation => Symbol.Locations.FirstOrDefault();
+        public virtual Microsoft.CodeAnalysis.Location? FullLocation => Symbol.Locations.FirstOrDefault();
 
         public virtual IEnumerable<Extraction.Entities.Location> Locations
         {
@@ -139,7 +138,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.metadata_handle(this, Location, MetadataTokens.GetToken(handle.Value));
         }
 
-        private static System.Reflection.PropertyInfo GetPropertyInfo(object o, string name)
+        private static System.Reflection.PropertyInfo? GetPropertyInfo(object o, string name)
         {
             return o.GetType().GetProperty(name, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetProperty);
         }

@@ -32,17 +32,5 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
                 Create(Context, Stmt.Finally.Block, this, -1);
             }
         }
-
-        public static SyntaxNodeOrToken NextNode(SyntaxNode node)
-        {
-            for (var i = node.Parent.ChildNodesAndTokens().GetEnumerator(); i.MoveNext();)
-            {
-                if (i.Current == node)
-                {
-                    return i.MoveNext() ? i.Current : null;
-                }
-            }
-            return null;
-        }
     }
 }

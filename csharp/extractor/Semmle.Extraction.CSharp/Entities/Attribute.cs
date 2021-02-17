@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.Entities
     {
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
-        private readonly AttributeSyntax attributeSyntax;
+        private readonly AttributeSyntax? attributeSyntax;
         private readonly IEntity entity;
 
         private Attribute(Context cx, AttributeData attributeData, IEntity entity)
@@ -93,7 +93,7 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 var expr = CreateExpressionFromArgument(
                     namedArgument.Value,
-                    attributeSyntax?.ArgumentList.Arguments.Single(a => a.NameEquals?.Name?.Identifier.Text == namedArgument.Key).Expression,
+                    attributeSyntax?.ArgumentList?.Arguments.Single(a => a.NameEquals?.Name?.Identifier.Text == namedArgument.Key).Expression,
                     this,
                     childIndex++);
 
@@ -104,7 +104,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        private Expression CreateExpressionFromArgument(TypedConstant constant, ExpressionSyntax syntax, IExpressionParentEntity parent,
+        private Expression? CreateExpressionFromArgument(TypedConstant constant, ExpressionSyntax? syntax, IExpressionParentEntity parent,
             int childIndex)
         {
             return syntax is null
@@ -114,11 +114,14 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => attributeSyntax?.Name.GetLocation();
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => attributeSyntax?.Name.GetLocation();
 
-        private Semmle.Extraction.Entities.Location location;
+        private Semmle.Extraction.Entities.Location? location;
+
         private Semmle.Extraction.Entities.Location Location =>
-            location ?? (location = Context.CreateLocation(attributeSyntax is null ? entity.ReportingLocation : attributeSyntax.Name.GetLocation()));
+            location ??= Context.CreateLocation(attributeSyntax is null
+                ? entity.ReportingLocation
+                : attributeSyntax.Name.GetLocation());
 
         public override bool NeedsPopulation => true;
 

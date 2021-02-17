@@ -6,7 +6,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
     internal class MemberAccess : Expression
     {
-        private MemberAccess(ExpressionNodeInfo info, ExpressionSyntax qualifier, ISymbol target) : base(info)
+        private MemberAccess(ExpressionNodeInfo info, ExpressionSyntax qualifier, ISymbol? target) : base(info)
         {
             var trapFile = info.Context.TrapWriter.Writer;
             Qualifier = Create(Context, qualifier, this, -1);

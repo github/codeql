@@ -14,12 +14,12 @@ namespace Semmle.Extraction.CSharp
     public class CompilerVersion
     {
         private const string csc_rsp = "csc.rsp";
-        private readonly string specifiedFramework = null;
+        private readonly string? specifiedFramework = null;
 
         /// <summary>
         /// The value specified by --compiler, or null.
         /// </summary>
-        public string SpecifiedCompiler
+        public string? SpecifiedCompiler
         {
             get;
             private set;
@@ -28,11 +28,19 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Why was the candidate exe rejected as a compiler?
         /// </summary>
-        public string SkipReason
+        public string? SkipReason
         {
             get;
             private set;
         }
+
+        private static readonly Dictionary<string, string> knownCompilerNames = new Dictionary<string, string>
+        {
+            { "csc.exe", "Microsoft" },
+            { "csc2.exe", "Microsoft" },
+            { "csc.dll", "Microsoft" },
+            { "mcs.exe", "Novell" }
+        };
 
         /// <summary>
         /// Probes the compiler (if specified).
@@ -52,16 +60,13 @@ namespace Semmle.Extraction.CSharp
                 }
 
                 // Reads the file details from the .exe
-                var versionInfo = FileVersionInfo.GetVersionInfo(SpecifiedCompiler);
-
                 var compilerDir = Path.GetDirectoryName(SpecifiedCompiler);
-                var knownCompilerNames = new Dictionary<string, string>
+                if (compilerDir is null)
                 {
-                    { "csc.exe", "Microsoft" },
-                    { "csc2.exe", "Microsoft" },
-                    { "csc.dll", "Microsoft" },
-                    { "mcs.exe", "Novell" }
-                };
+                    SkipExtractionBecause("the compiler directory could not be retrieved");
+                    return;
+                }
+
                 var mscorlibExists = File.Exists(Path.Combine(compilerDir, "mscorlib.dll"));
 
                 if (specifiedFramework == null && mscorlibExists)
@@ -69,6 +74,7 @@ namespace Semmle.Extraction.CSharp
                     specifiedFramework = compilerDir;
                 }
 
+                var versionInfo = FileVersionInfo.GetVersionInfo(SpecifiedCompiler);
                 if (!knownCompilerNames.TryGetValue(versionInfo.OriginalFilename, out var vendor))
                 {
                     SkipExtractionBecause("the compiler name is not recognised");
@@ -114,7 +120,7 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Gets additional reference directories - the compiler directory.
         /// </summary>
-        public string AdditionalReferenceDirectories => SpecifiedCompiler != null ? Path.GetDirectoryName(SpecifiedCompiler) : null;
+        public string? AdditionalReferenceDirectories => SpecifiedCompiler != null ? Path.GetDirectoryName(SpecifiedCompiler) : null;
 
         /// <summary>
         /// Adds @csc.rsp to the argument list to mimic csc.exe.
@@ -134,6 +140,6 @@ namespace Semmle.Extraction.CSharp
             return args.Any(arg => new[] { "/noconfig", "-noconfig" }.Contains(arg.ToLowerInvariant()));
         }
 
-        public IEnumerable<string> ArgsWithResponse { get; }
+        public IEnumerable<string> ArgsWithResponse { get; } = Enumerable.Empty<string>();
     }
 }

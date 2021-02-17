@@ -10,6 +10,8 @@ using System.Diagnostics;
 using Semmle.Util.Logging;
 using Semmle.Util;
 
+#nullable disable warnings
+
 namespace Semmle.Extraction.CSharp
 {
     /// <summary>
@@ -17,15 +19,15 @@ namespace Semmle.Extraction.CSharp
     /// </summary>
     public sealed class Analyser : IDisposable
     {
-        private Extraction.Extractor extractor;
-        private CSharpCompilation compilation;
-        private Layout layout;
+        private Extraction.Extractor? extractor;
+        private CSharpCompilation? compilation;
+        private Layout? layout;
         private bool init;
         private readonly object progressMutex = new object();
         private int taskCount = 0;
-        private CommonOptions options;
-        private Entities.Compilation compilationEntity;
-        private IDisposable compilationTrapFile;
+        private CommonOptions? options;
+        private Entities.Compilation? compilationEntity;
+        private IDisposable? compilationTrapFile;
 
         private readonly Stopwatch stopWatch = new Stopwatch();
 
@@ -359,13 +361,13 @@ namespace Semmle.Extraction.CSharp
 
                 var projectLayout = layout.LookupProjectOrNull(transformedSourcePath);
                 var excluded = projectLayout == null;
-                var trapPath = excluded ? "" : projectLayout.GetTrapPath(Logger, transformedSourcePath, options.TrapCompression);
+                var trapPath = excluded ? "" : projectLayout!.GetTrapPath(Logger, transformedSourcePath, options.TrapCompression);
                 var upToDate = false;
 
                 if (!excluded)
                 {
                     // compilation.Clone() is used to allow symbols to be garbage collected.
-                    using var trapWriter = projectLayout.CreateTrapWriter(Logger, transformedSourcePath, options.TrapCompression, discardDuplicates: false);
+                    using var trapWriter = projectLayout!.CreateTrapWriter(Logger, transformedSourcePath, options.TrapCompression, discardDuplicates: false);
 
                     upToDate = options.Fast && FileIsUpToDate(sourcePath, trapWriter.TrapFile);
 
@@ -571,3 +573,5 @@ namespace Semmle.Extraction.CSharp
         void MissingSummary(int types, int namespaces);
     }
 }
+
+#nullable restore warnings

@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
 
             var child = -1;
-            string memberName = null;
+            string? memberName = null;
             var target = TargetSymbol;
             switch (Syntax.Expression)
             {
@@ -54,11 +54,15 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     if (target != null && !target.IsStatic)
                     {
                         // Implicit `this` qualifier; add explicitly
-
-                        if (Context.GetModel(Syntax).GetEnclosingSymbol(Location.Symbol.SourceSpan.Start) is IMethodSymbol callingMethod)
+                        if (Location.Symbol is object &&
+                            Context.GetModel(Syntax).GetEnclosingSymbol(Location.Symbol.SourceSpan.Start) is IMethodSymbol callingMethod)
+                        {
                             This.CreateImplicit(Context, callingMethod.ContainingType, Location, this, child++);
+                        }
                         else
+                        {
                             Context.ModelError(Syntax, "Couldn't determine implicit this type");
+                        }
                     }
                     else
                     {
@@ -105,7 +109,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public SymbolInfo SymbolInfo => info.SymbolInfo;
 
-        public IMethodSymbol TargetSymbol
+        public IMethodSymbol? TargetSymbol
         {
             get
             {
@@ -144,7 +148,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             return IsDelegateLikeCall(info, IsDelegateInvoke);
         }
 
-        private static bool IsDelegateLikeCall(ExpressionNodeInfo info, Func<ISymbol, bool> check)
+        private static bool IsDelegateLikeCall(ExpressionNodeInfo info, Func<ISymbol?, bool> check)
         {
             var si = info.SymbolInfo;
 
@@ -167,13 +171,13 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             return check(si.Symbol);
         }
 
-        private static bool IsFunctionPointer(ISymbol symbol)
+        private static bool IsFunctionPointer(ISymbol? symbol)
         {
             return symbol != null &&
                 symbol.Kind == SymbolKind.FunctionPointerType;
         }
 
-        private static bool IsDelegateInvoke(ISymbol symbol)
+        private static bool IsDelegateInvoke(ISymbol? symbol)
         {
             return symbol != null &&
                 symbol.Kind == SymbolKind.Method &&
