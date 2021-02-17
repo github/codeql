@@ -254,9 +254,9 @@ private module FlaskModel {
    */
   private class FlaskAppRouteCall extends FlaskRouteSetup, DataFlow::CallCfgNode {
     FlaskAppRouteCall() {
-      this.getFunction() = flask::Flask::route().getAUse()
+      this = flask::Flask::route().getACall()
       or
-      this.getFunction() = flask::Blueprint::route().getAUse()
+      this = flask::Blueprint::route().getACall()
     }
 
     override DataFlow::Node getUrlPatternArg() {
@@ -273,9 +273,9 @@ private module FlaskModel {
    */
   private class FlaskAppAddUrlRuleCall extends FlaskRouteSetup, DataFlow::CallCfgNode {
     FlaskAppAddUrlRuleCall() {
-      this.getFunction() = flask::Flask::add_url_rule().getAUse()
+      this = flask::Flask::add_url_rule().getACall()
       or
-      this.getFunction() = flask::Blueprint::add_url_rule().getAUse()
+      this = flask::Blueprint::add_url_rule().getACall()
     }
 
     override DataFlow::Node getUrlPatternArg() {
@@ -428,9 +428,9 @@ private module FlaskModel {
   private class FlaskMakeResponseCall extends HTTP::Server::HttpResponse::Range,
     DataFlow::CallCfgNode {
     FlaskMakeResponseCall() {
-      this.getFunction() = flask::make_response().getAUse()
+      this = flask::make_response().getACall()
       or
-      this.getFunction() = flask::Flask::make_response_().getAUse()
+      this = flask::Flask::make_response_().getACall()
     }
 
     override DataFlow::Node getBody() { result = this.getArg(0) }
@@ -462,7 +462,7 @@ private module FlaskModel {
    */
   private class FlaskRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
     DataFlow::CallCfgNode {
-    FlaskRedirectCall() { this.getFunction() = flask_attr("redirect").getAUse() }
+    FlaskRedirectCall() { this = flask_attr("redirect").getACall() }
 
     override DataFlow::Node getRedirectLocation() {
       result in [this.getArg(0), this.getArgByName("location")]
