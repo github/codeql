@@ -119,9 +119,8 @@ module StringInterpolationComponent {
 
     final override string toString() { result = "#{...}" }
 
-    final override Expr getStmt(int n) {
-      // TODO: fix grammar to properly handle a sequence of more than one expr,
-      // e.g. #{ foo; bar }
+    final override Stmt getStmt(int n) {
+      // Generated AST can currently only represent a single statement in an interpolation.
       n = 0 and
       result = generated.getChild()
     }
