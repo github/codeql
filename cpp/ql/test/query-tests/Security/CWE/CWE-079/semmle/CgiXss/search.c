@@ -37,13 +37,13 @@ void good_server1(char* query) {
   puts(do_search(query));
 }
 
-int snprintf(char *, int, const char *, ...);
+int scanf(const char *, ...);
 
 void good_server2(char* query) {
   puts("<p>Query results for ");
   // GOOD: Only an integer is added to the page.
   int i = 0;
-  snprintf(query, 16, "value=%i", &i);
+  sscanf(query, "value=%i", &i);
   printf("\n<p>%i</p>\n", i);
 }
 
