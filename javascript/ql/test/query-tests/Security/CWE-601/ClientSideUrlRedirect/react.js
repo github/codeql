@@ -25,13 +25,13 @@ import { useRouter } from 'next/router'
 
 export function nextRouter() {
   const router = useRouter();
-  return <span onClick={() => router.push(document.location.hash)}>Click to XSS 1</span>
+  return <span onClick={() => router.push(document.location.hash.substr(1))}>Click to XSS 1</span>
 }
 
 import { withRouter } from 'next/router'
 
 function Page({ router }) {
-  return <span onClick={() => router.push(document.location.hash)}>Click to XSS 2</span>
+  return <span onClick={() => router.push(document.location.hash.substr(1))}>Click to XSS 2</span>
 }
 
 export const pageWithRouter = withRouter(Page);

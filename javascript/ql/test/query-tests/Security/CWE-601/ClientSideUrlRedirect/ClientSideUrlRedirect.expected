@@ -14,11 +14,13 @@ nodes
 | react.js:28:43:28:59 | document.location |
 | react.js:28:43:28:59 | document.location |
 | react.js:28:43:28:64 | documen ... on.hash |
-| react.js:28:43:28:64 | documen ... on.hash |
+| react.js:28:43:28:74 | documen ... bstr(1) |
+| react.js:28:43:28:74 | documen ... bstr(1) |
 | react.js:34:43:34:59 | document.location |
 | react.js:34:43:34:59 | document.location |
 | react.js:34:43:34:64 | documen ... on.hash |
-| react.js:34:43:34:64 | documen ... on.hash |
+| react.js:34:43:34:74 | documen ... bstr(1) |
+| react.js:34:43:34:74 | documen ... bstr(1) |
 | sanitizer.js:2:9:2:25 | url |
 | sanitizer.js:2:15:2:25 | window.name |
 | sanitizer.js:2:15:2:25 | window.name |
@@ -215,12 +217,12 @@ edges
 | react.js:21:24:21:40 | document.location | react.js:21:24:21:45 | documen ... on.hash |
 | react.js:28:43:28:59 | document.location | react.js:28:43:28:64 | documen ... on.hash |
 | react.js:28:43:28:59 | document.location | react.js:28:43:28:64 | documen ... on.hash |
-| react.js:28:43:28:59 | document.location | react.js:28:43:28:64 | documen ... on.hash |
-| react.js:28:43:28:59 | document.location | react.js:28:43:28:64 | documen ... on.hash |
+| react.js:28:43:28:64 | documen ... on.hash | react.js:28:43:28:74 | documen ... bstr(1) |
+| react.js:28:43:28:64 | documen ... on.hash | react.js:28:43:28:74 | documen ... bstr(1) |
 | react.js:34:43:34:59 | document.location | react.js:34:43:34:64 | documen ... on.hash |
 | react.js:34:43:34:59 | document.location | react.js:34:43:34:64 | documen ... on.hash |
-| react.js:34:43:34:59 | document.location | react.js:34:43:34:64 | documen ... on.hash |
-| react.js:34:43:34:59 | document.location | react.js:34:43:34:64 | documen ... on.hash |
+| react.js:34:43:34:64 | documen ... on.hash | react.js:34:43:34:74 | documen ... bstr(1) |
+| react.js:34:43:34:64 | documen ... on.hash | react.js:34:43:34:74 | documen ... bstr(1) |
 | sanitizer.js:2:9:2:25 | url | sanitizer.js:4:27:4:29 | url |
 | sanitizer.js:2:9:2:25 | url | sanitizer.js:4:27:4:29 | url |
 | sanitizer.js:2:9:2:25 | url | sanitizer.js:16:27:16:29 | url |
@@ -392,8 +394,8 @@ edges
 | electron.js:7:20:7:29 | getTaint() | electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() | Untrusted URL redirection due to $@. | electron.js:4:12:4:22 | window.name | user-provided value |
 | react.js:10:60:10:81 | documen ... on.hash | react.js:10:60:10:76 | document.location | react.js:10:60:10:81 | documen ... on.hash | Untrusted URL redirection due to $@. | react.js:10:60:10:76 | document.location | user-provided value |
 | react.js:21:24:21:45 | documen ... on.hash | react.js:21:24:21:40 | document.location | react.js:21:24:21:45 | documen ... on.hash | Untrusted URL redirection due to $@. | react.js:21:24:21:40 | document.location | user-provided value |
-| react.js:28:43:28:64 | documen ... on.hash | react.js:28:43:28:59 | document.location | react.js:28:43:28:64 | documen ... on.hash | Untrusted URL redirection due to $@. | react.js:28:43:28:59 | document.location | user-provided value |
-| react.js:34:43:34:64 | documen ... on.hash | react.js:34:43:34:59 | document.location | react.js:34:43:34:64 | documen ... on.hash | Untrusted URL redirection due to $@. | react.js:34:43:34:59 | document.location | user-provided value |
+| react.js:28:43:28:74 | documen ... bstr(1) | react.js:28:43:28:59 | document.location | react.js:28:43:28:74 | documen ... bstr(1) | Untrusted URL redirection due to $@. | react.js:28:43:28:59 | document.location | user-provided value |
+| react.js:34:43:34:74 | documen ... bstr(1) | react.js:34:43:34:59 | document.location | react.js:34:43:34:74 | documen ... bstr(1) | Untrusted URL redirection due to $@. | react.js:34:43:34:59 | document.location | user-provided value |
 | sanitizer.js:4:27:4:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:4:27:4:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
 | sanitizer.js:16:27:16:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:16:27:16:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
 | sanitizer.js:19:27:19:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:19:27:19:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
