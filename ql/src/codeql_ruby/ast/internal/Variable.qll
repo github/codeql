@@ -4,6 +4,7 @@ private import codeql_ruby.AST
 private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.ast.internal.Expr
 private import codeql_ruby.ast.internal.Method
+private import codeql_ruby.ast.internal.Module
 private import codeql_ruby.ast.internal.Pattern
 private import codeql_ruby.ast.internal.Parameter
 
@@ -415,9 +416,15 @@ module GlobalScope {
 
 module TopLevelScope {
   class Range extends VariableScope::Range, TTopLevelScope {
-    override string toString() { result = "top-level scope" }
+    Generated::Program program;
 
-    override Generated::AstNode getScopeElement() { TTopLevelScope(result) = this }
+    Range() { TTopLevelScope(program) = this }
+
+    override string toString() {
+      result = "top-level scope for " + program.getLocation().getFile().getBaseName()
+    }
+
+    override Generated::AstNode getScopeElement() { result = program }
 
     override predicate isCapturing() { none() }
   }
@@ -425,9 +432,13 @@ module TopLevelScope {
 
 module ModuleScope {
   class Range extends VariableScope::Range, TModuleScope {
-    override string toString() { result = "module scope" }
+    Generated::Module mdl;
 
-    override Generated::AstNode getScopeElement() { TModuleScope(result) = this }
+    Range() { TModuleScope(mdl) = this }
+
+    override string toString() { result = "module scope for " + mdl.(Module::Range).getName() }
+
+    override Generated::AstNode getScopeElement() { result = mdl }
 
     override predicate isCapturing() { none() }
   }
@@ -435,9 +446,17 @@ module ModuleScope {
 
 module ClassScope {
   class Range extends VariableScope::Range, TClassScope {
-    override string toString() { result = "class scope" }
+    Generated::AstNode cls;
 
-    override Generated::AstNode getScopeElement() { TClassScope(result) = this }
+    Range() { TClassScope(cls) = this }
+
+    override string toString() {
+      result = "class scope for " + cls.(Class::Range).getName()
+      or
+      cls instanceof Generated::SingletonClass and result = "class scope"
+    }
+
+    override Generated::AstNode getScopeElement() { result = cls }
 
     override predicate isCapturing() { none() }
   }
@@ -450,8 +469,9 @@ module CallableScope {
     Range() { this = TCallableScope(c) }
 
     override string toString() {
-      (c instanceof Method or c instanceof SingletonMethod) and
-      result = "method scope"
+      result = "method scope for " + c.(SingletonMethod).getName()
+      or
+      result = "method scope for " + c.(Method).getName()
       or
       c instanceof Lambda and
       result = "lambda scope"
