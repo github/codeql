@@ -27,10 +27,10 @@ namespace Semmle.Extraction.CIL
             }
             else
             {
-                e.Label = Cx.GetNewLabel();
-                Cx.DefineLabel(e, Cx.TrapWriter.Writer, Cx.Extractor);
+                e.Label = GetNewLabel();
+                DefineLabel(e, TrapWriter.Writer, Extractor);
                 ids.Add(e, e.Label);
-                Cx.PopulateLater(() =>
+                PopulateLater(() =>
                 {
                     foreach (var c in e.Contents)
                         c.Extract(this);
@@ -42,7 +42,7 @@ namespace Semmle.Extraction.CIL
 
                 if (debugLabels.TryGetValue(id, out var previousEntity))
                 {
-                    Cx.Extractor.Message(new Message("Duplicate trap ID", id, null, severity: Util.Logging.Severity.Warning));
+                    Extractor.Message(new Message("Duplicate trap ID", id, null, severity: Util.Logging.Severity.Warning));
                 }
                 else
                 {
@@ -74,9 +74,9 @@ namespace Semmle.Extraction.CIL
             {
                 e = new PrimitiveType(this, code)
                 {
-                    Label = Cx.GetNewLabel()
+                    Label = GetNewLabel()
                 };
-                Cx.DefineLabel(e, Cx.TrapWriter.Writer, Cx.Extractor);
+                DefineLabel(e, TrapWriter.Writer, Extractor);
                 primitiveTypes[(int)code] = e;
             }
 

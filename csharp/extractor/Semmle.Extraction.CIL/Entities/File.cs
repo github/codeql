@@ -11,7 +11,7 @@ namespace Semmle.Extraction.CIL.Entities
         public File(Context cx, string path) : base(cx)
         {
             this.OriginalPath = path;
-            TransformedPath = cx.Cx.Extractor.PathTransformer.Transform(OriginalPath);
+            TransformedPath = Cx.Extractor.PathTransformer.Transform(OriginalPath);
         }
 
         public override void WriteId(TextWriter trapFile)

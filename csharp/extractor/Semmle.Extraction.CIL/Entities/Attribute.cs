@@ -45,7 +45,7 @@ namespace Semmle.Extraction.CIL.Entities
                 }
                 catch
                 {
-                    Cx.Cx.Extractor.Logger.Log(Util.Logging.Severity.Info,
+                    Cx.Extractor.Logger.Log(Util.Logging.Severity.Info,
                         $"Attribute decoding is partial. Decoding attribute {constructor.DeclaringType.GetQualifiedName()} failed on {@object}.");
                     yield break;
                 }

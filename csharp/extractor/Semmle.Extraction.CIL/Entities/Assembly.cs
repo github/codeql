@@ -76,7 +76,7 @@ namespace Semmle.Extraction.CIL.Entities
                     }
                     catch (InternalError e)
                     {
-                        Cx.Cx.ExtractionError("Error processing type definition", e.Message, GeneratedLocation.Create(Cx.Cx), e.StackTrace);
+                        Cx.ExtractionError("Error processing type definition", e.Message, GeneratedLocation.Create(Cx), e.StackTrace);
                     }
 
                     // Limitation of C#: Cannot yield return inside a try-catch.
@@ -93,7 +93,7 @@ namespace Semmle.Extraction.CIL.Entities
                     }
                     catch (InternalError e)
                     {
-                        Cx.Cx.ExtractionError("Error processing bytecode", e.Message, GeneratedLocation.Create(Cx.Cx), e.StackTrace);
+                        Cx.ExtractionError("Error processing bytecode", e.Message, GeneratedLocation.Create(Cx), e.StackTrace);
                     }
 
                     if (product != null)
@@ -102,11 +102,11 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        private static void ExtractCIL(Extraction.Context cx, string assemblyPath, bool extractPdbs)
+        private static void ExtractCIL(Extractor extractor, TrapWriter trapWriter, bool extractPdbs)
         {
-            using var cilContext = new Context(cx, assemblyPath, extractPdbs);
+            using var cilContext = new Context(extractor, trapWriter, extractor.OutputPath, extractPdbs);
             cilContext.Populate(new Assembly(cilContext));
-            cilContext.Cx.PopulateAll();
+            cilContext.PopulateAll();
         }
 
         /// <summary>
@@ -135,8 +135,7 @@ namespace Semmle.Extraction.CIL.Entities
                 trapFile = trapWriter.TrapFile;
                 if (nocache || !System.IO.File.Exists(trapFile))
                 {
-                    var cx = new Extraction.Context(extractor, trapWriter);
-                    ExtractCIL(cx, assemblyPath, extractPdbs);
+                    ExtractCIL(extractor, trapWriter, extractPdbs);
                     extracted = true;
                 }
             }
