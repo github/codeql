@@ -143,7 +143,7 @@ class StringComponent extends AstNode {
  * "foo#{ bar() } baz"
  * ```
  */
-class StringTextComponent extends StringComponent, @token_string_content {
+class StringTextComponent extends StringComponent, StringTextComponent::StringContentToken {
   final override StringTextComponent::Range range;
 
   final override string getAPrimaryQlClass() { result = "StringTextComponent" }
@@ -302,6 +302,51 @@ class CharacterLiteral extends Literal, @token_character {
   final override CharacterLiteral::Range range;
 
   final override string getAPrimaryQlClass() { result = "CharacterLiteral" }
+}
+
+/**
+ * A "here document". For example:
+ * ```rb
+ * query = <<SQL
+ * SELECT * FROM person
+ * WHERE age > 21
+ * SQL
+ * ```
+ */
+class HereDoc extends StringlikeLiteral {
+  final override HereDoc::Range range;
+
+  final override string getAPrimaryQlClass() { result = "HereDoc" }
+
+  /**
+   * Holds if this here document is executed in a subshell.
+   * ```rb
+   * <<`COMMAND`
+   * echo "Hello world!"
+   * COMMAND
+   * ```
+   */
+  final predicate isSubShell() { getQuoteStyle() = "`" }
+
+  /**
+   * Gets the quotation mark (`"`, `'` or `` ` ``) that surrounds the here document identifier, if any.
+   * ```rb
+   * <<"IDENTIFIER"
+   * <<'IDENTIFIER'
+   * <<`IDENTIFIER`
+   * ```
+   */
+  final string getQuoteStyle() { result = range.getQuoteStyle() }
+
+  /**
+   * Gets the indentation modifier (`-` or `~`) of the here document identifier, if any.
+   * ```rb
+   * <<~IDENTIFIER
+   * <<-IDENTIFIER
+   * <<IDENTIFIER
+   * ```
+   */
+  final string getIndentationModifier() { result = range.getIndentationModifier() }
 }
 
 /**

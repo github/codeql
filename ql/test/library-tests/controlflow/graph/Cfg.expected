@@ -1331,14 +1331,11 @@ cfg.rb:
 #  108| puts
 #-----|  -> <<SQL
 
-#  108| ()
+#  108| (<<SQL)
 #-----|  -> call to puts
 
 #  108| <<SQL
 #-----|  -> call to table
-
-#  108| HeredocBody
-#-----|  -> ()
 
 #  109| #{...}
 #-----|  -> call to type
@@ -1347,7 +1344,7 @@ cfg.rb:
 #-----|  -> #{...}
 
 #  110| #{...}
-#-----|  -> HeredocBody
+#-----|  -> (<<SQL)
 
 #  110| call to type
 #-----|  -> #{...}
@@ -2154,15 +2151,9 @@ heredoc.rb:
 #-----|  -> <<A
 
 #    2| <<A
-#-----|  -> HeredocBody
-
-#    2| <<A
-#-----|  -> HeredocBody
-
-#    2| HeredocBody
 #-----|  -> <<A
 
-#    4| HeredocBody
+#    2| <<A
 #-----|  -> call to puts
 
 ifs.rb:

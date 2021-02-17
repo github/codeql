@@ -30,12 +30,6 @@ module AstNode {
       this instanceof Generated::RestAssignment
       or
       this instanceof Generated::Superclass
-      or
-      this instanceof Generated::HeredocBody
-      or
-      this instanceof Generated::HeredocBeginning
-      or
-      this instanceof Generated::HeredocEnd
     }
 
     override string toString() { result = "AstNode" }
