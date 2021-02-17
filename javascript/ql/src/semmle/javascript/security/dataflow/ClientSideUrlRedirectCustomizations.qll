@@ -173,7 +173,10 @@ module ClientSideUrlRedirect {
   class ReactAttributeWriteUrlSink extends ScriptUrlSink {
     ReactAttributeWriteUrlSink() {
       exists(JSXAttribute attr |
-        attr.getName() = DOM::getAPropertyNameInterpretedAsJavaScriptUrl()
+        attr.getName() = DOM::getAPropertyNameInterpretedAsJavaScriptUrl() and
+        attr.getElement().isHTMLElement()
+        or
+        DataFlow::moduleImport("next/link").flowsToExpr(attr.getElement().getNameExpr())
       |
         this = attr.getValue().flow()
       )

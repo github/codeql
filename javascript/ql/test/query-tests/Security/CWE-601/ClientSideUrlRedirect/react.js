@@ -35,3 +35,11 @@ function Page({ router }) {
 }
 
 export const pageWithRouter = withRouter(Page);
+
+export function plainLink() {
+  return <a href={document.location.hash.substr(1)}>my plain link!</a>;
+}
+
+export function someUnknown() {
+  return <FOO data={document.location.hash.substr(1)}>is safe.</FOO>;
+}
