@@ -41,7 +41,7 @@ def read_sized_xml(xml_file, name):
 def scale(xml, size, max_size):
     # Scale up the contents of all the <v> and <cardinality> tags
     for v in xml.xpath(".//v|.//cardinality"):
-        v.text = str((int(v.text) * max_size) / size)
+        v.text = str((int(v.text) * max_size) // size)
 
 def do_xml_files(output, scaled_xml_files, unscaled_xml_files, name):
     # The result starts off empty
@@ -55,7 +55,7 @@ def do_xml_files(output, scaled_xml_files, unscaled_xml_files, name):
         max_size = max([size for (xml, size) in sized_xmls])
         for (xml, size) in sized_xmls:
             scale(xml, size, max_size)
-    unsized_xmls = map(etree.parse, unscaled_xml_files)
+    unsized_xmls = list(map(etree.parse, unscaled_xml_files))
     xmls = [xml for (xml, size) in sized_xmls] + unsized_xmls
 
     # Put all the stats in a single XML doc so that we can search them
@@ -66,22 +66,22 @@ def do_xml_files(output, scaled_xml_files, unscaled_xml_files, name):
 
     # For each value of <e><k>, take the <e> tag with the biggest <e><v>
     typesizes = etree.SubElement(result, "typesizes")
-    typenames = set ([ typesize.find("k").text for typesize in merged_xml.xpath("dbstats/typesizes/e")])
+    typenames = sorted(set ([ typesize.find("k").text for typesize in merged_xml.xpath("dbstats/typesizes/e")]))
     for typename in typenames:
         xs = merged_xml.xpath("dbstats/typesizes/e[k='" + typename + "']")
         sized_xs = [(int(x.find("v").text), x) for x in xs]
-        (_, x) = max(sized_xs)
+        (_, x) = max(sized_xs, key = lambda p: p[0])
         typesizes.append(x)
 
     # For each value of <relation><name>, take the <relation> tag with
     # the biggest <relation><cardinality>
     stats = etree.SubElement(result, "stats")
     
-    relnames = set ([relation.find("name").text for relation in merged_xml.xpath("dbstats/stats/relation") ])
+    relnames = sorted(set ([relation.find("name").text for relation in merged_xml.xpath("dbstats/stats/relation") ]))
     for relname in relnames:
         rels = merged_xml.xpath("dbstats/stats/relation[name='" + relname + "']")
         sized_rels = [(int(rel.find("cardinality").text), rel) for rel in rels]
-        (_, rel) = max(sized_rels)
+        (_, rel) = max(sized_rels, key = lambda p: p[0])
         stats.append(rel)
 
     with open(output, 'wb') as f:

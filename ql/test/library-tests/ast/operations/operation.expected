@@ -87,9 +87,9 @@
 | operations.rb:63:1:63:7 | ... <=> ... | <=> | operations.rb:63:1:63:1 | a | SpaceshipExpr |
 | operations.rb:63:1:63:7 | ... <=> ... | <=> | operations.rb:63:7:63:7 | b | SpaceshipExpr |
 | operations.rb:64:1:64:15 | ... =~ ... | =~ | operations.rb:64:1:64:4 | name | RegexMatchExpr |
-| operations.rb:64:1:64:15 | ... =~ ... | =~ | operations.rb:64:9:64:15 | foo.* | RegexMatchExpr |
+| operations.rb:64:1:64:15 | ... =~ ... | =~ | operations.rb:64:9:64:15 | /foo.*/ | RegexMatchExpr |
 | operations.rb:65:1:65:17 | ... !~ ... | !~ | operations.rb:65:1:65:6 | handle | NoRegexMatchExpr |
-| operations.rb:65:1:65:17 | ... !~ ... | !~ | operations.rb:65:11:65:17 | .*bar | NoRegexMatchExpr |
+| operations.rb:65:1:65:17 | ... !~ ... | !~ | operations.rb:65:11:65:17 | /.*bar/ | NoRegexMatchExpr |
 | operations.rb:68:1:68:8 | ... += ... | += | operations.rb:68:1:68:1 | x | AssignAddExpr |
 | operations.rb:68:1:68:8 | ... += ... | += | operations.rb:68:6:68:8 | 128 | AssignAddExpr |
 | operations.rb:69:1:69:7 | ... -= ... | -= | operations.rb:69:1:69:1 | y | AssignSubExpr |

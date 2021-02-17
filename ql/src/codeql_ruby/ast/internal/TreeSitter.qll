@@ -1083,15 +1083,25 @@ module Generated {
   class Range extends @range, AstNode {
     override string getAPrimaryQlClass() { result = "Range" }
 
-    override Location getLocation() { range_def(this, _, _, result) }
+    override Location getLocation() { range_def(this, _, _, _, result) }
 
-    UnderscoreArg getChild(int i) { range_child(this, i, result) }
+    UnderscoreArg getBegin() { range_begin(this, result) }
 
-    override AstNode getParent() { range_def(this, result, _, _) }
+    UnderscoreArg getEnd() { range_end(this, result) }
 
-    override int getParentIndex() { range_def(this, _, result, _) }
+    string getOperator() {
+      exists(int value | range_def(this, _, _, value, _) |
+        result = ".." and value = 0
+        or
+        result = "..." and value = 1
+      )
+    }
 
-    override AstNode getAFieldOrChild() { range_child(this, _, result) }
+    override AstNode getParent() { range_def(this, result, _, _, _) }
+
+    override int getParentIndex() { range_def(this, _, result, _, _) }
+
+    override AstNode getAFieldOrChild() { range_begin(this, result) or range_end(this, result) }
   }
 
   class Rational extends @rational, AstNode {

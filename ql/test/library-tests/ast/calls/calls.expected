@@ -79,7 +79,7 @@ callsWithArguments
 | calls.rb:14:1:14:11 | call to foo | foo | 0 | calls.rb:14:5:14:5 | 0 |
 | calls.rb:14:1:14:11 | call to foo | foo | 1 | calls.rb:14:8:14:8 | 1 |
 | calls.rb:14:1:14:11 | call to foo | foo | 2 | calls.rb:14:11:14:11 | 2 |
-| calls.rb:25:1:27:3 | call to bar | bar | 0 | calls.rb:25:9:25:13 | foo |
+| calls.rb:25:1:27:3 | call to bar | bar | 0 | calls.rb:25:9:25:13 | "foo" |
 | calls.rb:36:3:36:16 | call to yield | yield | 0 | calls.rb:36:9:36:11 | 100 |
 | calls.rb:36:3:36:16 | call to yield | yield | 1 | calls.rb:36:14:36:16 | 200 |
 | calls.rb:54:1:54:14 | call to some_func | some_func | 0 | calls.rb:54:11:54:13 | call to foo |
@@ -94,7 +94,7 @@ callsWithArguments
 | calls.rb:275:1:275:13 | call to foo | foo | 0 | calls.rb:275:5:275:12 | **... |
 | calls.rb:278:1:278:14 | call to foo | foo | 0 | calls.rb:278:5:278:13 | Pair |
 | calls.rb:279:1:279:17 | call to foo | foo | 0 | calls.rb:279:5:279:16 | Pair |
-| calls.rb:288:5:288:16 | call to super | super | 0 | calls.rb:288:11:288:16 | blah |
+| calls.rb:288:5:288:16 | call to super | super | 0 | calls.rb:288:11:288:16 | "blah" |
 | calls.rb:289:5:289:17 | call to super | super | 0 | calls.rb:289:11:289:11 | 1 |
 | calls.rb:289:5:289:17 | call to super | super | 1 | calls.rb:289:14:289:14 | 2 |
 | calls.rb:289:5:289:17 | call to super | super | 2 | calls.rb:289:17:289:17 | 3 |
@@ -203,7 +203,7 @@ superCalls
 | calls.rb:293:5:293:33 | call to super |
 | calls.rb:305:5:305:9 | call to super |
 superCallsWithArguments
-| calls.rb:288:5:288:16 | call to super | 0 | calls.rb:288:11:288:16 | blah |
+| calls.rb:288:5:288:16 | call to super | 0 | calls.rb:288:11:288:16 | "blah" |
 | calls.rb:289:5:289:17 | call to super | 0 | calls.rb:289:11:289:11 | 1 |
 | calls.rb:289:5:289:17 | call to super | 1 | calls.rb:289:14:289:14 | 2 |
 | calls.rb:289:5:289:17 | call to super | 2 | calls.rb:289:17:289:17 | 3 |
