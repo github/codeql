@@ -41,7 +41,8 @@ class ServletMainMethod extends Method {
     this.isPublic() and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType() instanceof Array and
-    not this.getDeclaringType().getName().matches("%Test%") // Simple check to exclude test classes to reduce FPs
+    not this.getDeclaringType().getName().toLowerCase().matches("%test%") and // Simple check to exclude test classes to reduce FPs
+    not this.getDeclaringType().getPackage().getName().toLowerCase().matches("%test%") // Simple check to exclude classes in test packages to reduce FPs
   }
 }
 
