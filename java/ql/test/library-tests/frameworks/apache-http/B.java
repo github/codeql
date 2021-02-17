@@ -13,56 +13,56 @@ class B {
 
     class Test1 implements HttpRequestHandler {
         public void handle(ClassicHttpRequest req, ClassicHttpResponse res, HttpContext ctx) throws IOException, ParseException {
-            B.sink(req.getAuthority().getHostName());
-            B.sink(req.getAuthority().toString());
-            B.sink(req.getMethod());
-            B.sink(req.getPath());
-            B.sink(req.getScheme());
-            B.sink(req.getRequestUri());
+            B.sink(req.getAuthority().getHostName()); //$hasTaintFlow=y
+            B.sink(req.getAuthority().toString()); //$hasTaintFlow=y
+            B.sink(req.getMethod()); //$hasTaintFlow=y
+            B.sink(req.getPath()); //$hasTaintFlow=y
+            B.sink(req.getScheme()); 
+            B.sink(req.getRequestUri()); //$hasTaintFlow=y
             RequestLine line = new RequestLine(req);
-            B.sink(line.getUri());
-            B.sink(line.getMethod());
-            B.sink(req.getHeaders());
-            B.sink(req.headerIterator());
+            B.sink(line.getUri()); //$hasTaintFlow=y
+            B.sink(line.getMethod()); //$hasTaintFlow=y
+            B.sink(req.getHeaders()); //$hasTaintFlow=y
+            B.sink(req.headerIterator()); //$hasTaintFlow=y
             Header h = req.getHeaders("abc")[3];
-            B.sink(h.getName());
-            B.sink(h.getValue());
-            B.sink(req.getFirstHeader("abc"));
-            B.sink(req.getLastHeader("abc"));
+            B.sink(h.getName()); //$hasTaintFlow=y
+            B.sink(h.getValue()); //$hasTaintFlow=y
+            B.sink(req.getFirstHeader("abc")); //$hasTaintFlow=y
+            B.sink(req.getLastHeader("abc")); //$hasTaintFlow=y
             HttpEntity ent = req.getEntity();
-            B.sink(ent.getContent());
-            B.sink(ent.getContentEncoding());
-            B.sink(ent.getContentType());
-            B.sink(ent.getTrailerNames());
-            B.sink(ent.getTrailers().get());
-            B.sink(EntityUtils.toString(ent));
-            B.sink(EntityUtils.toByteArray(ent));
-            B.sink(EntityUtils.parse(ent));
-            res.setEntity(new StringEntity("<a href='" + req.getRequestUri() + "'>a</a>"));
-            res.setEntity(new ByteArrayEntity(EntityUtils.toByteArray(ent), ContentType.TEXT_HTML));
-            res.setEntity(HttpEntities.create("<a href='" + req.getRequestUri() + "'>a</a>"));
-            res.setHeader("Location", req.getRequestUri());
-            res.setHeader(new BasicHeader("Location", req.getRequestUri()));
+            B.sink(ent.getContent()); //$hasTaintFlow=y
+            B.sink(ent.getContentEncoding()); //$hasTaintFlow=y
+            B.sink(ent.getContentType()); //$hasTaintFlow=y
+            B.sink(ent.getTrailerNames()); //$hasTaintFlow=y
+            B.sink(ent.getTrailers().get()); //$hasTaintFlow=y
+            B.sink(EntityUtils.toString(ent)); //$hasTaintFlow=y
+            B.sink(EntityUtils.toByteArray(ent)); //$hasTaintFlow=y
+            B.sink(EntityUtils.parse(ent)); //$hasTaintFlow=y
+            res.setEntity(new StringEntity("<a href='" + req.getRequestUri() + "'>a</a>")); //$hasTaintFlow=y
+            res.setEntity(new ByteArrayEntity(EntityUtils.toByteArray(ent), ContentType.TEXT_HTML)); //$hasTaintFlow=y
+            res.setEntity(HttpEntities.create("<a href='" + req.getRequestUri() + "'>a</a>")); //$hasTaintFlow=y
+            res.setHeader("Location", req.getRequestUri()); //$hasTaintFlow=y
+            res.setHeader(new BasicHeader("Location", req.getRequestUri())); //$hasTaintFlow=y
         }
     }
 
     void test2() {
         ByteArrayBuffer bbuf = new ByteArrayBuffer(42);
-        bbuf.append((byte[]) taint(), 0, 3);
-        sink(bbuf.array());
-        sink(bbuf.toByteArray());
+        bbuf.append((byte[]) taint(), 0, 3); 
+        sink(bbuf.array()); //$hasTaintFlow=y
+        sink(bbuf.toByteArray()); //$hasTaintFlow=y
 
         CharArrayBuffer cbuf = new CharArrayBuffer(42);
-        cbuf.append(bbuf.toByteArray(), 0, 3);
-        sink(cbuf.toCharArray());
-        sink(cbuf.toString());
-        sink(cbuf.subSequence(0, 3));
-        sink(cbuf.substring(0, 3));
-        sink(cbuf.substringTrimmed(0, 3));
+        cbuf.append(bbuf.toByteArray(), 0, 3); 
+        sink(cbuf.toCharArray()); //$hasTaintFlow=y
+        sink(cbuf.toString()); //$hasTaintFlow=y
+        sink(cbuf.subSequence(0, 3)); //$hasTaintFlow=y
+        sink(cbuf.substring(0, 3)); //$hasTaintFlow=y
+        sink(cbuf.substringTrimmed(0, 3)); //$hasTaintFlow=y
 
-        sink(Args.notNull(taint(), "x"));
-        sink(Args.notEmpty((String) taint(), "x"));
-        sink(Args.notBlank((String) taint(), "x"));
+        sink(Args.notNull(taint(), "x")); //$hasTaintFlow=y
+        sink(Args.notEmpty((String) taint(), "x")); //$hasTaintFlow=y
+        sink(Args.notBlank((String) taint(), "x")); //$hasTaintFlow=y
         sink(Args.notNull("x", (String) taint())); // Good
     }
 }

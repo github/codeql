@@ -118,7 +118,7 @@ private class ApacheHttpGetter extends TaintPreservingCallable {
   ApacheHttpGetter() {
     exists(string pkg, string ty, string mtd, Method m |
       this.(Method).overrides*(m) and
-      m.getDeclaringType().hasQualifiedName(pkg, ty) and
+      m.getDeclaringType().getSourceDeclaration().hasQualifiedName(pkg, ty) and
       m.hasName(mtd)
     |
       pkg = "org.apache.http" and
@@ -165,7 +165,7 @@ private class ApacheHttpGetter extends TaintPreservingCallable {
         mtd = ["getFirstHeader", "getHeader", "getHeaders", "getLastHeader", "headerIterator"]
         or
         ty = "HttpRequest" and
-        mtd = ["getAuthority", "getPath", "getRequestUri", "getScheme", "getUri"]
+        mtd = ["getAuthority", "getMethod", "getPath", "getRequestUri", "getUri"]
         or
         ty = "HttpEntityContainer" and
         mtd = "getEntity"
@@ -177,10 +177,10 @@ private class ApacheHttpGetter extends TaintPreservingCallable {
         mtd = ["getContent", "getTrailers"]
         or
         ty = "EntityDetails" and
-        mtd = ["getContentType", "getTrailerNames"]
+        mtd = ["getContentType", "getContentEncoding", "getTrailerNames"]
       )
       or
-      pkg = "org.apache.hc.core5.message" and
+      pkg = "org.apache.hc.core5.http.message" and
       ty = "RequestLine" and
       mtd = ["getMethod", "getUri", "toString"]
       or
@@ -189,7 +189,7 @@ private class ApacheHttpGetter extends TaintPreservingCallable {
       mtd = "get"
       or
       pkg = "org.apache.hc.core5.net" and
-      ty = "UriAuthority" and
+      ty = "URIAuthority" and
       mtd = ["getHostName", "toString"]
     )
   }
@@ -204,7 +204,7 @@ private class UtilMethod extends TaintPreservingCallable {
       this.getDeclaringType().hasQualifiedName(pkg, ty) and
       this.hasName(mtd)
     |
-      pkg = ["org.apache.http.util", "org.apache.hc.core5.io.entity"] and
+      pkg = ["org.apache.http.util", "org.apache.hc.core5.http.io.entity"] and
       ty = "EntityUtils" and
       mtd = ["toString", "toByteArray", "getContentCharSet", "getContentMimeType", "parse"]
       or
@@ -216,7 +216,7 @@ private class UtilMethod extends TaintPreservingCallable {
       ty = "Args" and
       mtd = ["containsNoBlanks", "notBlank", "notEmpty", "notNull"]
       or
-      pkg = "org.apache.hc.core5.io.entity" and
+      pkg = "org.apache.hc.core5.http.io.entity" and
       ty = "HttpEntities" and
       mtd = ["create", "createGziped", "createUrlEncoded", "gzip", "withTrailers"]
     )
@@ -239,7 +239,7 @@ private class EntitySetter extends TaintPreservingCallable {
 private class EntityConstructor extends TaintPreservingCallable, Constructor {
   EntityConstructor() {
     this.getDeclaringType()
-        .hasQualifiedName(["org.apache.http.entity", "org.apache.hc.core5.io.entity"],
+        .hasQualifiedName(["org.apache.http.entity", "org.apache.hc.core5.http.io.entity"],
           [
             "BasicHttpEntity", "BufferedHttpEntity", "ByteArrayEntity", "HttpEntityWrapper",
             "InputStreamEntity", "StringEntity"
