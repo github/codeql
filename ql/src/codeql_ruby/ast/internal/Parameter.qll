@@ -100,7 +100,7 @@ module KeywordParameter {
       result = TLocalVariable(_, _, generated.getName())
     }
 
-    final Generated::AstNode getDefaultValue() { result = generated.getValue() }
+    final Expr::Range getDefaultValue() { result = generated.getValue() }
 
     final override string toString() { result = this.getName() }
 
@@ -116,7 +116,7 @@ module OptionalParameter {
       result = TLocalVariable(_, _, generated.getName())
     }
 
-    final Generated::AstNode getDefaultValue() { result = generated.getValue() }
+    final Expr::Range getDefaultValue() { result = generated.getValue() }
 
     final override string toString() { result = this.getName() }
 

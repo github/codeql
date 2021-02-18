@@ -120,9 +120,8 @@ class KeywordParameter extends @keyword_parameter, NamedParameter {
    * Gets the default value, i.e. the value assigned to the parameter when one
    * is not provided by the caller. If the parameter is mandatory and does not
    * have a default value, this predicate has no result.
-   * TODO: better return type (Expr?)
    */
-  final AstNode getDefaultValue() { result = range.getDefaultValue() }
+  final Expr getDefaultValue() { result = range.getDefaultValue() }
 
   /**
    * Holds if the parameter is optional. That is, there is a default value that
@@ -148,9 +147,8 @@ class OptionalParameter extends @optional_parameter, NamedParameter {
   /**
    * Gets the default value, i.e. the value assigned to the parameter when one
    * is not provided by the caller.
-   * TODO: better return type (Expr?)
    */
-  final AstNode getDefaultValue() { result = range.getDefaultValue() }
+  final Expr getDefaultValue() { result = range.getDefaultValue() }
 }
 
 /**
