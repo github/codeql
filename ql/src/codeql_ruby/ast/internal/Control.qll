@@ -1,4 +1,5 @@
 private import codeql_ruby.AST
+private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.ast.internal.Expr
 private import codeql_ruby.ast.internal.Pattern
 private import codeql_ruby.ast.internal.TreeSitter
@@ -12,6 +13,12 @@ module ConditionalExpr {
     abstract Expr getCondition();
 
     abstract Expr getBranch(boolean cond);
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getCondition" and child = getCondition()
+      or
+      label = "getBranch" and child = getBranch(_)
+    }
   }
 }
 
@@ -23,6 +30,14 @@ module IfExpr {
 
     final override string toString() {
       if this instanceof @elsif then result = "elsif ..." else result = "if ..."
+    }
+
+    override predicate child(string label, AstNode::Range child) {
+      super.child(label, child)
+      or
+      label = "getThen" and child = getThen()
+      or
+      label = "getElse" and child = getElse()
     }
   }
 
@@ -76,6 +91,14 @@ module UnlessExpr {
     }
 
     final override string toString() { result = "unless ..." }
+
+    override predicate child(string label, AstNode::Range child) {
+      ConditionalExpr::Range.super.child(label, child)
+      or
+      label = "getThen" and child = getThen()
+      or
+      label = "getElse" and child = getElse()
+    }
   }
 }
 
@@ -90,6 +113,12 @@ module IfModifierExpr {
     final override Expr getBranch(boolean cond) { cond = true and result = getExpr() }
 
     final override string toString() { result = "... if ..." }
+
+    override predicate child(string label, AstNode::Range child) {
+      ConditionalExpr::Range.super.child(label, child)
+      or
+      label = "getExpr" and child = getExpr()
+    }
   }
 }
 
@@ -104,6 +133,12 @@ module UnlessModifierExpr {
     final override Expr getBranch(boolean cond) { cond = false and result = getExpr() }
 
     final override string toString() { result = "... unless ..." }
+
+    override predicate child(string label, AstNode::Range child) {
+      ConditionalExpr::Range.super.child(label, child)
+      or
+      label = "getExpr" and child = getExpr()
+    }
   }
 }
 
@@ -124,6 +159,14 @@ module TernaryIfExpr {
     }
 
     final override string toString() { result = "... ? ... : ..." }
+
+    override predicate child(string label, AstNode::Range child) {
+      ConditionalExpr::Range.super.child(label, child)
+      or
+      label = "getThen" and child = getThen()
+      or
+      label = "getElse" and child = getElse()
+    }
   }
 }
 
@@ -136,6 +179,12 @@ module CaseExpr {
     final Expr getBranch(int n) { result = generated.getChild(n) }
 
     final override string toString() { result = "case ..." }
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getValue" and child = getValue()
+      or
+      label = "getBranch" and child = getBranch(_)
+    }
   }
 }
 
@@ -148,18 +197,34 @@ module WhenExpr {
     final Expr getPattern(int n) { result = generated.getPattern(n).getChild() }
 
     final override string toString() { result = "when ..." }
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getBody" and child = getBody()
+      or
+      label = "getPattern" and child = getPattern(_)
+    }
   }
 }
 
 module Loop {
   abstract class Range extends ControlExpr::Range {
     abstract Expr getBody();
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getBody" and child = getBody()
+    }
   }
 }
 
 module ConditionalLoop {
   abstract class Range extends Loop::Range {
     abstract Expr getCondition();
+
+    override predicate child(string label, AstNode::Range child) {
+      super.child(label, child)
+      or
+      label = "getCondition" and child = getCondition()
+    }
   }
 }
 
@@ -222,5 +287,13 @@ module ForExpr {
     final Expr getValue() { result = generated.getValue().getChild() }
 
     final override string toString() { result = "for ... in ..." }
+
+    override predicate child(string label, AstNode::Range child) {
+      Loop::Range.super.child(label, child)
+      or
+      label = "getPattern" and child = getPattern()
+      or
+      label = "getValue" and child = getValue()
+    }
   }
 }

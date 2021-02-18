@@ -1,4 +1,5 @@
-import codeql_ruby.AST
+private import codeql_ruby.AST
+private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.ast.internal.TreeSitter
 private import codeql_ruby.ast.internal.Expr
 
@@ -7,6 +8,10 @@ module Operation {
     abstract string getOperator();
 
     abstract Expr getAnOperand();
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getAnOperand" and child = getAnOperand()
+    }
   }
 }
 
@@ -21,6 +26,12 @@ module UnaryOperation {
     final override Expr getAnOperand() { result = this.getOperand() }
 
     override string toString() { result = this.getOperator() + " ..." }
+
+    override predicate child(string label, AstNode::Range child) {
+      Operation::Range.super.child(label, child)
+      or
+      label = "getOperand" and child = getOperand()
+    }
   }
 }
 
@@ -73,6 +84,14 @@ module BinaryOperation {
     }
 
     override string toString() { result = "... " + this.getOperator() + " ..." }
+
+    override predicate child(string label, AstNode::Range child) {
+      Operation::Range.super.child(label, child)
+      or
+      label = "getLeftOperand" and child = getLeftOperand()
+      or
+      label = "getRightOperand" and child = getRightOperand()
+    }
   }
 }
 
@@ -169,6 +188,14 @@ module RelationalOperation {
     abstract Expr getGreaterOperand();
 
     abstract Expr getLesserOperand();
+
+    override predicate child(string label, AstNode::Range child) {
+      ComparisonOperation::Range.super.child(label, child)
+      or
+      label = "getGreaterOperand" and child = getGreaterOperand()
+      or
+      label = "getLesserOperand" and child = getLesserOperand()
+    }
   }
 }
 
@@ -227,6 +254,14 @@ module Assignment {
     }
 
     override string toString() { result = "... " + this.getOperator() + " ..." }
+
+    override predicate child(string label, AstNode::Range child) {
+      Operation::Range.super.child(label, child)
+      or
+      label = "getLeftOperand" and child = getLeftOperand()
+      or
+      label = "getRightOperand" and child = getRightOperand()
+    }
   }
 }
 

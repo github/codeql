@@ -1,4 +1,5 @@
 private import codeql_ruby.AST
+private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.ast.internal.Expr
 private import codeql_ruby.ast.internal.TreeSitter
 private import codeql_ruby.ast.internal.Variable
@@ -14,6 +15,14 @@ module Call {
     abstract Block getBlock();
 
     override string toString() { result = "call to " + this.getMethodName() }
+
+    final override predicate child(string label, AstNode::Range child) {
+      label = "getReceiver" and child = getReceiver()
+      or
+      label = "getArgument" and child = getArgument(_)
+      or
+      label = "getBlock" and child = getBlock()
+    }
   }
 
   private class IdentifierCallRange extends Call::Range, @token_identifier {
@@ -144,6 +153,10 @@ module BlockArgument {
     final Expr getExpr() { result = generated.getChild() }
 
     final override string toString() { result = "&..." }
+
+    final override predicate child(string label, AstNode::Range child) {
+      label = "getExpr" and child = getExpr()
+    }
   }
 }
 
@@ -154,6 +167,10 @@ module SplatArgument {
     final Expr getExpr() { result = generated.getChild() }
 
     final override string toString() { result = "*..." }
+
+    final override predicate child(string label, AstNode::Range child) {
+      label = "getExpr" and child = getExpr()
+    }
   }
 }
 
@@ -164,5 +181,9 @@ module HashSplatArgument {
     final Expr getExpr() { result = generated.getChild() }
 
     final override string toString() { result = "**..." }
+
+    final override predicate child(string label, AstNode::Range child) {
+      label = "getExpr" and child = getExpr()
+    }
   }
 }

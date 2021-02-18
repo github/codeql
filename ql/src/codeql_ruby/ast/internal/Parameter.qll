@@ -1,6 +1,7 @@
 private import codeql_ruby.AST
 private import TreeSitter
 private import codeql_ruby.ast.internal.AST
+private import codeql_ruby.ast.internal.Expr
 private import codeql_ruby.ast.internal.Variable
 private import codeql_ruby.ast.internal.Method
 private import codeql_ruby.ast.internal.Pattern
@@ -61,6 +62,11 @@ module TuplePatternParameter {
     override LocalVariable getAVariable() { result = TuplePattern::Range.super.getAVariable() }
 
     override string toString() { result = TuplePattern::Range.super.toString() }
+
+    override predicate child(string label, AstNode::Range child) {
+      PatternParameter::Range.super.child(label, child) or
+      TuplePattern::Range.super.child(label, child)
+    }
   }
 }
 

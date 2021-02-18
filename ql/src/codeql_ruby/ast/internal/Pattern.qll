@@ -101,5 +101,9 @@ module TuplePattern {
     override Variable getAVariable() { result = this.getElement(_).getAVariable() }
 
     override string toString() { result = "(..., ...)" }
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getElement" and child = getElement(_)
+    }
   }
 }
