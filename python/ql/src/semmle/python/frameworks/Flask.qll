@@ -68,7 +68,7 @@ private module FlaskModel {
    */
   module Blueprint {
     /** Gets a reference to the `flask.Blueprint` class. */
-    API::Node classRef() { result = flask().getMember("Blueprint") }
+    API::Node classRef() { result = API::moduleImport("flask").getMember("Blueprint") }
 
     /** Gets a reference to an instance of `flask.Blueprint`. */
     API::Node instance() { result = classRef().getReturn() }
@@ -77,21 +77,10 @@ private module FlaskModel {
   // ---------------------------------------------------------------------------
   // flask
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `flask` module. */
-  API::Node flask() { result = API::moduleImport("flask") }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `flask` module.
-   */
-  private API::Node flask_attr(string attr_name) { result = flask().getMember(attr_name) }
-
   /** Provides models for the `flask` module. */
   module flask {
     /** Gets a reference to the `flask.request` object. */
-    API::Node request() { result = flask_attr("request") }
-
-    /** Gets a reference to the `flask.make_response` function. */
-    API::Node make_response() { result = flask_attr("make_response") }
+    API::Node request() { result = API::moduleImport("flask").getMember("request") }
   }
 
   /**
@@ -102,7 +91,7 @@ private module FlaskModel {
   module Response {
     /** Gets a reference to the `flask.Response` class. */
     API::Node classRef() {
-      result = flask_attr("Response")
+      result = API::moduleImport("flask").getMember("Response")
       or
       result = [FlaskApp::classRef(), FlaskApp::instance()].getMember("response_class")
     }
@@ -398,7 +387,7 @@ private module FlaskModel {
   private class FlaskMakeResponseCall extends HTTP::Server::HttpResponse::Range,
     DataFlow::CallCfgNode {
     FlaskMakeResponseCall() {
-      this = flask::make_response().getACall()
+      this = API::moduleImport("flask").getMember("make_response").getACall()
       or
       this = FlaskApp::instance().getMember("make_response").getACall()
     }
@@ -432,7 +421,7 @@ private module FlaskModel {
    */
   private class FlaskRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
     DataFlow::CallCfgNode {
-    FlaskRedirectCall() { this = flask_attr("redirect").getACall() }
+    FlaskRedirectCall() { this = API::moduleImport("flask").getMember("redirect").getACall() }
 
     override DataFlow::Node getRedirectLocation() {
       result in [this.getArg(0), this.getArgByName("location")]
