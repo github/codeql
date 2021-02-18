@@ -87,7 +87,7 @@ namespace Semmle.Extraction.CSharp
             var pathTransformer = new PathTransformer(canonicalPathCache);
 
             using var analyser = new NonStandaloneAnalyser(new LogProgressMonitor(logger), logger, options.AssemblySensitiveTrap, pathTransformer);
-            using var references = new BlockingCollection<MetadataReference>();
+
             try
             {
                 var compilerVersion = new CompilerVersion(options);
@@ -120,80 +120,7 @@ namespace Semmle.Extraction.CSharp
                     return ExitCode.Ok;
                 }
 
-                var referenceTasks = ResolveReferences(compilerArguments, analyser, canonicalPathCache, references);
-
-                var syntaxTrees = new List<SyntaxTree>();
-                var syntaxTreeTasks = ReadSyntaxTrees(
-                    compilerArguments.SourceFiles.
-                    Select(src => canonicalPathCache.GetCanonicalPath(src.Path)),
-                    analyser,
-                    compilerArguments.ParseOptions,
-                    compilerArguments.Encoding,
-                    syntaxTrees);
-
-                var sw1 = new Stopwatch();
-                sw1.Start();
-
-                Parallel.Invoke(
-                    new ParallelOptions { MaxDegreeOfParallelism = options.Threads },
-                    referenceTasks.Interleave(syntaxTreeTasks).ToArray());
-
-                if (syntaxTrees.Count == 0)
-                {
-                    logger.Log(Severity.Error, "  No source files");
-                    ++analyser.CompilationErrors;
-                    return ExitCode.Failed;
-                }
-
-                // csc.exe (CSharpCompiler.cs) also provides CompilationOptions
-                // .WithMetadataReferenceResolver(),
-                // .WithXmlReferenceResolver() and
-                // .WithSourceReferenceResolver().
-                // These would be needed if we hadn't explicitly provided the source/references
-                // already.
-                var compilation = CSharpCompilation.Create(
-                    compilerArguments.CompilationName,
-                    syntaxTrees,
-                    references,
-                    compilerArguments.CompilationOptions.
-                        WithAssemblyIdentityComparer(DesktopAssemblyIdentityComparer.Default).
-                        WithStrongNameProvider(new DesktopStrongNameProvider(compilerArguments.KeyFileSearchPaths))
-                    );
-
-                analyser.EndInitialize(compilerArguments, options, compilation);
-                analyser.AnalyseCompilation();
-                analyser.AnalyseReferences();
-
-                foreach (var tree in compilation.SyntaxTrees)
-                {
-                    analyser.AnalyseTree(tree);
-                }
-
-                var currentProcess = Process.GetCurrentProcess();
-                var cpuTime1 = currentProcess.TotalProcessorTime;
-                var userTime1 = currentProcess.UserProcessorTime;
-                sw1.Stop();
-                logger.Log(Severity.Info, "  Models constructed in {0}", sw1.Elapsed);
-
-                var sw2 = new Stopwatch();
-                sw2.Start();
-                analyser.PerformExtraction(options.Threads);
-                sw2.Stop();
-                var cpuTime2 = currentProcess.TotalProcessorTime;
-                var userTime2 = currentProcess.UserProcessorTime;
-
-                var performance = new Entities.PerformanceMetrics()
-                {
-                    Frontend = new Entities.Timings() { Elapsed = sw1.Elapsed, Cpu = cpuTime1, User = userTime1 },
-                    Extractor = new Entities.Timings() { Elapsed = sw2.Elapsed, Cpu = cpuTime2 - cpuTime1, User = userTime2 - userTime1 },
-                    Total = new Entities.Timings() { Elapsed = stopwatch.Elapsed, Cpu = cpuTime2, User = userTime2 },
-                    PeakWorkingSet = currentProcess.PeakWorkingSet64
-                };
-
-                analyser.LogPerformance(performance);
-                logger.Log(Severity.Info, "  Extraction took {0}", sw2.Elapsed);
-
-                return analyser.TotalErrors == 0 ? ExitCode.Ok : ExitCode.Errors;
+                return AnalyseNonStandalone(analyser, compilerArguments, options, canonicalPathCache, stopwatch);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
@@ -321,73 +248,175 @@ namespace Semmle.Extraction.CSharp
             ILogger logger,
             CommonOptions options)
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
             var pathTransformer = new PathTransformer(canonicalPathCache);
 
             using var analyser = new StandaloneAnalyser(pm, logger, false, pathTransformer);
-            using var references = new BlockingCollection<MetadataReference>();
             try
             {
-                var referenceTasks = referencePaths.Select<string, Action>(path => () =>
-                {
-                    var reference = MetadataReference.CreateFromFile(path);
-                    references.Add(reference);
-                });
-
-                var syntaxTrees = new List<SyntaxTree>();
-                var syntaxTreeTasks = ReadSyntaxTrees(sources, analyser, null, null, syntaxTrees);
-
-                var sw = new Stopwatch();
-                sw.Start();
-
-                Parallel.Invoke(
-                    new ParallelOptions { MaxDegreeOfParallelism = options.Threads },
-                    referenceTasks.Interleave(syntaxTreeTasks).ToArray());
-
-                if (syntaxTrees.Count == 0)
-                {
-                    analyser.Logger.Log(Severity.Error, "  No source files");
-                    ++analyser.CompilationErrors;
-                }
-
-                var compilation = CSharpCompilation.Create(
-                    "csharp.dll",
-                    syntaxTrees,
-                    references
-                    );
-
-                analyser.InitializeStandalone(compilation, options);
-                analyser.AnalyseReferences();
-
-                foreach (var tree in compilation.SyntaxTrees)
-                {
-                    analyser.AnalyseTree(tree);
-                }
-
-                sw.Stop();
-                analyser.Logger.Log(Severity.Info, "  Models constructed in {0}", sw.Elapsed);
-
-                sw.Restart();
-                analyser.PerformExtraction(options.Threads);
-                sw.Stop();
-                analyser.Logger.Log(Severity.Info, "  Extraction took {0}", sw.Elapsed);
-
-                foreach (var type in analyser.MissingNamespaces)
-                {
-                    pm.MissingNamespace(type);
-                }
-
-                foreach (var type in analyser.MissingTypes)
-                {
-                    pm.MissingType(type);
-                }
-
-                pm.MissingSummary(analyser.MissingTypes.Count(), analyser.MissingNamespaces.Count());
+                AnalyseStandalone(analyser, sources, referencePaths, options, pm, stopwatch);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
                 analyser.Logger.Log(Severity.Error, "  Unhandled exception: {0}", ex);
             }
+        }
+
+        private static ExitCode Analyse(Stopwatch stopwatch, Analyser analyser, CommonOptions options,
+            Func<BlockingCollection<MetadataReference>, IEnumerable<Action>> getResolvedReferenceTasks,
+            Func<Analyser, List<SyntaxTree>, IEnumerable<Action>> getSyntaxTreeTasks,
+            Func<IEnumerable<SyntaxTree>, IEnumerable<MetadataReference>, CSharpCompilation> getCompilation,
+            Action<CSharpCompilation, CommonOptions> initializeAnalyser,
+            Action analyseCompilation,
+            Action<Entities.PerformanceMetrics> logPerformance,
+            Action postProcess)
+        {
+            using var references = new BlockingCollection<MetadataReference>();
+            var referenceTasks = getResolvedReferenceTasks(references);
+
+            var syntaxTrees = new List<SyntaxTree>();
+            var syntaxTreeTasks = getSyntaxTreeTasks(analyser, syntaxTrees);
+
+            var sw = new Stopwatch();
+            sw.Start();
+
+            Parallel.Invoke(
+                new ParallelOptions { MaxDegreeOfParallelism = options.Threads },
+                referenceTasks.Interleave(syntaxTreeTasks).ToArray());
+
+            if (syntaxTrees.Count == 0)
+            {
+                analyser.Logger.Log(Severity.Error, "  No source files");
+                ++analyser.CompilationErrors;
+                if (analyser is NonStandaloneAnalyser)
+                {
+                    return ExitCode.Failed;
+                }
+            }
+
+            var compilation = getCompilation(syntaxTrees, references);
+
+            initializeAnalyser(compilation, options);
+            analyseCompilation();
+            analyser.AnalyseReferences();
+
+            foreach (var tree in compilation.SyntaxTrees)
+            {
+                analyser.AnalyseTree(tree);
+            }
+
+            sw.Stop();
+            analyser.Logger.Log(Severity.Info, "  Models constructed in {0}", sw.Elapsed);
+            var elapsed = sw.Elapsed;
+
+            var currentProcess = Process.GetCurrentProcess();
+            var cpuTime1 = currentProcess.TotalProcessorTime;
+            var userTime1 = currentProcess.UserProcessorTime;
+
+            sw.Restart();
+            analyser.PerformExtraction(options.Threads);
+            sw.Stop();
+            var cpuTime2 = currentProcess.TotalProcessorTime;
+            var userTime2 = currentProcess.UserProcessorTime;
+
+            var performance = new Entities.PerformanceMetrics()
+            {
+                Frontend = new Entities.Timings() { Elapsed = elapsed, Cpu = cpuTime1, User = userTime1 },
+                Extractor = new Entities.Timings() { Elapsed = sw.Elapsed, Cpu = cpuTime2 - cpuTime1, User = userTime2 - userTime1 },
+                Total = new Entities.Timings() { Elapsed = stopwatch.Elapsed, Cpu = cpuTime2, User = userTime2 },
+                PeakWorkingSet = currentProcess.PeakWorkingSet64
+            };
+
+            logPerformance(performance);
+            analyser.Logger.Log(Severity.Info, "  Extraction took {0}", sw.Elapsed);
+
+            postProcess();
+
+            return analyser.TotalErrors == 0 ? ExitCode.Ok : ExitCode.Errors;
+        }
+
+        private static void AnalyseStandalone(
+            StandaloneAnalyser analyser,
+            IEnumerable<string> sources,
+            IEnumerable<string> referencePaths,
+            CommonOptions options,
+            IProgressMonitor progressMonitor,
+            Stopwatch stopwatch)
+        {
+            Analyse(stopwatch, analyser, options,
+                references => GetResolvedReferencesStandalone(referencePaths, references),
+                (analyser, syntaxTrees) => ReadSyntaxTrees(sources, analyser, null, null, syntaxTrees),
+                (syntaxTrees, references) => CSharpCompilation.Create("csharp.dll", syntaxTrees, references),
+                (compilation, options) => analyser.InitializeStandalone(compilation, options),
+                () => { },
+                _ => { },
+                () =>
+                {
+                    foreach (var type in analyser.MissingNamespaces)
+                    {
+                        progressMonitor.MissingNamespace(type);
+                    }
+
+                    foreach (var type in analyser.MissingTypes)
+                    {
+                        progressMonitor.MissingType(type);
+                    }
+
+                    progressMonitor.MissingSummary(analyser.MissingTypes.Count(), analyser.MissingNamespaces.Count());
+                });
+        }
+
+        private static ExitCode AnalyseNonStandalone(
+            NonStandaloneAnalyser analyser,
+            CSharpCommandLineArguments compilerArguments,
+            Options options,
+            CanonicalPathCache canonicalPathCache,
+            Stopwatch stopwatch)
+        {
+            return Analyse(stopwatch, analyser, options,
+                references => ResolveReferences(compilerArguments, analyser, canonicalPathCache, references),
+                (analyser, syntaxTrees) =>
+                {
+                    return ReadSyntaxTrees(
+                        compilerArguments.SourceFiles.Select(src => canonicalPathCache.GetCanonicalPath(src.Path)),
+                        analyser,
+                        compilerArguments.ParseOptions,
+                        compilerArguments.Encoding,
+                        syntaxTrees);
+                },
+                (syntaxTrees, references) =>
+                {
+                    // csc.exe (CSharpCompiler.cs) also provides CompilationOptions
+                    // .WithMetadataReferenceResolver(),
+                    // .WithXmlReferenceResolver() and
+                    // .WithSourceReferenceResolver().
+                    // These would be needed if we hadn't explicitly provided the source/references
+                    // already.
+                    return CSharpCompilation.Create(
+                        compilerArguments.CompilationName,
+                        syntaxTrees,
+                        references,
+                        compilerArguments.CompilationOptions.
+                            WithAssemblyIdentityComparer(DesktopAssemblyIdentityComparer.Default).
+                            WithStrongNameProvider(new DesktopStrongNameProvider(compilerArguments.KeyFileSearchPaths))
+                        );
+                },
+                (compilation, options) => analyser.EndInitialize(compilerArguments, options, compilation),
+                () => analyser.AnalyseCompilation(),
+                performance => analyser.LogPerformance(performance),
+                () => { });
+        }
+
+        private static IEnumerable<Action> GetResolvedReferencesStandalone(IEnumerable<string> referencePaths, BlockingCollection<MetadataReference> references)
+        {
+            return referencePaths.Select<string, Action>(path => () =>
+            {
+                var reference = MetadataReference.CreateFromFile(path);
+                references.Add(reference);
+            });
         }
 
         /// <summary>

@@ -41,7 +41,7 @@ namespace Semmle.Extraction.CSharp
         /// <returns>A Boolean indicating whether to proceed with extraction.</returns>
         public void EndInitialize(
            CSharpCommandLineArguments commandLineArguments,
-           Options options,
+           CommonOptions options,
            CSharpCompilation compilation)
         {
             if (!init)
