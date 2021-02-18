@@ -376,3 +376,42 @@ unknownType
 abstractSignature
 | (): HasArea |
 | new (): HasArea |
+unionIndex
+| 1 | 0 | 1 \| 2 |
+| 2 | 1 | 1 \| 2 |
+| "bigint" | 2 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "boolean" | 3 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "function" | 7 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "number" | 1 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "object" | 6 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "string" | 0 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "symbol" | 4 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "undefined" | 5 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| Json[] | 5 | string \| number \| boolean \| { [property: string... |
+| T | 0 | T \| ValueOrArray<T>[] |
+| ValueOrArray<T>[] | 1 | T \| ValueOrArray<T>[] |
+| ValueOrArray<number>[] | 1 | number \| ValueOrArray<number>[] |
+| [string, { [key: string]: any; }, ...VirtualNod... | 1 | VirtualNode \| { [key: string]: any; } |
+| [string, { [key: string]: any; }, ...VirtualNod... | 1 | string \| [string, { [key: string]: any; }, ...V... |
+| false | 0 | boolean |
+| false | 2 | string \| number \| boolean |
+| false | 2 | string \| number \| boolean \| { [property: string... |
+| number | 0 | number \| ValueOrArray<number>[] |
+| number | 1 | string \| number |
+| number | 1 | string \| number \| boolean |
+| number | 1 | string \| number \| boolean \| { [property: string... |
+| number | 1 | string \| number \| true |
+| string | 0 | VirtualNode \| { [key: string]: any; } |
+| string | 0 | string \| [string, { [key: string]: any; }, ...V... |
+| string | 0 | string \| number |
+| string | 0 | string \| number \| boolean |
+| string | 0 | string \| number \| boolean \| { [property: string... |
+| string | 0 | string \| number \| true |
+| string | 0 | string \| { [key: string]: any; } |
+| true | 1 | boolean |
+| true | 2 | string \| number \| true |
+| true | 3 | string \| number \| boolean |
+| true | 3 | string \| number \| boolean \| { [property: string... |
+| { [key: string]: any; } | 1 | string \| { [key: string]: any; } |
+| { [key: string]: any; } | 2 | VirtualNode \| { [key: string]: any; } |
+| { [property: string]: Json; } | 4 | string \| number \| boolean \| { [property: string... |

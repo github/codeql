@@ -37,3 +37,5 @@ query predicate unknownType(Expr e, Type type) {
 }
 
 query CallSignatureType abstractSignature() { result.isAbstract() }
+
+query UnionType unionIndex(Type element, int i) { result.getElementType(i) = element }
