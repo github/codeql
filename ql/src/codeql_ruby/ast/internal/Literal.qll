@@ -128,6 +128,10 @@ module StringInterpolationComponent {
     }
 
     final override string getValueText() { none() }
+
+    override predicate child(string label, AstNode::Range child) {
+      StmtSequence::Range.super.child(label, child)
+    }
   }
 }
 
@@ -175,6 +179,10 @@ module StringlikeLiteral {
         ) and
         result = this.getStartDelimiter() + summary + this.getEndDelimiter()
       )
+    }
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getComponent" and child = getComponent(_)
     }
   }
 }
@@ -340,6 +348,10 @@ module ArrayLiteral {
     final override string getValueText() { none() }
 
     abstract Expr getElement(int i);
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getElement" and child = getElement(_)
+    }
   }
 
   private class RegularArrayRange extends ArrayLiteral::Range, @array {
@@ -376,6 +388,10 @@ module HashLiteral {
     final Expr getElement(int i) { result = generated.getChild(i) }
 
     final override string toString() { result = "{...}" }
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getElement" and child = getElement(_)
+    }
   }
 }
 
@@ -394,6 +410,12 @@ module RangeLiteral {
     final predicate isInclusive() { this instanceof @range_dotdot }
 
     final predicate isExclusive() { this instanceof @range_dotdotdot }
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getBegin" and child = getBegin()
+      or
+      label = "getEnd" and child = getEnd()
+    }
   }
 }
 

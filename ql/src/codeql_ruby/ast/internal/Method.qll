@@ -1,4 +1,5 @@
 private import codeql_ruby.AST
+private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.ast.internal.Expr
 private import codeql_ruby.ast.internal.Parameter
 private import TreeSitter
@@ -6,6 +7,10 @@ private import TreeSitter
 module Callable {
   abstract class Range extends Expr::Range {
     abstract Parameter::Range getParameter(int n);
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getParameter" and child = getParameter(_)
+    }
   }
 }
 
@@ -25,6 +30,10 @@ module Method {
     final override Generated::AstNode getChild(int i) { result = generated.getChild(i) }
 
     final override string toString() { result = this.getName() }
+
+    override predicate child(string label, AstNode::Range child) {
+      Callable::Range.super.child(label, child) or BodyStatement::Range.super.child(label, child)
+    }
   }
 }
 
@@ -45,6 +54,14 @@ module SingletonMethod {
     final override Generated::AstNode getChild(int i) { result = generated.getChild(i) }
 
     final override string toString() { result = this.getName() }
+
+    override predicate child(string label, AstNode::Range child) {
+      Callable::Range.super.child(label, child)
+      or
+      BodyStatement::Range.super.child(label, child)
+      or
+      label = "getObject" and child = getObject()
+    }
   }
 }
 
@@ -62,12 +79,24 @@ module Lambda {
     }
 
     final override string toString() { result = "-> { ... }" }
+
+    override predicate child(string label, AstNode::Range child) {
+      Callable::Range.super.child(label, child)
+      or
+      BodyStatement::Range.super.child(label, child)
+    }
   }
 }
 
 module Block {
   abstract class Range extends Callable::Range, StmtSequence::Range {
     Range() { not generated.getParent() instanceof Generated::Lambda }
+
+    override predicate child(string label, AstNode::Range child) {
+      Callable::Range.super.child(label, child)
+      or
+      StmtSequence::Range.super.child(label, child)
+    }
   }
 }
 
@@ -82,6 +111,12 @@ module DoBlock {
     }
 
     final override string toString() { result = "do ... end" }
+
+    override predicate child(string label, AstNode::Range child) {
+      Block::Range.super.child(label, child)
+      or
+      BodyStatement::Range.super.child(label, child)
+    }
   }
 }
 

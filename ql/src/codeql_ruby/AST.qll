@@ -36,4 +36,10 @@ class AstNode extends @ast_node {
 
   /** Gets the location of this node. */
   final Location getLocation() { result = range.getLocation() }
+
+  /** Gets a child node of this `AstNode`. */
+  final AstNode getAChild() { range.child(_, result) }
+
+  /** Gets the parent of this `AstNode`, if this node is not a root node. */
+  final AstNode getParent() { result.getAChild() = this }
 }

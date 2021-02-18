@@ -1,4 +1,5 @@
 private import codeql_ruby.AST
+private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.ast.internal.Literal
 private import codeql_ruby.ast.internal.Statement
 private import codeql_ruby.ast.internal.TreeSitter
@@ -30,6 +31,10 @@ module StmtSequence {
         c > 1 and result = "...; ..."
       )
     }
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getStmt" and child = getStmt(_)
+    }
   }
 }
 
@@ -56,6 +61,16 @@ module BodyStatement {
     final StmtSequence getEnsure() { result = unique(Generated::Ensure s | s = getChild(_)) }
 
     abstract Generated::AstNode getChild(int i);
+
+    override predicate child(string label, AstNode::Range child) {
+      StmtSequence::Range.super.child(label, child)
+      or
+      label = "getRescue" and child = getRescue(_)
+      or
+      label = "getElse" and child = getElse()
+      or
+      label = "getEnsure" and child = getEnsure()
+    }
   }
 }
 
@@ -72,16 +87,6 @@ module ParenthesizedExpr {
         c > 0 and result = "(" + StmtSequence::Range.super.toString() + ")"
       )
     }
-  }
-}
-
-module BeginBlock {
-  class Range extends StmtSequence::Range, @begin_block {
-    final override Generated::BeginBlock generated;
-
-    final override Stmt getStmt(int n) { result = generated.getChild(n) }
-
-    final override string toString() { result = "BEGIN { ... }" }
   }
 }
 
@@ -123,13 +128,21 @@ module RescueClause {
   class Range extends Expr::Range, @rescue {
     final override Generated::Rescue generated;
 
-    final LhsExpr getException(int n) { result = generated.getExceptions().getChild(n) }
+    final Expr getException(int n) { result = generated.getExceptions().getChild(n) }
 
-    final Expr getVariableExpr() { result = generated.getVariable() }
+    final LhsExpr getVariableExpr() { result = generated.getVariable().getChild() }
 
     final StmtSequence getBody() { result = generated.getBody() }
 
     final override string toString() { result = "rescue ..." }
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getException" and child = getException(_)
+      or
+      label = "getVariableExpr" and child = getVariableExpr()
+      or
+      label = "getBody" and child = getBody()
+    }
   }
 }
 
@@ -142,6 +155,12 @@ module RescueModifierExpr {
     final Stmt getHandler() { result = generated.getHandler() }
 
     final override string toString() { result = "... rescue ..." }
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getBody" and child = getBody()
+      or
+      label = "getHandler" and child = getHandler()
+    }
   }
 }
 
@@ -154,6 +173,12 @@ module Pair {
     final Expr getValue() { result = generated.getValue() }
 
     final override string toString() { result = "Pair" }
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getKey" and child = getKey()
+      or
+      label = "getValue" and child = getValue()
+    }
   }
 }
 
@@ -164,5 +189,9 @@ module StringConcatenation {
     final StringLiteral::Range getString(int i) { result = generated.getChild(i) }
 
     final override string toString() { result = "\"...\" \"...\"" }
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getString" and child = getString(_)
+    }
   }
 }

@@ -156,7 +156,7 @@ class VariableReadAccess extends VariableAccess {
     not this instanceof VariableWriteAccess
     or
     // `x` in `x += y` is considered both a read and a write
-    this = any(AssignOperation a).getLhs()
+    this = any(AssignOperation a).getLeftOperand()
   }
 }
 

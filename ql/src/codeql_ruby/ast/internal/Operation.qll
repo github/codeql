@@ -1,4 +1,5 @@
-import codeql_ruby.AST
+private import codeql_ruby.AST
+private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.ast.internal.TreeSitter
 private import codeql_ruby.ast.internal.Expr
 
@@ -7,6 +8,10 @@ module Operation {
     abstract string getOperator();
 
     abstract Expr getAnOperand();
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getAnOperand" and child = getAnOperand()
+    }
   }
 }
 
@@ -21,6 +26,12 @@ module UnaryOperation {
     final override Expr getAnOperand() { result = this.getOperand() }
 
     override string toString() { result = this.getOperator() + " ..." }
+
+    override predicate child(string label, AstNode::Range child) {
+      Operation::Range.super.child(label, child)
+      or
+      label = "getOperand" and child = getOperand()
+    }
   }
 }
 
@@ -73,6 +84,14 @@ module BinaryOperation {
     }
 
     override string toString() { result = "... " + this.getOperator() + " ..." }
+
+    override predicate child(string label, AstNode::Range child) {
+      Operation::Range.super.child(label, child)
+      or
+      label = "getLeftOperand" and child = getLeftOperand()
+      or
+      label = "getRightOperand" and child = getRightOperand()
+    }
   }
 }
 
@@ -169,6 +188,14 @@ module RelationalOperation {
     abstract Expr getGreaterOperand();
 
     abstract Expr getLesserOperand();
+
+    override predicate child(string label, AstNode::Range child) {
+      ComparisonOperation::Range.super.child(label, child)
+      or
+      label = "getGreaterOperand" and child = getGreaterOperand()
+      or
+      label = "getLesserOperand" and child = getLesserOperand()
+    }
   }
 }
 
@@ -218,13 +245,23 @@ module NoRegexMatchExpr {
 
 module Assignment {
   abstract class Range extends Operation::Range {
-    abstract Expr getLhs();
+    abstract Expr getLeftOperand();
 
-    abstract Expr getRhs();
+    abstract Expr getRightOperand();
 
-    final override Expr getAnOperand() { result = this.getLhs() or result = this.getRhs() }
+    final override Expr getAnOperand() {
+      result = this.getLeftOperand() or result = this.getRightOperand()
+    }
 
     override string toString() { result = "... " + this.getOperator() + " ..." }
+
+    override predicate child(string label, AstNode::Range child) {
+      Operation::Range.super.child(label, child)
+      or
+      label = "getLeftOperand" and child = getLeftOperand()
+      or
+      label = "getRightOperand" and child = getRightOperand()
+    }
   }
 }
 
@@ -232,9 +269,9 @@ module AssignExpr {
   class Range extends Assignment::Range, @assignment {
     final override Generated::Assignment generated;
 
-    final override Expr getLhs() { result = generated.getLeft() }
+    final override Expr getLeftOperand() { result = generated.getLeft() }
 
-    final override Expr getRhs() { result = generated.getRight() }
+    final override Expr getRightOperand() { result = generated.getRight() }
 
     final override string getOperator() { result = "=" }
   }
@@ -246,9 +283,9 @@ module AssignOperation {
 
     final override string getOperator() { result = generated.getOperator() }
 
-    final override LhsExpr getLhs() { result = generated.getLeft() }
+    final override LhsExpr getLeftOperand() { result = generated.getLeft() }
 
-    final override Expr getRhs() { result = generated.getRight() }
+    final override Expr getRightOperand() { result = generated.getRight() }
   }
 }
 

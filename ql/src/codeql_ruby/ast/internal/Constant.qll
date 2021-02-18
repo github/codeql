@@ -1,3 +1,4 @@
+private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.ast.internal.Expr
 private import codeql_ruby.ast.internal.Pattern
 private import codeql_ruby.ast.internal.TreeSitter
@@ -12,6 +13,10 @@ module ConstantAccess {
     abstract Expr::Range getScopeExpr();
 
     abstract predicate hasGlobalScope();
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getScopeExpr" and child = getScopeExpr()
+    }
   }
 }
 

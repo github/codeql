@@ -12,6 +12,28 @@ module EmptyStmt {
     final override Generated::EmptyStatement generated;
 
     final override string toString() { result = ";" }
+
+    override predicate child(string label, AstNode::Range child) { none() }
+  }
+}
+
+module Begin {
+  class Range extends BodyStatement::Range, @begin {
+    final override Generated::Begin generated;
+
+    final override Generated::AstNode getChild(int n) { result = generated.getChild(n) }
+
+    final override string toString() { result = "begin ... " }
+  }
+}
+
+module BeginBlock {
+  class Range extends StmtSequence::Range, @begin_block {
+    final override Generated::BeginBlock generated;
+
+    final override Stmt getStmt(int n) { result = generated.getChild(n) }
+
+    final override string toString() { result = "BEGIN { ... }" }
   }
 }
 
@@ -32,6 +54,10 @@ module UndefStmt {
     final MethodName getMethodName(int n) { result = generated.getChild(n) }
 
     final override string toString() { result = "undef ..." }
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getMethodName" and child = getMethodName(_)
+    }
   }
 }
 
@@ -44,6 +70,12 @@ module AliasStmt {
     final MethodName getOldName() { result = generated.getAlias() }
 
     final override string toString() { result = "alias ..." }
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getNewName" and child = getNewName()
+      or
+      label = "getOldName" and child = getOldName()
+    }
   }
 }
 
@@ -59,6 +91,10 @@ module ReturningStmt {
         or
         result = a and c > 1
       )
+    }
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getValue" and child = getValue()
     }
   }
 }

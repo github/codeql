@@ -578,6 +578,8 @@ module VariableAccess {
     abstract Variable getVariable();
 
     final override string toString() { result = this.getVariable().getName() }
+
+    override predicate child(string label, AstNode::Range child) { none() }
   }
 }
 

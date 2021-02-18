@@ -1,4 +1,5 @@
 private import codeql_ruby.AST
+private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.ast.internal.Constant
 private import codeql_ruby.ast.internal.Expr
 private import codeql_ruby.ast.internal.TreeSitter
@@ -23,6 +24,12 @@ module Toplevel {
     }
 
     final override string toString() { result = generated.getLocation().getFile().getBaseName() }
+
+    override predicate child(string label, AstNode::Range child) {
+      ModuleBase::Range.super.child(label, child)
+      or
+      label = "getBeginBlock" and child = getBeginBlock(_)
+    }
   }
 }
 
@@ -52,6 +59,14 @@ module Class {
     final Expr getSuperclassExpr() { result = generated.getSuperclass().getChild() }
 
     final override string toString() { result = this.getName() }
+
+    override predicate child(string label, AstNode::Range child) {
+      ModuleBase::Range.super.child(label, child)
+      or
+      ConstantWriteAccess::Range.super.child(label, child)
+      or
+      label = "getSuperclassExpr" and child = getSuperclassExpr()
+    }
   }
 }
 
@@ -64,6 +79,12 @@ module SingletonClass {
     final Expr getValue() { result = generated.getValue() }
 
     final override string toString() { result = "class << ..." }
+
+    override predicate child(string label, AstNode::Range child) {
+      ModuleBase::Range.super.child(label, child)
+      or
+      label = "getValue" and child = getValue()
+    }
   }
 }
 
@@ -91,5 +112,11 @@ module Module {
     }
 
     final override string toString() { result = this.getName() }
+
+    override predicate child(string label, AstNode::Range child) {
+      ModuleBase::Range.super.child(label, child)
+      or
+      ConstantWriteAccess::Range.super.child(label, child)
+    }
   }
 }

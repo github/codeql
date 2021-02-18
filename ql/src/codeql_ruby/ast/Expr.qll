@@ -177,7 +177,7 @@ class RescueClause extends Expr, @rescue {
    * end
    * ```
    */
-  final Expr getVariableExpr() { result = range.getVariableExpr() }
+  final LhsExpr getVariableExpr() { result = range.getVariableExpr() }
 
   /**
    * Gets the exception handler body.
