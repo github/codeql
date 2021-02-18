@@ -171,7 +171,10 @@ module Flask {
   // ---------------------------------------------------------------------------
   // routing modeling
   // ---------------------------------------------------------------------------
-  /** A flask View class defined in project code. */
+  /**
+   * A class that is a subclass of the `flask.views.View` class,
+   * thereby being able to handle incoming HTTP requests.
+   */
   class FlaskViewClass extends Class {
     API::Node api_node;
 
@@ -195,6 +198,10 @@ module Flask {
     API::Node asViewResult() { result = api_node.getMember("as_view").getReturn() }
   }
 
+  /**
+   * A class that is a subclass of the `flask.views.MethodView` class.
+   * thereby being able to handle incoming HTTP requests.
+   */
   class FlaskMethodViewClass extends FlaskViewClass {
     FlaskMethodViewClass() {
       this.getABase() = Views::MethodView::subclassRef().getAUse().asExpr() and
