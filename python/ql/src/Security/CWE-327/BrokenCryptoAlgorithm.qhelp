@@ -1,0 +1,57 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+     <overview>
+          <p>
+               Using broken or weak cryptographic algorithms can leave data
+               vulnerable to being decrypted or forged by an attacker.
+          </p>
+
+          <p>
+               Many cryptographic algorithms provided by cryptography
+               libraries are known to be weak, or flawed. Using such an
+               algorithm means that encrypted or hashed data is less
+               secure than it appears to be.
+          </p>
+
+     </overview>
+     <recommendation>
+
+          <p>
+               Ensure that you use a strong, modern cryptographic
+               algorithm. Use at least AES-128 or RSA-2048 for
+               encryption, and SHA-2 or SHA-3 for secure hashing.
+          </p>
+
+     </recommendation>
+     <example>
+
+          <p>
+               The following code uses the <code>pycrypto</code>
+               library to encrypt some secret data. When you create a cipher using
+               <code>pycrypto</code> you must specify the encryption
+               algorithm to use. The first example uses DES, which is an
+               older algorithm that is now considered weak. The second
+               example uses AES, which is a stronger modern algorithm.
+          </p>
+
+          <sample src="examples/broken_crypto.py" />
+
+          <p>
+               WARNING: Although the second example above is more robust,
+               pycrypto is no longer actively maintained so we recommend using <code>cryptography</code> instead.
+          </p>
+
+     </example>
+
+     <references>
+          <li>NIST, FIPS 140 Annex a: <a href="http://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf"> Approved Security Functions</a>.</li>
+          <li>NIST, SP 800-131A: <a href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf"> Transitions: Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
+          <li>OWASP: <a
+          href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#rule---use-strong-approved-authenticated-encryption">Rule
+          - Use strong approved cryptographic algorithms</a>.
+          </li>
+     </references>
+
+</qhelp>
