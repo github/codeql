@@ -17,6 +17,26 @@ module EmptyStmt {
   }
 }
 
+module Begin {
+  class Range extends BodyStatement::Range, @begin {
+    final override Generated::Begin generated;
+
+    final override Generated::AstNode getChild(int n) { result = generated.getChild(n) }
+
+    final override string toString() { result = "begin ... " }
+  }
+}
+
+module BeginBlock {
+  class Range extends StmtSequence::Range, @begin_block {
+    final override Generated::BeginBlock generated;
+
+    final override Stmt getStmt(int n) { result = generated.getChild(n) }
+
+    final override string toString() { result = "BEGIN { ... }" }
+  }
+}
+
 module EndBlock {
   class Range extends StmtSequence::Range, @end_block {
     final override Generated::EndBlock generated;

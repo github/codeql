@@ -36,7 +36,21 @@ class EmptyStmt extends Stmt, @token_empty_statement {
 }
 
 /**
- * An `BEGIN` block.
+ * A `begin` statement.
+ * ```rb
+ * begin
+ *  puts "hello world"
+ * end
+ * ```
+ */
+class BeginExpr extends BodyStatement, @begin {
+  final override Begin::Range range;
+
+  final override string getAPrimaryQlClass() { result = "BeginExpr" }
+}
+
+/**
+ * A `BEGIN` block.
  * ```rb
  * BEGIN { puts "starting ..." }
  * ```

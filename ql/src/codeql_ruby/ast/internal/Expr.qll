@@ -90,16 +90,6 @@ module ParenthesizedExpr {
   }
 }
 
-module BeginBlock {
-  class Range extends StmtSequence::Range, @begin_block {
-    final override Generated::BeginBlock generated;
-
-    final override Stmt getStmt(int n) { result = generated.getChild(n) }
-
-    final override string toString() { result = "BEGIN { ... }" }
-  }
-}
-
 module ThenExpr {
   class Range extends StmtSequence::Range, @then {
     final override Generated::Then generated;
