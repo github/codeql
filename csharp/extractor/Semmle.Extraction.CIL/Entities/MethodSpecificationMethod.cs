@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CIL.Entities
         private readonly Method unboundMethod;
         private readonly ImmutableArray<Type> typeParams;
 
-        public MethodSpecificationMethod(GenericContext gc, MethodSpecificationHandle handle) : base(gc)
+        public MethodSpecificationMethod(IGenericContext gc, MethodSpecificationHandle handle) : base(gc)
         {
             this.handle = handle;
             ms = Cx.MdReader.GetMethodSpecification(handle);

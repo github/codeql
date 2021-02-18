@@ -8,7 +8,7 @@ namespace Semmle.Extraction.Entities
         protected Location(Context cx, Microsoft.CodeAnalysis.Location? init)
             : base(cx, init) { }
 
-        public override Microsoft.CodeAnalysis.Location? ReportingLocation => symbol;
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => Symbol;
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }

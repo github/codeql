@@ -16,7 +16,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             trapFile.directive_ifs(this, trivia.BranchTaken, trivia.ConditionValue);
 
-            Expression.Create(cx, trivia.Condition, this, 0);
+            Expression.Create(Context, trivia.Condition, this, 0);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         {
             get
             {
-                return parent.symbol
+                return parent.Symbol
                     ?.DeclaringSyntaxReferences
                     .FirstOrDefault()
                     ?.GetSyntax()
@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            trapFile.stmt_location(this, cx.CreateLocation(ReportingLocation));
+            trapFile.stmt_location(this, Context.CreateLocation(ReportingLocation));
         }
     }
 }
