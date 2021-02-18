@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CIL
             {
                 var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
                 var pathTransformer = new PathTransformer(canonicalPathCache);
-                var extractor = new Extractor(false, assemblyPath, logger, pathTransformer);
+                var extractor = new Extractor(assemblyPath, logger, pathTransformer);
                 var transformedAssemblyPath = pathTransformer.Transform(assemblyPath);
                 var project = layout.LookupProjectOrDefault(transformedAssemblyPath);
                 using var trapWriter = project.CreateTrapWriter(logger, transformedAssemblyPath.WithSuffix(".cil"), trapCompression, discardDuplicates: true);

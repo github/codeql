@@ -9,21 +9,18 @@ namespace Semmle.Extraction
     /// </summary>
     public class Extractor
     {
-        public bool Standalone
-        {
-            get; private set;
-        }
+        public bool Standalone => OutputPath is null;
+
+        public string OutputPath { get; }
 
         /// <summary>
         /// Creates a new extractor instance for one compilation unit.
         /// </summary>
-        /// <param name="standalone">If the extraction is standalone.</param>
         /// <param name="outputPath">The name of the output DLL/EXE, or null if not specified (standalone extraction).</param>
         /// <param name="logger">The object used for logging.</param>
         /// <param name="pathTransformer">The object used for path transformations.</param>
-        public Extractor(bool standalone, string outputPath, ILogger logger, PathTransformer pathTransformer)
+        public Extractor(string outputPath, ILogger logger, PathTransformer pathTransformer)
         {
-            Standalone = standalone;
             OutputPath = outputPath;
             Logger = logger;
             PathTransformer = pathTransformer;
@@ -101,12 +98,6 @@ namespace Semmle.Extraction
         public IEnumerable<string> MissingTypes => missingTypes;
 
         public IEnumerable<string> MissingNamespaces => missingNamespaces;
-
-        public string OutputPath
-        {
-            get;
-            private set;
-        }
 
         public ILogger Logger { get; private set; }
 
