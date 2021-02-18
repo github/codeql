@@ -7,7 +7,7 @@ module Operation {
   abstract class Range extends Expr::Range {
     abstract string getOperator();
 
-    abstract Expr getAnOperand();
+    abstract Stmt getAnOperand();
 
     override predicate child(string label, AstNode::Range child) {
       label = "getAnOperand" and child = getAnOperand()
@@ -77,9 +77,9 @@ module BinaryOperation {
 
     final Expr getLeftOperand() { result = generated.getLeft() }
 
-    final Expr getRightOperand() { result = generated.getRight() }
+    final Stmt getRightOperand() { result = generated.getRight() }
 
-    final override Expr getAnOperand() {
+    final override Stmt getAnOperand() {
       result = this.getLeftOperand() or result = this.getRightOperand()
     }
 

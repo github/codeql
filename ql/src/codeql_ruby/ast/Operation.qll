@@ -105,10 +105,10 @@ class BinaryOperation extends Operation, @binary {
   override BinaryOperation::Range range;
 
   /** Gets the left operand of this binary operation. */
-  final Expr getLeftOperand() { result = range.getLeftOperand() }
+  final Stmt getLeftOperand() { result = range.getLeftOperand() }
 
   /** Gets the right operand of this binary operation. */
-  final Expr getRightOperand() { result = range.getRightOperand() }
+  final Stmt getRightOperand() { result = range.getRightOperand() }
 }
 
 /**
