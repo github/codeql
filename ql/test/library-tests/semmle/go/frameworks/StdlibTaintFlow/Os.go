@@ -152,7 +152,7 @@ func RunAllTaints_Os() {
 }
 
 func fsAccesses() {
-	var path, path1 string
+	var path, path1, part string
 	var time time.Time
 	os.Chdir(path)                       // $fsaccess=path
 	os.Chmod(path, 0600)                 // $fsaccess=path
@@ -175,4 +175,9 @@ func fsAccesses() {
 	os.Symlink(path, path1)              // $fsaccess=path $fsaccess=path1
 	os.Truncate(path, 1000)              // $fsaccess=path
 	os.DirFS(path)                       // $fsaccess=path
+	os.ReadDir(path)                     // $fsaccess=path
+	os.ReadFile(path)                    // $fsaccess=path
+	os.MkdirTemp(path, part)             // $fsaccess=path $fsaccess=part
+	os.CreateTemp(path, part)            // $fsaccess=path $fsaccess=part
+	os.WriteFile(path, []byte{}, 0600)   // $fsaccess=path
 }
