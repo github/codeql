@@ -42,12 +42,9 @@ module StoredXss {
   class FileNameSource extends Source {
     FileNameSource() {
       // the second parameter to a filepath.Walk function
-      exists(DataFlow::ParameterNode prm, DataFlow::FunctionNode f, DataFlow::CallNode walkCall |
-        prm = this and
-        f.getParameter(0) = prm
-      |
-        walkCall.getTarget().hasQualifiedName("path/filepath", "Walk") and
-        walkCall.getArgument(1) = f.getASuccessor*()
+      exists(DataFlow::FunctionNode f, Function walkFn | this = f.getParameter(0) |
+        walkFn.hasQualifiedName("path/filepath", ["Walk", "WalkDir"]) and
+        walkFn.getACall().getArgument(1) = f.getASuccessor*()
       )
       or
       // A call to os.FileInfo.Name
