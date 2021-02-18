@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         {
             get
             {
-                var m = cx.GetModel(Stmt);
+                var m = Context.GetModel(Stmt);
                 return m.GetDeclaredSymbol(Stmt) as IMethodSymbol;
             }
         }
@@ -34,7 +34,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         /// <summary>
         /// Gets the function defined by this local statement.
         /// </summary>
-        private Entities.LocalFunction Function => Entities.LocalFunction.Create(cx, Symbol);
+        private Entities.LocalFunction Function => Entities.LocalFunction.Create(Context, Symbol);
 
         protected override void PopulateStatement(TextWriter trapFile)
         {

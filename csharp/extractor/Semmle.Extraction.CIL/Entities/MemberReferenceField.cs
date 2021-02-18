@@ -8,10 +8,10 @@ namespace Semmle.Extraction.CIL.Entities
     {
         private readonly MemberReferenceHandle handle;
         private readonly MemberReference mr;
-        private readonly GenericContext gc;
+        private readonly IGenericContext gc;
         private readonly Type declType;
 
-        public MemberReferenceField(GenericContext gc, MemberReferenceHandle handle) : base(gc.Cx)
+        public MemberReferenceField(IGenericContext gc, MemberReferenceHandle handle) : base(gc.Cx)
         {
             this.handle = handle;
             this.gc = gc;

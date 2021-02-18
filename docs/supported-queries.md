@@ -20,14 +20,15 @@ The process must begin with the first step and must conclude with the final step
 
    Query help files explain the purpose of your query to other users. Write your query help in a `.qhelp` file and save it in the same directory as your query. For more information on writing query help, see the [Query help style guide](query-help-style-guide.md).
 
-   - Note, in particular, that almost all queries need to have a pair of "before" and "after" examples demonstrating the kind of problem the query identifies and how to fix it. Make sure that the examples are actually consistent with what the query does, for example by including them in your unit tests.
+   - Note, in particular, that almost all queries need to have a pair of "before" and "after" examples demonstrating the kind of problem the query identifies and how to fix it. Make sure that the examples are actually consistent with what the query does, for example by including them in your unit tests. Examples must be original, not copied from third-party sources.
    - At the time of writing, there is no way of previewing help locally. Once you've opened a PR, a preview will be created as part of the CI checks. A GitHub employee will review this and let you know of any problems.
 
 3. **Write unit tests**
 
    Add one or more unit tests for the query (and for any library changes you make) to the `ql/<language>/ql/test/experimental` directory. Tests for library changes go into the `library-tests` subdirectory, and tests for queries go into `query-tests` with their relative path mirroring the query's location under `ql/<language>/ql/src/experimental`.
 
-   See the section on [Testing custom queries](https://help.semmle.com/codeql/codeql-cli/procedures/test-queries.html) in the [CodeQL documentation](https://help.semmle.com/codeql/) for more information.
+ 	- See the section on [Testing custom queries](https://help.semmle.com/codeql/codeql-cli/procedures/test-queries.html) in the [CodeQL documentation](https://help.semmle.com/codeql/) for more information.
+	- See [C/C++ CodeQL tests](/cpp/ql/test/README.md) for more information about contributing tests for C/C++ queries in particular.
 
 4. **Test for correctness on real-world code**
 

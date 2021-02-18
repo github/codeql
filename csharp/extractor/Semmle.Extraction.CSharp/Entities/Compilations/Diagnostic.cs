@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities
         protected override void Populate(TextWriter trapFile)
         {
             trapFile.diagnostics(this, (int)diagnostic.Severity, diagnostic.Id, diagnostic.Descriptor.Title.ToString(),
-                diagnostic.GetMessage(), cx.CreateLocation(diagnostic.Location));
+                diagnostic.GetMessage(), Context.CreateLocation(diagnostic.Location));
         }
     }
 }

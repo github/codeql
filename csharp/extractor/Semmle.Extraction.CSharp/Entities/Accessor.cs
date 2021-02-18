@@ -29,9 +29,9 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// Gets the property symbol associated with this accessor.
         /// </summary>
-        private IPropertySymbol PropertySymbol => GetPropertySymbol(symbol);
+        private IPropertySymbol PropertySymbol => GetPropertySymbol(Symbol);
 
-        public new Accessor OriginalDefinition => Create(Context, symbol.OriginalDefinition);
+        public new Accessor OriginalDefinition => Create(Context, Symbol.OriginalDefinition);
 
         public override void Populate(TextWriter trapFile)
         {
@@ -42,42 +42,42 @@ namespace Semmle.Extraction.CSharp.Entities
             var prop = PropertySymbol;
             if (prop == null)
             {
-                Context.ModelError(symbol, "Unhandled accessor associated symbol");
+                Context.ModelError(Symbol, "Unhandled accessor associated symbol");
                 return;
             }
 
             var parent = Property.Create(Context, prop);
             int kind;
             Accessor unboundAccessor;
-            if (SymbolEqualityComparer.Default.Equals(symbol, prop.GetMethod))
+            if (SymbolEqualityComparer.Default.Equals(Symbol, prop.GetMethod))
             {
                 kind = 1;
                 unboundAccessor = Create(Context, prop.OriginalDefinition.GetMethod);
             }
-            else if (SymbolEqualityComparer.Default.Equals(symbol, prop.SetMethod))
+            else if (SymbolEqualityComparer.Default.Equals(Symbol, prop.SetMethod))
             {
                 kind = 2;
                 unboundAccessor = Create(Context, prop.OriginalDefinition.SetMethod);
             }
             else
             {
-                Context.ModelError(symbol, "Unhandled accessor kind");
+                Context.ModelError(Symbol, "Unhandled accessor kind");
                 return;
             }
 
-            trapFile.accessors(this, kind, symbol.Name, parent, unboundAccessor);
+            trapFile.accessors(this, kind, Symbol.Name, parent, unboundAccessor);
 
             foreach (var l in Locations)
                 trapFile.accessor_location(this, l);
 
             Overrides(trapFile);
 
-            if (symbol.FromSource() && Block == null)
+            if (Symbol.FromSource() && Block == null)
             {
                 trapFile.compiler_generated(this);
             }
 
-            if (symbol.IsInitOnly)
+            if (Symbol.IsInitOnly)
             {
                 trapFile.init_only_accessors(this);
             }
