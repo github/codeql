@@ -218,11 +218,13 @@ module NoRegexMatchExpr {
 
 module Assignment {
   abstract class Range extends Operation::Range {
-    abstract Expr getLhs();
+    abstract Pattern getLeftOperand();
 
-    abstract Expr getRhs();
+    abstract Expr getRightOperand();
 
-    final override Expr getAnOperand() { result = this.getLhs() or result = this.getRhs() }
+    final override Expr getAnOperand() {
+      result = this.getLeftOperand() or result = this.getRightOperand()
+    }
 
     override string toString() { result = "... " + this.getOperator() + " ..." }
   }
@@ -232,9 +234,9 @@ module AssignExpr {
   class Range extends Assignment::Range, @assignment {
     final override Generated::Assignment generated;
 
-    final override Expr getLhs() { result = generated.getLeft() }
+    final override Pattern getLeftOperand() { result = generated.getLeft() }
 
-    final override Expr getRhs() { result = generated.getRight() }
+    final override Expr getRightOperand() { result = generated.getRight() }
 
     final override string getOperator() { result = "=" }
   }
@@ -246,9 +248,9 @@ module AssignOperation {
 
     final override string getOperator() { result = generated.getOperator() }
 
-    final override LhsExpr getLhs() { result = generated.getLeft() }
+    final override LhsExpr getLeftOperand() { result = generated.getLeft() }
 
-    final override Expr getRhs() { result = generated.getRight() }
+    final override Expr getRightOperand() { result = generated.getRight() }
   }
 }
 

@@ -218,10 +218,10 @@ module ExprNodes {
     final override Assignment getExpr() { result = ExprCfgNode.super.getExpr() }
 
     /** Gets the LHS of this assignment. */
-    final ExprCfgNode getLhs() { e.hasCfgChild(e.getLhs(), this, result) }
+    final ExprCfgNode getLhs() { e.hasCfgChild(e.getLeftOperand(), this, result) }
 
     /** Gets the RHS of this assignment. */
-    final ExprCfgNode getRhs() { e.hasCfgChild(e.getRhs(), this, result) }
+    final ExprCfgNode getRhs() { e.hasCfgChild(e.getRightOperand(), this, result) }
   }
 
   /** A control-flow node that wraps an `AssignExpr` AST expression. */

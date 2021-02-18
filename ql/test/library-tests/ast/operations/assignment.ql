@@ -2,8 +2,8 @@ import ruby
 
 query predicate assignments(Assignment a, string operator, Expr left, Expr right, string pClass) {
   operator = a.getOperator() and
-  left = a.getLhs() and
-  right = a.getRhs() and
+  left = a.getLeftOperand() and
+  right = a.getRightOperand() and
   pClass = a.getAPrimaryQlClass()
 }
 
@@ -11,8 +11,8 @@ query predicate assignOperations(
   AssignOperation o, string operator, Expr left, Expr right, string pClass
 ) {
   operator = o.getOperator() and
-  left = o.getLhs() and
-  right = o.getRhs() and
+  left = o.getLeftOperand() and
+  right = o.getRightOperand() and
   pClass = o.getAPrimaryQlClass()
 }
 

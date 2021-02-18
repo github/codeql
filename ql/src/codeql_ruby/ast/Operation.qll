@@ -445,10 +445,10 @@ class Assignment extends Operation {
   override Assignment::Range range;
 
   /** Gets the left hand side of this assignment. */
-  final Expr getLhs() { result = range.getLhs() }
+  final Expr getLeftOperand() { result = range.getLeftOperand() }
 
   /** Gets the right hand side of this assignment. */
-  final Expr getRhs() { result = range.getRhs() }
+  final Expr getRightOperand() { result = range.getRightOperand() }
 }
 
 /**
