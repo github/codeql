@@ -48,6 +48,32 @@ private module FlaskModel {
     }
   }
 
+  /**
+   * Provides models for flask applications (instances of the `flask.Flask` class).
+   *
+   * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.
+   */
+  module FlaskApp {
+    /** Gets a reference to the `flask.Flask` class. */
+    API::Node classRef() { result = API::moduleImport("flask").getMember("Flask") }
+
+    /** Gets a reference to an instance of `flask.Flask` (a flask application). */
+    API::Node instance() { result = classRef().getReturn() }
+  }
+
+  /**
+   * Provides models for flask blueprints (instances of the `flask.Blueprint` class).
+   *
+   * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Blueprint.
+   */
+  module Blueprint {
+    /** Gets a reference to the `flask.Blueprint` class. */
+    API::Node classRef() { result = flask().getMember("Blueprint") }
+
+    /** Gets a reference to an instance of `flask.Blueprint`. */
+    API::Node instance() { result = classRef().getReturn() }
+  }
+
   // ---------------------------------------------------------------------------
   // flask
   // ---------------------------------------------------------------------------
@@ -66,67 +92,6 @@ private module FlaskModel {
 
     /** Gets a reference to the `flask.make_response` function. */
     API::Node make_response() { result = flask_attr("make_response") }
-
-    /**
-     * Provides models for the `flask.Flask` class
-     *
-     * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.
-     */
-    module Flask {
-      /** Gets a reference to the `flask.Flask` class. */
-      API::Node classRef() { result = flask().getMember("Flask") }
-
-      /** Gets a reference to an instance of `flask.Flask` (a flask application). */
-      API::Node instance() { result = classRef().getReturn() }
-
-      /**
-       * Gets a reference to the attribute `attr_name` of an instance of `flask.Flask` (a flask application).
-       */
-      private API::Node instance_attr(string attr_name) { result = instance().getMember(attr_name) }
-
-      /** Gets a reference to the `route` method on an instance of `flask.Flask`. */
-      API::Node route() { result = instance_attr("route") }
-
-      /** Gets a reference to the `add_url_rule` method on an instance of `flask.Flask`. */
-      API::Node add_url_rule() { result = instance_attr("add_url_rule") }
-
-      /** Gets a reference to the `make_response` method on an instance of `flask.Flask`. */
-      // HACK: We can't call this predicate `make_response` since shadowing is
-      // completely disallowed in QL. I added an underscore to move things forward for
-      // now :(
-      API::Node make_response_() { result = instance_attr("make_response") }
-
-      /**
-       * Gets a reference to the `response_class` attribute on the `flask.Flask` class or an instance.
-       *
-       * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.response_class
-       */
-      API::Node response_class() { result = [classRef(), instance()].getMember("response_class") }
-    }
-
-    /**
-     * Provides models for the `flask.Blueprint` class
-     *
-     * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Blueprint.
-     */
-    module Blueprint {
-      /** Gets a reference to the `flask.Blueprint` class. */
-      API::Node classRef() { result = flask().getMember("Blueprint") }
-
-      /** Gets a reference to an instance of `flask.Blueprint`. */
-      API::Node instance() { result = classRef().getReturn() }
-
-      /**
-       * Gets a reference to the attribute `attr_name` of an instance of `flask.Blueprint`.
-       */
-      private API::Node instance_attr(string attr_name) { result = instance().getMember(attr_name) }
-
-      /** Gets a reference to the `route` method on an instance of `flask.Blueprint`. */
-      API::Node route() { result = instance_attr("route") }
-
-      /** Gets a reference to the `add_url_rule` method on an instance of `flask.Blueprint`. */
-      API::Node add_url_rule() { result = instance_attr("add_url_rule") }
-    }
   }
 
   /**
@@ -136,7 +101,11 @@ private module FlaskModel {
    */
   module Response {
     /** Gets a reference to the `flask.Response` class. */
-    API::Node classRef() { result = [flask_attr("Response"), flask::Flask::response_class()] }
+    API::Node classRef() {
+      result = flask_attr("Response")
+      or
+      result = [FlaskApp::classRef(), FlaskApp::instance()].getMember("response_class")
+    }
 
     /**
      * A source of instances of `flask.Response`, extend this class to model new instances.
@@ -255,9 +224,9 @@ private module FlaskModel {
    */
   private class FlaskAppRouteCall extends FlaskRouteSetup, DataFlow::CallCfgNode {
     FlaskAppRouteCall() {
-      this = flask::Flask::route().getACall()
+      this = FlaskApp::instance().getMember("route").getACall()
       or
-      this = flask::Blueprint::route().getACall()
+      this = Blueprint::instance().getMember("route").getACall()
     }
 
     override DataFlow::Node getUrlPatternArg() {
@@ -274,9 +243,9 @@ private module FlaskModel {
    */
   private class FlaskAppAddUrlRuleCall extends FlaskRouteSetup, DataFlow::CallCfgNode {
     FlaskAppAddUrlRuleCall() {
-      this = flask::Flask::add_url_rule().getACall()
+      this = FlaskApp::instance().getMember("add_url_rule").getACall()
       or
-      this = flask::Blueprint::add_url_rule().getACall()
+      this = Blueprint::instance().getMember("add_url_rule").getACall()
     }
 
     override DataFlow::Node getUrlPatternArg() {
@@ -431,7 +400,7 @@ private module FlaskModel {
     FlaskMakeResponseCall() {
       this = flask::make_response().getACall()
       or
-      this = flask::Flask::make_response_().getACall()
+      this = FlaskApp::instance().getMember("make_response").getACall()
     }
 
     override DataFlow::Node getBody() { result = this.getArg(0) }
