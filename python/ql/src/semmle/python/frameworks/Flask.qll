@@ -15,7 +15,7 @@ private import semmle.python.ApiGraphs
  * Provides models for the `flask` PyPI package.
  * See https://flask.palletsprojects.com/en/1.1.x/.
  */
-private module FlaskModel {
+module Flask {
   /** Provides models for flask view classes (defined in the `flask.views` module) */
   module Views {
     /**
@@ -188,7 +188,10 @@ private module FlaskModel {
       result.getName() = "dispatch_request"
     }
 
-    /** Gets a reference to the result of calling the `as_view` classmethod of this class. */
+    /**
+     * INTERNAL: Do not use.
+     * Gets a reference to the result of calling the `as_view` classmethod of this class.
+     */
     API::Node asViewResult() { result = api_node.getMember("as_view").getReturn() }
   }
 
