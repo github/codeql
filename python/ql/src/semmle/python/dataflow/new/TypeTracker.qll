@@ -330,8 +330,8 @@ private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn, Optional
 /**
  * Summary of the steps needed to back-track a use of a value to a given dataflow node.
  *
- * This can be used to track callbacks that are passed to a certian API call, and are
- * therefore expected to called with a certain type of value.
+ * This can for example be used to track callbacks that are passed to a certain API,
+ * so we can model specific parameters of that callback as having a certain type.
  *
  * Note that type back-tracking does not provide a source/sink relation, that is,
  * it may determine that a node will be used in an API call somewhere, but it won't
