@@ -474,18 +474,27 @@ pragma[nomagic]
 private predicate barrierGuardBlocksEdge(
   BarrierGuardNode guard, DataFlow::Node pred, DataFlow::Node succ, string label
 ) {
-  barrierGuardIsRelevant(guard) and
   exists(
     SsaVariable input, SsaPhiNode phi, BasicBlock bb, ConditionGuardNode cond, boolean outcome
   |
+    bb = getADominatedBasicBlock(guard, cond) and
     pred = DataFlow::ssaDefinitionNode(input) and
     succ = DataFlow::ssaDefinitionNode(phi) and
     input = phi.getInputFromBlock(bb) and
-    guard.getEnclosingExpr() = cond.getTest() and
     outcome = cond.getOutcome() and
-    barrierGuardBlocksExpr(guard, outcome, input.getAUse(), label) and
-    cond.dominates(bb)
+    barrierGuardBlocksExpr(guard, outcome, input.getAUse(), label)
   )
+}
+
+/**
+ * Gets a basicblock that is dominated by `cond`, where the test for `cond` cond is `guard`.
+ *
+ * This predicate exists to get a better join-order for the `barrierGuardBlocksEdge` predicate above.
+ */
+private BasicBlock getADominatedBasicBlock(BarrierGuardNode guard, ConditionGuardNode cond) {
+  barrierGuardIsRelevant(guard) and
+  guard.getEnclosingExpr() = cond.getTest() and
+  cond.dominates(result)
 }
 
 /**
