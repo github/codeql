@@ -266,3 +266,43 @@ private class ApacheStrTokenizerTaintGetter extends TaintPreservingCallable {
 
   override predicate returnsTaintFrom(int arg) { arg = -1 }
 }
+
+private class ApacheStrLookup extends RefType {
+  ApacheStrLookup() {
+    this.hasQualifiedName("org.apache.commons.lang3.text", "StrLookup") or
+    this.hasQualifiedName("org.apache.commons.text.lookup", "StringLookup")
+  }
+}
+
+private class ApacheStringLookupFactory extends RefType {
+  ApacheStringLookupFactory() {
+    this.hasQualifiedName("org.apache.commons.text.lookup", "StringLookupFactory")
+  }
+}
+
+/**
+ * A callable that constructs an Apache Commons `Str[ing]Lookup` from a map.
+ */
+private class ApacheStrLookupTaintingMethod extends TaintPreservingCallable {
+  ApacheStrLookupTaintingMethod() {
+    this.getSourceDeclaration().getDeclaringType() instanceof ApacheStrLookup and
+    this.getName() = "mapLookup"
+    or
+    this.getDeclaringType() instanceof ApacheStringLookupFactory and
+    this.getName() = "mapStringLookup"
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = 0 }
+}
+
+/**
+ * A callable that looks up a value in a Apache Commons `Str[ing]Lookup` map.
+ */
+private class ApacheStrLookupTaintGetter extends TaintPreservingCallable {
+  ApacheStrLookupTaintGetter() {
+    this.getSourceDeclaration().getDeclaringType() instanceof ApacheStrLookup and
+    this.getName() = "lookup"
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = -1 }
+}
