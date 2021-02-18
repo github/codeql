@@ -155,9 +155,17 @@ private module FlaskModel {
 
       override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
     }
-    // TODO: Enable again, but take `InstanceSource` into account
-    // /** Gets a reference to an instance of `flask.Response`. */
-    // API::Node instance() { result = classRef().getReturn() }
+
+    /** Gets a reference to an instance of `flask.Response`. */
+    private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `flask.Response`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
   }
 
   // ---------------------------------------------------------------------------
