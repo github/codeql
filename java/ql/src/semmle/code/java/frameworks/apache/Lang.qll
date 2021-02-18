@@ -306,3 +306,43 @@ private class ApacheStrLookupTaintGetter extends TaintPreservingCallable {
 
   override predicate returnsTaintFrom(int arg) { arg = -1 }
 }
+
+private class ApacheStrSubstitutor extends RefType {
+  ApacheStrSubstitutor() {
+    this.hasQualifiedName("org.apache.commons.lang3.text", "StrSubstitutor") or
+    this.hasQualifiedName("org.apache.commons.text", "StringSubstitutor")
+  }
+}
+
+/**
+ * A callable declared on Apache Commons `StrSubstitutor` that returns taint.
+ */
+private class ApacheStrSubstitutorTaintGetter extends TaintPreservingCallable {
+  ApacheStrSubstitutorTaintGetter() {
+    this.getSourceDeclaration().getDeclaringType() instanceof ApacheStrSubstitutor and
+    (
+      this instanceof Constructor or
+      this.getName() = "replace"
+    )
+  }
+
+  override predicate returnsTaintFrom(int arg) {
+    arg in [0, -1]
+    or
+    this.isStatic() and arg = 1
+  }
+}
+
+/**
+ * A callable declared on Apache Commons `StrSubstitutor` that transfers taint.
+ */
+private class ApacheStrSubstitutorTaintTransfer extends TaintPreservingCallable {
+  ApacheStrSubstitutorTaintTransfer() {
+    this.getSourceDeclaration().getDeclaringType() instanceof ApacheStrSubstitutor and
+    this.getName() in ["replaceIn", "setVariableResolver"]
+  }
+
+  override predicate transfersTaint(int src, int sink) {
+    if this.getName() = "replaceIn" then (src = -1 and sink = 0) else (src = 0 and sink = -1)
+  }
+}
