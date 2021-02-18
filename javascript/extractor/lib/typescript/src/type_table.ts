@@ -632,7 +632,14 @@ export class TypeTable {
           ? tupleType.minLength
           : this.typeChecker.getTypeArguments(tupleReference).length;
       let hasRestElement = tupleType.hasRestElement ? 't' : 'f';
-      let prefix = `tuple;${minLength};${hasRestElement}`;
+      let restIndex = -1;
+      for (let i = 0; i < tupleType.elementFlags.length; i++) {
+        if (tupleType.elementFlags[i] & ts.ElementFlags.Rest) {
+          restIndex = i;
+          break;
+        }
+      }
+      let prefix = `tuple;${minLength};${restIndex}`;
       return this.makeTypeStringVectorFromTypeReferenceArguments(prefix, type);
     }
     if (objectFlags & ts.ObjectFlags.Anonymous) {

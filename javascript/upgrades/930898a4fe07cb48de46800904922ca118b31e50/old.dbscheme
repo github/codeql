@@ -799,9 +799,8 @@ tuple_type_min_length(
   int minLength: int ref
 );
 
-tuple_type_rest_index(
-  unique int typ: @type ref,
-  int index: int ref
+tuple_type_rest(
+  unique int typ: @type ref
 );
 
 // comments

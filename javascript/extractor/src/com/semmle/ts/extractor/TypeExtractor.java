@@ -118,10 +118,11 @@ public class TypeExtractor {
         }
       case tupleKind:
         {
-          // The first two parts denote minimum length and presence of rest element.
+          // The first two parts denote minimum length and index of rest element (or -1 if no rest element).
           trapWriter.addTuple("tuple_type_min_length", lbl, Integer.parseInt(parts[1]));
-          if (parts[2].equals("t")) {
-            trapWriter.addTuple("tuple_type_rest", lbl);
+          int restIndex = Integer.parseInt(parts[2]);
+          if (restIndex != -1) {
+            trapWriter.addTuple("tuple_type_rest_index", lbl, restIndex);
           }
           firstChild += 2;
           break;
