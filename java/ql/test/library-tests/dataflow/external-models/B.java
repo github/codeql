@@ -9,7 +9,7 @@ public class B {
     taggedSinkMethod(argToTagged);
 
     Object fieldWrite = new Object();
-    taggedField = fieldWrite; // not currently handled
+    taggedField = fieldWrite;
   }
 
   Object sinkMethod() {

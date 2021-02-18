@@ -2,6 +2,57 @@
  * INTERNAL use only. This is an experimental API subject to change without notice.
  *
  * Provides classes and predicates for dealing with flow models specified in CSV format.
+ *
+ * The CSV specification has the following columns:
+ * - Sources:
+ *   `namespace; type; subtypes; name; signature; ext; output; kind`
+ * - Sinks:
+ *   `namespace; type; subtypes; name; signature; ext; input; kind`
+ * - Summaries:
+ *   `namespace; type; subtypes; name; signature; ext; input; output; kind`
+ *
+ * The interpretation of a row is similar to API-graphs with a left-to-right
+ * reading.
+ * 1. The `namespace` column selects a package.
+ * 2. The `type` column selects a type within that package.
+ * 3. The `subtypes` is a boolean that indicates whether to jump to an
+ *    arbitrary subtype of that type.
+ * 4. The `name` column optionally selects a specific named member of the type.
+ * 5. The `signature` column optionally restricts the named member. If
+ *    `signature` is blank then no such filtering is done. The format of the
+ *    signature is a comma-separated list of types enclosed in parentheses. The
+ *    types can be short names or fully qualified names (mixing these two options
+ *    is not allowed within a single signature).
+ * 6. The `ext` column specifies additional API-graph-like edges. Currently
+ *    there are only two valid values: "" and "Annotated". The empty string has no
+ *    effect. "Annotated" applies if `name` and `signature` were left blank and
+ *    acts by selecting an element that is annotated by the annotation type
+ *    selected by the first 4 columns. This can be another member such as a field
+ *    or method, or a parameter.
+ * 7. The `input` column specifies how data enters the element selected by the
+ *    first 6 columns, and the `output` column specifies how data leaves the
+ *    element selected by the first 6 columns. An `input` can be either "",
+ *    "Argument", "Argument[n]", "ReturnValue":
+ *    - "": Selects a write to the selected element in case this is a field.
+ *    - "Argument": Selects any argument in a call to the selected element.
+ *    - "Argument[n]": Similar to "Argument" but restricted to a specific numbered
+ *      argument (zero-indexed, and `-1` specifies the qualifier).
+ *    - "ReturnValue": Selects a value being returned by the selected element.
+ *      This requires that the selected element is a method with a body.
+ *
+ *    An `output` can be either "", "Argument", "Argument[n]", "Parameter",
+ *    "Parameter[n]", or "ReturnValue":
+ *    - "": Selects a read of a selected field, or a selected parameter.
+ *    - "Argument": Selects the post-update value of an argument in a call to the
+ *      selected element. That is, the value of the argument after the call returns.
+ *    - "Argument[n]": Similar to "Argument" but restricted to a specific numbered
+ *      argument (zero-indexed, and `-1` specifies the qualifier).
+ *    - "Parameter": Selects the value of a parameter of the selected element.
+ *      "Parameter" is also allowed in case the selected element is already a
+ *      parameter itself.
+ *    - "Parameter[n]": Similar to "Parameter" but restricted to a specific
+ *      numbered parameter (zero-indexed, and `-1` specifies the value of `this`).
+ *    - "ReturnValue": Selects the return value of a call to the selected element.
  */
 
 import java
@@ -255,7 +306,7 @@ private Element interpretElement0(
       m.hasName(name)
     |
       signature = "" or
-      m.(Callable).getSignature().matches("%" + signature) or
+      m.(Callable).getSignature() = any(string nameprefix) + signature or
       paramsString(m) = signature
     )
     or
@@ -418,6 +469,12 @@ private predicate interpretInput(string input, int idx, Top ref, TAstOrNode node
       c = "ReturnValue" and
       n.asExpr() = ret.getResult() and
       mid = ret.getEnclosingCallable()
+    )
+    or
+    exists(FieldWrite fw |
+      c = "" and
+      fw.getField() = mid and
+      n.asExpr() = fw.getRHS()
     )
   )
 }
