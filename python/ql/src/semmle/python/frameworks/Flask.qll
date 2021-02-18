@@ -89,7 +89,11 @@ private module FlaskModel {
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Response.
    */
   module Response {
-    /** Gets a reference to the `flask.Response` class. */
+    /**
+     * Gets a reference to the `flask.Response` class, possibly through the
+     * `response_class` class attribute on a flask application (which by is an alias for
+     * `flask.Response` by default).
+     */
     API::Node classRef() {
       result = API::moduleImport("flask").getMember("Response")
       or
@@ -134,8 +138,32 @@ private module FlaskModel {
       }
     }
 
-    /** Gets a reference to an instance of `flask.Response`. */
-    API::Node instance() { result = classRef().getReturn() }
+    /**
+     * A call to either `flask.make_response` function, or the `make_response` method on
+     * an instance of `flask.Flask`. This creates an instance of the `flask_response`
+     * class (class-attribute on a flask application), which by default is
+     * `flask.Response`.
+     *
+     * See
+     * - https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.make_response
+     * - https://flask.palletsprojects.com/en/1.1.x/api/#flask.make_response
+     */
+    private class FlaskMakeResponseCall extends InstanceSource, DataFlow::CallCfgNode {
+      FlaskMakeResponseCall() {
+        this = API::moduleImport("flask").getMember("make_response").getACall()
+        or
+        this = FlaskApp::instance().getMember("make_response").getACall()
+      }
+
+      override DataFlow::Node getBody() { result = this.getArg(0) }
+
+      override string getMimetypeDefault() { result = "text/html" }
+
+      override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+    }
+    // TODO: Enable again, but take `InstanceSource` into account
+    // /** Gets a reference to an instance of `flask.Response`. */
+    // API::Node instance() { result = classRef().getReturn() }
   }
 
   // ---------------------------------------------------------------------------
@@ -366,39 +394,16 @@ private module FlaskModel {
   }
 
   private class RequestInputFiles extends RequestInputMultiDict {
+    // TODO: Somehow specify that elements of `RequestInputFiles` are
+    // Werkzeug::werkzeug::datastructures::FileStorage and should have those additional taint steps
+    // AND that the 0-indexed argument to its' save method is a sink for path-injection.
+    // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage.save
     RequestInputFiles() { attr_name = "files" }
   }
 
-  // TODO: Somehow specify that elements of `RequestInputFiles` are
-  // Werkzeug::werkzeug::datastructures::FileStorage and should have those additional taint steps
-  // AND that the 0-indexed argument to its' save method is a sink for path-injection.
-  // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage.save
   // ---------------------------------------------------------------------------
-  // Response modeling
+  // Implicit response from returns of flask request handlers
   // ---------------------------------------------------------------------------
-  /**
-   * A call to either `flask.make_response` function, or the `make_response` method on
-   * an instance of `flask.Flask`.
-   *
-   * See
-   * - https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.make_response
-   * - https://flask.palletsprojects.com/en/1.1.x/api/#flask.make_response
-   */
-  private class FlaskMakeResponseCall extends HTTP::Server::HttpResponse::Range,
-    DataFlow::CallCfgNode {
-    FlaskMakeResponseCall() {
-      this = API::moduleImport("flask").getMember("make_response").getACall()
-      or
-      this = FlaskApp::instance().getMember("make_response").getACall()
-    }
-
-    override DataFlow::Node getBody() { result = this.getArg(0) }
-
-    override string getMimetypeDefault() { result = "text/html" }
-
-    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
-  }
-
   private class FlaskRouteHandlerReturn extends HTTP::Server::HttpResponse::Range, DataFlow::CfgNode {
     FlaskRouteHandlerReturn() {
       exists(Function routeHandler |
@@ -414,6 +419,9 @@ private module FlaskModel {
     override string getMimetypeDefault() { result = "text/html" }
   }
 
+  // ---------------------------------------------------------------------------
+  // flask.redirect
+  // ---------------------------------------------------------------------------
   /**
    * A call to the `flask.redirect` function.
    *
