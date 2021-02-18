@@ -203,7 +203,20 @@ private predicate succImpl(AstNode pred, AstNode succ, Completion c) {
   any(ControlFlowTree cft).succ(pred, succ, c)
 }
 
-private predicate isHidden(ControlFlowTree t) { t.isHidden() }
+private predicate isHidden(ControlFlowTree t) {
+  t.isHidden()
+  or
+  t = any(Method m).getName()
+  or
+  t = any(SingletonMethod m).getName()
+  or
+  t = any(Call c).getMethod() and
+  not t instanceof ScopeResolution
+  or
+  t instanceof RestAssignment
+  or
+  t instanceof Superclass
+}
 
 private predicate succImplIfHidden(AstNode pred, AstNode succ) {
   isHidden(pred) and
