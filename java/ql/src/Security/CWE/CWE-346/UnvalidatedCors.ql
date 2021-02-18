@@ -13,6 +13,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.TaintTracking2
 import DataFlow::PathGraph
 
 /**
@@ -62,29 +63,23 @@ class CorsOriginConfig extends TaintTracking::Configuration {
       sink.asExpr() = corsheader.getArgument(1)
     )
   }
+}
 
-  /**
-   * this sanitizer is oversimplistic:
-   * - it only considers local dataflows
-   * - it will consider any method calling `Collection.contains` or `String.equals` as a sanitizer
-   *   no matter if that check is taken into account and its result reaches the
-   *   return statement of the wrapper.
-   */
-  override predicate isSanitizer(DataFlow::Node node) {
-    exists(CorsProbableCheckAccess check |
-      TaintTracking::localTaint(node, DataFlow::exprNode(check.getAnArgument()))
-      or
-      exists(MethodAccess wrapperAccess, Method wrapper, int i |
-        TaintTracking::localTaint(node, DataFlow::exprNode(wrapperAccess.getArgument(i))) and
-        wrapperAccess.getMethod() = wrapper and
-        TaintTracking::localTaint(DataFlow::parameterNode(wrapper.getParameter(i)),
-          DataFlow::exprNode(check.getAnArgument()))
-      )
-    )
+class CorsSourceReachesCheckConfig extends TaintTracking2::Configuration {
+  CorsSourceReachesCheckConfig() { this = "CorsOriginConfig" }
+
+  override predicate isSource(DataFlow::Node source) { any(CorsOriginConfig c).hasFlow(source, _) }
+
+  override predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() = any(CorsProbableCheckAccess check).getAnArgument()
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, CorsOriginConfig conf
-where conf.hasFlowPath(source, sink)
+from
+  DataFlow::PathNode source, DataFlow::PathNode sink, CorsOriginConfig conf,
+  CorsSourceReachesCheckConfig sanconf
+where
+  conf.hasFlowPath(source, sink) and
+  not sanconf.hasFlow(source.getNode(), _)
 select sink.getNode(), source, sink, "Cors header is being set using user controlled value $@.",
   source.getNode(), "user-provided value"
