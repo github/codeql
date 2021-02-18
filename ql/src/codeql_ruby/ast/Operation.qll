@@ -445,7 +445,7 @@ class Assignment extends Operation {
   override Assignment::Range range;
 
   /** Gets the left hand side of this assignment. */
-  final Expr getLeftOperand() { result = range.getLeftOperand() }
+  Pattern getLeftOperand() { result = range.getLeftOperand() }
 
   /** Gets the right hand side of this assignment. */
   final Expr getRightOperand() { result = range.getRightOperand() }
@@ -554,6 +554,8 @@ class AssignExponentExpr extends AssignArithmeticOperation, @operator_assignment
  */
 class AssignLogicalOperation extends AssignOperation {
   override AssignLogicalOperation::Range range;
+
+  final override LhsExpr getLeftOperand() { result = super.getLeftOperand() }
 }
 
 /**
