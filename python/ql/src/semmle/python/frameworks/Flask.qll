@@ -164,10 +164,10 @@ private module FlaskModel {
   // routing modeling
   // ---------------------------------------------------------------------------
   /** A flask View class defined in project code. */
-  class FlaskViewClassDef extends Class {
+  class FlaskViewClass extends Class {
     API::Node api_node;
 
-    FlaskViewClassDef() {
+    FlaskViewClass() {
       this.getABase() = Views::View::subclassRef().getAUse().asExpr() and
       api_node.getAnImmediateUse().asExpr().(ClassExpr) = this.getParent()
     }
@@ -184,8 +184,8 @@ private module FlaskModel {
     API::Node asViewResult() { result = api_node.getMember("as_view").getReturn() }
   }
 
-  class FlaskMethodViewClassDef extends FlaskViewClassDef {
-    FlaskMethodViewClassDef() {
+  class FlaskMethodViewClass extends FlaskViewClass {
+    FlaskMethodViewClass() {
       this.getABase() = Views::MethodView::subclassRef().getAUse().asExpr() and
       api_node.getAnImmediateUse().asExpr().(ClassExpr) = this.getParent()
     }
@@ -271,7 +271,7 @@ private module FlaskModel {
         func_src.asExpr().(CallableExpr) = result.getDefinition()
       )
       or
-      exists(FlaskViewClassDef vc |
+      exists(FlaskViewClass vc |
         getViewArg() = vc.asViewResult().getAUse() and
         result = vc.getARequestHandler()
       )
@@ -281,7 +281,7 @@ private module FlaskModel {
   /** A request handler defined in a django view class, that has no known route. */
   private class FlaskViewClassHandlerWithoutKnownRoute extends HTTP::Server::RequestHandler::Range {
     FlaskViewClassHandlerWithoutKnownRoute() {
-      exists(FlaskViewClassDef vc | vc.getARequestHandler() = this) and
+      exists(FlaskViewClass vc | vc.getARequestHandler() = this) and
       not exists(FlaskRouteSetup setup | setup.getARequestHandler() = this)
     }
 
