@@ -16,6 +16,38 @@ private import semmle.python.ApiGraphs
  * See https://flask.palletsprojects.com/en/1.1.x/.
  */
 private module FlaskModel {
+  /** Provides models for flask view classes (defined in the `flask.views` module) */
+  module Views {
+    /**
+     * Provides models for the `flask.views.View` class and subclasses.
+     *
+     * See https://flask.palletsprojects.com/en/1.1.x/views/#basic-principle.
+     */
+    module View {
+      /** Gets a reference to the `flask.views.View` class or any subclass. */
+      API::Node subclassRef() {
+        result =
+          API::moduleImport("flask")
+              .getMember("views")
+              .getMember(["View", "MethodView"])
+              .getASubclass*()
+      }
+    }
+
+    /**
+     * Provides models for the `flask.views.MethodView` class and subclasses.
+     *
+     * See https://flask.palletsprojects.com/en/1.1.x/views/#method-based-dispatching.
+     */
+    module MethodView {
+      /** Gets a reference to the `flask.views.MethodView` class or any subclass. */
+      API::Node subclassRef() {
+        result =
+          API::moduleImport("flask").getMember("views").getMember("MethodView").getASubclass*()
+      }
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // flask
   // ---------------------------------------------------------------------------
@@ -95,37 +127,6 @@ private module FlaskModel {
       /** Gets a reference to the `add_url_rule` method on an instance of `flask.Blueprint`. */
       API::Node add_url_rule() { result = instance_attr("add_url_rule") }
     }
-
-    // -------------------------------------------------------------------------
-    // flask.views
-    // -------------------------------------------------------------------------
-    /** Gets a reference to the `flask.views` module. */
-    API::Node views() { result = flask_attr("views") }
-
-    /** Provides models for the `flask.views` module */
-    module views {
-      /**
-       * Provides models for the `flask.views.View` class and subclasses.
-       *
-       * See https://flask.palletsprojects.com/en/1.1.x/views/#basic-principle.
-       */
-      module View {
-        /** Gets a reference to the `flask.views.View` class or any subclass. */
-        API::Node subclassRef() {
-          result = views().getMember(["View", "MethodView"]).getASubclass*()
-        }
-      }
-
-      /**
-       * Provides models for the `flask.views.MethodView` class and subclasses.
-       *
-       * See https://flask.palletsprojects.com/en/1.1.x/views/#method-based-dispatching.
-       */
-      module MethodView {
-        /** Gets a reference to the `flask.views.MethodView` class or any subclass. */
-        API::Node subclassRef() { result = views().getMember("MethodView").getASubclass*() }
-      }
-    }
   }
 
   /**
@@ -187,7 +188,7 @@ private module FlaskModel {
     API::Node api_node;
 
     FlaskViewClassDef() {
-      this.getABase() = flask::views::View::subclassRef().getAUse().asExpr() and
+      this.getABase() = Views::View::subclassRef().getAUse().asExpr() and
       api_node.getAnImmediateUse().asExpr().(ClassExpr) = this.getParent()
     }
 
@@ -205,7 +206,7 @@ private module FlaskModel {
 
   class FlaskMethodViewClassDef extends FlaskViewClassDef {
     FlaskMethodViewClassDef() {
-      this.getABase() = flask::views::MethodView::subclassRef().getAUse().asExpr() and
+      this.getABase() = Views::MethodView::subclassRef().getAUse().asExpr() and
       api_node.getAnImmediateUse().asExpr().(ClassExpr) = this.getParent()
     }
 
