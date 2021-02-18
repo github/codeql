@@ -2794,6 +2794,11 @@ class CallSignatureType extends @signature_type {
    * For example, for the signature `(...y: string[])`, this gets the type `string[]`.
    */
   PlainArrayType getRestParameterArrayType() { signature_rest_parameter(this, result) }
+
+  /**
+   * Holds if this signature is abstract.
+   */
+  predicate isAbstract() { is_abstract_signature(this) }
 }
 
 /**

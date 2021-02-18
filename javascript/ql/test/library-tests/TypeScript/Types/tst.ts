@@ -49,3 +49,15 @@ catch (e: unknown) {
       let b : string = e;
   }
 }
+
+
+interface NonAbstractDummy {
+  getArea(): number;
+}
+
+interface HasArea {
+  getArea(): number;
+}
+
+// abstract construct signature!
+let Ctor: abstract new () => HasArea = Shape;

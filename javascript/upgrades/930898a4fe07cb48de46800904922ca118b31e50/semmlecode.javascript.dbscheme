@@ -742,6 +742,10 @@ signature_types (
   int required_params: int ref
 );
 
+is_abstract_signature(
+  unique int sig: @signature_type ref
+);
+
 signature_rest_parameter(
   unique int sig: @signature_type ref,
   int rest_param_arra_type: @type ref

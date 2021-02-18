@@ -35,3 +35,5 @@ query predicate unknownType(Expr e, Type type) {
   type = e.getType() and
   e.getType() instanceof UnknownType
 }
+
+query CallSignatureType abstractSignature() { result.isAbstract() }
