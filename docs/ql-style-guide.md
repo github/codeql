@@ -212,8 +212,8 @@ class Type extends ... {
   /** ... */
   Type getATypeParameter() { ... }
   
-  /** Gets the HTTP connection ... */
-  predicate getHttpConnection() { ... }
+  /** Gets the SSA variable ... */
+  predicate getSsaVariable() { ... }
 }
 ```
 
