@@ -10,7 +10,7 @@
  */
 
 import javascript
-import TaintMetrics
+import meta.internal.TaintMetrics
 
 class BasicTaintConfiguration extends TaintTracking::Configuration {
   BasicTaintConfiguration() { this = "BasicTaintConfiguration" }
