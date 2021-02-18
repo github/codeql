@@ -64,8 +64,11 @@ module LhsExpr {
 }
 
 module VariablePattern {
-  class Range extends LhsExpr::Range, @token_identifier {
-    override Generated::Identifier generated;
+  class VariableToken =
+    @token_identifier or @token_instance_variable or @token_class_variable or @token_global_variable;
+
+  class Range extends LhsExpr::Range, VariableToken {
+    override Generated::Token generated;
 
     string getVariableName() { result = generated.getValue() }
 

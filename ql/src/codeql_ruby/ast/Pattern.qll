@@ -35,7 +35,7 @@ class LhsExpr extends Pattern, Expr {
 }
 
 /** A simple variable pattern. */
-class VariablePattern extends Pattern {
+class VariablePattern extends Pattern, VariablePattern::VariableToken {
   override VariablePattern::Range range;
 
   /** Gets the variable used in (or introduced by) this pattern. */
