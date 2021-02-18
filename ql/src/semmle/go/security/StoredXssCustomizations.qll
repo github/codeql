@@ -51,7 +51,7 @@ module StoredXss {
       )
       or
       // A call to os.FileInfo.Name
-      exists(Method m | m.implements("os", "FileInfo", "Name") |
+      exists(Method m | m.implements("io/fs", "FileInfo", "Name") |
         m = this.(DataFlow::CallNode).getTarget()
       )
     }
