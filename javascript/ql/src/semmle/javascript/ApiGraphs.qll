@@ -746,7 +746,7 @@ module API {
     /**
      * Holds if `nd`, which is a use of an API-graph node, flows in zero or more potentially
      * inter-procedural steps to some intermediate node, and then from that intermediate node to
-     * `res` in one step described by the resulting TypeTracker.
+     * `res` in one step. The entire flow is described by the resulting `TypeTracker`.
      *
      * This predicate exists solely to enforce a better join order in `trackUseNode` above.
      */
@@ -794,9 +794,9 @@ module API {
     }
 
     /**
-     * Holds if `nd`, which is a def of an API-graph node, flows in zero or more potentially
-     * inter-procedural steps from some intermediate node, and then to that intermediate node from
-     * `prev` in one step described by the resulting TypeTracker.
+     * Holds if `nd`, which is a def of an API-graph node, can be reached in zero or more potentially
+     * inter-procedural steps from some intermediate node, and `prev` flows into that intermediate node
+     * in one step. The entire flow is described by the resulting `TypeTracker`.
      *
      * This predicate exists solely to enforce a better join order in `trackDefNode` above.
      */
@@ -937,7 +937,7 @@ module API {
     }
 
     /**
-     * Gets an API node where a RHS of the node if the `i`th argument to this call.
+     * Gets an API node where a RHS of the node is the `i`th argument to this call.
      */
     private Node getAParameterCandidate(int i) { result.getARhs() = getArgument(i) }
 
