@@ -245,7 +245,7 @@ module NoRegexMatchExpr {
 
 module Assignment {
   abstract class Range extends Operation::Range {
-    abstract Pattern getLeftOperand();
+    abstract Expr getLeftOperand();
 
     abstract Expr getRightOperand();
 
@@ -269,7 +269,7 @@ module AssignExpr {
   class Range extends Assignment::Range, @assignment {
     final override Generated::Assignment generated;
 
-    final override Pattern getLeftOperand() { result = generated.getLeft() }
+    final override Expr getLeftOperand() { result = generated.getLeft() }
 
     final override Expr getRightOperand() { result = generated.getRight() }
 
