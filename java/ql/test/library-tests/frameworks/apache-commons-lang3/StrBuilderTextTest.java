@@ -18,8 +18,8 @@ class StrBuilderTextTest {
 
         StrBuilder sb1 = new StrBuilder(); sb1.append(taint().toCharArray()); sink(sb1.toString()); // $hasTaintFlow=y
         StrBuilder sb2 = new StrBuilder(); sb2.append(taint().toCharArray(), 0, 0); sink(sb2.toString()); // $hasTaintFlow=y
-        StrBuilder sb3 = new StrBuilder(); sb3.append(CharBuffer.wrap(taint().toCharArray())); sink(sb3.toString()); // BAD (but not detected because we don't model CharBuffer yet)
-        StrBuilder sb4 = new StrBuilder(); sb4.append(CharBuffer.wrap(taint().toCharArray()), 0, 0); sink(sb4.toString()); // BAD (but not detected because we don't model CharBuffer yet)
+        StrBuilder sb3 = new StrBuilder(); sb3.append(CharBuffer.wrap(taint().toCharArray())); sink(sb3.toString()); // $ MISSING: hasTaintFlow=y
+        StrBuilder sb4 = new StrBuilder(); sb4.append(CharBuffer.wrap(taint().toCharArray()), 0, 0); sink(sb4.toString()); // $ MISSING: hasTaintFlow=y
         StrBuilder sb5 = new StrBuilder(); sb5.append((CharSequence)taint()); sink(sb5.toString()); // $hasTaintFlow=y
         StrBuilder sb6 = new StrBuilder(); sb6.append((CharSequence)taint(), 0, 0); sink(sb6.toString()); // $hasTaintFlow=y
         StrBuilder sb7 = new StrBuilder(); sb7.append((Object)taint()); sink(sb7.toString()); // $hasTaintFlow=y

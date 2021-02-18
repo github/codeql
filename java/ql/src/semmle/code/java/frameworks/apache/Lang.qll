@@ -132,7 +132,7 @@ class ApacheStrBuilderCallable extends Callable {
 }
 
 /**
- * An Apache Commons Lang StrBuilder method that adds taint to the StrBuilder.
+ * An Apache Commons Lang `StrBuilder` method that adds taint to the `StrBuilder`.
  */
 private class ApacheStrBuilderTaintingMethod extends ApacheStrBuilderCallable,
   TaintPreservingCallable {
@@ -178,7 +178,7 @@ private class ApacheStrBuilderTaintingMethod extends ApacheStrBuilderCallable,
 }
 
 /**
- * An Apache Commons Lang StrBuilder method that returns taint from the StrBuilder.
+ * An Apache Commons Lang `StrBuilder` method that returns taint from the `StrBuilder`.
  */
 private class ApacheStrBuilderTaintGetter extends ApacheStrBuilderCallable, TaintPreservingCallable {
   ApacheStrBuilderTaintGetter() {
@@ -196,20 +196,18 @@ private class ApacheStrBuilderTaintGetter extends ApacheStrBuilderCallable, Tain
 }
 
 /**
- * An Apache Commons Lang StrBuilder method that writes taint from the StrBuilder to some parameter.
+ * An Apache Commons Lang `StrBuilder` method that writes taint from the `StrBuilder` to some parameter.
  */
 private class ApacheStrBuilderTaintWriter extends ApacheStrBuilderCallable, TaintPreservingCallable {
   ApacheStrBuilderTaintWriter() { this.hasName(["appendTo", "getChars"]) }
 
   override predicate transfersTaint(int fromArg, int toArg) {
     fromArg = -1 and
-    (
-      // appendTo(Readable) and getChars(char[])
-      if this.getNumberOfParameters() = 1
-      then toArg = 0
-      else
-        // getChars(int, int, char[], int)
-        toArg = 2
-    )
+    // appendTo(Readable) and getChars(char[])
+    if this.getNumberOfParameters() = 1
+    then toArg = 0
+    else
+      // getChars(int, int, char[], int)
+      toArg = 2
   }
 }
