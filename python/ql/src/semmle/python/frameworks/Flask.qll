@@ -74,14 +74,8 @@ private module FlaskModel {
     API::Node instance() { result = classRef().getReturn() }
   }
 
-  // ---------------------------------------------------------------------------
-  // flask
-  // ---------------------------------------------------------------------------
-  /** Provides models for the `flask` module. */
-  module flask {
-    /** Gets a reference to the `flask.request` object. */
-    API::Node request() { result = API::moduleImport("flask").getMember("request") }
-  }
+  /** Gets a reference to the `flask.request` object. */
+  API::Node request() { result = API::moduleImport("flask").getMember("request") }
 
   /**
    * Provides models for the `flask.Response` class
@@ -305,100 +299,92 @@ private module FlaskModel {
   // ---------------------------------------------------------------------------
   // flask.Request taint modeling
   // ---------------------------------------------------------------------------
-  // TODO: Do we even need this class? :|
   /**
    * A source of remote flow from a flask request.
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Request
    */
   private class RequestSource extends RemoteFlowSource::Range {
-    RequestSource() { this = flask::request().getAUse() }
+    RequestSource() { this = request().getAUse() }
 
     override string getSourceType() { result = "flask.request" }
   }
 
-  private module FlaskRequestTracking {
-    /** Gets a reference to either of the `get_json` or `get_data` attributes of a Flask request. */
-    API::Node tainted_methods(string attr_name) {
-      attr_name in ["get_data", "get_json"] and
-      result = flask::request().getMember(attr_name)
-    }
-  }
-
   /**
-   * A source of remote flow from attributes from a flask request.
+   * Taint propagation for a flask request.
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Request
    */
-  private class RequestInputAccess extends RemoteFlowSource::Range {
+  private class FlaskRequestAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      // Methods
+      exists(string method_name | method_name in ["get_data", "get_json"] |
+        // Method access
+        nodeFrom = request().getAUse() and
+        nodeTo = request().getMember(method_name).getAnImmediateUse()
+        or
+        // Method call
+        nodeFrom = request().getMember(method_name).getAUse() and
+        nodeTo.(DataFlow::CallCfgNode).getFunction() = nodeFrom
+      )
+      or
+      // Attributes
+      nodeFrom = request().getAUse() and
+      exists(DataFlow::AttrRead read | nodeTo = read and read.getObject() = nodeFrom |
+        read.getAttributeName() in [
+            // str
+            "path", "full_path", "base_url", "url", "access_control_request_method",
+            "content_encoding", "content_md5", "content_type", "data", "method", "mimetype",
+            "origin", "query_string", "referrer", "remote_addr", "remote_user", "user_agent",
+            // dict
+            "environ", "cookies", "mimetype_params", "view_args",
+            // json
+            "json",
+            // List[str]
+            "access_route",
+            // file-like
+            "stream", "input_stream",
+            // MultiDict[str, str]
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.MultiDict
+            "args", "values", "form",
+            // MultiDict[str, FileStorage]
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage
+            // TODO: FileStorage needs extra taint steps
+            "files",
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.HeaderSet
+            "access_control_request_headers", "pragma",
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Accept
+            // TODO: Kinda badly modeled for now -- has type List[Tuple[value, quality]], and some extra methods
+            "accept_charsets", "accept_encodings", "accept_languages", "accept_mimetypes",
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Authorization
+            // TODO: dict subclass with extra attributes like `username` and `password`
+            "authorization",
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.RequestCacheControl
+            // TODO: has attributes like `no_cache`, and `to_header` method (actually, many of these models do)
+            "cache_control",
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Headers
+            // TODO: dict-like with wsgiref.headers.Header compatibility methods
+            "headers"
+          ]
+      )
+    }
+  }
+
+  private class RequestAttrMultiDict extends Werkzeug::werkzeug::datastructures::MultiDict::InstanceSource {
     string attr_name;
 
-    RequestInputAccess() {
-      // attributes
-      this = flask::request().getMember(attr_name).getAnImmediateUse() and
-      attr_name in [
-          // str
-          "path", "full_path", "base_url", "url", "access_control_request_method",
-          "content_encoding", "content_md5", "content_type", "data", "method", "mimetype", "origin",
-          "query_string", "referrer", "remote_addr", "remote_user", "user_agent",
-          // dict
-          "environ", "cookies", "mimetype_params", "view_args",
-          // json
-          "json",
-          // List[str]
-          "access_route",
-          // file-like
-          "stream", "input_stream",
-          // MultiDict[str, str]
-          // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.MultiDict
-          "args", "values", "form",
-          // MultiDict[str, FileStorage]
-          // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage
-          // TODO: FileStorage needs extra taint steps
-          "files",
-          // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.HeaderSet
-          "access_control_request_headers", "pragma",
-          // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Accept
-          // TODO: Kinda badly modeled for now -- has type List[Tuple[value, quality]], and some extra methods
-          "accept_charsets", "accept_encodings", "accept_languages", "accept_mimetypes",
-          // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Authorization
-          // TODO: dict subclass with extra attributes like `username` and `password`
-          "authorization",
-          // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.RequestCacheControl
-          // TODO: has attributes like `no_cache`, and `to_header` method (actually, many of these models do)
-          "cache_control",
-          // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Headers
-          // TODO: dict-like with wsgiref.headers.Header compatibility methods
-          "headers"
-        ]
-      or
-      // methods (needs special handling to track bound-methods -- see `FlaskRequestMethodCallsAdditionalTaintStep` below)
-      this = FlaskRequestTracking::tainted_methods(attr_name).getAUse()
-    }
-
-    override string getSourceType() { result = "flask.request input" }
-  }
-
-  private class FlaskRequestMethodCallsAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      // NOTE: `request -> request.tainted_method` part is handled as part of RequestInputAccess
-      // tainted_method -> tainted_method()
-      nodeFrom = FlaskRequestTracking::tainted_methods(_).getAUse() and
-      nodeTo.(DataFlow::CallCfgNode).getFunction() = nodeFrom
+    RequestAttrMultiDict() {
+      attr_name in ["args", "values", "form", "files"] and
+      this = request().getMember(attr_name).getAnImmediateUse()
     }
   }
 
-  private class RequestInputMultiDict extends RequestInputAccess,
-    Werkzeug::werkzeug::datastructures::MultiDict::InstanceSource {
-    RequestInputMultiDict() { attr_name in ["args", "values", "form", "files"] }
-  }
-
-  private class RequestInputFiles extends RequestInputMultiDict {
-    // TODO: Somehow specify that elements of `RequestInputFiles` are
+  private class RequestAttrFiles extends RequestAttrMultiDict {
+    // TODO: Somehow specify that elements of `RequestAttrFiles` are
     // Werkzeug::werkzeug::datastructures::FileStorage and should have those additional taint steps
     // AND that the 0-indexed argument to its' save method is a sink for path-injection.
     // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage.save
-    RequestInputFiles() { attr_name = "files" }
+    RequestAttrFiles() { attr_name = "files" }
   }
 
   // ---------------------------------------------------------------------------
