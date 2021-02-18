@@ -53,6 +53,11 @@
  *    - "Parameter[n]": Similar to "Parameter" but restricted to a specific
  *      numbered parameter (zero-indexed, and `-1` specifies the value of `this`).
  *    - "ReturnValue": Selects the return value of a call to the selected element.
+ * 8. The `kind` column is a tag that can be referenced from QL to determine to
+ *    which classes the interpreted elements should be added. For example, for
+ *    sources "remote" indicates a default remote flow source, and for summaries
+ *    "taint" indicates a default additional taint step and "value" indicates a
+ *    globally applicable value-preserving step.
  */
 
 import java
