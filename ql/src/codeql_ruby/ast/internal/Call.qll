@@ -45,8 +45,7 @@ module Call {
 
     ScopeResolutionIdentifierCallRange() {
       identifier = generated.getName() and
-      vcall(this) and
-      not access(identifier, _)
+      not exists(Generated::Call c | c.getMethod() = this)
     }
 
     final override Expr getReceiver() { result = generated.getScope() }
@@ -69,12 +68,20 @@ module Call {
     }
 
     final override string getMethodName() {
-      result = generated.getMethod().(Generated::Token).getValue() or
+      result = "call" and generated.getMethod() instanceof Generated::ArgumentList
+      or
+      result = generated.getMethod().(Generated::Token).getValue()
+      or
       result =
         generated.getMethod().(Generated::ScopeResolution).getName().(Generated::Token).getValue()
     }
 
-    final override Expr getArgument(int n) { result = generated.getArguments().getChild(n) }
+    final override Expr getArgument(int n) {
+      result = generated.getArguments().getChild(n)
+      or
+      not exists(generated.getArguments()) and
+      result = generated.getMethod().(Generated::ArgumentList).getChild(n)
+    }
 
     final override Block getBlock() { result = generated.getBlock() }
   }

@@ -1,15 +1,21 @@
 import ruby
 import codeql_ruby.ast.internal.TreeSitter
 
+private string getMethodName(Call c) {
+  result = c.getMethodName()
+  or
+  not exists(c.getMethodName()) and result = "(none)"
+}
+
 query predicate callsWithNoReceiverArgumentsOrBlock(Call c, string name) {
-  name = c.getMethodName() and
+  name = getMethodName(c) and
   not exists(c.getReceiver()) and
   not exists(c.getAnArgument()) and
   not exists(c.getBlock())
 }
 
 query predicate callsWithArguments(Call c, string name, int n, Expr argN) {
-  name = c.getMethodName() and
+  name = getMethodName(c) and
   argN = c.getArgument(n)
 }
 

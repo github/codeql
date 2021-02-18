@@ -305,3 +305,8 @@ class AnotherClass
     super.super # we expect the receiver to be a SuperCall, while the outer call should not (it's just a regular Call)
   end
 end
+
+# calls without method name
+foo.()
+foo.(1)
+
