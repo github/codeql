@@ -13,8 +13,8 @@
 /docs/language/ @shati-patel @jf205
 
 # Exclude help for experimental queries from docs review
-/cpp/**/experimental/**/*.qhelp @github/codeql-c-analysis
-/csharp/**/experimental/**/*.qhelp @github/codeql-csharp
-/java/**/experimental/**/*.qhelp @github/codeql-java
-/javascript/**/experimental/**/*.qhelp @github/codeql-javascript
-/python/**/experimental/**/*.qhelp @github/codeql-python
+/cpp/**/experimental/**/*.qhelp @github/codeql-c-analysis @xcorail
+/csharp/**/experimental/**/*.qhelp @github/codeql-csharp @xcorail
+/java/**/experimental/**/*.qhelp @github/codeql-java @xcorail
+/javascript/**/experimental/**/*.qhelp @github/codeql-javascript @xcorail
+/python/**/experimental/**/*.qhelp @github/codeql-python @xcorail
