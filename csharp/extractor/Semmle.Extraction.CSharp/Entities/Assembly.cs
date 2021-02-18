@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (init == null)
             {
                 // This is the output assembly
-                assemblyPath = cx.Extractor.OutputPath;
+                assemblyPath = ((NonStandaloneExtractor)cx.Extractor).OutputPath;
                 assembly = cx.Compilation.Assembly;
             }
             else

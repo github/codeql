@@ -71,13 +71,13 @@ namespace Semmle.Extraction.CSharp
 
             Entities.Compilation.Settings = (Directory.GetCurrentDirectory(), args);
 
-            var commandLineArguments = Options.CreateWithEnvironment(Entities.Compilation.Settings.Args);
-            var fileLogger = new FileLogger(commandLineArguments.Verbosity, GetCSharpLogPath());
-            using var logger = commandLineArguments.Console
-                ? new CombinedLogger(new ConsoleLogger(commandLineArguments.Verbosity), fileLogger)
+            var options = Options.CreateWithEnvironment(Entities.Compilation.Settings.Args);
+            var fileLogger = new FileLogger(options.Verbosity, GetCSharpLogPath());
+            using var logger = options.Console
+                ? new CombinedLogger(new ConsoleLogger(options.Verbosity), fileLogger)
                 : (ILogger)fileLogger;
 
-            if (Environment.GetEnvironmentVariable("SEMMLE_CLRTRACER") == "1" && !commandLineArguments.ClrTracer)
+            if (Environment.GetEnvironmentVariable("SEMMLE_CLRTRACER") == "1" && !options.ClrTracer)
             {
                 logger.Log(Severity.Info, "Skipping extraction since already extracted from the CLR tracer");
                 return ExitCode.Ok;
@@ -86,11 +86,11 @@ namespace Semmle.Extraction.CSharp
             var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
             var pathTransformer = new PathTransformer(canonicalPathCache);
 
-            using var analyser = new Analyser(new LogProgressMonitor(logger), logger, commandLineArguments.AssemblySensitiveTrap, pathTransformer);
+            using var analyser = new NonStandaloneAnalyser(new LogProgressMonitor(logger), logger, options.AssemblySensitiveTrap, pathTransformer);
             using var references = new BlockingCollection<MetadataReference>();
             try
             {
-                var compilerVersion = new CompilerVersion(commandLineArguments);
+                var compilerVersion = new CompilerVersion(options);
 
                 if (compilerVersion.SkipExtraction)
                 {
@@ -135,7 +135,7 @@ namespace Semmle.Extraction.CSharp
                 sw1.Start();
 
                 Parallel.Invoke(
-                    new ParallelOptions { MaxDegreeOfParallelism = commandLineArguments.Threads },
+                    new ParallelOptions { MaxDegreeOfParallelism = options.Threads },
                     referenceTasks.Interleave(syntaxTreeTasks).ToArray());
 
                 if (syntaxTrees.Count == 0)
@@ -160,7 +160,7 @@ namespace Semmle.Extraction.CSharp
                         WithStrongNameProvider(new DesktopStrongNameProvider(compilerArguments.KeyFileSearchPaths))
                     );
 
-                analyser.EndInitialize(compilerArguments, commandLineArguments, compilation);
+                analyser.EndInitialize(compilerArguments, options, compilation);
                 analyser.AnalyseCompilation();
                 analyser.AnalyseReferences();
 
@@ -177,7 +177,7 @@ namespace Semmle.Extraction.CSharp
 
                 var sw2 = new Stopwatch();
                 sw2.Start();
-                analyser.PerformExtraction(commandLineArguments.Threads);
+                analyser.PerformExtraction(options.Threads);
                 sw2.Stop();
                 var cpuTime2 = currentProcess.TotalProcessorTime;
                 var userTime2 = currentProcess.UserProcessorTime;
@@ -324,7 +324,7 @@ namespace Semmle.Extraction.CSharp
             var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
             var pathTransformer = new PathTransformer(canonicalPathCache);
 
-            using var analyser = new Analyser(pm, logger, false, pathTransformer);
+            using var analyser = new StandaloneAnalyser(pm, logger, false, pathTransformer);
             using var references = new BlockingCollection<MetadataReference>();
             try
             {
