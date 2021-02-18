@@ -61,3 +61,9 @@ interface HasArea {
 
 // abstract construct signature!
 let Ctor: abstract new () => HasArea = Shape;
+
+type MyUnion = {myUnion: true} | {stillMyUnion: true};
+let union1: MyUnion = {myUnion: true};
+
+type MyUnion2 = MyUnion | {yetAnotherType: true};
+let union2: MyUnion2 = {yetAnotherType: true};
