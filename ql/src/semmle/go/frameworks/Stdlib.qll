@@ -40,6 +40,7 @@ import semmle.go.frameworks.stdlib.Fmt
 import semmle.go.frameworks.stdlib.Html
 import semmle.go.frameworks.stdlib.HtmlTemplate
 import semmle.go.frameworks.stdlib.Io
+import semmle.go.frameworks.stdlib.IoFs
 import semmle.go.frameworks.stdlib.IoIoutil
 import semmle.go.frameworks.stdlib.Log
 import semmle.go.frameworks.stdlib.Mime

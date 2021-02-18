@@ -53,6 +53,8 @@ module Os {
         fn = "Symlink" and pathidx in [0 .. 1]
         or
         fn = "Truncate" and pathidx = 0
+        or
+        fn = "DirFS" and pathidx = 0
       )
     }
 
