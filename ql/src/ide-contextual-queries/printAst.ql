@@ -19,7 +19,7 @@ external string selectedSourceFile();
  * Overrides the configuration to print only nodes in the selected source file.
  */
 class Cfg extends PrintAstConfiguration {
-  override predicate shouldPrintNode(Generated::AstNode n) {
+  override predicate shouldPrintNode(AstNode n) {
     n.getLocation().getFile() = getFileBySourceArchiveName(selectedSourceFile())
   }
 }
