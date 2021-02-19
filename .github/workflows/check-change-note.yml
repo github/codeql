@@ -1,0 +1,35 @@
+on:
+  pull_request_target:
+    paths:
+      - '**/*.ql'
+      - '**/*.qll'
+      - '!**/experimental/**'
+
+jobs:
+  check-change-note:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if change note file is present
+        uses: dorny/paths-filter@v2
+        id: paths_filter
+        with:
+          filters: |
+            change_note:
+              - '**/change-notes/*.md'
+      - name: Get PR labels
+        id: pr-labels
+        uses: joerick/pr-labels-action@v1.0.6
+      - name: Inform the PR author
+        uses: actions/github-script@v3
+        if: |
+          steps.paths_filter.outputs.change_note == 'false' && 
+          !contains(steps.pr-labels.outputs.labels, ' minor-change ')
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['Needs change note']
+            })
