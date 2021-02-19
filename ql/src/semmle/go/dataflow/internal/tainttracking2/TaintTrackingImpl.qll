@@ -92,7 +92,9 @@ abstract class Configuration extends DataFlow::Configuration {
   /** Holds if taint propagation through nodes guarded by `guard` is prohibited. */
   predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
 
-  final override predicate isBarrierGuard(DataFlow::BarrierGuard guard) { isSanitizerGuard(guard) }
+  final override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
+    isSanitizerGuard(guard) or defaultTaintSanitizerGuard(guard)
+  }
 
   /**
    * Holds if the additional taint propagation step from `node1` to `node2`
