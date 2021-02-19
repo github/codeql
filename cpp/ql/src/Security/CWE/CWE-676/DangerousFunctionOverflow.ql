@@ -8,6 +8,7 @@
  * @tags reliability
  *       security
  *       external/cwe/cwe-242
+ *       external/cwe/cwe-676
  */
 
 import cpp
