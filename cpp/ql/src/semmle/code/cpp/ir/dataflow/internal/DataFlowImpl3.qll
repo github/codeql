@@ -230,6 +230,14 @@ private predicate localFlowStep(Node node1, Node node2, Configuration config) {
   not fullBarrier(node2, config)
 }
 
+private predicate localFlowContentStep(Node node1, Node node2, Content c, Configuration config) {
+  simpleLocalFlowContentStep(c, node1, node2) and
+  not outBarrier(node1, config) and
+  not inBarrier(node2, config) and
+  not fullBarrier(node1, config) and
+  not fullBarrier(node2, config)
+}
+
 /**
  * Holds if the additional step from `node1` to `node2` does not jump between callables.
  */
@@ -296,6 +304,11 @@ private module Stage1 {
       exists(Node mid |
         fwdFlow(mid, cc, config) and
         localFlowStep(mid, node, config)
+      )
+      or
+      exists(Node mid |
+        fwdFlow(mid, cc, config) and
+        localFlowContentStep(mid, node, _, config)
       )
       or
       exists(Node mid |
@@ -425,6 +438,11 @@ private module Stage1 {
     or
     exists(Node mid |
       localFlowStep(node, mid, config) and
+      revFlow(mid, toReturn, config)
+    )
+    or
+    exists(Node mid |
+      localFlowContentStep(node, mid, _, config) and
       revFlow(mid, toReturn, config)
     )
     or
@@ -646,6 +664,14 @@ private predicate localFlowStepNodeCand1(Node node1, Node node2, Configuration c
 }
 
 pragma[noinline]
+private predicate localFlowContentStepNodeCand1(
+  Node node1, Node node2, Content c, Configuration config
+) {
+  Stage1::revFlow(node2, config) and
+  localFlowContentStep(node1, node2, c, config)
+}
+
+pragma[noinline]
 private predicate additionalLocalFlowStepNodeCand1(Node node1, Node node2, Configuration config) {
   Stage1::revFlow(node2, config) and
   additionalLocalFlowStep(node1, node2, config)
@@ -821,14 +847,20 @@ private module Stage2 {
   private LocalCc getLocalCc(Node node, Cc cc, Configuration config) { any() }
 
   private predicate localStep(
-    Node node1, Node node2, boolean preservesValue, ApNil ap, Configuration config, LocalCc lcc
+    Node node1, Node node2, boolean preservesValue, ApNil ap, ContentOption cOpt,
+    Configuration config, LocalCc lcc
   ) {
     (
       preservesValue = true and
-      localFlowStepNodeCand1(node1, node2, config)
+      localFlowStepNodeCand1(node1, node2, config) and
+      cOpt instanceof ContentNone
       or
       preservesValue = false and
-      additionalLocalFlowStepNodeCand1(node1, node2, config)
+      additionalLocalFlowStepNodeCand1(node1, node2, config) and
+      cOpt instanceof ContentNone
+      or
+      preservesValue = true and
+      localFlowContentStepNodeCand1(node1, node2, cOpt.getContent(), config)
     ) and
     exists(ap) and
     exists(lcc)
@@ -866,10 +898,10 @@ private module Stage2 {
       fwdFlow(mid, cc, argAp, ap0, config) and
       localCc = getLocalCc(mid, cc, config)
     |
-      localStep(mid, node, true, _, config, localCc) and
+      localStep(mid, node, true, _, _, config, localCc) and
       ap = ap0
       or
-      localStep(mid, node, false, ap, config, localCc) and
+      localStep(mid, node, false, ap, _, config, localCc) and
       ap0 instanceof ApNil
     )
     or
@@ -1050,13 +1082,13 @@ private module Stage2 {
     ap instanceof ApNil
     or
     exists(Node mid |
-      localStep(node, mid, true, _, config, _) and
+      localStep(node, mid, true, _, _, config, _) and
       revFlow(mid, toReturn, returnAp, ap, config)
     )
     or
     exists(Node mid, ApNil nil |
       fwdFlow(node, _, _, ap, config) and
-      localStep(node, mid, false, _, config, _) and
+      localStep(node, mid, false, _, _, config, _) and
       revFlow(mid, toReturn, returnAp, nil, config) and
       ap instanceof ApNil
     )
@@ -1329,8 +1361,8 @@ private module LocalFlowBigStep {
    */
   pragma[nomagic]
   private predicate localFlowStepPlus(
-    Node node1, Node node2, boolean preservesValue, DataFlowType t, Configuration config,
-    LocalCallContext cc
+    Node node1, Node node2, boolean preservesValue, DataFlowType t, ContentOption cOpt,
+    Configuration config, LocalCallContext cc
   ) {
     not isUnreachableInCall(node2, cc.(LocalCallContextSpecificCall).getCall()) and
     (
@@ -1338,11 +1370,17 @@ private module LocalFlowBigStep {
       (
         localFlowStepNodeCand1(node1, node2, config) and
         preservesValue = true and
-        t = getNodeType(node1)
+        t = getNodeType(node1) and
+        cOpt instanceof ContentNone
         or
         additionalLocalFlowStepNodeCand2(node1, node2, config) and
         preservesValue = false and
-        t = getNodeType(node2)
+        t = getNodeType(node2) and
+        cOpt instanceof ContentNone
+        or
+        localFlowContentStepNodeCand1(node1, node2, cOpt.getContent(), config) and
+        preservesValue = true and
+        t = getNodeType(node1)
       ) and
       node1 != node2 and
       cc.relevantFor(node1.getEnclosingCallable()) and
@@ -1350,16 +1388,24 @@ private module LocalFlowBigStep {
       Stage2::revFlow(node2, unbind(config))
       or
       exists(Node mid |
-        localFlowStepPlus(node1, mid, preservesValue, t, config, cc) and
+        localFlowStepPlus(node1, mid, preservesValue, t, cOpt, config, cc) and
         localFlowStepNodeCand1(mid, node2, config) and
         not mid instanceof FlowCheckNode and
         Stage2::revFlow(node2, unbind(config))
       )
       or
       exists(Node mid |
-        localFlowStepPlus(node1, mid, _, _, config, cc) and
+        localFlowStepPlus(node1, mid, preservesValue, t, [cOpt, contentNone()], config, cc) and
+        localFlowContentStepNodeCand1(mid, node2, cOpt.getContent(), config) and
+        not mid instanceof FlowCheckNode and
+        Stage2::revFlow(node2, unbind(config))
+      )
+      or
+      exists(Node mid |
+        localFlowStepPlus(node1, mid, _, _, contentNone(), config, cc) and
         additionalLocalFlowStepNodeCand2(mid, node2, config) and
         not mid instanceof FlowCheckNode and
+        cOpt instanceof ContentNone and
         preservesValue = false and
         t = getNodeType(node2) and
         Stage2::revFlow(node2, unbind(config))
@@ -1373,10 +1419,10 @@ private module LocalFlowBigStep {
    */
   pragma[nomagic]
   predicate localFlowBigStep(
-    Node node1, Node node2, boolean preservesValue, AccessPathFrontNil apf, Configuration config,
-    LocalCallContext callContext
+    Node node1, Node node2, boolean preservesValue, AccessPathFrontNil apf, ContentOption cOpt,
+    Configuration config, LocalCallContext callContext
   ) {
-    localFlowStepPlus(node1, node2, preservesValue, apf.getType(), config, callContext) and
+    localFlowStepPlus(node1, node2, preservesValue, apf.getType(), cOpt, config, callContext) and
     localFlowExit(node2, config)
   }
 }
@@ -1440,9 +1486,10 @@ private module Stage3 {
   private LocalCc getLocalCc(Node node, Cc cc, Configuration config) { any() }
 
   private predicate localStep(
-    Node node1, Node node2, boolean preservesValue, ApNil ap, Configuration config, LocalCc lcc
+    Node node1, Node node2, boolean preservesValue, ApNil ap, ContentOption cOpt,
+    Configuration config, LocalCc lcc
   ) {
-    localFlowBigStep(node1, node2, preservesValue, ap, config, _) and exists(lcc)
+    localFlowBigStep(node1, node2, preservesValue, ap, cOpt, config, _) and exists(lcc)
   }
 
   private predicate flowOutOfCall = flowOutOfCallNodeCand2/5;
@@ -1494,10 +1541,11 @@ private module Stage3 {
       fwdFlow(mid, cc, argAp, ap0, config) and
       localCc = getLocalCc(mid, cc, config)
     |
-      localStep(mid, node, true, _, config, localCc) and
+      localStep(mid, node, true, _, [contentNone(), contentSome(getHeadContent(ap))], config,
+        localCc) and
       ap = ap0
       or
-      localStep(mid, node, false, ap, config, localCc) and
+      localStep(mid, node, false, ap, _, config, localCc) and
       ap0 instanceof ApNil
     )
     or
@@ -1678,13 +1726,13 @@ private module Stage3 {
     ap instanceof ApNil
     or
     exists(Node mid |
-      localStep(node, mid, true, _, config, _) and
+      localStep(node, mid, true, _, [contentNone(), contentSome(getHeadContent(ap))], config, _) and
       revFlow(mid, toReturn, returnAp, ap, config)
     )
     or
     exists(Node mid, ApNil nil |
       fwdFlow(node, _, _, ap, config) and
-      localStep(node, mid, false, _, config, _) and
+      localStep(node, mid, false, _, _, config, _) and
       revFlow(mid, toReturn, returnAp, nil, config) and
       ap instanceof ApNil
     )
@@ -2136,9 +2184,10 @@ private module Stage4 {
   }
 
   private predicate localStep(
-    Node node1, Node node2, boolean preservesValue, ApNil ap, Configuration config, LocalCc lcc
+    Node node1, Node node2, boolean preservesValue, ApNil ap, ContentOption cOpt,
+    Configuration config, LocalCc lcc
   ) {
-    localFlowBigStep(node1, node2, preservesValue, ap.getFront(), config, lcc)
+    localFlowBigStep(node1, node2, preservesValue, ap.getFront(), cOpt, config, lcc)
   }
 
   pragma[nomagic]
@@ -2200,10 +2249,11 @@ private module Stage4 {
       fwdFlow(mid, cc, argAp, ap0, config) and
       localCc = getLocalCc(mid, cc, config)
     |
-      localStep(mid, node, true, _, config, localCc) and
+      localStep(mid, node, true, _, [contentNone(), contentSome(getHeadContent(ap))], config,
+        localCc) and
       ap = ap0
       or
-      localStep(mid, node, false, ap, config, localCc) and
+      localStep(mid, node, false, ap, _, config, localCc) and
       ap0 instanceof ApNil
     )
     or
@@ -2384,13 +2434,13 @@ private module Stage4 {
     ap instanceof ApNil
     or
     exists(Node mid |
-      localStep(node, mid, true, _, config, _) and
+      localStep(node, mid, true, _, [contentNone(), contentSome(getHeadContent(ap))], config, _) and
       revFlow(mid, toReturn, returnAp, ap, config)
     )
     or
     exists(Node mid, ApNil nil |
       fwdFlow(node, _, _, ap, config) and
-      localStep(node, mid, false, _, config, _) and
+      localStep(node, mid, false, _, _, config, _) and
       revFlow(mid, toReturn, returnAp, nil, config) and
       ap instanceof ApNil
     )
@@ -3119,10 +3169,11 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCt
     localCC = getLocalCallContext(cc, midnode.getEnclosingCallable()) and
     ap0 = mid.getAp()
   |
-    localFlowBigStep(midnode, node, true, _, conf, localCC) and
+    localFlowBigStep(midnode, node, true, _,
+      [contentNone(), contentSome(ap.getHead().getContent())], conf, localCC) and
     ap = ap0
     or
-    localFlowBigStep(midnode, node, false, ap.getFront(), conf, localCC) and
+    localFlowBigStep(midnode, node, false, ap.getFront(), _, conf, localCC) and
     ap0 instanceof AccessPathNil
   )
   or

@@ -469,6 +469,11 @@ private module Cached {
   newtype TAccessPathFrontOption =
     TAccessPathFrontNone() or
     TAccessPathFrontSome(AccessPathFront apf)
+
+  cached
+  newtype TContentOption =
+    TContentNone() or
+    TContentSome(Content c) { simpleLocalFlowContentStep(c, _, _) }
 }
 
 /**
@@ -839,3 +844,27 @@ class AccessPathFrontOption extends TAccessPathFrontOption {
     this = TAccessPathFrontSome(any(AccessPathFront apf | result = apf.toString()))
   }
 }
+
+abstract class ContentOption extends TContentOption {
+  abstract string toString();
+
+  Content getContent() { none() }
+}
+
+class ContentNone extends ContentOption, TContentNone {
+  override string toString() { result = "<nones>" }
+}
+
+ContentOption contentNone() { result instanceof ContentNone }
+
+class ContentSome extends ContentOption, TContentSome {
+  private Content c;
+
+  ContentSome() { this = TContentSome(c) }
+
+  override string toString() { result = c.toString() }
+
+  override Content getContent() { result = c }
+}
+
+ContentOption contentSome(Content c) { result.getContent() = c }
