@@ -1,9 +1,10 @@
 on:
   pull_request_target:
+    types: [labeled, unlabeled, opened, synchronize, reopened, ready_for_review]
     paths:
-      - '**/*.ql'
-      - '**/*.qll'
-      - '!**/experimental/**'
+      - "*/ql/src/**/*.ql"
+      - "*/ql/src/**/*.qll"
+      - "!**/experimental/**"
 
 jobs:
   check-change-note:
@@ -19,17 +20,14 @@ jobs:
       - name: Get PR labels
         id: pr-labels
         uses: joerick/pr-labels-action@v1.0.6
-      - name: Inform the PR author
+      - name: Fail if change note is missing
         uses: actions/github-script@v3
         if: |
-          steps.paths_filter.outputs.change_note == 'false' && 
-          !contains(steps.pr-labels.outputs.labels, ' minor-change ')
+          github.event.pull_request.draft == false &&
+          steps.paths_filter.outputs.change_note == 'false' &&
+          !contains(steps.pr-labels.outputs.labels, ' no-change-note-required ')
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            github.issues.addLabels({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              labels: ['Needs change note']
-            })
+            core.setFailed('No change note found.' +
+            ' Either add one, or add the `no-change-note-required` label.')
