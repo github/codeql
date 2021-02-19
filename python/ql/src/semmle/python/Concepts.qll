@@ -563,6 +563,21 @@ module Cryptography {
     /** Provides classes for modeling new key-pair generation APIs. */
     module KeyGeneration {
       /**
+       * A data-flow configuration for tracking integer literals.
+       */
+      private class IntegerLiteralTrackerConfiguration extends DataFlow::Configuration {
+        IntegerLiteralTrackerConfiguration() { this = "IntegerLiteralTrackerConfiguration" }
+
+        override predicate isSource(DataFlow::Node source) {
+          source = DataFlow::exprNode(any(IntegerLiteral size))
+        }
+
+        override predicate isSink(DataFlow::Node sink) {
+          sink = any(KeyGeneration::Range kg).getKeySizeArg()
+        }
+      }
+
+      /**
        * A data-flow node that generates a new key-pair for use with public-key cryptography.
        *
        * Extend this class to model new APIs. If you want to refine existing API models,
@@ -580,8 +595,9 @@ module Cryptography {
          * explains how we obtained this specific key size.
          */
         int getKeySizeWithOrigin(DataFlow::Node origin) {
-          exists(IntegerLiteral size | origin = DataFlow::exprNode(size) |
-            origin.(DataFlow::LocalSourceNode).flowsTo(this.getKeySizeArg()) and
+          exists(IntegerLiteral size, IntegerLiteralTrackerConfiguration config |
+            origin.asExpr() = size and
+            config.hasFlow(origin, this.getKeySizeArg()) and
             result = size.getValue()
           )
         }
