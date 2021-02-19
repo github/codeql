@@ -244,6 +244,14 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
 }
 
 /**
+ * INTERNAL: Do not use.
+ *
+ * Holds if data can flow from `nodeFrom` to `nodeTo` in exactly one local (intra-procedural) step
+ * when the head of the access path is `c`.
+ */
+predicate simpleLocalFlowContentStep(Content c, Node nodeFrom, Node nodeTo) { none() }
+
+/**
  * Holds if there is an Essa flow step from `nodeFrom` to `nodeTo` that does not switch between
  * local and global SSA variables.
  */

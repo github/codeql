@@ -888,6 +888,14 @@ private module Cached {
   }
 }
 
+/**
+ * INTERNAL: Do not use.
+ *
+ * Holds if data can flow from `nodeFrom` to `nodeTo` in exactly one local (intra-procedural) step
+ * when the head of the access path is `c`.
+ */
+predicate simpleLocalFlowContentStep(Content c, Node nodeFrom, Node nodeTo) { none() }
+
 import Cached
 
 /** An SSA definition, viewed as a node in a data flow graph. */
