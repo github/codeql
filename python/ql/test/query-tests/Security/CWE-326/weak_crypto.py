@@ -75,3 +75,16 @@ rsa_gen_key(65537, key_size=RSA_WEAK)
 
 DSA.generate(DSA_WEAK)
 RSA.generate(RSA_WEAK)
+
+# ------------------------------------------------------------------------------
+
+# Through function calls
+
+def make_new_rsa_key_weak(bits):
+    return RSA.generate(bits) # NOT OK
+make_new_rsa_key_weak(RSA_WEAK)
+
+
+def make_new_rsa_key_strong(bits):
+    return RSA.generate(bits) # OK
+make_new_rsa_key_strong(RSA_STRONG)
