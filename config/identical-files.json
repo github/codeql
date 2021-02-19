@@ -22,7 +22,8 @@
     "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImpl.qll",
     "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImpl2.qll",
     "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImpl3.qll",
-    "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImpl4.qll"
+    "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImpl4.qll",
+    "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImplOnlyInternalUse.qll"
   ],
   "DataFlow Java/C++/C#/Python Common": [
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll",

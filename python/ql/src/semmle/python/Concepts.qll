@@ -6,6 +6,7 @@
 
 import python
 private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.DataFlowOnlyInternalUse
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Frameworks
@@ -565,7 +566,7 @@ module Cryptography {
       /**
        * A data-flow configuration for tracking integer literals.
        */
-      private class IntegerLiteralTrackerConfiguration extends DataFlow::Configuration {
+      private class IntegerLiteralTrackerConfiguration extends DataFlowOnlyInternalUse::Configuration {
         IntegerLiteralTrackerConfiguration() { this = "IntegerLiteralTrackerConfiguration" }
 
         override predicate isSource(DataFlow::Node source) {
