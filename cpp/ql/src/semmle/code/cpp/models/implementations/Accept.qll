@@ -19,9 +19,9 @@ private class Accept extends ArrayFunction, AliasFunction, TaintFunction, SideEf
     bufParam = 1 and countParam = 2
   }
 
-  override predicate hasArrayInput(int bufParam) { bufParam = [1, 2] }
+  override predicate hasArrayInput(int bufParam) { bufParam = 1 }
 
-  override predicate hasArrayOutput(int bufParam) { bufParam = [1, 2] }
+  override predicate hasArrayOutput(int bufParam) { bufParam = 1 }
 
   override predicate parameterNeverEscapes(int index) { exists(this.getParameter(index)) }
 

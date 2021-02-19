@@ -19,9 +19,7 @@ private class Poll extends ArrayFunction, AliasFunction, TaintFunction, SideEffe
     bufParam = 0 and countParam = 1
   }
 
-  override predicate hasArrayInput(int bufParam) {
-    getParameter(bufParam).getUnspecifiedType() instanceof PointerType
-  }
+  override predicate hasArrayInput(int bufParam) { bufParam = 0 }
 
   override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
 
@@ -41,7 +39,9 @@ private class Poll extends ArrayFunction, AliasFunction, TaintFunction, SideEffe
   }
 
   override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
-    getParameter(i).getUnspecifiedType() instanceof PointerType and buffer = true
+    i = 0 and buffer = true
+    or
+    this.hasGlobalName("ppoll") and i = [2, 3] and buffer = false
   }
 
   override predicate hasOnlySpecificReadSideEffects() { any() }
