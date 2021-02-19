@@ -88,3 +88,8 @@ make_new_rsa_key_weak(RSA_WEAK)
 def make_new_rsa_key_strong(bits):
     return RSA.generate(bits) # OK
 make_new_rsa_key_strong(RSA_STRONG)
+
+
+def only_used_by_test(bits):
+    # Although this call will technically not be ok, since it's only used in a test, we don't want to alert on it.
+    return RSA.generate(bits)
