@@ -5,10 +5,14 @@ on:
     branches:
       - main
       - 'rc/*'
+    paths:
+      - 'csharp/**'
   pull_request:
     branches:
       - main
       - 'rc/*'
+    paths:
+      - 'csharp/**'
   schedule:
     - cron: '0 9 * * 1'
 
