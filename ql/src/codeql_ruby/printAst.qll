@@ -6,7 +6,7 @@
  * to hold for only the AST nodes you wish to view.
  */
 
-import ast.internal.TreeSitter
+import AST
 
 /**
  * The query can extend this class to control which nodes are printed.
@@ -17,13 +17,13 @@ class PrintAstConfiguration extends string {
   /**
    * Holds if the given node should be printed.
    */
-  predicate shouldPrintNode(Generated::AstNode n) { any() }
+  predicate shouldPrintNode(AstNode n) { any() }
 }
 
 /**
  * A node in the output tree.
  */
-class PrintAstNode extends Generated::AstNode {
+class PrintAstNode extends AstNode {
   string getProperty(string key) {
     key = "semmle.label" and
     result = "[" + this.getAPrimaryQlClass() + "] " + this.toString()
@@ -34,17 +34,15 @@ class PrintAstNode extends Generated::AstNode {
    * are printed, but the query can override
    * `PrintAstConfiguration.shouldPrintNode` to filter the output.
    */
-  predicate shouldPrint() {
-    (
-      not this instanceof Generated::Token
-      or
-      exists(Generated::AstNode parent | parent.getAFieldOrChild() = this)
-    ) and
-    shouldPrintNode(this)
-  }
+  predicate shouldPrint() { shouldPrintNode(this) }
+
+  /**
+   * Gets the child node that is accessed using the predicate `edgeName`.
+   */
+  PrintAstNode getChild(string edgeName) { range.child(edgeName, result) }
 }
 
-private predicate shouldPrintNode(Generated::AstNode n) {
+private predicate shouldPrintNode(AstNode n) {
   exists(PrintAstConfiguration config | config.shouldPrintNode(n))
 }
 
@@ -64,9 +62,8 @@ query predicate nodes(PrintAstNode node, string key, string value) {
 query predicate edges(PrintAstNode source, PrintAstNode target, string key, string value) {
   source.shouldPrint() and
   target.shouldPrint() and
-  target = source.getAFieldOrChild() and
   key = "semmle.label" and
-  value = "edge"
+  source.getChild(value) = target
 }
 
 /**
