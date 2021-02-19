@@ -398,6 +398,30 @@ abstract class FluentMethod extends ValuePreservingCallable {
   override predicate returnsValue(int arg) { arg = -1 }
 }
 
+private class StandardLibraryValuePreservingCallable extends ValuePreservingCallable {
+  int returnsArgNo;
+
+  StandardLibraryValuePreservingCallable() {
+    this.getDeclaringType().hasQualifiedName("java.util", "Objects") and
+    (
+      this.hasName(["requireNonNull", "requireNonNullElseGet"]) and returnsArgNo = 0
+      or
+      this.hasName("requireNonNullElse") and returnsArgNo = [0 .. this.getNumberOfParameters() - 1]
+      or
+      this.hasName("toString") and returnsArgNo = 1
+    )
+    or
+    this.getDeclaringType()
+        .getSourceDeclaration()
+        .getASourceSupertype*()
+        .hasQualifiedName("java.util", "Stack") and
+    this.hasName("push") and
+    returnsArgNo = 0
+  }
+
+  override predicate returnsValue(int argNo) { argNo = returnsArgNo }
+}
+
 /**
  * INTERNAL: do not use.
  *
@@ -447,30 +471,6 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
       or
       argNo = -1 and node1.asExpr() = ma.getQualifier()
     )
-  )
-  or
-  exists(MethodAccess ma, Method m |
-    ma = node2.asExpr() and
-    m = ma.getMethod() and
-    m.getDeclaringType().hasQualifiedName("java.util", "Objects") and
-    (
-      m.hasName(["requireNonNull", "requireNonNullElseGet"]) and node1.asExpr() = ma.getArgument(0)
-      or
-      m.hasName("requireNonNullElse") and node1.asExpr() = ma.getAnArgument()
-      or
-      m.hasName("toString") and node1.asExpr() = ma.getArgument(1)
-    )
-  )
-  or
-  exists(MethodAccess ma, Method m |
-    ma = node2.asExpr() and
-    m = ma.getMethod() and
-    m.getDeclaringType()
-        .getSourceDeclaration()
-        .getASourceSupertype*()
-        .hasQualifiedName("java.util", "Stack") and
-    m.hasName("push") and
-    node1.asExpr() = ma.getArgument(0)
   )
 }
 
