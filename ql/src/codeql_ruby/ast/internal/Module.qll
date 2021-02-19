@@ -8,6 +8,17 @@ module ModuleBase {
   abstract class Range extends BodyStatement::Range { }
 }
 
+module Namespace {
+  abstract class Range extends ModuleBase::Range, ConstantWriteAccess::Range {
+    override predicate child(string label, AstNode::Range child) {
+      ModuleBase::Range.super.child(label, child) or
+      ConstantWriteAccess::Range.super.child(label, child)
+    }
+
+    override string toString() { result = ModuleBase::Range.super.toString() }
+  }
+}
+
 module Toplevel {
   class Range extends ModuleBase::Range, @program {
     final override Generated::Program generated;
@@ -34,7 +45,7 @@ module Toplevel {
 }
 
 module Class {
-  class Range extends ModuleBase::Range, ConstantWriteAccess::Range, @class {
+  class Range extends Namespace::Range, @class {
     final override Generated::Class generated;
 
     final override Generated::AstNode getChild(int i) { result = generated.getChild(i) }
@@ -61,9 +72,7 @@ module Class {
     final override string toString() { result = this.getName() }
 
     override predicate child(string label, AstNode::Range child) {
-      ModuleBase::Range.super.child(label, child)
-      or
-      ConstantWriteAccess::Range.super.child(label, child)
+      Namespace::Range.super.child(label, child)
       or
       label = "getSuperclassExpr" and child = getSuperclassExpr()
     }
@@ -89,7 +98,7 @@ module SingletonClass {
 }
 
 module Module {
-  class Range extends ModuleBase::Range, ConstantWriteAccess::Range, @module {
+  class Range extends Namespace::Range, @module {
     final override Generated::Module generated;
 
     final override Generated::AstNode getChild(int i) { result = generated.getChild(i) }
@@ -114,9 +123,7 @@ module Module {
     final override string toString() { result = this.getName() }
 
     override predicate child(string label, AstNode::Range child) {
-      ModuleBase::Range.super.child(label, child)
-      or
-      ConstantWriteAccess::Range.super.child(label, child)
+      Namespace::Range.super.child(label, child)
     }
   }
 }
