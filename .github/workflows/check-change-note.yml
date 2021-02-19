@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check if change note file is present
-        uses: dorny/paths-filter@v2
+        uses: dorny/paths-filter@7c0f15b688b020e95e00f15c61299b022f08ca95 # v2.8.0
         id: paths_filter
         with:
           filters: |
@@ -19,7 +19,7 @@ jobs:
               - '**/change-notes/*.md'
       - name: Get PR labels
         id: pr-labels
-        uses: joerick/pr-labels-action@v1.0.6
+        uses: joerick/pr-labels-action@0a4cc4ee0ab557ec0b1ae1157fa6fa7f9f4c494b # v1.0.6
       - name: Fail if change note is missing
         uses: actions/github-script@v3
         if: |
