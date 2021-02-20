@@ -4,15 +4,16 @@ import semmle.code.java.dataflow.TaintTracking
 
 /**
  * A taint-tracking configuration for unsafe user input
- * that is used to construct and evaluate a Jexl expression.
- * It supports both Jexl2 and Jexl3.
+ * that is used to construct and evaluate a JEXL expression.
+ * It supports both JEXL 2 and 3.
  */
 class JexlInjectionConfig extends TaintTracking::Configuration {
   JexlInjectionConfig() { this = "JexlInjectionConfig" }
 
   override predicate isSource(DataFlow::Node source) {
     source instanceof TaintedSpringRequestBody or
-    source instanceof RemoteFlowSource
+    source instanceof RemoteFlowSource or
+    source instanceof LocalUserInput
   }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof JexlEvaluationSink }
@@ -35,9 +36,9 @@ private class TaintedSpringRequestBody extends DataFlow::Node {
 
 /**
  * A sink for Expresssion Language injection vulnerabilities via Jexl,
- * i.e. method calls that run evaluation of a Jexl expression.
+ * i.e. method calls that run evaluation of a JEXL expression.
  *
- * Creating a `Callable` from a tainted Jexl expression or script is considered as a sink
+ * Creating a `Callable` from a tainted JEXL expression or script is considered as a sink
  * although the tainted expression is not executed at this point.
  * Here we assume that it will get executed at some point,
  * maybe stored in an object field and then reached by a different flow.
@@ -60,7 +61,7 @@ private class JexlEvaluationSink extends DataFlow::ExprNode {
 
 /**
  * Defines method calls that propagate tainted data via one of the methods
- * from Jexl library.
+ * from JEXL library.
  */
 private class TaintPropagatingJexlMethodCall extends MethodAccess {
   Expr taintFromExpr;
@@ -97,14 +98,14 @@ private class TaintPropagatingJexlMethodCall extends MethodAccess {
 }
 
 /**
- * Holds if `expr` is a Jexl engine that is not configured with a sandbox.
+ * Holds if `expr` is a JEXL engine that is not configured with a sandbox.
  */
 private predicate isUnsafeEngine(Expr expr) {
   not exists(SandboxedJexlFlowConfig config | config.hasFlowTo(DataFlow::exprNode(expr)))
 }
 
 /**
- * A configuration for a tracking sandboxed Jexl engines.
+ * A configuration for a tracking sandboxed JEXL engines.
  */
 private class SandboxedJexlFlowConfig extends DataFlow2::Configuration {
   SandboxedJexlFlowConfig() { this = "JexlInjection::SandboxedJexlFlowConfig" }
@@ -112,9 +113,14 @@ private class SandboxedJexlFlowConfig extends DataFlow2::Configuration {
   override predicate isSource(DataFlow::Node node) { node instanceof SandboxedJexlSource }
 
   override predicate isSink(DataFlow::Node node) {
-    node.asExpr().getType() instanceof JexlEngine or
-    node.asExpr().getType() instanceof JxltEngine or
-    node.asExpr().getType() instanceof UnifiedJexl
+    exists(MethodAccess ma, Method m | ma.getMethod() = m |
+      (
+        m instanceof CreateJexlScriptMethod or
+        m instanceof CreateJexlExpressionMethod or
+        m instanceof CreateJexlTemplateMethod
+      ) and
+      ma.getQualifier() = node.asExpr()
+    )
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
@@ -123,7 +129,7 @@ private class SandboxedJexlFlowConfig extends DataFlow2::Configuration {
 }
 
 /**
- * Defines a data flow source for Jexl engines configured with a sandbox.
+ * Defines a data flow source for JEXL engines configured with a sandbox.
  */
 private class SandboxedJexlSource extends DataFlow::ExprNode {
   SandboxedJexlSource() {
@@ -143,7 +149,7 @@ private class SandboxedJexlSource extends DataFlow::ExprNode {
 }
 
 /**
- * Holds if `fromNode` to `toNode` is a dataflow step that creates one of the Jexl engines.
+ * Holds if `fromNode` to `toNode` is a dataflow step that creates one of the JEXL engines.
  */
 private predicate createsJexlEngine(DataFlow::Node fromNode, DataFlow::Node toNode) {
   exists(MethodAccess ma, Method m | m = ma.getMethod() |
@@ -162,7 +168,7 @@ private predicate createsJexlEngine(DataFlow::Node fromNode, DataFlow::Node toNo
 
 /**
  * Holds if `fromNode` to `toNode` is a dataflow step that returns data from
- * a tainted bean by calling one of its getters.
+ * a bean by calling one of its getters.
  */
 private predicate returnsDataFromBean(DataFlow::Node fromNode, DataFlow::Node toNode) {
   exists(MethodAccess ma, Method m | ma.getMethod() = m |
@@ -173,7 +179,7 @@ private predicate returnsDataFromBean(DataFlow::Node fromNode, DataFlow::Node to
 }
 
 /**
- * Method in the `JexlEngine` class that get or set a property with a Jexl expression.
+ * A methods in the `JexlEngine` class that gets or sets a property with a JEXL expression.
  */
 private class JexlEngineGetSetPropertyMethod extends Method {
   JexlEngineGetSetPropertyMethod() {
@@ -183,7 +189,7 @@ private class JexlEngineGetSetPropertyMethod extends Method {
 }
 
 /**
- * Defines methods that triggers direct evaluation of Jexl expressions.
+ * A method that triggers direct evaluation of JEXL expressions.
  */
 private class DirectJexlEvaluationMethod extends Method {
   DirectJexlEvaluationMethod() {
@@ -202,14 +208,14 @@ private class DirectJexlEvaluationMethod extends Method {
 }
 
 /**
- * Defines methods that create a Jexl script.
+ * A method that creates a JEXL script.
  */
 private class CreateJexlScriptMethod extends Method {
   CreateJexlScriptMethod() { getDeclaringType() instanceof JexlEngine and hasName("createScript") }
 }
 
 /**
- * Defines methods that creates a `Callable` for a Jexl expression or script.
+ * A method that creates a `Callable` for a JEXL expression or script.
  */
 private class CreateJexlCallableMethod extends Method {
   CreateJexlCallableMethod() {
@@ -219,7 +225,7 @@ private class CreateJexlCallableMethod extends Method {
 }
 
 /**
- * Defines methods that create a Jexl template.
+ * A method that creates a JEXL template.
  */
 private class CreateJexlTemplateMethod extends Method {
   CreateJexlTemplateMethod() {
@@ -229,7 +235,7 @@ private class CreateJexlTemplateMethod extends Method {
 }
 
 /**
- * Defines methods that create a Jexl expression.
+ * A method that creates a JEXL expression.
  */
 private class CreateJexlExpressionMethod extends Method {
   CreateJexlExpressionMethod() {

@@ -1,6 +1,6 @@
 /**
- * @name Expression language injection (Jexl)
- * @description Evaluation of a user-controlled Jexl expression
+ * @name Expression language injection (JEXL)
+ * @description Evaluation of a user-controlled JEXL expression
  *              may lead to arbitrary code execution.
  * @kind path-problem
  * @problem.severity error
@@ -16,4 +16,4 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, JexlInjectionConfig conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Jexl injection from $@.", source.getNode(), "this user input"
+select sink.getNode(), source, sink, "JEXL injection from $@.", source.getNode(), "this user input"
