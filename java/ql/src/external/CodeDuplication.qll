@@ -75,32 +75,45 @@ private predicate blockCoversStatement(int equivClass, int first, int last, Stmt
   )
 }
 
-private Stmt statementInMethod(Method m) {
-  result.getEnclosingCallable() = m and
+private Stmt statementInCallable(Callable c) {
+  result.getEnclosingCallable() = c and
   not result instanceof BlockStmt
 }
 
-private predicate duplicateStatement(Method m1, Method m2, Stmt s1, Stmt s2) {
+private predicate duplicateStatement(Callable c1, Callable c2, Stmt s1, Stmt s2) {
   exists(int equivClass, int first, int last |
-    s1 = statementInMethod(m1) and
-    s2 = statementInMethod(m2) and
+    s1 = statementInCallable(c1) and
+    s2 = statementInCallable(c2) and
     blockCoversStatement(equivClass, first, last, s1) and
     blockCoversStatement(equivClass, first, last, s2) and
     s1 != s2 and
-    m1 != m2
+    c1 != c2
   )
 }
 
-predicate duplicateStatements(Method m1, Method m2, int duplicate, int total) {
-  duplicate = strictcount(Stmt s | duplicateStatement(m1, m2, s, _)) and
-  total = strictcount(statementInMethod(m1))
+/**
+ * Holds if there are any duplicate statements between the callables.
+ * The number of duplicate statements is bound as `duplicate`, the total
+ * number of statements in `c` is bound as `total`.
+ */
+predicate duplicateStatements(Callable c, Callable other, int duplicate, int total) {
+  duplicate = strictcount(Stmt s | duplicateStatement(c, other, s, _)) and
+  total = strictcount(statementInCallable(c))
 }
 
 /**
- * Pairs of methods that are identical.
+ * Holds if the methods are non-empty and their bodies are identical.
  */
-predicate duplicateMethod(Method m, Method other) {
-  exists(int total | duplicateStatements(m, other, total, total))
+predicate duplicateMethod(Method m, Method other) { duplicateCallable(m, other) }
+
+/**
+ * Holds if the callables are non-empty and their bodies are identical.
+ */
+predicate duplicateCallable(Callable c, Callable other) {
+  exists(int total |
+    // Check count of `other`, otherwise statements of `c` might be a subset of `other`
+    duplicateStatements(c, other, total, total) and total = strictcount(statementInCallable(other))
+  )
 }
 
 predicate similarLines(File f, int line) {
