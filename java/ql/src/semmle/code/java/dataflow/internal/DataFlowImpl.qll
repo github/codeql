@@ -3166,7 +3166,7 @@ private class PathNodeSink extends PathNodeImpl, TPathNodeSink {
 
 pragma[noinline]
 private predicate localPathStep0(DataFlowCallable callable, Node midnode, Configuration conf) {
-  localFlowBigStep(midnode, _, _, _, conf, _) and
+  localFlowBigStep(midnode, _, _, _, _, conf, _) and
   callable = midnode.getEnclosingCallable()
 }
 
