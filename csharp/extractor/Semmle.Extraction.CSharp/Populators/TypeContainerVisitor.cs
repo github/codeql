@@ -11,16 +11,17 @@ namespace Semmle.Extraction.CSharp.Populators
 {
     public class TypeContainerVisitor : CSharpSyntaxVisitor
     {
-        protected Context cx { get; }
-        protected IEntity parent { get; }
-        protected TextWriter trapFile { get; }
+        protected Context Cx { get; }
+        protected IEntity Parent { get; }
+        protected TextWriter TrapFile { get; }
         private readonly Lazy<Func<SyntaxNode, AttributeData>> attributeLookup;
 
         public TypeContainerVisitor(Context cx, TextWriter trapFile, IEntity parent)
         {
-            this.cx = cx;
-            this.parent = parent;
-            this.trapFile = trapFile;
+            Cx = cx;
+            Parent = parent;
+            TrapFile = trapFile;
+
             attributeLookup = new Lazy<Func<SyntaxNode, AttributeData>>(() =>
                 {
                     var dict = new Dictionary<SyntaxNode, AttributeData>();
@@ -38,48 +39,59 @@ namespace Semmle.Extraction.CSharp.Populators
             throw new InternalError(node, "Unhandled top-level syntax node");
         }
 
+        public override void VisitGlobalStatement(GlobalStatementSyntax node)
+        {
+            // Intentionally left empty.
+            // Global statements are handled in CompilationUnitVisitor
+        }
+
         public override void VisitDelegateDeclaration(DelegateDeclarationSyntax node)
         {
-            Entities.NamedType.Create(cx, cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(trapFile, parent);
+            Entities.NamedType.Create(Cx, Cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(TrapFile, Parent);
         }
 
         public override void VisitRecordDeclaration(RecordDeclarationSyntax node)
         {
-            Entities.Type.Create(cx, cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(trapFile, parent);
+            ExtractTypeDeclaration(node);
         }
 
-        public override void VisitClassDeclaration(ClassDeclarationSyntax classDecl)
+        public override void VisitClassDeclaration(ClassDeclarationSyntax node)
         {
-            Entities.Type.Create(cx, cx.GetModel(classDecl).GetDeclaredSymbol(classDecl)).ExtractRecursive(trapFile, parent);
+            ExtractTypeDeclaration(node);
         }
 
         public override void VisitStructDeclaration(StructDeclarationSyntax node)
         {
-            Entities.Type.Create(cx, cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(trapFile, parent);
+            ExtractTypeDeclaration(node);
         }
 
         public override void VisitEnumDeclaration(EnumDeclarationSyntax node)
         {
-            Entities.Type.Create(cx, cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(trapFile, parent);
+            ExtractTypeDeclaration(node);
         }
 
         public override void VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
         {
-            Entities.Type.Create(cx, cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(trapFile, parent);
+            ExtractTypeDeclaration(node);
+        }
+
+        private void ExtractTypeDeclaration(BaseTypeDeclarationSyntax node)
+        {
+            Entities.Type.Create(Cx, Cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(TrapFile, Parent);
         }
 
         public override void VisitAttributeList(AttributeListSyntax node)
         {
-            if (cx.Extractor.Standalone)
+            if (Cx.Extractor.Standalone)
                 return;
 
-            var outputAssembly = Assembly.CreateOutputAssembly(cx);
+            var outputAssembly = Assembly.CreateOutputAssembly(Cx);
             foreach (var attribute in node.Attributes)
             {
                 if (attributeLookup.Value(attribute) is AttributeData attributeData)
                 {
-                    var ae = Semmle.Extraction.CSharp.Entities.Attribute.Create(cx, attributeData, outputAssembly);
-                    cx.BindComments(ae, attribute.GetLocation());
+                    var ae = Entities.Attribute.Create(Cx, attributeData, outputAssembly);
+                    Cx.BindComments(ae, attribute.GetLocation());
                 }
             }
         }

@@ -216,3 +216,46 @@ void test_pointers2()
 	sink(ptr4); // clean
 	sink(*ptr4); // $ MISSING: ast,ir
 }
+
+// --- recv ---
+
+int recv(int s, char* buf, int len, int flags);
+
+void test_recv() {
+	char buffer[1024];
+	recv(0, buffer, sizeof(buffer), 0);
+	sink(buffer); // $ ast,ir
+	sink(*buffer); // $ ast,ir
+}
+
+// --- send and related functions ---
+
+int send(int, const void*, int, int);
+
+void test_send(char* buffer, int length) {
+  send(0, buffer, length, 0); // $ remote
+}
+
+struct iovec {
+  void  *iov_base;
+  unsigned iov_len;
+};
+
+int readv(int, const struct iovec*, int);
+int writev(int, const struct iovec*, int);
+
+void sink(const iovec* iovs);
+void sink(iovec);
+
+int test_readv_and_writev(iovec* iovs) {
+  readv(0, iovs, 16);
+  sink(iovs); // $ast,ir
+  sink(iovs[0]); // $ast MISSING: ir
+  sink(*iovs); // $ast MISSING: ir
+
+  char* p = (char*)iovs[1].iov_base;
+  sink(p); // $ MISSING: ast,ir
+  sink(*p); // $ MISSING: ast,ir
+
+  writev(0, iovs, 16); // $ remote
+}

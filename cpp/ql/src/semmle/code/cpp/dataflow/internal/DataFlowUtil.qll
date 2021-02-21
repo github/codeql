@@ -7,6 +7,7 @@ private import semmle.code.cpp.dataflow.internal.FlowVar
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.controlflow.Guards
 private import semmle.code.cpp.dataflow.internal.AddressFlow
+private import DataFlowPrivate
 
 cached
 private newtype TNode =
@@ -698,6 +699,14 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
       )
     )
 }
+
+/**
+ * INTERNAL: do not use.
+ *
+ * Holds if data can flow from `nodeFrom` to `nodeTo` in exactly one local (intra-procedural) step
+ * when the head of the access path is `c`.
+ */
+predicate simpleLocalFlowContentStep(Content c, Node nodeFrom, Node nodeTo) { none() }
 
 private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
   exists(DataFlowFunction f, Call call, FunctionOutput outModel, int argOutIndex |

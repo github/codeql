@@ -28,12 +28,12 @@ namespace Semmle.Extraction
 
         public static Message Create(Context cx, string text, ISymbol symbol, string? stackTrace = null, Severity severity = Severity.Error)
         {
-            return new Message(text, symbol.ToString(), Entities.Location.Create(cx, symbol.Locations.FirstOrDefault()), stackTrace, severity);
+            return new Message(text, symbol.ToString(), cx.CreateLocation(symbol.Locations.FirstOrDefault()), stackTrace, severity);
         }
 
         public static Message Create(Context cx, string text, SyntaxNode node, string? stackTrace = null, Severity severity = Severity.Error)
         {
-            return new Message(text, node.ToString(), Entities.Location.Create(cx, node.GetLocation()), stackTrace, severity);
+            return new Message(text, node.ToString(), cx.CreateLocation(node.GetLocation()), stackTrace, severity);
         }
 
         public override string ToString() => Text;
@@ -44,8 +44,8 @@ namespace Semmle.Extraction
             sb.Append(Text);
             if (!string.IsNullOrEmpty(EntityText))
                 sb.Append(" in ").Append(EntityText);
-            if (!(Location is null) && !(Location.UnderlyingObject is null))
-                sb.Append(" at ").Append(Location.UnderlyingObject.GetLineSpan());
+            if (!(Location is null) && !(Location.Symbol is null))
+                sb.Append(" at ").Append(Location.Symbol.GetLineSpan());
             if (!string.IsNullOrEmpty(StackTrace))
                 sb.Append(" ").Append(StackTrace);
             return sb.ToString();

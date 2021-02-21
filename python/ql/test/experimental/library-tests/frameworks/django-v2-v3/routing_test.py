@@ -3,6 +3,7 @@ from django.urls import path, re_path
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseNotFound
 from django.views import View
 import django.views.generic.base
+from django.views.decorators.http import require_GET
 
 
 def url_match_xss(request, foo, bar, no_taint=None):  # $requestHandler routedParameter=foo routedParameter=bar
@@ -105,6 +106,10 @@ urlpatterns = [
     path("not_valid/<not_valid!>", not_valid_identifier),  # $routeSetup="not_valid/<not_valid!>"
 ]
 
+################################################################################
+# Deprecated django.conf.urls.url
+################################################################################
+
 # This version 1.x way of defining urls is deprecated in Django 3.1, but still works
 from django.conf.urls import url
 
@@ -116,9 +121,32 @@ urlpatterns = [
 ]
 
 
+################################################################################
+# Special stuff
+################################################################################
+
 class PossiblyNotRouted(View):
     # Even if our analysis can't find a route-setup for this class, we should still
     # consider it to be a handle incoming HTTP requests
 
     def get(self, request, possibly_not_routed=42):  # $ requestHandler routedParameter=possibly_not_routed
         return HttpResponse('PossiblyNotRouted get: {}'.format(possibly_not_routed))  # $HttpResponse
+
+
+@require_GET
+def with_decorator(request, foo):  # $ requestHandler routedParameter=foo
+    pass
+
+urlpatterns = [
+    path("with_decorator/<foo>", with_decorator),  # $ routeSetup="with_decorator/<foo>"
+]
+
+class UnknownViewSubclass(UnknownViewSuperclass):
+    # Although we don't know for certain that this class is a django view class, the fact that it's
+    # used with `as_view()` in the routing setup should be enough that we treat it as such.
+    def get(self, request): # $ requestHandler
+        pass
+
+urlpatterns = [
+    path("UnknownViewSubclass/", UnknownViewSubclass.as_view()),  # $ routeSetup="UnknownViewSubclass/"
+]

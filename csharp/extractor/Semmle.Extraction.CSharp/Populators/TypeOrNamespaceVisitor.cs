@@ -13,12 +13,12 @@ namespace Semmle.Extraction.CSharp.Populators
         {
             // Only deal with "using namespace" not "using X = Y"
             if (usingDirective.Alias == null)
-                new UsingDirective(cx, usingDirective, (NamespaceDeclaration)parent);
+                new UsingDirective(Cx, usingDirective, (NamespaceDeclaration)Parent);
         }
 
         public override void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
         {
-            NamespaceDeclaration.Create(cx, node, (NamespaceDeclaration)parent);
+            NamespaceDeclaration.Create(Cx, node, (NamespaceDeclaration)Parent);
         }
     }
 }

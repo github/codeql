@@ -356,6 +356,7 @@
   ],
   "Inline Test Expectations": [
     "cpp/ql/test/TestUtilities/InlineExpectationsTest.qll",
+    "java/ql/test/TestUtilities/InlineExpectationsTest.qll",
     "python/ql/test/TestUtilities/InlineExpectationsTest.qll"
   ],
   "C++ ExternalAPIs": [

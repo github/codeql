@@ -934,6 +934,14 @@ private predicate flowOutOfAddressNodeStore(AddressNode nodeFrom, Node nodeTo) {
   )
 }
 
+/**
+ * INTERNAL: do not use.
+ *
+ * Holds if data can flow from `nodeFrom` to `nodeTo` in exactly one local (intra-procedural) step
+ * when the head of the access path is `c`.
+ */
+predicate simpleLocalFlowContentStep(Content c, Node nodeFrom, Node nodeTo) { none() }
+
 pragma[noinline]
 private predicate getFieldSizeOfClass(Class c, Type type, int size) {
   exists(Field f |

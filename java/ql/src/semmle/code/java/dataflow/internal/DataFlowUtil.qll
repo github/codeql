@@ -431,6 +431,14 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
 }
 
 /**
+ * INTERNAL: do not use.
+ *
+ * Holds if data can flow from `nodeFrom` to `nodeTo` in exactly one local (intra-procedural) step
+ * when the head of the access path is `c`.
+ */
+predicate simpleLocalFlowContentStep(Content c, Node nodeFrom, Node nodeTo) { none() }
+
+/**
  * Gets the node that occurs as the qualifier of `fa`.
  */
 Node getFieldQualifier(FieldAccess fa) {

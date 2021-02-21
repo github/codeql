@@ -15,9 +15,8 @@ namespace Semmle.Extraction.CIL.Entities
         public override void WriteId(TextWriter trapFile)
         {
             trapFile.Write(transformedPath.DatabaseId);
+            trapFile.Write(";folder");
         }
-
-        public override string IdSuffix => ";folder";
 
         public override IEnumerable<IExtractionProduct> Contents
         {

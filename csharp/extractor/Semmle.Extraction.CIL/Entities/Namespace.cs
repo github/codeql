@@ -14,9 +14,6 @@ namespace Semmle.Extraction.CIL.Entities
 
         public bool IsGlobalNamespace => ParentNamespace is null;
 
-        public override string IdSuffix => ";namespace";
-
-
         public override void WriteId(TextWriter trapFile)
         {
             if (ParentNamespace != null && !ParentNamespace.IsGlobalNamespace)
@@ -26,6 +23,8 @@ namespace Semmle.Extraction.CIL.Entities
             }
             trapFile.Write(Name);
         }
+
+        public override string IdSuffix => ";namespacee";
 
         public override bool Equals(object? obj)
         {

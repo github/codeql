@@ -19,10 +19,10 @@ namespace Semmle.Extraction.Entities
             : base(cx, init)
         {
             Position = init.GetLineSpan();
-            FileEntity = File.Create(Context, Position.Path);
+            FileEntity = File.Create(base.Context, Position.Path);
         }
 
-        public static new Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => SourceLocationFactory.Instance.CreateEntity(cx, loc, loc);
+        public static Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => SourceLocationFactory.Instance.CreateEntity(cx, loc, loc);
 
         public override void Populate(TextWriter trapFile)
         {
@@ -30,7 +30,7 @@ namespace Semmle.Extraction.Entities
                 Position.Span.Start.Line + 1, Position.Span.Start.Character + 1,
                 Position.Span.End.Line + 1, Position.Span.End.Character);
 
-            var mapped = symbol!.GetMappedLineSpan();
+            var mapped = Symbol!.GetMappedLineSpan();
             if (mapped.HasMappedPath && mapped.IsValid)
             {
                 var mappedLoc = Create(Context, Microsoft.CodeAnalysis.Location.Create(mapped.Path, default, mapped.Span));

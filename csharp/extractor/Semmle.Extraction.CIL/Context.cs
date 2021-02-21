@@ -37,7 +37,7 @@ namespace Semmle.Extraction.CIL
 
             globalNamespace = new Lazy<Entities.Namespace>(() => Populate(new Entities.Namespace(this, "", null)));
             systemNamespace = new Lazy<Entities.Namespace>(() => Populate(new Entities.Namespace(this, "System")));
-            genericHandleFactory = new CachedFunction<GenericContext, Handle, IExtractedEntity>(CreateGenericHandle);
+            genericHandleFactory = new CachedFunction<IGenericContext, Handle, IExtractedEntity>(CreateGenericHandle);
             namespaceFactory = new CachedFunction<StringHandle, Entities.Namespace>(n => CreateNamespace(MdReader.GetString(n)));
             namespaceDefinitionFactory = new CachedFunction<NamespaceDefinitionHandle, Entities.Namespace>(CreateNamespace);
             sourceFiles = new CachedFunction<PDB.ISourceFile, Entities.PdbSourceFile>(path => new Entities.PdbSourceFile(this, path));

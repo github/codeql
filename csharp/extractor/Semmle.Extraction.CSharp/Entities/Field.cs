@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CSharp.Entities
         private Field(Context cx, IFieldSymbol init)
             : base(cx, init)
         {
-            type = new Lazy<Type>(() => Entities.Type.Create(cx, symbol.Type));
+            type = new Lazy<Type>(() => Entities.Type.Create(cx, Symbol.Type));
         }
 
         public static Field Create(Context cx, IFieldSymbol field) => FieldFactory.Instance.CreateEntityFromSymbol(cx, field);
@@ -22,78 +22,78 @@ namespace Semmle.Extraction.CSharp.Entities
         // Do not populate backing fields.
         // Populate Tuple fields.
         public override bool NeedsPopulation =>
-            (base.NeedsPopulation && !symbol.IsImplicitlyDeclared) || symbol.ContainingType.IsTupleType;
+            (base.NeedsPopulation && !Symbol.IsImplicitlyDeclared) || Symbol.ContainingType.IsTupleType;
 
         public override void Populate(TextWriter trapFile)
         {
             PopulateMetadataHandle(trapFile);
             PopulateAttributes();
             ContainingType.PopulateGenerics();
-            PopulateNullability(trapFile, symbol.GetAnnotatedType());
+            PopulateNullability(trapFile, Symbol.GetAnnotatedType());
 
-            var unboundFieldKey = Field.Create(Context, symbol.OriginalDefinition);
-            trapFile.fields(this, (symbol.IsConst ? 2 : 1), symbol.Name, ContainingType, Type.TypeRef, unboundFieldKey);
+            var unboundFieldKey = Field.Create(Context, Symbol.OriginalDefinition);
+            trapFile.fields(this, (Symbol.IsConst ? 2 : 1), Symbol.Name, ContainingType, Type.TypeRef, unboundFieldKey);
 
             PopulateModifiers(trapFile);
 
-            if (symbol.IsVolatile)
+            if (Symbol.IsVolatile)
                 Modifier.HasModifier(Context, trapFile, this, "volatile");
 
-            if (symbol.IsConst)
+            if (Symbol.IsConst)
             {
                 Modifier.HasModifier(Context, trapFile, this, "const");
 
-                if (symbol.HasConstantValue)
+                if (Symbol.HasConstantValue)
                 {
-                    trapFile.constant_value(this, Expression.ValueAsString(symbol.ConstantValue));
+                    trapFile.constant_value(this, Expression.ValueAsString(Symbol.ConstantValue));
                 }
             }
 
             foreach (var l in Locations)
                 trapFile.field_location(this, l);
 
-            if (!IsSourceDeclaration || !symbol.FromSource())
+            if (!IsSourceDeclaration || !Symbol.FromSource())
                 return;
 
-            Context.BindComments(this, Location.symbol);
+            Context.BindComments(this, Location.Symbol);
 
             var child = 0;
-            foreach (var initializer in symbol.DeclaringSyntaxReferences
+            foreach (var initializer in Symbol.DeclaringSyntaxReferences
                 .Select(n => n.GetSyntax())
                 .OfType<VariableDeclaratorSyntax>()
                 .Where(n => n.Initializer != null))
             {
                 Context.PopulateLater(() =>
                 {
-                    var loc = Context.Create(initializer.GetLocation());
+                    var loc = Context.CreateLocation(initializer.GetLocation());
 
                     var fieldAccess = AddInitializerAssignment(trapFile, initializer.Initializer.Value, loc, null, ref child);
 
-                    if (!symbol.IsStatic)
+                    if (!Symbol.IsStatic)
                     {
-                        This.CreateImplicit(Context, symbol.ContainingType, Location, fieldAccess, -1);
+                        This.CreateImplicit(Context, Symbol.ContainingType, Location, fieldAccess, -1);
                     }
                 });
             }
 
-            foreach (var initializer in symbol.DeclaringSyntaxReferences
+            foreach (var initializer in Symbol.DeclaringSyntaxReferences
                 .Select(n => n.GetSyntax())
                 .OfType<EnumMemberDeclarationSyntax>()
                 .Where(n => n.EqualsValue != null))
             {
                 // Mark fields that have explicit initializers.
-                var constValue = symbol.HasConstantValue
-                    ? Expression.ValueAsString(symbol.ConstantValue)
+                var constValue = Symbol.HasConstantValue
+                    ? Expression.ValueAsString(Symbol.ConstantValue)
                     : null;
 
-                var loc = Context.Create(initializer.GetLocation());
+                var loc = Context.CreateLocation(initializer.GetLocation());
 
                 AddInitializerAssignment(trapFile, initializer.EqualsValue.Value, loc, constValue, ref child);
             }
 
             if (IsSourceDeclaration)
             {
-                foreach (var syntax in symbol.DeclaringSyntaxReferences
+                foreach (var syntax in Symbol.DeclaringSyntaxReferences
                   .Select(d => d.GetSyntax())
                   .OfType<VariableDeclaratorSyntax>()
                   .Select(d => d.Parent)
@@ -107,7 +107,7 @@ namespace Semmle.Extraction.CSharp.Entities
         private Expression AddInitializerAssignment(TextWriter trapFile, ExpressionSyntax initializer, Extraction.Entities.Location loc,
             string constValue, ref int child)
         {
-            var type = symbol.GetAnnotatedType();
+            var type = Symbol.GetAnnotatedType();
             var simpleAssignExpr = new Expression(new ExpressionInfo(Context, type, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, constValue));
             Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer, simpleAssignExpr, 0));
             var access = new Expression(new ExpressionInfo(Context, type, Location, ExprKind.FIELD_ACCESS, simpleAssignExpr, 1, false, constValue));
@@ -124,7 +124,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(" ");
             trapFile.WriteSubId(ContainingType);
             trapFile.Write('.');
-            trapFile.Write(symbol.Name);
+            trapFile.Write(Symbol.Name);
             trapFile.Write(";field");
         }
 

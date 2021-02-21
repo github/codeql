@@ -13,28 +13,28 @@ namespace Semmle.Extraction.CSharp.Entities
             RawText = raw;
         }
 
-        public Microsoft.CodeAnalysis.Location Location => symbol.Item1;
+        public Microsoft.CodeAnalysis.Location Location => Symbol.Item1;
         public CommentLineType Type { get; private set; }
 
-        public string Text { get { return symbol.Item2; } }
+        public string Text { get { return Symbol.Item2; } }
         public string RawText { get; private set; }
 
         private Location location;
 
         public override void Populate(TextWriter trapFile)
         {
-            location = Context.Create(Location);
+            location = Context.CreateLocation(Location);
             trapFile.commentline(this, Type == CommentLineType.MultilineContinuation ? CommentLineType.Multiline : Type, Text, RawText);
             trapFile.commentline_location(this, location);
         }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => location.symbol;
+        public override Microsoft.CodeAnalysis.Location ReportingLocation => location.Symbol;
 
         public override bool NeedsPopulation => true;
 
         public override void WriteId(TextWriter trapFile)
         {
-            trapFile.WriteSubId(Context.Create(Location));
+            trapFile.WriteSubId(Context.CreateLocation(Location));
             trapFile.Write(";commentline");
         }
 
