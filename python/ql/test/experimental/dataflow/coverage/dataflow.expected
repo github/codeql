@@ -347,13 +347,6 @@ edges
 | test.py:686:43:686:48 | ControlFlowNode for SOURCE | test.py:686:3:686:52 | PosOverflowNode for iterate_star_args() [Tuple element at index 0] |
 | test.py:686:51:686:51 | ControlFlowNode for s | test.py:686:3:686:52 | PosOverflowNode for iterate_star_args() [Tuple element at index 1] |
 | test.py:757:16:757:21 | ControlFlowNode for SOURCE | test.py:760:10:760:36 | ControlFlowNode for return_from_inner_scope() |
-| user_test.py:2:10:2:17 | ControlFlowNode for Str | user_test.py:12:7:12:14 | ControlFlowNode for source() |
-| user_test.py:7:23:7:26 | ControlFlowNode for args [Tuple element at index 1] | user_test.py:8:14:8:17 | ControlFlowNode for args [Tuple element at index 1] |
-| user_test.py:8:7:8:9 | SSA variable arg | user_test.py:9:10:9:12 | ControlFlowNode for arg |
-| user_test.py:8:14:8:17 | ControlFlowNode for args [Tuple element at index 1] | user_test.py:8:7:8:9 | SSA variable arg |
-| user_test.py:12:7:12:14 | ControlFlowNode for source() | user_test.py:13:20:13:20 | ControlFlowNode for s |
-| user_test.py:13:3:13:21 | PosOverflowNode for f() [Tuple element at index 1] | user_test.py:7:23:7:26 | ControlFlowNode for args [Tuple element at index 1] |
-| user_test.py:13:20:13:20 | ControlFlowNode for s | user_test.py:13:3:13:21 | PosOverflowNode for f() [Tuple element at index 1] |
 nodes
 | datamodel.py:38:6:38:17 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
 | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
@@ -765,14 +758,6 @@ nodes
 | test.py:686:51:686:51 | ControlFlowNode for s | semmle.label | ControlFlowNode for s |
 | test.py:757:16:757:21 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:760:10:760:36 | ControlFlowNode for return_from_inner_scope() | semmle.label | ControlFlowNode for return_from_inner_scope() |
-| user_test.py:2:10:2:17 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
-| user_test.py:7:23:7:26 | ControlFlowNode for args [Tuple element at index 1] | semmle.label | ControlFlowNode for args [Tuple element at index 1] |
-| user_test.py:8:7:8:9 | SSA variable arg | semmle.label | SSA variable arg |
-| user_test.py:8:14:8:17 | ControlFlowNode for args [Tuple element at index 1] | semmle.label | ControlFlowNode for args [Tuple element at index 1] |
-| user_test.py:9:10:9:12 | ControlFlowNode for arg | semmle.label | ControlFlowNode for arg |
-| user_test.py:12:7:12:14 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
-| user_test.py:13:3:13:21 | PosOverflowNode for f() [Tuple element at index 1] | semmle.label | PosOverflowNode for f() [Tuple element at index 1] |
-| user_test.py:13:20:13:20 | ControlFlowNode for s | semmle.label | ControlFlowNode for s |
 #select
 | datamodel.py:38:6:38:17 | ControlFlowNode for f() | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:38:6:38:17 | ControlFlowNode for f() | Flow found |
 | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | Flow found |
