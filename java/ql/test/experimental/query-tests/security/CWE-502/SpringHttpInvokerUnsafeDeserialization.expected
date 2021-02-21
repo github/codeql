@@ -1,0 +1,1 @@
+| SpringHttpInvokerUnsafeDeserialization.java:9:32:9:37 | unsafe | Unasafe deserialization in a remote service exporter in 'unsafe' method |
