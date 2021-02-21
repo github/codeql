@@ -5,14 +5,13 @@
 
 import semmle.code.cpp.Function
 import semmle.code.cpp.models.interfaces.ArrayFunction
-import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
 
 /**
  * The function `poll` and its assorted variants
  */
-private class Poll extends ArrayFunction, AliasFunction, TaintFunction, SideEffectFunction {
+private class Poll extends ArrayFunction, AliasFunction, SideEffectFunction {
   Poll() { this.hasGlobalName(["poll", "ppoll", "WSAPoll"]) }
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
@@ -28,11 +27,6 @@ private class Poll extends ArrayFunction, AliasFunction, TaintFunction, SideEffe
   override predicate parameterEscapesOnlyViaReturn(int index) { none() }
 
   override predicate parameterIsAlwaysReturned(int index) { none() }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameterDeref(0) and
-    output.isParameterDeref(0)
-  }
 
   override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
     i = 0 and buffer = true and mustWrite = false

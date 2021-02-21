@@ -5,14 +5,13 @@
 
 import semmle.code.cpp.Function
 import semmle.code.cpp.models.interfaces.ArrayFunction
-import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
 
 /**
  * The function `select` and its assorted variants
  */
-private class Select extends ArrayFunction, AliasFunction, TaintFunction, SideEffectFunction {
+private class Select extends ArrayFunction, AliasFunction, SideEffectFunction {
   Select() { this.hasGlobalName(["select", "pselect"]) }
 
   override predicate hasArrayWithUnknownSize(int bufParam) { bufParam = [1 .. 3] }
@@ -26,13 +25,6 @@ private class Select extends ArrayFunction, AliasFunction, TaintFunction, SideEf
   override predicate parameterEscapesOnlyViaReturn(int index) { none() }
 
   override predicate parameterIsAlwaysReturned(int index) { none() }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    exists(int i | i = [1 .. 3] |
-      input.isParameterDeref(i) and
-      output.isParameterDeref(i)
-    )
-  }
 
   override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
     i = [1 .. 3] and buffer = true and mustWrite = false
