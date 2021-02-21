@@ -16,9 +16,9 @@
 
 		When the <code>Access-Control-Allow-Credentials</code> header
 		is <code>true</code>, the <code>Access-Control-Allow-Origin</code>
-		header must have a value different from <code>*</code> in order to
-		make browsers accept the header. Therefore, to allow multiple origins
-		for Cross-Origin requests with credentials, the server must
+		header must have a value different from <code>*</code> in order
+		for browsers to accept the header. Therefore, to allow multiple origins
+		for cross-origin requests with credentials, the server must
 		dynamically compute the value of the
 		<code>Access-Control-Allow-Origin</code> header. Computing this
 		header value from information in the request to the server can
@@ -47,8 +47,8 @@
 		attacker, it is never safe to use <code>null</code> as the value of
 		the <code>Access-Control-Allow-Origin</code> header when the
 		<code>Access-Control-Allow-Credentials</code> header value is
-		<code>true</code>.This can be done using a sandboxed iframe. A more detailed
-		explanation is available in the portswigger blogpost referenced below.
+		<code>true</code>.A null origin can be set by an attacker using a sandboxed iframe.
+		A more detailed explanation is available in the portswigger blogpost referenced below.
 
 	</p>
 </recommendation>
@@ -57,7 +57,7 @@
 	<p>
 
 		In the example below, the server allows the browser to send
-		user credentials in a Cross-Origin request. The request header
+		user credentials in a cross-origin request. The request header
 		<code>origins</code> controls the allowed origins for such a
 		Cross-Origin request.
 

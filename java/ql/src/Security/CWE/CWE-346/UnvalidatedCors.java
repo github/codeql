@@ -29,6 +29,15 @@ public class CorsFilter implements Filter {
             }
         }
 
+        if (!StringUtils.isEmpty(url)) {
+            List<String> checkorigins = Arrays.asList("www.example.com", "www.sub.example.com");
+
+            if (checkorigins.contains(url)) { // GOOD -> Origin is validated here.
+                response.addHeader("Access-Control-Allow-Origin", url);
+                response.addHeader("Access-Control-Allow-Credentials", "true");
+            }
+        }
+
         chain.doFilter(req, res);
     }
 
