@@ -1,5 +1,5 @@
 import ssl
-from pyOpenSSL import SSL
+from OpenSSL import SSL
 from ssl import SSLContext
 
 # true positives
@@ -33,9 +33,9 @@ SSL.Context(METHOD)
 
 # secure versions
 
-ssl.wrap_socket(ssl_version=ssl.PROTOCOL_TLSv1_1)
-SSLContext(protocol=ssl.PROTOCOL_TLSv1_1)
-SSL.Context(SSL.TLSv1_1_METHOD)
+ssl.wrap_socket(ssl_version=ssl.PROTOCOL_TLSv1_2)
+SSLContext(protocol=ssl.PROTOCOL_TLSv1_2)
+SSL.Context(SSL.TLSv1_2_METHOD)
 
 # possibly insecure default
 ssl.wrap_socket()
