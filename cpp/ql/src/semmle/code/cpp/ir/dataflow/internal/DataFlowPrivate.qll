@@ -213,7 +213,7 @@ private class CollectionContent extends Content, TCollectionContent {
   override string toString() { result = "collection" }
 }
 
-private class ArrayContent extends Content, TArrayContent {
+class ArrayContent extends Content, TArrayContent {
   ArrayContent() { this = TArrayContent() }
 
   override string toString() { result = "array content" }

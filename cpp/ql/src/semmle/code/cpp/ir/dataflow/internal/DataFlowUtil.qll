@@ -940,7 +940,10 @@ private predicate flowOutOfAddressNodeStore(AddressNode nodeFrom, Node nodeTo) {
  * Holds if data can flow from `nodeFrom` to `nodeTo` in exactly one local (intra-procedural) step
  * when the head of the access path is `c`.
  */
-predicate simpleLocalFlowContentStep(Content c, Node nodeFrom, Node nodeTo) { none() }
+predicate simpleLocalFlowContentStep(Content c, Node nodeFrom, Node nodeTo) {
+  c instanceof ArrayContent and
+  nodeFrom.asOperand() = nodeTo.asInstruction().(PointerArithmeticInstruction).getAnOperand()
+}
 
 pragma[noinline]
 private predicate getFieldSizeOfClass(Class c, Type type, int size) {
