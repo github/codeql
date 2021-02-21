@@ -677,7 +677,7 @@ def test_iterable_star_unpacking_in_for_2():
 
 def iterate_star_args(first, second, *args):
   for arg in args:
-    SINK(arg) #$ MISSING: flow="SOURCE, l:+5 -> arg" flow="SOURCE, l:+6 -> arg"
+    SINK(arg) #$ flow="SOURCE, l:+5 -> arg" flow="SOURCE, l:+6 -> arg"
 
 # FP reported here: https://github.com/github/codeql-python-team/issues/49
 @expects(2)
