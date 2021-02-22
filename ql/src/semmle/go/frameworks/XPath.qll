@@ -28,7 +28,10 @@ module XPath {
      */
     abstract class Range extends DataFlow::Node { }
 
-    /** An XPath expression string used in an API function of the https://github.com/antchfx/xpath package. */
+    /**
+     * An XPath expression string used in an API function of the
+     * [XPath](https://github.com/antchfx/xpath) package.
+     */
     private class AntchfxXpathXPathExpressionString extends Range {
       AntchfxXpathXPathExpressionString() {
         exists(Function f, string name | name.matches("Compile%") |
@@ -48,7 +51,10 @@ module XPath {
       }
     }
 
-    /** An XPath expression string used in an API function of the https://github.com/antchfx/htmlquery package. */
+    /**
+     * An XPath expression string used in an API function of the
+     * [htmlquery](https://github.com/antchfx/htmlquery) package.
+     */
     private class AntchfxHtmlqueryXPathExpressionString extends Range {
       AntchfxHtmlqueryXPathExpressionString() {
         exists(Function f, string name | name.matches("Find%") |
@@ -63,7 +69,10 @@ module XPath {
       }
     }
 
-    /** An XPath expression string used in an API function of the https://github.com/antchfx/xmlquery package. */
+    /**
+     * An XPath expression string used in an API function of the
+     * [xmlquery](https://github.com/antchfx/xmlquery) package.
+     */
     private class AntchfxXmlqueryXPathExpressionString extends Range {
       AntchfxXmlqueryXPathExpressionString() {
         exists(Function f, string name | name.matches("Find%") |
@@ -83,7 +92,10 @@ module XPath {
       }
     }
 
-    /** An XPath expression string used in an API function of the https://github.com/antchfx/jsonquery package. */
+    /**
+     * An XPath expression string used in an API function of the
+     * [jsonquery](https://github.com/antchfx/jsonquery) package.
+     */
     private class AntchfxJsonqueryXPathExpressionString extends Range {
       AntchfxJsonqueryXPathExpressionString() {
         exists(Function f, string name | name.matches("Find%") |
@@ -98,7 +110,10 @@ module XPath {
       }
     }
 
-    /** An XPath expression string used in an API function of the https://github.com/go-xmlpath/xmlpath package. */
+    /**
+     * An XPath expression string used in an API function of the
+     * [xmlpath](https://github.com/go-xmlpath/xmlpath) package.
+     */
     private class GoXmlpathXmlpathXPathExpressionString extends Range {
       GoXmlpathXmlpathXPathExpressionString() {
         exists(Function f, string name | name.matches("Compile%") |
@@ -113,7 +128,10 @@ module XPath {
       }
     }
 
-    /** An XPath expression string used in an API function of the https://github.com/ChrisTrenkamp/goxpath package. */
+    /**
+     * An XPath expression string used in an API function of the
+     * [goxpath](https://github.com/ChrisTrenkamp/goxpath) package.
+     */
     private class ChrisTrenkampGoxpathXPathExpressionString extends Range {
       ChrisTrenkampGoxpathXPathExpressionString() {
         exists(Function f, string name | name.matches("Parse%") |
@@ -128,7 +146,10 @@ module XPath {
       }
     }
 
-    /** An XPath expression string used in an API function of the https://github.com/santhosh-tekuri/xpathparser package. */
+    /**
+     * An XPath expression string used in an API function of the
+     * [xpathparser](https://github.com/santhosh-tekuri/xpathparser) package.
+     */
     private class SanthoshTekuriXpathparserXPathExpressionString extends Range {
       SanthoshTekuriXpathparserXPathExpressionString() {
         exists(Function f, string name | name.matches("Parse%") |
@@ -143,7 +164,10 @@ module XPath {
       }
     }
 
-    /** An XPath expression string used in an API function of the https://github.com/jbowtie/gokogiri package. */
+    /**
+     * An XPath expression string used in an API function of the
+     * [gokogiri]https://github.com/jbowtie/gokogiri) package.
+     */
     private class JbowtieGokogiriXPathExpressionString extends Range {
       JbowtieGokogiriXPathExpressionString() {
         exists(Function f, string name | name.matches("Compile%") |

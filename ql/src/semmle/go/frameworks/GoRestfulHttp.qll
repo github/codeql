@@ -1,7 +1,7 @@
 import go
 
 /**
- * Provides models of the go-restful library (`https://github.com/emicklei/go-restful`).
+ * Provides models of the [go-restful library](https://github.com/emicklei/go-restful).
  */
 private module GoRestfulHttp {
   /** Gets the package name `github.com/emicklei/go-restful`. */
