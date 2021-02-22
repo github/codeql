@@ -1508,6 +1508,8 @@ predicate forReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
     c instanceof ListElementContent
     or
     c instanceof SetElementContent
+    or
+    c instanceof TupleElementContent
   )
 }
 
