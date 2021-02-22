@@ -102,12 +102,12 @@ module XPath {
     private class GoXmlpathXmlpathXPathExpressionString extends Range {
       GoXmlpathXmlpathXPathExpressionString() {
         exists(Function f, string name | name.matches("Compile%") |
-          f.hasQualifiedName(package("github.com/go-xmlpath/xmlpath", ""), name) and
+          f.hasQualifiedName(XmlPath::packagePath(), name) and
           this = f.getACall().getArgument(0)
         )
         or
         exists(Function f, string name | name.matches("MustCompile%") |
-          f.hasQualifiedName(package("github.com/go-xmlpath/xmlpath", ""), name) and
+          f.hasQualifiedName(XmlPath::packagePath(), name) and
           this = f.getACall().getArgument(0)
         )
       }
@@ -162,5 +162,13 @@ module XPath {
         )
       }
     }
+  }
+}
+
+module XmlPath {
+  /** Gets the package name `github.com/go-xmlpath/xmlpath` or `gopkg.in/xmlpath`. */
+  bindingset[result]
+  string packagePath() {
+    result = package(["github.com/go-xmlpath/xmlpath", "gopkg.in/xmlpath"], "")
   }
 }
