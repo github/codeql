@@ -27,13 +27,12 @@ private class TStageOperand =
 class Operand extends TStageOperand {
   Operand() {
     // Ensure that the operand does not refer to instructions from earlier stages that are unreachable here
-    this = registerOperand(_, _, _)
-    or
-    this = nonSSAMemoryOperand(_, _)
-    or
-    this = phiOperand(_, _, _, _)
-    or
-    this = chiOperand(_, _)
+    exists(Instruction use, Instruction def | this = registerOperand(use, _, def)) or
+    exists(Instruction use | this = nonSSAMemoryOperand(use, _)) or
+    exists(Instruction use, Instruction def, IRBlock predecessorBlock |
+      this = phiOperand(use, def, predecessorBlock, _)
+    ) or
+    exists(Instruction use | this = chiOperand(use, _))
   }
 
   /** Gets a textual representation of this element. */
