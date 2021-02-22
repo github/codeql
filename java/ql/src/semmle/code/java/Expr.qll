@@ -704,16 +704,39 @@ class BinaryExpr extends Expr, @binaryexpr {
     )
   }
 
+  /**
+   * Holds if this binary operator expression is commutative, i.e. the operator allows
+   * switching its operands without affecting the result.
+   *
+   * The actual operand expressions are not considered. Switching operands might therefore
+   * change the outcome if they are method calls with side effects or perform unboxing
+   * conversion on an expression which might be `null`.
+   *
+   * The default implementation by `BinaryExpr` never holds. Custom subclasses may
+   * have to override it.
+   */
+  // 'pseudo'-abstract because custom classes can directly extend BinaryExpr
+  /*abstract*/ predicate isCommutative() { none() }
+
   /** Gets a printable representation of this expression. */
   override string toString() { result = "..." + this.getOp() + "..." }
 
-  /** Gets a string representation of the operator of this binary expression. */
+  /**
+   * Gets a string representation of the operator of this binary expression.
+   * The result will have leading and trainling spaces to simply displaying it.
+   *
+   * The default implementation by `BinaryExpr` has `" ?? "` as result. Custom
+   * subclasses may have to override it.
+   */
+  // 'pseudo'-abstract because custom classes can directly extend BinaryExpr
   /*abstract*/ string getOp() { result = " ?? " }
 }
 
 /** A binary expression using the `*` operator. */
 class MulExpr extends BinaryExpr, @mulexpr {
   override string getOp() { result = " * " }
+
+  override predicate isCommutative() { any() }
 
   override string getAPrimaryQlClass() { result = "MulExpr" }
 }
@@ -722,12 +745,16 @@ class MulExpr extends BinaryExpr, @mulexpr {
 class DivExpr extends BinaryExpr, @divexpr {
   override string getOp() { result = " / " }
 
+  override predicate isCommutative() { none() }
+
   override string getAPrimaryQlClass() { result = "DivExpr" }
 }
 
 /** A binary expression using the `%` operator. */
 class RemExpr extends BinaryExpr, @remexpr {
   override string getOp() { result = " % " }
+
+  override predicate isCommutative() { none() }
 
   override string getAPrimaryQlClass() { result = "RemExpr" }
 }
@@ -736,12 +763,19 @@ class RemExpr extends BinaryExpr, @remexpr {
 class AddExpr extends BinaryExpr, @addexpr {
   override string getOp() { result = " + " }
 
+  override predicate isCommutative() {
+    // String concatenation is not commutative
+    not getType() instanceof TypeString
+  }
+
   override string getAPrimaryQlClass() { result = "AddExpr" }
 }
 
 /** A binary expression using the `-` operator. */
 class SubExpr extends BinaryExpr, @subexpr {
   override string getOp() { result = " - " }
+
+  override predicate isCommutative() { none() }
 
   override string getAPrimaryQlClass() { result = "SubExpr" }
 }
@@ -750,12 +784,16 @@ class SubExpr extends BinaryExpr, @subexpr {
 class LShiftExpr extends BinaryExpr, @lshiftexpr {
   override string getOp() { result = " << " }
 
+  override predicate isCommutative() { none() }
+
   override string getAPrimaryQlClass() { result = "LShiftExpr" }
 }
 
 /** A binary expression using the `>>` operator. */
 class RShiftExpr extends BinaryExpr, @rshiftexpr {
   override string getOp() { result = " >> " }
+
+  override predicate isCommutative() { none() }
 
   override string getAPrimaryQlClass() { result = "RShiftExpr" }
 }
@@ -764,12 +802,16 @@ class RShiftExpr extends BinaryExpr, @rshiftexpr {
 class URShiftExpr extends BinaryExpr, @urshiftexpr {
   override string getOp() { result = " >>> " }
 
+  override predicate isCommutative() { none() }
+
   override string getAPrimaryQlClass() { result = "URShiftExpr" }
 }
 
 /** A binary expression using the `&` operator. */
 class AndBitwiseExpr extends BinaryExpr, @andbitexpr {
   override string getOp() { result = " & " }
+
+  override predicate isCommutative() { any() }
 
   override string getAPrimaryQlClass() { result = "AndBitwiseExpr" }
 }
@@ -778,12 +820,16 @@ class AndBitwiseExpr extends BinaryExpr, @andbitexpr {
 class OrBitwiseExpr extends BinaryExpr, @orbitexpr {
   override string getOp() { result = " | " }
 
+  override predicate isCommutative() { any() }
+
   override string getAPrimaryQlClass() { result = "OrBitwiseExpr" }
 }
 
 /** A binary expression using the `^` operator. */
 class XorBitwiseExpr extends BinaryExpr, @xorbitexpr {
   override string getOp() { result = " ^ " }
+
+  override predicate isCommutative() { any() }
 
   override string getAPrimaryQlClass() { result = "XorBitwiseExpr" }
 }
@@ -792,12 +838,22 @@ class XorBitwiseExpr extends BinaryExpr, @xorbitexpr {
 class AndLogicalExpr extends BinaryExpr, @andlogicalexpr {
   override string getOp() { result = " && " }
 
+  override predicate isCommutative() {
+    // Not commutative due to short circuiting
+    none()
+  }
+
   override string getAPrimaryQlClass() { result = "AndLogicalExpr" }
 }
 
 /** A binary expression using the `||` operator. */
 class OrLogicalExpr extends BinaryExpr, @orlogicalexpr {
   override string getOp() { result = " || " }
+
+  override predicate isCommutative() {
+    // Not commutative due to short circuiting
+    none()
+  }
 
   override string getAPrimaryQlClass() { result = "OrLogicalExpr" }
 }
@@ -806,12 +862,16 @@ class OrLogicalExpr extends BinaryExpr, @orlogicalexpr {
 class LTExpr extends BinaryExpr, @ltexpr {
   override string getOp() { result = " < " }
 
+  override predicate isCommutative() { none() }
+
   override string getAPrimaryQlClass() { result = "LTExpr" }
 }
 
 /** A binary expression using the `>` operator. */
 class GTExpr extends BinaryExpr, @gtexpr {
   override string getOp() { result = " > " }
+
+  override predicate isCommutative() { none() }
 
   override string getAPrimaryQlClass() { result = "GTExpr" }
 }
@@ -820,12 +880,16 @@ class GTExpr extends BinaryExpr, @gtexpr {
 class LEExpr extends BinaryExpr, @leexpr {
   override string getOp() { result = " <= " }
 
+  override predicate isCommutative() { none() }
+
   override string getAPrimaryQlClass() { result = "LEExpr" }
 }
 
 /** A binary expression using the `>=` operator. */
 class GEExpr extends BinaryExpr, @geexpr {
   override string getOp() { result = " >= " }
+
+  override predicate isCommutative() { none() }
 
   override string getAPrimaryQlClass() { result = "GEExpr" }
 }
@@ -834,12 +898,16 @@ class GEExpr extends BinaryExpr, @geexpr {
 class EQExpr extends BinaryExpr, @eqexpr {
   override string getOp() { result = " == " }
 
+  override predicate isCommutative() { any() }
+
   override string getAPrimaryQlClass() { result = "EQExpr" }
 }
 
 /** A binary expression using the `!=` operator. */
 class NEExpr extends BinaryExpr, @neexpr {
   override string getOp() { result = " != " }
+
+  override predicate isCommutative() { any() }
 
   override string getAPrimaryQlClass() { result = "NEExpr" }
 }
@@ -912,6 +980,8 @@ abstract class ComparisonExpr extends BinaryExpr {
 class LessThanComparison extends ComparisonExpr {
   LessThanComparison() { this instanceof LTExpr or this instanceof LEExpr }
 
+  override predicate isCommutative() { none() }
+
   /** Gets the lesser operand of this comparison expression. */
   override Expr getLesserOperand() { result = this.getLeftOperand() }
 
@@ -922,6 +992,8 @@ class LessThanComparison extends ComparisonExpr {
 /** A comparison expression using the operator `>` or `>=`. */
 class GreaterThanComparison extends ComparisonExpr {
   GreaterThanComparison() { this instanceof GTExpr or this instanceof GEExpr }
+
+  override predicate isCommutative() { none() }
 
   /** Gets the lesser operand of this comparison expression. */
   override Expr getLesserOperand() { result = this.getRightOperand() }
@@ -939,6 +1011,8 @@ class EqualityTest extends BinaryExpr {
     this instanceof EQExpr or
     this instanceof NEExpr
   }
+
+  override predicate isCommutative() { any() }
 
   /** Gets a boolean indicating whether this is `==` (true) or `!=` (false). */
   boolean polarity() {
