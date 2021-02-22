@@ -7,6 +7,8 @@ private import internal.Call
 class Call extends Expr {
   override Call::Range range;
 
+  Call() { range.isNormal() }
+
   override string getAPrimaryQlClass() { result = "Call" }
 
   /**
@@ -91,6 +93,19 @@ class MethodCall extends Call {
    * ```
    */
   final Block getBlock() { result = range.getBlock() }
+}
+
+/**
+ * A call to a setter method.
+ * ```rb
+ * self.foo = 10
+ * a[0] = 10
+ * ```
+ */
+class SetterMethodCall extends LhsExpr {
+  final override SetterMethodCall::Range range;
+
+  final override string getAPrimaryQlClass() { result = "SetterMethodCall" }
 }
 
 /**

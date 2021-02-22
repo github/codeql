@@ -310,3 +310,9 @@ end
 foo.()
 foo.(1)
 
+# setter calls
+self.foo = 10
+foo[0] = 10
+self.foo, *self.bar, foo[4] = [1, 2, 3, 4]
+a, *foo[5] = [1, 2, 3]
+self.count += 1

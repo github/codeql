@@ -1,12 +1,19 @@
 private import codeql_ruby.AST
 private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.ast.internal.Expr
+private import codeql_ruby.ast.internal.Pattern
 private import codeql_ruby.ast.internal.TreeSitter
 private import codeql_ruby.ast.internal.Variable
 
 module Call {
   abstract class Range extends Expr::Range {
     abstract Expr getArgument(int n);
+
+    final predicate isSetter() { this instanceof LhsExpr }
+
+    final predicate isNormal() {
+      not isSetter() or generated.getParent() instanceof AssignOperation
+    }
 
     override predicate child(string label, AstNode::Range child) {
       label = "getArgument" and child = getArgument(_)
@@ -108,6 +115,30 @@ module ElementReference {
     final override Expr getArgument(int n) { result = generated.getChild(n) }
 
     final override Block getBlock() { none() }
+  }
+}
+
+module SetterMethodCall {
+  class Range extends LhsExpr::Range {
+    private MethodCall::Range range;
+
+    Range() { this = range }
+
+    final Expr getReceiver() { result = range.getReceiver() }
+
+    final Expr getArgument(int n) { result = range.getArgument(n) }
+
+    final string getMethodName() { result = range.getMethodName() }
+
+    final override string toString() { result = range.toString() }
+
+    final override predicate child(string label, AstNode::Range child) {
+      super.child(label, child)
+      or
+      label = "getReceiver" and child = getReceiver()
+      or
+      label = "getArgument" and child = getArgument(_)
+    }
   }
 }
 
