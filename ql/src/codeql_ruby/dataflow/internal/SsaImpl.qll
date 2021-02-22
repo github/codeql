@@ -89,7 +89,7 @@ private predicate capturedCallRead(BasicBlock bb, int i, LocalVariable v) {
     or
     // If the read happens inside a block, we restrict to the call that
     // contains the block
-    scope = any(Call c | bb.getNode(i) = c.getAControlFlowNode()).getBlock()
+    scope = any(MethodCall c | bb.getNode(i) = c.getAControlFlowNode()).getBlock()
   )
 }
 
@@ -146,7 +146,7 @@ private module Cached {
       or
       // If the write happens inside a block, we restrict to the call that
       // contains the block
-      scope = any(Call c | bb.getNode(i) = c.getAControlFlowNode()).getBlock()
+      scope = any(MethodCall c | bb.getNode(i) = c.getAControlFlowNode()).getBlock()
     )
   }
 

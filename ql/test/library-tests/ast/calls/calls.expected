@@ -1,7 +1,7 @@
 callsWithNoReceiverArgumentsOrBlock
 | calls.rb:2:1:2:5 | call to foo | foo |
 | calls.rb:8:1:8:7 | call to bar | bar |
-| calls.rb:31:3:31:7 | call to yield | yield |
+| calls.rb:31:3:31:7 | yield ... | (none) |
 | calls.rb:46:1:46:3 | call to foo | foo |
 | calls.rb:50:2:50:4 | call to foo | foo |
 | calls.rb:54:11:54:13 | call to foo | foo |
@@ -82,8 +82,8 @@ callsWithArguments
 | calls.rb:14:1:14:11 | call to foo | foo | 1 | calls.rb:14:8:14:8 | 1 |
 | calls.rb:14:1:14:11 | call to foo | foo | 2 | calls.rb:14:11:14:11 | 2 |
 | calls.rb:25:1:27:3 | call to bar | bar | 0 | calls.rb:25:9:25:13 | "foo" |
-| calls.rb:36:3:36:16 | call to yield | yield | 0 | calls.rb:36:9:36:11 | 100 |
-| calls.rb:36:3:36:16 | call to yield | yield | 1 | calls.rb:36:14:36:16 | 200 |
+| calls.rb:36:3:36:16 | yield ... | (none) | 0 | calls.rb:36:9:36:11 | 100 |
+| calls.rb:36:3:36:16 | yield ... | (none) | 1 | calls.rb:36:14:36:16 | 200 |
 | calls.rb:54:1:54:14 | call to some_func | some_func | 0 | calls.rb:54:11:54:13 | call to foo |
 | calls.rb:55:1:55:17 | call to some_func | some_func | 0 | calls.rb:55:11:55:16 | call to foo |
 | calls.rb:234:1:234:8 | ...[...] | [] | 0 | calls.rb:234:5:234:7 | call to bar |
@@ -195,8 +195,8 @@ callsWithBlock
 | calls.rb:292:5:292:30 | call to super | calls.rb:292:16:292:30 | { ... } |
 | calls.rb:293:5:293:33 | call to super | calls.rb:293:16:293:33 | do ... end |
 yieldCalls
-| calls.rb:31:3:31:7 | call to yield |
-| calls.rb:36:3:36:16 | call to yield |
+| calls.rb:31:3:31:7 | yield ... |
+| calls.rb:36:3:36:16 | yield ... |
 superCalls
 | calls.rb:286:5:286:9 | call to super |
 | calls.rb:287:5:287:11 | call to super |

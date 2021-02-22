@@ -534,7 +534,7 @@ stringInterpolations
 | literals.rb:64:11:64:20 | #{...} | 0 | literals.rb:64:14:64:18 | ... * ... | MulExpr |
 | literals.rb:65:6:65:30 | #{...} | 0 | literals.rb:65:9:65:28 | "bar #{...} baz" | StringLiteral |
 | literals.rb:65:14:65:23 | #{...} | 0 | literals.rb:65:17:65:21 | ... + ... | AddExpr |
-| literals.rb:66:6:66:21 | #{...} | 0 | literals.rb:66:9:66:14 | call to blah | Call |
+| literals.rb:66:6:66:21 | #{...} | 0 | literals.rb:66:9:66:14 | call to blah | MethodCall |
 | literals.rb:66:6:66:21 | #{...} | 1 | literals.rb:66:17:66:19 | ... + ... | AddExpr |
 | literals.rb:87:7:87:15 | #{...} | 0 | literals.rb:87:10:87:14 | ... + ... | AddExpr |
 | literals.rb:101:11:101:16 | #{...} | 0 | literals.rb:101:13:101:15 | ... + ... | AddExpr |
@@ -543,9 +543,9 @@ stringInterpolations
 | literals.rb:129:10:129:19 | #{...} | 0 | literals.rb:129:13:129:17 | ... - ... | SubExpr |
 | literals.rb:136:5:136:14 | #{...} | 0 | literals.rb:136:8:136:12 | ... + ... | AddExpr |
 | literals.rb:142:7:142:16 | #{...} | 0 | literals.rb:142:10:142:14 | ... + ... | AddExpr |
-| literals.rb:154:14:154:22 | #{...} | 0 | literals.rb:154:17:154:20 | call to name | Call |
-| literals.rb:168:12:168:29 | #{...} | 0 | literals.rb:168:15:168:27 | call to interpolation | Call |
-| literals.rb:173:15:173:32 | #{...} | 0 | literals.rb:173:18:173:30 | call to interpolation | Call |
+| literals.rb:154:14:154:22 | #{...} | 0 | literals.rb:154:17:154:20 | call to name | MethodCall |
+| literals.rb:168:12:168:29 | #{...} | 0 | literals.rb:168:15:168:27 | call to interpolation | MethodCall |
+| literals.rb:173:15:173:32 | #{...} | 0 | literals.rb:173:18:173:30 | call to interpolation | MethodCall |
 concatenatedStrings
 | literals.rb:62:1:62:17 | "..." "..." | foobarbaz | 0 | literals.rb:62:1:62:5 | "foo" |
 | literals.rb:62:1:62:17 | "..." "..." | foobarbaz | 1 | literals.rb:62:7:62:11 | "bar" |

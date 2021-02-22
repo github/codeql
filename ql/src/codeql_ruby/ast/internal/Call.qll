@@ -6,26 +6,34 @@ private import codeql_ruby.ast.internal.Variable
 
 module Call {
   abstract class Range extends Expr::Range {
+    abstract Expr getArgument(int n);
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getArgument" and child = getArgument(_)
+    }
+  }
+}
+
+module MethodCall {
+  abstract class Range extends Call::Range {
+    abstract Block getBlock();
+
     abstract Expr getReceiver();
 
     abstract string getMethodName();
 
-    abstract Expr getArgument(int n);
-
-    abstract Block getBlock();
-
     override string toString() { result = "call to " + this.getMethodName() }
 
     final override predicate child(string label, AstNode::Range child) {
-      label = "getReceiver" and child = getReceiver()
+      super.child(label, child)
       or
-      label = "getArgument" and child = getArgument(_)
+      label = "getReceiver" and child = getReceiver()
       or
       label = "getBlock" and child = getBlock()
     }
   }
 
-  private class IdentifierCallRange extends Call::Range, @token_identifier {
+  private class IdentifierCallRange extends MethodCall::Range, @token_identifier {
     final override Generated::Identifier generated;
 
     IdentifierCallRange() { vcall(this) and not access(this, _) }
@@ -39,7 +47,7 @@ module Call {
     final override Block getBlock() { none() }
   }
 
-  private class ScopeResolutionIdentifierCallRange extends Call::Range, @scope_resolution {
+  private class ScopeResolutionIdentifierCallRange extends MethodCall::Range, @scope_resolution {
     final override Generated::ScopeResolution generated;
     Generated::Identifier identifier;
 
@@ -57,7 +65,7 @@ module Call {
     final override Block getBlock() { none() }
   }
 
-  private class RegularCallRange extends Call::Range, @call {
+  private class RegularCallRange extends MethodCall::Range, @call {
     final override Generated::Call generated;
 
     final override Expr getReceiver() {
@@ -88,7 +96,7 @@ module Call {
 }
 
 module ElementReference {
-  class Range extends Call::Range, @element_reference {
+  class Range extends MethodCall::Range, @element_reference {
     final override Generated::ElementReference generated;
 
     final override Expr getReceiver() { result = generated.getObject() }
@@ -107,18 +115,14 @@ module YieldCall {
   class Range extends Call::Range, @yield {
     final override Generated::Yield generated;
 
-    final override Expr getReceiver() { none() }
-
-    final override string getMethodName() { result = "yield" }
-
     final override Expr getArgument(int n) { result = generated.getChild().getChild(n) }
 
-    final override Block getBlock() { none() }
+    final override string toString() { result = "yield ..." }
   }
 }
 
 module SuperCall {
-  abstract class Range extends Call::Range { }
+  abstract class Range extends MethodCall::Range { }
 
   private class SuperTokenCallRange extends SuperCall::Range, @token_super {
     final override Generated::Super generated;
