@@ -120,4 +120,19 @@ module TaintedObject {
       label = label()
     }
   }
+
+  /**
+   * A sanitizer guard that validates an input against a JSON schema.
+   */
+  private class JsonSchemaValidationGuard extends SanitizerGuard {
+    JsonSchema::ValidationCall call;
+
+    JsonSchemaValidationGuard() { this = call }
+
+    override predicate sanitizes(boolean outcome, Expr e, FlowLabel label) {
+      outcome = call.getPolarity() and
+      e = call.getInput().asExpr() and
+      label = label()
+    }
+  }
 }
