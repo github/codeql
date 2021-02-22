@@ -1,6 +1,6 @@
 /**
  * @name Main Method in Enterprise Java Bean
- * @description Jave EE applications with a main method.
+ * @description Java EE applications with a main method.
  * @kind problem
  * @id java/main-method-in-enterprise-bean
  * @tags security

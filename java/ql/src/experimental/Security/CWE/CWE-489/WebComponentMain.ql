@@ -1,6 +1,6 @@
 /**
  * @name Main Method in Java EE Web Components
- * @description Jave EE web applications with a main method.
+ * @description Java EE web applications with a main method.
  * @kind problem
  * @id java/main-method-in-web-components
  * @tags security
@@ -27,9 +27,9 @@ class ServletListenerClass extends Class {
   }
 }
 
-/** The `main` method in `Servlet`. */
-class ServletMainMethod extends Method {
-  ServletMainMethod() {
+/** The `main` method in `Servlet` and `Action` of the Spring and Struts framework. */
+class WebComponentMainMethod extends Method {
+  WebComponentMainMethod() {
     (
       this.getDeclaringType() instanceof ServletClass or
       this.getDeclaringType() instanceof ServletFilterClass or
@@ -59,5 +59,5 @@ class ServletMainMethod extends Method {
   }
 }
 
-from ServletMainMethod sm
+from WebComponentMainMethod sm
 select sm, "Web application has a main method."
