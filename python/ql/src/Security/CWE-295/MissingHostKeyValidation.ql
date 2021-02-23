@@ -10,25 +10,23 @@
  */
 
 import python
+import semmle.python.ApiGraphs
 
-private ModuleValue theParamikoClientModule() { result = Value::named("paramiko.client") }
-
-private ClassValue theParamikoSSHClientClass() {
-  result = theParamikoClientModule().attr("SSHClient")
+private API::Node unsafe_paramiko_policy(string name) {
+  name in ["AutoAddPolicy", "WarningPolicy"] and
+  result = API::moduleImport("paramiko").getMember("client").getMember(name)
 }
 
-private ClassValue unsafe_paramiko_policy(string name) {
-  (name = "AutoAddPolicy" or name = "WarningPolicy") and
-  result = theParamikoClientModule().attr(name)
+private API::Node paramikoSSHClientInstance() {
+  result = API::moduleImport("paramiko").getMember("client").getMember("SSHClient").getReturn()
 }
 
 from CallNode call, ControlFlowNode arg, string name
 where
-  call =
-    theParamikoSSHClientClass().lookup("set_missing_host_key_policy").(FunctionValue).getACall() and
+  call = paramikoSSHClientInstance().getMember("set_missing_host_key_policy").getACall().asCfgNode() and
   arg = call.getAnArg() and
   (
-    arg.pointsTo(unsafe_paramiko_policy(name)) or
-    arg.pointsTo().getClass() = unsafe_paramiko_policy(name)
+    arg = unsafe_paramiko_policy(name).getAUse().asCfgNode() or
+    arg = unsafe_paramiko_policy(name).getReturn().getAUse().asCfgNode()
   )
 select call, "Setting missing host key policy to " + name + " may be unsafe."
