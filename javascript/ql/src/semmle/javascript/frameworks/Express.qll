@@ -509,8 +509,9 @@ module Express {
         this = request.getAPropertyRead("cookies")
         or
         // `req.files`, treated the same as `req.body`.
+        // `express-fileupload` uses .files, and `multer` uses .files or .file
         kind = "body" and
-        this = request.getAPropertyRead("files")
+        this = request.getAPropertyRead(["files", "file"])
       )
       or
       kind = "body" and

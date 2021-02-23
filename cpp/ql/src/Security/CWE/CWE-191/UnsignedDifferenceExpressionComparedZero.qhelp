@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+This rule finds relational comparisons between the result of an unsigned subtraction and the value <code>0</code>.
+Such comparisons are likely to be wrong as the value of an unsigned subtraction can never be negative. So the
+relational comparison ends up checking whether the result of the subtraction is equal to <code>0</code>.
+This is probably not what the programmer intended.
+</p>
+</overview>
+<recommendation>
+
+<p>If a relational comparison is intended, consider casting the result of the subtraction to a signed type.
+   If the intention was to test for equality, consider replacing the relational comparison with an equality test.
+</p>
+
+</recommendation>
+<example>
+<sample src="UnsignedDifferenceExpressionComparedZero.c" />
+
+</example>
+<references>
+
+<li>SEI CERT C Coding Standard:
+<a href="https://wiki.sei.cmu.edu/confluence/display/c/INT02-C.+Understand+integer+conversion+rules">INT02-C. Understand integer conversion rules</a>.
+</li>
+
+</references>
+</qhelp>

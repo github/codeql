@@ -23,7 +23,10 @@ master_doc = 'index'
 project = u'CodeQL query help'
 
 # Add md parser to process query help markdown files 
-extensions =['recommonmark']
+extensions = [
+    'recommonmark',
+    'sphinx_markdown_tables',
+]
 
 source_suffix = {
     '.rst': 'restructuredtext',

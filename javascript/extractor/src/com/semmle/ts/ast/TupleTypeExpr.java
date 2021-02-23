@@ -5,7 +5,7 @@ import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 import java.util.List;
 
-/** A tuple type, such as <tt>[number, string]</tt>. */
+/** A tuple type, such as <code>[number, string]</code>. */
 public class TupleTypeExpr extends TypeExpression {
   private final List<ITypeExpression> elementTypes;
   private final List<Identifier> elementNames;

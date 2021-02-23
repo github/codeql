@@ -11,7 +11,6 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     public abstract class Type : TypeContainer, IMember
     {
-        public override string IdSuffix => ";cil-type";
         internal const string AssemblyTypeNameSeparator = "::";
         internal const string PrimitiveTypePrefix = "builtin" + AssemblyTypeNameSeparator + "System.";
 
@@ -47,6 +46,8 @@ namespace Semmle.Extraction.CIL.Entities
         public abstract void WriteId(TextWriter trapFile, bool inContext);
 
         public sealed override void WriteId(TextWriter trapFile) => WriteId(trapFile, false);
+
+        public override string IdSuffix => ";cil-type";
 
         /// <summary>
         /// Returns the friendly qualified name of types, such as
@@ -198,7 +199,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public sealed override IEnumerable<Type> MethodParameters => Enumerable.Empty<Type>();
 
-        public static Type DecodeType(GenericContext gc, TypeSpecificationHandle handle) =>
+        public static Type DecodeType(IGenericContext gc, TypeSpecificationHandle handle) =>
             gc.Cx.MdReader.GetTypeSpecification(handle).DecodeSignature(gc.Cx.TypeSignatureDecoder, gc);
     }
 }

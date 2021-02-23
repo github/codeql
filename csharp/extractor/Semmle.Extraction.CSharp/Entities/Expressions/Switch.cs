@@ -17,10 +17,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            SwitchedExpr = Expression.Create(cx, Syntax.GoverningExpression, this, -1);
+            SwitchedExpr = Expression.Create(Context, Syntax.GoverningExpression, this, -1);
             for (var i = 0; i < Syntax.Arms.Count; i++)
             {
-                new SwitchCase(cx, Syntax.Arms[i], this, i);
+                new SwitchCase(Context, Syntax.Arms[i], this, i);
             }
         }
     }
@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     {
         internal SwitchCase(Context cx, SwitchExpressionArmSyntax arm, Switch parent, int child) :
             base(new ExpressionInfo(
-                cx, cx.GetType(arm.Expression), cx.Create(arm.GetLocation()),
+                cx, cx.GetType(arm.Expression), cx.CreateLocation(arm.GetLocation()),
                 ExprKind.SWITCH_CASE, parent, child, false, null))
         {
             Expressions.Pattern.Create(cx, arm.Pattern, this, 0);

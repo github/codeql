@@ -1,6 +1,6 @@
 /**
- * @name __del__ is called explicitly
- * @description The __del__ special method is called by the virtual machine when an object is being finalized. It should not be called explicitly.
+ * @name `__del__` is called explicitly
+ * @description The `__del__` special method is called by the virtual machine when an object is being finalized. It should not be called explicitly.
  * @kind problem
  * @tags reliability
  *       correctness

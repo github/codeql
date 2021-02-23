@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override string Name => "!" + index;
 
-        public MethodTypeParameter(GenericContext gc, Method m, int index) : base(gc)
+        public MethodTypeParameter(IGenericContext gc, Method m, int index) : base(gc)
         {
             method = m;
             this.index = index;

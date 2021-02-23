@@ -15,7 +15,9 @@ import semmle.code.cpp.models.interfaces.SideEffect
 private class MemsetFunction extends ArrayFunction, DataFlowFunction, AliasFunction,
   SideEffectFunction {
   MemsetFunction() {
-    this.hasGlobalOrStdName(["memset", "wmemset"])
+    this.hasGlobalOrStdOrBslName("memset")
+    or
+    this.hasGlobalOrStdName("wmemset")
     or
     this.hasGlobalName([bzero(), "__builtin_memset", "__builtin_memset_chk"])
   }

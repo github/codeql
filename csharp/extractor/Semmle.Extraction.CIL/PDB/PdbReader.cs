@@ -1,9 +1,8 @@
-﻿using System.Linq;
-using System.Reflection.PortableExecutable;
+﻿using System.Reflection.PortableExecutable;
 
 namespace Semmle.Extraction.PDB
 {
-    internal class PdbReader
+    internal static class PdbReader
     {
         /// <summary>
         /// Returns the PDB information associated with an assembly.

@@ -1019,6 +1019,7 @@ public class Activity {
      * @see Activity#requireViewById(int)
      */
     public <T> T findViewById(int id) {
+        return null;
     }
 
     /**

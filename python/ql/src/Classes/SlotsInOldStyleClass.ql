@@ -1,6 +1,6 @@
 /**
- * @name '__slots__' in old-style class
- * @description Overriding the class dictionary by declaring '__slots__' is not supported by old-style
+ * @name `__slots__` in old-style class
+ * @description Overriding the class dictionary by declaring `__slots__` is not supported by old-style
  *              classes.
  * @kind problem
  * @problem.severity error

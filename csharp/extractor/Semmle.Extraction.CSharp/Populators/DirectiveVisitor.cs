@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -68,7 +67,7 @@ namespace Semmle.Extraction.CSharp.Populators
             if (regionStarts.Count == 0)
             {
                 cx.ExtractionError("Couldn't find start region", null,
-                    Extraction.Entities.Location.Create(cx, node.GetLocation()), null, Util.Logging.Severity.Warning);
+                    cx.CreateLocation(node.GetLocation()), null, Util.Logging.Severity.Warning);
                 return;
             }
 
@@ -101,7 +100,7 @@ namespace Semmle.Extraction.CSharp.Populators
             if (ifStarts.Count == 0)
             {
                 cx.ExtractionError("Couldn't find start if", null,
-                    Extraction.Entities.Location.Create(cx, node.GetLocation()), null, Util.Logging.Severity.Warning);
+                    cx.CreateLocation(node.GetLocation()), null, Util.Logging.Severity.Warning);
                 return;
             }
 
@@ -114,7 +113,7 @@ namespace Semmle.Extraction.CSharp.Populators
             if (ifStarts.Count == 0)
             {
                 cx.ExtractionError("Couldn't find start if", null,
-                    Extraction.Entities.Location.Create(cx, node.GetLocation()), null, Util.Logging.Severity.Warning);
+                    cx.CreateLocation(node.GetLocation()), null, Util.Logging.Severity.Warning);
                 return;
             }
 
@@ -127,7 +126,7 @@ namespace Semmle.Extraction.CSharp.Populators
             if (ifStarts.Count == 0)
             {
                 cx.ExtractionError("Couldn't find start if", null,
-                    Extraction.Entities.Location.Create(cx, node.GetLocation()), null, Util.Logging.Severity.Warning);
+                    cx.CreateLocation(node.GetLocation()), null, Util.Logging.Severity.Warning);
                 return;
             }
 

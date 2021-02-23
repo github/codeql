@@ -125,6 +125,19 @@ class Node extends TNode {
    */
   pragma[inline]
   Node track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
+
+  /**
+   * Gets a node that may flow into this one using one heap and/or interprocedural step.
+   *
+   * See `TypeBackTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
+
+  /**
+   * Gets a local source node from which data may flow to this node in zero or more local steps.
+   */
+  LocalSourceNode getALocalSource() { result.flowsTo(this) }
 }
 
 /** A data-flow node corresponding to an SSA variable. */
@@ -163,6 +176,23 @@ class CfgNode extends Node, TCfgNode {
   override Scope getScope() { result = node.getScope() }
 
   override Location getLocation() { result = node.getLocation() }
+}
+
+/** A data-flow node corresponding to a `CallNode` in the control-flow graph. */
+class CallCfgNode extends CfgNode {
+  override CallNode node;
+
+  /**
+   * Gets the data-flow node for the function component of the call corresponding to this data-flow
+   * node.
+   */
+  Node getFunction() { result.asCfgNode() = node.getFunction() }
+
+  /** Gets the data-flow node corresponding to the i'th argument of the call corresponding to this data-flow node */
+  Node getArg(int i) { result.asCfgNode() = node.getArg(i) }
+
+  /** Gets the data-flow node corresponding to the named argument of the call corresponding to this data-flow node */
+  Node getArgByName(string name) { result.asCfgNode() = node.getArgByName(name) }
 }
 
 /**
@@ -443,11 +473,95 @@ class BarrierGuard extends GuardNode {
  * - Function parameters
  */
 class LocalSourceNode extends Node {
-  LocalSourceNode() { not simpleLocalFlowStep(_, this) }
+  LocalSourceNode() {
+    not simpleLocalFlowStep+(any(CfgNode n), this) and
+    not this instanceof ModuleVariableNode
+    or
+    this = any(ModuleVariableNode mvn).getARead()
+  }
 
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
+  pragma[inline]
+  predicate flowsTo(Node nodeTo) { Cached::hasLocalSource(nodeTo, this) }
+
+  /**
+   * Gets a reference (read or write) of attribute `attrName` on this node.
+   */
+  AttrRef getAnAttributeReference(string attrName) { Cached::namedAttrRef(this, attrName, result) }
+
+  /**
+   * Gets a read of attribute `attrName` on this node.
+   */
+  AttrRead getAnAttributeRead(string attrName) { result = getAnAttributeReference(attrName) }
+
+  /**
+   * Gets a reference (read or write) of any attribute on this node.
+   */
+  AttrRef getAnAttributeReference() {
+    Cached::namedAttrRef(this, _, result)
+    or
+    Cached::dynamicAttrRef(this, result)
+  }
+
+  /**
+   * Gets a read of any attribute on this node.
+   */
+  AttrRead getAnAttributeRead() { result = getAnAttributeReference() }
+
+  /**
+   * Gets a call to this node.
+   */
+  CallCfgNode getACall() { Cached::call(this, result) }
+}
+
+cached
+private module Cached {
+  /**
+   * Holds if `source` is a `LocalSourceNode` that can reach `sink` via local flow steps.
+   *
+   * The slightly backwards parametering ordering is to force correct indexing.
+   */
   cached
-  predicate flowsTo(Node nodeTo) { simpleLocalFlowStep*(this, nodeTo) }
+  predicate hasLocalSource(Node sink, Node source) {
+    // Declaring `source` to be a `SourceNode` currently causes a redundant check in the
+    // recursive case, so instead we check it explicitly here.
+    source = sink and
+    source instanceof LocalSourceNode
+    or
+    exists(Node mid |
+      hasLocalSource(mid, source) and
+      simpleLocalFlowStep(mid, sink)
+    )
+  }
+
+  /**
+   * Holds if `base` flows to the base of `ref` and `ref` has attribute name `attr`.
+   */
+  cached
+  predicate namedAttrRef(LocalSourceNode base, string attr, AttrRef ref) {
+    base.flowsTo(ref.getObject()) and
+    ref.getAttributeName() = attr
+  }
+
+  /**
+   * Holds if `base` flows to the base of `ref` and `ref` has no known attribute name.
+   */
+  cached
+  predicate dynamicAttrRef(LocalSourceNode base, AttrRef ref) {
+    base.flowsTo(ref.getObject()) and
+    not exists(ref.getAttributeName())
+  }
+
+  /**
+   * Holds if `func` flows to the callee of `call`.
+   */
+  cached
+  predicate call(LocalSourceNode func, CallCfgNode call) {
+    exists(CfgNode n |
+      func.flowsTo(n) and
+      n = call.getFunction()
+    )
+  }
 }
 
 /**
@@ -460,7 +574,12 @@ newtype TContent =
   /** An element of a set. */
   TSetElementContent() or
   /** An element of a tuple at a specific index. */
-  TTupleElementContent(int index) { exists(any(TupleNode tn).getElement(index)) } or
+  TTupleElementContent(int index) {
+    exists(any(TupleNode tn).getElement(index))
+    or
+    // Arguments can overflow and end up in the starred parameter tuple.
+    exists(any(CallNode cn).getArg(index))
+  } or
   /** An element of a dictionary under a specific key. */
   TDictionaryElementContent(string key) {
     key = any(KeyValuePair kvp).getKey().(StrConst).getS()

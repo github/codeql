@@ -1,6 +1,6 @@
 /**
  * @name Useless class
- * @description Class only defines one public method (apart from __init__ or __new__) and should be replaced by a function
+ * @description Class only defines one public method (apart from `__init__` or `__new__`) and should be replaced by a function
  * @kind problem
  * @tags maintainability
  *       useless-code

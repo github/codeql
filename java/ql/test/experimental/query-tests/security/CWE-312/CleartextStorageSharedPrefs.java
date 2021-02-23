@@ -20,7 +20,7 @@ public class CleartextStorageSharedPrefs extends Activity {
 	}
 
 	// GOOD - save sensitive information in encrypted format
-	public void testSetSharedPrefs2(Context context, String name, String password) {
+	public void testSetSharedPrefs2(Context context, String name, String password) throws Exception {
 		SharedPreferences sharedPrefs = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
 		Editor editor = sharedPrefs.edit();
 		editor.putString("name", encrypt(name));
@@ -28,7 +28,7 @@ public class CleartextStorageSharedPrefs extends Activity {
 		editor.commit();
 	}
 
-	private static String encrypt(String cleartext) {
+	private static String encrypt(String cleartext) throws Exception {
 		// Use an encryption or hashing algorithm in real world. The demo below just returns its hash.
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		byte[] hash = digest.digest(cleartext.getBytes(StandardCharsets.UTF_8));
@@ -37,7 +37,7 @@ public class CleartextStorageSharedPrefs extends Activity {
 	}
 
 	// GOOD - save sensitive information in encrypted format using separate variables
-	public void testSetSharedPrefs3(Context context, String name, String password) {
+	public void testSetSharedPrefs3(Context context, String name, String password) throws Exception {
 		String encUsername = encrypt(name);
 		String encPassword = encrypt(password);
 		SharedPreferences sharedPrefs = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
@@ -49,7 +49,7 @@ public class CleartextStorageSharedPrefs extends Activity {
 
 
 	// GOOD - save sensitive information using the built-in `EncryptedSharedPreferences` class in androidx
-	public void testSetSharedPrefs4(Context context, String name, String password) {
+	public void testSetSharedPrefs4(Context context, String name, String password) throws Exception {
 		MasterKey masterKey = new MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
 			.setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
 			.build();
@@ -69,7 +69,7 @@ public class CleartextStorageSharedPrefs extends Activity {
 	}
 
 	// GOOD - save sensitive information using the built-in `EncryptedSharedPreferences` class in androidx
-	public void testSetSharedPrefs5(Context context, String name, String password) {
+	public void testSetSharedPrefs5(Context context, String name, String password) throws Exception {
 		MasterKey masterKey = new MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
 			.setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
 			.build();
@@ -89,7 +89,7 @@ public class CleartextStorageSharedPrefs extends Activity {
 	}
 
 	// GOOD - save sensitive information using the built-in `EncryptedSharedPreferences` class in androidx
-	public void testSetSharedPrefs6(Context context, String name, String password) {
+	public void testSetSharedPrefs6(Context context, String name, String password) throws Exception {
 		MasterKey masterKey = new MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
 			.setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
 			.build();
