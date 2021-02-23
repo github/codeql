@@ -101,7 +101,7 @@ module BaseSsa {
     or
     exists(BasicBlock mid |
       reachesEndOf(def, v, mid) and
-      not exists(ssaRefRank(mid, _, v, SsaDef())) and
+      not exists(ssaRefRank(bb, _, v, SsaDef())) and
       bb = mid.getASuccessor()
     )
   }
