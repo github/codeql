@@ -10,6 +10,7 @@ private import semmle.code.java.dataflow.internal.ContainerFlow
 private import semmle.code.java.frameworks.spring.SpringController
 private import semmle.code.java.frameworks.spring.SpringHttp
 private import semmle.code.java.frameworks.Networking
+private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSteps
 
 /**
@@ -44,6 +45,8 @@ predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   or
   localAdditionalTaintUpdateStep(src.asExpr(),
     sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr())
+  or
+  summaryStep(src, sink, "taint")
   or
   exists(Argument arg |
     src.asExpr() = arg and
