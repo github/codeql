@@ -229,7 +229,7 @@ void test_getline()
 
 	sink(ss2.getline(b7, 1000).getline(b8, 1000)); // $ ast,ir
 	sink(b7); // $ ast,ir
-	sink(b8); // $ ast MISSING: ir
+	sink(b8); // $ ast,ir
 
 	sink(getline(ss1, s1));
 	sink(getline(ss2, s2)); // $ ast,ir
@@ -261,7 +261,7 @@ void test_chaining()
 
 	sink(ss1.get(b1, 100).unget().get(b2, 100)); // $ ast,ir
 	sink(b1); // $ ast,ir
-	sink(b2); // $ ast MISSING: ir
+	sink(b2); // $ ast,ir
 
 	sink(ss2.write("abc", 3).flush().write(source(), 3).flush().write("xyz", 3)); // $ ast MISSING: ir
 	sink(ss2); // $ ast MISSING: ir

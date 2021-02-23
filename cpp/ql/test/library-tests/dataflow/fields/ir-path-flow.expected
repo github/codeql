@@ -88,8 +88,12 @@ edges
 | arrays.cpp:36:26:36:35 | call to user_input | arrays.cpp:37:24:37:27 | data |
 | by_reference.cpp:50:3:50:3 | setDirectly output argument [a] | by_reference.cpp:51:10:51:20 | call to getDirectly |
 | by_reference.cpp:50:17:50:26 | call to user_input | by_reference.cpp:50:3:50:3 | setDirectly output argument [a] |
+| by_reference.cpp:56:3:56:3 | Chi [a] | by_reference.cpp:57:10:57:22 | call to getIndirectly |
+| by_reference.cpp:56:3:56:3 | setIndirectly output argument [a] | by_reference.cpp:56:3:56:3 | Chi [a] |
 | by_reference.cpp:56:3:56:3 | setIndirectly output argument [a] | by_reference.cpp:57:10:57:22 | call to getIndirectly |
 | by_reference.cpp:56:19:56:28 | call to user_input | by_reference.cpp:56:3:56:3 | setIndirectly output argument [a] |
+| by_reference.cpp:62:3:62:3 | Chi [a] | by_reference.cpp:63:10:63:28 | call to getThroughNonMember |
+| by_reference.cpp:62:3:62:3 | setThroughNonMember output argument [a] | by_reference.cpp:62:3:62:3 | Chi [a] |
 | by_reference.cpp:62:3:62:3 | setThroughNonMember output argument [a] | by_reference.cpp:63:10:63:28 | call to getThroughNonMember |
 | by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:62:3:62:3 | setThroughNonMember output argument [a] |
 | by_reference.cpp:68:17:68:18 | nonMemberSetA output argument [a] | by_reference.cpp:69:8:69:20 | call to nonMemberGetA |
@@ -159,28 +163,59 @@ edges
 | constructors.cpp:26:15:26:15 | *f [a_] | constructors.cpp:28:12:28:12 | call to a |
 | constructors.cpp:26:15:26:15 | *f [b_] | constructors.cpp:28:10:28:10 | a output argument [b_] |
 | constructors.cpp:26:15:26:15 | *f [b_] | constructors.cpp:29:12:29:12 | call to b |
+| constructors.cpp:26:15:26:15 | f [array content, a_] | constructors.cpp:28:10:28:10 | (reference dereference) [array content, a_] |
+| constructors.cpp:26:15:26:15 | f [array content, b_] | constructors.cpp:28:10:28:10 | (reference dereference) [array content, b_] |
+| constructors.cpp:26:15:26:15 | f [array content, b_] | constructors.cpp:29:10:29:10 | (reference dereference) [array content, b_] |
+| constructors.cpp:28:10:28:10 | (reference dereference) [array content, a_] | constructors.cpp:28:12:28:12 | call to a |
+| constructors.cpp:28:10:28:10 | (reference dereference) [array content, b_] | constructors.cpp:28:10:28:10 | a output argument [b_] |
 | constructors.cpp:28:10:28:10 | a output argument [b_] | constructors.cpp:29:12:29:12 | call to b |
+| constructors.cpp:28:10:28:10 | a output argument [b_] | constructors.cpp:29:12:29:12 | call to b |
+| constructors.cpp:29:10:29:10 | (reference dereference) [array content, b_] | constructors.cpp:29:12:29:12 | call to b |
 | constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:34:11:34:26 | Foo output argument [a_] |
+| constructors.cpp:34:11:34:26 | Chi [a_] | constructors.cpp:26:15:26:15 | f [array content, a_] |
 | constructors.cpp:34:11:34:26 | Foo output argument [a_] | constructors.cpp:26:15:26:15 | *f [a_] |
+| constructors.cpp:34:11:34:26 | Foo output argument [a_] | constructors.cpp:34:11:34:26 | Chi [a_] |
+| constructors.cpp:35:11:35:26 | Chi [b_] | constructors.cpp:26:15:26:15 | f [array content, b_] |
 | constructors.cpp:35:11:35:26 | Foo output argument [b_] | constructors.cpp:26:15:26:15 | *f [b_] |
+| constructors.cpp:35:11:35:26 | Foo output argument [b_] | constructors.cpp:35:11:35:26 | Chi [b_] |
 | constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:35:11:35:26 | Foo output argument [b_] |
 | constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:36:11:36:37 | Foo output argument [a_] |
+| constructors.cpp:36:11:36:37 | Chi [a_] | constructors.cpp:26:15:26:15 | f [array content, a_] |
+| constructors.cpp:36:11:36:37 | Chi [b_] | constructors.cpp:26:15:26:15 | f [array content, b_] |
 | constructors.cpp:36:11:36:37 | Foo output argument [a_] | constructors.cpp:26:15:26:15 | *f [a_] |
+| constructors.cpp:36:11:36:37 | Foo output argument [a_] | constructors.cpp:36:11:36:37 | Chi [a_] |
 | constructors.cpp:36:11:36:37 | Foo output argument [b_] | constructors.cpp:26:15:26:15 | *f [b_] |
+| constructors.cpp:36:11:36:37 | Foo output argument [b_] | constructors.cpp:36:11:36:37 | Chi [b_] |
 | constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:36:11:36:37 | Foo output argument [b_] |
 | simple.cpp:26:15:26:15 | *f [a_] | simple.cpp:28:12:28:12 | call to a |
 | simple.cpp:26:15:26:15 | *f [b_] | simple.cpp:28:10:28:10 | a output argument [b_] |
 | simple.cpp:26:15:26:15 | *f [b_] | simple.cpp:29:12:29:12 | call to b |
+| simple.cpp:26:15:26:15 | f [array content, a_] | simple.cpp:28:10:28:10 | (reference dereference) [array content, a_] |
+| simple.cpp:26:15:26:15 | f [array content, b_] | simple.cpp:28:10:28:10 | (reference dereference) [array content, b_] |
+| simple.cpp:26:15:26:15 | f [array content, b_] | simple.cpp:29:10:29:10 | (reference dereference) [array content, b_] |
+| simple.cpp:28:10:28:10 | (reference dereference) [array content, a_] | simple.cpp:28:12:28:12 | call to a |
+| simple.cpp:28:10:28:10 | (reference dereference) [array content, b_] | simple.cpp:28:10:28:10 | a output argument [b_] |
 | simple.cpp:28:10:28:10 | a output argument [b_] | simple.cpp:29:12:29:12 | call to b |
+| simple.cpp:28:10:28:10 | a output argument [b_] | simple.cpp:29:12:29:12 | call to b |
+| simple.cpp:29:10:29:10 | (reference dereference) [array content, b_] | simple.cpp:29:12:29:12 | call to b |
+| simple.cpp:39:5:39:5 | Chi [a_] | simple.cpp:26:15:26:15 | f [array content, a_] |
 | simple.cpp:39:5:39:5 | setA output argument [a_] | simple.cpp:26:15:26:15 | *f [a_] |
+| simple.cpp:39:5:39:5 | setA output argument [a_] | simple.cpp:39:5:39:5 | Chi [a_] |
 | simple.cpp:39:12:39:21 | call to user_input | simple.cpp:39:5:39:5 | setA output argument [a_] |
+| simple.cpp:40:5:40:5 | Chi [b_] | simple.cpp:26:15:26:15 | f [array content, b_] |
 | simple.cpp:40:5:40:5 | setB output argument [b_] | simple.cpp:26:15:26:15 | *f [b_] |
+| simple.cpp:40:5:40:5 | setB output argument [b_] | simple.cpp:40:5:40:5 | Chi [b_] |
 | simple.cpp:40:12:40:21 | call to user_input | simple.cpp:40:5:40:5 | setB output argument [b_] |
 | simple.cpp:41:5:41:5 | setA output argument [a_] | simple.cpp:26:15:26:15 | *f [a_] |
+| simple.cpp:41:5:41:5 | setA output argument [a_] | simple.cpp:42:5:42:5 | Chi [a_] |
 | simple.cpp:41:5:41:5 | setA output argument [a_] | simple.cpp:42:5:42:5 | setB output argument [a_] |
 | simple.cpp:41:12:41:21 | call to user_input | simple.cpp:41:5:41:5 | setA output argument [a_] |
+| simple.cpp:42:5:42:5 | Chi [a_] | simple.cpp:26:15:26:15 | f [array content, a_] |
+| simple.cpp:42:5:42:5 | Chi [b_] | simple.cpp:26:15:26:15 | f [array content, b_] |
 | simple.cpp:42:5:42:5 | setB output argument [a_] | simple.cpp:26:15:26:15 | *f [a_] |
+| simple.cpp:42:5:42:5 | setB output argument [a_] | simple.cpp:42:5:42:5 | Chi [a_] |
 | simple.cpp:42:5:42:5 | setB output argument [b_] | simple.cpp:26:15:26:15 | *f [b_] |
+| simple.cpp:42:5:42:5 | setB output argument [b_] | simple.cpp:42:5:42:5 | Chi [b_] |
 | simple.cpp:42:12:42:21 | call to user_input | simple.cpp:42:5:42:5 | setB output argument [b_] |
 | simple.cpp:65:5:65:22 | Store [i] | simple.cpp:66:12:66:12 | Store [i] |
 | simple.cpp:65:11:65:20 | call to user_input | simple.cpp:65:5:65:22 | Store [i] |
@@ -309,9 +344,11 @@ nodes
 | by_reference.cpp:50:3:50:3 | setDirectly output argument [a] | semmle.label | setDirectly output argument [a] |
 | by_reference.cpp:50:17:50:26 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:51:10:51:20 | call to getDirectly | semmle.label | call to getDirectly |
+| by_reference.cpp:56:3:56:3 | Chi [a] | semmle.label | Chi [a] |
 | by_reference.cpp:56:3:56:3 | setIndirectly output argument [a] | semmle.label | setIndirectly output argument [a] |
 | by_reference.cpp:56:19:56:28 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:57:10:57:22 | call to getIndirectly | semmle.label | call to getIndirectly |
+| by_reference.cpp:62:3:62:3 | Chi [a] | semmle.label | Chi [a] |
 | by_reference.cpp:62:3:62:3 | setThroughNonMember output argument [a] | semmle.label | setThroughNonMember output argument [a] |
 | by_reference.cpp:62:25:62:34 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:63:10:63:28 | call to getThroughNonMember | semmle.label | call to getThroughNonMember |
@@ -376,28 +413,48 @@ nodes
 | complex.cpp:56:19:56:28 | call to user_input | semmle.label | call to user_input |
 | constructors.cpp:26:15:26:15 | *f [a_] | semmle.label | *f [a_] |
 | constructors.cpp:26:15:26:15 | *f [b_] | semmle.label | *f [b_] |
+| constructors.cpp:26:15:26:15 | f [array content, a_] | semmle.label | f [array content, a_] |
+| constructors.cpp:26:15:26:15 | f [array content, b_] | semmle.label | f [array content, b_] |
+| constructors.cpp:28:10:28:10 | (reference dereference) [array content, a_] | semmle.label | (reference dereference) [array content, a_] |
+| constructors.cpp:28:10:28:10 | (reference dereference) [array content, b_] | semmle.label | (reference dereference) [array content, b_] |
+| constructors.cpp:28:10:28:10 | a output argument [b_] | semmle.label | a output argument [b_] |
 | constructors.cpp:28:10:28:10 | a output argument [b_] | semmle.label | a output argument [b_] |
 | constructors.cpp:28:12:28:12 | call to a | semmle.label | call to a |
+| constructors.cpp:29:10:29:10 | (reference dereference) [array content, b_] | semmle.label | (reference dereference) [array content, b_] |
 | constructors.cpp:29:12:29:12 | call to b | semmle.label | call to b |
 | constructors.cpp:34:11:34:20 | call to user_input | semmle.label | call to user_input |
+| constructors.cpp:34:11:34:26 | Chi [a_] | semmle.label | Chi [a_] |
 | constructors.cpp:34:11:34:26 | Foo output argument [a_] | semmle.label | Foo output argument [a_] |
+| constructors.cpp:35:11:35:26 | Chi [b_] | semmle.label | Chi [b_] |
 | constructors.cpp:35:11:35:26 | Foo output argument [b_] | semmle.label | Foo output argument [b_] |
 | constructors.cpp:35:14:35:23 | call to user_input | semmle.label | call to user_input |
 | constructors.cpp:36:11:36:20 | call to user_input | semmle.label | call to user_input |
+| constructors.cpp:36:11:36:37 | Chi [a_] | semmle.label | Chi [a_] |
+| constructors.cpp:36:11:36:37 | Chi [b_] | semmle.label | Chi [b_] |
 | constructors.cpp:36:11:36:37 | Foo output argument [a_] | semmle.label | Foo output argument [a_] |
 | constructors.cpp:36:11:36:37 | Foo output argument [b_] | semmle.label | Foo output argument [b_] |
 | constructors.cpp:36:25:36:34 | call to user_input | semmle.label | call to user_input |
 | simple.cpp:26:15:26:15 | *f [a_] | semmle.label | *f [a_] |
 | simple.cpp:26:15:26:15 | *f [b_] | semmle.label | *f [b_] |
+| simple.cpp:26:15:26:15 | f [array content, a_] | semmle.label | f [array content, a_] |
+| simple.cpp:26:15:26:15 | f [array content, b_] | semmle.label | f [array content, b_] |
+| simple.cpp:28:10:28:10 | (reference dereference) [array content, a_] | semmle.label | (reference dereference) [array content, a_] |
+| simple.cpp:28:10:28:10 | (reference dereference) [array content, b_] | semmle.label | (reference dereference) [array content, b_] |
+| simple.cpp:28:10:28:10 | a output argument [b_] | semmle.label | a output argument [b_] |
 | simple.cpp:28:10:28:10 | a output argument [b_] | semmle.label | a output argument [b_] |
 | simple.cpp:28:12:28:12 | call to a | semmle.label | call to a |
+| simple.cpp:29:10:29:10 | (reference dereference) [array content, b_] | semmle.label | (reference dereference) [array content, b_] |
 | simple.cpp:29:12:29:12 | call to b | semmle.label | call to b |
+| simple.cpp:39:5:39:5 | Chi [a_] | semmle.label | Chi [a_] |
 | simple.cpp:39:5:39:5 | setA output argument [a_] | semmle.label | setA output argument [a_] |
 | simple.cpp:39:12:39:21 | call to user_input | semmle.label | call to user_input |
+| simple.cpp:40:5:40:5 | Chi [b_] | semmle.label | Chi [b_] |
 | simple.cpp:40:5:40:5 | setB output argument [b_] | semmle.label | setB output argument [b_] |
 | simple.cpp:40:12:40:21 | call to user_input | semmle.label | call to user_input |
 | simple.cpp:41:5:41:5 | setA output argument [a_] | semmle.label | setA output argument [a_] |
 | simple.cpp:41:12:41:21 | call to user_input | semmle.label | call to user_input |
+| simple.cpp:42:5:42:5 | Chi [a_] | semmle.label | Chi [a_] |
+| simple.cpp:42:5:42:5 | Chi [b_] | semmle.label | Chi [b_] |
 | simple.cpp:42:5:42:5 | setB output argument [a_] | semmle.label | setB output argument [a_] |
 | simple.cpp:42:5:42:5 | setB output argument [b_] | semmle.label | setB output argument [b_] |
 | simple.cpp:42:12:42:21 | call to user_input | semmle.label | call to user_input |
