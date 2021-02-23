@@ -32,6 +32,7 @@ class OptionsAugOr extends ProtocolRestriction {
       aa.getTarget() = attr.getNode() and
       attr.getName() = "options" and
       attr.getObject() = node and
+      // TODO: Use something like BoolExpr::impliesValue here
       API::moduleImport("ssl").getMember("OP_NO_" + restriction).getAUse().asExpr() in [
           aa.getValue(), aa.getValue().getAChildNode()
         ]
