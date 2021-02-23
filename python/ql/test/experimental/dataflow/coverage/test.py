@@ -790,3 +790,9 @@ def test_reverse_read_subscript_cls():
     l = [withA]
     l[0].setA(SOURCE)
     SINK(withA.a) #$ MISSING:flow="SOURCE, l:-1 -> self.a"
+
+@expects(3)
+def test_with_default_param_value(x=SOURCE, /, y=SOURCE, *, z=SOURCE):
+    SINK(x) #$ MISSING:flow="SOURCE, l:-1 -> x"
+    SINK(y) #$ MISSING:flow="SOURCE, l:-2 -> y"
+    SINK(z) #$ MISSING:flow="SOURCE, l:-3 -> z"
