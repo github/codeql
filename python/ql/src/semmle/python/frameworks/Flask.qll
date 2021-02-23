@@ -99,6 +99,8 @@ module Flask {
     }
 
     /**
+     * INTERNAL: Do not use.
+     *
      * A source of instances of `flask.Response`, extend this class to model new instances.
      *
      * This can include instantiations of the class, return values from function
