@@ -3,8 +3,10 @@ package main
 import (
 	"database/sql"
 	"io"
+	"io/fs"
 	"log"
 	"net/http"
+	"path/filepath"
 )
 
 var db *sql.DB
@@ -49,5 +51,15 @@ func storedserve2() {
 				io.WriteString(w, name)
 			}
 		}
+	})
+}
+
+func storedserve3() {
+	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
+		filepath.WalkDir(".", func(path string, _ fs.DirEntry, err error) error {
+			// BAD: filenames are considered to be untrusted
+			io.WriteString(w, path)
+			return nil
+		})
 	})
 }
