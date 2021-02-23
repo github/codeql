@@ -7,5 +7,7 @@
 | 50 | VERBOSE |
 | 51 | UNICODE |
 | 52 | UNICODE |
+| 54 | DOTALL |
+| 54 | VERBOSE |
 | 56 | VERBOSE |
 | 68 | MULTILINE |
