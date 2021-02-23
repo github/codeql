@@ -1,6 +1,6 @@
 import python
 deprecated import semmle.python.objects.ObjectInternal as OI
-import semmle.python.ApiGraphs
+private import semmle.python.ApiGraphs
 
 /**
  * Gets the positional argument index containing the regular expression flags for the member of the
