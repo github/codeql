@@ -209,6 +209,17 @@ module LocalFlow {
         e1 = e2.(SwitchExpr).getACase().getBody() and
         scope = e2 and
         isSuccessor = true
+        or
+        exists(WithExpr we |
+          scope = we and
+          isSuccessor = true
+        |
+          e1 = we.getExpr() and
+          e2 = we.getInitializer()
+          or
+          e1 = we.getInitializer() and
+          e2 = we
+        )
       )
     }
 
@@ -451,10 +462,23 @@ private predicate fieldOrPropertyStore(Expr e, Content c, Expr src, Expr q, bool
       postUpdate = true
     )
     or
+    // `with` expression initializer, `x with { f = src }`
+    e =
+      any(WithExpr we |
+        exists(MemberInitializer mi |
+          q = we and
+          mi = we.getInitializer().getAMemberInitializer() and
+          f = mi.getInitializedMember() and
+          src = mi.getRValue() and
+          postUpdate = false
+        )
+      )
+    or
     // Object initializer, `new C() { f = src }`
     exists(MemberInitializer mi |
       e = q and
       mi = q.(ObjectInitializer).getAMemberInitializer() and
+      q.getParent() instanceof ObjectCreation and
       f = mi.getInitializedMember() and
       src = mi.getRValue() and
       postUpdate = false
@@ -792,6 +816,13 @@ private module Cached {
       input = SummaryInput::parameter(i) and
       n.(ArgumentNode).argumentOf(call, i)
     )
+    or
+    exists(WithExpr we, ObjectInitializer oi, FieldOrProperty f |
+      oi = we.getInitializer() and
+      n.asExpr() = oi and
+      f = oi.getAMemberInitializer().getInitializedMember() and
+      c = f.getContent()
+    )
   }
 
   /**
@@ -885,6 +916,8 @@ private module Cached {
     n instanceof SummaryNodeImpl
     or
     n instanceof ParamsArgumentNode
+    or
+    n.asExpr() = any(WithExpr we).getInitializer()
   }
 }
 

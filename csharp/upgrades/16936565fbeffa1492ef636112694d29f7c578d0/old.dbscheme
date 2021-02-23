@@ -1156,7 +1156,6 @@ case @expr.kind of
 | 127 = @and_pattern_expr
 | 128 = @or_pattern_expr
 | 129 = @function_pointer_invocation_expr
-| 130 = @with_expr
 /* Preprocessor */
 | 999 = @define_symbol_expr
 ;
