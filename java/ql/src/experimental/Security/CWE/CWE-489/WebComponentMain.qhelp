@@ -6,12 +6,12 @@
   </overview>
 
   <recommendation>
-    <p>Remove the main method from web components including servlets, filters, and listeners, as well as enterprise beans.</p>
+    <p>Remove the main method from web components including servlets, filters, and listeners.</p>
   </recommendation>
 
   <example>
     <p>The following example shows two ways of implementing web components. In the 'BAD' case, a main method is implemented. In the 'GOOD' case, no main method is implemented.</p>
-    <sample src="ServletMain.java" />
+    <sample src="WebComponentMain.java" />
   </example>
 
   <references>

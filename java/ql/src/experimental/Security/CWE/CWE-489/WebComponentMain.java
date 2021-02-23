@@ -1,4 +1,4 @@
-public class ServletMain implements Servlet {
+public class WebComponentMain implements Servlet {
 	// BAD - Implement a main method in servlet.
 	public static void main(String[] args) throws Exception {
 		// Connect to my server
