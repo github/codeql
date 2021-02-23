@@ -307,7 +307,7 @@ deprecated class UninitializedNode extends Node {
  * This class exists to match the interface used by Java. There are currently no non-abstract
  * classes that extend it. When we implement field flow, we can revisit this.
  */
-abstract class PostUpdateNode extends InstructionNode {
+abstract class PostUpdateNode extends Node {
   /**
    * Gets the node before the state update.
    */
@@ -331,7 +331,7 @@ abstract private class PartialDefinitionNode extends PostUpdateNode {
   abstract Expr getDefinedExpr();
 }
 
-private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
+private class ExplicitFieldStoreQualifierNode extends InstructionNode, PartialDefinitionNode {
   override ChiInstruction instr;
   StoreInstruction store;
 
@@ -366,7 +366,7 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
  * attach the PostUpdateNode to the store instruction. There's no obvious pre update node for this case
  * (as the entire memory is updated), so `getPreUpdateNode` is implemented as `none()`.
  */
-private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
+private class ExplicitSingleFieldStoreQualifierNode extends InstructionNode, PartialDefinitionNode {
   override StoreInstruction instr;
 
   ExplicitSingleFieldStoreQualifierNode() {
@@ -398,7 +398,7 @@ private FieldAddressInstruction getFieldInstruction(Instruction instr) {
  * into a field. See the QLDoc for `suppressArrayRead` for an example of where such a conversion
  * is inserted.
  */
-private class WriteSideEffectFieldStoreQualifierNode extends PartialDefinitionNode {
+private class WriteSideEffectFieldStoreQualifierNode extends InstructionNode, PartialDefinitionNode {
   override ChiInstruction instr;
   WriteSideEffectInstruction write;
   FieldAddressInstruction field;
@@ -420,7 +420,7 @@ private class WriteSideEffectFieldStoreQualifierNode extends PartialDefinitionNo
  * The `PostUpdateNode` that is the target of a `arrayStoreStepChi` store step. The overriden
  * `ChiInstruction` corresponds to the instruction represented by `node2` in `arrayStoreStepChi`.
  */
-private class ArrayStoreNode extends PartialDefinitionNode {
+private class ArrayStoreNode extends InstructionNode, PartialDefinitionNode {
   override ChiInstruction instr;
   PointerAddInstruction add;
 
@@ -441,7 +441,7 @@ private class ArrayStoreNode extends PartialDefinitionNode {
  * The `PostUpdateNode` that is the target of a `arrayStoreStepChi` store step. The overriden
  * `ChiInstruction` corresponds to the instruction represented by `node2` in `arrayStoreStepChi`.
  */
-private class PointerStoreNode extends PostUpdateNode {
+private class PointerStoreNode extends InstructionNode, PostUpdateNode {
   override ChiInstruction instr;
 
   PointerStoreNode() {
@@ -453,6 +453,22 @@ private class PointerStoreNode extends PostUpdateNode {
   }
 
   override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
+}
+
+/**
+ * A `PostUpdateNode` that is the target of a `storeStep` from the `SideEffectOperand` of
+ * a `ReadSideEffectInstruction` to the `ArgumentOperand` of the corresponding `CallInstruction` that
+ * generated the read side effect.
+ */
+private class ReadSideEffectNode extends OperandNode, PostUpdateNode {
+  override ArgumentOperand op;
+  ReadSideEffectInstruction read;
+
+  ReadSideEffectNode() {
+    read.getPrimaryInstruction().(CallInstruction).getArgumentOperand(read.getIndex()) = op
+  }
+
+  override Node getPreUpdateNode() { result.asOperand() = read.getSideEffectOperand() }
 }
 
 /**

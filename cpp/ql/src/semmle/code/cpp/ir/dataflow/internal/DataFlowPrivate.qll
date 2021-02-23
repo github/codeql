@@ -268,21 +268,30 @@ private predicate fieldStoreStepChi(Node node1, FieldContent f, PostUpdateNode n
 
 private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode node2) {
   a = TArrayContent() and
-  exists(ChiPartialOperand operand, ChiInstruction chi, StoreInstruction store |
-    chi.getPartialOperand() = operand and
-    store = operand.getDef() and
-    node1.asOperand() = operand and
-    // This `ChiInstruction` will always have a non-conflated result because both `ArrayStoreNode`
-    // and `PointerStoreNode` require it in their characteristic predicates.
-    node2.asInstruction() = chi and
-    (
-      // `x[i] = taint()`
-      // This matches the characteristic predicate in `ArrayStoreNode`.
-      store.getDestinationAddress() instanceof PointerAddInstruction
-      or
-      // `*p = taint()`
-      // This matches the characteristic predicate in `PointerStoreNode`.
-      store.getDestinationAddress().(CopyValueInstruction).getUnary() instanceof LoadInstruction
+  (
+    exists(ChiPartialOperand operand, ChiInstruction chi, StoreInstruction store |
+      chi.getPartialOperand() = operand and
+      store = operand.getDef() and
+      node1.asOperand() = operand and
+      // This `ChiInstruction` will always have a non-conflated result because both `ArrayStoreNode`
+      // and `PointerStoreNode` require it in their characteristic predicates.
+      node2.asInstruction() = chi and
+      (
+        // `x[i] = taint()`
+        // This matches the characteristic predicate in `ArrayStoreNode`.
+        store.getDestinationAddress() instanceof PointerAddInstruction
+        or
+        // `*p = taint()`
+        // This matches the characteristic predicate in `PointerStoreNode`.
+        store.getDestinationAddress().(CopyValueInstruction).getUnary() instanceof LoadInstruction
+      )
+    )
+    or
+    // A store step from a pointer indirection to the pointer.
+    exists(ReadSideEffectInstruction read, CallInstruction call |
+      call = read.getPrimaryInstruction() and
+      read.getSideEffectOperand().getAnyDef() = node1.asInstruction() and
+      call.getArgumentOperand(read.getIndex()) = node2.asOperand()
     )
   )
 }
@@ -392,16 +401,25 @@ private Instruction skipCopyValueInstructions(Operand op) {
 
 private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
   a = TArrayContent() and
-  // Explicit dereferences such as `*p` or `p[i]` where `p` is a pointer or array.
-  exists(LoadOperand operand, Instruction address |
-    operand.isDefinitionInexact() and
-    node1.asInstruction() = operand.getAnyDef() and
-    operand = node2.asOperand() and
-    address = skipCopyValueInstructions(operand.getAddressOperand()) and
-    (
-      address instanceof LoadInstruction or
-      address instanceof ArrayToPointerConvertInstruction or
-      address instanceof PointerOffsetInstruction
+  (
+    // Explicit dereferences such as `*p` or `p[i]` where `p` is a pointer or array.
+    exists(LoadOperand operand, Instruction address |
+      operand.isDefinitionInexact() and
+      node1.asInstruction() = operand.getAnyDef() and
+      operand = node2.asOperand() and
+      address = skipCopyValueInstructions(operand.getAddressOperand()) and
+      (
+        address instanceof LoadInstruction or
+        address instanceof ArrayToPointerConvertInstruction or
+        address instanceof PointerOffsetInstruction
+      )
+    )
+    or
+    // A read step from a pointer to its indirection.
+    exists(ReadSideEffectInstruction read, CallInstruction call |
+      call = read.getPrimaryInstruction() and
+      node1.asInstruction() = read.getArgumentDef() and
+      node2.asOperand() = read.getSideEffectOperand()
     )
   )
 }
