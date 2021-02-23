@@ -13,7 +13,7 @@
 
           <p>
             Ensure that a modern, strong protocol is used. All versions of SSL,
-            and TLS 1.0 are known to be vulnerable to attacks. Using TLS 1.1 or
+            and TLS 1.0 and 1.1 are known to be vulnerable to attacks. Using TLS 1.2 or
             above is strongly recommended. If no explicit
             <code>ssl_version</code> is specified, the default
             <code>PROTOCOL_TLS</code> is chosen. This protocol is insecure and
@@ -34,13 +34,15 @@
           <p>
             Both of the cases above should be updated to use a secure protocol
             instead, for instance by specifying
-            <code>ssl_version=PROTOCOL_TLSv1_1</code> as a keyword argument.
+            <code>ssl_version=PROTOCOL_TLSv1_2</code> as a keyword argument.
           </p>
           <p>
             Note that <code>ssl.wrap_socket</code> has been deprecated in
             Python 3.7. A preferred alternative is to use
             <code>ssl.SSLContext</code>, which is supported in Python 2.7.9 and
-            3.2 and later versions.
+            3.2 and later versions or the convenience function
+            <code>ssl.create_default_context</code>, which is supported in Python
+            3.4 and later versions.
           </p>
      </example>
 
@@ -48,6 +50,8 @@
        <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Transport_Layer_Security"> Transport Layer Security</a>.</li>
        <li>Python 3 documentation: <a href="https://docs.python.org/3/library/ssl.html#ssl.SSLContext"> class ssl.SSLContext</a>.</li>
        <li>Python 3 documentation: <a href="https://docs.python.org/3/library/ssl.html#ssl.wrap_socket"> ssl.wrap_socket</a>.</li>
+       <li>Python 3 documentation: <a href="https://docs.python.org/3/library/ssl.html#functions-constants-and-exceptions"> notes on context creation</a>.</li>
+       <li>Python 3 documentation: <a href="https://docs.python.org/3/library/ssl.html#ssl-security"> notes on security considerations</a>.</li>
      </references>
 
 </qhelp>
