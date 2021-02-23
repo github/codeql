@@ -29,7 +29,11 @@ module Flask {
         result =
           API::moduleImport("flask")
               .getMember("views")
-              .getMember(["View", "MethodView"])
+              .getMember([
+                  "View",
+                  // MethodView is a known subclass
+                  "MethodView"
+                ])
               .getASubclass*()
       }
     }
