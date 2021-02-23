@@ -6,7 +6,6 @@
 
 import python
 private import semmle.python.dataflow.new.DataFlow
-private import semmle.python.dataflow.new.DataFlowOnlyInternalUse
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Frameworks
@@ -563,19 +562,34 @@ module Cryptography {
 
     /** Provides classes for modeling new key-pair generation APIs. */
     module KeyGeneration {
-      /**
-       * A data-flow configuration for tracking integer literals.
-       */
-      private class IntegerLiteralTrackerConfiguration extends DataFlowOnlyInternalUse::Configuration {
-        IntegerLiteralTrackerConfiguration() { this = "IntegerLiteralTrackerConfiguration" }
+      /** Gets a reference to an integer literal, as well as the origin of the integer literal. */
+      private DataFlow::Node keysizeTracker(
+        DataFlow::TypeTracker t, int keySize, DataFlow::Node origin
+      ) {
+        t.start() and
+        result.asExpr().(IntegerLiteral).getValue() = keySize and
+        origin = result
+        or
+        // Due to bad performance when using normal setup with we have inlined that code and forced a join
+        exists(DataFlow::TypeTracker t2 |
+          exists(DataFlow::StepSummary summary |
+            keysizeTracker_first_join(t2, keySize, origin, result, summary) and
+            t = t2.append(summary)
+          )
+        )
+      }
 
-        override predicate isSource(DataFlow::Node source) {
-          source = DataFlow::exprNode(any(IntegerLiteral size))
-        }
+      pragma[nomagic]
+      private predicate keysizeTracker_first_join(
+        DataFlow::TypeTracker t2, int keySize, DataFlow::Node origin, DataFlow::Node res,
+        DataFlow::StepSummary summary
+      ) {
+        DataFlow::StepSummary::step(keysizeTracker(t2, keySize, origin), res, summary)
+      }
 
-        override predicate isSink(DataFlow::Node sink) {
-          sink = any(KeyGeneration::Range kg).getKeySizeArg()
-        }
+      /** Gets a reference to an integer literal, as well as the origin of the integer literal. */
+      private DataFlow::Node keysizeTracker(int keySize, DataFlow::Node origin) {
+        result = keysizeTracker(DataFlow::TypeTracker::end(), keySize, origin)
       }
 
       /**
@@ -596,11 +610,7 @@ module Cryptography {
          * explains how we obtained this specific key size.
          */
         int getKeySizeWithOrigin(DataFlow::Node origin) {
-          exists(IntegerLiteral size, IntegerLiteralTrackerConfiguration config |
-            origin.asExpr() = size and
-            config.hasFlow(origin, this.getKeySizeArg()) and
-            result = size.getValue()
-          )
+          this.getKeySizeArg() = keysizeTracker(result, origin)
         }
 
         /** Gets the minimum key size (in bits) for this algorithm to be considered secure. */
