@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 
-<include src="IterableOverview.qhelp" />
+<include src="IterableOverview.inc.qhelp" />
 
 <recommendation>
 <p>

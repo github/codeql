@@ -12,7 +12,7 @@ that does not have a <code>clone</code> method indicates that the class is break
 </p>
 
 </overview>
-<include src="MissingCloneDetails.qhelp" />
+<include src="MissingCloneDetails.inc.qhelp" />
 
 <recommendation>
 <p>

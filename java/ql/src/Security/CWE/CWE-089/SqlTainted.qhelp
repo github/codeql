@@ -11,7 +11,7 @@ SQL and the Java Persistence Query Language.</p>
 </overview>
 <recommendation>
 
-<include src="HowToAddress.qhelp" />
+<include src="HowToAddress.inc.qhelp" />
 
 </recommendation>
 <example>

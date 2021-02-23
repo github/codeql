@@ -13,7 +13,7 @@ it enough to cause the SQL query to fail to run.</p>
 </overview>
 <recommendation>
 
-<include src="HowToAddress.qhelp" />
+<include src="HowToAddress.inc.qhelp" />
 
 </recommendation>
 <example>
