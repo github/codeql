@@ -324,7 +324,7 @@ class ServletWebXMLListenerType extends RefType {
 }
 
 /** Holds if `m` is a request handler method (for example `doGet` or `doPost`). */
-predicate isServletMethod(Method m) {
+predicate isServletRequestMethod(Method m) {
   m.getDeclaringType() instanceof ServletClass and
   m.getNumberOfParameters() = 2 and
   m.getParameter(0).getType() instanceof ServletRequest and

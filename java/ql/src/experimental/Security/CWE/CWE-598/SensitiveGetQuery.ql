@@ -24,7 +24,9 @@ class SensitiveInfoExpr extends Expr {
 }
 
 /** Holds if `m` is a method of some override of `HttpServlet.doGet`. */
-private predicate isGetServletMethod(Method m) { isServletMethod(m) and m.getName() = "doGet" }
+private predicate isGetServletMethod(Method m) {
+  isServletRequestMethod(m) and m.getName() = "doGet"
+}
 
 /** The `doGet` method of `HttpServlet`. */
 class DoGetServletMethod extends Method {
@@ -63,7 +65,7 @@ class SensitiveGetQueryConfiguration extends TaintTracking::Configuration {
 
   /** Holds if the node is in a servlet method other than `doGet`. */
   override predicate isSanitizer(DataFlow::Node node) {
-    isServletMethod(node.getEnclosingCallable()) and
+    isServletRequestMethod(node.getEnclosingCallable()) and
     not isGetServletMethod(node.getEnclosingCallable())
   }
 }
