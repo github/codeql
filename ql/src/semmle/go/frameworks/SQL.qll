@@ -206,7 +206,7 @@ module SQL {
   private class SqlxSink extends SQL::QueryString::Range {
     SqlxSink() {
       exists(Method meth, string name, int n |
-        meth.hasQualifiedName(package("github.com/jmoiron", "sqlx"), ["DB", "Tx"], name) and
+        meth.hasQualifiedName(package("github.com/jmoiron/sqlx", ""), ["DB", "Tx"], name) and
         this = meth.getACall().getArgument(n)
       |
         name = ["Select", "Get"] and n = 1

@@ -115,7 +115,8 @@ ql/src/go.dbscheme.stats: ql/src/go.dbscheme build/stats/src.stamp extractor
 
 test: all build/testdb/check-upgrade-path
 	codeql test run ql/test --search-path . --consistency-queries ql/test/consistency
-	env GOARCH=386 codeql$(EXE) test run ql/test/query-tests/Security/CWE-681 --search-path . --consistency-queries ql/test/consistency
+  #	use GOOS=linux because GOOS=darwin GOARCH=386 is no longer supported
+	env GOOS=linux GOARCH=386 codeql$(EXE) test run ql/test/query-tests/Security/CWE-681 --search-path . --consistency-queries ql/test/consistency
 	cd extractor; go test -mod=vendor ./... | grep -vF "[no test files]"
 
 .PHONY: build/testdb/check-upgrade-path

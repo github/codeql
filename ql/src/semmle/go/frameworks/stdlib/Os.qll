@@ -53,6 +53,18 @@ module Os {
         fn = "Symlink" and pathidx in [0 .. 1]
         or
         fn = "Truncate" and pathidx = 0
+        or
+        fn = "DirFS" and pathidx = 0
+        or
+        fn = "ReadDir" and pathidx = 0
+        or
+        fn = "ReadFile" and pathidx = 0
+        or
+        fn = "MkdirTemp" and pathidx in [0 .. 1]
+        or
+        fn = "CreateTemp" and pathidx in [0 .. 1]
+        or
+        fn = "WriteFile" and pathidx = 0
       )
     }
 

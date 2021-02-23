@@ -549,10 +549,13 @@ func main() {
 				install = exec.Command("glide", "install")
 				log.Println("Installing dependencies using `glide install`")
 			} else {
+				// explicitly set go module support
 				if depMode == GoGetWithModules {
-					// enable go modules if used
 					os.Setenv("GO111MODULE", "on")
+				} else if depMode == GoGetNoModules {
+					os.Setenv("GO111MODULE", "off")
 				}
+
 				// get dependencies
 				install = exec.Command("go", "get", "-v", "./...")
 				log.Println("Installing dependencies using `go get -v ./...`.")
