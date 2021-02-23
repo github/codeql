@@ -41,7 +41,6 @@ class TypeApacheHttpRequestBuilder extends Class {
   }
 }
 
-// TODO: Other sources
 /**
  * The `request` parameter of an implementation of `HttpRequestHandler.handle`.
  */
