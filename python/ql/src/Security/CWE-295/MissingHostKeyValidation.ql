@@ -10,6 +10,7 @@
  */
 
 import python
+import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
 
 private API::Node unsafe_paramiko_policy(string name) {
@@ -21,12 +22,12 @@ private API::Node paramikoSSHClientInstance() {
   result = API::moduleImport("paramiko").getMember("client").getMember("SSHClient").getReturn()
 }
 
-from CallNode call, ControlFlowNode arg, string name
+from DataFlow::CallCfgNode call, DataFlow::Node arg, string name
 where
-  call = paramikoSSHClientInstance().getMember("set_missing_host_key_policy").getACall().asCfgNode() and
+  call = paramikoSSHClientInstance().getMember("set_missing_host_key_policy").getACall() and
   arg = call.getAnArg() and
   (
-    arg = unsafe_paramiko_policy(name).getAUse().asCfgNode() or
-    arg = unsafe_paramiko_policy(name).getReturn().getAUse().asCfgNode()
+    arg = unsafe_paramiko_policy(name).getAUse() or
+    arg = unsafe_paramiko_policy(name).getReturn().getAUse()
   )
 select call, "Setting missing host key policy to " + name + " may be unsafe."
