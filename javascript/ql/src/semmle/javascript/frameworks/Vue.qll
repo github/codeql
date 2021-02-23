@@ -164,6 +164,15 @@ module Vue {
     }
 
     /**
+     * Gets a source node flowing into the option `name` of this instance, including those from
+     * extended objects and mixins.
+     */
+    pragma[nomagic]
+    DataFlow::SourceNode getOptionSource(string name) {
+      result = getOption(name).getALocalSource()
+    }
+
+    /**
      * Gets the template element used by this instance, if any.
      */
     abstract Template::Element getTemplateElement();
@@ -190,13 +199,15 @@ module Vue {
     /**
      * Gets the node for the `template` option of this instance.
      */
-    DataFlow::Node getTemplate() { result = getOption("template") }
+    pragma[nomagic]
+    DataFlow::SourceNode getTemplate() { result = getOptionSource("template") }
 
     /**
      * Gets the node for the `render` option of this instance.
      */
-    DataFlow::Node getRender() {
-      result = getOption("render")
+    pragma[nomagic]
+    DataFlow::SourceNode getRender() {
+      result = getOptionSource("render")
       or
       result = getAsClassComponent().getInstanceMethod("render")
     }
@@ -204,24 +215,27 @@ module Vue {
     /**
      * Gets the node for the `methods` option of this instance.
      */
-    DataFlow::Node getMethods() { result = getOption("methods") }
+    pragma[nomagic]
+    DataFlow::SourceNode getMethods() { result = getOptionSource("methods") }
 
     /**
      * Gets the node for the `computed` option of this instance.
      */
-    DataFlow::Node getComputed() { result = getOption("computed") }
+    pragma[nomagic]
+    DataFlow::SourceNode getComputed() { result = getOptionSource("computed") }
 
     /**
      * Gets the node for the `watch` option of this instance.
      */
-    DataFlow::Node getWatch() { result = getOption("watch") }
+    pragma[nomagic]
+    DataFlow::SourceNode getWatch() { result = getOptionSource("watch") }
 
     /**
      * Gets the function responding to changes to the given `propName`.
      */
     DataFlow::FunctionNode getWatchHandler(string propName) {
       exists(DataFlow::SourceNode watcher |
-        watcher = getWatch().getALocalSource().getAPropertySource(propName)
+        watcher = getWatch().getAPropertySource(propName)
       |
         result = watcher
         or
@@ -232,12 +246,9 @@ module Vue {
     /**
      * Gets a node for a member of the `methods` option of this instance.
      */
-    pragma[noinline]
-    private DataFlow::Node getAMethod() {
-      exists(DataFlow::ObjectLiteralNode methods |
-        methods.flowsTo(getMethods()) and
-        result = methods.getAPropertyWrite().getRhs()
-      )
+    pragma[nomagic]
+    private DataFlow::SourceNode getAMethod() {
+      result = getMethods().getAPropertySource()
       or
       result = getAsClassComponent().getAnInstanceMethod() and
       not result = getAsClassComponent().getInstanceMethod([lifecycleHookName(), "render", "data"])
@@ -246,19 +257,11 @@ module Vue {
     /**
      * Gets a node for a member of the `computed` option of this instance that matches `kind`.
      */
-    pragma[noinline]
-    private DataFlow::Node getAnAccessor(DataFlow::MemberKind kind) {
-      exists(DataFlow::ObjectLiteralNode computedObj, DataFlow::Node accessorObjOrGetter |
-        computedObj.flowsTo(getComputed()) and
-        computedObj.getAPropertyWrite().getRhs() = accessorObjOrGetter
-      |
-        result = accessorObjOrGetter and kind = DataFlow::MemberKind::getter()
-        or
-        exists(DataFlow::ObjectLiteralNode accessorObj |
-          accessorObj.flowsTo(accessorObjOrGetter) and
-          result = accessorObj.getAPropertyWrite(memberKindVerb(kind)).getRhs()
-        )
-      )
+    pragma[nomagic]
+    private DataFlow::SourceNode getAnAccessor(DataFlow::MemberKind kind) {
+      result = getComputed().getAPropertySource() and kind = DataFlow::MemberKind::getter()
+      or
+      result = getComputed().getAPropertySource().getAPropertySource(memberKindVerb(kind))
       or
       result = getAsClassComponent().getAnInstanceMember(kind) and
       kind.isAccessor()
@@ -267,18 +270,10 @@ module Vue {
     /**
      * Gets a node for a member `name` of the `computed` option of this instance that matches `kind`.
      */
-    private DataFlow::Node getAccessor(string name, DataFlow::MemberKind kind) {
-      exists(DataFlow::ObjectLiteralNode computedObj, DataFlow::SourceNode accessorObjOrGetter |
-        computedObj.flowsTo(getComputed()) and
-        accessorObjOrGetter.flowsTo(computedObj.getAPropertyWrite(name).getRhs())
-      |
-        result = accessorObjOrGetter and kind = DataFlow::MemberKind::getter()
-        or
-        exists(DataFlow::ObjectLiteralNode accessorObj |
-          accessorObj.flowsTo(accessorObjOrGetter) and
-          result = accessorObj.getAPropertyWrite(memberKindVerb(kind)).getRhs()
-        )
-      )
+    private DataFlow::SourceNode getAccessor(string name, DataFlow::MemberKind kind) {
+      result = getComputed().getAPropertySource(name) and kind = DataFlow::MemberKind::getter()
+      or
+      result = getComputed().getAPropertySource(name).getAPropertySource(memberKindVerb(kind))
       or
       result = getAsClassComponent().getInstanceMember(name, kind) and
       kind.isAccessor()
@@ -287,11 +282,11 @@ module Vue {
     /**
      * Gets the node for the life cycle hook of the `hookName` option of this instance.
      */
-    pragma[noinline]
-    DataFlow::Node getALifecycleHook(string hookName) {
+    pragma[nomagic]
+    DataFlow::SourceNode getALifecycleHook(string hookName) {
       hookName = lifecycleHookName() and
       (
-        result = getOption(hookName)
+        result = getOptionSource(hookName)
         or
         result = getAsClassComponent().getInstanceMethod(hookName)
       )
@@ -300,20 +295,21 @@ module Vue {
     /**
      * Gets a node for a function that will be invoked with `this` bound to this instance.
      */
-    DataFlow::Node getABoundFunction() {
+    DataFlow::FunctionNode getABoundFunction() {
       result = getAMethod()
       or
       result = getAnAccessor(_)
       or
       result = getALifecycleHook(_)
       or
-      result = getOption(_).(DataFlow::FunctionNode)
+      result = getOptionSource(_)
       or
-      result = getOption(_).getALocalSource().getAPropertySource().(DataFlow::FunctionNode)
+      result = getOptionSource(_).getAPropertySource()
     }
 
     /**
-     * Gets a node for the value for property `name` of this instance.
+     * Gets the data flow node that flows into the property `name` of this instance, or is
+     * returned form a getter defining that property.
      */
     DataFlow::Node getAPropertyValue(string name) {
       exists(DataFlow::SourceNode obj | obj.getAPropertyWrite(name).getRhs() = result |
