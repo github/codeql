@@ -1,6 +1,7 @@
 import org.apache.hc.core5.http.*;
 import org.apache.hc.core5.http.protocol.HttpContext;
 import org.apache.hc.core5.http.io.HttpRequestHandler;
+import org.apache.hc.core5.http.io.HttpServerRequestHandler;
 import org.apache.hc.core5.http.message.*;
 import org.apache.hc.core5.http.io.entity.*;
 import org.apache.hc.core5.util.*;
@@ -51,6 +52,7 @@ class B {
         bbuf.append((byte[]) taint(), 0, 3); 
         sink(bbuf.array()); //$hasTaintFlow=y
         sink(bbuf.toByteArray()); //$hasTaintFlow=y
+        sink(bbuf.toString()); //SPURIOUS: $hasTaintFlow=y 
 
         CharArrayBuffer cbuf = new CharArrayBuffer(42);
         cbuf.append(bbuf.toByteArray(), 0, 3); 
@@ -63,6 +65,12 @@ class B {
         sink(Args.notNull(taint(), "x")); //$hasTaintFlow=y
         sink(Args.notEmpty((String) taint(), "x")); //$hasTaintFlow=y
         sink(Args.notBlank((String) taint(), "x")); //$hasTaintFlow=y
-        sink(Args.notNull("x", (String) taint())); // Good
+        sink(Args.notNull("x", (String) taint())); 
+    }
+
+    class Test3 implements HttpServerRequestHandler {
+        public void handle(ClassicHttpRequest req, HttpServerRequestHandler.ResponseTrigger restr, HttpContext ctx) throws HttpException, IOException {
+            B.sink(req.getEntity()); //$hasTaintFlow=y
+        }
     }
 }
