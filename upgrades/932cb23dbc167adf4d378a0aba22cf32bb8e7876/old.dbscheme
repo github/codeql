@@ -718,13 +718,9 @@ in_def(
   int loc: @location ref
 );
 
-@interpolation_child_type = @token_empty_statement | @underscore_statement
-
-#keyset[interpolation, index]
 interpolation_child(
-  int interpolation: @interpolation ref,
-  int index: int ref,
-  unique int child: @interpolation_child_type ref
+  unique int interpolation: @interpolation ref,
+  unique int child: @underscore_statement ref
 );
 
 #keyset[parent, parent_index]
