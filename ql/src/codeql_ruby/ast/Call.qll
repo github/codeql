@@ -10,32 +10,6 @@ class Call extends Expr {
   override string getAPrimaryQlClass() { result = "Call" }
 
   /**
-   * Gets the receiver of this call, if any. For example:
-   *
-   * ```rb
-   * foo.bar
-   * Baz::qux
-   * corge()
-   * ```
-   *
-   * The result for the call to `bar` is the `Expr` for `foo`; the result for
-   * the call to `qux` is the `Expr` for `Baz`; for the call to `corge` there
-   * is no result.
-   */
-  final Expr getReceiver() { result = range.getReceiver() }
-
-  /**
-   * Gets the name of the method being called. For example, in:
-   *
-   * ```rb
-   * foo.bar x, y
-   * ```
-   *
-   * the result is `"bar"`.
-   */
-  final string getMethodName() { result = range.getMethodName() }
-
-  /**
    * Gets the `n`th argument of this method call. In the following example, the
    * result for n=0 is the `IntegerLiteral` 0, while for n=1 the result is a
    * `Pair` (whose `getKey` returns the `SymbolLiteral` for `bar`, and
@@ -44,6 +18,7 @@ class Call extends Expr {
    * `getKeywordArgument(string keyword)` predicate.
    * ```rb
    * foo(0, bar: 1)
+   * yield 0, bar: 1
    * ```
    */
   final Expr getArgument(int n) { result = range.getArgument(n) }
@@ -73,6 +48,41 @@ class Call extends Expr {
    * Gets the number of arguments of this method call.
    */
   final int getNumberOfArguments() { result = count(this.getAnArgument()) }
+}
+
+/**
+ * A method call.
+ */
+class MethodCall extends Call {
+  override MethodCall::Range range;
+
+  override string getAPrimaryQlClass() { result = "MethodCall" }
+
+  /**
+   * Gets the receiver of this call, if any. For example:
+   *
+   * ```rb
+   * foo.bar
+   * Baz::qux
+   * corge()
+   * ```
+   *
+   * The result for the call to `bar` is the `Expr` for `foo`; the result for
+   * the call to `qux` is the `Expr` for `Baz`; for the call to `corge` there
+   * is no result.
+   */
+  final Expr getReceiver() { result = range.getReceiver() }
+
+  /**
+   * Gets the name of the method being called. For example, in:
+   *
+   * ```rb
+   * foo.bar x, y
+   * ```
+   *
+   * the result is `"bar"`.
+   */
+  final string getMethodName() { result = range.getMethodName() }
 
   /**
    * Gets the block of this method call, if any.
@@ -84,12 +94,25 @@ class Call extends Expr {
 }
 
 /**
+ * A call to a setter method.
+ * ```rb
+ * self.foo = 10
+ * a[0] = 10
+ * ```
+ */
+class SetterMethodCall extends MethodCall, LhsExpr {
+  final override SetterMethodCall::Range range;
+
+  final override string getAPrimaryQlClass() { result = "SetterMethodCall" }
+}
+
+/**
  * An element reference; a call to the `[]` method.
  * ```rb
  * a[0]
  * ```
  */
-class ElementReference extends Call, @element_reference {
+class ElementReference extends MethodCall, @element_reference {
   final override ElementReference::Range range;
 
   final override string getAPrimaryQlClass() { result = "ElementReference" }
@@ -117,7 +140,7 @@ class YieldCall extends Call, @yield {
  * end
  * ```
  */
-class SuperCall extends Call {
+class SuperCall extends MethodCall {
   final override SuperCall::Range range;
 
   final override string getAPrimaryQlClass() { result = "SuperCall" }

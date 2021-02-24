@@ -247,7 +247,9 @@ module ExprNodes {
   }
 
   private class CallExprChildMapping extends ExprChildMapping, Call {
-    override predicate relevantChild(Expr e) { e = [this.getAnArgument(), this.getReceiver()] }
+    override predicate relevantChild(Expr e) {
+      e = [this.getAnArgument(), this.(MethodCall).getReceiver()]
+    }
   }
 
   /** A control-flow node that wraps a `Call` AST expression. */
@@ -260,7 +262,7 @@ module ExprNodes {
     final ExprCfgNode getArgument(int n) { e.hasCfgChild(e.getArgument(n), this, result) }
 
     /** Gets the receiver of this call. */
-    final ExprCfgNode getReceiver() { e.hasCfgChild(e.getReceiver(), this, result) }
+    final ExprCfgNode getReceiver() { e.hasCfgChild(e.(MethodCall).getReceiver(), this, result) }
   }
 
   private class CaseExprChildMapping extends ExprChildMapping, CaseExpr {

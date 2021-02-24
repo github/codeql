@@ -15,7 +15,7 @@ import codeql_ruby.dataflow.SSA
 
 class RelevantLocalVariableReadAccess extends LocalVariableReadAccess {
   RelevantLocalVariableReadAccess() {
-    not exists(Call c |
+    not exists(MethodCall c |
       c.getReceiver() = this and
       c.getMethodName() = "nil?"
     )

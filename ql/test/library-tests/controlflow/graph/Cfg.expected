@@ -59,7 +59,7 @@ cfg.rb:
 #-----|  -> a
 
 #  187| enter run_block
-#-----|  -> call to yield
+#-----|  -> yield ...
 
 #  191| enter { ... }
 #-----|  -> x
@@ -2030,7 +2030,7 @@ cfg.rb:
 #  187| run_block
 #-----|  -> run_block
 
-#  188| call to yield
+#  188| yield ...
 #-----|  -> 42
 
 #  188| 42

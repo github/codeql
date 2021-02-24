@@ -17,7 +17,7 @@ classesWithGlobalNameScopeExprs
 exprsInClasses
 | classes.rb:20:1:37:3 | Wibble | 0 | classes.rb:21:3:23:5 | method_a | Method |
 | classes.rb:20:1:37:3 | Wibble | 1 | classes.rb:25:3:27:5 | method_b | Method |
-| classes.rb:20:1:37:3 | Wibble | 2 | classes.rb:29:3:29:20 | call to some_method_call | Call |
+| classes.rb:20:1:37:3 | Wibble | 2 | classes.rb:29:3:29:20 | call to some_method_call | MethodCall |
 | classes.rb:20:1:37:3 | Wibble | 3 | classes.rb:30:3:30:19 | ... = ... | AssignExpr |
 | classes.rb:20:1:37:3 | Wibble | 4 | classes.rb:32:3:33:5 | ClassInWibble | Class |
 | classes.rb:20:1:37:3 | Wibble | 5 | classes.rb:35:3:36:5 | ModuleInWibble | Module |

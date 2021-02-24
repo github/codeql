@@ -1,7 +1,7 @@
 callsWithNoReceiverArgumentsOrBlock
 | calls.rb:2:1:2:5 | call to foo | foo |
 | calls.rb:8:1:8:7 | call to bar | bar |
-| calls.rb:31:3:31:7 | call to yield | yield |
+| calls.rb:31:3:31:7 | yield ... | (none) |
 | calls.rb:46:1:46:3 | call to foo | foo |
 | calls.rb:50:2:50:4 | call to foo | foo |
 | calls.rb:54:11:54:13 | call to foo | foo |
@@ -75,13 +75,19 @@ callsWithNoReceiverArgumentsOrBlock
 | calls.rb:287:5:287:11 | call to super | super |
 | calls.rb:303:5:303:7 | call to foo | foo |
 | calls.rb:305:5:305:9 | call to super | super |
+| calls.rb:310:1:310:3 | call to foo | foo |
+| calls.rb:311:1:311:3 | call to foo | foo |
+| calls.rb:315:1:315:3 | call to foo | foo |
+| calls.rb:316:22:316:24 | call to foo | foo |
+| calls.rb:317:5:317:7 | call to foo | foo |
+| calls.rb:319:1:319:3 | call to foo | foo |
 callsWithArguments
 | calls.rb:14:1:14:11 | call to foo | foo | 0 | calls.rb:14:5:14:5 | 0 |
 | calls.rb:14:1:14:11 | call to foo | foo | 1 | calls.rb:14:8:14:8 | 1 |
 | calls.rb:14:1:14:11 | call to foo | foo | 2 | calls.rb:14:11:14:11 | 2 |
 | calls.rb:25:1:27:3 | call to bar | bar | 0 | calls.rb:25:9:25:13 | "foo" |
-| calls.rb:36:3:36:16 | call to yield | yield | 0 | calls.rb:36:9:36:11 | 100 |
-| calls.rb:36:3:36:16 | call to yield | yield | 1 | calls.rb:36:14:36:16 | 200 |
+| calls.rb:36:3:36:16 | yield ... | (none) | 0 | calls.rb:36:9:36:11 | 100 |
+| calls.rb:36:3:36:16 | yield ... | (none) | 1 | calls.rb:36:14:36:16 | 200 |
 | calls.rb:54:1:54:14 | call to some_func | some_func | 0 | calls.rb:54:11:54:13 | call to foo |
 | calls.rb:55:1:55:17 | call to some_func | some_func | 0 | calls.rb:55:11:55:16 | call to foo |
 | calls.rb:234:1:234:8 | ...[...] | [] | 0 | calls.rb:234:5:234:7 | call to bar |
@@ -102,6 +108,12 @@ callsWithArguments
 | calls.rb:292:5:292:30 | call to super | super | 1 | calls.rb:292:14:292:14 | 5 |
 | calls.rb:293:5:293:33 | call to super | super | 0 | calls.rb:293:11:293:11 | 6 |
 | calls.rb:293:5:293:33 | call to super | super | 1 | calls.rb:293:14:293:14 | 7 |
+| calls.rb:311:1:311:7 | call to call | call | 0 | calls.rb:311:6:311:6 | 1 |
+| calls.rb:315:1:315:6 | ...[...] | []= | 0 | calls.rb:315:5:315:5 | 0 |
+| calls.rb:316:22:316:27 | ...[...] | []= | 0 | calls.rb:316:26:316:26 | 4 |
+| calls.rb:317:5:317:10 | ...[...] | []= | 0 | calls.rb:317:9:317:9 | 5 |
+| calls.rb:319:1:319:6 | ...[...] | [] | 0 | calls.rb:319:5:319:5 | 0 |
+| calls.rb:319:1:319:6 | ...[...] | []= | 0 | calls.rb:319:5:319:5 | 0 |
 callsWithReceiver
 | calls.rb:5:1:5:10 | call to bar | calls.rb:5:1:5:3 | Foo |
 | calls.rb:11:1:11:7 | call to bar | calls.rb:11:1:11:3 | 123 |
@@ -179,6 +191,16 @@ callsWithReceiver
 | calls.rb:303:5:303:13 | call to super | calls.rb:303:5:303:7 | call to foo |
 | calls.rb:304:5:304:14 | call to super | calls.rb:304:5:304:8 | self |
 | calls.rb:305:5:305:15 | call to super | calls.rb:305:5:305:9 | call to super |
+| calls.rb:310:1:310:6 | call to call | calls.rb:310:1:310:3 | call to foo |
+| calls.rb:311:1:311:7 | call to call | calls.rb:311:1:311:3 | call to foo |
+| calls.rb:314:1:314:8 | call to foo= | calls.rb:314:1:314:4 | self |
+| calls.rb:315:1:315:6 | ...[...] | calls.rb:315:1:315:3 | call to foo |
+| calls.rb:316:1:316:8 | call to foo= | calls.rb:316:1:316:4 | self |
+| calls.rb:316:12:316:19 | call to bar= | calls.rb:316:12:316:15 | self |
+| calls.rb:316:22:316:27 | ...[...] | calls.rb:316:22:316:24 | call to foo |
+| calls.rb:317:5:317:10 | ...[...] | calls.rb:317:5:317:7 | call to foo |
+| calls.rb:318:1:318:10 | call to count/count= | calls.rb:318:1:318:4 | self |
+| calls.rb:319:1:319:6 | ...[...] | calls.rb:319:1:319:3 | call to foo |
 callsWithBlock
 | calls.rb:17:1:17:17 | call to foo | calls.rb:17:5:17:17 | { ... } |
 | calls.rb:20:1:22:3 | call to foo | calls.rb:20:5:22:3 | do ... end |
@@ -190,8 +212,8 @@ callsWithBlock
 | calls.rb:292:5:292:30 | call to super | calls.rb:292:16:292:30 | { ... } |
 | calls.rb:293:5:293:33 | call to super | calls.rb:293:16:293:33 | do ... end |
 yieldCalls
-| calls.rb:31:3:31:7 | call to yield |
-| calls.rb:36:3:36:16 | call to yield |
+| calls.rb:31:3:31:7 | yield ... |
+| calls.rb:36:3:36:16 | yield ... |
 superCalls
 | calls.rb:286:5:286:9 | call to super |
 | calls.rb:287:5:287:11 | call to super |
@@ -216,3 +238,12 @@ superCallsWithBlock
 | calls.rb:291:5:291:26 | call to super | calls.rb:291:11:291:26 | do ... end |
 | calls.rb:292:5:292:30 | call to super | calls.rb:292:16:292:30 | { ... } |
 | calls.rb:293:5:293:33 | call to super | calls.rb:293:16:293:33 | do ... end |
+setterCalls
+| calls.rb:314:1:314:8 | call to foo= |
+| calls.rb:315:1:315:6 | ...[...] |
+| calls.rb:316:1:316:8 | call to foo= |
+| calls.rb:316:12:316:19 | call to bar= |
+| calls.rb:316:22:316:27 | ...[...] |
+| calls.rb:317:5:317:10 | ...[...] |
+| calls.rb:318:1:318:10 | call to count/count= |
+| calls.rb:319:1:319:6 | ...[...] |

@@ -305,3 +305,15 @@ class AnotherClass
     super.super # we expect the receiver to be a SuperCall, while the outer call should not (it's just a regular Call)
   end
 end
+
+# calls without method name
+foo.()
+foo.(1)
+
+# setter calls
+self.foo = 10
+foo[0] = 10
+self.foo, *self.bar, foo[4] = [1, 2, 3, 4]
+a, *foo[5] = [1, 2, 3]
+self.count += 1
+foo[0] += 1
