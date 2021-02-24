@@ -660,14 +660,6 @@ class SsaPhiNode extends SsaPseudoDefinition, TPhi {
 
   override string prettyPrintDef() { result = getSourceVariable() + " = phi(" + ppInputs() + ")" }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    endline = startline and
-    endcolumn = startcolumn and
-    getBasicBlock().getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _)
-  }
-
   /**
    * If all inputs to this phi node are (transitive) refinements of the same variable,
    * gets that variable.
