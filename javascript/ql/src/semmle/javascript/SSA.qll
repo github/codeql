@@ -520,7 +520,10 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getDef().getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    exists(Location loc |
+      pragma[only_bind_into](loc) = pragma[only_bind_into](getDef()).getLocation() and
+      loc.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    )
   }
 
   /**
@@ -552,7 +555,10 @@ abstract class SsaImplicitDefinition extends SsaDefinition {
   ) {
     endline = startline and
     endcolumn = startcolumn and
-    getBasicBlock().getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _)
+    exists(Location loc |
+      pragma[only_bind_into](loc) = pragma[only_bind_into](getBasicBlock()).getLocation() and
+      loc.hasLocationInfo(filepath, startline, startcolumn, _, _)
+    )
   }
 }
 
