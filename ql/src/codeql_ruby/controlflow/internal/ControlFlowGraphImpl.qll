@@ -31,7 +31,8 @@
  * caught up by its surrounding loop and turned into a `NormalCompletion`.
  */
 
-private import codeql_ruby.AST as AST
+private import codeql_ruby.ast.internal.AST as ASTInternal
+private import codeql_ruby.ast.internal.Control as Control
 private import codeql_ruby.ast.internal.TreeSitter::Generated
 private import AstNodes
 private import codeql_ruby.ast.internal.Variable
@@ -305,6 +306,18 @@ abstract private class StandardNode extends ControlFlowTree {
 
 abstract private class PreOrderTree extends ControlFlowTree {
   final override predicate first(AstNode first) { first = this }
+}
+
+class InRange extends ASTInternal::AstNode::Range, @in {
+  final override string toString() { result = "In" }
+}
+
+class ForRange extends Control::ForExpr::Range, @for {
+  override predicate child(string label, ASTInternal::AstNode::Range child) {
+    Control::ForExpr::Range.super.child(label, child)
+    or
+    label = "<in>" and this.(AstNode).getAFieldOrChild().(In) = child
+  }
 }
 
 // TODO: remove this predicate

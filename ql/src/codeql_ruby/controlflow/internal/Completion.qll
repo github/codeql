@@ -5,7 +5,6 @@
  */
 
 private import codeql_ruby.AST
-private import codeql_ruby.ast.internal.Control
 private import codeql_ruby.controlflow.ControlFlowGraph
 private import ControlFlowGraphImpl
 private import NonReturning
@@ -54,7 +53,7 @@ private predicate nestedEnsureCompletion(Completion outer, int nestLevel) {
 
 pragma[noinline]
 private predicate completionIsValidForStmt(AstNode n, Completion c) {
-  n instanceof In::Range and
+  n instanceof InRange and
   c instanceof EmptinessCompletion
   or
   n instanceof BreakStmt and
