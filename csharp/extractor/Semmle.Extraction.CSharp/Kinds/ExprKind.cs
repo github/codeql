@@ -124,7 +124,7 @@ namespace Semmle.Extraction.Kinds
         AND_PATTERN = 127,
         OR_PATTERN = 128,
         FUNCTION_POINTER_INVOCATION = 129,
-
+        WITH = 130,
         DEFINE_SYMBOL = 999
     }
 }

@@ -10,4 +10,6 @@
 | Record.cs:29:66:29:72 | set_Subject | init |
 | Record.cs:32:70:32:74 | set_Level | init |
 | Record.cs:35:26:35:29 | set_Name | init |
+| Record.cs:54:34:54:34 | set_A | init |
+| Record.cs:56:35:56:35 | set_B | init |
 | UnaryPattern.cs:5:26:5:28 | set_P1 | set |

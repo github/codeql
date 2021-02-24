@@ -1,0 +1,8 @@
+invalidModelRow
+#select
+| B.java:6:11:6:14 | arg1 | qltest |
+| B.java:9:5:9:33 | this <.method> | qltest-arg |
+| B.java:9:22:9:32 | argToTagged | qltest-arg |
+| B.java:12:19:12:28 | fieldWrite | qltest-nospec |
+| B.java:17:12:17:14 | res | qltest |
+| B.java:23:12:23:17 | resTag | qltest-retval |
