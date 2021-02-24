@@ -4,6 +4,7 @@
 
 import java
 private import semmle.code.java.dataflow.FlowSteps
+private import semmle.code.java.dataflow.ExternalFlow
 
 class ApacheHttpGetParams extends Method {
   ApacheHttpGetParams() {
@@ -41,18 +42,14 @@ class TypeApacheHttpRequestBuilder extends Class {
   }
 }
 
-/**
- * The `request` parameter of an implementation of `HttpRequestHandler.handle`.
- */
-class ApacheHttpRequestHandlerParameter extends Parameter {
-  ApacheHttpRequestHandlerParameter() {
-    exists(Method m, Interface i |
-      i.hasQualifiedName(["org.apache.http.protocol", "org.apache.hc.core5.http.io"],
-        ["HttpRequestHandler", "HttpServerRequestHandler"]) and
-      m.getDeclaringType().extendsOrImplements+(i) and
-      m.hasName("handle") and
-      this = m.getParameter(0)
-    )
+private class ApacheHttpSource extends SourceModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.apache.http.protocol;HttpRequestHandler;true;handle;(HttpRequest,HttpResponse,HttpContext);;Parameter[0];remote",
+        "org.apache.hc.core5.http.io;HttpRequestHandler;true;handle;(ClassicHttpRequest,ClassicHttpResponse,HttpContext);;Parameter[0];remote",
+        "org.apache.hc.core5.http.io;HttpServerRequestHandler;true;handle;(ClassicHttpRequest,ResponseTrigger,HttpContext);;Parameter[0];remote"
+      ]
   }
 }
 
@@ -84,197 +81,152 @@ class ApacheHttpSetHeader extends Call {
   Expr getValue() { result = this.getArgument(1) }
 }
 
-/**
- * A call that sets the entity of an instance of `org.apache.http.HttpResponse` / `org.apache.hc.core5.http.ClassicHttpResponse`.
- */
-class ApacheHttpResponseSetEntityCall extends MethodAccess {
-  int arg;
-
-  ApacheHttpResponseSetEntityCall() {
-    exists(Method m | this.getMethod().overrides*(m) |
-      m.getDeclaringType().hasQualifiedName("org.apache.http", "HttpResponse") and
-      m.hasName("setEntity") and
-      arg = 0
-      or
-      m.getDeclaringType().hasQualifiedName("org.apache.http.util", "EntityUtils") and
-      m.hasName("updateEntity") and
-      arg = 1
-      or
-      m.getDeclaringType().hasQualifiedName("org.apache.hc.core5.http", "HttpEntityContainer") and
-      m.hasName("setEntity") and
-      arg = 0
-    )
+private class ApacheHttpXssSink extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.apache.http;HttpResponse;true;setEntity;(HttpEntity);;Argument[0];xss",
+        "org.apache.http.util;EntityUtils;true;updateEntity;(HttpResponse,HttpEntity);;Argument[1];xss",
+        "org.apache.hc.core5.http;HttpEntityContainer;true;setEntity;(HttpEntity);;Argument[0];xss"
+      ]
   }
-
-  /**
-   * Gets the entity that is set by this call.
-   */
-  Expr getEntity() { result = this.getArgument(arg) }
 }
 
-/** A getter that returns tainted data when its qualifier is tainted. */
-private class ApacheHttpGetter extends TaintPreservingCallable {
-  ApacheHttpGetter() {
-    exists(string pkg, string ty, string mtd, Method m |
-      this.(Method).overrides*(m) and
-      m.getDeclaringType().getSourceDeclaration().hasQualifiedName(pkg, ty) and
-      m.hasName(mtd)
-    |
-      pkg = "org.apache.http" and
-      (
-        ty = "HttpMessage" and
-        mtd =
-          [
-            "getAllHeaders", "getFirstHeader", "getHeaders", "getLastHeader", "getParams",
-            "headerIterator"
-          ]
-        or
-        ty = "HttpRequest" and
-        mtd = "getRequestLine"
-        or
-        ty = "HttpEntityEnclosingRequest" and
-        mtd = "getEntity"
-        or
-        ty = "Header" and
-        mtd = "getElements"
-        or
-        ty = "HeaderElement" and
-        mtd = ["getName", "getParameter", "getParameterByName", "getParameters", "getValue"]
-        or
-        ty = "NameValuePair" and
-        mtd = ["getName", "getValue"]
-        or
-        ty = "HeaderIterator" and
-        mtd = "nextHeader"
-        or
-        ty = "HttpEntity" and
-        mtd = ["getContent", "getContentEncoding", "getContentType"]
-        or
-        ty = "RequestLine" and
-        mtd = ["getMethod", "getUri"]
-      )
-      or
-      pkg = "org.apache.http.params" and
-      ty = "HttpParams" and
-      mtd.matches("get%Parameter")
-      or
-      pkg = "org.apache.hc.core5.http" and
-      (
-        ty = "MessageHeaders" and
-        mtd = ["getFirstHeader", "getHeader", "getHeaders", "getLastHeader", "headerIterator"]
-        or
-        ty = "HttpRequest" and
-        mtd = ["getAuthority", "getMethod", "getPath", "getRequestUri", "getUri"]
-        or
-        ty = "HttpEntityContainer" and
-        mtd = "getEntity"
-        or
-        ty = "NameValuePair" and
-        mtd = ["getName", "getValue"]
-        or
-        ty = "HttpEntity" and
-        mtd = ["getContent", "getTrailers"]
-        or
-        ty = "EntityDetails" and
-        mtd = ["getContentType", "getContentEncoding", "getTrailerNames"]
-      )
-      or
-      pkg = "org.apache.hc.core5.http.message" and
-      ty = "RequestLine" and
-      mtd = ["getMethod", "getUri", "toString"]
-      or
-      pkg = "org.apache.hc.core5.function" and
-      ty = "Supplier" and
-      mtd = "get"
-      or
-      pkg = "org.apache.hc.core5.net" and
-      ty = "URIAuthority" and
-      mtd = ["getHostName", "toString"]
-    )
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = -1 }
-}
-
-private class UtilMethod extends TaintPreservingCallable {
-  UtilMethod() {
-    exists(string pkg, string ty, string mtd |
-      this.isStatic() and
-      this.getDeclaringType().hasQualifiedName(pkg, ty) and
-      this.hasName(mtd)
-    |
-      pkg = ["org.apache.http.util", "org.apache.hc.core5.http.io.entity"] and
-      ty = "EntityUtils" and
-      mtd = ["toString", "toByteArray", "getContentCharSet", "getContentMimeType", "parse"]
-      or
-      pkg = ["org.apache.http.util", "org.apache.hc.core5.util"] and
-      ty = "EncodingUtils" and
-      mtd = ["getAsciiBytes", "getAsciiString", "getBytes", "getString"]
-      or
-      pkg = ["org.apache.http.util", "org.apache.hc.core5.util"] and
-      ty = "Args" and
-      mtd = ["containsNoBlanks", "notBlank", "notEmpty", "notNull"]
-      or
-      pkg = "org.apache.hc.core5.http.io.entity" and
-      ty = "HttpEntities" and
-      mtd = ["create", "createGziped", "createUrlEncoded", "gzip", "withTrailers"]
-    )
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = 0 }
-}
-
-private class EntitySetter extends TaintPreservingCallable {
-  EntitySetter() {
-    this.getDeclaringType()
-        .getASourceSupertype*()
-        .hasQualifiedName("org.apache.http.entity", "BasicHttpEntity") and
-    this.hasName("setContent")
-  }
-
-  override predicate transfersTaint(int src, int sink) { src = 0 and sink = -1 }
-}
-
-private class EntityConstructor extends TaintPreservingCallable, Constructor {
-  EntityConstructor() {
-    this.getDeclaringType()
-        .hasQualifiedName(["org.apache.http.entity", "org.apache.hc.core5.http.io.entity"],
-          [
-            "BasicHttpEntity", "BufferedHttpEntity", "ByteArrayEntity", "HttpEntityWrapper",
-            "InputStreamEntity", "StringEntity"
-          ])
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = 0 }
-}
-
-private class RequestLineConstructor extends TaintPreservingCallable, Constructor {
-  RequestLineConstructor() {
-    this.getDeclaringType().hasQualifiedName("org.apache.hc.core5.http.message", "RequestLine")
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = [0, 1] }
-}
-
-private class BufferMethod extends TaintPreservingCallable {
-  BufferMethod() {
-    exists(Method m |
-      this.(Method).overrides*(m) and
-      m.getDeclaringType()
-          .hasQualifiedName(["org.apache.http.util", "org.apache.hc.core5.util"],
-            ["ByteArrayBuffer", "CharArrayBuffer"]) and
-      m.hasName([
-          "append", "array", "buffer", "subSequence", "substring", "substringTrimmed",
-          "toByteArray", "toCharArray", "toString"
-        ])
-    )
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = -1 }
-
-  override predicate transfersTaint(int src, int sink) {
-    this.hasName("append") and
-    src = 0 and
-    sink = -1
+private class ApacheHttpFlowStep extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.apache.http;HttpMessage;true;getAllHeaders;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http;HttpMessage;true;getFirstHeader;(String);;Argument[-1];ReturnValue;taint",
+        "org.apache.http;HttpMessage;true;getLastHeader;(String);;Argument[-1];ReturnValue;taint",
+        "org.apache.http;HttpMessage;true;getHeaders;(String);;Argument[-1];ReturnValue;taint",
+        "org.apache.http;HttpMessage;true;getParams;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http;HttpMessage;true;headerIterator;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http;HttpMessage;true;headerIterator;(String);;Argument[-1];ReturnValue;taint",
+        "org.apache.http;HttpRequest;true;getRequestLine;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http;HttpEntityEnclosingRequest;true;getEntity;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http;Header;true;getElements;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http;HeaderElement;true;getName;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http;HeaderElement;true;getValue;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http;HeaderElement;true;getParameter;(int);;Argument[-1];ReturnValue;taint",
+        "org.apache.http;HeaderElement;true;getParameterByName;(String);;Argument[-1];ReturnValue;taint",
+        "org.apache.http;HeaderElement;true;getParameters;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http;NameValuePair;true;getName;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http;NameValuePair;true;getValue;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http;HeaderIterator;true;nextHeader;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http;HttpEntity;true;getContent;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http;HttpEntity;true;getContentEncoding;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http;HttpEntity;true;getContentType;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http;RequestLine;true;getMethod;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http;RequestLine;true;getUri;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http.params;HttpParams;true;getParameter;(String);;Argument[-1];ReturnValue;taint",
+        "org.apache.http.params;HttpParams;true;getDoubleParameter;(String,double);;Argument[-1];ReturnValue;taint",
+        "org.apache.http.params;HttpParams;true;getIntParameter;(String,int);;Argument[-1];ReturnValue;taint",
+        "org.apache.http.params;HttpParams;true;getLongParameter;(String,long);;Argument[-1];ReturnValue;taint",
+        "org.apache.http.params;HttpParams;true;getDoubleParameter;(String,double);;Argument[1];ReturnValue;value",
+        "org.apache.http.params;HttpParams;true;getIntParameter;(String,int);;Argument[1];ReturnValue;value",
+        "org.apache.http.params;HttpParams;true;getLongParameter;(String,long);;Argument[1];ReturnValue;value",
+        "org.apache.hc.core5.http;MessageHeaders;true;getFirstHeader;(String);;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http;MessageHeaders;true;getLastHeader;(String);;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http;MessageHeaders;true;getHeader;(String);;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http;MessageHeaders;true;getHeaders;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http;MessageHeaders;true;getHeaders;(String);;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http;MessageHeaders;true;headerIterator;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http;MessageHeaders;true;headerIterator;(String);;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http;HttpRequest;true;getAuthority;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http;HttpRequest;true;getMethod;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http;HttpRequest;true;getPath;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http;HttpRequest;true;getUri;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http;HttpRequest;true;getRequestUri;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http;HttpEntityContainer;true;getEntity;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http;NameValuePair;true;getName;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http;NameValuePair;true;getValue;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http;HttpEntity;true;getContent;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http;HttpEntity;true;getTrailers;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http;EntityDetails;true;getContentType;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http;EntityDetails;true;getContentEncoding;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http;EntityDetails;true;getTrailerNames;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http.message;RequestLine;true;getMethod;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http.message;RequestLine;true;getUri;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http.message;RequestLine;true;toString;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.http.message;RequestLine;true;RequestLine;(HttpRequest);;Argument[0];ReturnValue;taint",
+        "org.apache.hc.core5.http.message;RequestLine;true;RequestLine;(String,String,ProtocolVersion);;Argument[1];ReturnValue;taint",
+        "org.apache.hc.core5.http.message;RequestLine;true;RequestLine;(String,String,ProtocolVersion);;Argument[1];ReturnValue;taint",
+        "org.apache.hc.core5.function;Supplier;true;get;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.net;URIAuthority;true;getHostName;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.net;URIAuthority;true;toString;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http.util;EntityUtils;true;toString;;;Argument[0];ReturnValue;taint",
+        "org.apache.http.util;EntityUtils;true;toByteArray;(HttpEntity);;Argument[0];ReturnValue;taint",
+        "org.apache.http.util;EntityUtils;true;getContentCharSet;(HttpEntity);;Argument[0];ReturnValue;taint",
+        "org.apache.http.util;EntityUtils;true;getContentMimeType;(HttpEntity);;Argument[0];ReturnValue;taint",
+        "org.apache.hc.core5.http.io.entity;EntityUtils;true;toString;;;Argument[0];ReturnValue;taint",
+        "org.apache.hc.core5.http.io.entity;EntityUtils;true;toByteArray;;;Argument[0];ReturnValue;taint",
+        "org.apache.hc.core5.http.io.entity;EntityUtils;true;parse;;;Argument[0];ReturnValue;taint",
+        "org.apache.http.util;EncodingUtils;true;getAsciiBytes;(String);;Argument[0];ReturnValue;taint",
+        "org.apache.http.util;EncodingUtils;true;getAsciiString;;;Argument[0];ReturnValue;taint",
+        "org.apache.http.util;EncodingUtils;true;getBytes;(String,String);;Argument[0];ReturnValue;taint",
+        "org.apache.http.util;EncodingUtils;true;getString;;;Argument[0];ReturnValue;taint",
+        "org.apache.http.util;Args;true;containsNoBlanks;(T,String);;Argument[0];ReturnValue;value",
+        "org.apache.http.util;Args;true;notNull;(T,String);;Argument[0];ReturnValue;value",
+        "org.apache.http.util;Args;true;notEmpty;(T,String);;Argument[0];ReturnValue;value",
+        "org.apache.http.util;Args;true;notBlank;(T,String);;Argument[0];ReturnValue;value",
+        "org.apache.hc.core5.util;Args;true;containsNoBlanks;(T,String);;Argument[0];ReturnValue;value",
+        "org.apache.hc.core5.util;Args;true;notNull;(T,String);;Argument[0];ReturnValue;value",
+        "org.apache.hc.core5.util;Args;true;notEmpty;(T,String);;Argument[0];ReturnValue;value",
+        "org.apache.hc.core5.util;Args;true;notBlank;(T,String);;Argument[0];ReturnValue;value",
+        "org.apache.hc.core5.http.io.entity;HttpEntities;true;create;;;Argument[0];ReturnValue;taint",
+        "org.apache.hc.core5.http.io.entity;HttpEntities;true;createGzipped;;;Argument[0];ReturnValue;taint",
+        "org.apache.hc.core5.http.io.entity;HttpEntities;true;createUrlEncoded;;;Argument[0];ReturnValue;taint",
+        "org.apache.hc.core5.http.io.entity;HttpEntities;true;gzip;(HttpEntity);;Argument[0];ReturnValue;taint",
+        "org.apache.hc.core5.http.io.entity;HttpEntities;true;withTrailers;;;Argument[0];ReturnValue;taint",
+        "org.apache.http.entity;BasicHttpEntity;true;setContent;(InputStream);;Argument[0];Argument[-1];taint",
+        "org.apache.http.entity;BufferedHttpEntity;true;BufferedHttpEntity;(HttpEntity);;Argument[0];ReturnValue;taint",
+        "org.apache.http.entity;ByteArrayEntity;true;ByteArrayEntity;;;Argument[0];ReturnValue;taint",
+        "org.apache.http.entity;HttpEntityWrapper;true;HttpEntityWrapper;(HttpEntity);;Argument[0];ReturnValue;taint",
+        "org.apache.http.entity;InputStreamEntity;true;InputStreamEntity;;;Argument[0];ReturnValue;taint",
+        "org.apache.http.entity;StringEntity;true;StringEntity;;;Argument[0];ReturnValue;taint",
+        "org.apache.hc.core5.http.io.entity;BasicHttpEntity;true;BasicHttpEntity;;;Argument[0];ReturnValue;taint",
+        "org.apache.hc.core5.http.io.entity;BufferedHttpEntity;true;BufferedHttpEntity;(HttpEntity);;Argument[0];ReturnValue;taint",
+        "org.apache.hc.core5.http.io.entity;ByteArrayEntity;true;ByteArrayEntity;;;Argument[0];ReturnValue;taint",
+        "org.apache.hc.core5.http.io.entity;HttpEntityWrapper;true;HttpEntityWrapper;(HttpEntity);;Argument[0];ReturnValue;taint",
+        "org.apache.hc.core5.http.io.entity;InputStreamEntity;true;InputStreamEntity;;;Argument[0];ReturnValue;taint",
+        "org.apache.hc.core5.http.io.entity;StringEntity;true;StringEntity;;;Argument[0];ReturnValue;taint",
+        "org.apache.http.util;ByteArrayBuffer;true;append;(byte[],int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.http.util;ByteArrayBuffer;true;append;(char[],int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.http.util;ByteArrayBuffer;true;append;(CharArrayBuffer,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.http.util;ByteArrayBuffer;true;buffer;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http.util;ByteArrayBuffer;true;toByteArray;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http.util;CharArrayBuffer;true;append;(byte[],int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.http.util;CharArrayBuffer;true;append;(char[],int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.http.util;CharArrayBuffer;true;append;(CharArrayBuffer,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.http.util;CharArrayBuffer;true;append;(ByteArrayBuffer,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.http.util;CharArrayBuffer;true;append;(CharArrayBuffer);;Argument[0];Argument[-1];taint",
+        "org.apache.http.util;CharArrayBuffer;true;append;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.http.util;CharArrayBuffer;true;append;(Object);;Argument[0];Argument[-1];taint",
+        "org.apache.http.util;CharArrayBuffer;true;buffer;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http.util;CharArrayBuffer;true;toCharArray;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http.util;CharArrayBuffer;true;toString;();;Argument[-1];ReturnValue;taint",
+        "org.apache.http.util;CharArrayBuffer;true;substring;(int,int);;Argument[-1];ReturnValue;taint",
+        "org.apache.http.util;CharArrayBuffer;true;subSequence;(int,int);;Argument[-1];ReturnValue;taint",
+        "org.apache.http.util;CharArrayBuffer;true;substringTrimmed;(int,int);;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.util;ByteArrayBuffer;true;append;(byte[],int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.hc.core5.util;ByteArrayBuffer;true;append;(char[],int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.hc.core5.util;ByteArrayBuffer;true;append;(CharArrayBuffer,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.hc.core5.util;ByteArrayBuffer;true;array;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.util;ByteArrayBuffer;true;toByteArray;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.util;CharArrayBuffer;true;append;(byte[],int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.hc.core5.util;CharArrayBuffer;true;append;(char[],int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.hc.core5.util;CharArrayBuffer;true;append;(CharArrayBuffer,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.hc.core5.util;CharArrayBuffer;true;append;(ByteArrayBuffer,int,int);;Argument[0];Argument[-1];taint",
+        "org.apache.hc.core5.util;CharArrayBuffer;true;append;(CharArrayBuffer);;Argument[0];Argument[-1];taint",
+        "org.apache.hc.core5.util;CharArrayBuffer;true;append;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.hc.core5.util;CharArrayBuffer;true;append;(Object);;Argument[0];Argument[-1];taint",
+        "org.apache.hc.core5.util;CharArrayBuffer;true;array;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.util;CharArrayBuffer;true;toCharArray;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.util;CharArrayBuffer;true;toString;();;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.util;CharArrayBuffer;true;substring;(int,int);;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.util;CharArrayBuffer;true;subSequence;(int,int);;Argument[-1];ReturnValue;taint",
+        "org.apache.hc.core5.util;CharArrayBuffer;true;substringTrimmed;(int,int);;Argument[-1];ReturnValue;taint"
+      ]
   }
 }

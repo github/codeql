@@ -64,6 +64,14 @@ import java
 private import semmle.code.java.dataflow.DataFlow::DataFlow
 private import internal.DataFlowPrivate
 
+/**
+ * A module importing the frameworks that provide external flow data,
+ * ensuring that they are visible to the taint tracking / data flow library.
+ */
+private module Frameworks {
+  private import semmle.code.java.frameworks.ApacheHttp
+}
+
 private predicate sourceModelCsv(string row) {
   row =
     [

@@ -163,14 +163,6 @@ private class GuiceRequestParameterSource extends RemoteFlowSource {
   override string getSourceType() { result = "Guice request parameter" }
 }
 
-private class ApacheHttpRequestParameterSource extends RemoteFlowSource {
-  ApacheHttpRequestParameterSource() {
-    this.asParameter() instanceof ApacheHttpRequestHandlerParameter
-  }
-
-  override string getSourceType() { result = "Apache HTTP request parameter" }
-}
-
 private class Struts2ActionSupportClassFieldReadSource extends RemoteFlowSource {
   Struts2ActionSupportClassFieldReadSource() {
     exists(Struts2ActionSupportClass c |
