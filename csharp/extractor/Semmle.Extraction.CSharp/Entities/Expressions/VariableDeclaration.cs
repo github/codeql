@@ -3,7 +3,9 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Populators;
 using Semmle.Extraction.Kinds;
-using Semmle.Extraction.Entities;
+using System.Collections.Generic;
+using System.Linq;
+using System.Collections.Immutable;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -47,16 +49,17 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         /// Create a tuple expression representing a parenthesized variable declaration.
         /// That is, we consider `var (x, y) = ...` to be equivalent to `(var x, var y) = ...`.
         /// </summary>
-        public static Expression CreateParenthesized(Context cx, DeclarationExpressionSyntax node, ParenthesizedVariableDesignationSyntax designation, IExpressionParentEntity parent, int child)
+        public static Expression CreateParenthesized(Context cx, DeclarationExpressionSyntax node, ParenthesizedVariableDesignationSyntax designation, IExpressionParentEntity parent, int child, INamedTypeSymbol? t)
         {
-            AnnotatedTypeSymbol? type = null; // Should ideally be a corresponding tuple type
+            var type = t is null ? (AnnotatedTypeSymbol?)null : new AnnotatedTypeSymbol(t, t.NullableAnnotation);
             var tuple = new Expression(new ExpressionInfo(cx, type, cx.CreateLocation(node.GetLocation()), ExprKind.TUPLE, parent, child, false, null));
 
             cx.Try(null, null, () =>
             {
-                var child0 = 0;
-                foreach (var variable in designation.Variables)
-                    Create(cx, node, variable, tuple, child0++);
+                for (var child0 = 0; child0 < designation.Variables.Count; child0++)
+                {
+                    Create(cx, node, designation.Variables[child0], tuple, child0, t?.TypeArguments[child0] as INamedTypeSymbol);
+                }
             });
 
             return tuple;
@@ -64,18 +67,21 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression CreateParenthesized(Context cx, VarPatternSyntax varPattern, ParenthesizedVariableDesignationSyntax designation, IExpressionParentEntity parent, int child)
         {
-            AnnotatedTypeSymbol? type = null; // Should ideally be a corresponding tuple type
-            var tuple = new Expression(new ExpressionInfo(cx, type, cx.CreateLocation(varPattern.GetLocation()), ExprKind.TUPLE, parent, child, false, null));
+            var tuple = new Expression(
+                new ExpressionInfo(cx, null, cx.CreateLocation(varPattern.GetLocation()), ExprKind.TUPLE, parent, child, false, null),
+                shouldPopulate: false);
 
+            var elementTypes = new List<ITypeSymbol?>();
             cx.Try(null, null, () =>
             {
                 var child0 = 0;
                 foreach (var variable in designation.Variables)
                 {
+                    Expression sub;
                     switch (variable)
                     {
                         case ParenthesizedVariableDesignationSyntax paren:
-                            CreateParenthesized(cx, varPattern, paren, tuple, child0++);
+                            sub = CreateParenthesized(cx, varPattern, paren, tuple, child0++);
                             break;
                         case SingleVariableDesignationSyntax single:
                             if (cx.GetModel(variable).GetDeclaredSymbol(single) is ILocalSymbol local)
@@ -83,6 +89,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                                 var decl = Create(cx, variable, local.GetAnnotatedType(), tuple, child0++);
                                 var l = LocalVariable.Create(cx, local);
                                 l.PopulateManual(decl, true);
+                                sub = decl;
                             }
                             else
                             {
@@ -90,26 +97,43 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                             }
                             break;
                         case DiscardDesignationSyntax discard:
-                            new Discard(cx, discard, tuple, child0++);
+                            sub = new Discard(cx, discard, tuple, child0++);
+                            if (!sub.Type.HasValue || sub.Type.Value.Symbol is null)
+                            {
+                                // The type is only updated in memory, it will not be written to the trap file.
+                                sub.SetType(cx.Compilation.GetSpecialType(SpecialType.System_Object));
+                            }
                             break;
                         default:
                             throw new InternalError(variable, "Unhandled designation type");
                     }
+
+                    elementTypes.Add(sub.Type.HasValue && sub.Type.Value.Symbol?.Kind != SymbolKind.ErrorType
+                        ? sub.Type.Value.Symbol
+                        : null);
                 }
             });
+
+            INamedTypeSymbol? tupleType = null;
+            if (!elementTypes.Any(et => et is null))
+            {
+                tupleType = cx.Compilation.CreateTupleTypeSymbol(elementTypes.ToImmutableArray()!);
+            }
+
+            tuple.SetType(tupleType);
+            tuple.TryPopulate();
 
             return tuple;
         }
 
-
-        private static Expression Create(Context cx, DeclarationExpressionSyntax node, VariableDesignationSyntax? designation, IExpressionParentEntity parent, int child)
+        private static Expression Create(Context cx, DeclarationExpressionSyntax node, VariableDesignationSyntax? designation, IExpressionParentEntity parent, int child, INamedTypeSymbol? declarationType)
         {
             switch (designation)
             {
                 case SingleVariableDesignationSyntax single:
                     return CreateSingle(cx, node, single, parent, child);
                 case ParenthesizedVariableDesignationSyntax paren:
-                    return CreateParenthesized(cx, node, paren, parent, child);
+                    return CreateParenthesized(cx, node, paren, parent, child, declarationType);
                 case DiscardDesignationSyntax discard:
                     var type = cx.GetType(discard);
                     return Create(cx, node, type, parent, child);
@@ -120,7 +144,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
 
         public static Expression Create(Context cx, DeclarationExpressionSyntax node, IExpressionParentEntity parent, int child) =>
-            Create(cx, node, node.Designation, parent, child);
+            Create(cx, node, node.Designation, parent, child, cx.GetTypeInfo(node).Type.DisambiguateType() as INamedTypeSymbol);
 
         public static VariableDeclaration Create(Context cx, CSharpSyntaxNode c, AnnotatedTypeSymbol? type, IExpressionParentEntity parent, int child) =>
             new VariableDeclaration(new ExpressionInfo(cx, type, cx.CreateLocation(c.FixedLocation()), ExprKind.LOCAL_VAR_DECL, parent, child, false, null));

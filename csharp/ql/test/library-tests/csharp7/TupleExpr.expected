@@ -30,8 +30,8 @@
 | CSharp7.cs:78:23:78:33 | (..., ...) | file://:0:0:0:0 | (Int32,(Int32,Int32)) | 1 | CSharp7.cs:78:27:78:32 | (..., ...) |
 | CSharp7.cs:78:27:78:32 | (..., ...) | file://:0:0:0:0 | (Int32,Int32) | 0 | CSharp7.cs:78:28:78:28 | access to local variable c |
 | CSharp7.cs:78:27:78:32 | (..., ...) | file://:0:0:0:0 | (Int32,Int32) | 1 | CSharp7.cs:78:31:78:31 | access to local variable a |
-| CSharp7.cs:79:9:79:18 | (..., ...) | file://:0:0:0:0 | null | 0 | CSharp7.cs:79:14:79:14 | String i |
-| CSharp7.cs:79:9:79:18 | (..., ...) | file://:0:0:0:0 | null | 1 | CSharp7.cs:79:17:79:17 | Int32 j |
+| CSharp7.cs:79:9:79:18 | (..., ...) | file://:0:0:0:0 | (String,Int32) | 0 | CSharp7.cs:79:14:79:14 | String i |
+| CSharp7.cs:79:9:79:18 | (..., ...) | file://:0:0:0:0 | (String,Int32) | 1 | CSharp7.cs:79:17:79:17 | Int32 j |
 | CSharp7.cs:79:22:79:28 | (..., ...) | file://:0:0:0:0 | (String,Int32) | 0 | CSharp7.cs:79:23:79:24 | "" |
 | CSharp7.cs:79:22:79:28 | (..., ...) | file://:0:0:0:0 | (String,Int32) | 1 | CSharp7.cs:79:27:79:27 | access to local variable x |
 | CSharp7.cs:84:16:84:24 | (..., ...) | file://:0:0:0:0 | (String,Int32) | 0 | CSharp7.cs:84:20:84:20 | access to parameter x |
@@ -88,5 +88,5 @@
 | CSharp7.cs:287:18:287:34 | (..., ...) | file://:0:0:0:0 | (Int32,String) | 1 | CSharp7.cs:287:33:287:33 | String b |
 | CSharp7.cs:289:18:289:31 | (..., ...) | file://:0:0:0:0 | (Int32,String) | 0 | CSharp7.cs:289:23:289:23 | Int32 a |
 | CSharp7.cs:289:18:289:31 | (..., ...) | file://:0:0:0:0 | (Int32,String) | 1 | CSharp7.cs:289:30:289:30 | String b |
-| CSharp7.cs:291:18:291:27 | (..., ...) | file://:0:0:0:0 | null | 0 | CSharp7.cs:291:23:291:23 | Int32 a |
-| CSharp7.cs:291:18:291:27 | (..., ...) | file://:0:0:0:0 | null | 1 | CSharp7.cs:291:26:291:26 | String b |
+| CSharp7.cs:291:18:291:27 | (..., ...) | file://:0:0:0:0 | (Int32,String) | 0 | CSharp7.cs:291:23:291:23 | Int32 a |
+| CSharp7.cs:291:18:291:27 | (..., ...) | file://:0:0:0:0 | (Int32,String) | 1 | CSharp7.cs:291:26:291:26 | String b |
