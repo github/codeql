@@ -41,7 +41,7 @@
 | CSharp7.cs:72:17:72:19 | this access | CSharp7.cs:73:18:73:20 | this access |
 | CSharp7.cs:73:18:73:20 | [post] this access | CSharp7.cs:74:13:74:15 | this access |
 | CSharp7.cs:73:18:73:20 | this access | CSharp7.cs:74:13:74:15 | this access |
-| CSharp7.cs:74:13:74:15 | call to method F | CSharp7.cs:74:13:74:17 | access to field A |
+| CSharp7.cs:74:13:74:15 | call to method F | CSharp7.cs:74:13:74:17 | access to field Item1 |
 | CSharp7.cs:75:16:75:16 | [post] access to local variable z | CSharp7.cs:77:39:77:39 | access to local variable z |
 | CSharp7.cs:75:16:75:16 | access to local variable z | CSharp7.cs:77:39:77:39 | access to local variable z |
 | CSharp7.cs:75:28:75:28 | 1 | CSharp7.cs:75:27:75:35 | (..., ...) |
@@ -64,7 +64,7 @@
 | CSharp7.cs:79:23:79:24 | "" | CSharp7.cs:79:22:79:28 | (..., ...) |
 | CSharp7.cs:79:27:79:27 | access to local variable x | CSharp7.cs:79:22:79:28 | (..., ...) |
 | CSharp7.cs:82:21:82:21 | x | CSharp7.cs:84:20:84:20 | access to parameter x |
-| CSharp7.cs:84:16:84:24 | (..., ...) | CSharp7.cs:84:16:84:26 | access to field a |
+| CSharp7.cs:84:16:84:24 | (..., ...) | CSharp7.cs:84:16:84:26 | access to field Item1 |
 | CSharp7.cs:84:20:84:20 | access to parameter x | CSharp7.cs:84:16:84:24 | (..., ...) |
 | CSharp7.cs:84:23:84:23 | 2 | CSharp7.cs:84:16:84:24 | (..., ...) |
 | CSharp7.cs:87:10:87:18 | this | CSharp7.cs:92:18:92:28 | this access |
