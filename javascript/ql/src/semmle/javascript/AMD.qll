@@ -158,7 +158,7 @@ class AmdModuleDefinition extends CallExpr {
     result = [getAnImplicitExportsValue(), getAnExplicitExportsValue()]
   }
 
-  pragma[noinline]
+  pragma[noinline, nomagic]
   private AbstractValue getAnImplicitExportsValue() {
     // implicit exports: anything that is returned from the factory function
     result = getModuleExpr().analyze().getAValue()
