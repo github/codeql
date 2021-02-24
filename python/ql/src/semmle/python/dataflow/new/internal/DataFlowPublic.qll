@@ -193,6 +193,13 @@ class CallCfgNode extends CfgNode {
 
   /** Gets the data-flow node corresponding to the named argument of the call corresponding to this data-flow node */
   Node getArgByName(string name) { result.asCfgNode() = node.getArgByName(name) }
+
+  /** Gets the data-flow node corresponding to an argument of the call corresponding to this data-flow node */
+  Node getAnArg() {
+    exists(int n | result = this.getArg(n))
+    or
+    exists(string name | result = this.getArgByName(name))
+  }
 }
 
 /**
