@@ -54,7 +54,7 @@ class Toplevel extends ModuleBase, @program {
 }
 
 /**
- * A class or method definition.
+ * A class or module definition.
  *
  * ```rb
  * class Foo
