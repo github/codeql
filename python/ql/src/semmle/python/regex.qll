@@ -97,6 +97,11 @@ private DataFlow::Node re_flag_tracker(string flag_name) {
 /** Gets a regular expression mode flag associated with the given data flow node. */
 string mode_from_node(DataFlow::Node node) { node = re_flag_tracker(result) }
 
+/**
+ * DEPRECATED 2021-02-24 -- use `mode_from_node` instead.
+ *
+ * Gets a regular expression mode flag associated with the given value.
+ */
 deprecated string mode_from_mode_object(Value obj) {
   (
     result = "DEBUG" or
