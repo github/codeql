@@ -319,9 +319,9 @@ private TSsaWithFields accessPath(IR::Instruction insn) {
  * by ssa-with-fields value `base`.
  */
 private IR::Instruction accessPathAux(TSsaWithFields base, Field f) {
-  exists(IR::FieldReadInstruction fr, IR::EvalInstruction frb |
+  exists(IR::FieldReadInstruction fr, IR::Instruction frb |
     fr.getBase() = frb or
-    fr.getBase() = IR::implicitDerefInstruction(frb.getExpr())
+    fr.getBase() = IR::implicitDerefInstruction(frb.(IR::EvalInstruction).getExpr())
   |
     base = accessPath(frb) and
     f = fr.getField() and

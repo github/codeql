@@ -302,6 +302,22 @@ newtype TControlFlowNode =
     )
   } or
   /**
+   * A control-flow node that represents the implicit selection of a field when accessing a
+   * promoted field.
+   */
+  MkImplicitFieldSelection(SelectorExpr e, int i, Field implicitField) {
+    exists(Type baseType, StructType baseStructType, Field eField, int minDepth |
+      eField.getAReference() = e.getSelector() and
+      baseType = e.getBase().getType().getUnderlyingType() and
+      baseStructType = [baseType, baseType.(PointerType).getBaseType().getUnderlyingType()] and
+      baseStructType.getFieldAtDepth(_, minDepth) = eField
+    |
+      baseStructType.getFieldAtDepth(_, i) = implicitField and
+      implicitField.getType().getUnderlyingType().(StructType).getFieldAtDepth(_, minDepth - i - 1) =
+        eField
+    )
+  } or
+  /**
    * A control-flow node that represents the start of the execution of a function or file.
    */
   MkEntryNode(ControlFlow::Root root) or
@@ -1708,16 +1724,25 @@ module CFG {
     }
 
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      lastNode(getBase(), pred, normalCompletion()) and
-      (
-        succ = MkImplicitDeref(this.getBase())
-        or
-        not exists(MkImplicitDeref(this.getBase())) and
-        succ = mkExprOrSkipNode(this)
-      )
+      exists(int i | pred = this.getStepWithRank(i) and succ = this.getStepWithRank(i + 1))
+    }
+
+    private ControlFlow::Node getStepOrdered(int i) {
+      i = -2 and lastNode(this.getBase(), result, normalCompletion())
       or
-      pred = MkImplicitDeref(this.getBase()) and
-      succ = mkExprOrSkipNode(this)
+      i = -1 and result = MkImplicitDeref(this.getBase())
+      or
+      result = MkImplicitFieldSelection(this, i, _)
+      or
+      i = max(int k | k = -1 or exists(MkImplicitFieldSelection(this, k, _))) + 1 and
+      result = mkExprOrSkipNode(this)
+    }
+
+    private ControlFlow::Node getStepWithRank(int i) {
+      exists(int j |
+        result = this.getStepOrdered(j) and
+        j = rank[i + 1](int k | exists(this.getStepOrdered(k)))
+      )
     }
   }
 
