@@ -302,4 +302,14 @@ func RunAllTaints_Io() {
 		out := TaintStepTest_IoWriterToWriteTo_B0I0O0(source)
 		sink(24, out)
 	}
+	{
+		source := newSource(25).(io.Reader)
+		out := io.NopCloser(source)
+		sink(25, out)
+	}
+	{
+		source := newSource(26).(io.Reader)
+		out, _ := io.ReadAll(source)
+		sink(26, out)
+	}
 }

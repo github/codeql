@@ -17,9 +17,7 @@ private import Logrus
 abstract class SafeExternalAPIFunction extends Function { }
 
 private predicate isDefaultSafePackage(Package package) {
-  package.getPath() in [
-      "time", "unicode/utf8", package("http://gopkg.in/go-playground/validator", "")
-    ]
+  package.getPath() in ["time", "unicode/utf8", package("gopkg.in/go-playground/validator", "")]
 }
 
 /** The default set of "safe" external APIs. */

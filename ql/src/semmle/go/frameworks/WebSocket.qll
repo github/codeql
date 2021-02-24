@@ -319,5 +319,5 @@ module NhooyrWebSocket {
 module GobwasWs {
   /** Gets the package name `github.com/gobwas/ws`. */
   bindingset[result]
-  string packagePath() { result = package("github.com/gobwas", "ws") }
+  string packagePath() { result = package("github.com/gobwas/ws", "") }
 }

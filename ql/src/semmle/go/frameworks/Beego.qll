@@ -1,6 +1,6 @@
 /**
  * Provides classes for working with untrusted flow sources, sinks and taint propagators
- * from the `github.com/astaxie/beego` package.
+ * from the `github.com/beego/beego` package.
  */
 
 import go
@@ -8,21 +8,25 @@ import semmle.go.security.Xss
 private import semmle.go.security.SafeUrlFlowCustomizations
 
 module Beego {
-  /** Gets the package name `github.com/astaxie/beego`. */
+  /** Gets the module path `github.com/astaxie/beego` or `github.com/beego/beego`. */
   bindingset[result]
-  string packagePath() { result = package("github.com/astaxie/beego", "") }
+  string modulePath() { result = ["github.com/astaxie/beego", "github.com/beego/beego"] }
 
-  /** Gets the context subpackage name `github.com/astaxie/beego/context`. */
+  /** Gets the path for the root package of beego. */
   bindingset[result]
-  string contextPackagePath() { result = package("github.com/astaxie/beego", "context") }
+  string packagePath() { result = package(modulePath(), "") }
 
-  /** Gets the logs subpackage name `github.com/astaxie/beego/logs`. */
+  /** Gets the path for the context package of beego. */
   bindingset[result]
-  string logsPackagePath() { result = package("github.com/astaxie/beego", "logs") }
+  string contextPackagePath() { result = package(modulePath(), "context") }
 
-  /** Gets the utils subpackage name `github.com/astaxie/beego/utils`. */
+  /** Gets the path for the logs package of beego. */
   bindingset[result]
-  string utilsPackagePath() { result = package("github.com/astaxie/beego", "utils") }
+  string logsPackagePath() { result = package(modulePath(), "logs") }
+
+  /** Gets the path for the utils package of beego. */
+  bindingset[result]
+  string utilsPackagePath() { result = package(modulePath(), "utils") }
 
   /**
    * `BeegoInput` sources of untrusted data.

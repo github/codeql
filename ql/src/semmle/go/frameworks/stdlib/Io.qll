@@ -61,6 +61,14 @@ module Io {
       // signature: func WriteString(w Writer, s string) (n int, err error)
       hasQualifiedName("io", "WriteString") and
       (inp.isParameter(1) and outp.isParameter(0))
+      or
+      // signature: func NopCloser(r io.Reader) io.ReadCloser
+      hasQualifiedName("io", "NopCloser") and
+      (inp.isParameter(0) and outp.isResult())
+      or
+      // signature: func ReadAll(r io.Reader) ([]byte, error)
+      hasQualifiedName("io", "ReadAll") and
+      (inp.isParameter(0) and outp.isResult(0))
     }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
