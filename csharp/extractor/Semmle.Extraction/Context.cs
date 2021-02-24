@@ -291,7 +291,7 @@ namespace Semmle.Extraction
                     throw new InternalError("Unexpected TrapStackBehaviour");
             }
 
-            var a = duplicationGuard && IsEntityDuplicationGuarded(entity, out var loc) //CreateLocation(entity.ReportingLocation) is NonGeneratedSourceLocation loc
+            var a = duplicationGuard && IsEntityDuplicationGuarded(entity, out var loc)
                 ? (Action)(() => WithDuplicationGuard(new Key(entity, loc), () => entity.Populate(TrapWriter.Writer)))
                 : (Action)(() => this.Try(null, optionalSymbol, () => entity.Populate(TrapWriter.Writer)));
 
