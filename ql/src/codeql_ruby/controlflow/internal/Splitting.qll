@@ -2,7 +2,7 @@
  * Provides classes and predicates relevant for splitting the control flow graph.
  */
 
-private import codeql_ruby.ast.internal.TreeSitter::Generated
+private import codeql_ruby.AST
 private import AstNodes
 private import Completion
 private import ControlFlowGraphImpl

@@ -208,6 +208,12 @@ private predicate isHidden(ControlFlowTree t) {
   or
   t = any(Method m).getName()
   or
+  t = any(Class m).getName()
+  or
+  t = any(Module m).getName()
+  or
+  t = any(ScopeResolution m).getName()
+  or
   t = any(SingletonMethod m).getName()
   or
   t = any(Call c).getMethod() and
