@@ -46,3 +46,14 @@ DomObjectStub.prototype.value;
  * @type {!DomObjectStub}
  */
 var document;
+
+/**
+ * @constructor
+ * @implements {EventTarget}
+ */
+function Node() {}
+
+/**
+ * @type {Node}
+ */
+Node.prototype.parentNode;

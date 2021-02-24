@@ -353,6 +353,13 @@ module DOM {
           this = DataFlow::thisNode(eachCall.getCallback(0).getFunction()) or
           this = eachCall.getABoundCallbackParameter(0, 1)
         )
+        or
+        // A receiver node of an event handler on a DOM node
+        exists(string handler | handler.matches("on%") |
+          this = domValueRef().getAPropertySource(handler).(DataFlow::FunctionNode).getReceiver()
+        )
+        or
+        this = DataFlow::thisNode(any(EventHandlerCode evt))
       }
     }
   }

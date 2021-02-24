@@ -18,3 +18,14 @@ function WorkerGlobalScope() {}
 
 /** @type {WorkerLocation} */
 WorkerGlobalScope.prototype.location;
+
+/**
+ * @constructor
+ * @implements {EventTarget}
+ */
+function Node() {}
+
+/**
+ * @type {Node}
+ */
+Node.prototype.parentNode;
