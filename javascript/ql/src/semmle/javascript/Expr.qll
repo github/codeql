@@ -115,8 +115,8 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
   predicate isImpure() { any() }
 
   /**
-   * Holds if this expression is pure, that is, is its evaluation is guaranteed to be
-   * side effect-free.
+   * Holds if this expression is pure, that is, is its evaluation is guaranteed
+   * to be side-effect free.
    */
   predicate isPure() { not isImpure() }
 
