@@ -5,7 +5,7 @@ import semmle.code.cpp.models.interfaces.SideEffect
 
 /**
  * A function that operates on strings and is pure. That is, its evaluation is
- * guaranteed to be side effect-free.
+ * guaranteed to be side-effect free.
  */
 private class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction,
   SideEffectFunction {
@@ -129,8 +129,8 @@ private class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFun
 }
 
 /**
- * A function that is pure, that is, its evaluation is guaranteed to be side
- * effect-free. Excludes functions modeled by `PureStrFunction` and `PureMemFunction`.
+ * A function that is pure, that is, its evaluation is guaranteed to be
+ * side-effect free. Excludes functions modeled by `PureStrFunction` and `PureMemFunction`.
  */
 private class PureFunction extends TaintFunction, SideEffectFunction {
   PureFunction() { hasGlobalOrStdOrBslName(["abs", "labs"]) }
@@ -150,7 +150,7 @@ private class PureFunction extends TaintFunction, SideEffectFunction {
 
 /**
  * A function that operates on memory buffers and is pure. That is, its
- * evaluation is guaranteed to be side effect-free.
+ * evaluation is guaranteed to be side-effect free.
  */
 private class PureMemFunction extends AliasFunction, ArrayFunction, TaintFunction,
   SideEffectFunction {
