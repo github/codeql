@@ -187,3 +187,17 @@ labeledPatternExpr
 | patterns.cs:128:27:128:31 | Int32 x | X |
 | patterns.cs:129:27:129:28 | 10 | X |
 | patterns.cs:142:31:142:32 | 10 | X |
+tupleTypes
+| patterns.cs:59:18:59:27 | (..., ...) | file://:0:0:0:0 | null |
+| patterns.cs:86:15:86:19 | (..., ...) | patterns.cs:86:15:86:19 | (Int32,Int32) |
+| patterns.cs:91:16:91:20 | (..., ...) | patterns.cs:86:15:86:19 | (Int32,Int32) |
+| patterns.cs:108:9:108:20 | (..., ...) | file://:0:0:0:0 | null |
+| patterns.cs:108:24:108:31 | (..., ...) | patterns.cs:108:24:108:31 | (Int32,Int32) |
+| patterns.cs:110:22:110:26 | (..., ...) | patterns.cs:86:15:86:19 | (Int32,Int32) |
+| patterns.cs:111:22:111:26 | (..., ...) | patterns.cs:86:15:86:19 | (Int32,Int32) |
+| patterns.cs:115:9:115:16 | (..., ...) | patterns.cs:108:9:108:20 | (Int32,Int32) |
+| patterns.cs:115:20:115:27 | (..., ...) | patterns.cs:108:24:108:31 | (Int32,Int32) |
+| patterns.cs:117:27:117:33 | (..., ...) | patterns.cs:117:27:117:33 | (Int32,Int32) |
+| patterns.cs:118:28:118:34 | (..., ...) | patterns.cs:118:28:118:34 | (Int32,Int32) |
+| patterns.cs:119:33:119:38 | (..., ...) | patterns.cs:86:15:86:19 | (Int32,Int32) |
+| patterns.cs:131:13:131:22 | (..., ...) | file://:0:0:0:0 | null |
