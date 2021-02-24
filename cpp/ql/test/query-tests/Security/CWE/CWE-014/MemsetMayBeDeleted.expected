@@ -1,0 +1,3 @@
+| test.cpp:44:5:44:10 | call to memset | Call to memset may be deleted by the compiler. |
+| test.cpp:72:5:72:10 | call to memset | Call to memset may be deleted by the compiler. |
+| test.cpp:192:2:192:7 | call to memset | Call to memset may be deleted by the compiler. |
