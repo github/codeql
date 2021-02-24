@@ -71,19 +71,32 @@ private string canonical_name(API::Node flag) {
  * A type tracker for regular expression flag names. Holds if the result is a node that may refer
  * to the `re` flag with the canonical name `flag_name`
  */
-private DataFlow::Node re_flag_tracker(string flag_name, DataFlow::TypeTracker t) {
+private DataFlow::LocalSourceNode re_flag_tracker(string flag_name, DataFlow::TypeTracker t) {
   t.start() and
   exists(API::Node flag | flag_name = canonical_name(flag) and result = flag.getAUse())
   or
-  exists(BinaryExprNode binop |
+  exists(BinaryExprNode binop, DataFlow::Node operand |
+    operand.getALocalSource() = re_flag_tracker(flag_name, t.continue()) and
+    operand.asCfgNode() = binop.getAnOperand() and
     (binop.getOp() instanceof BitOr or binop.getOp() instanceof Add) and
-    binop.getAnOperand() = re_flag_tracker(flag_name, t.continue()).asCfgNode() and
     result.asCfgNode() = binop
   )
   or
-  exists(DataFlow::TypeTracker t2, DataFlow::Node prev | prev = re_flag_tracker(flag_name, t2) |
-    t2 = t.smallstep(prev, result)
+  // Due to bad performance when using normal setup with `re_flag_tracker(t2, attr_name).track(t2, t)`
+  // we have inlined that code and forced a join
+  exists(DataFlow::TypeTracker t2 |
+    exists(DataFlow::StepSummary summary |
+      re_flag_tracker_first_join(t2, flag_name, result, summary) and
+      t = t2.append(summary)
+    )
   )
+}
+
+pragma[nomagic]
+private predicate re_flag_tracker_first_join(
+  DataFlow::TypeTracker t2, string flag_name, DataFlow::Node res, DataFlow::StepSummary summary
+) {
+  DataFlow::StepSummary::step(re_flag_tracker(flag_name, t2), res, summary)
 }
 
 /**
@@ -91,7 +104,7 @@ private DataFlow::Node re_flag_tracker(string flag_name, DataFlow::TypeTracker t
  * to the `re` flag with the canonical name `flag_name`
  */
 private DataFlow::Node re_flag_tracker(string flag_name) {
-  result = re_flag_tracker(flag_name, DataFlow::TypeTracker::end())
+  re_flag_tracker(flag_name, DataFlow::TypeTracker::end()).flowsTo(result)
 }
 
 /** Gets a regular expression mode flag associated with the given data flow node. */
