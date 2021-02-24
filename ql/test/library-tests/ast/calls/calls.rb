@@ -316,3 +316,4 @@ foo[0] = 10
 self.foo, *self.bar, foo[4] = [1, 2, 3, 4]
 a, *foo[5] = [1, 2, 3]
 self.count += 1
+foo[0] += 1

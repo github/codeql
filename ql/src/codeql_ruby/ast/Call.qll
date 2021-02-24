@@ -7,8 +7,6 @@ private import internal.Call
 class Call extends Expr {
   override Call::Range range;
 
-  Call() { range.isNormal() }
-
   override string getAPrimaryQlClass() { result = "Call" }
 
   /**
@@ -102,7 +100,7 @@ class MethodCall extends Call {
  * a[0] = 10
  * ```
  */
-class SetterMethodCall extends LhsExpr {
+class SetterMethodCall extends MethodCall, LhsExpr {
   final override SetterMethodCall::Range range;
 
   final override string getAPrimaryQlClass() { result = "SetterMethodCall" }
