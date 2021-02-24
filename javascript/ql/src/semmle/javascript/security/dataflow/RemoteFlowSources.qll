@@ -7,13 +7,16 @@ import semmle.javascript.frameworks.HTTP
 import semmle.javascript.security.dataflow.DOM
 
 /** A data flow source of remote user input. */
+cached
 abstract class RemoteFlowSource extends DataFlow::Node {
   /** Gets a string that describes the type of this remote flow source. */
+  cached
   abstract string getSourceType();
 
   /**
    * Holds if this can be a user-controlled object, such as a JSON object parsed from user-controlled data.
    */
+  cached
   predicate isUserControlledObject() { none() }
 }
 
