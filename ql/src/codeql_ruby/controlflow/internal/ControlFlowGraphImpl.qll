@@ -31,6 +31,7 @@
  * caught up by its surrounding loop and turned into a `NormalCompletion`.
  */
 
+private import codeql_ruby.AST as AST
 private import codeql_ruby.ast.internal.TreeSitter::Generated
 private import AstNodes
 private import codeql_ruby.ast.internal.Variable
@@ -306,12 +307,19 @@ abstract private class PreOrderTree extends ControlFlowTree {
   final override predicate first(AstNode first) { first = this }
 }
 
+// TODO: remove this predicate
+predicate isValidFor(Completion c, ControlFlowTree node) {
+  c instanceof SimpleCompletion and isHidden(node)
+  or
+  c.isValidFor(node)
+}
+
 abstract private class StandardPreOrderTree extends StandardNode, PreOrderTree {
   final override predicate last(AstNode last, Completion c) {
     last(this.getLastChildNode(), last, c)
     or
     not exists(this.getLastChildNode()) and
-    c.isValidFor(this) and
+    isValidFor(c, this) and
     last = this
   }
 
@@ -327,7 +335,7 @@ abstract private class StandardPreOrderTree extends StandardNode, PreOrderTree {
 abstract private class PostOrderTree extends ControlFlowTree {
   override predicate last(AstNode last, Completion c) {
     last = this and
-    c.isValidFor(last)
+    isValidFor(c, last)
   }
 }
 
@@ -840,7 +848,7 @@ module Trees {
           or
           not exists(this.getExceptions()) and
           last = this and
-          c.isValidFor(this)
+          isValidFor(c, this)
         )
       )
     }
