@@ -121,11 +121,7 @@ module StringInterpolationComponent {
 
     final override string toString() { result = "#{...}" }
 
-    final override Stmt getStmt(int n) {
-      // Generated AST can currently only represent a single statement in an interpolation.
-      n = 0 and
-      result = generated.getChild()
-    }
+    final override Stmt getStmt(int n) { result = generated.getChild(n) }
 
     final override string getValueText() { none() }
 

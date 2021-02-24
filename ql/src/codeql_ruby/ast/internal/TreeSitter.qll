@@ -803,13 +803,13 @@ module Generated {
 
     override Location getLocation() { interpolation_def(this, _, _, result) }
 
-    UnderscoreStatement getChild() { interpolation_child(this, result) }
+    AstNode getChild(int i) { interpolation_child(this, i, result) }
 
     override AstNode getParent() { interpolation_def(this, result, _, _) }
 
     override int getParentIndex() { interpolation_def(this, _, result, _) }
 
-    override AstNode getAFieldOrChild() { interpolation_child(this, result) }
+    override AstNode getAFieldOrChild() { interpolation_child(this, _, result) }
   }
 
   class KeywordParameter extends @keyword_parameter, AstNode {

@@ -243,7 +243,7 @@ private module Cached {
     or
     i = any(Generated::In x).getChild()
     or
-    i = any(Generated::Interpolation x).getChild()
+    i = any(Generated::Interpolation x).getChild(_)
     or
     i = any(Generated::KeywordParameter x).getValue()
     or
