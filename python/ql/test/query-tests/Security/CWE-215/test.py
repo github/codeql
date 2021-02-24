@@ -22,11 +22,11 @@ app.notrun(debug=True)
 
 DEBUG = True
 
-app.run(debug=DEBUG)
+app.run(debug=DEBUG) # NOT OK
 
 DEBUG = 1
 
-app.run(debug=DEBUG)
+app.run(debug=DEBUG) # NOT OK
 
 if False:
     app.run(debug=True)
@@ -34,4 +34,17 @@ if False:
 
 
 runapp = app.run
-runapp(debug=True)
+runapp(debug=True) # NOT OK
+
+
+# imports from other module
+import settings
+app.run(debug=settings.ALWAYS_TRUE) # NOT OK
+
+
+# depending on environment values
+import os
+
+DEPENDS_ON_ENV = os.environ["ENV"] == "dev"
+
+app.run(debug=DEPENDS_ON_ENV) # OK
