@@ -39,13 +39,13 @@
           <p>
             Note that <code>ssl.wrap_socket</code> has been deprecated in
             Python 3.7. The recommended alternatives are:
-            <ul>
-              <li><code>ssl.SSLContext</code> - supported in Python 2.7.9,
-                    3.2, and later versions</li>
-              <li><code>ssl.create_default_context</code> - a convenience function,
-                    supported in Python 3.4 and later versions.</li>
-            </ul>
           </p>
+          <ul>
+            <li><code>ssl.SSLContext</code> - supported in Python 2.7.9,
+                  3.2, and later versions</li>
+            <li><code>ssl.create_default_context</code> - a convenience function,
+                  supported in Python 3.4 and later versions.</li>
+          </ul>
      </example>
 
      <references>
