@@ -2,4 +2,4 @@
   "-//Semmle//qhelp//EN"
   "qhelp.dtd">
 <qhelp>
-<include src="TempDirLocalInformationDisclosure.qhelp" /></qhelp>
+<include src="TempDirLocalInformationDisclosure.inc.qhelp" /></qhelp>
