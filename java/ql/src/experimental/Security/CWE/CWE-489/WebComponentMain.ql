@@ -9,6 +9,7 @@
 
 import java
 import semmle.code.java.frameworks.Servlets
+import MainLib
 
 /** The java type `javax.servlet.Filter`. */
 class ServletFilterClass extends Class {
@@ -47,15 +48,8 @@ class WebComponentMainMethod extends Method {
           .getASupertype+()
           .hasQualifiedName("org.springframework.webflow.execution", "Action") // Spring actions
     ) and
-    this.hasName("main") and
-    this.isStatic() and
-    this.getReturnType() instanceof VoidType and
-    this.isPublic() and
-    this.getNumberOfParameters() = 1 and
-    this.getParameter(0).getType() instanceof Array and
-    not this.getDeclaringType().getName().toLowerCase().matches("%test%") and // Simple check to exclude test classes to reduce FPs
-    not this.getDeclaringType().getPackage().getName().toLowerCase().matches("%test%") and // Simple check to exclude classes in test packages to reduce FPs
-    not exists(this.getLocation().getFile().getAbsolutePath().indexOf("/src/test/java")) //  Match test directory structure of build tools like maven
+    isMainMethod(this) and
+    not isTestMethod(this)
   }
 }
 
