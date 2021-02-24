@@ -562,34 +562,32 @@ module Cryptography {
 
     /** Provides classes for modeling new key-pair generation APIs. */
     module KeyGeneration {
-      /** Gets a reference to an integer literal, as well as the origin of the integer literal. */
-      private DataFlow::Node keysizeTracker(
-        DataFlow::TypeTracker t, int keySize, DataFlow::Node origin
-      ) {
+      /** Gets a back-reference to the keysize argument `arg` that was used to generate a new key-pair. */
+      DataFlow::LocalSourceNode keysizeBacktracker(DataFlow::TypeBackTracker t, DataFlow::Node arg) {
         t.start() and
-        result.asExpr().(IntegerLiteral).getValue() = keySize and
-        origin = result
+        arg = any(KeyGeneration::Range r).getKeySizeArg() and
+        result = arg.getALocalSource()
         or
         // Due to bad performance when using normal setup with we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
+        exists(DataFlow::TypeBackTracker t2 |
           exists(DataFlow::StepSummary summary |
-            keysizeTracker_first_join(t2, keySize, origin, result, summary) and
-            t = t2.append(summary)
+            keysizeBacktracker_first_join(t2, arg, result, summary) and
+            t = t2.prepend(summary)
           )
         )
       }
 
       pragma[nomagic]
-      private predicate keysizeTracker_first_join(
-        DataFlow::TypeTracker t2, int keySize, DataFlow::Node origin, DataFlow::Node res,
+      private predicate keysizeBacktracker_first_join(
+        DataFlow::TypeBackTracker t2, DataFlow::Node arg, DataFlow::Node res,
         DataFlow::StepSummary summary
       ) {
-        DataFlow::StepSummary::step(keysizeTracker(t2, keySize, origin), res, summary)
+        DataFlow::StepSummary::step(res, keysizeBacktracker(t2, arg), summary)
       }
 
-      /** Gets a reference to an integer literal, as well as the origin of the integer literal. */
-      private DataFlow::Node keysizeTracker(int keySize, DataFlow::Node origin) {
-        result = keysizeTracker(DataFlow::TypeTracker::end(), keySize, origin)
+      /** Gets a back-reference to the keysize argument `arg` that was used to generate a new key-pair. */
+      DataFlow::LocalSourceNode keysizeBacktracker(DataFlow::Node arg) {
+        result = keysizeBacktracker(DataFlow::TypeBackTracker::end(), arg)
       }
 
       /**
@@ -610,7 +608,8 @@ module Cryptography {
          * explains how we obtained this specific key size.
          */
         int getKeySizeWithOrigin(DataFlow::Node origin) {
-          this.getKeySizeArg() = keysizeTracker(result, origin)
+          origin = keysizeBacktracker(this.getKeySizeArg()) and
+          result = origin.asExpr().(IntegerLiteral).getValue()
         }
 
         /** Gets the minimum key size (in bits) for this algorithm to be considered secure. */
