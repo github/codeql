@@ -431,9 +431,7 @@ module Trees {
     }
   }
 
-  private class BlockParameterTree extends ComplexParameterTree, BlockParameter {
-    final override Identifier getIdentifier() { result = this.getName() }
-  }
+  private class BlockParameterTree extends LeafTree, BlockParameter { }
 
   private class CaseTree extends PreOrderTree, Case {
     final override predicate propagatesAbnormal(AstNode child) {
@@ -494,47 +492,32 @@ module Trees {
 
   private class ComplexTree extends LeafTree, Complex { }
 
-  abstract private class ComplexParameterTree extends ControlFlowTree {
-    abstract Identifier getIdentifier();
-
-    final override predicate propagatesAbnormal(AstNode child) { none() }
-
-    final override predicate first(AstNode first) { first(this.getIdentifier(), first) }
-
-    final override predicate last(AstNode last, Completion c) {
-      last(this.getIdentifier(), last, c)
-    }
-
-    final override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
-  }
-
   private class ConstantTree extends LeafTree, Constant { }
 
   /** A parameter that may have a default value. */
-  abstract class DefaultValueParameterTree extends ControlFlowTree {
+  abstract class DefaultValueParameterTree extends PreOrderTree {
     abstract AstNode getDefaultValue();
-
-    abstract Identifier getIdentifier();
 
     predicate hasDefaultValue() { exists(this.getDefaultValue()) }
 
     final override predicate propagatesAbnormal(AstNode child) { child = this.getDefaultValue() }
 
-    final override predicate first(AstNode first) { first(this.getIdentifier(), first) }
-
     final override predicate last(AstNode last, Completion c) {
-      last(this.getIdentifier(), last, c) and
-      c.(MatchingCompletion).getValue() = true
-      or
-      last(this.getDefaultValue(), last, c)
-      or
-      last(this.getIdentifier(), last, c) and
-      not this.hasDefaultValue() and
+      last(this.getDefaultValue(), last, c) and
       c instanceof NormalCompletion
+      or
+      last = this and
+      (
+        not this.hasDefaultValue() and
+        c instanceof SimpleCompletion
+        or
+        this.hasDefaultValue() and
+        c.(MatchingCompletion).getValue() = true
+      )
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      last(this.getIdentifier(), pred, c) and
+      pred = this and
       first(this.getDefaultValue(), succ) and
       c.(MatchingCompletion).getValue() = false
     }
@@ -675,9 +658,7 @@ module Trees {
 
   private class GlobalVariableTree extends LeafTree, GlobalVariable { }
 
-  private class HashSplatParameterTree extends ComplexParameterTree, HashSplatParameter {
-    final override Identifier getIdentifier() { result = this.getName() }
-  }
+  private class HashSplatParameterTree extends LeafTree, HashSplatParameter { }
 
   private HeredocBody heredoc(HeredocBeginning start) {
     exists(int i, File f |
@@ -734,8 +715,6 @@ module Trees {
 
   private class KeywordParameterTree extends DefaultValueParameterTree, KeywordParameter {
     final override AstNode getDefaultValue() { result = this.getValue() }
-
-    final override Identifier getIdentifier() { result = this.getName() }
   }
 
   class LambdaTree extends LeafTree, Lambda {
@@ -834,8 +813,6 @@ module Trees {
 
   private class OptionalParameterTree extends DefaultValueParameterTree, OptionalParameter {
     final override AstNode getDefaultValue() { result = this.getValue() }
-
-    final override Identifier getIdentifier() { result = this.getName() }
   }
 
   private class RationalTree extends LeafTree, Rational { }
@@ -1196,9 +1173,7 @@ module Trees {
     }
   }
 
-  private class SplatParameterTree extends ComplexParameterTree, SplatParameter {
-    final override Identifier getIdentifier() { result = this.getName() }
-  }
+  private class SplatParameterTree extends LeafTree, SplatParameter { }
 
   private class SuperTree extends LeafTree, Super { }
 
