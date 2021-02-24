@@ -324,6 +324,7 @@ class VarRefinementContext extends RefinementContext, TVarRefinementContext {
 }
 
 /** Holds if `e` is nested inside a guard node. */
+pragma[nomagic]
 private predicate inGuard(Expr e) {
   e = any(GuardControlFlowNode g).getTest()
   or

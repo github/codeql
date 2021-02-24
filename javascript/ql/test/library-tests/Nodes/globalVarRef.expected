@@ -2,7 +2,6 @@
 | String | tst2.js:9:1:9:11 | this.String |
 | document | tst2.js:2:1:2:26 | require ... ument") |
 | document | tst.js:3:1:3:15 | window.document |
-| document | tst.js:4:1:4:22 | window. ... ocument |
 | document | tst.js:5:1:5:13 | self.document |
 | document | tst.js:6:1:6:19 | globalThis.document |
 | foo | tst3.js:4:1:4:5 | w.foo |
