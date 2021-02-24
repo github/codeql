@@ -54,6 +54,76 @@ class Toplevel extends ModuleBase, @program {
 }
 
 /**
+ * A class or module definition.
+ *
+ * ```rb
+ * class Foo
+ *   def bar
+ *   end
+ * end
+ * module Bar
+ *   class Baz
+ *   end
+ * end
+ * ```
+ */
+class Namespace extends ModuleBase, ConstantWriteAccess {
+  override Namespace::Range range;
+
+  override string getAPrimaryQlClass() { result = "Namespace" }
+
+  /**
+   * Gets the name of the module/class. In the following example, the result is
+   * `"Foo"`.
+   * ```rb
+   * class Foo
+   * end
+   * ```
+   *
+   * N.B. in the following example, where the module/class name uses the scope
+   * resolution operator, the result is the name being resolved, i.e. `"Bar"`.
+   * Use `getScopeExpr` to get the `Foo` for `Foo`.
+   * ```rb
+   * module Foo::Bar
+   * end
+   * ```
+   */
+  override string getName() { result = range.getName() }
+
+  /**
+   * Gets the scope expression used in the module/class name's scope resolution
+   * operation, if any.
+   *
+   * In the following example, the result is the `Expr` for `Foo`.
+   *
+   * ```rb
+   * module Foo::Bar
+   * end
+   * ```
+   *
+   * However, there is no result for the following example, since there is no
+   * scope resolution operation.
+   *
+   * ```rb
+   * module Baz
+   * end
+   * ```
+   */
+  override Expr getScopeExpr() { result = range.getScopeExpr() }
+
+  /**
+   * Holds if the module/class name uses the scope resolution operator to access the
+   * global scope, as in this example:
+   *
+   * ```rb
+   * class ::Foo
+   * end
+   * ```
+   */
+  override predicate hasGlobalScope() { range.hasGlobalScope() }
+}
+
+/**
  * A class definition.
  *
  * ```rb
@@ -63,60 +133,10 @@ class Toplevel extends ModuleBase, @program {
  * end
  * ```
  */
-class Class extends ModuleBase, ConstantWriteAccess {
+class Class extends Namespace, @class {
   final override Class::Range range;
 
   final override string getAPrimaryQlClass() { result = "Class" }
-
-  /**
-   * Gets the name of the class. In the following example, the result is
-   * `"Foo"`.
-   * ```rb
-   * class Foo
-   * end
-   * ```
-   *
-   * N.B. in the following example, where the class name uses the scope
-   * resolution operator, the result is the name being resolved, i.e. `"Bar"`.
-   * Use `getScopeExpr` to get the `Foo` for `Foo`.
-   * ```rb
-   * class Foo::Bar
-   * end
-   * ```
-   */
-  final override string getName() { result = range.getName() }
-
-  /**
-   * Gets the scope expression used in the class name's scope resolution
-   * operation, if any.
-   *
-   * In the following example, the result is the `Expr` for `Foo`.
-   *
-   * ```rb
-   * class Foo::Bar
-   * end
-   * ```
-   *
-   * However, there is no result for the following example, since there is no
-   * scope resolution operation.
-   *
-   * ```rb
-   * class Baz
-   * end
-   * ```
-   */
-  final override Expr getScopeExpr() { result = range.getScopeExpr() }
-
-  /**
-   * Holds if the class name uses the scope resolution operator to access the
-   * global scope, as in this example:
-   *
-   * ```rb
-   * class ::Foo
-   * end
-   * ```
-   */
-  final override predicate hasGlobalScope() { range.hasGlobalScope() }
 
   /**
    * Gets the `Expr` used as the superclass in the class definition, if any.
@@ -190,58 +210,8 @@ class SingletonClass extends ModuleBase, @singleton_class {
  * end
  * ```
  */
-class Module extends ModuleBase, ConstantWriteAccess, @module {
+class Module extends Namespace, @module {
   final override Module::Range range;
 
   final override string getAPrimaryQlClass() { result = "Module" }
-
-  /**
-   * Gets the name of the module. In the following example, the result is
-   * `"Foo"`.
-   * ```rb
-   * module Foo
-   * end
-   * ```
-   *
-   * N.B. in the following example, where the module name uses the scope
-   * resolution operator, the result is the name being resolved, i.e. `"Bar"`.
-   * Use `getScopeExpr` to get the `Expr` for `Foo`.
-   * ```rb
-   * module Foo::Bar
-   * end
-   * ```
-   */
-  final override string getName() { result = range.getName() }
-
-  /**
-   * Gets the scope expression used in the module name's scope resolution
-   * operation, if any.
-   *
-   * In the following example, the result is the `Expr` for `Foo`.
-   *
-   * ```rb
-   * module Foo::Bar
-   * end
-   * ```
-   *
-   * However, there is no result for the following example, since there is no
-   * scope resolution operation.
-   *
-   * ```rb
-   * module Baz
-   * end
-   * ```
-   */
-  final override Expr getScopeExpr() { result = range.getScopeExpr() }
-
-  /**
-   * Holds if the module name uses the scope resolution operator to access the
-   * global scope, as in this example:
-   *
-   * ```rb
-   * module ::Foo
-   * end
-   * ```
-   */
-  final override predicate hasGlobalScope() { range.hasGlobalScope() }
 }
