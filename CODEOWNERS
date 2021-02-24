@@ -4,9 +4,9 @@
 /javascript/ @github/codeql-javascript
 /python/ @github/codeql-python
 
-# Exclude help for experimental queries from docs review
-/cpp/**/experimental/**/*.qhelp @github/codeql-c-analysis @xcorail
-/csharp/**/experimental/**/*.qhelp @github/codeql-csharp @xcorail
-/java/**/experimental/**/*.qhelp @github/codeql-java @xcorail
-/javascript/**/experimental/**/*.qhelp @github/codeql-javascript @xcorail
-/python/**/experimental/**/*.qhelp @github/codeql-python @xcorail
+# Make @xcorail (GitHub Security Lab) a code owner for experimental queries so he gets pinged when we promote a query out of experimental
+/cpp/**/experimental/**/* @github/codeql-c-analysis @xcorail
+/csharp/**/experimental/**/* @github/codeql-csharp @xcorail
+/java/**/experimental/**/* @github/codeql-java @xcorail
+/javascript/**/experimental/**/* @github/codeql-javascript @xcorail
+/python/**/experimental/**/* @github/codeql-python @xcorail
