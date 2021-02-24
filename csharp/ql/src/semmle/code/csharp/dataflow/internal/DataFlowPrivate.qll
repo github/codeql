@@ -220,6 +220,9 @@ module LocalFlow {
           e1 = we.getInitializer() and
           e2 = we
         )
+        or
+        scope = any(AssignExpr ae | ae.getLValue().(TupleExpr) = e2 and ae.getRValue() = e1) and
+        isSuccessor = false
       )
     }
 
@@ -483,6 +486,15 @@ private predicate fieldOrPropertyStore(Expr e, Content c, Expr src, Expr q, bool
       src = mi.getRValue() and
       postUpdate = false
     )
+    or
+    // Tuple element, `(..., src, ...)` `f` is `ItemX` of tuple `q`
+    exists(int i |
+      not (src instanceof LocalVariableDeclExpr or src instanceof VariableWrite) and
+      e = q and
+      src = q.(TupleExpr).getArgument(i) and
+      f = q.getType().(TupleType).getElement(i) and
+      postUpdate = false
+    )
   )
 }
 
@@ -495,7 +507,7 @@ private predicate overridesOrImplementsSourceDecl(Property p1, Property p2) {
 
 /**
  * Holds if `e2` is an expression that reads field or property `c` from
- * expresion `e1`. This takes overriding into account for properties written
+ * expression `e1`. This takes overriding into account for properties written
  * from library code.
  */
 private predicate fieldOrPropertyRead(Expr e1, Content c, FieldOrPropertyRead e2) {
@@ -792,6 +804,27 @@ private module Cached {
       hasNodePath(x, node1, node2) and
       node2.asExpr().(AwaitExpr).getExpr() = node1.asExpr() and
       c = getResultContent()
+    )
+    or
+    // node1 = (..., node2, ...)
+    // node1.ItemX flows to node2
+    exists(
+      int i, Ssa::ExplicitDefinition def, AssignableDefinitions::TupleAssignmentDefinition tad,
+      Expr item
+    |
+      // node1 = (..., item, ...)
+      node1.asExpr().(TupleExpr).getArgument(i) = item and
+      (
+        // item = (..., ..., ...) in node1 = (..., (..., ..., ...), ...)
+        node2.asExpr() instanceof TupleExpr and node2.asExpr() = item
+        or
+        // item = variable in node1 = (..., variable, ...)
+        node2.(SsaDefinitionNode).getDefinition() = def and
+        def.getADefinition() = tad and
+        tad.getLeaf() = item
+      ) and
+      c.(FieldContent).getField() =
+        node1.asExpr().getType().(TupleType).getElement(i).getUnboundDeclaration()
     )
     or
     FlowSummaryImpl::Private::readStep(node1, c, node2)

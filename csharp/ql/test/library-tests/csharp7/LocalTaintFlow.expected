@@ -34,33 +34,41 @@
 | CSharp7.cs:66:26:66:26 | 2 | CSharp7.cs:66:16:66:27 | (..., ...) |
 | CSharp7.cs:69:10:69:20 | this | CSharp7.cs:71:26:71:28 | this access |
 | CSharp7.cs:71:26:71:28 | [post] this access | CSharp7.cs:72:17:72:19 | this access |
+| CSharp7.cs:71:26:71:28 | call to method F | CSharp7.cs:71:9:71:22 | (..., ...) |
 | CSharp7.cs:71:26:71:28 | this access | CSharp7.cs:72:17:72:19 | this access |
 | CSharp7.cs:72:13:72:19 | SSA def(z) | CSharp7.cs:75:16:75:16 | access to local variable z |
 | CSharp7.cs:72:17:72:19 | [post] this access | CSharp7.cs:73:18:73:20 | this access |
 | CSharp7.cs:72:17:72:19 | call to method F | CSharp7.cs:72:13:72:19 | SSA def(z) |
 | CSharp7.cs:72:17:72:19 | this access | CSharp7.cs:73:18:73:20 | this access |
 | CSharp7.cs:73:18:73:20 | [post] this access | CSharp7.cs:74:13:74:15 | this access |
+| CSharp7.cs:73:18:73:20 | call to method F | CSharp7.cs:73:9:73:14 | (..., ...) |
 | CSharp7.cs:73:18:73:20 | this access | CSharp7.cs:74:13:74:15 | this access |
 | CSharp7.cs:74:13:74:15 | call to method F | CSharp7.cs:74:13:74:17 | access to field Item1 |
 | CSharp7.cs:75:16:75:16 | [post] access to local variable z | CSharp7.cs:77:39:77:39 | access to local variable z |
 | CSharp7.cs:75:16:75:16 | access to local variable z | CSharp7.cs:77:39:77:39 | access to local variable z |
+| CSharp7.cs:75:27:75:35 | (..., ...) | CSharp7.cs:75:9:75:23 | (..., ...) |
 | CSharp7.cs:75:28:75:28 | 1 | CSharp7.cs:75:27:75:35 | (..., ...) |
 | CSharp7.cs:75:31:75:31 | 2 | CSharp7.cs:75:27:75:35 | (..., ...) |
 | CSharp7.cs:75:34:75:34 | 3 | CSharp7.cs:75:27:75:35 | (..., ...) |
 | CSharp7.cs:76:9:76:32 | SSA def(x) | CSharp7.cs:79:27:79:27 | access to local variable x |
+| CSharp7.cs:76:18:76:32 | ... = ... | CSharp7.cs:76:9:76:14 | (..., ...) |
+| CSharp7.cs:76:27:76:32 | (..., ...) | CSharp7.cs:76:18:76:23 | (..., ...) |
 | CSharp7.cs:76:27:76:32 | (..., ...) | CSharp7.cs:76:18:76:32 | ... = ... |
 | CSharp7.cs:76:28:76:28 | 1 | CSharp7.cs:76:27:76:32 | (..., ...) |
 | CSharp7.cs:76:31:76:31 | 2 | CSharp7.cs:76:27:76:32 | (..., ...) |
 | CSharp7.cs:77:9:77:40 | SSA def(a) | CSharp7.cs:78:31:78:31 | access to local variable a |
 | CSharp7.cs:77:9:77:40 | SSA def(b) | CSharp7.cs:78:24:78:24 | access to local variable b |
 | CSharp7.cs:77:9:77:40 | SSA def(c) | CSharp7.cs:78:28:78:28 | access to local variable c |
+| CSharp7.cs:77:35:77:40 | (..., ...) | CSharp7.cs:77:9:77:31 | (..., ...) |
 | CSharp7.cs:77:36:77:36 | 1 | CSharp7.cs:77:9:77:40 | SSA def(a) |
 | CSharp7.cs:77:36:77:36 | 1 | CSharp7.cs:77:35:77:40 | (..., ...) |
 | CSharp7.cs:77:39:77:39 | access to local variable z | CSharp7.cs:77:35:77:40 | (..., ...) |
+| CSharp7.cs:78:23:78:33 | (..., ...) | CSharp7.cs:78:9:78:19 | (..., ...) |
 | CSharp7.cs:78:24:78:24 | access to local variable b | CSharp7.cs:78:23:78:33 | (..., ...) |
 | CSharp7.cs:78:27:78:32 | (..., ...) | CSharp7.cs:78:23:78:33 | (..., ...) |
 | CSharp7.cs:78:28:78:28 | access to local variable c | CSharp7.cs:78:27:78:32 | (..., ...) |
 | CSharp7.cs:78:31:78:31 | access to local variable a | CSharp7.cs:78:27:78:32 | (..., ...) |
+| CSharp7.cs:79:22:79:28 | (..., ...) | CSharp7.cs:79:9:79:18 | (..., ...) |
 | CSharp7.cs:79:23:79:24 | "" | CSharp7.cs:79:22:79:28 | (..., ...) |
 | CSharp7.cs:79:27:79:27 | access to local variable x | CSharp7.cs:79:22:79:28 | (..., ...) |
 | CSharp7.cs:82:21:82:21 | x | CSharp7.cs:84:20:84:20 | access to parameter x |
@@ -74,6 +82,7 @@
 | CSharp7.cs:89:19:89:27 | "tainted" | CSharp7.cs:89:18:89:34 | (..., ...) |
 | CSharp7.cs:89:30:89:33 | "X2" | CSharp7.cs:89:18:89:34 | (..., ...) |
 | CSharp7.cs:90:9:90:29 | SSA def(t3) | CSharp7.cs:91:18:91:19 | access to local variable t3 |
+| CSharp7.cs:90:28:90:29 | access to local variable t1 | CSharp7.cs:90:9:90:24 | (..., ...) |
 | CSharp7.cs:90:28:90:29 | access to local variable t1 | CSharp7.cs:92:20:92:21 | access to local variable t1 |
 | CSharp7.cs:92:20:92:21 | access to local variable t1 | CSharp7.cs:92:20:92:27 | access to field Item1 |
 | CSharp7.cs:97:19:97:19 | 1 | CSharp7.cs:97:18:97:38 | (..., ...) |
@@ -92,6 +101,7 @@
 | CSharp7.cs:104:45:104:45 | 1 | CSharp7.cs:104:22:104:46 | (..., ...) |
 | CSharp7.cs:109:9:109:46 | SSA def(m1) | CSharp7.cs:112:27:112:28 | access to local variable m1 |
 | CSharp7.cs:109:9:109:46 | SSA def(m2) | CSharp7.cs:112:31:112:32 | access to local variable m2 |
+| CSharp7.cs:109:28:109:46 | (..., ...) | CSharp7.cs:109:9:109:24 | (..., ...) |
 | CSharp7.cs:109:29:109:37 | "DefUse1" | CSharp7.cs:109:9:109:46 | SSA def(m1) |
 | CSharp7.cs:109:29:109:37 | "DefUse1" | CSharp7.cs:109:28:109:46 | (..., ...) |
 | CSharp7.cs:109:40:109:45 | (..., ...) | CSharp7.cs:109:9:109:46 | SSA def(m2) |
@@ -99,11 +109,14 @@
 | CSharp7.cs:109:41:109:41 | 0 | CSharp7.cs:109:40:109:45 | (..., ...) |
 | CSharp7.cs:109:44:109:44 | 1 | CSharp7.cs:109:40:109:45 | (..., ...) |
 | CSharp7.cs:112:9:112:33 | SSA def(m4) | CSharp7.cs:113:18:113:19 | access to local variable m4 |
+| CSharp7.cs:112:26:112:33 | (..., ...) | CSharp7.cs:112:9:112:22 | (..., ...) |
 | CSharp7.cs:112:27:112:28 | access to local variable m1 | CSharp7.cs:112:26:112:33 | (..., ...) |
 | CSharp7.cs:112:31:112:32 | access to local variable m2 | CSharp7.cs:112:26:112:33 | (..., ...) |
 | CSharp7.cs:114:9:114:67 | SSA def(m9) | CSharp7.cs:115:19:115:20 | access to local variable m9 |
+| CSharp7.cs:114:38:114:67 | ... = ... | CSharp7.cs:114:9:114:34 | (..., ...) |
 | CSharp7.cs:114:38:114:67 | SSA def(m2) | CSharp7.cs:118:9:118:10 | access to local variable m2 |
 | CSharp7.cs:114:38:114:67 | SSA qualifier def(m2.Item1) | CSharp7.cs:119:19:119:26 | access to field Item1 |
+| CSharp7.cs:114:49:114:67 | (..., ...) | CSharp7.cs:114:38:114:45 | (..., ...) |
 | CSharp7.cs:114:49:114:67 | (..., ...) | CSharp7.cs:114:38:114:67 | ... = ... |
 | CSharp7.cs:114:50:114:58 | "DefUse2" | CSharp7.cs:114:49:114:67 | (..., ...) |
 | CSharp7.cs:114:61:114:66 | (..., ...) | CSharp7.cs:114:38:114:67 | SSA def(m2) |
@@ -186,9 +199,12 @@
 | CSharp7.cs:223:13:223:20 | [post] this access | CSharp7.cs:224:18:224:25 | this access |
 | CSharp7.cs:223:13:223:20 | this access | CSharp7.cs:224:18:224:25 | this access |
 | CSharp7.cs:224:18:224:25 | [post] this access | CSharp7.cs:225:22:225:29 | this access |
+| CSharp7.cs:224:18:224:25 | call to method f | CSharp7.cs:224:9:224:14 | (..., ...) |
 | CSharp7.cs:224:18:224:25 | this access | CSharp7.cs:225:22:225:29 | this access |
 | CSharp7.cs:225:22:225:29 | [post] this access | CSharp7.cs:226:22:226:33 | this access |
+| CSharp7.cs:225:22:225:29 | call to method f | CSharp7.cs:225:9:225:18 | (..., ...) |
 | CSharp7.cs:225:22:225:29 | this access | CSharp7.cs:226:22:226:33 | this access |
+| CSharp7.cs:226:22:226:33 | call to method f | CSharp7.cs:226:9:226:18 | (..., ...) |
 | CSharp7.cs:234:16:234:23 | SSA def(o) | CSharp7.cs:235:13:235:13 | access to local variable o |
 | CSharp7.cs:234:20:234:23 | null | CSharp7.cs:234:16:234:23 | SSA def(o) |
 | CSharp7.cs:235:13:235:13 | access to local variable o | CSharp7.cs:235:18:235:23 | SSA def(i1) |
