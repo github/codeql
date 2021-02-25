@@ -79,6 +79,9 @@ test_ClientRequest
 | tst.js:247:24:247:68 | request ... o.png') |
 | tst.js:249:1:251:2 | form.su ... e();\\n}) |
 | tst.js:257:1:262:2 | form.su ... rs()\\n}) |
+| tst.js:267:1:267:61 | httpPro ... 9000'}) |
+| tst.js:269:13:269:48 | httpPro ... ptions) |
+| tst.js:271:3:271:61 | proxy.w ... 080' }) |
 test_getADataNode
 | tst.js:53:5:53:23 | axios({data: data}) | tst.js:53:18:53:21 | data |
 | tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:19:57:23 | data1 |
@@ -210,6 +213,8 @@ test_getUrl
 | tst.js:247:24:247:68 | request ... o.png') | tst.js:247:32:247:67 | 'http:/ ... go.png' |
 | tst.js:249:1:251:2 | form.su ... e();\\n}) | tst.js:249:13:249:33 | 'http:/ ... e.org/' |
 | tst.js:257:1:262:2 | form.su ... rs()\\n}) | tst.js:257:13:262:1 | {\\n    m ... ers()\\n} |
+| tst.js:267:1:267:61 | httpPro ... 9000'}) | tst.js:267:37:267:59 | 'http:/ ... t:9000' |
+| tst.js:271:3:271:61 | proxy.w ... 080' }) | tst.js:271:33:271:58 | 'http:/ ... m:8080' |
 test_getAResponseDataNode
 | tst.js:19:5:19:23 | requestPromise(url) | tst.js:19:5:19:23 | requestPromise(url) | text | true |
 | tst.js:21:5:21:23 | superagent.get(url) | tst.js:21:5:21:23 | superagent.get(url) | stream | true |

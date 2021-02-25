@@ -260,3 +260,13 @@ form.submit({
     path: '/upload',
     headers: form.getHeaders()
 });
+
+var httpProxy = require('http-proxy');
+var http = require("http");
+
+httpProxy.createProxyServer({target:'http://localhost:9000'}).listen(8000); 
+
+var proxy = httpProxy.createProxyServer(options);
+http.createServer(function(req, res) {
+  proxy.web(req, res, { target: 'http://mytarget.com:8080' });
+});
