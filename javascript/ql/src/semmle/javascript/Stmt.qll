@@ -95,7 +95,7 @@ class ControlStmt extends TControlStmt, Stmt {
 }
 
 /**
- * A loop, that is, is a while loop, a do-while loop, a for loop, or a for-in loop.
+ * A loop, that is, a while loop, a do-while loop, a for loop, or a for-in loop.
  *
  * Examples:
  *
