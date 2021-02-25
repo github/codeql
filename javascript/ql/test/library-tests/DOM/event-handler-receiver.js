@@ -1,3 +1,7 @@
-document.getElementById('my-id').onclick = function() {
-  this.parentNode.innerHTML = '<h2><a href="' + location.href + '">A link</a></h2>'; // NOT OK
+document.getElementById('my-id').onclick = function () {
+  this.parentNode.innerHTML = '<b>hello</b>'; // `this` is a DOM element
 };
+
+document.getElementById('my-id').addEventListener("click", function (ev) {
+  this.parentNode.innerHTML = '<b>hello</b>'; // `this` is a DOM element
+});

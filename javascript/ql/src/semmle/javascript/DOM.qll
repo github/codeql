@@ -355,8 +355,16 @@ module DOM {
         )
         or
         // A receiver node of an event handler on a DOM node
-        exists(string handler | handler.matches("on%") |
-          this = domValueRef().getAPropertySource(handler).(DataFlow::FunctionNode).getReceiver()
+        exists(DataFlow::SourceNode domNode, DataFlow::FunctionNode eventHandler |
+          // NOTE: we do not use `getABoundFunctionValue()`, since bound functions tend to have
+          // a different receiver anyway
+          eventHandler = domNode.getAPropertySource(any(string n | n.matches("on%")))
+          or
+          eventHandler =
+            domNode.getAMethodCall("addEventListener").getArgument(1).getAFunctionValue()
+        |
+          domNode = domValueRef() and
+          this = eventHandler.getReceiver()
         )
         or
         this = DataFlow::thisNode(any(EventHandlerCode evt))
