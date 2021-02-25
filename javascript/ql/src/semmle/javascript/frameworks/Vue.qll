@@ -168,9 +168,7 @@ module Vue {
      * extended objects and mixins.
      */
     pragma[nomagic]
-    DataFlow::SourceNode getOptionSource(string name) {
-      result = getOption(name).getALocalSource()
-    }
+    DataFlow::SourceNode getOptionSource(string name) { result = getOption(name).getALocalSource() }
 
     /**
      * Gets the template element used by this instance, if any.
@@ -234,9 +232,7 @@ module Vue {
      * Gets the function responding to changes to the given `propName`.
      */
     DataFlow::FunctionNode getWatchHandler(string propName) {
-      exists(DataFlow::SourceNode watcher |
-        watcher = getWatch().getAPropertySource(propName)
-      |
+      exists(DataFlow::SourceNode watcher | watcher = getWatch().getAPropertySource(propName) |
         result = watcher
         or
         result = watcher.getAPropertySource("handler")
