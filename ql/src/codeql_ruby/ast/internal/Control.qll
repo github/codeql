@@ -108,16 +108,16 @@ module IfModifierExpr {
 
     final override Expr getCondition() { result = generated.getCondition() }
 
-    final Stmt getExpr() { result = generated.getBody() }
+    final Stmt getBody() { result = generated.getBody() }
 
-    final override Stmt getBranch(boolean cond) { cond = true and result = getExpr() }
+    final override Stmt getBranch(boolean cond) { cond = true and result = getBody() }
 
     final override string toString() { result = "... if ..." }
 
     override predicate child(string label, AstNode::Range child) {
       ConditionalExpr::Range.super.child(label, child)
       or
-      label = "getExpr" and child = getExpr()
+      label = "getBody" and child = getBody()
     }
   }
 }
@@ -128,16 +128,16 @@ module UnlessModifierExpr {
 
     final override Expr getCondition() { result = generated.getCondition() }
 
-    final Stmt getExpr() { result = generated.getBody() }
+    final Stmt getBody() { result = generated.getBody() }
 
-    final override Stmt getBranch(boolean cond) { cond = false and result = getExpr() }
+    final override Stmt getBranch(boolean cond) { cond = false and result = getBody() }
 
     final override string toString() { result = "... unless ..." }
 
     override predicate child(string label, AstNode::Range child) {
       ConditionalExpr::Range.super.child(label, child)
       or
-      label = "getExpr" and child = getExpr()
+      label = "getBody" and child = getBody()
     }
   }
 }

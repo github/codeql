@@ -151,7 +151,7 @@ class IfModifierExpr extends ConditionalExpr, @if_modifier {
    * foo if bar
    * ```
    */
-  final Stmt getExpr() { result = range.getExpr() }
+  final Stmt getBody() { result = range.getBody() }
 }
 
 /**
@@ -172,7 +172,7 @@ class UnlessModifierExpr extends ConditionalExpr, @unless_modifier {
    * foo unless bar
    * ```
    */
-  final Stmt getExpr() { result = range.getExpr() }
+  final Stmt getBody() { result = range.getBody() }
 }
 
 /**

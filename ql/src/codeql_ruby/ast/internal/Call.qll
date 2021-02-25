@@ -223,12 +223,12 @@ module BlockArgument {
   class Range extends Expr::Range, @block_argument {
     final override Generated::BlockArgument generated;
 
-    final Expr getExpr() { result = generated.getChild() }
+    final Expr getValue() { result = generated.getChild() }
 
     final override string toString() { result = "&..." }
 
     final override predicate child(string label, AstNode::Range child) {
-      label = "getExpr" and child = getExpr()
+      label = "getValue" and child = getValue()
     }
   }
 }
@@ -237,12 +237,12 @@ module SplatArgument {
   class Range extends Expr::Range, @splat_argument {
     final override Generated::SplatArgument generated;
 
-    final Expr getExpr() { result = generated.getChild() }
+    final Expr getValue() { result = generated.getChild() }
 
     final override string toString() { result = "*..." }
 
     final override predicate child(string label, AstNode::Range child) {
-      label = "getExpr" and child = getExpr()
+      label = "getValue" and child = getValue()
     }
   }
 }
@@ -251,12 +251,12 @@ module HashSplatArgument {
   class Range extends Expr::Range, @hash_splat_argument {
     final override Generated::HashSplatArgument generated;
 
-    final Expr getExpr() { result = generated.getChild() }
+    final Expr getValue() { result = generated.getChild() }
 
     final override string toString() { result = "**..." }
 
     final override predicate child(string label, AstNode::Range child) {
-      label = "getExpr" and child = getExpr()
+      label = "getValue" and child = getValue()
     }
   }
 }

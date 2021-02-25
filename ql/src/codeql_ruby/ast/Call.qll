@@ -164,7 +164,7 @@ class BlockArgument extends Expr, @block_argument {
    * foo(&bar)
    * ```
    */
-  final Expr getExpr() { result = range.getExpr() }
+  final Expr getValue() { result = range.getValue() }
 }
 
 /**
@@ -185,7 +185,7 @@ class SplatArgument extends Expr, @splat_argument {
    * foo(*bar)
    * ```
    */
-  final Expr getExpr() { result = range.getExpr() }
+  final Expr getValue() { result = range.getValue() }
 }
 
 /**
@@ -206,5 +206,5 @@ class HashSplatArgument extends Expr, @hash_splat_argument {
    * foo(**bar)
    * ```
    */
-  final Expr getExpr() { result = range.getExpr() }
+  final Expr getValue() { result = range.getValue() }
 }
