@@ -19,6 +19,9 @@ private import internal.CallGraphs
  */
 class ExprNode extends DataFlow::ValueNode {
   override Expr astNode;
+
+  pragma[nomagic]
+  ExprNode() { any() }
 }
 
 /**

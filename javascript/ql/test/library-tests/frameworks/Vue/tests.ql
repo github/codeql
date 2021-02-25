@@ -29,3 +29,5 @@ query predicate vhtmlSourceWrite(
 import semmle.javascript.security.dataflow.DomBasedXss
 
 query predicate xssSink(DomBasedXss::Sink s) { any() }
+
+query RemoteFlowSource remoteFlowSource() { any() }

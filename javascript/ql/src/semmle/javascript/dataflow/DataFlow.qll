@@ -1263,6 +1263,7 @@ module DataFlow {
   /**
    * Gets the data flow node corresponding to `e`.
    */
+  pragma[inline]
   ExprNode exprNode(Expr e) { result = valueNode(e) }
 
   /** Gets the data flow node corresponding to `ssa`. */
