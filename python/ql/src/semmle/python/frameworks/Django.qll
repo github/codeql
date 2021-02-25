@@ -44,21 +44,7 @@ private module Django {
       result = DataFlow::importNode("django")
     )
     or
-    // Due to bad performance when using normal setup with `django_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        django_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate django_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(django_attr(t2, attr_name), res, summary)
+    exists(DataFlow::TypeTracker t2 | result = django_attr(t2, attr_name).track(t2, t))
   }
 
   /**
@@ -163,22 +149,7 @@ private module Django {
           t.startInAttr(attr_name) and
           result = objects()
           or
-          // Due to bad performance when using normal setup with `objects_attr(t2, attr_name).track(t2, t)`
-          // we have inlined that code and forced a join
-          exists(DataFlow::TypeTracker t2 |
-            exists(DataFlow::StepSummary summary |
-              objects_attr_first_join(t2, attr_name, result, summary) and
-              t = t2.append(summary)
-            )
-          )
-        }
-
-        pragma[nomagic]
-        private predicate objects_attr_first_join(
-          DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-          DataFlow::StepSummary summary
-        ) {
-          DataFlow::StepSummary::step(objects_attr(t2, attr_name), res, summary)
+          exists(DataFlow::TypeTracker t2 | result = objects_attr(t2, attr_name).track(t2, t))
         }
 
         /**
@@ -323,22 +294,7 @@ private module Django {
           result = django::urls()
         )
         or
-        // Due to bad performance when using normal setup with `urls_attr(t2, attr_name).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            urls_attr_first_join(t2, attr_name, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate urls_attr_first_join(
-        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(urls_attr(t2, attr_name), res, summary)
+        exists(DataFlow::TypeTracker t2 | result = urls_attr(t2, attr_name).track(t2, t))
       }
 
       /**
@@ -444,22 +400,7 @@ private module Django {
           result = django::http()
         )
         or
-        // Due to bad performance when using normal setup with `http_attr(t2, attr_name).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            http_attr_first_join(t2, attr_name, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate http_attr_first_join(
-        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(http_attr(t2, attr_name), res, summary)
+        exists(DataFlow::TypeTracker t2 | result = http_attr(t2, attr_name).track(t2, t))
       }
 
       /**
@@ -492,22 +433,7 @@ private module Django {
             result = django::http::request()
           )
           or
-          // Due to bad performance when using normal setup with `request_attr(t2, attr_name).track(t2, t)`
-          // we have inlined that code and forced a join
-          exists(DataFlow::TypeTracker t2 |
-            exists(DataFlow::StepSummary summary |
-              request_attr_first_join(t2, attr_name, result, summary) and
-              t = t2.append(summary)
-            )
-          )
-        }
-
-        pragma[nomagic]
-        private predicate request_attr_first_join(
-          DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-          DataFlow::StepSummary summary
-        ) {
-          DataFlow::StepSummary::step(request_attr(t2, attr_name), res, summary)
+          exists(DataFlow::TypeTracker t2 | result = request_attr(t2, attr_name).track(t2, t))
         }
 
         /**
@@ -595,22 +521,7 @@ private module Django {
             result = response()
           )
           or
-          // Due to bad performance when using normal setup with `response_attr(t2, attr_name).track(t2, t)`
-          // we have inlined that code and forced a join
-          exists(DataFlow::TypeTracker t2 |
-            exists(DataFlow::StepSummary summary |
-              response_attr_first_join(t2, attr_name, result, summary) and
-              t = t2.append(summary)
-            )
-          )
-        }
-
-        pragma[nomagic]
-        private predicate response_attr_first_join(
-          DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-          DataFlow::StepSummary summary
-        ) {
-          DataFlow::StepSummary::step(response_attr(t2, attr_name), res, summary)
+          exists(DataFlow::TypeTracker t2 | result = response_attr(t2, attr_name).track(t2, t))
         }
 
         /**
@@ -1532,22 +1443,7 @@ private module Django {
           result = views()
         )
         or
-        // Due to bad performance when using normal setup with `views_attr(t2, attr_name).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            views_attr_first_join(t2, attr_name, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate views_attr_first_join(
-        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(views_attr(t2, attr_name), res, summary)
+        exists(DataFlow::TypeTracker t2 | result = views_attr(t2, attr_name).track(t2, t))
       }
 
       /**
@@ -1589,22 +1485,7 @@ private module Django {
             result = generic()
           )
           or
-          // Due to bad performance when using normal setup with `generic_attr(t2, attr_name).track(t2, t)`
-          // we have inlined that code and forced a join
-          exists(DataFlow::TypeTracker t2 |
-            exists(DataFlow::StepSummary summary |
-              generic_attr_first_join(t2, attr_name, result, summary) and
-              t = t2.append(summary)
-            )
-          )
-        }
-
-        pragma[nomagic]
-        private predicate generic_attr_first_join(
-          DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-          DataFlow::StepSummary summary
-        ) {
-          DataFlow::StepSummary::step(generic_attr(t2, attr_name), res, summary)
+          exists(DataFlow::TypeTracker t2 | result = generic_attr(t2, attr_name).track(t2, t))
         }
 
         /**
@@ -1637,22 +1518,7 @@ private module Django {
               result = base()
             )
             or
-            // Due to bad performance when using normal setup with `base_attr(t2, attr_name).track(t2, t)`
-            // we have inlined that code and forced a join
-            exists(DataFlow::TypeTracker t2 |
-              exists(DataFlow::StepSummary summary |
-                base_attr_first_join(t2, attr_name, result, summary) and
-                t = t2.append(summary)
-              )
-            )
-          }
-
-          pragma[nomagic]
-          private predicate base_attr_first_join(
-            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-            DataFlow::StepSummary summary
-          ) {
-            DataFlow::StepSummary::step(base_attr(t2, attr_name), res, summary)
+            exists(DataFlow::TypeTracker t2 | result = base_attr(t2, attr_name).track(t2, t))
           }
 
           /**
@@ -1689,22 +1555,7 @@ private module Django {
               result = dates()
             )
             or
-            // Due to bad performance when using normal setup with `dates_attr(t2, attr_name).track(t2, t)`
-            // we have inlined that code and forced a join
-            exists(DataFlow::TypeTracker t2 |
-              exists(DataFlow::StepSummary summary |
-                dates_attr_first_join(t2, attr_name, result, summary) and
-                t = t2.append(summary)
-              )
-            )
-          }
-
-          pragma[nomagic]
-          private predicate dates_attr_first_join(
-            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-            DataFlow::StepSummary summary
-          ) {
-            DataFlow::StepSummary::step(dates_attr(t2, attr_name), res, summary)
+            exists(DataFlow::TypeTracker t2 | result = dates_attr(t2, attr_name).track(t2, t))
           }
 
           /**
@@ -1738,22 +1589,7 @@ private module Django {
               result = detail()
             )
             or
-            // Due to bad performance when using normal setup with `detail_attr(t2, attr_name).track(t2, t)`
-            // we have inlined that code and forced a join
-            exists(DataFlow::TypeTracker t2 |
-              exists(DataFlow::StepSummary summary |
-                detail_attr_first_join(t2, attr_name, result, summary) and
-                t = t2.append(summary)
-              )
-            )
-          }
-
-          pragma[nomagic]
-          private predicate detail_attr_first_join(
-            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-            DataFlow::StepSummary summary
-          ) {
-            DataFlow::StepSummary::step(detail_attr(t2, attr_name), res, summary)
+            exists(DataFlow::TypeTracker t2 | result = detail_attr(t2, attr_name).track(t2, t))
           }
 
           /**
@@ -1787,22 +1623,7 @@ private module Django {
               result = edit()
             )
             or
-            // Due to bad performance when using normal setup with `edit_attr(t2, attr_name).track(t2, t)`
-            // we have inlined that code and forced a join
-            exists(DataFlow::TypeTracker t2 |
-              exists(DataFlow::StepSummary summary |
-                edit_attr_first_join(t2, attr_name, result, summary) and
-                t = t2.append(summary)
-              )
-            )
-          }
-
-          pragma[nomagic]
-          private predicate edit_attr_first_join(
-            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-            DataFlow::StepSummary summary
-          ) {
-            DataFlow::StepSummary::step(edit_attr(t2, attr_name), res, summary)
+            exists(DataFlow::TypeTracker t2 | result = edit_attr(t2, attr_name).track(t2, t))
           }
 
           /**
@@ -1836,22 +1657,7 @@ private module Django {
               result = list()
             )
             or
-            // Due to bad performance when using normal setup with `list_attr(t2, attr_name).track(t2, t)`
-            // we have inlined that code and forced a join
-            exists(DataFlow::TypeTracker t2 |
-              exists(DataFlow::StepSummary summary |
-                list_attr_first_join(t2, attr_name, result, summary) and
-                t = t2.append(summary)
-              )
-            )
-          }
-
-          pragma[nomagic]
-          private predicate list_attr_first_join(
-            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-            DataFlow::StepSummary summary
-          ) {
-            DataFlow::StepSummary::step(list_attr(t2, attr_name), res, summary)
+            exists(DataFlow::TypeTracker t2 | result = list_attr(t2, attr_name).track(t2, t))
           }
 
           /**
@@ -1940,22 +1746,7 @@ private module Django {
           result = shortcuts()
         )
         or
-        // Due to bad performance when using normal setup with `shortcuts_attr(t2, attr_name).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            shortcuts_attr_first_join(t2, attr_name, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate shortcuts_attr_first_join(
-        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(shortcuts_attr(t2, attr_name), res, summary)
+        exists(DataFlow::TypeTracker t2 | result = shortcuts_attr(t2, attr_name).track(t2, t))
       }
 
       /**
