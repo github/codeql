@@ -51,18 +51,18 @@ variableAccess
 | parameters.rb:3:9:3:9 | x | parameters.rb:1:14:1:14 | x | parameters.rb:1:9:5:3 | block scope |
 | parameters.rb:4:9:4:9 | y | parameters.rb:1:18:1:18 | y | parameters.rb:1:9:5:3 | block scope |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:7:1:13:3 | method scope for order_pizza |
-| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:1:13:3 | method scope for order_pizza |
+| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:1:13:3 | method scope for order_pizza |
 | parameters.rb:8:6:8:11 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:1:13:3 | method scope for order_pizza |
 | parameters.rb:9:25:9:30 | client | parameters.rb:7:17:7:22 | client | parameters.rb:7:1:13:3 | method scope for order_pizza |
 | parameters.rb:11:14:11:19 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:1:13:3 | method scope for order_pizza |
 | parameters.rb:11:41:11:46 | client | parameters.rb:7:17:7:22 | client | parameters.rb:7:1:13:3 | method scope for order_pizza |
-| parameters.rb:15:17:15:19 | map | parameters.rb:15:17:15:19 | map | parameters.rb:15:1:19:3 | method scope for print_map |
+| parameters.rb:15:15:15:19 | **map | parameters.rb:15:17:15:19 | map | parameters.rb:15:1:19:3 | method scope for print_map |
 | parameters.rb:16:3:16:5 | map | parameters.rb:15:17:15:19 | map | parameters.rb:15:1:19:3 | method scope for print_map |
 | parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key | parameters.rb:16:12:18:5 | block scope |
 | parameters.rb:16:21:16:25 | value | parameters.rb:16:21:16:25 | value | parameters.rb:16:12:18:5 | block scope |
 | parameters.rb:17:13:17:15 | key | parameters.rb:16:16:16:18 | key | parameters.rb:16:12:18:5 | block scope |
 | parameters.rb:17:22:17:26 | value | parameters.rb:16:21:16:25 | value | parameters.rb:16:12:18:5 | block scope |
-| parameters.rb:21:17:21:21 | block | parameters.rb:21:17:21:21 | block | parameters.rb:21:1:23:3 | method scope for call_block |
+| parameters.rb:21:16:21:21 | &block | parameters.rb:21:17:21:21 | block | parameters.rb:21:1:23:3 | method scope for call_block |
 | parameters.rb:22:3:22:7 | block | parameters.rb:21:17:21:21 | block | parameters.rb:21:1:23:3 | method scope for call_block |
 | parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:25:1:28:3 | method scope for opt_param |
 | parameters.rb:25:33:25:36 | size | parameters.rb:25:33:25:36 | size | parameters.rb:25:1:28:3 | method scope for opt_param |
@@ -228,11 +228,11 @@ implicitWrite
 | parameters.rb:1:14:1:14 | x |
 | parameters.rb:1:18:1:18 | y |
 | parameters.rb:7:17:7:22 | client |
-| parameters.rb:7:26:7:31 | pizzas |
-| parameters.rb:15:17:15:19 | map |
+| parameters.rb:7:25:7:31 | *pizzas |
+| parameters.rb:15:15:15:19 | **map |
 | parameters.rb:16:16:16:18 | key |
 | parameters.rb:16:21:16:25 | value |
-| parameters.rb:21:17:21:21 | block |
+| parameters.rb:21:16:21:21 | &block |
 | parameters.rb:25:15:25:18 | name |
 | parameters.rb:25:33:25:36 | size |
 | parameters.rb:30:15:30:19 | first |

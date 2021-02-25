@@ -16,6 +16,36 @@ module Self {
   }
 }
 
+module ArgumentList {
+  private class ValidParent = @break or @return or @next or @assignment or @operator_assignment;
+
+  abstract class Range extends Expr::Range {
+    Range() { generated.getParent() instanceof ValidParent }
+
+    abstract Expr getElement(int i);
+
+    final override string toString() { result = "..., ..." }
+
+    override predicate child(string label, AstNode::Range child) {
+      label = "getElement" and child = getElement(_)
+    }
+  }
+
+  private class ArgArgumentList extends ArgumentList::Range, @argument_list {
+    final override Generated::ArgumentList generated;
+
+    ArgArgumentList() { strictcount(generated.getChild(_)) > 1 }
+
+    final override Expr getElement(int i) { result = generated.getChild(i) }
+  }
+
+  private class AssignmentList extends ArgumentList::Range, @right_assignment_list {
+    final override Generated::RightAssignmentList generated;
+
+    final override Expr getElement(int i) { result = generated.getChild(i) }
+  }
+}
+
 module StmtSequence {
   abstract class Range extends Expr::Range {
     abstract Stmt getStmt(int n);

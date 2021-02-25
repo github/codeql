@@ -13,32 +13,32 @@ definition
 | parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x |
 | parameters.rb:2:4:2:8 | ... = ... | parameters.rb:1:18:1:18 | y |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client |
-| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas |
-| parameters.rb:15:17:15:19 | map | parameters.rb:15:17:15:19 | map |
+| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas |
+| parameters.rb:15:15:15:19 | **map | parameters.rb:15:17:15:19 | map |
 | parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key |
 | parameters.rb:16:21:16:25 | value | parameters.rb:16:21:16:25 | value |
-| parameters.rb:21:17:21:21 | block | parameters.rb:21:17:21:21 | block |
-| parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name |
-| parameters.rb:25:33:25:36 | size | parameters.rb:25:33:25:36 | size |
-| parameters.rb:30:15:30:19 | first | parameters.rb:30:15:30:19 | first |
-| parameters.rb:30:24:30:29 | middle | parameters.rb:30:24:30:29 | middle |
-| parameters.rb:30:36:30:39 | last | parameters.rb:30:36:30:39 | last |
+| parameters.rb:21:16:21:21 | &block | parameters.rb:21:17:21:21 | block |
+| parameters.rb:25:15:25:30 | name | parameters.rb:25:15:25:18 | name |
+| parameters.rb:25:33:25:50 | size | parameters.rb:25:33:25:36 | size |
+| parameters.rb:30:15:30:20 | first | parameters.rb:30:15:30:19 | first |
+| parameters.rb:30:24:30:33 | middle | parameters.rb:30:24:30:29 | middle |
+| parameters.rb:30:36:30:40 | last | parameters.rb:30:36:30:39 | last |
 | parameters.rb:35:1:38:3 | <uninitialized> | parameters.rb:35:16:35:16 | b |
-| parameters.rb:35:11:35:11 | a | parameters.rb:35:11:35:11 | a |
+| parameters.rb:35:11:35:21 | a | parameters.rb:35:11:35:11 | a |
 | parameters.rb:35:16:35:20 | ... = ... | parameters.rb:35:16:35:16 | b |
-| parameters.rb:37:3:37:6 | phi | parameters.rb:35:16:35:16 | b |
+| parameters.rb:37:11:37:11 | phi | parameters.rb:35:16:35:16 | b |
 | parameters.rb:40:1:43:3 | <uninitialized> | parameters.rb:40:15:40:15 | e |
-| parameters.rb:40:12:40:12 | d | parameters.rb:40:12:40:12 | d |
+| parameters.rb:40:12:40:19 | d | parameters.rb:40:12:40:12 | d |
 | parameters.rb:40:15:40:19 | ... = ... | parameters.rb:40:15:40:15 | e |
-| parameters.rb:42:3:42:6 | phi | parameters.rb:40:15:40:15 | e |
+| parameters.rb:42:11:42:11 | phi | parameters.rb:40:15:40:15 | e |
 | parameters.rb:45:20:45:20 | _ | parameters.rb:45:20:45:20 | _ |
 | parameters.rb:49:13:49:13 | a | parameters.rb:49:13:49:13 | a |
 | parameters.rb:49:15:49:15 | b | parameters.rb:49:15:49:15 | b |
 | parameters.rb:53:1:53:6 | ... = ... | parameters.rb:53:1:53:1 | x |
 | parameters.rb:54:9:57:3 | <captured> | parameters.rb:53:1:53:1 | x |
-| parameters.rb:54:14:54:14 | y | parameters.rb:54:14:54:14 | y |
+| parameters.rb:54:14:54:24 | y | parameters.rb:54:14:54:14 | y |
 | parameters.rb:54:19:54:23 | ... = ... | parameters.rb:53:1:53:1 | x |
-| parameters.rb:55:4:55:7 | phi | parameters.rb:53:1:53:1 | x |
+| parameters.rb:55:9:55:9 | phi | parameters.rb:53:1:53:1 | x |
 | scopes.rb:4:4:4:8 | ... = ... | scopes.rb:4:4:4:4 | a |
 | scopes.rb:7:1:7:5 | ... = ... | scopes.rb:7:1:7:1 | a |
 | scopes.rb:9:9:18:3 | <captured> | scopes.rb:7:1:7:1 | a |
@@ -68,7 +68,7 @@ definition
 | ssa.rb:45:3:45:12 | phi | ssa.rb:45:3:45:3 | x |
 | ssa.rb:49:1:51:3 | <uninitialized> | ssa.rb:49:14:49:14 | y |
 | ssa.rb:49:14:49:19 | ... = ... | ssa.rb:49:14:49:14 | y |
-| ssa.rb:50:3:50:6 | phi | ssa.rb:49:14:49:14 | y |
+| ssa.rb:50:8:50:8 | phi | ssa.rb:49:14:49:14 | y |
 | ssa.rb:53:8:53:10 | foo | ssa.rb:53:8:53:10 | foo |
 | ssa.rb:54:3:54:11 | ... = ... | ssa.rb:54:3:54:3 | x |
 | ssa.rb:59:3:59:8 | ... = ... | ssa.rb:59:3:59:3 | x |
@@ -100,27 +100,27 @@ read
 | parameters.rb:2:4:2:8 | ... = ... | parameters.rb:1:18:1:18 | y | parameters.rb:4:9:4:9 | y |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:9:25:9:30 | client |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:11:41:11:46 | client |
-| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas |
-| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:11:14:11:19 | pizzas |
-| parameters.rb:15:17:15:19 | map | parameters.rb:15:17:15:19 | map | parameters.rb:16:3:16:5 | map |
+| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas |
+| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:11:14:11:19 | pizzas |
+| parameters.rb:15:15:15:19 | **map | parameters.rb:15:17:15:19 | map | parameters.rb:16:3:16:5 | map |
 | parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key | parameters.rb:17:13:17:15 | key |
 | parameters.rb:16:21:16:25 | value | parameters.rb:16:21:16:25 | value | parameters.rb:17:22:17:26 | value |
-| parameters.rb:21:17:21:21 | block | parameters.rb:21:17:21:21 | block | parameters.rb:22:3:22:7 | block |
-| parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:25:40:25:43 | name |
-| parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:26:8:26:11 | name |
-| parameters.rb:25:33:25:36 | size | parameters.rb:25:33:25:36 | size | parameters.rb:27:8:27:11 | size |
-| parameters.rb:30:15:30:19 | first | parameters.rb:30:15:30:19 | first | parameters.rb:31:11:31:15 | first |
-| parameters.rb:30:24:30:29 | middle | parameters.rb:30:24:30:29 | middle | parameters.rb:31:20:31:25 | middle |
-| parameters.rb:30:36:30:39 | last | parameters.rb:30:36:30:39 | last | parameters.rb:31:30:31:33 | last |
-| parameters.rb:35:11:35:11 | a | parameters.rb:35:11:35:11 | a | parameters.rb:37:11:37:11 | a |
-| parameters.rb:37:3:37:6 | phi | parameters.rb:35:16:35:16 | b | parameters.rb:37:16:37:16 | b |
-| parameters.rb:40:12:40:12 | d | parameters.rb:40:12:40:12 | d | parameters.rb:42:11:42:11 | d |
-| parameters.rb:42:3:42:6 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:42:16:42:16 | e |
+| parameters.rb:21:16:21:21 | &block | parameters.rb:21:17:21:21 | block | parameters.rb:22:3:22:7 | block |
+| parameters.rb:25:15:25:30 | name | parameters.rb:25:15:25:18 | name | parameters.rb:25:40:25:43 | name |
+| parameters.rb:25:15:25:30 | name | parameters.rb:25:15:25:18 | name | parameters.rb:26:8:26:11 | name |
+| parameters.rb:25:33:25:50 | size | parameters.rb:25:33:25:36 | size | parameters.rb:27:8:27:11 | size |
+| parameters.rb:30:15:30:20 | first | parameters.rb:30:15:30:19 | first | parameters.rb:31:11:31:15 | first |
+| parameters.rb:30:24:30:33 | middle | parameters.rb:30:24:30:29 | middle | parameters.rb:31:20:31:25 | middle |
+| parameters.rb:30:36:30:40 | last | parameters.rb:30:36:30:39 | last | parameters.rb:31:30:31:33 | last |
+| parameters.rb:35:11:35:21 | a | parameters.rb:35:11:35:11 | a | parameters.rb:37:11:37:11 | a |
+| parameters.rb:37:11:37:11 | phi | parameters.rb:35:16:35:16 | b | parameters.rb:37:16:37:16 | b |
+| parameters.rb:40:12:40:19 | d | parameters.rb:40:12:40:12 | d | parameters.rb:42:11:42:11 | d |
+| parameters.rb:42:11:42:11 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:42:16:42:16 | e |
 | parameters.rb:45:20:45:20 | _ | parameters.rb:45:20:45:20 | _ | parameters.rb:46:8:46:8 | _ |
 | parameters.rb:49:13:49:13 | a | parameters.rb:49:13:49:13 | a | parameters.rb:50:11:50:11 | a |
 | parameters.rb:49:15:49:15 | b | parameters.rb:49:15:49:15 | b | parameters.rb:50:16:50:16 | b |
-| parameters.rb:54:14:54:14 | y | parameters.rb:54:14:54:14 | y | parameters.rb:56:9:56:9 | y |
-| parameters.rb:55:4:55:7 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:55:9:55:9 | x |
+| parameters.rb:54:14:54:24 | y | parameters.rb:54:14:54:14 | y | parameters.rb:56:9:56:9 | y |
+| parameters.rb:55:9:55:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:55:9:55:9 | x |
 | scopes.rb:4:4:4:8 | ... = ... | scopes.rb:4:4:4:4 | a | scopes.rb:5:9:5:9 | a |
 | scopes.rb:7:1:7:5 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:8:6:8:6 | a |
 | scopes.rb:9:9:18:3 | <captured> | scopes.rb:7:1:7:1 | a | scopes.rb:10:9:10:9 | a |
@@ -153,7 +153,7 @@ read
 | ssa.rb:40:3:40:9 | ... = ... | ssa.rb:40:3:40:4 | m3 | ssa.rb:41:8:41:9 | m3 |
 | ssa.rb:44:8:44:8 | b | ssa.rb:44:8:44:8 | b | ssa.rb:45:12:45:12 | b |
 | ssa.rb:45:3:45:12 | phi | ssa.rb:45:3:45:3 | x | ssa.rb:46:8:46:8 | x |
-| ssa.rb:50:3:50:6 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:50:8:50:8 | y |
+| ssa.rb:50:8:50:8 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:50:8:50:8 | y |
 | ssa.rb:53:8:53:10 | foo | ssa.rb:53:8:53:10 | foo | ssa.rb:54:7:54:9 | foo |
 | ssa.rb:54:3:54:11 | ... = ... | ssa.rb:54:3:54:3 | x | ssa.rb:55:8:55:8 | x |
 | ssa.rb:59:3:59:8 | ... = ... | ssa.rb:59:3:59:3 | x | ssa.rb:60:3:60:3 | x |
@@ -181,26 +181,26 @@ firstRead
 | parameters.rb:2:4:2:8 | ... = ... | parameters.rb:1:18:1:18 | y | parameters.rb:4:9:4:9 | y |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:9:25:9:30 | client |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:11:41:11:46 | client |
-| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas |
-| parameters.rb:15:17:15:19 | map | parameters.rb:15:17:15:19 | map | parameters.rb:16:3:16:5 | map |
+| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas |
+| parameters.rb:15:15:15:19 | **map | parameters.rb:15:17:15:19 | map | parameters.rb:16:3:16:5 | map |
 | parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key | parameters.rb:17:13:17:15 | key |
 | parameters.rb:16:21:16:25 | value | parameters.rb:16:21:16:25 | value | parameters.rb:17:22:17:26 | value |
-| parameters.rb:21:17:21:21 | block | parameters.rb:21:17:21:21 | block | parameters.rb:22:3:22:7 | block |
-| parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:25:40:25:43 | name |
-| parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:26:8:26:11 | name |
-| parameters.rb:25:33:25:36 | size | parameters.rb:25:33:25:36 | size | parameters.rb:27:8:27:11 | size |
-| parameters.rb:30:15:30:19 | first | parameters.rb:30:15:30:19 | first | parameters.rb:31:11:31:15 | first |
-| parameters.rb:30:24:30:29 | middle | parameters.rb:30:24:30:29 | middle | parameters.rb:31:20:31:25 | middle |
-| parameters.rb:30:36:30:39 | last | parameters.rb:30:36:30:39 | last | parameters.rb:31:30:31:33 | last |
-| parameters.rb:35:11:35:11 | a | parameters.rb:35:11:35:11 | a | parameters.rb:37:11:37:11 | a |
-| parameters.rb:37:3:37:6 | phi | parameters.rb:35:16:35:16 | b | parameters.rb:37:16:37:16 | b |
-| parameters.rb:40:12:40:12 | d | parameters.rb:40:12:40:12 | d | parameters.rb:42:11:42:11 | d |
-| parameters.rb:42:3:42:6 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:42:16:42:16 | e |
+| parameters.rb:21:16:21:21 | &block | parameters.rb:21:17:21:21 | block | parameters.rb:22:3:22:7 | block |
+| parameters.rb:25:15:25:30 | name | parameters.rb:25:15:25:18 | name | parameters.rb:25:40:25:43 | name |
+| parameters.rb:25:15:25:30 | name | parameters.rb:25:15:25:18 | name | parameters.rb:26:8:26:11 | name |
+| parameters.rb:25:33:25:50 | size | parameters.rb:25:33:25:36 | size | parameters.rb:27:8:27:11 | size |
+| parameters.rb:30:15:30:20 | first | parameters.rb:30:15:30:19 | first | parameters.rb:31:11:31:15 | first |
+| parameters.rb:30:24:30:33 | middle | parameters.rb:30:24:30:29 | middle | parameters.rb:31:20:31:25 | middle |
+| parameters.rb:30:36:30:40 | last | parameters.rb:30:36:30:39 | last | parameters.rb:31:30:31:33 | last |
+| parameters.rb:35:11:35:21 | a | parameters.rb:35:11:35:11 | a | parameters.rb:37:11:37:11 | a |
+| parameters.rb:37:11:37:11 | phi | parameters.rb:35:16:35:16 | b | parameters.rb:37:16:37:16 | b |
+| parameters.rb:40:12:40:19 | d | parameters.rb:40:12:40:12 | d | parameters.rb:42:11:42:11 | d |
+| parameters.rb:42:11:42:11 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:42:16:42:16 | e |
 | parameters.rb:45:20:45:20 | _ | parameters.rb:45:20:45:20 | _ | parameters.rb:46:8:46:8 | _ |
 | parameters.rb:49:13:49:13 | a | parameters.rb:49:13:49:13 | a | parameters.rb:50:11:50:11 | a |
 | parameters.rb:49:15:49:15 | b | parameters.rb:49:15:49:15 | b | parameters.rb:50:16:50:16 | b |
-| parameters.rb:54:14:54:14 | y | parameters.rb:54:14:54:14 | y | parameters.rb:56:9:56:9 | y |
-| parameters.rb:55:4:55:7 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:55:9:55:9 | x |
+| parameters.rb:54:14:54:24 | y | parameters.rb:54:14:54:14 | y | parameters.rb:56:9:56:9 | y |
+| parameters.rb:55:9:55:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:55:9:55:9 | x |
 | scopes.rb:4:4:4:8 | ... = ... | scopes.rb:4:4:4:4 | a | scopes.rb:5:9:5:9 | a |
 | scopes.rb:7:1:7:5 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:8:6:8:6 | a |
 | scopes.rb:9:9:18:3 | <captured> | scopes.rb:7:1:7:1 | a | scopes.rb:10:9:10:9 | a |
@@ -223,7 +223,7 @@ firstRead
 | ssa.rb:40:3:40:9 | ... = ... | ssa.rb:40:3:40:4 | m3 | ssa.rb:41:8:41:9 | m3 |
 | ssa.rb:44:8:44:8 | b | ssa.rb:44:8:44:8 | b | ssa.rb:45:12:45:12 | b |
 | ssa.rb:45:3:45:12 | phi | ssa.rb:45:3:45:3 | x | ssa.rb:46:8:46:8 | x |
-| ssa.rb:50:3:50:6 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:50:8:50:8 | y |
+| ssa.rb:50:8:50:8 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:50:8:50:8 | y |
 | ssa.rb:53:8:53:10 | foo | ssa.rb:53:8:53:10 | foo | ssa.rb:54:7:54:9 | foo |
 | ssa.rb:54:3:54:11 | ... = ... | ssa.rb:54:3:54:3 | x | ssa.rb:55:8:55:8 | x |
 | ssa.rb:59:3:59:8 | ... = ... | ssa.rb:59:3:59:3 | x | ssa.rb:60:3:60:3 | x |
@@ -250,26 +250,26 @@ lastRead
 | parameters.rb:2:4:2:8 | ... = ... | parameters.rb:1:18:1:18 | y | parameters.rb:4:9:4:9 | y |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:9:25:9:30 | client |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:11:41:11:46 | client |
-| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas |
-| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:11:14:11:19 | pizzas |
-| parameters.rb:15:17:15:19 | map | parameters.rb:15:17:15:19 | map | parameters.rb:16:3:16:5 | map |
+| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas |
+| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:11:14:11:19 | pizzas |
+| parameters.rb:15:15:15:19 | **map | parameters.rb:15:17:15:19 | map | parameters.rb:16:3:16:5 | map |
 | parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key | parameters.rb:17:13:17:15 | key |
 | parameters.rb:16:21:16:25 | value | parameters.rb:16:21:16:25 | value | parameters.rb:17:22:17:26 | value |
-| parameters.rb:21:17:21:21 | block | parameters.rb:21:17:21:21 | block | parameters.rb:22:3:22:7 | block |
-| parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:26:8:26:11 | name |
-| parameters.rb:25:33:25:36 | size | parameters.rb:25:33:25:36 | size | parameters.rb:27:8:27:11 | size |
-| parameters.rb:30:15:30:19 | first | parameters.rb:30:15:30:19 | first | parameters.rb:31:11:31:15 | first |
-| parameters.rb:30:24:30:29 | middle | parameters.rb:30:24:30:29 | middle | parameters.rb:31:20:31:25 | middle |
-| parameters.rb:30:36:30:39 | last | parameters.rb:30:36:30:39 | last | parameters.rb:31:30:31:33 | last |
-| parameters.rb:35:11:35:11 | a | parameters.rb:35:11:35:11 | a | parameters.rb:37:11:37:11 | a |
-| parameters.rb:37:3:37:6 | phi | parameters.rb:35:16:35:16 | b | parameters.rb:37:16:37:16 | b |
-| parameters.rb:40:12:40:12 | d | parameters.rb:40:12:40:12 | d | parameters.rb:42:11:42:11 | d |
-| parameters.rb:42:3:42:6 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:42:16:42:16 | e |
+| parameters.rb:21:16:21:21 | &block | parameters.rb:21:17:21:21 | block | parameters.rb:22:3:22:7 | block |
+| parameters.rb:25:15:25:30 | name | parameters.rb:25:15:25:18 | name | parameters.rb:26:8:26:11 | name |
+| parameters.rb:25:33:25:50 | size | parameters.rb:25:33:25:36 | size | parameters.rb:27:8:27:11 | size |
+| parameters.rb:30:15:30:20 | first | parameters.rb:30:15:30:19 | first | parameters.rb:31:11:31:15 | first |
+| parameters.rb:30:24:30:33 | middle | parameters.rb:30:24:30:29 | middle | parameters.rb:31:20:31:25 | middle |
+| parameters.rb:30:36:30:40 | last | parameters.rb:30:36:30:39 | last | parameters.rb:31:30:31:33 | last |
+| parameters.rb:35:11:35:21 | a | parameters.rb:35:11:35:11 | a | parameters.rb:37:11:37:11 | a |
+| parameters.rb:37:11:37:11 | phi | parameters.rb:35:16:35:16 | b | parameters.rb:37:16:37:16 | b |
+| parameters.rb:40:12:40:19 | d | parameters.rb:40:12:40:12 | d | parameters.rb:42:11:42:11 | d |
+| parameters.rb:42:11:42:11 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:42:16:42:16 | e |
 | parameters.rb:45:20:45:20 | _ | parameters.rb:45:20:45:20 | _ | parameters.rb:46:8:46:8 | _ |
 | parameters.rb:49:13:49:13 | a | parameters.rb:49:13:49:13 | a | parameters.rb:50:11:50:11 | a |
 | parameters.rb:49:15:49:15 | b | parameters.rb:49:15:49:15 | b | parameters.rb:50:16:50:16 | b |
-| parameters.rb:54:14:54:14 | y | parameters.rb:54:14:54:14 | y | parameters.rb:56:9:56:9 | y |
-| parameters.rb:55:4:55:7 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:55:9:55:9 | x |
+| parameters.rb:54:14:54:24 | y | parameters.rb:54:14:54:14 | y | parameters.rb:56:9:56:9 | y |
+| parameters.rb:55:9:55:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:55:9:55:9 | x |
 | scopes.rb:4:4:4:8 | ... = ... | scopes.rb:4:4:4:4 | a | scopes.rb:5:9:5:9 | a |
 | scopes.rb:7:1:7:5 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:8:6:8:6 | a |
 | scopes.rb:9:9:18:3 | <captured> | scopes.rb:7:1:7:1 | a | scopes.rb:11:4:11:4 | a |
@@ -293,7 +293,7 @@ lastRead
 | ssa.rb:40:3:40:9 | ... = ... | ssa.rb:40:3:40:4 | m3 | ssa.rb:41:8:41:9 | m3 |
 | ssa.rb:44:8:44:8 | b | ssa.rb:44:8:44:8 | b | ssa.rb:45:12:45:12 | b |
 | ssa.rb:45:3:45:12 | phi | ssa.rb:45:3:45:3 | x | ssa.rb:46:8:46:8 | x |
-| ssa.rb:50:3:50:6 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:50:8:50:8 | y |
+| ssa.rb:50:8:50:8 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:50:8:50:8 | y |
 | ssa.rb:53:8:53:10 | foo | ssa.rb:53:8:53:10 | foo | ssa.rb:54:7:54:9 | foo |
 | ssa.rb:54:3:54:11 | ... = ... | ssa.rb:54:3:54:3 | x | ssa.rb:55:8:55:8 | x |
 | ssa.rb:59:3:59:8 | ... = ... | ssa.rb:59:3:59:3 | x | ssa.rb:60:3:60:3 | x |
@@ -306,8 +306,8 @@ lastRead
 | ssa.rb:84:10:86:8 | <captured> | ssa.rb:82:3:82:10 | captured | ssa.rb:85:15:85:22 | captured |
 adjacentReads
 | nested_scopes.rb:13:11:13:15 | ... = ... | nested_scopes.rb:13:11:13:11 | a | nested_scopes.rb:14:16:14:16 | a | nested_scopes.rb:15:11:15:11 | a |
-| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas | parameters.rb:11:14:11:19 | pizzas |
-| parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:25:40:25:43 | name | parameters.rb:26:8:26:11 | name |
+| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas | parameters.rb:11:14:11:19 | pizzas |
+| parameters.rb:25:15:25:30 | name | parameters.rb:25:15:25:18 | name | parameters.rb:25:40:25:43 | name | parameters.rb:26:8:26:11 | name |
 | scopes.rb:9:9:18:3 | <captured> | scopes.rb:7:1:7:1 | a | scopes.rb:10:9:10:9 | a | scopes.rb:11:4:11:4 | a |
 | scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:28:8:28:8 | x | scopes.rb:31:10:31:10 | x |
 | scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:31:10:31:10 | x | scopes.rb:34:7:34:7 | x |
@@ -320,12 +320,12 @@ adjacentReads
 | ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:20:10:20:10 | x | ssa.rb:21:5:21:5 | x |
 | ssa.rb:66:11:70:5 | <captured> | ssa.rb:65:3:65:10 | captured | ssa.rb:68:10:68:17 | captured | ssa.rb:69:5:69:12 | captured |
 phi
-| parameters.rb:37:3:37:6 | phi | parameters.rb:35:16:35:16 | b | parameters.rb:35:1:38:3 | <uninitialized> |
-| parameters.rb:37:3:37:6 | phi | parameters.rb:35:16:35:16 | b | parameters.rb:35:16:35:20 | ... = ... |
-| parameters.rb:42:3:42:6 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:40:1:43:3 | <uninitialized> |
-| parameters.rb:42:3:42:6 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:40:15:40:19 | ... = ... |
-| parameters.rb:55:4:55:7 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:54:9:57:3 | <captured> |
-| parameters.rb:55:4:55:7 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:54:19:54:23 | ... = ... |
+| parameters.rb:37:11:37:11 | phi | parameters.rb:35:16:35:16 | b | parameters.rb:35:1:38:3 | <uninitialized> |
+| parameters.rb:37:11:37:11 | phi | parameters.rb:35:16:35:16 | b | parameters.rb:35:16:35:20 | ... = ... |
+| parameters.rb:42:11:42:11 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:40:1:43:3 | <uninitialized> |
+| parameters.rb:42:11:42:11 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:40:15:40:19 | ... = ... |
+| parameters.rb:55:9:55:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:54:9:57:3 | <captured> |
+| parameters.rb:55:9:55:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:54:19:54:23 | ... = ... |
 | ssa.rb:5:3:13:5 | phi | ssa.rb:2:3:2:3 | i | ssa.rb:6:5:6:9 | ... = ... |
 | ssa.rb:5:3:13:5 | phi | ssa.rb:2:3:2:3 | i | ssa.rb:10:5:10:9 | ... = ... |
 | ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:18:8:18:8 | x |
@@ -334,5 +334,5 @@ phi
 | ssa.rb:26:12:26:22 | phi | ssa.rb:26:7:26:10 | elem | ssa.rb:26:7:26:10 | elem |
 | ssa.rb:45:3:45:12 | phi | ssa.rb:45:3:45:3 | x | ssa.rb:44:1:47:3 | <uninitialized> |
 | ssa.rb:45:3:45:12 | phi | ssa.rb:45:3:45:3 | x | ssa.rb:45:3:45:7 | ... = ... |
-| ssa.rb:50:3:50:6 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:49:1:51:3 | <uninitialized> |
-| ssa.rb:50:3:50:6 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:49:14:49:19 | ... = ... |
+| ssa.rb:50:8:50:8 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:49:1:51:3 | <uninitialized> |
+| ssa.rb:50:8:50:8 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:49:14:49:19 | ... = ... |

@@ -122,7 +122,7 @@ class VariableAccess extends Expr {
    *
    * both `a` and `b` are write accesses belonging to the same assignment.
    */
-  predicate isExplicitWrite(AstNode assignment) { explicitWriteAccess(this, assignment) }
+  predicate isExplicitWrite(AstNode assignment) { range.isExplicitWrite(assignment) }
 
   /**
    * Holds if this access is a write access belonging to an implicit assignment.
@@ -139,7 +139,7 @@ class VariableAccess extends Expr {
    * the access to `elements` in the parameter list is an implicit assignment,
    * as is the first access to `e`.
    */
-  predicate isImplicitWrite() { implicitWriteAccess(this) }
+  predicate isImplicitWrite() { range.isImplicitWrite() }
 }
 
 /** An access to a variable where the value is updated. */
@@ -161,13 +161,13 @@ class VariableReadAccess extends VariableAccess {
 }
 
 /** An access to a local variable. */
-class LocalVariableAccess extends VariableAccess, @token_identifier {
+class LocalVariableAccess extends VariableAccess, LocalVariableAccess::LocalVariableRange {
   final override LocalVariableAccess::Range range;
 
   final override LocalVariable getVariable() { result = range.getVariable() }
 
   final override string getAPrimaryQlClass() {
-    not this instanceof SimpleParameter and result = "LocalVariableAccess"
+    not this instanceof NamedParameter and result = "LocalVariableAccess"
   }
 
   /**

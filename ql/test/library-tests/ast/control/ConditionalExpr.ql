@@ -30,13 +30,13 @@ query predicate unlessExprs(
 query predicate ifModifierExprs(IfModifierExpr e, string pClass, Expr cond, Expr expr) {
   pClass = e.getAPrimaryQlClass() and
   cond = e.getCondition() and
-  expr = e.getExpr()
+  expr = e.getBody()
 }
 
 query predicate unlessModifierExprs(UnlessModifierExpr e, string pClass, Expr cond, Expr expr) {
   pClass = e.getAPrimaryQlClass() and
   cond = e.getCondition() and
-  expr = e.getExpr()
+  expr = e.getBody()
 }
 
 query predicate ternaryIfExprs(

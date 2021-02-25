@@ -111,6 +111,14 @@ module KeywordParameter {
     final override string toString() { result = this.getName() }
 
     final override string getName() { result = generated.getName().getValue() }
+
+    final override Location getLocation() { result = generated.getName().getLocation() }
+
+    final override predicate child(string label, AstNode::Range child) {
+      NamedParameter::Range.super.child(label, child)
+      or
+      label = "getDefaultValue" and child = getDefaultValue()
+    }
   }
 }
 
@@ -127,6 +135,14 @@ module OptionalParameter {
     final override string toString() { result = this.getName() }
 
     final override string getName() { result = generated.getName().getValue() }
+
+    final override Location getLocation() { result = generated.getName().getLocation() }
+
+    final override predicate child(string label, AstNode::Range child) {
+      NamedParameter::Range.super.child(label, child)
+      or
+      label = "getDefaultValue" and child = getDefaultValue()
+    }
   }
 }
 

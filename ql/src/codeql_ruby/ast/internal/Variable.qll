@@ -116,6 +116,23 @@ private predicate strictlyBefore(Location one, Location two) {
   one.getStartLine() = two.getStartLine() and one.getStartColumn() < two.getStartColumn()
 }
 
+private Generated::AstNode getNodeForIdentifier(Generated::Identifier id) {
+  exists(Generated::AstNode parent | parent = id.getParent() |
+    if
+      parent instanceof Generated::BlockParameter
+      or
+      parent instanceof Generated::SplatParameter
+      or
+      parent instanceof Generated::HashSplatParameter
+      or
+      parent instanceof Generated::KeywordParameter
+      or
+      parent instanceof Generated::OptionalParameter
+    then result = parent
+    else result = id
+  )
+}
+
 cached
 private module Cached {
   /** Gets the enclosing scope for `node`. */
@@ -518,7 +535,7 @@ module LocalVariable {
 
     final override VariableScope getDeclaringScope() { result = scope }
 
-    final VariableAccess getDefiningAccess() { result = i }
+    final VariableAccess getDefiningAccess() { result = getNodeForIdentifier(i) }
   }
 }
 
@@ -577,27 +594,45 @@ module VariableAccess {
   abstract class Range extends Expr::Range {
     abstract Variable getVariable();
 
-    final override string toString() { result = this.getVariable().getName() }
+    final predicate isExplicitWrite(AstNode assignment) {
+      exists(Generated::Identifier i | this = getNodeForIdentifier(i) |
+        explicitWriteAccess(i, assignment)
+      )
+      or
+      not this = getNodeForIdentifier(_) and explicitWriteAccess(this, assignment)
+    }
 
-    override predicate child(string label, AstNode::Range child) { none() }
+    final predicate isImplicitWrite() {
+      exists(Generated::Identifier i | this = getNodeForIdentifier(i) | implicitWriteAccess(i))
+      or
+      not this = getNodeForIdentifier(_) and implicitWriteAccess(this)
+    }
   }
 }
 
 module LocalVariableAccess {
-  class Range extends VariableAccess::Range, @token_identifier {
-    override Generated::Identifier generated;
+  class LocalVariableRange =
+    @token_identifier or @splat_parameter or @keyword_parameter or @optional_parameter or
+        @hash_splat_parameter or @block_parameter;
+
+  class Range extends VariableAccess::Range, LocalVariableRange {
     LocalVariable variable;
 
     Range() {
-      access(this, variable) and
-      (
-        explicitWriteAccess(this, _)
-        or
-        implicitWriteAccess(this)
-        or
-        vcall(this)
+      exists(Generated::Identifier id |
+        this = getNodeForIdentifier(id) and
+        access(id, variable) and
+        (
+          explicitWriteAccess(id, _)
+          or
+          implicitWriteAccess(id)
+          or
+          vcall(id)
+        )
       )
     }
+
+    override string toString() { result = generated.(Generated::Identifier).getValue() }
 
     final override LocalVariable getVariable() { result = variable }
   }
@@ -610,6 +645,8 @@ module GlobalVariableAccess {
     Range() { this.(Generated::GlobalVariable).getValue() = variable.getName() }
 
     final override GlobalVariable getVariable() { result = variable }
+
+    override string toString() { result = generated.(Generated::GlobalVariable).getValue() }
   }
 }
 
@@ -620,6 +657,8 @@ module InstanceVariableAccess {
     Range() { instanceVariableAccess(this, variable) }
 
     final override InstanceVariable getVariable() { result = variable }
+
+    override string toString() { result = generated.(Generated::InstanceVariable).getValue() }
   }
 }
 
@@ -630,5 +669,7 @@ module ClassVariableAccess {
     Range() { classVariableAccess(this, variable) }
 
     final override ClassVariable getVariable() { result = variable }
+
+    override string toString() { result = generated.(Generated::ClassVariable).getValue() }
   }
 }

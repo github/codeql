@@ -35,7 +35,7 @@ class ConditionalExpr extends ControlExpr {
    * Gets the branch of this conditional expression that is taken when the
    * condition evaluates to `cond`, if any.
    */
-  Expr getBranch(boolean cond) { result = range.getBranch(cond) }
+  Stmt getBranch(boolean cond) { result = range.getBranch(cond) }
 }
 
 /**
@@ -57,7 +57,7 @@ class IfExpr extends ConditionalExpr {
   final predicate isElsif() { this instanceof @elsif }
 
   /** Gets the 'then' branch of this `if`/`elsif` expression. */
-  final StmtSequence getThen() { result = range.getThen() }
+  final Stmt getThen() { result = range.getThen() }
 
   /**
    * Gets the `elsif`/`else` branch of this `if`/`elsif` expression, if any. In
@@ -90,7 +90,7 @@ class IfExpr extends ConditionalExpr {
    * end
    * ```
    */
-  final Expr getElse() { result = range.getElse() }
+  final Stmt getElse() { result = range.getElse() }
 }
 
 /**
@@ -117,7 +117,7 @@ class UnlessExpr extends ConditionalExpr, @unless {
    * end
    * ```
    */
-  final StmtSequence getThen() { result = range.getThen() }
+  final Stmt getThen() { result = range.getThen() }
 
   /**
    * Gets the 'else' branch of this `unless` expression. In the following
@@ -130,7 +130,7 @@ class UnlessExpr extends ConditionalExpr, @unless {
    * end
    * ```
    */
-  final StmtSequence getElse() { result = range.getElse() }
+  final Stmt getElse() { result = range.getElse() }
 }
 
 /**
@@ -145,13 +145,13 @@ class IfModifierExpr extends ConditionalExpr, @if_modifier {
   final override string getAPrimaryQlClass() { result = "IfModifierExpr" }
 
   /**
-   * Gets the expression that is conditionally evaluated. In the following
+   * Gets the statement that is conditionally evaluated. In the following
    * example, the result is the `Expr` for `foo`.
    * ```rb
    * foo if bar
    * ```
    */
-  final Expr getExpr() { result = range.getExpr() }
+  final Stmt getBody() { result = range.getBody() }
 }
 
 /**
@@ -166,13 +166,13 @@ class UnlessModifierExpr extends ConditionalExpr, @unless_modifier {
   final override string getAPrimaryQlClass() { result = "UnlessModifierExpr" }
 
   /**
-   * Gets the expression that is conditionally evaluated. In the following
+   * Gets the statement that is conditionally evaluated. In the following
    * example, the result is the `Expr` for `foo`.
    * ```rb
    * foo unless bar
    * ```
    */
-  final Expr getExpr() { result = range.getExpr() }
+  final Stmt getBody() { result = range.getBody() }
 }
 
 /**
@@ -187,10 +187,10 @@ class TernaryIfExpr extends ConditionalExpr, @conditional {
   final override string getAPrimaryQlClass() { result = "TernaryIfExpr" }
 
   /** Gets the 'then' branch of this ternary if expression. */
-  final Expr getThen() { result = range.getThen() }
+  final Stmt getThen() { result = range.getThen() }
 
   /** Gets the 'else' branch of this ternary if expression. */
-  final Expr getElse() { result = range.getElse() }
+  final Stmt getElse() { result = range.getElse() }
 }
 
 class CaseExpr extends ControlExpr, @case__ {
@@ -257,7 +257,7 @@ class WhenExpr extends Expr, @when {
   final override string getAPrimaryQlClass() { result = "WhenExpr" }
 
   /** Gets the body of this case-when expression. */
-  final StmtSequence getBody() { result = range.getBody() }
+  final Stmt getBody() { result = range.getBody() }
 
   /**
    * Gets the `n`th pattern (or condition) in this case-when expression. In the
@@ -291,7 +291,7 @@ class Loop extends ControlExpr {
   override Loop::Range range;
 
   /** Gets the body of this loop. */
-  Expr getBody() { result = range.getBody() }
+  Stmt getBody() { result = range.getBody() }
 }
 
 /**
@@ -320,7 +320,7 @@ class WhileExpr extends ConditionalLoop, @while {
   final override string getAPrimaryQlClass() { result = "WhileExpr" }
 
   /** Gets the body of this `while` loop. */
-  final override StmtSequence getBody() { result = range.getBody() }
+  final override Stmt getBody() { result = range.getBody() }
 }
 
 /**
@@ -338,7 +338,7 @@ class UntilExpr extends ConditionalLoop, @until {
   final override string getAPrimaryQlClass() { result = "UntilExpr" }
 
   /** Gets the body of this `until` loop. */
-  final override StmtSequence getBody() { result = range.getBody() }
+  final override Stmt getBody() { result = range.getBody() }
 }
 
 /**
@@ -379,7 +379,7 @@ class ForExpr extends Loop, @for {
   final override string getAPrimaryQlClass() { result = "ForExpr" }
 
   /** Gets the body of this `for` loop. */
-  final override Expr getBody() { result = range.getBody() }
+  final override Stmt getBody() { result = range.getBody() }
 
   /** Gets the pattern representing the iteration argument. */
   final Pattern getPattern() { result = range.getPattern() }

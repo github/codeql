@@ -24,6 +24,23 @@ class Self extends Expr, @token_self {
   final override string getAPrimaryQlClass() { result = "Self" }
 }
 
+/**
+ * A sequence of expressions in the right-hand side of an assignment or
+ * a `return`, `break` or `next` statement.
+ * ```rb
+ * x = 1, *items, 3, *more
+ * return 1, 2
+ * next *list
+ * break **map
+ * return 1, 2, *items, k: 5, **map
+ * ```
+ */
+class ArgumentList extends Expr {
+  override ArgumentList::Range range;
+
+  override string getAPrimaryQlClass() { result = "ArgumentList" }
+}
+
 /** A sequence of expressions. */
 class StmtSequence extends Expr {
   override StmtSequence::Range range;
