@@ -1,4 +1,5 @@
 from django.http.response import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect, JsonResponse, HttpResponseNotFound
+from django.views.generic import RedirectView
 import django.shortcuts
 
 # Not an XSS sink, since the Content-Type is not "text/html"
@@ -52,6 +53,14 @@ def redirect_through_normal_response(request):
 def redirect_shortcut(request):
     next = request.GET.get("next")
     return django.shortcuts.redirect(next) # $ HttpResponse HttpRedirectResponse redirectLocation=next
+
+
+class CustomRedirectView(RedirectView):
+
+    def get_redirect_url(self, foo): # $ requestHandler routedParameter=foo
+        ensure_tainted(foo)
+        next = "https://example.com/{}".format(foo)
+        return next # $ HttpResponse HttpRedirectResponse redirectLocation=next
 
 
 # Ensure that simple subclasses are still vuln to XSS
