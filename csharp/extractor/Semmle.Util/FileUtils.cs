@@ -33,10 +33,7 @@ namespace Semmle.Util
         /// <param name="dest">Target file.</param>
         public static void MoveOrReplace(string src, string dest)
         {
-            // Potential race condition here.
-            // .net offers the facility to either move a file, or to replace it.
-            File.Delete(dest);
-            File.Move(src, dest);
+            File.Move(src, dest, overwrite: true);
         }
 
         /// <summary>
