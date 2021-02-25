@@ -16,6 +16,11 @@ edges
 | A.java:70:25:70:45 | getInputStream(...) : InputStream | A.java:73:28:73:55 | new InputStreamReader(...) |
 | A.java:70:25:70:45 | getInputStream(...) : InputStream | A.java:74:24:74:28 | input |
 | A.java:70:25:70:45 | getInputStream(...) : InputStream | A.java:75:24:75:51 | new InputStreamReader(...) |
+| A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:91:26:91:30 | input |
+| A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:92:30:92:34 | input |
+| A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:93:28:93:55 | new InputStreamReader(...) |
+| A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:94:24:94:28 | input |
+| A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:95:24:95:51 | new InputStreamReader(...) |
 | B.java:7:31:7:51 | getInputStream(...) : InputStream | B.java:8:29:8:39 | inputStream |
 | B.java:12:31:12:51 | getInputStream(...) : InputStream | B.java:15:23:15:27 | bytes |
 | B.java:19:31:19:51 | getInputStream(...) : InputStream | B.java:23:29:23:29 | s |
@@ -46,6 +51,12 @@ nodes
 | A.java:73:28:73:55 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
 | A.java:74:24:74:28 | input | semmle.label | input |
 | A.java:75:24:75:51 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| A.java:90:25:90:45 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| A.java:91:26:91:30 | input | semmle.label | input |
+| A.java:92:30:92:34 | input | semmle.label | input |
+| A.java:93:28:93:55 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| A.java:94:24:94:28 | input | semmle.label | input |
+| A.java:95:24:95:51 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
 | B.java:7:31:7:51 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | B.java:8:29:8:39 | inputStream | semmle.label | inputStream |
 | B.java:12:31:12:51 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
@@ -74,6 +85,11 @@ nodes
 | A.java:73:17:73:56 | parse(...) | A.java:70:25:70:45 | getInputStream(...) : InputStream | A.java:73:28:73:55 | new InputStreamReader(...) | Unsafe deserialization of $@. | A.java:70:25:70:45 | getInputStream(...) | user input |
 | A.java:74:12:74:38 | loadAs(...) | A.java:70:25:70:45 | getInputStream(...) : InputStream | A.java:74:24:74:28 | input | Unsafe deserialization of $@. | A.java:70:25:70:45 | getInputStream(...) | user input |
 | A.java:75:12:75:61 | loadAs(...) | A.java:70:25:70:45 | getInputStream(...) : InputStream | A.java:75:24:75:51 | new InputStreamReader(...) | Unsafe deserialization of $@. | A.java:70:25:70:45 | getInputStream(...) | user input |
+| A.java:91:16:91:31 | load(...) | A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:91:26:91:30 | input | Unsafe deserialization of $@. | A.java:90:25:90:45 | getInputStream(...) | user input |
+| A.java:92:17:92:35 | loadAll(...) | A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:92:30:92:34 | input | Unsafe deserialization of $@. | A.java:90:25:90:45 | getInputStream(...) | user input |
+| A.java:93:17:93:56 | parse(...) | A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:93:28:93:55 | new InputStreamReader(...) | Unsafe deserialization of $@. | A.java:90:25:90:45 | getInputStream(...) | user input |
+| A.java:94:12:94:38 | loadAs(...) | A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:94:24:94:28 | input | Unsafe deserialization of $@. | A.java:90:25:90:45 | getInputStream(...) | user input |
+| A.java:95:12:95:61 | loadAs(...) | A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:95:24:95:51 | new InputStreamReader(...) | Unsafe deserialization of $@. | A.java:90:25:90:45 | getInputStream(...) | user input |
 | B.java:8:12:8:46 | parseObject(...) | B.java:7:31:7:51 | getInputStream(...) : InputStream | B.java:8:29:8:39 | inputStream | Unsafe deserialization of $@. | B.java:7:31:7:51 | getInputStream(...) | user input |
 | B.java:15:12:15:28 | parse(...) | B.java:12:31:12:51 | getInputStream(...) : InputStream | B.java:15:23:15:27 | bytes | Unsafe deserialization of $@. | B.java:12:31:12:51 | getInputStream(...) | user input |
 | B.java:23:12:23:30 | parseObject(...) | B.java:19:31:19:51 | getInputStream(...) : InputStream | B.java:23:29:23:29 | s | Unsafe deserialization of $@. | B.java:19:31:19:51 | getInputStream(...) | user input |

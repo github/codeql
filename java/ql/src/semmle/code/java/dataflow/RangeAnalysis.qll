@@ -874,7 +874,5 @@ private predicate boundedConditionalExpr(
   ConditionalExpr cond, Bound b, boolean upper, boolean branch, int delta, boolean fromBackEdge,
   int origdelta, Reason reason
 ) {
-  branch = true and bounded(cond.getTrueExpr(), b, delta, upper, fromBackEdge, origdelta, reason)
-  or
-  branch = false and bounded(cond.getFalseExpr(), b, delta, upper, fromBackEdge, origdelta, reason)
+  bounded(cond.getBranchExpr(branch), b, delta, upper, fromBackEdge, origdelta, reason)
 }

@@ -93,6 +93,11 @@ module API {
     Node getReturn() { result = getASuccessor(Label::return()) }
 
     /**
+     * Gets a node representing a subclass of the class represented by this node.
+     */
+    Node getASubclass() { result = getASuccessor(Label::subclass()) }
+
+    /**
      * Gets a string representation of the lexicographically least among all shortest access paths
      * from the root to this node.
      */
@@ -312,12 +317,11 @@ module API {
      * For instance, `prefix_member("foo.bar", "baz", "foo.bar.baz")` would hold.
      */
     private predicate prefix_member(TApiNode base, string member, TApiNode sub) {
-      exists(string base_str, string sub_str |
-        base = MkModuleImport(base_str) and
+      exists(string sub_str, string regexp |
+        regexp = "(.+)[.]([^.]+)" and
+        base = MkModuleImport(sub_str.regexpCapture(regexp, 1)) and
+        member = sub_str.regexpCapture(regexp, 2) and
         sub = MkModuleImport(sub_str)
-      |
-        base_str + "." + member = sub_str and
-        not member.matches("%.%")
       )
     }
 
@@ -351,13 +355,19 @@ module API {
         // the relationship between `pred` and `ref`.
         use(base, src) and pred = trackUseNode(src)
       |
-        // Reading an attribute on a node that is a use of `base`:
+        // Referring to an attribute on a node that is a use of `base`:
         lbl = Label::memberFromRef(ref) and
-        ref = pred.getAnAttributeRead()
+        ref = pred.getAnAttributeReference()
         or
         // Calling a node that is a use of `base`
         lbl = Label::return() and
         ref = pred.getACall()
+        or
+        // Subclassing a node
+        lbl = Label::subclass() and
+        exists(DataFlow::Node superclass | pred.flowsTo(superclass) |
+          ref.asExpr().(ClassExpr).getABase() = superclass.asExpr()
+        )
       )
     }
 
@@ -468,4 +478,6 @@ private module Label {
 
   /** Gets the `return` edge label. */
   string return() { result = "getReturn()" }
+
+  string subclass() { result = "getASubclass()" }
 }

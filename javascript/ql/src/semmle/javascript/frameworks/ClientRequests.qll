@@ -823,4 +823,35 @@ module ClientRequest {
 
     override DataFlow::Node getADataNode() { none() }
   }
+
+  /**
+   * Classes and predicates modelling the `apollo-client` library.
+   */
+  private module ApolloClient {
+    /**
+     * A function from `apollo-client` that accepts an options object that may contain a `uri` property.
+     */
+    API::Node apolloUriCallee() {
+      result = API::moduleImport("apollo-link-http").getMember(["HttpLink", "createHttpLink"])
+      or
+      result =
+        API::moduleImport(["apollo-boost", "apollo-client", "apollo-client-preset"])
+            .getMember(["ApolloClient", "HttpLink", "createNetworkInterface"])
+      or
+      result = API::moduleImport("apollo-link-ws").getMember("WebSocketLink")
+    }
+
+    /**
+     * A model of a URL request made using apollo-client.
+     */
+    class ApolloClientRequest extends ClientRequest::Range, API::InvokeNode {
+      ApolloClientRequest() { this = apolloUriCallee().getAnInvocation() }
+
+      override DataFlow::Node getUrl() { result = getParameter(0).getMember("uri").getARhs() }
+
+      override DataFlow::Node getHost() { none() }
+
+      override DataFlow::Node getADataNode() { none() }
+    }
+  }
 }

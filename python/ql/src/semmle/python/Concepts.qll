@@ -373,6 +373,9 @@ module HTTP {
        * requests for this route, if any. These automatically become a `RemoteFlowSource`.
        */
       Parameter getARoutedParameter() { result = range.getARoutedParameter() }
+
+      /** Gets a string that identifies the framework used for this route setup. */
+      string getFramework() { result = range.getFramework() }
     }
 
     /** Provides a class for modeling new HTTP routing APIs. */
@@ -407,6 +410,9 @@ module HTTP {
          * requests for this route, if any. These automatically become a `RemoteFlowSource`.
          */
         abstract Parameter getARoutedParameter();
+
+        /** Gets a string that identifies the framework used for this route setup. */
+        abstract string getFramework();
       }
     }
 
@@ -426,6 +432,9 @@ module HTTP {
        * requests, if any. These automatically become a `RemoteFlowSource`.
        */
       Parameter getARoutedParameter() { result = range.getARoutedParameter() }
+
+      /** Gets a string that identifies the framework used for this route setup. */
+      string getFramework() { result = range.getFramework() }
     }
 
     /** Provides a class for modeling new HTTP request handlers. */
@@ -444,6 +453,9 @@ module HTTP {
          * requests, if any. These automatically become a `RemoteFlowSource`.
          */
         abstract Parameter getARoutedParameter();
+
+        /** Gets a string that identifies the framework used for this request handler. */
+        abstract string getFramework();
       }
     }
 
@@ -456,13 +468,17 @@ module HTTP {
         result = rs.getARoutedParameter() and
         result in [this.getArg(_), this.getArgByName(_)]
       }
+
+      override string getFramework() { result = rs.getFramework() }
     }
 
     /** A parameter that will receive parts of the url when handling an incoming request. */
     private class RoutedParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
-      RoutedParameter() { this.getParameter() = any(RequestHandler handler).getARoutedParameter() }
+      RequestHandler handler;
 
-      override string getSourceType() { result = "RoutedParameter" }
+      RoutedParameter() { this.getParameter() = handler.getARoutedParameter() }
+
+      override string getSourceType() { result = handler.getFramework() + " RoutedParameter" }
     }
 
     /**

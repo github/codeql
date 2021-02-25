@@ -30,4 +30,5 @@ class MyCustomViewBaseClass(View):
 
 class MyViewHandlerWithCustomInheritance(MyCustomViewBaseClass):
     def get(self, request: HttpRequest): # $ requestHandler
+        print(self.request.GET)
         return HttpResponse("MyViewHandlerWithCustomInheritance: GET") # $ HttpResponse

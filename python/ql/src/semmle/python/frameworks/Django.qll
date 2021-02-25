@@ -1975,6 +1975,14 @@ private module Django {
     }
   }
 
+  /**
+   * Gets the last decorator call for the function `func`, if `func` has decorators.
+   */
+  private Expr lastDecoratorCall(Function func) {
+    result = func.getDefinition().(FunctionExpr).getADecoratorCall() and
+    not exists(Call other_decorator | other_decorator.getArg(0) = result)
+  }
+
   // ---------------------------------------------------------------------------
   // routing modeling
   // ---------------------------------------------------------------------------
@@ -1987,7 +1995,18 @@ private module Django {
    */
   private DataFlow::Node djangoRouteHandlerFunctionTracker(DataFlow::TypeTracker t, Function func) {
     t.start() and
-    result = DataFlow::exprNode(func.getDefinition())
+    (
+      not exists(func.getADecorator()) and
+      result.asExpr() = func.getDefinition()
+      or
+      // If the function has decorators, we still want to model the function as being
+      // the request handler for a route setup. In such situations, we must track the
+      // last decorator call instead of the function itself.
+      //
+      // Note that this means that we blindly ignore what the decorator actually does to
+      // the function, which seems like an OK tradeoff.
+      result.asExpr() = lastDecoratorCall(func)
+    )
     or
     exists(DataFlow::TypeTracker t2 |
       result = djangoRouteHandlerFunctionTracker(t2, func).track(t2, t)
@@ -2005,18 +2024,15 @@ private module Django {
     result = djangoRouteHandlerFunctionTracker(DataFlow::TypeTracker::end(), func)
   }
 
-  /** A django View class defined in project code. */
-  class DjangoViewClassDef extends Class {
-    DjangoViewClassDef() { this.getABase() = django::views::generic::View::subclassRef().asExpr() }
-
-    /** Gets a function that could handle incoming requests, if any. */
-    DjangoRouteHandler getARequestHandler() {
-      // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
-      // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
-      result = this.getAMethod() and
-      result.getName() = HTTP::httpVerbLower()
-    }
-
+  /**
+   * In order to recognize a class as being a django view class, based on the `as_view`
+   * call, we need to be able to track such calls on _any_ class. This is provided by
+   * the member predicates of this QL class.
+   *
+   * As such, a Python class being part of `DjangoViewClassHelper` doesn't signify that
+   * we model it as a django view class.
+   */
+  class DjangoViewClassHelper extends Class {
     /** Gets a reference to this class. */
     private DataFlow::Node getARef(DataFlow::TypeTracker t) {
       t.start() and
@@ -2051,15 +2067,69 @@ private module Django {
     DataFlow::Node asViewResult() { result = asViewResult(DataFlow::TypeTracker::end()) }
   }
 
+  /** A class that we consider a django View class. */
+  abstract class DjangoViewClass extends DjangoViewClassHelper {
+    /** Gets a function that could handle incoming requests, if any. */
+    Function getARequestHandler() {
+      // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
+      // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
+      result = this.getAMethod() and
+      result.getName() = HTTP::httpVerbLower()
+    }
+
+    /**
+     * Gets a reference to instances of this class, originating from a self parameter of
+     * a method defined on this class.
+     *
+     * Note: TODO: This doesn't take MRO into account
+     * Note: TODO: This doesn't take staticmethod/classmethod into account
+     */
+    private DataFlow::Node getASelfRef(DataFlow::TypeTracker t) {
+      t.start() and
+      result.(DataFlow::ParameterNode).getParameter() = this.getAMethod().getArg(0)
+      or
+      exists(DataFlow::TypeTracker t2 | result = this.getASelfRef(t2).track(t2, t))
+    }
+
+    /**
+     * Gets a reference to instances of this class, originating from a self parameter of
+     * a method defined on this class.
+     *
+     * Note: TODO: This doesn't take MRO into account
+     * Note: TODO: This doesn't take staticmethod/classmethod into account
+     */
+    DataFlow::Node getASelfRef() { result = this.getASelfRef(DataFlow::TypeTracker::end()) }
+  }
+
+  /**
+   * A class that is used in a route-setup, with `<class>.as_view()`, therefore being
+   * considered a django View class.
+   */
+  class DjangoViewClassFromRouteSetup extends DjangoViewClass {
+    DjangoViewClassFromRouteSetup() {
+      exists(DjangoRouteSetup setup | setup.getViewArg() = this.asViewResult())
+    }
+  }
+
+  /**
+   * A class that has a super-type which is a django View class, therefore also
+   * becoming a django View class.
+   */
+  class DjangoViewClassFromSuperClass extends DjangoViewClass {
+    DjangoViewClassFromSuperClass() {
+      this.getABase() = django::views::generic::View::subclassRef().asExpr()
+    }
+  }
+
   /**
    * A function that is a django route handler, meaning it handles incoming requests
    * with the django framework.
    */
   private class DjangoRouteHandler extends Function {
     DjangoRouteHandler() {
-      exists(djangoRouteHandlerFunctionTracker(this))
+      exists(DjangoRouteSetup route | route.getViewArg() = djangoRouteHandlerFunctionTracker(this))
       or
-      any(DjangoViewClassDef vc).getARequestHandler() = this
+      any(DjangoViewClass vc).getARequestHandler() = this
     }
 
     /** Gets the index of the request parameter. */
@@ -2083,18 +2153,20 @@ private module Django {
     final override DjangoRouteHandler getARequestHandler() {
       djangoRouteHandlerFunctionTracker(result) = getViewArg()
       or
-      exists(DjangoViewClassDef vc |
+      exists(DjangoViewClass vc |
         getViewArg() = vc.asViewResult() and
         result = vc.getARequestHandler()
       )
     }
+
+    override string getFramework() { result = "Django" }
   }
 
   /** A request handler defined in a django view class, that has no known route. */
   private class DjangoViewClassHandlerWithoutKnownRoute extends HTTP::Server::RequestHandler::Range,
     DjangoRouteHandler {
     DjangoViewClassHandlerWithoutKnownRoute() {
-      exists(DjangoViewClassDef vc | vc.getARequestHandler() = this) and
+      exists(DjangoViewClass vc | vc.getARequestHandler() = this) and
       not exists(DjangoRouteSetup setup | setup.getARequestHandler() = this)
     }
 
@@ -2105,6 +2177,8 @@ private module Django {
       result in [this.getArg(_), this.getArgByName(_)] and
       not result = any(int i | i <= this.getRequestParamIndex() | this.getArg(i))
     }
+
+    override string getFramework() { result = "Django" }
   }
 
   /**
@@ -2265,6 +2339,46 @@ private module Django {
     }
 
     override string getSourceType() { result = "django.http.request.HttpRequest" }
+  }
+
+  /**
+   * A read of the `request` attribute on a reference to an instance of a View class,
+   * which is the request being processed currently.
+   *
+   * See https://docs.djangoproject.com/en/3.1/topics/class-based-views/generic-display/#dynamic-filtering
+   */
+  private class DjangoViewClassRequestAttributeRead extends django::http::request::HttpRequest::InstanceSource,
+    RemoteFlowSource::Range, DataFlow::Node {
+    DjangoViewClassRequestAttributeRead() {
+      exists(DataFlow::AttrRead read | this = read |
+        read.getObject() = any(DjangoViewClass vc).getASelfRef() and
+        read.getAttributeName() = "request"
+      )
+    }
+
+    override string getSourceType() {
+      result = "django.http.request.HttpRequest (attribute on self in View class)"
+    }
+  }
+
+  /**
+   * A read of the `args` or `kwargs` attribute on a reference to an instance of a View class,
+   * which contains the routed parameters captured from the URL route.
+   *
+   * See https://docs.djangoproject.com/en/3.1/topics/class-based-views/generic-display/#dynamic-filtering
+   */
+  private class DjangoViewClassRoutedParamsAttributeRead extends RemoteFlowSource::Range,
+    DataFlow::Node {
+    DjangoViewClassRoutedParamsAttributeRead() {
+      exists(DataFlow::AttrRead read | this = read |
+        read.getObject() = any(DjangoViewClass vc).getASelfRef() and
+        read.getAttributeName() in ["args", "kwargs"]
+      )
+    }
+
+    override string getSourceType() {
+      result = "django routed param from attribute on self in View class"
+    }
   }
 
   private class DjangoHttpRequstAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {

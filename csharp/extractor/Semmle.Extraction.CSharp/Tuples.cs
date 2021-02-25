@@ -53,6 +53,17 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("catch_type", @catch, type, explicityCaught ? 1 : 2);
         }
 
+        internal static void foreach_stmt_info(this TextWriter trapFile, Entities.Statements.ForEach @foreach, bool isAsync)
+        {
+            trapFile.WriteTuple("foreach_stmt_info", @foreach, isAsync ? 2 : 1);
+        }
+
+        internal static void foreach_stmt_desugar(this TextWriter trapFile, Entities.Statements.ForEach @foreach, IEntity entity,
+            Entities.Statements.ForEach.ForeachSymbolType type)
+        {
+            trapFile.WriteTuple("foreach_stmt_desugar", @foreach, entity, (int)type);
+        }
+
         internal static void commentblock(this TextWriter trapFile, CommentBlock k)
         {
             trapFile.WriteTuple("commentblock", k);

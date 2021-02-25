@@ -3,7 +3,7 @@ import java.security.spec.ECGenParameterSpec;
 import javax.crypto.KeyGenerator;
 
 public class InsufficientKeySize {
-    public void CryptoMethod() {
+    public void CryptoMethod() throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
         KeyGenerator keyGen1 = KeyGenerator.getInstance("AES");
         // BAD: Key size is less than 128
         keyGen1.init(64);

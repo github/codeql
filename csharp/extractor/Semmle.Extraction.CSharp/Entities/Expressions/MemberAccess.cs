@@ -9,16 +9,16 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         private MemberAccess(ExpressionNodeInfo info, ExpressionSyntax qualifier, ISymbol target) : base(info)
         {
             var trapFile = info.Context.TrapWriter.Writer;
-            Qualifier = Create(cx, qualifier, this, -1);
+            Qualifier = Create(Context, qualifier, this, -1);
 
             if (target == null)
             {
                 if (info.Kind != ExprKind.DYNAMIC_MEMBER_ACCESS)
-                    cx.ModelError(info.Node, "Could not determine target for member access");
+                    Context.ModelError(info.Node, "Could not determine target for member access");
             }
             else
             {
-                var t = cx.CreateEntity(target);
+                var t = Context.CreateEntity(target);
                 trapFile.expr_access(this, t);
             }
         }

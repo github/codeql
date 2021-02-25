@@ -4,10 +4,10 @@ import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 
 /**
- * A type of form <tt>{ [K in C]: T }</tt>, where <tt>T</tt> is a type that may refer to <tt>K</tt>.
+ * A type of form <code>{ [K in C]: T }</code>, where <code>T</code> is a type that may refer to <code>K</code>.
  *
- * <p>As with the TypeScript AST, the <tt>K in C</tt> part is represented as a type parameter with
- * <tt>C</tt> as its upper bound.
+ * <p>As with the TypeScript AST, the <code>K in C</code> part is represented as a type parameter with
+ * <code>C</code> as its upper bound.
  */
 public class MappedTypeExpr extends TypeExpression {
   private final TypeParameter typeParameter;

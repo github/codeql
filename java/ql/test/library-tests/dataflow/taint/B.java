@@ -11,7 +11,7 @@ public class B {
 
   public static void sink(Object o) { }
 
-  public static void maintest() {
+  public static void maintest() throws java.io.UnsupportedEncodingException, java.net.MalformedURLException {
     String[] args = taint();
     // tainted - access to main args
     String[] aaaargs = args;

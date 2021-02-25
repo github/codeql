@@ -293,7 +293,7 @@ private module ControlFlowGraphImpl {
     exists(ConditionalExpr condexpr |
       condexpr.getCondition() = b
       or
-      (condexpr.getTrueExpr() = b or condexpr.getFalseExpr() = b) and
+      condexpr.getABranchExpr() = b and
       inBooleanContext(condexpr)
     )
     or
@@ -706,8 +706,7 @@ private module ControlFlowGraphImpl {
     or
     // The last node of a `ConditionalExpr` is in either of its branches.
     exists(ConditionalExpr condexpr | condexpr = n |
-      last(condexpr.getFalseExpr(), last, completion) or
-      last(condexpr.getTrueExpr(), last, completion)
+      last(condexpr.getABranchExpr(), last, completion)
     )
     or
     exists(InstanceOfExpr ioe | ioe.isPattern() and ioe = n |
@@ -915,14 +914,10 @@ private module ControlFlowGraphImpl {
     )
     or
     // Control flows to the corresponding branch depending on the boolean completion of the condition.
-    exists(ConditionalExpr e |
+    exists(ConditionalExpr e, boolean branch |
       last(e.getCondition(), n, completion) and
-      completion = BooleanCompletion(true, _) and
-      result = first(e.getTrueExpr())
-      or
-      last(e.getCondition(), n, completion) and
-      completion = BooleanCompletion(false, _) and
-      result = first(e.getFalseExpr())
+      completion = BooleanCompletion(branch, _) and
+      result = first(e.getBranchExpr(branch))
     )
     or
     exists(InstanceOfExpr ioe | ioe.isPattern() |

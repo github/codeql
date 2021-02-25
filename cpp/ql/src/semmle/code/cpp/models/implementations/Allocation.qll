@@ -15,7 +15,7 @@ private class MallocAllocationFunction extends AllocationFunction {
 
   MallocAllocationFunction() {
     // --- C library allocation
-    hasGlobalOrStdName("malloc") and // malloc(size)
+    hasGlobalOrStdOrBslName("malloc") and // malloc(size)
     sizeArg = 0
     or
     hasGlobalName([
@@ -104,7 +104,7 @@ private class CallocAllocationFunction extends AllocationFunction {
 
   CallocAllocationFunction() {
     // --- C library allocation
-    hasGlobalOrStdName("calloc") and // calloc(num, size)
+    hasGlobalOrStdOrBslName("calloc") and // calloc(num, size)
     sizeArg = 1 and
     multArg = 0
   }
@@ -124,7 +124,7 @@ private class ReallocAllocationFunction extends AllocationFunction {
 
   ReallocAllocationFunction() {
     // --- C library allocation
-    hasGlobalOrStdName("realloc") and // realloc(ptr, size)
+    hasGlobalOrStdOrBslName("realloc") and // realloc(ptr, size)
     sizeArg = 1 and
     reallocArg = 0
     or

@@ -474,18 +474,27 @@ pragma[nomagic]
 private predicate barrierGuardBlocksEdge(
   BarrierGuardNode guard, DataFlow::Node pred, DataFlow::Node succ, string label
 ) {
-  barrierGuardIsRelevant(guard) and
   exists(
     SsaVariable input, SsaPhiNode phi, BasicBlock bb, ConditionGuardNode cond, boolean outcome
   |
+    bb = getADominatedBasicBlock(guard, cond) and
     pred = DataFlow::ssaDefinitionNode(input) and
     succ = DataFlow::ssaDefinitionNode(phi) and
     input = phi.getInputFromBlock(bb) and
-    guard.getEnclosingExpr() = cond.getTest() and
     outcome = cond.getOutcome() and
-    barrierGuardBlocksExpr(guard, outcome, input.getAUse(), label) and
-    cond.dominates(bb)
+    barrierGuardBlocksExpr(guard, outcome, input.getAUse(), label)
   )
+}
+
+/**
+ * Gets a basicblock that is dominated by `cond`, where the test for `cond` cond is `guard`.
+ *
+ * This predicate exists to get a better join-order for the `barrierGuardBlocksEdge` predicate above.
+ */
+private BasicBlock getADominatedBasicBlock(BarrierGuardNode guard, ConditionGuardNode cond) {
+  barrierGuardIsRelevant(guard) and
+  guard.getEnclosingExpr() = cond.getTest() and
+  cond.dominates(result)
 }
 
 /**
@@ -659,8 +668,14 @@ module PseudoProperties {
    */
   pragma[inline]
   string mapValueKnownKey(DataFlow::Node key) {
-    result = pseudoProperty("mapValue", any(string s | key.mayHaveStringValue(s)))
+    result = mapValueKey(any(string s | key.mayHaveStringValue(s)))
   }
+
+  /**
+   * Gets a pseudo-property for the location of a map value where the key is `key`.
+   */
+  bindingset[key]
+  string mapValueKey(string key) { result = pseudoProperty("mapValue", key) }
 
   /**
    * Gets a pseudo-property for the location of a map value where the key is `key`.
@@ -1290,12 +1305,9 @@ private predicate summarizedHigherOrderCall(
     Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner, int j,
     DataFlow::Node innerArg, DataFlow::SourceNode cbParm, PathSummary oldSummary
   |
-    reachableFromInput(f, outer, arg, innerArg, cfg, oldSummary) and
-    // Only track actual parameter flow.
     // Captured flow does not need to be summarized - it is handled by the local case in `higherOrderCall`.
     not arg = DataFlow::capturedVariableNode(_) and
-    argumentPassing(outer, cb, f, cbParm) and
-    innerArg = inner.getArgument(j)
+    summarizedHigherOrderCallAux(f, outer, arg, innerArg, cfg, oldSummary, cbParm, inner, j, cb)
   |
     // direct higher-order call
     cbParm.flowsTo(inner.getCalleeNode()) and
@@ -1309,6 +1321,21 @@ private predicate summarizedHigherOrderCall(
       summary = oldSummary.append(PathSummary::call()).append(newSummary)
     )
   )
+}
+
+/**
+ * @see `summarizedHigherOrderCall`.
+ */
+pragma[noinline]
+private predicate summarizedHigherOrderCallAux(
+  Function f, DataFlow::InvokeNode outer, DataFlow::Node arg, DataFlow::Node innerArg,
+  DataFlow::Configuration cfg, PathSummary oldSummary, DataFlow::SourceNode cbParm,
+  DataFlow::InvokeNode inner, int j, DataFlow::Node cb
+) {
+  reachableFromInput(f, outer, arg, innerArg, cfg, oldSummary) and
+  // Only track actual parameter flow.
+  argumentPassing(outer, cb, f, cbParm) and
+  innerArg = inner.getArgument(j)
 }
 
 /**

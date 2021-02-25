@@ -467,7 +467,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
       // ... and likewise for destructors.
       this.(Destructor).getADestruction().mayBeGloballyImpure()
     else
-      // Unless it's a function that we know is side-effect-free, it may
+      // Unless it's a function that we know is side-effect free, it may
       // have side-effects.
       not this.hasGlobalOrStdName([
           "strcmp", "wcscmp", "_mbscmp", "strlen", "wcslen", "_mbslen", "_mbslen_l", "_mbstrlen",
@@ -680,7 +680,7 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
 
 /**
  * A C/C++ non-member function (a function that is not a member of any
- * class). For example the in the following code, `MyFunction` is a
+ * class). For example, in the following code, `MyFunction` is a
  * `TopLevelFunction` but `MyMemberFunction` is not:
  * ```
  * void MyFunction() {

@@ -675,6 +675,15 @@ def test_iterable_star_unpacking_in_for_2():
         SINK_F(y)  # The list itself is not tainted (and is here empty)
         SINK_F(z)
 
+def iterate_star_args(first, second, *args):
+  for arg in args:
+    SINK(arg) #$ flow="SOURCE, l:+5 -> arg" flow="SOURCE, l:+6 -> arg"
+
+# FP reported here: https://github.com/github/codeql-python-team/issues/49
+@expects(2)
+def test_overflow_iteration():
+  s = SOURCE
+  iterate_star_args(NONSOURCE, NONSOURCE, SOURCE, s)
 
 def test_deep_callgraph():
     # port of python/ql/test/library-tests/taint/general/deep.py
@@ -781,3 +790,9 @@ def test_reverse_read_subscript_cls():
     l = [withA]
     l[0].setA(SOURCE)
     SINK(withA.a) #$ MISSING:flow="SOURCE, l:-1 -> self.a"
+
+@expects(3)
+def test_with_default_param_value(x=SOURCE, /, y=SOURCE, *, z=SOURCE):
+    SINK(x) #$ MISSING:flow="SOURCE, l:-1 -> x"
+    SINK(y) #$ MISSING:flow="SOURCE, l:-2 -> y"
+    SINK(z) #$ MISSING:flow="SOURCE, l:-3 -> z"

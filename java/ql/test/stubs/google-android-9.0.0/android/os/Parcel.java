@@ -229,6 +229,7 @@ public final class Parcel {
     }
 
     public final float[] createFloatArray() {
+        return null;
     }
 
     public final void readFloatArray(float[] val) {

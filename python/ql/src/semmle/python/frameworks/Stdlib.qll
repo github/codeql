@@ -1630,6 +1630,8 @@ private module Stdlib {
       }
 
       override Parameter getARoutedParameter() { none() }
+
+      override string getFramework() { result = "Stdlib" }
     }
   }
 

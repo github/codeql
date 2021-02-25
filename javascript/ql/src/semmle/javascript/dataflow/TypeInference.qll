@@ -85,7 +85,7 @@ class AnalyzedNode extends DataFlow::Node {
   }
 
   /** Gets a type inferred for this node. */
-  pragma[nomagic]
+  cached
   InferredType getAType() { result = getAValue().getType() }
 
   /**

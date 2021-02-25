@@ -149,7 +149,7 @@ public class ScopeManager {
   }
 
   /**
-   * Enters a scope for a block of form <tt>declare global { ... }</tt>.
+   * Enters a scope for a block of form <code>declare global { ... }</code>.
    *
    * <p>Declarations in this block will contribute to the global scope, but references can still be
    * resolved in the scope enclosing the declaration itself. The scope itself does not have its own
