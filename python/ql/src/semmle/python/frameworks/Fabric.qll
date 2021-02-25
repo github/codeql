@@ -44,21 +44,7 @@ private module FabricV1 {
       result = fabric()
     )
     or
-    // Due to bad performance when using normal setup with `fabric_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        fabric_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate fabric_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(fabric_attr(t2, attr_name), res, summary)
+    exists(DataFlow::TypeTracker t2 | result = fabric_attr(t2, attr_name).track(t2, t))
   }
 
   /**
@@ -93,22 +79,7 @@ private module FabricV1 {
           result = api()
         )
         or
-        // Due to bad performance when using normal setup with `api_attr(t2, attr_name).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            api_attr_first_join(t2, attr_name, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate api_attr_first_join(
-        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(api_attr(t2, attr_name), res, summary)
+        exists(DataFlow::TypeTracker t2 | result = api_attr(t2, attr_name).track(t2, t))
       }
 
       /**
@@ -184,21 +155,7 @@ private module FabricV2 {
       result = fabric()
     )
     or
-    // Due to bad performance when using normal setup with `fabric_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        fabric_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate fabric_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(fabric_attr(t2, attr_name), res, summary)
+    exists(DataFlow::TypeTracker t2 | result = fabric_attr(t2, attr_name).track(t2, t))
   }
 
   /**
@@ -233,22 +190,7 @@ private module FabricV2 {
           result = connection()
         )
         or
-        // Due to bad performance when using normal setup with `connection_attr(t2, attr_name).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            connection_attr_first_join(t2, attr_name, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate connection_attr_first_join(
-        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(connection_attr(t2, attr_name), res, summary)
+        exists(DataFlow::TypeTracker t2 | result = connection_attr(t2, attr_name).track(t2, t))
       }
 
       /**
@@ -418,22 +360,7 @@ private module FabricV2 {
           result = group()
         )
         or
-        // Due to bad performance when using normal setup with `group_attr(t2, attr_name).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            group_attr_first_join(t2, attr_name, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate group_attr_first_join(
-        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(group_attr(t2, attr_name), res, summary)
+        exists(DataFlow::TypeTracker t2 | result = group_attr(t2, attr_name).track(t2, t))
       }
 
       /**
