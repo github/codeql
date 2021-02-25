@@ -21,7 +21,9 @@ private module HttpProxy {
 
     override DataFlow::Node getUrl() { result = getParameter(0).getMember("target").getARhs() }
 
-    override DataFlow::Node getHost() { none() }
+    override DataFlow::Node getHost() {
+      result = getParameter(0).getMember("target").getMember("host").getARhs()
+    }
 
     override DataFlow::Node getADataNode() { none() }
   }
@@ -37,17 +39,21 @@ private module HttpProxy {
       this = any(CreateServerCall server).getReturn().getMember(method).getACall()
     }
 
-    override DataFlow::Node getUrl() {
+    private API::Node getOptionsObject() {
       exists(int optionsIndex |
         method = "web" and optionsIndex = 2
         or
         method = "ws" and optionsIndex = 3
       |
-        result = getParameter(optionsIndex).getMember("target").getARhs()
+        result = getParameter(optionsIndex)
       )
     }
 
-    override DataFlow::Node getHost() { none() }
+    override DataFlow::Node getUrl() { result = getOptionsObject().getMember("target").getARhs() }
+
+    override DataFlow::Node getHost() {
+      result = getOptionsObject().getMember("target").getMember("host").getARhs()
+    }
 
     override DataFlow::Node getADataNode() { none() }
   }

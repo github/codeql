@@ -82,6 +82,7 @@ test_ClientRequest
 | tst.js:267:1:267:61 | httpPro ... 9000'}) |
 | tst.js:269:13:269:48 | httpPro ... ptions) |
 | tst.js:271:3:271:61 | proxy.w ... 080' }) |
+| tst.js:274:1:283:2 | httpPro ... true\\n}) |
 test_getADataNode
 | tst.js:53:5:53:23 | axios({data: data}) | tst.js:53:18:53:21 | data |
 | tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:19:57:23 | data1 |
@@ -127,6 +128,7 @@ test_getHost
 | tst.js:93:5:93:35 | net.req ... host }) | tst.js:93:29:93:32 | host |
 | tst.js:219:5:219:41 | data.so ... Host"}) | tst.js:219:32:219:39 | "myHost" |
 | tst.js:257:1:262:2 | form.su ... rs()\\n}) | tst.js:259:11:259:23 | 'example.org' |
+| tst.js:274:1:283:2 | httpPro ... true\\n}) | tst.js:277:15:277:30 | 'my-domain-name' |
 test_getUrl
 | apollo.js:5:18:5:78 | new cre ... hql' }) | apollo.js:5:44:5:75 | 'https: ... raphql' |
 | apollo.js:10:1:10:54 | new Htt ... hql' }) | apollo.js:10:21:10:51 | 'http:/ ... raphql' |
@@ -215,6 +217,7 @@ test_getUrl
 | tst.js:257:1:262:2 | form.su ... rs()\\n}) | tst.js:257:13:262:1 | {\\n    m ... ers()\\n} |
 | tst.js:267:1:267:61 | httpPro ... 9000'}) | tst.js:267:37:267:59 | 'http:/ ... t:9000' |
 | tst.js:271:3:271:61 | proxy.w ... 080' }) | tst.js:271:33:271:58 | 'http:/ ... m:8080' |
+| tst.js:274:1:283:2 | httpPro ... true\\n}) | tst.js:275:13:281:5 | {\\n      ... ,\\n    } |
 test_getAResponseDataNode
 | tst.js:19:5:19:23 | requestPromise(url) | tst.js:19:5:19:23 | requestPromise(url) | text | true |
 | tst.js:21:5:21:23 | superagent.get(url) | tst.js:21:5:21:23 | superagent.get(url) | stream | true |
