@@ -51,21 +51,7 @@ private module Stdlib {
       result = DataFlow::importNode("os")
     )
     or
-    // Due to bad performance when using normal setup with `os_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        os_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate os_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(os_attr(t2, attr_name), res, summary)
+    exists(DataFlow::TypeTracker t2 | result = os_attr(t2, attr_name).track(t2, t))
   }
 
   /**
@@ -101,22 +87,7 @@ private module Stdlib {
           result = os::path()
         )
         or
-        // Due to bad performance when using normal setup with `path_attr(t2, attr_name).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            path_attr_first_join(t2, attr_name, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate path_attr_first_join(
-        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(path_attr(t2, attr_name), res, summary)
+        exists(DataFlow::TypeTracker t2 | result = path_attr(t2, attr_name).track(t2, t))
       }
 
       /**
@@ -333,21 +304,7 @@ private module Stdlib {
       result = subprocess()
     )
     or
-    // Due to bad performance when using normal setup with `subprocess_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        subprocess_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate subprocess_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(subprocess_attr(t2, attr_name), res, summary)
+    exists(DataFlow::TypeTracker t2 | result = subprocess_attr(t2, attr_name).track(t2, t))
   }
 
   /**
@@ -570,21 +527,7 @@ private module Stdlib {
       result = DataFlow::importNode("popen2")
     )
     or
-    // Due to bad performance when using normal setup with `popen2_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        popen2_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate popen2_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(popen2_attr(t2, attr_name), res, summary)
+    exists(DataFlow::TypeTracker t2 | result = popen2_attr(t2, attr_name).track(t2, t))
   }
 
   /**
@@ -642,21 +585,7 @@ private module Stdlib {
       result = DataFlow::importNode("platform")
     )
     or
-    // Due to bad performance when using normal setup with `platform_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        platform_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate platform_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(platform_attr(t2, attr_name), res, summary)
+    exists(DataFlow::TypeTracker t2 | result = platform_attr(t2, attr_name).track(t2, t))
   }
 
   /**
@@ -718,21 +647,7 @@ private module Stdlib {
       )
     )
     or
-    // Due to bad performance when using normal setup with `builtins_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        builtins_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate builtins_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(builtins_attr(t2, attr_name), res, summary)
+    exists(DataFlow::TypeTracker t2 | result = builtins_attr(t2, attr_name).track(t2, t))
   }
 
   /**
@@ -843,21 +758,7 @@ private module Stdlib {
       result = base64()
     )
     or
-    // Due to bad performance when using normal setup with `base64_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        base64_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate base64_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(base64_attr(t2, attr_name), res, summary)
+    exists(DataFlow::TypeTracker t2 | result = base64_attr(t2, attr_name).track(t2, t))
   }
 
   /**
@@ -970,21 +871,7 @@ private module Stdlib {
       result = io()
     )
     or
-    // Due to bad performance when using normal setup with `io_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        io_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate io_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(io_attr(t2, attr_name), res, summary)
+    exists(DataFlow::TypeTracker t2 | result = io_attr(t2, attr_name).track(t2, t))
   }
 
   /**
@@ -1023,21 +910,7 @@ private module Stdlib {
       result = json()
     )
     or
-    // Due to bad performance when using normal setup with `json_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        json_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate json_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(json_attr(t2, attr_name), res, summary)
+    exists(DataFlow::TypeTracker t2 | result = json_attr(t2, attr_name).track(t2, t))
   }
 
   /**
@@ -1421,21 +1294,7 @@ private module Stdlib {
       result = http()
     )
     or
-    // Due to bad performance when using normal setup with `http_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        http_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate http_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(http_attr(t2, attr_name), res, summary)
+    exists(DataFlow::TypeTracker t2 | result = http_attr(t2, attr_name).track(t2, t))
   }
 
   /**
@@ -1470,22 +1329,7 @@ private module Stdlib {
           result = server()
         )
         or
-        // Due to bad performance when using normal setup with `server_attr(t2, attr_name).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            server_attr_first_join(t2, attr_name, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate server_attr_first_join(
-        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(server_attr(t2, attr_name), res, summary)
+        exists(DataFlow::TypeTracker t2 | result = server_attr(t2, attr_name).track(t2, t))
       }
 
       /**
