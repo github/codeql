@@ -136,11 +136,11 @@ namespace Semmle.Extraction.CSharp.Entities
             return AttributeFactory.Instance.CreateEntity(cx, attributeData, init);
         }
 
-        private class AttributeFactory : ICachedEntityFactory<(AttributeData attributeData, IEntity receiver), Attribute>
+        private class AttributeFactory : CachedEntityFactory<(AttributeData attributeData, IEntity receiver), Attribute>
         {
             public static readonly AttributeFactory Instance = new AttributeFactory();
 
-            public Attribute Create(Context cx, (AttributeData attributeData, IEntity receiver) init) =>
+            public override Attribute Create(Context cx, (AttributeData attributeData, IEntity receiver) init) =>
                 new Attribute(cx, init.attributeData, init.receiver);
         }
     }

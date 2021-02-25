@@ -149,18 +149,18 @@ namespace Semmle.Extraction.CSharp.Entities
                 base.WriteQuotedId(trapFile);
         }
 
-        private class NamedTypeFactory : ICachedEntityFactory<INamedTypeSymbol, NamedType>
+        private class NamedTypeFactory : CachedEntityFactory<INamedTypeSymbol, NamedType>
         {
             public static NamedTypeFactory Instance { get; } = new NamedTypeFactory();
 
-            public NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init, false);
+            public override NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init, false);
         }
 
-        private class UnderlyingTupleTypeFactory : ICachedEntityFactory<INamedTypeSymbol, NamedType>
+        private class UnderlyingTupleTypeFactory : CachedEntityFactory<INamedTypeSymbol, NamedType>
         {
             public static UnderlyingTupleTypeFactory Instance { get; } = new UnderlyingTupleTypeFactory();
 
-            public NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init, true);
+            public override NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init, true);
         }
 
         // Do not create typerefs of constructed generics as they are always in the current trap file.
@@ -186,11 +186,11 @@ namespace Semmle.Extraction.CSharp.Entities
             // `NamedType`s and `NamedTypeRef`s
             NamedTypeRefFactory.Instance.CreateEntity(cx, (typeof(NamedTypeRef), new SymbolEqualityWrapper(type)), type);
 
-        private class NamedTypeRefFactory : ICachedEntityFactory<INamedTypeSymbol, NamedTypeRef>
+        private class NamedTypeRefFactory : CachedEntityFactory<INamedTypeSymbol, NamedTypeRef>
         {
             public static NamedTypeRefFactory Instance { get; } = new NamedTypeRefFactory();
 
-            public NamedTypeRef Create(Context cx, INamedTypeSymbol init) => new NamedTypeRef(cx, init);
+            public override NamedTypeRef Create(Context cx, INamedTypeSymbol init) => new NamedTypeRef(cx, init);
         }
 
         public override bool NeedsPopulation => true;

@@ -8,14 +8,13 @@ namespace Semmle.Extraction.CIL
     /// An entity that needs to be populated during extraction.
     /// This assigns a key and optionally extracts its contents.
     /// </summary>
-    public abstract class LabelledEntity : Extraction.LabelledEntity, IExtractedEntity
+    internal abstract class LabelledEntity : Extraction.LabelledEntity, IExtractedEntity
     {
         // todo: with .NET 5 this can override the base context, and change the return type.
-        public Context Cx { get; }
+        public Context Cx => (Context)base.Context;
 
-        protected LabelledEntity(Context cx) : base(cx.Cx)
+        protected LabelledEntity(Context cx) : base(cx)
         {
-            this.Cx = cx;
         }
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => throw new NotImplementedException();

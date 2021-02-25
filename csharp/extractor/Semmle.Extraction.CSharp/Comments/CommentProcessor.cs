@@ -1,32 +1,32 @@
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
+using Semmle.Extraction.CSharp.Entities;
 using Semmle.Util;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Semmle.Extraction.CommentProcessing
+namespace Semmle.Extraction.CSharp
 {
     /// <summary>
     /// Implements the comment processor for associating comments with program elements.
     /// Registers locations of comments and program elements,
     /// then generates binding information.
     /// </summary>
-    internal class CommentProcessor : ICommentGenerator
+    internal class CommentProcessor
     {
-        public void AddComment(ICommentLine comment)
+        public void AddComment(CommentLine comment)
         {
             comments[comment.Location] = comment;
         }
 
         // Comments sorted by location.
-        private readonly SortedDictionary<Location, ICommentLine> comments = new SortedDictionary<Location, ICommentLine>(new LocationComparer());
+        private readonly SortedDictionary<Location, CommentLine> comments = new SortedDictionary<Location, CommentLine>(new LocationComparer());
 
         // Program elements sorted by location.
         private readonly SortedDictionary<Location, Label> elements = new SortedDictionary<Location, Label>(new LocationComparer());
 
         private readonly Dictionary<Label, Key> duplicationGuardKeys = new Dictionary<Label, Key>();
 
-        private Key? GetDuplicationGuardKey(Label label)
+        private Key GetDuplicationGuardKey(Label label)
         {
             if (duplicationGuardKeys.TryGetValue(label, out var duplicationGuardKey))
                 return duplicationGuardKey;
@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CommentProcessing
 
         private class LocationComparer : IComparer<Location>
         {
-            public int Compare(Location? l1, Location? l2) => CommentProcessor.Compare(l1, l2);
+            public int Compare(Location l1, Location l2) => CommentProcessor.Compare(l1, l2);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Semmle.Extraction.CommentProcessing
         /// <param name="l1">First location</param>
         /// <param name="l2">Second location</param>
         /// <returns>&lt;0 if l1 before l2, &gt;0 if l1 after l2, else 0.</returns>
-        private static int Compare(Location? l1, Location? l2)
+        private static int Compare(Location l1, Location l2)
         {
             if (object.ReferenceEquals(l1, l2))
                 return 0;
@@ -68,7 +68,7 @@ namespace Semmle.Extraction.CommentProcessing
         /// <param name="elementLabel">The label of the element in the trap file.</param>
         /// <param name="duplicationGuardKey">The duplication guard key of the element, if any.</param>
         /// <param name="loc">The location of the element.</param>
-        public void AddElement(Label elementLabel, Key? duplicationGuardKey, Location loc)
+        public void AddElement(Label elementLabel, Key duplicationGuardKey, Location loc)
         {
             if (loc != null && loc.IsInSource)
                 elements[loc] = elementLabel;
@@ -78,7 +78,7 @@ namespace Semmle.Extraction.CommentProcessing
 
         // Ensure that commentBlock and element refer to the same file
         // which can happen when processing multiple files.
-        private static void EnsureSameFile(ICommentBlock commentBlock, ref KeyValuePair<Location, Label>? element)
+        private static void EnsureSameFile(Comments.CommentBlock commentBlock, ref KeyValuePair<Location, Label>? element)
         {
             if (element != null && element.Value.Key.SourceTree != commentBlock.Location.SourceTree)
                 element = null;
@@ -95,7 +95,7 @@ namespace Semmle.Extraction.CommentProcessing
         /// <param name="parentElement">The parent element of the comment block.</param>
         /// <param name="callback">Output binding information.</param>
         private void GenerateBindings(
-            ICommentBlock commentBlock,
+            Comments.CommentBlock commentBlock,
             KeyValuePair<Location, Label>? previousElement,
             KeyValuePair<Location, Label>? nextElement,
             KeyValuePair<Location, Label>? parentElement,
@@ -231,7 +231,7 @@ namespace Semmle.Extraction.CommentProcessing
 
         // Generate binding information for one CommentBlock.
         private void GenerateBindings(
-            ICommentBlock block,
+            Comments.CommentBlock block,
             ElementStack elementStack,
             KeyValuePair<Location, Label>? nextElement,
             CommentBindingCallback cb
@@ -259,25 +259,25 @@ namespace Semmle.Extraction.CommentProcessing
         /// <param name="cb">Where to send the results.</param>
         /// <returns>true if there are more comments to process, false otherwise.</returns>
         private bool GenerateBindings(
-            IEnumerator<KeyValuePair<Location, ICommentLine>> commentEnumerator,
+            IEnumerator<KeyValuePair<Location, CommentLine>> commentEnumerator,
             KeyValuePair<Location, Label>? nextElement,
             ElementStack elementStack,
             CommentBindingCallback cb
             )
         {
-            CommentBlock? block = null;
+            Comments.CommentBlock block = null;
 
             // Iterate comments until the commentEnumerator has gone past nextElement
             while (nextElement == null || Compare(commentEnumerator.Current.Value.Location, nextElement.Value.Key) < 0)
             {
                 if (block is null)
-                    block = new CommentBlock(commentEnumerator.Current.Value);
+                    block = new Comments.CommentBlock(commentEnumerator.Current.Value);
 
                 if (!block.CombinesWith(commentEnumerator.Current.Value))
                 {
                     // Start of a new block, so generate the bindings for the old block first.
                     GenerateBindings(block, elementStack, nextElement, cb);
-                    block = new CommentBlock(commentEnumerator.Current.Value);
+                    block = new Comments.CommentBlock(commentEnumerator.Current.Value);
                 }
                 else
                 {
@@ -320,7 +320,7 @@ namespace Semmle.Extraction.CommentProcessing
             var elementStack = new ElementStack();
 
             using IEnumerator<KeyValuePair<Location, Label>> elementEnumerator = elements.GetEnumerator();
-            using IEnumerator<KeyValuePair<Location, ICommentLine>> commentEnumerator = comments.GetEnumerator();
+            using IEnumerator<KeyValuePair<Location, CommentLine>> commentEnumerator = comments.GetEnumerator();
             if (!commentEnumerator.MoveNext())
             {
                 // There are no comments to process.
@@ -343,54 +343,12 @@ namespace Semmle.Extraction.CommentProcessing
         }
     }
 
-    internal class CommentBlock : ICommentBlock
-    {
-        private readonly List<ICommentLine> lines;
-
-        public IEnumerable<ICommentLine> CommentLines => lines;
-
-        public Location Location { get; private set; }
-
-        public CommentBlock(ICommentLine firstLine)
-        {
-            lines = new List<ICommentLine> { firstLine };
-            Location = firstLine.Location;
-        }
-
-        /// <summary>
-        ///     Determine whether commentlines should be merged.
-        /// </summary>
-        /// <param name="newLine">A comment line to be appended to this comment block.</param>
-        /// <returns>Whether the new line should be appended to this block.</returns>
-        public bool CombinesWith(ICommentLine newLine)
-        {
-            if (!CommentLines.Any())
-                return true;
-
-            var sameFile = Location.SourceTree == newLine.Location.SourceTree;
-            var sameRow = Location.EndLine() == newLine.Location.StartLine();
-            var sameColumn = Location.EndLine() + 1 == newLine.Location.StartLine();
-            var nextRow = Location.StartColumn() == newLine.Location.StartColumn();
-            var adjacent = sameFile && (sameRow || (sameColumn && nextRow));
-
-            return
-                newLine.Type == CommentLineType.MultilineContinuation ||
-                adjacent;
-        }
-
-        /// <summary>
-        /// Adds a comment line to the this comment block.
-        /// </summary>
-        /// <param name="line">The line to add.</param>
-        public void AddCommentLine(ICommentLine line)
-        {
-            Location = !lines.Any()
-                ? line.Location
-                : Location.Create(
-                    line.Location.SourceTree!,
-                    new TextSpan(Location.SourceSpan.Start, line.Location.SourceSpan.End - Location.SourceSpan.Start));
-
-            lines.Add(line);
-        }
-    }
+    /// <summary>
+    /// Callback for generated comment associations.
+    /// </summary>
+    /// <param name="elementLabel">The label of the element</param>
+    /// <param name="duplicationGuardKey">The duplication guard key of the element, if any</param>
+    /// <param name="commentBlock">The comment block associated with the element</param>
+    /// <param name="binding">The relationship between the commentblock and the element</param>
+    internal delegate void CommentBindingCallback(Label elementLabel, Key duplicationGuardKey, Comments.CommentBlock commentBlock, CommentBinding binding);
 }

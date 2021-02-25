@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A type reference, to a type in a referenced assembly.
     /// </summary>
-    public sealed class TypeReferenceType : Type
+    internal sealed class TypeReferenceType : Type
     {
         private readonly TypeReferenceHandle handle;
         private readonly TypeReference tr;

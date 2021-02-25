@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public abstract class Method : CachedSymbol<IMethodSymbol>, IExpressionParentEntity, IStatementParentEntity
+    internal abstract class Method : CachedSymbol<IMethodSymbol>, IExpressionParentEntity, IStatementParentEntity
     {
         protected Method(Context cx, IMethodSymbol init)
             : base(cx, init) { }

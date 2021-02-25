@@ -26,11 +26,11 @@ namespace Semmle.Extraction.CSharp.Entities
         public static new Destructor Create(Context cx, IMethodSymbol symbol) =>
             DestructorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        private class DestructorFactory : ICachedEntityFactory<IMethodSymbol, Destructor>
+        private class DestructorFactory : CachedEntityFactory<IMethodSymbol, Destructor>
         {
             public static DestructorFactory Instance { get; } = new DestructorFactory();
 
-            public Destructor Create(Context cx, IMethodSymbol init) => new Destructor(cx, init);
+            public override Destructor Create(Context cx, IMethodSymbol init) => new Destructor(cx, init);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A namespace.
     /// </summary>
-    public sealed class Namespace : TypeContainer
+    internal sealed class Namespace : TypeContainer
     {
         public Namespace? ParentNamespace { get; }
         public string Name { get; }

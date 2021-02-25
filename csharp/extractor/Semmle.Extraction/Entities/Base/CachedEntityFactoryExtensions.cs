@@ -2,7 +2,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction
 {
-    public static class ICachedEntityFactoryExtensions
+    public static class CachedEntityFactoryExtensions
     {
         /// <summary>
         /// Creates and populates a new entity, or returns the existing one from the cache,
@@ -15,7 +15,7 @@ namespace Semmle.Extraction
         /// <param name="cacheKey">The key used for caching.</param>
         /// <param name="init">The initializer for the entity.</param>
         /// <returns>The entity.</returns>
-        public static TEntity CreateEntity<TInit, TEntity>(this ICachedEntityFactory<TInit, TEntity> factory, Context cx, object cacheKey, TInit init)
+        public static TEntity CreateEntity<TInit, TEntity>(this CachedEntityFactory<TInit, TEntity> factory, Context cx, object cacheKey, TInit init)
             where TEntity : CachedEntity => cx.CreateEntity(factory, cacheKey, init);
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Semmle.Extraction
         /// <param name="cx">The extractor context.</param>
         /// <param name="init">The initializer for the entity.</param>
         /// <returns>The entity.</returns>
-        public static TEntity CreateEntityFromSymbol<TSymbol, TEntity>(this ICachedEntityFactory<TSymbol, TEntity> factory, Context cx, TSymbol init)
+        public static TEntity CreateEntityFromSymbol<TSymbol, TEntity>(this CachedEntityFactory<TSymbol, TEntity> factory, Context cx, TSymbol init)
             where TSymbol : ISymbol
             where TEntity : CachedEntity => cx.CreateEntityFromSymbol(factory, init);
     }

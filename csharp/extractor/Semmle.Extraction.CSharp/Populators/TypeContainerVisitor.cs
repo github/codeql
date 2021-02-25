@@ -1,7 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.Entities;
+using Semmle.Extraction.CSharp.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Populators
 {
-    public class TypeContainerVisitor : CSharpSyntaxVisitor
+    internal class TypeContainerVisitor : CSharpSyntaxVisitor
     {
         protected Context Cx { get; }
         protected IEntity Parent { get; }

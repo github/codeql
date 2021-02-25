@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    public sealed class PrimitiveType : Type
+    internal sealed class PrimitiveType : Type
     {
         private readonly PrimitiveTypeCode typeCode;
         public PrimitiveType(Context cx, PrimitiveTypeCode tc) : base(cx)

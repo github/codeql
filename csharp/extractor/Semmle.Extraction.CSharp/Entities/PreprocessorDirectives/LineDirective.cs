@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 if (!string.IsNullOrWhiteSpace(trivia.File.ValueText))
                 {
-                    var file = Extraction.Entities.File.Create(Context, trivia.File.ValueText);
+                    var file = File.Create(Context, trivia.File.ValueText);
                     trapFile.directive_line_file(this, file);
                 }
             }

@@ -65,11 +65,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static Event Create(Context cx, IEventSymbol symbol) => EventFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        private class EventFactory : ICachedEntityFactory<IEventSymbol, Event>
+        private class EventFactory : CachedEntityFactory<IEventSymbol, Event>
         {
             public static EventFactory Instance { get; } = new EventFactory();
 
-            public Event Create(Context cx, IEventSymbol init) => new Event(cx, init);
+            public override Event Create(Context cx, IEventSymbol init) => new Event(cx, init);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;

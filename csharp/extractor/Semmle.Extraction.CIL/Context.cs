@@ -10,12 +10,10 @@ namespace Semmle.Extraction.CIL
     /// Adds additional context that is specific for CIL extraction.
     /// One context = one DLL/EXE.
     /// </summary>
-    public sealed partial class Context : IDisposable
+    internal sealed partial class Context : Extraction.Context, IDisposable
     {
         private readonly FileStream stream;
         private Entities.Assembly? assemblyNull;
-
-        public Extraction.Context Cx { get; }
         public MetadataReader MdReader { get; }
         public PEReader PeReader { get; }
         public string AssemblyPath { get; }
@@ -26,9 +24,9 @@ namespace Semmle.Extraction.CIL
         }
         public PDB.IPdb? Pdb { get; }
 
-        public Context(Extraction.Context cx, string assemblyPath, bool extractPdbs)
+        public Context(Extractor extractor, TrapWriter trapWriter, string assemblyPath, bool extractPdbs)
+            : base(extractor, trapWriter)
         {
-            this.Cx = cx;
             this.AssemblyPath = assemblyPath;
             stream = File.OpenRead(assemblyPath);
             PeReader = new PEReader(stream, PEStreamOptions.PrefetchEntireImage);
@@ -51,7 +49,7 @@ namespace Semmle.Extraction.CIL
                 Pdb = PDB.PdbReader.Create(assemblyPath, PeReader);
                 if (Pdb != null)
                 {
-                    cx.Extractor.Logger.Log(Util.Logging.Severity.Info, string.Format("Found PDB information for {0}", assemblyPath));
+                    Extractor.Logger.Log(Util.Logging.Severity.Info, string.Format("Found PDB information for {0}", assemblyPath));
                 }
             }
         }

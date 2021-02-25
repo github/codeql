@@ -6,7 +6,7 @@ using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public class Compilation : CachedEntity<object>
+    internal class Compilation : CachedEntity<object>
     {
         private static (string Cwd, string[] Args) settings;
         private static int hashCode;
@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            var assembly = Extraction.Entities.Assembly.CreateOutputAssembly(Context);
+            var assembly = Assembly.CreateOutputAssembly(Context);
 
             trapFile.compilations(this, FileUtils.ConvertToUnix(Compilation.Settings.Cwd));
             trapFile.compilation_assembly(this, assembly);
@@ -45,7 +45,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             // Files
             index = 0;
-            foreach (var file in Context.Compilation.SyntaxTrees.Select(tree => Extraction.Entities.File.Create(Context, tree.FilePath)))
+            foreach (var file in Context.Compilation.SyntaxTrees.Select(tree => File.Create(Context, tree.FilePath)))
             {
                 trapFile.compilation_compiling_files(this, index++, file);
             }
@@ -54,7 +54,7 @@ namespace Semmle.Extraction.CSharp.Entities
             index = 0;
             foreach (var file in Context.Compilation.References
                 .OfType<PortableExecutableReference>()
-                .Select(r => Extraction.Entities.File.Create(Context, r.FilePath)))
+                .Select(r => File.Create(Context, r.FilePath)))
             {
                 trapFile.compilation_referencing_files(this, index++, file);
             }
@@ -90,11 +90,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => Context.IsAssemblyScope;
 
-        private class CompilationFactory : ICachedEntityFactory<object, Compilation>
+        private class CompilationFactory : CachedEntityFactory<object, Compilation>
         {
             public static CompilationFactory Instance { get; } = new CompilationFactory();
 
-            public Compilation Create(Context cx, object init) => new Compilation(cx);
+            public override Compilation Create(Context cx, object init) => new Compilation(cx);
         }
 
         private static readonly object compilationCacheKey = new object();

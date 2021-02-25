@@ -55,11 +55,11 @@ namespace Semmle.Extraction.CSharp.Entities
         public static new EventAccessor Create(Context cx, IMethodSymbol symbol) =>
             EventAccessorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        private class EventAccessorFactory : ICachedEntityFactory<IMethodSymbol, EventAccessor>
+        private class EventAccessorFactory : CachedEntityFactory<IMethodSymbol, EventAccessor>
         {
             public static EventAccessorFactory Instance { get; } = new EventAccessorFactory();
 
-            public EventAccessor Create(Context cx, IMethodSymbol init) => new EventAccessor(cx, init);
+            public override EventAccessor Create(Context cx, IMethodSymbol init) => new EventAccessor(cx, init);
         }
     }
 }

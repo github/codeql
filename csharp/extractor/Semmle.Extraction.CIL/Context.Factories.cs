@@ -9,11 +9,11 @@ namespace Semmle.Extraction.CIL
     /// <summary>
     /// Provides methods for creating and caching various entities.
     /// </summary>
-    public sealed partial class Context
+    internal sealed partial class Context
     {
         private readonly Dictionary<object, Label> ids = new Dictionary<object, Label>();
 
-        public T Populate<T>(T e) where T : IExtractedEntity
+        internal T Populate<T>(T e) where T : IExtractedEntity
         {
             if (e.Label.Valid)
             {
@@ -27,10 +27,10 @@ namespace Semmle.Extraction.CIL
             }
             else
             {
-                e.Label = Cx.GetNewLabel();
-                Cx.DefineLabel(e, Cx.TrapWriter.Writer, Cx.Extractor);
+                e.Label = GetNewLabel();
+                DefineLabel(e);
                 ids.Add(e, e.Label);
-                Cx.PopulateLater(() =>
+                PopulateLater(() =>
                 {
                     foreach (var c in e.Contents)
                         c.Extract(this);
@@ -42,7 +42,7 @@ namespace Semmle.Extraction.CIL
 
                 if (debugLabels.TryGetValue(id, out var previousEntity))
                 {
-                    Cx.Extractor.Message(new Message("Duplicate trap ID", id, null, severity: Util.Logging.Severity.Warning));
+                    Extractor.Message(new Message("Duplicate trap ID", id, null, severity: Util.Logging.Severity.Warning));
                 }
                 else
                 {
@@ -74,9 +74,9 @@ namespace Semmle.Extraction.CIL
             {
                 e = new PrimitiveType(this, code)
                 {
-                    Label = Cx.GetNewLabel()
+                    Label = GetNewLabel()
                 };
-                Cx.DefineLabel(e, Cx.TrapWriter.Writer, Cx.Extractor);
+                DefineLabel(e);
                 primitiveTypes[(int)code] = e;
             }
 

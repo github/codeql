@@ -11,7 +11,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A type defined in the current assembly.
     /// </summary>
-    public sealed class TypeDefinitionType : Type
+    internal sealed class TypeDefinitionType : Type
     {
         private readonly TypeDefinitionHandle handle;
         private readonly TypeDefinition td;

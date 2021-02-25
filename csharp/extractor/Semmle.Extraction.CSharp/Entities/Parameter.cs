@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public class Parameter : CachedSymbol<IParameterSymbol>, IExpressionParentEntity
+    internal class Parameter : CachedSymbol<IParameterSymbol>, IExpressionParentEntity
     {
         protected IEntity Parent { get; set; }
         protected Parameter Original { get; }
@@ -177,11 +177,11 @@ namespace Semmle.Extraction.CSharp.Entities
             return syntax?.Default;
         }
 
-        private class ParameterFactory : ICachedEntityFactory<(IParameterSymbol, IEntity, Parameter), Parameter>
+        private class ParameterFactory : CachedEntityFactory<(IParameterSymbol, IEntity, Parameter), Parameter>
         {
             public static ParameterFactory Instance { get; } = new ParameterFactory();
 
-            public Parameter Create(Context cx, (IParameterSymbol, IEntity, Parameter) init) => new Parameter(cx, init.Item1, init.Item2, init.Item3);
+            public override Parameter Create(Context cx, (IParameterSymbol, IEntity, Parameter) init) => new Parameter(cx, init.Item1, init.Item2, init.Item3);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
@@ -218,11 +218,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static VarargsType Create(Context cx) => VarargsTypeFactory.Instance.CreateEntity(cx, typeof(VarargsType), null);
 
-        private class VarargsTypeFactory : ICachedEntityFactory<string, VarargsType>
+        private class VarargsTypeFactory : CachedEntityFactory<string, VarargsType>
         {
             public static VarargsTypeFactory Instance { get; } = new VarargsTypeFactory();
 
-            public VarargsType Create(Context cx, string init) => new VarargsType(cx);
+            public override VarargsType Create(Context cx, string init) => new VarargsType(cx);
         }
     }
 
@@ -253,11 +253,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static VarargsParam Create(Context cx, Method method) => VarargsParamFactory.Instance.CreateEntity(cx, typeof(VarargsParam), method);
 
-        private class VarargsParamFactory : ICachedEntityFactory<Method, VarargsParam>
+        private class VarargsParamFactory : CachedEntityFactory<Method, VarargsParam>
         {
             public static VarargsParamFactory Instance { get; } = new VarargsParamFactory();
 
-            public VarargsParam Create(Context cx, Method init) => new VarargsParam(cx, init);
+            public override VarargsParam Create(Context cx, Method init) => new VarargsParam(cx, init);
         }
     }
 
@@ -281,11 +281,11 @@ namespace Semmle.Extraction.CSharp.Entities
         public static ConstructedExtensionParameter Create(Context cx, Method method, Parameter parameter) =>
             ExtensionParamFactory.Instance.CreateEntity(cx, (new SymbolEqualityWrapper(parameter.Symbol), new SymbolEqualityWrapper(method.Symbol.ReceiverType)), (method, parameter));
 
-        private class ExtensionParamFactory : ICachedEntityFactory<(Method, Parameter), ConstructedExtensionParameter>
+        private class ExtensionParamFactory : CachedEntityFactory<(Method, Parameter), ConstructedExtensionParameter>
         {
             public static ExtensionParamFactory Instance { get; } = new ExtensionParamFactory();
 
-            public ConstructedExtensionParameter Create(Context cx, (Method, Parameter) init) =>
+            public override ConstructedExtensionParameter Create(Context cx, (Method, Parameter) init) =>
                 new ConstructedExtensionParameter(cx, init.Item1, init.Item2);
         }
     }

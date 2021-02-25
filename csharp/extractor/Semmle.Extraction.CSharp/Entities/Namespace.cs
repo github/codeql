@@ -36,11 +36,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static Namespace Create(Context cx, INamespaceSymbol ns) => NamespaceFactory.Instance.CreateEntityFromSymbol(cx, ns);
 
-        private class NamespaceFactory : ICachedEntityFactory<INamespaceSymbol, Namespace>
+        private class NamespaceFactory : CachedEntityFactory<INamespaceSymbol, Namespace>
         {
             public static NamespaceFactory Instance { get; } = new NamespaceFactory();
 
-            public Namespace Create(Context cx, INamespaceSymbol init) => new Namespace(cx, init);
+            public override Namespace Create(Context cx, INamespaceSymbol init) => new Namespace(cx, init);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;

@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var returnType = Type.Create(Context, Symbol.ReturnType);
             trapFile.operators(this,
                 Symbol.Name,
-                OperatorSymbol(Context, Symbol.Name),
+                OperatorSymbol(Context, Symbol),
                 ContainingType,
                 returnType.TypeRef,
                 (UserOperator)OriginalDefinition);
@@ -176,20 +176,21 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="cx">Extractor context.</param>
         /// <param name="methodName">The method name.</param>
         /// <returns>The converted name.</returns>
-        public static string OperatorSymbol(Context cx, string methodName)
+        private static string OperatorSymbol(Context cx, IMethodSymbol method)
         {
+            var methodName = method.Name;
             if (!OperatorSymbol(methodName, out var result))
-                cx.ModelError($"Unhandled operator name in OperatorSymbol(): '{methodName}'");
+                cx.ModelError(method, $"Unhandled operator name in OperatorSymbol(): '{methodName}'");
             return result;
         }
 
         public static new UserOperator Create(Context cx, IMethodSymbol symbol) => UserOperatorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        private class UserOperatorFactory : ICachedEntityFactory<IMethodSymbol, UserOperator>
+        private class UserOperatorFactory : CachedEntityFactory<IMethodSymbol, UserOperator>
         {
             public static UserOperatorFactory Instance { get; } = new UserOperatorFactory();
 
-            public UserOperator Create(Context cx, IMethodSymbol init) => new UserOperator(cx, init);
+            public override UserOperator Create(Context cx, IMethodSymbol init) => new UserOperator(cx, init);
         }
     }
 }

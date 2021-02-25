@@ -127,11 +127,11 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(kind);
         }
 
-        private class TypeParameterFactory : ICachedEntityFactory<ITypeParameterSymbol, TypeParameter>
+        private class TypeParameterFactory : CachedEntityFactory<ITypeParameterSymbol, TypeParameter>
         {
             public static TypeParameterFactory Instance { get; } = new TypeParameterFactory();
 
-            public TypeParameter Create(Context cx, ITypeParameterSymbol init) => new TypeParameter(cx, init);
+            public override TypeParameter Create(Context cx, ITypeParameterSymbol init) => new TypeParameter(cx, init);
         }
     }
 }

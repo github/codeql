@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CIL.Driver
         {
             var sw = new Stopwatch();
             sw.Start();
-            Entities.Assembly.ExtractCIL(layout, assemblyPath, logger, nocache, extractPdbs, trapCompression, out _, out _);
+            Analyser.ExtractCIL(layout, assemblyPath, logger, nocache, extractPdbs, trapCompression, out _, out _);
             sw.Stop();
             logger.Log(Severity.Info, "  {0} ({1})", assemblyPath, sw.Elapsed);
         }

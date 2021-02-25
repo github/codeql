@@ -52,11 +52,11 @@ namespace Semmle.Extraction.CSharp.Entities
             return NamespaceDeclarationFactory.Instance.CreateEntity(cx, decl, init);
         }
 
-        private class NamespaceDeclarationFactory : ICachedEntityFactory<(NamespaceDeclarationSyntax decl, NamespaceDeclaration parent), NamespaceDeclaration>
+        private class NamespaceDeclarationFactory : CachedEntityFactory<(NamespaceDeclarationSyntax decl, NamespaceDeclaration parent), NamespaceDeclaration>
         {
             public static readonly NamespaceDeclarationFactory Instance = new NamespaceDeclarationFactory();
 
-            public NamespaceDeclaration Create(Context cx, (NamespaceDeclarationSyntax decl, NamespaceDeclaration parent) init) =>
+            public override NamespaceDeclaration Create(Context cx, (NamespaceDeclarationSyntax decl, NamespaceDeclaration parent) init) =>
                 new NamespaceDeclaration(cx, init.decl, init.parent);
         }
 
