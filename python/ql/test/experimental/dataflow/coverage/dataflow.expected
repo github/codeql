@@ -336,7 +336,17 @@ edges
 | test.py:673:9:673:14 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:673:9:673:9 | SSA variable x |
 | test.py:673:9:673:14 | IterableSequence [Tuple element at index 0] | test.py:673:9:673:14 | ControlFlowNode for Tuple [Tuple element at index 0] |
 | test.py:673:19:673:20 | ControlFlowNode for tl [List element, Tuple element at index 0] | test.py:673:9:673:14 | IterableSequence [Tuple element at index 0] |
-| test.py:748:16:748:21 | ControlFlowNode for SOURCE | test.py:751:10:751:36 | ControlFlowNode for return_from_inner_scope() |
+| test.py:678:39:678:42 | ControlFlowNode for args [Tuple element at index 0] | test.py:679:14:679:17 | ControlFlowNode for args [Tuple element at index 0] |
+| test.py:678:39:678:42 | ControlFlowNode for args [Tuple element at index 1] | test.py:679:14:679:17 | ControlFlowNode for args [Tuple element at index 1] |
+| test.py:679:7:679:9 | SSA variable arg | test.py:680:10:680:12 | ControlFlowNode for arg |
+| test.py:679:14:679:17 | ControlFlowNode for args [Tuple element at index 0] | test.py:679:7:679:9 | SSA variable arg |
+| test.py:679:14:679:17 | ControlFlowNode for args [Tuple element at index 1] | test.py:679:7:679:9 | SSA variable arg |
+| test.py:685:7:685:12 | ControlFlowNode for SOURCE | test.py:686:51:686:51 | ControlFlowNode for s |
+| test.py:686:3:686:52 | PosOverflowNode for iterate_star_args() [Tuple element at index 0] | test.py:678:39:678:42 | ControlFlowNode for args [Tuple element at index 0] |
+| test.py:686:3:686:52 | PosOverflowNode for iterate_star_args() [Tuple element at index 1] | test.py:678:39:678:42 | ControlFlowNode for args [Tuple element at index 1] |
+| test.py:686:43:686:48 | ControlFlowNode for SOURCE | test.py:686:3:686:52 | PosOverflowNode for iterate_star_args() [Tuple element at index 0] |
+| test.py:686:51:686:51 | ControlFlowNode for s | test.py:686:3:686:52 | PosOverflowNode for iterate_star_args() [Tuple element at index 1] |
+| test.py:757:16:757:21 | ControlFlowNode for SOURCE | test.py:760:10:760:36 | ControlFlowNode for return_from_inner_scope() |
 nodes
 | datamodel.py:38:6:38:17 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
 | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
@@ -735,8 +745,19 @@ nodes
 | test.py:673:9:673:14 | IterableSequence [Tuple element at index 0] | semmle.label | IterableSequence [Tuple element at index 0] |
 | test.py:673:19:673:20 | ControlFlowNode for tl [List element, Tuple element at index 0] | semmle.label | ControlFlowNode for tl [List element, Tuple element at index 0] |
 | test.py:674:14:674:14 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:748:16:748:21 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:751:10:751:36 | ControlFlowNode for return_from_inner_scope() | semmle.label | ControlFlowNode for return_from_inner_scope() |
+| test.py:678:39:678:42 | ControlFlowNode for args [Tuple element at index 0] | semmle.label | ControlFlowNode for args [Tuple element at index 0] |
+| test.py:678:39:678:42 | ControlFlowNode for args [Tuple element at index 1] | semmle.label | ControlFlowNode for args [Tuple element at index 1] |
+| test.py:679:7:679:9 | SSA variable arg | semmle.label | SSA variable arg |
+| test.py:679:14:679:17 | ControlFlowNode for args [Tuple element at index 0] | semmle.label | ControlFlowNode for args [Tuple element at index 0] |
+| test.py:679:14:679:17 | ControlFlowNode for args [Tuple element at index 1] | semmle.label | ControlFlowNode for args [Tuple element at index 1] |
+| test.py:680:10:680:12 | ControlFlowNode for arg | semmle.label | ControlFlowNode for arg |
+| test.py:685:7:685:12 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:686:3:686:52 | PosOverflowNode for iterate_star_args() [Tuple element at index 0] | semmle.label | PosOverflowNode for iterate_star_args() [Tuple element at index 0] |
+| test.py:686:3:686:52 | PosOverflowNode for iterate_star_args() [Tuple element at index 1] | semmle.label | PosOverflowNode for iterate_star_args() [Tuple element at index 1] |
+| test.py:686:43:686:48 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:686:51:686:51 | ControlFlowNode for s | semmle.label | ControlFlowNode for s |
+| test.py:757:16:757:21 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:760:10:760:36 | ControlFlowNode for return_from_inner_scope() | semmle.label | ControlFlowNode for return_from_inner_scope() |
 #select
 | datamodel.py:38:6:38:17 | ControlFlowNode for f() | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:38:6:38:17 | ControlFlowNode for f() | Flow found |
 | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | Flow found |
@@ -841,4 +862,6 @@ nodes
 | test.py:667:16:667:16 | ControlFlowNode for y | test.py:663:33:663:38 | ControlFlowNode for SOURCE | test.py:667:16:667:16 | ControlFlowNode for y | Flow found |
 | test.py:674:14:674:14 | ControlFlowNode for x | test.py:672:12:672:17 | ControlFlowNode for SOURCE | test.py:674:14:674:14 | ControlFlowNode for x | Flow found |
 | test.py:674:14:674:14 | ControlFlowNode for x | test.py:672:33:672:38 | ControlFlowNode for SOURCE | test.py:674:14:674:14 | ControlFlowNode for x | Flow found |
-| test.py:751:10:751:36 | ControlFlowNode for return_from_inner_scope() | test.py:748:16:748:21 | ControlFlowNode for SOURCE | test.py:751:10:751:36 | ControlFlowNode for return_from_inner_scope() | Flow found |
+| test.py:680:10:680:12 | ControlFlowNode for arg | test.py:685:7:685:12 | ControlFlowNode for SOURCE | test.py:680:10:680:12 | ControlFlowNode for arg | Flow found |
+| test.py:680:10:680:12 | ControlFlowNode for arg | test.py:686:43:686:48 | ControlFlowNode for SOURCE | test.py:680:10:680:12 | ControlFlowNode for arg | Flow found |
+| test.py:760:10:760:36 | ControlFlowNode for return_from_inner_scope() | test.py:757:16:757:21 | ControlFlowNode for SOURCE | test.py:760:10:760:36 | ControlFlowNode for return_from_inner_scope() | Flow found |

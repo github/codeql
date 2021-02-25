@@ -14,20 +14,20 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             trapFile.WriteSubId(ContainingType);
             trapFile.Write('.');
-            Method.AddExplicitInterfaceQualifierToId(Context, trapFile, symbol.ExplicitInterfaceImplementations);
-            trapFile.Write(symbol.Name);
+            Method.AddExplicitInterfaceQualifierToId(Context, trapFile, Symbol.ExplicitInterfaceImplementations);
+            trapFile.Write(Symbol.Name);
             trapFile.Write(";event");
         }
 
         public override void Populate(TextWriter trapFile)
         {
-            PopulateNullability(trapFile, symbol.GetAnnotatedType());
+            PopulateNullability(trapFile, Symbol.GetAnnotatedType());
 
-            var type = Type.Create(Context, symbol.Type);
-            trapFile.events(this, symbol.GetName(), ContainingType, type.TypeRef, Create(Context, symbol.OriginalDefinition));
+            var type = Type.Create(Context, Symbol.Type);
+            trapFile.events(this, Symbol.GetName(), ContainingType, type.TypeRef, Create(Context, Symbol.OriginalDefinition));
 
-            var adder = symbol.AddMethod;
-            var remover = symbol.RemoveMethod;
+            var adder = Symbol.AddMethod;
+            var remover = Symbol.RemoveMethod;
 
             if (!(adder is null))
                 Method.Create(Context, adder);
@@ -39,10 +39,10 @@ namespace Semmle.Extraction.CSharp.Entities
             BindComments();
 
             var declSyntaxReferences = IsSourceDeclaration
-                ? symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).ToArray()
+                ? Symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).ToArray()
                 : Enumerable.Empty<SyntaxNode>();
 
-            foreach (var explicitInterface in symbol.ExplicitInterfaceImplementations.Select(impl => Type.Create(Context, impl.ContainingType)))
+            foreach (var explicitInterface in Symbol.ExplicitInterfaceImplementations.Select(impl => Type.Create(Context, impl.ContainingType)))
             {
                 trapFile.explicitly_implements(this, explicitInterface.TypeRef);
 

@@ -118,6 +118,7 @@ class ASTNode extends @ast_node, NodeInStmtContainer {
   int getNumChildStmt() { result = count(getAChildStmt()) }
 
   /** Gets the parent node of this node, if any. */
+  cached
   ASTNode getParent() { this = result.getAChild() }
 
   /** Gets the first control flow node belonging to this syntactic entity. */

@@ -51,6 +51,10 @@ public record Dog(string Name) : Pet(Name)
     }
 }
 
+public abstract record R1(string A) { }
+
+public record R2(string A, string B) : R1(A) { }
+
 public class Record1
 {
     public void M1()
@@ -63,10 +67,20 @@ public class Record1
 
     public void M2()
     {
-        var person = new Person1("Bill", "Wagner");
+        Person1 p1 = new Teacher1("Bill", "Wagner", "Math");
 
-        var (first, last) = person;
+        var (first, last) = p1;
         Console.WriteLine(first);
-        Console.WriteLine(last);
+
+        var p2 = p1 with { FirstName = "Paul" };
+        var p3 = (Teacher1)p1 with { FirstName = "Paul", Subject = "Literature" };
+        var clone = p1 with { };
+    }
+
+    public void M3()
+    {
+        R2 a = new R2("A", "B");
+        R1 b = a;
+        R1 c = b with { A = "C" };
     }
 }

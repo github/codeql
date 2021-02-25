@@ -73,7 +73,7 @@ namespace Semmle.Extraction
         }
 
 #if DEBUG_LABELS
-        private void CheckEntityHasUniqueLabel(string id, ICachedEntity entity)
+        private void CheckEntityHasUniqueLabel(string id, CachedEntity entity)
         {
             if (idLabelCache.ContainsKey(id))
             {
@@ -89,12 +89,12 @@ namespace Semmle.Extraction
         public Label GetNewLabel() => new Label(GetNewId());
 
         public TEntity CreateEntity<TInit, TEntity>(ICachedEntityFactory<TInit, TEntity> factory, object cacheKey, TInit init)
-            where TEntity : ICachedEntity =>
+            where TEntity : CachedEntity =>
             cacheKey is ISymbol s ? CreateEntity(factory, s, init, symbolEntityCache) : CreateEntity(factory, cacheKey, init, objectEntityCache);
 
         public TEntity CreateEntityFromSymbol<TSymbol, TEntity>(ICachedEntityFactory<TSymbol, TEntity> factory, TSymbol init)
             where TSymbol : ISymbol
-            where TEntity : ICachedEntity => CreateEntity(factory, init, init, symbolEntityCache);
+            where TEntity : CachedEntity => CreateEntity(factory, init, init, symbolEntityCache);
 
         /// <summary>
         /// Creates and populates a new entity, or returns the existing one from the cache.
@@ -104,9 +104,9 @@ namespace Semmle.Extraction
         /// <param name="init">The initializer for the entity.</param>
         /// <param name="dictionary">The dictionary to use for caching.</param>
         /// <returns>The new/existing entity.</returns>
-        private TEntity CreateEntity<TInit, TCacheKey, TEntity>(ICachedEntityFactory<TInit, TEntity> factory, TCacheKey cacheKey, TInit init, IDictionary<TCacheKey, ICachedEntity> dictionary)
+        private TEntity CreateEntity<TInit, TCacheKey, TEntity>(ICachedEntityFactory<TInit, TEntity> factory, TCacheKey cacheKey, TInit init, IDictionary<TCacheKey, CachedEntity> dictionary)
             where TCacheKey : notnull
-            where TEntity : ICachedEntity
+            where TEntity : CachedEntity
         {
             if (dictionary.TryGetValue(cacheKey, out var cached))
                 return (TEntity)cached;
@@ -143,7 +143,7 @@ namespace Semmle.Extraction
         /// </summary>
         /// <param name="entity">The entity to extract.</param>
         /// <returns>True only on the first call for a particular entity.</returns>
-        public bool ExtractGenerics(ICachedEntity entity)
+        public bool ExtractGenerics(CachedEntity entity)
         {
             if (extractedGenerics.Contains(entity.Label))
             {
@@ -158,18 +158,18 @@ namespace Semmle.Extraction
         /// Creates a fresh label with ID "*", and set it on the
         /// supplied <paramref name="entity"/> object.
         /// </summary>
-        public void AddFreshLabel(IEntity entity)
+        public void AddFreshLabel(Entity entity)
         {
             entity.Label = GetNewLabel();
             entity.DefineFreshLabel(TrapWriter.Writer);
         }
 
 #if DEBUG_LABELS
-        private readonly Dictionary<string, ICachedEntity> idLabelCache = new Dictionary<string, ICachedEntity>();
+        private readonly Dictionary<string, CachedEntity> idLabelCache = new Dictionary<string, CachedEntity>();
 #endif
 
-        private readonly IDictionary<object, ICachedEntity> objectEntityCache = new Dictionary<object, ICachedEntity>();
-        private readonly IDictionary<ISymbol, ICachedEntity> symbolEntityCache = new Dictionary<ISymbol, ICachedEntity>(10000, SymbolEqualityComparer.Default);
+        private readonly IDictionary<object, CachedEntity> objectEntityCache = new Dictionary<object, CachedEntity>();
+        private readonly IDictionary<ISymbol, CachedEntity> symbolEntityCache = new Dictionary<ISymbol, CachedEntity>(10000, SymbolEqualityComparer.Default);
         private readonly HashSet<Label> extractedGenerics = new HashSet<Label>();
 
         /// <summary>
@@ -325,7 +325,7 @@ namespace Semmle.Extraction
         /// <param name="optionalSymbol">Symbol for reporting errors.</param>
         /// <param name="entity">The entity to populate.</param>
         /// <exception cref="InternalError">Thrown on invalid trap stack behaviour.</exception>
-        public void Populate(ISymbol? optionalSymbol, ICachedEntity entity)
+        public void Populate(ISymbol? optionalSymbol, CachedEntity entity)
         {
             if (writingLabel)
             {
@@ -406,7 +406,7 @@ namespace Semmle.Extraction
         /// <param name="cx">Extractor context.</param>
         /// <param name="entity">Program entity.</param>
         /// <param name="l">Location of the entity.</param>
-        public void BindComments(IEntity entity, Microsoft.CodeAnalysis.Location l)
+        public void BindComments(Entity entity, Microsoft.CodeAnalysis.Location l)
         {
             var duplicationGuardKey = tagStack.Count > 0 ? tagStack.Peek() : null;
             CommentGenerator.AddElement(entity.Label, duplicationGuardKey, l);
@@ -432,7 +432,7 @@ namespace Semmle.Extraction
         /// <param name="message">The text of the message.</param>
         /// <param name="optionalSymbol">The symbol of the error, or null.</param>
         /// <param name="optionalEntity">The entity of the error, or null.</param>
-        public void ExtractionError(string message, ISymbol? optionalSymbol, IEntity optionalEntity)
+        public void ExtractionError(string message, ISymbol? optionalSymbol, Entity optionalEntity)
         {
             if (!(optionalSymbol is null))
             {

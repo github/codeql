@@ -29,23 +29,23 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            Expression.Create(cx, Stmt.Expression, this, 1);
+            Expression.Create(Context, Stmt.Expression, this, 1);
 
-            var semanticModel = cx.GetModel(Stmt);
+            var semanticModel = Context.GetModel(Stmt);
             var typeSymbol = semanticModel.GetDeclaredSymbol(Stmt);
             var type = typeSymbol.GetAnnotatedType();
 
-            var location = cx.CreateLocation(Stmt.Identifier.GetLocation());
+            var location = Context.CreateLocation(Stmt.Identifier.GetLocation());
 
-            Expressions.VariableDeclaration.Create(cx, typeSymbol, type, Stmt.Type, location, Stmt.Type.IsVar, this, 0);
+            Expressions.VariableDeclaration.Create(Context, typeSymbol, type, Stmt.Type, location, Stmt.Type.IsVar, this, 0);
 
-            Statement.Create(cx, Stmt.Statement, this, 2);
+            Statement.Create(Context, Stmt.Statement, this, 2);
 
             var info = semanticModel.GetForEachStatementInfo(Stmt);
 
             if (info.Equals(default))
             {
-                cx.ExtractionError("Could not get foreach statement info", null, cx.CreateLocation(this.ReportingLocation), severity: Util.Logging.Severity.Info);
+                Context.ExtractionError("Could not get foreach statement info", null, Context.CreateLocation(this.ReportingLocation), severity: Util.Logging.Severity.Info);
                 return;
             }
 
@@ -53,31 +53,31 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
             if (info.GetEnumeratorMethod != null)
             {
-                var m = Method.Create(cx, info.GetEnumeratorMethod);
+                var m = Method.Create(Context, info.GetEnumeratorMethod);
                 trapFile.foreach_stmt_desugar(this, m, ForeachSymbolType.GetEnumeratorMethod);
             }
 
             if (info.MoveNextMethod != null)
             {
-                var m = Method.Create(cx, info.MoveNextMethod);
+                var m = Method.Create(Context, info.MoveNextMethod);
                 trapFile.foreach_stmt_desugar(this, m, ForeachSymbolType.MoveNextMethod);
             }
 
             if (info.DisposeMethod != null)
             {
-                var m = Method.Create(cx, info.DisposeMethod);
+                var m = Method.Create(Context, info.DisposeMethod);
                 trapFile.foreach_stmt_desugar(this, m, ForeachSymbolType.DisposeMethod);
             }
 
             if (info.CurrentProperty != null)
             {
-                var p = Property.Create(cx, info.CurrentProperty);
+                var p = Property.Create(Context, info.CurrentProperty);
                 trapFile.foreach_stmt_desugar(this, p, ForeachSymbolType.CurrentProperty);
             }
 
             if (info.ElementType != null)
             {
-                var t = Type.Create(cx, info.ElementType);
+                var t = Type.Create(Context, info.ElementType);
                 trapFile.foreach_stmt_desugar(this, t, ForeachSymbolType.ElementType);
             }
         }
@@ -97,9 +97,9 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            Expression.Create(cx, Stmt.Variable, this, 0);
-            Expression.Create(cx, Stmt.Expression, this, 1);
-            Statement.Create(cx, Stmt.Statement, this, 2);
+            Expression.Create(Context, Stmt.Variable, this, 0);
+            Expression.Create(Context, Stmt.Expression, this, 1);
+            Statement.Create(Context, Stmt.Statement, this, 2);
         }
     }
 }

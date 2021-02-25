@@ -25,9 +25,8 @@ namespace Semmle.Extraction.CIL.Entities
             parent.WriteId(trapFile);
             trapFile.Write('.');
             trapFile.Write(Cx.ShortName(ed.Name));
+            trapFile.Write(";cil-event");
         }
-
-        public override string IdSuffix => ";cil-event";
 
         public override bool Equals(object? obj)
         {

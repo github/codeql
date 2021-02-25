@@ -155,9 +155,17 @@ class AmdModuleDefinition extends CallExpr {
    * into this module's `module.exports` property.
    */
   DefiniteAbstractValue getAModuleExportsValue() {
+    result = [getAnImplicitExportsValue(), getAnExplicitExportsValue()]
+  }
+
+  pragma[noinline]
+  private AbstractValue getAnImplicitExportsValue() {
     // implicit exports: anything that is returned from the factory function
     result = getModuleExpr().analyze().getAValue()
-    or
+  }
+
+  pragma[noinline]
+  private AbstractValue getAnExplicitExportsValue() {
     // explicit exports: anything assigned to `module.exports`
     exists(AbstractProperty moduleExports, AmdModule m |
       this = m.getDefine() and

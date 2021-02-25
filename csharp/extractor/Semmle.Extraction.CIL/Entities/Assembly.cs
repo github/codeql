@@ -40,6 +40,7 @@ namespace Semmle.Extraction.CIL.Entities
             trapFile.Write(FullName);
             trapFile.Write("#file:///");
             trapFile.Write(Cx.AssemblyPath.Replace("\\", "/"));
+            trapFile.Write(";assembly");
         }
 
         public override bool Equals(object? obj)
@@ -48,8 +49,6 @@ namespace Semmle.Extraction.CIL.Entities
         }
 
         public override int GetHashCode() => 7 * file.GetHashCode();
-
-        public override string IdSuffix => ";assembly";
 
         private string FullName => assemblyName.GetPublicKey() is null ? assemblyName.FullName + ", PublicKeyToken=null" : assemblyName.FullName;
 
