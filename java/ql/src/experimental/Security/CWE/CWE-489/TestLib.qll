@@ -1,16 +1,6 @@
-/** Definitions related to the main method in a test program. */
+/** Definitions related to test methods. */
 
 import java
-
-/** Holds if `m` is the main method of a Java class with the signature `public static void main(String[] args)`. */
-predicate isMainMethod(Method m) {
-  m.hasName("main") and
-  m.isStatic() and
-  m.getReturnType() instanceof VoidType and
-  m.isPublic() and
-  m.getNumberOfParameters() = 1 and
-  m.getParameter(0).getType() instanceof Array
-}
 
 /**
  * Holds if `m` is a test method indicated by:
