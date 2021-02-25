@@ -51,4 +51,41 @@ private module HttpProxy {
 
     override DataFlow::Node getADataNode() { none() }
   }
+
+  /**
+   * Holds if an event handler for `event` has a HTTP request parameter at `req` and a HTTP response parameter at `res`.
+   */
+  predicate routeHandlingEventHandler(string event, int req, int res) {
+    event = ["start", "end"] and req = 0 and res = 1
+    or
+    event = ["proxyReq", "proxyRes", "econnreset"] and req = 1 and res = 2
+    or
+    event = "proxyReqWs" and req = 1 and res = -10 // -10 for non-existent.
+  }
+
+  /**
+   * An http proxy event handler.
+   */
+  class ProxyListenerCallback extends NodeJSLib::RouteHandler, DataFlow::FunctionNode {
+    string event;
+    API::CallNode call;
+
+    ProxyListenerCallback() {
+      call = any(CreateServerCall server).getReturn().getMember(["on", "once"]).getACall() and
+      call.getParameter(0).getARhs().mayHaveStringValue(event) and
+      this = call.getParameter(1).getARhs().getAFunctionValue()
+    }
+
+    override Parameter getRequestParameter() {
+      exists(int req | routeHandlingEventHandler(event, req, _) |
+        result = getFunction().getParameter(req)
+      )
+    }
+
+    override Parameter getResponseParameter() {
+      exists(int res | routeHandlingEventHandler(event, _, res) |
+        result = getFunction().getParameter(res)
+      )
+    }
+  }
 }
