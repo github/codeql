@@ -243,6 +243,15 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
 
 int accessPathLimit() { result = 5 }
 
+/** The unit type. */
+private newtype TUnit = TMkUnit()
+
+/** The trivial type with a single element. */
+class Unit extends TUnit {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "unit" }
+}
+
 /**
  * Gets the `i`th argument of call `c`, where the receiver of a method call
  * counts as argument -1.

@@ -186,7 +186,7 @@ abstract class DefaultTaintSanitizer extends DataFlow::Node { }
  * Holds if `node` should be a sanitizer in all global taint flow configurations
  * but not in local taint.
  */
-predicate isDefaultTaintSanitizer(DataFlow::Node node) { node instanceof DefaultTaintSanitizer }
+predicate defaultTaintSanitizer(DataFlow::Node node) { node instanceof DefaultTaintSanitizer }
 
 /**
  * A sanitizer guard in all global taint flow configurations but not in local taint.
@@ -197,7 +197,7 @@ abstract class DefaultTaintSanitizerGuard extends DataFlow::BarrierGuard { }
  * Holds if `guard` should be a sanitizer guard in all global taint flow configurations
  * but not in local taint.
  */
-predicate isDefaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) {
+predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) {
   guard instanceof DefaultTaintSanitizerGuard
 }
 
