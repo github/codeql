@@ -1,6 +1,6 @@
 /**
  * @name Call to `memset` may be deleted
- * @description Using `memset` the function to clear private data in a variable that has no subsequent use
+ * @description Using the `memset` function to clear private data in a variable that has no subsequent use
  *              can make information-leak vulnerabilities easier to exploit because the compiler can remove the call.
  * @kind problem
  * @id cpp/memset-may-be-deleted
