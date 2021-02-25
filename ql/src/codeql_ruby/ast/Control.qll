@@ -145,7 +145,7 @@ class IfModifierExpr extends ConditionalExpr, @if_modifier {
   final override string getAPrimaryQlClass() { result = "IfModifierExpr" }
 
   /**
-   * Gets the expression that is conditionally evaluated. In the following
+   * Gets the statement that is conditionally evaluated. In the following
    * example, the result is the `Expr` for `foo`.
    * ```rb
    * foo if bar
@@ -166,7 +166,7 @@ class UnlessModifierExpr extends ConditionalExpr, @unless_modifier {
   final override string getAPrimaryQlClass() { result = "UnlessModifierExpr" }
 
   /**
-   * Gets the expression that is conditionally evaluated. In the following
+   * Gets the statement that is conditionally evaluated. In the following
    * example, the result is the `Expr` for `foo`.
    * ```rb
    * foo unless bar
