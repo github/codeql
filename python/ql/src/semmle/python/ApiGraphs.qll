@@ -396,18 +396,7 @@ module API {
       use(_, src) and
       result = src
       or
-      // Due to bad performance when using `trackUseNode(t2, attr_name).track(t2, t)`
-      // we have inlined that code and forced a join
-      exists(DataFlow::StepSummary summary |
-        t = trackUseNode_first_join(src, result, summary).append(summary)
-      )
-    }
-
-    pragma[nomagic]
-    private DataFlow::TypeTracker trackUseNode_first_join(
-      DataFlow::LocalSourceNode src, DataFlow::LocalSourceNode res, DataFlow::StepSummary summary
-    ) {
-      DataFlow::StepSummary::step(trackUseNode(src, result), res, summary)
+      exists(DataFlow::TypeTracker t2 | result = trackUseNode(src, t2).track(t2, t))
     }
 
     cached
