@@ -276,8 +276,8 @@ class TypeTracker extends TTypeTracker {
   pragma[inline]
   TypeTracker step(LocalSourceNode nodeFrom, Node nodeTo) {
     exists(StepSummary summary |
-      StepSummary::step(nodeFrom, nodeTo, summary) and
-      result = this.append(summary)
+      StepSummary::step(nodeFrom, nodeTo, pragma[only_bind_into](summary)) and
+      result = this.append(pragma[only_bind_into](summary))
     )
   }
 
@@ -308,8 +308,8 @@ class TypeTracker extends TTypeTracker {
   pragma[inline]
   TypeTracker smallstep(Node nodeFrom, Node nodeTo) {
     exists(StepSummary summary |
-      StepSummary::smallstep(nodeFrom, nodeTo, summary) and
-      result = this.append(summary)
+      StepSummary::smallstep(nodeFrom, nodeTo, pragma[only_bind_into](summary)) and
+      result = this.append(pragma[only_bind_into](summary))
     )
     or
     typePreservingStep(nodeFrom, nodeTo) and
