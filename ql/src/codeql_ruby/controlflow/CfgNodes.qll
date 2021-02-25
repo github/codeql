@@ -1,7 +1,6 @@
 /** Provides classes representing nodes in a control flow graph. */
 
 private import codeql_ruby.AST
-private import codeql_ruby.ast.internal.TreeSitter
 private import codeql_ruby.controlflow.BasicBlocks
 private import ControlFlowGraph
 private import internal.ControlFlowGraphImpl
@@ -65,7 +64,7 @@ class ExitNode extends CfgNode, TExitNode {
  */
 class AstCfgNode extends CfgNode, TAstNode {
   private Splits splits;
-  private Generated::AstNode n;
+  private AstNode n;
 
   AstCfgNode() { this = TAstNode(n, splits) }
 
@@ -74,28 +73,7 @@ class AstCfgNode extends CfgNode, TAstNode {
   override Location getLocation() { result = n.getLocation() }
 
   final override string toString() {
-    exists(string s |
-      // TODO: Replace the two disjuncts below with `s = n.(AstNode).toString()` once
-      // `RemoveWhenFullCoverage` has been removed
-      s = n.(AstNode).toString() and
-      s != "AstNode"
-      or
-      n.(AstNode).toString() = "AstNode" and
-      s = n.toString()
-      or
-      n = any(Generated::For f).getValue() and
-      s = "In"
-      or
-      // TODO: Remove these nodes from the CFG
-      n = any(Generated::Class c).getName() and
-      s = n.toString()
-      or
-      n = any(Generated::Module m).getName() and
-      s = n.toString()
-      or
-      n = any(Generated::ScopeResolution sc).getName() and
-      s = n.toString()
-    |
+    exists(string s | s = n.(AstNode).toString() |
       result = "[" + this.getSplitsString() + "] " + s
       or
       not exists(this.getSplitsString()) and result = s
@@ -145,10 +123,10 @@ abstract private class ExprChildMapping extends Expr {
    */
   abstract predicate relevantChild(Expr child);
 
-  private Generated::AstNode getAChildStar() {
+  private AstNode getAChildStar() {
     result = this
     or
-    result.(Generated::AstNode).getParent() = this.getAChildStar()
+    result.getParent() = this.getAChildStar()
   }
 
   pragma[noinline]

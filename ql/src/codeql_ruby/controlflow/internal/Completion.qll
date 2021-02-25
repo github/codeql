@@ -4,9 +4,8 @@
  * A completion represents how a statement or expression terminates.
  */
 
-private import codeql_ruby.ast.internal.TreeSitter::Generated
+private import codeql_ruby.AST
 private import codeql_ruby.controlflow.ControlFlowGraph
-private import AstNodes
 private import ControlFlowGraphImpl
 private import NonReturning
 private import SuccessorTypes
@@ -54,19 +53,19 @@ private predicate nestedEnsureCompletion(Completion outer, int nestLevel) {
 
 pragma[noinline]
 private predicate completionIsValidForStmt(AstNode n, Completion c) {
-  n instanceof In and
+  n instanceof InRange and
   c instanceof EmptinessCompletion
   or
-  n instanceof Break and
+  n instanceof BreakStmt and
   c = TBreakCompletion()
   or
-  n instanceof Next and
+  n instanceof NextStmt and
   c = TNextCompletion()
   or
-  n instanceof Redo and
+  n instanceof RedoStmt and
   c = TRedoCompletion()
   or
-  n instanceof Return and
+  n instanceof ReturnStmt and
   c = TReturnCompletion()
 }
 
@@ -89,7 +88,7 @@ abstract class Completion extends TCompletion {
     mustHaveMatchingCompletion(n) and
     this = TMatchingCompletion(_)
     or
-    n = any(RescueModifier parent).getBody() and this = TRaiseCompletion()
+    n = any(RescueModifierExpr parent).getBody() and this = TRaiseCompletion()
     or
     not n instanceof NonReturningCall and
     not completionIsValidForStmt(n, _) and
@@ -130,10 +129,10 @@ abstract class Completion extends TCompletion {
 private predicate isBooleanConstant(AstNode n, boolean value) {
   mustHaveBooleanCompletion(n) and
   (
-    n instanceof True and
+    n.(BooleanLiteral).isTrue() and
     value = true
     or
-    n instanceof False and
+    n.(BooleanLiteral).isFalse() and
     value = false
   )
 }
@@ -151,49 +150,42 @@ private predicate mustHaveBooleanCompletion(AstNode n) {
  * that `n` evaluates to determines a true/false branch successor.
  */
 private predicate inBooleanContext(AstNode n) {
-  exists(IfElsifAstNode i |
-    n = i.getConditionNode()
+  exists(ConditionalExpr i |
+    n = i.getCondition()
     or
     inBooleanContext(i) and
     n = i.getBranch(_)
   )
   or
-  n = any(ConditionalLoopAstNode parent).getConditionNode()
+  n = any(ConditionalLoop parent).getCondition()
   or
-  exists(LogicalAndAstNode parent |
-    n = parent.getLeft()
+  exists(LogicalAndExpr parent |
+    n = parent.getLeftOperand()
     or
     inBooleanContext(parent) and
-    n = parent.getRight()
+    n = parent.getRightOperand()
   )
   or
-  exists(LogicalOrAstNode parent |
-    n = parent.getLeft()
+  exists(LogicalOrExpr parent |
+    n = parent.getLeftOperand()
     or
     inBooleanContext(parent) and
-    n = parent.getRight()
+    n = parent.getRightOperand()
   )
   or
-  n = any(LogicalNotAstNode parent | inBooleanContext(parent)).getOperand()
+  n = any(NotExpr parent | inBooleanContext(parent)).getOperand()
   or
-  n = any(ParenthesizedStatement parent | inBooleanContext(parent)).getChild()
+  n = any(ParenthesizedExpr parent | inBooleanContext(parent)).getLastExpr()
   or
-  exists(Case c, When w |
+  exists(CaseExpr c, WhenExpr w |
     not exists(c.getValue()) and
-    c.getChild(_) = w and
-    w.getPattern(_).getChild() = n
+    c.getAWhenBranch() = w and
+    w.getPattern(_) = n
   )
   or
-  exists(Then parent, int lst |
+  exists(StmtSequence parent |
     inBooleanContext(parent) and
-    n = parent.getChild(lst) and
-    not exists(parent.getChild(lst + 1))
-  )
-  or
-  exists(Else parent, int lst |
-    inBooleanContext(parent) and
-    n = parent.getChild(lst) and
-    not exists(parent.getChild(lst + 1))
+    n = parent.getLastExpr()
   )
 }
 
@@ -210,12 +202,12 @@ private predicate mustHaveMatchingCompletion(AstNode n) {
  * not the value of `n` matches, determines the successor.
  */
 private predicate inMatchingContext(AstNode n) {
-  n = any(Rescue r).getExceptions().getChild(_)
+  n = any(RescueClause r).getException(_)
   or
-  exists(Case c, When w |
+  exists(CaseExpr c, WhenExpr w |
     exists(c.getValue()) and
-    c.getChild(_) = w and
-    w.getPattern(_).getChild() = n
+    c.getAWhenBranch() = w and
+    w.getPattern(_) = n
   )
   or
   n = any(Trees::DefaultValueParameterTree t | t.hasDefaultValue())

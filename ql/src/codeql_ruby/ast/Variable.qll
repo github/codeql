@@ -2,7 +2,6 @@
 
 private import codeql_ruby.AST
 private import codeql.Locations
-private import internal.TreeSitter
 private import internal.Variable
 
 /** A scope in which variables can be declared. */

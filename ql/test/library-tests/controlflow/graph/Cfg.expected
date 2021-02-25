@@ -724,9 +724,6 @@ cfg.rb:
 #-----|  -> character
 
 #   58| Silly
-#-----|  -> Silly
-
-#   58| Silly
 #-----|  -> Object
 
 #   58| Object
@@ -1184,9 +1181,6 @@ cfg.rb:
 #-----|  -> ... > ...
 
 #  115| C
-#-----|  -> C
-
-#  115| C
 #-----|  -> 42
 
 #  116| ... = ...
@@ -1241,9 +1235,6 @@ cfg.rb:
 
 #  120| exit -> { ... } (normal)
 #-----|  -> exit -> { ... }
-
-#  122| M
-#-----|  -> M
 
 #  122| M
 #-----|  -> nil
@@ -1405,9 +1396,6 @@ cfg.rb:
 #  137| M
 #-----|  -> Constant
 
-#  137| Constant
-#-----|  -> Constant
-
 #  138| Constant
 #-----|  -> class << ...
 
@@ -1416,9 +1404,6 @@ cfg.rb:
 
 #  138| M
 #-----|  -> call to itself
-
-#  138| Constant
-#-----|  -> Constant
 
 #  140| class << ...
 #-----|  -> Silly
@@ -2561,9 +2546,6 @@ raise.rb:
 #-----|  -> ExceptionA
 
 #    1| ExceptionA
-#-----|  -> ExceptionA
-
-#    1| ExceptionA
 #-----|  -> Exception
 
 #    1| Exception
@@ -2573,9 +2555,6 @@ raise.rb:
 
 #    1| exit raise.rb (normal)
 #-----|  -> exit raise.rb
-
-#    4| ExceptionB
-#-----|  -> ExceptionB
 
 #    4| ExceptionB
 #-----|  -> Exception

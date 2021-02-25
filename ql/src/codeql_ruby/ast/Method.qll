@@ -1,7 +1,6 @@
 private import codeql_ruby.AST
 private import codeql_ruby.controlflow.ControlFlowGraph
 private import internal.AST
-private import internal.TreeSitter
 private import internal.Method
 
 /** A callable. */

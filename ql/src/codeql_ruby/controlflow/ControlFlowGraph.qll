@@ -2,7 +2,6 @@
 
 private import codeql.Locations
 private import codeql_ruby.AST as AST
-private import codeql_ruby.ast.internal.TreeSitter::Generated
 private import codeql_ruby.controlflow.BasicBlocks
 private import SuccessorTypes
 private import internal.ControlFlowGraphImpl
@@ -15,8 +14,8 @@ class CfgScope extends AST::AstNode {
 
   /** Gets the CFG scope that this scope is nested under, if any. */
   final CfgScope getOuterCfgScope() {
-    exists(AstNode parent |
-      parent.getAFieldOrChild() = this and
+    exists(AST::AstNode parent |
+      parent = this.getParent() and
       result = getCfgScope(parent)
     )
   }

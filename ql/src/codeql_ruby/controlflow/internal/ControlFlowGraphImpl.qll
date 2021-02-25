@@ -31,6 +31,8 @@
  * caught up by its surrounding loop and turned into a `NormalCompletion`.
  */
 
+private import codeql_ruby.ast.internal.AST as ASTInternal
+private import codeql_ruby.ast.internal.Control as Control
 private import codeql_ruby.ast.internal.TreeSitter::Generated
 private import AstNodes
 private import codeql_ruby.ast.internal.Variable
@@ -208,6 +210,12 @@ private predicate isHidden(ControlFlowTree t) {
   or
   t = any(Method m).getName()
   or
+  t = any(Class m).getName()
+  or
+  t = any(Module m).getName()
+  or
+  t = any(ScopeResolution m).getName()
+  or
   t = any(SingletonMethod m).getName()
   or
   t = any(Call c).getMethod() and
@@ -300,12 +308,33 @@ abstract private class PreOrderTree extends ControlFlowTree {
   final override predicate first(AstNode first) { first = this }
 }
 
+// TODO: remove this class; it should be replaced with an implicit non AST node
+class InRange extends ASTInternal::AstNode::Range, @in {
+  final override string toString() { result = "In" }
+}
+
+// TODO: remove this class; it should be replaced with an implicit non AST node
+class ForRange extends Control::ForExpr::Range, @for {
+  override predicate child(string label, ASTInternal::AstNode::Range child) {
+    Control::ForExpr::Range.super.child(label, child)
+    or
+    label = "<in>" and this.(AstNode).getAFieldOrChild().(In) = child
+  }
+}
+
+// TODO: remove this predicate
+predicate isValidFor(Completion c, ControlFlowTree node) {
+  c instanceof SimpleCompletion and isHidden(node)
+  or
+  c.isValidFor(node)
+}
+
 abstract private class StandardPreOrderTree extends StandardNode, PreOrderTree {
   final override predicate last(AstNode last, Completion c) {
     last(this.getLastChildNode(), last, c)
     or
     not exists(this.getLastChildNode()) and
-    c.isValidFor(this) and
+    isValidFor(c, this) and
     last = this
   }
 
@@ -321,7 +350,7 @@ abstract private class StandardPreOrderTree extends StandardNode, PreOrderTree {
 abstract private class PostOrderTree extends ControlFlowTree {
   override predicate last(AstNode last, Completion c) {
     last = this and
-    c.isValidFor(last)
+    isValidFor(c, last)
   }
 }
 
@@ -834,7 +863,7 @@ module Trees {
           or
           not exists(this.getExceptions()) and
           last = this and
-          c.isValidFor(this)
+          isValidFor(c, this)
         )
       )
     }
