@@ -34,7 +34,7 @@ module ArgumentList {
   private class ArgArgumentList extends ArgumentList::Range, @argument_list {
     final override Generated::ArgumentList generated;
 
-    ArgArgumentList() { count(generated.getChild(_)) != 1 }
+    ArgArgumentList() { strictcount(generated.getChild(_)) > 1 }
 
     final override Expr getElement(int i) { result = generated.getChild(i) }
   }
