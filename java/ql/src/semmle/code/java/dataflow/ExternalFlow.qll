@@ -222,7 +222,7 @@ module CsvValidation {
       not name.regexpMatch("[a-zA-Z0-9_]*") and
       msg = "Dubious name \"" + name + "\" in " + pred + " model."
       or
-      not signature.regexpMatch("|\\([a-zA-Z0-9_\\.\\$<>,]*\\)") and
+      not signature.regexpMatch("|\\([a-zA-Z0-9_\\.\\$<>,\\[\\]]*\\)") and
       msg = "Dubious signature \"" + signature + "\" in " + pred + " model."
       or
       not ext.regexpMatch("|Annotated") and
