@@ -40,21 +40,7 @@ private module Invoke {
       result = DataFlow::importNode("invoke")
     )
     or
-    // Due to bad performance when using normal setup with `invoke_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        invoke_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate invoke_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(invoke_attr(t2, attr_name), res, summary)
+    exists(DataFlow::TypeTracker t2 | result = invoke_attr(t2, attr_name).track(t2, t))
   }
 
   /**
