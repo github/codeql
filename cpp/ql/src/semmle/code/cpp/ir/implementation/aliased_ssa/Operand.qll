@@ -25,7 +25,7 @@ private class TStageOperand =
  * (the defining instruction) in another instruction (the use instruction)
  */
 class Operand extends TStageOperand {
-  Operand() {
+  cached Operand() {
     // Ensure that the operand does not refer to instructions from earlier stages that are unreachable here
     exists(Instruction use, Instruction def | this = registerOperand(use, _, def)) or
     exists(Instruction use | this = nonSSAMemoryOperand(use, _)) or
@@ -190,7 +190,7 @@ class Operand extends TStageOperand {
  * An operand that consumes a memory result (e.g. the `LoadOperand` on a `Load` instruction).
  */
 class MemoryOperand extends Operand {
-  MemoryOperand() {
+  cached MemoryOperand() {
     this instanceof TNonSSAMemoryOperand or
     this instanceof TPhiOperand or
     this instanceof TChiOperand
@@ -256,7 +256,7 @@ class RegisterOperand extends NonPhiOperand, TRegisterOperand {
   override RegisterOperandTag tag;
   Instruction defInstr;
 
-  RegisterOperand() { this = registerOperand(useInstr, tag, defInstr) }
+  cached RegisterOperand() { this = registerOperand(useInstr, tag, defInstr) }
 
   final override string toString() { result = tag.toString() }
 
@@ -274,7 +274,7 @@ class RegisterOperand extends NonPhiOperand, TRegisterOperand {
 class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, TNonPhiMemoryOperand {
   override MemoryOperandTag tag;
 
-  NonPhiMemoryOperand() {
+  cached NonPhiMemoryOperand() {
     this = nonSSAMemoryOperand(useInstr, tag)
     or
     this = chiOperand(useInstr, tag)
@@ -426,7 +426,7 @@ class PhiInputOperand extends MemoryOperand, TPhiOperand {
   IRBlock predecessorBlock;
   Overlap overlap;
 
-  PhiInputOperand() { this = phiOperand(useInstr, defInstr, predecessorBlock, overlap) }
+  cached PhiInputOperand() { this = phiOperand(useInstr, defInstr, predecessorBlock, overlap) }
 
   override string toString() { result = "Phi" }
 
