@@ -54,6 +54,8 @@ class VariablePattern extends Pattern, VariablePattern::VariableToken {
 class TuplePattern extends Pattern {
   override TuplePattern::Range range;
 
+  override string getAPrimaryQlClass() { result = "TuplePattern" }
+
   /** Gets the `i`th pattern in this tuple pattern. */
   final Pattern getElement(int i) { result = range.getElement(i) }
 
