@@ -52,6 +52,10 @@ where
   // Reference-typed variables get special treatment in `variableAddressEscapesTree` so we leave them
   // out of this query.
   not v.getUnspecifiedType() instanceof ReferenceType and
+  // `v` is not only just used in the call to `memset`.
+  exists(Access acc |
+    acc = v.getAnAccess() and not call.getArgument(0).getAChild*() = acc and not acc.isUnevaluated()
+  ) and
   // There is no later use of `v`.
   not v.getAnAccess() = call.getASuccessor*() and
   // Not using the `-fno-builtin-memset` flag
