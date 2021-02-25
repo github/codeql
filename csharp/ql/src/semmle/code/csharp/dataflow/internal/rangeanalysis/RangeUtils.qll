@@ -415,5 +415,15 @@ module ExprNode {
 
     /** Gets the "else" expression of this conditional expression. */
     ExprNode getFalseExpr() { hasChild(e, e.getElse(), this, result) }
+
+    /**
+     * If `branch` is `true` gets the "then" expression, if `false` gets the
+     * "else" expression of this conditional expression.
+     */
+    ExprNode getBranchExpr(boolean branch) {
+      branch = true and result = getTrueExpr()
+      or
+      branch = false and result = getFalseExpr()
+    }
   }
 }

@@ -7,10 +7,7 @@ import semmle.code.java.JDKAnnotations
 Expr valueFlow(Expr src) {
   result = src
   or
-  exists(ConditionalExpr c | result = c |
-    src = c.getTrueExpr() or
-    src = c.getFalseExpr()
-  )
+  result.(ConditionalExpr).getABranchExpr() = src
 }
 
 /**

@@ -26,6 +26,12 @@ features for query files (extension ``.ql``) and library files (extension ``.qll
 
 You can also use the VS Code **Format Document** command to format your code according to the `CodeQL style guide <https://github.com/github/codeql/blob/main/docs/ql-style-guide.md>`__.
 
+Data and telemetry
+-------------------
+
+If you specifically opt in to permit GitHub to do so, GitHub will collect usage data and metrics for the purposes of helping the core developers to improve the CodeQL extension for VS Code.
+For more information, see ":doc:`About telemetry in CodeQL for Visual Studio Code <about-telemetry-in-codeql-for-visual-studio-code>`."
+
 Further reading
 -------------------
 
