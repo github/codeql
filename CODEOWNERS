@@ -3,3 +3,10 @@
 /java/ @github/codeql-java
 /javascript/ @github/codeql-javascript
 /python/ @github/codeql-python
+
+# Make @xcorail (GitHub Security Lab) a code owner for experimental queries so he gets pinged when we promote a query out of experimental
+/cpp/**/experimental/**/* @github/codeql-c-analysis @xcorail
+/csharp/**/experimental/**/* @github/codeql-csharp @xcorail
+/java/**/experimental/**/* @github/codeql-java @xcorail
+/javascript/**/experimental/**/* @github/codeql-javascript @xcorail
+/python/**/experimental/**/* @github/codeql-python @xcorail
