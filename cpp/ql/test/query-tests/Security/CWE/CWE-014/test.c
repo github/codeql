@@ -59,9 +59,9 @@ int func1d() {
 	memset(pw1d, 0, PW_SIZE); // GOOD
 	return 0;
 }
-// x86-64 gcc 9.2: not deleted
-// x86-64 clang 9.0.0: not deleted
-// x64 msvc v19.14 (WINE): not deleted
+// x86-64 gcc 9.2: deleted
+// x86-64 clang 9.0.0: deleted
+// x64 msvc v19.14 (WINE): deleted
 char *func2(void) {  
 	char pw2[PW_SIZE];
 	use_pw(pw2);
@@ -129,9 +129,9 @@ int func8(void) {
 	return pw1a[4];
 }
 
-// x86-64 gcc 9.2: not deleted
-// x86-64 clang 9.0.0: not deleted
-// x64 msvc v19.14 (WINE): not deleted
+// x86-64 gcc 9.2: deleted
+// x86-64 clang 9.0.0: deleted
+// x64 msvc v19.14 (WINE): deleted
 char *func9(void) {
 	char pw1[PW_SIZE];
 	use_pw(pw1);

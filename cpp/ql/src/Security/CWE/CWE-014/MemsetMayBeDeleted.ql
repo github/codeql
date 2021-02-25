@@ -32,7 +32,8 @@ where
   forall(Expr escape | variableAddressEscapesTree(v.getAnAccess(), escape) |
     call.getArgument(0) = escape.getUnconverted()
   ) and
-  // `v` is a stack-allocated array or a struct.
+  // `v` is a stack-allocated array or a struct, and `v` is not static.
+  not v.isStatic() and
   (
     v.getUnspecifiedType() instanceof ArrayType and call.getArgument(0) = v.getAnAccess()
     or

@@ -277,7 +277,7 @@ bool nobadFunc2_1_0(unsigned char ch){
 
 void nobadFunc2_1_2(){
 	unsigned char buff1[PW_SIZE];
-	memset(buff1, 0, PW_SIZE); // GOOD
+	memset(buff1, 0, PW_SIZE); // BAD [NOT DETECTED]
 	buff1[2] = 5;
 }
 
@@ -363,4 +363,12 @@ void nobadFunc4_5(){
 void nobadFunc4_6(){
 	unsigned char * buff1 = globalBuff2->buff2;
 	memset(buff1, 0, PW_SIZE); // GOOD
+}
+
+extern void use_byte(unsigned char);
+
+void test_static_func() {
+	static unsigned char buffer[PW_SIZE] = {0};
+	use_byte(buffer[0]);
+	memset(buffer, 42, sizeof(buffer)); // GOOD
 }
