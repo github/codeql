@@ -308,10 +308,12 @@ abstract private class PreOrderTree extends ControlFlowTree {
   final override predicate first(AstNode first) { first = this }
 }
 
+// TODO: remove this class; it should be replaced with an implicit non AST node
 class InRange extends ASTInternal::AstNode::Range, @in {
   final override string toString() { result = "In" }
 }
 
+// TODO: remove this class; it should be replaced with an implicit non AST node
 class ForRange extends Control::ForExpr::Range, @for {
   override predicate child(string label, ASTInternal::AstNode::Range child) {
     Control::ForExpr::Range.super.child(label, child)
