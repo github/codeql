@@ -43,21 +43,7 @@ private module Tornado {
       result = tornado()
     )
     or
-    // Due to bad performance when using normal setup with `tornado_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        tornado_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate tornado_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(tornado_attr(t2, attr_name), res, summary)
+    exists(DataFlow::TypeTracker t2 | result = tornado_attr(t2, attr_name).track(t2, t))
   }
 
   /**
@@ -92,22 +78,7 @@ private module Tornado {
           result = web()
         )
         or
-        // Due to bad performance when using normal setup with `web_attr(t2, attr_name).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            web_attr_first_join(t2, attr_name, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate web_attr_first_join(
-        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(web_attr(t2, attr_name), res, summary)
+        exists(DataFlow::TypeTracker t2 | result = web_attr(t2, attr_name).track(t2, t))
       }
 
       /**
@@ -353,22 +324,7 @@ private module Tornado {
           result = httputil()
         )
         or
-        // Due to bad performance when using normal setup with `httputil_attr(t2, attr_name).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            httputil_attr_first_join(t2, attr_name, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate httputil_attr_first_join(
-        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(httputil_attr(t2, attr_name), res, summary)
+        exists(DataFlow::TypeTracker t2 | result = httputil_attr(t2, attr_name).track(t2, t))
       }
 
       /**
