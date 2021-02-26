@@ -854,4 +854,24 @@ module ClientRequest {
       override DataFlow::Node getADataNode() { none() }
     }
   }
+
+  /**
+   * A model of a URL request made using [form-data](https://www.npmjs.com/package/form-data).
+   */
+  class FormDataRequest extends ClientRequest::Range, API::InvokeNode {
+    API::Node form;
+
+    FormDataRequest() {
+      form = API::moduleImport("form-data").getInstance() and
+      this = form.getMember("submit").getACall()
+    }
+
+    override DataFlow::Node getUrl() { result = getArgument(0) }
+
+    override DataFlow::Node getHost() { result = getParameter(0).getMember("host").getARhs() }
+
+    override DataFlow::Node getADataNode() {
+      result = form.getMember("append").getACall().getParameter(1).getARhs()
+    }
+  }
 }
