@@ -590,10 +590,6 @@ module JQuery {
         read.getBase().getALocalSource() = [dollar(), objectRef()] and
         read.mayHavePropertyName(name)
       )
-      or
-      // Handle contributed JQuery objects that aren't source nodes (usually parameter uses)
-      getReceiver() = legacyObjectSource() and
-      this.(DataFlow::MethodCallNode).getMethodName() = name
     }
 
     /**
