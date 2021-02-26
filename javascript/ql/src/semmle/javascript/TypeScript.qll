@@ -2150,7 +2150,7 @@ class TupleType extends ArrayType, @tuple_type {
 
   /**
    * Gets the index of the rest element.
-   * E.g. for a type `[number, ...string[]]` the result is 1,
+   * For example, for a type `[number, ...string[]]` the result is 1,
    * or for a type `[...number[], string]` the result is 0.
    */
   int getRestElementIndex() { tuple_type_rest_index(this, result) }
