@@ -1,6 +1,11 @@
 import python
 import TlsLibraryModel
 
+/**
+ * Configuration to track flow from the creation of a context to
+ * that context being used to create a connection.
+ * Flow is broken if the insecure protocol of interest is being restricted.
+ */
 class InsecureContextConfiguration extends DataFlow::Configuration {
   TlsLibrary library;
 
@@ -25,28 +30,38 @@ class InsecureContextConfiguration extends DataFlow::Configuration {
   }
 }
 
+/** Configuration to specifically track the insecure protocol TLS 1.0 */
 class AllowsTLSv1 extends InsecureContextConfiguration {
   AllowsTLSv1() { this = library + "AllowsTLSv1" }
 
   override string flag() { result = "TLSv1" }
 }
 
+/** Configuration to specifically track the insecure protocol TLS 1.1 */
 class AllowsTLSv1_1 extends InsecureContextConfiguration {
   AllowsTLSv1_1() { this = library + "AllowsTLSv1_1" }
 
   override string flag() { result = "TLSv1_1" }
 }
 
+/**
+ * A connection is created from a context allowing an insecure protocol,
+ * and that protocol has not been restricted appropriately.
+ */
 predicate unsafe_connection_creation(DataFlow::Node node, ProtocolVersion insecure_version) {
+  // Connection created from a context allowing TLS 1.0.
   exists(AllowsTLSv1 c | c.hasFlowTo(node)) and
   insecure_version = "TLSv1"
   or
+  // Connection created from a context allowing TLS 1.1.
   exists(AllowsTLSv1_1 c | c.hasFlowTo(node)) and
   insecure_version = "TLSv1_1"
   or
+  // Connection created from a context for an insecure protocol.
   exists(TlsLibrary l | l.insecure_connection_creation(insecure_version) = node)
 }
 
+/** A connection is created insecurely without reference to a context. */
 predicate unsafe_context_creation(DataFlow::Node node, string insecure_version) {
   exists(TlsLibrary l, ContextCreation cc | cc = l.insecure_context_creation(insecure_version) |
     cc = node

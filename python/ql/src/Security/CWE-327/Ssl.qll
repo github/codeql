@@ -13,6 +13,16 @@ class SSLContextCreation extends ContextCreation {
   }
 }
 
+class SSLDefaultContextCreation extends ContextCreation {
+  SSLDefaultContextCreation() {
+    this = API::moduleImport("ssl").getMember("create_default_context").getACall()
+  }
+
+  // Allowed insecure versions are "TLSv1" and "TLSv1_1"
+  // see https://docs.python.org/3/library/ssl.html#context-creation
+  override DataFlow::CfgNode getProtocol() { none() }
+}
+
 class WrapSocketCall extends ConnectionCreation {
   override CallNode node;
 
@@ -67,7 +77,6 @@ class Ssl extends TlsLibrary {
   override string specific_insecure_version_name(ProtocolVersion version) {
     version in ["SSLv2", "SSLv3", "TLSv1", "TLSv1_1"] and
     result = "PROTOCOL_" + version
-    // result in ["PROTOCOL_SSLv2", "PROTOCOL_SSLv3", "PROTOCOL_TLSv1", "PROTOCOL_TLSv1_1"]
   }
 
   override string unspecific_version_name() {
@@ -83,10 +92,8 @@ class Ssl extends TlsLibrary {
 
   override API::Node version_constants() { result = API::moduleImport("ssl") }
 
-  override DataFlow::CfgNode default_context_creation() {
-    result = API::moduleImport("ssl").getMember("create_default_context").getACall() //and
-    // see https://docs.python.org/3/library/ssl.html#context-creation
-    // version in ["TLSv1", "TLSv1_1"]
+  override ContextCreation default_context_creation() {
+    result instanceof SSLDefaultContextCreation
   }
 
   override ContextCreation specific_context_creation() { result instanceof SSLContextCreation }

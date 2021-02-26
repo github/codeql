@@ -59,7 +59,7 @@ class PyOpenSSL extends TlsLibrary {
 
   override API::Node version_constants() { result = API::moduleImport("OpenSSL").getMember("SSL") }
 
-  override DataFlow::CfgNode default_context_creation() { none() }
+  override ContextCreation default_context_creation() { none() }
 
   override ContextCreation specific_context_creation() {
     result instanceof PyOpenSSLContextCreation
