@@ -1035,7 +1035,13 @@ class TupleExpr extends Expr, @tuple_expr {
   Expr getAnArgument() { result = getArgument(_) }
 
   /** Holds if this tuple is a read access. */
-  predicate isReadAccess() { not this = getAnAssignOrForeachChild() }
+  deprecated predicate isReadAccess() { not this = getAnAssignOrForeachChild() }
+
+  /** Holds if this expression is a tuple construction. */
+  predicate isConstruction() {
+    not this = getAnAssignOrForeachChild() and
+    not this instanceof PatternExpr
+  }
 
   override string getAPrimaryQlClass() { result = "TupleExpr" }
 }

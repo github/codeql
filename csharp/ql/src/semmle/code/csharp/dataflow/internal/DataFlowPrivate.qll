@@ -488,13 +488,16 @@ private predicate fieldOrPropertyStore(Expr e, Content c, Expr src, Expr q, bool
     )
     or
     // Tuple element, `(..., src, ...)` `f` is `ItemX` of tuple `q`
-    exists(int i |
-      not (src instanceof LocalVariableDeclExpr or src instanceof VariableWrite) and
-      e = q and
-      src = q.(TupleExpr).getArgument(i) and
-      f = q.getType().(TupleType).getElement(i) and
-      postUpdate = false
-    )
+    e =
+      any(TupleExpr te |
+        exists(int i |
+          e = q and
+          src = te.getArgument(i) and
+          te.isConstruction() and
+          f = q.getType().(TupleType).getElement(i) and
+          postUpdate = false
+        )
+      )
   )
 }
 
@@ -807,24 +810,24 @@ private module Cached {
       or
       // node1 = (..., node2, ...)
       // node1.ItemX flows to node2
-      exists(
-        int i, Ssa::ExplicitDefinition def, AssignableDefinitions::TupleAssignmentDefinition tad,
-        Expr item
-      |
+      exists(TupleExpr te, int i, Expr item |
+        te = node1.asExpr() and
+        not te.isConstruction() and
+        c.(FieldContent).getField() = te.getType().(TupleType).getElement(i).getUnboundDeclaration() and
         // node1 = (..., item, ...)
-        node1.asExpr().(TupleExpr).getArgument(i) = item and
-        (
-          // item = (..., ..., ...) in node1 = (..., (..., ..., ...), ...)
-          node2.asExpr().(TupleExpr) = item and hasNodePath(x, node2, node1)
-          or
-          // item = variable in node1 = (..., variable, ...)
+        te.getArgument(i) = item
+      |
+        // item = (..., ..., ...) in node1 = (..., (..., ..., ...), ...)
+        node2.asExpr().(TupleExpr) = item and
+        hasNodePath(x, node2, node1)
+        or
+        // item = variable in node1 = (..., variable, ...)
+        exists(AssignableDefinitions::TupleAssignmentDefinition tad, Ssa::ExplicitDefinition def |
           node2.(SsaDefinitionNode).getDefinition() = def and
           def.getADefinition() = tad and
           tad.getLeaf() = item and
-          hasNodePath(x, node1, any(Node n | n.asExpr() = tad.getAssignment()))
-        ) and
-        c.(FieldContent).getField() =
-          node1.asExpr().getType().(TupleType).getElement(i).getUnboundDeclaration()
+          hasNodePath(x, node1, node2)
+        )
       )
     )
     or
@@ -1770,11 +1773,6 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
     e1 = e2.(TupleExpr).getAnArgument() and
     scope = e2 and
     isSuccessor = true
-    or
-    exactScope = false and
-    e1.(TupleExpr).getParent*() = e2.(AssignExpr).getLValue() and
-    scope = e2 and
-    isSuccessor = true
   }
 
   override predicate candidateDef(
@@ -1796,6 +1794,14 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
       scope = fs.getVariableDeclExpr() and
       exactScope = false
     )
+    or
+    scope =
+      any(AssignExpr ae |
+        ae = defTo.(AssignableDefinitions::TupleAssignmentDefinition).getAssignment() and
+        e = ae.getLValue().getAChildExpr*().(TupleExpr) and
+        exactScope = false and
+        isSuccessor = true
+      )
   }
 }
 

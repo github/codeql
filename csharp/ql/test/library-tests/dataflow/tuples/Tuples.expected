@@ -4,7 +4,6 @@ edges
 | Tuples.cs:7:17:7:56 | (..., ...) [Item1] : String | Tuples.cs:18:9:18:22 | (..., ...) [Item1] : String |
 | Tuples.cs:7:17:7:56 | (..., ...) [Item1] : String | Tuples.cs:23:14:23:14 | access to local variable x [Item1] : String |
 | Tuples.cs:7:17:7:56 | (..., ...) [Item1] : String | Tuples.cs:24:14:24:14 | access to local variable x [Item1] : String |
-| Tuples.cs:7:17:7:56 | (..., ...) [Item2, Item2] : String | Tuples.cs:7:37:7:55 | (..., ...) [Item2] : String |
 | Tuples.cs:7:17:7:56 | (..., ...) [Item2, Item2] : String | Tuples.cs:8:9:8:23 | (..., ...) [Item2, Item2] : String |
 | Tuples.cs:7:17:7:56 | (..., ...) [Item2, Item2] : String | Tuples.cs:13:9:13:19 | (..., ...) [Item2, Item2] : String |
 | Tuples.cs:7:17:7:56 | (..., ...) [Item2, Item2] : String | Tuples.cs:18:9:18:22 | (..., ...) [Item2, Item2] : String |
@@ -14,7 +13,6 @@ edges
 | Tuples.cs:7:41:7:54 | "taint source" : String | Tuples.cs:7:37:7:55 | (..., ...) [Item2] : String |
 | Tuples.cs:8:9:8:23 | (..., ...) [Item1] : String | Tuples.cs:8:9:8:27 | SSA def(a) : String |
 | Tuples.cs:8:9:8:23 | (..., ...) [Item2, Item2] : String | Tuples.cs:8:9:8:23 | (..., ...) [Item2] : String |
-| Tuples.cs:8:9:8:23 | (..., ...) [Item2] : String | Tuples.cs:8:9:8:23 | (..., ...) [Item2, Item2] : String |
 | Tuples.cs:8:9:8:23 | (..., ...) [Item2] : String | Tuples.cs:8:9:8:27 | SSA def(c) : String |
 | Tuples.cs:8:9:8:27 | SSA def(a) : String | Tuples.cs:9:14:9:14 | access to local variable a |
 | Tuples.cs:8:9:8:27 | SSA def(c) : String | Tuples.cs:11:14:11:14 | access to local variable c |
@@ -22,7 +20,6 @@ edges
 | Tuples.cs:13:9:13:19 | (..., ...) [Item2, Item2] : String | Tuples.cs:13:13:13:18 | (..., ...) [Item2] : String |
 | Tuples.cs:13:9:13:23 | SSA def(a) : String | Tuples.cs:14:14:14:14 | access to local variable a |
 | Tuples.cs:13:9:13:23 | SSA def(c) : String | Tuples.cs:16:14:16:14 | access to local variable c |
-| Tuples.cs:13:13:13:18 | (..., ...) [Item2] : String | Tuples.cs:13:9:13:19 | (..., ...) [Item2, Item2] : String |
 | Tuples.cs:13:13:13:18 | (..., ...) [Item2] : String | Tuples.cs:13:9:13:23 | SSA def(c) : String |
 | Tuples.cs:18:9:18:22 | (..., ...) [Item1] : String | Tuples.cs:18:9:18:26 | SSA def(p) : String |
 | Tuples.cs:18:9:18:22 | (..., ...) [Item2, Item2] : String | Tuples.cs:18:9:18:26 | SSA def(q) [Item2] : String |
