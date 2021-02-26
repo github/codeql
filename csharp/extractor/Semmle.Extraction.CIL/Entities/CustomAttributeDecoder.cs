@@ -56,7 +56,8 @@ namespace Semmle.Extraction.CIL.Entities
         private static readonly Dictionary<string, PrimitiveTypeCode> wellKnownEnums = new Dictionary<string, PrimitiveTypeCode>
         {
             { "System.AttributeTargets", PrimitiveTypeCode.Int32 },
-            { "System.ComponentModel.EditorBrowsableState", PrimitiveTypeCode.Int32 }
+            { "System.ComponentModel.EditorBrowsableState", PrimitiveTypeCode.Int32 },
+            { "System.Diagnostics.DebuggerBrowsableState", PrimitiveTypeCode.Int32 }
         };
     }
 }
