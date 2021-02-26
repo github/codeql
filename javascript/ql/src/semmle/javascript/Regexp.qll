@@ -865,6 +865,14 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
       // because `String.prototype.search` returns a number
       not exists(PropAccess p | p.getBase() = mce.getEnclosingExpr())
     )
+    or
+    exists(DataFlow::SourceNode schema |
+      schema = JsonSchema::getAPartOfJsonSchema()
+    |
+      source = schema.getAPropertyWrite("pattern").getRhs()
+      or
+      source = schema.getAPropertySource("patternProperties").getAPropertyWrite().getPropertyNameExpr().flow()
+    )
   )
 }
 

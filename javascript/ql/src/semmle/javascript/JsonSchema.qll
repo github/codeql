@@ -17,6 +17,34 @@ module JsonSchema {
     boolean getPolarity() { result = true }
   }
 
+  /** A data flow node that is used a JSON schema. */
+  abstract class SchemaRoot extends DataFlow::Node {
+  }
+
+  /** An object literal with a `$schema` property indicating it is the root of a JSON schema. */
+  private class SchemaNodeByTag extends SchemaRoot, DataFlow::ObjectLiteralNode {
+    SchemaNodeByTag() {
+      getAPropertyWrite("$schema").getRhs().getStringValue().matches("%//json-schema.org%")
+    }
+  }
+
+  /** Gets a data flow node that is part of a JSON schema. */
+  private DataFlow::SourceNode getAPartOfJsonSchema(DataFlow::TypeBackTracker t) {
+    t.start() and
+    result = any(SchemaRoot n).getALocalSource()
+    or
+    result = getAPartOfJsonSchema(t.continue()).getAPropertySource()
+    or
+    exists(DataFlow::TypeBackTracker t2 |
+      result = getAPartOfJsonSchema(t2).backtrack(t2, t)
+    )
+  }
+
+  /** Gets a data flow node that is part of a JSON schema. */
+  DataFlow::SourceNode getAPartOfJsonSchema() {
+    result = getAPartOfJsonSchema(DataFlow::TypeBackTracker::end())
+  }
+
   /** Provides a model of the `ajv` library. */
   module Ajv {
     /** A method on `Ajv` that returns `this`. */
@@ -90,6 +118,12 @@ module JsonSchema {
 
       /** Gets the ajv instance doing the validation. */
       Instance getAjvInstance() { result = instance }
+    }
+
+    private class AjvSchemaNode extends SchemaRoot {
+      AjvSchemaNode() {
+        this = any(Instance i).ref().getMember(["addSchema", "validate", "compile", "compileAsync"]).getParameter(0).getARhs()
+      }
     }
   }
 }
