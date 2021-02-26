@@ -15902,7 +15902,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>tuple_type_rest</name>
+<name>tuple_type_rest_index</name>
 <cardinality>100</cardinality>
 <columnsizes>
 <e>
