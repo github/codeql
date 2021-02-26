@@ -1,96 +1,28 @@
 edges
-| search.c:14:24:14:28 | *query | search.c:17:8:17:12 | Argument 0 indirection |
-| search.c:14:24:14:28 | *query | search.c:17:8:17:12 | Argument 0 indirection |
-| search.c:14:24:14:28 | *query | search.c:17:8:17:12 | query |
-| search.c:14:24:14:28 | *query | search.c:17:8:17:12 | query |
-| search.c:14:24:14:28 | query | search.c:14:24:14:28 | *query |
 | search.c:14:24:14:28 | query | search.c:17:8:17:12 | (const char *)... |
-| search.c:14:24:14:28 | query | search.c:17:8:17:12 | Argument 0 indirection |
 | search.c:14:24:14:28 | query | search.c:17:8:17:12 | query |
 | search.c:14:24:14:28 | query | search.c:17:8:17:12 | query |
-| search.c:14:24:14:28 | query [array content] | search.c:17:8:17:12 | (const char *)... [array content] |
-| search.c:14:24:14:28 | query [array content] | search.c:17:8:17:12 | query |
-| search.c:17:8:17:12 | (const char *)... [array content] | search.c:17:8:17:12 | Argument 0 indirection |
-| search.c:17:8:17:12 | (const char *)... [array content] | search.c:17:8:17:12 | query |
-| search.c:22:24:22:28 | *query | search.c:23:39:23:43 | Argument 1 indirection |
-| search.c:22:24:22:28 | *query | search.c:23:39:23:43 | Argument 1 indirection |
-| search.c:22:24:22:28 | *query | search.c:23:39:23:43 | query |
-| search.c:22:24:22:28 | *query | search.c:23:39:23:43 | query |
-| search.c:22:24:22:28 | query | search.c:22:24:22:28 | *query |
-| search.c:22:24:22:28 | query | search.c:23:39:23:43 | Argument 1 indirection |
 | search.c:22:24:22:28 | query | search.c:23:39:23:43 | query |
 | search.c:22:24:22:28 | query | search.c:23:39:23:43 | query |
-| search.c:22:24:22:28 | query [array content] | search.c:23:39:23:43 | query |
-| search.c:22:24:22:28 | query [array content] | search.c:23:39:23:43 | query [array content] |
-| search.c:23:39:23:43 | query [array content] | search.c:23:39:23:43 | Argument 1 indirection |
-| search.c:23:39:23:43 | query [array content] | search.c:23:39:23:43 | query |
-| search.c:51:21:51:26 | call to getenv | search.c:14:24:14:28 | *query |
-| search.c:51:21:51:26 | call to getenv | search.c:14:24:14:28 | *query |
 | search.c:51:21:51:26 | call to getenv | search.c:14:24:14:28 | query |
 | search.c:51:21:51:26 | call to getenv | search.c:14:24:14:28 | query |
-| search.c:51:21:51:26 | call to getenv | search.c:14:24:14:28 | query [array content] |
-| search.c:51:21:51:26 | call to getenv | search.c:14:24:14:28 | query [array content] |
-| search.c:51:21:51:26 | call to getenv | search.c:22:24:22:28 | *query |
-| search.c:51:21:51:26 | call to getenv | search.c:22:24:22:28 | *query |
 | search.c:51:21:51:26 | call to getenv | search.c:22:24:22:28 | query |
 | search.c:51:21:51:26 | call to getenv | search.c:22:24:22:28 | query |
-| search.c:51:21:51:26 | call to getenv | search.c:22:24:22:28 | query [array content] |
-| search.c:51:21:51:26 | call to getenv | search.c:22:24:22:28 | query [array content] |
 nodes
-| search.c:14:24:14:28 | *query | semmle.label | *query |
-| search.c:14:24:14:28 | *query | semmle.label | *query |
 | search.c:14:24:14:28 | query | semmle.label | query |
-| search.c:14:24:14:28 | query [array content] | semmle.label | query [array content] |
-| search.c:17:3:17:6 | Argument 0 | semmle.label | Argument 0 |
-| search.c:17:3:17:6 | Argument 0 [array content] | semmle.label | Argument 0 [array content] |
-| search.c:17:3:17:6 | Argument 0 [array content] | semmle.label | Argument 0 [array content] |
-| search.c:17:3:17:6 | Argument 0 [array content] | semmle.label | Argument 0 [array content] |
 | search.c:17:8:17:12 | (const char *)... | semmle.label | (const char *)... |
 | search.c:17:8:17:12 | (const char *)... | semmle.label | (const char *)... |
-| search.c:17:8:17:12 | (const char *)... [array content] | semmle.label | (const char *)... [array content] |
-| search.c:17:8:17:12 | Argument 0 indirection | semmle.label | Argument 0 indirection |
-| search.c:17:8:17:12 | Argument 0 indirection | semmle.label | Argument 0 indirection |
-| search.c:17:8:17:12 | Argument 0 indirection | semmle.label | Argument 0 indirection |
-| search.c:17:8:17:12 | Argument 0 indirection | semmle.label | Argument 0 indirection |
-| search.c:17:8:17:12 | Chi | semmle.label | Chi |
-| search.c:17:8:17:12 | Chi | semmle.label | Chi |
 | search.c:17:8:17:12 | query | semmle.label | query |
 | search.c:17:8:17:12 | query | semmle.label | query |
 | search.c:17:8:17:12 | query | semmle.label | query |
-| search.c:19:8:19:16 | Argument 0 | semmle.label | Argument 0 |
-| search.c:19:8:19:16 | Argument 0 [array content] | semmle.label | Argument 0 [array content] |
-| search.c:19:8:19:16 | Argument 0 [array content] | semmle.label | Argument 0 [array content] |
-| search.c:19:8:19:16 | Argument 0 [array content] | semmle.label | Argument 0 [array content] |
-| search.c:22:24:22:28 | *query | semmle.label | *query |
-| search.c:22:24:22:28 | *query | semmle.label | *query |
 | search.c:22:24:22:28 | query | semmle.label | query |
-| search.c:22:24:22:28 | query [array content] | semmle.label | query [array content] |
-| search.c:23:3:23:8 | Argument 1 | semmle.label | Argument 1 |
-| search.c:23:3:23:8 | Argument 1 [array content] | semmle.label | Argument 1 [array content] |
-| search.c:23:3:23:8 | Argument 1 [array content] | semmle.label | Argument 1 [array content] |
-| search.c:23:3:23:8 | Argument 1 [array content] | semmle.label | Argument 1 [array content] |
-| search.c:23:39:23:43 | Argument 1 indirection | semmle.label | Argument 1 indirection |
-| search.c:23:39:23:43 | Argument 1 indirection | semmle.label | Argument 1 indirection |
-| search.c:23:39:23:43 | Argument 1 indirection | semmle.label | Argument 1 indirection |
-| search.c:23:39:23:43 | Argument 1 indirection | semmle.label | Argument 1 indirection |
-| search.c:23:39:23:43 | Chi | semmle.label | Chi |
-| search.c:23:39:23:43 | Chi | semmle.label | Chi |
 | search.c:23:39:23:43 | query | semmle.label | query |
 | search.c:23:39:23:43 | query | semmle.label | query |
 | search.c:23:39:23:43 | query | semmle.label | query |
-| search.c:23:39:23:43 | query [array content] | semmle.label | query [array content] |
-| search.c:26:8:26:16 | Argument 0 | semmle.label | Argument 0 |
-| search.c:26:8:26:16 | Argument 0 [array content] | semmle.label | Argument 0 [array content] |
-| search.c:26:8:26:16 | Argument 0 [array content] | semmle.label | Argument 0 [array content] |
-| search.c:26:8:26:16 | Argument 0 [array content] | semmle.label | Argument 0 [array content] |
 | search.c:51:21:51:26 | call to getenv | semmle.label | call to getenv |
 | search.c:51:21:51:26 | call to getenv | semmle.label | call to getenv |
 | search.c:55:5:55:15 | Argument 0 | semmle.label | Argument 0 |
-| search.c:55:5:55:15 | Argument 0 [array content] | semmle.label | Argument 0 [array content] |
-| search.c:55:17:55:25 | Argument 0 indirection | semmle.label | Argument 0 indirection |
 | search.c:57:5:57:15 | Argument 0 | semmle.label | Argument 0 |
-| search.c:57:5:57:15 | Argument 0 [array content] | semmle.label | Argument 0 [array content] |
-| search.c:57:17:57:25 | Argument 0 indirection | semmle.label | Argument 0 indirection |
 #select
 | search.c:17:8:17:12 | query | search.c:51:21:51:26 | call to getenv | search.c:17:8:17:12 | query | Cross-site scripting vulnerability due to $@. | search.c:51:21:51:26 | call to getenv | this query data |
 | search.c:23:39:23:43 | query | search.c:51:21:51:26 | call to getenv | search.c:23:39:23:43 | query | Cross-site scripting vulnerability due to $@. | search.c:51:21:51:26 | call to getenv | this query data |
