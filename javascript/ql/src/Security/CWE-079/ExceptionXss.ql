@@ -15,8 +15,18 @@ import javascript
 import semmle.javascript.security.dataflow.ExceptionXss::ExceptionXss
 import DataFlow::PathGraph
 
+/**
+ * Gets a description of the source.
+ */
+string getSourceDescription(DataFlow::Node source) {
+  result = source.(ErrorSource).getDescription()
+  or
+  not source instanceof ErrorSource and
+  result = "Exception text"
+}
+
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
   "$@ is reinterpreted as HTML without escaping meta-characters.", source.getNode(),
-  "Exception text"
+  getSourceDescription(source.getNode())

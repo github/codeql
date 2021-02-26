@@ -38,6 +38,31 @@ module JsonSchema {
         or
         result = ref().getMember(chainedMethod()).getReturn()
       }
+
+      /**
+       * Gets an API node for a function produced by `new Ajv().compile()` or similar. 
+       *
+       * Note that this does not include the instance method `new Ajv().validate` as its
+       * signature is different.
+       */
+      API::Node getAValidationFunction() {
+        result = ref().getMember(["compile", "getSchema"]).getReturn()
+        or
+        result = ref().getMember("compileAsync").getPromised()
+      }
+
+      /**
+       * Gets an API node that refers to an error produced by this Ajv instance.
+       */
+      API::Node getAValidationError() {
+        exists(API::Node base |
+          base = [ref(), getAValidationFunction()]
+        |
+          result = base.getMember("errors")
+          or
+          result = base.getMember("errorsText").getReturn()
+        )
+      }
     }
 
     /** A call to the `validate` method of `ajv`. */
@@ -48,10 +73,7 @@ module JsonSchema {
       AjvValidationCall() {
         this = instance.ref().getMember("validate").getACall() and argIndex = 1
         or
-        this = instance.ref().getMember(["compile", "getSchema"]).getReturn().getACall() and
-        argIndex = 0
-        or
-        this = instance.ref().getMember("compileAsync").getPromised().getACall() and argIndex = 0
+        this = instance.getAValidationFunction().getACall() and argIndex = 0
       }
 
       override DataFlow::Node getInput() { result = getArgument(argIndex) }
