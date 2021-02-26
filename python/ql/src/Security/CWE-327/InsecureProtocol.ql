@@ -12,9 +12,17 @@
 import python
 import FluentApiModel
 
-from DataFlow::Node node, string insecure_version
-where
-  unsafe_connection_creation(node, insecure_version)
+string callName(AstNode call) {
+  result = call.(Name).getId()
   or
-  unsafe_context_creation(node, insecure_version)
-select node, "Insecure SSL/TLS protocol version " + insecure_version //+ " specified in call to " + method_name + "."
+  exists(Attribute a | a = call | result = callName(a.getObject()) + "." + a.getName())
+}
+
+from DataFlow::Node node, string insecure_version, CallNode call
+where
+  unsafe_connection_creation(node, insecure_version, call)
+  or
+  unsafe_context_creation(node, insecure_version, call)
+select node, "Insecure SSL/TLS protocol version " + insecure_version + " specified in $@ ", call,
+  "call to " + callName(call.getFunction().getNode())
+//+ " specified in call to " + method_name + "."

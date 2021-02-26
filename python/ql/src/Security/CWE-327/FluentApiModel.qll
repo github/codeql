@@ -48,22 +48,30 @@ class AllowsTLSv1_1 extends InsecureContextConfiguration {
  * A connection is created from a context allowing an insecure protocol,
  * and that protocol has not been restricted appropriately.
  */
-predicate unsafe_connection_creation(DataFlow::Node node, ProtocolVersion insecure_version) {
+predicate unsafe_connection_creation(
+  DataFlow::Node node, ProtocolVersion insecure_version, CallNode call
+) {
   // Connection created from a context allowing TLS 1.0.
-  exists(AllowsTLSv1 c | c.hasFlowTo(node)) and
+  exists(AllowsTLSv1 c, ContextCreation cc | c.hasFlow(cc, node) | cc.getNode() = call) and
   insecure_version = "TLSv1"
   or
   // Connection created from a context allowing TLS 1.1.
-  exists(AllowsTLSv1_1 c | c.hasFlowTo(node)) and
+  exists(AllowsTLSv1_1 c, ContextCreation cc | c.hasFlow(cc, node) | cc.getNode() = call) and
   insecure_version = "TLSv1_1"
   or
   // Connection created from a context for an insecure protocol.
-  exists(TlsLibrary l | l.insecure_connection_creation(insecure_version) = node)
+  exists(TlsLibrary l, DataFlow::CfgNode cc |
+    cc = l.insecure_connection_creation(insecure_version)
+  |
+    cc = node and
+    cc.getNode() = call
+  )
 }
 
 /** A connection is created insecurely without reference to a context. */
-predicate unsafe_context_creation(DataFlow::Node node, string insecure_version) {
+predicate unsafe_context_creation(DataFlow::Node node, string insecure_version, CallNode call) {
   exists(TlsLibrary l, ContextCreation cc | cc = l.insecure_context_creation(insecure_version) |
-    cc = node
+    cc = node and
+    cc.getNode() = call
   )
 }
