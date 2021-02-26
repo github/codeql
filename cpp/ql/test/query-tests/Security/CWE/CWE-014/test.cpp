@@ -11,6 +11,7 @@ extern "C" {
 	void free(void *ptr);
 	extern void use_pw(char *pw);
 	int printf(const char* format, ...);
+	char* gets(char * str);
 }
 
 #define PW_SIZE 32
@@ -25,22 +26,25 @@ struct mem {
 // x86-64 clang 9.0.0: not deleted
 // x64 msvc v19.22: not deleted
 void func(char buff[128], unsigned long long sz) {
-    memset(buff, 0, PW_SIZE); // GOOD
+	gets(buff);
+  memset(buff, 0, PW_SIZE); // GOOD
 }
 
 // x86-64 gcc 9.2: not deleted
 // x86-64 clang 9.0.0: not deleted
 // x64 msvc v19.22: not deleted
-char *func2(char buff[128], unsigned long long sz) { 
-    memset(buff, 0, PW_SIZE); // GOOD
-    return buff;
+char *func2(char buff[128], unsigned long long sz) {
+	gets(buff);
+  memset(buff, 0, PW_SIZE); // GOOD
+  return buff;
 }
 
 // x86-64 gcc 9.2: deleted
 // x86-64 clang 9.0.0: deleted
 // x64 msvc v19.22: deleted
 void func3(unsigned long long sz) { 
-    char buff[128]; 
+    char buff[128];
+		gets(buff);
     memset(buff, 0, PW_SIZE); // BAD
 }
 
@@ -48,7 +52,8 @@ void func3(unsigned long long sz) {
 // x86-64 clang 9.0.0: deleted
 // x64 msvc v19.22: deleted
 void func4(unsigned long long sz) {
-    char buff[128]; 
+    char buff[128];
+		gets(buff);
     memset(buff, 0, PW_SIZE); // BAD [NOT DETECTED]
     strcpy(buff, "Hello");
 }
@@ -57,7 +62,8 @@ void func4(unsigned long long sz) {
 // x86-64 clang 9.0.0: deleted
 // x64 msvc v19.22: deleted
 void func5(unsigned long long sz) {
-    char buff[128]; 
+    char buff[128];
+		gets(buff);
     memset(buff, 0, PW_SIZE); // BAD [NOT DETECTED]
     if (sz > 5) {
         strcpy(buff, "Hello");
@@ -68,7 +74,8 @@ void func5(unsigned long long sz) {
 // x86-64 clang 9.0.0: deleted
 // x64 msvc v19.22: deleted
 void func6(unsigned long long sz) {
-    struct mem m; 
+    struct mem m;
+		gets(m.b);
     memset(&m, 0, PW_SIZE); // BAD
 }
 
@@ -76,7 +83,8 @@ void func6(unsigned long long sz) {
 // x86-64 clang 9.0.0: deleted
 // x64 msvc v19.22: deleted
 void func7(unsigned long long sz) { 
-    struct mem m; 
+    struct mem m;
+		gets(m.b); 
     memset(&m, 0, PW_SIZE); // BAD [NOT DETECTED]
     m.a = 15;
 }
@@ -86,6 +94,7 @@ void func7(unsigned long long sz) {
 // x64 msvc v19.22: not deleted
 void func8(unsigned long long sz) {
     struct mem *m = (struct mem *)malloc(sizeof(struct mem));
+		gets(m->b);
     memset(m, 0, PW_SIZE); // BAD [NOT DETECTED]
 }
 
@@ -94,6 +103,7 @@ void func8(unsigned long long sz) {
 // x64 msvc v19.22: not deleted
 void func9(unsigned long long sz) {
     struct mem *m = (struct mem *)malloc(sizeof(struct mem));
+		gets(m->b);
     memset(m, 0, PW_SIZE); // BAD [NOT DETECTED]
     free(m);
 }
@@ -103,6 +113,7 @@ void func9(unsigned long long sz) {
 // x64 msvc v19.22: not deleted
 void func10(unsigned long long sz) {
     struct mem *m = (struct mem *)malloc(sizeof(struct mem));
+		gets(m->b);
     memset(m, 0, PW_SIZE); // BAD [NOT DETECTED]
     m->a = sz;
     m->c = m->a + 1; 
@@ -113,6 +124,7 @@ void func10(unsigned long long sz) {
 // x64 msvc v19.22: not deleted
 void func11(unsigned long long sz) {
     struct mem *m = (struct mem *)malloc(sizeof(struct mem));
+		gets(m->b);
     ::memset(m, 0, PW_SIZE); // BAD [NOT DETECTED]
     if (sz > 5) {
     	strcpy(m->b, "Hello");
@@ -124,12 +136,14 @@ void func11(unsigned long long sz) {
 // x64 msvc v19.22: not deleted
 int func12(unsigned long long sz) {
     struct mem *m = (struct mem *)malloc(sizeof(struct mem));
+		gets(m->b);
     memset(m, 0, sz); // GOOD
     return m->c;
 }
 
 int funcN1() {
 	char pw[PW_SIZE];
+	gets(pw);
 	char *pw_ptr = pw;
 	memset(pw, 0, PW_SIZE); // GOOD
 	use_pw(pw_ptr);
@@ -138,6 +152,7 @@ int funcN1() {
 
 char pw_global[PW_SIZE];
 int funcN2() {
+	gets(pw_global);
 	use_pw(pw_global);
 	memset(pw_global, 0, PW_SIZE); // GOOD
 	return 0;
@@ -145,6 +160,7 @@ int funcN2() {
 
 int funcN3(unsigned long long sz) {
     struct mem m;
+		gets(m.b);
     memset(&m, 0, sizeof(m)); // GOOD
     return m.a;
 }
@@ -152,9 +168,9 @@ int funcN3(unsigned long long sz) {
 void funcN(int num) {
 	char pw[PW_SIZE];
 	int i;
-
 	for (i = 0; i < num; i++)
 	{
+		gets(pw);
 		use_pw(pw);
 		memset(pw, 0, PW_SIZE); // GOOD
 	}
@@ -193,11 +209,13 @@ void badFunc0_0(){
 }
 
 void nobadFunc1_0() {
-	unsigned char* buff1 = (unsigned char *) malloc(PW_SIZE);
+	char* buff1 = (char *) malloc(PW_SIZE);
+	gets(buff1);
 	memset(buff1, 0, PW_SIZE); // BAD [NOT DETECTED]
 }
 void badFunc1_0(){
-	unsigned char * buff1 = (unsigned char *) malloc(PW_SIZE);
+	char * buff1 = (char *) malloc(PW_SIZE);
+	gets(buff1);
 	memset(buff1, 0, PW_SIZE); // BAD [NOT DETECTED]
 	free(buff1);
 }
@@ -217,14 +235,16 @@ void nobadFunc2_0_0(){
 }
 
 void nobadFunc2_0_1(){
-	unsigned char buff1[PW_SIZE];
+	char buff1[PW_SIZE];
+	gets(buff1);
 	memset(buff1, '\0', sizeof(buff1));
 	memset(buff1, 0, PW_SIZE); // GOOD
 	printf("%s", buff1 + 3);
 }
 
 void nobadFunc2_0_2(){
-	unsigned char buff1[PW_SIZE];
+	char buff1[PW_SIZE];
+	gets(buff1);
 	memset(buff1, 0, PW_SIZE); // GOOD
 	printf("%c", *buff1);
 }
@@ -238,14 +258,16 @@ void nobadFunc2_0_3(char ch){
 	printf("%c", *(buff1 + 3));
 }
 
-unsigned char * nobadFunc2_0_4(){
-	unsigned char buff1[PW_SIZE];
+char * nobadFunc2_0_4(){
+	char buff1[PW_SIZE];
+	gets(buff1);
 	memset(buff1, 0, PW_SIZE); // GOOD
 	return buff1;
 }
 
-unsigned char * nobadFunc2_0_5(){
-	unsigned char buff1[PW_SIZE];
+char * nobadFunc2_0_5(){
+	char buff1[PW_SIZE];
+	gets(buff1);
 	memset(buff1, 0, PW_SIZE); // GOOD
 
 	return buff1+3;
@@ -261,28 +283,31 @@ unsigned char nobadFunc2_0_6(){
 }
 
 unsigned char nobadFunc2_0_7(){
-	unsigned char buff1[PW_SIZE];
+	char buff1[PW_SIZE];
+	gets(buff1);
 	memset(buff1, 0, PW_SIZE); // GOOD
 
 	return *(buff1 + 3);
 }
 
 bool nobadFunc2_1_0(unsigned char ch){
-	unsigned char buff1[PW_SIZE];
-
+	char buff1[PW_SIZE];
+	gets(buff1);
 	memset(buff1, 0, PW_SIZE); // GOOD
 	if(*buff1 == ch) { return true; }
 	return false;
 }
 
 void nobadFunc2_1_2(){
-	unsigned char buff1[PW_SIZE];
+	char buff1[PW_SIZE];
+	gets(buff1);
 	memset(buff1, 0, PW_SIZE); // BAD [NOT DETECTED]
 	buff1[2] = 5;
 }
 
-void nobadFunc3_0(unsigned char * buffAll){
-	unsigned char * buff1 = buffAll;
+void nobadFunc3_0(char * buffAll){
+	char * buff1 = buffAll;
+	gets(buff1);
 	memset(buff1, 0, PW_SIZE); // GOOD
 }
 
@@ -293,12 +318,13 @@ void nobadFunc3_1(unsigned char * buffAll){
 
 struct buffers
 {
-    unsigned char buff1[50];
+    char buff1[50];
     unsigned char *buff2;
 };
 
 void nobadFunc3_2(struct buffers buffAll) {
-	unsigned char * buff1 = buffAll.buff1;
+	char * buff1 = buffAll.buff1;
+	gets(buff1);
 	memset(buff1, 0, PW_SIZE); // GOOD
 }
 
@@ -313,7 +339,7 @@ void nobadFunc3_4(struct buffers buffAll) {
 }
 
 void nobadFunc3_5(struct buffers * buffAll) {
-	unsigned char * buff1 = buffAll->buff1;
+	char * buff1 = buffAll->buff1;
 	memset(buff1, 0, PW_SIZE); // GOOD
 }
 
@@ -322,26 +348,27 @@ void nobadFunc3_6(struct buffers *buffAll){
 	memset(buff1, 0, PW_SIZE); // GOOD
 }
 
-unsigned char * globalBuff;
+char * globalBuff;
 
 void nobadFunc4(){
-	unsigned char * buff1 = globalBuff;
+	char * buff1 = globalBuff;
 	memset(buff1, 0, PW_SIZE); // GOOD
 }
 
 void nobadFunc4_0(){
-	unsigned char * buff1 = globalBuff;
+	char * buff1 = globalBuff;
+	gets(buff1);
 	memset(buff1, 0, PW_SIZE); // GOOD
 }
 void nobadFunc4_1(){
-	unsigned char * buff1 = globalBuff + 3;
+	char * buff1 = globalBuff + 3;
 	memset(buff1, 0, PW_SIZE); // GOOD
 }
 
 buffers globalBuff1, *globalBuff2;
 
 void nobadFunc4_2(){
-	unsigned char * buff1 = globalBuff1.buff1;
+	char * buff1 = globalBuff1.buff1;
 	memset(buff1, 0, PW_SIZE); // GOOD
 }
 
@@ -356,7 +383,7 @@ void nobadFunc4_4(){
 }
 
 void nobadFunc4_5(){
-	unsigned char * buff1 = globalBuff2->buff1;
+	char * buff1 = globalBuff2->buff1;
 	memset(buff1, 0, PW_SIZE); // GOOD
 }
 
