@@ -22,7 +22,7 @@ CallNode unsafe_call(string method_name) {
   not exists(result.getArgByName("protocol")) and
   not exists(result.getArg(0)) and
   method_name = "ssl.SSLContext" and
-  // in version 3.4, flags were introduced to modify cotexts created with default values
+  // in version 3.4, flags were introduced to modify contexts created with default values
   (major_version() < 3 or minor_version() < 4)
 }
 
