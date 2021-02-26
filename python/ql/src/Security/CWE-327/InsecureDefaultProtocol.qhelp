@@ -3,9 +3,10 @@
 "qhelp.dtd">
 <qhelp>
      <overview>
-          <p> The <code>ssl</code> library defaults to an insecure version of
-          SSL/TLS when no specific protocol version is specified. This may leave
-          the connection vulnerable to attack.
+          <p>
+          In version of Python before 3.4, the <code>ssl</code> library defaults
+          to an insecure version of SSL/TLS when no specific protocol version is
+          specified. This may leave the connection vulnerable to attack.
           </p>
 
      </overview>
@@ -16,8 +17,8 @@
             and TLS 1.0 and 1.1 are known to be vulnerable to attacks. Using TLS 1.2 or
             above is strongly recommended. If no explicit
             <code>ssl_version</code> is specified, the default
-            <code>PROTOCOL_TLS</code> is chosen. This protocol is insecure and
-            should not be used.
+            <code>PROTOCOL_TLS</code> is chosen. This protocol is insecure in that it
+            allows TLS 1.0 and TLS 1.1 and so should not be used.
           </p>
 
      </recommendation>
@@ -46,6 +47,15 @@
             <li><code>ssl.create_default_context</code> - a convenience function,
                   supported in Python 3.4 and later versions.</li>
           </ul>
+          <p>
+            Note also that, even using these alternatives, it is recommended to
+            ensure that a safe protocol is being used. The following code illustrates
+            how to use either flags (available since Python 3.2) or the `minimum_version`
+            field (favored since Python 3.7) to restrict the protocols accepted when
+            creating a connection.
+          </p>
+
+          <sample src="examples/secure_default_protocol.py" />
      </example>
 
      <references>
