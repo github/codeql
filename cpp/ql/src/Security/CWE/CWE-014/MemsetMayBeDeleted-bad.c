@@ -1,4 +1,3 @@
-char * password = malloc(PASSWORD_SIZE);
-// ... read and check password
-memset(password, 0, PASSWORD_SIZE);
-free(password);
+char password[MAX_PASSWORD_LENGTH];
+// read and verify password
+memset(password, 0, MAX_PASSWORD_LENGTH);

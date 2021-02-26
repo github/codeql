@@ -36,6 +36,10 @@ longer needed:</p>
 CERT C Coding Standard:
 <a href="https://wiki.sei.cmu.edu/confluence/display/c/MSC06-C.+Beware+of+compiler+optimizations">MSC06-C. Beware of compiler optimizations</a>.
 </li>
+<li>
+USENIX: The Advanced Computing Systems Association:
+<a href="https://www.usenix.org/system/files/conference/usenixsecurity17/sec17-yang.pdf">Dead Store Elimination (Still) Considered Harmfuls</a>
+</li>
 
 </references>
 </qhelp>
