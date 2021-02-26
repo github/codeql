@@ -3,7 +3,6 @@
  */
 
 private import codeql_ruby.AST
-private import AstNodes
 private import Completion
 private import ControlFlowGraphImpl
 private import SuccessorTypes
@@ -218,19 +217,19 @@ private module ConditionalCompletionSplitting {
       succ(pred, succ, c) and
       last(succ, _, completion) and
       (
-        last(succ.(LogicalNotAstNode).getOperand(), pred, c) and
+        last(succ.(NotExpr).getOperand(), pred, c) and
         completion.(BooleanCompletion).getDual() = c
         or
-        last(succ.(LogicalAndAstNode).getAnOperand(), pred, c) and
+        last(succ.(LogicalAndExpr).getAnOperand(), pred, c) and
         completion = c
         or
-        last(succ.(LogicalOrAstNode).getAnOperand(), pred, c) and
+        last(succ.(LogicalOrExpr).getAnOperand(), pred, c) and
         completion = c
         or
-        last(succ.(ParenthesizedStatement).getChild(), pred, c) and
+        last(succ.(ParenthesizedExpr).getLastExpr(), pred, c) and
         completion = c
         or
-        last(succ.(IfElsifAstNode).getBranch(_), pred, c) and
+        last(succ.(ConditionalExpr).getBranch(_), pred, c) and
         completion = c
       )
     }
