@@ -26,7 +26,7 @@ class PrintAstConfiguration extends string {
 class PrintAstNode extends AstNode {
   string getProperty(string key) {
     key = "semmle.label" and
-    result = "[" + this.getAPrimaryQlClass() + "] " + this.toString()
+    result = "[" + concat(this.getAPrimaryQlClass(), ", ") + "] " + this.toString()
   }
 
   /**
@@ -63,7 +63,8 @@ query predicate edges(PrintAstNode source, PrintAstNode target, string key, stri
   source.shouldPrint() and
   target.shouldPrint() and
   key = "semmle.label" and
-  source.getChild(value) = target
+  target = source.getAChild() and
+  value = concat(string name | source.getChild(name) = target | name, "/")
 }
 
 /**

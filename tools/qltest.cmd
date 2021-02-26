@@ -1,5 +1,11 @@
 @echo off
 
-CALL "%CODEQL_EXTRACTOR_RUBY_ROOT%\tools\autobuild.cmd"
+type NUL && "%CODEQL_DIST%\codeql.exe" database index-files ^
+    --prune=**/*.testproj ^
+    --include-extension=.rb ^
+    --include-extension=.erb ^
+    --size-limit=5m ^
+    --language=ruby ^
+    "%CODEQL_EXTRACTOR_RUBY_WIP_DATABASE%"
 
 exit /b %ERRORLEVEL%
