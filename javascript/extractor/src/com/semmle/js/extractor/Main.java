@@ -344,7 +344,7 @@ public class Main {
     for (String pattern : ap.getZeroOrMore(P_EXCLUDE))
       addPathPattern(excludes, System.getProperty("user.dir"), pattern);
     for (String excl : ap.getZeroOrMore(P_EXCLUDE_PATH)) {
-      File exclFile = new File(new File(System.getProperty("user.dir")), excl).getAbsoluteFile();
+      File exclFile = new File(excl).getAbsoluteFile();
       String base = exclFile.getParent();
       for (String pattern : NEWLINE.split(new WholeIO().strictread(exclFile)))
         addPathPattern(excludes, base, pattern);
