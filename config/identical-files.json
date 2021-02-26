@@ -425,5 +425,10 @@
     "java/ql/src/IDEContextual.qll",
     "javascript/ql/src/IDEContextual.qll",
     "python/ql/src/analysis/IDEContextual.qll"
+  ],
+  "SSA C#": [
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/SsaImplCommon.qll",
+    "csharp/ql/src/semmle/code/csharp/controlflow/internal/pressa/SsaImplCommon.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/basessa/SsaImplCommon.qll"
   ]
 }
