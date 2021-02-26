@@ -85,3 +85,13 @@ def test_fluent_ssl_safe_version():
     with socket.create_connection((hostname, 443)) as sock:
         with context.wrap_socket(sock, server_hostname=hostname) as ssock:
             print(ssock.version())
+
+# Taken from https://docs.python.org/3/library/ssl.html#context-creation
+def test_fluent_explicitly_unsafe():
+    hostname = 'www.python.org'
+    context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+    context.options &= ~ssl.OP_NO_SSLv3  # This not recognized
+
+    with socket.create_connection((hostname, 443)) as sock:
+        with context.wrap_socket(sock, server_hostname=hostname) as ssock:  # SSLv3 not flagged here
+            print(ssock.version())
