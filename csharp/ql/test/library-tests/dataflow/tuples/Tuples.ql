@@ -6,7 +6,7 @@ import csharp
 import DataFlow::PathGraph
 
 class Conf extends DataFlow::Configuration {
-  Conf() { this = "TypesConf" }
+  Conf() { this = "TuplesConf" }
 
   override predicate isSource(DataFlow::Node src) {
     src.asExpr().(StringLiteral).getValue() = "taint source"

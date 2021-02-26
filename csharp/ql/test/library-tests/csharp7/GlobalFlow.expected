@@ -1,6 +1,40 @@
-| CSharp7.cs:41:13:41:21 | "tainted" | CSharp7.cs:53:18:53:19 | access to local variable t1 |
-| CSharp7.cs:57:11:57:19 | "tainted" | CSharp7.cs:58:18:58:19 | access to local variable t4 |
-| CSharp7.cs:89:19:89:27 | "tainted" | CSharp7.cs:92:18:92:28 | call to method I |
-| CSharp7.cs:177:22:177:30 | "tainted" | CSharp7.cs:177:22:177:30 | "tainted" |
-| CSharp7.cs:177:22:177:30 | "tainted" | CSharp7.cs:183:21:183:26 | call to local function g |
-| CSharp7.cs:177:22:177:30 | "tainted" | CSharp7.cs:184:21:184:26 | call to local function h |
+edges
+| CSharp7.cs:41:9:41:21 | SSA def(x) : String | CSharp7.cs:51:22:51:23 | SSA def(t1) : String |
+| CSharp7.cs:41:13:41:21 | "tainted" : String | CSharp7.cs:41:9:41:21 | SSA def(x) : String |
+| CSharp7.cs:51:22:51:23 | SSA def(t1) : String | CSharp7.cs:53:18:53:19 | access to local variable t1 |
+| CSharp7.cs:57:11:57:19 | "tainted" : String | CSharp7.cs:57:30:57:31 | SSA def(t4) : String |
+| CSharp7.cs:57:30:57:31 | SSA def(t4) : String | CSharp7.cs:58:18:58:19 | access to local variable t4 |
+| CSharp7.cs:89:18:89:34 | (..., ...) [Item1] : String | CSharp7.cs:92:20:92:21 | access to local variable t1 [Item1] : String |
+| CSharp7.cs:89:19:89:27 | "tainted" : String | CSharp7.cs:89:18:89:34 | (..., ...) [Item1] : String |
+| CSharp7.cs:92:20:92:21 | access to local variable t1 [Item1] : String | CSharp7.cs:92:20:92:27 | access to field Item1 : String |
+| CSharp7.cs:92:20:92:27 | access to field Item1 : String | CSharp7.cs:92:18:92:28 | call to method I |
+| CSharp7.cs:177:22:177:30 | "tainted" : String | CSharp7.cs:183:23:183:25 | access to local variable src : String |
+| CSharp7.cs:177:22:177:30 | "tainted" : String | CSharp7.cs:184:23:184:25 | access to local variable src : String |
+| CSharp7.cs:183:23:183:25 | access to local variable src : String | CSharp7.cs:183:21:183:26 | call to local function g |
+| CSharp7.cs:184:23:184:25 | access to local variable src : String | CSharp7.cs:184:21:184:26 | call to local function h |
+nodes
+| CSharp7.cs:41:9:41:21 | SSA def(x) : String | semmle.label | SSA def(x) : String |
+| CSharp7.cs:41:13:41:21 | "tainted" : String | semmle.label | "tainted" : String |
+| CSharp7.cs:51:22:51:23 | SSA def(t1) : String | semmle.label | SSA def(t1) : String |
+| CSharp7.cs:53:18:53:19 | access to local variable t1 | semmle.label | access to local variable t1 |
+| CSharp7.cs:57:11:57:19 | "tainted" : String | semmle.label | "tainted" : String |
+| CSharp7.cs:57:30:57:31 | SSA def(t4) : String | semmle.label | SSA def(t4) : String |
+| CSharp7.cs:58:18:58:19 | access to local variable t4 | semmle.label | access to local variable t4 |
+| CSharp7.cs:89:18:89:34 | (..., ...) [Item1] : String | semmle.label | (..., ...) [Item1] : String |
+| CSharp7.cs:89:19:89:27 | "tainted" : String | semmle.label | "tainted" : String |
+| CSharp7.cs:92:18:92:28 | call to method I | semmle.label | call to method I |
+| CSharp7.cs:92:20:92:21 | access to local variable t1 [Item1] : String | semmle.label | access to local variable t1 [Item1] : String |
+| CSharp7.cs:92:20:92:27 | access to field Item1 : String | semmle.label | access to field Item1 : String |
+| CSharp7.cs:177:22:177:30 | "tainted" | semmle.label | "tainted" |
+| CSharp7.cs:177:22:177:30 | "tainted" : String | semmle.label | "tainted" : String |
+| CSharp7.cs:183:21:183:26 | call to local function g | semmle.label | call to local function g |
+| CSharp7.cs:183:23:183:25 | access to local variable src : String | semmle.label | access to local variable src : String |
+| CSharp7.cs:184:21:184:26 | call to local function h | semmle.label | call to local function h |
+| CSharp7.cs:184:23:184:25 | access to local variable src : String | semmle.label | access to local variable src : String |
+#select
+| CSharp7.cs:41:13:41:21 | "tainted" : String | CSharp7.cs:41:13:41:21 | "tainted" : String | CSharp7.cs:53:18:53:19 | access to local variable t1 | $@ | CSharp7.cs:53:18:53:19 | access to local variable t1 | access to local variable t1 |
+| CSharp7.cs:57:11:57:19 | "tainted" : String | CSharp7.cs:57:11:57:19 | "tainted" : String | CSharp7.cs:58:18:58:19 | access to local variable t4 | $@ | CSharp7.cs:58:18:58:19 | access to local variable t4 | access to local variable t4 |
+| CSharp7.cs:89:19:89:27 | "tainted" : String | CSharp7.cs:89:19:89:27 | "tainted" : String | CSharp7.cs:92:18:92:28 | call to method I | $@ | CSharp7.cs:92:18:92:28 | call to method I | call to method I |
+| CSharp7.cs:177:22:177:30 | "tainted" | CSharp7.cs:177:22:177:30 | "tainted" | CSharp7.cs:177:22:177:30 | "tainted" | $@ | CSharp7.cs:177:22:177:30 | "tainted" | "tainted" |
+| CSharp7.cs:177:22:177:30 | "tainted" : String | CSharp7.cs:177:22:177:30 | "tainted" : String | CSharp7.cs:183:21:183:26 | call to local function g | $@ | CSharp7.cs:183:21:183:26 | call to local function g | call to local function g |
+| CSharp7.cs:177:22:177:30 | "tainted" : String | CSharp7.cs:177:22:177:30 | "tainted" : String | CSharp7.cs:184:21:184:26 | call to local function h | $@ | CSharp7.cs:184:21:184:26 | call to local function h | call to local function h |
