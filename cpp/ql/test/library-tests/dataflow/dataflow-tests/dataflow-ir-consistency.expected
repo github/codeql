@@ -29,105 +29,11 @@ postHasUniquePre
 uniquePostUpdate
 postIsInSameCallable
 reverseRead
-| clang.cpp:18:8:18:19 | (const int *)... | Origin of readStep is missing a PostUpdateNode. |
-| clang.cpp:22:8:22:20 | & ... | Origin of readStep is missing a PostUpdateNode. |
-| clang.cpp:26:8:26:24 | sourceStruct1_ptr | Origin of readStep is missing a PostUpdateNode. |
-| clang.cpp:30:8:30:24 | sourceStruct1_ptr | Origin of readStep is missing a PostUpdateNode. |
-| clang.cpp:51:8:51:17 | (const int *)... | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:31:8:31:13 | topPtr | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:32:8:32:13 | topPtr | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:33:3:33:8 | topPtr | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:35:8:35:13 | topPtr | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:36:8:36:13 | topPtr | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:37:3:37:8 | topPtr | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:39:8:39:13 | (reference dereference) | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:40:8:40:13 | (reference dereference) | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:41:3:41:8 | (reference dereference) | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:43:8:43:13 | (reference dereference) | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:44:8:44:13 | (reference dereference) | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:45:3:45:8 | (reference dereference) | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:55:8:55:19 | globalBottom | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:56:8:56:19 | globalMiddle | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:58:8:58:23 | call to readGlobalBottom | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:69:3:69:5 | top | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:73:3:73:5 | (reference dereference) | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:77:21:77:34 | call to allocateBottom | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:78:23:78:39 | (reference to) | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:81:3:81:3 | x | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:89:3:89:10 | call to identity | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:89:12:89:17 | (Top *)... | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:90:3:90:10 | call to identity | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:90:12:90:14 | top | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:129:10:129:15 | topPtr | Origin of readStep is missing a PostUpdateNode. |
-| dispatch.cpp:130:10:130:15 | (reference dereference) | Origin of readStep is missing a PostUpdateNode. |
-| example.c:26:18:26:24 | & ... | Origin of readStep is missing a PostUpdateNode. |
-| example.c:28:14:28:25 | (void *)... | Origin of readStep is missing a PostUpdateNode. |
-| lambdas.cpp:18:7:18:7 | (const lambda [] type at line 13, col. 11)... | Origin of readStep is missing a PostUpdateNode. |
-| lambdas.cpp:25:2:25:2 | (const lambda [] type at line 20, col. 11)... | Origin of readStep is missing a PostUpdateNode. |
-| lambdas.cpp:32:2:32:2 | (const lambda [] type at line 28, col. 11)... | Origin of readStep is missing a PostUpdateNode. |
-| lambdas.cpp:38:2:38:2 | (const lambda [] type at line 34, col. 11)... | Origin of readStep is missing a PostUpdateNode. |
-| lambdas.cpp:45:2:45:2 | (const lambda [] type at line 40, col. 11)... | Origin of readStep is missing a PostUpdateNode. |
-| lambdas.cpp:45:4:45:4 | (reference to) | Origin of readStep is missing a PostUpdateNode. |
-| lambdas.cpp:45:7:45:7 | (reference to) | Origin of readStep is missing a PostUpdateNode. |
-| lambdas.cpp:45:10:45:10 | (reference to) | Origin of readStep is missing a PostUpdateNode. |
-| ref.cpp:16:12:16:14 | (reference to) | Origin of readStep is missing a PostUpdateNode. |
-| ref.cpp:37:21:37:23 | (reference to) | Origin of readStep is missing a PostUpdateNode. |
-| ref.cpp:55:19:55:20 | (reference to) | Origin of readStep is missing a PostUpdateNode. |
-| ref.cpp:58:15:58:16 | (reference to) | Origin of readStep is missing a PostUpdateNode. |
-| ref.cpp:61:26:61:27 | (reference to) | Origin of readStep is missing a PostUpdateNode. |
-| ref.cpp:64:15:64:16 | (reference to) | Origin of readStep is missing a PostUpdateNode. |
-| ref.cpp:79:12:79:14 | (reference to) | Origin of readStep is missing a PostUpdateNode. |
-| ref.cpp:102:21:102:23 | (reference to) | Origin of readStep is missing a PostUpdateNode. |
-| ref.cpp:122:19:122:20 | (reference to) | Origin of readStep is missing a PostUpdateNode. |
-| ref.cpp:125:15:125:16 | (reference to) | Origin of readStep is missing a PostUpdateNode. |
-| ref.cpp:128:26:128:27 | (reference to) | Origin of readStep is missing a PostUpdateNode. |
-| ref.cpp:131:15:131:16 | (reference to) | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:71:8:71:9 | x4 | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:194:13:194:27 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:207:13:207:33 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:209:13:209:33 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:221:13:221:34 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:223:13:223:34 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:236:13:236:24 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:245:7:245:12 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:246:7:246:16 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:251:7:251:12 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:256:7:256:12 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:265:15:265:20 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:267:11:267:20 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:273:14:273:19 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:278:14:278:19 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:288:17:288:22 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:290:13:290:22 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:295:17:295:22 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:300:23:300:28 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:314:2:314:2 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:317:10:317:10 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:319:10:319:10 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:321:2:321:2 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:364:5:364:14 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:374:5:374:20 | this | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:384:16:384:23 | (const void *)... | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:391:16:391:23 | (const void *)... | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:400:16:400:22 | (const void *)... | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:407:16:407:22 | (const void *)... | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:417:16:417:20 | (reference to) | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:423:20:423:25 | & ... | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:429:20:429:24 | array to pointer conversion | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:430:8:430:12 | (const int *)... | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:436:18:436:23 | & ... | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:442:18:442:22 | array to pointer conversion | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:443:8:443:12 | (const int *)... | Origin of readStep is missing a PostUpdateNode. |
-| test.cpp:470:21:470:22 | & ... | Origin of readStep is missing a PostUpdateNode. |
 argHasPostUpdate
 postWithInFlow
 | BarrierGuard.cpp:49:3:49:17 | Chi | PostUpdateNode should not be the target of local flow. |
 | BarrierGuard.cpp:60:3:60:18 | Chi | PostUpdateNode should not be the target of local flow. |
-| clang.cpp:18:3:18:6 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| clang.cpp:22:3:22:6 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| clang.cpp:26:27:26:34 | This argument | PostUpdateNode should not be the target of local flow. |
 | clang.cpp:28:3:28:34 | Chi | PostUpdateNode should not be the target of local flow. |
-| clang.cpp:30:27:30:34 | This argument | PostUpdateNode should not be the target of local flow. |
 | clang.cpp:34:22:34:27 | Chi | PostUpdateNode should not be the target of local flow. |
 | clang.cpp:34:32:34:37 | Chi | PostUpdateNode should not be the target of local flow. |
 | clang.cpp:39:32:39:37 | Chi | PostUpdateNode should not be the target of local flow. |
@@ -137,129 +43,43 @@ postWithInFlow
 | clang.cpp:49:25:49:30 | Chi | PostUpdateNode should not be the target of local flow. |
 | clang.cpp:49:35:49:40 | Chi | PostUpdateNode should not be the target of local flow. |
 | clang.cpp:50:3:50:26 | Chi | PostUpdateNode should not be the target of local flow. |
-| clang.cpp:51:3:51:6 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:31:16:31:24 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:32:16:32:24 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:33:11:33:16 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:35:16:35:25 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:36:16:36:25 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:37:11:37:17 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:39:15:39:23 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:40:15:40:23 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:41:10:41:15 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:43:15:43:24 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:44:15:44:24 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:45:10:45:16 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:55:22:55:30 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:56:22:56:30 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:58:28:58:36 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:69:8:69:13 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:73:7:73:12 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:77:3:77:19 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:78:3:78:21 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:81:6:81:11 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:89:3:89:10 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:89:21:89:26 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:90:3:90:10 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:90:18:90:23 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:129:18:129:25 | This argument | PostUpdateNode should not be the target of local flow. |
-| dispatch.cpp:130:17:130:24 | This argument | PostUpdateNode should not be the target of local flow. |
 | example.c:17:19:17:22 | Chi | PostUpdateNode should not be the target of local flow. |
 | example.c:17:21:17:21 | Chi | PostUpdateNode should not be the target of local flow. |
 | example.c:24:2:24:30 | Chi | PostUpdateNode should not be the target of local flow. |
 | example.c:24:13:24:30 | Chi | PostUpdateNode should not be the target of local flow. |
 | example.c:26:2:26:25 | Chi | PostUpdateNode should not be the target of local flow. |
-| example.c:26:13:26:16 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| example.c:28:2:28:12 | Argument 0 | PostUpdateNode should not be the target of local flow. |
 | file://:0:0:0:0 | Chi | PostUpdateNode should not be the target of local flow. |
 | file://:0:0:0:0 | Chi | PostUpdateNode should not be the target of local flow. |
 | file://:0:0:0:0 | Chi | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:13:12:13:12 | Chi | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:13:15:13:15 | Chi | PostUpdateNode should not be the target of local flow. |
-| lambdas.cpp:18:8:18:8 | This argument | PostUpdateNode should not be the target of local flow. |
-| lambdas.cpp:25:3:25:3 | This argument | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:28:10:31:2 | Chi | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:28:10:31:2 | Chi | PostUpdateNode should not be the target of local flow. |
-| lambdas.cpp:32:3:32:3 | This argument | PostUpdateNode should not be the target of local flow. |
-| lambdas.cpp:38:3:38:3 | This argument | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:43:3:43:14 | Chi | PostUpdateNode should not be the target of local flow. |
-| lambdas.cpp:45:3:45:3 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| lambdas.cpp:45:3:45:3 | Argument 1 | PostUpdateNode should not be the target of local flow. |
-| lambdas.cpp:45:3:45:3 | Argument 2 | PostUpdateNode should not be the target of local flow. |
-| lambdas.cpp:45:3:45:3 | This argument | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:11:5:11:13 | Chi | PostUpdateNode should not be the target of local flow. |
-| ref.cpp:16:5:16:10 | Argument 0 | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:20:5:20:13 | Chi | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:22:7:22:13 | Chi | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:24:7:24:13 | Chi | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:29:5:29:18 | Chi | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:31:7:31:13 | Chi | PostUpdateNode should not be the target of local flow. |
-| ref.cpp:37:7:37:19 | Argument 0 | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:39:7:39:13 | Chi | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:44:5:44:18 | Chi | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:46:7:46:13 | Chi | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:48:7:48:13 | Chi | PostUpdateNode should not be the target of local flow. |
-| ref.cpp:55:5:55:17 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| ref.cpp:58:5:58:13 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| ref.cpp:61:5:61:24 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| ref.cpp:64:5:64:13 | Argument 0 | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:75:5:75:17 | Chi | PostUpdateNode should not be the target of local flow. |
-| ref.cpp:79:5:79:10 | Argument 0 | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:83:5:83:17 | Chi | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:87:7:87:17 | Chi | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:89:7:89:17 | Chi | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:94:5:94:22 | Chi | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:96:7:96:17 | Chi | PostUpdateNode should not be the target of local flow. |
-| ref.cpp:102:7:102:19 | Argument 0 | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:104:7:104:17 | Chi | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:109:5:109:22 | Chi | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:113:7:113:17 | Chi | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:115:7:115:17 | Chi | PostUpdateNode should not be the target of local flow. |
-| ref.cpp:122:5:122:17 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| ref.cpp:125:5:125:13 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| ref.cpp:128:5:128:24 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| ref.cpp:131:5:131:13 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| test.cpp:71:3:71:6 | Argument 0 | PostUpdateNode should not be the target of local flow. |
 | test.cpp:91:3:91:18 | Chi | PostUpdateNode should not be the target of local flow. |
 | test.cpp:115:3:115:17 | Chi | PostUpdateNode should not be the target of local flow. |
 | test.cpp:120:3:120:10 | Chi | PostUpdateNode should not be the target of local flow. |
 | test.cpp:125:3:125:11 | Chi | PostUpdateNode should not be the target of local flow. |
-| test.cpp:194:13:194:27 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:207:13:207:33 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:209:13:209:33 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:221:13:221:34 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:223:13:223:34 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:236:13:236:24 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:245:7:245:12 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:246:7:246:16 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:251:7:251:12 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:256:7:256:12 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:265:15:265:20 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:267:11:267:20 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:273:14:273:19 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:278:14:278:19 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:288:17:288:22 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:290:13:290:22 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:295:17:295:22 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:300:23:300:28 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:314:2:314:2 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:317:10:317:10 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:319:10:319:10 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:321:2:321:2 | This argument | PostUpdateNode should not be the target of local flow. |
 | test.cpp:359:5:359:20 | Chi | PostUpdateNode should not be the target of local flow. |
-| test.cpp:364:5:364:14 | This argument | PostUpdateNode should not be the target of local flow. |
 | test.cpp:373:5:373:20 | Chi | PostUpdateNode should not be the target of local flow. |
-| test.cpp:374:5:374:20 | This argument | PostUpdateNode should not be the target of local flow. |
-| test.cpp:384:3:384:8 | Argument 1 | PostUpdateNode should not be the target of local flow. |
-| test.cpp:391:3:391:8 | Argument 1 | PostUpdateNode should not be the target of local flow. |
-| test.cpp:400:3:400:8 | Argument 1 | PostUpdateNode should not be the target of local flow. |
-| test.cpp:407:3:407:8 | Argument 1 | PostUpdateNode should not be the target of local flow. |
-| test.cpp:417:3:417:14 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| test.cpp:423:3:423:18 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| test.cpp:429:3:429:18 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| test.cpp:430:3:430:6 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| test.cpp:436:3:436:16 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| test.cpp:442:3:442:16 | Argument 0 | PostUpdateNode should not be the target of local flow. |
-| test.cpp:443:3:443:6 | Argument 0 | PostUpdateNode should not be the target of local flow. |
 | test.cpp:465:3:465:15 | Chi | PostUpdateNode should not be the target of local flow. |
-| test.cpp:470:3:470:19 | Argument 0 | PostUpdateNode should not be the target of local flow. |

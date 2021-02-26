@@ -266,7 +266,7 @@ private predicate fieldStoreStepChi(Node node1, FieldContent f, PostUpdateNode n
   )
 }
 
-private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode node2) {
+private predicate arrayStoreStepChi(Node node1, ArrayContent a, Node node2) {
   a = TArrayContent() and
   (
     exists(ChiPartialOperand operand, ChiInstruction chi, StoreInstruction store |
@@ -275,7 +275,7 @@ private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode n
       node1.asOperand() = operand and
       // This `ChiInstruction` will always have a non-conflated result because both `ArrayStoreNode`
       // and `PointerStoreNode` require it in their characteristic predicates.
-      node2.asInstruction() = chi and
+      node2.(PostUpdateNode).asInstruction() = chi and
       (
         // `x[i] = taint()`
         // This matches the characteristic predicate in `ArrayStoreNode`.
@@ -301,7 +301,7 @@ private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode n
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
+predicate storeStep(Node node1, Content f, Node node2) {
   fieldStoreStepNoChi(node1, f, node2) or
   fieldStoreStepChi(node1, f, node2) or
   arrayStoreStepChi(node1, f, node2) or

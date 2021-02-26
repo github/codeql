@@ -169,7 +169,6 @@ edges
 | constructors.cpp:28:10:28:10 | (reference dereference) [array content, a_] | constructors.cpp:28:12:28:12 | call to a |
 | constructors.cpp:28:10:28:10 | (reference dereference) [array content, b_] | constructors.cpp:28:10:28:10 | a output argument [b_] |
 | constructors.cpp:28:10:28:10 | a output argument [b_] | constructors.cpp:29:12:29:12 | call to b |
-| constructors.cpp:28:10:28:10 | a output argument [b_] | constructors.cpp:29:12:29:12 | call to b |
 | constructors.cpp:29:10:29:10 | (reference dereference) [array content, b_] | constructors.cpp:29:12:29:12 | call to b |
 | constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:34:11:34:26 | Foo output argument [a_] |
 | constructors.cpp:34:11:34:26 | Chi [a_] | constructors.cpp:26:15:26:15 | f [array content, a_] |
@@ -195,7 +194,6 @@ edges
 | simple.cpp:26:15:26:15 | f [array content, b_] | simple.cpp:29:10:29:10 | (reference dereference) [array content, b_] |
 | simple.cpp:28:10:28:10 | (reference dereference) [array content, a_] | simple.cpp:28:12:28:12 | call to a |
 | simple.cpp:28:10:28:10 | (reference dereference) [array content, b_] | simple.cpp:28:10:28:10 | a output argument [b_] |
-| simple.cpp:28:10:28:10 | a output argument [b_] | simple.cpp:29:12:29:12 | call to b |
 | simple.cpp:28:10:28:10 | a output argument [b_] | simple.cpp:29:12:29:12 | call to b |
 | simple.cpp:29:10:29:10 | (reference dereference) [array content, b_] | simple.cpp:29:12:29:12 | call to b |
 | simple.cpp:39:5:39:5 | Chi [a_] | simple.cpp:26:15:26:15 | f [array content, a_] |
@@ -418,7 +416,6 @@ nodes
 | constructors.cpp:28:10:28:10 | (reference dereference) [array content, a_] | semmle.label | (reference dereference) [array content, a_] |
 | constructors.cpp:28:10:28:10 | (reference dereference) [array content, b_] | semmle.label | (reference dereference) [array content, b_] |
 | constructors.cpp:28:10:28:10 | a output argument [b_] | semmle.label | a output argument [b_] |
-| constructors.cpp:28:10:28:10 | a output argument [b_] | semmle.label | a output argument [b_] |
 | constructors.cpp:28:12:28:12 | call to a | semmle.label | call to a |
 | constructors.cpp:29:10:29:10 | (reference dereference) [array content, b_] | semmle.label | (reference dereference) [array content, b_] |
 | constructors.cpp:29:12:29:12 | call to b | semmle.label | call to b |
@@ -440,7 +437,6 @@ nodes
 | simple.cpp:26:15:26:15 | f [array content, b_] | semmle.label | f [array content, b_] |
 | simple.cpp:28:10:28:10 | (reference dereference) [array content, a_] | semmle.label | (reference dereference) [array content, a_] |
 | simple.cpp:28:10:28:10 | (reference dereference) [array content, b_] | semmle.label | (reference dereference) [array content, b_] |
-| simple.cpp:28:10:28:10 | a output argument [b_] | semmle.label | a output argument [b_] |
 | simple.cpp:28:10:28:10 | a output argument [b_] | semmle.label | a output argument [b_] |
 | simple.cpp:28:12:28:12 | call to a | semmle.label | call to a |
 | simple.cpp:29:10:29:10 | (reference dereference) [array content, b_] | semmle.label | (reference dereference) [array content, b_] |

@@ -224,11 +224,6 @@ private predicate instructionToOperandTaintStep(Instruction fromInstr, Operand t
     fromInstr.getResultType() instanceof ArrayType or
     fromInstr.getResultType() instanceof Union
   )
-  or
-  exists(ReadSideEffectInstruction readInstr |
-    fromInstr = readInstr.getArgumentDef() and
-    toOperand = readInstr.getSideEffectOperand()
-  )
 }
 
 private predicate operandToInstructionTaintStep(Operand fromOperand, Instruction toInstr) {
@@ -315,20 +310,6 @@ private predicate operandToInstructionTaintStep(Operand fromOperand, Instruction
   // This is part of the translation of `a[i]`, where we want taint to flow
   // from `a`.
   toInstr.(PointerAddInstruction).getLeftOperand() = fromOperand
-  or
-  // Until we have from through indirections across calls, we'll take flow out
-  // of the parameter and into its indirection.
-  // `InitializeIndirectionInstruction` only has a single operand: the address of the
-  // value whose indirection we are initializing. When initializing an indirection of a parameter `p`,
-  // the IR looks like this:
-  // ```
-  // m1 = InitializeParameter[p] : &r1
-  // r2 = Load[p] : r2, m1
-  // m3 = InitializeIndirection[p] : &r2
-  // ```
-  // So by having flow from `r2` to `m3` we're enabling flow from `m1` to `m3`. This relies on the
-  // `LoadOperand`'s overlap being exact.
-  toInstr.(InitializeIndirectionInstruction).getAnOperand() = fromOperand
 }
 
 /**

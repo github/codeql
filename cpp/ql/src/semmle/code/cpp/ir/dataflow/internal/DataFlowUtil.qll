@@ -456,22 +456,6 @@ private class PointerStoreNode extends InstructionNode, PostUpdateNode {
 }
 
 /**
- * A `PostUpdateNode` that is the target of a `storeStep` from the `SideEffectOperand` of
- * a `ReadSideEffectInstruction` to the `ArgumentOperand` of the corresponding `CallInstruction` that
- * generated the read side effect.
- */
-private class ReadSideEffectNode extends OperandNode, PostUpdateNode {
-  override ArgumentOperand op;
-  ReadSideEffectInstruction read;
-
-  ReadSideEffectNode() {
-    read.getPrimaryInstruction().(CallInstruction).getArgumentOperand(read.getIndex()) = op
-  }
-
-  override Node getPreUpdateNode() { result.asOperand() = read.getSideEffectOperand() }
-}
-
-/**
  * A node that represents the value of a variable after a function call that
  * may have changed the variable because it's passed by reference.
  *
