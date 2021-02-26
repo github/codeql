@@ -13,8 +13,8 @@ contains sensitive data that could somehow be retrieved by an attacker.</p>
 <p>Use alternative platform-supplied functions that will not get optimized away. Examples of such
 functions include <code>memset_s</code>, <code>SecureZeroMemory</code>, and <code>bzero_explicit</code>.
 Alternatively, passing the <code>-fno-builtin-memset</code> option to the GCC/Clang compiler usually
-also prevents the optimization. Finally, the public-domain <code>secure_memzero</code> function (see
-below) can be used. This function, however, is not guaranteed to work on all platforms and compilers.</p>
+also prevents the optimization. Finally, you can use the public-domain <code>secure_memzero</code> function
+(see references below). This function, however, is not guaranteed to work on all platforms and compilers.</p>
 
 </recommendation>
 <example>
