@@ -1,5 +1,7 @@
 /**
- * Provides classes for modeling cryptographic libraries.
+ * Provides classes modeling cryptographic algorithms, separated into strong and weak variants.
+ *
+ * The classification into strong and weak are based on Wikipedia, OWASP and google (2017).
  */
 
 /**
@@ -110,7 +112,7 @@ abstract class CryptographicAlgorithm extends TCryptographicAlgorithm {
   string toString() { result = getName() }
 
   /**
-   * Gets the name of this algorithm.
+   * Gets the normalized name of this algorithm (upper-case, no spaces, dashes or underscores).
    */
   abstract string getName();
 
