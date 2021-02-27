@@ -2,17 +2,14 @@
  * Provides classes for modeling cryptographic libraries.
  */
 
-/*
- * The following information is copied from `/semmlecode-javascript-queries/semmle/javascript/frameworks/CryptoLibraries.qll`
- * which should be considered the definitive version (as of Feb 2018)
- */
-
 /**
  * Names of cryptographic algorithms, separated into strong and weak variants.
  *
  * The names are normalized: upper-case, no spaces, dashes or underscores.
  *
  * The names are inspired by the names used in real world crypto libraries.
+ *
+ * The classification into strong and weak are based on Wikipedia, OWASP and google (2017).
  */
 private module AlgorithmNames {
   predicate isStrongHashingAlgorithm(string name) {
@@ -81,14 +78,6 @@ private module AlgorithmNames {
   }
 
   predicate isWeakPasswordHashingAlgorithm(string name) { none() }
-
-  /**
-   * Normalizes `name`: upper-case, no spaces, dashes or underscores.
-   *
-   * All names of this module are in this normalized form.
-   */
-  bindingset[name]
-  string normalizeName(string name) { result = name.toUpperCase().regexpReplaceAll("[-_ ]", "") }
 }
 
 private import AlgorithmNames
@@ -121,9 +110,18 @@ abstract class CryptographicAlgorithm extends TCryptographicAlgorithm {
   string toString() { result = getName() }
 
   /**
-   * Gets the name of the algorithm.
+   * Gets the name of this algorithm.
    */
   abstract string getName();
+
+  /**
+   * Holds if the name of this algorithm matches `name` modulo case,
+   * white space, dashes and underscores.
+   */
+  bindingset[name]
+  predicate matchesName(string name) {
+    name.toUpperCase().regexpReplaceAll("[-_ ]", "") = getName()
+  }
 
   /**
    * Holds if this algorithm is weak.
