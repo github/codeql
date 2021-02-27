@@ -5,6 +5,69 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.spring.SpringController
 
+/** Holds if `m` is a method of some override of `HttpServlet.doGet`. */
+private predicate isGetServletMethod(Method m) {
+  isServletRequestMethod(m) and m.getName() = "doGet"
+}
+
+/** Holds if `m` is a method of some override of `HttpServlet.doGet`. */
+private predicate isGetSpringControllerMethod(Method m) {
+  exists(Annotation a |
+    a = m.getAnAnnotation() and
+    a.getType().hasQualifiedName("org.springframework.web.bind.annotation", "GetMapping")
+  )
+  or
+  exists(Annotation a |
+    a = m.getAnAnnotation() and
+    a.getType().hasQualifiedName("org.springframework.web.bind.annotation", "RequestMapping") and
+    a.getValue("method").toString().regexpMatch("RequestMethod.GET|\\{...\\}")
+  )
+}
+
+/** Method parameters use the annotation `@RequestParam` or the parameter type is `ServletRequest`, `String`, `Object` */
+predicate checkSpringMethodParameterType(Method m, int i) {
+  m.getParameter(i).getType() instanceof ServletRequest
+  or
+  exists(Parameter p |
+    p = m.getParameter(i) and
+    p.hasAnnotation() and
+    p.getAnAnnotation()
+        .getType()
+        .hasQualifiedName("org.springframework.web.bind.annotation", "RequestParam") and
+    p.getType().getName().regexpMatch("String|Object")
+  )
+  or
+  exists(Parameter p |
+    p = m.getParameter(i) and
+    not p.hasAnnotation() and
+    p.getType().getName().regexpMatch("String|Object")
+  )
+}
+
+/** A data flow source for get method request parameters. */
+abstract class GetHttpRequestSource extends DataFlow::Node { }
+
+/** A data flow source for servlet get method request parameters. */
+private class ServletGetHttpRequestSource extends GetHttpRequestSource {
+  ServletGetHttpRequestSource() {
+    exists(Method m |
+      isGetServletMethod(m) and
+      m.getParameter(0).getAnAccess() = this.asExpr()
+    )
+  }
+}
+
+/** A data flow source for spring controller get method request parameters. */
+private class SpringGetHttpRequestSource extends GetHttpRequestSource {
+  SpringGetHttpRequestSource() {
+    exists(SpringControllerMethod scm, int i |
+      isGetSpringControllerMethod(scm) and
+      checkSpringMethodParameterType(scm, i) and
+      scm.getParameter(i).getAnAccess() = this.asExpr()
+    )
+  }
+}
+
 /** A data flow sink for unvalidated user input that is used to jsonp. */
 abstract class JsonpInjectionSink extends DataFlow::Node { }
 
@@ -26,7 +89,7 @@ private class WriterPrintln extends JsonpInjectionSink {
 private class SpringReturn extends JsonpInjectionSink {
   SpringReturn() {
     exists(ReturnStmt rs, Method m | m = rs.getEnclosingCallable() |
-      m instanceof SpringRequestMappingMethod and
+      isGetSpringControllerMethod(m) and
       rs.getResult() = this.asExpr()
     )
   }

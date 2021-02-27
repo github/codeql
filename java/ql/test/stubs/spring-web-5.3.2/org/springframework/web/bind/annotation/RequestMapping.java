@@ -10,4 +10,6 @@ public @interface RequestMapping {
 
     @AliasFor("value")
     String[] path() default {};
+
+    RequestMethod[] method() default {};
 }

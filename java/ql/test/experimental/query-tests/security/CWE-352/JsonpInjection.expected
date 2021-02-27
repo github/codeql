@@ -1,60 +1,60 @@
 edges
-| JsonpInjection.java:28:32:28:68 | getParameter(...) : String | JsonpInjection.java:33:16:33:24 | resultStr |
-| JsonpInjection.java:32:21:32:54 | ... + ... : String | JsonpInjection.java:33:16:33:24 | resultStr |
-| JsonpInjection.java:40:32:40:68 | getParameter(...) : String | JsonpInjection.java:44:16:44:24 | resultStr |
-| JsonpInjection.java:42:21:42:80 | ... + ... : String | JsonpInjection.java:44:16:44:24 | resultStr |
-| JsonpInjection.java:51:32:51:68 | getParameter(...) : String | JsonpInjection.java:54:16:54:24 | resultStr |
-| JsonpInjection.java:53:21:53:55 | ... + ... : String | JsonpInjection.java:54:16:54:24 | resultStr |
-| JsonpInjection.java:61:32:61:68 | getParameter(...) : String | JsonpInjection.java:64:16:64:24 | resultStr |
-| JsonpInjection.java:63:21:63:54 | ... + ... : String | JsonpInjection.java:64:16:64:24 | resultStr |
-| JsonpInjection.java:72:32:72:68 | getParameter(...) : String | JsonpInjection.java:80:20:80:28 | resultStr |
+| JsonpInjection.java:29:32:29:38 | request : HttpServletRequest | JsonpInjection.java:34:16:34:24 | resultStr |
+| JsonpInjection.java:33:21:33:54 | ... + ... : String | JsonpInjection.java:34:16:34:24 | resultStr |
+| JsonpInjection.java:41:32:41:38 | request : HttpServletRequest | JsonpInjection.java:45:16:45:24 | resultStr |
+| JsonpInjection.java:43:21:43:80 | ... + ... : String | JsonpInjection.java:45:16:45:24 | resultStr |
+| JsonpInjection.java:52:32:52:38 | request : HttpServletRequest | JsonpInjection.java:55:16:55:24 | resultStr |
+| JsonpInjection.java:54:21:54:55 | ... + ... : String | JsonpInjection.java:55:16:55:24 | resultStr |
+| JsonpInjection.java:62:32:62:38 | request : HttpServletRequest | JsonpInjection.java:65:16:65:24 | resultStr |
+| JsonpInjection.java:64:21:64:54 | ... + ... : String | JsonpInjection.java:65:16:65:24 | resultStr |
+| JsonpInjection.java:72:32:72:38 | request : HttpServletRequest | JsonpInjection.java:80:20:80:28 | resultStr |
 | JsonpInjection.java:79:21:79:54 | ... + ... : String | JsonpInjection.java:80:20:80:28 | resultStr |
-| JsonpInjection.java:88:32:88:68 | getParameter(...) : String | JsonpInjection.java:95:20:95:28 | resultStr |
-| JsonpInjection.java:94:21:94:54 | ... + ... : String | JsonpInjection.java:95:20:95:28 | resultStr |
-| JsonpInjection.java:102:32:102:68 | getParameter(...) : String | JsonpInjection.java:113:16:113:24 | resultStr |
-| JsonpInjection.java:128:25:128:59 | ... + ... : String | JsonpInjection.java:129:20:129:28 | resultStr |
-| JsonpInjection.java:147:25:147:59 | ... + ... : String | JsonpInjection.java:148:20:148:28 | resultStr |
+| JsonpInjection.java:87:32:87:38 | request : HttpServletRequest | JsonpInjection.java:94:20:94:28 | resultStr |
+| JsonpInjection.java:93:21:93:54 | ... + ... : String | JsonpInjection.java:94:20:94:28 | resultStr |
+| JsonpInjection.java:101:32:101:38 | request : HttpServletRequest | JsonpInjection.java:112:16:112:24 | resultStr |
+| JsonpInjection.java:127:25:127:59 | ... + ... : String | JsonpInjection.java:128:20:128:28 | resultStr |
+| JsonpInjection.java:148:25:148:59 | ... + ... : String | JsonpInjection.java:149:20:149:28 | resultStr |
 nodes
-| JsonpInjection.java:28:32:28:68 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| JsonpInjection.java:32:21:32:54 | ... + ... : String | semmle.label | ... + ... : String |
-| JsonpInjection.java:33:16:33:24 | resultStr | semmle.label | resultStr |
-| JsonpInjection.java:33:16:33:24 | resultStr | semmle.label | resultStr |
-| JsonpInjection.java:40:32:40:68 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| JsonpInjection.java:42:21:42:80 | ... + ... : String | semmle.label | ... + ... : String |
-| JsonpInjection.java:44:16:44:24 | resultStr | semmle.label | resultStr |
-| JsonpInjection.java:44:16:44:24 | resultStr | semmle.label | resultStr |
-| JsonpInjection.java:51:32:51:68 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| JsonpInjection.java:53:21:53:55 | ... + ... : String | semmle.label | ... + ... : String |
-| JsonpInjection.java:54:16:54:24 | resultStr | semmle.label | resultStr |
-| JsonpInjection.java:54:16:54:24 | resultStr | semmle.label | resultStr |
-| JsonpInjection.java:61:32:61:68 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| JsonpInjection.java:63:21:63:54 | ... + ... : String | semmle.label | ... + ... : String |
-| JsonpInjection.java:64:16:64:24 | resultStr | semmle.label | resultStr |
-| JsonpInjection.java:64:16:64:24 | resultStr | semmle.label | resultStr |
-| JsonpInjection.java:72:32:72:68 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JsonpInjection.java:29:32:29:38 | request : HttpServletRequest | semmle.label | request : HttpServletRequest |
+| JsonpInjection.java:33:21:33:54 | ... + ... : String | semmle.label | ... + ... : String |
+| JsonpInjection.java:34:16:34:24 | resultStr | semmle.label | resultStr |
+| JsonpInjection.java:34:16:34:24 | resultStr | semmle.label | resultStr |
+| JsonpInjection.java:41:32:41:38 | request : HttpServletRequest | semmle.label | request : HttpServletRequest |
+| JsonpInjection.java:43:21:43:80 | ... + ... : String | semmle.label | ... + ... : String |
+| JsonpInjection.java:45:16:45:24 | resultStr | semmle.label | resultStr |
+| JsonpInjection.java:45:16:45:24 | resultStr | semmle.label | resultStr |
+| JsonpInjection.java:52:32:52:38 | request : HttpServletRequest | semmle.label | request : HttpServletRequest |
+| JsonpInjection.java:54:21:54:55 | ... + ... : String | semmle.label | ... + ... : String |
+| JsonpInjection.java:55:16:55:24 | resultStr | semmle.label | resultStr |
+| JsonpInjection.java:55:16:55:24 | resultStr | semmle.label | resultStr |
+| JsonpInjection.java:62:32:62:38 | request : HttpServletRequest | semmle.label | request : HttpServletRequest |
+| JsonpInjection.java:64:21:64:54 | ... + ... : String | semmle.label | ... + ... : String |
+| JsonpInjection.java:65:16:65:24 | resultStr | semmle.label | resultStr |
+| JsonpInjection.java:65:16:65:24 | resultStr | semmle.label | resultStr |
+| JsonpInjection.java:72:32:72:38 | request : HttpServletRequest | semmle.label | request : HttpServletRequest |
 | JsonpInjection.java:79:21:79:54 | ... + ... : String | semmle.label | ... + ... : String |
 | JsonpInjection.java:80:20:80:28 | resultStr | semmle.label | resultStr |
 | JsonpInjection.java:80:20:80:28 | resultStr | semmle.label | resultStr |
-| JsonpInjection.java:88:32:88:68 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| JsonpInjection.java:94:21:94:54 | ... + ... : String | semmle.label | ... + ... : String |
-| JsonpInjection.java:95:20:95:28 | resultStr | semmle.label | resultStr |
-| JsonpInjection.java:95:20:95:28 | resultStr | semmle.label | resultStr |
-| JsonpInjection.java:102:32:102:68 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| JsonpInjection.java:113:16:113:24 | resultStr | semmle.label | resultStr |
-| JsonpInjection.java:128:25:128:59 | ... + ... : String | semmle.label | ... + ... : String |
-| JsonpInjection.java:129:20:129:28 | resultStr | semmle.label | resultStr |
-| JsonpInjection.java:147:25:147:59 | ... + ... : String | semmle.label | ... + ... : String |
-| JsonpInjection.java:148:20:148:28 | resultStr | semmle.label | resultStr |
+| JsonpInjection.java:87:32:87:38 | request : HttpServletRequest | semmle.label | request : HttpServletRequest |
+| JsonpInjection.java:93:21:93:54 | ... + ... : String | semmle.label | ... + ... : String |
+| JsonpInjection.java:94:20:94:28 | resultStr | semmle.label | resultStr |
+| JsonpInjection.java:94:20:94:28 | resultStr | semmle.label | resultStr |
+| JsonpInjection.java:101:32:101:38 | request : HttpServletRequest | semmle.label | request : HttpServletRequest |
+| JsonpInjection.java:112:16:112:24 | resultStr | semmle.label | resultStr |
+| JsonpInjection.java:127:25:127:59 | ... + ... : String | semmle.label | ... + ... : String |
+| JsonpInjection.java:128:20:128:28 | resultStr | semmle.label | resultStr |
+| JsonpInjection.java:148:25:148:59 | ... + ... : String | semmle.label | ... + ... : String |
+| JsonpInjection.java:149:20:149:28 | resultStr | semmle.label | resultStr |
 #select
-| JsonpInjection.java:33:16:33:24 | resultStr | JsonpInjection.java:28:32:28:68 | getParameter(...) : String | JsonpInjection.java:33:16:33:24 | resultStr | Json Hijacking query 
-might include code from $@. | JsonpInjection.java:28:32:28:68 | getParameter(...) | this user input |
-| JsonpInjection.java:44:16:44:24 | resultStr | JsonpInjection.java:40:32:40:68 | getParameter(...) : String | JsonpInjection.java:44:16:44:24 | resultStr | Json Hijacking query 
-might include code from $@. | JsonpInjection.java:40:32:40:68 | getParameter(...) | this user input |
-| JsonpInjection.java:54:16:54:24 | resultStr | JsonpInjection.java:51:32:51:68 | getParameter(...) : String | JsonpInjection.java:54:16:54:24 | resultStr | Json Hijacking query 
-might include code from $@. | JsonpInjection.java:51:32:51:68 | getParameter(...) | this user input |
-| JsonpInjection.java:64:16:64:24 | resultStr | JsonpInjection.java:61:32:61:68 | getParameter(...) : String | JsonpInjection.java:64:16:64:24 | resultStr | Json Hijacking query 
-might include code from $@. | JsonpInjection.java:61:32:61:68 | getParameter(...) | this user input |
-| JsonpInjection.java:80:20:80:28 | resultStr | JsonpInjection.java:72:32:72:68 | getParameter(...) : String | JsonpInjection.java:80:20:80:28 | resultStr | Json Hijacking query 
-might include code from $@. | JsonpInjection.java:72:32:72:68 | getParameter(...) | this user input |
-| JsonpInjection.java:95:20:95:28 | resultStr | JsonpInjection.java:88:32:88:68 | getParameter(...) : String | JsonpInjection.java:95:20:95:28 | resultStr | Json Hijacking query 
-might include code from $@. | JsonpInjection.java:88:32:88:68 | getParameter(...) | this user input |
+| JsonpInjection.java:34:16:34:24 | resultStr | JsonpInjection.java:29:32:29:38 | request : HttpServletRequest | JsonpInjection.java:34:16:34:24 | 
+resultStr | Jsonp Injection query might include code from $@. | JsonpInjection.java:29:32:29:38 | request | this user input |
+| JsonpInjection.java:45:16:45:24 | resultStr | JsonpInjection.java:41:32:41:38 | request : HttpServletRequest | JsonpInjection.java:45:16:45:24 | 
+resultStr | Jsonp Injection query might include code from $@. | JsonpInjection.java:41:32:41:38 | request | this user input |
+| JsonpInjection.java:55:16:55:24 | resultStr | JsonpInjection.java:52:32:52:38 | request : HttpServletRequest | JsonpInjection.java:55:16:55:24 | 
+resultStr | Jsonp Injection query might include code from $@. | JsonpInjection.java:52:32:52:38 | request | this user input |
+| JsonpInjection.java:65:16:65:24 | resultStr | JsonpInjection.java:62:32:62:38 | request : HttpServletRequest | JsonpInjection.java:65:16:65:24 | 
+resultStr | Jsonp Injection query might include code from $@. | JsonpInjection.java:62:32:62:38 | request | this user input |
+| JsonpInjection.java:80:20:80:28 | resultStr | JsonpInjection.java:72:32:72:38 | request : HttpServletRequest | JsonpInjection.java:80:20:80:28 | 
+resultStr | Jsonp Injection query might include code from $@. | JsonpInjection.java:72:32:72:38 | request | this user input |
+| JsonpInjection.java:94:20:94:28 | resultStr | JsonpInjection.java:87:32:87:38 | request : HttpServletRequest | JsonpInjection.java:94:20:94:28 | 
+resultStr | Jsonp Injection query might include code from $@. | JsonpInjection.java:87:32:87:38 | request | this user input |

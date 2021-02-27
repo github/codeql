@@ -8,11 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class JsonpInjection {
-    
     private static HashMap hashMap = new HashMap();
 
     static {
@@ -21,7 +22,7 @@ public class JsonpInjection {
     }
 
 
-    @GetMapping(value = "jsonp1")
+    @GetMapping(value = "jsonp1", produces="text/javascript")
     @ResponseBody
     public String bad1(HttpServletRequest request) {
         String resultStr = null;
@@ -68,7 +69,6 @@ public class JsonpInjection {
     @ResponseBody
     public void bad5(HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        response.setContentType("application/json");
         String jsonpCallback = request.getParameter("jsonpCallback");
         PrintWriter pw = null;
         Gson gson = new Gson();
@@ -84,7 +84,6 @@ public class JsonpInjection {
     @ResponseBody
     public void bad6(HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        response.setContentType("application/json");
         String jsonpCallback = request.getParameter("jsonpCallback");
         PrintWriter pw = null;
         ObjectMapper mapper = new ObjectMapper();
@@ -141,8 +140,10 @@ public class JsonpInjection {
         String referer = request.getHeader("Referer");
 
         boolean result = verifReferer(referer);
+
+        boolean test = result;
         // good
-        if (result){
+        if (test){
             String jsonStr = getJsonStr(hashMap);
             resultStr = jsonpCallback + "(" + jsonStr + ")";
             return resultStr;
