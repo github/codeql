@@ -30,7 +30,6 @@ private predicate isRemoteInvocationSerializingExporter(RefType type) {
  * Holds if `method` returns an object that extends `RemoteInvocationSerializingExporter`.
  */
 private predicate returnsRemoteInvocationSerializingExporter(Method method) {
-  isRemoteInvocationSerializingExporter(method.getReturnType()) or
   isRemoteInvocationSerializingExporter(method.getReturnType().(RefType).getASupertype*())
 }
 

@@ -1,5 +1,3 @@
 package org.springframework.remoting.rmi;
 
-public abstract class RemoteInvocationSerializingExporter {
-    
-}
+public abstract class RemoteInvocationSerializingExporter {}

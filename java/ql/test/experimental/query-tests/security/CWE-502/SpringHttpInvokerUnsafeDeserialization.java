@@ -1,16 +1,22 @@
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter;
+import org.springframework.remoting.rmi.RemoteInvocationSerializingExporter;
 
 @Configuration
 public class SpringHttpInvokerUnsafeDeserialization {
     
-    @Bean(name = "/unsafe")
-    HttpInvokerServiceExporter unsafe() {
+    @Bean(name = "/unsafeHttpInvokerServiceExporter")
+    HttpInvokerServiceExporter unsafeHttpInvokerServiceExporter() {
         HttpInvokerServiceExporter exporter = new HttpInvokerServiceExporter();
         exporter.setService(new AccountServiceImpl());
         exporter.setServiceInterface(AccountService.class);
         return exporter;
+    }
+
+    @Bean(name = "/unsafeCustomeRemoteInvocationSerializingExporter")
+    RemoteInvocationSerializingExporter unsafeCustomeRemoteInvocationSerializingExporter() {
+        return new CustomeRemoteInvocationSerializingExporter();
     }
 
     HttpInvokerServiceExporter notABean() {
@@ -20,6 +26,8 @@ public class SpringHttpInvokerUnsafeDeserialization {
         return exporter;
     }
 }
+
+class CustomeRemoteInvocationSerializingExporter extends RemoteInvocationSerializingExporter {}
 
 class NotAConfiguration {
 

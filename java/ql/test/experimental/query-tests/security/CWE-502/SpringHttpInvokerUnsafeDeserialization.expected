@@ -1,1 +1,2 @@
-| SpringHttpInvokerUnsafeDeserialization.java:9:32:9:37 | unsafe | Unasafe deserialization in a remote service exporter in 'unsafe' method |
+| SpringHttpInvokerUnsafeDeserialization.java:10:32:10:63 | unsafeHttpInvokerServiceExporter | Unasafe deserialization in a remote service exporter in 'unsafeHttpInvokerServiceExporter' method |
+| SpringHttpInvokerUnsafeDeserialization.java:18:41:18:88 | unsafeCustomeRemoteInvocationSerializingExporter | Unasafe deserialization in a remote service exporter in 'unsafeCustomeRemoteInvocationSerializingExporter' method |
