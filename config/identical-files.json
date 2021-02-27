@@ -430,5 +430,9 @@
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/SsaImplCommon.qll",
     "csharp/ql/src/semmle/code/csharp/controlflow/internal/pressa/SsaImplCommon.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/basessa/SsaImplCommon.qll"
+  ],
+  "CryptoAlgorithms Python/JS": [
+    "javascript/ql/src/semmle/javascript/security/CryptoAlgorithms.qll",
+    "python/ql/src/semmle/crypto/Crypto.qll"
   ]
 }
