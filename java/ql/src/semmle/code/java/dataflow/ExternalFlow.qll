@@ -111,7 +111,15 @@ private predicate sourceModelCsv(string row) {
       "org.springframework.web.multipart;MultipartFile;true;getOriginalFilename;();;ReturnValue;remote",
       "org.springframework.web.multipart;MultipartFile;true;getResource;();;ReturnValue;remote",
       "org.springframework.web.multipart;MultipartFile;true;getSize;();;ReturnValue;remote",
-      "org.springframework.web.multipart;MultipartFile;true;isEmpty;();;ReturnValue;remote"
+      "org.springframework.web.multipart;MultipartFile;true;isEmpty;();;ReturnValue;remote",
+      // HttpServletRequest.get*
+      "javax.servlet.http;HttpServletRequest;false;getHeader;(String);;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getHeaders;(String);;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getHeaderNames;();;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getPathInfo;();;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getRequestURI;();;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getRequestURL;();;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getRemoteUser;();;ReturnValue;remote"
     ]
 }
 

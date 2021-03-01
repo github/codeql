@@ -214,13 +214,6 @@ class DatabaseInput extends LocalUserInput {
 
 private class RemoteTaintedMethod extends Method {
   RemoteTaintedMethod() {
-    this instanceof HttpServletRequestGetHeaderMethod or
-    this instanceof HttpServletRequestGetPathMethod or
-    this instanceof HttpServletRequestGetHeadersMethod or
-    this instanceof HttpServletRequestGetHeaderNamesMethod or
-    this instanceof HttpServletRequestGetRequestURIMethod or
-    this instanceof HttpServletRequestGetRequestURLMethod or
-    this instanceof HttpServletRequestGetRemoteUserMethod or
     this instanceof PlayRequestGetMethod or
     this instanceof SpringWebRequestGetMethod or
     this instanceof SpringRestTemplateResponseEntityMethod or
