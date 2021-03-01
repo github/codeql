@@ -132,7 +132,11 @@ private predicate sourceModelCsv(string row) {
       // TODO consider org.springframework.web.context.request.WebRequest.getRemoteUser
       // ServletRequestGetBodyMethod
       "javax.servlet;ServletRequest;false;getInputStream;();;ReturnValue;remote",
-      "javax.servlet;ServletRequest;false;getReader;();;ReturnValue;remote"
+      "javax.servlet;ServletRequest;false;getReader;();;ReturnValue;remote",
+      // CookieGet*
+      "javax.servlet.http;Cookie;false;getValue;();;ReturnValue;remote",
+      "javax.servlet.http;Cookie;false;getName;();;ReturnValue;remote",
+      "javax.servlet.http;Cookie;false;getComment;();;ReturnValue;remote"
     ]
 }
 
