@@ -281,6 +281,9 @@ func main() {
 	depMode := GoGetNoModules
 	modMode := ModUnset
 	needGopath := true
+	if _, present := os.LookupEnv("GO111MODULE"); !present {
+		os.Setenv("GO111MODULE", "auto")
+	}
 	if util.FileExists("go.mod") {
 		depMode = GoGetWithModules
 		needGopath = false
