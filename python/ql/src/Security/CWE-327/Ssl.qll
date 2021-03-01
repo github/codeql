@@ -37,21 +37,42 @@ class OptionsAugOr extends ProtocolRestriction {
   ProtocolVersion restriction;
 
   OptionsAugOr() {
-    exists(AugAssign aa, AttrNode attr |
+    exists(AugAssign aa, AttrNode attr, Expr flag |
       aa.getOperation().getOp() instanceof BitOr and
       aa.getTarget() = attr.getNode() and
       attr.getName() = "options" and
       attr.getObject() = node and
-      // TODO: Use something like BoolExpr::impliesValue here
-      API::moduleImport("ssl").getMember("OP_NO_" + restriction).getAUse().asExpr() in [
-          aa.getValue(), aa.getValue().getAChildNode()
-        ]
+      flag = API::moduleImport("ssl").getMember("OP_NO_" + restriction).getAUse().asExpr() and
+      (
+        aa.getValue() = flag
+        or
+        impliesValue(aa.getValue(), flag, false, false)
+      )
     )
   }
 
   override DataFlow::CfgNode getContext() { result = this }
 
   override ProtocolVersion getRestriction() { result = restriction }
+}
+
+/** Whether `part` evaluates to `partIsTrue` if `whole` evaluates to `wholeIsTrue`. */
+predicate impliesValue(BinaryExpr whole, Expr part, boolean partIsTrue, boolean wholeIsTrue) {
+  whole.getOp() instanceof BitAnd and
+  (
+    wholeIsTrue = true and partIsTrue = true and part in [whole.getLeft(), whole.getRight()]
+    or
+    wholeIsTrue = true and
+    impliesValue([whole.getLeft(), whole.getRight()], part, partIsTrue, wholeIsTrue)
+  )
+  or
+  whole.getOp() instanceof BitOr and
+  (
+    wholeIsTrue = false and partIsTrue = false and part in [whole.getLeft(), whole.getRight()]
+    or
+    wholeIsTrue = false and
+    impliesValue([whole.getLeft(), whole.getRight()], part, partIsTrue, wholeIsTrue)
+  )
 }
 
 class ContextSetVersion extends ProtocolRestriction {
