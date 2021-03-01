@@ -175,17 +175,12 @@ private predicate inBooleanContext(AstNode n) {
   or
   n = any(NotExpr parent | inBooleanContext(parent)).getOperand()
   or
-  n = any(ParenthesizedExpr parent | inBooleanContext(parent)).getLastExpr()
+  n = any(StmtSequence parent | inBooleanContext(parent)).getLastExpr()
   or
   exists(CaseExpr c, WhenExpr w |
     not exists(c.getValue()) and
     c.getAWhenBranch() = w and
     w.getPattern(_) = n
-  )
-  or
-  exists(StmtSequence parent |
-    inBooleanContext(parent) and
-    n = parent.getLastExpr()
   )
 }
 

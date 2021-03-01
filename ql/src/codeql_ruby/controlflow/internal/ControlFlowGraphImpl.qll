@@ -206,24 +206,9 @@ private predicate succImpl(AstNode pred, AstNode succ, Completion c) {
 }
 
 private predicate isHidden(ControlFlowTree t) {
+  not t instanceof ASTInternal::AstNode::Range
+  or
   t.isHidden()
-  or
-  t = any(Method m).getName()
-  or
-  t = any(Class m).getName()
-  or
-  t = any(Module m).getName()
-  or
-  t = any(ScopeResolution m).getName()
-  or
-  t = any(SingletonMethod m).getName()
-  or
-  t = any(Call c).getMethod() and
-  not t instanceof ScopeResolution
-  or
-  t instanceof RestAssignment
-  or
-  t instanceof Superclass
 }
 
 private predicate succImplIfHidden(AstNode pred, AstNode succ) {
