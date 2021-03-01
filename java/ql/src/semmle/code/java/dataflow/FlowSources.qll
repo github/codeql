@@ -216,10 +216,6 @@ private class RemoteTaintedMethod extends Method {
   RemoteTaintedMethod() {
     this instanceof PlayRequestGetMethod or
     this instanceof SpringRestTemplateResponseEntityMethod or
-    // In the setting of Android we assume that XML has been transmitted over
-    // the network, so may be tainted.
-    this instanceof XmlPullGetMethod or
-    this instanceof XmlAttrSetGetMethod or
     // The current URL in a browser may be untrusted or uncontrolled.
     this instanceof WebViewGetUrlMethod
   }

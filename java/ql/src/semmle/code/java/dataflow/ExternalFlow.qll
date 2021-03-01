@@ -139,7 +139,30 @@ private predicate sourceModelCsv(string row) {
       "javax.servlet.http;Cookie;false;getComment;();;ReturnValue;remote",
       // ApacheHttp*
       "org.apache.http;HttpMessage;false;getParams;();;ReturnValue;remote",
-      "org.apache.http;HttpEntity;false;getContent;();;ReturnValue;remote"
+      "org.apache.http;HttpEntity;false;getContent;();;ReturnValue;remote",
+      // In the setting of Android we assume that XML has been transmitted over
+      // the network, so may be tainted.
+      // XmlPullGetMethod
+      "org.xmlpull.v1;XmlPullParser;false;getName;();;ReturnValue;remote",
+      "org.xmlpull.v1;XmlPullParser;false;getNamespace;();;ReturnValue;remote",
+      "org.xmlpull.v1;XmlPullParser;false;getText;();;ReturnValue;remote",
+      // XmlAttrSetGetMethod
+      "android.util;AttributeSet;false;getAttributeBooleanValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeCount;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeFloatValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeIntValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeListValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeName;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeNameResource;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeNamespace;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeResourceValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeUnsignedIntValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getClassAttribute;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getIdAttribute;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getIdAttributeResourceValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getPositionDescription;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getStyleAttribute;;;ReturnValue;remote"
     ]
 }
 
