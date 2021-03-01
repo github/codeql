@@ -128,8 +128,11 @@ private predicate sourceModelCsv(string row) {
       "org.springframework.web.context.request;WebRequest;false;getParameter;;;ReturnValue;remote",
       "org.springframework.web.context.request;WebRequest;false;getParameterMap;;;ReturnValue;remote",
       "org.springframework.web.context.request;WebRequest;false;getParameterNames;;;ReturnValue;remote",
-      "org.springframework.web.context.request;WebRequest;false;getParameterValues;;;ReturnValue;remote"
+      "org.springframework.web.context.request;WebRequest;false;getParameterValues;;;ReturnValue;remote",
       // TODO consider org.springframework.web.context.request.WebRequest.getRemoteUser
+      // ServletRequestGetBodyMethod
+      "javax.servlet;ServletRequest;false;getInputStream;();;ReturnValue;remote",
+      "javax.servlet;ServletRequest;false;getReader;();;ReturnValue;remote"
     ]
 }
 

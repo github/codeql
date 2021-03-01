@@ -216,7 +216,6 @@ private class RemoteTaintedMethod extends Method {
   RemoteTaintedMethod() {
     this instanceof PlayRequestGetMethod or
     this instanceof SpringRestTemplateResponseEntityMethod or
-    this instanceof ServletRequestGetBodyMethod or
     this instanceof CookieGetValueMethod or
     this instanceof CookieGetNameMethod or
     this instanceof CookieGetCommentMethod or
