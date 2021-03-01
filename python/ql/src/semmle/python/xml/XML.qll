@@ -342,7 +342,6 @@ class XMLCharacters extends @xmlcharacters, XMLLocatable {
   override string toString() { result = this.getCharacters() }
 }
 
-
 /**
  * An alert suppression comment.
  */
