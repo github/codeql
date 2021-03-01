@@ -115,21 +115,6 @@ private class MessageBodyReaderParameterSource extends RemoteFlowSource {
   override string getSourceType() { result = "MessageBodyReader parameter" }
 }
 
-private class SpringMultipartRequestSource extends RemoteFlowSource {
-  SpringMultipartRequestSource() {
-    exists(MethodAccess ma, Method m |
-      ma = this.asExpr() and
-      m = ma.getMethod() and
-      m.getDeclaringType()
-          .getASourceSupertype*()
-          .hasQualifiedName("org.springframework.web.multipart", "MultipartRequest") and
-      m.getName().matches("get%")
-    )
-  }
-
-  override string getSourceType() { result = "Spring MultipartRequest getter" }
-}
-
 private class PlayParameterSource extends RemoteFlowSource {
   PlayParameterSource() { exists(PlayActionMethodQueryParameter p | p = this.asParameter()) }
 

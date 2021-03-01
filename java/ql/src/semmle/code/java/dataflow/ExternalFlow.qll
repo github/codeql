@@ -95,7 +95,14 @@ private predicate sourceModelCsv(string row) {
       // SocketGetInputStreamMethod
       "java.net;Socket;false;getInputStream;();;ReturnValue;remote",
       // BeanValidationSource
-      "javax.validation;ConstraintValidator;true;isValid;;;Parameter[0];remote"
+      "javax.validation;ConstraintValidator;true;isValid;;;Parameter[0];remote",
+      // SpringMultipartRequestSource
+      "org.springframework.web.multipart;MultipartRequest;true;getFile;(String);;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getFileMap;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getFileNames;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getFiles;(String);;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getMultiFileMap;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getMultipartContentType;(String);;ReturnValue;remote"
     ]
 }
 
