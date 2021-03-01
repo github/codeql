@@ -1,8 +1,8 @@
 import java
-import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.DataFlow
 import TestUtilities.InlineExpectationsTest
 
-class Conf extends TaintTracking::Configuration {
+class Conf extends DataFlow::Configuration {
   Conf() { this = "qltest:dataflow:fluent-methods" }
 
   override predicate isSource(DataFlow::Node n) {
