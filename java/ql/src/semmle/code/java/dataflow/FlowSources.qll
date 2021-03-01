@@ -215,9 +215,7 @@ class DatabaseInput extends LocalUserInput {
 private class RemoteTaintedMethod extends Method {
   RemoteTaintedMethod() {
     this instanceof PlayRequestGetMethod or
-    this instanceof SpringRestTemplateResponseEntityMethod or
-    // The current URL in a browser may be untrusted or uncontrolled.
-    this instanceof WebViewGetUrlMethod
+    this instanceof SpringRestTemplateResponseEntityMethod
   }
 }
 

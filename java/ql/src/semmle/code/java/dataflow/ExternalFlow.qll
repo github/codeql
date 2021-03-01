@@ -162,7 +162,11 @@ private predicate sourceModelCsv(string row) {
       "android.util;AttributeSet;false;getIdAttribute;;;ReturnValue;remote",
       "android.util;AttributeSet;false;getIdAttributeResourceValue;;;ReturnValue;remote",
       "android.util;AttributeSet;false;getPositionDescription;;;ReturnValue;remote",
-      "android.util;AttributeSet;false;getStyleAttribute;;;ReturnValue;remote"
+      "android.util;AttributeSet;false;getStyleAttribute;;;ReturnValue;remote",
+      // The current URL in a browser may be untrusted or uncontrolled.
+      // WebViewGetUrlMethod
+      "android.webkit;WebView;false;getUrl;();;ReturnValue;remote",
+      "android.webkit;WebView;false;getOriginalUrl;();;ReturnValue;remote"
     ]
 }
 
