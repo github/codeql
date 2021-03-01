@@ -422,10 +422,10 @@ private module Cached {
    * interface.
    */
   cached
-  predicate reverseStepThroughInputOutputAlias(Node fromNode, Node toNode) {
+  predicate reverseStepThroughInputOutputAlias(PostUpdateNode fromNode, PostUpdateNode toNode) {
     exists(Node fromPre, Node toPre |
-      fromPre = fromNode.(PostUpdateNode).getPreUpdateNode() and
-      toPre = toNode.(PostUpdateNode).getPreUpdateNode()
+      fromPre = fromNode.getPreUpdateNode() and
+      toPre = toNode.getPreUpdateNode()
     |
       exists(DataFlowCall c |
         // Does the language-specific simpleLocalFlowStep already model flow
