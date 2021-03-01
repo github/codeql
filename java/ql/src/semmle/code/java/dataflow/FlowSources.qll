@@ -256,7 +256,6 @@ private class RemoteTaintedMethod extends Method {
     this instanceof ServletRequestGetParameterMethod or
     this instanceof ServletRequestGetParameterMapMethod or
     this instanceof ServletRequestGetParameterNamesMethod or
-    this instanceof PortletRenderRequestGetParameterMethod or
     this instanceof HttpServletRequestGetQueryStringMethod or
     this instanceof HttpServletRequestGetHeaderMethod or
     this instanceof HttpServletRequestGetPathMethod or
@@ -306,21 +305,6 @@ class EnvReadMethod extends Method {
     this instanceof MethodSystemGetenv or
     this instanceof PropertiesGetPropertyMethod or
     this instanceof MethodSystemGetProperty
-  }
-}
-
-private class PortletRenderRequestGetParameterMethod extends Method {
-  PortletRenderRequestGetParameterMethod() {
-    exists(RefType c, Interface t |
-      c.extendsOrImplements*(t) and
-      t.hasQualifiedName("javax.portlet", "RenderState") and
-      this = c.getAMethod()
-    |
-      this.hasName([
-          "getCookies", "getParameter", "getRenderParameters", "getParameterNames",
-          "getParameterValues", "getParameterMap"
-        ])
-    )
   }
 }
 

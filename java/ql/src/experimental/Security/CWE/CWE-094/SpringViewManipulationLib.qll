@@ -20,6 +20,22 @@ predicate thymeleafIsUsed() {
   exists(SpringBean b | b.getClassNameRaw().matches("org.thymeleaf.spring%"))
 }
 
+/** Models methods from the `javax.portlet.RenderState` package which return data from externally controlled sources. */
+class PortletRenderRequestMethod extends Method {
+  PortletRenderRequestMethod() {
+    exists(RefType c, Interface t |
+      c.extendsOrImplements*(t) and
+      t.hasQualifiedName("javax.portlet", "RenderState") and
+      this = c.getAMethod()
+    |
+      this.hasName([
+          "getCookies", "getParameter", "getRenderParameters", "getParameterNames",
+          "getParameterValues", "getParameterMap"
+        ])
+    )
+  }
+}
+
 /**
  * A taint-tracking configuration for unsafe user input
  * that can lead to Spring View Manipulation vulnerabilities.
@@ -29,7 +45,8 @@ class SpringViewManipulationConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource or
-    source instanceof WebRequestSource
+    source instanceof WebRequestSource or
+    source.asExpr().(MethodAccess).getMethod() instanceof PortletRenderRequestMethod
   }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof SpringViewManipulationSink }
