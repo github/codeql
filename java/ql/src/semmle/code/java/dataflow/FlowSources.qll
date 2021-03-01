@@ -260,10 +260,6 @@ class DatabaseInput extends LocalUserInput {
 
 private class RemoteTaintedMethod extends Method {
   RemoteTaintedMethod() {
-    this instanceof ServletRequestGetParameterMethod or
-    this instanceof ServletRequestGetParameterMapMethod or
-    this instanceof ServletRequestGetParameterNamesMethod or
-    this instanceof HttpServletRequestGetQueryStringMethod or
     this instanceof HttpServletRequestGetHeaderMethod or
     this instanceof HttpServletRequestGetPathMethod or
     this instanceof HttpServletRequestGetHeadersMethod or
@@ -278,8 +274,6 @@ private class RemoteTaintedMethod extends Method {
     this instanceof CookieGetValueMethod or
     this instanceof CookieGetNameMethod or
     this instanceof CookieGetCommentMethod or
-    this instanceof URLConnectionGetInputStreamMethod or
-    this instanceof SocketGetInputStreamMethod or
     this instanceof ApacheHttpGetParams or
     this instanceof ApacheHttpEntityGetContent or
     // In the setting of Android we assume that XML has been transmitted over
