@@ -102,7 +102,16 @@ private predicate sourceModelCsv(string row) {
       "org.springframework.web.multipart;MultipartRequest;true;getFileNames;();;ReturnValue;remote",
       "org.springframework.web.multipart;MultipartRequest;true;getFiles;(String);;ReturnValue;remote",
       "org.springframework.web.multipart;MultipartRequest;true;getMultiFileMap;();;ReturnValue;remote",
-      "org.springframework.web.multipart;MultipartRequest;true;getMultipartContentType;(String);;ReturnValue;remote"
+      "org.springframework.web.multipart;MultipartRequest;true;getMultipartContentType;(String);;ReturnValue;remote",
+      // SpringMultipartFileSource
+      "org.springframework.web.multipart;MultipartFile;true;getBytes;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getContentType;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getInputStream;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getName;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getOriginalFilename;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getResource;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getSize;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;isEmpty;();;ReturnValue;remote"
     ]
 }
 
