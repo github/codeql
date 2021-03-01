@@ -1,5 +1,5 @@
 /**
- * Provides a taint-tracking configuration for detecting SQL injection
+ * Provides a taint-tracking configuration for detecting stack trace exposure
  * vulnerabilities.
  */
 
@@ -9,7 +9,7 @@ import semmle.python.dataflow.new.TaintTracking
 import semmle.python.Concepts
 
 /**
- * A taint-tracking configuration for detecting SQL injection vulnerabilities.
+ * A taint-tracking configuration for detecting stack trace exposure.
  */
 class StackTraceExposureConfiguration extends TaintTracking::Configuration {
   StackTraceExposureConfiguration() { this = "StackTraceExposureConfiguration" }
