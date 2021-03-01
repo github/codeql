@@ -416,6 +416,30 @@ private module Cached {
   }
 
   /**
+   * Holds if data can flow from `fromNode` to `toNode` because they are the post-update
+   * nodes of some function output and input respectively, where the output and input
+   * are aliases. A typical example is a function returning `this`, implementing a fluent
+   * interface.
+   */
+  cached
+  predicate reverseStepThroughInputOutputAlias(Node fromNode, Node toNode) {
+    exists(Node fromPre, Node toPre |
+      fromPre = fromNode.(PostUpdateNode).getPreUpdateNode() and
+      toPre = toNode.(PostUpdateNode).getPreUpdateNode()
+    |
+      exists(DataFlowCall c |
+        // Does the language-specific simpleLocalFlowStep already model flow
+        // from function input to output?
+        fromPre = getAnOutNode(c, _) and
+        toPre.(ArgumentNode).argumentOf(c, _) and
+        simpleLocalFlowStep(toPre.(ArgumentNode), fromPre)
+      )
+      or
+      argumentValueFlowsThrough(toPre, TReadStepTypesNone(), fromPre)
+    )
+  }
+
+  /**
    * Holds if the call context `call` either improves virtual dispatch in
    * `callable` or if it allows us to prune unreachable nodes in `callable`.
    */
