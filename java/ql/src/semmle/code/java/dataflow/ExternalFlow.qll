@@ -119,7 +119,17 @@ private predicate sourceModelCsv(string row) {
       "javax.servlet.http;HttpServletRequest;false;getPathInfo;();;ReturnValue;remote",
       "javax.servlet.http;HttpServletRequest;false;getRequestURI;();;ReturnValue;remote",
       "javax.servlet.http;HttpServletRequest;false;getRequestURL;();;ReturnValue;remote",
-      "javax.servlet.http;HttpServletRequest;false;getRemoteUser;();;ReturnValue;remote"
+      "javax.servlet.http;HttpServletRequest;false;getRemoteUser;();;ReturnValue;remote",
+      // SpringWebRequestGetMethod
+      "org.springframework.web.context.request;WebRequest;false;getDescription;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getHeader;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getHeaderNames;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getHeaderValues;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getParameter;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getParameterMap;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getParameterNames;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getParameterValues;;;ReturnValue;remote"
+      // TODO consider org.springframework.web.context.request.WebRequest.getRemoteUser
     ]
 }
 

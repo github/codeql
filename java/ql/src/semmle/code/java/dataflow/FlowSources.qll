@@ -215,7 +215,6 @@ class DatabaseInput extends LocalUserInput {
 private class RemoteTaintedMethod extends Method {
   RemoteTaintedMethod() {
     this instanceof PlayRequestGetMethod or
-    this instanceof SpringWebRequestGetMethod or
     this instanceof SpringRestTemplateResponseEntityMethod or
     this instanceof ServletRequestGetBodyMethod or
     this instanceof CookieGetValueMethod or
@@ -236,22 +235,6 @@ private class PlayRequestGetMethod extends Method {
   PlayRequestGetMethod() {
     this.getDeclaringType() instanceof PlayMvcHttpRequestHeader and
     this.hasName(["queryString", "getQueryString", "header", "getHeader"])
-  }
-}
-
-private class SpringWebRequestGetMethod extends Method {
-  SpringWebRequestGetMethod() {
-    exists(SpringWebRequest swr | this = swr.getAMethod() |
-      this.hasName("getDescription") or
-      this.hasName("getHeader") or
-      this.hasName("getHeaderNames") or
-      this.hasName("getHeaderValues") or
-      this.hasName("getParameter") or
-      this.hasName("getParameterMap") or
-      this.hasName("getParameterNames") or
-      this.hasName("getParameterValues")
-      // TODO consider getRemoteUser
-    )
   }
 }
 
