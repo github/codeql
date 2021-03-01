@@ -6,6 +6,10 @@
 import javascript
 import semmle.javascript.security.TaintedObject
 
+/**
+ * Provides a taint tracking configuration for reasoning about DoS attacks
+ * due to inefficient handling of user-controlled objects.
+ */
 module DeepObjectResourceExhaustion {
   import DeepObjectResourceExhaustionCustomizations::DeepObjectResourceExhaustion
 
