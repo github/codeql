@@ -1,5 +1,3 @@
-package smowton;
-
 public class Test {
 
   private String field;
