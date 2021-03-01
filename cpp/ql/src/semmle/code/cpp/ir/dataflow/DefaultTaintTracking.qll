@@ -155,6 +155,9 @@ private predicate writesVariable(StoreInstruction store, Variable var) {
 // to do this right away since it could expose a lot of FPs that were
 // previously suppressed by this predicate by coincidence.
 private predicate hasUpperBoundsCheck(Variable var) {
+  // This check is only intended to block taint through numbers that'll be used as
+  // allocation sizes, so we include only variables that have integral types.
+  var.getUnspecifiedType() instanceof IntegralType and
   exists(RelationalOperation oper, VariableAccess access |
     oper.getAnOperand() = access and
     access.getTarget() = var and
