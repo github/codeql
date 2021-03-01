@@ -213,10 +213,7 @@ class DatabaseInput extends LocalUserInput {
 }
 
 private class RemoteTaintedMethod extends Method {
-  RemoteTaintedMethod() {
-    this instanceof PlayRequestGetMethod or
-    this instanceof SpringRestTemplateResponseEntityMethod
-  }
+  RemoteTaintedMethod() { this instanceof PlayRequestGetMethod }
 }
 
 private class PlayRequestGetMethod extends Method {

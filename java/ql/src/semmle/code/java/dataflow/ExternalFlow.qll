@@ -166,7 +166,11 @@ private predicate sourceModelCsv(string row) {
       // The current URL in a browser may be untrusted or uncontrolled.
       // WebViewGetUrlMethod
       "android.webkit;WebView;false;getUrl;();;ReturnValue;remote",
-      "android.webkit;WebView;false;getOriginalUrl;();;ReturnValue;remote"
+      "android.webkit;WebView;false;getOriginalUrl;();;ReturnValue;remote",
+      // SpringRestTemplateResponseEntityMethod
+      "org.springframework.web.client;RestTemplate;false;exchange;;;ReturnValue;remote",
+      "org.springframework.web.client;RestTemplate;false;getForEntity;;;ReturnValue;remote",
+      "org.springframework.web.client;RestTemplate;false;postForEntity;;;ReturnValue;remote"
     ]
 }
 
