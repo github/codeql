@@ -1,0 +1,4 @@
+| src/.eslintrc.yml:0:0:0:0 | src/.eslintrc.yml | 2 |
+| src/javascript_file.js:0:0:0:0 | src/javascript_file.js | 7 |
+| src/package.json:0:0:0:0 | src/package.json | 6 |
+| src/typescript_file.ts:0:0:0:0 | src/typescript_file.ts | 7 |
