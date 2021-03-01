@@ -136,7 +136,10 @@ private predicate sourceModelCsv(string row) {
       // CookieGet*
       "javax.servlet.http;Cookie;false;getValue;();;ReturnValue;remote",
       "javax.servlet.http;Cookie;false;getName;();;ReturnValue;remote",
-      "javax.servlet.http;Cookie;false;getComment;();;ReturnValue;remote"
+      "javax.servlet.http;Cookie;false;getComment;();;ReturnValue;remote",
+      // ApacheHttp*
+      "org.apache.http;HttpMessage;false;getParams;();;ReturnValue;remote",
+      "org.apache.http;HttpEntity;false;getContent;();;ReturnValue;remote"
     ]
 }
 
