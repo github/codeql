@@ -58,8 +58,8 @@ print("signature={}".format(signature))
 
 print()
 
-
 verifier = pss.new(public_key)
+
 hasher = SHA256.new(message)
 verifier.verify(hasher, signature)
 print("Signature verified (as expected)")
