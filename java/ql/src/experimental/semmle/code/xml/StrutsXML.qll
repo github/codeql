@@ -37,5 +37,4 @@ class ConstantParameter extends StrutsXMLElement {
    * Gets the value of the `value` attribute of this `<constant>`.
    */
   string getValueValue() { result = getAttributeValue("value") }
-
 }
