@@ -18,8 +18,7 @@ module JsonSchema {
   }
 
   /** A data flow node that is used a JSON schema. */
-  abstract class SchemaRoot extends DataFlow::Node {
-  }
+  abstract class SchemaRoot extends DataFlow::Node { }
 
   /** An object literal with a `$schema` property indicating it is the root of a JSON schema. */
   private class SchemaNodeByTag extends SchemaRoot, DataFlow::ObjectLiteralNode {
@@ -35,9 +34,7 @@ module JsonSchema {
     or
     result = getAPartOfJsonSchema(t.continue()).getAPropertySource()
     or
-    exists(DataFlow::TypeBackTracker t2 |
-      result = getAPartOfJsonSchema(t2).backtrack(t2, t)
-    )
+    exists(DataFlow::TypeBackTracker t2 | result = getAPartOfJsonSchema(t2).backtrack(t2, t))
   }
 
   /** Gets a data flow node that is part of a JSON schema. */
@@ -68,7 +65,7 @@ module JsonSchema {
       }
 
       /**
-       * Gets an API node for a function produced by `new Ajv().compile()` or similar. 
+       * Gets an API node for a function produced by `new Ajv().compile()` or similar.
        *
        * Note that this does not include the instance method `new Ajv().validate` as its
        * signature is different.
@@ -83,9 +80,7 @@ module JsonSchema {
        * Gets an API node that refers to an error produced by this Ajv instance.
        */
       API::Node getAValidationError() {
-        exists(API::Node base |
-          base = [ref(), getAValidationFunction()]
-        |
+        exists(API::Node base | base = [ref(), getAValidationFunction()] |
           result = base.getMember("errors")
           or
           result = base.getMember("errorsText").getReturn()
@@ -122,7 +117,12 @@ module JsonSchema {
 
     private class AjvSchemaNode extends SchemaRoot {
       AjvSchemaNode() {
-        this = any(Instance i).ref().getMember(["addSchema", "validate", "compile", "compileAsync"]).getParameter(0).getARhs()
+        this =
+          any(Instance i)
+              .ref()
+              .getMember(["addSchema", "validate", "compile", "compileAsync"])
+              .getParameter(0)
+              .getARhs()
       }
     }
   }

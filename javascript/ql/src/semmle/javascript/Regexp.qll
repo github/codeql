@@ -866,12 +866,15 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
       not exists(PropAccess p | p.getBase() = mce.getEnclosingExpr())
     )
     or
-    exists(DataFlow::SourceNode schema |
-      schema = JsonSchema::getAPartOfJsonSchema()
-    |
+    exists(DataFlow::SourceNode schema | schema = JsonSchema::getAPartOfJsonSchema() |
       source = schema.getAPropertyWrite("pattern").getRhs()
       or
-      source = schema.getAPropertySource("patternProperties").getAPropertyWrite().getPropertyNameExpr().flow()
+      source =
+        schema
+            .getAPropertySource("patternProperties")
+            .getAPropertyWrite()
+            .getPropertyNameExpr()
+            .flow()
     )
   )
 }

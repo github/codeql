@@ -156,9 +156,7 @@ module ExceptionXss {
       this = any(JsonSchema::Ajv::Instance i).getAValidationError().getAnImmediateUse()
     }
 
-    override string getDescription() {
-      result = "JSON schema validation error"
-    }
+    override string getDescription() { result = "JSON schema validation error" }
   }
 
   /**
