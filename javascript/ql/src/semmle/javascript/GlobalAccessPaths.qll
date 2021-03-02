@@ -415,7 +415,7 @@ module AccessPath {
   pragma[inline]
   DataFlow::SourceNode getAnAliasedSourceNode(DataFlow::Node node) {
     exists(DataFlow::SourceNode root, string accessPath |
-      node = AccessPath::getAReferenceTo(root, accessPath) and
+      node = pragma[only_bind_into](AccessPath::getAReferenceTo(root, accessPath)) and
       result = AccessPath::getAReferenceTo(root, accessPath)
     )
     or
