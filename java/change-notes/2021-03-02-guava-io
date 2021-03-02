@@ -1,0 +1,2 @@
+lgtm,codescanning
+* Increased coverage of the Guava framework to include classes in the `com.google.common.io` package.
