@@ -5,7 +5,6 @@ private import DataFlowPublic
 private import DataFlowDispatch
 private import DataFlowImplCommon
 private import ControlFlowReachability
-private import DelegateDataFlow
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.Caching
@@ -433,7 +432,7 @@ private class Argument extends Expr {
         this = dc.getQualifier() and arg = -1 and not dc.getAStaticTarget().(Modifiable).isStatic()
       ).getCall()
     or
-    this = call.(DelegateCall).getArgument(arg)
+    this = call.(DelegateLikeCall).getArgument(arg)
   }
 
   /**
@@ -2022,3 +2021,69 @@ class Unit extends TUnit {
  * This predicate is only used for consistency checks.
  */
 predicate isImmutableOrUnobservable(Node n) { none() }
+
+class LambdaCallKind = Unit;
+
+/** Holds if `creation` is an expression that creates a delegate for `c`. */
+predicate lambdaCreation(ExprNode creation, LambdaCallKind kind, DataFlowCallable c) {
+  exists(Expr e | e = creation.getExpr() |
+    c = e.(AnonymousFunctionExpr)
+    or
+    c = e.(CallableAccess).getTarget().getUnboundDeclaration()
+    or
+    c = e.(AddressOfExpr).getOperand().(CallableAccess).getTarget().getUnboundDeclaration()
+  ) and
+  kind = TMkUnit()
+}
+
+private class LambdaConfiguration extends ControlFlowReachabilityConfiguration {
+  LambdaConfiguration() { this = "LambdaConfiguration" }
+
+  override predicate candidate(
+    Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor
+  ) {
+    e1 = e2.(DelegateLikeCall).getExpr() and
+    exactScope = false and
+    scope = e2 and
+    isSuccessor = true
+    or
+    e1 = e2.(DelegateCreation).getArgument() and
+    exactScope = false and
+    scope = e2 and
+    isSuccessor = true
+  }
+}
+
+/** Holds if `call` is a lambda call where `receiver` is the lambda expression. */
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+  (
+    exists(LambdaConfiguration x, DelegateLikeCall dc |
+      x.hasExprPath(dc.getExpr(), receiver.(ExprNode).getControlFlowNode(), dc,
+        call.getControlFlowNode())
+    )
+    or
+    receiver = call.(SummaryDelegateCall).getParameterNode()
+  ) and
+  kind = TMkUnit()
+}
+
+/** Extra data-flow steps needed for lamba flow analysis. */
+predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) {
+  exists(Ssa::Definition def |
+    LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo) and
+    LocalFlow::usesInstanceField(def) and
+    preservesValue = true
+  )
+  or
+  exists(LambdaConfiguration x, DelegateCreation dc |
+    x.hasExprPath(dc.getArgument(), nodeFrom.(ExprNode).getControlFlowNode(), dc,
+      nodeTo.(ExprNode).getControlFlowNode()) and
+    preservesValue = false
+  )
+  or
+  exists(AddEventExpr aee |
+    nodeFrom.asExpr() = aee.getRValue() and
+    nodeTo.asExpr().(EventRead).getTarget() = aee.getTarget() and
+    preservesValue = false
+  )
+}
