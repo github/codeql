@@ -4,7 +4,7 @@
 <qhelp>
      <overview>
           <p>
-          The <code>ssl</code> library defaults
+          The <code>ssl.wrap_socket</code> function defaults
           to an insecure version of SSL/TLS when no specific protocol version is
           specified. This may leave the connection vulnerable to attack.
           </p>
