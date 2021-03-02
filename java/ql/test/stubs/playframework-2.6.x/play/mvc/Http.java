@@ -155,8 +155,6 @@ public class Http {
 
   public static class Headers {
 
-    private final Map<String, List<String>> headers;
-
     public Headers(Map<String, List<String>> headers) {}
 
     public Map<String, List<String>> toMap() {
@@ -756,7 +754,9 @@ public class Http {
         boolean secure,
         boolean httpOnly) {}
 
-    public static CookieBuilder builder(String name, String value) {}
+    public static CookieBuilder builder(String name, String value) {
+      return null;
+    }
 
     public String name() {
       return "";
@@ -786,14 +786,14 @@ public class Http {
       return true;
     }
 
-    public Optional<SameSite> sameSite() {}
+    public Optional<SameSite> sameSite() {
+      return null;
+    }
 
     public enum SameSite {
       STRICT("Strict"),
       LAX("Lax"),
       NONE("None");
-
-      private final String value;
 
       SameSite(String value) {}
 
@@ -820,7 +820,9 @@ public class Http {
     }
 
     @Deprecated
-    public CookieBuilder withMaxAge(Integer maxAge) {}
+    public CookieBuilder withMaxAge(Integer maxAge) {
+      return null;
+    }
 
     public CookieBuilder withMaxAge(Duration maxAge) {
       return null;
