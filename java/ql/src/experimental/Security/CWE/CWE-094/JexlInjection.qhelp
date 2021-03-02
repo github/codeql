@@ -31,15 +31,13 @@ The next example shows how an untrusted JEXL expression can be run
 in a sandbox that allows accessing only methods in the <code>java.lang.Math</code> class.
 The sandbox is implemented using <code>JexlSandbox</code> class that is provided by
 Apache Commons JEXL 3.
-However, it's recommended to avoid using untrusted input in JEXL expressions.
 </p>
 <sample src="SaferJexlExpressionEvaluationWithSandbox.java" />
 
 <p>
 The next example shows another way how a sandbox can be implemented.
-It uses a custom implememtation of <code>JexlUberspect</code>
+It uses a custom implementation of <code>JexlUberspect</code>
 that checks if callees are instances of allowed classes.
-Again, it's recommended to avoid using untrusted input in JEXL expressions.
 </p>
 <sample src="SaferJexlExpressionEvaluationWithUberspectSandbox.java" />
 </example>
