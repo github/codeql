@@ -169,4 +169,165 @@ private module CryptographyModel {
     // Note: There is not really a key-size argument, since it's always specified by the curve.
     override DataFlow::Node getKeySizeArg() { none() }
   }
+
+  /** Provides models for the `cryptography.hazmat.primitives.ciphers` package */
+  private module Ciphers {
+    /** Gets a reference to a `cryptography.hazmat.primitives.ciphers.algorithms` Class */
+    API::Node algorithmClassRef(string algorithmName) {
+      result =
+        API::moduleImport("cryptography")
+            .getMember("hazmat")
+            .getMember("primitives")
+            .getMember("ciphers")
+            .getMember("algorithms")
+            .getMember(algorithmName)
+    }
+
+    /**
+     * Internal module making it easy to hide verbose type-tracking helpers.
+     *
+     * These turned out to be so verbose, that it was impossible to get an overview of
+     * the relevant predicates without hiding them away.
+     */
+    private module InternalTypeTracking {
+      /** Gets a reference to a Cipher instance using algorithm with `algorithmName`. */
+      DataFlow::LocalSourceNode cipherInstance(DataFlow::TypeTracker t, string algorithmName) {
+        t.start() and
+        exists(DataFlow::CallCfgNode call | result = call |
+          call =
+            API::moduleImport("cryptography")
+                .getMember("hazmat")
+                .getMember("primitives")
+                .getMember("ciphers")
+                .getMember("Cipher")
+                .getACall() and
+          algorithmClassRef(algorithmName).getReturn().getAUse() in [
+              call.getArg(0), call.getArgByName("algorithm")
+            ]
+        )
+        or
+        // Due to bad performance when using normal setup with `cipherInstance(t2, algorithmName).track(t2, t)`
+        // we have inlined that code and forced a join
+        exists(DataFlow::TypeTracker t2 |
+          exists(DataFlow::StepSummary summary |
+            cipherInstance_first_join(t2, algorithmName, result, summary) and
+            t = t2.append(summary)
+          )
+        )
+      }
+
+      pragma[nomagic]
+      private predicate cipherInstance_first_join(
+        DataFlow::TypeTracker t2, string algorithmName, DataFlow::Node res,
+        DataFlow::StepSummary summary
+      ) {
+        DataFlow::StepSummary::step(cipherInstance(t2, algorithmName), res, summary)
+      }
+
+      /** Gets a reference to the encryptor of a Cipher instance using algorithm with `algorithmName`. */
+      DataFlow::LocalSourceNode cipherEncryptor(DataFlow::TypeTracker t, string algorithmName) {
+        t.start() and
+        exists(DataFlow::AttrRead attr |
+          result.(DataFlow::CallCfgNode).getFunction() = attr and
+          attr.getAttributeName() = "encryptor" and
+          attr.getObject() = cipherInstance(algorithmName)
+        )
+        or
+        // Due to bad performance when using normal setup with `cipherEncryptor(t2, algorithmName).track(t2, t)`
+        // we have inlined that code and forced a join
+        exists(DataFlow::TypeTracker t2 |
+          exists(DataFlow::StepSummary summary |
+            cipherEncryptor_first_join(t2, algorithmName, result, summary) and
+            t = t2.append(summary)
+          )
+        )
+      }
+
+      pragma[nomagic]
+      private predicate cipherEncryptor_first_join(
+        DataFlow::TypeTracker t2, string algorithmName, DataFlow::Node res,
+        DataFlow::StepSummary summary
+      ) {
+        DataFlow::StepSummary::step(cipherEncryptor(t2, algorithmName), res, summary)
+      }
+
+      /** Gets a reference to the dncryptor of a Cipher instance using algorithm with `algorithmName`. */
+      DataFlow::LocalSourceNode cipherDecryptor(DataFlow::TypeTracker t, string algorithmName) {
+        t.start() and
+        exists(DataFlow::AttrRead attr |
+          result.(DataFlow::CallCfgNode).getFunction() = attr and
+          attr.getAttributeName() = "decryptor" and
+          attr.getObject() = cipherInstance(algorithmName)
+        )
+        or
+        // Due to bad performance when using normal setup with `cipherDecryptor(t2, algorithmName).track(t2, t)`
+        // we have inlined that code and forced a join
+        exists(DataFlow::TypeTracker t2 |
+          exists(DataFlow::StepSummary summary |
+            cipherDecryptor_first_join(t2, algorithmName, result, summary) and
+            t = t2.append(summary)
+          )
+        )
+      }
+
+      pragma[nomagic]
+      private predicate cipherDecryptor_first_join(
+        DataFlow::TypeTracker t2, string algorithmName, DataFlow::Node res,
+        DataFlow::StepSummary summary
+      ) {
+        DataFlow::StepSummary::step(cipherDecryptor(t2, algorithmName), res, summary)
+      }
+    }
+
+    private import InternalTypeTracking
+
+    /** Gets a reference to a Cipher instance using algorithm with `algorithmName`. */
+    DataFlow::Node cipherInstance(string algorithmName) {
+      cipherInstance(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
+    }
+
+    /**
+     * Gets a reference to the encryptor of a Cipher instance using algorithm with `algorithmName`.
+     *
+     * You obtain an encryptor by using the `encryptor()` method on a Cipher instance.
+     */
+    DataFlow::Node cipherEncryptor(string algorithmName) {
+      cipherEncryptor(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
+    }
+
+    /**
+     * Gets a reference to the decryptor of a Cipher instance using algorithm with `algorithmName`.
+     *
+     * You obtain an decryptor by using the `decryptor()` method on a Cipher instance.
+     */
+    DataFlow::Node cipherDecryptor(string algorithmName) {
+      cipherDecryptor(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
+    }
+
+    /**
+     * An encrypt or decrypt operation from `cryptography.hazmat.primitives.ciphers`.
+     */
+    class CryptographyGenericCipherOperation extends Cryptography::CryptographicOperation::Range,
+      DataFlow::CallCfgNode {
+      string algorithmName;
+
+      CryptographyGenericCipherOperation() {
+        exists(DataFlow::AttrRead attr |
+          this.getFunction() = attr and
+          attr.getAttributeName() = ["update", "update_into"] and
+          (
+            attr.getObject() = cipherEncryptor(algorithmName)
+            or
+            attr.getObject() = cipherDecryptor(algorithmName)
+          )
+        )
+      }
+
+      override Cryptography::CryptographicAlgorithm getAlgorithm() {
+        result.matchesName(algorithmName)
+      }
+
+      override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
+    }
+  }
 }
