@@ -12,7 +12,7 @@ private import semmle.javascript.security.TaintedObjectCustomizations
  */
 module DeepObjectResourceExhaustion {
   /**
-   * A data flow source for slow input validation.
+   * A data flow source for inefficient handling of user-controlled objects.
    */
   abstract class Source extends DataFlow::Node {
     /** Gets a flow label to associate with this source. */
