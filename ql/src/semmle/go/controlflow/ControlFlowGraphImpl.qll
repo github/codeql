@@ -1692,9 +1692,9 @@ module CFG {
   }
 
   private class SelectorExprTree extends ControlFlowTree, SelectorExpr {
-    SelectorExprTree() { getBase() instanceof ValueExpr }
+    SelectorExprTree() { this.getBase() instanceof ValueExpr }
 
-    override predicate firstNode(ControlFlow::Node first) { firstNode(getBase(), first) }
+    override predicate firstNode(ControlFlow::Node first) { firstNode(this.getBase(), first) }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       ControlFlowTree.super.lastNode(last, cmpl)

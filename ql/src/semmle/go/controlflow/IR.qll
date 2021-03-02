@@ -52,10 +52,10 @@ module IR {
     }
 
     /** Holds if this instruction reads the value of variable or constant `v`. */
-    predicate reads(ValueEntity v) { readsField(_, v) or readsMethod(_, v) }
+    predicate reads(ValueEntity v) { this.readsField(_, v) or this.readsMethod(_, v) }
 
     /** Holds if this instruction updates variable or constant `v` to the value of `rhs`. */
-    predicate writes(ValueEntity v, Instruction rhs) { writesField(_, v, rhs) }
+    predicate writes(ValueEntity v, Instruction rhs) { this.writesField(_, v, rhs) }
 
     /** Holds if this instruction reads the value of field `f` on the value of `base`. */
     predicate readsField(Instruction base, Field f) { none() }
