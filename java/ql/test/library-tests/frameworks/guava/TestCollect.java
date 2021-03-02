@@ -72,7 +72,7 @@ class TestCollect {
         sink(t1.remove("r", "c")); // $numTaintFlow=1
 
         t3.row("r").put("c", x);
-        sink(t3);  // MISSING:$numTaintFlow=1
+        sink(t3);  // $ MISSING:numTaintFlow=1
     }
 
     void test4(Multimap<String, String> m1, Multimap<String, String> m2, Multimap<String, String> m3, 
@@ -94,7 +94,7 @@ class TestCollect {
         }
 
         m5.asMap().get("k").add(x);
-        sink(m5);  // MISSING:$numTaintFlow=1
+        sink(m5);  // $ MISSING:numTaintFlow=1
     }
 
     void test5(Comparator<String> comp, SortedSet<String> sorS, SortedMap<String, String> sorM) {
