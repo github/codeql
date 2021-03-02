@@ -4,7 +4,7 @@ import com.semmle.js.ast.Expression;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 
-/** An import type such as in <tt>import("http").ServerRequest</tt>. */
+/** An import type such as in <code>import("http").ServerRequest</code>. */
 public class ImportTypeExpr extends Expression implements ITypeExpression {
   private final ITypeExpression path;
 

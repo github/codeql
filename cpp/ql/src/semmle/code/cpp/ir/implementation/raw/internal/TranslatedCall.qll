@@ -528,9 +528,9 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
     tag instanceof OnlyInstructionTag and
     operandTag instanceof BufferSizeOperandTag and
     result =
-      getTranslatedExpr(call
-            .getArgument(call.getTarget().(SideEffectFunction).getParameterSizeIndex(index))
-            .getFullyConverted()).getResult()
+      getTranslatedExpr(call.getArgument(call.getTarget()
+              .(SideEffectFunction)
+              .getParameterSizeIndex(index)).getFullyConverted()).getResult()
   }
 
   override CppType getInstructionMemoryOperandType(InstructionTag tag, TypedOperandTag operandTag) {

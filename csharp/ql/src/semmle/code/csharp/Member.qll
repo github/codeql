@@ -17,7 +17,7 @@ class Declaration extends DotNet::Declaration, Element, @declaration {
   override ValueOrRefType getDeclaringType() { none() }
 
   /** Holds if this declaration is unconstructed and in source code. */
-  predicate isSourceDeclaration() { fromSource() and this = getSourceDeclaration() }
+  final predicate isSourceDeclaration() { this.fromSource() and this.isUnboundDeclaration() }
 
   override string toString() { result = this.getName() }
 
@@ -120,6 +120,20 @@ class Modifiable extends Declaration, @modifiable {
 class Member extends DotNet::Member, Modifiable, @member {
   /** Gets an access to this member. */
   MemberAccess getAnAccess() { result.getTarget() = this }
+
+  override predicate isPublic() { Modifiable.super.isPublic() }
+
+  override predicate isProtected() { Modifiable.super.isProtected() }
+
+  override predicate isPrivate() { Modifiable.super.isPrivate() }
+
+  override predicate isInternal() { Modifiable.super.isInternal() }
+
+  override predicate isSealed() { Modifiable.super.isSealed() }
+
+  override predicate isAbstract() { Modifiable.super.isAbstract() }
+
+  override predicate isStatic() { Modifiable.super.isStatic() }
 }
 
 /**
@@ -313,18 +327,10 @@ class Virtualizable extends Member, @virtualizable {
  * A parameterizable declaration. Either a callable (`Callable`), a delegate
  * type (`DelegateType`), or an indexer (`Indexer`).
  */
-class Parameterizable extends Declaration, @parameterizable {
-  /** Gets a parameter of this declaration, if any. */
-  Parameter getAParameter() { result = getParameter(_) }
+class Parameterizable extends DotNet::Parameterizable, Declaration, @parameterizable {
+  override Parameter getRawParameter(int i) { params(result, _, _, i, _, this, _) }
 
-  /** Gets the `i`th parameter of this declaration. */
-  Parameter getParameter(int i) { params(result, _, _, i, _, this, _) }
-
-  /** Gets the number of parameters of this declaration. */
-  int getNumberOfParameters() { result = count(this.getAParameter()) }
-
-  /** Holds if this declaration has no parameters. */
-  predicate hasNoParameters() { not exists(this.getAParameter()) }
+  override Parameter getParameter(int i) { params(result, _, _, i, _, this, _) }
 
   /**
    * Gets the name of this parameter followed by its type, possibly prefixed

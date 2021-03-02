@@ -68,8 +68,7 @@ abstract class Module extends TopLevel {
       or
       // a re-export using spread-operator. E.g. `const foo = require("./foo"); module.exports = {bar: bar, ...foo};`
       exists(ObjectExpr obj | obj = this.(NodeModule).getAModuleExportsNode().asExpr() |
-        obj
-            .getAProperty()
+        obj.getAProperty()
             .(SpreadProperty)
             .getInit()
             .(SpreadElement)
@@ -237,6 +236,7 @@ abstract class Import extends ASTNode {
    * behavior of Node.js imports, which prefer core modules such as `fs` over any
    * source module of the same name.
    */
+  cached
   Module getImportedModule() {
     if exists(resolveExternsImport())
     then result = resolveExternsImport()

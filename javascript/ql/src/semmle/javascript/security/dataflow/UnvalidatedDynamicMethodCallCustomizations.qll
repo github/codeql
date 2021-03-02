@@ -98,16 +98,13 @@ module UnvalidatedDynamicMethodCall {
    */
   class FunctionCheck extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::ValueNode {
     override EqualityTest astNode;
-    TypeofExpr t;
+    Expr operand;
 
-    FunctionCheck() {
-      astNode.getAnOperand().getStringValue() = "function" and
-      astNode.getAnOperand().getUnderlyingValue() = t
-    }
+    FunctionCheck() { TaintTracking::isTypeofGuard(astNode, operand, "function") }
 
     override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       outcome = astNode.getPolarity() and
-      e = t.getOperand().getUnderlyingValue() and
+      e = operand and
       label instanceof MaybeNonFunction
     }
   }

@@ -295,6 +295,8 @@ module SqlExecution {
 
 /** Provides classes for modeling HTTP-related APIs. */
 module HTTP {
+  import semmle.python.web.HttpConstants
+
   /** Provides classes for modeling HTTP servers. */
   module Server {
     /**
@@ -311,14 +313,21 @@ module HTTP {
       /** Gets the URL pattern for this route, if it can be statically determined. */
       string getUrlPattern() { result = range.getUrlPattern() }
 
-      /** Gets a function that will handle incoming requests for this route, if any. */
-      Function getARouteHandler() { result = range.getARouteHandler() }
+      /**
+       * Gets a function that will handle incoming requests for this route, if any.
+       *
+       * NOTE: This will be modified in the near future to have a `RequestHandler` result, instead of a `Function`.
+       */
+      Function getARequestHandler() { result = range.getARequestHandler() }
 
       /**
        * Gets a parameter that will receive parts of the url when handling incoming
        * requests for this route, if any. These automatically become a `RemoteFlowSource`.
        */
       Parameter getARoutedParameter() { result = range.getARoutedParameter() }
+
+      /** Gets a string that identifies the framework used for this route setup. */
+      string getFramework() { result = range.getFramework() }
     }
 
     /** Provides a class for modeling new HTTP routing APIs. */
@@ -336,26 +345,92 @@ module HTTP {
         /** Gets the URL pattern for this route, if it can be statically determined. */
         string getUrlPattern() {
           exists(StrConst str |
-            DataFlow::localFlow(DataFlow::exprNode(str), this.getUrlPatternArg()) and
+            DataFlow::exprNode(str).(DataFlow::LocalSourceNode).flowsTo(this.getUrlPatternArg()) and
             result = str.getText()
           )
         }
 
-        /** Gets a function that will handle incoming requests for this route, if any. */
-        abstract Function getARouteHandler();
+        /**
+         * Gets a function that will handle incoming requests for this route, if any.
+         *
+         * NOTE: This will be modified in the near future to have a `RequestHandler` result, instead of a `Function`.
+         */
+        abstract Function getARequestHandler();
 
         /**
          * Gets a parameter that will receive parts of the url when handling incoming
          * requests for this route, if any. These automatically become a `RemoteFlowSource`.
          */
         abstract Parameter getARoutedParameter();
+
+        /** Gets a string that identifies the framework used for this route setup. */
+        abstract string getFramework();
       }
     }
 
-    private class RoutedParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
-      RoutedParameter() { this.getParameter() = any(RouteSetup setup).getARoutedParameter() }
+    /**
+     * A function that will handle incoming HTTP requests.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `RequestHandler::Range` instead.
+     */
+    class RequestHandler extends Function {
+      RequestHandler::Range range;
 
-      override string getSourceType() { result = "RoutedParameter" }
+      RequestHandler() { this = range }
+
+      /**
+       * Gets a parameter that could receive parts of the url when handling incoming
+       * requests, if any. These automatically become a `RemoteFlowSource`.
+       */
+      Parameter getARoutedParameter() { result = range.getARoutedParameter() }
+
+      /** Gets a string that identifies the framework used for this route setup. */
+      string getFramework() { result = range.getFramework() }
+    }
+
+    /** Provides a class for modeling new HTTP request handlers. */
+    module RequestHandler {
+      /**
+       * A function that will handle incoming HTTP requests.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `RequestHandler` instead.
+       *
+       * Only extend this class if you can't provide a `RouteSetup`, since we handle that case automatically.
+       */
+      abstract class Range extends Function {
+        /**
+         * Gets a parameter that could receive parts of the url when handling incoming
+         * requests, if any. These automatically become a `RemoteFlowSource`.
+         */
+        abstract Parameter getARoutedParameter();
+
+        /** Gets a string that identifies the framework used for this request handler. */
+        abstract string getFramework();
+      }
+    }
+
+    private class RequestHandlerFromRouteSetup extends RequestHandler::Range {
+      RouteSetup rs;
+
+      RequestHandlerFromRouteSetup() { this = rs.getARequestHandler() }
+
+      override Parameter getARoutedParameter() {
+        result = rs.getARoutedParameter() and
+        result in [this.getArg(_), this.getArgByName(_)]
+      }
+
+      override string getFramework() { result = rs.getFramework() }
+    }
+
+    /** A parameter that will receive parts of the url when handling an incoming request. */
+    private class RoutedParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
+      RequestHandler handler;
+
+      RoutedParameter() { this.getParameter() = handler.getARoutedParameter() }
+
+      override string getSourceType() { result = handler.getFramework() + " RoutedParameter" }
     }
 
     /**
@@ -403,13 +478,50 @@ module HTTP {
         /** Gets the mimetype of this HTTP response, if it can be statically determined. */
         string getMimetype() {
           exists(StrConst str |
-            DataFlow::localFlow(DataFlow::exprNode(str), this.getMimetypeOrContentTypeArg()) and
+            DataFlow::exprNode(str)
+                .(DataFlow::LocalSourceNode)
+                .flowsTo(this.getMimetypeOrContentTypeArg()) and
             result = str.getText().splitAt(";", 0)
           )
           or
           not exists(this.getMimetypeOrContentTypeArg()) and
           result = this.getMimetypeDefault()
         }
+      }
+    }
+
+    /**
+     * A data-flow node that creates a HTTP redirect response on a server.
+     *
+     * Note: we don't require that this redirect must be sent to a client (a kind of
+     * "if a tree falls in a forest and nobody hears it" situation).
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `HttpRedirectResponse::Range` instead.
+     */
+    class HttpRedirectResponse extends HttpResponse {
+      override HttpRedirectResponse::Range range;
+
+      HttpRedirectResponse() { this = range }
+
+      /** Gets the data-flow node that specifies the location of this HTTP redirect response. */
+      DataFlow::Node getRedirectLocation() { result = range.getRedirectLocation() }
+    }
+
+    /** Provides a class for modeling new HTTP redirect response APIs. */
+    module HttpRedirectResponse {
+      /**
+       * A data-flow node that creates a HTTP redirect response on a server.
+       *
+       * Note: we don't require that this redirect must be sent to a client (a kind of
+       * "if a tree falls in a forest and nobody hears it" situation).
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `HttpResponse` instead.
+       */
+      abstract class Range extends HTTP::Server::HttpResponse::Range {
+        /** Gets the data-flow node that specifies the location of this HTTP redirect response. */
+        abstract DataFlow::Node getRedirectLocation();
       }
     }
   }

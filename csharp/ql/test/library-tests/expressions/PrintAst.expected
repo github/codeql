@@ -599,7 +599,7 @@ expressions.cs:
 #   64|             0: [PropertyCall] access to property Length
 #   64|               -1: [ParameterAccess] access to parameter s
 #   64|             1: [ParameterAccess] access to parameter x
-#   67|     14: [IndexerProperty] Name
+#   67|     14: [Property] Name
 #   67|       -1: [TypeMention] string
 #   69|       3: [Getter] get_Name
 #   69|         4: [BlockStmt] {...}
@@ -1504,7 +1504,7 @@ expressions.cs:
 #  375|         1: [ObjectCreation] object creation of type List<String>
 #  375|           0: [TypeMention] List<String>
 #  375|             1: [TypeMention] string
-#  377|     7: [IndexerProperty] Name
+#  377|     7: [Property] Name
 #  377|       -1: [TypeMention] string
 #  377|       3: [Getter] get_Name
 #  377|         4: [BlockStmt] {...}
@@ -1518,7 +1518,7 @@ expressions.cs:
 #  377|             0: [AssignExpr] ... = ...
 #  377|               0: [FieldAccess] access to field name
 #  377|               1: [ParameterAccess] access to parameter value
-#  378|     8: [IndexerProperty] PhoneNumbers
+#  378|     8: [Property] PhoneNumbers
 #  378|       -1: [TypeMention] List<String>
 #  378|         1: [TypeMention] string
 #  378|       3: [Getter] get_PhoneNumbers

@@ -1,9 +1,10 @@
 """testing views for Django 2.x and 3.x"""
 from django.urls import path
 from django.http import HttpRequest
+from django.views import View
 
 
-def test_taint(request: HttpRequest, foo, bar, baz=None):  # $routeHandler routedParameter=foo routedParameter=bar
+def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler routedParameter=foo routedParameter=bar
     ensure_tainted(foo, bar)
     ensure_not_tainted(baz)
 
@@ -150,7 +151,22 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $routeHandler route
     )
 
 
+class ClassView(View):
+    def some_method(self):
+        ensure_tainted(
+            self.request,
+            self.request.GET["key"],
+
+            self.args,
+            self.args[0],
+
+            self.kwargs,
+            self.kwargs["key"],
+        )
+
+
 # fake setup, you can't actually run this
 urlpatterns = [
-    path("test-taint/<foo>/<bar>", test_taint),  # $routeSetup="test-taint/<foo>/<bar>"
+    path("test-taint/<foo>/<bar>", test_taint),  # $ routeSetup="test-taint/<foo>/<bar>"
+    path("ClassView/", ClassView.as_view()), # $ routeSetup="ClassView/"
 ]

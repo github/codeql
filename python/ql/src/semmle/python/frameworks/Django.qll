@@ -35,7 +35,7 @@ private module Django {
    * WARNING: Only holds for a few predefined attributes.
    */
   private DataFlow::Node django_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["db", "urls", "http", "conf"] and
+    attr_name in ["db", "urls", "http", "conf", "views", "shortcuts"] and
     (
       t.start() and
       result = DataFlow::importNode("django" + "." + attr_name)
@@ -540,9 +540,9 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.request.HttpRequest`.
+           * A source of instances of `django.http.request.HttpRequest`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
+           * This can include instantiations of the class, return values from function
            * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
@@ -646,13 +646,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponse`.
+           * A source of instances of `django.http.response.HttpResponse`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponse::instance()` predicate to get references to instances of `django.http.response.HttpResponse`.
+           * Use the predicate `HttpResponse::instance()` to get references to instances of `django.http.response.HttpResponse`.
            */
           abstract class InstanceSource extends HTTP::Server::HttpResponse::Range, DataFlow::Node {
           }
@@ -716,15 +716,16 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponseRedirect`.
+           * A source of instances of `django.http.response.HttpResponseRedirect`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponseRedirect::instance()` predicate to get references to instances of `django.http.response.HttpResponseRedirect`.
+           * Use the predicate `HttpResponseRedirect::instance()` to get references to instances of `django.http.response.HttpResponseRedirect`.
            */
-          abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
+          abstract class InstanceSource extends HttpResponse::InstanceSource,
+            HTTP::Server::HttpRedirectResponse::Range, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.HttpResponseRedirect`. */
           private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
@@ -737,6 +738,10 @@ private module Django {
               // content of a redirect, it is possible to observe the body (for example,
               // with cURL).
               result.asCfgNode() in [node.getArg(1), node.getArgByName("content")]
+            }
+
+            override DataFlow::Node getRedirectLocation() {
+              result.asCfgNode() in [node.getArg(0), node.getArgByName("redirect_to")]
             }
 
             // How to support the `headers` argument here?
@@ -782,15 +787,16 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponsePermanentRedirect`.
+           * A source of instances of `django.http.response.HttpResponsePermanentRedirect`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponsePermanentRedirect::instance()` predicate to get references to instances of `django.http.response.HttpResponsePermanentRedirect`.
+           * Use the predicate `HttpResponsePermanentRedirect::instance()` to get references to instances of `django.http.response.HttpResponsePermanentRedirect`.
            */
-          abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
+          abstract class InstanceSource extends HttpResponse::InstanceSource,
+            HTTP::Server::HttpRedirectResponse::Range, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.HttpResponsePermanentRedirect`. */
           private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
@@ -803,6 +809,10 @@ private module Django {
               // content of a redirect, it is possible to observe the body (for example,
               // with cURL).
               result.asCfgNode() in [node.getArg(1), node.getArgByName("content")]
+            }
+
+            override DataFlow::Node getRedirectLocation() {
+              result.asCfgNode() in [node.getArg(0), node.getArgByName("redirect_to")]
             }
 
             // How to support the `headers` argument here?
@@ -849,13 +859,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponseNotModified`.
+           * A source of instances of `django.http.response.HttpResponseNotModified`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponseNotModified::instance()` predicate to get references to instances of `django.http.response.HttpResponseNotModified`.
+           * Use the predicate `HttpResponseNotModified::instance()` to get references to instances of `django.http.response.HttpResponseNotModified`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -910,13 +920,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponseBadRequest`.
+           * A source of instances of `django.http.response.HttpResponseBadRequest`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponseBadRequest::instance()` predicate to get references to instances of `django.http.response.HttpResponseBadRequest`.
+           * Use the predicate `HttpResponseBadRequest::instance()` to get references to instances of `django.http.response.HttpResponseBadRequest`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -973,13 +983,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponseNotFound`.
+           * A source of instances of `django.http.response.HttpResponseNotFound`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponseNotFound::instance()` predicate to get references to instances of `django.http.response.HttpResponseNotFound`.
+           * Use the predicate `HttpResponseNotFound::instance()` to get references to instances of `django.http.response.HttpResponseNotFound`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -1036,13 +1046,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponseForbidden`.
+           * A source of instances of `django.http.response.HttpResponseForbidden`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponseForbidden::instance()` predicate to get references to instances of `django.http.response.HttpResponseForbidden`.
+           * Use the predicate `HttpResponseForbidden::instance()` to get references to instances of `django.http.response.HttpResponseForbidden`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -1099,13 +1109,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponseNotAllowed`.
+           * A source of instances of `django.http.response.HttpResponseNotAllowed`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponseNotAllowed::instance()` predicate to get references to instances of `django.http.response.HttpResponseNotAllowed`.
+           * Use the predicate `HttpResponseNotAllowed::instance()` to get references to instances of `django.http.response.HttpResponseNotAllowed`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -1163,13 +1173,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponseGone`.
+           * A source of instances of `django.http.response.HttpResponseGone`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponseGone::instance()` predicate to get references to instances of `django.http.response.HttpResponseGone`.
+           * Use the predicate `HttpResponseGone::instance()` to get references to instances of `django.http.response.HttpResponseGone`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -1226,13 +1236,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponseServerError`.
+           * A source of instances of `django.http.response.HttpResponseServerError`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponseServerError::instance()` predicate to get references to instances of `django.http.response.HttpResponseServerError`.
+           * Use the predicate `HttpResponseServerError::instance()` to get references to instances of `django.http.response.HttpResponseServerError`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -1289,13 +1299,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.JsonResponse`.
+           * A source of instances of `django.http.response.JsonResponse`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `JsonResponse::instance()` predicate to get references to instances of `django.http.response.JsonResponse`.
+           * Use the predicate `JsonResponse::instance()` to get references to instances of `django.http.response.JsonResponse`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -1355,13 +1365,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.StreamingHttpResponse`.
+           * A source of instances of `django.http.response.StreamingHttpResponse`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `StreamingHttpResponse::instance()` predicate to get references to instances of `django.http.response.StreamingHttpResponse`.
+           * Use the predicate `StreamingHttpResponse::instance()` to get references to instances of `django.http.response.StreamingHttpResponse`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -1418,13 +1428,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.FileResponse`.
+           * A source of instances of `django.http.response.FileResponse`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `FileResponse::instance()` predicate to get references to instances of `django.http.response.FileResponse`.
+           * Use the predicate `FileResponse::instance()` to get references to instances of `django.http.response.FileResponse`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -1498,6 +1508,479 @@ private module Django {
         }
       }
     }
+
+    // -------------------------------------------------------------------------
+    // django.views
+    // -------------------------------------------------------------------------
+    /** Gets a reference to the `django.views` module. */
+    DataFlow::Node views() { result = django_attr("views") }
+
+    /** Provides models for the `django.views` module */
+    module views {
+      /**
+       * Gets a reference to the attribute `attr_name` of the `django.views` module.
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node views_attr(DataFlow::TypeTracker t, string attr_name) {
+        // for 1.11.x, see: https://github.com/django/django/blob/stable/1.11.x/django/views/__init__.py
+        attr_name in ["generic", "View"] and
+        (
+          t.start() and
+          result = DataFlow::importNode("django.views" + "." + attr_name)
+          or
+          t.startInAttr(attr_name) and
+          result = views()
+        )
+        or
+        // Due to bad performance when using normal setup with `views_attr(t2, attr_name).track(t2, t)`
+        // we have inlined that code and forced a join
+        exists(DataFlow::TypeTracker t2 |
+          exists(DataFlow::StepSummary summary |
+            views_attr_first_join(t2, attr_name, result, summary) and
+            t = t2.append(summary)
+          )
+        )
+      }
+
+      pragma[nomagic]
+      private predicate views_attr_first_join(
+        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+        DataFlow::StepSummary summary
+      ) {
+        DataFlow::StepSummary::step(views_attr(t2, attr_name), res, summary)
+      }
+
+      /**
+       * Gets a reference to the attribute `attr_name` of the `django.views` module.
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node views_attr(string attr_name) {
+        result = views_attr(DataFlow::TypeTracker::end(), attr_name)
+      }
+
+      // -------------------------------------------------------------------------
+      // django.views.generic
+      // -------------------------------------------------------------------------
+      /** Gets a reference to the `django.views.generic` module. */
+      DataFlow::Node generic() { result = views_attr("generic") }
+
+      /** Provides models for the `django.views.generic` module */
+      module generic {
+        /**
+         * Gets a reference to the attribute `attr_name` of the `django.views.generic` module.
+         * WARNING: Only holds for a few predefined attributes.
+         */
+        private DataFlow::Node generic_attr(DataFlow::TypeTracker t, string attr_name) {
+          // for 3.1.x see: https://github.com/django/django/blob/stable/3.1.x/django/views/generic/__init__.py
+          // same for 1.11.x see: https://github.com/django/django/blob/stable/1.11.x/django/views/generic/__init__.py
+          attr_name in [
+              "View", "TemplateView", "RedirectView", "ArchiveIndexView", "YearArchiveView",
+              "MonthArchiveView", "WeekArchiveView", "DayArchiveView", "TodayArchiveView",
+              "DateDetailView", "DetailView", "FormView", "CreateView", "UpdateView", "DeleteView",
+              "ListView", "GenericViewError",
+              // modules
+              "base", "dates", "detail", "edit", "list"
+            ] and
+          (
+            t.start() and
+            result = DataFlow::importNode("django.views.generic" + "." + attr_name)
+            or
+            t.startInAttr(attr_name) and
+            result = generic()
+          )
+          or
+          // Due to bad performance when using normal setup with `generic_attr(t2, attr_name).track(t2, t)`
+          // we have inlined that code and forced a join
+          exists(DataFlow::TypeTracker t2 |
+            exists(DataFlow::StepSummary summary |
+              generic_attr_first_join(t2, attr_name, result, summary) and
+              t = t2.append(summary)
+            )
+          )
+        }
+
+        pragma[nomagic]
+        private predicate generic_attr_first_join(
+          DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+          DataFlow::StepSummary summary
+        ) {
+          DataFlow::StepSummary::step(generic_attr(t2, attr_name), res, summary)
+        }
+
+        /**
+         * Gets a reference to the attribute `attr_name` of the `django.views.generic` module.
+         * WARNING: Only holds for a few predefined attributes.
+         */
+        private DataFlow::Node generic_attr(string attr_name) {
+          result = generic_attr(DataFlow::TypeTracker::end(), attr_name)
+        }
+
+        // -------------------------------------------------------------------------
+        // django.views.generic.base
+        // -------------------------------------------------------------------------
+        /** Gets a reference to the `django.views.generic.base` module. */
+        DataFlow::Node base() { result = generic_attr("base") }
+
+        /** Provides models for the `django.views.generic.base` module */
+        module base {
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.base` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          private DataFlow::Node base_attr(DataFlow::TypeTracker t, string attr_name) {
+            attr_name in ["RedirectView", "TemplateView", "View"] and
+            (
+              t.start() and
+              result = DataFlow::importNode("django.views.generic.base" + "." + attr_name)
+              or
+              t.startInAttr(attr_name) and
+              result = base()
+            )
+            or
+            // Due to bad performance when using normal setup with `base_attr(t2, attr_name).track(t2, t)`
+            // we have inlined that code and forced a join
+            exists(DataFlow::TypeTracker t2 |
+              exists(DataFlow::StepSummary summary |
+                base_attr_first_join(t2, attr_name, result, summary) and
+                t = t2.append(summary)
+              )
+            )
+          }
+
+          pragma[nomagic]
+          private predicate base_attr_first_join(
+            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+            DataFlow::StepSummary summary
+          ) {
+            DataFlow::StepSummary::step(base_attr(t2, attr_name), res, summary)
+          }
+
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.base` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          DataFlow::Node base_attr(string attr_name) {
+            result = base_attr(DataFlow::TypeTracker::end(), attr_name)
+          }
+        }
+
+        // -------------------------------------------------------------------------
+        // django.views.generic.dates
+        // -------------------------------------------------------------------------
+        /** Gets a reference to the `django.views.generic.dates` module. */
+        DataFlow::Node dates() { result = generic_attr("dates") }
+
+        /** Provides models for the `django.views.generic.dates` module */
+        module dates {
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.dates` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          private DataFlow::Node dates_attr(DataFlow::TypeTracker t, string attr_name) {
+            attr_name in [
+                "ArchiveIndexView", "DateDetailView", "DayArchiveView", "MonthArchiveView",
+                "TodayArchiveView", "WeekArchiveView", "YearArchiveView"
+              ] and
+            (
+              t.start() and
+              result = DataFlow::importNode("django.views.generic.dates" + "." + attr_name)
+              or
+              t.startInAttr(attr_name) and
+              result = dates()
+            )
+            or
+            // Due to bad performance when using normal setup with `dates_attr(t2, attr_name).track(t2, t)`
+            // we have inlined that code and forced a join
+            exists(DataFlow::TypeTracker t2 |
+              exists(DataFlow::StepSummary summary |
+                dates_attr_first_join(t2, attr_name, result, summary) and
+                t = t2.append(summary)
+              )
+            )
+          }
+
+          pragma[nomagic]
+          private predicate dates_attr_first_join(
+            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+            DataFlow::StepSummary summary
+          ) {
+            DataFlow::StepSummary::step(dates_attr(t2, attr_name), res, summary)
+          }
+
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.dates` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          DataFlow::Node dates_attr(string attr_name) {
+            result = dates_attr(DataFlow::TypeTracker::end(), attr_name)
+          }
+        }
+
+        // -------------------------------------------------------------------------
+        // django.views.generic.detail
+        // -------------------------------------------------------------------------
+        /** Gets a reference to the `django.views.generic.detail` module. */
+        DataFlow::Node detail() { result = generic_attr("detail") }
+
+        /** Provides models for the `django.views.generic.detail` module */
+        module detail {
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.detail` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          private DataFlow::Node detail_attr(DataFlow::TypeTracker t, string attr_name) {
+            attr_name in ["DetailView"] and
+            (
+              t.start() and
+              result = DataFlow::importNode("django.views.generic.detail" + "." + attr_name)
+              or
+              t.startInAttr(attr_name) and
+              result = detail()
+            )
+            or
+            // Due to bad performance when using normal setup with `detail_attr(t2, attr_name).track(t2, t)`
+            // we have inlined that code and forced a join
+            exists(DataFlow::TypeTracker t2 |
+              exists(DataFlow::StepSummary summary |
+                detail_attr_first_join(t2, attr_name, result, summary) and
+                t = t2.append(summary)
+              )
+            )
+          }
+
+          pragma[nomagic]
+          private predicate detail_attr_first_join(
+            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+            DataFlow::StepSummary summary
+          ) {
+            DataFlow::StepSummary::step(detail_attr(t2, attr_name), res, summary)
+          }
+
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.detail` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          DataFlow::Node detail_attr(string attr_name) {
+            result = detail_attr(DataFlow::TypeTracker::end(), attr_name)
+          }
+        }
+
+        // -------------------------------------------------------------------------
+        // django.views.generic.edit
+        // -------------------------------------------------------------------------
+        /** Gets a reference to the `django.views.generic.edit` module. */
+        DataFlow::Node edit() { result = generic_attr("edit") }
+
+        /** Provides models for the `django.views.generic.edit` module */
+        module edit {
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.edit` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          private DataFlow::Node edit_attr(DataFlow::TypeTracker t, string attr_name) {
+            attr_name in ["CreateView", "DeleteView", "FormView", "UpdateView"] and
+            (
+              t.start() and
+              result = DataFlow::importNode("django.views.generic.edit" + "." + attr_name)
+              or
+              t.startInAttr(attr_name) and
+              result = edit()
+            )
+            or
+            // Due to bad performance when using normal setup with `edit_attr(t2, attr_name).track(t2, t)`
+            // we have inlined that code and forced a join
+            exists(DataFlow::TypeTracker t2 |
+              exists(DataFlow::StepSummary summary |
+                edit_attr_first_join(t2, attr_name, result, summary) and
+                t = t2.append(summary)
+              )
+            )
+          }
+
+          pragma[nomagic]
+          private predicate edit_attr_first_join(
+            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+            DataFlow::StepSummary summary
+          ) {
+            DataFlow::StepSummary::step(edit_attr(t2, attr_name), res, summary)
+          }
+
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.edit` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          DataFlow::Node edit_attr(string attr_name) {
+            result = edit_attr(DataFlow::TypeTracker::end(), attr_name)
+          }
+        }
+
+        // -------------------------------------------------------------------------
+        // django.views.generic.list
+        // -------------------------------------------------------------------------
+        /** Gets a reference to the `django.views.generic.list` module. */
+        DataFlow::Node list() { result = generic_attr("list") }
+
+        /** Provides models for the `django.views.generic.list` module */
+        module list {
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.list` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          private DataFlow::Node list_attr(DataFlow::TypeTracker t, string attr_name) {
+            attr_name in ["ListView"] and
+            (
+              t.start() and
+              result = DataFlow::importNode("django.views.generic.list" + "." + attr_name)
+              or
+              t.startInAttr(attr_name) and
+              result = list()
+            )
+            or
+            // Due to bad performance when using normal setup with `list_attr(t2, attr_name).track(t2, t)`
+            // we have inlined that code and forced a join
+            exists(DataFlow::TypeTracker t2 |
+              exists(DataFlow::StepSummary summary |
+                list_attr_first_join(t2, attr_name, result, summary) and
+                t = t2.append(summary)
+              )
+            )
+          }
+
+          pragma[nomagic]
+          private predicate list_attr_first_join(
+            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+            DataFlow::StepSummary summary
+          ) {
+            DataFlow::StepSummary::step(list_attr(t2, attr_name), res, summary)
+          }
+
+          /**
+           * Gets a reference to the attribute `attr_name` of the `django.views.generic.list` module.
+           * WARNING: Only holds for a few predefined attributes.
+           */
+          DataFlow::Node list_attr(string attr_name) {
+            result = list_attr(DataFlow::TypeTracker::end(), attr_name)
+          }
+        }
+
+        /**
+         * Provides models for the `django.views.generic.View` class and subclasses.
+         *
+         * See
+         *  - https://docs.djangoproject.com/en/3.1/topics/class-based-views/
+         *  - https://docs.djangoproject.com/en/3.1/ref/class-based-views/
+         */
+        module View {
+          /** Gets a reference to the `django.views.generic.View` class or any subclass. */
+          private DataFlow::Node subclassRef(DataFlow::TypeTracker t) {
+            t.start() and
+            result =
+              generic_attr([
+                  "View",
+                  // Known Views
+                  "TemplateView", "RedirectView", "ArchiveIndexView", "YearArchiveView",
+                  "MonthArchiveView", "WeekArchiveView", "DayArchiveView", "TodayArchiveView",
+                  "DateDetailView", "DetailView", "FormView", "CreateView", "UpdateView",
+                  "DeleteView", "ListView"
+                ])
+            or
+            // aliases
+            t.start() and
+            (
+              // django.views.View
+              result = views_attr("View")
+              or
+              // django.views.generic.base.*
+              result = base::base_attr(_)
+              or
+              // django.views.generic.dates.*
+              result = dates::dates_attr(_)
+              or
+              // django.views.generic.detail.*
+              result = detail::detail_attr(_)
+              or
+              // django.views.generic.edit.*
+              result = edit::edit_attr(_)
+              or
+              // django.views.generic.list.*
+              result = list::list_attr(_)
+            )
+            or
+            // subclasses in project code
+            result.asExpr().(ClassExpr).getABase() = subclassRef(t.continue()).asExpr()
+            or
+            exists(DataFlow::TypeTracker t2 | result = subclassRef(t2).track(t2, t))
+          }
+
+          /** Gets a reference to the `django.views.generic.View` class or any subclass. */
+          DataFlow::Node subclassRef() { result = subclassRef(DataFlow::TypeTracker::end()) }
+        }
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // django.shortcuts
+    // -------------------------------------------------------------------------
+    /** Gets a reference to the `django.shortcuts` module. */
+    DataFlow::Node shortcuts() { result = django_attr("shortcuts") }
+
+    /** Provides models for the `django.shortcuts` module */
+    module shortcuts {
+      /**
+       * Gets a reference to the attribute `attr_name` of the `django.shortcuts` module.
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node shortcuts_attr(DataFlow::TypeTracker t, string attr_name) {
+        attr_name in ["redirect"] and
+        (
+          t.start() and
+          result = DataFlow::importNode("django.shortcuts" + "." + attr_name)
+          or
+          t.startInAttr(attr_name) and
+          result = shortcuts()
+        )
+        or
+        // Due to bad performance when using normal setup with `shortcuts_attr(t2, attr_name).track(t2, t)`
+        // we have inlined that code and forced a join
+        exists(DataFlow::TypeTracker t2 |
+          exists(DataFlow::StepSummary summary |
+            shortcuts_attr_first_join(t2, attr_name, result, summary) and
+            t = t2.append(summary)
+          )
+        )
+      }
+
+      pragma[nomagic]
+      private predicate shortcuts_attr_first_join(
+        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+        DataFlow::StepSummary summary
+      ) {
+        DataFlow::StepSummary::step(shortcuts_attr(t2, attr_name), res, summary)
+      }
+
+      /**
+       * Gets a reference to the attribute `attr_name` of the `django.shortcuts` module.
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node shortcuts_attr(string attr_name) {
+        result = shortcuts_attr(DataFlow::TypeTracker::end(), attr_name)
+      }
+
+      /**
+       * Gets a reference to the `django.shortcuts.redirect` function
+       *
+       * See https://docs.djangoproject.com/en/3.1/topics/http/shortcuts/#redirect
+       */
+      DataFlow::Node redirect() { result = shortcuts_attr("redirect") }
+    }
+  }
+
+  /**
+   * Gets the last decorator call for the function `func`, if `func` has decorators.
+   */
+  private Expr lastDecoratorCall(Function func) {
+    result = func.getDefinition().(FunctionExpr).getADecoratorCall() and
+    not exists(Call other_decorator | other_decorator.getArg(0) = result)
   }
 
   // ---------------------------------------------------------------------------
@@ -1512,7 +1995,18 @@ private module Django {
    */
   private DataFlow::Node djangoRouteHandlerFunctionTracker(DataFlow::TypeTracker t, Function func) {
     t.start() and
-    result = DataFlow::exprNode(func.getDefinition())
+    (
+      not exists(func.getADecorator()) and
+      result.asExpr() = func.getDefinition()
+      or
+      // If the function has decorators, we still want to model the function as being
+      // the request handler for a route setup. In such situations, we must track the
+      // last decorator call instead of the function itself.
+      //
+      // Note that this means that we blindly ignore what the decorator actually does to
+      // the function, which seems like an OK tradeoff.
+      result.asExpr() = lastDecoratorCall(func)
+    )
     or
     exists(DataFlow::TypeTracker t2 |
       result = djangoRouteHandlerFunctionTracker(t2, func).track(t2, t)
@@ -1531,10 +2025,124 @@ private module Django {
   }
 
   /**
-   * A function that is used as a django route handler.
+   * In order to recognize a class as being a django view class, based on the `as_view`
+   * call, we need to be able to track such calls on _any_ class. This is provided by
+   * the member predicates of this QL class.
+   *
+   * As such, a Python class being part of `DjangoViewClassHelper` doesn't signify that
+   * we model it as a django view class.
+   */
+  class DjangoViewClassHelper extends Class {
+    /** Gets a reference to this class. */
+    private DataFlow::Node getARef(DataFlow::TypeTracker t) {
+      t.start() and
+      result.asExpr().(ClassExpr) = this.getParent()
+      or
+      exists(DataFlow::TypeTracker t2 | result = this.getARef(t2).track(t2, t))
+    }
+
+    /** Gets a reference to this class. */
+    DataFlow::Node getARef() { result = this.getARef(DataFlow::TypeTracker::end()) }
+
+    /** Gets a reference to the `as_view` classmethod of this class. */
+    private DataFlow::Node asViewRef(DataFlow::TypeTracker t) {
+      t.startInAttr("as_view") and
+      result = this.getARef()
+      or
+      exists(DataFlow::TypeTracker t2 | result = this.asViewRef(t2).track(t2, t))
+    }
+
+    /** Gets a reference to the `as_view` classmethod of this class. */
+    DataFlow::Node asViewRef() { result = this.asViewRef(DataFlow::TypeTracker::end()) }
+
+    /** Gets a reference to the result of calling the `as_view` classmethod of this class. */
+    private DataFlow::Node asViewResult(DataFlow::TypeTracker t) {
+      t.start() and
+      result.asCfgNode().(CallNode).getFunction() = this.asViewRef().asCfgNode()
+      or
+      exists(DataFlow::TypeTracker t2 | result = asViewResult(t2).track(t2, t))
+    }
+
+    /** Gets a reference to the result of calling the `as_view` classmethod of this class. */
+    DataFlow::Node asViewResult() { result = asViewResult(DataFlow::TypeTracker::end()) }
+  }
+
+  /** A class that we consider a django View class. */
+  abstract class DjangoViewClass extends DjangoViewClassHelper {
+    /** Gets a function that could handle incoming requests, if any. */
+    Function getARequestHandler() {
+      // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
+      // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
+      result = this.getAMethod() and
+      (
+        result.getName() = HTTP::httpVerbLower()
+        or
+        result.getName() = "get_redirect_url"
+      )
+    }
+
+    /**
+     * Gets a reference to instances of this class, originating from a self parameter of
+     * a method defined on this class.
+     *
+     * Note: TODO: This doesn't take MRO into account
+     * Note: TODO: This doesn't take staticmethod/classmethod into account
+     */
+    private DataFlow::Node getASelfRef(DataFlow::TypeTracker t) {
+      t.start() and
+      result.(DataFlow::ParameterNode).getParameter() = this.getAMethod().getArg(0)
+      or
+      exists(DataFlow::TypeTracker t2 | result = this.getASelfRef(t2).track(t2, t))
+    }
+
+    /**
+     * Gets a reference to instances of this class, originating from a self parameter of
+     * a method defined on this class.
+     *
+     * Note: TODO: This doesn't take MRO into account
+     * Note: TODO: This doesn't take staticmethod/classmethod into account
+     */
+    DataFlow::Node getASelfRef() { result = this.getASelfRef(DataFlow::TypeTracker::end()) }
+  }
+
+  /**
+   * A class that is used in a route-setup, with `<class>.as_view()`, therefore being
+   * considered a django View class.
+   */
+  class DjangoViewClassFromRouteSetup extends DjangoViewClass {
+    DjangoViewClassFromRouteSetup() {
+      exists(DjangoRouteSetup setup | setup.getViewArg() = this.asViewResult())
+    }
+  }
+
+  /**
+   * A class that has a super-type which is a django View class, therefore also
+   * becoming a django View class.
+   */
+  class DjangoViewClassFromSuperClass extends DjangoViewClass {
+    DjangoViewClassFromSuperClass() {
+      this.getABase() = django::views::generic::View::subclassRef().asExpr()
+    }
+  }
+
+  /**
+   * A function that is a django route handler, meaning it handles incoming requests
+   * with the django framework.
+   *
+   * Most functions take a django HttpRequest as a parameter (but not all).
    */
   private class DjangoRouteHandler extends Function {
-    DjangoRouteHandler() { exists(djangoRouteHandlerFunctionTracker(this)) }
+    DjangoRouteHandler() {
+      exists(DjangoRouteSetup route | route.getViewArg() = djangoRouteHandlerFunctionTracker(this))
+      or
+      any(DjangoViewClass vc).getARequestHandler() = this
+    }
+
+    /**
+     * Gets the index of the parameter where the first routed parameter can be passed --
+     * that is, the one just after any possible `self` or HttpRequest parameters.
+     */
+    int getFirstPossibleRoutedParamIndex() { result = 1 + this.getRequestParamIndex() }
 
     /** Gets the index of the request parameter. */
     int getRequestParamIndex() {
@@ -1549,8 +2157,60 @@ private module Django {
     Parameter getRequestParam() { result = this.getArg(this.getRequestParamIndex()) }
   }
 
+  /**
+   * A method named `get_redirect_url` on a django view class.
+   *
+   * See https://docs.djangoproject.com/en/3.1/ref/class-based-views/base/#django.views.generic.base.RedirectView.get_redirect_url
+   *
+   * Note: this function only does something on a subclass of `RedirectView`, but since
+   * classes can be considered django view classes without us knowing their super-classes,
+   * we need to consider _any_ django view class. I don't expect any problems to come from this.
+   */
+  private class GetRedirectUrlFunction extends DjangoRouteHandler {
+    GetRedirectUrlFunction() {
+      this.getName() = "get_redirect_url" and
+      any(DjangoViewClass vc).getARequestHandler() = this
+    }
+
+    override int getFirstPossibleRoutedParamIndex() { result = 1 }
+
+    override int getRequestParamIndex() { none() }
+  }
+
+  /** A data-flow node that sets up a route on a server, using the django framework. */
   abstract private class DjangoRouteSetup extends HTTP::Server::RouteSetup::Range, DataFlow::CfgNode {
-    abstract override DjangoRouteHandler getARouteHandler();
+    /** Gets the data-flow node that is used as the argument for the view handler. */
+    abstract DataFlow::Node getViewArg();
+
+    final override DjangoRouteHandler getARequestHandler() {
+      djangoRouteHandlerFunctionTracker(result) = getViewArg()
+      or
+      exists(DjangoViewClass vc |
+        getViewArg() = vc.asViewResult() and
+        result = vc.getARequestHandler()
+      )
+    }
+
+    override string getFramework() { result = "Django" }
+  }
+
+  /** A request handler defined in a django view class, that has no known route. */
+  private class DjangoViewClassHandlerWithoutKnownRoute extends HTTP::Server::RequestHandler::Range,
+    DjangoRouteHandler {
+    DjangoViewClassHandlerWithoutKnownRoute() {
+      exists(DjangoViewClass vc | vc.getARequestHandler() = this) and
+      not exists(DjangoRouteSetup setup | setup.getARequestHandler() = this)
+    }
+
+    override Parameter getARoutedParameter() {
+      // Since we don't know the URL pattern, we simply mark all parameters as a routed
+      // parameter. This should give us more RemoteFlowSources but could also lead to
+      // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
+      result in [this.getArg(_), this.getArgByName(_)] and
+      not result = any(int i | i < this.getFirstPossibleRoutedParamIndex() | this.getArg(i))
+    }
+
+    override string getFramework() { result = "Django" }
   }
 
   /**
@@ -1576,25 +2236,23 @@ private module Django {
       result.asCfgNode() = [node.getArg(0), node.getArgByName("route")]
     }
 
-    override DjangoRouteHandler getARouteHandler() {
-      exists(DataFlow::Node viewArg |
-        viewArg.asCfgNode() in [node.getArg(1), node.getArgByName("view")] and
-        djangoRouteHandlerFunctionTracker(result) = viewArg
-      )
+    override DataFlow::Node getViewArg() {
+      result.asCfgNode() in [node.getArg(1), node.getArgByName("view")]
     }
 
     override Parameter getARoutedParameter() {
       // If we don't know the URL pattern, we simply mark all parameters as a routed
       // parameter. This should give us more RemoteFlowSources but could also lead to
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
-      exists(DjangoRouteHandler routeHandler | routeHandler = this.getARouteHandler() |
+      exists(DjangoRouteHandler routeHandler | routeHandler = this.getARequestHandler() |
         not exists(this.getUrlPattern()) and
         result in [routeHandler.getArg(_), routeHandler.getArgByName(_)] and
-        not result = any(int i | i <= routeHandler.getRequestParamIndex() | routeHandler.getArg(i))
+        not result =
+          any(int i | i < routeHandler.getFirstPossibleRoutedParamIndex() | routeHandler.getArg(i))
       )
       or
       exists(string name |
-        result = this.getARouteHandler().getArgByName(name) and
+        result = this.getARequestHandler().getArgByName(name) and
         exists(string match |
           match = this.getUrlPattern().regexpFind(pathRoutedParameterRegex(), _, _) and
           name = match.regexpCapture(pathRoutedParameterRegex(), 2)
@@ -1609,14 +2267,15 @@ private module Django {
       // If we don't know the URL pattern, we simply mark all parameters as a routed
       // parameter. This should give us more RemoteFlowSources but could also lead to
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
-      exists(DjangoRouteHandler routeHandler | routeHandler = this.getARouteHandler() |
+      exists(DjangoRouteHandler routeHandler | routeHandler = this.getARequestHandler() |
         not exists(this.getUrlPattern()) and
         result in [routeHandler.getArg(_), routeHandler.getArgByName(_)] and
-        not result = any(int i | i <= routeHandler.getRequestParamIndex() | routeHandler.getArg(i))
+        not result =
+          any(int i | i < routeHandler.getFirstPossibleRoutedParamIndex() | routeHandler.getArg(i))
       )
       or
       exists(DjangoRouteHandler routeHandler, DjangoRouteRegex regex |
-        routeHandler = this.getARouteHandler() and
+        routeHandler = this.getARequestHandler() and
         regex.getRouteSetup() = this
       |
         // either using named capture groups (passed as keyword arguments) or using
@@ -1624,7 +2283,9 @@ private module Django {
         not exists(regex.getGroupName(_, _)) and
         // first group will have group number 1
         result =
-          routeHandler.getArg(routeHandler.getRequestParamIndex() + regex.getGroupNumber(_, _))
+          routeHandler
+              .getArg(routeHandler.getFirstPossibleRoutedParamIndex() - 1 +
+                  regex.getGroupNumber(_, _))
         or
         result = routeHandler.getArgByName(regex.getGroupName(_, _))
       )
@@ -1641,7 +2302,7 @@ private module Django {
 
     DjangoRouteRegex() {
       this instanceof StrConst and
-      DataFlow::localFlow(DataFlow::exprNode(this), rePathCall.getUrlPatternArg())
+      DataFlow::exprNode(this).(DataFlow::LocalSourceNode).flowsTo(rePathCall.getUrlPatternArg())
     }
 
     DjangoRegexRouteSetup getRouteSetup() { result = rePathCall }
@@ -1655,17 +2316,30 @@ private module Django {
   private class DjangoUrlsRePathCall extends DjangoRegexRouteSetup {
     override CallNode node;
 
-    DjangoUrlsRePathCall() { node.getFunction() = django::urls::re_path().asCfgNode() }
+    DjangoUrlsRePathCall() {
+      node.getFunction() = django::urls::re_path().asCfgNode() and
+      // `django.conf.urls.url` (which we support directly with
+      // `DjangoConfUrlsUrlCall`), is implemented in Django 2+ as backward compatibility
+      // using `django.urls.re_path`. See
+      // https://github.com/django/django/blob/stable/3.2.x/django/conf/urls/__init__.py#L22
+      // Since we're still installing dependencies and analyzing their source code,
+      // without explicitly filtering out this call, we would be double-counting such
+      // route-setups :( One practical negative side effect of double-counting it, is
+      // that since we can't figure out the URL in the library code calling `django.urls.re_path`
+      // (because we only consider local flow), we will for all those cases mark ANY parameter
+      // as being a routed-parameter, which can lead to FPs.
+      not exists(Module mod |
+        mod.getName() = "django.conf.urls.__init__" and
+        node.getEnclosingModule() = mod
+      )
+    }
 
     override DataFlow::Node getUrlPatternArg() {
       result.asCfgNode() = [node.getArg(0), node.getArgByName("route")]
     }
 
-    override DjangoRouteHandler getARouteHandler() {
-      exists(DataFlow::Node viewArg |
-        viewArg.asCfgNode() in [node.getArg(1), node.getArgByName("view")] and
-        djangoRouteHandlerFunctionTracker(result) = viewArg
-      )
+    override DataFlow::Node getViewArg() {
+      result.asCfgNode() in [node.getArg(1), node.getArgByName("view")]
     }
   }
 
@@ -1683,24 +2357,64 @@ private module Django {
       result.asCfgNode() = [node.getArg(0), node.getArgByName("regex")]
     }
 
-    override DjangoRouteHandler getARouteHandler() {
-      exists(DataFlow::Node viewArg |
-        viewArg.asCfgNode() in [node.getArg(1), node.getArgByName("view")] and
-        djangoRouteHandlerFunctionTracker(result) = viewArg
-      )
+    override DataFlow::Node getViewArg() {
+      result.asCfgNode() in [node.getArg(1), node.getArgByName("view")]
     }
   }
 
   // ---------------------------------------------------------------------------
   // HttpRequest taint modeling
   // ---------------------------------------------------------------------------
-  class DjangoRouteHandlerRequestParam extends django::http::request::HttpRequest::InstanceSource,
+  /** A parameter that will receive the django `HttpRequest` instance when a request handler is invoked. */
+  private class DjangoRequestHandlerRequestParam extends django::http::request::HttpRequest::InstanceSource,
     RemoteFlowSource::Range, DataFlow::ParameterNode {
-    DjangoRouteHandlerRequestParam() {
-      this.getParameter() = any(DjangoRouteSetup setup).getARouteHandler().getRequestParam()
+    DjangoRequestHandlerRequestParam() {
+      this.getParameter() = any(DjangoRouteSetup setup).getARequestHandler().getRequestParam()
+      or
+      this.getParameter() = any(DjangoViewClassHandlerWithoutKnownRoute setup).getRequestParam()
     }
 
     override string getSourceType() { result = "django.http.request.HttpRequest" }
+  }
+
+  /**
+   * A read of the `request` attribute on a reference to an instance of a View class,
+   * which is the request being processed currently.
+   *
+   * See https://docs.djangoproject.com/en/3.1/topics/class-based-views/generic-display/#dynamic-filtering
+   */
+  private class DjangoViewClassRequestAttributeRead extends django::http::request::HttpRequest::InstanceSource,
+    RemoteFlowSource::Range, DataFlow::Node {
+    DjangoViewClassRequestAttributeRead() {
+      exists(DataFlow::AttrRead read | this = read |
+        read.getObject() = any(DjangoViewClass vc).getASelfRef() and
+        read.getAttributeName() = "request"
+      )
+    }
+
+    override string getSourceType() {
+      result = "django.http.request.HttpRequest (attribute on self in View class)"
+    }
+  }
+
+  /**
+   * A read of the `args` or `kwargs` attribute on a reference to an instance of a View class,
+   * which contains the routed parameters captured from the URL route.
+   *
+   * See https://docs.djangoproject.com/en/3.1/topics/class-based-views/generic-display/#dynamic-filtering
+   */
+  private class DjangoViewClassRoutedParamsAttributeRead extends RemoteFlowSource::Range,
+    DataFlow::Node {
+    DjangoViewClassRoutedParamsAttributeRead() {
+      exists(DataFlow::AttrRead read | this = read |
+        read.getObject() = any(DjangoViewClass vc).getASelfRef() and
+        read.getAttributeName() in ["args", "kwargs"]
+      )
+    }
+
+    override string getSourceType() {
+      result = "django routed param from attribute on self in View class"
+    }
   }
 
   private class DjangoHttpRequstAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
@@ -1731,5 +2445,67 @@ private module Django {
         // TODO: Handle that a HttpRequest is iterable
       )
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // django.shortcuts.redirect
+  // ---------------------------------------------------------------------------
+  /**
+   * A call to `django.shortcuts.redirect`.
+   *
+   * Note: This works differently depending on what argument is used.
+   * _One_ option is to redirect to a full URL.
+   *
+   * See https://docs.djangoproject.com/en/3.1/topics/http/shortcuts/#redirect
+   */
+  private class DjangoShortcutsRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
+    DataFlow::CfgNode {
+    override CallNode node;
+
+    DjangoShortcutsRedirectCall() { node.getFunction() = django::shortcuts::redirect().asCfgNode() }
+
+    /**
+     * Gets the data-flow node that specifies the location of this HTTP redirect response.
+     *
+     * Note: For `django.shortcuts.redirect`, the result might not be a full URL
+     * (as usually expected by this method), but could be a relative URL,
+     * a string identifying a view, or a Django model.
+     */
+    override DataFlow::Node getRedirectLocation() {
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("to")]
+    }
+
+    override DataFlow::Node getBody() { none() }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+    override string getMimetypeDefault() { none() }
+  }
+
+  // ---------------------------------------------------------------------------
+  // RedirectView handling
+  // ---------------------------------------------------------------------------
+  /**
+   * A return from a method named `get_redirect_url` on a django view class.
+   *
+   * Note that in reality, this only does something on a subclass of `RedirectView` --
+   * but until API graphs makes this easy to model, I took a shortcut in modeling
+   * preciseness.
+   *
+   * See https://docs.djangoproject.com/en/3.1/ref/class-based-views/base/#redirectview
+   */
+  private class DjangoRedirectViewGetRedirectUrlReturn extends HTTP::Server::HttpRedirectResponse::Range,
+    DataFlow::CfgNode {
+    DjangoRedirectViewGetRedirectUrlReturn() {
+      node = any(GetRedirectUrlFunction f).getAReturnValueFlowNode()
+    }
+
+    override DataFlow::Node getRedirectLocation() { result = this }
+
+    override DataFlow::Node getBody() { none() }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+    override string getMimetypeDefault() { none() }
   }
 }

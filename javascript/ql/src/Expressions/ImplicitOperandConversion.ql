@@ -130,13 +130,7 @@ class NumericConversion extends ImplicitConversion {
     or
     parent instanceof ArithmeticExpr and not parent instanceof AddExpr
     or
-    parent instanceof CompoundAssignExpr and
-    not (
-      parent instanceof AssignAddExpr or
-      parent instanceof AssignLogOrExpr or
-      parent instanceof AssignLogAndExpr or
-      parent instanceof AssignNullishCoalescingExpr
-    )
+    parent.(CompoundAssignExpr).isNumeric()
     or
     parent instanceof UpdateExpr
   }

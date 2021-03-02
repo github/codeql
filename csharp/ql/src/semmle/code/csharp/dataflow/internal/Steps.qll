@@ -16,7 +16,10 @@ module Steps {
    * Gets a read that is guaranteed to read the value assigned at definition `def`.
    */
   private AssignableRead getARead(AssignableDefinition def) {
-    result = BaseSsa::getARead(def, _)
+    exists(BaseSsa::Definition ssaDef |
+      ssaDef.getDefinition() = def and
+      result = ssaDef.getARead()
+    )
     or
     exists(LocalScopeVariable v | def.getTarget() = v |
       result = v.getAnAccess() and
@@ -52,7 +55,7 @@ module Steps {
   private predicate flowIn(Parameter p, Expr pred, AssignableRead succ) {
     exists(AssignableDefinitions::ImplicitParameterDefinition def, Call c | succ = getARead(def) |
       pred = getArgumentForOverridderParameter(c, p) and
-      p.getSourceDeclaration() = def.getParameter()
+      p.getUnboundDeclaration() = def.getParameter()
     )
   }
 

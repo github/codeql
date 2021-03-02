@@ -17,6 +17,9 @@ class Expr extends Element, @dotnet_expr {
   /** Gets the constant value of this expression, if any. */
   string getValue() { none() }
 
+  /** Holds if this expression has a value. */
+  final predicate hasValue() { exists(this.getValue()) }
+
   /**
    * Gets the parent of this expression. This is for example the element
    * that uses the result of this expression.

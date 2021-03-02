@@ -102,7 +102,7 @@ class DocumentBuilderTests {
 	builder.parse(source.getInputStream()); //unsafe
   }
 
-  private static DocumentBuilderFactory getDocumentBuilderFactory() {
+  private static DocumentBuilderFactory getDocumentBuilderFactory() throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     String feature = "";
     feature = "http://xml.org/sax/features/external-parameter-entities";
@@ -115,8 +115,8 @@ class DocumentBuilderTests {
   private static final ThreadLocal<DocumentBuilder> XML_DOCUMENT_BUILDER = new ThreadLocal<DocumentBuilder>() {
     @Override
     protected DocumentBuilder initialValue() {
-      DocumentBuilderFactory factory = getDocumentBuilderFactory();
       try {
+        DocumentBuilderFactory factory = getDocumentBuilderFactory();
         return factory.newDocumentBuilder();
       } catch (Exception ex) {
         throw new RuntimeException(ex);

@@ -118,6 +118,29 @@ nodes
 | react-native.js:8:32:8:38 | tainted |
 | react-native.js:10:23:10:29 | tainted |
 | react-native.js:10:23:10:29 | tainted |
+| react.js:10:56:10:72 | document.location |
+| react.js:10:56:10:72 | document.location |
+| react.js:10:56:10:77 | documen ... on.hash |
+| react.js:10:56:10:77 | documen ... on.hash |
+| template-sinks.js:12:9:12:31 | tainted |
+| template-sinks.js:12:19:12:31 | req.query.foo |
+| template-sinks.js:12:19:12:31 | req.query.foo |
+| template-sinks.js:14:17:14:23 | tainted |
+| template-sinks.js:14:17:14:23 | tainted |
+| template-sinks.js:15:16:15:22 | tainted |
+| template-sinks.js:15:16:15:22 | tainted |
+| template-sinks.js:16:18:16:24 | tainted |
+| template-sinks.js:16:18:16:24 | tainted |
+| template-sinks.js:17:17:17:23 | tainted |
+| template-sinks.js:17:17:17:23 | tainted |
+| template-sinks.js:18:18:18:24 | tainted |
+| template-sinks.js:18:18:18:24 | tainted |
+| template-sinks.js:19:16:19:22 | tainted |
+| template-sinks.js:19:16:19:22 | tainted |
+| template-sinks.js:20:27:20:33 | tainted |
+| template-sinks.js:20:27:20:33 | tainted |
+| template-sinks.js:21:21:21:27 | tainted |
+| template-sinks.js:21:21:21:27 | tainted |
 | tst.js:2:6:2:22 | document.location |
 | tst.js:2:6:2:22 | document.location |
 | tst.js:2:6:2:27 | documen ... on.href |
@@ -256,6 +279,28 @@ edges
 | react-native.js:7:7:7:33 | tainted | react-native.js:10:23:10:29 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
+| react.js:10:56:10:72 | document.location | react.js:10:56:10:77 | documen ... on.hash |
+| react.js:10:56:10:72 | document.location | react.js:10:56:10:77 | documen ... on.hash |
+| react.js:10:56:10:72 | document.location | react.js:10:56:10:77 | documen ... on.hash |
+| react.js:10:56:10:72 | document.location | react.js:10:56:10:77 | documen ... on.hash |
+| template-sinks.js:12:9:12:31 | tainted | template-sinks.js:14:17:14:23 | tainted |
+| template-sinks.js:12:9:12:31 | tainted | template-sinks.js:14:17:14:23 | tainted |
+| template-sinks.js:12:9:12:31 | tainted | template-sinks.js:15:16:15:22 | tainted |
+| template-sinks.js:12:9:12:31 | tainted | template-sinks.js:15:16:15:22 | tainted |
+| template-sinks.js:12:9:12:31 | tainted | template-sinks.js:16:18:16:24 | tainted |
+| template-sinks.js:12:9:12:31 | tainted | template-sinks.js:16:18:16:24 | tainted |
+| template-sinks.js:12:9:12:31 | tainted | template-sinks.js:17:17:17:23 | tainted |
+| template-sinks.js:12:9:12:31 | tainted | template-sinks.js:17:17:17:23 | tainted |
+| template-sinks.js:12:9:12:31 | tainted | template-sinks.js:18:18:18:24 | tainted |
+| template-sinks.js:12:9:12:31 | tainted | template-sinks.js:18:18:18:24 | tainted |
+| template-sinks.js:12:9:12:31 | tainted | template-sinks.js:19:16:19:22 | tainted |
+| template-sinks.js:12:9:12:31 | tainted | template-sinks.js:19:16:19:22 | tainted |
+| template-sinks.js:12:9:12:31 | tainted | template-sinks.js:20:27:20:33 | tainted |
+| template-sinks.js:12:9:12:31 | tainted | template-sinks.js:20:27:20:33 | tainted |
+| template-sinks.js:12:9:12:31 | tainted | template-sinks.js:21:21:21:27 | tainted |
+| template-sinks.js:12:9:12:31 | tainted | template-sinks.js:21:21:21:27 | tainted |
+| template-sinks.js:12:19:12:31 | req.query.foo | template-sinks.js:12:9:12:31 | tainted |
+| template-sinks.js:12:19:12:31 | req.query.foo | template-sinks.js:12:9:12:31 | tainted |
 | tst.js:2:6:2:22 | document.location | tst.js:2:6:2:27 | documen ... on.href |
 | tst.js:2:6:2:22 | document.location | tst.js:2:6:2:27 | documen ... on.href |
 | tst.js:2:6:2:27 | documen ... on.href | tst.js:2:6:2:83 | documen ... t=")+8) |
@@ -315,6 +360,15 @@ edges
 | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | $@ flows to here and is interpreted as code. | module.js:9:16:9:29 | req.query.code | User-provided value |
 | react-native.js:8:32:8:38 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:8:32:8:38 | tainted | $@ flows to here and is interpreted as code. | react-native.js:7:17:7:33 | req.param("code") | User-provided value |
 | react-native.js:10:23:10:29 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:10:23:10:29 | tainted | $@ flows to here and is interpreted as code. | react-native.js:7:17:7:33 | req.param("code") | User-provided value |
+| react.js:10:56:10:77 | documen ... on.hash | react.js:10:56:10:72 | document.location | react.js:10:56:10:77 | documen ... on.hash | $@ flows to here and is interpreted as code. | react.js:10:56:10:72 | document.location | User-provided value |
+| template-sinks.js:14:17:14:23 | tainted | template-sinks.js:12:19:12:31 | req.query.foo | template-sinks.js:14:17:14:23 | tainted | $@ flows to here and is interpreted as a template, which may contain code. | template-sinks.js:12:19:12:31 | req.query.foo | User-provided value |
+| template-sinks.js:15:16:15:22 | tainted | template-sinks.js:12:19:12:31 | req.query.foo | template-sinks.js:15:16:15:22 | tainted | $@ flows to here and is interpreted as a template, which may contain code. | template-sinks.js:12:19:12:31 | req.query.foo | User-provided value |
+| template-sinks.js:16:18:16:24 | tainted | template-sinks.js:12:19:12:31 | req.query.foo | template-sinks.js:16:18:16:24 | tainted | $@ flows to here and is interpreted as a template, which may contain code. | template-sinks.js:12:19:12:31 | req.query.foo | User-provided value |
+| template-sinks.js:17:17:17:23 | tainted | template-sinks.js:12:19:12:31 | req.query.foo | template-sinks.js:17:17:17:23 | tainted | $@ flows to here and is interpreted as a template, which may contain code. | template-sinks.js:12:19:12:31 | req.query.foo | User-provided value |
+| template-sinks.js:18:18:18:24 | tainted | template-sinks.js:12:19:12:31 | req.query.foo | template-sinks.js:18:18:18:24 | tainted | $@ flows to here and is interpreted as a template, which may contain code. | template-sinks.js:12:19:12:31 | req.query.foo | User-provided value |
+| template-sinks.js:19:16:19:22 | tainted | template-sinks.js:12:19:12:31 | req.query.foo | template-sinks.js:19:16:19:22 | tainted | $@ flows to here and is interpreted as a template, which may contain code. | template-sinks.js:12:19:12:31 | req.query.foo | User-provided value |
+| template-sinks.js:20:27:20:33 | tainted | template-sinks.js:12:19:12:31 | req.query.foo | template-sinks.js:20:27:20:33 | tainted | $@ flows to here and is interpreted as a template, which may contain code. | template-sinks.js:12:19:12:31 | req.query.foo | User-provided value |
+| template-sinks.js:21:21:21:27 | tainted | template-sinks.js:12:19:12:31 | req.query.foo | template-sinks.js:21:21:21:27 | tainted | $@ flows to here and is interpreted as a template, which may contain code. | template-sinks.js:12:19:12:31 | req.query.foo | User-provided value |
 | tst.js:2:6:2:83 | documen ... t=")+8) | tst.js:2:6:2:22 | document.location | tst.js:2:6:2:83 | documen ... t=")+8) | $@ flows to here and is interpreted as code. | tst.js:2:6:2:22 | document.location | User-provided value |
 | tst.js:5:12:5:33 | documen ... on.hash | tst.js:5:12:5:28 | document.location | tst.js:5:12:5:33 | documen ... on.hash | $@ flows to here and is interpreted as code. | tst.js:5:12:5:28 | document.location | User-provided value |
 | tst.js:14:10:14:74 | documen ... , "$1") | tst.js:14:10:14:26 | document.location | tst.js:14:10:14:74 | documen ... , "$1") | $@ flows to here and is interpreted as code. | tst.js:14:10:14:26 | document.location | User-provided value |

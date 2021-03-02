@@ -26,7 +26,7 @@ For examples of query files for the languages supported by CodeQL, visit the fol
 
 ## Metadata area
 
-Query file metadata contains important information that defines the identifier and purpose of the query. The metadata is included as the content of a valid [QLDoc](https://help.semmle.com/QL/ql-handbook/qldoc.html) comment, on lines with leading whitespace followed by `*`, between an initial `/**` and a trailing `*/`. For example:
+Query file metadata contains important information that defines the identifier and purpose of the query. The metadata is included as the content of a valid [QLDoc](https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#qldoc) comment, on lines with leading whitespace followed by `*`, between an initial `/**` and a trailing `*/`. For example:
 
 ```
 /**

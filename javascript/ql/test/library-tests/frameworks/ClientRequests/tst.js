@@ -236,3 +236,27 @@ const needle = require("needle");
 
     });
 })();
+
+var FormData = require('form-data');
+var request = require('request');
+
+var form = new FormData();
+
+form.append('my_field', 'my value');
+form.append('my_buffer', Buffer.from("foo"));
+form.append('my_logo', request('http://example.org/images/logo.png'));
+
+form.submit('http://example.org/', (err, res) => {
+    res.resume();
+});
+
+
+var form = new FormData();
+form.append('new_form', 'new_value');
+
+form.submit({
+    method: 'post',
+    host: 'example.org',
+    path: '/upload',
+    headers: form.getHeaders()
+});

@@ -1,0 +1,13 @@
+edges
+| test.c:15:20:15:23 | argv | test.c:21:18:21:23 | (const char *)... |
+| test.c:15:20:15:23 | argv | test.c:21:18:21:23 | (const char *)... |
+| test.c:15:20:15:23 | argv | test.c:21:18:21:23 | query1 |
+| test.c:15:20:15:23 | argv | test.c:21:18:21:23 | query1 |
+nodes
+| test.c:15:20:15:23 | argv | semmle.label | argv |
+| test.c:15:20:15:23 | argv | semmle.label | argv |
+| test.c:21:18:21:23 | (const char *)... | semmle.label | (const char *)... |
+| test.c:21:18:21:23 | (const char *)... | semmle.label | (const char *)... |
+| test.c:21:18:21:23 | query1 | semmle.label | query1 |
+#select
+| test.c:21:18:21:23 | query1 | test.c:15:20:15:23 | argv | test.c:21:18:21:23 | query1 | This argument to a SQL query function is derived from $@ and then passed to mysql_query(sqlArg) | test.c:15:20:15:23 | argv | user input (argv) |

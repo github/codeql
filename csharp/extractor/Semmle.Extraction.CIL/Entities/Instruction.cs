@@ -8,20 +8,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A CIL instruction.
     /// </summary>
-    internal interface IInstruction : IExtractedEntity
-    {
-        /// <summary>
-        /// Gets the extraction products for branches.
-        /// </summary>
-        /// <param name="jump_table">The map from offset to instruction.</param>
-        /// <returns>The extraction products.</returns>
-        IEnumerable<IExtractionProduct> JumpContents(Dictionary<int, IInstruction> jump_table);
-    }
-
-    /// <summary>
-    /// A CIL instruction.
-    /// </summary>
-    internal class Instruction : UnlabelledEntity, IInstruction
+    internal class Instruction : UnlabelledEntity
     {
         /// <summary>
         /// The additional data following the opcode, if any.
@@ -302,11 +289,6 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        Label IEntity.Label
-        {
-            get; set;
-        }
-
         private readonly byte[] data;
 
         private int PayloadSize => payloadSizes[(int)PayloadType];
@@ -446,10 +428,10 @@ namespace Semmle.Extraction.CIL.Entities
         }
 
         // Called to populate the jumps in each instruction.
-        public IEnumerable<IExtractionProduct> JumpContents(Dictionary<int, IInstruction> jump_table)
+        public IEnumerable<IExtractionProduct> JumpContents(Dictionary<int, Instruction> jump_table)
         {
             int target;
-            IInstruction? inst;
+            Instruction? inst;
 
             switch (PayloadType)
             {
@@ -494,7 +476,7 @@ namespace Semmle.Extraction.CIL.Entities
                 // TODO: Find a solution to this.
 
                 // For now, just log the error
-                Cx.Cx.ExtractionError("A CIL instruction jumps outside the current method", "", Extraction.Entities.GeneratedLocation.Create(Cx.Cx), "", Util.Logging.Severity.Warning);
+                Cx.ExtractionError("A CIL instruction jumps outside the current method", null, Extraction.Entities.GeneratedLocation.Create(Cx), "", Util.Logging.Severity.Warning);
             }
         }
     }

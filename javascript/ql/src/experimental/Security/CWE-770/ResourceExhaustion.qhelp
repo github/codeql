@@ -1,0 +1,63 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+	<overview>
+
+		<p>
+
+			Applications are constrained by how many resources they can make use
+			of. Failing to respect these constraints may cause the application to
+			be unresponsive or crash. It is therefore problematic if attackers
+			can control the sizes or lifetimes of allocated objects.
+
+		</p>
+
+	</overview>
+
+	<recommendation>
+
+		<p>
+
+			Ensure that attackers can not control object sizes and their
+			lifetimes. If object sizes and lifetimes must be controlled by
+			external parties, ensure you restrict the object sizes and lifetimes so that
+			they are within acceptable ranges.
+
+		</p>
+
+	</recommendation>
+
+	<example>
+
+		<p>
+
+			The following example lets a user choose a delay after
+			which a function is executed:
+
+		</p>
+
+		<sample src="examples/ResourceExhaustion_timeout.js" />
+
+		<p>
+
+			This is problematic because a large delay essentially makes the
+			application wait indefinitely before executing the function. Repeated
+			registrations of such delays will therefore use up all of the memory
+			in the application.
+
+			A limit on the delay will prevent the attack:
+
+		</p>
+
+		<sample src="examples/ResourceExhaustion_timeout_fixed.js" />
+
+
+	</example>
+
+	<references>
+
+	</references>
+
+</qhelp>

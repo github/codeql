@@ -8,7 +8,7 @@ class SsaVariable = Ssa::Definition;
 
 class SsaPhiNode = Ssa::PhiNode;
 
-class BasicBlock = Ssa::BasicBlock;
+class BasicBlock = ControlFlow::BasicBlock;
 
 /** Gets a basic block in which SSA variable `v` is read. */
 BasicBlock getAReadBasicBlock(SsaVariable v) {

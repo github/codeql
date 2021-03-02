@@ -1,6 +1,7 @@
 import python
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.DataFlow
+import experimental.dataflow.TestUtil.PrintNode
 
 class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
   TestTaintTrackingConfiguration() { this = "TestTaintTrackingConfiguration" }
@@ -17,31 +18,6 @@ class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
       sink.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }
-}
-
-private string repr(Expr e) {
-  not e instanceof Num and
-  not e instanceof StrConst and
-  not e instanceof Subscript and
-  not e instanceof Call and
-  not e instanceof Attribute and
-  result = e.toString()
-  or
-  result = e.(Num).getN()
-  or
-  result =
-    e.(StrConst).getPrefix() + e.(StrConst).getText() +
-      e.(StrConst).getPrefix().regexpReplaceAll("[a-zA-Z]+", "")
-  or
-  result = repr(e.(Subscript).getObject()) + "[" + repr(e.(Subscript).getIndex()) + "]"
-  or
-  (
-    if exists(e.(Call).getAnArg()) or exists(e.(Call).getANamedArg())
-    then result = repr(e.(Call).getFunc()) + "(..)"
-    else result = repr(e.(Call).getFunc()) + "()"
-  )
-  or
-  result = repr(e.(Attribute).getObject()) + "." + e.(Attribute).getName()
 }
 
 query predicate test_taint(string arg_location, string test_res, string scope_name, string repr) {
@@ -70,6 +46,6 @@ query predicate test_taint(string arg_location, string test_res, string scope_na
     arg_location = arg.getLocation().toString() and
     test_res = test_res and
     scope_name = call.getScope().getName() and
-    repr = repr(arg)
+    repr = prettyExp(arg)
   )
 }

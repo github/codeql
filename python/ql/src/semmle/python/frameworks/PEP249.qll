@@ -29,13 +29,13 @@ DataFlow::Node connect() { result = connect(DataFlow::TypeTracker::end()) }
  */
 module Connection {
   /**
-   * A source of an instance of `db.Connection`.
+   * A source of instances of `db.Connection`, extend this class to model new instances.
    *
-   * This can include instantiation of the class, return value from function
+   * This can include instantiations of the class, return values from function
    * calls, or a special parameter that will be set when functions are called by external
    * libraries.
    *
-   * Use `Connection::instance()` predicate to get references to instances of `db.Connection`.
+   * Use the predicate `Connection::instance()` to get references to instances of `db.Connection`.
    *
    * Extend this class if the module implementing PEP 249 offers more direct ways to obtain
    * a connection than going through `connect`.
@@ -62,11 +62,11 @@ module Connection {
 }
 
 /**
- * Provides models for the `db.Connection.cursor` method.
+ * Provides models for the `cursor` method on a connection.
  * See https://www.python.org/dev/peps/pep-0249/#cursor.
  */
 module cursor {
-  /** Gets a reference to the `db.connection.cursor` method. */
+  /** Gets a reference to the `cursor` method on a connection. */
   private DataFlow::Node methodRef(DataFlow::TypeTracker t) {
     t.startInAttr("cursor") and
     result = Connection::instance()
@@ -74,10 +74,10 @@ module cursor {
     exists(DataFlow::TypeTracker t2 | result = methodRef(t2).track(t2, t))
   }
 
-  /** Gets a reference to the `db.connection.cursor` metod. */
+  /** Gets a reference to the `cursor` method on a connection. */
   DataFlow::Node methodRef() { result = methodRef(DataFlow::TypeTracker::end()) }
 
-  /** Gets a reference to a result of calling `db.connection.cursor`. */
+  /** Gets a reference to a result of calling the `cursor` method on a connection. */
   private DataFlow::Node methodResult(DataFlow::TypeTracker t) {
     t.start() and
     result.asCfgNode().(CallNode).getFunction() = methodRef().asCfgNode()
@@ -85,31 +85,40 @@ module cursor {
     exists(DataFlow::TypeTracker t2 | result = methodResult(t2).track(t2, t))
   }
 
-  /** Gets a reference to a result of calling `db.connection.cursor`. */
+  /** Gets a reference to a result of calling the `cursor` method on a connection. */
   DataFlow::Node methodResult() { result = methodResult(DataFlow::TypeTracker::end()) }
 }
 
 /**
- * Gets a reference to the `db.Connection.Cursor.execute` function.
+ * Gets a reference to the `execute` method on a cursor (or on a connection).
+ *
+ * Note: while `execute` method on a connection is not part of PEP249, if it is used, we
+ * recognize it as an alias for constructing a cursor and calling `execute` on it.
+ *
  * See https://www.python.org/dev/peps/pep-0249/#id15.
  */
 private DataFlow::Node execute(DataFlow::TypeTracker t) {
   t.startInAttr("execute") and
-  result = cursor::methodResult()
+  result in [cursor::methodResult(), Connection::instance()]
   or
   exists(DataFlow::TypeTracker t2 | result = execute(t2).track(t2, t))
 }
 
 /**
- * Gets a reference to the `db.Connection.Cursor.execute` function.
+ * Gets a reference to the `execute` method on a cursor (or on a connection).
+ *
+ * Note: while `execute` method on a connection is not part of PEP249, if it is used, we
+ * recognize it as an alias for constructing a cursor and calling `execute` on it.
+ *
  * See https://www.python.org/dev/peps/pep-0249/#id15.
  */
 DataFlow::Node execute() { result = execute(DataFlow::TypeTracker::end()) }
 
-private class DbConnectionExecute extends SqlExecution::Range, DataFlow::CfgNode {
+/** A call to the `execute` method on a cursor (or on a connection). */
+private class ExecuteCall extends SqlExecution::Range, DataFlow::CfgNode {
   override CallNode node;
 
-  DbConnectionExecute() { node.getFunction() = execute().asCfgNode() }
+  ExecuteCall() { node.getFunction() = execute().asCfgNode() }
 
   override DataFlow::Node getSql() {
     result.asCfgNode() in [node.getArg(0), node.getArgByName("sql")]

@@ -5,16 +5,9 @@ using System.Reflection.Metadata;
 namespace Semmle.Extraction.CIL.Entities
 {
     /// <summary>
-    /// An event.
-    /// </summary>
-    internal interface IEvent : IExtractedEntity
-    {
-    }
-
-    /// <summary>
     /// An event entity.
     /// </summary>
-    internal sealed class Event : LabelledEntity, IEvent
+    internal sealed class Event : LabelledEntity
     {
         private readonly EventDefinitionHandle handle;
         private readonly Type parent;
@@ -32,9 +25,8 @@ namespace Semmle.Extraction.CIL.Entities
             parent.WriteId(trapFile);
             trapFile.Write('.');
             trapFile.Write(Cx.ShortName(ed.Name));
+            trapFile.Write(";cil-event");
         }
-
-        public override string IdSuffix => ";cil-event";
 
         public override bool Equals(object? obj)
         {

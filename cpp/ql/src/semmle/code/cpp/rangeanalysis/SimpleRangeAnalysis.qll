@@ -585,6 +585,12 @@ private float addRoundingDownSmall(float x, float small) {
   if (x + small) - x > small then result = (x + small).nextDown() else result = (x + small)
 }
 
+private predicate lowerBoundableExpr(Expr expr) {
+  analyzableExpr(expr) and
+  getUpperBoundsImpl(expr) <= exprMaxVal(expr) and
+  not exists(getValue(expr).toFloat())
+}
+
 /**
  * Gets the lower bounds of the expression.
  *
@@ -603,41 +609,42 @@ private float addRoundingDownSmall(float x, float small) {
  * this predicate.
  */
 private float getTruncatedLowerBounds(Expr expr) {
-  if analyzableExpr(expr)
-  then
-    // If the expression evaluates to a constant, then there is no
-    // need to call getLowerBoundsImpl.
-    if exists(getValue(expr).toFloat())
-    then result = getValue(expr).toFloat()
-    else (
-      // Some of the bounds computed by getLowerBoundsImpl might
-      // overflow, so we replace invalid bounds with exprMinVal.
-      exists(float newLB | newLB = normalizeFloatUp(getLowerBoundsImpl(expr)) |
-        if exprMinVal(expr) <= newLB and newLB <= exprMaxVal(expr)
-        then
-          // Apply widening where we might get a combinatorial explosion.
-          if isRecursiveBinary(expr)
-          then
-            result =
-              max(float widenLB |
-                widenLB = wideningLowerBounds(expr.getUnspecifiedType()) and
-                not widenLB > newLB
-              )
-          else result = newLB
-        else result = exprMinVal(expr)
-      )
-      or
-      // The expression might overflow and wrap. If so, the
-      // lower bound is exprMinVal.
-      exprMightOverflowPositively(expr) and
-      result = exprMinVal(expr)
-    )
-  else
-    // The expression is not analyzable, so its lower bound is
-    // unknown. Note that the call to exprMinVal restricts the
-    // expressions to just those with arithmetic types. There is no
-    // need to return results for non-arithmetic expressions.
-    result = exprMinVal(expr)
+  // If the expression evaluates to a constant, then there is no
+  // need to call getLowerBoundsImpl.
+  analyzableExpr(expr) and
+  result = getValue(expr).toFloat()
+  or
+  // Some of the bounds computed by getLowerBoundsImpl might
+  // overflow, so we replace invalid bounds with exprMinVal.
+  exists(float newLB | newLB = normalizeFloatUp(getLowerBoundsImpl(expr)) |
+    if exprMinVal(expr) <= newLB and newLB <= exprMaxVal(expr)
+    then
+      // Apply widening where we might get a combinatorial explosion.
+      if isRecursiveBinary(expr)
+      then
+        result =
+          max(float widenLB |
+            widenLB = wideningLowerBounds(expr.getUnspecifiedType()) and
+            not widenLB > newLB
+          )
+      else result = newLB
+    else result = exprMinVal(expr)
+  ) and
+  lowerBoundableExpr(expr)
+  or
+  // The expression might overflow and wrap. If so, the
+  // lower bound is exprMinVal.
+  analyzableExpr(expr) and
+  exprMightOverflowPositively(expr) and
+  not result = getValue(expr).toFloat() and
+  result = exprMinVal(expr)
+  or
+  // The expression is not analyzable, so its lower bound is
+  // unknown. Note that the call to exprMinVal restricts the
+  // expressions to just those with arithmetic types. There is no
+  // need to return results for non-arithmetic expressions.
+  not analyzableExpr(expr) and
+  result = exprMinVal(expr)
 }
 
 /**

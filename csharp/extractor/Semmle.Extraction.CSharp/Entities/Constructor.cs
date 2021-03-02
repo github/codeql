@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public class Constructor : Method
+    internal class Constructor : Method
     {
         private Constructor(Context cx, IMethodSymbol init)
             : base(cx, init) { }
@@ -19,10 +19,10 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateModifiers(trapFile);
             ContainingType.PopulateGenerics();
 
-            trapFile.constructors(this, symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
+            trapFile.constructors(this, Symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
             trapFile.constructor_location(this, Location);
 
-            if (symbol.IsImplicitlyDeclared)
+            if (Symbol.IsImplicitlyDeclared)
             {
                 var lineCounts = new LineCounts() { Total = 2, Code = 1, Comment = 0 };
                 trapFile.numlines(this, lineCounts);
@@ -42,16 +42,16 @@ namespace Semmle.Extraction.CSharp.Entities
             if (initializer == null)
                 return;
 
-            Type initializerType;
+            ITypeSymbol initializerType;
             var symbolInfo = Context.GetSymbolInfo(initializer);
 
             switch (initializer.Kind())
             {
                 case SyntaxKind.BaseConstructorInitializer:
-                    initializerType = Type.Create(Context, symbol.ContainingType.BaseType);
+                    initializerType = Symbol.ContainingType.BaseType;
                     break;
                 case SyntaxKind.ThisConstructorInitializer:
-                    initializerType = ContainingType;
+                    initializerType = Symbol.ContainingType;
                     break;
                 default:
                     Context.ModelError(initializer, "Unknown initializer");
@@ -59,8 +59,8 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             var initInfo = new ExpressionInfo(Context,
-                new AnnotatedType(initializerType, NullableAnnotation.None),
-                Context.Create(initializer.ThisOrBaseKeyword.GetLocation()),
+                AnnotatedTypeSymbol.CreateNotAnnotated(initializerType),
+                Context.CreateLocation(initializer.ThisOrBaseKeyword.GetLocation()),
                 Kinds.ExprKind.CONSTRUCTOR_INIT,
                 this,
                 -1,
@@ -73,7 +73,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (target == null)
             {
-                Context.ModelError(symbol, "Unable to resolve call");
+                Context.ModelError(Symbol, "Unable to resolve call");
                 return;
             }
 
@@ -90,7 +90,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                return symbol.DeclaringSyntaxReferences
+                return Symbol.DeclaringSyntaxReferences
                     .Select(r => r.GetSyntax())
                     .OfType<ConstructorDeclarationSyntax>()
                     .FirstOrDefault();
@@ -114,15 +114,15 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            if (symbol.IsStatic)
+            if (Symbol.IsStatic)
                 trapFile.Write("static");
             trapFile.WriteSubId(ContainingType);
-            AddParametersToId(Context, trapFile, symbol);
+            AddParametersToId(Context, trapFile, Symbol);
             trapFile.Write(";constructor");
         }
 
         private ConstructorDeclarationSyntax GetSyntax() =>
-            symbol.DeclaringSyntaxReferences.Select(r => r.GetSyntax()).OfType<ConstructorDeclarationSyntax>().FirstOrDefault();
+            Symbol.DeclaringSyntaxReferences.Select(r => r.GetSyntax()).OfType<ConstructorDeclarationSyntax>().FirstOrDefault();
 
         public override Microsoft.CodeAnalysis.Location FullLocation => ReportingLocation;
 
@@ -136,20 +136,20 @@ namespace Semmle.Extraction.CSharp.Entities
                     return syn.Identifier.GetLocation();
                 }
 
-                if (symbol.IsImplicitlyDeclared)
+                if (Symbol.IsImplicitlyDeclared)
                 {
                     return ContainingType.ReportingLocation;
                 }
 
-                return symbol.ContainingType.Locations.FirstOrDefault();
+                return Symbol.ContainingType.Locations.FirstOrDefault();
             }
         }
 
-        private class ConstructorFactory : ICachedEntityFactory<IMethodSymbol, Constructor>
+        private class ConstructorFactory : CachedEntityFactory<IMethodSymbol, Constructor>
         {
             public static ConstructorFactory Instance { get; } = new ConstructorFactory();
 
-            public Constructor Create(Context cx, IMethodSymbol init) => new Constructor(cx, init);
+            public override Constructor Create(Context cx, IMethodSymbol init) => new Constructor(cx, init);
         }
     }
 }

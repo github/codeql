@@ -17,30 +17,30 @@ private import semmle.code.csharp.frameworks.system.collections.Generic
  * code version.
  */
 DotNet::Callable getCallableForDataFlow(DotNet::Callable c) {
-  exists(DotNet::Callable sourceDecl | sourceDecl = c.getSourceDeclaration() |
-    result = sourceDecl and
+  exists(DotNet::Callable unboundDecl | unboundDecl = c.getUnboundDeclaration() |
+    result = unboundDecl and
     result instanceof SummarizedCallable
     or
-    result = sourceDecl and
+    result = unboundDecl and
     FlowSummaryImpl::Private::summary(_, _, _, SummaryOutput::jump(result, _), _, _)
     or
     result.hasBody() and
-    if sourceDecl.getFile().fromSource()
+    if unboundDecl.getFile().fromSource()
     then
       // C# callable with C# implementation in the database
-      result = sourceDecl
+      result = unboundDecl
     else
-      if sourceDecl instanceof CIL::Callable
+      if unboundDecl instanceof CIL::Callable
       then
         // CIL callable with C# implementation in the database
-        sourceDecl.matchesHandle(result.(Callable))
+        unboundDecl.matchesHandle(result.(Callable))
         or
         // CIL callable without C# implementation in the database
-        not sourceDecl.matchesHandle(any(Callable k | k.hasBody())) and
-        result = sourceDecl
+        not unboundDecl.matchesHandle(any(Callable k | k.hasBody())) and
+        result = unboundDecl
       else
         // C# callable without C# implementation in the database
-        sourceDecl.matchesHandle(result.(CIL::Callable))
+        unboundDecl.matchesHandle(result.(CIL::Callable))
   )
 }
 
@@ -101,7 +101,7 @@ private module Cached {
     TNonDelegateCall(ControlFlow::Nodes::ElementNode cfn, DispatchCall dc) {
       cfn.getElement() = dc.getCall()
     } or
-    TExplicitDelegateCall(ControlFlow::Nodes::ElementNode cfn, DelegateCall dc) {
+    TExplicitDelegateLikeCall(ControlFlow::Nodes::ElementNode cfn, DelegateLikeCall dc) {
       cfn.getElement() = dc
     } or
     TTransitiveCapturedCall(ControlFlow::Nodes::ElementNode cfn, Callable target) {
@@ -168,11 +168,10 @@ private module DispatchImpl {
     )
     or
     result =
-      call
-          .(NonDelegateDataFlowCall)
+      call.(NonDelegateDataFlowCall)
           .getDispatchCall()
           .getADynamicTargetInCallContext(ctx.(NonDelegateDataFlowCall).getDispatchCall())
-          .getSourceDeclaration()
+          .getUnboundDeclaration()
   }
 }
 
@@ -309,12 +308,12 @@ abstract class DelegateDataFlowCall extends DataFlowCall {
   override DataFlowCallable getARuntimeTarget() { result = this.getARuntimeTarget(_) }
 }
 
-/** An explicit delegate call relevant for data flow. */
-class ExplicitDelegateDataFlowCall extends DelegateDataFlowCall, TExplicitDelegateCall {
+/** An explicit delegate or function pointer call relevant for data flow. */
+class ExplicitDelegateLikeDataFlowCall extends DelegateDataFlowCall, TExplicitDelegateLikeCall {
   private ControlFlow::Nodes::ElementNode cfn;
-  private DelegateCall dc;
+  private DelegateLikeCall dc;
 
-  ExplicitDelegateDataFlowCall() { this = TExplicitDelegateCall(cfn, dc) }
+  ExplicitDelegateLikeDataFlowCall() { this = TExplicitDelegateLikeCall(cfn, dc) }
 
   override DataFlowCallable getARuntimeTarget(CallContext::CallContext cc) {
     result = getCallableForDataFlow(dc.getARuntimeTarget(cc))
@@ -392,7 +391,7 @@ class SummaryDelegateCall extends DelegateDataFlowCall, TSummaryDelegateCall {
 
   override DataFlowCallable getARuntimeTarget(CallContext::CallContext cc) {
     exists(SummaryDelegateParameterSink p |
-      p = TSummaryParameterNode(c, pos) and
+      p.isParameterOf(c, pos) and
       result = p.getARuntimeTarget(cc)
     )
   }

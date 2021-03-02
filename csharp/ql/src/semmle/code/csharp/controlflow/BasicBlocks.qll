@@ -298,6 +298,19 @@ private module Internal {
     cfn.isJoin()
     or
     cfn.getAPredecessor().isBranch()
+    or
+    /*
+     * In cases such as
+     * ```csharp
+     * if (b)
+     *     M()
+     * ```
+     * where the `false` edge out of `b` is not present (because we can prove it
+     * impossible), we still split up the basic block in two, in order to generate
+     * a `ConditionBlock` which can be used by the guards library.
+     */
+
+    exists(cfn.getAPredecessorByType(any(ControlFlow::SuccessorTypes::ConditionalSuccessor s)))
   }
 
   /**
@@ -364,7 +377,17 @@ private predicate entryBB(BasicBlock bb) {
  * an annotated exit node.
  */
 class AnnotatedExitBasicBlock extends BasicBlock {
-  AnnotatedExitBasicBlock() { this.getANode() instanceof ControlFlow::Nodes::AnnotatedExitNode }
+  private boolean isNormal;
+
+  AnnotatedExitBasicBlock() {
+    this.getANode() =
+      any(ControlFlow::Nodes::AnnotatedExitNode n |
+        if n.isNormal() then isNormal = true else isNormal = false
+      )
+  }
+
+  /** Holds if this block represents a normal exit. */
+  predicate isNormal() { isNormal = true }
 }
 
 /**
@@ -377,19 +400,14 @@ class ExitBasicBlock extends BasicBlock {
 
 private module JoinBlockPredecessors {
   private import ControlFlow::Nodes
-
-  private class CallableOrCFE extends Element {
-    CallableOrCFE() { this instanceof Callable or this instanceof ControlFlowElement }
-  }
-
-  private predicate id(CallableOrCFE x, CallableOrCFE y) { x = y }
-
-  private predicate idOf(CallableOrCFE x, int y) = equivalenceRelation(id/2)(x, y)
+  private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
 
   int getId(JoinBlockPredecessor jbp) {
-    idOf(jbp.getFirstNode().(ElementNode).getElement(), result)
-    or
-    idOf(jbp.(EntryBasicBlock).getCallable(), result)
+    exists(ControlFlowTree::Range t | ControlFlowTree::idOf(t, result) |
+      t = jbp.getFirstNode().getElement()
+      or
+      t = jbp.(EntryBasicBlock).getCallable()
+    )
   }
 
   string getSplitString(JoinBlockPredecessor jbp) {

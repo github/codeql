@@ -14,6 +14,7 @@
  */
 
 import javascript
+private import semmle.javascript.dataflow.InferredTypes
 
 module TaintedObject {
   private import DataFlow
@@ -63,6 +64,14 @@ module TaintedObject {
       src = call.getASourceOperand() and
       trg = call.getDestinationOperand().getALocalSource()
     )
+    or
+    // Spreading into an object preserves deep object taint: `p -> { ...p }`
+    inlbl = label() and
+    outlbl = label() and
+    exists(ObjectLiteralNode obj |
+      src = obj.getASpreadProperty() and
+      trg = obj
+    )
   }
 
   /**
@@ -90,25 +99,24 @@ module TaintedObject {
    */
   private class TypeTestGuard extends SanitizerGuard, ValueNode {
     override EqualityTest astNode;
-    TypeofExpr typeof;
+    Expr operand;
     boolean polarity;
 
     TypeTestGuard() {
-      astNode.getAnOperand() = typeof and
-      (
+      exists(TypeofTag tag | TaintTracking::isTypeofGuard(astNode, operand, tag) |
         // typeof x === "object" sanitizes `x` when it evaluates to false
-        astNode.getAnOperand().getStringValue() = "object" and
+        tag = "object" and
         polarity = astNode.getPolarity().booleanNot()
         or
         // typeof x === "string" sanitizes `x` when it evaluates to true
-        astNode.getAnOperand().getStringValue() != "object" and
+        tag != "object" and
         polarity = astNode.getPolarity()
       )
     }
 
     override predicate sanitizes(boolean outcome, Expr e, FlowLabel label) {
       polarity = outcome and
-      e = typeof.getOperand() and
+      e = operand and
       label = label()
     }
   }

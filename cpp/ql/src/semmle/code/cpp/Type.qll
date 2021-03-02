@@ -274,7 +274,7 @@ class Type extends Locatable, @type {
 
   /**
    * Gets this type with any typedefs resolved. For example, given
-   * `typedef C T`, this would resolve `const T&amp;` to `const C&amp;`.
+   * `typedef C T`, this would resolve `const T&` to `const C&`.
    * Note that this will only work if the resolved type actually appears
    * on its own elsewhere in the program.
    */
@@ -577,7 +577,9 @@ class BoolType extends IntegralType {
  * unsigned char e, f;
  * ```
  */
-abstract class CharType extends IntegralType { }
+class CharType extends IntegralType {
+  CharType() { builtintypes(underlyingElement(this), _, [5, 6, 7], _, _, _) }
+}
 
 /**
  * The C/C++ `char` type (which is distinct from `signed char` and
@@ -1542,9 +1544,9 @@ class FunctionPointerIshType extends DerivedType {
 /**
  * A C++ pointer to data member. See 15.5.
  * ```
- * class C { int m; };
+ * class C { public: int m; };
  * int C::* p = &C::m;          // pointer to data member m of class C
- * class C *;
+ * class C c;
  * int val = c.*p;              // access data member
  * ```
  */

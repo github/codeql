@@ -356,7 +356,16 @@
   ],
   "Inline Test Expectations": [
     "cpp/ql/test/TestUtilities/InlineExpectationsTest.qll",
+    "java/ql/test/TestUtilities/InlineExpectationsTest.qll",
     "python/ql/test/TestUtilities/InlineExpectationsTest.qll"
+  ],
+  "C++ ExternalAPIs": [
+    "cpp/ql/src/Security/CWE/CWE-020/ExternalAPIs.qll",
+    "cpp/ql/src/Security/CWE/CWE-020/ir/ExternalAPIs.qll"
+  ],
+  "C++ SafeExternalAPIFunction": [
+    "cpp/ql/src/Security/CWE/CWE-020/SafeExternalAPIFunction.qll",
+    "cpp/ql/src/Security/CWE/CWE-020/ir/SafeExternalAPIFunction.qll"
   ],
   "XML": [
     "cpp/ql/src/semmle/code/cpp/XML.qll",
@@ -416,5 +425,10 @@
     "java/ql/src/IDEContextual.qll",
     "javascript/ql/src/IDEContextual.qll",
     "python/ql/src/analysis/IDEContextual.qll"
+  ],
+  "SSA C#": [
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/SsaImplCommon.qll",
+    "csharp/ql/src/semmle/code/csharp/controlflow/internal/pressa/SsaImplCommon.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/basessa/SsaImplCommon.qll"
   ]
 }

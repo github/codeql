@@ -602,8 +602,7 @@ class SsaVariableCapture extends SsaImplicitDefinition, TCapture {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     exists(ReachableBasicBlock bb, int i | definesAt(bb, i, _) |
-      bb
-          .getNode(i)
+      bb.getNode(i)
           .getLocation()
           .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     )

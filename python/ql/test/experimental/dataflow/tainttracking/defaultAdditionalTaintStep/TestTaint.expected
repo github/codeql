@@ -68,9 +68,9 @@
 | test_json.py:27 | ok   | test | json.loads(..) |
 | test_json.py:34 | fail | test | tainted_filelike |
 | test_json.py:35 | fail | test | json.load(..) |
-| test_json.py:48 | fail | non_syntacical | dumps(..) |
-| test_json.py:49 | fail | non_syntacical | dumps_alias(..) |
-| test_json.py:50 | fail | non_syntacical | loads(..) |
+| test_json.py:48 | ok   | non_syntacical | dumps(..) |
+| test_json.py:49 | ok   | non_syntacical | dumps_alias(..) |
+| test_json.py:50 | ok   | non_syntacical | loads(..) |
 | test_json.py:57 | fail | non_syntacical | tainted_filelike |
 | test_json.py:58 | fail | non_syntacical | load(..) |
 | test_string.py:25 | ok   | str_operations | ts |

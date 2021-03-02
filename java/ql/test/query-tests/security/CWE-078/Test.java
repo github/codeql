@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 class Test {
-  public static void shellCommand(String arg) {
+  public static void shellCommand(String arg) throws java.io.IOException {
     ProcessBuilder pb = new ProcessBuilder("/bin/bash -c echo " + arg);
     pb.start();
 
@@ -25,7 +25,7 @@ class Test {
     pb.start();
   }
 
-  public static void nonShellCommand(String arg) {
+  public static void nonShellCommand(String arg) throws java.io.IOException {
     ProcessBuilder pb = new ProcessBuilder("./customTool " + arg);
     pb.start();
 
@@ -46,7 +46,7 @@ class Test {
     pb.start();
   }
 
-  public static void relativeCommand() {
+  public static void relativeCommand() throws java.io.IOException {
       ProcessBuilder pb = new ProcessBuilder("ls");
       pb.start();
 
@@ -54,7 +54,7 @@ class Test {
       pb.start();
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws java.io.IOException {
       String arg = args.length > 1 ? args[1] : "default";
 
       shellCommand(arg);

@@ -17,9 +17,8 @@ private string commonTopLevelDomainRegex() { result = "com|org|edu|gov|uk|net|io
 
 predicate looksLikeUrl(StrConst s) {
   exists(string text | text = s.getText() |
-    text
-        .regexpMatch("(?i)([a-z]*:?//)?\\.?([a-z0-9-]+\\.)+(" + commonTopLevelDomainRegex() +
-            ")(:[0-9]+)?/?")
+    text.regexpMatch("(?i)([a-z]*:?//)?\\.?([a-z0-9-]+\\.)+(" + commonTopLevelDomainRegex() +
+        ")(:[0-9]+)?/?")
     or
     // target is a HTTP URL to a domain on any TLD
     text.regexpMatch("(?i)https?://([a-z0-9-]+\\.)+([a-z]+)(:[0-9]+)?/?")

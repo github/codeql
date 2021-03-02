@@ -298,6 +298,23 @@ module DOM {
       )
     }
 
+    /**
+     * A data flow node that might refer to some form.
+     * Either by a read like `document.forms[0]`, or a property read from `document` with some constant property-name.
+     * E.g. if `<form name="foobar">..</form>` exists, then `document.foobar` refers to that form.
+     */
+    private DataFlow::SourceNode forms() {
+      result = documentRef().getAPropertyRead("forms").getAPropertyRead()
+      or
+      exists(DataFlow::PropRead read |
+        read = documentRef().getAPropertyRead() and
+        result = read
+      |
+        read.mayHavePropertyName(_) and
+        not read.mayHavePropertyName(getADomPropertyName())
+      )
+    }
+
     private class DefaultRange extends Range {
       DefaultRange() {
         this.asExpr().(VarAccess).getVariable() instanceof DOMGlobalVariable
@@ -317,6 +334,14 @@ module DOM {
         or
         this = domElementCollection()
         or
+        this = forms()
+        or
+        // reading property `foo` - where a child has `name="foo"` - resolves to that child.
+        // We only look for such properties on forms/document, to avoid potential false positives.
+        exists(DataFlow::SourceNode form | form = [forms(), documentRef()] |
+          this = form.getAPropertyRead(any(string s | not s = getADomPropertyName()))
+        )
+        or
         exists(JQuery::MethodCall call | this = call and call.getMethodName() = "get" |
           call.getNumArgument() = 1 and
           forex(InferredType t | t = call.getArgument(0).analyze().getAType() | t = TTNumber())
@@ -332,6 +357,25 @@ module DOM {
     }
   }
 
+  /**
+   * Gets a reference to a DOM event.
+   */
+  private DataFlow::SourceNode domEventSource() {
+    // e.g. <form onSubmit={e => e.target}/>
+    exists(JSXAttribute attr | attr.getName().matches("on%") |
+      result = attr.getValue().flow().getABoundFunctionValue(0).getParameter(0)
+    )
+    or
+    // node.addEventListener("submit", e => e.target)
+    result = domValueRef().getAMethodCall("addEventListener").getABoundCallbackParameter(1, 0)
+    or
+    // node.onSubmit = (e => e.target);
+    exists(DataFlow::PropWrite write | write = domValueRef().getAPropertyWrite() |
+      write.getPropertyName().matches("on%") and
+      result = write.getRhs().getAFunctionValue().getParameter(0)
+    )
+  }
+
   /** Gets a data flow node that refers directly to a value from the DOM. */
   DataFlow::SourceNode domValueSource() { result instanceof DomValueSource::Range }
 
@@ -342,6 +386,9 @@ module DOM {
     or
     t.start() and
     result = domValueRef().getAMethodCall(["item", "namedItem"])
+    or
+    t.startInProp("target") and
+    result = domEventSource()
     or
     exists(DataFlow::TypeTracker t2 | result = domValueRef(t2).track(t2, t))
   }
@@ -374,8 +421,24 @@ module DOM {
         this = DOM::domValueRef().getAPropertyRead("baseUri")
         or
         this = DataFlow::globalVarRef("location")
+        or
+        this = any(DataFlow::Node n | n.hasUnderlyingType("Location")).getALocalSource() and
+        not this = nonFirstLocationType(DataFlow::TypeTracker::end()) // only start from the source, and not the locations we can type-track to.
       }
     }
+  }
+
+  /**
+   * Get a reference to a node of type `Location` that has gone through at least 1 type-tracking step.
+   */
+  private DataFlow::SourceNode nonFirstLocationType(DataFlow::TypeTracker t) {
+    // One step inlined in the beginning.
+    exists(DataFlow::TypeTracker t2 |
+      result =
+        any(DataFlow::Node n | n.hasUnderlyingType("Location")).getALocalSource().track(t2, t)
+    )
+    or
+    exists(DataFlow::TypeTracker t2 | result = nonFirstLocationType(t2).track(t2, t))
   }
 
   /** Gets a data flow node that directly refers to a DOM `location` object. */

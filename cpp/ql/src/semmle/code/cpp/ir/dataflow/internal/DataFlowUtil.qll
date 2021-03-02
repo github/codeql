@@ -95,7 +95,7 @@ class Node extends TIRDataFlowNode {
    * Gets the uninitialized local variable corresponding to this node, if
    * any.
    */
-  LocalVariable asUninitialized() { none() }
+  deprecated LocalVariable asUninitialized() { none() }
 
   /**
    * Gets an upper bound on the type of this node.
@@ -266,10 +266,8 @@ class ParameterIndirectionNode extends ParameterNode {
 
   override predicate isParameterOf(Function f, int pos) {
     exists(int index |
-      f.getParameter(index) = instr.getParameter()
-      or
-      index = -1 and
-      instr.getIRVariable().(IRThisVariable).getEnclosingFunction() = f
+      instr.getEnclosingFunction() = f and
+      instr.hasIndex(index)
     |
       pos = getArgumentPosOfSideEffect(index)
     )
@@ -476,16 +474,8 @@ class DefinitionByReferenceNode extends InstructionNode {
       instr
           .getPrimaryInstruction()
           .(CallInstruction)
-          .getPositionalArgument(instr.getIndex())
+          .getArgument(instr.getIndex())
           .getUnconvertedResultExpression()
-    or
-    result =
-      instr
-          .getPrimaryInstruction()
-          .(CallInstruction)
-          .getThisArgument()
-          .getUnconvertedResultExpression() and
-    instr.getIndex() = -1
   }
 
   /** Gets the parameter through which this value is assigned. */
@@ -726,21 +716,15 @@ private predicate modelFlow(Operand opFrom, Instruction iTo) {
       iTo = call
       or
       exists(int index, WriteSideEffectInstruction outNode |
-        modelOut.isParameterDeref(index) and
+        modelOut.isParameterDerefOrQualifierObject(index) and
         iTo = outNode and
         outNode = getSideEffectFor(call, index)
-      )
-      or
-      exists(WriteSideEffectInstruction outNode |
-        modelOut.isQualifierObject() and
-        iTo = outNode and
-        outNode = getSideEffectFor(call, -1)
       )
     ) and
     (
       exists(int index |
-        modelIn.isParameter(index) and
-        opFrom = call.getPositionalArgumentOperand(index)
+        modelIn.isParameterOrQualifierAddress(index) and
+        opFrom = call.getArgumentOperand(index)
       )
       or
       exists(int index, ReadSideEffectInstruction read |
@@ -748,9 +732,6 @@ private predicate modelFlow(Operand opFrom, Instruction iTo) {
         read = getSideEffectFor(call, index) and
         opFrom = read.getSideEffectOperand()
       )
-      or
-      modelIn.isQualifierAddress() and
-      opFrom = call.getThisArgumentOperand()
       or
       exists(ReadSideEffectInstruction read |
         modelIn.isQualifierObject() and

@@ -212,6 +212,21 @@ class MethodSystemGetProperty extends Method {
 }
 
 /**
+ * An access to a method named `getProperty` on class `java.lang.System`.
+ */
+class MethodAccessSystemGetProperty extends MethodAccess {
+  MethodAccessSystemGetProperty() { getMethod() instanceof MethodSystemGetProperty }
+
+  /**
+   * Holds if this call has a compile-time constant first argument with the value `propertyName`.
+   * For example: `System.getProperty("user.dir")`.
+   */
+  predicate hasCompileTimeConstantGetPropertyName(string propertyName) {
+    this.getArgument(0).(CompileTimeConstantExpr).getStringValue() = propertyName
+  }
+}
+
+/**
  * Any method named `exit` on class `java.lang.Runtime` or `java.lang.System`.
  */
 class MethodExit extends Method {

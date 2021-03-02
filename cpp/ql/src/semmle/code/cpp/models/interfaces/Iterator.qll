@@ -26,3 +26,8 @@ abstract class GetIteratorFunction extends Function {
    */
   abstract predicate getsIterator(FunctionInput input, FunctionOutput output);
 }
+
+/**
+ * A type which can be used as an iterator.
+ */
+abstract class Iterator extends Type { }

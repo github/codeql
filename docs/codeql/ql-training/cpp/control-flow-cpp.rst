@@ -223,7 +223,7 @@ Further materials
 =================
 
 - CodeQL for C/C++: https://help.semmle.com/QL/learn-ql/ql/cpp/ql-for-cpp.html 
-- API reference: https://help.semmle.com/qldoc/cpp 
+- API reference: https://codeql.github.com/codeql-standard-libraries/cpp 
 
 .. rst-class:: end-slide
 

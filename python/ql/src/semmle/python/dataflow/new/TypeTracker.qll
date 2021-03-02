@@ -51,7 +51,7 @@ module StepSummary {
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
    */
   cached
-  predicate step(Node nodeFrom, Node nodeTo, StepSummary summary) {
+  predicate step(LocalSourceNode nodeFrom, Node nodeTo, StepSummary summary) {
     exists(Node mid | typePreservingStep*(nodeFrom, mid) and smallstep(mid, nodeTo, summary))
   }
 
@@ -82,9 +82,8 @@ module StepSummary {
 
 /** Holds if it's reasonable to expect the data flow step from `nodeFrom` to `nodeTo` to preserve types. */
 private predicate typePreservingStep(Node nodeFrom, Node nodeTo) {
-  EssaFlow::essaFlowStep(nodeFrom, nodeTo) or
-  jumpStep(nodeFrom, nodeTo) or
-  nodeFrom = nodeTo.(PostUpdateNode).getPreUpdateNode()
+  simpleLocalFlowStep(nodeFrom, nodeTo) or
+  jumpStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -142,11 +141,11 @@ predicate returnStep(ReturnNode nodeFrom, Node nodeTo) {
  * function. This means we will track the fact that `x.attr` can have the type of `y` into the
  * assignment to `z` inside `bar`, even though this attribute write happens _after_ `bar` is called.
  */
-predicate basicStoreStep(Node nodeFrom, Node nodeTo, string attr) {
+predicate basicStoreStep(Node nodeFrom, LocalSourceNode nodeTo, string attr) {
   exists(AttrWrite a |
     a.mayHaveAttributeName(attr) and
     nodeFrom = a.getValue() and
-    simpleLocalFlowStep*(nodeTo, a.getObject())
+    nodeTo.flowsTo(a.getObject())
   )
 }
 
@@ -181,7 +180,7 @@ private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalAttributeN
  * It is recommended that all uses of this type are written in the following form,
  * for tracking some type `myType`:
  * ```
- * DataFlow::Node myType(DataFlow::TypeTracker t) {
+ * DataFlow::LocalSourceNode myType(DataFlow::TypeTracker t) {
  *   t.start() and
  *   result = < source of myType >
  *   or
@@ -190,7 +189,7 @@ private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalAttributeN
  *   )
  * }
  *
- * DataFlow::Node myType() { result = myType(DataFlow::TypeTracker::end()) }
+ * DataFlow::Node myType() { myType(DataFlow::TypeTracker::end()).flowsTo(result) }
  * ```
  *
  * Instead of `result = myType(t2).track(t2, t)`, you can also use the equivalent
@@ -275,7 +274,7 @@ class TypeTracker extends TTypeTracker {
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
    */
   pragma[inline]
-  TypeTracker step(Node nodeFrom, Node nodeTo) {
+  TypeTracker step(LocalSourceNode nodeFrom, Node nodeTo) {
     exists(StepSummary summary |
       StepSummary::step(nodeFrom, nodeTo, summary) and
       result = this.append(summary)
@@ -324,4 +323,145 @@ module TypeTracker {
    * Gets a valid end point of type tracking.
    */
   TypeTracker end() { result.end() }
+}
+
+private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn, OptionalAttributeName attr)
+
+/**
+ * Summary of the steps needed to back-track a use of a value to a given dataflow node.
+ *
+ * This can for example be used to track callbacks that are passed to a certain API,
+ * so we can model specific parameters of that callback as having a certain type.
+ *
+ * Note that type back-tracking does not provide a source/sink relation, that is,
+ * it may determine that a node will be used in an API call somewhere, but it won't
+ * determine exactly where that use was, or the path that led to the use.
+ *
+ * It is recommended that all uses of this type are written in the following form,
+ * for back-tracking some callback type `myCallback`:
+ *
+ * ```
+ * DataFlow::LocalSourceNode myCallback(DataFlow::TypeBackTracker t) {
+ *   t.start() and
+ *   result = (< some API call >).getArgument(< n >).getALocalSource()
+ *   or
+ *   exists (DataFlow::TypeBackTracker t2 |
+ *     result = myCallback(t2).backtrack(t2, t)
+ *   )
+ * }
+ *
+ * DataFlow::LocalSourceNode myCallback() { result = myCallback(DataFlow::TypeBackTracker::end()) }
+ * ```
+ *
+ * Instead of `result = myCallback(t2).backtrack(t2, t)`, you can also use the equivalent
+ * `t2 = t.step(result, myCallback(t2))`. If you additionally want to track individual
+ * intra-procedural steps, use `t2 = t.smallstep(result, myCallback(t2))`.
+ */
+class TypeBackTracker extends TTypeBackTracker {
+  Boolean hasReturn;
+  string attr;
+
+  TypeBackTracker() { this = MkTypeBackTracker(hasReturn, attr) }
+
+  /** Gets the summary resulting from prepending `step` to this type-tracking summary. */
+  TypeBackTracker prepend(StepSummary step) {
+    step = LevelStep() and result = this
+    or
+    step = CallStep() and hasReturn = false and result = this
+    or
+    step = ReturnStep() and result = MkTypeBackTracker(true, attr)
+    or
+    exists(string p | step = LoadStep(p) and attr = "" and result = MkTypeBackTracker(hasReturn, p))
+    or
+    step = StoreStep(attr) and result = MkTypeBackTracker(hasReturn, "")
+  }
+
+  /** Gets a textual representation of this summary. */
+  string toString() {
+    exists(string withReturn, string withAttr |
+      (if hasReturn = true then withReturn = "with" else withReturn = "without") and
+      (if attr != "" then withAttr = " with attribute " + attr else withAttr = "") and
+      result = "type back-tracker " + withReturn + " return steps" + withAttr
+    )
+  }
+
+  /**
+   * Holds if this is the starting point of type tracking.
+   */
+  predicate start() { hasReturn = false and attr = "" }
+
+  /**
+   * Holds if this is the end point of type tracking.
+   */
+  predicate end() { attr = "" }
+
+  /**
+   * INTERNAL. DO NOT USE.
+   *
+   * Holds if this type has been back-tracked into a call through return edge.
+   */
+  boolean hasReturn() { result = hasReturn }
+
+  /**
+   * Gets a type tracker that starts where this one has left off to allow continued
+   * tracking.
+   *
+   * This predicate is only defined if the type has not been tracked into an attribute.
+   */
+  TypeBackTracker continue() { attr = "" and result = this }
+
+  /**
+   * Gets the summary that corresponds to having taken a backwards
+   * heap and/or inter-procedural step from `nodeTo` to `nodeFrom`.
+   */
+  pragma[inline]
+  TypeBackTracker step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo) {
+    exists(StepSummary summary |
+      StepSummary::step(nodeFrom, nodeTo, summary) and
+      this = result.prepend(summary)
+    )
+  }
+
+  /**
+   * Gets the summary that corresponds to having taken a backwards
+   * local, heap and/or inter-procedural step from `nodeTo` to `nodeFrom`.
+   *
+   * Unlike `TypeBackTracker::step`, this predicate exposes all edges
+   * in the flowgraph, and not just the edges between
+   * `LocalSourceNode`s. It may therefore be less performant.
+   *
+   * Type tracking predicates using small steps typically take the following form:
+   * ```ql
+   * DataFlow::Node myType(DataFlow::TypeBackTracker t) {
+   *   t.start() and
+   *   result = < some API call >.getArgument(< n >)
+   *   or
+   *   exists (DataFlow::TypeBackTracker t2 |
+   *     t = t2.smallstep(result, myType(t2))
+   *   )
+   * }
+   *
+   * DataFlow::Node myType() {
+   *   result = myType(DataFlow::TypeBackTracker::end())
+   * }
+   * ```
+   */
+  pragma[inline]
+  TypeBackTracker smallstep(Node nodeFrom, Node nodeTo) {
+    exists(StepSummary summary |
+      StepSummary::smallstep(nodeFrom, nodeTo, summary) and
+      this = result.prepend(summary)
+    )
+    or
+    typePreservingStep(nodeFrom, nodeTo) and
+    this = result
+  }
+}
+
+/** Provides predicates for implementing custom `TypeBackTracker`s. */
+module TypeBackTracker {
+  /**
+   * Gets a valid end point of type back-tracking.
+   */
+  TypeBackTracker end() { result.end() }
 }

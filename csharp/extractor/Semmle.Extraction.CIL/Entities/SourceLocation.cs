@@ -4,11 +4,7 @@ using Semmle.Extraction.PDB;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    public interface ISourceLocation : ILocation
-    {
-    }
-
-    public sealed class PdbSourceLocation : LabelledEntity, ISourceLocation
+    internal sealed class PdbSourceLocation : LabelledEntity, ILocation
     {
         private readonly Location location;
         private readonly PdbSourceFile file;
@@ -30,6 +26,7 @@ namespace Semmle.Extraction.CIL.Entities
             trapFile.Write(location.EndLine);
             trapFile.Write(',');
             trapFile.Write(location.EndColumn);
+            trapFile.Write(";sourcelocation");
         }
 
         public override bool Equals(object? obj)
@@ -47,7 +44,5 @@ namespace Semmle.Extraction.CIL.Entities
                 yield return Tuples.locations_default(this, file, location.StartLine, location.StartColumn, location.EndLine, location.EndColumn);
             }
         }
-
-        public override string IdSuffix => ";sourcelocation";
     }
 }

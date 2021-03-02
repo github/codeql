@@ -620,7 +620,8 @@ module FlowVar_internal {
   private predicate largeVariable(Variable v, int liveBlocks, int defs) {
     liveBlocks = strictcount(SubBasicBlock sbb | variableLiveInSBB(sbb, v)) and
     defs = strictcount(SubBasicBlock sbb | exists(TBlockVar(sbb, v))) and
-    liveBlocks * defs > 1000000
+    // Convert to float to avoid int overflow (32-bit two's complement)
+    liveBlocks.(float) * defs.(float) > 100000.0
   }
 
   /**

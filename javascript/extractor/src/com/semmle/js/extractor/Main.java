@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import com.semmle.js.extractor.ExtractorConfig.HTMLHandling;
+import com.semmle.extractor.html.HtmlPopulator;
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.extractor.FileExtractor.FileType;
@@ -43,7 +43,7 @@ public class Main {
    * A version identifier that should be updated every time the extractor changes in such a way that
    * it may produce different tuples for the same file under the same {@link ExtractorConfig}.
    */
-  public static final String EXTRACTOR_VERSION = "2020-11-11";
+  public static final String EXTRACTOR_VERSION = "2021-02-24";
 
   public static final Pattern NEWLINE = Pattern.compile("\n");
 
@@ -486,8 +486,8 @@ public class Main {
             .withHtmlHandling(
                 ap.getEnum(
                     P_HTML,
-                    HTMLHandling.class,
-                    ap.has(P_EXPERIMENTAL) ? HTMLHandling.ALL : HTMLHandling.ELEMENTS))
+                    HtmlPopulator.Config.class,
+                    ap.has(P_EXPERIMENTAL) ? HtmlPopulator.Config.ALL : HtmlPopulator.Config.ELEMENTS))
             .withFileType(getFileType(ap))
             .withSourceType(ap.getEnum(P_SOURCE_TYPE, SourceType.class, SourceType.AUTO))
             .withExtractLines(ap.has(P_EXTRACT_PROGRAM_TEXT))

@@ -188,8 +188,7 @@ class FormattingCall extends Call {
       exists(Expr arg | arg = this.getArgument(1 + this.getFormatStringIndex()) |
         result = arg.(ArrayCreationExpr).getFirstDimensionSize() or
         result =
-          arg
-              .(VarAccess)
+          arg.(VarAccess)
               .getVariable()
               .getAnAssignedValue()
               .(ArrayCreationExpr)

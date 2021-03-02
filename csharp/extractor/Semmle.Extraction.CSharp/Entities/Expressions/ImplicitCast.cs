@@ -12,21 +12,21 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
 
         public ImplicitCast(ExpressionNodeInfo info)
-            : base(new ExpressionInfo(info.Context, Entities.Type.Create(info.Context, info.ConvertedType), info.Location, ExprKind.CAST, info.Parent, info.Child, true, info.ExprValue))
+            : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.CAST, info.Parent, info.Child, true, info.ExprValue))
         {
-            Expr = Factory.Create(new ExpressionNodeInfo(cx, info.Node, this, 0));
+            Expr = Factory.Create(new ExpressionNodeInfo(Context, info.Node, this, 0));
         }
 
         public ImplicitCast(ExpressionNodeInfo info, IMethodSymbol method)
-            : base(new ExpressionInfo(info.Context, Entities.Type.Create(info.Context, info.ConvertedType), info.Location, ExprKind.OPERATOR_INVOCATION, info.Parent, info.Child, true, info.ExprValue))
+            : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.OPERATOR_INVOCATION, info.Parent, info.Child, true, info.ExprValue))
         {
             Expr = Factory.Create(info.SetParent(this, 0));
 
-            var target = Method.Create(cx, method);
+            var target = Method.Create(Context, method);
             if (target != null)
-                cx.TrapWriter.Writer.expr_call(this, target);
+                Context.TrapWriter.Writer.expr_call(this, target);
             else
-                cx.ModelError(info.Node, "Failed to resolve target for operator invocation");
+                Context.ModelError(info.Node, "Failed to resolve target for operator invocation");
         }
 
         /// <summary>

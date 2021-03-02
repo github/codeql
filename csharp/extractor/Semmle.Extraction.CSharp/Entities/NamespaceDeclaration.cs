@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            trapFile.WriteSubId(Context.Create(ReportingLocation));
+            trapFile.WriteSubId(Context.CreateLocation(ReportingLocation));
             trapFile.Write(";namespacedeclaration");
         }
 
@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var @namespace = (INamespaceSymbol)Context.GetModel(node).GetSymbolInfo(node.Name).Symbol;
             var ns = Namespace.Create(Context, @namespace);
             trapFile.namespace_declarations(this, ns);
-            trapFile.namespace_declaration_location(this, Context.Create(node.Name.GetLocation()));
+            trapFile.namespace_declaration_location(this, Context.CreateLocation(node.Name.GetLocation()));
 
             var visitor = new Populators.TypeOrNamespaceVisitor(Context, trapFile, this);
 
@@ -52,11 +52,11 @@ namespace Semmle.Extraction.CSharp.Entities
             return NamespaceDeclarationFactory.Instance.CreateEntity(cx, decl, init);
         }
 
-        private class NamespaceDeclarationFactory : ICachedEntityFactory<(NamespaceDeclarationSyntax decl, NamespaceDeclaration parent), NamespaceDeclaration>
+        private class NamespaceDeclarationFactory : CachedEntityFactory<(NamespaceDeclarationSyntax decl, NamespaceDeclaration parent), NamespaceDeclaration>
         {
             public static readonly NamespaceDeclarationFactory Instance = new NamespaceDeclarationFactory();
 
-            public NamespaceDeclaration Create(Context cx, (NamespaceDeclarationSyntax decl, NamespaceDeclaration parent) init) =>
+            public override NamespaceDeclaration Create(Context cx, (NamespaceDeclarationSyntax decl, NamespaceDeclaration parent) init) =>
                 new NamespaceDeclaration(cx, init.decl, init.parent);
         }
 

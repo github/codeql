@@ -271,352 +271,383 @@ private predicate additionalJumpStep(Node node1, Node node2, Configuration confi
  */
 private predicate useFieldFlow(Configuration config) { config.fieldFlowBranchLimit() >= 1 }
 
-/**
- * Holds if `node` is reachable from a source in the configuration `config`.
- *
- * The Boolean `fromArg` records whether the node is reached through an
- * argument in a call.
- */
-private predicate nodeCandFwd1(Node node, boolean fromArg, Configuration config) {
-  not fullBarrier(node, config) and
-  (
-    config.isSource(node) and
-    fromArg = false
+private module Stage1 {
+  class ApApprox = Unit;
+
+  class Ap = Unit;
+
+  class ApOption = Unit;
+
+  class Cc = boolean;
+
+  /* Begin: Stage 1 logic. */
+  /**
+   * Holds if `node` is reachable from a source in the configuration `config`.
+   *
+   * The Boolean `cc` records whether the node is reached through an
+   * argument in a call.
+   */
+  predicate fwdFlow(Node node, Cc cc, Configuration config) {
+    not fullBarrier(node, config) and
+    (
+      config.isSource(node) and
+      cc = false
+      or
+      exists(Node mid |
+        fwdFlow(mid, cc, config) and
+        localFlowStep(mid, node, config)
+      )
+      or
+      exists(Node mid |
+        fwdFlow(mid, cc, config) and
+        additionalLocalFlowStep(mid, node, config)
+      )
+      or
+      exists(Node mid |
+        fwdFlow(mid, _, config) and
+        jumpStep(mid, node, config) and
+        cc = false
+      )
+      or
+      exists(Node mid |
+        fwdFlow(mid, _, config) and
+        additionalJumpStep(mid, node, config) and
+        cc = false
+      )
+      or
+      // store
+      exists(Node mid |
+        useFieldFlow(config) and
+        fwdFlow(mid, cc, config) and
+        store(mid, _, node, _) and
+        not outBarrier(mid, config)
+      )
+      or
+      // read
+      exists(Content c |
+        fwdFlowRead(c, node, cc, config) and
+        fwdFlowConsCand(c, config) and
+        not inBarrier(node, config)
+      )
+      or
+      // flow into a callable
+      exists(Node arg |
+        fwdFlow(arg, _, config) and
+        viableParamArg(_, node, arg) and
+        cc = true
+      )
+      or
+      // flow out of a callable
+      exists(DataFlowCall call |
+        fwdFlowOut(call, node, false, config) and
+        cc = false
+        or
+        fwdFlowOutFromArg(call, node, config) and
+        fwdFlowIsEntered(call, cc, config)
+      )
+    )
+  }
+
+  private predicate fwdFlow(Node node, Configuration config) { fwdFlow(node, _, config) }
+
+  pragma[nomagic]
+  private predicate fwdFlowRead(Content c, Node node, Cc cc, Configuration config) {
+    exists(Node mid |
+      fwdFlow(mid, cc, config) and
+      read(mid, c, node)
+    )
+  }
+
+  /**
+   * Holds if `c` is the target of a store in the flow covered by `fwdFlow`.
+   */
+  pragma[nomagic]
+  private predicate fwdFlowConsCand(Content c, Configuration config) {
+    exists(Node mid, Node node, TypedContent tc |
+      not fullBarrier(node, config) and
+      useFieldFlow(config) and
+      fwdFlow(mid, _, config) and
+      store(mid, tc, node, _) and
+      c = tc.getContent()
+    )
+  }
+
+  pragma[nomagic]
+  private predicate fwdFlowReturnPosition(ReturnPosition pos, Cc cc, Configuration config) {
+    exists(ReturnNodeExt ret |
+      fwdFlow(ret, cc, config) and
+      getReturnPosition(ret) = pos
+    )
+  }
+
+  pragma[nomagic]
+  private predicate fwdFlowOut(DataFlowCall call, Node out, Cc cc, Configuration config) {
+    exists(ReturnPosition pos |
+      fwdFlowReturnPosition(pos, cc, config) and
+      viableReturnPosOut(call, pos, out)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate fwdFlowOutFromArg(DataFlowCall call, Node out, Configuration config) {
+    fwdFlowOut(call, out, true, config)
+  }
+
+  /**
+   * Holds if an argument to `call` is reached in the flow covered by `fwdFlow`.
+   */
+  pragma[nomagic]
+  private predicate fwdFlowIsEntered(DataFlowCall call, Cc cc, Configuration config) {
+    exists(ArgumentNode arg |
+      fwdFlow(arg, cc, config) and
+      viableParamArg(call, _, arg)
+    )
+  }
+
+  /**
+   * Holds if `node` is part of a path from a source to a sink in the
+   * configuration `config`.
+   *
+   * The Boolean `toReturn` records whether the node must be returned from
+   * the enclosing callable in order to reach a sink.
+   */
+  pragma[nomagic]
+  predicate revFlow(Node node, boolean toReturn, Configuration config) {
+    revFlow0(node, toReturn, config) and
+    fwdFlow(node, config)
+  }
+
+  pragma[nomagic]
+  private predicate revFlow0(Node node, boolean toReturn, Configuration config) {
+    fwdFlow(node, config) and
+    config.isSink(node) and
+    toReturn = false
     or
     exists(Node mid |
-      nodeCandFwd1(mid, fromArg, config) and
-      localFlowStep(mid, node, config)
+      localFlowStep(node, mid, config) and
+      revFlow(mid, toReturn, config)
     )
     or
     exists(Node mid |
-      nodeCandFwd1(mid, fromArg, config) and
-      additionalLocalFlowStep(mid, node, config)
+      additionalLocalFlowStep(node, mid, config) and
+      revFlow(mid, toReturn, config)
     )
     or
     exists(Node mid |
-      nodeCandFwd1(mid, config) and
-      jumpStep(mid, node, config) and
-      fromArg = false
+      jumpStep(node, mid, config) and
+      revFlow(mid, _, config) and
+      toReturn = false
     )
     or
     exists(Node mid |
-      nodeCandFwd1(mid, config) and
-      additionalJumpStep(mid, node, config) and
-      fromArg = false
+      additionalJumpStep(node, mid, config) and
+      revFlow(mid, _, config) and
+      toReturn = false
     )
     or
     // store
-    exists(Node mid |
-      useFieldFlow(config) and
-      nodeCandFwd1(mid, fromArg, config) and
-      store(mid, _, node, _) and
-      not outBarrier(mid, config)
+    exists(Content c |
+      revFlowStore(c, node, toReturn, config) and
+      revFlowConsCand(c, config)
     )
     or
     // read
-    exists(Content c |
-      nodeCandFwd1Read(c, node, fromArg, config) and
-      nodeCandFwd1IsStored(c, config) and
-      not inBarrier(node, config)
+    exists(Node mid, Content c |
+      read(node, c, mid) and
+      fwdFlowConsCand(c, unbind(config)) and
+      revFlow(mid, toReturn, config)
     )
     or
     // flow into a callable
-    exists(Node arg |
-      nodeCandFwd1(arg, config) and
-      viableParamArg(_, node, arg) and
-      fromArg = true
+    exists(DataFlowCall call |
+      revFlowIn(call, node, false, config) and
+      toReturn = false
+      or
+      revFlowInToReturn(call, node, config) and
+      revFlowIsReturned(call, toReturn, config)
     )
     or
     // flow out of a callable
-    exists(DataFlowCall call |
-      nodeCandFwd1Out(call, node, false, config) and
-      fromArg = false
-      or
-      nodeCandFwd1OutFromArg(call, node, config) and
-      nodeCandFwd1IsEntered(call, fromArg, config)
+    exists(ReturnPosition pos |
+      revFlowOut(pos, config) and
+      getReturnPosition(node) = pos and
+      toReturn = true
     )
-  )
-}
+  }
 
-private predicate nodeCandFwd1(Node node, Configuration config) { nodeCandFwd1(node, _, config) }
+  /**
+   * Holds if `c` is the target of a read in the flow covered by `revFlow`.
+   */
+  pragma[nomagic]
+  private predicate revFlowConsCand(Content c, Configuration config) {
+    exists(Node mid, Node node |
+      fwdFlow(node, unbind(config)) and
+      read(node, c, mid) and
+      fwdFlowConsCand(c, unbind(config)) and
+      revFlow(mid, _, config)
+    )
+  }
 
-pragma[nomagic]
-private predicate nodeCandFwd1Read(Content c, Node node, boolean fromArg, Configuration config) {
-  exists(Node mid |
-    nodeCandFwd1(mid, fromArg, config) and
-    read(mid, c, node)
-  )
-}
+  pragma[nomagic]
+  private predicate revFlowStore(Content c, Node node, boolean toReturn, Configuration config) {
+    exists(Node mid, TypedContent tc |
+      revFlow(mid, toReturn, config) and
+      fwdFlowConsCand(c, unbind(config)) and
+      store(node, tc, mid, _) and
+      c = tc.getContent()
+    )
+  }
 
-/**
- * Holds if `c` is the target of a store in the flow covered by `nodeCandFwd1`.
- */
-pragma[nomagic]
-private predicate nodeCandFwd1IsStored(Content c, Configuration config) {
-  exists(Node mid, Node node, TypedContent tc |
-    not fullBarrier(node, config) and
-    useFieldFlow(config) and
-    nodeCandFwd1(mid, config) and
-    store(mid, tc, node, _) and
-    c = tc.getContent()
-  )
-}
+  /**
+   * Holds if `c` is the target of both a read and a store in the flow covered
+   * by `revFlow`.
+   */
+  private predicate revFlowIsReadAndStored(Content c, Configuration conf) {
+    revFlowConsCand(c, conf) and
+    revFlowStore(c, _, _, conf)
+  }
 
-pragma[nomagic]
-private predicate nodeCandFwd1ReturnPosition(
-  ReturnPosition pos, boolean fromArg, Configuration config
-) {
-  exists(ReturnNodeExt ret |
-    nodeCandFwd1(ret, fromArg, config) and
-    getReturnPosition(ret) = pos
-  )
-}
-
-pragma[nomagic]
-private predicate nodeCandFwd1Out(DataFlowCall call, Node out, boolean fromArg, Configuration config) {
-  exists(ReturnPosition pos |
-    nodeCandFwd1ReturnPosition(pos, fromArg, config) and
+  pragma[nomagic]
+  predicate viableReturnPosOutNodeCandFwd1(
+    DataFlowCall call, ReturnPosition pos, Node out, Configuration config
+  ) {
+    fwdFlowReturnPosition(pos, _, config) and
     viableReturnPosOut(call, pos, out)
-  )
-}
+  }
 
-pragma[nomagic]
-private predicate nodeCandFwd1OutFromArg(DataFlowCall call, Node node, Configuration config) {
-  nodeCandFwd1Out(call, node, true, config)
-}
+  pragma[nomagic]
+  private predicate revFlowOut(ReturnPosition pos, Configuration config) {
+    exists(DataFlowCall call, Node out |
+      revFlow(out, _, config) and
+      viableReturnPosOutNodeCandFwd1(call, pos, out, config)
+    )
+  }
 
-/**
- * Holds if an argument to `call` is reached in the flow covered by `nodeCandFwd1`.
- */
-pragma[nomagic]
-private predicate nodeCandFwd1IsEntered(DataFlowCall call, boolean fromArg, Configuration config) {
-  exists(ArgumentNode arg |
-    nodeCandFwd1(arg, fromArg, config) and
-    viableParamArg(call, _, arg)
-  )
+  pragma[nomagic]
+  predicate viableParamArgNodeCandFwd1(
+    DataFlowCall call, ParameterNode p, ArgumentNode arg, Configuration config
+  ) {
+    viableParamArg(call, p, arg) and
+    fwdFlow(arg, config)
+  }
+
+  pragma[nomagic]
+  private predicate revFlowIn(
+    DataFlowCall call, ArgumentNode arg, boolean toReturn, Configuration config
+  ) {
+    exists(ParameterNode p |
+      revFlow(p, toReturn, config) and
+      viableParamArgNodeCandFwd1(call, p, arg, config)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate revFlowInToReturn(DataFlowCall call, ArgumentNode arg, Configuration config) {
+    revFlowIn(call, arg, true, config)
+  }
+
+  /**
+   * Holds if an output from `call` is reached in the flow covered by `revFlow`.
+   */
+  pragma[nomagic]
+  private predicate revFlowIsReturned(DataFlowCall call, boolean toReturn, Configuration config) {
+    exists(Node out |
+      revFlow(out, toReturn, config) and
+      fwdFlowOutFromArg(call, out, config)
+    )
+  }
+
+  pragma[nomagic]
+  predicate storeStepCand(
+    Node node1, Ap ap1, TypedContent tc, Node node2, DataFlowType contentType, Configuration config
+  ) {
+    exists(Content c |
+      revFlowIsReadAndStored(c, config) and
+      revFlow(node2, unbind(config)) and
+      store(node1, tc, node2, contentType) and
+      c = tc.getContent() and
+      exists(ap1)
+    )
+  }
+
+  pragma[nomagic]
+  predicate readStepCand(Node n1, Content c, Node n2, Configuration config) {
+    revFlowIsReadAndStored(c, config) and
+    revFlow(n2, unbind(config)) and
+    read(n1, c, n2)
+  }
+
+  pragma[nomagic]
+  predicate revFlow(Node node, Configuration config) { revFlow(node, _, config) }
+
+  predicate revFlow(Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config) {
+    revFlow(node, toReturn, config) and exists(returnAp) and exists(ap)
+  }
+
+  private predicate throughFlowNodeCand(Node node, Configuration config) {
+    revFlow(node, true, config) and
+    fwdFlow(node, true, config) and
+    not inBarrier(node, config) and
+    not outBarrier(node, config)
+  }
+
+  /** Holds if flow may return from `callable`. */
+  pragma[nomagic]
+  private predicate returnFlowCallableNodeCand(
+    DataFlowCallable callable, ReturnKindExt kind, Configuration config
+  ) {
+    exists(ReturnNodeExt ret |
+      throughFlowNodeCand(ret, config) and
+      callable = ret.getEnclosingCallable() and
+      kind = ret.getKind()
+    )
+  }
+
+  /**
+   * Holds if flow may enter through `p` and reach a return node making `p` a
+   * candidate for the origin of a summary.
+   */
+  predicate parameterMayFlowThrough(ParameterNode p, DataFlowCallable c, Ap ap, Configuration config) {
+    exists(ReturnKindExt kind |
+      throughFlowNodeCand(p, config) and
+      returnFlowCallableNodeCand(c, kind, config) and
+      p.getEnclosingCallable() = c and
+      exists(ap) and
+      // we don't expect a parameter to return stored in itself
+      not exists(int pos |
+        kind.(ParamUpdateReturnKind).getPosition() = pos and p.isParameterOf(_, pos)
+      )
+    )
+  }
+
+  predicate stats(boolean fwd, int nodes, int fields, int conscand, int tuples, Configuration config) {
+    fwd = true and
+    nodes = count(Node node | fwdFlow(node, config)) and
+    fields = count(Content f0 | fwdFlowConsCand(f0, config)) and
+    conscand = -1 and
+    tuples = count(Node n, boolean b | fwdFlow(n, b, config))
+    or
+    fwd = false and
+    nodes = count(Node node | revFlow(node, _, config)) and
+    fields = count(Content f0 | revFlowConsCand(f0, config)) and
+    conscand = -1 and
+    tuples = count(Node n, boolean b | revFlow(n, b, config))
+  }
+  /* End: Stage 1 logic. */
 }
 
 bindingset[result, b]
 private boolean unbindBool(boolean b) { result != b.booleanNot() }
 
-/**
- * Holds if `node` is part of a path from a source to a sink in the
- * configuration `config`.
- *
- * The Boolean `toReturn` records whether the node must be returned from
- * the enclosing callable in order to reach a sink.
- */
-pragma[nomagic]
-private predicate nodeCand1(Node node, boolean toReturn, Configuration config) {
-  nodeCand1_0(node, toReturn, config) and
-  nodeCandFwd1(node, config)
-}
-
-pragma[nomagic]
-private predicate nodeCand1_0(Node node, boolean toReturn, Configuration config) {
-  nodeCandFwd1(node, config) and
-  config.isSink(node) and
-  toReturn = false
-  or
-  exists(Node mid |
-    localFlowStep(node, mid, config) and
-    nodeCand1(mid, toReturn, config)
-  )
-  or
-  exists(Node mid |
-    additionalLocalFlowStep(node, mid, config) and
-    nodeCand1(mid, toReturn, config)
-  )
-  or
-  exists(Node mid |
-    jumpStep(node, mid, config) and
-    nodeCand1(mid, _, config) and
-    toReturn = false
-  )
-  or
-  exists(Node mid |
-    additionalJumpStep(node, mid, config) and
-    nodeCand1(mid, _, config) and
-    toReturn = false
-  )
-  or
-  // store
-  exists(Content c |
-    nodeCand1Store(c, node, toReturn, config) and
-    nodeCand1IsRead(c, config)
-  )
-  or
-  // read
-  exists(Node mid, Content c |
-    read(node, c, mid) and
-    nodeCandFwd1IsStored(c, unbind(config)) and
-    nodeCand1(mid, toReturn, config)
-  )
-  or
-  // flow into a callable
-  exists(DataFlowCall call |
-    nodeCand1In(call, node, false, config) and
-    toReturn = false
-    or
-    nodeCand1InToReturn(call, node, config) and
-    nodeCand1IsReturned(call, toReturn, config)
-  )
-  or
-  // flow out of a callable
-  exists(ReturnPosition pos |
-    nodeCand1Out(pos, config) and
-    getReturnPosition(node) = pos and
-    toReturn = true
-  )
-}
-
-/**
- * Holds if `c` is the target of a read in the flow covered by `nodeCand1`.
- */
-pragma[nomagic]
-private predicate nodeCand1IsRead(Content c, Configuration config) {
-  exists(Node mid, Node node |
-    useFieldFlow(config) and
-    nodeCandFwd1(node, unbind(config)) and
-    read(node, c, mid) and
-    nodeCandFwd1IsStored(c, unbind(config)) and
-    nodeCand1(mid, _, config)
-  )
-}
-
-pragma[nomagic]
-private predicate nodeCand1Store(Content c, Node node, boolean toReturn, Configuration config) {
-  exists(Node mid, TypedContent tc |
-    nodeCand1(mid, toReturn, config) and
-    nodeCandFwd1IsStored(c, unbind(config)) and
-    store(node, tc, mid, _) and
-    c = tc.getContent()
-  )
-}
-
-/**
- * Holds if `c` is the target of both a read and a store in the flow covered
- * by `nodeCand1`.
- */
-private predicate nodeCand1IsReadAndStored(Content c, Configuration conf) {
-  nodeCand1IsRead(c, conf) and
-  nodeCand1Store(c, _, _, conf)
-}
-
-pragma[nomagic]
-private predicate viableReturnPosOutNodeCandFwd1(
-  DataFlowCall call, ReturnPosition pos, Node out, Configuration config
-) {
-  nodeCandFwd1ReturnPosition(pos, _, config) and
-  viableReturnPosOut(call, pos, out)
-}
-
-pragma[nomagic]
-private predicate nodeCand1Out(ReturnPosition pos, Configuration config) {
-  exists(DataFlowCall call, Node out |
-    nodeCand1(out, _, config) and
-    viableReturnPosOutNodeCandFwd1(call, pos, out, config)
-  )
-}
-
-pragma[nomagic]
-private predicate viableParamArgNodeCandFwd1(
-  DataFlowCall call, ParameterNode p, ArgumentNode arg, Configuration config
-) {
-  viableParamArg(call, p, arg) and
-  nodeCandFwd1(arg, config)
-}
-
-pragma[nomagic]
-private predicate nodeCand1In(
-  DataFlowCall call, ArgumentNode arg, boolean toReturn, Configuration config
-) {
-  exists(ParameterNode p |
-    nodeCand1(p, toReturn, config) and
-    viableParamArgNodeCandFwd1(call, p, arg, config)
-  )
-}
-
-pragma[nomagic]
-private predicate nodeCand1InToReturn(DataFlowCall call, ArgumentNode arg, Configuration config) {
-  nodeCand1In(call, arg, true, config)
-}
-
-/**
- * Holds if an output from `call` is reached in the flow covered by `nodeCand1`.
- */
-pragma[nomagic]
-private predicate nodeCand1IsReturned(DataFlowCall call, boolean toReturn, Configuration config) {
-  exists(Node out |
-    nodeCand1(out, toReturn, config) and
-    nodeCandFwd1OutFromArg(call, out, config)
-  )
-}
-
-pragma[nomagic]
-private predicate nodeCand1(Node node, Configuration config) { nodeCand1(node, _, config) }
-
-private predicate throughFlowNodeCand1(Node node, Configuration config) {
-  nodeCand1(node, true, config) and
-  nodeCandFwd1(node, true, config) and
-  not fullBarrier(node, config) and
-  not inBarrier(node, config) and
-  not outBarrier(node, config)
-}
-
-/** Holds if flow may return from `callable`. */
-pragma[nomagic]
-private predicate returnFlowCallableNodeCand1(
-  DataFlowCallable callable, ReturnKindExt kind, Configuration config
-) {
-  exists(ReturnNodeExt ret |
-    throughFlowNodeCand1(ret, config) and
-    callable = ret.getEnclosingCallable() and
-    kind = ret.getKind()
-  )
-}
-
-/**
- * Holds if flow may enter through `p` and reach a return node making `p` a
- * candidate for the origin of a summary.
- */
-private predicate parameterThroughFlowNodeCand1(ParameterNode p, Configuration config) {
-  exists(ReturnKindExt kind |
-    throughFlowNodeCand1(p, config) and
-    returnFlowCallableNodeCand1(p.getEnclosingCallable(), kind, config) and
-    // we don't expect a parameter to return stored in itself
-    not exists(int pos |
-      kind.(ParamUpdateReturnKind).getPosition() = pos and p.isParameterOf(_, pos)
-    )
-  )
-}
-
-pragma[nomagic]
-private predicate storeCand1(Node n1, Content c, Node n2, Configuration config) {
-  exists(TypedContent tc |
-    nodeCand1IsReadAndStored(c, config) and
-    nodeCand1(n2, unbind(config)) and
-    store(n1, tc, n2, _) and
-    c = tc.getContent()
-  )
-}
-
-pragma[nomagic]
-private predicate read(Node n1, Content c, Node n2, Configuration config) {
-  nodeCand1IsReadAndStored(c, config) and
-  nodeCand1(n2, unbind(config)) and
-  read(n1, c, n2)
-}
-
 pragma[noinline]
 private predicate localFlowStepNodeCand1(Node node1, Node node2, Configuration config) {
-  nodeCand1(node1, config) and
+  Stage1::revFlow(node2, config) and
   localFlowStep(node1, node2, config)
 }
 
 pragma[noinline]
 private predicate additionalLocalFlowStepNodeCand1(Node node1, Node node2, Configuration config) {
-  nodeCand1(node1, config) and
+  Stage1::revFlow(node2, config) and
   additionalLocalFlowStep(node1, node2, config)
 }
 
@@ -624,8 +655,8 @@ pragma[nomagic]
 private predicate viableReturnPosOutNodeCand1(
   DataFlowCall call, ReturnPosition pos, Node out, Configuration config
 ) {
-  nodeCand1(out, _, config) and
-  viableReturnPosOutNodeCandFwd1(call, pos, out, config)
+  Stage1::revFlow(out, config) and
+  Stage1::viableReturnPosOutNodeCandFwd1(call, pos, out, config)
 }
 
 /**
@@ -638,7 +669,7 @@ private predicate flowOutOfCallNodeCand1(
   DataFlowCall call, ReturnNodeExt ret, Node out, Configuration config
 ) {
   viableReturnPosOutNodeCand1(call, getReturnPosition(ret), out, config) and
-  nodeCand1(ret, config) and
+  Stage1::revFlow(ret, config) and
   not outBarrier(ret, config) and
   not inBarrier(out, config)
 }
@@ -647,8 +678,8 @@ pragma[nomagic]
 private predicate viableParamArgNodeCand1(
   DataFlowCall call, ParameterNode p, ArgumentNode arg, Configuration config
 ) {
-  viableParamArgNodeCandFwd1(call, p, arg, config) and
-  nodeCand1(arg, config)
+  Stage1::viableParamArgNodeCandFwd1(call, p, arg, config) and
+  Stage1::revFlow(arg, config)
 }
 
 /**
@@ -660,7 +691,7 @@ private predicate flowIntoCallNodeCand1(
   DataFlowCall call, ArgumentNode arg, ParameterNode p, Configuration config
 ) {
   viableParamArgNodeCand1(call, p, arg, config) and
-  nodeCand1(p, config) and
+  Stage1::revFlow(p, config) and
   not outBarrier(arg, config) and
   not inBarrier(p, config)
 }
@@ -730,338 +761,497 @@ private predicate flowIntoCallNodeCand1(
   )
 }
 
-/**
- * Holds if `node` is reachable from a source in the configuration `config`.
- * The Boolean `stored` records whether the tracked value is stored into a
- * field of `node`.
- *
- * The Boolean `fromArg` records whether the node is reached through an
- * argument in a call, and if so, `argStored` records whether the tracked
- * value was stored into a field of the argument.
- */
-private predicate nodeCandFwd2(
-  Node node, boolean fromArg, BooleanOption argStored, boolean stored, Configuration config
-) {
-  nodeCand1(node, config) and
-  config.isSource(node) and
-  fromArg = false and
-  argStored = TBooleanNone() and
-  stored = false
-  or
-  nodeCand1(node, unbind(config)) and
-  (
-    exists(Node mid |
-      nodeCandFwd2(mid, fromArg, argStored, stored, config) and
-      localFlowStepNodeCand1(mid, node, config)
+private module Stage2 {
+  module PrevStage = Stage1;
+
+  class ApApprox = PrevStage::Ap;
+
+  class Ap = boolean;
+
+  class ApNil extends Ap {
+    ApNil() { this = false }
+  }
+
+  bindingset[result, ap]
+  private ApApprox getApprox(Ap ap) { any() }
+
+  private ApNil getApNil(Node node) { any() }
+
+  bindingset[tc, tail]
+  private Ap apCons(TypedContent tc, Ap tail) { result = true and exists(tc) and exists(tail) }
+
+  pragma[inline]
+  private Content getHeadContent(Ap ap) { exists(result) and ap = true }
+
+  class ApOption = BooleanOption;
+
+  ApOption apNone() { result = TBooleanNone() }
+
+  ApOption apSome(Ap ap) { result = TBooleanSome(ap) }
+
+  class Cc = boolean;
+
+  class CcCall extends Cc {
+    CcCall() { this = true }
+
+    /** Holds if this call context may be `call`. */
+    predicate matchesCall(DataFlowCall call) { any() }
+  }
+
+  class CcNoCall extends Cc {
+    CcNoCall() { this = false }
+  }
+
+  Cc ccNone() { result = false }
+
+  private class LocalCc = Unit;
+
+  bindingset[call, c, outercc]
+  private CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) { any() }
+
+  bindingset[call, c]
+  private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) { any() }
+
+  bindingset[innercc, inner, call]
+  private predicate checkCallContextReturn(Cc innercc, DataFlowCallable inner, DataFlowCall call) {
+    any()
+  }
+
+  bindingset[node, cc, config]
+  private LocalCc getLocalCc(Node node, Cc cc, Configuration config) { any() }
+
+  private predicate localStep(
+    Node node1, Node node2, boolean preservesValue, ApNil ap, Configuration config, LocalCc lcc
+  ) {
+    (
+      preservesValue = true and
+      localFlowStepNodeCand1(node1, node2, config)
+      or
+      preservesValue = false and
+      additionalLocalFlowStepNodeCand1(node1, node2, config)
+    ) and
+    exists(ap) and
+    exists(lcc)
+  }
+
+  private predicate flowOutOfCall = flowOutOfCallNodeCand1/5;
+
+  private predicate flowIntoCall = flowIntoCallNodeCand1/5;
+
+  bindingset[ap, contentType]
+  private predicate typecheckStore(Ap ap, DataFlowType contentType) { any() }
+
+  /* Begin: Stage 2 logic. */
+  private predicate flowCand(Node node, ApApprox apa, Configuration config) {
+    PrevStage::revFlow(node, _, _, apa, config)
+  }
+
+  /**
+   * Holds if `node` is reachable with access path `ap` from a source in the
+   * configuration `config`.
+   *
+   * The call context `cc` records whether the node is reached through an
+   * argument in a call, and if so, `argAp` records the access path of that
+   * argument.
+   */
+  pragma[nomagic]
+  predicate fwdFlow(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
+    flowCand(node, _, config) and
+    config.isSource(node) and
+    cc = ccNone() and
+    argAp = apNone() and
+    ap = getApNil(node)
+    or
+    exists(Node mid, Ap ap0, LocalCc localCc |
+      fwdFlow(mid, cc, argAp, ap0, config) and
+      localCc = getLocalCc(mid, cc, config)
+    |
+      localStep(mid, node, true, _, config, localCc) and
+      ap = ap0
+      or
+      localStep(mid, node, false, ap, config, localCc) and
+      ap0 instanceof ApNil
     )
     or
     exists(Node mid |
-      nodeCandFwd2(mid, fromArg, argStored, stored, config) and
-      additionalLocalFlowStepNodeCand1(mid, node, config) and
-      stored = false
-    )
-    or
-    exists(Node mid |
-      nodeCandFwd2(mid, _, _, stored, config) and
+      fwdFlow(mid, _, _, ap, config) and
+      flowCand(node, _, unbind(config)) and
       jumpStep(mid, node, config) and
-      fromArg = false and
-      argStored = TBooleanNone()
+      cc = ccNone() and
+      argAp = apNone()
     )
     or
-    exists(Node mid |
-      nodeCandFwd2(mid, _, _, stored, config) and
+    exists(Node mid, ApNil nil |
+      fwdFlow(mid, _, _, nil, config) and
+      flowCand(node, _, unbind(config)) and
       additionalJumpStep(mid, node, config) and
-      fromArg = false and
-      argStored = TBooleanNone() and
-      stored = false
+      cc = ccNone() and
+      argAp = apNone() and
+      ap = getApNil(node)
     )
     or
     // store
-    exists(Node mid |
-      nodeCandFwd2(mid, fromArg, argStored, _, config) and
-      storeCand1(mid, _, node, config) and
-      stored = true
+    exists(TypedContent tc, Ap ap0 |
+      fwdFlowStore(_, ap0, tc, node, cc, argAp, config) and
+      ap = apCons(tc, ap0)
     )
     or
     // read
-    exists(Content c |
-      nodeCandFwd2Read(c, node, fromArg, argStored, config) and
-      nodeCandFwd2IsStored(c, stored, config)
+    exists(Ap ap0, Content c |
+      fwdFlowRead(ap0, c, _, node, cc, argAp, config) and
+      fwdFlowConsCand(ap0, c, ap, config)
     )
     or
     // flow into a callable
-    nodeCandFwd2In(_, node, _, _, stored, config) and
-    fromArg = true and
-    if parameterThroughFlowNodeCand1(node, config)
-    then argStored = TBooleanSome(stored)
-    else argStored = TBooleanNone()
+    exists(ApApprox apa |
+      fwdFlowIn(_, node, _, cc, _, ap, config) and
+      apa = getApprox(ap) and
+      if PrevStage::parameterMayFlowThrough(node, _, apa, config)
+      then argAp = apSome(ap)
+      else argAp = apNone()
+    )
     or
     // flow out of a callable
     exists(DataFlowCall call |
-      nodeCandFwd2Out(call, node, fromArg, argStored, stored, config) and
-      fromArg = false
+      fwdFlowOut(call, node, any(CcNoCall innercc), cc, argAp, ap, config)
       or
-      exists(boolean argStored0 |
-        nodeCandFwd2OutFromArg(call, node, argStored0, stored, config) and
-        nodeCandFwd2IsEntered(call, fromArg, argStored, argStored0, config)
+      exists(Ap argAp0 |
+        fwdFlowOutFromArg(call, node, argAp0, ap, config) and
+        fwdFlowIsEntered(call, cc, argAp, argAp0, config)
       )
     )
-  )
-}
+  }
 
-/**
- * Holds if `c` is the target of a store in the flow covered by `nodeCandFwd2`.
- */
-pragma[noinline]
-private predicate nodeCandFwd2IsStored(Content c, boolean stored, Configuration config) {
-  exists(Node mid, Node node |
-    useFieldFlow(config) and
-    nodeCand1(node, unbind(config)) and
-    nodeCandFwd2(mid, _, _, stored, config) and
-    storeCand1(mid, c, node, config)
-  )
-}
-
-pragma[nomagic]
-private predicate nodeCandFwd2Read(
-  Content c, Node node, boolean fromArg, BooleanOption argStored, Configuration config
-) {
-  exists(Node mid |
-    nodeCandFwd2(mid, fromArg, argStored, true, config) and
-    read(mid, c, node, config)
-  )
-}
-
-pragma[nomagic]
-private predicate nodeCandFwd2In(
-  DataFlowCall call, ParameterNode p, boolean fromArg, BooleanOption argStored, boolean stored,
-  Configuration config
-) {
-  exists(ArgumentNode arg, boolean allowsFieldFlow |
-    nodeCandFwd2(arg, fromArg, argStored, stored, config) and
-    flowIntoCallNodeCand1(call, arg, p, allowsFieldFlow, config)
-  |
-    stored = false or allowsFieldFlow = true
-  )
-}
-
-pragma[nomagic]
-private predicate nodeCandFwd2Out(
-  DataFlowCall call, Node out, boolean fromArg, BooleanOption argStored, boolean stored,
-  Configuration config
-) {
-  exists(ReturnNodeExt ret, boolean allowsFieldFlow |
-    nodeCandFwd2(ret, fromArg, argStored, stored, config) and
-    flowOutOfCallNodeCand1(call, ret, out, allowsFieldFlow, config)
-  |
-    stored = false or allowsFieldFlow = true
-  )
-}
-
-pragma[nomagic]
-private predicate nodeCandFwd2OutFromArg(
-  DataFlowCall call, Node out, boolean argStored, boolean stored, Configuration config
-) {
-  nodeCandFwd2Out(call, out, true, TBooleanSome(argStored), stored, config)
-}
-
-/**
- * Holds if an argument to `call` is reached in the flow covered by `nodeCandFwd2`.
- */
-pragma[nomagic]
-private predicate nodeCandFwd2IsEntered(
-  DataFlowCall call, boolean fromArg, BooleanOption argStored, boolean stored, Configuration config
-) {
-  exists(ParameterNode p |
-    nodeCandFwd2In(call, p, fromArg, argStored, stored, config) and
-    parameterThroughFlowNodeCand1(p, config)
-  )
-}
-
-/**
- * Holds if `node` is part of a path from a source to a sink in the
- * configuration `config`. The Boolean `read` records whether the tracked
- * value must be read from a field of `node` in order to reach a sink.
- *
- * The Boolean `toReturn` records whether the node must be returned from
- * the enclosing callable in order to reach a sink, and if so, `returnRead`
- * records whether a field must be read from the returned value.
- */
-private predicate nodeCand2(
-  Node node, boolean toReturn, BooleanOption returnRead, boolean read, Configuration config
-) {
-  nodeCandFwd2(node, _, _, false, config) and
-  config.isSink(node) and
-  toReturn = false and
-  returnRead = TBooleanNone() and
-  read = false
-  or
-  nodeCandFwd2(node, _, _, unbindBool(read), unbind(config)) and
-  (
-    exists(Node mid |
-      localFlowStepNodeCand1(node, mid, config) and
-      nodeCand2(mid, toReturn, returnRead, read, config)
+  pragma[nomagic]
+  private predicate fwdFlowStore(
+    Node node1, Ap ap1, TypedContent tc, Node node2, Cc cc, ApOption argAp, Configuration config
+  ) {
+    exists(DataFlowType contentType |
+      fwdFlow(node1, cc, argAp, ap1, config) and
+      PrevStage::storeStepCand(node1, getApprox(ap1), tc, node2, contentType, config) and
+      typecheckStore(ap1, contentType)
     )
+  }
+
+  /**
+   * Holds if forward flow with access path `tail` reaches a store of `c`
+   * resulting in access path `cons`.
+   */
+  pragma[nomagic]
+  private predicate fwdFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
+    exists(TypedContent tc |
+      fwdFlowStore(_, tail, tc, _, _, _, config) and
+      tc.getContent() = c and
+      cons = apCons(tc, tail)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate fwdFlowRead(
+    Ap ap, Content c, Node node1, Node node2, Cc cc, ApOption argAp, Configuration config
+  ) {
+    fwdFlow(node1, cc, argAp, ap, config) and
+    PrevStage::readStepCand(node1, c, node2, config) and
+    getHeadContent(ap) = c
+  }
+
+  pragma[nomagic]
+  private predicate fwdFlowIn(
+    DataFlowCall call, ParameterNode p, Cc outercc, Cc innercc, ApOption argAp, Ap ap,
+    Configuration config
+  ) {
+    exists(ArgumentNode arg, boolean allowsFieldFlow |
+      fwdFlow(arg, outercc, argAp, ap, config) and
+      flowIntoCall(call, arg, p, allowsFieldFlow, config) and
+      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
+    |
+      ap instanceof ApNil or allowsFieldFlow = true
+    )
+  }
+
+  /**
+   * Holds if flow may exit from `call` at `out` with access path `ap`. The
+   * inner call context is `innercc`, but `ccOut` is just the call context
+   * based on the return step. In the case of through-flow `ccOut` is discarded
+   * and replaced by the outer call context as tracked by `fwdFlowIsEntered`.
+   */
+  pragma[nomagic]
+  private predicate fwdFlowOut(
+    DataFlowCall call, Node out, Cc innercc, Cc ccOut, ApOption argAp, Ap ap, Configuration config
+  ) {
+    exists(ReturnNodeExt ret, boolean allowsFieldFlow, DataFlowCallable inner |
+      fwdFlow(ret, innercc, argAp, ap, config) and
+      flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
+      inner = ret.getEnclosingCallable() and
+      checkCallContextReturn(innercc, inner, call) and
+      ccOut = getCallContextReturn(inner, call)
+    |
+      ap instanceof ApNil or allowsFieldFlow = true
+    )
+  }
+
+  pragma[nomagic]
+  private predicate fwdFlowOutFromArg(
+    DataFlowCall call, Node out, Ap argAp, Ap ap, Configuration config
+  ) {
+    fwdFlowOut(call, out, any(CcCall ccc), _, apSome(argAp), ap, config)
+  }
+
+  /**
+   * Holds if an argument to `call` is reached in the flow covered by `fwdFlow`
+   * and data might flow through the target callable and back out at `call`.
+   */
+  pragma[nomagic]
+  private predicate fwdFlowIsEntered(
+    DataFlowCall call, Cc cc, ApOption argAp, Ap ap, Configuration config
+  ) {
+    exists(ParameterNode p |
+      fwdFlowIn(call, p, cc, _, argAp, ap, config) and
+      PrevStage::parameterMayFlowThrough(p, _, getApprox(ap), config)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate storeStepFwd(
+    Node node1, Ap ap1, TypedContent tc, Node node2, Ap ap2, Configuration config
+  ) {
+    fwdFlowStore(node1, ap1, tc, node2, _, _, config) and
+    ap2 = apCons(tc, ap1) and
+    fwdFlowRead(ap2, tc.getContent(), _, _, _, _, config)
+  }
+
+  private predicate readStepFwd(Node n1, Ap ap1, Content c, Node n2, Ap ap2, Configuration config) {
+    fwdFlowRead(ap1, c, n1, n2, _, _, config) and
+    fwdFlowConsCand(ap1, c, ap2, config)
+  }
+
+  /**
+   * Holds if `node` with access path `ap` is part of a path from a source to a
+   * sink in the configuration `config`.
+   *
+   * The Boolean `toReturn` records whether the node must be returned from the
+   * enclosing callable in order to reach a sink, and if so, `returnAp` records
+   * the access path of the returned value.
+   */
+  pragma[nomagic]
+  predicate revFlow(Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config) {
+    revFlow0(node, toReturn, returnAp, ap, config) and
+    fwdFlow(node, _, _, ap, config)
+  }
+
+  pragma[nomagic]
+  private predicate revFlow0(
+    Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
+  ) {
+    fwdFlow(node, _, _, ap, config) and
+    config.isSink(node) and
+    toReturn = false and
+    returnAp = apNone() and
+    ap instanceof ApNil
     or
     exists(Node mid |
-      additionalLocalFlowStepNodeCand1(node, mid, config) and
-      nodeCand2(mid, toReturn, returnRead, read, config) and
-      read = false
+      localStep(node, mid, true, _, config, _) and
+      revFlow(mid, toReturn, returnAp, ap, config)
+    )
+    or
+    exists(Node mid, ApNil nil |
+      fwdFlow(node, _, _, ap, config) and
+      localStep(node, mid, false, _, config, _) and
+      revFlow(mid, toReturn, returnAp, nil, config) and
+      ap instanceof ApNil
     )
     or
     exists(Node mid |
       jumpStep(node, mid, config) and
-      nodeCand2(mid, _, _, read, config) and
+      revFlow(mid, _, _, ap, config) and
       toReturn = false and
-      returnRead = TBooleanNone()
+      returnAp = apNone()
     )
     or
-    exists(Node mid |
+    exists(Node mid, ApNil nil |
+      fwdFlow(node, _, _, ap, config) and
       additionalJumpStep(node, mid, config) and
-      nodeCand2(mid, _, _, read, config) and
+      revFlow(mid, _, _, nil, config) and
       toReturn = false and
-      returnRead = TBooleanNone() and
-      read = false
+      returnAp = apNone() and
+      ap instanceof ApNil
     )
     or
     // store
-    exists(Content c |
-      nodeCand2Store(c, node, toReturn, returnRead, read, config) and
-      nodeCand2IsRead(c, read, config)
+    exists(Ap ap0, Content c |
+      revFlowStore(ap0, c, ap, node, _, _, toReturn, returnAp, config) and
+      revFlowConsCand(ap0, c, ap, config)
     )
     or
     // read
-    exists(Node mid, Content c, boolean read0 |
-      read(node, c, mid, config) and
-      nodeCandFwd2IsStored(c, unbindBool(read0), unbind(config)) and
-      nodeCand2(mid, toReturn, returnRead, read0, config) and
-      read = true
+    exists(Node mid, Ap ap0 |
+      revFlow(mid, toReturn, returnAp, ap0, config) and
+      readStepFwd(node, ap, _, mid, ap0, config)
     )
     or
     // flow into a callable
     exists(DataFlowCall call |
-      nodeCand2In(call, node, toReturn, returnRead, read, config) and
+      revFlowIn(call, node, toReturn, returnAp, ap, config) and
       toReturn = false
       or
-      exists(boolean returnRead0 |
-        nodeCand2InToReturn(call, node, returnRead0, read, config) and
-        nodeCand2IsReturned(call, toReturn, returnRead, returnRead0, config)
+      exists(Ap returnAp0 |
+        revFlowInToReturn(call, node, returnAp0, ap, config) and
+        revFlowIsReturned(call, toReturn, returnAp, returnAp0, config)
       )
     )
     or
     // flow out of a callable
-    nodeCand2Out(_, node, _, _, read, config) and
+    revFlowOut(_, node, _, _, ap, config) and
     toReturn = true and
-    if nodeCandFwd2(node, true, TBooleanSome(_), unbindBool(read), config)
-    then returnRead = TBooleanSome(read)
-    else returnRead = TBooleanNone()
-  )
-}
+    if fwdFlow(node, any(CcCall ccc), apSome(_), ap, config)
+    then returnAp = apSome(ap)
+    else returnAp = apNone()
+  }
 
-/**
- * Holds if `c` is the target of a read in the flow covered by `nodeCand2`.
- */
-pragma[noinline]
-private predicate nodeCand2IsRead(Content c, boolean read, Configuration config) {
-  exists(Node mid, Node node |
-    useFieldFlow(config) and
-    nodeCandFwd2(node, _, _, true, unbind(config)) and
-    read(node, c, mid, config) and
-    nodeCandFwd2IsStored(c, unbindBool(read), unbind(config)) and
-    nodeCand2(mid, _, _, read, config)
-  )
-}
+  pragma[nomagic]
+  private predicate revFlowStore(
+    Ap ap0, Content c, Ap ap, Node node, TypedContent tc, Node mid, boolean toReturn,
+    ApOption returnAp, Configuration config
+  ) {
+    revFlow(mid, toReturn, returnAp, ap0, config) and
+    storeStepFwd(node, ap, tc, mid, ap0, config) and
+    tc.getContent() = c
+  }
 
-pragma[nomagic]
-private predicate nodeCand2Store(
-  Content c, Node node, boolean toReturn, BooleanOption returnRead, boolean stored,
-  Configuration config
-) {
-  exists(Node mid |
-    storeCand1(node, c, mid, config) and
-    nodeCand2(mid, toReturn, returnRead, true, config) and
-    nodeCandFwd2(node, _, _, stored, unbind(config))
-  )
-}
+  /**
+   * Holds if reverse flow with access path `tail` reaches a read of `c`
+   * resulting in access path `cons`.
+   */
+  pragma[nomagic]
+  private predicate revFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
+    exists(Node mid |
+      revFlow(mid, _, _, tail, config) and
+      readStepFwd(_, cons, c, mid, tail, config)
+    )
+  }
 
-/**
- * Holds if `c` is the target of a store in the flow covered by `nodeCand2`.
- */
-pragma[nomagic]
-private predicate nodeCand2IsStored(Content c, boolean stored, Configuration conf) {
-  exists(Node node |
-    nodeCand2Store(c, node, _, _, stored, conf) and
-    nodeCand2(node, _, _, stored, conf)
-  )
-}
+  pragma[nomagic]
+  private predicate revFlowOut(
+    DataFlowCall call, ReturnNodeExt ret, boolean toReturn, ApOption returnAp, Ap ap,
+    Configuration config
+  ) {
+    exists(Node out, boolean allowsFieldFlow |
+      revFlow(out, toReturn, returnAp, ap, config) and
+      flowOutOfCall(call, ret, out, allowsFieldFlow, config)
+    |
+      ap instanceof ApNil or allowsFieldFlow = true
+    )
+  }
 
-/**
- * Holds if `c` is the target of both a store and a read in the path graph
- * covered by `nodeCand2`.
- */
-pragma[noinline]
-private predicate nodeCand2IsReadAndStored(Content c, Configuration conf) {
-  exists(boolean apNonEmpty |
-    nodeCand2IsStored(c, apNonEmpty, conf) and
-    nodeCand2IsRead(c, apNonEmpty, conf)
-  )
-}
+  pragma[nomagic]
+  private predicate revFlowIn(
+    DataFlowCall call, ArgumentNode arg, boolean toReturn, ApOption returnAp, Ap ap,
+    Configuration config
+  ) {
+    exists(ParameterNode p, boolean allowsFieldFlow |
+      revFlow(p, toReturn, returnAp, ap, config) and
+      flowIntoCall(call, arg, p, allowsFieldFlow, config)
+    |
+      ap instanceof ApNil or allowsFieldFlow = true
+    )
+  }
 
-pragma[nomagic]
-private predicate nodeCand2Out(
-  DataFlowCall call, ReturnNodeExt ret, boolean toReturn, BooleanOption returnRead, boolean read,
-  Configuration config
-) {
-  exists(Node out, boolean allowsFieldFlow |
-    nodeCand2(out, toReturn, returnRead, read, config) and
-    flowOutOfCallNodeCand1(call, ret, out, allowsFieldFlow, config)
-  |
-    read = false or allowsFieldFlow = true
-  )
-}
+  pragma[nomagic]
+  private predicate revFlowInToReturn(
+    DataFlowCall call, ArgumentNode arg, Ap returnAp, Ap ap, Configuration config
+  ) {
+    revFlowIn(call, arg, true, apSome(returnAp), ap, config)
+  }
 
-pragma[nomagic]
-private predicate nodeCand2In(
-  DataFlowCall call, ArgumentNode arg, boolean toReturn, BooleanOption returnRead, boolean read,
-  Configuration config
-) {
-  exists(ParameterNode p, boolean allowsFieldFlow |
-    nodeCand2(p, toReturn, returnRead, read, config) and
-    flowIntoCallNodeCand1(call, arg, p, allowsFieldFlow, config)
-  |
-    read = false or allowsFieldFlow = true
-  )
-}
+  /**
+   * Holds if an output from `call` is reached in the flow covered by `revFlow`
+   * and data might flow through the target callable resulting in reverse flow
+   * reaching an argument of `call`.
+   */
+  pragma[nomagic]
+  private predicate revFlowIsReturned(
+    DataFlowCall call, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
+  ) {
+    exists(ReturnNodeExt ret, CcCall ccc |
+      revFlowOut(call, ret, toReturn, returnAp, ap, config) and
+      fwdFlow(ret, ccc, apSome(_), ap, config) and
+      ccc.matchesCall(call)
+    )
+  }
 
-pragma[nomagic]
-private predicate nodeCand2InToReturn(
-  DataFlowCall call, ArgumentNode arg, boolean returnRead, boolean read, Configuration config
-) {
-  nodeCand2In(call, arg, true, TBooleanSome(returnRead), read, config)
-}
+  pragma[nomagic]
+  predicate storeStepCand(
+    Node node1, Ap ap1, TypedContent tc, Node node2, DataFlowType contentType, Configuration config
+  ) {
+    exists(Ap ap2, Content c |
+      store(node1, tc, node2, contentType) and
+      revFlowStore(ap2, c, ap1, node1, tc, node2, _, _, config) and
+      revFlowConsCand(ap2, c, ap1, config)
+    )
+  }
 
-/**
- * Holds if an output from `call` is reached in the flow covered by `nodeCand2`.
- */
-pragma[nomagic]
-private predicate nodeCand2IsReturned(
-  DataFlowCall call, boolean toReturn, BooleanOption returnRead, boolean read, Configuration config
-) {
-  exists(ReturnNodeExt ret |
-    nodeCand2Out(call, ret, toReturn, returnRead, read, config) and
-    nodeCandFwd2(ret, true, TBooleanSome(_), read, config)
-  )
-}
+  predicate readStepCand(Node node1, Content c, Node node2, Configuration config) {
+    exists(Ap ap1, Ap ap2 |
+      revFlow(node2, _, _, ap2, config) and
+      readStepFwd(node1, ap1, c, node2, ap2, config) and
+      revFlowStore(ap1, c, /*unbind*/ unbindBool(ap2), _, _, _, _, _, unbind(config))
+    )
+  }
 
-private predicate nodeCand2(Node node, Configuration config) { nodeCand2(node, _, _, _, config) }
+  predicate revFlow(Node node, Configuration config) { revFlow(node, _, _, _, config) }
+
+  private predicate fwdConsCand(TypedContent tc, Ap ap, Configuration config) {
+    storeStepFwd(_, ap, tc, _, _, config)
+  }
+
+  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+    storeStepCand(_, ap, tc, _, _, config)
+  }
+
+  pragma[noinline]
+  private predicate parameterFlow(
+    ParameterNode p, Ap ap, Ap ap0, DataFlowCallable c, Configuration config
+  ) {
+    revFlow(p, true, apSome(ap0), ap, config) and
+    c = p.getEnclosingCallable()
+  }
+
+  predicate parameterMayFlowThrough(ParameterNode p, DataFlowCallable c, Ap ap, Configuration config) {
+    exists(ReturnNodeExt ret, Ap ap0, ReturnKindExt kind, int pos |
+      parameterFlow(p, ap, ap0, c, config) and
+      c = ret.getEnclosingCallable() and
+      revFlow(ret, true, apSome(_), ap0, config) and
+      fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
+      kind = ret.getKind() and
+      p.isParameterOf(_, pos) and
+      // we don't expect a parameter to return stored in itself
+      not kind.(ParamUpdateReturnKind).getPosition() = pos
+    )
+  }
+
+  predicate stats(boolean fwd, int nodes, int fields, int conscand, int tuples, Configuration config) {
+    fwd = true and
+    nodes = count(Node node | fwdFlow(node, _, _, _, config)) and
+    fields = count(TypedContent f0 | fwdConsCand(f0, _, config)) and
+    conscand = count(TypedContent f0, Ap ap | fwdConsCand(f0, ap, config)) and
+    tuples = count(Node n, Cc cc, ApOption argAp, Ap ap | fwdFlow(n, cc, argAp, ap, config))
+    or
+    fwd = false and
+    nodes = count(Node node | revFlow(node, _, _, _, config)) and
+    fields = count(TypedContent f0 | consCand(f0, _, config)) and
+    conscand = count(TypedContent f0, Ap ap | consCand(f0, ap, config)) and
+    tuples = count(Node n, boolean b, ApOption retAp, Ap ap | revFlow(n, b, retAp, ap, config))
+  }
+  /* End: Stage 2 logic. */
+}
 
 pragma[nomagic]
 private predicate flowOutOfCallNodeCand2(
   DataFlowCall call, ReturnNodeExt node1, Node node2, boolean allowsFieldFlow, Configuration config
 ) {
   flowOutOfCallNodeCand1(call, node1, node2, allowsFieldFlow, config) and
-  nodeCand2(node2, config) and
-  nodeCand2(node1, unbind(config))
+  Stage2::revFlow(node2, config) and
+  Stage2::revFlow(node1, unbind(config))
 }
 
 pragma[nomagic]
@@ -1070,8 +1260,8 @@ private predicate flowIntoCallNodeCand2(
   Configuration config
 ) {
   flowIntoCallNodeCand1(call, node1, node2, allowsFieldFlow, config) and
-  nodeCand2(node2, config) and
-  nodeCand2(node1, unbind(config))
+  Stage2::revFlow(node2, config) and
+  Stage2::revFlow(node1, unbind(config))
 }
 
 private module LocalFlowBigStep {
@@ -1091,7 +1281,7 @@ private module LocalFlowBigStep {
    * flow steps in a dataflow path.
    */
   predicate localFlowEntry(Node node, Configuration config) {
-    nodeCand2(node, config) and
+    Stage2::revFlow(node, config) and
     (
       config.isSource(node) or
       jumpStep(_, node, config) or
@@ -1109,7 +1299,7 @@ private module LocalFlowBigStep {
    * flow steps in a dataflow path.
    */
   private predicate localFlowExit(Node node, Configuration config) {
-    exists(Node next | nodeCand2(next, config) |
+    exists(Node next | Stage2::revFlow(next, config) |
       jumpStep(node, next, config) or
       additionalJumpStep(node, next, config) or
       flowIntoCallNodeCand1(_, node, next, config) or
@@ -1126,8 +1316,8 @@ private module LocalFlowBigStep {
   pragma[noinline]
   private predicate additionalLocalFlowStepNodeCand2(Node node1, Node node2, Configuration config) {
     additionalLocalFlowStepNodeCand1(node1, node2, config) and
-    nodeCand2(node1, _, _, false, config) and
-    nodeCand2(node2, _, _, false, unbind(config))
+    Stage2::revFlow(node1, _, _, false, config) and
+    Stage2::revFlow(node2, _, _, false, unbind(config))
   }
 
   /**
@@ -1157,13 +1347,13 @@ private module LocalFlowBigStep {
       node1 != node2 and
       cc.relevantFor(node1.getEnclosingCallable()) and
       not isUnreachableInCall(node1, cc.(LocalCallContextSpecificCall).getCall()) and
-      nodeCand2(node2, unbind(config))
+      Stage2::revFlow(node2, unbind(config))
       or
       exists(Node mid |
         localFlowStepPlus(node1, mid, preservesValue, t, config, cc) and
         localFlowStepNodeCand1(mid, node2, config) and
         not mid instanceof FlowCheckNode and
-        nodeCand2(node2, unbind(config))
+        Stage2::revFlow(node2, unbind(config))
       )
       or
       exists(Node mid |
@@ -1172,7 +1362,7 @@ private module LocalFlowBigStep {
         not mid instanceof FlowCheckNode and
         preservesValue = false and
         t = getNodeType(node2) and
-        nodeCand2(node2, unbind(config))
+        Stage2::revFlow(node2, unbind(config))
       )
     )
   }
@@ -1193,358 +1383,494 @@ private module LocalFlowBigStep {
 
 private import LocalFlowBigStep
 
-pragma[nomagic]
-private predicate readCand2(Node node1, Content c, Node node2, Configuration config) {
-  read(node1, c, node2, config) and
-  nodeCand2(node1, _, _, true, unbind(config)) and
-  nodeCand2(node2, config) and
-  nodeCand2IsReadAndStored(c, unbind(config))
-}
+private module Stage3 {
+  module PrevStage = Stage2;
 
-pragma[nomagic]
-private predicate storeCand2(
-  Node node1, TypedContent tc, Node node2, DataFlowType contentType, Configuration config
-) {
-  store(node1, tc, node2, contentType) and
-  nodeCand2(node1, config) and
-  nodeCand2(node2, _, _, true, unbind(config)) and
-  nodeCand2IsReadAndStored(tc.getContent(), unbind(config))
-}
+  class ApApprox = PrevStage::Ap;
 
-/**
- * Holds if `node` is reachable with access path front `apf` from a
- * source in the configuration `config`.
- *
- * The Boolean `fromArg` records whether the node is reached through an
- * argument in a call, and if so, `argApf` records the front of the
- * access path of that argument.
- */
-pragma[nomagic]
-private predicate flowCandFwd(
-  Node node, boolean fromArg, AccessPathFrontOption argApf, AccessPathFront apf,
-  Configuration config
-) {
-  flowCandFwd0(node, fromArg, argApf, apf, config) and
-  not apf.isClearedAt(node) and
-  if node instanceof CastingNode then compatibleTypes(getNodeType(node), apf.getType()) else any()
-}
+  class Ap = AccessPathFront;
 
-pragma[nomagic]
-private predicate flowCandFwd0(
-  Node node, boolean fromArg, AccessPathFrontOption argApf, AccessPathFront apf,
-  Configuration config
-) {
-  nodeCand2(node, _, _, false, config) and
-  config.isSource(node) and
-  fromArg = false and
-  argApf = TAccessPathFrontNone() and
-  apf = TFrontNil(getNodeType(node))
-  or
-  exists(Node mid |
-    flowCandFwd(mid, fromArg, argApf, apf, config) and
-    localFlowBigStep(mid, node, true, _, config, _)
-  )
-  or
-  exists(Node mid, AccessPathFrontNil nil |
-    flowCandFwd(mid, fromArg, argApf, nil, config) and
-    localFlowBigStep(mid, node, false, apf, config, _)
-  )
-  or
-  exists(Node mid |
-    flowCandFwd(mid, _, _, apf, config) and
-    nodeCand2(node, unbind(config)) and
-    jumpStep(mid, node, config) and
-    fromArg = false and
-    argApf = TAccessPathFrontNone()
-  )
-  or
-  exists(Node mid, AccessPathFrontNil nil |
-    flowCandFwd(mid, _, _, nil, config) and
-    nodeCand2(node, unbind(config)) and
-    additionalJumpStep(mid, node, config) and
-    fromArg = false and
-    argApf = TAccessPathFrontNone() and
-    apf = TFrontNil(getNodeType(node))
-  )
-  or
-  // store
-  exists(Node mid, TypedContent tc, AccessPathFront apf0, DataFlowType contentType |
-    flowCandFwd(mid, fromArg, argApf, apf0, config) and
-    storeCand2(mid, tc, node, contentType, config) and
-    nodeCand2(node, _, _, true, unbind(config)) and
-    apf.headUsesContent(tc) and
-    compatibleTypes(apf0.getType(), contentType)
-  )
-  or
-  // read
-  exists(TypedContent tc |
-    flowCandFwdRead(tc, node, fromArg, argApf, config) and
-    flowCandFwdConsCand(tc, apf, config) and
-    nodeCand2(node, _, _, unbindBool(apf.toBoolNonEmpty()), unbind(config))
-  )
-  or
-  // flow into a callable
-  flowCandFwdIn(_, node, _, _, apf, config) and
-  fromArg = true and
-  if nodeCand2(node, true, _, unbindBool(apf.toBoolNonEmpty()), config)
-  then argApf = TAccessPathFrontSome(apf)
-  else argApf = TAccessPathFrontNone()
-  or
-  // flow out of a callable
-  exists(DataFlowCall call |
-    flowCandFwdOut(call, node, fromArg, argApf, apf, config) and
-    fromArg = false
+  class ApNil = AccessPathFrontNil;
+
+  private ApApprox getApprox(Ap ap) { result = ap.toBoolNonEmpty() }
+
+  private ApNil getApNil(Node node) { result = TFrontNil(getNodeType(node)) }
+
+  bindingset[tc, tail]
+  private Ap apCons(TypedContent tc, Ap tail) { result.getHead() = tc and exists(tail) }
+
+  pragma[noinline]
+  private Content getHeadContent(Ap ap) { result = ap.getHead().getContent() }
+
+  class ApOption = AccessPathFrontOption;
+
+  ApOption apNone() { result = TAccessPathFrontNone() }
+
+  ApOption apSome(Ap ap) { result = TAccessPathFrontSome(ap) }
+
+  class Cc = boolean;
+
+  class CcCall extends Cc {
+    CcCall() { this = true }
+
+    /** Holds if this call context may be `call`. */
+    predicate matchesCall(DataFlowCall call) { any() }
+  }
+
+  class CcNoCall extends Cc {
+    CcNoCall() { this = false }
+  }
+
+  Cc ccNone() { result = false }
+
+  private class LocalCc = Unit;
+
+  bindingset[call, c, outercc]
+  private CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) { any() }
+
+  bindingset[call, c]
+  private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) { any() }
+
+  bindingset[innercc, inner, call]
+  private predicate checkCallContextReturn(Cc innercc, DataFlowCallable inner, DataFlowCall call) {
+    any()
+  }
+
+  bindingset[node, cc, config]
+  private LocalCc getLocalCc(Node node, Cc cc, Configuration config) { any() }
+
+  private predicate localStep(
+    Node node1, Node node2, boolean preservesValue, ApNil ap, Configuration config, LocalCc lcc
+  ) {
+    localFlowBigStep(node1, node2, preservesValue, ap, config, _) and exists(lcc)
+  }
+
+  private predicate flowOutOfCall = flowOutOfCallNodeCand2/5;
+
+  private predicate flowIntoCall = flowIntoCallNodeCand2/5;
+
+  bindingset[node, ap]
+  private predicate filter(Node node, Ap ap) {
+    not ap.isClearedAt(node) and
+    if node instanceof CastingNode then compatibleTypes(getNodeType(node), ap.getType()) else any()
+  }
+
+  bindingset[ap, contentType]
+  private predicate typecheckStore(Ap ap, DataFlowType contentType) {
+    // We need to typecheck stores here, since reverse flow through a getter
+    // might have a different type here compared to inside the getter.
+    compatibleTypes(ap.getType(), contentType)
+  }
+
+  /* Begin: Stage 3 logic. */
+  private predicate flowCand(Node node, ApApprox apa, Configuration config) {
+    PrevStage::revFlow(node, _, _, apa, config)
+  }
+
+  /**
+   * Holds if `node` is reachable with access path `ap` from a source in the
+   * configuration `config`.
+   *
+   * The call context `cc` records whether the node is reached through an
+   * argument in a call, and if so, `argAp` records the access path of that
+   * argument.
+   */
+  pragma[nomagic]
+  predicate fwdFlow(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
+    fwdFlow0(node, cc, argAp, ap, config) and
+    flowCand(node, unbindBool(getApprox(ap)), config) and
+    filter(node, ap)
+  }
+
+  pragma[nomagic]
+  private predicate fwdFlow0(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
+    flowCand(node, _, config) and
+    config.isSource(node) and
+    cc = ccNone() and
+    argAp = apNone() and
+    ap = getApNil(node)
     or
-    exists(AccessPathFront argApf0 |
-      flowCandFwdOutFromArg(call, node, argApf0, apf, config) and
-      flowCandFwdIsEntered(call, fromArg, argApf, argApf0, config)
+    exists(Node mid, Ap ap0, LocalCc localCc |
+      fwdFlow(mid, cc, argAp, ap0, config) and
+      localCc = getLocalCc(mid, cc, config)
+    |
+      localStep(mid, node, true, _, config, localCc) and
+      ap = ap0
+      or
+      localStep(mid, node, false, ap, config, localCc) and
+      ap0 instanceof ApNil
     )
-  )
-}
-
-pragma[nomagic]
-private predicate flowCandFwdConsCand(TypedContent tc, AccessPathFront apf, Configuration config) {
-  exists(Node mid, Node n, DataFlowType contentType |
-    flowCandFwd(mid, _, _, apf, config) and
-    storeCand2(mid, tc, n, contentType, config) and
-    nodeCand2(n, _, _, true, unbind(config)) and
-    compatibleTypes(apf.getType(), contentType)
-  )
-}
-
-pragma[nomagic]
-private predicate flowCandFwdRead0(
-  Node node1, TypedContent tc, Content c, Node node2, boolean fromArg, AccessPathFrontOption argApf,
-  AccessPathFrontHead apf, Configuration config
-) {
-  flowCandFwd(node1, fromArg, argApf, apf, config) and
-  readCand2(node1, c, node2, config) and
-  apf.headUsesContent(tc)
-}
-
-pragma[nomagic]
-private predicate flowCandFwdRead(
-  TypedContent tc, Node node, boolean fromArg, AccessPathFrontOption argApf, Configuration config
-) {
-  flowCandFwdRead0(_, tc, tc.getContent(), node, fromArg, argApf, _, config)
-}
-
-pragma[nomagic]
-private predicate flowCandFwdIn(
-  DataFlowCall call, ParameterNode p, boolean fromArg, AccessPathFrontOption argApf,
-  AccessPathFront apf, Configuration config
-) {
-  exists(ArgumentNode arg, boolean allowsFieldFlow |
-    flowCandFwd(arg, fromArg, argApf, apf, config) and
-    flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config)
-  |
-    apf instanceof AccessPathFrontNil or allowsFieldFlow = true
-  )
-}
-
-pragma[nomagic]
-private predicate flowCandFwdOut(
-  DataFlowCall call, Node node, boolean fromArg, AccessPathFrontOption argApf, AccessPathFront apf,
-  Configuration config
-) {
-  exists(ReturnNodeExt ret, boolean allowsFieldFlow |
-    flowCandFwd(ret, fromArg, argApf, apf, config) and
-    flowOutOfCallNodeCand2(call, ret, node, allowsFieldFlow, config)
-  |
-    apf instanceof AccessPathFrontNil or allowsFieldFlow = true
-  )
-}
-
-pragma[nomagic]
-private predicate flowCandFwdOutFromArg(
-  DataFlowCall call, Node node, AccessPathFront argApf, AccessPathFront apf, Configuration config
-) {
-  flowCandFwdOut(call, node, true, TAccessPathFrontSome(argApf), apf, config)
-}
-
-/**
- * Holds if an argument to `call` is reached in the flow covered by `flowCandFwd`.
- */
-pragma[nomagic]
-private predicate flowCandFwdIsEntered(
-  DataFlowCall call, boolean fromArg, AccessPathFrontOption argApf, AccessPathFront apf,
-  Configuration config
-) {
-  exists(ParameterNode p |
-    flowCandFwdIn(call, p, fromArg, argApf, apf, config) and
-    nodeCand2(p, true, TBooleanSome(_), unbindBool(apf.toBoolNonEmpty()), config)
-  )
-}
-
-/**
- * Holds if `node` with access path front `apf` is part of a path from a
- * source to a sink in the configuration `config`.
- *
- * The Boolean `toReturn` records whether the node must be returned from
- * the enclosing callable in order to reach a sink, and if so, `returnApf`
- * records the front of the access path of the returned value.
- */
-pragma[nomagic]
-private predicate flowCand(
-  Node node, boolean toReturn, AccessPathFrontOption returnApf, AccessPathFront apf,
-  Configuration config
-) {
-  flowCand0(node, toReturn, returnApf, apf, config) and
-  flowCandFwd(node, _, _, apf, config)
-}
-
-pragma[nomagic]
-private predicate flowCand0(
-  Node node, boolean toReturn, AccessPathFrontOption returnApf, AccessPathFront apf,
-  Configuration config
-) {
-  flowCandFwd(node, _, _, apf, config) and
-  config.isSink(node) and
-  toReturn = false and
-  returnApf = TAccessPathFrontNone() and
-  apf instanceof AccessPathFrontNil
-  or
-  exists(Node mid |
-    localFlowBigStep(node, mid, true, _, config, _) and
-    flowCand(mid, toReturn, returnApf, apf, config)
-  )
-  or
-  exists(Node mid, AccessPathFrontNil nil |
-    flowCandFwd(node, _, _, apf, config) and
-    localFlowBigStep(node, mid, false, _, config, _) and
-    flowCand(mid, toReturn, returnApf, nil, config) and
-    apf instanceof AccessPathFrontNil
-  )
-  or
-  exists(Node mid |
-    jumpStep(node, mid, config) and
-    flowCand(mid, _, _, apf, config) and
-    toReturn = false and
-    returnApf = TAccessPathFrontNone()
-  )
-  or
-  exists(Node mid, AccessPathFrontNil nil |
-    flowCandFwd(node, _, _, apf, config) and
-    additionalJumpStep(node, mid, config) and
-    flowCand(mid, _, _, nil, config) and
-    toReturn = false and
-    returnApf = TAccessPathFrontNone() and
-    apf instanceof AccessPathFrontNil
-  )
-  or
-  // store
-  exists(TypedContent tc |
-    flowCandStore(node, tc, apf, toReturn, returnApf, config) and
-    flowCandConsCand(tc, apf, config)
-  )
-  or
-  // read
-  exists(TypedContent tc, AccessPathFront apf0 |
-    flowCandRead(node, tc, apf, toReturn, returnApf, apf0, config) and
-    flowCandFwdConsCand(tc, apf0, config)
-  )
-  or
-  // flow into a callable
-  exists(DataFlowCall call |
-    flowCandIn(call, node, toReturn, returnApf, apf, config) and
-    toReturn = false
     or
-    exists(AccessPathFront returnApf0 |
-      flowCandInToReturn(call, node, returnApf0, apf, config) and
-      flowCandIsReturned(call, toReturn, returnApf, returnApf0, config)
+    exists(Node mid |
+      fwdFlow(mid, _, _, ap, config) and
+      flowCand(node, _, unbind(config)) and
+      jumpStep(mid, node, config) and
+      cc = ccNone() and
+      argAp = apNone()
     )
-  )
-  or
-  // flow out of a callable
-  flowCandOut(_, node, _, _, apf, config) and
-  toReturn = true and
-  if flowCandFwd(node, true, _, apf, config)
-  then returnApf = TAccessPathFrontSome(apf)
-  else returnApf = TAccessPathFrontNone()
-}
+    or
+    exists(Node mid, ApNil nil |
+      fwdFlow(mid, _, _, nil, config) and
+      flowCand(node, _, unbind(config)) and
+      additionalJumpStep(mid, node, config) and
+      cc = ccNone() and
+      argAp = apNone() and
+      ap = getApNil(node)
+    )
+    or
+    // store
+    exists(TypedContent tc, Ap ap0 |
+      fwdFlowStore(_, ap0, tc, node, cc, argAp, config) and
+      ap = apCons(tc, ap0)
+    )
+    or
+    // read
+    exists(Ap ap0, Content c |
+      fwdFlowRead(ap0, c, _, node, cc, argAp, config) and
+      fwdFlowConsCand(ap0, c, ap, config)
+    )
+    or
+    // flow into a callable
+    exists(ApApprox apa |
+      fwdFlowIn(_, node, _, cc, _, ap, config) and
+      apa = getApprox(ap) and
+      if PrevStage::parameterMayFlowThrough(node, _, apa, config)
+      then argAp = apSome(ap)
+      else argAp = apNone()
+    )
+    or
+    // flow out of a callable
+    exists(DataFlowCall call |
+      fwdFlowOut(call, node, any(CcNoCall innercc), cc, argAp, ap, config)
+      or
+      exists(Ap argAp0 |
+        fwdFlowOutFromArg(call, node, argAp0, ap, config) and
+        fwdFlowIsEntered(call, cc, argAp, argAp0, config)
+      )
+    )
+  }
 
-pragma[nomagic]
-private predicate readCandFwd(
-  Node node1, TypedContent tc, AccessPathFront apf, Node node2, Configuration config
-) {
-  flowCandFwdRead0(node1, tc, tc.getContent(), node2, _, _, apf, config)
-}
+  pragma[nomagic]
+  private predicate fwdFlowStore(
+    Node node1, Ap ap1, TypedContent tc, Node node2, Cc cc, ApOption argAp, Configuration config
+  ) {
+    exists(DataFlowType contentType |
+      fwdFlow(node1, cc, argAp, ap1, config) and
+      PrevStage::storeStepCand(node1, unbindBool(getApprox(ap1)), tc, node2, contentType, config) and
+      typecheckStore(ap1, contentType)
+    )
+  }
 
-pragma[nomagic]
-private predicate flowCandRead(
-  Node node, TypedContent tc, AccessPathFront apf, boolean toReturn,
-  AccessPathFrontOption returnApf, AccessPathFront apf0, Configuration config
-) {
-  exists(Node mid |
-    readCandFwd(node, tc, apf, mid, config) and
-    flowCand(mid, toReturn, returnApf, apf0, config)
-  )
-}
+  /**
+   * Holds if forward flow with access path `tail` reaches a store of `c`
+   * resulting in access path `cons`.
+   */
+  pragma[nomagic]
+  private predicate fwdFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
+    exists(TypedContent tc |
+      fwdFlowStore(_, tail, tc, _, _, _, config) and
+      tc.getContent() = c and
+      cons = apCons(tc, tail)
+    )
+  }
 
-pragma[nomagic]
-private predicate flowCandStore(
-  Node node, TypedContent tc, AccessPathFront apf, boolean toReturn,
-  AccessPathFrontOption returnApf, Configuration config
-) {
-  exists(Node mid |
-    flowCandFwd(node, _, _, apf, config) and
-    storeCand2(node, tc, mid, _, unbind(config)) and
-    flowCand(mid, toReturn, returnApf, TFrontHead(tc), unbind(config))
-  )
-}
+  pragma[nomagic]
+  private predicate fwdFlowRead(
+    Ap ap, Content c, Node node1, Node node2, Cc cc, ApOption argAp, Configuration config
+  ) {
+    fwdFlow(node1, cc, argAp, ap, config) and
+    PrevStage::readStepCand(node1, c, node2, config) and
+    getHeadContent(ap) = c
+  }
 
-pragma[nomagic]
-private predicate flowCandConsCand(TypedContent tc, AccessPathFront apf, Configuration config) {
-  flowCandFwdConsCand(tc, apf, config) and
-  flowCandRead(_, tc, _, _, _, apf, config)
-}
+  pragma[nomagic]
+  private predicate fwdFlowIn(
+    DataFlowCall call, ParameterNode p, Cc outercc, Cc innercc, ApOption argAp, Ap ap,
+    Configuration config
+  ) {
+    exists(ArgumentNode arg, boolean allowsFieldFlow |
+      fwdFlow(arg, outercc, argAp, ap, config) and
+      flowIntoCall(call, arg, p, allowsFieldFlow, config) and
+      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
+    |
+      ap instanceof ApNil or allowsFieldFlow = true
+    )
+  }
 
-pragma[nomagic]
-private predicate flowCandOut(
-  DataFlowCall call, ReturnNodeExt ret, boolean toReturn, AccessPathFrontOption returnApf,
-  AccessPathFront apf, Configuration config
-) {
-  exists(Node out, boolean allowsFieldFlow |
-    flowCand(out, toReturn, returnApf, apf, config) and
-    flowOutOfCallNodeCand2(call, ret, out, allowsFieldFlow, config)
-  |
-    apf instanceof AccessPathFrontNil or allowsFieldFlow = true
-  )
-}
+  /**
+   * Holds if flow may exit from `call` at `out` with access path `ap`. The
+   * inner call context is `innercc`, but `ccOut` is just the call context
+   * based on the return step. In the case of through-flow `ccOut` is discarded
+   * and replaced by the outer call context as tracked by `fwdFlowIsEntered`.
+   */
+  pragma[nomagic]
+  private predicate fwdFlowOut(
+    DataFlowCall call, Node out, Cc innercc, Cc ccOut, ApOption argAp, Ap ap, Configuration config
+  ) {
+    exists(ReturnNodeExt ret, boolean allowsFieldFlow, DataFlowCallable inner |
+      fwdFlow(ret, innercc, argAp, ap, config) and
+      flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
+      inner = ret.getEnclosingCallable() and
+      checkCallContextReturn(innercc, inner, call) and
+      ccOut = getCallContextReturn(inner, call)
+    |
+      ap instanceof ApNil or allowsFieldFlow = true
+    )
+  }
 
-pragma[nomagic]
-private predicate flowCandIn(
-  DataFlowCall call, ArgumentNode arg, boolean toReturn, AccessPathFrontOption returnApf,
-  AccessPathFront apf, Configuration config
-) {
-  exists(ParameterNode p, boolean allowsFieldFlow |
-    flowCand(p, toReturn, returnApf, apf, config) and
-    flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config)
-  |
-    apf instanceof AccessPathFrontNil or allowsFieldFlow = true
-  )
-}
+  pragma[nomagic]
+  private predicate fwdFlowOutFromArg(
+    DataFlowCall call, Node out, Ap argAp, Ap ap, Configuration config
+  ) {
+    fwdFlowOut(call, out, any(CcCall ccc), _, apSome(argAp), ap, config)
+  }
 
-pragma[nomagic]
-private predicate flowCandInToReturn(
-  DataFlowCall call, ArgumentNode arg, AccessPathFront returnApf, AccessPathFront apf,
-  Configuration config
-) {
-  flowCandIn(call, arg, true, TAccessPathFrontSome(returnApf), apf, config)
-}
+  /**
+   * Holds if an argument to `call` is reached in the flow covered by `fwdFlow`
+   * and data might flow through the target callable and back out at `call`.
+   */
+  pragma[nomagic]
+  private predicate fwdFlowIsEntered(
+    DataFlowCall call, Cc cc, ApOption argAp, Ap ap, Configuration config
+  ) {
+    exists(ParameterNode p |
+      fwdFlowIn(call, p, cc, _, argAp, ap, config) and
+      PrevStage::parameterMayFlowThrough(p, _, unbindBool(getApprox(ap)), config)
+    )
+  }
 
-/**
- * Holds if an output from `call` is reached in the flow covered by `flowCand`.
- */
-pragma[nomagic]
-private predicate flowCandIsReturned(
-  DataFlowCall call, boolean toReturn, AccessPathFrontOption returnApf, AccessPathFront apf,
-  Configuration config
-) {
-  exists(ReturnNodeExt ret |
-    flowCandOut(call, ret, toReturn, returnApf, apf, config) and
-    flowCandFwd(ret, true, TAccessPathFrontSome(_), apf, config)
-  )
+  pragma[nomagic]
+  private predicate storeStepFwd(
+    Node node1, Ap ap1, TypedContent tc, Node node2, Ap ap2, Configuration config
+  ) {
+    fwdFlowStore(node1, ap1, tc, node2, _, _, config) and
+    ap2 = apCons(tc, ap1) and
+    fwdFlowRead(ap2, tc.getContent(), _, _, _, _, config)
+  }
+
+  private predicate readStepFwd(Node n1, Ap ap1, Content c, Node n2, Ap ap2, Configuration config) {
+    fwdFlowRead(ap1, c, n1, n2, _, _, config) and
+    fwdFlowConsCand(ap1, c, ap2, config)
+  }
+
+  /**
+   * Holds if `node` with access path `ap` is part of a path from a source to a
+   * sink in the configuration `config`.
+   *
+   * The Boolean `toReturn` records whether the node must be returned from the
+   * enclosing callable in order to reach a sink, and if so, `returnAp` records
+   * the access path of the returned value.
+   */
+  pragma[nomagic]
+  predicate revFlow(Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config) {
+    revFlow0(node, toReturn, returnAp, ap, config) and
+    fwdFlow(node, _, _, ap, config)
+  }
+
+  pragma[nomagic]
+  private predicate revFlow0(
+    Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
+  ) {
+    fwdFlow(node, _, _, ap, config) and
+    config.isSink(node) and
+    toReturn = false and
+    returnAp = apNone() and
+    ap instanceof ApNil
+    or
+    exists(Node mid |
+      localStep(node, mid, true, _, config, _) and
+      revFlow(mid, toReturn, returnAp, ap, config)
+    )
+    or
+    exists(Node mid, ApNil nil |
+      fwdFlow(node, _, _, ap, config) and
+      localStep(node, mid, false, _, config, _) and
+      revFlow(mid, toReturn, returnAp, nil, config) and
+      ap instanceof ApNil
+    )
+    or
+    exists(Node mid |
+      jumpStep(node, mid, config) and
+      revFlow(mid, _, _, ap, config) and
+      toReturn = false and
+      returnAp = apNone()
+    )
+    or
+    exists(Node mid, ApNil nil |
+      fwdFlow(node, _, _, ap, config) and
+      additionalJumpStep(node, mid, config) and
+      revFlow(mid, _, _, nil, config) and
+      toReturn = false and
+      returnAp = apNone() and
+      ap instanceof ApNil
+    )
+    or
+    // store
+    exists(Ap ap0, Content c |
+      revFlowStore(ap0, c, ap, node, _, _, toReturn, returnAp, config) and
+      revFlowConsCand(ap0, c, ap, config)
+    )
+    or
+    // read
+    exists(Node mid, Ap ap0 |
+      revFlow(mid, toReturn, returnAp, ap0, config) and
+      readStepFwd(node, ap, _, mid, ap0, config)
+    )
+    or
+    // flow into a callable
+    exists(DataFlowCall call |
+      revFlowIn(call, node, toReturn, returnAp, ap, config) and
+      toReturn = false
+      or
+      exists(Ap returnAp0 |
+        revFlowInToReturn(call, node, returnAp0, ap, config) and
+        revFlowIsReturned(call, toReturn, returnAp, returnAp0, config)
+      )
+    )
+    or
+    // flow out of a callable
+    revFlowOut(_, node, _, _, ap, config) and
+    toReturn = true and
+    if fwdFlow(node, any(CcCall ccc), apSome(_), ap, config)
+    then returnAp = apSome(ap)
+    else returnAp = apNone()
+  }
+
+  pragma[nomagic]
+  private predicate revFlowStore(
+    Ap ap0, Content c, Ap ap, Node node, TypedContent tc, Node mid, boolean toReturn,
+    ApOption returnAp, Configuration config
+  ) {
+    revFlow(mid, toReturn, returnAp, ap0, config) and
+    storeStepFwd(node, ap, tc, mid, ap0, config) and
+    tc.getContent() = c
+  }
+
+  /**
+   * Holds if reverse flow with access path `tail` reaches a read of `c`
+   * resulting in access path `cons`.
+   */
+  pragma[nomagic]
+  private predicate revFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
+    exists(Node mid |
+      revFlow(mid, _, _, tail, config) and
+      readStepFwd(_, cons, c, mid, tail, config)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate revFlowOut(
+    DataFlowCall call, ReturnNodeExt ret, boolean toReturn, ApOption returnAp, Ap ap,
+    Configuration config
+  ) {
+    exists(Node out, boolean allowsFieldFlow |
+      revFlow(out, toReturn, returnAp, ap, config) and
+      flowOutOfCall(call, ret, out, allowsFieldFlow, config)
+    |
+      ap instanceof ApNil or allowsFieldFlow = true
+    )
+  }
+
+  pragma[nomagic]
+  private predicate revFlowIn(
+    DataFlowCall call, ArgumentNode arg, boolean toReturn, ApOption returnAp, Ap ap,
+    Configuration config
+  ) {
+    exists(ParameterNode p, boolean allowsFieldFlow |
+      revFlow(p, toReturn, returnAp, ap, config) and
+      flowIntoCall(call, arg, p, allowsFieldFlow, config)
+    |
+      ap instanceof ApNil or allowsFieldFlow = true
+    )
+  }
+
+  pragma[nomagic]
+  private predicate revFlowInToReturn(
+    DataFlowCall call, ArgumentNode arg, Ap returnAp, Ap ap, Configuration config
+  ) {
+    revFlowIn(call, arg, true, apSome(returnAp), ap, config)
+  }
+
+  /**
+   * Holds if an output from `call` is reached in the flow covered by `revFlow`
+   * and data might flow through the target callable resulting in reverse flow
+   * reaching an argument of `call`.
+   */
+  pragma[nomagic]
+  private predicate revFlowIsReturned(
+    DataFlowCall call, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
+  ) {
+    exists(ReturnNodeExt ret, CcCall ccc |
+      revFlowOut(call, ret, toReturn, returnAp, ap, config) and
+      fwdFlow(ret, ccc, apSome(_), ap, config) and
+      ccc.matchesCall(call)
+    )
+  }
+
+  pragma[nomagic]
+  predicate storeStepCand(
+    Node node1, Ap ap1, TypedContent tc, Node node2, DataFlowType contentType, Configuration config
+  ) {
+    exists(Ap ap2, Content c |
+      store(node1, tc, node2, contentType) and
+      revFlowStore(ap2, c, ap1, node1, tc, node2, _, _, config) and
+      revFlowConsCand(ap2, c, ap1, config)
+    )
+  }
+
+  predicate readStepCand(Node node1, Content c, Node node2, Configuration config) {
+    exists(Ap ap1, Ap ap2 |
+      revFlow(node2, _, _, ap2, config) and
+      readStepFwd(node1, ap1, c, node2, ap2, config) and
+      revFlowStore(ap1, c, /*unbind*/ ap2, _, _, _, _, _, unbind(config))
+    )
+  }
+
+  predicate revFlow(Node node, Configuration config) { revFlow(node, _, _, _, config) }
+
+  private predicate fwdConsCand(TypedContent tc, Ap ap, Configuration config) {
+    storeStepFwd(_, ap, tc, _, _, config)
+  }
+
+  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+    storeStepCand(_, ap, tc, _, _, config)
+  }
+
+  pragma[noinline]
+  private predicate parameterFlow(
+    ParameterNode p, Ap ap, Ap ap0, DataFlowCallable c, Configuration config
+  ) {
+    revFlow(p, true, apSome(ap0), ap, config) and
+    c = p.getEnclosingCallable()
+  }
+
+  predicate parameterMayFlowThrough(ParameterNode p, DataFlowCallable c, Ap ap, Configuration config) {
+    exists(ReturnNodeExt ret, Ap ap0, ReturnKindExt kind, int pos |
+      parameterFlow(p, ap, ap0, c, config) and
+      c = ret.getEnclosingCallable() and
+      revFlow(ret, true, apSome(_), ap0, config) and
+      fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
+      kind = ret.getKind() and
+      p.isParameterOf(_, pos) and
+      // we don't expect a parameter to return stored in itself
+      not kind.(ParamUpdateReturnKind).getPosition() = pos
+    )
+  }
+
+  predicate stats(boolean fwd, int nodes, int fields, int conscand, int tuples, Configuration config) {
+    fwd = true and
+    nodes = count(Node node | fwdFlow(node, _, _, _, config)) and
+    fields = count(TypedContent f0 | fwdConsCand(f0, _, config)) and
+    conscand = count(TypedContent f0, Ap ap | fwdConsCand(f0, ap, config)) and
+    tuples = count(Node n, Cc cc, ApOption argAp, Ap ap | fwdFlow(n, cc, argAp, ap, config))
+    or
+    fwd = false and
+    nodes = count(Node node | revFlow(node, _, _, _, config)) and
+    fields = count(TypedContent f0 | consCand(f0, _, config)) and
+    conscand = count(TypedContent f0, Ap ap | consCand(f0, ap, config)) and
+    tuples = count(Node n, boolean b, ApOption retAp, Ap ap | revFlow(n, b, retAp, ap, config))
+  }
+  /* End: Stage 3 logic. */
 }
 
 /**
@@ -1553,8 +1879,8 @@ private predicate flowCandIsReturned(
  */
 private predicate flowCandSummaryCtx(Node node, AccessPathFront argApf, Configuration config) {
   exists(AccessPathFront apf |
-    flowCand(node, true, _, apf, config) and
-    flowCandFwd(node, true, TAccessPathFrontSome(argApf), apf, config)
+    Stage3::revFlow(node, true, _, apf, config) and
+    Stage3::fwdFlow(node, true, TAccessPathFrontSome(argApf), apf, config)
   )
 }
 
@@ -1564,12 +1890,12 @@ private predicate flowCandSummaryCtx(Node node, AccessPathFront argApf, Configur
  */
 private predicate expensiveLen2unfolding(TypedContent tc, Configuration config) {
   exists(int tails, int nodes, int apLimit, int tupleLimit |
-    tails = strictcount(AccessPathFront apf | flowCandConsCand(tc, apf, config)) and
+    tails = strictcount(AccessPathFront apf | Stage3::consCand(tc, apf, config)) and
     nodes =
       strictcount(Node n |
-        flowCand(n, _, _, any(AccessPathFrontHead apf | apf.headUsesContent(tc)), config)
+        Stage3::revFlow(n, _, _, any(AccessPathFrontHead apf | apf.getHead() = tc), config)
         or
-        flowCandSummaryCtx(n, any(AccessPathFrontHead apf | apf.headUsesContent(tc)), config)
+        flowCandSummaryCtx(n, any(AccessPathFrontHead apf | apf.getHead() = tc), config)
       ) and
     accessPathApproxCostLimits(apLimit, tupleLimit) and
     apLimit < tails and
@@ -1580,11 +1906,11 @@ private predicate expensiveLen2unfolding(TypedContent tc, Configuration config) 
 private newtype TAccessPathApprox =
   TNil(DataFlowType t) or
   TConsNil(TypedContent tc, DataFlowType t) {
-    flowCandConsCand(tc, TFrontNil(t), _) and
+    Stage3::consCand(tc, TFrontNil(t), _) and
     not expensiveLen2unfolding(tc, _)
   } or
   TConsCons(TypedContent tc1, TypedContent tc2, int len) {
-    flowCandConsCand(tc1, TFrontHead(tc2), _) and
+    Stage3::consCand(tc1, TFrontHead(tc2), _) and
     len in [2 .. accessPathLimit()] and
     not expensiveLen2unfolding(tc1, _)
   } or
@@ -1714,7 +2040,7 @@ private class AccessPathApproxCons1 extends AccessPathApproxCons, TCons1 {
   override AccessPathApprox pop(TypedContent head) {
     head = tc and
     (
-      exists(TypedContent tc2 | flowCandConsCand(tc, TFrontHead(tc2), _) |
+      exists(TypedContent tc2 | Stage3::consCand(tc, TFrontHead(tc2), _) |
         result = TConsCons(tc2, _, len - 1)
         or
         len = 2 and
@@ -1725,7 +2051,7 @@ private class AccessPathApproxCons1 extends AccessPathApproxCons, TCons1 {
       or
       exists(DataFlowType t |
         len = 1 and
-        flowCandConsCand(tc, TFrontNil(t), _) and
+        Stage3::consCand(tc, TFrontNil(t), _) and
         result = TNil(t)
       )
     )
@@ -1750,435 +2076,526 @@ private class AccessPathApproxOption extends TAccessPathApproxOption {
   }
 }
 
-/**
- * Holds if `node` is reachable with approximate access path `apa` from a source
- * in the configuration `config`.
- *
- * The call context `cc` records whether the node is reached through an
- * argument in a call, and if so, `argApa` records the approximate access path
- * of that argument.
- */
-private predicate flowFwd(
-  Node node, CallContext cc, AccessPathApproxOption argApa, AccessPathFront apf,
-  AccessPathApprox apa, Configuration config
-) {
-  flowFwd0(node, cc, argApa, apf, apa, config) and
-  flowCand(node, _, _, apf, config)
-}
+private module Stage4 {
+  module PrevStage = Stage3;
 
-private predicate flowFwd0(
-  Node node, CallContext cc, AccessPathApproxOption argApa, AccessPathFront apf,
-  AccessPathApprox apa, Configuration config
-) {
-  flowCand(node, _, _, _, config) and
-  config.isSource(node) and
-  cc instanceof CallContextAny and
-  argApa = TAccessPathApproxNone() and
-  apa = TNil(getNodeType(node)) and
-  apf = apa.(AccessPathApproxNil).getFront()
-  or
-  flowCand(node, _, _, _, unbind(config)) and
-  (
-    exists(Node mid, LocalCallContext localCC |
-      flowFwdLocalEntry(mid, cc, argApa, apf, apa, localCC, config) and
-      localFlowBigStep(mid, node, true, _, config, localCC)
-    )
+  class ApApprox = PrevStage::Ap;
+
+  class Ap = AccessPathApprox;
+
+  class ApNil = AccessPathApproxNil;
+
+  private ApApprox getApprox(Ap ap) { result = ap.getFront() }
+
+  private ApNil getApNil(Node node) { result = TNil(getNodeType(node)) }
+
+  bindingset[tc, tail]
+  private Ap apCons(TypedContent tc, Ap tail) { result = push(tc, tail) }
+
+  pragma[noinline]
+  private Content getHeadContent(Ap ap) { result = ap.getHead().getContent() }
+
+  class ApOption = AccessPathApproxOption;
+
+  ApOption apNone() { result = TAccessPathApproxNone() }
+
+  ApOption apSome(Ap ap) { result = TAccessPathApproxSome(ap) }
+
+  class Cc = CallContext;
+
+  class CcCall = CallContextCall;
+
+  class CcNoCall = CallContextNoCall;
+
+  Cc ccNone() { result instanceof CallContextAny }
+
+  private class LocalCc = LocalCallContext;
+
+  bindingset[call, c, outercc]
+  private CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) {
+    c = resolveCall(call, outercc) and
+    if recordDataFlowCallSite(call, c) then result = TSpecificCall(call) else result = TSomeCall()
+  }
+
+  bindingset[call, c]
+  private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) {
+    if reducedViableImplInReturn(c, call) then result = TReturn(c, call) else result = ccNone()
+  }
+
+  bindingset[innercc, inner, call]
+  private predicate checkCallContextReturn(Cc innercc, DataFlowCallable inner, DataFlowCall call) {
+    resolveReturn(innercc, inner, call)
     or
-    exists(Node mid, AccessPathApproxNil nil, LocalCallContext localCC |
-      flowFwdLocalEntry(mid, cc, argApa, _, nil, localCC, config) and
-      localFlowBigStep(mid, node, false, apf, config, localCC) and
-      apf = apa.(AccessPathApproxNil).getFront()
+    innercc.(CallContextCall).matchesCall(call)
+  }
+
+  bindingset[node, cc, config]
+  private LocalCc getLocalCc(Node node, Cc cc, Configuration config) {
+    localFlowEntry(node, config) and
+    result = getLocalCallContext(cc, node.getEnclosingCallable())
+  }
+
+  private predicate localStep(
+    Node node1, Node node2, boolean preservesValue, ApNil ap, Configuration config, LocalCc lcc
+  ) {
+    localFlowBigStep(node1, node2, preservesValue, ap.getFront(), config, lcc)
+  }
+
+  pragma[nomagic]
+  private predicate flowOutOfCall(
+    DataFlowCall call, ReturnNodeExt node1, Node node2, boolean allowsFieldFlow,
+    Configuration config
+  ) {
+    flowOutOfCallNodeCand2(call, node1, node2, allowsFieldFlow, config) and
+    PrevStage::revFlow(node2, _, _, _, config) and
+    PrevStage::revFlow(node1, _, _, _, unbind(config))
+  }
+
+  pragma[nomagic]
+  private predicate flowIntoCall(
+    DataFlowCall call, ArgumentNode node1, ParameterNode node2, boolean allowsFieldFlow,
+    Configuration config
+  ) {
+    flowIntoCallNodeCand2(call, node1, node2, allowsFieldFlow, config) and
+    PrevStage::revFlow(node2, _, _, _, config) and
+    PrevStage::revFlow(node1, _, _, _, unbind(config))
+  }
+
+  bindingset[node, ap]
+  private predicate filter(Node node, Ap ap) { any() }
+
+  // Type checking is not necessary here as it has already been done in stage 3.
+  bindingset[ap, contentType]
+  private predicate typecheckStore(Ap ap, DataFlowType contentType) { any() }
+
+  /* Begin: Stage 4 logic. */
+  private predicate flowCand(Node node, ApApprox apa, Configuration config) {
+    PrevStage::revFlow(node, _, _, apa, config)
+  }
+
+  /**
+   * Holds if `node` is reachable with access path `ap` from a source in the
+   * configuration `config`.
+   *
+   * The call context `cc` records whether the node is reached through an
+   * argument in a call, and if so, `argAp` records the access path of that
+   * argument.
+   */
+  pragma[nomagic]
+  predicate fwdFlow(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
+    fwdFlow0(node, cc, argAp, ap, config) and
+    flowCand(node, getApprox(ap), config) and
+    filter(node, ap)
+  }
+
+  pragma[nomagic]
+  private predicate fwdFlow0(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
+    flowCand(node, _, config) and
+    config.isSource(node) and
+    cc = ccNone() and
+    argAp = apNone() and
+    ap = getApNil(node)
+    or
+    exists(Node mid, Ap ap0, LocalCc localCc |
+      fwdFlow(mid, cc, argAp, ap0, config) and
+      localCc = getLocalCc(mid, cc, config)
+    |
+      localStep(mid, node, true, _, config, localCc) and
+      ap = ap0
+      or
+      localStep(mid, node, false, ap, config, localCc) and
+      ap0 instanceof ApNil
     )
     or
     exists(Node mid |
-      flowFwd(mid, _, _, apf, apa, config) and
+      fwdFlow(mid, _, _, ap, config) and
+      flowCand(node, _, unbind(config)) and
       jumpStep(mid, node, config) and
-      cc instanceof CallContextAny and
-      argApa = TAccessPathApproxNone()
+      cc = ccNone() and
+      argAp = apNone()
     )
     or
-    exists(Node mid, AccessPathApproxNil nil |
-      flowFwd(mid, _, _, _, nil, config) and
+    exists(Node mid, ApNil nil |
+      fwdFlow(mid, _, _, nil, config) and
+      flowCand(node, _, unbind(config)) and
       additionalJumpStep(mid, node, config) and
-      cc instanceof CallContextAny and
-      argApa = TAccessPathApproxNone() and
-      apa = TNil(getNodeType(node)) and
-      apf = apa.(AccessPathApproxNil).getFront()
-    )
-  )
-  or
-  // store
-  exists(TypedContent tc | flowFwdStore(node, tc, pop(tc, apa), apf, cc, argApa, config))
-  or
-  // read
-  exists(TypedContent tc |
-    flowFwdRead(node, _, push(tc, apa), apf, cc, argApa, config) and
-    flowFwdConsCand(tc, apf, apa, config)
-  )
-  or
-  // flow into a callable
-  flowFwdIn(_, node, _, cc, _, apf, apa, config) and
-  if flowCand(node, true, _, apf, config)
-  then argApa = TAccessPathApproxSome(apa)
-  else argApa = TAccessPathApproxNone()
-  or
-  // flow out of a callable
-  exists(DataFlowCall call |
-    exists(DataFlowCallable c |
-      flowFwdOut(call, node, any(CallContextNoCall innercc), c, argApa, apf, apa, config) and
-      if reducedViableImplInReturn(c, call) then cc = TReturn(c, call) else cc = TAnyCallContext()
+      cc = ccNone() and
+      argAp = apNone() and
+      ap = getApNil(node)
     )
     or
-    exists(AccessPathApprox argApa0 |
-      flowFwdOutFromArg(call, node, argApa0, apf, apa, config) and
-      flowFwdIsEntered(call, cc, argApa, argApa0, config)
+    // store
+    exists(TypedContent tc, Ap ap0 |
+      fwdFlowStore(_, ap0, tc, node, cc, argAp, config) and
+      ap = apCons(tc, ap0)
     )
-  )
-}
-
-pragma[nomagic]
-private predicate flowFwdLocalEntry(
-  Node node, CallContext cc, AccessPathApproxOption argApa, AccessPathFront apf,
-  AccessPathApprox apa, LocalCallContext localCC, Configuration config
-) {
-  flowFwd(node, cc, argApa, apf, apa, config) and
-  localFlowEntry(node, config) and
-  localCC = getLocalCallContext(cc, node.getEnclosingCallable())
-}
-
-pragma[nomagic]
-private predicate flowFwdStore(
-  Node node, TypedContent tc, AccessPathApprox apa0, AccessPathFront apf, CallContext cc,
-  AccessPathApproxOption argApa, Configuration config
-) {
-  exists(Node mid, AccessPathFront apf0 |
-    flowFwd(mid, cc, argApa, apf0, apa0, config) and
-    flowFwdStore0(mid, tc, node, apf0, apf, config)
-  )
-}
-
-pragma[nomagic]
-private predicate storeCand(
-  Node mid, TypedContent tc, Node node, AccessPathFront apf0, AccessPathFront apf,
-  Configuration config
-) {
-  storeCand2(mid, tc, node, _, config) and
-  flowCand(mid, _, _, apf0, config) and
-  apf.headUsesContent(tc)
-}
-
-pragma[noinline]
-private predicate flowFwdStore0(
-  Node mid, TypedContent tc, Node node, AccessPathFront apf0, AccessPathFrontHead apf,
-  Configuration config
-) {
-  storeCand(mid, tc, node, apf0, apf, config) and
-  flowCandConsCand(tc, apf0, config) and
-  flowCand(node, _, _, apf, unbind(config))
-}
-
-pragma[nomagic]
-private predicate flowFwdRead0(
-  Node node1, TypedContent tc, AccessPathFrontHead apf0, AccessPathApprox apa0, Node node2,
-  CallContext cc, AccessPathApproxOption argApa, Configuration config
-) {
-  flowFwd(node1, cc, argApa, apf0, apa0, config) and
-  readCandFwd(node1, tc, apf0, node2, config)
-}
-
-pragma[nomagic]
-private predicate flowFwdRead(
-  Node node, AccessPathFrontHead apf0, AccessPathApprox apa0, AccessPathFront apf, CallContext cc,
-  AccessPathApproxOption argApa, Configuration config
-) {
-  exists(Node mid, TypedContent tc |
-    flowFwdRead0(mid, tc, apf0, apa0, node, cc, argApa, config) and
-    flowCand(node, _, _, apf, unbind(config)) and
-    flowCandConsCand(tc, apf, unbind(config))
-  )
-}
-
-pragma[nomagic]
-private predicate flowFwdConsCand(
-  TypedContent tc, AccessPathFront apf, AccessPathApprox apa, Configuration config
-) {
-  exists(Node n |
-    flowFwd(n, _, _, apf, apa, config) and
-    flowFwdStore0(n, tc, _, apf, _, config)
-  )
-}
-
-pragma[nomagic]
-private predicate flowFwdIn(
-  DataFlowCall call, ParameterNode p, CallContext outercc, CallContext innercc,
-  AccessPathApproxOption argApa, AccessPathFront apf, AccessPathApprox apa, Configuration config
-) {
-  exists(ArgumentNode arg, boolean allowsFieldFlow, DataFlowCallable c |
-    flowFwd(arg, outercc, argApa, apf, apa, config) and
-    flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config) and
-    c = p.getEnclosingCallable() and
-    c = resolveCall(call, outercc) and
-    flowCand(p, _, _, _, unbind(config)) and
-    if recordDataFlowCallSite(call, c) then innercc = TSpecificCall(call) else innercc = TSomeCall()
-  |
-    apa instanceof AccessPathApproxNil or allowsFieldFlow = true
-  )
-}
-
-pragma[nomagic]
-private predicate flowFwdOut(
-  DataFlowCall call, Node node, CallContext innercc, DataFlowCallable innerc,
-  AccessPathApproxOption argApa, AccessPathFront apf, AccessPathApprox apa, Configuration config
-) {
-  exists(ReturnNodeExt ret, boolean allowsFieldFlow |
-    flowFwd(ret, innercc, argApa, apf, apa, config) and
-    flowOutOfCallNodeCand2(call, ret, node, allowsFieldFlow, config) and
-    innerc = ret.getEnclosingCallable() and
-    flowCand(node, _, _, _, unbind(config)) and
-    (
-      resolveReturn(innercc, innerc, call)
+    or
+    // read
+    exists(Ap ap0, Content c |
+      fwdFlowRead(ap0, c, _, node, cc, argAp, config) and
+      fwdFlowConsCand(ap0, c, ap, config)
+    )
+    or
+    // flow into a callable
+    exists(ApApprox apa |
+      fwdFlowIn(_, node, _, cc, _, ap, config) and
+      apa = getApprox(ap) and
+      if PrevStage::parameterMayFlowThrough(node, _, apa, config)
+      then argAp = apSome(ap)
+      else argAp = apNone()
+    )
+    or
+    // flow out of a callable
+    exists(DataFlowCall call |
+      fwdFlowOut(call, node, any(CcNoCall innercc), cc, argAp, ap, config)
       or
-      innercc.(CallContextCall).matchesCall(call)
+      exists(Ap argAp0 |
+        fwdFlowOutFromArg(call, node, argAp0, ap, config) and
+        fwdFlowIsEntered(call, cc, argAp, argAp0, config)
+      )
     )
-  |
-    apa instanceof AccessPathApproxNil or allowsFieldFlow = true
-  )
-}
+  }
 
-pragma[nomagic]
-private predicate flowFwdOutFromArg(
-  DataFlowCall call, Node node, AccessPathApprox argApa, AccessPathFront apf, AccessPathApprox apa,
-  Configuration config
-) {
-  flowFwdOut(call, node, any(CallContextCall ccc), _, TAccessPathApproxSome(argApa), apf, apa,
-    config)
-}
+  pragma[nomagic]
+  private predicate fwdFlowStore(
+    Node node1, Ap ap1, TypedContent tc, Node node2, Cc cc, ApOption argAp, Configuration config
+  ) {
+    exists(DataFlowType contentType |
+      fwdFlow(node1, cc, argAp, ap1, config) and
+      PrevStage::storeStepCand(node1, getApprox(ap1), tc, node2, contentType, config) and
+      typecheckStore(ap1, contentType)
+    )
+  }
 
-/**
- * Holds if an argument to `call` is reached in the flow covered by `flowFwd`.
- */
-pragma[nomagic]
-private predicate flowFwdIsEntered(
-  DataFlowCall call, CallContext cc, AccessPathApproxOption argApa, AccessPathApprox apa,
-  Configuration config
-) {
-  exists(ParameterNode p, AccessPathFront apf |
-    flowFwdIn(call, p, cc, _, argApa, apf, apa, config) and
-    flowCand(p, true, TAccessPathFrontSome(_), apf, config)
-  )
-}
+  /**
+   * Holds if forward flow with access path `tail` reaches a store of `c`
+   * resulting in access path `cons`.
+   */
+  pragma[nomagic]
+  private predicate fwdFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
+    exists(TypedContent tc |
+      fwdFlowStore(_, tail, tc, _, _, _, config) and
+      tc.getContent() = c and
+      cons = apCons(tc, tail)
+    )
+  }
 
-/**
- * Holds if `node` with approximate access path `apa` is part of a path from a
- * source to a sink in the configuration `config`.
- *
- * The Boolean `toReturn` records whether the node must be returned from
- * the enclosing callable in order to reach a sink, and if so, `returnApa`
- * records the approximate access path of the returned value.
- */
-private predicate flow(
-  Node node, boolean toReturn, AccessPathApproxOption returnApa, AccessPathApprox apa,
-  Configuration config
-) {
-  flow0(node, toReturn, returnApa, apa, config) and
-  flowFwd(node, _, _, _, apa, config)
-}
+  pragma[nomagic]
+  private predicate fwdFlowRead(
+    Ap ap, Content c, Node node1, Node node2, Cc cc, ApOption argAp, Configuration config
+  ) {
+    fwdFlow(node1, cc, argAp, ap, config) and
+    PrevStage::readStepCand(node1, c, node2, config) and
+    getHeadContent(ap) = c
+  }
 
-private predicate flow0(
-  Node node, boolean toReturn, AccessPathApproxOption returnApa, AccessPathApprox apa,
-  Configuration config
-) {
-  flowFwd(node, _, _, _, apa, config) and
-  config.isSink(node) and
-  toReturn = false and
-  returnApa = TAccessPathApproxNone() and
-  apa instanceof AccessPathApproxNil
-  or
-  exists(Node mid |
-    localFlowBigStep(node, mid, true, _, config, _) and
-    flow(mid, toReturn, returnApa, apa, config)
-  )
-  or
-  exists(Node mid, AccessPathApproxNil nil |
-    flowFwd(node, _, _, _, apa, config) and
-    localFlowBigStep(node, mid, false, _, config, _) and
-    flow(mid, toReturn, returnApa, nil, config) and
-    apa instanceof AccessPathApproxNil
-  )
-  or
-  exists(Node mid |
-    jumpStep(node, mid, config) and
-    flow(mid, _, _, apa, config) and
+  pragma[nomagic]
+  private predicate fwdFlowIn(
+    DataFlowCall call, ParameterNode p, Cc outercc, Cc innercc, ApOption argAp, Ap ap,
+    Configuration config
+  ) {
+    exists(ArgumentNode arg, boolean allowsFieldFlow |
+      fwdFlow(arg, outercc, argAp, ap, config) and
+      flowIntoCall(call, arg, p, allowsFieldFlow, config) and
+      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
+    |
+      ap instanceof ApNil or allowsFieldFlow = true
+    )
+  }
+
+  /**
+   * Holds if flow may exit from `call` at `out` with access path `ap`. The
+   * inner call context is `innercc`, but `ccOut` is just the call context
+   * based on the return step. In the case of through-flow `ccOut` is discarded
+   * and replaced by the outer call context as tracked by `fwdFlowIsEntered`.
+   */
+  pragma[nomagic]
+  private predicate fwdFlowOut(
+    DataFlowCall call, Node out, Cc innercc, Cc ccOut, ApOption argAp, Ap ap, Configuration config
+  ) {
+    exists(ReturnNodeExt ret, boolean allowsFieldFlow, DataFlowCallable inner |
+      fwdFlow(ret, innercc, argAp, ap, config) and
+      flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
+      inner = ret.getEnclosingCallable() and
+      checkCallContextReturn(innercc, inner, call) and
+      ccOut = getCallContextReturn(inner, call)
+    |
+      ap instanceof ApNil or allowsFieldFlow = true
+    )
+  }
+
+  pragma[nomagic]
+  private predicate fwdFlowOutFromArg(
+    DataFlowCall call, Node out, Ap argAp, Ap ap, Configuration config
+  ) {
+    fwdFlowOut(call, out, any(CcCall ccc), _, apSome(argAp), ap, config)
+  }
+
+  /**
+   * Holds if an argument to `call` is reached in the flow covered by `fwdFlow`
+   * and data might flow through the target callable and back out at `call`.
+   */
+  pragma[nomagic]
+  private predicate fwdFlowIsEntered(
+    DataFlowCall call, Cc cc, ApOption argAp, Ap ap, Configuration config
+  ) {
+    exists(ParameterNode p |
+      fwdFlowIn(call, p, cc, _, argAp, ap, config) and
+      PrevStage::parameterMayFlowThrough(p, _, getApprox(ap), config)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate storeStepFwd(
+    Node node1, Ap ap1, TypedContent tc, Node node2, Ap ap2, Configuration config
+  ) {
+    fwdFlowStore(node1, ap1, tc, node2, _, _, config) and
+    ap2 = apCons(tc, ap1) and
+    fwdFlowRead(ap2, tc.getContent(), _, _, _, _, config)
+  }
+
+  private predicate readStepFwd(Node n1, Ap ap1, Content c, Node n2, Ap ap2, Configuration config) {
+    fwdFlowRead(ap1, c, n1, n2, _, _, config) and
+    fwdFlowConsCand(ap1, c, ap2, config)
+  }
+
+  /**
+   * Holds if `node` with access path `ap` is part of a path from a source to a
+   * sink in the configuration `config`.
+   *
+   * The Boolean `toReturn` records whether the node must be returned from the
+   * enclosing callable in order to reach a sink, and if so, `returnAp` records
+   * the access path of the returned value.
+   */
+  pragma[nomagic]
+  predicate revFlow(Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config) {
+    revFlow0(node, toReturn, returnAp, ap, config) and
+    fwdFlow(node, _, _, ap, config)
+  }
+
+  pragma[nomagic]
+  private predicate revFlow0(
+    Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
+  ) {
+    fwdFlow(node, _, _, ap, config) and
+    config.isSink(node) and
     toReturn = false and
-    returnApa = TAccessPathApproxNone()
-  )
-  or
-  exists(Node mid, AccessPathApproxNil nil |
-    flowFwd(node, _, _, _, apa, config) and
-    additionalJumpStep(node, mid, config) and
-    flow(mid, _, _, nil, config) and
-    toReturn = false and
-    returnApa = TAccessPathApproxNone() and
-    apa instanceof AccessPathApproxNil
-  )
-  or
-  // store
-  exists(TypedContent tc |
-    flowStore(tc, node, toReturn, returnApa, apa, config) and
-    flowConsCand(tc, apa, config)
-  )
-  or
-  // read
-  exists(Node mid, AccessPathApprox apa0 |
-    readFlowFwd(node, _, mid, apa, apa0, config) and
-    flow(mid, toReturn, returnApa, apa0, config)
-  )
-  or
-  // flow into a callable
-  exists(DataFlowCall call |
-    flowIn(call, node, toReturn, returnApa, apa, config) and
-    toReturn = false
+    returnAp = apNone() and
+    ap instanceof ApNil
     or
-    exists(AccessPathApprox returnApa0 |
-      flowInToReturn(call, node, returnApa0, apa, config) and
-      flowIsReturned(call, toReturn, returnApa, returnApa0, config)
+    exists(Node mid |
+      localStep(node, mid, true, _, config, _) and
+      revFlow(mid, toReturn, returnAp, ap, config)
     )
-  )
-  or
-  // flow out of a callable
-  flowOut(_, node, _, _, apa, config) and
-  toReturn = true and
-  if flowFwd(node, any(CallContextCall ccc), TAccessPathApproxSome(_), _, apa, config)
-  then returnApa = TAccessPathApproxSome(apa)
-  else returnApa = TAccessPathApproxNone()
-}
+    or
+    exists(Node mid, ApNil nil |
+      fwdFlow(node, _, _, ap, config) and
+      localStep(node, mid, false, _, config, _) and
+      revFlow(mid, toReturn, returnAp, nil, config) and
+      ap instanceof ApNil
+    )
+    or
+    exists(Node mid |
+      jumpStep(node, mid, config) and
+      revFlow(mid, _, _, ap, config) and
+      toReturn = false and
+      returnAp = apNone()
+    )
+    or
+    exists(Node mid, ApNil nil |
+      fwdFlow(node, _, _, ap, config) and
+      additionalJumpStep(node, mid, config) and
+      revFlow(mid, _, _, nil, config) and
+      toReturn = false and
+      returnAp = apNone() and
+      ap instanceof ApNil
+    )
+    or
+    // store
+    exists(Ap ap0, Content c |
+      revFlowStore(ap0, c, ap, node, _, _, toReturn, returnAp, config) and
+      revFlowConsCand(ap0, c, ap, config)
+    )
+    or
+    // read
+    exists(Node mid, Ap ap0 |
+      revFlow(mid, toReturn, returnAp, ap0, config) and
+      readStepFwd(node, ap, _, mid, ap0, config)
+    )
+    or
+    // flow into a callable
+    exists(DataFlowCall call |
+      revFlowIn(call, node, toReturn, returnAp, ap, config) and
+      toReturn = false
+      or
+      exists(Ap returnAp0 |
+        revFlowInToReturn(call, node, returnAp0, ap, config) and
+        revFlowIsReturned(call, toReturn, returnAp, returnAp0, config)
+      )
+    )
+    or
+    // flow out of a callable
+    revFlowOut(_, node, _, _, ap, config) and
+    toReturn = true and
+    if fwdFlow(node, any(CcCall ccc), apSome(_), ap, config)
+    then returnAp = apSome(ap)
+    else returnAp = apNone()
+  }
 
-pragma[nomagic]
-private predicate storeFlowFwd(
-  Node node1, TypedContent tc, Node node2, AccessPathApprox apa, AccessPathApprox apa0,
-  Configuration config
-) {
-  storeCand2(node1, tc, node2, _, config) and
-  flowFwdStore(node2, tc, apa, _, _, _, config) and
-  apa0 = push(tc, apa)
-}
+  pragma[nomagic]
+  private predicate revFlowStore(
+    Ap ap0, Content c, Ap ap, Node node, TypedContent tc, Node mid, boolean toReturn,
+    ApOption returnAp, Configuration config
+  ) {
+    revFlow(mid, toReturn, returnAp, ap0, config) and
+    storeStepFwd(node, ap, tc, mid, ap0, config) and
+    tc.getContent() = c
+  }
 
-pragma[nomagic]
-private predicate flowStore(
-  TypedContent tc, Node node, boolean toReturn, AccessPathApproxOption returnApa,
-  AccessPathApprox apa, Configuration config
-) {
-  exists(Node mid, AccessPathApprox apa0 |
-    storeFlowFwd(node, tc, mid, apa, apa0, config) and
-    flow(mid, toReturn, returnApa, apa0, config)
-  )
-}
+  /**
+   * Holds if reverse flow with access path `tail` reaches a read of `c`
+   * resulting in access path `cons`.
+   */
+  pragma[nomagic]
+  private predicate revFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
+    exists(Node mid |
+      revFlow(mid, _, _, tail, config) and
+      readStepFwd(_, cons, c, mid, tail, config)
+    )
+  }
 
-pragma[nomagic]
-private predicate readFlowFwd(
-  Node node1, TypedContent tc, Node node2, AccessPathApprox apa, AccessPathApprox apa0,
-  Configuration config
-) {
-  exists(AccessPathFrontHead apf |
-    readCandFwd(node1, tc, apf, node2, config) and
-    flowFwdRead(node2, apf, apa, _, _, _, config) and
-    apa0 = pop(tc, apa) and
-    flowFwdConsCand(tc, _, apa0, unbind(config))
-  )
-}
+  pragma[nomagic]
+  private predicate revFlowOut(
+    DataFlowCall call, ReturnNodeExt ret, boolean toReturn, ApOption returnAp, Ap ap,
+    Configuration config
+  ) {
+    exists(Node out, boolean allowsFieldFlow |
+      revFlow(out, toReturn, returnAp, ap, config) and
+      flowOutOfCall(call, ret, out, allowsFieldFlow, config)
+    |
+      ap instanceof ApNil or allowsFieldFlow = true
+    )
+  }
 
-pragma[nomagic]
-private predicate flowConsCand(TypedContent tc, AccessPathApprox apa, Configuration config) {
-  exists(Node n, Node mid |
-    flow(mid, _, _, apa, config) and
-    readFlowFwd(n, tc, mid, _, apa, config)
-  )
-}
+  pragma[nomagic]
+  private predicate revFlowIn(
+    DataFlowCall call, ArgumentNode arg, boolean toReturn, ApOption returnAp, Ap ap,
+    Configuration config
+  ) {
+    exists(ParameterNode p, boolean allowsFieldFlow |
+      revFlow(p, toReturn, returnAp, ap, config) and
+      flowIntoCall(call, arg, p, allowsFieldFlow, config)
+    |
+      ap instanceof ApNil or allowsFieldFlow = true
+    )
+  }
 
-pragma[nomagic]
-private predicate flowOut(
-  DataFlowCall call, ReturnNodeExt ret, boolean toReturn, AccessPathApproxOption returnApa,
-  AccessPathApprox apa, Configuration config
-) {
-  exists(Node out, boolean allowsFieldFlow |
-    flow(out, toReturn, returnApa, apa, config) and
-    flowOutOfCallNodeCand2(call, ret, out, allowsFieldFlow, config)
-  |
-    apa instanceof AccessPathApproxNil or allowsFieldFlow = true
-  )
-}
+  pragma[nomagic]
+  private predicate revFlowInToReturn(
+    DataFlowCall call, ArgumentNode arg, Ap returnAp, Ap ap, Configuration config
+  ) {
+    revFlowIn(call, arg, true, apSome(returnAp), ap, config)
+  }
 
-pragma[nomagic]
-private predicate flowIn(
-  DataFlowCall call, ArgumentNode arg, boolean toReturn, AccessPathApproxOption returnApa,
-  AccessPathApprox apa, Configuration config
-) {
-  exists(ParameterNode p, boolean allowsFieldFlow |
-    flow(p, toReturn, returnApa, apa, config) and
-    flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config)
-  |
-    apa instanceof AccessPathApproxNil or allowsFieldFlow = true
-  )
-}
+  /**
+   * Holds if an output from `call` is reached in the flow covered by `revFlow`
+   * and data might flow through the target callable resulting in reverse flow
+   * reaching an argument of `call`.
+   */
+  pragma[nomagic]
+  private predicate revFlowIsReturned(
+    DataFlowCall call, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
+  ) {
+    exists(ReturnNodeExt ret, CcCall ccc |
+      revFlowOut(call, ret, toReturn, returnAp, ap, config) and
+      fwdFlow(ret, ccc, apSome(_), ap, config) and
+      ccc.matchesCall(call)
+    )
+  }
 
-pragma[nomagic]
-private predicate flowInToReturn(
-  DataFlowCall call, ArgumentNode arg, AccessPathApprox returnApa, AccessPathApprox apa,
-  Configuration config
-) {
-  flowIn(call, arg, true, TAccessPathApproxSome(returnApa), apa, config)
-}
+  pragma[nomagic]
+  predicate storeStepCand(
+    Node node1, Ap ap1, TypedContent tc, Node node2, DataFlowType contentType, Configuration config
+  ) {
+    exists(Ap ap2, Content c |
+      store(node1, tc, node2, contentType) and
+      revFlowStore(ap2, c, ap1, node1, tc, node2, _, _, config) and
+      revFlowConsCand(ap2, c, ap1, config)
+    )
+  }
 
-/**
- * Holds if an output from `call` is reached in the flow covered by `flow`.
- */
-pragma[nomagic]
-private predicate flowIsReturned(
-  DataFlowCall call, boolean toReturn, AccessPathApproxOption returnApa, AccessPathApprox apa,
-  Configuration config
-) {
-  exists(ReturnNodeExt ret, CallContextCall ccc |
-    flowOut(call, ret, toReturn, returnApa, apa, config) and
-    flowFwd(ret, ccc, TAccessPathApproxSome(_), _, apa, config) and
-    ccc.matchesCall(call)
-  )
+  predicate readStepCand(Node node1, Content c, Node node2, Configuration config) {
+    exists(Ap ap1, Ap ap2 |
+      revFlow(node2, _, _, ap2, config) and
+      readStepFwd(node1, ap1, c, node2, ap2, config) and
+      revFlowStore(ap1, c, /*unbind*/ ap2, _, _, _, _, _, unbind(config))
+    )
+  }
+
+  predicate revFlow(Node node, Configuration config) { revFlow(node, _, _, _, config) }
+
+  private predicate fwdConsCand(TypedContent tc, Ap ap, Configuration config) {
+    storeStepFwd(_, ap, tc, _, _, config)
+  }
+
+  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+    storeStepCand(_, ap, tc, _, _, config)
+  }
+
+  pragma[noinline]
+  private predicate parameterFlow(
+    ParameterNode p, Ap ap, Ap ap0, DataFlowCallable c, Configuration config
+  ) {
+    revFlow(p, true, apSome(ap0), ap, config) and
+    c = p.getEnclosingCallable()
+  }
+
+  predicate parameterMayFlowThrough(ParameterNode p, DataFlowCallable c, Ap ap, Configuration config) {
+    exists(ReturnNodeExt ret, Ap ap0, ReturnKindExt kind, int pos |
+      parameterFlow(p, ap, ap0, c, config) and
+      c = ret.getEnclosingCallable() and
+      revFlow(ret, true, apSome(_), ap0, config) and
+      fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
+      kind = ret.getKind() and
+      p.isParameterOf(_, pos) and
+      // we don't expect a parameter to return stored in itself
+      not kind.(ParamUpdateReturnKind).getPosition() = pos
+    )
+  }
+
+  predicate stats(boolean fwd, int nodes, int fields, int conscand, int tuples, Configuration config) {
+    fwd = true and
+    nodes = count(Node node | fwdFlow(node, _, _, _, config)) and
+    fields = count(TypedContent f0 | fwdConsCand(f0, _, config)) and
+    conscand = count(TypedContent f0, Ap ap | fwdConsCand(f0, ap, config)) and
+    tuples = count(Node n, Cc cc, ApOption argAp, Ap ap | fwdFlow(n, cc, argAp, ap, config))
+    or
+    fwd = false and
+    nodes = count(Node node | revFlow(node, _, _, _, config)) and
+    fields = count(TypedContent f0 | consCand(f0, _, config)) and
+    conscand = count(TypedContent f0, Ap ap | consCand(f0, ap, config)) and
+    tuples = count(Node n, boolean b, ApOption retAp, Ap ap | revFlow(n, b, retAp, ap, config))
+  }
+  /* End: Stage 4 logic. */
 }
 
 bindingset[conf, result]
 private Configuration unbind(Configuration conf) { result >= conf and result <= conf }
 
-private predicate flow(Node n, Configuration config) { flow(n, _, _, _, config) }
-
-pragma[noinline]
-private predicate parameterFlow(
-  ParameterNode p, AccessPathApprox apa, AccessPathApprox apa0, DataFlowCallable c,
-  Configuration config
-) {
-  flow(p, true, TAccessPathApproxSome(apa0), apa, config) and
-  c = p.getEnclosingCallable()
-}
-
-private predicate parameterMayFlowThrough(ParameterNode p, DataFlowCallable c, AccessPathApprox apa) {
-  exists(ReturnNodeExt ret, Configuration config, AccessPathApprox apa0 |
-    parameterFlow(p, apa, apa0, c, config) and
-    c = ret.getEnclosingCallable() and
-    flow(ret, true, TAccessPathApproxSome(_), apa0, config) and
-    flowFwd(ret, any(CallContextCall ccc), TAccessPathApproxSome(apa), _, apa0, config)
-  )
-}
-
 private predicate nodeMayUseSummary(Node n, AccessPathApprox apa, Configuration config) {
   exists(DataFlowCallable c, AccessPathApprox apa0 |
-    parameterMayFlowThrough(_, c, apa) and
-    flow(n, true, _, apa0, config) and
-    flowFwd(n, any(CallContextCall ccc), TAccessPathApproxSome(apa), _, apa0, config) and
+    Stage4::parameterMayFlowThrough(_, c, apa, _) and
+    Stage4::revFlow(n, true, _, apa0, config) and
+    Stage4::fwdFlow(n, any(CallContextCall ccc), TAccessPathApproxSome(apa), apa0, config) and
     n.getEnclosingCallable() = c
   )
 }
 
 private newtype TSummaryCtx =
   TSummaryCtxNone() or
-  TSummaryCtxSome(ParameterNode p, AccessPath ap) { parameterMayFlowThrough(p, _, ap.getApprox()) }
+  TSummaryCtxSome(ParameterNode p, AccessPath ap) {
+    Stage4::parameterMayFlowThrough(p, _, ap.getApprox(), _)
+  }
 
 /**
  * A context for generating flow summaries. This represents flow entry through
@@ -2222,14 +2639,15 @@ private int count1to2unfold(AccessPathApproxCons1 apa, Configuration config) {
     len = apa.len() and
     result =
       strictcount(AccessPathFront apf |
-        flowConsCand(tc, any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1),
+        Stage4::consCand(tc, any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1),
           config)
       )
   )
 }
 
 private int countNodesUsingAccessPath(AccessPathApprox apa, Configuration config) {
-  result = strictcount(Node n | flow(n, _, _, apa, config) or nodeMayUseSummary(n, apa, config))
+  result =
+    strictcount(Node n | Stage4::revFlow(n, _, _, apa, config) or nodeMayUseSummary(n, apa, config))
 }
 
 /**
@@ -2249,7 +2667,7 @@ private predicate expensiveLen1to2unfolding(AccessPathApproxCons1 apa, Configura
 private AccessPathApprox getATail(AccessPathApprox apa, Configuration config) {
   exists(TypedContent head |
     apa.pop(head) = result and
-    flowConsCand(head, result, config)
+    Stage4::consCand(head, result, config)
   )
 }
 
@@ -2323,7 +2741,7 @@ private newtype TAccessPath =
 private newtype TPathNode =
   TPathNodeMid(Node node, CallContext cc, SummaryCtx sc, AccessPath ap, Configuration config) {
     // A PathNode is introduced by a source ...
-    flow(node, config) and
+    Stage4::revFlow(node, config) and
     config.isSource(node) and
     cc instanceof CallContextAny and
     sc instanceof SummaryCtxNone and
@@ -2333,12 +2751,12 @@ private newtype TPathNode =
     exists(PathNodeMid mid |
       pathStep(mid, node, cc, sc, ap) and
       config = mid.getConfiguration() and
-      flow(node, _, _, ap.getApprox(), unbind(config))
+      Stage4::revFlow(node, _, _, ap.getApprox(), unbind(config))
     )
   } or
   TPathNodeSink(Node node, Configuration config) {
     config.isSink(node) and
-    flow(node, unbind(config)) and
+    Stage4::revFlow(node, unbind(config)) and
     (
       // A sink that is also a source ...
       config.isSource(node)
@@ -2467,7 +2885,7 @@ private class AccessPathCons2 extends AccessPath, TAccessPathCons2 {
   override TypedContent getHead() { result = head1 }
 
   override AccessPath getTail() {
-    flowConsCand(head1, result.getApprox(), _) and
+    Stage4::consCand(head1, result.getApprox(), _) and
     result.getHead() = head2 and
     result.length() = len - 1
   }
@@ -2498,7 +2916,7 @@ private class AccessPathCons1 extends AccessPath, TAccessPathCons1 {
   override TypedContent getHead() { result = head }
 
   override AccessPath getTail() {
-    flowConsCand(head, result.getApprox(), _) and result.length() = len - 1
+    Stage4::consCand(head, result.getApprox(), _) and result.length() = len - 1
   }
 
   override AccessPathFrontHead getFront() { result = TFrontHead(head) }
@@ -2733,24 +3151,13 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCt
 }
 
 pragma[nomagic]
-private predicate readCand(Node node1, TypedContent tc, Node node2, Configuration config) {
-  readCandFwd(node1, tc, _, node2, config) and
-  flow(node2, config)
-}
-
-pragma[nomagic]
 private predicate pathReadStep(
   PathNodeMid mid, Node node, AccessPath ap0, TypedContent tc, CallContext cc
 ) {
   ap0 = mid.getAp() and
-  readCand(mid.getNode(), tc, node, mid.getConfiguration()) and
+  tc = ap0.getHead() and
+  Stage4::readStepCand(mid.getNode(), tc.getContent(), node, mid.getConfiguration()) and
   cc = mid.getCallContext()
-}
-
-pragma[nomagic]
-private predicate storeCand(Node node1, TypedContent tc, Node node2, Configuration config) {
-  storeCand2(node1, tc, node2, _, config) and
-  flow(node2, config)
 }
 
 pragma[nomagic]
@@ -2758,7 +3165,7 @@ private predicate pathStoreStep(
   PathNodeMid mid, Node node, AccessPath ap0, TypedContent tc, CallContext cc
 ) {
   ap0 = mid.getAp() and
-  storeCand(mid.getNode(), tc, node, mid.getConfiguration()) and
+  Stage4::storeStepCand(mid.getNode(), _, tc, node, _, mid.getConfiguration()) and
   cc = mid.getCallContext()
 }
 
@@ -2793,7 +3200,7 @@ private Node getAnOutNodeFlow(
   ReturnKindExt kind, DataFlowCall call, AccessPathApprox apa, Configuration config
 ) {
   result = kind.getAnOutNode(call) and
-  flow(result, _, _, apa, config)
+  Stage4::revFlow(result, _, _, apa, config)
 }
 
 /**
@@ -2829,7 +3236,7 @@ private predicate parameterCand(
   DataFlowCallable callable, int i, AccessPathApprox apa, Configuration config
 ) {
   exists(ParameterNode p |
-    flow(p, _, _, apa, config) and
+    Stage4::revFlow(p, _, _, apa, config) and
     p.isParameterOf(callable, i)
   )
 }
@@ -2937,6 +3344,49 @@ private predicate flowsTo(
  */
 predicate flowsTo(Node source, Node sink, Configuration configuration) {
   flowsTo(_, _, source, sink, configuration)
+}
+
+private predicate finalStats(boolean fwd, int nodes, int fields, int conscand, int tuples) {
+  fwd = true and
+  nodes = count(Node n0 | exists(PathNode pn | pn.getNode() = n0)) and
+  fields = count(TypedContent f0 | exists(PathNodeMid pn | pn.getAp().getHead() = f0)) and
+  conscand = count(AccessPath ap | exists(PathNodeMid pn | pn.getAp() = ap)) and
+  tuples = count(PathNode pn)
+  or
+  fwd = false and
+  nodes = count(Node n0 | exists(PathNode pn | pn.getNode() = n0 and reach(pn))) and
+  fields = count(TypedContent f0 | exists(PathNodeMid pn | pn.getAp().getHead() = f0 and reach(pn))) and
+  conscand = count(AccessPath ap | exists(PathNodeMid pn | pn.getAp() = ap and reach(pn))) and
+  tuples = count(PathNode pn | reach(pn))
+}
+
+/**
+ * INTERNAL: Only for debugging.
+ *
+ * Calculates per-stage metrics for data flow.
+ */
+predicate stageStats(
+  int n, string stage, int nodes, int fields, int conscand, int tuples, Configuration config
+) {
+  stage = "1 Fwd" and n = 10 and Stage1::stats(true, nodes, fields, conscand, tuples, config)
+  or
+  stage = "1 Rev" and n = 15 and Stage1::stats(false, nodes, fields, conscand, tuples, config)
+  or
+  stage = "2 Fwd" and n = 20 and Stage2::stats(true, nodes, fields, conscand, tuples, config)
+  or
+  stage = "2 Rev" and n = 25 and Stage2::stats(false, nodes, fields, conscand, tuples, config)
+  or
+  stage = "3 Fwd" and n = 30 and Stage3::stats(true, nodes, fields, conscand, tuples, config)
+  or
+  stage = "3 Rev" and n = 35 and Stage3::stats(false, nodes, fields, conscand, tuples, config)
+  or
+  stage = "4 Fwd" and n = 40 and Stage4::stats(true, nodes, fields, conscand, tuples, config)
+  or
+  stage = "4 Rev" and n = 45 and Stage4::stats(false, nodes, fields, conscand, tuples, config)
+  or
+  stage = "5 Fwd" and n = 50 and finalStats(true, nodes, fields, conscand, tuples)
+  or
+  stage = "5 Rev" and n = 55 and finalStats(false, nodes, fields, conscand, tuples)
 }
 
 private module FlowExploration {
@@ -3148,6 +3598,7 @@ private module FlowExploration {
       or
       exists(PartialPathNodeRev mid |
         revPartialPathStep(mid, node, sc1, sc2, ap, config) and
+        not clearsContent(node, ap.getHead()) and
         not fullBarrier(node, config) and
         distSink(node.getEnclosingCallable(), config) <= config.explorationLimit()
       )
@@ -3161,6 +3612,7 @@ private module FlowExploration {
     exists(PartialPathNodeFwd mid |
       partialPathStep(mid, node, cc, sc1, sc2, ap, config) and
       not fullBarrier(node, config) and
+      not clearsContent(node, ap.getHead().getContent()) and
       if node instanceof CastingNode
       then compatibleTypes(getNodeType(node), ap.getType())
       else any()

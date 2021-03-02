@@ -10,6 +10,7 @@ private import semmle.code.java.dataflow.internal.ContainerFlow
 private import semmle.code.java.frameworks.spring.SpringController
 private import semmle.code.java.frameworks.spring.SpringHttp
 private import semmle.code.java.frameworks.Networking
+private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSteps
 
 /**
@@ -44,6 +45,8 @@ predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   or
   localAdditionalTaintUpdateStep(src.asExpr(),
     sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr())
+  or
+  summaryStep(src, sink, "taint")
   or
   exists(Argument arg |
     src.asExpr() = arg and
@@ -345,7 +348,9 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.getDeclaringType() instanceof TypeUri and
   m.hasName("toURL")
   or
-  m instanceof GetterMethod and m.getDeclaringType() instanceof SpringUntrustedDataType
+  m instanceof GetterMethod and
+  m.getDeclaringType().getASubtype*() instanceof SpringUntrustedDataType and
+  not m.getDeclaringType() instanceof TypeObject
   or
   m.getDeclaringType() instanceof SpringHttpEntity and
   m.getName().regexpMatch("getBody|getHeaders")
@@ -684,8 +689,7 @@ private class FormatterCallable extends TaintPreservingCallable {
     (
       this.hasName(["format", "out", "toString"])
       or
-      this
-          .(Constructor)
+      this.(Constructor)
           .getParameterType(0)
           .(RefType)
           .getASourceSupertype*()

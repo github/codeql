@@ -1,7 +1,9 @@
 import experimental.dataflow.tainttracking.TestTaintLib
 
 class IsSafeCheck extends DataFlow::BarrierGuard {
-  IsSafeCheck() { this.(CallNode).getNode().getFunc().(Name).getId() = "emulated_is_safe" }
+  IsSafeCheck() {
+    this.(CallNode).getNode().getFunc().(Name).getId() in ["is_safe", "emulated_is_safe"]
+  }
 
   override predicate checks(ControlFlowNode node, boolean branch) {
     node = this.(CallNode).getAnArg() and

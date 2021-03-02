@@ -1,4 +1,12 @@
 nodes
+| electron.js:4:12:4:22 | window.name |
+| electron.js:4:12:4:22 | window.name |
+| electron.js:7:20:7:29 | getTaint() |
+| electron.js:7:20:7:29 | getTaint() |
+| react.js:10:60:10:76 | document.location |
+| react.js:10:60:10:76 | document.location |
+| react.js:10:60:10:81 | documen ... on.hash |
+| react.js:10:60:10:81 | documen ... on.hash |
 | sanitizer.js:2:9:2:25 | url |
 | sanitizer.js:2:15:2:25 | window.name |
 | sanitizer.js:2:15:2:25 | window.name |
@@ -157,7 +165,38 @@ nodes
 | tst.js:22:34:22:50 | document.location |
 | tst.js:22:34:22:50 | document.location |
 | tst.js:22:34:22:55 | documen ... on.href |
+| typed.ts:3:15:3:72 | location |
+| typed.ts:3:17:3:24 | location |
+| typed.ts:3:17:3:24 | location |
+| typed.ts:4:13:4:36 | params |
+| typed.ts:4:22:4:29 | location |
+| typed.ts:4:22:4:36 | location.search |
+| typed.ts:5:25:5:30 | params |
+| typed.ts:7:24:7:34 | redirectUri |
+| typed.ts:8:33:8:43 | redirectUri |
+| typed.ts:8:33:8:43 | redirectUri |
+| typed.ts:14:15:14:72 | location |
+| typed.ts:14:17:14:24 | location |
+| typed.ts:14:17:14:24 | location |
+| typed.ts:17:18:17:25 | location |
+| typed.ts:19:13:19:37 | secondLoc |
+| typed.ts:19:25:19:37 | container.loc |
+| typed.ts:21:33:21:41 | secondLoc |
+| typed.ts:24:32:24:34 | loc |
+| typed.ts:25:25:25:27 | loc |
+| typed.ts:25:25:25:34 | loc.search |
+| typed.ts:28:24:28:34 | redirectUri |
+| typed.ts:29:33:29:43 | redirectUri |
+| typed.ts:29:33:29:43 | redirectUri |
 edges
+| electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() |
+| electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() |
+| electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() |
+| electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() |
+| react.js:10:60:10:76 | document.location | react.js:10:60:10:81 | documen ... on.hash |
+| react.js:10:60:10:76 | document.location | react.js:10:60:10:81 | documen ... on.hash |
+| react.js:10:60:10:76 | document.location | react.js:10:60:10:81 | documen ... on.hash |
+| react.js:10:60:10:76 | document.location | react.js:10:60:10:81 | documen ... on.hash |
 | sanitizer.js:2:9:2:25 | url | sanitizer.js:4:27:4:29 | url |
 | sanitizer.js:2:9:2:25 | url | sanitizer.js:4:27:4:29 | url |
 | sanitizer.js:2:9:2:25 | url | sanitizer.js:16:27:16:29 | url |
@@ -304,7 +343,30 @@ edges
 | tst.js:22:34:22:50 | document.location | tst.js:22:34:22:55 | documen ... on.href |
 | tst.js:22:34:22:50 | document.location | tst.js:22:34:22:55 | documen ... on.href |
 | tst.js:22:34:22:55 | documen ... on.href | tst.js:22:20:22:56 | indirec ... n.href) |
+| typed.ts:3:15:3:72 | location | typed.ts:4:22:4:29 | location |
+| typed.ts:3:17:3:24 | location | typed.ts:3:15:3:72 | location |
+| typed.ts:3:17:3:24 | location | typed.ts:3:15:3:72 | location |
+| typed.ts:4:13:4:36 | params | typed.ts:5:25:5:30 | params |
+| typed.ts:4:22:4:29 | location | typed.ts:4:22:4:36 | location.search |
+| typed.ts:4:22:4:36 | location.search | typed.ts:4:13:4:36 | params |
+| typed.ts:5:25:5:30 | params | typed.ts:7:24:7:34 | redirectUri |
+| typed.ts:7:24:7:34 | redirectUri | typed.ts:8:33:8:43 | redirectUri |
+| typed.ts:7:24:7:34 | redirectUri | typed.ts:8:33:8:43 | redirectUri |
+| typed.ts:14:15:14:72 | location | typed.ts:17:18:17:25 | location |
+| typed.ts:14:17:14:24 | location | typed.ts:14:15:14:72 | location |
+| typed.ts:14:17:14:24 | location | typed.ts:14:15:14:72 | location |
+| typed.ts:17:18:17:25 | location | typed.ts:19:25:19:37 | container.loc |
+| typed.ts:19:13:19:37 | secondLoc | typed.ts:21:33:21:41 | secondLoc |
+| typed.ts:19:25:19:37 | container.loc | typed.ts:19:13:19:37 | secondLoc |
+| typed.ts:21:33:21:41 | secondLoc | typed.ts:24:32:24:34 | loc |
+| typed.ts:24:32:24:34 | loc | typed.ts:25:25:25:27 | loc |
+| typed.ts:25:25:25:27 | loc | typed.ts:25:25:25:34 | loc.search |
+| typed.ts:25:25:25:34 | loc.search | typed.ts:28:24:28:34 | redirectUri |
+| typed.ts:28:24:28:34 | redirectUri | typed.ts:29:33:29:43 | redirectUri |
+| typed.ts:28:24:28:34 | redirectUri | typed.ts:29:33:29:43 | redirectUri |
 #select
+| electron.js:7:20:7:29 | getTaint() | electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() | Untrusted URL redirection due to $@. | electron.js:4:12:4:22 | window.name | user-provided value |
+| react.js:10:60:10:81 | documen ... on.hash | react.js:10:60:10:76 | document.location | react.js:10:60:10:81 | documen ... on.hash | Untrusted URL redirection due to $@. | react.js:10:60:10:76 | document.location | user-provided value |
 | sanitizer.js:4:27:4:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:4:27:4:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
 | sanitizer.js:16:27:16:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:16:27:16:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
 | sanitizer.js:19:27:19:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:19:27:19:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
@@ -344,3 +406,5 @@ edges
 | tst.js:14:20:14:59 | indirec ... ref)[1] | tst.js:14:34:14:50 | document.location | tst.js:14:20:14:59 | indirec ... ref)[1] | Untrusted URL redirection due to $@. | tst.js:14:34:14:50 | document.location | user-provided value |
 | tst.js:18:19:18:84 | new Reg ... ref)[1] | tst.js:18:59:18:75 | document.location | tst.js:18:19:18:84 | new Reg ... ref)[1] | Untrusted URL redirection due to $@. | tst.js:18:59:18:75 | document.location | user-provided value |
 | tst.js:22:20:22:59 | indirec ... ref)[1] | tst.js:22:34:22:50 | document.location | tst.js:22:20:22:59 | indirec ... ref)[1] | Untrusted URL redirection due to $@. | tst.js:22:34:22:50 | document.location | user-provided value |
+| typed.ts:8:33:8:43 | redirectUri | typed.ts:3:17:3:24 | location | typed.ts:8:33:8:43 | redirectUri | Untrusted URL redirection due to $@. | typed.ts:3:17:3:24 | location | user-provided value |
+| typed.ts:29:33:29:43 | redirectUri | typed.ts:14:17:14:24 | location | typed.ts:29:33:29:43 | redirectUri | Untrusted URL redirection due to $@. | typed.ts:14:17:14:24 | location | user-provided value |

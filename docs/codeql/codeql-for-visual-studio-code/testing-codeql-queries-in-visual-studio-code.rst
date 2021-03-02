@@ -1,3 +1,5 @@
+:tocdepth: 1
+
 .. _testing-codeql-queries-in-visual-studio-code:
 
 Testing CodeQL queries in Visual Studio Code

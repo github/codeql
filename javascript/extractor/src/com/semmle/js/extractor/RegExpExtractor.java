@@ -1,5 +1,8 @@
 package com.semmle.js.extractor;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import com.semmle.js.ast.Node;
 import com.semmle.js.ast.Position;
 import com.semmle.js.ast.SourceElement;
@@ -40,10 +43,9 @@ import com.semmle.js.ast.regexp.ZeroWidthPositiveLookahead;
 import com.semmle.js.ast.regexp.ZeroWidthPositiveLookbehind;
 import com.semmle.js.parser.RegExpParser;
 import com.semmle.js.parser.RegExpParser.Result;
+import com.semmle.util.locations.OffsetTranslation;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /** Extractor for populating regular expressions. */
 public class RegExpExtractor {

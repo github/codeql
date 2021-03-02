@@ -194,7 +194,7 @@ public class Captured
 
     void M2()
     {
-        var x = M6(); // BAD
+        var x = M6(); // BAD [FALSE NEGATIVE]
         Action a = () =>
         {
             x = 1; // GOOD
@@ -208,7 +208,7 @@ public class Captured
         int x;
         Action a = () =>
         {
-            x = 1; // BAD
+            x = 1; // BAD [FALSE NEGATIVE]
         };
         a();
     }

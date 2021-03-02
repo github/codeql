@@ -7,22 +7,12 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A namespace.
     /// </summary>
-    internal interface INamespace : ITypeContainer
-    {
-    }
-
-    /// <summary>
-    /// A namespace.
-    /// </summary>
-    public sealed class Namespace : TypeContainer, INamespace
+    internal sealed class Namespace : TypeContainer
     {
         public Namespace? ParentNamespace { get; }
         public string Name { get; }
 
         public bool IsGlobalNamespace => ParentNamespace is null;
-
-        public override string IdSuffix => ";namespace";
-
 
         public override void WriteId(TextWriter trapFile)
         {
@@ -33,6 +23,8 @@ namespace Semmle.Extraction.CIL.Entities
             }
             trapFile.Write(Name);
         }
+
+        public override string IdSuffix => ";namespacee";
 
         public override bool Equals(object? obj)
         {

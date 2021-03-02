@@ -45,8 +45,8 @@ query predicate test6(ConstructedClass at, UnboundGenericClass b, ConstructedCla
 query predicate test7(ConstructedClass aString, ConstructedClass bString) {
   aString.hasName("A<String>") and
   bString.hasName("B<String>") and
-  aString.getSourceDeclaration().hasName("A<>") and
-  bString.getSourceDeclaration().hasName("B<>")
+  aString.getUnboundDeclaration().hasName("A<>") and
+  bString.getUnboundDeclaration().hasName("B<>")
 }
 
 query predicate test8(ConstructedClass bString, Method m) {
@@ -54,7 +54,7 @@ query predicate test8(ConstructedClass bString, Method m) {
   m.getDeclaringType() = bString and
   m.hasName("fooParams") and
   m.getParameter(0).getType().(ArrayType).getElementType() instanceof StringType and
-  m.getSourceDeclaration().getDeclaringType() = m.getDeclaringType().getSourceDeclaration()
+  m.getUnboundDeclaration().getDeclaringType() = m.getDeclaringType().getUnboundDeclaration()
 }
 
 query predicate test9(ConstructedClass bString, Setter sourceSetter, Setter setter) {
@@ -62,11 +62,11 @@ query predicate test9(ConstructedClass bString, Setter sourceSetter, Setter sett
     bString.hasName("B<String>") and
     p.getDeclaringType() = bString and
     p.hasName("Name") and
-    p.getSourceDeclaration().getDeclaringType() = p.getDeclaringType().getSourceDeclaration() and
+    p.getUnboundDeclaration().getDeclaringType() = p.getDeclaringType().getUnboundDeclaration() and
     p.getSetter().getParameter(0).getType() instanceof StringType and
-    p.getSetter().getSourceDeclaration() = p.getSourceDeclaration().getSetter() and
-    p.getGetter().getSourceDeclaration() = p.getSourceDeclaration().getGetter() and
-    sourceSetter = p.getSourceDeclaration().getSetter() and
+    p.getSetter().getUnboundDeclaration() = p.getUnboundDeclaration().getSetter() and
+    p.getGetter().getUnboundDeclaration() = p.getUnboundDeclaration().getGetter() and
+    sourceSetter = p.getUnboundDeclaration().getSetter() and
     setter = p.getSetter()
   )
 }
@@ -75,26 +75,26 @@ query predicate test10(ConstructedClass bString, Event e) {
   bString.hasName("B<String>") and
   e.getDeclaringType() = bString and
   e.hasName("myEvent") and
-  e.getSourceDeclaration().getDeclaringType() = e.getDeclaringType().getSourceDeclaration() and
+  e.getUnboundDeclaration().getDeclaringType() = e.getDeclaringType().getUnboundDeclaration() and
   e.getType().(ConstructedDelegateType).getTypeArgument(0) instanceof StringType and
-  e.getAddEventAccessor().getSourceDeclaration() = e.getSourceDeclaration().getAddEventAccessor() and
-  e.getRemoveEventAccessor().getSourceDeclaration() =
-    e.getSourceDeclaration().getRemoveEventAccessor()
+  e.getAddEventAccessor().getUnboundDeclaration() = e.getUnboundDeclaration().getAddEventAccessor() and
+  e.getRemoveEventAccessor().getUnboundDeclaration() =
+    e.getUnboundDeclaration().getRemoveEventAccessor()
 }
 
 query predicate test11(ConstructedClass bString, Operator o) {
   bString.hasName("B<String>") and
   o.getDeclaringType() = bString and
   o instanceof IncrementOperator and
-  o.getSourceDeclaration().getDeclaringType() = o.getDeclaringType().getSourceDeclaration()
+  o.getUnboundDeclaration().getDeclaringType() = o.getDeclaringType().getUnboundDeclaration()
 }
 
 query predicate test12(ConstructedClass gridInt, Indexer i) {
   gridInt.hasName("Grid<Int32>") and
   i.getDeclaringType() = gridInt and
-  i.getSourceDeclaration().getDeclaringType() = i.getDeclaringType().getSourceDeclaration() and
-  i.getGetter().getSourceDeclaration() = i.getSourceDeclaration().getGetter() and
-  i.getSetter().getSourceDeclaration() = i.getSourceDeclaration().getSetter()
+  i.getUnboundDeclaration().getDeclaringType() = i.getDeclaringType().getUnboundDeclaration() and
+  i.getGetter().getUnboundDeclaration() = i.getUnboundDeclaration().getGetter() and
+  i.getSetter().getUnboundDeclaration() = i.getUnboundDeclaration().getSetter()
 }
 
 query predicate test13(ConstructedClass gridInt, Indexer i) {
@@ -198,11 +198,11 @@ query predicate test25(ConstructedMethod cm) {
   cm.getParameter(0).getType() instanceof DoubleType and
   cm.getParameter(1).getType() instanceof IntType and
   cm.getReturnType() instanceof DoubleType and
-  exists(Method sourceDeclaration |
-    sourceDeclaration = cm.getSourceDeclaration() and
-    sourceDeclaration.getParameter(0).getType().(TypeParameter).hasName("T2") and
-    sourceDeclaration.getParameter(1).getType().(TypeParameter).hasName("T1") and
-    sourceDeclaration.getReturnType().(TypeParameter).hasName("T2")
+  exists(Method unboundDeclaration |
+    unboundDeclaration = cm.getUnboundDeclaration() and
+    unboundDeclaration.getParameter(0).getType().(TypeParameter).hasName("T2") and
+    unboundDeclaration.getParameter(1).getType().(TypeParameter).hasName("T1") and
+    unboundDeclaration.getReturnType().(TypeParameter).hasName("T2")
   ) and
   exists(Method unbound |
     unbound = cm.getUnboundGeneric() and
@@ -215,7 +215,7 @@ query predicate test25(ConstructedMethod cm) {
 query predicate test26(ConstructedGeneric cg, string s) {
   // Source declaration and unbound generic must be unique
   (
-    strictcount(cg.getSourceDeclaration+()) > 1 or
+    strictcount(cg.getUnboundDeclaration+()) > 1 or
     strictcount(cg.getUnboundGeneric()) > 1
   ) and
   s = "Non-unique source decl or unbound generic"
@@ -224,7 +224,7 @@ query predicate test26(ConstructedGeneric cg, string s) {
 query predicate test27(ConstructedType ct, UnboundGenericType ugt, UnboundGenericType sourceDecl) {
   ct instanceof NestedType and
   ugt = ct.getUnboundGeneric() and
-  sourceDecl = ct.getSourceDeclaration() and
+  sourceDecl = ct.getUnboundDeclaration() and
   ugt != sourceDecl
 }
 
@@ -242,7 +242,7 @@ query predicate test30(Declaration d, string s) {
   d.fromSource() and
   d instanceof @generic and
   s = d.getQualifiedNameWithTypes() and
-  d != d.getSourceDeclaration() and
+  d != d.getUnboundDeclaration() and
   not d instanceof Generic
 }
 

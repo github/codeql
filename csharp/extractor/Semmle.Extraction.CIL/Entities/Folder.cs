@@ -3,11 +3,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    internal interface IFolder : IFileOrFolder
-    {
-    }
-
-    public sealed class Folder : LabelledEntity, IFolder
+    internal sealed class Folder : LabelledEntity, IFileOrFolder
     {
         private readonly PathTransformer.ITransformedPath transformedPath;
 
@@ -19,9 +15,8 @@ namespace Semmle.Extraction.CIL.Entities
         public override void WriteId(TextWriter trapFile)
         {
             trapFile.Write(transformedPath.DatabaseId);
+            trapFile.Write(";folder");
         }
-
-        public override string IdSuffix => ";folder";
 
         public override IEnumerable<IExtractionProduct> Contents
         {

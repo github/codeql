@@ -105,7 +105,7 @@ private newtype TComparisonTest =
       m = any(SystemIComparableInterface i).getCompareToMethod()
       or
       m = any(SystemIComparableTInterface i).getAConstructedGeneric().getAMethod() and
-      m.getSourceDeclaration() = any(SystemIComparableTInterface i).getCompareToMethod()
+      m.getUnboundDeclaration() = any(SystemIComparableTInterface i).getCompareToMethod()
     )
   } or
   TCompareCall(MethodCall mc) {
@@ -116,7 +116,7 @@ private newtype TComparisonTest =
       m = any(SystemCollectionsIComparerInterface i).getCompareMethod()
       or
       m = any(SystemCollectionsGenericIComparerTInterface i).getAConstructedGeneric().getAMethod() and
-      m.getSourceDeclaration() =
+      m.getUnboundDeclaration() =
         any(SystemCollectionsGenericIComparerTInterface i).getCompareMethod()
     )
   } or

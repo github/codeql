@@ -17,6 +17,11 @@ Most database connector libraries offer a way of safely
 embedding untrusted data into a query by means of query parameters
 or prepared statements.
 </p>
+<p>
+For NoSQL queries, make use of an operator like MongoDB's <code>$eq</code>
+to ensure that untrusted data is interpreted as a literal value and not as
+a query object.
+</p>
 </recommendation>
 
 <example>
@@ -52,5 +57,6 @@ immune to injection attacks.
 
 <references>
 <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/SQL_injection">SQL injection</a>.</li>
+<li>MongoDB: <a href="https://docs.mongodb.com/manual/reference/operator/query/eq">$eq operator</a>.</li>
 </references>
 </qhelp>

@@ -15,7 +15,7 @@ private import TypeRef
  * A variable. Either a variable with local scope (`LocalScopeVariable`) or a field (`Field`).
  */
 class Variable extends Assignable, DotNet::Variable, @variable {
-  override Variable getSourceDeclaration() { result = this }
+  override Variable getUnboundDeclaration() { result = this }
 
   override VariableAccess getAnAccess() { result.getTarget() = this }
 
@@ -177,9 +177,9 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
   predicate hasExtensionMethodModifier() { params(this, _, _, _, 4, _, _) }
 
   /** Gets the declaring element of this parameter. */
-  Parameterizable getDeclaringElement() { params(this, _, _, _, _, result, _) }
+  override Parameterizable getDeclaringElement() { params(this, _, _, _, _, result, _) }
 
-  override Parameter getSourceDeclaration() { params(this, _, _, _, _, _, result) }
+  override Parameter getUnboundDeclaration() { params(this, _, _, _, _, _, result) }
 
   override ValueOrRefType getDeclaringType() {
     exists(Parameterizable p | p = this.getDeclaringElement() |
@@ -207,13 +207,13 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
    * }
    * ```
    */
-  Expr getDefaultValue() { result = this.getSourceDeclaration().getChildExpr(0) }
+  Expr getDefaultValue() { result = this.getUnboundDeclaration().getChildExpr(0) }
 
   /** Holds if this parameter has a default value. */
   predicate hasDefaultValue() { exists(getDefaultValue()) }
 
   /** Gets the callable to which this parameter belongs, if any. */
-  override Callable getCallable() { result.getAParameter() = this }
+  override Callable getCallable() { result = this.getDeclaringElement() }
 
   /**
    * Gets an argument which is assigned to this parameter in a call to the
@@ -237,6 +237,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
    * The assigned arguments to `x` are `1` and `4`, the assigned argument to
    * `y` is `5`, and the assigned arguments to `z` are `3` and `6`, respectively.
    */
+  pragma[nomagic]
   Expr getAnAssignedArgument() { result = getCallable().getACall().getArgumentForParameter(this) }
 
   /** Holds if this parameter is potentially overwritten in the body of its callable. */
@@ -397,7 +398,7 @@ class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent
   /** Holds if this field is `readonly`. */
   predicate isReadOnly() { this.hasModifier("readonly") }
 
-  override Field getSourceDeclaration() { fields(this, _, _, _, _, result) }
+  override Field getUnboundDeclaration() { fields(this, _, _, _, _, result) }
 
   override FieldAccess getAnAccess() { result = Variable.super.getAnAccess() }
 

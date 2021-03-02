@@ -53,6 +53,8 @@
 | printf1.h:231:25:231:25 | i | This argument should be of type 'char *' but is of type 'int' |
 | printf1.h:234:25:234:25 | i | This argument should be of type 'char *' but is of type 'int' |
 | printf1.h:235:22:235:22 | s | This argument should be of type 'int' but is of type 'char *' |
+| printf1.h:276:32:276:32 | s | This argument should be of type 'int' but is of type 'char *' |
+| printf1.h:278:17:278:17 | s | This argument should be of type 'int' but is of type 'char *' |
 | real_world.h:61:21:61:22 | & ... | This argument should be of type 'int *' but is of type 'short *' |
 | real_world.h:62:22:62:23 | & ... | This argument should be of type 'short *' but is of type 'int *' |
 | real_world.h:63:22:63:24 | & ... | This argument should be of type 'short *' but is of type 'unsigned int *' |

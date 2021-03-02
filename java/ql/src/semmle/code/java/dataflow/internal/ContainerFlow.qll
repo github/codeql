@@ -110,8 +110,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.hasName(["asIterator", "nextElement"])
   or
   // java.util.Map
-  m
-      .(MapMethod)
+  m.(MapMethod)
       .hasName([
           "computeIfAbsent", "entrySet", "get", "getOrDefault", "put", "putIfAbsent", "remove",
           "replace", "values"
@@ -138,8 +137,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.(CollectionMethod).hasName("remove") and m.getNumberOfParameters() = 0
   or
   // java.util.Deque
-  m
-      .(CollectionMethod)
+  m.(CollectionMethod)
       .hasName([
           "getFirst", "getLast", "peekFirst", "peekLast", "pollFirst", "pollLast", "removeFirst",
           "removeLast"
@@ -159,8 +157,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   // java.util.NavigableSet
   // covered by Deque: pollFirst(), pollLast()
   // covered by SortedSet: headSet(E, boolean), subSet(E, boolean, E, boolean) and tailSet(E, boolean)
-  m
-      .(CollectionMethod)
+  m.(CollectionMethod)
       .hasName(["ceiling", "descendingIterator", "descendingSet", "floor", "higher", "lower"])
   or
   // java.util.SortedMap
@@ -168,16 +165,14 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   or
   // java.util.NavigableMap
   // covered by SortedMap: headMap(K, boolean), subMap(K, boolean, K, boolean), tailMap(K, boolean)
-  m
-      .(MapMethod)
+  m.(MapMethod)
       .hasName([
           "ceilingEntry", "descendingMap", "firstEntry", "floorEntry", "higherEntry", "lastEntry",
           "lowerEntry", "pollFirstEntry", "pollLastEntry"
         ])
   or
   // java.util.Dictionary
-  m
-      .getDeclaringType()
+  m.getDeclaringType()
       .getSourceDeclaration()
       .getASourceSupertype*()
       .hasQualifiedName("java.util", "Dictionary") and

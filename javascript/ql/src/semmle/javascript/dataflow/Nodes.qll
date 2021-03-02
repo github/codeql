@@ -19,6 +19,9 @@ private import internal.CallGraphs
  */
 class ExprNode extends DataFlow::ValueNode {
   override Expr astNode;
+
+  pragma[nomagic]
+  ExprNode() { any() }
 }
 
 /**
@@ -365,22 +368,38 @@ DataFlow::SourceNode globalObjectRef() {
   )
   or
   // DOM
-  result = globalVarRef("window")
+  result = globalVariable("window")
   or
   // Node.js
-  result = globalVarRef("global")
+  result = globalVariable("global")
   or
   // DOM and service workers
-  result = globalVarRef("self")
+  result = globalVariable("self")
   or
   // ECMAScript 2020
-  result = globalVarRef("globalThis")
+  result = globalVariable("globalThis")
   or
   // `require("global")`
   result = moduleImport("global")
   or
   // Closure library - based on AST to avoid recursion with Closure library model
-  result = globalVarRef("goog").getAPropertyRead("global")
+  result = globalVariable("goog").getAPropertyRead("global")
+}
+
+/**
+ * Gets a reference to a global variable `name`.
+ * For example, if `name` is "foo":
+ * ```js
+ * foo
+ * require('global/foo')
+ * ```
+ */
+private DataFlow::SourceNode globalVariable(string name) {
+  result.(GlobalVarRefNode).getName() = name
+  or
+  // `require("global/document")` or `require("global/window")`
+  (name = "document" or name = "window") and
+  result = moduleImport("global/" + name)
 }
 
 /**
@@ -398,13 +417,9 @@ DataFlow::SourceNode globalObjectRef() {
  */
 pragma[nomagic]
 DataFlow::SourceNode globalVarRef(string name) {
-  result.(GlobalVarRefNode).getName() = name
+  result = globalVariable(name)
   or
   result = globalObjectRef().getAPropertyReference(name)
-  or
-  // `require("global/document")` or `require("global/window")`
-  (name = "document" or name = "window") and
-  result = moduleImport("global/" + name)
 }
 
 /**
@@ -519,6 +534,11 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::SourceNode {
  */
 class ObjectLiteralNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   override ObjectExpr astNode;
+
+  /** Gets the value of a spread property of this object literal, such as `x` in `{...x}` */
+  DataFlow::Node getASpreadProperty() {
+    result = astNode.getAProperty().(SpreadProperty).getInit().(SpreadElement).getOperand().flow()
+  }
 }
 
 /**
@@ -1002,6 +1022,11 @@ class ClassNode extends DataFlow::SourceNode {
   TypeAnnotation getFieldTypeAnnotation(string fieldName) {
     result = impl.getFieldTypeAnnotation(fieldName)
   }
+
+  /**
+   * Gets a decorator applied to this class.
+   */
+  DataFlow::Node getADecorator() { result = impl.getADecorator() }
 }
 
 module ClassNode {
@@ -1059,6 +1084,9 @@ module ClassNode {
      * Gets the type annotation for the field `fieldName`, if any.
      */
     TypeAnnotation getFieldTypeAnnotation(string fieldName) { none() }
+
+    /** Gets a decorator applied to this class. */
+    DataFlow::Node getADecorator() { none() }
   }
 
   /**
@@ -1125,6 +1153,10 @@ module ClassNode {
         fieldName = field.getName() and
         result = field.getTypeAnnotation()
       )
+    }
+
+    override DataFlow::Node getADecorator() {
+      result = astNode.getADecorator().getExpression().flow()
     }
   }
 

@@ -410,11 +410,11 @@ class ConstructorInitializer extends Call, @constructor_init_expr {
   override string getAPrimaryQlClass() { result = "ConstructorInitializer" }
 
   private ValueOrRefType getTargetType() {
-    result = this.getTarget().getDeclaringType().getSourceDeclaration()
+    result = this.getTarget().getDeclaringType().getUnboundDeclaration()
   }
 
   private ValueOrRefType getConstructorType() {
-    result = this.getConstructor().getDeclaringType().getSourceDeclaration()
+    result = this.getConstructor().getDeclaringType().getUnboundDeclaration()
   }
 
   /**
@@ -527,6 +527,46 @@ class MutatorOperatorCall extends OperatorCall {
   predicate isPostfix() { mutator_invocation_mode(this, 2) }
 }
 
+private class DelegateLikeCall_ = @delegate_invocation_expr or @function_pointer_invocation_expr;
+
+/**
+ * A function pointer or delegate call.
+ */
+class DelegateLikeCall extends Call, DelegateLikeCall_ {
+  override Callable getTarget() { none() }
+
+  /**
+   * Gets a potential run-time target of this delegate or function pointer call in the given
+   * call context `cc`.
+   */
+  Callable getARuntimeTarget(CallContext::CallContext cc) {
+    exists(DelegateLikeCallExpr call |
+      this = call.getCall() and
+      result = call.getARuntimeTarget(cc)
+    )
+  }
+
+  /**
+   * Gets the delegate or function pointer expression of this call. For example, the
+   * delegate expression of `X()` on line 5 is the access to the field `X` in
+   *
+   * ```csharp
+   * class A {
+   *   Action X = () => { };
+   *
+   *   void CallX() {
+   *     X();
+   *   }
+   * }
+   * ```
+   */
+  Expr getExpr() { result = this.getChild(-1) }
+
+  override Callable getARuntimeTarget() { result = getARuntimeTarget(_) }
+
+  override Expr getRuntimeArgument(int i) { result = getArgument(i) }
+}
+
 /**
  * A delegate call, for example `x()` on line 5 in
  *
@@ -540,18 +580,13 @@ class MutatorOperatorCall extends OperatorCall {
  * }
  * ```
  */
-class DelegateCall extends Call, @delegate_invocation_expr {
-  override Callable getTarget() { none() }
-
+class DelegateCall extends DelegateLikeCall, @delegate_invocation_expr {
   /**
    * Gets a potential run-time target of this delegate call in the given
    * call context `cc`.
    */
-  Callable getARuntimeTarget(CallContext::CallContext cc) {
-    exists(DelegateCallExpr call |
-      this = call.getDelegateCall() and
-      result = call.getARuntimeTarget(cc)
-    )
+  override Callable getARuntimeTarget(CallContext::CallContext cc) {
+    result = DelegateLikeCall.super.getARuntimeTarget(cc)
     or
     exists(AddEventSource aes, CallContext::CallContext cc2 |
       aes = this.getAnAddEventSource(_) and
@@ -567,7 +602,7 @@ class DelegateCall extends Call, @delegate_invocation_expr {
   }
 
   private AddEventSource getAnAddEventSource(Callable enclosingCallable) {
-    this.getDelegateExpr().(EventAccess).getTarget() = result.getEvent() and
+    this.getExpr().(EventAccess).getTarget() = result.getEvent() and
     enclosingCallable = result.getExpr().getEnclosingCallable()
   }
 
@@ -579,29 +614,33 @@ class DelegateCall extends Call, @delegate_invocation_expr {
     exists(Callable c | result = getAnAddEventSource(c) | c != this.getEnclosingCallable())
   }
 
-  override Callable getARuntimeTarget() { result = getARuntimeTarget(_) }
-
-  override Expr getRuntimeArgument(int i) { result = getArgument(i) }
-
   /**
-   * Gets the delegate expression of this delegate call. For example, the
-   * delegate expression of `X()` on line 5 is the access to the field `X` in
+   * DEPRECATED: use `getExpr` instead.
    *
-   * ```csharp
-   * class A {
-   *   Action X = () => { };
-   *
-   *   void CallX() {
-   *     X();
-   *   }
-   * }
-   * ```
+   * Gets the delegate expression of this call.
    */
-  Expr getDelegateExpr() { result = this.getChild(-1) }
+  deprecated Expr getDelegateExpr() { result = this.getExpr() }
 
   override string toString() { result = "delegate call" }
 
   override string getAPrimaryQlClass() { result = "DelegateCall" }
+}
+
+/**
+ * A function pointer call, for example `fp(1)` on line 3 in
+ *
+ * ```csharp
+ * class A {
+ *   void Call(delegate*<int, void> fp) {
+ *     fp(1);
+ *   }
+ * }
+ * ```
+ */
+class FunctionPointerCall extends DelegateLikeCall, @function_pointer_invocation_expr {
+  override string toString() { result = "function pointer call" }
+
+  override string getAPrimaryQlClass() { result = "FunctionPointerCall" }
 }
 
 /**

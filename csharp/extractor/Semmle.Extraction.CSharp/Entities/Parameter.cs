@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public class Parameter : CachedSymbol<IParameterSymbol>, IExpressionParentEntity
+    internal class Parameter : CachedSymbol<IParameterSymbol>, IExpressionParentEntity
     {
         protected IEntity Parent { get; set; }
         protected Parameter Original { get; }
@@ -19,7 +19,7 @@ namespace Semmle.Extraction.CSharp.Entities
             Original = original ?? this;
         }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => symbol.GetSymbolLocation();
+        public override Microsoft.CodeAnalysis.Location ReportingLocation => Symbol.GetSymbolLocation();
 
         public enum Kind
         {
@@ -35,9 +35,9 @@ namespace Semmle.Extraction.CSharp.Entities
                 // actually numbered from 1.
                 // This is to be consistent from the original (unreduced) extension method.
                 var isReducedExtension =
-                    symbol.ContainingSymbol is IMethodSymbol method &&
+                    Symbol.ContainingSymbol is IMethodSymbol method &&
                     method.MethodKind == MethodKind.ReducedExtension;
-                return symbol.Ordinal + (isReducedExtension ? 1 : 0);
+                return Symbol.Ordinal + (isReducedExtension ? 1 : 0);
             }
         }
 
@@ -45,7 +45,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                switch (symbol.RefKind)
+                switch (Symbol.RefKind)
                 {
                     case RefKind.Out:
                         return Kind.Out;
@@ -54,12 +54,12 @@ namespace Semmle.Extraction.CSharp.Entities
                     case RefKind.In:
                         return Kind.In;
                     default:
-                        if (symbol.IsParams)
+                        if (Symbol.IsParams)
                             return Kind.Params;
 
                         if (Ordinal == 0)
                         {
-                            if (symbol.ContainingSymbol is IMethodSymbol method && method.IsExtensionMethod)
+                            if (Symbol.ContainingSymbol is IMethodSymbol method && method.IsExtensionMethod)
                                 return Kind.This;
                         }
                         return Kind.None;
@@ -76,7 +76,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void WriteId(TextWriter trapFile)
         {
             if (Parent == null)
-                Parent = Method.Create(Context, symbol.ContainingSymbol as IMethodSymbol);
+                Parent = Method.Create(Context, Symbol.ContainingSymbol as IMethodSymbol);
             trapFile.WriteSubId(Parent);
             trapFile.Write('_');
             trapFile.Write(Ordinal);
@@ -92,34 +92,42 @@ namespace Semmle.Extraction.CSharp.Entities
                 // Very rarely, two parameters have the same name according to the data model.
                 // This breaks our database constraints.
                 // Generate an impossible name to ensure that it doesn't conflict.
-                var conflictingCount = symbol.ContainingSymbol.GetParameters().Count(p => p.Ordinal < symbol.Ordinal && p.Name == symbol.Name);
-                return conflictingCount > 0 ? symbol.Name + "`" + conflictingCount : symbol.Name;
+                var conflictingCount = Symbol.ContainingSymbol.GetParameters().Count(p => p.Ordinal < Symbol.Ordinal && p.Name == Symbol.Name);
+                return conflictingCount > 0 ? Symbol.Name + "`" + conflictingCount : Symbol.Name;
             }
         }
 
         public override void Populate(TextWriter trapFile)
         {
             PopulateAttributes();
-            PopulateNullability(trapFile, symbol.GetAnnotatedType());
-            PopulateRefKind(trapFile, symbol.RefKind);
+            PopulateNullability(trapFile, Symbol.GetAnnotatedType());
+            PopulateRefKind(trapFile, Symbol.RefKind);
 
-            if (symbol.Name != Original.symbol.Name)
-                Context.ModelError(symbol, "Inconsistent parameter declaration");
+            if (Symbol.Name != Original.Symbol.Name)
+                Context.ModelError(Symbol, "Inconsistent parameter declaration");
 
-            var type = Type.Create(Context, symbol.Type);
+            var type = Type.Create(Context, Symbol.Type);
             trapFile.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent, Original);
 
-            foreach (var l in symbol.Locations)
-                trapFile.param_location(this, Context.Create(l));
+            foreach (var l in Symbol.Locations)
+                trapFile.param_location(this, Context.CreateLocation(l));
 
-            if (!IsSourceDeclaration || !symbol.FromSource())
+            if (!Symbol.Locations.Any() &&
+                Symbol.ContainingSymbol is IMethodSymbol ms &&
+                ms.Name == WellKnownMemberNames.TopLevelStatementsEntryPointMethodName &&
+                ms.ContainingType.Name == WellKnownMemberNames.TopLevelStatementsEntryPointTypeName)
+            {
+                trapFile.param_location(this, Context.CreateLocation());
+            }
+
+            if (!IsSourceDeclaration || !Symbol.FromSource())
                 return;
 
             BindComments();
 
             if (IsSourceDeclaration)
             {
-                foreach (var syntax in symbol.DeclaringSyntaxReferences
+                foreach (var syntax in Symbol.DeclaringSyntaxReferences
                     .Select(d => d.GetSyntax())
                     .OfType<ParameterSyntax>()
                     .Where(s => s.Type != null))
@@ -128,21 +136,21 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
-            if (symbol.HasExplicitDefaultValue && Context.Defines(symbol))
+            if (Symbol.HasExplicitDefaultValue && Context.Defines(Symbol))
             {
                 // This is a slight bug in the dbscheme
                 // We should really define param_default(param, string)
                 // And use parameter child #0 to encode the default expression.
-                var defaultValue = GetParameterDefaultValue(symbol);
+                var defaultValue = GetParameterDefaultValue(Symbol);
                 if (defaultValue == null)
                 {
                     // In case this parameter belongs to an accessor of an indexer, we need
                     // to get the default value from the corresponding parameter belonging
                     // to the indexer itself
-                    var method = (IMethodSymbol)symbol.ContainingSymbol;
+                    var method = (IMethodSymbol)Symbol.ContainingSymbol;
                     if (method != null)
                     {
-                        var i = method.Parameters.IndexOf(symbol);
+                        var i = method.Parameters.IndexOf(Symbol);
                         var indexer = (IPropertySymbol)method.AssociatedSymbol;
                         if (indexer != null)
                             defaultValue = GetParameterDefaultValue(indexer.Parameters[i]);
@@ -159,7 +167,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override bool IsSourceDeclaration => symbol.IsSourceDeclaration();
+        public override bool IsSourceDeclaration => Symbol.IsSourceDeclaration();
 
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
@@ -169,11 +177,11 @@ namespace Semmle.Extraction.CSharp.Entities
             return syntax?.Default;
         }
 
-        private class ParameterFactory : ICachedEntityFactory<(IParameterSymbol, IEntity, Parameter), Parameter>
+        private class ParameterFactory : CachedEntityFactory<(IParameterSymbol, IEntity, Parameter), Parameter>
         {
             public static ParameterFactory Instance { get; } = new ParameterFactory();
 
-            public Parameter Create(Context cx, (IParameterSymbol, IEntity, Parameter) init) => new Parameter(cx, init.Item1, init.Item2, init.Item3);
+            public override Parameter Create(Context cx, (IParameterSymbol, IEntity, Parameter) init) => new Parameter(cx, init.Item1, init.Item2, init.Item3);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
@@ -210,11 +218,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static VarargsType Create(Context cx) => VarargsTypeFactory.Instance.CreateEntity(cx, typeof(VarargsType), null);
 
-        private class VarargsTypeFactory : ICachedEntityFactory<string, VarargsType>
+        private class VarargsTypeFactory : CachedEntityFactory<string, VarargsType>
         {
             public static VarargsTypeFactory Instance { get; } = new VarargsTypeFactory();
 
-            public VarargsType Create(Context cx, string init) => new VarargsType(cx);
+            public override VarargsType Create(Context cx, string init) => new VarargsType(cx);
         }
     }
 
@@ -231,7 +239,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.param_location(this, GeneratedLocation.Create(Context));
         }
 
-        protected override int Ordinal => ((Method)Parent).OriginalDefinition.symbol.Parameters.Length;
+        protected override int Ordinal => ((Method)Parent).OriginalDefinition.Symbol.Parameters.Length;
 
         public override int GetHashCode()
         {
@@ -245,11 +253,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static VarargsParam Create(Context cx, Method method) => VarargsParamFactory.Instance.CreateEntity(cx, typeof(VarargsParam), method);
 
-        private class VarargsParamFactory : ICachedEntityFactory<Method, VarargsParam>
+        private class VarargsParamFactory : CachedEntityFactory<Method, VarargsParam>
         {
             public static VarargsParamFactory Instance { get; } = new VarargsParamFactory();
 
-            public VarargsParam Create(Context cx, Method init) => new VarargsParam(cx, init);
+            public override VarargsParam Create(Context cx, Method init) => new VarargsParam(cx, init);
         }
     }
 
@@ -258,26 +266,26 @@ namespace Semmle.Extraction.CSharp.Entities
         private readonly ITypeSymbol constructedType;
 
         private ConstructedExtensionParameter(Context cx, Method method, Parameter original)
-            : base(cx, original.symbol, method, original)
+            : base(cx, original.Symbol, method, original)
         {
-            constructedType = method.symbol.ReceiverType;
+            constructedType = method.Symbol.ReceiverType;
         }
 
         public override void Populate(TextWriter trapFile)
         {
             var typeKey = Type.Create(Context, constructedType);
-            trapFile.@params(this, Original.symbol.Name, typeKey.TypeRef, 0, Kind.This, Parent, Original);
+            trapFile.@params(this, Original.Symbol.Name, typeKey.TypeRef, 0, Kind.This, Parent, Original);
             trapFile.param_location(this, Original.Location);
         }
 
         public static ConstructedExtensionParameter Create(Context cx, Method method, Parameter parameter) =>
-            ExtensionParamFactory.Instance.CreateEntity(cx, (new SymbolEqualityWrapper(parameter.symbol), new SymbolEqualityWrapper(method.symbol.ReceiverType)), (method, parameter));
+            ExtensionParamFactory.Instance.CreateEntity(cx, (new SymbolEqualityWrapper(parameter.Symbol), new SymbolEqualityWrapper(method.Symbol.ReceiverType)), (method, parameter));
 
-        private class ExtensionParamFactory : ICachedEntityFactory<(Method, Parameter), ConstructedExtensionParameter>
+        private class ExtensionParamFactory : CachedEntityFactory<(Method, Parameter), ConstructedExtensionParameter>
         {
             public static ExtensionParamFactory Instance { get; } = new ExtensionParamFactory();
 
-            public ConstructedExtensionParameter Create(Context cx, (Method, Parameter) init) =>
+            public override ConstructedExtensionParameter Create(Context cx, (Method, Parameter) init) =>
                 new ConstructedExtensionParameter(cx, init.Item1, init.Item2);
         }
     }

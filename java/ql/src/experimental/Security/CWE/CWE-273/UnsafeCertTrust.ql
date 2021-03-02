@@ -1,6 +1,6 @@
 /**
- * @name Unsafe certificate trust and improper hostname verification
- * @description Unsafe implementation of the interface X509TrustManager, HostnameVerifier, and SSLSocket/SSLEngine ignores all SSL certificate validation errors when establishing an HTTPS connection, thereby making the app vulnerable to man-in-the-middle attacks.
+ * @name Unsafe certificate trust
+ * @description Unsafe implementation of the interface X509TrustManager and SSLSocket/SSLEngine ignores all SSL certificate validation errors when establishing an HTTPS connection, thereby making the app vulnerable to man-in-the-middle attacks.
  * @kind problem
  * @id java/unsafe-cert-trust
  * @tags security
@@ -48,42 +48,6 @@ class X509TrustAllManagerInit extends MethodAccess {
         this.getArgument(1).(VarAccess).getVariable() = v and
         ai.getParent() = v.getAnAssignedValue() and
         ai.getInit(0).getType().(Class).getASupertype*() instanceof X509TrustAllManager //Scenario of context.init(null, serverTMs, null);
-      )
-    )
-  }
-}
-
-/**
- * HostnameVerifier class that allows a certificate whose CN (Common Name) does not match the host name in the URL
- */
-class TrustAllHostnameVerifier extends RefType {
-  TrustAllHostnameVerifier() {
-    this.getASupertype*() instanceof HostnameVerifier and
-    exists(Method m, ReturnStmt rt |
-      m.getDeclaringType() = this and
-      m.hasName("verify") and
-      rt.getEnclosingCallable() = m and
-      rt.getResult().(BooleanLiteral).getBooleanValue() = true
-    )
-  }
-}
-
-/**
- * The setDefaultHostnameVerifier method of HttpsURLConnection with the trust all configuration
- */
-class TrustAllHostnameVerify extends MethodAccess {
-  TrustAllHostnameVerify() {
-    this.getMethod().hasName("setDefaultHostnameVerifier") and
-    this.getMethod().getDeclaringType() instanceof HttpsURLConnection and //httpsURLConnection.setDefaultHostnameVerifier method
-    (
-      exists(NestedClass nc |
-        nc.getASupertype*() instanceof TrustAllHostnameVerifier and
-        this.getArgument(0).getType() = nc //Scenario of HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {...});
-      )
-      or
-      exists(Variable v |
-        this.getArgument(0).(VarAccess).getVariable() = v and
-        v.getInitializer().getType() instanceof TrustAllHostnameVerifier //Scenario of HttpsURLConnection.setDefaultHostnameVerifier(verifier);
       )
     )
   }
@@ -239,7 +203,6 @@ class RabbitMQEnableHostnameVerificationNotSet extends MethodAccess {
 
 from MethodAccess aa
 where
-  aa instanceof TrustAllHostnameVerify or
   aa instanceof X509TrustAllManagerInit or
   aa instanceof SSLEndpointIdentificationNotSet or
   aa instanceof RabbitMQEnableHostnameVerificationNotSet

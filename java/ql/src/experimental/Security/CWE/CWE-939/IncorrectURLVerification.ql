@@ -52,8 +52,7 @@ class HostVerificationMethodAccess extends MethodAccess {
     (
       this.getArgument(0).(StringLiteral).getRepresentedString().charAt(0) != "." //string constant comparison e.g. uri.getHost().endsWith("example.com")
       or
-      this
-          .getArgument(0)
+      this.getArgument(0)
           .(AddExpr)
           .getLeftOperand()
           .(VarAccess)
@@ -63,8 +62,7 @@ class HostVerificationMethodAccess extends MethodAccess {
           .getRepresentedString()
           .charAt(0) != "." //var1+var2, check var1 starts with "." e.g. String domainName = "example"; Uri.parse(url).getHost().endsWith(domainName+".com")
       or
-      this
-          .getArgument(0)
+      this.getArgument(0)
           .(AddExpr)
           .getLeftOperand()
           .(StringLiteral)
@@ -80,8 +78,7 @@ class HostVerificationMethodAccess extends MethodAccess {
         f.getDeclaringType() instanceof AndroidRString
       ) //Check resource properties in /res/values/strings.xml in Android mobile applications using res.getString(R.string.key)
       or
-      this
-          .getArgument(0)
+      this.getArgument(0)
           .(VarAccess)
           .getVariable()
           .getAnAssignedValue()

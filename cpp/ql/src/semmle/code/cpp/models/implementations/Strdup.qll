@@ -11,27 +11,16 @@ import semmle.code.cpp.models.interfaces.Taint
 /**
  * A `strdup` style allocation function.
  */
-class StrdupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction {
+private class StrdupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction {
   StrdupFunction() {
-    exists(string name |
-      hasGlobalName(name) and
-      (
-        // strdup(str)
-        name = "strdup"
-        or
-        // wcsdup(str)
-        name = "wcsdup"
-        or
-        // _strdup(str)
-        name = "_strdup"
-        or
-        // _wcsdup(str)
-        name = "_wcsdup"
-        or
-        // _mbsdup(str)
-        name = "_mbsdup"
-      )
-    )
+    hasGlobalName([
+        // --- C library allocation
+        "strdup", // strdup(str)
+        "wcsdup", // wcsdup(str)
+        "_strdup", // _strdup(str)
+        "_wcsdup", // _wcsdup(str)
+        "_mbsdup" // _mbsdup(str)
+      ])
   }
 
   override predicate hasArrayInput(int bufParam) { bufParam = 0 }
@@ -47,12 +36,12 @@ class StrdupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction
 /**
  * A `strndup` style allocation function.
  */
-class StrndupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction {
+private class StrndupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction {
   StrndupFunction() {
     exists(string name |
       hasGlobalName(name) and
-      // strndup(str, maxlen)
-      name = "strndup"
+      // --- C library allocation
+      name = "strndup" // strndup(str, maxlen)
     )
   }
 

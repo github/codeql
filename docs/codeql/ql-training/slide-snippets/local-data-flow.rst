@@ -105,9 +105,9 @@ So all references will need to be qualified (that is, ``DataFlow::Node``)
   A **query library** is file with the extension ``.qll``. Query libraries do not contain a query clause, but may contain modules, classes, and predicates. 
   For further information on the data flow libraries, see the following links:
 
-  - `Java data flow library <https://help.semmle.com/qldoc/java/semmle/code/java/dataflow/DataFlow.qll/module.DataFlow.html>`__
-  - `C/C++ data flow library <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/dataflow/DataFlow.qll/module.DataFlow.html>`__
-  - `C# data flow library <https://help.semmle.com/qldoc/csharp/semmle/code/csharp/dataflow/DataFlow.qll/module.DataFlow.html>`__
+  - `Java data flow library <https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/dataflow/DataFlow.qll/module.DataFlow.html>`__
+  - `C/C++ data flow library <https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/dataflow/DataFlow.qll/module.DataFlow.html>`__
+  - `C# data flow library <https://codeql.github.com/codeql-standard-libraries/csharp/semmle/code/csharp/dataflow/DataFlow.qll/module.DataFlow.html>`__
 
   A **module** is a way of organizing QL code by grouping together related predicates, classes, and (sub-)modules. They can be either explicitly declared or implicit. A query library implicitly declares a module with the same name as the QLL file.
 
@@ -155,6 +155,6 @@ Taint tracking
 
   The taint-tracking API is almost identical to that of the local data flow. All we need to do to switch to taint tracking is ``import semmle.code.<language>.dataflow.TaintTracking`` instead of ``semmle.code.<language>.dataflow.DataFlow``, and instead of using ``localFlow``, we use ``localTaint``.
   
-  - `Java taint-tracking library <https://help.semmle.com/qldoc/java/semmle/code/java/dataflow/TaintTracking.qll/module.TaintTracking.html>`__ 
-  - `C/C++ taint-tracking library <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/dataflow/TaintTracking.qll/module.TaintTracking.html>`__ 
-  - `C# taint-tracking library <https://help.semmle.com/qldoc/csharp/semmle/code/csharp/dataflow/TaintTracking.qll/module.TaintTracking.html>`__ 
+  - `Java taint-tracking library <https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/dataflow/TaintTracking.qll/module.TaintTracking.html>`__ 
+  - `C/C++ taint-tracking library <https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/dataflow/TaintTracking.qll/module.TaintTracking.html>`__ 
+  - `C# taint-tracking library <https://codeql.github.com/codeql-standard-libraries/csharp/semmle/code/csharp/dataflow/TaintTracking.qll/module.TaintTracking.html>`__ 

@@ -96,6 +96,7 @@ test_RouteSetup_getServer
 | src/indirect2.js:18:14:18:35 | http.cr ... er(get) | src/indirect2.js:18:14:18:35 | http.cr ... er(get) |
 | src/indirect.js:34:14:34:58 | http.cr ... dler()) | src/indirect.js:34:14:34:58 | http.cr ... dler()) |
 test_ClientRequest
+| http.js:2:1:2:56 | http.re ... fined)) |
 | src/http.js:18:1:18:30 | http.re ... uth" }) |
 | src/http.js:21:15:26:6 | http.re ... \\n    }) |
 | src/http.js:27:16:27:73 | http.re ... POST'}) |

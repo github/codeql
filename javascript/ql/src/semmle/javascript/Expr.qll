@@ -115,8 +115,8 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
   predicate isImpure() { any() }
 
   /**
-   * Holds if this expression is pure, that is, is its evaluation is guaranteed to be
-   * side effect-free.
+   * Holds if this expression is pure, that is, its evaluation is guaranteed
+   * to be side-effect free.
    */
   predicate isPure() { not isImpure() }
 
@@ -1921,6 +1921,18 @@ private class TCompoundAssignExpr =
  */
 class CompoundAssignExpr extends TCompoundAssignExpr, Assignment {
   override string getAPrimaryQlClass() { result = "CompoundAssignExpr" }
+
+  /**
+   * Holds if this compound assignment always returns a number value.
+   */
+  predicate isNumeric() {
+    not (
+      this instanceof AssignAddExpr or
+      this instanceof AssignLogOrExpr or
+      this instanceof AssignLogAndExpr or
+      this instanceof AssignNullishCoalescingExpr
+    )
+  }
 }
 
 /**

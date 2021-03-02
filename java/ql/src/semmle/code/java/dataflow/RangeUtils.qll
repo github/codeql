@@ -27,10 +27,9 @@ private predicate nonNullSsaFwdStep(SsaVariable v, SsaVariable phi) {
 }
 
 private predicate nonNullDefStep(Expr e1, Expr e2) {
-  exists(ConditionalExpr cond | cond = e2 |
-    cond.getTrueExpr() = e1 and cond.getFalseExpr() instanceof NullLiteral
-    or
-    cond.getFalseExpr() = e1 and cond.getTrueExpr() instanceof NullLiteral
+  exists(ConditionalExpr cond, boolean branch | cond = e2 |
+    cond.getBranchExpr(branch) = e1 and
+    cond.getBranchExpr(branch.booleanNot()) instanceof NullLiteral
   )
 }
 

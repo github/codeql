@@ -1,0 +1,15 @@
+| AnonymousObjectCreation.cs:9:29:9:31 | set_Prop1 | set |
+| BinaryPattern.cs:5:26:5:28 | set_P1 | set |
+| InitOnlyProperty.cs:5:42:5:45 | set_Prop0 | init |
+| InitOnlyProperty.cs:6:37:6:40 | set_Prop1 | init |
+| InitOnlyProperty.cs:7:37:7:39 | set_Prop2 | set |
+| InitOnlyProperty.cs:13:38:13:41 | set_Prop1 | init |
+| InitOnlyProperty.cs:17:9:17:12 | set_Prop2 | init |
+| Record.cs:27:30:27:38 | set_FirstName | init |
+| Record.cs:27:48:27:55 | set_LastName | init |
+| Record.cs:29:66:29:72 | set_Subject | init |
+| Record.cs:32:70:32:74 | set_Level | init |
+| Record.cs:35:26:35:29 | set_Name | init |
+| Record.cs:54:34:54:34 | set_A | init |
+| Record.cs:56:35:56:35 | set_B | init |
+| UnaryPattern.cs:5:26:5:28 | set_P1 | set |

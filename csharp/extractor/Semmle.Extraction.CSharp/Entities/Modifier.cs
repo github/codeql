@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            trapFile.Write(symbol);
+            trapFile.Write(Symbol);
             trapFile.Write(";modifier");
         }
 
@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.modifiers(Label, symbol);
+            trapFile.modifiers(Label, Symbol);
         }
 
         public static string AccessbilityModifier(Accessibility access)
@@ -140,11 +140,11 @@ namespace Semmle.Extraction.CSharp.Entities
             return ModifierFactory.Instance.CreateEntity(cx, (typeof(Modifier), modifier), modifier);
         }
 
-        private class ModifierFactory : ICachedEntityFactory<string, Modifier>
+        private class ModifierFactory : CachedEntityFactory<string, Modifier>
         {
             public static ModifierFactory Instance { get; } = new ModifierFactory();
 
-            public Modifier Create(Context cx, string init) => new Modifier(cx, init);
+            public override Modifier Create(Context cx, string init) => new Modifier(cx, init);
         }
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }

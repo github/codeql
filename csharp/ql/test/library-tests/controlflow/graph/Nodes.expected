@@ -619,13 +619,9 @@ finallyNode
 | CompileTimeOperators.cs:37:13:37:41 | [finally: goto(End)] ...; | CompileTimeOperators.cs:30:9:38:9 | try {...} ... |
 | CompileTimeOperators.cs:37:31:37:39 | [finally: goto(End)] "Finally" | CompileTimeOperators.cs:30:9:38:9 | try {...} ... |
 | Finally.cs:14:9:16:9 | [finally: exception(Exception)] {...} | Finally.cs:9:9:16:9 | try {...} ... |
-| Finally.cs:14:9:16:9 | [finally: exception(OutOfMemoryException)] {...} | Finally.cs:9:9:16:9 | try {...} ... |
 | Finally.cs:15:13:15:40 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:9:9:16:9 | try {...} ... |
-| Finally.cs:15:13:15:40 | [finally: exception(OutOfMemoryException)] call to method WriteLine | Finally.cs:9:9:16:9 | try {...} ... |
 | Finally.cs:15:13:15:41 | [finally: exception(Exception)] ...; | Finally.cs:9:9:16:9 | try {...} ... |
-| Finally.cs:15:13:15:41 | [finally: exception(OutOfMemoryException)] ...; | Finally.cs:9:9:16:9 | try {...} ... |
 | Finally.cs:15:31:15:39 | [finally: exception(Exception)] "Finally" | Finally.cs:9:9:16:9 | try {...} ... |
-| Finally.cs:15:31:15:39 | [finally: exception(OutOfMemoryException)] "Finally" | Finally.cs:9:9:16:9 | try {...} ... |
 | Finally.cs:37:13:39:13 | [finally: exception(ArgumentException)] {...} | Finally.cs:32:13:39:13 | try {...} ... |
 | Finally.cs:38:17:38:44 | [finally: exception(ArgumentException)] throw ...; | Finally.cs:32:13:39:13 | try {...} ... |
 | Finally.cs:38:23:38:43 | [finally: exception(ArgumentException)] object creation of type Exception | Finally.cs:32:13:39:13 | try {...} ... |
@@ -644,19 +640,15 @@ finallyNode
 | Finally.cs:50:31:50:39 | [finally: return] "Finally" | Finally.cs:21:9:51:9 | try {...} ... |
 | Finally.cs:69:9:71:9 | [finally: exception(Exception)] {...} | Finally.cs:56:9:71:9 | try {...} ... |
 | Finally.cs:69:9:71:9 | [finally: exception(IOException)] {...} | Finally.cs:56:9:71:9 | try {...} ... |
-| Finally.cs:69:9:71:9 | [finally: exception(OutOfMemoryException)] {...} | Finally.cs:56:9:71:9 | try {...} ... |
 | Finally.cs:69:9:71:9 | [finally: return] {...} | Finally.cs:56:9:71:9 | try {...} ... |
 | Finally.cs:70:13:70:40 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:56:9:71:9 | try {...} ... |
 | Finally.cs:70:13:70:40 | [finally: exception(IOException)] call to method WriteLine | Finally.cs:56:9:71:9 | try {...} ... |
-| Finally.cs:70:13:70:40 | [finally: exception(OutOfMemoryException)] call to method WriteLine | Finally.cs:56:9:71:9 | try {...} ... |
 | Finally.cs:70:13:70:40 | [finally: return] call to method WriteLine | Finally.cs:56:9:71:9 | try {...} ... |
 | Finally.cs:70:13:70:41 | [finally: exception(Exception)] ...; | Finally.cs:56:9:71:9 | try {...} ... |
 | Finally.cs:70:13:70:41 | [finally: exception(IOException)] ...; | Finally.cs:56:9:71:9 | try {...} ... |
-| Finally.cs:70:13:70:41 | [finally: exception(OutOfMemoryException)] ...; | Finally.cs:56:9:71:9 | try {...} ... |
 | Finally.cs:70:13:70:41 | [finally: return] ...; | Finally.cs:56:9:71:9 | try {...} ... |
 | Finally.cs:70:31:70:39 | [finally: exception(Exception)] "Finally" | Finally.cs:56:9:71:9 | try {...} ... |
 | Finally.cs:70:31:70:39 | [finally: exception(IOException)] "Finally" | Finally.cs:56:9:71:9 | try {...} ... |
-| Finally.cs:70:31:70:39 | [finally: exception(OutOfMemoryException)] "Finally" | Finally.cs:56:9:71:9 | try {...} ... |
 | Finally.cs:70:31:70:39 | [finally: return] "Finally" | Finally.cs:56:9:71:9 | try {...} ... |
 | Finally.cs:89:13:99:13 | [finally: break] {...} | Finally.cs:79:13:99:13 | try {...} ... |
 | Finally.cs:89:13:99:13 | [finally: continue] {...} | Finally.cs:79:13:99:13 | try {...} ... |
@@ -685,33 +677,33 @@ finallyNode
 | Finally.cs:93:31:93:45 | [finally: break] object creation of type Exception | Finally.cs:79:13:99:13 | try {...} ... |
 | Finally.cs:93:31:93:45 | [finally: continue] object creation of type Exception | Finally.cs:79:13:99:13 | try {...} ... |
 | Finally.cs:93:31:93:45 | [finally: return] object creation of type Exception | Finally.cs:79:13:99:13 | try {...} ... |
-| Finally.cs:96:17:98:17 | [finally(2): exception(Exception)] {...} | Finally.cs:90:17:98:17 | try {...} ... |
-| Finally.cs:96:17:98:17 | [finally: break, finally(2): exception(Exception)] {...} | Finally.cs:90:17:98:17 | try {...} ... |
+| Finally.cs:96:17:98:17 | [finally(1): exception(Exception)] {...} | Finally.cs:90:17:98:17 | try {...} ... |
+| Finally.cs:96:17:98:17 | [finally: break, finally(1): exception(Exception)] {...} | Finally.cs:90:17:98:17 | try {...} ... |
 | Finally.cs:96:17:98:17 | [finally: break] {...} | Finally.cs:90:17:98:17 | try {...} ... |
-| Finally.cs:96:17:98:17 | [finally: continue, finally(2): exception(Exception)] {...} | Finally.cs:90:17:98:17 | try {...} ... |
+| Finally.cs:96:17:98:17 | [finally: continue, finally(1): exception(Exception)] {...} | Finally.cs:90:17:98:17 | try {...} ... |
 | Finally.cs:96:17:98:17 | [finally: continue] {...} | Finally.cs:90:17:98:17 | try {...} ... |
-| Finally.cs:96:17:98:17 | [finally: return, finally(2): exception(Exception)] {...} | Finally.cs:90:17:98:17 | try {...} ... |
+| Finally.cs:96:17:98:17 | [finally: return, finally(1): exception(Exception)] {...} | Finally.cs:90:17:98:17 | try {...} ... |
 | Finally.cs:96:17:98:17 | [finally: return] {...} | Finally.cs:90:17:98:17 | try {...} ... |
-| Finally.cs:97:21:97:21 | [finally(2): exception(Exception)] access to local variable i | Finally.cs:90:17:98:17 | try {...} ... |
-| Finally.cs:97:21:97:21 | [finally: break, finally(2): exception(Exception)] access to local variable i | Finally.cs:90:17:98:17 | try {...} ... |
+| Finally.cs:97:21:97:21 | [finally(1): exception(Exception)] access to local variable i | Finally.cs:90:17:98:17 | try {...} ... |
+| Finally.cs:97:21:97:21 | [finally: break, finally(1): exception(Exception)] access to local variable i | Finally.cs:90:17:98:17 | try {...} ... |
 | Finally.cs:97:21:97:21 | [finally: break] access to local variable i | Finally.cs:90:17:98:17 | try {...} ... |
-| Finally.cs:97:21:97:21 | [finally: continue, finally(2): exception(Exception)] access to local variable i | Finally.cs:90:17:98:17 | try {...} ... |
+| Finally.cs:97:21:97:21 | [finally: continue, finally(1): exception(Exception)] access to local variable i | Finally.cs:90:17:98:17 | try {...} ... |
 | Finally.cs:97:21:97:21 | [finally: continue] access to local variable i | Finally.cs:90:17:98:17 | try {...} ... |
-| Finally.cs:97:21:97:21 | [finally: return, finally(2): exception(Exception)] access to local variable i | Finally.cs:90:17:98:17 | try {...} ... |
+| Finally.cs:97:21:97:21 | [finally: return, finally(1): exception(Exception)] access to local variable i | Finally.cs:90:17:98:17 | try {...} ... |
 | Finally.cs:97:21:97:21 | [finally: return] access to local variable i | Finally.cs:90:17:98:17 | try {...} ... |
-| Finally.cs:97:21:97:23 | [finally(2): exception(Exception)] ...-- | Finally.cs:90:17:98:17 | try {...} ... |
-| Finally.cs:97:21:97:23 | [finally: break, finally(2): exception(Exception)] ...-- | Finally.cs:90:17:98:17 | try {...} ... |
+| Finally.cs:97:21:97:23 | [finally(1): exception(Exception)] ...-- | Finally.cs:90:17:98:17 | try {...} ... |
+| Finally.cs:97:21:97:23 | [finally: break, finally(1): exception(Exception)] ...-- | Finally.cs:90:17:98:17 | try {...} ... |
 | Finally.cs:97:21:97:23 | [finally: break] ...-- | Finally.cs:90:17:98:17 | try {...} ... |
-| Finally.cs:97:21:97:23 | [finally: continue, finally(2): exception(Exception)] ...-- | Finally.cs:90:17:98:17 | try {...} ... |
+| Finally.cs:97:21:97:23 | [finally: continue, finally(1): exception(Exception)] ...-- | Finally.cs:90:17:98:17 | try {...} ... |
 | Finally.cs:97:21:97:23 | [finally: continue] ...-- | Finally.cs:90:17:98:17 | try {...} ... |
-| Finally.cs:97:21:97:23 | [finally: return, finally(2): exception(Exception)] ...-- | Finally.cs:90:17:98:17 | try {...} ... |
+| Finally.cs:97:21:97:23 | [finally: return, finally(1): exception(Exception)] ...-- | Finally.cs:90:17:98:17 | try {...} ... |
 | Finally.cs:97:21:97:23 | [finally: return] ...-- | Finally.cs:90:17:98:17 | try {...} ... |
-| Finally.cs:97:21:97:24 | [finally(2): exception(Exception)] ...; | Finally.cs:90:17:98:17 | try {...} ... |
-| Finally.cs:97:21:97:24 | [finally: break, finally(2): exception(Exception)] ...; | Finally.cs:90:17:98:17 | try {...} ... |
+| Finally.cs:97:21:97:24 | [finally(1): exception(Exception)] ...; | Finally.cs:90:17:98:17 | try {...} ... |
+| Finally.cs:97:21:97:24 | [finally: break, finally(1): exception(Exception)] ...; | Finally.cs:90:17:98:17 | try {...} ... |
 | Finally.cs:97:21:97:24 | [finally: break] ...; | Finally.cs:90:17:98:17 | try {...} ... |
-| Finally.cs:97:21:97:24 | [finally: continue, finally(2): exception(Exception)] ...; | Finally.cs:90:17:98:17 | try {...} ... |
+| Finally.cs:97:21:97:24 | [finally: continue, finally(1): exception(Exception)] ...; | Finally.cs:90:17:98:17 | try {...} ... |
 | Finally.cs:97:21:97:24 | [finally: continue] ...; | Finally.cs:90:17:98:17 | try {...} ... |
-| Finally.cs:97:21:97:24 | [finally: return, finally(2): exception(Exception)] ...; | Finally.cs:90:17:98:17 | try {...} ... |
+| Finally.cs:97:21:97:24 | [finally: return, finally(1): exception(Exception)] ...; | Finally.cs:90:17:98:17 | try {...} ... |
 | Finally.cs:97:21:97:24 | [finally: return] ...; | Finally.cs:90:17:98:17 | try {...} ... |
 | Finally.cs:113:9:118:9 | [finally: exception(Exception)] {...} | Finally.cs:105:9:118:9 | try {...} ... |
 | Finally.cs:113:9:118:9 | [finally: exception(NullReferenceException)] {...} | Finally.cs:105:9:118:9 | try {...} ... |
@@ -802,13 +794,9 @@ finallyNode
 | Finally.cs:117:35:117:35 | [finally: exception(OutOfMemoryException)] 1 | Finally.cs:105:9:118:9 | try {...} ... |
 | Finally.cs:117:35:117:35 | [finally: return] 1 | Finally.cs:105:9:118:9 | try {...} ... |
 | Finally.cs:140:9:143:9 | [finally: exception(Exception)] {...} | Finally.cs:135:9:143:9 | try {...} ... |
-| Finally.cs:140:9:143:9 | [finally: exception(OutOfMemoryException)] {...} | Finally.cs:135:9:143:9 | try {...} ... |
 | Finally.cs:141:13:141:44 | [finally: exception(Exception)] throw ...; | Finally.cs:135:9:143:9 | try {...} ... |
-| Finally.cs:141:13:141:44 | [finally: exception(OutOfMemoryException)] throw ...; | Finally.cs:135:9:143:9 | try {...} ... |
 | Finally.cs:141:19:141:43 | [finally: exception(Exception)] object creation of type ArgumentException | Finally.cs:135:9:143:9 | try {...} ... |
-| Finally.cs:141:19:141:43 | [finally: exception(OutOfMemoryException)] object creation of type ArgumentException | Finally.cs:135:9:143:9 | try {...} ... |
 | Finally.cs:141:41:141:42 | [finally: exception(Exception)] "" | Finally.cs:135:9:143:9 | try {...} ... |
-| Finally.cs:141:41:141:42 | [finally: exception(OutOfMemoryException)] "" | Finally.cs:135:9:143:9 | try {...} ... |
 | Finally.cs:155:9:169:9 | [finally: exception(ArgumentNullException)] {...} | Finally.cs:149:9:169:9 | try {...} ... |
 | Finally.cs:155:9:169:9 | [finally: exception(Exception)] {...} | Finally.cs:149:9:169:9 | try {...} ... |
 | Finally.cs:156:13:168:13 | [finally: exception(ArgumentNullException)] try {...} ... | Finally.cs:149:9:169:9 | try {...} ... |
@@ -923,45 +911,45 @@ finallyNode
 | Finally.cs:205:25:205:47 | [finally: exception(ExceptionA)] throw ...; | Finally.cs:197:9:212:9 | try {...} ... |
 | Finally.cs:205:31:205:46 | [finally: exception(Exception)] object creation of type ExceptionB | Finally.cs:197:9:212:9 | try {...} ... |
 | Finally.cs:205:31:205:46 | [finally: exception(ExceptionA)] object creation of type ExceptionB | Finally.cs:197:9:212:9 | try {...} ... |
-| Finally.cs:208:13:210:13 | [finally(2): exception(Exception)] {...} | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:208:13:210:13 | [finally(2): exception(ExceptionB)] {...} | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:208:13:210:13 | [finally: exception(Exception), finally(2): exception(Exception)] {...} | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:208:13:210:13 | [finally: exception(Exception), finally(2): exception(ExceptionB)] {...} | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:208:13:210:13 | [finally(1): exception(Exception)] {...} | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:208:13:210:13 | [finally(1): exception(ExceptionB)] {...} | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:208:13:210:13 | [finally: exception(Exception), finally(1): exception(Exception)] {...} | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:208:13:210:13 | [finally: exception(Exception), finally(1): exception(ExceptionB)] {...} | Finally.cs:203:13:210:13 | try {...} ... |
 | Finally.cs:208:13:210:13 | [finally: exception(Exception)] {...} | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:208:13:210:13 | [finally: exception(ExceptionA), finally(2): exception(Exception)] {...} | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:208:13:210:13 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] {...} | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:208:13:210:13 | [finally: exception(ExceptionA), finally(1): exception(Exception)] {...} | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:208:13:210:13 | [finally: exception(ExceptionA), finally(1): exception(ExceptionB)] {...} | Finally.cs:203:13:210:13 | try {...} ... |
 | Finally.cs:208:13:210:13 | [finally: exception(ExceptionA)] {...} | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:17:209:47 | [finally(2): exception(Exception)] if (...) ... | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:17:209:47 | [finally(2): exception(ExceptionB)] if (...) ... | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:17:209:47 | [finally: exception(Exception), finally(2): exception(Exception)] if (...) ... | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:17:209:47 | [finally: exception(Exception), finally(2): exception(ExceptionB)] if (...) ... | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:17:209:47 | [finally(1): exception(Exception)] if (...) ... | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:17:209:47 | [finally(1): exception(ExceptionB)] if (...) ... | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:17:209:47 | [finally: exception(Exception), finally(1): exception(Exception)] if (...) ... | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:17:209:47 | [finally: exception(Exception), finally(1): exception(ExceptionB)] if (...) ... | Finally.cs:203:13:210:13 | try {...} ... |
 | Finally.cs:209:17:209:47 | [finally: exception(Exception)] if (...) ... | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:17:209:47 | [finally: exception(ExceptionA), finally(2): exception(Exception)] if (...) ... | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:17:209:47 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] if (...) ... | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:17:209:47 | [finally: exception(ExceptionA), finally(1): exception(Exception)] if (...) ... | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:17:209:47 | [finally: exception(ExceptionA), finally(1): exception(ExceptionB)] if (...) ... | Finally.cs:203:13:210:13 | try {...} ... |
 | Finally.cs:209:17:209:47 | [finally: exception(ExceptionA)] if (...) ... | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:21:209:22 | [finally(2): exception(Exception)] access to parameter b3 | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:21:209:22 | [finally(2): exception(ExceptionB)] access to parameter b3 | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:21:209:22 | [finally: exception(Exception), finally(2): exception(Exception)] access to parameter b3 | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:21:209:22 | [finally: exception(Exception), finally(2): exception(ExceptionB)] access to parameter b3 | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:21:209:22 | [finally(1): exception(Exception)] access to parameter b3 | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:21:209:22 | [finally(1): exception(ExceptionB)] access to parameter b3 | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:21:209:22 | [finally: exception(Exception), finally(1): exception(Exception)] access to parameter b3 | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:21:209:22 | [finally: exception(Exception), finally(1): exception(ExceptionB)] access to parameter b3 | Finally.cs:203:13:210:13 | try {...} ... |
 | Finally.cs:209:21:209:22 | [finally: exception(Exception)] access to parameter b3 | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:21:209:22 | [finally: exception(ExceptionA), finally(2): exception(Exception)] access to parameter b3 | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:21:209:22 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] access to parameter b3 | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:21:209:22 | [finally: exception(ExceptionA), finally(1): exception(Exception)] access to parameter b3 | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:21:209:22 | [finally: exception(ExceptionA), finally(1): exception(ExceptionB)] access to parameter b3 | Finally.cs:203:13:210:13 | try {...} ... |
 | Finally.cs:209:21:209:22 | [finally: exception(ExceptionA)] access to parameter b3 | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:25:209:47 | [finally(2): exception(Exception)] throw ...; | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:25:209:47 | [finally(2): exception(ExceptionB)] throw ...; | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:25:209:47 | [finally: exception(Exception), finally(2): exception(Exception)] throw ...; | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:25:209:47 | [finally: exception(Exception), finally(2): exception(ExceptionB)] throw ...; | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:25:209:47 | [finally(1): exception(Exception)] throw ...; | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:25:209:47 | [finally(1): exception(ExceptionB)] throw ...; | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:25:209:47 | [finally: exception(Exception), finally(1): exception(Exception)] throw ...; | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:25:209:47 | [finally: exception(Exception), finally(1): exception(ExceptionB)] throw ...; | Finally.cs:203:13:210:13 | try {...} ... |
 | Finally.cs:209:25:209:47 | [finally: exception(Exception)] throw ...; | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:25:209:47 | [finally: exception(ExceptionA), finally(2): exception(Exception)] throw ...; | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:25:209:47 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] throw ...; | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:25:209:47 | [finally: exception(ExceptionA), finally(1): exception(Exception)] throw ...; | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:25:209:47 | [finally: exception(ExceptionA), finally(1): exception(ExceptionB)] throw ...; | Finally.cs:203:13:210:13 | try {...} ... |
 | Finally.cs:209:25:209:47 | [finally: exception(ExceptionA)] throw ...; | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:31:209:46 | [finally(2): exception(Exception)] object creation of type ExceptionC | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:31:209:46 | [finally(2): exception(ExceptionB)] object creation of type ExceptionC | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(2): exception(Exception)] object creation of type ExceptionC | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(2): exception(ExceptionB)] object creation of type ExceptionC | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:31:209:46 | [finally(1): exception(Exception)] object creation of type ExceptionC | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:31:209:46 | [finally(1): exception(ExceptionB)] object creation of type ExceptionC | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(1): exception(Exception)] object creation of type ExceptionC | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(1): exception(ExceptionB)] object creation of type ExceptionC | Finally.cs:203:13:210:13 | try {...} ... |
 | Finally.cs:209:31:209:46 | [finally: exception(Exception)] object creation of type ExceptionC | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(2): exception(Exception)] object creation of type ExceptionC | Finally.cs:203:13:210:13 | try {...} ... |
-| Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] object creation of type ExceptionC | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(1): exception(Exception)] object creation of type ExceptionC | Finally.cs:203:13:210:13 | try {...} ... |
+| Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(1): exception(ExceptionB)] object creation of type ExceptionC | Finally.cs:203:13:210:13 | try {...} ... |
 | Finally.cs:209:31:209:46 | [finally: exception(ExceptionA)] object creation of type ExceptionC | Finally.cs:203:13:210:13 | try {...} ... |
 | Finally.cs:211:13:211:16 | [finally: exception(Exception)] this access | Finally.cs:197:9:212:9 | try {...} ... |
 | Finally.cs:211:13:211:16 | [finally: exception(ExceptionA)] this access | Finally.cs:197:9:212:9 | try {...} ... |
@@ -971,6 +959,69 @@ finallyNode
 | Finally.cs:211:13:211:29 | [finally: exception(ExceptionA)] ...; | Finally.cs:197:9:212:9 | try {...} ... |
 | Finally.cs:211:26:211:28 | [finally: exception(Exception)] "0" | Finally.cs:197:9:212:9 | try {...} ... |
 | Finally.cs:211:26:211:28 | [finally: exception(ExceptionA)] "0" | Finally.cs:197:9:212:9 | try {...} ... |
+| Finally.cs:243:13:253:13 | [finally: exception(Exception)] {...} | Finally.cs:237:13:253:13 | try {...} ... |
+| Finally.cs:243:13:253:13 | [finally: exception(ExceptionA)] {...} | Finally.cs:237:13:253:13 | try {...} ... |
+| Finally.cs:244:17:252:17 | [finally: exception(Exception)] try {...} ... | Finally.cs:237:13:253:13 | try {...} ... |
+| Finally.cs:244:17:252:17 | [finally: exception(ExceptionA)] try {...} ... | Finally.cs:237:13:253:13 | try {...} ... |
+| Finally.cs:245:17:248:17 | [finally: exception(Exception)] {...} | Finally.cs:237:13:253:13 | try {...} ... |
+| Finally.cs:245:17:248:17 | [finally: exception(ExceptionA)] {...} | Finally.cs:237:13:253:13 | try {...} ... |
+| Finally.cs:246:21:247:47 | [finally: exception(Exception)] if (...) ... | Finally.cs:237:13:253:13 | try {...} ... |
+| Finally.cs:246:21:247:47 | [finally: exception(ExceptionA)] if (...) ... | Finally.cs:237:13:253:13 | try {...} ... |
+| Finally.cs:246:25:246:26 | [finally: exception(Exception)] access to parameter b2 | Finally.cs:237:13:253:13 | try {...} ... |
+| Finally.cs:246:25:246:26 | [finally: exception(ExceptionA)] access to parameter b2 | Finally.cs:237:13:253:13 | try {...} ... |
+| Finally.cs:247:25:247:47 | [finally: exception(Exception)] throw ...; | Finally.cs:237:13:253:13 | try {...} ... |
+| Finally.cs:247:25:247:47 | [finally: exception(ExceptionA)] throw ...; | Finally.cs:237:13:253:13 | try {...} ... |
+| Finally.cs:247:31:247:46 | [finally: exception(Exception)] object creation of type ExceptionA | Finally.cs:237:13:253:13 | try {...} ... |
+| Finally.cs:247:31:247:46 | [finally: exception(ExceptionA)] object creation of type ExceptionA | Finally.cs:237:13:253:13 | try {...} ... |
+| Finally.cs:250:17:252:17 | [finally(1): exception(Exception)] {...} | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:250:17:252:17 | [finally(1): exception(ExceptionA)] {...} | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:250:17:252:17 | [finally: exception(Exception), finally(1): exception(Exception)] {...} | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:250:17:252:17 | [finally: exception(Exception), finally(1): exception(ExceptionA)] {...} | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:250:17:252:17 | [finally: exception(Exception)] {...} | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:250:17:252:17 | [finally: exception(ExceptionA), finally(1): exception(Exception)] {...} | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:250:17:252:17 | [finally: exception(ExceptionA), finally(1): exception(ExceptionA)] {...} | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:250:17:252:17 | [finally: exception(ExceptionA)] {...} | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:21:251:54 | [finally(1): exception(Exception)] call to method WriteLine | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:21:251:54 | [finally(1): exception(ExceptionA)] call to method WriteLine | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:21:251:54 | [finally: exception(Exception), finally(1): exception(Exception)] call to method WriteLine | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:21:251:54 | [finally: exception(Exception), finally(1): exception(ExceptionA)] call to method WriteLine | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:21:251:54 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:21:251:54 | [finally: exception(ExceptionA), finally(1): exception(Exception)] call to method WriteLine | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:21:251:54 | [finally: exception(ExceptionA), finally(1): exception(ExceptionA)] call to method WriteLine | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:21:251:54 | [finally: exception(ExceptionA)] call to method WriteLine | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:21:251:55 | [finally(1): exception(Exception)] ...; | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:21:251:55 | [finally(1): exception(ExceptionA)] ...; | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:21:251:55 | [finally: exception(Exception), finally(1): exception(Exception)] ...; | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:21:251:55 | [finally: exception(Exception), finally(1): exception(ExceptionA)] ...; | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:21:251:55 | [finally: exception(Exception)] ...; | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:21:251:55 | [finally: exception(ExceptionA), finally(1): exception(Exception)] ...; | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:21:251:55 | [finally: exception(ExceptionA), finally(1): exception(ExceptionA)] ...; | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:21:251:55 | [finally: exception(ExceptionA)] ...; | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:39:251:53 | [finally(1): exception(Exception)] "Inner finally" | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:39:251:53 | [finally(1): exception(ExceptionA)] "Inner finally" | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:39:251:53 | [finally: exception(Exception), finally(1): exception(Exception)] "Inner finally" | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:39:251:53 | [finally: exception(Exception), finally(1): exception(ExceptionA)] "Inner finally" | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:39:251:53 | [finally: exception(Exception)] "Inner finally" | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:39:251:53 | [finally: exception(ExceptionA), finally(1): exception(Exception)] "Inner finally" | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:39:251:53 | [finally: exception(ExceptionA), finally(1): exception(ExceptionA)] "Inner finally" | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:251:39:251:53 | [finally: exception(ExceptionA)] "Inner finally" | Finally.cs:244:17:252:17 | try {...} ... |
+| Finally.cs:257:9:259:9 | [finally: exception(Exception)] {...} | Finally.cs:235:9:259:9 | try {...} ... |
+| Finally.cs:257:9:259:9 | [finally: exception(ExceptionA)] {...} | Finally.cs:235:9:259:9 | try {...} ... |
+| Finally.cs:258:13:258:46 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:235:9:259:9 | try {...} ... |
+| Finally.cs:258:13:258:46 | [finally: exception(ExceptionA)] call to method WriteLine | Finally.cs:235:9:259:9 | try {...} ... |
+| Finally.cs:258:13:258:47 | [finally: exception(Exception)] ...; | Finally.cs:235:9:259:9 | try {...} ... |
+| Finally.cs:258:13:258:47 | [finally: exception(ExceptionA)] ...; | Finally.cs:235:9:259:9 | try {...} ... |
+| Finally.cs:258:31:258:45 | [finally: exception(Exception)] "Outer finally" | Finally.cs:235:9:259:9 | try {...} ... |
+| Finally.cs:258:31:258:45 | [finally: exception(ExceptionA)] "Outer finally" | Finally.cs:235:9:259:9 | try {...} ... |
+| Finally.cs:270:9:273:9 | [finally: exception(Exception)] {...} | Finally.cs:265:9:273:9 | try {...} ... |
+| Finally.cs:271:13:271:34 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:265:9:273:9 | try {...} ... |
+| Finally.cs:271:13:271:35 | [finally: exception(Exception)] ...; | Finally.cs:265:9:273:9 | try {...} ... |
+| Finally.cs:271:31:271:33 | [finally: exception(Exception)] "3" | Finally.cs:265:9:273:9 | try {...} ... |
+| Finally.cs:272:13:272:13 | [finally: exception(Exception)] access to parameter i | Finally.cs:265:9:273:9 | try {...} ... |
+| Finally.cs:272:13:272:18 | [finally: exception(Exception)] ... + ... | Finally.cs:265:9:273:9 | try {...} ... |
+| Finally.cs:272:13:272:18 | [finally: exception(Exception)] ... = ... | Finally.cs:265:9:273:9 | try {...} ... |
+| Finally.cs:272:13:272:19 | [finally: exception(Exception)] ...; | Finally.cs:265:9:273:9 | try {...} ... |
+| Finally.cs:272:18:272:18 | [finally: exception(Exception)] 3 | Finally.cs:265:9:273:9 | try {...} ... |
 | cflow.cs:274:9:276:9 | [finally: return] {...} | cflow.cs:268:9:276:9 | try {...} ... |
 | cflow.cs:275:13:275:41 | [finally: return] call to method WriteLine | cflow.cs:268:9:276:9 | try {...} ... |
 | cflow.cs:275:13:275:42 | [finally: return] ...; | cflow.cs:268:9:276:9 | try {...} ... |
@@ -1041,27 +1092,28 @@ entryPoint
 | Conditions.cs:113:10:113:11 | M9 | Conditions.cs:114:5:124:5 | {...} |
 | Conditions.cs:129:10:129:12 | M10 | Conditions.cs:130:5:141:5 | {...} |
 | Conditions.cs:143:10:143:12 | M11 | Conditions.cs:144:5:150:5 | {...} |
-| ExitMethods.cs:7:10:7:11 | M1 | ExitMethods.cs:8:5:11:5 | {...} |
-| ExitMethods.cs:13:10:13:11 | M2 | ExitMethods.cs:14:5:17:5 | {...} |
-| ExitMethods.cs:19:10:19:11 | M3 | ExitMethods.cs:20:5:23:5 | {...} |
-| ExitMethods.cs:25:10:25:11 | M4 | ExitMethods.cs:26:5:29:5 | {...} |
-| ExitMethods.cs:31:10:31:11 | M5 | ExitMethods.cs:32:5:35:5 | {...} |
-| ExitMethods.cs:37:10:37:11 | M6 | ExitMethods.cs:38:5:51:5 | {...} |
-| ExitMethods.cs:53:10:53:11 | M7 | ExitMethods.cs:54:5:57:5 | {...} |
-| ExitMethods.cs:59:10:59:11 | M8 | ExitMethods.cs:60:5:63:5 | {...} |
-| ExitMethods.cs:65:17:65:26 | ErrorMaybe | ExitMethods.cs:66:5:69:5 | {...} |
-| ExitMethods.cs:71:17:71:27 | ErrorAlways | ExitMethods.cs:72:5:77:5 | {...} |
-| ExitMethods.cs:79:17:79:28 | ErrorAlways2 | ExitMethods.cs:80:5:82:5 | {...} |
-| ExitMethods.cs:84:17:84:28 | ErrorAlways3 | ExitMethods.cs:84:41:84:55 | object creation of type Exception |
-| ExitMethods.cs:86:10:86:13 | Exit | ExitMethods.cs:87:5:89:5 | {...} |
-| ExitMethods.cs:91:10:91:18 | ExitInTry | ExitMethods.cs:92:5:102:5 | {...} |
-| ExitMethods.cs:104:10:104:24 | ApplicationExit | ExitMethods.cs:105:5:107:5 | {...} |
-| ExitMethods.cs:109:13:109:21 | ThrowExpr | ExitMethods.cs:110:5:112:5 | {...} |
-| ExitMethods.cs:114:16:114:34 | ExtensionMethodCall | ExitMethods.cs:115:5:117:5 | {...} |
-| ExitMethods.cs:119:17:119:32 | FailingAssertion | ExitMethods.cs:120:5:123:5 | {...} |
-| ExitMethods.cs:125:17:125:33 | FailingAssertion2 | ExitMethods.cs:126:5:129:5 | {...} |
-| ExitMethods.cs:131:10:131:20 | AssertFalse | ExitMethods.cs:131:48:131:48 | access to parameter b |
-| ExitMethods.cs:133:17:133:33 | FailingAssertion3 | ExitMethods.cs:134:5:137:5 | {...} |
+| ExitMethods.cs:8:10:8:11 | M1 | ExitMethods.cs:9:5:12:5 | {...} |
+| ExitMethods.cs:14:10:14:11 | M2 | ExitMethods.cs:15:5:18:5 | {...} |
+| ExitMethods.cs:20:10:20:11 | M3 | ExitMethods.cs:21:5:24:5 | {...} |
+| ExitMethods.cs:26:10:26:11 | M4 | ExitMethods.cs:27:5:30:5 | {...} |
+| ExitMethods.cs:32:10:32:11 | M5 | ExitMethods.cs:33:5:36:5 | {...} |
+| ExitMethods.cs:38:10:38:11 | M6 | ExitMethods.cs:39:5:52:5 | {...} |
+| ExitMethods.cs:54:10:54:11 | M7 | ExitMethods.cs:55:5:58:5 | {...} |
+| ExitMethods.cs:60:10:60:11 | M8 | ExitMethods.cs:61:5:64:5 | {...} |
+| ExitMethods.cs:66:17:66:26 | ErrorMaybe | ExitMethods.cs:67:5:70:5 | {...} |
+| ExitMethods.cs:72:17:72:27 | ErrorAlways | ExitMethods.cs:73:5:78:5 | {...} |
+| ExitMethods.cs:80:17:80:28 | ErrorAlways2 | ExitMethods.cs:81:5:83:5 | {...} |
+| ExitMethods.cs:85:17:85:28 | ErrorAlways3 | ExitMethods.cs:85:41:85:55 | object creation of type Exception |
+| ExitMethods.cs:87:10:87:13 | Exit | ExitMethods.cs:88:5:90:5 | {...} |
+| ExitMethods.cs:92:10:92:18 | ExitInTry | ExitMethods.cs:93:5:103:5 | {...} |
+| ExitMethods.cs:105:10:105:24 | ApplicationExit | ExitMethods.cs:106:5:108:5 | {...} |
+| ExitMethods.cs:110:13:110:21 | ThrowExpr | ExitMethods.cs:111:5:113:5 | {...} |
+| ExitMethods.cs:115:16:115:34 | ExtensionMethodCall | ExitMethods.cs:116:5:118:5 | {...} |
+| ExitMethods.cs:120:17:120:32 | FailingAssertion | ExitMethods.cs:121:5:124:5 | {...} |
+| ExitMethods.cs:126:17:126:33 | FailingAssertion2 | ExitMethods.cs:127:5:130:5 | {...} |
+| ExitMethods.cs:132:10:132:20 | AssertFalse | ExitMethods.cs:132:48:132:48 | access to parameter b |
+| ExitMethods.cs:134:17:134:33 | FailingAssertion3 | ExitMethods.cs:135:5:138:5 | {...} |
+| ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow | ExitMethods.cs:141:5:147:5 | {...} |
 | Extensions.cs:5:23:5:29 | ToInt32 | Extensions.cs:6:5:8:5 | {...} |
 | Extensions.cs:10:24:10:29 | ToBool | Extensions.cs:11:5:13:5 | {...} |
 | Extensions.cs:15:23:15:33 | CallToInt32 | Extensions.cs:15:48:15:50 | "0" |
@@ -1077,6 +1129,8 @@ entryPoint
 | Finally.cs:176:10:176:11 | M9 | Finally.cs:177:5:193:5 | {...} |
 | Finally.cs:195:10:195:12 | M10 | Finally.cs:196:5:214:5 | {...} |
 | Finally.cs:216:10:216:12 | M11 | Finally.cs:217:5:231:5 | {...} |
+| Finally.cs:233:10:233:12 | M12 | Finally.cs:234:5:261:5 | {...} |
+| Finally.cs:263:10:263:12 | M13 | Finally.cs:264:5:274:5 | {...} |
 | Foreach.cs:6:10:6:11 | M1 | Foreach.cs:7:5:10:5 | {...} |
 | Foreach.cs:12:10:12:11 | M2 | Foreach.cs:13:5:16:5 | {...} |
 | Foreach.cs:18:10:18:11 | M3 | Foreach.cs:19:5:22:5 | {...} |
@@ -1165,7 +1219,16 @@ entryPoint
 | NullCoalescing.cs:9:12:9:13 | M4 | NullCoalescing.cs:9:37:9:37 | access to parameter b |
 | NullCoalescing.cs:11:9:11:10 | M5 | NullCoalescing.cs:11:44:11:45 | access to parameter b1 |
 | NullCoalescing.cs:13:10:13:11 | M6 | NullCoalescing.cs:14:5:18:5 | {...} |
-| Patterns.cs:5:10:5:13 | Test | Patterns.cs:6:5:43:5 | {...} |
+| Patterns.cs:5:10:5:11 | M1 | Patterns.cs:6:5:43:5 | {...} |
+| Patterns.cs:47:24:47:25 | M2 | Patterns.cs:48:9:48:9 | access to parameter c |
+| Patterns.cs:50:24:50:25 | M3 | Patterns.cs:51:9:51:9 | access to parameter c |
+| Patterns.cs:53:24:53:25 | M4 | Patterns.cs:54:9:54:9 | access to parameter c |
+| Patterns.cs:56:26:56:27 | M5 | Patterns.cs:57:5:63:5 | {...} |
+| Patterns.cs:65:26:65:27 | M6 | Patterns.cs:66:5:72:5 | {...} |
+| Patterns.cs:74:26:74:27 | M7 | Patterns.cs:75:5:83:5 | {...} |
+| Patterns.cs:85:26:85:27 | M8 | Patterns.cs:85:39:85:39 | access to parameter i |
+| Patterns.cs:87:26:87:27 | M9 | Patterns.cs:87:39:87:39 | access to parameter i |
+| Patterns.cs:93:17:93:19 | M10 | Patterns.cs:94:5:99:5 | {...} |
 | PostDominance.cs:5:10:5:11 | M1 | PostDominance.cs:6:5:8:5 | {...} |
 | PostDominance.cs:10:10:10:11 | M2 | PostDominance.cs:11:5:15:5 | {...} |
 | PostDominance.cs:17:10:17:11 | M3 | PostDominance.cs:18:5:22:5 | {...} |

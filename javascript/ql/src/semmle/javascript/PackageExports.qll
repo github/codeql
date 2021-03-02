@@ -7,6 +7,16 @@
 import javascript
 
 /**
+ * Gets a parameter that is a library input to a top-level package.
+ */
+DataFlow::ParameterNode getALibraryInputParameter() {
+  exists(int bound, DataFlow::FunctionNode func |
+    func = getAValueExportedByPackage().getABoundFunctionValue(bound) and
+    result = func.getParameter(any(int arg | arg >= bound))
+  )
+}
+
+/**
  * Gets the number of occurrences of "/" in `path`.
  */
 bindingset[path]
@@ -29,33 +39,33 @@ PackageJSON getTopmostPackageJSON() {
 }
 
 /**
- * Gets a value exported by the main module from the package.json `packageJSON`.
+ * Gets a value exported by the main module from one of the topmost `package.json` files (see `getTopmostPackageJSON`).
  * The value is either directly the `module.exports` value, a nested property of `module.exports`, or a method on an exported class.
  */
-DataFlow::Node getAValueExportedBy(PackageJSON packageJSON) {
-  result = getAnExportFromModule(packageJSON.getMainModule())
+private DataFlow::Node getAValueExportedByPackage() {
+  result = getAnExportFromModule(getTopmostPackageJSON().getMainModule())
   or
-  result = getAValueExportedBy(packageJSON).(DataFlow::PropWrite).getRhs()
+  result = getAValueExportedByPackage().(DataFlow::PropWrite).getRhs()
   or
   exists(DataFlow::SourceNode callee |
-    callee = getAValueExportedBy(packageJSON).(DataFlow::NewNode).getCalleeNode().getALocalSource()
+    callee = getAValueExportedByPackage().(DataFlow::NewNode).getCalleeNode().getALocalSource()
   |
     result = callee.getAPropertyRead("prototype").getAPropertyWrite().getRhs()
     or
     result = callee.(DataFlow::ClassNode).getAnInstanceMethod()
   )
   or
-  result = getAValueExportedBy(packageJSON).getALocalSource()
+  result = getAValueExportedByPackage().getALocalSource()
   or
-  result = getAValueExportedBy(packageJSON).(DataFlow::SourceNode).getAPropertyReference()
+  result = getAValueExportedByPackage().(DataFlow::SourceNode).getAPropertyReference()
   or
   exists(Module mod |
-    mod = getAValueExportedBy(packageJSON).getEnclosingExpr().(Import).getImportedModule()
+    mod = getAValueExportedByPackage().getEnclosingExpr().(Import).getImportedModule()
   |
     result = getAnExportFromModule(mod)
   )
   or
-  exists(DataFlow::ClassNode cla | cla = getAValueExportedBy(packageJSON) |
+  exists(DataFlow::ClassNode cla | cla = getAValueExportedByPackage() |
     result = cla.getAnInstanceMethod() or
     result = cla.getAStaticMethod() or
     result = cla.getConstructor()
@@ -67,6 +77,10 @@ DataFlow::Node getAValueExportedBy(PackageJSON packageJSON) {
  */
 private DataFlow::Node getAnExportFromModule(Module mod) {
   result.analyze().getAValue() = mod.(NodeModule).getAModuleExportsValue()
+  or
+  result = mod.(Closure::ClosureModule).getExportsVariable().getAnAssignedExpr().flow()
+  or
+  result.analyze().getAValue() = mod.(AmdModule).getDefine().getAModuleExportsValue()
   or
   result = mod.getAnExportedValue(_)
 }

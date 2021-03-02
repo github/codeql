@@ -131,7 +131,22 @@ private predicate lvalueToUpdate(Expr lvalue, Expr outer, ControlFlowNode node) 
     exists(Call call | node = call |
       outer = call.getQualifier().getFullyConverted() and
       outer.getUnspecifiedType() instanceof Class and
-      not call.getTarget().hasSpecifier("const")
+      not (
+        call.getTarget().hasSpecifier("const") and
+        // Given the following program:
+        // ```
+        // struct C {
+        //   void* data_;
+        //   void* data() const { return data; }
+        // };
+        // C c;
+        // memcpy(c.data(), source, 16)
+        // ```
+        // the data pointed to by `c.data_` is potentially modified by the call to `memcpy` even though
+        // `C::data` has a const specifier. So we further place the restriction that the type returned
+        // by `call` should not be of the form `const T*` (for some deeply const type `T`).
+        call.getType().isDeeplyConstBelow()
+      )
     )
     or
     assignmentTo(outer, node)
@@ -170,7 +185,11 @@ private predicate pointerToUpdate(Expr pointer, Expr outer, ControlFlowNode node
       or
       outer = call.getQualifier().getFullyConverted() and
       outer.getUnspecifiedType() instanceof PointerType and
-      not call.getTarget().hasSpecifier("const")
+      not (
+        call.getTarget().hasSpecifier("const") and
+        // See the `lvalueToUpdate` case for an explanation of this conjunct.
+        call.getType().isDeeplyConstBelow()
+      )
     )
     or
     exists(PointerFieldAccess fa |

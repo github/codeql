@@ -14,7 +14,7 @@ module IncompleteHtmlAttributeSanitization {
 
   private module Label {
     class Quote extends DataFlow::FlowLabel {
-      Quote() { this = "\"" }
+      Quote() { this = ["\"", "'"] }
     }
 
     class Ampersand extends DataFlow::FlowLabel {

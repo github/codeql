@@ -29,8 +29,14 @@ class QueryString extends EnvironmentRead {
 }
 
 class Configuration extends TaintTrackingConfiguration {
+  override predicate isSource(Expr source) { source instanceof QueryString }
+
   override predicate isSink(Element tainted) {
     exists(PrintStdoutCall call | call.getAnArgument() = tainted)
+  }
+
+  override predicate isBarrier(Expr e) {
+    super.isBarrier(e) or e.getUnspecifiedType() instanceof IntegralType
   }
 }
 

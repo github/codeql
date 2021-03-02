@@ -13,10 +13,10 @@ void test_pointer_deref_assignment()
 
 	*p_x = source();
 
-	sink(x); // tainted [DETECTED BY IR ONLY]
-	sink(*p_x); // tainted
-	sink(*p2_x); // tainted [DETECTED BY IR ONLY]
-	sink(r_x); // tainted [DETECTED BY IR ONLY]
+	sink(x); // $ ir MISSING: ast
+	sink(*p_x); // $ ast,ir
+	sink(*p2_x); // $ ir MISSING: ast
+	sink(r_x); // $ ir MISSING: ast
 }
 
 void test_reference_deref_assignment()
@@ -28,10 +28,10 @@ void test_reference_deref_assignment()
 
 	r_x = source();
 
-	sink(x); // tainted [DETECTED BY IR ONLY]
-	sink(*p_x); // tainted [DETECTED BY IR ONLY]
-	sink(r_x); // tainted
-	sink(r2_x); // tainted [DETECTED BY IR ONLY]
+	sink(x); // $ ir MISSING: ast
+	sink(*p_x); // $ ir MISSING: ast
+	sink(r_x); // $ ast,ir
+	sink(r2_x); // $ ir MISSING: ast
 }
 
 class MyInt
@@ -53,8 +53,8 @@ void test_myint_member_assignment()
 
 	mi.i = source();
 
-	sink(mi); // tainted [DETECTED BY IR ONLY]
-	sink(mi.get()); // tainted
+	sink(mi); // $ ir MISSING: ast
+	sink(mi.get()); // $ ast,ir
 }
 
 void test_myint_method_assignment()
@@ -63,8 +63,8 @@ void test_myint_method_assignment()
 
 	mi.get() = source();
 
-	sink(mi); // tainted [DETECTED BY IR ONLY]
-	sink(mi.get()); // tainted
+	sink(mi); // $ ir MISSING: ast
+	sink(mi.get()); // $ ast,ir
 }
 
 void test_myint_overloaded_assignment()
@@ -74,10 +74,10 @@ void test_myint_overloaded_assignment()
 	mi = source();
 	mi2 = mi;
 
-	sink(mi); // tainted [NOT DETECTED]
-	sink(mi.get()); // tainted [NOT DETECTED]
-	sink(mi2); // tainted [NOT DETECTED]
-	sink(mi2.get()); // tainted [NOT DETECTED]
+	sink(mi); // $ MISSING: ast,ir
+	sink(mi.get()); // $ MISSING: ast,ir
+	sink(mi2); // $ MISSING: ast,ir
+	sink(mi2.get()); // $ MISSING: ast,ir
 }
 
 class MyArray
@@ -98,7 +98,7 @@ void test_myarray_member_assignment()
 
 	ma.values[0] = source();
 
-	sink(ma.values[0]); // tainted
+	sink(ma.values[0]); // $ ast,ir
 }
 
 void test_myarray_method_assignment()
@@ -107,7 +107,7 @@ void test_myarray_method_assignment()
 
 	ma.get(0) = source();
 
-	sink(ma.get(0)); // tainted [NOT DETECTED]
+	sink(ma.get(0)); // $ MISSING: ast,ir
 }
 
 void test_myarray_overloaded_assignment()
@@ -117,8 +117,8 @@ void test_myarray_overloaded_assignment()
 	ma[0] = source();
 	ma2 = ma;
 
-	sink(ma[0]); // tainted [NOT DETECTED]
-	sink(ma2[0]); // tainted [NOT DETECTED]
+	sink(ma[0]); // $ MISSING: ast,ir
+	sink(ma2[0]); // $ MISSING: ast,ir
 }
 
 void sink(int *);
@@ -132,16 +132,16 @@ void test_array_reference_assignment()
 	int *ptr2, *ptr3;
 
 	ref1 = source();
-	sink(ref1); // tainted
-	sink(arr1[5]); // tainted [DETECTED BY IR ONLY]
+	sink(ref1); // $ ast,ir
+	sink(arr1[5]); // $ ir MISSING: ast
 
 	ptr2 = &(arr2[5]);
 	*ptr2 = source();
-	sink(*ptr2); // tainted
-	sink(arr2[5]); // tainted [DETECTED BY IR ONLY]
+	sink(*ptr2); // $ ast,ir
+	sink(arr2[5]); // $ ir MISSING: ast
 
 	ptr3 = arr3;
 	ptr3[5] = source();
-	sink(ptr3[5]); // tainted
-	sink(arr3[5]); // tainted [DETECTED BY IR ONLY]
+	sink(ptr3[5]); // $ ast,ir
+	sink(arr3[5]); // $ ir MISSING: ast
 }

@@ -119,12 +119,10 @@ class ExprNode extends Node {
 class ParameterNode extends Node {
   ParameterNode() {
     // charpred needed to avoid making `ParameterNode` abstract
-    explicitParameterNode(this, _) or
+    this = TExplicitParameterNode(_) or
     this.(SsaDefinitionNode).getDefinition() instanceof
       ImplicitCapturedParameterNodeImpl::SsaCapturedEntryDefinition or
-    this = TInstanceParameterNode(_) or
-    this = TCilParameterNode(_) or
-    this = TSummaryParameterNode(_, _)
+    this = TInstanceParameterNode(_)
   }
 
   /** Gets the parameter corresponding to this node, if any. */

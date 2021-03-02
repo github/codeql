@@ -1,26 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection.Metadata;
 
 namespace Semmle.Extraction.CIL.Entities
 {
     /// <summary>
-    /// A CIL attribute.
-    /// </summary>
-    internal interface IAttribute : IExtractedEntity
-    {
-    }
-
-    /// <summary>
     /// Entity representing a CIL attribute.
     /// </summary>
-    internal sealed class Attribute : UnlabelledEntity, IAttribute
+    internal sealed class Attribute : UnlabelledEntity
     {
         private readonly CustomAttributeHandle handle;
         private readonly CustomAttribute attrib;
-        private readonly IEntity @object;
+        private readonly IExtractedEntity @object;
 
-        public Attribute(Context cx, IEntity @object, CustomAttributeHandle handle) : base(cx)
+        public Attribute(Context cx, IExtractedEntity @object, CustomAttributeHandle handle) : base(cx)
         {
             attrib = cx.MdReader.GetCustomAttribute(handle);
             this.handle = handle;
@@ -49,63 +43,49 @@ namespace Semmle.Extraction.CIL.Entities
                 {
                     decoded = attrib.DecodeValue(new CustomAttributeDecoder(Cx));
                 }
-                catch (NotImplementedException)
+                catch
                 {
-                    // Attribute decoding is only partial at this stage.
+                    Cx.Extractor.Logger.Log(Util.Logging.Severity.Info,
+                        $"Attribute decoding is partial. Decoding attribute {constructor.DeclaringType.GetQualifiedName()} failed on {@object}.");
                     yield break;
                 }
 
                 for (var index = 0; index < decoded.FixedArguments.Length; ++index)
                 {
-                    var value = decoded.FixedArguments[index].Value;
-                    var stringValue = value?.ToString();
-                    yield return Tuples.cil_attribute_positional_argument(this, index, stringValue ?? "null");
+                    var stringValue = GetStringValue(decoded.FixedArguments[index].Type, decoded.FixedArguments[index].Value);
+                    yield return Tuples.cil_attribute_positional_argument(this, index, stringValue);
                 }
 
                 foreach (var p in decoded.NamedArguments)
                 {
-                    var value = p.Value;
-                    var stringValue = value?.ToString();
-                    yield return Tuples.cil_attribute_named_argument(this, p.Name, stringValue ?? "null");
+                    var stringValue = GetStringValue(p.Type, p.Value);
+                    yield return Tuples.cil_attribute_named_argument(this, p.Name!, stringValue);
                 }
             }
         }
 
-        public static IEnumerable<IExtractionProduct> Populate(Context cx, IEntity @object, CustomAttributeHandleCollection attributes)
+        private static string GetStringValue(Type type, object? value)
+        {
+            if (value is System.Collections.Immutable.ImmutableArray<CustomAttributeTypedArgument<Type>> values)
+            {
+                return "[" + string.Join(",", values.Select(v => GetStringValue(v.Type, v.Value))) + "]";
+            }
+
+            if (type.GetQualifiedName() == "System.Type" &&
+                value is Type t)
+            {
+                return t.GetQualifiedName();
+            }
+
+            return value?.ToString() ?? "null";
+        }
+
+        public static IEnumerable<IExtractionProduct> Populate(Context cx, IExtractedEntity @object, CustomAttributeHandleCollection attributes)
         {
             foreach (var attrib in attributes)
             {
                 yield return new Attribute(cx, @object, attrib);
             }
         }
-    }
-
-    /// <summary>
-    /// Helper class to decode the attribute structure.
-    /// Note that there are some unhandled cases that should be fixed in due course.
-    /// </summary>
-    internal class CustomAttributeDecoder : ICustomAttributeTypeProvider<Type>
-    {
-        private readonly Context cx;
-        public CustomAttributeDecoder(Context cx) { this.cx = cx; }
-
-        public Type GetPrimitiveType(PrimitiveTypeCode typeCode) => cx.Create(typeCode);
-
-        public Type GetSystemType() => throw new NotImplementedException();
-
-        public Type GetSZArrayType(Type elementType) =>
-            cx.Populate(new ArrayType(cx, elementType));
-
-        public Type GetTypeFromDefinition(MetadataReader reader, TypeDefinitionHandle handle, byte rawTypeKind) =>
-            (Type)cx.Create(handle);
-
-        public Type GetTypeFromReference(MetadataReader reader, TypeReferenceHandle handle, byte rawTypeKind) =>
-            (Type)cx.Create(handle);
-
-        public Type GetTypeFromSerializedName(string name) => throw new NotImplementedException();
-
-        public PrimitiveTypeCode GetUnderlyingEnumType(Type type) => throw new NotImplementedException();
-
-        public bool IsSystemType(Type type) => type is PrimitiveType; // ??
     }
 }

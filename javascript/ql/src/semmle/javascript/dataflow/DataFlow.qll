@@ -336,8 +336,7 @@ module DataFlow {
     override predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      prop
-          .(Locatable)
+      prop.(Locatable)
           .getLocation()
           .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
@@ -629,7 +628,11 @@ module DataFlow {
     override string getPropertyName() { result = astNode.getArgument(1).getStringValue() }
 
     override Node getRhs() {
-      result = astNode.getArgument(2).(ObjectExpr).getPropertyByName("value").getInit().flow()
+      exists(ObjectExpr obj | obj = astNode.getArgument(2) |
+        result = obj.getPropertyByName("value").getInit().flow()
+        or
+        result = obj.getPropertyByName("get").getInit().flow().(DataFlow::FunctionNode).getAReturn()
+      )
     }
 
     override ControlFlowNode getWriteNode() { result = astNode }
@@ -1076,8 +1079,19 @@ module DataFlow {
 
       override DataFlow::Node getCalleeNode() { result = DataFlow::valueNode(astNode.getCallee()) }
 
+      /**
+       * Whether i is an index that occurs after a spread argument.
+       */
+      pragma[nomagic]
+      private predicate isIndexAfterSpread(int i) {
+        astNode.isSpreadArgument(i)
+        or
+        exists(astNode.getArgument(i)) and
+        isIndexAfterSpread(i - 1)
+      }
+
       override DataFlow::Node getArgument(int i) {
-        not astNode.isSpreadArgument([0 .. i]) and
+        not isIndexAfterSpread(i) and
         result = DataFlow::valueNode(astNode.getArgument(i))
       }
 
@@ -1249,6 +1263,7 @@ module DataFlow {
   /**
    * Gets the data flow node corresponding to `e`.
    */
+  pragma[inline]
   ExprNode exprNode(Expr e) { result = valueNode(e) }
 
   /** Gets the data flow node corresponding to `ssa`. */
@@ -1304,6 +1319,20 @@ module DataFlow {
   predicate functionReturnNode(DataFlow::Node nd, Function function) {
     nd = TFunctionReturnNode(function)
   }
+
+  /**
+   * INTERNAL: Do not use outside standard library.
+   *
+   * Gets a data flow node unique to the given field declaration.
+   *
+   * Note that this node defaults to being disconnected from the data flow
+   * graph, as the individual property reads and writes affecting the field are
+   * analyzed independently of the field declaration.
+   *
+   * Certain framework models may need this node to model the behavior of
+   * class and field decorators.
+   */
+  DataFlow::Node fieldDeclarationNode(FieldDeclaration field) { result = TPropNode(field) }
 
   /**
    * Gets the data flow node corresponding the given l-value expression, if
@@ -1589,7 +1618,8 @@ module DataFlow {
       e instanceof E4X::XMLAttributeSelector or
       e instanceof E4X::XMLDotDotExpression or
       e instanceof E4X::XMLFilterExpression or
-      e instanceof E4X::XMLQualifiedIdentifier
+      e instanceof E4X::XMLQualifiedIdentifier or
+      e instanceof Angular2::PipeRefExpr
     )
     or
     exists(Expr e | e = nd.asExpr() |

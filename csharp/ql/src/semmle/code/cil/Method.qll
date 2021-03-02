@@ -66,7 +66,8 @@ class MethodImplementation extends EntryPoint, @cil_method_implementation {
  * A method, which corresponds to any callable in C#, including constructors,
  * destructors, operators, accessors and so on.
  */
-class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowNode, @cil_method {
+class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowNode,
+  CustomModifierReceiver, Parameterizable, @cil_method {
   /**
    * Gets a method implementation, if any. Note that there can
    * be several implementations in different assemblies.
@@ -86,11 +87,9 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
 
   override Location getLocation() { result = Element.super.getLocation() }
 
-  override Location getALocation() { cil_method_location(this.getSourceDeclaration(), result) }
+  override Location getALocation() { cil_method_location(this.getUnboundDeclaration(), result) }
 
-  override Parameter getRawParameter(int n) { cil_parameter(result, this, n, _) }
-
-  override Parameter getParameter(int n) {
+  override MethodParameter getParameter(int n) {
     if isStatic() then result = getRawParameter(n) else (result = getRawParameter(n + 1) and n >= 0)
   }
 
@@ -128,7 +127,7 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
   /** Gets the unbound declaration of this method, or the method itself. */
   Method getUnboundMethod() { cil_method_source_declaration(this, result) }
 
-  override Method getSourceDeclaration() { result = getUnboundMethod() }
+  override Method getUnboundDeclaration() { result = getUnboundMethod() }
 
   /** Holds if this method is an instance constructor. */
   predicate isInstanceConstructor() { isSpecial() and getName() = ".ctor" }
@@ -246,6 +245,13 @@ class Setter extends Accessor {
   Setter() { cil_setter(_, this) }
 
   override Property getProperty() { cil_setter(result, this) }
+
+  /** Holds if this setter is an `init` accessor. */
+  predicate isInitOnly() {
+    exists(Type t | t.getQualifiedName() = "System.Runtime.CompilerServices.IsExternalInit" |
+      this.hasRequiredCustomModifier(t)
+    )
+  }
 }
 
 /**

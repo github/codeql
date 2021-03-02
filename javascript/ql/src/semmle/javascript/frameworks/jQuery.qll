@@ -72,8 +72,7 @@ private predicate neverReturnsJQuery(string name) {
     decl.getBaseName() = "jQuery" and
     decl.getName() = name
   |
-    not decl
-        .getDocumentation()
+    not decl.getDocumentation()
         .getATagByTitle("return")
         .getType()
         .getAnUnderlyingType()
@@ -364,11 +363,10 @@ private module JQueryClientRequest {
    */
   private DataFlow::SourceNode getAResponseNodeFromAnXHRObject(DataFlow::SourceNode obj) {
     result =
-      obj
-          .getAPropertyRead(any(string s |
-              s = "responseText" or
-              s = "responseXML"
-            ))
+      obj.getAPropertyRead(any(string s |
+          s = "responseText" or
+          s = "responseXML"
+        ))
   }
 
   /**

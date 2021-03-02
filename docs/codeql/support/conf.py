@@ -71,6 +71,8 @@ html_theme_options = {'font_size': '16px',
                       'nosidebar':True,
                       }
 
+html_favicon = '../images/site/favicon.ico'
+
 # -- Currently unused, but potentially useful, configs--------------------------------------
 
 # Add any paths that contain custom themes here, relative to this directory.

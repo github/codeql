@@ -1,0 +1,21 @@
+default
+| trivia.cs:21:1:21:13 | #line default |
+hidden
+| trivia.cs:25:1:25:38 | #line hidden |
+lines_file
+| trivia.cs:18:1:18:22 | #line ... | 1 | comments1.cs:0:0:0:0 | comments1.cs |
+lines_no_file
+| trivia.cs:27:1:27:7 | #line ... | 5 |
+succ
+| trivia.cs:18:1:18:22 | #line ... | trivia.cs:21:1:21:13 | #line default |
+| trivia.cs:21:1:21:13 | #line default | trivia.cs:25:1:25:38 | #line hidden |
+| trivia.cs:25:1:25:38 | #line hidden | trivia.cs:27:1:27:7 | #line ... |
+last
+| trivia.cs:27:1:27:7 | #line ... |
+mapped
+| trivia.cs:19:9:19:11 | trivia.cs:19:9:19:11 | comments1.cs:1:9:1:11 | comments1.cs:1:9:1:11 |
+| trivia.cs:19:9:19:14 | trivia.cs:19:9:19:14 | comments1.cs:1:9:1:14 | comments1.cs:1:9:1:14 |
+| trivia.cs:19:13:19:13 | trivia.cs:19:13:19:13 | comments1.cs:1:13:1:13 | comments1.cs:1:13:1:13 |
+| trivia.cs:20:9:20:11 | trivia.cs:20:9:20:11 | comments1.cs:2:9:2:11 | comments1.cs:2:9:2:11 |
+| trivia.cs:20:9:20:14 | trivia.cs:20:9:20:14 | comments1.cs:2:9:2:14 | comments1.cs:2:9:2:14 |
+| trivia.cs:20:13:20:13 | trivia.cs:20:13:20:13 | comments1.cs:2:13:2:13 | comments1.cs:2:13:2:13 |

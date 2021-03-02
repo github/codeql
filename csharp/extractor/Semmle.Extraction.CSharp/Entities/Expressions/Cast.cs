@@ -16,17 +16,17 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            Create(cx, Syntax.Expression, this, ExpressionIndex);
+            Create(Context, Syntax.Expression, this, ExpressionIndex);
 
             if (Kind == ExprKind.CAST)
             {  // Type cast
-                TypeAccess.Create(new ExpressionNodeInfo(cx, Syntax.Type, this, TypeAccessIndex));
+                TypeAccess.Create(new ExpressionNodeInfo(Context, Syntax.Type, this, TypeAccessIndex));
             }
             else
             {
                 // Type conversion
                 OperatorCall(trapFile, Syntax);
-                TypeMention.Create(cx, Syntax.Type, this, Type);
+                TypeMention.Create(Context, Syntax.Type, this, Type);
             }
         }
 
@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             var info = new ExpressionInfo(
                 cx,
-                new AnnotatedType(Entities.Type.Create(cx, type), Microsoft.CodeAnalysis.NullableAnnotation.None),
+                AnnotatedTypeSymbol.CreateNotAnnotated(type),
                 location,
                 ExprKind.CAST,
                 parent,

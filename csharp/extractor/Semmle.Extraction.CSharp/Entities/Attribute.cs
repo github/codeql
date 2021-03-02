@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            var type = Type.Create(Context, symbol.AttributeClass);
+            var type = Type.Create(Context, Symbol.AttributeClass);
             trapFile.attributes(this, type.TypeRef, entity);
             trapFile.attribute_location(this, Location);
 
@@ -66,17 +66,30 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private void ExtractArguments(TextWriter trapFile)
         {
+            var ctorArguments = attributeSyntax?.ArgumentList?.Arguments.Where(a => a.NameEquals == null).ToList();
+
             var childIndex = 0;
-            foreach (var constructorArgument in symbol.ConstructorArguments)
+            for (var i = 0; i < Symbol.ConstructorArguments.Length; i++)
             {
+                var constructorArgument = Symbol.ConstructorArguments[i];
+                var paramName = Symbol.AttributeConstructor?.Parameters[i].Name;
+                var argSyntax = ctorArguments?.SingleOrDefault(a => a.NameColon != null && a.NameColon.Name.Identifier.Text == paramName);
+
+                if (argSyntax == null &&                            // couldn't find named argument
+                    ctorArguments?.Count > childIndex &&            // there're more arguments
+                    ctorArguments[childIndex].NameColon == null)    // the argument is positional
+                {
+                    argSyntax = ctorArguments[childIndex];
+                }
+
                 CreateExpressionFromArgument(
                     constructorArgument,
-                    attributeSyntax?.ArgumentList.Arguments[childIndex].Expression,
+                    argSyntax?.Expression,
                     this,
                     childIndex++);
             }
 
-            foreach (var namedArgument in symbol.NamedArguments)
+            foreach (var namedArgument in Symbol.NamedArguments)
             {
                 var expr = CreateExpressionFromArgument(
                     namedArgument.Value,
@@ -105,7 +118,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private Semmle.Extraction.Entities.Location location;
         private Semmle.Extraction.Entities.Location Location =>
-            location ?? (location = Semmle.Extraction.Entities.Location.Create(Context, attributeSyntax is null ? entity.ReportingLocation : attributeSyntax.Name.GetLocation()));
+            location ?? (location = Context.CreateLocation(attributeSyntax is null ? entity.ReportingLocation : attributeSyntax.Name.GetLocation()));
 
         public override bool NeedsPopulation => true;
 
@@ -123,11 +136,11 @@ namespace Semmle.Extraction.CSharp.Entities
             return AttributeFactory.Instance.CreateEntity(cx, attributeData, init);
         }
 
-        private class AttributeFactory : ICachedEntityFactory<(AttributeData attributeData, IEntity receiver), Attribute>
+        private class AttributeFactory : CachedEntityFactory<(AttributeData attributeData, IEntity receiver), Attribute>
         {
             public static readonly AttributeFactory Instance = new AttributeFactory();
 
-            public Attribute Create(Context cx, (AttributeData attributeData, IEntity receiver) init) =>
+            public override Attribute Create(Context cx, (AttributeData attributeData, IEntity receiver) init) =>
                 new Attribute(cx, init.attributeData, init.receiver);
         }
     }

@@ -1,5 +1,6 @@
 /** Provides classes for assertions. */
 
+private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
 private import semmle.code.csharp.frameworks.system.Diagnostics
 private import semmle.code.csharp.frameworks.system.diagnostics.Contracts
 private import semmle.code.csharp.frameworks.test.VisualStudio
@@ -189,7 +190,7 @@ class Assertion extends MethodCall {
   deprecated private predicate immediatelyDominatesBlockSplit(BasicBlock succ) {
     // Only calculate dominance by explicit recursion for split nodes;
     // all other nodes can use regular CFG dominance
-    this instanceof ControlFlow::Internal::SplitControlFlowElement and
+    this instanceof SplitControlFlowElement and
     exists(BasicBlock bb | bb.getANode() = this.getAControlFlowNode() |
       succ = bb.getASuccessor() and
       forall(BasicBlock pred | pred = succ.getAPredecessor() and pred != bb |

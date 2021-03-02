@@ -5,7 +5,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 {
     internal static class Factory
     {
-        internal static Statement Create(Context cx, StatementSyntax node, Statement parent, int child)
+        internal static Statement Create(Context cx, StatementSyntax node, IStatementParentEntity parent, int child)
         {
             switch (node.Kind())
             {

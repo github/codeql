@@ -1,3 +1,5 @@
+:tocdepth: 1
+
 .. _about-the-ql-language:
 
 About the QL language
@@ -42,7 +44,7 @@ When you write this process in QL, it closely resembles the above structure. Not
 For more information about the important concepts and syntactic constructs of QL, see the individual reference topics such as ":doc:`Expressions <expressions>`" and ":doc:`Recursion <recursion>`."
 The explanations and examples help you understand how the language works, and how to write more advanced QL code.
 
-For formal specifications of the QL language and QLDoc comments, see the ":doc:`QL language specification <ql-language-specification>`" and ":doc:`QLDoc comment specification <qldoc-comment-specification>`."
+For a formal specification of the QL language, see the ":doc:`QL language specification <ql-language-specification>`."
 
 QL and object orientation
 -------------------------
@@ -62,9 +64,9 @@ Here are a few prominent conceptual and functional differences between general p
 Further reading
 ---------------
 
-`Academic references <https://help.semmle.com/publications.html>`__ also provide an overview of QL and its semantics. Other useful references on database query languages and Datalog:
+`Academic references <https://codeql.github.com/publications/>`__ also provide an overview of QL and its semantics. Other useful references on database query languages and Datalog:
 
--  `Database theory: Query languages <http://www.lsv.ens-cachan.fr/~segoufin/Papers/Mypapers/DB-chapter.pdf>`__
--  `Logic Programming and Databases book - Amazon page <http://www.amazon.co.uk/Programming-Databases-Surveys-Computer-Science/dp/3642839541>`__
+-  `Database theory: Query languages <http://www.lsv.fr/~segoufin/Papers/Mypapers/DB-chapter.pdf>`__
+-  `Logic Programming and Databases book <https://doi.org/10.1007/978-3-642-83952-8>`__
 -  `Foundations of Databases <http://webdam.inria.fr/Alice/>`__
 -  `Datalog <https://en.wikipedia.org/wiki/Datalog>`__

@@ -6,7 +6,7 @@ import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Statement;
 import com.semmle.js.ast.Visitor;
 
-/** An import of form <tt>import a = E</tt>. */
+/** An import of form <code>import a = E</code>. */
 public class ImportWholeDeclaration extends Statement {
   private final Identifier lhs;
   private final Expression rhs;

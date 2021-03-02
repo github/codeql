@@ -74,10 +74,10 @@ AsyncStreams.cs:
 #   42|         1: [TypeMention] bool
 DefaultInterfaceMethods.cs:
 #    3| [Interface] IPerson
-#    5|   4: [IndexerProperty] Name
+#    5|   4: [Property] Name
 #    5|     -1: [TypeMention] string
 #    5|     3: [Getter] get_Name
-#    7|   5: [IndexerProperty] Greeting
+#    7|   5: [Property] Greeting
 #    7|     -1: [TypeMention] string
 #    9|     3: [Getter] get_Greeting
 #    9|       4: [StringLiteral] "Hello"
@@ -95,7 +95,7 @@ DefaultInterfaceMethods.cs:
 #   13|         0: [PropertyCall] access to property Greeting
 #   13|         1: [StringLiteral] " "
 #   13|       1: [ParameterAccess] access to parameter name
-#   15|   7: [IndexerProperty] GreetingString
+#   15|   7: [Property] GreetingString
 #   15|     -1: [TypeMention] string
 #   15|     3: [Getter] get_GreetingString
 #   15|       4: [MethodCall] call to method Greet
@@ -105,11 +105,11 @@ DefaultInterfaceMethods.cs:
 #   20| [Class] Person
 #-----|   3: (Base types)
 #   20|     1: [TypeMention] IPerson
-#   22|   5: [IndexerProperty] Name
+#   22|   5: [Property] Name
 #   22|     -1: [TypeMention] string
 #   22|     3: [Getter] get_Name
 #   22|       4: [StringLiteral] "Petra"
-#   24|   6: [IndexerProperty] Greeting
+#   24|   6: [Property] Greeting
 #   24|     -1: [TypeMention] IPerson
 #   24|     -1: [TypeMention] string
 #   24|     3: [Getter] get_Greeting
@@ -121,6 +121,42 @@ DefaultInterfaceMethods.cs:
 #   26|   7: [Method] Greet
 #   26|     -1: [TypeMention] Void
 #   26|     4: [BlockStmt] {...}
+NameResolutionSuppressNullable.cs:
+#    5| [Class] MyClass2
+#    7|   5: [Field] s_signalMethod
+#    7|     -1: [TypeMention] WaitCallback
+#    8|   6: [Property] SignalMethod
+#    8|     -1: [TypeMention] WaitCallback
+#    8|     3: [Getter] get_SignalMethod
+#    8|       4: [MethodCall] call to method EnsureInitialized
+#    8|         0: [FieldAccess] access to field s_signalMethod
+#    8|         1: [LambdaExpr] (...) => ...
+#    8|           4: [ExplicitDelegateCreation] delegate creation of type WaitCallback
+#    8|             -1: [TypeMention] WaitCallback
+#    8|             0: [SuppressNullableWarningExpr] ...!
+#    8|               0: [MethodAccess] access to method M1
+#   10|   7: [Method] EnsureInitialized
+#   10|     -1: [TypeMention] T
+#-----|     1: (Type parameters)
+#   10|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   10|       0: [Parameter] target
+#   10|         -1: [TypeMention] T
+#   10|       1: [Parameter] valueFactory
+#   10|         -1: [TypeMention] Func<T>
+#   10|           1: [TypeMention] T
+#   10|     4: [BlockStmt] {...}
+#   10|       0: [ReturnStmt] return ...;
+#   10|         0: [AssignExpr] ... = ...
+#   10|           0: [ParameterAccess] access to parameter target
+#   10|           1: [DelegateCall] delegate call
+#   10|             -1: [ParameterAccess] access to parameter valueFactory
+#   12|   9: [Method] M1
+#   12|     -1: [TypeMention] Void
+#-----|     2: (Parameters)
+#   12|       0: [Parameter] state
+#   12|         -1: [TypeMention] object
+#   13|     4: [BlockStmt] {...}
 NullCoalescingAssignment.cs:
 #    3| [Class] NullCoalescingAssignment
 #    5|   5: [Method] NullCoalescing
@@ -141,11 +177,11 @@ NullableRefTypes.cs:
 #    9|     -1: [TypeMention] MyClass
 #   10|   6: [Field] B
 #   10|     -1: [TypeMention] MyClass
-#   13|   7: [IndexerProperty] C
+#   13|   7: [Property] C
 #   13|     -1: [TypeMention] MyClass
 #   13|     3: [Getter] get_C
 #   13|       4: [NullLiteral] null
-#   14|   8: [IndexerProperty] D
+#   14|   8: [Property] D
 #   14|     -1: [TypeMention] MyClass
 #   14|     3: [Getter] get_D
 #   14|       4: [ThisAccess] this access
@@ -417,7 +453,7 @@ NullableRefTypes.cs:
 #  110|       0: [NullLiteral] null
 #  112|   12: [Field] Property
 #  112|     -1: [TypeMention] MyClass
-#  113|   13: [IndexerProperty] RefProperty
+#  113|   13: [Property] RefProperty
 #  113|     -1: [TypeMention] MyClass
 #  113|     3: [Getter] get_RefProperty
 #  113|       4: [RefExpr] ref ...
@@ -502,7 +538,7 @@ NullableRefTypes.cs:
 #  154| [Class] DisabledNullability
 #  156|   5: [Field] f1
 #  156|     -1: [TypeMention] MyClass
-#  157|   6: [IndexerProperty] P
+#  157|   6: [Property] P
 #  157|     -1: [TypeMention] MyClass
 #  157|     3: [Getter] get_P
 #  157|       4: [ObjectCreation] object creation of type MyClass
@@ -754,8 +790,8 @@ patterns.cs:
 #   13|             0: [IsExpr] ... is ...
 #   13|               0: [LocalVariableAccess] access to local variable o
 #   13|               1: [RecursivePatternExpr] { ... }
-#   13|                 0: [LocalVariableDeclExpr] MyStruct s
-#   13|                 1: [TypeAccess] access to type MyStruct
+#   13|                 0: [VariablePatternExpr] MyStruct s
+#   13|                 1: [TypeAccessPatternExpr] access to type MyStruct
 #   13|                   0: [TypeMention] MyStruct
 #   13|                 3: [PropertyPatternExpr] { ... }
 #   13|                   0: [LabeledPatternExpr,VariablePatternExpr] Int32 x
@@ -772,14 +808,14 @@ patterns.cs:
 #   17|         0: [IsExpr] ... is ...
 #   17|           0: [LocalVariableAccess] access to local variable o
 #   17|           1: [RecursivePatternExpr] { ... }
-#   17|             0: [LocalVariableDeclExpr] Object p
+#   17|             0: [VariablePatternExpr] Object p
 #   17|             3: [PropertyPatternExpr] { ... }
 #   18|         1: [BlockStmt] {...}
 #   22|       4: [IfStmt] if (...) ...
 #   22|         0: [IsExpr] ... is ...
 #   22|           0: [LocalVariableAccess] access to local variable o
 #   22|           1: [RecursivePatternExpr] { ... }
-#   22|             1: [TypeAccess] access to type MyStruct
+#   22|             1: [TypeAccessPatternExpr] access to type MyStruct
 #   22|               0: [TypeMention] MyStruct
 #   22|             3: [PropertyPatternExpr] { ... }
 #   22|               0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 12
@@ -791,13 +827,13 @@ patterns.cs:
 #   27|         0: [IsExpr] ... is ...
 #   27|           0: [LocalVariableAccess] access to local variable o
 #   27|           1: [RecursivePatternExpr] { ... }
-#   27|             1: [TypeAccess] access to type MyStruct
+#   27|             1: [TypeAccessPatternExpr] access to type MyStruct
 #   27|               0: [TypeMention] MyStruct
 #   27|             3: [PropertyPatternExpr] { ... }
 #   27|               0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 12
 #   27|               1: [LabeledPatternExpr,RecursivePatternExpr] { ... }
-#   27|                 0: [LocalVariableDeclExpr] MyStruct ms
-#   27|                 1: [TypeAccess] access to type MyStruct
+#   27|                 0: [VariablePatternExpr] MyStruct ms
+#   27|                 1: [TypeAccessPatternExpr] access to type MyStruct
 #   27|                   0: [TypeMention] MyStruct
 #   27|                 3: [PropertyPatternExpr] { ... }
 #   27|                   0: [DiscardPatternExpr,LabeledPatternExpr] _
@@ -847,7 +883,7 @@ patterns.cs:
 #   46|         0: [LocalVariableAccess] access to local variable s
 #   48|         0: [CaseStmt] case ...:
 #   48|           0: [RecursivePatternExpr] { ... }
-#   48|             1: [TypeAccess] access to type MyStruct
+#   48|             1: [TypeAccessPatternExpr] access to type MyStruct
 #   48|               0: [TypeMention] MyStruct
 #   48|             3: [PropertyPatternExpr] { ... }
 #   48|               0: [LabeledPatternExpr,VariablePatternExpr] Int32 x
@@ -863,8 +899,8 @@ patterns.cs:
 #   50|         2: [BreakStmt] break;
 #   51|         3: [CaseStmt] case ...:
 #   51|           0: [RecursivePatternExpr] { ... }
-#   51|             0: [LocalVariableDeclExpr] MyStruct ms
-#   51|             1: [TypeAccess] access to type MyStruct
+#   51|             0: [VariablePatternExpr] MyStruct ms
+#   51|             1: [TypeAccessPatternExpr] access to type MyStruct
 #   51|               0: [TypeMention] MyStruct
 #   51|             3: [PropertyPatternExpr] { ... }
 #   51|               0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 10
@@ -905,7 +941,7 @@ patterns.cs:
 #   65|         0: [LocalVariableAccess] access to local variable s
 #   67|         0: [CaseStmt] case ...:
 #   67|           0: [RecursivePatternExpr] { ... }
-#   67|             1: [TypeAccess] access to type MyStruct
+#   67|             1: [TypeAccessPatternExpr] access to type MyStruct
 #   67|               0: [TypeMention] MyStruct
 #   67|             3: [PropertyPatternExpr] { ... }
 #   67|               0: [LabeledPatternExpr,VariablePatternExpr] Int32 x
@@ -921,8 +957,8 @@ patterns.cs:
 #   69|         2: [BreakStmt] break;
 #   70|         3: [CaseStmt] case ...:
 #   70|           0: [RecursivePatternExpr] { ... }
-#   70|             0: [LocalVariableDeclExpr] MyStruct ms
-#   70|             1: [TypeAccess] access to type MyStruct
+#   70|             0: [VariablePatternExpr] MyStruct ms
+#   70|             1: [TypeAccessPatternExpr] access to type MyStruct
 #   70|               0: [TypeMention] MyStruct
 #   70|             3: [PropertyPatternExpr] { ... }
 #   70|               0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 10
@@ -1098,7 +1134,7 @@ patterns.cs:
 #  126|             -1: [LocalVariableAccess] access to local variable s
 #  128|             0: [SwitchCaseExpr] ... => ...
 #  128|               0: [RecursivePatternExpr] { ... }
-#  128|                 1: [TypeAccess] access to type MyStruct
+#  128|                 1: [TypeAccessPatternExpr] access to type MyStruct
 #  128|                   0: [TypeMention] MyStruct
 #  128|                 3: [PropertyPatternExpr] { ... }
 #  128|                   0: [LabeledPatternExpr,VariablePatternExpr] Int32 x
@@ -1109,8 +1145,8 @@ patterns.cs:
 #  128|               2: [IntLiteral] 0
 #  129|             1: [SwitchCaseExpr] ... => ...
 #  129|               0: [RecursivePatternExpr] { ... }
-#  129|                 0: [LocalVariableDeclExpr] MyStruct ms
-#  129|                 1: [TypeAccess] access to type MyStruct
+#  129|                 0: [VariablePatternExpr] MyStruct ms
+#  129|                 1: [TypeAccessPatternExpr] access to type MyStruct
 #  129|                   0: [TypeMention] MyStruct
 #  129|                 3: [PropertyPatternExpr] { ... }
 #  129|                   0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 10
@@ -1155,7 +1191,7 @@ patterns.cs:
 #  141|                   2: [IntLiteral] 5
 #  142|                 4: [SwitchCaseExpr] ... => ...
 #  142|                   0: [RecursivePatternExpr] { ... }
-#  142|                     1: [TypeAccess] access to type MyStruct
+#  142|                     1: [TypeAccessPatternExpr] access to type MyStruct
 #  142|                       0: [TypeMention] MyStruct
 #  142|                     3: [PropertyPatternExpr] { ... }
 #  142|                       0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 10

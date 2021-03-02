@@ -65,8 +65,7 @@ module LdapInjection {
         sanitize = "(?:escape|saniti[sz]e|validate|filter)" and
         input = "[Ii]nput?"
       |
-        this
-            .getCalleeName()
+        this.getCalleeName()
             .regexpMatch("(?i)(" + sanitize + input + ")" + "|(" + input + sanitize + ")")
       )
     }

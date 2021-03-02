@@ -80,10 +80,14 @@ Folder getAPackageJSONFolder() { result = any(PackageJSON json).getFile().getPar
 DataFlow::Node getALeakingFolder(string description) {
   exists(ModuleScope ms | result.asExpr() = ms.getVariable("__dirname").getAnAccess()) and
   result.getFile().getParentContainer() = getAPackageJSONFolder() and
-  description = "the folder " + result.getFile().getParentContainer().getRelativePath()
+  (
+    if result.getFile().getParentContainer().getRelativePath().trim() != ""
+    then description = "the folder " + result.getFile().getParentContainer().getRelativePath()
+    else description = "the source root folder"
+  )
   or
   result = DataFlow::moduleImport("os").getAMemberCall("homedir") and
-  description = "the home folder "
+  description = "the home folder"
   or
   result.mayHaveStringValue("/") and
   description = "the root folder"

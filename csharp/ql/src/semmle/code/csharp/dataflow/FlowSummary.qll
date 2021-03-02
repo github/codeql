@@ -27,13 +27,13 @@ module ContentList {
   /** Gets a singleton property content list. */
   ContentList property(Property p) {
     result =
-      singleton(any(DataFlowPublic::PropertyContent c | c.getProperty() = p.getSourceDeclaration()))
+      singleton(any(DataFlowPublic::PropertyContent c | c.getProperty() = p.getUnboundDeclaration()))
   }
 
   /** Gets a singleton field content list. */
   ContentList field(Field f) {
     result =
-      singleton(any(DataFlowPublic::FieldContent c | c.getField() = f.getSourceDeclaration()))
+      singleton(any(DataFlowPublic::FieldContent c | c.getField() = f.getUnboundDeclaration()))
   }
 }
 

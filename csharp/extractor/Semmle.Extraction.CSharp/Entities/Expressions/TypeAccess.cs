@@ -15,20 +15,20 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 case SyntaxKind.SimpleMemberAccessExpression:
                     var maes = (MemberAccessExpressionSyntax)Syntax;
-                    if (Type.Type.ContainingType == null)
+                    if (Type?.Symbol.ContainingType is null)
                     {
                         // namespace qualifier
-                        TypeMention.Create(cx, maes.Name, this, Type, Syntax.GetLocation());
+                        TypeMention.Create(Context, maes.Name, this, Type, Syntax.GetLocation());
                     }
                     else
                     {
                         // type qualifier
-                        TypeMention.Create(cx, maes.Name, this, Type);
-                        Create(cx, maes.Expression, this, -1);
+                        TypeMention.Create(Context, maes.Name, this, Type);
+                        Create(Context, maes.Expression, this, -1);
                     }
                     return;
                 default:
-                    TypeMention.Create(cx, (TypeSyntax)Syntax, this, Type);
+                    TypeMention.Create(Context, (TypeSyntax)Syntax, this, Type);
                     return;
             }
         }
@@ -39,7 +39,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             var typeAccessInfo = new ExpressionInfo(
                 cx,
-                new AnnotatedType(Entities.Type.Create(cx, type), Microsoft.CodeAnalysis.NullableAnnotation.None),
+                AnnotatedTypeSymbol.CreateNotAnnotated(type),
                 location,
                 ExprKind.TYPE_ACCESS,
                 parent,

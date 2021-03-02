@@ -38,43 +38,33 @@ private predicate predictableInstruction(Instruction instr) {
  * library's `returnArgument` predicate.
  */
 predicate predictableOnlyFlow(string name) {
-  name = "strcasestr" or
-  name = "strchnul" or
-  name = "strchr" or
-  name = "strchrnul" or
-  name = "strcmp" or
-  name = "strcspn" or
-  name = "strncmp" or
-  name = "strndup" or
-  name = "strnlen" or
-  name = "strrchr" or
-  name = "strspn" or
-  name = "strstr" or
-  name = "strtod" or
-  name = "strtof" or
-  name = "strtol" or
-  name = "strtoll" or
-  name = "strtoq" or
-  name = "strtoul"
+  name =
+    [
+      "strcasestr", "strchnul", "strchr", "strchrnul", "strcmp", "strcspn", "strncmp", "strndup",
+      "strnlen", "strrchr", "strspn", "strstr", "strtod", "strtof", "strtol", "strtoll", "strtoq",
+      "strtoul"
+    ]
 }
 
 private DataFlow::Node getNodeForSource(Expr source) {
   isUserInput(source, _) and
-  (
-    result = DataFlow::exprNode(source)
-    or
-    // Some of the sources in `isUserInput` are intended to match the value of
-    // an expression, while others (those modeled below) are intended to match
-    // the taint that propagates out of an argument, like the `char *` argument
-    // to `gets`. It's impossible here to tell which is which, but the "access
-    // to argv" source is definitely not intended to match an output argument,
-    // and it causes false positives if we let it.
-    //
-    // This case goes together with the similar (but not identical) rule in
-    // `nodeIsBarrierIn`.
-    result = DataFlow::definitionByReferenceNodeFromArgument(source) and
-    not argv(source.(VariableAccess).getTarget())
-  )
+  result = getNodeForExpr(source)
+}
+
+private DataFlow::Node getNodeForExpr(Expr node) {
+  result = DataFlow::exprNode(node)
+  or
+  // Some of the sources in `isUserInput` are intended to match the value of
+  // an expression, while others (those modeled below) are intended to match
+  // the taint that propagates out of an argument, like the `char *` argument
+  // to `gets`. It's impossible here to tell which is which, but the "access
+  // to argv" source is definitely not intended to match an output argument,
+  // and it causes false positives if we let it.
+  //
+  // This case goes together with the similar (but not identical) rule in
+  // `nodeIsBarrierIn`.
+  result = DataFlow::definitionByReferenceNodeFromArgument(node) and
+  not argv(node.(VariableAccess).getTarget())
 }
 
 private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
@@ -239,16 +229,27 @@ private predicate nodeIsBarrierIn(DataFlow::Node node) {
 
 cached
 private predicate commonTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  instructionToInstructionTaintStep(fromNode.asInstruction(), toNode.asInstruction())
-  or
   operandToInstructionTaintStep(fromNode.asOperand(), toNode.asInstruction())
   or
-  operandToOperandTaintStep(fromNode.asOperand(), toNode.asOperand())
+  instructionToOperandTaintStep(fromNode.asInstruction(), toNode.asOperand())
 }
 
-private predicate operandToOperandTaintStep(Operand fromOperand, Operand toOperand) {
+private predicate instructionToOperandTaintStep(Instruction fromInstr, Operand toOperand) {
+  // Propagate flow from the definition of an operand to the operand, even when the overlap is inexact.
+  // We only do this in certain cases:
+  // 1. The instruction's result must not be conflated, and
+  // 2. The instruction's result type is one the types where we expect element-to-object flow. Currently
+  // this is array types and union types. This matches the other two cases of element-to-object flow in
+  // `DefaultTaintTracking`.
+  toOperand.getAnyDef() = fromInstr and
+  not fromInstr.isResultConflated() and
+  (
+    fromInstr.getResultType() instanceof ArrayType or
+    fromInstr.getResultType() instanceof Union
+  )
+  or
   exists(ReadSideEffectInstruction readInstr |
-    fromOperand = readInstr.getArgumentOperand() and
+    fromInstr = readInstr.getArgumentDef() and
     toOperand = readInstr.getSideEffectOperand()
   )
 }
@@ -291,18 +292,18 @@ private predicate operandToInstructionTaintStep(Operand fromOperand, Instruction
         outInstr.getPrimaryInstruction() = call
       )
     )
-}
-
-private predicate instructionToInstructionTaintStep(Instruction i1, Instruction i2) {
+  or
   // Flow through pointer dereference
-  i2.(LoadInstruction).getSourceAddress() = i1
+  toInstr.(LoadInstruction).getSourceAddressOperand() = fromOperand
   or
   // Flow through partial reads of arrays and unions
-  i2.(LoadInstruction).getSourceValueOperand().getAnyDef() = i1 and
-  not i1.isResultConflated() and
-  (
-    i1.getResultType() instanceof ArrayType or
-    i1.getResultType() instanceof Union
+  toInstr.(LoadInstruction).getSourceValueOperand() = fromOperand and
+  exists(Instruction fromInstr | fromInstr = fromOperand.getAnyDef() |
+    not fromInstr.isResultConflated() and
+    (
+      fromInstr.getResultType() instanceof ArrayType or
+      fromInstr.getResultType() instanceof Union
+    )
   )
   or
   // Unary instructions tend to preserve enough information in practice that we
@@ -312,63 +313,54 @@ private predicate instructionToInstructionTaintStep(Instruction i1, Instruction 
   // `FieldAddressInstruction` could cause flow into one field to come out an
   // unrelated field. This would happen across function boundaries, where the IR
   // would not be able to match loads to stores.
-  i2.(UnaryInstruction).getUnary() = i1 and
+  toInstr.(UnaryInstruction).getUnaryOperand() = fromOperand and
   (
-    not i2 instanceof FieldAddressInstruction
+    not toInstr instanceof FieldAddressInstruction
     or
-    i2.(FieldAddressInstruction).getField().getDeclaringType() instanceof Union
+    toInstr.(FieldAddressInstruction).getField().getDeclaringType() instanceof Union
   )
   or
-  // Flow out of definition-by-reference
-  i2.(ChiInstruction).getPartial() = i1.(WriteSideEffectInstruction) and
-  not i2.isResultConflated()
-  or
   // Flow from an element to an array or union that contains it.
-  i2.(ChiInstruction).getPartial() = i1 and
-  not i2.isResultConflated() and
-  exists(Type t | i2.getResultLanguageType().hasType(t, false) |
+  toInstr.(ChiInstruction).getPartialOperand() = fromOperand and
+  not toInstr.isResultConflated() and
+  exists(Type t | toInstr.getResultLanguageType().hasType(t, false) |
     t instanceof Union
     or
     t instanceof ArrayType
   )
   or
   exists(BinaryInstruction bin |
-    bin = i2 and
-    predictableInstruction(i2.getAnOperand().getDef()) and
-    i1 = i2.getAnOperand().getDef()
+    bin = toInstr and
+    predictableInstruction(toInstr.getAnOperand().getDef()) and
+    fromOperand = toInstr.getAnOperand()
   )
   or
   // This is part of the translation of `a[i]`, where we want taint to flow
   // from `a`.
-  i2.(PointerAddInstruction).getLeft() = i1
-  or
-  // Until we have from through indirections across calls, we'll take flow out
-  // of the parameter and into its indirection.
-  exists(IRFunction f, Parameter parameter |
-    i1 = getInitializeParameter(f, parameter) and
-    i2 = getInitializeIndirection(f, parameter)
-  )
+  toInstr.(PointerAddInstruction).getLeftOperand() = fromOperand
   or
   // Until we have flow through indirections across calls, we'll take flow out
   // of the indirection and into the argument.
   // When we get proper flow through indirections across calls, this code can be
   // moved to `adjusedSink` or possibly into the `DataFlow::ExprNode` class.
   exists(ReadSideEffectInstruction read |
-    read.getAnOperand().(SideEffectOperand).getAnyDef() = i1 and
-    read.getArgumentDef() = i2
+    read.getSideEffectOperand() = fromOperand and
+    read.getArgumentDef() = toInstr
   )
-}
-
-pragma[noinline]
-private InitializeIndirectionInstruction getInitializeIndirection(IRFunction f, Parameter p) {
-  result.getParameter() = p and
-  result.getEnclosingIRFunction() = f
-}
-
-pragma[noinline]
-private InitializeParameterInstruction getInitializeParameter(IRFunction f, Parameter p) {
-  result.getParameter() = p and
-  result.getEnclosingIRFunction() = f
+  or
+  // Until we have from through indirections across calls, we'll take flow out
+  // of the parameter and into its indirection.
+  // `InitializeIndirectionInstruction` only has a single operand: the address of the
+  // value whose indirection we are initializing. When initializing an indirection of a parameter `p`,
+  // the IR looks like this:
+  // ```
+  // m1 = InitializeParameter[p] : &r1
+  // r2 = Load[p] : r2, m1
+  // m3 = InitializeIndirection[p] : &r2
+  // ```
+  // So by having flow from `r2` to `m3` we're enabling flow from `m1` to `m3`. This relies on the
+  // `LoadOperand`'s overlap being exact.
+  toInstr.(InitializeIndirectionInstruction).getAnOperand() = fromOperand
 }
 
 /**
@@ -473,8 +465,7 @@ private Element adjustedSink(DataFlow::Node sink) {
   result.(AssignOperation).getAnOperand() = sink.asExpr()
   or
   result =
-    sink
-        .asOperand()
+    sink.asOperand()
         .(SideEffectOperand)
         .getUse()
         .(ReadSideEffectInstruction)
@@ -579,8 +570,14 @@ module TaintedWithPath {
    * a characteristic predicate.
    */
   class TaintTrackingConfiguration extends TSingleton {
+    /** Override this to specify which elements are sources in this configuration. */
+    predicate isSource(Expr source) { exists(getNodeForSource(source)) }
+
     /** Override this to specify which elements are sinks in this configuration. */
     abstract predicate isSink(Element e);
+
+    /** Override this to specify which expressions are barriers in this configuration. */
+    predicate isBarrier(Expr e) { nodeIsBarrier(getNodeForExpr(e)) }
 
     /**
      * Override this predicate to `any()` to allow taint to flow through global
@@ -595,7 +592,11 @@ module TaintedWithPath {
   private class AdjustedConfiguration extends TaintTracking2::Configuration {
     AdjustedConfiguration() { this = "AdjustedConfiguration" }
 
-    override predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
+    override predicate isSource(DataFlow::Node source) {
+      exists(TaintTrackingConfiguration cfg, Expr e |
+        cfg.isSource(e) and source = getNodeForExpr(e)
+      )
+    }
 
     override predicate isSink(DataFlow::Node sink) {
       exists(TaintTrackingConfiguration cfg | cfg.isSink(adjustedSink(sink)))
@@ -624,7 +625,9 @@ module TaintedWithPath {
       )
     }
 
-    override predicate isSanitizer(DataFlow::Node node) { nodeIsBarrier(node) }
+    override predicate isSanitizer(DataFlow::Node node) {
+      exists(TaintTrackingConfiguration cfg, Expr e | cfg.isBarrier(e) and node = getNodeForExpr(e))
+    }
 
     override predicate isSanitizerIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
   }
@@ -651,7 +654,8 @@ module TaintedWithPath {
       exists(AdjustedConfiguration cfg, DataFlow2::Node sourceNode, DataFlow2::Node sinkNode |
         cfg.hasFlow(sourceNode, sinkNode)
       |
-        sourceNode = getNodeForSource(e)
+        sourceNode = getNodeForExpr(e) and
+        exists(TaintTrackingConfiguration ttCfg | ttCfg.isSource(e))
         or
         e = adjustedSink(sinkNode) and
         exists(TaintTrackingConfiguration ttCfg | ttCfg.isSink(e))
@@ -697,8 +701,7 @@ module TaintedWithPath {
     override predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      this
-          .inner()
+      this.inner()
           .getLocation()
           .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
@@ -706,7 +709,7 @@ module TaintedWithPath {
 
   /** A PathNode whose `Element` is a source. It may also be a sink. */
   private class InitialPathNode extends EndpointPathNode {
-    InitialPathNode() { exists(getNodeForSource(this.inner())) }
+    InitialPathNode() { exists(TaintTrackingConfiguration cfg | cfg.isSource(this.inner())) }
   }
 
   /** A PathNode whose `Element` is a sink. It may also be a source. */
@@ -728,14 +731,14 @@ module TaintedWithPath {
     // Same for the first node
     exists(WrapPathNode sourceNode |
       DataFlow2::PathGraph::edges(sourceNode.inner(), b.(WrapPathNode).inner()) and
-      sourceNode.inner().getNode() = getNodeForSource(a.(InitialPathNode).inner())
+      sourceNode.inner().getNode() = getNodeForExpr(a.(InitialPathNode).inner())
     )
     or
     // Finally, handle the case where the path goes directly from a source to a
     // sink, meaning that they both need to be translated.
     exists(WrapPathNode sinkNode, WrapPathNode sourceNode |
       DataFlow2::PathGraph::edges(sourceNode.inner(), sinkNode.inner()) and
-      sourceNode.inner().getNode() = getNodeForSource(a.(InitialPathNode).inner()) and
+      sourceNode.inner().getNode() = getNodeForExpr(a.(InitialPathNode).inner()) and
       b.(FinalPathNode).inner() = adjustedSink(sinkNode.inner().getNode())
     )
   }
@@ -758,7 +761,7 @@ module TaintedWithPath {
   predicate taintedWithPath(Expr source, Element tainted, PathNode sourceNode, PathNode sinkNode) {
     exists(AdjustedConfiguration cfg, DataFlow2::Node flowSource, DataFlow2::Node flowSink |
       source = sourceNode.(InitialPathNode).inner() and
-      flowSource = getNodeForSource(source) and
+      flowSource = getNodeForExpr(source) and
       cfg.hasFlow(flowSource, flowSink) and
       tainted = adjustedSink(flowSink) and
       tainted = sinkNode.(FinalPathNode).inner()
@@ -780,8 +783,8 @@ module TaintedWithPath {
    * through a global variable.
    */
   predicate taintedWithoutGlobals(Element tainted) {
-    exists(PathNode sourceNode, FinalPathNode sinkNode |
-      sourceNode.(WrapPathNode).inner().getNode() = getNodeForSource(_) and
+    exists(AdjustedConfiguration cfg, PathNode sourceNode, FinalPathNode sinkNode |
+      cfg.isSource(sourceNode.(WrapPathNode).inner().getNode()) and
       edgesWithoutGlobals+(sourceNode, sinkNode) and
       tainted = sinkNode.inner()
     )

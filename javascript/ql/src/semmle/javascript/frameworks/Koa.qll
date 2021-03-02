@@ -298,9 +298,8 @@ module Koa {
 
     ResponseSendArgument() {
       exists(DataFlow::PropWrite pwn |
-        pwn
-            .writes(DataFlow::valueNode(rh.getAResponseOrContextExpr()), "body",
-              DataFlow::valueNode(this))
+        pwn.writes(DataFlow::valueNode(rh.getAResponseOrContextExpr()), "body",
+          DataFlow::valueNode(this))
       )
     }
 

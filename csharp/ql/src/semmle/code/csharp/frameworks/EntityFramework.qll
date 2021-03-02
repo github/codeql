@@ -18,8 +18,7 @@ module DataAnnotations {
   /** The `NotMappedAttribute` attribute. */
   class NotMappedAttribute extends Attribute {
     NotMappedAttribute() {
-      this
-          .getType()
+      this.getType()
           .hasQualifiedName("System.ComponentModel.DataAnnotations.Schema.NotMappedAttribute")
     }
   }
@@ -263,7 +262,7 @@ module EntityFramework {
 
   /** A DB Context. */
   private class DbContextClass extends Class {
-    DbContextClass() { this.getBaseClass*().getSourceDeclaration() instanceof DbContext }
+    DbContextClass() { this.getBaseClass*().getUnboundDeclaration() instanceof DbContext }
 
     /**
      * Gets a `DbSet<elementType>` property belonging to this DB context.
@@ -281,9 +280,9 @@ module EntityFramework {
     private Property getADbSetProperty(Class elementType) {
       exists(ConstructedClass c |
         result.getType() = c and
-        c.getSourceDeclaration() instanceof DbSet and
+        c.getUnboundDeclaration() instanceof DbSet and
         elementType = c.getTypeArgument(0) and
-        this.hasMember(any(Property p | result = p.getSourceDeclaration())) and
+        this.hasMember(any(Property p | result = p.getUnboundDeclaration())) and
         not isNotMapped([result.(Attributable), elementType])
       )
     }
@@ -320,7 +319,7 @@ module EntityFramework {
           c1 instanceof PropertyContent and
           t1.(ValueOrRefType).getABaseType*() = ci and
           not t1 instanceof StringType and
-          ci.getSourceDeclaration() instanceof SystemCollectionsGenericIEnumerableTInterface and
+          ci.getUnboundDeclaration() instanceof SystemCollectionsGenericIEnumerableTInterface and
           c2 instanceof ElementContent and
           t2 = ci.getTypeArgument(0)
         )

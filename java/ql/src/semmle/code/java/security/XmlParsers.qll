@@ -482,6 +482,10 @@ class SafeSAXParserFactory extends VarAccess {
   SafeSAXParserFactory() {
     exists(Variable v | v = this.getVariable() |
       exists(SAXParserFactoryConfig config | config.getQualifier() = v.getAnAccess() |
+        config.enables(singleSafeConfig())
+      )
+      or
+      exists(SAXParserFactoryConfig config | config.getQualifier() = v.getAnAccess() |
         config
             .disables(any(ConstantStringExpr s |
                 s.getStringValue() = "http://xml.org/sax/features/external-general-entities"

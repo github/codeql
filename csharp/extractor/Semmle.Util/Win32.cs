@@ -8,7 +8,7 @@ namespace Semmle.Util
     /// <summary>
     /// Holder for various Win32 functions.
     /// </summary>
-    public class Win32
+    public static class Win32
     {
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         public static extern int GetFinalPathNameByHandle(  // lgtm[cs/unmanaged-code]

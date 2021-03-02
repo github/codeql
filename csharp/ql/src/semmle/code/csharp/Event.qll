@@ -43,7 +43,7 @@ class Event extends DeclarationWithAccessors, @event {
     not this.getAnEventAccessor().hasBody()
   }
 
-  override Event getSourceDeclaration() { events(this, _, _, _, result) }
+  override Event getUnboundDeclaration() { events(this, _, _, _, result) }
 
   override Event getOverridee() { result = DeclarationWithAccessors.super.getOverridee() }
 
@@ -88,7 +88,7 @@ class EventAccessor extends Accessor, @event_accessor {
 
   override string getAssemblyName() { event_accessors(this, _, result, _, _) }
 
-  override EventAccessor getSourceDeclaration() { event_accessors(this, _, _, _, result) }
+  override EventAccessor getUnboundDeclaration() { event_accessors(this, _, _, _, result) }
 
   override Event getDeclaration() { event_accessors(this, _, _, result, _) }
 

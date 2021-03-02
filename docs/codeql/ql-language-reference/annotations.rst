@@ -1,3 +1,5 @@
+:tocdepth: 1
+
 .. _annotations:
 
 Annotations
@@ -45,7 +47,7 @@ Overview of annotations
 
 This section describes what the different annotations do, and when you can use them.
 You can also find a summary table in the Annotations section of the 
-`QL language specification <ql-language-specification#annotations-in-java>`_.
+`QL language specification <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#annotations>`_.
 
 .. index:: abstract
 .. _abstract:
@@ -81,7 +83,9 @@ to describe specific configurations. Any non-abstract subtypes must override it 
 indirectly) to describe what sources of data they each track.
 
 In other words, all non-abstract classes that extend ``Configuration`` must override ``isSource`` in their
-own body, or they must inherit from another class that overrides ``isSource``::
+own body, or they must inherit from another class that overrides ``isSource``:
+
+.. code-block:: ql
 
     class ConfigA extends Configuration {
       ...
@@ -201,7 +205,8 @@ change this definition. In this case, ``hasName`` should be final:
 
 **Available for**: |classes|
 
-.. important::
+.. pull-quote:: Important
+
    This annotation is deprecated. Instead of annotating a name with ``library``, put it in a
    private (or privately imported) module.
 
@@ -326,8 +331,10 @@ When you use this annotation, be aware of the following issues:
    In particular, you can't chain predicate :ref:`calls <calls>` or call predicates on a
    :ref:`cast <casts>`. You must write them as multiple conjuncts and explicitly order them.
 
-   For example, suppose you have the following definitions::
-   
+   For example, suppose you have the following definitions:
+
+   .. code-block:: ql
+
        class Small extends int {
          Small() { this in [1 .. 10] }
          Small getSucc() { result = this + 1}
@@ -341,8 +348,10 @@ When you use this annotation, be aware of the following issues:
          s.getSucc().getSucc() = 3
        }
    
-   If you add ``noopt`` pragmas, you must rewrite the predicates. For example::
-   
+   If you add ``noopt`` pragmas, you must rewrite the predicates. For example:
+
+   .. code-block:: ql
+
        pragma[noopt]
        predicate p(int i) {
          exists(Small s | s = i and s.getSucc() = 2)

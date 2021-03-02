@@ -43,28 +43,28 @@ class Test {
 		new Bogus().exec("Irrelevant version of exec");
 	}
 
-	void apacheExecute1() {
+	void apacheExecute1() throws IOException {
 		String line = "AcroRd32.exe /p /h some.file";
 		CommandLine cmdLine = CommandLine.parse(line);
 		DefaultExecutor executor = new DefaultExecutor();
 		int exitValue = executor.execute(cmdLine);
 	}
 
-	void apacheExecute2() {
+	void apacheExecute2() throws IOException {
 		String line = "AcroRd32.exe /p /h some.file";
 		CommandLine cmdLine = CommandLine.parse(line, null);
 		DefaultExecutor executor = new DefaultExecutor();
 		int exitValue = executor.execute(cmdLine);
 	}
 
-	void apacheExecute3() {
+	void apacheExecute3() throws IOException {
 		CommandLine cmdLine = new CommandLine("AcroRd32.exe");
 		cmdLine.addArguments("/p /h some.file");
 		DefaultExecutor executor = new DefaultExecutor();
 		int exitValue = executor.execute(cmdLine);
 	}
 
-	void apacheExecute4() {
+	void apacheExecute4() throws IOException {
 		CommandLine cmdLine = new CommandLine("AcroRd32.exe");
 		cmdLine.addArguments("/p /h some.file", false);
 		DefaultExecutor executor = new DefaultExecutor();

@@ -149,7 +149,7 @@ Let’s look for overflow guards of the form ``v + b < v``, using the classes
     - a ``RelationalOperation``: the overflow comparison check.
     - a ``Variable``: used as an argument to both the addition and comparison.
 
-  - The ``where`` part of the query ties these three variables together using `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ defined in the `standard CodeQL for C/C++ library <https://help.semmle.com/qldoc/cpp/>`__.
+  - The ``where`` part of the query ties these three variables together using `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ defined in the `standard CodeQL for C/C++ library <https://codeql.github.com/codeql-standard-libraries/cpp/>`__.
 
 CodeQL query: bad overflow guards
 =================================

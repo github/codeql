@@ -80,8 +80,7 @@ private DataFlow::Node goodRandom(DataFlow::TypeTracker t, DataFlow::SourceNode 
     // reading a number from a Buffer.
     exists(DataFlow::MethodCallNode call | result = call |
       call.getReceiver() = goodRandom(t2, source) and
-      call
-          .getMethodName()
+      call.getMethodName()
           .regexpMatch("read(BigInt|BigUInt|Double|Float|Int|UInt)(8|16|32|64)?(BE|LE)?")
     )
   )

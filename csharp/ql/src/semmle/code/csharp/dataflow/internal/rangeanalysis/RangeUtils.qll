@@ -95,7 +95,7 @@ private module Impl {
     /**
      * Holds if basic block `bb` is guarded by this guard having value `v`.
      */
-    predicate controlsBasicBlock(BasicBlock bb, G::AbstractValue v) {
+    predicate controlsBasicBlock(ControlFlow::BasicBlock bb, G::AbstractValue v) {
       this.(G::Guard).controlsBasicBlock(bb, v)
     }
 
@@ -154,7 +154,7 @@ private module Impl {
    */
   predicate propertyOverrides(Property p, string baseClass, string property) {
     exists(Property p2 |
-      p2.getSourceDeclaration().getDeclaringType().hasQualifiedName(baseClass) and
+      p2.getUnboundDeclaration().getDeclaringType().hasQualifiedName(baseClass) and
       p2.hasName(property)
     |
       p.overridesOrImplementsOrEquals(p2)
@@ -415,5 +415,15 @@ module ExprNode {
 
     /** Gets the "else" expression of this conditional expression. */
     ExprNode getFalseExpr() { hasChild(e, e.getElse(), this, result) }
+
+    /**
+     * If `branch` is `true` gets the "then" expression, if `false` gets the
+     * "else" expression of this conditional expression.
+     */
+    ExprNode getBranchExpr(boolean branch) {
+      branch = true and result = getTrueExpr()
+      or
+      branch = false and result = getFalseExpr()
+    }
   }
 }

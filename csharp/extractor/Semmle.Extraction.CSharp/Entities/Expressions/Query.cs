@@ -22,8 +22,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         private class QueryCall : Expression
         {
             public QueryCall(Context cx, IMethodSymbol method, SyntaxNode clause, IExpressionParentEntity parent, int child)
-                : base(new ExpressionInfo(cx, method is null ? NullType.Create(cx) : Entities.Type.Create(cx, method.GetAnnotatedReturnType()),
-                        cx.Create(clause.GetLocation()),
+                : base(new ExpressionInfo(cx, method?.GetAnnotatedReturnType(),
+                        cx.CreateLocation(clause.GetLocation()),
                         ExprKind.METHOD_INVOCATION, parent, child, false, null))
             {
                 if (method != null)
@@ -63,21 +63,21 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             protected Expression DeclareRangeVariable(Context cx, IExpressionParentEntity parent, int child, bool getElement, ISymbol variableSymbol, SyntaxToken name)
             {
-                var type = Type.Create(cx, cx.GetType(Expr));
+                var type = cx.GetType(Expr);
 
-                AnnotatedType declType;
+                AnnotatedTypeSymbol? declType;
                 TypeSyntax declTypeSyntax = null;
                 if (getElement)
                 {
                     if (node is FromClauseSyntax from && from.Type != null)
                     {
                         declTypeSyntax = from.Type;
-                        declType = Type.Create(cx, cx.GetType(from.Type));
+                        declType = cx.GetType(from.Type);
                     }
                     else
                     {
                         declTypeSyntax = null;
-                        declType = type.Type.ElementType;
+                        declType = GetElementType(cx, type.Symbol);
                     }
                 }
                 else
@@ -89,7 +89,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     variableSymbol,
                     declType,
                     declTypeSyntax,
-                    cx.Create(node.GetLocation()),
+                    cx.CreateLocation(node.GetLocation()),
                     true,
                     parent,
                     child
@@ -97,12 +97,42 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                 Expression.Create(cx, Expr, decl, 0);
 
-                var nameLoc = cx.Create(name.GetLocation());
+                var nameLoc = cx.CreateLocation(name.GetLocation());
                 var access = new Expression(new ExpressionInfo(cx, type, nameLoc, ExprKind.LOCAL_VARIABLE_ACCESS, decl, 1, false, null));
                 cx.TrapWriter.Writer.expr_access(access, LocalVariable.Create(cx, variableSymbol));
 
                 return decl;
             }
+
+            private static AnnotatedTypeSymbol? GetEnumerableType(Context cx, INamedTypeSymbol type)
+            {
+                return type.SpecialType == SpecialType.System_Collections_IEnumerable
+                    ? cx.Compilation.ObjectType.WithAnnotation(NullableAnnotation.NotAnnotated)
+                    : type.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T
+                        ? type.GetAnnotatedTypeArguments().First()
+                        : (AnnotatedTypeSymbol?)null;
+            }
+
+            private static AnnotatedTypeSymbol? GetEnumerableElementType(Context cx, INamedTypeSymbol type)
+            {
+                var et = GetEnumerableType(cx, type);
+                if (et != null)
+                    return et;
+
+                return type.AllInterfaces
+                    .Where(i => i.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T)
+                    .Concat(type.AllInterfaces.Where(i => i.SpecialType == SpecialType.System_Collections_IEnumerable))
+                    .Select(i => GetEnumerableType(cx, i))
+                    .FirstOrDefault();
+            }
+
+            private static AnnotatedTypeSymbol? GetElementType(Context cx, ITypeSymbol symbol) =>
+                symbol switch
+                {
+                    IArrayTypeSymbol a => a.GetAnnotatedElementType(),
+                    INamedTypeSymbol n => GetEnumerableElementType(cx, n),
+                    _ => null
+                };
 
             protected void PopulateArguments(Context cx, QueryCall callExpr, int child)
             {

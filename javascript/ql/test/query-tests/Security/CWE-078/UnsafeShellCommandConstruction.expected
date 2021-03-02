@@ -191,6 +191,20 @@ nodes
 | lib/lib.js:340:22:340:26 | id(n) |
 | lib/lib.js:340:22:340:26 | id(n) |
 | lib/lib.js:340:25:340:25 | n |
+| lib/lib.js:349:29:349:34 | unsafe |
+| lib/lib.js:349:29:349:34 | unsafe |
+| lib/lib.js:351:22:351:27 | unsafe |
+| lib/lib.js:351:22:351:27 | unsafe |
+| lib/lib.js:360:20:360:23 | opts |
+| lib/lib.js:360:20:360:23 | opts |
+| lib/lib.js:361:20:361:23 | opts |
+| lib/lib.js:361:20:361:34 | opts.learn_args |
+| lib/lib.js:366:28:366:42 | this.learn_args |
+| lib/lib.js:366:28:366:42 | this.learn_args |
+| lib/lib.js:405:39:405:42 | name |
+| lib/lib.js:405:39:405:42 | name |
+| lib/lib.js:406:22:406:25 | name |
+| lib/lib.js:406:22:406:25 | name |
 edges
 | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name |
 | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name |
@@ -417,6 +431,19 @@ edges
 | lib/lib.js:339:39:339:39 | n | lib/lib.js:340:25:340:25 | n |
 | lib/lib.js:340:25:340:25 | n | lib/lib.js:340:22:340:26 | id(n) |
 | lib/lib.js:340:25:340:25 | n | lib/lib.js:340:22:340:26 | id(n) |
+| lib/lib.js:349:29:349:34 | unsafe | lib/lib.js:351:22:351:27 | unsafe |
+| lib/lib.js:349:29:349:34 | unsafe | lib/lib.js:351:22:351:27 | unsafe |
+| lib/lib.js:349:29:349:34 | unsafe | lib/lib.js:351:22:351:27 | unsafe |
+| lib/lib.js:349:29:349:34 | unsafe | lib/lib.js:351:22:351:27 | unsafe |
+| lib/lib.js:360:20:360:23 | opts | lib/lib.js:361:20:361:23 | opts |
+| lib/lib.js:360:20:360:23 | opts | lib/lib.js:361:20:361:23 | opts |
+| lib/lib.js:361:20:361:23 | opts | lib/lib.js:361:20:361:34 | opts.learn_args |
+| lib/lib.js:361:20:361:34 | opts.learn_args | lib/lib.js:366:28:366:42 | this.learn_args |
+| lib/lib.js:361:20:361:34 | opts.learn_args | lib/lib.js:366:28:366:42 | this.learn_args |
+| lib/lib.js:405:39:405:42 | name | lib/lib.js:406:22:406:25 | name |
+| lib/lib.js:405:39:405:42 | name | lib/lib.js:406:22:406:25 | name |
+| lib/lib.js:405:39:405:42 | name | lib/lib.js:406:22:406:25 | name |
+| lib/lib.js:405:39:405:42 | name | lib/lib.js:406:22:406:25 | name |
 #select
 | lib/lib2.js:4:10:4:25 | "rm -rf " + name | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name | $@ based on library input is later used in $@. | lib/lib2.js:4:10:4:25 | "rm -rf " + name | String concatenation | lib/lib2.js:4:2:4:26 | cp.exec ... + name) | shell command |
 | lib/lib2.js:8:10:8:25 | "rm -rf " + name | lib/lib2.js:7:32:7:35 | name | lib/lib2.js:8:22:8:25 | name | $@ based on library input is later used in $@. | lib/lib2.js:8:10:8:25 | "rm -rf " + name | String concatenation | lib/lib2.js:8:2:8:26 | cp.exec ... + name) | shell command |
@@ -472,3 +499,6 @@ edges
 | lib/lib.js:320:11:320:26 | "rm -rf " + name | lib/lib.js:314:40:314:43 | name | lib/lib.js:320:23:320:26 | name | $@ based on library input is later used in $@. | lib/lib.js:320:11:320:26 | "rm -rf " + name | String concatenation | lib/lib.js:320:3:320:27 | cp.exec ... + name) | shell command |
 | lib/lib.js:325:12:325:51 | "MyWind ... " + arg | lib/lib.js:324:40:324:42 | arg | lib/lib.js:325:49:325:51 | arg | $@ based on library input is later used in $@. | lib/lib.js:325:12:325:51 | "MyWind ... " + arg | String concatenation | lib/lib.js:326:2:326:13 | cp.exec(cmd) | shell command |
 | lib/lib.js:340:10:340:26 | "rm -rf " + id(n) | lib/lib.js:339:39:339:39 | n | lib/lib.js:340:22:340:26 | id(n) | $@ based on library input is later used in $@. | lib/lib.js:340:10:340:26 | "rm -rf " + id(n) | String concatenation | lib/lib.js:340:2:340:27 | cp.exec ...  id(n)) | shell command |
+| lib/lib.js:351:10:351:27 | "rm -rf " + unsafe | lib/lib.js:349:29:349:34 | unsafe | lib/lib.js:351:22:351:27 | unsafe | $@ based on library input is later used in $@. | lib/lib.js:351:10:351:27 | "rm -rf " + unsafe | String concatenation | lib/lib.js:351:2:351:28 | cp.exec ... unsafe) | shell command |
+| lib/lib.js:366:17:366:56 | "learn  ... + model | lib/lib.js:360:20:360:23 | opts | lib/lib.js:366:28:366:42 | this.learn_args | $@ based on library input is later used in $@. | lib/lib.js:366:17:366:56 | "learn  ... + model | String concatenation | lib/lib.js:367:3:367:18 | cp.exec(command) | shell command |
+| lib/lib.js:406:10:406:25 | "rm -rf " + name | lib/lib.js:405:39:405:42 | name | lib/lib.js:406:22:406:25 | name | $@ based on library input is later used in $@. | lib/lib.js:406:10:406:25 | "rm -rf " + name | String concatenation | lib/lib.js:406:2:406:26 | cp.exec ... + name) | shell command |

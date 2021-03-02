@@ -1,0 +1,3 @@
+| test.c:4:3:4:9 | call to strncat | if the used buffer is full, writing out of the buffer is possible |
+| test.c:11:3:11:9 | call to strncat | if the used buffer is full, writing out of the buffer is possible |
+| test.c:19:3:19:9 | call to strncat | if the used buffer is full, writing out of the buffer is possible |

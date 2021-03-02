@@ -1,3 +1,5 @@
+:tocdepth: 1
+
 .. index:: recursion
 
 .. _recursion:
@@ -27,7 +29,9 @@ Counting from 0 to 100
 ======================
 
 The following query uses the predicate ``getANumber()`` to list all integers from 0 to 100
-(inclusive):: 
+(inclusive):
+
+.. code-block:: ql
 
     int getANumber() {
       result = 0
@@ -44,7 +48,9 @@ Mutual recursion
 ================
 
 Predicates can be mutually recursive, that is, you can have a cycle of predicates that
-depend on each other. For example, here is a QL query that counts to 100 using even numbers:: 
+depend on each other. For example, here is a QL query that counts to 100 using even numbers:
+
+.. code-block:: ql
 
     int getAnEven() {
       result = 0
@@ -87,7 +93,9 @@ helpful abbreviations:
    ``p``, and so on.
    
    Using this ``+`` notation is often simpler than defining the recursive predicate explicitly. 
-   In this case, an explicit definition could look like this::
+   In this case, an explicit definition could look like this:
+
+   .. code-block:: ql
    
        Person getAnAncestor() {
          result = this.getAParent()
@@ -105,7 +113,9 @@ helpful abbreviations:
    For example, the result of ``p.getAParent*()`` is an ancestor of ``p`` (as above), or ``p``
    itself.
    
-   In this case, the explicit definition looks like this::
+   In this case, the explicit definition looks like this:
+
+   .. code-block:: ql
    
        Person getAnAncestor2() {
          result = this
@@ -174,7 +184,9 @@ According to this definition, the predicate ``isParadox()`` holds precisely when
 This is impossible, so there is no fixed point solution to the recursion.
 
 If the recursion appears under an even number of negations, then this isn't a problem.
-For example, consider the following (slightly macabre) member predicate of class ``Person``::
+For example, consider the following (slightly macabre) member predicate of class ``Person``:
+
+.. code-block:: ql
 
     predicate isExtinct() {
       this.isDead() and

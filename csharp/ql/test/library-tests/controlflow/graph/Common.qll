@@ -5,7 +5,9 @@ class StubFile extends File {
 }
 
 class SourceControlFlowElement extends ControlFlowElement {
-  SourceControlFlowElement() { not this.getLocation().getFile() instanceof StubFile }
+  SourceControlFlowElement() {
+    this.fromSource() and not this.getLocation().getFile() instanceof StubFile
+  }
 }
 
 class SourceControlFlowNode extends ControlFlow::Node {

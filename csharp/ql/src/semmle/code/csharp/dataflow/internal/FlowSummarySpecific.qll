@@ -87,7 +87,7 @@ module Private {
   NodeImpl inputNode(SummarizableCallable c, SummaryInput input) {
     exists(int i |
       input = TParameterSummaryInput(i) and
-      result = DataFlowPrivate::TSummaryParameterNode(c, i)
+      result.(ParameterNode).isParameterOf(c, i)
     )
     or
     exists(int i |
@@ -135,7 +135,7 @@ module Public {
 
   /** An unbound callable. */
   class SummarizableCallable extends Callable {
-    SummarizableCallable() { this = this.getSourceDeclaration() }
+    SummarizableCallable() { this.isUnboundDeclaration() }
   }
 
   /** A flow-summary input specification. */

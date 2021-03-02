@@ -1,3 +1,5 @@
+:tocdepth: 1
+
 .. _troubleshooting-codeql-for-visual-studio-code:
 
 Troubleshooting CodeQL for Visual Studio Code

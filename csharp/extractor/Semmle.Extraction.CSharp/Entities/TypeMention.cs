@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 case NullableTypeSyntax nts:
                     // int[]? -> int[] -> int
                     // int?   -> int?
-                    return cx.GetTypeInfo(nts.ElementType).Type.IsReferenceType
+                    return Context.GetTypeInfo(nts.ElementType).Type.IsReferenceType
                         ? GetArrayElementType(nts.ElementType)
                         : nts;
                 case PointerTypeSyntax pts:
@@ -47,9 +47,9 @@ namespace Semmle.Extraction.CSharp.Entities
             switch (type)
             {
                 case ArrayType at:
-                    return GetArrayElementType(at.ElementType.Type);
-                case NamedType nt when nt.symbol.IsBoundSpan() ||
-                                       nt.symbol.IsBoundReadOnlySpan():
+                    return GetArrayElementType(at.ElementType);
+                case NamedType nt when nt.Symbol.IsBoundSpan() ||
+                                       nt.Symbol.IsBoundReadOnlySpan():
                     return nt.TypeArguments.Single();
                 case PointerType pt:
                     return GetArrayElementType(pt.PointedAtType);
@@ -65,48 +65,48 @@ namespace Semmle.Extraction.CSharp.Entities
                 case SyntaxKind.ArrayType:
                 case SyntaxKind.PointerType:
                     Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
-                    Create(cx, GetArrayElementType(syntax), this, GetArrayElementType(type));
+                    Create(Context, GetArrayElementType(syntax), this, GetArrayElementType(type));
                     return;
                 case SyntaxKind.NullableType:
                     var nts = (NullableTypeSyntax)syntax;
                     if (type is NamedType nt)
                     {
-                        if (!nt.symbol.IsReferenceType)
+                        if (!nt.Symbol.IsReferenceType)
                         {
                             Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
-                            Create(cx, nts.ElementType, this, nt.TypeArguments[0]);
+                            Create(Context, nts.ElementType, this, nt.TypeArguments[0]);
                         }
                         else
                         {
-                            Create(cx, nts.ElementType, parent, type);
+                            Create(Context, nts.ElementType, parent, type);
                         }
                     }
                     else if (type is ArrayType)
                     {
-                        Create(cx, nts.ElementType, parent, type);
+                        Create(Context, nts.ElementType, parent, type);
                     }
                     return;
                 case SyntaxKind.TupleType:
                     var tts = (TupleTypeSyntax)syntax;
                     var tt = (TupleType)type;
                     Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
-                    tts.Elements.Zip(tt.TupleElements, (s, t) => Create(cx, s.Type, this, t.Type)).Enumerate();
+                    tts.Elements.Zip(tt.TupleElements, (s, t) => Create(Context, s.Type, this, t.Type)).Enumerate();
                     return;
                 case SyntaxKind.GenericName:
                     Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
-                    cx.PopulateLater(() =>
+                    Context.PopulateLater(() =>
                         ((GenericNameSyntax)syntax)
                             .TypeArgumentList
                             .Arguments
-                            .Zip(type.TypeMentions, (s, t) => Create(cx, s, this, t)).Enumerate());
+                            .Zip(type.TypeMentions, (s, t) => Create(Context, s, this, t)).Enumerate());
                     return;
                 case SyntaxKind.QualifiedName:
                     var qns = (QualifiedNameSyntax)syntax;
-                    var right = Create(cx, qns.Right, parent, type);
+                    var right = Create(Context, qns.Right, parent, type);
                     if (type.ContainingType is object)
                     {
                         // Type qualifier
-                        Create(cx, qns.Left, right, type.ContainingType);
+                        Create(Context, qns.Left, right, type.ContainingType);
                     }
                     return;
                 default:
@@ -118,7 +118,7 @@ namespace Semmle.Extraction.CSharp.Entities
         private void Emit(TextWriter trapFile, Microsoft.CodeAnalysis.Location loc, IEntity parent, Type type)
         {
             trapFile.type_mention(this, type.TypeRef, parent);
-            trapFile.type_mention_location(this, cx.Create(loc));
+            trapFile.type_mention_location(this, Context.CreateLocation(loc));
         }
 
         public static TypeMention Create(Context cx, TypeSyntax syntax, IEntity parent, Type type, Microsoft.CodeAnalysis.Location loc = null)
@@ -128,8 +128,8 @@ namespace Semmle.Extraction.CSharp.Entities
             return ret;
         }
 
-        public static TypeMention Create(Context cx, TypeSyntax syntax, IEntity parent, AnnotatedType type, Microsoft.CodeAnalysis.Location loc = null) =>
-            Create(cx, syntax, parent, type.Type, loc);
+        public static TypeMention Create(Context cx, TypeSyntax syntax, IEntity parent, AnnotatedTypeSymbol? type, Microsoft.CodeAnalysis.Location loc = null) =>
+            Create(cx, syntax, parent, Type.Create(cx, type?.Symbol), loc);
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }

@@ -444,6 +444,15 @@ class SystemStringClass extends StringType {
     result.getNumberOfParameters() = 1 and
     result.getReturnType() instanceof BoolType
   }
+
+  /** Gets the `IsNullOrWhiteSpace(string)` method. */
+  Method getIsNullOrWhiteSpaceMethod() {
+    result.getDeclaringType() = this and
+    result.hasName("IsNullOrWhiteSpace") and
+    result.isStatic() and
+    result.getNumberOfParameters() = 1 and
+    result.getReturnType() instanceof BoolType
+  }
 }
 
 /** A `ToString()` method. */
@@ -554,7 +563,7 @@ class IEquatableEqualsMethod extends Method {
   IEquatableEqualsMethod() {
     exists(Method m |
       m = any(SystemIEquatableTInterface i).getAConstructedGeneric().getAMethod() and
-      m.getSourceDeclaration() = any(SystemIEquatableTInterface i).getEqualsMethod()
+      m.getUnboundDeclaration() = any(SystemIEquatableTInterface i).getEqualsMethod()
     |
       this = m or getAnUltimateImplementee() = m
     )
@@ -579,16 +588,19 @@ predicate implementsEquals(ValueOrRefType t) { getInvokedEqualsMethod(t).getDecl
  * from the `object.Equals(object)` method inherited by `t`.
  */
 Method getInvokedEqualsMethod(ValueOrRefType t) {
-  result = getInheritedEqualsMethod(t) and
+  result = getInheritedEqualsMethod(t, _) and
   not exists(getInvokedIEquatableEqualsMethod(t, result))
   or
   exists(EqualsMethod eq |
     result = getInvokedIEquatableEqualsMethod(t, eq) and
-    getInheritedEqualsMethod(t) = eq
+    getInheritedEqualsMethod(t, _) = eq
   )
 }
 
-private EqualsMethod getInheritedEqualsMethod(ValueOrRefType t) { t.hasMethod(result) }
+pragma[noinline]
+private EqualsMethod getInheritedEqualsMethod(ValueOrRefType t, ValueOrRefType decl) {
+  t.hasMethod(result) and decl = result.getDeclaringType()
+}
 
 /**
  * Equals method `eq` is inherited by `t`, `t` overrides `IEquatable<T>.Equals(T)`
@@ -612,10 +624,9 @@ private EqualsMethod getInheritedEqualsMethod(ValueOrRefType t) { t.hasMethod(re
  */
 private IEquatableEqualsMethod getInvokedIEquatableEqualsMethod(ValueOrRefType t, EqualsMethod eq) {
   t.hasMethod(result) and
-  eq = getInheritedEqualsMethod(t.getBaseClass()) and
   exists(IEquatableEqualsMethod ieem |
     result = ieem.getAnOverrider*() and
-    eq.getDeclaringType() = ieem.getDeclaringType()
+    eq = getInheritedEqualsMethod(t.getBaseClass(), ieem.getDeclaringType())
   |
     not ieem.fromSource()
     or
@@ -626,8 +637,8 @@ private IEquatableEqualsMethod getInvokedIEquatableEqualsMethod(ValueOrRefType t
 /** Whether `eq` calls `ieem` */
 private predicate callsEqualsMethod(EqualsMethod eq, IEquatableEqualsMethod ieem) {
   exists(MethodCall callToDerivedEquals |
-    callToDerivedEquals.getEnclosingCallable() = eq.getSourceDeclaration() and
-    callToDerivedEquals.getTarget() = ieem.getSourceDeclaration()
+    callToDerivedEquals.getEnclosingCallable() = eq.getUnboundDeclaration() and
+    callToDerivedEquals.getTarget() = ieem.getUnboundDeclaration()
   )
 }
 
@@ -709,8 +720,8 @@ private DisposeBoolMethod getInvokedDiposeBoolMethod(ValueOrRefType t, DisposeMe
     not disp.fromSource()
     or
     exists(MethodCall callToDerivedDispose |
-      callToDerivedDispose.getEnclosingCallable() = disp.getSourceDeclaration() and
-      callToDerivedDispose.getTarget() = dbm.getSourceDeclaration()
+      callToDerivedDispose.getEnclosingCallable() = disp.getUnboundDeclaration() and
+      callToDerivedDispose.getTarget() = dbm.getUnboundDeclaration()
     )
   )
 }

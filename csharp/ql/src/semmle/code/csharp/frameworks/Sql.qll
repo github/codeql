@@ -69,8 +69,7 @@ class MySqlHelperMethodCallSqlExpr extends SqlExpr, MethodCall {
 /** A `Microsoft.ApplicationBlocks.Data.SqlHelper` method. */
 class MicrosoftSqlHelperMethodCallSqlExpr extends SqlExpr, MethodCall {
   MicrosoftSqlHelperMethodCallSqlExpr() {
-    this
-        .getQualifier()
+    this.getQualifier()
         .getType()
         .(Class)
         .hasQualifiedName("Microsoft.ApplicationBlocks.Data", "SqlHelper")

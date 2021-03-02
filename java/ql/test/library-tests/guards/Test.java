@@ -3,7 +3,7 @@ class Test {
 	void test(int x) {
 		z = 0;
 		if (x < 0) {
-			throw new Exception();
+			throw new Error();
 		}
 		int y = 0;
 		while(x >= 0) {

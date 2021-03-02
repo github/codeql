@@ -60,3 +60,5 @@ function good() {
     app.use("jquery", express.static('./node_modules/jquery/dist')); // OK
     app.use("bootstrap", express.static('./node_modules/bootstrap/dist')); // OK
 }
+
+app.use(express.static(__dirname)) // NOT OK

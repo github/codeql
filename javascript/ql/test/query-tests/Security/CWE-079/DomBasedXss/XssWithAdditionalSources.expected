@@ -15,50 +15,53 @@ nodes
 | addEventListener.js:12:24:12:28 | event |
 | addEventListener.js:12:24:12:33 | event.data |
 | addEventListener.js:12:24:12:33 | event.data |
-| angular2-client.ts:21:44:21:66 | \\u0275getDOM ... ation() |
-| angular2-client.ts:21:44:21:66 | \\u0275getDOM ... ation() |
-| angular2-client.ts:21:44:21:71 | \\u0275getDOM ... ().href |
-| angular2-client.ts:21:44:21:71 | \\u0275getDOM ... ().href |
-| angular2-client.ts:23:44:23:69 | this.ro ... .params |
-| angular2-client.ts:23:44:23:69 | this.ro ... .params |
-| angular2-client.ts:23:44:23:73 | this.ro ... ams.foo |
-| angular2-client.ts:23:44:23:73 | this.ro ... ams.foo |
-| angular2-client.ts:24:44:24:74 | this.ro ... yParams |
-| angular2-client.ts:24:44:24:74 | this.ro ... yParams |
-| angular2-client.ts:24:44:24:78 | this.ro ... ams.foo |
-| angular2-client.ts:24:44:24:78 | this.ro ... ams.foo |
-| angular2-client.ts:25:44:25:71 | this.ro ... ragment |
-| angular2-client.ts:25:44:25:71 | this.ro ... ragment |
-| angular2-client.ts:25:44:25:71 | this.ro ... ragment |
-| angular2-client.ts:26:44:26:82 | this.ro ... ('foo') |
-| angular2-client.ts:26:44:26:82 | this.ro ... ('foo') |
-| angular2-client.ts:26:44:26:82 | this.ro ... ('foo') |
-| angular2-client.ts:27:44:27:87 | this.ro ... ('foo') |
-| angular2-client.ts:27:44:27:87 | this.ro ... ('foo') |
-| angular2-client.ts:27:44:27:87 | this.ro ... ('foo') |
-| angular2-client.ts:29:46:29:59 | map.get('foo') |
-| angular2-client.ts:29:46:29:59 | map.get('foo') |
-| angular2-client.ts:29:46:29:59 | map.get('foo') |
-| angular2-client.ts:32:44:32:74 | this.ro ... 1].path |
-| angular2-client.ts:32:44:32:74 | this.ro ... 1].path |
-| angular2-client.ts:32:44:32:74 | this.ro ... 1].path |
-| angular2-client.ts:33:44:33:80 | this.ro ... ameters |
-| angular2-client.ts:33:44:33:80 | this.ro ... ameters |
-| angular2-client.ts:33:44:33:82 | this.ro ... eters.x |
-| angular2-client.ts:33:44:33:82 | this.ro ... eters.x |
-| angular2-client.ts:34:44:34:91 | this.ro ... et('x') |
-| angular2-client.ts:34:44:34:91 | this.ro ... et('x') |
-| angular2-client.ts:34:44:34:91 | this.ro ... et('x') |
-| angular2-client.ts:35:44:35:89 | this.ro ... .params |
-| angular2-client.ts:35:44:35:89 | this.ro ... .params |
-| angular2-client.ts:35:44:35:91 | this.ro ... arams.x |
-| angular2-client.ts:35:44:35:91 | this.ro ... arams.x |
-| angular2-client.ts:37:44:37:58 | this.router.url |
-| angular2-client.ts:37:44:37:58 | this.router.url |
-| angular2-client.ts:37:44:37:58 | this.router.url |
-| angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
-| angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
-| angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
+| angular2-client.ts:22:44:22:66 | \\u0275getDOM ... ation() |
+| angular2-client.ts:22:44:22:66 | \\u0275getDOM ... ation() |
+| angular2-client.ts:22:44:22:71 | \\u0275getDOM ... ().href |
+| angular2-client.ts:22:44:22:71 | \\u0275getDOM ... ().href |
+| angular2-client.ts:24:44:24:69 | this.ro ... .params |
+| angular2-client.ts:24:44:24:69 | this.ro ... .params |
+| angular2-client.ts:24:44:24:73 | this.ro ... ams.foo |
+| angular2-client.ts:24:44:24:73 | this.ro ... ams.foo |
+| angular2-client.ts:25:44:25:74 | this.ro ... yParams |
+| angular2-client.ts:25:44:25:74 | this.ro ... yParams |
+| angular2-client.ts:25:44:25:78 | this.ro ... ams.foo |
+| angular2-client.ts:25:44:25:78 | this.ro ... ams.foo |
+| angular2-client.ts:26:44:26:71 | this.ro ... ragment |
+| angular2-client.ts:26:44:26:71 | this.ro ... ragment |
+| angular2-client.ts:26:44:26:71 | this.ro ... ragment |
+| angular2-client.ts:27:44:27:82 | this.ro ... ('foo') |
+| angular2-client.ts:27:44:27:82 | this.ro ... ('foo') |
+| angular2-client.ts:27:44:27:82 | this.ro ... ('foo') |
+| angular2-client.ts:28:44:28:87 | this.ro ... ('foo') |
+| angular2-client.ts:28:44:28:87 | this.ro ... ('foo') |
+| angular2-client.ts:28:44:28:87 | this.ro ... ('foo') |
+| angular2-client.ts:30:46:30:59 | map.get('foo') |
+| angular2-client.ts:30:46:30:59 | map.get('foo') |
+| angular2-client.ts:30:46:30:59 | map.get('foo') |
+| angular2-client.ts:33:44:33:74 | this.ro ... 1].path |
+| angular2-client.ts:33:44:33:74 | this.ro ... 1].path |
+| angular2-client.ts:33:44:33:74 | this.ro ... 1].path |
+| angular2-client.ts:34:44:34:80 | this.ro ... ameters |
+| angular2-client.ts:34:44:34:80 | this.ro ... ameters |
+| angular2-client.ts:34:44:34:82 | this.ro ... eters.x |
+| angular2-client.ts:34:44:34:82 | this.ro ... eters.x |
+| angular2-client.ts:35:44:35:91 | this.ro ... et('x') |
+| angular2-client.ts:35:44:35:91 | this.ro ... et('x') |
+| angular2-client.ts:35:44:35:91 | this.ro ... et('x') |
+| angular2-client.ts:36:44:36:89 | this.ro ... .params |
+| angular2-client.ts:36:44:36:89 | this.ro ... .params |
+| angular2-client.ts:36:44:36:91 | this.ro ... arams.x |
+| angular2-client.ts:36:44:36:91 | this.ro ... arams.x |
+| angular2-client.ts:38:44:38:58 | this.router.url |
+| angular2-client.ts:38:44:38:58 | this.router.url |
+| angular2-client.ts:38:44:38:58 | this.router.url |
+| angular2-client.ts:40:45:40:59 | this.router.url |
+| angular2-client.ts:40:45:40:59 | this.router.url |
+| angular2-client.ts:40:45:40:59 | this.router.url |
+| angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
+| angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
+| angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
 | classnames.js:7:31:7:84 | `<span  ... <span>` |
 | classnames.js:7:31:7:84 | `<span  ... <span>` |
 | classnames.js:7:47:7:69 | classNa ... w.name) |
@@ -658,6 +661,47 @@ nodes
 | v-html.vue:2:8:2:23 | v-html=tainted |
 | v-html.vue:6:42:6:58 | document.location |
 | v-html.vue:6:42:6:58 | document.location |
+| various-concat-obfuscations.js:2:6:2:39 | tainted |
+| various-concat-obfuscations.js:2:16:2:39 | documen ... .search |
+| various-concat-obfuscations.js:2:16:2:39 | documen ... .search |
+| various-concat-obfuscations.js:4:4:4:31 | "<div>" ... </div>" |
+| various-concat-obfuscations.js:4:4:4:31 | "<div>" ... </div>" |
+| various-concat-obfuscations.js:4:14:4:20 | tainted |
+| various-concat-obfuscations.js:5:4:5:26 | `<div>$ ... </div>` |
+| various-concat-obfuscations.js:5:4:5:26 | `<div>$ ... </div>` |
+| various-concat-obfuscations.js:5:12:5:18 | tainted |
+| various-concat-obfuscations.js:6:4:6:26 | "<div>" ... ainted) |
+| various-concat-obfuscations.js:6:4:6:43 | "<div>" ... /div>") |
+| various-concat-obfuscations.js:6:4:6:43 | "<div>" ... /div>") |
+| various-concat-obfuscations.js:6:19:6:25 | tainted |
+| various-concat-obfuscations.js:7:4:7:31 | ["<div> ... /div>"] |
+| various-concat-obfuscations.js:7:4:7:38 | ["<div> ... .join() |
+| various-concat-obfuscations.js:7:4:7:38 | ["<div> ... .join() |
+| various-concat-obfuscations.js:7:14:7:20 | tainted |
+| various-concat-obfuscations.js:9:4:9:34 | "<div i ...  "\\"/>" |
+| various-concat-obfuscations.js:9:4:9:34 | "<div i ...  "\\"/>" |
+| various-concat-obfuscations.js:9:19:9:25 | tainted |
+| various-concat-obfuscations.js:10:4:10:27 | `<div i ... ed}"/>` |
+| various-concat-obfuscations.js:10:4:10:27 | `<div i ... ed}"/>` |
+| various-concat-obfuscations.js:10:16:10:22 | tainted |
+| various-concat-obfuscations.js:11:4:11:31 | "<div i ... ainted) |
+| various-concat-obfuscations.js:11:4:11:44 | "<div i ... t("/>") |
+| various-concat-obfuscations.js:11:4:11:44 | "<div i ... t("/>") |
+| various-concat-obfuscations.js:11:24:11:30 | tainted |
+| various-concat-obfuscations.js:12:4:12:34 | ["<div  ... "\\"/>"] |
+| various-concat-obfuscations.js:12:4:12:41 | ["<div  ... .join() |
+| various-concat-obfuscations.js:12:4:12:41 | ["<div  ... .join() |
+| various-concat-obfuscations.js:12:19:12:25 | tainted |
+| various-concat-obfuscations.js:20:4:20:47 | indirec ... .attrs) |
+| various-concat-obfuscations.js:20:4:20:47 | indirec ... .attrs) |
+| various-concat-obfuscations.js:20:17:20:40 | documen ... .search |
+| various-concat-obfuscations.js:20:17:20:40 | documen ... .search |
+| various-concat-obfuscations.js:20:17:20:46 | documen ... h.attrs |
+| various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) |
+| various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) |
+| various-concat-obfuscations.js:21:17:21:40 | documen ... .search |
+| various-concat-obfuscations.js:21:17:21:40 | documen ... .search |
+| various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs |
 | winjs.js:2:7:2:53 | tainted |
 | winjs.js:2:17:2:33 | document.location |
 | winjs.js:2:17:2:33 | document.location |
@@ -681,34 +725,35 @@ edges
 | addEventListener.js:10:21:10:25 | event | addEventListener.js:12:24:12:28 | event |
 | addEventListener.js:12:24:12:28 | event | addEventListener.js:12:24:12:33 | event.data |
 | addEventListener.js:12:24:12:28 | event | addEventListener.js:12:24:12:33 | event.data |
-| angular2-client.ts:21:44:21:66 | \\u0275getDOM ... ation() | angular2-client.ts:21:44:21:71 | \\u0275getDOM ... ().href |
-| angular2-client.ts:21:44:21:66 | \\u0275getDOM ... ation() | angular2-client.ts:21:44:21:71 | \\u0275getDOM ... ().href |
-| angular2-client.ts:21:44:21:66 | \\u0275getDOM ... ation() | angular2-client.ts:21:44:21:71 | \\u0275getDOM ... ().href |
-| angular2-client.ts:21:44:21:66 | \\u0275getDOM ... ation() | angular2-client.ts:21:44:21:71 | \\u0275getDOM ... ().href |
-| angular2-client.ts:23:44:23:69 | this.ro ... .params | angular2-client.ts:23:44:23:73 | this.ro ... ams.foo |
-| angular2-client.ts:23:44:23:69 | this.ro ... .params | angular2-client.ts:23:44:23:73 | this.ro ... ams.foo |
-| angular2-client.ts:23:44:23:69 | this.ro ... .params | angular2-client.ts:23:44:23:73 | this.ro ... ams.foo |
-| angular2-client.ts:23:44:23:69 | this.ro ... .params | angular2-client.ts:23:44:23:73 | this.ro ... ams.foo |
-| angular2-client.ts:24:44:24:74 | this.ro ... yParams | angular2-client.ts:24:44:24:78 | this.ro ... ams.foo |
-| angular2-client.ts:24:44:24:74 | this.ro ... yParams | angular2-client.ts:24:44:24:78 | this.ro ... ams.foo |
-| angular2-client.ts:24:44:24:74 | this.ro ... yParams | angular2-client.ts:24:44:24:78 | this.ro ... ams.foo |
-| angular2-client.ts:24:44:24:74 | this.ro ... yParams | angular2-client.ts:24:44:24:78 | this.ro ... ams.foo |
-| angular2-client.ts:25:44:25:71 | this.ro ... ragment | angular2-client.ts:25:44:25:71 | this.ro ... ragment |
-| angular2-client.ts:26:44:26:82 | this.ro ... ('foo') | angular2-client.ts:26:44:26:82 | this.ro ... ('foo') |
-| angular2-client.ts:27:44:27:87 | this.ro ... ('foo') | angular2-client.ts:27:44:27:87 | this.ro ... ('foo') |
-| angular2-client.ts:29:46:29:59 | map.get('foo') | angular2-client.ts:29:46:29:59 | map.get('foo') |
-| angular2-client.ts:32:44:32:74 | this.ro ... 1].path | angular2-client.ts:32:44:32:74 | this.ro ... 1].path |
-| angular2-client.ts:33:44:33:80 | this.ro ... ameters | angular2-client.ts:33:44:33:82 | this.ro ... eters.x |
-| angular2-client.ts:33:44:33:80 | this.ro ... ameters | angular2-client.ts:33:44:33:82 | this.ro ... eters.x |
-| angular2-client.ts:33:44:33:80 | this.ro ... ameters | angular2-client.ts:33:44:33:82 | this.ro ... eters.x |
-| angular2-client.ts:33:44:33:80 | this.ro ... ameters | angular2-client.ts:33:44:33:82 | this.ro ... eters.x |
-| angular2-client.ts:34:44:34:91 | this.ro ... et('x') | angular2-client.ts:34:44:34:91 | this.ro ... et('x') |
-| angular2-client.ts:35:44:35:89 | this.ro ... .params | angular2-client.ts:35:44:35:91 | this.ro ... arams.x |
-| angular2-client.ts:35:44:35:89 | this.ro ... .params | angular2-client.ts:35:44:35:91 | this.ro ... arams.x |
-| angular2-client.ts:35:44:35:89 | this.ro ... .params | angular2-client.ts:35:44:35:91 | this.ro ... arams.x |
-| angular2-client.ts:35:44:35:89 | this.ro ... .params | angular2-client.ts:35:44:35:91 | this.ro ... arams.x |
-| angular2-client.ts:37:44:37:58 | this.router.url | angular2-client.ts:37:44:37:58 | this.router.url |
-| angular2-client.ts:41:44:41:76 | routeSn ... ('foo') | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
+| angular2-client.ts:22:44:22:66 | \\u0275getDOM ... ation() | angular2-client.ts:22:44:22:71 | \\u0275getDOM ... ().href |
+| angular2-client.ts:22:44:22:66 | \\u0275getDOM ... ation() | angular2-client.ts:22:44:22:71 | \\u0275getDOM ... ().href |
+| angular2-client.ts:22:44:22:66 | \\u0275getDOM ... ation() | angular2-client.ts:22:44:22:71 | \\u0275getDOM ... ().href |
+| angular2-client.ts:22:44:22:66 | \\u0275getDOM ... ation() | angular2-client.ts:22:44:22:71 | \\u0275getDOM ... ().href |
+| angular2-client.ts:24:44:24:69 | this.ro ... .params | angular2-client.ts:24:44:24:73 | this.ro ... ams.foo |
+| angular2-client.ts:24:44:24:69 | this.ro ... .params | angular2-client.ts:24:44:24:73 | this.ro ... ams.foo |
+| angular2-client.ts:24:44:24:69 | this.ro ... .params | angular2-client.ts:24:44:24:73 | this.ro ... ams.foo |
+| angular2-client.ts:24:44:24:69 | this.ro ... .params | angular2-client.ts:24:44:24:73 | this.ro ... ams.foo |
+| angular2-client.ts:25:44:25:74 | this.ro ... yParams | angular2-client.ts:25:44:25:78 | this.ro ... ams.foo |
+| angular2-client.ts:25:44:25:74 | this.ro ... yParams | angular2-client.ts:25:44:25:78 | this.ro ... ams.foo |
+| angular2-client.ts:25:44:25:74 | this.ro ... yParams | angular2-client.ts:25:44:25:78 | this.ro ... ams.foo |
+| angular2-client.ts:25:44:25:74 | this.ro ... yParams | angular2-client.ts:25:44:25:78 | this.ro ... ams.foo |
+| angular2-client.ts:26:44:26:71 | this.ro ... ragment | angular2-client.ts:26:44:26:71 | this.ro ... ragment |
+| angular2-client.ts:27:44:27:82 | this.ro ... ('foo') | angular2-client.ts:27:44:27:82 | this.ro ... ('foo') |
+| angular2-client.ts:28:44:28:87 | this.ro ... ('foo') | angular2-client.ts:28:44:28:87 | this.ro ... ('foo') |
+| angular2-client.ts:30:46:30:59 | map.get('foo') | angular2-client.ts:30:46:30:59 | map.get('foo') |
+| angular2-client.ts:33:44:33:74 | this.ro ... 1].path | angular2-client.ts:33:44:33:74 | this.ro ... 1].path |
+| angular2-client.ts:34:44:34:80 | this.ro ... ameters | angular2-client.ts:34:44:34:82 | this.ro ... eters.x |
+| angular2-client.ts:34:44:34:80 | this.ro ... ameters | angular2-client.ts:34:44:34:82 | this.ro ... eters.x |
+| angular2-client.ts:34:44:34:80 | this.ro ... ameters | angular2-client.ts:34:44:34:82 | this.ro ... eters.x |
+| angular2-client.ts:34:44:34:80 | this.ro ... ameters | angular2-client.ts:34:44:34:82 | this.ro ... eters.x |
+| angular2-client.ts:35:44:35:91 | this.ro ... et('x') | angular2-client.ts:35:44:35:91 | this.ro ... et('x') |
+| angular2-client.ts:36:44:36:89 | this.ro ... .params | angular2-client.ts:36:44:36:91 | this.ro ... arams.x |
+| angular2-client.ts:36:44:36:89 | this.ro ... .params | angular2-client.ts:36:44:36:91 | this.ro ... arams.x |
+| angular2-client.ts:36:44:36:89 | this.ro ... .params | angular2-client.ts:36:44:36:91 | this.ro ... arams.x |
+| angular2-client.ts:36:44:36:89 | this.ro ... .params | angular2-client.ts:36:44:36:91 | this.ro ... arams.x |
+| angular2-client.ts:38:44:38:58 | this.router.url | angular2-client.ts:38:44:38:58 | this.router.url |
+| angular2-client.ts:40:45:40:59 | this.router.url | angular2-client.ts:40:45:40:59 | this.router.url |
+| angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
 | classnames.js:7:47:7:69 | classNa ... w.name) | classnames.js:7:31:7:84 | `<span  ... <span>` |
 | classnames.js:7:47:7:69 | classNa ... w.name) | classnames.js:7:31:7:84 | `<span  ... <span>` |
 | classnames.js:7:58:7:68 | window.name | classnames.js:7:47:7:69 | classNa ... w.name) |
@@ -1235,6 +1280,44 @@ edges
 | v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted |
 | v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted |
 | v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted |
+| various-concat-obfuscations.js:2:6:2:39 | tainted | various-concat-obfuscations.js:4:14:4:20 | tainted |
+| various-concat-obfuscations.js:2:6:2:39 | tainted | various-concat-obfuscations.js:5:12:5:18 | tainted |
+| various-concat-obfuscations.js:2:6:2:39 | tainted | various-concat-obfuscations.js:6:19:6:25 | tainted |
+| various-concat-obfuscations.js:2:6:2:39 | tainted | various-concat-obfuscations.js:7:14:7:20 | tainted |
+| various-concat-obfuscations.js:2:6:2:39 | tainted | various-concat-obfuscations.js:9:19:9:25 | tainted |
+| various-concat-obfuscations.js:2:6:2:39 | tainted | various-concat-obfuscations.js:10:16:10:22 | tainted |
+| various-concat-obfuscations.js:2:6:2:39 | tainted | various-concat-obfuscations.js:11:24:11:30 | tainted |
+| various-concat-obfuscations.js:2:6:2:39 | tainted | various-concat-obfuscations.js:12:19:12:25 | tainted |
+| various-concat-obfuscations.js:2:16:2:39 | documen ... .search | various-concat-obfuscations.js:2:6:2:39 | tainted |
+| various-concat-obfuscations.js:2:16:2:39 | documen ... .search | various-concat-obfuscations.js:2:6:2:39 | tainted |
+| various-concat-obfuscations.js:4:14:4:20 | tainted | various-concat-obfuscations.js:4:4:4:31 | "<div>" ... </div>" |
+| various-concat-obfuscations.js:4:14:4:20 | tainted | various-concat-obfuscations.js:4:4:4:31 | "<div>" ... </div>" |
+| various-concat-obfuscations.js:5:12:5:18 | tainted | various-concat-obfuscations.js:5:4:5:26 | `<div>$ ... </div>` |
+| various-concat-obfuscations.js:5:12:5:18 | tainted | various-concat-obfuscations.js:5:4:5:26 | `<div>$ ... </div>` |
+| various-concat-obfuscations.js:6:4:6:26 | "<div>" ... ainted) | various-concat-obfuscations.js:6:4:6:43 | "<div>" ... /div>") |
+| various-concat-obfuscations.js:6:4:6:26 | "<div>" ... ainted) | various-concat-obfuscations.js:6:4:6:43 | "<div>" ... /div>") |
+| various-concat-obfuscations.js:6:19:6:25 | tainted | various-concat-obfuscations.js:6:4:6:26 | "<div>" ... ainted) |
+| various-concat-obfuscations.js:7:4:7:31 | ["<div> ... /div>"] | various-concat-obfuscations.js:7:4:7:38 | ["<div> ... .join() |
+| various-concat-obfuscations.js:7:4:7:31 | ["<div> ... /div>"] | various-concat-obfuscations.js:7:4:7:38 | ["<div> ... .join() |
+| various-concat-obfuscations.js:7:14:7:20 | tainted | various-concat-obfuscations.js:7:4:7:31 | ["<div> ... /div>"] |
+| various-concat-obfuscations.js:9:19:9:25 | tainted | various-concat-obfuscations.js:9:4:9:34 | "<div i ...  "\\"/>" |
+| various-concat-obfuscations.js:9:19:9:25 | tainted | various-concat-obfuscations.js:9:4:9:34 | "<div i ...  "\\"/>" |
+| various-concat-obfuscations.js:10:16:10:22 | tainted | various-concat-obfuscations.js:10:4:10:27 | `<div i ... ed}"/>` |
+| various-concat-obfuscations.js:10:16:10:22 | tainted | various-concat-obfuscations.js:10:4:10:27 | `<div i ... ed}"/>` |
+| various-concat-obfuscations.js:11:4:11:31 | "<div i ... ainted) | various-concat-obfuscations.js:11:4:11:44 | "<div i ... t("/>") |
+| various-concat-obfuscations.js:11:4:11:31 | "<div i ... ainted) | various-concat-obfuscations.js:11:4:11:44 | "<div i ... t("/>") |
+| various-concat-obfuscations.js:11:24:11:30 | tainted | various-concat-obfuscations.js:11:4:11:31 | "<div i ... ainted) |
+| various-concat-obfuscations.js:12:4:12:34 | ["<div  ... "\\"/>"] | various-concat-obfuscations.js:12:4:12:41 | ["<div  ... .join() |
+| various-concat-obfuscations.js:12:4:12:34 | ["<div  ... "\\"/>"] | various-concat-obfuscations.js:12:4:12:41 | ["<div  ... .join() |
+| various-concat-obfuscations.js:12:19:12:25 | tainted | various-concat-obfuscations.js:12:4:12:34 | ["<div  ... "\\"/>"] |
+| various-concat-obfuscations.js:20:17:20:40 | documen ... .search | various-concat-obfuscations.js:20:17:20:46 | documen ... h.attrs |
+| various-concat-obfuscations.js:20:17:20:40 | documen ... .search | various-concat-obfuscations.js:20:17:20:46 | documen ... h.attrs |
+| various-concat-obfuscations.js:20:17:20:46 | documen ... h.attrs | various-concat-obfuscations.js:20:4:20:47 | indirec ... .attrs) |
+| various-concat-obfuscations.js:20:17:20:46 | documen ... h.attrs | various-concat-obfuscations.js:20:4:20:47 | indirec ... .attrs) |
+| various-concat-obfuscations.js:21:17:21:40 | documen ... .search | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs |
+| various-concat-obfuscations.js:21:17:21:40 | documen ... .search | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs |
+| various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) |
+| various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) |
 | winjs.js:2:7:2:53 | tainted | winjs.js:3:43:3:49 | tainted |
 | winjs.js:2:7:2:53 | tainted | winjs.js:3:43:3:49 | tainted |
 | winjs.js:2:7:2:53 | tainted | winjs.js:4:43:4:49 | tainted |

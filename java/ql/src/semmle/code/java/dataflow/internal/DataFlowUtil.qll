@@ -7,6 +7,7 @@ private import DataFlowPrivate
 private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.dataflow.TypeFlow
 private import semmle.code.java.controlflow.Guards
+private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.InstanceAccess
 
 cached
@@ -405,6 +406,8 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   or
   node2.asExpr().(AssignExpr).getSource() = node1.asExpr()
   or
+  summaryStep(node1, node2, "value")
+  or
   exists(MethodAccess ma, Method m |
     ma = node2.asExpr() and
     m = ma.getMethod() and
@@ -421,8 +424,7 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   exists(MethodAccess ma, Method m |
     ma = node2.asExpr() and
     m = ma.getMethod() and
-    m
-        .getDeclaringType()
+    m.getDeclaringType()
         .getSourceDeclaration()
         .getASourceSupertype*()
         .hasQualifiedName("java.util", "Stack") and

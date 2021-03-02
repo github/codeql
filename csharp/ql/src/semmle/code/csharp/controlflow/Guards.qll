@@ -110,7 +110,7 @@ module AbstractValues {
 
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
       s.(BooleanSuccessor).getValue() = this.getValue() and
-      exists(BooleanCompletion c | s.matchesCompletion(c) |
+      exists(BooleanCompletion c | s = c.getAMatchingSuccessorType() |
         c.isValidFor(cfe) and
         e = cfe
       )
@@ -161,7 +161,7 @@ module AbstractValues {
 
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
       this = TNullValue(s.(NullnessSuccessor).getValue()) and
-      exists(NullnessCompletion c | s.matchesCompletion(c) |
+      exists(NullnessCompletion c | s = c.getAMatchingSuccessorType() |
         c.isValidFor(cfe) and
         e = cfe
       )
@@ -190,7 +190,7 @@ module AbstractValues {
 
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
       this = TMatchValue(_, s.(MatchingSuccessor).getValue()) and
-      exists(MatchingCompletion c, Switch switch, Case case | s.matchesCompletion(c) |
+      exists(MatchingCompletion c, Switch switch, Case case | s = c.getAMatchingSuccessorType() |
         c.isValidFor(cfe) and
         switchMatching(switch, case, cfe) and
         e = switch.getExpr() and
@@ -227,7 +227,7 @@ module AbstractValues {
 
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
       this = TEmptyCollectionValue(s.(EmptinessSuccessor).getValue()) and
-      exists(EmptinessCompletion c, ForeachStmt fs | s.matchesCompletion(c) |
+      exists(EmptinessCompletion c, ForeachStmt fs | s = c.getAMatchingSuccessorType() |
         c.isValidFor(cfe) and
         foreachEmptiness(fs, cfe) and
         e = fs.getIterableExpr()
@@ -260,6 +260,12 @@ module AbstractValues {
 }
 
 private import AbstractValues
+
+pragma[nomagic]
+private predicate typePattern(PatternMatch pm, TypePatternExpr tpe, Type t) {
+  tpe = pm.getPattern() and
+  t = pm.getExpr().getType()
+}
 
 /**
  * An expression that evaluates to a value that can be dereferenced. That is,
@@ -337,19 +343,23 @@ class DereferenceableExpr extends Expr {
       or
       result =
         any(PatternMatch pm |
-          pm.getExpr() = this and
-          if pm.getPattern() instanceof NullLiteral
-          then
+          this = pm.getExpr() and
+          (
             // E.g. `x is null`
+            pm.getPattern() instanceof NullLiteral and
             isNull = branch
-          else (
-            // E.g. `x is string` or `x is ""`
-            branch = true and isNull = false
             or
-            // E.g. `x is string` where `x` has type `string`
-            pm.getPattern().(TypePatternExpr).getCheckedType() = pm.getExpr().getType() and
-            branch = false and
-            isNull = true
+            // E.g. `x is string` or `x is ""`
+            not pm.getPattern() instanceof NullLiteral and
+            branch = true and
+            isNull = false
+            or
+            exists(TypePatternExpr tpe |
+              // E.g. `x is string` where `x` has type `string`
+              typePattern(result, tpe, tpe.getCheckedType()) and
+              branch = false and
+              isNull = true
+            )
           )
         )
       or
@@ -481,17 +491,16 @@ class CollectionExpr extends Expr {
     result =
       any(PropertyRead pr |
         this = pr.getQualifier() and
-        pr
-            .getTarget()
+        pr.getTarget()
             .overridesOrImplementsOrEquals(any(Property p |
-                p.getSourceDeclaration() =
+                p.getUnboundDeclaration() =
                   any(SystemCollectionsGenericICollectionInterface x).getCountProperty()
               ))
       )
     or
     result =
       any(MethodCall mc |
-        mc.getTarget().getSourceDeclaration() =
+        mc.getTarget().getUnboundDeclaration() =
           any(SystemLinq::SystemLinqEnumerableClass x).getACountMethod() and
         this = mc.getArgument(0) and
         if mc.getNumberOfArguments() = 1 then lowerBound = false else lowerBound = true
@@ -544,7 +553,7 @@ class CollectionExpr extends Expr {
       or
       result =
         any(MethodCall mc |
-          mc.getTarget().getSourceDeclaration() =
+          mc.getTarget().getUnboundDeclaration() =
             any(SystemLinq::SystemLinqEnumerableClass x).getAnAnyMethod() and
           this = mc.getArgument(0) and
           branch = isEmpty.booleanNot() and
@@ -612,8 +621,7 @@ private Ssa::Definition getAnSsaQualifier(Expr e, ControlFlow::Node cfn) {
 }
 
 private AssignableAccess getATrackedAccess(Ssa::Definition def, ControlFlow::Node cfn) {
-  result = def.getAReadAtNode(cfn) and
-  not def instanceof Ssa::ImplicitUntrackedDefinition
+  result = def.getAReadAtNode(cfn)
   or
   result = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess() and
   cfn = def.getControlFlowNode()
@@ -842,7 +850,7 @@ module Internal {
     or
     e instanceof DefaultValueExpr and e.getType().isRefType()
     or
-    e.(Call).getTarget().getSourceDeclaration() instanceof NullCallable
+    e.(Call).getTarget().getUnboundDeclaration() instanceof NullCallable
   }
 
   /** Holds if expression `e2` is a `null` value whenever `e1` is. */
@@ -893,7 +901,7 @@ module Internal {
     or
     e.(DefaultValueExpr).getType().isValueType()
     or
-    e.(Call).getTarget().getSourceDeclaration() instanceof NonNullCallable and
+    e.(Call).getTarget().getUnboundDeclaration() instanceof NonNullCallable and
     not e.(QualifiableExpr).isConditional()
     or
     e instanceof SuppressNullableWarningExpr
@@ -987,7 +995,7 @@ module Internal {
   // pre-SSA predicates
   private module PreCFG {
     private import semmle.code.csharp.controlflow.internal.PreBasicBlocks as PreBasicBlocks
-    private import semmle.code.csharp.controlflow.internal.PreSsa as PreSsa
+    private import semmle.code.csharp.controlflow.internal.PreSsa
 
     /**
      * Holds if pre-basic-block `bb` only is reached when guard `g` has abstract value `v`,
@@ -1073,25 +1081,25 @@ module Internal {
 
     pragma[noinline]
     private predicate conditionalAssign0(
-      Guard guard, AbstractValue vGuard, PreSsa::Definition def, Expr e, PreSsa::Definition upd,
+      Guard guard, AbstractValue vGuard, PreSsa::PhiNode phi, Expr e, PreSsa::Definition upd,
       PreBasicBlocks::PreBasicBlock bbGuard
     ) {
       e = upd.getDefinition().getSource() and
-      upd = def.getAPhiInput() and
+      upd = phi.getAnInput() and
       preControlsDirect(guard, upd.getBasicBlock(), vGuard) and
       bbGuard.getAnElement() = guard and
-      bbGuard.strictlyDominates(def.getBasicBlock()) and
-      not preControlsDirect(guard, def.getBasicBlock(), vGuard)
+      bbGuard.strictlyDominates(phi.getBasicBlock()) and
+      not preControlsDirect(guard, phi.getBasicBlock(), vGuard)
     }
 
     pragma[noinline]
     private predicate conditionalAssign1(
-      Guard guard, AbstractValue vGuard, PreSsa::Definition def, Expr e, PreSsa::Definition upd,
+      Guard guard, AbstractValue vGuard, PreSsa::PhiNode phi, Expr e, PreSsa::Definition upd,
       PreBasicBlocks::PreBasicBlock bbGuard, PreSsa::Definition other
     ) {
-      conditionalAssign0(guard, vGuard, def, e, upd, bbGuard) and
+      conditionalAssign0(guard, vGuard, phi, e, upd, bbGuard) and
       other != upd and
-      other = def.getAPhiInput()
+      other = phi.getAnInput()
     }
 
     pragma[noinline]
@@ -1119,7 +1127,7 @@ module Internal {
     ) {
       conditionalAssign1(guard, vGuard, def, e, upd, bbGuard, other) and
       other.getBasicBlock().dominates(bbGuard) and
-      not PreSsa::ssaDefReachesEndOfBlock(getConditionalSuccessor(guard, vGuard), other, _)
+      not other.isLiveAtEndOfBlock(getConditionalSuccessor(guard, vGuard))
     }
 
     /**
@@ -1249,6 +1257,7 @@ module Internal {
       )
     }
 
+    pragma[nomagic]
     private Expr getAnEqualityCheckVal(Expr e, AbstractValue v, AbstractValue vExpr) {
       result = getAnEqualityCheck(e, v, vExpr.getAnExpr())
     }
@@ -1306,14 +1315,14 @@ module Internal {
      */
     private PreSsa::Definition getADefinition(PreSsa::Definition def, boolean fromBackEdge) {
       result = def and
-      not exists(def.getAPhiInput()) and
+      not def instanceof PreSsa::PhiNode and
       fromBackEdge = false
       or
       exists(PreSsa::Definition input, PreBasicBlocks::PreBasicBlock pred, boolean fbe |
-        input = def.getAPhiInput()
+        input = def.(PreSsa::PhiNode).getAnInput()
       |
         pred = def.getBasicBlock().getAPredecessor() and
-        PreSsa::ssaDefReachesEndOfBlock(pred, input, _) and
+        input.isLiveAtEndOfBlock(pred) and
         result = getADefinition(input, fbe) and
         (if def.getBasicBlock().dominates(pred) then fromBackEdge = true else fromBackEdge = fbe)
       )
@@ -1428,8 +1437,8 @@ module Internal {
       cached
       predicate isCustomNullCheck(Call call, Expr arg, BooleanValue v, boolean isNull) {
         exists(Callable callable, Parameter p |
-          arg = call.getArgumentForParameter(any(Parameter p0 | p0.getSourceDeclaration() = p)) and
-          call.getTarget().getSourceDeclaration() = callable and
+          arg = call.getArgumentForParameter(any(Parameter p0 | p0.getUnboundDeclaration() = p)) and
+          call.getTarget().getUnboundDeclaration() = callable and
           callable = customNullCheck(p, v, isNull)
         )
       }
@@ -1437,7 +1446,7 @@ module Internal {
       private predicate firstReadSameVarUniquePredecesssor(
         PreSsa::Definition def, AssignableRead read
       ) {
-        PreSsa::firstReadSameVar(def, read) and
+        read = def.getAFirstRead() and
         not exists(AssignableRead other | PreSsa::adjacentReadPairSameVar(other, read) |
           other != read
         )
@@ -1645,7 +1654,7 @@ module Internal {
         exists(PreSsa::Definition def | emptyDef(def) | firstReadSameVarUniquePredecesssor(def, e))
         or
         exists(MethodCall mc |
-          mc.getTarget().getAnUltimateImplementee().getSourceDeclaration() =
+          mc.getTarget().getAnUltimateImplementee().getUnboundDeclaration() =
             any(SystemCollectionsGenericICollectionInterface c).getClearMethod() and
           adjacentReadPairSameVarUniquePredecessor(mc.getQualifier(), e)
         )
@@ -1670,7 +1679,7 @@ module Internal {
         )
         or
         exists(MethodCall mc |
-          mc.getTarget().getAnUltimateImplementee().getSourceDeclaration() =
+          mc.getTarget().getAnUltimateImplementee().getUnboundDeclaration() =
             any(SystemCollectionsGenericICollectionInterface c).getAddMethod() and
           adjacentReadPairSameVarUniquePredecessor(mc.getQualifier(), e)
         )
@@ -1714,6 +1723,7 @@ module Internal {
   cached
   private module Cached {
     private import semmle.code.csharp.Caching
+    private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 
     /**
      * Holds if basic block `bb` only is reached when guard `g` has abstract value `v`.
@@ -1766,9 +1776,9 @@ module Internal {
     private predicate adjacentReadPairSameVarUniquePredecessor(
       Ssa::Definition def, ControlFlow::Node cfn1, ControlFlow::Node cfn2
     ) {
-      Ssa::Internal::adjacentReadPairSameVar(def, cfn1, cfn2) and
+      SsaImpl::adjacentReadPairSameVar(def, cfn1, cfn2) and
       not exists(ControlFlow::Node other |
-        Ssa::Internal::adjacentReadPairSameVar(def, other, cfn2) and
+        SsaImpl::adjacentReadPairSameVar(def, other, cfn2) and
         other != cfn1 and
         other != cfn2
       )
@@ -1822,7 +1832,7 @@ module Internal {
     private predicate firstReadUniquePredecessor(Ssa::ExplicitDefinition def, ControlFlow::Node cfn) {
       exists(def.getAFirstReadAtNode(cfn)) and
       not exists(ControlFlow::Node other |
-        Ssa::Internal::adjacentReadPairSameVar(def, other, cfn) and
+        SsaImpl::adjacentReadPairSameVar(def, other, cfn) and
         other != cfn
       )
     }

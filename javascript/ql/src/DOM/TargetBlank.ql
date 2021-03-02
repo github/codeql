@@ -17,6 +17,16 @@ import semmle.javascript.frameworks.Templating
 import semmle.javascript.RestrictedLocations
 
 /**
+ * Holds if the `rel` attribute may be injected by an Angular2 directive.
+ */
+predicate maybeInjectedByAngular() {
+  DataFlow::moduleMember("@angular/core", "HostBinding")
+      .getACall()
+      .getArgument(0)
+      .mayHaveStringValue("attr.rel")
+}
+
+/**
  * Holds if the href attribute contains a host that we cannot determine statically.
  */
 predicate hasDynamicHrefHostAttributeValue(DOM::ElementDefinition elem) {
@@ -44,6 +54,8 @@ where
   e.getName() = "a" and
   // and the host in the href is not hard-coded
   hasDynamicHrefHostAttributeValue(e) and
+  // disable for Angular applications that dynamically inject the 'rel' attribute
+  not maybeInjectedByAngular() and
   e.getAttributeByName("target").getStringValue() = "_blank" and
   // there is no `rel` attribute specifying link type `noopener`/`noreferrer`;
   // `rel` attributes with non-constant value are handled conservatively

@@ -1,9 +1,11 @@
+:tocdepth: 1
+
 .. _codeql-glossary:
 
 CodeQL glossary
 ===============
 
-An overview of the technical terms and concepts in coCodeQL. 
+An overview of the technical terms and concepts in CodeQL. 
 
 .. _bqrs-file:
 

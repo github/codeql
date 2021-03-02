@@ -11,7 +11,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     {
         private VariableDeclaration(IExpressionInfo info) : base(info) { }
 
-        public static VariableDeclaration Create(Context cx, ISymbol symbol, AnnotatedType type, TypeSyntax optionalSyntax, Extraction.Entities.Location exprLocation, bool isVar, IExpressionParentEntity parent, int child)
+        public static VariableDeclaration Create(Context cx, ISymbol symbol, AnnotatedTypeSymbol? type, TypeSyntax optionalSyntax, Extraction.Entities.Location exprLocation, bool isVar, IExpressionParentEntity parent, int child)
         {
             var ret = new VariableDeclaration(new ExpressionInfo(cx, type, exprLocation, ExprKind.LOCAL_VAR_DECL, parent, child, false, null));
             cx.Try(null, null, () =>
@@ -30,10 +30,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             if (variableSymbol == null)
             {
                 cx.ModelError(node, "Failed to determine local variable");
-                return Create(cx, node, NullType.Create(cx), parent, child);
+                return Create(cx, node, (AnnotatedTypeSymbol?)null, parent, child);
             }
 
-            var type = Entities.Type.Create(cx, variableSymbol.GetAnnotatedType());
+            var type = variableSymbol.GetAnnotatedType();
             var ret = Create(cx, designation, type, parent, child);
             cx.Try(null, null, () =>
             {
@@ -49,8 +49,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         /// </summary>
         public static Expression CreateParenthesized(Context cx, DeclarationExpressionSyntax node, ParenthesizedVariableDesignationSyntax designation, IExpressionParentEntity parent, int child)
         {
-            var type = Entities.NullType.Create(cx); // Should ideally be a corresponding tuple type
-            var tuple = new Expression(new ExpressionInfo(cx, type, cx.Create(node.GetLocation()), ExprKind.TUPLE, parent, child, false, null));
+            AnnotatedTypeSymbol? type = null; // Should ideally be a corresponding tuple type
+            var tuple = new Expression(new ExpressionInfo(cx, type, cx.CreateLocation(node.GetLocation()), ExprKind.TUPLE, parent, child, false, null));
 
             cx.Try(null, null, () =>
             {
@@ -64,8 +64,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression CreateParenthesized(Context cx, VarPatternSyntax varPattern, ParenthesizedVariableDesignationSyntax designation, IExpressionParentEntity parent, int child)
         {
-            var type = NullType.Create(cx); // Should ideally be a corresponding tuple type
-            var tuple = new Expression(new ExpressionInfo(cx, type, cx.Create(varPattern.GetLocation()), ExprKind.TUPLE, parent, child, false, null));
+            AnnotatedTypeSymbol? type = null; // Should ideally be a corresponding tuple type
+            var tuple = new Expression(new ExpressionInfo(cx, type, cx.CreateLocation(varPattern.GetLocation()), ExprKind.TUPLE, parent, child, false, null));
 
             cx.Try(null, null, () =>
             {
@@ -80,7 +80,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         case SingleVariableDesignationSyntax single:
                             if (cx.GetModel(variable).GetDeclaredSymbol(single) is ILocalSymbol local)
                             {
-                                var decl = Create(cx, variable, Entities.Type.Create(cx, local.GetAnnotatedType()), tuple, child0++);
+                                var decl = Create(cx, variable, local.GetAnnotatedType(), tuple, child0++);
                                 var l = LocalVariable.Create(cx, local);
                                 l.PopulateManual(decl, true);
                             }
@@ -111,25 +111,24 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 case ParenthesizedVariableDesignationSyntax paren:
                     return CreateParenthesized(cx, node, paren, parent, child);
                 case DiscardDesignationSyntax discard:
-                    var ti = cx.GetType(discard);
-                    var type = Entities.Type.Create(cx, ti);
+                    var type = cx.GetType(discard);
                     return Create(cx, node, type, parent, child);
                 default:
                     cx.ModelError(node, "Failed to determine designation type");
-                    return Create(cx, node, NullType.Create(cx), parent, child);
+                    return Create(cx, node, null, parent, child);
             }
         }
 
         public static Expression Create(Context cx, DeclarationExpressionSyntax node, IExpressionParentEntity parent, int child) =>
             Create(cx, node, node.Designation, parent, child);
 
-        public static VariableDeclaration Create(Context cx, CSharpSyntaxNode c, AnnotatedType type, IExpressionParentEntity parent, int child) =>
-            new VariableDeclaration(new ExpressionInfo(cx, type, cx.Create(c.FixedLocation()), ExprKind.LOCAL_VAR_DECL, parent, child, false, null));
+        public static VariableDeclaration Create(Context cx, CSharpSyntaxNode c, AnnotatedTypeSymbol? type, IExpressionParentEntity parent, int child) =>
+            new VariableDeclaration(new ExpressionInfo(cx, type, cx.CreateLocation(c.FixedLocation()), ExprKind.LOCAL_VAR_DECL, parent, child, false, null));
 
         public static VariableDeclaration Create(Context cx, CatchDeclarationSyntax d, bool isVar, IExpressionParentEntity parent, int child)
         {
             var symbol = cx.GetModel(d).GetDeclaredSymbol(d);
-            var type = Entities.Type.Create(cx, symbol.GetAnnotatedType());
+            var type = symbol.GetAnnotatedType();
             var ret = Create(cx, d, type, parent, child);
             cx.Try(d, null, () =>
             {
@@ -141,7 +140,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             return ret;
         }
 
-        public static VariableDeclaration CreateDeclarator(Context cx, VariableDeclaratorSyntax d, AnnotatedType type, bool isVar, IExpressionParentEntity parent, int child)
+        public static VariableDeclaration CreateDeclarator(Context cx, VariableDeclaratorSyntax d, AnnotatedTypeSymbol type, bool isVar, IExpressionParentEntity parent, int child)
         {
             var ret = Create(cx, d, type, parent, child);
             cx.Try(d, null, () =>
@@ -170,7 +169,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     {
         public static void Populate(Context cx, VariableDeclarationSyntax decl, IExpressionParentEntity parent, int child, int childIncrement = 1)
         {
-            var type = Type.Create(cx, cx.GetType(decl.Type));
+            var type = cx.GetType(decl.Type);
 
             foreach (var v in decl.Variables)
             {
