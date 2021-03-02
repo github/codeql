@@ -425,12 +425,20 @@ class StructType extends @structtype, CompositeType {
     )
   }
 
-  override Field getField(string name) {
-    exists(int mindepth |
-      mindepth = min(int depth | exists(getFieldCand(name, depth, _))) and
-      result = getFieldCand(name, mindepth, _) and
-      strictcount(getFieldCand(name, mindepth, _)) = 1
-    )
+  override Field getField(string name) { result = getFieldAtDepth(name, _) }
+
+  /**
+   * Gets the field `f` with depth `depth` of this type.
+   *
+   * This includes fields promoted from an embedded field. It is not possible
+   * to access a field that is shadowed by a promoted field with this function.
+   * The number of embedded fields traversed to reach `f` is called its depth.
+   * The depth of a field `f` declared in this type is zero.
+   */
+  Field getFieldAtDepth(string name, int depth) {
+    depth = min(int depthCand | exists(getFieldCand(name, depthCand, _))) and
+    result = getFieldCand(name, depth, _) and
+    strictcount(getFieldCand(name, depth, _)) = 1
   }
 
   override predicate hasMethod(string name, SignatureType tp) { hasFieldOrMethod(name, tp, true) }
