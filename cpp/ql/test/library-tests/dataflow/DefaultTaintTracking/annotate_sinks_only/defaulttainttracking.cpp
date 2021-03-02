@@ -13,8 +13,8 @@ int main() {
 
 
 
-  sink(_strdup(getenv("VAR"))); // $ MISSING: ast,ir
-  sink(strdup(getenv("VAR"))); // $ ast MISSING: ir
+  sink(_strdup(getenv("VAR"))); // $ ir MISSING: ast
+  sink(strdup(getenv("VAR"))); // $ ast,ir
   sink(unmodeled_function(getenv("VAR"))); // clean by assumption
 
   char untainted_buf[100] = "";

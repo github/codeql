@@ -613,7 +613,7 @@ module TaintedWithPath {
       // Step to return value of a modeled function when an input taints the
       // dereference of the return value
       exists(CallInstruction call, Function func, FunctionInput modelIn, FunctionOutput modelOut |
-        n1 = callInput(call, modelIn) and
+        n1.asOperand() = callInput(call, modelIn) and
         (
           func.(TaintFunction).hasTaintFlow(modelIn, modelOut)
           or
