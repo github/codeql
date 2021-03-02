@@ -168,7 +168,13 @@ class InvokeNode extends DataFlow::SourceNode {
   private ObjectLiteralNode getOptionsArgument(int i) { result.flowsTo(getArgument(i)) }
 
   /** Gets an abstract value representing possible callees of this call site. */
-  final AbstractValue getACalleeValue() { result = getCalleeNode().analyze().getAValue() }
+  final AbstractValue getACalleeValue() {
+    exists(DataFlow::Node callee, DataFlow::AnalyzedNode analyzed |
+      pragma[only_bind_into](callee) = getCalleeNode() and
+      pragma[only_bind_into](analyzed) = callee.analyze() and
+      pragma[only_bind_into](result) = analyzed.getAValue()
+    )
+  }
 
   /**
    * Gets a potential callee of this call site.
