@@ -13,8 +13,8 @@ int main() {
 
 
 
-  sink(_strdup(getenv("VAR"))); // $ ir MISSING: ast
-  sink(strdup(getenv("VAR"))); // $ ast,ir
+  sink(_strdup(getenv("VAR"))); // $ MISSING: ast,ir
+  sink(strdup(getenv("VAR"))); // $ ast MISSING: ir
   sink(unmodeled_function(getenv("VAR"))); // clean by assumption
 
   char untainted_buf[100] = "";
@@ -250,12 +250,12 @@ void sink(iovec);
 int test_readv_and_writev(iovec* iovs) {
   readv(0, iovs, 16);
   sink(iovs); // $ast,ir
-  sink(iovs[0]); // $ast MISSING: ir
-  sink(*iovs); // $ast MISSING: ir
+  sink(iovs[0]); // $ast,ir
+  sink(*iovs); // $ast,ir
 
   char* p = (char*)iovs[1].iov_base;
-  sink(p); // $ MISSING: ast,ir
-  sink(*p); // $ MISSING: ast,ir
+  sink(p); // $ ir MISSING: ast
+  sink(*p); // $ ir MISSING: ast
 
   writev(0, iovs, 16); // $ remote
 }
