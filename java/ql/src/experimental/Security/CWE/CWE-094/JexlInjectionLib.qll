@@ -12,8 +12,7 @@ class JexlInjectionConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) {
     source instanceof TaintedSpringRequestBody or
-    source instanceof RemoteFlowSource or
-    source instanceof LocalUserInput
+    source instanceof RemoteFlowSource
   }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof JexlEvaluationSink }
@@ -30,7 +29,7 @@ class JexlInjectionConfig extends TaintTracking::Configuration {
  */
 private class TaintedSpringRequestBody extends DataFlow::Node {
   TaintedSpringRequestBody() {
-    exists(SpringServletInputAnnotation a | this.asParameter().getAnAnnotation() = a)
+    this.asParameter().getAnAnnotation() instanceof SpringServletInputAnnotation
   }
 }
 
@@ -137,7 +136,7 @@ private class SandboxedJexlSource extends DataFlow::ExprNode {
       m.getDeclaringType() instanceof JexlBuilder and
       m.hasName(["uberspect", "sandbox"]) and
       m.getReturnType() instanceof JexlBuilder and
-      (ma = this.asExpr() or ma.getQualifier() = this.asExpr())
+      this.asExpr() = [ma, ma.getQualifier()]
     )
     or
     exists(ConstructorCall cc |
