@@ -287,7 +287,7 @@ private predicate elementSpec(
 bindingset[namespace, type, subtypes]
 private RefType interpretType(string namespace, string type, boolean subtypes) {
   exists(RefType t |
-    t.hasQualifiedName(namespace, type) and
+    [t, t.getSourceDeclaration()].hasQualifiedName(namespace, type) and
     if subtypes = true then result.getASourceSupertype*() = t else result = t
   )
 }
