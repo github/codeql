@@ -4,7 +4,4 @@
 
 package play.mvc;
 
-/** Any action result. */
-public class Result {
-
-}
+public class Result {}

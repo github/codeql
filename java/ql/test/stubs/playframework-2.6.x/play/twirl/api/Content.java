@@ -3,9 +3,4 @@
  */
 package play.twirl.api;
 
-/**
- * Play twirl Content result. (Part of scala)
- */
-public class Content {
-
-}
+public class Content {}

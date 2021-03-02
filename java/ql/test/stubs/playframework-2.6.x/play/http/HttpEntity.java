@@ -1,6 +1,3 @@
 package play.http;
 
-/** XML utilities. */
-public abstract class HttpEntity {
-
-}
+public abstract class HttpEntity {}

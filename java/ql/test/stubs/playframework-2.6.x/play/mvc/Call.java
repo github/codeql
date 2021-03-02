@@ -3,13 +3,4 @@
  */
 package play.mvc;
 
-/**
- * Any action result.
- */
-public class Call {
-
-    /**
-     * Retrieves the real (Scala-based) result.
-     */
-    // play.api.mvc.Result toScala();
-}
+public class Call {}

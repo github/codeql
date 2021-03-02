@@ -1,92 +1,37 @@
-/*
- * Copyright (C) Lightbend Inc. <https://www.lightbend.com>
- */
-
 package play.mvc;
 
-//import akka.stream.Materializer;
-//import akka.stream.javadsl.Sink;
-//import akka.stream.javadsl.Source;
-//import akka.util.ByteString;
 import com.fasterxml.jackson.databind.JsonNode;
+import java.io.File;
+import java.net.URI;
+import java.security.cert.X509Certificate;
+import java.time.Duration;
+import java.util.*;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
-//import play.api.i18n.Messages$;
-//import play.api.libs.json.JsValue;
-//import play.api.mvc.Headers$;
-//import play.api.mvc.request.*;
 import play.core.j.JavaContextComponents;
-//import play.core.j.JavaHelpers$;
-//import play.core.j.JavaParsers;
 import play.i18n.Lang;
 import play.i18n.Langs;
 import play.i18n.Messages;
 import play.i18n.MessagesApi;
 import play.libs.Files;
-//import play.libs.Json;
-import play.libs.XML;
 import play.libs.typedmap.TypedKey;
 import play.libs.typedmap.TypedMap;
 import play.mvc.Http.Cookie.SameSite;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.security.cert.X509Certificate;
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
-
-/** Defines HTTP standard objects. */
 public class Http {
 
-  /** The global HTTP context. */
   public static class Context {
 
     public static ThreadLocal<Context> current = new ThreadLocal<>();
 
-    /**
-     * Retrieves the current HTTP context, for the current thread.
-     *
-     * @return the context
-     */
     public static Context current() {
+      return null;
     }
 
-    //
-
-    /**
-     * Creates a new HTTP context.
-     *
-     * @param requestBuilder the HTTP request builder.
-     * @param components the context components.
-     */
     public Context(RequestBuilder requestBuilder, JavaContextComponents components) {}
 
-    /**
-     * Creates a new HTTP context.
-     *
-     * @param request the HTTP request
-     * @param components the context components.
-     */
     public Context(Request request, JavaContextComponents components) {}
 
-    /**
-     * Creates a new HTTP context.
-     *
-     * @param id the unique context ID
-     * @param header the request header
-     * @param request the request with body
-     * @param sessionData the session data extracted from the session cookie
-     * @param flashData the flash data extracted from the flash cookie
-     * @param args any arbitrary data to associate with this request context.
-     * @param components the context components.
-     */
     public Context(
         Long id,
         play.api.mvc.RequestHeader header,
@@ -94,24 +39,8 @@ public class Http {
         Map<String, String> sessionData,
         Map<String, String> flashData,
         Map<String, Object> args,
-        JavaContextComponents components) {
-    }
+        JavaContextComponents components) {}
 
-    /**
-     * Creates a new HTTP context, using the references provided.
-     *
-     * <p>Use this constructor (or withRequest) to copy a context within a Java Action to be passed
-     * to a delegate.
-     *
-     * @param id the unique context ID
-     * @param header the request header
-     * @param request the request with body
-     * @param response the response instance to use
-     * @param session the session instance to use
-     * @param flash the flash instance to use
-     * @param args any arbitrary data to associate with this request context.
-     * @param components the context components.
-     */
     public Context(
         Long id,
         play.api.mvc.RequestHeader header,
@@ -120,1409 +49,615 @@ public class Http {
         Session session,
         Flash flash,
         Map<String, Object> args,
-        JavaContextComponents components) {
+        JavaContextComponents components) {}
 
-    }
-
-    /**
-     * The context id (unique)
-     *
-     * @return the id
-     */
     public Long id() {
+      return 0L;
     }
 
-    /**
-     * Returns the current request.
-     *
-     * @return the request
-     */
     public Request request() {
+      return null;
     }
 
-    /**
-     * Returns the current response.
-     *
-     * @return the response
-     */
     public Response response() {
+      return null;
     }
 
-    /**
-     * Returns the current session.
-     *
-     * @return the session
-     */
     public Session session() {
+      return null;
     }
 
-    /**
-     * Returns the current flash scope.
-     *
-     * @return the flash scope
-     */
     public Flash flash() {
+      return null;
     }
 
-    /**
-     * The original Play request Header used to create this context. For internal usage only.
-     *
-     * @return the original request header.
-     */
     public play.api.mvc.RequestHeader _requestHeader() {
+      return null;
     }
 
-    /**
-     * The current lang
-     *
-     * @return the current lang
-     */
     public Lang lang() {
+      return null;
     }
 
-    /** @return the messages for the current lang */
     public Messages messages() {
+      return null;
     }
 
-    /**
-     * Change durably the lang for the current user.
-     *
-     * @param code New lang code to use (e.g. "fr", "en-US", etc.)
-     * @return true if the requested lang was supported by the application, otherwise false
-     */
     public boolean changeLang(String code) {
+      return true;
     }
 
-    /**
-     * Change durably the lang for the current user.
-     *
-     * @param lang New Lang object to use
-     * @return true if the requested lang was supported by the application, otherwise false
-     */
     public boolean changeLang(Lang lang) {
+      return true;
     }
 
-    /** Clear the lang for the current user. */
-    public void clearLang() {
-    }
+    public void clearLang() {}
 
     private Langs langs() {
+      return null;
     }
 
     private MessagesApi messagesApi() {
+      return null;
     }
-
-    //private scala.Option<String> sessionDomain() {
-    //}
 
     private String sessionPath() {
+      return "";
     }
 
-    /**
-     * Set the language for the current request, but don't change the language cookie. This means
-     * the language will be set for this request, but will not change for future requests.
-     *
-     * @param code the language code to set (e.g. "en-US")
-     * @throws IllegalArgumentException If the given language is not supported by the application.
-     */
-    public void setTransientLang(String code) {
-    }
+    public void setTransientLang(String code) {}
 
-    /**
-     * Set the language for the current request, but don't change the language cookie. This means
-     * the language will be set for this request, but will not change for future requests.
-     *
-     * @param lang the language to set
-     * @throws IllegalArgumentException If the given language is not supported by the application.
-     */
-    public void setTransientLang(Lang lang) {
-    }
+    public void setTransientLang(Lang lang) {}
 
-    /**
-     * Clear the language for the current request, but don't change the language cookie. This means
-     * the language will be cleared for this request (so a default will be used), but will not
-     * change for future requests.
-     */
-    public void clearTransientLang() {
-    }
+    public void clearTransientLang() {}
 
-    /** Free space to store your request specific data. */
     public Map<String, Object> args;
 
-    //public FileMimeTypes fileMimeTypes() {}
-
-    /** Import in templates to get implicit HTTP context. */
     public static class Implicit {
 
-      /**
-       * Returns the current response.
-       *
-       * @return the current response.
-       */
       public static Response response() {
+        return null;
       }
 
-      /**
-       * Returns the current request.
-       *
-       * @return the current request.
-       */
       public static Request request() {
+        return null;
       }
 
-      /**
-       * Returns the current flash scope.
-       *
-       * @return the current flash scope.
-       */
       public static Flash flash() {
+        return null;
       }
 
-      /**
-       * Returns the current session.
-       *
-       * @return the current session.
-       */
       public static Session session() {
+        return null;
       }
 
-      /**
-       * Returns the current lang.
-       *
-       * @return the current lang.
-       */
       public static Lang lang() {
+        return null;
       }
 
-      /** @return the messages for the current lang */
       public static Messages messages() {
+        return null;
       }
 
-      /**
-       * Returns the current context.
-       *
-       * @return the current context.
-       */
       public static Context ctx() {
+        return null;
       }
     }
 
-    /** @return a String representation */
     public String toString() {
+      return "";
     }
 
-    /**
-     * Create a new context with the given request.
-     *
-     * <p>The id, Scala RequestHeader, session, flash and args remain unchanged.
-     *
-     * <p>This method is intended for use within a Java action, to create a new Context to pass to a
-     * delegate action.
-     *
-     * @param request The request to create the new header from.
-     * @return The new context.
-     */
     public Context withRequest(Request request) {
+      return null;
     }
   }
-
-  /** A wrapped context. Use this to modify the context in some way. */
-  //public abstract static class WrappedContext extends Context {
-
-    /** @param wrapped the context the created instance will wrap */
-/*     public WrappedContext(Context wrapped) {
-        super(
-            wrapped.id(),
-            wrapped._requestHeader(),
-            wrapped.request(),
-            wrapped.session(),
-            wrapped.flash(),
-            wrapped.args,
-            wrapped.components);
-    }
-
-    @Override
-    public Long id() {
-    }
-
-    @Override
-    public Request request() {
-    }
-
-    @Override
-    public Response response() {
-    }
-
-    @Override
-    public Session session() {
-    }
-
-    @Override
-    public Flash flash() {
-    }
-
-    //@Override
-    //public play.api.mvc.RequestHeader _requestHeader() { }
-
-    @Override
-    public Lang lang() {
-    }
-
-    @Override
-    public boolean changeLang(String code) {
-    }
-
-    @Override
-    public boolean changeLang(Lang lang) {
-    }
-
-    @Override
-    public void clearLang() {
-    }
-  } */
 
   public static class Headers {
 
     private final Map<String, List<String>> headers;
 
-    public Headers(Map<String, List<String>> headers) {
-    }
+    public Headers(Map<String, List<String>> headers) {}
 
-    /** @return all the headers as a map. */
     public Map<String, List<String>> toMap() {
+      return null;
     }
 
-    /**
-     * Checks if the given header is present.
-     *
-     * @param headerName The name of the header (case-insensitive)
-     * @return <code>true</code> if the request did contain the header.
-     */
     public boolean contains(String headerName) {
+      return true;
     }
 
-    /**
-     * Gets the header value. If more than one value is associated with this header, then returns
-     * the first one.
-     *
-     * @param name the header name
-     * @return the first header value or empty if no value available.
-     */
     public Optional<String> get(String name) {
+      return null;
     }
 
-    /**
-     * Get all the values associated with the header name.
-     *
-     * @param name the header name.
-     * @return the list of values associates with the header of empty.
-     */
     public List<String> getAll(String name) {
+      return null;
     }
 
-    /** @return the scala version of this headers. */
-    //public play.api.mvc.Headers asScala() {}
-
-    /**
-     * Add a new header with the given value.
-     *
-     * @param name the header name
-     * @param value the header value
-     * @return this with the new header added
-     */
     public Headers addHeader(String name, String value) {
+      return null;
     }
 
-    /**
-     * Add a new header with the given values.
-     *
-     * @param name the header name
-     * @param values the header values
-     * @return this with the new header added
-     */
     public Headers addHeader(String name, List<String> values) {
+      return null;
     }
 
-    /**
-     * Remove a header.
-     *
-     * @param name the header name.
-     * @return this without the removed header.
-     */
     public Headers remove(String name) {
+      return null;
     }
   }
 
   public interface RequestHeader {
 
-    /**
-     * The complete request URI, containing both path and query string.
-     *
-     * @return the uri
-     */
     String uri();
 
-    /**
-     * The HTTP Method.
-     *
-     * @return the http method
-     */
     String method();
 
-    /**
-     * The HTTP version.
-     *
-     * @return the version
-     */
     String version();
 
-    /**
-     * The client IP address.
-     *
-     * <p>retrieves the last untrusted proxy from the Forwarded-Headers or the
-     * X-Forwarded-*-Headers.
-     *
-     * @return the remote address
-     */
     String remoteAddress();
 
-    /**
-     * Is the client using SSL?
-     *
-     * @return true that the client is using SSL
-     */
     boolean secure();
 
-    /** @return a map of typed attributes associated with the request. */
     TypedMap attrs();
 
-    /**
-     * Create a new version of this object with the given attributes attached to it.
-     *
-     * @param newAttrs The new attributes to add.
-     * @return The new version of this object with the attributes attached.
-     */
     RequestHeader withAttrs(TypedMap newAttrs);
 
-    /**
-     * Create a new versions of this object with the given attribute attached to it.
-     *
-     * @param key The new attribute key.
-     * @param value The attribute value.
-     * @param <A> the attribute type
-     * @return The new version of this object with the new attribute.
-     */
     <A> RequestHeader addAttr(TypedKey<A> key, A value);
 
-    /**
-     * Attach a body to this header.
-     *
-     * @param body The body to attach.
-     * @return A new request with the body attached to the header.
-     */
     Request withBody(RequestBody body);
 
-    /**
-     * The request host.
-     *
-     * @return the host
-     */
     String host();
 
-    /**
-     * The URI path.
-     *
-     * @return the path
-     */
     String path();
 
-    /**
-     * The Request Langs extracted from the Accept-Language header and sorted by preference
-     * (preferred first).
-     *
-     * @return the preference-ordered list of languages accepted by the client
-     */
     List<play.i18n.Lang> acceptLanguages();
 
-    /**
-     * @return The media types set in the request Accept header, sorted by preference (preferred
-     *     first)
-     */
-    //List<play.api.http.MediaRange> acceptedTypes();
-
-    /**
-     * Check if this request accepts a given media type.
-     *
-     * @param mimeType the mimeType to check for support.
-     * @return true if <code>mimeType</code> is in the Accept header, otherwise false
-     */
     boolean accepts(String mimeType);
 
-    /**
-     * The query string content.
-     *
-     * @return the query string map
-     */
     Map<String, String[]> queryString();
 
-    /**
-     * Helper method to access a queryString parameter.
-     *
-     * @param key the query string parameter to look up
-     * @return the value for the provided <code>key</code>.
-     */
     String getQueryString(String key);
 
-    /** @return the request cookies */
     Cookies cookies();
 
-    /**
-     * @param name Name of the cookie to retrieve
-     * @return the cookie, if found, otherwise null
-     */
     Cookie cookie(String name);
 
-    /**
-     * Retrieve all headers.
-     *
-     * @return the request headers for this request.
-     */
     Headers getHeaders();
 
-    /**
-     * Retrieves all headers.
-     *
-     * @return a map of of header name to headers with case-insensitive keys
-     * @deprecated Deprecated as of 2.6.0. Use {@link #getHeaders()} instead.
-     */
     @Deprecated
     default Map<String, String[]> headers() {
+      return null;
     }
 
-    /**
-     * Retrieves a single header.
-     *
-     * @param headerName The name of the header (case-insensitive)
-     * @return the value corresponding to <code>headerName</code>, or null if it was not present
-     * @deprecated Deprecated as of 2.6.0. Use {@link #header(String)} ()} instead.
-     */
     @Deprecated
     default String getHeader(String headerName) {
+      return "";
     }
 
-    /**
-     * Retrieves a single header.
-     *
-     * @param headerName The name of the header (case-insensitive)
-     * @return the value corresponding to <code>headerName</code>, or empty if it was not present
-     */
     default Optional<String> header(String headerName) {
+      return null;
     }
 
-    /**
-     * Checks if the request has the header.
-     *
-     * @param headerName The name of the header (case-insensitive)
-     * @return <code>true</code> if the request did contain the header.
-     */
     default boolean hasHeader(String headerName) {
+      return true;
     }
 
-    /**
-     * Checks if the request has a body.
-     *
-     * @return true if request has a body, false otherwise.
-     */
     boolean hasBody();
 
-    /**
-     * Get the content type of the request.
-     *
-     * @return The request content type excluding the charset, if it exists.
-     */
     Optional<String> contentType();
 
-    /**
-     * Get the charset of the request.
-     *
-     * @return The request charset, which comes from the content type header, if it exists.
-     */
     Optional<String> charset();
 
-    /**
-     * The X509 certificate chain presented by a client during SSL requests.
-     *
-     * @return The chain of X509Certificates used for the request if the request is secure and the
-     *     server supports it.
-     */
     Optional<List<X509Certificate>> clientCertificateChain();
 
-    /**
-     * @return the tags for the request
-     * @deprecated Use <code>attr</code>, <code>withAttr</code>, etc.
-     */
     @Deprecated
     Map<String, String> tags();
-
-    /**
-     * For internal Play-use only
-     *
-     * @return the underlying request
-     * @deprecated As of release 2.6.0. Use {@link #asScala()}
-     */
-    //@Deprecated
-    //play.api.mvc.RequestHeader _underlyingHeader();
-
-    /**
-     * Return the Scala version of the request header.
-     *
-     * @return the Scala version for this request header.
-     * @see play.api.mvc.RequestHeader
-     */
-    //play.api.mvc.RequestHeader asScala();
   }
 
-  /** An HTTP request. */
   public interface Request extends RequestHeader {
 
-    /**
-     * The request body.
-     *
-     * @return the body
-     */
     RequestBody body();
 
     Request withBody(RequestBody body);
 
-    // Override return type
     Request withAttrs(TypedMap newAttrs);
 
-    // Override return type
     <A> Request addAttr(TypedKey<A> key, A value);
 
-    /**
-     * The user name for this request, if defined. This is usually set by annotating your Action
-     * with <code>@Authenticated</code>.
-     *
-     * @return the username
-     * @deprecated As of release 2.6, use <code>attrs.get(Security.USERNAME)</code> or <code>
-     *     attrs.getOptional(Security.USERNAME)</code>.
-     */
     @Deprecated
     String username();
 
-    /**
-     * Returns a request updated with specified user name
-     *
-     * @param username the new user name
-     * @return a copy of the request containing the specified user name
-     * @deprecated As of release 2.6, use <code>
-     *     req.withAttrs(req.attrs().put(Security.USERNAME, username))</code>.
-     */
     @Deprecated
     Request withUsername(String username);
-
-    /**
-     * For internal Play-use only
-     *
-     * @return the underlying request
-     * @deprecated As of release 2.6.0. Use {@link #asScala()}
-     */
-    //@Deprecated
-    //play.api.mvc.Request<RequestBody> _underlyingRequest();
-
-    /**
-     * Return the Scala version of the request
-     *
-     * @return the underlying request.
-     * @see play.api.mvc.Request
-     */
-    //play.api.mvc.Request<RequestBody> asScala();
   }
 
-  /** An HTTP request. */
   public static class RequestImpl extends play.core.j.RequestImpl {
 
-    /**
-     * Constructor only based on a header.
-     *
-     * @param header the header from a request
-     */
     public RequestImpl(play.api.mvc.RequestHeader header) {}
 
-    /**
-     * Constructor with a requestbody.
-     *
-     * @param request the body of the request
-     */
     public RequestImpl(play.api.mvc.Request<RequestBody> request) {}
   }
 
-  /** The builder for building a request. */
   public static class RequestBuilder {
 
-    //protected play.api.mvc.Request<RequestBody> req;
+    public RequestBuilder() {}
 
-    /**
-     * Returns a simple request builder. The initial request is "GET / HTTP/1.1" from 127.0.0.1 over
-     * an insecure connection. The request is created using the default factory.
-     */
-    public RequestBuilder() {
-    }
-
-    /**
-     * Returns a simple request builder. The initial request is "GET / HTTP/1.1" from 127.0.0.1 over
-     * an insecure connection. The request is created using the given factory.
-     *
-     * @param requestFactory the incoming request factory
-     */
-    //public RequestBuilder(RequestFactory requestFactory) {}
-
-    /** @return the request body, if a previously the body has been set */
     public RequestBody body() {
+      return null;
     }
 
-    /**
-     * Get the username. This method calls <code>attrs().getOptional(Security.USERNAME)</code>.
-     *
-     * @return the username or null
-     * @deprecated Use <code>attrs().get(Security.USERNAME)</code> or <code>
-     *     attrs().getOptional(Security.USERNAME)</code> instead.
-     */
     @Deprecated
     public String username() {
+      return "";
     }
 
-    /**
-     * Set the username. This method calls <code>attr(Security.USERNAME, username)</code>.
-     *
-     * @param username the username for the request
-     * @return the modified builder
-     * @deprecated Use <code>attr(Security.USERNAME, username)</code> instead.
-     */
     @Deprecated
     public RequestBuilder username(String username) {
+      return null;
     }
 
-    /**
-     * Set the body of the request.
-     *
-     * @param body the body
-     * @param contentType Content-Type header value
-     * @return the modified builder
-     */
     protected RequestBuilder body(RequestBody body, String contentType) {
+      return null;
     }
 
-    /**
-     * Set the body of the request.
-     *
-     * @param body The body.
-     * @return the modified builder
-     */
     protected RequestBuilder body(RequestBody body) {
+      return null;
     }
 
-    /**
-     * Set a Binary Data to this request using a singleton temp file creator The
-     * <tt>Content-Type</tt> header of the request is set to <tt>application/octet-stream</tt>.
-     *
-     * @param data the Binary Data
-     * @return the modified builder
-     */
-    public RequestBuilder bodyRaw(/*ByteString*/String data) {
+    public RequestBuilder bodyRaw(String data) {
+      return null;
     }
 
-    /**
-     * Set a Binary Data to this request. The <tt>Content-Type</tt> header of the request is set to
-     * <tt>application/octet-stream</tt>.
-     *
-     * @param data the Binary Data
-     * @param tempFileCreator the temporary file creator for binary data.
-     * @return the modified builder
-     */
-    public RequestBuilder bodyRaw(/* ByteString */String data, Files.TemporaryFileCreator tempFileCreator) {
+    public RequestBuilder bodyRaw(String data, Files.TemporaryFileCreator tempFileCreator) {
+      return null;
     }
 
-    /**
-     * Set a Binary Data to this request using a singleton temporary file creator. The
-     * <tt>Content-Type</tt> header of the request is set to <tt>application/octet-stream</tt>.
-     *
-     * @param data the Binary Data
-     * @return the modified builder
-     */
     public RequestBuilder bodyRaw(byte[] data) {
+      return null;
     }
 
-    /**
-     * Set a Binary Data to this request. The <tt>Content-Type</tt> header of the request is set to
-     * <tt>application/octet-stream</tt>.
-     *
-     * @param data the Binary Data
-     * @param tempFileCreator the temporary file creator for binary data.
-     * @return the modified builder
-     */
     public RequestBuilder bodyRaw(byte[] data, Files.TemporaryFileCreator tempFileCreator) {
+      return null;
     }
 
-    /**
-     * Set a Form url encoded body to this request.
-     *
-     * @param data the x-www-form-urlencoded parameters
-     * @return the modified builder
-     */
     public RequestBuilder bodyFormArrayValues(Map<String, String[]> data) {
+      return null;
     }
 
-    /**
-     * Set a Form url encoded body to this request.
-     *
-     * @param data the x-www-form-urlencoded parameters
-     * @return the modified builder
-     */
     public RequestBuilder bodyForm(Map<String, String> data) {
+      return null;
     }
 
-    /**
-     * Set a Multipart Form url encoded body to this request.
-     *
-     * @param data the multipart-form parameters
-     * @param temporaryFileCreator the temporary file creator.
-     * @param mat a Akka Streams Materializer
-     * @return the modified builder
-     */
     public RequestBuilder bodyMultipart(
-        /*List<MultipartFormData.Part<Source<ByteString, ?>>>*/List<String> data,
-        Files.TemporaryFileCreator temporaryFileCreator,
-        /*Materializer*/String mat) {
+        List<String> data, Files.TemporaryFileCreator temporaryFileCreator, String mat) {
+      return null;
     }
 
-    /**
-     * Set a Json Body to this request. The <tt>Content-Type</tt> header of the request is set to
-     * <tt>application/json</tt>.
-     *
-     * @param node the Json Node
-     * @return this builder, updated
-     */
     public RequestBuilder bodyJson(JsonNode node) {
+      return null;
     }
 
-    /**
-     * Set a Json Body to this request. The <tt>Content-Type</tt> header of the request is set to
-     * <tt>application/json</tt>.
-     *
-     * @param json the JsValue
-     * @return the modified builder
-     */
-    public RequestBuilder bodyJson(/* JsValue */String json) {
+    public RequestBuilder bodyJson(String json) {
+      return null;
     }
 
-    /**
-     * Set a XML to this request. The <tt>Content-Type</tt> header of the request is set to
-     * <tt>application/xml</tt>.
-     *
-     * @param xml the XML
-     * @return the modified builder
-     */
     public RequestBuilder bodyXml(InputSource xml) {
+      return null;
     }
 
-    /**
-     * Set a XML to this request.
-     *
-     * <p>The <tt>Content-Type</tt> header of the request is set to <tt>application/xml</tt>.
-     *
-     * @param xml the XML
-     * @return the modified builder
-     */
     public RequestBuilder bodyXml(Document xml) {
+      return null;
     }
 
-    /**
-     * Set a Text to this request. The <tt>Content-Type</tt> header of the request is set to
-     * <tt>text/plain</tt>.
-     *
-     * @param text the text
-     * @return this builder, updated
-     */
     public RequestBuilder bodyText(String text) {
+      return null;
     }
 
-    /**
-     * Builds the request.
-     *
-     * @return a build of the given parameters
-     */
     public RequestImpl build() {
+      return null;
     }
 
-    // -------------------
-    // REQUEST HEADER CODE
-
-    /** @return the id of the request */
     public Long id() {
+      return 0L;
     }
 
-    /**
-     * @param id the id to be used
-     * @return the builder instance
-     */
     public RequestBuilder id(Long id) {
+      return null;
     }
 
-    /**
-     * Add an attribute to the request.
-     *
-     * @param key The key of the attribute to add.
-     * @param value The value of the attribute to add.
-     * @param <T> The type of the attribute to add.
-     * @return the request builder with extra attribute
-     */
     public <T> RequestBuilder attr(TypedKey<T> key, T value) {
+      return null;
     }
 
-    /**
-     * Update the request attributes. This replaces all existing attributes.
-     *
-     * @param newAttrs The attribute entries to add.
-     * @return the request builder with extra attributes set.
-     */
     public RequestBuilder attrs(TypedMap newAttrs) {
+      return null;
     }
 
-    /**
-     * Get the request attributes.
-     *
-     * @return the request builder's request attributes.
-     */
     public TypedMap attrs() {
+      return null;
     }
 
-    /**
-     * @return the tags for the request
-     * @deprecated Use typed attributes, i.e. <code>attrs()</code>, instead.
-     */
     @Deprecated
     public Map<String, String> tags() {
+      return null;
     }
 
-    /**
-     * @param tags overwrites the tags for this request
-     * @return the builder instance
-     * @deprecated Use <code>attrs(...)</code> instead.
-     */
     @Deprecated
     public RequestBuilder tags(Map<String, String> tags) {
+      return null;
     }
 
-    /**
-     * Puts an extra tag.
-     *
-     * @param key the key for the tag
-     * @param value the value for the tag
-     * @return the builder
-     * @deprecated Use <code>attr(key, value)</code> instead.
-     */
     @Deprecated
     public RequestBuilder tag(String key, String value) {
+      return null;
     }
 
-    /** @return the builder instance. */
     public String method() {
+      return "";
     }
 
-    /**
-     * @param method sets the method
-     * @return the builder instance
-     */
     public RequestBuilder method(String method) {
+      return null;
     }
 
-    /** @return gives the uri of the request */
     public String uri() {
+      return "";
     }
 
     public RequestBuilder uri(URI uri) {
+      return null;
     }
 
-    /**
-     * Sets the uri.
-     *
-     * @param str the uri
-     * @return the builder instance
-     */
     public RequestBuilder uri(String str) {
+      return null;
     }
 
-    /**
-     * @param secure true if the request is secure
-     * @return the builder instance
-     */
     public RequestBuilder secure(boolean secure) {
+      return null;
     }
 
-    /** @return the status if the request is secure */
     public boolean secure() {
+      return true;
     }
 
-    /** @return the host name from the header */
     public String host() {
+      return "";
     }
 
-    /**
-     * @param host sets the host in the header
-     * @return the builder instance
-     */
     public RequestBuilder host(String host) {
+      return null;
     }
 
-    /** @return the raw path of the uri */
     public String path() {
+      return "";
     }
 
-    /**
-     * This method sets the path of the uri.
-     *
-     * @param path the path after the port and for the query in a uri
-     * @return the builder instance
-     */
     public RequestBuilder path(String path) {
-      // Update URI with new path element
+      return null;
     }
 
-    /** @return the version */
     public String version() {
+      return "";
     }
 
-    /**
-     * @param version the version
-     * @return the builder instance
-     */
     public RequestBuilder version(String version) {
+      return null;
     }
 
-    /**
-     * @param key the key to be used in the header
-     * @return the value associated with the key, if multiple, the first, if none returns null
-     * @deprecated As of release 2.6, use {@link #getHeaders()} instead.
-     */
     @Deprecated
     public String header(String key) {
+      return "";
     }
 
-    /**
-     * @param key the key to be used in the header
-     * @return all values (could be 0) associated with the key
-     * @deprecated As of release 2.6, use {@link #getHeaders()} instead.
-     */
     @Deprecated
     public String[] headers(String key) {
+      return null;
     }
 
-    /**
-     * @return the headers
-     * @deprecated As of release 2.6, use {@link #getHeaders()} instead.
-     */
     @Deprecated
     public Map<String, String[]> headers() {
+      return null;
     }
 
-    /** @return the headers for this request builder */
     public Headers getHeaders() {
+      return null;
     }
 
-    /**
-     * @param headers the headers to be replaced
-     * @return the builder instance
-     * @deprecated As of release 2.6, use {@link #headers(Headers)} instead.
-     */
     @Deprecated
     public RequestBuilder headers(Map<String, String[]> headers) {
+      return null;
     }
 
-    /**
-     * Set the headers to be used by the request builder.
-     *
-     * @param headers the headers to be replaced
-     * @return the builder instance
-     */
     public RequestBuilder headers(Headers headers) {
+      return null;
     }
 
-    /**
-     * @param key the key for in the header
-     * @param values the values associated with the key
-     * @return the builder instance
-     * @deprecated As of release 2.6, use {@link #header(String, List)} instead.
-     */
     @Deprecated
     public RequestBuilder header(String key, String[] values) {
+      return null;
     }
 
-    /**
-     * @param key the key for in the header
-     * @param values the values associated with the key
-     * @return the builder instance
-     */
     public RequestBuilder header(String key, List<String> values) {
+      return null;
     }
 
-    /**
-     * @param key the key for in the header
-     * @param value the value (one) associated with the key
-     * @return the builder instance
-     */
     public RequestBuilder header(String key, String value) {
+      return null;
     }
 
-    /** @return the cookies in Java instances */
     public Cookies cookies() {
+      return null;
     }
 
-    /**
-     * Sets one cookie.
-     *
-     * @param cookie the cookie to be set
-     * @return the builder instance
-     */
     public RequestBuilder cookie(Cookie cookie) {
+      return null;
     }
 
-    /** @return the cookies in a Java map */
     public Map<String, String> flash() {
+      return null;
     }
 
-    /**
-     * Sets a cookie in the request.
-     *
-     * @param key the key for the cookie
-     * @param value the value for the cookie
-     * @return the builder instance
-     */
     public RequestBuilder flash(String key, String value) {
-
+      return null;
     }
 
-    /**
-     * Sets cookies in a request.
-     *
-     * @param data a key value mapping of cookies
-     * @return the builder instance
-     */
     public RequestBuilder flash(Map<String, String> data) {
-
+      return null;
     }
 
-    /** @return the sessions in the request */
     public Map<String, String> session() {
+      return null;
     }
 
-    /**
-     * Sets a session.
-     *
-     * @param key the key for the session
-     * @param value the value associated with the key for the session
-     * @return the builder instance
-     */
     public RequestBuilder session(String key, String value) {
+      return null;
     }
 
-    /**
-     * Sets all parameters for the session.
-     *
-     * @param data a key value mapping of the session data
-     * @return the builder instance
-     */
     public RequestBuilder session(Map<String, String> data) {
+      return null;
     }
 
-    /** @return the remote address */
     public String remoteAddress() {
+      return "";
     }
 
-    /**
-     * @param remoteAddress sets the remote address
-     * @return the builder instance
-     */
     public RequestBuilder remoteAddress(String remoteAddress) {
+      return null;
     }
 
-    /** @return the client X509Certificates if they have been set */
     public Optional<List<X509Certificate>> clientCertificateChain() {
+      return null;
     }
 
-    /**
-     * @param clientCertificateChain sets the X509Certificates to use
-     * @return the builder instance
-     */
     public RequestBuilder clientCertificateChain(List<X509Certificate> clientCertificateChain) {
+      return null;
     }
   }
 
-  /** Handle the request body a raw bytes data. */
   public abstract static class RawBuffer {
 
-    /**
-     * Buffer size.
-     *
-     * @return the buffer size
-     */
     public abstract Long size();
 
-    /**
-     * Returns the buffer content as a bytes array.
-     *
-     * @param maxLength The max length allowed to be stored in memory
-     * @return null if the content is too big to fit in memory
-     */
-    //public abstract ByteString asBytes(int maxLength);
-
-    /**
-     * Returns the buffer content as a bytes array
-     *
-     * @return the bytes
-     */
-    //public abstract ByteString asBytes();
-
-    /**
-     * Returns the buffer content as File
-     *
-     * @return the file
-     */
     public abstract File asFile();
   }
 
-  /** Multipart form data body. */
   public abstract static class MultipartFormData<A> {
 
-    /** Info about a file part */
     public static class FileInfo {
-      public FileInfo(String key, String filename, String contentType) {
-      }
+      public FileInfo(String key, String filename, String contentType) {}
 
       public String getKey() {
+        return "";
       }
 
       public String getFilename() {
+        return "";
       }
 
       public String getContentType() {
+        return "";
       }
     }
 
     public interface Part<A> {}
 
-    /** A file part. */
     public static class FilePart<A> implements Part<A> {
 
-      public FilePart(String key, String filename, String contentType, A file) {
-      }
+      public FilePart(String key, String filename, String contentType, A file) {}
 
-      /**
-       * The part name.
-       *
-       * @return the part name
-       */
       public String getKey() {
+        return "";
       }
 
-      /**
-       * The file name.
-       *
-       * @return the file name
-       */
       public String getFilename() {
+        return "";
       }
 
-      /**
-       * The file Content-Type
-       *
-       * @return the content type
-       */
       public String getContentType() {
+        return "";
       }
 
-      /**
-       * The File.
-       *
-       * @return the file
-       */
       public A getFile() {
+        return null;
       }
     }
 
-    public static class DataPart /*implements Part<Source<ByteString, ?>>*/ {
+    public static class DataPart {
 
-      public DataPart(String key, String value) {
-      }
+      public DataPart(String key, String value) {}
 
-      /**
-       * The part name.
-       *
-       * @return the part name
-       */
       public String getKey() {
+        return "";
       }
 
-      /**
-       * The part value.
-       *
-       * @return the part value
-       */
       public String getValue() {
+        return "";
       }
     }
 
-    /**
-     * Extract the data parts as Form url encoded.
-     *
-     * @return the data that was URL encoded
-     */
     public abstract Map<String, String[]> asFormUrlEncoded();
 
-    /**
-     * Retrieves all file parts.
-     *
-     * @return the file parts
-     */
     public abstract List<FilePart<A>> getFiles();
 
-    /**
-     * Access a file part.
-     *
-     * @param key name of the file part to access
-     * @return the file part specified by key
-     */
     public FilePart<A> getFile(String key) {
+      return null;
     }
   }
 
-  /** The request body. */
   public static final class RequestBody {
 
-    public RequestBody(Object body) {
-    }
+    public RequestBody(Object body) {}
 
-    /**
-     * The request content parsed as multipart form data.
-     *
-     * @param <A> the file type (e.g. play.api.libs.Files.TemporaryFile)
-     * @return the content parsed as multipart form data
-     */
     public <A> MultipartFormData<A> asMultipartFormData() {
+      return null;
     }
 
-    /**
-     * The request content parsed as URL form-encoded.
-     *
-     * @return the request content parsed as URL form-encoded.
-     */
     public Map<String, String[]> asFormUrlEncoded() {
+      return null;
     }
 
-    /**
-     * The request content as Array bytes.
-     *
-     * @return The request content as Array bytes.
-     */
     public RawBuffer asRaw() {
+      return null;
     }
 
-    /**
-     * The request content as text.
-     *
-     * @return The request content as text.
-     */
     public String asText() {
+      return "";
     }
 
-    /**
-     * The request content as XML.
-     *
-     * @return The request content as XML.
-     */
     public Document asXml() {
+      return null;
     }
 
-    /**
-     * The request content as Json.
-     *
-     * @return The request content as Json.
-     */
     public JsonNode asJson() {
+      return null;
     }
-
-    /**
-     * The request content as a ByteString.
-     *
-     * <p>This makes a best effort attempt to convert the parsed body to a ByteString, if it knows
-     * how. This includes String, json, XML and form bodies. It doesn't include multipart/form-data
-     * or raw bodies that don't fit in the configured max memory buffer, nor does it include custom
-     * output types from custom body parsers.
-     *
-     * @return the request content as a ByteString
-     */
-    //public ByteString asBytes() {}
 
     private String encode(String value) {
+      return "";
     }
 
-    /**
-     * Cast this RequestBody as T if possible.
-     *
-     * @param tType class that we are trying to cast the body as
-     * @param <T> type of the provided <code>tType</code>
-     * @return either a successful cast into T or null
-     */
     public <T> T as(Class<T> tType) {
+      return null;
     }
 
     public String toString() {
+      return "";
     }
   }
 
-  /** The HTTP response. */
   public static class Response implements HeaderNames {
 
-    /**
-     * Adds a new header to the response.
-     *
-     * @param name The name of the header, must not be null
-     * @param value The value of the header, must not be null
-     */
-    public void setHeader(String name, String value) {
-    }
+    public void setHeader(String name, String value) {}
 
-    /**
-     * Gets the current response headers.
-     *
-     * @return the current response headers.
-     */
     public Map<String, String> getHeaders() {
+      return null;
     }
 
-    /**
-     * @deprecated noop. Use {@link Result#as(String)} instead.
-     * @param contentType Deprecated
-     */
     @Deprecated
     public void setContentType(String contentType) {}
 
-    /**
-     * Set a new cookie.
-     *
-     * @param name Cookie name, must not be null
-     * @param value Cookie value
-     * @param maxAge Cookie duration in seconds (null for a transient cookie, 0 or less for one that
-     *     expires now)
-     * @param path Cookie path
-     * @param domain Cookie domain
-     * @param secure Whether the cookie is secured (for HTTPS requests)
-     * @param httpOnly Whether the cookie is HTTP only (i.e. not accessible from client-side
-     *     JavaScript code)
-     * @param sameSite The SameSite value (Strict or Lax)
-     * @deprecated Use {@link #setCookie(Http.Cookie)} instead.
-     */
     @Deprecated
     public void setCookie(
         String name,
@@ -1532,146 +667,75 @@ public class Http {
         String domain,
         boolean secure,
         boolean httpOnly,
-        SameSite sameSite) {
-    }
+        SameSite sameSite) {}
 
-    /**
-     * Set a new cookie.
-     *
-     * @param cookie to set
-     */
-    public void setCookie(Cookie cookie) {
-    }
+    public void setCookie(Cookie cookie) {}
 
-    /**
-     * Discard a cookie on the default path ("/") with no domain and that's not secure.
-     *
-     * @param name The name of the cookie to discard, must not be null
-     */
-    public void discardCookie(String name) {
-    }
+    public void discardCookie(String name) {}
 
-    /**
-     * Discard a cookie on the given path with no domain and not that's secure.
-     *
-     * @param name The name of the cookie to discard, must not be null
-     * @param path The path of the cookie te discard, may be null
-     */
-    public void discardCookie(String name, String path) {
-    }
+    public void discardCookie(String name, String path) {}
 
-    /**
-     * Discard a cookie on the given path and domain that's not secure.
-     *
-     * @param name The name of the cookie to discard, must not be null
-     * @param path The path of the cookie te discard, may be null
-     * @param domain The domain of the cookie to discard, may be null
-     */
-    public void discardCookie(String name, String path, String domain) {
-    }
+    public void discardCookie(String name, String path, String domain) {}
 
-    /**
-     * Discard a cookie in this result
-     *
-     * @param name The name of the cookie to discard, must not be null
-     * @param path The path of the cookie te discard, may be null
-     * @param domain The domain of the cookie to discard, may be null
-     * @param secure Whether the cookie to discard is secure
-     */
-    public void discardCookie(String name, String path, String domain, boolean secure) {
-    }
+    public void discardCookie(String name, String path, String domain, boolean secure) {}
 
     public Collection<Cookie> cookies() {
+      return null;
     }
 
     public Optional<Cookie> cookie(String name) {
+      return null;
     }
   }
 
-  /**
-   * HTTP Session.
-   *
-   * <p>Session data are encoded into an HTTP cookie, and can only contain simple <code>String
-   * </code> values.
-   */
   public static class Session extends HashMap<String, String> {
 
     public boolean isDirty = false;
 
-    public Session(Map<String, String> data) {
-    }
+    public Session(Map<String, String> data) {}
 
-    /** Removes the specified value from the session. */
     @Override
     public String remove(Object key) {
+      return "";
     }
 
-    /** Adds the given value to the session. */
     @Override
     public String put(String key, String value) {
+      return "";
     }
 
-    /** Adds the given values to the session. */
     @Override
-    public void putAll(Map<? extends String, ? extends String> values) {
-    }
+    public void putAll(Map<? extends String, ? extends String> values) {}
 
-    /** Clears the session. */
     @Override
-    public void clear() {
-    }
+    public void clear() {}
   }
 
-  /**
-   * HTTP Flash.
-   *
-   * <p>Flash data are encoded into an HTTP cookie, and can only contain simple String values.
-   */
   public static class Flash extends HashMap<String, String> {
 
     public boolean isDirty = false;
 
-    public Flash(Map<String, String> data) {
-    }
+    public Flash(Map<String, String> data) {}
 
-    /** Removes the specified value from the flash scope. */
     @Override
     public String remove(Object key) {
+      return "";
     }
 
-    /** Adds the given value to the flash scope. */
     @Override
     public String put(String key, String value) {
+      return "";
     }
 
-    /** Adds the given values to the flash scope. */
     @Override
-    public void putAll(Map<? extends String, ? extends String> values) {
-    }
+    public void putAll(Map<? extends String, ? extends String> values) {}
 
-    /** Clears the flash scope. */
     @Override
-    public void clear() {
-    }
+    public void clear() {}
   }
 
-  /** HTTP Cookie */
   public static class Cookie {
-    /**
-     * Construct a new cookie. Prefer {@link Cookie#builder} for creating new cookies in your
-     * application.
-     *
-     * @param name Cookie name, must not be null
-     * @param value Cookie value
-     * @param maxAge Cookie duration in seconds (null for a transient cookie, 0 or less for one that
-     *     expires now)
-     * @param path Cookie path
-     * @param domain Cookie domain
-     * @param secure Whether the cookie is secured (for HTTPS requests)
-     * @param httpOnly Whether the cookie is HTTP only (i.e. not accessible from client-side
-     *     JavaScript code)
-     * @param sameSite the SameSite attribute for this cookie (for CSRF protection).
-     */
+
     public Cookie(
         String name,
         String value,
@@ -1680,21 +744,8 @@ public class Http {
         String domain,
         boolean secure,
         boolean httpOnly,
-        SameSite sameSite) {
-    }
+        SameSite sameSite) {}
 
-    /**
-     * @param name Cookie name, must not be null
-     * @param value Cookie value
-     * @param maxAge Cookie duration in seconds (null for a transient cookie, 0 or less for one that
-     *     expires now)
-     * @param path Cookie path
-     * @param domain Cookie domain
-     * @param secure Whether the cookie is secured (for HTTPS requests)
-     * @param httpOnly Whether the cookie is HTTP only (i.e. not accessible from client-side
-     *     JavaScript code)
-     * @deprecated as of 2.6.0. Use {@link Cookie#builder}.
-     */
     @Deprecated
     public Cookie(
         String name,
@@ -1703,55 +754,40 @@ public class Http {
         String path,
         String domain,
         boolean secure,
-        boolean httpOnly) {
-    }
+        boolean httpOnly) {}
 
-    /**
-     * @param name the cookie builder name
-     * @param value the cookie builder value
-     * @return the cookie builder with the specified name and value
-     */
-    public static CookieBuilder builder(String name, String value) {
-    }
+    public static CookieBuilder builder(String name, String value) {}
 
-    /** @return the cookie name */
     public String name() {
+      return "";
     }
 
-    /** @return the cookie value */
     public String value() {
+      return "";
     }
 
-    /**
-     * @return the cookie expiration date in seconds, null for a transient cookie, a value less than
-     *     zero for a cookie that expires now
-     */
     public Integer maxAge() {
+      return 0;
     }
 
-    /** @return the cookie path */
     public String path() {
+      return "";
     }
 
-    /** @return the cookie domain, or null if not defined */
     public String domain() {
+      return "";
     }
 
-    /** @return wether the cookie is secured, sent only for HTTPS requests */
     public boolean secure() {
+      return true;
     }
 
-    /**
-     * @return wether the cookie is HTTP only, i.e. not accessible from client-side JavaScript code
-     */
     public boolean httpOnly() {
+      return true;
     }
 
-    /** @return the SameSite attribute for this cookie */
-    public Optional<SameSite> sameSite() {
-    }
+    public Optional<SameSite> sameSite() {}
 
-    /** The cookie SameSite attribute */
     public enum SameSite {
       STRICT("Strict"),
       LAX("Lax"),
@@ -1759,123 +795,66 @@ public class Http {
 
       private final String value;
 
-      SameSite(String value) {
-      }
+      SameSite(String value) {}
 
       public String value() {
+        return "";
       }
-
-      //public play.api.mvc.Cookie.SameSite asScala() {}
 
       public static Optional<SameSite> parse(String sameSite) {
+        return null;
       }
     }
-
-    //public play.api.mvc.Cookie asScala() {}
   }
-
-  /*
-   * HTTP Cookie builder
-   */
 
   public static class CookieBuilder {
 
+    private CookieBuilder(String name, String value) {}
 
-    /**
-     * @param name the cookie builder name
-     * @param value the cookie builder value
-     * @return the cookie builder with the specified name and value
-     */
-    private CookieBuilder(String name, String value) {
-    }
-
-    /**
-     * @param name The name of the cookie
-     * @return the cookie builder with the new name
-     */
     public CookieBuilder withName(String name) {
+      return null;
     }
 
-    /**
-     * @param value The value of the cookie
-     * @return the cookie builder with the new value
-     */
     public CookieBuilder withValue(String value) {
+      return null;
     }
 
-    /**
-     * @param maxAge The maxAge of the cookie in seconds
-     * @return the cookie builder with the new maxAge
-     * @deprecated As of 2.6.0, use withMaxAge(Duration) instead.
-     */
     @Deprecated
-    public CookieBuilder withMaxAge(Integer maxAge) {
-    }
+    public CookieBuilder withMaxAge(Integer maxAge) {}
 
-    /**
-     * Set the maximum age of the cookie.
-     *
-     * <p>For example, to set a maxAge of 40 days: <code>
-     * builder.withMaxAge(Duration.of(40, ChronoUnit.DAYS))</code>
-     *
-     * @param maxAge a duration representing the maximum age of the cookie. Will be truncated to the
-     *     nearest second.
-     * @return the cookie builder with the new maxAge
-     */
     public CookieBuilder withMaxAge(Duration maxAge) {
+      return null;
     }
 
-    /**
-     * @param path The path of the cookie
-     * @return the cookie builder with the new path
-     */
     public CookieBuilder withPath(String path) {
+      return null;
     }
 
-    /**
-     * @param domain The domain of the cookie
-     * @return the cookie builder with the new domain
-     */
     public CookieBuilder withDomain(String domain) {
+      return null;
     }
 
-    /**
-     * @param secure specify if the cookie is secure
-     * @return the cookie builder with the new is secure flag
-     */
     public CookieBuilder withSecure(boolean secure) {
+      return null;
     }
 
-    /**
-     * @param httpOnly specify if the cookie is httpOnly
-     * @return the cookie builder with the new is httpOnly flag
-     */
     public CookieBuilder withHttpOnly(boolean httpOnly) {
+      return null;
     }
 
-    /**
-     * @param sameSite specify if the cookie is SameSite
-     * @return the cookie builder with the new SameSite flag
-     */
     public CookieBuilder withSameSite(SameSite sameSite) {
+      return null;
     }
 
-    /** @return a new cookie with the current builder parameters */
     public Cookie build() {
+      return null;
     }
   }
 
-  /** HTTP Cookies set */
   public interface Cookies extends Iterable<Cookie> {
 
-    /**
-     * @param name Name of the cookie to retrieve
-     * @return the cookie that is associated with the given name
-     */
     Cookie get(String name);
   }
-
-  /** Defines all standard HTTP headers. */
 
   public interface HeaderNames {
 
@@ -1958,12 +937,6 @@ public class Http {
     String REFERRER_POLICY = "Referrer-Policy";
   }
 
-  /**
-   * Defines all standard HTTP status codes.
-   *
-   * @see <a href="https://tools.ietf.org/html/rfc7231">RFC 7231</a> and <a
-   *     href="https://tools.ietf.org/html/rfc6585">RFC 6585</a>
-   */
   public interface Status {
     int CONTINUE = 100;
     int SWITCHING_PROTOCOLS = 101;
@@ -2027,41 +1000,29 @@ public class Http {
     int NETWORK_AUTHENTICATION_REQUIRED = 511;
   }
 
-  /** Common HTTP MIME types */
   public interface MimeTypes {
 
-    /** Content-Type of text. */
     String TEXT = "text/plain";
 
-    /** Content-Type of html. */
     String HTML = "text/html";
 
-    /** Content-Type of json. */
     String JSON = "application/json";
 
-    /** Content-Type of xml. */
     String XML = "application/xml";
 
-    /** Content-Type of xhtml. */
     String XHTML = "application/xhtml+xml";
 
-    /** Content-Type of css. */
     String CSS = "text/css";
 
-    /** Content-Type of javascript. */
     String JAVASCRIPT = "application/javascript";
 
-    /** Content-Type of form-urlencoded. */
     String FORM = "application/x-www-form-urlencoded";
 
-    /** Content-Type of server sent events. */
     String EVENT_STREAM = "text/event-stream";
 
-    /** Content-Type of binary data. */
     String BINARY = "application/octet-stream";
   }
 
-  /** Standard HTTP Verbs */
   public interface HttpVerbs {
     String GET = "GET";
     String POST = "POST";
