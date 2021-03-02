@@ -330,4 +330,81 @@ private module CryptographyModel {
       override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
     }
   }
+
+  /** Provides models for the `cryptography.hazmat.primitives.hashes` package */
+  private module Hashes {
+    /**
+     * Gets a reference to a `cryptography.hazmat.primitives.hashes` class, representing
+     * a hashing algorithm.
+     */
+    API::Node algorithmClassRef(string algorithmName) {
+      result =
+        API::moduleImport("cryptography")
+            .getMember("hazmat")
+            .getMember("primitives")
+            .getMember("hashes")
+            .getMember(algorithmName)
+    }
+
+    /** Gets a reference to a Hash instance using algorithm with `algorithmName`. */
+    private DataFlow::LocalSourceNode hashInstance(DataFlow::TypeTracker t, string algorithmName) {
+      t.start() and
+      exists(DataFlow::CallCfgNode call | result = call |
+        call =
+          API::moduleImport("cryptography")
+              .getMember("hazmat")
+              .getMember("primitives")
+              .getMember("hashes")
+              .getMember("Hash")
+              .getACall() and
+        algorithmClassRef(algorithmName).getReturn().getAUse() in [
+            call.getArg(0), call.getArgByName("algorithm")
+          ]
+      )
+      or
+      // Due to bad performance when using normal setup with `hashInstance(t2, algorithmName).track(t2, t)`
+      // we have inlined that code and forced a join
+      exists(DataFlow::TypeTracker t2 |
+        exists(DataFlow::StepSummary summary |
+          hashInstance_first_join(t2, algorithmName, result, summary) and
+          t = t2.append(summary)
+        )
+      )
+    }
+
+    pragma[nomagic]
+    private predicate hashInstance_first_join(
+      DataFlow::TypeTracker t2, string algorithmName, DataFlow::Node res,
+      DataFlow::StepSummary summary
+    ) {
+      DataFlow::StepSummary::step(hashInstance(t2, algorithmName), res, summary)
+    }
+
+    /** Gets a reference to a Hash instance using algorithm with `algorithmName`. */
+    DataFlow::Node hashInstance(string algorithmName) {
+      hashInstance(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
+    }
+
+    /**
+     * An hashing operation from `cryptography.hazmat.primitives.hashes`.
+     */
+    class CryptographyGenericHashOperation extends Cryptography::CryptographicOperation::Range,
+      DataFlow::CallCfgNode {
+      string algorithmName;
+
+      CryptographyGenericHashOperation() {
+        exists(DataFlow::AttrRead attr |
+          this.getFunction() = attr and
+          attr.getAttributeName() = "update" and
+          attr.getObject() = hashInstance(algorithmName)
+        )
+      }
+
+      override Cryptography::CryptographicAlgorithm getAlgorithm() {
+        result.matchesName(algorithmName)
+      }
+
+      override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
+    }
+  }
 }
