@@ -4,6 +4,7 @@
  */
 
 import javascript
+private import semmle.javascript.security.TaintedObjectCustomizations
 
 /**
  * Provides sources, sinks and sanitizers for reasoning about
@@ -13,7 +14,22 @@ module DeepObjectResourceExhaustion {
   /**
    * A data flow source for slow input validation.
    */
-  abstract class Source extends DataFlow::Node { }
+  abstract class Source extends DataFlow::Node {
+    /** Gets a flow label to associate with this source. */
+    DataFlow::FlowLabel getAFlowLabel() { result = TaintedObject::label() }
+  }
+
+  private class TaintedObjectSourceAsSource extends Source {
+    TaintedObjectSourceAsSource() { this instanceof TaintedObject::Source }
+
+    override DataFlow::FlowLabel getAFlowLabel() { result = TaintedObject::label() }
+  }
+
+  private class RemoteFlowSourceAsSource extends Source {
+    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
+
+    override DataFlow::FlowLabel getAFlowLabel() { result.isTaint() }
+  }
 
   /**
    * A data flow sink for slow input validation.
