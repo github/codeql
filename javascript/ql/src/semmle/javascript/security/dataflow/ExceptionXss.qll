@@ -10,6 +10,7 @@ module ExceptionXss {
   import DomBasedXssCustomizations::DomBasedXss as DomBasedXssCustom
   import ReflectedXssCustomizations::ReflectedXss as ReflectedXssCustom
   import Xss as Xss
+  import Xss::ExceptionXss
   private import semmle.javascript.dataflow.InferredTypes
 
   /**
@@ -71,14 +72,9 @@ module ExceptionXss {
     )
   }
 
-  /**
-   * A FlowLabel representing tainted data that has not been thrown in an exception.
-   * In the js/xss-through-exception query data-flow can only reach a sink after
-   * the data has been thrown as an exception, and data that has not been thrown
-   * as an exception therefore has this flow label, and only this flow label, associated with it.
-   */
-  class NotYetThrown extends DataFlow::FlowLabel {
-    NotYetThrown() { this = "NotYetThrown" }
+  // Materialize flow labels
+  private class ConcreteNotYetThrown extends Xss::ExceptionXss::NotYetThrown {
+    ConcreteNotYetThrown() { this = this }
   }
 
   /**
@@ -131,35 +127,6 @@ module ExceptionXss {
   }
 
   /**
-   * A source of error values that is likely to contain unencoded user input.
-   */
-  abstract class ErrorSource extends DataFlow::Node {
-    /**
-     * Gets a human-readable description of what type of error this refers to.
-     *
-     * The result should be captialized and usable in the context of a noun.
-     */
-    abstract string getDescription();
-  }
-
-  /**
-   * An error produced by validating using `ajv`.
-   *
-   * Such an error can contain property names from the input if the
-   * underlying schema uses `additionalProperties` or `propertyPatterns`.
-   *
-   * For example, an input of form `{"<img src=x onerror=alert(1)>": 45}` might produce the error
-   * `data/<img src=x onerror=alert(1)> should be string`.
-   */
-  private class JsonSchemaValidationError extends ErrorSource {
-    JsonSchemaValidationError() {
-      this = any(JsonSchema::Ajv::Instance i).getAValidationError().getAnImmediateUse()
-    }
-
-    override string getDescription() { result = "JSON schema validation error" }
-  }
-
-  /**
    * A taint-tracking configuration for reasoning about XSS with possible exceptional flow.
    * Flow labels are used to ensure that we only report taint-flow that has been thrown in
    * an exception.
@@ -168,10 +135,7 @@ module ExceptionXss {
     Configuration() { this = "ExceptionXss" }
 
     override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-      source instanceof Xss::Shared::Source and label instanceof NotYetThrown
-      or
-      source instanceof ErrorSource and
-      label.isTaint()
+      source.(Xss::ExceptionXss::Source).getAFlowLabel() = label
     }
 
     override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
