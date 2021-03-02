@@ -396,9 +396,9 @@ void test_string_iterators() {
 		sink(*(i2+1)); // $ ast,ir
 		sink(*(i2-1)); // $ ast,ir
 		i3 = i2;
-		sink(*(++i3)); // $ ast MISSING: ir
+		sink(*(++i3)); // $ ast,ir
 		i4 = i2;
-		sink(*(--i4)); // $ ast MISSING: ir
+		sink(*(--i4)); // $ ast,ir
 		i5 = i2;
 		i5++;
 		sink(*i5); // $ ast,ir
