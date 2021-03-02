@@ -32,18 +32,18 @@ module DeepObjectResourceExhaustion {
   }
 
   /**
-   * A data flow sink for slow input validation.
+   * A data flow sink for inefficient handling of user-controlled objects.
    */
   abstract class Sink extends DataFlow::Node {
     /**
      * Holds if `link` and `text` should be included in the message to explain
-     * why the input validation is slow.
+     * why the handling of the object is slow.
      */
     abstract predicate hasReason(DataFlow::Node link, string text);
   }
 
   /**
-   * A sanitizer for slow input validation.
+   * A sanitizer for inefficient handling of user-controlled objects.
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
