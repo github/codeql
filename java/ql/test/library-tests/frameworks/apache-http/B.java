@@ -52,7 +52,7 @@ class B {
         bbuf.append((byte[]) taint(), 0, 3); 
         sink(bbuf.array()); //$hasTaintFlow=y
         sink(bbuf.toByteArray()); //$hasTaintFlow=y
-        sink(bbuf.toString()); //SPURIOUS: $hasTaintFlow=y 
+        sink(bbuf.toString()); 
 
         CharArrayBuffer cbuf = new CharArrayBuffer(42);
         cbuf.append(bbuf.toByteArray(), 0, 3); 
