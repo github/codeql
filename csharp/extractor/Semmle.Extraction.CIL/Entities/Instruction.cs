@@ -432,7 +432,7 @@ namespace Semmle.Extraction.CIL.Entities
                             }
                             catch (Exception exc)
                             {
-                                Cx.Cx.Extractor.Logger.Log(Util.Logging.Severity.Warning, $"Couldn't interpret payload of payload type {PayloadType} as a function pointer type. {exc.Message} {exc.StackTrace}");
+                                Cx.Extractor.Logger.Log(Util.Logging.Severity.Warning, $"Couldn't interpret payload of payload type {PayloadType} as a function pointer type. {exc.Message} {exc.StackTrace}");
                             }
 
                             if (target != null)
