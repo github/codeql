@@ -229,6 +229,7 @@ private class PostMessageEventParameter extends RemoteFlowSource {
  * even if the window is opened from a foreign domain.
  */
 private class WindowNameAccess extends RemoteFlowSource {
+  pragma[nomagic, noinline]
   WindowNameAccess() {
     this = DataFlow::globalObjectRef().getAPropertyRead("name")
     or

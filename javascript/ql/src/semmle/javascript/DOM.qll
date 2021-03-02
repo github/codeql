@@ -344,7 +344,7 @@ module DOM {
         or
         exists(JQuery::MethodCall call | this = call and call.getMethodName() = "get" |
           call.getNumArgument() = 1 and
-          forex(InferredType t | t = call.getArgument(0).analyze().getAType() | t = TTNumber())
+          unique(InferredType t | t = call.getArgument(0).analyze().getAType()) = TTNumber()
         )
         or
         // A `this` node from a callback given to a `$().each(callback)` call.
