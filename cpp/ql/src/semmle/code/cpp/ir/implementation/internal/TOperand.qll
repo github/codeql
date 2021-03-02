@@ -55,9 +55,7 @@ private module Internal {
     ) {
       defInstr = AliasedConstruction::getPhiOperandDefinition(useInstr, predecessorBlock, overlap)
     } or
-    TAliasedChiOperand(TAliasedSSAChiInstruction useInstr, ChiOperandTag tag) {
-      any()
-    }
+    TAliasedChiOperand(TAliasedSSAChiInstruction useInstr, ChiOperandTag tag) { any() }
 }
 
 /**
