@@ -83,7 +83,7 @@ class MissingCallTarget extends InstructionViolation {
     exists(Call c | c = instruction |
       count(c.getTarget()) != 1 and not c instanceof Opcodes::Calli
       or
-      count(c.(Opcodes::Calli).getTargetType()) != 1
+      count(c.(Opcodes::Calli).getTargetType()) != 1 and c instanceof Opcodes::Calli
     )
   }
 
