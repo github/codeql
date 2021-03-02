@@ -3,14 +3,14 @@
 
 <overview>
 <p>
-Spring Framework provides an abstract base class <code>RemoteInvocationSerializingExporter</code>
+The Spring Framework provides an abstract base class <code>RemoteInvocationSerializingExporter</code>
 for defining remote service exporters.
 A Spring exporter, which is based on this class, deserializes incoming data using <code>ObjectInputStream</code>.
 Deserializing untrusted data is easily exploitable and in many cases allows an attacker
 to execute arbitrary code.
 </p>
 <p>
-Spring Framework also provides two classes that extend <code>RemoteInvocationSerializingExporter</code>:
+The Spring Framework also provides two classes that extend <code>RemoteInvocationSerializingExporter</code>:
 <li>
 <code>HttpInvokerServiceExporter</code>
 </li>
@@ -24,7 +24,7 @@ using unsafe <code>ObjectInputStream</code>. If a remote attacker can reach such
 it results in remote code execution in the worst case.
 </p>
 <p>
-CVE-2016-1000027 has been assigned to this issue in Spring Framework. There is no fix for that.
+CVE-2016-1000027 has been assigned to this issue in the Spring Framework. It is regarded as a design limitation, and can be mitigated but not fixed outright.
 </p>
 </overview>
 
@@ -36,7 +36,7 @@ Instead, use other message formats for API endpoints (for example, JSON),
 but make sure that the underlying deserialization mechanism is properly configured
 so that deserialization attacks are not possible. If the vulnerable exporters can not be replaced,
 consider using global deserialization filters introduced by JEP 290.
-In general, avoid deserialization of untrusted data.
+In general, avoid using Java's built-in deserialization methods on untrusted data.
 </p>
 </recommendation>
 

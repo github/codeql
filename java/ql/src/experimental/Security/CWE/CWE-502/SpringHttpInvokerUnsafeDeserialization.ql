@@ -52,4 +52,4 @@ private predicate createsRemoteInvocationSerializingExporterBean(Method method) 
 from Method method
 where createsRemoteInvocationSerializingExporterBean(method)
 select method,
-  "Unasafe deserialization in a remote service exporter in '" + method.getName() + "' method"
+  "Unsafe deserialization in a remote service exporter in '" + method.getName() + "' method"
