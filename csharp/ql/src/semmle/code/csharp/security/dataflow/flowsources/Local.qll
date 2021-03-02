@@ -20,3 +20,17 @@ class TextFieldSource extends LocalUserInputSource {
 
   override string getSourceType() { result = "TextBox text" }
 }
+
+/** A call to any `System.Console.Read*` method. */
+class SystemConsoleReadSource extends LocalUserInputSource {
+  SystemConsoleReadSource() {
+    this.asExpr() =
+      any(MethodCall call |
+        call.getTarget().hasQualifiedName("System.Console", "ReadLine") or
+        call.getTarget().hasQualifiedName("System.Console", "Read") or
+        call.getTarget().hasQualifiedName("System.Console", "ReadKey")
+      )
+  }
+
+  override string getSourceType() { result = "TextBox text" }
+}
