@@ -17,6 +17,7 @@ class MessageDigest extends RefType {
   MessageDigest() { this.hasQualifiedName("java.security", "MessageDigest") }
 }
 
+/** The method call `MessageDigest.getInstance(...)` */
 class MDConstructor extends StaticMethodAccess {
   MDConstructor() {
     exists(Method m | m = this.getMethod() |
@@ -57,26 +58,22 @@ class MDHashMethodAccess extends MethodAccess {
 string getPasswordRegex() { result = "(?i).*pass(wd|word|code|phrase).*" }
 
 /** Finds variables that hold password information judging by their names. */
-class PasswordVarExpr extends Expr {
+class PasswordVarExpr extends VarAccess {
   PasswordVarExpr() {
-    this.(VarAccess).getVariable().getName().toLowerCase().regexpMatch(getPasswordRegex()) and
-    not this.(VarAccess).getVariable().getName().toLowerCase().matches("%hash%") // Exclude variable names such as `passwordHash` since their values were already hashed
+    exists(string name | name = this.getVariable().getName().toLowerCase() |
+      name.regexpMatch(getPasswordRegex()) and not name.matches("%hash%") // Exclude variable names such as `passwordHash` since their values were already hashed
+    )
   }
 }
 
 /** Holds if `Expr` e is a direct or indirect operand of `ae`. */
-predicate hasAddExpr(AddExpr ae, Expr e) { ae.getAnOperand+() = e }
+predicate hasAddExprAncestor(AddExpr ae, Expr e) { ae.getAnOperand+() = e }
 
-/** Holds if `MethodAccess` ma has a flow to another `MDHashMethodAccess` call. */
-predicate hasAnotherHashCall(MethodAccess ma) {
-  exists(MDHashMethodAccess ma2, DataFlow::Node node1, DataFlow::Node node2 |
+/** Holds if `MDHashMethodAccess ma` is a second `MDHashMethodAccess` call by the same object. */
+predicate hasAnotherHashCall(MDHashMethodAccess ma) {
+  exists(MDHashMethodAccess ma2 |
     ma2 != ma and
-    node1.asExpr() = ma.getAChildExpr() and
-    node2.asExpr() = ma2.getAChildExpr() and
-    (
-      TaintTracking2::localTaint(node1, node2) or
-      TaintTracking2::localTaint(node2, node1)
-    )
+    ma2.getQualifier() = ma.getQualifier().(VarAccess).getVariable().getAnAccess()
   )
 }
 
@@ -84,19 +81,12 @@ predicate hasAnotherHashCall(MethodAccess ma) {
 predicate isSingleHashMethodCall(MDHashMethodAccess ma) { not hasAnotherHashCall(ma) }
 
 /** Holds if `MethodAccess` ma is invoked by `MethodAccess` ma2 either directly or indirectly. */
-predicate hasParentCall(MethodAccess ma2, MethodAccess ma) {
-  ma.getCaller() = ma2.getMethod()
-  or
-  exists(MethodAccess ma3 |
-    ma.getCaller() = ma3.getMethod() and
-    hasParentCall(ma2, ma3)
-  )
-}
+predicate hasParentCall(MethodAccess ma2, MethodAccess ma) { ma.getCaller() = ma2.getMethod() }
 
 /** Holds if `MethodAccess` is a single hashing call that is not invoked by a wrapper method. */
 predicate isSink(MethodAccess ma) {
   isSingleHashMethodCall(ma) and
-  not exists(MethodAccess ma2 | hasParentCall(ma2, ma)) // Not invoked by a wrapper method which could invoke MDHashMethod in another call stack to reduce FPs
+  not hasParentCall(_, ma) // Not invoked by a wrapper method which could invoke MDHashMethod in another call stack. This reduces FPs.
 }
 
 /** Sink of hashing calls. */
@@ -131,9 +121,9 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
       ma.getArgument(0) = node.asExpr()
     ) // System.arraycopy(password.getBytes(), ...)
     or
-    exists(AddExpr e | hasAddExpr(e, node.asExpr())) // password+salt
+    exists(AddExpr e | hasAddExprAncestor(e, node.asExpr())) // password+salt
     or
-    exists(ConditionalExpr ce | ce = node.asExpr()) // useSalt?password+":"+salt:password
+    exists(ConditionalExpr ce | ce.getAChildExpr() = node.asExpr()) // useSalt?password+":"+salt:password
     or
     exists(MethodAccess ma |
       ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "StringBuilder") and
@@ -143,7 +133,7 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
     or
     exists(MethodAccess ma |
       ma.getQualifier().(VarAccess).getVariable().getType() instanceof Interface and
-      ma.getAnArgument() = node.asExpr() // Method access of interface type variables requires runtime determination
+      ma.getAnArgument() = node.asExpr() // Method access of interface type variables requires runtime determination thus not handled
     )
   }
 }

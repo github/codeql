@@ -54,12 +54,16 @@ public class HashWithoutSalt {
 
 	// GOOD - Hash with a given salt stored somewhere else.
 	public String getSHA256Hash(String password, String salt) throws NoSuchAlgorithmException {
-		return hash(password+":"+salt);
+		MessageDigest alg = MessageDigest.getInstance("SHA-256");
+		String payload = password+":"+salt;
+		return Base64.getEncoder().encodeToString(alg.digest(payload.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
 	}
 
 	// GOOD - Hash with a given salt stored somewhere else.
 	public String getSHA256Hash2(String password, String salt, boolean useSalt) throws NoSuchAlgorithmException {
-		return hash(useSalt?password+":"+salt:password);
+		MessageDigest alg = MessageDigest.getInstance("SHA-256");
+		String payload = useSalt?password+":"+salt:password;
+		return Base64.getEncoder().encodeToString(alg.digest(payload.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
 	}
 
 	// GOOD - Hash with a salt for a variable named passwordHash, whose value is a hash used as an input for a hashing function.
@@ -70,10 +74,6 @@ public class HashWithoutSalt {
 	}
 
 	public void update(SHA256 sha256, byte[] foo, int start, int len) throws NoSuchAlgorithmException {
-		sha256.update(foo, start, len);
-	}
-
-	public void update2(SHA256 sha256, byte[] foo, int start, int len) throws NoSuchAlgorithmException {
 		sha256.update(foo, start, len);
 	}
 
@@ -98,15 +98,15 @@ public class HashWithoutSalt {
 	}
 
 	// BAD - Invoking a wrapper implementation without a salt is not detected.
-	public String getSHA256Hash6(String password) throws NoSuchAlgorithmException {
-		SHA256 sha256 = new SHA256();
+	public String getSHA512Hash6(String password) throws NoSuchAlgorithmException {
+		SHA512 sha512 = new SHA512();
 		byte[] passBytes = password.getBytes();
-		sha256.update(passBytes, 0, passBytes.length);
-		return Base64.getEncoder().encodeToString(sha256.digest());
+		sha512.update(passBytes, 0, passBytes.length);
+		return Base64.getEncoder().encodeToString(sha512.digest());
 	}
 
 	// BAD - Invoke a wrapper implementation with a salt, which is not detected with an interface type variable.
-	public String getSHA256Hash7(byte[] passphrase) throws NoSuchAlgorithmException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+	public String getSHA512Hash7(byte[] passphrase) throws NoSuchAlgorithmException, ClassNotFoundException, IllegalAccessException, InstantiationException {
 		Class c = Class.forName("SHA512");
 		HASH sha512 = (HASH) (c.newInstance());
 		byte[] tmp = new byte[4];
@@ -118,11 +118,6 @@ public class HashWithoutSalt {
 			System.arraycopy(sha512.digest(), 0, key, i * 32, 32);
 		}
 		return Base64.getEncoder().encodeToString(key);
-	}
-
-	private String hash(String payload) throws NoSuchAlgorithmException {
-		MessageDigest alg = MessageDigest.getInstance("SHA-256");
-		return Base64.getEncoder().encodeToString(alg.digest(payload.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
 	}
 
 	public static byte[] getSalt() throws NoSuchAlgorithmException {
