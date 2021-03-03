@@ -175,7 +175,7 @@ abstract class ReturnKind extends TReturnKind {
  * body, that is, a "normal" return.
  */
 class NormalReturnKind extends ReturnKind, TNormalReturnKind {
-  override string toString() { result = "return" }
+  override string toString() { result = "normal" }
 }
 
 /** A value returned from a callable using an `out` or a `ref` parameter. */
@@ -186,16 +186,24 @@ abstract class OutRefReturnKind extends ReturnKind {
 
 /** A value returned from a callable using an `out` parameter. */
 class OutReturnKind extends OutRefReturnKind, TOutReturnKind {
-  override int getPosition() { this = TOutReturnKind(result) }
+  private int pos;
 
-  override string toString() { result = "out" }
+  OutReturnKind() { this = TOutReturnKind(pos) }
+
+  override int getPosition() { result = pos }
+
+  override string toString() { result = "out parameter " + pos }
 }
 
 /** A value returned from a callable using a `ref` parameter. */
 class RefReturnKind extends OutRefReturnKind, TRefReturnKind {
-  override int getPosition() { this = TRefReturnKind(result) }
+  private int pos;
 
-  override string toString() { result = "ref" }
+  RefReturnKind() { this = TRefReturnKind(pos) }
+
+  override int getPosition() { result = pos }
+
+  override string toString() { result = "ref parameter " + pos }
 }
 
 /** A value implicitly returned from a callable using a captured variable. */
