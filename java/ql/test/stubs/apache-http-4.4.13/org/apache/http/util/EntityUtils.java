@@ -25,29 +25,48 @@
  *
  */
 
-package org.apache.http;
+package org.apache.http.util;
 
-/**
- * Represents an HTTP header field.
- *
- * <p>The HTTP header fields follow the same generic format as
- * that given in Section 3.1 of RFC 822. Each header field consists
- * of a name followed by a colon (":") and the field value. Field names
- * are case-insensitive. The field value MAY be preceded by any amount
- * of LWS, though a single SP is preferred.
- *
- *<pre>
- *     message-header = field-name ":" [ field-value ]
- *     field-name     = token
- *     field-value    = *( field-content | LWS )
- *     field-content  = &lt;the OCTETs making up the field-value
- *                      and consisting of either *TEXT or combinations
- *                      of token, separators, and quoted-string&gt;
- *</pre>
- *
- * @since 4.0
- */
-public interface Header extends NameValuePair {
-    HeaderElement[] getElements() throws ParseException;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import org.apache.http.*;
+
+
+public final class EntityUtils {
+    public static void consumeQuietly(final HttpEntity entity) {
+    }
+
+    public static void consume(final HttpEntity entity) throws IOException {
+    }
+
+    public static void updateEntity(
+            final HttpResponse response, final HttpEntity entity) throws IOException {
+    }
+
+    public static byte[] toByteArray(final HttpEntity entity) throws IOException {
+      return null;
+    }
+
+    public static String getContentCharSet(final HttpEntity entity) {
+      return null;
+    }
+
+    public static String getContentMimeType(final HttpEntity entity) {
+      return null;
+    }
+
+    public static String toString(
+            final HttpEntity entity, final Charset defaultCharset) throws IOException {
+      return null;
+    }
+
+    public static String toString(
+            final HttpEntity entity, final String defaultCharset) throws IOException {
+      return null;
+    }
+
+    public static String toString(final HttpEntity entity) throws IOException, ParseException {
+      return null;
+    }
 
 }

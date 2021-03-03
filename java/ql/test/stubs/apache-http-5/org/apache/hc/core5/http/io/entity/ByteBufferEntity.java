@@ -25,29 +25,41 @@
  *
  */
 
-package org.apache.http;
+package org.apache.hc.core5.http.io.entity;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import org.apache.hc.core5.http.ContentType;
 
-/**
- * Represents an HTTP header field.
- *
- * <p>The HTTP header fields follow the same generic format as
- * that given in Section 3.1 of RFC 822. Each header field consists
- * of a name followed by a colon (":") and the field value. Field names
- * are case-insensitive. The field value MAY be preceded by any amount
- * of LWS, though a single SP is preferred.
- *
- *<pre>
- *     message-header = field-name ":" [ field-value ]
- *     field-name     = token
- *     field-value    = *( field-content | LWS )
- *     field-content  = &lt;the OCTETs making up the field-value
- *                      and consisting of either *TEXT or combinations
- *                      of token, separators, and quoted-string&gt;
- *</pre>
- *
- * @since 4.0
- */
-public interface Header extends NameValuePair {
-    HeaderElement[] getElements() throws ParseException;
+public class ByteBufferEntity extends AbstractHttpEntity {
+    public ByteBufferEntity(final ByteBuffer buffer, final ContentType contentType, final String contentEncoding) {
+    }
+
+    public ByteBufferEntity(final ByteBuffer buffer, final ContentType contentType) {
+    }
+
+    @Override
+    public final boolean isRepeatable() {
+      return false;
+    }
+
+    @Override
+    public final long getContentLength() {
+      return 0;
+    }
+
+    @Override
+    public final InputStream getContent() throws IOException, UnsupportedOperationException {
+      return null;
+    }
+
+    @Override
+    public final boolean isStreaming() {
+      return false;
+    }
+
+    @Override
+    public final void close() throws IOException {
+    }
 
 }

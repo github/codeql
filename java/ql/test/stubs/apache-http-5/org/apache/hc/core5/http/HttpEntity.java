@@ -25,29 +25,24 @@
  *
  */
 
-package org.apache.http;
+package org.apache.hc.core5.http;
 
-/**
- * Represents an HTTP header field.
- *
- * <p>The HTTP header fields follow the same generic format as
- * that given in Section 3.1 of RFC 822. Each header field consists
- * of a name followed by a colon (":") and the field value. Field names
- * are case-insensitive. The field value MAY be preceded by any amount
- * of LWS, though a single SP is preferred.
- *
- *<pre>
- *     message-header = field-name ":" [ field-value ]
- *     field-name     = token
- *     field-value    = *( field-content | LWS )
- *     field-content  = &lt;the OCTETs making up the field-value
- *                      and consisting of either *TEXT or combinations
- *                      of token, separators, and quoted-string&gt;
- *</pre>
- *
- * @since 4.0
- */
-public interface Header extends NameValuePair {
-    HeaderElement[] getElements() throws ParseException;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
+
+import org.apache.hc.core5.function.Supplier;
+
+public interface HttpEntity extends EntityDetails, Closeable {
+    boolean isRepeatable();
+
+    InputStream getContent() throws IOException, UnsupportedOperationException;
+
+    void writeTo(OutputStream outStream) throws IOException;
+
+    boolean isStreaming(); 
+    Supplier<List<? extends Header>> getTrailers();
 
 }

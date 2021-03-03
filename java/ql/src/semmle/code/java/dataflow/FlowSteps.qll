@@ -9,7 +9,7 @@ private import semmle.code.java.dataflow.DataFlow
  * A module importing the frameworks that implement additional flow steps,
  * ensuring that they are visible to the taint tracking library.
  */
-module Frameworks {
+private module Frameworks {
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
   private import semmle.code.java.frameworks.android.Intent
   private import semmle.code.java.frameworks.android.SQLite
@@ -17,6 +17,7 @@ module Frameworks {
   private import semmle.code.java.frameworks.Protobuf
   private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.frameworks.apache.Lang
+  private import semmle.code.java.frameworks.ApacheHttp
 }
 
 /**

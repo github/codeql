@@ -25,29 +25,69 @@
  *
  */
 
-package org.apache.http;
+package org.apache.http.util;
 
-/**
- * Represents an HTTP header field.
- *
- * <p>The HTTP header fields follow the same generic format as
- * that given in Section 3.1 of RFC 822. Each header field consists
- * of a name followed by a colon (":") and the field value. Field names
- * are case-insensitive. The field value MAY be preceded by any amount
- * of LWS, though a single SP is preferred.
- *
- *<pre>
- *     message-header = field-name ":" [ field-value ]
- *     field-name     = token
- *     field-value    = *( field-content | LWS )
- *     field-content  = &lt;the OCTETs making up the field-value
- *                      and consisting of either *TEXT or combinations
- *                      of token, separators, and quoted-string&gt;
- *</pre>
- *
- * @since 4.0
- */
-public interface Header extends NameValuePair {
-    HeaderElement[] getElements() throws ParseException;
+import java.io.Serializable;
+
+public final class ByteArrayBuffer implements Serializable {
+    public ByteArrayBuffer(final int capacity) {
+    }
+
+    public void append(final byte[] b, final int off, final int len) {
+    }
+
+    public void append(final int b) {
+    }
+
+    public void append(final char[] b, final int off, final int len) {
+    }
+
+    public void append(final CharArrayBuffer b, final int off, final int len) {
+    }
+
+    public void clear() {
+    }
+
+    public byte[] toByteArray() {
+      return null;
+    }
+
+    public int byteAt(final int i) {
+      return 0;
+    }
+
+    public int capacity() {
+      return 0;
+    }
+
+    public int length() {
+      return 0;
+    }
+
+    public void ensureCapacity(final int required) {
+    }
+
+    public byte[] buffer() {
+      return null;
+    }
+
+    public void setLength(final int len) {
+    }
+
+    public boolean isEmpty() {
+      return false;
+    }
+
+    public boolean isFull() {
+      return false;
+    }
+
+    public int indexOf(final byte b, final int from, final int to) {
+      return 0;
+    }
+
+    public int indexOf(final byte b) {
+      return 0;
+    }
 
 }

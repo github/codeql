@@ -25,29 +25,63 @@
  *
  */
 
-package org.apache.http;
+package org.apache.hc.core5.http;
 
-/**
- * Represents an HTTP header field.
- *
- * <p>The HTTP header fields follow the same generic format as
- * that given in Section 3.1 of RFC 822. Each header field consists
- * of a name followed by a colon (":") and the field value. Field names
- * are case-insensitive. The field value MAY be preceded by any amount
- * of LWS, though a single SP is preferred.
- *
- *<pre>
- *     message-header = field-name ":" [ field-value ]
- *     field-name     = token
- *     field-value    = *( field-content | LWS )
- *     field-content  = &lt;the OCTETs making up the field-value
- *                      and consisting of either *TEXT or combinations
- *                      of token, separators, and quoted-string&gt;
- *</pre>
- *
- * @since 4.0
- */
-public interface Header extends NameValuePair {
-    HeaderElement[] getElements() throws ParseException;
+import java.io.Serializable;
+
+public class ProtocolVersion implements Serializable {
+    public ProtocolVersion(final String protocol, final int major, final int minor) {
+    }
+
+    public final String getProtocol() {
+      return null;
+    }
+
+    public final int getMajor() {
+      return 0;
+    }
+
+    public final int getMinor() {
+      return 0;
+    }
+
+    @Override
+    public final int hashCode() {
+      return 0;
+    }
+
+    public final boolean equals(final int major, final int minor) {
+      return false;
+    }
+
+    @Override
+    public final boolean equals(final Object obj) {
+      return false;
+    }
+
+    public String format() {
+      return null;
+    }
+
+    public boolean isComparable(final ProtocolVersion that) {
+      return false;
+    }
+
+    public int compareToVersion(final ProtocolVersion that) {
+      return 0;
+    }
+
+    public final boolean greaterEquals(final ProtocolVersion version) {
+      return false;
+    }
+
+    public final boolean lessEquals(final ProtocolVersion version) {
+      return false;
+    }
+
+    @Override
+    public String toString() {
+      return null;
+    }
 
 }
