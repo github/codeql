@@ -13,6 +13,12 @@ namespace Semmle.Util
         {
             stdout = new List<string>();
             using var process = Process.Start(pi);
+
+            if (process is null)
+            {
+                return -1;
+            }
+
             string? s;
             do
             {

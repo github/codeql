@@ -90,7 +90,7 @@ namespace Semmle.Autobuild.Shared
             .Select(p => p.ToolsVersion);
 
         public Version ToolsVersion => ToolsVersions.Any()
-            ? ToolsVersions.Max()
+            ? ToolsVersions.Max()!
             : new Version();
     }
 }

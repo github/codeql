@@ -128,6 +128,11 @@ namespace Semmle.Extraction.CIL
                 case HandleKind.TypeDefinition:
                     entity = new TypeDefinitionType(this, (TypeDefinitionHandle)handle);
                     break;
+                case HandleKind.StandaloneSignature:
+                    var signature = MdReader.GetStandaloneSignature((StandaloneSignatureHandle)handle);
+                    var method = signature.DecodeMethodSignature(gc.Cx.TypeSignatureDecoder, gc);
+                    entity = new FunctionPointerType(this, method);
+                    break;
                 default:
                     throw new InternalError("Unhandled handle kind " + handle.Kind);
             }
