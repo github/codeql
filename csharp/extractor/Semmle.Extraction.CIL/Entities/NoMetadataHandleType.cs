@@ -38,11 +38,11 @@ namespace Semmle.Extraction.CIL.Entities
 
             unboundGenericType = nameParser.UnboundGenericTypeName == null
                 ? this
-                : new NoMetadataHandleType(Cx, nameParser.UnboundGenericTypeName);
+                : new NoMetadataHandleType(Context, nameParser.UnboundGenericTypeName);
 
             if (nameParser.TypeArguments != null)
             {
-                thisTypeArguments = nameParser.TypeArguments.Select(t => new NoMetadataHandleType(Cx, t)).ToArray();
+                thisTypeArguments = nameParser.TypeArguments.Select(t => new NoMetadataHandleType(Context, t)).ToArray();
             }
             else
             {
@@ -51,14 +51,14 @@ namespace Semmle.Extraction.CIL.Entities
 
             containingType = isContainerNamespace
                 ? null
-                : new NoMetadataHandleType(Cx, containerName);
+                : new NoMetadataHandleType(Context, containerName);
 
             containingNamespace = isContainerNamespace
-                ? containerName == Cx.GlobalNamespace.Name
-                    ? Cx.GlobalNamespace
-                    : containerName == Cx.SystemNamespace.Name
-                        ? Cx.SystemNamespace
-                        : new Namespace(Cx, containerName)
+                ? containerName == Context.GlobalNamespace.Name
+                    ? Context.GlobalNamespace
+                    : containerName == Context.SystemNamespace.Name
+                        ? Context.SystemNamespace
+                        : new Namespace(Context, containerName)
                 : null;
 
             Populate();
@@ -68,10 +68,10 @@ namespace Semmle.Extraction.CIL.Entities
         {
             if (ContainingNamespace is object)
             {
-                Cx.Populate(ContainingNamespace);
+                Context.Populate(ContainingNamespace);
             }
 
-            Cx.Populate(this);
+            Context.Populate(this);
         }
 
         public override bool Equals(object? obj)
@@ -118,7 +118,7 @@ namespace Semmle.Extraction.CIL.Entities
             if (TotalTypeParametersCount != typeArguments.Count())
                 throw new InternalError("Mismatched type arguments");
 
-            return Cx.Populate(new ConstructedType(Cx, this, typeArguments));
+            return Context.Populate(new ConstructedType(Context, this, typeArguments));
         }
 
         public override void WriteAssemblyPrefix(TextWriter trapFile)
@@ -133,7 +133,7 @@ namespace Semmle.Extraction.CIL.Entities
             }
             else
             {
-                Cx.WriteAssemblyPrefix(trapFile);
+                Context.WriteAssemblyPrefix(trapFile);
             }
         }
 

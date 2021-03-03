@@ -356,7 +356,7 @@ namespace Semmle.Extraction.CIL.Entities
                 switch (PayloadType)
                 {
                     case Payload.String:
-                        yield return Tuples.cil_value(this, Cx.MdReader.GetUserString(MetadataTokens.UserStringHandle(payloadValue)));
+                        yield return Tuples.cil_value(this, Context.MdReader.GetUserString(MetadataTokens.UserStringHandle(payloadValue)));
                         break;
                     case Payload.Float32:
                         yield return Tuples.cil_value(this, BitConverter.ToSingle(data, offset).ToString());
@@ -388,7 +388,7 @@ namespace Semmle.Extraction.CIL.Entities
                         {
                             // A generic EntityHandle.
                             var handle = MetadataTokens.EntityHandle(payloadValue);
-                            var target = Cx.CreateGeneric(Method, handle);
+                            var target = Context.CreateGeneric(Method, handle);
                             yield return target;
                             if (target != null)
                             {
@@ -428,11 +428,11 @@ namespace Semmle.Extraction.CIL.Entities
                             IExtractedEntity? target = null;
                             try
                             {
-                                target = Cx.CreateGeneric(Method, handle);
+                                target = Context.CreateGeneric(Method, handle);
                             }
                             catch (Exception exc)
                             {
-                                Cx.Extractor.Logger.Log(Util.Logging.Severity.Warning, $"Couldn't interpret payload of payload type {PayloadType} as a function pointer type. {exc.Message} {exc.StackTrace}");
+                                Context.Extractor.Logger.Log(Util.Logging.Severity.Warning, $"Couldn't interpret payload of payload type {PayloadType} as a function pointer type. {exc.Message} {exc.StackTrace}");
                             }
 
                             if (target != null)
@@ -501,7 +501,7 @@ namespace Semmle.Extraction.CIL.Entities
                 // TODO: Find a solution to this.
 
                 // For now, just log the error
-                Cx.ExtractionError("A CIL instruction jumps outside the current method", null, Extraction.Entities.GeneratedLocation.Create(Cx), "", Util.Logging.Severity.Warning);
+                Context.ExtractionError("A CIL instruction jumps outside the current method", null, Extraction.Entities.GeneratedLocation.Create(Context), "", Util.Logging.Severity.Warning);
             }
         }
     }

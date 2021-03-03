@@ -15,7 +15,7 @@ namespace Semmle.Extraction.CIL.Entities
         protected IGenericContext gc;
         protected MethodSignature<ITypeSignature> signature;
 
-        protected Method(IGenericContext gc) : base(gc.Cx)
+        protected Method(IGenericContext gc) : base(gc.Context)
         {
             this.gc = gc;
         }
@@ -83,10 +83,10 @@ namespace Semmle.Extraction.CIL.Entities
 
             if (!IsStatic)
             {
-                yield return Cx.Populate(new Parameter(Cx, this, i++, DeclaringType));
+                yield return Context.Populate(new Parameter(Context, this, i++, DeclaringType));
             }
 
-            foreach (var p in GetParameterExtractionProducts(parameterTypes, this, this, Cx, i))
+            foreach (var p in GetParameterExtractionProducts(parameterTypes, this, this, Context, i))
             {
                 yield return p;
             }

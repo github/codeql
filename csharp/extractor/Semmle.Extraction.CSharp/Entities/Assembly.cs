@@ -6,8 +6,7 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class Assembly : Extraction.Entities.Location
     {
-        // todo: this can be changed to an override after the .NET 5 upgrade
-        private new Context Context => (Context)base.Context;
+        public override Context Context => (Context)base.Context;
 
         private readonly string assemblyPath;
         private readonly IAssemblySymbol assembly;

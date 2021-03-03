@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override string Name => typeCode.Id();
 
-        public override Namespace ContainingNamespace => Cx.SystemNamespace;
+        public override Namespace ContainingNamespace => Context.SystemNamespace;
 
         public override Type? ContainingType => null;
 

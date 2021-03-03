@@ -16,7 +16,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override string Name => "!error";
 
-        public override Namespace ContainingNamespace => Cx.GlobalNamespace;
+        public override Namespace ContainingNamespace => Context.GlobalNamespace;
 
         public override Type? ContainingType => null;
 

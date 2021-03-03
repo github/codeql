@@ -21,9 +21,9 @@ namespace Semmle.Extraction.CIL.Entities
                 var text = file.Contents;
 
                 if (text == null)
-                    Cx.Extractor.Logger.Log(Util.Logging.Severity.Warning, string.Format("PDB source file {0} could not be found", OriginalPath));
+                    Context.Extractor.Logger.Log(Util.Logging.Severity.Warning, string.Format("PDB source file {0} could not be found", OriginalPath));
                 else
-                    Cx.TrapWriter.Archive(TransformedPath, text);
+                    Context.TrapWriter.Archive(TransformedPath, text);
 
                 yield return Tuples.file_extraction_mode(this, 2);
             }
