@@ -132,6 +132,15 @@ class UnspecificSSLContextCreation extends SSLContextCreation, UnspecificContext
   }
 }
 
+class UnspecificSSLDefaultContextCreation extends SSLDefaultContextCreation, ProtocolUnrestriction {
+  override DataFlow::CfgNode getContext() { result = this }
+
+  // see https://docs.python.org/3/library/ssl.html#ssl.create_default_context
+  override ProtocolVersion getUnrestriction() {
+    result in ["TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
+  }
+}
+
 class Ssl extends TlsLibrary {
   Ssl() { this = "ssl" }
 
@@ -167,5 +176,7 @@ class Ssl extends TlsLibrary {
     result instanceof ContextSetVersion
     or
     result instanceof UnspecificSSLContextCreation
+    or
+    result instanceof UnspecificSSLDefaultContextCreation
   }
 }
