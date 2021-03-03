@@ -8,40 +8,44 @@ import TlsLibraryModel
  */
 class InsecureContextConfiguration extends DataFlow::Configuration {
   TlsLibrary library;
+  ProtocolVersion tracked_version;
 
-  InsecureContextConfiguration() { this = library + ["AllowsTLSv1", "AllowsTLSv1_1"] }
+  InsecureContextConfiguration() {
+    this = library + "Allows" + tracked_version and
+    tracked_version.isInsecure()
+  }
+
+  ProtocolVersion getTrackedVersion() { result = tracked_version }
 
   override predicate isSource(DataFlow::Node source) {
-    source = library.unspecific_context_creation()
+    // source = library.unspecific_context_creation()
+    exists(ProtocolUnrestriction pu |
+      pu = library.protocol_unrestriction() and
+      pu.getUnrestriction() = tracked_version
+    |
+      source = pu.getContext()
+    )
   }
 
   override predicate isSink(DataFlow::Node sink) {
     sink = library.connection_creation().getContext()
   }
 
-  abstract string flag();
-
   override predicate isBarrierOut(DataFlow::Node node) {
     exists(ProtocolRestriction r |
       r = library.protocol_restriction() and
       node = r.getContext() and
-      r.getRestriction() = flag()
+      r.getRestriction() = tracked_version
     )
   }
-}
 
-/** Configuration to specifically track the insecure protocol TLS 1.0 */
-class AllowsTLSv1 extends InsecureContextConfiguration {
-  AllowsTLSv1() { this = library + "AllowsTLSv1" }
-
-  override string flag() { result = "TLSv1" }
-}
-
-/** Configuration to specifically track the insecure protocol TLS 1.1 */
-class AllowsTLSv1_1 extends InsecureContextConfiguration {
-  AllowsTLSv1_1() { this = library + "AllowsTLSv1_1" }
-
-  override string flag() { result = "TLSv1_1" }
+  override predicate isBarrierIn(DataFlow::Node node) {
+    exists(ProtocolUnrestriction r |
+      r = library.protocol_unrestriction() and
+      node = r.getContext() and
+      r.getUnrestriction() = tracked_version
+    )
+  }
 }
 
 /**
@@ -49,22 +53,22 @@ class AllowsTLSv1_1 extends InsecureContextConfiguration {
  * and that protocol has not been restricted appropriately.
  */
 predicate unsafe_connection_creation(
-  DataFlow::Node node, ProtocolVersion insecure_version, CallNode call
+  DataFlow::Node creation, ProtocolVersion insecure_version, DataFlow::Node source, boolean specific
 ) {
-  // Connection created from a context allowing TLS 1.0.
-  exists(AllowsTLSv1 c, ContextCreation cc | c.hasFlow(cc, node) | cc.getNode() = call) and
-  insecure_version = "TLSv1"
+  // Connection created from a context allowing `insecure_version`.
+  exists(InsecureContextConfiguration c, ProtocolUnrestriction cc | c.hasFlow(cc, creation) |
+    insecure_version = c.getTrackedVersion() and
+    source = cc and
+    specific = false
+  )
   or
-  // Connection created from a context allowing TLS 1.1.
-  exists(AllowsTLSv1_1 c, ContextCreation cc | c.hasFlow(cc, node) | cc.getNode() = call) and
-  insecure_version = "TLSv1_1"
-  or
-  // Connection created from a context for an insecure protocol.
+  // Connection created from a context specifying `insecure_version`.
   exists(TlsLibrary l, DataFlow::CfgNode cc |
     cc = l.insecure_connection_creation(insecure_version)
   |
-    cc = node and
-    cc.getNode() = call
+    creation = cc and
+    source = cc and
+    specific = true
   )
 }
 

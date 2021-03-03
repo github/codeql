@@ -26,6 +26,8 @@ class ConnectionCall extends ConnectionCreation {
   }
 }
 
+// This cannot be used to unrestrict,
+// see https://www.pyopenssl.org/en/stable/api/ssl.html#OpenSSL.SSL.Context.set_options
 class SetOptionsCall extends ProtocolRestriction {
   override CallNode node;
 
@@ -42,6 +44,10 @@ class SetOptionsCall extends ProtocolRestriction {
   }
 }
 
+class UnspecificPyOpenSSLContextCreation extends PyOpenSSLContextCreation, UnspecificContextCreation {
+  UnspecificPyOpenSSLContextCreation() { library = "pyOpenSSL" }
+}
+
 class PyOpenSSL extends TlsLibrary {
   PyOpenSSL() { this = "pyOpenSSL" }
 
@@ -50,11 +56,9 @@ class PyOpenSSL extends TlsLibrary {
     result = version + "_METHOD"
   }
 
-  override string unspecific_version_name() {
-    result in [
-        "TLS_METHOD", // This is not actually available in pyOpenSSL yet
-        "SSLv23_METHOD" // This is what can negotiate TLS 1.3 (indeed, I know, I did test that..)
-      ]
+  override string unspecific_version_name(ProtocolFamily family) {
+    // `"TLS_METHOD"` is not actually available in pyOpenSSL yet, but should be coming soon..
+    result = family + "_METHOD"
   }
 
   override API::Node version_constants() { result = API::moduleImport("OpenSSL").getMember("SSL") }
@@ -70,4 +74,8 @@ class PyOpenSSL extends TlsLibrary {
   override ConnectionCreation connection_creation() { result instanceof ConnectionCall }
 
   override ProtocolRestriction protocol_restriction() { result instanceof SetOptionsCall }
+
+  override ProtocolUnrestriction protocol_unrestriction() {
+    result instanceof UnspecificPyOpenSSLContextCreation
+  }
 }

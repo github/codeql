@@ -56,6 +56,31 @@ class OptionsAugOr extends ProtocolRestriction {
   override ProtocolVersion getRestriction() { result = restriction }
 }
 
+class OptionsAugAndNot extends ProtocolUnrestriction {
+  ProtocolVersion restriction;
+
+  OptionsAugAndNot() {
+    exists(AugAssign aa, AttrNode attr, Expr flag, UnaryExpr notFlag |
+      aa.getOperation().getOp() instanceof BitAnd and
+      aa.getTarget() = attr.getNode() and
+      attr.getName() = "options" and
+      attr.getObject() = node and
+      notFlag.getOp() instanceof Invert and
+      notFlag.getOperand() = flag and
+      flag = API::moduleImport("ssl").getMember("OP_NO_" + restriction).getAUse().asExpr() and
+      (
+        aa.getValue() = notFlag
+        or
+        impliesValue(aa.getValue(), notFlag, true, true)
+      )
+    )
+  }
+
+  override DataFlow::CfgNode getContext() { result = this }
+
+  override ProtocolVersion getUnrestriction() { result = restriction }
+}
+
 /** Whether `part` evaluates to `partIsTrue` if `whole` evaluates to `wholeIsTrue`. */
 predicate impliesValue(BinaryExpr whole, Expr part, boolean partIsTrue, boolean wholeIsTrue) {
   whole.getOp() instanceof BitAnd and
@@ -75,8 +100,8 @@ predicate impliesValue(BinaryExpr whole, Expr part, boolean partIsTrue, boolean 
   )
 }
 
-class ContextSetVersion extends ProtocolRestriction {
-  string restriction;
+class ContextSetVersion extends ProtocolRestriction, ProtocolUnrestriction {
+  ProtocolVersion restriction;
 
   ContextSetVersion() {
     exists(Attributes::AttrWrite aw |
@@ -90,6 +115,21 @@ class ContextSetVersion extends ProtocolRestriction {
   override DataFlow::CfgNode getContext() { result = this }
 
   override ProtocolVersion getRestriction() { result.lessThan(restriction) }
+
+  override ProtocolVersion getUnrestriction() {
+    restriction = result or restriction.lessThan(result)
+  }
+}
+
+class UnspecificSSLContextCreation extends SSLContextCreation, UnspecificContextCreation {
+  UnspecificSSLContextCreation() { library = "ssl" }
+
+  override ProtocolVersion getUnrestriction() {
+    result = UnspecificContextCreation.super.getUnrestriction() and
+    // These are turned off by default
+    // see https://docs.python.org/3/library/ssl.html#ssl-contexts
+    not result in ["SSLv2", "SSLv3"]
+  }
 }
 
 class Ssl extends TlsLibrary {
@@ -100,16 +140,7 @@ class Ssl extends TlsLibrary {
     result = "PROTOCOL_" + version
   }
 
-  override string unspecific_version_name() {
-    result =
-      "PROTOCOL_" +
-        [
-          "TLS",
-          // This can negotiate a TLS 1.3 connection (!)
-          // see https://docs.python.org/3/library/ssl.html#ssl-contexts
-          "SSLv23"
-        ]
-  }
+  override string unspecific_version_name(ProtocolFamily family) { result = "PROTOCOL_" + family }
 
   override API::Node version_constants() { result = API::moduleImport("ssl") }
 
@@ -131,5 +162,13 @@ class Ssl extends TlsLibrary {
     result instanceof OptionsAugOr
     or
     result instanceof ContextSetVersion
+  }
+
+  override ProtocolUnrestriction protocol_unrestriction() {
+    result instanceof OptionsAugAndNot
+    or
+    result instanceof ContextSetVersion
+    or
+    result instanceof UnspecificSSLContextCreation
   }
 }

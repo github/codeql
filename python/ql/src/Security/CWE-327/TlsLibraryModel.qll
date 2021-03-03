@@ -19,6 +19,13 @@ class ProtocolVersion extends string {
     or
     this = ["TLSv1", "TLSv1_1", "TLSv1_2"] and version = "TLSv1_3"
   }
+
+  predicate isInsecure() { this in ["SSLv2", "SSLv3", "TLSv1", "TLSv1_1"] }
+}
+
+/** An unspecific protocol version */
+class ProtocolFamily extends string {
+  ProtocolFamily() { this in ["SSLv23", "TLS"] }
 }
 
 /** The creation of a context. */
@@ -42,6 +49,34 @@ abstract class ProtocolRestriction extends DataFlow::CfgNode {
   abstract ProtocolVersion getRestriction();
 }
 
+/** A context is being relaxed on which protocols it can accepts. */
+abstract class ProtocolUnrestriction extends DataFlow::CfgNode {
+  /** Gets the context being relaxed. */
+  abstract DataFlow::CfgNode getContext();
+
+  /** Gets the protocol version being allowed. */
+  abstract ProtocolVersion getUnrestriction();
+}
+
+abstract class UnspecificContextCreation extends ContextCreation, ProtocolUnrestriction {
+  TlsLibrary library;
+  ProtocolFamily family;
+
+  UnspecificContextCreation() { this.getProtocol() = library.unspecific_version(family) }
+
+  override DataFlow::CfgNode getContext() { result = this }
+
+  override ProtocolVersion getUnrestriction() {
+    family = "TLS" and
+    result in ["TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
+    or
+    // This can negotiate a TLS 1.3 connection (!)
+    // see https://docs.python.org/3/library/ssl.html#ssl-contexts
+    family = "SSLv23" and
+    result in ["SSLv2", "SSLv3", "TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
+  }
+}
+
 abstract class TlsLibrary extends string {
   TlsLibrary() { this in ["ssl", "pyOpenSSL"] }
 
@@ -49,7 +84,7 @@ abstract class TlsLibrary extends string {
   abstract string specific_insecure_version_name(ProtocolVersion version);
 
   /** The name of an unspecific protocol version, say TLS, known to have insecure instances. */
-  abstract string unspecific_version_name();
+  abstract string unspecific_version_name(ProtocolFamily family);
 
   /** The module or class holding the version constants. */
   abstract API::Node version_constants();
@@ -60,8 +95,8 @@ abstract class TlsLibrary extends string {
   }
 
   /** A dataflow node representing an unspecific protocol version, say TLS, known to have insecure instances. */
-  DataFlow::Node unspecific_version() {
-    result = version_constants().getMember(unspecific_version_name()).getAUse()
+  DataFlow::Node unspecific_version(ProtocolFamily family) {
+    result = version_constants().getMember(unspecific_version_name(family)).getAUse()
   }
 
   /** The creation of a context with a deafult protocol. */
@@ -77,11 +112,11 @@ abstract class TlsLibrary extends string {
   }
 
   /** The creation of a context with an unspecific protocol version, say TLS, known to have insecure instances. */
-  DataFlow::CfgNode unspecific_context_creation() {
+  DataFlow::CfgNode unspecific_context_creation(ProtocolFamily family) {
     result = default_context_creation()
     or
     result = specific_context_creation() and
-    result.(ContextCreation).getProtocol() = unspecific_version()
+    result.(ContextCreation).getProtocol() = unspecific_version(family)
   }
 
   /** A connection is created in an insecure manner, not from a context. */
@@ -92,4 +127,7 @@ abstract class TlsLibrary extends string {
 
   /** A context is being restricted on which protocols it can accepts. */
   abstract ProtocolRestriction protocol_restriction();
+
+  /** A context is being relaxed on which protocols it can accepts. */
+  abstract ProtocolUnrestriction protocol_unrestriction();
 }
