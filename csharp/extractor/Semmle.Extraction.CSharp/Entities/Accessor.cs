@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// Gets the property symbol associated accessor `symbol`, or `null`
         /// if there is no associated symbol.
         /// </summary>
-        public static IPropertySymbol GetPropertySymbol(IMethodSymbol symbol)
+        public static IPropertySymbol? GetPropertySymbol(IMethodSymbol symbol)
         {
             // Usually, the property/indexer can be fetched from the associated symbol
             if (symbol.AssociatedSymbol is IPropertySymbol prop)
@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// Gets the property symbol associated with this accessor.
         /// </summary>
-        private IPropertySymbol PropertySymbol => GetPropertySymbol(Symbol);
+        private IPropertySymbol? PropertySymbol => GetPropertySymbol(Symbol);
 
         public new Accessor OriginalDefinition => Create(Context, Symbol.OriginalDefinition);
 

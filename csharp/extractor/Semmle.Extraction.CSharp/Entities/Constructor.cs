@@ -86,7 +86,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        private ConstructorDeclarationSyntax Syntax
+        private ConstructorDeclarationSyntax? Syntax
         {
             get
             {
@@ -122,7 +122,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";constructor");
         }
 
-        private ConstructorDeclarationSyntax GetSyntax() =>
+        private ConstructorDeclarationSyntax? GetSyntax() =>
             Symbol.DeclaringSyntaxReferences.Select(r => r.GetSyntax()).OfType<ConstructorDeclarationSyntax>().FirstOrDefault();
 
         public override Microsoft.CodeAnalysis.Location? FullLocation => ReportingLocation;

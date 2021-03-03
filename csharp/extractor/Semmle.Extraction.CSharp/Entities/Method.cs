@@ -83,7 +83,7 @@ namespace Semmle.Extraction.CSharp.Entities
                        if (block != null)
                            Statements.Block.Create(Context, block, this, 0);
                        else
-                           Expression.Create(Context, expr, this, 0);
+                           Expression.Create(Context, expr!, this, 0);
 
                        NumberOfLines(trapFile, BodyDeclaringSymbol, this);
                    });

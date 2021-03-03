@@ -101,7 +101,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected virtual T BodyDeclaringSymbol => Symbol;
 
-        public BlockSyntax Block
+        public BlockSyntax? Block
         {
             get
             {
@@ -112,7 +112,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public ExpressionSyntax ExpressionBody
+        public ExpressionSyntax? ExpressionBody
         {
             get
             {

@@ -75,7 +75,7 @@ namespace Semmle.Extraction.CSharp
                 }
 
                 var versionInfo = FileVersionInfo.GetVersionInfo(SpecifiedCompiler);
-                if (!knownCompilerNames.TryGetValue(versionInfo.OriginalFilename, out var vendor))
+                if (!knownCompilerNames.TryGetValue(versionInfo.OriginalFilename ?? string.Empty, out var vendor))
                 {
                     SkipExtractionBecause("the compiler name is not recognised");
                     return;
