@@ -106,7 +106,7 @@ module DataFlow {
 
     /** Holds if this node may evaluate to the Boolean value `b`. */
     predicate mayHaveBooleanValue(boolean b) {
-      getAPredecessor().mayHaveBooleanValue(b) // needed stage 31 + stage 26 + stage 22 (unfixable)
+      getAPredecessor().mayHaveBooleanValue(b)
       or
       b = true and asExpr().(BooleanLiteral).getValue() = "true"
       or
