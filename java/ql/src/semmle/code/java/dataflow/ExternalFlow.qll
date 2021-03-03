@@ -287,7 +287,7 @@ private predicate elementSpec(
 bindingset[namespace, type, subtypes]
 private RefType interpretType(string namespace, string type, boolean subtypes) {
   exists(RefType t |
-    [t, t.getSourceDeclaration()].hasQualifiedName(namespace, type) and
+    t.hasQualifiedName(namespace, type) and
     if subtypes = true then result.getASourceSupertype*() = t else result = t
   )
 }
@@ -409,21 +409,27 @@ private predicate outputNeedsReference(string c) {
 private predicate sourceElementRef(Top ref, string output, string kind) {
   exists(Element e |
     sourceElement(e, output, kind) and
-    if outputNeedsReference(getLast(output)) then ref.(Call).getCallee() = e else ref = e
+    if outputNeedsReference(getLast(output))
+    then ref.(Call).getCallee().getSourceDeclaration() = e
+    else ref = e
   )
 }
 
 private predicate sinkElementRef(Top ref, string input, string kind) {
   exists(Element e |
     sinkElement(e, input, kind) and
-    if inputNeedsReference(getLast(input)) then ref.(Call).getCallee() = e else ref = e
+    if inputNeedsReference(getLast(input))
+    then ref.(Call).getCallee().getSourceDeclaration() = e
+    else ref = e
   )
 }
 
 private predicate summaryElementRef(Top ref, string input, string output, string kind) {
   exists(Element e |
     summaryElement(e, input, output, kind) and
-    if inputNeedsReference(getLast(input)) then ref.(Call).getCallee() = e else ref = e
+    if inputNeedsReference(getLast(input))
+    then ref.(Call).getCallee().getSourceDeclaration() = e
+    else ref = e
   )
 }
 
