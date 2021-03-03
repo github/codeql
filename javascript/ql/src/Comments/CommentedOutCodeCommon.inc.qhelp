@@ -12,6 +12,6 @@ for debugging, is left in the code, but commented out. It should be removed alto
 
 </example>
 
-<include src="CommentedOutCodeReferences.qhelp" />
+<include src="CommentedOutCodeReferences.inc.qhelp" />
 
 </qhelp>
