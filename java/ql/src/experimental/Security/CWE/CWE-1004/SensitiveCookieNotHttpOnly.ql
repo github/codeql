@@ -48,9 +48,8 @@ class SensitiveCookieNameExpr extends Expr {
       ClassInstanceExpr cie // new Cookie("jwt_token", token)
     |
       (
-        cie.getConstructor().getDeclaringType().hasQualifiedName("javax.servlet.http", "Cookie") or
-        cie.getConstructor()
-            .getDeclaringType()
+        cie.getConstructedType().hasQualifiedName("javax.servlet.http", "Cookie") or
+        cie.getConstructedType()
             .getASupertype*()
             .hasQualifiedName(["javax.ws.rs.core", "jakarta.ws.rs.core"], "Cookie")
       ) and
