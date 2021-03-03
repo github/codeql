@@ -135,10 +135,7 @@ class UnspecificSSLContextCreation extends SSLContextCreation, UnspecificContext
 class Ssl extends TlsLibrary {
   Ssl() { this = "ssl" }
 
-  override string specific_insecure_version_name(ProtocolVersion version) {
-    version in ["SSLv2", "SSLv3", "TLSv1", "TLSv1_1"] and
-    result = "PROTOCOL_" + version
-  }
+  override string specific_version_name(ProtocolVersion version) { result = "PROTOCOL_" + version }
 
   override string unspecific_version_name(ProtocolFamily family) { result = "PROTOCOL_" + family }
 

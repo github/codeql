@@ -51,10 +51,7 @@ class UnspecificPyOpenSSLContextCreation extends PyOpenSSLContextCreation, Unspe
 class PyOpenSSL extends TlsLibrary {
   PyOpenSSL() { this = "pyOpenSSL" }
 
-  override string specific_insecure_version_name(ProtocolVersion version) {
-    version in ["SSLv2", "SSLv3", "TLSv1", "TLSv1_1"] and
-    result = version + "_METHOD"
-  }
+  override string specific_version_name(ProtocolVersion version) { result = version + "_METHOD" }
 
   override string unspecific_version_name(ProtocolFamily family) {
     // `"TLS_METHOD"` is not actually available in pyOpenSSL yet, but should be coming soon..

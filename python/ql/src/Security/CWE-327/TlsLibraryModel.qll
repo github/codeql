@@ -80,8 +80,8 @@ abstract class UnspecificContextCreation extends ContextCreation, ProtocolUnrest
 abstract class TlsLibrary extends string {
   TlsLibrary() { this in ["ssl", "pyOpenSSL"] }
 
-  /** The name of a specific protocol version, known to be insecure. */
-  abstract string specific_insecure_version_name(ProtocolVersion version);
+  /** The name of a specific protocol version. */
+  abstract string specific_version_name(ProtocolVersion version);
 
   /** The name of an unspecific protocol version, say TLS, known to have insecure instances. */
   abstract string unspecific_version_name(ProtocolFamily family);
@@ -91,7 +91,8 @@ abstract class TlsLibrary extends string {
 
   /** A dataflow node representing a specific protocol version, known to be insecure. */
   DataFlow::Node insecure_version(ProtocolVersion version) {
-    result = version_constants().getMember(specific_insecure_version_name(version)).getAUse()
+    version.isInsecure() and
+    result = version_constants().getMember(specific_version_name(version)).getAUse()
   }
 
   /** A dataflow node representing an unspecific protocol version, say TLS, known to have insecure instances. */
