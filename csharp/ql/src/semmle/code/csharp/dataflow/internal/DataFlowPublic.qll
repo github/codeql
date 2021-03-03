@@ -117,22 +117,18 @@ class ExprNode extends Node {
  * flow graph.
  */
 class ParameterNode extends Node {
-  ParameterNode() {
-    // charpred needed to avoid making `ParameterNode` abstract
-    this = TExplicitParameterNode(_) or
-    this.(SsaDefinitionNode).getDefinition() instanceof
-      ImplicitCapturedParameterNodeImpl::SsaCapturedEntryDefinition or
-    this = TInstanceParameterNode(_)
-  }
+  private ParameterNodeImpl p;
+
+  ParameterNode() { this = p }
 
   /** Gets the parameter corresponding to this node, if any. */
-  DotNet::Parameter getParameter() { none() }
+  DotNet::Parameter getParameter() { result = p.getParameter() }
 
   /**
    * Holds if this node is the parameter of callable `c` at the specified
    * (zero-based) position.
    */
-  predicate isParameterOf(DataFlowCallable c, int i) { none() }
+  predicate isParameterOf(DataFlowCallable c, int i) { p.isParameterOf(c, i) }
 }
 
 /** A definition, viewed as a node in a data flow graph. */
