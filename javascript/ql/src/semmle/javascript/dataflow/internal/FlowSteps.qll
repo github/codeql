@@ -378,6 +378,7 @@ private module CachedSteps {
    */
   cached
   predicate basicLoadStep(DataFlow::Node pred, DataFlow::PropRead succ, string prop) {
+    ExtendedStaging::TypeTracking::ref() and
     succ.accesses(pred, prop)
   }
 
@@ -403,6 +404,7 @@ private module CachedSteps {
    */
   cached
   predicate callback(DataFlow::Node arg, DataFlow::SourceNode cb) {
+    ExtendedStaging::TypeTracking::ref() and
     exists(DataFlow::InvokeNode invk, DataFlow::ParameterNode cbParm, DataFlow::Node cbArg |
       arg = invk.getAnArgument() and
       cbParm.flowsTo(invk.getCalleeNode()) and

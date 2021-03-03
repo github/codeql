@@ -60,7 +60,9 @@ private module Internal {
 
   cached
   predicate useAt(BasicBlock bb, int i, Variable v, VarUse u) {
-    v = u.getVariable() and bbIndex(bb, u, i)
+    ExtendedStaging::BasicBlocks::ref() and
+    v = u.getVariable() and
+    bbIndex(bb, u, i)
   }
 
   cached

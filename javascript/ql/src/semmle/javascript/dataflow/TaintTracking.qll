@@ -232,7 +232,9 @@ module TaintTracking {
     HeapTaintStep() { heapStep(_, this) }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      heapStep(pred, succ) and succ = this
+      ExtendedStaging::Taint::ref() and
+      heapStep(pred, succ) and
+      succ = this
     }
   }
 

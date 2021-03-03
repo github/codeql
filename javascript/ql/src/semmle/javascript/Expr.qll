@@ -109,7 +109,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
 
   /** Gets the constant string value this expression evaluates to, if any. */
   cached
-  string getStringValue() { result = getStringValue(this) }
+  string getStringValue() { ExtendedStaging::Ast::ref() and result = getStringValue(this) }
 
   /** Holds if this expression is impure, that is, its evaluation could have side effects. */
   predicate isImpure() { any() }
@@ -257,6 +257,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
 
 cached
 private DataFlow::Node getCatchParameterFromStmt(Stmt stmt) {
+  ExtendedStaging::DataFlowStage::ref() and
   result =
     DataFlow::parameterNode(stmt.getEnclosingTryCatchStmt().getACatchClause().getAParameter())
 }
@@ -806,7 +807,9 @@ class FunctionExpr extends @function_expr, Expr, Function {
   /** Gets the statement in which this function expression appears. */
   override Stmt getEnclosingStmt() { result = Expr.super.getEnclosingStmt() }
 
-  override StmtContainer getEnclosingContainer() { result = Expr.super.getContainer() }
+  override StmtContainer getEnclosingContainer() {
+    ExtendedStaging::Ast::ref() and result = Expr.super.getContainer()
+  }
 
   override predicate isImpure() { none() }
 

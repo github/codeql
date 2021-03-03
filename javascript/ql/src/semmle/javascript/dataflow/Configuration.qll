@@ -733,6 +733,7 @@ private class FlowStepThroughImport extends AdditionalFlowStep, DataFlow::ValueN
   override ImportSpecifier astNode;
 
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    ExtendedStaging::FlowSteps::ref() and
     pred = this and
     succ = DataFlow::ssaDefinitionNode(SSA::definition(astNode))
   }

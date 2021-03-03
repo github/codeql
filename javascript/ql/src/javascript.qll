@@ -25,6 +25,7 @@ import semmle.javascript.Errors
 import semmle.javascript.ES2015Modules
 import semmle.javascript.Expr
 import semmle.javascript.Extend
+import semmle.javascript.ExtendedStaging
 import semmle.javascript.Externs
 import semmle.javascript.Files
 import semmle.javascript.Functions
