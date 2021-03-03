@@ -1,7 +1,6 @@
 /** Definitions of taint steps in the IO packae of the Guava framework */
 
 import java
-private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
 
 private class GuavaIoCsv extends SummaryModelCsv {
