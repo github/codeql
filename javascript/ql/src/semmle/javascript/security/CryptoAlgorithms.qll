@@ -118,7 +118,7 @@ abstract class CryptographicAlgorithm extends TCryptographicAlgorithm {
 
   /**
    * Holds if the name of this algorithm matches `name` modulo case,
-   * white space, dashes and underscores.
+   * white space, dashes, and underscores.
    */
   bindingset[name]
   predicate matchesName(string name) {
