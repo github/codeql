@@ -45,7 +45,7 @@ class SetCookieMethodAccess extends MethodAccess {
 class SensitiveCookieNameExpr extends Expr {
   SensitiveCookieNameExpr() {
     exists(
-      ClassInstanceExpr cie, Expr e // new Cookie("jwt_token", token)
+      ClassInstanceExpr cie // new Cookie("jwt_token", token)
     |
       (
         cie.getConstructor().getDeclaringType().hasQualifiedName("javax.servlet.http", "Cookie") or
@@ -55,16 +55,14 @@ class SensitiveCookieNameExpr extends Expr {
             .hasQualifiedName(["javax.ws.rs.core", "jakarta.ws.rs.core"], "Cookie")
       ) and
       this = cie and
-      isSensitiveCookieNameExpr(e) and
-      DataFlow::localExprFlow(e, cie.getArgument(0))
+      isSensitiveCookieNameExpr(cie.getArgument(0))
     )
     or
     exists(
-      SetCookieMethodAccess ma, Expr e // response.addHeader("Set-Cookie: token=" +authId + ";HttpOnly;Secure")
+      SetCookieMethodAccess ma // response.addHeader("Set-Cookie: token=" +authId + ";HttpOnly;Secure")
     |
       this = ma.getArgument(1) and
-      isSensitiveCookieNameExpr(e) and
-      DataFlow::localExprFlow(e, ma.getArgument(1))
+      isSensitiveCookieNameExpr(this)
     )
   }
 }
