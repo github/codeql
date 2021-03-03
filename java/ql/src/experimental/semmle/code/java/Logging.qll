@@ -23,7 +23,7 @@ class LoggingCall extends MethodAccess {
     |
       (
         m.getDeclaringType().getASourceSupertype*() = t or
-        m.getDeclaringType().(RefType).extendsOrImplements*(t)
+        m.getDeclaringType().extendsOrImplements*(t)
       ) and
       m.getReturnType() instanceof VoidType and
       this = m.getAReference()
