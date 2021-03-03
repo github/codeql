@@ -51,10 +51,16 @@ package javax.ws.rs.core;
  * @since 1.0
  */
 public class Cookie {
+
     /**
      * Cookies using the default version correspond to RFC 2109.
      */
     public static final int DEFAULT_VERSION = 1;
+    private final String name;
+    private final String value;
+    private final int version;
+    private final String path;
+    private final String domain;
 
     /**
      * Create a new instance.
@@ -68,6 +74,11 @@ public class Cookie {
      */
     public Cookie(final String name, final String value, final String path, final String domain, final int version)
             throws IllegalArgumentException {
+        this.name = name;
+        this.value = value;
+        this.version = version;
+        this.domain = domain;
+        this.path = path;
     }
 
     /**
@@ -81,6 +92,7 @@ public class Cookie {
      */
     public Cookie(final String name, final String value, final String path, final String domain)
             throws IllegalArgumentException {
+        this(name, value, path, domain, DEFAULT_VERSION);
     }
 
     /**
@@ -92,6 +104,7 @@ public class Cookie {
      */
     public Cookie(final String name, final String value)
             throws IllegalArgumentException {
+        this(name, value, null, null);
     }
 
     /**
@@ -112,7 +125,7 @@ public class Cookie {
      * @return the cookie name.
      */
     public String getName() {
-        return null;
+        return name;
     }
 
     /**
@@ -121,7 +134,7 @@ public class Cookie {
      * @return the cookie value.
      */
     public String getValue() {
-        return null;
+        return value;
     }
 
     /**
@@ -130,7 +143,7 @@ public class Cookie {
      * @return the cookie version.
      */
     public int getVersion() {
-        return -1;
+        return version;
     }
 
     /**
@@ -139,7 +152,7 @@ public class Cookie {
      * @return the cookie domain.
      */
     public String getDomain() {
-        return null;
+        return domain;
     }
 
     /**
@@ -148,40 +161,6 @@ public class Cookie {
      * @return the cookie path.
      */
     public String getPath() {
-        return null;
-    }
-
-    /**
-     * Convert the cookie to a string suitable for use as the value of the
-     * corresponding HTTP header.
-     *
-     * @return a stringified cookie.
-     */
-    @Override
-    public String toString() {
-        return null;
-    }
-
-    /**
-     * Generate a hash code by hashing all of the cookies properties.
-     *
-     * @return the cookie hash code.
-     */
-    @Override
-    public int hashCode() {
-        return -1;
-    }
-
-    /**
-     * Compare for equality.
-     *
-     * @param obj the object to compare to.
-     * @return {@code true}, if the object is a {@code Cookie} with the same
-     *         value for all properties, {@code false} otherwise.
-     */
-    @SuppressWarnings({"StringEquality", "RedundantIfStatement"})
-    @Override
-    public boolean equals(final Object obj) {
-        return true;
+        return path;
     }
 }

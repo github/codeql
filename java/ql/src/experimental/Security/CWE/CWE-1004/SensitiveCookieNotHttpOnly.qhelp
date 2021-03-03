@@ -2,7 +2,7 @@
 <qhelp>
 
   <overview>
-    <p>Cross-Site Scripting (XSS) is categorized as one of the OWASP Top 10 Security Vulnerabilities. The <code>HttpOnly</code> flag directs compatible browsers to prevent client-side script from accessing cookies. Including the HttpOnly flag in the Set-Cookie HTTP response header for a sensitive cookie helps mitigate the risk associated with XSS where an attacker's script code attempts to read the contents of a cookie and exfiltrate information obtained.</p>
+    <p>Cross-Site Scripting (XSS) is categorized as one of the OWASP Top 10 Security Vulnerabilities. The <code>HttpOnly</code> flag directs compatible browsers to prevent client-side script from accessing cookies. Including the <code>HttpOnly</code> flag in the Set-Cookie HTTP response header for a sensitive cookie helps mitigate the risk associated with XSS where an attacker's script code attempts to read the contents of a cookie and exfiltrate information obtained.</p>
   </overview>
 
   <recommendation>

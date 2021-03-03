@@ -320,40 +320,4 @@ public class NewCookie extends Cookie {
     public Cookie toCookie() {
         return null;
     }
-
-    /**
-     * Convert the cookie to a string suitable for use as the value of the
-     * corresponding HTTP header.
-     *
-     * @return a stringified cookie.
-     */
-    @Override
-    public String toString() {
-        return null;
-    }
-
-    /**
-     * Generate a hash code by hashing all of the properties.
-     *
-     * @return the hash code.
-     */
-    @Override
-    public int hashCode() {
-        return -1;
-    }
-
-    /**
-     * Compare for equality. Use {@link #toCookie()} to compare a
-     * {@code NewCookie} to a {@code Cookie} considering only the common
-     * properties.
-     *
-     * @param obj the object to compare to
-     * @return true if the object is a {@code NewCookie} with the same value for
-     *         all properties, false otherwise.
-     */
-    @SuppressWarnings({"StringEquality", "RedundantIfStatement"})
-    @Override
-    public boolean equals(Object obj) {
-        return true;
-    }
 }
