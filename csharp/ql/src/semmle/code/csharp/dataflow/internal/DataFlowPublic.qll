@@ -236,7 +236,7 @@ class FieldContent extends Content, TFieldContent {
   /** Gets the field that is referenced. */
   Field getField() { result = f }
 
-  override string toString() { result = f.toString() }
+  override string toString() { result = "field " + f.getName() }
 
   override Location getLocation() { result = f.getLocation() }
 
@@ -256,7 +256,7 @@ class PropertyContent extends Content, TPropertyContent {
   /** Gets the property that is referenced. */
   Property getProperty() { result = p }
 
-  override string toString() { result = p.toString() }
+  override string toString() { result = "property " + p.getName() }
 
   override Location getLocation() { result = p.getLocation() }
 
@@ -269,7 +269,7 @@ class PropertyContent extends Content, TPropertyContent {
 
 /** A reference to an element in a collection. */
 class ElementContent extends Content, TElementContent {
-  override string toString() { result = "[]" }
+  override string toString() { result = "element" }
 
   override Location getLocation() { result instanceof EmptyLocation }
 }
