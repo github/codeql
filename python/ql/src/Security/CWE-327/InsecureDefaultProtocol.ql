@@ -10,15 +10,13 @@
  *       external/cwe/cwe-327
  */
 
-// This query is based on the premise that default constructors are always a security concern.
-// This has become untrue since Python 3.2 where the `SSLContext` was introduced. Such contexts
-// are designed to later be modified by flags such as `OP_NO_TLSv1_1`, and so the default values
-// are not necessarity problematic.
+// Connections are generally created based on a context which controls the range of acceptable
+// protocols. This query alerts on the deprecated way of creating connections without referring
+// to a context (via `ssl.wrap_socket`). Doing this and not specifying which protocols are
+// acceptable means that connections will be created with the insecure default settings.
 //
-// Detecting that a connection is created with a context that has not been suitably modified is
-// handled by the data-flow query py/insecure-protocol, while the present query is restricted
-// to alerting on the one deprecated default constructor whch does not refer to a contex, namely
-// `ssl.wrap_socket`.
+// Detecting that a connection is created with a context that has not been suitably configured
+// is handled by the data-flow query py/insecure-protocol.
 import python
 import semmle.python.ApiGraphs
 
