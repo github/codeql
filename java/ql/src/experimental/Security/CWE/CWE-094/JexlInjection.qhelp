@@ -14,8 +14,8 @@ and then evaluated, then it may allow the attacker to run arbitrary code.
 
 <recommendation>
 <p>
-Including untrusted input in a JEXL expression should be avoided. If it is not possible,
-JEXL expressions should be run in a sandbox that allows accessing only
+It is generally recommended to avoid using untrusted input in a JEXL expression.
+If it is not possible, JEXL expressions should be run in a sandbox that allows accessing only
 explicitly allowed classes.
 </p>
 </recommendation>
