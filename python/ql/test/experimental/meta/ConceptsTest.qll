@@ -319,35 +319,3 @@ class SafeAccessCheckTest extends InlineExpectationsTest {
     )
   }
 }
-
-class ErrorInfoSourceTest extends InlineExpectationsTest {
-  ErrorInfoSourceTest() { this = "ErrorInfoSourceTest" }
-
-  override string getARelevantTag() { result = "errorInfoSource" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(location.getFile().getRelativePath()) and
-    exists(ErrorInfoSource e |
-      location = e.getLocation() and
-      element = e.toString() and
-      value = "" and
-      tag = "errorInfoSource"
-    )
-  }
-}
-
-class ExceptionSourceTest extends InlineExpectationsTest {
-  ExceptionSourceTest() { this = "ExceptionSourceTest" }
-
-  override string getARelevantTag() { result = "exceptionSource" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(location.getFile().getRelativePath()) and
-    exists(ExceptionSource e |
-      location = e.getLocation() and
-      element = e.toString() and
-      value = "" and
-      tag = "exceptionSource"
-    )
-  }
-}
