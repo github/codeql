@@ -19,7 +19,7 @@ class LoggingCall extends MethodAccess {
       t.hasQualifiedName("com.google.common.flogger", "LoggingApi") or
       t.hasQualifiedName("java.lang", "System$Logger") or
       t.hasQualifiedName("java.util.logging", "Logger") or
-      t.hasQualifiedName("android.util.Log", _)
+      t.hasQualifiedName("android.util", "Log")
     |
       (
         m.getDeclaringType().getASourceSupertype*() = t or
