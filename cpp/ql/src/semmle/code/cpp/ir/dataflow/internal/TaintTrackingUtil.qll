@@ -64,7 +64,7 @@ private predicate operandToInstructionTaintStep(Operand opFrom, Instruction inst
     or
     instrTo instanceof PointerArithmeticInstruction
     or
-    instrTo instanceof FieldAddressInstruction
+    instrTo.(FieldAddressInstruction).getField().getDeclaringType() instanceof Union
     or
     // The `CopyInstruction` case is also present in non-taint data flow, but
     // that uses `getDef` rather than `getAnyDef`. For taint, we want flow
