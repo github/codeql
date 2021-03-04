@@ -1,5 +1,6 @@
 import java
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.FlowSteps
 import TestUtilities.InlineExpectationsTest
 
 class Conf extends DataFlow::Configuration {
@@ -12,6 +13,16 @@ class Conf extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node n) {
     exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
   }
+}
+
+class Model extends DataFlow::FluentMethod {
+  Model() { this.getName() = "modelledFluentMethod" }
+}
+
+class IdentityModel extends DataFlow::ValuePreservingCallable {
+  IdentityModel() { this.getName() = "modelledIdentity" }
+
+  override predicate returnsValue(int arg) { arg = 0 }
 }
 
 class HasFlowTest extends InlineExpectationsTest {

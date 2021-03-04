@@ -369,6 +369,36 @@ predicate hasNonlocalValue(FieldRead fr) {
 predicate localFlowStep(Node node1, Node node2) { simpleLocalFlowStep(node1, node2) }
 
 /**
+ * A method or constructor that returns the exact value of one of its parameters or the qualifier.
+ *
+ * Extend this class and override `returnsValue` to add additional value-preserving steps through a
+ * method that should be added to the basic local flow step relation.
+ *
+ * These steps will be visible for all global data-flow purposes, as well as via
+ * `DataFlow::Node.getASuccessor` and other related functions exposing intraprocedural dataflow.
+ */
+abstract class ValuePreservingCallable extends Callable {
+  /**
+   * Holds if this callable returns precisely the value passed into argument `arg`.
+   * `arg` is a parameter index, or is -1 to indicate the qualifier.
+   */
+  abstract predicate returnsValue(int arg);
+}
+
+/**
+ * A method or constructor that returns the exact value of its qualifier (e.g., `return this;`)
+ *
+ * Extend this class and override `returnsValue` to add additional value-preserving steps through a
+ * method that should be added to the basic local flow step relation.
+ *
+ * These steps will be visible for all global data-flow purposes, as well as via
+ * `DataFlow::Node.getASuccessor` and other related functions exposing intraprocedural dataflow.
+ */
+abstract class FluentMethod extends ValuePreservingCallable {
+  override predicate returnsValue(int arg) { arg = -1 }
+}
+
+/**
  * INTERNAL: do not use.
  *
  * This is the local flow predicate that's used as a building block in global
@@ -407,6 +437,17 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   node2.asExpr().(AssignExpr).getSource() = node1.asExpr()
   or
   summaryStep(node1, node2, "value")
+  or
+  exists(MethodAccess ma, ValuePreservingCallable c, int argNo |
+    ma.getCallee() = c and c.returnsValue(argNo)
+  |
+    node2.asExpr() = ma and
+    (
+      node1.asExpr() = ma.getArgument(argNo)
+      or
+      argNo = -1 and node1.asExpr() = ma.getQualifier()
+    )
+  )
   or
   exists(MethodAccess ma, Method m |
     ma = node2.asExpr() and
