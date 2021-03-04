@@ -1,4 +1,6 @@
 class A {
+  final boolean cond = otherCond();
+
   boolean otherCond() { return 3 > 5; }
 
   void f(int initx) {
@@ -29,6 +31,10 @@ class A {
 
     while(initx > 0) { // OK: loop used as an if-statement
       break;
+    }
+
+    while (cond) { // BAD: read of final field
+      i++;
     }
   }
 }
