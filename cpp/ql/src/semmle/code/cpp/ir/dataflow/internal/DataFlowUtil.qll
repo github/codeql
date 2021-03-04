@@ -694,9 +694,9 @@ private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo
     opFrom.getAnyDef() instanceof WriteSideEffectInstruction and
     chi.getPartialOperand() = opFrom and
     not chi.isResultConflated() and
-    // In a call such as `set_value(&x->val);`
-    // we don't want the memory that of `x` to receive dataflow. This is handled by field flow. If we
-    // add dataflow here we get field to object flow.
+    // In a call such as `set_value(&x->val);` we don't want the memory representing `x` to receive
+    // dataflow by a simple step. Instead, this is handled by field flow. If we add a simple step here
+    // we can get field-to-object flow.
     not chi.isPartialUpdate()
   )
   or
