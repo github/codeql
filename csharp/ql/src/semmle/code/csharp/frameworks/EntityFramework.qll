@@ -9,6 +9,7 @@ private import semmle.code.csharp.frameworks.system.data.Entity
 private import semmle.code.csharp.frameworks.system.collections.Generic
 private import semmle.code.csharp.frameworks.Sql
 private import semmle.code.csharp.dataflow.FlowSummary
+private import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
  * Definitions relating to the `System.ComponentModel.DataAnnotations`
@@ -267,160 +268,225 @@ module EntityFramework {
     or
     isColumnType(t.(NullableType).getUnderlyingType())
   }
-  //   /** A DB Context. */
-  //   private class DbContextClass extends Class {
-  //     DbContextClass() { this.getBaseClass*().getUnboundDeclaration() instanceof DbContext }
-  //     /**
-  //      * Gets a `DbSet<elementType>` property belonging to this DB context.
-  //      *
-  //      * For example `Persons` with `elementType = Person` in
-  //      *
-  //      * ```csharp
-  //      * class MyContext : DbContext
-  //      * {
-  //      *     public virtual DbSet<Person> Persons { get; set; }
-  //      *     public virtual DbSet<Address> Addresses { get; set; }
-  //      * }
-  //      * ```
-  //      */
-  //     private Property getADbSetProperty(Class elementType) {
-  //       exists(ConstructedClass c |
-  //         result.getType() = c and
-  //         c.getUnboundDeclaration() instanceof DbSet and
-  //         elementType = c.getTypeArgument(0) and
-  //         this.hasMember(any(Property p | result = p.getUnboundDeclaration())) and
-  //         not isNotMapped([result.(Attributable), elementType])
-  //       )
-  //     }
-  //     /**
-  //      * Holds if `[c2, c1]` is part of a valid access path starting from a `DbSet<T>`
-  //      * property belonging to this DB context. `t1` is the type of `c1` and `t2` is
-  //      * the type of `c2`.
-  //      *
-  //      * If `t2` is a column type, `c2` will be included in the model (see
-  //      * https://docs.microsoft.com/en-us/ef/core/modeling/entity-types?tabs=data-annotations).
-  //      */
-  //     private predicate step(Content c1, Type t1, Content c2, Type t2) {
-  //       exists(Property p1 |
-  //         p1 = this.getADbSetProperty(t2) and
-  //         c1.(PropertyContent).getProperty() = p1 and
-  //         t1 = p1.getType() and
-  //         c2 instanceof ElementContent
-  //       )
-  //       or
-  //       step(_, _, c1, t1) and
-  //       not isNotMapped(t2) and
-  //       (
-  //         // Navigation property (https://docs.microsoft.com/en-us/ef/ef6/fundamentals/relationships)
-  //         exists(Property p2 |
-  //           p2.getDeclaringType().(Class) = t1 and
-  //           not isColumnType(t1) and
-  //           c2.(PropertyContent).getProperty() = p2 and
-  //           t2 = p2.getType() and
-  //           not isNotMapped(p2)
-  //         )
-  //         or
-  //         exists(ConstructedInterface ci |
-  //           c1 instanceof PropertyContent and
-  //           t1.(ValueOrRefType).getABaseType*() = ci and
-  //           not t1 instanceof StringType and
-  //           ci.getUnboundDeclaration() instanceof SystemCollectionsGenericIEnumerableTInterface and
-  //           c2 instanceof ElementContent and
-  //           t2 = ci.getTypeArgument(0)
-  //         )
-  //       )
-  //     }
-  //     /**
-  //      * Gets a property belonging to the model of this DB context, which is mapped
-  //      * directly to a column in the underlying DB.
-  //      *
-  //      * For example the `Name` and `Id` properties of `Person`, but not `Title`
-  //      * as it is explicitly unmapped, in
-  //      *
-  //      * ```csharp
-  //      * class Person
-  //      * {
-  //      *     public int Id { get; set; }
-  //      *     public string Name { get; set; }
-  //      *
-  //      *     [NotMapped]
-  //      *     public string Title { get; set; }
-  //      * }
-  //      *
-  //      * class MyContext : DbContext
-  //      * {
-  //      *     public virtual DbSet<Person> Persons { get; set; }
-  //      *     public virtual DbSet<Address> Addresses { get; set; }
-  //      * }
-  //      * ```
-  //      */
-  //     private Property getAColumnProperty() {
-  //       exists(PropertyContent c, Type t |
-  //         this.step(_, _, c, t) and
-  //         c.getProperty() = result and
-  //         isColumnType(t)
-  //       )
-  //     }
-  //     /** Gets a `SaveChanges[Async]` method. */
-  //     pragma[nomagic]
-  //     Method getASaveChanges() {
-  //       this.hasMethod(result) and
-  //       result.getName().matches("SaveChanges%")
-  //     }
-  //     /** Holds if content list `head :: tail` is required. */
-  //     predicate requiresContentList(
-  //       Content head, Type headType, ContentList tail, Type tailType, Property last
-  //     ) {
-  //       exists(PropertyContent p |
-  //         last = this.getAColumnProperty() and
-  //         p.getProperty() = last and
-  //         tail = ContentList::singleton(p) and
-  //         this.step(head, headType, p, tailType)
-  //       )
-  //       or
-  //       exists(Content tailHead, ContentList tailTail |
-  //         this.requiresContentList(tailHead, tailType, tailTail, _, last) and
-  //         tail = ContentList::cons(tailHead, tailTail) and
-  //         this.step(head, headType, tailHead, tailType)
-  //       )
-  //     }
-  //     /**
-  //      * Holds if the access path obtained by concatenating `head` onto `tail`
-  //      * is a path from `dbSet` (which is a `DbSet<T>` property belonging to
-  //      * this DB context) to `last`, which is a property that is mapped directly
-  //      * to a column in the underlying DB.
-  //      */
-  //     pragma[noinline]
-  //     predicate pathFromDbSetToDbProperty(
-  //       Property dbSet, PropertyContent head, ContentList tail, Property last
-  //     ) {
-  //       this.requiresContentList(head, _, tail, _, last) and
-  //       head.getProperty() = dbSet and
-  //       dbSet = this.getADbSetProperty(_)
-  //     }
-  //   }
-  //   private class DbContextSaveChanges extends EFSummarizedCallable {
-  //     private DbContextClass c;
-  //     DbContextSaveChanges() { this = c.getASaveChanges() }
-  //     override predicate requiresContentList(Content head, ContentList tail) {
-  //       c.requiresContentList(head, _, tail, _, _)
-  //     }
-  //     override predicate propagatesFlow(
-  //       SummaryInput input, ContentList inputContents, SummaryOutput output,
-  //       ContentList outputContents, boolean preservesValue
-  //     ) {
-  //       exists(Property mapped |
-  //         preservesValue = true and
-  //         exists(PropertyContent sourceHead, ContentList sourceTail |
-  //           input = SummaryInput::thisParameter() and
-  //           c.pathFromDbSetToDbProperty(_, sourceHead, sourceTail, mapped) and
-  //           inputContents = ContentList::cons(sourceHead, sourceTail)
-  //         ) and
-  //         exists(Property dbSetProp |
-  //           output = SummaryOutput::jump(dbSetProp.getGetter(), SummaryOutput::return()) and
-  //           c.pathFromDbSetToDbProperty(dbSetProp, _, outputContents, mapped)
-  //         )
-  //       )
-  //     }
-  //   }
+
+  /** A DB Context. */
+  private class DbContextClass extends Class {
+    DbContextClass() { this.getBaseClass*().getUnboundDeclaration() instanceof DbContext }
+
+    /**
+     * Gets a `DbSet<elementType>` property belonging to this DB context.
+     *
+     * For example `Persons` with `elementType = Person` in
+     *
+     * ```csharp
+     * class MyContext : DbContext
+     * {
+     *     public virtual DbSet<Person> Persons { get; set; }
+     *     public virtual DbSet<Address> Addresses { get; set; }
+     * }
+     * ```
+     */
+    private Property getADbSetProperty(Class elementType) {
+      exists(ConstructedClass c |
+        result.getType() = c and
+        c.getUnboundDeclaration() instanceof DbSet and
+        elementType = c.getTypeArgument(0) and
+        this.hasMember(any(Property p | result = p.getUnboundDeclaration())) and
+        not isNotMapped([result.(Attributable), elementType])
+      )
+    }
+
+    /**
+     * Holds if `[c2, c1]` is part of a valid access path starting from a `DbSet<T>`
+     * property belonging to this DB context. `t1` is the type of `c1` and `t2` is
+     * the type of `c2`.
+     *
+     * If `t2` is a column type, `c2` will be included in the model (see
+     * https://docs.microsoft.com/en-us/ef/core/modeling/entity-types?tabs=data-annotations).
+     */
+    private predicate step(Property dbSetProp, Content c1, Type t1, Content c2, Type t2, int dist) {
+      dbSetProp =
+        any(Property p1 |
+          p1 = this.getADbSetProperty(t2) and
+          c1.(PropertyContent).getProperty() = p1 and
+          t1 = p1.getType() and
+          c2 instanceof ElementContent and
+          dist = 0
+        )
+      or
+      step(dbSetProp, _, _, c1, t1, dist - 1) and
+      dist < DataFlowPrivate::accessPathLimit() and
+      not isNotMapped(t2) and
+      (
+        // Navigation property (https://docs.microsoft.com/en-us/ef/ef6/fundamentals/relationships)
+        exists(Property p2 |
+          p2.getDeclaringType().(Class) = t1 and
+          not isColumnType(t1) and
+          c2.(PropertyContent).getProperty() = p2 and
+          t2 = p2.getType() and
+          not isNotMapped(p2)
+        )
+        or
+        exists(ConstructedInterface ci |
+          c1 instanceof PropertyContent and
+          t1.(ValueOrRefType).getABaseType*() = ci and
+          not t1 instanceof StringType and
+          ci.getUnboundDeclaration() instanceof SystemCollectionsGenericIEnumerableTInterface and
+          c2 instanceof ElementContent and
+          t2 = ci.getTypeArgument(0)
+        )
+      )
+    }
+
+    /**
+     * Gets a property belonging to the model of this DB context, which is mapped
+     * directly to a column in the underlying DB.
+     *
+     * For example the `Name` and `Id` properties of `Person`, but not `Title`
+     * as it is explicitly unmapped, in
+     *
+     * ```csharp
+     * class Person
+     * {
+     *     public int Id { get; set; }
+     *     public string Name { get; set; }
+     *
+     *     [NotMapped]
+     *     public string Title { get; set; }
+     * }
+     *
+     * class MyContext : DbContext
+     * {
+     *     public virtual DbSet<Person> Persons { get; set; }
+     *     public virtual DbSet<Address> Addresses { get; set; }
+     * }
+     * ```
+     */
+    private Property getAColumnProperty(Property dbSetProp, int dist) {
+      exists(PropertyContent c, Type t |
+        this.step(dbSetProp, _, _, c, t, dist) and
+        c.getProperty() = result and
+        isColumnType(t)
+      )
+    }
+
+    private predicate stepRev(Property dbSetProp, Content c1, Type t1, Content c2, Type t2, int dist) {
+      step(dbSetProp, c1, t1, c2, t2, dist) and
+      c2.(PropertyContent).getProperty() = getAColumnProperty(dbSetProp, dist)
+      or
+      stepRev(dbSetProp, c2, t2, _, _, dist + 1) and
+      step(dbSetProp, c1, t1, c2, t2, dist)
+    }
+
+    /** Gets a `SaveChanges[Async]` method. */
+    pragma[nomagic]
+    Method getASaveChanges() {
+      this.hasMethod(result) and
+      result.getName().matches("SaveChanges%")
+    }
+
+    // /** Holds if content list `head :: tail` is required. */
+    // predicate requiresContentList(
+    //   Content head, Type headType, SummaryComponentStack tail, Type tailType, Property last
+    // ) {
+    //   exists(PropertyContent p |
+    //     last = this.getAColumnProperty() and
+    //     p.getProperty() = last and
+    //     tail = SummaryComponentStack::singleton(p) and
+    //     this.step(head, headType, p, tailType)
+    //   )
+    //   or
+    //   exists(Content tailHead, SummaryComponentStack tailTail |
+    //     this.requiresContentList(tailHead, tailType, tailTail, _, last) and
+    //     tail = SummaryComponentStack::push(tailHead, tailTail) and
+    //     this.step(head, headType, tailHead, tailType)
+    //   )
+    // }
+    // /**
+    //  * Holds if the access path obtained by concatenating `head` onto `tail`
+    //  * is a path from `dbSet` (which is a `DbSet<T>` property belonging to
+    //  * this DB context) to `last`, which is a property that is mapped directly
+    //  * to a column in the underlying DB.
+    //  */
+    // pragma[noinline]
+    // predicate pathFromDbSetToDbProperty(
+    //   Property dbSet, PropertyContent head, SummaryComponentStack tail, Property last
+    // ) {
+    //   this.requiresContentList(head, _, tail, _, last) and
+    //   head.getProperty() = dbSet and
+    //   dbSet = this.getADbSetProperty(_)
+    // }
+    /** Holds if content list `head :: tail` is required. */
+    predicate requiresContentList(
+      Property dbSetProp, Content head, SummaryComponentStack tail, int dist, boolean input
+    ) {
+      dbSetProp = this.getADbSetProperty(_) and
+      (
+        tail = SummaryComponentStack::qualifier() and
+        this.stepRev(dbSetProp, head, _, _, _, 0) and
+        dist = -1 and
+        input = true
+        or
+        tail = SummaryComponentStack::jump(dbSetProp.getGetter()) and
+        this.stepRev(dbSetProp, _, _, head, _, 0) and
+        dist = 0 and
+        input = false
+      )
+      or
+      exists(Content tailHead, SummaryComponentStack tailTail |
+        this.requiresContentList(dbSetProp, tailHead, tailTail, dist - 1, input) and
+        tail = SummaryComponentStack::push(SummaryComponent::content(tailHead), tailTail) and
+        this.stepRev(dbSetProp, tailHead, _, head, _, dist)
+      )
+    }
+
+    /**
+     * Holds if the access path obtained by concatenating `head` onto `tail`
+     * is a path from `dbSet` (which is a `DbSet<T>` property belonging to
+     * this DB context) to `last`, which is a property that is mapped directly
+     * to a column in the underlying DB.
+     */
+    pragma[noinline]
+    predicate pathToDbColumnProperty(
+      Property mapped, PropertyContent head, SummaryComponentStack tail, boolean input
+    ) {
+      exists(Property dbSetProp |
+        this.requiresContentList(dbSetProp, head, tail, _, input) and
+        head.(PropertyContent).getProperty() = mapped and
+        mapped = getAColumnProperty(dbSetProp, _)
+      )
+    }
+  }
+
+  private class DbContextSaveChanges extends EFSummarizedCallable {
+    private DbContextClass c;
+
+    DbContextSaveChanges() { this = c.getASaveChanges() }
+
+    override predicate propagatesFlow(
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+    ) {
+      exists(Property mapped |
+        preservesValue = true and
+        exists(PropertyContent inputHead, SummaryComponentStack inputTail |
+          c.pathToDbColumnProperty(mapped, inputHead, inputTail, true) and
+          input = SummaryComponentStack::push(SummaryComponent::content(inputHead), inputTail)
+        ) and
+        exists(PropertyContent outputHead, SummaryComponentStack outputTail |
+          c.pathToDbColumnProperty(mapped, outputHead, outputTail, false) and
+          output = SummaryComponentStack::push(SummaryComponent::content(outputHead), outputTail)
+        )
+      )
+    }
+  }
+
+  private class DbContextSaveChangesRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
+    private Content head;
+
+    DbContextSaveChangesRequiredSummaryComponentStack() {
+      any(DbContextClass c).requiresContentList(_, head, this, _, _)
+    }
+
+    override predicate required(SummaryComponent c) { c = SummaryComponent::content(head) }
+  }
 }

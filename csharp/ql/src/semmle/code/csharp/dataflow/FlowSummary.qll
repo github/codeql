@@ -15,6 +15,9 @@ class SummaryComponent = Impl::Public::SummaryComponent;
 module SummaryComponent {
   import Impl::Public::SummaryComponent
 
+  /** Gets a summary component that represents a qualifier. */
+  SummaryComponent qualifier() { result = argument(-1) }
+
   /** Gets a summary component that represents an element in a collection. */
   SummaryComponent element() { result = content(any(DataFlow::ElementContent c)) }
 
@@ -30,6 +33,14 @@ module SummaryComponent {
 
   /** Gets a summary component that represents the return value of a call. */
   SummaryComponent return() { result = return(any(NormalReturnKind rk)) }
+
+  /** Gets a summary component that represents a jump to `c`. */
+  SummaryComponent jump(Callable c) {
+    result =
+      return(any(JumpReturnKind jrk |
+          jrk.getTarget() = c and jrk.getTargetReturnKind() instanceof NormalReturnKind
+        ))
+  }
 }
 
 class SummaryComponentStack = Impl::Public::SummaryComponentStack;
@@ -37,6 +48,9 @@ class SummaryComponentStack = Impl::Public::SummaryComponentStack;
 /** Provides predicates for constructing stacks of summary components. */
 module SummaryComponentStack {
   import Impl::Public::SummaryComponentStack
+
+  /** Gets a singleton stack representing a qualifier. */
+  SummaryComponentStack qualifier() { result = singleton(SummaryComponent::qualifier()) }
 
   /** Gets a stack representing an element of `of`. */
   SummaryComponentStack elementOf(SummaryComponentStack of) {
@@ -55,6 +69,9 @@ module SummaryComponentStack {
 
   /** Gets a singleton stack representing a (normal) return. */
   SummaryComponentStack return() { result = singleton(SummaryComponent::return()) }
+
+  /** Gets a singleton stack representing a jump to `c`. */
+  SummaryComponentStack jump(Callable c) { result = singleton(SummaryComponent::jump(c)) }
 }
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;

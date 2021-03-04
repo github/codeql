@@ -716,8 +716,12 @@ private module Cached {
       flr = succ.asExpr() and
       flr.hasNonlocalValue()
     )
-    // or
-    // succ = pred.(SummaryJumpNode).getAJumpTarget()
+    or
+    exists(JumpReturnKind jrk, DataFlowCall call |
+      jrk = pred.(ReturnNode).getKind() and
+      viableCallable(call) = jrk.getTarget() and
+      succ = getAnOutNode(call, jrk.getTargetReturnKind())
+    )
   }
 
   cached
@@ -1565,20 +1569,6 @@ private class SummaryNode extends NodeImpl, TSummaryInternalNode {
   override string toStringImpl() { result = "[summary] " + state + " in " + c }
 }
 
-// /** A data-flow node used to model flow summaries with jumps. */
-// private class SummaryJumpNode extends SummaryNodeImpl, TSummaryJumpNode {
-//   private SummarizedCallable c;
-//   private SummarizableCallable target;
-//   private ReturnKind rk;
-//   SummaryJumpNode() { this = TSummaryJumpNode(c, target, rk) }
-//   /** Gets a jump target of this node. */
-//   OutNode getAJumpTarget() { target = viableCallable(result.getCall(rk)) }
-//   override Callable getEnclosingCallableImpl() { result = c }
-//   override DotNet::Type getTypeImpl() { result = target.getReturnType() }
-//   override ControlFlow::Node getControlFlowNodeImpl() { none() }
-//   override Location getLocationImpl() { result = c.getLocation() }
-//   override string toStringImpl() { result = "[summary] jump to " + target }
-// }
 /** A field or a property. */
 class FieldOrProperty extends Assignable, Modifiable {
   FieldOrProperty() {
