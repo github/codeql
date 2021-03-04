@@ -70,6 +70,7 @@ private import internal.DataFlowPrivate
  */
 private module Frameworks {
   private import semmle.code.java.frameworks.ApacheHttp
+  private import semmle.code.java.frameworks.apache.Lang
 }
 
 private predicate sourceModelCsv(string row) {
