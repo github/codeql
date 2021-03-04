@@ -25,6 +25,7 @@ private class GuavaIoCsv extends SummaryModelCsv {
         "com.google.common.io;BaseEncoding;true;encode;(byte[],int,int);;Argument[-1];ReturnValue;taint",
         "com.google.common.io;ByteSource;true;asCharSource;(Charset);;Argument[-1];ReturnValue;taint",
         "com.google.common.io;ByteSource;true;concat;;;Argument[0];ReturnValue;taint",
+        "com.google.common.io;ByteSource;true;copyTo;(OutputStream);;Argument[-1];Argument[0];taint",
         "com.google.common.io;ByteSource;true;openStream;();;Argument[-1];ReturnValue;taint",
         "com.google.common.io;ByteSource;true;openBufferedStream;();;Argument[-1];ReturnValue;taint",
         "com.google.common.io;ByteSource;true;read;();;Argument[-1];ReturnValue;taint",

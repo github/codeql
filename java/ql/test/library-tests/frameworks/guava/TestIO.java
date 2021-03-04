@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.StringBuffer;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.Closeable;
 import java.nio.file.Path;
@@ -40,6 +41,9 @@ class TestIO {
         sink(ByteSource.concat(ByteSource.empty(), ByteSource.empty(), b)); // $numTaintFlow=1
         sink(ByteSource.concat(ImmutableList.of(ByteSource.empty(), ByteSource.empty(), b))); // $numTaintFlow=1
         sink(b.read(new MyByteProcessor())); // $ MISSING:numTaintFlow=1
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        b.copyTo(out);
+        sink(out.toByteArray()); // $numTaintFlow=1
 
         CharSource c = CharSource.wrap(staint());
         sink(c.openStream()); // $numTaintFlow=1
