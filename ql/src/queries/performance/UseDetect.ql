@@ -1,6 +1,6 @@
 /**
  * @name Use detect
- * @description Use 'detect' instead of 'first' and 'last'.
+ * @description Use 'detect' instead of 'select' followed by 'first' or 'last'.
  * @kind problem
  * @problem.severity warning
  * @id rb/use-detect
