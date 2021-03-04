@@ -1,4 +1,4 @@
-/** Definitions of taint steps in the IO packae of the Guava framework */
+/** Definitions of taint steps in the IO package of the Guava framework */
 
 import java
 private import semmle.code.java.dataflow.ExternalFlow
