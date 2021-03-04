@@ -7,7 +7,7 @@
 <p>
 Enum constants that are never used at runtime are redundant and should be removed.
 </p>
-<include src="DeadCodeSummary.qhelp"/>
+<include src="DeadCodeSummary.inc.qhelp"/>
 <p>
 An enum constant is considered dead if at runtime it is never used, or only used in comparisons. Any
 enum constant which is not dead is considered to be "live".
@@ -17,7 +17,7 @@ An enum constant that is only used in a comparison is considered dead because th
 always produce the same result. This is because no variable holds the value of the enum constant,
 so the comparison of any variable against the constant will always return the same result.
 </p>
-<include src="DeadCodeDetails.qhelp"/>
+<include src="DeadCodeDetails.inc.qhelp"/>
 </overview>
 <recommendation>
 <p>
@@ -32,7 +32,7 @@ After confirming that the enum constant is not required, remove the enum constan
 need to remove any references to this enum constant, which may, in turn, require removing other dead
 code.
 </p>
-<include src="DeadCodeExtraEntryPoints.qhelp"/>
+<include src="DeadCodeExtraEntryPoints.inc.qhelp"/>
 </recommendation>
 <example>
 <p>
@@ -51,5 +51,5 @@ stored or returned anywhere in the program. Therefore, <code>ERROR</code> is dea
 along with the comparison check, and the <code>exit(1);</code>.
 </p>
 </example>
-<include src="DeadCodeReferences.qhelp" />
+<include src="DeadCodeReferences.inc.qhelp" />
 </qhelp>

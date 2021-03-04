@@ -29,8 +29,8 @@ storing them.</p>
 </example>
 <references>
 
-<li>The CERT Oracle Secure Coding Standard for Java:
-  <a href="https://www.securecoding.cert.org/confluence/display/java/SER03-J.+Do+not+serialize+unencrypted+sensitive+data">SER03-J. Do not serialize unencrypted, sensitive data</a>.</li>
+<li>SEI CERT Oracle Coding Standard for Java:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/java/SER03-J.+Do+not+serialize+unencrypted+sensitive+data">SER03-J. Do not serialize unencrypted, sensitive data</a>.</li>
 <li>M. Dowd, J. McDonald and J. Schuhm, <i>The Art of Software Security Assessment</i>, 1st Edition, Chapter 2 - 'Common Vulnerabilities of Encryption', p. 43. Addison Wesley, 2006.</li> 
 <li>M. Howard and D. LeBlanc, <i>Writing Secure Code</i>, 2nd Edition, Chapter 9 - 'Protecting Secret Data', p. 299. Microsoft, 2002.</li>
 
