@@ -3,18 +3,25 @@
 | As | method | 32 |
 | AsMutable | method | 32 |
 | AsRef | method | 32 |
+| Element | method | 32 |
+| FindValue | method | 32 |
+| GetArrayDataReference | method | 32 |
+| GetBucket | method | 32 |
+| GetBucketRef | method | 32 |
+| GetMultiDimensionalArrayBounds | method | 32 |
 | GetNonNullPinnableReference | method | 32 |
 | GetPinnableReference | method | 32 |
 | GetRawArrayData | method | 32 |
-| GetRawArrayGeometry | method | 32 |
 | GetRawData | method | 32 |
 | GetRawStringData | method | 32 |
-| GetRawSzArrayData | method | 32 |
 | GetReference | method | 32 |
-| Local variable 0 of method <GetUpper>g__SoftwareFallback\|66_0 | local | 32 |
+| LdelemaRef | method | 32 |
+| Local variable 0 of method <GetUpper>g__SoftwareFallback\|68_0 | local | 32 |
 | Local variable 0 of method Add | local | 32 |
 | Local variable 0 of method Clear | local | 32 |
-| Local variable 0 of method EnumCalendarInfoCallback | local | 32 |
+| Local variable 0 of method CompareTo | local | 32 |
+| Local variable 0 of method Contains | local | 32 |
+| Local variable 0 of method FindValue | local | 32 |
 | Local variable 0 of method GetElement | local | 32 |
 | Local variable 0 of method GetHashCode | local | 32 |
 | Local variable 0 of method GetPinnableReference | local | 32 |
@@ -24,18 +31,21 @@
 | Local variable 0 of method Memmove | local | 32 |
 | Local variable 0 of method MoveNext | local | 32 |
 | Local variable 0 of method Multiply | local | 32 |
+| Local variable 0 of method PickPivotAndPartition | local | 32 |
+| Local variable 0 of method Remove | local | 32 |
 | Local variable 0 of method RemoveIndex | local | 32 |
 | Local variable 0 of method Reverse | local | 32 |
 | Local variable 0 of method RunOrScheduleAction | local | 32 |
+| Local variable 0 of method SwapIfGreaterWithValues | local | 32 |
 | Local variable 0 of method ToUInt64 | local | 32 |
 | Local variable 0 of method TryDecodeFromUtf16 | local | 32 |
+| Local variable 0 of method TryGetValue | local | 32 |
 | Local variable 0 of method TryParseExactD | local | 32 |
 | Local variable 0 of method TryParseExactN | local | 32 |
 | Local variable 0 of method ValueToHexString | local | 32 |
 | Local variable 0 of method ValueToString | local | 32 |
+| Local variable 0 of method get_Item | local | 32 |
 | Local variable 1 of method .ctor | local | 32 |
-| Local variable 1 of method <Create>g__SoftwareFallback\|32_0 | local | 32 |
-| Local variable 1 of method <Create>g__SoftwareFallback\|33_0 | local | 32 |
 | Local variable 1 of method <Create>g__SoftwareFallback\|34_0 | local | 32 |
 | Local variable 1 of method <Create>g__SoftwareFallback\|35_0 | local | 32 |
 | Local variable 1 of method <Create>g__SoftwareFallback\|36_0 | local | 32 |
@@ -44,20 +54,30 @@
 | Local variable 1 of method <Create>g__SoftwareFallback\|39_0 | local | 32 |
 | Local variable 1 of method <Create>g__SoftwareFallback\|40_0 | local | 32 |
 | Local variable 1 of method <Create>g__SoftwareFallback\|41_0 | local | 32 |
-| Local variable 1 of method <GetCalendarInfo>b__32_0 | local | 32 |
-| Local variable 1 of method <GetDisplayName>b__113_0 | local | 32 |
-| Local variable 1 of method <WithUpper>g__SoftwareFallback\|67_0 | local | 32 |
+| Local variable 1 of method <Create>g__SoftwareFallback\|42_0 | local | 32 |
+| Local variable 1 of method <Create>g__SoftwareFallback\|43_0 | local | 32 |
+| Local variable 1 of method <Create>g__SoftwareFallback\|44_0 | local | 32 |
+| Local variable 1 of method <Create>g__SoftwareFallback\|45_0 | local | 32 |
+| Local variable 1 of method <Create>g__SoftwareFallback\|46_0 | local | 32 |
+| Local variable 1 of method <Create>g__SoftwareFallback\|47_0 | local | 32 |
+| Local variable 1 of method <Create>g__SoftwareFallback\|48_0 | local | 32 |
+| Local variable 1 of method <Create>g__SoftwareFallback\|49_0 | local | 32 |
+| Local variable 1 of method <GetCalendarInfo>b__33_0 | local | 32 |
+| Local variable 1 of method <GetDisplayName>b__158_0 | local | 32 |
+| Local variable 1 of method <GetDisplayName>b__158_1 | local | 32 |
+| Local variable 1 of method <WithUpper>g__SoftwareFallback\|69_0 | local | 32 |
+| Local variable 1 of method <WithUpper>g__SoftwareFallback\|75_0 | local | 32 |
 | Local variable 1 of method Add | local | 32 |
 | Local variable 1 of method Append | local | 32 |
 | Local variable 1 of method AppendHelper | local | 32 |
 | Local variable 1 of method AppendJoin | local | 32 |
-| Local variable 1 of method CompareString | local | 32 |
-| Local variable 1 of method CompareStringOrdinalIgnoreCase | local | 32 |
+| Local variable 1 of method CompareIgnoreCaseInvariantMode | local | 32 |
+| Local variable 1 of method CompareStringIgnoreCase | local | 32 |
+| Local variable 1 of method CompareTo | local | 32 |
 | Local variable 1 of method Convert | local | 32 |
-| Local variable 1 of method Create | local | 32 |
 | Local variable 1 of method CreateActivityPathGuid | local | 32 |
-| Local variable 1 of method EndsWith | local | 32 |
-| Local variable 1 of method FillStringChecked | local | 32 |
+| Local variable 1 of method EnumCalendarInfoCallback | local | 32 |
+| Local variable 1 of method FindValue | local | 32 |
 | Local variable 1 of method FromBase64CharArray | local | 32 |
 | Local variable 1 of method FromBase64String | local | 32 |
 | Local variable 1 of method FromUtf16 | local | 32 |
@@ -67,6 +87,7 @@
 | Local variable 1 of method GetBytes | local | 32 |
 | Local variable 1 of method GetBytesFromEncoding | local | 32 |
 | Local variable 1 of method GetBytesWithFallback | local | 32 |
+| Local variable 1 of method GetCategoryCasingTableOffsetNoBoundsChecks | local | 32 |
 | Local variable 1 of method GetCharCount | local | 32 |
 | Local variable 1 of method GetCharCountWithFallback | local | 32 |
 | Local variable 1 of method GetChars | local | 32 |
@@ -74,32 +95,39 @@
 | Local variable 1 of method GetEnvironmentVariable | local | 32 |
 | Local variable 1 of method GetHashCode | local | 32 |
 | Local variable 1 of method GetNonRandomizedHashCode | local | 32 |
+| Local variable 1 of method GetNumericGraphemeTableOffsetNoBoundsChecks | local | 32 |
+| Local variable 1 of method GetNumericValueNoBoundsCheck | local | 32 |
 | Local variable 1 of method GetString | local | 32 |
 | Local variable 1 of method GetUnicode | local | 32 |
+| Local variable 1 of method GetUpperBound | local | 32 |
+| Local variable 1 of method IcuCompareString | local | 32 |
+| Local variable 1 of method IcuEndsWith | local | 32 |
+| Local variable 1 of method IcuGetSortKeyLength | local | 32 |
+| Local variable 1 of method IcuIndexOfCore | local | 32 |
+| Local variable 1 of method IcuStartsWith | local | 32 |
 | Local variable 1 of method IndexOf | local | 32 |
-| Local variable 1 of method IndexOfCore | local | 32 |
 | Local variable 1 of method IndexOfOrdinalHelper | local | 32 |
 | Local variable 1 of method IndexOfOrdinalIgnoreCaseHelper | local | 32 |
 | Local variable 1 of method Insert | local | 32 |
 | Local variable 1 of method InternalCopy | local | 32 |
 | Local variable 1 of method InvariantIndexOf | local | 32 |
-| Local variable 1 of method InvariantLastIndexOf | local | 32 |
 | Local variable 1 of method IsAscii | local | 32 |
-| Local variable 1 of method IsSortable | local | 32 |
 | Local variable 1 of method Join | local | 32 |
 | Local variable 1 of method LastIndexOf | local | 32 |
 | Local variable 1 of method MatchChars | local | 32 |
 | Local variable 1 of method Memmove | local | 32 |
+| Local variable 1 of method PickPivotAndPartition | local | 32 |
 | Local variable 1 of method Pow10 | local | 32 |
 | Local variable 1 of method ReplaceAllInChunk | local | 32 |
 | Local variable 1 of method Reverse | local | 32 |
-| Local variable 1 of method StartsWith | local | 32 |
 | Local variable 1 of method TZif_ToInt32 | local | 32 |
 | Local variable 1 of method TZif_ToInt64 | local | 32 |
 | Local variable 1 of method ThreadSafeCopy | local | 32 |
 | Local variable 1 of method ToLowerAsciiInvariant | local | 32 |
+| Local variable 1 of method ToString | local | 32 |
 | Local variable 1 of method ToUpperAsciiInvariant | local | 32 |
 | Local variable 1 of method ToUtf16 | local | 32 |
+| Local variable 1 of method TraceOperationBegin | local | 32 |
 | Local variable 1 of method Trim | local | 32 |
 | Local variable 1 of method TrimEnd | local | 32 |
 | Local variable 1 of method TrimStart | local | 32 |
@@ -107,7 +135,6 @@
 | Local variable 1 of method TryStringToNumber | local | 32 |
 | Local variable 1 of method WaitMultipleIgnoringSyncContext | local | 32 |
 | Local variable 1 of method WithElement | local | 32 |
-| Local variable 1 of method WithUpper | local | 32 |
 | Local variable 1 of method WriteEvent | local | 32 |
 | Local variable 1 of method WriteImpl | local | 32 |
 | Local variable 1 of method WriteMultiMerge | local | 32 |
@@ -115,29 +142,33 @@
 | Local variable 1 of method get_Item | local | 32 |
 | Local variable 2 of method .ctor | local | 32 |
 | Local variable 2 of method ChangeCaseCommon | local | 32 |
+| Local variable 2 of method CompareIgnoreCaseInvariantMode | local | 32 |
 | Local variable 2 of method CompareOrdinalHelper | local | 32 |
-| Local variable 2 of method CompareOrdinalIgnoreCase | local | 32 |
+| Local variable 2 of method CompareStringIgnoreCase | local | 32 |
+| Local variable 2 of method Copy | local | 32 |
 | Local variable 2 of method CopyTo | local | 32 |
-| Local variable 2 of method CreateSortKey | local | 32 |
 | Local variable 2 of method Ctor | local | 32 |
+| Local variable 2 of method Decompose | local | 32 |
 | Local variable 2 of method DoAnsiConversion | local | 32 |
 | Local variable 2 of method EndsWithOrdinalHelper | local | 32 |
 | Local variable 2 of method EndsWithOrdinalIgnoreCaseHelper | local | 32 |
 | Local variable 2 of method EqualStartingCharacterCount | local | 32 |
+| Local variable 2 of method GenerateMetadataForNamedTypeV2 | local | 32 |
 | Local variable 2 of method GetByteCount | local | 32 |
 | Local variable 2 of method GetBytes | local | 32 |
 | Local variable 2 of method GetChars | local | 32 |
 | Local variable 2 of method GetValue | local | 32 |
-| Local variable 2 of method IndexOfCore | local | 32 |
-| Local variable 2 of method IndexOfOrdinalCore | local | 32 |
+| Local variable 2 of method IcuCreateSortKey | local | 32 |
+| Local variable 2 of method IcuGetSortKey | local | 32 |
+| Local variable 2 of method IcuIsNormalized | local | 32 |
 | Local variable 2 of method Insert | local | 32 |
-| Local variable 2 of method InternalGetNumericValue | local | 32 |
-| Local variable 2 of method InternalSubString | local | 32 |
-| Local variable 2 of method InvariantCreateSortKey | local | 32 |
-| Local variable 2 of method LastIndexOfCore | local | 32 |
-| Local variable 2 of method LastIndexOfOrdinalCore | local | 32 |
+| Local variable 2 of method IntersectWithHashSetWithSameComparer | local | 32 |
+| Local variable 2 of method IntroSort | local | 32 |
+| Local variable 2 of method MemberwiseClone | local | 32 |
 | Local variable 2 of method Multiply | local | 32 |
+| Local variable 2 of method PickPivotAndPartition | local | 32 |
 | Local variable 2 of method ReadNative | local | 32 |
+| Local variable 2 of method Remove | local | 32 |
 | Local variable 2 of method SetValue | local | 32 |
 | Local variable 2 of method StartsWithOrdinalHelper | local | 32 |
 | Local variable 2 of method StartsWithOrdinalIgnoreCaseHelper | local | 32 |
@@ -149,47 +180,51 @@
 | Local variable 2 of method TryUInt32ToDecStr | local | 32 |
 | Local variable 2 of method TryUInt64ToDecStr | local | 32 |
 | Local variable 2 of method Write | local | 32 |
+| Local variable 3 of method <GetString>b__29_0 | local | 32 |
+| Local variable 3 of method <GetString>b__30_0 | local | 32 |
 | Local variable 3 of method AddCustomAttributes | local | 32 |
-| Local variable 3 of method CompareOrdinalIgnoreCase | local | 32 |
-| Local variable 3 of method CompareString | local | 32 |
-| Local variable 3 of method CompareStringOrdinalIgnoreCase | local | 32 |
+| Local variable 3 of method CompareStringIgnoreCase | local | 32 |
 | Local variable 3 of method Convert | local | 32 |
 | Local variable 3 of method Copy | local | 32 |
 | Local variable 3 of method CreateInstance | local | 32 |
 | Local variable 3 of method CreateStringFromEncoding | local | 32 |
-| Local variable 3 of method Ctor | local | 32 |
-| Local variable 3 of method EndsWith | local | 32 |
+| Local variable 3 of method Enable | local | 32 |
 | Local variable 3 of method Fill | local | 32 |
-| Local variable 3 of method FillStringChecked | local | 32 |
 | Local variable 3 of method FindSection | local | 32 |
 | Local variable 3 of method FromUtf16 | local | 32 |
 | Local variable 3 of method GetBytes | local | 32 |
 | Local variable 3 of method GetBytesWithFallback | local | 32 |
 | Local variable 3 of method GetChars | local | 32 |
 | Local variable 3 of method GetCharsWithFallback | local | 32 |
+| Local variable 3 of method GetNonRandomizedHashCodeOrdinalIgnoreCase | local | 32 |
+| Local variable 3 of method IcuCompareString | local | 32 |
+| Local variable 3 of method IcuEndsWith | local | 32 |
+| Local variable 3 of method IcuIndexOfCore | local | 32 |
+| Local variable 3 of method IcuStartsWith | local | 32 |
+| Local variable 3 of method IndexOf | local | 32 |
 | Local variable 3 of method IndexOfCharArray | local | 32 |
-| Local variable 3 of method IndexOfCore | local | 32 |
 | Local variable 3 of method IndexOfOrdinalHelper | local | 32 |
 | Local variable 3 of method IndexOfOrdinalIgnoreCaseHelper | local | 32 |
 | Local variable 3 of method Int32ToHexStr | local | 32 |
 | Local variable 3 of method Int64ToHexStr | local | 32 |
 | Local variable 3 of method InternalLoad | local | 32 |
+| Local variable 3 of method IntroSort | local | 32 |
 | Local variable 3 of method InvariantIndexOf | local | 32 |
-| Local variable 3 of method InvariantLastIndexOf | local | 32 |
 | Local variable 3 of method JoinInternal | local | 32 |
+| Local variable 3 of method LastIndexOf | local | 32 |
 | Local variable 3 of method LastIndexOfCharArray | local | 32 |
+| Local variable 3 of method MemberwiseClone | local | 32 |
 | Local variable 3 of method NegativeInt32ToDecStr | local | 32 |
+| Local variable 3 of method PickPivotAndPartition | local | 32 |
 | Local variable 3 of method Pin | local | 32 |
 | Local variable 3 of method Populate | local | 32 |
 | Local variable 3 of method Pow10 | local | 32 |
-| Local variable 3 of method Replace | local | 32 |
+| Local variable 3 of method RemoveWhere | local | 32 |
 | Local variable 3 of method Resize | local | 32 |
-| Local variable 3 of method StartsWith | local | 32 |
 | Local variable 3 of method StringToCoTaskMemUni | local | 32 |
 | Local variable 3 of method StringToHGlobalUni | local | 32 |
 | Local variable 3 of method ThreadSafeCopy | local | 32 |
 | Local variable 3 of method ToBase64String | local | 32 |
-| Local variable 3 of method ToCharArray | local | 32 |
 | Local variable 3 of method ToString | local | 32 |
 | Local variable 3 of method ToUtf16 | local | 32 |
 | Local variable 3 of method TryNegativeInt64ToDecStr | local | 32 |
@@ -199,12 +234,14 @@
 | Local variable 3 of method Write | local | 32 |
 | Local variable 3 of method WriteEvent | local | 32 |
 | Local variable 3 of method WriteStdoutAnsiString | local | 32 |
-| Local variable 3 of method get_Item | local | 32 |
 | Local variable 4 of method .ctor | local | 32 |
 | Local variable 4 of method AddDivisor | local | 32 |
+| Local variable 4 of method AddIfNotPresent | local | 32 |
 | Local variable 4 of method AddNullTerminatedString | local | 32 |
+| Local variable 4 of method Append | local | 32 |
 | Local variable 4 of method ChangeCaseCommon | local | 32 |
 | Local variable 4 of method CompareOrdinalHelper | local | 32 |
+| Local variable 4 of method ConstructFrom | local | 32 |
 | Local variable 4 of method Copy | local | 32 |
 | Local variable 4 of method EndsWithOrdinalHelper | local | 32 |
 | Local variable 4 of method EndsWithOrdinalIgnoreCaseHelper | local | 32 |
@@ -212,30 +249,32 @@
 | Local variable 4 of method EscapeString | local | 32 |
 | Local variable 4 of method FormatPrintF | local | 32 |
 | Local variable 4 of method GetBytes | local | 32 |
+| Local variable 4 of method GetBytesForSmallInput | local | 32 |
 | Local variable 4 of method GetChars | local | 32 |
 | Local variable 4 of method GetMessage | local | 32 |
-| Local variable 4 of method GetUnicodeCore | local | 32 |
-| Local variable 4 of method IndexOfCore | local | 32 |
-| Local variable 4 of method IndexOfOrdinalCore | local | 32 |
+| Local variable 4 of method IcuGetSortKey | local | 32 |
+| Local variable 4 of method IcuGetUnicodeCore | local | 32 |
 | Local variable 4 of method InternalLoad | local | 32 |
-| Local variable 4 of method InternalSubString | local | 32 |
+| Local variable 4 of method IntroSort | local | 32 |
 | Local variable 4 of method JoinInternal | local | 32 |
-| Local variable 4 of method LastIndexOfCore | local | 32 |
 | Local variable 4 of method MakeRoom | local | 32 |
 | Local variable 4 of method NegativeInt64ToDecStr | local | 32 |
 | Local variable 4 of method PadLeft | local | 32 |
 | Local variable 4 of method PadRight | local | 32 |
 | Local variable 4 of method Remove | local | 32 |
+| Local variable 4 of method Replace | local | 32 |
+| Local variable 4 of method Resize | local | 32 |
 | Local variable 4 of method StartsWithOrdinalHelper | local | 32 |
 | Local variable 4 of method StartsWithOrdinalIgnoreCaseHelper | local | 32 |
-| Local variable 4 of method ToCharArray | local | 32 |
 | Local variable 4 of method TryInsert | local | 32 |
 | Local variable 4 of method Write | local | 32 |
 | Local variable 4 of method WriteCore | local | 32 |
 | Local variable 4 of method WriteEvent | local | 32 |
-| Local variable 5 of method Append | local | 32 |
+| Local variable 5 of method Clear | local | 32 |
 | Local variable 5 of method ConvertToNative | local | 32 |
+| Local variable 5 of method Copy | local | 32 |
 | Local variable 5 of method CreateInstance | local | 32 |
+| Local variable 5 of method Enable | local | 32 |
 | Local variable 5 of method GetAttributeUsage | local | 32 |
 | Local variable 5 of method GetBytes | local | 32 |
 | Local variable 5 of method GetBytesWithFallback | local | 32 |
@@ -244,11 +283,13 @@
 | Local variable 5 of method GetHomeDirectory | local | 32 |
 | Local variable 5 of method Insert | local | 32 |
 | Local variable 5 of method JoinInternal | local | 32 |
+| Local variable 5 of method PickPivotAndPartition | local | 32 |
 | Local variable 5 of method Pow10 | local | 32 |
 | Local variable 5 of method Read | local | 32 |
 | Local variable 5 of method ReadArray | local | 32 |
 | Local variable 5 of method ReadCore | local | 32 |
 | Local variable 5 of method Replace | local | 32 |
+| Local variable 5 of method Resize | local | 32 |
 | Local variable 5 of method StringToCoTaskMemUTF8 | local | 32 |
 | Local variable 5 of method StringToHGlobalUTF8 | local | 32 |
 | Local variable 5 of method SubtractDivisor | local | 32 |
@@ -258,111 +299,101 @@
 | Local variable 5 of method TryToBase64Chars | local | 32 |
 | Local variable 5 of method WriteArray | local | 32 |
 | Local variable 5 of method WriteEvent | local | 32 |
-| Local variable 5 of method get_Item | local | 32 |
+| Local variable 5 of method WriteWhenEncodingIsNotUtf8 | local | 32 |
 | Local variable 5 of method get_UserName | local | 32 |
-| Local variable 6 of method .ctor | local | 32 |
-| Local variable 6 of method Clear | local | 32 |
+| Local variable 6 of method Append | local | 32 |
+| Local variable 6 of method ConvertFixedToManaged | local | 32 |
 | Local variable 6 of method ConvertToBase64Array | local | 32 |
+| Local variable 6 of method ConvertToNative | local | 32 |
+| Local variable 6 of method Copy | local | 32 |
+| Local variable 6 of method FindItemIndex | local | 32 |
 | Local variable 6 of method GenerateMetadataForProperty | local | 32 |
-| Local variable 6 of method GetAsciiCore | local | 32 |
-| Local variable 6 of method IndexOfOrdinalCore | local | 32 |
+| Local variable 6 of method IcuGetAsciiCore | local | 32 |
 | Local variable 6 of method InternalCopy | local | 32 |
 | Local variable 6 of method JoinInternal | local | 32 |
 | Local variable 6 of method PadRight | local | 32 |
+| Local variable 6 of method PickPivotAndPartition | local | 32 |
 | Local variable 6 of method Remove | local | 32 |
-| Local variable 6 of method Replace | local | 32 |
 | Local variable 6 of method Resize | local | 32 |
 | Local variable 6 of method SetConstantValue | local | 32 |
 | Local variable 6 of method ToBase64CharArray | local | 32 |
 | Local variable 6 of method TryDecodeFromUtf16 | local | 32 |
 | Local variable 6 of method TryFormat | local | 32 |
-| Local variable 6 of method Write | local | 32 |
 | Local variable 7 of method .ctor | local | 32 |
-| Local variable 7 of method Append | local | 32 |
+| Local variable 7 of method AddIfNotPresent | local | 32 |
+| Local variable 7 of method ConvertFixedToNative | local | 32 |
 | Local variable 7 of method GenerateMetadata | local | 32 |
 | Local variable 7 of method GetBytesWithFallback | local | 32 |
 | Local variable 7 of method GetCharsWithFallback | local | 32 |
-| Local variable 7 of method GetHashCodeOfStringCore | local | 32 |
+| Local variable 7 of method IcuGetHashCodeOfString | local | 32 |
+| Local variable 7 of method IcuNormalize | local | 32 |
 | Local variable 7 of method Insert | local | 32 |
 | Local variable 7 of method JoinInternal | local | 32 |
 | Local variable 7 of method PadLeft | local | 32 |
 | Local variable 7 of method Populate | local | 32 |
 | Local variable 7 of method Pow10 | local | 32 |
-| Local variable 7 of method Remove | local | 32 |
 | Local variable 7 of method Resize | local | 32 |
-| Local variable 7 of method WriteEventString | local | 32 |
-| Local variable 7 of method get_Item | local | 32 |
+| Local variable 7 of method TryInsert | local | 32 |
+| Local variable 7 of method WriteWhenEncodingIsNotUtf8 | local | 32 |
 | Local variable 8 of method JoinInternal | local | 32 |
 | Local variable 8 of method Pow10 | local | 32 |
-| Local variable 8 of method Replace | local | 32 |
 | Local variable 8 of method SetConstantValue | local | 32 |
 | Local variable 8 of method ToBase64CharArray | local | 32 |
 | Local variable 8 of method ToString | local | 32 |
-| Local variable 8 of method TryInsert | local | 32 |
-| Local variable 8 of method Write | local | 32 |
+| Local variable 8 of method TrimExcess | local | 32 |
+| Local variable 8 of method WriteEventString | local | 32 |
+| Local variable 9 of method <GetNonRandomizedHashCodeOrdinalIgnoreCase>g__GetNonRandomizedHashCodeOrdinalIgnoreCaseSlow\|52_0 | local | 32 |
+| Local variable 9 of method AddIfNotPresent | local | 32 |
+| Local variable 9 of method Enable | local | 32 |
+| Local variable 9 of method FindItemIndex | local | 32 |
 | Local variable 9 of method GenerateMetadataForProperty | local | 32 |
-| Local variable 9 of method GetHashCodeOfStringCore | local | 32 |
+| Local variable 9 of method IcuGetHashCodeOfString | local | 32 |
+| Local variable 9 of method IcuNormalize | local | 32 |
 | Local variable 9 of method Insert | local | 32 |
+| Local variable 9 of method IntersectWithEnumerable | local | 32 |
 | Local variable 9 of method JoinInternal | local | 32 |
 | Local variable 9 of method TrimExcess | local | 32 |
-| Local variable 9 of method get_Item | local | 32 |
 | Local variable 10 of method .ctor | local | 32 |
 | Local variable 10 of method FormatFixed | local | 32 |
 | Local variable 10 of method IntToString | local | 32 |
 | Local variable 10 of method JoinInternal | local | 32 |
 | Local variable 10 of method LongToString | local | 32 |
 | Local variable 10 of method ReplaceAllInChunk | local | 32 |
-| Local variable 11 of method GenerateMetadata | local | 32 |
-| Local variable 11 of method GetHashCodeOfStringCore | local | 32 |
-| Local variable 11 of method InternalReadChars | local | 32 |
+| Local variable 10 of method TrimExcess | local | 32 |
+| Local variable 11 of method AddIfNotPresent | local | 32 |
+| Local variable 11 of method IcuGetHashCodeOfString | local | 32 |
 | Local variable 11 of method Resize | local | 32 |
-| Local variable 11 of method get_Item | local | 32 |
+| Local variable 12 of method FindItemIndex | local | 32 |
 | Local variable 12 of method JoinCore | local | 32 |
 | Local variable 13 of method .ctor | local | 32 |
+| Local variable 13 of method AddIfNotPresent | local | 32 |
 | Local variable 13 of method ChangeCaseCommon | local | 32 |
-| Local variable 13 of method get_Item | local | 32 |
-| Local variable 14 of method .ctor | local | 32 |
 | Local variable 14 of method Resize | local | 32 |
-| Local variable 15 of method get_Item | local | 32 |
 | Local variable 16 of method .ctor | local | 32 |
-| Local variable 17 of method get_Item | local | 32 |
-| Local variable 18 of method .ctor | local | 32 |
 | Local variable 19 of method .ctor | local | 32 |
 | Local variable 19 of method NumberToStringFormat | local | 32 |
-| Local variable 19 of method get_Item | local | 32 |
+| Local variable 21 of method GenerateMetadata | local | 32 |
 | Local variable 22 of method .ctor | local | 32 |
 | Local variable 23 of method WriteEvent | local | 32 |
 | Local variable 24 of method WriteEvent | local | 32 |
 | Local variable 25 of method .ctor | local | 32 |
 | Local variable 25 of method WriteEvent | local | 32 |
-| Local variable 26 of method .ctor | local | 32 |
 | Local variable 26 of method WriteEvent | local | 32 |
 | Local variable 27 of method WriteEvent | local | 32 |
 | Local variable 28 of method .ctor | local | 32 |
 | Local variable 28 of method WriteEvent | local | 32 |
 | Local variable 29 of method WriteEvent | local | 32 |
-| Local variable 30 of method .ctor | local | 32 |
+| Local variable 30 of method <Invert>g__SseImpl\|59_0 | local | 32 |
 | Local variable 30 of method WriteEvent | local | 32 |
-| Local variable 31 of method .ctor | local | 32 |
 | Local variable 31 of method NumberToStringFormat | local | 32 |
-| Local variable 33 of method .ctor | local | 32 |
-| Local variable 34 of method .ctor | local | 32 |
 | Local variable 34 of method WriteEvent | local | 32 |
-| Local variable 35 of method .ctor | local | 32 |
-| Local variable 37 of method .ctor | local | 32 |
-| Local variable 38 of method .ctor | local | 32 |
-| Local variable 39 of method .ctor | local | 32 |
-| Local variable 41 of method .ctor | local | 32 |
-| Local variable 43 of method .ctor | local | 32 |
-| Local variable 45 of method .ctor | local | 32 |
-| Local variable 47 of method .ctor | local | 32 |
-| Local variable 49 of method .ctor | local | 32 |
 | Max | method | 32 |
 | Min | method | 32 |
-| Parameter 0 of <Equals>g__SoftwareFallback\|10_0 | parameter | 32 |
+| NullRef | method | 32 |
 | Parameter 0 of <Equals>g__SoftwareFallback\|12_0 | parameter | 32 |
-| Parameter 0 of <UpdatedCachedCursorPosition>g__IncrementX\|115_1 | parameter | 32 |
-| Parameter 0 of <UpdatedCachedCursorPosition>g__IncrementY\|115_0 | parameter | 32 |
+| Parameter 0 of <Equals>g__SoftwareFallback\|14_0 | parameter | 32 |
+| Parameter 0 of <UpdatedCachedCursorPosition>g__IncrementX\|112_1 | parameter | 32 |
+| Parameter 0 of <UpdatedCachedCursorPosition>g__IncrementY\|112_0 | parameter | 32 |
 | Parameter 0 of Abs | parameter | 32 |
 | Parameter 0 of AccumulateDecimalDigitsIntoBigInteger | parameter | 32 |
 | Parameter 0 of Add | parameter | 32 |
@@ -378,6 +409,7 @@
 | Parameter 0 of AdjustHour | parameter | 32 |
 | Parameter 0 of AdjustTimeZoneToLocal | parameter | 32 |
 | Parameter 0 of AdjustTimeZoneToUniversal | parameter | 32 |
+| Parameter 0 of And | parameter | 32 |
 | Parameter 0 of AppendParameters | parameter | 32 |
 | Parameter 0 of AreSame | parameter | 32 |
 | Parameter 0 of As | parameter | 32 |
@@ -385,8 +417,11 @@
 | Parameter 0 of AsPointer | parameter | 32 |
 | Parameter 0 of AsRef | parameter | 32 |
 | Parameter 0 of AssembleFloatingPointBits | parameter | 32 |
+| Parameter 0 of AwaitOnCompleted | parameter | 32 |
+| Parameter 0 of AwaitUnsafeOnCompleted | parameter | 32 |
 | Parameter 0 of BinarySearch | parameter | 32 |
 | Parameter 0 of Block | parameter | 32 |
+| Parameter 0 of BulkMoveWithWriteBarrier | parameter | 32 |
 | Parameter 0 of ByteOffset | parameter | 32 |
 | Parameter 0 of CheckDefaultDateTime | parameter | 32 |
 | Parameter 0 of CheckForAvailableMemory | parameter | 32 |
@@ -396,8 +431,9 @@
 | Parameter 0 of ClearWithoutReferences | parameter | 32 |
 | Parameter 0 of Compare | parameter | 32 |
 | Parameter 0 of CompareExchange | parameter | 32 |
-| Parameter 0 of CompareOrdinalIgnoreCase | parameter | 32 |
-| Parameter 0 of CompareStringOrdinalIgnoreCase | parameter | 32 |
+| Parameter 0 of CompareIgnoreCaseInvariantMode | parameter | 32 |
+| Parameter 0 of CompareStringIgnoreCase | parameter | 32 |
+| Parameter 0 of CompareStringIgnoreCaseNonAscii | parameter | 32 |
 | Parameter 0 of ComputeHash32 | parameter | 32 |
 | Parameter 0 of ComputeHash32OrdinalIgnoreCase | parameter | 32 |
 | Parameter 0 of ComputeHash32OrdinalIgnoreCaseSlow | parameter | 32 |
@@ -406,6 +442,7 @@
 | Parameter 0 of Contains | parameter | 32 |
 | Parameter 0 of ConvertBigIntegerToFloatingPointBits | parameter | 32 |
 | Parameter 0 of CountSignificantBits | parameter | 32 |
+| Parameter 0 of Create | parameter | 32 |
 | Parameter 0 of CreateReadOnlySpan | parameter | 32 |
 | Parameter 0 of CreateSpan | parameter | 32 |
 | Parameter 0 of DateTimeOffsetTimeZonePostProcessing | parameter | 32 |
@@ -423,12 +460,12 @@
 | Parameter 0 of Div96ByConst | parameter | 32 |
 | Parameter 0 of Div128By96 | parameter | 32 |
 | Parameter 0 of DivRem | parameter | 32 |
+| Parameter 0 of Element | parameter | 32 |
 | Parameter 0 of EncodeObject | parameter | 32 |
 | Parameter 0 of EnsureInitialized | parameter | 32 |
 | Parameter 0 of EnsureInitializedCore | parameter | 32 |
 | Parameter 0 of EnsureLockInitialized | parameter | 32 |
-| Parameter 0 of EqualsOrdinalIgnoreCase | parameter | 32 |
-| Parameter 0 of EqualsOrdinalIgnoreCaseNonAscii | parameter | 32 |
+| Parameter 0 of EqualsIgnoreCase | parameter | 32 |
 | Parameter 0 of Exchange | parameter | 32 |
 | Parameter 0 of ExchangeAdd | parameter | 32 |
 | Parameter 0 of FormatCurrency | parameter | 32 |
@@ -436,6 +473,7 @@
 | Parameter 0 of FormatExponent | parameter | 32 |
 | Parameter 0 of FormatFixed | parameter | 32 |
 | Parameter 0 of FormatGeneral | parameter | 32 |
+| Parameter 0 of FormatHalf | parameter | 32 |
 | Parameter 0 of FormatNumber | parameter | 32 |
 | Parameter 0 of FormatPercent | parameter | 32 |
 | Parameter 0 of FormatScientific | parameter | 32 |
@@ -466,18 +504,13 @@
 | Parameter 0 of GetExecutingAssembly | parameter | 32 |
 | Parameter 0 of GetHashCode | parameter | 32 |
 | Parameter 0 of GetHebrewDayOfNM | parameter | 32 |
+| Parameter 0 of GetIUnknownImpl | parameter | 32 |
 | Parameter 0 of GetMaxThreads | parameter | 32 |
 | Parameter 0 of GetMaxThreadsNative | parameter | 32 |
-| Parameter 0 of GetMemoryInfo | parameter | 32 |
 | Parameter 0 of GetMinThreads | parameter | 32 |
 | Parameter 0 of GetMinThreadsNative | parameter | 32 |
 | Parameter 0 of GetNextIntroducedMethod | parameter | 32 |
-| Parameter 0 of GetObjectHandleOnStack | parameter | 32 |
-| Parameter 0 of GetQCallAssemblyOnStack | parameter | 32 |
-| Parameter 0 of GetQCallModuleOnStack | parameter | 32 |
-| Parameter 0 of GetQCallTypeHandleOnStack | parameter | 32 |
-| Parameter 0 of GetStackCrawlMarkHandle | parameter | 32 |
-| Parameter 0 of GetStringHandleOnStack | parameter | 32 |
+| Parameter 0 of GetStateMachineBox | parameter | 32 |
 | Parameter 0 of GetSymbolOrDefault | parameter | 32 |
 | Parameter 0 of GetThreadDeserializationTracker | parameter | 32 |
 | Parameter 0 of GetTimeOfN | parameter | 32 |
@@ -485,7 +518,10 @@
 | Parameter 0 of GetTimeOfNNN | parameter | 32 |
 | Parameter 0 of GetTimeZoneName | parameter | 32 |
 | Parameter 0 of GetWindowSize | parameter | 32 |
+| Parameter 0 of GreaterThan | parameter | 32 |
+| Parameter 0 of GrowTable | parameter | 32 |
 | Parameter 0 of HandleTimeZone | parameter | 32 |
+| Parameter 0 of HashShift | parameter | 32 |
 | Parameter 0 of HeuristicDivide | parameter | 32 |
 | Parameter 0 of IncreaseScale | parameter | 32 |
 | Parameter 0 of IncreaseScale64 | parameter | 32 |
@@ -494,16 +530,21 @@
 | Parameter 0 of IndexOfAny | parameter | 32 |
 | Parameter 0 of InitBlockUnaligned | parameter | 32 |
 | Parameter 0 of Initialize | parameter | 32 |
-| Parameter 0 of InitializeVMTp | parameter | 32 |
 | Parameter 0 of Int64DivMod1E9 | parameter | 32 |
 | Parameter 0 of InternalGetCurrentMethod | parameter | 32 |
 | Parameter 0 of InternalRound | parameter | 32 |
 | Parameter 0 of IsAddressGreaterThan | parameter | 32 |
 | Parameter 0 of IsAddressLessThan | parameter | 32 |
+| Parameter 0 of IsNullRef | parameter | 32 |
 | Parameter 0 of IsUtf8ContinuationByte | parameter | 32 |
+| Parameter 0 of KeepAliveViaCleanupList | parameter | 32 |
+| Parameter 0 of KeyToBucket | parameter | 32 |
 | Parameter 0 of LastIndexOf | parameter | 32 |
 | Parameter 0 of LastIndexOfAny | parameter | 32 |
-| Parameter 0 of LoadUIntPtr | parameter | 32 |
+| Parameter 0 of LessThan | parameter | 32 |
+| Parameter 0 of LoadNUInt | parameter | 32 |
+| Parameter 0 of LoadUInt | parameter | 32 |
+| Parameter 0 of LoadUShort | parameter | 32 |
 | Parameter 0 of LoadVector | parameter | 32 |
 | Parameter 0 of LoadVector128 | parameter | 32 |
 | Parameter 0 of LoadVector256 | parameter | 32 |
@@ -521,13 +562,17 @@
 | Parameter 0 of Min | parameter | 32 |
 | Parameter 0 of Multiply | parameter | 32 |
 | Parameter 0 of NarrowFourUtf16CharsToAsciiAndWriteToBuffer | parameter | 32 |
+| Parameter 0 of NarrowFourUtf16CharsToLatin1AndWriteToBuffer | parameter | 32 |
 | Parameter 0 of NarrowTwoUtf16CharsToAsciiAndWriteToBuffer | parameter | 32 |
+| Parameter 0 of NarrowTwoUtf16CharsToLatin1AndWriteToBuffer | parameter | 32 |
 | Parameter 0 of NumberToDouble | parameter | 32 |
 | Parameter 0 of NumberToFloatingPointBits | parameter | 32 |
 | Parameter 0 of NumberToFloatingPointBitsSlow | parameter | 32 |
+| Parameter 0 of NumberToHalf | parameter | 32 |
 | Parameter 0 of NumberToSingle | parameter | 32 |
 | Parameter 0 of NumberToString | parameter | 32 |
 | Parameter 0 of NumberToStringFormat | parameter | 32 |
+| Parameter 0 of Or | parameter | 32 |
 | Parameter 0 of OverflowUnscale | parameter | 32 |
 | Parameter 0 of ParseByFormat | parameter | 32 |
 | Parameter 0 of ParseDigits | parameter | 32 |
@@ -552,8 +597,6 @@
 | Parameter 0 of RefreshColors | parameter | 32 |
 | Parameter 0 of RemoveFirstArgIfRelatedActivityId | parameter | 32 |
 | Parameter 0 of Resize | parameter | 32 |
-| Parameter 0 of RhBulkMoveWithWriteBarrier | parameter | 32 |
-| Parameter 0 of RhZeroMemory | parameter | 32 |
 | Parameter 0 of Round | parameter | 32 |
 | Parameter 0 of RoundNumber | parameter | 32 |
 | Parameter 0 of SearchScale | parameter | 32 |
@@ -563,11 +606,23 @@
 | Parameter 0 of SetDateMDY | parameter | 32 |
 | Parameter 0 of SetDateYDM | parameter | 32 |
 | Parameter 0 of SetDateYMD | parameter | 32 |
+| Parameter 0 of SetUInt32 | parameter | 32 |
+| Parameter 0 of SetUInt64 | parameter | 32 |
+| Parameter 0 of SetValue | parameter | 32 |
+| Parameter 0 of SetZero | parameter | 32 |
 | Parameter 0 of Sign | parameter | 32 |
+| Parameter 0 of SkipInit | parameter | 32 |
 | Parameter 0 of Start | parameter | 32 |
+| Parameter 0 of StartAssemblyLoad | parameter | 32 |
+| Parameter 0 of StelemRef_Helper | parameter | 32 |
+| Parameter 0 of StelemRef_Helper_NoCacheLookup | parameter | 32 |
+| Parameter 0 of StopAssemblyLoad | parameter | 32 |
 | Parameter 0 of SubtractDivisor | parameter | 32 |
+| Parameter 0 of Swap | parameter | 32 |
+| Parameter 0 of SwapIfGreater | parameter | 32 |
 | Parameter 0 of TZif_GenerateAdjustmentRule | parameter | 32 |
 | Parameter 0 of TZif_GenerateAdjustmentRules | parameter | 32 |
+| Parameter 0 of TableMask | parameter | 32 |
 | Parameter 0 of TrimEventDescriptors | parameter | 32 |
 | Parameter 0 of Truncate | parameter | 32 |
 | Parameter 0 of TryAdjustYear | parameter | 32 |
@@ -577,6 +632,7 @@
 | Parameter 0 of TryFormatDecimalF | parameter | 32 |
 | Parameter 0 of TryFormatDecimalG | parameter | 32 |
 | Parameter 0 of TryFormatThrowFormatException | parameter | 32 |
+| Parameter 0 of TryGetAppLocalIcuSwitchValue | parameter | 32 |
 | Parameter 0 of TryGetCachedCursorPosition | parameter | 32 |
 | Parameter 0 of TryGetCursorPosition | parameter | 32 |
 | Parameter 0 of TryGetLocalTzFile | parameter | 32 |
@@ -611,16 +667,23 @@
 | Parameter 0 of VolatileWrite | parameter | 32 |
 | Parameter 0 of WidenFourAsciiBytesToUtf16AndWriteToBuffer | parameter | 32 |
 | Parameter 0 of Write | parameter | 32 |
+| Parameter 0 of WriteBarrier | parameter | 32 |
 | Parameter 0 of WriteFirstUtf16CharAsUtf8ThreeByteSequence | parameter | 32 |
 | Parameter 0 of WriteNibble | parameter | 32 |
 | Parameter 0 of WriteThreeLowOrderBytes | parameter | 32 |
 | Parameter 0 of WriteTwoUtf16CharsAsTwoUtf8ThreeByteSequences | parameter | 32 |
 | Parameter 0 of WriteUnaligned | parameter | 32 |
+| Parameter 0 of _BulkMoveWithWriteBarrier | parameter | 32 |
 | Parameter 0 of _GetCurrentMethod | parameter | 32 |
 | Parameter 0 of _Memmove | parameter | 32 |
+| Parameter 0 of _ZeroMemory | parameter | 32 |
+| Parameter 0 of __BulkMoveWithWriteBarrier | parameter | 32 |
 | Parameter 1 of .ctor | parameter | 32 |
-| Parameter 1 of <SignalCompletion>b__21_0 | parameter | 32 |
+| Parameter 1 of <Invert>g__SoftwareFallback\|59_1 | parameter | 32 |
+| Parameter 1 of <Invert>g__SseImpl\|59_0 | parameter | 32 |
+| Parameter 1 of <ToString>g__Write\|65_0 | parameter | 32 |
 | Parameter 1 of AcquirePointer | parameter | 32 |
+| Parameter 1 of AcquireSpan | parameter | 32 |
 | Parameter 1 of Add | parameter | 32 |
 | Parameter 1 of AddNonLetter | parameter | 32 |
 | Parameter 1 of AddSpecialInterface | parameter | 32 |
@@ -631,8 +694,8 @@
 | Parameter 1 of AreSame | parameter | 32 |
 | Parameter 1 of AwaitOnCompleted | parameter | 32 |
 | Parameter 1 of AwaitUnsafeOnCompleted | parameter | 32 |
-| Parameter 1 of BeginInvoke | parameter | 32 |
 | Parameter 1 of Block | parameter | 32 |
+| Parameter 1 of BulkMoveWithWriteBarrier | parameter | 32 |
 | Parameter 1 of ByteOffset | parameter | 32 |
 | Parameter 1 of ChangeCaseCommon | parameter | 32 |
 | Parameter 1 of CheckDefaultDateTime | parameter | 32 |
@@ -640,6 +703,7 @@
 | Parameter 1 of CheckVMForIOPacket | parameter | 32 |
 | Parameter 1 of ClearManaged | parameter | 32 |
 | Parameter 1 of ClearNative | parameter | 32 |
+| Parameter 1 of ClearNativeContents | parameter | 32 |
 | Parameter 1 of Clone | parameter | 32 |
 | Parameter 1 of Compare | parameter | 32 |
 | Parameter 1 of ConfigureFormatOS | parameter | 32 |
@@ -649,6 +713,8 @@
 | Parameter 1 of ConvertContentsToManaged | parameter | 32 |
 | Parameter 1 of ConvertContentsToNative | parameter | 32 |
 | Parameter 1 of ConvertGregorianToHijri | parameter | 32 |
+| Parameter 1 of ConvertSafeHandleToNative | parameter | 32 |
+| Parameter 1 of ConvertSmpToUtf16 | parameter | 32 |
 | Parameter 1 of ConvertSpaceToManaged | parameter | 32 |
 | Parameter 1 of ConvertSpaceToNative | parameter | 32 |
 | Parameter 1 of CopyRuntimeTypeHandles | parameter | 32 |
@@ -664,15 +730,17 @@
 | Parameter 1 of DecodeFromUtf16 | parameter | 32 |
 | Parameter 1 of DecodeLastFromUtf8 | parameter | 32 |
 | Parameter 1 of DecodeLastFromUtf16 | parameter | 32 |
+| Parameter 1 of Decompose | parameter | 32 |
 | Parameter 1 of Deconstruct | parameter | 32 |
 | Parameter 1 of Div96ByConst | parameter | 32 |
 | Parameter 1 of Div128By96 | parameter | 32 |
 | Parameter 1 of DivRem | parameter | 32 |
+| Parameter 1 of DivRem32 | parameter | 32 |
 | Parameter 1 of EatWhiteSpace | parameter | 32 |
 | Parameter 1 of Encode | parameter | 32 |
+| Parameter 1 of EncodeHexString | parameter | 32 |
 | Parameter 1 of EncodeObject | parameter | 32 |
 | Parameter 1 of EncodeTags | parameter | 32 |
-| Parameter 1 of EndInvoke | parameter | 32 |
 | Parameter 1 of EnsureInitialized | parameter | 32 |
 | Parameter 1 of EnsureInitializedCore | parameter | 32 |
 | Parameter 1 of Enter | parameter | 32 |
@@ -680,8 +748,7 @@
 | Parameter 1 of EnumConnections | parameter | 32 |
 | Parameter 1 of EnumObjectParam | parameter | 32 |
 | Parameter 1 of EnumRunning | parameter | 32 |
-| Parameter 1 of EqualsOrdinalIgnoreCase | parameter | 32 |
-| Parameter 1 of EqualsOrdinalIgnoreCaseNonAscii | parameter | 32 |
+| Parameter 1 of EqualsIgnoreCase | parameter | 32 |
 | Parameter 1 of EtwEnableCallBack | parameter | 32 |
 | Parameter 1 of EvaluateInternal | parameter | 32 |
 | Parameter 1 of EventActivityIdControl | parameter | 32 |
@@ -691,7 +758,6 @@
 | Parameter 1 of FStat | parameter | 32 |
 | Parameter 1 of FilterCustomAttributeRecord | parameter | 32 |
 | Parameter 1 of FilterHelper | parameter | 32 |
-| Parameter 1 of FindAndParseNextNumber | parameter | 32 |
 | Parameter 1 of FindConnectionPoint | parameter | 32 |
 | Parameter 1 of FormatCurrency | parameter | 32 |
 | Parameter 1 of FormatFixed | parameter | 32 |
@@ -714,10 +780,10 @@
 | Parameter 1 of GetContainingTypeLib | parameter | 32 |
 | Parameter 1 of GetCurFile | parameter | 32 |
 | Parameter 1 of GetCustData | parameter | 32 |
+| Parameter 1 of GetDate | parameter | 32 |
 | Parameter 1 of GetDateOfDSN | parameter | 32 |
 | Parameter 1 of GetDateOfNDS | parameter | 32 |
 | Parameter 1 of GetDateOfNNDS | parameter | 32 |
-| Parameter 1 of GetDatePart | parameter | 32 |
 | Parameter 1 of GetDateTimeNow | parameter | 32 |
 | Parameter 1 of GetDateTimeNowUtcOffsetFromUtc | parameter | 32 |
 | Parameter 1 of GetDayOfMN | parameter | 32 |
@@ -737,10 +803,12 @@
 | Parameter 1 of GetFloatingPointMaxDigitsAndPrecision | parameter | 32 |
 | Parameter 1 of GetGUID | parameter | 32 |
 | Parameter 1 of GetHebrewDayOfNM | parameter | 32 |
+| Parameter 1 of GetIUnknownImpl | parameter | 32 |
 | Parameter 1 of GetInterface | parameter | 32 |
 | Parameter 1 of GetJapaneseEraStartDate | parameter | 32 |
 | Parameter 1 of GetJitContext | parameter | 32 |
 | Parameter 1 of GetLibAttr | parameter | 32 |
+| Parameter 1 of GetLicInfo | parameter | 32 |
 | Parameter 1 of GetLocalSignature | parameter | 32 |
 | Parameter 1 of GetLocaleName | parameter | 32 |
 | Parameter 1 of GetMarshalAs | parameter | 32 |
@@ -748,17 +816,19 @@
 | Parameter 1 of GetMaxThreadsNative | parameter | 32 |
 | Parameter 1 of GetMemberCache | parameter | 32 |
 | Parameter 1 of GetMemberList | parameter | 32 |
-| Parameter 1 of GetMemoryInfo | parameter | 32 |
-| Parameter 1 of GetMetadata | parameter | 32 |
+| Parameter 1 of GetMetadataLength | parameter | 32 |
+| Parameter 1 of GetMetadataLengthForTypeV2 | parameter | 32 |
+| Parameter 1 of GetMetadataLengthV2 | parameter | 32 |
 | Parameter 1 of GetMinThreads | parameter | 32 |
 | Parameter 1 of GetMinThreadsNative | parameter | 32 |
+| Parameter 1 of GetMonthDayOrder | parameter | 32 |
 | Parameter 1 of GetNeutralResourcesLanguage | parameter | 32 |
+| Parameter 1 of GetNextUnicodeScalarValueFromUtf16Surrogate | parameter | 32 |
 | Parameter 1 of GetObjectStartLength | parameter | 32 |
 | Parameter 1 of GetPEKind | parameter | 32 |
 | Parameter 1 of GetPrimaryAndSecondary | parameter | 32 |
 | Parameter 1 of GetPropertyOrFieldData | parameter | 32 |
 | Parameter 1 of GetPwUidR | parameter | 32 |
-| Parameter 1 of GetRawArrayGeometry | parameter | 32 |
 | Parameter 1 of GetRegularToken | parameter | 32 |
 | Parameter 1 of GetRunningObjectTable | parameter | 32 |
 | Parameter 1 of GetScopeProps | parameter | 32 |
@@ -766,39 +836,47 @@
 | Parameter 1 of GetSortHandle | parameter | 32 |
 | Parameter 1 of GetStackTracesDeepCopy | parameter | 32 |
 | Parameter 1 of GetStateMachineBox | parameter | 32 |
+| Parameter 1 of GetTime | parameter | 32 |
 | Parameter 1 of GetTimeOfN | parameter | 32 |
 | Parameter 1 of GetTimeOfNN | parameter | 32 |
 | Parameter 1 of GetTimeOfNNN | parameter | 32 |
+| Parameter 1 of GetTimePrecise | parameter | 32 |
 | Parameter 1 of GetTypeAttr | parameter | 32 |
 | Parameter 1 of GetTypeComp | parameter | 32 |
 | Parameter 1 of GetTypeFlags | parameter | 32 |
+| Parameter 1 of GetTypeInfoFromType | parameter | 32 |
 | Parameter 1 of GetTypeInfoOfGuid | parameter | 32 |
 | Parameter 1 of GetTypeKind | parameter | 32 |
 | Parameter 1 of GetUtf16SurrogatesFromSupplementaryPlaneScalar | parameter | 32 |
 | Parameter 1 of GetVersion | parameter | 32 |
 | Parameter 1 of GetWindowSize | parameter | 32 |
-| Parameter 1 of GrowTable | parameter | 32 |
+| Parameter 1 of GetYearMonthDayOrder | parameter | 32 |
+| Parameter 1 of GetYearMonthOrder | parameter | 32 |
+| Parameter 1 of GreaterThan | parameter | 32 |
 | Parameter 1 of HandleTimeZone | parameter | 32 |
 | Parameter 1 of Hash | parameter | 32 |
 | Parameter 1 of HeuristicDivide | parameter | 32 |
+| Parameter 1 of HtmlDecode | parameter | 32 |
+| Parameter 1 of HtmlEncode | parameter | 32 |
 | Parameter 1 of Initialize | parameter | 32 |
 | Parameter 1 of Insert | parameter | 32 |
 | Parameter 1 of Int32ToNumber | parameter | 32 |
 | Parameter 1 of Int64ToNumber | parameter | 32 |
 | Parameter 1 of InternalGetSignature | parameter | 32 |
 | Parameter 1 of InternalLoad | parameter | 32 |
-| Parameter 1 of InternalLoadAssemblyName | parameter | 32 |
 | Parameter 1 of InternalTryGetRawMetadata | parameter | 32 |
 | Parameter 1 of Inverse | parameter | 32 |
+| Parameter 1 of Invert | parameter | 32 |
 | Parameter 1 of Invoke | parameter | 32 |
 | Parameter 1 of IsAddressGreaterThan | parameter | 32 |
 | Parameter 1 of IsAddressLessThan | parameter | 32 |
 | Parameter 1 of IsSystemMoniker | parameter | 32 |
 | Parameter 1 of LStat | parameter | 32 |
 | Parameter 1 of LazyCreateEvent | parameter | 32 |
+| Parameter 1 of LessThan | parameter | 32 |
 | Parameter 1 of Lex | parameter | 32 |
-| Parameter 1 of Load | parameter | 32 |
 | Parameter 1 of MapBufferToConsoleKey | parameter | 32 |
+| Parameter 1 of MarshalToNative | parameter | 32 |
 | Parameter 1 of Max | parameter | 32 |
 | Parameter 1 of Memmove | parameter | 32 |
 | Parameter 1 of Min | parameter | 32 |
@@ -836,18 +914,23 @@
 | Parameter 1 of ReorderArgumentArray | parameter | 32 |
 | Parameter 1 of ReplaceInPlaceAtChunk | parameter | 32 |
 | Parameter 1 of RestoreDispatchState | parameter | 32 |
-| Parameter 1 of RhBulkMoveWithWriteBarrier | parameter | 32 |
 | Parameter 1 of SafeHandleAddRef | parameter | 32 |
 | Parameter 1 of SequenceEqual | parameter | 32 |
+| Parameter 1 of SerializeSubstitute | parameter | 32 |
+| Parameter 1 of SerializeTransitionTime | parameter | 32 |
 | Parameter 1 of SetBindOptions | parameter | 32 |
 | Parameter 1 of SetCurrentThreadActivityId | parameter | 32 |
+| Parameter 1 of SetException | parameter | 32 |
+| Parameter 1 of SetNotificationForWaitCompletion | parameter | 32 |
 | Parameter 1 of SetValue | parameter | 32 |
-| Parameter 1 of SkipWhitespace | parameter | 32 |
 | Parameter 1 of SnapForObservation | parameter | 32 |
 | Parameter 1 of SplitName | parameter | 32 |
 | Parameter 1 of Start | parameter | 32 |
+| Parameter 1 of StartAssemblyLoad | parameter | 32 |
 | Parameter 1 of Stat | parameter | 32 |
 | Parameter 1 of Subtract | parameter | 32 |
+| Parameter 1 of Swap | parameter | 32 |
+| Parameter 1 of SwapIfGreater | parameter | 32 |
 | Parameter 1 of TZif_ParseJulianDay | parameter | 32 |
 | Parameter 1 of TZif_ParseMDateRule | parameter | 32 |
 | Parameter 1 of TZif_ParsePosixDate | parameter | 32 |
@@ -864,6 +947,7 @@
 | Parameter 1 of TryDequeueSlow | parameter | 32 |
 | Parameter 1 of TryDigitGenShortest | parameter | 32 |
 | Parameter 1 of TryEnter | parameter | 32 |
+| Parameter 1 of TryFindFirstMatchedLane | parameter | 32 |
 | Parameter 1 of TryGetArray | parameter | 32 |
 | Parameter 1 of TryGetBuffer | parameter | 32 |
 | Parameter 1 of TryGetCachedCursorPosition | parameter | 32 |
@@ -898,6 +982,7 @@
 | Parameter 1 of TryParseExactP | parameter | 32 |
 | Parameter 1 of TryParseExactX | parameter | 32 |
 | Parameter 1 of TryParseGuid | parameter | 32 |
+| Parameter 1 of TryParseGuidCore | parameter | 32 |
 | Parameter 1 of TryParseGuidN | parameter | 32 |
 | Parameter 1 of TryParseHebrewNumber | parameter | 32 |
 | Parameter 1 of TryParseHex | parameter | 32 |
@@ -928,12 +1013,16 @@
 | Parameter 1 of TryParseUInt64X | parameter | 32 |
 | Parameter 1 of TryPeek | parameter | 32 |
 | Parameter 1 of TryRead | parameter | 32 |
+| Parameter 1 of TryReadDoubleBigEndian | parameter | 32 |
+| Parameter 1 of TryReadDoubleLittleEndian | parameter | 32 |
 | Parameter 1 of TryReadInt16BigEndian | parameter | 32 |
 | Parameter 1 of TryReadInt16LittleEndian | parameter | 32 |
 | Parameter 1 of TryReadInt32BigEndian | parameter | 32 |
 | Parameter 1 of TryReadInt32LittleEndian | parameter | 32 |
 | Parameter 1 of TryReadInt64BigEndian | parameter | 32 |
 | Parameter 1 of TryReadInt64LittleEndian | parameter | 32 |
+| Parameter 1 of TryReadSingleBigEndian | parameter | 32 |
+| Parameter 1 of TryReadSingleLittleEndian | parameter | 32 |
 | Parameter 1 of TryReadUInt16BigEndian | parameter | 32 |
 | Parameter 1 of TryReadUInt16LittleEndian | parameter | 32 |
 | Parameter 1 of TryReadUInt32BigEndian | parameter | 32 |
@@ -948,8 +1037,6 @@
 | Parameter 1 of UInt32ToNumber | parameter | 32 |
 | Parameter 1 of UInt64ToNumber | parameter | 32 |
 | Parameter 1 of Unscale | parameter | 32 |
-| Parameter 1 of ValidateEventOpcodeForTransfer | parameter | 32 |
-| Parameter 1 of ValidateVariableAndValue | parameter | 32 |
 | Parameter 1 of VarDecCmp | parameter | 32 |
 | Parameter 1 of VarDecCmpSub | parameter | 32 |
 | Parameter 1 of VarDecDiv | parameter | 32 |
@@ -963,13 +1050,16 @@
 | Parameter 1 of WriteEvent | parameter | 32 |
 | Parameter 1 of WriteEventRaw | parameter | 32 |
 | Parameter 1 of YearMonthAdjustment | parameter | 32 |
+| Parameter 1 of _BulkMoveWithWriteBarrier | parameter | 32 |
 | Parameter 1 of _GetScopeProps | parameter | 32 |
 | Parameter 1 of _Memmove | parameter | 32 |
-| Parameter 1 of nCreateDynamicAssembly | parameter | 32 |
+| Parameter 1 of __BulkMoveWithWriteBarrier | parameter | 32 |
 | Parameter 1 of nGetPrimaryAndSecondary | parameter | 32 |
-| Parameter 2 of <TryGetCursorPosition>g__BufferUntil\|86_0 | parameter | 32 |
+| Parameter 2 of <BigMul>g__SoftwareFallback\|42_0 | parameter | 32 |
+| Parameter 2 of <TryGetCursorPosition>g__BufferUntil\|83_0 | parameter | 32 |
 | Parameter 2 of Add | parameter | 32 |
 | Parameter 2 of AddDivisor | parameter | 32 |
+| Parameter 2 of AddIfNotPresent | parameter | 32 |
 | Parameter 2 of AddNum | parameter | 32 |
 | Parameter 2 of AddResourceSet | parameter | 32 |
 | Parameter 2 of AddSep | parameter | 32 |
@@ -979,15 +1069,18 @@
 | Parameter 2 of AttributeUsageCheck | parameter | 32 |
 | Parameter 2 of AwaitOnCompleted | parameter | 32 |
 | Parameter 2 of AwaitUnsafeOnCompleted | parameter | 32 |
+| Parameter 2 of BigMul | parameter | 32 |
 | Parameter 2 of BiggestPowerTen | parameter | 32 |
 | Parameter 2 of ChangeCaseCommon | parameter | 32 |
 | Parameter 2 of CheckVMForIOPacket | parameter | 32 |
 | Parameter 2 of CommonPrefixWith | parameter | 32 |
-| Parameter 2 of CompareOrdinalIgnoreCase | parameter | 32 |
-| Parameter 2 of CompareStringOrdinalIgnoreCase | parameter | 32 |
+| Parameter 2 of CompareIgnoreCaseInvariantMode | parameter | 32 |
+| Parameter 2 of CompareStringIgnoreCase | parameter | 32 |
+| Parameter 2 of CompareStringIgnoreCaseNonAscii | parameter | 32 |
 | Parameter 2 of ConfigureFormatR | parameter | 32 |
 | Parameter 2 of ContinueTryEnter | parameter | 32 |
 | Parameter 2 of ConvertGregorianToHijri | parameter | 32 |
+| Parameter 2 of ConvertSmpToUtf16 | parameter | 32 |
 | Parameter 2 of ConvertUtcToTimeZone | parameter | 32 |
 | Parameter 2 of CopyToTempBufferWithoutWhiteSpace | parameter | 32 |
 | Parameter 2 of CountOccurrences | parameter | 32 |
@@ -1000,6 +1093,7 @@
 | Parameter 2 of DecodeFromUtf16 | parameter | 32 |
 | Parameter 2 of DecodeLastFromUtf8 | parameter | 32 |
 | Parameter 2 of DecodeLastFromUtf16 | parameter | 32 |
+| Parameter 2 of Decompose | parameter | 32 |
 | Parameter 2 of Deconstruct | parameter | 32 |
 | Parameter 2 of Dequeue | parameter | 32 |
 | Parameter 2 of DivByConst | parameter | 32 |
@@ -1008,7 +1102,6 @@
 | Parameter 2 of DrainLeftoverDataForGetByteCount | parameter | 32 |
 | Parameter 2 of DrainLeftoverDataForGetCharCount | parameter | 32 |
 | Parameter 2 of EncodeObject | parameter | 32 |
-| Parameter 2 of EndInvoke | parameter | 32 |
 | Parameter 2 of EnqueueSlow | parameter | 32 |
 | Parameter 2 of EnsureInitialized | parameter | 32 |
 | Parameter 2 of EnsureInitializedCore | parameter | 32 |
@@ -1030,6 +1123,8 @@
 | Parameter 2 of FromUtf16 | parameter | 32 |
 | Parameter 2 of GenerateMetadata | parameter | 32 |
 | Parameter 2 of GenerateMetadataForProperty | parameter | 32 |
+| Parameter 2 of GenerateMetadataForTypeV2 | parameter | 32 |
+| Parameter 2 of GenerateMetadataV2 | parameter | 32 |
 | Parameter 2 of GetAdjustmentRuleForAmbiguousOffsets | parameter | 32 |
 | Parameter 2 of GetAdjustmentRuleForTime | parameter | 32 |
 | Parameter 2 of GetBoundaries | parameter | 32 |
@@ -1037,15 +1132,15 @@
 | Parameter 2 of GetClassLayout | parameter | 32 |
 | Parameter 2 of GetCodeInfo | parameter | 32 |
 | Parameter 2 of GetContainingTypeLib | parameter | 32 |
+| Parameter 2 of GetCurrentContextInfo | parameter | 32 |
 | Parameter 2 of GetCustData | parameter | 32 |
 | Parameter 2 of GetCustomAttributeProps | parameter | 32 |
 | Parameter 2 of GetCustomAttributes | parameter | 32 |
-| Parameter 2 of GetDatePart | parameter | 32 |
+| Parameter 2 of GetDate | parameter | 32 |
 | Parameter 2 of GetDayOfMN | parameter | 32 |
 | Parameter 2 of GetDayOfNM | parameter | 32 |
 | Parameter 2 of GetDayOfNN | parameter | 32 |
 | Parameter 2 of GetDefaultValue | parameter | 32 |
-| Parameter 2 of GetDisplayName | parameter | 32 |
 | Parameter 2 of GetDocumentation | parameter | 32 |
 | Parameter 2 of GetDocumentation2 | parameter | 32 |
 | Parameter 2 of GetDynamicOrStaticVariables | parameter | 32 |
@@ -1057,6 +1152,7 @@
 | Parameter 2 of GetFuncCustData | parameter | 32 |
 | Parameter 2 of GetFuncDesc | parameter | 32 |
 | Parameter 2 of GetGenericParamProps | parameter | 32 |
+| Parameter 2 of GetIUnknownImpl | parameter | 32 |
 | Parameter 2 of GetImplTypeCustData | parameter | 32 |
 | Parameter 2 of GetImplTypeFlags | parameter | 32 |
 | Parameter 2 of GetIndexOfNextTokenAfterSeconds | parameter | 32 |
@@ -1067,9 +1163,7 @@
 | Parameter 2 of GetLocaleInfoGroupingSizes | parameter | 32 |
 | Parameter 2 of GetLocaleInfoInt | parameter | 32 |
 | Parameter 2 of GetMarshalAs | parameter | 32 |
-| Parameter 2 of GetMemoryInfo | parameter | 32 |
-| Parameter 2 of GetMetadata | parameter | 32 |
-| Parameter 2 of GetMonthDayOrder | parameter | 32 |
+| Parameter 2 of GetMetadataLengthForNamedTypeV2 | parameter | 32 |
 | Parameter 2 of GetMops | parameter | 32 |
 | Parameter 2 of GetObject | parameter | 32 |
 | Parameter 2 of GetObjectParam | parameter | 32 |
@@ -1080,7 +1174,6 @@
 | Parameter 2 of GetPointerToFirstInvalidByte | parameter | 32 |
 | Parameter 2 of GetPointerToFirstInvalidChar | parameter | 32 |
 | Parameter 2 of GetPropertyProps | parameter | 32 |
-| Parameter 2 of GetRawArrayGeometry | parameter | 32 |
 | Parameter 2 of GetRefTypeInfo | parameter | 32 |
 | Parameter 2 of GetRefTypeOfImplType | parameter | 32 |
 | Parameter 2 of GetRegularToken | parameter | 32 |
@@ -1090,11 +1183,14 @@
 | Parameter 2 of GetSessionInfo | parameter | 32 |
 | Parameter 2 of GetSessionInfoCallback | parameter | 32 |
 | Parameter 2 of GetStackTracesDeepCopy | parameter | 32 |
+| Parameter 2 of GetTime | parameter | 32 |
 | Parameter 2 of GetTimeOfLastChange | parameter | 32 |
+| Parameter 2 of GetTimePrecise | parameter | 32 |
 | Parameter 2 of GetTypeInfo | parameter | 32 |
 | Parameter 2 of GetTypeInfoOfGuid | parameter | 32 |
 | Parameter 2 of GetTypeInfoType | parameter | 32 |
 | Parameter 2 of GetUnescapeSequence | parameter | 32 |
+| Parameter 2 of GetUnicodeCategoryInternal | parameter | 32 |
 | Parameter 2 of GetUtcOffsetFromUniversalTime | parameter | 32 |
 | Parameter 2 of GetUtcOffsetFromUtc | parameter | 32 |
 | Parameter 2 of GetUtf16SurrogatesFromSupplementaryPlaneScalar | parameter | 32 |
@@ -1102,19 +1198,17 @@
 | Parameter 2 of GetVarDesc | parameter | 32 |
 | Parameter 2 of GetVarIndexOfMemId | parameter | 32 |
 | Parameter 2 of GetVersion | parameter | 32 |
-| Parameter 2 of GetYearMonthDayOrder | parameter | 32 |
-| Parameter 2 of GetYearMonthOrder | parameter | 32 |
 | Parameter 2 of GrabInts | parameter | 32 |
 | Parameter 2 of GrabLongs | parameter | 32 |
 | Parameter 2 of IndexOf | parameter | 32 |
 | Parameter 2 of IndexOfAny | parameter | 32 |
 | Parameter 2 of Initialize | parameter | 32 |
-| Parameter 2 of InternalConvertToUtf32 | parameter | 32 |
 | Parameter 2 of InternalDefineDynamicAssembly | parameter | 32 |
 | Parameter 2 of InternalFallback | parameter | 32 |
 | Parameter 2 of InternalFallbackGetByteCount | parameter | 32 |
-| Parameter 2 of InternalGetUnicodeCategory | parameter | 32 |
+| Parameter 2 of InternalLoad | parameter | 32 |
 | Parameter 2 of InternalTryGetRawMetadata | parameter | 32 |
+| Parameter 2 of Invoke | parameter | 32 |
 | Parameter 2 of IsDigit | parameter | 32 |
 | Parameter 2 of IsInstanceOfInterface | parameter | 32 |
 | Parameter 2 of LastIndexOf | parameter | 32 |
@@ -1143,7 +1237,6 @@
 | Parameter 2 of ParseComponent | parameter | 32 |
 | Parameter 2 of ParseDigits | parameter | 32 |
 | Parameter 2 of ParseExactDigits | parameter | 32 |
-| Parameter 2 of ParseFormatO | parameter | 32 |
 | Parameter 2 of ParseFormatR | parameter | 32 |
 | Parameter 2 of ParseFractionExact | parameter | 32 |
 | Parameter 2 of ParseInt | parameter | 32 |
@@ -1167,11 +1260,10 @@
 | Parameter 2 of Remove | parameter | 32 |
 | Parameter 2 of RemoveRelativeSegments | parameter | 32 |
 | Parameter 2 of ReplaceInPlaceAtChunk | parameter | 32 |
+| Parameter 2 of RequestLicKey | parameter | 32 |
 | Parameter 2 of ResolveToken | parameter | 32 |
 | Parameter 2 of RunForThreadPoolUnsafe | parameter | 32 |
-| Parameter 2 of RunInternal | parameter | 32 |
 | Parameter 2 of SequenceCompareTo | parameter | 32 |
-| Parameter 2 of ShiftLeft | parameter | 32 |
 | Parameter 2 of SnapForObservation | parameter | 32 |
 | Parameter 2 of SplitName | parameter | 32 |
 | Parameter 2 of SubtractDivisor | parameter | 32 |
@@ -1181,6 +1273,7 @@
 | Parameter 2 of TZif_ParsePosixFormat | parameter | 32 |
 | Parameter 2 of TZif_ParseRaw | parameter | 32 |
 | Parameter 2 of TimeToLunar | parameter | 32 |
+| Parameter 2 of ToUpperSurrogate | parameter | 32 |
 | Parameter 2 of ToUtf16 | parameter | 32 |
 | Parameter 2 of Tokenize | parameter | 32 |
 | Parameter 2 of TryAddTicks | parameter | 32 |
@@ -1195,6 +1288,7 @@
 | Parameter 2 of TryEncodeToUtf8 | parameter | 32 |
 | Parameter 2 of TryEncodeToUtf16 | parameter | 32 |
 | Parameter 2 of TryEnter | parameter | 32 |
+| Parameter 2 of TryFindFirstMatchedLane | parameter | 32 |
 | Parameter 2 of TryFormat | parameter | 32 |
 | Parameter 2 of TryFormatDateTimeL | parameter | 32 |
 | Parameter 2 of TryFormatDateTimeR | parameter | 32 |
@@ -1202,20 +1296,15 @@
 | Parameter 2 of TryFormatDecimalF | parameter | 32 |
 | Parameter 2 of TryFormatDecimalG | parameter | 32 |
 | Parameter 2 of TryFormatFloatingPoint | parameter | 32 |
-| Parameter 2 of TryFormatInt32MultipleDigits | parameter | 32 |
 | Parameter 2 of TryFormatInt64Default | parameter | 32 |
-| Parameter 2 of TryFormatInt64LessThanNegativeBillionMaxUInt | parameter | 32 |
-| Parameter 2 of TryFormatInt64MoreThanNegativeBillionMaxUInt | parameter | 32 |
 | Parameter 2 of TryFormatInt64MultipleDigits | parameter | 32 |
-| Parameter 2 of TryFormatUInt32MultipleDigits | parameter | 32 |
 | Parameter 2 of TryFormatUInt32SingleDigit | parameter | 32 |
 | Parameter 2 of TryFormatUInt64 | parameter | 32 |
 | Parameter 2 of TryFormatUInt64Default | parameter | 32 |
-| Parameter 2 of TryFormatUInt64LessThanBillionMaxUInt | parameter | 32 |
-| Parameter 2 of TryFormatUInt64MoreThanBillionMaxUInt | parameter | 32 |
 | Parameter 2 of TryFormatUInt64MultipleDigits | parameter | 32 |
 | Parameter 2 of TryFromBase64Chars | parameter | 32 |
 | Parameter 2 of TryFromBase64String | parameter | 32 |
+| Parameter 2 of TryGetBits | parameter | 32 |
 | Parameter 2 of TryGetByteCount | parameter | 32 |
 | Parameter 2 of TryGetEntry | parameter | 32 |
 | Parameter 2 of TryGetExport | parameter | 32 |
@@ -1224,9 +1313,9 @@
 | Parameter 2 of TryGetRawMetadata | parameter | 32 |
 | Parameter 2 of TryGetRuneAt | parameter | 32 |
 | Parameter 2 of TryGetString | parameter | 32 |
+| Parameter 2 of TryGetStringValue | parameter | 32 |
 | Parameter 2 of TryGetTimeZone | parameter | 32 |
 | Parameter 2 of TryGetTimeZoneFromLocalMachine | parameter | 32 |
-| Parameter 2 of TryGetUserNameFromPasswd | parameter | 32 |
 | Parameter 2 of TryGetValue | parameter | 32 |
 | Parameter 2 of TryGetValueWorker | parameter | 32 |
 | Parameter 2 of TryLoadTzFile | parameter | 32 |
@@ -1239,6 +1328,7 @@
 | Parameter 2 of TryParseDateTimeOffsetO | parameter | 32 |
 | Parameter 2 of TryParseDateTimeOffsetR | parameter | 32 |
 | Parameter 2 of TryParseExact | parameter | 32 |
+| Parameter 2 of TryParseGuidCore | parameter | 32 |
 | Parameter 2 of TryParseGuidN | parameter | 32 |
 | Parameter 2 of TryParseHebrewNumber | parameter | 32 |
 | Parameter 2 of TryParseHex | parameter | 32 |
@@ -1252,6 +1342,7 @@
 | Parameter 2 of TryParseNumber | parameter | 32 |
 | Parameter 2 of TryParseSByteD | parameter | 32 |
 | Parameter 2 of TryParseSByteN | parameter | 32 |
+| Parameter 2 of TryParseThrowFormatException | parameter | 32 |
 | Parameter 2 of TryParseTimeSpanBigG | parameter | 32 |
 | Parameter 2 of TryParseTimeSpanC | parameter | 32 |
 | Parameter 2 of TryParseTimeSpanFraction | parameter | 32 |
@@ -1268,6 +1359,7 @@
 | Parameter 2 of TryParseUInt64N | parameter | 32 |
 | Parameter 2 of TryParseUInt64X | parameter | 32 |
 | Parameter 2 of TryRunDouble | parameter | 32 |
+| Parameter 2 of TryRunHalf | parameter | 32 |
 | Parameter 2 of TryRunShortest | parameter | 32 |
 | Parameter 2 of TryRunSingle | parameter | 32 |
 | Parameter 2 of TryStringToNumber | parameter | 32 |
@@ -1302,13 +1394,12 @@
 | Parameter 2 of _ParseAttributeUsageAttribute | parameter | 32 |
 | Parameter 2 of ctor>g__TryConvertFromInvariantString\|2_0 | parameter | 32 |
 | Parameter 3 of .ctor | parameter | 32 |
-| Parameter 3 of <GetSessions>b__39_0 | parameter | 32 |
-| Parameter 3 of <TryGetCursorPosition>g__AppendToStdInReaderUntil\|86_1 | parameter | 32 |
-| Parameter 3 of <TryGetCursorPosition>g__BufferUntil\|86_0 | parameter | 32 |
+| Parameter 3 of <GetSessions>b__37_0 | parameter | 32 |
+| Parameter 3 of <TryGetCursorPosition>g__AppendToStdInReaderUntil\|83_1 | parameter | 32 |
+| Parameter 3 of <TryGetCursorPosition>g__BufferUntil\|83_0 | parameter | 32 |
 | Parameter 3 of AccumulateDecimalDigitsIntoBigInteger | parameter | 32 |
 | Parameter 3 of AddressOfMember | parameter | 32 |
 | Parameter 3 of AtomicStateUpdate | parameter | 32 |
-| Parameter 3 of BeginInvoke | parameter | 32 |
 | Parameter 3 of BindToMethod | parameter | 32 |
 | Parameter 3 of BindToObject | parameter | 32 |
 | Parameter 3 of BindToStorage | parameter | 32 |
@@ -1316,6 +1407,7 @@
 | Parameter 3 of CheckNewValue | parameter | 32 |
 | Parameter 3 of CompareExchange | parameter | 32 |
 | Parameter 3 of ComposeWith | parameter | 32 |
+| Parameter 3 of ComputeVtables | parameter | 32 |
 | Parameter 3 of ContinueTryEnterWithThreadTracking | parameter | 32 |
 | Parameter 3 of ConvertGregorianToHijri | parameter | 32 |
 | Parameter 3 of ConvertHijriToGregorian | parameter | 32 |
@@ -1323,21 +1415,21 @@
 | Parameter 3 of CopyToTempBufferWithoutWhiteSpace | parameter | 32 |
 | Parameter 3 of CreateCaObject | parameter | 32 |
 | Parameter 3 of CreateInstance | parameter | 32 |
+| Parameter 3 of CreateInstanceLic | parameter | 32 |
 | Parameter 3 of CreateMutexCore | parameter | 32 |
 | Parameter 3 of DecodeFirstRune | parameter | 32 |
 | Parameter 3 of DecodeObject | parameter | 32 |
+| Parameter 3 of Decompose | parameter | 32 |
 | Parameter 3 of Deconstruct | parameter | 32 |
-| Parameter 3 of DefineDynamicModuleInternal | parameter | 32 |
-| Parameter 3 of DefineDynamicModuleInternalNoLock | parameter | 32 |
 | Parameter 3 of DivByConst | parameter | 32 |
 | Parameter 3 of DivRem | parameter | 32 |
 | Parameter 3 of DoAnsiConversion | parameter | 32 |
 | Parameter 3 of Dragon4Double | parameter | 32 |
+| Parameter 3 of Dragon4Half | parameter | 32 |
 | Parameter 3 of Dragon4Single | parameter | 32 |
 | Parameter 3 of DrainLeftoverDataForGetChars | parameter | 32 |
 | Parameter 3 of EncodeObject | parameter | 32 |
 | Parameter 3 of EncodeRune | parameter | 32 |
-| Parameter 3 of EndInvoke | parameter | 32 |
 | Parameter 3 of Enum | parameter | 32 |
 | Parameter 3 of EnumCalendarInfo | parameter | 32 |
 | Parameter 3 of EnumDatePatterns | parameter | 32 |
@@ -1346,16 +1438,17 @@
 | Parameter 3 of ExpandPredefinedFormat | parameter | 32 |
 | Parameter 3 of FilterHelper | parameter | 32 |
 | Parameter 3 of FromUtf16 | parameter | 32 |
+| Parameter 3 of GenerateMetadataForNamedTypeV2 | parameter | 32 |
 | Parameter 3 of GetAdjustmentRuleForTime | parameter | 32 |
 | Parameter 3 of GetBoundaries | parameter | 32 |
 | Parameter 3 of GetCalendarInfo | parameter | 32 |
 | Parameter 3 of GetClassLayout | parameter | 32 |
 | Parameter 3 of GetCodeInfo | parameter | 32 |
 | Parameter 3 of GetControlCharacters | parameter | 32 |
-| Parameter 3 of GetCurrentTextElementLen | parameter | 32 |
+| Parameter 3 of GetCurrentContextInfo | parameter | 32 |
 | Parameter 3 of GetCustomAttributeProps | parameter | 32 |
 | Parameter 3 of GetDataFromController | parameter | 32 |
-| Parameter 3 of GetDatePart | parameter | 32 |
+| Parameter 3 of GetDate | parameter | 32 |
 | Parameter 3 of GetDefaultValue | parameter | 32 |
 | Parameter 3 of GetDisplayName | parameter | 32 |
 | Parameter 3 of GetDocumentation | parameter | 32 |
@@ -1371,8 +1464,6 @@
 | Parameter 3 of GetKeyFromCharValue | parameter | 32 |
 | Parameter 3 of GetLocaleInfoGroupingSizes | parameter | 32 |
 | Parameter 3 of GetMarshalAs | parameter | 32 |
-| Parameter 3 of GetMemoryInfo | parameter | 32 |
-| Parameter 3 of GetMetadata | parameter | 32 |
 | Parameter 3 of GetPInvokeMap | parameter | 32 |
 | Parameter 3 of GetParamCustData | parameter | 32 |
 | Parameter 3 of GetParamDefProps | parameter | 32 |
@@ -1381,10 +1472,11 @@
 | Parameter 3 of GetPointerToFirstInvalidChar | parameter | 32 |
 | Parameter 3 of GetPropertyOrFieldData | parameter | 32 |
 | Parameter 3 of GetPropertyProps | parameter | 32 |
-| Parameter 3 of GetRawArrayGeometry | parameter | 32 |
 | Parameter 3 of GetResourceData | parameter | 32 |
 | Parameter 3 of GetSeparatorToken | parameter | 32 |
+| Parameter 3 of GetTime | parameter | 32 |
 | Parameter 3 of GetTimeOfLastChange | parameter | 32 |
+| Parameter 3 of GetTimePrecise | parameter | 32 |
 | Parameter 3 of GetType | parameter | 32 |
 | Parameter 3 of GetTypeByName | parameter | 32 |
 | Parameter 3 of GetUtcOffsetFromUtc | parameter | 32 |
@@ -1428,6 +1520,7 @@
 | Parameter 3 of TZif_ParsePosixFormat | parameter | 32 |
 | Parameter 3 of TZif_ParseRaw | parameter | 32 |
 | Parameter 3 of TimeToLunar | parameter | 32 |
+| Parameter 3 of ToUpperSurrogate | parameter | 32 |
 | Parameter 3 of ToUtf16 | parameter | 32 |
 | Parameter 3 of Tokenize | parameter | 32 |
 | Parameter 3 of TryDecodeFromUtf16 | parameter | 32 |
@@ -1444,6 +1537,7 @@
 | Parameter 3 of TryFormatR | parameter | 32 |
 | Parameter 3 of TryGetEntry | parameter | 32 |
 | Parameter 3 of TryGetMemoryManager | parameter | 32 |
+| Parameter 3 of TryGetSpan | parameter | 32 |
 | Parameter 3 of TryGetSpecialConsoleKey | parameter | 32 |
 | Parameter 3 of TryGetString | parameter | 32 |
 | Parameter 3 of TryGetTimeZone | parameter | 32 |
@@ -1460,6 +1554,7 @@
 | Parameter 3 of TryParseDecimal | parameter | 32 |
 | Parameter 3 of TryParseDouble | parameter | 32 |
 | Parameter 3 of TryParseExact | parameter | 32 |
+| Parameter 3 of TryParseHalf | parameter | 32 |
 | Parameter 3 of TryParseInt32 | parameter | 32 |
 | Parameter 3 of TryParseInt32IntegerStyle | parameter | 32 |
 | Parameter 3 of TryParseInt32Number | parameter | 32 |
@@ -1484,6 +1579,7 @@
 | Parameter 3 of ValidateTimeZoneInfo | parameter | 32 |
 | Parameter 3 of Write | parameter | 32 |
 | Parameter 3 of WriteFile | parameter | 32 |
+| Parameter 3 of WriteToBuffer | parameter | 32 |
 | Parameter 3 of _Enum | parameter | 32 |
 | Parameter 3 of _GetClassLayout | parameter | 32 |
 | Parameter 3 of _GetCustomAttributeProps | parameter | 32 |
@@ -1496,13 +1592,14 @@
 | Parameter 3 of _GetPropertyProps | parameter | 32 |
 | Parameter 3 of _GetUserString | parameter | 32 |
 | Parameter 3 of _ParseAttributeUsageAttribute | parameter | 32 |
-| Parameter 3 of nLoad | parameter | 32 |
 | Parameter 4 of .ctor | parameter | 32 |
-| Parameter 4 of <TryGetCursorPosition>g__AppendToStdInReaderUntil\|86_1 | parameter | 32 |
-| Parameter 4 of <TryGetCursorPosition>g__BufferUntil\|86_0 | parameter | 32 |
-| Parameter 4 of <TryGetCursorPosition>g__ReadRowOrCol\|86_2 | parameter | 32 |
+| Parameter 4 of <TryFormatInt64>g__TryFormatInt64Slow\|43_0 | parameter | 32 |
+| Parameter 4 of <TryFormatUInt32>g__TryFormatUInt32Slow\|41_0 | parameter | 32 |
+| Parameter 4 of <TryFormatUInt64>g__TryFormatUInt64Slow\|45_0 | parameter | 32 |
+| Parameter 4 of <TryGetCursorPosition>g__AppendToStdInReaderUntil\|83_1 | parameter | 32 |
+| Parameter 4 of <TryGetCursorPosition>g__BufferUntil\|83_0 | parameter | 32 |
+| Parameter 4 of <TryGetCursorPosition>g__ReadRowOrCol\|83_2 | parameter | 32 |
 | Parameter 4 of AssignAssociates | parameter | 32 |
-| Parameter 4 of BeginInvoke | parameter | 32 |
 | Parameter 4 of Bind | parameter | 32 |
 | Parameter 4 of BindToObject | parameter | 32 |
 | Parameter 4 of BindToStorage | parameter | 32 |
@@ -1515,7 +1612,6 @@
 | Parameter 4 of CreateSemaphoreCore | parameter | 32 |
 | Parameter 4 of Deconstruct | parameter | 32 |
 | Parameter 4 of DoStrictParse | parameter | 32 |
-| Parameter 4 of EndInvoke | parameter | 32 |
 | Parameter 4 of EnumMonthNames | parameter | 32 |
 | Parameter 4 of EscapeString | parameter | 32 |
 | Parameter 4 of EvaluateInternal | parameter | 32 |
@@ -1523,25 +1619,27 @@
 | Parameter 4 of FilterHelper | parameter | 32 |
 | Parameter 4 of GetByteCountFast | parameter | 32 |
 | Parameter 4 of GetCharCountFast | parameter | 32 |
-| Parameter 4 of GetCurrentTextElementLen | parameter | 32 |
 | Parameter 4 of GetDataFromController | parameter | 32 |
 | Parameter 4 of GetDefaultValue | parameter | 32 |
 | Parameter 4 of GetDocumentation | parameter | 32 |
 | Parameter 4 of GetDocumentation2 | parameter | 32 |
 | Parameter 4 of GetMarshalAs | parameter | 32 |
-| Parameter 4 of GetMemoryInfo | parameter | 32 |
-| Parameter 4 of GetMetadata | parameter | 32 |
 | Parameter 4 of GetNames | parameter | 32 |
 | Parameter 4 of GetPInvokeMap | parameter | 32 |
 | Parameter 4 of GetParamCustData | parameter | 32 |
 | Parameter 4 of GetPropertyOrFieldData | parameter | 32 |
 | Parameter 4 of GetPropertyProps | parameter | 32 |
-| Parameter 4 of GetRawArrayGeometry | parameter | 32 |
+| Parameter 4 of GetTime | parameter | 32 |
+| Parameter 4 of GetTimePrecise | parameter | 32 |
 | Parameter 4 of GetValue | parameter | 32 |
 | Parameter 4 of GetVersion | parameter | 32 |
 | Parameter 4 of GregorianToLunar | parameter | 32 |
+| Parameter 4 of IndexOf | parameter | 32 |
 | Parameter 4 of InitHash | parameter | 32 |
 | Parameter 4 of Invoke | parameter | 32 |
+| Parameter 4 of IsPrefix | parameter | 32 |
+| Parameter 4 of IsSuffix | parameter | 32 |
+| Parameter 4 of LastIndexOf | parameter | 32 |
 | Parameter 4 of Lex | parameter | 32 |
 | Parameter 4 of LunarToGregorian | parameter | 32 |
 | Parameter 4 of MakeRoom | parameter | 32 |
@@ -1554,8 +1652,7 @@
 | Parameter 4 of ParseExactDigits | parameter | 32 |
 | Parameter 4 of ParseExactMultiple | parameter | 32 |
 | Parameter 4 of PopulateEvents | parameter | 32 |
-| Parameter 4 of ProcessHebrewTerminalState | parameter | 32 |
-| Parameter 4 of ProcessTerminalState | parameter | 32 |
+| Parameter 4 of ReadFromBuffer | parameter | 32 |
 | Parameter 4 of Reduce | parameter | 32 |
 | Parameter 4 of Remove | parameter | 32 |
 | Parameter 4 of ResolveToken | parameter | 32 |
@@ -1572,7 +1669,7 @@
 | Parameter 4 of TryDrainLeftoverDataForGetBytes | parameter | 32 |
 | Parameter 4 of TryFormatDecimal | parameter | 32 |
 | Parameter 4 of TryFormatDouble | parameter | 32 |
-| Parameter 4 of TryFormatInt32 | parameter | 32 |
+| Parameter 4 of TryFormatHalf | parameter | 32 |
 | Parameter 4 of TryFormatInt64 | parameter | 32 |
 | Parameter 4 of TryFormatSingle | parameter | 32 |
 | Parameter 4 of TryFormatStandard | parameter | 32 |
@@ -1595,13 +1692,9 @@
 | Parameter 4 of TryParseExactMultiple | parameter | 32 |
 | Parameter 4 of TryParseExactMultipleTimeSpan | parameter | 32 |
 | Parameter 4 of TryParseExactTimeSpan | parameter | 32 |
-| Parameter 4 of TryParseGuidCore | parameter | 32 |
 | Parameter 4 of TryParseNumber | parameter | 32 |
 | Parameter 4 of TryRunCounted | parameter | 32 |
 | Parameter 4 of TryRunShortest | parameter | 32 |
-| Parameter 4 of TrySZBinarySearch | parameter | 32 |
-| Parameter 4 of TrySZIndexOf | parameter | 32 |
-| Parameter 4 of TrySZLastIndexOf | parameter | 32 |
 | Parameter 4 of UpdateDescriptor | parameter | 32 |
 | Parameter 4 of Write | parameter | 32 |
 | Parameter 4 of _GetDefaultValue | parameter | 32 |
@@ -1609,14 +1702,15 @@
 | Parameter 4 of _GetPropertyOrFieldData | parameter | 32 |
 | Parameter 4 of _GetPropertyProps | parameter | 32 |
 | Parameter 4 of _ParseAttributeUsageAttribute | parameter | 32 |
+| Parameter 5 of <TryFormatInt32>g__TryFormatInt32Slow\|39_0 | parameter | 32 |
 | Parameter 5 of AssignAssociates | parameter | 32 |
-| Parameter 5 of BeginInvoke | parameter | 32 |
 | Parameter 5 of Bind | parameter | 32 |
 | Parameter 5 of ConstructType | parameter | 32 |
 | Parameter 5 of Convert | parameter | 32 |
 | Parameter 5 of ConvertHijriToGregorian | parameter | 32 |
 | Parameter 5 of CreateCaObject | parameter | 32 |
 | Parameter 5 of CreateInstance | parameter | 32 |
+| Parameter 5 of CreateInstanceLic | parameter | 32 |
 | Parameter 5 of Deconstruct | parameter | 32 |
 | Parameter 5 of EnsureDestinationSize | parameter | 32 |
 | Parameter 5 of EvaluateInternal | parameter | 32 |
@@ -1628,7 +1722,6 @@
 | Parameter 5 of GetDocumentation | parameter | 32 |
 | Parameter 5 of GetIsDaylightSavingsFromUtc | parameter | 32 |
 | Parameter 5 of GetMarshalAs | parameter | 32 |
-| Parameter 5 of GetMemoryInfo | parameter | 32 |
 | Parameter 5 of GetPropertyOrFieldData | parameter | 32 |
 | Parameter 5 of GetType | parameter | 32 |
 | Parameter 5 of GregorianToLunar | parameter | 32 |
@@ -1646,11 +1739,11 @@
 | Parameter 5 of TranscodeToUtf8 | parameter | 32 |
 | Parameter 5 of TranscodeToUtf16 | parameter | 32 |
 | Parameter 5 of TryDigitGenShortest | parameter | 32 |
+| Parameter 5 of TryFormatInt32 | parameter | 32 |
 | Parameter 5 of TryParseAsSpecialFloatingPoint | parameter | 32 |
 | Parameter 5 of TryParseByName | parameter | 32 |
 | Parameter 5 of TryParseExact | parameter | 32 |
 | Parameter 5 of TryParseExactMultiple | parameter | 32 |
-| Parameter 5 of TryParseGuidCore | parameter | 32 |
 | Parameter 5 of TryParseInt64Enum | parameter | 32 |
 | Parameter 5 of TryParseRareEnum | parameter | 32 |
 | Parameter 5 of TryParseUInt64Enum | parameter | 32 |
@@ -1660,7 +1753,6 @@
 | Parameter 5 of _GetMarshalAs | parameter | 32 |
 | Parameter 5 of _GetPropertyOrFieldData | parameter | 32 |
 | Parameter 6 of AssignAssociates | parameter | 32 |
-| Parameter 6 of BeginInvoke | parameter | 32 |
 | Parameter 6 of Bind | parameter | 32 |
 | Parameter 6 of Convert | parameter | 32 |
 | Parameter 6 of Deconstruct | parameter | 32 |
@@ -1703,7 +1795,6 @@
 | Parameter 8 of TryParseInt32Enum | parameter | 32 |
 | Parameter 8 of _GetMarshalAs | parameter | 32 |
 | Parameter 9 of AssignAssociates | parameter | 32 |
-| Parameter 9 of BeginInvoke | parameter | 32 |
 | Parameter 9 of Convert | parameter | 32 |
 | Parameter 9 of Deconstruct | parameter | 32 |
 | Parameter 9 of FilterCustomAttributeRecord | parameter | 32 |
@@ -1712,15 +1803,12 @@
 | Parameter 9 of TryToDateTime | parameter | 32 |
 | Parameter 9 of _GetMarshalAs | parameter | 32 |
 | Parameter 10 of AssignAssociates | parameter | 32 |
-| Parameter 10 of BeginInvoke | parameter | 32 |
 | Parameter 10 of Convert | parameter | 32 |
 | Parameter 10 of Deconstruct | parameter | 32 |
-| Parameter 10 of FilterCustomAttributeRecord | parameter | 32 |
 | Parameter 10 of Invoke | parameter | 32 |
 | Parameter 10 of TryCreateDateTimeOffset | parameter | 32 |
 | Parameter 10 of _GetMarshalAs | parameter | 32 |
 | Parameter 11 of AssignAssociates | parameter | 32 |
-| Parameter 11 of BeginInvoke | parameter | 32 |
 | Parameter 11 of Deconstruct | parameter | 32 |
 | Parameter 11 of Invoke | parameter | 32 |
 | Parameter 12 of Deconstruct | parameter | 32 |
@@ -1733,6 +1821,10 @@
 | Parameter 19 of Deconstruct | parameter | 32 |
 | Parameter 20 of Deconstruct | parameter | 32 |
 | Parameter 21 of Deconstruct | parameter | 32 |
+| TableData | method | 32 |
+| ThrowArrayMismatchException | method | 32 |
+| Unbox | method | 32 |
+| Unbox_Helper | method | 32 |
 | get_Current | method | 32 |
 | get_EventHandle | method | 32 |
 | get_Item | method | 32 |

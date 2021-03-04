@@ -312,8 +312,13 @@ private module Internal {
       1 < strictcount(this.getADynamicTarget().getUnboundDeclaration()) and
       c = this.getCall().getEnclosingCallable().getUnboundDeclaration() and
       (
-        exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
-          this.getQualifier() = BaseSsa::getARead(pdef, p) and
+        exists(
+          BaseSsa::Definition def, AssignableDefinitions::ImplicitParameterDefinition pdef,
+          Parameter p
+        |
+          pdef = def.getDefinition() and
+          p = pdef.getTarget() and
+          this.getQualifier() = def.getARead() and
           p.getPosition() = i and
           c.getAParameter() = p and
           not p.isParams()

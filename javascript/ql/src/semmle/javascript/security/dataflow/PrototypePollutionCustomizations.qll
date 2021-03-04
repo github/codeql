@@ -14,7 +14,7 @@ module PrototypePollution {
    * Label for wrappers around tainted objects, that is, objects that are
    * not completely user-controlled, but contain a user-controlled object.
    *
-   * For example, `options` below is is a tainted wrapper, but is not itself
+   * For example, `options` below is a tainted wrapper, but is not itself
    * a tainted object:
    * ```
    * let options = {

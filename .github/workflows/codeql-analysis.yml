@@ -5,8 +5,6 @@ on:
     branches:
       - main
       - 'rc/*'
-    paths:
-      - 'csharp/**'
   pull_request:
     branches:
       - main

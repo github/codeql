@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+	<p>
+		Processing user-controlled data with a method that allocates excessive amounts
+		of memory can lead to denial of service.
+	</p>
+
+	<p>
+		If the JSON schema validation library <code>ajv</code> is configured with
+		<code>allErrors: true</code> there is no limit to how many error objects
+		will be allocated. An attacker can exploit this by sending an object that
+		deliberately contains a huge number of errors, and in some cases, with
+		longer and longer error messages. This can cause the service to become
+		unresponsive due to the slow error-checking process.
+	</p>
+</overview>
+
+<recommendation>
+	<p>
+		Do not use <code>allErrors: true</code> in production.
+	</p>
+</recommendation>
+
+<example>
+	<p>
+		In the example below, the user-submitted object <code>req.body</code> is
+		validated using <code>ajv</code> and <code>allErrors: true</code>:
+	</p>
+
+	<sample src="examples/DeepObjectResourceExhaustion.js"/>
+
+	<p>
+		Although this ensures that <code>req.body</code> conforms to the schema,
+		the validation itself could be vulnerable to a denial-of-service attack.
+		An attacker could send an object containing so many errors that the server
+		runs out of memory.
+	</p>
+
+	<p>
+		A solution is to not pass in <code>allErrors: true</code>, which means
+		<code>ajv</code> will only report the first error, not all of them:
+	</p>
+
+	<sample src="examples/DeepObjectResourceExhaustion_fixed.js"/>
+</example>
+
+<references>
+	<li>Ajv documentation: <a href="https://github.com/ajv-validator/ajv/blob/master/docs/security.md#untrusted-schemas">security considerations</a>
+	</li>
+</references>
+</qhelp>

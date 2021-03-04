@@ -25,7 +25,7 @@ module ArrayTaintTracking {
     // `array.map(function (elt, i, ary) { ... })`: if `array` is tainted, then so are
     // `elt` and `ary`; similar for `forEach`
     exists(Function f |
-      call.getArgument(0).analyze().getAValue().(AbstractFunction).getFunction() = f and
+      call.getArgument(0).getAFunctionValue(0).getFunction() = f and
       call.(DataFlow::MethodCallNode).getMethodName() = ["map", "forEach"] and
       pred = call.getReceiver() and
       succ = DataFlow::parameterNode(f.getParameter([0, 2]))

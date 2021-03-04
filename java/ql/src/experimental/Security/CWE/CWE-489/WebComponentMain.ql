@@ -9,7 +9,7 @@
 
 import java
 import semmle.code.java.frameworks.Servlets
-import MainLib
+import TestLib
 
 /** The java type `javax.servlet.Filter`. */
 class ServletFilterClass extends Class {
@@ -48,7 +48,7 @@ class WebComponentMainMethod extends Method {
           .getASupertype+()
           .hasQualifiedName("org.springframework.webflow.execution", "Action") // Spring actions
     ) and
-    isMainMethod(this) and
+    this instanceof MainMethod and
     not isTestMethod(this)
   }
 }

@@ -6,7 +6,9 @@ fnptr
 | delegate* managed<Int32&,Object& modreq(OutAttribute),Int32> | 2 | Int32 | 0 |
 | delegate* managed<Int32*,Void*> | 1 | Void* | 0 |
 | delegate* managed<Int32> | 0 | Int32 | 0 |
+| delegate* managed<IntPtr,IntPtr,IntPtr*,Void> | 3 | void | 0 |
 | delegate* managed<Void*,Int32*> | 1 | Int32* | 0 |
+| delegate* unmanaged<Char*,IntPtr,Void> | 2 | void | 9 |
 | delegate* unmanaged[StdCall]<Int32&,Object& modreq(OutAttribute),!0,Void> | 3 | void | 2 |
 params
 | delegate* managed<!0,Int32> | 0 | Parameter 0 of delegate* managed<!0,Int32> | !0 |
@@ -18,7 +20,12 @@ params
 | delegate* managed<Int32&,Object& modreq(OutAttribute),Int32> | 0 | Parameter 0 of delegate* managed<Int32&,Object& modreq(OutAttribute),Int32> | Int32& |
 | delegate* managed<Int32&,Object& modreq(OutAttribute),Int32> | 1 | Parameter 1 of delegate* managed<Int32&,Object& modreq(OutAttribute),Int32> | Object& |
 | delegate* managed<Int32*,Void*> | 0 | Parameter 0 of delegate* managed<Int32*,Void*> | Int32* |
+| delegate* managed<IntPtr,IntPtr,IntPtr*,Void> | 0 | Parameter 0 of delegate* managed<IntPtr,IntPtr,IntPtr*,Void> | IntPtr |
+| delegate* managed<IntPtr,IntPtr,IntPtr*,Void> | 1 | Parameter 1 of delegate* managed<IntPtr,IntPtr,IntPtr*,Void> | IntPtr |
+| delegate* managed<IntPtr,IntPtr,IntPtr*,Void> | 2 | Parameter 2 of delegate* managed<IntPtr,IntPtr,IntPtr*,Void> | IntPtr* |
 | delegate* managed<Void*,Int32*> | 0 | Parameter 0 of delegate* managed<Void*,Int32*> | Void* |
+| delegate* unmanaged<Char*,IntPtr,Void> | 0 | Parameter 0 of delegate* unmanaged<Char*,IntPtr,Void> | Char* |
+| delegate* unmanaged<Char*,IntPtr,Void> | 1 | Parameter 1 of delegate* unmanaged<Char*,IntPtr,Void> | IntPtr |
 | delegate* unmanaged[StdCall]<Int32&,Object& modreq(OutAttribute),!0,Void> | 0 | Parameter 0 of delegate* unmanaged[StdCall]<Int32&,Object& modreq(OutAttribute),!0,Void> | Int32& |
 | delegate* unmanaged[StdCall]<Int32&,Object& modreq(OutAttribute),!0,Void> | 1 | Parameter 1 of delegate* unmanaged[StdCall]<Int32&,Object& modreq(OutAttribute),!0,Void> | Object& |
 | delegate* unmanaged[StdCall]<Int32&,Object& modreq(OutAttribute),!0,Void> | 2 | Parameter 2 of delegate* unmanaged[StdCall]<Int32&,Object& modreq(OutAttribute),!0,Void> | !0 |

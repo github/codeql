@@ -9,13 +9,13 @@
 
 import java
 import semmle.code.java.J2EE
-import MainLib
+import TestLib
 
 /** The `main` method in an Enterprise Java Bean. */
 class EnterpriseBeanMainMethod extends Method {
   EnterpriseBeanMainMethod() {
     this.getDeclaringType() instanceof EnterpriseBean and
-    isMainMethod(this) and
+    this instanceof MainMethod and
     not isTestMethod(this)
   }
 }

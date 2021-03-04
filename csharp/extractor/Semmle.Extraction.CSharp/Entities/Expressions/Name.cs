@@ -13,6 +13,13 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             var target = symbolInfo.Symbol;
 
+            if (target == null &&
+                symbolInfo.CandidateReason == CandidateReason.OverloadResolutionFailure &&
+                info.Node.Parent.IsKind(SyntaxKind.SuppressNullableWarningExpression))
+            {
+                target = symbolInfo.CandidateSymbols.FirstOrDefault();
+            }
+
             if (target == null && symbolInfo.CandidateReason == CandidateReason.OverloadResolutionFailure)
             {
                 // The expression is probably a cast

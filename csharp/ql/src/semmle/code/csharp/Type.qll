@@ -902,6 +902,8 @@ class FunctionPointerType extends Type, Parameterizable, @function_pointer_type 
   AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
 
   override string getAPrimaryQlClass() { result = "FunctionPointerType" }
+
+  override string getLabel() { result = getName() }
 }
 
 /**
