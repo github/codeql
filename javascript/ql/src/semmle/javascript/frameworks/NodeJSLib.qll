@@ -107,13 +107,18 @@ module NodeJSLib {
   }
 
   /**
-   * A Node.js response source, that is, the response parameter of a
+   * A Node.js response source.
+   */
+  abstract class ResponseSource extends HTTP::Servers::ResponseSource { }
+
+  /**
+   * A standard Node.js response source, that is, the response parameter of a
    * route handler.
    */
-  private class ResponseSource extends HTTP::Servers::ResponseSource {
+  private class StandardResponseSource extends ResponseSource {
     RouteHandler rh;
 
-    ResponseSource() { this = DataFlow::parameterNode(rh.getResponseParameter()) }
+    StandardResponseSource() { this = DataFlow::parameterNode(rh.getResponseParameter()) }
 
     /**
      * Gets the route handler that provides this response.
@@ -122,13 +127,18 @@ module NodeJSLib {
   }
 
   /**
-   * A Node.js request source, that is, the request parameter of a
+   * A Node.js request source.
+   */
+  abstract class RequestSource extends HTTP::Servers::RequestSource { }
+
+  /**
+   * A standard Node.js request source, that is, the request parameter of a
    * route handler.
    */
-  private class RequestSource extends HTTP::Servers::RequestSource {
+  private class StandardRequestSource extends RequestSource {
     RouteHandler rh;
 
-    RequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
+    StandardRequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
 
     /**
      * Gets the route handler that handles this request.
