@@ -167,6 +167,12 @@ private module DispatchImpl {
       cc.isArgument(ctx.getExpr(), _)
     )
     or
+    exists(DataFlowCallable enclosing |
+      mayBenefitFromCallContext(call, enclosing) and
+      ctx.getARuntimeTarget() = enclosing and
+      result = viableDelegateCallable(call, any(EmptyCallContext ecc))
+    )
+    or
     result =
       call.(NonDelegateDataFlowCall)
           .getDispatchCall()
