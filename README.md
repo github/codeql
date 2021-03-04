@@ -33,3 +33,11 @@ Then run
 ```bash
 codeql database create <database-path> -l ruby -s <project-source-path> --search-path <extractor-pack-path>
 ```
+
+## Running qltests
+
+Run
+
+```bash
+codeql test run <test-path> --search-path <extractor-pack-path>
+```
