@@ -338,7 +338,6 @@ predicate isRequestGetParamMethod(MethodAccess ma) {
   ma.getMethod() instanceof HttpServletRequestGetQueryStringMethod
 }
 
-
 /**
  * A class that has `javax.servlet.Filter` as an ancestor.
  */
@@ -346,17 +345,14 @@ class FilterClass extends Class {
   FilterClass() { getAnAncestor().hasQualifiedName("javax.servlet", "Filter") }
 }
 
-
 /**
  * The interface `javax.servlet.FilterChain`
  */
-class FilterChain extends RefType {
-  FilterChain() {
-    hasQualifiedName("javax.servlet", "FilterChain")
-  }
+class FilterChain extends Interface {
+  FilterChain() { hasQualifiedName("javax.servlet", "FilterChain") }
 }
 
-/** Holds if `m` is a request handler method (for example `doGet` or `doPost`). */
+/** Holds if `m` is a filter handler method (for example `doFilter`). */
 predicate isDoFilterMethod(Method m) {
   m.getDeclaringType() instanceof FilterClass and
   m.getNumberOfParameters() = 3 and

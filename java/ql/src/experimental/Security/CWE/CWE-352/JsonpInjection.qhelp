@@ -16,7 +16,7 @@ there is a problem of sensitive information leakage.</p>
 
 <p>The following example shows the case of no verification processing and verification processing for the external input function name.</p>
 
-<sample src="JsonHijacking.java" />
+<sample src="JsonpInjection.java" />
 
 </example>
 <references>
