@@ -267,30 +267,10 @@ private int argToParam(Call call, int arg) {
 /** Access to a method that passes taint from qualifier to argument. */
 private predicate qualifierToArgumentStep(Expr tracked, Expr sink) {
   exists(MethodAccess ma, int arg |
-    taintPreservingQualifierToArgument(ma.getMethod(), argToParam(ma, arg)) and
+    ma.getMethod().(TaintPreservingCallable).transfersTaint(-1, argToParam(ma, arg)) and
     tracked = ma.getQualifier() and
     sink = ma.getArgument(arg)
   )
-}
-
-/** Methods that passes tainted data from qualifier to argument. */
-private predicate taintPreservingQualifierToArgument(Method m, int arg) {
-  m.getDeclaringType().hasQualifiedName("java.io", "ByteArrayOutputStream") and
-  m.hasName("writeTo") and
-  arg = 0
-  or
-  exists(Method read |
-    m.overrides*(read) and
-    read.getDeclaringType().hasQualifiedName("java.io", "InputStream") and
-    read.hasName("read") and
-    arg = 0
-  )
-  or
-  m.getDeclaringType().getASupertype*().hasQualifiedName("java.io", "Reader") and
-  m.hasName("read") and
-  arg = 0
-  or
-  m.(TaintPreservingCallable).transfersTaint(-1, arg)
 }
 
 /** Access to a method that passes taint from the qualifier. */

@@ -182,7 +182,16 @@ private predicate sourceModelCsv(string row) {
 
 private predicate sinkModelCsv(string row) { none() }
 
-private predicate summaryModelCsv(string row) { none() }
+private predicate summaryModelCsv(string row) {
+  row =
+    [
+      // qualifier to arg
+      "java.io;InputStream;true;read;(byte[]);;Argument[-1];Argument[0];taint",
+      "java.io;InputStream;true;read;(byte[],int,int);;Argument[-1];Argument[0];taint",
+      "java.io;ByteArrayOutputStream;false;writeTo;;;Argument[-1];Argument[0];taint",
+      "java.io;Reader;true;read;;;Argument[-1];Argument[0];taint"
+    ]
+}
 
 /**
  * A unit class for adding additional source model rows.
