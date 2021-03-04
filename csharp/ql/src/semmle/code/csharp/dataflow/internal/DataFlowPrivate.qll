@@ -292,8 +292,8 @@ module LocalFlow {
    */
   private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def, Ssa::Definition next) {
     exists(ControlFlow::BasicBlock bb, int i | SsaImpl::lastRefBeforeRedef(def, bb, i, next) |
-      def = nodeFrom.(SsaDefinitionNode).getDefinition() and
-      def.definesAt(_, bb, i)
+      def.definesAt(_, bb, i) and
+      def = getSsaDefinition(nodeFrom)
       or
       nodeFrom.asExprAtNode(bb.getNode(i)) instanceof AssignableRead
     )
