@@ -209,6 +209,7 @@
 | Collections.cs:68:13:68:13 | access to local variable x | non-null | Collections.cs:63:17:63:55 | call to method ToList | non-null |
 | Collections.cs:68:13:68:13 | access to local variable x | null | Collections.cs:63:17:63:55 | call to method ToList | null |
 | Collections.cs:74:35:74:41 | ... == ... | true | Collections.cs:74:35:74:35 | access to parameter s | non-null |
+| Collections.cs:74:35:74:41 | ... == ... | true | Collections.cs:74:40:74:41 | "" | non-null |
 | Collections.cs:75:17:75:33 | call to method Any | true | Collections.cs:75:17:75:20 | access to parameter args | non-empty |
 | Collections.cs:76:13:76:36 | ... == ... | false | Collections.cs:76:13:76:16 | access to parameter args | non-empty |
 | Collections.cs:77:13:77:36 | ... == ... | true | Collections.cs:77:13:77:16 | access to parameter args | non-empty |
@@ -243,6 +244,8 @@
 | Guards.cs:35:26:35:34 | ... == ... | true | Guards.cs:35:26:35:26 | access to parameter y | null |
 | Guards.cs:36:32:36:36 | ... + ... | non-null | Guards.cs:36:32:36:32 | access to parameter x | non-null |
 | Guards.cs:36:32:36:36 | ... + ... | non-null | Guards.cs:36:36:36:36 | access to parameter y | non-null |
+| Guards.cs:36:32:36:36 | ... + ... | null | Guards.cs:36:32:36:32 | access to parameter x | null |
+| Guards.cs:36:32:36:36 | ... + ... | null | Guards.cs:36:36:36:36 | access to parameter y | null |
 | Guards.cs:38:13:38:37 | !... | false | Guards.cs:38:15:38:36 | ... \|\| ... | true |
 | Guards.cs:38:13:38:37 | !... | true | Guards.cs:38:15:38:36 | ... \|\| ... | false |
 | Guards.cs:38:15:38:23 | ... == ... | false | Guards.cs:38:15:38:15 | access to parameter x | non-null |
@@ -253,6 +256,8 @@
 | Guards.cs:38:28:38:36 | ... == ... | true | Guards.cs:38:28:38:28 | access to parameter y | null |
 | Guards.cs:39:31:39:35 | ... + ... | non-null | Guards.cs:39:31:39:31 | access to parameter x | non-null |
 | Guards.cs:39:31:39:35 | ... + ... | non-null | Guards.cs:39:35:39:35 | access to parameter y | non-null |
+| Guards.cs:39:31:39:35 | ... + ... | null | Guards.cs:39:31:39:31 | access to parameter x | null |
+| Guards.cs:39:31:39:35 | ... + ... | null | Guards.cs:39:35:39:35 | access to parameter y | null |
 | Guards.cs:41:13:41:39 | !... | false | Guards.cs:41:14:41:39 | !... | true |
 | Guards.cs:41:13:41:39 | !... | true | Guards.cs:41:14:41:39 | !... | false |
 | Guards.cs:41:14:41:39 | !... | false | Guards.cs:41:15:41:39 | !... | true |
@@ -267,6 +272,8 @@
 | Guards.cs:41:30:41:38 | ... != ... | true | Guards.cs:41:30:41:30 | access to parameter y | non-null |
 | Guards.cs:42:32:42:36 | ... + ... | non-null | Guards.cs:42:32:42:32 | access to parameter x | non-null |
 | Guards.cs:42:32:42:36 | ... + ... | non-null | Guards.cs:42:36:42:36 | access to parameter y | non-null |
+| Guards.cs:42:32:42:36 | ... + ... | null | Guards.cs:42:32:42:32 | access to parameter x | null |
+| Guards.cs:42:32:42:36 | ... + ... | null | Guards.cs:42:36:42:36 | access to parameter y | null |
 | Guards.cs:44:13:44:25 | ... != ... | false | Guards.cs:44:13:44:17 | access to field Field | null |
 | Guards.cs:44:13:44:25 | ... != ... | true | Guards.cs:44:13:44:17 | access to field Field | non-null |
 | Guards.cs:47:13:47:25 | ... != ... | false | Guards.cs:47:13:47:17 | access to field Field | null |
@@ -323,6 +330,8 @@
 | Guards.cs:119:27:119:36 | access to property Property | null | Guards.cs:117:22:117:25 | null | null |
 | Guards.cs:125:21:125:31 | call to method Equals | non-null | Guards.cs:125:18:125:19 | access to parameter s1 | non-null |
 | Guards.cs:125:21:125:31 | call to method Equals | null | Guards.cs:125:18:125:19 | access to parameter s1 | null |
+| Guards.cs:125:21:125:31 | call to method Equals | true | Guards.cs:125:18:125:19 | access to parameter s1 | non-null |
+| Guards.cs:125:21:125:31 | call to method Equals | true | Guards.cs:125:29:125:30 | access to parameter s1 | non-null |
 | Guards.cs:130:13:130:21 | ... is ... | false | Guards.cs:130:13:130:13 | access to parameter s | non-null |
 | Guards.cs:130:13:130:21 | ... is ... | true | Guards.cs:130:13:130:13 | access to parameter s | null |
 | Guards.cs:137:13:137:25 | ... is ... | false | Guards.cs:137:13:137:13 | access to parameter s | null |
@@ -457,6 +466,7 @@
 | Splitting.cs:116:22:116:30 | ... != ... | false | Splitting.cs:116:22:116:22 | access to parameter o | null |
 | Splitting.cs:116:22:116:30 | ... != ... | true | Splitting.cs:116:22:116:22 | access to parameter o | non-null |
 | Splitting.cs:129:17:129:25 | ... != ... | false | Splitting.cs:129:17:129:17 | access to local variable o | null |
+| Splitting.cs:129:17:129:25 | ... != ... | false | Splitting.cs:129:22:129:25 | null | non-null |
 | Splitting.cs:129:17:129:25 | ... != ... | true | Splitting.cs:129:17:129:17 | access to local variable o | non-null |
 | Splitting.cs:134:17:134:17 | access to local variable o | non-null | Splitting.cs:133:21:133:29 | call to method M11 | non-null |
 | Splitting.cs:134:17:134:17 | access to local variable o | null | Splitting.cs:133:21:133:29 | call to method M11 | null |

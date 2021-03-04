@@ -92,79 +92,311 @@ abstractValue
 | non-empty | Collections.cs:89:26:89:32 | { ..., ... } |
 | non-empty | Collections.cs:90:22:90:28 | { ..., ... } |
 | non-null | Assert.cs:9:31:9:32 | "" |
+| non-null | Assert.cs:10:9:10:13 | access to type Debug |
+| non-null | Assert.cs:11:9:11:15 | access to type Console |
+| non-null | Assert.cs:11:27:11:27 | access to local variable s |
 | non-null | Assert.cs:16:31:16:32 | "" |
+| non-null | Assert.cs:17:9:17:14 | access to type Assert |
+| non-null | Assert.cs:18:9:18:15 | access to type Console |
 | non-null | Assert.cs:23:31:23:32 | "" |
+| non-null | Assert.cs:24:9:24:14 | access to type Assert |
+| non-null | Assert.cs:25:9:25:15 | access to type Console |
 | non-null | Assert.cs:30:31:30:32 | "" |
+| non-null | Assert.cs:31:9:31:14 | access to type Assert |
+| non-null | Assert.cs:32:9:32:15 | access to type Console |
 | non-null | Assert.cs:37:31:37:32 | "" |
+| non-null | Assert.cs:38:9:38:14 | access to type Assert |
+| non-null | Assert.cs:39:9:39:15 | access to type Console |
 | non-null | Assert.cs:44:31:44:32 | "" |
+| non-null | Assert.cs:45:9:45:14 | access to type Assert |
+| non-null | Assert.cs:46:9:46:15 | access to type Console |
 | non-null | Assert.cs:51:31:51:32 | "" |
+| non-null | Assert.cs:52:9:52:14 | access to type Assert |
+| non-null | Assert.cs:53:9:53:15 | access to type Console |
 | non-null | Assert.cs:58:31:58:32 | "" |
+| non-null | Assert.cs:59:9:59:14 | access to type Assert |
+| non-null | Assert.cs:60:9:60:15 | access to type Console |
 | non-null | Assert.cs:65:31:65:32 | "" |
+| non-null | Assert.cs:66:9:66:14 | access to type Assert |
+| non-null | Assert.cs:67:9:67:15 | access to type Console |
 | non-null | Assert.cs:72:31:72:32 | "" |
+| non-null | Assert.cs:73:9:73:14 | access to type Assert |
+| non-null | Assert.cs:74:9:74:15 | access to type Console |
 | non-null | Assert.cs:79:31:79:32 | "" |
+| non-null | Assert.cs:80:9:80:14 | access to type Assert |
+| non-null | Assert.cs:81:9:81:15 | access to type Console |
 | non-null | Assert.cs:93:9:93:35 | this access |
+| non-null | Collections.cs:12:17:12:20 | access to parameter args |
+| non-null | Collections.cs:13:13:13:16 | access to parameter args |
+| non-null | Collections.cs:14:13:14:16 | access to parameter args |
+| non-null | Collections.cs:15:13:15:16 | access to parameter args |
+| non-null | Collections.cs:16:13:16:16 | access to parameter args |
+| non-null | Collections.cs:17:13:17:16 | access to parameter args |
+| non-null | Collections.cs:18:13:18:16 | access to parameter args |
+| non-null | Collections.cs:23:17:23:20 | access to parameter args |
+| non-null | Collections.cs:24:13:24:16 | access to parameter args |
+| non-null | Collections.cs:25:13:25:16 | access to parameter args |
+| non-null | Collections.cs:26:13:26:16 | access to parameter args |
+| non-null | Collections.cs:27:13:27:16 | access to parameter args |
+| non-null | Collections.cs:28:13:28:16 | access to parameter args |
+| non-null | Collections.cs:29:13:29:16 | access to parameter args |
+| non-null | Collections.cs:34:17:34:20 | access to parameter args |
+| non-null | Collections.cs:35:13:35:16 | access to parameter args |
+| non-null | Collections.cs:36:13:36:16 | access to parameter args |
+| non-null | Collections.cs:37:13:37:16 | access to parameter args |
+| non-null | Collections.cs:38:13:38:16 | access to parameter args |
+| non-null | Collections.cs:39:13:39:16 | access to parameter args |
+| non-null | Collections.cs:40:13:40:16 | access to parameter args |
+| non-null | Collections.cs:45:17:45:20 | access to parameter args |
+| non-null | Collections.cs:50:13:50:16 | access to parameter args |
+| non-null | Collections.cs:52:17:52:20 | access to parameter args |
+| non-null | Collections.cs:52:17:52:30 | call to method ToArray |
+| non-null | Collections.cs:53:9:53:12 | access to parameter args |
+| non-null | Collections.cs:54:9:54:9 | access to local variable x |
+| non-null | Collections.cs:54:9:54:26 | ... = ... |
+| non-null | Collections.cs:54:13:54:16 | access to parameter args |
+| non-null | Collections.cs:54:13:54:26 | call to method ToArray |
+| non-null | Collections.cs:55:9:55:9 | access to local variable x |
 | non-null | Collections.cs:55:9:55:42 | ... = ... |
 | non-null | Collections.cs:55:13:55:42 | array creation of type String[] |
 | non-null | Collections.cs:55:28:55:30 | "a" |
 | non-null | Collections.cs:55:33:55:35 | "b" |
 | non-null | Collections.cs:55:38:55:40 | "c" |
+| non-null | Collections.cs:56:9:56:9 | access to local variable x |
 | non-null | Collections.cs:56:9:56:13 | ... = ... |
 | non-null | Collections.cs:56:13:56:13 | access to local variable x |
+| non-null | Collections.cs:57:9:57:9 | access to local variable x |
 | non-null | Collections.cs:57:9:57:25 | ... = ... |
 | non-null | Collections.cs:57:13:57:25 | array creation of type String[] |
+| non-null | Collections.cs:58:9:58:9 | access to local variable x |
 | non-null | Collections.cs:58:9:58:13 | ... = ... |
 | non-null | Collections.cs:58:13:58:13 | access to local variable x |
 | non-null | Collections.cs:63:17:63:46 | array creation of type String[] |
+| non-null | Collections.cs:63:17:63:55 | call to method ToList |
 | non-null | Collections.cs:63:32:63:34 | "a" |
 | non-null | Collections.cs:63:37:63:39 | "b" |
 | non-null | Collections.cs:63:42:63:44 | "c" |
+| non-null | Collections.cs:64:9:64:9 | access to local variable x |
+| non-null | Collections.cs:65:13:65:13 | access to local variable x |
+| non-null | Collections.cs:67:13:67:13 | access to local variable x |
 | non-null | Collections.cs:67:19:67:21 | "a" |
+| non-null | Collections.cs:68:13:68:13 | access to local variable x |
 | non-null | Collections.cs:68:19:68:21 | "b" |
+| non-null | Collections.cs:74:35:74:35 | access to parameter s |
 | non-null | Collections.cs:74:40:74:41 | "" |
+| non-null | Collections.cs:75:17:75:20 | access to parameter args |
+| non-null | Collections.cs:75:26:75:32 | access to local function IsEmpty |
+| non-null | Collections.cs:75:26:75:32 | delegate creation of type Func<String,Boolean> |
 | non-null | Collections.cs:75:26:75:32 | this access |
+| non-null | Collections.cs:76:13:76:16 | access to parameter args |
+| non-null | Collections.cs:76:24:76:30 | access to local function IsEmpty |
+| non-null | Collections.cs:76:24:76:30 | delegate creation of type Func<String,Boolean> |
 | non-null | Collections.cs:76:24:76:30 | this access |
+| non-null | Collections.cs:77:13:77:16 | access to parameter args |
+| non-null | Collections.cs:77:24:77:30 | access to local function IsEmpty |
+| non-null | Collections.cs:77:24:77:30 | delegate creation of type Func<String,Boolean> |
 | non-null | Collections.cs:77:24:77:30 | this access |
+| non-null | Collections.cs:78:13:78:16 | access to parameter args |
+| non-null | Collections.cs:78:24:78:30 | access to local function IsEmpty |
+| non-null | Collections.cs:78:24:78:30 | delegate creation of type Func<String,Boolean> |
 | non-null | Collections.cs:78:24:78:30 | this access |
+| non-null | Collections.cs:79:13:79:16 | access to parameter args |
+| non-null | Collections.cs:79:24:79:30 | access to local function IsEmpty |
+| non-null | Collections.cs:79:24:79:30 | delegate creation of type Func<String,Boolean> |
 | non-null | Collections.cs:79:24:79:30 | this access |
+| non-null | Collections.cs:80:13:80:16 | access to parameter args |
+| non-null | Collections.cs:80:24:80:30 | access to local function IsEmpty |
+| non-null | Collections.cs:80:24:80:30 | delegate creation of type Func<String,Boolean> |
 | non-null | Collections.cs:80:24:80:30 | this access |
+| non-null | Collections.cs:81:13:81:16 | access to parameter args |
+| non-null | Collections.cs:81:24:81:30 | access to local function IsEmpty |
+| non-null | Collections.cs:81:24:81:30 | delegate creation of type Func<String,Boolean> |
 | non-null | Collections.cs:81:24:81:30 | this access |
+| non-null | Collections.cs:82:13:82:16 | access to parameter args |
+| non-null | Collections.cs:82:24:82:30 | access to local function IsEmpty |
+| non-null | Collections.cs:82:24:82:30 | delegate creation of type Func<String,Boolean> |
 | non-null | Collections.cs:82:24:82:30 | this access |
 | non-null | Collections.cs:87:17:87:32 | array creation of type String[] |
 | non-null | Collections.cs:88:22:88:24 | array creation of type String[] |
+| non-null | Collections.cs:89:9:89:9 | access to local variable x |
 | non-null | Collections.cs:89:9:89:32 | ... = ... |
 | non-null | Collections.cs:89:13:89:32 | array creation of type String[] |
 | non-null | Collections.cs:89:28:89:30 | "a" |
 | non-null | Collections.cs:90:22:90:28 | array creation of type String[] |
 | non-null | Collections.cs:90:24:90:26 | "a" |
+| non-null | Collections.cs:95:29:95:32 | access to parameter args |
+| non-null | Collections.cs:96:13:96:19 | access to type Console |
+| non-null | Collections.cs:96:31:96:34 | access to parameter args |
+| non-null | Collections.cs:101:29:101:32 | access to parameter args |
+| non-null | Collections.cs:103:9:103:15 | access to type Console |
+| non-null | Collections.cs:103:27:103:30 | access to parameter args |
+| non-null | Guards.cs:12:13:12:13 | access to parameter s |
+| non-null | Guards.cs:14:13:14:19 | access to type Console |
+| non-null | Guards.cs:14:31:14:31 | access to parameter s |
+| non-null | Guards.cs:18:13:18:19 | access to type Console |
 | non-null | Guards.cs:18:31:18:46 | "<empty string>" |
+| non-null | Guards.cs:26:13:26:19 | access to type Console |
+| non-null | Guards.cs:26:31:26:31 | access to parameter s |
+| non-null | Guards.cs:32:14:32:19 | access to type String |
+| non-null | Guards.cs:33:13:33:19 | access to type Console |
 | non-null | Guards.cs:33:31:33:35 | ... + ... |
+| non-null | Guards.cs:36:14:36:20 | access to type Console |
+| non-null | Guards.cs:36:32:36:32 | access to parameter x |
 | non-null | Guards.cs:36:32:36:36 | ... + ... |
+| non-null | Guards.cs:36:36:36:36 | access to parameter y |
+| non-null | Guards.cs:39:13:39:19 | access to type Console |
+| non-null | Guards.cs:39:31:39:31 | access to parameter x |
 | non-null | Guards.cs:39:31:39:35 | ... + ... |
+| non-null | Guards.cs:39:35:39:35 | access to parameter y |
+| non-null | Guards.cs:42:14:42:20 | access to type Console |
+| non-null | Guards.cs:42:32:42:32 | access to parameter x |
 | non-null | Guards.cs:42:32:42:36 | ... + ... |
+| non-null | Guards.cs:42:36:42:36 | access to parameter y |
 | non-null | Guards.cs:44:13:44:17 | this access |
+| non-null | Guards.cs:45:13:45:19 | access to type Console |
 | non-null | Guards.cs:45:31:45:42 | object creation of type Guards |
 | non-null | Guards.cs:47:13:47:17 | this access |
+| non-null | Guards.cs:48:13:48:19 | access to type Console |
 | non-null | Guards.cs:48:31:48:34 | this access |
+| non-null | Guards.cs:48:31:48:40 | access to field Field |
+| non-null | Guards.cs:53:13:53:13 | access to parameter g |
+| non-null | Guards.cs:55:9:55:15 | access to type Console |
+| non-null | Guards.cs:55:27:55:27 | access to parameter g |
+| non-null | Guards.cs:55:27:55:33 | access to field Field |
+| non-null | Guards.cs:60:13:60:13 | access to parameter g |
 | non-null | Guards.cs:61:19:61:33 | object creation of type Exception |
+| non-null | Guards.cs:62:9:62:15 | access to type Console |
+| non-null | Guards.cs:62:27:62:27 | access to parameter g |
+| non-null | Guards.cs:62:27:62:36 | access to property Property |
+| non-null | Guards.cs:62:27:62:45 | access to property Property |
+| non-null | Guards.cs:62:27:62:51 | access to field Field |
+| non-null | Guards.cs:63:9:63:15 | access to type Console |
+| non-null | Guards.cs:63:27:63:27 | access to parameter g |
+| non-null | Guards.cs:63:27:63:36 | access to property Property |
+| non-null | Guards.cs:70:13:70:19 | access to type Console |
+| non-null | Guards.cs:70:31:70:31 | access to parameter s |
+| non-null | Guards.cs:71:13:71:13 | access to parameter s |
+| non-null | Guards.cs:72:13:72:19 | access to type Console |
 | non-null | Guards.cs:78:26:78:26 | (...) ... |
+| non-null | Guards.cs:79:13:79:19 | access to type Console |
+| non-null | Guards.cs:79:31:79:31 | access to parameter s |
 | non-null | Guards.cs:80:25:80:25 | (...) ... |
+| non-null | Guards.cs:81:13:81:19 | access to type Console |
+| non-null | Guards.cs:81:31:81:31 | access to parameter s |
 | non-null | Guards.cs:82:26:82:26 | (...) ... |
+| non-null | Guards.cs:83:13:83:19 | access to type Console |
+| non-null | Guards.cs:83:31:83:31 | access to parameter s |
 | non-null | Guards.cs:84:25:84:26 | (...) ... |
+| non-null | Guards.cs:85:13:85:19 | access to type Console |
+| non-null | Guards.cs:85:31:85:31 | access to parameter s |
 | non-null | Guards.cs:86:26:86:27 | (...) ... |
+| non-null | Guards.cs:87:13:87:19 | access to type Console |
+| non-null | Guards.cs:87:31:87:31 | access to parameter s |
+| non-null | Guards.cs:89:13:89:19 | access to type Console |
+| non-null | Guards.cs:89:31:89:31 | access to parameter s |
+| non-null | Guards.cs:91:13:91:19 | access to type Console |
 | non-null | Guards.cs:92:25:92:25 | (...) ... |
 | non-null | Guards.cs:92:30:92:30 | (...) ... |
+| non-null | Guards.cs:93:13:93:19 | access to type Console |
+| non-null | Guards.cs:95:13:95:19 | access to type Console |
 | non-null | Guards.cs:96:18:96:19 | "" |
+| non-null | Guards.cs:97:13:97:19 | access to type Console |
+| non-null | Guards.cs:97:31:97:31 | access to parameter s |
+| non-null | Guards.cs:99:13:99:19 | access to type Console |
+| non-null | Guards.cs:104:13:104:13 | access to parameter g |
 | non-null | Guards.cs:105:19:105:33 | object creation of type Exception |
+| non-null | Guards.cs:106:9:106:9 | access to parameter g |
+| non-null | Guards.cs:106:9:106:18 | access to property Property |
+| non-null | Guards.cs:107:9:107:15 | access to type Console |
+| non-null | Guards.cs:107:27:107:27 | access to parameter g |
+| non-null | Guards.cs:108:9:108:15 | access to type Console |
+| non-null | Guards.cs:108:27:108:27 | access to parameter g |
+| non-null | Guards.cs:108:27:108:36 | access to property Property |
+| non-null | Guards.cs:113:21:113:21 | access to parameter g |
+| non-null | Guards.cs:114:14:114:14 | access to parameter g |
+| non-null | Guards.cs:114:14:114:23 | access to property Property |
+| non-null | Guards.cs:114:14:114:32 | access to property Property |
+| non-null | Guards.cs:115:9:115:55 | ... = ... |
+| non-null | Guards.cs:115:17:115:17 | access to parameter g |
+| non-null | Guards.cs:115:17:115:26 | access to property Property |
+| non-null | Guards.cs:115:17:115:35 | access to property Property |
+| non-null | Guards.cs:115:17:115:55 | ... ?? ... |
+| non-null | Guards.cs:115:46:115:55 | throw ... |
+| non-null | Guards.cs:116:9:116:15 | access to type Console |
+| non-null | Guards.cs:116:27:116:27 | access to parameter g |
+| non-null | Guards.cs:116:27:116:36 | access to property Property |
+| non-null | Guards.cs:116:27:116:45 | access to property Property |
+| non-null | Guards.cs:116:27:116:51 | access to field Field |
+| non-null | Guards.cs:117:9:117:9 | access to parameter g |
+| non-null | Guards.cs:117:9:117:18 | access to property Property |
+| non-null | Guards.cs:118:9:118:15 | access to type Console |
+| non-null | Guards.cs:118:27:118:27 | access to parameter g |
+| non-null | Guards.cs:119:9:119:15 | access to type Console |
+| non-null | Guards.cs:119:27:119:27 | access to parameter g |
+| non-null | Guards.cs:119:27:119:36 | access to property Property |
+| non-null | Guards.cs:125:18:125:19 | access to parameter s1 |
+| non-null | Guards.cs:125:29:125:30 | access to parameter s1 |
+| non-null | Guards.cs:132:16:132:16 | access to parameter s |
+| non-null | Guards.cs:138:20:138:20 | access to parameter s |
+| non-null | Guards.cs:145:20:145:20 | access to local variable s |
+| non-null | Guards.cs:154:24:154:24 | access to parameter o |
+| non-null | Guards.cs:156:24:156:24 | access to local variable a |
+| non-null | Guards.cs:158:24:158:24 | access to parameter o |
+| non-null | Guards.cs:162:24:162:24 | access to parameter o |
+| non-null | Guards.cs:168:14:168:19 | access to type String |
+| non-null | Guards.cs:169:13:169:19 | access to type Console |
+| non-null | Guards.cs:169:31:169:31 | access to parameter x |
 | non-null | Guards.cs:183:38:183:49 | this access |
 | non-null | Guards.cs:189:14:189:25 | this access |
+| non-null | Guards.cs:190:13:190:19 | access to type Console |
 | non-null | Guards.cs:191:14:191:25 | this access |
+| non-null | Guards.cs:192:13:192:19 | access to type Console |
 | non-null | Guards.cs:193:14:193:25 | this access |
+| non-null | Guards.cs:194:13:194:19 | access to type Console |
 | non-null | Guards.cs:195:13:195:27 | this access |
+| non-null | Guards.cs:196:13:196:19 | access to type Console |
 | non-null | Guards.cs:197:14:197:29 | this access |
+| non-null | Guards.cs:198:13:198:19 | access to type Console |
+| non-null | Guards.cs:205:13:205:13 | access to parameter o |
+| non-null | Guards.cs:206:33:206:36 | access to parameter args |
+| non-null | Guards.cs:208:17:208:17 | access to parameter o |
 | non-null | Guards.cs:268:30:268:41 | call to method GetType |
+| non-null | Guards.cs:269:13:269:14 | access to parameter o1 |
+| non-null | Guards.cs:270:30:270:31 | access to parameter o2 |
+| non-null | Guards.cs:279:17:279:17 | access to parameter o |
+| non-null | Guards.cs:281:17:281:17 | access to local variable a |
+| non-null | Guards.cs:283:17:283:17 | access to parameter o |
+| non-null | Guards.cs:287:17:287:17 | access to parameter o |
 | non-null | Guards.cs:341:31:341:32 | "" |
+| non-null | Guards.cs:343:13:343:19 | access to type Console |
+| non-null | Guards.cs:343:31:343:31 | access to local variable s |
+| non-null | Guards.cs:349:13:349:13 | access to parameter o |
+| non-null | Splitting.cs:13:17:13:17 | access to parameter o |
+| non-null | Splitting.cs:23:24:23:24 | access to parameter o |
 | non-null | Splitting.cs:33:24:33:25 | "" |
+| non-null | Splitting.cs:44:17:44:17 | access to parameter o |
+| non-null | Splitting.cs:46:17:46:17 | access to parameter o |
+| non-null | Splitting.cs:55:13:55:13 | access to parameter o |
+| non-null | Splitting.cs:66:20:66:20 | access to parameter o |
+| non-null | Splitting.cs:78:24:78:24 | access to parameter o |
+| non-null | Splitting.cs:87:13:87:17 | access to type Debug |
+| non-null | Splitting.cs:90:13:90:13 | access to parameter o |
+| non-null | Splitting.cs:91:9:91:9 | access to parameter o |
+| non-null | Splitting.cs:97:13:97:17 | access to type Debug |
+| non-null | Splitting.cs:105:9:105:13 | access to type Debug |
+| non-null | Splitting.cs:107:13:107:13 | access to parameter o |
+| non-null | Splitting.cs:109:13:109:13 | access to parameter o |
+| non-null | Splitting.cs:116:9:116:13 | access to type Debug |
+| non-null | Splitting.cs:117:9:117:9 | access to parameter o |
+| non-null | Splitting.cs:119:13:119:13 | access to parameter o |
+| non-null | Splitting.cs:120:16:120:16 | access to parameter o |
+| non-null | Splitting.cs:129:17:129:17 | access to local variable o |
+| non-null | Splitting.cs:133:17:133:17 | access to local variable o |
+| non-null | Splitting.cs:133:17:133:29 | ... = ... |
+| non-null | Splitting.cs:133:21:133:29 | call to method M11 |
 | non-null | Splitting.cs:133:21:133:29 | this access |
+| non-null | Splitting.cs:133:28:133:28 | access to local variable o |
+| non-null | Splitting.cs:134:17:134:17 | access to local variable o |
 | null | Assert.cs:9:24:9:27 | null |
 | null | Assert.cs:10:27:10:30 | null |
 | null | Assert.cs:16:24:16:27 | null |
