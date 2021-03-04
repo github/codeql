@@ -4,7 +4,7 @@
 		<p>
 			In Go, the <code>html/template</code> package has a few special types
 			(<code>HTML</code>, <code>HTMLAttr</code>, <code>JS</code>, <code>JSStr</code>, <code>CSS</code>,
-			<code>Srcset</code>, <code>URL</code>)
+			<code>Srcset</code>, and <code>URL</code>)
 			that allow values to be rendered as-is in the template, avoiding the escaping that all the other strings go
 			through.
 		</p>
