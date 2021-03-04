@@ -37,6 +37,7 @@ private class GuavaIoCsv extends SummaryModelCsv {
         "com.google.common.io;ByteStreams;false;newDataInput;(byte[]);;Argument[0];ReturnValue;taint",
         "com.google.common.io;ByteStreams;false;newDataInput;(byte[],int);;Argument[0];ReturnValue;taint",
         "com.google.common.io;ByteStreams;false;newDataInput;(ByteArrayInputStream);;Argument[0];ReturnValue;taint",
+        "com.google.common.io;ByteStreams;false;newDataOutput;(ByteArrayOutputStream);;Argument[0];ReturnValue;taint",
         "com.google.common.io;ByteStreams;false;read;(InputStream,byte[],int,int);;Argument[0];Argument[1];taint",
         "com.google.common.io;ByteStreams;false;readFully;(InputStream,byte[]);;Argument[0];Argument[1];taint",
         "com.google.common.io;ByteStreams;false;readFully;(InputStream,byte[],int,int);;Argument[0];Argument[1];taint",
@@ -61,7 +62,21 @@ private class GuavaIoCsv extends SummaryModelCsv {
         "com.google.common.io;MoreFiles;false;getFileExtension;(Path);;Argument[0];ReturnValue;taint",
         "com.google.common.io;MoreFiles;false;getNameWithoutExtension;(Path);;Argument[0];ReturnValue;taint",
         "com.google.common.io;LineReader;false;LineReader;(Readable);;Argument[0];ReturnValue;taint",
-        "com.google.common.io;LineReader;true;readLine;();;Argument[-1];ReturnValue;taint"
+        "com.google.common.io;LineReader;true;readLine;();;Argument[-1];ReturnValue;taint",
+        "com.google.common.io;ByteArrayDataOutput;true;toByteArray;();;Argument[-1];ReturnValue;taint",
+        "com.google.common.io;ByteArrayDataOutput;true;write;(byte[]);;Argument[0];Argument[-1];taint",
+        "com.google.common.io;ByteArrayDataOutput;true;write;(byte[],int,int);;Argument[0];Argument[-1];taint",
+        "com.google.common.io;ByteArrayDataOutput;true;write;(int);;Argument[0];Argument[-1];taint",
+        "com.google.common.io;ByteArrayDataOutput;true;writeByte;(int);;Argument[0];Argument[-1];taint",
+        "com.google.common.io;ByteArrayDataOutput;true;writeBytes;(String);;Argument[0];Argument[-1];taint",
+        "com.google.common.io;ByteArrayDataOutput;true;writeChar;(int);;Argument[0];Argument[-1];taint",
+        "com.google.common.io;ByteArrayDataOutput;true;writeChars;(String);;Argument[0];Argument[-1];taint",
+        "com.google.common.io;ByteArrayDataOutput;true;writeDouble;(double);;Argument[0];Argument[-1];taint",
+        "com.google.common.io;ByteArrayDataOutput;true;writeFloat;(float);;Argument[0];Argument[-1];taint",
+        "com.google.common.io;ByteArrayDataOutput;true;writeInt;(int);;Argument[0];Argument[-1];taint",
+        "com.google.common.io;ByteArrayDataOutput;true;writeLong;(long);;Argument[0];Argument[-1];taint",
+        "com.google.common.io;ByteArrayDataOutput;true;writeShort;(int);;Argument[0];Argument[-1];taint",
+        "com.google.common.io;ByteArrayDataOutput;true;writeUTF;(String);;Argument[0];Argument[-1];taint"
       ]
   }
 }

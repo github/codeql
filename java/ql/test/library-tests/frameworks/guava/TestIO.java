@@ -81,6 +81,9 @@ class TestIO {
         sink(ByteStreams.newDataInput(btaint())); // $numTaintFlow=1
         sink(ByteStreams.newDataInput(btaint()).readLine()); // $ MISSING:numTaintFlow=1
         sink(ByteStreams.newDataInput(new ByteArrayInputStream(btaint()))); // $numTaintFlow=1
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        out.write(btaint());
+        sink(ByteStreams.newDataOutput(out)); // $numTaintFlow=1
         byte[] b1 = null, b2 = null, b3 = null;
         ByteStreams.read(itaint(), b1, 0, 42);
         sink(b1); // $numTaintFlow=1
@@ -90,6 +93,9 @@ class TestIO {
         sink(b3); // $numTaintFlow=1
         sink(ByteStreams.readBytes(itaint(), new MyByteProcessor())); // $ MISSING:numTaintFlow=1
         sink(ByteStreams.toByteArray(itaint())); // $numTaintFlow=1
+        ByteArrayDataOutput out2 = ByteStreams.newDataOutput();
+        out2.writeUTF(staint());
+        sink(out2.toByteArray()); // $numTaintFlow=1
 
         StringBuffer buf = new StringBuffer();
         CharStreams.copy(rtaint(), buf);
