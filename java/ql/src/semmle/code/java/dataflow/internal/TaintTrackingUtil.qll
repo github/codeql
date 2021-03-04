@@ -383,46 +383,11 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
  */
 private predicate argToArgStep(Expr tracked, Expr sink) {
   exists(MethodAccess ma, Method method, int input, int output |
-    taintPreservingArgToArg(method, argToParam(ma, input), argToParam(ma, output)) and
+    method.(TaintPreservingCallable).transfersTaint(argToParam(ma, input), argToParam(ma, output)) and
     ma.getMethod() = method and
     ma.getArgument(input) = tracked and
     ma.getArgument(output) = sink
   )
-}
-
-/**
- * Holds if `method` is a library method that writes tainted data to the
- * `output`th argument if the `input`th argument is tainted.
- */
-private predicate taintPreservingArgToArg(Method method, int input, int output) {
-  method.getDeclaringType().hasQualifiedName("org.apache.commons.io", "IOUtils") and
-  (
-    method.hasName("copy") and input = 0 and output = 1
-    or
-    method.hasName("copyLarge") and input = 0 and output = 1
-    or
-    method.hasName("read") and input = 0 and output = 1
-    or
-    method.hasName("readFully") and
-    input = 0 and
-    output = 1 and
-    not method.getParameterType(1).hasName("int")
-    or
-    method.hasName("write") and input = 0 and output = 1
-    or
-    method.hasName("writeChunked") and input = 0 and output = 1
-    or
-    method.hasName("writeLines") and input = 0 and output = 2
-    or
-    method.hasName("writeLines") and input = 1 and output = 2
-  )
-  or
-  method.getDeclaringType().hasQualifiedName("java.lang", "System") and
-  method.hasName("arraycopy") and
-  input = 0 and
-  output = 2
-  or
-  method.(TaintPreservingCallable).transfersTaint(input, output)
 }
 
 /**
