@@ -10,26 +10,13 @@ import semmle.code.java.dataflow.TaintTracking
 class JexlInjectionConfig extends TaintTracking::Configuration {
   JexlInjectionConfig() { this = "JexlInjectionConfig" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof TaintedSpringRequestBody or
-    source instanceof RemoteFlowSource
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof JexlEvaluationSink }
 
   override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
     any(TaintPropagatingJexlMethodCall c).taintFlow(fromNode, toNode) or
     returnsDataFromBean(fromNode, toNode)
-  }
-}
-
-/**
- * A data flow source for parameters that have
- * a Spring framework annotation indicating remote user input from servlets.
- */
-private class TaintedSpringRequestBody extends DataFlow::Node {
-  TaintedSpringRequestBody() {
-    this.asParameter().getAnAnnotation() instanceof SpringServletInputAnnotation
   }
 }
 

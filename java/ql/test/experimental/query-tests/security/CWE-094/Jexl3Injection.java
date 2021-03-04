@@ -6,10 +6,12 @@ import java.util.function.Consumer;
 import org.apache.commons.jexl3.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+@Controller
 public class Jexl3Injection {
 
     private static void runJexlExpression(String jexlExpr) {
