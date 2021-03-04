@@ -1,0 +1,6 @@
+| UseDetect.rb:5:9:5:36 | call to first | Replace this call with 'detect'. |
+| UseDetect.rb:6:9:6:35 | call to last | Replace this call with 'reverse_detect'. |
+| UseDetect.rb:7:9:7:33 | ...[...] | Replace this call with 'detect'. |
+| UseDetect.rb:8:9:8:34 | ...[...] | Replace this call with 'reverse_detect'. |
+| UseDetect.rb:9:9:9:36 | call to first | Replace this call with 'detect'. |
+| UseDetect.rb:10:9:10:37 | call to last | Replace this call with 'reverse_detect'. |
