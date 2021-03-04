@@ -189,7 +189,21 @@ private predicate summaryModelCsv(string row) {
       "java.io;InputStream;true;read;(byte[]);;Argument[-1];Argument[0];taint",
       "java.io;InputStream;true;read;(byte[],int,int);;Argument[-1];Argument[0];taint",
       "java.io;ByteArrayOutputStream;false;writeTo;;;Argument[-1];Argument[0];taint",
-      "java.io;Reader;true;read;;;Argument[-1];Argument[0];taint"
+      "java.io;Reader;true;read;;;Argument[-1];Argument[0];taint",
+      // qualifier to return
+      "java.io;ByteArrayOutputStream;false;toByteArray;;;Argument[-1];ReturnValue;taint",
+      "java.io;ByteArrayOutputStream;false;toString;;;Argument[-1];ReturnValue;taint",
+      "java.util;StringTokenizer;false;nextElement;();;Argument[-1];ReturnValue;taint",
+      "java.util;StringTokenizer;false;nextToken;;;Argument[-1];ReturnValue;taint",
+      "javax.xml.transform.sax;SAXSource;false;getInputSource;;;Argument[-1];ReturnValue;taint",
+      "javax.xml.transform.stream;StreamSource;false;getInputStream;;;Argument[-1];ReturnValue;taint",
+      "java.nio;ByteBuffer;false;get;;;Argument[-1];ReturnValue;taint",
+      "java.net;URI;false;toURL;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;false;toURI;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;false;toPath;;;Argument[-1];ReturnValue;taint",
+      "java.nio.file;Path;false;toFile;;;Argument[-1];ReturnValue;taint",
+      "java.io;Reader;true;readLine;;;Argument[-1];ReturnValue;taint",
+      "java.io;Reader;true;read;();;Argument[-1];ReturnValue;taint"
     ]
 }
 

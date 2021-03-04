@@ -285,13 +285,6 @@ private predicate qualifierToMethodStep(Expr tracked, MethodAccess sink) {
 private predicate taintPreservingQualifierToMethod(Method m) {
   m instanceof CloneMethod
   or
-  m.getDeclaringType().getASupertype*().hasQualifiedName("java.io", "Reader") and
-  (
-    m.getName() = "read" and m.getNumberOfParameters() = 0
-    or
-    m.getName() = "readLine"
-  )
-  or
   m.getDeclaringType().getQualifiedName().matches("%StringWriter") and
   (
     m.getName() = "getBuffer"
@@ -299,35 +292,8 @@ private predicate taintPreservingQualifierToMethod(Method m) {
     m.getName() = "toString"
   )
   or
-  m.getDeclaringType().hasQualifiedName("java.util", "StringTokenizer") and
-  m.getName().matches("next%")
-  or
-  m.getDeclaringType().hasQualifiedName("java.io", "ByteArrayOutputStream") and
-  (m.getName() = "toByteArray" or m.getName() = "toString")
-  or
   m.getDeclaringType().hasQualifiedName("java.io", "ObjectInputStream") and
   m.getName().matches("read%")
-  or
-  m.getDeclaringType().hasQualifiedName("javax.xml.transform.sax", "SAXSource") and
-  m.hasName("getInputSource")
-  or
-  m.getDeclaringType().hasQualifiedName("javax.xml.transform.stream", "StreamSource") and
-  m.hasName("getInputStream")
-  or
-  m.getDeclaringType().hasQualifiedName("java.nio", "ByteBuffer") and
-  m.hasName("get")
-  or
-  m.getDeclaringType() instanceof TypeFile and
-  m.hasName("toPath")
-  or
-  m.getDeclaringType() instanceof TypePath and
-  m.hasName("toFile")
-  or
-  m.getDeclaringType() instanceof TypeFile and
-  m.hasName("toURI")
-  or
-  m.getDeclaringType() instanceof TypeUri and
-  m.hasName("toURL")
   or
   m instanceof GetterMethod and
   m.getDeclaringType().getASubtype*() instanceof SpringUntrustedDataType and
