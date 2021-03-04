@@ -367,68 +367,12 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
  * `arg`th argument is tainted.
  */
 private predicate taintPreservingArgumentToMethod(Method method, int arg) {
-  (
-    method.getDeclaringType().hasQualifiedName("java.util", "Base64$Encoder") or
-    method.getDeclaringType().hasQualifiedName("java.util", "Base64$Decoder") or
-    method
-        .getDeclaringType()
-        .getASupertype*()
-        .hasQualifiedName("org.apache.commons.codec", "Encoder") or
-    method
-        .getDeclaringType()
-        .getASupertype*()
-        .hasQualifiedName("org.apache.commons.codec", "Decoder")
-  ) and
-  (
-    method.getName() = "encode" and arg = 0 and method.getNumberOfParameters() = 1
-    or
-    method.getName() = "decode" and arg = 0 and method.getNumberOfParameters() = 1
-    or
-    method.getName() = "encodeToString" and arg = 0
-    or
-    method.getName() = "wrap" and arg = 0
-  )
-  or
   method.getDeclaringType().hasQualifiedName("org.apache.commons.codec.binary", "Base64") and
   (
     method.getName() = "decodeBase64" and arg = 0
     or
     method.getName().matches("encodeBase64%") and arg = 0
   )
-  or
-  method.getDeclaringType().hasQualifiedName("org.apache.commons.io", "IOUtils") and
-  (
-    method.getName() = "buffer" and arg = 0
-    or
-    method.getName() = "readLines" and arg = 0
-    or
-    method.getName() = "readFully" and arg = 0 and method.getParameterType(1).hasName("int")
-    or
-    method.getName() = "toBufferedInputStream" and arg = 0
-    or
-    method.getName() = "toBufferedReader" and arg = 0
-    or
-    method.getName() = "toByteArray" and arg = 0
-    or
-    method.getName() = "toCharArray" and arg = 0
-    or
-    method.getName() = "toInputStream" and arg = 0
-    or
-    method.getName() = "toString" and arg = 0
-  )
-  or
-  method.getDeclaringType().hasQualifiedName("java.net", "URLDecoder") and
-  method.hasName("decode") and
-  arg = 0
-  or
-  // A URI created from a tainted string is still tainted.
-  method.getDeclaringType() instanceof TypeUri and
-  method.hasName("create") and
-  arg = 0
-  or
-  method.getDeclaringType().hasQualifiedName("javax.xml.transform.sax", "SAXSource") and
-  method.hasName("sourceToInputSource") and
-  arg = 0
   or
   method.(TaintPreservingCallable).returnsTaintFrom(arg)
 }

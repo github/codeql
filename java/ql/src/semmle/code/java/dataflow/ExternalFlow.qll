@@ -203,7 +203,30 @@ private predicate summaryModelCsv(string row) {
       "java.io;File;false;toPath;;;Argument[-1];ReturnValue;taint",
       "java.nio.file;Path;false;toFile;;;Argument[-1];ReturnValue;taint",
       "java.io;Reader;true;readLine;;;Argument[-1];ReturnValue;taint",
-      "java.io;Reader;true;read;();;Argument[-1];ReturnValue;taint"
+      "java.io;Reader;true;read;();;Argument[-1];ReturnValue;taint",
+      // arg to return
+      "java.util;Base64$Encoder;false;encode;(byte[]);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Encoder;false;encode;(ByteBuffer);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Encoder;false;encodeToString;(byte[]);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Encoder;false;wrap;(OutputStream);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;decode;(byte[]);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;decode;(ByteBuffer);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;decode;(String);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;wrap;(InputStream);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;Encoder;true;encode;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;Decoder;true;decode;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;buffer;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;readLines;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,int);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toBufferedInputStream;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toBufferedReader;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toByteArray;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toCharArray;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toInputStream;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toString;;;Argument[0];ReturnValue;taint",
+      "java.net;URLDecoder;false;decode;;;Argument[0];ReturnValue;taint",
+      "java.net;URI;false;create;;;Argument[0];ReturnValue;taint",
+      "javax.xml.transform.sax;SAXSource;false;sourceToInputSource;;;Argument[0];ReturnValue;taint"
     ]
 }
 
