@@ -2055,6 +2055,13 @@ class ChiInstruction extends Instruction {
   final predicate getUpdatedInterval(int startBit, int endBit) {
     Construction::getIntervalUpdatedByChi(this, startBit, endBit)
   }
+
+  /**
+   * Holds if the `ChiPartialOperand` totally, but not exactly, overlaps with the `ChiTotalOperand`.
+   * This means that the `ChiPartialOperand` will not override the entire memory associated with the
+   * `ChiTotalOperand`.
+   */
+  final predicate isPartialUpdate() { Construction::chiOnlyPartiallyUpdatesLocation(this) }
 }
 
 /**
