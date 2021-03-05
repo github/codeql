@@ -40,7 +40,7 @@ abstract class ValuePreservingMethod extends Method {
 /**
  * A method that returns the exact value of its qualifier (e.g., `return this;`)
  *
- * Extend this class and override `returnsValue` to add additional value-preserving steps through a
+ * Extend this class to add additional value-preserving steps from qualifier to return value through a
  * method that should be added to the basic local flow step relation.
  *
  * These steps will be visible for all global data-flow purposes, as well as via
