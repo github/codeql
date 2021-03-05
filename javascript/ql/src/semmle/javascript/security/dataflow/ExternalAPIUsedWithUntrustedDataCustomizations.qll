@@ -27,6 +27,8 @@ module ExternalAPIUsedWithUntrustedData {
      * have to scan over many irrelevant sinks in order to pick out the interesting ones.
      */
     abstract string getApiName();
+
+    abstract DataFlow::InvokeNode getInvokeNode();
   }
 
   /**
@@ -301,6 +303,8 @@ module ExternalAPIUsedWithUntrustedData {
     }
 
     override string getApiName() { result = invoke.getApiName() + " [param " + index + "]" }
+
+    override DataFlow::InvokeNode getInvokeNode() { result = invoke }
   }
 
   /** A spread argument or an unknown-index argument to an external API. */
@@ -317,6 +321,8 @@ module ExternalAPIUsedWithUntrustedData {
     }
 
     override string getApiName() { result = invoke.getApiName() + " [param *]" }
+
+    override DataFlow::InvokeNode getInvokeNode() { result = invoke }
   }
 
   /** A "named argument" to an external API call, seen as a sink. */
@@ -343,6 +349,8 @@ module ExternalAPIUsedWithUntrustedData {
     override string getApiName() {
       result = invoke.getApiName() + " [param " + index + " '" + prop + "']"
     }
+
+    override DataFlow::InvokeNode getInvokeNode() { result = invoke }
   }
 
   /** The return value from a direct callback to an external API call, seen as a sink */
@@ -359,6 +367,8 @@ module ExternalAPIUsedWithUntrustedData {
     override string getApiName() {
       result = invoke.getApiName() + " [callback " + index + " result]"
     }
+
+    override DataFlow::InvokeNode getInvokeNode() { result = invoke }
   }
 
   /** The return value from a named callback to an external API call, seen as a sink. */
@@ -379,5 +389,7 @@ module ExternalAPIUsedWithUntrustedData {
     override string getApiName() {
       result = invoke.getApiName() + " [callback " + index + " '" + prop + "' result]"
     }
+
+    override DataFlow::InvokeNode getInvokeNode() { result = invoke }
   }
 }
