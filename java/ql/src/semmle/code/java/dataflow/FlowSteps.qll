@@ -46,14 +46,14 @@ abstract class ValuePreservingMethod extends Method {
  * These steps will be visible for all global data-flow purposes, as well as via
  * `DataFlow::Node.getASuccessor` and other related functions exposing intraprocedural dataflow.
  */
-abstract class FluentMethod extends ValuePreservingCallable {
+abstract class FluentMethod extends ValuePreservingMethod {
   override predicate returnsValue(int arg) { arg = -1 }
 }
 
 private class StandardLibraryValuePreservingMethod extends ValuePreservingMethod {
   int returnsArgNo;
 
-  StandardLibraryValuePreservingCallable() {
+  StandardLibraryValuePreservingMethod() {
     this.getDeclaringType().hasQualifiedName("java.util", "Objects") and
     (
       this.hasName(["requireNonNull", "requireNonNullElseGet"]) and returnsArgNo = 0
@@ -63,9 +63,7 @@ private class StandardLibraryValuePreservingMethod extends ValuePreservingMethod
       this.hasName("toString") and returnsArgNo = 1
     )
     or
-    this.getDeclaringType()
-        .getASourceSupertype*()
-        .hasQualifiedName("java.util", "Stack") and
+    this.getDeclaringType().getASourceSupertype*().hasQualifiedName("java.util", "Stack") and
     this.hasName("push") and
     returnsArgNo = 0
   }

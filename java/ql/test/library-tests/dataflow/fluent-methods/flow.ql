@@ -19,7 +19,7 @@ class Model extends FluentMethod {
   Model() { this.getName() = "modelledFluentMethod" }
 }
 
-class IdentityModel extends ValuePreservingCallable {
+class IdentityModel extends ValuePreservingMethod {
   IdentityModel() { this.getName() = "modelledIdentity" }
 
   override predicate returnsValue(int arg) { arg = 0 }
