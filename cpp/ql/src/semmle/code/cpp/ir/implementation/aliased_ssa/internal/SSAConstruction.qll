@@ -179,9 +179,9 @@ private module Cached {
   }
 
   /**
-   * Holds if the `ChiPartialOperand` totally, but not exactly, overlaps with the `ChiTotalOperand`.
-   * This means that the `ChiPartialOperand` will not override the entire memory associated with the
-   * `ChiTotalOperand`.
+   * Holds if the `ChiPartialOperand` only partially overlaps with the `ChiTotalOperand`.
+   * This means that the `ChiPartialOperand` will not override the entire memory associated
+   * with the `ChiTotalOperand`.
    */
   cached
   predicate chiOnlyPartiallyUpdatesLocation(ChiInstruction chi) {
