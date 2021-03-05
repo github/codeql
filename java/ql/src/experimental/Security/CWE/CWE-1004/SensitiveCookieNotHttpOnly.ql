@@ -8,6 +8,7 @@
  */
 
 import java
+import semmle.code.java.dataflow.FlowSteps
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
@@ -41,18 +42,31 @@ class SetCookieMethodAccess extends MethodAccess {
   }
 }
 
+/** The cookie class of Java EE. */
+class CookieClass extends RefType {
+  CookieClass() {
+    this.getASupertype*()
+        .hasQualifiedName(["javax.servlet.http", "javax.ws.rs.core", "jakarta.ws.rs.core"], "Cookie")
+  }
+}
+
+/** The method call `toString` to get a stringified cookie representation. */
+class CookieInstanceExpr extends TaintPreservingCallable {
+  CookieInstanceExpr() {
+    this.getDeclaringType() instanceof CookieClass and
+    this.hasName("toString")
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = -1 }
+}
+
 /** Sensitive cookie name used in a `Cookie` constructor or a `Set-Cookie` call. */
 class SensitiveCookieNameExpr extends Expr {
   SensitiveCookieNameExpr() {
     exists(
       ClassInstanceExpr cie // new Cookie("jwt_token", token)
     |
-      (
-        cie.getConstructedType().hasQualifiedName("javax.servlet.http", "Cookie") or
-        cie.getConstructedType()
-            .getASupertype*()
-            .hasQualifiedName(["javax.ws.rs.core", "jakarta.ws.rs.core"], "Cookie")
-      ) and
+      cie.getConstructedType() instanceof CookieClass and
       this = cie and
       isSensitiveCookieNameExpr(cie.getArgument(0))
     )
@@ -168,16 +182,6 @@ class MissingHttpOnlyConfiguration extends TaintTracking::Configuration {
     or
     // Test class or method
     isTestMethod(node)
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(
-      MethodAccess ma // `toString` call on a cookie object
-    |
-      ma.getQualifier() = pred.asExpr() and
-      ma.getMethod().hasName("toString") and
-      ma = succ.asExpr()
-    )
   }
 }
 
