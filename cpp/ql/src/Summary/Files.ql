@@ -2,7 +2,7 @@
  * @name Total source files
  * @description The total number of source files.
  * @kind metric
- * @id cpp/metrics/files
+ * @id cpp/summary/files
  */
 
 import cpp

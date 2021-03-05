@@ -2,7 +2,7 @@
  * @name Lines of text per source file
  * @description The number of lines of text for each source file.
  * @kind metric
- * @id cpp/metrics/lines-per-file
+ * @id cpp/summary/lines-per-file
  */
 
 import cpp
