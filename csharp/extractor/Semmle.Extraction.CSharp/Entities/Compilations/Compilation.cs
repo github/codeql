@@ -56,7 +56,7 @@ namespace Semmle.Extraction.CSharp.Entities
             index = 0;
             foreach (var file in Context.Compilation.References
                 .OfType<PortableExecutableReference>()
-                .Where(r => r.FilePath is object)
+                .Where(r => r.FilePath is not null)
                 .Select(r => File.Create(Context, r.FilePath!)))
             {
                 trapFile.compilation_referencing_files(this, index++, file);

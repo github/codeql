@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 var l = LocalVariable.Create(cx, symbol);
                 l.PopulateManual(ret, isVar);
-                if (optionalSyntax != null)
+                if (optionalSyntax is not null)
                     TypeMention.Create(cx, optionalSyntax, ret, type);
             });
             return ret;
@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         private static VariableDeclaration CreateSingle(Context cx, DeclarationExpressionSyntax node, SingleVariableDesignationSyntax designation, IExpressionParentEntity parent, int child)
         {
             var variableSymbol = cx.GetModel(designation).GetDeclaredSymbol(designation) as ILocalSymbol;
-            if (variableSymbol == null)
+            if (variableSymbol is null)
             {
                 cx.ModelError(node, "Failed to determine local variable");
                 return Create(cx, node, (AnnotatedTypeSymbol?)null, parent, child);
@@ -149,7 +149,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 var localVar = LocalVariable.Create(cx, declSymbol);
                 localVar.PopulateManual(ret, isVar);
 
-                if (d.Initializer != null)
+                if (d.Initializer is not null)
                 {
                     Create(cx, d.Initializer.Value, ret, 0);
 

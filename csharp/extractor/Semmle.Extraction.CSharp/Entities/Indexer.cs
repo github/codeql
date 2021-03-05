@@ -42,7 +42,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (IsSourceDeclaration)
             {
                 var expressionBody = ExpressionBody;
-                if (expressionBody != null)
+                if (expressionBody is not null)
                 {
                     // The expression may need to reference parameters in the getter.
                     // So we need to arrange that the expression is populated after the getter.

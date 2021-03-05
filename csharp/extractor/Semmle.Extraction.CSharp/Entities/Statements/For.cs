@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         {
             var child = -1;
 
-            if (Stmt.Declaration != null)
+            if (Stmt.Declaration is not null)
                 VariableDeclarations.Populate(Context, Stmt.Declaration, this, child, childIncrement: -1);
 
             foreach (var init in Stmt.Initializers)
@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
                 Expression.Create(Context, init, this, child--);
             }
 
-            if (Stmt.Condition != null)
+            if (Stmt.Condition is not null)
             {
                 Expression.Create(Context, Stmt.Condition, this, 0);
             }

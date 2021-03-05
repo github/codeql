@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var syntax = Syntax;
             var initializer = syntax?.Initializer;
 
-            if (initializer == null)
+            if (initializer is null)
                 return;
 
             ITypeSymbol initializerType;
@@ -71,7 +71,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var init = new Expression(initInfo);
 
             var target = Constructor.Create(Context, (IMethodSymbol?)symbolInfo.Symbol);
-            if (target == null)
+            if (target is null)
             {
                 Context.ModelError(Symbol, "Unable to resolve call");
                 return;
@@ -100,7 +100,7 @@ namespace Semmle.Extraction.CSharp.Entities
         [return: NotNullIfNotNull("constructor")]
         public static new Constructor? Create(Context cx, IMethodSymbol? constructor)
         {
-            if (constructor == null)
+            if (constructor is null)
                 return null;
 
             switch (constructor.MethodKind)
@@ -132,7 +132,7 @@ namespace Semmle.Extraction.CSharp.Entities
             get
             {
                 var syn = GetSyntax();
-                if (syn != null)
+                if (syn is not null)
                 {
                     return syn.Identifier.GetLocation();
                 }

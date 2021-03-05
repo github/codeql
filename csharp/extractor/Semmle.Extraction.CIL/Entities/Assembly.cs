@@ -56,7 +56,7 @@ namespace Semmle.Extraction.CIL.Entities
                 yield return file;
                 yield return Tuples.assemblies(this, file, FullName, assemblyName.Name ?? string.Empty, assemblyName.Version?.ToString() ?? string.Empty);
 
-                if (Context.Pdb != null)
+                if (Context.Pdb is not null)
                 {
                     foreach (var f in Context.Pdb.SourceFiles)
                     {
@@ -77,7 +77,7 @@ namespace Semmle.Extraction.CIL.Entities
                     }
 
                     // Limitation of C#: Cannot yield return inside a try-catch.
-                    if (product != null)
+                    if (product is not null)
                         yield return product;
                 }
 
@@ -93,7 +93,7 @@ namespace Semmle.Extraction.CIL.Entities
                         Context.ExtractionError("Error processing bytecode", e.Message, GeneratedLocation.Create(Context), e.StackTrace);
                     }
 
-                    if (product != null)
+                    if (product is not null)
                         yield return product;
                 }
             }

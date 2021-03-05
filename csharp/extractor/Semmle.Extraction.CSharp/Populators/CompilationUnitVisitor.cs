@@ -65,7 +65,7 @@ namespace Semmle.Extraction.CSharp.Populators
 
             for (var i = 0; i < globalStatements.Count; i++)
             {
-                if (globalStatements[i].Statement is object)
+                if (globalStatements[i].Statement is not null)
                 {
                     Statement.Create(Cx, globalStatements[i].Statement, block, i);
                 }

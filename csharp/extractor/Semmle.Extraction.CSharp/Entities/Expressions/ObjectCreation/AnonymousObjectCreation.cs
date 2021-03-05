@@ -19,7 +19,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             var target = Context.GetSymbolInfo(Syntax);
             var method = (IMethodSymbol?)target.Symbol;
-            if (method != null)
+            if (method is not null)
             {
                 trapFile.expr_call(this, Method.Create(Context, method));
             }

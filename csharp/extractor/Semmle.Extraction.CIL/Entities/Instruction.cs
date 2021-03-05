@@ -390,7 +390,7 @@ namespace Semmle.Extraction.CIL.Entities
                             var handle = MetadataTokens.EntityHandle(payloadValue);
                             var target = Context.CreateGeneric(Method, handle);
                             yield return target;
-                            if (target != null)
+                            if (target is not null)
                             {
                                 yield return Tuples.cil_access(this, target);
                             }
@@ -402,14 +402,14 @@ namespace Semmle.Extraction.CIL.Entities
                         }
                     case Payload.Arg8:
                     case Payload.Arg16:
-                        if (Method.Parameters is object)
+                        if (Method.Parameters is not null)
                         {
                             yield return Tuples.cil_access(this, Method.Parameters[(int)unsignedPayloadValue]);
                         }
                         break;
                     case Payload.Local8:
                     case Payload.Local16:
-                        if (Method.LocalVariables is object)
+                        if (Method.LocalVariables is not null)
                         {
                             yield return Tuples.cil_access(this, Method.LocalVariables[(int)unsignedPayloadValue]);
                         }
@@ -435,7 +435,7 @@ namespace Semmle.Extraction.CIL.Entities
                                 Context.Extractor.Logger.Log(Util.Logging.Severity.Warning, $"Couldn't interpret payload of payload type {PayloadType} as a function pointer type. {exc.Message} {exc.StackTrace}");
                             }
 
-                            if (target != null)
+                            if (target is not null)
                             {
                                 yield return target;
                                 yield return Tuples.cil_access(this, target);

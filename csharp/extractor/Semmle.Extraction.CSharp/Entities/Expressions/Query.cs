@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         cx.CreateLocation(clause.GetLocation()),
                         ExprKind.METHOD_INVOCATION, parent, child, false, null))
             {
-                if (method != null)
+                if (method is not null)
                     cx.TrapWriter.Writer.expr_call(this, Method.Create(cx, method));
             }
         }
@@ -56,7 +56,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             public Clause AddArgument(ExpressionSyntax arg)
             {
-                if (arg != null)
+                if (arg is not null)
                     arguments.Add(arg);
                 return this;
             }
@@ -69,7 +69,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 TypeSyntax? declTypeSyntax = null;
                 if (getElement)
                 {
-                    if (node is FromClauseSyntax from && from.Type != null)
+                    if (node is FromClauseSyntax from && from.Type is not null)
                     {
                         declTypeSyntax = from.Type;
                         declType = cx.GetType(from.Type);
@@ -116,7 +116,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             private static AnnotatedTypeSymbol? GetEnumerableElementType(Context cx, INamedTypeSymbol type)
             {
                 var et = GetEnumerableType(cx, type);
-                if (et != null)
+                if (et is not null)
                     return et;
 
                 return type.AllInterfaces
@@ -182,13 +182,13 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             private void DeclareIntoVariable(Context cx, IExpressionParentEntity parent, int intoChild, bool getElement)
             {
-                if (intoDeclaration != null)
+                if (intoDeclaration is not null)
                     DeclareRangeVariable(cx, parent, intoChild, getElement, intoDeclaration, name);
             }
 
             public override Expression Populate(Context cx, IExpressionParentEntity parent, int child)
             {
-                if (method == null)
+                if (method is null)
                     cx.ModelError(node, "Unable to determine target of query expression");
 
                 var callExpr = new QueryCall(cx, method, node, parent, child);
@@ -248,7 +248,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                             clauseExpr = clauseExpr.WithCallClause(method, orderByClause).AddArgument(ordering.Expression);
 
-                            if (method == null)
+                            if (method is null)
                                 cx.ModelError(ordering, "Could not determine method call for orderby clause");
                         }
                         break;
@@ -275,7 +275,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                             AddArgument(joinClause.LeftExpression).
                             AddArgument(joinClause.RightExpression);
 
-                        if (joinClause.Into != null)
+                        if (joinClause.Into is not null)
                         {
                             var into = cx.GetModel(node).GetDeclaredSymbol(joinClause.Into)!;
                             ((LetClause)clauseExpr).WithInto(into);

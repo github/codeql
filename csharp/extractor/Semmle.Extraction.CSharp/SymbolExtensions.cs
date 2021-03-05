@@ -117,7 +117,7 @@ namespace Semmle.Extraction.CSharp
                         case TypeKind.Delegate:
                         case TypeKind.Error:
                             var named = (INamedTypeSymbol)type;
-                            if (named.IsTupleType && named.TupleUnderlyingType is object)
+                            if (named.IsTupleType && named.TupleUnderlyingType is not null)
                                 named = named.TupleUnderlyingType;
                             if (IdDependsOnImpl(named.ContainingType))
                                 return true;
@@ -306,14 +306,14 @@ namespace Semmle.Extraction.CSharp
 
             void AddContaining()
             {
-                if (named.ContainingType != null)
+                if (named.ContainingType is not null)
                 {
                     named.ContainingType.BuildOrWriteId(cx, trapFile, symbolBeingDefined, addBaseClass);
                     trapFile.Write('.');
                 }
-                else if (named.ContainingNamespace != null)
+                else if (named.ContainingNamespace is not null)
                 {
-                    if (cx.ShouldAddAssemblyTrapPrefix && named.ContainingAssembly is object)
+                    if (cx.ShouldAddAssemblyTrapPrefix && named.ContainingAssembly is not null)
                         BuildAssembly(named.ContainingAssembly, trapFile);
                     named.ContainingNamespace.BuildNamespace(cx, trapFile);
                 }
@@ -594,7 +594,7 @@ namespace Semmle.Extraction.CSharp
         /// Holds if this method is a source declaration.
         /// </summary>
         public static bool IsSourceDeclaration(this IMethodSymbol method) =>
-            IsSourceDeclaration((ISymbol)method) && SymbolEqualityComparer.Default.Equals(method, method.ConstructedFrom) && method.ReducedFrom == null;
+            IsSourceDeclaration((ISymbol)method) && SymbolEqualityComparer.Default.Equals(method, method.ConstructedFrom) && method.ReducedFrom is null;
 
         /// <summary>
         /// Holds if this parameter is a source declaration.
@@ -618,7 +618,7 @@ namespace Semmle.Extraction.CSharp
         [return: NotNullIfNotNull("symbol")]
         public static IEntity? CreateEntity(this Context cx, ISymbol symbol)
         {
-            if (symbol == null)
+            if (symbol is null)
                 return null;
 
             using (cx.StackGuard)

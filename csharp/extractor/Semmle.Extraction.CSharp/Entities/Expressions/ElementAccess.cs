@@ -49,7 +49,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             var qualifierType = cx.GetType(qualifier);
 
             // This is a compilation error, so make a guess and continue.
-            if (qualifierType.Symbol == null)
+            if (qualifierType.Symbol is null)
                 return ExprKind.ARRAY_ACCESS;
 
             if (qualifierType.Symbol.TypeKind == Microsoft.CodeAnalysis.TypeKind.Pointer)

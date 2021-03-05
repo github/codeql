@@ -124,7 +124,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                if (ContainingType != null)
+                if (ContainingType is not null)
                 {
                     foreach (var t in ContainingType.GenericArguments)
                         yield return t;
@@ -184,7 +184,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         private bool TryGetPrimitiveTypeCode(out PrimitiveTypeCode code)
         {
-            if (ContainingType == null &&
+            if (ContainingType is null &&
                 ContainingNamespace?.Name == Context.SystemNamespace.Name &&
                 primitiveTypeCodeMapping.TryGetValue(Name, out code))
             {

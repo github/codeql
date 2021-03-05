@@ -158,7 +158,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            if (Syntax.Initializer != null)
+            if (Syntax.Initializer is not null)
             {
                 ArrayInitializer.Create(new ExpressionNodeInfo(Context, Syntax.Initializer, this, InitializerIndex));
             }

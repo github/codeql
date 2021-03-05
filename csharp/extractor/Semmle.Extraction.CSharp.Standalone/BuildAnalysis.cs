@@ -104,7 +104,7 @@ namespace Semmle.BuildAnalyser
             using (new FileRenamer(sourceDir.GetFiles("global.json", SearchOption.AllDirectories)))
             using (new FileRenamer(sourceDir.GetFiles("Directory.Build.props", SearchOption.AllDirectories)))
             {
-                var solutions = options.SolutionFile != null ?
+                var solutions = options.SolutionFile is not null ?
                         new[] { options.SolutionFile } :
                         sourceDir.GetFiles("*.sln", SearchOption.AllDirectories).Select(d => d.FullName);
 

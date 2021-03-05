@@ -76,7 +76,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             PopulateType(trapFile, constructUnderlyingTupleType);
 
-            if (Symbol.EnumUnderlyingType != null)
+            if (Symbol.EnumUnderlyingType is not null)
             {
                 trapFile.enum_underlying_type(this, Type.Create(Context, Symbol.EnumUnderlyingType).TypeRef);
             }

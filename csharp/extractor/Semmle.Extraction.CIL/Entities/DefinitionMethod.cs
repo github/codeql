@@ -150,7 +150,7 @@ namespace Semmle.Extraction.CIL.Entities
 
                     yield return Tuples.cil_method_stack_size(Implementation, body.MaxStack);
 
-                    if (methodDebugInformation != null)
+                    if (methodDebugInformation is not null)
                     {
                         var sourceLocation = Context.CreateSourceLocation(methodDebugInformation.Location);
                         yield return sourceLocation;
@@ -205,7 +205,7 @@ namespace Semmle.Extraction.CIL.Entities
             IEnumerator<PDB.SequencePoint>? nextSequencePoint = null;
             PdbSourceLocation? instructionLocation = null;
 
-            if (methodDebugInformation != null)
+            if (methodDebugInformation is not null)
             {
                 nextSequencePoint = methodDebugInformation.SequencePoints.GetEnumerator();
                 if (nextSequencePoint.MoveNext())
@@ -225,7 +225,7 @@ namespace Semmle.Extraction.CIL.Entities
                 var instruction = new Instruction(Context, this, ilbytes!, offset, child++);
                 yield return instruction;
 
-                if (nextSequencePoint != null && offset >= nextSequencePoint.Current.Offset)
+                if (nextSequencePoint is not null && offset >= nextSequencePoint.Current.Offset)
                 {
                     instructionLocation = Context.CreateSourceLocation(nextSequencePoint.Current.Location);
                     yield return instructionLocation;
@@ -233,7 +233,7 @@ namespace Semmle.Extraction.CIL.Entities
                         nextSequencePoint = null;
                 }
 
-                if (instructionLocation != null)
+                if (instructionLocation is not null)
                     yield return Tuples.cil_instruction_location(instruction, instructionLocation);
 
                 jump_table.Add(instruction.Offset, instruction);

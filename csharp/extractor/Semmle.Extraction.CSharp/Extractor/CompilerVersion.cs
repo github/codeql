@@ -51,7 +51,7 @@ namespace Semmle.Extraction.CSharp
             SpecifiedCompiler = options.CompilerName;
             specifiedFramework = options.Framework;
 
-            if (SpecifiedCompiler != null)
+            if (SpecifiedCompiler is not null)
             {
                 if (!File.Exists(SpecifiedCompiler))
                 {
@@ -69,7 +69,7 @@ namespace Semmle.Extraction.CSharp
 
                 var mscorlibExists = File.Exists(Path.Combine(compilerDir, "mscorlib.dll"));
 
-                if (specifiedFramework == null && mscorlibExists)
+                if (specifiedFramework is null && mscorlibExists)
                 {
                     specifiedFramework = compilerDir;
                 }
@@ -81,7 +81,7 @@ namespace Semmle.Extraction.CSharp
                     return;
                 }
 
-                if (versionInfo.LegalCopyright == null || !versionInfo.LegalCopyright.Contains(vendor))
+                if (versionInfo.LegalCopyright is null || !versionInfo.LegalCopyright.Contains(vendor))
                 {
                     SkipExtractionBecause($"the compiler isn't copyright {vendor}, but instead {versionInfo.LegalCopyright ?? "<null>"}");
                     return;
@@ -120,7 +120,7 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Gets additional reference directories - the compiler directory.
         /// </summary>
-        public string? AdditionalReferenceDirectories => SpecifiedCompiler != null ? Path.GetDirectoryName(SpecifiedCompiler) : null;
+        public string? AdditionalReferenceDirectories => SpecifiedCompiler is not null ? Path.GetDirectoryName(SpecifiedCompiler) : null;
 
         /// <summary>
         /// Adds @csc.rsp to the argument list to mimic csc.exe.

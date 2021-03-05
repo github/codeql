@@ -74,13 +74,13 @@ namespace Semmle.Extraction.CSharp.Entities
             var block = Block;
             var expr = ExpressionBody;
 
-            if (block != null || expr != null)
+            if (block is not null || expr is not null)
             {
                 Context.PopulateLater(
                    () =>
                    {
                        ExtractInitializers(trapFile);
-                       if (block != null)
+                       if (block is not null)
                            Statements.Block.Create(Context, block, this, 0);
                        else
                            Expression.Create(Context, expr!, this, 0);
@@ -96,7 +96,7 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 var node = (CSharpSyntaxNode)decl.GetSyntax();
                 var lineCounts = node.Accept(new AstLineCounter());
-                if (lineCounts is object)
+                if (lineCounts is not null)
                 {
                     trapFile.numlines(callable, lineCounts);
                 }
@@ -118,7 +118,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
-            if (Symbol.OverriddenMethod != null)
+            if (Symbol.OverriddenMethod is not null)
             {
                 trapFile.overrides(this, Method.Create(Context, Symbol.OverriddenMethod));
             }
@@ -239,7 +239,7 @@ namespace Semmle.Extraction.CSharp.Entities
         [return: NotNullIfNotNull("methodDecl")]
         public static Method? Create(Context cx, IMethodSymbol? methodDecl)
         {
-            if (methodDecl == null)
+            if (methodDecl is null)
                 return null;
 
             var methodKind = methodDecl.MethodKind;

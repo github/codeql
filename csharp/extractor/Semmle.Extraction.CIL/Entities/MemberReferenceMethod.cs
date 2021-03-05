@@ -87,7 +87,7 @@ namespace Semmle.Extraction.CIL.Entities
                     yield return m;
                 }
 
-                if (SourceDeclaration != null)
+                if (SourceDeclaration is not null)
                     yield return Tuples.cil_method_source_declaration(this, SourceDeclaration);
             }
         }

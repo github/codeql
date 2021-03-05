@@ -148,7 +148,7 @@ namespace Semmle.Extraction
         public void PopulateLater(Action a)
         {
             var key = GetCurrentTagStackKey();
-            if (key is object)
+            if (key is not null)
             {
                 // If we are currently executing with a duplication guard, then the same
                 // guard must be used for the deferred action
@@ -425,11 +425,11 @@ namespace Semmle.Extraction
             {
                 Message message;
 
-                if (node != null)
+                if (node is not null)
                 {
                     message = Message.Create(this, ex.Message, node, ex.StackTrace);
                 }
-                else if (symbol != null)
+                else if (symbol is not null)
                 {
                     message = Message.Create(this, ex.Message, symbol, ex.StackTrace);
                 }

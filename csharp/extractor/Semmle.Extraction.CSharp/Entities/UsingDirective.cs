@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.using_directive_location(this, Context.CreateLocation(ReportingLocation));
             }
 
-            if (parent != null)
+            if (parent is not null)
             {
                 trapFile.parent_namespace_declaration(this, parent);
             }

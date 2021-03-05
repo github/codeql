@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 member.Accept(visitor);
             }
 
-            if (parent != null)
+            if (parent is not null)
             {
                 trapFile.parent_namespace_declaration(this, parent);
             }

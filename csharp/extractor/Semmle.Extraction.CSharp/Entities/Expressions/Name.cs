@@ -13,26 +13,26 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             var target = symbolInfo.Symbol;
 
-            if (target == null &&
+            if (target is null &&
                 symbolInfo.CandidateReason == CandidateReason.OverloadResolutionFailure &&
                 info.Node.Parent.IsKind(SyntaxKind.SuppressNullableWarningExpression))
             {
                 target = symbolInfo.CandidateSymbols.FirstOrDefault();
             }
 
-            if (target == null && symbolInfo.CandidateReason == CandidateReason.OverloadResolutionFailure)
+            if (target is null && symbolInfo.CandidateReason == CandidateReason.OverloadResolutionFailure)
             {
                 // The expression is probably a cast
                 target = info.Context.GetSymbolInfo((CSharpSyntaxNode)info.Node.Parent!).Symbol;
             }
 
-            if (target == null && (symbolInfo.CandidateReason == CandidateReason.Ambiguous || symbolInfo.CandidateReason == CandidateReason.MemberGroup))
+            if (target is null && (symbolInfo.CandidateReason == CandidateReason.Ambiguous || symbolInfo.CandidateReason == CandidateReason.MemberGroup))
             {
                 // Pick one at random - they probably resolve to the same ID
                 target = symbolInfo.CandidateSymbols.First();
             }
 
-            if (target == null)
+            if (target is null)
             {
                 if (IsInsideIfDirective(info.Node))
                 {

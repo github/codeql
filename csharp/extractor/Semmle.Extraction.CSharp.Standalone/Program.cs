@@ -30,7 +30,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             buildAnalysis = new BuildAnalysis(options, progressMonitor);
             References = buildAnalysis.ReferenceFiles;
             Extraction = new Extraction(options.SrcDir);
-            Extraction.Sources.AddRange(options.SolutionFile == null ? buildAnalysis.AllSourceFiles : buildAnalysis.ProjectSourceFiles);
+            Extraction.Sources.AddRange(options.SolutionFile is null ? buildAnalysis.AllSourceFiles : buildAnalysis.ProjectSourceFiles);
         }
 
         public IEnumerable<string> References { get; }

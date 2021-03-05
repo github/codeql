@@ -61,7 +61,7 @@ namespace Semmle.Extraction.CSharp.Entities
             foreach (var initializer in Symbol.DeclaringSyntaxReferences
                 .Select(n => n.GetSyntax())
                 .OfType<VariableDeclaratorSyntax>()
-                .Where(n => n.Initializer != null))
+                .Where(n => n.Initializer is not null))
             {
                 Context.PopulateLater(() =>
                 {
@@ -79,7 +79,7 @@ namespace Semmle.Extraction.CSharp.Entities
             foreach (var initializer in Symbol.DeclaringSyntaxReferences
                 .Select(n => n.GetSyntax())
                 .OfType<EnumMemberDeclarationSyntax>()
-                .Where(n => n.EqualsValue != null))
+                .Where(n => n.EqualsValue is not null))
             {
                 // Mark fields that have explicit initializers.
                 var constValue = Symbol.HasConstantValue

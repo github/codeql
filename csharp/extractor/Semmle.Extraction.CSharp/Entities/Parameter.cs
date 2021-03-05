@@ -75,10 +75,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            if (Parent == null)
+            if (Parent is null)
                 Parent = Method.Create(Context, Symbol.ContainingSymbol as IMethodSymbol);
 
-            if (Parent == null)
+            if (Parent is null)
                 throw new InternalError(Symbol, "Couldn't get parent of symbol.");
 
             trapFile.WriteSubId(Parent);
@@ -134,7 +134,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 foreach (var syntax in Symbol.DeclaringSyntaxReferences
                     .Select(d => d.GetSyntax())
                     .OfType<ParameterSyntax>()
-                    .Where(s => s.Type != null))
+                    .Where(s => s.Type is not null))
                 {
                     TypeMention.Create(Context, syntax.Type!, this, type);
                 }
@@ -146,22 +146,22 @@ namespace Semmle.Extraction.CSharp.Entities
                 // We should really define param_default(param, string)
                 // And use parameter child #0 to encode the default expression.
                 var defaultValue = GetParameterDefaultValue(Symbol);
-                if (defaultValue == null)
+                if (defaultValue is null)
                 {
                     // In case this parameter belongs to an accessor of an indexer, we need
                     // to get the default value from the corresponding parameter belonging
                     // to the indexer itself
                     var method = (IMethodSymbol)Symbol.ContainingSymbol;
-                    if (method != null)
+                    if (method is not null)
                     {
                         var i = method.Parameters.IndexOf(Symbol);
                         var indexer = (IPropertySymbol?)method.AssociatedSymbol;
-                        if (indexer != null)
+                        if (indexer is not null)
                             defaultValue = GetParameterDefaultValue(indexer.Parameters[i]);
                     }
                 }
 
-                if (defaultValue != null)
+                if (defaultValue is not null)
                 {
                     Context.PopulateLater(() =>
                     {
@@ -217,7 +217,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool Equals(object? obj)
         {
-            return obj != null && obj.GetType() == typeof(VarargsType);
+            return obj is not null && obj.GetType() == typeof(VarargsType);
         }
 
         public static VarargsType Create(Context cx) => VarargsTypeFactory.Instance.CreateEntity(cx, typeof(VarargsType), null);
@@ -254,7 +254,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool Equals(object? obj)
         {
-            return obj != null && obj.GetType() == typeof(VarargsParam);
+            return obj is not null && obj.GetType() == typeof(VarargsParam);
         }
 
         public static VarargsParam Create(Context cx, Method method) => VarargsParamFactory.Instance.CreateEntity(cx, typeof(VarargsParam), method);

@@ -45,7 +45,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     var lineCount = 0;
                     using (var sr = new StreamReader(originalPath, detectEncodingFromByteOrderMarks: true))
                     {
-                        while (sr.ReadLine() != null)
+                        while (sr.ReadLine() is not null)
                         {
                             lineCount++;
                         }

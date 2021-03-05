@@ -75,7 +75,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                 case null:
                 default:
-                    if (expr is object)
+                    if (expr is not null)
                         context.ModelError(expr, "Unhandled literal type");
                     else
                         context.ModelError("Unhandled literal type");
