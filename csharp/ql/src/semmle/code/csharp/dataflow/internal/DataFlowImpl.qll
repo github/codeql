@@ -765,7 +765,7 @@ private module Stage2 {
   bindingset[result, ap]
   private ApApprox getApprox(Ap ap) { any() }
 
-  private ApNil getApNil(Node node) { any() }
+  private Ap getApNil(Node node) { PrevStage::revFlow(node, _) and result instanceof ApNil }
 
   bindingset[tc, tail]
   private Ap apCons(TypedContent tc, Ap tail) { result = true and exists(tc) and exists(tail) }
@@ -1384,7 +1384,9 @@ private module Stage3 {
 
   private ApApprox getApprox(Ap ap) { result = ap.toBoolNonEmpty() }
 
-  private ApNil getApNil(Node node) { result = TFrontNil(getNodeType(node)) }
+  private ApNil getApNil(Node node) {
+    PrevStage::revFlow(node, _) and result = TFrontNil(getNodeType(node))
+  }
 
   bindingset[tc, tail]
   private Ap apCons(TypedContent tc, Ap tail) { result.getHead() = tc and exists(tail) }
@@ -2077,7 +2079,9 @@ private module Stage4 {
 
   private ApApprox getApprox(Ap ap) { result = ap.getFront() }
 
-  private ApNil getApNil(Node node) { result = TNil(getNodeType(node)) }
+  private ApNil getApNil(Node node) {
+    PrevStage::revFlow(node, _) and result = TNil(getNodeType(node))
+  }
 
   bindingset[tc, tail]
   private Ap apCons(TypedContent tc, Ap tail) { result = push(tc, tail) }
