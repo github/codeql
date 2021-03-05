@@ -21,7 +21,7 @@ private module Frameworks {
 }
 
 /**
- * A method or constructor that returns the exact value of one of its parameters or the qualifier.
+ * A method that returns the exact value of one of its parameters or the qualifier.
  *
  * Extend this class and override `returnsValue` to add additional value-preserving steps through a
  * method that should be added to the basic local flow step relation.
@@ -29,16 +29,16 @@ private module Frameworks {
  * These steps will be visible for all global data-flow purposes, as well as via
  * `DataFlow::Node.getASuccessor` and other related functions exposing intraprocedural dataflow.
  */
-abstract class ValuePreservingCallable extends Callable {
+abstract class ValuePreservingMethod extends Method {
   /**
-   * Holds if this callable returns precisely the value passed into argument `arg`.
+   * Holds if this method returns precisely the value passed into argument `arg`.
    * `arg` is a parameter index, or is -1 to indicate the qualifier.
    */
   abstract predicate returnsValue(int arg);
 }
 
 /**
- * A method or constructor that returns the exact value of its qualifier (e.g., `return this;`)
+ * A method that returns the exact value of its qualifier (e.g., `return this;`)
  *
  * Extend this class and override `returnsValue` to add additional value-preserving steps through a
  * method that should be added to the basic local flow step relation.
