@@ -38,23 +38,38 @@ predicate isNonEscapingArgument(Expr escaped) {
   )
 }
 
-from FunctionCall call, LocalVariable v, MemsetFunction memset
-where
-  call.getTarget() = memset and
-  not isFromMacroDefinition(call) and
-  // `v` escapes as the argument to `memset`
-  variableAddressEscapesTree(v.getAnAccess(), call.getArgument(0).getFullyConverted()) and
-  // ... and `v` doesn't escape anywhere else.
-  forall(Expr escape | variableAddressEscapesTree(v.getAnAccess(), escape) |
-    isNonEscapingArgument(escape)
-  ) and
+pragma[noinline]
+predicate callToMemsetWithRelevantVariable(
+  LocalVariable v, VariableAccess acc, FunctionCall call, MemsetFunction memset
+) {
   not v.isStatic() and
   // Reference-typed variables get special treatment in `variableAddressEscapesTree` so we leave them
   // out of this query.
   not v.getUnspecifiedType() instanceof ReferenceType and
-  // `v` is not only just used in the call to `memset`.
-  exists(Access acc |
-    acc = v.getAnAccess() and not call.getArgument(0).getAChild*() = acc and not acc.isUnevaluated()
+  call.getTarget() = memset and
+  acc = v.getAnAccess() and
+  // `v` escapes as the argument to `memset`
+  variableAddressEscapesTree(acc, call.getArgument(0).getFullyConverted())
+}
+
+pragma[noinline]
+predicate relevantVariable(LocalVariable v, FunctionCall call, MemsetFunction memset) {
+  exists(VariableAccess acc, VariableAccess anotherAcc |
+    callToMemsetWithRelevantVariable(v, acc, call, memset) and
+    // `v` is not only just used in the call to `memset`.
+    anotherAcc = v.getAnAccess() and
+    acc != anotherAcc and
+    not anotherAcc.isUnevaluated()
+  )
+}
+
+from FunctionCall call, LocalVariable v, MemsetFunction memset
+where
+  relevantVariable(v, call, memset) and
+  not isFromMacroDefinition(call) and
+  // `v` doesn't escape anywhere else.
+  forall(Expr escape | variableAddressEscapesTree(v.getAnAccess(), escape) |
+    isNonEscapingArgument(escape)
   ) and
   // There is no later use of `v`.
   not v.getAnAccess() = call.getASuccessor*() and
