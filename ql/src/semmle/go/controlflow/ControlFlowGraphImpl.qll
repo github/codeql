@@ -302,8 +302,11 @@ newtype TControlFlowNode =
     )
   } or
   /**
-   * A control-flow node that represents the implicit selection of a field when accessing a
-   * promoted field.
+   * A control-flow node that represents the implicit selection of a field when
+   * accessing a promoted field.
+   *
+   * If that field has a pointer type then this control-flow node also
+   * represents an implicit dereference of it.
    */
   MkImplicitFieldSelection(SelectorExpr e, int i, Field implicitField) {
     exists(Type baseType, StructType baseStructType, Field eField, int minDepth |
@@ -313,8 +316,12 @@ newtype TControlFlowNode =
       baseStructType.getFieldAtDepth(_, minDepth) = eField
     |
       baseStructType.getFieldAtDepth(_, i) = implicitField and
-      implicitField.getType().getUnderlyingType().(StructType).getFieldAtDepth(_, minDepth - i - 1) =
-        eField
+      exists(Type implicitFieldType, StructType implicitFieldStructType |
+        implicitFieldType = implicitField.getType().getUnderlyingType() and
+        implicitFieldStructType =
+          [implicitFieldType, implicitFieldType.(PointerType).getBaseType().getUnderlyingType()] and
+        implicitFieldStructType.getFieldAtDepth(_, minDepth - i - 1) = eField
+      )
     )
   } or
   /**

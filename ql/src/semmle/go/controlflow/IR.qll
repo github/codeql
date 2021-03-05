@@ -277,9 +277,15 @@ module IR {
         not exists(MkImplicitDeref(se.getBase())) and
         result = evalExprInstruction(se.getBase())
       else
-        exists(ImplicitFieldReadInstruction ifri |
+        exists(
+          ImplicitFieldReadInstruction ifri, Type implicitFieldType,
+          StructType implicitFieldStructType
+        |
           ifri.getSelectorExpr() = se and
-          ifri.getField().getType().getUnderlyingType().(StructType).getOwnField(_, _) = field
+          implicitFieldType = ifri.getField().getType().getUnderlyingType() and
+          implicitFieldStructType =
+            [implicitFieldType, implicitFieldType.(PointerType).getBaseType().getUnderlyingType()] and
+          implicitFieldStructType.getOwnField(_, _) = field
         |
           result = ifri
         )
@@ -339,7 +345,11 @@ module IR {
   }
 
   /**
-   * An IR instruction for an implicit field read as part of reading a promoted field.
+   * An IR instruction for an implicit field read as part of reading a
+   * promoted field.
+   *
+   * If that field has a pointer type then this instruction also represents an
+   * implicit dereference of it.
    */
   class ImplicitFieldReadInstruction extends Instruction, MkImplicitFieldSelection {
     SelectorExpr e;
@@ -353,7 +363,11 @@ module IR {
 
     override predicate reads(ValueEntity v) { v = implicitField }
 
-    override Type getResultType() { result = implicitField.getType() }
+    override Type getResultType() {
+      if implicitField.getType() instanceof PointerType
+      then result = implicitField.getType().(PointerType).getBaseType()
+      else result = implicitField.getType()
+    }
 
     override ControlFlow::Root getRoot() { result.isRootOf(e) }
 
