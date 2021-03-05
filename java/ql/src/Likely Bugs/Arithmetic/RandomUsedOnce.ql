@@ -12,10 +12,11 @@
  */
 
 import java
+import semmle.code.java.security.Random
 
 from MethodAccess ma, Method random
 where
-  random.getDeclaringType().hasQualifiedName("java.util", "Random") and
+  random.getDeclaringType() instanceof RandomNumberGenerator and
   ma.getMethod() = random and
   ma.getQualifier() instanceof ClassInstanceExpr
 select ma, "Random object created and used only once."

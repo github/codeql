@@ -2,15 +2,164 @@ import java
 import semmle.code.java.dataflow.DefUse
 import semmle.code.java.dataflow.DataFlow
 
-class SecureRandomNumberGenerator extends RefType {
+/**
+ * A class with methods that generate random data.
+ */
+abstract class RandomNumberGenerator extends RefType { }
+
+/**
+ * The `java.security.SecureRandom` class.
+ */
+class SecureRandomNumberGenerator extends RandomNumberGenerator {
   SecureRandomNumberGenerator() { this.hasQualifiedName("java.security", "SecureRandom") }
 }
 
-class GetRandomData extends MethodAccess {
-  GetRandomData() {
-    this.getMethod().getName().matches("next%") and
-    this.getQualifier().getType() instanceof SecureRandomNumberGenerator
+/**
+ * The `java.util.Random` class or any of its subtypes, including `java.security.SecureRandom`.
+ */
+class StdlibRandom extends RandomNumberGenerator {
+  StdlibRandom() { this.getAnAncestor().hasQualifiedName("java.util", "Random") }
+}
+
+/**
+ * The `org.apache.commons.lang3.RandomUtils` class.
+ */
+class ApacheRandomUtils extends RandomNumberGenerator {
+  ApacheRandomUtils() { this.hasQualifiedName("org.apache.commons.lang3", "RandomUtils") }
+}
+
+/**
+ * A method access that returns random data or writes random data to an argument.
+ */
+abstract class RandomDataSource extends MethodAccess {
+  RandomDataSource() {
+    exists(Method m | m = this.getMethod() |
+      m.getName().matches("next%") and
+      m.getDeclaringType() instanceof RandomNumberGenerator
+    )
   }
+
+  /**
+   * Gets the integer lower bound, inclusive, of the values returned by this call,
+   * if applicable to this method's type and a constant bound is known.
+   */
+  int getLowerBound() { result = this.getLowerBoundExpr().(CompileTimeConstantExpr).getIntValue() }
+
+  /**
+   * Gets the integer lower bound, inclusive, of the values returned by this call,
+   * if applicable to this method's type and a constant bound is known.
+   */
+  Expr getLowerBoundExpr() { none() }
+
+  /**
+   * Gets the integer upper bound, exclusive, of the values returned by this call,
+   * if applicable to this method's type and a constant bound is known.
+   */
+  int getUpperBound() { result = this.getUpperBoundExpr().(CompileTimeConstantExpr).getIntValue() }
+
+  /**
+   * Gets the integer upper bound, exclusive, of the values returned by this call,
+   * if applicable to this method's type and a constant bound is known.
+   */
+  Expr getUpperBoundExpr() { none() }
+
+  /**
+   * Holds if this source of random data may return bounded values (e.g. integers between 1 and 10).
+   * If it does not hold, it may return any value in the range of its result type (e.g., any possible integer).
+   */
+  predicate resultMayBeBounded() { none() }
+
+  /**
+   * Gets the result of this source of randomness: either the method access itself, or some argument
+   * in the case where it writes random data to that argument.
+   */
+  abstract Expr getOutput();
+}
+
+/**
+ * A method access calling a method declared on `java.util.Random`
+ * that returns random data or writes random data to an argument.
+ */
+class StdlibRandomSource extends RandomDataSource {
+  Method m;
+
+  StdlibRandomSource() {
+    m = this.getMethod() and
+    m.getDeclaringType() instanceof StdlibRandom
+  }
+
+  override int getLowerBound() {
+    // If this call is to `nextInt(int)`, the lower bound is zero.
+    m.hasName("nextInt") and
+    m.getNumberOfParameters() = 1 and
+    result = 0
+  }
+
+  override Expr getUpperBoundExpr() {
+    // If this call is to `nextInt(int)`, the upper bound is the first argument.
+    m.hasName("nextInt") and
+    m.getNumberOfParameters() = 1 and
+    result = this.getArgument(0)
+  }
+
+  override predicate resultMayBeBounded() {
+    // `next` may be restricted by its `bits` argument,
+    // `nextBoolean` can't possibly be usefully bounded,
+    // `nextDouble` and `nextFloat` are between 0 and 1,
+    // `nextGaussian` is extremely unlikely to hit max values.
+    m.hasName(["next", "nextBoolean", "nextDouble", "nextFloat", "nextGaussian"])
+    or
+    m.hasName(["nextInt", "nextLong"]) and
+    m.getNumberOfParameters() = 1
+  }
+
+  override Expr getOutput() {
+    if m.hasName("getBytes") then result = this.getArgument(0) else result = this
+  }
+}
+
+/**
+ * A method access calling a method declared on `org.apache.commons.lang3.RandomUtils`
+ * that returns random data or writes random data to an argument.
+ */
+class ApacheCommonsRandomSource extends RandomDataSource {
+  Method m;
+
+  ApacheCommonsRandomSource() {
+    m = this.getMethod() and
+    m.getDeclaringType() instanceof ApacheRandomUtils
+  }
+
+  override Expr getLowerBoundExpr() {
+    // If this call is to `nextInt(int, int)` or `nextLong(long, long)`, the lower bound is the first argument.
+    m.hasName(["nextInt", "nextLong"]) and
+    m.getNumberOfParameters() = 2 and
+    result = this.getArgument(0)
+  }
+
+  override Expr getUpperBoundExpr() {
+    // If this call is to `nextInt(int, int)` or `nextLong(long, long)`, the upper bound is the second argument.
+    m.hasName(["nextInt", "nextLong"]) and
+    m.getNumberOfParameters() = 2 and
+    result = this.getArgument(1)
+  }
+
+  override predicate resultMayBeBounded() {
+    m.hasName(["nextDouble", "nextFloat"])
+    or
+    m.hasName(["nextInt", "nextLong"]) and
+    m.getNumberOfParameters() = 2
+  }
+
+  override Expr getOutput() { result = this }
+}
+
+/**
+ * A method access calling a method declared on `java.security.SecureRandom`
+ * that returns random data or writes random data to an argument.
+ */
+class GetRandomData extends StdlibRandomSource {
+  GetRandomData() { this.getQualifier().getType() instanceof SecureRandomNumberGenerator }
 }
 
 private predicate isSeeded(RValue use) {

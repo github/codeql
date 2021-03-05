@@ -68,6 +68,7 @@ private import SSA
 private import RangeUtils
 private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
 private import semmle.code.java.controlflow.internal.GuardsLogic
+private import semmle.code.java.security.Random
 private import SignAnalysis
 private import ModulusAnalysis
 private import semmle.code.java.Reflection
@@ -486,14 +487,17 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
   or
   e2.(AssignOrExpr).getSource() = e1 and positive(e2) and delta = 0 and upper = false
   or
-  exists(MethodAccess ma, Method m |
-    e2 = ma and
-    ma.getMethod() = m and
-    m.hasName("nextInt") and
-    m.getDeclaringType().hasQualifiedName("java.util", "Random") and
-    e1 = ma.getAnArgument() and
-    delta = -1 and
-    upper = true
+  exists(RandomDataSource rds |
+    e2 = rds.getOutput() and
+    (
+      e1 = rds.getUpperBoundExpr() and
+      delta = -1 and
+      upper = true
+      or
+      e1 = rds.getLowerBoundExpr() and
+      delta = 0 and
+      upper = false
+    )
   )
   or
   exists(MethodAccess ma, Method m |

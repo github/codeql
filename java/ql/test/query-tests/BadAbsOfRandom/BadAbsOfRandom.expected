@@ -1,0 +1,4 @@
+| Test.java:9:5:9:25 | abs(...) | Incorrect computation of abs of signed integral random value. |
+| Test.java:10:5:10:26 | abs(...) | Incorrect computation of abs of signed integral random value. |
+| Test.java:13:5:13:35 | abs(...) | Incorrect computation of abs of signed integral random value. |
+| Test.java:14:5:14:36 | abs(...) | Incorrect computation of abs of signed integral random value. |
