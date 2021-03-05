@@ -113,12 +113,8 @@ private predicate constructorHasEffect(Constructor c) {
   or
   exists(Assignment a | a.getEnclosingCallable() = c |
     not exists(VarAccess va | va = a.getDest() |
-      va.getVariable() instanceof LocalVariableDecl
-      or
-      exists(Field f | f = va.getVariable() |
-        va.getQualifier() instanceof ThisAccess or
-        not exists(va.getQualifier())
-      )
+      va.getVariable() instanceof LocalVariableDecl or
+      va.(FieldAccess).isOwnFieldAccess()
     )
   )
 }
