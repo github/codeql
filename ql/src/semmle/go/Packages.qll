@@ -32,9 +32,10 @@ class Package extends @package {
  * For example, `package("github.com/go-pg/pg", "types")` gets an import path that can
  * refer to `"github.com/go-pg/pg/types"`, but also to `"github.com/go-pg/pg/v10/types"`.
  */
-bindingset[result, mod, path]
+bindingset[mod, path]
 string package(string mod, string path) {
   // "\Q" and "\E" start and end a quoted section of a regular expression. Anything like "." or "*" that
   // "*" that comes between them is not interpreted as it would normally be in a regular expression.
-  result.regexpMatch("\\Q" + mod + "\\E([/.]v[^/]+)?($|/)\\Q" + path + "\\E")
+  result.regexpMatch("\\Q" + mod + "\\E([/.]v[^/]+)?($|/)\\Q" + path + "\\E") and
+  result = any(Package p).getPath()
 }
