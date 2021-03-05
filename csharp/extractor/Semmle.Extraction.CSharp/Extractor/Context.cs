@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp
             return cachedModel;
         }
 
-        private SemanticModel cachedModel;
+        private SemanticModel? cachedModel;
 
         /// <summary>
         /// The current compilation unit.
@@ -51,7 +51,7 @@ namespace Semmle.Extraction.CSharp
 
         public bool IsAssemblyScope => scope is AssemblyScope;
 
-        private SyntaxTree SourceTree => scope is SourceScope sc ? sc.SourceTree : null;
+        private SyntaxTree? SourceTree => scope is SourceScope sc ? sc.SourceTree : null;
 
         /// <summary>
         ///     Whether the given symbol needs to be defined in this context.
@@ -85,7 +85,7 @@ namespace Semmle.Extraction.CSharp
                 : CreateLocation(Microsoft.CodeAnalysis.Location.Create(SourceTree, Microsoft.CodeAnalysis.Text.TextSpan.FromBounds(0, 0)));
         }
 
-        public override Extraction.Entities.Location CreateLocation(Microsoft.CodeAnalysis.Location location)
+        public override Extraction.Entities.Location CreateLocation(Microsoft.CodeAnalysis.Location? location)
         {
             return (location == null || location.Kind == LocationKind.None)
                 ? GeneratedLocation.Create(this)
@@ -100,13 +100,13 @@ namespace Semmle.Extraction.CSharp
         /// <param name="cx">Extractor context.</param>
         /// <param name="entity">Program entity.</param>
         /// <param name="l">Location of the entity.</param>
-        public void BindComments(Entity entity, Microsoft.CodeAnalysis.Location l)
+        public void BindComments(Entity entity, Microsoft.CodeAnalysis.Location? l)
         {
             var duplicationGuardKey = GetCurrentTagStackKey();
             CommentGenerator.AddElement(entity.Label, duplicationGuardKey, l);
         }
 
-        protected override bool IsEntityDuplicationGuarded(IEntity entity, [NotNullWhen(true)] out Extraction.Entities.Location loc)
+        protected override bool IsEntityDuplicationGuarded(IEntity entity, [NotNullWhen(true)] out Extraction.Entities.Location? loc)
         {
             if (CreateLocation(entity.ReportingLocation) is Entities.NonGeneratedSourceLocation l)
             {

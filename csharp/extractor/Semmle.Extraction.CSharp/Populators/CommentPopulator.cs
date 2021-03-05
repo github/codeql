@@ -63,7 +63,7 @@ namespace Semmle.Extraction.CSharp.Populators
                             trimmedLine = trimmedLine.Trim();
 
                             var span = Microsoft.CodeAnalysis.Text.TextSpan.FromBounds(currentLocation, currentLocation + fullLine.Length);
-                            var location = Microsoft.CodeAnalysis.Location.Create(trivia.SyntaxTree, span);
+                            var location = Microsoft.CodeAnalysis.Location.Create(trivia.SyntaxTree!, span);
                             var commentType = CommentLineType.XmlDoc;
                             cx.CommentGenerator.AddComment(CommentLine.Create(cx, location, commentType, trimmedLine, fullLine));
                         }
@@ -110,7 +110,7 @@ namespace Semmle.Extraction.CSharp.Populators
                         trimmedLine = trimmedLine.Trim();
 
                         var span = Microsoft.CodeAnalysis.Text.TextSpan.FromBounds(currentLocation, currentLocation + fullLine.Length);
-                        var location = Microsoft.CodeAnalysis.Location.Create(trivia.SyntaxTree, span);
+                        var location = Microsoft.CodeAnalysis.Location.Create(trivia.SyntaxTree!, span);
                         var commentType = line == 0 ? CommentLineType.Multiline : CommentLineType.MultilineContinuation;
                         cx.CommentGenerator.AddComment(CommentLine.Create(cx, location, commentType, trimmedLine, fullLine));
                         currentLocation = nextLineLocation;

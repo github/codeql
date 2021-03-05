@@ -57,7 +57,7 @@ namespace Semmle.Extraction.CSharp.Entities
             type.PopulateGenerics();
         }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => Location.Symbol;
+        public override Location? ReportingLocation => Location.Symbol;
 
         bool IExpressionParentEntity.IsTopLevelParent => false;
 
@@ -66,7 +66,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         /// <param name="obj">The value.</param>
         /// <returns>The string representation.</returns>
-        public static string ValueAsString(object value)
+        public static string ValueAsString(object? value)
         {
             return value == null
                 ? "null"
@@ -74,7 +74,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     ? b
                         ? "true"
                         : "false"
-                    : value.ToString();
+                    : value.ToString()!;
         }
 
         /// <summary>
@@ -118,10 +118,11 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// Creates a generated expression from a typed constant.
         /// </summary>
-        public static Expression CreateGenerated(Context cx, TypedConstant constant, IExpressionParentEntity parent,
-            int childIndex, Semmle.Extraction.Entities.Location location)
+        public static Expression? CreateGenerated(Context cx, TypedConstant constant, IExpressionParentEntity parent,
+            int childIndex, Extraction.Entities.Location location)
         {
-            if (constant.IsNull)
+            if (constant.IsNull ||
+                constant.Type is null)
             {
                 return Literal.CreateGeneratedNullLiteral(cx, parent, childIndex, location);
             }
@@ -132,11 +133,11 @@ namespace Semmle.Extraction.CSharp.Entities
                     return Literal.CreateGenerated(cx, parent, childIndex, constant.Type, constant.Value, location);
                 case TypedConstantKind.Enum:
                     // Enum value is generated in the following format: (Enum)value
-                    Action<Expression, int> createChild = (parent, index) => Literal.CreateGenerated(cx, parent, index, ((INamedTypeSymbol)constant.Type).EnumUnderlyingType, constant.Value, location);
-                    var cast = Cast.CreateGenerated(cx, parent, childIndex, constant.Type, constant.Value, createChild, location);
+                    Action<Expression, int> createChild = (parent, index) => Literal.CreateGenerated(cx, parent, index, ((INamedTypeSymbol)constant.Type).EnumUnderlyingType!, constant.Value, location);
+                    var cast = Cast.CreateGenerated(cx, parent, childIndex, constant.Type!, constant.Value, createChild, location);
                     return cast;
                 case TypedConstantKind.Type:
-                    var type = ((ITypeSymbol)constant.Value).OriginalDefinition;
+                    var type = ((ITypeSymbol)constant.Value!).OriginalDefinition;
                     return TypeOf.CreateGenerated(cx, parent, childIndex, type, location);
                 case TypedConstantKind.Array:
                     // Single dimensional arrays are in the following format:
@@ -145,6 +146,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     //
                     // itemI is generated recursively.
                     return NormalArrayCreation.CreateGenerated(cx, parent, childIndex, constant.Type, constant.Values, location);
+                case TypedConstantKind.Error:
                 default:
                     cx.ExtractionError("Couldn't extract constant in attribute", constant.ToString(), location);
                     return null;
@@ -242,7 +244,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <returns>The qualifier of the conditional access.</returns>
         protected static ExpressionSyntax FindConditionalQualifier(ExpressionSyntax node)
         {
-            for (SyntaxNode n = node; n != null; n = n.Parent)
+            for (SyntaxNode? n = node; n != null; n = n.Parent)
             {
                 if (n.Parent is ConditionalAccessExpressionSyntax conditionalAccess &&
                     conditionalAccess.WhenNotNull == n)

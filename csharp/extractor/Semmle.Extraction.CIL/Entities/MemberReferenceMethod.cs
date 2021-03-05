@@ -19,11 +19,11 @@ namespace Semmle.Extraction.CIL.Entities
         {
             this.handle = handle;
             this.gc = gc;
-            mr = Cx.MdReader.GetMemberReference(handle);
+            mr = Context.MdReader.GetMemberReference(handle);
 
             signature = mr.DecodeMethodSignature(new SignatureDecoder(), gc);
 
-            parent = (IGenericContext)Cx.CreateGeneric(gc, mr.Parent);
+            parent = (IGenericContext)Context.CreateGeneric(gc, mr.Parent);
 
             var declType = parent is Method parentMethod
                 ? parentMethod.DeclaringType
@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CIL.Entities
                 throw new InternalError("Parent context of method is not a type");
 
             declaringType = declType;
-            nameLabel = Cx.GetString(mr.Name);
+            nameLabel = Context.GetString(mr.Name);
 
             var typeSourceDeclaration = declaringType.SourceDeclaration;
             sourceDeclaration = typeSourceDeclaration == declaringType ? (Method)this : typeSourceDeclaration.LookupMethod(mr.Name, mr.Signature);
@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override Type DeclaringType => declaringType;
 
-        public override string Name => Cx.ShortName(mr.Name);
+        public override string Name => Context.ShortName(mr.Name);
 
         public override IEnumerable<Type> TypeParameters => parent.TypeParameters.Concat(gc.TypeParameters);
 
@@ -69,12 +69,12 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 genericParams = new MethodTypeParameter[signature.GenericParameterCount];
                 for (var p = 0; p < genericParams.Length; ++p)
-                    genericParams[p] = Cx.Populate(new MethodTypeParameter(this, this, p));
+                    genericParams[p] = Context.Populate(new MethodTypeParameter(this, this, p));
 
                 foreach (var p in genericParams)
                     yield return p;
 
-                var typeSignature = mr.DecodeMethodSignature(Cx.TypeSignatureDecoder, this);
+                var typeSignature = mr.DecodeMethodSignature(Context.TypeSignatureDecoder, this);
 
                 var parameters = GetParameterExtractionProducts(typeSignature.ParameterTypes).ToArray();
                 Parameters = parameters.OfType<Parameter>().ToArray();

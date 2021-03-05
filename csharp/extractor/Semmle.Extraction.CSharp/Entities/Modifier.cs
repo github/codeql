@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CSharp.Entities
         private Modifier(Context cx, string init)
             : base(cx, init) { }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => null;
+        public override Location? ReportingLocation => null;
 
         public override void WriteId(TextWriter trapFile)
         {

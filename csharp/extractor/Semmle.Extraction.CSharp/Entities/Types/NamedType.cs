@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (Symbol.TypeKind == TypeKind.Error)
             {
-                Context.Extractor.MissingType(Symbol.ToString(), Context.FromSource);
+                Context.Extractor.MissingType(Symbol.ToString()!, Context.FromSource);
                 return;
             }
 
@@ -108,7 +108,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 foreach (var l in GetLocations(Symbol))
                     yield return Context.CreateLocation(l);
 
-                if (Context.Extractor.OutputPath != null && Symbol.DeclaringSyntaxReferences.Any())
+                if (!Context.Extractor.Standalone && Symbol.DeclaringSyntaxReferences.Any())
                     yield return Assembly.CreateOutputAssembly(Context);
             }
         }
@@ -124,7 +124,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 );
         }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => GetLocations(Symbol).FirstOrDefault();
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => GetLocations(Symbol).FirstOrDefault();
 
         private bool IsAnonymousType() => Symbol.IsAnonymousType || Symbol.Name.Contains("__AnonymousType");
 

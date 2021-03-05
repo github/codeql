@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             trapFile.Write(FullName);
             trapFile.Write("#file:///");
-            trapFile.Write(Cx.AssemblyPath.Replace("\\", "/"));
+            trapFile.Write(Context.AssemblyPath.Replace("\\", "/"));
             trapFile.Write(";assembly");
         }
 
@@ -56,24 +56,24 @@ namespace Semmle.Extraction.CIL.Entities
                 yield return file;
                 yield return Tuples.assemblies(this, file, FullName, assemblyName.Name ?? string.Empty, assemblyName.Version?.ToString() ?? string.Empty);
 
-                if (Cx.Pdb != null)
+                if (Context.Pdb != null)
                 {
-                    foreach (var f in Cx.Pdb.SourceFiles)
+                    foreach (var f in Context.Pdb.SourceFiles)
                     {
-                        yield return Cx.CreateSourceFile(f);
+                        yield return Context.CreateSourceFile(f);
                     }
                 }
 
-                foreach (var handle in Cx.MdReader.TypeDefinitions)
+                foreach (var handle in Context.MdReader.TypeDefinitions)
                 {
                     IExtractionProduct? product = null;
                     try
                     {
-                        product = Cx.Create(handle);
+                        product = Context.Create(handle);
                     }
                     catch (InternalError e)
                     {
-                        Cx.ExtractionError("Error processing type definition", e.Message, GeneratedLocation.Create(Cx), e.StackTrace);
+                        Context.ExtractionError("Error processing type definition", e.Message, GeneratedLocation.Create(Context), e.StackTrace);
                     }
 
                     // Limitation of C#: Cannot yield return inside a try-catch.
@@ -81,16 +81,16 @@ namespace Semmle.Extraction.CIL.Entities
                         yield return product;
                 }
 
-                foreach (var handle in Cx.MdReader.MethodDefinitions)
+                foreach (var handle in Context.MdReader.MethodDefinitions)
                 {
                     IExtractionProduct? product = null;
                     try
                     {
-                        product = Cx.Create(handle);
+                        product = Context.Create(handle);
                     }
                     catch (InternalError e)
                     {
-                        Cx.ExtractionError("Error processing bytecode", e.Message, GeneratedLocation.Create(Cx), e.StackTrace);
+                        Context.ExtractionError("Error processing bytecode", e.Message, GeneratedLocation.Create(Context), e.StackTrace);
                     }
 
                     if (product != null)

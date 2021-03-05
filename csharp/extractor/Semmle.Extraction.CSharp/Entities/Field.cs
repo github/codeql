@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             PopulateMetadataHandle(trapFile);
             PopulateAttributes();
-            ContainingType.PopulateGenerics();
+            ContainingType!.PopulateGenerics();
             PopulateNullability(trapFile, Symbol.GetAnnotatedType());
 
             var unboundFieldKey = Field.Create(Context, Symbol.OriginalDefinition);
@@ -67,7 +67,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     var loc = Context.CreateLocation(initializer.GetLocation());
 
-                    var fieldAccess = AddInitializerAssignment(trapFile, initializer.Initializer.Value, loc, null, ref child);
+                    var fieldAccess = AddInitializerAssignment(trapFile, initializer.Initializer!.Value, loc, null, ref child);
 
                     if (!Symbol.IsStatic)
                     {
@@ -88,7 +88,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 var loc = Context.CreateLocation(initializer.GetLocation());
 
-                AddInitializerAssignment(trapFile, initializer.EqualsValue.Value, loc, constValue, ref child);
+                AddInitializerAssignment(trapFile, initializer.EqualsValue!.Value, loc, constValue, ref child);
             }
 
             if (IsSourceDeclaration)
@@ -105,7 +105,7 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         private Expression AddInitializerAssignment(TextWriter trapFile, ExpressionSyntax initializer, Extraction.Entities.Location loc,
-            string constValue, ref int child)
+            string? constValue, ref int child)
         {
             var type = Symbol.GetAnnotatedType();
             var simpleAssignExpr = new Expression(new ExpressionInfo(Context, type, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, constValue));
@@ -122,7 +122,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             trapFile.WriteSubId(Type);
             trapFile.Write(" ");
-            trapFile.WriteSubId(ContainingType);
+            trapFile.WriteSubId(ContainingType!);
             trapFile.Write('.');
             trapFile.Write(Symbol.Name);
             trapFile.Write(";field");

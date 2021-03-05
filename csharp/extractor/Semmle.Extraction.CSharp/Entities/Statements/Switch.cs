@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         // Sometimes, the literal "null" is used as a label.
         // This is inconveniently represented by the "null" object.
         // This cannot be stored in a Dictionary<>, so substitute an object which can be.
-        public static object LabelForValue(object label)
+        public static object LabelForValue(object? label)
         {
             return label ?? nullLabel;
         }

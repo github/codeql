@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             if (target == null && symbolInfo.CandidateReason == CandidateReason.OverloadResolutionFailure)
             {
                 // The expression is probably a cast
-                target = info.Context.GetSymbolInfo((CSharpSyntaxNode)info.Node.Parent).Symbol;
+                target = info.Context.GetSymbolInfo((CSharpSyntaxNode)info.Node.Parent!).Symbol;
             }
 
             if (target == null && (symbolInfo.CandidateReason == CandidateReason.Ambiguous || symbolInfo.CandidateReason == CandidateReason.MemberGroup))

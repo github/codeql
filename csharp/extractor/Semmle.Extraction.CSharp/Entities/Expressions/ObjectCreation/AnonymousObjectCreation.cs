@@ -18,22 +18,25 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         protected override void PopulateExpression(TextWriter trapFile)
         {
             var target = Context.GetSymbolInfo(Syntax);
-            var method = (IMethodSymbol)target.Symbol;
-
+            var method = (IMethodSymbol?)target.Symbol;
             if (method != null)
             {
                 trapFile.expr_call(this, Method.Create(Context, method));
             }
+
             var child = 0;
 
-            var objectInitializer = Syntax.Initializers.Any() ?
-                new Expression(new ExpressionInfo(Context, Type, Location, ExprKind.OBJECT_INIT, this, -1, false, null)) :
-                null;
+            if (!Syntax.Initializers.Any())
+            {
+                return;
+            }
+
+            var objectInitializer = new Expression(new ExpressionInfo(Context, Type, Location, ExprKind.OBJECT_INIT, this, -1, false, null));
 
             foreach (var init in Syntax.Initializers)
             {
                 // Create an "assignment"
-                var property = Context.GetModel(init).GetDeclaredSymbol(init);
+                var property = Context.GetModel(init).GetDeclaredSymbol(init)!;
                 var propEntity = Property.Create(Context, property);
                 var type = property.GetAnnotatedType();
                 var loc = Context.CreateLocation(init.GetLocation());

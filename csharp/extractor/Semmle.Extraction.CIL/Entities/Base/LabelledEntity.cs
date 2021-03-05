@@ -10,8 +10,7 @@ namespace Semmle.Extraction.CIL
     /// </summary>
     internal abstract class LabelledEntity : Extraction.LabelledEntity, IExtractedEntity
     {
-        // todo: with .NET 5 this can override the base context, and change the return type.
-        public Context Cx => (Context)base.Context;
+        public override Context Context => (Context)base.Context;
 
         protected LabelledEntity(Context cx) : base(cx)
         {

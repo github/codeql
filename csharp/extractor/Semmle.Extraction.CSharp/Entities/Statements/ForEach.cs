@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             Expression.Create(Context, Stmt.Expression, this, 1);
 
             var semanticModel = Context.GetModel(Stmt);
-            var typeSymbol = semanticModel.GetDeclaredSymbol(Stmt);
+            var typeSymbol = semanticModel.GetDeclaredSymbol(Stmt)!;
             var type = typeSymbol.GetAnnotatedType();
 
             var location = Context.CreateLocation(Stmt.Identifier.GetLocation());

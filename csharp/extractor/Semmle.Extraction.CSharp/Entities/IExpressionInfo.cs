@@ -46,7 +46,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// If the expression does not have a value, then this
         /// is null.
         /// </summary>
-        string ExprValue { get; }
+        string? ExprValue { get; }
 
         NullableFlowState FlowState { get; }
     }

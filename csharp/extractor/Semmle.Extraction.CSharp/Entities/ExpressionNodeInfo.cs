@@ -74,7 +74,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        private Microsoft.CodeAnalysis.Location location;
+        private Microsoft.CodeAnalysis.Location? location;
 
         public Microsoft.CodeAnalysis.Location CodeAnalysisLocation
         {
@@ -92,7 +92,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public SemanticModel Model => Context.GetModel(Node);
 
-        public string ExprValue
+        public string? ExprValue
         {
             get
             {
@@ -111,7 +111,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        private Extraction.Entities.Location cachedLocation;
+        private Extraction.Entities.Location? cachedLocation;
 
         public Extraction.Entities.Location Location
         {

@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                var constructor = (Method)Cx.Create(attrib.Constructor);
+                var constructor = (Method)Context.Create(attrib.Constructor);
                 yield return constructor;
 
                 yield return Tuples.cil_attribute(this, @object, constructor);
@@ -41,11 +41,11 @@ namespace Semmle.Extraction.CIL.Entities
 
                 try
                 {
-                    decoded = attrib.DecodeValue(new CustomAttributeDecoder(Cx));
+                    decoded = attrib.DecodeValue(new CustomAttributeDecoder(Context));
                 }
                 catch
                 {
-                    Cx.Extractor.Logger.Log(Util.Logging.Severity.Info,
+                    Context.Extractor.Logger.Log(Util.Logging.Severity.Info,
                         $"Attribute decoding is partial. Decoding attribute {constructor.DeclaringType.GetQualifiedName()} failed on {@object}.");
                     yield break;
                 }

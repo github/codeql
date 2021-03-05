@@ -25,9 +25,11 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
+#nullable disable warnings
         private Compilation(Context cx) : base(cx, null)
         {
         }
+#nullable restore warnings
 
         public override void Populate(TextWriter trapFile)
         {
@@ -54,7 +56,8 @@ namespace Semmle.Extraction.CSharp.Entities
             index = 0;
             foreach (var file in Context.Compilation.References
                 .OfType<PortableExecutableReference>()
-                .Select(r => File.Create(Context, r.FilePath)))
+                .Where(r => r.FilePath is object)
+                .Select(r => File.Create(Context, r.FilePath!)))
             {
                 trapFile.compilation_referencing_files(this, index++, file);
             }
@@ -90,11 +93,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => Context.IsAssemblyScope;
 
-        private class CompilationFactory : CachedEntityFactory<object, Compilation>
+        private class CompilationFactory : CachedEntityFactory<object?, Compilation>
         {
             public static CompilationFactory Instance { get; } = new CompilationFactory();
 
-            public override Compilation Create(Context cx, object init) => new Compilation(cx);
+            public override Compilation Create(Context cx, object? init) => new Compilation(cx);
         }
 
         private static readonly object compilationCacheKey = new object();

@@ -10,9 +10,10 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal abstract class Type : CachedSymbol<ITypeSymbol>
     {
-        protected Type(Context cx, ITypeSymbol init)
+#nullable disable warnings
+        protected Type(Context cx, ITypeSymbol? init)
             : base(cx, init) { }
-
+#nullable restore warnings
 
         public override bool NeedsPopulation =>
             base.NeedsPopulation || Symbol.TypeKind == TypeKind.Dynamic || Symbol.TypeKind == TypeKind.TypeParameter;
@@ -132,7 +133,7 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 // This is a delegate.
                 // The method "Invoke" has the return type.
-                var invokeMethod = ((INamedTypeSymbol)Symbol).DelegateInvokeMethod;
+                var invokeMethod = ((INamedTypeSymbol)Symbol).DelegateInvokeMethod!;
                 ExtractParametersForDelegateLikeType(trapFile, invokeMethod,
                     t => trapFile.delegate_return_type(this, t));
             }
@@ -155,7 +156,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 baseLists
                     .Where(bl => bl != null)
-                    .SelectMany(bl => bl.Types)
+                    .SelectMany(bl => bl!.Types)
                     .Zip(
                         baseTypes.Where(bt => bt.Symbol.SpecialType != SpecialType.System_Object),
                         (s, t) => TypeMention.Create(Context, s.Type, this, t))
@@ -258,7 +259,7 @@ namespace Semmle.Extraction.CSharp.Entities
             ExtractRecursive();
         }
 
-        public static Type Create(Context cx, ITypeSymbol type)
+        public static Type Create(Context cx, ITypeSymbol? type)
         {
             type = type.DisambiguateType();
             return type == null
@@ -271,7 +272,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public virtual int Dimension => 0;
 
-        public static bool IsDelegate(ITypeSymbol symbol) =>
+        public static bool IsDelegate(ITypeSymbol? symbol) =>
             symbol != null && symbol.TypeKind == TypeKind.Delegate;
 
         /// <summary>
@@ -279,19 +280,19 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         private class DelegateTypeParameter : Parameter
         {
-            private DelegateTypeParameter(Context cx, IParameterSymbol init, IEntity parent, Parameter original)
+            private DelegateTypeParameter(Context cx, IParameterSymbol init, IEntity parent, Parameter? original)
                 : base(cx, init, parent, original) { }
 
-            public static new DelegateTypeParameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter original = null) =>
+            public static new DelegateTypeParameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter? original = null) =>
                // We need to use a different cache key than `param` to avoid mixing up
                // `DelegateTypeParameter`s and `Parameter`s
                DelegateTypeParameterFactory.Instance.CreateEntity(cx, (typeof(DelegateTypeParameter), new SymbolEqualityWrapper(param)), (param, parent, original));
 
-            private class DelegateTypeParameterFactory : CachedEntityFactory<(IParameterSymbol, IEntity, Parameter), DelegateTypeParameter>
+            private class DelegateTypeParameterFactory : CachedEntityFactory<(IParameterSymbol, IEntity, Parameter?), DelegateTypeParameter>
             {
                 public static DelegateTypeParameterFactory Instance { get; } = new DelegateTypeParameterFactory();
 
-                public override DelegateTypeParameter Create(Context cx, (IParameterSymbol, IEntity, Parameter) init) =>
+                public override DelegateTypeParameter Create(Context cx, (IParameterSymbol, IEntity, Parameter?) init) =>
                     new DelegateTypeParameter(cx, init.Item1, init.Item2, init.Item3);
             }
         }
@@ -312,7 +313,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             var other = obj as Type;
             return other?.GetType() == GetType() && SymbolEqualityComparer.Default.Equals(other.Symbol, Symbol);
@@ -326,7 +327,6 @@ namespace Semmle.Extraction.CSharp.Entities
         protected Type(Context cx, T init)
             : base(cx, init) { }
 
-        // todo: change this with .net 5 to be an override
         public new T Symbol => (T)base.Symbol;
     }
 }

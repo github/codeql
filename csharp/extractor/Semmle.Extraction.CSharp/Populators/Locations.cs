@@ -58,21 +58,21 @@ namespace Semmle.Extraction.CSharp.Populators
                 case SyntaxKind.DelegateDeclaration:
                     {
                         var decl = (DelegateDeclarationSyntax)node;
-                        return decl.Identifier.GetLocation().ExtendLocation(decl.TypeParameterList);
+                        return decl.Identifier.GetLocation().ExtendLocation(decl.TypeParameterList!);
                     }
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.StructDeclaration:
                 case SyntaxKind.InterfaceDeclaration:
                     {
                         var decl = (TypeDeclarationSyntax)node;
-                        return decl.Identifier.GetLocation().ExtendLocation(decl.TypeParameterList);
+                        return decl.Identifier.GetLocation().ExtendLocation(decl.TypeParameterList!);
                     }
                 case SyntaxKind.EnumDeclaration:
                     return ((EnumDeclarationSyntax)node).Identifier.GetLocation();
                 case SyntaxKind.MethodDeclaration:
                     {
                         var decl = (MethodDeclarationSyntax)node;
-                        return decl.Identifier.GetLocation().ExtendLocation(decl.TypeParameterList);
+                        return decl.Identifier.GetLocation().ExtendLocation(decl.TypeParameterList!);
                     }
                 case SyntaxKind.ConstructorDeclaration:
                     {

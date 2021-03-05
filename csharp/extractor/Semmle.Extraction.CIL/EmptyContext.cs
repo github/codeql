@@ -9,10 +9,10 @@ namespace Semmle.Extraction.CIL
     {
         public EmptyContext(Context cx)
         {
-            Cx = cx;
+            Context = cx;
         }
 
-        public Context Cx { get; }
+        public Context Context { get; }
 
         public IEnumerable<Entities.Type> TypeParameters { get { yield break; } }
 

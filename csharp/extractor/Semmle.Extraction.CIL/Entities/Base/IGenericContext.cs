@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CIL
     /// </summary>
     internal interface IGenericContext
     {
-        Context Cx { get; }
+        Context Context { get; }
 
         /// <summary>
         /// The list of generic type parameters/arguments, including type parameters/arguments of
