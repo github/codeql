@@ -42,19 +42,19 @@ public class Test {
   public static void test1() {
     Test t = new Test();
     t.fluentNoop().fluentSet(source()).fluentNoop();
-    sink(t.get()); // $hasTaintFlow=y
+    sink(t.get()); // $hasTaintFlow
   }
 
   public static void test2() {
     Test t = new Test();
     Test.identity(t).fluentNoop().fluentSet(source()).fluentNoop();
-    sink(t.get()); // $hasTaintFlow=y
+    sink(t.get()); // $hasTaintFlow
   }
 
   public static void test3() {
     Test t = new Test();
     t.indirectlyFluentNoop().fluentSet(source()).fluentNoop();
-    sink(t.get()); // $hasTaintFlow=y
+    sink(t.get()); // $hasTaintFlow
   }
 
   public static void testModel1() {
