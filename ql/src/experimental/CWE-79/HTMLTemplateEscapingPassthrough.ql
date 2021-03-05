@@ -14,6 +14,8 @@ import DataFlow::PathGraph
 
 /**
  * Holds if the provided src node flows into a conversion to a PassthroughType.
+ * The `targetType` parameter gets populated with the name of the PassthroughType,
+ * and `conversionSink` with the node where the conversion happens.
  */
 predicate isConvertedToPassthroughType(
   DataFlow::Node src, string targetType, DataFlow::PathNode conversionSink
@@ -26,11 +28,11 @@ predicate isConvertedToPassthroughType(
 }
 
 /**
- * Gets the names of the types that will not be escaped when passed to
+ * Provides the names of the types that will not be escaped when passed to
  * a `html/template` template.
  */
-string getAPassthroughTypeName() {
-  result = ["HTML", "HTMLAttr", "JS", "JSStr", "CSS", "Srcset", "URL"]
+class PassthroughTypeName extends string {
+  PassthroughTypeName() { this = ["HTML", "HTMLAttr", "JS", "JSStr", "CSS", "Srcset", "URL"] }
 }
 
 /**
@@ -43,7 +45,7 @@ class ConversionFlowToPassthroughTypeConf extends TaintTracking::Configuration {
   string dstTypeName;
 
   ConversionFlowToPassthroughTypeConf() {
-    dstTypeName = getAPassthroughTypeName() and
+    dstTypeName instanceof PassthroughTypeName and
     this = "UnsafeConversion" + dstTypeName
   }
 
@@ -55,7 +57,7 @@ class ConversionFlowToPassthroughTypeConf extends TaintTracking::Configuration {
     exists(Type typ |
       typ = sink.getResultType() and
       typ.getUnderlyingType*().hasQualifiedName("html/template", name) and
-      name = getAPassthroughTypeName()
+      name instanceof PassthroughTypeName
     )
   }
 
@@ -63,7 +65,7 @@ class ConversionFlowToPassthroughTypeConf extends TaintTracking::Configuration {
 }
 
 /**
- * Holds if the the sink is a data value argument of a template execution call.
+ * Holds if the sink is a data value argument of a template execution call.
  */
 predicate isSinkToTemplateExec(DataFlow::Node sink, DataFlow::CallNode call) {
   exists(Method fn, string methodName |
