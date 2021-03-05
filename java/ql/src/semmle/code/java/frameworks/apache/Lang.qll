@@ -376,3 +376,23 @@ private class ApacheStrSubstitutorModel extends SummaryModelCsv {
       ]
   }
 }
+
+/**
+ * Taint-propagating models for `RegexUtils`.
+ */
+private class ApacheRegExUtilsModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.apache.commons.lang3;RegExUtils;false;removeAll;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;RegExUtils;false;removeFirst;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;RegExUtils;false;removePattern;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;RegExUtils;false;replaceAll;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;RegExUtils;false;replaceFirst;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;RegExUtils;false;replacePattern;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;RegExUtils;false;replaceAll;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;RegExUtils;false;replaceFirst;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;RegExUtils;false;replacePattern;;;Argument[2];ReturnValue;taint"
+      ]
+  }
+}
