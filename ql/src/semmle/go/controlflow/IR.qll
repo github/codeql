@@ -1395,7 +1395,7 @@ module IR {
     }
 
     /** Get the type of the base of this field access, that is, the type that contains the field. */
-    Type getBaseType() { result = this.getBase().(EvalInstruction).getExpr().getType() }
+    Type getBaseType() { result = this.getBase().getResultType() }
 
     override predicate refersTo(ValueEntity e) {
       exists(SelectorExpr sel | this = MkLhs(_, sel) | sel.uses(e))
