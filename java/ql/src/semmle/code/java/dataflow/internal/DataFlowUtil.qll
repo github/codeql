@@ -410,7 +410,7 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   summaryStep(node1, node2, "value")
   or
   exists(MethodAccess ma, ValuePreservingCallable c, int argNo |
-    ma.getCallee() = c and c.returnsValue(argNo)
+    ma.getCallee().getSourceDeclaration() = c and c.returnsValue(argNo)
   |
     node2.asExpr() = ma and
     (

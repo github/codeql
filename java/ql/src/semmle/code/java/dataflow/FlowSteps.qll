@@ -64,7 +64,6 @@ private class StandardLibraryValuePreservingCallable extends ValuePreservingCall
     )
     or
     this.getDeclaringType()
-        .getSourceDeclaration()
         .getASourceSupertype*()
         .hasQualifiedName("java.util", "Stack") and
     this.hasName("push") and
