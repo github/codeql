@@ -24,8 +24,10 @@
 | IntentSources.java:33:20:33:33 | getIntent(...) | IntentSources.java:33:20:33:55 | getStringExtra(...) |
 | IntentSources.java:33:20:33:33 | getIntent(...) | IntentSources.java:34:29:34:35 | trouble |
 | PlayResource.java:19:37:19:46 | uri | PlayResource.java:19:37:19:46 | uri |
+| PlayResource.java:20:18:20:48 | getQueryString(...) | ../../../stubs/playframework-2.6.x/play/mvc/Results.java:634:33:634:42 | url |
 | PlayResource.java:20:18:20:48 | getQueryString(...) | PlayResource.java:20:18:20:48 | getQueryString(...) |
-| PlayResource.java:24:42:24:53 | token | ../../../stubs/playframework-2.6.x/play/mvc/Results.java:261:27:261:40 | content |
+| PlayResource.java:20:18:20:48 | getQueryString(...) | PlayResource.java:21:21:21:23 | url |
+| PlayResource.java:24:42:24:53 | token | ../../../stubs/playframework-2.6.x/play/mvc/Results.java:94:27:94:40 | content |
 | PlayResource.java:24:42:24:53 | token | PlayResource.java:24:42:24:53 | token |
 | PlayResource.java:24:42:24:53 | token | PlayResource.java:25:30:25:34 | token |
 | PlayResource.java:28:56:28:65 | uri | PlayResource.java:28:56:28:65 | uri |
