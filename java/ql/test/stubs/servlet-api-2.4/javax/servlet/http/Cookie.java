@@ -114,4 +114,15 @@ public class Cookie implements Cloneable {
     public boolean isHttpOnly() {
         return isHttpOnly;
     }
+
+    /**
+     * Convert the cookie to a string suitable for use as the value of the
+     * corresponding HTTP header.
+     *
+     * @return a stringified cookie.
+     */
+    @Override
+    public String toString() {
+        return null;
+    }    
 }

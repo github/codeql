@@ -320,4 +320,15 @@ public class NewCookie extends Cookie {
     public Cookie toCookie() {
         return null;
     }
+
+    /**
+     * Convert the cookie to a string suitable for use as the value of the
+     * corresponding HTTP header.
+     *
+     * @return a stringified cookie.
+     */
+    @Override
+    public String toString() {
+        return null;
+    }    
 }
