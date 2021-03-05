@@ -59,7 +59,7 @@ class CorsSourceReachesCheckConfig extends TaintTracking2::Configuration {
   }
 }
 
-class CorsOriginConfig extends TaintTracking::Configuration {
+private class CorsOriginConfig extends TaintTracking::Configuration {
   CorsOriginConfig() { this = "CorsOriginConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
