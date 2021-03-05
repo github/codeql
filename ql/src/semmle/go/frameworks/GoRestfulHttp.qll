@@ -9,7 +9,6 @@ import go
  */
 private module GoRestfulHttp {
   /** Gets the package name `github.com/emicklei/go-restful`. */
-  bindingset[result]
   string packagePath() { result = package("github.com/emicklei/go-restful", "") }
 
   /**

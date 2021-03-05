@@ -8,7 +8,6 @@ import go
  */
 module K8sIoClientGo {
   /** Gets the package name `k8s.io/client-go/kubernetes/typed/core/v1`. */
-  bindingset[result]
   string packagePath() { result = package("k8s.io/client-go", "kubernetes/typed/core/v1") }
 
   /**

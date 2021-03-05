@@ -90,7 +90,6 @@ module TestFile {
 /** Provides classes modelling Ginkgo. */
 module Ginkgo {
   /** Gets the package path `github.com/onsi/ginkgo`. */
-  bindingset[result]
   string packagePath() { result = package("github.com/onsi/ginkgo", "") }
 
   /** The Ginkgo `Fail` function, which always panics. */

@@ -8,7 +8,6 @@ private import semmle.go.security.OpenUrlRedirectCustomizations
 /** Provides classes and methods modelling the Revel web framework. */
 module Revel {
   /** Gets the package name `github.com/revel/revel`. */
-  bindingset[result]
   string packagePath() { result = package(["github.com/revel", "github.com/robfig"], "revel") }
 
   private class ControllerParams extends UntrustedFlowSource::Range, DataFlow::FieldReadNode {

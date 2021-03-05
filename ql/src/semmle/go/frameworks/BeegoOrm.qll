@@ -12,7 +12,6 @@ private import semmle.go.security.StoredXssCustomizations
  */
 module BeegoOrm {
   /** Gets the package name `github.com/astaxie/beego/orm`. */
-  bindingset[result]
   string packagePath() { result = package("github.com/astaxie/beego", "orm") }
 
   private class DbSink extends SQL::QueryString::Range {

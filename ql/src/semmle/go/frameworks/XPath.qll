@@ -194,7 +194,6 @@ module XPath {
  */
 module XmlPath {
   /** Gets the package name `github.com/go-xmlpath/xmlpath` or `gopkg.in/xmlpath`. */
-  bindingset[result]
   string packagePath() {
     result = package(["github.com/go-xmlpath/xmlpath", "gopkg.in/xmlpath"], "")
   }

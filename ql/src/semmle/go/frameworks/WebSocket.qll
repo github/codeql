@@ -304,7 +304,6 @@ module WebSocketReader {
  */
 module GorillaWebsocket {
   /** Gets the package name `github.com/gorilla/websocket`. */
-  bindingset[result]
   string packagePath() { result = package("github.com/gorilla", "websocket") }
 }
 
@@ -314,7 +313,6 @@ module GorillaWebsocket {
  */
 module GolangOrgXNetWebsocket {
   /** Gets the package name `golang.org/x/net/websocket`. */
-  bindingset[result]
   string packagePath() { result = package("golang.org/x/net", "websocket") }
 }
 
@@ -324,7 +322,6 @@ module GolangOrgXNetWebsocket {
  */
 module NhooyrWebSocket {
   /** Gets the package name `nhooyr.io/websocket/`. */
-  bindingset[result]
   string packagePath() { result = package("nhooyr.io/websocket", "") }
 }
 
@@ -333,6 +330,5 @@ module NhooyrWebSocket {
  */
 module GobwasWs {
   /** Gets the package name `github.com/gobwas/ws`. */
-  bindingset[result]
   string packagePath() { result = package("github.com/gobwas/ws", "") }
 }
