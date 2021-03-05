@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CIL.Entities
         private class FullyQualifiedNameParser
         {
             public string ShortName { get; internal set; }
-            public string? AssemblyName { get; internal set; }
+            public string? AssemblyName { get; private set; }
             public IEnumerable<string>? TypeArguments { get; internal set; }
             public string? UnboundGenericTypeName { get; internal set; }
             public string ContainerName { get; internal set; }

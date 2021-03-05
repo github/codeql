@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            symbol.BuildTypeId(Context, trapFile, symbol);
+            Symbol.BuildTypeId(Context, trapFile, Symbol);
             trapFile.Write(";functionpointertype");
         }
 
@@ -21,8 +21,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.function_pointer_calling_conventions(this, (int)symbol.Signature.CallingConvention);
-            foreach (var (conv, i) in symbol.Signature.UnmanagedCallingConventionTypes.Select((nt, i) => (Create(Context, nt), i)))
+            trapFile.function_pointer_calling_conventions(this, (int)Symbol.Signature.CallingConvention);
+            foreach (var (conv, i) in Symbol.Signature.UnmanagedCallingConventionTypes.Select((nt, i) => (Create(Context, nt), i)))
             {
                 trapFile.has_unmanaged_calling_conventions(this, i, conv.TypeRef);
             }

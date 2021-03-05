@@ -2,6 +2,8 @@ using System;
 using Microsoft.DiaSymReader;
 using System.Reflection;
 
+#pragma warning disable IDE0060, CA1822
+
 namespace Semmle.Extraction.PDB
 {
     /// <summary>
@@ -31,3 +33,5 @@ namespace Semmle.Extraction.PDB
             throw new NotImplementedException();
     }
 }
+
+#pragma warning restore

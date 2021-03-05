@@ -1079,8 +1079,19 @@ module DataFlow {
 
       override DataFlow::Node getCalleeNode() { result = DataFlow::valueNode(astNode.getCallee()) }
 
+      /**
+       * Whether i is an index that occurs after a spread argument.
+       */
+      pragma[nomagic]
+      private predicate isIndexAfterSpread(int i) {
+        astNode.isSpreadArgument(i)
+        or
+        exists(astNode.getArgument(i)) and
+        isIndexAfterSpread(i - 1)
+      }
+
       override DataFlow::Node getArgument(int i) {
-        not astNode.isSpreadArgument([0 .. i]) and
+        not isIndexAfterSpread(i) and
         result = DataFlow::valueNode(astNode.getArgument(i))
       }
 

@@ -1464,93 +1464,117 @@ unreachableNodeCCtx
 localCallNodes
 postIsNotPre
 postHasUniquePre
-| allocators.cpp:16:14:16:36 | Foo output argument | PostUpdateNode should have one pre-update node but has 0. |
-| condition_decls.cpp:16:19:16:20 | BoxedInt output argument | PostUpdateNode should have one pre-update node but has 0. |
-| condition_decls.cpp:26:23:26:24 | BoxedInt output argument | PostUpdateNode should have one pre-update node but has 0. |
-| condition_decls.cpp:41:22:41:23 | BoxedInt output argument | PostUpdateNode should have one pre-update node but has 0. |
-| condition_decls.cpp:48:22:48:24 | BoxedInt output argument | PostUpdateNode should have one pre-update node but has 0. |
-| condition_decls.cpp:48:34:48:36 | BoxedInt output argument | PostUpdateNode should have one pre-update node but has 0. |
-| condition_decls.cpp:48:52:48:53 | BoxedInt output argument | PostUpdateNode should have one pre-update node but has 0. |
-| conditional_destructors.cpp:30:9:30:13 | C1 output argument | PostUpdateNode should have one pre-update node but has 0. |
-| conditional_destructors.cpp:30:18:30:22 | C1 output argument | PostUpdateNode should have one pre-update node but has 0. |
-| conditional_destructors.cpp:33:9:33:13 | C1 output argument | PostUpdateNode should have one pre-update node but has 0. |
-| conditional_destructors.cpp:33:18:33:22 | C1 output argument | PostUpdateNode should have one pre-update node but has 0. |
-| conditional_destructors.cpp:39:9:39:13 | C2 output argument | PostUpdateNode should have one pre-update node but has 0. |
-| conditional_destructors.cpp:39:18:39:22 | C2 output argument | PostUpdateNode should have one pre-update node but has 0. |
-| conditional_destructors.cpp:42:9:42:13 | C2 output argument | PostUpdateNode should have one pre-update node but has 0. |
-| conditional_destructors.cpp:42:18:42:22 | C2 output argument | PostUpdateNode should have one pre-update node but has 0. |
-| constructorinitializer.cpp:8:6:8:18 | C output argument | PostUpdateNode should have one pre-update node but has 0. |
-| cpp11.cpp:77:19:77:21 | Val output argument | PostUpdateNode should have one pre-update node but has 0. |
-| cpp11.cpp:82:11:82:14 | Val output argument | PostUpdateNode should have one pre-update node but has 0. |
-| cpp11.cpp:82:17:82:55 | Val output argument | PostUpdateNode should have one pre-update node but has 0. |
-| cpp11.cpp:82:45:82:48 | Val output argument | PostUpdateNode should have one pre-update node but has 0. |
-| cpp11.cpp:82:51:82:51 | Val output argument | PostUpdateNode should have one pre-update node but has 0. |
-| cpp11.cpp:88:25:88:30 | Val output argument | PostUpdateNode should have one pre-update node but has 0. |
-| cpp11.cpp:88:33:88:38 | Val output argument | PostUpdateNode should have one pre-update node but has 0. |
-| cpp17.cpp:15:5:15:45 | HasTwoArgCtor output argument | PostUpdateNode should have one pre-update node but has 0. |
-| destructors.cpp:50:9:50:13 | C output argument | PostUpdateNode should have one pre-update node but has 0. |
-| destructors.cpp:51:36:51:38 | C output argument | PostUpdateNode should have one pre-update node but has 0. |
-| file://:0:0:0:0 | C output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:616:12:616:13 | String output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:617:15:617:22 | String output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:619:16:619:30 | String output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:662:9:662:19 | String output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:663:5:663:5 | String output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:736:5:736:19 | String output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:745:8:745:8 | String output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:748:10:748:10 | String output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:757:12:757:12 | Base output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:757:12:757:12 | String output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:766:13:766:13 | Middle output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:766:13:766:13 | String output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:775:15:775:15 | Base output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:775:15:775:15 | String output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:784:15:784:15 | Base output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:784:15:784:15 | String output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:793:15:793:15 | Base output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:793:15:793:15 | MiddleVB1 output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:793:15:793:15 | MiddleVB2 output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:793:15:793:15 | String output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:800:8:800:8 | Base output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:801:10:801:10 | Middle output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:802:11:802:11 | Derived output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:809:7:809:13 | Base output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:810:7:810:26 | Base output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:823:7:823:13 | Base output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:824:7:824:26 | Base output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:846:8:846:8 | PolymorphicBase output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:850:19:850:19 | PolymorphicBase output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:851:22:851:22 | PolymorphicDerived output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:868:3:868:12 | String output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:944:3:944:14 | String output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:945:3:945:27 | String output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ms_assume.cpp:28:18:28:23 | fgets output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ms_try_mix.cpp:11:12:11:15 | C output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ms_try_mix.cpp:28:12:28:15 | C output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ms_try_mix.cpp:48:10:48:13 | C output argument | PostUpdateNode should have one pre-update node but has 0. |
-| newexpr.cpp:8:2:8:20 | C output argument | PostUpdateNode should have one pre-update node but has 0. |
-| ops.cpp:26:31:26:53 | C_with_constr_destr output argument | PostUpdateNode should have one pre-update node but has 0. |
-| parameterinitializer.cpp:25:5:25:8 | c output argument | PostUpdateNode should have one pre-update node but has 0. |
-| static_init_templates.cpp:31:10:31:11 | MyClass output argument | PostUpdateNode should have one pre-update node but has 0. |
-| static_init_templates.cpp:236:7:236:7 | MyConstructorClass output argument | PostUpdateNode should have one pre-update node but has 0. |
-| static_init_templates.cpp:240:7:240:7 | MyConstructorClass output argument | PostUpdateNode should have one pre-update node but has 0. |
-| static_init_templates.cpp:249:21:249:23 | MyConstructorClass output argument | PostUpdateNode should have one pre-update node but has 0. |
-| static_init_templates.cpp:250:17:250:19 | MyDerivedClass output argument | PostUpdateNode should have one pre-update node but has 0. |
-| static_init_templates.cpp:251:20:251:23 | MyContainingClass output argument | PostUpdateNode should have one pre-update node but has 0. |
-| stmt_expr.cpp:13:18:13:19 | C output argument | PostUpdateNode should have one pre-update node but has 0. |
-| try_catch.cpp:7:8:7:8 | exception output argument | PostUpdateNode should have one pre-update node but has 0. |
-| try_catch.cpp:7:8:7:8 | exception output argument | PostUpdateNode should have one pre-update node but has 0. |
-| try_catch.cpp:13:5:13:16 | exn1 output argument | PostUpdateNode should have one pre-update node but has 0. |
+| assignexpr.cpp:9:2:9:12 | Store | PostUpdateNode should have one pre-update node but has 0. |
+| bad_asts.cpp:15:10:15:12 | Store | PostUpdateNode should have one pre-update node but has 0. |
+| cpp11.cpp:65:19:65:45 | Store | PostUpdateNode should have one pre-update node but has 0. |
+| ir.cpp:531:14:531:14 | Store | PostUpdateNode should have one pre-update node but has 0. |
 uniquePostUpdate
 postIsInSameCallable
 reverseRead
 argHasPostUpdate
 postWithInFlow
-| cpp11.cpp:77:19:77:21 | Val output argument | PostUpdateNode should not be the target of local flow. |
-| cpp11.cpp:82:11:82:14 | Val output argument | PostUpdateNode should not be the target of local flow. |
-| cpp11.cpp:82:45:82:48 | Val output argument | PostUpdateNode should not be the target of local flow. |
-| cpp11.cpp:82:51:82:51 | Val output argument | PostUpdateNode should not be the target of local flow. |
-| ir.cpp:809:7:809:13 | Base output argument | PostUpdateNode should not be the target of local flow. |
-| ir.cpp:810:7:810:26 | Base output argument | PostUpdateNode should not be the target of local flow. |
-| ir.cpp:823:7:823:13 | Base output argument | PostUpdateNode should not be the target of local flow. |
-| ir.cpp:824:7:824:26 | Base output argument | PostUpdateNode should not be the target of local flow. |
+| aggregateinitializer.c:3:14:3:18 | Chi | PostUpdateNode should not be the target of local flow. |
+| aggregateinitializer.c:3:21:3:25 | Chi | PostUpdateNode should not be the target of local flow. |
+| allocators.cpp:3:27:3:27 | Chi | PostUpdateNode should not be the target of local flow. |
+| allocators.cpp:3:35:3:35 | Chi | PostUpdateNode should not be the target of local flow. |
+| allocators.cpp:4:11:4:23 | Chi | PostUpdateNode should not be the target of local flow. |
+| allocators.cpp:4:17:4:23 | Chi | PostUpdateNode should not be the target of local flow. |
+| assignexpr.cpp:9:2:9:12 | Store | PostUpdateNode should not be the target of local flow. |
+| bad_asts.cpp:15:10:15:12 | Store | PostUpdateNode should not be the target of local flow. |
+| builtin.c:14:26:14:26 | Chi | PostUpdateNode should not be the target of local flow. |
+| builtin.c:14:29:14:29 | Chi | PostUpdateNode should not be the target of local flow. |
+| builtin.c:14:32:14:32 | Chi | PostUpdateNode should not be the target of local flow. |
+| builtin.c:14:35:14:35 | Chi | PostUpdateNode should not be the target of local flow. |
+| condition_decls.cpp:3:5:3:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| condition_decls.cpp:3:21:3:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| conditional_destructors.cpp:6:13:6:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| conditional_destructors.cpp:18:13:18:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:65:19:65:45 | Store | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:82:17:82:55 | Chi | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:82:17:82:55 | Chi | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:82:45:82:48 | Chi | PostUpdateNode should not be the target of local flow. |
+| defdestructordeleteexpr.cpp:4:9:4:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| deleteexpr.cpp:7:9:7:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| file://:0:0:0:0 | Chi | PostUpdateNode should not be the target of local flow. |
+| file://:0:0:0:0 | Chi | PostUpdateNode should not be the target of local flow. |
+| file://:0:0:0:0 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:177:5:177:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:178:5:178:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:183:5:183:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:184:5:184:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:342:5:342:10 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:428:5:428:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:429:5:429:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:504:19:504:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:504:22:504:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:505:16:505:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:505:19:505:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:506:16:506:18 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:506:16:506:18 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:513:14:513:16 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:513:14:513:16 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:514:14:514:26 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:514:19:514:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:514:22:514:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:515:19:515:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:515:22:515:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:515:29:515:29 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:515:32:515:32 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:516:17:516:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:516:19:516:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:516:24:516:28 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:516:26:516:26 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:521:19:521:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:521:22:521:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:521:25:521:25 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:522:16:522:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:522:19:522:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:531:14:531:14 | Store | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:577:16:577:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:577:19:577:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:578:19:578:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:578:22:578:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:579:16:579:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:579:19:579:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:643:9:643:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:644:9:644:23 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:645:9:645:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:659:9:659:14 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:660:13:660:13 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:661:9:661:13 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:662:9:662:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:663:5:663:5 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:745:8:745:8 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:745:8:745:8 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:748:10:748:10 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:754:8:754:8 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:757:12:757:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:763:8:763:8 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:766:13:766:13 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:775:15:775:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:784:15:784:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:793:15:793:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:943:3:943:11 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:947:3:947:25 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:962:17:962:47 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:962:17:962:47 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:962:17:962:47 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:962:26:962:30 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:962:41:962:45 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:130:5:130:11 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:131:5:131:13 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:154:32:154:32 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:154:35:154:35 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:154:40:154:40 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:154:43:154:43 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:157:14:157:18 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:158:14:158:18 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:160:31:160:33 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:160:31:160:33 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:220:3:223:3 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:221:10:221:10 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:222:10:222:10 | Chi | PostUpdateNode should not be the target of local flow. |
+| range_analysis.c:102:5:102:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| static_init_templates.cpp:3:2:3:8 | Chi | PostUpdateNode should not be the target of local flow. |
+| static_init_templates.cpp:21:2:21:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| static_init_templates.cpp:240:7:240:7 | Chi | PostUpdateNode should not be the target of local flow. |

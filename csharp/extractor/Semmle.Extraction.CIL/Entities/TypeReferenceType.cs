@@ -1,7 +1,5 @@
 using System;
-using Microsoft.CodeAnalysis;
 using System.Reflection.Metadata;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;

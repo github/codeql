@@ -362,7 +362,7 @@ class FlowThroughFields {
   int f() {
     sink(field); // tainted or clean? Not sure.
     taintField();
-    sink(field); // $ ast,ir
+    sink(field); // $ ast MISSING: ir
   }
 
   int calledAfterTaint() {

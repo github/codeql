@@ -491,8 +491,44 @@ void test_vector_emplace() {
 	std::vector<int> v1(10), v2(10);
 
 	v1.emplace_back(source());
-	sink(v1); // $ ast MISSING: ir
+	sink(v1); // $ ast,ir
 
 	v2.emplace(v2.begin(), source());
-	sink(v2); // $ ast MISSING: ir
+	sink(v2); // $ ast,ir
+}
+
+void test_vector_iterator() {
+	{
+		// array behaviour, for comparison
+		short as[100] = {0};
+		short *ptr;
+
+		sink(as[1]);
+		sink(as[source()]); // $ ast,ir
+
+		ptr = as;
+		sink(*ptr);
+		ptr += 1;
+		sink(*ptr);
+		ptr += source();
+		sink(*ptr); // $ ast,ir
+		sink(as[1]);
+	}
+
+	{
+		// iterator behaviour
+		std::vector<short> vs(100, 0);
+		std::vector<short>::iterator it;
+
+		sink(vs[1]);
+		sink(vs[source()]); // $ MISSING: ast,ir
+
+		it = vs.begin();
+		sink(*it);
+		it += 1;
+		sink(*it);
+		it += source();
+		sink(*it); // $ ast,ir
+		sink(vs[1]);
+	}
 }

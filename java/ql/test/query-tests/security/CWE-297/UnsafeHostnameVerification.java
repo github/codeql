@@ -66,7 +66,7 @@ public class UnsafeHostnameVerification {
         HostnameVerifier verifier = new HostnameVerifier() {
             @Override
             public boolean verify(String hostname, SSLSession session) {
-                verify(hostname, session.getPeerCertificates());
+                try { verify(hostname, session.getPeerCertificates()); } catch (Exception e) { throw new RuntimeException(); }
                 return true; // GOOD [but detected as BAD]. The verification of the certificate is done in
                              // another method and
                 // in the case of a mismatch, an `Exception` is thrown so the `return true`

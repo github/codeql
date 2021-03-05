@@ -3,7 +3,7 @@ package com.semmle.ts.ast;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 
-/** A conditional type annotation, such as <tt>T extends any[] ? A : B</tt>. */
+/** A conditional type annotation, such as <code>T extends any[] ? A : B</code>. */
 public class ConditionalTypeExpr extends TypeExpression {
   private ITypeExpression checkType;
   private ITypeExpression extendsType;

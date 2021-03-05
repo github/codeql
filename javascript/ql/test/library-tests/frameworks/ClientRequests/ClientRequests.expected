@@ -1,4 +1,10 @@
 test_ClientRequest
+| apollo.js:5:18:5:78 | new cre ... hql' }) |
+| apollo.js:10:1:10:54 | new Htt ... hql' }) |
+| apollo.js:14:16:14:69 | new Apo ... .com'}) |
+| apollo.js:17:1:17:34 | new Pre ... yurl"}) |
+| apollo.js:20:1:20:77 | createN ... phql'}) |
+| apollo.js:23:1:23:31 | new Web ... wsUri}) |
 | tst.js:11:5:11:16 | request(url) |
 | tst.js:13:5:13:20 | request.get(url) |
 | tst.js:15:5:15:23 | request.delete(url) |
@@ -111,6 +117,12 @@ test_getHost
 | tst.js:93:5:93:35 | net.req ... host }) | tst.js:93:29:93:32 | host |
 | tst.js:219:5:219:41 | data.so ... Host"}) | tst.js:219:32:219:39 | "myHost" |
 test_getUrl
+| apollo.js:5:18:5:78 | new cre ... hql' }) | apollo.js:5:44:5:75 | 'https: ... raphql' |
+| apollo.js:10:1:10:54 | new Htt ... hql' }) | apollo.js:10:21:10:51 | 'http:/ ... raphql' |
+| apollo.js:14:16:14:69 | new Apo ... .com'}) | apollo.js:14:39:14:67 | 'https: ... le.com' |
+| apollo.js:17:1:17:34 | new Pre ... yurl"}) | apollo.js:17:26:17:32 | "myurl" |
+| apollo.js:20:1:20:77 | createN ... phql'}) | apollo.js:20:30:20:75 | 'https: ... raphql' |
+| apollo.js:23:1:23:31 | new Web ... wsUri}) | apollo.js:23:25:23:29 | wsUri |
 | tst.js:11:5:11:16 | request(url) | tst.js:11:13:11:15 | url |
 | tst.js:13:5:13:20 | request.get(url) | tst.js:13:17:13:19 | url |
 | tst.js:15:5:15:23 | request.delete(url) | tst.js:15:20:15:22 | url |

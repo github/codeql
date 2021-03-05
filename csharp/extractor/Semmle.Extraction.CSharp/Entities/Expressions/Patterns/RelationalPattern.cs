@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     internal class RelationalPattern : Expression
     {
         public RelationalPattern(Context cx, RelationalPatternSyntax syntax, IExpressionParentEntity parent, int child) :
-             base(new ExpressionInfo(cx, null, cx.Create(syntax.GetLocation()), GetKind(syntax.OperatorToken), parent, child, false, null))
+             base(new ExpressionInfo(cx, null, cx.CreateLocation(syntax.GetLocation()), GetKind(syntax.OperatorToken), parent, child, false, null))
         {
             Expression.Create(cx, syntax.Expression, this, 0);
         }

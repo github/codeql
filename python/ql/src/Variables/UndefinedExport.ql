@@ -1,6 +1,6 @@
 /**
  * @name Explicit export is not defined
- * @description Including an undefined attribute in __all__ causes an exception when
+ * @description Including an undefined attribute in `__all__` causes an exception when
  *              the module is imported using '*'
  * @kind problem
  * @tags reliability

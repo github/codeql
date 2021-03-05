@@ -26,6 +26,7 @@ namespace Semmle.Extraction.CIL.Entities
             trapFile.Write(location.EndLine);
             trapFile.Write(',');
             trapFile.Write(location.EndColumn);
+            trapFile.Write(";sourcelocation");
         }
 
         public override bool Equals(object? obj)
@@ -43,7 +44,5 @@ namespace Semmle.Extraction.CIL.Entities
                 yield return Tuples.locations_default(this, file, location.StartLine, location.StartColumn, location.EndLine, location.EndColumn);
             }
         }
-
-        public override string IdSuffix => ";sourcelocation";
     }
 }

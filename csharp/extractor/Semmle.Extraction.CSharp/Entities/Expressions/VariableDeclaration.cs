@@ -50,7 +50,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         public static Expression CreateParenthesized(Context cx, DeclarationExpressionSyntax node, ParenthesizedVariableDesignationSyntax designation, IExpressionParentEntity parent, int child)
         {
             AnnotatedTypeSymbol? type = null; // Should ideally be a corresponding tuple type
-            var tuple = new Expression(new ExpressionInfo(cx, type, cx.Create(node.GetLocation()), ExprKind.TUPLE, parent, child, false, null));
+            var tuple = new Expression(new ExpressionInfo(cx, type, cx.CreateLocation(node.GetLocation()), ExprKind.TUPLE, parent, child, false, null));
 
             cx.Try(null, null, () =>
             {
@@ -65,7 +65,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         public static Expression CreateParenthesized(Context cx, VarPatternSyntax varPattern, ParenthesizedVariableDesignationSyntax designation, IExpressionParentEntity parent, int child)
         {
             AnnotatedTypeSymbol? type = null; // Should ideally be a corresponding tuple type
-            var tuple = new Expression(new ExpressionInfo(cx, type, cx.Create(varPattern.GetLocation()), ExprKind.TUPLE, parent, child, false, null));
+            var tuple = new Expression(new ExpressionInfo(cx, type, cx.CreateLocation(varPattern.GetLocation()), ExprKind.TUPLE, parent, child, false, null));
 
             cx.Try(null, null, () =>
             {
@@ -123,7 +123,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             Create(cx, node, node.Designation, parent, child);
 
         public static VariableDeclaration Create(Context cx, CSharpSyntaxNode c, AnnotatedTypeSymbol? type, IExpressionParentEntity parent, int child) =>
-            new VariableDeclaration(new ExpressionInfo(cx, type, cx.Create(c.FixedLocation()), ExprKind.LOCAL_VAR_DECL, parent, child, false, null));
+            new VariableDeclaration(new ExpressionInfo(cx, type, cx.CreateLocation(c.FixedLocation()), ExprKind.LOCAL_VAR_DECL, parent, child, false, null));
 
         public static VariableDeclaration Create(Context cx, CatchDeclarationSyntax d, bool isVar, IExpressionParentEntity parent, int child)
         {

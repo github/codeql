@@ -12,10 +12,10 @@ namespace Semmle.Extraction.CIL.Entities
     internal abstract class Method : TypeContainer, IMember, ICustomModifierReceiver, IParameterizable
     {
         protected MethodTypeParameter[]? genericParams;
-        protected GenericContext gc;
+        protected IGenericContext gc;
         protected MethodSignature<ITypeSignature> signature;
 
-        protected Method(GenericContext gc) : base(gc.Cx)
+        protected Method(IGenericContext gc) : base(gc.Cx)
         {
             this.gc = gc;
         }

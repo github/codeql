@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
     internal class LocalFunction : Statement<LocalFunctionStatementSyntax>
     {
         private LocalFunction(Context cx, LocalFunctionStatementSyntax node, IStatementParentEntity parent, int child)
-            : base(cx, node, StmtKind.LOCAL_FUNCTION, parent, child, cx.Create(node.GetLocation())) { }
+            : base(cx, node, StmtKind.LOCAL_FUNCTION, parent, child, cx.CreateLocation(node.GetLocation())) { }
 
         public static LocalFunction Create(Context cx, LocalFunctionStatementSyntax node, IStatementParentEntity parent, int child)
         {
@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         {
             get
             {
-                var m = cx.GetModel(Stmt);
+                var m = Context.GetModel(Stmt);
                 return m.GetDeclaredSymbol(Stmt) as IMethodSymbol;
             }
         }
@@ -34,7 +34,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         /// <summary>
         /// Gets the function defined by this local statement.
         /// </summary>
-        private Entities.LocalFunction Function => Entities.LocalFunction.Create(cx, Symbol);
+        private Entities.LocalFunction Function => Entities.LocalFunction.Create(Context, Symbol);
 
         protected override void PopulateStatement(TextWriter trapFile)
         {

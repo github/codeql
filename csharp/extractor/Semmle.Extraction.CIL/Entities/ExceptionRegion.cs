@@ -7,13 +7,13 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     internal class ExceptionRegion : UnlabelledEntity
     {
-        private readonly GenericContext gc;
+        private readonly IGenericContext gc;
         private readonly MethodImplementation method;
         private readonly int index;
         private readonly System.Reflection.Metadata.ExceptionRegion r;
         private readonly Dictionary<int, Instruction> jump_table;
 
-        public ExceptionRegion(GenericContext gc, MethodImplementation method, int index, System.Reflection.Metadata.ExceptionRegion r, Dictionary<int, Instruction> jump_table) : base(gc.Cx)
+        public ExceptionRegion(IGenericContext gc, MethodImplementation method, int index, System.Reflection.Metadata.ExceptionRegion r, Dictionary<int, Instruction> jump_table) : base(gc.Cx)
         {
             this.gc = gc;
             this.method = method;

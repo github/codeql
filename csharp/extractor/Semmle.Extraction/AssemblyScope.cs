@@ -21,7 +21,5 @@ namespace Semmle.Extraction
         public bool InScope(ISymbol symbol) =>
             SymbolEqualityComparer.Default.Equals(symbol.ContainingAssembly, assembly) ||
             SymbolEqualityComparer.Default.Equals(symbol, assembly);
-
-        public bool FromSource => false;
     }
 }

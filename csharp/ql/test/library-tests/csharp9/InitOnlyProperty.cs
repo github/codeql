@@ -1,12 +1,5 @@
 using System;
 
-namespace System.Runtime.CompilerServices
-{
-    public sealed class IsExternalInit
-    {
-    }
-}
-
 public class Base
 {
     public int Prop0 { get { return 1; } init { Prop1 = value; } }

@@ -163,7 +163,7 @@ namespace Semmle.Extraction.CIL.Driver
         }
 
         private readonly HashSet<string> filesAnalyzed = new HashSet<string>();
-        public HashSet<AssemblyName> MissingReferences {get;} = new HashSet<AssemblyName>();
+        public HashSet<AssemblyName> MissingReferences { get; } = new HashSet<AssemblyName>();
     }
 
     /// <summary>

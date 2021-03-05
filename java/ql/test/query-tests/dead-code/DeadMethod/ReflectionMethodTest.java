@@ -19,7 +19,7 @@ public class ReflectionMethodTest {
     public void test4() { }
   }
 
-  public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+  public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException {
     // Get class by name
     Class.forName("ReflectionTest$TestObject1").getMethod("test1");
     // Use classloader

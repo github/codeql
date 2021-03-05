@@ -13,7 +13,7 @@ import semmle.code.cpp.models.interfaces.SideEffect
  */
 class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, SideEffectFunction {
   StrcpyFunction() {
-    this.hasGlobalOrStdName([
+    this.hasGlobalOrStdOrBslName([
         "strcpy", // strcpy(dst, src)
         "wcscpy", // wcscpy(dst, src)
         "strncpy", // strncpy(dst, src, max_amount)

@@ -43,6 +43,11 @@ namespace Semmle.Extraction
             trapFile.WriteTuple("locations_default", label, file, startLine, startCol, endLine, endCol);
         }
 
+        public static void locations_mapped(this System.IO.TextWriter trapFile, SourceLocation l1, Location l2)
+        {
+            trapFile.WriteTuple("locations_mapped", l1, l2);
+        }
+
         public static void numlines(this System.IO.TextWriter trapFile, IEntity label, LineCounts lineCounts)
         {
             trapFile.WriteTuple("numlines", label, lineCounts.Total, lineCounts.Code, lineCounts.Comment);

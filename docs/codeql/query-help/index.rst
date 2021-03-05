@@ -20,6 +20,9 @@ View the query help for the queries included in the ``code-scanning``, ``securit
    - A link to the query in the `CodeQL repository <https://github.com/github/codeql>`__.
    - A description of the potential vulnerability that the query identifies and a recommendation for how to avoid introducing the problem to your code.
 
+
+For a full list of the CWEs covered by these queries, see ":doc:`CodeQL CWE coverage <codeql-cwe-coverage>`." 
+
 .. toctree::
    :hidden:
    :titlesonly:
@@ -30,4 +33,5 @@ View the query help for the queries included in the ``code-scanning``, ``securit
    java
    javascript
    python
+   codeql-cwe-coverage
    

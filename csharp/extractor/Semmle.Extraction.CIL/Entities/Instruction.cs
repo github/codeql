@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A CIL instruction.
     /// </summary>
-    internal class Instruction : UnlabelledEntity, IEntity
+    internal class Instruction : UnlabelledEntity
     {
         /// <summary>
         /// The additional data following the opcode, if any.
@@ -289,11 +289,6 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        Label IEntity.Label
-        {
-            get; set;
-        }
-
         private readonly byte[] data;
 
         private int PayloadSize => payloadSizes[(int)PayloadType];
@@ -481,7 +476,7 @@ namespace Semmle.Extraction.CIL.Entities
                 // TODO: Find a solution to this.
 
                 // For now, just log the error
-                Cx.Cx.ExtractionError("A CIL instruction jumps outside the current method", "", Extraction.Entities.GeneratedLocation.Create(Cx.Cx), "", Util.Logging.Severity.Warning);
+                Cx.Cx.ExtractionError("A CIL instruction jumps outside the current method", null, Extraction.Entities.GeneratedLocation.Create(Cx.Cx), "", Util.Logging.Severity.Warning);
             }
         }
     }

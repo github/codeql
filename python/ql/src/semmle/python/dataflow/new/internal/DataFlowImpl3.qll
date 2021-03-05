@@ -3598,6 +3598,7 @@ private module FlowExploration {
       or
       exists(PartialPathNodeRev mid |
         revPartialPathStep(mid, node, sc1, sc2, ap, config) and
+        not clearsContent(node, ap.getHead()) and
         not fullBarrier(node, config) and
         distSink(node.getEnclosingCallable(), config) <= config.explorationLimit()
       )
@@ -3611,6 +3612,7 @@ private module FlowExploration {
     exists(PartialPathNodeFwd mid |
       partialPathStep(mid, node, cc, sc1, sc2, ap, config) and
       not fullBarrier(node, config) and
+      not clearsContent(node, ap.getHead().getContent()) and
       if node instanceof CastingNode
       then compatibleTypes(getNodeType(node), ap.getType())
       else any()

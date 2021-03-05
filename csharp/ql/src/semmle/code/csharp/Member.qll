@@ -120,6 +120,20 @@ class Modifiable extends Declaration, @modifiable {
 class Member extends DotNet::Member, Modifiable, @member {
   /** Gets an access to this member. */
   MemberAccess getAnAccess() { result.getTarget() = this }
+
+  override predicate isPublic() { Modifiable.super.isPublic() }
+
+  override predicate isProtected() { Modifiable.super.isProtected() }
+
+  override predicate isPrivate() { Modifiable.super.isPrivate() }
+
+  override predicate isInternal() { Modifiable.super.isInternal() }
+
+  override predicate isSealed() { Modifiable.super.isSealed() }
+
+  override predicate isAbstract() { Modifiable.super.isAbstract() }
+
+  override predicate isStatic() { Modifiable.super.isStatic() }
 }
 
 /**

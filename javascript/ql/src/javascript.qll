@@ -85,13 +85,16 @@ import semmle.javascript.frameworks.Electron
 import semmle.javascript.frameworks.EventEmitter
 import semmle.javascript.frameworks.Files
 import semmle.javascript.frameworks.Firebase
+import semmle.javascript.frameworks.FormParsers
 import semmle.javascript.frameworks.jQuery
 import semmle.javascript.frameworks.JWT
 import semmle.javascript.frameworks.Handlebars
+import semmle.javascript.frameworks.Immutable
 import semmle.javascript.frameworks.LazyCache
 import semmle.javascript.frameworks.LodashUnderscore
 import semmle.javascript.frameworks.Logging
 import semmle.javascript.frameworks.HttpFrameworks
+import semmle.javascript.frameworks.Markdown
 import semmle.javascript.frameworks.NoSQL
 import semmle.javascript.frameworks.PkgCloud
 import semmle.javascript.frameworks.PropertyProjection

@@ -9,7 +9,7 @@ import semmle.code.cpp.models.interfaces.Alias
  * ```
  */
 private class Swap extends DataFlowFunction {
-  Swap() { this.hasQualifiedName("std", "swap") }
+  Swap() { this.hasQualifiedName(["std", "bsl"], "swap") }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isParameterDeref(0) and

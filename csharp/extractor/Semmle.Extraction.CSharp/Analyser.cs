@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp
     /// </summary>
     public sealed class Analyser : IDisposable
     {
-        private IExtractor extractor;
+        private Extraction.Extractor extractor;
         private CSharpCompilation compilation;
         private Layout layout;
         private bool init;
@@ -215,14 +215,12 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Extracts compilation-wide entities, such as compilations and compiler diagnostics.
         /// </summary>
-        public void AnalyseCompilation(string cwd, string[] args)
+        public void AnalyseCompilation()
         {
-            extractionTasks.Add(() => DoAnalyseCompilation(cwd, args));
+            extractionTasks.Add(() => DoAnalyseCompilation());
         }
 
-
-
-        private void DoAnalyseCompilation(string cwd, string[] args)
+        private void DoAnalyseCompilation()
         {
             try
             {
@@ -232,9 +230,9 @@ namespace Semmle.Extraction.CSharp
                 var projectLayout = layout.LookupProjectOrDefault(transformedAssemblyPath);
                 var trapWriter = projectLayout.CreateTrapWriter(Logger, transformedAssemblyPath, options.TrapCompression, discardDuplicates: false);
                 compilationTrapFile = trapWriter;  // Dispose later
-                var cx = extractor.CreateContext(compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath), AddAssemblyTrapPrefix);
+                var cx = new Context(extractor, compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath), AddAssemblyTrapPrefix);
 
-                compilationEntity = new Entities.Compilation(cx, cwd, args);
+                compilationEntity = Entities.Compilation.Create(cx);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
@@ -287,7 +285,7 @@ namespace Semmle.Extraction.CSharp
 
                     if (c.GetAssemblyOrModuleSymbol(r) is IAssemblySymbol assembly)
                     {
-                        var cx = extractor.CreateContext(c, trapWriter, new AssemblyScope(assembly, assemblyPath), AddAssemblyTrapPrefix);
+                        var cx = new Context(extractor, c, trapWriter, new AssemblyScope(assembly, assemblyPath), AddAssemblyTrapPrefix);
 
                         foreach (var module in assembly.Modules)
                         {
@@ -373,10 +371,16 @@ namespace Semmle.Extraction.CSharp
 
                     if (!upToDate)
                     {
-                        var cx = extractor.CreateContext(compilation.Clone(), trapWriter, new SourceScope(tree), AddAssemblyTrapPrefix);
-                        Populators.CompilationUnit.Extract(cx, tree.GetRoot());
+                        var cx = new Context(extractor, compilation.Clone(), trapWriter, new SourceScope(tree), AddAssemblyTrapPrefix);
+                        // Ensure that the file itself is populated in case the source file is totally empty
+                        var root = tree.GetRoot();
+                        Extraction.Entities.File.Create(cx, root.SyntaxTree.FilePath);
+
+                        var csNode = (CSharpSyntaxNode)root;
+                        csNode.Accept(new CompilationUnitVisitor(cx));
+                        csNode.Accept(new DirectiveVisitor(cx));
                         cx.PopulateAll();
-                        cx.ExtractComments(cx.CommentGenerator);
+                        CommentPopulator.ExtractCommentBlocks(cx, cx.CommentGenerator);
                         cx.PopulateAll();
                     }
                 }
@@ -389,7 +393,7 @@ namespace Semmle.Extraction.CSharp
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                extractor.Message(new Message("Unhandled exception processing syntax tree", tree.FilePath, null, ex.StackTrace));
+                extractor.Message(new Message($"Unhandled exception processing syntax tree. {ex.Message}", tree.FilePath, null, ex.StackTrace));
             }
         }
 

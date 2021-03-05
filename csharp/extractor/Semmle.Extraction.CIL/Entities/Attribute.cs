@@ -12,9 +12,9 @@ namespace Semmle.Extraction.CIL.Entities
     {
         private readonly CustomAttributeHandle handle;
         private readonly CustomAttribute attrib;
-        private readonly IEntity @object;
+        private readonly IExtractedEntity @object;
 
-        public Attribute(Context cx, IEntity @object, CustomAttributeHandle handle) : base(cx)
+        public Attribute(Context cx, IExtractedEntity @object, CustomAttributeHandle handle) : base(cx)
         {
             attrib = cx.MdReader.GetCustomAttribute(handle);
             this.handle = handle;
@@ -80,7 +80,7 @@ namespace Semmle.Extraction.CIL.Entities
             return value?.ToString() ?? "null";
         }
 
-        public static IEnumerable<IExtractionProduct> Populate(Context cx, IEntity @object, CustomAttributeHandleCollection attributes)
+        public static IEnumerable<IExtractionProduct> Populate(Context cx, IExtractedEntity @object, CustomAttributeHandleCollection attributes)
         {
             foreach (var attrib in attributes)
             {

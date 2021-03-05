@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            var type = Type.Create(Context, symbol.AttributeClass);
+            var type = Type.Create(Context, Symbol.AttributeClass);
             trapFile.attributes(this, type.TypeRef, entity);
             trapFile.attribute_location(this, Location);
 
@@ -69,10 +69,10 @@ namespace Semmle.Extraction.CSharp.Entities
             var ctorArguments = attributeSyntax?.ArgumentList?.Arguments.Where(a => a.NameEquals == null).ToList();
 
             var childIndex = 0;
-            for (var i = 0; i < symbol.ConstructorArguments.Length; i++)
+            for (var i = 0; i < Symbol.ConstructorArguments.Length; i++)
             {
-                var constructorArgument = symbol.ConstructorArguments[i];
-                var paramName = symbol.AttributeConstructor?.Parameters[i].Name;
+                var constructorArgument = Symbol.ConstructorArguments[i];
+                var paramName = Symbol.AttributeConstructor?.Parameters[i].Name;
                 var argSyntax = ctorArguments?.SingleOrDefault(a => a.NameColon != null && a.NameColon.Name.Identifier.Text == paramName);
 
                 if (argSyntax == null &&                            // couldn't find named argument
@@ -89,7 +89,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     childIndex++);
             }
 
-            foreach (var namedArgument in symbol.NamedArguments)
+            foreach (var namedArgument in Symbol.NamedArguments)
             {
                 var expr = CreateExpressionFromArgument(
                     namedArgument.Value,
@@ -118,7 +118,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private Semmle.Extraction.Entities.Location location;
         private Semmle.Extraction.Entities.Location Location =>
-            location ?? (location = Semmle.Extraction.Entities.Location.Create(Context, attributeSyntax is null ? entity.ReportingLocation : attributeSyntax.Name.GetLocation()));
+            location ?? (location = Context.CreateLocation(attributeSyntax is null ? entity.ReportingLocation : attributeSyntax.Name.GetLocation()));
 
         public override bool NeedsPopulation => true;
 

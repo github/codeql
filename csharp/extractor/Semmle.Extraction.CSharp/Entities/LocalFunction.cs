@@ -1,8 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.IO;
-using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -36,10 +34,10 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateMethod(trapFile);
             PopulateModifiers(trapFile);
 
-            var originalDefinition = IsSourceDeclaration ? this : Create(Context, symbol.OriginalDefinition);
-            var returnType = Type.Create(Context, symbol.ReturnType);
-            trapFile.local_functions(this, symbol.Name, returnType, originalDefinition);
-            ExtractRefReturn(trapFile, symbol, this);
+            var originalDefinition = IsSourceDeclaration ? this : Create(Context, Symbol.OriginalDefinition);
+            var returnType = Type.Create(Context, Symbol.ReturnType);
+            trapFile.local_functions(this, Symbol.Name, returnType, originalDefinition);
+            ExtractRefReturn(trapFile, Symbol, this);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NeedsLabel;

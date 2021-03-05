@@ -6,6 +6,41 @@ import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.Iterator
 
 /**
+ * The `std::array` template class.
+ */
+private class Array extends Class {
+  Array() { this.hasQualifiedName(["std", "bsl"], "array") }
+}
+
+/**
+ * The `std::deque` template class.
+ */
+private class Deque extends Class {
+  Deque() { this.hasQualifiedName(["std", "bsl"], "deque") }
+}
+
+/**
+ * The `std::forward_list` template class.
+ */
+private class ForwardList extends Class {
+  ForwardList() { this.hasQualifiedName(["std", "bsl"], "forward_list") }
+}
+
+/**
+ * The `std::list` template class.
+ */
+private class List extends Class {
+  List() { this.hasQualifiedName(["std", "bsl"], "list") }
+}
+
+/**
+ * The `std::vector` template class.
+ */
+private class Vector extends Class {
+  Vector() { this.hasQualifiedName(["std", "bsl"], "vector") }
+}
+
+/**
  * Additional model for standard container constructors that reference the
  * value type of the container (that is, the `T` in `std::vector<T>`).  For
  * example the fill constructor:
@@ -15,7 +50,10 @@ import semmle.code.cpp.models.interfaces.Iterator
  */
 private class StdSequenceContainerConstructor extends Constructor, TaintFunction {
   StdSequenceContainerConstructor() {
-    this.getDeclaringType().hasQualifiedName("std", ["vector", "deque", "list", "forward_list"])
+    this.getDeclaringType() instanceof Vector or
+    this.getDeclaringType() instanceof Deque or
+    this.getDeclaringType() instanceof List or
+    this.getDeclaringType() instanceof ForwardList
   }
 
   /**
@@ -50,7 +88,10 @@ private class StdSequenceContainerConstructor extends Constructor, TaintFunction
  * The standard container function `data`.
  */
 private class StdSequenceContainerData extends TaintFunction {
-  StdSequenceContainerData() { this.hasQualifiedName("std", ["array", "vector"], "data") }
+  StdSequenceContainerData() {
+    this.getClassAndName("data") instanceof Array or
+    this.getClassAndName("data") instanceof Vector
+  }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from container itself (qualifier) to return value
@@ -69,8 +110,10 @@ private class StdSequenceContainerData extends TaintFunction {
  */
 private class StdSequenceContainerPush extends TaintFunction {
   StdSequenceContainerPush() {
-    this.hasQualifiedName("std", ["vector", "deque", "list"], "push_back") or
-    this.hasQualifiedName("std", ["deque", "list", "forward_list"], "push_front")
+    this.getClassAndName("push_back") instanceof Vector or
+    this.getClassAndName(["push_back", "push_front"]) instanceof Deque or
+    this.getClassAndName("push_front") instanceof ForwardList or
+    this.getClassAndName(["push_back", "push_front"]) instanceof List
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -85,8 +128,11 @@ private class StdSequenceContainerPush extends TaintFunction {
  */
 private class StdSequenceContainerFrontBack extends TaintFunction {
   StdSequenceContainerFrontBack() {
-    this.hasQualifiedName("std", ["array", "vector", "deque", "list", "forward_list"], "front") or
-    this.hasQualifiedName("std", ["array", "vector", "deque", "list"], "back")
+    this.getClassAndName(["front", "back"]) instanceof Array or
+    this.getClassAndName(["front", "back"]) instanceof Deque or
+    this.getClassAndName("front") instanceof ForwardList or
+    this.getClassAndName(["front", "back"]) instanceof List or
+    this.getClassAndName(["front", "back"]) instanceof Vector
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -101,8 +147,10 @@ private class StdSequenceContainerFrontBack extends TaintFunction {
  */
 private class StdSequenceContainerInsert extends TaintFunction {
   StdSequenceContainerInsert() {
-    this.hasQualifiedName("std", ["vector", "deque", "list"], "insert") or
-    this.hasQualifiedName("std", "forward_list", "insert_after")
+    this.getClassAndName("insert") instanceof Deque or
+    this.getClassAndName("insert") instanceof List or
+    this.getClassAndName("insert") instanceof Vector or
+    this.getClassAndName("insert_after") instanceof ForwardList
   }
 
   /**
@@ -138,7 +186,10 @@ private class StdSequenceContainerInsert extends TaintFunction {
  */
 private class StdSequenceContainerAssign extends TaintFunction {
   StdSequenceContainerAssign() {
-    this.hasQualifiedName("std", ["vector", "deque", "list", "forward_list"], "assign")
+    this.getClassAndName("assign") instanceof Deque or
+    this.getClassAndName("assign") instanceof ForwardList or
+    this.getClassAndName("assign") instanceof List or
+    this.getClassAndName("assign") instanceof Vector
   }
 
   /**
@@ -170,7 +221,9 @@ private class StdSequenceContainerAssign extends TaintFunction {
  */
 private class StdSequenceContainerAt extends TaintFunction {
   StdSequenceContainerAt() {
-    this.hasQualifiedName("std", ["vector", "array", "deque"], ["at", "operator[]"])
+    this.getClassAndName(["at", "operator[]"]) instanceof Array or
+    this.getClassAndName(["at", "operator[]"]) instanceof Deque or
+    this.getClassAndName(["at", "operator[]"]) instanceof Vector
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -188,12 +241,12 @@ private class StdSequenceContainerAt extends TaintFunction {
  * The standard vector `emplace` function.
  */
 class StdVectorEmplace extends TaintFunction {
-  StdVectorEmplace() { this.hasQualifiedName("std", "vector", "emplace") }
+  StdVectorEmplace() { this.getClassAndName("emplace") instanceof Vector }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from any parameter except the position iterator to qualifier and return value
     // (here we assume taint flow from any constructor parameter to the constructed object)
-    input.isParameter([1 .. getNumberOfParameters() - 1]) and
+    input.isParameterDeref([1 .. getNumberOfParameters() - 1]) and
     (
       output.isQualifierObject() or
       output.isReturnValue()
@@ -205,12 +258,12 @@ class StdVectorEmplace extends TaintFunction {
  * The standard vector `emplace_back` function.
  */
 class StdVectorEmplaceBack extends TaintFunction {
-  StdVectorEmplaceBack() { this.hasQualifiedName("std", "vector", "emplace_back") }
+  StdVectorEmplaceBack() { this.getClassAndName("emplace_back") instanceof Vector }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from any parameter to qualifier
     // (here we assume taint flow from any constructor parameter to the constructed object)
-    input.isParameter([0 .. getNumberOfParameters() - 1]) and
+    input.isParameterDeref([0 .. getNumberOfParameters() - 1]) and
     output.isQualifierObject()
   }
 }

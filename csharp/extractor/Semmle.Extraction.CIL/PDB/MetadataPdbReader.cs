@@ -76,7 +76,7 @@ namespace Semmle.Extraction.PDB
                     out provider,
                     out _))
                 {
-                    return new MetadataPdbReader(provider);
+                    return new MetadataPdbReader(provider!);
                 }
             }
 

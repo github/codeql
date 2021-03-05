@@ -12,10 +12,10 @@ namespace Semmle.Extraction.CIL.Entities
         private readonly MemberReferenceHandle handle;
         private readonly MemberReference mr;
         private readonly Type declaringType;
-        private readonly GenericContext parent;
+        private readonly IGenericContext parent;
         private readonly Method? sourceDeclaration;
 
-        public MemberReferenceMethod(GenericContext gc, MemberReferenceHandle handle) : base(gc)
+        public MemberReferenceMethod(IGenericContext gc, MemberReferenceHandle handle) : base(gc)
         {
             this.handle = handle;
             this.gc = gc;
@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CIL.Entities
 
             signature = mr.DecodeMethodSignature(new SignatureDecoder(), gc);
 
-            parent = (GenericContext)Cx.CreateGeneric(gc, mr.Parent);
+            parent = (IGenericContext)Cx.CreateGeneric(gc, mr.Parent);
 
             var declType = parent is Method parentMethod
                 ? parentMethod.DeclaringType

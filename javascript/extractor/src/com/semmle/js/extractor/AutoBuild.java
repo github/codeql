@@ -722,13 +722,13 @@ public class AutoBuild {
   }
 
   /**
-   * Prepares <tt>package.json</tt> files in a virtual source root, and, if enabled,
+   * Prepares <code>package.json</code> files in a virtual source root, and, if enabled,
    * installs dependencies for use by the TypeScript type checker.
    * <p>
    * Some packages must be downloaded while others exist within the same repo ("monorepos")
    * but are not in a location where TypeScript would look for it.
    * <p>
-   * Downloaded packages are intalled under <tt>SCRATCH_DIR</tt>, in a mirrored directory hierarchy
+   * Downloaded packages are intalled under <code>SCRATCH_DIR</code>, in a mirrored directory hierarchy
    * we call the "virtual source root".
    * <p>
    * Packages that exists within the repo are not downloaded. Since they are part of the main source tree,

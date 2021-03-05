@@ -15,7 +15,7 @@ import semmle.code.cpp.models.interfaces.Iterator
  */
 private class IteratorTraits extends Class {
   IteratorTraits() {
-    this.hasQualifiedName("std", "iterator_traits") and
+    this.hasQualifiedName(["std", "bsl"], "iterator_traits") and
     not this instanceof TemplateClass and
     exists(TypedefType t |
       this.getAMember() = t and
@@ -24,6 +24,14 @@ private class IteratorTraits extends Class {
   }
 
   Type getIteratorType() { result = this.getTemplateArgument(0) }
+}
+
+/**
+ * A type that is deduced to be an iterator because there is a corresponding
+ * `std::iterator_traits` instantiation for it.
+ */
+private class IteratorByTraits extends Iterator {
+  IteratorByTraits() { exists(IteratorTraits it | it.getIteratorType() = this) }
 }
 
 /**
@@ -36,7 +44,7 @@ private class IteratorByTypedefs extends Iterator, Class {
     this.getAMember().(TypedefType).hasName("pointer") and
     this.getAMember().(TypedefType).hasName("reference") and
     this.getAMember().(TypedefType).hasName("iterator_category") and
-    not this.hasQualifiedName("std", "iterator_traits")
+    not this.hasQualifiedName(["std", "bsl"], "iterator_traits")
   }
 }
 
@@ -44,17 +52,13 @@ private class IteratorByTypedefs extends Iterator, Class {
  * The `std::iterator` class.
  */
 private class StdIterator extends Iterator, Class {
-  StdIterator() { this.hasQualifiedName("std", "iterator") }
+  StdIterator() { this.hasQualifiedName(["std", "bsl"], "iterator") }
 }
 
 /**
- * A type that is deduced to be an iterator because there is a corresponding
- * `std::iterator_traits` instantiation for it.
+ * Gets the `FunctionInput` corresponding to an iterator parameter to
+ * user-defined operator `op`, at `index`.
  */
-private class IteratorByTraits extends Iterator {
-  IteratorByTraits() { exists(IteratorTraits it | it.getIteratorType() = this) }
-}
-
 private FunctionInput getIteratorArgumentInput(Operator op, int index) {
   exists(Type t |
     t =
@@ -109,6 +113,8 @@ private class IteratorCrementOperator extends Operator, DataFlowFunction {
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input = iteratorInput and
     output.isReturnValue()
+    or
+    input.isParameterDeref(0) and output.isReturnValueDeref()
   }
 }
 
@@ -153,7 +159,7 @@ private class IteratorSubOperator extends Operator, TaintFunction {
 private class IteratorAssignArithmeticOperator extends Operator, DataFlowFunction, TaintFunction {
   IteratorAssignArithmeticOperator() {
     this.hasName(["operator+=", "operator-="]) and
-    this.getDeclaringType() instanceof Iterator
+    exists(getIteratorArgumentInput(this, 0))
   }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
@@ -162,6 +168,12 @@ private class IteratorAssignArithmeticOperator extends Operator, DataFlowFunctio
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isParameterDeref(0) and output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the object referenced by the first parameter
+    input.isReturnValueDeref() and
+    output.isParameterDeref(0)
+    or
     input.isParameterDeref(1) and
     output.isParameterDeref(0)
   }
@@ -173,8 +185,7 @@ private class IteratorAssignArithmeticOperator extends Operator, DataFlowFunctio
 class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunction,
   IteratorReferenceFunction {
   IteratorPointerDereferenceMemberOperator() {
-    this.hasName("operator*") and
-    this.getDeclaringType() instanceof Iterator
+    this.getClassAndName("operator*") instanceof Iterator
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -191,8 +202,7 @@ class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunc
  */
 private class IteratorCrementMemberOperator extends MemberFunction, DataFlowFunction, TaintFunction {
   IteratorCrementMemberOperator() {
-    this.hasName(["operator++", "operator--"]) and
-    this.getDeclaringType() instanceof Iterator
+    this.getClassAndName(["operator++", "operator--"]) instanceof Iterator
   }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
@@ -201,6 +211,9 @@ private class IteratorCrementMemberOperator extends MemberFunction, DataFlowFunc
     or
     input.isReturnValueDeref() and
     output.isQualifierObject()
+    or
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -213,10 +226,7 @@ private class IteratorCrementMemberOperator extends MemberFunction, DataFlowFunc
  * A member `operator->` function for an iterator type.
  */
 private class IteratorFieldMemberOperator extends Operator, TaintFunction {
-  IteratorFieldMemberOperator() {
-    this.hasName("operator->") and
-    this.getDeclaringType() instanceof Iterator
-  }
+  IteratorFieldMemberOperator() { this.getClassAndName("operator->") instanceof Iterator }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
@@ -229,8 +239,7 @@ private class IteratorFieldMemberOperator extends Operator, TaintFunction {
  */
 private class IteratorBinaryArithmeticMemberOperator extends MemberFunction, TaintFunction {
   IteratorBinaryArithmeticMemberOperator() {
-    this.hasName(["operator+", "operator-"]) and
-    this.getDeclaringType() instanceof Iterator
+    this.getClassAndName(["operator+", "operator-"]) instanceof Iterator
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -245,21 +254,24 @@ private class IteratorBinaryArithmeticMemberOperator extends MemberFunction, Tai
 private class IteratorAssignArithmeticMemberOperator extends MemberFunction, DataFlowFunction,
   TaintFunction {
   IteratorAssignArithmeticMemberOperator() {
-    this.hasName(["operator+=", "operator-="]) and
-    this.getDeclaringType() instanceof Iterator
+    this.getClassAndName(["operator+=", "operator-="]) instanceof Iterator
   }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierAddress() and
     output.isReturnValue()
-    or
-    input.isReturnValueDeref() and
-    output.isQualifierObject()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
     output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the qualifier
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
+    or
+    input.isParameterDeref(0) and
+    output.isQualifierObject()
   }
 }
 
@@ -268,10 +280,7 @@ private class IteratorAssignArithmeticMemberOperator extends MemberFunction, Dat
  */
 private class IteratorArrayMemberOperator extends MemberFunction, TaintFunction,
   IteratorReferenceFunction {
-  IteratorArrayMemberOperator() {
-    this.hasName("operator[]") and
-    this.getDeclaringType() instanceof Iterator
-  }
+  IteratorArrayMemberOperator() { this.getClassAndName("operator[]") instanceof Iterator }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
@@ -288,8 +297,7 @@ private class IteratorArrayMemberOperator extends MemberFunction, TaintFunction,
  */
 private class IteratorAssignmentMemberOperator extends MemberFunction, TaintFunction {
   IteratorAssignmentMemberOperator() {
-    this.hasName("operator=") and
-    this.getDeclaringType() instanceof Iterator and
+    this.getClassAndName("operator=") instanceof Iterator and
     not this instanceof CopyAssignmentOperator and
     not this instanceof MoveAssignmentOperator
   }
@@ -330,7 +338,7 @@ private class BeginOrEndFunction extends MemberFunction, TaintFunction, GetItera
  */
 private class InserterIteratorFunction extends GetIteratorFunction {
   InserterIteratorFunction() {
-    this.hasQualifiedName("std", ["front_inserter", "inserter", "back_inserter"])
+    this.hasQualifiedName(["std", "bsl"], ["front_inserter", "inserter", "back_inserter"])
   }
 
   override predicate getsIterator(FunctionInput input, FunctionOutput output) {

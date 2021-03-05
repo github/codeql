@@ -821,6 +821,7 @@ public class Intent implements Parcelable, Cloneable {
      */
     @Deprecated
     public static Intent getIntent(String uri) {
+        return null;
     }
 
     /**
@@ -845,6 +846,7 @@ public class Intent implements Parcelable, Cloneable {
      * @see #toUri
      */
     public static Intent parseUri(String uri, int flags) {
+        return null;
     }
 
     /**

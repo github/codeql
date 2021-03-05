@@ -18,17 +18,17 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     if (Type?.Symbol.ContainingType is null)
                     {
                         // namespace qualifier
-                        TypeMention.Create(cx, maes.Name, this, Type, Syntax.GetLocation());
+                        TypeMention.Create(Context, maes.Name, this, Type, Syntax.GetLocation());
                     }
                     else
                     {
                         // type qualifier
-                        TypeMention.Create(cx, maes.Name, this, Type);
-                        Create(cx, maes.Expression, this, -1);
+                        TypeMention.Create(Context, maes.Name, this, Type);
+                        Create(Context, maes.Expression, this, -1);
                     }
                     return;
                 default:
-                    TypeMention.Create(cx, (TypeSyntax)Syntax, this, Type);
+                    TypeMention.Create(Context, (TypeSyntax)Syntax, this, Type);
                     return;
             }
         }

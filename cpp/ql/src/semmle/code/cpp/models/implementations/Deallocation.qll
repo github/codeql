@@ -13,9 +13,13 @@ private class StandardDeallocationFunction extends DeallocationFunction {
   int freedArg;
 
   StandardDeallocationFunction() {
-    hasGlobalName([
+    hasGlobalOrStdOrBslName([
         // --- C library allocation
-        "free", "realloc",
+        "free", "realloc"
+      ]) and
+    freedArg = 0
+    or
+    hasGlobalName([
         // --- OpenSSL memory allocation
         "CRYPTO_free", "CRYPTO_secure_free"
       ]) and

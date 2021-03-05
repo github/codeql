@@ -17,18 +17,18 @@ private module Liveness {
    * (certain or uncertain) writes.
    */
   private newtype TRefKind =
-    Read() or
-    Write(boolean certain) { certain = true or certain = false }
+    Read(boolean certain) { certain in [false, true] } or
+    Write(boolean certain) { certain in [false, true] }
 
   private class RefKind extends TRefKind {
     string toString() {
-      this = Read() and result = "read"
+      exists(boolean certain | this = Read(certain) and result = "read (" + certain + ")")
       or
       exists(boolean certain | this = Write(certain) and result = "write (" + certain + ")")
     }
 
     int getOrder() {
-      this = Read() and
+      this = Read(_) and
       result = 0
       or
       this = Write(_) and
@@ -40,7 +40,7 @@ private module Liveness {
    * Holds if the `i`th node of basic block `bb` is a reference to `v` of kind `k`.
    */
   private predicate ref(BasicBlock bb, int i, SourceVariable v, RefKind k) {
-    variableRead(bb, i, v) and k = Read()
+    exists(boolean certain | variableRead(bb, i, v, certain) | k = Read(certain))
     or
     exists(boolean certain | variableWrite(bb, i, v, certain) | k = Write(certain))
   }
@@ -95,7 +95,7 @@ private module Liveness {
    */
   predicate liveAtEntry(BasicBlock bb, SourceVariable v) {
     // The first read or certain write to `v` inside `bb` is a read
-    refRank(bb, _, v, Read()) = firstReadOrCertainWrite(bb, v)
+    refRank(bb, _, v, Read(_)) = firstReadOrCertainWrite(bb, v)
     or
     // There is no certain write to `v` inside `bb`, but `v` is live at entry
     // to a successor basic block of `bb`
@@ -120,7 +120,7 @@ private module Liveness {
       liveAtExit(bb, v)
       or
       ref(bb, i, v, kind) and
-      kind = Read()
+      kind = Read(_)
       or
       exists(RefKind nextKind |
         liveAtRank(bb, _, v, rnk + 1) and
@@ -174,34 +174,15 @@ private predicate inDefDominanceFrontier(BasicBlock bb, SourceVariable v) {
 }
 
 cached
-private module Cached {
-  cached
-  newtype TDefinition =
-    TWriteDef(SourceVariable v, BasicBlock bb, int i) {
-      variableWrite(bb, i, v, _) and
-      liveAfterWrite(bb, i, v)
-    } or
-    TPhiNode(SourceVariable v, BasicBlock bb) {
-      inDefDominanceFrontier(bb, v) and
-      liveAtEntry(bb, v)
-    }
-
-  cached
-  predicate uncertainWriteDefinitionInput(UncertainWriteDefinition def, Definition inp) {
-    lastRefRedef(inp, _, _, def)
+newtype TDefinition =
+  TWriteDef(SourceVariable v, BasicBlock bb, int i) {
+    variableWrite(bb, i, v, _) and
+    liveAfterWrite(bb, i, v)
+  } or
+  TPhiNode(SourceVariable v, BasicBlock bb) {
+    inDefDominanceFrontier(bb, v) and
+    liveAtEntry(bb, v)
   }
-
-  cached
-  predicate phiHasInputFromBlock(PhiNode phi, Definition inp, BasicBlock bb) {
-    exists(SourceVariable v, BasicBlock bbDef |
-      phi.definesAt(v, bbDef, _) and
-      getABasicBlockPredecessor(bbDef) = bb and
-      ssaDefReachesEndOfBlock(bb, inp, v)
-    )
-  }
-}
-
-import Cached
 
 private module SsaDefReaches {
   newtype TSsaRefKind =
@@ -237,7 +218,7 @@ private module SsaDefReaches {
    * Unlike `Liveness::ref`, this includes `phi` nodes.
    */
   predicate ssaRef(BasicBlock bb, int i, SourceVariable v, SsaRefKind k) {
-    variableRead(bb, i, v) and
+    variableRead(bb, i, v, _) and
     k = SsaRead()
     or
     exists(Definition def | def.definesAt(v, bb, i)) and
@@ -304,7 +285,7 @@ private module SsaDefReaches {
     exists(int rnk |
       ssaDefReachesRank(bb, def, rnk, v) and
       rnk = ssaRefRank(bb, i, v, SsaRead()) and
-      variableRead(bb, i, v)
+      variableRead(bb, i, v, _)
     )
   }
 
@@ -368,7 +349,7 @@ private module SsaDefReaches {
   predicate defAdjacentRead(Definition def, BasicBlock bb1, BasicBlock bb2, int i2) {
     varBlockReaches(def, bb1, bb2) and
     ssaRefRank(bb2, i2, def.getSourceVariable(), SsaRead()) = 1 and
-    variableRead(bb2, i2, _)
+    variableRead(bb2, i2, _, _)
   }
 }
 
@@ -394,6 +375,7 @@ private predicate ssaDefReachesEndOfBlockRec(BasicBlock bb, Definition def, Sour
  * block `bb`, at which point it is still live, without crossing another
  * SSA definition of `v`.
  */
+pragma[nomagic]
 predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def, SourceVariable v) {
   exists(int last | last = maxSsaRefRank(bb, v) |
     ssaDefReachesRank(bb, def, last, v) and
@@ -408,14 +390,29 @@ predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def, SourceVariable 
 /**
  * NB: If this predicate is exposed, it should be cached.
  *
+ * Holds if `inp` is an input to the phi node `phi` along the edge originating in `bb`.
+ */
+pragma[nomagic]
+predicate phiHasInputFromBlock(PhiNode phi, Definition inp, BasicBlock bb) {
+  exists(SourceVariable v, BasicBlock bbDef |
+    phi.definesAt(v, bbDef, _) and
+    getABasicBlockPredecessor(bbDef) = bb and
+    ssaDefReachesEndOfBlock(bb, inp, v)
+  )
+}
+
+/**
+ * NB: If this predicate is exposed, it should be cached.
+ *
  * Holds if the SSA definition of `v` at `def` reaches a read at index `i` in
  * basic block `bb`, without crossing another SSA definition of `v`. The read
  * is of kind `rk`.
  */
+pragma[nomagic]
 predicate ssaDefReachesRead(SourceVariable v, Definition def, BasicBlock bb, int i) {
   ssaDefReachesReadWithinBlock(v, def, bb, i)
   or
-  variableRead(bb, i, v) and
+  variableRead(bb, i, v, _) and
   ssaDefReachesEndOfBlock(getABasicBlockPredecessor(bb), def, v) and
   not ssaDefReachesReadWithinBlock(v, _, bb, i)
 }
@@ -427,16 +424,45 @@ predicate ssaDefReachesRead(SourceVariable v, Definition def, BasicBlock bb, int
  * or a write), `def` is read at index `i2` in basic block `bb2`, and there is a
  * path between them without any read of `def`.
  */
+pragma[nomagic]
 predicate adjacentDefRead(Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2) {
   exists(int rnk |
     rnk = ssaDefRank(def, _, bb1, i1, _) and
     rnk + 1 = ssaDefRank(def, _, bb1, i2, SsaRead()) and
-    variableRead(bb1, i2, _) and
+    variableRead(bb1, i2, _, _) and
     bb2 = bb1
   )
   or
   exists(SourceVariable v | ssaDefRank(def, v, bb1, i1, _) = maxSsaRefRank(bb1, v)) and
   defAdjacentRead(def, bb1, bb2, i2)
+}
+
+private predicate adjacentDefReachesRead(
+  Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
+) {
+  adjacentDefRead(def, bb1, i1, bb2, i2) and
+  exists(SourceVariable v | v = def.getSourceVariable() |
+    ssaRef(bb1, i1, v, SsaDef())
+    or
+    variableRead(bb1, i1, v, true)
+  )
+  or
+  exists(BasicBlock bb3, int i3 |
+    adjacentDefReachesRead(def, bb1, i1, bb3, i3) and
+    variableRead(bb3, i3, _, false) and
+    adjacentDefRead(def, bb3, i3, bb2, i2)
+  )
+}
+
+/**
+ * NB: If this predicate is exposed, it should be cached.
+ *
+ * Same as `adjacentDefRead`, but ignores uncertain reads.
+ */
+pragma[nomagic]
+predicate adjacentDefNoUncertainReads(Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2) {
+  adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
+  variableRead(bb2, i2, _, true)
 }
 
 /**
@@ -446,6 +472,7 @@ predicate adjacentDefRead(Definition def, BasicBlock bb1, int i1, BasicBlock bb2
  * `def`. The reference is last because it can reach another write `next`,
  * without passing through another read or write.
  */
+pragma[nomagic]
 predicate lastRefRedef(Definition def, BasicBlock bb, int i, Definition next) {
   exists(int rnk, SourceVariable v, int j | rnk = ssaDefRank(def, v, bb, i, _) |
     // Next reference to `v` inside `bb` is a write
@@ -465,6 +492,41 @@ predicate lastRefRedef(Definition def, BasicBlock bb, int i, Definition next) {
 /**
  * NB: If this predicate is exposed, it should be cached.
  *
+ * Holds if `inp` is an immediately preceding definition of uncertain definition
+ * `def`. Since `def` is uncertain, the value from the preceding definition might
+ * still be valid.
+ */
+pragma[nomagic]
+predicate uncertainWriteDefinitionInput(UncertainWriteDefinition def, Definition inp) {
+  lastRefRedef(inp, _, _, def)
+}
+
+private predicate adjacentDefReachesUncertainRead(
+  Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
+) {
+  adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
+  variableRead(bb2, i2, _, false)
+}
+
+/**
+ * NB: If this predicate is exposed, it should be cached.
+ *
+ * Same as `lastRefRedef`, but ignores uncertain reads.
+ */
+pragma[nomagic]
+predicate lastRefRedefNoUncertainReads(Definition def, BasicBlock bb, int i, Definition next) {
+  lastRefRedef(def, bb, i, next) and
+  not variableRead(bb, i, def.getSourceVariable(), false)
+  or
+  exists(BasicBlock bb0, int i0 |
+    lastRefRedef(def, bb0, i0, next) and
+    adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
+  )
+}
+
+/**
+ * NB: If this predicate is exposed, it should be cached.
+ *
  * Holds if the node at index `i` in `bb` is a last reference to SSA
  * definition `def`.
  *
@@ -472,6 +534,7 @@ predicate lastRefRedef(Definition def, BasicBlock bb, int i, Definition next) {
  * SSA definition for the underlying source variable, without passing through
  * another read.
  */
+pragma[nomagic]
 predicate lastRef(Definition def, BasicBlock bb, int i) {
   lastRefRedef(def, bb, i, _)
   or
@@ -484,6 +547,22 @@ predicate lastRef(Definition def, BasicBlock bb, int i) {
       not defOccursInBlock(def, bb2, _) and
       not ssaDefReachesEndOfBlock(bb2, def, _)
     )
+  )
+}
+
+/**
+ * NB: If this predicate is exposed, it should be cached.
+ *
+ * Same as `lastRefRedef`, but ignores uncertain reads.
+ */
+pragma[nomagic]
+predicate lastRefNoUncertainReads(Definition def, BasicBlock bb, int i) {
+  lastRef(def, bb, i) and
+  not variableRead(bb, i, def.getSourceVariable(), false)
+  or
+  exists(BasicBlock bb0, int i0 |
+    lastRef(def, bb0, i0) and
+    adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
   )
 }
 
@@ -506,24 +585,6 @@ class Definition extends TDefinition {
   /** Gets the basic block to which this SSA definition belongs. */
   final BasicBlock getBasicBlock() { this.definesAt(_, result, _) }
 
-  /**
-   * Gets an SSA definition whose value can flow to this one in one step. This
-   * includes inputs to phi nodes and the prior definitions of uncertain writes.
-   */
-  private Definition getAPseudoInputOrPriorDefinition() {
-    result = this.(PhiNode).getAnInput() or
-    result = this.(UncertainWriteDefinition).getPriorDefinition()
-  }
-
-  /**
-   * Gets a definition that ultimately defines this SSA definition and is
-   * not itself a phi node.
-   */
-  Definition getAnUltimateDefinition() {
-    result = this.getAPseudoInputOrPriorDefinition*() and
-    not result instanceof PhiNode
-  }
-
   /** Gets a textual representation of this SSA definition. */
   string toString() { none() }
 }
@@ -541,12 +602,6 @@ class WriteDefinition extends Definition, TWriteDef {
 
 /** A phi node. */
 class PhiNode extends Definition, TPhiNode {
-  /** Gets an input of this phi node. */
-  Definition getAnInput() { this.hasInputFromBlock(result, _) }
-
-  /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
-  predicate hasInputFromBlock(Definition inp, BasicBlock bb) { phiHasInputFromBlock(this, inp, bb) }
-
   override string toString() { result = "Phi" }
 }
 
@@ -561,10 +616,4 @@ class UncertainWriteDefinition extends WriteDefinition {
       variableWrite(bb, i, v, false)
     )
   }
-
-  /**
-   * Gets the immediately preceding definition. Since this update is uncertain,
-   * the value from the preceding definition might still be valid.
-   */
-  Definition getPriorDefinition() { uncertainWriteDefinitionInput(this, result) }
 }

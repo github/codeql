@@ -15,14 +15,6 @@ import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /**
- * Gets a regular expression for matching private hosts, which only matches the host portion therefore checking for port is not necessary.
- */
-private string getPrivateHostRegex() {
-  result =
-    "(?i)localhost(?:[:/?#].*)?|127\\.0\\.0\\.1(?:[:/?#].*)?|10(?:\\.[0-9]+){3}(?:[:/?#].*)?|172\\.16(?:\\.[0-9]+){2}(?:[:/?#].*)?|192.168(?:\\.[0-9]+){2}(?:[:/?#].*)?|\\[?0:0:0:0:0:0:0:1\\]?(?:[:/?#].*)?|\\[?::1\\]?(?:[:/?#].*)?"
-}
-
-/**
  * Class of Java URL constructor.
  */
 class URLConstructor extends ClassInstanceExpr {
@@ -76,7 +68,7 @@ class HttpStringLiteral extends StringLiteral {
     // Match URLs with the HTTP protocol and without private IP addresses to reduce false positives.
     exists(string s | this.getRepresentedString() = s |
       s.regexpMatch("(?i)http://[\\[a-zA-Z0-9].*") and
-      not s.substring(7, s.length()).regexpMatch(getPrivateHostRegex())
+      not s.substring(7, s.length()) instanceof PrivateHostName
     )
   }
 }
@@ -101,7 +93,7 @@ predicate concatHttpString(Expr protocol, Expr host) {
       host.(VarAccess).getVariable().getAnAssignedValue().(CompileTimeConstantExpr).getStringValue()
   |
     hostString.length() = 0 or // Empty host is loopback address
-    hostString.regexpMatch(getPrivateHostRegex())
+    hostString instanceof PrivateHostName
   )
 }
 

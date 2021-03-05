@@ -7,7 +7,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     internal class PropertyPattern : Expression
     {
         internal PropertyPattern(Context cx, PropertyPatternClauseSyntax pp, IExpressionParentEntity parent, int child) :
-            base(new ExpressionInfo(cx, null, cx.Create(pp.GetLocation()), ExprKind.PROPERTY_PATTERN, parent, child, false, null))
+            base(new ExpressionInfo(cx, null, cx.CreateLocation(pp.GetLocation()), ExprKind.PROPERTY_PATTERN, parent, child, false, null))
         {
             child = 0;
             var trapFile = cx.TrapWriter.Writer;

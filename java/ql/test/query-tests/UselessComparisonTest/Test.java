@@ -3,7 +3,7 @@ class Test {
 	void test(int x) {
 		z = getInt();
 		if (x < 0 || z < 0) {
-			throw new Exception();
+			throw new Error();
 		}
 		int y = 0;
 		if (x >= 0) y++; // useless test due to test in line 5 being false

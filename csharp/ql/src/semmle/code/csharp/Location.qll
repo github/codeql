@@ -62,6 +62,12 @@ class EmptyLocation extends Location {
  * within the file.
  */
 class SourceLocation extends Location, @location_default {
+  /** Gets the location that takes into account `#line` directives, if any. */
+  Location getMappedLocation() {
+    locations_mapped(this, result) and
+    not exists(LineDirective l | l.getALocation() = this)
+  }
+
   override File getFile() { locations_default(this, result, _, _, _, _) }
 
   override predicate hasLocationInfo(

@@ -14,12 +14,12 @@ import semmle.code.cpp.models.interfaces.FlowSource
  * The standard functions `gets` and `fgets`.
  */
 private class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, AliasFunction,
-  SideEffectFunction, RemoteFlowFunction {
+  SideEffectFunction, RemoteFlowSourceFunction {
   GetsFunction() {
     // gets(str)
     // fgets(str, num, stream)
     // fgetws(wstr, num, stream)
-    hasGlobalOrStdName(["gets", "fgets", "fgetws"])
+    hasGlobalOrStdOrBslName(["gets", "fgets", "fgetws"])
   }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
@@ -54,13 +54,13 @@ private class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunctio
   }
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
-    not hasGlobalOrStdName("gets") and
+    not hasName("gets") and
     bufParam = 0 and
     countParam = 1
   }
 
   override predicate hasArrayWithUnknownSize(int bufParam) {
-    hasGlobalOrStdName("gets") and
+    hasName("gets") and
     bufParam = 0
   }
 

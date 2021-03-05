@@ -78,7 +78,7 @@ predicate depends(ValueOrRefType t, ValueOrRefType u) {
     or
     exists(DelegateCall dc, DelegateType dt |
       dc.getEnclosingCallable().getDeclaringType() = t and
-      dc.getDelegateExpr().getType() = dt and
+      dc.getExpr().getType() = dt and
       usesType(dt.getUnboundDeclaration(), u)
     )
     or

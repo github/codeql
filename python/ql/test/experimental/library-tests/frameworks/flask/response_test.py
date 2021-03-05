@@ -1,6 +1,6 @@
 import json
 
-from flask import Flask, make_response, jsonify, Response, request
+from flask import Flask, make_response, jsonify, Response, request, redirect
 
 app = Flask(__name__)
 
@@ -171,6 +171,18 @@ def app_response_class():  # $requestHandler
 
 # TODO: add tests for setting status code
 # TODO: add test that manually creates a redirect by setting status code and suitable header.
+
+################################################################################
+# Redirect
+################################################################################
+
+
+@app.route("/redirect-simple")  # $routeSetup="/redirect-simple"
+def redirect_simple():  # $requestHandler
+    next = request.args['next']
+    resp = redirect(next) # $ HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation=next
+    return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
+
 
 ################################################################################
 

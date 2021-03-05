@@ -351,3 +351,7 @@ var bad79 = /(a*)*b/;
 var bad80 = /(a+)*b/;
 var bad81 = /(a*)+b/;
 var bad82 = /(a+)+b/;
+
+// GOOD
+var good40 = /(a|b)+/;
+var good41 = /(?:[\s;,"'<>(){}|[\]@=+*]|:(?![/\\]))+/;

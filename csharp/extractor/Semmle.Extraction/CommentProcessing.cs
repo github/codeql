@@ -53,7 +53,7 @@ namespace Semmle.Extraction.CommentProcessing
             if (l2 == null)
                 return 1;
 
-            var diff = l1.SourceTree == l2.SourceTree ? 0 : l1.SourceTree.FilePath.CompareTo(l2.SourceTree.FilePath);
+            var diff = l1.SourceTree == l2.SourceTree ? 0 : l1.SourceTree!.FilePath.CompareTo(l2.SourceTree!.FilePath);
             if (diff != 0)
                 return diff;
             diff = l1.SourceSpan.Start - l2.SourceSpan.Start;
@@ -384,9 +384,12 @@ namespace Semmle.Extraction.CommentProcessing
         /// <param name="line">The line to add.</param>
         public void AddCommentLine(ICommentLine line)
         {
-            Location = !lines.Any() ?
-                line.Location :
-                Location.Create(line.Location.SourceTree, new TextSpan(Location.SourceSpan.Start, line.Location.SourceSpan.End - Location.SourceSpan.Start));
+            Location = !lines.Any()
+                ? line.Location
+                : Location.Create(
+                    line.Location.SourceTree!,
+                    new TextSpan(Location.SourceSpan.Start, line.Location.SourceSpan.End - Location.SourceSpan.Start));
+
             lines.Add(line);
         }
     }

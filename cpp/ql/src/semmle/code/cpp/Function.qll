@@ -680,7 +680,7 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
 
 /**
  * A C/C++ non-member function (a function that is not a member of any
- * class). For example the in the following code, `MyFunction` is a
+ * class). For example, in the following code, `MyFunction` is a
  * `TopLevelFunction` but `MyMemberFunction` is not:
  * ```
  * void MyFunction() {

@@ -23,7 +23,7 @@ private class RemoteReturnSource extends RemoteFlowSource {
   string sourceType;
 
   RemoteReturnSource() {
-    exists(RemoteFlowFunction func, CallInstruction instr, FunctionOutput output |
+    exists(RemoteFlowSourceFunction func, CallInstruction instr, FunctionOutput output |
       asInstruction() = instr and
       instr.getStaticCallTarget() = func and
       func.hasRemoteFlowSource(output, sourceType) and
@@ -42,7 +42,7 @@ private class RemoteParameterSource extends RemoteFlowSource {
   string sourceType;
 
   RemoteParameterSource() {
-    exists(RemoteFlowFunction func, WriteSideEffectInstruction instr, FunctionOutput output |
+    exists(RemoteFlowSourceFunction func, WriteSideEffectInstruction instr, FunctionOutput output |
       asInstruction() = instr and
       instr.getPrimaryInstruction().(CallInstruction).getStaticCallTarget() = func and
       func.hasRemoteFlowSource(output, sourceType) and
@@ -57,7 +57,7 @@ private class LocalReturnSource extends LocalFlowSource {
   string sourceType;
 
   LocalReturnSource() {
-    exists(LocalFlowFunction func, CallInstruction instr, FunctionOutput output |
+    exists(LocalFlowSourceFunction func, CallInstruction instr, FunctionOutput output |
       asInstruction() = instr and
       instr.getStaticCallTarget() = func and
       func.hasLocalFlowSource(output, sourceType) and
@@ -76,7 +76,7 @@ private class LocalParameterSource extends LocalFlowSource {
   string sourceType;
 
   LocalParameterSource() {
-    exists(LocalFlowFunction func, WriteSideEffectInstruction instr, FunctionOutput output |
+    exists(LocalFlowSourceFunction func, WriteSideEffectInstruction instr, FunctionOutput output |
       asInstruction() = instr and
       instr.getPrimaryInstruction().(CallInstruction).getStaticCallTarget() = func and
       func.hasLocalFlowSource(output, sourceType) and
@@ -97,4 +97,32 @@ private class ArgvSource extends LocalFlowSource {
   }
 
   override string getSourceType() { result = "a command-line argument" }
+}
+
+/** A remote data flow sink. */
+abstract class RemoteFlowSink extends DataFlow::Node {
+  /** Gets a string that describes the type of this flow sink. */
+  abstract string getSinkType();
+}
+
+private class RemoteParameterSink extends RemoteFlowSink {
+  string sourceType;
+
+  RemoteParameterSink() {
+    exists(RemoteFlowSinkFunction func, FunctionInput input, CallInstruction call, int index |
+      func.hasRemoteFlowSink(input, sourceType) and call.getStaticCallTarget() = func
+    |
+      exists(ReadSideEffectInstruction read |
+        call = read.getPrimaryInstruction() and
+        read.getIndex() = index and
+        this.asOperand() = read.getSideEffectOperand() and
+        input.isParameterDerefOrQualifierObject(index)
+      )
+      or
+      input.isParameterOrQualifierAddress(index) and
+      this.asOperand() = call.getArgumentOperand(index)
+    )
+  }
+
+  override string getSinkType() { result = sourceType }
 }

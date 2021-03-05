@@ -85,6 +85,7 @@ public final class EncryptedSharedPreferences implements SharedPreferences {
             PrefKeyEncryptionScheme prefKeyEncryptionScheme,
             PrefValueEncryptionScheme prefValueEncryptionScheme)
             throws GeneralSecurityException, IOException {
+        return null;
     }
 
     /**

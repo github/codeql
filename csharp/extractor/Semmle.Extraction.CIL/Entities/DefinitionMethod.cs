@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override IList<LocalVariable>? LocalVariables => locals;
 
-        public DefinitionMethod(GenericContext gc, MethodDefinitionHandle handle) : base(gc)
+        public DefinitionMethod(IGenericContext gc, MethodDefinitionHandle handle) : base(gc)
         {
             md = Cx.MdReader.GetMethodDefinition(handle);
             this.gc = gc;

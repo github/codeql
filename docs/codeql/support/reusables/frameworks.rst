@@ -33,6 +33,7 @@ Go built-in support
    glog, Logging library
    go-restful, Web application framework
    go-sh, Utility library
+   GoKit, Microservice toolkit
    Gokogiri, XPath library
    golang.org/x/crypto/ssh, Network communicator
    golang.org/x/net/websocket, Network communicator
@@ -93,7 +94,8 @@ JavaScript and TypeScript built-in support
    :widths: auto
 
    Name, Category
-   angularjs, HTML framework
+   angular (modern version), HTML framework
+   angular.js (legacy version), HTML framework
    axios, Network communicator
    browser, Runtime environment
    electron, Runtime environment
@@ -122,19 +124,20 @@ JavaScript and TypeScript built-in support
 Python built-in support
 ====================================
 
-.. csv-table:: 
+.. csv-table::
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
 
    Name, Category
-   Bottle, Web framework
-   CherryPy, Web framework
-   Django, Web application framework
-   Falcon, Web API framework
-   Flask, Microframework
-   Pyramid, Web application framework
-   Tornado, Web application framework and asynchronous networking library
-   Turbogears, Web framework
-   Twisted, Networking engine
-   WebOb, WSGI request library
+   Django, Web framework
+   Flask, Web framework
+   Tornado, Web framework
+   PyYAML, Serialization
+   dill, Serialization
+   fabric, Utility library
+   invoke, Utility library
+   mysql-connector-python, Database
+   MySQLdb, Database
+   psycopg2, Database
+   sqlite3, Database

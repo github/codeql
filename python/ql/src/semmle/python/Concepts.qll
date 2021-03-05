@@ -325,6 +325,9 @@ module HTTP {
        * requests for this route, if any. These automatically become a `RemoteFlowSource`.
        */
       Parameter getARoutedParameter() { result = range.getARoutedParameter() }
+
+      /** Gets a string that identifies the framework used for this route setup. */
+      string getFramework() { result = range.getFramework() }
     }
 
     /** Provides a class for modeling new HTTP routing APIs. */
@@ -359,6 +362,9 @@ module HTTP {
          * requests for this route, if any. These automatically become a `RemoteFlowSource`.
          */
         abstract Parameter getARoutedParameter();
+
+        /** Gets a string that identifies the framework used for this route setup. */
+        abstract string getFramework();
       }
     }
 
@@ -378,6 +384,9 @@ module HTTP {
        * requests, if any. These automatically become a `RemoteFlowSource`.
        */
       Parameter getARoutedParameter() { result = range.getARoutedParameter() }
+
+      /** Gets a string that identifies the framework used for this route setup. */
+      string getFramework() { result = range.getFramework() }
     }
 
     /** Provides a class for modeling new HTTP request handlers. */
@@ -396,6 +405,9 @@ module HTTP {
          * requests, if any. These automatically become a `RemoteFlowSource`.
          */
         abstract Parameter getARoutedParameter();
+
+        /** Gets a string that identifies the framework used for this request handler. */
+        abstract string getFramework();
       }
     }
 
@@ -408,13 +420,17 @@ module HTTP {
         result = rs.getARoutedParameter() and
         result in [this.getArg(_), this.getArgByName(_)]
       }
+
+      override string getFramework() { result = rs.getFramework() }
     }
 
     /** A parameter that will receive parts of the url when handling an incoming request. */
     private class RoutedParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
-      RoutedParameter() { this.getParameter() = any(RequestHandler handler).getARoutedParameter() }
+      RequestHandler handler;
 
-      override string getSourceType() { result = "RoutedParameter" }
+      RoutedParameter() { this.getParameter() = handler.getARoutedParameter() }
+
+      override string getSourceType() { result = handler.getFramework() + " RoutedParameter" }
     }
 
     /**
@@ -471,6 +487,41 @@ module HTTP {
           not exists(this.getMimetypeOrContentTypeArg()) and
           result = this.getMimetypeDefault()
         }
+      }
+    }
+
+    /**
+     * A data-flow node that creates a HTTP redirect response on a server.
+     *
+     * Note: we don't require that this redirect must be sent to a client (a kind of
+     * "if a tree falls in a forest and nobody hears it" situation).
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `HttpRedirectResponse::Range` instead.
+     */
+    class HttpRedirectResponse extends HttpResponse {
+      override HttpRedirectResponse::Range range;
+
+      HttpRedirectResponse() { this = range }
+
+      /** Gets the data-flow node that specifies the location of this HTTP redirect response. */
+      DataFlow::Node getRedirectLocation() { result = range.getRedirectLocation() }
+    }
+
+    /** Provides a class for modeling new HTTP redirect response APIs. */
+    module HttpRedirectResponse {
+      /**
+       * A data-flow node that creates a HTTP redirect response on a server.
+       *
+       * Note: we don't require that this redirect must be sent to a client (a kind of
+       * "if a tree falls in a forest and nobody hears it" situation).
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `HttpResponse` instead.
+       */
+      abstract class Range extends HTTP::Server::HttpResponse::Range {
+        /** Gets the data-flow node that specifies the location of this HTTP redirect response. */
+        abstract DataFlow::Node getRedirectLocation();
       }
     }
   }

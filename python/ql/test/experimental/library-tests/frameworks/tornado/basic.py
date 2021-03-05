@@ -25,7 +25,7 @@ class RedirectHandler(tornado.web.RequestHandler):
         req = self.request
         h = req.headers
         url = h["url"]
-        self.redirect(url)
+        self.redirect(url) # $ HttpRedirectResponse HttpResponse redirectLocation=url
 
 
 class BaseReverseInheritance(tornado.web.RequestHandler):

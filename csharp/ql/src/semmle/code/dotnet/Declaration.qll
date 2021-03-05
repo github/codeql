@@ -58,7 +58,28 @@ class Declaration extends NamedElement, @dotnet_declaration {
 }
 
 /** A member of a type. */
-class Member extends Declaration, @dotnet_member { }
+class Member extends Declaration, @dotnet_member {
+  /** Holds if this member is declared `public`. */
+  predicate isPublic() { none() }
+
+  /** Holds if this member is declared `protected.` */
+  predicate isProtected() { none() }
+
+  /** Holds if this member is `private`. */
+  predicate isPrivate() { none() }
+
+  /** Holds if this member is `internal`. */
+  predicate isInternal() { none() }
+
+  /** Holds if this member is `sealed`. */
+  predicate isSealed() { none() }
+
+  /** Holds if this member is `abstract`. */
+  predicate isAbstract() { none() }
+
+  /** Holds if this member is `static`. */
+  predicate isStatic() { none() }
+}
 
 /** A property. */
 class Property extends Member, @dotnet_property {

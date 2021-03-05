@@ -270,7 +270,12 @@ private predicate isFromUninstantiatedTemplateRec(Element e, Element template) {
 }
 
 /**
- * A C++11 `static_assert` or C11 `_Static_assert` construct.
+ * A C++11 `static_assert` or C11 `_Static_assert` construct. For example each
+ * line in the following example contains a static assert:
+ * ```
+ * static_assert(sizeof(MyStruct) <= 4096);
+ * static_assert(sizeof(MyStruct) <= 4096, "MyStruct is too big!");
+ * ```
  */
 class StaticAssert extends Locatable, @static_assert {
   override string toString() { result = "static_assert(..., \"" + getMessage() + "\")" }

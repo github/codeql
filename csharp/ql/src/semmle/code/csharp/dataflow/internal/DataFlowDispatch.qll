@@ -101,7 +101,7 @@ private module Cached {
     TNonDelegateCall(ControlFlow::Nodes::ElementNode cfn, DispatchCall dc) {
       cfn.getElement() = dc.getCall()
     } or
-    TExplicitDelegateCall(ControlFlow::Nodes::ElementNode cfn, DelegateCall dc) {
+    TExplicitDelegateLikeCall(ControlFlow::Nodes::ElementNode cfn, DelegateLikeCall dc) {
       cfn.getElement() = dc
     } or
     TTransitiveCapturedCall(ControlFlow::Nodes::ElementNode cfn, Callable target) {
@@ -308,12 +308,12 @@ abstract class DelegateDataFlowCall extends DataFlowCall {
   override DataFlowCallable getARuntimeTarget() { result = this.getARuntimeTarget(_) }
 }
 
-/** An explicit delegate call relevant for data flow. */
-class ExplicitDelegateDataFlowCall extends DelegateDataFlowCall, TExplicitDelegateCall {
+/** An explicit delegate or function pointer call relevant for data flow. */
+class ExplicitDelegateLikeDataFlowCall extends DelegateDataFlowCall, TExplicitDelegateLikeCall {
   private ControlFlow::Nodes::ElementNode cfn;
-  private DelegateCall dc;
+  private DelegateLikeCall dc;
 
-  ExplicitDelegateDataFlowCall() { this = TExplicitDelegateCall(cfn, dc) }
+  ExplicitDelegateLikeDataFlowCall() { this = TExplicitDelegateLikeCall(cfn, dc) }
 
   override DataFlowCallable getARuntimeTarget(CallContext::CallContext cc) {
     result = getCallableForDataFlow(dc.getARuntimeTarget(cc))

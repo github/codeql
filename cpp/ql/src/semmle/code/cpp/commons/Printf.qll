@@ -53,7 +53,12 @@ predicate primitiveVariadicFormatter(
   (
     if type = "" then outputParamIndex = -1 else outputParamIndex = 0 // Conveniently, these buffer parameters are all at index 0.
   ) and
-  not exists(f.getBlock()) // exclude functions with an implementation in the snapshot as they may not be standard implementations.
+  not (
+    // exclude functions with an implementation in the snapshot source
+    // directory, as they may not be standard implementations.
+    exists(f.getBlock()) and
+    exists(f.getFile().getRelativePath())
+  )
 }
 
 private predicate callsVariadicFormatter(

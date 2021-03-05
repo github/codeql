@@ -11,7 +11,8 @@ cached
 private newtype TCallContext =
   TEmptyCallContext() or
   TArgNonDelegateCallContext(Expr arg) { exists(DispatchCall dc | arg = dc.getArgument(_)) } or
-  TArgDelegateCallContext(DelegateCall dc, int i) { exists(dc.getArgument(i)) }
+  TArgDelegateCallContext(DelegateCall dc, int i) { exists(dc.getArgument(i)) } or
+  TArgFunctionPointerCallContext(FunctionPointerCall fptrc, int i) { exists(fptrc.getArgument(i)) }
 
 /**
  * A call context.
@@ -60,12 +61,14 @@ class NonDelegateCallArgumentCallContext extends ArgumentCallContext, TArgNonDel
   override Location getLocation() { result = arg.getLocation() }
 }
 
-/** An argument of a delegate call. */
-class DelegateCallArgumentCallContext extends ArgumentCallContext, TArgDelegateCallContext {
-  DelegateCall dc;
+/** An argument of a delegate or function pointer call. */
+class DelegateLikeCallArgumentCallContext extends ArgumentCallContext {
+  DelegateLikeCall dc;
   int arg;
 
-  DelegateCallArgumentCallContext() { this = TArgDelegateCallContext(dc, arg) }
+  DelegateLikeCallArgumentCallContext() {
+    this = TArgDelegateCallContext(dc, arg) or this = TArgFunctionPointerCallContext(dc, arg)
+  }
 
   override predicate isArgument(Expr call, int i) {
     call = dc and
@@ -76,3 +79,11 @@ class DelegateCallArgumentCallContext extends ArgumentCallContext, TArgDelegateC
 
   override Location getLocation() { result = dc.getArgument(arg).getLocation() }
 }
+
+/** An argument of a delegate call. */
+class DelegateCallArgumentCallContext extends DelegateLikeCallArgumentCallContext,
+  TArgDelegateCallContext { }
+
+/** An argument of a function pointer call. */
+class FunctionPointerCallArgumentCallContext extends DelegateLikeCallArgumentCallContext,
+  TArgFunctionPointerCallContext { }

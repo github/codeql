@@ -192,7 +192,7 @@ def test_nested_comprehension_deep_with_local_flow():
 def test_nested_comprehension_dict():
     d = {"s": [SOURCE]}
     x = [y for k, v in d.items() for y in v]
-    SINK(x[0]) #$ MISSING:flow="SOURCE, l:-1 -> x[0]"
+    SINK(x[0]) #$ MISSING:flow="SOURCE, l:-2 -> x[0]"
 
 
 def test_nested_comprehension_paren():
@@ -203,12 +203,12 @@ def test_nested_comprehension_paren():
 # Iterable unpacking in comprehensions
 def test_unpacking_comprehension():
     x = [a for (a, b) in [(SOURCE, NONSOURCE)]]
-    SINK(x[0])  # Flow missing
+    SINK(x[0]) #$ flow="SOURCE, l:-1 -> x[0]"
 
 
 def test_star_unpacking_comprehension():
     x = [a[0] for (*a, b) in [(SOURCE, NONSOURCE)]]
-    SINK(x[0])  # Flow missing
+    SINK(x[0]) #$ flow="SOURCE, l:-1 -> x[0]"
 
 
 # 6.2.8. Generator expressions
@@ -654,7 +654,7 @@ def test_iterable_repacking():
 def test_iterable_unpacking_in_for():
     tl = [(SOURCE, NONSOURCE), (SOURCE, NONSOURCE)]
     for x,y in tl:
-        SINK(x) #$ MISSING: flow="SOURCE, l:-2 -> x"
+        SINK(x) #$ flow="SOURCE, l:-2 -> x"
         SINK_F(y)
 
 
@@ -663,8 +663,17 @@ def test_iterable_star_unpacking_in_for():
     tl = [(SOURCE, NONSOURCE), (SOURCE, NONSOURCE)]
     for *x,y in tl:
         SINK_F(x)
-        SINK(x[0]) #$ MISSING: flow="SOURCE, l:-3 -> x[0]"
-        SINK_F(y)
+        SINK(x[0]) #$ flow="SOURCE, l:-3 -> x[0]"
+        SINK_F(y) #$ SPURIOUS: flow="SOURCE, l:-4 -> y"  # FP here since we do not track the tuple lenght and so `*x` could be empty
+
+
+@expects(6)
+def test_iterable_star_unpacking_in_for_2():
+    tl = [(SOURCE, NONSOURCE), (SOURCE, NONSOURCE)]
+    for x,*y,z in tl:
+        SINK(x) #$ flow="SOURCE, l:-2 -> x"
+        SINK_F(y)  # The list itself is not tainted (and is here empty)
+        SINK_F(z)
 
 
 def test_deep_callgraph():

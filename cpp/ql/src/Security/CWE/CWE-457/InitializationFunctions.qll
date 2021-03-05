@@ -353,7 +353,9 @@ class InitializationFunction extends Function {
           // Destination range is zeroed out on failure, assuming first two parameters are valid
           "memcpy_s",
           // This zeroes the memory unconditionally
-          "SeCreateAccessState"
+          "SeCreateAccessState",
+          // Argument initialization is optional, but always succeeds
+          "KeGetCurrentProcessorNumberEx"
         ]
     )
   }

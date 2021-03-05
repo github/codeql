@@ -26,7 +26,7 @@ public class SpringSSRF extends HttpServlet {
         String fooResourceUrl = request2.getParameter("uri");;
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> request = new HttpEntity<>(new String("bar"));
-
+        try {
         {
             ResponseEntity<String> response =
                     restTemplate.getForEntity(fooResourceUrl + "/1", String.class);
@@ -68,5 +68,6 @@ public class SpringSSRF extends HttpServlet {
         {
             restTemplate.put(fooResourceUrl, new String("object"));
         }
+        } catch (org.springframework.web.client.RestClientException | java.net.URISyntaxException e) {}
     }
 }

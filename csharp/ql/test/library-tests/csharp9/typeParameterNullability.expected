@@ -10,8 +10,6 @@ valueType
 | TypeParameterNullability.cs:19:29:19:29 | T |
 | TypeParameterNullability.cs:24:29:24:29 | T |
 valueOrRefType
-| FunctionPointer.cs:22:24:22:24 | T |
-| FunctionPointer.cs:34:24:34:24 | T |
 | TypeParameterNullability.cs:5:28:5:28 | T |
 | TypeParameterNullability.cs:9:28:9:28 | T |
 | TypeParameterNullability.cs:15:29:15:29 | T |

@@ -245,7 +245,7 @@ private module CallGraph {
      * a library callable and `e` is a delegate argument.
      */
     private predicate delegateCall(Call c, Expr e, boolean libraryDelegateCall) {
-      c = any(DelegateCall dc | e = dc.getDelegateExpr()) and
+      c = any(DelegateCall dc | e = dc.getExpr()) and
       libraryDelegateCall = false
       or
       c.getTarget().fromLibrary() and
@@ -954,10 +954,12 @@ private predicate variableReadPseudo(ControlFlow::BasicBlock bb, int i, Ssa::Sou
  *
  * This includes implicit reads via calls.
  */
-predicate variableRead(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v) {
-  variableReadActual(bb, i, v)
+predicate variableRead(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
+  variableReadActual(bb, i, v) and
+  certain = true
   or
-  variableReadPseudo(bb, i, v)
+  variableReadPseudo(bb, i, v) and
+  certain = false
 }
 
 cached
@@ -1073,7 +1075,7 @@ private module Cached {
     Ssa::ExplicitDefinition def, Ssa::ImplicitEntryDefinition edef,
     ControlFlow::Nodes::ElementNode c, boolean additionalCalls
   ) {
-    exists(Ssa::SourceVariable v, Definition def0, ControlFlow::BasicBlock bb, int i |
+    exists(Ssa::SourceVariable v, Ssa::Definition def0, ControlFlow::BasicBlock bb, int i |
       v = def.getSourceVariable() and
       capturedReadIn(_, _, v, edef.getSourceVariable(), c, additionalCalls) and
       def = def0.getAnUltimateDefinition() and
@@ -1107,24 +1109,9 @@ private module Cached {
     ssaDefReachesEndOfBlock(bb, def, _)
   }
 
-  private predicate adjacentDefReaches(
-    Definition def, ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2
-  ) {
-    adjacentDefRead(def, bb1, i1, bb2, i2)
-    or
-    exists(ControlFlow::BasicBlock bb3, int i3 |
-      adjacentDefReaches(def, bb1, i1, bb3, i3) and
-      variableReadPseudo(bb3, i3, _) and
-      adjacentDefRead(def, bb3, i3, bb2, i2)
-    )
-  }
-
-  pragma[noinline]
-  private predicate adjacentDefActualRead(
-    Definition def, ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2
-  ) {
-    adjacentDefReaches(def, bb1, i1, bb2, i2) and
-    variableReadActual(bb2, i2, _)
+  cached
+  Definition phiHasInputFromBlock(PhiNode phi, ControlFlow::BasicBlock bb) {
+    phiHasInputFromBlock(phi, result, bb)
   }
 
   cached
@@ -1145,7 +1132,7 @@ private module Cached {
   predicate firstReadSameVar(Definition def, ControlFlow::Node cfn) {
     exists(ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2 |
       def.definesAt(_, bb1, i1) and
-      adjacentDefActualRead(def, bb1, i1, bb2, i2) and
+      adjacentDefNoUncertainReads(def, bb1, i1, bb2, i2) and
       cfn = bb2.getNode(i2)
     )
   }
@@ -1160,51 +1147,28 @@ private module Cached {
     exists(ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2 |
       cfn1 = bb1.getNode(i1) and
       variableReadActual(bb1, i1, _) and
-      adjacentDefActualRead(def, bb1, i1, bb2, i2) and
+      adjacentDefNoUncertainReads(def, bb1, i1, bb2, i2) and
       cfn2 = bb2.getNode(i2)
-    )
-  }
-
-  private predicate adjacentDefPseudoRead(
-    Definition def, ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2
-  ) {
-    adjacentDefReaches(def, bb1, i1, bb2, i2) and
-    variableReadPseudo(bb2, i2, _)
-  }
-
-  private predicate reachesLastRefRedef(
-    Definition def, ControlFlow::BasicBlock bb, int i, Definition next
-  ) {
-    lastRefRedef(def, bb, i, next)
-    or
-    exists(ControlFlow::BasicBlock bb0, int i0 |
-      reachesLastRefRedef(def, bb0, i0, next) and
-      adjacentDefPseudoRead(def, bb, i, bb0, i0)
     )
   }
 
   cached
   predicate lastRefBeforeRedef(Definition def, ControlFlow::BasicBlock bb, int i, Definition next) {
-    reachesLastRefRedef(def, bb, i, next) and
-    not variableReadPseudo(bb, i, def.getSourceVariable())
-  }
-
-  private predicate reachesLastRef(Definition def, ControlFlow::BasicBlock bb, int i) {
-    lastRef(def, bb, i)
-    or
-    exists(ControlFlow::BasicBlock bb0, int i0 |
-      reachesLastRef(def, bb0, i0) and
-      adjacentDefPseudoRead(def, bb, i, bb0, i0)
-    )
+    lastRefRedefNoUncertainReads(def, bb, i, next)
   }
 
   cached
   predicate lastReadSameVar(Definition def, ControlFlow::Node cfn) {
     exists(ControlFlow::BasicBlock bb, int i |
-      reachesLastRef(def, bb, i) and
+      lastRefNoUncertainReads(def, bb, i) and
       variableReadActual(bb, i, _) and
       cfn = bb.getNode(i)
     )
+  }
+
+  cached
+  Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def) {
+    uncertainWriteDefinitionInput(def, result)
   }
 
   cached

@@ -14,7 +14,7 @@ class Test {
 		return "tainted";
 	}
 
-	public static void jacksonObjectMapper() {
+	public static void jacksonObjectMapper() throws java.io.FileNotFoundException, java.io.UnsupportedEncodingException {
 		String s = taint();
 		ObjectMapper om = new ObjectMapper();
 		File file = new File("testFile");
@@ -32,7 +32,7 @@ class Test {
 		System.out.println(reconstructed);
 	}
 
-	public static void jacksonObjectWriter() {
+	public static void jacksonObjectWriter() throws java.io.FileNotFoundException, java.io.UnsupportedEncodingException {
 		String s = taint();
 		ObjectWriter ow = new ObjectWriter();
 		File file = new File("testFile");

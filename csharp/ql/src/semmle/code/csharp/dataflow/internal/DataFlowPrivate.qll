@@ -1394,7 +1394,7 @@ private module OutNodes {
 
   private DataFlowCall csharpCall(Expr e, ControlFlow::Node cfn) {
     e = any(DispatchCall dc | result = TNonDelegateCall(cfn, dc)).getCall() or
-    result = TExplicitDelegateCall(cfn, e)
+    result = TExplicitDelegateLikeCall(cfn, e)
   }
 
   /** A valid return type for a method that uses `yield return`. */

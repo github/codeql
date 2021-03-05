@@ -7,9 +7,15 @@ import semmle.code.cpp.models.interfaces.Taint
 /**
  * An instantiation of `std::pair<T1, T2>`.
  */
-class StdPairClass extends ClassTemplateInstantiation {
-  StdPairClass() { getTemplate().hasQualifiedName("std", "pair") }
+private class StdPair extends ClassTemplateInstantiation {
+  StdPair() { this.hasQualifiedName(["std", "bsl"], "pair") }
 }
+
+/**
+ * DEPRECATED: This is now called `StdPair` and is a private part of the
+ * library implementation.
+ */
+deprecated class StdPairClass = StdPair;
 
 /**
  * Any of the single-parameter constructors of `std::pair` that takes a reference to an
@@ -18,9 +24,9 @@ class StdPairClass extends ClassTemplateInstantiation {
  */
 class StdPairCopyishConstructor extends Constructor, TaintFunction {
   StdPairCopyishConstructor() {
-    this.getDeclaringType() instanceof StdPairClass and
+    this.getDeclaringType() instanceof StdPair and
     this.getNumberOfParameters() = 1 and
-    this.getParameter(0).getUnspecifiedType().(ReferenceType).getBaseType() instanceof StdPairClass
+    this.getParameter(0).getUnspecifiedType().(ReferenceType).getBaseType() instanceof StdPair
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -38,7 +44,7 @@ class StdPairCopyishConstructor extends Constructor, TaintFunction {
  * Additional model for `std::pair` constructors.
  */
 private class StdPairConstructor extends Constructor, TaintFunction {
-  StdPairConstructor() { this.hasQualifiedName("std", "pair", "pair") }
+  StdPairConstructor() { this.getDeclaringType() instanceof StdPair }
 
   /**
    * Gets the index of a parameter to this function that is a reference to

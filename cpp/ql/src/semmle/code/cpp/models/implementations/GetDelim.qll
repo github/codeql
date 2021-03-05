@@ -7,7 +7,7 @@ import semmle.code.cpp.models.interfaces.FlowSource
  * The standard functions `getdelim`, `getwdelim` and the glibc variant `__getdelim`.
  */
 private class GetDelimFunction extends TaintFunction, AliasFunction, SideEffectFunction,
-  RemoteFlowFunction {
+  RemoteFlowSourceFunction {
   GetDelimFunction() { hasGlobalName(["getdelim", "getwdelim", "__getdelim"]) }
 
   override predicate hasTaintFlow(FunctionInput i, FunctionOutput o) {
