@@ -8,6 +8,7 @@ private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.dataflow.TypeFlow
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSteps
 import semmle.code.java.dataflow.InstanceAccess
 
 cached
@@ -367,60 +368,6 @@ predicate hasNonlocalValue(FieldRead fr) {
  * Holds if data can flow from `node1` to `node2` in one local step.
  */
 predicate localFlowStep(Node node1, Node node2) { simpleLocalFlowStep(node1, node2) }
-
-/**
- * A method or constructor that returns the exact value of one of its parameters or the qualifier.
- *
- * Extend this class and override `returnsValue` to add additional value-preserving steps through a
- * method that should be added to the basic local flow step relation.
- *
- * These steps will be visible for all global data-flow purposes, as well as via
- * `DataFlow::Node.getASuccessor` and other related functions exposing intraprocedural dataflow.
- */
-abstract class ValuePreservingCallable extends Callable {
-  /**
-   * Holds if this callable returns precisely the value passed into argument `arg`.
-   * `arg` is a parameter index, or is -1 to indicate the qualifier.
-   */
-  abstract predicate returnsValue(int arg);
-}
-
-/**
- * A method or constructor that returns the exact value of its qualifier (e.g., `return this;`)
- *
- * Extend this class and override `returnsValue` to add additional value-preserving steps through a
- * method that should be added to the basic local flow step relation.
- *
- * These steps will be visible for all global data-flow purposes, as well as via
- * `DataFlow::Node.getASuccessor` and other related functions exposing intraprocedural dataflow.
- */
-abstract class FluentMethod extends ValuePreservingCallable {
-  override predicate returnsValue(int arg) { arg = -1 }
-}
-
-private class StandardLibraryValuePreservingCallable extends ValuePreservingCallable {
-  int returnsArgNo;
-
-  StandardLibraryValuePreservingCallable() {
-    this.getDeclaringType().hasQualifiedName("java.util", "Objects") and
-    (
-      this.hasName(["requireNonNull", "requireNonNullElseGet"]) and returnsArgNo = 0
-      or
-      this.hasName("requireNonNullElse") and returnsArgNo = [0 .. this.getNumberOfParameters() - 1]
-      or
-      this.hasName("toString") and returnsArgNo = 1
-    )
-    or
-    this.getDeclaringType()
-        .getSourceDeclaration()
-        .getASourceSupertype*()
-        .hasQualifiedName("java.util", "Stack") and
-    this.hasName("push") and
-    returnsArgNo = 0
-  }
-
-  override predicate returnsValue(int argNo) { argNo = returnsArgNo }
-}
 
 /**
  * INTERNAL: do not use.

@@ -15,11 +15,11 @@ class Conf extends DataFlow::Configuration {
   }
 }
 
-class Model extends DataFlow::FluentMethod {
+class Model extends FluentMethod {
   Model() { this.getName() = "modelledFluentMethod" }
 }
 
-class IdentityModel extends DataFlow::ValuePreservingCallable {
+class IdentityModel extends ValuePreservingCallable {
   IdentityModel() { this.getName() = "modelledIdentity" }
 
   override predicate returnsValue(int arg) { arg = 0 }
