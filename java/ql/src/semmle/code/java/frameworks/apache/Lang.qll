@@ -396,3 +396,28 @@ private class ApacheRegExUtilsModel extends SummaryModelCsv {
       ]
   }
 }
+
+/**
+ * Taint-propagating models for `ObjectUtils`.
+ */
+private class ApacheObjectUtilsModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        // Note all the functions annotated with `taint` flow really should have `value` flow,
+        // but we don't support value-preserving varargs functions at the moment.
+        "org.apache.commons.lang3;ObjectUtils;false;clone;;;Argument;ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;cloneIfPossible;;;Argument;ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;CONST;;;Argument;ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;defaultIfNull;;;Argument;ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;firstNonNull;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;ObjectUtils;false;getIfNull;;;Argument[0];ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;max;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;ObjectUtils;false;median;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;ObjectUtils;false;min;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;ObjectUtils;false;mode;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;ObjectUtils;false;requireNonEmpty;;;Argument[0];ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;toString;(Object,String);;Argument[1];ReturnValue;value"
+      ]
+  }
+}
