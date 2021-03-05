@@ -70,6 +70,7 @@ private import internal.DataFlowPrivate
  */
 private module Frameworks {
   private import semmle.code.java.frameworks.ApacheHttp
+  private import semmle.code.java.frameworks.apache.Lang
 }
 
 private predicate sourceModelCsv(string row) {
@@ -409,21 +410,27 @@ private predicate outputNeedsReference(string c) {
 private predicate sourceElementRef(Top ref, string output, string kind) {
   exists(Element e |
     sourceElement(e, output, kind) and
-    if outputNeedsReference(getLast(output)) then ref.(Call).getCallee() = e else ref = e
+    if outputNeedsReference(getLast(output))
+    then ref.(Call).getCallee().getSourceDeclaration() = e
+    else ref = e
   )
 }
 
 private predicate sinkElementRef(Top ref, string input, string kind) {
   exists(Element e |
     sinkElement(e, input, kind) and
-    if inputNeedsReference(getLast(input)) then ref.(Call).getCallee() = e else ref = e
+    if inputNeedsReference(getLast(input))
+    then ref.(Call).getCallee().getSourceDeclaration() = e
+    else ref = e
   )
 }
 
 private predicate summaryElementRef(Top ref, string input, string output, string kind) {
   exists(Element e |
     summaryElement(e, input, output, kind) and
-    if inputNeedsReference(getLast(input)) then ref.(Call).getCallee() = e else ref = e
+    if inputNeedsReference(getLast(input))
+    then ref.(Call).getCallee().getSourceDeclaration() = e
+    else ref = e
   )
 }
 
