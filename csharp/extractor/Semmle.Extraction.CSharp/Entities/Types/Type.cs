@@ -10,9 +10,10 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal abstract class Type : CachedSymbol<ITypeSymbol>
     {
+#nullable disable warnings
         protected Type(Context cx, ITypeSymbol? init)
             : base(cx, init) { }
-
+#nullable restore warnings
 
         public override bool NeedsPopulation =>
             base.NeedsPopulation || Symbol.TypeKind == TypeKind.Dynamic || Symbol.TypeKind == TypeKind.TypeParameter;

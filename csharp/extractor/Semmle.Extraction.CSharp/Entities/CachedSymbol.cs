@@ -11,12 +11,10 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal abstract class CachedSymbol<T> : CachedEntity<T> where T : class, ISymbol
     {
-#nullable disable warnings
-        protected CachedSymbol(Context cx, T? init)
+        protected CachedSymbol(Context cx, T init)
             : base(cx, init)
         {
         }
-#nullable restore warnings
 
         public virtual Type? ContainingType => Symbol.ContainingType != null ? Type.Create(Context, Symbol.ContainingType) : null;
 
