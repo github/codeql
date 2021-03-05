@@ -241,7 +241,30 @@ private predicate summaryModelCsv(string row) {
       "org.apache.commons.io;IOUtils;false;write;;;Argument[0];Argument[1];taint",
       "org.apache.commons.io;IOUtils;false;writeChunked;;;Argument[0];Argument[1];taint",
       "org.apache.commons.io;IOUtils;false;writeLines;;;Argument[0];Argument[2];taint",
-      "org.apache.commons.io;IOUtils;false;writeLines;;;Argument[1];Argument[2];taint"
+      "org.apache.commons.io;IOUtils;false;writeLines;;;Argument[1];Argument[2];taint",
+      // constructor flow
+      "java.io;File;false;File;;;Argument[0];ReturnValue;taint",
+      "java.io;File;false;File;;;Argument[1];ReturnValue;taint",
+      "java.net;URI;false;URI;(String);;Argument[0];ReturnValue;taint",
+      "javax.xml.transform.stream;StreamSource;false;StreamSource;;;Argument[0];ReturnValue;taint",
+      "javax.xml.transform.sax;SAXSource;false;SAXSource;(InputSource);;Argument[0];ReturnValue;taint",
+      "javax.xml.transform.sax;SAXSource;false;SAXSource;(XMLReader,InputSource);;Argument[1];ReturnValue;taint",
+      "org.xml.sax;InputSource;false;InputSource;;;Argument[0];ReturnValue;taint",
+      "javax.servlet.http;Cookie;false;Cookie;;;Argument[0];ReturnValue;taint",
+      "javax.servlet.http;Cookie;false;Cookie;;;Argument[1];ReturnValue;taint",
+      "java.util.zip;ZipInputStream;false;ZipInputStream;;;Argument[0];ReturnValue;taint",
+      "java.util.zip;GZIPInputStream;false;GZIPInputStream;;;Argument[0];ReturnValue;taint",
+      "java.util;StringTokenizer;false;StringTokenizer;;;Argument[0];ReturnValue;taint",
+      "java.beans;XMLDecoder;false;XMLDecoder;;;Argument[0];ReturnValue;taint",
+      "com.esotericsoftware.kryo.io;Input;false;Input;;;Argument[0];ReturnValue;taint",
+      "java.io;BufferedInputStream;false;BufferedInputStream;;;Argument[0];ReturnValue;taint",
+      "java.io;DataInputStream;false;DataInputStream;;;Argument[0];ReturnValue;taint",
+      "java.io;ByteArrayInputStream;false;ByteArrayInputStream;;;Argument[0];ReturnValue;taint",
+      "java.io;ObjectInputStream;false;ObjectInputStream;;;Argument[0];ReturnValue;taint",
+      "java.io;StringReader;false;StringReader;;;Argument[0];ReturnValue;taint",
+      "java.io;CharArrayReader;false;CharArrayReader;;;Argument[0];ReturnValue;taint",
+      "java.io;BufferedReader;false;BufferedReader;;;Argument[0];ReturnValue;taint",
+      "java.io;InputStreamReader;false;InputStreamReader;;;Argument[0];ReturnValue;taint"
     ]
 }
 

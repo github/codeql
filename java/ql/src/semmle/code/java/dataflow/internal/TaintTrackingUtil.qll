@@ -166,60 +166,6 @@ private predicate inputStreamWrapper(Constructor c, int argi) {
 /** An object construction that preserves the data flow status of any of its arguments. */
 private predicate constructorStep(Expr tracked, ConstructorCall sink) {
   exists(int argi | sink.getArgument(argi) = tracked |
-    exists(string s | sink.getConstructedType().getQualifiedName() = s |
-      // some readers preserve the content of streams
-      s = "java.io.InputStreamReader" and argi = 0
-      or
-      s = "java.io.BufferedReader" and argi = 0
-      or
-      s = "java.io.CharArrayReader" and argi = 0
-      or
-      s = "java.io.StringReader" and argi = 0
-      or
-      // data preserved through streams
-      s = "java.io.ObjectInputStream" and argi = 0
-      or
-      s = "java.io.ByteArrayInputStream" and argi = 0
-      or
-      s = "java.io.DataInputStream" and argi = 0
-      or
-      s = "java.io.BufferedInputStream" and argi = 0
-      or
-      s = "com.esotericsoftware.kryo.io.Input" and argi = 0
-      or
-      s = "java.beans.XMLDecoder" and argi = 0
-      or
-      // a tokenizer preserves the content of a string
-      s = "java.util.StringTokenizer" and argi = 0
-      or
-      // unzipping the stream preserves content
-      s = "java.util.zip.ZipInputStream" and argi = 0
-      or
-      s = "java.util.zip.GZIPInputStream" and argi = 0
-      or
-      // a cookie with tainted ingredients is tainted
-      s = "javax.servlet.http.Cookie" and argi = 0
-      or
-      s = "javax.servlet.http.Cookie" and argi = 1
-      or
-      // various xml stream source constructors.
-      s = "org.xml.sax.InputSource" and argi = 0
-      or
-      s = "javax.xml.transform.sax.SAXSource" and argi = 0 and sink.getNumArgument() = 1
-      or
-      s = "javax.xml.transform.sax.SAXSource" and argi = 1 and sink.getNumArgument() = 2
-      or
-      s = "javax.xml.transform.stream.StreamSource" and argi = 0
-      or
-      //a URI constructed from a tainted string is tainted.
-      s = "java.net.URI" and argi = 0 and sink.getNumArgument() = 1
-      or
-      //a File constructed from a tainted string is tainted.
-      s = "java.io.File" and argi = 0
-      or
-      s = "java.io.File" and argi = 1
-    )
-    or
     // wrappers constructed by extension
     exists(Constructor c, Parameter p, SuperConstructorInvocationStmt sup |
       c = sink.getConstructor() and
