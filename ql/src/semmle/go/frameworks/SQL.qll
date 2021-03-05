@@ -101,11 +101,9 @@ module SQL {
     }
 
     /** A string that might identify package `go-pg/pg` or a specific version of it. */
-    bindingset[result]
     private string gopg() { result = package("github.com/go-pg/pg", "") }
 
     /** A string that might identify package `go-pg/pg/orm` or a specific version of it. */
-    bindingset[result]
     private string gopgorm() { result = package("github.com/go-pg/pg", "orm") }
 
     /**
@@ -219,7 +217,6 @@ module SQL {
 
 module Gorm {
   /** Gets the package name for Gorm. */
-  bindingset[result]
   string packagePath() {
     result = package(["github.com/jinzhu/gorm", "github.com/go-gorm/gorm", "gorm.io/gorm"], "")
   }

@@ -44,7 +44,6 @@ module EmailData {
   }
 
   /** Gets the package name `github.com/sendgrid/sendgrid-go/helpers/mail`. */
-  bindingset[result]
   private string sendgridMail() {
     result = package("github.com/sendgrid/sendgrid-go", "helpers/mail")
   }

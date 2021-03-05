@@ -7,7 +7,6 @@ import go
  */
 module K8sIoApiCoreV1 {
   /** Gets the package name `k8s.io/api/core/v1`. */
-  bindingset[result]
   string packagePath() { result = package("k8s.io/api", "core/v1") }
 
   private class SecretDeepCopy extends TaintTracking::FunctionModel, Method {

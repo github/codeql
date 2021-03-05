@@ -14,7 +14,6 @@ module Couchbase {
    * Note that v1 and v2 have different APIs, but the names are disjoint so there is no need to
    * distinguish between them.
    */
-  bindingset[result]
   string packagePath() {
     result =
       package([
