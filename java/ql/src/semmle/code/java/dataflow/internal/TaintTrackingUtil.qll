@@ -166,6 +166,9 @@ private predicate inputStreamWrapper(Constructor c, int argi) {
 /** An object construction that preserves the data flow status of any of its arguments. */
 private predicate constructorStep(Expr tracked, ConstructorCall sink) {
   exists(int argi | sink.getArgument(argi) = tracked |
+    summaryStep(any(DataFlow::Node n | n.asExpr() = tracked),
+      any(DataFlow::Node n | n.asExpr() = sink), "taint", "Argument(" + argi + ")", "ReturnValue")
+    or
     // wrappers constructed by extension
     exists(Constructor c, Parameter p, SuperConstructorInvocationStmt sup |
       c = sink.getConstructor() and

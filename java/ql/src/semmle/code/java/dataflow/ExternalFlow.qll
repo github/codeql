@@ -697,3 +697,15 @@ predicate summaryStep(Node node1, Node node2, string kind) {
     interpretOutput(output, 0, ref, TNode(node2))
   )
 }
+
+/**
+ * Holds if `node1` to `node2` is specified as a flow step with the given kind, input and output
+ * in a CSV flow model.
+ */
+predicate summaryStep(Node node1, Node node2, string kind, string input, string output) {
+  exists(Top ref |
+    summaryElementRef(ref, input, output, kind) and
+    interpretInput(input, 0, ref, TNode(node1)) and
+    interpretOutput(output, 0, ref, TNode(node2))
+  )
+}
