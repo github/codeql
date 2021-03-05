@@ -38,3 +38,5 @@
 | ssl_fluent.py:124:14:124:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1_1 allowed by $@  | ssl_fluent.py:122:5:122:11 | ControlFlowNode for context | context modification |
 | ssl_fluent.py:173:14:173:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1_1 allowed by $@  | ssl_fluent.py:170:5:170:11 | ControlFlowNode for context | context modification |
 | ssl_fluent.py:192:14:192:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version SSLv3 allowed by $@  | ssl_fluent.py:189:5:189:11 | ControlFlowNode for context | context modification |
+| ssl_fluent.py:192:14:192:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1 allowed by $@  | ssl_fluent.py:188:15:188:65 | ControlFlowNode for Attribute() | call to ssl.create_default_context |
+| ssl_fluent.py:192:14:192:20 | ControlFlowNode for context | Insecure SSL/TLS protocol version TLSv1_1 allowed by $@  | ssl_fluent.py:188:15:188:65 | ControlFlowNode for Attribute() | call to ssl.create_default_context |
