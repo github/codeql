@@ -86,7 +86,7 @@ namespace Semmle.Extraction.CSharp
             var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
             var pathTransformer = new PathTransformer(canonicalPathCache);
 
-            using var analyser = new NonStandaloneAnalyser(new LogProgressMonitor(logger), logger, options.AssemblySensitiveTrap, pathTransformer);
+            using var analyser = new TracingAnalyser(new LogProgressMonitor(logger), logger, options.AssemblySensitiveTrap, pathTransformer);
 
             try
             {
@@ -120,7 +120,7 @@ namespace Semmle.Extraction.CSharp
                     return ExitCode.Ok;
                 }
 
-                return AnalyseNonStandalone(analyser, compilerArguments, options, canonicalPathCache, stopwatch);
+                return AnalyseTracing(analyser, compilerArguments, options, canonicalPathCache, stopwatch);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
@@ -291,7 +291,7 @@ namespace Semmle.Extraction.CSharp
             {
                 analyser.Logger.Log(Severity.Error, "  No source files");
                 ++analyser.CompilationErrors;
-                if (analyser is NonStandaloneAnalyser)
+                if (analyser is TracingAnalyser)
                 {
                     return ExitCode.Failed;
                 }
@@ -369,8 +369,8 @@ namespace Semmle.Extraction.CSharp
                 });
         }
 
-        private static ExitCode AnalyseNonStandalone(
-            NonStandaloneAnalyser analyser,
+        private static ExitCode AnalyseTracing(
+            TracingAnalyser analyser,
             CSharpCommandLineArguments compilerArguments,
             Options options,
             CanonicalPathCache canonicalPathCache,

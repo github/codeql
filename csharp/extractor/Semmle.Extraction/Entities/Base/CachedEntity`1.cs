@@ -28,7 +28,7 @@ namespace Semmle.Extraction
     /// An abstract symbol, which encapsulates a data type (such as a C# symbol).
     /// </summary>
     /// <typeparam name="TSymbol">The type of the symbol.</typeparam>
-    public abstract class CachedEntity<TSymbol> : CachedEntity where TSymbol : class
+    public abstract class CachedEntity<TSymbol> : CachedEntity where TSymbol : notnull
     {
         public TSymbol Symbol { get; }
 

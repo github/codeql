@@ -4,10 +4,10 @@ using System;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal class CommentLine : CachedEntity<Tuple<Microsoft.CodeAnalysis.Location, string>>
+    internal class CommentLine : CachedEntity<(Microsoft.CodeAnalysis.Location, string)>
     {
         private CommentLine(Context cx, Microsoft.CodeAnalysis.Location loc, CommentLineType type, string text, string raw)
-            : base(cx, new Tuple<Microsoft.CodeAnalysis.Location, string>(loc, text))
+            : base(cx, (loc, text))
         {
             Type = type;
             RawText = raw;

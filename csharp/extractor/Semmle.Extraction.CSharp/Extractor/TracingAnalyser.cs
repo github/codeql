@@ -10,14 +10,14 @@ using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp
 {
-    public class NonStandaloneAnalyser : Analyser, IDisposable
+    public class TracingAnalyser : Analyser, IDisposable
     {
         private Entities.Compilation? compilationEntity;
         private IDisposable? compilationTrapFile;
 
         private bool init;
 
-        public NonStandaloneAnalyser(IProgressMonitor pm, ILogger logger, bool addAssemblyTrapPrefix, PathTransformer pathTransformer)
+        public TracingAnalyser(IProgressMonitor pm, ILogger logger, bool addAssemblyTrapPrefix, PathTransformer pathTransformer)
             : base(pm, logger, addAssemblyTrapPrefix, pathTransformer)
         {
         }
@@ -49,7 +49,7 @@ namespace Semmle.Extraction.CSharp
             this.layout = new Layout();
             this.options = options;
             this.compilation = compilation;
-            this.extractor = new NonStandaloneExtractor(GetOutputName(compilation, commandLineArguments), Logger, PathTransformer);
+            this.extractor = new TracingExtractor(GetOutputName(compilation, commandLineArguments), Logger, PathTransformer);
             LogDiagnostics();
 
             SetReferencePaths();
@@ -199,7 +199,7 @@ namespace Semmle.Extraction.CSharp
         {
             try
             {
-                var assemblyPath = ((NonStandaloneExtractor?)extractor).OutputPath;
+                var assemblyPath = ((TracingExtractor?)extractor).OutputPath;
                 var transformedAssemblyPath = PathTransformer.Transform(assemblyPath);
                 var assembly = compilation.Assembly;
                 var projectLayout = layout.LookupProjectOrDefault(transformedAssemblyPath);
