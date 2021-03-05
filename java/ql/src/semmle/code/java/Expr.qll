@@ -1030,8 +1030,30 @@ class CastExpr extends Expr, @castexpr {
   override string getAPrimaryQlClass() { result = "CastExpr" }
 }
 
+/**
+ * An access of a member which can have an instance of the declaring type of
+ * the member as qualifier.
+ */
+abstract class QualifiableMemberAccess extends Expr {
+  /** Gets the member which is accessed. */
+  abstract Member getMember();
+
+  /** Gets the qualifier of the access, if any. */
+  abstract Expr getQualifier();
+
+  /**
+   * Holds if this is a member access to a member of `this`. That is, the qualifier
+   * is either an explicit or implicit unqualified `this` or `super`.
+   */
+  abstract predicate isOwnMemberAccess();
+
+  /** Holds if this access is unaffected by the instance used as qualifier, if any. */
+  abstract predicate isStaticAccess();
+}
+
 /** A class instance creation expression. */
-class ClassInstanceExpr extends Expr, ConstructorCall, @classinstancexpr {
+// TODO: Not sure if it is worth it extending QualifiableMemberAccess
+class ClassInstanceExpr extends Expr, ConstructorCall, QualifiableMemberAccess, @classinstancexpr {
   /** Gets the number of arguments provided to the constructor of the class instance creation expression. */
   override int getNumArgument() { count(this.getAnArgument()) = result }
 
@@ -1073,6 +1095,19 @@ class ClassInstanceExpr extends Expr, ConstructorCall, @classinstancexpr {
 
   /** Gets the constructor invoked by this class instance creation expression. */
   override Constructor getConstructor() { callableBinding(this, result) }
+
+  override Constructor getMember() { result = getConstructor() }
+
+  override predicate isOwnMemberAccess() {
+    // TODO: Not sure if this is correct; should hold when creating non-static inner class from enclosing class
+    Qualifier::ownMemberAccess(this)
+  }
+
+  override predicate isStaticAccess() {
+    exists(RefType declaringType | declaringType = getConstructor().getDeclaringType() |
+      declaringType.isTopLevel() or declaringType.isStatic()
+    )
+  }
 
   /** Gets the anonymous class created by this class instance creation expression, if any. */
   AnonymousClass getAnonymousClass() { isAnonymClass(result, this) }
@@ -1560,7 +1595,7 @@ class RValue extends VarAccess {
 }
 
 /** A method access is an invocation of a method with a list of arguments. */
-class MethodAccess extends Expr, Call, @methodaccess {
+class MethodAccess extends Expr, Call, QualifiableMemberAccess, @methodaccess {
   /** Gets the qualifying expression of this method access, if any. */
   override Expr getQualifier() { result.isNthChildOf(this, -1) }
 
@@ -1584,6 +1619,12 @@ class MethodAccess extends Expr, Call, @methodaccess {
 
   /** Gets the method accessed by this method access. */
   Method getMethod() { callableBinding(this, result) }
+
+  override Method getMember() { result = getMethod() }
+
+  override predicate isOwnMemberAccess() { isOwnMethodAccess() }
+
+  override predicate isStaticAccess() { getMethod().isStatic() }
 
   /** Gets the immediately enclosing callable that contains this method access. */
   override Callable getEnclosingCallable() { result = Expr.super.getEnclosingCallable() }
@@ -1820,7 +1861,7 @@ abstract class ConstructorCall extends Call {
 }
 
 /** An expression that accesses a field. */
-class FieldAccess extends VarAccess {
+class FieldAccess extends VarAccess, QualifiableMemberAccess {
   FieldAccess() { this.getVariable() instanceof Field }
 
   /** Gets the field accessed by this field access expression. */
@@ -1841,6 +1882,14 @@ class FieldAccess extends VarAccess {
    * `t`-qualified `this` or `super`.
    */
   predicate isEnclosingFieldAccess(RefType t) { Qualifier::enclosingMemberAccess(this, t) }
+
+  override Expr getQualifier() { result = VarAccess.super.getQualifier() }
+
+  override Field getMember() { result = getField() }
+
+  override predicate isOwnMemberAccess() { isOwnFieldAccess() }
+
+  override predicate isStaticAccess() { getField().isStatic() }
 }
 
 private module Qualifier {
@@ -1848,26 +1897,6 @@ private module Qualifier {
   private newtype TThisQualifier =
     TThis() or
     TEnclosing(RefType t)
-
-  /** An expression that accesses a member. That is, either a `FieldAccess` or a `MethodAccess`. */
-  class MemberAccess extends Expr {
-    MemberAccess() {
-      this instanceof FieldAccess or
-      this instanceof MethodAccess
-    }
-
-    /** Gets the member accessed by this member access. */
-    Member getMember() {
-      result = this.(FieldAccess).getField() or
-      result = this.(MethodAccess).getMethod()
-    }
-
-    /** Gets the qualifier of this member access, if any. */
-    Expr getQualifier() {
-      result = this.(FieldAccess).getQualifier() or
-      result = this.(MethodAccess).getQualifier()
-    }
-  }
 
   /**
    * Gets the implicit type qualifier of the implicit `ThisAccess` qualifier of
@@ -1884,9 +1913,9 @@ private module Qualifier {
   /**
    * Gets the implicit type qualifier of the implicit `ThisAccess` qualifier of `ma`.
    */
-  private TThisQualifier getImplicitQualifier(MemberAccess ma) {
+  private TThisQualifier getImplicitQualifier(QualifiableMemberAccess ma) {
     exists(Member m | m = ma.getMember() |
-      not m.isStatic() and
+      not ma.isStaticAccess() and
       not exists(ma.getQualifier()) and
       exists(RefType t | t = ma.getEnclosingCallable().getDeclaringType() |
         not t instanceof InnerClass and result = TThis()
@@ -1903,11 +1932,11 @@ private module Qualifier {
   /**
    * Gets the type qualifier of the `InstanceAccess` qualifier of `ma`.
    */
-  private TThisQualifier getThisQualifier(MemberAccess ma) {
+  private TThisQualifier getThisQualifier(QualifiableMemberAccess ma) {
     result = getImplicitQualifier(ma)
     or
     exists(Expr q |
-      not ma.getMember().isStatic() and
+      not ma.isStaticAccess() and
       q = ma.getQualifier()
     |
       exists(InstanceAccess ia | ia = q and ia.isOwnInstanceAccess() and result = TThis())
@@ -1922,14 +1951,14 @@ private module Qualifier {
    * Holds if `ma` is a member access to an instance field or method of `this`. That is,
    * the qualifier is either an explicit or implicit unqualified `this` or `super`.
    */
-  predicate ownMemberAccess(MemberAccess ma) { TThis() = getThisQualifier(ma) }
+  predicate ownMemberAccess(QualifiableMemberAccess ma) { TThis() = getThisQualifier(ma) }
 
   /**
    * Holds if `ma` is a member access to an instance field or method of the enclosing
    * class `t`. That is, the qualifier is either an explicit or implicit
    * `t`-qualified `this` or `super`.
    */
-  predicate enclosingMemberAccess(MemberAccess ma, RefType t) {
+  predicate enclosingMemberAccess(QualifiableMemberAccess ma, RefType t) {
     TEnclosing(t) = getThisQualifier(ma)
   }
 }
