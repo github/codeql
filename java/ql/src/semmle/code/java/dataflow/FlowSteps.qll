@@ -50,7 +50,7 @@ abstract class FluentMethod extends ValuePreservingCallable {
   override predicate returnsValue(int arg) { arg = -1 }
 }
 
-private class StandardLibraryValuePreservingCallable extends ValuePreservingCallable {
+private class StandardLibraryValuePreservingMethod extends ValuePreservingMethod {
   int returnsArgNo;
 
   StandardLibraryValuePreservingCallable() {
