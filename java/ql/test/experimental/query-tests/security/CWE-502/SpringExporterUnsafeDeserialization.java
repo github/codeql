@@ -4,7 +4,7 @@ import org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter;
 import org.springframework.remoting.rmi.RemoteInvocationSerializingExporter;
 
 @Configuration
-public class SpringHttpInvokerUnsafeDeserialization {
+public class SpringExporterUnsafeDeserialization {
 
     @Bean(name = "/unsafeHttpInvokerServiceExporter")
     HttpInvokerServiceExporter unsafeHttpInvokerServiceExporter() {
