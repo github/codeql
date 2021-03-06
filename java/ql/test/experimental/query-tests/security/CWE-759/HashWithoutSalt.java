@@ -11,19 +11,19 @@ public class HashWithoutSalt {
 		return Base64.getEncoder().encodeToString(messageDigest);
 	}
 
-	// BAD - Hash without a salt.
-	public String getSHA256Hash2(String password) throws NoSuchAlgorithmException {
-		MessageDigest md = MessageDigest.getInstance("SHA-256");
-		md.update(password.getBytes());
-		byte[] messageDigest = md.digest();
-		return Base64.getEncoder().encodeToString(messageDigest);
-	}
-
 	// GOOD - Hash with a salt.
 	public String getSHA256Hash(String password, byte[] salt) throws NoSuchAlgorithmException {
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
 		md.update(salt);
 		byte[] messageDigest = md.digest(password.getBytes());
+		return Base64.getEncoder().encodeToString(messageDigest);
+	}
+
+	// BAD - Hash without a salt.
+	public String getSHA256Hash2(String password) throws NoSuchAlgorithmException {
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		md.update(password.getBytes());
+		byte[] messageDigest = md.digest();
 		return Base64.getEncoder().encodeToString(messageDigest);
 	}
 
@@ -77,8 +77,8 @@ public class HashWithoutSalt {
 		sha256.update(foo, start, len);
 	}
 
-	// BAD - Invoking a wrapper implementation without a salt is not detected.
-	public String getSHA256Hash4(String password) throws NoSuchAlgorithmException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+	// GOOD - Invoking a wrapper implementation through qualifier with a salt.
+	public String getWrapperSHA256Hash(String password) throws NoSuchAlgorithmException, ClassNotFoundException, IllegalAccessException, InstantiationException {
 		SHA256 sha256 = new SHA256();
 		byte[] salt = getSalt();
 		byte[] passBytes = password.getBytes();
@@ -87,8 +87,16 @@ public class HashWithoutSalt {
 		return Base64.getEncoder().encodeToString(sha256.digest());
 	}
 
-	// BAD - Invoking a wrapper implementation without a salt is not detected.
-	public String getSHA256Hash5(String password) throws NoSuchAlgorithmException {
+	// BAD - Invoking a wrapper implementation through qualifier without a salt.
+	public String getWrapperSHA256Hash2(String password) throws NoSuchAlgorithmException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+		SHA256 sha256 = new SHA256();
+		byte[] passBytes = password.getBytes();
+		sha256.update(passBytes, 0, passBytes.length);
+		return Base64.getEncoder().encodeToString(sha256.digest());
+	}
+
+	// GOOD - Invoking a wrapper implementation through qualifier and argument with a salt.
+	public String getWrapperSHA256Hash3(String password) throws NoSuchAlgorithmException {
 		SHA256 sha256 = new SHA256();
 		byte[] salt = getSalt();
 		byte[] passBytes = password.getBytes();
@@ -97,16 +105,26 @@ public class HashWithoutSalt {
 		return Base64.getEncoder().encodeToString(sha256.digest());
 	}
 
-	// BAD - Invoking a wrapper implementation without a salt is not detected.
-	public String getSHA512Hash6(String password) throws NoSuchAlgorithmException {
-		SHA512 sha512 = new SHA512();
+	// BAD - Invoking a wrapper implementation through argument without a salt.
+	public String getWrapperSHA256Hash4(String password) throws NoSuchAlgorithmException {
+		SHA256 sha256 = new SHA256();
 		byte[] passBytes = password.getBytes();
-		sha512.update(passBytes, 0, passBytes.length);
-		return Base64.getEncoder().encodeToString(sha512.digest());
+		update(sha256, passBytes, 0, passBytes.length);
+		return Base64.getEncoder().encodeToString(sha256.digest());
+	}
+
+	// GOOD - Invoking a wrapper implementation through argument with a salt.
+	public String getWrapperSHA256Hash5(String password) throws NoSuchAlgorithmException {
+		SHA256 sha256 = new SHA256();
+		byte[] salt = getSalt();
+		byte[] passBytes = password.getBytes();
+		update(sha256, passBytes, 0, passBytes.length);
+		update(sha256, salt, 0, salt.length);
+		return Base64.getEncoder().encodeToString(sha256.digest());
 	}
 
 	// BAD - Invoke a wrapper implementation with a salt, which is not detected with an interface type variable.
-	public String getSHA512Hash7(byte[] passphrase) throws NoSuchAlgorithmException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+	public String getSHA512Hash8(byte[] passphrase) throws NoSuchAlgorithmException, ClassNotFoundException, IllegalAccessException, InstantiationException {
 		Class c = Class.forName("SHA512");
 		HASH sha512 = (HASH) (c.newInstance());
 		byte[] tmp = new byte[4];

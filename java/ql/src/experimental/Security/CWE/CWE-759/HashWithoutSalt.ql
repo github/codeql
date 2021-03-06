@@ -9,8 +9,25 @@
 
 import java
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.TaintTracking2
 import DataFlow::PathGraph
+
+/**
+ * Gets a regular expression for matching common names of variables
+ * that indicate the value being held is a password.
+ */
+string getPasswordRegex() { result = "(?i).*pass(wd|word|code|phrase).*" }
+
+/** Finds variables that hold password information judging by their names. */
+class PasswordVarExpr extends VarAccess {
+  PasswordVarExpr() {
+    exists(string name | name = this.getVariable().getName().toLowerCase() |
+      name.regexpMatch(getPasswordRegex()) and not name.matches("%hash%") // Exclude variable names such as `passwordHash` since their values were already hashed
+    )
+  }
+}
+
+/** Holds if `Expr` e is a direct or indirect operand of `ae`. */
+predicate hasAddExprAncestor(AddExpr ae, Expr e) { ae.getAnOperand+() = e }
 
 /** The Java class `java.security.MessageDigest`. */
 class MessageDigest extends RefType {
@@ -54,40 +71,65 @@ class MDHashMethodAccess extends MethodAccess {
   }
 }
 
-/** Gets a regular expression for matching common names of variables that indicate the value being held is a password. */
-string getPasswordRegex() { result = "(?i).*pass(wd|word|code|phrase).*" }
-
-/** Finds variables that hold password information judging by their names. */
-class PasswordVarExpr extends VarAccess {
-  PasswordVarExpr() {
-    exists(string name | name = this.getVariable().getName().toLowerCase() |
-      name.regexpMatch(getPasswordRegex()) and not name.matches("%hash%") // Exclude variable names such as `passwordHash` since their values were already hashed
-    )
-  }
+/**
+ * Holds if `MethodAccess` ma is a method access of `MDHashMethodAccess` or
+ * invokes a method access of `MDHashMethodAccess` directly or indirectly.
+ */
+predicate isHashAccess(MethodAccess ma) {
+  ma instanceof MDHashMethodAccess
+  or
+  exists(MethodAccess mca |
+    ma.getMethod().calls(mca.getMethod()) and
+    isHashAccess(mca) and
+    DataFlow::localExprFlow(ma.getMethod().getAParameter().getAnAccess(), mca.getAnArgument())
+  )
 }
 
-/** Holds if `Expr` e is a direct or indirect operand of `ae`. */
-predicate hasAddExprAncestor(AddExpr ae, Expr e) { ae.getAnOperand+() = e }
-
-/** Holds if `MDHashMethodAccess ma` is a second `MDHashMethodAccess` call by the same object. */
-predicate hasAnotherHashCall(MDHashMethodAccess ma) {
-  exists(MDHashMethodAccess ma2 |
+/**
+ * Holds if there is a second method access that satisfies `isHashAccess` whose qualifier or argument
+ * is the same as the method call `ma` that satisfies `isHashAccess`.
+ */
+predicate hasAnotherHashCall(MethodAccess ma) {
+  isHashAccess(ma) and
+  exists(MethodAccess ma2, VarAccess va |
     ma2 != ma and
-    ma2.getQualifier() = ma.getQualifier().(VarAccess).getVariable().getAnAccess()
+    isHashAccess(ma2) and
+    not va.getVariable().getType() instanceof PrimitiveType and
+    (
+      ma.getQualifier() = va and
+      ma2.getQualifier() = va.getVariable().getAnAccess()
+      or
+      ma.getQualifier() = va and
+      ma2.getAnArgument() = va.getVariable().getAnAccess()
+      or
+      ma.getAnArgument() = va and
+      ma2.getQualifier() = va.getVariable().getAnAccess()
+      or
+      ma.getAnArgument() = va and
+      ma2.getAnArgument() = va.getVariable().getAnAccess()
+    )
+  )
+}
+
+/**
+ * Holds if `MethodAccess` ma is part of a call graph that satisfies `isHashAccess`
+ * but is not at the top of the call hierarchy.
+ */
+predicate hasHashAncestor(MethodAccess ma) {
+  exists(MethodAccess mpa |
+    mpa.getMethod().calls(ma.getMethod()) and
+    isHashAccess(mpa) and
+    DataFlow::localExprFlow(mpa.getMethod().getAParameter().getAnAccess(), ma.getAnArgument())
   )
 }
 
 /** Holds if `MethodAccess` ma is a hashing call without a sibling node making another hashing call. */
-predicate isSingleHashMethodCall(MDHashMethodAccess ma) { not hasAnotherHashCall(ma) }
-
-/** Holds if `MethodAccess` ma is invoked by `MethodAccess` ma2 either directly or indirectly. */
-predicate hasParentCall(MethodAccess ma2, MethodAccess ma) { ma.getCaller() = ma2.getMethod() }
-
-/** Holds if `MethodAccess` is a single hashing call that is not invoked by a wrapper method. */
-predicate isSink(MethodAccess ma) {
-  isSingleHashMethodCall(ma) and
-  not hasParentCall(_, ma) // Not invoked by a wrapper method which could invoke MDHashMethod in another call stack. This reduces FPs.
+predicate isSingleHashMethodCall(MethodAccess ma) {
+  isHashAccess(ma) and not hasAnotherHashCall(ma)
 }
+
+/** Holds if `MethodAccess` ma is a single hashing call that is not invoked by a wrapper method. */
+predicate isSink(MethodAccess ma) { isSingleHashMethodCall(ma) and not hasHashAncestor(ma) }
 
 /** Sink of hashing calls. */
 class HashWithoutSaltSink extends DataFlow::ExprNode {
@@ -99,7 +141,10 @@ class HashWithoutSaltSink extends DataFlow::ExprNode {
   }
 }
 
-/** Taint configuration tracking flow from an expression whose name suggests it holds password data to a method call that generates a hash without a salt. */
+/**
+ * Taint configuration tracking flow from an expression whose name suggests it holds password data
+ * to a method call that generates a hash without a salt.
+ */
 class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
   HashWithoutSaltConfiguration() { this = "HashWithoutSaltConfiguration" }
 
