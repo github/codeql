@@ -4,7 +4,7 @@
 <overview>
 <p>
 The Spring Framework provides an abstract base class <code>RemoteInvocationSerializingExporter</code>
-for defining remote service exporters.
+for creating remote service exporters.
 A Spring exporter, which is based on this class, deserializes incoming data using <code>ObjectInputStream</code>.
 Deserializing untrusted data is easily exploitable and in many cases allows an attacker
 to execute arbitrary code.
@@ -24,7 +24,8 @@ using unsafe <code>ObjectInputStream</code>. If a remote attacker can reach such
 it results in remote code execution in the worst case.
 </p>
 <p>
-CVE-2016-1000027 has been assigned to this issue in the Spring Framework. It is regarded as a design limitation, and can be mitigated but not fixed outright.
+CVE-2016-1000027 has been assigned to this issue in the Spring Framework.
+It is regarded as a design limitation, and can be mitigated but not fixed outright.
 </p>
 </overview>
 
@@ -35,16 +36,20 @@ and any other exporter that is based on <code>RemoteInvocationSerializingExporte
 Instead, use other message formats for API endpoints (for example, JSON),
 but make sure that the underlying deserialization mechanism is properly configured
 so that deserialization attacks are not possible. If the vulnerable exporters can not be replaced,
-consider using global deserialization filters introduced by JEP 290.
-In general, avoid using Java's built-in deserialization methods on untrusted data.
+consider using global deserialization filters introduced in JEP 290.
 </p>
 </recommendation>
 
 <example>
 <p>
-The following example defines a vulnerable HTTP endpoint:
+The following example shows how a vulnerable HTTP endpoint can be defined
+using <code>HttpInvokerServiceExporter</code> and Spring annotations:
 </p>
 <sample src="UnsafeHttpInvokerEndpoint.java" />
+<p>
+The next examples shows how the same vulnerable endpoint can be defined in a Spring XML config:
+</p>
+<sample src="UnsafeHttpInvokerEndpoint.xml" />
 </example>
 
 <references>
