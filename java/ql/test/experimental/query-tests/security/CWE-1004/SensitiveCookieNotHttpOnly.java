@@ -19,7 +19,8 @@ class SensitiveCookieNotHttpOnly {
 
     // BAD - Tests adding a sensitive cookie without the `HttpOnly` flag set.
     public void addCookie2(String jwt_token, String userId, HttpServletRequest request, HttpServletResponse response) {
-        Cookie jwtCookie = new Cookie("jwt_token", jwt_token);
+        String tokenCookieStr = "jwt_token";
+        Cookie jwtCookie = new Cookie(tokenCookieStr, jwt_token);
         Cookie userIdCookie = new Cookie("user_id", userId);
         jwtCookie.setPath("/");
         userIdCookie.setPath("/");
@@ -61,4 +62,10 @@ class SensitiveCookieNotHttpOnly {
         String keyStr = accessKeyCookie.toString();
         response.setHeader("Set-Cookie", keyStr);
     }
+
+    // BAD - Tests set a sensitive cookie header using a variable without the `HttpOnly` flag set.
+    public void addCookie9(String authId, HttpServletRequest request, HttpServletResponse response) {
+        String secString = "token=" +authId + ";Secure";
+        response.addHeader("Set-Cookie", secString);
+    }    
 }

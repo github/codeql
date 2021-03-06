@@ -60,24 +60,16 @@ class CookieInstanceExpr extends TaintPreservingCallable {
   override predicate returnsTaintFrom(int arg) { arg = -1 }
 }
 
+/** The cookie constructor. */
+class CookieTaintPreservingConstructor extends Constructor, TaintPreservingCallable {
+  CookieTaintPreservingConstructor() { this.getDeclaringType() instanceof CookieClass }
+
+  override predicate returnsTaintFrom(int arg) { arg = 0 }
+}
+
 /** Sensitive cookie name used in a `Cookie` constructor or a `Set-Cookie` call. */
 class SensitiveCookieNameExpr extends Expr {
-  SensitiveCookieNameExpr() {
-    exists(
-      ClassInstanceExpr cie // new Cookie("jwt_token", token)
-    |
-      cie.getConstructedType() instanceof CookieClass and
-      this = cie and
-      isSensitiveCookieNameExpr(cie.getArgument(0))
-    )
-    or
-    exists(
-      SetCookieMethodAccess ma // response.addHeader("Set-Cookie: token=" +authId + ";HttpOnly;Secure")
-    |
-      this = ma.getArgument(1) and
-      isSensitiveCookieNameExpr(this)
-    )
-  }
+  SensitiveCookieNameExpr() { isSensitiveCookieNameExpr(this) }
 }
 
 /** Sink of adding a cookie to the HTTP response. */

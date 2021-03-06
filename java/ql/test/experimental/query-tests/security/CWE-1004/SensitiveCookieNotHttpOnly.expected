@@ -1,17 +1,33 @@
 edges
-| SensitiveCookieNotHttpOnly.java:22:28:22:61 | new Cookie(...) : Cookie | SensitiveCookieNotHttpOnly.java:28:28:28:36 | jwtCookie |
-| SensitiveCookieNotHttpOnly.java:49:42:49:113 | new NewCookie(...) : NewCookie | SensitiveCookieNotHttpOnly.java:49:42:49:124 | toString(...) |
-| SensitiveCookieNotHttpOnly.java:60:37:60:115 | new NewCookie(...) : NewCookie | SensitiveCookieNotHttpOnly.java:62:42:62:47 | keyStr |
+| SensitiveCookieNotHttpOnly.java:22:33:22:43 | "jwt_token" : String | SensitiveCookieNotHttpOnly.java:29:28:29:36 | jwtCookie |
+| SensitiveCookieNotHttpOnly.java:40:42:40:49 | "token=" : String | SensitiveCookieNotHttpOnly.java:40:42:40:69 | ... + ... |
+| SensitiveCookieNotHttpOnly.java:40:42:40:57 | ... + ... : String | SensitiveCookieNotHttpOnly.java:40:42:40:69 | ... + ... |
+| SensitiveCookieNotHttpOnly.java:50:56:50:75 | "session-access-key" : String | SensitiveCookieNotHttpOnly.java:50:42:50:124 | toString(...) |
+| SensitiveCookieNotHttpOnly.java:61:51:61:70 | "session-access-key" : String | SensitiveCookieNotHttpOnly.java:63:42:63:47 | keyStr |
+| SensitiveCookieNotHttpOnly.java:68:28:68:35 | "token=" : String | SensitiveCookieNotHttpOnly.java:69:42:69:50 | secString |
+| SensitiveCookieNotHttpOnly.java:68:28:68:43 | ... + ... : String | SensitiveCookieNotHttpOnly.java:69:42:69:50 | secString |
+| SensitiveCookieNotHttpOnly.java:68:28:68:55 | ... + ... : String | SensitiveCookieNotHttpOnly.java:69:42:69:50 | secString |
 nodes
-| SensitiveCookieNotHttpOnly.java:22:28:22:61 | new Cookie(...) : Cookie | semmle.label | new Cookie(...) : Cookie |
-| SensitiveCookieNotHttpOnly.java:28:28:28:36 | jwtCookie | semmle.label | jwtCookie |
-| SensitiveCookieNotHttpOnly.java:39:42:39:69 | ... + ... | semmle.label | ... + ... |
-| SensitiveCookieNotHttpOnly.java:49:42:49:113 | new NewCookie(...) : NewCookie | semmle.label | new NewCookie(...) : NewCookie |
-| SensitiveCookieNotHttpOnly.java:49:42:49:124 | toString(...) | semmle.label | toString(...) |
-| SensitiveCookieNotHttpOnly.java:60:37:60:115 | new NewCookie(...) : NewCookie | semmle.label | new NewCookie(...) : NewCookie |
-| SensitiveCookieNotHttpOnly.java:62:42:62:47 | keyStr | semmle.label | keyStr |
+| SensitiveCookieNotHttpOnly.java:22:33:22:43 | "jwt_token" : String | semmle.label | "jwt_token" : String |
+| SensitiveCookieNotHttpOnly.java:29:28:29:36 | jwtCookie | semmle.label | jwtCookie |
+| SensitiveCookieNotHttpOnly.java:40:42:40:49 | "token=" : String | semmle.label | "token=" : String |
+| SensitiveCookieNotHttpOnly.java:40:42:40:57 | ... + ... : String | semmle.label | ... + ... : String |
+| SensitiveCookieNotHttpOnly.java:40:42:40:69 | ... + ... | semmle.label | ... + ... |
+| SensitiveCookieNotHttpOnly.java:50:42:50:124 | toString(...) | semmle.label | toString(...) |
+| SensitiveCookieNotHttpOnly.java:50:56:50:75 | "session-access-key" : String | semmle.label | "session-access-key" : String |
+| SensitiveCookieNotHttpOnly.java:61:51:61:70 | "session-access-key" : String | semmle.label | "session-access-key" : String |
+| SensitiveCookieNotHttpOnly.java:63:42:63:47 | keyStr | semmle.label | keyStr |
+| SensitiveCookieNotHttpOnly.java:68:28:68:35 | "token=" : String | semmle.label | "token=" : String |
+| SensitiveCookieNotHttpOnly.java:68:28:68:43 | ... + ... : String | semmle.label | ... + ... : String |
+| SensitiveCookieNotHttpOnly.java:68:28:68:55 | ... + ... : String | semmle.label | ... + ... : String |
+| SensitiveCookieNotHttpOnly.java:69:42:69:50 | secString | semmle.label | secString |
 #select
-| SensitiveCookieNotHttpOnly.java:28:28:28:36 | jwtCookie | SensitiveCookieNotHttpOnly.java:22:28:22:61 | new Cookie(...) : Cookie | SensitiveCookieNotHttpOnly.java:28:28:28:36 | jwtCookie | $@ doesn't have the HttpOnly flag set. | SensitiveCookieNotHttpOnly.java:22:28:22:61 | new Cookie(...) | This sensitive cookie |
-| SensitiveCookieNotHttpOnly.java:39:42:39:69 | ... + ... | SensitiveCookieNotHttpOnly.java:39:42:39:69 | ... + ... | SensitiveCookieNotHttpOnly.java:39:42:39:69 | ... + ... | $@ doesn't have the HttpOnly flag set. | SensitiveCookieNotHttpOnly.java:39:42:39:69 | ... + ... | This sensitive cookie |
-| SensitiveCookieNotHttpOnly.java:49:42:49:124 | toString(...) | SensitiveCookieNotHttpOnly.java:49:42:49:113 | new NewCookie(...) : NewCookie | SensitiveCookieNotHttpOnly.java:49:42:49:124 | toString(...) | $@ doesn't have the HttpOnly flag set. | SensitiveCookieNotHttpOnly.java:49:42:49:113 | new NewCookie(...) | This sensitive cookie |
-| SensitiveCookieNotHttpOnly.java:62:42:62:47 | keyStr | SensitiveCookieNotHttpOnly.java:60:37:60:115 | new NewCookie(...) : NewCookie | SensitiveCookieNotHttpOnly.java:62:42:62:47 | keyStr | $@ doesn't have the HttpOnly flag set. | SensitiveCookieNotHttpOnly.java:60:37:60:115 | new NewCookie(...) | This sensitive cookie |
+| SensitiveCookieNotHttpOnly.java:29:28:29:36 | jwtCookie | SensitiveCookieNotHttpOnly.java:22:33:22:43 | "jwt_token" : String | SensitiveCookieNotHttpOnly.java:29:28:29:36 | jwtCookie | $@ doesn't have the HttpOnly flag set. | SensitiveCookieNotHttpOnly.java:22:33:22:43 | "jwt_token" | This sensitive cookie |
+| SensitiveCookieNotHttpOnly.java:40:42:40:69 | ... + ... | SensitiveCookieNotHttpOnly.java:40:42:40:49 | "token=" : String | SensitiveCookieNotHttpOnly.java:40:42:40:69 | ... + ... | $@ doesn't have the HttpOnly flag set. | SensitiveCookieNotHttpOnly.java:40:42:40:49 | "token=" | This sensitive cookie |
+| SensitiveCookieNotHttpOnly.java:40:42:40:69 | ... + ... | SensitiveCookieNotHttpOnly.java:40:42:40:57 | ... + ... : String | SensitiveCookieNotHttpOnly.java:40:42:40:69 | ... + ... | $@ doesn't have the HttpOnly flag set. | SensitiveCookieNotHttpOnly.java:40:42:40:57 | ... + ... | This sensitive cookie |
+| SensitiveCookieNotHttpOnly.java:40:42:40:69 | ... + ... | SensitiveCookieNotHttpOnly.java:40:42:40:69 | ... + ... | SensitiveCookieNotHttpOnly.java:40:42:40:69 | ... + ... | $@ doesn't have the HttpOnly flag set. | SensitiveCookieNotHttpOnly.java:40:42:40:69 | ... + ... | This sensitive cookie |
+| SensitiveCookieNotHttpOnly.java:50:42:50:124 | toString(...) | SensitiveCookieNotHttpOnly.java:50:56:50:75 | "session-access-key" : String | SensitiveCookieNotHttpOnly.java:50:42:50:124 | toString(...) | $@ doesn't have the HttpOnly flag set. | SensitiveCookieNotHttpOnly.java:50:56:50:75 | "session-access-key" | This sensitive cookie |
+| SensitiveCookieNotHttpOnly.java:63:42:63:47 | keyStr | SensitiveCookieNotHttpOnly.java:61:51:61:70 | "session-access-key" : String | SensitiveCookieNotHttpOnly.java:63:42:63:47 | keyStr | $@ doesn't have the HttpOnly flag set. | SensitiveCookieNotHttpOnly.java:61:51:61:70 | "session-access-key" | This sensitive cookie |
+| SensitiveCookieNotHttpOnly.java:69:42:69:50 | secString | SensitiveCookieNotHttpOnly.java:68:28:68:35 | "token=" : String | SensitiveCookieNotHttpOnly.java:69:42:69:50 | secString | $@ doesn't have the HttpOnly flag set. | SensitiveCookieNotHttpOnly.java:68:28:68:35 | "token=" | This sensitive cookie |
+| SensitiveCookieNotHttpOnly.java:69:42:69:50 | secString | SensitiveCookieNotHttpOnly.java:68:28:68:43 | ... + ... : String | SensitiveCookieNotHttpOnly.java:69:42:69:50 | secString | $@ doesn't have the HttpOnly flag set. | SensitiveCookieNotHttpOnly.java:68:28:68:43 | ... + ... | This sensitive cookie |
+| SensitiveCookieNotHttpOnly.java:69:42:69:50 | secString | SensitiveCookieNotHttpOnly.java:68:28:68:55 | ... + ... : String | SensitiveCookieNotHttpOnly.java:69:42:69:50 | secString | $@ doesn't have the HttpOnly flag set. | SensitiveCookieNotHttpOnly.java:68:28:68:55 | ... + ... | This sensitive cookie |
