@@ -206,6 +206,8 @@ module TaintTracking {
     override predicate sanitizes(boolean outcome, Expr e) { none() }
   }
 
+  private newtype TUnit = TUnitInjector()
+
   /**
    * A taint-propagating data flow edge that should be added to all taint tracking
    * configurations in addition to standard data flow edges.
@@ -214,14 +216,15 @@ module TaintTracking {
    * of the standard library. Override `Configuration::isAdditionalTaintStep`
    * for analysis-specific taint steps.
    */
-  cached
-  abstract class AdditionalTaintStep extends DataFlow::Node {
+  class AdditionalTaintStep extends TUnit {
     /**
      * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
      * data flow edge.
      */
     cached
     abstract predicate step(DataFlow::Node pred, DataFlow::Node succ);
+
+    string toString() { result = "Additional taint step class" }
   }
 
   /**
@@ -229,11 +232,7 @@ module TaintTracking {
    * promises.
    */
   private class HeapTaintStep extends AdditionalTaintStep {
-    HeapTaintStep() { heapStep(_, this) }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      heapStep(pred, succ) and succ = this
-    }
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) { heapStep(pred, succ) }
   }
 
   /**
@@ -280,14 +279,13 @@ module TaintTracking {
    * A taint propagating data flow edge through persistent storage.
    */
   class PersistentStorageTaintStep extends AdditionalTaintStep {
-    PersistentReadAccess read;
-
-    PersistentStorageTaintStep() { this = read }
-
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = read.getAWrite().getValue() and
-      succ = read
+      persistentStorageTaintStep(pred, succ)
     }
+  }
+
+  predicate persistentStorageTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    pred = succ.(PersistentReadAccess).getAWrite().getValue()
   }
 
   predicate arrayFunctionTaintStep = ArrayTaintTracking::arrayFunctionTaintStep/3;
@@ -303,10 +301,7 @@ module TaintTracking {
    * map to be tainted as soon as one of its entries is.
    */
   private class DictionaryTaintStep extends AdditionalTaintStep {
-    DictionaryTaintStep() { dictionaryTaintStep(_, this) }
-
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      succ = this and
       dictionaryTaintStep(pred, succ)
     }
   }
@@ -328,9 +323,7 @@ module TaintTracking {
    * also is an instance of `C`.
    */
   private class ReactComponentStateTaintStep extends AdditionalTaintStep {
-    DataFlow::Node source;
-
-    ReactComponentStateTaintStep() {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(ReactComponent c, DataFlow::PropRead prn, DataFlow::PropWrite pwn |
         (
           c.getACandidateStateSource().flowsTo(pwn.getBase()) or
@@ -342,13 +335,9 @@ module TaintTracking {
         )
       |
         prn.getPropertyName() = pwn.getPropertyName() and
-        this = prn and
-        source = pwn.getRhs()
+        succ = prn and
+        pred = pwn.getRhs()
       )
-    }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = source and succ = this
     }
   }
 
@@ -359,20 +348,14 @@ module TaintTracking {
    * also is an instance of `C`.
    */
   private class ReactComponentPropsTaintStep extends AdditionalTaintStep {
-    DataFlow::Node source;
-
-    ReactComponentPropsTaintStep() {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(ReactComponent c, string name, DataFlow::PropRead prn |
         prn = c.getAPropRead(name) or
         prn = c.getAPreviousPropsSource().getAPropertyRead(name)
       |
-        source = c.getACandidatePropsValue(name) and
-        this = prn
+        pred = c.getACandidatePropsValue(name) and
+        succ = prn
       )
-    }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = source and succ = this
     }
   }
 
@@ -383,10 +366,7 @@ module TaintTracking {
    * we consider any `+` operation to propagate taint.
    */
   class StringConcatenationTaintStep extends AdditionalTaintStep {
-    StringConcatenationTaintStep() { StringConcatenation::taintStep(_, this) }
-
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      succ = this and
       StringConcatenation::taintStep(pred, succ)
     }
   }
@@ -395,11 +375,8 @@ module TaintTracking {
    * A taint propagating data flow edge arising from string manipulation
    * functions defined in the standard library.
    */
-  private class StringManipulationTaintStep extends AdditionalTaintStep, DataFlow::ValueNode {
-    StringManipulationTaintStep() { stringManipulationStep(_, this) }
-
+  private class StringManipulationTaintStep extends AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      succ = this and
       stringManipulationStep(pred, succ)
     }
   }
@@ -488,16 +465,8 @@ module TaintTracking {
    * A taint propagating data flow edge arising from string formatting.
    */
   private class StringFormattingTaintStep extends AdditionalTaintStep {
-    PrintfStyleCall call;
-
-    StringFormattingTaintStep() {
-      this = call and
-      call.returnsFormatted()
-    }
-
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      succ = this and
-      (
+      exists(PrintfStyleCall call | call.returnsFormatted() and succ = call |
         pred = call.getFormatString()
         or
         pred = call.getFormatArgument(_)
@@ -510,59 +479,50 @@ module TaintTracking {
    * `RegExp.prototype.exec` to its result.
    */
   private class RegExpExecTaintStep extends AdditionalTaintStep {
-    DataFlow::MethodCallNode self;
-
-    RegExpExecTaintStep() {
-      this = self and
-      self.getReceiver().analyze().getAType() = TTRegExp() and
-      self.getMethodName() = "exec" and
-      self.getNumArgument() = 1
-    }
-
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = self.getArgument(0) and
-      succ = this
+      exists(DataFlow::MethodCallNode call |
+        call.getReceiver().analyze().getAType() = TTRegExp() and
+        call.getMethodName() = "exec" and
+        call.getNumArgument() = 1 and
+        pred = call.getArgument(0) and
+        succ = call
+      )
     }
   }
 
   /**
    * A taint propagating data flow edge arising from calling `String.prototype.match()`.
    */
-  private class StringMatchTaintStep extends AdditionalTaintStep, DataFlow::MethodCallNode {
-    StringMatchTaintStep() {
-      this.getMethodName() = "match" and
-      this.getNumArgument() = 1 and
-      this.getArgument(0).analyze().getAType() = TTRegExp()
-    }
-
+  private class StringMatchTaintStep extends AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = this.getReceiver() and
-      succ = this
+      exists(DataFlow::MethodCallNode call |
+        pred = call.getReceiver() and
+        succ = call and
+        call.getMethodName() = "match" and
+        call.getNumArgument() = 1 and
+        call.getArgument(0).analyze().getAType() = TTRegExp()
+      )
     }
   }
 
   /**
    * A taint propagating data flow edge arising from JSON unparsing.
    */
-  private class JsonStringifyTaintStep extends AdditionalTaintStep, DataFlow::CallNode {
-    JsonStringifyTaintStep() { this instanceof JsonStringifyCall }
-
+  private class JsonStringifyTaintStep extends AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getArgument(0) and succ = this
+      pred = succ.(JsonStringifyCall).getArgument(0)
     }
   }
 
   /**
    * A taint propagating data flow edge arising from JSON parsing.
    */
-  private class JsonParserTaintStep extends AdditionalTaintStep, DataFlow::CallNode {
-    JsonParserCall call;
-
-    JsonParserTaintStep() { this = call }
-
+  private class JsonParserTaintStep extends AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = call.getInput() and
-      succ = call.getOutput()
+      exists(JsonParserCall call |
+        pred = call.getInput() and
+        succ = call.getOutput()
+      )
     }
   }
 
@@ -664,33 +624,29 @@ module TaintTracking {
   /**
    * A taint propagating data flow edge arising from sorting.
    */
-  private class SortTaintStep extends AdditionalTaintStep, DataFlow::MethodCallNode {
-    SortTaintStep() { getMethodName() = "sort" }
-
+  private class SortTaintStep extends AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getReceiver() and succ = this
+      exists(DataFlow::MethodCallNode call | call.getMethodName() = "sort" |
+        pred = call.getReceiver() and succ = call
+      )
     }
   }
 
   /**
    * A taint step through an exception constructor, such as `x` to `new Error(x)`.
    */
-  class ErrorConstructorTaintStep extends AdditionalTaintStep, DataFlow::InvokeNode {
-    ErrorConstructorTaintStep() {
-      exists(string name | this = DataFlow::globalVarRef(name).getAnInvocation() |
-        name = "Error" or
-        name = "EvalError" or
-        name = "RangeError" or
-        name = "ReferenceError" or
-        name = "SyntaxError" or
-        name = "TypeError" or
-        name = "URIError"
-      )
-    }
-
+  class ErrorConstructorTaintStep extends AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getArgument(0) and
-      succ = this
+      exists(DataFlow::InvokeNode call |
+        call =
+          DataFlow::globalVarRef([
+              "Error", "EvalError", "RangeError", "ReferenceError", "SyntaxError", "TypeError",
+              "URIError"
+            ]).getAnInvocation()
+      |
+        pred = call.getArgument(0) and
+        succ = call
+      )
     }
   }
 
@@ -756,11 +712,8 @@ module TaintTracking {
     }
 
     private class StaticRegExpCaptureStep extends AdditionalTaintStep {
-      StaticRegExpCaptureStep() { staticRegExpCaptureStep(this, _) }
-
       override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-        pred = this and
-        staticRegExpCaptureStep(this, succ)
+        staticRegExpCaptureStep(pred, succ)
       }
     }
   }

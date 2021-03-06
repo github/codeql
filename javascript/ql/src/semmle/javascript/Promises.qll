@@ -460,13 +460,7 @@ predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
  * An additional taint step that involves promises.
  */
 private class PromiseTaintStep extends TaintTracking::AdditionalTaintStep {
-  DataFlow::Node source;
-
-  PromiseTaintStep() { promiseTaintStep(source, this) }
-
-  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    pred = source and succ = this
-  }
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) { promiseTaintStep(pred, succ) }
 }
 
 /**
@@ -500,14 +494,13 @@ private module AsyncReturnSteps {
   /**
    * A data-flow step for ordinary return from an async function in a taint configuration.
    */
-  private class AsyncTaintReturn extends TaintTracking::AdditionalTaintStep, DataFlow::FunctionNode {
-    Function f;
-
-    AsyncTaintReturn() { this.getFunction() = f and f.isAsync() }
-
+  private class AsyncTaintReturn extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      returnExpr(f, pred, _) and
-      succ.(DataFlow::FunctionReturnNode).getFunction() = f
+      exists(Function f |
+        f.isAsync() and
+        returnExpr(f, pred, _) and
+        succ.(DataFlow::FunctionReturnNode).getFunction() = f
+      )
     }
   }
 }
@@ -617,13 +610,11 @@ private module ClosurePromise {
    * Taint steps through closure promise methods.
    */
   private class ClosurePromiseTaintStep extends TaintTracking::AdditionalTaintStep {
-    DataFlow::Node pred;
-
-    ClosurePromiseTaintStep() {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       // static methods in goog.Promise
       exists(DataFlow::CallNode call, string name |
         call = Closure::moduleImport("goog.Promise." + name).getACall() and
-        this = call and
+        succ = call and
         pred = call.getAnArgument()
       |
         name = "all" or
@@ -635,12 +626,10 @@ private module ClosurePromise {
       // promise created through goog.promise.withResolver()
       exists(DataFlow::CallNode resolver |
         resolver = Closure::moduleImport("goog.Promise.withResolver").getACall() and
-        this = resolver.getAPropertyRead("promise") and
+        succ = resolver.getAPropertyRead("promise") and
         pred = resolver.getAMethodCall("resolve").getArgument(0)
       )
     }
-
-    override predicate step(DataFlow::Node src, DataFlow::Node dst) { src = pred and dst = this }
   }
 }
 

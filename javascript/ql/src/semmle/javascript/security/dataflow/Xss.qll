@@ -359,21 +359,16 @@ module DomBasedXss {
    * `div` element is part of the template for `inst`.
    */
   class VHtmlSourceWrite extends TaintTracking::AdditionalTaintStep {
-    VHtmlSink attr;
-
-    VHtmlSourceWrite() {
-      exists(Vue::Instance instance, string expr |
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(VHtmlSink attr, Vue::Instance instance, string expr |
         attr.getAttr().getRoot() =
           instance.getTemplateElement().(Vue::Template::HtmlElement).getElement() and
         expr = attr.getAttr().getValue() and
         // only support for simple identifier expressions
         expr.regexpMatch("(?i)[a-z0-9_]+") and
-        this = instance.getAPropertyValue(expr)
+        pred = instance.getAPropertyValue(expr) and
+        succ = attr
       )
-    }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = this and succ = attr
     }
   }
 

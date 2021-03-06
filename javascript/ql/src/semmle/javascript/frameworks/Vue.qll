@@ -476,18 +476,14 @@ module Vue {
    * A taint propagating data flow edge through a Vue instance property.
    */
   class InstanceHeapStep extends TaintTracking::AdditionalTaintStep {
-    DataFlow::Node src;
-
-    InstanceHeapStep() {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(Instance i, string name, DataFlow::FunctionNode bound |
         bound.flowsTo(i.getABoundFunction()) and
         not bound.getFunction() instanceof ArrowFunctionExpr and
-        bound.getReceiver().getAPropertyRead(name) = this and
-        src = i.getAPropertyValue(name)
+        bound.getReceiver().getAPropertyRead(name) = succ and
+        pred = i.getAPropertyValue(name)
       )
     }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) { pred = src and succ = this }
   }
 
   /*

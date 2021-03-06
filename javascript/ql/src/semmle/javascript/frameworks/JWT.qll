@@ -11,12 +11,12 @@ private module JwtDecode {
   /**
    * A taint-step for `succ = require("jwt-decode")(pred)`.
    */
-  private class JwtDecodeStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
-    JwtDecodeStep() { this = DataFlow::moduleImport("jwt-decode").getACall() }
-
+  private class JwtDecodeStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = this.getArgument(0) and
-      succ = this
+      exists(DataFlow::CallNode call | call = DataFlow::moduleImport("jwt-decode").getACall() |
+        pred = call.getArgument(0) and
+        succ = call
+      )
     }
   }
 }
@@ -28,12 +28,14 @@ private module JsonWebToken {
   /**
    * A taint-step for `require("jsonwebtoken").verify(pred, "key", (err succ) => {...})`.
    */
-  private class VerifyStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
-    VerifyStep() { this = DataFlow::moduleMember("jsonwebtoken", "verify").getACall() }
-
+  private class VerifyStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = this.getArgument(0) and
-      succ = this.getABoundCallbackParameter(2, 1)
+      exists(DataFlow::CallNode call |
+        call = DataFlow::moduleMember("jsonwebtoken", "verify").getACall()
+      |
+        pred = call.getArgument(0) and
+        succ = call.getABoundCallbackParameter(2, 1)
+      )
     }
   }
 

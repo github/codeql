@@ -68,13 +68,11 @@ module Base64 {
    * to avoid false positives.
    */
   private class Base64DecodingStep extends TaintTracking::AdditionalTaintStep {
-    Decode dec;
-
-    Base64DecodingStep() { this = dec }
-
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = dec.getInput() and
-      succ = dec.getOutput()
+      exists(Decode dec |
+        pred = dec.getInput() and
+        succ = dec.getOutput()
+      )
     }
   }
 }

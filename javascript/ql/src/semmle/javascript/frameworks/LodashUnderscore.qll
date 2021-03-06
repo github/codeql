@@ -441,10 +441,8 @@ module LodashUnderscore {
    * A model for taint-steps involving (non-function) underscore methods.
    */
   private class UnderscoreTaintStep extends TaintTracking::AdditionalTaintStep {
-    UnderscoreTaintStep() { underscoreTaintStep(this, _) }
-
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      underscoreTaintStep(pred, succ) and pred = this
+      underscoreTaintStep(pred, succ)
     }
   }
 }

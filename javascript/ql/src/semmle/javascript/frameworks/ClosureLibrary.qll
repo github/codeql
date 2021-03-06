@@ -7,12 +7,13 @@ import javascript
 module ClosureLibrary {
   private import DataFlow
 
-  private class StringStep extends TaintTracking::AdditionalTaintStep, CallNode {
-    Node pred;
-
-    StringStep() {
-      exists(string name | this = Closure::moduleImport("goog.string." + name).getACall() |
-        pred = getAnArgument() and
+  private class StringStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(Node pred, Node succ) {
+      exists(CallNode call, string name |
+        call = Closure::moduleImport("goog.string." + name).getACall() and
+        succ = call
+      |
+        pred = call.getAnArgument() and
         (
           name = "canonicalizeNewlines" or
           name = "capitalize" or
@@ -39,18 +40,13 @@ module ClosureLibrary {
           name = "whitespaceEscape"
         )
         or
-        pred = getArgument(0) and
+        pred = call.getArgument(0) and
         (
           name = "truncate" or
           name = "truncateMiddle" or
           name = "unescapeEntitiesWithDocument"
         )
       )
-    }
-
-    override predicate step(Node src, Node dst) {
-      src = pred and
-      dst = this
     }
   }
 }

@@ -29,24 +29,24 @@ private module DateFns {
    *
    * A format string can use single-quotes to include mostly arbitrary text.
    */
-  private class FormatStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
-    FormatStep() { this = formatFunction().getACall() }
-
+  private class FormatStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getArgument(1) and
-      succ = this
+      exists(DataFlow::CallNode call | call = formatFunction().getACall() |
+        pred = call.getArgument(1) and
+        succ = call
+      )
     }
   }
 
   /**
    * Taint step of form: `f -> format(f)(date)`
    */
-  private class CurriedFormatStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
-    CurriedFormatStep() { this = curriedFormatFunction().getACall() }
-
+  private class CurriedFormatStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getArgument(0) and
-      succ = getACall()
+      exists(DataFlow::CallNode call | call = curriedFormatFunction().getACall() |
+        pred = call.getArgument(0) and
+        succ = call.getACall()
+      )
     }
   }
 }
@@ -66,12 +66,12 @@ private module Moment {
    *
    * The format string can use backslash-escaping to include mostly arbitrary text.
    */
-  private class MomentFormatStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
-    MomentFormatStep() { this = moment().getMember("format").getACall() }
-
+  private class MomentFormatStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getArgument(0) and
-      succ = this
+      exists(DataFlow::CallNode call | call = moment().getMember("format").getACall() |
+        pred = call.getArgument(0) and
+        succ = call
+      )
     }
   }
 }
@@ -82,12 +82,12 @@ private module DateFormat {
    *
    * The format string can use single-quotes to include mostly arbitrary text.
    */
-  private class DateFormatStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
-    DateFormatStep() { this = DataFlow::moduleImport("dateformat").getACall() }
-
+  private class DateFormatStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getArgument(1) and
-      succ = this
+      exists(DataFlow::CallNode call | call = DataFlow::moduleImport("dateformat").getACall() |
+        pred = call.getArgument(1) and
+        succ = call
+      )
     }
   }
 }

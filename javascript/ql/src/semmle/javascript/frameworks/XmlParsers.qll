@@ -277,13 +277,11 @@ module XML {
   }
 
   private class XMLParserTaintStep extends js::TaintTracking::AdditionalTaintStep {
-    XML::ParserInvocation parser;
-
-    XMLParserTaintStep() { this.asExpr() = parser }
-
     override predicate step(js::DataFlow::Node pred, js::DataFlow::Node succ) {
-      pred.asExpr() = parser.getSourceArgument() and
-      succ = parser.getAResult()
+      exists(XML::ParserInvocation parser |
+        pred.asExpr() = parser.getSourceArgument() and
+        succ = parser.getAResult()
+      )
     }
   }
 }
