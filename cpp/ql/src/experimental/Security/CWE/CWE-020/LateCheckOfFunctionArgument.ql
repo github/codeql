@@ -15,32 +15,31 @@
 import cpp
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
-predicate numberArgument(Function f, int size) {
-  f.hasGlobalOrStdName("write") and size = 2
+/ ** Pridekat allows you to get the number of the argument used for positioning in the buffer by the name of the function. * /
+predicate numberArgument(Function f, int apos) {
+  f.hasGlobalOrStdName("write") and apos = 2
   or
-  f.hasGlobalOrStdName("read") and size = 2
+  f.hasGlobalOrStdName("read") and apos = 2
   or
-  f.hasGlobalOrStdName("lseek") and size = 1
+  f.hasGlobalOrStdName("lseek") and apos = 1
   or
-  f.hasGlobalOrStdName("memmove") and size = 2
+  f.hasGlobalOrStdName("memmove") and apos = 2
   or
-  f.hasGlobalOrStdName("memset") and size = 2
+  f.hasGlobalOrStdName("memset") and apos = 2
   or
-  f.hasGlobalOrStdName("memcpy") and size = 2
+  f.hasGlobalOrStdName("memcpy") and apos = 2
   or
-  f.hasGlobalOrStdName("memcmp") and size = 2
+  f.hasGlobalOrStdName("memcmp") and apos = 2
   or
-  f.hasGlobalOrStdName("strncat") and size = 2
+  f.hasGlobalOrStdName("strncat") and apos = 2
   or
-  f.hasGlobalOrStdName("strncpy") and size = 2
+  f.hasGlobalOrStdName("strncpy") and apos = 2
   or
-  f.hasGlobalOrStdName("strncmp") and size = 2
+  f.hasGlobalOrStdName("strncmp") and apos = 2
   or
-  f.hasGlobalOrStdName("snprintf") and size = 1
+  f.hasGlobalOrStdName("snprintf") and apos = 1
   or
-  f.hasGlobalOrStdName("strndup") and size = 2
-  or
-  f.hasGlobalOrStdName("read") and size = 2
+  f.hasGlobalOrStdName("strndup") and apos = 2
 }
 
 class IfCompareWithZero extends IfStmt {
@@ -55,12 +54,11 @@ class IfCompareWithZero extends IfStmt {
 
 from FunctionCall fc, IfCompareWithZero ifc, int na
 where
-  numberArgument(fc.getTarget(), na) and
-  na >= 0 and
+  numberArgument(fc.getTarget(), na)
   globalValueNumber(fc.getArgument(na)) = globalValueNumber(ifc.noZerroOperand()) and
   dominates(fc, ifc) and
   not exists(IfStmt ifc1 |
     dominates(ifc1, fc) and
     globalValueNumber(fc.getArgument(na)) = globalValueNumber(ifc1.getCondition().getAChild*())
   )
-select fc, "Argument '$@' will be checked later.", fc.getArgument(na), fc.getArgument(na).toString()
+select fc, "The value of argument '$@' appears to be checked after the call, rather than before it.", fc.getArgument(na), fc.getArgument(na).toString()
