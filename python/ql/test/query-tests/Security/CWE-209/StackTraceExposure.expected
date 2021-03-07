@@ -1,11 +1,11 @@
 edges
-| test.py:33:15:33:36 | ControlFlowNode for Attribute() | test.py:34:29:34:31 | ControlFlowNode for err |
-| test.py:34:29:34:31 | ControlFlowNode for err | test.py:34:16:34:32 | ControlFlowNode for format_error() |
+| test.py:49:15:49:36 | ControlFlowNode for Attribute() | test.py:50:29:50:31 | ControlFlowNode for err |
+| test.py:50:29:50:31 | ControlFlowNode for err | test.py:50:16:50:32 | ControlFlowNode for format_error() |
 nodes
 | test.py:16:16:16:37 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| test.py:33:15:33:36 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| test.py:34:16:34:32 | ControlFlowNode for format_error() | semmle.label | ControlFlowNode for format_error() |
-| test.py:34:29:34:31 | ControlFlowNode for err | semmle.label | ControlFlowNode for err |
+| test.py:49:15:49:36 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:50:16:50:32 | ControlFlowNode for format_error() | semmle.label | ControlFlowNode for format_error() |
+| test.py:50:29:50:31 | ControlFlowNode for err | semmle.label | ControlFlowNode for err |
 #select
 | test.py:16:16:16:37 | ControlFlowNode for Attribute() | test.py:16:16:16:37 | ControlFlowNode for Attribute() | test.py:16:16:16:37 | ControlFlowNode for Attribute() | $@ may be exposed to an external user | test.py:16:16:16:37 | ControlFlowNode for Attribute() | Error information |
-| test.py:34:16:34:32 | ControlFlowNode for format_error() | test.py:33:15:33:36 | ControlFlowNode for Attribute() | test.py:34:16:34:32 | ControlFlowNode for format_error() | $@ may be exposed to an external user | test.py:33:15:33:36 | ControlFlowNode for Attribute() | Error information |
+| test.py:50:16:50:32 | ControlFlowNode for format_error() | test.py:49:15:49:36 | ControlFlowNode for Attribute() | test.py:50:16:50:32 | ControlFlowNode for format_error() | $@ may be exposed to an external user | test.py:49:15:49:36 | ControlFlowNode for Attribute() | Error information |

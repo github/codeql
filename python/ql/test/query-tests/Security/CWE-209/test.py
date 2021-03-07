@@ -12,15 +12,31 @@ def do_computation():
 def server_bad():
     try:
         do_computation()
-    except Exception as e:  #$ exceptionInfo
+    except Exception:
         return traceback.format_exc()  #$ exceptionInfo
+
+# BAD
+@app.route('/bad/clearly')
+def server_bad():
+    try:
+        do_computation()
+    except Exception as e:  #$ exceptionInfo
+        return e
+
+# BAD
+@app.route('/bad/also')
+def server_bad():
+    try:
+        do_computation()
+    except Exception as e:  #$ exceptionInfo
+        return e.__traceback__
 
 # GOOD
 @app.route('/good')
 def server_good():
     try:
         do_computation()
-    except Exception as e:  #$ exceptionInfo
+    except Exception:
         log(traceback.format_exc())  #$ exceptionInfo
         return "An internal error has occurred!"
 
@@ -29,7 +45,7 @@ def server_good():
 def server_bad_flow():
     try:
         do_computation()
-    except Exception as e:  #$ exceptionInfo
+    except Exception:
         err = traceback.format_exc()  #$ exceptionInfo
         return format_error(err)
 
