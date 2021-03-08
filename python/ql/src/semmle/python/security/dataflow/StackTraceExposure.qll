@@ -22,6 +22,8 @@ class StackTraceExposureConfiguration extends TaintTracking::Configuration {
     sink = any(HTTP::Server::HttpResponse response).getBody()
   }
 
+  // A stack trace is accessible as the `__traceback__` attribute of a caught exception.
+  //  seehttps://docs.python.org/3/reference/datamodel.html#traceback-objects
   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(AttrRead attr | attr.getAttributeName() = "__traceback__" |
       nodeFrom = attr.getObject() and
