@@ -15,7 +15,7 @@
 import cpp
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
-/ ** Pridekat allows you to get the number of the argument used for positioning in the buffer by the name of the function. * /
+/** Holds for a function `f` that has an argument at index `apos` used for positioning in a buffer. */
 predicate numberArgument(Function f, int apos) {
   f.hasGlobalOrStdName("write") and apos = 2
   or
@@ -54,7 +54,7 @@ class IfCompareWithZero extends IfStmt {
 
 from FunctionCall fc, IfCompareWithZero ifc, int na
 where
-  numberArgument(fc.getTarget(), na)
+  numberArgument(fc.getTarget(), na) and
   globalValueNumber(fc.getArgument(na)) = globalValueNumber(ifc.noZerroOperand()) and
   dominates(fc, ifc) and
   not exists(IfStmt ifc1 |
