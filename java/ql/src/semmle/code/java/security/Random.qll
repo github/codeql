@@ -47,7 +47,7 @@ abstract class RandomDataSource extends MethodAccess {
 
   /**
    * Gets the integer lower bound, inclusive, of the values returned by this call,
-   * if applicable to this method's type and a constant bound is known.
+   * if applicable to this method's type and a bound is known.
    */
   Expr getLowerBoundExpr() { none() }
 
@@ -59,7 +59,7 @@ abstract class RandomDataSource extends MethodAccess {
 
   /**
    * Gets the integer upper bound, exclusive, of the values returned by this call,
-   * if applicable to this method's type and a constant bound is known.
+   * if applicable to this method's type and a bound is known.
    */
   Expr getUpperBoundExpr() { none() }
 
