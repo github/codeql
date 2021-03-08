@@ -64,12 +64,24 @@ private predicate operandToInstructionTaintStep(Operand opFrom, Instruction inst
     or
     instrTo instanceof PointerArithmeticInstruction
     or
-    instrTo.(FieldAddressInstruction).getField().getDeclaringType() instanceof Union
-    or
     // The `CopyInstruction` case is also present in non-taint data flow, but
     // that uses `getDef` rather than `getAnyDef`. For taint, we want flow
     // from a definition of `myStruct` to a `myStruct.myField` expression.
     instrTo instanceof CopyInstruction
+  )
+  or
+  // Unary instructions tend to preserve enough information in practice that we
+  // want taint to flow through.
+  // The exception is `FieldAddressInstruction`. Together with the rules below for
+  // `LoadInstruction`s and `ChiInstruction`s, flow through `FieldAddressInstruction`
+  // could cause flow into one field to come out an unrelated field.
+  // This would happen across function boundaries, where the IR would not be able to
+  // match loads to stores.
+  instrTo.(UnaryInstruction).getUnaryOperand() = opFrom and
+  (
+    not instrTo instanceof FieldAddressInstruction
+    or
+    instrTo.(FieldAddressInstruction).getField().getDeclaringType() instanceof Union
   )
   or
   instrTo.(LoadInstruction).getSourceAddressOperand() = opFrom
@@ -82,6 +94,29 @@ private predicate operandToInstructionTaintStep(Operand opFrom, Instruction inst
     or
     t instanceof ArrayType
   )
+  or
+  // Until we have flow through indirections across calls, we'll take flow out
+  // of the indirection and into the argument.
+  // When we get proper flow through indirections across calls, this code can be
+  // moved to `adjusedSink` or possibly into the `DataFlow::ExprNode` class.
+  exists(ReadSideEffectInstruction read |
+    read.getSideEffectOperand() = opFrom and
+    read.getArgumentDef() = instrTo
+  )
+  or
+  // Until we have from through indirections across calls, we'll take flow out
+  // of the parameter and into its indirection.
+  // `InitializeIndirectionInstruction` only has a single operand: the address of the
+  // value whose indirection we are initializing. When initializing an indirection of a parameter `p`,
+  // the IR looks like this:
+  // ```
+  // m1 = InitializeParameter[p] : &r1
+  // r2 = Load[p] : r2, m1
+  // m3 = InitializeIndirection[p] : &r2
+  // ```
+  // So by having flow from `r2` to `m3` we're enabling flow from `m1` to `m3`. This relies on the
+  // `LoadOperand`'s overlap being exact.
+  instrTo.(InitializeIndirectionInstruction).getAnOperand() = opFrom
   or
   modeledTaintStep(opFrom, instrTo)
 }
