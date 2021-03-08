@@ -63,7 +63,7 @@ destructors likely not be called (as previously noted), but the pointer will als
 potentially less of a serious issue than that posed by the first approach, but it should still be avoided.</li>
 </ul>
 
-<include src="pointsToWarning.qhelp" />
+<include src="pointsToWarning.inc.qhelp" />
 
 </overview>
 <recommendation>
