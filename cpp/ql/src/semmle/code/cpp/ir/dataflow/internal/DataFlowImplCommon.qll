@@ -755,7 +755,7 @@ pragma[inline]
 DataFlowCallable getNodeEnclosingCallable(Node n) {
   exists(Node n0 |
     pragma[only_bind_into](n0) = n and
-    result = n0.getEnclosingCallable()
+    pragma[only_bind_into](result) = n0.getEnclosingCallable()
   )
 }
 

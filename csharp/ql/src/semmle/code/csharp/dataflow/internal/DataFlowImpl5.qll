@@ -765,7 +765,7 @@ private module Stage2 {
   bindingset[result, ap]
   private ApApprox getApprox(Ap ap) { any() }
 
-  private Ap getApNil(Node node) { PrevStage::revFlow(node, _) and result instanceof ApNil }
+  private ApNil getApNil(Node node) { PrevStage::revFlow(node, _) and exists(result) }
 
   bindingset[tc, tail]
   private Ap apCons(TypedContent tc, Ap tail) { result = true and exists(tc) and exists(tail) }
