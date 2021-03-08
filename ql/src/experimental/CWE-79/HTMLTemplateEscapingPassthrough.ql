@@ -91,11 +91,11 @@ class TemplateExecutionFlowConf extends TaintTracking::Configuration {
 }
 
 from
-  TemplateExecutionFlowConf cfg, DataFlow::PathNode source, DataFlow::PathNode sink,
-  string targetTypeName, DataFlow::PathNode conversionSink
+  TemplateExecutionFlowConf cfg, DataFlow::PathNode untrustedSource,
+  DataFlow::PathNode tplExecutionSink, string targetTypeName, DataFlow::PathNode conversionSink
 where
-  cfg.hasFlowPath(source, sink) and
-  isConvertedToPassthroughType(source.getNode(), targetTypeName, conversionSink)
-select sink.getNode(), source, sink,
+  cfg.hasFlowPath(untrustedSource, tplExecutionSink) and
+  isConvertedToPassthroughType(untrustedSource.getNode(), targetTypeName, conversionSink)
+select tplExecutionSink.getNode(), untrustedSource, tplExecutionSink,
   "Data from an $@ will not be auto-escaped because it was $@ to template." + targetTypeName,
-  source.getNode(), "untrusted source", conversionSink.getNode(), "converted"
+  untrustedSource.getNode(), "untrusted source", conversionSink.getNode(), "converted"
