@@ -178,30 +178,14 @@ fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<dbscheme::Entry<
                 // It's a product type, defined by a table.
                 let mut main_table = dbscheme::Table {
                     name: &name,
-                    columns: vec![
-                        dbscheme::Column {
-                            db_type: dbscheme::DbColumnType::Int,
-                            name: "id",
-                            unique: true,
-                            ql_type: ql::Type::AtType(&node.dbscheme_name),
-                            ql_type_is_ref: false,
-                        },
-                        dbscheme::Column {
-                            db_type: dbscheme::DbColumnType::Int,
-                            name: "parent",
-                            unique: false,
-                            ql_type: ql::Type::AtType("ast_node_parent"),
-                            ql_type_is_ref: true,
-                        },
-                        dbscheme::Column {
-                            unique: false,
-                            db_type: dbscheme::DbColumnType::Int,
-                            name: "parent_index",
-                            ql_type: ql::Type::Int,
-                            ql_type_is_ref: true,
-                        },
-                    ],
-                    keysets: Some(vec!["parent", "parent_index"]),
+                    columns: vec![dbscheme::Column {
+                        db_type: dbscheme::DbColumnType::Int,
+                        name: "id",
+                        unique: true,
+                        ql_type: ql::Type::AtType(&node.dbscheme_name),
+                        ql_type_is_ref: false,
+                    }],
+                    keysets: None,
                 };
                 ast_node_members.insert(&node.dbscheme_name);
 
@@ -275,22 +259,21 @@ fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<dbscheme::Entry<
         name: "ast_node_parent",
         members: ["ast_node", "file"].iter().cloned().collect(),
     }));
+
+    entries.push(dbscheme::Entry::Table(create_ast_node_parent_table()));
+
     entries
 }
-
-fn create_tokeninfo<'a>(
-    token_kinds: Map<&'a str, usize>,
-) -> (dbscheme::Case<'a>, dbscheme::Table<'a>) {
-    let table = dbscheme::Table {
-        name: "tokeninfo",
-        keysets: Some(vec!["parent", "parent_index"]),
+fn create_ast_node_parent_table<'a>() -> dbscheme::Table<'a> {
+    dbscheme::Table {
+        name: "ast_node_parent",
         columns: vec![
             dbscheme::Column {
                 db_type: dbscheme::DbColumnType::Int,
-                name: "id",
-                unique: true,
-                ql_type: ql::Type::AtType("token"),
-                ql_type_is_ref: false,
+                name: "child",
+                unique: false,
+                ql_type: ql::Type::AtType("ast_node"),
+                ql_type_is_ref: true,
             },
             dbscheme::Column {
                 db_type: dbscheme::DbColumnType::Int,
@@ -305,6 +288,25 @@ fn create_tokeninfo<'a>(
                 name: "parent_index",
                 ql_type: ql::Type::Int,
                 ql_type_is_ref: true,
+            },
+        ],
+        keysets: Some(vec!["parent", "parent_index"]),
+    }
+}
+
+fn create_tokeninfo<'a>(
+    token_kinds: Map<&'a str, usize>,
+) -> (dbscheme::Case<'a>, dbscheme::Table<'a>) {
+    let table = dbscheme::Table {
+        name: "tokeninfo",
+        keysets: None,
+        columns: vec![
+            dbscheme::Column {
+                db_type: dbscheme::DbColumnType::Int,
+                name: "id",
+                unique: true,
+                ql_type: ql::Type::AtType("token"),
+                ql_type_is_ref: false,
             },
             dbscheme::Column {
                 unique: false,
