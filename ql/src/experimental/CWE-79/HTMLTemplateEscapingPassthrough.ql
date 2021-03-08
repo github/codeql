@@ -138,15 +138,6 @@ class FlowConfFromUntrustedToTemplateExecutionCall extends TaintTracking::Config
   override predicate isSink(DataFlow::Node sink) { isSinkToTemplateExec(sink, _) }
 }
 
-private class DummySource extends UntrustedFlowSource::Range {
-  DummySource() {
-    exists(Function fn, DataFlow::CallNode call | fn.hasQualifiedName(_, "source") |
-      call = fn.getACall() and
-      this = call.getResult()
-    )
-  }
-}
-
 /**
  * Holds if the provided `conversion` node flows into the provided `execSink`.
  */
