@@ -17,10 +17,10 @@ import DataFlow::PathGraph
  * The `targetType` parameter gets populated with the name of the PassthroughType,
  * and `conversionSink` with the node where the conversion happens.
  */
-predicate isConvertedToPassthroughType(
+predicate flowsFromUntrustedToConversion(
   DataFlow::Node src, string targetType, DataFlow::PathNode conversionSink
 ) {
-  exists(ConversionFlowToPassthroughTypeConf cfg, DataFlow::PathNode source |
+  exists(FlowConfFromUntrustedToPassthroughTypeConversion cfg, DataFlow::PathNode source |
     cfg.hasFlowPath(source, conversionSink) and
     source.getNode() = src and
     targetType = cfg.getDstTypeName()
@@ -37,14 +37,14 @@ class PassthroughTypeName extends string {
 
 /**
  * A taint-tracking configuration for reasoning about when an UntrustedFlowSource
- * is converted into a special type which will not be escaped by the template generator;
+ * is converted into a special "passthrough" type which will not be escaped by the template generator;
  * this allows the injection of arbitrary content (html, css, js) into the generated
  * output of the templates.
  */
-class ConversionFlowToPassthroughTypeConf extends TaintTracking::Configuration {
+class FlowConfFromUntrustedToPassthroughTypeConversion extends TaintTracking::Configuration {
   string dstTypeName;
 
-  ConversionFlowToPassthroughTypeConf() {
+  FlowConfFromUntrustedToPassthroughTypeConversion() {
     dstTypeName instanceof PassthroughTypeName and
     this = "UnsafeConversion" + dstTypeName
   }
@@ -65,6 +65,52 @@ class ConversionFlowToPassthroughTypeConf extends TaintTracking::Configuration {
 }
 
 /**
+ * Holds if the provided `conversion` node flows into the provided `execSink`.
+ */
+predicate flowsFromConversionToExec(
+  DataFlow::Node conversion, string targetType, DataFlow::PathNode execSink
+) {
+  exists(
+    FlowConfPassthroughTypeConversionToTemplateExecutionCall cfg, DataFlow::PathNode source,
+    DataFlow::PathNode execSinkLocal
+  |
+    cfg.hasFlowPath(source, execSinkLocal) and
+    source.getNode() = conversion and
+    execSink.getNode() = execSinkLocal.getNode() and
+    targetType = cfg.getDstTypeName()
+  )
+}
+
+/**
+ * A taint-tracking configuration for reasoning about when the result of a conversion
+ * to a PassthroughType flows to a template execution call.
+ */
+class FlowConfPassthroughTypeConversionToTemplateExecutionCall extends TaintTracking::Configuration {
+  string dstTypeName;
+
+  FlowConfPassthroughTypeConversionToTemplateExecutionCall() {
+    dstTypeName instanceof PassthroughTypeName and
+    this = "UnsafeConversionToExec" + dstTypeName
+  }
+
+  string getDstTypeName() { result = dstTypeName }
+
+  override predicate isSource(DataFlow::Node source) {
+    isSourceConversionToPassthroughType(source, _)
+  }
+
+  predicate isSourceConversionToPassthroughType(DataFlow::TypeCastNode source, string name) {
+    exists(Type typ |
+      typ = source.getResultType() and
+      typ.getUnderlyingType*().hasQualifiedName("html/template", name) and
+      name instanceof PassthroughTypeName
+    )
+  }
+
+  override predicate isSink(DataFlow::Node sink) { isSinkToTemplateExec(sink, _) }
+}
+
+/**
  * Holds if the sink is a data value argument of a template execution call.
  */
 predicate isSinkToTemplateExec(DataFlow::Node sink, DataFlow::CallNode call) {
@@ -82,20 +128,46 @@ predicate isSinkToTemplateExec(DataFlow::Node sink, DataFlow::CallNode call) {
  * A taint-tracking configuration for reasoning about when an UntrustedFlowSource
  * flows into a template executor call.
  */
-class TemplateExecutionFlowConf extends TaintTracking::Configuration {
-  TemplateExecutionFlowConf() { this = "TemplateExecutionFlowConf" }
+class FlowConfFromUntrustedToTemplateExecutionCall extends TaintTracking::Configuration {
+  FlowConfFromUntrustedToTemplateExecutionCall() {
+    this = "FlowConfFromUntrustedToTemplateExecutionCall"
+  }
 
   override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { isSinkToTemplateExec(sink, _) }
 }
 
+private class DummySource extends UntrustedFlowSource::Range {
+  DummySource() {
+    exists(Function fn, DataFlow::CallNode call | fn.hasQualifiedName(_, "source") |
+      call = fn.getACall() and
+      this = call.getResult()
+    )
+  }
+}
+
+/**
+ * Holds if the provided `conversion` node flows into the provided `execSink`.
+ */
+predicate flowsFromUntrustedToExec(DataFlow::PathNode untrusted, DataFlow::PathNode execSink) {
+  exists(FlowConfFromUntrustedToTemplateExecutionCall cfg | cfg.hasFlowPath(untrusted, execSink))
+}
+
 from
-  TemplateExecutionFlowConf cfg, DataFlow::PathNode untrustedSource,
-  DataFlow::PathNode tplExecutionSink, string targetTypeName, DataFlow::PathNode conversionSink
+  DataFlow::PathNode untrustedSource, DataFlow::PathNode tplExecCall, string targetTypeName,
+  DataFlow::PathNode conversionSink
 where
-  cfg.hasFlowPath(untrustedSource, tplExecutionSink) and
-  isConvertedToPassthroughType(untrustedSource.getNode(), targetTypeName, conversionSink)
-select tplExecutionSink.getNode(), untrustedSource, tplExecutionSink,
+  // A = remoteflowsource
+  // B = conversion to PassthroughType
+  // C = template execution
+  // Flows:
+  // A -> B
+  flowsFromUntrustedToConversion(untrustedSource.getNode(), targetTypeName, conversionSink) and
+  // B -> C
+  flowsFromConversionToExec(conversionSink.getNode(), targetTypeName, tplExecCall) and
+  // A -> C
+  flowsFromUntrustedToExec(untrustedSource, tplExecCall)
+select tplExecCall.getNode(), untrustedSource, tplExecCall,
   "Data from an $@ will not be auto-escaped because it was $@ to template." + targetTypeName,
   untrustedSource.getNode(), "untrusted source", conversionSink.getNode(), "converted"

@@ -70,8 +70,16 @@ func bad(req *http.Request) {
 // good is an example of a good implementation
 func good(req *http.Request) {
 	tmpl, _ := template.New("test").Parse(`Hello, {{.}}\n`)
-	{ // This will be escaped:
-		var caught = req.UserAgent()
-		checkError(tmpl.Execute(os.Stdout, caught))
+	{ // This will be escaped, so it shoud NOT be caught:
+		var escaped = source(`<a href="example.com">link</a>`)
+		checkError(tmpl.Execute(os.Stdout, escaped))
+	}
+	{
+		// The converted source value does NOT flow to tmpl.Exec,
+		// so this should NOT be caught.
+		src := source(`<a href='example.com'>link</a>`)
+		converted := template.HTML(src)
+		_ = converted
+		checkError(tmpl.Execute(os.Stdout, src))
 	}
 }
