@@ -11,7 +11,7 @@ class StrLookupTest {
       Map<String, String> map = new HashMap<String, String>();
       map.put("key", taint());
       StrLookup<String> lookup = StrLookup.mapLookup(map);
-      sink(lookup.lookup("key")); // $hasTaintFlow=y
+      sink(lookup.lookup("key")); // $hasTaintFlow
     }
 
 }
