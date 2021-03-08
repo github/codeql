@@ -1,4 +1,0 @@
-| SpringExporterUnsafeDeserialization.java:0:0:0:0 | SpringExporterUnsafeDeserialization | Unsafe deserialization in Spring exporter bean '/unsafeCustomeRemoteInvocationSerializingExporter' |
-| SpringExporterUnsafeDeserialization.java:0:0:0:0 | SpringExporterUnsafeDeserialization | Unsafe deserialization in Spring exporter bean '/unsafeHttpInvokerServiceExporter' |
-| beans.xml:0:0:0:0 | beans.xml | Unsafe deserialization in Spring exporter bean '/unsafeBooking' |
-| beans.xml:0:0:0:0 | beans.xml | Unsafe deserialization in Spring exporter bean 'org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter' |

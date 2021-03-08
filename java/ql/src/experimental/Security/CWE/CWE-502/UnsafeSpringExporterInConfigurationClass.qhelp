@@ -46,10 +46,6 @@ The following example shows how a vulnerable HTTP endpoint can be defined
 using <code>HttpInvokerServiceExporter</code> and Spring annotations:
 </p>
 <sample src="SpringExporterUnsafeDeserialization.java" />
-<p>
-The next examples shows how the same vulnerable endpoint can be defined in a Spring XML config:
-</p>
-<sample src="SpringExporterUnsafeDeserialization.xml" />
 </example>
 
 <references>

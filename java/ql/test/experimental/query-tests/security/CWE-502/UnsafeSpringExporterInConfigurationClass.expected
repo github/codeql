@@ -1,0 +1,2 @@
+| SpringExporterUnsafeDeserialization.java:10:32:10:63 | unsafeHttpInvokerServiceExporter | Unsafe deserialization in a Spring exporter bean '/unsafeHttpInvokerServiceExporter' |
+| SpringExporterUnsafeDeserialization.java:18:41:18:88 | unsafeCustomeRemoteInvocationSerializingExporter | Unsafe deserialization in a Spring exporter bean '/unsafeCustomeRemoteInvocationSerializingExporter' |
