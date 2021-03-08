@@ -79,55 +79,62 @@ For example, you can find taint propagation from a parameter ``source`` to an ex
 Examples
 ~~~~~~~~
 
-This query finds the filename passed to ``System.IO.File.Open``:
+This query finds the filename passed to ``os.open``:
 
 .. code-block:: ql
 
-   import csharp
+    import python
+    import semmle.python.dataflow.new.DataFlow
+    import semmle.python.ApiGraphs
 
-   from Method fileOpen, MethodCall call
-   where fileOpen.hasQualifiedName("System.IO.File.Open")
-     and call.getTarget() = fileOpen
-   select call.getArgument(0)
+    from DataFlow::CallCfgNode call
+    where
+      call = API::moduleImport("os").getMember("open").getACall()
+    select call.getArg(0)
 
 Unfortunately this will only give the expression in the argument, not the values which could be passed to it. So we use local data flow to find all expressions that flow into the argument:
 
 .. code-block:: ql
 
-   import csharp
+    import python
+    import semmle.python.dataflow.new.DataFlow
+    import semmle.python.ApiGraphs
 
-   from Method fileOpen, MethodCall call, Expr src
-   where fileOpen.hasQualifiedName("System.IO.File.Open")
-     and call.getTarget() = fileOpen
-     and DataFlow::localFlow(DataFlow::exprNode(src), DataFlow::exprNode(call.getArgument(0)))
-   select src
+    from DataFlow::CallCfgNode call, DataFlow::ExprNode expr
+    where
+      call = API::moduleImport("os").getMember("open").getACall()
+      and DataFlow::localFlow(expr, call.getArg(0))
+    select expr
 
-Then we can make the source more specific, for example an access to a public parameter. This query finds instances where a public parameter is used to open a file:
-
-.. code-block:: ql
-
-   import csharp
-
-   from Method fileOpen, MethodCall call, Parameter p
-   where fileOpen.hasQualifiedName("System.IO.File.Open")
-     and call.getTarget() = fileOpen
-     and DataFlow::localFlow(DataFlow::parameterNode(p), DataFlow::exprNode(call.getArgument(0)))
-     and call.getEnclosingCallable().(Member).isPublic()
-   select p, "Opening a file from a public method."
-
-This query finds calls to ``String.Format`` where the format string isn't hard-coded:
+Then we can make the source more specific, for example a parameter to a function or method. This query finds instances where a parameter is used as the name when opening a file:
 
 .. code-block:: ql
 
-   import csharp
+    import python
+    import semmle.python.dataflow.new.DataFlow
+    import semmle.python.ApiGraphs
 
-   from Method format, MethodCall call, Expr formatString
-   where format.hasQualifiedName("System.String.Format")
-     and call.getTarget() = format
-     and formatString = call.getArgument(0)
-     and formatString.getType() instanceof StringType
-     and not exists(StringLiteral source | DataFlow::localFlow(DataFlow::exprNode(source), DataFlow::exprNode(formatString)))
-   select call, "Argument to 'string.Format' isn't hard-coded."
+    from DataFlow::CallCfgNode call, DataFlow::ParameterNode p
+    where
+      call = API::moduleImport("os").getMember("open").getACall()
+      and DataFlow::localFlow(p, call.getArg(0))
+    select p, "Opening a file based on parameter."
+
+Using the exact name in the parameter may be too strict. If we want to know if the parameter influences
+the file name, we can use taint tracking instead of data flow.
+This query finds calls to ``os.open`` where the filename is derived from a parameter:
+
+.. code-block:: ql
+
+    import python
+    import semmle.python.dataflow.new.TaintTracking
+    import semmle.python.ApiGraphs
+
+    from DataFlow::CallCfgNode call, DataFlow::ParameterNode p
+    where
+      call = API::moduleImport("os").getMember("open").getACall()
+    and TaintTracking::localTaint(p, call.getArg(0))
+    select p, "Opening a file based on parameter."
 
 Exercises
 ~~~~~~~~~
