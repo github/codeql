@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import org.apache.commons.lang3.RandomUtils;
 
 public class Test {
@@ -14,6 +15,14 @@ public class Test {
     Math.abs(RandomUtils.nextLong());
     Math.abs(RandomUtils.nextInt(1, 10)); // GOOD: random value already has a restricted range
     Math.abs(RandomUtils.nextLong(1, 10)); // GOOD: random value already has a restricted range
+
+    ThreadLocalRandom tlr = ThreadLocalRandom.current();
+    Math.abs(tlr.nextInt());
+    Math.abs(tlr.nextLong());
+    Math.abs(tlr.nextInt(10)); // GOOD: random value already has a restricted range
+    Math.abs(tlr.nextLong(10)); // GOOD: random value already has a restricted range
+    Math.abs(tlr.nextInt(1, 10)); // GOOD: random value already has a restricted range
+    Math.abs(tlr.nextLong(1, 10)); // GOOD: random value already has a restricted range
 
   }
 

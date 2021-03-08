@@ -88,18 +88,37 @@ class StdlibRandomSource extends RandomDataSource {
     m.getDeclaringType() instanceof StdlibRandom
   }
 
+  // Note for the following bounds functions: `java.util.Random` only defines no-arg versions
+  // of `nextInt` and `nextLong` plus `nextInt(int x)`, bounded to the range [0, x)
+  // However `ThreadLocalRandom` provides one- and two-arg versions of `nextInt` and `nextLong`
+  // which allow both lower and upper bounds for both types.
   override int getLowerBound() {
-    // If this call is to `nextInt(int)`, the lower bound is zero.
-    m.hasName("nextInt") and
+    // If this call is to `nextInt(int)` or `nextLong(long), the lower bound is zero.
+    m.hasName(["nextInt", "nextLong"]) and
     m.getNumberOfParameters() = 1 and
     result = 0
+    or
+    result = super.getLowerBound() // Include a lower bound provided via `getLowerBoundExpr`
+  }
+
+  override Expr getLowerBoundExpr() {
+    // If this call is to `nextInt(int, int)` or `nextLong(long, long)`, the lower bound is the first argument.
+    m.hasName(["nextInt", "nextLong"]) and
+    m.getNumberOfParameters() = 2 and
+    result = this.getArgument(0)
   }
 
   override Expr getUpperBoundExpr() {
-    // If this call is to `nextInt(int)`, the upper bound is the first argument.
-    m.hasName("nextInt") and
-    m.getNumberOfParameters() = 1 and
-    result = this.getArgument(0)
+    // If this call is to `nextInt(int)` or `nextLong(long)`, the upper bound is the first argument.
+    // If it calls `nextInt(int, int)` or `nextLong(long, long)`, the upper bound is the first argument.
+    m.hasName(["nextInt", "nextLong"]) and
+    (
+      m.getNumberOfParameters() = 1 and
+      result = this.getArgument(0)
+      or
+      m.getNumberOfParameters() = 2 and
+      result = this.getArgument(1)
+    )
   }
 
   override predicate resultMayBeBounded() {
@@ -110,7 +129,7 @@ class StdlibRandomSource extends RandomDataSource {
     m.hasName(["next", "nextBoolean", "nextDouble", "nextFloat", "nextGaussian"])
     or
     m.hasName(["nextInt", "nextLong"]) and
-    m.getNumberOfParameters() = 1
+    m.getNumberOfParameters() = [1, 2]
   }
 
   override Expr getOutput() {
