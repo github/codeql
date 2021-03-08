@@ -7,6 +7,7 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.Concepts
+import semmle.python.dataflow.new.internal.Attributes
 private import ExceptionInfo
 
 /**
@@ -19,5 +20,12 @@ class StackTraceExposureConfiguration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     sink = any(HTTP::Server::HttpResponse response).getBody()
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    exists(AttrRead attr | attr.getAttributeName() = "__traceback__" |
+      nodeFrom = attr.getObject() and
+      nodeTo = attr
+    )
   }
 }
