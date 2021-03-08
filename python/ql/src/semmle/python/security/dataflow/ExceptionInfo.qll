@@ -5,6 +5,8 @@ import semmle.python.dataflow.new.DataFlow
 private import semmle.python.ApiGraphs
 
 /**
+ * INTERNAL: Do not use.
+ *
  * A data-flow node that carries information about a raised exception.
  * Such information should rarely be exposed directly to the user.
  */
@@ -25,7 +27,10 @@ private class TracebackFunctionCall extends ExceptionInfo, DataFlow::CallCfgNode
 
 /** A caught exception. */
 private class CaughtException extends ExceptionInfo {
-  CaughtException() { this.asExpr() = any(ExceptStmt s).getName() }
+  CaughtException() {
+    this.asVar().getDefinition().(EssaNodeDefinition).getDefiningNode().getNode() =
+      any(ExceptStmt s).getName()
+  }
 }
 
 /** A call to `sys.exc_info`. */

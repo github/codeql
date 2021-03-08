@@ -16,16 +16,16 @@ def server_bad():
         return traceback.format_exc()  #$ exceptionInfo
 
 # BAD
-@app.route('/bad/clearly')
-def server_bad():
+@app.route('/bad/direct')
+def server_bad_direct():
     try:
         do_computation()
     except Exception as e:  #$ exceptionInfo
         return e
 
 # BAD
-@app.route('/bad/also')
-def server_bad():
+@app.route('/bad/traceback')
+def server_bad_traceback():
     try:
         do_computation()
     except Exception as e:  #$ exceptionInfo
