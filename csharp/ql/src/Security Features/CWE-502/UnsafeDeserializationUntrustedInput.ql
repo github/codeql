@@ -26,32 +26,41 @@ class LocalSource extends Source {
 
 from
   TaintToObjectMethodTrackingConfig taintTracking, DataFlow::PathNode userInput,
-  DataFlow::PathNode deserializeCall, TaintToObjectTypeTrackingConfig userControlledTypeTracking,
-  DataFlow::PathNode userInput2, WeakTypeCreationToUsageTrackingConfig weakTypeDeserializerTracking,
-  DataFlow::PathNode deserializeCall2
+  DataFlow::PathNode deserializeCall
 where
   // all flows from user input to deserialization with weak and strong type serializers
-  taintTracking.hasFlowPath(userInput2, deserializeCall) and
+  taintTracking.hasFlowPath(userInput, deserializeCall) and
   // intersect with strong types, but user controlled or weak types deserialization usages
   (
-    userControlledTypeTracking.hasFlowPath(userInput, deserializeCall2) or
-    exists(DataFlow::PathNode constructorCall |
-      weakTypeDeserializerTracking.hasFlowPath(constructorCall, deserializeCall2)
+    exists(
+      DataFlow::PathNode weakTypeCreation, DataFlow::PathNode weakTypeUsage,
+      WeakTypeCreationToUsageTrackingConfig weakTypeDeserializerTracking
+    |
+      weakTypeDeserializerTracking.hasFlowPath(weakTypeCreation, weakTypeUsage) and
+      weakTypeUsage.getNode().asExpr().getParent() = deserializeCall.getNode().asExpr().getParent()
+    )
+    or
+    exists(
+      TaintToObjectTypeTrackingConfig userControlledTypeTracking,
+      DataFlow::PathNode taintedTypeUsage, DataFlow::PathNode userInput2
+    |
+      userControlledTypeTracking.hasFlowPath(userInput2, taintedTypeUsage) and
+      taintedTypeUsage.getNode().asExpr().getParent() =
+        deserializeCall.getNode().asExpr().getParent()
     )
   ) and
-  deserializeCall2.getNode().asExpr().getParent() = deserializeCall.getNode().asExpr().getParent() and
   // exclude deserialization flows with safe instances (i.e. JavaScriptSerializer without resolver)
   not exists(
-    DataFlow::PathNode constructor, DataFlow::PathNode usage2,
-    SafeConstructorTrackingConfig constructorTracking
+    SafeConstructorTrackingConfig safeConstructorTracking, DataFlow::PathNode safeCreation,
+    DataFlow::PathNode safeTypeUsage
   |
-    constructorTracking.hasFlowPath(constructor, usage2) and
-    usage2.getNode().asExpr().getParent() = deserializeCall.getNode().asExpr().getParent()
+    safeConstructorTracking.hasFlowPath(safeCreation, safeTypeUsage) and
+    safeTypeUsage.getNode().asExpr().getParent() = deserializeCall.getNode().asExpr().getParent()
   )
   or
   // no type check needed - straightforward taint -> sink
   exists(TaintToConstructorOrStaticMethodTrackingConfig taintTracking2 |
-    taintTracking2.hasFlowPath(userInput2, deserializeCall)
+    taintTracking2.hasFlowPath(userInput, deserializeCall)
   )
-select deserializeCall, userInput2, deserializeCall, "$@ flows to unsafe deserializer.", userInput2,
+select deserializeCall, userInput, deserializeCall, "$@ flows to unsafe deserializer.", userInput,
   "User-provided data"
