@@ -5,8 +5,8 @@ class Good
 {
     public static object Deserialize(TextBox textBox)
     {
-        JavaScriptSerializer sr = new JavaScriptSerializer();
+        JavaScriptSerializer sr = new JavaScriptSerializer(new SimpleTypeResolver());
         // GOOD
-        return sr.DeserializeObject(textBox.Text);
+        return sr.DeserializeObject("hardcoded");
     }
 }
