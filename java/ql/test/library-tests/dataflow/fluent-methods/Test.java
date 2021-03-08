@@ -60,13 +60,13 @@ public class Test {
   public static void testModel1() {
     Test t = new Test();
     t.indirectlyFluentNoop().modelledFluentMethod().fluentSet(source()).fluentNoop();
-    sink(t.get()); // $hasTaintFlow=y
+    sink(t.get()); // $hasTaintFlow
   }
 
   public static void testModel2() {
     Test t = new Test();
     Test.modelledIdentity(t).indirectlyFluentNoop().modelledFluentMethod().fluentSet(source()).fluentNoop();
-    sink(t.get()); // $hasTaintFlow=y
+    sink(t.get()); // $hasTaintFlow
   }
 
 }

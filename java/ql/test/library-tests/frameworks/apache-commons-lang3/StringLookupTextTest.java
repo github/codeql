@@ -12,7 +12,7 @@ class StringLookupTextTest {
       Map<String, String> map = new HashMap<String, String>();
       map.put("key", taint());
       StringLookup lookup = StringLookupFactory.INSTANCE.mapStringLookup(map);
-      sink(lookup.lookup("key")); // $hasTaintFlow=y
+      sink(lookup.lookup("key")); // $hasTaintFlow
     }
 
 }
