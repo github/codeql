@@ -13,16 +13,16 @@ import go
 import DataFlow::PathGraph
 
 /**
- * Holds if the provided src node flows into a conversion to a PassthroughType.
+ * Holds if the provided `untrusted` node flows into a conversion to a PassthroughType.
  * The `targetType` parameter gets populated with the name of the PassthroughType,
- * and `conversionSink` with the node where the conversion happens.
+ * and `conversionSink` gets populated with the node where the conversion happens.
  */
 predicate flowsFromUntrustedToConversion(
-  DataFlow::Node src, string targetType, DataFlow::PathNode conversionSink
+  DataFlow::PathNode untrusted, string targetType, DataFlow::PathNode conversionSink
 ) {
   exists(FlowConfFromUntrustedToPassthroughTypeConversion cfg, DataFlow::PathNode source |
     cfg.hasFlowPath(source, conversionSink) and
-    source.getNode() = src and
+    source.getNode() = untrusted.getNode() and
     targetType = cfg.getDstTypeName()
   )
 }
@@ -46,7 +46,7 @@ class FlowConfFromUntrustedToPassthroughTypeConversion extends TaintTracking::Co
 
   FlowConfFromUntrustedToPassthroughTypeConversion() {
     dstTypeName instanceof PassthroughTypeName and
-    this = "UnsafeConversion" + dstTypeName
+    this = "UntrustedToConversion" + dstTypeName
   }
 
   string getDstTypeName() { result = dstTypeName }
@@ -68,14 +68,14 @@ class FlowConfFromUntrustedToPassthroughTypeConversion extends TaintTracking::Co
  * Holds if the provided `conversion` node flows into the provided `execSink`.
  */
 predicate flowsFromConversionToExec(
-  DataFlow::Node conversion, string targetType, DataFlow::PathNode execSink
+  DataFlow::PathNode conversion, string targetType, DataFlow::PathNode execSink
 ) {
   exists(
     FlowConfPassthroughTypeConversionToTemplateExecutionCall cfg, DataFlow::PathNode source,
     DataFlow::PathNode execSinkLocal
   |
     cfg.hasFlowPath(source, execSinkLocal) and
-    source.getNode() = conversion and
+    source.getNode() = conversion.getNode() and
     execSink.getNode() = execSinkLocal.getNode() and
     targetType = cfg.getDstTypeName()
   )
@@ -139,7 +139,7 @@ class FlowConfFromUntrustedToTemplateExecutionCall extends TaintTracking::Config
 }
 
 /**
- * Holds if the provided `conversion` node flows into the provided `execSink`.
+ * Holds if the provided `untrusted` node flows into the provided `execSink`.
  */
 predicate flowsFromUntrustedToExec(DataFlow::PathNode untrusted, DataFlow::PathNode execSink) {
   exists(FlowConfFromUntrustedToTemplateExecutionCall cfg | cfg.hasFlowPath(untrusted, execSink))
@@ -154,9 +154,9 @@ where
   // C = template execution
   // Flows:
   // A -> B
-  flowsFromUntrustedToConversion(untrustedSource.getNode(), targetTypeName, conversionSink) and
+  flowsFromUntrustedToConversion(untrustedSource, targetTypeName, conversionSink) and
   // B -> C
-  flowsFromConversionToExec(conversionSink.getNode(), targetTypeName, tplExecCall) and
+  flowsFromConversionToExec(conversionSink, targetTypeName, tplExecCall) and
   // A -> C
   flowsFromUntrustedToExec(untrustedSource, tplExecCall)
 select tplExecCall.getNode(), untrustedSource, tplExecCall,
