@@ -1,7 +1,147 @@
 edges
+| BinaryFormatterUntrustedInputBad.cs:10:18:10:38 | object creation of type BinaryFormatter : BinaryFormatter | BinaryFormatterUntrustedInputBad.cs:12:16:12:17 | access to local variable ds |
+| BinaryFormatterUntrustedInputBad.cs:12:48:12:83 | call to method GetBytes : Byte[] | BinaryFormatterUntrustedInputBad.cs:12:31:12:84 | object creation of type MemoryStream |
+| BinaryFormatterUntrustedInputBad.cs:12:71:12:77 | access to parameter textBox : TextBox | BinaryFormatterUntrustedInputBad.cs:12:71:12:82 | access to property Text : String |
+| BinaryFormatterUntrustedInputBad.cs:12:71:12:82 | access to property Text : String | BinaryFormatterUntrustedInputBad.cs:12:48:12:83 | call to method GetBytes : Byte[] |
+| BinaryFormatterUntrustedInputGood.cs:9:18:9:38 | object creation of type BinaryFormatter : BinaryFormatter | BinaryFormatterUntrustedInputGood.cs:11:16:11:17 | access to local variable ds |
+| DataContractJsonSerializerUntrustedInputBad.cs:11:62:11:65 | access to parameter type : TextBox | DataContractJsonSerializerUntrustedInputBad.cs:11:62:11:70 | access to property Text : String |
+| DataContractJsonSerializerUntrustedInputBad.cs:11:62:11:70 | access to property Text : String | DataContractJsonSerializerUntrustedInputBad.cs:13:16:13:17 | access to local variable ds |
+| DataContractJsonSerializerUntrustedInputBad.cs:13:47:13:79 | call to method GetBytes : Byte[] | DataContractJsonSerializerUntrustedInputBad.cs:13:30:13:80 | object creation of type MemoryStream |
+| DataContractJsonSerializerUntrustedInputBad.cs:13:70:13:73 | access to parameter data : TextBox | DataContractJsonSerializerUntrustedInputBad.cs:13:70:13:78 | access to property Text : String |
+| DataContractJsonSerializerUntrustedInputBad.cs:13:70:13:78 | access to property Text : String | DataContractJsonSerializerUntrustedInputBad.cs:13:47:13:79 | call to method GetBytes : Byte[] |
+| DataContractJsonSerializerUntrustedInputGood.cs:12:18:12:87 | object creation of type DataContractJsonSerializer : DataContractJsonSerializer | DataContractJsonSerializerUntrustedInputGood.cs:13:16:13:17 | access to local variable ds |
+| DataContractJsonSerializerUntrustedInputGood.cs:13:47:13:79 | call to method GetBytes : Byte[] | DataContractJsonSerializerUntrustedInputGood.cs:13:30:13:80 | object creation of type MemoryStream |
+| DataContractJsonSerializerUntrustedInputGood.cs:13:70:13:73 | access to parameter data : TextBox | DataContractJsonSerializerUntrustedInputGood.cs:13:70:13:78 | access to property Text : String |
+| DataContractJsonSerializerUntrustedInputGood.cs:13:70:13:78 | access to property Text : String | DataContractJsonSerializerUntrustedInputGood.cs:13:47:13:79 | call to method GetBytes : Byte[] |
+| DataContractJsonSerializerUntrustedInputGood.cs:18:62:18:65 | access to parameter type : TextBox | DataContractJsonSerializerUntrustedInputGood.cs:18:62:18:70 | access to property Text : String |
+| DataContractJsonSerializerUntrustedInputGood.cs:18:62:18:70 | access to property Text : String | DataContractJsonSerializerUntrustedInputGood.cs:20:16:20:17 | access to local variable ds |
+| DataContractSerializerUntrustedInputBad.cs:11:58:11:61 | access to parameter type : TextBox | DataContractSerializerUntrustedInputBad.cs:11:58:11:66 | access to property Text : String |
+| DataContractSerializerUntrustedInputBad.cs:11:58:11:66 | access to property Text : String | DataContractSerializerUntrustedInputBad.cs:13:16:13:17 | access to local variable ds |
+| DataContractSerializerUntrustedInputBad.cs:13:47:13:79 | call to method GetBytes : Byte[] | DataContractSerializerUntrustedInputBad.cs:13:30:13:80 | object creation of type MemoryStream |
+| DataContractSerializerUntrustedInputBad.cs:13:70:13:73 | access to parameter data : TextBox | DataContractSerializerUntrustedInputBad.cs:13:70:13:78 | access to property Text : String |
+| DataContractSerializerUntrustedInputBad.cs:13:70:13:78 | access to property Text : String | DataContractSerializerUntrustedInputBad.cs:13:47:13:79 | call to method GetBytes : Byte[] |
+| DataContractSerializerUntrustedInputGood.cs:12:18:12:79 | object creation of type DataContractSerializer : DataContractSerializer | DataContractSerializerUntrustedInputGood.cs:13:16:13:17 | access to local variable ds |
+| DataContractSerializerUntrustedInputGood.cs:13:47:13:79 | call to method GetBytes : Byte[] | DataContractSerializerUntrustedInputGood.cs:13:30:13:80 | object creation of type MemoryStream |
+| DataContractSerializerUntrustedInputGood.cs:13:70:13:73 | access to parameter data : TextBox | DataContractSerializerUntrustedInputGood.cs:13:70:13:78 | access to property Text : String |
+| DataContractSerializerUntrustedInputGood.cs:13:70:13:78 | access to property Text : String | DataContractSerializerUntrustedInputGood.cs:13:47:13:79 | call to method GetBytes : Byte[] |
+| DataContractSerializerUntrustedInputGood.cs:18:58:18:61 | access to parameter type : TextBox | DataContractSerializerUntrustedInputGood.cs:18:58:18:66 | access to property Text : String |
+| DataContractSerializerUntrustedInputGood.cs:18:58:18:66 | access to property Text : String | DataContractSerializerUntrustedInputGood.cs:20:16:20:17 | access to local variable ds |
+| ResourceReaderUntrustedInputBad.cs:11:54:11:86 | call to method GetBytes : Byte[] | ResourceReaderUntrustedInputBad.cs:11:37:11:87 | object creation of type MemoryStream |
+| ResourceReaderUntrustedInputBad.cs:11:77:11:80 | access to parameter data : TextBox | ResourceReaderUntrustedInputBad.cs:11:77:11:85 | access to property Text : String |
+| ResourceReaderUntrustedInputBad.cs:11:77:11:85 | access to property Text : String | ResourceReaderUntrustedInputBad.cs:11:54:11:86 | call to method GetBytes : Byte[] |
+| UnsafeDeserializationUntrustedInputBad.cs:8:35:8:84 | object creation of type JavaScriptSerializer : JavaScriptSerializer | UnsafeDeserializationUntrustedInputBad.cs:10:16:10:17 | access to local variable sr |
 | UnsafeDeserializationUntrustedInputBad.cs:10:37:10:43 | access to parameter textBox : TextBox | UnsafeDeserializationUntrustedInputBad.cs:10:37:10:48 | access to property Text |
+| UnsafeDeserializationUntrustedInputGood.cs:8:35:8:84 | object creation of type JavaScriptSerializer : JavaScriptSerializer | UnsafeDeserializationUntrustedInputGood.cs:10:16:10:17 | access to local variable sr |
+| XmlObjectSerializerUntrustedInputBad.cs:11:74:11:77 | access to parameter type : TextBox | XmlObjectSerializerUntrustedInputBad.cs:11:74:11:82 | access to property Text : String |
+| XmlObjectSerializerUntrustedInputBad.cs:11:74:11:82 | access to property Text : String | XmlObjectSerializerUntrustedInputBad.cs:13:16:13:17 | access to local variable ds |
+| XmlObjectSerializerUntrustedInputBad.cs:13:47:13:79 | call to method GetBytes : Byte[] | XmlObjectSerializerUntrustedInputBad.cs:13:30:13:80 | object creation of type MemoryStream |
+| XmlObjectSerializerUntrustedInputBad.cs:13:70:13:73 | access to parameter data : TextBox | XmlObjectSerializerUntrustedInputBad.cs:13:70:13:78 | access to property Text : String |
+| XmlObjectSerializerUntrustedInputBad.cs:13:70:13:78 | access to property Text : String | XmlObjectSerializerUntrustedInputBad.cs:13:47:13:79 | call to method GetBytes : Byte[] |
+| XmlObjectSerializerUntrustedInputGood.cs:12:34:12:92 | object creation of type DataContractSerializer : DataContractSerializer | XmlObjectSerializerUntrustedInputGood.cs:13:16:13:17 | access to local variable ds |
+| XmlObjectSerializerUntrustedInputGood.cs:13:47:13:79 | call to method GetBytes : Byte[] | XmlObjectSerializerUntrustedInputGood.cs:13:30:13:80 | object creation of type MemoryStream |
+| XmlObjectSerializerUntrustedInputGood.cs:13:70:13:73 | access to parameter data : TextBox | XmlObjectSerializerUntrustedInputGood.cs:13:70:13:78 | access to property Text : String |
+| XmlObjectSerializerUntrustedInputGood.cs:13:70:13:78 | access to property Text : String | XmlObjectSerializerUntrustedInputGood.cs:13:47:13:79 | call to method GetBytes : Byte[] |
+| XmlObjectSerializerUntrustedInputGood.cs:18:74:18:77 | access to parameter type : TextBox | XmlObjectSerializerUntrustedInputGood.cs:18:74:18:82 | access to property Text : String |
+| XmlObjectSerializerUntrustedInputGood.cs:18:74:18:82 | access to property Text : String | XmlObjectSerializerUntrustedInputGood.cs:20:16:20:17 | access to local variable ds |
+| XmlSerializerUntrustedInputBad.cs:11:49:11:52 | access to parameter type : TextBox | XmlSerializerUntrustedInputBad.cs:11:49:11:57 | access to property Text : String |
+| XmlSerializerUntrustedInputBad.cs:11:49:11:57 | access to property Text : String | XmlSerializerUntrustedInputBad.cs:13:16:13:17 | access to local variable ds |
+| XmlSerializerUntrustedInputBad.cs:13:48:13:80 | call to method GetBytes : Byte[] | XmlSerializerUntrustedInputBad.cs:13:31:13:81 | object creation of type MemoryStream |
+| XmlSerializerUntrustedInputBad.cs:13:71:13:74 | access to parameter data : TextBox | XmlSerializerUntrustedInputBad.cs:13:71:13:79 | access to property Text : String |
+| XmlSerializerUntrustedInputBad.cs:13:71:13:79 | access to property Text : String | XmlSerializerUntrustedInputBad.cs:13:48:13:80 | call to method GetBytes : Byte[] |
+| XmlSerializerUntrustedInputGood.cs:12:18:12:61 | object creation of type XmlSerializer : XmlSerializer | XmlSerializerUntrustedInputGood.cs:13:16:13:17 | access to local variable ds |
+| XmlSerializerUntrustedInputGood.cs:13:48:13:80 | call to method GetBytes : Byte[] | XmlSerializerUntrustedInputGood.cs:13:31:13:81 | object creation of type MemoryStream |
+| XmlSerializerUntrustedInputGood.cs:13:71:13:74 | access to parameter data : TextBox | XmlSerializerUntrustedInputGood.cs:13:71:13:79 | access to property Text : String |
+| XmlSerializerUntrustedInputGood.cs:13:71:13:79 | access to property Text : String | XmlSerializerUntrustedInputGood.cs:13:48:13:80 | call to method GetBytes : Byte[] |
+| XmlSerializerUntrustedInputGood.cs:18:49:18:52 | access to parameter type : TextBox | XmlSerializerUntrustedInputGood.cs:18:49:18:57 | access to property Text : String |
+| XmlSerializerUntrustedInputGood.cs:18:49:18:57 | access to property Text : String | XmlSerializerUntrustedInputGood.cs:20:16:20:17 | access to local variable ds |
 nodes
+| BinaryFormatterUntrustedInputBad.cs:10:18:10:38 | object creation of type BinaryFormatter : BinaryFormatter | semmle.label | object creation of type BinaryFormatter : BinaryFormatter |
+| BinaryFormatterUntrustedInputBad.cs:12:16:12:17 | access to local variable ds | semmle.label | access to local variable ds |
+| BinaryFormatterUntrustedInputBad.cs:12:31:12:84 | object creation of type MemoryStream | semmle.label | object creation of type MemoryStream |
+| BinaryFormatterUntrustedInputBad.cs:12:48:12:83 | call to method GetBytes : Byte[] | semmle.label | call to method GetBytes : Byte[] |
+| BinaryFormatterUntrustedInputBad.cs:12:71:12:77 | access to parameter textBox : TextBox | semmle.label | access to parameter textBox : TextBox |
+| BinaryFormatterUntrustedInputBad.cs:12:71:12:82 | access to property Text : String | semmle.label | access to property Text : String |
+| BinaryFormatterUntrustedInputGood.cs:9:18:9:38 | object creation of type BinaryFormatter : BinaryFormatter | semmle.label | object creation of type BinaryFormatter : BinaryFormatter |
+| BinaryFormatterUntrustedInputGood.cs:11:16:11:17 | access to local variable ds | semmle.label | access to local variable ds |
+| DataContractJsonSerializerUntrustedInputBad.cs:11:62:11:65 | access to parameter type : TextBox | semmle.label | access to parameter type : TextBox |
+| DataContractJsonSerializerUntrustedInputBad.cs:11:62:11:70 | access to property Text : String | semmle.label | access to property Text : String |
+| DataContractJsonSerializerUntrustedInputBad.cs:13:16:13:17 | access to local variable ds | semmle.label | access to local variable ds |
+| DataContractJsonSerializerUntrustedInputBad.cs:13:30:13:80 | object creation of type MemoryStream | semmle.label | object creation of type MemoryStream |
+| DataContractJsonSerializerUntrustedInputBad.cs:13:47:13:79 | call to method GetBytes : Byte[] | semmle.label | call to method GetBytes : Byte[] |
+| DataContractJsonSerializerUntrustedInputBad.cs:13:70:13:73 | access to parameter data : TextBox | semmle.label | access to parameter data : TextBox |
+| DataContractJsonSerializerUntrustedInputBad.cs:13:70:13:78 | access to property Text : String | semmle.label | access to property Text : String |
+| DataContractJsonSerializerUntrustedInputGood.cs:12:18:12:87 | object creation of type DataContractJsonSerializer : DataContractJsonSerializer | semmle.label | object creation of type DataContractJsonSerializer : DataContractJsonSerializer |
+| DataContractJsonSerializerUntrustedInputGood.cs:13:16:13:17 | access to local variable ds | semmle.label | access to local variable ds |
+| DataContractJsonSerializerUntrustedInputGood.cs:13:30:13:80 | object creation of type MemoryStream | semmle.label | object creation of type MemoryStream |
+| DataContractJsonSerializerUntrustedInputGood.cs:13:47:13:79 | call to method GetBytes : Byte[] | semmle.label | call to method GetBytes : Byte[] |
+| DataContractJsonSerializerUntrustedInputGood.cs:13:70:13:73 | access to parameter data : TextBox | semmle.label | access to parameter data : TextBox |
+| DataContractJsonSerializerUntrustedInputGood.cs:13:70:13:78 | access to property Text : String | semmle.label | access to property Text : String |
+| DataContractJsonSerializerUntrustedInputGood.cs:18:62:18:65 | access to parameter type : TextBox | semmle.label | access to parameter type : TextBox |
+| DataContractJsonSerializerUntrustedInputGood.cs:18:62:18:70 | access to property Text : String | semmle.label | access to property Text : String |
+| DataContractJsonSerializerUntrustedInputGood.cs:20:16:20:17 | access to local variable ds | semmle.label | access to local variable ds |
+| DataContractSerializerUntrustedInputBad.cs:11:58:11:61 | access to parameter type : TextBox | semmle.label | access to parameter type : TextBox |
+| DataContractSerializerUntrustedInputBad.cs:11:58:11:66 | access to property Text : String | semmle.label | access to property Text : String |
+| DataContractSerializerUntrustedInputBad.cs:13:16:13:17 | access to local variable ds | semmle.label | access to local variable ds |
+| DataContractSerializerUntrustedInputBad.cs:13:30:13:80 | object creation of type MemoryStream | semmle.label | object creation of type MemoryStream |
+| DataContractSerializerUntrustedInputBad.cs:13:47:13:79 | call to method GetBytes : Byte[] | semmle.label | call to method GetBytes : Byte[] |
+| DataContractSerializerUntrustedInputBad.cs:13:70:13:73 | access to parameter data : TextBox | semmle.label | access to parameter data : TextBox |
+| DataContractSerializerUntrustedInputBad.cs:13:70:13:78 | access to property Text : String | semmle.label | access to property Text : String |
+| DataContractSerializerUntrustedInputGood.cs:12:18:12:79 | object creation of type DataContractSerializer : DataContractSerializer | semmle.label | object creation of type DataContractSerializer : DataContractSerializer |
+| DataContractSerializerUntrustedInputGood.cs:13:16:13:17 | access to local variable ds | semmle.label | access to local variable ds |
+| DataContractSerializerUntrustedInputGood.cs:13:30:13:80 | object creation of type MemoryStream | semmle.label | object creation of type MemoryStream |
+| DataContractSerializerUntrustedInputGood.cs:13:47:13:79 | call to method GetBytes : Byte[] | semmle.label | call to method GetBytes : Byte[] |
+| DataContractSerializerUntrustedInputGood.cs:13:70:13:73 | access to parameter data : TextBox | semmle.label | access to parameter data : TextBox |
+| DataContractSerializerUntrustedInputGood.cs:13:70:13:78 | access to property Text : String | semmle.label | access to property Text : String |
+| DataContractSerializerUntrustedInputGood.cs:18:58:18:61 | access to parameter type : TextBox | semmle.label | access to parameter type : TextBox |
+| DataContractSerializerUntrustedInputGood.cs:18:58:18:66 | access to property Text : String | semmle.label | access to property Text : String |
+| DataContractSerializerUntrustedInputGood.cs:20:16:20:17 | access to local variable ds | semmle.label | access to local variable ds |
+| ResourceReaderUntrustedInputBad.cs:11:37:11:87 | object creation of type MemoryStream | semmle.label | object creation of type MemoryStream |
+| ResourceReaderUntrustedInputBad.cs:11:54:11:86 | call to method GetBytes : Byte[] | semmle.label | call to method GetBytes : Byte[] |
+| ResourceReaderUntrustedInputBad.cs:11:77:11:80 | access to parameter data : TextBox | semmle.label | access to parameter data : TextBox |
+| ResourceReaderUntrustedInputBad.cs:11:77:11:85 | access to property Text : String | semmle.label | access to property Text : String |
+| UnsafeDeserializationUntrustedInputBad.cs:8:35:8:84 | object creation of type JavaScriptSerializer : JavaScriptSerializer | semmle.label | object creation of type JavaScriptSerializer : JavaScriptSerializer |
+| UnsafeDeserializationUntrustedInputBad.cs:10:16:10:17 | access to local variable sr | semmle.label | access to local variable sr |
 | UnsafeDeserializationUntrustedInputBad.cs:10:37:10:43 | access to parameter textBox : TextBox | semmle.label | access to parameter textBox : TextBox |
 | UnsafeDeserializationUntrustedInputBad.cs:10:37:10:48 | access to property Text | semmle.label | access to property Text |
+| UnsafeDeserializationUntrustedInputGood.cs:8:35:8:84 | object creation of type JavaScriptSerializer : JavaScriptSerializer | semmle.label | object creation of type JavaScriptSerializer : JavaScriptSerializer |
+| UnsafeDeserializationUntrustedInputGood.cs:10:16:10:17 | access to local variable sr | semmle.label | access to local variable sr |
+| XmlObjectSerializerUntrustedInputBad.cs:11:74:11:77 | access to parameter type : TextBox | semmle.label | access to parameter type : TextBox |
+| XmlObjectSerializerUntrustedInputBad.cs:11:74:11:82 | access to property Text : String | semmle.label | access to property Text : String |
+| XmlObjectSerializerUntrustedInputBad.cs:13:16:13:17 | access to local variable ds | semmle.label | access to local variable ds |
+| XmlObjectSerializerUntrustedInputBad.cs:13:30:13:80 | object creation of type MemoryStream | semmle.label | object creation of type MemoryStream |
+| XmlObjectSerializerUntrustedInputBad.cs:13:47:13:79 | call to method GetBytes : Byte[] | semmle.label | call to method GetBytes : Byte[] |
+| XmlObjectSerializerUntrustedInputBad.cs:13:70:13:73 | access to parameter data : TextBox | semmle.label | access to parameter data : TextBox |
+| XmlObjectSerializerUntrustedInputBad.cs:13:70:13:78 | access to property Text : String | semmle.label | access to property Text : String |
+| XmlObjectSerializerUntrustedInputGood.cs:12:34:12:92 | object creation of type DataContractSerializer : DataContractSerializer | semmle.label | object creation of type DataContractSerializer : DataContractSerializer |
+| XmlObjectSerializerUntrustedInputGood.cs:13:16:13:17 | access to local variable ds | semmle.label | access to local variable ds |
+| XmlObjectSerializerUntrustedInputGood.cs:13:30:13:80 | object creation of type MemoryStream | semmle.label | object creation of type MemoryStream |
+| XmlObjectSerializerUntrustedInputGood.cs:13:47:13:79 | call to method GetBytes : Byte[] | semmle.label | call to method GetBytes : Byte[] |
+| XmlObjectSerializerUntrustedInputGood.cs:13:70:13:73 | access to parameter data : TextBox | semmle.label | access to parameter data : TextBox |
+| XmlObjectSerializerUntrustedInputGood.cs:13:70:13:78 | access to property Text : String | semmle.label | access to property Text : String |
+| XmlObjectSerializerUntrustedInputGood.cs:18:74:18:77 | access to parameter type : TextBox | semmle.label | access to parameter type : TextBox |
+| XmlObjectSerializerUntrustedInputGood.cs:18:74:18:82 | access to property Text : String | semmle.label | access to property Text : String |
+| XmlObjectSerializerUntrustedInputGood.cs:20:16:20:17 | access to local variable ds | semmle.label | access to local variable ds |
+| XmlSerializerUntrustedInputBad.cs:11:49:11:52 | access to parameter type : TextBox | semmle.label | access to parameter type : TextBox |
+| XmlSerializerUntrustedInputBad.cs:11:49:11:57 | access to property Text : String | semmle.label | access to property Text : String |
+| XmlSerializerUntrustedInputBad.cs:13:16:13:17 | access to local variable ds | semmle.label | access to local variable ds |
+| XmlSerializerUntrustedInputBad.cs:13:31:13:81 | object creation of type MemoryStream | semmle.label | object creation of type MemoryStream |
+| XmlSerializerUntrustedInputBad.cs:13:48:13:80 | call to method GetBytes : Byte[] | semmle.label | call to method GetBytes : Byte[] |
+| XmlSerializerUntrustedInputBad.cs:13:71:13:74 | access to parameter data : TextBox | semmle.label | access to parameter data : TextBox |
+| XmlSerializerUntrustedInputBad.cs:13:71:13:79 | access to property Text : String | semmle.label | access to property Text : String |
+| XmlSerializerUntrustedInputGood.cs:12:18:12:61 | object creation of type XmlSerializer : XmlSerializer | semmle.label | object creation of type XmlSerializer : XmlSerializer |
+| XmlSerializerUntrustedInputGood.cs:13:16:13:17 | access to local variable ds | semmle.label | access to local variable ds |
+| XmlSerializerUntrustedInputGood.cs:13:31:13:81 | object creation of type MemoryStream | semmle.label | object creation of type MemoryStream |
+| XmlSerializerUntrustedInputGood.cs:13:48:13:80 | call to method GetBytes : Byte[] | semmle.label | call to method GetBytes : Byte[] |
+| XmlSerializerUntrustedInputGood.cs:13:71:13:74 | access to parameter data : TextBox | semmle.label | access to parameter data : TextBox |
+| XmlSerializerUntrustedInputGood.cs:13:71:13:79 | access to property Text : String | semmle.label | access to property Text : String |
+| XmlSerializerUntrustedInputGood.cs:18:49:18:52 | access to parameter type : TextBox | semmle.label | access to parameter type : TextBox |
+| XmlSerializerUntrustedInputGood.cs:18:49:18:57 | access to property Text : String | semmle.label | access to property Text : String |
+| XmlSerializerUntrustedInputGood.cs:20:16:20:17 | access to local variable ds | semmle.label | access to local variable ds |
 #select
-| UnsafeDeserializationUntrustedInputBad.cs:10:37:10:48 | access to property Text | UnsafeDeserializationUntrustedInputBad.cs:10:37:10:43 | access to parameter textBox : TextBox | UnsafeDeserializationUntrustedInputBad.cs:10:37:10:48 | access to property Text | $@ flows to unsafe deserializer. | UnsafeDeserializationUntrustedInputBad.cs:10:37:10:43 | access to parameter textBox | User-provided data |
+| BinaryFormatterUntrustedInputBad.cs:12:31:12:84 | object creation of type MemoryStream | BinaryFormatterUntrustedInputBad.cs:12:71:12:77 | access to parameter textBox : TextBox | BinaryFormatterUntrustedInputBad.cs:12:31:12:84 | object creation of type MemoryStream | $@ flows to unsafe deserializer. | BinaryFormatterUntrustedInputBad.cs:12:71:12:77 | access to parameter textBox : TextBox | User-provided data |
+| DataContractJsonSerializerUntrustedInputBad.cs:13:30:13:80 | object creation of type MemoryStream | DataContractJsonSerializerUntrustedInputBad.cs:13:70:13:73 | access to parameter data : TextBox | DataContractJsonSerializerUntrustedInputBad.cs:13:30:13:80 | object creation of type MemoryStream | $@ flows to unsafe deserializer. | DataContractJsonSerializerUntrustedInputBad.cs:13:70:13:73 | access to parameter data : TextBox | User-provided data |
+| DataContractSerializerUntrustedInputBad.cs:13:30:13:80 | object creation of type MemoryStream | DataContractSerializerUntrustedInputBad.cs:13:70:13:73 | access to parameter data : TextBox | DataContractSerializerUntrustedInputBad.cs:13:30:13:80 | object creation of type MemoryStream | $@ flows to unsafe deserializer. | DataContractSerializerUntrustedInputBad.cs:13:70:13:73 | access to parameter data : TextBox | User-provided data |
+| ResourceReaderUntrustedInputBad.cs:11:37:11:87 | object creation of type MemoryStream | ResourceReaderUntrustedInputBad.cs:11:77:11:80 | access to parameter data : TextBox | ResourceReaderUntrustedInputBad.cs:11:37:11:87 | object creation of type MemoryStream | $@ flows to unsafe deserializer. | ResourceReaderUntrustedInputBad.cs:11:77:11:80 | access to parameter data : TextBox | User-provided data |
+| UnsafeDeserializationUntrustedInputBad.cs:10:37:10:48 | access to property Text | UnsafeDeserializationUntrustedInputBad.cs:10:37:10:43 | access to parameter textBox : TextBox | UnsafeDeserializationUntrustedInputBad.cs:10:37:10:48 | access to property Text | $@ flows to unsafe deserializer. | UnsafeDeserializationUntrustedInputBad.cs:10:37:10:43 | access to parameter textBox : TextBox | User-provided data |
+| XmlObjectSerializerUntrustedInputBad.cs:13:30:13:80 | object creation of type MemoryStream | XmlObjectSerializerUntrustedInputBad.cs:13:70:13:73 | access to parameter data : TextBox | XmlObjectSerializerUntrustedInputBad.cs:13:30:13:80 | object creation of type MemoryStream | $@ flows to unsafe deserializer. | XmlObjectSerializerUntrustedInputBad.cs:13:70:13:73 | access to parameter data : TextBox | User-provided data |
+| XmlSerializerUntrustedInputBad.cs:13:31:13:81 | object creation of type MemoryStream | XmlSerializerUntrustedInputBad.cs:13:71:13:74 | access to parameter data : TextBox | XmlSerializerUntrustedInputBad.cs:13:31:13:81 | object creation of type MemoryStream | $@ flows to unsafe deserializer. | XmlSerializerUntrustedInputBad.cs:13:71:13:74 | access to parameter data : TextBox | User-provided data |
