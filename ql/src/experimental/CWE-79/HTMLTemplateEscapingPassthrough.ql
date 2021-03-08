@@ -146,19 +146,19 @@ predicate flowsFromUntrustedToExec(DataFlow::PathNode untrusted, DataFlow::PathN
 }
 
 from
-  DataFlow::PathNode untrustedSource, DataFlow::PathNode tplExecCall, string targetTypeName,
-  DataFlow::PathNode conversionSink
+  DataFlow::PathNode untrustedSource, DataFlow::PathNode templateExecCall, string targetTypeName,
+  DataFlow::PathNode conversion
 where
-  // A = remoteflowsource
+  // A = untrusted remote flow source
   // B = conversion to PassthroughType
-  // C = template execution
+  // C = template execution call
   // Flows:
   // A -> B
-  flowsFromUntrustedToConversion(untrustedSource, targetTypeName, conversionSink) and
+  flowsFromUntrustedToConversion(untrustedSource, targetTypeName, conversion) and
   // B -> C
-  flowsFromConversionToExec(conversionSink, targetTypeName, tplExecCall) and
+  flowsFromConversionToExec(conversion, targetTypeName, templateExecCall) and
   // A -> C
-  flowsFromUntrustedToExec(untrustedSource, tplExecCall)
-select tplExecCall.getNode(), untrustedSource, tplExecCall,
+  flowsFromUntrustedToExec(untrustedSource, templateExecCall)
+select templateExecCall.getNode(), untrustedSource, templateExecCall,
   "Data from an $@ will not be auto-escaped because it was $@ to template." + targetTypeName,
-  untrustedSource.getNode(), "untrusted source", conversionSink.getNode(), "converted"
+  untrustedSource.getNode(), "untrusted source", conversion.getNode(), "converted"
