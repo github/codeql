@@ -80,3 +80,19 @@ private class GuavaIoCsv extends SummaryModelCsv {
       ]
   }
 }
+
+private class GuavaIoSinkCsv extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        //"package;type;overrides;name;signature;ext;inputspec;kind",
+        "com.google.common.io;Resources;false;asByteSource;(URL);;Argument[0];url-open-stream",
+        "com.google.common.io;Resources;false;asCharSource;(URL,Charset);;Argument[0];url-open-stream",
+        "com.google.common.io;Resources;false;copy;(URL,OutputStream);;Argument[0];url-open-stream",
+        "com.google.common.io;Resources;false;asByteSource;(URL);;Argument[0];url-open-stream",
+        "com.google.common.io;Resources;false;readLines;;;Argument[0];url-open-stream",
+        "com.google.common.io;Resources;false;toByteArray;(URL);;Argument[0];url-open-stream",
+        "com.google.common.io;Resources;false;toString;(URL,Charset);;Argument[0];url-open-stream"
+      ]
+  }
+}
