@@ -91,6 +91,34 @@ class WebFilterClass extends WebXMLElement {
 }
 
 /**
+ * A `<servlet-mapping>` element in a `web.xml` file.
+ */
+class WebServletMapping extends WebXMLElement {
+  WebServletMapping() { getName() = "servlet-mapping" }
+}
+
+/**
+ * A `<servlet-name>` element in a `web.xml` file, nested under the `<servlet-mapping>` or `<servlet>` element.
+ */
+class WebServletName extends WebXMLElement {
+  WebServletName() {
+    getName() = "servlet-name" and
+    getParent() instanceof WebServletMapping or
+    getParent() instanceof WebServlet
+  }
+}
+
+/**
+ * A `<url-pattern>` element in a `web.xml` file, nested under a `<servlet-mapping>` element.
+ */
+class WebServletMappingUrlPattern extends WebXMLElement {
+  WebServletMappingUrlPattern() {
+    getName() = "url-pattern" and
+    getParent() instanceof WebServletMapping
+  }
+}
+
+/**
  * A `<servlet>` element in a `web.xml` file.
  */
 class WebServlet extends WebXMLElement {

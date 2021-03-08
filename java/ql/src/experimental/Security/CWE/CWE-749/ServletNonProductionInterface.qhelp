@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>During application development, when you write the test interface to the official environment directory and do not delete the test interface 
+before the application goes online, you can access the test interface and are vulnerable to attacks.
+</p>
+</overview>
+
+<recommendation>
+<p>Delete the test interface from the official environment directory.</p>
+</recommendation>
+
+<example>
+<p>The following example shows the test interface in <code>servlet</code>.</p>
+
+<sample src="TestServlet.java" />
+<sample src="web.xml" />
+</example>
+
+<references>
+<li>
+CAPEC:
+<a href="https://capec.mitre.org/data/definitions/121.html">CAPEC-121: Exploit Non-Production Interfaces</a>.
+</li>
+</references>
+</qhelp>
