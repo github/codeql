@@ -46,8 +46,34 @@ fn create_ast_node_class<'a>() -> ql::Class<'a> {
         create_none_predicate("getLocation", false, Some(ql::Type::Normal("Location")));
     let get_a_field_or_child =
         create_none_predicate("getAFieldOrChild", false, Some(ql::Type::Normal("AstNode")));
-    let get_parent = create_none_predicate("getParent", false, Some(ql::Type::Normal("AstNode")));
-    let get_parent_index = create_none_predicate("getParentIndex", false, Some(ql::Type::Int));
+    let get_parent = ql::Predicate {
+        name: "getParent",
+        overridden: false,
+        return_type: Some(ql::Type::Normal("AstNode")),
+        formal_parameters: vec![],
+        body: ql::Expression::Pred(
+            "ast_node_parent",
+            vec![
+                ql::Expression::Var("this"),
+                ql::Expression::Var("result"),
+                ql::Expression::Var("_"),
+            ],
+        ),
+    };
+    let get_parent_index = ql::Predicate {
+        name: "getParentIndex",
+        overridden: false,
+        return_type: Some(ql::Type::Int),
+        formal_parameters: vec![],
+        body: ql::Expression::Pred(
+            "ast_node_parent",
+            vec![
+                ql::Expression::Var("this"),
+                ql::Expression::Var("_"),
+                ql::Expression::Var("result"),
+            ],
+        ),
+    };
     let get_a_primary_ql_class = ql::Predicate {
         name: "getAPrimaryQlClass",
         overridden: false,
@@ -76,34 +102,6 @@ fn create_ast_node_class<'a>() -> ql::Class<'a> {
 
 fn create_token_class<'a>() -> ql::Class<'a> {
     let tokeninfo_arity = 6;
-    let get_parent = ql::Predicate {
-        name: "getParent",
-        overridden: true,
-        return_type: Some(ql::Type::Normal("AstNode")),
-        formal_parameters: vec![],
-        body: ql::Expression::Pred(
-            "ast_node_parent",
-            vec![
-                ql::Expression::Var("this"),
-                ql::Expression::Var("result"),
-                ql::Expression::Var("_"),
-            ],
-        ),
-    };
-    let get_parent_index = ql::Predicate {
-        name: "getParentIndex",
-        overridden: true,
-        return_type: Some(ql::Type::Int),
-        formal_parameters: vec![],
-        body: ql::Expression::Pred(
-            "ast_node_parent",
-            vec![
-                ql::Expression::Var("this"),
-                ql::Expression::Var("_"),
-                ql::Expression::Var("result"),
-            ],
-        ),
-    };
     let get_value = ql::Predicate {
         name: "getValue",
         overridden: false,
@@ -136,8 +134,6 @@ fn create_token_class<'a>() -> ql::Class<'a> {
             .collect(),
         characteristic_predicate: None,
         predicates: vec![
-            get_parent,
-            get_parent_index,
             get_value,
             get_location,
             to_string,
@@ -545,36 +541,6 @@ pub fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<ql::TopLevel
                             get_child_exprs.push(get_child_expr)
                         }
                     }
-
-                    main_class.predicates.push(ql::Predicate {
-                        name: "getParent",
-                        overridden: true,
-                        return_type: Some(ql::Type::Normal("AstNode")),
-                        formal_parameters: vec![],
-                        body: ql::Expression::Pred(
-                            "ast_node_parent",
-                            vec![
-                                ql::Expression::Var("this"),
-                                ql::Expression::Var("result"),
-                                ql::Expression::Var("_"),
-                            ],
-                        ),
-                    });
-
-                    main_class.predicates.push(ql::Predicate {
-                        name: "getParentIndex",
-                        overridden: true,
-                        return_type: Some(ql::Type::Int),
-                        formal_parameters: vec![],
-                        body: ql::Expression::Pred(
-                            "ast_node_parent",
-                            vec![
-                                ql::Expression::Var("this"),
-                                ql::Expression::Var("_"),
-                                ql::Expression::Var("result"),
-                            ],
-                        ),
-                    });
 
                     main_class.predicates.push(ql::Predicate {
                         name: "getAFieldOrChild",

@@ -12,9 +12,9 @@ module Generated {
 
     Location getLocation() { none() }
 
-    AstNode getParent() { none() }
+    AstNode getParent() { ast_node_parent(this, result, _) }
 
-    int getParentIndex() { none() }
+    int getParentIndex() { ast_node_parent(this, _, result) }
 
     AstNode getAFieldOrChild() { none() }
 
@@ -22,10 +22,6 @@ module Generated {
   }
 
   class Token extends @token, AstNode {
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     string getValue() { tokeninfo(this, _, _, _, result, _) }
 
     override Location getLocation() { tokeninfo(this, _, _, _, _, result) }
@@ -60,10 +56,6 @@ module Generated {
 
     UnderscoreMethodName getName() { alias_def(this, _, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       alias_def(this, result, _, _) or alias_def(this, _, result, _)
     }
@@ -76,10 +68,6 @@ module Generated {
 
     AstNode getChild(int i) { argument_list_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { argument_list_child(this, _, result) }
   }
 
@@ -89,10 +77,6 @@ module Generated {
     override Location getLocation() { array_def(this, result) }
 
     AstNode getChild(int i) { array_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { array_child(this, _, result) }
   }
@@ -106,10 +90,6 @@ module Generated {
 
     AstNode getRight() { assignment_def(this, _, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       assignment_def(this, result, _, _) or assignment_def(this, _, result, _)
     }
@@ -122,10 +102,6 @@ module Generated {
 
     AstNode getChild(int i) { bare_string_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { bare_string_child(this, _, result) }
   }
 
@@ -135,10 +111,6 @@ module Generated {
     override Location getLocation() { bare_symbol_def(this, result) }
 
     AstNode getChild(int i) { bare_symbol_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { bare_symbol_child(this, _, result) }
   }
@@ -150,10 +122,6 @@ module Generated {
 
     AstNode getChild(int i) { begin_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { begin_child(this, _, result) }
   }
 
@@ -163,10 +131,6 @@ module Generated {
     override Location getLocation() { begin_block_def(this, result) }
 
     AstNode getChild(int i) { begin_block_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { begin_block_child(this, _, result) }
   }
@@ -234,10 +198,6 @@ module Generated {
 
     AstNode getRight() { binary_def(this, _, _, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       binary_def(this, result, _, _, _) or binary_def(this, _, _, result, _)
     }
@@ -252,10 +212,6 @@ module Generated {
 
     AstNode getChild(int i) { block_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       block_parameters(this, result) or block_child(this, _, result)
     }
@@ -268,10 +224,6 @@ module Generated {
 
     UnderscoreArg getChild() { block_argument_def(this, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { block_argument_def(this, result, _) }
   }
 
@@ -281,10 +233,6 @@ module Generated {
     override Location getLocation() { block_parameter_def(this, _, result) }
 
     Identifier getName() { block_parameter_def(this, result, _) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { block_parameter_def(this, result, _) }
   }
@@ -296,10 +244,6 @@ module Generated {
 
     AstNode getChild(int i) { block_parameters_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { block_parameters_child(this, _, result) }
   }
 
@@ -309,10 +253,6 @@ module Generated {
     override Location getLocation() { break_def(this, result) }
 
     ArgumentList getChild() { break_child(this, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { break_child(this, result) }
   }
@@ -329,10 +269,6 @@ module Generated {
     AstNode getMethod() { call_def(this, result, _) }
 
     AstNode getReceiver() { call_receiver(this, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() {
       call_arguments(this, result) or
@@ -351,10 +287,6 @@ module Generated {
 
     AstNode getChild(int i) { case_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { case_value(this, result) or case_child(this, _, result) }
   }
 
@@ -364,10 +296,6 @@ module Generated {
     override Location getLocation() { chained_string_def(this, result) }
 
     String getChild(int i) { chained_string_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { chained_string_child(this, _, result) }
   }
@@ -386,10 +314,6 @@ module Generated {
     Superclass getSuperclass() { class_superclass(this, result) }
 
     AstNode getChild(int i) { class_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() {
       class_def(this, result, _) or class_superclass(this, result) or class_child(this, _, result)
@@ -419,10 +343,6 @@ module Generated {
 
     UnderscoreArg getConsequence() { conditional_def(this, _, _, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       conditional_def(this, result, _, _, _) or
       conditional_def(this, _, result, _, _) or
@@ -441,10 +361,6 @@ module Generated {
 
     AstNode getChild(int i) { delimited_symbol_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { delimited_symbol_child(this, _, result) }
   }
 
@@ -454,10 +370,6 @@ module Generated {
     override Location getLocation() { destructured_left_assignment_def(this, result) }
 
     AstNode getChild(int i) { destructured_left_assignment_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { destructured_left_assignment_child(this, _, result) }
   }
@@ -469,10 +381,6 @@ module Generated {
 
     AstNode getChild(int i) { destructured_parameter_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { destructured_parameter_child(this, _, result) }
   }
 
@@ -482,10 +390,6 @@ module Generated {
     override Location getLocation() { do_def(this, result) }
 
     AstNode getChild(int i) { do_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { do_child(this, _, result) }
   }
@@ -498,10 +402,6 @@ module Generated {
     BlockParameters getParameters() { do_block_parameters(this, result) }
 
     AstNode getChild(int i) { do_block_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() {
       do_block_parameters(this, result) or do_block_child(this, _, result)
@@ -517,10 +417,6 @@ module Generated {
 
     AstNode getChild(int i) { element_reference_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       element_reference_def(this, result, _) or element_reference_child(this, _, result)
     }
@@ -532,10 +428,6 @@ module Generated {
     override Location getLocation() { else_def(this, result) }
 
     AstNode getChild(int i) { else_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { else_child(this, _, result) }
   }
@@ -550,10 +442,6 @@ module Generated {
     UnderscoreStatement getCondition() { elsif_def(this, result, _) }
 
     Then getConsequence() { elsif_consequence(this, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() {
       elsif_alternative(this, result) or
@@ -573,10 +461,6 @@ module Generated {
 
     AstNode getChild(int i) { end_block_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { end_block_child(this, _, result) }
   }
 
@@ -586,10 +470,6 @@ module Generated {
     override Location getLocation() { ensure_def(this, result) }
 
     AstNode getChild(int i) { ensure_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { ensure_child(this, _, result) }
   }
@@ -605,10 +485,6 @@ module Generated {
 
     UnderscoreLhs getChild() { exception_variable_def(this, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { exception_variable_def(this, result, _) }
   }
 
@@ -618,10 +494,6 @@ module Generated {
     override Location getLocation() { exceptions_def(this, result) }
 
     AstNode getChild(int i) { exceptions_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { exceptions_child(this, _, result) }
   }
@@ -645,10 +517,6 @@ module Generated {
 
     In getValue() { for_def(this, _, _, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       for_def(this, result, _, _, _) or
       for_def(this, _, result, _, _) or
@@ -667,10 +535,6 @@ module Generated {
 
     AstNode getChild(int i) { hash_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { hash_child(this, _, result) }
   }
 
@@ -685,10 +549,6 @@ module Generated {
 
     UnderscoreArg getChild() { hash_splat_argument_def(this, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { hash_splat_argument_def(this, result, _) }
   }
 
@@ -698,10 +558,6 @@ module Generated {
     override Location getLocation() { hash_splat_parameter_def(this, result) }
 
     Identifier getName() { hash_splat_parameter_name(this, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { hash_splat_parameter_name(this, result) }
   }
@@ -716,10 +572,6 @@ module Generated {
     override Location getLocation() { heredoc_body_def(this, result) }
 
     AstNode getChild(int i) { heredoc_body_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { heredoc_body_child(this, _, result) }
   }
@@ -747,10 +599,6 @@ module Generated {
 
     Then getConsequence() { if_consequence(this, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       if_alternative(this, result) or if_def(this, result, _) or if_consequence(this, result)
     }
@@ -765,10 +613,6 @@ module Generated {
 
     AstNode getCondition() { if_modifier_def(this, _, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       if_modifier_def(this, result, _, _) or if_modifier_def(this, _, result, _)
     }
@@ -780,10 +624,6 @@ module Generated {
     override Location getLocation() { in_def(this, _, result) }
 
     UnderscoreArg getChild() { in_def(this, result, _) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { in_def(this, result, _) }
   }
@@ -803,10 +643,6 @@ module Generated {
 
     AstNode getChild(int i) { interpolation_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { interpolation_child(this, _, result) }
   }
 
@@ -818,10 +654,6 @@ module Generated {
     Identifier getName() { keyword_parameter_def(this, result, _) }
 
     UnderscoreArg getValue() { keyword_parameter_value(this, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() {
       keyword_parameter_def(this, result, _) or keyword_parameter_value(this, result)
@@ -837,10 +669,6 @@ module Generated {
 
     LambdaParameters getParameters() { lambda_parameters(this, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       lambda_def(this, result, _) or lambda_parameters(this, result)
     }
@@ -853,10 +681,6 @@ module Generated {
 
     AstNode getChild(int i) { lambda_parameters_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { lambda_parameters_child(this, _, result) }
   }
 
@@ -866,10 +690,6 @@ module Generated {
     override Location getLocation() { left_assignment_list_def(this, result) }
 
     AstNode getChild(int i) { left_assignment_list_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { left_assignment_list_child(this, _, result) }
   }
@@ -885,10 +705,6 @@ module Generated {
 
     AstNode getChild(int i) { method_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       method_def(this, result, _) or
       method_parameters(this, result) or
@@ -903,10 +719,6 @@ module Generated {
 
     AstNode getChild(int i) { method_parameters_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { method_parameters_child(this, _, result) }
   }
 
@@ -919,10 +731,6 @@ module Generated {
 
     AstNode getChild(int i) { module_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       module_def(this, result, _) or module_child(this, _, result)
     }
@@ -934,10 +742,6 @@ module Generated {
     override Location getLocation() { next_def(this, result) }
 
     ArgumentList getChild() { next_child(this, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { next_child(this, result) }
   }
@@ -989,10 +793,6 @@ module Generated {
 
     AstNode getRight() { operator_assignment_def(this, _, _, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       operator_assignment_def(this, result, _, _, _) or
       operator_assignment_def(this, _, _, result, _)
@@ -1008,10 +808,6 @@ module Generated {
 
     UnderscoreArg getValue() { optional_parameter_def(this, _, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       optional_parameter_def(this, result, _, _) or optional_parameter_def(this, _, result, _)
     }
@@ -1026,10 +822,6 @@ module Generated {
 
     UnderscoreArg getValue() { pair_def(this, _, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       pair_def(this, result, _, _) or pair_def(this, _, result, _)
     }
@@ -1042,10 +834,6 @@ module Generated {
 
     AstNode getChild(int i) { parenthesized_statements_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { parenthesized_statements_child(this, _, result) }
   }
 
@@ -1056,10 +844,6 @@ module Generated {
 
     AstNode getChild() { pattern_def(this, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { pattern_def(this, result, _) }
   }
 
@@ -1069,10 +853,6 @@ module Generated {
     override Location getLocation() { program_def(this, result) }
 
     AstNode getChild(int i) { program_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { program_child(this, _, result) }
   }
@@ -1094,10 +874,6 @@ module Generated {
       )
     }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { range_begin(this, result) or range_end(this, result) }
   }
 
@@ -1107,10 +883,6 @@ module Generated {
     override Location getLocation() { rational_def(this, _, result) }
 
     AstNode getChild() { rational_def(this, result, _) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { rational_def(this, result, _) }
   }
@@ -1122,10 +894,6 @@ module Generated {
 
     ArgumentList getChild() { redo_child(this, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { redo_child(this, result) }
   }
 
@@ -1135,10 +903,6 @@ module Generated {
     override Location getLocation() { regex_def(this, result) }
 
     AstNode getChild(int i) { regex_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { regex_child(this, _, result) }
   }
@@ -1154,10 +918,6 @@ module Generated {
 
     ExceptionVariable getVariable() { rescue_variable(this, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       rescue_body(this, result) or rescue_exceptions(this, result) or rescue_variable(this, result)
     }
@@ -1172,10 +932,6 @@ module Generated {
 
     AstNode getHandler() { rescue_modifier_def(this, _, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       rescue_modifier_def(this, result, _, _) or rescue_modifier_def(this, _, result, _)
     }
@@ -1188,10 +944,6 @@ module Generated {
 
     UnderscoreLhs getChild() { rest_assignment_child(this, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { rest_assignment_child(this, result) }
   }
 
@@ -1201,10 +953,6 @@ module Generated {
     override Location getLocation() { retry_def(this, result) }
 
     ArgumentList getChild() { retry_child(this, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { retry_child(this, result) }
   }
@@ -1216,10 +964,6 @@ module Generated {
 
     ArgumentList getChild() { return_child(this, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { return_child(this, result) }
   }
 
@@ -1229,10 +973,6 @@ module Generated {
     override Location getLocation() { right_assignment_list_def(this, result) }
 
     AstNode getChild(int i) { right_assignment_list_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { right_assignment_list_child(this, _, result) }
   }
@@ -1245,10 +985,6 @@ module Generated {
     AstNode getName() { scope_resolution_def(this, result, _) }
 
     UnderscorePrimary getScope() { scope_resolution_scope(this, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() {
       scope_resolution_def(this, result, _) or scope_resolution_scope(this, result)
@@ -1266,10 +1002,6 @@ module Generated {
 
     Identifier getName() { setter_def(this, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { setter_def(this, result, _) }
   }
 
@@ -1285,10 +1017,6 @@ module Generated {
     UnderscoreArg getValue() { singleton_class_def(this, result, _) }
 
     AstNode getChild(int i) { singleton_class_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() {
       singleton_class_def(this, result, _) or singleton_class_child(this, _, result)
@@ -1308,10 +1036,6 @@ module Generated {
 
     AstNode getChild(int i) { singleton_method_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       singleton_method_def(this, result, _, _) or
       singleton_method_def(this, _, result, _) or
@@ -1327,10 +1051,6 @@ module Generated {
 
     UnderscoreArg getChild() { splat_argument_def(this, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { splat_argument_def(this, result, _) }
   }
 
@@ -1340,10 +1060,6 @@ module Generated {
     override Location getLocation() { splat_parameter_def(this, result) }
 
     Identifier getName() { splat_parameter_name(this, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { splat_parameter_name(this, result) }
   }
@@ -1355,10 +1071,6 @@ module Generated {
 
     AstNode getChild(int i) { string_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { string_child(this, _, result) }
   }
 
@@ -1368,10 +1080,6 @@ module Generated {
     override Location getLocation() { string_array_def(this, result) }
 
     BareString getChild(int i) { string_array_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { string_array_child(this, _, result) }
   }
@@ -1387,10 +1095,6 @@ module Generated {
 
     AstNode getChild(int i) { subshell_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { subshell_child(this, _, result) }
   }
 
@@ -1405,10 +1109,6 @@ module Generated {
 
     AstNode getChild() { superclass_def(this, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { superclass_def(this, result, _) }
   }
 
@@ -1419,10 +1119,6 @@ module Generated {
 
     BareSymbol getChild(int i) { symbol_array_child(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { symbol_array_child(this, _, result) }
   }
 
@@ -1432,10 +1128,6 @@ module Generated {
     override Location getLocation() { then_def(this, result) }
 
     AstNode getChild(int i) { then_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { then_child(this, _, result) }
   }
@@ -1467,10 +1159,6 @@ module Generated {
       )
     }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { unary_def(this, result, _, _) }
   }
 
@@ -1480,10 +1168,6 @@ module Generated {
     override Location getLocation() { undef_def(this, result) }
 
     UnderscoreMethodName getChild(int i) { undef_child(this, i, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { undef_child(this, _, result) }
   }
@@ -1503,10 +1187,6 @@ module Generated {
 
     Then getConsequence() { unless_consequence(this, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       unless_alternative(this, result) or
       unless_def(this, result, _) or
@@ -1523,10 +1203,6 @@ module Generated {
 
     AstNode getCondition() { unless_modifier_def(this, _, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       unless_modifier_def(this, result, _, _) or unless_modifier_def(this, _, result, _)
     }
@@ -1540,10 +1216,6 @@ module Generated {
     Do getBody() { until_def(this, result, _, _) }
 
     UnderscoreStatement getCondition() { until_def(this, _, result, _) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() {
       until_def(this, result, _, _) or until_def(this, _, result, _)
@@ -1559,10 +1231,6 @@ module Generated {
 
     AstNode getCondition() { until_modifier_def(this, _, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       until_modifier_def(this, result, _, _) or until_modifier_def(this, _, result, _)
     }
@@ -1577,10 +1245,6 @@ module Generated {
 
     Pattern getPattern(int i) { when_pattern(this, i, result) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() { when_body(this, result) or when_pattern(this, _, result) }
   }
 
@@ -1592,10 +1256,6 @@ module Generated {
     Do getBody() { while_def(this, result, _, _) }
 
     UnderscoreStatement getCondition() { while_def(this, _, result, _) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() {
       while_def(this, result, _, _) or while_def(this, _, result, _)
@@ -1611,10 +1271,6 @@ module Generated {
 
     AstNode getCondition() { while_modifier_def(this, _, result, _) }
 
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
-
     override AstNode getAFieldOrChild() {
       while_modifier_def(this, result, _, _) or while_modifier_def(this, _, result, _)
     }
@@ -1626,10 +1282,6 @@ module Generated {
     override Location getLocation() { yield_def(this, result) }
 
     ArgumentList getChild() { yield_child(this, result) }
-
-    override AstNode getParent() { ast_node_parent(this, result, _) }
-
-    override int getParentIndex() { ast_node_parent(this, _, result) }
 
     override AstNode getAFieldOrChild() { yield_child(this, result) }
   }
