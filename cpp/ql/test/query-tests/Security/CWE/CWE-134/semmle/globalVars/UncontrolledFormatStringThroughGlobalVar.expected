@@ -21,16 +21,19 @@ edges
 | globalVars.c:12:2:12:15 | Store | globalVars.c:8:7:8:10 | copy |
 | globalVars.c:15:21:15:23 | val | globalVars.c:16:2:16:12 | Store |
 | globalVars.c:16:2:16:12 | Store | globalVars.c:9:7:9:11 | copy2 |
-| globalVars.c:24:11:24:14 | argv | globalVars.c:11:22:11:25 | *argv |
-| globalVars.c:24:11:24:14 | argv | globalVars.c:11:22:11:25 | *argv |
-| globalVars.c:24:11:24:14 | argv | globalVars.c:11:22:11:25 | argv |
-| globalVars.c:24:11:24:14 | argv | globalVars.c:11:22:11:25 | argv |
+| globalVars.c:24:2:24:9 | Argument 0 | globalVars.c:11:22:11:25 | argv |
+| globalVars.c:24:11:24:14 | Argument 0 indirection | globalVars.c:11:22:11:25 | *argv |
+| globalVars.c:24:11:24:14 | argv | globalVars.c:24:2:24:9 | Argument 0 |
+| globalVars.c:24:11:24:14 | argv | globalVars.c:24:2:24:9 | Argument 0 |
+| globalVars.c:24:11:24:14 | argv | globalVars.c:24:11:24:14 | Argument 0 indirection |
+| globalVars.c:24:11:24:14 | argv | globalVars.c:24:11:24:14 | Argument 0 indirection |
 | globalVars.c:27:9:27:12 | copy | globalVars.c:27:9:27:12 | (const char *)... |
 | globalVars.c:27:9:27:12 | copy | globalVars.c:27:9:27:12 | copy |
 | globalVars.c:30:15:30:18 | copy | globalVars.c:30:15:30:18 | copy |
 | globalVars.c:30:15:30:18 | copy | globalVars.c:30:15:30:18 | copy |
 | globalVars.c:30:15:30:18 | copy | globalVars.c:30:15:30:18 | copy |
-| globalVars.c:35:11:35:14 | copy | globalVars.c:15:21:15:23 | val |
+| globalVars.c:35:2:35:9 | Argument 0 | globalVars.c:15:21:15:23 | val |
+| globalVars.c:35:11:35:14 | copy | globalVars.c:35:2:35:9 | Argument 0 |
 | globalVars.c:38:9:38:13 | copy2 | globalVars.c:38:9:38:13 | (const char *)... |
 | globalVars.c:38:9:38:13 | copy2 | globalVars.c:38:9:38:13 | copy2 |
 | globalVars.c:41:15:41:19 | copy2 | globalVars.c:41:15:41:19 | copy2 |
