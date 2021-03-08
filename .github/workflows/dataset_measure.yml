@@ -9,6 +9,7 @@ on:
     branches: [main]
     paths:
       - ql/src/ruby.dbscheme
+  workflow_dispatch:
 
 jobs:
   measure:
