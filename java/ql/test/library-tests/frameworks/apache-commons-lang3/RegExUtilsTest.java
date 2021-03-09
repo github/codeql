@@ -10,21 +10,21 @@ public class RegExUtilsTest {
     Pattern cleanPattern = Pattern.compile("clean");
     Pattern taintedPattern = Pattern.compile(taint());
 
-    sink(RegExUtils.removeAll(taint(), cleanPattern)); // $hasTaintFlow=y
-    sink(RegExUtils.removeAll(taint(), "clean")); // $hasTaintFlow=y
-    sink(RegExUtils.removeFirst(taint(), cleanPattern)); // $hasTaintFlow=y
-    sink(RegExUtils.removeFirst(taint(), "clean")); // $hasTaintFlow=y
-    sink(RegExUtils.removePattern(taint(), "clean")); // $hasTaintFlow=y
-    sink(RegExUtils.replaceAll(taint(), cleanPattern, "replacement")); // $hasTaintFlow=y
-    sink(RegExUtils.replaceAll(taint(), "clean", "replacement")); // $hasTaintFlow=y
-    sink(RegExUtils.replaceFirst(taint(), cleanPattern, "replacement")); // $hasTaintFlow=y
-    sink(RegExUtils.replaceFirst(taint(), "clean", "replacement")); // $hasTaintFlow=y
-    sink(RegExUtils.replacePattern(taint(), "clean", "replacement")); // $hasTaintFlow=y
-    sink(RegExUtils.replaceAll("original", cleanPattern, taint())); // $hasTaintFlow=y
-    sink(RegExUtils.replaceAll("original", "clean", taint())); // $hasTaintFlow=y
-    sink(RegExUtils.replaceFirst("original", cleanPattern, taint())); // $hasTaintFlow=y
-    sink(RegExUtils.replaceFirst("original", "clean", taint())); // $hasTaintFlow=y
-    sink(RegExUtils.replacePattern("original", "clean", taint())); // $hasTaintFlow=y
+    sink(RegExUtils.removeAll(taint(), cleanPattern)); // $hasTaintFlow
+    sink(RegExUtils.removeAll(taint(), "clean")); // $hasTaintFlow
+    sink(RegExUtils.removeFirst(taint(), cleanPattern)); // $hasTaintFlow
+    sink(RegExUtils.removeFirst(taint(), "clean")); // $hasTaintFlow
+    sink(RegExUtils.removePattern(taint(), "clean")); // $hasTaintFlow
+    sink(RegExUtils.replaceAll(taint(), cleanPattern, "replacement")); // $hasTaintFlow
+    sink(RegExUtils.replaceAll(taint(), "clean", "replacement")); // $hasTaintFlow
+    sink(RegExUtils.replaceFirst(taint(), cleanPattern, "replacement")); // $hasTaintFlow
+    sink(RegExUtils.replaceFirst(taint(), "clean", "replacement")); // $hasTaintFlow
+    sink(RegExUtils.replacePattern(taint(), "clean", "replacement")); // $hasTaintFlow
+    sink(RegExUtils.replaceAll("original", cleanPattern, taint())); // $hasTaintFlow
+    sink(RegExUtils.replaceAll("original", "clean", taint())); // $hasTaintFlow
+    sink(RegExUtils.replaceFirst("original", cleanPattern, taint())); // $hasTaintFlow
+    sink(RegExUtils.replaceFirst("original", "clean", taint())); // $hasTaintFlow
+    sink(RegExUtils.replacePattern("original", "clean", taint())); // $hasTaintFlow
     // Subsequent calls don't propagate taint, as regex search patterns don't propagate to the return value.
     sink(RegExUtils.removeAll("original", taintedPattern));
     sink(RegExUtils.removeAll("original", taint()));
