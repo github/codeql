@@ -12,6 +12,7 @@
  */
 
 import ruby
+import codeql_ruby.dataflow.SSA
 
 /** A call that extracts the first or last element of a list. */
 class EndCall extends MethodCall {
@@ -40,6 +41,17 @@ class EndCall extends MethodCall {
   string detectCall() { result = detect }
 }
 
+Expr getUniqueRead(Expr e) {
+  exists(AssignExpr ae |
+    e = ae.getRightOperand() and
+    forex(Ssa::WriteDefinition def | def.getWriteAccess() = ae.getLeftOperand() |
+      strictcount(def.getARead()) = 1 and
+      not def = any(Ssa::PhiNode phi).getAnInput() and
+      def.getARead() = result.getAControlFlowNode()
+    )
+  )
+}
+
 class SelectBlock extends MethodCall {
   SelectBlock() {
     this.getMethodName() in ["select", "filter", "find_all"] and
@@ -48,5 +60,6 @@ class SelectBlock extends MethodCall {
 }
 
 from EndCall call, SelectBlock selectBlock
-where selectBlock = call.getReceiver()
-select call, "Replace this call with '" + call.detectCall() + "'."
+where [selectBlock, getUniqueRead(selectBlock)] = call.getReceiver()
+select call, "Replace this call and $@ with '" + call.detectCall() + "'.", selectBlock,
+  "'select' call"
