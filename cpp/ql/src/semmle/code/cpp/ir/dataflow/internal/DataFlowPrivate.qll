@@ -526,4 +526,4 @@ predicate isImmutableOrUnobservable(Node n) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof OperandNode }
+predicate nodeIsHidden(Node n) { n instanceof OperandNode and not n instanceof ArgumentNode }
