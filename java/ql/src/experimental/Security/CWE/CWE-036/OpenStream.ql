@@ -8,6 +8,7 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.ExternalFlow
 import DataFlow::PathGraph
 
 class URLConstructor extends ClassInstanceExpr {
@@ -37,6 +38,8 @@ class RemoteURLToOpenStreamFlowConfig extends TaintTracking::Configuration {
     exists(MethodAccess m |
       sink.asExpr() = m.getQualifier() and m.getMethod() instanceof URLOpenStreamMethod
     )
+    or
+    sinkNode(sink, "url-open-stream")
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
