@@ -39,14 +39,6 @@ private class ExternalRemoteFlowSource extends RemoteFlowSource {
   override string getSourceType() { result = "external" }
 }
 
-private class RemoteTaintedMethodAccessSource extends RemoteFlowSource {
-  RemoteTaintedMethodAccessSource() {
-    this.asExpr().(MethodAccess).getMethod() instanceof RemoteTaintedMethod
-  }
-
-  override string getSourceType() { result = "network data source" }
-}
-
 private class RmiMethodParameterSource extends RemoteFlowSource {
   RmiMethodParameterSource() {
     exists(RemoteCallableMethod method |
@@ -202,17 +194,6 @@ class EnvInput extends LocalUserInput {
 /** A node with input from a database. */
 class DatabaseInput extends LocalUserInput {
   DatabaseInput() { this.asExpr().(MethodAccess).getMethod() instanceof ResultSetGetStringMethod }
-}
-
-private class RemoteTaintedMethod extends Method {
-  RemoteTaintedMethod() { this instanceof PlayRequestGetMethod }
-}
-
-private class PlayRequestGetMethod extends Method {
-  PlayRequestGetMethod() {
-    this.getDeclaringType() instanceof PlayMvcHttpRequestHeader and
-    this.hasName(["queryString", "getQueryString", "header", "getHeader"])
-  }
 }
 
 /** A method that reads from the environment, such as `System.getProperty` or `System.getenv`. */

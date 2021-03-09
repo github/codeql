@@ -172,7 +172,12 @@ private predicate sourceModelCsv(string row) {
       "org.springframework.web.client;RestTemplate;false;getForEntity;;;ReturnValue;remote",
       "org.springframework.web.client;RestTemplate;false;postForEntity;;;ReturnValue;remote",
       // WebSocketMessageParameterSource
-      "java.net.http;WebSocket$Listener;true;onText;(WebSocket,CharSequence,boolean);;Parameter[1];remote"
+      "java.net.http;WebSocket$Listener;true;onText;(WebSocket,CharSequence,boolean);;Parameter[1];remote",
+      // PlayRequestGetMethod
+      "play.mvc;Http$RequestHeader;false;queryString;;;ReturnValue;remote",
+      "play.mvc;Http$RequestHeader;false;getQueryString;;;ReturnValue;remote",
+      "play.mvc;Http$RequestHeader;false;header;;;ReturnValue;remote",
+      "play.mvc;Http$RequestHeader;false;getHeader;;;ReturnValue;remote"
     ]
 }
 
