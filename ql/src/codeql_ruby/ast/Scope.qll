@@ -16,7 +16,7 @@ class Scope extends AstNode, Scope::ScopeType {
   /** Gets a variable that is declared in this scope. */
   final Variable getAVariable() { result.getDeclaringScope() = this }
 
-  /** Gets the variable with the given name that is declared in this scope. */
+  /** Gets the variable declared in this scope with the given name, if any. */
   final Variable getVariable(string name) {
     result = this.getAVariable() and
     result.getName() = name
