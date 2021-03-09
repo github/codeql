@@ -18,6 +18,7 @@ import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.frameworks.javase.WebSocket
 import semmle.code.java.frameworks.android.Android
 import semmle.code.java.frameworks.android.Intent
+import semmle.code.java.frameworks.play.Play
 import semmle.code.java.frameworks.spring.SpringWeb
 import semmle.code.java.frameworks.spring.SpringController
 import semmle.code.java.frameworks.spring.SpringWebClient
@@ -127,6 +128,12 @@ private class SpringMultipartRequestSource extends RemoteFlowSource {
   }
 
   override string getSourceType() { result = "Spring MultipartRequest getter" }
+}
+
+private class PlayParameterSource extends RemoteFlowSource {
+  PlayParameterSource() { exists(PlayActionMethodQueryParameter p | p = this.asParameter()) }
+
+  override string getSourceType() { result = "Play Query Parameters" }
 }
 
 private class SpringMultipartFileSource extends RemoteFlowSource {
@@ -264,6 +271,7 @@ private class RemoteTaintedMethod extends Method {
     this instanceof HttpServletRequestGetRequestURIMethod or
     this instanceof HttpServletRequestGetRequestURLMethod or
     this instanceof HttpServletRequestGetRemoteUserMethod or
+    this instanceof PlayRequestGetMethod or
     this instanceof SpringWebRequestGetMethod or
     this instanceof SpringRestTemplateResponseEntityMethod or
     this instanceof ServletRequestGetBodyMethod or
@@ -280,6 +288,13 @@ private class RemoteTaintedMethod extends Method {
     this instanceof XmlAttrSetGetMethod or
     // The current URL in a browser may be untrusted or uncontrolled.
     this instanceof WebViewGetUrlMethod
+  }
+}
+
+private class PlayRequestGetMethod extends Method {
+  PlayRequestGetMethod() {
+    this.getDeclaringType() instanceof PlayMvcHttpRequestHeader and
+    this.hasName(["queryString", "getQueryString", "header", "getHeader"])
   }
 }
 

@@ -16,10 +16,7 @@ from MethodAccess m
 where
   m.getMethod().hasName("next") and
   m.getMethod().getNumberOfParameters() = 0 and
-  (
-    not m.hasQualifier() or
-    m.getQualifier() instanceof ThisAccess
-  ) and
+  m.isOwnMethodAccess() and
   exists(Interface i, Method hasNext |
     i.getSourceDeclaration().hasQualifiedName("java.util", "Iterator") and
     m.getEnclosingCallable() = hasNext and

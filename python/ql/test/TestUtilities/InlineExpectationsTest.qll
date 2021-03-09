@@ -1,6 +1,7 @@
 /**
  * Provides a library for writing QL tests whose success or failure is based on expected results
- * embedded in the test source code as comments, rather than a `.expected` file.
+ * embedded in the test source code as comments, rather than the contents of an `.expected` file
+ * (in that the `.expected` file should always be empty).
  *
  * To add this framework to a new language:
  * - Add a file `InlineExpectationsTestPrivate.qll` that defines a `LineComment` class. This class
@@ -233,7 +234,9 @@ private string expectationPattern() {
   exists(string tag, string tags, string value |
     tag = "[A-Za-z-_][A-Za-z-_0-9]*" and
     tags = "((?:" + tag + ")(?:\\s*,\\s*" + tag + ")*)" and
-    value = "((?:\"[^\"]*\"|'[^']*'|\\S+)*)" and
+    // In Python, we allow both `"` and `'` for strings, as well as the prefixes `bru`.
+    // For example, `b"foo"`.
+    value = "((?:[bru]*\"[^\"]*\"|[bru]*'[^']*'|\\S+)*)" and
     result = tags + "(?:=" + value + ")?"
   )
 }

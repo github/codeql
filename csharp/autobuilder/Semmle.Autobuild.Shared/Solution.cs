@@ -49,13 +49,13 @@ namespace Semmle.Autobuild.Shared
         public override IEnumerable<IProjectOrSolution> IncludedProjects => includedProjects;
 
         public IEnumerable<SolutionConfigurationInSolution> Configurations =>
-            solution == null ? Enumerable.Empty<SolutionConfigurationInSolution>() : solution.SolutionConfigurations;
+            solution is null ? Enumerable.Empty<SolutionConfigurationInSolution>() : solution.SolutionConfigurations;
 
         public string DefaultConfigurationName =>
-            solution == null ? "" : solution.GetDefaultConfigurationName();
+            solution is null ? "" : solution.GetDefaultConfigurationName();
 
         public string DefaultPlatformName =>
-            solution == null ? "" : solution.GetDefaultPlatformName();
+            solution is null ? "" : solution.GetDefaultPlatformName();
 
         public Solution(Autobuilder builder, string path, bool allowProject) : base(builder, path)
         {
@@ -90,7 +90,7 @@ namespace Semmle.Autobuild.Shared
             .Select(p => p.ToolsVersion);
 
         public Version ToolsVersion => ToolsVersions.Any()
-            ? ToolsVersions.Max()
+            ? ToolsVersions.Max()!
             : new Version();
     }
 }

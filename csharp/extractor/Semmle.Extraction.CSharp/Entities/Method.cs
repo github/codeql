@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Populators;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
@@ -25,7 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     // Non-generic reduced extensions must be extracted exactly like the
                     // non-reduced counterparts
-                    parameters = Symbol.ReducedFrom.Parameters;
+                    parameters = Symbol.ReducedFrom!.Parameters;
                 }
                 else
                 {
@@ -73,16 +74,16 @@ namespace Semmle.Extraction.CSharp.Entities
             var block = Block;
             var expr = ExpressionBody;
 
-            if (block != null || expr != null)
+            if (block is not null || expr is not null)
             {
                 Context.PopulateLater(
                    () =>
                    {
                        ExtractInitializers(trapFile);
-                       if (block != null)
+                       if (block is not null)
                            Statements.Block.Create(Context, block, this, 0);
                        else
-                           Expression.Create(Context, expr, this, 0);
+                           Expression.Create(Context, expr!, this, 0);
 
                        NumberOfLines(trapFile, BodyDeclaringSymbol, this);
                    });
@@ -95,7 +96,10 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 var node = (CSharpSyntaxNode)decl.GetSyntax();
                 var lineCounts = node.Accept(new AstLineCounter());
-                trapFile.numlines(callable, lineCounts);
+                if (lineCounts is not null)
+                {
+                    trapFile.numlines(callable, lineCounts);
+                }
             }
         }
 
@@ -110,11 +114,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 if (IsSourceDeclaration)
                 {
                     foreach (var syntax in Symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).OfType<MethodDeclarationSyntax>())
-                        TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier.Name, this, explicitInterface);
+                        TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier!.Name, this, explicitInterface);
                 }
             }
 
-            if (Symbol.OverriddenMethod != null)
+            if (Symbol.OverriddenMethod is not null)
             {
                 trapFile.overrides(this, Method.Create(Context, Symbol.OverriddenMethod));
             }
@@ -128,7 +132,7 @@ namespace Semmle.Extraction.CSharp.Entities
             m.Symbol.ReturnType.BuildOrWriteId(m.Context, trapFile, m.Symbol);
             trapFile.Write(" ");
 
-            trapFile.WriteSubId(m.ContainingType);
+            trapFile.WriteSubId(m.ContainingType!);
 
             AddExplicitInterfaceQualifierToId(m.Context, trapFile, m.Symbol.ExplicitInterfaceImplementations);
 
@@ -189,7 +193,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var index = 0;
 
             var @params = method.MethodKind == MethodKind.ReducedExtension
-                ? method.ReducedFrom.Parameters
+                ? method.ReducedFrom!.Parameters
                 : method.Parameters;
 
             foreach (var param in @params)
@@ -232,9 +236,10 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="cx"></param>
         /// <param name="methodDecl"></param>
         /// <returns></returns>
-        public static Method Create(Context cx, IMethodSymbol methodDecl)
+        [return: NotNullIfNotNull("methodDecl")]
+        public static Method? Create(Context cx, IMethodSymbol? methodDecl)
         {
-            if (methodDecl == null)
+            if (methodDecl is null)
                 return null;
 
             var methodKind = methodDecl.MethodKind;
@@ -278,10 +283,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public Method OriginalDefinition =>
             IsReducedExtension
-                ? Create(Context, Symbol.ReducedFrom)
+                ? Create(Context, Symbol.ReducedFrom!)
                 : Create(Context, Symbol.OriginalDefinition);
 
-        public override Microsoft.CodeAnalysis.Location FullLocation => ReportingLocation;
+        public override Location? FullLocation => ReportingLocation;
 
         public override bool IsSourceDeclaration => Symbol.IsSourceDeclaration();
 

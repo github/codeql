@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             // to the extent that the stack has been known to overflow.
             using (info.Context.StackGuard)
             {
-                if (info.Node == null)
+                if (info.Node is null)
                 {
                     info.Context.ModelError("Attempt to create a null expression");
                     return new Unknown(info);

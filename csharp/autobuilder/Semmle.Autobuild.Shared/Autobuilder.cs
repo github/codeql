@@ -176,12 +176,12 @@ namespace Semmle.Autobuild.Shared
 
                 // First look for `.proj` files
                 ret = FindFiles(".proj", f => new Project(this, f))?.ToList();
-                if (ret != null)
+                if (ret is not null)
                     return ret;
 
                 // Then look for `.sln` files
                 ret = FindFiles(".sln", f => new Solution(this, f, false))?.ToList();
-                if (ret != null)
+                if (ret is not null)
                     return ret;
 
                 // Finally look for language specific project files, e.g. `.csproj` files

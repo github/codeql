@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.Entities
     {
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
-        private readonly AttributeSyntax attributeSyntax;
+        private readonly AttributeSyntax? attributeSyntax;
         private readonly IEntity entity;
 
         private Attribute(Context cx, AttributeData attributeData, IEntity entity)
@@ -51,9 +51,9 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.attributes(this, type.TypeRef, entity);
             trapFile.attribute_location(this, Location);
 
-            if (attributeSyntax is object)
+            if (attributeSyntax is not null)
             {
-                if (Context.Extractor.OutputPath != null)
+                if (!Context.Extractor.Standalone)
                 {
                     trapFile.attribute_location(this, Assembly.CreateOutputAssembly(Context));
                 }
@@ -66,18 +66,18 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private void ExtractArguments(TextWriter trapFile)
         {
-            var ctorArguments = attributeSyntax?.ArgumentList?.Arguments.Where(a => a.NameEquals == null).ToList();
+            var ctorArguments = attributeSyntax?.ArgumentList?.Arguments.Where(a => a.NameEquals is null).ToList();
 
             var childIndex = 0;
             for (var i = 0; i < Symbol.ConstructorArguments.Length; i++)
             {
                 var constructorArgument = Symbol.ConstructorArguments[i];
                 var paramName = Symbol.AttributeConstructor?.Parameters[i].Name;
-                var argSyntax = ctorArguments?.SingleOrDefault(a => a.NameColon != null && a.NameColon.Name.Identifier.Text == paramName);
+                var argSyntax = ctorArguments?.SingleOrDefault(a => a.NameColon is not null && a.NameColon.Name.Identifier.Text == paramName);
 
-                if (argSyntax == null &&                            // couldn't find named argument
+                if (argSyntax is null &&                            // couldn't find named argument
                     ctorArguments?.Count > childIndex &&            // there're more arguments
-                    ctorArguments[childIndex].NameColon == null)    // the argument is positional
+                    ctorArguments[childIndex].NameColon is null)    // the argument is positional
                 {
                     argSyntax = ctorArguments[childIndex];
                 }
@@ -93,18 +93,18 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 var expr = CreateExpressionFromArgument(
                     namedArgument.Value,
-                    attributeSyntax?.ArgumentList.Arguments.Single(a => a.NameEquals?.Name?.Identifier.Text == namedArgument.Key).Expression,
+                    attributeSyntax?.ArgumentList?.Arguments.Single(a => a.NameEquals?.Name?.Identifier.Text == namedArgument.Key).Expression,
                     this,
                     childIndex++);
 
-                if (expr is object)
+                if (expr is not null)
                 {
                     trapFile.expr_argument_name(expr, namedArgument.Key);
                 }
             }
         }
 
-        private Expression CreateExpressionFromArgument(TypedConstant constant, ExpressionSyntax syntax, IExpressionParentEntity parent,
+        private Expression? CreateExpressionFromArgument(TypedConstant constant, ExpressionSyntax? syntax, IExpressionParentEntity parent,
             int childIndex)
         {
             return syntax is null
@@ -114,11 +114,14 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => attributeSyntax?.Name.GetLocation();
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => attributeSyntax?.Name.GetLocation();
 
-        private Semmle.Extraction.Entities.Location location;
+        private Semmle.Extraction.Entities.Location? location;
+
         private Semmle.Extraction.Entities.Location Location =>
-            location ?? (location = Context.CreateLocation(attributeSyntax is null ? entity.ReportingLocation : attributeSyntax.Name.GetLocation()));
+            location ??= Context.CreateLocation(attributeSyntax is null
+                ? entity.ReportingLocation
+                : attributeSyntax.Name.GetLocation());
 
         public override bool NeedsPopulation => true;
 

@@ -64,6 +64,15 @@ import java
 private import semmle.code.java.dataflow.DataFlow::DataFlow
 private import internal.DataFlowPrivate
 
+/**
+ * A module importing the frameworks that provide external flow data,
+ * ensuring that they are visible to the taint tracking / data flow library.
+ */
+private module Frameworks {
+  private import semmle.code.java.frameworks.ApacheHttp
+  private import semmle.code.java.frameworks.apache.Lang
+}
+
 private predicate sourceModelCsv(string row) {
   row =
     [
@@ -214,7 +223,7 @@ module CsvValidation {
       not name.regexpMatch("[a-zA-Z0-9_]*") and
       msg = "Dubious name \"" + name + "\" in " + pred + " model."
       or
-      not signature.regexpMatch("|\\([a-zA-Z0-9_\\.\\$<>,]*\\)") and
+      not signature.regexpMatch("|\\([a-zA-Z0-9_\\.\\$<>,\\[\\]]*\\)") and
       msg = "Dubious signature \"" + signature + "\" in " + pred + " model."
       or
       not ext.regexpMatch("|Annotated") and
@@ -401,21 +410,27 @@ private predicate outputNeedsReference(string c) {
 private predicate sourceElementRef(Top ref, string output, string kind) {
   exists(Element e |
     sourceElement(e, output, kind) and
-    if outputNeedsReference(getLast(output)) then ref.(Call).getCallee() = e else ref = e
+    if outputNeedsReference(getLast(output))
+    then ref.(Call).getCallee().getSourceDeclaration() = e
+    else ref = e
   )
 }
 
 private predicate sinkElementRef(Top ref, string input, string kind) {
   exists(Element e |
     sinkElement(e, input, kind) and
-    if inputNeedsReference(getLast(input)) then ref.(Call).getCallee() = e else ref = e
+    if inputNeedsReference(getLast(input))
+    then ref.(Call).getCallee().getSourceDeclaration() = e
+    else ref = e
   )
 }
 
 private predicate summaryElementRef(Top ref, string input, string output, string kind) {
   exists(Element e |
     summaryElement(e, input, output, kind) and
-    if inputNeedsReference(getLast(input)) then ref.(Call).getCallee() = e else ref = e
+    if inputNeedsReference(getLast(input))
+    then ref.(Call).getCallee().getSourceDeclaration() = e
+    else ref = e
   )
 }
 

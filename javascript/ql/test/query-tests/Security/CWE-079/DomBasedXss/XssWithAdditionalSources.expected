@@ -118,6 +118,11 @@ nodes
 | dates.js:18:31:18:66 | `Time i ... aint)}` |
 | dates.js:18:42:18:64 | datefor ...  taint) |
 | dates.js:18:59:18:63 | taint |
+| event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
+| event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
+| event-handler-receiver.js:2:49:2:56 | location |
+| event-handler-receiver.js:2:49:2:56 | location |
+| event-handler-receiver.js:2:49:2:61 | location.href |
 | express.js:7:15:7:33 | req.param("wobble") |
 | express.js:7:15:7:33 | req.param("wobble") |
 | express.js:7:15:7:33 | req.param("wobble") |
@@ -803,6 +808,10 @@ edges
 | dates.js:18:42:18:64 | datefor ...  taint) | dates.js:18:31:18:66 | `Time i ... aint)}` |
 | dates.js:18:42:18:64 | datefor ...  taint) | dates.js:18:31:18:66 | `Time i ... aint)}` |
 | dates.js:18:59:18:63 | taint | dates.js:18:42:18:64 | datefor ...  taint) |
+| event-handler-receiver.js:2:49:2:56 | location | event-handler-receiver.js:2:49:2:61 | location.href |
+| event-handler-receiver.js:2:49:2:56 | location | event-handler-receiver.js:2:49:2:61 | location.href |
+| event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
+| event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") |
 | jquery.js:2:7:2:40 | tainted | jquery.js:7:20:7:26 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:8:28:8:34 | tainted |

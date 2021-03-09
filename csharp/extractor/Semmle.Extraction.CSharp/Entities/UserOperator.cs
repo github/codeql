@@ -58,15 +58,15 @@ namespace Semmle.Extraction.CSharp.Entities
         private bool IsImplicitOperator(out ITypeSymbol containingType)
         {
             containingType = Symbol.ContainingType;
-            if (containingType != null)
+            if (containingType is not null)
             {
                 var containingNamedType = containingType as INamedTypeSymbol;
-                return containingNamedType == null ||
+                return containingNamedType is null ||
                     !containingNamedType.GetMembers(Symbol.Name).Contains(Symbol);
             }
 
             var pointerType = Symbol.Parameters.Select(p => p.Type).OfType<IPointerTypeSymbol>().FirstOrDefault();
-            if (pointerType != null)
+            if (pointerType is not null)
             {
                 containingType = pointerType;
                 return true;

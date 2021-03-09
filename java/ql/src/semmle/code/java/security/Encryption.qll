@@ -120,13 +120,16 @@ private string algorithmRegex(string algorithmString) {
  * Gets the name of an algorithm that is known to be insecure.
  */
 string getAnInsecureAlgorithmName() {
-  result = "DES" or
-  result = "RC2" or
-  result = "RC4" or
-  result = "RC5" or
-  result = "ARCFOUR" or // a variant of RC4
-  result = "ECB" or // encryption mode ECB like AES/ECB/NoPadding is vulnerable to replay and other attacks
-  result = "AES/CBC/PKCS[5|7]Padding" // CBC mode of operation with PKCS#5 (or PKCS#7) padding is vulnerable to padding oracle attacks
+  result =
+    [
+      "DES", "RC2", "RC4", "RC5",
+      // ARCFOUR is a variant of RC4
+      "ARCFOUR",
+      // Encryption mode ECB like AES/ECB/NoPadding is vulnerable to replay and other attacks
+      "ECB",
+      // CBC mode of operation with PKCS#5 or PKCS#7 padding is vulnerable to padding oracle attacks
+      "AES/CBC/PKCS[57]Padding"
+    ]
 }
 
 /**
@@ -163,14 +166,11 @@ string getInsecureAlgorithmRegex() {
  * Gets the name of an algorithm that is known to be secure.
  */
 string getASecureAlgorithmName() {
-  result = "RSA" or
-  result = "SHA256" or
-  result = "SHA512" or
-  result = "CCM" or
-  result = "GCM" or
-  result = "AES([^a-zA-Z](?!ECB|CBC/PKCS[5|7]Padding)).*" or
-  result = "Blowfish" or
-  result = "ECIES"
+  result =
+    [
+      "RSA", "SHA256", "SHA512", "CCM", "GCM", "AES([^a-zA-Z](?!ECB|CBC/PKCS[57]Padding)).*",
+      "Blowfish", "ECIES"
+    ]
 }
 
 private string rankedSecureAlgorithm(int i) { result = rank[i](getASecureAlgorithmName()) }

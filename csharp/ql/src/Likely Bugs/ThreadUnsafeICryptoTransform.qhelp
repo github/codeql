@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<include src="ThreadUnsafeICryptoTransformOverview.qhelp" />
+<include src="ThreadUnsafeICryptoTransformOverview.inc.qhelp" />
 </overview>
 <recommendation>
 <p>If the object is shared across instances, you should consider changing the code to use a non-static object of type <code>System.Security.Cryptography.ICryptoTransform</code> instead.</p>

@@ -260,3 +260,24 @@ form.submit({
     path: '/upload',
     headers: form.getHeaders()
 });
+
+var httpProxy = require('http-proxy');
+var http = require("http");
+
+httpProxy.createProxyServer({target:'http://localhost:9000'}).listen(8000); 
+
+var proxy = httpProxy.createProxyServer(options);
+http.createServer(function(req, res) {
+  proxy.web(req, res, { target: 'http://mytarget.com:8080' });
+});
+
+httpProxy.createProxyServer({
+    target: {
+        protocol: 'https:',
+        host: 'my-domain-name',
+        port: 443,
+        pfx: fs.readFileSync('path/to/certificate.p12'),
+        passphrase: 'password',
+    },
+    changeOrigin: true
+}).listen(8000);

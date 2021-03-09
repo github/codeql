@@ -53,6 +53,11 @@ module ASTTest {
       or
       // Track uninitialized variables
       exists(source.asUninitialized())
+      or
+      exists(FunctionCall fc |
+        fc.getAnArgument() = source.asDefiningArgument() and
+        fc.getTarget().hasName("argument_source")
+      )
     }
 
     override predicate isSink(DataFlow::Node sink) {
@@ -80,6 +85,11 @@ module IRTest {
       source.(DataFlow::ExprNode).getConvertedExpr().(FunctionCall).getTarget().getName() = "source"
       or
       source.asParameter().getName().matches("source%")
+      or
+      exists(FunctionCall fc |
+        fc.getAnArgument() = source.asDefiningArgument() and
+        fc.getTarget().hasName("argument_source")
+      )
     }
 
     override predicate isSink(DataFlow::Node sink) {

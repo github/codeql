@@ -657,3 +657,18 @@ void test_with_const_member(char* source) {
   memcpy(c.data(), source, 16);
   sink(c.data()); // $ ast MISSING: ir
 }
+
+void argument_source(void*);
+
+struct two_members {
+	char *x, *y;
+};
+
+void test_argument_source_field_to_obj() {
+	two_members s;
+	argument_source(s.x);
+
+	sink(s); // $ SPURIOUS: ast
+	sink(s.x); // $ ast MISSING: ir
+	sink(s.y); // clean
+}

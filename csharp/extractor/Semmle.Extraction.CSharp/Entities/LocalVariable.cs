@@ -49,7 +49,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (Symbol is ILocalSymbol local && local.HasConstantValue)
             {
-                trapFile.constant_value(this, Expression.ValueAsString(local.ConstantValue));
+                trapFile.constant_value(this, Expression.ValueAsString(local.ConstantValue!));
             }
         }
 

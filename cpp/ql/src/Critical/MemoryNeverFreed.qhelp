@@ -10,7 +10,7 @@ This rule finds calls to the <code>alloc</code> family of functions without a co
 This leads to memory leaks.
 </p>
 
-<include src="aliasAnalysisWarning.qhelp" />
+<include src="aliasAnalysisWarning.inc.qhelp" />
 
 </overview>
 <recommendation>

@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         private void VisitParameter(ParameterSyntax p)
         {
-            var symbol = Context.GetModel(p).GetDeclaredSymbol(p);
+            var symbol = Context.GetModel(p).GetDeclaredSymbol(p)!;
             Parameter.Create(Context, symbol, this);
         }
 
@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         public static Lambda Create(ExpressionNodeInfo info, SimpleLambdaExpressionSyntax node) => new Lambda(info, node);
 
         private Lambda(ExpressionNodeInfo info, AnonymousMethodExpressionSyntax node) :
-            this(info.SetKind(ExprKind.ANONYMOUS_METHOD), node.Body, node.ParameterList == null ? Enumerable.Empty<ParameterSyntax>() : node.ParameterList.Parameters)
+            this(info.SetKind(ExprKind.ANONYMOUS_METHOD), node.Body, node.ParameterList is null ? Enumerable.Empty<ParameterSyntax>() : node.ParameterList.Parameters)
         { }
 
         public static Lambda Create(ExpressionNodeInfo info, AnonymousMethodExpressionSyntax node) => new Lambda(info, node);

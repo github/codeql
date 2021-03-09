@@ -114,7 +114,7 @@ namespace Semmle.Extraction.CIL
                     entity = new MethodSpecificationMethod(gc, (MethodSpecificationHandle)handle);
                     break;
                 case HandleKind.FieldDefinition:
-                    entity = new DefinitionField(gc.Cx, (FieldDefinitionHandle)handle);
+                    entity = new DefinitionField(gc.Context, (FieldDefinitionHandle)handle);
                     break;
                 case HandleKind.TypeReference:
                     var tr = new TypeReferenceType(this, (TypeReferenceHandle)handle);
@@ -127,6 +127,11 @@ namespace Semmle.Extraction.CIL
                     return Entities.Type.DecodeType(gc, (TypeSpecificationHandle)handle);
                 case HandleKind.TypeDefinition:
                     entity = new TypeDefinitionType(this, (TypeDefinitionHandle)handle);
+                    break;
+                case HandleKind.StandaloneSignature:
+                    var signature = MdReader.GetStandaloneSignature((StandaloneSignatureHandle)handle);
+                    var method = signature.DecodeMethodSignature(gc.Context.TypeSignatureDecoder, gc);
+                    entity = new FunctionPointerType(this, method);
                     break;
                 default:
                     throw new InternalError("Unhandled handle kind " + handle.Kind);

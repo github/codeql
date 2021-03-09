@@ -168,7 +168,13 @@ class InvokeNode extends DataFlow::SourceNode {
   private ObjectLiteralNode getOptionsArgument(int i) { result.flowsTo(getArgument(i)) }
 
   /** Gets an abstract value representing possible callees of this call site. */
-  final AbstractValue getACalleeValue() { result = getCalleeNode().analyze().getAValue() }
+  final AbstractValue getACalleeValue() {
+    exists(DataFlow::Node callee, DataFlow::AnalyzedNode analyzed |
+      pragma[only_bind_into](callee) = getCalleeNode() and
+      pragma[only_bind_into](analyzed) = callee.analyze() and
+      pragma[only_bind_into](result) = analyzed.getAValue()
+    )
+  }
 
   /**
    * Gets a potential callee of this call site.
@@ -1167,6 +1173,16 @@ module ClassNode {
   }
 
   /**
+   * Gets a reference to the function `func`, where there exists a read/write of the "prototype" property on that reference.
+   */
+  pragma[noinline]
+  private DataFlow::SourceNode getAFunctionValueWithPrototype(AbstractValue func) {
+    exists(result.getAPropertyReference("prototype")) and
+    result.analyze().getAValue() = pragma[only_bind_into](func) and
+    func instanceof AbstractFunction // the join-order goes bad if `func` has type `AbstractFunction`.
+  }
+
+  /**
    * A function definition with prototype manipulation as a `ClassNode` instance.
    */
   class FunctionStyleClass extends Range, DataFlow::ValueNode {
@@ -1176,10 +1192,7 @@ module ClassNode {
     FunctionStyleClass() {
       function.getFunction() = astNode and
       (
-        exists(DataFlow::PropRef read |
-          read.getPropertyName() = "prototype" and
-          read.getBase().analyze().getAValue() = function
-        )
+        exists(getAFunctionValueWithPrototype(function))
         or
         exists(string name |
           this = AccessPath::getAnAssignmentTo(name) and
@@ -1240,7 +1253,7 @@ module ClassNode {
      * Gets a reference to the prototype of this class.
      */
     DataFlow::SourceNode getAPrototypeReference() {
-      exists(DataFlow::SourceNode base | base.analyze().getAValue() = function |
+      exists(DataFlow::SourceNode base | base = getAFunctionValueWithPrototype(function) |
         result = base.getAPropertyRead("prototype")
         or
         result = base.getAPropertySource("prototype")

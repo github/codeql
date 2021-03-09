@@ -14,17 +14,17 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            var isSpecificCatchClause = Stmt.Declaration != null;
-            var hasVariableDeclaration = isSpecificCatchClause && Stmt.Declaration.Identifier.RawKind != 0;
+            var isSpecificCatchClause = Stmt.Declaration is not null;
+            var hasVariableDeclaration = isSpecificCatchClause && Stmt.Declaration!.Identifier.RawKind != 0;
 
             if (hasVariableDeclaration) // A catch clause of the form 'catch(Ex ex) { ... }'
             {
-                var decl = Expressions.VariableDeclaration.Create(Context, Stmt.Declaration, false, this, 0);
+                var decl = Expressions.VariableDeclaration.Create(Context, Stmt.Declaration!, false, this, 0);
                 trapFile.catch_type(this, Type.Create(Context, decl.Type).TypeRef, true);
             }
             else if (isSpecificCatchClause) // A catch clause of the form 'catch(Ex) { ... }'
             {
-                trapFile.catch_type(this, Type.Create(Context, Context.GetType(Stmt.Declaration.Type)).TypeRef, true);
+                trapFile.catch_type(this, Type.Create(Context, Context.GetType(Stmt.Declaration!.Type)).TypeRef, true);
             }
             else // A catch clause of the form 'catch { ... }'
             {
@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
                 trapFile.catch_type(this, exception, false);
             }
 
-            if (Stmt.Filter != null)
+            if (Stmt.Filter is not null)
             {
                 // For backward compatibility, the catch filter clause is child number 2.
                 Expression.Create(Context, Stmt.Filter.FilterExpression, this, 2);

@@ -32,7 +32,7 @@ whose <code>constructor-arg</code> elements use type matching.</p>
 
 <li>
 Spring Framework Reference Documentation 3.0:
-<a href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-constructor-injection">3.4.1.1 Constructor-based dependency injection</a>.
+<a href="https://docs.spring.io/spring-framework/docs/3.0.x/spring-framework-reference/html/beans.html#beans-constructor-injection">3.4.1.1 Constructor-based dependency injection</a>.
 </li>
 <li>
 ONJava:

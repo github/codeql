@@ -9,10 +9,10 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class Parameter : CachedSymbol<IParameterSymbol>, IExpressionParentEntity
     {
-        protected IEntity Parent { get; set; }
+        protected IEntity? Parent { get; set; }
         protected Parameter Original { get; }
 
-        protected Parameter(Context cx, IParameterSymbol init, IEntity parent, Parameter original)
+        protected Parameter(Context cx, IParameterSymbol init, IEntity? parent, Parameter? original)
             : base(cx, init)
         {
             Parent = parent;
@@ -67,7 +67,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public static Parameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter original = null) =>
+        public static Parameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter? original = null) =>
             ParameterFactory.Instance.CreateEntity(cx, param, (param, parent, original));
 
         public static Parameter Create(Context cx, IParameterSymbol param) =>
@@ -75,8 +75,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            if (Parent == null)
+            if (Parent is null)
                 Parent = Method.Create(Context, Symbol.ContainingSymbol as IMethodSymbol);
+
+            if (Parent is null)
+                throw new InternalError(Symbol, "Couldn't get parent of symbol.");
+
             trapFile.WriteSubId(Parent);
             trapFile.Write('_');
             trapFile.Write(Ordinal);
@@ -107,7 +111,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 Context.ModelError(Symbol, "Inconsistent parameter declaration");
 
             var type = Type.Create(Context, Symbol.Type);
-            trapFile.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent, Original);
+            trapFile.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent!, Original);
 
             foreach (var l in Symbol.Locations)
                 trapFile.param_location(this, Context.CreateLocation(l));
@@ -130,9 +134,9 @@ namespace Semmle.Extraction.CSharp.Entities
                 foreach (var syntax in Symbol.DeclaringSyntaxReferences
                     .Select(d => d.GetSyntax())
                     .OfType<ParameterSyntax>()
-                    .Where(s => s.Type != null))
+                    .Where(s => s.Type is not null))
                 {
-                    TypeMention.Create(Context, syntax.Type, this, type);
+                    TypeMention.Create(Context, syntax.Type!, this, type);
                 }
             }
 
@@ -142,22 +146,22 @@ namespace Semmle.Extraction.CSharp.Entities
                 // We should really define param_default(param, string)
                 // And use parameter child #0 to encode the default expression.
                 var defaultValue = GetParameterDefaultValue(Symbol);
-                if (defaultValue == null)
+                if (defaultValue is null)
                 {
                     // In case this parameter belongs to an accessor of an indexer, we need
                     // to get the default value from the corresponding parameter belonging
                     // to the indexer itself
                     var method = (IMethodSymbol)Symbol.ContainingSymbol;
-                    if (method != null)
+                    if (method is not null)
                     {
                         var i = method.Parameters.IndexOf(Symbol);
-                        var indexer = (IPropertySymbol)method.AssociatedSymbol;
-                        if (indexer != null)
+                        var indexer = (IPropertySymbol?)method.AssociatedSymbol;
+                        if (indexer is not null)
                             defaultValue = GetParameterDefaultValue(indexer.Parameters[i]);
                     }
                 }
 
-                if (defaultValue != null)
+                if (defaultValue is not null)
                 {
                     Context.PopulateLater(() =>
                     {
@@ -171,17 +175,17 @@ namespace Semmle.Extraction.CSharp.Entities
 
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
-        private static EqualsValueClauseSyntax GetParameterDefaultValue(IParameterSymbol parameter)
+        private static EqualsValueClauseSyntax? GetParameterDefaultValue(IParameterSymbol parameter)
         {
             var syntax = parameter.DeclaringSyntaxReferences.Select(@ref => @ref.GetSyntax()).OfType<ParameterSyntax>().FirstOrDefault();
             return syntax?.Default;
         }
 
-        private class ParameterFactory : CachedEntityFactory<(IParameterSymbol, IEntity, Parameter), Parameter>
+        private class ParameterFactory : CachedEntityFactory<(IParameterSymbol, IEntity?, Parameter?), Parameter>
         {
             public static ParameterFactory Instance { get; } = new ParameterFactory();
 
-            public override Parameter Create(Context cx, (IParameterSymbol, IEntity, Parameter) init) => new Parameter(cx, init.Item1, init.Item2, init.Item3);
+            public override Parameter Create(Context cx, (IParameterSymbol, IEntity?, Parameter?) init) => new Parameter(cx, init.Item1, init.Item2, init.Item3);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
@@ -211,44 +215,46 @@ namespace Semmle.Extraction.CSharp.Entities
             return 98735267;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            return obj != null && obj.GetType() == typeof(VarargsType);
+            return obj is not null && obj.GetType() == typeof(VarargsType);
         }
 
         public static VarargsType Create(Context cx) => VarargsTypeFactory.Instance.CreateEntity(cx, typeof(VarargsType), null);
 
-        private class VarargsTypeFactory : CachedEntityFactory<string, VarargsType>
+        private class VarargsTypeFactory : CachedEntityFactory<string?, VarargsType>
         {
             public static VarargsTypeFactory Instance { get; } = new VarargsTypeFactory();
 
-            public override VarargsType Create(Context cx, string init) => new VarargsType(cx);
+            public override VarargsType Create(Context cx, string? init) => new VarargsType(cx);
         }
     }
 
     internal class VarargsParam : Parameter
     {
+#nullable disable warnings
         private VarargsParam(Context cx, Method methodKey)
             : base(cx, null, methodKey, null) { }
+#nullable restore warnings
 
         public override void Populate(TextWriter trapFile)
         {
             var typeKey = VarargsType.Create(Context);
             // !! Maybe originaldefinition is wrong
-            trapFile.@params(this, "", typeKey, Ordinal, Kind.None, Parent, this);
+            trapFile.@params(this, "", typeKey, Ordinal, Kind.None, Parent!, this);
             trapFile.param_location(this, GeneratedLocation.Create(Context));
         }
 
-        protected override int Ordinal => ((Method)Parent).OriginalDefinition.Symbol.Parameters.Length;
+        protected override int Ordinal => ((Method)Parent!).OriginalDefinition.Symbol.Parameters.Length;
 
         public override int GetHashCode()
         {
             return 9873567;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            return obj != null && obj.GetType() == typeof(VarargsParam);
+            return obj is not null && obj.GetType() == typeof(VarargsParam);
         }
 
         public static VarargsParam Create(Context cx, Method method) => VarargsParamFactory.Instance.CreateEntity(cx, typeof(VarargsParam), method);
@@ -268,18 +274,18 @@ namespace Semmle.Extraction.CSharp.Entities
         private ConstructedExtensionParameter(Context cx, Method method, Parameter original)
             : base(cx, original.Symbol, method, original)
         {
-            constructedType = method.Symbol.ReceiverType;
+            constructedType = method.Symbol.ReceiverType!;
         }
 
         public override void Populate(TextWriter trapFile)
         {
             var typeKey = Type.Create(Context, constructedType);
-            trapFile.@params(this, Original.Symbol.Name, typeKey.TypeRef, 0, Kind.This, Parent, Original);
+            trapFile.@params(this, Original.Symbol.Name, typeKey.TypeRef, 0, Kind.This, Parent!, Original);
             trapFile.param_location(this, Original.Location);
         }
 
         public static ConstructedExtensionParameter Create(Context cx, Method method, Parameter parameter) =>
-            ExtensionParamFactory.Instance.CreateEntity(cx, (new SymbolEqualityWrapper(parameter.Symbol), new SymbolEqualityWrapper(method.Symbol.ReceiverType)), (method, parameter));
+            ExtensionParamFactory.Instance.CreateEntity(cx, (new SymbolEqualityWrapper(parameter.Symbol), new SymbolEqualityWrapper(method.Symbol.ReceiverType!)), (method, parameter));
 
         private class ExtensionParamFactory : CachedEntityFactory<(Method, Parameter), ConstructedExtensionParameter>
         {

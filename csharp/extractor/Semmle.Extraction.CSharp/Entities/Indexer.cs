@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateNullability(trapFile, Symbol.GetAnnotatedType());
 
             var type = Type.Create(Context, Symbol.Type);
-            trapFile.indexers(this, Symbol.GetName(useMetadataName: true), ContainingType, type.TypeRef, OriginalDefinition);
+            trapFile.indexers(this, Symbol.GetName(useMetadataName: true), ContainingType!, type.TypeRef, OriginalDefinition);
             foreach (var l in Locations)
                 trapFile.indexer_location(this, l);
 
@@ -42,7 +42,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (IsSourceDeclaration)
             {
                 var expressionBody = ExpressionBody;
-                if (expressionBody != null)
+                if (expressionBody is not null)
                 {
                     // The expression may need to reference parameters in the getter.
                     // So we need to arrange that the expression is populated after the getter.
@@ -63,7 +63,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.explicitly_implements(this, explicitInterface.TypeRef);
 
                 foreach (var syntax in declSyntaxReferences)
-                    TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier.Name, this, explicitInterface);
+                    TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier!.Name, this, explicitInterface);
             }
 
 
@@ -75,7 +75,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            trapFile.WriteSubId(ContainingType);
+            trapFile.WriteSubId(ContainingType!);
             trapFile.Write('.');
             trapFile.Write(Symbol.MetadataName);
             trapFile.Write('(');

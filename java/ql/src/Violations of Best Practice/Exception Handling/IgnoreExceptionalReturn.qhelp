@@ -37,49 +37,49 @@ Instead, the code should check the method's return value, which indicates the nu
 
 
 <li>
-    CERT Secure Coding Standards: <a href="https://www.securecoding.cert.org/confluence/display/java/EXP00-J.+Do+not+ignore+values+returned+by+methods">
+    SEI CERT Oracle Coding Standard for Java: <a href="https://wiki.sei.cmu.edu/confluence/display/java/EXP00-J.+Do+not+ignore+values+returned+by+methods">
         EXP00-J. Do not ignore values returned by methods</a>.
 </li>
 <li>
-  Java API Documentation, java.util.Queue: <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Queue.html#offer%28E%29">
-    offer</a>.
+  Java API Specification: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Queue.html#offer(E)">
+    java.util.Queue.offer</a>.
 </li>
 <li>
-  Java API Documentation, java.util.concurrent.BlockingQueue: <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/BlockingQueue.html#offer%28E,%20long,%20java.util.concurrent.TimeUnit%29">
-    offer</a>.
+  Java API Specification: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/BlockingQueue.html#offer(E,long,java.util.concurrent.TimeUnit)">
+    java.util.concurrent.BlockingQueue.offer</a>.
 </li>
 <li>
-  Java API Documentation, java.util.concurrent.locks.Condition: <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/locks/Condition.html#await%28long,%20java.util.concurrent.TimeUnit%29">
+  Java API Specification, java.util.concurrent.locks.Condition: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/locks/Condition.html#await(long,java.util.concurrent.TimeUnit)">
     await</a>, 
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/locks/Condition.html#awaitUntil%28java.util.Date%29">
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/locks/Condition.html#awaitUntil(java.util.Date)">
     awaitUntil</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/locks/Condition.html#awaitNanos%28long%29">
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/locks/Condition.html#awaitNanos(long)">
     awaitNanos</a>.
 </li>
 <li>
-  Java API Documentation, java.io.File: <a href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html#createNewFile%28%29">
+  Java API Specification, java.io.File: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html#createNewFile()">
     createNewFile</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html#delete%28%29">
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html#delete()">
     delete</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html#mkdir%28%29">
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html#mkdir()">
     mkdir</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html#renameTo%28java.io.File%29">
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html#renameTo(java.io.File)">
     renameTo</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html#setLastModified%28long%29">
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html#setLastModified(long)">
     setLastModified</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html#setReadOnly%28%29">
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html#setReadOnly()">
     setReadOnly</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html#setWritable%28boolean%29">
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html#setWritable(boolean)">
     setWritable(boolean)</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html#setWritable%28boolean,%20boolean%29">
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html#setWritable(boolean,boolean)">
     setWritable(boolean, boolean)</a>.
 </li>
 <li>
-  Java API Documentation, java.io.InputStream: <a href="http://docs.oracle.com/javase/6/docs/api/java/io/InputStream.html#skip%28long%29">
+  Java API Specification, java.io.InputStream: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html#skip(long)">
     skip</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/InputStream.html#read%28byte[]%29">
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html#read(byte%5B%5D)">
     read(byte[])</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/InputStream.html#read%28byte[],%20int,%20int%29">
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html#read(byte[],int,int)">
     read(byte[], int, int)</a>.
 </li>
 

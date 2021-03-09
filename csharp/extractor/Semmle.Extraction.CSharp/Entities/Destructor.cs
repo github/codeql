@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             PopulateMethod(trapFile);
             PopulateModifiers(trapFile);
-            ContainingType.PopulateGenerics();
+            ContainingType!.PopulateGenerics();
 
             trapFile.destructors(this, string.Format("~{0}", Symbol.ContainingType.Name), ContainingType, OriginalDefinition(Context, this, Symbol));
             trapFile.destructor_location(this, Location);
@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private static new Destructor OriginalDefinition(Context cx, Destructor original, IMethodSymbol symbol)
         {
-            return symbol.OriginalDefinition == null || SymbolEqualityComparer.Default.Equals(symbol.OriginalDefinition, symbol) ? original : Create(cx, symbol.OriginalDefinition);
+            return symbol.OriginalDefinition is null || SymbolEqualityComparer.Default.Equals(symbol.OriginalDefinition, symbol) ? original : Create(cx, symbol.OriginalDefinition);
         }
 
         public static new Destructor Create(Context cx, IMethodSymbol symbol) =>

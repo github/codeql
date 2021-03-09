@@ -7,7 +7,7 @@ namespace Semmle.Extraction.CIL
 {
     public static class Analyser
     {
-        private static void ExtractCIL(Extractor extractor, TrapWriter trapWriter, bool extractPdbs)
+        private static void ExtractCIL(TracingExtractor extractor, TrapWriter trapWriter, bool extractPdbs)
         {
             using var cilContext = new Context(extractor, trapWriter, extractor.OutputPath, extractPdbs);
             cilContext.Populate(new Assembly(cilContext));
@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CIL
             {
                 var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
                 var pathTransformer = new PathTransformer(canonicalPathCache);
-                var extractor = new Extractor(false, assemblyPath, logger, pathTransformer);
+                var extractor = new TracingExtractor(assemblyPath, logger, pathTransformer);
                 var transformedAssemblyPath = pathTransformer.Transform(assemblyPath);
                 var project = layout.LookupProjectOrDefault(transformedAssemblyPath);
                 using var trapWriter = project.CreateTrapWriter(logger, transformedAssemblyPath.WithSuffix(".cil"), trapCompression, discardDuplicates: true);
