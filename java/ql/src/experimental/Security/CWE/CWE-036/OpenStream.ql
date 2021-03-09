@@ -22,13 +22,6 @@ class URLConstructor extends ClassInstanceExpr {
   }
 }
 
-class URLOpenStreamCsv extends SinkModelCsv {
-  override predicate row(string row) {
-    //"package;type;overrides;name;signature;ext;inputspec;kind",
-    row = "java.net;URL;true;openStream;();;Argument[-1];url-open-stream"
-  }
-}
-
 class URLOpenStreamMethod extends Method {
   URLOpenStreamMethod() {
     this.getDeclaringType() instanceof TypeUrl and
@@ -41,7 +34,13 @@ class RemoteURLToOpenStreamFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "url-open-stream") }
+  override predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess m |
+      sink.asExpr() = m.getQualifier() and m.getMethod() instanceof URLOpenStreamMethod
+    )
+    or
+    sinkNode(sink, "url-open-stream")
+  }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(URLConstructor u |
