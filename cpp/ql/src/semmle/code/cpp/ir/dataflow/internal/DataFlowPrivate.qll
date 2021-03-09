@@ -52,7 +52,11 @@ private class SideEffectArgumentNode extends ArgumentNode {
     pos = getArgumentPosOfSideEffect(read.getIndex())
   }
 
-  override string toString() { result = "Argument " + read.getIndex() + " indirection" }
+  override string toString() {
+    if read.getIndex() = -1
+    then result = "This indirection"
+    else result = "Argument " + read.getIndex() + " indirection"
+  }
 }
 
 private newtype TReturnKind =
