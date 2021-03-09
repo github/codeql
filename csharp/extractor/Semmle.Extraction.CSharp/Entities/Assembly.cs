@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CSharp.Entities
         private Assembly(Context cx, Microsoft.CodeAnalysis.Location? init)
             : base(cx, init)
         {
-            if (init == null)
+            if (init is null)
             {
                 // This is the output assembly
                 assemblyPath = ((TracingExtractor)cx.Extractor).OutputPath;
@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            if (assemblyPath != null)
+            if (assemblyPath is not null)
             {
                 trapFile.assemblies(this, File.Create(Context, assemblyPath), assembly.ToString() ?? "",
                     assembly.Identity.Name, assembly.Identity.Version.ToString());
@@ -41,7 +41,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public override bool NeedsPopulation => true;
 
         public override int GetHashCode() =>
-            Symbol == null ? 91187354 : Symbol.GetHashCode();
+            Symbol is null ? 91187354 : Symbol.GetHashCode();
 
         public override bool Equals(object? obj)
         {

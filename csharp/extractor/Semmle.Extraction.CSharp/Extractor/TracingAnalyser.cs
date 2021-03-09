@@ -133,11 +133,11 @@ namespace Semmle.Extraction.CSharp
             // There's no apparent way to access the output filename from the compilation,
             // so we need to re-parse the command line arguments.
 
-            if (commandLineArguments.OutputFileName == null)
+            if (commandLineArguments.OutputFileName is null)
             {
                 // No output specified: Use name based on first filename
                 var entry = compilation.GetEntryPoint(System.Threading.CancellationToken.None);
-                if (entry == null)
+                if (entry is null)
                 {
                     if (compilation.SyntaxTrees.Length == 0)
                         throw new InvalidOperationException("No source files seen");
@@ -188,7 +188,7 @@ namespace Semmle.Extraction.CSharp
         {
             get
             {
-                return extractor == null || extractor.Standalone || compilation == null ? Enumerable.Empty<Diagnostic>() :
+                return extractor is null || extractor.Standalone || compilation is null ? Enumerable.Empty<Diagnostic>() :
                     compilation.
                     GetDiagnostics().
                     Where(e => e.Severity >= DiagnosticSeverity.Error && !errorsToIgnore.Contains(e.Id));

@@ -193,7 +193,7 @@ namespace Semmle.Extraction.CSharp
                 var transformedSourcePath = PathTransformer.Transform(sourcePath);
 
                 var projectLayout = layout.LookupProjectOrNull(transformedSourcePath);
-                var excluded = projectLayout == null;
+                var excluded = projectLayout is null;
                 var trapPath = excluded ? "" : projectLayout!.GetTrapPath(Logger, transformedSourcePath, options.TrapCompression);
                 var upToDate = false;
 

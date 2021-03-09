@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CIL
             if (extractPdbs)
             {
                 Pdb = PDB.PdbReader.Create(assemblyPath, PeReader);
-                if (Pdb != null)
+                if (Pdb is not null)
                 {
                     Extractor.Logger.Log(Util.Logging.Severity.Info, string.Format("Found PDB information for {0}", assemblyPath));
                 }
@@ -56,7 +56,7 @@ namespace Semmle.Extraction.CIL
 
         public void Dispose()
         {
-            if (Pdb != null)
+            if (Pdb is not null)
                 Pdb.Dispose();
             PeReader.Dispose();
             stream.Dispose();

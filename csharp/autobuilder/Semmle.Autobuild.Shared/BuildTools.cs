@@ -27,7 +27,7 @@ namespace Semmle.Autobuild.Shared
         public static IEnumerable<VcVarsBatFile> GetCandidateVcVarsFiles(IBuildActions actions)
         {
             var programFilesx86 = actions.GetEnvironmentVariable("ProgramFiles(x86)");
-            if (programFilesx86 == null)
+            if (programFilesx86 is null)
                 yield break;
 
             // Attempt to use vswhere to find installations of Visual Studio

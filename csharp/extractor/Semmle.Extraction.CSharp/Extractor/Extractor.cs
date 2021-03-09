@@ -105,7 +105,7 @@ namespace Semmle.Extraction.CSharp
                     compilerVersion.AdditionalReferenceDirectories
                     );
 
-                if (compilerArguments == null)
+                if (compilerArguments is null)
                 {
                     var sb = new StringBuilder();
                     sb.Append("  Failed to parse command line: ").AppendList(" ", Entities.Compilation.Settings.Args);
@@ -143,7 +143,7 @@ namespace Semmle.Extraction.CSharp
             // 3) Directories specified by / lib.
             // 4) Directories specified by the LIB environment variable.
 
-            if (args.BaseDirectory is object)
+            if (args.BaseDirectory is not null)
             {
                 yield return args.BaseDirectory;
             }
@@ -152,7 +152,7 @@ namespace Semmle.Extraction.CSharp
                 yield return r;
 
             var lib = System.Environment.GetEnvironmentVariable("LIB");
-            if (lib != null)
+            if (lib is not null)
                 yield return lib;
         }
 
@@ -196,7 +196,7 @@ namespace Semmle.Extraction.CSharp
                         .Select(path => canonicalPathCache.GetCanonicalPath(path))
                         .FirstOrDefault();
 
-                    if (composed is object)
+                    if (composed is not null)
                     {
                         var reference = MakeReference(clref, composed);
                         ret.Add(reference);

@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public static bool ConstructedOrParentIsConstructed(INamedTypeSymbol symbol)
         {
             return !SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) ||
-                symbol.ContainingType != null && ConstructedOrParentIsConstructed(symbol.ContainingType);
+                symbol.ContainingType is not null && ConstructedOrParentIsConstructed(symbol.ContainingType);
         }
 
         private static Kinds.TypeKind GetClassType(Context cx, ITypeSymbol t, bool constructUnderlyingTupleType)
@@ -101,12 +101,12 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             var containingType = ContainingType;
-            if (containingType != null && Symbol.Kind != SymbolKind.TypeParameter)
+            if (containingType is not null && Symbol.Kind != SymbolKind.TypeParameter)
             {
                 var originalDefinition = Symbol.TypeKind == TypeKind.Error ? this : Create(Context, Symbol.OriginalDefinition);
                 trapFile.nested_types(this, containingType, originalDefinition);
             }
-            else if (Symbol.ContainingNamespace != null)
+            else if (Symbol.ContainingNamespace is not null)
             {
                 trapFile.parent_namespace(this, Namespace.Create(Context, Symbol.ContainingNamespace));
             }
@@ -116,7 +116,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 // They are in the namespace of the original object
                 var elementType = array.ElementType;
                 var ns = elementType.TypeKind == TypeKind.TypeParameter ? Context.Compilation.GlobalNamespace : elementType.ContainingNamespace;
-                if (ns != null)
+                if (ns is not null)
                     trapFile.parent_namespace(this, Namespace.Create(Context, ns));
             }
 
@@ -125,11 +125,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 var elementType = pointer.PointedAtType;
                 var ns = elementType.TypeKind == TypeKind.TypeParameter ? Context.Compilation.GlobalNamespace : elementType.ContainingNamespace;
 
-                if (ns != null)
+                if (ns is not null)
                     trapFile.parent_namespace(this, Namespace.Create(Context, ns));
             }
 
-            if (Symbol.BaseType != null && Symbol.BaseType.SpecialType == SpecialType.System_MulticastDelegate)
+            if (Symbol.BaseType is not null && Symbol.BaseType.SpecialType == SpecialType.System_MulticastDelegate)
             {
                 // This is a delegate.
                 // The method "Invoke" has the return type.
@@ -155,7 +155,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 baseLists = baseLists.Concat(declSyntaxReferences.OfType<StructDeclarationSyntax>().Select(c => c.BaseList));
 
                 baseLists
-                    .Where(bl => bl != null)
+                    .Where(bl => bl is not null)
                     .SelectMany(bl => bl!.Types)
                     .Zip(
                         baseTypes.Where(bt => bt.Symbol.SpecialType != SpecialType.System_Object),
@@ -212,7 +212,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         public void PopulateGenerics()
         {
-            if (Symbol == null || !NeedsPopulation || !Context.ExtractGenerics(this))
+            if (Symbol is null || !NeedsPopulation || !Context.ExtractGenerics(this))
                 return;
 
             var members = new List<ISymbol>();
@@ -240,7 +240,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 Context.CreateEntity(member);
             }
 
-            if (Symbol.BaseType != null)
+            if (Symbol.BaseType is not null)
                 Create(Context, Symbol.BaseType).PopulateGenerics();
 
             foreach (var i in Symbol.Interfaces)
@@ -262,7 +262,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public static Type Create(Context cx, ITypeSymbol? type)
         {
             type = type.DisambiguateType();
-            return type == null
+            return type is null
                 ? NullType.Create(cx)
                 : (Type)cx.CreateEntity(type);
         }
@@ -273,7 +273,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public virtual int Dimension => 0;
 
         public static bool IsDelegate(ITypeSymbol? symbol) =>
-            symbol != null && symbol.TypeKind == TypeKind.Delegate;
+            symbol is not null && symbol.TypeKind == TypeKind.Delegate;
 
         /// <summary>
         /// A copy of a delegate "Invoke" method or function pointer parameter.

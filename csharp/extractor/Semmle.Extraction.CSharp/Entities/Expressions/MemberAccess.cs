@@ -11,7 +11,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             var trapFile = info.Context.TrapWriter.Writer;
             Qualifier = Create(Context, qualifier, this, -1);
 
-            if (target == null)
+            if (target is null)
             {
                 if (info.Kind != ExprKind.DYNAMIC_MEMBER_ACCESS)
                     Context.ModelError(info.Node, "Could not determine target for member access");
@@ -59,14 +59,14 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             var symbol = target.Symbol ?? info.Context.GetSymbolInfo(name).Symbol;
 
-            if (symbol == null && target.CandidateSymbols.Length >= 1)
+            if (symbol is null && target.CandidateSymbols.Length >= 1)
             {
                 // Pick the first symbol. This could occur for something like `nameof(Foo.Bar)`
                 // where `Bar` is a method group. Technically, we don't know which symbol is accessed.
                 symbol = target.CandidateSymbols[0];
             }
 
-            if (symbol == null)
+            if (symbol is null)
             {
                 info.Context.ModelError(info.Node, "Failed to determine symbol for member access");
                 // Default to property access - this can still give useful results but

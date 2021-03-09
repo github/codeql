@@ -23,15 +23,15 @@ namespace Semmle.Autobuild.Shared
 
             var vsTools = GetVcVarsBatFile(builder);
 
-            if (vsTools == null && builder.ProjectsOrSolutionsToBuild.Any())
+            if (vsTools is null && builder.ProjectsOrSolutionsToBuild.Any())
             {
                 var firstSolution = builder.ProjectsOrSolutionsToBuild.OfType<ISolution>().FirstOrDefault();
-                vsTools = firstSolution != null
+                vsTools = firstSolution is not null
                                 ? BuildTools.FindCompatibleVcVars(builder.Actions, firstSolution)
                                 : BuildTools.VcVarsAllBatFiles(builder.Actions).OrderByDescending(b => b.ToolsVersion).FirstOrDefault();
             }
 
-            if (vsTools == null && builder.Actions.IsWindows())
+            if (vsTools is null && builder.Actions.IsWindows())
             {
                 builder.Log(Severity.Warning, "Could not find a suitable version of VsDevCmd.bat/vcvarsall.bat");
             }
@@ -85,7 +85,7 @@ namespace Semmle.Autobuild.Shared
 
                 var command = new CommandBuilder(builder.Actions);
 
-                if (vsTools != null)
+                if (vsTools is not null)
                 {
                     command.CallBatFile(vsTools.Path);
                     // `vcvarsall.bat` sets a default Platform environment variable,
@@ -105,9 +105,9 @@ namespace Semmle.Autobuild.Shared
                 var configuration = builder.Options.MsBuildConfiguration ?? (projectOrSolution is ISolution s2 ? s2.DefaultConfigurationName : null);
 
                 command.Argument("/t:" + target);
-                if (platform != null)
+                if (platform is not null)
                     command.Argument(string.Format("/p:Platform=\"{0}\"", platform));
-                if (configuration != null)
+                if (configuration is not null)
                     command.Argument(string.Format("/p:Configuration=\"{0}\"", configuration));
                 command.Argument("/p:MvcBuildViews=true");
 
@@ -130,7 +130,7 @@ namespace Semmle.Autobuild.Shared
         {
             VcVarsBatFile? vsTools = null;
 
-            if (builder.Options.VsToolsVersion != null)
+            if (builder.Options.VsToolsVersion is not null)
             {
                 if (int.TryParse(builder.Options.VsToolsVersion, out var msToolsVersion))
                 {
@@ -140,7 +140,7 @@ namespace Semmle.Autobuild.Shared
                     }
 
                     vsTools = BuildTools.FindCompatibleVcVars(builder.Actions, msToolsVersion);
-                    if (vsTools == null)
+                    if (vsTools is null)
                         builder.Log(Severity.Warning, "Could not find build tools matching version {0}", msToolsVersion);
                     else
                         builder.Log(Severity.Info, "Setting Visual Studio tools to {0}", vsTools.Path);

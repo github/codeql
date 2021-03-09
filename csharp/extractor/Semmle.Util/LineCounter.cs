@@ -98,7 +98,7 @@ namespace Semmle.Util
             var context = new Context();
 
             char? cur, prev = null;
-            while ((cur = GetNext(input, context)) != null)
+            while ((cur = GetNext(input, context)) is not null)
             {
                 if (IsNewLine(cur))
                 {
@@ -154,7 +154,7 @@ namespace Semmle.Util
         /// <returns></returns>
         private static char? GetNext(string input, Context context)
         {
-            return input == null || context.CurIndex >= input.Length ?
+            return input is null || context.CurIndex >= input.Length ?
                 (char?)null :
                 input[context.CurIndex++];
         }
@@ -191,7 +191,7 @@ namespace Semmle.Util
             do
             {
                 c = GetNext(input, context);
-            } while (c != null && !IsNewLine(c));
+            } while (c is not null && !IsNewLine(c));
 
             // If we reached the end of a line (as opposed to reaching the end of the text),
             // put the '\n' back so that it can be handled by the normal newline processing
@@ -210,7 +210,7 @@ namespace Semmle.Util
         {
             char? cur = '\0', prev = null;
             context.HasComment = true;
-            while (cur != null && ((cur = GetNext(input, context)) != '/' || prev != '*'))
+            while (cur is not null && ((cur = GetNext(input, context)) != '/' || prev != '*'))
             {
                 if (IsNewLine(cur))
                 {
@@ -244,7 +244,7 @@ namespace Semmle.Util
         {
             char? cur = '\0';
             var numSlashes = 0;
-            while (cur != null && ((cur = GetNext(input, context)) != '"' || (numSlashes % 2 != 0)))
+            while (cur is not null && ((cur = GetNext(input, context)) != '"' || (numSlashes % 2 != 0)))
             {
                 if (cur == '\\')
                     ++numSlashes;

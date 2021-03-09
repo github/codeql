@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool Equals(object? obj)
         {
-            return obj != null && obj.GetType() == typeof(NullType);
+            return obj is not null && obj.GetType() == typeof(NullType);
         }
 
         public static Type Create(Context cx) => NullTypeFactory.Instance.CreateEntity(cx, typeof(NullType), null);

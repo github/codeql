@@ -36,11 +36,11 @@ namespace Semmle.Extraction.CIL.Entities
             isContainerNamespace = nameParser.IsContainerNamespace;
             containerName = nameParser.ContainerName;
 
-            unboundGenericType = nameParser.UnboundGenericTypeName == null
+            unboundGenericType = nameParser.UnboundGenericTypeName is null
                 ? this
                 : new NoMetadataHandleType(Context, nameParser.UnboundGenericTypeName);
 
-            if (nameParser.TypeArguments != null)
+            if (nameParser.TypeArguments is not null)
             {
                 thisTypeArguments = nameParser.TypeArguments.Select(t => new NoMetadataHandleType(Context, t)).ToArray();
             }
@@ -66,7 +66,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         private void Populate()
         {
-            if (ContainingNamespace is object)
+            if (ContainingNamespace is not null)
             {
                 Context.Populate(ContainingNamespace);
             }

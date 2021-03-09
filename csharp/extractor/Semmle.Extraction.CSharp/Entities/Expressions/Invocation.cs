@@ -51,10 +51,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 case SimpleNameSyntax simpleName when (Kind == ExprKind.METHOD_INVOCATION):
                     // Unqualified method call; `M()`
                     memberName = simpleName.Identifier.Text;
-                    if (target != null && !target.IsStatic)
+                    if (target is not null && !target.IsStatic)
                     {
                         // Implicit `this` qualifier; add explicitly
-                        if (Location.Symbol is object &&
+                        if (Location.Symbol is not null &&
                             Context.GetModel(Syntax).GetEnclosingSymbol(Location.Symbol.SourceSpan.Start) is IMethodSymbol callingMethod)
                         {
                             This.CreateImplicit(Context, callingMethod.ContainingType, Location, this, child++);
@@ -79,7 +79,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             var isDynamicCall = IsDynamicCall(info);
             if (isDynamicCall)
             {
-                if (memberName != null)
+                if (memberName is not null)
                     trapFile.dynamic_member_name(this, memberName);
                 else
                     Context.ModelError(Syntax, "Unable to get name for dynamic call.");
@@ -87,7 +87,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             PopulateArguments(trapFile, Syntax.ArgumentList, child);
 
-            if (target == null)
+            if (target is null)
             {
                 if (!isDynamicCall && !IsDelegateLikeCall(info))
                     Context.ModelError(Syntax, "Unable to resolve target for call. (Compilation error?)");
@@ -115,7 +115,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 var si = SymbolInfo;
 
-                if (si.Symbol != null)
+                if (si.Symbol is not null)
                     return si.Symbol as IMethodSymbol;
 
                 if (si.CandidateReason == CandidateReason.OverloadResolutionFailure)
@@ -163,7 +163,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             if (si.CandidateReason == CandidateReason.LateBound &&
                 node.Expression is IdentifierNameSyntax &&
                 IsDynamic(info.Context, node.Expression) &&
-                si.Symbol == null)
+                si.Symbol is null)
             {
                 return true;
             }
@@ -173,13 +173,13 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         private static bool IsFunctionPointer(ISymbol? symbol)
         {
-            return symbol != null &&
+            return symbol is not null &&
                 symbol.Kind == SymbolKind.FunctionPointerType;
         }
 
         private static bool IsDelegateInvoke(ISymbol? symbol)
         {
-            return symbol != null &&
+            return symbol is not null &&
                 symbol.Kind == SymbolKind.Method &&
                 ((IMethodSymbol)symbol).MethodKind == MethodKind.DelegateInvoke;
         }

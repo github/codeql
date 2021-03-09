@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Entities
             ContainingType!.PopulateGenerics();
 
             var prop = PropertySymbol;
-            if (prop == null)
+            if (prop is null)
             {
                 Context.ModelError(Symbol, "Unhandled accessor associated symbol");
                 return;
@@ -72,7 +72,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             Overrides(trapFile);
 
-            if (Symbol.FromSource() && Block == null)
+            if (Symbol.FromSource() && Block is null)
             {
                 trapFile.compiler_generated(this);
             }

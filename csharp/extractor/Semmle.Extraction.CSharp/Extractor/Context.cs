@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CSharp
             // todo: when this context belongs to a SourceScope, the syntax tree can be retrieved from the scope, and
             // the node parameter could be removed. Is there any case when we pass in a node that's not from the current
             // tree?
-            if (cachedModel == null || node.SyntaxTree != cachedModel.SyntaxTree)
+            if (cachedModel is null || node.SyntaxTree != cachedModel.SyntaxTree)
             {
                 cachedModel = Compilation.GetSemanticModel(node.SyntaxTree);
             }
@@ -80,14 +80,14 @@ namespace Semmle.Extraction.CSharp
 
         public override Extraction.Entities.Location CreateLocation()
         {
-            return SourceTree == null
+            return SourceTree is null
                 ? GeneratedLocation.Create(this)
                 : CreateLocation(Microsoft.CodeAnalysis.Location.Create(SourceTree, Microsoft.CodeAnalysis.Text.TextSpan.FromBounds(0, 0)));
         }
 
         public override Extraction.Entities.Location CreateLocation(Microsoft.CodeAnalysis.Location? location)
         {
-            return (location == null || location.Kind == LocationKind.None)
+            return (location is null || location.Kind == LocationKind.None)
                 ? GeneratedLocation.Create(this)
                 : location.IsInSource
                     ? Entities.NonGeneratedSourceLocation.Create(this, location)

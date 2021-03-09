@@ -103,7 +103,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 case SyntaxKind.QualifiedName:
                     var qns = (QualifiedNameSyntax)syntax;
                     var right = Create(Context, qns.Right, parent, type);
-                    if (type.ContainingType is object)
+                    if (type.ContainingType is not null)
                     {
                         // Type qualifier
                         Create(Context, qns.Left, right, type.ContainingType);

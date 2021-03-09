@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
             Create(Context, Stmt.Block, this, 0);
 
-            if (Stmt.Finally != null)
+            if (Stmt.Finally is not null)
             {
                 Create(Context, Stmt.Finally.Block, this, -1);
             }

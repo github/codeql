@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CIL.Entities
 
                 var text = file.Contents;
 
-                if (text == null)
+                if (text is null)
                     Context.Extractor.Logger.Log(Util.Logging.Severity.Warning, string.Format("PDB source file {0} could not be found", OriginalPath));
                 else
                     Context.TrapWriter.Archive(TransformedPath, text);

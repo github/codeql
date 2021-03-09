@@ -72,7 +72,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (IsSourceDeclaration && Symbol.FromSource())
             {
                 var expressionBody = ExpressionBody;
-                if (expressionBody != null)
+                if (expressionBody is not null)
                 {
                     Context.PopulateLater(() => Expression.Create(Context, expressionBody, this, 0));
                 }
@@ -80,7 +80,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 var child = 1;
                 foreach (var initializer in declSyntaxReferences
                     .Select(n => n.Initializer)
-                    .Where(i => i != null))
+                    .Where(i => i is not null))
                 {
                     Context.PopulateLater(() =>
                     {

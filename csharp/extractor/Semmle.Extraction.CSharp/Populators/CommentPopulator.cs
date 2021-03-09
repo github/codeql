@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Populators
                     // When the duplication guard key exists, it means that the entity is guarded against
                     // trap duplication (<see cref = "Context.BindComments(IEntity, Location)" />).
                     // We must therefore also guard comment construction.
-                    if (duplicationGuardKey != null)
+                    if (duplicationGuardKey is not null)
                         cx.WithDuplicationGuard(duplicationGuardKey, a);
                     else
                         a();

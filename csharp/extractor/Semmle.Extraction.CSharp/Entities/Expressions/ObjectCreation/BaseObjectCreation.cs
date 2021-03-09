@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            if (Syntax.ArgumentList != null)
+            if (Syntax.ArgumentList is not null)
             {
                 PopulateArguments(trapFile, Syntax.ArgumentList, 0);
             }
@@ -41,7 +41,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 }
             }
 
-            if (Syntax.Initializer != null)
+            if (Syntax.Initializer is not null)
             {
                 switch (Syntax.Initializer.Kind())
                 {
@@ -68,7 +68,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         private static bool IsDynamicObjectCreation(Context cx, BaseObjectCreationExpressionSyntax node)
         {
-            return node.ArgumentList != null &&
+            return node.ArgumentList is not null &&
                 node.ArgumentList.Arguments.Any(arg => IsDynamic(cx, arg.Expression));
         }
     }

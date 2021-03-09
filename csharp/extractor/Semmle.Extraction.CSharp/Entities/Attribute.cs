@@ -51,7 +51,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.attributes(this, type.TypeRef, entity);
             trapFile.attribute_location(this, Location);
 
-            if (attributeSyntax is object)
+            if (attributeSyntax is not null)
             {
                 if (!Context.Extractor.Standalone)
                 {
@@ -66,18 +66,18 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private void ExtractArguments(TextWriter trapFile)
         {
-            var ctorArguments = attributeSyntax?.ArgumentList?.Arguments.Where(a => a.NameEquals == null).ToList();
+            var ctorArguments = attributeSyntax?.ArgumentList?.Arguments.Where(a => a.NameEquals is null).ToList();
 
             var childIndex = 0;
             for (var i = 0; i < Symbol.ConstructorArguments.Length; i++)
             {
                 var constructorArgument = Symbol.ConstructorArguments[i];
                 var paramName = Symbol.AttributeConstructor?.Parameters[i].Name;
-                var argSyntax = ctorArguments?.SingleOrDefault(a => a.NameColon != null && a.NameColon.Name.Identifier.Text == paramName);
+                var argSyntax = ctorArguments?.SingleOrDefault(a => a.NameColon is not null && a.NameColon.Name.Identifier.Text == paramName);
 
-                if (argSyntax == null &&                            // couldn't find named argument
+                if (argSyntax is null &&                            // couldn't find named argument
                     ctorArguments?.Count > childIndex &&            // there're more arguments
-                    ctorArguments[childIndex].NameColon == null)    // the argument is positional
+                    ctorArguments[childIndex].NameColon is null)    // the argument is positional
                 {
                     argSyntax = ctorArguments[childIndex];
                 }
@@ -97,7 +97,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     this,
                     childIndex++);
 
-                if (expr is object)
+                if (expr is not null)
                 {
                     trapFile.expr_argument_name(expr, namedArgument.Key);
                 }

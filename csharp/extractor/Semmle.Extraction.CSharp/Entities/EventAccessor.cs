@@ -19,7 +19,7 @@ namespace Semmle.Extraction.CSharp.Entities
             ContainingType!.PopulateGenerics();
 
             var @event = EventSymbol;
-            if (@event == null)
+            if (@event is null)
             {
                 Context.ModelError(Symbol, "Unhandled event accessor associated symbol");
                 return;

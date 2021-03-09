@@ -72,7 +72,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static void ExtractModifiers(Context cx, TextWriter trapFile, IEntity key, ISymbol symbol)
         {
-            var interfaceDefinition = symbol.ContainingType != null
+            var interfaceDefinition = symbol.ContainingType is not null
                 && symbol.ContainingType.Kind == SymbolKind.NamedType
                 && symbol.ContainingType.TypeKind == TypeKind.Interface;
 

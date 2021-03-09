@@ -16,7 +16,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
         }
 
-        public virtual Type? ContainingType => Symbol.ContainingType != null ? Type.Create(Context, Symbol.ContainingType) : null;
+        public virtual Type? ContainingType => Symbol.ContainingType is not null ? Type.Create(Context, Symbol.ContainingType) : null;
 
         public void PopulateModifiers(TextWriter trapFile)
         {
@@ -77,7 +77,7 @@ namespace Semmle.Extraction.CSharp.Entities
             get
             {
                 var loc = ReportingLocation;
-                if (loc != null)
+                if (loc is not null)
                 {
                     // Some built in operators lack locations, so loc is null.
                     yield return Context.CreateLocation(ReportingLocation);
@@ -151,7 +151,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 if (handleProp is null)
                 {
                     var underlyingSymbolProp = GetPropertyInfo(Symbol, "UnderlyingSymbol");
-                    if (underlyingSymbolProp is object)
+                    if (underlyingSymbolProp is not null)
                     {
                         if (underlyingSymbolProp.GetValue(Symbol) is object underlying)
                         {
@@ -161,7 +161,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     }
                 }
 
-                if (handleProp is object)
+                if (handleProp is not null)
                 {
                     switch (handleProp.GetValue(handleObj))
                     {

@@ -68,7 +68,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <returns>The string representation.</returns>
         public static string ValueAsString(object? value)
         {
-            return value == null
+            return value is null
                 ? "null"
                 : value is bool b
                     ? b
@@ -215,7 +215,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 switch (method.MethodKind)
                 {
                     case MethodKind.BuiltinOperator:
-                        if (method.ContainingType != null && method.ContainingType.TypeKind == Microsoft.CodeAnalysis.TypeKind.Delegate)
+                        if (method.ContainingType is not null && method.ContainingType.TypeKind == Microsoft.CodeAnalysis.TypeKind.Delegate)
                             return CallType.UserOperator;
                         return CallType.BuiltInOperator;
                     case MethodKind.Constructor:
@@ -234,7 +234,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public static bool IsDynamic(Context cx, ExpressionSyntax node)
         {
             var ti = cx.GetTypeInfo(node).ConvertedType;
-            return ti != null && ti.TypeKind == Microsoft.CodeAnalysis.TypeKind.Dynamic;
+            return ti is not null && ti.TypeKind == Microsoft.CodeAnalysis.TypeKind.Dynamic;
         }
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <returns>The qualifier of the conditional access.</returns>
         protected static ExpressionSyntax FindConditionalQualifier(ExpressionSyntax node)
         {
-            for (SyntaxNode? n = node; n != null; n = n.Parent)
+            for (SyntaxNode? n = node; n is not null; n = n.Parent)
             {
                 if (n.Parent is ConditionalAccessExpressionSyntax conditionalAccess &&
                     conditionalAccess.WhenNotNull == n)
@@ -290,7 +290,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
             trapFile.expr_argument(expr, mode);
 
-            if (arg.NameColon != null)
+            if (arg.NameColon is not null)
             {
                 trapFile.expr_argument_name(expr, arg.NameColon.Name.Identifier.Text);
             }
