@@ -349,7 +349,12 @@ private module Cached {
   }
 
   private class Access extends Generated::Token {
-    Access() { access(this, _) or this instanceof Generated::GlobalVariable }
+    Access() {
+      access(this, _) or
+      this instanceof Generated::GlobalVariable or
+      this instanceof Generated::InstanceVariable or
+      this instanceof Generated::ClassVariable
+    }
   }
 
   cached
