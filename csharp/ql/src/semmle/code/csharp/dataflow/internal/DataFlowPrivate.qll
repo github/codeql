@@ -837,7 +837,7 @@ private module Cached {
         )
         or
         // item = variable in node1 = (..., variable, ...) in a case/is var (..., ...)
-        exists(PatternExpr pe | pe.getAChild*() = te) and
+        te = any(PatternExpr pe).getAChildExpr*() and
         exists(AssignableDefinitions::LocalVariableDefinition lvd, Ssa::ExplicitDefinition def |
           node2.(SsaDefinitionNode).getDefinition() = def and
           def.getADefinition() = lvd and
