@@ -13,42 +13,31 @@
 
 import ruby
 
-// Extracts the first or last element of a list
-abstract class EndCall extends MethodCall {
-  abstract string detectCall();
-}
+/** A call that extracts the first or last element of a list. */
+class EndCall extends MethodCall {
+  string detect;
 
-abstract class First extends EndCall {
-  override string detectCall() { result = "detect" }
-}
-
-class FirstCall extends First {
-  FirstCall() {
-    this.getMethodName() = "first" and
-    this.getNumberOfArguments() = 0
+  EndCall() {
+    detect = "detect" and
+    (
+      this.getMethodName() = "first" and
+      this.getNumberOfArguments() = 0
+      or
+      this.getNumberOfArguments() = 1 and
+      this.getArgument(0).(IntegerLiteral).getValueText() = "0"
+    )
+    or
+    detect = "reverse_detect" and
+    (
+      this.getMethodName() = "last" and
+      this.getNumberOfArguments() = 0
+      or
+      this.getNumberOfArguments() = 1 and
+      this.getArgument(0).(UnaryMinusExpr).getOperand().(IntegerLiteral).getValueText() = "1"
+    )
   }
-}
 
-class FirstElement extends First, ElementReference {
-  FirstElement() {
-    this.getNumberOfArguments() = 1 and
-    this.getArgument(0).(IntegerLiteral).getValueText() = "0"
-  }
-}
-
-abstract class Last extends EndCall {
-  override string detectCall() { result = "reverse_detect" }
-}
-
-class LastCall extends Last {
-  LastCall() { this.getMethodName() = "last" and this.getNumberOfArguments() = 0 }
-}
-
-class LastElement extends Last, ElementReference {
-  LastElement() {
-    this.getNumberOfArguments() = 1 and
-    this.getArgument(0).(UnaryMinusExpr).getOperand().(IntegerLiteral).getValueText() = "1"
-  }
+  string detectCall() { result = detect }
 }
 
 class SelectBlock extends MethodCall {
