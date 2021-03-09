@@ -40,9 +40,33 @@ edges
 | Tuples.cs:39:47:39:68 | (..., ...) [Item1] : String | Tuples.cs:39:17:39:68 | (...) ... [Item1] : String |
 | Tuples.cs:39:48:39:61 | "taint source" : String | Tuples.cs:39:47:39:68 | (..., ...) [Item1] : String |
 | Tuples.cs:40:14:40:14 | access to local variable x [Item1] : String | Tuples.cs:40:14:40:20 | access to field Item1 |
-| Tuples.cs:66:17:66:41 | object creation of type R1 [i] : String | Tuples.cs:67:14:67:14 | access to local variable r [i] : String |
-| Tuples.cs:66:24:66:37 | "taint source" : String | Tuples.cs:66:17:66:41 | object creation of type R1 [i] : String |
-| Tuples.cs:67:14:67:14 | access to local variable r [i] : String | Tuples.cs:67:14:67:16 | access to property i |
+| Tuples.cs:50:17:50:56 | (..., ...) [Item1] : String | Tuples.cs:53:18:53:57 | SSA def(t) [Item1] : String |
+| Tuples.cs:50:17:50:56 | (..., ...) [Item1] : String | Tuples.cs:58:18:58:35 | (..., ...) [Item1] : String |
+| Tuples.cs:50:17:50:56 | (..., ...) [Item1] : String | Tuples.cs:65:18:65:35 | (..., ...) [Item1] : String |
+| Tuples.cs:50:17:50:56 | (..., ...) [Item2, Item2] : String | Tuples.cs:53:18:53:57 | SSA def(t) [Item2, Item2] : String |
+| Tuples.cs:50:17:50:56 | (..., ...) [Item2, Item2] : String | Tuples.cs:58:18:58:35 | (..., ...) [Item2, Item2] : String |
+| Tuples.cs:50:17:50:56 | (..., ...) [Item2, Item2] : String | Tuples.cs:65:18:65:35 | (..., ...) [Item2, Item2] : String |
+| Tuples.cs:50:18:50:31 | "taint source" : String | Tuples.cs:50:17:50:56 | (..., ...) [Item1] : String |
+| Tuples.cs:50:34:50:52 | (..., ...) [Item2] : String | Tuples.cs:50:17:50:56 | (..., ...) [Item2, Item2] : String |
+| Tuples.cs:50:38:50:51 | "taint source" : String | Tuples.cs:50:34:50:52 | (..., ...) [Item2] : String |
+| Tuples.cs:53:18:53:57 | SSA def(t) [Item1] : String | Tuples.cs:54:22:54:22 | access to local variable t [Item1] : String |
+| Tuples.cs:53:18:53:57 | SSA def(t) [Item2, Item2] : String | Tuples.cs:55:22:55:22 | access to local variable t [Item2, Item2] : String |
+| Tuples.cs:54:22:54:22 | access to local variable t [Item1] : String | Tuples.cs:54:22:54:28 | access to field Item1 |
+| Tuples.cs:55:22:55:22 | access to local variable t [Item2, Item2] : String | Tuples.cs:55:22:55:28 | access to field Item2 [Item2] : String |
+| Tuples.cs:55:22:55:28 | access to field Item2 [Item2] : String | Tuples.cs:55:22:55:34 | access to field Item2 |
+| Tuples.cs:58:18:58:35 | (..., ...) [Item1] : String | Tuples.cs:58:23:58:23 | SSA def(a) : String |
+| Tuples.cs:58:18:58:35 | (..., ...) [Item2, Item2] : String | Tuples.cs:58:18:58:35 | (..., ...) [Item2] : String |
+| Tuples.cs:58:18:58:35 | (..., ...) [Item2] : String | Tuples.cs:58:30:58:30 | SSA def(c) : String |
+| Tuples.cs:58:23:58:23 | SSA def(a) : String | Tuples.cs:59:22:59:22 | access to local variable a |
+| Tuples.cs:58:30:58:30 | SSA def(c) : String | Tuples.cs:60:22:60:22 | access to local variable c |
+| Tuples.cs:65:18:65:35 | (..., ...) [Item1] : String | Tuples.cs:65:23:65:23 | SSA def(p) : String |
+| Tuples.cs:65:18:65:35 | (..., ...) [Item2, Item2] : String | Tuples.cs:65:18:65:35 | (..., ...) [Item2] : String |
+| Tuples.cs:65:18:65:35 | (..., ...) [Item2] : String | Tuples.cs:65:30:65:30 | SSA def(r) : String |
+| Tuples.cs:65:23:65:23 | SSA def(p) : String | Tuples.cs:67:18:67:18 | access to local variable p |
+| Tuples.cs:65:30:65:30 | SSA def(r) : String | Tuples.cs:68:18:68:18 | access to local variable r |
+| Tuples.cs:77:17:77:41 | object creation of type R1 [i] : String | Tuples.cs:78:14:78:14 | access to local variable r [i] : String |
+| Tuples.cs:77:24:77:37 | "taint source" : String | Tuples.cs:77:17:77:41 | object creation of type R1 [i] : String |
+| Tuples.cs:78:14:78:14 | access to local variable r [i] : String | Tuples.cs:78:14:78:16 | access to property i |
 nodes
 | Tuples.cs:7:17:7:56 | (..., ...) [Item1] : String | semmle.label | (..., ...) [Item1] : String |
 | Tuples.cs:7:17:7:56 | (..., ...) [Item2, Item2] : String | semmle.label | (..., ...) [Item2, Item2] : String |
@@ -90,10 +114,36 @@ nodes
 | Tuples.cs:39:48:39:61 | "taint source" : String | semmle.label | "taint source" : String |
 | Tuples.cs:40:14:40:14 | access to local variable x [Item1] : String | semmle.label | access to local variable x [Item1] : String |
 | Tuples.cs:40:14:40:20 | access to field Item1 | semmle.label | access to field Item1 |
-| Tuples.cs:66:17:66:41 | object creation of type R1 [i] : String | semmle.label | object creation of type R1 [i] : String |
-| Tuples.cs:66:24:66:37 | "taint source" : String | semmle.label | "taint source" : String |
-| Tuples.cs:67:14:67:14 | access to local variable r [i] : String | semmle.label | access to local variable r [i] : String |
-| Tuples.cs:67:14:67:16 | access to property i | semmle.label | access to property i |
+| Tuples.cs:50:17:50:56 | (..., ...) [Item1] : String | semmle.label | (..., ...) [Item1] : String |
+| Tuples.cs:50:17:50:56 | (..., ...) [Item2, Item2] : String | semmle.label | (..., ...) [Item2, Item2] : String |
+| Tuples.cs:50:18:50:31 | "taint source" : String | semmle.label | "taint source" : String |
+| Tuples.cs:50:34:50:52 | (..., ...) [Item2] : String | semmle.label | (..., ...) [Item2] : String |
+| Tuples.cs:50:38:50:51 | "taint source" : String | semmle.label | "taint source" : String |
+| Tuples.cs:53:18:53:57 | SSA def(t) [Item1] : String | semmle.label | SSA def(t) [Item1] : String |
+| Tuples.cs:53:18:53:57 | SSA def(t) [Item2, Item2] : String | semmle.label | SSA def(t) [Item2, Item2] : String |
+| Tuples.cs:54:22:54:22 | access to local variable t [Item1] : String | semmle.label | access to local variable t [Item1] : String |
+| Tuples.cs:54:22:54:28 | access to field Item1 | semmle.label | access to field Item1 |
+| Tuples.cs:55:22:55:22 | access to local variable t [Item2, Item2] : String | semmle.label | access to local variable t [Item2, Item2] : String |
+| Tuples.cs:55:22:55:28 | access to field Item2 [Item2] : String | semmle.label | access to field Item2 [Item2] : String |
+| Tuples.cs:55:22:55:34 | access to field Item2 | semmle.label | access to field Item2 |
+| Tuples.cs:58:18:58:35 | (..., ...) [Item1] : String | semmle.label | (..., ...) [Item1] : String |
+| Tuples.cs:58:18:58:35 | (..., ...) [Item2, Item2] : String | semmle.label | (..., ...) [Item2, Item2] : String |
+| Tuples.cs:58:18:58:35 | (..., ...) [Item2] : String | semmle.label | (..., ...) [Item2] : String |
+| Tuples.cs:58:23:58:23 | SSA def(a) : String | semmle.label | SSA def(a) : String |
+| Tuples.cs:58:30:58:30 | SSA def(c) : String | semmle.label | SSA def(c) : String |
+| Tuples.cs:59:22:59:22 | access to local variable a | semmle.label | access to local variable a |
+| Tuples.cs:60:22:60:22 | access to local variable c | semmle.label | access to local variable c |
+| Tuples.cs:65:18:65:35 | (..., ...) [Item1] : String | semmle.label | (..., ...) [Item1] : String |
+| Tuples.cs:65:18:65:35 | (..., ...) [Item2, Item2] : String | semmle.label | (..., ...) [Item2, Item2] : String |
+| Tuples.cs:65:18:65:35 | (..., ...) [Item2] : String | semmle.label | (..., ...) [Item2] : String |
+| Tuples.cs:65:23:65:23 | SSA def(p) : String | semmle.label | SSA def(p) : String |
+| Tuples.cs:65:30:65:30 | SSA def(r) : String | semmle.label | SSA def(r) : String |
+| Tuples.cs:67:18:67:18 | access to local variable p | semmle.label | access to local variable p |
+| Tuples.cs:68:18:68:18 | access to local variable r | semmle.label | access to local variable r |
+| Tuples.cs:77:17:77:41 | object creation of type R1 [i] : String | semmle.label | object creation of type R1 [i] : String |
+| Tuples.cs:77:24:77:37 | "taint source" : String | semmle.label | "taint source" : String |
+| Tuples.cs:78:14:78:14 | access to local variable r [i] : String | semmle.label | access to local variable r [i] : String |
+| Tuples.cs:78:14:78:16 | access to property i | semmle.label | access to property i |
 #select
 | Tuples.cs:7:21:7:34 | "taint source" : String | Tuples.cs:7:21:7:34 | "taint source" : String | Tuples.cs:9:14:9:14 | access to local variable a | $@ | Tuples.cs:9:14:9:14 | access to local variable a | access to local variable a |
 | Tuples.cs:7:21:7:34 | "taint source" : String | Tuples.cs:7:21:7:34 | "taint source" : String | Tuples.cs:14:14:14:14 | access to local variable a | $@ | Tuples.cs:14:14:14:14 | access to local variable a | access to local variable a |
@@ -107,4 +157,10 @@ nodes
 | Tuples.cs:31:18:31:31 | "taint source" : String | Tuples.cs:31:18:31:31 | "taint source" : String | Tuples.cs:32:14:32:20 | access to field Item1 | $@ | Tuples.cs:32:14:32:20 | access to field Item1 | access to field Item1 |
 | Tuples.cs:31:58:31:71 | "taint source" : String | Tuples.cs:31:58:31:71 | "taint source" : String | Tuples.cs:34:14:34:21 | access to field Item10 | $@ | Tuples.cs:34:14:34:21 | access to field Item10 | access to field Item10 |
 | Tuples.cs:39:48:39:61 | "taint source" : String | Tuples.cs:39:48:39:61 | "taint source" : String | Tuples.cs:40:14:40:20 | access to field Item1 | $@ | Tuples.cs:40:14:40:20 | access to field Item1 | access to field Item1 |
-| Tuples.cs:66:24:66:37 | "taint source" : String | Tuples.cs:66:24:66:37 | "taint source" : String | Tuples.cs:67:14:67:16 | access to property i | $@ | Tuples.cs:67:14:67:16 | access to property i | access to property i |
+| Tuples.cs:50:18:50:31 | "taint source" : String | Tuples.cs:50:18:50:31 | "taint source" : String | Tuples.cs:54:22:54:28 | access to field Item1 | $@ | Tuples.cs:54:22:54:28 | access to field Item1 | access to field Item1 |
+| Tuples.cs:50:18:50:31 | "taint source" : String | Tuples.cs:50:18:50:31 | "taint source" : String | Tuples.cs:59:22:59:22 | access to local variable a | $@ | Tuples.cs:59:22:59:22 | access to local variable a | access to local variable a |
+| Tuples.cs:50:18:50:31 | "taint source" : String | Tuples.cs:50:18:50:31 | "taint source" : String | Tuples.cs:67:18:67:18 | access to local variable p | $@ | Tuples.cs:67:18:67:18 | access to local variable p | access to local variable p |
+| Tuples.cs:50:38:50:51 | "taint source" : String | Tuples.cs:50:38:50:51 | "taint source" : String | Tuples.cs:55:22:55:34 | access to field Item2 | $@ | Tuples.cs:55:22:55:34 | access to field Item2 | access to field Item2 |
+| Tuples.cs:50:38:50:51 | "taint source" : String | Tuples.cs:50:38:50:51 | "taint source" : String | Tuples.cs:60:22:60:22 | access to local variable c | $@ | Tuples.cs:60:22:60:22 | access to local variable c | access to local variable c |
+| Tuples.cs:50:38:50:51 | "taint source" : String | Tuples.cs:50:38:50:51 | "taint source" : String | Tuples.cs:68:18:68:18 | access to local variable r | $@ | Tuples.cs:68:18:68:18 | access to local variable r | access to local variable r |
+| Tuples.cs:77:24:77:37 | "taint source" : String | Tuples.cs:77:24:77:37 | "taint source" : String | Tuples.cs:78:14:78:16 | access to property i | $@ | Tuples.cs:78:14:78:16 | access to property i | access to property i |

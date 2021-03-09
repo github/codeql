@@ -223,6 +223,13 @@ module LocalFlow {
         or
         scope = any(AssignExpr ae | ae.getLValue().(TupleExpr) = e2 and ae.getRValue() = e1) and
         isSuccessor = false
+        or
+        isSuccessor = true and
+        exists(ControlFlowElement cfe | cfe = e2.(TupleExpr).(PatternExpr).getPatternMatch() |
+          cfe.(IsExpr).getExpr() = e1
+          or
+          exists(Switch sw | sw.getACase() = cfe and sw.getExpr() = e1)
+        )
       )
     }
 
@@ -819,13 +826,22 @@ private module Cached {
       |
         // item = (..., ..., ...) in node1 = (..., (..., ..., ...), ...)
         node2.asExpr().(TupleExpr) = item and
-        hasNodePath(x, node2, node1)
+        hasNodePath(x, node1, node2)
         or
         // item = variable in node1 = (..., variable, ...)
         exists(AssignableDefinitions::TupleAssignmentDefinition tad, Ssa::ExplicitDefinition def |
           node2.(SsaDefinitionNode).getDefinition() = def and
           def.getADefinition() = tad and
           tad.getLeaf() = item and
+          hasNodePath(x, node1, node2)
+        )
+        or
+        // item = variable in node1 = (..., variable, ...) in a case/is var (..., ...)
+        exists(PatternExpr pe | pe.getAChild*() = te) and
+        exists(AssignableDefinitions::LocalVariableDefinition lvd, Ssa::ExplicitDefinition def |
+          node2.(SsaDefinitionNode).getDefinition() = def and
+          def.getADefinition() = lvd and
+          lvd.getDeclaration() = item and
           hasNodePath(x, node1, node2)
         )
       )
@@ -1770,9 +1786,9 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
     isSuccessor = true
     or
     exactScope = false and
-    e1 = e2.(TupleExpr).getAnArgument() and
-    scope = e2 and
-    isSuccessor = true
+    e2 = e1.(TupleExpr).getAnArgument() and
+    scope = e1 and
+    isSuccessor = false
   }
 
   override predicate candidateDef(
@@ -1801,6 +1817,14 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
         e = ae.getLValue().getAChildExpr*().(TupleExpr) and
         exactScope = false and
         isSuccessor = true
+      )
+    or
+    scope =
+      any(TupleExpr te |
+        te.getAnArgument() = defTo.(AssignableDefinitions::LocalVariableDefinition).getDeclaration() and
+        e = te and
+        exactScope = false and
+        isSuccessor = false
       )
   }
 }

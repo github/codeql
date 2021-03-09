@@ -47,15 +47,26 @@ class Tuples
 
     static void M4()
     {
-        var x = ("taint source", 2, 3);
+        var x = ("taint source", (2, "taint source"), 3);
         switch (x)
         {
-            case ValueTuple<string, int, int> t when t.Item2 > 10:
+            case ValueTuple<string, (int, string), int> t when t.Item3 > 1:
+                Sink(t.Item1);          // Tainted
+                Sink(t.Item2.Item2);    // Tainted
+                Sink(t.Item2.Item1);
                 break;
-            case var (a, b, _):
-                Sink(a);        // Tainted, not found
+            case var (a, (b, c), _):
+                Sink(a);        // Tainted
+                Sink(c);        // Tainted
                 Sink(b);
                 break;
+        }
+
+        if (x is var (p, (q, r), _))
+        {
+            Sink(p);        // Tainted
+            Sink(r);        // Tainted
+            Sink(q);
         }
     }
 

@@ -1040,7 +1040,7 @@ class TupleExpr extends Expr, @tuple_expr {
   /** Holds if this expression is a tuple construction. */
   predicate isConstruction() {
     not this = getAnAssignOrForeachChild() and
-    not this instanceof PatternExpr
+    not exists(PatternExpr pe | pe.getAChild*() = this)
   }
 
   override string getAPrimaryQlClass() { result = "TupleExpr" }
