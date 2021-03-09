@@ -2,7 +2,6 @@ private import codeql_ruby.AST
 private import codeql_ruby.CFG
 private import internal.Expr
 private import internal.Statement
-private import internal.Variable
 private import codeql_ruby.controlflow.internal.ControlFlowGraphImpl
 
 /**
@@ -18,9 +17,6 @@ class Stmt extends AstNode {
 
   /** Gets the control-flow scope of this statement, if any. */
   CfgScope getCfgScope() { result = getCfgScope(this) }
-
-  /** Gets the variable scope that this statement belongs to. */
-  VariableScope getVariableScope() { result = enclosingScope(this) }
 
   /** Gets the enclosing callable, if any. */
   Callable getEnclosingCallable() { result = this.getCfgScope() }

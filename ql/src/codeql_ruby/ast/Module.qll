@@ -5,14 +5,14 @@ private import internal.Module
 /**
  * The base class for classes, singleton classes, and modules.
  */
-class ModuleBase extends BodyStatement {
+class ModuleBase extends BodyStatement, Scope {
   override ModuleBase::Range range;
 
   /** Gets a method defined in this module/class. */
-  Method getAMethod() { result = this.getAStmt() }
+  MethodBase getAMethod() { result = this.getAStmt() }
 
   /** Gets the method named `name` in this module/class, if any. */
-  Method getMethod(string name) { result = this.getAMethod() and result.getName() = name }
+  MethodBase getMethod(string name) { result = this.getAMethod() and result.getName() = name }
 
   /** Gets a class defined in this module/class. */
   Class getAClass() { result = this.getAStmt() }

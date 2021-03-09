@@ -4,34 +4,6 @@ private import codeql_ruby.AST
 private import codeql.Locations
 private import internal.Variable
 
-/** A scope in which variables can be declared. */
-class VariableScope extends TScope {
-  VariableScope::Range range;
-
-  VariableScope() { range = this }
-
-  /** Gets a textual representation of this element. */
-  final string toString() { result = range.toString() }
-
-  /** Gets the program element this scope is associated with, if any. */
-  final AstNode getScopeElement() { result = range.getScopeElement() }
-
-  /** Gets the location of the program element this scope is associated with. */
-  final Location getLocation() { result = getScopeElement().getLocation() }
-
-  /** Gets a variable that is declared in this scope. */
-  final Variable getAVariable() { result.getDeclaringScope() = this }
-
-  /** Gets the variable with the given name that is declared in this scope. */
-  final Variable getVariable(string name) {
-    result = this.getAVariable() and
-    result.getName() = name
-  }
-
-  /** Gets the scope in which this scope is nested, if any. */
-  VariableScope getOuterScope() { result = enclosingScope(this.getScopeElement()) }
-}
-
 /** A variable declared in a scope. */
 class Variable extends TVariable {
   Variable::Range range;
@@ -48,7 +20,7 @@ class Variable extends TVariable {
   final Location getLocation() { result = range.getLocation() }
 
   /** Gets the scope this variable is declared in. */
-  final VariableScope getDeclaringScope() { result = range.getDeclaringScope() }
+  final Scope getDeclaringScope() { result = range.getDeclaringScope() }
 
   /** Gets an access to this variable. */
   VariableAccess getAnAccess() { result.getVariable() = this }

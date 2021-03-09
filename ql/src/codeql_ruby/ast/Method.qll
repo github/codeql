@@ -18,13 +18,18 @@ class Callable extends Expr, CfgScope {
 }
 
 /** A method. */
-class Method extends Callable, BodyStatement, @method {
-  final override Method::Range range;
-
-  final override string getAPrimaryQlClass() { result = "Method" }
+class MethodBase extends Callable, BodyStatement, Scope {
+  override MethodBase::Range range;
 
   /** Gets the name of this method. */
   final string getName() { result = range.getName() }
+}
+
+/** A normal method. */
+class Method extends MethodBase, @method {
+  final override Method::Range range;
+
+  final override string getAPrimaryQlClass() { result = "Method" }
 
   /**
    * Holds if this is a setter method, as in the following example:
@@ -40,16 +45,13 @@ class Method extends Callable, BodyStatement, @method {
 }
 
 /** A singleton method. */
-class SingletonMethod extends Callable, BodyStatement, @singleton_method {
+class SingletonMethod extends MethodBase, @singleton_method {
   final override SingletonMethod::Range range;
 
   final override string getAPrimaryQlClass() { result = "SingletonMethod" }
 
   /** Gets the object of this singleton method. */
   final Expr getObject() { result = range.getObject() }
-
-  /** Gets the name of this method. */
-  final string getName() { result = range.getName() }
 }
 
 /**
@@ -65,7 +67,7 @@ class Lambda extends Callable, BodyStatement, @lambda {
 }
 
 /** A block. */
-class Block extends Callable, StmtSequence {
+class Block extends Callable, StmtSequence, Scope {
   override Block::Range range;
 }
 

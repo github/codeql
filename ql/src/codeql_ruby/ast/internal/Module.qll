@@ -2,10 +2,13 @@ private import codeql_ruby.AST
 private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.ast.internal.Constant
 private import codeql_ruby.ast.internal.Expr
+private import codeql_ruby.ast.internal.Scope
 private import codeql_ruby.ast.internal.TreeSitter
 
 module ModuleBase {
-  abstract class Range extends BodyStatement::Range { }
+  abstract class Range extends BodyStatement::Range, Scope::Range {
+    override string toString() { result = BodyStatement::Range.super.toString() }
+  }
 }
 
 module Namespace {

@@ -33,6 +33,7 @@
 
 private import codeql_ruby.ast.internal.AST as ASTInternal
 private import codeql_ruby.ast.internal.Control as Control
+private import codeql_ruby.ast.internal.Scope
 private import codeql_ruby.ast.internal.TreeSitter::Generated
 private import AstNodes
 private import codeql_ruby.ast.internal.Variable
@@ -146,11 +147,6 @@ module CfgScope {
       not exists(this.getBody()) and last(this.getParameters(), last, c)
     }
   }
-}
-
-private AstNode parent(AstNode n) {
-  result = parentOf(n) and
-  not n instanceof CfgScope
 }
 
 abstract private class ControlFlowTree extends AstNode {
@@ -1263,11 +1259,16 @@ module Trees {
   }
 }
 
+private Scope::Range parent(Scope::Range n) {
+  result = n.getOuterScope() and
+  not n instanceof CfgScope
+}
+
 cached
 private module Cached {
   /** Gets the CFG scope of node `n`. */
   cached
-  CfgScope getCfgScope(AstNode n) { result = unique(CfgScope scope | scope = parent*(parentOf(n))) }
+  CfgScope getCfgScope(AstNode n) { result = parent*(any(Scope::Range x | x.getADescendant() = n)) }
 
   private predicate isAbnormalExitType(SuccessorType t) {
     t instanceof RaiseSuccessor or t instanceof ExitSuccessor
