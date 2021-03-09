@@ -90,7 +90,7 @@ class StdlibRandomSource extends RandomDataSource {
 
   // Note for the following bounds functions: `java.util.Random` only defines no-arg versions
   // of `nextInt` and `nextLong` plus `nextInt(int x)`, bounded to the range [0, x)
-  // However `ThreadLocalRandom` provides one- and two-arg versions of `nextInt` and `nextLong`
+  // However `ThreadLocalRandom` provides one- and two-arg versions of `nextInt` and `nextLong`
   // which allow both lower and upper bounds for both types.
   override int getLowerBound() {
     // If this call is to `nextInt(int)` or `nextLong(long), the lower bound is zero.
