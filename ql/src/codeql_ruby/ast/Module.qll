@@ -1,13 +1,12 @@
 private import codeql_ruby.AST
 private import codeql_ruby.ast.Constant
-private import internal.Module
+private import internal.AST
+private import internal.TreeSitter
 
 /**
  * The base class for classes, singleton classes, and modules.
  */
-class ModuleBase extends BodyStatement, Scope {
-  override ModuleBase::Range range;
-
+class ModuleBase extends BodyStmt, TModuleBase {
   /** Gets a method defined in this module/class. */
   MethodBase getAMethod() { result = this.getAStmt() }
 
@@ -37,20 +36,33 @@ class ModuleBase extends BodyStatement, Scope {
  * main
  * ```
  */
-class Toplevel extends ModuleBase, @program {
-  final override Toplevel::Range range;
+class Toplevel extends ModuleBase, TToplevel {
+  private Generated::Program g;
+
+  Toplevel() { this = TToplevel(g) }
 
   final override string getAPrimaryQlClass() { result = "Toplevel" }
 
   /**
    * Gets the `n`th `BEGIN` block.
    */
-  final BeginBlock getBeginBlock(int n) { result = range.getBeginBlock(n) }
+  final BeginBlock getBeginBlock(int n) {
+    toTreeSitter(result) =
+      rank[n](int i, Generated::BeginBlock b | b = g.getChild(i) | b order by i)
+  }
 
   /**
    * Gets a `BEGIN` block.
    */
   final BeginBlock getABeginBlock() { result = getBeginBlock(_) }
+
+  final override predicate child(string label, AstNode child) {
+    ModuleBase.super.child(label, child)
+    or
+    label = "getBeginBlock" and child = this.getBeginBlock(_)
+  }
+
+  final override string toString() { result = g.getLocation().getFile().getBaseName() }
 }
 
 /**
@@ -67,9 +79,7 @@ class Toplevel extends ModuleBase, @program {
  * end
  * ```
  */
-class Namespace extends ModuleBase, ConstantWriteAccess {
-  override Namespace::Range range;
-
+class Namespace extends ModuleBase, ConstantWriteAccess, TNamespace {
   override string getAPrimaryQlClass() { result = "Namespace" }
 
   /**
@@ -88,7 +98,7 @@ class Namespace extends ModuleBase, ConstantWriteAccess {
    * end
    * ```
    */
-  override string getName() { result = range.getName() }
+  override string getName() { none() }
 
   /**
    * Gets the scope expression used in the module/class name's scope resolution
@@ -109,7 +119,7 @@ class Namespace extends ModuleBase, ConstantWriteAccess {
    * end
    * ```
    */
-  override Expr getScopeExpr() { result = range.getScopeExpr() }
+  override Expr getScopeExpr() { none() }
 
   /**
    * Holds if the module/class name uses the scope resolution operator to access the
@@ -120,7 +130,14 @@ class Namespace extends ModuleBase, ConstantWriteAccess {
    * end
    * ```
    */
-  override predicate hasGlobalScope() { range.hasGlobalScope() }
+  override predicate hasGlobalScope() { none() }
+
+  override predicate child(string label, AstNode child) {
+    ModuleBase.super.child(label, child) or
+    ConstantWriteAccess.super.child(label, child)
+  }
+
+  final override string toString() { result = ConstantWriteAccess.super.toString() }
 }
 
 /**
@@ -133,8 +150,10 @@ class Namespace extends ModuleBase, ConstantWriteAccess {
  * end
  * ```
  */
-class Class extends Namespace, @class {
-  final override Class::Range range;
+class Class extends Namespace, TClass {
+  private Generated::Class g;
+
+  Class() { this = TClass(g) }
 
   final override string getAPrimaryQlClass() { result = "Class" }
 
@@ -154,7 +173,29 @@ class Class extends Namespace, @class {
    * end
    * ```
    */
-  final Expr getSuperclassExpr() { result = range.getSuperclassExpr() }
+  final Expr getSuperclassExpr() { toTreeSitter(result) = g.getSuperclass().getChild() }
+
+  final override string getName() {
+    result = g.getName().(Generated::Token).getValue() or
+    result = g.getName().(Generated::ScopeResolution).getName().(Generated::Token).getValue()
+  }
+
+  final override Expr getScopeExpr() {
+    toTreeSitter(result) = g.getName().(Generated::ScopeResolution).getScope()
+  }
+
+  final override predicate hasGlobalScope() {
+    exists(Generated::ScopeResolution sr |
+      sr = g.getName() and
+      not exists(sr.getScope())
+    )
+  }
+
+  final override predicate child(string label, AstNode child) {
+    Namespace.super.child(label, child)
+    or
+    label = "getSuperclassExpr" and child = this.getSuperclassExpr()
+  }
 }
 
 /**
@@ -168,8 +209,10 @@ class Class extends Namespace, @class {
  * end
  * ```
  */
-class SingletonClass extends ModuleBase, @singleton_class {
-  final override SingletonClass::Range range;
+class SingletonClass extends ModuleBase, TSingletonClass {
+  private Generated::SingletonClass g;
+
+  SingletonClass() { this = TSingletonClass(g) }
 
   final override string getAPrimaryQlClass() { result = "Class" }
 
@@ -182,7 +225,15 @@ class SingletonClass extends ModuleBase, @singleton_class {
    * end
    * ```
    */
-  final Expr getValue() { result = range.getValue() }
+  final Expr getValue() { toTreeSitter(result) = g.getValue() }
+
+  final override string toString() { result = "class << ..." }
+
+  final override predicate child(string label, AstNode child) {
+    ModuleBase.super.child(label, child)
+    or
+    label = "getValue" and child = this.getValue()
+  }
 }
 
 /**
@@ -210,8 +261,26 @@ class SingletonClass extends ModuleBase, @singleton_class {
  * end
  * ```
  */
-class Module extends Namespace, @module {
-  final override Module::Range range;
+class Module extends Namespace, TModule {
+  private Generated::Module g;
+
+  Module() { this = TModule(g) }
 
   final override string getAPrimaryQlClass() { result = "Module" }
+
+  final override string getName() {
+    result = g.getName().(Generated::Token).getValue() or
+    result = g.getName().(Generated::ScopeResolution).getName().(Generated::Token).getValue()
+  }
+
+  final override Expr getScopeExpr() {
+    toTreeSitter(result) = g.getName().(Generated::ScopeResolution).getScope()
+  }
+
+  final override predicate hasGlobalScope() {
+    exists(Generated::ScopeResolution sr |
+      sr = g.getName() and
+      not exists(sr.getScope())
+    )
+  }
 }

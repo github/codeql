@@ -1,12 +1,11 @@
 private import codeql_ruby.AST
-private import internal.Call
+private import internal.AST
+private import internal.TreeSitter
 
 /**
  * A call.
  */
-class Call extends Expr {
-  override Call::Range range;
-
+class Call extends Expr, TCall {
   override string getAPrimaryQlClass() { result = "Call" }
 
   /**
@@ -21,7 +20,7 @@ class Call extends Expr {
    * yield 0, bar: 1
    * ```
    */
-  final Expr getArgument(int n) { result = range.getArgument(n) }
+  Expr getArgument(int n) { none() }
 
   /**
    * Gets an argument of this method call.
@@ -48,14 +47,29 @@ class Call extends Expr {
    * Gets the number of arguments of this method call.
    */
   final int getNumberOfArguments() { result = count(this.getAnArgument()) }
+
+  override predicate child(string label, AstNode child) {
+    label = "getArgument" and child = getArgument(_)
+  }
+}
+
+bindingset[s]
+private string getMethodName(MethodCall mc, string s) {
+  (
+    not mc instanceof LhsExpr
+    or
+    mc.getParent() instanceof AssignOperation
+  ) and
+  result = s
+  or
+  mc instanceof LhsExpr and
+  result = s + "="
 }
 
 /**
  * A method call.
  */
-class MethodCall extends Call {
-  override MethodCall::Range range;
-
+class MethodCall extends Call, TMethodCall {
   override string getAPrimaryQlClass() { result = "MethodCall" }
 
   /**
@@ -71,7 +85,7 @@ class MethodCall extends Call {
    * the call to `qux` is the `Expr` for `Baz`; for the call to `corge` there
    * is no result.
    */
-  final Expr getReceiver() { result = range.getReceiver() }
+  Expr getReceiver() { none() }
 
   /**
    * Gets the name of the method being called. For example, in:
@@ -82,7 +96,7 @@ class MethodCall extends Call {
    *
    * the result is `"bar"`.
    */
-  final string getMethodName() { result = range.getMethodName() }
+  string getMethodName() { none() }
 
   /**
    * Gets the block of this method call, if any.
@@ -90,7 +104,68 @@ class MethodCall extends Call {
    * foo.each { |x| puts x }
    * ```
    */
-  final Block getBlock() { result = range.getBlock() }
+  Block getBlock() { none() }
+
+  override string toString() { result = "call to " + concat(this.getMethodName(), "/") }
+
+  final override predicate child(string label, AstNode child) {
+    Call.super.child(label, child)
+    or
+    label = "getReceiver" and child = getReceiver()
+    or
+    label = "getBlock" and child = getBlock()
+  }
+}
+
+private class IdentifierMethodCall extends MethodCall, TIdentifierMethodCall {
+  private Generated::Identifier g;
+
+  IdentifierMethodCall() { this = TIdentifierMethodCall(g) }
+
+  final override string getMethodName() { result = getMethodName(this, g.getValue()) }
+}
+
+private class ScopeResolutionMethodCall extends MethodCall, TScopeResolutionMethodCall {
+  private Generated::ScopeResolution g;
+  private Generated::Identifier i;
+
+  ScopeResolutionMethodCall() { this = TScopeResolutionMethodCall(g, i) }
+
+  final override Expr getReceiver() { toTreeSitter(result) = g.getScope() }
+
+  final override string getMethodName() { result = getMethodName(this, i.getValue()) }
+}
+
+private class RegularMethodCall extends MethodCall, TRegularMethodCall {
+  private Generated::Call g;
+
+  RegularMethodCall() { this = TRegularMethodCall(g) }
+
+  final override Expr getReceiver() {
+    toTreeSitter(result) = g.getReceiver()
+    or
+    not exists(g.getReceiver()) and
+    toTreeSitter(result) = g.getMethod().(Generated::ScopeResolution).getScope()
+  }
+
+  final override string getMethodName() {
+    exists(string res | result = getMethodName(this, res) |
+      res = "call" and g.getMethod() instanceof Generated::ArgumentList
+      or
+      res = g.getMethod().(Generated::Token).getValue()
+      or
+      res = g.getMethod().(Generated::ScopeResolution).getName().(Generated::Token).getValue()
+    )
+  }
+
+  final override Expr getArgument(int n) {
+    toTreeSitter(result) = g.getArguments().getChild(n)
+    or
+    not exists(g.getArguments()) and
+    toTreeSitter(result) = g.getMethod().(Generated::ArgumentList).getChild(n)
+  }
+
+  final override Block getBlock() { toTreeSitter(result) = g.getBlock() }
 }
 
 /**
@@ -101,8 +176,6 @@ class MethodCall extends Call {
  * ```
  */
 class SetterMethodCall extends MethodCall, LhsExpr {
-  final override SetterMethodCall::Range range;
-
   final override string getAPrimaryQlClass() { result = "SetterMethodCall" }
 }
 
@@ -112,10 +185,20 @@ class SetterMethodCall extends MethodCall, LhsExpr {
  * a[0]
  * ```
  */
-class ElementReference extends MethodCall, @element_reference {
-  final override ElementReference::Range range;
+class ElementReference extends MethodCall, TElementReference {
+  private Generated::ElementReference g;
+
+  ElementReference() { this = TElementReference(g) }
 
   final override string getAPrimaryQlClass() { result = "ElementReference" }
+
+  final override Expr getReceiver() { toTreeSitter(result) = g.getObject() }
+
+  final override string getMethodName() { result = getMethodName(this, "[]") }
+
+  final override Expr getArgument(int n) { toTreeSitter(result) = g.getChild(n) }
+
+  final override string toString() { result = "...[...]" }
 }
 
 /**
@@ -124,10 +207,16 @@ class ElementReference extends MethodCall, @element_reference {
  * yield x, y
  * ```
  */
-class YieldCall extends Call, @yield {
-  final override YieldCall::Range range;
+class YieldCall extends Call, TYieldCall {
+  private Generated::Yield g;
+
+  YieldCall() { this = TYieldCall(g) }
 
   final override string getAPrimaryQlClass() { result = "YieldCall" }
+
+  final override Expr getArgument(int n) { toTreeSitter(result) = g.getChild().getChild(n) }
+
+  final override string toString() { result = "yield ..." }
 }
 
 /**
@@ -140,10 +229,30 @@ class YieldCall extends Call, @yield {
  * end
  * ```
  */
-class SuperCall extends MethodCall {
-  final override SuperCall::Range range;
-
+class SuperCall extends MethodCall, TSuperCall {
   final override string getAPrimaryQlClass() { result = "SuperCall" }
+}
+
+private class TokenSuperCall extends SuperCall, TTokenSuperCall {
+  private Generated::Super g;
+
+  TokenSuperCall() { this = TTokenSuperCall(g) }
+
+  final override string getMethodName() { result = getMethodName(this, g.getValue()) }
+}
+
+private class RegularSuperCall extends SuperCall, TRegularSuperCall {
+  private Generated::Call g;
+
+  RegularSuperCall() { this = TRegularSuperCall(g) }
+
+  final override string getMethodName() {
+    result = getMethodName(this, g.getMethod().(Generated::Super).getValue())
+  }
+
+  final override Expr getArgument(int n) { toTreeSitter(result) = g.getArguments().getChild(n) }
+
+  final override Block getBlock() { toTreeSitter(result) = g.getBlock() }
 }
 
 /**
@@ -152,8 +261,10 @@ class SuperCall extends MethodCall {
  * foo(&block)
  * ```
  */
-class BlockArgument extends Expr, @block_argument {
-  final override BlockArgument::Range range;
+class BlockArgument extends Expr, TBlockArgument {
+  private Generated::BlockArgument g;
+
+  BlockArgument() { this = TBlockArgument(g) }
 
   final override string getAPrimaryQlClass() { result = "BlockArgument" }
 
@@ -164,7 +275,13 @@ class BlockArgument extends Expr, @block_argument {
    * foo(&bar)
    * ```
    */
-  final Expr getValue() { result = range.getValue() }
+  final Expr getValue() { toTreeSitter(result) = g.getChild() }
+
+  final override string toString() { result = "&..." }
+
+  final override predicate child(string label, AstNode child) {
+    label = "getValue" and child = getValue()
+  }
 }
 
 /**
@@ -173,8 +290,10 @@ class BlockArgument extends Expr, @block_argument {
  * foo(*args)
  * ```
  */
-class SplatArgument extends Expr, @splat_argument {
-  final override SplatArgument::Range range;
+class SplatArgument extends Expr, TSplatArgument {
+  private Generated::SplatArgument g;
+
+  SplatArgument() { this = TSplatArgument(g) }
 
   final override string getAPrimaryQlClass() { result = "SplatArgument" }
 
@@ -185,7 +304,13 @@ class SplatArgument extends Expr, @splat_argument {
    * foo(*bar)
    * ```
    */
-  final Expr getValue() { result = range.getValue() }
+  final Expr getValue() { toTreeSitter(result) = g.getChild() }
+
+  final override string toString() { result = "*..." }
+
+  final override predicate child(string label, AstNode child) {
+    label = "getValue" and child = getValue()
+  }
 }
 
 /**
@@ -194,8 +319,10 @@ class SplatArgument extends Expr, @splat_argument {
  * foo(**options)
  * ```
  */
-class HashSplatArgument extends Expr, @hash_splat_argument {
-  final override HashSplatArgument::Range range;
+class HashSplatArgument extends Expr, THashSplatArgument {
+  private Generated::HashSplatArgument g;
+
+  HashSplatArgument() { this = THashSplatArgument(g) }
 
   final override string getAPrimaryQlClass() { result = "HashSplatArgument" }
 
@@ -206,5 +333,11 @@ class HashSplatArgument extends Expr, @hash_splat_argument {
    * foo(**bar)
    * ```
    */
-  final Expr getValue() { result = range.getValue() }
+  final Expr getValue() { toTreeSitter(result) = g.getChild() }
+
+  final override string toString() { result = "**..." }
+
+  final override predicate child(string label, AstNode child) {
+    label = "getValue" and child = getValue()
+  }
 }

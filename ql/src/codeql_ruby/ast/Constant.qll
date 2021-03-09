@@ -1,12 +1,11 @@
 private import codeql_ruby.AST
-private import internal.Constant
+private import internal.AST
+private import internal.TreeSitter
 
 /** An access to a constant. */
-class ConstantAccess extends Expr {
-  override ConstantAccess::Range range;
-
+class ConstantAccess extends Expr, TConstantAccess {
   /** Gets the name of the constant being accessed. */
-  string getName() { result = range.getName() }
+  string getName() { none() }
 
   /**
    * Gets the expression used in the access's scope resolution operation, if
@@ -24,7 +23,7 @@ class ConstantAccess extends Expr {
    * MESSAGE
    * ```
    */
-  Expr getScopeExpr() { result = range.getScopeExpr() }
+  Expr getScopeExpr() { none() }
 
   /**
    * Holds if the access uses the scope resolution operator to refer to the
@@ -34,7 +33,13 @@ class ConstantAccess extends Expr {
    * ::MESSAGE
    * ```
    */
-  predicate hasGlobalScope() { range.hasGlobalScope() }
+  predicate hasGlobalScope() { none() }
+
+  override string toString() { result = this.getName() }
+
+  override predicate child(string label, AstNode child) {
+    label = "getScopeExpr" and child = getScopeExpr()
+  }
 }
 
 /**
@@ -53,10 +58,34 @@ class ConstantAccess extends Expr {
  * end
  * ```
  */
-class ConstantReadAccess extends ConstantAccess {
-  final override ConstantReadAccess::Range range;
+class ConstantReadAccess extends ConstantAccess, TConstantReadAccess {
+  override Expr getScopeExpr() { none() }
+
+  override predicate hasGlobalScope() { none() }
 
   final override string getAPrimaryQlClass() { result = "ConstantReadAccess" }
+}
+
+private class TokenConstantReadAccess extends ConstantReadAccess, TTokenConstantReadAccess {
+  private Generated::Constant g;
+
+  TokenConstantReadAccess() { this = TTokenConstantReadAccess(g) }
+
+  final override string getName() { result = g.getValue() }
+}
+
+private class ScopeResolutionConstantReadAccess extends ConstantReadAccess,
+  TScopeResolutionConstantReadAccess {
+  private Generated::ScopeResolution g;
+  private Generated::Constant constant;
+
+  ScopeResolutionConstantReadAccess() { this = TScopeResolutionConstantReadAccess(g, constant) }
+
+  final override string getName() { result = constant.getValue() }
+
+  final override Expr getScopeExpr() { toTreeSitter(result) = g.getScope() }
+
+  final override predicate hasGlobalScope() { not exists(this.getScopeExpr()) }
 }
 
 /**
@@ -75,10 +104,30 @@ class ConstantReadAccess extends ConstantAccess {
  * module M::Baz; end  # defines constant Baz as a module in module M
  * ```
  */
-class ConstantWriteAccess extends ConstantAccess {
-  override ConstantWriteAccess::Range range;
-
+class ConstantWriteAccess extends ConstantAccess, TConstantWriteAccess {
   override string getAPrimaryQlClass() { result = "ConstantWriteAccess" }
+}
+
+private class TokenConstantWriteAccess extends ConstantWriteAccess, TTokenConstantWriteAccess {
+  private Generated::Constant g;
+
+  TokenConstantWriteAccess() { this = TTokenConstantWriteAccess(g) }
+
+  final override string getName() { result = g.getValue() }
+}
+
+private class ScopeResolutionConstantWriteAccess extends ConstantWriteAccess,
+  TScopeResolutionConstantWriteAccess {
+  private Generated::ScopeResolution g;
+  private Generated::Constant constant;
+
+  ScopeResolutionConstantWriteAccess() { this = TScopeResolutionConstantWriteAccess(g, constant) }
+
+  final override string getName() { result = constant.getValue() }
+
+  final override Expr getScopeExpr() { toTreeSitter(result) = g.getScope() }
+
+  final override predicate hasGlobalScope() { not exists(this.getScopeExpr()) }
 }
 
 /**
@@ -89,8 +138,6 @@ class ConstantWriteAccess extends ConstantAccess {
  * MAX_SIZE = 100
  * ```
  */
-class ConstantAssignment extends ConstantWriteAccess {
-  override ConstantAssignment::Range range;
-
+class ConstantAssignment extends ConstantWriteAccess, LhsExpr, TConstantAssignment {
   override string getAPrimaryQlClass() { result = "ConstantAssignment" }
 }

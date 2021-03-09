@@ -1,16 +1,13 @@
 private import codeql_ruby.AST
-private import internal.Expr
+private import internal.AST
+private import internal.TreeSitter
 
 /**
  * An expression.
  *
  * This is the root QL class for all expressions.
  */
-class Expr extends Stmt {
-  override Expr::Range range;
-
-  Expr() { this = range }
-}
+class Expr extends Stmt, TExpr { }
 
 /**
  * A reference to the current object. For example:
@@ -18,10 +15,10 @@ class Expr extends Stmt {
  * - `self.method_name`
  * - `def self.method_name ... end`
  */
-class Self extends Expr, @token_self {
-  override Self::Range range;
-
+class Self extends Expr, TSelf {
   final override string getAPrimaryQlClass() { result = "Self" }
+
+  final override string toString() { result = "self" }
 }
 
 /**
@@ -35,20 +32,43 @@ class Self extends Expr, @token_self {
  * return 1, 2, *items, k: 5, **map
  * ```
  */
-class ArgumentList extends Expr {
-  override ArgumentList::Range range;
+class ArgumentList extends Expr, TArgumentList {
+  private Generated::AstNode g;
 
-  override string getAPrimaryQlClass() { result = "ArgumentList" }
+  ArgumentList() { this = TArgumentList(g) }
+
+  /** Gets the `i`th element in this argument list. */
+  Expr getElement(int i) {
+    toTreeSitter(result) in [
+        g.(Generated::ArgumentList).getChild(i), g.(Generated::RightAssignmentList).getChild(i)
+      ]
+  }
+
+  final override string getAPrimaryQlClass() { result = "ArgumentList" }
+
+  final override string toString() { result = "..., ..." }
+
+  final override predicate child(string label, AstNode child) {
+    label = "getElement" and child = this.getElement(_)
+  }
 }
 
 /** A sequence of expressions. */
-class StmtSequence extends Expr {
-  override StmtSequence::Range range;
-
+class StmtSequence extends Expr, TStmtSequence {
   override string getAPrimaryQlClass() { result = "StmtSequence" }
 
+  override string toString() {
+    exists(int c | c = this.getNumberOfStatements() |
+      c = 0 and result = ";"
+      or
+      c = 1 and result = this.getStmt(0).toString()
+      or
+      c > 1 and result = "...; ..."
+    )
+  }
+
   /** Gets the `n`th statement in this sequence. */
-  final Stmt getStmt(int n) { result = range.getStmt(n) }
+  Stmt getStmt(int n) { none() }
 
   /** Gets a statement in this sequence. */
   final Stmt getAStmt() { result = this.getStmt(_) }
@@ -61,6 +81,44 @@ class StmtSequence extends Expr {
 
   /** Holds if this sequence has no statements. */
   final predicate isEmpty() { this.getNumberOfStatements() = 0 }
+
+  override predicate child(string label, AstNode child) {
+    label = "getStmt" and child = this.getStmt(_)
+  }
+}
+
+private class Then extends StmtSequence, TThen {
+  private Generated::Then g;
+
+  Then() { this = TThen(g) }
+
+  override Stmt getStmt(int n) { toTreeSitter(result) = g.getChild(n) }
+}
+
+private class Else extends StmtSequence, TElse {
+  private Generated::Else g;
+
+  Else() { this = TElse(g) }
+
+  override Stmt getStmt(int n) { toTreeSitter(result) = g.getChild(n) }
+}
+
+private class Do extends StmtSequence, TDo {
+  private Generated::Do g;
+
+  Do() { this = TDo(g) }
+
+  override Stmt getStmt(int n) { toTreeSitter(result) = g.getChild(n) }
+}
+
+private class Ensure extends StmtSequence, TEnsure {
+  private Generated::Ensure g;
+
+  Ensure() { this = TEnsure(g) }
+
+  override Stmt getStmt(int n) { toTreeSitter(result) = g.getChild(n) }
+
+  final override string toString() { result = "ensure ..." }
 }
 
 /**
@@ -68,22 +126,70 @@ class StmtSequence extends Expr {
  * or do-block. That is, any body that may also include rescue/ensure/else
  * statements.
  */
-class BodyStatement extends StmtSequence {
-  override BodyStatement::Range range;
+class BodyStmt extends StmtSequence, TBodyStmt {
+  // Not defined by dispatch, as it should not be exposed
+  private Generated::AstNode getChild(int i) {
+    result = any(Generated::Method g | this = TMethod(g)).getChild(i)
+    or
+    result = any(Generated::SingletonMethod g | this = TSingletonMethod(g)).getChild(i)
+    or
+    exists(Generated::Lambda g | this = TLambda(g) |
+      result = g.getBody().(Generated::DoBlock).getChild(i) or
+      result = g.getBody().(Generated::Block).getChild(i)
+    )
+    or
+    result = any(Generated::DoBlock g | this = TDoBlock(g)).getChild(i)
+    or
+    result = any(Generated::Program g | this = TToplevel(g)).getChild(i) and
+    not result instanceof Generated::BeginBlock
+    or
+    result = any(Generated::Class g | this = TClass(g)).getChild(i)
+    or
+    result = any(Generated::SingletonClass g | this = TSingletonClass(g)).getChild(i)
+    or
+    result = any(Generated::Module g | this = TModule(g)).getChild(i)
+    or
+    result = any(Generated::Begin g | this = TBeginExpr(g)).getChild(i)
+  }
+
+  final override Stmt getStmt(int n) {
+    result =
+      rank[n + 1](AstNode node, int i |
+        toTreeSitter(node) = this.getChild(i) and
+        not node instanceof Else and
+        not node instanceof RescueClause and
+        not node instanceof Ensure
+      |
+        node order by i
+      )
+  }
 
   /** Gets the `n`th rescue clause in this block. */
-  final RescueClause getRescue(int n) { result = range.getRescue(n) }
+  final RescueClause getRescue(int n) {
+    result =
+      rank[n + 1](RescueClause node, int i | toTreeSitter(node) = getChild(i) | node order by i)
+  }
 
   /** Gets a rescue clause in this block. */
   final RescueClause getARescue() { result = this.getRescue(_) }
 
   /** Gets the `else` clause in this block, if any. */
-  final StmtSequence getElse() { result = range.getElse() }
+  final StmtSequence getElse() { result = unique(Else s | toTreeSitter(s) = getChild(_)) }
 
   /** Gets the `ensure` clause in this block, if any. */
-  final StmtSequence getEnsure() { result = range.getEnsure() }
+  final StmtSequence getEnsure() { result = unique(Ensure s | toTreeSitter(s) = getChild(_)) }
 
   final predicate hasEnsure() { exists(this.getEnsure()) }
+
+  override predicate child(string label, AstNode child) {
+    StmtSequence.super.child(label, child)
+    or
+    label = "getRescue" and child = this.getRescue(_)
+    or
+    label = "getElse" and child = this.getElse()
+    or
+    label = "getEnsure" and child = this.getEnsure()
+  }
 }
 
 /**
@@ -101,10 +207,22 @@ class BodyStatement extends StmtSequence {
  * ()
  * ```
  */
-class ParenthesizedExpr extends StmtSequence, @parenthesized_statements {
-  final override ParenthesizedExpr::Range range;
+class ParenthesizedExpr extends StmtSequence, TParenthesizedExpr {
+  private Generated::ParenthesizedStatements g;
+
+  ParenthesizedExpr() { this = TParenthesizedExpr(g) }
 
   final override string getAPrimaryQlClass() { result = "ParenthesizedExpr" }
+
+  final override string toString() {
+    exists(int c | c = this.getNumberOfStatements() |
+      c = 0 and result = "()"
+      or
+      c > 0 and result = "(" + StmtSequence.super.toString() + ")"
+    )
+  }
+
+  final override Stmt getStmt(int n) { toTreeSitter(result) = g.getChild(n) }
 }
 
 /**
@@ -117,8 +235,10 @@ class ParenthesizedExpr extends StmtSequence, @parenthesized_statements {
  * baz(qux: 1)
  * ```
  */
-class Pair extends Expr, @pair {
-  final override Pair::Range range;
+class Pair extends Expr, TPair {
+  private Generated::Pair g;
+
+  Pair() { this = TPair(g) }
 
   final override string getAPrimaryQlClass() { result = "Pair" }
 
@@ -133,7 +253,7 @@ class Pair extends Expr, @pair {
    * { 'foo' => 123 }
    * ```
    */
-  final Expr getKey() { result = range.getKey() }
+  final Expr getKey() { toTreeSitter(result) = g.getKey() }
 
   /**
    * Gets the value expression of this pair. For example, the `InteralLiteral`
@@ -142,7 +262,15 @@ class Pair extends Expr, @pair {
    * { 'foo' => 123 }
    * ```
    */
-  final Expr getValue() { result = range.getValue() }
+  final Expr getValue() { toTreeSitter(result) = g.getValue() }
+
+  final override string toString() { result = "Pair" }
+
+  override predicate child(string label, AstNode child) {
+    label = "getKey" and child = this.getKey()
+    or
+    label = "getValue" and child = this.getValue()
+  }
 }
 
 /**
@@ -154,8 +282,10 @@ class Pair extends Expr, @pair {
  *   puts msg
  * end
  */
-class RescueClause extends Expr, @rescue {
-  final override RescueClause::Range range;
+class RescueClause extends Expr, TRescueClause {
+  private Generated::Rescue g;
+
+  RescueClause() { this = TRescueClause(g) }
 
   final override string getAPrimaryQlClass() { result = "RescueClause" }
 
@@ -169,7 +299,7 @@ class RescueClause extends Expr, @rescue {
    * end
    * ```
    */
-  final Expr getException(int n) { result = range.getException(n) }
+  final Expr getException(int n) { toTreeSitter(result) = g.getExceptions().getChild(n) }
 
   /**
    * Gets an exception to match, if any. For example `FirstError` or `SecondError` in:
@@ -181,7 +311,7 @@ class RescueClause extends Expr, @rescue {
    * end
    * ```
    */
-  final Expr getAnException() { result = getException(_) }
+  final Expr getAnException() { result = this.getException(_) }
 
   /**
    * Gets the variable to which to assign the matched exception, if any.
@@ -194,12 +324,22 @@ class RescueClause extends Expr, @rescue {
    * end
    * ```
    */
-  final LhsExpr getVariableExpr() { result = range.getVariableExpr() }
+  final LhsExpr getVariableExpr() { toTreeSitter(result) = g.getVariable().getChild() }
 
   /**
    * Gets the exception handler body.
    */
-  final StmtSequence getBody() { result = range.getBody() }
+  final StmtSequence getBody() { toTreeSitter(result) = g.getBody() }
+
+  final override string toString() { result = "rescue ..." }
+
+  override predicate child(string label, AstNode child) {
+    label = "getException" and child = this.getException(_)
+    or
+    label = "getVariableExpr" and child = this.getVariableExpr()
+    or
+    label = "getBody" and child = this.getBody()
+  }
 }
 
 /**
@@ -208,8 +348,10 @@ class RescueClause extends Expr, @rescue {
  * contents = read_file rescue ""
  * ```
  */
-class RescueModifierExpr extends Expr, @rescue_modifier {
-  final override RescueModifierExpr::Range range;
+class RescueModifierExpr extends Expr, TRescueModifierExpr {
+  private Generated::RescueModifier g;
+
+  RescueModifierExpr() { this = TRescueModifierExpr(g) }
 
   final override string getAPrimaryQlClass() { result = "RescueModifierExpr" }
 
@@ -219,7 +361,7 @@ class RescueModifierExpr extends Expr, @rescue_modifier {
    * body rescue handler
    * ```
    */
-  final Stmt getBody() { result = range.getBody() }
+  final Stmt getBody() { toTreeSitter(result) = g.getBody() }
 
   /**
    * Gets the exception handler of this `RescueModifierExpr`.
@@ -227,7 +369,15 @@ class RescueModifierExpr extends Expr, @rescue_modifier {
    * body rescue handler
    * ```
    */
-  final Stmt getHandler() { result = range.getHandler() }
+  final Stmt getHandler() { toTreeSitter(result) = g.getHandler() }
+
+  final override string toString() { result = "... rescue ..." }
+
+  override predicate child(string label, AstNode child) {
+    label = "getBody" and child = this.getBody()
+    or
+    label = "getHandler" and child = this.getHandler()
+  }
 }
 
 /**
@@ -237,13 +387,15 @@ class RescueModifierExpr extends Expr, @rescue_modifier {
  * "foo" "bar" "baz"
  * ```
  */
-class StringConcatenation extends Expr, @chained_string {
-  final override StringConcatenation::Range range;
+class StringConcatenation extends Expr, TStringConcatenation {
+  private Generated::ChainedString g;
+
+  StringConcatenation() { this = TStringConcatenation(g) }
 
   final override string getAPrimaryQlClass() { result = "StringConcatenation" }
 
   /** Gets the `n`th string literal in this concatenation. */
-  final StringLiteral getString(int n) { result = range.getString(n) }
+  final StringLiteral getString(int n) { toTreeSitter(result) = g.getChild(n) }
 
   /** Gets a string literal in this concatenation. */
   final StringLiteral getAString() { result = this.getString(_) }
@@ -276,5 +428,11 @@ class StringConcatenation extends Expr, @chained_string {
       |
         valueText order by i
       )
+  }
+
+  final override string toString() { result = "\"...\" \"...\"" }
+
+  override predicate child(string label, AstNode child) {
+    label = "getString" and child = this.getString(_)
   }
 }

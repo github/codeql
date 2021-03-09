@@ -2,6 +2,8 @@
 
 private import codeql_ruby.AST
 private import codeql.Locations
+private import internal.AST
+private import internal.TreeSitter
 private import internal.Variable
 
 /** A variable declared in a scope. */
@@ -20,7 +22,7 @@ class Variable extends TVariable {
   final Location getLocation() { result = range.getLocation() }
 
   /** Gets the scope this variable is declared in. */
-  final Scope getDeclaringScope() { result = range.getDeclaringScope() }
+  final Scope getDeclaringScope() { toTreeSitter(result) = range.getDeclaringScope() }
 
   /** Gets an access to this variable. */
   VariableAccess getAnAccess() { result.getVariable() = this }
@@ -77,11 +79,9 @@ class ClassVariable extends Variable, TClassVariable {
 }
 
 /** An access to a variable. */
-class VariableAccess extends Expr {
-  override VariableAccess::Range range;
-
+class VariableAccess extends Expr, TVariableAccess {
   /** Gets the variable this identifier refers to. */
-  Variable getVariable() { result = range.getVariable() }
+  Variable getVariable() { none() }
 
   /**
    * Holds if this access is a write access belonging to the explicit
@@ -93,7 +93,9 @@ class VariableAccess extends Expr {
    *
    * both `a` and `b` are write accesses belonging to the same assignment.
    */
-  predicate isExplicitWrite(AstNode assignment) { range.isExplicitWrite(assignment) }
+  predicate isExplicitWrite(AstNode assignment) {
+    explicitWriteAccess(toTreeSitter(this), toTreeSitter(assignment))
+  }
 
   /**
    * Holds if this access is a write access belonging to an implicit assignment.
@@ -110,7 +112,7 @@ class VariableAccess extends Expr {
    * the access to `elements` in the parameter list is an implicit assignment,
    * as is the first access to `e`.
    */
-  predicate isImplicitWrite() { range.isImplicitWrite() }
+  predicate isImplicitWrite() { implicitWriteAccess(toTreeSitter(this)) }
 }
 
 /** An access to a variable where the value is updated. */
@@ -132,14 +134,15 @@ class VariableReadAccess extends VariableAccess {
 }
 
 /** An access to a local variable. */
-class LocalVariableAccess extends VariableAccess, LocalVariableAccess::LocalVariableRange {
-  final override LocalVariableAccess::Range range;
+class LocalVariableAccess extends VariableAccess, TLocalVariableAccess {
+  private Generated::Identifier g;
+  private LocalVariable v;
 
-  final override LocalVariable getVariable() { result = range.getVariable() }
+  LocalVariableAccess() { this = TLocalVariableAccess(g, v) }
 
-  final override string getAPrimaryQlClass() {
-    not this instanceof NamedParameter and result = "LocalVariableAccess"
-  }
+  final override LocalVariable getVariable() { result = v }
+
+  final override string getAPrimaryQlClass() { result = "LocalVariableAccess" }
 
   /**
    * Holds if this access is a captured variable access. For example in
@@ -157,6 +160,8 @@ class LocalVariableAccess extends VariableAccess, LocalVariableAccess::LocalVari
    * the access to `x` in the second `puts x` is not.
    */
   final predicate isCapturedAccess() { isCapturedAccess(this) }
+
+  override string toString() { result = g.getValue() }
 }
 
 /** An access to a local variable where the value is updated. */
@@ -166,12 +171,17 @@ class LocalVariableWriteAccess extends LocalVariableAccess, VariableWriteAccess 
 class LocalVariableReadAccess extends LocalVariableAccess, VariableReadAccess { }
 
 /** An access to a global variable. */
-class GlobalVariableAccess extends VariableAccess, @token_global_variable {
-  final override GlobalVariableAccess::Range range;
+class GlobalVariableAccess extends VariableAccess, TGlobalVariableAccess {
+  private Generated::GlobalVariable g;
+  private GlobalVariable v;
 
-  final override GlobalVariable getVariable() { result = range.getVariable() }
+  GlobalVariableAccess() { this = TGlobalVariableAccess(g, v) }
+
+  final override GlobalVariable getVariable() { result = v }
 
   final override string getAPrimaryQlClass() { result = "GlobalVariableAccess" }
+
+  override string toString() { result = g.getValue() }
 }
 
 /** An access to a global variable where the value is updated. */
@@ -181,19 +191,29 @@ class GlobalVariableWriteAccess extends GlobalVariableAccess, VariableWriteAcces
 class GlobalVariableReadAccess extends GlobalVariableAccess, VariableReadAccess { }
 
 /** An access to an instance variable. */
-class InstanceVariableAccess extends VariableAccess, @token_instance_variable {
-  final override InstanceVariableAccess::Range range;
+class InstanceVariableAccess extends VariableAccess, TInstanceVariableAccess {
+  private Generated::InstanceVariable g;
+  private InstanceVariable v;
 
-  final override InstanceVariable getVariable() { result = range.getVariable() }
+  InstanceVariableAccess() { this = TInstanceVariableAccess(g, v) }
+
+  final override InstanceVariable getVariable() { result = v }
 
   final override string getAPrimaryQlClass() { result = "InstanceVariableAccess" }
+
+  override string toString() { result = g.getValue() }
 }
 
 /** An access to a class variable. */
-class ClassVariableAccess extends VariableAccess, @token_class_variable {
-  final override ClassVariableAccess::Range range;
+class ClassVariableAccess extends VariableAccess, TClassVariableAccess {
+  private Generated::ClassVariable g;
+  private ClassVariable v;
 
-  final override ClassVariable getVariable() { result = range.getVariable() }
+  ClassVariableAccess() { this = TClassVariableAccess(g, v) }
+
+  final override ClassVariable getVariable() { result = v }
 
   final override string getAPrimaryQlClass() { result = "ClassVariableAccess" }
+
+  override string toString() { result = g.getValue() }
 }

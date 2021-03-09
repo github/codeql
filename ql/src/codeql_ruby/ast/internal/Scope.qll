@@ -1,22 +1,19 @@
 private import TreeSitter
+private import codeql_ruby.ast.Scope
 private import codeql_ruby.ast.internal.AST
-private import codeql_ruby.ast.internal.Module
-private import codeql_ruby.ast.internal.Method
-private import codeql_ruby.ast.internal.Statement
+private import codeql_ruby.ast.internal.Parameter
+
+class TScopeType = TMethodBase or TModuleLike or TBlockLike;
+
+private class TBlockLike = TDoBlock or TLambda or TBlock or TEndBlock;
+
+private class TModuleLike = TToplevel or TModule or TClass or TSingletonClass;
 
 module Scope {
-  class ScopeType = MethodLike or ModuleLike or BlockLike;
+  class TypeRange = Callable::TypeRange or ModuleBase::TypeRange or @end_block;
 
-  class BlockLike = @do_block or @lambda or @block or @end_block;
-
-  class ModuleLike = @program or @module or @class or @singleton_class;
-
-  class MethodLike = @method or @singleton_method;
-
-  class Range extends AstNode::Range, ScopeType {
-    Range() { not exists(Generated::Lambda l | l.getBody() = this) }
-
-    Generated::AstNode getADescendant() { this = scopeOf(result) }
+  class Range extends Generated::AstNode, TypeRange {
+    Range() { not this = any(Generated::Lambda l).getBody() }
 
     ModuleBase::Range getEnclosingModule() {
       result = this
@@ -32,19 +29,34 @@ module Scope {
       result = this.getOuterScope().getEnclosingMethod()
     }
 
-    Scope::Range getOuterScope() { result = scopeOf(this) }
-
-    override string toString() { none() }
+    Range getOuterScope() { result = scopeOf(this) }
   }
 }
 
-/** Gets the enclosing scope of a node */
-private Scope::Range scopeOf(Generated::AstNode n) {
-  exists(Generated::AstNode p | p = parentOf(n) |
-    p instanceof Scope::Range and result = p
-    or
-    not p instanceof Scope::Range and result = scopeOf(p)
-  )
+module MethodBase {
+  class TypeRange = @method or @singleton_method;
+
+  class Range extends Scope::Range, TypeRange { }
+}
+
+module Callable {
+  class TypeRange = MethodBase::TypeRange or @do_block or @lambda or @block;
+
+  class Range extends Scope::Range, TypeRange {
+    Parameter::Range getParameter(int i) {
+      result = this.(Generated::Method).getParameters().getChild(i) or
+      result = this.(Generated::SingletonMethod).getParameters().getChild(i) or
+      result = this.(Generated::DoBlock).getParameters().getChild(i) or
+      result = this.(Generated::Lambda).getParameters().getChild(i) or
+      result = this.(Generated::Block).getParameters().getChild(i)
+    }
+  }
+}
+
+module ModuleBase {
+  class TypeRange = @program or @module or @class or @singleton_class;
+
+  class Range extends Scope::Range, TypeRange { }
 }
 
 private Generated::AstNode parentOf(Generated::AstNode n) {
@@ -59,5 +71,15 @@ private Generated::AstNode parentOf(Generated::AstNode n) {
         ]
     then result = parent.getParent()
     else result = parent
+  )
+}
+
+/** Gets the enclosing scope of a node */
+cached
+Scope::Range scopeOf(Generated::AstNode n) {
+  exists(Generated::AstNode p | p = parentOf(n) |
+    p = result
+    or
+    not p instanceof Scope::Range and result = scopeOf(p)
   )
 }

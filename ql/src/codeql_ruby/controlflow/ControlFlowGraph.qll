@@ -2,6 +2,7 @@
 
 private import codeql.Locations
 private import codeql_ruby.AST as AST
+private import codeql_ruby.ast.internal.AST as ASTInternal
 private import codeql_ruby.controlflow.BasicBlocks
 private import SuccessorTypes
 private import internal.ControlFlowGraphImpl
@@ -10,13 +11,13 @@ private import internal.Completion
 
 /** An AST node with an associated control-flow graph. */
 class CfgScope extends AST::AstNode {
-  CfgScope() { this instanceof CfgScope::Range_ }
+  CfgScope() { ASTInternal::toTreeSitter(this) instanceof CfgScope::Range_ }
 
   /** Gets the CFG scope that this scope is nested under, if any. */
   final CfgScope getOuterCfgScope() {
     exists(AST::AstNode parent |
       parent = this.getParent() and
-      result = getCfgScope(parent)
+      result = getCfgScope(ASTInternal::toTreeSitter(parent))
     )
   }
 }

@@ -1,12 +1,10 @@
 private import codeql_ruby.AST
 private import codeql_ruby.controlflow.ControlFlowGraph
 private import internal.AST
-private import internal.Method
+private import internal.TreeSitter
 
 /** A callable. */
-class Callable extends Expr, CfgScope {
-  override Callable::Range range;
-
+class Callable extends Expr, CfgScope, TCallable {
   /** Gets the number of parameters of this callable. */
   final int getNumberOfParameters() { result = count(this.getAParameter()) }
 
@@ -14,22 +12,37 @@ class Callable extends Expr, CfgScope {
   final Parameter getAParameter() { result = this.getParameter(_) }
 
   /** Gets the `n`th parameter of this callable. */
-  final Parameter getParameter(int n) { result = range.getParameter(n) }
+  Parameter getParameter(int n) { none() }
+
+  override predicate child(string label, AstNode child) {
+    label = "getParameter" and child = this.getParameter(_)
+  }
 }
 
 /** A method. */
-class MethodBase extends Callable, BodyStatement, Scope {
-  override MethodBase::Range range;
-
+class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
   /** Gets the name of this method. */
-  final string getName() { result = range.getName() }
+  string getName() { none() }
+
+  override predicate child(string label, AstNode child) {
+    Callable.super.child(label, child)
+    or
+    BodyStmt.super.child(label, child)
+  }
 }
 
 /** A normal method. */
-class Method extends MethodBase, @method {
-  final override Method::Range range;
+class Method extends MethodBase, TMethod {
+  private Generated::Method g;
+
+  Method() { this = TMethod(g) }
 
   final override string getAPrimaryQlClass() { result = "Method" }
+
+  final override string getName() {
+    result = g.getName().(Generated::Token).getValue() or
+    result = g.getName().(Generated::Setter).getName().getValue() + "="
+  }
 
   /**
    * Holds if this is a setter method, as in the following example:
@@ -41,17 +54,44 @@ class Method extends MethodBase, @method {
    * end
    * ```
    */
-  final predicate isSetter() { range.isSetter() }
+  final predicate isSetter() { g.getName() instanceof Generated::Setter }
+
+  final override Parameter getParameter(int n) {
+    toTreeSitter(result) = g.getParameters().getChild(n)
+  }
+
+  final override string toString() { result = this.getName() }
 }
 
 /** A singleton method. */
-class SingletonMethod extends MethodBase, @singleton_method {
-  final override SingletonMethod::Range range;
+class SingletonMethod extends MethodBase, TSingletonMethod {
+  private Generated::SingletonMethod g;
+
+  SingletonMethod() { this = TSingletonMethod(g) }
 
   final override string getAPrimaryQlClass() { result = "SingletonMethod" }
 
   /** Gets the object of this singleton method. */
-  final Expr getObject() { result = range.getObject() }
+  final Expr getObject() { toTreeSitter(result) = g.getObject() }
+
+  final override string getName() {
+    result = g.getName().(Generated::Token).getValue()
+    or
+    // result = g.getName().(SymbolLiteral).getValueText() or
+    result = g.getName().(Generated::Setter).getName().getValue() + "="
+  }
+
+  final override Parameter getParameter(int n) {
+    toTreeSitter(result) = g.getParameters().getChild(n)
+  }
+
+  final override string toString() { result = this.getName() }
+
+  final override predicate child(string label, AstNode child) {
+    MethodBase.super.child(label, child)
+    or
+    label = "getObject" and child = this.getObject()
+  }
 }
 
 /**
@@ -60,20 +100,52 @@ class SingletonMethod extends MethodBase, @singleton_method {
  * -> (x) { x + 1 }
  * ```
  */
-class Lambda extends Callable, BodyStatement, @lambda {
-  final override Lambda::Range range;
+class Lambda extends Callable, BodyStmt, TLambda {
+  private Generated::Lambda g;
+
+  Lambda() { this = TLambda(g) }
 
   final override string getAPrimaryQlClass() { result = "Lambda" }
+
+  final override Parameter getParameter(int n) {
+    toTreeSitter(result) = g.getParameters().getChild(n)
+  }
+
+  final override string toString() { result = "-> { ... }" }
+
+  final override predicate child(string label, AstNode child) {
+    Callable.super.child(label, child)
+    or
+    BodyStmt.super.child(label, child)
+  }
 }
 
 /** A block. */
-class Block extends Callable, StmtSequence, Scope {
-  override Block::Range range;
+class Block extends Callable, StmtSequence, Scope, TBlock {
+  override predicate child(string label, AstNode child) {
+    Callable.super.child(label, child)
+    or
+    StmtSequence.super.child(label, child)
+  }
 }
 
 /** A block enclosed within `do` and `end`. */
-class DoBlock extends Block, BodyStatement, @do_block {
-  final override DoBlock::Range range;
+class DoBlock extends Block, BodyStmt, TDoBlock {
+  private Generated::DoBlock g;
+
+  DoBlock() { this = TDoBlock(g) }
+
+  final override Parameter getParameter(int n) {
+    toTreeSitter(result) = g.getParameters().getChild(n)
+  }
+
+  final override string toString() { result = "do ... end" }
+
+  final override predicate child(string label, AstNode child) {
+    Block.super.child(label, child)
+    or
+    BodyStmt.super.child(label, child)
+  }
 
   final override string getAPrimaryQlClass() { result = "DoBlock" }
 }
@@ -84,8 +156,18 @@ class DoBlock extends Block, BodyStatement, @do_block {
  * names.each { |name| puts name }
  * ```
  */
-class BraceBlock extends Block, @block {
-  final override BraceBlock::Range range;
+class BraceBlock extends Block, TBraceBlock {
+  private Generated::Block g;
+
+  BraceBlock() { this = TBraceBlock(g) }
+
+  final override Parameter getParameter(int n) {
+    toTreeSitter(result) = g.getParameters().getChild(n)
+  }
+
+  final override Stmt getStmt(int i) { toTreeSitter(result) = g.getChild(i) }
+
+  final override string toString() { result = "{ ... }" }
 
   final override string getAPrimaryQlClass() { result = "BraceBlock" }
 }

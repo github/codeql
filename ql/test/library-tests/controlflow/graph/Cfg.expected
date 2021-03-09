@@ -1,9 +1,9 @@
 break_ensure.rb:
-#    1| enter break_ensure.rb
-#-----|  -> m1
-
 #    1| enter m1
 #-----|  -> elements
+
+#    1| enter break_ensure.rb
+#-----|  -> m1
 
 #    1| m1
 #-----|  -> m2
@@ -11,15 +11,15 @@ break_ensure.rb:
 #    1| elements
 #-----|  -> elements
 
-#    1| exit break_ensure.rb
-
 #    1| exit m1
 
-#    1| exit break_ensure.rb (normal)
-#-----|  -> exit break_ensure.rb
+#    1| exit break_ensure.rb
 
 #    1| exit m1 (normal)
 #-----|  -> exit m1
+
+#    1| exit break_ensure.rb (normal)
+#-----|  -> exit break_ensure.rb
 
 #    2| for ... in ...
 #-----|  -> ensure ...
@@ -338,24 +338,24 @@ break_ensure.rb:
 #-----|  -> [ensure: raise] break
 
 case.rb:
-#    1| enter case.rb
-#-----|  -> if_in_case
-
 #    1| enter if_in_case
 #-----|  -> case ...
+
+#    1| enter case.rb
+#-----|  -> if_in_case
 
 #    1| if_in_case
 #-----|  -> exit case.rb (normal)
 
-#    1| exit case.rb
-
 #    1| exit if_in_case
 
-#    1| exit case.rb (normal)
-#-----|  -> exit case.rb
+#    1| exit case.rb
 
 #    1| exit if_in_case (normal)
 #-----|  -> exit if_in_case
+
+#    1| exit case.rb (normal)
+#-----|  -> exit case.rb
 
 #    2| case ...
 #-----|  -> call to x1
@@ -544,7 +544,7 @@ cfg.rb:
 #-----|  -> &...
 
 #   29| enter { ... }
-#-----|  -> &x
+#-----|  -> x
 
 #   29| call to new
 #-----|  -> true
@@ -555,7 +555,7 @@ cfg.rb:
 #   29| { ... }
 #-----|  -> call to new
 
-#   29| &x
+#   29| x
 #-----|  -> x
 
 #   29| call to call
@@ -1094,9 +1094,9 @@ cfg.rb:
 #-----|  -> key
 
 #  101| key
-#-----|  -> **kwargs
+#-----|  -> kwargs
 
-#  101| **kwargs
+#  101| kwargs
 #-----|  -> value
 
 #  101| exit parameters
@@ -1456,7 +1456,7 @@ cfg.rb:
 #-----|  -> call to new
 
 #  149| enter method
-#-----|  -> *x
+#-----|  -> x
 
 #  149| method
 #-----|  -> two_parameters
@@ -1464,7 +1464,7 @@ cfg.rb:
 #  149| silly
 #-----|  -> method
 
-#  149| *x
+#  149| x
 #-----|  -> x
 
 #  149| exit method
@@ -1825,11 +1825,11 @@ cfg.rb:
 #-----|  -> exit { ... }
 
 exit.rb:
-#    1| enter exit.rb
-#-----|  -> m1
-
 #    1| enter m1
 #-----|  -> x
+
+#    1| enter exit.rb
+#-----|  -> m1
 
 #    1| m1
 #-----|  -> m2
@@ -1837,18 +1837,18 @@ exit.rb:
 #    1| x
 #-----|  -> x
 
-#    1| exit exit.rb
-
 #    1| exit m1
 
-#    1| exit exit.rb (normal)
-#-----|  -> exit exit.rb
+#    1| exit exit.rb
 
 #    1| exit m1 (abnormal)
 #-----|  -> exit m1
 
 #    1| exit m1 (normal)
 #-----|  -> exit m1
+
+#    1| exit exit.rb (normal)
+#-----|  -> exit exit.rb
 
 #    2| if ...
 #-----|  -> "x <= 2"
@@ -1918,24 +1918,24 @@ exit.rb:
 #-----|  -> call to puts
 
 heredoc.rb:
-#    1| enter heredoc.rb
-#-----|  -> double_heredoc
-
 #    1| enter double_heredoc
 #-----|  -> <<A
+
+#    1| enter heredoc.rb
+#-----|  -> double_heredoc
 
 #    1| double_heredoc
 #-----|  -> exit heredoc.rb (normal)
 
-#    1| exit heredoc.rb
-
 #    1| exit double_heredoc
 
-#    1| exit heredoc.rb (normal)
-#-----|  -> exit heredoc.rb
+#    1| exit heredoc.rb
 
 #    1| exit double_heredoc (normal)
 #-----|  -> exit double_heredoc
+
+#    1| exit heredoc.rb (normal)
+#-----|  -> exit heredoc.rb
 
 #    2| call to puts
 #-----|  -> exit double_heredoc (normal)
@@ -1947,11 +1947,11 @@ heredoc.rb:
 #-----|  -> call to puts
 
 ifs.rb:
-#    1| enter ifs.rb
-#-----|  -> m1
-
 #    1| enter m1
 #-----|  -> x
+
+#    1| enter ifs.rb
+#-----|  -> m1
 
 #    1| m1
 #-----|  -> m2
@@ -1959,15 +1959,15 @@ ifs.rb:
 #    1| x
 #-----|  -> x
 
-#    1| exit ifs.rb
-
 #    1| exit m1
 
-#    1| exit ifs.rb (normal)
-#-----|  -> exit ifs.rb
+#    1| exit ifs.rb
 
 #    1| exit m1 (normal)
 #-----|  -> exit m1
+
+#    1| exit ifs.rb (normal)
+#-----|  -> exit ifs.rb
 
 #    2| if ...
 #-----|  -> exit m1 (normal)
@@ -2343,11 +2343,11 @@ ifs.rb:
 #-----| true -> [false] ! ...
 
 loops.rb:
-#    1| enter loops.rb
-#-----|  -> m1
-
 #    1| enter m1
 #-----|  -> x
+
+#    1| enter loops.rb
+#-----|  -> m1
 
 #    1| m1
 #-----|  -> m2
@@ -2355,15 +2355,15 @@ loops.rb:
 #    1| x
 #-----|  -> x
 
-#    1| exit loops.rb
-
 #    1| exit m1
 
-#    1| exit loops.rb (normal)
-#-----|  -> exit loops.rb
+#    1| exit loops.rb
 
 #    1| exit m1 (normal)
 #-----|  -> exit m1
+
+#    1| exit loops.rb (normal)
+#-----|  -> exit loops.rb
 
 #    2| while ...
 #-----|  -> exit m1 (normal)

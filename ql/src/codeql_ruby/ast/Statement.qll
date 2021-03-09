@@ -1,7 +1,8 @@
 private import codeql_ruby.AST
 private import codeql_ruby.CFG
-private import internal.Expr
-private import internal.Statement
+private import internal.AST
+private import internal.TreeSitter
+private import internal.Variable
 private import codeql_ruby.controlflow.internal.ControlFlowGraphImpl
 
 /**
@@ -9,14 +10,12 @@ private import codeql_ruby.controlflow.internal.ControlFlowGraphImpl
  *
  * This is the root QL class for all statements.
  */
-class Stmt extends AstNode {
-  override Stmt::Range range;
-
+class Stmt extends AstNode, TStmt {
   /** Gets a control-flow node for this statement, if any. */
   CfgNodes::AstCfgNode getAControlFlowNode() { result.getNode() = this }
 
   /** Gets the control-flow scope of this statement, if any. */
-  CfgScope getCfgScope() { result = getCfgScope(this) }
+  CfgScope getCfgScope() { result = getCfgScope(toTreeSitter(this)) }
 
   /** Gets the enclosing callable, if any. */
   Callable getEnclosingCallable() { result = this.getCfgScope() }
@@ -25,10 +24,10 @@ class Stmt extends AstNode {
 /**
  * An empty statement (`;`).
  */
-class EmptyStmt extends Stmt, @token_empty_statement {
-  final override EmptyStmt::Range range;
-
+class EmptyStmt extends Stmt, TEmptyStmt {
   final override string getAPrimaryQlClass() { result = "EmptyStmt" }
+
+  final override string toString() { result = ";" }
 }
 
 /**
@@ -39,10 +38,10 @@ class EmptyStmt extends Stmt, @token_empty_statement {
  * end
  * ```
  */
-class BeginExpr extends BodyStatement, @begin {
-  final override Begin::Range range;
-
+class BeginExpr extends BodyStmt, TBeginExpr {
   final override string getAPrimaryQlClass() { result = "BeginExpr" }
+
+  final override string toString() { result = "begin ... " }
 }
 
 /**
@@ -51,10 +50,16 @@ class BeginExpr extends BodyStatement, @begin {
  * BEGIN { puts "starting ..." }
  * ```
  */
-class BeginBlock extends StmtSequence, @begin_block {
-  final override BeginBlock::Range range;
+class BeginBlock extends StmtSequence, TBeginBlock {
+  private Generated::BeginBlock g;
+
+  BeginBlock() { this = TBeginBlock(g) }
 
   final override string getAPrimaryQlClass() { result = "BeginBlock" }
+
+  final override string toString() { result = "BEGIN { ... }" }
+
+  final override Stmt getStmt(int n) { toTreeSitter(result) = g.getChild(n) }
 }
 
 /**
@@ -63,10 +68,16 @@ class BeginBlock extends StmtSequence, @begin_block {
  * END { puts "shutting down" }
  * ```
  */
-class EndBlock extends StmtSequence, @end_block {
-  final override EndBlock::Range range;
+class EndBlock extends StmtSequence, TEndBlock {
+  private Generated::EndBlock g;
+
+  EndBlock() { this = TEndBlock(g) }
 
   final override string getAPrimaryQlClass() { result = "EndBlock" }
+
+  final override string toString() { result = "END { ... }" }
+
+  final override Stmt getStmt(int n) { toTreeSitter(result) = g.getChild(n) }
 }
 
 /**
@@ -77,16 +88,24 @@ class EndBlock extends StmtSequence, @end_block {
  * - undef :"method_#{ name }"
  * ```
  */
-class UndefStmt extends Stmt, @undef {
-  final override UndefStmt::Range range;
+class UndefStmt extends Stmt, TUndefStmt {
+  private Generated::Undef g;
+
+  UndefStmt() { this = TUndefStmt(g) }
 
   /** Gets the `n`th method name to undefine. */
-  final MethodName getMethodName(int n) { result = range.getMethodName(n) }
+  final MethodName getMethodName(int n) { toTreeSitter(result) = g.getChild(n) }
 
   /** Gets a method name to undefine. */
   final MethodName getAMethodName() { result = getMethodName(_) }
 
   final override string getAPrimaryQlClass() { result = "UndefStmt" }
+
+  final override string toString() { result = "undef ..." }
+
+  final override predicate child(string label, AstNode child) {
+    label = "getMethodName" and child = this.getMethodName(_)
+  }
 }
 
 /**
@@ -97,16 +116,26 @@ class UndefStmt extends Stmt, @undef {
  * - alias bar :"method_#{ name }"
  * ```
  */
-class AliasStmt extends Stmt, @alias {
-  final override AliasStmt::Range range;
+class AliasStmt extends Stmt, TAliasStmt {
+  private Generated::Alias g;
+
+  AliasStmt() { this = TAliasStmt(g) }
 
   /** Gets the new method name. */
-  final MethodName getNewName() { result = range.getNewName() }
+  final MethodName getNewName() { toTreeSitter(result) = g.getName() }
 
   /** Gets the original method name. */
-  final MethodName getOldName() { result = range.getOldName() }
+  final MethodName getOldName() { toTreeSitter(result) = g.getAlias() }
 
   final override string getAPrimaryQlClass() { result = "AliasStmt" }
+
+  final override string toString() { result = "alias ..." }
+
+  final override predicate child(string label, AstNode child) {
+    label = "getNewName" and child = this.getNewName()
+    or
+    label = "getOldName" and child = this.getOldName()
+  }
 }
 
 /**
@@ -121,11 +150,32 @@ class AliasStmt extends Stmt, @alias {
  * next value
  * ```
  */
-class ReturningStmt extends Stmt {
-  override ReturningStmt::Range range;
+class ReturningStmt extends Stmt, TReturningStmt {
+  private Generated::ArgumentList getArgumentList() {
+    result = any(Generated::Return g | this = TReturnStmt(g)).getChild()
+    or
+    result = any(Generated::Break g | this = TBreakStmt(g)).getChild()
+    or
+    result = any(Generated::Next g | this = TNextStmt(g)).getChild()
+  }
 
   /** Gets the returned value, if any. */
-  final Expr getValue() { result = range.getValue() }
+  final Expr getValue() {
+    toTreeSitter(result) =
+      any(Generated::AstNode res |
+        exists(Generated::ArgumentList a, int c |
+          a = this.getArgumentList() and c = count(a.getChild(_))
+        |
+          res = a.getChild(0) and c = 1
+          or
+          res = a and c > 1
+        )
+      )
+  }
+
+  final override predicate child(string label, AstNode child) {
+    label = "getValue" and child = this.getValue()
+  }
 }
 
 /**
@@ -135,10 +185,10 @@ class ReturningStmt extends Stmt {
  * return value
  * ```
  */
-class ReturnStmt extends ReturningStmt, @return {
-  final override ReturnStmt::Range range;
-
+class ReturnStmt extends ReturningStmt, TReturnStmt {
   final override string getAPrimaryQlClass() { result = "ReturnStmt" }
+
+  final override string toString() { result = "return" }
 }
 
 /**
@@ -148,10 +198,10 @@ class ReturnStmt extends ReturningStmt, @return {
  * break value
  * ```
  */
-class BreakStmt extends ReturningStmt, @break {
-  final override BreakStmt::Range range;
-
+class BreakStmt extends ReturningStmt, TBreakStmt {
   final override string getAPrimaryQlClass() { result = "BreakStmt" }
+
+  final override string toString() { result = "break" }
 }
 
 /**
@@ -161,10 +211,10 @@ class BreakStmt extends ReturningStmt, @break {
  * next value
  * ```
  */
-class NextStmt extends ReturningStmt, @next {
-  final override NextStmt::Range range;
-
+class NextStmt extends ReturningStmt, TNextStmt {
   final override string getAPrimaryQlClass() { result = "NextStmt" }
+
+  final override string toString() { result = "next" }
 }
 
 /**
@@ -173,10 +223,10 @@ class NextStmt extends ReturningStmt, @next {
  * redo
  * ```
  */
-class RedoStmt extends Stmt, @redo {
-  final override RedoStmt::Range range;
-
+class RedoStmt extends Stmt, TRedoStmt {
   final override string getAPrimaryQlClass() { result = "RedoStmt" }
+
+  final override string toString() { result = "redo" }
 }
 
 /**
@@ -185,8 +235,8 @@ class RedoStmt extends Stmt, @redo {
  * retry
  * ```
  */
-class RetryStmt extends Stmt, @retry {
-  final override RetryStmt::Range range;
-
+class RetryStmt extends Stmt, TRetryStmt {
   final override string getAPrimaryQlClass() { result = "RetryStmt" }
+
+  final override string toString() { result = "retry" }
 }

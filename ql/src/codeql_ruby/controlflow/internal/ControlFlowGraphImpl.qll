@@ -31,9 +31,10 @@
  * caught up by its surrounding loop and turned into a `NormalCompletion`.
  */
 
+private import codeql_ruby.AST as AST
 private import codeql_ruby.ast.internal.AST as ASTInternal
-private import codeql_ruby.ast.internal.Control as Control
 private import codeql_ruby.ast.internal.Scope
+private import codeql_ruby.ast.Scope
 private import codeql_ruby.ast.internal.TreeSitter::Generated
 private import AstNodes
 private import codeql_ruby.ast.internal.Variable
@@ -202,7 +203,7 @@ private predicate succImpl(AstNode pred, AstNode succ, Completion c) {
 }
 
 private predicate isHidden(ControlFlowTree t) {
-  not t instanceof ASTInternal::AstNode::Range
+  not t = ASTInternal::toTreeSitter(_)
   or
   t.isHidden()
 }
@@ -290,16 +291,17 @@ abstract private class PreOrderTree extends ControlFlowTree {
 }
 
 // TODO: remove this class; it should be replaced with an implicit non AST node
-class InRange extends ASTInternal::AstNode::Range, @in {
+private class ForIn extends AST::AstNode, ASTInternal::TForIn {
   final override string toString() { result = "In" }
 }
 
 // TODO: remove this class; it should be replaced with an implicit non AST node
-class ForRange extends Control::ForExpr::Range, @for {
-  override predicate child(string label, ASTInternal::AstNode::Range child) {
-    Control::ForExpr::Range.super.child(label, child)
+private class ForRange extends AST::ForExpr {
+  override predicate child(string label, AST::AstNode child) {
+    AST::ForExpr.super.child(label, child)
     or
-    label = "<in>" and this.(AstNode).getAFieldOrChild().(In) = child
+    label = "<in>" and
+    child = ASTInternal::TForIn(ASTInternal::toTreeSitter(this).(For).getValue())
   }
 }
 
@@ -307,7 +309,7 @@ class ForRange extends Control::ForExpr::Range, @for {
 predicate isValidFor(Completion c, ControlFlowTree node) {
   c instanceof SimpleCompletion and isHidden(node)
   or
-  c.isValidFor(node)
+  c.isValidFor(ASTInternal::fromTreeSitter(node))
 }
 
 abstract private class StandardPreOrderTree extends StandardNode, PreOrderTree {
@@ -343,7 +345,8 @@ private class LeftToRightPostOrderNodes =
       @operator_assignment or @pair or @parenthesized_statements or @range or @redo or @regex or
       @rest_assignment or @retry or @return or @right_assignment_list or @scope_resolution or
       @token_simple_symbol or @splat_argument or @string__ or @string_array or @subshell or
-      @superclass or @symbol_array or @token_hash_key_symbol or @unary;
+      @superclass or @symbol_array or @token_hash_key_symbol or @unary or @splat_parameter or
+      @hash_splat_parameter or @block_parameter;
 
 private class LeftToRightPostOrderTree extends StandardPostOrderTree, LeftToRightPostOrderNodes {
   LeftToRightPostOrderTree() {
@@ -357,7 +360,10 @@ private class LeftToRightPostOrderTree extends StandardPostOrderTree, LeftToRigh
     this instanceof ChainedString or
     this instanceof ExceptionVariable or
     this instanceof LeftAssignmentList or
-    this instanceof RightAssignmentList
+    this instanceof RightAssignmentList or
+    this instanceof SplatParameter or
+    this instanceof HashSplatParameter or
+    this instanceof BlockParameter
   }
 }
 
@@ -441,8 +447,6 @@ module Trees {
     }
   }
 
-  private class BlockParameterTree extends LeafTree, BlockParameter { }
-
   private class CaseTree extends PreOrderTree, Case {
     final override predicate propagatesAbnormal(AstNode child) {
       child = this.getValue() or child = this.getChild(_)
@@ -505,18 +509,24 @@ module Trees {
   private class ConstantTree extends LeafTree, Constant { }
 
   /** A parameter that may have a default value. */
-  abstract class DefaultValueParameterTree extends PreOrderTree {
+  abstract class DefaultValueParameterTree extends ControlFlowTree {
     abstract AstNode getDefaultValue();
+
+    abstract AstNode getAccessNode();
 
     predicate hasDefaultValue() { exists(this.getDefaultValue()) }
 
-    final override predicate propagatesAbnormal(AstNode child) { child = this.getDefaultValue() }
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = this.getDefaultValue() or child = this.getAccessNode()
+    }
+
+    final override predicate first(AstNode first) { first = this.getAccessNode() }
 
     final override predicate last(AstNode last, Completion c) {
       last(this.getDefaultValue(), last, c) and
       c instanceof NormalCompletion
       or
-      last = this and
+      last = this.getAccessNode() and
       (
         not this.hasDefaultValue() and
         c instanceof SimpleCompletion
@@ -527,7 +537,7 @@ module Trees {
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      pred = this and
+      pred = this.getAccessNode() and
       first(this.getDefaultValue(), succ) and
       c.(MatchingCompletion).getValue() = false
     }
@@ -668,8 +678,6 @@ module Trees {
 
   private class GlobalVariableTree extends LeafTree, GlobalVariable { }
 
-  private class HashSplatParameterTree extends LeafTree, HashSplatParameter { }
-
   private HeredocBody heredoc(HeredocBeginning start) {
     exists(int i, File f |
       start =
@@ -725,6 +733,8 @@ module Trees {
 
   private class KeywordParameterTree extends DefaultValueParameterTree, KeywordParameter {
     final override AstNode getDefaultValue() { result = this.getValue() }
+
+    final override AstNode getAccessNode() { result = this.getName() }
   }
 
   class LambdaTree extends LeafTree, Lambda {
@@ -823,6 +833,8 @@ module Trees {
 
   private class OptionalParameterTree extends DefaultValueParameterTree, OptionalParameter {
     final override AstNode getDefaultValue() { result = this.getValue() }
+
+    final override AstNode getAccessNode() { result = this.getName() }
   }
 
   private class RationalTree extends LeafTree, Rational { }
@@ -1183,8 +1195,6 @@ module Trees {
     }
   }
 
-  private class SplatParameterTree extends LeafTree, SplatParameter { }
-
   private class SuperTree extends LeafTree, Super { }
 
   private class TrueTree extends LeafTree, True { }
@@ -1261,14 +1271,14 @@ module Trees {
 
 private Scope::Range parent(Scope::Range n) {
   result = n.getOuterScope() and
-  not n instanceof CfgScope
+  not n instanceof CfgScope::Range_
 }
 
 cached
 private module Cached {
   /** Gets the CFG scope of node `n`. */
   cached
-  CfgScope getCfgScope(AstNode n) { result = parent*(any(Scope::Range x | x.getADescendant() = n)) }
+  CfgScope getCfgScope(AstNode n) { ASTInternal::toTreeSitter(result) = parent*(scopeOf(n)) }
 
   private predicate isAbnormalExitType(SuccessorType t) {
     t instanceof RaiseSuccessor or t instanceof ExitSuccessor
@@ -1288,7 +1298,7 @@ private module Cached {
         succExitSplits(b.getANode(), _, scope, _)
       )
     } or
-    TAstNode(AstNode n, Splits splits) {
+    TAstCfgNode(AstNode n, Splits splits) {
       exists(Reachability::SameSplitsBlock b | b.isReachable(splits) | n = b.getANode())
     }
 
@@ -1312,10 +1322,10 @@ private module Cached {
     exists(CfgScope scope, AstNode succElement, Splits succSplits |
       pred = TEntryNode(scope) and
       succEntrySplits(scope, succElement, succSplits, t) and
-      result = TAstNode(succElement, succSplits)
+      result = TAstCfgNode(succElement, succSplits)
     )
     or
-    exists(AstNode predNode, Splits predSplits | pred = TAstNode(predNode, predSplits) |
+    exists(AstNode predNode, Splits predSplits | pred = TAstCfgNode(predNode, predSplits) |
       exists(CfgScope scope, boolean normal |
         succExitSplits(predNode, predSplits, scope, t) and
         (if isAbnormalExitType(t) then normal = false else normal = true) and
@@ -1325,7 +1335,7 @@ private module Cached {
       exists(AstNode succElement, Splits succSplits, Completion c |
         succSplits(predNode, predSplits, succElement, succSplits, c) and
         t = c.getAMatchingSuccessorType() and
-        result = TAstNode(succElement, succSplits)
+        result = TAstCfgNode(succElement, succSplits)
       )
     )
     or
@@ -1349,5 +1359,5 @@ import Cached
 
 /** An AST node that is split into multiple control flow nodes. */
 class SplitAstNode extends AstNode {
-  SplitAstNode() { strictcount(CfgNode n | n.getNode() = this) > 1 }
+  SplitAstNode() { strictcount(CfgNode n | ASTInternal::toTreeSitter(n.getNode()) = this) > 1 }
 }
