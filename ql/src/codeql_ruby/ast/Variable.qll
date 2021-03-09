@@ -5,20 +5,7 @@ private import codeql.Locations
 private import internal.Variable
 
 /** A scope in which variables can be declared. */
-class VariableScope extends TScope {
-  VariableScope::Range range;
-
-  VariableScope() { range = this }
-
-  /** Gets a textual representation of this element. */
-  final string toString() { result = range.toString() }
-
-  /** Gets the program element this scope is associated with, if any. */
-  final AstNode getScopeElement() { result = range.getScopeElement() }
-
-  /** Gets the location of the program element this scope is associated with. */
-  final Location getLocation() { result = getScopeElement().getLocation() }
-
+class VariableScope extends Scope {
   /** Gets a variable that is declared in this scope. */
   final Variable getAVariable() { result.getDeclaringScope() = this }
 
@@ -27,9 +14,6 @@ class VariableScope extends TScope {
     result = this.getAVariable() and
     result.getName() = name
   }
-
-  /** Gets the scope in which this scope is nested, if any. */
-  VariableScope getOuterScope() { result = enclosingScope(this.getScopeElement()) }
 }
 
 /** A variable declared in a scope. */
