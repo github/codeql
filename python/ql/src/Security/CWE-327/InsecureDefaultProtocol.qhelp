@@ -17,7 +17,7 @@
             and TLS 1.0 and 1.1 are known to be vulnerable to attacks. Using TLS 1.2 or
             above is strongly recommended. If no explicit
             <code>ssl_version</code> is specified, the default
-            <code>PROTOCOL_TLS</code> is chosen. This protocol is insecure in that it
+            <code>PROTOCOL_TLS</code> is chosen. This protocol is insecure because it
             allows TLS 1.0 and TLS 1.1 and so should not be used.
           </p>
 
