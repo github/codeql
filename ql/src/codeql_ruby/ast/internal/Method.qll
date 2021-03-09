@@ -2,6 +2,7 @@ private import codeql_ruby.AST
 private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.ast.internal.Expr
 private import codeql_ruby.ast.internal.Parameter
+private import codeql_ruby.ast.internal.Scope
 private import TreeSitter
 
 module Callable {
@@ -14,13 +15,25 @@ module Callable {
   }
 }
 
+module MethodBase {
+  abstract class Range extends Callable::Range, BodyStatement::Range, Scope::Range {
+    abstract string getName();
+
+    override predicate child(string label, AstNode::Range child) {
+      Callable::Range.super.child(label, child) or BodyStatement::Range.super.child(label, child)
+    }
+
+    override string toString() { result = BodyStatement::Range.super.toString() }
+  }
+}
+
 module Method {
-  class Range extends Callable::Range, BodyStatement::Range, @method {
+  class Range extends MethodBase::Range, @method {
     final override Generated::Method generated;
 
     override Parameter::Range getParameter(int n) { result = generated.getParameters().getChild(n) }
 
-    string getName() {
+    override string getName() {
       result = generated.getName().(Generated::Token).getValue() or
       result = generated.getName().(Generated::Setter).getName().getValue() + "="
     }
@@ -30,20 +43,16 @@ module Method {
     final override Generated::AstNode getChild(int i) { result = generated.getChild(i) }
 
     final override string toString() { result = this.getName() }
-
-    override predicate child(string label, AstNode::Range child) {
-      Callable::Range.super.child(label, child) or BodyStatement::Range.super.child(label, child)
-    }
   }
 }
 
 module SingletonMethod {
-  class Range extends Callable::Range, BodyStatement::Range, @singleton_method {
+  class Range extends MethodBase::Range, @singleton_method {
     final override Generated::SingletonMethod generated;
 
     override Parameter::Range getParameter(int n) { result = generated.getParameters().getChild(n) }
 
-    string getName() {
+    override string getName() {
       result = generated.getName().(Generated::Token).getValue() or
       result = generated.getName().(SymbolLiteral).getValueText() or
       result = generated.getName().(Generated::Setter).getName().getValue() + "="
@@ -56,9 +65,7 @@ module SingletonMethod {
     final override string toString() { result = this.getName() }
 
     override predicate child(string label, AstNode::Range child) {
-      Callable::Range.super.child(label, child)
-      or
-      BodyStatement::Range.super.child(label, child)
+      MethodBase::Range.super.child(label, child)
       or
       label = "getObject" and child = getObject()
     }
@@ -89,7 +96,7 @@ module Lambda {
 }
 
 module Block {
-  abstract class Range extends Callable::Range, StmtSequence::Range {
+  abstract class Range extends Callable::Range, StmtSequence::Range, Scope::Range {
     Range() { not generated.getParent() instanceof Generated::Lambda }
 
     override predicate child(string label, AstNode::Range child) {
@@ -97,6 +104,8 @@ module Block {
       or
       StmtSequence::Range.super.child(label, child)
     }
+
+    override string toString() { result = StmtSequence::Range.super.toString() }
   }
 }
 
