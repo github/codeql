@@ -55,9 +55,9 @@
                   supported in Python 3.4 and later versions.</li>
           </ul>
           <p>
-            Note also that, even using these alternatives, it is recommended to
-            ensure that a safe protocol is being used. The following code illustrates
-            how to use either flags (available since Python 3.2) or the `minimum_version`
+            Even when you use these alternatives, you should
+            ensure that a safe protocol is used. The following code illustrates
+            how to use flags (available since Python 3.2) or the `minimum_version`
             field (favored since Python 3.7) to restrict the protocols accepted when
             creating a connection.
           </p>
