@@ -158,14 +158,6 @@ private class ThriftIfaceParameterSource extends RemoteFlowSource {
   override string getSourceType() { result = "Thrift Iface parameter" }
 }
 
-private class WebSocketMessageParameterSource extends RemoteFlowSource {
-  WebSocketMessageParameterSource() {
-    exists(WebsocketOnText t | t.getParameter(1) = this.asParameter())
-  }
-
-  override string getSourceType() { result = "Websocket onText parameter" }
-}
-
 /** Class for `tainted` user input. */
 abstract class UserInput extends DataFlow::Node { }
 

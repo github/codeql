@@ -170,7 +170,9 @@ private predicate sourceModelCsv(string row) {
       // SpringRestTemplateResponseEntityMethod
       "org.springframework.web.client;RestTemplate;false;exchange;;;ReturnValue;remote",
       "org.springframework.web.client;RestTemplate;false;getForEntity;;;ReturnValue;remote",
-      "org.springframework.web.client;RestTemplate;false;postForEntity;;;ReturnValue;remote"
+      "org.springframework.web.client;RestTemplate;false;postForEntity;;;ReturnValue;remote",
+      // WebSocketMessageParameterSource
+      "java.net.http;WebSocket$Listener;true;onText;(WebSocket,CharSequence,boolean);;Parameter[1];remote"
     ]
 }
 
