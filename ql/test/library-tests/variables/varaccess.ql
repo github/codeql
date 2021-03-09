@@ -1,7 +1,7 @@
 import codeql_ruby.AST
 import codeql_ruby.ast.Variable
 
-query predicate variableAccess(VariableAccess access, Variable variable, VariableScope scope) {
+query predicate variableAccess(VariableAccess access, Variable variable, Scope scope) {
   variable = access.getVariable() and
   scope = variable.getDeclaringScope()
 }

@@ -12,4 +12,13 @@ class Scope extends AstNode, Scope::ScopeType {
 
   /** Gets the scope in which this scope is nested, if any. */
   Scope getOuterScope() { result = range.getOuterScope() }
+
+  /** Gets a variable that is declared in this scope. */
+  final Variable getAVariable() { result.getDeclaringScope() = this }
+
+  /** Gets the variable with the given name that is declared in this scope. */
+  final Variable getVariable(string name) {
+    result = this.getAVariable() and
+    result.getName() = name
+  }
 }
