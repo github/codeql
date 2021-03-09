@@ -54,6 +54,7 @@
             <li><code>ssl.create_default_context</code> - a convenience function,
                   supported in Python 3.4 and later versions.</li>
           </ul>
+
           <p>
             Even when you use these alternatives, you should
             ensure that a safe protocol is used. The following code illustrates
