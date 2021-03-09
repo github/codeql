@@ -39,7 +39,7 @@
           </p>
           <p>
             The latter example can also be made secure by modifying the created
-            context before it is used to create a connection and so will not be
+            context before it is used to create a connection. Therefore it will not be
             flagged by this query. However, if a connection is created before
             the context has been secured (e.g. by setting the value of <code>minimum_version</code>),
             then the code should be flagged by the query <code>py/insecure-protocol</code>.
