@@ -11,7 +11,7 @@
  */
 
 // Connections are generally created based on a context which controls the range of acceptable
-// protocols. This query alerts on the deprecated way of creating connections without referring
+// protocols. This query reports the deprecated way of creating connections without referring
 // to a context (via `ssl.wrap_socket`). Doing this and not specifying which protocols are
 // acceptable means that connections will be created with the insecure default settings.
 //
