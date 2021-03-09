@@ -34,3 +34,21 @@ app5.post('/path', function(req, res) {
     var bodyParameter = req.body.bodyParameter;
     res.render('template', bodyParameter); // NOT OK
 }); 
+
+var app6 = require('express')();
+app6.register(".html", require("consolidate").whiskers);
+app6.set('view engine', 'html');
+app6.post('/path', function(req, res) {
+    var bodyParameter = req.body.bodyParameter;
+    res.render('template', bodyParameter); // NOT OK
+}); 
+
+const express = require('express');
+var router = express.Router();
+var app7 = express();
+app7.set('view engine', 'ejs');
+router.post('/path', function(req, res) {
+    var bodyParameter = req.body.bodyParameter;
+    res.render('template', bodyParameter); // NOT OK
+});
+app7.use("/router", router);

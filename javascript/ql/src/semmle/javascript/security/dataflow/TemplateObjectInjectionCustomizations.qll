@@ -53,7 +53,8 @@ module TemplateObjectInjection {
       |
         setup.getARouteHandler() = getRouteHandler() and
         setup.getRouter() = router and
-        usesVulnerableTemplateEngine(router)
+        top.getASubRouter*() = router and
+        usesVulnerableTemplateEngine(top)
       )
     }
   }
@@ -98,7 +99,13 @@ module TemplateObjectInjection {
       viewEngineCall.getMethodName() = "set" and
       viewEngineCall.getArgument(0).getStringValue() = "view engine" and
       // The name set by the `app.engine("name")` call matches `app.set("view engine", "name")`.
-      viewEngineCall.getArgument(1).getStringValue() = registerCall.getArgument(0).getStringValue()
+      (
+        viewEngineCall.getArgument(1).getStringValue() =
+          registerCall.getArgument(0).getStringValue()
+        or
+        "." + viewEngineCall.getArgument(1).getStringValue() =
+          registerCall.getArgument(0).getStringValue()
+      )
     |
       // Different ways of initializing vulnerable template engines.
       engine = DataFlow::moduleImport(getAVulnerableTemplateEngine())
