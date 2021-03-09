@@ -409,6 +409,8 @@ private class ApacheObjectUtilsModel extends SummaryModelCsv {
         "org.apache.commons.lang3;ObjectUtils;false;clone;;;Argument;ReturnValue;value",
         "org.apache.commons.lang3;ObjectUtils;false;cloneIfPossible;;;Argument;ReturnValue;value",
         "org.apache.commons.lang3;ObjectUtils;false;CONST;;;Argument;ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;CONST_BYTE;;;Argument;ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;CONST_SHORT;;;Argument;ReturnValue;value",
         "org.apache.commons.lang3;ObjectUtils;false;defaultIfNull;;;Argument;ReturnValue;value",
         "org.apache.commons.lang3;ObjectUtils;false;firstNonNull;;;Argument;ReturnValue;taint",
         "org.apache.commons.lang3;ObjectUtils;false;getIfNull;;;Argument[0];ReturnValue;value",

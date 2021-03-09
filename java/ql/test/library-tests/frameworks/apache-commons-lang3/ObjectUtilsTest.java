@@ -3,12 +3,18 @@ import org.apache.commons.lang3.ObjectUtils;
 public class ObjectUtilsTest {
   String taint() { return "tainted"; }
 
+  private static class IntSource {
+    static int taint() { return 0; }
+  }
+
   void sink(Object o) {}
 
   void test() throws Exception {
     sink(ObjectUtils.clone(taint())); // $hasTaintFlow=y $hasValueFlow=y
     sink(ObjectUtils.cloneIfPossible(taint())); // $hasTaintFlow=y $hasValueFlow=y
     sink(ObjectUtils.CONST(taint())); // $hasTaintFlow=y $hasValueFlow=y
+    sink(ObjectUtils.CONST_SHORT(IntSource.taint())); // $hasTaintFlow=y $hasValueFlow=y
+    sink(ObjectUtils.CONST_BYTE(IntSource.taint())); // $hasTaintFlow=y $hasValueFlow=y
     sink(ObjectUtils.defaultIfNull(taint(), null)); // $hasTaintFlow=y $hasValueFlow=y
     sink(ObjectUtils.defaultIfNull(null, taint())); // $hasTaintFlow=y $hasValueFlow=y
     sink(ObjectUtils.firstNonNull(taint(), null, null)); // $hasTaintFlow=y $MISSING:hasValueFlow=y
