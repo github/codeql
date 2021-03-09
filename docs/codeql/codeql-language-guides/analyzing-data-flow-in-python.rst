@@ -20,7 +20,7 @@ Local data flow is data flow within a single method or callable. Local data flow
 Using local data flow
 ~~~~~~~~~~~~~~~~~~~~~
 
-The local data flow library is in the module ``DataFlow``, which defines the class ``Node`` denoting any element that data can flow through. ``Node``\ s are divided into expression nodes (``ExprNode``) and parameter nodes (``ParameterNode``). You can map between data flow nodes and expressions/parameters using the member predicates ``asExpr`` and ``asParameter``:
+The local data flow library is in the module ``DataFlow``, which defines the class ``Node`` denoting any element that data can flow through. The ``Node`` class has a number of useful subclasses, such as ``ExprNode`` for expressions, ``CallCfgNode`` for function and method calls, and ``ParameterNode`` for parameters, all of which are subclasses of ``CfgNode`` which holds all those data-flow nodes which are associated with a control-flow node. You can map between data flow nodes and expressions/control-flow nodes using the member predicates ``asExpr`` and ``asCfgNode``:
 
 .. code-block:: ql
 
@@ -28,25 +28,22 @@ The local data flow library is in the module ``DataFlow``, which defines the cla
        /** Gets the expression corresponding to this node, if any. */
        Expr asExpr() { ... }
 
-       /** Gets the parameter corresponding to this node, if any. */
-       Parameter asParameter() { ... }
+       /** Gets the control-flow node corresponding to this node, if any. */
+       ControlFlowNode asCfgNode() { ... }
 
       ...
      }
 
-or using the predicates ``exprNode`` and ``parameterNode``:
+or using the predicate ``exprNode``:
 
 .. code-block:: ql
 
      /**
-      * Gets the node corresponding to expression `e`.
+      * Gets a node corresponding to expression `e`.
       */
      ExprNode exprNode(Expr e) { ... }
 
-     /**
-      * Gets the node corresponding to the value of parameter `p` at function entry.
-      */
-     ParameterNode parameterNode(Parameter p) { ... }
+Due to the control-flow graph being split, there can be multiple data-flow nodes associated with a single expression.
 
 The predicate ``localFlowStep(Node nodeFrom, Node nodeTo)`` holds if there is an immediate data flow edge from the node ``nodeFrom`` to the node ``nodeTo``. You can apply the predicate recursively, by using the ``+`` and ``*`` operators, or you can use the predefined recursive predicate ``localFlow``.
 
@@ -79,7 +76,7 @@ For example, you can find taint propagation from a parameter ``source`` to an ex
 Examples
 ~~~~~~~~
 
-This query finds the filename passed to ``os.open``:
+Python has builtin functionality for reading and writing files, such as the function ``open``. However, there is also the library ``os`` which provides low-level file access. This query finds the filename passed to ``os.open``:
 
 .. code-block:: ql
 
@@ -118,7 +115,7 @@ Then we can make the source more specific, for example a parameter to a function
     where
       call = API::moduleImport("os").getMember("open").getACall()
       and DataFlow::localFlow(p, call.getArg(0))
-    select p, "Opening a file based on parameter."
+    select p, "Opening a file based on a parameter."
 
 Using the exact name in the parameter may be too strict. If we want to know if the parameter influences
 the file name, we can use taint tracking instead of data flow.
@@ -134,12 +131,7 @@ This query finds calls to ``os.open`` where the filename is derived from a param
     where
       call = API::moduleImport("os").getMember("open").getACall()
     and TaintTracking::localTaint(p, call.getArg(0))
-    select p, "Opening a file based on parameter."
-
-Exercises
-~~~~~~~~~
-
-Exercise 1: Write a query that finds all hard-coded strings used to create a ``System.Uri``, using local data flow. (`Answer <#exercise-1>`__)
+    select p, "Opening a file based on a parameter."
 
 Global data flow
 ----------------
@@ -178,7 +170,7 @@ These predicates are defined in the configuration:
 -  ``isBarrier`` - optionally, restricts the data flow.
 -  ``isAdditionalFlowStep`` - optionally, adds additional flow steps.
 
-The characteristic predicate (``MyDataFlowConfiguration()``) defines the name of the configuration, so ``"..."`` must be replaced with a unique name.
+The characteristic predicate (``MyDataFlowConfiguration()``) defines the name of the configuration, so ``"..."`` must be replaced with a unique name (for instance the class name).
 
 The data flow analysis is performed using the predicate ``hasFlow(DataFlow::Node source, DataFlow::Node sink)``:
 
@@ -221,14 +213,12 @@ Similar to global data flow, the characteristic predicate (``MyTaintTrackingConf
 Flow sources
 ~~~~~~~~~~~~
 
-The data flow library contains some predefined flow sources. The class ``PublicCallableParameterFlowSource`` (defined in module ``semmle.code.csharp.dataflow.flowsources.PublicCallableParameter``) represents data flow from public parameters, which is useful for finding security problems in a public API.
-
-The class ``RemoteSourceFlow`` (defined in module ``semmle.code.csharp.dataflow.flowsources.Remote``) represents data flow from remote network inputs. This is useful for finding security problems in networked services.
+The data flow library contains some predefined flow sources. The class ``RemoteFlowSource`` (defined in module ``semmle.python.dataflow.new.RemoteFlowSources``) represents data flow from remote network inputs. This is useful for finding security problems in networked services.
 
 Example
 ~~~~~~~
 
-This query shows a data flow configuration that uses all public API parameters as data sources:
+This query shows a data flow configuration that uses all network input as data sources:
 
 .. code-block:: ql
 
@@ -241,7 +231,7 @@ This query shows a data flow configuration that uses all public API parameters a
      }
 
      override predicate isSource(DataFlow::Node source) {
-       source instanceof PublicCallableParameterFlowSource
+       source instanceof RemoteFlowSource
      }
 
      ...
@@ -255,18 +245,7 @@ Class hierarchy
 
    -  ``DataFlow::ExprNode`` - an expression behaving as a data flow node.
    -  ``DataFlow::ParameterNode`` - a parameter data flow node representing the value of a parameter at function entry.
-
-      -  ``PublicCallableParameter`` - a parameter to a public method/callable in a public class.
-
-   -  ``RemoteSourceFlow`` - data flow from network/remote input.
-
-      -  ``AspNetRemoteFlowSource`` - data flow from remote ASP.NET user input.
-
-         -  ``AspNetQueryStringRemoteFlowSource`` - data flow from ``System.Web.HttpRequest``.
-         -  ``AspNetUserInputRemoveFlowSource`` - data flow from ``System.Web.IO.WebControls.TextBox``.
-
-      -  ``WcfRemoteFlowSource`` - data flow from a WCF web service.
-      -  ``AspNetServiceRemoteFlowSource`` - data flow from an ASP.NET web service.
+   -  ``RemoteFlowSource`` - data flow from network/remote input.
 
 -  ``TaintTracking::Configuration`` - base class for custom global taint tracking analysis.
 
@@ -277,287 +256,29 @@ This data flow configuration tracks data flow from environment variables to open
 
 .. code-block:: ql
 
-   import csharp
-
-   class EnvironmentToFileConfiguration extends DataFlow::Configuration {
-     EnvironmentToFileConfiguration() { this = "Environment opening files" }
-
-     override predicate isSource(DataFlow::Node source) {
-       exists(Method m |
-         m = source.asExpr().(MethodCall).getTarget() and
-         m.hasQualifiedName("System.Environment.GetEnvironmentVariable")
-       )
-     }
-
-     override predicate isSink(DataFlow::Node sink) {
-       exists(MethodCall mc |
-         mc.getTarget().hasQualifiedName("System.IO.File.Open") and
-         sink.asExpr() = mc.getArgument(0)
-       )
-     }
-   }
-
-   from Expr environment, Expr fileOpen, EnvironmentToFileConfiguration config
-   where config.hasFlow(DataFlow::exprNode(environment), DataFlow::exprNode(fileOpen))
-   select fileOpen, "This 'File.Open' uses data from $@.",
-     environment, "call to 'GetEnvironmentVariable'"
-
-Exercises
-~~~~~~~~~
-
-Exercise 2: Find all hard-coded strings passed to ``System.Uri``, using global data flow. (`Answer <#exercise-2>`__)
-
-Exercise 3: Define a class that represents flow sources from ``System.Environment.GetEnvironmentVariable``. (`Answer <#exercise-3>`__)
-
-Exercise 4: Using the answers from 2 and 3, write a query to find all global data flow from ``System.Environment.GetEnvironmentVariable`` to ``System.Uri``. (`Answer <#exercise-4>`__)
-
-Extending library data flow
----------------------------
-
-Library data flow defines how data flows through libraries where the source code is not available, such as the .NET Framework, third-party libraries or proprietary libraries.
-
-To define new library data flow, extend the class ``LibraryTypeDataFlow`` from the module ``semmle.code.csharp.dataflow.LibraryTypeDataFlow``. Override the predicate ``callableFlow`` to define how data flows through the methods in the class. ``callableFlow`` has the signature
-
-.. code-block:: ql
-
-   predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable callable, boolean preservesValue)
-
--  ``callable`` - the ``Callable`` (such as a method, constructor, property getter or setter) performing the data flow.
--  ``source`` - the data flow input.
--  ``sink`` - the data flow output.
--  ``preservesValue`` - whether the flow step preserves the value, for example if ``x`` is a string then ``x.ToString()`` preserves the value where as ``x.ToLower()`` does not.
-
-Class hierarchy
-~~~~~~~~~~~~~~~
-
--  ``Callable`` - a callable (methods, accessors, constructors etc.)
-
-   -  ``SourceDeclarationCallable`` - an unconstructed callable.
-
--  ``CallableFlowSource`` - the input of data flow into the callable.
-
-   -  ``CallableFlowSourceQualifier`` - the data flow comes from the object itself.
-   -  ``CallableFlowSourceArg`` - the data flow comes from an argument to the call.
-
--  ``CallableFlowSink`` - the output of data flow from the callable.
-
-   -  ``CallableFlowSinkQualifier`` - the output is to the object itself.
-   -  ``CallableFlowSinkReturn`` - the output is returned from the call.
-   -  ``CallableFlowSinkArg`` - the output is an argument.
-   -  ``CallableFlowSinkDelegateArg`` - the output flows through a delegate argument (for example, LINQ).
-
-Example
-~~~~~~~
-
-This example is adapted from ``LibraryTypeDataFlow.qll``. It declares data flow through the class ``System.Uri``, including the constructor, the ``ToString`` method, and the properties ``Query``, ``OriginalString``, and ``PathAndQuery``.
-
-.. code-block:: ql
-
-   import semmle.code.csharp.dataflow.LibraryTypeDataFlow
-   import semmle.code.csharp.frameworks.System
-
-   class SystemUriFlow extends LibraryTypeDataFlow, SystemUriClass {
-     override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
-       (
-         constructorFlow(source, c) and
-         sink instanceof CallableFlowSinkQualifier
-         or
-         methodFlow(c) and
-         source instanceof CallableFlowSourceQualifier and
-         sink instanceof CallableFlowSinkReturn
-         or
-         exists(Property p |
-           propertyFlow(p) and
-           source instanceof CallableFlowSourceQualifier and
-           sink instanceof CallableFlowSinkReturn and
-           c = p.getGetter()
-         )
-       )
-       and
-       preservesValue = false
-     }
-
-     private predicate constructorFlow(CallableFlowSourceArg source, Constructor c) {
-       c = getAMember()
-       and
-       c.getParameter(0).getType() instanceof StringType
-       and
-       source.getArgumentIndex() = 0
-     }
-
-     private predicate methodFlow(Method m) {
-       m.getDeclaringType() = getABaseType*()
-       and
-       m = getSystemObjectClass().getToStringMethod().getAnOverrider*()
-     }
-
-     private predicate propertyFlow(Property p) {
-       p = getPathAndQueryProperty()
-       or
-       p = getQueryProperty()
-       or
-       p = getOriginalStringProperty()
-     }
-   }
-
-This defines a new class ``SystemUriFlow`` which extends ``LibraryTypeDataFlow`` to add another case. It extends ``SystemUriClass`` (the class representing ``System.Uri``, defined in the module ``semmle.code.csharp.frameworks.System``) to access methods such as ``getQueryProperty``.
-
-The predicate ``callableFlow`` declares data flow through ``System.Uri``. The first case (``constructorFlow``) declares data flow from the first argument of the constructor to the object itself (``CallableFlowSinkQualifier``).
-
-The second case declares data flow from the object (``CallableFlowSourceQualifier``) to the result of calling ``ToString`` on the object (``CallableFlowSinkReturn``).
-
-The third case declares data flow from the object (``CallableFlowSourceQualifier``) to the return (``CallableFlowSinkReturn``) of the getters for the properties ``PathAndQuery``, ``Query`` and ``OriginalString``. Note that the properties (``getPathAndQueryProperty``, ``getQueryProperty`` and ``getOriginalStringProperty``) are inherited from the class ``SystemUriClass``.
-
-In all three cases ``preservesValue = false``, which means that these steps will only be included in taint tracking, not in (normal) data flow.
-
-Exercises
-~~~~~~~~~
-
-Exercise 5: In ``System.Uri``, what other properties could expose data? How could they be added to ``SystemUriFlow``? (`Answer <#exercise-5>`__)
-
-Exercise 6: Implement the data flow for the class ``System.Exception``. (`Answer <#exercise-6>`__)
-
---------------
-
-Answers
--------
-
-Exercise 1
-~~~~~~~~~~
-
-.. code-block:: ql
-
-   import csharp
-
-   from Expr src, Call c
-   where DataFlow::localFlow(DataFlow::exprNode(src), DataFlow::exprNode(c.getArgument(0)))
-     and c.getTarget().(Constructor).getDeclaringType().hasQualifiedName("System.Uri")
-     and src.hasValue()
-   select src, "This string constructs 'System.Uri' $@.", c, "here"
-
-Exercise 2
-~~~~~~~~~~
-
-.. code-block:: ql
-
-   import csharp
-
-   class Configuration extends DataFlow::Configuration {
-     Configuration() { this="String to System.Uri" }
-
-     override predicate isSource(DataFlow::Node src) {
-       src.asExpr().hasValue()
-     }
-
-     override predicate isSink(DataFlow::Node sink) {
-       exists(Call c | c.getTarget().(Constructor).getDeclaringType().hasQualifiedName("System.Uri")
-       and sink.asExpr()=c.getArgument(0))
-     }
-   }
-
-   from DataFlow::Node src, DataFlow::Node sink, Configuration config
-   where config.hasFlow(src, sink)
-   select src, "This string constructs a 'System.Uri' $@.", sink, "here"
-
-Exercise 3
-~~~~~~~~~~
-
-.. code-block:: ql
-
-   class EnvironmentVariableFlowSource extends DataFlow::ExprNode {
-     EnvironmentVariableFlowSource() {
-       this.getExpr().(MethodCall).getTarget().hasQualifiedName("System.Environment.GetEnvironmentVariable")
-     }
-   }
-
-Exercise 4
-~~~~~~~~~~
-
-.. code-block:: ql
-
-   import csharp
-
-   class EnvironmentVariableFlowSource extends DataFlow::ExprNode {
-     EnvironmentVariableFlowSource() {
-       this.getExpr().(MethodCall).getTarget().hasQualifiedName("System.Environment.GetEnvironmentVariable")
-     }
-   }
-
-   class Configuration extends DataFlow::Configuration {
-     Configuration() { this="Environment to System.Uri" }
-
-     override predicate isSource(DataFlow::Node src) {
-       src instanceof EnvironmentVariableFlowSource
-     }
-
-     override predicate isSink(DataFlow::Node sink) {
-       exists(Call c | c.getTarget().(Constructor).getDeclaringType().hasQualifiedName("System.Uri")
-       and sink.asExpr()=c.getArgument(0))
-     }
-   }
-
-   from DataFlow::Node src, DataFlow::Node sink, Configuration config
-   where config.hasFlow(src, sink)
-   select src, "This environment variable constructs a 'System.Uri' $@.", sink, "here"
-
-Exercise 5
-~~~~~~~~~~
-
-All properties can flow data:
-
-.. code-block:: ql
-
-     private predicate propertyFlow(Property p) {
-       p = getAMember()
-     }
-
-Exercise 6
-~~~~~~~~~~
-
-This can be adapted from the ``SystemUriFlow`` class:
-
-.. code-block:: ql
-
-   import semmle.code.csharp.dataflow.LibraryTypeDataFlow
-   import semmle.code.csharp.frameworks.System
-
-   class SystemExceptionFlow extends LibraryTypeDataFlow, SystemExceptionClass {
-     override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
-       (
-         constructorFlow(source, c) and
-         sink instanceof CallableFlowSinkQualifier
-         or
-         methodFlow(source, sink, c)
-         or
-         exists(Property p |
-           propertyFlow(p) and
-           source instanceof CallableFlowSourceQualifier and
-           sink instanceof CallableFlowSinkReturn and
-           c = p.getGetter()
-         )
-       )
-       and
-       preservesValue = false
-     }
-
-     private predicate constructorFlow(CallableFlowSourceArg source, Constructor c) {
-       c = getAMember()
-       and
-       c.getParameter(0).getType() instanceof StringType
-       and
-       source.getArgumentIndex() = 0
-     }
-
-     private predicate methodFlow(CallableFlowSourceQualifier source, CallableFlowSinkReturn sink, SourceDeclarationMethod m) {
-       m.getDeclaringType() = getABaseType*()
-       and
-       m = getSystemObjectClass().getToStringMethod().getAnOverrider*()
-     }
-
-     private predicate propertyFlow(Property p) {
-       p = getAProperty() and p.hasName("Message")
-     }
-   }
+    import python
+    import semmle.python.dataflow.new.TaintTracking
+    import semmle.python.ApiGraphs
+
+    class EnvironmentToFileConfiguration extends DataFlow::Configuration {
+      EnvironmentToFileConfiguration() { this = "Environment opening files" }
+
+      override predicate isSource(DataFlow::Node source) {
+        source = API::moduleImport("os").getMember("getenv").getACall()
+      }
+
+      override predicate isSink(DataFlow::Node sink) {
+        exists(DataFlow::CallCfgNode call |
+          call = API::moduleImport("os").getMember("open").getACall() and
+          sink = call.getArg(0)
+        )
+      }
+    }
+
+    from Expr environment, Expr fileOpen, EnvironmentToFileConfiguration config
+    where config.hasFlow(DataFlow::exprNode(environment), DataFlow::exprNode(fileOpen))
+    select fileOpen, "This 'File.Open' uses data from $@.",
+      environment, "call to 'GetEnvironmentVariable'"
 
 Further reading
 ---------------
@@ -565,5 +286,5 @@ Further reading
 - ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"
 
 
-.. include:: ../reusables/csharp-further-reading.rst
+.. include:: ../reusables/python-further-reading.rst
 .. include:: ../reusables/codeql-ref-tools-further-reading.rst
