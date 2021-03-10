@@ -1,8 +1,13 @@
 | Bar | pkg1/tst.go:29:10:31:1 | struct type | flag | bool |
+| Baz | embedded.go:3:10:5:1 | struct type | A | string |
+| EmbedsBaz | embedded.go:12:16:15:1 | struct type | Baz | string |
+| EmbedsBaz | embedded.go:12:16:15:1 | struct type | Qux | Qux |
 | Foo | pkg1/tst.go:24:10:27:1 | struct type | flag | bool |
 | Foo | pkg1/tst.go:24:10:27:1 | struct type | val | int |
 | G | pkg2/tst.go:3:8:5:1 | struct type | g | int |
 | G | pkg2/tst.go:7:8:9:1 | struct type | g | int |
+| Qux | embedded.go:7:10:9:1 | struct type | A | string |
+| Qux | embedded.go:7:10:9:1 | struct type | Baz | * Baz |
 | T | pkg1/tst.go:3:8:7:1 | struct type | Bar | Bar |
 | T | pkg1/tst.go:3:8:7:1 | struct type | Foo | Foo |
 | T | pkg1/tst.go:3:8:7:1 | struct type | f | int |
@@ -46,3 +51,4 @@
 | u | cyclic.go:12:8:14:1 | struct type | f | int |
 | u | cyclic.go:12:8:14:1 | struct type | t | t |
 | u | cyclic.go:12:8:14:1 | struct type | u | * u |
+| v | cyclic.go:16:8:18:1 | struct type | s | s |

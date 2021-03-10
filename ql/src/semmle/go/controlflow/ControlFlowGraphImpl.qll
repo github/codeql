@@ -48,6 +48,19 @@ private predicate isCond(Expr e) {
   e = any(ParenExpr par | isCond(par)).getExpr()
 }
 
+private predicate implicitFieldSelection(SelectorExpr e, int i, Field implicitField) {
+  exists(StructType baseType, Field child |
+    baseType = e.getBase().getType().getBaseType*().getUnderlyingType() and
+    (
+      e.getSelector() = child.getAReference()
+      or
+      implicitFieldSelection(e, i + 1, child)
+    )
+  |
+    child = baseType.getFieldOfEmbedded(implicitField, _, i, _)
+  )
+}
+
 /**
  * A node in the intra-procedural control-flow graph of a Go function or file.
  *
@@ -309,20 +322,7 @@ newtype TControlFlowNode =
    * represents an implicit dereference of it.
    */
   MkImplicitFieldSelection(SelectorExpr e, int i, Field implicitField) {
-    exists(Type baseType, StructType baseStructType, Field eField, int minDepth |
-      eField.getAReference() = e.getSelector() and
-      baseType = e.getBase().getType().getUnderlyingType() and
-      baseStructType = [baseType, baseType.(PointerType).getBaseType().getUnderlyingType()] and
-      baseStructType.getFieldAtDepth(_, minDepth) = eField
-    |
-      baseStructType.getFieldAtDepth(_, i) = implicitField and
-      exists(Type implicitFieldType, StructType implicitFieldStructType |
-        implicitFieldType = implicitField.getType().getUnderlyingType() and
-        implicitFieldStructType =
-          [implicitFieldType, implicitFieldType.(PointerType).getBaseType().getUnderlyingType()] and
-        implicitFieldStructType.getFieldAtDepth(_, minDepth - i - 1) = eField
-      )
-    )
+    implicitFieldSelection(e, i, implicitField)
   } or
   /**
    * A control-flow node that represents the start of the execution of a function or file.

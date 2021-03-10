@@ -375,39 +375,38 @@ class StructType extends @structtype, CompositeType {
     this.hasOwnField(_, name, _, isEmbedded)
   }
 
+  /**
+   * hasEmbeddedField holds if there is an embedded field at int `depth`, with either type `tp` or `tp`'s pointer type.
+   */
   private predicate hasEmbeddedField(Type tp, int depth) {
-    hasFieldOrMethodCand(_, tp, depth, true, false)
-    or
-    exists(PointerType embeddedPtr |
-      hasFieldOrMethodCand(_, embeddedPtr, depth, true, false) and
-      tp = embeddedPtr.getBaseType()
+    exists(Field f | this.hasFieldCand(_, f, depth, true) | tp = f.getType().getBaseType*())
+  }
+
+  /**
+   * getFieldOfEmbedded gets a field of `embeddedParent`, which is then embedded into this struct type.
+   */
+  Field getFieldOfEmbedded(Field embeddedParent, string name, int depth, boolean isEmbedded) {
+    // embeddedParent is a field of 'this' at depth 'depth - 1'
+    this.hasFieldCand(_, embeddedParent, depth - 1, true) and
+    // embeddedParent's type has the result field
+    exists(StructType embeddedType |
+      embeddedType = embeddedParent.getType().getBaseType*().getUnderlyingType()
+    |
+      result = embeddedType.getOwnField(name, isEmbedded)
     )
   }
 
-  private predicate hasFieldOrMethodCand(
-    string name, Type tp, int depth, boolean isEmbedded, boolean isMethod
-  ) {
-    hasOwnField(_, name, tp, isEmbedded) and depth = 0 and isMethod = false
+  private predicate hasFieldCand(string name, Field f, int depth, boolean isEmbedded) {
+    f = this.getOwnField(name, isEmbedded) and depth = 0
     or
-    not hasOwnField(_, name, _, _) and
-    exists(Type embedded | hasEmbeddedField(embedded, depth - 1) |
-      embedded.getUnderlyingType().(StructType).hasOwnField(_, name, tp, isEmbedded) and
-      isMethod = false
-      or
-      exists(MethodDecl md | md.getReceiverType() = embedded |
-        name = md.getName() and
-        tp = md.getType()
-      ) and
-      isEmbedded = false and
-      isMethod = true
-    )
+    not this.hasOwnField(_, name, _, _) and
+    f = this.getFieldOfEmbedded(_, name, depth, isEmbedded)
   }
 
-  private predicate hasFieldOrMethod(string name, Type tp, boolean isMethod) {
-    exists(int mindepth |
-      mindepth = min(int depth | hasFieldOrMethodCand(name, _, depth, _, _)) and
-      hasFieldOrMethodCand(name, tp, mindepth, _, isMethod) and
-      (strictcount(getFieldCand(name, mindepth, _)) = 1 or isMethod = true)
+  private predicate hasMethodCand(string name, Method m, int depth) {
+    name = m.getName() and
+    exists(Type embedded | this.hasEmbeddedField(embedded, depth - 1) |
+      m.getReceiverType() = embedded
     )
   }
 
@@ -415,7 +414,12 @@ class StructType extends @structtype, CompositeType {
    * Holds if this struct contains a field `name` with type `tp`, possibly inside a (nested)
    * embedded field.
    */
-  predicate hasField(string name, Type tp) { hasFieldOrMethod(name, tp, false) }
+  predicate hasField(string name, Type tp) {
+    exists(int mindepth |
+      mindepth = min(int depth | this.hasFieldCand(name, _, depth, _)) and
+      tp = unique(Field f | f = this.getFieldCand(name, mindepth, _)).getType()
+    )
+  }
 
   private Field getFieldCand(string name, int depth, boolean isEmbedded) {
     result = this.getOwnField(name, isEmbedded) and depth = 0
@@ -441,7 +445,12 @@ class StructType extends @structtype, CompositeType {
     strictcount(getFieldCand(name, depth, _)) = 1
   }
 
-  override predicate hasMethod(string name, SignatureType tp) { hasFieldOrMethod(name, tp, true) }
+  override predicate hasMethod(string name, SignatureType tp) {
+    exists(int mindepth |
+      mindepth = min(int depth | this.hasMethodCand(name, _, depth)) and
+      tp = unique(Method m | this.hasMethodCand(name, m, mindepth)).getType()
+    )
+  }
 
   language[monotonicAggregates]
   override string pp() {
