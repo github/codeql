@@ -55,6 +55,11 @@ module UnaliasedSSAInstructions {
     result = TUnaliasedSSAPhiInstruction(blockStartInstr, memoryLocation)
   }
 
+  TPhiInstruction reusedPhiInstruction(
+    TRawInstruction blockStartInstr) {
+    none()
+  }
+
   class TChiInstruction = TUnaliasedSSAChiInstruction;
 
   TChiInstruction chiInstruction(TRawInstruction primaryInstruction) {
@@ -75,12 +80,17 @@ module UnaliasedSSAInstructions {
  * a class alias.
  */
 module AliasedSSAInstructions {
-  class TPhiInstruction = TAliasedSSAPhiInstruction;
+  class TPhiInstruction = TAliasedSSAPhiInstruction or TUnaliasedSSAPhiInstruction;
 
   TPhiInstruction phiInstruction(
     TRawInstruction blockStartInstr, AliasedSSA::SSA::MemoryLocation memoryLocation
   ) {
     result = TAliasedSSAPhiInstruction(blockStartInstr, memoryLocation)
+  }
+
+  TPhiInstruction reusedPhiInstruction(
+    TRawInstruction blockStartInstr) {
+    result = TUnaliasedSSAPhiInstruction(blockStartInstr, _)
   }
 
   class TChiInstruction = TAliasedSSAChiInstruction;

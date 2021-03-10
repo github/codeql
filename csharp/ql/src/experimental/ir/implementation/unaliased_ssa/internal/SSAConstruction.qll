@@ -862,6 +862,26 @@ module DefUse {
   }
 }
 
+predicate canReuseSSAForMemoryResult(Instruction instruction) {
+  exists(OldInstruction oldInstruction |
+    oldInstruction = getOldInstruction(instruction) and
+    (
+      // The previous iteration said it was reusable, so we should mark it as reusable as well.
+      Alias::canReuseSSAForOldResult(oldInstruction)
+      or
+      // The current alias analysis says it is reusable.
+      Alias::getResultMemoryLocation(oldInstruction).canReuseSSA()
+    )
+  )
+  or
+  exists(Alias::MemoryLocation defLocation |
+    // This is a `Phi` for a reusable location, so the result of the `Phi` is reusable as well.
+    instruction = phiInstruction(_, defLocation) and
+    defLocation.canReuseSSA()
+  )
+  // We don't support reusing SSA for any location that could create a `Chi` instruction.
+}
+
 /**
  * Expose some of the internal predicates to PrintSSA.qll. We do this by publically importing those modules in the
  * `DebugSSA` module, which is then imported by PrintSSA.

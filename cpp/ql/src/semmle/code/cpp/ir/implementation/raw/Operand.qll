@@ -31,7 +31,8 @@ class Operand extends TStageOperand {
     exists(Instruction use, Instruction def | this = registerOperand(use, _, def)) or
     exists(Instruction use | this = nonSSAMemoryOperand(use, _)) or
     exists(Instruction use, Instruction def, IRBlock predecessorBlock |
-      this = phiOperand(use, def, predecessorBlock, _)
+      this = phiOperand(use, def, predecessorBlock, _) or
+      this = reusedPhiOperand(use, def, predecessorBlock, _)
     ) or
     exists(Instruction use | this = chiOperand(use, _))
   }
@@ -431,7 +432,11 @@ class PhiInputOperand extends MemoryOperand, TPhiOperand {
   Overlap overlap;
 
   cached
-  PhiInputOperand() { this = phiOperand(useInstr, defInstr, predecessorBlock, overlap) }
+  PhiInputOperand() {
+    this = phiOperand(useInstr, defInstr, predecessorBlock, overlap)
+    or
+    this = reusedPhiOperand(useInstr, defInstr, predecessorBlock, overlap)
+  }
 
   override string toString() { result = "Phi" }
 

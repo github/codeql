@@ -58,9 +58,28 @@ private module Cached {
     result.getFirstInstruction() = getNewInstruction(oldBlock.getFirstInstruction())
   }
 
+  /**
+   * Gets the block from the old IR that corresponds to `newBlock`.
+   */
+  private OldBlock getOldBlock(IRBlock newBlock) { getNewBlock(result) = newBlock }
+
+  /**
+   * Holds if this iteration of SSA can model the def/use information for the result of
+   * `oldInstruction`, either because alias analysis has determined a memory location for that
+   * result, or because a previous iteration of the IR already computed that def/use information
+   * completely.
+   */
+  private predicate canModelResultForOldInstruction(OldInstruction oldInstruction) {
+    // We're modeling the result's memory location ourselves.
+    exists(Alias::getResultMemoryLocation(oldInstruction))
+    or
+    // This result was already modeled by a previous iteration of SSA.
+    Alias::canReuseSSAForOldResult(oldInstruction)
+  }
+
   cached
   predicate hasModeledMemoryResult(Instruction instruction) {
-    exists(Alias::getResultMemoryLocation(getOldInstruction(instruction))) or
+    canModelResultForOldInstruction(getOldInstruction(instruction)) or
     instruction instanceof PhiInstruction or // Phis always have modeled results
     instruction instanceof ChiInstruction // Chis always have modeled results
   }
@@ -117,6 +136,30 @@ private module Cached {
     )
   }
 
+  /**
+   * Gets the new definition instruction for `oldOperand` based on `oldOperand`'s definition in the
+   * old IR. Usually, this will just get the old definition of `oldOperand` and map it to the
+   * corresponding new instruction. However, if the old definition of `oldOperand` is a `Phi`
+   * instruction that is now degenerate due all but one of its predecessor branches being
+   * unreachable, this predicate will recurse through any degenerate `Phi` instructions to find the
+   * true definition.
+   */
+  private Instruction getNewDefinitionFromOldSSA(OldIR::MemoryOperand oldOperand, Overlap overlap) {
+    exists(Overlap originalOverlap |
+      originalOverlap = oldOperand.getDefinitionOverlap() and
+      (
+        result = getNewInstruction(oldOperand.getAnyDef()) and
+        overlap = originalOverlap
+        /*or
+        exists(OldIR::PhiInputOperand phiOperand, Overlap phiOperandOverlap |
+          phiOperand = getDegeneratePhiOperand(oldOperand.getAnyDef()) and
+          result = getNewDefinitionFromOldSSA(phiOperand, phiOperandOverlap) and
+          overlap = combineOverlap(phiOperandOverlap, originalOverlap)
+        ) */
+      )
+    )
+  }
+
   cached
   private Instruction getMemoryOperandDefinition0(
     Instruction instruction, MemoryOperandTag tag, Overlap overlap
@@ -147,6 +190,12 @@ private module Cached {
     not (
       overlap instanceof MustExactlyOverlap and
       exists(MustTotallyOverlap o | exists(getMemoryOperandDefinition0(instruction, tag, o)))
+    )
+    or
+    exists(OldIR::NonPhiMemoryOperand oldOperand |
+      result = getNewDefinitionFromOldSSA(oldOperand, overlap) and
+      oldOperand.getUse() = instruction and
+      tag = oldOperand.getOperandTag()
     )
   }
 
@@ -214,10 +263,24 @@ private module Cached {
     )
   }
 
+  /**
+   * Gets the new definition instruction for the operand of `instr` that flows from the block
+   * `newPredecessorBlock`, based on that operand's definition in the old IR.
+   */
+  private Instruction getNewPhiOperandDefinitionFromOldSSA(
+    Instruction instr, IRBlock newPredecessorBlock, Overlap overlap
+  ) {
+    exists(OldIR::PhiInstruction oldPhi, OldIR::PhiInputOperand oldOperand |
+      oldPhi = getOldInstruction(instr) and
+      oldOperand = oldPhi.getInputOperand(getOldBlock(newPredecessorBlock)) and
+      result = getNewDefinitionFromOldSSA(oldOperand, overlap)
+    )
+  }
+
   pragma[noopt]
   cached
   Instruction getPhiOperandDefinition(
-    PhiInstruction instr, IRBlock newPredecessorBlock, Overlap overlap
+    Instruction instr, IRBlock newPredecessorBlock, Overlap overlap
   ) {
     exists(
       Alias::MemoryLocation defLocation, Alias::MemoryLocation useLocation, OldBlock phiBlock,
@@ -229,6 +292,8 @@ private module Cached {
       result = getDefinitionOrChiInstruction(defBlock, defOffset, defLocation, actualDefLocation) and
       overlap = Alias::getOverlap(actualDefLocation, useLocation)
     )
+    or
+    result = getNewPhiOperandDefinitionFromOldSSA(instr, newPredecessorBlock, overlap)
   }
 
   cached
@@ -248,8 +313,12 @@ private module Cached {
 
   cached
   Instruction getPhiInstructionBlockStart(PhiInstruction instr) {
-    exists(OldBlock oldBlock |
-      instr = getPhi(oldBlock, _) and
+    exists(OldBlock oldBlock |      (
+      instr = getPhi(oldBlock, _)
+      or
+      // Any `Phi` that we propagated from the previous iteration stays in the same block.
+      getOldInstruction(instr).getBlock() = oldBlock
+    ) and
       result = getNewInstruction(oldBlock.getFirstInstruction())
     )
   }
@@ -334,6 +403,9 @@ private module Cached {
       hasChiNode(vvar, primaryInstr) and
       result = vvar.getType()
     )
+    or
+    instr = reusedPhiInstruction(_) and
+    result = instr.(OldInstruction).getResultLanguageType()
     or
     instr = unreachedInstruction(_) and result = Language::getVoidType()
   }
@@ -860,6 +932,26 @@ module DefUse {
       exists(Alias::getOverlap(defLocation, useLocation))
     )
   }
+}
+
+predicate canReuseSSAForMemoryResult(Instruction instruction) {
+  exists(OldInstruction oldInstruction |
+    oldInstruction = getOldInstruction(instruction) and
+    (
+      // The previous iteration said it was reusable, so we should mark it as reusable as well.
+      Alias::canReuseSSAForOldResult(oldInstruction)
+      or
+      // The current alias analysis says it is reusable.
+      Alias::getResultMemoryLocation(oldInstruction).canReuseSSA()
+    )
+  )
+  or
+  exists(Alias::MemoryLocation defLocation |
+    // This is a `Phi` for a reusable location, so the result of the `Phi` is reusable as well.
+    instruction = phiInstruction(_, defLocation) and
+    defLocation.canReuseSSA()
+  )
+  // We don't support reusing SSA for any location that could create a `Chi` instruction.
 }
 
 /**

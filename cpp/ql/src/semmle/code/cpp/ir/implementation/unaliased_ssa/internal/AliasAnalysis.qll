@@ -90,6 +90,11 @@ private predicate operandIsConsumedWithoutEscaping(Operand operand) {
       or
       // Converting an address to a `bool` does not escape the address.
       instr.(ConvertInstruction).getResultIRType() instanceof IRBooleanType
+      or
+      instr instanceof CallInstruction and
+      not exists(IREscapeAnalysisConfiguration config |
+        config.useSoundEscapeAnalysis()
+      )
     )
   )
   or

@@ -84,7 +84,7 @@ private module Shared {
   }
 }
 
-/**
+/** 
  * Provides wrappers for the constructors of each branch of `TOperand` that is used by the
  * raw IR stage.
  * These wrappers are not parameterized because it is not possible to invoke an IPA constructor via
@@ -109,6 +109,12 @@ module RawOperands {
     none()
   }
 
+  TPhiOperand reusedPhiOperand(
+    Raw::PhiInstruction useInstr, Raw::Instruction defInstr, Raw::IRBlock predecessorBlock,
+    Overlap overlap
+  ) {
+    none()
+  }
   /**
    * Returns the Chi operand with the specified parameters.
    */
@@ -140,6 +146,12 @@ module UnaliasedSSAOperands {
     result = Internal::TUnaliasedPhiOperand(useInstr, defInstr, predecessorBlock, overlap)
   }
 
+  TPhiOperand reusedPhiOperand(
+    Unaliased::PhiInstruction useInstr, Unaliased::Instruction defInstr,
+    Unaliased::IRBlock predecessorBlock, Overlap overlap
+  ) {
+    none()
+  }
   /**
    * Returns the Chi operand with the specified parameters.
    */
@@ -155,7 +167,7 @@ module UnaliasedSSAOperands {
 module AliasedSSAOperands {
   import Shared
 
-  class TPhiOperand = Internal::TAliasedPhiOperand;
+  class TPhiOperand = Internal::TAliasedPhiOperand or Internal::TUnaliasedPhiOperand;
 
   class TChiOperand = Internal::TAliasedChiOperand;
 
@@ -165,12 +177,24 @@ module AliasedSSAOperands {
    * Returns the Phi operand with the specified parameters.
    */
   TPhiOperand phiOperand(
-    TAliasedSSAPhiInstruction useInstr, Aliased::Instruction defInstr,
+    Aliased::PhiInstruction useInstr, Aliased::Instruction defInstr,
     Aliased::IRBlock predecessorBlock, Overlap overlap
   ) {
     result = Internal::TAliasedPhiOperand(useInstr, defInstr, predecessorBlock, overlap)
   }
 
+  /**
+   * Returns the Phi operand with the specified parameters.
+   */
+  TPhiOperand reusedPhiOperand(
+    Aliased::PhiInstruction useInstr, Aliased::Instruction defInstr,
+    Aliased::IRBlock predecessorBlock, Overlap overlap
+  ) {
+    exists(Unaliased::IRBlock oldBlock |
+      predecessorBlock.getFirstInstruction() = oldBlock.getFirstInstruction() and
+      result = Internal::TUnaliasedPhiOperand(useInstr, defInstr, oldBlock, overlap)
+    )
+  }
   /**
    * Returns the Chi operand with the specified parameters.
    */
