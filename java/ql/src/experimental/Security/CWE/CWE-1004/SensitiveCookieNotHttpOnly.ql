@@ -104,8 +104,8 @@ class CookieTaintPreservingConstructor extends Constructor, TaintPreservingCalla
 }
 
 /** The method call `toString` to get a stringified cookie representation. */
-class CookieInstanceExpr extends TaintPreservingCallable {
-  CookieInstanceExpr() {
+class CookieToString extends TaintPreservingCallable {
+  CookieToString() {
     this.getDeclaringType() instanceof CookieClass and
     this.hasName("toString")
   }
