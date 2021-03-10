@@ -15,15 +15,6 @@ class TypeApacheRandomStringUtils extends Class {
 }
 
 /**
- * The class `org.apache.commons.lang.ArrayUtils` or `org.apache.commons.lang3.ArrayUtils`.
- */
-class TypeApacheArrayUtils extends Class {
-  TypeApacheArrayUtils() {
-    hasQualifiedName(["org.apache.commons.lang", "org.apache.commons.lang3"], "ArrayUtils")
-  }
-}
-
-/**
  * The method `deserialize` in either `org.apache.commons.lang.SerializationUtils`
  * or `org.apache.commons.lang3.SerializationUtils`.
  */
@@ -37,39 +28,45 @@ class MethodApacheSerializationUtilsDeserialize extends Method {
 }
 
 /**
- * A taint preserving method on `org.apache.commons.lang.ArrayUtils` or `org.apache.commons.lang3.ArrayUtils`
+ * Taint-propagating models for `ArrayUtils`.
  */
-private class ApacheLangArrayUtilsTaintPreservingMethod extends TaintPreservingCallable {
-  ApacheLangArrayUtilsTaintPreservingMethod() {
-    this.getDeclaringType() instanceof TypeApacheArrayUtils
-  }
-
-  override predicate returnsTaintFrom(int src) {
-    this.hasName(["addAll", "addFirst"]) and
-    src = [0 .. getNumberOfParameters() - 1]
-    or
-    this.hasName([
-        "clone", "nullToEmpty", "remove", "removeAll", "removeElement", "removeElements",
-        "subarray", "toArray", "toMap", "toObject", "removeAllOccurences", "removeAllOccurrences"
-      ]) and
-    src = 0
-    or
-    this.hasName("toPrimitive") and
-    src = [0, 1]
-    or
-    this.hasName("add") and
-    this.getNumberOfParameters() = 2 and
-    src = [0, 1]
-    or
-    this.hasName(["add"]) and
-    this.getNumberOfParameters() = 3 and
-    src = [0, 2]
-    or
-    this.hasName("insert") and
-    src = [1, 2]
-    or
-    this.hasName("get") and
-    src = [0, 2]
+private class ApacheArrayUtilsModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.apache.commons.lang3;ArrayUtils;false;add;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;(java.lang.Object[],java.lang.Object);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;(boolean[],boolean);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;(byte[],byte);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;(char[],char);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;(double[],double);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;(float[],float);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;(int[],int);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;(long[],long);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;add;(short[],short);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;addAll;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;addFirst;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;clone;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;get;(java.lang.Object[],int,java.lang.Object);;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;get;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;insert;;;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;insert;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;insert;;;Argument[3];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;nullToEmpty;(java.lang.Object[],java.lang.Class);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;nullToEmpty;(java.lang.String[]);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;remove;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;removeAll;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;removeAllOccurences;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;removeAllOccurrences;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;removeElement;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;removeElements;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;subarray;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;toArray;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;toMap;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;toObject;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;ArrayUtils;false;toPrimitive;;;Argument;ReturnValue;taint"
+      ]
   }
 }
 
