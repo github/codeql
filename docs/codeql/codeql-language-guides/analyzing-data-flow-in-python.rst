@@ -89,6 +89,8 @@ Python has builtin functionality for reading and writing files, such as the func
       call = API::moduleImport("os").getMember("open").getACall()
     select call.getArg(0)
 
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/8635258505893505141/>`__. Two of the demo projects make use of this low-level API.
+
 Unfortunately this will only give the expression in the argument, not the values which could be passed to it. So we use local data flow to find all expressions that flow into the argument:
 
 .. code-block:: ql
@@ -99,11 +101,32 @@ Unfortunately this will only give the expression in the argument, not the values
 
     from DataFlow::CallCfgNode call, DataFlow::ExprNode expr
     where
-      call = API::moduleImport("os").getMember("open").getACall()
-      and DataFlow::localFlow(expr, call.getArg(0))
-    select expr
+      call = API::moduleImport("os").getMember("open").getACall() and
+      DataFlow::localFlow(expr, call.getArg(0))
+    select call, expr
 
-Then we can make the source more specific, for example a parameter to a function or method. This query finds instances where a parameter is used as the name when opening a file:
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/8213643003890447109/>`__. Many expressions flow to the same call.
+
+We see that we get several data-flow nodes for an expression as it flows towards a call (notice repeated locations in the ``call`` column). We are mostly interested in the "first" of these, what might be called the local source for the file name. To restrict attention to such local sources, and to simultaneously make the analysis more performant, we have the QL class ``LocalSourceNode``:
+
+.. code-block:: ql
+
+    import python
+    import semmle.python.dataflow.new.DataFlow
+    import semmle.python.ApiGraphs
+
+    from DataFlow::CallCfgNode call, DataFlow::ExprNode expr
+    where
+      call = API::moduleImport("os").getMember("open").getACall() and
+      DataFlow::localFlow(expr, call.getArg(0)) and
+      expr instanceof DataFlow::LocalSourceNode
+    select call, expr
+
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2017139821928498055/>`__. We now mostly have one expression per call.
+
+We still have some cases of more than one expression flowing to a call, but then they flow through different code paths (possibly due to control-flow splitting, as in the second case).
+
+We can also make the source more specific, for example a parameter to a function or method. This query finds instances where a parameter is used as the name when opening a file:
 
 .. code-block:: ql
 
@@ -113,13 +136,13 @@ Then we can make the source more specific, for example a parameter to a function
 
     from DataFlow::CallCfgNode call, DataFlow::ParameterNode p
     where
-      call = API::moduleImport("os").getMember("open").getACall()
-      and DataFlow::localFlow(p, call.getArg(0))
-    select p, "Opening a file based on a parameter."
+      call = API::moduleImport("os").getMember("open").getACall() and
+      DataFlow::localFlow(p, call.getArg(0))
+    select call, p
 
-Using the exact name in the parameter may be too strict. If we want to know if the parameter influences
-the file name, we can use taint tracking instead of data flow.
-This query finds calls to ``os.open`` where the filename is derived from a parameter:
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/3998032643497238063/>`__. Very few hits now; these could feasibly be inspected manually.
+
+Using the exact name supplied via the parameter may be too strict. If we want to know if the parameter influences the file name, we can use taint tracking instead of data flow. This query finds calls to ``os.open`` where the filename is derived from a parameter:
 
 .. code-block:: ql
 
@@ -129,9 +152,11 @@ This query finds calls to ``os.open`` where the filename is derived from a param
 
     from DataFlow::CallCfgNode call, DataFlow::ParameterNode p
     where
-      call = API::moduleImport("os").getMember("open").getACall()
-    and TaintTracking::localTaint(p, call.getArg(0))
-    select p, "Opening a file based on a parameter."
+      call = API::moduleImport("os").getMember("open").getACall() and
+      TaintTracking::localTaint(p, call.getArg(0))
+    select call, p
+
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2129957933670836953/>`__. Now we get more hits and in more projects.
 
 Global data flow
 ----------------
@@ -261,7 +286,7 @@ This data flow configuration tracks data flow from environment variables to open
     import semmle.python.ApiGraphs
 
     class EnvironmentToFileConfiguration extends DataFlow::Configuration {
-      EnvironmentToFileConfiguration() { this = "Environment opening files" }
+      EnvironmentToFileConfiguration() { this = "EnvironmentToFileConfiguration" }
 
       override predicate isSource(DataFlow::Node source) {
         source = API::moduleImport("os").getMember("getenv").getACall()
@@ -277,8 +302,11 @@ This data flow configuration tracks data flow from environment variables to open
 
     from Expr environment, Expr fileOpen, EnvironmentToFileConfiguration config
     where config.hasFlow(DataFlow::exprNode(environment), DataFlow::exprNode(fileOpen))
-    select fileOpen, "This 'File.Open' uses data from $@.",
-      environment, "call to 'GetEnvironmentVariable'"
+    select fileOpen, "This call to 'os.open' uses data from $@.",
+      environment, "call to 'os.getenv'"
+
+➤ `Running this in the query console on LGTM.com <https://lgtm.com/query/6582374907796191895/>`__ unsurprisingly yields no results in the demo projects.
+
 
 Further reading
 ---------------
