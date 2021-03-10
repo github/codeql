@@ -32,18 +32,18 @@ void test_stringstream_string(int amount)
 	sink(ss2 << source()); // $ ast,ir
 	sink(ss3 << "123" << source()); // $ ast,ir
 	sink(ss4 << source() << "456"); // $ ast,ir
-	sink(ss5 << t); // $ ast MISSING: ir
+	sink(ss5 << t); // $ ast,ir
 
 	sink(ss1);
 	sink(ss2); // $ ast,ir
 	sink(ss3); // $ ast MISSING: ir
 	sink(ss4); // $ ast,ir
-	sink(ss5); // $ ast MISSING: ir
+	sink(ss5); // $ ast MISSIN,ir
 	sink(ss1.str());
 	sink(ss2.str()); // $ ast,ir
 	sink(ss3.str()); // $ ast MISSING: ir
 	sink(ss4.str()); // $ ast,ir
-	sink(ss5.str()); // $ ast MISSING: ir
+	sink(ss5.str()); // $ ast,ir
 
 	ss6.str("abc");
 	ss6.str(source()); // (overwrites)

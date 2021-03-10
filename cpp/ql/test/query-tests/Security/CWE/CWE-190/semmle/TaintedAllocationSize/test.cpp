@@ -76,7 +76,7 @@ void processData2(char *start, char *end)
 {
 	char *copy;
 
-	copy = new char[end - start]; // GOOD
+	copy = new char[end - start]; // GOOD [FALSE POSITIVE]
 
 	// ...
 

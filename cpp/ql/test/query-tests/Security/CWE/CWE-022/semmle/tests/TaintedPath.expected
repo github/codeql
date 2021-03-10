@@ -1,4 +1,6 @@
 edges
+| test.c:9:23:9:26 | argv | test.c:17:11:17:18 | (const char *)... |
+| test.c:9:23:9:26 | argv | test.c:17:11:17:18 | (const char *)... |
 | test.c:9:23:9:26 | argv | test.c:17:11:17:18 | Argument 0 indirection |
 | test.c:9:23:9:26 | argv | test.c:17:11:17:18 | Argument 0 indirection |
 | test.c:9:23:9:26 | argv | test.c:17:11:17:18 | fileName |
@@ -6,6 +8,8 @@ edges
 nodes
 | test.c:9:23:9:26 | argv | semmle.label | argv |
 | test.c:9:23:9:26 | argv | semmle.label | argv |
+| test.c:17:11:17:18 | (const char *)... | semmle.label | (const char *)... |
+| test.c:17:11:17:18 | (const char *)... | semmle.label | (const char *)... |
 | test.c:17:11:17:18 | Argument 0 indirection | semmle.label | Argument 0 indirection |
 | test.c:17:11:17:18 | Argument 0 indirection | semmle.label | Argument 0 indirection |
 | test.c:17:11:17:18 | fileName | semmle.label | fileName |

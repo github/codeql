@@ -91,12 +91,12 @@ void test_stringstream()
 	sink(ss2); // $ ir MISSING: ast
 	sink(ss3); // $ MISSING: ast,ir
 	sink(ss4); // $ ir MISSING: ast
-	sink(ss5); // $ MISSING: ast,ir
+	sink(ss5); // $ ir MISSING: ast
 	sink(ss1.str());
 	sink(ss2.str()); // $ ir MISSING: ast
 	sink(ss3.str()); // $ MISSING: ast,ir
 	sink(ss4.str()); // $ ir MISSING: ast
-	sink(ss5.str()); // $ MISSING: ast,ir
+	sink(ss5.str()); // $ ir MISSING: ast
 }
 
 void test_stringstream_int(int source)
