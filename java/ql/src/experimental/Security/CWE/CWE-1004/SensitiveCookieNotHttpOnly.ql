@@ -79,7 +79,10 @@ class CookieResponseSink extends DataFlow::ExprNode {
   }
 }
 
-/** Holds if `cie` is an invocation of a JAX-RS `NewCookie` constructor that sets `HttpOnly` to true. */
+/**
+ * Holds if `ClassInstanceExpr` cie is an invocation of a JAX-RS `NewCookie` constructor
+ * that sets `HttpOnly` to true.
+ */
 predicate setHttpOnlyInNewCookie(ClassInstanceExpr cie) {
   cie.getConstructedType().hasQualifiedName(["javax.ws.rs.core", "jakarta.ws.rs.core"], "NewCookie") and
   (
@@ -111,7 +114,7 @@ class CookieInstanceExpr extends TaintPreservingCallable {
 }
 
 /**
- * Holds if the node is a test method indicated by:
+ * Holds if the MethodAccess `ma` is a test method call indicated by:
  *    a) in a test directory such as `src/test/java`
  *    b) in a test package whose name has the word `test`
  *    c) in a test class whose name has the word `test`
