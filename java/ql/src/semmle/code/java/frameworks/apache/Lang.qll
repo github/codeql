@@ -49,18 +49,26 @@ private class ApacheLangArrayUtilsTaintPreservingMethod extends TaintPreservingC
     src = [0 .. getNumberOfParameters() - 1]
     or
     this.hasName([
-        "clone", "nullToEmpty", "remove", "removeAll", "removeElement", "removeElements", "reverse",
-        "shift", "shuffle", "subarray", "swap", "toArray", "toMap", "toObject", "toPrimitive",
-        "toString", "toStringArray"
+        "clone", "nullToEmpty", "remove", "removeAll", "removeElement", "removeElements",
+        "subarray", "toArray", "toMap", "toObject", "removeAllOccurences", "removeAllOccurrences"
       ]) and
     src = 0
+    or
+    this.hasName("toPrimitive") and
+    src = [0, 1]
     or
     this.hasName("add") and
     this.getNumberOfParameters() = 2 and
     src = [0, 1]
     or
-    this.hasName("add") and
+    this.hasName(["add"]) and
     this.getNumberOfParameters() = 3 and
+    src = [0, 2]
+    or
+    this.hasName("insert") and
+    src = [1, 2]
+    or
+    this.hasName("get") and
     src = [0, 2]
   }
 }
