@@ -26,7 +26,7 @@ To show why this complex relation is required consider the following Python code
    finally:
        close_resource()
 
-There are many paths through the above code. There are three different paths through the call to ``close_resource();`` one normal path, one path that breaks out of the loop, and one path where an exception is raised by ``might_raise()``. 
+There are many paths through the above code. There are three different paths through the call to ``close_resource();`` one normal path, one path that breaks out of the loop, and one path where an exception is raised by ``might_raise()``.
 
 An annotated flow graph:
 
@@ -114,11 +114,10 @@ Example finding mutually exclusive blocks within the same function
    )
    select b1, b2
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/671000028/>`__. This typically gives a very large number of results, because it is a common occurrence in normal control flow. It is, however, an example of the sort of control-flow analysis that is possible. Control-flow analyses such as this are an important aid to data flow analysis. For more information, see ":doc:`Analyzing data flow and tracking tainted data in Python <analyzing-data-flow-and-tracking-tainted-data-in-python>`."
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/671000028/>`__. This typically gives a very large number of results, because it is a common occurrence in normal control flow. It is, however, an example of the sort of control-flow analysis that is possible. Control-flow analyses such as this are an important aid to data flow analysis. For more information, see ":doc:`Analyzing data flow in Python <analyzing-data-flow-in-python>`."
 
 Further reading
 ---------------
 
 .. include:: ../reusables/python-further-reading.rst
 .. include:: ../reusables/codeql-ref-tools-further-reading.rst
-
