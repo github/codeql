@@ -70,58 +70,150 @@ private class ApacheArrayUtilsModel extends SummaryModelCsv {
   }
 }
 
-private Type getAnExcludedParameterType() {
-  result instanceof PrimitiveType or
-  result.(RefType).hasQualifiedName("java.nio.charset", "Charset") or
-  result.(RefType).hasQualifiedName("java.util", "Locale")
-}
-
-private class ApacheStringUtilsTaintPreservingMethod extends TaintPreservingCallable {
-  ApacheStringUtilsTaintPreservingMethod() {
-    this.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "StringUtils") and
-    this.hasName([
-        "abbreviate", "abbreviateMiddle", "appendIfMissing", "appendIfMissingIgnoreCase",
-        "capitalize", "center", "chomp", "chop", "defaultIfBlank", "defaultIfEmpty",
-        "defaultString", "deleteWhitespace", "difference", "firstNonBlank", "firstNonEmpty",
-        "getBytes", "getCommonPrefix", "getDigits", "getIfBlank", "getIfEmpty", "join", "joinWith",
-        "left", "leftPad", "lowerCase", "mid", "normalizeSpace", "overlay", "prependIfMissing",
-        "prependIfMissingIgnoreCase", "remove", "removeAll", "removeEnd", "removeEndIgnoreCase",
-        "removeFirst", "removeIgnoreCase", "removePattern", "removeStart", "removeStartIgnoreCase",
-        "repeat", "replace", "replaceAll", "replaceChars", "replaceEach", "replaceEachRepeatedly",
-        "replaceFirst", "replaceIgnoreCase", "replaceOnce", "replaceOnceIgnoreCase",
-        "replacePattern", "reverse", "reverseDelimited", "right", "rightPad", "rotate", "split",
-        "splitByCharacterType", "splitByCharacterTypeCamelCase", "splitByWholeSeparator",
-        "splitByWholeSeparatorPreserveAllTokens", "splitPreserveAllTokens", "strip", "stripAccents",
-        "stripAll", "stripEnd", "stripStart", "stripToEmpty", "stripToNull", "substring",
-        "substringAfter", "substringAfterLast", "substringBefore", "substringBeforeLast",
-        "substringBetween", "substringsBetween", "swapCase", "toCodePoints", "toEncodedString",
-        "toRootLowerCase", "toRootUpperCase", "toString", "trim", "trimToEmpty", "trimToNull",
-        "truncate", "uncapitalize", "unwrap", "upperCase", "valueOf", "wrap", "wrapIfMissing"
-      ])
-  }
-
-  private predicate isExcludedParameter(int arg) {
-    this.getName().matches(["appendIfMissing%", "prependIfMissing%"]) and arg = [2, 3]
-    or
-    this.getName().matches(["remove%", "split%", "substring%", "strip%"]) and
-    arg = [1 .. getNumberOfParameters() - 1]
-    or
-    this.getName().matches(["chomp", "getBytes", "replace%", "toString", "unwrap"]) and arg = 1
-    or
-    this.getName() = "join" and
-    // Exclude joins of types that render numerically (char[] and non-primitive arrays
-    // are still considered taint sources)
-    exists(PrimitiveType pt |
-      this.getParameterType(arg).(Array).getComponentType() = pt and
-      not pt instanceof CharacterType
-    ) and
-    arg = 0
-  }
-
-  override predicate returnsTaintFrom(int arg) {
-    arg = [0 .. getNumberOfParameters() - 1] and
-    not this.getParameterType(arg) = getAnExcludedParameterType() and
-    not isExcludedParameter(arg)
+private class ApacheStringUtilsModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.apache.commons.lang3;StringUtils;false;abbreviate;(java.lang.String,java.lang.String,int);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;abbreviate;(java.lang.String,java.lang.String,int,int);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;abbreviate;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;abbreviateMiddle;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;abbreviateMiddle;;;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;appendIfMissing;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;appendIfMissing;;;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;appendIfMissingIgnoreCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;appendIfMissingIgnoreCase;;;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;capitalize;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;center;(java.lang.String,int,java.lang.String);;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;center;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;chomp;(java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;chomp;(java.lang.String,java.lang.String);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;chop;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;defaultIfBlank;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;defaultIfEmpty;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;defaultString;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;deleteWhitespace;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;difference;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;firstNonBlank;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;firstNonEmpty;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;getBytes;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;getCommonPrefix;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;getDigits;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;getIfBlank;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;getIfEmpty;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(char[],char);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(char[],char,int,int);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.lang.Iterable,char);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.lang.Iterable,java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.lang.Object[]);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.lang.Object[],char);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.lang.Object[],char,int,int);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.lang.Object[],java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.lang.Object[],java.lang.String,int,int);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.lang.Object[],java.lang.String,int,int);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.util.Iterator,char);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.util.Iterator,java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.util.List,char,int,int);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.util.List,java.lang.String,int,int);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;join;(java.util.List,java.lang.String,int,int);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;joinWith;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;left;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;leftPad;(java.lang.String,int,java.lang.String);;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;leftPad;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;lowerCase;(java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;lowerCase;(java.lang.String,java.util.Locale);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;mid;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;normalizeSpace;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;overlay;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;overlay;;;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;prependIfMissing;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;prependIfMissing;;;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;prependIfMissingIgnoreCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;prependIfMissingIgnoreCase;;;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;remove;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;removeAll;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;removeEnd;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;removeEndIgnoreCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;removeFirst;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;removeIgnoreCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;removePattern;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;removeStart;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;removeStartIgnoreCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;repeat;(java.lang.String,java.lang.String,int);;Argument[1];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;repeat;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replace;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replace;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceAll;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceAll;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceChars;(java.lang.String,java.lang.String,java.lang.String);;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceChars;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceEach;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceEach;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceEachRepeatedly;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceEachRepeatedly;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceFirst;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceFirst;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceIgnoreCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceIgnoreCase;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceOnce;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceOnce;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceOnceIgnoreCase;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replaceOnceIgnoreCase;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replacePattern;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;replacePattern;;;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;reverse;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;reverseDelimited;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;right;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;rightPad;(java.lang.String,int,java.lang.String);;Argument[2];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;rightPad;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;rotate;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;split;(java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;split;(java.lang.String,char);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;split;(java.lang.String,java.lang.String);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;split;(java.lang.String,java.lang.String,int);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;splitByCharacterType;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;splitByCharacterTypeCamelCase;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;splitByWholeSeparator;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;splitByWholeSeparatorPreserveAllTokens;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;splitPreserveAllTokens;(java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;splitPreserveAllTokens;(java.lang.String,char);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;splitPreserveAllTokens;(java.lang.String,java.lang.String);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;splitPreserveAllTokens;(java.lang.String,java.lang.String,int);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;strip;(java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;strip;(java.lang.String,java.lang.String);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;stripAccents;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;stripAll;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;stripEnd;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;stripStart;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;stripToEmpty;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;stripToNull;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;substring;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;substringAfter;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;substringAfterLast;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;substringBefore;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;substringBeforeLast;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;substringBetween;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;substringsBetween;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;swapCase;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;toCodePoints;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;toEncodedString;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;toRootLowerCase;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;toRootUpperCase;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;toString;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;trim;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;trimToEmpty;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;trimToNull;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;truncate;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;uncapitalize;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;unwrap;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;upperCase;(java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;upperCase;(java.lang.String,java.util.Locale);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;valueOf;;;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;wrap;(java.lang.String,char);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;wrap;(java.lang.String,java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;wrapIfMissing;(java.lang.String,char);;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;StringUtils;false;wrapIfMissing;(java.lang.String,java.lang.String);;Argument;ReturnValue;taint"
+      ]
   }
 }
 
