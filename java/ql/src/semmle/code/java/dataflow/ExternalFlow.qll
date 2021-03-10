@@ -204,6 +204,29 @@ private predicate summaryModel(
   )
 }
 
+/**
+ * Holds if CSV framework coverage of `package` is `n` api endpoints of the
+ * kind `(kind, part)`.
+ */
+predicate modelCoverage(string package, string kind, string part, int n) {
+  part = "source" and
+  n =
+    strictcount(string type, boolean subtypes, string name, string signature, string ext,
+      string output | sourceModel(package, type, subtypes, name, signature, ext, output, kind))
+  or
+  part = "sink" and
+  n =
+    strictcount(string type, boolean subtypes, string name, string signature, string ext,
+      string input | sinkModel(package, type, subtypes, name, signature, ext, input, kind))
+  or
+  part = "summary" and
+  n =
+    strictcount(string type, boolean subtypes, string name, string signature, string ext,
+      string input, string output |
+      summaryModel(package, type, subtypes, name, signature, ext, input, output, kind)
+    )
+}
+
 /** Provides a query predicate to check the CSV data for validation errors. */
 module CsvValidation {
   /** Holds if some row in a CSV-based flow model appears to contain typos. */
