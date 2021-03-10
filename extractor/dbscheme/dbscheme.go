@@ -272,6 +272,11 @@ func IntColumn(columnName string) Column {
 	return Column{columnName, INT, false, true}
 }
 
+// FloatColumn constructs a column with name `columnName` holding floating point number values
+func FloatColumn(columnName string) Column {
+	return Column{columnName, FLOAT, false, true}
+}
+
 // A Table represents a database table
 type Table struct {
 	name    string

@@ -133,6 +133,8 @@ func (tw *Writer) Emit(table string, values []interface{}) error {
 			fmt.Fprintf(tw.zip, "\"%s\"", escapeString(capStringLength(value)))
 		case int:
 			fmt.Fprintf(tw.zip, "%d", value)
+		case float64:
+			fmt.Fprintf(tw.zip, "%e", value)
 		default:
 			return errors.New("Cannot emit value")
 		}
