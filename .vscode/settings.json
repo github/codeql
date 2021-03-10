@@ -1,3 +1,4 @@
 {
-    "omnisharp.autoStart": false
+    "omnisharp.autoStart": false,
+    "restructuredtext.confPath": "${workspaceFolder}/docs/codeql"
 }

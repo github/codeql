@@ -20,7 +20,6 @@ The CodeQL library for Python incorporates a large number of classes. Each class
 
 -  **Syntactic** - classes that represent entities in the Python source code.
 -  **Control flow** - classes that represent entities from the control flow graphs.
--  **Type inference** - classes that represent the inferred values and types of entities in the Python source code.
 
 Syntactic classes
 -----------------
@@ -288,40 +287,6 @@ The classes in the control-flow part of the library are:
 
 -  `ControlFlowNode <https://codeql.github.com/codeql-standard-libraries/python/semmle/python/Flow.qll/type.Flow$ControlFlowNode.html>`__ – A control-flow node. There is a one-to-many relation between AST nodes and control-flow nodes.
 -  `BasicBlock <https://codeql.github.com/codeql-standard-libraries/python/semmle/python/Flow.qll/type.Flow$BasicBlock.html>`__ – A non branching list of control-flow nodes.
-
-
-Type-inference classes
-----------------------
-
-The CodeQL library for Python also supplies some classes for accessing the inferred types of values. The classes ``Value`` and ``ClassValue`` allow you to query the possible classes that an expression may have at runtime.
-
-Example
-^^^^^^^
-
-For example, which ``ClassValue``\ s are iterable can be determined using the query:
-
-**Find iterable "ClassValue"s**
-
-.. code-block:: ql
-
-   import python
-
-   from ClassValue cls
-   where cls.hasAttribute("__iter__")
-   select cls
-
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/5151030165280978402/>`__ This query returns a list of classes for the projects analyzed. If you want to include the results for ``builtin`` classes, which do not have any Python source code, show the non-source results. For more information, see `builtin classes <https://docs.python.org/3/library/stdtypes.html>`__ in the Python documentation.
-
-Summary
-^^^^^^^
-
--  `Value <https://codeql.github.com/codeql-standard-libraries/python/semmle/python/objects/ObjectAPI.qll/type.ObjectAPI$Value.html>`__
-
-   -  ``ClassValue``
-   -  ``CallableValue``
-   -  ``ModuleValue``
-
-For more information about these classes, see ":doc:`Pointer analysis and type inference in Python <pointer-analysis-and-type-inference-in-python>`."
 
 
 Further reading
