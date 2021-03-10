@@ -8,7 +8,7 @@ When you need to analyze a Python program, you can make use of the large collect
 About the CodeQL library for Python
 -----------------------------------
 
-The CodeQL library for each programming language uses classes with abstractions and predicates to present data in an object-oriented form. 
+The CodeQL library for each programming language uses classes with abstractions and predicates to present data in an object-oriented form.
 
 Each CodeQL library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``python.qll`` imports all the core Python library modules, so you can include the complete library by beginning your query with:
 
@@ -21,7 +21,6 @@ The CodeQL library for Python incorporates a large number of classes. Each class
 -  **Syntactic** - classes that represent entities in the Python source code.
 -  **Control flow** - classes that represent entities from the control flow graphs.
 -  **Type inference** - classes that represent the inferred values and types of entities in the Python source code.
--  **Taint tracking** - classes that represent the source, sinks and kinds of taint used to implement taint-tracking queries.
 
 Syntactic classes
 -----------------
@@ -294,7 +293,7 @@ The classes in the control-flow part of the library are:
 Type-inference classes
 ----------------------
 
-The CodeQL library for Python also supplies some classes for accessing the inferred types of values. The classes ``Value`` and ``ClassValue`` allow you to query the possible classes that an expression may have at runtime. 
+The CodeQL library for Python also supplies some classes for accessing the inferred types of values. The classes ``Value`` and ``ClassValue`` allow you to query the possible classes that an expression may have at runtime.
 
 Example
 ^^^^^^^
@@ -324,24 +323,9 @@ Summary
 
 For more information about these classes, see ":doc:`Pointer analysis and type inference in Python <pointer-analysis-and-type-inference-in-python>`."
 
-Taint-tracking classes
-----------------------
-
-The CodeQL library for Python also supplies classes to specify taint-tracking analyses. The ``Configuration`` class can be overridden to specify a taint-tracking analysis, by specifying source, sinks, sanitizers and additional flow steps. For those analyses that require additional types of taint to be tracked the ``TaintKind`` class can be overridden.
-
-
-Summary
-^^^^^^^
-
-- `TaintKind <https://codeql.github.com/codeql-standard-libraries/python/semmle/python/dataflow/old/TaintTracking.qll/type.TaintTracking$TaintKind.html>`__
-- `Configuration <https://codeql.github.com/codeql-standard-libraries/python/semmle/python/dataflow/old/Configuration.qll/type.Configuration$TaintTracking$Configuration.html>`__
-
-For more information about these classes, see ":doc:`Analyzing data flow and tracking tainted data in Python <analyzing-data-flow-and-tracking-tainted-data-in-python>`."
-
 
 Further reading
 ---------------
 
 .. include:: ../reusables/python-further-reading.rst
 .. include:: ../reusables/codeql-ref-tools-further-reading.rst
-
