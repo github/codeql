@@ -59,7 +59,10 @@ module CallGraph {
 
   /**
    * Gets a reference to `function` type-tracked by `t`.
-   * Only considers callgraph specific steps.
+   *
+   * This only includes steps that aren't included in ordinary type-tracking.
+   * For example, this steps from a method definition to an access on an instance, but
+   * does not step through access paths, as those are included in type-tracking already.
    */
   cached
   DataFlow::SourceNode callgraphStep(DataFlow::FunctionNode function, DataFlow::TypeTracker t) {
