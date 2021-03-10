@@ -1493,7 +1493,7 @@ module DataFlow {
    */
   cached
   predicate localFlowStep(Node pred, Node succ) {
-    ExtendedStaging::DataFlowStage::ref() and
+    Stages::DataFlowStage::ref() and
     // flow from RHS into LHS
     lvalueFlowStep(pred, succ)
     or

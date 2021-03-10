@@ -25,7 +25,6 @@ import semmle.javascript.Errors
 import semmle.javascript.ES2015Modules
 import semmle.javascript.Expr
 import semmle.javascript.Extend
-import semmle.javascript.ExtendedStaging
 import semmle.javascript.Externs
 import semmle.javascript.Files
 import semmle.javascript.Functions
@@ -34,6 +33,7 @@ import semmle.javascript.GlobalAccessPaths
 import semmle.javascript.HTML
 import semmle.javascript.HtmlSanitizers
 import semmle.javascript.InclusionTests
+import semmle.javascript.internal.CachedStages
 import semmle.javascript.JSDoc
 import semmle.javascript.JSON
 import semmle.javascript.JsonParsers

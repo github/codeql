@@ -539,7 +539,7 @@ module AccessPath {
      */
     cached
     predicate hasDominatingWrite(DataFlow::PropRead read) {
-      ExtendedStaging::FlowSteps::ref() and
+      Stages::FlowSteps::ref() and
       // within the same basic block.
       exists(ReachableBasicBlock bb, Root root, string path, int ranking |
         read.asExpr() = rankedAccessPath(bb, root, path, ranking, AccessPathRead()) and

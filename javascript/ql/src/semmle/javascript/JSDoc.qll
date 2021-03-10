@@ -58,7 +58,7 @@ abstract class Documentable extends ASTNode {
   /** Gets the JSDoc comment for this element, if any. */
   cached
   JSDoc getDocumentation() {
-    ExtendedStaging::Ast::ref() and result.getComment().getNextToken() = getFirstToken()
+    Stages::Ast::ref() and result.getComment().getNextToken() = getFirstToken()
   }
 }
 

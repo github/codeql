@@ -299,7 +299,7 @@ private class AmdDependencyImport extends Import {
 class AmdModule extends Module {
   cached
   AmdModule() {
-    ExtendedStaging::DataFlowStage::ref() and
+    Stages::DataFlowStage::ref() and
     exists(unique(AmdModuleDefinition def | amdModuleTopLevel(def, this)))
   }
 
