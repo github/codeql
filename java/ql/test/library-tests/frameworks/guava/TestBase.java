@@ -2,6 +2,7 @@ package com.google.common.base;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 class TestBase {
     String taint() { return "tainted"; }
@@ -59,6 +60,50 @@ class TestBase {
 
     void test4() {
         sink(Preconditions.checkNotNull(taint())); // $numTaintFlow=1
+        sink(Verify.verifyNotNull(taint())); // $numTaintFlow=1
+    }
+
+    void test5() {
+        sink(Ascii.toLowerCase(taint())); // $numTaintFlow=1
+        sink(Ascii.toUpperCase(taint())); // $numTaintFlow=1
+        sink(Ascii.truncate(taint(), 3, "...")); // $numTaintFlow=1
+        sink(Ascii.truncate("abcabcabc", 3, taint())); // $numTaintFlow=1
+        sink(CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, taint())); // $numTaintFlow=1
+        sink(CaseFormat.LOWER_HYPHEN.converterTo(CaseFormat.UPPER_CAMEL).convert(taint())); // $numTaintFlow=1
+        sink(CaseFormat.LOWER_UNDERSCORE.converterTo(CaseFormat.LOWER_HYPHEN).reverse().convert(taint())); // $numTaintFlow=1
+    }
+
+    void test6() {
+        sink(Suppliers.memoize(Suppliers.memoizeWithExpiration(Suppliers.synchronizedSupplier(Suppliers.ofInstance(taint())), 3, TimeUnit.HOURS))); // $numTaintFlow=1
+    }
+
+    void test7() {
+        sink(MoreObjects.firstNonNull(taint(), "abc")); // $numTaintFlow=1
+        sink(MoreObjects.firstNonNull(null, taint())); // $numTaintFlow=1
+        sink(MoreObjects.toStringHelper(taint()).add("x", 3).omitNullValues().toString()); // $numTaintFlow=1
+        sink(MoreObjects.toStringHelper((Object) taint()).toString());
+        sink(MoreObjects.toStringHelper("a").add("x", 3).add(taint(), 4).toString()); // $numTaintFlow=1
+        sink(MoreObjects.toStringHelper("a").add("x", taint()).toString()); // $numTaintFlow=1
+        sink(MoreObjects.toStringHelper("a").addValue(taint()).toString()); // $numTaintFlow=1
+        MoreObjects.ToStringHelper h = MoreObjects.toStringHelper("a");
+        h.add("x", 3).add(taint(), 4);
+        sink(h.add("z",5).toString()); // $numTaintFlow=1
+    }
+
+    void test8() {
+        Optional<String> x = Optional.of(taint());
+        sink(x); // $numTaintFlow=1
+        sink(x.get()); // $numTaintFlow=1
+        sink(x.or("hi")); // $numTaintFlow=1
+        sink(x.orNull()); // $numTaintFlow=1
+        sink(x.asSet()); // $numTaintFlow=1
+        sink(Optional.fromJavaUtil(x.toJavaUtil())); // $numTaintFlow=1
+        sink(Optional.fromJavaUtil(Optional.toJavaUtil(x))); // $numTaintFlow=1
+        sink(x.asSet()); // $numTaintFlow=1
+        sink(Optional.fromNullable(taint())); // $numTaintFlow=1
+        sink(Optional.absent().or(x)); // $numTaintFlow=1
+        sink(Optional.absent().or(taint())); // $numTaintFlow=1
+        sink(Optional.presentInstances(Optional.of(x).asSet())); // $numTaintFlow=1
     }
 
     void test5() {
