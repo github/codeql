@@ -20,14 +20,9 @@
 import python
 import semmle.python.ApiGraphs
 
-CallNode unsafe_call(string method_name) {
-  result = API::moduleImport("ssl").getMember("wrap_socket").getACall().asCfgNode() and
-  not exists(result.getArgByName("ssl_version")) and
-  method_name = "deprecated method ssl.wrap_socket"
-}
-
-from CallNode call, string method_name
-where call = unsafe_call(method_name)
+from DataFlow::CallCfgNode call
+where
+  call = API::moduleImport("ssl").getMember("wrap_socket").getACall() and
+  not exists(call.getArgByName("ssl_version"))
 select call,
-  "Call to " + method_name +
-    " does not specify a protocol, which may result in an insecure default being used."
+  "Call to deprecated method ssl.wrap_socket does not specify a protocol, which may result in an insecure default being used."
