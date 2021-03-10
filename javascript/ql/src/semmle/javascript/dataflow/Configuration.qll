@@ -72,6 +72,7 @@ private import javascript
 private import internal.FlowSteps
 private import internal.AccessPaths
 private import internal.CallGraphs
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A data flow tracking configuration for finding inter-procedural paths from

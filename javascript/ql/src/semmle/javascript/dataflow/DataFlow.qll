@@ -24,6 +24,7 @@ private import internal.FlowSteps as FlowSteps
 private import internal.DataFlowNode
 private import internal.AnalyzedParameters
 private import internal.PreCallGraphStep
+private import semmle.javascript.internal.CachedStages
 
 module DataFlow {
   /**

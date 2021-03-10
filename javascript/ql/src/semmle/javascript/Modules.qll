@@ -5,6 +5,7 @@
  */
 
 import javascript
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A module, which may either be an ECMAScript 2015-style module,

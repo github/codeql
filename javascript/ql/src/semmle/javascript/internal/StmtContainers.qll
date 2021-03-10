@@ -6,6 +6,7 @@
  */
 
 private import javascript
+private import semmle.javascript.internal.CachedStages
 
 cached
 private StmtContainer getStmtContainer(NodeInStmtContainer node) {

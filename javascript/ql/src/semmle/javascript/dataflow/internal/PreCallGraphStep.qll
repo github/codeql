@@ -4,6 +4,7 @@
  */
 
 private import javascript
+private import semmle.javascript.internal.CachedStages
 
 private newtype TUnit = MkUnit()
 

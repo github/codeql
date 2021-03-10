@@ -7,6 +7,7 @@
 private import javascript
 private import semmle.javascript.dependencies.Dependencies
 private import internal.CallGraphs
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A data flow node corresponding to an expression.

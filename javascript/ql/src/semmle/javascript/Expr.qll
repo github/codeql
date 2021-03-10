@@ -3,6 +3,7 @@
  */
 
 import javascript
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A program element that is either an expression or a type annotation.

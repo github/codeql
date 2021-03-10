@@ -1,6 +1,7 @@
 /** Provides classes for working with JSDoc comments. */
 
 import javascript
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A JSDoc comment.

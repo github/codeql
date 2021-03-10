@@ -33,7 +33,6 @@ import semmle.javascript.GlobalAccessPaths
 import semmle.javascript.HTML
 import semmle.javascript.HtmlSanitizers
 import semmle.javascript.InclusionTests
-import semmle.javascript.internal.CachedStages
 import semmle.javascript.JSDoc
 import semmle.javascript.JSON
 import semmle.javascript.JsonParsers

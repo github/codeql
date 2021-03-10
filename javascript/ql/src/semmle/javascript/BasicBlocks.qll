@@ -5,6 +5,7 @@
 
 import javascript
 private import internal.StmtContainers
+private import semmle.javascript.internal.CachedStages
 
 /**
  * Holds if `nd` starts a new basic block.

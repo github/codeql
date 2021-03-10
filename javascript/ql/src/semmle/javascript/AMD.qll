@@ -4,6 +4,7 @@
  */
 
 import javascript
+private import semmle.javascript.internal.CachedStages
 
 /**
  * An AMD `define` call.

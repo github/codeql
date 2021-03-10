@@ -4,6 +4,7 @@
 
 import javascript
 private import internal.StmtContainers
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A program element corresponding to JavaScript code, such as an expression

@@ -76,6 +76,7 @@
 
 import javascript
 private import semmle.javascript.dataflow.Refinements
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A variable that can be SSA converted, that is, a local variable.

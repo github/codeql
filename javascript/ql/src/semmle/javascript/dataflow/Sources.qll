@@ -8,6 +8,7 @@
 
 private import javascript
 private import semmle.javascript.dataflow.TypeTracking
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A source node for local data flow, that is, a node from which local data flow is tracked.

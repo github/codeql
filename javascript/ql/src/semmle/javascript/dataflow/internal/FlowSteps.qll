@@ -7,6 +7,7 @@
 import javascript
 import semmle.javascript.dataflow.Configuration
 import semmle.javascript.dataflow.internal.CallGraphs
+private import semmle.javascript.internal.CachedStages
 
 /**
  * Holds if flow should be tracked through properties of `obj`.

@@ -16,6 +16,7 @@
 import javascript
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import semmle.javascript.dataflow.InferredTypes
+private import semmle.javascript.internal.CachedStages
 
 /**
  * Provides classes for modelling taint propagation.
