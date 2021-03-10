@@ -1,20 +1,20 @@
 /**
  * INTERNAL: Do not use.
  *
- * The purpose of this file is to reduce the number of stages computed by the runtime,
- * thereby speeding up the evaluation without affecting any results.
+ * The purpose of this file is to control which cached predicates belong to the same stage.
  *
- * Computing less stages can improve performance as each stages is less likely to recompute non-cached predicates.
+ * Combining stages can improve performance as we are more likely to reuse shared, non-cached predicates.
  *
  * A number of stages are grouped into an extended stage.
  * An extended stage contains a number of substages - corrosponding to to how the stages would be grouped if this file didn't exist.
  * Each extended stage is identified by a `cached module` in the `ExtendedStaging` module.
  *
- * The number of stages are reduced by using how the compiler groups predicates into stages.
- * The compiler will group mutually recursive cached predicates, or cached predicates within the same `cached module`, into the same stage.
- * This file uses the latter by creating a `cached module` with two predicates for each extended stage.
- * The first predicate is referenced from all the `cached` predicates we want in the same extended stage,
- * and the second predicate has references to all the `cached` predicates we want in the same extended stage.
+* To make a predicate `p` belong to a stage `A`:
+* - make `p` depend on `A::ref()`, and
+* - make `A::backref()` depend on `p`.
+*
+* Since `A` is a cached module, `ref` and `backref` must be in the same stage, and the dependency
+* chain above thus forces `p` to be in that stage as well.
  *
  * With these two predicates in a `cached module` we ensure that all substages will be in a single stage at runtime.
  *
