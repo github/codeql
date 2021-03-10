@@ -50,23 +50,6 @@ class CookieClass extends RefType {
   }
 }
 
-/** The method call `toString` to get a stringified cookie representation. */
-class CookieInstanceExpr extends TaintPreservingCallable {
-  CookieInstanceExpr() {
-    this.getDeclaringType() instanceof CookieClass and
-    this.hasName("toString")
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = -1 }
-}
-
-/** The cookie constructor. */
-class CookieTaintPreservingConstructor extends Constructor, TaintPreservingCallable {
-  CookieTaintPreservingConstructor() { this.getDeclaringType() instanceof CookieClass }
-
-  override predicate returnsTaintFrom(int arg) { arg = 0 }
-}
-
 /** Sensitive cookie name used in a `Cookie` constructor or a `Set-Cookie` call. */
 class SensitiveCookieNameExpr extends Expr {
   SensitiveCookieNameExpr() { isSensitiveCookieNameExpr(this) }
@@ -78,55 +61,58 @@ class CookieResponseSink extends DataFlow::ExprNode {
     exists(MethodAccess ma |
       (
         ma.getMethod() instanceof ResponseAddCookieMethod and
-        this.getExpr() = ma.getArgument(0)
+        this.getExpr() = ma.getArgument(0) and
+        not exists(
+          MethodAccess ma2 // cookie.setHttpOnly(true)
+        |
+          ma2.getMethod().getName() = "setHttpOnly" and
+          ma2.getArgument(0).(BooleanLiteral).getBooleanValue() = true and
+          DataFlow::localExprFlow(ma2.getQualifier(), this.getExpr())
+        )
         or
         ma instanceof SetCookieMethodAccess and
-        this.getExpr() = ma.getArgument(1)
+        this.getExpr() = ma.getArgument(1) and
+        not hasHttpOnlyExpr(this.getExpr()) // response.addHeader("Set-Cookie", "token=" +authId + ";HttpOnly;Secure")
       )
     )
   }
 }
 
-/**
- * Holds if `node` is an access to a variable which has `setHttpOnly(true)` called on it and is also
- * the first argument to a call to the method `addCookie` of `javax.servlet.http.HttpServletResponse`.
- */
-predicate setHttpOnlyMethodAccess(DataFlow::Node node) {
-  exists(
-    MethodAccess addCookie, Variable cookie, MethodAccess m // jwtCookie.setHttpOnly(true)
-  |
-    addCookie.getMethod() instanceof ResponseAddCookieMethod and
-    addCookie.getArgument(0) = cookie.getAnAccess() and
-    m.getMethod().getName() = "setHttpOnly" and
-    m.getArgument(0).(BooleanLiteral).getBooleanValue() = true and
-    m.getQualifier() = cookie.getAnAccess() and
-    node.asExpr() = cookie.getAnAccess()
-  )
+/** A JAX-RS `NewCookie` constructor that sets `HttpOnly` to true. */
+class HttpOnlyNewCookie extends ClassInstanceExpr {
+  HttpOnlyNewCookie() {
+    this.getConstructedType()
+        .hasQualifiedName(["javax.ws.rs.core", "jakarta.ws.rs.core"], "NewCookie") and
+    (
+      this.getNumArgument() = 6 and this.getArgument(5).(BooleanLiteral).getBooleanValue() = true // NewCookie(Cookie cookie, String comment, int maxAge, Date expiry, boolean secure, boolean httpOnly)
+      or
+      this.getNumArgument() = 8 and
+      this.getArgument(6).getType() instanceof BooleanType and
+      this.getArgument(7).(BooleanLiteral).getBooleanValue() = true // NewCookie(String name, String value, String path, String domain, String comment, int maxAge, boolean secure, boolean httpOnly)
+      or
+      this.getNumArgument() = 10 and this.getArgument(9).(BooleanLiteral).getBooleanValue() = true // NewCookie(String name, String value, String path, String domain, int version, String comment, int maxAge, Date expiry, boolean secure, boolean httpOnly)
+    )
+  }
 }
 
-/**
- * Holds if `node` is a string that contains `httponly` and which flows to the second argument
- * of a method to set a cookie.
- */
-predicate setHttpOnlyInSetCookie(DataFlow::Node node) {
-  exists(SetCookieMethodAccess sa |
-    hasHttpOnlyExpr(node.asExpr()) and
-    DataFlow::localExprFlow(node.asExpr(), sa.getArgument(1))
-  )
+/** The cookie constructor. */
+class CookieTaintPreservingConstructor extends Constructor, TaintPreservingCallable {
+  CookieTaintPreservingConstructor() {
+    this.getDeclaringType() instanceof CookieClass and
+    not exists(HttpOnlyNewCookie hie | hie.getConstructor() = this)
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = 0 }
 }
 
-/** Holds if `cie` is an invocation of a JAX-RS `NewCookie` constructor that sets `HttpOnly` to true. */
-predicate setHttpOnlyInNewCookie(ClassInstanceExpr cie) {
-  cie.getConstructedType().hasQualifiedName(["javax.ws.rs.core", "jakarta.ws.rs.core"], "NewCookie") and
-  (
-    cie.getNumArgument() = 6 and cie.getArgument(5).(BooleanLiteral).getBooleanValue() = true // NewCookie(Cookie cookie, String comment, int maxAge, Date expiry, boolean secure, boolean httpOnly)
-    or
-    cie.getNumArgument() = 8 and
-    cie.getArgument(6).getType() instanceof BooleanType and
-    cie.getArgument(7).(BooleanLiteral).getBooleanValue() = true // NewCookie(String name, String value, String path, String domain, String comment, int maxAge, boolean secure, boolean httpOnly)
-    or
-    cie.getNumArgument() = 10 and cie.getArgument(9).(BooleanLiteral).getBooleanValue() = true // NewCookie(String name, String value, String path, String domain, int version, String comment, int maxAge, Date expiry, boolean secure, boolean httpOnly)
-  )
+/** The method call `toString` to get a stringified cookie representation. */
+class CookieInstanceExpr extends TaintPreservingCallable {
+  CookieInstanceExpr() {
+    this.getDeclaringType() instanceof CookieClass and
+    this.hasName("toString")
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = -1 }
 }
 
 /**
@@ -163,15 +149,6 @@ class MissingHttpOnlyConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof CookieResponseSink }
 
   override predicate isSanitizer(DataFlow::Node node) {
-    // cookie.setHttpOnly(true)
-    setHttpOnlyMethodAccess(node)
-    or
-    // response.addHeader("Set-Cookie", "token=" +authId + ";HttpOnly;Secure")
-    setHttpOnlyInSetCookie(node)
-    or
-    // new NewCookie("session-access-key", accessKey, "/", null, null, 0, true, true)
-    setHttpOnlyInNewCookie(node.asExpr())
-    or
     // Test class or method
     isTestMethod(node)
   }
