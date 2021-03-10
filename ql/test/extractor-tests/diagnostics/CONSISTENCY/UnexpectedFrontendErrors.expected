@@ -1,0 +1,5 @@
+| broken2/test1.go:4:2:4:2 | undeclared name: fmt |
+| broken2/test1.go:5:2:5:2 | undeclared name: fmt |
+| broken2/test1.go:5:14:5:14 | undeclared name: a |
+| broken2/test.go:3:1:3:1 | expected 'package', found pac |
+| broken/test.go:7:1:7:1 | expected declaration, found This |
