@@ -1,12 +1,15 @@
 package extractor
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"fmt"
 	"go/ast"
 	"go/constant"
 	"go/scanner"
 	"go/token"
 	"go/types"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -25,6 +28,33 @@ import (
 	"golang.org/x/tools/go/packages"
 )
 
+var MaxGoRoutines int
+
+func init() {
+	// this sets the number of threads that the Go runtime will spawn; this is separate
+	// from the number of goroutines that the program spawns, which are scheduled into
+	// the system threads by the Go runtime scheduler
+	threads := os.Getenv("LGTM_THREADS")
+	if maxprocs, err := strconv.Atoi(threads); err == nil && maxprocs > 0 {
+		log.Printf("Max threads set to %d", maxprocs)
+		runtime.GOMAXPROCS(maxprocs)
+	} else if threads != "" {
+		log.Printf("Warning: LGTM_THREADS value %s is not valid, defaulting to using all available threads.", threads)
+	}
+	// if the value is empty or not set, use the Go default, which is the number of cores
+	// available since Go 1.5, but is subject to change
+
+	var err error
+	if MaxGoRoutines, err = strconv.Atoi(util.Getenv(
+		"CODEQL_EXTRACTOR_GO_MAX_GOROUTINES",
+		"SEMMLE_MAX_GOROUTINES",
+	)); err != nil {
+		MaxGoRoutines = 32
+	} else {
+		log.Printf("Max goroutines set to %d", MaxGoRoutines)
+	}
+}
+
 // Extract extracts the packages specified by the given patterns
 func Extract(patterns []string) error {
 	return ExtractWithFlags(nil, patterns)
@@ -32,6 +62,11 @@ func Extract(patterns []string) error {
 
 // ExtractWithFlags extracts the packages specified by the given patterns and build flags
 func ExtractWithFlags(buildFlags []string, patterns []string) error {
+	startTime := time.Now()
+
+	extraction := NewExtraction(buildFlags, patterns)
+	defer extraction.StatWriter.Close()
+
 	modEnabled := os.Getenv("GO111MODULE") != "off"
 	if !modEnabled {
 		log.Println("Go module mode disabled.")
@@ -111,7 +146,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 			log.Printf("Warning: encountered errors extracting package `%s`:", pkg.PkgPath)
 			for i, err := range pkg.Errors {
 				log.Printf("  %s", err.Error())
-				extractError(tw, err, lbl, i)
+				extraction.extractError(tw, err, lbl, i)
 			}
 		}
 		log.Printf("Done extracting types for package %s.", pkg.PkgPath)
@@ -128,38 +163,6 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	log.Println("Done processing dependencies.")
 
 	log.Println("Starting to extract packages.")
-
-	// this sets the number of threads that the Go runtime will spawn; this is separate
-	// from the number of goroutines that the program spawns, which are scheduled into
-	// the system threads by the Go runtime scheduler
-	threads := os.Getenv("LGTM_THREADS")
-	if maxprocs, err := strconv.Atoi(threads); err == nil && maxprocs > 0 {
-		log.Printf("Max threads set to %d", maxprocs)
-		runtime.GOMAXPROCS(maxprocs)
-	} else if threads != "" {
-		log.Printf("Warning: LGTM_THREADS value %s is not valid, defaulting to using all available threads.", threads)
-	}
-	// if the value is empty or not set, use the Go default, which is the number of cores
-	// available since Go 1.5, but is subject to change
-
-	var maxgoroutines int
-	if maxgoroutines, err = strconv.Atoi(util.Getenv(
-		"CODEQL_EXTRACTOR_GO_MAX_GOROUTINES",
-		"SEMMLE_MAX_GOROUTINES",
-	)); err != nil {
-		maxgoroutines = 32
-	} else {
-		log.Printf("Max goroutines set to %d", maxgoroutines)
-	}
-
-	var wg sync.WaitGroup
-	// this semaphore is used to limit the number of files that are open at once;
-	// this is to prevent the extractor from running into issues with caps on the
-	// number of open files that can be held by one process
-	fdSem := newSemaphore(100)
-	// this semaphore is used to limit the number of goroutines spawned, so we
-	// don't run into memory issues
-	goroutineSem := newSemaphore(maxgoroutines)
 
 	sep := regexp.QuoteMeta(string(filepath.Separator))
 	// if a path matches this regexp, we don't want to extract this package. Currently, it checks
@@ -178,7 +181,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 				continue
 			}
 
-			extractPackage(pkg, &wg, goroutineSem, fdSem)
+			extraction.extractPackage(pkg)
 
 			if pkgRoots[pkg.PkgPath] != "" {
 				modPath := filepath.Join(pkgRoots[pkg.PkgPath], "go.mod")
@@ -186,7 +189,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 					log.Printf("Extracting %s", modPath)
 					start := time.Now()
 
-					err := extractGoMod(modPath)
+					err := extraction.extractGoMod(modPath)
 					if err != nil {
 						log.Printf("Failed to extract go.mod: %s", err.Error())
 					}
@@ -202,11 +205,131 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		log.Printf("Skipping dependency package %s.", pkg.PkgPath)
 	})
 
-	wg.Wait()
+	extraction.WaitGroup.Wait()
 
 	log.Println("Done extracting packages.")
 
+	t := time.Now()
+	elapsed := t.Sub(startTime)
+	dbscheme.CompilationFinishedTable.Emit(extraction.StatWriter, extraction.Label, 0.0, elapsed.Seconds())
+
 	return nil
+}
+
+type Extraction struct {
+	// A lock for preventing concurrent writes to maps and the stat trap writer, as they are not
+	// thread-safe
+	Lock         sync.Mutex
+	LabelKey     string
+	Label        trap.Label
+	StatWriter   *trap.Writer
+	WaitGroup    sync.WaitGroup
+	GoroutineSem *semaphore
+	FdSem        *semaphore
+	NextFileId   int
+	FileInfo     map[string]*FileInfo
+	SeenGoMods   map[string]bool
+}
+
+type FileInfo struct {
+	Idx     int
+	NextErr int
+}
+
+func (extraction *Extraction) GetFileInfo(path string) *FileInfo {
+	if fileInfo, ok := extraction.FileInfo[path]; ok {
+		return fileInfo
+	}
+
+	extraction.FileInfo[path] = &FileInfo{extraction.NextFileId, 0}
+	extraction.NextFileId += 1
+
+	return extraction.FileInfo[path]
+}
+
+func (extraction *Extraction) GetFileIdx(path string) int {
+	return extraction.GetFileInfo(path).Idx
+}
+
+func (extraction *Extraction) GetNextErr(path string) int {
+	finfo := extraction.GetFileInfo(path)
+	res := finfo.NextErr
+	finfo.NextErr += 1
+	return res
+}
+
+func NewExtraction(buildFlags []string, patterns []string) *Extraction {
+	hash := md5.New()
+	io.WriteString(hash, "go")
+	for _, buildFlag := range buildFlags {
+		io.WriteString(hash, " "+buildFlag)
+	}
+	io.WriteString(hash, " --")
+	for _, pattern := range patterns {
+		io.WriteString(hash, " "+pattern)
+	}
+	sum := hash.Sum(nil)
+
+	i := 0
+	var path string
+	// split compilation files into directories to avoid filling a single directory with too many files
+	pathFmt := fmt.Sprintf("compilations/%s/%s_%%d", hex.EncodeToString(sum[:1]), hex.EncodeToString(sum[1:]))
+	for {
+		path = fmt.Sprintf(pathFmt, i)
+		file, err := trap.FileFor(path)
+		if err != nil {
+			log.Fatalf("Error creating trap file: %s\n", err.Error())
+		}
+		i++
+
+		if !util.FileExists(file) {
+			break
+		}
+	}
+
+	statWriter, err := trap.NewWriter(path, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	lblKey := fmt.Sprintf("%s_%d;compilation", hex.EncodeToString(sum), i)
+	lbl := statWriter.Labeler.GlobalID(lblKey)
+
+	wd, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("Unable to determine current directory: %s\n", err.Error())
+	}
+
+	dbscheme.CompilationsTable.Emit(statWriter, lbl, wd)
+	i = 0
+	dbscheme.CompilationArgsTable.Emit(statWriter, lbl, 0, util.GetExtractorPath())
+	i++
+	for _, flag := range buildFlags {
+		dbscheme.CompilationArgsTable.Emit(statWriter, lbl, i, flag)
+		i++
+	}
+	// emit a fake "--" argument to make it clear that what comes after it are patterns
+	dbscheme.CompilationArgsTable.Emit(statWriter, lbl, i, "--")
+	i++
+	for _, pattern := range patterns {
+		dbscheme.CompilationArgsTable.Emit(statWriter, lbl, i, pattern)
+		i++
+	}
+
+	return &Extraction{
+		LabelKey:   lblKey,
+		Label:      lbl,
+		StatWriter: statWriter,
+		// this semaphore is used to limit the number of files that are open at once;
+		// this is to prevent the extractor from running into issues with caps on the
+		// number of open files that can be held by one process
+		FdSem: newSemaphore(100),
+		// this semaphore is used to limit the number of goroutines spawned, so we
+		// don't run into memory issues
+		GoroutineSem: newSemaphore(MaxGoRoutines),
+		NextFileId:   0,
+		FileInfo:     make(map[string]*FileInfo),
+		SeenGoMods:   make(map[string]bool),
+	}
 }
 
 // extractUniverseScope extracts symbol table information for the universe scope
@@ -315,9 +438,10 @@ var (
 )
 
 // extractError extracts the message and location of a frontend error
-func extractError(tw *trap.Writer, err packages.Error, pkglbl trap.Label, idx int) {
+func (extraction *Extraction) extractError(tw *trap.Writer, err packages.Error, pkglbl trap.Label, idx int) {
 	var (
 		lbl  = tw.Labeler.FreshID()
+		tag  = dbscheme.ErrorTags[err.Kind]
 		kind = dbscheme.ErrorTypes[err.Kind].Index()
 		pos  = err.Pos
 		file = ""
@@ -347,23 +471,42 @@ func extractError(tw *trap.Writer, err packages.Error, pkglbl trap.Label, idx in
 	} else if pos != "" && pos != "-" {
 		log.Printf("Warning: malformed error position `%s`", pos)
 	}
-	file = filepath.ToSlash(srcarchive.TransformPath(file))
-	dbscheme.ErrorsTable.Emit(tw, lbl, kind, err.Msg, pos, file, line, col, pkglbl, idx)
+	afile, e := filepath.Abs(file)
+	if e != nil {
+		log.Printf("Warning: failed to get absolute path for for %s", file)
+		afile = file
+	}
+	ffile, e := filepath.EvalSymlinks(afile)
+	if e != nil {
+		log.Printf("Warning: failed to evaluate symlinks for %s", afile)
+		ffile = afile
+	}
+	transformed := filepath.ToSlash(srcarchive.TransformPath(ffile))
+
+	extraction.Lock.Lock()
+	diagLbl := extraction.StatWriter.Labeler.FreshID()
+	dbscheme.DiagnosticsTable.Emit(extraction.StatWriter, diagLbl, 1, tag, err.Msg, err.Msg,
+		emitLocation(
+			extraction.StatWriter, extraction.StatWriter.Labeler.GlobalID(ffile+";sourcefile"),
+			line, col, line, col,
+		))
+	dbscheme.DiagnosticForTable.Emit(extraction.StatWriter, diagLbl, extraction.Label, extraction.GetFileIdx(transformed), extraction.GetNextErr(transformed))
+	extraction.Lock.Unlock()
+	dbscheme.ErrorsTable.Emit(tw, lbl, kind, err.Msg, pos, transformed, line, col, pkglbl, idx)
 }
 
 // extractPackage extracts AST information for all files in the given package
-func extractPackage(pkg *packages.Package, wg *sync.WaitGroup,
-	goroutineSem *semaphore, fdSem *semaphore) {
+func (extraction *Extraction) extractPackage(pkg *packages.Package) {
 	for _, astFile := range pkg.Syntax {
-		wg.Add(1)
-		goroutineSem.acquire(1)
+		extraction.WaitGroup.Add(1)
+		extraction.GoroutineSem.acquire(1)
 		go func(astFile *ast.File) {
-			err := extractFile(astFile, pkg, fdSem)
+			err := extraction.extractFile(astFile, pkg)
 			if err != nil {
 				log.Fatal(err)
 			}
-			goroutineSem.release(1)
-			wg.Done()
+			extraction.GoroutineSem.release(1)
+			extraction.WaitGroup.Done()
 		}(astFile)
 	}
 }
@@ -379,7 +522,7 @@ func normalizedPath(ast *ast.File, fset *token.FileSet) string {
 }
 
 // extractFile extracts AST information for the given file
-func extractFile(ast *ast.File, pkg *packages.Package, fdSem *semaphore) error {
+func (extraction *Extraction) extractFile(ast *ast.File, pkg *packages.Package) error {
 	fset := pkg.Fset
 	if ast.Package == token.NoPos {
 		log.Printf("Skipping extracting a file without a 'package' declaration")
@@ -387,26 +530,26 @@ func extractFile(ast *ast.File, pkg *packages.Package, fdSem *semaphore) error {
 	}
 	path := normalizedPath(ast, fset)
 
-	fdSem.acquire(3)
+	extraction.FdSem.acquire(3)
 
 	log.Printf("Extracting %s", path)
 	start := time.Now()
 
-	defer fdSem.release(1)
+	defer extraction.FdSem.release(1)
 	tw, err := trap.NewWriter(path, pkg)
 	if err != nil {
-		fdSem.release(2)
+		extraction.FdSem.release(2)
 		return err
 	}
 	defer tw.Close()
 
 	err = srcarchive.Add(path)
-	fdSem.release(2)
+	extraction.FdSem.release(2)
 	if err != nil {
 		return err
 	}
 
-	extractFileInfo(tw, path)
+	extraction.extractFileInfo(tw, path)
 
 	extractScopes(tw, ast, pkg)
 
@@ -433,7 +576,7 @@ func stemAndExt(base string) (string, string) {
 
 // extractFileInfo extracts file-system level information for the given file, populating
 // the `files` and `containerparent` tables
-func extractFileInfo(tw *trap.Writer, file string) {
+func (extraction *Extraction) extractFileInfo(tw *trap.Writer, file string) {
 	path := filepath.ToSlash(srcarchive.TransformPath(file))
 	components := strings.Split(path, "/")
 	parentPath := ""
@@ -454,6 +597,9 @@ func extractFileInfo(tw *trap.Writer, file string) {
 			dbscheme.FilesTable.Emit(tw, lbl, path, stem, ext, 0)
 			dbscheme.ContainerParentTable.Emit(tw, parentLbl, lbl)
 			extractLocation(tw, lbl, 0, 0, 0, 0)
+			extraction.Lock.Lock()
+			dbscheme.CompilationCompilingFilesTable.Emit(extraction.StatWriter, extraction.Label, extraction.GetFileIdx(path), extraction.StatWriter.Labeler.FileLabelFor(tw))
+			extraction.Lock.Unlock()
 			break
 		}
 		lbl := tw.Labeler.GlobalID(path + ";folder")
@@ -470,10 +616,16 @@ func extractFileInfo(tw *trap.Writer, file string) {
 
 // extractLocation emits a location entity for the given entity
 func extractLocation(tw *trap.Writer, entity trap.Label, sl int, sc int, el int, ec int) {
-	lbl := tw.Labeler.FileLabel()
-	locLbl := tw.Labeler.GlobalID(fmt.Sprintf("loc,{%s},%d,%d,%d,%d", lbl.String(), sl, sc, el, ec))
-	dbscheme.LocationsDefaultTable.Emit(tw, locLbl, lbl, sl, sc, el, ec)
-	dbscheme.HasLocationTable.Emit(tw, entity, locLbl)
+	filelbl := tw.Labeler.FileLabel()
+	dbscheme.HasLocationTable.Emit(tw, entity, emitLocation(tw, filelbl, sl, sc, el, ec))
+}
+
+// emitLocation emits a location entity
+func emitLocation(tw *trap.Writer, filelbl trap.Label, sl int, sc int, el int, ec int) trap.Label {
+	locLbl := tw.Labeler.GlobalID(fmt.Sprintf("loc,{%s},%d,%d,%d,%d", filelbl, sl, sc, el, ec))
+	dbscheme.LocationsDefaultTable.Emit(tw, locLbl, filelbl, sl, sc, el, ec)
+
+	return locLbl
 }
 
 // extractNodeLocation extracts location information for the given node

@@ -14,10 +14,19 @@ import (
 	"github.com/github/codeql-go/extractor/trap"
 )
 
-func extractGoMod(path string) error {
+func (extraction *Extraction) extractGoMod(path string) error {
 	if normPath, err := filepath.EvalSymlinks(path); err == nil {
 		path = normPath
 	}
+
+	extraction.Lock.Lock()
+	if extraction.SeenGoMods[path] {
+		extraction.Lock.Unlock()
+		return nil
+	}
+
+	extraction.SeenGoMods[path] = true
+	extraction.Lock.Unlock()
 
 	tw, err := trap.NewWriter(path, nil)
 	if err != nil {
@@ -30,7 +39,7 @@ func extractGoMod(path string) error {
 		return err
 	}
 
-	extractFileInfo(tw, path)
+	extraction.extractFileInfo(tw, path)
 
 	file, err := os.Open(path)
 	if err != nil {
