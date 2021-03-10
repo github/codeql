@@ -60,6 +60,6 @@ class SelectBlock extends MethodCall {
 }
 
 from EndCall call, SelectBlock selectBlock
-where [selectBlock, getUniqueRead(selectBlock)] = call.getReceiver()
+where getUniqueRead*(selectBlock) = call.getReceiver()
 select call, "Replace this call and $@ with '" + call.detectCall() + "'.", selectBlock,
   "'select' call"
