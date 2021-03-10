@@ -1,8 +1,9 @@
 /**
+ * @id cpp/summary/files
  * @name Total source files
  * @description The total number of source files.
  * @kind metric
- * @id cpp/summary/files
+ * @tags summary
  */
 
 import cpp

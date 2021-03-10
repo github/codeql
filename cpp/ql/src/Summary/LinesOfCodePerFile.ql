@@ -1,8 +1,9 @@
 /**
+ * @id cpp/summary/lines-of-code-per-file
  * @name Lines of code per source file
  * @description The number of lines of code for each source file.
  * @kind metric
- * @id cpp/summary/lines-of-code-per-file
+ * @tags summary
  */
 
 import cpp
