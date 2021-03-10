@@ -1,3 +1,5 @@
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter;
@@ -20,6 +22,30 @@ public class SpringExporterUnsafeDeserialization {
     }
 
     HttpInvokerServiceExporter notABean() {
+        HttpInvokerServiceExporter exporter = new HttpInvokerServiceExporter();
+        exporter.setService(new AccountServiceImpl());
+        exporter.setServiceInterface(AccountService.class);
+        return exporter;
+    }
+}
+
+@SpringBootApplication
+class SpringBootTestApplication {
+
+    @Bean(name = "/unsafeHttpInvokerServiceExporter")
+    HttpInvokerServiceExporter unsafeHttpInvokerServiceExporter() {
+        HttpInvokerServiceExporter exporter = new HttpInvokerServiceExporter();
+        exporter.setService(new AccountServiceImpl());
+        exporter.setServiceInterface(AccountService.class);
+        return exporter;
+    }
+}
+
+@SpringBootConfiguration
+class SpringBootTestConfiguration {
+
+    @Bean(name = "/unsafeHttpInvokerServiceExporter")
+    HttpInvokerServiceExporter unsafeHttpInvokerServiceExporter() {
         HttpInvokerServiceExporter exporter = new HttpInvokerServiceExporter();
         exporter.setService(new AccountServiceImpl());
         exporter.setServiceInterface(AccountService.class);
