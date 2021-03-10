@@ -447,7 +447,7 @@ private module Cached {
   predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable callable) {
     reducedViableImplInCallContext(_, callable, call)
     or
-    exists(Node n | n.getEnclosingCallable() = callable | isUnreachableInCall(n, call))
+    exists(Node n | getNodeEnclosingCallable(n) = callable | isUnreachableInCall(n, call))
   }
 
   cached
@@ -592,7 +592,7 @@ class CallContextSomeCall extends CallContextCall, TSomeCall {
   override string toString() { result = "CcSomeCall" }
 
   override predicate relevantFor(DataFlowCallable callable) {
-    exists(ParameterNode p | p.getEnclosingCallable() = callable)
+    exists(ParameterNode p | getNodeEnclosingCallable(p) = callable)
   }
 
   override predicate matchesCall(DataFlowCall call) { any() }
@@ -637,7 +637,7 @@ class LocalCallContextSpecificCall extends LocalCallContext, TSpecificLocalCall 
 }
 
 private predicate relevantLocalCCtx(DataFlowCall call, DataFlowCallable callable) {
-  exists(Node n | n.getEnclosingCallable() = callable and isUnreachableInCall(n, call))
+  exists(Node n | getNodeEnclosingCallable(n) = callable and isUnreachableInCall(n, call))
 }
 
 /**
@@ -746,9 +746,22 @@ class ReturnPosition extends TReturnPosition0 {
   string toString() { result = "[" + kind + "] " + c }
 }
 
+/**
+ * Gets the enclosing callable of `n`. Unlike `n.getEnclosingCallable()`, this
+ * predicate ensures that joins go from `n` to the result instead of the other
+ * way around.
+ */
+pragma[inline]
+DataFlowCallable getNodeEnclosingCallable(Node n) {
+  exists(Node n0 |
+    pragma[only_bind_into](n0) = n and
+    pragma[only_bind_into](result) = n0.getEnclosingCallable()
+  )
+}
+
 pragma[noinline]
 private DataFlowCallable returnNodeGetEnclosingCallable(ReturnNodeExt ret) {
-  result = ret.getEnclosingCallable()
+  result = getNodeEnclosingCallable(ret)
 }
 
 pragma[noinline]

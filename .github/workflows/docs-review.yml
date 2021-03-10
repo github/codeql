@@ -26,4 +26,4 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           gh pr comment "$PR_NUMBER" --repo "github/codeql" \
-            --body "Hello @github/docs-content-codeql: this PR is ready for docs review."
+            --body "Hello @github/docs-content-codeql - this PR is ready for docs review."

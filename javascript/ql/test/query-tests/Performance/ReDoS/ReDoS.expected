@@ -168,3 +168,7 @@
 | tst.js:351:15:351:16 | a+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.js:352:15:352:16 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.js:353:15:353:16 | a+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| tst.js:360:15:360:30 | ((?:a{\|-)\|\\w\\{)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a{'. |
+| tst.js:361:15:361:33 | ((?:a{0\|-)\|\\w\\{\\d)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a{0'. |
+| tst.js:362:15:362:35 | ((?:a{0,\|-)\|\\w\\{\\d,)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a{0,'. |
+| tst.js:363:15:363:38 | ((?:a{0,2\|-)\|\\w\\{\\d,\\d)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a{0,2'. |
