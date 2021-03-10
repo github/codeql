@@ -73,34 +73,29 @@ class CookieResponseSink extends DataFlow::ExprNode {
         ma instanceof SetCookieMethodAccess and
         this.getExpr() = ma.getArgument(1) and
         not hasHttpOnlyExpr(this.getExpr()) // response.addHeader("Set-Cookie", "token=" +authId + ";HttpOnly;Secure")
-      )
+      ) and
+      not isTestMethod(ma) // Test class or method
     )
   }
 }
 
-/** A JAX-RS `NewCookie` constructor that sets `HttpOnly` to true. */
-class HttpOnlyNewCookie extends ClassInstanceExpr {
-  HttpOnlyNewCookie() {
-    this.getConstructedType()
-        .hasQualifiedName(["javax.ws.rs.core", "jakarta.ws.rs.core"], "NewCookie") and
-    (
-      this.getNumArgument() = 6 and this.getArgument(5).(BooleanLiteral).getBooleanValue() = true // NewCookie(Cookie cookie, String comment, int maxAge, Date expiry, boolean secure, boolean httpOnly)
-      or
-      this.getNumArgument() = 8 and
-      this.getArgument(6).getType() instanceof BooleanType and
-      this.getArgument(7).(BooleanLiteral).getBooleanValue() = true // NewCookie(String name, String value, String path, String domain, String comment, int maxAge, boolean secure, boolean httpOnly)
-      or
-      this.getNumArgument() = 10 and this.getArgument(9).(BooleanLiteral).getBooleanValue() = true // NewCookie(String name, String value, String path, String domain, int version, String comment, int maxAge, Date expiry, boolean secure, boolean httpOnly)
-    )
-  }
+/** Holds if `cie` is an invocation of a JAX-RS `NewCookie` constructor that sets `HttpOnly` to true. */
+predicate setHttpOnlyInNewCookie(ClassInstanceExpr cie) {
+  cie.getConstructedType().hasQualifiedName(["javax.ws.rs.core", "jakarta.ws.rs.core"], "NewCookie") and
+  (
+    cie.getNumArgument() = 6 and cie.getArgument(5).(BooleanLiteral).getBooleanValue() = true // NewCookie(Cookie cookie, String comment, int maxAge, Date expiry, boolean secure, boolean httpOnly)
+    or
+    cie.getNumArgument() = 8 and
+    cie.getArgument(6).getType() instanceof BooleanType and
+    cie.getArgument(7).(BooleanLiteral).getBooleanValue() = true // NewCookie(String name, String value, String path, String domain, String comment, int maxAge, boolean secure, boolean httpOnly)
+    or
+    cie.getNumArgument() = 10 and cie.getArgument(9).(BooleanLiteral).getBooleanValue() = true // NewCookie(String name, String value, String path, String domain, int version, String comment, int maxAge, Date expiry, boolean secure, boolean httpOnly)
+  )
 }
 
 /** The cookie constructor. */
 class CookieTaintPreservingConstructor extends Constructor, TaintPreservingCallable {
-  CookieTaintPreservingConstructor() {
-    this.getDeclaringType() instanceof CookieClass and
-    not exists(HttpOnlyNewCookie hie | hie.getConstructor() = this)
-  }
+  CookieTaintPreservingConstructor() { this.getDeclaringType() instanceof CookieClass }
 
   override predicate returnsTaintFrom(int arg) { arg = 0 }
 }
@@ -122,9 +117,8 @@ class CookieInstanceExpr extends TaintPreservingCallable {
  *    c) in a test class whose name has the word `test`
  *    d) in a test class implementing a test framework such as JUnit or TestNG
  */
-predicate isTestMethod(DataFlow::Node node) {
-  exists(MethodAccess ma, Method m |
-    node.asExpr() = ma.getAnArgument() and
+predicate isTestMethod(MethodAccess ma) {
+  exists(Method m |
     m = ma.getEnclosingCallable() and
     (
       m.getDeclaringType().getName().toLowerCase().matches("%test%") or // Simple check to exclude test classes to reduce FPs
@@ -149,8 +143,8 @@ class MissingHttpOnlyConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof CookieResponseSink }
 
   override predicate isSanitizer(DataFlow::Node node) {
-    // Test class or method
-    isTestMethod(node)
+    // new NewCookie("session-access-key", accessKey, "/", null, null, 0, true, true)
+    setHttpOnlyInNewCookie(node.asExpr())
   }
 }
 
