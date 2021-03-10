@@ -110,7 +110,7 @@ class StdlibRandomSource extends RandomDataSource {
 
   override Expr getUpperBoundExpr() {
     // If this call is to `nextInt(int)` or `nextLong(long)`, the upper bound is the first argument.
-    // If it calls `nextInt(int, int)` or `nextLong(long, long)`, the upper bound is the first argument.
+    // If it calls `nextInt(int, int)` or `nextLong(long, long)`, the upper bound is the second argument.
     m.hasName(["nextInt", "nextLong"]) and
     (
       m.getNumberOfParameters() = 1 and
