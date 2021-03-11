@@ -9,6 +9,9 @@ module D3 {
   API::Node d3() {
     result = API::moduleImport("d3")
     or
+    // recognize copies of d3 in a scope
+    result = API::moduleImport(any(string s | s.regexpMatch("@.*/d3(-\\w+)?")))
+    or
     result = API::moduleImport("d3-node").getInstance().getMember("d3")
   }
 
@@ -44,6 +47,10 @@ module D3 {
       or
       name = ["attr", "classed", "style", "property", "on"] and
       call.getNumArgument() > 1 // exclude 1-argument version, which returns the current value
+      or
+      // Setting multiple things at once
+      name = ["attr", "classed", "style", "property", "on"] and
+      call.getArgument(0).getALocalSource() instanceof DataFlow::ObjectLiteralNode
     )
     or
     result = d3Selection().getMember("call").getParameter(0).getParameter(0)

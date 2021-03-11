@@ -61,15 +61,20 @@ module XssThroughDom {
    */
   class D3TextSource extends Source {
     D3TextSource() {
-      exists(DataFlow::MethodCallNode call, string methodName, string argValue |
+      exists(DataFlow::MethodCallNode call, string methodName |
         this = call and
-        call = D3::d3Selection().getMember(methodName).getACall() and
+        call = D3::d3Selection().getMember(methodName).getACall()
+        |
+        methodName = "attr" and
         call.getNumArgument() = 1 and
-        call.getArgument(0).mayHaveStringValue(argValue)
-      |
-        methodName = "attr" and argValue = unsafeAttributeName()
+        call.getArgument(0).mayHaveStringValue(unsafeAttributeName())
         or
-        methodName = "property" and argValue = unsafeDomPropertyName()
+        methodName = "property" and
+        call.getNumArgument() = 1 and
+        call.getArgument(0).mayHaveStringValue(unsafeDomPropertyName())
+        or
+        methodName = "text" and
+        call.getNumArgument() = 0
       )
     }
   }
