@@ -82,23 +82,6 @@ private module Micro {
     )
   }
 
-  class MicroBodyParserCall extends HTTP::RequestInputAccess, DataFlow::CallNode {
-    string name;
-
-    MicroBodyParserCall() {
-      name = ["buffer", "text", "json"] and
-      this = moduleMember("micro", name).getACall()
-    }
-
-    override string getKind() { result = "body" }
-
-    override HTTP::RouteHandler getRouteHandler() {
-      result = getRouteHandlerFromReqRes(getArgument(0))
-    }
-
-    override predicate isUserControlledObject() { name = "json" }
-  }
-
   class MicroSendArgument extends HTTP::ResponseSendArgument {
     CallNode send;
 
