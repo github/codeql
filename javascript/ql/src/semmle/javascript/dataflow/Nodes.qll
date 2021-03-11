@@ -1009,6 +1009,31 @@ class ClassNode extends DataFlow::SourceNode {
   }
 
   /**
+   * Gets a property read that accesses the property `name` on an instance of this class.
+   *
+   * Concretely, this holds when the base is an instance of this class or a subclass thereof.
+   */
+  pragma[nomagic]
+  DataFlow::PropRead getAnInstanceMemberAccess(string name, DataFlow::TypeTracker t) {
+    result = this.getAnInstanceReference(t.continue()).getAPropertyRead(name)
+    or
+    exists(DataFlow::ClassNode subclass |
+      result = subclass.getAnInstanceMemberAccess(name, t) and
+      not exists(subclass.getInstanceMember(name, _)) and
+      this = subclass.getADirectSuperClass()
+    )
+  }
+
+  /**
+   * Gets a property read that accesses the property `name` on an instance of this class.
+   *
+   * Concretely, this holds when the base is an instance of this class or a subclass thereof.
+   */
+  DataFlow::PropRead getAnInstanceMemberAccess(string name) {
+    result = this.getAnInstanceMemberAccess(name, DataFlow::TypeTracker::end())
+  }
+
+  /**
    * Gets an access to a static member of this class.
    */
   DataFlow::PropRead getAStaticMemberAccess(string name) {
