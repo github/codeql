@@ -100,13 +100,4 @@ private module ServerLess {
       result = mod.getAnExportedValue(handler).getAFunctionValue()
     )
   }
-
-  /**
-   * A serverless request handler event, seen as a RemoteFlowSource.
-   */
-  private class ServerlessHandlerEventAsRemoteFlow extends RemoteFlowSource {
-    ServerlessHandlerEventAsRemoteFlow() { this = getAServerlessHandler().getParameter(0) }
-
-    override string getSourceType() { result = "Serverless event" }
-  }
 }
