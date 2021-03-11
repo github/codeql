@@ -7,6 +7,7 @@
 private import javascript
 private import semmle.javascript.dependencies.Dependencies
 private import internal.CallGraphs
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A data flow node corresponding to an expression.
@@ -734,7 +735,7 @@ module ModuleImportNode {
  * This predicate can be extended by subclassing `ModuleImportNode::Range`.
  */
 cached
-ModuleImportNode moduleImport(string path) { result.getPath() = path }
+ModuleImportNode moduleImport(string path) { Stages::Imports::ref() and result.getPath() = path }
 
 /**
  * Gets a (default) import of the given dependency `dep`, such as
@@ -1005,6 +1006,31 @@ class ClassNode extends DataFlow::SourceNode {
   cached
   final DataFlow::SourceNode getAnInstanceReference() {
     result = getAnInstanceReference(DataFlow::TypeTracker::end())
+  }
+
+  /**
+   * Gets a property read that accesses the property `name` on an instance of this class.
+   *
+   * Concretely, this holds when the base is an instance of this class or a subclass thereof.
+   */
+  pragma[nomagic]
+  DataFlow::PropRead getAnInstanceMemberAccess(string name, DataFlow::TypeTracker t) {
+    result = this.getAnInstanceReference(t.continue()).getAPropertyRead(name)
+    or
+    exists(DataFlow::ClassNode subclass |
+      result = subclass.getAnInstanceMemberAccess(name, t) and
+      not exists(subclass.getInstanceMember(name, _)) and
+      this = subclass.getADirectSuperClass()
+    )
+  }
+
+  /**
+   * Gets a property read that accesses the property `name` on an instance of this class.
+   *
+   * Concretely, this holds when the base is an instance of this class or a subclass thereof.
+   */
+  DataFlow::PropRead getAnInstanceMemberAccess(string name) {
+    result = this.getAnInstanceMemberAccess(name, DataFlow::TypeTracker::end())
   }
 
   /**

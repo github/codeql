@@ -96,7 +96,87 @@ private predicate sourceModelCsv(string row) {
       // SocketGetInputStreamMethod
       "java.net;Socket;false;getInputStream;();;ReturnValue;remote",
       // BeanValidationSource
-      "javax.validation;ConstraintValidator;true;isValid;;;Parameter[0];remote"
+      "javax.validation;ConstraintValidator;true;isValid;;;Parameter[0];remote",
+      // SpringMultipartRequestSource
+      "org.springframework.web.multipart;MultipartRequest;true;getFile;(String);;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getFileMap;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getFileNames;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getFiles;(String);;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getMultiFileMap;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getMultipartContentType;(String);;ReturnValue;remote",
+      // SpringMultipartFileSource
+      "org.springframework.web.multipart;MultipartFile;true;getBytes;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getContentType;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getInputStream;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getName;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getOriginalFilename;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getResource;();;ReturnValue;remote",
+      // HttpServletRequest.get*
+      "javax.servlet.http;HttpServletRequest;false;getHeader;(String);;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getHeaders;(String);;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getHeaderNames;();;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getPathInfo;();;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getRequestURI;();;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getRequestURL;();;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getRemoteUser;();;ReturnValue;remote",
+      // SpringWebRequestGetMethod
+      "org.springframework.web.context.request;WebRequest;false;getDescription;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getHeader;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getHeaderNames;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getHeaderValues;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getParameter;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getParameterMap;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getParameterNames;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getParameterValues;;;ReturnValue;remote",
+      // TODO consider org.springframework.web.context.request.WebRequest.getRemoteUser
+      // ServletRequestGetBodyMethod
+      "javax.servlet;ServletRequest;false;getInputStream;();;ReturnValue;remote",
+      "javax.servlet;ServletRequest;false;getReader;();;ReturnValue;remote",
+      // CookieGet*
+      "javax.servlet.http;Cookie;false;getValue;();;ReturnValue;remote",
+      "javax.servlet.http;Cookie;false;getName;();;ReturnValue;remote",
+      "javax.servlet.http;Cookie;false;getComment;();;ReturnValue;remote",
+      // ApacheHttp*
+      "org.apache.http;HttpMessage;false;getParams;();;ReturnValue;remote",
+      "org.apache.http;HttpEntity;false;getContent;();;ReturnValue;remote",
+      // In the setting of Android we assume that XML has been transmitted over
+      // the network, so may be tainted.
+      // XmlPullGetMethod
+      "org.xmlpull.v1;XmlPullParser;false;getName;();;ReturnValue;remote",
+      "org.xmlpull.v1;XmlPullParser;false;getNamespace;();;ReturnValue;remote",
+      "org.xmlpull.v1;XmlPullParser;false;getText;();;ReturnValue;remote",
+      // XmlAttrSetGetMethod
+      "android.util;AttributeSet;false;getAttributeBooleanValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeCount;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeFloatValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeIntValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeListValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeName;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeNameResource;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeNamespace;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeResourceValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeUnsignedIntValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getClassAttribute;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getIdAttribute;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getIdAttributeResourceValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getPositionDescription;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getStyleAttribute;;;ReturnValue;remote",
+      // The current URL in a browser may be untrusted or uncontrolled.
+      // WebViewGetUrlMethod
+      "android.webkit;WebView;false;getUrl;();;ReturnValue;remote",
+      "android.webkit;WebView;false;getOriginalUrl;();;ReturnValue;remote",
+      // SpringRestTemplateResponseEntityMethod
+      "org.springframework.web.client;RestTemplate;false;exchange;;;ReturnValue;remote",
+      "org.springframework.web.client;RestTemplate;false;getForEntity;;;ReturnValue;remote",
+      "org.springframework.web.client;RestTemplate;false;postForEntity;;;ReturnValue;remote",
+      // WebSocketMessageParameterSource
+      "java.net.http;WebSocket$Listener;true;onText;(WebSocket,CharSequence,boolean);;Parameter[1];remote",
+      // PlayRequestGetMethod
+      "play.mvc;Http$RequestHeader;false;queryString;;;ReturnValue;remote",
+      "play.mvc;Http$RequestHeader;false;getQueryString;;;ReturnValue;remote",
+      "play.mvc;Http$RequestHeader;false;header;;;ReturnValue;remote",
+      "play.mvc;Http$RequestHeader;false;getHeader;;;ReturnValue;remote"
     ]
 }
 

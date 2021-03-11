@@ -4,6 +4,7 @@
  */
 
 import javascript
+private import semmle.javascript.internal.CachedStages
 
 /**
  * An AMD `define` call.
@@ -298,7 +299,10 @@ private class AmdDependencyImport extends Import {
  */
 class AmdModule extends Module {
   cached
-  AmdModule() { exists(unique(AmdModuleDefinition def | amdModuleTopLevel(def, this))) }
+  AmdModule() {
+    Stages::DataFlowStage::ref() and
+    exists(unique(AmdModuleDefinition def | amdModuleTopLevel(def, this)))
+  }
 
   /** Gets the definition of this module. */
   AmdModuleDefinition getDefine() { amdModuleTopLevel(result, this) }

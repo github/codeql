@@ -72,6 +72,7 @@ private import javascript
 private import internal.FlowSteps
 private import internal.AccessPaths
 private import internal.CallGraphs
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A data flow tracking configuration for finding inter-procedural paths from
@@ -733,6 +734,7 @@ private class FlowStepThroughImport extends AdditionalFlowStep, DataFlow::ValueN
   override ImportSpecifier astNode;
 
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    Stages::FlowSteps::ref() and
     pred = this and
     succ = DataFlow::ssaDefinitionNode(SSA::definition(astNode))
   }
