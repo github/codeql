@@ -4,6 +4,7 @@
  */
 
 private import javascript
+private import semmle.javascript.internal.CachedStages
 
 private newtype TUnit = MkUnit()
 
@@ -63,6 +64,7 @@ module PreCallGraphStep {
    */
   cached
   predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    Stages::TypeTracking::ref() and
     any(PreCallGraphStep s).loadStep(pred, succ, prop)
   }
 

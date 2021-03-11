@@ -24,6 +24,7 @@ private import internal.FlowSteps as FlowSteps
 private import internal.DataFlowNode
 private import internal.AnalyzedParameters
 private import internal.PreCallGraphStep
+private import semmle.javascript.internal.CachedStages
 
 module DataFlow {
   /**
@@ -1493,6 +1494,7 @@ module DataFlow {
    */
   cached
   predicate localFlowStep(Node pred, Node succ) {
+    Stages::DataFlowStage::ref() and
     // flow from RHS into LHS
     lvalueFlowStep(pred, succ)
     or
