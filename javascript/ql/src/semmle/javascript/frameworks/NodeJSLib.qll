@@ -940,7 +940,7 @@ module NodeJSLib {
   private class ClientRequestDataEvent extends RemoteFlowSource {
     ClientRequestDataEvent() {
       exists(DataFlow::MethodCallNode mcn, ClientRequestResponseEvent cr |
-        cr.getAMethodCall(EventEmitter::on()) = mcn and
+        cr.getAMethodCall("on") = mcn and
         mcn.getArgument(0).mayHaveStringValue("data") and
         this = mcn.getCallback(1).getParameter(0)
       )
