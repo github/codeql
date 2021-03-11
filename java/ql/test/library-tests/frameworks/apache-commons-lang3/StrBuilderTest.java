@@ -142,6 +142,68 @@ class StrBuilderTest {
         StrBuilder fluentBackflowTest2 = new StrBuilder();
         fluentBackflowTest2.append("Harmless").append(taint());
         sink(fluentBackflowTest2.toString()); // $hasTaintFlow
+
+        // Test all fluent methods are passing taint through to their result:
+        StrBuilder fluentAllMethodsTest = new StrBuilder(taint());
+        sink(fluentAllMethodsTest // $hasTaintFlow
+        .append("text")
+        .appendAll("text")
+        .appendFixedWidthPadLeft("text", 4, ' ')
+        .appendFixedWidthPadRight("text", 4, ' ')
+        .appendln("text")
+        .appendNewLine()
+        .appendNull()
+        .appendPadding(0, ' ')
+        .appendSeparator(',')
+        .appendWithSeparators(new String[] { }, ",")
+        .delete(0, 0)
+        .deleteAll(' ')
+        .deleteCharAt(0)
+        .deleteFirst("delme")
+        .ensureCapacity(100)
+        .insert(1, "insertme")
+        .minimizeCapacity()
+        .replace(0, 0, "replacement")
+        .replaceAll("find", "replace")
+        .replaceFirst("find", "replace")
+        .reverse()
+        .setCharAt(0, 'a')
+        .setLength(500)
+        .setNewLineText("newline")
+        .setNullText("NULL")
+        .trim());
+
+        // Test all fluent methods are passing taint back to their qualifier:
+        StrBuilder fluentAllMethodsTest2 = new StrBuilder();
+        fluentAllMethodsTest2
+        .append("text")
+        .appendAll("text")
+        .appendFixedWidthPadLeft("text", 4, ' ')
+        .appendFixedWidthPadRight("text", 4, ' ')
+        .appendln("text")
+        .appendNewLine()
+        .appendNull()
+        .appendPadding(0, ' ')
+        .appendSeparator(',')
+        .appendWithSeparators(new String[] { }, ",")
+        .delete(0, 0)
+        .deleteAll(' ')
+        .deleteCharAt(0)
+        .deleteFirst("delme")
+        .ensureCapacity(100)
+        .insert(1, "insertme")
+        .minimizeCapacity()
+        .replace(0, 0, "replacement")
+        .replaceAll("find", "replace")
+        .replaceFirst("find", "replace")
+        .reverse()
+        .setCharAt(0, 'a')
+        .setLength(500)
+        .setNewLineText("newline")
+        .setNullText("NULL")
+        .trim()
+        .append(taint());
+        sink(fluentAllMethodsTest2); // $hasTaintFlow
     }
 
 }
