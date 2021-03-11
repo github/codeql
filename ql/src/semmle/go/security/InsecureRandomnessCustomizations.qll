@@ -5,6 +5,10 @@
 
 import go
 
+/**
+ * Provides default sources, sinks and sanitizers for reasoning about random values that are
+ * not cryptographically secure, as well as extension points for adding your own.
+ */
 module InsecureRandomness {
   /**
    * A data flow source for insufficient random sources
@@ -32,6 +36,10 @@ module InsecureRandomness {
     InsecureRandomSource() { this.getTarget().getPackage().getPath() = "math/rand" }
   }
 
+  /**
+   * Gets an interface outside of the `crypto` package which is the same as an
+   * interface in the `crypto` package.
+   */
   string nonCryptoInterface() { result = ["io.Writer", "io.Reader", "sync.Mutex", "net.Listener"] }
 
   /**
@@ -47,8 +55,11 @@ module InsecureRandomness {
         pkg.regexpMatch("crypto/.*") and
         not pkg = getAHashPkg() and
         not (pkg = "crypto/rand" and name = "Read") and
-        not (pkg = "crypto/cipher" and name = ["Read", "Write"]) and // crypto/cipher APIs for reading/writing encrypted streams
-        not fn.hasQualifiedName(nonCryptoInterface(), _) and // some interfaces in crypto are the same as interfaces elsewhere, e.g. tls.listener is the same as net.Listener
+        // `crypto/cipher` APIs for reading/writing encrypted streams
+        not (pkg = "crypto/cipher" and name = ["Read", "Write"]) and
+        // Some interfaces in the `crypto` package are the same as interfaces
+        // elsewhere, e.g. tls.listener is the same as net.Listener
+        not fn.hasQualifiedName(nonCryptoInterface(), _) and
         this = fn.getACall().getAnArgument()
       )
     }
@@ -71,6 +82,7 @@ module InsecureRandomness {
     override string getKind() { result = "a password-related function" }
   }
 
+  /** Gets a package that implements hash algorithms. */
   bindingset[result]
   private string getAHashPkg() { result.regexpMatch("crypto/(md5|sha(1|256|512)|rand)") }
 

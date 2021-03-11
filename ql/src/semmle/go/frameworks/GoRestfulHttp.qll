@@ -1,3 +1,7 @@
+/**
+ * Provides models of the [go-restful library](https://github.com/emicklei/go-restful).
+ */
+
 import go
 
 /**

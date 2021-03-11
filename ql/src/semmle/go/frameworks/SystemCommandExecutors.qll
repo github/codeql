@@ -77,6 +77,10 @@ private class GoShCommandExecution extends SystemCommandExecution::Range, DataFl
   override DataFlow::Node getCommandName() { result = this.getArgument(0) }
 }
 
+/**
+ * Provides classes for working with the
+ * [golang.org/x/crypto/ssh](https://pkg.go.dev/golang.org/x/crypto/ssh) package.
+ */
 module CryptoSsh {
   /** Gets the package path `golang.org/x/crypto/ssh`. */
   bindingset[result]

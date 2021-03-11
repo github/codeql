@@ -45,12 +45,12 @@ private module EvanphxJsonPatch {
     }
   }
 
-  private class Apply extends TaintTracking::FunctionModel {
+  private class Apply extends TaintTracking::FunctionModel, Method {
     Apply() {
       exists(string fn |
         fn in ["Apply", "ApplyWithOptions", "ApplyIndent", "ApplyIndentWithOptions"]
       |
-        this.hasQualifiedName(packagePath(), fn)
+        this.hasQualifiedName(packagePath(), "Patch", fn)
       )
     }
 
