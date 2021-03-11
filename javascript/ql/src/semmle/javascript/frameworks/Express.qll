@@ -507,10 +507,6 @@ module Express {
         // `req.cookies`
         kind = "cookie" and
         this = request.getAPropertyRead("cookies")
-        or
-        // `req.files`, treated the same as `req.body`.
-        kind = "body" and
-        this = request.getAPropertyRead("files")
       )
       or
       kind = "body" and
