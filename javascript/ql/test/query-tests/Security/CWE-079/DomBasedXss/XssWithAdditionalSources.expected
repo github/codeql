@@ -716,6 +716,13 @@ nodes
 | winjs.js:3:43:3:49 | tainted |
 | winjs.js:4:43:4:49 | tainted |
 | winjs.js:4:43:4:49 | tainted |
+| xmlRequest.js:8:13:8:47 | json |
+| xmlRequest.js:8:20:8:47 | JSON.pa ... seText) |
+| xmlRequest.js:8:31:8:46 | xhr.responseText |
+| xmlRequest.js:8:31:8:46 | xhr.responseText |
+| xmlRequest.js:9:28:9:31 | json |
+| xmlRequest.js:9:28:9:39 | json.message |
+| xmlRequest.js:9:28:9:39 | json.message |
 edges
 | addEventListener.js:1:43:1:47 | event | addEventListener.js:2:20:2:24 | event |
 | addEventListener.js:1:43:1:47 | event | addEventListener.js:2:20:2:24 | event |
@@ -1335,6 +1342,13 @@ edges
 | winjs.js:2:17:2:33 | document.location | winjs.js:2:17:2:40 | documen ... .search |
 | winjs.js:2:17:2:40 | documen ... .search | winjs.js:2:17:2:53 | documen ... ring(1) |
 | winjs.js:2:17:2:53 | documen ... ring(1) | winjs.js:2:7:2:53 | tainted |
+| xmlRequest.js:8:13:8:47 | json | xmlRequest.js:9:28:9:31 | json |
+| xmlRequest.js:8:20:8:47 | JSON.pa ... seText) | xmlRequest.js:8:13:8:47 | json |
+| xmlRequest.js:8:31:8:46 | xhr.responseText | xmlRequest.js:8:20:8:47 | JSON.pa ... seText) |
+| xmlRequest.js:8:31:8:46 | xhr.responseText | xmlRequest.js:8:20:8:47 | JSON.pa ... seText) |
+| xmlRequest.js:9:28:9:31 | json | xmlRequest.js:9:28:9:39 | json.message |
+| xmlRequest.js:9:28:9:31 | json | xmlRequest.js:9:28:9:39 | json.message |
 #select
 | jwt.js:6:14:6:20 | decoded | jwt.js:4:36:4:39 | data | jwt.js:6:14:6:20 | decoded | Cross-site scripting vulnerability due to $@. | jwt.js:4:36:4:39 | data | user-provided value |
 | typeahead.js:10:16:10:18 | loc | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc | Cross-site scripting vulnerability due to $@. | typeahead.js:9:28:9:30 | loc | user-provided value |
+| xmlRequest.js:9:28:9:39 | json.message | xmlRequest.js:8:31:8:46 | xhr.responseText | xmlRequest.js:9:28:9:39 | json.message | Cross-site scripting vulnerability due to $@. | xmlRequest.js:8:31:8:46 | xhr.responseText | user-provided value |
