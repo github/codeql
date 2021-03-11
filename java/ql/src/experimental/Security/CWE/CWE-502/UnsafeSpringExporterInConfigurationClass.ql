@@ -47,6 +47,9 @@ private class UnsafeBeanInitMethod extends Method {
     )
   }
 
+  /**
+   * Gets this bean's name if given by the `Bean` annotation, or this method's identifier otherwise.
+   */
   string getBeanIdentifier() { result = identifier }
 }
 
