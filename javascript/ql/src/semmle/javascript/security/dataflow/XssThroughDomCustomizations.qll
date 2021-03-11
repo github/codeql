@@ -28,6 +28,13 @@ module XssThroughDom {
   }
 
   /**
+   * Gets a DOM property name that could store user-controlled data.
+   */
+  string unsafeDomPropertyName() {
+    result = ["innerText", "textContent", "value", "name"]
+  }
+
+  /**
    * A source for text from the DOM from a JQuery method call.
    */
   class JQueryTextSource extends Source, JQuery::MethodCall {
@@ -52,13 +59,31 @@ module XssThroughDom {
   }
 
   /**
+   * A source for text from the DOM from a `d3` method call.
+   */
+  class D3TextSource extends Source {
+    D3TextSource() {
+      exists(DataFlow::MethodCallNode call, string methodName, string argValue |
+        this = call and
+        call = D3::d3Selection().getMember(methodName).getACall() and
+        call.getNumArgument() = 1 and
+        call.getArgument(0).mayHaveStringValue(argValue)
+      |
+        methodName = "attr" and argValue = unsafeAttributeName()
+        or
+        methodName = "property" and argValue = unsafeDomPropertyName()
+      )
+    }
+  }
+
+  /**
    * A source for text from the DOM from a DOM property read or call to `getAttribute()`.
    */
   class DOMTextSource extends Source {
     DOMTextSource() {
       exists(DataFlow::PropRead read | read = this |
         read.getBase().getALocalSource() = DOM::domValueRef() and
-        read.mayHavePropertyName(["innerText", "textContent", "value", "name"])
+        read.mayHavePropertyName(unsafeDomPropertyName())
       )
       or
       exists(DataFlow::MethodCallNode mcn | mcn = this |
