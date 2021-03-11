@@ -1,6 +1,7 @@
 /**
  * @name Insecure LDAPS Endpoint Configuration
- * @description Java application configured to disable LDAPS endpoint identification does not validate the SSL certificate to properly ensure that it is actually associated with that host.
+ * @description Java application configured to disable LDAPS endpoint identification does not validate
+ *              the SSL certificate to properly ensure that it is actually associated with that host.
  * @kind problem
  * @id java/insecure-ldaps-endpoint
  * @tags security
@@ -23,7 +24,8 @@ class TypeHashtable extends Class {
 }
 
 /**
- * The method to set Java properties either through `setProperty` declared in the class `Properties` or `put` declared in its parent class `HashTable`.
+ * The method to set Java properties either through `setProperty` declared in the class `Properties`
+ * or `put` declared in its parent class `HashTable`.
  */
 class SetPropertyMethod extends Method {
   SetPropertyMethod() {
@@ -40,7 +42,10 @@ class SetSystemPropertiesMethod extends Method {
   }
 }
 
-/** Holds if `expr` is evaluated to the string literal `com.sun.jndi.ldap.object.disableEndpointIdentification`. */
+/**
+ * Holds if `Expr` expr is evaluated to the string literal
+ * `com.sun.jndi.ldap.object.disableEndpointIdentification`.
+ */
 predicate isPropertyDisableLdapEndpointId(Expr expr) {
   expr.(CompileTimeConstantExpr).getStringValue() =
     "com.sun.jndi.ldap.object.disableEndpointIdentification"
