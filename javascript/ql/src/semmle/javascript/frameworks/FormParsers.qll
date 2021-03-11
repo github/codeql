@@ -5,27 +5,6 @@
 import javascript
 
 /**
- * A source of remote flow from the `Formidable` library parsing a HTTP request.
- */
-private class FormidableRemoteFlow extends RemoteFlowSource {
-  FormidableRemoteFlow() {
-    exists(API::Node formidable |
-      formidable = API::moduleImport("formidable").getReturn()
-      or
-      formidable = API::moduleImport("formidable").getMember("formidable").getReturn()
-      or
-      formidable =
-        API::moduleImport("formidable").getMember(["IncomingForm", "Formidable"]).getInstance()
-    |
-      this =
-        formidable.getMember("parse").getACall().getABoundCallbackParameter(1, any(int i | i > 0))
-    )
-  }
-
-  override string getSourceType() { result = "parsed user value from Formidable" }
-}
-
-/**
  * A source of remote flow from the `Multiparty` library.
  */
 private class MultipartyRemoteFlow extends RemoteFlowSource {
