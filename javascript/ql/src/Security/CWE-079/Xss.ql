@@ -19,7 +19,7 @@ from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode 
 where
   (
     cfg instanceof HtmlInjectionConfiguration or
-    cfg instanceof JQueryHtmlOrSelectorInjectionConfiguration
+    cfg instanceof JQuerySelectorInjectionConfiguration
   ) and
   cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,

@@ -34,11 +34,18 @@ module UnsafeJQueryPlugin {
   /**
    * An argument that may act as a HTML fragment rather than a CSS selector, as a sink for remote unsafe jQuery plugins.
    */
-  class AmbiguousHtmlOrSelectorArgument extends DataFlow::Node,
-    DomBasedXss::JQueryHtmlOrSelectorArgument {
+  class AmbiguousHtmlOrSelectorArgument extends DataFlow::Node {
     AmbiguousHtmlOrSelectorArgument() {
+      exists(JQuery::MethodCall call |
+        call.interpretsArgumentAsSelector(this) and call.interpretsArgumentAsHtml(this)
+      ) and
+      // the $-function in particular will not construct HTML for non-string values
+      analyze().getAType() = TTString() and
       // any fixed prefix makes the call unambiguous
-      not exists(getAPrefix())
+      not exists(DataFlow::Node prefix |
+        DomBasedXss::isPrefixOfJQueryHtmlString(this, prefix) and
+        prefix.mayHaveStringValue(_)
+      )
     }
   }
 

@@ -9,7 +9,7 @@ module DomBasedXss {
   import DomBasedXssCustomizations::DomBasedXss
 
   /**
-   * DEPRECATED. Use `HtmlInjectionConfiguration` or `JQueryHtmlOrSelectorInjectionConfiguration`.
+   * DEPRECATED. Use `HtmlInjectionConfiguration` or `JQuerySelectorInjectionConfiguration`.
    */
   deprecated class Configuration = HtmlInjectionConfiguration;
 
@@ -28,7 +28,7 @@ module DomBasedXss {
 
     override predicate isSink(DataFlow::Node sink) {
       sink instanceof Sink and
-      not sink instanceof JQueryHtmlOrSelectorSink // Handled by JQueryHtmlOrSelectorInjectionConfiguration below
+      not sink instanceof JQuerySelectorSink // Handled by JQuerySelectorInjectionConfiguration below
     }
 
     override predicate isSanitizer(DataFlow::Node node) {
@@ -52,8 +52,8 @@ module DomBasedXss {
    *
    * Values are only considered tainted if they can start with the `<` character.
    */
-  class JQueryHtmlOrSelectorInjectionConfiguration extends TaintTracking::Configuration {
-    JQueryHtmlOrSelectorInjectionConfiguration() { this = "JQueryHtmlOrSelectorInjection" }
+  class JQuerySelectorInjectionConfiguration extends TaintTracking::Configuration {
+    JQuerySelectorInjectionConfiguration() { this = "JQuerySelectorInjection" }
 
     override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
       // Reuse any source not derived from location
@@ -69,7 +69,7 @@ module DomBasedXss {
     }
 
     override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-      sink instanceof JQueryHtmlOrSelectorSink and label.isTaint()
+      sink instanceof JQuerySelectorSink and label.isTaint()
     }
 
     override predicate isAdditionalFlowStep(

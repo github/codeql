@@ -3,7 +3,6 @@
  */
 
 import javascript
-private import semmle.javascript.dataflow.InferredTypes
 
 /** Provides classes and predicates shared between the XSS queries. */
 module Shared {
@@ -203,32 +202,19 @@ module DomBasedXss {
   }
 
   /**
-   * An argument to the jQuery `$` function or similar, which is interpreted as either a selector
+   * An argument to the jQuery `$` function, which is interpreted as either a selector
    * or as an HTML string depending on its first character.
    */
-  class JQueryHtmlOrSelectorArgument extends DataFlow::Node {
-    JQueryHtmlOrSelectorArgument() {
+  class JQuerySelectorSink extends Sink {
+    JQuerySelectorSink() {
       exists(JQuery::MethodCall call |
         call.interpretsArgumentAsHtml(this) and
         call.interpretsArgumentAsSelector(this) and
-        analyze().getAType() = TTString()
+        // If a prefix of the string is known, it must start with '<' or be an empty string
+        forall(string strval | strval = getAPrefixOfJQuerySelectorString(this).getStringValue() |
+          strval.regexpMatch("(?s)\\s*<.*|")
+        )
       )
-    }
-
-    /** Gets a string that flows to the prefix of this argument. */
-    string getAPrefix() { result = getAPrefixOfJQuerySelectorString(this).getStringValue() }
-  }
-
-  /**
-   * An argument to the jQuery `$` function or similar, which may be interpreted as HTML.
-   *
-   * This is the same as `JQueryHtmlOrSelectorArgument`, excluding cases where the value
-   * is prefixed by something other than `<`.
-   */
-  class JQueryHtmlOrSelectorSink extends Sink, JQueryHtmlOrSelectorArgument {
-    JQueryHtmlOrSelectorSink() {
-      // If a prefix of the string is known, it must start with '<' or be an empty string
-      forall(string strval | strval = getAPrefix() | strval.regexpMatch("(?s)\\s*<.*|"))
     }
   }
 
