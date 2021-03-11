@@ -655,17 +655,4 @@ module Vue {
 
   /** Gets a data flow node that refers to a `Route` object from `vue-router`. */
   DataFlow::SourceNode routeObject() { result = routeObject(DataFlow::TypeTracker::end()) }
-
-  private class VueRouterFlowSource extends RemoteFlowSource {
-    VueRouterFlowSource() {
-      this = routeObject().getAPropertyRead(["params", "query", "hash", "path", "fullPath"])
-      or
-      exists(Instance i, string prop |
-        this = i.getWatchHandler(prop).getParameter([0, 1]) and
-        prop.regexpMatch("\\$route\\.(params|query|hash|path|fullPath)\\b.*")
-      )
-    }
-
-    override string getSourceType() { result = "Vue route parameter" }
-  }
 }
