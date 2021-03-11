@@ -2,12 +2,11 @@
  * @kind diagnostic
  * @id cpp/diagnostics/failed-extractions
  */
+
 import cpp
 
 class AnonymousCompilation extends Compilation {
-  override string toString() {
-    result = "<compilation>"
-  }
+  override string toString() { result = "<compilation>" }
 }
 
 string describe(Compilation c) {
@@ -19,4 +18,3 @@ string describe(Compilation c) {
 from Compilation c
 where not c.normalTermination()
 select c, "Extraction failed for " + describe(c), 2
-
