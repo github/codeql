@@ -147,9 +147,19 @@ module DomBasedXss {
   class LibrarySink extends Sink {
     LibrarySink() {
       // call to a jQuery method that interprets its argument as HTML
-      exists(JQuery::MethodCall call |
-        call.interpretsArgumentAsHtml(this) and
-        not call.interpretsArgumentAsSelector(this) // Handled by `JQuerySelectorSink`
+      exists(JQuery::MethodCall call | call.interpretsArgumentAsHtml(this) |
+        // either the argument is always interpreted as HTML
+        not call.interpretsArgumentAsSelector(this)
+        or
+        // or it doesn't start with something other than `<`, and so at least
+        // _may_ be interpreted as HTML
+        not exists(DataFlow::Node prefix, string strval |
+          isPrefixOfJQueryHtmlString(this, prefix) and
+          strval = prefix.getStringValue() and
+          not strval = "" and
+          not strval.regexpMatch("\\s*<.*")
+        ) and
+        not DOM::locationRef().flowsTo(this)
       )
       or
       // call to an Angular method that interprets its argument as HTML
@@ -183,39 +193,14 @@ module DomBasedXss {
    * HTML by a jQuery method.
    */
   predicate isPrefixOfJQueryHtmlString(DataFlow::Node htmlString, DataFlow::Node prefix) {
-    prefix = getAPrefixOfJQuerySelectorString(htmlString)
-  }
-
-  /**
-   * Holds if `prefix` is a prefix of `htmlString`, which may be intepreted as
-   * HTML by a jQuery method.
-   */
-  private DataFlow::Node getAPrefixOfJQuerySelectorString(DataFlow::Node htmlString) {
-    any(JQuery::MethodCall call).interpretsArgumentAsSelector(htmlString) and
-    result = htmlString
+    any(JQuery::MethodCall call).interpretsArgumentAsHtml(htmlString) and
+    prefix = htmlString
     or
-    exists(DataFlow::Node pred | pred = getAPrefixOfJQuerySelectorString(htmlString) |
-      result = StringConcatenation::getFirstOperand(pred)
+    exists(DataFlow::Node pred | isPrefixOfJQueryHtmlString(htmlString, pred) |
+      prefix = StringConcatenation::getFirstOperand(pred)
       or
-      result = pred.getAPredecessor()
+      prefix = pred.getAPredecessor()
     )
-  }
-
-  /**
-   * An argument to the jQuery `$` function, which is interpreted as either a selector
-   * or as an HTML string depending on its first character.
-   */
-  class JQuerySelectorSink extends Sink {
-    JQuerySelectorSink() {
-      exists(JQuery::MethodCall call |
-        call.interpretsArgumentAsHtml(this) and
-        call.interpretsArgumentAsSelector(this) and
-        // If a prefix of the string is known, it must start with '<' or be an empty string
-        forall(string strval | strval = getAPrefixOfJQuerySelectorString(this).getStringValue() |
-          strval.regexpMatch("(?s)\\s*<.*|")
-        )
-      )
-    }
   }
 
   /**
@@ -325,7 +310,30 @@ module DomBasedXss {
    */
   class SafePropertyReadSanitizer extends Sanitizer, DataFlow::Node {
     SafePropertyReadSanitizer() {
-      exists(PropAccess pacc | pacc = this.asExpr() | pacc.getPropertyName() = "length")
+      exists(PropAccess pacc | pacc = this.asExpr() |
+        isSafeLocationProperty(pacc)
+        or
+        // `$(location.hash)` is a fairly common and safe idiom
+        // (because `location.hash` always starts with `#`),
+        // so we mark `hash` as safe for the purposes of this query
+        pacc.getPropertyName() = "hash"
+        or
+        pacc.getPropertyName() = "length"
+      )
+    }
+  }
+
+  /**
+   * A sanitizer that reads the first part a location split by "?", e.g. `location.href.split('?')[0]`.
+   */
+  class QueryPrefixSanitizer extends Sanitizer {
+    StringSplitCall splitCall;
+
+    QueryPrefixSanitizer() {
+      this = splitCall.getASubstringRead(0) and
+      splitCall.getSeparator() = "?" and
+      splitCall.getBaseString().getALocalSource() =
+        [DOM::locationRef(), DOM::locationRef().getAPropertyRead("href")]
     }
   }
 
