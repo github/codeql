@@ -428,6 +428,15 @@ private class ApacheStrBuilderModel extends SummaryModelCsv {
 }
 
 /**
+ * An Apache Commons-Lang StrBuilder method that returns `this`.
+ */
+private class ApacheStrBuilderFluentMethod extends FluentMethod {
+  ApacheStrBuilderFluentMethod() {
+    this.getReturnType().(RefType).hasQualifiedName("org.apache.commons.lang3.text", "StrBuilder")
+  }
+}
+
+/**
  * Taint-propagating models for `WordUtils`.
  */
 private class ApacheWordUtilsModel extends SummaryModelCsv {

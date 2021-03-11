@@ -128,6 +128,20 @@ class StrBuilderTest {
         StrBuilder sb72 = new StrBuilder(); sb72.append(taint()); sink(sb72.toCharArray(0, 0)); // $hasTaintFlow
         StrBuilder sb73 = new StrBuilder(); sb73.append(taint()); sink(sb73.toStringBuffer()); // $hasTaintFlow
         StrBuilder sb74 = new StrBuilder(); sb74.append(taint()); sink(sb74.toStringBuilder()); // $hasTaintFlow
+
+        // Tests for fluent methods (those returning `this`):
+
+        StrBuilder fluentTest = new StrBuilder();
+        sink(fluentTest.append("Harmless").append(taint()).append("Also harmless").toString()); // $hasTaintFlow
+
+        StrBuilder fluentBackflowTest = new StrBuilder();
+        fluentBackflowTest.append("Harmless").append(taint()).append("Also harmless");
+        sink(fluentBackflowTest.toString()); // $hasTaintFlow
+
+        // Test the case where the fluent method contributing taint is at the end of a statement:
+        StrBuilder fluentBackflowTest2 = new StrBuilder();
+        fluentBackflowTest2.append("Harmless").append(taint());
+        sink(fluentBackflowTest2.toString()); // $hasTaintFlow
     }
 
 }
