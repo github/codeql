@@ -248,7 +248,7 @@ This query shows a data flow configuration that uses all network input as data s
 .. code-block:: ql
 
    import python
-   import semmle.code.csharp.dataflow.flowsources.PublicCallableParameter
+   import semmle.python.dataflow.new.RemoteFlowSources
 
    class MyDataFlowConfiguration extends DataFlow::Configuration {
      MyDataFlowConfiguration() {
