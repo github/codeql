@@ -1,6 +1,7 @@
 /**
  * @name Insecure Spring Boot Actuator Configuration
- * @description Exposed Spring Boot Actuator through configuration files without declarative or procedural security enforcement leads to information leak or even remote code execution.
+ * @description Exposed Spring Boot Actuator through configuration files without declarative or procedural
+ *              security enforcement leads to information leak or even remote code execution.
  * @kind problem
  * @id java/insecure-spring-actuator-config
  * @tags security
@@ -9,7 +10,6 @@
 
 import java
 import semmle.code.configfiles.ConfigFiles
-import semmle.code.java.security.SensitiveActions
 import semmle.code.xml.MavenPom
 
 /** The parent node of the `org.springframework.boot` group. */
@@ -26,7 +26,10 @@ class SpringBootPom extends Pom {
     this.getADependency().getArtifact().getValue() = "spring-boot-starter-actuator"
   }
 
-  /** Holds if the Spring Boot Security module is used in the project, which brings in other security related libraries. */
+  /**
+   * Holds if the Spring Boot Security module is used in the project, which brings in other security
+   * related libraries.
+   */
   predicate isSpringBootSecurityUsed() {
     this.getADependency().getArtifact().getValue() = "spring-boot-starter-security"
   }
@@ -38,14 +41,14 @@ class ApplicationProperties extends ConfigPair {
 }
 
 /** The configuration property `management.security.enabled`. */
-class ManagementSecurityEnabled extends ApplicationProperties {
-  ManagementSecurityEnabled() { this.getNameElement().getName() = "management.security.enabled" }
+class ManagementSecurityConfig extends ApplicationProperties {
+  ManagementSecurityConfig() { this.getNameElement().getName() = "management.security.enabled" }
 
-  string getManagementSecurityEnabled() { result = this.getValueElement().getValue() }
+  string getValue() { result = this.getValueElement().getValue().trim() }
 
-  predicate hasSecurityDisabled() { getManagementSecurityEnabled() = "false" }
+  predicate hasSecurityDisabled() { getValue() = "false" }
 
-  predicate hasSecurityEnabled() { getManagementSecurityEnabled() = "true" }
+  predicate hasSecurityEnabled() { getValue() = "true" }
 }
 
 /** The configuration property `management.endpoints.web.exposure.include`. */
@@ -54,56 +57,37 @@ class ManagementEndPointInclude extends ApplicationProperties {
     this.getNameElement().getName() = "management.endpoints.web.exposure.include"
   }
 
-  string getManagementEndPointInclude() { result = this.getValueElement().getValue().trim() }
-}
-
-/** The configuration property `management.endpoints.web.exposure.exclude`. */
-class ManagementEndPointExclude extends ApplicationProperties {
-  ManagementEndPointExclude() {
-    this.getNameElement().getName() = "management.endpoints.web.exposure.exclude"
-  }
-
-  string getManagementEndPointExclude() { result = this.getValueElement().getValue().trim() }
-}
-
-/** Holds if an application handles sensitive information judging by its variable names. */
-predicate isProtectedApp() {
-  exists(VarAccess va | va.getVariable().getName().regexpMatch(getCommonSensitiveInfoRegex()))
+  string getValue() { result = this.getValueElement().getValue().trim() }
 }
 
 from SpringBootPom pom, ApplicationProperties ap, Dependency d
 where
-  isProtectedApp() and
   pom.isSpringBootActuatorUsed() and
   not pom.isSpringBootSecurityUsed() and
   ap.getFile()
       .getParentContainer()
       .getAbsolutePath()
       .matches(pom.getFile().getParentContainer().getAbsolutePath() + "%") and // in the same sub-directory
-  exists(string s | s = pom.getParentElement().getVersionString() |
-    s.regexpMatch("1\\.[0|1|2|3|4].*") and
-    not exists(ManagementSecurityEnabled me |
+  exists(string springBootVersion | springBootVersion = pom.getParentElement().getVersionString() |
+    springBootVersion.regexpMatch("1\\.[0-4].*") and // version 1.0, 1.1, ..., 1.4
+    not exists(ManagementSecurityConfig me |
       me.hasSecurityEnabled() and me.getFile() = ap.getFile()
     )
     or
-    s.regexpMatch("1\\.5.*") and
-    exists(ManagementSecurityEnabled me | me.hasSecurityDisabled() and me.getFile() = ap.getFile())
+    springBootVersion.matches("1.5%") and // version 1.5
+    exists(ManagementSecurityConfig me | me.hasSecurityDisabled() and me.getFile() = ap.getFile())
     or
-    s.regexpMatch("2.*") and
+    springBootVersion.matches("2.%") and //version 2.x
     exists(ManagementEndPointInclude mi |
       mi.getFile() = ap.getFile() and
       (
-        mi.getManagementEndPointInclude() = "*" // all endpoints are enabled
+        mi.getValue() = "*" // all endpoints are enabled
         or
-        mi.getManagementEndPointInclude()
+        mi.getValue()
             .matches([
                 "%dump%", "%trace%", "%logfile%", "%shutdown%", "%startup%", "%mappings%", "%env%",
                 "%beans%", "%sessions%"
-              ]) // all endpoints apart from '/health' and '/info' are considered sensitive
-      ) and
-      not exists(ManagementEndPointExclude mx |
-        mx.getFile() = ap.getFile() and
-        mx.getManagementEndPointExclude() = mi.getManagementEndPointInclude()
+              ]) // confidential endpoints to check although all endpoints apart from '/health' and '/info' are considered sensitive by Spring
       )
     )
   ) and
