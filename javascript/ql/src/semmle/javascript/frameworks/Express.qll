@@ -489,16 +489,13 @@ module Express {
     string kind;
 
     RequestInputAccess() {
-      kind = "parameter" and
-      this =
-        [
-          getAQueryObjectReference(DataFlow::TypeTracker::end(), rh),
-          getAParamsObjectReference(DataFlow::TypeTracker::end(), rh)
-        ].getAPropertyRead()
-      or
       exists(DataFlow::SourceNode request | request = rh.getARequestSource().ref() |
         kind = "parameter" and
-        this = request.getAMethodCall("param")
+        (
+          this = request.getAMethodCall("param")
+          or
+          this = request.getAPropertyRead(["params", "query"]).getAPropertyRead()
+        )
         or
         // `req.originalUrl`
         kind = "url" and
