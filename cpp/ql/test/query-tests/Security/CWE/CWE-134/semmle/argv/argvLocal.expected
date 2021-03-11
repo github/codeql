@@ -167,9 +167,8 @@ edges
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
 nodes
 | argvLocal.c:9:25:9:31 | *correct | semmle.label | *correct |
+| argvLocal.c:9:25:9:31 | *correct | semmle.label | *correct |
 | argvLocal.c:9:25:9:31 | correct | semmle.label | correct |
-| argvLocal.c:10:9:10:15 | Chi | semmle.label | Chi |
-| argvLocal.c:10:9:10:15 | Chi | semmle.label | Chi |
 | argvLocal.c:95:9:95:12 | argv | semmle.label | argv |
 | argvLocal.c:95:9:95:12 | argv | semmle.label | argv |
 | argvLocal.c:95:9:95:15 | (const char *)... | semmle.label | (const char *)... |

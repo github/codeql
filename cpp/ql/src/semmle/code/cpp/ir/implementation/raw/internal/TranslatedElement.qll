@@ -658,14 +658,18 @@ newtype TTranslatedElement =
         t instanceof ReferenceType
       ) and
       (
-        isWrite = true or
+        isWrite = true and
+        not call.getTarget().getParameter(n).getType().isDeeplyConstBelow()
+        or
         isWrite = false
       )
       or
       not call.getTarget() instanceof SideEffectFunction and
       n = -1 and
       (
-        isWrite = true or
+        isWrite = true and
+        not call.getTarget() instanceof ConstMemberFunction
+        or
         isWrite = false
       )
     ) and
