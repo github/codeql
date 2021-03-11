@@ -691,33 +691,6 @@ private DataFlow::SourceNode reactRouterDom() {
   result = DataFlow::moduleImport("react-router-dom")
 }
 
-private DataFlow::SourceNode reactRouterMatchObject() {
-  result = reactRouterDom().getAMemberCall(["useRouteMatch", "matchPath"])
-  or
-  exists(ReactComponent c |
-    dependedOnByReactRouterClient(c.getTopLevel()) and
-    result = c.getAPropRead("match")
-  )
-}
-
-private class ReactRouterSource extends ClientSideRemoteFlowSource {
-  ClientSideRemoteFlowKind kind;
-
-  ReactRouterSource() {
-    this = reactRouterDom().getAMemberCall("useParams") and kind.isPath()
-    or
-    exists(string prop | this = reactRouterMatchObject().getAPropertyRead(prop) |
-      prop = "params" and kind.isPath()
-      or
-      prop = "url" and kind.isUrl()
-    )
-  }
-
-  override string getSourceType() { result = "react-router path parameters" }
-
-  override ClientSideRemoteFlowKind getKind() { result = kind }
-}
-
 /**
  * Holds if `mod` transitively depends on `react-router-dom`.
  */
