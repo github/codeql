@@ -5,23 +5,6 @@
 import javascript
 
 /**
- * A source of remote flow from the `Busboy` library.
- */
-private class BusBoyRemoteFlow extends RemoteFlowSource {
-  BusBoyRemoteFlow() {
-    this =
-      API::moduleImport("busboy")
-          .getInstance()
-          .getMember("on")
-          .getParameter(1)
-          .getAParameter()
-          .getAnImmediateUse()
-  }
-
-  override string getSourceType() { result = "parsed user value from Busbuy" }
-}
-
-/**
  * A source of remote flow from the `Formidable` library parsing a HTTP request.
  */
 private class FormidableRemoteFlow extends RemoteFlowSource {
