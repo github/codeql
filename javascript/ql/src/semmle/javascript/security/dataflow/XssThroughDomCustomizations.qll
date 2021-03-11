@@ -40,10 +40,16 @@ module XssThroughDom {
       (
         this.getMethodName() = ["text", "val"] and this.getNumArgument() = 0
         or
-        this.getMethodName() = "attr" and
-        this.getNumArgument() = 1 and
-        forex(InferredType t | t = this.getArgument(0).analyze().getAType() | t = TTString()) and
-        this.getArgument(0).mayHaveStringValue(unsafeAttributeName())
+        exists(string methodName, string value |
+          this.getMethodName() = methodName and
+          this.getNumArgument() = 1 and
+          forex(InferredType t | t = this.getArgument(0).analyze().getAType() | t = TTString()) and
+          this.getArgument(0).mayHaveStringValue(value)
+        |
+          methodName = "attr" and value = unsafeAttributeName()
+          or
+          methodName = "prop" and value = unsafeDomPropertyName()
+        )
       ) and
       // looks like a $("<p>" + ... ) source, which is benign for this query.
       not exists(DataFlow::Node prefix |
