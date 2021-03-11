@@ -5,6 +5,17 @@ private import semmle.javascript.security.dataflow.Xss
 
 /** Provides classes and predicates modelling aspects of the `d3` library. */
 module D3 {
+  /** The global variable `d3` as an entry point for API graphs. */
+  private class D3GlobalEntry extends API::EntryPoint {
+    D3GlobalEntry() { this = "D3GlobalEntry" }
+
+    override DataFlow::SourceNode getAUse() {
+      result = DataFlow::globalVarRef("d3")
+    }
+
+    override DataFlow::Node getARhs() { none() }
+  }
+
   /** Gets an API node referring to the `d3` module. */
   API::Node d3() {
     result = API::moduleImport("d3")
@@ -13,6 +24,8 @@ module D3 {
     result = API::moduleImport(any(string s | s.regexpMatch("@.*/d3(-\\w+)?")))
     or
     result = API::moduleImport("d3-node").getInstance().getMember("d3")
+    or
+    result = API::root().getASuccessor(any(D3GlobalEntry i))
   }
 
   /**
