@@ -44,22 +44,6 @@ module NextJS {
   }
 
   /**
-   * User defined path parameter in `Next.js`.
-   */
-  class NextParams extends RemoteFlowSource {
-    NextParams() {
-      this =
-        getAModuleWithFallbackPaths()
-            .getAnExportedValue("getStaticProps")
-            .getAFunctionValue()
-            .getParameter(0)
-            .getAPropertyRead("params")
-    }
-
-    override string getSourceType() { result = "Next request parameter" }
-  }
-
-  /**
    * Gets the `getStaticProps` function in a Next.js page.
    * This function is executed at build time, or when a page with a new URL is requested for the first time (if `fallback` is not false).
    */
