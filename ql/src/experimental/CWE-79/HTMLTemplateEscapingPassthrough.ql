@@ -49,11 +49,14 @@ class FlowConfFromUntrustedToPassthroughTypeConversion extends TaintTracking::Co
     this = "UntrustedToConversion" + dstTypeName
   }
 
+  /**
+   * Gets the name of conversion's destination type.
+   */
   string getDstTypeName() { result = dstTypeName }
 
   override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
-  predicate isSinkToPassthroughType(DataFlow::TypeCastNode sink, string name) {
+  private predicate isSinkToPassthroughType(DataFlow::TypeCastNode sink, string name) {
     exists(Type typ |
       typ = sink.getResultType() and
       typ.getUnderlyingType*().hasQualifiedName("html/template", name) and
@@ -90,16 +93,19 @@ class FlowConfPassthroughTypeConversionToTemplateExecutionCall extends TaintTrac
 
   FlowConfPassthroughTypeConversionToTemplateExecutionCall() {
     dstTypeName instanceof PassthroughTypeName and
-    this = "UnsafeConversionToExec" + dstTypeName
+    this = "ConversionToExec" + dstTypeName
   }
 
+  /**
+   * Gets the name of conversion's destination type.
+   */
   string getDstTypeName() { result = dstTypeName }
 
   override predicate isSource(DataFlow::Node source) {
     isSourceConversionToPassthroughType(source, _)
   }
 
-  predicate isSourceConversionToPassthroughType(DataFlow::TypeCastNode source, string name) {
+  private predicate isSourceConversionToPassthroughType(DataFlow::TypeCastNode source, string name) {
     exists(Type typ |
       typ = source.getResultType() and
       typ.getUnderlyingType*().hasQualifiedName("html/template", name) and
