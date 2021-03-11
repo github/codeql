@@ -126,6 +126,10 @@ module Stages {
       exists(any(Expr e).getExceptionTarget())
       or
       exists(DataFlow::ssaDefinitionNode(_))
+      or
+      any(DataFlow::Node node).hasLocationInfo(_, _, _, _, _)
+      or
+      exists(any(DataFlow::Node node).toString())
     }
   }
 
