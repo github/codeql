@@ -82,4 +82,12 @@ func good(req *http.Request) {
 		_ = converted
 		checkError(tmpl.Execute(os.Stdout, src))
 	}
+	{
+		// The untrusted input is sanitized before use.
+		tmpl, _ := template.New("test").Parse(`<div>Your user agent is {{.}}</div>`)
+		src := req.UserAgent()
+
+		converted := template.HTML("<b>" + template.HTMLEscapeString(src) + "</b>")
+		checkError(tmpl.Execute(os.Stdout, converted))
+	}
 }
