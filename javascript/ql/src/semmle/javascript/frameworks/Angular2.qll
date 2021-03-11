@@ -105,35 +105,6 @@ module Angular2 {
     result = urlSegment().getAPropertyRead("parameters") and kind.isPath()
   }
 
-  /** Gets a reference to a `Params` object, usually containing values from the URL. */
-  DataFlow::SourceNode paramDictionaryObject() { result = paramDictionaryObject(_) }
-
-  /**
-   * A value from `@angular/router` derived from the URL.
-   */
-  class AngularSource extends ClientSideRemoteFlowSource {
-    ClientSideRemoteFlowKind kind;
-
-    AngularSource() {
-      this = paramMap(kind).getAMethodCall(["get", "getAll"])
-      or
-      this = paramDictionaryObject(kind)
-      or
-      this = activatedRouteProp("fragment") and kind.isFragment()
-      or
-      this = urlSegment().getAPropertyRead("path") and kind.isPath()
-      or
-      // Note that Router.url and RouterStateSnapshot.url are strings, not UrlSegment[]
-      this = router().getAPropertyRead("url") and kind.isUrl()
-      or
-      this = routerStateSnapshot().getAPropertyRead("url") and kind.isUrl()
-    }
-
-    override string getSourceType() { result = "Angular route parameter" }
-
-    override ClientSideRemoteFlowKind getKind() { result = kind }
-  }
-
   /** Gets a reference to a `DomSanitizer` object. */
   DataFlow::SourceNode domSanitizer() {
     result.hasUnderlyingType(["@angular/platform-browser", "@angular/core"], "DomSanitizer")
