@@ -16,12 +16,18 @@ import DataFlow::PathGraph
 /** Gets a regular expression for matching common names of sensitive cookies. */
 string getSensitiveCookieNameRegex() { result = "(?i).*(auth|session|token|key|credential).*" }
 
-/** Holds if a string is concatenated with the name of a sensitive cookie. */
+/** Gets a regular expression for matching CSRF cookies. */
+string getCsrfCookieNameRegex() { result = "(?i).*(csrf).*" }
+
+/**
+ * Holds if a string is concatenated with the name of a sensitive cookie. Excludes CSRF cookies since
+ * they are special cookies implementing the Synchronizer Token Pattern that can be used in JavaScript.
+ */
 predicate isSensitiveCookieNameExpr(Expr expr) {
-  expr.(CompileTimeConstantExpr)
-      .getStringValue()
-      .toLowerCase()
-      .regexpMatch(getSensitiveCookieNameRegex()) or
+  exists(string s | s = expr.(CompileTimeConstantExpr).getStringValue().toLowerCase() |
+    s.regexpMatch(getSensitiveCookieNameRegex()) and not s.regexpMatch(getCsrfCookieNameRegex())
+  )
+  or
   isSensitiveCookieNameExpr(expr.(AddExpr).getAnOperand())
 }
 

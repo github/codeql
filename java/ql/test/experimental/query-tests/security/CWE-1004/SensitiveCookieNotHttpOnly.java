@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 
 import javax.ws.rs.core.NewCookie;
 
+import org.springframework.security.web.csrf.CsrfToken;
+
 class SensitiveCookieNotHttpOnly {
     // GOOD - Tests adding a sensitive cookie with the `HttpOnly` flag set.
     public void addCookie(String jwt_token, HttpServletRequest request, HttpServletResponse response) {
@@ -67,5 +69,23 @@ class SensitiveCookieNotHttpOnly {
     public void addCookie9(String authId, HttpServletRequest request, HttpServletResponse response) {
         String secString = "token=" +authId + ";Secure";
         response.addHeader("Set-Cookie", secString);
-    }    
+    }
+
+    // GOOD - CSRF token doesn't need to have the `HttpOnly` flag set.
+    public void addCsrfCookie(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Spring put the CSRF token in session attribute "_csrf"
+        CsrfToken csrfToken = (CsrfToken) request.getAttribute("_csrf");
+    
+        // Send the cookie only if the token has changed
+        String actualToken = request.getHeader("X-CSRF-TOKEN");
+        if (actualToken == null || !actualToken.equals(csrfToken.getToken())) {
+            // Session cookie that can be used by AngularJS
+            String pCookieName = "CSRF-TOKEN";
+            Cookie cookie = new Cookie(pCookieName, csrfToken.getToken());
+            cookie.setMaxAge(-1);
+            cookie.setHttpOnly(false);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+        }
+    }
 }
