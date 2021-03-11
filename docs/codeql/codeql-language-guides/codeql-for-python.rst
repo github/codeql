@@ -19,7 +19,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  :doc:`CodeQL library for Python <codeql-library-for-python>`: When you need to analyze a Python program, you can make use of the large collection of classes in the CodeQL library for Python.
 
--  :doc:`Analyzing data flow in Python <analyzing-data-flow-in-python>`: You can use CodeQL to track the flow of data through a Python program. Tracking user-controlled, or tainted, data is a key technique for security researchers.
+-  :doc:`Analyzing data flow in Python <analyzing-data-flow-in-python>`: You can use CodeQL to track the flow of data through a Python program to places where the data is used.
 
 -  :doc:`Functions in Python <functions-in-python>`: You can use syntactic classes from the standard CodeQL library to find Python functions and identify calls to them.
 

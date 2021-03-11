@@ -174,7 +174,7 @@ The global data flow library is used by extending the class ``DataFlow::Configur
 
 .. code-block:: ql
 
-   import csharp
+   import python
 
    class MyDataFlowConfiguration extends DataFlow::Configuration {
      MyDataFlowConfiguration() { this = "..." }
@@ -212,7 +212,7 @@ Global taint tracking is to global data flow what local taint tracking is to loc
 
 .. code-block:: ql
 
-   import csharp
+   import python
 
    class MyTaintTrackingConfiguration extends TaintTracking::Configuration {
      MyTaintTrackingConfiguration() { this = "..." }
@@ -247,7 +247,7 @@ This query shows a data flow configuration that uses all network input as data s
 
 .. code-block:: ql
 
-   import csharp
+   import python
    import semmle.code.csharp.dataflow.flowsources.PublicCallableParameter
 
    class MyDataFlowConfiguration extends DataFlow::Configuration {
