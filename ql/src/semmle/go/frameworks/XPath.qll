@@ -189,6 +189,9 @@ module XPath {
   }
 }
 
+/**
+ * Provides classes for working with the [xmlpath](https://gopkg.in/xmlpath.v2) package.
+ */
 module XmlPath {
   /** Gets the package name `github.com/go-xmlpath/xmlpath` or `gopkg.in/xmlpath`. */
   bindingset[result]

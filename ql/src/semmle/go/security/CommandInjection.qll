@@ -17,7 +17,8 @@ module CommandInjection {
   import CommandInjectionCustomizations::CommandInjection
 
   /**
-   * A taint-tracking configuration for reasoning about command-injection vulnerabilities.
+   * A taint-tracking configuration for reasoning about command-injection vulnerabilities
+   * with sinks which are not sanitized by `--`.
    */
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "CommandInjection" }
@@ -77,6 +78,10 @@ module CommandInjection {
     }
   }
 
+  /**
+   * A taint-tracking configuration for reasoning about command-injection vulnerabilities
+   * with sinks which are sanitized by `--`.
+   */
   class DoubleDashSanitizingConfiguration extends TaintTracking::Configuration {
     DoubleDashSanitizingConfiguration() { this = "CommandInjectionWithDoubleDashSanitizer" }
 

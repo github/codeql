@@ -298,24 +298,39 @@ module WebSocketReader {
   }
 }
 
+/**
+ * Provides classes for working with the [Gorilla WebSocket](https://github.com/gorilla/websocket)
+ * package.
+ */
 module GorillaWebsocket {
   /** Gets the package name `github.com/gorilla/websocket`. */
   bindingset[result]
   string packagePath() { result = package("github.com/gorilla", "websocket") }
 }
 
+/**
+ * Provides classes for working with the
+ * [golang.org/x/net/websocket](https://pkg.go.dev/golang.org/x/net/websocket) package.
+ */
 module GolangOrgXNetWebsocket {
   /** Gets the package name `golang.org/x/net/websocket`. */
   bindingset[result]
   string packagePath() { result = package("golang.org/x/net", "websocket") }
 }
 
+/**
+ * Provides classes for working with the [nhooyr.io/websocket](http://nhooyr.io/websocket)
+ * package.
+ */
 module NhooyrWebSocket {
   /** Gets the package name `nhooyr.io/websocket/`. */
   bindingset[result]
   string packagePath() { result = package("nhooyr.io/websocket", "") }
 }
 
+/**
+ * Provides classes for working with the [ws](https://github.com/gobwas/ws) package.
+ */
 module GobwasWs {
   /** Gets the package name `github.com/gobwas/ws`. */
   bindingset[result]
