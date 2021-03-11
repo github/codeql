@@ -47,6 +47,19 @@ webCrypto.Algorithm;
  */
 webCrypto.AlgorithmIdentifier;
 
+/**
+ * @typedef {webCrypto.AlgorithmIdentifier}
+ * @see http://www.w3.org/TR/WebCryptoAPI/#dfn-HashAlgorithmIdentifier
+ */
+webCrypto.HashAlgorithmIdentifier;
+
+
+/**
+ * @typedef {Uint8Array}
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-BigInteger
+ */
+webCrypto.BigInteger;
+
 
 /**
  * @constructor
@@ -83,6 +96,25 @@ webCrypto.CryptoKey.prototype.algorithm;
  *   permissible to be used with this key.
  */
 webCrypto.CryptoKey.prototype.usages;
+
+
+/**
+ * @constructor
+ * @see https://www.w3.org/TR/WebCryptoAPI/#keypair
+ */
+webCrypto.CryptoKeyPair = function() {};
+
+
+/**
+ * @type {!webCrypto.CryptoKey}
+ */
+webCrypto.CryptoKeyPair.prototype.publicKey;
+
+
+/**
+ * @type {!webCrypto.CryptoKey}
+ */
+webCrypto.CryptoKeyPair.prototype.privateKey;
 
 
 /**
@@ -249,6 +281,337 @@ webCrypto.RsaOtherPrimesInfo.prototype.t;
 
 
 /**
+ * @record
+ * @extends webCrypto.Algorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-RsaKeyGenParams
+ */
+webCrypto.RsaKeyGenParams;
+/**
+ * @type {number}
+ */
+webCrypto.RsaKeyGenParams.prototype.modulusLength;
+/**
+ * @type {webCrypto.BigInteger}
+ */
+webCrypto.RsaKeyGenParams.prototype.publicExponent;
+
+
+/**
+ * @record
+ * @extends webCrypto.RsaKeyGenParams
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-RsaHashedKeyGenParams
+ */
+webCrypto.RsaHashedKeyGenParams;
+/**
+ * @type {webCrypto.HashAlgorithmIdentifier}
+ */
+webCrypto.RsaHashedKeyGenParams.prototype.hash;
+
+
+/**
+ * @record
+ * @extends webCrypto.KeyAlgorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-RsaKeyAlgorithm
+ */
+webCrypto.RsaKeyAlgorithm;
+/**
+ * @type {number}
+ */
+webCrypto.RsaKeyAlgorithm.prototype.modulusLength;
+/**
+ * @type {webCrypto.BigInteger}
+ */
+webCrypto.RsaKeyAlgorithm.prototype.publicExponent;
+
+
+/**
+ * @record
+ * @extends webCrypto.RsaKeyAlgorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-RsaHashedKeyAlgorithm
+ */
+webCrypto.RsaHashedKeyAlgorithm;
+/**
+ * @type {webCrypto.KeyAlgorithm}
+ */
+webCrypto.RsaHashedKeyAlgorithm.prototype.hash;
+
+
+/**
+ * @record
+ * @extends webCrypto.Algorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-RsaHashedImportParams
+ */
+webCrypto.RsaHashedImportParams;
+/**
+ * @type {webCrypto.HashAlgorithmIdentifier}
+ */
+webCrypto.RsaHashedImportParams.prototype.hash;
+
+
+/**
+ * @record
+ * @extends webCrypto.Algorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-RsaPssParams
+ */
+webCrypto.RsaPssParams;
+/**
+ * @type {number}
+ */
+webCrypto.RsaPssParams.prototype.saltLength;
+
+
+/**
+ * @record
+ * @extends webCrypto.Algorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-RsaOaepParams
+ */
+webCrypto.RsaOaepParams;
+/**
+ * @type {!BufferSource}
+ */
+webCrypto.RsaOaepParams.prototype.label;
+
+
+/**
+ * @record
+ * @extends webCrypto.Algorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-EcdsaParams
+ */
+webCrypto.EcdsaParams;
+/**
+ * @type {!webCrypto.HashAlgorithmIdentifier}
+ */
+webCrypto.EcdsaParams.prototype.hash;
+
+
+/**
+ * @typedef {string}
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-NamedCurve
+ */
+webCrypto.NamedCurve;
+
+
+/**
+ * @record
+ * @extends webCrypto.Algorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-EcKeyGenParams
+ */
+webCrypto.EcKeyGenParams;
+/**
+ * @type {!webCrypto.NamedCurve}
+ */
+webCrypto.EcKeyGenParams.prototype.namedCurve;
+
+
+/**
+ * @record
+ * @extends webCrypto.KeyAlgorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-EcKeyAlgorithm
+ */
+webCrypto.EcKeyAlgorithm;
+/**
+ * @type {!webCrypto.NamedCurve}
+ */
+webCrypto.EcKeyAlgorithm.prototype.namedCurve;
+
+
+/**
+ * @record
+ * @extends webCrypto.Algorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-EcKeyImportParams
+ */
+webCrypto.EcKeyImportParams;
+/**
+ * @type {!webCrypto.NamedCurve}
+ */
+webCrypto.EcKeyImportParams.prototype.namedCurve;
+
+
+/**
+ * @record
+ * @extends webCrypto.Algorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-EcKeyDeriveParams
+ */
+webCrypto.EcKeyDeriveParams;
+/**
+ * @type {!webCrypto.CryptoKey}
+ */
+webCrypto.EcKeyDeriveParams.prototype.public;
+
+
+/**
+ * @record
+ * @extends webCrypto.Algorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-AesCtrParams
+ */
+webCrypto.AesCtrParams;
+/**
+ * @type {!BufferSource}
+ */
+webCrypto.AesCtrParams.prototype.counter;
+/**
+ * @type {number}
+ */
+webCrypto.AesCtrParams.prototype.length;
+
+
+/**
+ * @record
+ * @extends webCrypto.KeyAlgorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-AesKeyAlgorithm
+ */
+webCrypto.AesKeyAlgorithm;
+/**
+ * @type {number}
+ */
+webCrypto.AesKeyAlgorithm.prototype.length;
+
+
+/**
+ * @record
+ * @extends webCrypto.Algorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-AesKeyGenParams
+ */
+webCrypto.AesKeyGenParams;
+/**
+ * @type {number}
+ */
+webCrypto.AesKeyGenParams.prototype.length;
+
+
+/**
+ * @record
+ * @extends webCrypto.Algorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-AesDerivedKeyParams
+ */
+webCrypto.AesDerivedKeyParams;
+/**
+ * @type {number}
+ */
+webCrypto.AesDerivedKeyParams.prototype.length;
+
+
+/**
+ * @record
+ * @extends webCrypto.Algorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-AesCbcParams
+ */
+webCrypto.AesCbcParams;
+/**
+ * @type {!BufferSource}
+ */
+webCrypto.AesCbcParams.prototype.iv;
+
+
+/**
+ * @record
+ * @extends webCrypto.Algorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-AesGcmParams
+ */
+webCrypto.AesGcmParams;
+/**
+ * @type {!BufferSource}
+ */
+webCrypto.AesGcmParams.prototype.iv;
+/**
+ * @type {!BufferSource}
+ */
+webCrypto.AesGcmParams.prototype.additionalData;
+/**
+ * @type {number}
+ */
+webCrypto.AesGcmParams.prototype.tagLength;
+
+
+/**
+ * @record
+ * @extends webCrypto.Algorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-HmacImportParams
+ */
+webCrypto.HmacImportParams;
+/**
+ * @type {!webCrypto.HashAlgorithmIdentifier}
+ */
+webCrypto.HmacImportParams.prototype.hash;
+/**
+ * @type {number}
+ */
+webCrypto.HmacImportParams.prototype.length;
+
+
+/**
+ * @record
+ * @extends webCrypto.KeyAlgorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-HmacKeyAlgorithm
+ */
+webCrypto.HmacKeyAlgorithm;
+/**
+ * @type {!webCrypto.KeyAlgorithm}
+ */
+webCrypto.HmacKeyAlgorithm.prototype.hash;
+/**
+ * @type {number}
+ */
+webCrypto.HmacKeyAlgorithm.prototype.length;
+
+
+/**
+ * @record
+ * @extends webCrypto.Algorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-HmacKeyGenParams
+ */
+webCrypto.HmacKeyGenParams;
+/**
+ * @type {!webCrypto.HashAlgorithmIdentifier}
+ */
+webCrypto.HmacKeyGenParams.prototype.hash;
+/**
+ * @type {number}
+ */
+webCrypto.HmacKeyGenParams.prototype.length;
+
+
+/**
+ * @record
+ * @extends webCrypto.Algorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-HkdfParams
+ */
+webCrypto.HkdfParams;
+/**
+ * @type {!webCrypto.HashAlgorithmIdentifier}
+ */
+webCrypto.HkdfParams.prototype.hash;
+/**
+ * @type {!BufferSource}
+ */
+webCrypto.HkdfParams.prototype.salt;
+/**
+ * @type {!BufferSource}
+ */
+webCrypto.HkdfParams.prototype.info;
+
+
+/**
+ * @record
+ * @extends webCrypto.Algorithm
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-Pbkdf2Params
+ */
+webCrypto.Pbkdf2Params;
+/**
+ * @type {!BufferSource}
+ */
+webCrypto.Pbkdf2Params.prototype.salt;
+/**
+ * @type {number}
+ */
+webCrypto.Pbkdf2Params.prototype.iterations;
+/**
+ * @type {!webCrypto.HashAlgorithmIdentifier}
+ */
+webCrypto.Pbkdf2Params.prototype.hash;
+
+
+/**
  * @constructor
  * @see http://www.w3.org/TR/WebCryptoAPI/#subtlecrypto-interface
  */
@@ -260,8 +623,8 @@ webCrypto.SubtleCrypto = function() {};
  *     values are: AES-CBC, AES-CTR, AES-GCM, and RSA-OAEP.
  * @param {!webCrypto.CryptoKey} key Key to be used for signing.
  * @param {!BufferSource} data Data to be encrypted (cleartext).
- * @return {!Promise<*>} Ciphertext generated by the encryption of the
- *     cleartext.
+ * @return {!Promise<!ArrayBuffer>} Ciphertext generated by the encryption of
+ *     the cleartext.
  */
 webCrypto.SubtleCrypto.prototype.encrypt = function(algorithm, key,
     data) {};
@@ -272,7 +635,7 @@ webCrypto.SubtleCrypto.prototype.encrypt = function(algorithm, key,
  *     values are: AES-CBC, AES-CTR, AES-GCM, and RSA-OAEP.
  * @param {!webCrypto.CryptoKey} key Key to be used for signing.
  * @param {!BufferSource} data Data to be decrypted (ciphertext).
- * @return {!Promise<*>} Cleartext generated by the decryption of the
+ * @return {!Promise<!ArrayBuffer>} Cleartext generated by the decryption of the
  *     ciphertext.
  */
 webCrypto.SubtleCrypto.prototype.decrypt = function(algorithm, key,
@@ -284,7 +647,7 @@ webCrypto.SubtleCrypto.prototype.decrypt = function(algorithm, key,
  *     values are: HMAC, RSASSA-PKCS1-v1_5, and ECDSA.
  * @param {!webCrypto.CryptoKey} key Private key to be used for signing.
  * @param {!BufferSource} data Data to be signed.
- * @return {!Promise<*>} Returns the signature on success.
+ * @return {!Promise<!ArrayBuffer>} Returns the signature on success.
  */
 webCrypto.SubtleCrypto.prototype.sign = function(algorithm, key,
     data) {};
@@ -296,8 +659,8 @@ webCrypto.SubtleCrypto.prototype.sign = function(algorithm, key,
  * @param {!webCrypto.CryptoKey} key Private key to be used for signing.
  * @param {!BufferSource} signature Signature to verify.
  * @param {!BufferSource} data Data whose signature needs to be verified.
- * @return {!Promise<*>} Returns a boolean indicating if the signature operating
- *     has been successful.
+ * @return {!Promise<boolean>} Returns if the signature operating has been
+ *     successful.
  */
 webCrypto.SubtleCrypto.prototype.verify = function(algorithm, key,
     signature, data) {};
@@ -307,21 +670,21 @@ webCrypto.SubtleCrypto.prototype.verify = function(algorithm, key,
  * @param {!webCrypto.AlgorithmIdentifier} algorithm Supported
  *     values are: SHA-1, SHA-256, SHA-384, and SHA-512.
  * @param {!BufferSource} data Data to be hashed using the hashing algorithm.
- * @return {!Promise<*>} returns the hash on success.
+ * @return {!Promise<!ArrayBuffer>} returns the hash on success.
  */
 webCrypto.SubtleCrypto.prototype.digest = function(algorithm, data) {};
 
 
 /**
- * @param {!webCrypto.AlgorithmIdentifier} algorithm Supported
- *     values are: SHA-1, SHA-256, SHA-384, and SHA-512.
+ * @param {!webCrypto.AlgorithmIdentifier|webCrypto.RsaHashedKeyGenParams}
+ *     algorithm Supported values are: SHA-1, SHA-256, SHA-384, and SHA-512.
  * @param {boolean} extractable If the key can be extracted from the CryptoKey
  *     object at a later stage.
  * @param {!Array<string>} keyUsages Indication of new key options i.e.
  *     encrypt, decrypt, sign, verify, deriveKey, deriveBits, wrapKey,
  *     unwrapKey.
- * @return {!Promise<*>} returns the generated key as a CryptoKey or a
- *     CryptoKeyPair.
+ * @return {!Promise<!webCrypto.CryptoKey|!webCrypto.CryptoKeyPair>} returns the
+ *     generated key.
  */
 webCrypto.SubtleCrypto.prototype.generateKey = function(algorithm,
     extractable, keyUsages) {};
@@ -338,8 +701,8 @@ webCrypto.SubtleCrypto.prototype.generateKey = function(algorithm,
  *     CryptoKey object at a later stage.
  * @param {!Array<string>} keyUsages Indicates what can be done with the
  *     derivated key.
- * @return {!Promise<*>} returns the generated key as a CryptoKey or a
- *     CryptoKeyPair.
+ * @return {!Promise<!webCrypto.CryptoKey|!webCrypto.CryptoKeyPair>} returns the
+ *     generated key.
  */
 webCrypto.SubtleCrypto.prototype.deriveKey = function(algorithm,
    baseKey, derivedKeyAlgo, extractable, keyUsages) {};
@@ -351,8 +714,7 @@ webCrypto.SubtleCrypto.prototype.deriveKey = function(algorithm,
  * @param {!webCrypto.CryptoKey} baseKey Key to be used by the key
  *     derivation algorithm.
  * @param {number} length
- * @return {!Promise<*>} returns the generated key as a CryptoKey or a
- *     CryptoKeyPair.
+ * @return {!Promise<!ArrayBuffer>} returns the generated bits.
  */
 webCrypto.SubtleCrypto.prototype.deriveBits = function(algorithm,
    baseKey, length) {};
@@ -363,15 +725,15 @@ webCrypto.SubtleCrypto.prototype.deriveBits = function(algorithm,
  *     format of the key to imported.
  * @param {!BufferSource|!webCrypto.JsonWebKey} keyData The key
  *     in the given format.
- * @param {!webCrypto.AlgorithmIdentifier} algorithm Supported values
- *     are: AES-CTR, AES-CBC, AES-GCM, RSA-OAEP, AES-KW, HMAC,
- *     RSASSA-PKCS1-v1_5, ECDSA, ECDH, DH.
+ * @param {!webCrypto.AlgorithmIdentifier|webCrypto.RsaHashedImportParams}
+ *     algorithm Supported values are: AES-CTR, AES-CBC, AES-GCM, RSA-OAEP,
+ *     AES-KW, HMAC, RSASSA-PKCS1-v1_5, ECDSA, ECDH, DH.
  * @param {boolean} extractable If the key can be extracted from the CryptoKey
  *     object at a later stage.
  * @param {!Array<string>} keyUsages Indication of new key options i.e.
  *     encrypt, decrypt, sign, verify, deriveKey, deriveBits, wrapKey,
  *     unwrapKey.
- * @return {!Promise<*>} returns the generated key as a CryptoKey.
+ * @return {!Promise<!webCrypto.CryptoKey>} returns the generated key.
  */
 webCrypto.SubtleCrypto.prototype.importKey = function(format, keyData,
     algorithm, extractable, keyUsages) {};
@@ -381,7 +743,8 @@ webCrypto.SubtleCrypto.prototype.importKey = function(format, keyData,
  * @param {string} format Enumerated value describing the data
  *     format of the key to imported.
  * @param {!webCrypto.CryptoKey} key CryptoKey to export.
- * @return {!Promise<*>} returns the key in the requested format.
+ * @return {!Promise<!ArrayBuffer|!webCrypto.JsonWebKey>} returns the key in the
+ *     requested format.
  */
 webCrypto.SubtleCrypto.prototype.exportKey = function(format, key) {};
 
@@ -395,7 +758,8 @@ webCrypto.SubtleCrypto.prototype.exportKey = function(format, key) {};
  * @param {!webCrypto.AlgorithmIdentifier} wrapAlgorithm algorithm used
  *     to perform the wrapping. It is one of the following: AES-CBC, AES-CTR,
  *     AES-GCM, RSA-OAEP, and AES-KW.
- * @return {!Promise<*>} returns the wrapped key in the requested format.
+ * @return {!Promise<!ArrayBuffer>} returns the wrapped key in the requested
+ *     format.
  */
 webCrypto.SubtleCrypto.prototype.wrapKey = function(format,
    key, wrappingKey, wrapAlgorithm) {};
@@ -417,7 +781,7 @@ webCrypto.SubtleCrypto.prototype.wrapKey = function(format,
  *     CryptoKey object at a later stage.
  * @param {!Array<string>} keyUsages Indicates what can be done with the
  *     derivated key.
- * @return {!Promise<*>} returns the unwrapped key as a CryptoKey.
+ * @return {!Promise<!webCrypto.CryptoKey>} returns the unwrapped key.
  */
 webCrypto.SubtleCrypto.prototype.unwrapKey = function(format, wrappedKey,
     unwrappingKey, unwrapAlgorithm, unwrappedKeyAlgorithm, extractable,
@@ -425,13 +789,10 @@ webCrypto.SubtleCrypto.prototype.unwrapKey = function(format, wrappedKey,
 
 
 /**
- * Web Cryptography API
- * @see http://www.w3.org/TR/WebCryptoAPI/
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/Crypto
+ * @interface
  */
-
-/** @see https://developer.mozilla.org/en/DOM/window.crypto */
-Window.prototype.crypto;
-
+webCrypto.Crypto = function() {};
 
 /**
  * @see https://developer.mozilla.org/en/DOM/window.crypto.getRandomValues
@@ -439,11 +800,16 @@ Window.prototype.crypto;
  * @return {!ArrayBufferView}
  * @throws {Error}
  */
-Window.prototype.crypto.getRandomValues = function(typedArray) {};
-
+webCrypto.Crypto.prototype.getRandomValues = function(typedArray) {};
 
 /**
- * @type {webCrypto.SubtleCrypto}
+ * @type {?webCrypto.SubtleCrypto}
  * @see http://www.w3.org/TR/WebCryptoAPI/#Crypto-attribute-subtle
  */
-Window.prototype.crypto.subtle;
+webCrypto.Crypto.prototype.subtle;
+
+/**
+ * @see https://developer.mozilla.org/en/DOM/window.crypto
+ * @type {!webCrypto.Crypto|undefined}
+ */
+var crypto;

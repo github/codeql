@@ -41,7 +41,55 @@ ServiceWorker.prototype.onstatechange;
  * 'activated', 'redundant'.
  *  @typedef {string}
  */
-var ServiceWorkerState ;
+var ServiceWorkerState;
+
+/**
+ * @see https://w3c.github.io/ServiceWorker/#navigationpreloadmanager
+ * @constructor
+ */
+function NavigationPreloadManager() {}
+
+/** @return {!Promise<void>} */
+NavigationPreloadManager.prototype.enable = function() {};
+
+/** @return {!Promise<void>} */
+NavigationPreloadManager.prototype.disable = function() {};
+
+/**
+ * @param {string=} value
+ * @return {!Promise<void>}
+ */
+NavigationPreloadManager.prototype.setHeaderValue = function(value) {};
+
+/** @return {!Promise<NavigationPreloadState>} */
+NavigationPreloadManager.prototype.getState = function() {};
+
+/**
+ *  @typedef {{
+ *   enabled: (boolean|undefined),
+ *   headerValue: (string|undefined)
+ * }}
+ */
+var NavigationPreloadState;
+
+/** @record */
+function PushSubscriptionOptions() {}
+
+/** @type {ArrayBuffer|undefined} */
+PushSubscriptionOptions.prototype.applicationServerKey;
+
+/** @type {boolean|undefined} */
+PushSubscriptionOptions.prototype.userVisibleOnly;
+
+/** @record */
+function PushSubscriptionOptionsInit() {}
+
+/** @type {BufferSource|string|undefined} */
+PushSubscriptionOptionsInit.prototype.applicationServerKey;
+
+/** @type {boolean|undefined} */
+PushSubscriptionOptionsInit.prototype.userVisibleOnly;
+
 
 /**
  * @see https://w3c.github.io/push-api/
@@ -58,6 +106,9 @@ PushSubscription.prototype.endpoint;
  * @type {string}
  */
 PushSubscription.prototype.subscriptionId;
+
+/** @type {!PushSubscriptionOptions} */
+PushSubscription.prototype.options;
 
 /** @return {!Promise<boolean>} */
 PushSubscription.prototype.unsubscribe = function() {};
@@ -78,8 +129,8 @@ PushSubscription.prototype.unsubscribe = function() {};
 function PushManager() {}
 
 /**
- * @param {PushSubscriptionOptions=} opt_options
- * @return {!Promise<PushSubscription>}
+ * @param {PushSubscriptionOptionsInit=} opt_options
+ * @return {!Promise<!PushSubscription>}
  */
 PushManager.prototype.subscribe = function(opt_options) {};
 
@@ -92,10 +143,34 @@ PushManager.prototype.getSubscription = function() {};
 // PushManager.prototype.hasPermission = function() {};
 
 /**
- * @typedef {{userVisibleOnly: (boolean|undefined)}}
- * @see https://w3c.github.io/push-api/#idl-def-PushSubscriptionOptions
+ * @see https://wicg.github.io/BackgroundSync/spec/#sync-manager-interface
+ * @constructor
  */
-var PushSubscriptionOptions;
+function SyncManager() {}
+
+/**
+ * @param {string} tag
+ * @return {!Promise<void>}
+ */
+SyncManager.prototype.register = function(tag) {}
+
+/**
+ * @return {!Promise<Array<string>>}
+ */
+SyncManager.prototype.getTags = function() {}
+
+/**
+ * @see https://wicg.github.io/BackgroundSync/spec/#sync-event
+ * @constructor
+ * @extends{ExtendableEvent}
+ */
+function SyncEvent() {}
+
+/** @type {string} */
+SyncEvent.prototype.tag;
+
+/** @type {boolean} */
+SyncEvent.prototype.lastChance;
 
 /**
  * @see http://www.w3.org/TR/push-api/#idl-def-PushMessageData
@@ -145,6 +220,9 @@ ServiceWorkerRegistration.prototype.waiting;
 /** @type {ServiceWorker} */
 ServiceWorkerRegistration.prototype.active;
 
+/** @type {NavigationPreloadManager} */
+ServiceWorkerRegistration.prototype.navigationPreload;
+
 /** @type {string} */
 ServiceWorkerRegistration.prototype.scope;
 
@@ -180,6 +258,12 @@ ServiceWorkerRegistration.prototype.showNotification =
 ServiceWorkerRegistration.prototype.getNotifications = function(opt_filter) {};
 
 /**
+ * @see https://wicg.github.io/BackgroundSync/spec/#service-worker-registration-extensions
+ * @type {!SyncManager}
+ */
+ServiceWorkerRegistration.prototype.sync;
+
+/**
  * @see http://www.w3.org/TR/service-workers/#service-worker-container-interface
  * @interface
  * @extends {EventTarget}
@@ -193,7 +277,7 @@ ServiceWorkerContainer.prototype.controller;
 ServiceWorkerContainer.prototype.ready;
 
 /**
- * @param {string} scriptURL
+ * @param {!TrustedScriptURL|string} scriptURL
  * @param {RegistrationOptions=} opt_options
  * @return {!Promise<!ServiceWorkerRegistration>}
  */
@@ -210,14 +294,17 @@ ServiceWorkerContainer.prototype.getRegistration = function(opt_documentURL) {};
  */
 ServiceWorkerContainer.prototype.getRegistrations = function() {};
 
-/** @type {?function(!Event)} */
+/** @type {?function(!Event): void} */
 ServiceWorkerContainer.prototype.oncontrollerchange;
 
-/** @type {?function(!ErrorEvent)} */
+/** @type {?function(!ExtendableMessageEvent): void} */
+ServiceWorkerContainer.prototype.onmessage;
+
+/** @type {?function(!ErrorEvent): void} */
 ServiceWorkerContainer.prototype.onerror;
 
 /**
- * @typedef {{scope: (string|undefined), useCache: (boolean|undefined)}}
+ * @typedef {{scope: (string|undefined), useCache: (boolean|undefined), updateViaCache: (string|undefined)}}
  */
 var RegistrationOptions;
 
@@ -276,8 +363,19 @@ ServiceWorkerGlobalScope.prototype.onevicted;
 /** @type {?function(!MessageEvent)} */
 ServiceWorkerGlobalScope.prototype.onmessage;
 
-/** @type {!IDBFactory|undefined} */
-ServiceWorkerGlobalScope.prototype.indexedDB;
+/**
+ * While not strictly correct, this should be effectively correct. Notification
+ * is the Notification constructor but calling it from the Service Worker throws
+ * (https://notifications.spec.whatwg.org/#constructors) so its only use is as
+ * an object holding some static properties (note that requestPermission is only
+ * exposed to window context - https://notifications.spec.whatwg.org/#api).
+ *
+ * @type {{
+ *   permission: string,
+ *   maxActions: number,
+ * }}
+ */
+ServiceWorkerGlobalScope.prototype.Notification;
 
 /**
  * @see http://www.w3.org/TR/service-workers/#service-worker-client-interface
@@ -300,6 +398,9 @@ ServiceWorkerClient.prototype.visibilityState;
 /** @type {string} */
 ServiceWorkerClient.prototype.url;
 
+/** @type {string} */
+ServiceWorkerClient.prototype.id;
+
 /**
  * // TODO(mtragut): Possibly replace the type with enum ContextFrameType once
  * the enum is defined.
@@ -316,6 +417,12 @@ ServiceWorkerClient.prototype.postMessage = function(message, opt_transfer) {};
 
 /** @return {!Promise} */
 ServiceWorkerClient.prototype.focus = function() {};
+
+/**
+ * @param {string} url
+ * @return {!Promise<!ServiceWorkerClient>}
+ */
+ServiceWorkerClient.prototype.navigate = function(url) {};
 
 /**
  * @see http://www.w3.org/TR/service-workers/#service-worker-clients-interface
@@ -348,6 +455,12 @@ ServiceWorkerClients.prototype.claim = function() {};
  * @return {!Promise<!ServiceWorkerClient>}
  */
 ServiceWorkerClients.prototype.openWindow = function(url) {};
+
+/**
+ * @param {string} id
+ * @return {!Promise<!ServiceWorkerClient|undefined>}
+ */
+ServiceWorkerClients.prototype.get = function(id) {};
 
 /** @typedef {{includeUncontrolled: (boolean|undefined)}} */
 var ServiceWorkerClientQueryOptions;
@@ -506,21 +619,35 @@ var InstallEventInit;
  * @constructor
  * @param {string} type
  * @param {FetchEventInit=} opt_eventInitDict
- * @extends {Event}
+ * @extends {ExtendableEvent}
  */
 function FetchEvent(type, opt_eventInitDict) {}
 
 /** @type {!Request} */
 FetchEvent.prototype.request;
 
-/** @type {!ServiceWorkerClient} */
-FetchEvent.prototype.client;
-
-/** @type {!boolean} */
-FetchEvent.prototype.isReload;
+/**
+ * @type {!Promise<Response>}
+ */
+FetchEvent.prototype.preloadResponse;
 
 /**
- * @param {(Response|Promise<Response>)} r
+ * @type {!ServiceWorkerClient}
+ * @deprecated
+ */
+FetchEvent.prototype.client;
+
+/** @type {?string} */
+FetchEvent.prototype.clientId;
+
+/** @type {boolean} */
+FetchEvent.prototype.isReload;
+
+/** @type {?string} */
+FetchEvent.prototype.resultingClientId;
+
+/**
+ * @param {(Response|IThenable<Response>)} r
  * @return {undefined}
  */
 FetchEvent.prototype.respondWith = function(r) {};
@@ -541,8 +668,59 @@ FetchEvent.prototype.default = function() {};
  *   bubbles: (boolean|undefined),
  *   cancelable: (boolean|undefined),
  *   request: (!Request|undefined),
+ *   preloadResponse: (!Promise<Response>),
  *   client: (!ServiceWorkerClient|undefined),
- *   isReload: (!boolean|undefined)
+ *   isReload: (boolean|undefined)
  * }}
  */
 var FetchEventInit;
+
+
+/**
+ * @see https://www.w3.org/TR/service-workers/#extendablemessage-event-interface
+ * @param {string} type
+ * @param {!ExtendableMessageEventInit<T>=} opt_eventInitDict
+ * @constructor
+ * @extends {ExtendableEvent}
+ * @template T
+ */
+function ExtendableMessageEvent(type, opt_eventInitDict) {};
+
+/** @type {T} */
+ExtendableMessageEvent.prototype.data;
+
+/** @type {string} */
+ExtendableMessageEvent.prototype.origin;
+
+/** @type {string} */
+ExtendableMessageEvent.prototype.lastEventId;
+
+/** @type {?ServiceWorkerClient|?ServiceWorker|?MessagePort} */
+ExtendableMessageEvent.prototype.source;
+
+/** @type {?Array<!MessagePort>} */
+ExtendableMessageEvent.prototype.ports;
+
+
+/**
+ * @see https://www.w3.org/TR/service-workers/#extendablemessage-event-init-dictionary
+ * @record
+ * @extends {ExtendableEventInit}
+ * @template T
+ */
+function ExtendableMessageEventInit() {};
+
+/** @type {T} */
+ExtendableMessageEventInit.prototype.data;
+
+/** @type {string|undefined} */
+ExtendableMessageEventInit.prototype.origin;
+
+/** @type {string|undefined} */
+ExtendableMessageEventInit.prototype.lastEventId;
+
+/** @type {!ServiceWorkerClient|!ServiceWorker|!MessagePort|undefined} */
+ExtendableMessageEventInit.prototype.source;
+
+/** @type {!Array<!MessagePort>|undefined} */
+ExtendableMessageEventInit.prototype.ports;

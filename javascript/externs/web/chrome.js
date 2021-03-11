@@ -65,246 +65,284 @@ Port.prototype.disconnect = function() {};
 
 
 /**
- * @see https://developer.chrome.com/extensions/events.html
- * @constructor
- * TODO(tbreisacher): Update *Listener methods to take {function()}
- * instead of {!Function}. See discussion at go/ChromeEvent-TODO
+ * Base event type without listener methods.
+ *
+ * This interface exists for event interfaces whose addListeners() method takes
+ * more than one parameter. Those interfaces must inherit from this one, so they
+ * can supply their own custom listener method declarations.
+ *
+ * Event interfaces whose addListeners() method takes just one parameter should
+ * inherit from ChromeBaseEvent instead. It extends this interface.
+ *
+ * @see https://developer.chrome.com/extensions/events
+ * @interface
+ */
+function ChromeBaseEventNoListeners() {}
+
+
+/**
+ * @param {!Array<!Rule>} rules
+ * @param {function(!Array<!Rule>): void=} callback
+ * @see https://developer.chrome.com/extensions/events#method-Event-addRules
+ */
+ChromeBaseEventNoListeners.prototype.addRules = function(rules, callback) {};
+
+
+/**
+ * Returns currently registered rules.
+ *
+ * NOTE: The API allows the first argument to be omitted.
+ *     That cannot be correctly represented here, so we end up incorrectly
+ *     allowing 2 callback arguments.
+ * @param {!Array<string>|function(!Array<!Rule>): void} ruleIdentifiersOrCb
+ * @param {function(!Array<!Rule>): void=} callback
+ * @see https://developer.chrome.com/extensions/events#method-Event-getRules
+ */
+ChromeBaseEventNoListeners.prototype.getRules =
+    function(ruleIdentifiersOrCb, callback) {};
+
+
+/**
+ * Removes currently registered rules.
+ *
+ * NOTE: The API allows the either or both arguments to be omitted.
+ *     That cannot be correctly represented here, so we end up incorrectly
+ *     allowing 2 callback arguments.
+ * @param {(!Array<string>|function(): void)=} ruleIdentifiersOrCb
+ * @param {function(): void=} callback
+ * @see https://developer.chrome.com/extensions/events#method-Event-removeRules
+ */
+ChromeBaseEventNoListeners.prototype.removeRules =
+    function(ruleIdentifiersOrCb, callback) {};
+
+
+/**
+ * @see https://developer.chrome.com/extensions/events#type-Rule
+ * @record
+ */
+function Rule() {}
+
+
+/** @type {string|undefined} */
+Rule.prototype.id;
+
+
+/** @type {!Array<string>|undefined} */
+Rule.prototype.tags;
+
+
+/** @type {!Array<*>} */
+Rule.prototype.conditions;
+
+
+/** @type {!Array<*>} */
+Rule.prototype.actions;
+
+
+/** @type {number|undefined} */
+Rule.prototype.priority;
+
+
+/**
+ * @see https://developer.chrome.com/extensions/events#type-UrlFilter
+ * @record
+ */
+function UrlFilter() {}
+
+
+/** @type {string|undefined} */
+UrlFilter.prototype.hostContains;
+
+
+/** @type {string|undefined} */
+UrlFilter.prototype.hostEquals;
+
+
+/** @type {string|undefined} */
+UrlFilter.prototype.hostPrefix;
+
+
+/** @type {string|undefined} */
+UrlFilter.prototype.hostSuffix;
+
+
+/** @type {string|undefined} */
+UrlFilter.prototype.pathContains;
+
+
+/** @type {string|undefined} */
+UrlFilter.prototype.pathEquals;
+
+
+/** @type {string|undefined} */
+UrlFilter.prototype.pathPrefix;
+
+
+/** @type {string|undefined} */
+UrlFilter.prototype.pathSuffix;
+
+
+/** @type {string|undefined} */
+UrlFilter.prototype.queryContains;
+
+
+/** @type {string|undefined} */
+UrlFilter.prototype.queryEquals;
+
+
+/** @type {string|undefined} */
+UrlFilter.prototype.queryPrefix;
+
+
+/** @type {string|undefined} */
+UrlFilter.prototype.querySuffix;
+
+
+/** @type {string|undefined} */
+UrlFilter.prototype.urlContains;
+
+
+/** @type {string|undefined} */
+UrlFilter.prototype.urlEquals;
+
+
+/** @type {string|undefined} */
+UrlFilter.prototype.urlMatches;
+
+
+/** @type {string|undefined} */
+UrlFilter.prototype.originAndPathMatches;
+
+
+/** @type {string|undefined} */
+UrlFilter.prototype.urlPrefix;
+
+
+/** @type {string|undefined} */
+UrlFilter.prototype.urlSuffix;
+
+
+/** @type {!Array<string>|undefined} */
+UrlFilter.prototype.schemes;
+
+
+/** @type {!Array<(number|!Array<number>)>|undefined} */
+UrlFilter.prototype.ports;
+
+
+/**
+ * Base event type from which all others inherit.
+ *
+ * LISTENER must be a function type that returns void.
+ *
+ * @see https://developer.chrome.com/extensions/events
+ * @interface
+ * @extends {ChromeBaseEventNoListeners}
+ * @template LISTENER
+ */
+function ChromeBaseEvent() {}
+
+
+/**
+ * @param {LISTENER} callback
+ * @return {undefined}
+ * @see https://developer.chrome.com/extensions/events#method-Event-addListener
+ */
+ChromeBaseEvent.prototype.addListener = function(callback) {};
+
+
+/**
+ * @param {LISTENER} callback
+ * @return {undefined}
+ * @see https://developer.chrome.com/extensions/events#method-Event-removeListener
+ */
+ChromeBaseEvent.prototype.removeListener = function(callback) {};
+
+
+/**
+ * @param {LISTENER} callback
+ * @return {boolean}
+ * @see https://developer.chrome.com/extensions/events#method-Event-hasListener
+ */
+ChromeBaseEvent.prototype.hasListener = function(callback) {};
+
+
+/**
+ * @return {boolean}
+ * @see https://developer.chrome.com/extensions/events#method-Event-hasListeners
+ */
+ChromeBaseEvent.prototype.hasListeners = function() {};
+
+
+/**
+ * Event whose listeners take unspecified parameters.
+ *
+ * TODO(bradfordcsmith): Definitions using this type are failing to provide
+ *     information about the parameters that will actually be supplied to the
+ *     listener and should be updated to use a more specific event type.
+ * @see https://developer.chrome.com/extensions/events
+ * @interface
+ * @extends {ChromeBaseEvent<!Function>}
  */
 function ChromeEvent() {}
 
 
 /**
- * @param {!Function} callback
- * @return {undefined}
+ * Event whose listeners take no parameters.
+ *
+ * @see https://developer.chrome.com/extensions/events
+ * @interface
+ * @extends {ChromeBaseEvent<function()>}
  */
-ChromeEvent.prototype.addListener = function(callback) {};
-
-
-/**
- * @param {!Function} callback
- * @return {undefined}
- */
-ChromeEvent.prototype.removeListener = function(callback) {};
-
-
-/**
- * @param {!Function} callback
- * @return {boolean}
- */
-ChromeEvent.prototype.hasListener = function(callback) {};
-
-
-/** @return {boolean} */
-ChromeEvent.prototype.hasListeners = function() {};
-
-// TODO(tbreisacher): Add the addRules, getRules, and removeRules methods?
-
+function ChromeVoidEvent() {}
 
 
 /**
  * Event whose listeners take a string parameter.
- * @constructor
+ * @interface
+ * @extends {ChromeBaseEvent<function(string)>}
  */
 function ChromeStringEvent() {}
 
 
 /**
- * @param {function(string): void} callback
- * @return {undefined}
- */
-ChromeStringEvent.prototype.addListener = function(callback) {};
-
-
-/**
- * @param {function(string): void} callback
- * @return {undefined}
- */
-ChromeStringEvent.prototype.removeListener = function(callback) {};
-
-
-/**
- * @param {function(string): void} callback
- * @return {boolean}
- */
-ChromeStringEvent.prototype.hasListener = function(callback) {};
-
-
-/** @return {boolean} */
-ChromeStringEvent.prototype.hasListeners = function() {};
-
-
-
-/**
  * Event whose listeners take a boolean parameter.
- * @constructor
+ * @interface
+ * @extends {ChromeBaseEvent<function(boolean)>}
  */
-
 function ChromeBooleanEvent() {}
 
 
 /**
- * @param {function(boolean): void} callback
- * @return {undefined}
- */
-ChromeBooleanEvent.prototype.addListener = function(callback) {};
-
-
-/**
- * @param {function(boolean): void} callback
- * @return {undefined}
- */
-ChromeBooleanEvent.prototype.removeListener = function(callback) {};
-
-
-/**
- * @param {function(boolean): void} callback
- * @return {boolean}
- */
-ChromeBooleanEvent.prototype.hasListener = function(callback) {};
-
-
-/**
- * @return {boolean}
- */
-ChromeBooleanEvent.prototype.hasListeners = function() {};
-
-
-
-/**
  * Event whose listeners take a number parameter.
- * @constructor
+ * @interface
+ * @extends {ChromeBaseEvent<function(number)>}
  */
-
 function ChromeNumberEvent() {}
 
 
 /**
- * @param {function(number): void} callback
- * @return {undefined}
- */
-ChromeNumberEvent.prototype.addListener = function(callback) {};
-
-
-/**
- * @param {function(number): void} callback
- * @return {undefined}
- */
-ChromeNumberEvent.prototype.removeListener = function(callback) {};
-
-
-/**
- * @param {function(number): void} callback
- * @return {boolean}
- */
-ChromeNumberEvent.prototype.hasListener = function(callback) {};
-
-
-/**
- * @return {boolean}
- */
-ChromeNumberEvent.prototype.hasListeners = function() {};
-
-
-
-/**
  * Event whose listeners take an Object parameter.
- * @constructor
+ * @interface
+ * @extends {ChromeBaseEvent<function(!Object)>}
  */
 function ChromeObjectEvent() {}
 
 
 /**
- * @param {function(!Object): void} callback Callback.
- * @return {undefined}
- */
-ChromeObjectEvent.prototype.addListener = function(callback) {};
-
-
-/**
- * @param {function(!Object): void} callback Callback.
- * @return {undefined}
- */
-ChromeObjectEvent.prototype.removeListener = function(callback) {};
-
-
-/**
- * @param {function(!Object): void} callback Callback.
- * @return {boolean}
- */
-ChromeObjectEvent.prototype.hasListener = function(callback) {};
-
-
-/**
- * @return {boolean}
- */
-ChromeObjectEvent.prototype.hasListeners = function() {};
-
-
-
-/**
  * Event whose listeners take a string array parameter.
- * @constructor
+ * @interface
+ * @extends {ChromeBaseEvent<function(!Array<string>)>}
  */
 function ChromeStringArrayEvent() {}
 
 
 /**
- * @param {function(!Array<string>): void} callback
- * @return {undefined}
- */
-ChromeStringArrayEvent.prototype.addListener = function(callback) {};
-
-
-/**
- * @param {function(!Array<string>): void} callback
- * @return {undefined}
- */
-ChromeStringArrayEvent.prototype.removeListener = function(callback) {};
-
-
-/**
- * @param {function(!Array<string>): void} callback
- * @return {boolean}
- */
-ChromeStringArrayEvent.prototype.hasListener = function(callback) {};
-
-
-/** @return {boolean} */
-ChromeStringArrayEvent.prototype.hasListeners = function() {};
-
-
-
-/**
  * Event whose listeners take two strings as parameters.
- * @constructor
+ * @interface
+ * @extends {ChromeBaseEvent<function(string, string)>}
  */
 function ChromeStringStringEvent() {}
-
-
-/**
- * @param {function(string, string): void} callback
- * @return {undefined}
- */
-ChromeStringStringEvent.prototype.addListener = function(callback) {};
-
-
-/**
- * @param {function(string, string): void} callback
- * @return {undefined}
- */
-ChromeStringStringEvent.prototype.removeListener = function(callback) {};
-
-
-/**
- * @param {function(string, string): void} callback
- * @return {boolean}
- */
-ChromeStringStringEvent.prototype.hasListener = function(callback) {};
-
-
-/** @return {boolean} */
-ChromeStringStringEvent.prototype.hasListeners = function() {};
-
 
 
 /**
@@ -331,7 +369,15 @@ MessageSender.prototype.url;
 
 
 /** @type {string|undefined} */
+MessageSender.prototype.nativeApplication;
+
+
+/** @type {string|undefined} */
 MessageSender.prototype.tlsChannelId;
+
+
+/** @type {string|undefined} */
+MessageSender.prototype.origin;
 
 
 /**
@@ -424,6 +470,10 @@ Tab.prototype.mutedInfo;
 Tab.prototype.url;
 
 
+/** @type {string|undefined} */
+Tab.prototype.pendingUrl;
+
+
 // TODO: Make this field optional once dependent projects have been updated.
 /** @type {string} */
 Tab.prototype.title;
@@ -503,12 +553,8 @@ chrome.webstore.onDownloadProgress;
 chrome.runtime = {};
 
 
-/** @type {!Object|undefined} */
-chrome.runtime.lastError = {};
-
-
-/** @type {string|undefined} */
-chrome.runtime.lastError.message;
+/** @type {{message:(string|undefined)}|undefined} */
+chrome.runtime.lastError;
 
 
 /**
@@ -616,49 +662,6 @@ ChromeLoadTimes.prototype.wasAlternateProtocolAvailable;
 
 /** @type {string} */
 ChromeLoadTimes.prototype.connectionInfo;
-
-
-/**
- * Returns an object containing timing information.
- * @return {!ChromeCsiInfo}
- */
-chrome.csi = function() {};
-
-
-
-/**
- * The data object given by chrome.csi().
- * @constructor
- */
-function ChromeCsiInfo() {}
-
-
-/**
- * Same as chrome.loadTimes().requestTime, if defined.
- * Otherwise, gives the same value as chrome.loadTimes().startLoadTime.
- * In milliseconds, truncated.
- * @type {number}
- */
-ChromeCsiInfo.prototype.startE;
-
-
-/**
- * Same as chrome.loadTimes().finishDocumentLoadTime but in milliseconds and
- * truncated.
- * @type {number}
- */
-ChromeCsiInfo.prototype.onloadT;
-
-
-/**
- * The time since startE in milliseconds.
- * @type {number}
- */
-ChromeCsiInfo.prototype.pageT;
-
-
-/** @type {number} */
-ChromeCsiInfo.prototype.tran;
 
 
 /**

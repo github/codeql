@@ -252,6 +252,9 @@ CSSProperties.prototype.MsWritingMode;
 /** @type {string} */
 CSSProperties.prototype.MsZoom;
 
+/** @type {string} */
+CSSProperties.prototype.msUserSelect;
+
 // See: http://msdn.microsoft.com/en-us/library/windows/apps/Hh702466.aspx
 
 /** @type {string} */

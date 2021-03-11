@@ -17,7 +17,7 @@
 /**
  * @fileoverview Definitions for W3C's Battery Status API.
  *  The whole file has been fully type annotated. Created from
- *  http://www.w3.org/TR/2014/CR-battery-status-20141209/
+ *  https://www.w3.org/TR/battery-status/
  *
  * @externs
  */
@@ -56,24 +56,30 @@ BatteryManager.prototype.level;
 
 
 /**
- * @type {?function(!Event)}
+ * @type {?function(!Event): void}
  */
 BatteryManager.prototype.onchargingchange;
 
 
 /**
- * @type {?function(!Event)}
+ * @type {?function(!Event): void}
  */
 BatteryManager.prototype.onchargingtimechange;
 
 
 /**
- * @type {?function(!Event)}
+ * @type {?function(!Event): void}
  */
 BatteryManager.prototype.ondischargingtimechange;
 
 
 /**
- * @type {?function(!Event)}
+ * @type {?function(!Event): void}
  */
 BatteryManager.prototype.onlevelchange;
+
+/**
+ * @return {!Promise<!BatteryManager>}
+ * @see http://www.w3.org/TR/battery-status/
+ */
+Navigator.prototype.getBattery = function() {};

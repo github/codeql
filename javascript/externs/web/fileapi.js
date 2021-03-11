@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 The Closure Compiler Authors
+ * Copyright 2019 The Closure Compiler Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,70 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
- * @fileoverview Definitions for objects in the File API, File Writer API, and
- * File System API. Details of the API are at:
- * http://www.w3.org/TR/FileAPI/
- * http://www.w3.org/TR/file-writer-api/
- * http://www.w3.org/TR/file-system-api/
- *
+ * @fileoverview Definitions for file api implemented in
+ *     various browsers but not part of https://www.w3.org/TR/FileAPI.
  * @externs
- * @author dbk@google.com (David Barrett-Kahn)
  */
-
-
-/**
- * @see http://dev.w3.org/2006/webapi/FileAPI/#dfn-Blob
- * @param {Array<ArrayBuffer|ArrayBufferView|Blob|string>=} opt_blobParts
- * @param {Object=} opt_options
- * @constructor
- * @nosideeffects
- */
-function Blob(opt_blobParts, opt_options) {}
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-size
- * @type {number}
- */
-Blob.prototype.size;
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-type
- * @type {string}
- */
-Blob.prototype.type;
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-slice
- * @param {number=} start
- * @param {number=} length
- * @param {string=} opt_contentType
- * @return {!Blob}
- * @nosideeffects
- */
-Blob.prototype.slice = function(start, length, opt_contentType) {};
 
 /**
  * This replaces Blob.slice in Chrome since WebKit revision 84005.
  * @see http://lists.w3.org/Archives/Public/public-webapps/2011AprJun/0222.html
  * @param {number=} start
  * @param {number=} end
- * @param {string=} opt_contentType
+ * @param {string=} contentType
  * @return {!Blob}
  * @nosideeffects
  */
-Blob.prototype.webkitSlice = function(start, end, opt_contentType) {};
+Blob.prototype.webkitSlice = function(start, end, contentType) {};
 
 /**
  * This replaces Blob.slice in Firefox.
  * @see http://lists.w3.org/Archives/Public/public-webapps/2011AprJun/0222.html
  * @param {number=} start
  * @param {number=} end
- * @param {string=} opt_contentType
+ * @param {string=} contentType
  * @return {!Blob}
  * @nosideeffects
  */
-Blob.prototype.mozSlice = function(start, end, opt_contentType) {};
+Blob.prototype.mozSlice = function(start, end, contentType) {};
 
 /**
  * @see http://www.w3.org/TR/file-writer-api/#the-blobbuilder-interface
@@ -125,7 +89,6 @@ WebKitBlobBuilder.prototype.append = function(data, endings) {};
  */
 WebKitBlobBuilder.prototype.getBlob = function(contentType) {};
 
-
 /**
  * @record
  * @see https://dev.w3.org/2009/dap/file-system/file-dir-sys.html#the-flags-dictionary
@@ -137,7 +100,6 @@ FileSystemFlags.prototype.create;
 
 /** @type {(undefined|boolean)} */
 FileSystemFlags.prototype.exclusive;
-
 
 /**
  * @see http://www.w3.org/TR/file-system-api/#the-directoryentry-interface
@@ -160,8 +122,8 @@ DirectoryEntry.prototype.createReader = function() {};
  * @param {function(!FileError)=} errorCallback
  * @return {undefined}
  */
-DirectoryEntry.prototype.getFile = function(path, options, successCallback,
-    errorCallback) {};
+DirectoryEntry.prototype.getFile = function(
+    path, options, successCallback, errorCallback) {};
 
 /**
  * @see http://www.w3.org/TR/file-system-api/#widl-DirectoryEntry-getDirectory
@@ -171,8 +133,8 @@ DirectoryEntry.prototype.getFile = function(path, options, successCallback,
  * @param {function(!FileError)=} errorCallback
  * @return {undefined}
  */
-DirectoryEntry.prototype.getDirectory = function(path, options, successCallback,
-    errorCallback) {};
+DirectoryEntry.prototype.getDirectory = function(
+    path, options, successCallback, errorCallback) {};
 
 /**
  * @see http://www.w3.org/TR/file-system-api/#widl-DirectoryEntry-removeRecursively
@@ -180,8 +142,8 @@ DirectoryEntry.prototype.getDirectory = function(path, options, successCallback,
  * @param {function(!FileError)=} errorCallback
  * @return {undefined}
  */
-DirectoryEntry.prototype.removeRecursively = function(successCallback,
-    errorCallback) {};
+DirectoryEntry.prototype.removeRecursively = function(
+    successCallback, errorCallback) {};
 
 /**
  * @see http://www.w3.org/TR/file-system-api/#the-directoryreader-interface
@@ -195,8 +157,8 @@ function DirectoryReader() {};
  * @param {function(!FileError)=} errorCallback
  * @return {undefined}
  */
-DirectoryReader.prototype.readEntries = function(successCallback,
-    errorCallback) {};
+DirectoryReader.prototype.readEntries = function(
+    successCallback, errorCallback) {};
 
 /**
  * @see http://www.w3.org/TR/file-system-api/#the-entry-interface
@@ -242,8 +204,8 @@ Entry.prototype.filesystem;
  * @param {function(!FileError)=} errorCallback
  * @return {undefined}
  */
-Entry.prototype.moveTo = function(parent, newName, successCallback,
-    errorCallback) {};
+Entry.prototype.moveTo = function(
+    parent, newName, successCallback, errorCallback) {};
 
 /**
  * @see http://www.w3.org/TR/file-system-api/#widl-Entry-copyTo
@@ -253,8 +215,8 @@ Entry.prototype.moveTo = function(parent, newName, successCallback,
  * @param {function(!FileError)=} errorCallback
  * @return {undefined}
  */
-Entry.prototype.copyTo = function(parent, newName, successCallback,
-    errorCallback) {};
+Entry.prototype.copyTo = function(
+    parent, newName, successCallback, errorCallback) {};
 
 /**
  * @see http://www.w3.org/TR/file-system-api/#widl-Entry-toURL
@@ -288,47 +250,18 @@ Entry.prototype.getMetadata = function(successCallback, errorCallback) {};
 Entry.prototype.getParent = function(successCallback, errorCallback) {};
 
 /**
- * @see http://www.w3.org/TR/FileAPI/#dfn-file
- * @param {!Array<string|!Blob|!ArrayBuffer>=} opt_contents
- * @param {string=} opt_name
- * @param {{type: (string|undefined), lastModified: (number|undefined)}=}
- *     opt_properties
- * @constructor
- * @extends {Blob}
+ * @return {?Entry} The Entry corresponding to this item, or null. Note that
+ * despite its name,this method only works in Chrome, and will eventually
+ * be renamed to {@code getAsEntry}.
+ * @nosideeffects
  */
-function File(opt_contents, opt_name, opt_properties) {}
+DataTransferItem.prototype.webkitGetAsEntry = function() {};
 
 /**
- * Chrome uses this instead of name.
- * @deprecated Use name instead.
+ * @see https://wicg.github.io/entries-api/#dom-file-webkitrelativepath
  * @type {string}
  */
-File.prototype.fileName;
-
-/**
- * Chrome uses this instead of size.
- * @deprecated Use size instead.
- * @type {string}
- */
-File.prototype.fileSize;
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-name
- * @type {string}
- */
-File.prototype.name;
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-lastModifiedDate
- * @type {Date}
- */
-File.prototype.lastModifiedDate;
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-lastModified
- * @type {number}
- */
-File.prototype.lastModified;
+File.prototype.webkitRelativePath;
 
 /**
  * @see http://www.w3.org/TR/file-system-api/#the-fileentry-interface
@@ -362,111 +295,111 @@ function FileError() {}
 
 /**
  * @see http://www.w3.org/TR/FileAPI/#dfn-NOT_FOUND_ERR
- * @type {number}
+ * @const {number}
  */
-FileError.prototype.NOT_FOUND_ERR = 1;
+FileError.prototype.NOT_FOUND_ERR;
 
-/** @type {number} */
-FileError.NOT_FOUND_ERR = 1;
+/** @const {number} */
+FileError.NOT_FOUND_ERR;
 
 /**
  * @see http://www.w3.org/TR/FileAPI/#dfn-SECURITY_ERR
- * @type {number}
+ * @const {number}
  */
-FileError.prototype.SECURITY_ERR = 2;
+FileError.prototype.SECURITY_ERR;
 
-/** @type {number} */
-FileError.SECURITY_ERR = 2;
+/** @const {number} */
+FileError.SECURITY_ERR;
 
 /**
  * @see http://www.w3.org/TR/FileAPI/#dfn-ABORT_ERR
- * @type {number}
+ * @const {number}
  */
-FileError.prototype.ABORT_ERR = 3;
+FileError.prototype.ABORT_ERR;
 
-/** @type {number} */
-FileError.ABORT_ERR = 3;
+/** @const {number} */
+FileError.ABORT_ERR;
 
 /**
  * @see http://www.w3.org/TR/FileAPI/#dfn-NOT_READABLE_ERR
- * @type {number}
+ * @const {number}
  */
-FileError.prototype.NOT_READABLE_ERR = 4;
+FileError.prototype.NOT_READABLE_ERR;
 
-/** @type {number} */
-FileError.NOT_READABLE_ERR = 4;
+/** @const {number} */
+FileError.NOT_READABLE_ERR;
 
 /**
  * @see http://www.w3.org/TR/FileAPI/#dfn-ENCODING_ERR
- * @type {number}
+ * @const {number}
  */
-FileError.prototype.ENCODING_ERR = 5;
+FileError.prototype.ENCODING_ERR;
 
-/** @type {number} */
-FileError.ENCODING_ERR = 5;
+/** @const {number} */
+FileError.ENCODING_ERR;
 
 /**
  * @see http://www.w3.org/TR/file-writer-api/#widl-FileError-NO_MODIFICATION_ALLOWED_ERR
- * @type {number}
+ * @const {number}
  */
-FileError.prototype.NO_MODIFICATION_ALLOWED_ERR = 6;
+FileError.prototype.NO_MODIFICATION_ALLOWED_ERR;
 
-/** @type {number} */
-FileError.NO_MODIFICATION_ALLOWED_ERR = 6;
+/** @const {number} */
+FileError.NO_MODIFICATION_ALLOWED_ERR;
 
 /**
  * @see http://www.w3.org/TR/file-writer-api/#widl-FileException-INVALID_STATE_ERR
- * @type {number}
+ * @const {number}
  */
-FileError.prototype.INVALID_STATE_ERR = 7;
+FileError.prototype.INVALID_STATE_ERR;
 
-/** @type {number} */
-FileError.INVALID_STATE_ERR = 7;
+/** @const {number} */
+FileError.INVALID_STATE_ERR;
 
 /**
  * @see http://www.w3.org/TR/file-writer-api/#widl-FileException-SYNTAX_ERR
- * @type {number}
+ * @const {number}
  */
-FileError.prototype.SYNTAX_ERR = 8;
+FileError.prototype.SYNTAX_ERR;
 
-/** @type {number} */
-FileError.SYNTAX_ERR = 8;
+/** @const {number} */
+FileError.SYNTAX_ERR;
 
 /**
  * @see http://www.w3.org/TR/file-system-api/#widl-FileError-INVALID_MODIFICATION_ERR
- * @type {number}
+ * @const {number}
  */
-FileError.prototype.INVALID_MODIFICATION_ERR = 9;
+FileError.prototype.INVALID_MODIFICATION_ERR;
 
-/** @type {number} */
-FileError.INVALID_MODIFICATION_ERR = 9;
+/** @const {number} */
+FileError.INVALID_MODIFICATION_ERR;
 
 /**
  * @see http://www.w3.org/TR/file-system-api/#widl-FileError-QUOTA_EXCEEDED_ERR
- * @type {number}
+ * @const {number}
  */
-FileError.prototype.QUOTA_EXCEEDED_ERR = 10;
+FileError.prototype.QUOTA_EXCEEDED_ERR;
 
-/** @type {number} */
-FileError.QUOTA_EXCEEDED_ERR = 10;
+/** @const {number} */
+FileError.QUOTA_EXCEEDED_ERR;
 
 /**
  * @see http://www.w3.org/TR/file-system-api/#widl-FileException-TYPE_MISMATCH_ERR
- * @type {number}
+ * @const {number}
  */
-FileError.prototype.TYPE_MISMATCH_ERR = 11;
+FileError.prototype.TYPE_MISMATCH_ERR;
 
-/** @type {number} */
-FileError.TYPE_MISMATCH_ERR = 11;
+/** @const {number} */
+FileError.TYPE_MISMATCH_ERR;
 
 /**
  * @see http://www.w3.org/TR/file-system-api/#widl-FileException-PATH_EXISTS_ERR
- * @type {number}
+ * @const {number}
  */
-FileError.prototype.PATH_EXISTS_ERR = 12;
+FileError.prototype.PATH_EXISTS_ERR;
 
-/** @type {number} */
-FileError.PATH_EXISTS_ERR = 12;
+/** @const {number} */
+FileError.PATH_EXISTS_ERR;
 
 /**
  * @see http://www.w3.org/TR/FileAPI/#dfn-code-exception
@@ -475,151 +408,6 @@ FileError.PATH_EXISTS_ERR = 12;
  * 'code'
  */
 FileError.prototype.code;
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-filereader
- * @constructor
- * @implements {EventTarget}
- */
-function FileReader() {}
-
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-FileReader.prototype.addEventListener = function(type, listener, opt_useCapture)
-    {};
-
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-FileReader.prototype.removeEventListener = function(type, listener,
-    opt_useCapture) {};
-
-/**
- * @override
- * @return {boolean}
- */
-FileReader.prototype.dispatchEvent = function(evt) {};
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-readAsArrayBuffer
- * @param {!Blob} blob
- * @return {undefined}
- */
-FileReader.prototype.readAsArrayBuffer = function(blob) {};
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-readAsBinaryStringAsync
- * @param {!Blob} blob
- * @return {undefined}
- */
-FileReader.prototype.readAsBinaryString = function(blob) {};
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-readAsText
- * @param {!Blob} blob
- * @param {string=} encoding
- * @return {undefined}
- */
-FileReader.prototype.readAsText = function(blob, encoding) {};
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-readAsDataURL
- * @param {!Blob} blob
- * @return {undefined}
- */
-FileReader.prototype.readAsDataURL = function(blob) {};
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-abort
- * @return {undefined}
- */
-FileReader.prototype.abort = function() {};
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-empty
- * @type {number}
- */
-FileReader.prototype.EMPTY = 0;
-
-/** @type {number} */
-FileReader.EMPTY = 0;
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-loading
- * @type {number}
- */
-FileReader.prototype.LOADING = 1;
-
-/** @type {number} */
-FileReader.LOADING = 1;
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-done
- * @type {number}
- */
-FileReader.prototype.DONE = 2;
-
-/** @type {number} */
-FileReader.DONE = 2;
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-readystate
- * @type {number}
- */
-FileReader.prototype.readyState;
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-result
- * @type {string|Blob|ArrayBuffer}
- */
-FileReader.prototype.result;
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-error
- * @type {FileError}
- */
-FileReader.prototype.error;
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-onloadstart
- * @type {?function(!ProgressEvent)}
- */
-FileReader.prototype.onloadstart;
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-onprogress
- * @type {?function(!ProgressEvent)}
- */
-FileReader.prototype.onprogress;
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-onload
- * @type {?function(!ProgressEvent)}
- */
-FileReader.prototype.onload;
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-onabort
- * @type {?function(!ProgressEvent)}
- */
-FileReader.prototype.onabort;
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-onerror
- * @type {?function(!ProgressEvent)}
- */
-FileReader.prototype.onerror;
-
-/**
- * @see http://www.w3.org/TR/FileAPI/#dfn-onloadend
- * @type {?function(!ProgressEvent)}
- */
-FileReader.prototype.onloadend;
 
 /**
  * @see http://www.w3.org/TR/file-writer-api/#idl-def-FileSaver
@@ -635,21 +423,21 @@ FileSaver.prototype.abort = function() {};
 
 /**
  * @see http://www.w3.org/TR/file-writer-api/#widl-FileSaver-INIT
- * @type {number}
+ * @const {number}
  */
-FileSaver.prototype.INIT = 0;
+FileSaver.prototype.INIT;
 
 /**
  * @see http://www.w3.org/TR/file-writer-api/#widl-FileSaver-WRITING
- * @type {number}
+ * @const {number}
  */
-FileSaver.prototype.WRITING = 1;
+FileSaver.prototype.WRITING;
 
 /**
  * @see http://www.w3.org/TR/file-writer-api/#widl-FileSaver-DONE
- * @type {number}
+ * @const {number}
  */
-FileSaver.prototype.DONE = 2;
+FileSaver.prototype.DONE;
 
 /**
  * @see http://www.w3.org/TR/file-writer-api/#widl-FileSaver-readyState
@@ -665,37 +453,37 @@ FileSaver.prototype.error;
 
 /**
  * @see http://www.w3.org/TR/file-writer-api/#widl-FileSaver-onwritestart
- * @type {?function(!ProgressEvent)}
+ * @type {?function(!ProgressEvent<!FileSaver>)}
  */
 FileSaver.prototype.onwritestart;
 
 /**
  * @see http://www.w3.org/TR/file-writer-api/#widl-FileSaver-onprogress
- * @type {?function(!ProgressEvent)}
+ * @type {?function(!ProgressEvent<!FileSaver>)}
  */
 FileSaver.prototype.onprogress;
 
 /**
  * @see http://www.w3.org/TR/file-writer-api/#widl-FileSaver-onwrite
- * @type {?function(!ProgressEvent)}
+ * @type {?function(!ProgressEvent<!FileSaver>)}
  */
 FileSaver.prototype.onwrite;
 
 /**
  * @see http://www.w3.org/TR/file-writer-api/#widl-FileSaver-onabort
- * @type {?function(!ProgressEvent)}
+ * @type {?function(!ProgressEvent<!FileSaver>)}
  */
 FileSaver.prototype.onabort;
 
 /**
  * @see http://www.w3.org/TR/file-writer-api/#widl-FileSaver-onerror
- * @type {?function(!ProgressEvent)}
+ * @type {?function(!ProgressEvent<!FileSaver>)}
  */
 FileSaver.prototype.onerror;
 
 /**
  * @see http://www.w3.org/TR/file-writer-api/#widl-FileSaver-onwriteend
- * @type {?function(!ProgressEvent)}
+ * @type {?function(!ProgressEvent<!FileSaver>)}
  */
 FileSaver.prototype.onwriteend;
 
@@ -785,15 +573,15 @@ Metadata.prototype.size;
 
 /**
  * @see http://www.w3.org/TR/file-system-api/#widl-LocalFileSystem-TEMPORARY
- * @type {number}
-*/
-Window.prototype.TEMPORARY = 0;
+ * @const {number}
+ */
+Window.prototype.TEMPORARY;
 
 /**
  * @see http://www.w3.org/TR/file-system-api/#widl-LocalFileSystem-PERSISTENT
- * @type {number}
-*/
-Window.prototype.PERSISTENT = 1;
+ * @const {number}
+ */
+Window.prototype.PERSISTENT;
 
 /**
  * @see http://www.w3.org/TR/file-system-api/#widl-LocalFileSystem-requestFileSystem
@@ -813,8 +601,8 @@ function requestFileSystem(type, size, successCallback, errorCallback) {}
  * @param {function(!FileError)=} errorCallback
  * @return {undefined}
  */
-Window.prototype.requestFileSystem = function(type, size, successCallback,
-    errorCallback) {};
+Window.prototype.requestFileSystem = function(
+    type, size, successCallback, errorCallback) {};
 
 /**
  * @see http://www.w3.org/TR/file-system-api/#widl-LocalFileSystem-resolveLocalFileSystemURI
@@ -832,8 +620,8 @@ function resolveLocalFileSystemURI(uri, successCallback, errorCallback) {}
  * @param {function(!FileError)=} errorCallback
  * @return {undefined}
  */
-Window.prototype.resolveLocalFileSystemURI = function(uri, successCallback,
-    errorCallback) {}
+Window.prototype.resolveLocalFileSystemURI =
+    function(uri, successCallback, errorCallback) {}
 
 /**
  * This has replaced requestFileSystem in Chrome since WebKit revision 84224.
@@ -878,8 +666,8 @@ function webkitResolveLocalFileSystemURI(uri, successCallback, errorCallback) {}
  * @param {function(!FileError)=} errorCallback
  * @return {undefined}
  */
-Window.prototype.webkitResolveLocalFileSystemURI = function(uri, successCallback,
-    errorCallback) {}
+Window.prototype.webkitResolveLocalFileSystemURI = function(
+    uri, successCallback, errorCallback) {}
 
 // WindowBlobURIMethods interface, implemented by Window and WorkerGlobalScope.
 // There are three APIs for this: the old specced API, the new specced API, and
@@ -918,9 +706,9 @@ Window.prototype.revokeObjectURL = function(url) {};
  * This has been replaced by URL in Chrome since WebKit revision 75739.
  * @constructor
  * @param {string} urlString
- * @param {string=} opt_base
+ * @param {string=} base
  */
-function webkitURL(urlString, opt_base) {}
+function webkitURL(urlString, base) {}
 
 /**
  * @see http://www.w3.org/TR/FileAPI/#dfn-createObjectURL
@@ -944,15 +732,15 @@ function StorageInfo() {}
 
 /**
  * @see https://developers.google.com/chrome/whitepapers/storage
- * @type {number}
+ * @const {number}
  * */
-StorageInfo.prototype.TEMPORARY = 0;
+StorageInfo.prototype.TEMPORARY;
 
 /**
  * @see https://developers.google.com/chrome/whitepapers/storage
- * @type {number}
+ * @const {number}
  */
-StorageInfo.prototype.PERSISTENT = 1;
+StorageInfo.prototype.PERSISTENT;
 
 /**
  * @see https://developers.google.com/chrome/whitepapers/storage#requestQuota
@@ -962,8 +750,8 @@ StorageInfo.prototype.PERSISTENT = 1;
  * @param {function(!DOMException)=} errorCallback
  * @return {undefined}
  */
-StorageInfo.prototype.requestQuota = function(type, size, successCallback,
-    errorCallback) {};
+StorageInfo.prototype.requestQuota = function(
+    type, size, successCallback, errorCallback) {};
 
 /**
  * @see https://developers.google.com/chrome/whitepapers/storage#queryUsageAndQuota
@@ -972,8 +760,8 @@ StorageInfo.prototype.requestQuota = function(type, size, successCallback,
  * @param {function(!DOMException)=} errorCallback
  * @return {undefined}
  */
-StorageInfo.prototype.queryUsageAndQuota = function(type, successCallback,
-    errorCallback) {};
+StorageInfo.prototype.queryUsageAndQuota = function(
+    type, successCallback, errorCallback) {};
 
 /**
  * @see https://developers.google.com/chrome/whitepapers/storage
@@ -989,21 +777,20 @@ function StorageQuota() {}
 
 /**
  * @param {number} size
- * @param {function(number)=} opt_successCallback
- * @param {function(!DOMException)=} opt_errorCallback
+ * @param {function(number)=} successCallback
+ * @param {function(!DOMException)=} errorCallback
  * @return {undefined}
  */
-StorageQuota.prototype.requestQuota = function(size, opt_successCallback,
-    opt_errorCallback) {};
+StorageQuota.prototype.requestQuota = function(
+    size, successCallback, errorCallback) {};
 
 /**
  * @param {function(number, number)} successCallback
- * @param {function(!DOMException)=} opt_errorCallback
+ * @param {function(!DOMException)=} errorCallback
  * @return {undefined}
  */
-StorageQuota.prototype.queryUsageAndQuota = function(successCallback,
-    opt_errorCallback) {};
-
+StorageQuota.prototype.queryUsageAndQuota = function(
+    successCallback, errorCallback) {};
 
 /**
  * @type {!StorageQuota}
@@ -1016,3 +803,357 @@ Navigator.prototype.webkitPersistentStorage;
  * @see https://developer.chrome.com/apps/offline_storage
  */
 Navigator.prototype.webkitTemporaryStorage;
+
+
+/**
+ * @see http://www.w3.org/TR/file-writer-api/#idl-def-FileWriterSync
+ * @constructor
+ */
+function FileWriterSync() {}
+
+/**
+ * @see http://www.w3.org/TR/file-writer-api/#widl-FileWriterSync-position
+ * @type {number}
+ * @const
+ */
+FileWriterSync.prototype.position;
+
+/**
+ * @see http://www.w3.org/TR/file-writer-api/#widl-FileWriterSync-length
+ * @type {number}
+ * @const
+ */
+FileWriterSync.prototype.length;
+
+/**
+ * @see http://www.w3.org/TR/file-writer-api/#widl-FileWriter-write
+ * @param {!Blob} blob
+ * @return {undefined}
+ */
+FileWriterSync.prototype.write = function(blob) {};
+
+/**
+ * @see http://www.w3.org/TR/file-writer-api/#widl-FileWriterSync-seek
+ * @param {number} offset
+ * @return {undefined}
+ */
+FileWriterSync.prototype.seek = function(offset) {};
+
+/**
+ * @see http://www.w3.org/TR/file-writer-api/#widl-FileWriterSync-truncate
+ * @param {number} size
+ * @return {undefined}
+ */
+FileWriterSync.prototype.truncate = function(size) {};
+
+/**
+ * LocalFileSystemSync interface, implemented by WorkerGlobalScope.
+ * @see http://www.w3.org/TR/file-system-api/#idl-def-LocalFileSystemSync
+ * @constructor
+ */
+function LocalFileSystemSync() {}
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/
+ *     #the-synchronous-filesystem-interface
+ * @constructor
+ */
+function FileSystemSync() {}
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-FileSystemSync-name
+ * @type {string}
+ * @const
+ */
+FileSystemSync.prototype.name;
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-FileSystemSync-root
+ * @type {!DirectoryEntrySync}
+ * @const
+ */
+FileSystemSync.prototype.root;
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-LocalFileSystemSync-requestFileSystemSync-FileSystemSync-unsigned-short-type-unsigned-long-long-size
+ * @param {number} type
+ * @param {number} size
+ * @return {!FileSystemSync}
+ */
+function requestFileSystemSync(type, size) {}
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-LocalFileSystemSync-requestFileSystemSync-FileSystemSync-unsigned-short-type-unsigned-long-long-size
+ * @param {number} type
+ * @param {number} size
+ * @return {!FileSystemSync}
+ */
+function webkitRequestFileSystemSync(type, size) {}
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#the-entrysync-interface
+ * @constructor
+ */
+function EntrySync() {};
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-EntrySync-isFile
+ * @type {boolean}
+ * @const
+ */
+EntrySync.prototype.isFile;
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-EntrySync-isDirectory
+ * @type {boolean}
+ * @const
+ */
+EntrySync.prototype.isDirectory;
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-EntrySync-name
+ * @type {string}
+ * @const
+ */
+EntrySync.prototype.name;
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-EntrySync-fullPath
+ * @type {string}
+ * @const
+ */
+EntrySync.prototype.fullPath;
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-EntrySync-filesystem
+ * @type {!FileSystemSync}
+ * @const
+ */
+EntrySync.prototype.filesystem;
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-EntrySync-moveTo
+ * @param {!DirectoryEntrySync} parent
+ * @param {string=} newName
+ * @return {!EntrySync}
+ */
+EntrySync.prototype.moveTo = function(parent, newName) {};
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-EntrySync-copyTo
+ * @param {!DirectoryEntrySync} parent
+ * @param {string=} newName
+ * @return {!EntrySync}
+ */
+EntrySync.prototype.copyTo = function(parent, newName) {};
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-EntrySync-toURL
+ * @param {string=} mimeType
+ * @return {string}
+ */
+EntrySync.prototype.toURL = function(mimeType) {};
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-EntrySync-remove
+ * @return {undefined}
+ */
+EntrySync.prototype.remove = function() {};
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-EntrySync-getMetadata
+ * @return {!Metadata}
+ */
+EntrySync.prototype.getMetadata = function() {};
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-EntrySync-getParent
+ * @return {!DirectoryEntrySync}
+ */
+EntrySync.prototype.getParent = function() {};
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#the-directoryentrysync-interface
+ * @constructor
+ * @extends {EntrySync}
+ */
+function DirectoryEntrySync() {};
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-DirectoryEntrySync-createReader
+ * @return {!DirectoryReaderSync}
+ */
+DirectoryEntrySync.prototype.createReader = function() {};
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-DirectoryEntrySync-getFile
+ * @param {string} path
+ * @param {Object=} options
+ * @return {!FileEntrySync}
+ */
+DirectoryEntrySync.prototype.getFile = function(path, options) {};
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-DirectoryEntrySync-getDirectory
+ * @param {string} path
+ * @param {Object=} options
+ * @return {!DirectoryEntrySync}
+ */
+DirectoryEntrySync.prototype.getDirectory = function(path, options) {};
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-DirectoryEntrySync-removeRecursively
+ * @return {undefined}
+ */
+DirectoryEntrySync.prototype.removeRecursively = function() {};
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#the-directoryreadersync-interface
+ * @constructor
+ */
+function DirectoryReaderSync() {};
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-DirectoryReaderSync-readEntries
+ * @return {!Array<!EntrySync>}
+ */
+DirectoryReaderSync.prototype.readEntries = function() {};
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#the-fileentrysync-interface
+ * @constructor
+ * @extends {EntrySync}
+ */
+function FileEntrySync() {};
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-FileEntrySync-createWriter
+ * @return {!FileWriterSync}
+ */
+FileEntrySync.prototype.createWriter = function() {};
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-FileEntrySync-file
+ * @return {!File}
+ */
+FileEntrySync.prototype.file = function() {};
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#the-fileexception-exception
+ * @constructor
+ */
+function FileException() {}
+
+/**
+ * @see http://www.w3.org/TR/FileAPI/#dfn-NOT_FOUND_ERR
+ * @type {number}
+ */
+FileException.prototype.NOT_FOUND_ERR;
+
+/** @type {number} */
+FileException.NOT_FOUND_ERR;
+
+/**
+ * @see http://www.w3.org/TR/FileAPI/#dfn-SECURITY_ERR
+ * @type {number}
+ */
+FileException.prototype.SECURITY_ERR;
+
+/** @type {number} */
+FileException.SECURITY_ERR;
+
+/**
+ * @see http://www.w3.org/TR/FileAPI/#widl-FileException-ABORT_ERR
+ * @type {number}
+ */
+FileException.prototype.ABORT_ERR;
+
+/** @type {number} */
+FileException.ABORT_ERR;
+
+/**
+ * @see http://www.w3.org/TR/FileAPI/#widl-FileException-NOT_READABLE_ERR
+ * @type {number}
+ */
+FileException.prototype.NOT_READABLE_ERR;
+
+/** @type {number} */
+FileException.NOT_READABLE_ERR;
+
+/**
+ * @see http://www.w3.org/TR/FileAPI/#widl-FileException-ENCODING_ERR
+ * @type {number}
+ */
+FileException.prototype.ENCODING_ERR;
+
+/** @type {number} */
+FileException.ENCODING_ERR;
+
+/**
+ * @see http://www.w3.org/TR/file-writer-api/#widl-FileException-NO_MODIFICATION_ALLOWED_ERR
+ * @type {number}
+ */
+FileException.prototype.NO_MODIFICATION_ALLOWED_ERR;
+
+/** @type {number} */
+FileException.NO_MODIFICATION_ALLOWED_ERR;
+
+/**
+ * @see http://www.w3.org/TR/file-writer-api/#widl-FileException-INVALID_STATE_ERR
+ * @type {number}
+ */
+FileException.prototype.INVALID_STATE_ERR;
+
+/** @type {number} */
+FileException.INVALID_STATE_ERR;
+
+/**
+ * @see http://www.w3.org/TR/file-writer-api/#widl-FileException-SYNTAX_ERR
+ * @type {number}
+ */
+FileException.prototype.SYNTAX_ERR;
+
+/** @type {number} */
+FileException.SYNTAX_ERR;
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-FileException-INVALID_MODIFICATION_ERR
+ * @type {number}
+ */
+FileException.prototype.INVALID_MODIFICATION_ERR;
+
+/** @type {number} */
+FileException.INVALID_MODIFICATION_ERR;
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-FileException-QUOTA_EXCEEDED_ERR
+ * @type {number}
+ */
+FileException.prototype.QUOTA_EXCEEDED_ERR;
+
+/** @type {number} */
+FileException.QUOTA_EXCEEDED_ERR;
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-FileException-TYPE_MISMATCH_ERR
+ * @type {number}
+ */
+FileException.prototype.TYPE_MISMATCH_ERR;
+
+/** @type {number} */
+FileException.TYPE_MISMATCH_ERR;
+
+/**
+ * @see http://www.w3.org/TR/file-system-api/#widl-FileException-PATH_EXISTS_ERR
+ * @type {number}
+ */
+FileException.prototype.PATH_EXISTS_ERR;
+
+/** @type {number} */
+FileException.PATH_EXISTS_ERR;
+
+/**
+ * @see http://www.w3.org/TR/FileAPI/#dfn-code-exception
+ * @type {number}
+ */
+FileException.prototype.code;
