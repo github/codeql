@@ -312,6 +312,10 @@ module TaintTracking {
    */
   cached
   private module Cached {
+    cached predicate forceStage() {
+      Stages::Taint::ref()
+    }
+
     /**
      * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
      * data flow edge, which doesn't fit into a more specific category.
