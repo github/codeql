@@ -1,0 +1,1 @@
+| test.c:6:3:6:8 | call to memset | The value of argument '$@' appears to be checked after the call, rather than before it. | test.c:6:17:6:20 | len1 | len1 |
