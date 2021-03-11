@@ -1176,17 +1176,6 @@ module NodeJSLib {
   }
 
   /**
-   * A data flow node representing data received from a client to a NodeJS net server, viewed as remote user input.
-   */
-  private class NodeJSNetServerItemAsRemoteFlow extends RemoteFlowSource {
-    NodeJSNetServerRegistration reg;
-
-    NodeJSNetServerItemAsRemoteFlow() { this = reg.getReceivedItem(_) }
-
-    override string getSourceType() { result = "NodeJS server" }
-  }
-
-  /**
    * An instantiation of the `respjs` library, which is an EventEmitter.
    */
   private class RespJS extends NodeJSEventEmitter {
