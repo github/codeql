@@ -11,6 +11,7 @@ private import semmle.code.java.frameworks.spring.SpringController
 private import semmle.code.java.frameworks.spring.SpringHttp
 private import semmle.code.java.frameworks.Networking
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.FlowSteps
 
 /**
@@ -41,6 +42,12 @@ predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
  * different objects.
  */
 predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+  localAdditionalBasicTaintStep(src, sink)
+  or
+  composedValueAndTaintModelStep(src, sink)
+}
+
+private predicate localAdditionalBasicTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   localAdditionalTaintExprStep(src.asExpr(), sink.asExpr())
   or
   localAdditionalTaintUpdateStep(src.asExpr(),
@@ -53,6 +60,31 @@ predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
     src.asExpr() = arg and
     arg.isVararg() and
     sink.(DataFlow::ImplicitVarargsArray).getCall() = arg.getCall()
+  )
+}
+
+/**
+ * Holds if an additional step from `src` to `sink` can be inferred from a value-preserving step
+ * across a method callsite (from input to input, or input to result) and a taint-preserving step
+ * across the same callsite from a different input. For example, if we know that `f(a, b)` returns
+ * the exact value of `a` and also propagates taint from `b` to its result, then we also know that
+ * `a` is tainted after `f` completes, and vice versa.
+ */
+private predicate composedValueAndTaintModelStep(ArgumentNode src, DataFlow::Node sink) {
+  exists(Call call, ArgumentNode valueSource, DataFlow::PostUpdateNode valueSourcePun |
+    src.argumentOf(call, _) and
+    valueSource.argumentOf(call, _) and
+    valueSourcePun.getPreUpdateNode() = valueSource and
+    DataFlow::localFlowStep(valueSource, DataFlow::exprNode(call)) and
+    (
+      // in-x -value-> out-y and in-z -taint-> out-y ==> in-z -taint-> in-x
+      localAdditionalBasicTaintStep(src, DataFlow::exprNode(call)) and
+      sink = valueSourcePun
+      or
+      // in-x -value-> out-y and in-z -taint-> in-x ==> in-z -taint-> out-y
+      localAdditionalBasicTaintStep(src, valueSourcePun) and
+      sink = DataFlow::exprNode(call)
+    )
   )
 }
 
