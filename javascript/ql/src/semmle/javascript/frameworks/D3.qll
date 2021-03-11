@@ -1,4 +1,5 @@
 /** Provides classes and predicates modelling aspects of the `d3` library. */
+
 private import javascript
 private import semmle.javascript.security.dataflow.Xss
 
@@ -31,7 +32,12 @@ module D3 {
       call = d3Selection().getMember(name).getACall() and
       result = call.getReturn()
     |
-      name = ["select", "selectAll", "filter", "merge", "selectChild", "selectChildren", "selection", "insert", "remove", "clone", "sort", "order", "raise", "lower", "append", "data", "join", "enter", "exit", "call"]
+      name =
+        [
+          "select", "selectAll", "filter", "merge", "selectChild", "selectChildren", "selection",
+          "insert", "remove", "clone", "sort", "order", "raise", "lower", "append", "data", "join",
+          "enter", "exit", "call"
+        ]
       or
       name = ["text", "html", "datum"] and
       call.getNumArgument() > 0 // exclude 0-argument version, which returns the current value
@@ -71,12 +77,8 @@ module D3 {
       this = call.asExpr()
     }
 
-    override string getName() {
-      result = call.getArgument(0).getStringValue()
-    }
+    override string getName() { result = call.getArgument(0).getStringValue() }
 
-    override DataFlow::Node getValueNode() {
-      result = call.getArgument(1)
-    }
+    override DataFlow::Node getValueNode() { result = call.getArgument(1) }
   }
 }
