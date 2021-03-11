@@ -71,11 +71,9 @@ module DomBasedXss {
       DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
       DataFlow::FlowLabel succlbl
     ) {
-      exists(TaintTracking::AdditionalTaintStep step |
-        step.step(pred, succ) and
-        predlbl.isData() and
-        succlbl.isTaint()
-      )
+      TaintTracking::sharedTaintStep(pred, succ) and
+      predlbl.isData() and
+      succlbl.isTaint()
     }
 
     override predicate isSanitizer(DataFlow::Node node) {

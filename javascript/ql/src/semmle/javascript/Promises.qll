@@ -491,14 +491,13 @@ private module AsyncReturnSteps {
   /**
    * A data-flow step for ordinary return from an async function in a taint configuration.
    */
-  private class AsyncTaintReturn extends TaintTracking::AdditionalTaintStep, DataFlow::FunctionNode {
-    Function f;
-
-    AsyncTaintReturn() { this.getFunction() = f and f.isAsync() }
-
+  private class AsyncTaintReturn extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      returnExpr(f, pred, _) and
-      succ.(DataFlow::FunctionReturnNode).getFunction() = f
+      exists(Function f |
+        f.isAsync() and
+        returnExpr(f, pred, _) and
+        succ.(DataFlow::FunctionReturnNode).getFunction() = f
+      )
     }
   }
 }
