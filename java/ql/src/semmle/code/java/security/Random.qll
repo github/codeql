@@ -3,42 +3,16 @@ import semmle.code.java.dataflow.DefUse
 import semmle.code.java.dataflow.DataFlow
 
 /**
- * A class with methods that generate random data.
- */
-abstract class RandomNumberGenerator extends RefType { }
-
-/**
  * The `java.security.SecureRandom` class.
  */
-class SecureRandomNumberGenerator extends RandomNumberGenerator {
+class SecureRandomNumberGenerator extends RefType {
   SecureRandomNumberGenerator() { this.hasQualifiedName("java.security", "SecureRandom") }
-}
-
-/**
- * The `java.util.Random` class or any of its subtypes, including `java.security.SecureRandom`.
- */
-class StdlibRandom extends RandomNumberGenerator {
-  StdlibRandom() { this.getAnAncestor().hasQualifiedName("java.util", "Random") }
-}
-
-/**
- * The `org.apache.commons.lang3.RandomUtils` class.
- */
-class ApacheRandomUtils extends RandomNumberGenerator {
-  ApacheRandomUtils() { this.hasQualifiedName("org.apache.commons.lang3", "RandomUtils") }
 }
 
 /**
  * A method access that returns random data or writes random data to an argument.
  */
 abstract class RandomDataSource extends MethodAccess {
-  RandomDataSource() {
-    exists(Method m | m = this.getMethod() |
-      m.getName().matches("next%") and
-      m.getDeclaringType() instanceof RandomNumberGenerator
-    )
-  }
-
   /**
    * Gets the integer lower bound, inclusive, of the values returned by this call,
    * if applicable to this method's type and a constant bound is known.
@@ -85,7 +59,8 @@ class StdlibRandomSource extends RandomDataSource {
 
   StdlibRandomSource() {
     m = this.getMethod() and
-    m.getDeclaringType() instanceof StdlibRandom
+    m.getName().matches("next%") and
+    m.getDeclaringType().getAnAncestor().hasQualifiedName("java.util", "Random")
   }
 
   // Note for the following bounds functions: `java.util.Random` only defines no-arg versions
@@ -146,7 +121,8 @@ class ApacheCommonsRandomSource extends RandomDataSource {
 
   ApacheCommonsRandomSource() {
     m = this.getMethod() and
-    m.getDeclaringType() instanceof ApacheRandomUtils
+    m.getName().matches("next%") and
+    m.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "RandomUtils")
   }
 
   override Expr getLowerBoundExpr() {
