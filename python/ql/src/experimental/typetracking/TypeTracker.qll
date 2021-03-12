@@ -78,12 +78,6 @@ module StepSummary {
   }
 }
 
-/** Holds if it's reasonable to expect the data flow step from `nodeFrom` to `nodeTo` to preserve types. */
-private predicate typePreservingStep(Node nodeFrom, Node nodeTo) {
-  simpleLocalFlowStep(nodeFrom, nodeTo) or
-  jumpStep(nodeFrom, nodeTo)
-}
-
 /**
  * A utility class that is equivalent to `boolean` but does not require type joining.
  */
