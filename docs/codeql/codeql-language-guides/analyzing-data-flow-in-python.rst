@@ -107,7 +107,7 @@ Unfortunately this will only give the expression in the argument, not the values
 
 ➤ `See this in the query console on LGTM.com <https://lgtm.com/query/8213643003890447109/>`__. Many expressions flow to the same call.
 
-We see that we get several data-flow nodes for an expression as it flows towards a call (notice repeated locations in the ``call`` column). We are mostly interested in the "first" of these, what might be called the local source for the file name. To restrict attention to such local sources, and to simultaneously make the analysis more performant, we have the QL class ``LocalSourceNode``:
+We see that we get several data-flow nodes for an expression as it flows towards a call (notice repeated locations in the ``call`` column). We are mostly interested in the "first" of these, what might be called the local source for the file name. To restrict attention to such local sources, and to simultaneously make the analysis more performant, we have the QL class ``LocalSourceNode``. We could simply demand that ``expr`` is such a node:
 
 .. code-block:: ql
 
@@ -122,11 +122,39 @@ We see that we get several data-flow nodes for an expression as it flows towards
       expr instanceof DataFlow::LocalSourceNode
     select call, expr
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2017139821928498055/>`__. We now mostly have one expression per call.
+However, we could also enforce this by casting. That would allow us to use the member function ``flowsTo`` on ``LocalSourceNode`` like so:
+
+.. code-block:: ql
+
+    import python
+    import semmle.python.dataflow.new.DataFlow
+    import semmle.python.ApiGraphs
+
+    from DataFlow::CallCfgNode call, DataFlow::ExprNode expr
+    where
+      call = API::moduleImport("os").getMember("open").getACall() and
+      expr.(DataFlow::LocalSourceNode).flowsTo(call.getArg(0))
+    select call, expr
+
+As an alternative, we can ask more directly that ``expr`` is a local source of the first argument, via the predicate ``getALocalSource``:
+
+.. code-block:: ql
+
+    import python
+    import semmle.python.dataflow.new.DataFlow
+    import semmle.python.ApiGraphs
+
+    from DataFlow::CallCfgNode call, DataFlow::ExprNode expr
+    where
+      call = API::moduleImport("os").getMember("open").getACall() and
+      expr = call.getArg(0).getALocalSource()
+    select call, expr
+
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/6602079735954016687/>`__. All these three queries give identical results. We now mostly have one expression per call.
 
 We still have some cases of more than one expression flowing to a call, but then they flow through different code paths (possibly due to control-flow splitting, as in the second case).
 
-We can also make the source more specific, for example a parameter to a function or method. This query finds instances where a parameter is used as the name when opening a file:
+We might want to make the source more specific, for example a parameter to a function or method. This query finds instances where a parameter is used as the name when opening a file:
 
 .. code-block:: ql
 
@@ -140,7 +168,7 @@ We can also make the source more specific, for example a parameter to a function
       DataFlow::localFlow(p, call.getArg(0))
     select call, p
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/3998032643497238063/>`__. Very few hits now; these could feasibly be inspected manually.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/3998032643497238063/>`__. Very few results now; these could feasibly be inspected manually.
 
 Using the exact name supplied via the parameter may be too strict. If we want to know if the parameter influences the file name, we can use taint tracking instead of data flow. This query finds calls to ``os.open`` where the filename is derived from a parameter:
 
@@ -156,7 +184,7 @@ Using the exact name supplied via the parameter may be too strict. If we want to
       TaintTracking::localTaint(p, call.getArg(0))
     select call, p
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2129957933670836953/>`__. Now we get more hits and in more projects.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2129957933670836953/>`__. Now we get more results and in more projects.
 
 Global data flow
 ----------------
