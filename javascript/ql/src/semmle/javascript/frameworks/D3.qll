@@ -9,9 +9,7 @@ module D3 {
   private class D3GlobalEntry extends API::EntryPoint {
     D3GlobalEntry() { this = "D3GlobalEntry" }
 
-    override DataFlow::SourceNode getAUse() {
-      result = DataFlow::globalVarRef("d3")
-    }
+    override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("d3") }
 
     override DataFlow::Node getARhs() { none() }
   }

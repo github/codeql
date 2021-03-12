@@ -70,7 +70,7 @@ module XssThroughDom {
       exists(DataFlow::MethodCallNode call, string methodName |
         this = call and
         call = D3::d3Selection().getMember(methodName).getACall()
-        |
+      |
         methodName = "attr" and
         call.getNumArgument() = 1 and
         call.getArgument(0).mayHaveStringValue(unsafeAttributeName())
