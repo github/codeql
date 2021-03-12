@@ -590,7 +590,9 @@ module Angular2 {
   private class MatTableDataSourceStep extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::NewNode invoke |
-        invoke = DataFlow::moduleMember("@angular/material/table", "MatTableDataSource").getAnInstantiation() and
+        invoke =
+          DataFlow::moduleMember("@angular/material/table", "MatTableDataSource")
+              .getAnInstantiation() and
         pred = [invoke.getArgument(0), invoke.getAPropertyWrite("data").getRhs()] and
         succ = invoke
       )

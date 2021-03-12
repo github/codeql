@@ -312,9 +312,8 @@ module TaintTracking {
    */
   cached
   private module Cached {
-    cached predicate forceStage() {
-      Stages::Taint::ref()
-    }
+    cached
+    predicate forceStage() { Stages::Taint::ref() }
 
     /**
      * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
@@ -963,7 +962,8 @@ module TaintTracking {
         getACaptureSetter(pred) = getANodeReachingCaptureRef(succ)
         or
         exists(StringReplaceCall replace |
-          getANodeReachingCaptureRef(succ) = replace.getReplacementCallback().getFunction().getEntry() and
+          getANodeReachingCaptureRef(succ) =
+            replace.getReplacementCallback().getFunction().getEntry() and
           pred = replace.getReceiver()
         )
       }

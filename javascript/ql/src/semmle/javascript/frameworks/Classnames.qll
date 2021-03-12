@@ -24,7 +24,11 @@ private class PlainStep extends TaintTracking::SharedTaintStep {
 private class BindStep extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(DataFlow::CallNode bind | bind = classnames().getAMemberCall("bind") |
-      pred = [succ.(DataFlow::CallNode).getAnArgument(), bind.getAnArgument(), bind.getOptionArgument(_, _)] and
+      pred =
+        [
+          succ.(DataFlow::CallNode).getAnArgument(), bind.getAnArgument(),
+          bind.getOptionArgument(_, _)
+        ] and
       succ = bind.getACall()
     )
   }

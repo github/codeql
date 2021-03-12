@@ -307,7 +307,12 @@ module Vue {
     private DataFlow::PropWrite getAPropertyValueWrite(string name) {
       result = getData().getALocalSource().getAPropertyWrite(name)
       or
-      result = getABoundFunction().getALocalSource().(DataFlow::FunctionNode).getReceiver().getAPropertyWrite(name)
+      result =
+        getABoundFunction()
+            .getALocalSource()
+            .(DataFlow::FunctionNode)
+            .getReceiver()
+            .getAPropertyWrite(name)
     }
 
     /**
