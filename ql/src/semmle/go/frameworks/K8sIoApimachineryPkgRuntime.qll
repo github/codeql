@@ -7,7 +7,6 @@ import go
  */
 module K8sIoApimachineryPkgRuntime {
   /** Gets the package name `k8s.io/apimachinery/pkg/runtime`. */
-  bindingset[result]
   string packagePath() { result = package("k8s.io/apimachinery", "pkg/runtime") }
 
   private class ConvertTypeToType extends TaintTracking::FunctionModel {

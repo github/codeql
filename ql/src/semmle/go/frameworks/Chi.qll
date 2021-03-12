@@ -6,7 +6,6 @@ import go
 
 private module Chi {
   /** Gets the package name `github.com/go-chi/chi`. */
-  bindingset[result]
   string packagePath() { result = package("github.com/go-chi/chi", "") }
 
   /**

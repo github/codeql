@@ -12,7 +12,6 @@ import go
  */
 module GoKit {
   /** Gets the package name. */
-  bindingset[result]
   string packagePath() { result = package("github.com/go-kit/kit", "") }
 
   /**
@@ -21,7 +20,6 @@ module GoKit {
    */
   module Endpoint {
     /** Gets the package name. */
-    bindingset[result]
     string endpointPackagePath() { result = package("github.com/go-kit/kit", "endpoint") }
 
     // gets a function that returns an endpoint
