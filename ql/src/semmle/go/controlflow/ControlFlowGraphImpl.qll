@@ -61,6 +61,7 @@ private predicate isCond(Expr e) {
  *        respectively, of the execution of the function and the loading of the file;
  *      - Skip nodes that are semantic no-ops, but make CFG construction easier.
  */
+cached
 newtype TControlFlowNode =
   /**
    * A control-flow node that represents the evaluation of an expression.
