@@ -850,7 +850,7 @@ private module Stage2 {
     ap = getApNil(node)
     or
     exists(Node mid, Ap ap0, LocalCc localCc |
-      fwdFlow(mid, cc, argAp, ap0, config) and
+      fwdFlow(mid, pragma[only_bind_into](cc), argAp, ap0, config) and
       localCc = getLocalCc(mid, cc, config)
     |
       localStep(mid, node, true, _, config, localCc) and
@@ -1489,7 +1489,7 @@ private module Stage3 {
     ap = getApNil(node)
     or
     exists(Node mid, Ap ap0, LocalCc localCc |
-      fwdFlow(mid, cc, argAp, ap0, config) and
+      fwdFlow(mid, pragma[only_bind_into](cc), argAp, ap0, config) and
       localCc = getLocalCc(mid, cc, config)
     |
       localStep(mid, node, true, _, config, localCc) and
@@ -2206,7 +2206,7 @@ private module Stage4 {
     ap = getApNil(node)
     or
     exists(Node mid, Ap ap0, LocalCc localCc |
-      fwdFlow(mid, cc, argAp, ap0, config) and
+      fwdFlow(mid, pragma[only_bind_into](cc), argAp, ap0, config) and
       localCc = getLocalCc(mid, cc, config)
     |
       localStep(mid, node, true, _, config, localCc) and
