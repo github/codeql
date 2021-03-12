@@ -71,7 +71,7 @@ private module Cached {
    */
   cached
   predicate hasLocalSource(Node sink, Node source) {
-    // Declaring `source` to be a `SourceNode` currently causes a redundant check in the
+    // Declaring `source` to be a `LocalSourceNode` currently causes a redundant check in the
     // recursive case, so instead we check it explicitly here.
     source = sink and
     source instanceof LocalSourceNode
@@ -89,7 +89,7 @@ private module Cached {
    */
   cached
   predicate hasLocalTaintSource(Node sink, Node source) {
-    // Declaring `source` to be a `SourceNode` currently causes a redundant check in the
+    // Declaring `source` to be a `LocalSourceNode` currently causes a redundant check in the
     // recursive case, so instead we check it explicitly here.
     source = sink and
     source instanceof LocalSourceNode
