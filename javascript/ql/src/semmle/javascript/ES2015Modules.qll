@@ -1,6 +1,7 @@
 /** Provides classes for working with ECMAScript 2015 modules. */
 
 import javascript
+private import semmle.javascript.internal.CachedStages
 
 /**
  * An ECMAScript 2015 module.
@@ -654,7 +655,9 @@ abstract class ReExportDeclaration extends ExportDeclaration {
   ES2015Module getReExportedES2015Module() { result = getReExportedModule() }
 
   /** Gets the module from which this declaration re-exports. */
+  cached
   Module getReExportedModule() {
+    Stages::Imports::ref() and
     result.getFile() = getEnclosingModule().resolve(getImportedPath().(PathExpr))
     or
     result = resolveFromTypeRoot()
