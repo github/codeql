@@ -126,42 +126,6 @@ module Fastify {
   }
 
   /**
-   * An access to a user-controlled Fastify request input.
-   */
-  private class RequestInputAccess extends HTTP::RequestInputAccess {
-    RouteHandler rh;
-    string kind;
-
-    RequestInputAccess() {
-      exists(string name | this = rh.getARequestSource().ref().getAPropertyRead(name) |
-        kind = "parameter" and
-        name = ["params", "query"]
-        or
-        kind = "body" and
-        name = "body"
-      )
-    }
-
-    override RouteHandler getRouteHandler() { result = rh }
-
-    override string getKind() { result = kind }
-
-    override predicate isUserControlledObject() {
-      kind = "body" and
-      (
-        usesFastifyPlugin(rh,
-          DataFlow::moduleImport(["fastify-xml-body-parser", "fastify-formbody"]))
-        or
-        usesMiddleware(rh,
-          any(ExpressLibraries::BodyParser bodyParser | bodyParser.producesUserControlledObjects()))
-      )
-      or
-      kind = "parameter" and
-      usesFastifyPlugin(rh, DataFlow::moduleImport("fastify-qs"))
-    }
-  }
-
-  /**
    * Holds if `rh` uses `plugin`.
    */
   private predicate usesFastifyPlugin(RouteHandler rh, DataFlow::SourceNode plugin) {
