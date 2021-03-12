@@ -303,15 +303,15 @@ module API {
       MkRoot() or
       /** An abstract representative for imports of the module called `name`. */
       MkModuleImport(string name) {
+        // Ignore the following module name for Python 2, as we alias `__builtin__` to `builtins` elsewhere
+        (name != "__builtin__" or major_version() = 3) and
         (
           imports(_, name)
           or
           // When we `import foo.bar.baz` we want to create API graph nodes also for the prefixes
           // `foo` and `foo.bar`:
           name = any(ImportExpr e | not e.isRelative()).getAnImportedModuleName()
-        ) and
-        // Ignore the following module name, as we alias `__builtin__` to `builtins` elsewhere
-        name != "__builtin__"
+        )
         or
         // The `builtins` module should always be implicitly available
         name = "builtins"
@@ -414,6 +414,7 @@ module API {
       )
       or
       // Ensure the Python 2 `__builtin__` module gets the name of the Python 3 `builtins` module.
+      major_version() = 2 and
       nd = MkModuleImport("builtins") and
       imports(ref, "__builtin__")
       or

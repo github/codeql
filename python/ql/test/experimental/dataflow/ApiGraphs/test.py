@@ -136,5 +136,6 @@ def obscured_print():
     p("Can you see me?") #$ use=moduleImport("builtins").getMember("print").getReturn()
 
 def python2_style():
-    from __builtin__ import open #$ use=moduleImport("builtins").getMember("open")
-    open("hello.txt") #$ use=moduleImport("builtins").getMember("open").getReturn()
+    # In Python 3, `__builtin__` has no special meaning.
+    from __builtin__ import open #$ use=moduleImport("__builtin__").getMember("open")
+    open("hello.txt") #$ use=moduleImport("__builtin__").getMember("open").getReturn()
