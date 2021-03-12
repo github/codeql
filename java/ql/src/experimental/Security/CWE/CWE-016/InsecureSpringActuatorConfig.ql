@@ -60,8 +60,11 @@ class ManagementEndPointInclude extends ApplicationProperties {
   string getValue() { result = this.getValueElement().getValue().trim() }
 }
 
-from SpringBootPom pom, ApplicationProperties ap, Dependency d
-where
+/**
+ * Holds if `ApplicationProperties` ap of a repository managed by `SpringBootPom` pom
+ * has a vulnerable configuration of Spring Boot Actuator management endpoints.
+ */
+predicate hasConfidentialEndPointExposed(SpringBootPom pom, ApplicationProperties ap) {
   pom.isSpringBootActuatorUsed() and
   not pom.isSpringBootSecurityUsed() and
   ap.getFile()
@@ -90,7 +93,12 @@ where
               ]) // confidential endpoints to check although all endpoints apart from '/health' and '/info' are considered sensitive by Spring
       )
     )
-  ) and
+  )
+}
+
+from SpringBootPom pom, ApplicationProperties ap, Dependency d
+where
+  hasConfidentialEndPointExposed(pom, ap) and
   d = pom.getADependency() and
   d.getArtifact().getValue() = "spring-boot-starter-actuator"
 select d, "Insecure configuration of Spring Boot Actuator exposes sensitive endpoints."
