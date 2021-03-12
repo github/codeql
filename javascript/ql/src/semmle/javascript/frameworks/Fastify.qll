@@ -158,25 +158,6 @@ module Fastify {
   }
 
   /**
-   * An access to a header on a Fastify request.
-   */
-  private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
-    RouteHandler rh;
-
-    RequestHeaderAccess() {
-      this = rh.getARequestSource().ref().getAPropertyRead("headers").getAPropertyRead()
-    }
-
-    override string getAHeaderName() {
-      result = this.(DataFlow::PropRead).getPropertyName().toLowerCase()
-    }
-
-    override RouteHandler getRouteHandler() { result = rh }
-
-    override string getKind() { result = "header" }
-  }
-
-  /**
    * An argument passed to the `send` or `end` method of an HTTP response object.
    */
   private class ResponseSendArgument extends HTTP::ResponseSendArgument {
