@@ -92,6 +92,16 @@ nodes
 | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name |
 | classnames.js:15:52:15:62 | window.name |
+| d3.js:4:12:4:22 | window.name |
+| d3.js:4:12:4:22 | window.name |
+| d3.js:11:15:11:24 | getTaint() |
+| d3.js:11:15:11:24 | getTaint() |
+| d3.js:12:20:12:29 | getTaint() |
+| d3.js:12:20:12:29 | getTaint() |
+| d3.js:14:20:14:29 | getTaint() |
+| d3.js:14:20:14:29 | getTaint() |
+| d3.js:21:15:21:24 | getTaint() |
+| d3.js:21:15:21:24 | getTaint() |
 | dates.js:9:9:9:69 | taint |
 | dates.js:9:17:9:69 | decodeU ... ing(1)) |
 | dates.js:9:36:9:50 | window.location |
@@ -772,6 +782,22 @@ edges
 | classnames.js:15:47:15:63 | clsx(window.name) | classnames.js:15:31:15:78 | `<span  ... <span>` |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
+| d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:12:20:12:29 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:12:20:12:29 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:12:20:12:29 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:12:20:12:29 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:14:20:14:29 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:14:20:14:29 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:14:20:14:29 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:14:20:14:29 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:21:15:21:24 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:21:15:21:24 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:21:15:21:24 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:21:15:21:24 | getTaint() |
 | dates.js:9:9:9:69 | taint | dates.js:11:63:11:67 | taint |
 | dates.js:9:9:9:69 | taint | dates.js:12:66:12:70 | taint |
 | dates.js:9:9:9:69 | taint | dates.js:13:59:13:63 | taint |
@@ -1338,6 +1364,10 @@ edges
 | classnames.js:11:31:11:79 | `<span  ... <span>` | classnames.js:10:45:10:55 | window.name | classnames.js:11:31:11:79 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:10:45:10:55 | window.name | user-provided value |
 | classnames.js:13:31:13:83 | `<span  ... <span>` | classnames.js:13:57:13:67 | window.name | classnames.js:13:31:13:83 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:13:57:13:67 | window.name | user-provided value |
 | classnames.js:15:31:15:78 | `<span  ... <span>` | classnames.js:15:52:15:62 | window.name | classnames.js:15:31:15:78 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:15:52:15:62 | window.name | user-provided value |
+| d3.js:11:15:11:24 | getTaint() | d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() | Cross-site scripting vulnerability due to $@. | d3.js:4:12:4:22 | window.name | user-provided value |
+| d3.js:12:20:12:29 | getTaint() | d3.js:4:12:4:22 | window.name | d3.js:12:20:12:29 | getTaint() | Cross-site scripting vulnerability due to $@. | d3.js:4:12:4:22 | window.name | user-provided value |
+| d3.js:14:20:14:29 | getTaint() | d3.js:4:12:4:22 | window.name | d3.js:14:20:14:29 | getTaint() | Cross-site scripting vulnerability due to $@. | d3.js:4:12:4:22 | window.name | user-provided value |
+| d3.js:21:15:21:24 | getTaint() | d3.js:4:12:4:22 | window.name | d3.js:21:15:21:24 | getTaint() | Cross-site scripting vulnerability due to $@. | d3.js:4:12:4:22 | window.name | user-provided value |
 | dates.js:11:31:11:70 | `Time i ... aint)}` | dates.js:9:36:9:50 | window.location | dates.js:11:31:11:70 | `Time i ... aint)}` | Cross-site scripting vulnerability due to $@. | dates.js:9:36:9:50 | window.location | user-provided value |
 | dates.js:12:31:12:73 | `Time i ... aint)}` | dates.js:9:36:9:50 | window.location | dates.js:12:31:12:73 | `Time i ... aint)}` | Cross-site scripting vulnerability due to $@. | dates.js:9:36:9:50 | window.location | user-provided value |
 | dates.js:13:31:13:72 | `Time i ... time)}` | dates.js:9:36:9:50 | window.location | dates.js:13:31:13:72 | `Time i ... time)}` | Cross-site scripting vulnerability due to $@. | dates.js:9:36:9:50 | window.location | user-provided value |
