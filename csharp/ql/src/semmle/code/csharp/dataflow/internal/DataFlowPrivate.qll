@@ -226,9 +226,9 @@ module LocalFlow {
         or
         isSuccessor = true and
         exists(ControlFlowElement cfe | cfe = e2.(TupleExpr).(PatternExpr).getPatternMatch() |
-          cfe.(IsExpr).getExpr() = e1
+          cfe.(IsExpr).getExpr() = e1 and scope = cfe
           or
-          exists(Switch sw | sw.getACase() = cfe and sw.getExpr() = e1)
+          exists(Switch sw | sw.getACase() = cfe and sw.getExpr() = e1 and scope = sw)
         )
       )
     }
