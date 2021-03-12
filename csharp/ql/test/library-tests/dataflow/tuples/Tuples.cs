@@ -45,7 +45,7 @@ class Tuples
         Sink(y.Item2);
     }
 
-    static void M4()
+    static void M4(string s)
     {
         var x = ("taint source", (2, "taint source"), 3);
         switch (x)
@@ -58,6 +58,18 @@ class Tuples
             case var (a, (b, c), _):
                 Sink(a);        // Tainted
                 Sink(c);        // Tainted
+                Sink(b);
+                break;
+        }
+
+        var y = (s, (2, s), 3);
+        switch (y)
+        {
+            case ("taint source", var (b, c), _):
+                Sink(y.Item1);          // Tainted, not found
+                Sink(y.Item2.Item2);    // Tainted, not found
+                Sink(c);                // Tainted, not found
+                Sink(y.Item2.Item1);
                 Sink(b);
                 break;
         }

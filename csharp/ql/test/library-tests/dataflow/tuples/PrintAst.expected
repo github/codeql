@@ -161,6 +161,9 @@ Tuples.cs:
 #   45|             -1: [LocalVariableAccess] access to local variable y
 #   48|   8: [Method] M4
 #   48|     -1: [TypeMention] Void
+#-----|     2: (Parameters)
+#   48|       0: [Parameter] s
+#   48|         -1: [TypeMention] string
 #   49|     4: [BlockStmt] {...}
 #   50|       0: [LocalVariableDeclStmt] ... ...;
 #   50|         0: [LocalVariableDeclAndInitExpr] (String,(Int32,String),Int32) x = ...
@@ -218,99 +221,140 @@ Tuples.cs:
 #   61|           0: [MethodCall] call to method Sink
 #   61|             0: [LocalVariableAccess] access to local variable b
 #   62|         9: [BreakStmt] break;
-#   65|       2: [IfStmt] if (...) ...
-#   65|         0: [IsExpr] ... is ...
-#   65|           0: [LocalVariableAccess] access to local variable x
+#   65|       2: [LocalVariableDeclStmt] ... ...;
+#   65|         0: [LocalVariableDeclAndInitExpr] (String,(Int32,String),Int32) y = ...
+#   65|           -1: [TypeMention] (string, (int, string), int)
+#   65|           0: [LocalVariableAccess] access to local variable y
 #   65|           1: [TupleExpr] (..., ...)
-#   65|             0: [LocalVariableDeclExpr] String p
+#   65|             0: [ParameterAccess] access to parameter s
 #   65|             1: [TupleExpr] (..., ...)
-#   65|               0: [LocalVariableDeclExpr] Int32 q
-#   65|               1: [LocalVariableDeclExpr] String r
-#   65|             2: [DiscardExpr] _
-#   66|         1: [BlockStmt] {...}
-#   67|           0: [ExprStmt] ...;
-#   67|             0: [MethodCall] call to method Sink
-#   67|               0: [LocalVariableAccess] access to local variable p
-#   68|           1: [ExprStmt] ...;
-#   68|             0: [MethodCall] call to method Sink
-#   68|               0: [LocalVariableAccess] access to local variable r
-#   69|           2: [ExprStmt] ...;
-#   69|             0: [MethodCall] call to method Sink
-#   69|               0: [LocalVariableAccess] access to local variable q
-#   73|   9: [Record] R1
-#   73|     12: [NEOperator] !=
+#   65|               0: [IntLiteral] 2
+#   65|               1: [ParameterAccess] access to parameter s
+#   65|             2: [IntLiteral] 3
+#   66|       3: [SwitchStmt] switch (...) {...}
+#   66|         0: [LocalVariableAccess] access to local variable y
+#   68|         0: [CaseStmt] case ...:
+#   68|           0: [RecursivePatternExpr] { ... }
+#   68|             2: [PositionalPatternExpr] ( ... )
+#   68|               0: [ConstantPatternExpr,StringLiteral] "taint source"
+#   68|               1: [TupleExpr] (..., ...)
+#   68|                 0: [LocalVariableDeclExpr] Int32 b
+#   68|                 1: [LocalVariableDeclExpr] String c
+#   68|               2: [DiscardPatternExpr] _
+#   69|         1: [ExprStmt] ...;
+#   69|           0: [MethodCall] call to method Sink
+#   69|             0: [FieldAccess] access to field Item1
+#   69|               -1: [LocalVariableAccess] access to local variable y
+#   70|         2: [ExprStmt] ...;
+#   70|           0: [MethodCall] call to method Sink
+#   70|             0: [FieldAccess] access to field Item2
+#   70|               -1: [FieldAccess] access to field Item2
+#   70|                 -1: [LocalVariableAccess] access to local variable y
+#   71|         3: [ExprStmt] ...;
+#   71|           0: [MethodCall] call to method Sink
+#   71|             0: [LocalVariableAccess] access to local variable c
+#   72|         4: [ExprStmt] ...;
+#   72|           0: [MethodCall] call to method Sink
+#   72|             0: [FieldAccess] access to field Item1
+#   72|               -1: [FieldAccess] access to field Item2
+#   72|                 -1: [LocalVariableAccess] access to local variable y
+#   73|         5: [ExprStmt] ...;
+#   73|           0: [MethodCall] call to method Sink
+#   73|             0: [LocalVariableAccess] access to local variable b
+#   74|         6: [BreakStmt] break;
+#   77|       4: [IfStmt] if (...) ...
+#   77|         0: [IsExpr] ... is ...
+#   77|           0: [LocalVariableAccess] access to local variable x
+#   77|           1: [TupleExpr] (..., ...)
+#   77|             0: [LocalVariableDeclExpr] String p
+#   77|             1: [TupleExpr] (..., ...)
+#   77|               0: [LocalVariableDeclExpr] Int32 q
+#   77|               1: [LocalVariableDeclExpr] String r
+#   77|             2: [DiscardExpr] _
+#   78|         1: [BlockStmt] {...}
+#   79|           0: [ExprStmt] ...;
+#   79|             0: [MethodCall] call to method Sink
+#   79|               0: [LocalVariableAccess] access to local variable p
+#   80|           1: [ExprStmt] ...;
+#   80|             0: [MethodCall] call to method Sink
+#   80|               0: [LocalVariableAccess] access to local variable r
+#   81|           2: [ExprStmt] ...;
+#   81|             0: [MethodCall] call to method Sink
+#   81|               0: [LocalVariableAccess] access to local variable q
+#   85|   9: [Record] R1
+#   85|     12: [NEOperator] !=
 #-----|       2: (Parameters)
-#   73|         0: [Parameter] r1
-#   73|         1: [Parameter] r2
-#   73|     13: [EQOperator] ==
+#   85|         0: [Parameter] r1
+#   85|         1: [Parameter] r2
+#   85|     13: [EQOperator] ==
 #-----|       2: (Parameters)
-#   73|         0: [Parameter] r1
-#   73|         1: [Parameter] r2
-#   73|     14: [Property] EqualityContract
-#   73|       3: [Getter] get_EqualityContract
-#   73|     15: [InstanceConstructor] R1
+#   85|         0: [Parameter] r1
+#   85|         1: [Parameter] r2
+#   85|     14: [Property] EqualityContract
+#   85|       3: [Getter] get_EqualityContract
+#   85|     15: [InstanceConstructor] R1
 #-----|       2: (Parameters)
-#   73|         0: [Parameter] i
-#   73|           -1: [TypeMention] string
-#   73|         1: [Parameter] j
-#   73|           -1: [TypeMention] int
-#   73|     16: [Property] i
-#   73|       3: [Getter] get_i
-#   73|       4: [Setter] set_i
+#   85|         0: [Parameter] i
+#   85|           -1: [TypeMention] string
+#   85|         1: [Parameter] j
+#   85|           -1: [TypeMention] int
+#   85|     16: [Property] i
+#   85|       3: [Getter] get_i
+#   85|       4: [Setter] set_i
 #-----|         2: (Parameters)
-#   73|           0: [Parameter] value
-#   73|     17: [Property] j
-#   73|       3: [Getter] get_j
-#   73|       4: [Setter] set_j
+#   85|           0: [Parameter] value
+#   85|     17: [Property] j
+#   85|       3: [Getter] get_j
+#   85|       4: [Setter] set_j
 #-----|         2: (Parameters)
-#   73|           0: [Parameter] value
-#   75|   10: [Method] M5
-#   75|     -1: [TypeMention] Void
-#   76|     4: [BlockStmt] {...}
-#   77|       0: [LocalVariableDeclStmt] ... ...;
-#   77|         0: [LocalVariableDeclAndInitExpr] R1 r = ...
-#   77|           -1: [TypeMention] R1
-#   77|           0: [LocalVariableAccess] access to local variable r
-#   77|           1: [ObjectCreation] object creation of type R1
-#   77|             -1: [TypeMention] R1
-#   77|             0: [StringLiteral] "taint source"
-#   77|             1: [IntLiteral] 1
-#   78|       1: [ExprStmt] ...;
-#   78|         0: [MethodCall] call to method Sink
-#   78|           0: [PropertyCall] access to property i
-#   78|             -1: [LocalVariableAccess] access to local variable r
-#   80|       2: [ExprStmt] ...;
-#   80|         0: [AssignExpr] ... = ...
-#   80|           0: [TupleExpr] (..., ...)
-#   80|             0: [LocalVariableDeclExpr] String a
-#   80|             1: [LocalVariableDeclExpr] Int32 b
-#   80|           1: [LocalVariableAccess] access to local variable r
-#   81|       3: [ExprStmt] ...;
-#   81|         0: [MethodCall] call to method Sink
-#   81|           0: [LocalVariableAccess] access to local variable a
-#   82|       4: [ExprStmt] ...;
-#   82|         0: [MethodCall] call to method Sink
-#   82|           0: [LocalVariableAccess] access to local variable b
-#   84|       5: [SwitchStmt] switch (...) {...}
-#   84|         0: [LocalVariableAccess] access to local variable r
-#   86|         0: [CaseStmt] case ...:
-#   86|           0: [TupleExpr] (..., ...)
-#   86|             0: [LocalVariableDeclExpr] String x
-#   86|             1: [LocalVariableDeclExpr] Int32 y
-#   87|         1: [ExprStmt] ...;
-#   87|           0: [MethodCall] call to method Sink
-#   87|             0: [LocalVariableAccess] access to local variable x
-#   88|         2: [ExprStmt] ...;
-#   88|           0: [MethodCall] call to method Sink
-#   88|             0: [LocalVariableAccess] access to local variable y
-#   89|         3: [BreakStmt] break;
-#   93|   11: [Method] Sink
-#   93|     -1: [TypeMention] Void
+#   85|           0: [Parameter] value
+#   87|   10: [Method] M5
+#   87|     -1: [TypeMention] Void
+#   88|     4: [BlockStmt] {...}
+#   89|       0: [LocalVariableDeclStmt] ... ...;
+#   89|         0: [LocalVariableDeclAndInitExpr] R1 r = ...
+#   89|           -1: [TypeMention] R1
+#   89|           0: [LocalVariableAccess] access to local variable r
+#   89|           1: [ObjectCreation] object creation of type R1
+#   89|             -1: [TypeMention] R1
+#   89|             0: [StringLiteral] "taint source"
+#   89|             1: [IntLiteral] 1
+#   90|       1: [ExprStmt] ...;
+#   90|         0: [MethodCall] call to method Sink
+#   90|           0: [PropertyCall] access to property i
+#   90|             -1: [LocalVariableAccess] access to local variable r
+#   92|       2: [ExprStmt] ...;
+#   92|         0: [AssignExpr] ... = ...
+#   92|           0: [TupleExpr] (..., ...)
+#   92|             0: [LocalVariableDeclExpr] String a
+#   92|             1: [LocalVariableDeclExpr] Int32 b
+#   92|           1: [LocalVariableAccess] access to local variable r
+#   93|       3: [ExprStmt] ...;
+#   93|         0: [MethodCall] call to method Sink
+#   93|           0: [LocalVariableAccess] access to local variable a
+#   94|       4: [ExprStmt] ...;
+#   94|         0: [MethodCall] call to method Sink
+#   94|           0: [LocalVariableAccess] access to local variable b
+#   96|       5: [SwitchStmt] switch (...) {...}
+#   96|         0: [LocalVariableAccess] access to local variable r
+#   98|         0: [CaseStmt] case ...:
+#   98|           0: [TupleExpr] (..., ...)
+#   98|             0: [LocalVariableDeclExpr] String x
+#   98|             1: [LocalVariableDeclExpr] Int32 y
+#   99|         1: [ExprStmt] ...;
+#   99|           0: [MethodCall] call to method Sink
+#   99|             0: [LocalVariableAccess] access to local variable x
+#  100|         2: [ExprStmt] ...;
+#  100|           0: [MethodCall] call to method Sink
+#  100|             0: [LocalVariableAccess] access to local variable y
+#  101|         3: [BreakStmt] break;
+#  105|   11: [Method] Sink
+#  105|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
-#   93|       0: [TypeParameter] T
+#  105|       0: [TypeParameter] T
 #-----|     2: (Parameters)
-#   93|       0: [Parameter] x
-#   93|         -1: [TypeMention] T
-#   93|     4: [BlockStmt] {...}
-#   96| [NamespaceDeclaration] namespace ... { ... }
-#   98|   1: [Class] IsExternalInit
+#  105|       0: [Parameter] x
+#  105|         -1: [TypeMention] T
+#  105|     4: [BlockStmt] {...}
+#  108| [NamespaceDeclaration] namespace ... { ... }
+#  110|   1: [Class] IsExternalInit
