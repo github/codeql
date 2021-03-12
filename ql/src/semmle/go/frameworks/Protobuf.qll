@@ -5,23 +5,19 @@ import go
 /** Provides models of commonly used functions and types in the protobuf packages. */
 module Protobuf {
   /** Gets the name of the modern protobuf top-level implementation package. */
-  bindingset[result]
   string modernProtobufPackage() { result = package("google.golang.org/protobuf", "proto") }
 
   /** Gets the name of the modern protobuf implementation's `protoiface` subpackage. */
-  bindingset[result]
   string protobufIfacePackage() {
     result = package("google.golang.org/protobuf", "runtime/protoiface")
   }
 
   /** Gets the name of the modern protobuf implementation's `protoreflect` subpackage. */
-  bindingset[result]
   string protobufReflectPackage() {
     result = package("google.golang.org/protobuf", "reflect/protoreflect")
   }
 
   /** Gets the name of a top-level protobuf implementation package. */
-  bindingset[result]
   string protobufPackages() {
     result in [package("github.com/golang/protobuf", "proto"), modernProtobufPackage()]
   }

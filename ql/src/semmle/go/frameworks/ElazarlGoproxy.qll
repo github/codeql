@@ -9,7 +9,6 @@ import go
  */
 module ElazarlGoproxy {
   /** Gets the package name. */
-  bindingset[result]
   string packagePath() { result = package("github.com/elazarl/goproxy", "") }
 
   private class NewResponse extends HTTP::HeaderWrite::Range, DataFlow::CallNode {

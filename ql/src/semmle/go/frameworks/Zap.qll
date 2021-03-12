@@ -9,7 +9,6 @@ import go
  */
 module Zap {
   /** Gets the package path `go.uber.org/zap`. */
-  bindingset[result]
   private string packagePath() { result = package("go.uber.org/zap", "") }
 
   /** Gets a suffix for a method on `zap.SugaredLogger`. */
