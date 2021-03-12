@@ -136,7 +136,7 @@ class Node extends TNode {
   LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
 
   /**
-   * Gets a local source node from which data may flow to this node in zero or more local steps.
+   * Gets a local source node from which data may flow to this node in zero or more local data-flow steps.
    */
   LocalSourceNode getALocalSource() { result.flowsTo(this) }
 
