@@ -30,6 +30,10 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v2
 
+    - name: Enable problem matchers in repository
+      shell: bash
+      run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
+
     - name: Build
       run: env PATH=$PATH:$HOME/codeql make
 
@@ -75,6 +79,10 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v2
 
+    - name: Enable problem matchers in repository
+      shell: bash
+      run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
+
     - name: Build
       run: env PATH=$PATH:$HOME/codeql make
 
@@ -107,6 +115,10 @@ jobs:
 
     - name: Check out code
       uses: actions/checkout@v2
+
+    - name: Enable problem matchers in repository
+      shell: bash
+      run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
 
     - name: Build
       run: |
