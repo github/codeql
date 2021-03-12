@@ -34,6 +34,7 @@ class HasFlowTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasTaintFlow" and
     exists(DataFlow::Node src, DataFlow::Node sink, TaintFlowConf conf | conf.hasFlow(src, sink) |
+      not any(ValueFlowConf vconf).hasFlow(src, sink) and
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""
