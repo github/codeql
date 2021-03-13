@@ -34,3 +34,38 @@
 | typeaccesses/TA.java:15:9:15:19 | TA.Inner<?> |
 | typeaccesses/TA.java:16:9:16:26 | List<TA> |
 | typeaccesses/TA.java:16:24:16:25 | TA |
+| typeaccesses/TA.java:18:9:18:12 | void |
+| typeaccesses/TA.java:18:23:18:49 | ArrayList<? extends Number> |
+| typeaccesses/TA.java:18:43:18:48 | Number |
+| typeaccesses/TA.java:19:9:19:12 | void |
+| typeaccesses/TA.java:19:23:19:51 | ArrayList<? extends Number[]> |
+| typeaccesses/TA.java:19:43:19:48 | Number |
+| typeaccesses/TA.java:20:9:20:12 | void |
+| typeaccesses/TA.java:20:23:20:49 | ArrayList<? super Number[]> |
+| typeaccesses/TA.java:20:41:20:46 | Number |
+| typeaccesses/TA.java:24:25:24:26 | I1 |
+| typeaccesses/TA.java:24:30:24:31 | I2 |
+| typeaccesses/TA.java:25:25:25:26 | I2 |
+| typeaccesses/TA.java:25:30:25:31 | I1 |
+| typeaccesses/TA.java:26:25:26:30 | Object |
+| typeaccesses/TA.java:26:34:26:35 | I2 |
+| typeaccesses/TA.java:26:39:26:40 | I1 |
+| typeaccesses/TA.java:27:20:27:21 | I1 |
+| typeaccesses/TA.java:27:25:27:26 | I2 |
+| typeaccesses/TA.java:27:29:27:32 | void |
+| typeaccesses/TA.java:28:20:28:21 | I2 |
+| typeaccesses/TA.java:28:25:28:26 | I1 |
+| typeaccesses/TA.java:28:29:28:32 | void |
+| typeaccesses/TA.java:29:20:29:25 | Object |
+| typeaccesses/TA.java:29:29:29:30 | I2 |
+| typeaccesses/TA.java:29:34:29:35 | I1 |
+| typeaccesses/TA.java:29:38:29:41 | void |
+| typeaccesses/TA.java:31:20:31:25 | Number |
+| typeaccesses/TA.java:31:29:31:36 | Runnable |
+| typeaccesses/TA.java:31:49:31:49 | T |
+| typeaccesses/TA.java:31:62:31:83 | ArrayList<? super R[]> |
+| typeaccesses/TA.java:31:80:31:80 | R |
+| typeaccesses/TA.java:31:86:31:139 | ArrayList<? super ArrayList<? extends ArrayList<T>[]>> |
+| typeaccesses/TA.java:31:104:31:138 | ArrayList<? extends ArrayList<T>[]> |
+| typeaccesses/TA.java:31:124:31:135 | ArrayList<T> |
+| typeaccesses/TA.java:31:134:31:134 | T |

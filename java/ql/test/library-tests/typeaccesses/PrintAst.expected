@@ -92,7 +92,7 @@ typeaccesses/TA.java:
 #   15|     11: [Method] method8
 #   15|       3: [TypeAccess] TA.Inner<?>
 #   15|         -1: [TypeAccess] TA
-#   15|         0: [WildcardTypeAccess] ? ...
+#   15|         0: [WildcardTypeAccess] ?
 #   15|       5: [BlockStmt] stmt
 #   15|         0: [ReturnStmt] stmt
 #   15|           0: [NullLiteral] null
@@ -102,3 +102,89 @@ typeaccesses/TA.java:
 #   16|       5: [BlockStmt] stmt
 #   16|         0: [ReturnStmt] stmt
 #   16|           0: [NullLiteral] null
+#   18|     13: [Method] method10
+#   18|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#   18|         0: [Parameter] l
+#   18|           0: [TypeAccess] ArrayList<? extends Number>
+#   18|             0: [WildcardTypeAccess] ? extends ...
+#   18|               0: [TypeAccess] Number
+#   18|       5: [BlockStmt] stmt
+#   19|     14: [Method] method11
+#   19|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#   19|         0: [Parameter] l
+#   19|           0: [TypeAccess] ArrayList<? extends Number[]>
+#   19|             0: [WildcardTypeAccess] ? extends ...
+#   19|               0: [ArrayTypeAccess] ...[]
+#   19|                 0: [TypeAccess] Number
+#   19|       5: [BlockStmt] stmt
+#   20|     15: [Method] method12
+#   20|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#   20|         0: [Parameter] l
+#   20|           0: [TypeAccess] ArrayList<? super Number[]>
+#   20|             0: [WildcardTypeAccess] ? super ...
+#   20|               1: [ArrayTypeAccess] ...[]
+#   20|                 0: [TypeAccess] Number
+#   20|       5: [BlockStmt] stmt
+#   22|     16: [Interface] I1
+#   23|     17: [Interface] I2
+#   24|     18: [Class] Inner2
+#-----|       -2: (Generic Parameters)
+#   24|         0: [TypeVariable] T
+#   24|           0: [TypeAccess] I1
+#   24|           1: [TypeAccess] I2
+#   25|     19: [Class] Inner3
+#-----|       -2: (Generic Parameters)
+#   25|         0: [TypeVariable] T
+#   25|           0: [TypeAccess] I2
+#   25|           1: [TypeAccess] I1
+#   26|     20: [Class] Inner4
+#-----|       -2: (Generic Parameters)
+#   26|         0: [TypeVariable] T
+#   26|           0: [TypeAccess] Object
+#   26|           1: [TypeAccess] I2
+#   26|           2: [TypeAccess] I1
+#   27|     21: [Method] method13
+#-----|       2: (Generic Parameters)
+#   27|         0: [TypeVariable] T
+#   27|           0: [TypeAccess] I1
+#   27|           1: [TypeAccess] I2
+#   27|       3: [TypeAccess] void
+#   27|       5: [BlockStmt] stmt
+#   28|     22: [Method] method14
+#-----|       2: (Generic Parameters)
+#   28|         0: [TypeVariable] T
+#   28|           0: [TypeAccess] I2
+#   28|           1: [TypeAccess] I1
+#   28|       3: [TypeAccess] void
+#   28|       5: [BlockStmt] stmt
+#   29|     23: [Method] method15
+#-----|       2: (Generic Parameters)
+#   29|         0: [TypeVariable] T
+#   29|           0: [TypeAccess] Object
+#   29|           1: [TypeAccess] I2
+#   29|           2: [TypeAccess] I1
+#   29|       3: [TypeAccess] void
+#   29|       5: [BlockStmt] stmt
+#   31|     24: [Method] method16
+#-----|       2: (Generic Parameters)
+#   31|         0: [TypeVariable] T
+#   31|           0: [TypeAccess] Number
+#   31|           1: [TypeAccess] Runnable
+#   31|         1: [TypeVariable] R
+#   31|           0: [TypeAccess] T
+#   31|         2: [TypeVariable] S
+#   31|           0: [TypeAccess] ArrayList<? super R[]>
+#   31|             0: [WildcardTypeAccess] ? super ...
+#   31|               1: [ArrayTypeAccess] ...[]
+#   31|                 0: [TypeAccess] R
+#   31|       3: [TypeAccess] ArrayList<? super ArrayList<? extends ArrayList<T>[]>>
+#   31|         0: [WildcardTypeAccess] ? super ...
+#   31|           1: [TypeAccess] ArrayList<? extends ArrayList<T>[]>
+#   31|             0: [WildcardTypeAccess] ? extends ...
+#   31|               0: [ArrayTypeAccess] ...[]
+#   31|                 0: [TypeAccess] ArrayList<T>
+#   31|                   0: [TypeAccess] T
+#   31|       5: [BlockStmt] stmt

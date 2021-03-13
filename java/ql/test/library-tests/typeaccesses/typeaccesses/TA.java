@@ -14,4 +14,19 @@ public class TA extends ArrayList<TA> {
 	class Inner<T extends ArrayList<TA>> { }
 	public TA.Inner<?> method8() { return null; }
 	public java.util.List<TA> method9() { return null; }
+	
+	public void method10(ArrayList<? extends Number> l) { }
+	public void method11(ArrayList<? extends Number[]> l) { }
+	public void method12(ArrayList<? super Number[]> l) { }
+
+	public interface I1 { }
+	public interface I2 { }
+	class Inner2<T extends I1 & I2> { }
+	class Inner3<T extends I2 & I1> { }
+	class Inner4<T extends Object & I2 & I1> { }
+	public <T extends I1 & I2> void method13() { }
+	public <T extends I2 & I1> void method14() { }
+	public <T extends Object & I2 & I1> void method15() { }
+
+	public <T extends Number & Runnable, R extends T, S extends ArrayList<? super R[]>> ArrayList<? super ArrayList<? extends ArrayList<T>[]>> method16() { }
 }
