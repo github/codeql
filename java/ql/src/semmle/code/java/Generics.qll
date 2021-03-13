@@ -91,11 +91,16 @@ abstract class BoundedType extends RefType, @boundedtype {
   /** Holds if this type is bounded. */
   predicate hasTypeBound() { exists(TypeBound tb | tb = this.getATypeBound()) }
 
+  /** Gets the type bound for this type at the 0-based position, if any. */
+  TypeBound getTypeBound(int position) {
+    result = getATypeBound() and result.getPosition() = position
+  }
+
   /** Gets a type bound for this type, if any. */
   TypeBound getATypeBound() { result.getBoundedType() = this }
 
   /** Gets the first type bound for this type, if any. */
-  TypeBound getFirstTypeBound() { result = getATypeBound() and result.getPosition() = 0 }
+  TypeBound getFirstTypeBound() { result = getTypeBound(0) }
 
   /**
    * Gets an upper type bound of this type, or `Object`

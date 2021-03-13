@@ -7,42 +7,96 @@ generics/A.java:
 #-----|     -2: (Generic Parameters)
 #    6|       0: [TypeVariable] T
 #    7|     2: [Class] B
-#   10|   2: [Class] C
-#   11|     3: [FieldDeclaration] A<String> f, ...;
-#   11|       -1: [TypeAccess] A<String>
-#   11|         0: [TypeAccess] String
-#   12|     4: [FieldDeclaration] A<String>.B<> b, ...;
-#   12|       -1: [TypeAccess] A<String>.B<>
-#   12|         -1: [TypeAccess] A<String>
-#   12|           0: [TypeAccess] String
-#   13|     5: [FieldDeclaration] Map<String,Object> m, ...;
-#   13|       -1: [TypeAccess] Map<String,Object>
-#   13|         0: [TypeAccess] String
-#   13|         1: [TypeAccess] Object
-#   13|       0: [ClassInstanceExpr] new HashMap<String,Object>(...)
-#   13|         -3: [TypeAccess] HashMap<String,Object>
-#   13|           0: [TypeAccess] String
-#   13|           1: [TypeAccess] Object
-#   16|   3: [Class] D
+#    9|     3: [Method] noBound
+#-----|       2: (Generic Parameters)
+#    9|         0: [TypeVariable] R
+#    9|       3: [TypeAccess] void
+#    9|       5: [BlockStmt] stmt
+#   10|     4: [Method] upperBound
+#-----|       2: (Generic Parameters)
+#   10|         0: [TypeVariable] R
+#   10|           0: [TypeAccess] String
+#   10|       3: [TypeAccess] void
+#   10|       5: [BlockStmt] stmt
+#   13|   2: [Class] C
+#   14|     3: [FieldDeclaration] A<String> f, ...;
+#   14|       -1: [TypeAccess] A<String>
+#   14|         0: [TypeAccess] String
+#   15|     4: [FieldDeclaration] A<String>.B<> b, ...;
+#   15|       -1: [TypeAccess] A<String>.B<>
+#   15|         -1: [TypeAccess] A<String>
+#   15|           0: [TypeAccess] String
+#   16|     5: [FieldDeclaration] Map<String,Object> m, ...;
+#   16|       -1: [TypeAccess] Map<String,Object>
+#   16|         0: [TypeAccess] String
+#   16|         1: [TypeAccess] Object
+#   16|       0: [ClassInstanceExpr] new HashMap<String,Object>(...)
+#   16|         -3: [TypeAccess] HashMap<String,Object>
+#   16|           0: [TypeAccess] String
+#   16|           1: [TypeAccess] Object
+#   19|   3: [Class] D
 #-----|     -2: (Generic Parameters)
-#   16|       0: [TypeVariable] V
-#   16|         0: [TypeAccess] Number
-#   17|     3: [FieldDeclaration] D<?> d1, ...;
-#   17|       -1: [TypeAccess] D<?>
-#   17|         0: [WildcardTypeAccess] ? ...
-#   18|     4: [FieldDeclaration] D<? extends Object> d2, ...;
-#   18|       -1: [TypeAccess] D<? extends Object>
-#   18|         0: [WildcardTypeAccess] ? ...
-#   18|           0: [TypeAccess] Object
-#   19|     5: [FieldDeclaration] D<? extends Float> d3, ...;
-#   19|       -1: [TypeAccess] D<? extends Float>
-#   19|         0: [WildcardTypeAccess] ? ...
-#   19|           0: [TypeAccess] Float
-#   20|     6: [FieldDeclaration] D<? super Double> d4, ...;
-#   20|       -1: [TypeAccess] D<? super Double>
-#   20|         0: [WildcardTypeAccess] ? ...
-#   20|           1: [TypeAccess] Double
-#   21|     7: [BlockStmt] stmt
-#   21|       0: [ExprStmt] stmt
-#   21|         0: [MethodAccess] asList(...)
-#   21|           -1: [TypeAccess] Arrays
+#   19|       0: [TypeVariable] V
+#   19|         0: [TypeAccess] Number
+#   21|     3: [FieldDeclaration] D<?> d1, ...;
+#   21|       -1: [TypeAccess] D<?>
+#   21|         0: [WildcardTypeAccess] ? ...
+#   22|     4: [FieldDeclaration] D<? extends Object> d2, ...;
+#   22|       -1: [TypeAccess] D<? extends Object>
+#   22|         0: [WildcardTypeAccess] ? ...
+#   22|           0: [TypeAccess] Object
+#   23|     5: [FieldDeclaration] D<? extends Float> d3, ...;
+#   23|       -1: [TypeAccess] D<? extends Float>
+#   23|         0: [WildcardTypeAccess] ? ...
+#   23|           0: [TypeAccess] Float
+#   24|     6: [FieldDeclaration] D<? super Double> d4, ...;
+#   24|       -1: [TypeAccess] D<? super Double>
+#   24|         0: [WildcardTypeAccess] ? ...
+#   24|           1: [TypeAccess] Double
+#   25|     7: [BlockStmt] stmt
+#   25|       0: [ExprStmt] stmt
+#   25|         0: [MethodAccess] asList(...)
+#   25|           -1: [TypeAccess] Arrays
+#   28|   4: [Interface] I1
+#   29|   5: [Interface] I2
+#   31|   6: [Class] E1
+#-----|     -2: (Generic Parameters)
+#   31|       0: [TypeVariable] T
+#   31|         0: [TypeAccess] C
+#   31|         1: [TypeAccess] I1
+#   31|         2: [TypeAccess] I2
+#   32|   7: [Class] E2
+#-----|     -2: (Generic Parameters)
+#   32|       0: [TypeVariable] T
+#   32|         0: [TypeAccess] I2
+#   32|         1: [TypeAccess] I1
+#   33|   8: [Class] E3
+#-----|     -2: (Generic Parameters)
+#   33|       0: [TypeVariable] T
+#   33|         0: [TypeAccess] Object
+#   33|         1: [TypeAccess] I2
+#   33|         2: [TypeAccess] I1
+#   35|   9: [Class] F
+#   36|     2: [Method] test1
+#-----|       2: (Generic Parameters)
+#   36|         0: [TypeVariable] T
+#   36|           0: [TypeAccess] C
+#   36|           1: [TypeAccess] I1
+#   36|           2: [TypeAccess] I2
+#   36|       3: [TypeAccess] void
+#   36|       5: [BlockStmt] stmt
+#   37|     3: [Method] test2
+#-----|       2: (Generic Parameters)
+#   37|         0: [TypeVariable] T
+#   37|           0: [TypeAccess] I2
+#   37|           1: [TypeAccess] I1
+#   37|       3: [TypeAccess] void
+#   37|       5: [BlockStmt] stmt
+#   38|     4: [Method] test3
+#-----|       2: (Generic Parameters)
+#   38|         0: [TypeVariable] T
+#   38|           0: [TypeAccess] Object
+#   38|           1: [TypeAccess] I2
+#   38|           2: [TypeAccess] I1
+#   38|       3: [TypeAccess] void
+#   38|       5: [BlockStmt] stmt
