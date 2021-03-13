@@ -43,7 +43,7 @@ module ClientSideUrlRedirect {
     override predicate isAdditionalFlowStep(
       DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel f, DataFlow::FlowLabel g
     ) {
-      queryAccess(pred, succ) and
+      untrustedUrlSubstring(pred, succ) and
       f instanceof DocumentUrl and
       g.isTaint()
       or
