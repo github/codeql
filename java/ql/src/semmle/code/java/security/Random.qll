@@ -2,9 +2,7 @@ import java
 import semmle.code.java.dataflow.DefUse
 import semmle.code.java.dataflow.DataFlow
 
-class SecureRandomNumberGenerator extends RefType {
-  SecureRandomNumberGenerator() { this.hasQualifiedName("java.security", "SecureRandom") }
-}
+class SecureRandomNumberGenerator extends TypeSecureRandom { }
 
 class GetRandomData extends MethodAccess {
   GetRandomData() {

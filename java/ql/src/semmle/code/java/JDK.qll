@@ -170,6 +170,18 @@ class TypeFile extends Class {
   TypeFile() { this.hasQualifiedName("java.io", "File") }
 }
 
+// --- Java Util ---
+/** The type `java.util.UUID` */
+class TypeUUID extends Class {
+  TypeUUID() { this.hasQualifiedName("java.util", "UUID") }
+}
+
+// --- Java Security --
+/** The type `java.security.SecureRandom` */
+class TypeSecureRandom extends Class {
+  TypeSecureRandom() { this.hasQualifiedName("java.security", "SecureRandom") }
+}
+
 // --- Standard methods ---
 /**
  * Any of the methods named `command` on class `java.lang.ProcessBuilder`.
