@@ -1,13 +1,9 @@
-# taken from https://docs.python.org/3/library/ssl.html?highlight=ssl#ssl.SSLContext
-
-import socket
 import ssl
 
-hostname = 'www.python.org'
-context = ssl.create_default_context()
-context.options |= ssl.OP_NO_TLSv1 # This added by me
-context.options |= ssl.OP_NO_TLSv1_1 # This added by me
+# Using flags to restrict the protocol
+context = ssl.SSLContext()
+context.options |= ssl.OP_NO_TLSv1 | ssl.OP_NO_TLSv1_1
 
-with socket.create_connection((hostname, 443)) as sock:
-    with context.wrap_socket(sock, server_hostname=hostname) as ssock:
-        print(ssock.version())
+# Declaring a minimum version to restrict the protocol
+context = ssl.create_default_context()
+context.minimum_version = ssl.TLSVersion.TLSv1_2
