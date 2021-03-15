@@ -77,7 +77,9 @@ For example, you can find taint propagation from an expression ``source`` to an 
 Using local sources
 ~~~~~~~~~~~~~~~~~~~
 
-When asking for local data-flow or taint propagation between two expressions as above, one would normally constrain the expressions to be relevant to a certain investigation. The next section will give some concrete examples, but there is a more abstract concept that we should call out explicitly, namely that of a local source. A local source is a data-flow node with no local data-flow into it. As such it is a local origin of data flow, a place where a new value is created. This includes parameters (which only receive global data-flow) and most expressions (because they are not value-preserving). Restricting attention to such local sources gives a much lighter and more performant data-flow graph and in most cases also a more suitable abstraction for the investigation of interest. The class ``LocalSourceNode`` is exactly data-flow nodes that are also local sources. It comes with a handy member predicate ``flowsTo(DataFlow::Node node)`` which holds if there is local data-flow from the local source to ``node``.
+When asking for local data flow or taint propagation between two expressions as above, you would normally constrain the expressions to be relevant to a certain investigation. The next section will give some concrete examples, but there is a more abstract concept that we should call out explicitly, namely that of a local source.
+
+A local source is a data-flow node with no local data flow into it. As such, it is a local origin of data flow, a place where a new value is created. This includes parameters (which only receive global data flow) and most expressions (because they are not value-preserving). Restricting attention to such local sources gives a much lighter and more performant data-flow graph and in most cases also a more suitable abstraction for the investigation of interest. The class ``LocalSourceNode`` represents data-flow nodes that are also local sources. It comes with a useful member predicate ``flowsTo(DataFlow::Node node)``, which holds if there is local data flow from the local source to ``node``.
 
 Examples
 ~~~~~~~~
@@ -113,7 +115,7 @@ Unfortunately this will only give the expression in the argument, not the values
 
 ➤ `See this in the query console on LGTM.com <https://lgtm.com/query/8213643003890447109/>`__. Many expressions flow to the same call.
 
-We see that we get several data-flow nodes for an expression as it flows towards a call (notice repeated locations in the ``call`` column). We are mostly interested in the "first" of these, what might be called the local source for the file name. To restrict attention to such local sources, and to simultaneously make the analysis more performant, we have the QL class ``LocalSourceNode``. We could simply demand that ``expr`` is such a node:
+We see that we get several data-flow nodes for an expression as it flows towards a call (notice repeated locations in the ``call`` column). We are mostly interested in the "first" of these, what might be called the local source for the file name. To restrict attention to such local sources, and to simultaneously make the analysis more performant, we have the QL class ``LocalSourceNode``. We could demand that ``expr`` is such a node:
 
 .. code-block:: ql
 
@@ -274,7 +276,7 @@ Flow sources
 
 The data flow library contains some predefined flow sources. The class ``RemoteFlowSource`` (defined in module ``semmle.python.dataflow.new.RemoteFlowSources``) represents data flow from remote network inputs. This is useful for finding security problems in networked services.
 
-Also for global flow is it useful to restrict sources to instances of ``LocalSourceNode`` and the predefined sources generally do that.
+For global flow, it is also useful to restrict sources to instances of ``LocalSourceNode``. The predefined sources generally do that.
 
 Example
 ~~~~~~~
