@@ -494,22 +494,26 @@ predicate clearsContent(Node n, Content c) {
 }
 
 /** Gets the type of `n` used for type pruning. */
-IRType getNodeType(Node n) {
-  suppressUnusedNode(n) and
-  result instanceof IRVoidType // stub implementation
-}
+DataFlowType getNodeType(Node n) { result = n.getType() }
 
 /** Gets a string representation of a type returned by `getNodeType`. */
-string ppReprType(IRType t) { none() } // stub implementation
+string ppReprType(DataFlowType t) { none() } // stub implementation
+
+Type hasConversionTo(Type type) {
+  result.getUnspecifiedType() = type.getUnspecifiedType()
+  or
+  exists(Conversion convert |
+    convert.getExpr().getUnspecifiedType() = type.getUnspecifiedType() and
+    result = convert.getUnspecifiedType()
+  )
+}
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
 pragma[inline]
-predicate compatibleTypes(IRType t1, IRType t2) {
-  any() // stub implementation
-}
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { t2 = hasConversionTo+(t1) }
 
 private predicate suppressUnusedNode(Node n) { any() }
 
@@ -531,7 +535,7 @@ class DataFlowCallable = Declaration;
 
 class DataFlowExpr = Expr;
 
-class DataFlowType = IRType;
+class DataFlowType = Type;
 
 /** A function call relevant for data flow. */
 class DataFlowCall extends CallInstruction {

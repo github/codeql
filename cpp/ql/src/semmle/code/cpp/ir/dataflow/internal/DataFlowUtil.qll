@@ -34,7 +34,7 @@ class Node extends TIRDataFlowNode {
   Function getFunction() { none() } // overridden in subclasses
 
   /** Gets the type of this node. */
-  IRType getType() { none() } // overridden in subclasses
+  Type getType() { none() } // overridden in subclasses
 
   /** Gets the instruction corresponding to this node, if any. */
   Instruction asInstruction() { result = this.(InstructionNode).getInstruction() }
@@ -100,7 +100,7 @@ class Node extends TIRDataFlowNode {
   /**
    * Gets an upper bound on the type of this node.
    */
-  IRType getTypeBound() { result = getType() }
+  Type getTypeBound() { result = getType() }
 
   /** Gets the location of this element. */
   Location getLocation() { none() } // overridden by subclasses
@@ -137,7 +137,7 @@ class InstructionNode extends Node, TInstructionNode {
 
   override Function getFunction() { result = instr.getEnclosingFunction() }
 
-  override IRType getType() { result = instr.getResultIRType() }
+  override Type getType() { result = instr.getResultType() }
 
   override Location getLocation() { result = instr.getLocation() }
 
@@ -163,7 +163,7 @@ class OperandNode extends Node, TOperandNode {
 
   override Function getFunction() { result = op.getUse().getEnclosingFunction() }
 
-  override IRType getType() { result = op.getIRType() }
+  override Type getType() { result = op.getType() }
 
   override Location getLocation() { result = op.getLocation() }
 
@@ -519,7 +519,7 @@ class VariableNode extends Node, TVariableNode {
     result = v
   }
 
-  override IRType getType() { result.getCanonicalLanguageType().hasUnspecifiedType(v.getType(), _) }
+  override Type getType() { result = v.getType() }
 
   override Location getLocation() { result = v.getLocation() }
 

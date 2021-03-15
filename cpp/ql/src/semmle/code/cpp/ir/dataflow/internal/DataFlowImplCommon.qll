@@ -44,8 +44,8 @@ private module Cached {
   cached
   predicate viableParamArg(DataFlowCall call, ParameterNode p, ArgumentNode arg) {
     exists(int i |
-      viableParam(call, i, p) and
-      arg.argumentOf(call, i) and
+      viableParam(call, i, pragma[only_bind_into](p)) and
+      pragma[only_bind_into](arg).argumentOf(call, i) and
       compatibleTypes(getNodeType(arg), getNodeType(p))
     )
   }
