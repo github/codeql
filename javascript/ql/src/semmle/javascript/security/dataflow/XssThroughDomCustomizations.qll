@@ -28,6 +28,11 @@ module XssThroughDom {
   }
 
   /**
+   * Gets a DOM property name that could store user-controlled data.
+   */
+  string unsafeDomPropertyName() { result = ["innerText", "textContent", "value", "name"] }
+
+  /**
    * A source for text from the DOM from a JQuery method call.
    */
   class JQueryTextSource extends Source, JQuery::MethodCall {
@@ -35,10 +40,16 @@ module XssThroughDom {
       (
         this.getMethodName() = ["text", "val"] and this.getNumArgument() = 0
         or
-        this.getMethodName() = "attr" and
-        this.getNumArgument() = 1 and
-        forex(InferredType t | t = this.getArgument(0).analyze().getAType() | t = TTString()) and
-        this.getArgument(0).mayHaveStringValue(unsafeAttributeName())
+        exists(string methodName, string value |
+          this.getMethodName() = methodName and
+          this.getNumArgument() = 1 and
+          forex(InferredType t | t = this.getArgument(0).analyze().getAType() | t = TTString()) and
+          this.getArgument(0).mayHaveStringValue(value)
+        |
+          methodName = "attr" and value = unsafeAttributeName()
+          or
+          methodName = "prop" and value = unsafeDomPropertyName()
+        )
       ) and
       // looks like a $("<p>" + ... ) source, which is benign for this query.
       not exists(DataFlow::Node prefix |
@@ -52,13 +63,36 @@ module XssThroughDom {
   }
 
   /**
+   * A source for text from the DOM from a `d3` method call.
+   */
+  class D3TextSource extends Source {
+    D3TextSource() {
+      exists(DataFlow::MethodCallNode call, string methodName |
+        this = call and
+        call = D3::d3Selection().getMember(methodName).getACall()
+      |
+        methodName = "attr" and
+        call.getNumArgument() = 1 and
+        call.getArgument(0).mayHaveStringValue(unsafeAttributeName())
+        or
+        methodName = "property" and
+        call.getNumArgument() = 1 and
+        call.getArgument(0).mayHaveStringValue(unsafeDomPropertyName())
+        or
+        methodName = "text" and
+        call.getNumArgument() = 0
+      )
+    }
+  }
+
+  /**
    * A source for text from the DOM from a DOM property read or call to `getAttribute()`.
    */
   class DOMTextSource extends Source {
     DOMTextSource() {
       exists(DataFlow::PropRead read | read = this |
         read.getBase().getALocalSource() = DOM::domValueRef() and
-        read.mayHavePropertyName(["innerText", "textContent", "value", "name"])
+        read.mayHavePropertyName(unsafeDomPropertyName())
       )
       or
       exists(DataFlow::MethodCallNode mcn | mcn = this |
