@@ -193,3 +193,74 @@ private class StringBuilderTaintPreservingCallable extends TaintPreservingCallab
     sink = -1
   }
 }
+
+/**
+ * Flow steps through methods of classes that extend `java.nio.Buffer`, such as `ByteBuffer` and `CharBuffer`.
+ */
+private module Buffers {
+  class BufferType extends RefType {
+    BufferType() { this.getASourceSupertype*().hasQualifiedName("java.nio", "Buffer") }
+  }
+
+  class BufferWrapMethod extends TaintPreservingCallable {
+    BufferWrapMethod() {
+      this.getDeclaringType() instanceof BufferType and
+      // public static ByteBuffer wrap(byte[] array)
+      // public static ByteBuffer wrap(byte[] array, int offset, int length)
+      this.hasName("wrap") and
+      this.isStatic()
+    }
+
+    override predicate returnsTaintFrom(int arg) { arg = 0 }
+  }
+
+  class BufferArrayMethod extends TaintPreservingCallable {
+    BufferArrayMethod() {
+      this.getDeclaringType() instanceof BufferType and
+      // public abstract Object array() [in Buffer]
+      this.hasName("array")
+    }
+
+    override predicate returnsTaintFrom(int arg) { arg = -1 }
+  }
+
+  class BufferChainMethod extends TaintPreservingCallable {
+    BufferChainMethod() {
+      this.getDeclaringType() instanceof BufferType and
+      this.getReturnType() instanceof BufferType and
+      not this.hasName("clear")
+    }
+
+    override predicate returnsTaintFrom(int arg) { arg = -1 }
+  }
+
+  class BufferBulkGetMethod extends BufferChainMethod {
+    int idx;
+
+    BufferBulkGetMethod() {
+      // public ByteBuffer get(byte[] dst)
+      // public ByteBuffer get(byte[] dst, int offset, int length)
+      // public ByteBuffer get(int index, byte[] dst, int offset, int length)
+      this.hasName("get") and
+      this.getParameterType(idx) instanceof Array
+    }
+
+    override predicate transfersTaint(int src, int sink) { src = -1 and sink = idx }
+  }
+
+  class BufferBulkPutMethod extends BufferChainMethod {
+    int idx;
+
+    BufferBulkPutMethod() {
+      // public final ByteBuffer put(byte[] src)
+      // public ByteBuffer put(byte[] src, int offset, int length)
+      // public ByteBuffer put(int index, byte[] src, int offset, int length)
+      // public ByteBuffer put(ByteBuffer src)
+      // public final CharBuffer put(String src)
+      this.hasName("put") and
+      this.getParameterType(idx) instanceof RefType
+    }
+
+    override predicate transfersTaint(int src, int sink) { src = idx and sink = -1 }
+  }
+}

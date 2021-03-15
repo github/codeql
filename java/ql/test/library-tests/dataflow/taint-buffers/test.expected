@@ -1,0 +1,3 @@
+| A.java:10:32:10:38 | taint(...) | A.java:19:14:19:18 | data2 |
+| A.java:23:32:23:38 | taint(...) | A.java:27:14:27:68 | array(...) |
+| A.java:31:32:31:38 | taint(...) | A.java:36:14:36:16 | buf |
