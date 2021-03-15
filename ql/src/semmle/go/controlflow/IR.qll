@@ -662,7 +662,7 @@ module IR {
       )
       or
       exists(TypeAssertExpr tae | getBase() = evalExprInstruction(tae) |
-        result = tae.getType().(TupleType).getComponentType(i)
+        result = tae.getType().(TupleType).getComponentType(pragma[only_bind_into](i))
       )
       or
       exists(Type rangeType | rangeType = s.(RangeStmt).getDomain().getType().getUnderlyingType() |
