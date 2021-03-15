@@ -1,0 +1,1 @@
+| Test.java:7:5:7:28 | nextInt(...) | Random object created and used only once. |
