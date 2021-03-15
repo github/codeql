@@ -14,6 +14,11 @@ module DomBasedXss {
   deprecated class Configuration = HtmlInjectionConfiguration;
 
   /**
+   * DEPRECATED. Use `Vue::VHtmlSourceWrite` instead.
+   */
+  deprecated class VHtmlSourceWrite = Vue::VHtmlSourceWrite;
+
+  /**
    * A taint-tracking configuration for reasoning about XSS.
    */
   class HtmlInjectionConfiguration extends TaintTracking::Configuration {
