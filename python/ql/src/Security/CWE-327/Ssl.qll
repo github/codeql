@@ -146,7 +146,11 @@ class Ssl extends TlsLibrary {
 
   override string specific_version_name(ProtocolVersion version) { result = "PROTOCOL_" + version }
 
-  override string unspecific_version_name(ProtocolFamily family) { result = "PROTOCOL_" + family }
+  override string unspecific_version_name(ProtocolFamily family) {
+    family = "SSLv23" and result = "PROTOCOL_" + family
+    or
+    family = "TLS" and result = "PROTOCOL_" + family + ["", "_CLIENT", "_SERVER"]
+  }
 
   override API::Node version_constants() { result = API::moduleImport("ssl") }
 
