@@ -19,6 +19,24 @@ def test_fluent_tls_no_TLSv1():
         with context.wrap_socket(sock, server_hostname=hostname) as ssock:
             print(ssock.version())
 
+def test_fluent_tls_client_no_TLSv1():
+    hostname = 'www.python.org'
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+    context.options |= ssl.OP_NO_TLSv1
+
+    with socket.create_connection((hostname, 443)) as sock:
+        with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+            print(ssock.version())
+
+def test_fluent_tls_server_no_TLSv1():
+    hostname = 'www.python.org'
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+    context.options |= ssl.OP_NO_TLSv1
+
+    with socket.create_server((hostname, 443)) as sock:
+        with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+            print(ssock.version())
+
 def test_fluent_tls_safe():
     hostname = 'www.python.org'
     context = ssl.SSLContext(ssl.PROTOCOL_TLS)
