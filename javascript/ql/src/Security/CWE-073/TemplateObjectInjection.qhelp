@@ -11,14 +11,14 @@ local file reads or even remote code execution.
 
 <recommendation>
 <p>
-Avoid using user-controlled objects as arguments to template engine, instead construct the object explicitly with 
+Avoid using user-controlled objects as arguments to a template engine. Instead, construct the object explicitly with 
 the specific properties needed by the template.
 </p>
 </recommendation>
 
 <example>
 <p>
-In the below example a server uses the user-controlled <code>profile</code> object to 
+In the example below a server uses the user-controlled <code>profile</code> object to 
 render the <code>index</code> template.  
 </p>
 <sample src="examples/TemplateObjectInjection.js" />
