@@ -1,4 +1,3 @@
-# receive_pr.yml
 name: Receive PR
 
 # read-only repo token

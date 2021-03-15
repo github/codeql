@@ -46,12 +46,13 @@
 
 		<p>
 
-			The following examples use two triggers to handle potentially untrusted
-			pull request in a secure manner:
+			The following example uses two workflows  to handle potentially untrusted
+			pull request in a secure manner. The receive_pr.yml is triggered first:
 
 		</p>
 
 		<sample src="examples/receive_pr.yml" />
+		<p>The comment_pr.yml is triggered after receive_pr.yml completes:</p>
 		<sample src="examples/comment_pr.yml" />
 
 	</example>
