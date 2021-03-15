@@ -219,7 +219,7 @@ module NetHttp {
   /** A call to the `Transport.RoundTrip` function in the `net/http` package. */
   private class TransportRoundTrip extends HTTP::ClientRequest::Range, DataFlow::MethodCallNode {
     TransportRoundTrip() {
-      this.getTarget().(Method).hasQualifiedName("net/http", "Transport", "RoundTrip")
+      this.getTarget().hasQualifiedName("net/http", "Transport", "RoundTrip")
     }
 
     override DataFlow::Node getUrl() {
