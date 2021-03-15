@@ -8,7 +8,7 @@
  * @id js/actions/injection
  * @tags actions
  *       security
- *       external/cwe/cwe-829
+ *       external/cwe/cwe-094
  */
 
 import javascript

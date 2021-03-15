@@ -9,7 +9,7 @@
  * @id js/actions/pull_request_target
  * @tags actions
  *       security
- *       external/cwe/cwe-829
+ *       external/cwe/cwe-094
  */
 
 import javascript

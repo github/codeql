@@ -12,7 +12,7 @@ import javascript
 module Actions {
   /** A YAML node in a GitHub Actions workflow file. */
   private class Node extends YAMLNode {
-    Node() { this.getLocation().getFile().getRelativePath().matches(["experimental/Security/CWE-829/.github/workflows/%", ".github/workflows/%"]) }
+    Node() { this.getLocation().getFile().getRelativePath().matches(["experimental/Security/CWE-094/.github/workflows/%", ".github/workflows/%"]) }
   }
 
   /**
