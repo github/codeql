@@ -1,0 +1,2 @@
+| com/example/controller/TestApiController.java:12:5:12:34 | GetMapping | non production interface is left behind and vulnerable to attacks |
+| com/example/servlet/WebServletTest.java:14:1:14:42 | WebServlet | non production interface is left behind and vulnerable to attacks |

@@ -8,7 +8,7 @@ before the application goes online, you can access the test interface and are vu
 </overview>
 
 <recommendation>
-<p>Delete the test interface from the official environment directory.</p>
+<p>Exclude the test interface when packaging the project.For usage, please refer to <code>Maven</code> <code>Ant</code> <code>Gradle</code></p>
 </recommendation>
 
 <example>

@@ -1,3 +1,5 @@
+package com.example.servlet;
+
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,8 +27,6 @@ public class WebServletTest extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String jsonpCallback = req.getParameter("jsonpCallback");
-
-        resp.setHeader("test", req.getParameter("crlf"));
 
         PrintWriter pw = null;
         Gson gson = new Gson();
@@ -56,7 +56,6 @@ public class WebServletTest extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         this.key = config.getInitParameter("key");
-        System.out.println("初始化" + this.key);
         super.init(config);
     }
 

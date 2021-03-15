@@ -209,6 +209,24 @@ class Pom extends ProtoPom {
   RefType getASourceRefType() { result.getFile().getParentContainer*() = getSourceDirectory() }
 }
 
+/** An XML element named "excludes", as found in Maven POM XML files. */
+class Excludes extends PomElement {
+  Excludes() { this.getName() = "excludes" }
+}
+
+/** An XML element named "exclude", as found in Maven POM XML files. */
+class Exclude extends PomElement {
+  Exclude() { getParent() instanceof Excludes }
+}
+
+/** An XML element named "packagingExcludes", as found in Maven POM XML files. */
+class PackagingExcludes extends PomElement {
+  PackagingExcludes() { this.getName() = "packagingExcludes" }
+
+  /** Gets an value that applies to this element. */
+  string getAnValue() { result = this.getValue().splitAt(",").trim() }
+}
+
 /**
  * An XML element named "dependency", as found in Maven POM XML files.
  *

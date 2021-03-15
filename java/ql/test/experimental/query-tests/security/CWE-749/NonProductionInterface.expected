@@ -1,3 +1,0 @@
-| SpringControllerTest.java:14:5:14:36 | GetMapping | non production interface is left behind and vulnerable to attacks |
-| SpringControllerTest.java:31:5:31:34 | GetMapping | non production interface is left behind and vulnerable to attacks |
-| WebServletTest.java:12:1:12:42 | WebServlet | non production interface is left behind and vulnerable to attacks |

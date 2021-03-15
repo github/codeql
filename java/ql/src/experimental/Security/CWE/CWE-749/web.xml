@@ -1,12 +1,17 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
-                      http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" version="4.0">
-    <servlet>
-        <servlet-name>testServlet</servlet-name>
-        <servlet-class>TestServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>testServlet</servlet-name>
-        <url-pattern>/testServlet</url-pattern>
-    </servlet-mapping>
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+
+  <servlet>
+    <servlet-name>testServlet</servlet-name>
+    <servlet-class>TestServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>testServlet</servlet-name>
+    <url-pattern>/testServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

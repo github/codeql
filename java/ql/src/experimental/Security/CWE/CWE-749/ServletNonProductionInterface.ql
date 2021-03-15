@@ -8,9 +8,14 @@
  */
 
 import java
+import NonProductionInterfaceLib
 import semmle.code.xml.WebXML
 import semmle.code.java.frameworks.Servlets
 
-from WebServletMappingUrlPattern wsmup
-where wsmup.getValue().regexpMatch("(?i).*test.*") // The test interface is defined in `web.xml`
+from WebServletMappingUrlPattern wsmup, WebServletClass wsc
+where
+  wsmup.getValue().regexpMatch("(?i).*test.*") and // The test interface is defined in `web.xml`
+  wsc.getParent().getAChild("servlet-name").getTextValue() =
+    wsmup.getParent().getAChild("servlet-name").getTextValue() and
+  verifyClassWithPomWarExcludes(wsc.getClass())
 select wsmup, "servlet non production interface is left behind and vulnerable to attacks"

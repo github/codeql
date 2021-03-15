@@ -8,6 +8,7 @@
  */
 
 import java
+import NonProductionInterfaceLib
 import semmle.code.java.frameworks.spring.SpringController
 
 abstract class NonProductionInterface extends Annotation {
@@ -21,7 +22,7 @@ class SpringControllerNonProductionInterface extends NonProductionInterface {
   SpringControllerNonProductionInterface() {
     exists(SpringRequestMappingMethod srmm |
       srmm.getAnAnnotation() = this and
-      srmm.getNumberOfLinesOfCode() > 3 and
+      srmm.getNumberOfLinesOfCode() > 2 and  //Ensure that the test interface method has a body.
       this.getType() instanceof SpringRequestMappingAnnotationType and
       this.getAValue("value").toString().regexpMatch("(?i).*test.*")
     )
@@ -59,5 +60,9 @@ class WebServletNonProductionInterface extends NonProductionInterface {
   }
 }
 
-from NonProductionInterface npi
+from Class c, NonProductionInterface npi
+where
+  npi.getCompilationUnit() = c.getCompilationUnit() and
+  verifyClassWithPomJarExcludes(c) and
+  verifyClassWithPomWarExcludes(c)
 select npi, "non production interface is left behind and vulnerable to attacks"
