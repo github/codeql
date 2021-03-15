@@ -65,6 +65,12 @@ class JSXElement extends JSXNode {
   }
 
   override string getAPrimaryQlClass() { result = "JSXElement" }
+
+  /**
+   * Holds if this JSX element is a HTML element.
+   * That is, the name starts with a lowercase letter.
+   */
+  predicate isHTMLElement() { getName().regexpMatch("[a-z].*") }
 }
 
 /**

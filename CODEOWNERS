@@ -4,17 +4,16 @@
 /javascript/ @github/codeql-javascript
 /python/ @github/codeql-python
 
-# Assign query help for docs review
-/cpp/**/*.qhelp @hubwriter
-/csharp/**/*.qhelp @jf205
-/java/**/*.qhelp @felicitymay
-/javascript/**/*.qhelp @mchammer01
-/python/**/*.qhelp @felicitymay
-/docs/language/ @shati-patel @jf205
+# Make @xcorail (GitHub Security Lab) a code owner for experimental queries so he gets pinged when we promote a query out of experimental
+/cpp/**/experimental/**/* @github/codeql-c-analysis @xcorail
+/csharp/**/experimental/**/* @github/codeql-csharp @xcorail
+/java/**/experimental/**/* @github/codeql-java @xcorail
+/javascript/**/experimental/**/* @github/codeql-javascript @xcorail
+/python/**/experimental/**/* @github/codeql-python @xcorail
 
-# Exclude help for experimental queries from docs review
-/cpp/**/experimental/**/*.qhelp @github/codeql-c-analysis
-/csharp/**/experimental/**/*.qhelp @github/codeql-csharp
-/java/**/experimental/**/*.qhelp @github/codeql-java
-/javascript/**/experimental/**/*.qhelp @github/codeql-javascript
-/python/**/experimental/**/*.qhelp @github/codeql-python
+# Notify members of codeql-go about PRs to the shared data-flow library files
+/java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl.qll @github/codeql-java @github/codeql-go
+/java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl2.qll @github/codeql-java @github/codeql-go
+/java/ql/src/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll @github/codeql-java @github/codeql-go
+/java/ql/src/semmle/code/java/dataflow/internal/tainttracking1/TaintTrackingImpl.qll @github/codeql-java @github/codeql-go
+/java/ql/src/semmle/code/java/dataflow/internal/tainttracking2/TaintTrackingImpl.qll @github/codeql-java @github/codeql-go

@@ -40,11 +40,11 @@ namespace Semmle.Extraction.CIL.Entities
 
             if (wellKnownEnums.TryGetValue(name, out var code))
             {
-                cx.Cx.Extractor.Logger.Log(Util.Logging.Severity.Debug, $"Using hard coded underlying enum type for {name}");
+                cx.Extractor.Logger.Log(Util.Logging.Severity.Debug, $"Using hard coded underlying enum type for {name}");
                 return code;
             }
 
-            cx.Cx.Extractor.Logger.Log(Util.Logging.Severity.Info, $"Couldn't get underlying enum type for {name}");
+            cx.Extractor.Logger.Log(Util.Logging.Severity.Info, $"Couldn't get underlying enum type for {name}");
 
             // We can't fall back to Int32, because the type returned here defines how many bytes are read from the
             // stream and how those bytes are interpreted.
@@ -56,7 +56,8 @@ namespace Semmle.Extraction.CIL.Entities
         private static readonly Dictionary<string, PrimitiveTypeCode> wellKnownEnums = new Dictionary<string, PrimitiveTypeCode>
         {
             { "System.AttributeTargets", PrimitiveTypeCode.Int32 },
-            { "System.ComponentModel.EditorBrowsableState", PrimitiveTypeCode.Int32 }
+            { "System.ComponentModel.EditorBrowsableState", PrimitiveTypeCode.Int32 },
+            { "System.Diagnostics.DebuggerBrowsableState", PrimitiveTypeCode.Int32 }
         };
     }
 }

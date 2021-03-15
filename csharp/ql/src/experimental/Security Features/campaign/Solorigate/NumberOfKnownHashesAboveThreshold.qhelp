@@ -8,6 +8,6 @@
     <p>Please notice that by themselves these literals are not malign, but several of the values together would be less likely to be coincidental.</p>
   </overview>
 
-  <include src="Solorigate.qhelp.inc" />
+  <include src="Solorigate.inc.qhelp" />
 
 </qhelp>

@@ -16,21 +16,15 @@
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
 
+/** Provides classes and predicates for reasoning about deeply tainted objects. */
 module TaintedObject {
   private import DataFlow
+  import TaintedObjectCustomizations::TaintedObject
 
-  private class TaintedObjectLabel extends FlowLabel {
-    TaintedObjectLabel() { this = "tainted-object" }
+  // Materialize flow labels
+  private class ConcreteTaintedObjectLabel extends TaintedObjectLabel {
+    ConcreteTaintedObjectLabel() { this = this }
   }
-
-  /**
-   * Gets the flow label representing a deeply tainted object.
-   *
-   * A "tainted object" is an array or object whose property values are all assumed to be tainted as well.
-   *
-   * Note that the presence of the this label generally implies the presence of the `taint` label as well.
-   */
-  FlowLabel label() { result instanceof TaintedObjectLabel }
 
   /**
    * Holds for the flows steps that are relevant for tracking user-controlled JSON objects.
@@ -79,11 +73,6 @@ module TaintedObject {
    */
   predicate isSource(Node source, FlowLabel label) { source instanceof Source and label = label() }
 
-  /**
-   * A source of a user-controlled deep object.
-   */
-  abstract class Source extends DataFlow::Node { }
-
   /** Request input accesses as a JSON source. */
   private class RequestInputAsSource extends Source {
     RequestInputAsSource() { this.(HTTP::RequestInputAccess).isUserControlledObject() }
@@ -117,6 +106,21 @@ module TaintedObject {
     override predicate sanitizes(boolean outcome, Expr e, FlowLabel label) {
       polarity = outcome and
       e = operand and
+      label = label()
+    }
+  }
+
+  /**
+   * A sanitizer guard that validates an input against a JSON schema.
+   */
+  private class JsonSchemaValidationGuard extends SanitizerGuard {
+    JsonSchema::ValidationCall call;
+
+    JsonSchemaValidationGuard() { this = call }
+
+    override predicate sanitizes(boolean outcome, Expr e, FlowLabel label) {
+      outcome = call.getPolarity() and
+      e = call.getInput().asExpr() and
       label = label()
     }
   }

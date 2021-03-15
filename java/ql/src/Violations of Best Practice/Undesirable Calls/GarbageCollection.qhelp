@@ -37,12 +37,12 @@ connection.</p>
 
 
 <li>
-  Java 6 API Documentation:
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/System.html#gc%28%29">System.gc()</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/System.html#gc()">System.gc()</a>.
 </li>
 <li>
-  Oracle Technology Network:
-  <a href="http://www.oracle.com/technetwork/java/javase/gc-tuning-6-140523.html">Java SE 6 HotSpot Virtual Machine Garbage Collection Tuning</a>.
+  Java Documentation:
+  <a href="https://docs.oracle.com/en/java/javase/11/gctuning/index.html">HotSpot Virtual Machine Garbage Collection Tuning Guide</a>.
 </li>
 
 

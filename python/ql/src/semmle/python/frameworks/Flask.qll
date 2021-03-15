@@ -15,118 +15,71 @@ private import semmle.python.ApiGraphs
  * Provides models for the `flask` PyPI package.
  * See https://flask.palletsprojects.com/en/1.1.x/.
  */
-private module FlaskModel {
-  // ---------------------------------------------------------------------------
-  // flask
-  // ---------------------------------------------------------------------------
-  /** Gets a reference to the `flask` module. */
-  API::Node flask() { result = API::moduleImport("flask") }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `flask` module.
-   */
-  private API::Node flask_attr(string attr_name) { result = flask().getMember(attr_name) }
-
-  /** Provides models for the `flask` module. */
-  module flask {
-    /** Gets a reference to the `flask.request` object. */
-    API::Node request() { result = flask_attr("request") }
-
-    /** Gets a reference to the `flask.make_response` function. */
-    API::Node make_response() { result = flask_attr("make_response") }
-
+module Flask {
+  /** Provides models for flask view classes (defined in the `flask.views` module) */
+  module Views {
     /**
-     * Provides models for the `flask.Flask` class
+     * Provides models for the `flask.views.View` class and subclasses.
      *
-     * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.
+     * See https://flask.palletsprojects.com/en/1.1.x/views/#basic-principle.
      */
-    module Flask {
-      /** Gets a reference to the `flask.Flask` class. */
-      API::Node classRef() { result = flask().getMember("Flask") }
-
-      /** Gets a reference to an instance of `flask.Flask` (a flask application). */
-      API::Node instance() { result = classRef().getReturn() }
-
-      /**
-       * Gets a reference to the attribute `attr_name` of an instance of `flask.Flask` (a flask application).
-       */
-      private API::Node instance_attr(string attr_name) { result = instance().getMember(attr_name) }
-
-      /** Gets a reference to the `route` method on an instance of `flask.Flask`. */
-      API::Node route() { result = instance_attr("route") }
-
-      /** Gets a reference to the `add_url_rule` method on an instance of `flask.Flask`. */
-      API::Node add_url_rule() { result = instance_attr("add_url_rule") }
-
-      /** Gets a reference to the `make_response` method on an instance of `flask.Flask`. */
-      // HACK: We can't call this predicate `make_response` since shadowing is
-      // completely disallowed in QL. I added an underscore to move things forward for
-      // now :(
-      API::Node make_response_() { result = instance_attr("make_response") }
-
-      /**
-       * Gets a reference to the `response_class` attribute on the `flask.Flask` class or an instance.
-       *
-       * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.response_class
-       */
-      API::Node response_class() { result = [classRef(), instance()].getMember("response_class") }
-    }
-
-    /**
-     * Provides models for the `flask.Blueprint` class
-     *
-     * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Blueprint.
-     */
-    module Blueprint {
-      /** Gets a reference to the `flask.Blueprint` class. */
-      API::Node classRef() { result = flask().getMember("Blueprint") }
-
-      /** Gets a reference to an instance of `flask.Blueprint`. */
-      API::Node instance() { result = classRef().getReturn() }
-
-      /**
-       * Gets a reference to the attribute `attr_name` of an instance of `flask.Blueprint`.
-       */
-      private API::Node instance_attr(string attr_name) { result = instance().getMember(attr_name) }
-
-      /** Gets a reference to the `route` method on an instance of `flask.Blueprint`. */
-      API::Node route() { result = instance_attr("route") }
-
-      /** Gets a reference to the `add_url_rule` method on an instance of `flask.Blueprint`. */
-      API::Node add_url_rule() { result = instance_attr("add_url_rule") }
-    }
-
-    // -------------------------------------------------------------------------
-    // flask.views
-    // -------------------------------------------------------------------------
-    /** Gets a reference to the `flask.views` module. */
-    API::Node views() { result = flask_attr("views") }
-
-    /** Provides models for the `flask.views` module */
-    module views {
-      /**
-       * Provides models for the `flask.views.View` class and subclasses.
-       *
-       * See https://flask.palletsprojects.com/en/1.1.x/views/#basic-principle.
-       */
-      module View {
-        /** Gets a reference to the `flask.views.View` class or any subclass. */
-        API::Node subclassRef() {
-          result = views().getMember(["View", "MethodView"]).getASubclass*()
-        }
+    module View {
+      /** Gets a reference to the `flask.views.View` class or any subclass. */
+      API::Node subclassRef() {
+        result =
+          API::moduleImport("flask")
+              .getMember("views")
+              .getMember([
+                  "View",
+                  // MethodView is a known subclass
+                  "MethodView"
+                ])
+              .getASubclass*()
       }
+    }
 
-      /**
-       * Provides models for the `flask.views.MethodView` class and subclasses.
-       *
-       * See https://flask.palletsprojects.com/en/1.1.x/views/#method-based-dispatching.
-       */
-      module MethodView {
-        /** Gets a reference to the `flask.views.MethodView` class or any subclass. */
-        API::Node subclassRef() { result = views().getMember("MethodView").getASubclass*() }
+    /**
+     * Provides models for the `flask.views.MethodView` class and subclasses.
+     *
+     * See https://flask.palletsprojects.com/en/1.1.x/views/#method-based-dispatching.
+     */
+    module MethodView {
+      /** Gets a reference to the `flask.views.MethodView` class or any subclass. */
+      API::Node subclassRef() {
+        result =
+          API::moduleImport("flask").getMember("views").getMember("MethodView").getASubclass*()
       }
     }
   }
+
+  /**
+   * Provides models for flask applications (instances of the `flask.Flask` class).
+   *
+   * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.
+   */
+  module FlaskApp {
+    /** Gets a reference to the `flask.Flask` class. */
+    API::Node classRef() { result = API::moduleImport("flask").getMember("Flask") }
+
+    /** Gets a reference to an instance of `flask.Flask` (a flask application). */
+    API::Node instance() { result = classRef().getReturn() }
+  }
+
+  /**
+   * Provides models for flask blueprints (instances of the `flask.Blueprint` class).
+   *
+   * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Blueprint.
+   */
+  module Blueprint {
+    /** Gets a reference to the `flask.Blueprint` class. */
+    API::Node classRef() { result = API::moduleImport("flask").getMember("Blueprint") }
+
+    /** Gets a reference to an instance of `flask.Blueprint`. */
+    API::Node instance() { result = classRef().getReturn() }
+  }
+
+  /** Gets a reference to the `flask.request` object. */
+  API::Node request() { result = API::moduleImport("flask").getMember("request") }
 
   /**
    * Provides models for the `flask.Response` class
@@ -134,10 +87,20 @@ private module FlaskModel {
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Response.
    */
   module Response {
-    /** Gets a reference to the `flask.Response` class. */
-    API::Node classRef() { result = [flask_attr("Response"), flask::Flask::response_class()] }
+    /**
+     * Gets a reference to the `flask.Response` class, possibly through the
+     * `response_class` class attribute on a flask application (which by is an alias for
+     * `flask.Response` by default).
+     */
+    API::Node classRef() {
+      result = API::moduleImport("flask").getMember("Response")
+      or
+      result = [FlaskApp::classRef(), FlaskApp::instance()].getMember("response_class")
+    }
 
     /**
+     * INTERNAL: Do not use.
+     *
      * A source of instances of `flask.Response`, extend this class to model new instances.
      *
      * This can include instantiations of the class, return values from function
@@ -175,19 +138,54 @@ private module FlaskModel {
       }
     }
 
+    /**
+     * A call to either `flask.make_response` function, or the `make_response` method on
+     * an instance of `flask.Flask`. This creates an instance of the `flask_response`
+     * class (class-attribute on a flask application), which by default is
+     * `flask.Response`.
+     *
+     * See
+     * - https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.make_response
+     * - https://flask.palletsprojects.com/en/1.1.x/api/#flask.make_response
+     */
+    private class FlaskMakeResponseCall extends InstanceSource, DataFlow::CallCfgNode {
+      FlaskMakeResponseCall() {
+        this = API::moduleImport("flask").getMember("make_response").getACall()
+        or
+        this = FlaskApp::instance().getMember("make_response").getACall()
+      }
+
+      override DataFlow::Node getBody() { result = this.getArg(0) }
+
+      override string getMimetypeDefault() { result = "text/html" }
+
+      override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+    }
+
     /** Gets a reference to an instance of `flask.Response`. */
-    API::Node instance() { result = classRef().getReturn() }
+    private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `flask.Response`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
   }
 
   // ---------------------------------------------------------------------------
   // routing modeling
   // ---------------------------------------------------------------------------
-  /** A flask View class defined in project code. */
-  class FlaskViewClassDef extends Class {
+  /**
+   * A class that is a subclass of the `flask.views.View` class,
+   * thereby being able to handle incoming HTTP requests.
+   */
+  class FlaskViewClass extends Class {
     API::Node api_node;
 
-    FlaskViewClassDef() {
-      this.getABase() = flask::views::View::subclassRef().getAUse().asExpr() and
+    FlaskViewClass() {
+      this.getABase() = Views::View::subclassRef().getAUse().asExpr() and
       api_node.getAnImmediateUse().asExpr().(ClassExpr) = this.getParent()
     }
 
@@ -199,13 +197,20 @@ private module FlaskModel {
       result.getName() = "dispatch_request"
     }
 
-    /** Gets a reference to the result of calling the `as_view` classmethod of this class. */
+    /**
+     * INTERNAL: Do not use.
+     * Gets a reference to the result of calling the `as_view` classmethod of this class.
+     */
     API::Node asViewResult() { result = api_node.getMember("as_view").getReturn() }
   }
 
-  class FlaskMethodViewClassDef extends FlaskViewClassDef {
-    FlaskMethodViewClassDef() {
-      this.getABase() = flask::views::MethodView::subclassRef().getAUse().asExpr() and
+  /**
+   * A class that is a subclass of the `flask.views.MethodView` class.
+   * thereby being able to handle incoming HTTP requests.
+   */
+  class FlaskMethodViewClass extends FlaskViewClass {
+    FlaskMethodViewClass() {
+      this.getABase() = Views::MethodView::subclassRef().getAUse().asExpr() and
       api_node.getAnImmediateUse().asExpr().(ClassExpr) = this.getParent()
     }
 
@@ -254,9 +259,9 @@ private module FlaskModel {
    */
   private class FlaskAppRouteCall extends FlaskRouteSetup, DataFlow::CallCfgNode {
     FlaskAppRouteCall() {
-      this.getFunction() = flask::Flask::route().getAUse()
+      this = FlaskApp::instance().getMember("route").getACall()
       or
-      this.getFunction() = flask::Blueprint::route().getAUse()
+      this = Blueprint::instance().getMember("route").getACall()
     }
 
     override DataFlow::Node getUrlPatternArg() {
@@ -273,9 +278,9 @@ private module FlaskModel {
    */
   private class FlaskAppAddUrlRuleCall extends FlaskRouteSetup, DataFlow::CallCfgNode {
     FlaskAppAddUrlRuleCall() {
-      this.getFunction() = flask::Flask::add_url_rule().getAUse()
+      this = FlaskApp::instance().getMember("add_url_rule").getACall()
       or
-      this.getFunction() = flask::Blueprint::add_url_rule().getAUse()
+      this = Blueprint::instance().getMember("add_url_rule").getACall()
     }
 
     override DataFlow::Node getUrlPatternArg() {
@@ -290,7 +295,7 @@ private module FlaskModel {
         func_src.asExpr().(CallableExpr) = result.getDefinition()
       )
       or
-      exists(FlaskViewClassDef vc |
+      exists(FlaskViewClass vc |
         getViewArg() = vc.asViewResult().getAUse() and
         result = vc.getARequestHandler()
       )
@@ -300,7 +305,7 @@ private module FlaskModel {
   /** A request handler defined in a django view class, that has no known route. */
   private class FlaskViewClassHandlerWithoutKnownRoute extends HTTP::Server::RequestHandler::Range {
     FlaskViewClassHandlerWithoutKnownRoute() {
-      exists(FlaskViewClassDef vc | vc.getARequestHandler() = this) and
+      exists(FlaskViewClass vc | vc.getARequestHandler() = this) and
       not exists(FlaskRouteSetup setup | setup.getARequestHandler() = this)
     }
 
@@ -318,128 +323,104 @@ private module FlaskModel {
   // ---------------------------------------------------------------------------
   // flask.Request taint modeling
   // ---------------------------------------------------------------------------
-  // TODO: Do we even need this class? :|
   /**
    * A source of remote flow from a flask request.
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Request
    */
-  private class RequestSource extends RemoteFlowSource::Range {
-    RequestSource() { this = flask::request().getAUse() }
+  private class FlaskRequestSource extends RemoteFlowSource::Range {
+    FlaskRequestSource() {
+      this = request().getAUse() and
+      not any(Import imp).contains(this.asExpr()) and
+      not exists(ControlFlowNode def | this.asVar().getSourceVariable().hasDefiningNode(def) |
+        any(Import imp).contains(def.getNode())
+      )
+    }
 
     override string getSourceType() { result = "flask.request" }
   }
 
-  private module FlaskRequestTracking {
-    /** Gets a reference to either of the `get_json` or `get_data` attributes of a Flask request. */
-    API::Node tainted_methods(string attr_name) {
-      attr_name in ["get_data", "get_json"] and
-      result = flask::request().getMember(attr_name)
-    }
-  }
-
   /**
-   * A source of remote flow from attributes from a flask request.
+   * Taint propagation for a flask request.
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Request
    */
-  private class RequestInputAccess extends RemoteFlowSource::Range {
+  private class FlaskRequestAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      // Methods
+      exists(string method_name | method_name in ["get_data", "get_json"] |
+        // Method access
+        nodeFrom = request().getAUse() and
+        nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
+        nodeTo.(DataFlow::AttrRead).getAttributeName() = method_name
+        or
+        // Method call
+        nodeFrom = request().getMember(method_name).getAUse() and
+        nodeTo.(DataFlow::CallCfgNode).getFunction() = nodeFrom
+      )
+      or
+      // Attributes
+      nodeFrom = request().getAUse() and
+      exists(DataFlow::AttrRead read | nodeTo = read and read.getObject() = nodeFrom |
+        read.getAttributeName() in [
+            // str
+            "path", "full_path", "base_url", "url", "access_control_request_method",
+            "content_encoding", "content_md5", "content_type", "data", "method", "mimetype",
+            "origin", "query_string", "referrer", "remote_addr", "remote_user", "user_agent",
+            // dict
+            "environ", "cookies", "mimetype_params", "view_args",
+            // json
+            "json",
+            // List[str]
+            "access_route",
+            // file-like
+            "stream", "input_stream",
+            // MultiDict[str, str]
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.MultiDict
+            "args", "values", "form",
+            // MultiDict[str, FileStorage]
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage
+            // TODO: FileStorage needs extra taint steps
+            "files",
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.HeaderSet
+            "access_control_request_headers", "pragma",
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Accept
+            // TODO: Kinda badly modeled for now -- has type List[Tuple[value, quality]], and some extra methods
+            "accept_charsets", "accept_encodings", "accept_languages", "accept_mimetypes",
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Authorization
+            // TODO: dict subclass with extra attributes like `username` and `password`
+            "authorization",
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.RequestCacheControl
+            // TODO: has attributes like `no_cache`, and `to_header` method (actually, many of these models do)
+            "cache_control",
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Headers
+            // TODO: dict-like with wsgiref.headers.Header compatibility methods
+            "headers"
+          ]
+      )
+    }
+  }
+
+  private class RequestAttrMultiDict extends Werkzeug::werkzeug::datastructures::MultiDict::InstanceSource {
     string attr_name;
 
-    RequestInputAccess() {
-      // attributes
-      this = flask::request().getMember(attr_name).getAnImmediateUse() and
-      attr_name in [
-          // str
-          "path", "full_path", "base_url", "url", "access_control_request_method",
-          "content_encoding", "content_md5", "content_type", "data", "method", "mimetype", "origin",
-          "query_string", "referrer", "remote_addr", "remote_user", "user_agent",
-          // dict
-          "environ", "cookies", "mimetype_params", "view_args",
-          // json
-          "json",
-          // List[str]
-          "access_route",
-          // file-like
-          "stream", "input_stream",
-          // MultiDict[str, str]
-          // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.MultiDict
-          "args", "values", "form",
-          // MultiDict[str, FileStorage]
-          // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage
-          // TODO: FileStorage needs extra taint steps
-          "files",
-          // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.HeaderSet
-          "access_control_request_headers", "pragma",
-          // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Accept
-          // TODO: Kinda badly modeled for now -- has type List[Tuple[value, quality]], and some extra methods
-          "accept_charsets", "accept_encodings", "accept_languages", "accept_mimetypes",
-          // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Authorization
-          // TODO: dict subclass with extra attributes like `username` and `password`
-          "authorization",
-          // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.RequestCacheControl
-          // TODO: has attributes like `no_cache`, and `to_header` method (actually, many of these models do)
-          "cache_control",
-          // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Headers
-          // TODO: dict-like with wsgiref.headers.Header compatibility methods
-          "headers"
-        ]
-      or
-      // methods (needs special handling to track bound-methods -- see `FlaskRequestMethodCallsAdditionalTaintStep` below)
-      this = FlaskRequestTracking::tainted_methods(attr_name).getAUse()
-    }
-
-    override string getSourceType() { result = "flask.request input" }
-  }
-
-  private class FlaskRequestMethodCallsAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      // NOTE: `request -> request.tainted_method` part is handled as part of RequestInputAccess
-      // tainted_method -> tainted_method()
-      nodeFrom = FlaskRequestTracking::tainted_methods(_).getAUse() and
-      nodeTo.(DataFlow::CallCfgNode).getFunction() = nodeFrom
+    RequestAttrMultiDict() {
+      attr_name in ["args", "values", "form", "files"] and
+      this = request().getMember(attr_name).getAnImmediateUse()
     }
   }
 
-  private class RequestInputMultiDict extends RequestInputAccess,
-    Werkzeug::werkzeug::datastructures::MultiDict::InstanceSource {
-    RequestInputMultiDict() { attr_name in ["args", "values", "form", "files"] }
+  private class RequestAttrFiles extends RequestAttrMultiDict {
+    // TODO: Somehow specify that elements of `RequestAttrFiles` are
+    // Werkzeug::werkzeug::datastructures::FileStorage and should have those additional taint steps
+    // AND that the 0-indexed argument to its' save method is a sink for path-injection.
+    // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage.save
+    RequestAttrFiles() { attr_name = "files" }
   }
 
-  private class RequestInputFiles extends RequestInputMultiDict {
-    RequestInputFiles() { attr_name = "files" }
-  }
-
-  // TODO: Somehow specify that elements of `RequestInputFiles` are
-  // Werkzeug::werkzeug::datastructures::FileStorage and should have those additional taint steps
-  // AND that the 0-indexed argument to its' save method is a sink for path-injection.
-  // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage.save
   // ---------------------------------------------------------------------------
-  // Response modeling
+  // Implicit response from returns of flask request handlers
   // ---------------------------------------------------------------------------
-  /**
-   * A call to either `flask.make_response` function, or the `make_response` method on
-   * an instance of `flask.Flask`.
-   *
-   * See
-   * - https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.make_response
-   * - https://flask.palletsprojects.com/en/1.1.x/api/#flask.make_response
-   */
-  private class FlaskMakeResponseCall extends HTTP::Server::HttpResponse::Range,
-    DataFlow::CallCfgNode {
-    FlaskMakeResponseCall() {
-      this.getFunction() = flask::make_response().getAUse()
-      or
-      this.getFunction() = flask::Flask::make_response_().getAUse()
-    }
-
-    override DataFlow::Node getBody() { result = this.getArg(0) }
-
-    override string getMimetypeDefault() { result = "text/html" }
-
-    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
-  }
-
   private class FlaskRouteHandlerReturn extends HTTP::Server::HttpResponse::Range, DataFlow::CfgNode {
     FlaskRouteHandlerReturn() {
       exists(Function routeHandler |
@@ -455,6 +436,9 @@ private module FlaskModel {
     override string getMimetypeDefault() { result = "text/html" }
   }
 
+  // ---------------------------------------------------------------------------
+  // flask.redirect
+  // ---------------------------------------------------------------------------
   /**
    * A call to the `flask.redirect` function.
    *
@@ -462,7 +446,7 @@ private module FlaskModel {
    */
   private class FlaskRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
     DataFlow::CallCfgNode {
-    FlaskRedirectCall() { this.getFunction() = flask_attr("redirect").getAUse() }
+    FlaskRedirectCall() { this = API::moduleImport("flask").getMember("redirect").getACall() }
 
     override DataFlow::Node getRedirectLocation() {
       result in [this.getArg(0), this.getArgByName("location")]

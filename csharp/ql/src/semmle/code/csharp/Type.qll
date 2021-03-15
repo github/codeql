@@ -748,6 +748,9 @@ class Class extends RefType, @class_type {
 class Record extends Class {
   Record() { this.isRecord() }
 
+  /** Gets the clone method of this record. */
+  RecordCloneMethod getCloneMethod() { result = this.getAMember() }
+
   override string getAPrimaryQlClass() { result = "Record" }
 }
 
@@ -899,6 +902,8 @@ class FunctionPointerType extends Type, Parameterizable, @function_pointer_type 
   AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
 
   override string getAPrimaryQlClass() { result = "FunctionPointerType" }
+
+  override string getLabel() { result = getName() }
 }
 
 /**

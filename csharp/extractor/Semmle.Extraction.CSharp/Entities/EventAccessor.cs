@@ -11,15 +11,15 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// Gets the event symbol associated with this accessor.
         /// </summary>
-        private IEventSymbol EventSymbol => Symbol.AssociatedSymbol as IEventSymbol;
+        private IEventSymbol? EventSymbol => Symbol.AssociatedSymbol as IEventSymbol;
 
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
-            ContainingType.PopulateGenerics();
+            ContainingType!.PopulateGenerics();
 
             var @event = EventSymbol;
-            if (@event == null)
+            if (@event is null)
             {
                 Context.ModelError(Symbol, "Unhandled event accessor associated symbol");
                 return;
@@ -31,12 +31,12 @@ namespace Semmle.Extraction.CSharp.Entities
             if (SymbolEqualityComparer.Default.Equals(Symbol, @event.AddMethod))
             {
                 kind = 1;
-                unboundAccessor = Create(Context, @event.OriginalDefinition.AddMethod);
+                unboundAccessor = Create(Context, @event.OriginalDefinition.AddMethod!);
             }
             else if (SymbolEqualityComparer.Default.Equals(Symbol, @event.RemoveMethod))
             {
                 kind = 2;
-                unboundAccessor = Create(Context, @event.OriginalDefinition.RemoveMethod);
+                unboundAccessor = Create(Context, @event.OriginalDefinition.RemoveMethod!);
             }
             else
             {
@@ -55,11 +55,11 @@ namespace Semmle.Extraction.CSharp.Entities
         public static new EventAccessor Create(Context cx, IMethodSymbol symbol) =>
             EventAccessorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        private class EventAccessorFactory : ICachedEntityFactory<IMethodSymbol, EventAccessor>
+        private class EventAccessorFactory : CachedEntityFactory<IMethodSymbol, EventAccessor>
         {
             public static EventAccessorFactory Instance { get; } = new EventAccessorFactory();
 
-            public EventAccessor Create(Context cx, IMethodSymbol init) => new EventAccessor(cx, init);
+            public override EventAccessor Create(Context cx, IMethodSymbol init) => new EventAccessor(cx, init);
         }
     }
 }

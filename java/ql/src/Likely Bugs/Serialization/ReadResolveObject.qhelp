@@ -46,13 +46,13 @@ the singleton.</p>
 
 
 <li>
-Java API Documentation:
-<a href="http://docs.oracle.com/javase/6/docs/api/java/io/Serializable.html">Serializable</a>.
+Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Serializable.html">Serializable</a>.
 </li>
 <li>
-Java 6 Object Serialization Specification:
-<a href="http://docs.oracle.com/javase/6/docs/platform/serialization/spec/input.html#5903">3.7 The readResolve Method</a>,
-<a href="http://docs.oracle.com/javase/6/docs/platform/serialization/spec/serial-arch.html#6469">1.12 Serialization of Enum Constants</a>.
+Java Object Serialization Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/specs/serialization/input.html#the-readresolve-method">3.7 The readResolve Method</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/specs/serialization/serial-arch.html#serialization-of-enum-constants">1.12 Serialization of Enum Constants</a>.
 </li>
 <li>
   J. Bloch, <em>Effective Java (second edition)</em>,

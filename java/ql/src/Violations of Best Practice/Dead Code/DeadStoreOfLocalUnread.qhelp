@@ -19,5 +19,5 @@ it is important to keep this to preserve the overall behavior.</p>
 
 </recommendation>
 
-<include src="../../DeadCode/DeadCodeReferences.qhelp" />
+<include src="../../DeadCode/DeadCodeReferences.inc.qhelp" />
 </qhelp>

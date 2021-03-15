@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             trapFile.WriteSubId(Type);
             trapFile.Write(" ");
-            trapFile.WriteSubId(ContainingType);
+            trapFile.WriteSubId(ContainingType!);
             trapFile.Write('.');
             Method.AddExplicitInterfaceQualifierToId(Context, trapFile, Symbol.ExplicitInterfaceImplementations);
             trapFile.Write(Symbol.Name);
@@ -42,7 +42,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateRefKind(trapFile, Symbol.RefKind);
 
             var type = Type;
-            trapFile.properties(this, Symbol.GetName(), ContainingType, type.TypeRef, Create(Context, Symbol.OriginalDefinition));
+            trapFile.properties(this, Symbol.GetName(), ContainingType!, type.TypeRef, Create(Context, Symbol.OriginalDefinition));
 
             var getter = Symbol.GetMethod;
             var setter = Symbol.SetMethod;
@@ -63,7 +63,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.explicitly_implements(this, explicitInterface.TypeRef);
 
                 foreach (var syntax in declSyntaxReferences)
-                    TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier.Name, this, explicitInterface);
+                    TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier!.Name, this, explicitInterface);
             }
 
             foreach (var l in Locations)
@@ -72,7 +72,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (IsSourceDeclaration && Symbol.FromSource())
             {
                 var expressionBody = ExpressionBody;
-                if (expressionBody != null)
+                if (expressionBody is not null)
                 {
                     Context.PopulateLater(() => Expression.Create(Context, expressionBody, this, 0));
                 }
@@ -80,11 +80,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 var child = 1;
                 foreach (var initializer in declSyntaxReferences
                     .Select(n => n.Initializer)
-                    .Where(i => i != null))
+                    .Where(i => i is not null))
                 {
                     Context.PopulateLater(() =>
                     {
-                        var loc = Context.CreateLocation(initializer.GetLocation());
+                        var loc = Context.CreateLocation(initializer!.GetLocation());
                         var annotatedType = AnnotatedTypeSymbol.CreateNotAnnotated(Symbol.Type);
                         var simpleAssignExpr = new Expression(new ExpressionInfo(Context, annotatedType, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, null));
                         Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer.Value, simpleAssignExpr, 0));
@@ -124,11 +124,11 @@ namespace Semmle.Extraction.CSharp.Entities
             return isIndexer ? Indexer.Create(cx, prop) : PropertyFactory.Instance.CreateEntityFromSymbol(cx, prop);
         }
 
-        private class PropertyFactory : ICachedEntityFactory<IPropertySymbol, Property>
+        private class PropertyFactory : CachedEntityFactory<IPropertySymbol, Property>
         {
             public static PropertyFactory Instance { get; } = new PropertyFactory();
 
-            public Property Create(Context cx, IPropertySymbol init) => new Property(cx, init);
+            public override Property Create(Context cx, IPropertySymbol init) => new Property(cx, init);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;

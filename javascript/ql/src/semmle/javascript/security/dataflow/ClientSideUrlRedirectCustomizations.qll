@@ -166,4 +166,29 @@ module ClientSideUrlRedirect {
       )
     }
   }
+
+  /**
+   * A write to an React attribute which may execute JavaScript code.
+   */
+  class ReactAttributeWriteUrlSink extends ScriptUrlSink {
+    ReactAttributeWriteUrlSink() {
+      exists(JSXAttribute attr |
+        attr.getName() = DOM::getAPropertyNameInterpretedAsJavaScriptUrl() and
+        attr.getElement().isHTMLElement()
+        or
+        DataFlow::moduleImport("next/link").flowsToExpr(attr.getElement().getNameExpr())
+      |
+        this = attr.getValue().flow()
+      )
+    }
+  }
+
+  /**
+   * A call to change the current url with a Next.js router.
+   */
+  class NextRoutePushUrlSink extends ScriptUrlSink {
+    NextRoutePushUrlSink() {
+      this = NextJS::nextRouter().getAMemberCall(["push", "replace"]).getArgument(0)
+    }
+  }
 }

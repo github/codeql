@@ -41,9 +41,9 @@ being evaluated.</p>
 
 <references>
 
-<li>CERT Java Coding Standard: <a href="https://www.securecoding.cert.org/confluence/display/java/IDS06-J.+Exclude+unsanitized+user+input+from+format+strings">IDS06-J. Exclude unsanitized user input from format strings</a>.</li>
-<li>Java SE Documentation: <a href="https://docs.oracle.com/javase/tutorial/java/data/numberformat.html">Formatting Numeric Print Output</a>.</li>
-<li>Java API: <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html">Formatter</a>.</li>
+<li>SEI CERT Oracle Coding Standard for Java: <a href="https://wiki.sei.cmu.edu/confluence/display/java/IDS06-J.+Exclude+unsanitized+user+input+from+format+strings">IDS06-J. Exclude unsanitized user input from format strings</a>.</li>
+<li>The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/java/data/numberformat.html">Formatting Numeric Print Output</a>.</li>
+<li>Java API Specification: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Formatter.html">Formatter</a>.</li>
 
 </references>
 </qhelp>

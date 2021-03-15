@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         protected Initializer(ExpressionNodeInfo info) : base(info) { }
     }
 
-    internal class ArrayInitializer : Expression<InitializerExpressionSyntax>
+    internal class ArrayInitializer : Initializer
     {
         private ArrayInitializer(ExpressionNodeInfo info) : base(info.SetType(null).SetKind(ExprKind.ARRAY_INIT)) { }
 
@@ -139,7 +139,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                 var invocation = new Expression(new ExpressionInfo(Context, voidType, Context.CreateLocation(i.GetLocation()), ExprKind.METHOD_INVOCATION, this, child++, false, null));
 
-                if (addMethod != null)
+                if (addMethod is not null)
                     trapFile.expr_call(invocation, addMethod);
                 else
                     Context.ModelError(Syntax, "Unable to find an Add() method for collection initializer");

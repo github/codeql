@@ -32,10 +32,9 @@ even if all the elements of <code>a</code> can be cast to <code>B</code>.
 
 
 <li>
-  The Java Language Specification:
-  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-5.html#jls-5.5.3">Checked Casts at Run Time</a>,
-  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-5.html#jls-5.5.1">Reference Type Casting</a>,
-  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-4.html#jls-4.10.3">Subtyping among Array Types</a>.
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-5.html#jls-5.1.6">Narrowing Reference Conversion</a>,
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-4.html#jls-4.10.3">Subtyping among Array Types</a>.
 </li>
 
 

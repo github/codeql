@@ -16,6 +16,7 @@
 import javascript
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import semmle.javascript.dataflow.InferredTypes
+private import semmle.javascript.internal.CachedStages
 
 /**
  * Provides classes for modelling taint propagation.
@@ -232,7 +233,9 @@ module TaintTracking {
     HeapTaintStep() { heapStep(_, this) }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      heapStep(pred, succ) and succ = this
+      Stages::Taint::ref() and
+      heapStep(pred, succ) and
+      succ = this
     }
   }
 

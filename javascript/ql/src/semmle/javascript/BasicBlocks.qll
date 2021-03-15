@@ -5,6 +5,7 @@
 
 import javascript
 private import internal.StmtContainers
+private import semmle.javascript.internal.CachedStages
 
 /**
  * Holds if `nd` starts a new basic block.
@@ -60,7 +61,9 @@ private module Internal {
 
   cached
   predicate useAt(BasicBlock bb, int i, Variable v, VarUse u) {
-    v = u.getVariable() and bbIndex(bb, u, i)
+    Stages::BasicBlocks::ref() and
+    v = u.getVariable() and
+    bbIndex(bb, u, i)
   }
 
   cached

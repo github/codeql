@@ -28,13 +28,13 @@ the connection is a secured SSL connection.</p>
 </example>
 <references>
 
-<li>The CERT Oracle Secure Coding Standard for Java:
-  <a href="https://www.securecoding.cert.org/confluence/display/java/SER03-J.+Do+not+serialize+unencrypted+sensitive+data">SER03-J. Do not serialize unencrypted, sensitive data</a>.</li>
-<li>Java Platform, Standard Edition 7, API Specification: 
-<a href="http://docs.oracle.com/javase/7/docs/api/javax/net/ssl/HttpsURLConnection.html">
+<li>SEI CERT Oracle Coding Standard for Java:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/java/SER03-J.+Do+not+serialize+unencrypted+sensitive+data">SER03-J. Do not serialize unencrypted, sensitive data</a>.</li>
+<li>Java API Specification: 
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/javax/net/ssl/HttpsURLConnection.html">
 Class HttpsURLConnection</a>.</li>
-<li>Java Platform, Standard Edition 7, API Specification: 
-<a href="http://docs.oracle.com/javase/7/docs/api/javax/net/ssl/SSLSocket.html">
+<li>Java API Specification: 
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/javax/net/ssl/SSLSocket.html">
 Class SSLSocket</a>.</li>
 <li>
 OWASP:

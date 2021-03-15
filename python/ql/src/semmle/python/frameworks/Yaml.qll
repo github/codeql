@@ -29,7 +29,13 @@ private module Yaml {
      * For example, using `attr_name = "load"` will get all uses of `yaml.load`.
      */
     private DataFlow::Node yaml_attr(DataFlow::TypeTracker t, string attr_name) {
-      attr_name in ["load", "SafeLoader", "BaseLoader"] and
+      attr_name in [
+          // functions
+          "load", "load_all", "full_load", "full_load_all", "unsafe_load", "unsafe_load_all",
+          "safe_load", "safe_load_all",
+          // Classes
+          "SafeLoader", "BaseLoader"
+        ] and
       (
         t.start() and
         result = DataFlow::importNode("yaml." + attr_name)
@@ -68,13 +74,22 @@ private module Yaml {
 }
 
 /**
- * A call to `yaml.load`
+ * A call to any of the loading functions in `yaml` (`load`, `load_all`, `full_load`,
+ * `full_load_all`, `unsafe_load`, `unsafe_load_all`, `safe_load`, `safe_load_all`)
+ *
  * See https://pyyaml.org/wiki/PyYAMLDocumentation (you will have to scroll down).
  */
 private class YamlLoadCall extends Decoding::Range, DataFlow::CfgNode {
   override CallNode node;
+  string func_name;
 
-  YamlLoadCall() { node.getFunction() = Yaml::yaml::yaml_attr("load").asCfgNode() }
+  YamlLoadCall() {
+    func_name in [
+        "load", "load_all", "full_load", "full_load_all", "unsafe_load", "unsafe_load_all",
+        "safe_load", "safe_load_all"
+      ] and
+    node.getFunction() = Yaml::yaml::yaml_attr(func_name).asCfgNode()
+  }
 
   /**
    * This function was thought safe from the 5.1 release in 2017, when the default loader was changed to `FullLoader`.
@@ -84,10 +99,16 @@ private class YamlLoadCall extends Decoding::Range, DataFlow::CfgNode {
    * See https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation for more details.
    */
   override predicate mayExecuteInput() {
+    func_name in ["full_load", "full_load_all", "unsafe_load", "unsafe_load_all"]
+    or
+    func_name in ["load", "load_all"] and
     // If the `Loader` is not set to either `SafeLoader` or `BaseLoader` or not set at all,
     // then the default loader will be used, which is not safe.
-    not node.getArgByName("Loader") =
-      Yaml::yaml::yaml_attr(["SafeLoader", "BaseLoader"]).asCfgNode()
+    not exists(DataFlow::Node loader_arg |
+      loader_arg.asCfgNode() in [node.getArg(1), node.getArgByName("Loader")]
+    |
+      loader_arg = Yaml::yaml::yaml_attr(["SafeLoader", "BaseLoader"])
+    )
   }
 
   override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }

@@ -121,6 +121,42 @@ DefaultInterfaceMethods.cs:
 #   26|   7: [Method] Greet
 #   26|     -1: [TypeMention] Void
 #   26|     4: [BlockStmt] {...}
+NameResolutionSuppressNullable.cs:
+#    5| [Class] MyClass2
+#    7|   5: [Field] s_signalMethod
+#    7|     -1: [TypeMention] WaitCallback
+#    8|   6: [Property] SignalMethod
+#    8|     -1: [TypeMention] WaitCallback
+#    8|     3: [Getter] get_SignalMethod
+#    8|       4: [MethodCall] call to method EnsureInitialized
+#    8|         0: [FieldAccess] access to field s_signalMethod
+#    8|         1: [LambdaExpr] (...) => ...
+#    8|           4: [ExplicitDelegateCreation] delegate creation of type WaitCallback
+#    8|             -1: [TypeMention] WaitCallback
+#    8|             0: [SuppressNullableWarningExpr] ...!
+#    8|               0: [MethodAccess] access to method M1
+#   10|   7: [Method] EnsureInitialized
+#   10|     -1: [TypeMention] T
+#-----|     1: (Type parameters)
+#   10|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   10|       0: [Parameter] target
+#   10|         -1: [TypeMention] T
+#   10|       1: [Parameter] valueFactory
+#   10|         -1: [TypeMention] Func<T>
+#   10|           1: [TypeMention] T
+#   10|     4: [BlockStmt] {...}
+#   10|       0: [ReturnStmt] return ...;
+#   10|         0: [AssignExpr] ... = ...
+#   10|           0: [ParameterAccess] access to parameter target
+#   10|           1: [DelegateCall] delegate call
+#   10|             -1: [ParameterAccess] access to parameter valueFactory
+#   12|   9: [Method] M1
+#   12|     -1: [TypeMention] Void
+#-----|     2: (Parameters)
+#   12|       0: [Parameter] state
+#   12|         -1: [TypeMention] object
+#   13|     4: [BlockStmt] {...}
 NullCoalescingAssignment.cs:
 #    3| [Class] NullCoalescingAssignment
 #    5|   5: [Method] NullCoalescing

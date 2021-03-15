@@ -12,9 +12,9 @@ namespace Semmle.Extraction.CSharp.Entities
         private readonly TypeSyntax syntax;
         private readonly IEntity parent;
         private readonly Type type;
-        private readonly Microsoft.CodeAnalysis.Location loc;
+        private readonly Microsoft.CodeAnalysis.Location? loc;
 
-        private TypeMention(Context cx, TypeSyntax syntax, IEntity parent, Type type, Microsoft.CodeAnalysis.Location loc = null)
+        private TypeMention(Context cx, TypeSyntax syntax, IEntity parent, Type type, Microsoft.CodeAnalysis.Location? loc = null)
             : base(cx)
         {
             this.syntax = syntax;
@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 case NullableTypeSyntax nts:
                     // int[]? -> int[] -> int
                     // int?   -> int?
-                    return Context.GetTypeInfo(nts.ElementType).Type.IsReferenceType
+                    return Context.GetTypeInfo(nts.ElementType).Type?.IsReferenceType == true
                         ? GetArrayElementType(nts.ElementType)
                         : nts;
                 case PointerTypeSyntax pts:
@@ -103,7 +103,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 case SyntaxKind.QualifiedName:
                     var qns = (QualifiedNameSyntax)syntax;
                     var right = Create(Context, qns.Right, parent, type);
-                    if (type.ContainingType is object)
+                    if (type.ContainingType is not null)
                     {
                         // Type qualifier
                         Create(Context, qns.Left, right, type.ContainingType);
@@ -121,14 +121,14 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.type_mention_location(this, Context.CreateLocation(loc));
         }
 
-        public static TypeMention Create(Context cx, TypeSyntax syntax, IEntity parent, Type type, Microsoft.CodeAnalysis.Location loc = null)
+        public static TypeMention Create(Context cx, TypeSyntax syntax, IEntity parent, Type type, Microsoft.CodeAnalysis.Location? loc = null)
         {
             var ret = new TypeMention(cx, syntax, parent, type, loc);
             cx.Try(syntax, null, () => ret.Populate(cx.TrapWriter.Writer));
             return ret;
         }
 
-        public static TypeMention Create(Context cx, TypeSyntax syntax, IEntity parent, AnnotatedTypeSymbol? type, Microsoft.CodeAnalysis.Location loc = null) =>
+        public static TypeMention Create(Context cx, TypeSyntax syntax, IEntity parent, AnnotatedTypeSymbol? type, Microsoft.CodeAnalysis.Location? loc = null) =>
             Create(cx, syntax, parent, Type.Create(cx, type?.Symbol), loc);
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;

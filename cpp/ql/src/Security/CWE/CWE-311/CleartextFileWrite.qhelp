@@ -2,4 +2,4 @@
   "-//Semmle//qhelp//EN"
   "qhelp.dtd">
 <qhelp>
-<include src="CleartextStorage.qhelp" /></qhelp>
+<include src="CleartextStorage.inc.qhelp" /></qhelp>

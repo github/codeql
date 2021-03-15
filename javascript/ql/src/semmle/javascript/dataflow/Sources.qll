@@ -8,6 +8,7 @@
 
 private import javascript
 private import semmle.javascript.dataflow.TypeTracking
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A source node for local data flow, that is, a node from which local data flow is tracked.
@@ -220,6 +221,7 @@ private module Cached {
    */
   cached
   predicate namedPropRef(DataFlow::SourceNode base, string prop, DataFlow::PropRef ref) {
+    Stages::DataFlowStage::ref() and
     hasLocalSource(ref.getBase(), base) and
     ref.getPropertyName() = prop
   }

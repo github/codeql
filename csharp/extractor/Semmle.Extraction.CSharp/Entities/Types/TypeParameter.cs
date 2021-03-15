@@ -62,8 +62,8 @@ namespace Semmle.Extraction.CSharp.Entities
                 var declSyntaxReferences = Symbol.DeclaringSyntaxReferences
                     .Select(d => d.GetSyntax())
                     .Select(s => s.Parent)
-                    .Where(p => p != null)
-                    .Select(p => p.Parent)
+                    .Where(p => p is not null)
+                    .Select(p => p!.Parent)
                     .ToArray();
                 var clauses = declSyntaxReferences.OfType<MethodDeclarationSyntax>().SelectMany(m => m.ConstraintClauses);
                 clauses = clauses.Concat(declSyntaxReferences.OfType<ClassDeclarationSyntax>().SelectMany(c => c.ConstraintClauses));
@@ -127,11 +127,11 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(kind);
         }
 
-        private class TypeParameterFactory : ICachedEntityFactory<ITypeParameterSymbol, TypeParameter>
+        private class TypeParameterFactory : CachedEntityFactory<ITypeParameterSymbol, TypeParameter>
         {
             public static TypeParameterFactory Instance { get; } = new TypeParameterFactory();
 
-            public TypeParameter Create(Context cx, ITypeParameterSymbol init) => new TypeParameter(cx, init);
+            public override TypeParameter Create(Context cx, ITypeParameterSymbol init) => new TypeParameter(cx, init);
         }
     }
 }

@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-  <include src="LeapYear.qhelp" />
+  <include src="LeapYear.inc.qhelp" />
   
 <p>When performing arithmetic operations on a variable that represents a year, it is important to consider that the resulting value may not be a valid date.</p>
 <p>The typical example is doing simple year arithmetic (i.e. <code>date.year++</code>) without considering if the resulting value will be a valid date or not.</p>

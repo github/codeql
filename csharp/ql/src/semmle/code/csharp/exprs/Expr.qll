@@ -1152,3 +1152,21 @@ class DefineSymbolExpr extends Expr, @define_symbol_expr {
 
   override string getAPrimaryQlClass() { result = "DefineSymbolExpr" }
 }
+
+/**
+ * A `with` expression called on a record.
+ */
+class WithExpr extends Expr, @with_expr {
+  /** Gets the object initializer of this `with` expression. */
+  ObjectInitializer getInitializer() { result = this.getChild(1) }
+
+  /** Gets the expression on which this `with` is called. */
+  Expr getExpr() { result = this.getChild(0) }
+
+  /** Gets the clone method of the `record` that is targetted by this `with` expression. */
+  RecordCloneMethod getCloneMethod() { result = this.getExpr().getType().(Record).getCloneMethod() }
+
+  override string toString() { result = "... with { ... }" }
+
+  override string getAPrimaryQlClass() { result = "WithExpr" }
+}

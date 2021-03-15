@@ -103,7 +103,7 @@ If you are citing a website, please use the following format, without breadcrumb
 
 For example:
 
->Java 6 API Specification: [Object.clone()](http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#clone%28%29).
+>Java API Specification: [Object.clone()](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#clone()).
 
 ### Referencing potential security weaknesses
 
@@ -170,11 +170,11 @@ tab width settings cannot be taken into account.
 
 <li>
   Java SE Documentation:
-  <a href="http://www.oracle.com/technetwork/java/javase/documentation/codeconventions-142311.html#15395">Compound Statements</a>.
+  <a href="https://www.oracle.com/java/technologies/javase/codeconventions-statements.html#15395">Compound Statements</a>.
 </li>
 <li>
   Wikipedia:
-  <a href="https://en.wikipedia.org/wiki/Indent_style">Indent style</a>.
+  <a href="https://en.wikipedia.org/wiki/Indentation_style">Indentation style</a>.
 </li>
 
 </references>
