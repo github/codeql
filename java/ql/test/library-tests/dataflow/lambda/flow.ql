@@ -22,4 +22,3 @@ class Conf extends TaintTracking::Configuration {
 from DataFlow::Node src, DataFlow::Node sink, Conf c
 where c.hasFlow(src, sink)
 select src, sink
-
