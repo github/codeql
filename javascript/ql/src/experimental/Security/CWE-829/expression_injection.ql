@@ -1,5 +1,5 @@
 /**
- * @name Injection from user-controlled Actions context
+ * @name Expression injection in Actions
  * @description Using user-controlled GitHub Actions contexts like `run:` or `script:` may allow a malicious
  *              user to inject code into the GitHub action.
  * @kind problem
