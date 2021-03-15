@@ -738,16 +738,32 @@ module Express {
    * as the value of a template variable.
    */
   private class TemplateInput extends HTTP::ResponseBody {
-    RouteHandler rh;
+    TemplateObjectInput obj;
 
     TemplateInput() {
+      obj.getALocalSource().(DataFlow::ObjectLiteralNode).hasPropertyWrite(_, this.flow())
+    }
+
+    override RouteHandler getRouteHandler() { result = obj.getRouteHandler() }
+  }
+
+  /**
+   * An object passed to the `render` method of an HTTP response object.
+   */
+  class TemplateObjectInput extends DataFlow::Node {
+    RouteHandler rh;
+
+    TemplateObjectInput() {
       exists(DataFlow::MethodCallNode render |
         render.calls(rh.getAResponseExpr().flow(), "render") and
-        this = render.getOptionArgument(1, _).asExpr()
+        this = render.getArgument(1)
       )
     }
 
-    override RouteHandler getRouteHandler() { result = rh }
+    /**
+     * Gets the route handler that uses this object.
+     */
+    RouteHandler getRouteHandler() { result = rh }
   }
 
   /**
