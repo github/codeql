@@ -107,7 +107,7 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
   }
 
   /** Gets the regular expression passed as the first argument to `replace`, if any. */
-  DataFlow::RegExpLiteralNode getRegExp() { result.flowsTo(getArgument(0)) }
+  DataFlow::RegExpCreationNode getRegExp() { result.flowsTo(getArgument(0)) }
 
   /** Gets a string that is being replaced by this call. */
   string getAReplacedString() {
