@@ -48,11 +48,15 @@ private predicate isCond(Expr e) {
   e = any(ParenExpr par | isCond(par)).getExpr()
 }
 
+private class PromotedField extends Field {
+  PromotedField() { this = any(StructType t).getFieldOfEmbedded(_, _, _, _) }
+}
+
 private predicate implicitFieldSelection(SelectorExpr e, int i, Field implicitField) {
-  exists(StructType baseType, Field child |
+  exists(StructType baseType, PromotedField child |
     baseType = e.getBase().getType().getBaseType*().getUnderlyingType() and
     (
-      e.getSelector() = child.getAReference()
+      e.refersTo(child)
       or
       implicitFieldSelection(e, i + 1, child)
     )
