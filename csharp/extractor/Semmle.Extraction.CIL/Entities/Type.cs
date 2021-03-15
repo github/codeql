@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A type.
     /// </summary>
-    public abstract class Type : TypeContainer, IMember
+    internal abstract class Type : TypeContainer, IMember
     {
         internal const string AssemblyTypeNameSeparator = "::";
         internal const string PrimitiveTypePrefix = "builtin" + AssemblyTypeNameSeparator + "System.";
@@ -124,7 +124,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                if (ContainingType != null)
+                if (ContainingType is not null)
                 {
                     foreach (var t in ContainingType.GenericArguments)
                         yield return t;
@@ -174,7 +174,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             if (TryGetPrimitiveTypeCode(out var code))
             {
-                t = Cx.Create(code);
+                t = Context.Create(code);
                 return true;
             }
 
@@ -184,8 +184,8 @@ namespace Semmle.Extraction.CIL.Entities
 
         private bool TryGetPrimitiveTypeCode(out PrimitiveTypeCode code)
         {
-            if (ContainingType == null &&
-                ContainingNamespace?.Name == Cx.SystemNamespace.Name &&
+            if (ContainingType is null &&
+                ContainingNamespace?.Name == Context.SystemNamespace.Name &&
                 primitiveTypeCodeMapping.TryGetValue(Name, out code))
             {
                 return true;
@@ -200,6 +200,6 @@ namespace Semmle.Extraction.CIL.Entities
         public sealed override IEnumerable<Type> MethodParameters => Enumerable.Empty<Type>();
 
         public static Type DecodeType(IGenericContext gc, TypeSpecificationHandle handle) =>
-            gc.Cx.MdReader.GetTypeSpecification(handle).DecodeSignature(gc.Cx.TypeSignatureDecoder, gc);
+            gc.Context.MdReader.GetTypeSpecification(handle).DecodeSignature(gc.Context.TypeSignatureDecoder, gc);
     }
 }

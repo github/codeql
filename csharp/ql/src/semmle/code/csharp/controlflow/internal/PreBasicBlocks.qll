@@ -82,13 +82,6 @@ class PreBasicBlock extends ControlFlowElement {
     or
     this.strictlyDominates(bb)
   }
-
-  predicate inDominanceFrontier(PreBasicBlock df) {
-    this.dominatesPredecessor(df) and
-    not this.strictlyDominates(df)
-  }
-
-  private predicate dominatesPredecessor(PreBasicBlock df) { this.dominates(df.getAPredecessor()) }
 }
 
 private Completion getConditionalCompletion(ConditionalCompletion cc) {

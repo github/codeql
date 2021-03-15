@@ -42,14 +42,14 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        public sealed override Microsoft.CodeAnalysis.Location ReportingLocation => base.ReportingLocation;
+        public sealed override Microsoft.CodeAnalysis.Location? ReportingLocation => base.ReportingLocation;
 
         private static ExprKind GetKind(Context cx, ExpressionSyntax qualifier)
         {
             var qualifierType = cx.GetType(qualifier);
 
             // This is a compilation error, so make a guess and continue.
-            if (qualifierType.Symbol == null)
+            if (qualifierType.Symbol is null)
                 return ExprKind.ARRAY_ACCESS;
 
             if (qualifierType.Symbol.TypeKind == Microsoft.CodeAnalysis.TypeKind.Pointer)

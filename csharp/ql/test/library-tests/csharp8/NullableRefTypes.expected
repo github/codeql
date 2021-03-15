@@ -1,4 +1,5 @@
 suppressNullableWarnings
+| NameResolutionSuppressNullable.cs:8:110:8:112 | ...! | NameResolutionSuppressNullable.cs:8:110:8:111 | access to method M1 |
 | NullableRefTypes.cs:85:20:85:21 | ...! | NullableRefTypes.cs:85:20:85:20 | access to local variable x |
 | NullableRefTypes.cs:86:13:86:14 | ...! | NullableRefTypes.cs:86:13:86:13 | access to local variable x |
 | NullableRefTypes.cs:88:13:88:14 | ...! | NullableRefTypes.cs:88:13:88:13 | access to local variable x |
@@ -206,6 +207,7 @@ returnTypes
 | NullableRefTypes.cs:215:10:215:20 | ElementTest | Void! |
 | NullableRefTypes.cs:223:48:223:54 | GetSelf | TestNullableFlowStates? |
 methodTypeArguments
+| NameResolutionSuppressNullable.cs:10:21:10:40 | EnsureInitialized | 0 | WaitCallback? |
 | NullableRefTypes.cs:51:12:51:15 | Q | 0 | MyClass! |
 | NullableRefTypes.cs:51:12:51:15 | Q | 0 | MyClass? |
 | NullableRefTypes.cs:67:10:67:21 | GenericFn | 0 | MyClass! |

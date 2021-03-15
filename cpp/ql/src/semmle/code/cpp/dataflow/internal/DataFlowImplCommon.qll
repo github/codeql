@@ -416,6 +416,30 @@ private module Cached {
   }
 
   /**
+   * Holds if data can flow from `fromNode` to `toNode` because they are the post-update
+   * nodes of some function output and input respectively, where the output and input
+   * are aliases. A typical example is a function returning `this`, implementing a fluent
+   * interface.
+   */
+  cached
+  predicate reverseStepThroughInputOutputAlias(PostUpdateNode fromNode, PostUpdateNode toNode) {
+    exists(Node fromPre, Node toPre |
+      fromPre = fromNode.getPreUpdateNode() and
+      toPre = toNode.getPreUpdateNode()
+    |
+      exists(DataFlowCall c |
+        // Does the language-specific simpleLocalFlowStep already model flow
+        // from function input to output?
+        fromPre = getAnOutNode(c, _) and
+        toPre.(ArgumentNode).argumentOf(c, _) and
+        simpleLocalFlowStep(toPre.(ArgumentNode), fromPre)
+      )
+      or
+      argumentValueFlowsThrough(toPre, TReadStepTypesNone(), fromPre)
+    )
+  }
+
+  /**
    * Holds if the call context `call` either improves virtual dispatch in
    * `callable` or if it allows us to prune unreachable nodes in `callable`.
    */
@@ -423,7 +447,7 @@ private module Cached {
   predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable callable) {
     reducedViableImplInCallContext(_, callable, call)
     or
-    exists(Node n | n.getEnclosingCallable() = callable | isUnreachableInCall(n, call))
+    exists(Node n | getNodeEnclosingCallable(n) = callable | isUnreachableInCall(n, call))
   }
 
   cached
@@ -568,7 +592,7 @@ class CallContextSomeCall extends CallContextCall, TSomeCall {
   override string toString() { result = "CcSomeCall" }
 
   override predicate relevantFor(DataFlowCallable callable) {
-    exists(ParameterNode p | p.getEnclosingCallable() = callable)
+    exists(ParameterNode p | getNodeEnclosingCallable(p) = callable)
   }
 
   override predicate matchesCall(DataFlowCall call) { any() }
@@ -613,7 +637,7 @@ class LocalCallContextSpecificCall extends LocalCallContext, TSpecificLocalCall 
 }
 
 private predicate relevantLocalCCtx(DataFlowCall call, DataFlowCallable callable) {
-  exists(Node n | n.getEnclosingCallable() = callable and isUnreachableInCall(n, call))
+  exists(Node n | getNodeEnclosingCallable(n) = callable and isUnreachableInCall(n, call))
 }
 
 /**
@@ -722,9 +746,22 @@ class ReturnPosition extends TReturnPosition0 {
   string toString() { result = "[" + kind + "] " + c }
 }
 
+/**
+ * Gets the enclosing callable of `n`. Unlike `n.getEnclosingCallable()`, this
+ * predicate ensures that joins go from `n` to the result instead of the other
+ * way around.
+ */
+pragma[inline]
+DataFlowCallable getNodeEnclosingCallable(Node n) {
+  exists(Node n0 |
+    pragma[only_bind_into](n0) = n and
+    pragma[only_bind_into](result) = n0.getEnclosingCallable()
+  )
+}
+
 pragma[noinline]
 private DataFlowCallable returnNodeGetEnclosingCallable(ReturnNodeExt ret) {
-  result = ret.getEnclosingCallable()
+  result = getNodeEnclosingCallable(ret)
 }
 
 pragma[noinline]

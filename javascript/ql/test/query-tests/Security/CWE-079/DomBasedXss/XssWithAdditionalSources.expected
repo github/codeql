@@ -92,6 +92,16 @@ nodes
 | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name |
 | classnames.js:15:52:15:62 | window.name |
+| d3.js:4:12:4:22 | window.name |
+| d3.js:4:12:4:22 | window.name |
+| d3.js:11:15:11:24 | getTaint() |
+| d3.js:11:15:11:24 | getTaint() |
+| d3.js:12:20:12:29 | getTaint() |
+| d3.js:12:20:12:29 | getTaint() |
+| d3.js:14:20:14:29 | getTaint() |
+| d3.js:14:20:14:29 | getTaint() |
+| d3.js:21:15:21:24 | getTaint() |
+| d3.js:21:15:21:24 | getTaint() |
 | dates.js:9:9:9:69 | taint |
 | dates.js:9:17:9:69 | decodeU ... ing(1)) |
 | dates.js:9:36:9:50 | window.location |
@@ -118,6 +128,11 @@ nodes
 | dates.js:18:31:18:66 | `Time i ... aint)}` |
 | dates.js:18:42:18:64 | datefor ...  taint) |
 | dates.js:18:59:18:63 | taint |
+| event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
+| event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
+| event-handler-receiver.js:2:49:2:56 | location |
+| event-handler-receiver.js:2:49:2:56 | location |
+| event-handler-receiver.js:2:49:2:61 | location.href |
 | express.js:7:15:7:33 | req.param("wobble") |
 | express.js:7:15:7:33 | req.param("wobble") |
 | express.js:7:15:7:33 | req.param("wobble") |
@@ -711,6 +726,13 @@ nodes
 | winjs.js:3:43:3:49 | tainted |
 | winjs.js:4:43:4:49 | tainted |
 | winjs.js:4:43:4:49 | tainted |
+| xmlRequest.js:8:13:8:47 | json |
+| xmlRequest.js:8:20:8:47 | JSON.pa ... seText) |
+| xmlRequest.js:8:31:8:46 | xhr.responseText |
+| xmlRequest.js:8:31:8:46 | xhr.responseText |
+| xmlRequest.js:9:28:9:31 | json |
+| xmlRequest.js:9:28:9:39 | json.message |
+| xmlRequest.js:9:28:9:39 | json.message |
 edges
 | addEventListener.js:1:43:1:47 | event | addEventListener.js:2:20:2:24 | event |
 | addEventListener.js:1:43:1:47 | event | addEventListener.js:2:20:2:24 | event |
@@ -778,6 +800,22 @@ edges
 | classnames.js:15:47:15:63 | clsx(window.name) | classnames.js:15:31:15:78 | `<span  ... <span>` |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
+| d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:12:20:12:29 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:12:20:12:29 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:12:20:12:29 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:12:20:12:29 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:14:20:14:29 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:14:20:14:29 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:14:20:14:29 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:14:20:14:29 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:21:15:21:24 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:21:15:21:24 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:21:15:21:24 | getTaint() |
+| d3.js:4:12:4:22 | window.name | d3.js:21:15:21:24 | getTaint() |
 | dates.js:9:9:9:69 | taint | dates.js:11:63:11:67 | taint |
 | dates.js:9:9:9:69 | taint | dates.js:12:66:12:70 | taint |
 | dates.js:9:9:9:69 | taint | dates.js:13:59:13:63 | taint |
@@ -803,6 +841,10 @@ edges
 | dates.js:18:42:18:64 | datefor ...  taint) | dates.js:18:31:18:66 | `Time i ... aint)}` |
 | dates.js:18:42:18:64 | datefor ...  taint) | dates.js:18:31:18:66 | `Time i ... aint)}` |
 | dates.js:18:59:18:63 | taint | dates.js:18:42:18:64 | datefor ...  taint) |
+| event-handler-receiver.js:2:49:2:56 | location | event-handler-receiver.js:2:49:2:61 | location.href |
+| event-handler-receiver.js:2:49:2:56 | location | event-handler-receiver.js:2:49:2:61 | location.href |
+| event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
+| event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") |
 | jquery.js:2:7:2:40 | tainted | jquery.js:7:20:7:26 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:8:28:8:34 | tainted |
@@ -1326,6 +1368,13 @@ edges
 | winjs.js:2:17:2:33 | document.location | winjs.js:2:17:2:40 | documen ... .search |
 | winjs.js:2:17:2:40 | documen ... .search | winjs.js:2:17:2:53 | documen ... ring(1) |
 | winjs.js:2:17:2:53 | documen ... ring(1) | winjs.js:2:7:2:53 | tainted |
+| xmlRequest.js:8:13:8:47 | json | xmlRequest.js:9:28:9:31 | json |
+| xmlRequest.js:8:20:8:47 | JSON.pa ... seText) | xmlRequest.js:8:13:8:47 | json |
+| xmlRequest.js:8:31:8:46 | xhr.responseText | xmlRequest.js:8:20:8:47 | JSON.pa ... seText) |
+| xmlRequest.js:8:31:8:46 | xhr.responseText | xmlRequest.js:8:20:8:47 | JSON.pa ... seText) |
+| xmlRequest.js:9:28:9:31 | json | xmlRequest.js:9:28:9:39 | json.message |
+| xmlRequest.js:9:28:9:31 | json | xmlRequest.js:9:28:9:39 | json.message |
 #select
 | jwt.js:6:14:6:20 | decoded | jwt.js:4:36:4:39 | data | jwt.js:6:14:6:20 | decoded | Cross-site scripting vulnerability due to $@. | jwt.js:4:36:4:39 | data | user-provided value |
 | typeahead.js:10:16:10:18 | loc | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc | Cross-site scripting vulnerability due to $@. | typeahead.js:9:28:9:30 | loc | user-provided value |
+| xmlRequest.js:9:28:9:39 | json.message | xmlRequest.js:8:31:8:46 | xhr.responseText | xmlRequest.js:9:28:9:39 | json.message | Cross-site scripting vulnerability due to $@. | xmlRequest.js:8:31:8:46 | xhr.responseText | user-provided value |

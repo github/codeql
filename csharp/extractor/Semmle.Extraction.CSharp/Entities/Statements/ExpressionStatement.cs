@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            if (Stmt.Expression != null)
+            if (Stmt.Expression is not null)
                 Expression.Create(Context, Stmt.Expression, this, 0);
             else
                 Context.ModelError(Stmt, "Invalid expression statement");

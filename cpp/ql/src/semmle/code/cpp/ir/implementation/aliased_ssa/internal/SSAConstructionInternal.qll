@@ -5,3 +5,4 @@ import semmle.code.cpp.ir.implementation.aliased_ssa.IR as NewIR
 import semmle.code.cpp.ir.implementation.internal.TInstruction::AliasedSSAInstructions as SSAInstructions
 import semmle.code.cpp.ir.internal.IRCppLanguage as Language
 import AliasedSSA as Alias
+import semmle.code.cpp.ir.implementation.internal.TOperand::AliasedSSAOperands as SSAOperands

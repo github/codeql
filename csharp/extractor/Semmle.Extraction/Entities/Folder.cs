@@ -2,7 +2,7 @@ using System.IO;
 
 namespace Semmle.Extraction.Entities
 {
-    internal sealed class Folder : CachedEntity<PathTransformer.ITransformedPath>
+    public sealed class Folder : CachedEntity<PathTransformer.ITransformedPath>
     {
         private Folder(Context cx, PathTransformer.ITransformedPath init) : base(cx, init) { }
 
@@ -26,11 +26,11 @@ namespace Semmle.Extraction.Entities
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
 
-        private class FolderFactory : ICachedEntityFactory<PathTransformer.ITransformedPath, Folder>
+        private class FolderFactory : CachedEntityFactory<PathTransformer.ITransformedPath, Folder>
         {
             public static FolderFactory Instance { get; } = new FolderFactory();
 
-            public Folder Create(Context cx, PathTransformer.ITransformedPath init) => new Folder(cx, init);
+            public override Folder Create(Context cx, PathTransformer.ITransformedPath init) => new Folder(cx, init);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;

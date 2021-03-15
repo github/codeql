@@ -8,6 +8,7 @@ private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.dataflow.TypeFlow
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSteps
 import semmle.code.java.dataflow.InstanceAccess
 
 cached
@@ -408,28 +409,11 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   or
   summaryStep(node1, node2, "value")
   or
-  exists(MethodAccess ma, Method m |
-    ma = node2.asExpr() and
-    m = ma.getMethod() and
-    m.getDeclaringType().hasQualifiedName("java.util", "Objects") and
-    (
-      m.hasName(["requireNonNull", "requireNonNullElseGet"]) and node1.asExpr() = ma.getArgument(0)
-      or
-      m.hasName("requireNonNullElse") and node1.asExpr() = ma.getAnArgument()
-      or
-      m.hasName("toString") and node1.asExpr() = ma.getArgument(1)
-    )
-  )
-  or
-  exists(MethodAccess ma, Method m |
-    ma = node2.asExpr() and
-    m = ma.getMethod() and
-    m.getDeclaringType()
-        .getSourceDeclaration()
-        .getASourceSupertype*()
-        .hasQualifiedName("java.util", "Stack") and
-    m.hasName("push") and
-    node1.asExpr() = ma.getArgument(0)
+  exists(MethodAccess ma, ValuePreservingMethod m, int argNo |
+    ma.getCallee().getSourceDeclaration() = m and m.returnsValue(argNo)
+  |
+    node2.asExpr() = ma and
+    node1.(ArgumentNode).argumentOf(ma, argNo)
   )
 }
 

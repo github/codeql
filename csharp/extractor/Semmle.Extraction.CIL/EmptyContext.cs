@@ -5,14 +5,14 @@ namespace Semmle.Extraction.CIL
     /// <summary>
     /// A generic context which does not contain any type parameters.
     /// </summary>
-    public class EmptyContext : IGenericContext
+    internal class EmptyContext : IGenericContext
     {
         public EmptyContext(Context cx)
         {
-            Cx = cx;
+            Context = cx;
         }
 
-        public Context Cx { get; }
+        public Context Context { get; }
 
         public IEnumerable<Entities.Type> TypeParameters { get { yield break; } }
 

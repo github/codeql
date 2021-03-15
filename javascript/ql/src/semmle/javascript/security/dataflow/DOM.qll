@@ -122,11 +122,7 @@ class DomPropWriteNode extends Assignment {
    * Holds if the assigned value is interpreted as JavaScript via javascript: protocol.
    */
   predicate interpretsValueAsJavaScriptUrl() {
-    lhs.getPropertyName() = "action" or
-    lhs.getPropertyName() = "formaction" or
-    lhs.getPropertyName() = "href" or
-    lhs.getPropertyName() = "src" or
-    lhs.getPropertyName() = "data"
+    lhs.getPropertyName() = DOM::getAPropertyNameInterpretedAsJavaScriptUrl()
   }
 }
 
@@ -229,6 +225,7 @@ private class PostMessageEventParameter extends RemoteFlowSource {
  * even if the window is opened from a foreign domain.
  */
 private class WindowNameAccess extends RemoteFlowSource {
+  pragma[nomagic, noinline]
   WindowNameAccess() {
     this = DataFlow::globalObjectRef().getAPropertyRead("name")
     or

@@ -1,0 +1,2 @@
+| ServletContextListenerMain.java:17:21:17:24 | main | Web application has a main method. |
+| ServletMain.java:28:21:28:24 | main | Web application has a main method. |

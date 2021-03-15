@@ -46,7 +46,8 @@ predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   localAdditionalTaintUpdateStep(src.asExpr(),
     sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr())
   or
-  summaryStep(src, sink, "taint")
+  summaryStep(src, sink, "taint") and
+  not summaryStep(src, sink, "value")
   or
   exists(Argument arg |
     src.asExpr() = arg and

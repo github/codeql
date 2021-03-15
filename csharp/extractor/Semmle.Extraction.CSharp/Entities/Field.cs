@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             PopulateMetadataHandle(trapFile);
             PopulateAttributes();
-            ContainingType.PopulateGenerics();
+            ContainingType!.PopulateGenerics();
             PopulateNullability(trapFile, Symbol.GetAnnotatedType());
 
             var unboundFieldKey = Field.Create(Context, Symbol.OriginalDefinition);
@@ -61,13 +61,13 @@ namespace Semmle.Extraction.CSharp.Entities
             foreach (var initializer in Symbol.DeclaringSyntaxReferences
                 .Select(n => n.GetSyntax())
                 .OfType<VariableDeclaratorSyntax>()
-                .Where(n => n.Initializer != null))
+                .Where(n => n.Initializer is not null))
             {
                 Context.PopulateLater(() =>
                 {
                     var loc = Context.CreateLocation(initializer.GetLocation());
 
-                    var fieldAccess = AddInitializerAssignment(trapFile, initializer.Initializer.Value, loc, null, ref child);
+                    var fieldAccess = AddInitializerAssignment(trapFile, initializer.Initializer!.Value, loc, null, ref child);
 
                     if (!Symbol.IsStatic)
                     {
@@ -79,7 +79,7 @@ namespace Semmle.Extraction.CSharp.Entities
             foreach (var initializer in Symbol.DeclaringSyntaxReferences
                 .Select(n => n.GetSyntax())
                 .OfType<EnumMemberDeclarationSyntax>()
-                .Where(n => n.EqualsValue != null))
+                .Where(n => n.EqualsValue is not null))
             {
                 // Mark fields that have explicit initializers.
                 var constValue = Symbol.HasConstantValue
@@ -88,7 +88,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 var loc = Context.CreateLocation(initializer.GetLocation());
 
-                AddInitializerAssignment(trapFile, initializer.EqualsValue.Value, loc, constValue, ref child);
+                AddInitializerAssignment(trapFile, initializer.EqualsValue!.Value, loc, constValue, ref child);
             }
 
             if (IsSourceDeclaration)
@@ -105,7 +105,7 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         private Expression AddInitializerAssignment(TextWriter trapFile, ExpressionSyntax initializer, Extraction.Entities.Location loc,
-            string constValue, ref int child)
+            string? constValue, ref int child)
         {
             var type = Symbol.GetAnnotatedType();
             var simpleAssignExpr = new Expression(new ExpressionInfo(Context, type, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, constValue));
@@ -122,7 +122,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             trapFile.WriteSubId(Type);
             trapFile.Write(" ");
-            trapFile.WriteSubId(ContainingType);
+            trapFile.WriteSubId(ContainingType!);
             trapFile.Write('.');
             trapFile.Write(Symbol.Name);
             trapFile.Write(";field");
@@ -130,11 +130,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
-        private class FieldFactory : ICachedEntityFactory<IFieldSymbol, Field>
+        private class FieldFactory : CachedEntityFactory<IFieldSymbol, Field>
         {
             public static FieldFactory Instance { get; } = new FieldFactory();
 
-            public Field Create(Context cx, IFieldSymbol init) => new Field(cx, init);
+            public override Field Create(Context cx, IFieldSymbol init) => new Field(cx, init);
         }
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;
     }

@@ -8,6 +8,6 @@
     <p>Please notice that by themselves these literals are not malign.</p>
   </overview>
 
-  <include src="Solorigate.qhelp.inc" />
+  <include src="Solorigate.inc.qhelp" />
 
 </qhelp>

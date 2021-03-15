@@ -1,6 +1,5 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Semmle.Extraction.CommentProcessing;
 using Semmle.Extraction.CSharp.Entities;
 using System;
 
@@ -9,9 +8,9 @@ namespace Semmle.Extraction.CSharp.Populators
     /// <summary>
     /// Populators for comments.
     /// </summary>
-    public static class CommentPopulator
+    internal static class CommentPopulator
     {
-        public static void ExtractCommentBlocks(Context cx, ICommentGenerator gen)
+        public static void ExtractCommentBlocks(Context cx, CommentProcessor gen)
         {
             cx.Try(null, null, () =>
             {
@@ -25,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Populators
                     // When the duplication guard key exists, it means that the entity is guarded against
                     // trap duplication (<see cref = "Context.BindComments(IEntity, Location)" />).
                     // We must therefore also guard comment construction.
-                    if (duplicationGuardKey != null)
+                    if (duplicationGuardKey is not null)
                         cx.WithDuplicationGuard(duplicationGuardKey, a);
                     else
                         a();
@@ -64,7 +63,7 @@ namespace Semmle.Extraction.CSharp.Populators
                             trimmedLine = trimmedLine.Trim();
 
                             var span = Microsoft.CodeAnalysis.Text.TextSpan.FromBounds(currentLocation, currentLocation + fullLine.Length);
-                            var location = Microsoft.CodeAnalysis.Location.Create(trivia.SyntaxTree, span);
+                            var location = Microsoft.CodeAnalysis.Location.Create(trivia.SyntaxTree!, span);
                             var commentType = CommentLineType.XmlDoc;
                             cx.CommentGenerator.AddComment(CommentLine.Create(cx, location, commentType, trimmedLine, fullLine));
                         }
@@ -111,7 +110,7 @@ namespace Semmle.Extraction.CSharp.Populators
                         trimmedLine = trimmedLine.Trim();
 
                         var span = Microsoft.CodeAnalysis.Text.TextSpan.FromBounds(currentLocation, currentLocation + fullLine.Length);
-                        var location = Microsoft.CodeAnalysis.Location.Create(trivia.SyntaxTree, span);
+                        var location = Microsoft.CodeAnalysis.Location.Create(trivia.SyntaxTree!, span);
                         var commentType = line == 0 ? CommentLineType.Multiline : CommentLineType.MultilineContinuation;
                         cx.CommentGenerator.AddComment(CommentLine.Create(cx, location, commentType, trimmedLine, fullLine));
                         currentLocation = nextLineLocation;
