@@ -536,13 +536,6 @@ module TaintTracking {
       not any(PromiseAllCreation call).getArrayNode() = succ
       or
       // reading from a tainted object yields a tainted result
-      succ.(DataFlow::PropRead).getBase() = pred
-      or
-      // arrays with tainted elements and objects with tainted property names are tainted
-      succ.(DataFlow::ArrayCreationNode).getAnElement() = pred and
-      not any(PromiseAllCreation call).getArrayNode() = succ
-      or
-      // reading from a tainted object yields a tainted result
       succ.(DataFlow::PropRead).getBase() = pred and
       not AccessPath::DominatingPaths::hasDominatingWrite(succ) and
       not isSafeClientSideUrlProperty(succ)
