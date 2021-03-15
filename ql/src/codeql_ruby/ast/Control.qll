@@ -440,6 +440,9 @@ class ConditionalLoop extends Loop, TConditionalLoop {
     or
     pred = "getCondition" and result = this.getCondition()
   }
+
+  /** Holds if the loop body is entered when the condition is `condValue`. */
+  predicate entersLoopWhenConditionIs(boolean condValue) { none() }
 }
 
 /**
@@ -462,6 +465,12 @@ class WhileExpr extends ConditionalLoop, TWhileExpr {
   final override Stmt getBody() { toGenerated(result) = g.getBody() }
 
   final override Expr getCondition() { toGenerated(result) = g.getCondition() }
+
+  /**
+   * Holds if the loop body is entered when the condition is `condValue`. For
+   * `while` loops, this holds when `condValue` is true.
+   */
+  final override predicate entersLoopWhenConditionIs(boolean condValue) { condValue = true }
 
   final override string toString() { result = "while ..." }
 }
@@ -487,6 +496,12 @@ class UntilExpr extends ConditionalLoop, TUntilExpr {
 
   final override Expr getCondition() { toGenerated(result) = g.getCondition() }
 
+  /**
+   * Holds if the loop body is entered when the condition is `condValue`. For
+   * `until` loops, this holds when `condValue` is false.
+   */
+  final override predicate entersLoopWhenConditionIs(boolean condValue) { condValue = false }
+
   final override string toString() { result = "until ..." }
 }
 
@@ -504,6 +519,12 @@ class WhileModifierExpr extends ConditionalLoop, TWhileModifierExpr {
   final override Stmt getBody() { toGenerated(result) = g.getBody() }
 
   final override Expr getCondition() { toGenerated(result) = g.getCondition() }
+
+  /**
+   * Holds if the loop body is entered when the condition is `condValue`. For
+   * `while`-modifier loops, this holds when `condValue` is true.
+   */
+  final override predicate entersLoopWhenConditionIs(boolean condValue) { condValue = true }
 
   final override string getAPrimaryQlClass() { result = "WhileModifierExpr" }
 
@@ -524,6 +545,12 @@ class UntilModifierExpr extends ConditionalLoop, TUntilModifierExpr {
   final override Stmt getBody() { toGenerated(result) = g.getBody() }
 
   final override Expr getCondition() { toGenerated(result) = g.getCondition() }
+
+  /**
+   * Holds if the loop body is entered when the condition is `condValue`. For
+   * `until`-modifier loops, this holds when `condValue` is false.
+   */
+  final override predicate entersLoopWhenConditionIs(boolean condValue) { condValue = false }
 
   final override string getAPrimaryQlClass() { result = "UntilModifierExpr" }
 

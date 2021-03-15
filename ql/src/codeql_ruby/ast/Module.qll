@@ -47,7 +47,8 @@ class Toplevel extends ModuleBase, TToplevel {
    * Gets the `n`th `BEGIN` block.
    */
   final BeginBlock getBeginBlock(int n) {
-    toGenerated(result) = rank[n](int i, Generated::BeginBlock b | b = g.getChild(i) | b order by i)
+    toGenerated(result) =
+      rank[n + 1](int i, Generated::BeginBlock b | b = g.getChild(i) | b order by i)
   }
 
   /**

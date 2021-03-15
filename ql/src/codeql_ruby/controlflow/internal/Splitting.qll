@@ -2,9 +2,7 @@
  * Provides classes and predicates relevant for splitting the control flow graph.
  */
 
-private import codeql_ruby.ast.internal.TreeSitter::Generated
-private import codeql_ruby.ast.internal.AST as ASTInternal
-private import codeql_ruby.AST as AST
+private import codeql_ruby.AST
 private import Completion
 private import ControlFlowGraphImpl
 private import SuccessorTypes
@@ -18,13 +16,13 @@ private module Cached {
   cached
   newtype TSplitKind =
     TConditionalCompletionSplitKind() or
-    TEnsureSplitKind(int nestLevel) { nestLevel = any(Trees::RescueEnsureBlockTree t).nestLevel() }
+    TEnsureSplitKind(int nestLevel) { nestLevel = any(Trees::BodyStmtTree t).getNestLevel() }
 
   cached
   newtype TSplit =
     TConditionalCompletionSplit(ConditionalCompletion c) or
     TEnsureSplit(EnsureSplitting::EnsureSplitType type, int nestLevel) {
-      nestLevel = any(Trees::RescueEnsureBlockTree t).nestLevel()
+      nestLevel = any(Trees::BodyStmtTree t).getNestLevel()
     }
 
   cached
@@ -219,28 +217,19 @@ private module ConditionalCompletionSplitting {
       succ(pred, succ, c) and
       last(succ, _, completion) and
       (
-        last(ASTInternal::toGenerated(ASTInternal::fromGenerated(succ).(AST::NotExpr).getOperand()),
-          pred, c) and
+        last(succ.(NotExpr).getOperand(), pred, c) and
         completion.(BooleanCompletion).getDual() = c
         or
-        last(ASTInternal::toGenerated(ASTInternal::fromGenerated(succ)
-                .(AST::LogicalAndExpr)
-                .getAnOperand()), pred, c) and
+        last(succ.(LogicalAndExpr).getAnOperand(), pred, c) and
         completion = c
         or
-        last(ASTInternal::toGenerated(ASTInternal::fromGenerated(succ)
-                .(AST::LogicalOrExpr)
-                .getAnOperand()), pred, c) and
+        last(succ.(LogicalOrExpr).getAnOperand(), pred, c) and
         completion = c
         or
-        last(ASTInternal::toGenerated(ASTInternal::fromGenerated(succ)
-                .(AST::ParenthesizedExpr)
-                .getLastExpr()), pred, c) and
+        last(succ.(ParenthesizedExpr).getLastExpr(), pred, c) and
         completion = c
         or
-        last(ASTInternal::toGenerated(ASTInternal::fromGenerated(succ)
-                .(AST::ConditionalExpr)
-                .getBranch(_)), pred, c) and
+        last(succ.(ConditionalExpr).getBranch(_), pred, c) and
         completion = c
       )
     }
@@ -255,7 +244,7 @@ private module ConditionalCompletionSplitting {
 
     override predicate hasExitScope(CfgScope scope, AstNode last, Completion c) {
       this.appliesTo(last) and
-      succExit(ASTInternal::toGenerated(scope), last, c) and
+      succExit(scope, last, c) and
       if c instanceof ConditionalCompletion then completion = c else any()
     }
 
@@ -288,12 +277,11 @@ module EnsureSplitting {
 
   /** A node that belongs to an `ensure` block. */
   private class EnsureNode extends AstNode {
-    private Trees::RescueEnsureBlockTree block;
+    private Trees::BodyStmtTree block;
 
     EnsureNode() { this = block.getAnEnsureDescendant() }
 
-    /** Gets the immediate block that this node belongs to. */
-    Trees::RescueEnsureBlockTree getBlock() { result = block }
+    int getNestLevel() { result = block.getNestLevel() }
 
     /** Holds if this node is the entry node in the `ensure` block it belongs to. */
     predicate isEntryNode() { first(block.getEnsure(), this) }
@@ -366,7 +354,7 @@ module EnsureSplitting {
   pragma[noinline]
   private predicate hasEntry0(AstNode pred, EnsureNode succ, int nestLevel, Completion c) {
     succ.isEntryNode() and
-    nestLevel = succ.getBlock().nestLevel() and
+    nestLevel = succ.getNestLevel() and
     succ(pred, succ, c)
   }
 
@@ -389,11 +377,9 @@ module EnsureSplitting {
     }
 
     pragma[noinline]
-    private predicate exit0(
-      AstNode pred, Trees::RescueEnsureBlockTree block, int nestLevel, Completion c
-    ) {
+    private predicate exit0(AstNode pred, Trees::BodyStmtTree block, int nestLevel, Completion c) {
       this.appliesToPredecessor(pred) and
-      nestLevel = block.nestLevel() and
+      nestLevel = block.getNestLevel() and
       block.lastInner(pred, c)
     }
 
@@ -402,9 +388,7 @@ module EnsureSplitting {
      * `inherited` indicates whether `c` is an inherited completion from the
      * body.
      */
-    private predicate exit(
-      Trees::RescueEnsureBlockTree block, AstNode pred, Completion c, boolean inherited
-    ) {
+    private predicate exit(Trees::BodyStmtTree block, AstNode pred, Completion c, boolean inherited) {
       exists(EnsureSplitType type |
         exit0(pred, block, this.getNestLevel(), c) and
         type = this.getType()
@@ -472,7 +456,7 @@ module EnsureSplitting {
     }
 
     override predicate hasExitScope(CfgScope scope, AstNode last, Completion c) {
-      succExit(ASTInternal::toGenerated(scope), last, c) and
+      succExit(scope, last, c) and
       (
         exit(_, last, c, _)
         or
@@ -488,10 +472,10 @@ module EnsureSplitting {
           if en.isEntryNode()
           then
             // entering a nested `ensure` block
-            en.getBlock().nestLevel() > this.getNestLevel()
+            en.getNestLevel() > this.getNestLevel()
           else
             // staying in the same (possibly nested) `ensure` block as `pred`
-            en.getBlock().nestLevel() >= this.getNestLevel()
+            en.getNestLevel() >= this.getNestLevel()
         )
     }
   }
@@ -517,7 +501,7 @@ class Splits extends TSplits {
 
 private predicate succEntrySplitsFromRank(CfgScope pred, AstNode succ, Splits splits, int rnk) {
   splits = TSplitsNil() and
-  succEntry(ASTInternal::toGenerated(pred), succ) and
+  succEntry(pred, succ) and
   rnk = 0
   or
   exists(SplitImpl head, Splits tail | succEntrySplitsCons(pred, succ, head, tail, rnk) |
@@ -540,7 +524,7 @@ private predicate succEntrySplitsCons(
 pragma[noinline]
 predicate succEntrySplits(CfgScope pred, AstNode succ, Splits succSplits, SuccessorType t) {
   exists(int rnk |
-    succEntry(ASTInternal::toGenerated(pred), succ) and
+    succEntry(pred, succ) and
     t instanceof NormalSuccessor and
     succEntrySplitsFromRank(pred, succ, succSplits, rnk)
   |
@@ -559,7 +543,7 @@ predicate succExitSplits(AstNode last, Splits predSplits, CfgScope scope, Succes
   exists(Reachability::SameSplitsBlock b, Completion c | last = b.getANode() |
     b.isReachable(predSplits) and
     t = c.getAMatchingSuccessorType() and
-    succExit(ASTInternal::toGenerated(scope), last, c) and
+    succExit(scope, last, c) and
     forall(SplitImpl predSplit | predSplit = predSplits.getASplit() |
       predSplit.hasExitScope(scope, last, c)
     )

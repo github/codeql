@@ -15,7 +15,7 @@ class Stmt extends AstNode, TStmt {
   CfgNodes::AstCfgNode getAControlFlowNode() { result.getNode() = this }
 
   /** Gets the control-flow scope of this statement, if any. */
-  CfgScope getCfgScope() { result = getCfgScope(toGenerated(this)) }
+  CfgScope getCfgScope() { result = getCfgScope(this) }
 
   /** Gets the enclosing callable, if any. */
   Callable getEnclosingCallable() { result = this.getCfgScope() }

@@ -38,8 +38,8 @@ break_ensure.rb:
 #-----|  -> In
 
 #    3| ... > ...
-#-----| false -> if ...
 #-----| true -> break
+#-----| false -> if ...
 
 #    3| element
 #-----|  -> 0
@@ -57,8 +57,8 @@ break_ensure.rb:
 #-----|  -> exit m1 (normal)
 
 #    8| call to nil?
-#-----| false -> if ...
 #-----| true -> "elements nil"
+#-----| false -> if ...
 
 #    8| elements
 #-----|  -> call to nil?
@@ -100,8 +100,8 @@ break_ensure.rb:
 #-----|  -> ensure ...
 
 #   16| ... > ...
-#-----| false -> if ...
 #-----| true -> break
+#-----| false -> if ...
 
 #   16| element
 #-----|  -> 0
@@ -125,12 +125,12 @@ break_ensure.rb:
 #-----| break -> for ... in ...
 
 #   20| call to nil?
-#-----| false -> if ...
 #-----| true -> "elements nil"
+#-----| false -> if ...
 
 #   20| [ensure: break] call to nil?
-#-----| false -> [ensure: break] if ...
 #-----| true -> [ensure: break] "elements nil"
+#-----| false -> [ensure: break] if ...
 
 #   20| elements
 #-----|  -> call to nil?
@@ -168,8 +168,8 @@ break_ensure.rb:
 #-----|  -> ensure ...
 
 #   29| call to nil?
-#-----| false -> if ...
 #-----| true -> return
+#-----| false -> if ...
 
 #   29| elements
 #-----|  -> call to nil?
@@ -216,12 +216,12 @@ break_ensure.rb:
 #-----|  -> [ensure: return] In
 
 #   35| ... > ...
-#-----| false -> if ...
 #-----| true -> break
+#-----| false -> if ...
 
 #   35| [ensure: return] ... > ...
-#-----| false -> [ensure: return] if ...
 #-----| true -> [ensure: return] break
+#-----| false -> [ensure: return] if ...
 
 #   35| call to x
 #-----|  -> 0
@@ -278,8 +278,8 @@ break_ensure.rb:
 #-----|  -> ensure ...
 
 #   47| ... > ...
-#-----| false -> if ...
 #-----| true -> ""
+#-----| false -> if ...
 
 #   47| element
 #-----|  -> 1
@@ -306,12 +306,12 @@ break_ensure.rb:
 #-----| raise -> for ... in ...
 
 #   51| ... > ...
-#-----| false -> if ...
 #-----| true -> 10
+#-----| false -> if ...
 
 #   51| [ensure: raise] ... > ...
-#-----| false -> [ensure: raise] if ...
 #-----| true -> [ensure: raise] 10
+#-----| false -> [ensure: raise] if ...
 
 #   51| element
 #-----|  -> 0
@@ -377,8 +377,8 @@ case.rb:
 #-----|  -> (if ...)
 
 #    3| call to x2
-#-----| false -> if ...
 #-----| true -> "x2"
+#-----| false -> if ...
 
 #    3| call to puts
 #-----|  -> if ...
@@ -401,7 +401,7 @@ case.rb:
 
 cfg.rb:
 #    1| enter cfg.rb
-#-----|  -> bar
+#-----|  -> BEGIN { ... }
 
 #    1| bar
 #-----|  -> alias ...
@@ -460,24 +460,16 @@ cfg.rb:
 #-----|  -> %w(...)
 
 #   12| call to puts
-#-----|  -> BEGIN { ... }
+#-----|  -> END { ... }
 
 #   12| 4
 #-----|  -> call to puts
 
-#   15| enter BEGIN { ... }
+#   15| BEGIN { ... }
 #-----|  -> "hello"
 
-#   15| BEGIN { ... }
-#-----|  -> END { ... }
-
-#   15| exit BEGIN { ... }
-
-#   15| exit BEGIN { ... } (normal)
-#-----|  -> exit BEGIN { ... }
-
 #   16| call to puts
-#-----|  -> exit BEGIN { ... } (normal)
+#-----|  -> bar
 
 #   16| "hello"
 #-----|  -> call to puts
@@ -560,8 +552,11 @@ cfg.rb:
 #   29| exit { ... } (normal)
 #-----|  -> exit { ... }
 
-#   29| x
+#   29| &x
 #-----|  -> x
+
+#   29| x
+#-----|  -> &x
 
 #   29| call to call
 #-----|  -> exit { ... } (normal)
@@ -587,11 +582,11 @@ cfg.rb:
 #   35| false
 #-----| false -> if ...
 
-#   39| call to puts
-#-----|  -> case ...
-
 #   39| self
 #-----|  -> 42
+
+#   39| call to puts
+#-----|  -> case ...
 
 #   39| 42
 #-----|  -> call to puts
@@ -619,12 +614,12 @@ cfg.rb:
 #-----|  -> 2
 
 #   43| 2
-#-----| no-match -> 3
 #-----| match -> "some"
+#-----| no-match -> 3
 
 #   43| 3
-#-----| no-match -> 4
 #-----| match -> "some"
+#-----| no-match -> 4
 
 #   43| 4
 #-----| match -> "some"
@@ -668,8 +663,8 @@ cfg.rb:
 #-----|  -> b
 
 #   49| ... == ...
-#-----| false -> b
 #-----| true -> "some"
+#-----| false -> b
 
 #   49| b
 #-----|  -> 0
@@ -774,6 +769,9 @@ cfg.rb:
 
 #   62| ... = ...
 #-----|  -> pattern
+
+#   62| (..., ...)
+#-----|  -> (..., ...)
 
 #   62| (..., ...)
 #-----|  -> ... = ...
@@ -987,8 +985,8 @@ cfg.rb:
 #-----|  -> x
 
 #   91| ... > ...
-#-----| false -> if ...
 #-----| true -> next
+#-----| false -> if ...
 
 #   91| x
 #-----|  -> 3
@@ -1023,20 +1021,20 @@ cfg.rb:
 #   97| {...}
 #-----|  -> map1
 
-#   97| Pair
-#-----|  -> "c"
-
 #   97| "a"
 #-----|  -> "b"
+
+#   97| Pair
+#-----|  -> "c"
 
 #   97| "b"
 #-----|  -> Pair
 
-#   97| Pair
-#-----|  -> :e
-
 #   97| "c"
 #-----|  -> "d"
+
+#   97| Pair
+#-----|  -> :e
 
 #   97| "d"
 #-----|  -> Pair
@@ -1065,11 +1063,11 @@ cfg.rb:
 #   98| map1
 #-----|  -> **...
 
-#   98| Pair
-#-----|  -> map1
-
 #   98| "x"
 #-----|  -> "y"
+
+#   98| Pair
+#-----|  -> map1
 
 #   98| "y"
 #-----|  -> Pair
@@ -1101,8 +1099,11 @@ cfg.rb:
 #  101| key
 #-----|  -> kwargs
 
-#  101| kwargs
+#  101| **kwargs
 #-----|  -> value
+
+#  101| kwargs
+#-----|  -> **kwargs
 
 #  102| call to puts
 #-----|  -> kwargs
@@ -1161,18 +1162,18 @@ cfg.rb:
 #  110| call to type
 #-----|  -> #{...}
 
-#  113| ... if ...
-#-----|  -> C
-
 #  113| call to puts
 #-----|  -> ... if ...
+
+#  113| ... if ...
+#-----|  -> C
 
 #  113| "hi"
 #-----|  -> call to puts
 
 #  113| ... > ...
-#-----| false -> ... if ...
 #-----| true -> "hi"
+#-----| false -> ... if ...
 
 #  113| b
 #-----|  -> 10
@@ -1373,6 +1374,9 @@ cfg.rb:
 #-----|  -> M
 
 #  135| (..., ...)
+#-----|  -> (..., ...)
+
+#  135| (..., ...)
 #-----|  -> ... = ...
 
 #  135| init
@@ -1390,20 +1394,20 @@ cfg.rb:
 #  135| 3
 #-----|  -> init
 
-#  137| Constant
-#-----|  -> M
-
 #  137| M
 #-----|  -> Constant
 
-#  138| Constant
-#-----|  -> class << ...
+#  137| Constant
+#-----|  -> M
 
 #  138| call to itself
 #-----|  -> Constant
 
 #  138| M
 #-----|  -> call to itself
+
+#  138| Constant
+#-----|  -> class << ...
 
 #  140| class << ...
 #-----|  -> Silly
@@ -1469,8 +1473,11 @@ cfg.rb:
 #  149| silly
 #-----|  -> method
 
-#  149| x
+#  149| *x
 #-----|  -> x
+
+#  149| x
+#-----|  -> *x
 
 #  150| call to puts
 #-----|  -> exit method (normal)
@@ -1619,18 +1626,18 @@ cfg.rb:
 #  169| "bye"
 #-----|  -> call to puts
 
-#  171| ... unless ...
-#-----|  -> x
-
 #  171| call to puts
 #-----|  -> ... unless ...
+
+#  171| ... unless ...
+#-----|  -> x
 
 #  171| "hi"
 #-----|  -> call to puts
 
 #  171| ... == ...
-#-----| true -> ... unless ...
 #-----| false -> "hi"
+#-----| true -> ... unless ...
 
 #  171| x
 #-----|  -> 0
@@ -1675,11 +1682,11 @@ cfg.rb:
 #  175| 0
 #-----|  -> i
 
-#  176| ... until ...
-#-----|  -> 0
-
 #  176| (...; ...)
 #-----|  -> i
+
+#  176| ... until ...
+#-----|  -> 0
 
 #  176| call to puts
 #-----|  -> i
@@ -1697,8 +1704,8 @@ cfg.rb:
 #-----|  -> ... += ...
 
 #  176| ... == ...
-#-----| true -> ... until ...
 #-----| false -> "hello"
+#-----| true -> ... until ...
 
 #  176| i
 #-----|  -> 10
@@ -1719,8 +1726,8 @@ cfg.rb:
 #-----|  -> i
 
 #  179| ... < ...
-#-----| false -> while ...
 #-----| true -> x
+#-----| false -> while ...
 
 #  179| x
 #-----|  -> 10
@@ -1741,8 +1748,8 @@ cfg.rb:
 #-----|  -> x
 
 #  181| ... == ...
-#-----| false -> if ...
 #-----| true -> redo
+#-----| false -> if ...
 
 #  181| x
 #-----|  -> 5
@@ -1759,11 +1766,11 @@ cfg.rb:
 #  182| x
 #-----|  -> call to puts
 
-#  185| ... while ...
-#-----|  -> run_block
-
 #  185| (...; ...)
 #-----|  -> i
+
+#  185| ... while ...
+#-----|  -> run_block
 
 #  185| call to puts
 #-----|  -> i
@@ -1781,8 +1788,8 @@ cfg.rb:
 #-----|  -> ... -= ...
 
 #  185| ... != ...
-#-----| false -> ... while ...
 #-----| true -> "hello"
+#-----| false -> ... while ...
 
 #  185| i
 #-----|  -> 0
@@ -1796,10 +1803,16 @@ cfg.rb:
 #  187| run_block
 #-----|  -> { ... }
 
+#  187| exit run_block
+
+#  187| exit run_block (normal)
+#-----|  -> exit run_block
+
 #  188| yield ...
 #-----|  -> 42
 
 #  188| 42
+#-----|  -> exit run_block (normal)
 
 #  191| call to run_block
 #-----|  -> exit cfg.rb (normal)
@@ -1854,8 +1867,8 @@ exit.rb:
 #-----|  -> "x <= 2"
 
 #    2| ... > ...
-#-----| false -> if ...
 #-----| true -> 1
+#-----| false -> if ...
 
 #    2| x
 #-----|  -> 2
@@ -1896,8 +1909,8 @@ exit.rb:
 #-----|  -> "x <= 2"
 
 #    9| ... > ...
-#-----| false -> if ...
 #-----| true -> "abort!"
+#-----| false -> if ...
 
 #    9| x
 #-----|  -> 2
@@ -2075,8 +2088,8 @@ ifs.rb:
 #-----|  -> 1
 
 #   12| b
-#-----| false -> if ...
 #-----| true -> 0
+#-----| false -> if ...
 
 #   13| return
 #-----| return -> exit m2 (normal)
@@ -2295,11 +2308,11 @@ ifs.rb:
 #   36| enter conditional_method_def
 #-----|  -> "bla"
 
-#   36| ... unless ...
-#-----|  -> constant_condition
-
 #   36| conditional_method_def
 #-----|  -> ... unless ...
+
+#   36| ... unless ...
+#-----|  -> constant_condition
 
 #   36| exit conditional_method_def
 
@@ -2313,8 +2326,8 @@ ifs.rb:
 #-----|  -> call to puts
 
 #   38| ... == ...
-#-----| true -> ... unless ...
 #-----| false -> conditional_method_def
+#-----| true -> ... unless ...
 
 #   38| 1
 #-----|  -> 2
@@ -2369,8 +2382,8 @@ loops.rb:
 #-----|  -> exit m1 (normal)
 
 #    2| ... >= ...
-#-----| false -> while ...
 #-----| true -> x
+#-----| false -> while ...
 
 #    2| x
 #-----|  -> 0
@@ -2411,8 +2424,8 @@ loops.rb:
 #-----|  -> "Done"
 
 #    9| ... >= ...
-#-----| false -> while ...
 #-----| true -> x
+#-----| false -> while ...
 
 #    9| x
 #-----|  -> 0
@@ -2471,8 +2484,8 @@ loops.rb:
 #-----|  -> elsif ...
 
 #   16| ... > ...
-#-----| false -> elsif ...
 #-----| true -> redo
+#-----| false -> elsif ...
 
 #   16| x
 #-----|  -> 10
@@ -2506,11 +2519,11 @@ loops.rb:
 #   24| exit m3 (normal)
 #-----|  -> exit m3
 
-#   25| call to each
-#-----|  -> exit m3 (normal)
-
 #   25| [...]
 #-----|  -> do ... end
+
+#   25| call to each
+#-----|  -> exit m3 (normal)
 
 #   25| 1
 #-----|  -> 2
@@ -2583,8 +2596,8 @@ raise.rb:
 #-----|  -> "x <= 2"
 
 #    8| ... > ...
-#-----| false -> if ...
 #-----| true -> "x > 2"
+#-----| false -> if ...
 
 #    8| x
 #-----|  -> 2
@@ -2875,8 +2888,8 @@ raise.rb:
 #-----|  -> if ...
 
 #   71| ... < ...
-#-----| false -> elsif ...
 #-----| true -> "x < 0"
+#-----| false -> elsif ...
 
 #   71| x
 #-----|  -> 0
@@ -2969,8 +2982,8 @@ raise.rb:
 #-----|  -> if ...
 
 #   84| ... < ...
-#-----| false -> elsif ...
 #-----| true -> "x < 0"
+#-----| false -> elsif ...
 
 #   84| x
 #-----|  -> 0
@@ -3075,8 +3088,8 @@ raise.rb:
 #-----|  -> if ...
 
 #   99| ... < ...
-#-----| false -> elsif ...
 #-----| true -> "x < 0"
+#-----| false -> elsif ...
 
 #   99| x
 #-----|  -> 0
@@ -3133,16 +3146,16 @@ raise.rb:
 #-----|  -> [ensure: raise] ensure ...
 
 #  106| b1
-#-----| false -> if ...
 #-----| true -> "b1 is true"
+#-----| false -> if ...
 
 #  106| [ensure: return] b1
-#-----| false -> [ensure: return] if ...
 #-----| true -> [ensure: return] "b1 is true"
+#-----| false -> [ensure: return] if ...
 
 #  106| [ensure: raise] b1
-#-----| false -> [ensure: raise] if ...
 #-----| true -> [ensure: raise] "b1 is true"
+#-----| false -> [ensure: raise] if ...
 
 #  107| call to raise
 #-----| raise -> [ensure(1): raise] ensure ...
@@ -3259,16 +3272,16 @@ raise.rb:
 #-----| raise -> exit m9 (abnormal)
 
 #  116| b2
-#-----| false -> if ...
 #-----| true -> "b2 is true"
+#-----| false -> if ...
 
 #  116| [ensure: return] b2
-#-----| false -> [ensure: return] if ...
 #-----| true -> [ensure: return] "b2 is true"
+#-----| false -> [ensure: return] if ...
 
 #  116| [ensure: raise] b2
-#-----| false -> [ensure: raise] if ...
 #-----| true -> [ensure: raise] "b2 is true"
+#-----| false -> [ensure: raise] if ...
 
 #  117| call to raise
 #-----| raise -> exit m9 (abnormal)
@@ -3306,7 +3319,11 @@ raise.rb:
 #-----| no-match -> "Exception"
 #-----| match -> ensure ...
 
+#  121| (call to raise)
+#-----|  -> ensure ...
+
 #  121| call to raise
+#-----| raise -> (call to raise)
 #-----| raise -> exit m10 (abnormal)
 
 #  121| "Exception"
@@ -3413,8 +3430,8 @@ raise.rb:
 #-----|  -> ensure ...
 
 #  143| b
-#-----| false -> if ...
 #-----| true -> ""
+#-----| false -> if ...
 
 #  144| call to raise
 #-----| raise -> [ensure: raise] ensure ...
@@ -3491,18 +3508,18 @@ raise.rb:
 #  155| elem
 #-----|  -> element
 
-#  155| ... if ...
-#-----|  -> exit { ... } (normal)
-
 #  155| call to raise
 #-----| raise -> exit { ... } (abnormal)
+
+#  155| ... if ...
+#-----|  -> exit { ... } (normal)
 
 #  155| ""
 #-----|  -> call to raise
 
 #  155| call to nil?
-#-----| false -> ... if ...
 #-----| true -> ""
+#-----| false -> ... if ...
 
 #  155| element
 #-----|  -> call to nil?
