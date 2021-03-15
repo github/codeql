@@ -20,9 +20,7 @@ query predicate templateElement(Vue::Template::Element template) { any() }
 
 import semmle.javascript.security.dataflow.DomBasedXss
 
-query predicate vhtmlSourceWrite(
-  Vue::VHtmlSourceWrite w, DataFlow::Node pred, DataFlow::Node succ
-) {
+query predicate vhtmlSourceWrite(Vue::VHtmlSourceWrite w, DataFlow::Node pred, DataFlow::Node succ) {
   w.step(pred, succ)
 }
 
