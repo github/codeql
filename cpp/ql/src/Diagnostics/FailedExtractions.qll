@@ -60,7 +60,7 @@ class ExtractionIrrecoverableError extends ExtractionError, TCompilationFailed {
   ExtractionIrrecoverableError() { this = TCompilationFailed(c, f) }
 
   override string toString() {
-    result = "Irrecoverable extraction error: " + c.toString() + " in " + f.toString()
+    result = "Irrecoverable extraction error while compiling " + f.toString()
   }
 
   override string getErrorMessage() {
