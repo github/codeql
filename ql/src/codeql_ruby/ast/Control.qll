@@ -34,10 +34,10 @@ class ConditionalExpr extends ControlExpr, TConditionalExpr {
    */
   Stmt getBranch(boolean cond) { none() }
 
-  override predicate child(string label, AstNode child) {
-    label = "getCondition" and child = this.getCondition()
+  override AstNode getAChild(string pred) {
+    pred = "getCondition" and result = this.getCondition()
     or
-    label = "getBranch" and child = this.getBranch(_)
+    pred = "getBranch" and result = this.getBranch(_)
   }
 }
 
@@ -99,12 +99,12 @@ class IfExpr extends ConditionalExpr, TIfExpr {
     cond = false and result = this.getElse()
   }
 
-  override predicate child(string label, AstNode child) {
-    ConditionalExpr.super.child(label, child)
+  override AstNode getAChild(string pred) {
+    result = ConditionalExpr.super.getAChild(pred)
     or
-    label = "getThen" and child = this.getThen()
+    pred = "getThen" and result = this.getThen()
     or
-    label = "getElse" and child = this.getElse()
+    pred = "getElse" and result = this.getElse()
   }
 }
 
@@ -189,12 +189,12 @@ class UnlessExpr extends ConditionalExpr, TUnlessExpr {
 
   final override string toString() { result = "unless ..." }
 
-  override predicate child(string label, AstNode child) {
-    ConditionalExpr.super.child(label, child)
+  override AstNode getAChild(string pred) {
+    result = ConditionalExpr.super.getAChild(pred)
     or
-    label = "getThen" and child = this.getThen()
+    pred = "getThen" and result = this.getThen()
     or
-    label = "getElse" and child = this.getElse()
+    pred = "getElse" and result = this.getElse()
   }
 }
 
@@ -226,10 +226,10 @@ class IfModifierExpr extends ConditionalExpr, TIfModifierExpr {
 
   final override string toString() { result = "... if ..." }
 
-  override predicate child(string label, AstNode child) {
-    ConditionalExpr.super.child(label, child)
+  override AstNode getAChild(string pred) {
+    result = ConditionalExpr.super.getAChild(pred)
     or
-    label = "getBody" and child = this.getBody()
+    pred = "getBody" and result = this.getBody()
   }
 }
 
@@ -261,10 +261,10 @@ class UnlessModifierExpr extends ConditionalExpr, TUnlessModifierExpr {
 
   final override string toString() { result = "... unless ..." }
 
-  override predicate child(string label, AstNode child) {
-    ConditionalExpr.super.child(label, child)
+  override AstNode getAChild(string pred) {
+    result = ConditionalExpr.super.getAChild(pred)
     or
-    label = "getBody" and child = this.getBody()
+    pred = "getBody" and result = this.getBody()
   }
 }
 
@@ -297,12 +297,12 @@ class TernaryIfExpr extends ConditionalExpr, TTernaryIfExpr {
 
   final override string toString() { result = "... ? ... : ..." }
 
-  override predicate child(string label, AstNode child) {
-    ConditionalExpr.super.child(label, child)
+  override AstNode getAChild(string pred) {
+    result = ConditionalExpr.super.getAChild(pred)
     or
-    label = "getThen" and child = this.getThen()
+    pred = "getThen" and result = this.getThen()
     or
-    label = "getElse" and child = this.getElse()
+    pred = "getElse" and result = this.getElse()
   }
 }
 
@@ -359,10 +359,10 @@ class CaseExpr extends ControlExpr, TCaseExpr {
 
   final override string toString() { result = "case ..." }
 
-  override predicate child(string label, AstNode child) {
-    label = "getValue" and child = this.getValue()
+  override AstNode getAChild(string pred) {
+    pred = "getValue" and result = this.getValue()
     or
-    label = "getBranch" and child = this.getBranch(_)
+    pred = "getBranch" and result = this.getBranch(_)
   }
 }
 
@@ -409,10 +409,10 @@ class WhenExpr extends Expr, TWhenExpr {
 
   final override string toString() { result = "when ..." }
 
-  override predicate child(string label, AstNode child) {
-    label = "getBody" and child = this.getBody()
+  override AstNode getAChild(string pred) {
+    pred = "getBody" and result = this.getBody()
     or
-    label = "getPattern" and child = this.getPattern(_)
+    pred = "getPattern" and result = this.getPattern(_)
   }
 }
 
@@ -424,9 +424,7 @@ class Loop extends ControlExpr, TLoop {
   /** Gets the body of this loop. */
   Stmt getBody() { none() }
 
-  override predicate child(string label, AstNode child) {
-    label = "getBody" and child = this.getBody()
-  }
+  override AstNode getAChild(string pred) { pred = "getBody" and result = this.getBody() }
 }
 
 /**
@@ -437,10 +435,10 @@ class ConditionalLoop extends Loop, TConditionalLoop {
   /** Gets the condition expression of this loop. */
   Expr getCondition() { none() }
 
-  override predicate child(string label, AstNode child) {
-    Loop.super.child(label, child)
+  override AstNode getAChild(string pred) {
+    result = Loop.super.getAChild(pred)
     or
-    label = "getCondition" and child = this.getCondition()
+    pred = "getCondition" and result = this.getCondition()
   }
 }
 
@@ -566,11 +564,11 @@ class ForExpr extends Loop, TForExpr {
 
   final override string toString() { result = "for ... in ..." }
 
-  override predicate child(string label, AstNode child) {
-    Loop.super.child(label, child)
+  override AstNode getAChild(string pred) {
+    result = Loop.super.getAChild(pred)
     or
-    label = "getPattern" and child = this.getPattern()
+    pred = "getPattern" and result = this.getPattern()
     or
-    label = "getValue" and child = this.getValue()
+    pred = "getValue" and result = this.getValue()
   }
 }

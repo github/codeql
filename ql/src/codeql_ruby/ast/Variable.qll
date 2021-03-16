@@ -161,7 +161,7 @@ class LocalVariableAccess extends VariableAccess, TLocalVariableAccess {
    */
   final predicate isCapturedAccess() { isCapturedAccess(this) }
 
-  override string toString() { result = g.getValue() }
+  final override string toString() { result = g.getValue() }
 }
 
 /** An access to a local variable where the value is updated. */
@@ -181,7 +181,7 @@ class GlobalVariableAccess extends VariableAccess, TGlobalVariableAccess {
 
   final override string getAPrimaryQlClass() { result = "GlobalVariableAccess" }
 
-  override string toString() { result = g.getValue() }
+  final override string toString() { result = g.getValue() }
 }
 
 /** An access to a global variable where the value is updated. */
@@ -201,7 +201,7 @@ class InstanceVariableAccess extends VariableAccess, TInstanceVariableAccess {
 
   final override string getAPrimaryQlClass() { result = "InstanceVariableAccess" }
 
-  override string toString() { result = g.getValue() }
+  final override string toString() { result = g.getValue() }
 }
 
 /** An access to a class variable. */
@@ -215,5 +215,5 @@ class ClassVariableAccess extends VariableAccess, TClassVariableAccess {
 
   final override string getAPrimaryQlClass() { result = "ClassVariableAccess" }
 
-  override string toString() { result = g.getValue() }
+  final override string toString() { result = g.getValue() }
 }

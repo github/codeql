@@ -271,11 +271,51 @@ class StringlikeLiteral extends Literal, TStringlikeLiteral {
    */
   final int getNumberOfComponents() { result = count(this.getComponent(_)) }
 
-  string getStartDelimiter() { result = "" }
+  private string getStartDelimiter() {
+    this instanceof TStringLiteral and
+    result = "\""
+    or
+    this instanceof TRegexLiteral and
+    result = "/"
+    or
+    this instanceof TSimpleSymbolLiteral and
+    result = ":"
+    or
+    this instanceof TComplexSymbolLiteral and
+    result = ":\""
+    or
+    this instanceof THashKeySymbolLiteral and
+    result = ""
+    or
+    this instanceof TSubshellLiteral and
+    result = "`"
+    or
+    this instanceof THereDoc and
+    result = ""
+  }
 
-  string getEndDelimiter() { result = "" }
-
-  final predicate isSimple() { count(this.getComponent(_)) <= 1 }
+  private string getEndDelimiter() {
+    this instanceof TStringLiteral and
+    result = "\""
+    or
+    this instanceof TRegexLiteral and
+    result = "/"
+    or
+    this instanceof TSimpleSymbolLiteral and
+    result = ""
+    or
+    this instanceof TComplexSymbolLiteral and
+    result = "\""
+    or
+    this instanceof THashKeySymbolLiteral and
+    result = ""
+    or
+    this instanceof TSubshellLiteral and
+    result = "`"
+    or
+    this instanceof THereDoc and
+    result = ""
+  }
 
   override string getValueText() {
     // 0 components should result in the empty string
@@ -312,8 +352,8 @@ class StringlikeLiteral extends Literal, TStringlikeLiteral {
     )
   }
 
-  final override predicate child(string label, AstNode child) {
-    label = "getComponent" and child = this.getComponent(_)
+  final override AstNode getAChild(string pred) {
+    pred = "getComponent" and result = this.getComponent(_)
   }
 }
 
@@ -326,10 +366,6 @@ class StringlikeLiteral extends Literal, TStringlikeLiteral {
  * ```
  */
 class StringLiteral extends StringlikeLiteral, TStringLiteral {
-  final override string getStartDelimiter() { result = "\"" }
-
-  final override string getEndDelimiter() { result = "\"" }
-
   final override string getAPrimaryQlClass() { result = "StringLiteral" }
 }
 
@@ -364,10 +400,6 @@ class RegexLiteral extends StringlikeLiteral, TRegexLiteral {
   final override string getAPrimaryQlClass() { result = "RegexLiteral" }
 
   final override StringComponent getComponent(int i) { toTreeSitter(result) = g.getChild(i) }
-
-  final override string getStartDelimiter() { result = "/" }
-
-  final override string getEndDelimiter() { result = "/" }
 
   /**
    * Gets the regex flags as a string.
@@ -419,19 +451,13 @@ private class SimpleSymbolLiteral extends SymbolLiteral, TSimpleSymbolLiteral {
 
   SimpleSymbolLiteral() { this = TSimpleSymbolLiteral(g) }
 
-  final override string getStartDelimiter() { result = ":" }
-
   // Tree-sitter gives us value text including the colon, which we skip.
   final override string getValueText() { result = g.getValue().suffix(1) }
 
   final override string toString() { result = g.getValue() }
 }
 
-private class ComplexSymbolLiteral extends SymbolLiteral, TComplexSymbolLiteral {
-  final override string getStartDelimiter() { result = ":\"" }
-
-  final override string getEndDelimiter() { result = "\"" }
-}
+private class ComplexSymbolLiteral extends SymbolLiteral, TComplexSymbolLiteral { }
 
 private class DelimitedSymbolLiteral extends ComplexSymbolLiteral, TDelimitedSymbolLiteral {
   private Generated::DelimitedSymbol g;
@@ -475,10 +501,6 @@ class SubshellLiteral extends StringlikeLiteral, TSubshellLiteral {
   final override string getAPrimaryQlClass() { result = "SubshellLiteral" }
 
   final override StringComponent getComponent(int i) { toTreeSitter(result) = g.getChild(i) }
-
-  final override string getStartDelimiter() { result = "`" }
-
-  final override string getEndDelimiter() { result = "`" }
 }
 
 /**
@@ -604,8 +626,8 @@ class ArrayLiteral extends Literal, TArrayLiteral {
   /** Gets the number of elements in this array literal. */
   final int getNumberOfElements() { result = count(this.getAnElement()) }
 
-  final override predicate child(string label, AstNode child) {
-    label = "getElement" and child = this.getElement(_)
+  final override AstNode getAChild(string pred) {
+    pred = "getElement" and result = this.getElement(_)
   }
 }
 
@@ -676,8 +698,8 @@ class HashLiteral extends Literal, THashLiteral {
 
   final override string toString() { result = "{...}" }
 
-  final override predicate child(string label, AstNode child) {
-    label = "getElement" and child = this.getElement(_)
+  final override AstNode getAChild(string pred) {
+    pred = "getElement" and result = this.getElement(_)
   }
 }
 
@@ -716,10 +738,10 @@ class RangeLiteral extends Literal, TRangeLiteral {
 
   final override string toString() { result = "_ " + g.getOperator() + " _" }
 
-  final override predicate child(string label, AstNode child) {
-    label = "getBegin" and child = this.getBegin()
+  final override AstNode getAChild(string pred) {
+    pred = "getBegin" and result = this.getBegin()
     or
-    label = "getEnd" and child = this.getEnd()
+    pred = "getEnd" and result = this.getEnd()
   }
 }
 

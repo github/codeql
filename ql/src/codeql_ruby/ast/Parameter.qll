@@ -37,9 +37,9 @@ class TuplePatternParameter extends PatternParameter, TuplePattern, TTuplePatter
 
   final override string getAPrimaryQlClass() { result = "TuplePatternParameter" }
 
-  override predicate child(string label, AstNode child) {
-    PatternParameter.super.child(label, child) or
-    TuplePattern.super.child(label, child)
+  override AstNode getAChild(string pred) {
+    result = PatternParameter.super.getAChild(pred) or
+    result = TuplePattern.super.getAChild(pred)
   }
 }
 
@@ -59,11 +59,11 @@ class NamedParameter extends Parameter, TNamedParameter {
   /** Gets the access that defines the underlying local variable. */
   final VariableAccess getDefiningAccess() { result = this.getVariable().getDefiningAccess() }
 
-  override predicate child(string label, AstNode child) {
-    Parameter.super.child(label, child)
+  override AstNode getAChild(string pred) {
+    result = Parameter.super.getAChild(pred)
     or
-    label = "getDefiningAccess" and
-    child = this.getDefiningAccess()
+    pred = "getDefiningAccess" and
+    result = this.getDefiningAccess()
   }
 }
 
@@ -77,7 +77,7 @@ class SimpleParameter extends NamedParameter, PatternParameter, VariablePattern,
 
   final override LocalVariable getVariable() { result = TLocalVariable(_, _, g) }
 
-  override LocalVariable getAVariable() { result = this.getVariable() }
+  final override LocalVariable getAVariable() { result = this.getVariable() }
 
   final override string getAPrimaryQlClass() { result = "SimpleParameter" }
 
@@ -168,10 +168,10 @@ class KeywordParameter extends NamedParameter, TKeywordParameter {
 
   final override Location getLocation() { result = g.getName().getLocation() }
 
-  final override predicate child(string label, AstNode child) {
-    NamedParameter.super.child(label, child)
+  final override AstNode getAChild(string pred) {
+    result = NamedParameter.super.getAChild(pred)
     or
-    label = "getDefaultValue" and child = this.getDefaultValue()
+    pred = "getDefaultValue" and result = this.getDefaultValue()
   }
 }
 
@@ -205,10 +205,10 @@ class OptionalParameter extends NamedParameter, TOptionalParameter {
 
   final override Location getLocation() { result = g.getName().getLocation() }
 
-  final override predicate child(string label, AstNode child) {
-    NamedParameter.super.child(label, child)
+  final override AstNode getAChild(string pred) {
+    result = NamedParameter.super.getAChild(pred)
     or
-    label = "getDefaultValue" and child = this.getDefaultValue()
+    pred = "getDefaultValue" and result = this.getDefaultValue()
   }
 }
 

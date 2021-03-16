@@ -297,11 +297,11 @@ private class ForIn extends AST::AstNode, ASTInternal::TForIn {
 
 // TODO: remove this class; it should be replaced with an implicit non AST node
 private class ForRange extends AST::ForExpr {
-  override predicate child(string label, AST::AstNode child) {
-    AST::ForExpr.super.child(label, child)
+  override AST::AstNode getAChild(string pred) {
+    result = AST::ForExpr.super.getAChild(pred)
     or
-    label = "<in>" and
-    child = ASTInternal::TForIn(ASTInternal::toTreeSitter(this).(For).getValue())
+    pred = "<in>" and
+    result = ASTInternal::TForIn(ASTInternal::toTreeSitter(this).(For).getValue())
   }
 }
 

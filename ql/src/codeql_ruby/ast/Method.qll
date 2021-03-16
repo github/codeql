@@ -14,8 +14,8 @@ class Callable extends Expr, CfgScope, TCallable {
   /** Gets the `n`th parameter of this callable. */
   Parameter getParameter(int n) { none() }
 
-  override predicate child(string label, AstNode child) {
-    label = "getParameter" and child = this.getParameter(_)
+  override AstNode getAChild(string pred) {
+    pred = "getParameter" and result = this.getParameter(_)
   }
 }
 
@@ -24,10 +24,10 @@ class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
   /** Gets the name of this method. */
   string getName() { none() }
 
-  override predicate child(string label, AstNode child) {
-    Callable.super.child(label, child)
+  override AstNode getAChild(string pred) {
+    result = Callable.super.getAChild(pred)
     or
-    BodyStmt.super.child(label, child)
+    result = BodyStmt.super.getAChild(pred)
   }
 }
 
@@ -77,7 +77,6 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
   final override string getName() {
     result = g.getName().(Generated::Token).getValue()
     or
-    // result = g.getName().(SymbolLiteral).getValueText() or
     result = g.getName().(Generated::Setter).getName().getValue() + "="
   }
 
@@ -87,10 +86,10 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
 
   final override string toString() { result = this.getName() }
 
-  final override predicate child(string label, AstNode child) {
-    MethodBase.super.child(label, child)
+  final override AstNode getAChild(string pred) {
+    result = MethodBase.super.getAChild(pred)
     or
-    label = "getObject" and child = this.getObject()
+    pred = "getObject" and result = this.getObject()
   }
 }
 
@@ -113,19 +112,19 @@ class Lambda extends Callable, BodyStmt, TLambda {
 
   final override string toString() { result = "-> { ... }" }
 
-  final override predicate child(string label, AstNode child) {
-    Callable.super.child(label, child)
+  final override AstNode getAChild(string pred) {
+    result = Callable.super.getAChild(pred)
     or
-    BodyStmt.super.child(label, child)
+    result = BodyStmt.super.getAChild(pred)
   }
 }
 
 /** A block. */
 class Block extends Callable, StmtSequence, Scope, TBlock {
-  override predicate child(string label, AstNode child) {
-    Callable.super.child(label, child)
+  override AstNode getAChild(string pred) {
+    result = Callable.super.getAChild(pred)
     or
-    StmtSequence.super.child(label, child)
+    result = StmtSequence.super.getAChild(pred)
   }
 }
 
@@ -141,10 +140,10 @@ class DoBlock extends Block, BodyStmt, TDoBlock {
 
   final override string toString() { result = "do ... end" }
 
-  final override predicate child(string label, AstNode child) {
-    Block.super.child(label, child)
+  final override AstNode getAChild(string pred) {
+    result = Block.super.getAChild(pred)
     or
-    BodyStmt.super.child(label, child)
+    result = BodyStmt.super.getAChild(pred)
   }
 
   final override string getAPrimaryQlClass() { result = "DoBlock" }

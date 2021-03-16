@@ -14,9 +14,7 @@ class Operation extends Expr, TOperation {
   /** Gets an operand of this operation. */
   Expr getAnOperand() { none() }
 
-  override predicate child(string label, AstNode child) {
-    label = "getAnOperand" and child = this.getAnOperand()
-  }
+  override AstNode getAChild(string pred) { pred = "getAnOperand" and result = this.getAnOperand() }
 }
 
 /** A unary operation. */
@@ -32,10 +30,10 @@ class UnaryOperation extends Operation, TUnaryOperation {
 
   final override Expr getAnOperand() { result = this.getOperand() }
 
-  final override predicate child(string label, AstNode child) {
-    Operation.super.child(label, child)
+  final override AstNode getAChild(string pred) {
+    result = Operation.super.getAChild(pred)
     or
-    label = "getOperand" and child = this.getOperand()
+    pred = "getOperand" and result = this.getOperand()
   }
 
   final override string toString() { result = this.getOperator() + " ..." }
@@ -115,19 +113,19 @@ class BinaryOperation extends Operation, TBinaryOperation {
 
   final override string toString() { result = "... " + this.getOperator() + " ..." }
 
-  override predicate child(string label, AstNode child) {
-    Operation.super.child(label, child)
+  override AstNode getAChild(string pred) {
+    result = Operation.super.getAChild(pred)
     or
-    label = "getLeftOperand" and child = this.getLeftOperand()
+    pred = "getLeftOperand" and result = this.getLeftOperand()
     or
-    label = "getRightOperand" and child = this.getRightOperand()
+    pred = "getRightOperand" and result = this.getRightOperand()
   }
 
   /** Gets the left operand of this binary operation. */
-  final Expr getLeftOperand() { toTreeSitter(result) = g.getLeft() }
+  final Stmt getLeftOperand() { toTreeSitter(result) = g.getLeft() }
 
   /** Gets the right operand of this binary operation. */
-  final Expr getRightOperand() { toTreeSitter(result) = g.getRight() }
+  final Stmt getRightOperand() { toTreeSitter(result) = g.getRight() }
 }
 
 /**
@@ -328,12 +326,12 @@ class RelationalOperation extends ComparisonOperation, TRelationalOperation {
   /** Gets the lesser operand. */
   Expr getLesserOperand() { none() }
 
-  final override predicate child(string label, AstNode child) {
-    ComparisonOperation.super.child(label, child)
+  final override AstNode getAChild(string pred) {
+    result = ComparisonOperation.super.getAChild(pred)
     or
-    label = "getGreaterOperand" and child = this.getGreaterOperand()
+    pred = "getGreaterOperand" and result = this.getGreaterOperand()
     or
-    label = "getLesserOperand" and child = this.getLesserOperand()
+    pred = "getLesserOperand" and result = this.getLesserOperand()
   }
 }
 
@@ -441,12 +439,12 @@ class Assignment extends Operation, TAssignment {
 
   final override string toString() { result = "... " + this.getOperator() + " ..." }
 
-  override predicate child(string label, AstNode child) {
-    Operation.super.child(label, child)
+  override AstNode getAChild(string pred) {
+    result = Operation.super.getAChild(pred)
     or
-    label = "getLeftOperand" and child = getLeftOperand()
+    pred = "getLeftOperand" and result = getLeftOperand()
     or
-    label = "getRightOperand" and child = getRightOperand()
+    pred = "getRightOperand" and result = getRightOperand()
   }
 }
 

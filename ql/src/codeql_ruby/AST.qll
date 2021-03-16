@@ -36,15 +36,15 @@ class AstNode extends TAstNode {
   Location getLocation() { result = toTreeSitter(this).getLocation() }
 
   /** Gets a child node of this `AstNode`. */
-  final AstNode getAChild() { this.child(_, result) }
+  final AstNode getAChild() { result = this.getAChild(_) }
 
   /** Gets the parent of this `AstNode`, if this node is not a root node. */
   final AstNode getParent() { result.getAChild() = this }
 
   /**
-   * Holds if `child` is a child of this node, and `child` can be retrieved using
-   * a predicate named `label`.
+   * Gets a child of this node, which can also be retrieved using a predicate
+   * named `pred`.
    */
   cached
-  predicate child(string label, AstNode child) { none() }
+  AstNode getAChild(string pred) { none() }
 }

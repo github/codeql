@@ -56,10 +56,10 @@ class Toplevel extends ModuleBase, TToplevel {
    */
   final BeginBlock getABeginBlock() { result = getBeginBlock(_) }
 
-  final override predicate child(string label, AstNode child) {
-    ModuleBase.super.child(label, child)
+  final override AstNode getAChild(string pred) {
+    result = ModuleBase.super.getAChild(pred)
     or
-    label = "getBeginBlock" and child = this.getBeginBlock(_)
+    pred = "getBeginBlock" and result = this.getBeginBlock(_)
   }
 
   final override string toString() { result = g.getLocation().getFile().getBaseName() }
@@ -132,9 +132,9 @@ class Namespace extends ModuleBase, ConstantWriteAccess, TNamespace {
    */
   override predicate hasGlobalScope() { none() }
 
-  override predicate child(string label, AstNode child) {
-    ModuleBase.super.child(label, child) or
-    ConstantWriteAccess.super.child(label, child)
+  override AstNode getAChild(string pred) {
+    result = ModuleBase.super.getAChild(pred) or
+    result = ConstantWriteAccess.super.getAChild(pred)
   }
 
   final override string toString() { result = ConstantWriteAccess.super.toString() }
@@ -191,10 +191,10 @@ class Class extends Namespace, TClass {
     )
   }
 
-  final override predicate child(string label, AstNode child) {
-    Namespace.super.child(label, child)
+  final override AstNode getAChild(string pred) {
+    result = Namespace.super.getAChild(pred)
     or
-    label = "getSuperclassExpr" and child = this.getSuperclassExpr()
+    pred = "getSuperclassExpr" and result = this.getSuperclassExpr()
   }
 }
 
@@ -229,10 +229,10 @@ class SingletonClass extends ModuleBase, TSingletonClass {
 
   final override string toString() { result = "class << ..." }
 
-  final override predicate child(string label, AstNode child) {
-    ModuleBase.super.child(label, child)
+  final override AstNode getAChild(string pred) {
+    result = ModuleBase.super.getAChild(pred)
     or
-    label = "getValue" and child = this.getValue()
+    pred = "getValue" and result = this.getValue()
   }
 }
 

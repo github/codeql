@@ -48,9 +48,7 @@ class Call extends Expr, TCall {
    */
   final int getNumberOfArguments() { result = count(this.getAnArgument()) }
 
-  override predicate child(string label, AstNode child) {
-    label = "getArgument" and child = getArgument(_)
-  }
+  override AstNode getAChild(string pred) { pred = "getArgument" and result = this.getArgument(_) }
 }
 
 bindingset[s]
@@ -108,12 +106,12 @@ class MethodCall extends Call, TMethodCall {
 
   override string toString() { result = "call to " + concat(this.getMethodName(), "/") }
 
-  final override predicate child(string label, AstNode child) {
-    Call.super.child(label, child)
+  final override AstNode getAChild(string pred) {
+    result = Call.super.getAChild(pred)
     or
-    label = "getReceiver" and child = getReceiver()
+    pred = "getReceiver" and result = this.getReceiver()
     or
-    label = "getBlock" and child = getBlock()
+    pred = "getBlock" and result = this.getBlock()
   }
 }
 
@@ -161,7 +159,6 @@ private class RegularMethodCall extends MethodCall, TRegularMethodCall {
   final override Expr getArgument(int n) {
     toTreeSitter(result) = g.getArguments().getChild(n)
     or
-    not exists(g.getArguments()) and
     toTreeSitter(result) = g.getMethod().(Generated::ArgumentList).getChild(n)
   }
 
@@ -279,9 +276,7 @@ class BlockArgument extends Expr, TBlockArgument {
 
   final override string toString() { result = "&..." }
 
-  final override predicate child(string label, AstNode child) {
-    label = "getValue" and child = getValue()
-  }
+  final override AstNode getAChild(string pred) { pred = "getValue" and result = this.getValue() }
 }
 
 /**
@@ -308,9 +303,7 @@ class SplatArgument extends Expr, TSplatArgument {
 
   final override string toString() { result = "*..." }
 
-  final override predicate child(string label, AstNode child) {
-    label = "getValue" and child = getValue()
-  }
+  final override AstNode getAChild(string pred) { pred = "getValue" and result = this.getValue() }
 }
 
 /**
@@ -337,7 +330,5 @@ class HashSplatArgument extends Expr, THashSplatArgument {
 
   final override string toString() { result = "**..." }
 
-  final override predicate child(string label, AstNode child) {
-    label = "getValue" and child = getValue()
-  }
+  final override AstNode getAChild(string pred) { pred = "getValue" and result = this.getValue() }
 }

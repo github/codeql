@@ -103,8 +103,8 @@ class UndefStmt extends Stmt, TUndefStmt {
 
   final override string toString() { result = "undef ..." }
 
-  final override predicate child(string label, AstNode child) {
-    label = "getMethodName" and child = this.getMethodName(_)
+  final override AstNode getAChild(string pred) {
+    pred = "getMethodName" and result = this.getMethodName(_)
   }
 }
 
@@ -131,10 +131,10 @@ class AliasStmt extends Stmt, TAliasStmt {
 
   final override string toString() { result = "alias ..." }
 
-  final override predicate child(string label, AstNode child) {
-    label = "getNewName" and child = this.getNewName()
+  final override AstNode getAChild(string pred) {
+    pred = "getNewName" and result = this.getNewName()
     or
-    label = "getOldName" and child = this.getOldName()
+    pred = "getOldName" and result = this.getOldName()
   }
 }
 
@@ -173,9 +173,7 @@ class ReturningStmt extends Stmt, TReturningStmt {
       )
   }
 
-  final override predicate child(string label, AstNode child) {
-    label = "getValue" and child = this.getValue()
-  }
+  final override AstNode getAChild(string pred) { pred = "getValue" and result = this.getValue() }
 }
 
 /**

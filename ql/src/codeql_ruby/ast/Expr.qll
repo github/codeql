@@ -48,8 +48,8 @@ class ArgumentList extends Expr, TArgumentList {
 
   final override string toString() { result = "..., ..." }
 
-  final override predicate child(string label, AstNode child) {
-    label = "getElement" and child = this.getElement(_)
+  final override AstNode getAChild(string pred) {
+    pred = "getElement" and result = this.getElement(_)
   }
 }
 
@@ -82,9 +82,7 @@ class StmtSequence extends Expr, TStmtSequence {
   /** Holds if this sequence has no statements. */
   final predicate isEmpty() { this.getNumberOfStatements() = 0 }
 
-  override predicate child(string label, AstNode child) {
-    label = "getStmt" and child = this.getStmt(_)
-  }
+  override AstNode getAChild(string pred) { pred = "getStmt" and result = this.getStmt(_) }
 }
 
 private class Then extends StmtSequence, TThen {
@@ -181,14 +179,14 @@ class BodyStmt extends StmtSequence, TBodyStmt {
 
   final predicate hasEnsure() { exists(this.getEnsure()) }
 
-  override predicate child(string label, AstNode child) {
-    StmtSequence.super.child(label, child)
+  override AstNode getAChild(string pred) {
+    result = StmtSequence.super.getAChild(pred)
     or
-    label = "getRescue" and child = this.getRescue(_)
+    pred = "getRescue" and result = this.getRescue(_)
     or
-    label = "getElse" and child = this.getElse()
+    pred = "getElse" and result = this.getElse()
     or
-    label = "getEnsure" and child = this.getEnsure()
+    pred = "getEnsure" and result = this.getEnsure()
   }
 }
 
@@ -266,10 +264,10 @@ class Pair extends Expr, TPair {
 
   final override string toString() { result = "Pair" }
 
-  override predicate child(string label, AstNode child) {
-    label = "getKey" and child = this.getKey()
+  override AstNode getAChild(string pred) {
+    pred = "getKey" and result = this.getKey()
     or
-    label = "getValue" and child = this.getValue()
+    pred = "getValue" and result = this.getValue()
   }
 }
 
@@ -333,12 +331,12 @@ class RescueClause extends Expr, TRescueClause {
 
   final override string toString() { result = "rescue ..." }
 
-  override predicate child(string label, AstNode child) {
-    label = "getException" and child = this.getException(_)
+  override AstNode getAChild(string pred) {
+    pred = "getException" and result = this.getException(_)
     or
-    label = "getVariableExpr" and child = this.getVariableExpr()
+    pred = "getVariableExpr" and result = this.getVariableExpr()
     or
-    label = "getBody" and child = this.getBody()
+    pred = "getBody" and result = this.getBody()
   }
 }
 
@@ -373,10 +371,10 @@ class RescueModifierExpr extends Expr, TRescueModifierExpr {
 
   final override string toString() { result = "... rescue ..." }
 
-  override predicate child(string label, AstNode child) {
-    label = "getBody" and child = this.getBody()
+  override AstNode getAChild(string pred) {
+    pred = "getBody" and result = this.getBody()
     or
-    label = "getHandler" and child = this.getHandler()
+    pred = "getHandler" and result = this.getHandler()
   }
 }
 
@@ -432,7 +430,5 @@ class StringConcatenation extends Expr, TStringConcatenation {
 
   final override string toString() { result = "\"...\" \"...\"" }
 
-  override predicate child(string label, AstNode child) {
-    label = "getString" and child = this.getString(_)
-  }
+  override AstNode getAChild(string pred) { pred = "getString" and result = this.getString(_) }
 }

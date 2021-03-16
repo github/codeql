@@ -37,9 +37,7 @@ class ConstantAccess extends Expr, TConstantAccess {
 
   override string toString() { result = this.getName() }
 
-  override predicate child(string label, AstNode child) {
-    label = "getScopeExpr" and child = getScopeExpr()
-  }
+  override AstNode getAChild(string pred) { pred = "getScopeExpr" and result = this.getScopeExpr() }
 }
 
 /**
@@ -85,7 +83,7 @@ private class ScopeResolutionConstantReadAccess extends ConstantReadAccess,
 
   final override Expr getScopeExpr() { toTreeSitter(result) = g.getScope() }
 
-  final override predicate hasGlobalScope() { not exists(this.getScopeExpr()) }
+  final override predicate hasGlobalScope() { not exists(g.getScope()) }
 }
 
 /**
@@ -127,7 +125,7 @@ private class ScopeResolutionConstantWriteAccess extends ConstantWriteAccess,
 
   final override Expr getScopeExpr() { toTreeSitter(result) = g.getScope() }
 
-  final override predicate hasGlobalScope() { not exists(this.getScopeExpr()) }
+  final override predicate hasGlobalScope() { not exists(g.getScope()) }
 }
 
 /**
