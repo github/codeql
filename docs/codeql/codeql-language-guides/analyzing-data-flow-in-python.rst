@@ -20,7 +20,7 @@ Local data flow is data flow within a single method or callable. Local data flow
 Using local data flow
 ~~~~~~~~~~~~~~~~~~~~~
 
-The local data flow library is in the module ``DataFlow``, which defines the class ``Node`` denoting any element that data can flow through. The ``Node`` class has a number of useful subclasses, such as ``ExprNode`` for expressions, ``CallCfgNode`` for function and method calls, and ``ParameterNode`` for parameters, all of which are subclasses of ``CfgNode`` which holds all those data-flow nodes which are associated with a control-flow node. You can map between data flow nodes and expressions/control-flow nodes using the member predicates ``asExpr`` and ``asCfgNode``:
+The local data flow library is in the module ``DataFlow``, which defines the class ``Node`` denoting any element that data can flow through. The ``Node`` class has a number of useful subclasses, such as ``ExprNode`` for expressions, ``CfgNode`` for control-flow nodes, ``CallCfgNode`` for function and method calls, and ``ParameterNode`` for parameters. You can map between data flow nodes and expressions/control-flow nodes using the member predicates ``asExpr`` and ``asCfgNode``:
 
 .. code-block:: ql
 
