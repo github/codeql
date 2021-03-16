@@ -632,6 +632,9 @@ private module Cached {
     TYieldReturnNode(ControlFlow::Nodes::ElementNode cfn) {
       any(Callable c).canYieldReturn(cfn.getElement())
     } or
+    TAsyncReturnNode(ControlFlow::Nodes::ElementNode cfn) {
+      any(Callable c | c.(Modifiable).isAsync()).canReturn(cfn.getElement())
+    } or
     TImplicitCapturedArgumentNode(ControlFlow::Nodes::ElementNode cfn, LocalScopeVariable v) {
       exists(Ssa::ExplicitDefinition def | def.isCapturedVariableDefinitionFlowIn(_, cfn, _) |
         v = def.getSourceVariable().getAssignable()
@@ -781,6 +784,12 @@ private module Cached {
       e = node1.asExpr() and
       node2.(YieldReturnNode).getYieldReturnStmt().getExpr() = e and
       c instanceof ElementContent
+    )
+    or
+    exists(Expr e |
+      e = node1.asExpr() and
+      node2.(AsyncReturnNode).getReturnStmt().getExpr() = e and
+      c = getResultContent()
     )
     or
     FlowSummaryImpl::Private::storeStep(node1, c, node2)
@@ -961,6 +970,8 @@ private module Cached {
     )
     or
     n instanceof YieldReturnNode
+    or
+    n instanceof AsyncReturnNode
     or
     n instanceof ImplicitCapturedArgumentNode
     or
@@ -1395,6 +1406,30 @@ private module ReturnNodes {
     override Location getLocationImpl() { result = yrs.getLocation() }
 
     override string toStringImpl() { result = yrs.toString() }
+  }
+
+  /**
+   * A synthesized `return` node for returned expressions inside `async` methods.
+   */
+  class AsyncReturnNode extends ReturnNode, NodeImpl, TAsyncReturnNode {
+    private ControlFlow::Nodes::ElementNode cfn;
+    private ReturnStmt rs;
+
+    AsyncReturnNode() { this = TAsyncReturnNode(cfn) and rs.getExpr().getAControlFlowNode() = cfn }
+
+    ReturnStmt getReturnStmt() { result = rs }
+
+    override NormalReturnKind getKind() { any() }
+
+    override Callable getEnclosingCallableImpl() { result = rs.getEnclosingCallable() }
+
+    override Type getTypeImpl() { result = rs.getEnclosingCallable().getReturnType() }
+
+    override ControlFlow::Node getControlFlowNodeImpl() { result = cfn }
+
+    override Location getLocationImpl() { result = rs.getLocation() }
+
+    override string toStringImpl() { result = rs.toString() }
   }
 
   /**

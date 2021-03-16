@@ -8,7 +8,7 @@ class Test
 
     public void TestNonAwait(string input)
     {
-        Sink(Return(input)); // True positive
+        Sink(Return(input));
     }
 
     private string Return(string x)
@@ -18,18 +18,18 @@ class Test
 
     public async Task TestAwait1(string input)
     {
-        Sink(await ReturnAwait(input)); // False negative
+        Sink(await ReturnAwait(input));
     }
 
     public async Task TestAwait2(string input)
     {
         var x = await ReturnAwait(input);
-        Sink(x); // False negative
+        Sink(x);
     }
 
     public void TestAwait3(string input)
     {
-        Sink(ReturnAwait(input).Result); // False negative
+        Sink(ReturnAwait(input).Result);
     }
 
     private async Task<string> ReturnAwait(string x)
@@ -40,7 +40,7 @@ class Test
 
     public void TestTask(string input)
     {
-        Sink(ReturnTask(input).Result); // True positive
+        Sink(ReturnTask(input).Result);
     }
 
     private Task<string> ReturnTask(string x)
