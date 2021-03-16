@@ -653,7 +653,10 @@ private class SharedStepAsAdditionalFlowStep extends AdditionalFlowStep {
     any(SharedFlowStep st).step(pred, succ) and succ = this
   }
 
-  override predicate step(DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl, DataFlow::FlowLabel succlbl) {
+  override predicate step(
+    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
+    DataFlow::FlowLabel succlbl
+  ) {
     any(SharedFlowStep st).step(pred, succ, predlbl, succlbl) and succ = this
   }
 }
