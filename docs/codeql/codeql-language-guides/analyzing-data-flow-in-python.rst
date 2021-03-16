@@ -271,34 +271,16 @@ These predicates are defined in the configuration:
 
 Similar to global data flow, the characteristic predicate (``MyTaintTrackingConfiguration()``) defines the unique name of the configuration and the taint analysis is performed using the predicate ``hasFlow(DataFlow::Node source, DataFlow::Node sink)``.
 
-Flow sources
-~~~~~~~~~~~~
+Predefined sources and sinks
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The data flow library contains some predefined flow sources. The class ``RemoteFlowSource`` (defined in module ``semmle.python.dataflow.new.RemoteFlowSources``) represents data flow from remote network inputs. This is useful for finding security problems in networked services.
+The data flow library contains a number of predefined sources and sinks, providing a good starting point for defining data flow based security queries.
+
+-  The class ``RemoteFlowSource`` (defined in module ``semmle.python.dataflow.new.RemoteFlowSources``) represents data flow from remote network inputs. This is useful for finding security problems in networked services.
+-  The library ``Concepts`` (defined in module ``semmle.python.Concepts``) contain several subclasses of ``DataFlow::Node`` that are security relevant, such as ``FileSystemAccess`` and ``SqlExecution``.
+-  The module ``Attributes`` (defined in module ``semmle.python.dataflow.new.internal.Attributes``) defines ``AttrRead`` and ``AttrWrite`` which handle both ordinary and dynamic attribute access.
 
 For global flow, it is also useful to restrict sources to instances of ``LocalSourceNode``. The predefined sources generally do that.
-
-Example
-~~~~~~~
-
-This query shows a data flow configuration that uses all network input as data sources:
-
-.. code-block:: ql
-
-   import python
-   import semmle.python.dataflow.new.RemoteFlowSources
-
-   class MyDataFlowConfiguration extends DataFlow::Configuration {
-     MyDataFlowConfiguration() {
-       this = "..."
-     }
-
-     override predicate isSource(DataFlow::Node source) {
-       source instanceof RemoteFlowSource
-     }
-
-     ...
-   }
 
 Class hierarchy
 ~~~~~~~~~~~~~~~
@@ -309,11 +291,49 @@ Class hierarchy
    -  ``DataFlow::ExprNode`` - an expression behaving as a data flow node.
    -  ``DataFlow::ParameterNode`` - a parameter data flow node representing the value of a parameter at function entry.
    -  ``RemoteFlowSource`` - data flow from network/remote input.
+   -  ``Attributes::AttrRead`` - flow out of an attribute.
+   -  ``Attributes::AttrWrite`` - flow into an attribute.
+   -  ``Concepts::SystemCommandExecution`` - a data-flow node that executes an operating system command, for instance by spawning a new process.
+   -  ``Concepts::FileSystemAccess`` - a data flow node that performs a file system access, including reading and writing data, creating and deleting files and folders, checking and updating permissions, and so on.
+   -  ``Concepts::Path::PathNormalization`` - a data-flow node that performs path normalization. This is often needed in order to safely access paths.
+   -  ``Concepts::Decoding`` - a data-flow node that decodes data from a binary or textual format. A decoding (automatically) preserves taint from input to output. However, it can also be a problem in itself, for example if it allows code execution or could result in denial-of-service.
+   -  ``Concepts::Encoding`` - a data-flow node that encodes data to a binary or textual format. An encoding (automatically) preserves taint from input to output.
+   -  ``Concepts::CodeExecution`` - a data-flow node that dynamically executes Python code.
+   -  ``Concepts::SqlExecution`` - a data-flow node that executes SQL statements.
+   -  ``Concepts::HTTP::Server::RouteSetup`` - a data-flow node that sets up a route on a server.
+   -  ``Concepts::HTTP::Server::HttpResponse`` - a data-flow node that creates a HTTP response on a server.
 
 -  ``TaintTracking::Configuration`` - base class for custom global taint tracking analysis.
 
 Examples
 ~~~~~~~~
+
+This query shows a data flow configuration that uses all network input as data sources:
+
+.. code-block:: ql
+
+    import python
+    import semmle.python.dataflow.new.DataFlow
+    import semmle.python.dataflow.new.TaintTracking
+    import semmle.python.dataflow.new.RemoteFlowSources
+    import semmle.python.Concepts
+
+    class RemoteToFileConfiguration extends TaintTracking::Configuration {
+      RemoteToFileConfiguration() { this = "RemoteToFileConfiguration" }
+
+      override predicate isSource(DataFlow::Node source) {
+        source instanceof RemoteFlowSource
+      }
+
+      override predicate isSink(DataFlow::Node sink) {
+        sink = any(FileSystemAccess fa).getAPathArgument()
+      }
+    }
+
+    from DataFlow::Node input, DataFlow::Node fileAccess, RemoteToFileConfiguration config
+    where config.hasFlow(input, fileAccess)
+    select fileAccess, "This file access uses data from $@.",
+      input, "user-controllable input."
 
 This data flow configuration tracks data flow from environment variables to opening files:
 
