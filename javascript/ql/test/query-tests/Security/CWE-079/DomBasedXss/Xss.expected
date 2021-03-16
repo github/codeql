@@ -269,6 +269,9 @@ nodes
 | sanitiser.js:45:21:45:44 | '<b>' + ...  '</b>' |
 | sanitiser.js:45:21:45:44 | '<b>' + ...  '</b>' |
 | sanitiser.js:45:29:45:35 | tainted |
+| sanitiser.js:48:19:48:25 | tainted |
+| sanitiser.js:48:19:48:46 | tainted ... /g, '') |
+| sanitiser.js:48:19:48:46 | tainted ... /g, '') |
 | stored-xss.js:2:39:2:62 | documen ... .search |
 | stored-xss.js:2:39:2:62 | documen ... .search |
 | stored-xss.js:3:35:3:58 | documen ... .search |
@@ -889,6 +892,7 @@ edges
 | sanitiser.js:16:7:16:27 | tainted | sanitiser.js:33:29:33:35 | tainted |
 | sanitiser.js:16:7:16:27 | tainted | sanitiser.js:38:29:38:35 | tainted |
 | sanitiser.js:16:7:16:27 | tainted | sanitiser.js:45:29:45:35 | tainted |
+| sanitiser.js:16:7:16:27 | tainted | sanitiser.js:48:19:48:25 | tainted |
 | sanitiser.js:16:17:16:27 | window.name | sanitiser.js:16:7:16:27 | tainted |
 | sanitiser.js:16:17:16:27 | window.name | sanitiser.js:16:7:16:27 | tainted |
 | sanitiser.js:23:29:23:35 | tainted | sanitiser.js:23:21:23:44 | '<b>' + ...  '</b>' |
@@ -901,6 +905,8 @@ edges
 | sanitiser.js:38:29:38:35 | tainted | sanitiser.js:38:21:38:44 | '<b>' + ...  '</b>' |
 | sanitiser.js:45:29:45:35 | tainted | sanitiser.js:45:21:45:44 | '<b>' + ...  '</b>' |
 | sanitiser.js:45:29:45:35 | tainted | sanitiser.js:45:21:45:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:48:19:48:25 | tainted | sanitiser.js:48:19:48:46 | tainted ... /g, '') |
+| sanitiser.js:48:19:48:25 | tainted | sanitiser.js:48:19:48:46 | tainted ... /g, '') |
 | stored-xss.js:2:39:2:62 | documen ... .search | stored-xss.js:5:20:5:52 | session ... ssion') |
 | stored-xss.js:2:39:2:62 | documen ... .search | stored-xss.js:5:20:5:52 | session ... ssion') |
 | stored-xss.js:2:39:2:62 | documen ... .search | stored-xss.js:5:20:5:52 | session ... ssion') |
@@ -1310,6 +1316,7 @@ edges
 | sanitiser.js:33:21:33:44 | '<b>' + ...  '</b>' | sanitiser.js:16:17:16:27 | window.name | sanitiser.js:33:21:33:44 | '<b>' + ...  '</b>' | Cross-site scripting vulnerability due to $@. | sanitiser.js:16:17:16:27 | window.name | user-provided value |
 | sanitiser.js:38:21:38:44 | '<b>' + ...  '</b>' | sanitiser.js:16:17:16:27 | window.name | sanitiser.js:38:21:38:44 | '<b>' + ...  '</b>' | Cross-site scripting vulnerability due to $@. | sanitiser.js:16:17:16:27 | window.name | user-provided value |
 | sanitiser.js:45:21:45:44 | '<b>' + ...  '</b>' | sanitiser.js:16:17:16:27 | window.name | sanitiser.js:45:21:45:44 | '<b>' + ...  '</b>' | Cross-site scripting vulnerability due to $@. | sanitiser.js:16:17:16:27 | window.name | user-provided value |
+| sanitiser.js:48:19:48:46 | tainted ... /g, '') | sanitiser.js:16:17:16:27 | window.name | sanitiser.js:48:19:48:46 | tainted ... /g, '') | Cross-site scripting vulnerability due to $@. | sanitiser.js:16:17:16:27 | window.name | user-provided value |
 | stored-xss.js:5:20:5:52 | session ... ssion') | stored-xss.js:2:39:2:62 | documen ... .search | stored-xss.js:5:20:5:52 | session ... ssion') | Cross-site scripting vulnerability due to $@. | stored-xss.js:2:39:2:62 | documen ... .search | user-provided value |
 | stored-xss.js:8:20:8:48 | localSt ... local') | stored-xss.js:3:35:3:58 | documen ... .search | stored-xss.js:8:20:8:48 | localSt ... local') | Cross-site scripting vulnerability due to $@. | stored-xss.js:3:35:3:58 | documen ... .search | user-provided value |
 | stored-xss.js:12:20:12:54 | "<a hre ... ar</a>" | stored-xss.js:3:35:3:58 | documen ... .search | stored-xss.js:12:20:12:54 | "<a hre ... ar</a>" | Cross-site scripting vulnerability due to $@. | stored-xss.js:3:35:3:58 | documen ... .search | user-provided value |
