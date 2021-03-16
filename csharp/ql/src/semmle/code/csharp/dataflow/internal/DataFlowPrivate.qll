@@ -1354,14 +1354,12 @@ abstract class ReturnNode extends Node {
 private module ReturnNodes {
   /**
    * A data-flow node that represents an expression returned by a callable,
-   * either using a (`yield`) `return` statement or an expression body (`=>`).
+   * either using a `return` statement or an expression body (`=>`).
    */
   class ExprReturnNode extends ReturnNode, ExprNode {
     ExprReturnNode() {
       exists(DotNet::Callable c, DotNet::Expr e | e = this.getExpr() |
-        c.canReturn(e)
-        or
-        c.(Callable).canYieldReturn(e)
+        c.canReturn(e) and not c.(Modifiable).isAsync()
       )
     }
 
