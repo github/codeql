@@ -338,7 +338,7 @@ module TaintTracking {
      */
     cached
     predicate legacyAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-      any(AdditionalTaintStep step).step(pred, succ)
+      any(InternalAdditionalTaintStep step).step(pred, succ)
     }
 
     /**
@@ -469,6 +469,12 @@ module TaintTracking {
   }
 
   /**
+   * DEPRECATED. Subclasses should extend `SharedTaintStep` instead, unless the subclass
+   * is part of a query, in which case it should be moved into the `isAdditionalTaintStep` predicate
+   * of the relevant taint-tracking configuration.
+   * Other uses of the `step` relation in this class should instead use the `TaintTracking::sharedTaintStep`
+   * predicate.
+   *
    * A taint-propagating data flow edge that should be added to all taint tracking
    * configurations in addition to standard data flow edges.
    *
@@ -476,7 +482,10 @@ module TaintTracking {
    * of the standard library. Override `Configuration::isAdditionalTaintStep`
    * for analysis-specific taint steps.
    */
-  abstract class AdditionalTaintStep extends DataFlow::Node {
+  deprecated class AdditionalTaintStep = InternalAdditionalTaintStep;
+
+  /** Internal version of `AdditionalTaintStep` that won't trigger deprecation warnings. */
+  abstract private class InternalAdditionalTaintStep extends DataFlow::Node {
     /**
      * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
      * data flow edge.

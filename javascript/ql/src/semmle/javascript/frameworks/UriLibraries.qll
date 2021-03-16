@@ -9,8 +9,9 @@ import javascript
  *
  * A taint propagating data flow edge arising from an operation in a URI library.
  */
-abstract deprecated class UriLibraryStep extends DataFlow::ValueNode,
-  TaintTracking::AdditionalTaintStep { }
+abstract deprecated class UriLibraryStep extends DataFlow::ValueNode {
+  predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
+}
 
 /**
  * Provides classes for working with [urijs](http://medialize.github.io/URI.js/) code.
