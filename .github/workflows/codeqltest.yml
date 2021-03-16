@@ -20,12 +20,15 @@ jobs:
         echo "Done"
         cd $HOME
         echo "Downloading CodeQL CLI..."
-        curl https://github.com/github/codeql-cli-binaries/releases/download/v2.4.3/codeql.zip -L -o codeql.zip
+        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -1)
+        gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-linux64.zip "$LATEST"
         echo "Done"
         echo "Unpacking CodeQL CLI..."
-        unzip -q codeql.zip
-        rm -f codeql.zip
+        unzip -q codeql-linux64.zip
+        rm -f codeql-linux64.zip
         echo "Done"
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
 
     - name: Check out code
       uses: actions/checkout@v2
@@ -69,12 +72,15 @@ jobs:
         echo "Done"
         cd $HOME
         echo "Downloading CodeQL CLI..."
-        curl https://github.com/github/codeql-cli-binaries/releases/download/v2.4.3/codeql.zip -L -o codeql.zip
+        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -1)
+        gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-osx64.zip "$LATEST"
         echo "Done"
         echo "Unpacking CodeQL CLI..."
-        unzip -q codeql.zip
-        rm -f codeql.zip
+        unzip -q codeql-osx64.zip
+        rm -f codeql-osx64.zip
         echo "Done"
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
 
     - name: Check out code
       uses: actions/checkout@v2
@@ -102,16 +108,22 @@ jobs:
     - name: Set up CodeQL CLI
       run: |
         echo "Removing old CodeQL Directory..."
-        rmdir "$HOME\codeql" -Recurse -Force -ErrorAction SilentlyContinue
+        rm -rf $HOME/codeql
         echo "Done"
         cd "$HOME"
         echo "Downloading CodeQL CLI..."
-        Invoke-WebRequest -Uri https://github.com/github/codeql-cli-binaries/releases/download/v2.4.3/codeql.zip -OutFile codeql.zip
+        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -1)
+        gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-win64.zip "$LATEST"
         echo "Done"
         echo "Unpacking CodeQL CLI..."
-        Expand-Archive codeql.zip -DestinationPath $HOME
-        rm -fo codeql.zip
+        unzip -q -o codeql-win64.zip
+        unzip -q -o codeql-win64.zip codeql/codeql.exe
+        rm -f codeql-win64.zip
         echo "Done"
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      shell:
+        bash
 
     - name: Check out code
       uses: actions/checkout@v2
