@@ -456,7 +456,7 @@ to wrap it in a new subclass of ``TaintTracking::SharedTaintStep`` like this:
 If we add this definition to the standard library, it will be picked up by all taint-tracking configurations. Obviously, one has to be
 careful when adding such new additional taint steps to ensure that they really make sense for `all` configurations.
 
-Analogous to ``TaintTracking::SharedTaintStep``, there is also a class ``DataFlow::AdditionalFlowStep`` that can be extended to add
+Analogous to ``TaintTracking::SharedTaintStep``, there is also a class ``DataFlow::SharedFlowStep`` that can be extended to add
 extra steps to all data-flow configurations, and hence also to all taint-tracking configurations.
 
 Exercises
