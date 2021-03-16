@@ -51,7 +51,9 @@ class StringReplaceCallSequence extends DataFlow::CallNode {
 
   /** Gets a string that is the replacement of this call. */
   string getAReplacementString() {
-    // this is more restrictive than `StringReplaceCall::replaces/2`, in the name of precision
+    getAMember().replaces(_, result)
+    or
+    // StringReplaceCall::replaces/2 can't always find the `old` string, so this is added as a falback.
     getAMember().getRawReplacement().getStringValue() = result
   }
 
