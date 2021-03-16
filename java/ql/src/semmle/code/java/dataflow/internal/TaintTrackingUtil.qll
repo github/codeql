@@ -71,18 +71,19 @@ private predicate localAdditionalBasicTaintStep(DataFlow::Node src, DataFlow::No
  * `a` is tainted after `f` completes, and vice versa.
  */
 private predicate composedValueAndTaintModelStep(ArgumentNode src, DataFlow::Node sink) {
-  exists(Call call, ArgumentNode valueSource, DataFlow::PostUpdateNode valueSourcePun |
+  exists(Call call, ArgumentNode valueSource, DataFlow::PostUpdateNode valueSourcePost |
     src.argumentOf(call, _) and
     valueSource.argumentOf(call, _) and
-    valueSourcePun.getPreUpdateNode() = valueSource and
+    src != valueSource and
+    valueSourcePost.getPreUpdateNode() = valueSource and
     DataFlow::localFlowStep(valueSource, DataFlow::exprNode(call)) and
     (
       // in-x -value-> out-y and in-z -taint-> out-y ==> in-z -taint-> in-x
       localAdditionalBasicTaintStep(src, DataFlow::exprNode(call)) and
-      sink = valueSourcePun
+      sink = valueSourcePost
       or
       // in-x -value-> out-y and in-z -taint-> in-x ==> in-z -taint-> out-y
-      localAdditionalBasicTaintStep(src, valueSourcePun) and
+      localAdditionalBasicTaintStep(src, valueSourcePost) and
       sink = DataFlow::exprNode(call)
     )
   )
