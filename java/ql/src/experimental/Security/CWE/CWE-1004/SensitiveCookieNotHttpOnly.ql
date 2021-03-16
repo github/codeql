@@ -33,7 +33,23 @@ predicate isSensitiveCookieNameExpr(Expr expr) {
 
 /** Holds if a string is concatenated with the `HttpOnly` flag. */
 predicate hasHttpOnlyExpr(Expr expr) {
-  expr.(CompileTimeConstantExpr).getStringValue().toLowerCase().matches("%httponly%") or
+  (
+    expr.(CompileTimeConstantExpr).getStringValue().toLowerCase().matches("%httponly%")
+    or
+    exists(
+      StaticMethodAccess ma // String.format("%s=%s;HttpOnly", "sessionkey", sessionKey)
+    |
+      ma.getType().getName() = "String" and
+      ma.getMethod().getName() = "format" and
+      ma.getArgument(0)
+          .(CompileTimeConstantExpr)
+          .getStringValue()
+          .toLowerCase()
+          .matches("%httponly%") and
+      expr = ma
+    )
+  )
+  or
   hasHttpOnlyExpr(expr.(AddExpr).getAnOperand())
 }
 
@@ -56,6 +72,40 @@ class CookieClass extends RefType {
   }
 }
 
+/** Holds if the `Expr` expr is evaluated to boolean true. */
+predicate isBooleanTrue(Expr expr) {
+  expr.(CompileTimeConstantExpr).getBooleanValue() = true or
+  expr.(VarAccess).getVariable().getAnAssignedValue().(CompileTimeConstantExpr).getBooleanValue() =
+    true
+}
+
+/** Holds if the method or a wrapper method sets the `HttpOnly` flag. */
+predicate setHttpOnlyInCookie(MethodAccess ma) {
+  ma.getMethod().getName() = "setHttpOnly" and
+  (
+    isBooleanTrue(ma.getArgument(0)) // boolean literal true
+    or
+    exists(
+      MethodAccess mpa, int i // runtime assignment of boolean value true
+    |
+      TaintTracking::localTaint(DataFlow::parameterNode(mpa.getMethod().getParameter(i)),
+        DataFlow::exprNode(ma.getArgument(0))) and
+      isBooleanTrue(mpa.getArgument(i))
+    )
+  )
+  or
+  exists(MethodAccess mca |
+    ma.getMethod().calls(mca.getMethod()) and
+    setHttpOnlyInCookie(mca)
+  )
+}
+
+/** Holds if the method or a wrapper method removes a cookie. */
+predicate removeCookie(MethodAccess ma) {
+  ma.getMethod().getName() = "setMaxAge" and
+  ma.getArgument(0).(IntegerLiteral).getIntValue() = 0
+}
+
 /** Sensitive cookie name used in a `Cookie` constructor or a `Set-Cookie` call. */
 class SensitiveCookieNameExpr extends Expr {
   SensitiveCookieNameExpr() { isSensitiveCookieNameExpr(this) }
@@ -69,11 +119,16 @@ class CookieResponseSink extends DataFlow::ExprNode {
         ma.getMethod() instanceof ResponseAddCookieMethod and
         this.getExpr() = ma.getArgument(0) and
         not exists(
-          MethodAccess ma2 // cookie.setHttpOnly(true)
+          MethodAccess ma2 // a method or wrapper method that invokes cookie.setHttpOnly(true)
         |
-          ma2.getMethod().getName() = "setHttpOnly" and
-          ma2.getArgument(0).(BooleanLiteral).getBooleanValue() = true and
-          DataFlow::localExprFlow(ma2.getQualifier(), this.getExpr())
+          (
+            setHttpOnlyInCookie(ma2) or
+            removeCookie(ma2)
+          ) and
+          (
+            DataFlow::localExprFlow(ma2.getQualifier(), this.getExpr()) or
+            DataFlow::localExprFlow(ma2, this.getExpr())
+          )
         )
         or
         ma instanceof SetCookieMethodAccess and
@@ -92,13 +147,15 @@ class CookieResponseSink extends DataFlow::ExprNode {
 predicate setHttpOnlyInNewCookie(ClassInstanceExpr cie) {
   cie.getConstructedType().hasQualifiedName(["javax.ws.rs.core", "jakarta.ws.rs.core"], "NewCookie") and
   (
-    cie.getNumArgument() = 6 and cie.getArgument(5).(BooleanLiteral).getBooleanValue() = true // NewCookie(Cookie cookie, String comment, int maxAge, Date expiry, boolean secure, boolean httpOnly)
+    cie.getNumArgument() = 6 and
+    isBooleanTrue(cie.getArgument(5)) // NewCookie(Cookie cookie, String comment, int maxAge, Date expiry, boolean secure, boolean httpOnly)
     or
     cie.getNumArgument() = 8 and
     cie.getArgument(6).getType() instanceof BooleanType and
-    cie.getArgument(7).(BooleanLiteral).getBooleanValue() = true // NewCookie(String name, String value, String path, String domain, String comment, int maxAge, boolean secure, boolean httpOnly)
+    isBooleanTrue(cie.getArgument(7)) // NewCookie(String name, String value, String path, String domain, String comment, int maxAge, boolean secure, boolean httpOnly)
     or
-    cie.getNumArgument() = 10 and cie.getArgument(9).(BooleanLiteral).getBooleanValue() = true // NewCookie(String name, String value, String path, String domain, int version, String comment, int maxAge, Date expiry, boolean secure, boolean httpOnly)
+    cie.getNumArgument() = 10 and
+    isBooleanTrue(cie.getArgument(9)) // NewCookie(String name, String value, String path, String domain, int version, String comment, int maxAge, Date expiry, boolean secure, boolean httpOnly)
   )
 }
 

@@ -71,6 +71,63 @@ class SensitiveCookieNotHttpOnly {
         response.addHeader("Set-Cookie", secString);
     }
 
+    // GOOD - Tests set a sensitive cookie header with the `HttpOnly` flag set using `String.format(...)`.
+    public void addCookie10(HttpServletRequest request, HttpServletResponse response) {
+        response.addHeader("SET-COOKIE", String.format("%s=%s;HttpOnly", "sessionkey", request.getSession().getAttribute("sessionkey")));
+    }
+
+    public Cookie createHttpOnlyAuthenticationCookie(HttpServletRequest request, String jwt) {
+        String PRESTO_UI_COOKIE = "Presto-UI-Token";
+        Cookie cookie = new Cookie(PRESTO_UI_COOKIE, jwt);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/ui");
+        return cookie;
+    }
+
+    public Cookie createAuthenticationCookie(HttpServletRequest request, String jwt) {
+        String PRESTO_UI_COOKIE = "Presto-UI-Token";
+        Cookie cookie = new Cookie(PRESTO_UI_COOKIE, jwt);
+        cookie.setPath("/ui");
+        return cookie;
+    }
+
+    // GOOD - Tests set a sensitive cookie header with the `HttpOnly` flag set using a wrapper method.
+    public void addCookie11(HttpServletRequest request, HttpServletResponse response, String jwt) {
+        Cookie cookie = createHttpOnlyAuthenticationCookie(request, jwt);
+        response.addCookie(cookie);
+    }
+
+    // BAD - Tests set a sensitive cookie header without the `HttpOnly` flag set using a wrapper method.
+    public void addCookie12(HttpServletRequest request, HttpServletResponse response, String jwt) {
+        Cookie cookie = createAuthenticationCookie(request, jwt);
+        response.addCookie(cookie);
+    }
+
+    private Cookie createCookie(String name, String value, Boolean httpOnly){
+        Cookie cookie = null;
+        cookie = new Cookie(name, value);
+        cookie.setDomain("/");
+        cookie.setHttpOnly(httpOnly);
+
+        //for production https
+        cookie.setSecure(true);
+
+        cookie.setMaxAge(60*60*24*30);
+        cookie.setPath("/");
+
+        return cookie;
+    }
+
+    // GOOD - Tests set a sensitive cookie header with the `HttpOnly` flag set through a boolean variable using a wrapper method.
+    public void addCookie13(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
+        response.addCookie(createCookie("refresh_token", refreshToken, true));
+    }
+
+    // BAD - Tests set a sensitive cookie header with the `HttpOnly` flag not set through a boolean variable using a wrapper method.
+    public void addCookie14(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
+        response.addCookie(createCookie("refresh_token", refreshToken, false));
+    }
+
     // GOOD - CSRF token doesn't need to have the `HttpOnly` flag set.
     public void addCsrfCookie(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Spring put the CSRF token in session attribute "_csrf"
