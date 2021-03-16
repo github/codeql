@@ -64,9 +64,9 @@ private predicate localAdditionalBasicTaintStep(DataFlow::Node src, DataFlow::No
 }
 
 /**
- * Holds if an additional step from `src` to `sink` can be inferred from a value-preserving step
- * across a method callsite (from input to input, or input to result) and a taint-preserving step
- * across the same callsite from a different input. For example, if we know that `f(a, b)` returns
+ * Holds if an additional step from `src` to `sink` through a call can be inferred from the
+ * combination of a value-preserving step providing an alias between an input and the output
+ * and a taint step from `src` to one the aliased nodes. For example, if we know that `f(a, b)` returns
  * the exact value of `a` and also propagates taint from `b` to its result, then we also know that
  * `a` is tainted after `f` completes, and vice versa.
  */
