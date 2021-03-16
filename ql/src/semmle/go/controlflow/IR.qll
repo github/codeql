@@ -240,19 +240,18 @@ module IR {
 
   /**
    * Gets the effective base of a selector, index or slice expression, taking implicit dereferences
-   * into account.
+   * and implicit field reads into account.
    *
-   * For a selector expression `b.f`, this will either be the implicit dereference `*b`, or just
-   * `b` if there is no implicit dereferencing.
+   * For a selector expression `b.f`, this could be the implicit dereference `*b`, or the implicit
+   * field access `b.Embedded.f` if the field `f` is promoted from an embedded type `Embedded`, or
+   * a combination of both, or simply `b` if neither case applies.
    */
   private Instruction selectorBase(Expr e) {
-    exists(Field field | field.getAReference() = e.(SelectorExpr).getSelector() |
-      result = selectorBase(e, field)
-    )
+    exists(Field field | e.(SelectorExpr).refersTo(field) | result = selectorBase(e, field))
     or
     exists(Expr base |
       base = e.(SelectorExpr).getBase() and
-      e.(SelectorExpr).getSelector() = any(Method m).getAReference()
+      e.(SelectorExpr).refersTo(any(Method m))
       or
       base = e.(IndexExpr).getBase()
       or
