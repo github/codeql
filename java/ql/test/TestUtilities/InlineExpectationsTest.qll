@@ -242,10 +242,8 @@ private string expectationPattern() {
 }
 
 private newtype TFailureLocatable =
-  TActualResult(
-    InlineExpectationsTest test, Location location, string element, string tag, string value
-  ) {
-    test.hasActualResult(location, element, tag, value)
+  TActualResult(InlineExpectationsTest test, Location location, string element, string tag) {
+    test.hasActualResult(location, element, tag, _)
   } or
   TValidExpectation(LineComment comment, string tag, string value, string knownFailure) {
     exists(TColumn column, string tags |
@@ -276,9 +274,8 @@ class ActualResult extends FailureLocatable, TActualResult {
   Location location;
   string element;
   string tag;
-  string value;
 
-  ActualResult() { this = TActualResult(test, location, element, tag, value) }
+  ActualResult() { this = TActualResult(test, location, element, tag) }
 
   override string toString() { result = element }
 
@@ -288,7 +285,7 @@ class ActualResult extends FailureLocatable, TActualResult {
 
   override string getTag() { result = tag }
 
-  override string getValue() { result = value }
+  override string getValue() { test.hasActualResult(location, element, tag, result) }
 }
 
 abstract private class Expectation extends FailureLocatable {
