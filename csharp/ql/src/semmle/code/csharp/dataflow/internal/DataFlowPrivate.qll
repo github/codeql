@@ -1393,7 +1393,7 @@ private module ReturnNodes {
 
     YieldReturnStmt getYieldReturnStmt() { result = yrs }
 
-    override YieldReturnKind getKind() { any() }
+    override NormalReturnKind getKind() { any() }
 
     override Callable getEnclosingCallableImpl() { result = yrs.getEnclosingCallable() }
 
@@ -1516,21 +1516,6 @@ private module OutNodes {
     result = TExplicitDelegateLikeCall(cfn, e)
   }
 
-  /** A valid return type for a method that uses `yield return`. */
-  private class YieldReturnType extends Type {
-    YieldReturnType() {
-      exists(Type t | t = this.getUnboundDeclaration() |
-        t instanceof SystemCollectionsIEnumerableInterface
-        or
-        t instanceof SystemCollectionsIEnumeratorInterface
-        or
-        t instanceof SystemCollectionsGenericIEnumerableTInterface
-        or
-        t instanceof SystemCollectionsGenericIEnumeratorInterface
-      )
-    }
-  }
-
   /**
    * A data-flow node that reads a value returned directly by a callable,
    * either via a C# call or a CIL call.
@@ -1551,9 +1536,6 @@ private module OutNodes {
       (
         kind instanceof NormalReturnKind and
         not call.getExpr().getType() instanceof VoidType
-        or
-        kind instanceof YieldReturnKind and
-        call.getExpr().getType() instanceof YieldReturnType
       )
     }
   }
