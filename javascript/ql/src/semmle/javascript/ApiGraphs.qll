@@ -317,6 +317,8 @@ module API {
         tn.hasQualifiedName(moduleName, exportedName) and
         result = Impl::MkCanonicalNameUse(tn).(Node).getInstance()
       )
+      or
+      result = Impl::MkHasUnderlyingType(moduleName, exportedName)
     }
   }
 
@@ -413,6 +415,13 @@ module API {
         not n.isRoot() and
         isUsed(n)
       } or
+      /**
+       * An instance of a TypeScript type, identified by name of the type-annotation.
+       * This API node is exclusively used by `API::Node::ofType`.
+       */
+      MkHasUnderlyingType(string moduleName, string exportName) {
+        any(TypeAnnotation n).hasQualifiedName(moduleName, exportName)
+      } or
       MkSyntheticCallbackArg(DataFlow::Node src, int bound, DataFlow::InvokeNode nd) {
         trackUseNode(src, true, bound).flowsTo(nd.getCalleeNode())
       }
@@ -423,7 +432,8 @@ module API {
       MkModuleExport or MkClassInstance or MkAsyncFuncResult or MkDef or MkCanonicalNameDef or
           MkSyntheticCallbackArg;
 
-    class TUse = MkModuleUse or MkModuleImport or MkUse or MkCanonicalNameUse;
+    class TUse =
+      MkModuleUse or MkModuleImport or MkUse or MkCanonicalNameUse or MkHasUnderlyingType;
 
     private predicate hasSemantics(DataFlow::Node nd) { not nd.getTopLevel().isExterns() }
 
@@ -678,6 +688,12 @@ module API {
       nd = MkUse(ref)
       or
       exists(CanonicalName n | nd = MkCanonicalNameUse(n) | ref.asExpr() = n.getAnAccess())
+      or
+      exists(string moduleName, string exportsName |
+        nd = MkHasUnderlyingType(moduleName, exportsName)
+      |
+        ref.(DataFlow::SourceNode).hasUnderlyingType(moduleName, exportsName)
+      )
     }
 
     /** Holds if module `m` exports `rhs`. */

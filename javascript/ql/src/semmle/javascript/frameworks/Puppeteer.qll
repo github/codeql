@@ -9,38 +9,22 @@ module Puppeteer {
    */
   private API::Node puppeteer() { result = API::moduleImport(["puppeteer", "puppeteer-core"]) }
 
-  private class BrowserTypeEntryPoint extends API::EntryPoint {
-    BrowserTypeEntryPoint() { this = "PuppeteerBrowserTypeEntryPoint" }
-
-    override DataFlow::SourceNode getAUse() { result.hasUnderlyingType("puppeteer", "Browser") }
-
-    override DataFlow::Node getARhs() { none() }
-  }
-
   /**
    * A reference to a `Browser` from puppeteer.
    */
   private API::Node browser() {
-    result = API::root().getASuccessor(any(BrowserTypeEntryPoint b))
+    result = API::Node::ofType("puppeteer", "Browser")
     or
     result = puppeteer().getMember(["launch", "connect"]).getReturn().getPromised()
     or
     result = [page(), context(), target()].getMember("browser").getReturn()
   }
 
-  private class PageTypeEntryPoint extends API::EntryPoint {
-    PageTypeEntryPoint() { this = "PuppeteerPageTypeEntryPoint" }
-
-    override DataFlow::SourceNode getAUse() { result.hasUnderlyingType("puppeteer", "Page") }
-
-    override DataFlow::Node getARhs() { none() }
-  }
-
   /**
    * A reference to a `Page` from puppeteer.
    */
   API::Node page() {
-    result = API::root().getASuccessor(any(PageTypeEntryPoint b))
+    result = API::Node::ofType("puppeteer", "Page")
     or
     result = [browser(), context()].getMember("newPage").getReturn().getPromised()
     or
@@ -49,19 +33,11 @@ module Puppeteer {
     result = target().getMember("page").getReturn().getPromised()
   }
 
-  private class TargetTypeEntryPoint extends API::EntryPoint {
-    TargetTypeEntryPoint() { this = "PuppeteerTargetTypeEntryPoint" }
-
-    override DataFlow::SourceNode getAUse() { result.hasUnderlyingType("puppeteer", "Target") }
-
-    override DataFlow::Node getARhs() { none() }
-  }
-
   /**
    * A reference to a `Target` from puppeteer.
    */
   private API::Node target() {
-    result = API::root().getASuccessor(any(TargetTypeEntryPoint b))
+    result = API::Node::ofType("puppeteer", "Target")
     or
     result = [page(), browser()].getMember("target").getReturn()
     or
@@ -70,21 +46,11 @@ module Puppeteer {
     result = target().getMember("opener").getReturn()
   }
 
-  private class ContextTypeEntryPoint extends API::EntryPoint {
-    ContextTypeEntryPoint() { this = "PuppeteerContextTypeEntryPoint" }
-
-    override DataFlow::SourceNode getAUse() {
-      result.hasUnderlyingType("puppeteer", "BrowserContext")
-    }
-
-    override DataFlow::Node getARhs() { none() }
-  }
-
   /**
    * A reference to a `BrowserContext` from puppeteer.
    */
   private API::Node context() {
-    result = API::root().getASuccessor(any(ContextTypeEntryPoint b))
+    result = API::Node::ofType("puppeteer", "BrowserContext")
     or
     result = [page(), target()].getMember("browserContext").getReturn()
     or
