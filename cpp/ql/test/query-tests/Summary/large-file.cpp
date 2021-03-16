@@ -26,10 +26,14 @@ int a06(float x) {
     return (int)x;
 }
 
+/**
+ * This is a multi-line comment
+ */
 int a07(float x) {
     return (int)x;
 }
 
+// this is a single-line comment
 int a08(float x) {
     return (int)x;
 }
