@@ -660,6 +660,13 @@ nodes
 | tst.js:424:18:424:48 | window. ... it('#') |
 | tst.js:424:18:424:51 | window. ... '#')[1] |
 | tst.js:424:18:424:51 | window. ... '#')[1] |
+| tst.js:428:7:428:39 | target |
+| tst.js:428:16:428:32 | document.location |
+| tst.js:428:16:428:32 | document.location |
+| tst.js:428:16:428:39 | documen ... .search |
+| tst.js:430:18:430:23 | target |
+| tst.js:430:18:430:89 | target. ... data>') |
+| tst.js:430:18:430:89 | target. ... data>') |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:10:16:10:18 | loc |
@@ -1307,6 +1314,12 @@ edges
 | tst.js:424:18:424:37 | window.location.hash | tst.js:424:18:424:48 | window. ... it('#') |
 | tst.js:424:18:424:48 | window. ... it('#') | tst.js:424:18:424:51 | window. ... '#')[1] |
 | tst.js:424:18:424:48 | window. ... it('#') | tst.js:424:18:424:51 | window. ... '#')[1] |
+| tst.js:428:7:428:39 | target | tst.js:430:18:430:23 | target |
+| tst.js:428:16:428:32 | document.location | tst.js:428:16:428:39 | documen ... .search |
+| tst.js:428:16:428:32 | document.location | tst.js:428:16:428:39 | documen ... .search |
+| tst.js:428:16:428:39 | documen ... .search | tst.js:428:7:428:39 | target |
+| tst.js:430:18:430:23 | target | tst.js:430:18:430:89 | target. ... data>') |
+| tst.js:430:18:430:23 | target | tst.js:430:18:430:89 | target. ... data>') |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |

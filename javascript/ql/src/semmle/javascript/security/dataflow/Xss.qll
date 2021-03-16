@@ -28,7 +28,7 @@ module Shared {
   abstract class SanitizerGuard extends TaintTracking::SanitizerGuardNode { }
 
   /**
-   * A regexp replacement involving an HTML meta-character, viewed as a sanitizer for
+   * A global regexp replacement involving an HTML meta-character, viewed as a sanitizer for
    * XSS vulnerabilities.
    *
    * The XSS queries do not attempt to reason about correctness or completeness of sanitizers,
@@ -36,6 +36,7 @@ module Shared {
    */
   class MetacharEscapeSanitizer extends Sanitizer, StringReplaceCall {
     MetacharEscapeSanitizer() {
+      this.isGlobal() and
       exists(RegExpConstant c |
         c.getLiteral() = getRegExp().asExpr() and
         c.getValue().regexpMatch("['\"&<>]")
