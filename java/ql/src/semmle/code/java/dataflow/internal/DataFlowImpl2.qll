@@ -850,7 +850,7 @@ private module Stage2 {
     ap = getApNil(node)
     or
     exists(Node mid, Ap ap0, LocalCc localCc |
-      fwdFlow(mid, pragma[only_bind_into](cc), argAp, ap0, config) and
+      fwdFlow(mid, cc, argAp, ap0, config) and
       localCc = getLocalCc(mid, cc, config)
     |
       localStep(mid, node, true, _, config, localCc) and
@@ -1489,7 +1489,7 @@ private module Stage3 {
     ap = getApNil(node)
     or
     exists(Node mid, Ap ap0, LocalCc localCc |
-      fwdFlow(mid, pragma[only_bind_into](cc), argAp, ap0, config) and
+      fwdFlow(mid, cc, argAp, ap0, config) and
       localCc = getLocalCc(mid, cc, config)
     |
       localStep(mid, node, true, _, config, localCc) and
@@ -2133,8 +2133,11 @@ private module Stage4 {
 
   bindingset[node, cc, config]
   private LocalCc getLocalCc(Node node, Cc cc, Configuration config) {
-    localFlowEntry(node, config) and
-    result = getLocalCallContext(cc, getNodeEnclosingCallable(node))
+    exists(Cc cc0 |
+      cc = pragma[only_bind_into](cc0) and
+      localFlowEntry(node, config) and
+      result = getLocalCallContext(cc0, getNodeEnclosingCallable(node))
+    )
   }
 
   private predicate localStep(
@@ -2206,7 +2209,7 @@ private module Stage4 {
     ap = getApNil(node)
     or
     exists(Node mid, Ap ap0, LocalCc localCc |
-      fwdFlow(mid, pragma[only_bind_into](cc), argAp, ap0, config) and
+      fwdFlow(mid, cc, argAp, ap0, config) and
       localCc = getLocalCc(mid, cc, config)
     |
       localStep(mid, node, true, _, config, localCc) and
