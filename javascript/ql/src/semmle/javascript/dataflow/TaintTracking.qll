@@ -308,7 +308,8 @@ module TaintTracking {
   }
 
   /**
-   * Module existing only to ensure all taint steps are cached as a single stage.
+   * Module existing only to ensure all taint steps are cached as a single stage,
+   * and without the the `Unit` type column.
    */
   cached
   private module Cached {
