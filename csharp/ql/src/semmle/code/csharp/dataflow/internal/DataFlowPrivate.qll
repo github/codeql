@@ -788,7 +788,7 @@ private module Cached {
     or
     exists(Expr e |
       e = node1.asExpr() and
-      node2.(AsyncReturnNode).getReturnStmt().getExpr() = e and
+      node2.(AsyncReturnNode).getExpr() = e and
       c = getResultContent()
     )
     or
@@ -1411,23 +1411,23 @@ private module ReturnNodes {
    */
   class AsyncReturnNode extends ReturnNode, NodeImpl, TAsyncReturnNode {
     private ControlFlow::Nodes::ElementNode cfn;
-    private ReturnStmt rs;
+    private Expr expr;
 
-    AsyncReturnNode() { this = TAsyncReturnNode(cfn) and rs.getExpr().getAControlFlowNode() = cfn }
+    AsyncReturnNode() { this = TAsyncReturnNode(cfn) and expr = cfn.getElement() }
 
-    ReturnStmt getReturnStmt() { result = rs }
+    Expr getExpr() { result = expr }
 
     override NormalReturnKind getKind() { any() }
 
-    override Callable getEnclosingCallableImpl() { result = rs.getEnclosingCallable() }
+    override Callable getEnclosingCallableImpl() { result = expr.getEnclosingCallable() }
 
-    override Type getTypeImpl() { result = rs.getEnclosingCallable().getReturnType() }
+    override Type getTypeImpl() { result = expr.getEnclosingCallable().getReturnType() }
 
     override ControlFlow::Node getControlFlowNodeImpl() { result = cfn }
 
-    override Location getLocationImpl() { result = rs.getLocation() }
+    override Location getLocationImpl() { result = expr.getLocation() }
 
-    override string toStringImpl() { result = rs.toString() }
+    override string toStringImpl() { result = expr.toString() }
   }
 
   /**

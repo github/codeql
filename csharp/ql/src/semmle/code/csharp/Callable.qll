@@ -11,6 +11,7 @@ private import dotnet
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.metrics.Complexity
 private import TypeRef
+private import semmle.code.csharp.frameworks.system.threading.Tasks
 
 /**
  * An element that can be called.
@@ -206,7 +207,11 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
     exists(ReturnStmt ret | ret.getEnclosingCallable() = this | e = ret.getExpr())
     or
     e = this.getExpressionBody() and
-    not this.getReturnType() instanceof VoidType
+    not this.getReturnType() instanceof VoidType and
+    (
+      not this.(Modifiable).isAsync() or
+      not this.getReturnType() instanceof SystemThreadingTasksTaskClass
+    )
   }
 
   /** Holds if this callable can yield return the expression `e`. */

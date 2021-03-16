@@ -29,7 +29,7 @@ class Test
 
     public void TestAwait3(string input)
     {
-        Sink(ReturnAwait(input).Result);
+        Sink(ReturnAwait2(input).Result);
     }
 
     private async Task<string> ReturnAwait(string x)
@@ -47,4 +47,6 @@ class Test
     {
         return Task.FromResult(x);
     }
+
+    private async Task<string> ReturnAwait2(string x) => x;
 }
