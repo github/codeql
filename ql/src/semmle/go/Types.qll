@@ -379,7 +379,10 @@ class StructType extends @structtype, CompositeType {
    * hasEmbeddedField holds if there is an embedded field at int `depth`, with either type `tp` or `tp`'s pointer type.
    */
   private predicate hasEmbeddedField(Type tp, int depth) {
-    exists(Field f | this.hasFieldCand(_, f, depth, true) | tp = f.getType().getBaseType*())
+    exists(Field f | this.hasFieldCand(_, f, depth, true) |
+      tp = f.getType() or
+      tp = f.getType().(PointerType).getBaseType()
+    )
   }
 
   /**
@@ -389,8 +392,10 @@ class StructType extends @structtype, CompositeType {
     // embeddedParent is a field of 'this' at depth 'depth - 1'
     this.hasFieldCand(_, embeddedParent, depth - 1, true) and
     // embeddedParent's type has the result field
-    exists(StructType embeddedType |
-      embeddedType = embeddedParent.getType().getBaseType*().getUnderlyingType()
+    exists(StructType embeddedType, Type fieldType |
+      fieldType = embeddedParent.getType().getUnderlyingType() and
+      pragma[only_bind_into](embeddedType) =
+        [fieldType, fieldType.(PointerType).getBaseType().getUnderlyingType()]
     |
       result = embeddedType.getOwnField(name, isEmbedded)
     )

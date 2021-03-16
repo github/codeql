@@ -48,8 +48,11 @@ private predicate isCond(Expr e) {
   e = any(ParenExpr par | isCond(par)).getExpr()
 }
 
-private Type getSelectedStructType(PromotedFieldSelector e) {
-  pragma[only_bind_into](result) = e.getBase().getType().getBaseType*().getUnderlyingType()
+private StructType getSelectedStructType(PromotedFieldSelector e) {
+  exists(Type baseType | baseType = e.getBase().getType().getUnderlyingType() |
+    pragma[only_bind_into](result) =
+      [baseType, baseType.(PointerType).getBaseType().getUnderlyingType()]
+  )
 }
 
 private predicate implicitFieldSelection(PromotedFieldSelector e, int i, Field implicitField) {
