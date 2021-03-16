@@ -238,20 +238,13 @@ module IR {
     }
   }
 
-  /**
-   * Gets the effective base of a selector, index or slice expression, taking implicit dereferences
-   * and implicit field reads into account.
-   *
-   * For a selector expression `b.f`, this could be the implicit dereference `*b`, or the implicit
-   * field access `b.Embedded.f` if the field `f` is promoted from an embedded type `Embedded`, or
-   * a combination of both, or simply `b` if neither case applies.
-   */
-  private Instruction selectorBase(Expr e) {
-    exists(Field field | e.(SelectorExpr).refersTo(field) | result = selectorBase(e, field))
-    or
+  private Instruction simpleSelectorBase(Expr e) {
     exists(Expr base |
-      base = e.(SelectorExpr).getBase() and
-      e.(SelectorExpr).refersTo(any(Method m))
+      (
+        e.(SelectorExpr).refersTo(any(Method m)) or
+        e.(SelectorExpr).refersTo(any(Field f | not f instanceof PromotedField))
+      ) and
+      base = e.(SelectorExpr).getBase()
       or
       base = e.(IndexExpr).getBase()
       or
@@ -264,11 +257,34 @@ module IR {
     )
   }
 
-  private Instruction selectorBase(SelectorExpr se, Field field) {
-    exists(Type baseType, StructType baseStructType |
-      baseType = se.getBase().getType().getUnderlyingType() and
-      baseStructType = [baseType, baseType.(PointerType).getBaseType().getUnderlyingType()]
-    |
+  /**
+   * Gets the effective base of a selector, index or slice expression, taking implicit dereferences
+   * and implicit field reads into account.
+   *
+   * For a selector expression `b.f`, this could be the implicit dereference `*b`, or the implicit
+   * field access `b.Embedded.f` if the field `f` is promoted from an embedded type `Embedded`, or
+   * a combination of both, or simply `b` if neither case applies.
+   */
+  private Instruction selectorBase(Expr e) {
+    result = promotedFieldSelectorBase(e, _)
+    or
+    result = simpleSelectorBase(e)
+  }
+
+  private class PromotedField extends Field {
+    PromotedField() { this = any(StructType t).getFieldOfEmbedded(_, _, _, _) }
+  }
+
+  private class PromotedFieldSelector extends SelectorExpr {
+    PromotedFieldSelector() { this.refersTo(any(PromotedField f)) }
+  }
+
+  private Type getSelectedStructType(PromotedFieldSelector e) {
+    pragma[only_bind_into](result) = e.getBase().getType().getBaseType*().getUnderlyingType()
+  }
+
+  private Instruction promotedFieldSelectorBase(PromotedFieldSelector se, Field field) {
+    exists(StructType baseStructType | baseStructType = getSelectedStructType(se) |
       if field = baseStructType.getOwnField(_, _)
       then
         result = MkImplicitDeref(se.getBase())
@@ -289,6 +305,14 @@ module IR {
           result = ifri
         )
     )
+  }
+
+  private Instruction selectorBase(SelectorExpr se, Field field) {
+    result = promotedFieldSelectorBase(se, field)
+    or
+    se.refersTo(field) and
+    result = simpleSelectorBase(se) and
+    not field instanceof PromotedField
   }
 
   /**
