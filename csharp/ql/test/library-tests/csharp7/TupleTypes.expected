@@ -1,49 +1,10 @@
-| (Int32,(Int32,Int32)) | (int, (int, int)) | ValueTuple<Int32, (Int32,Int32)> | 2 | 0 | CSharp7.cs:77:10:77:14 | a |
-| (Int32,(Int32,Int32)) | (int, (int, int)) | ValueTuple<Int32, (Int32,Int32)> | 2 | 0 | CSharp7.cs:77:36:77:36 | Item1 |
-| (Int32,(Int32,Int32)) | (int, (int, int)) | ValueTuple<Int32, (Int32,Int32)> | 2 | 0 | CSharp7.cs:78:24:78:24 | b |
-| (Int32,(Int32,Int32)) | (int, (int, int)) | ValueTuple<Int32, (Int32,Int32)> | 2 | 1 | CSharp7.cs:77:17:77:30 | Item2 |
-| (Int32,(Int32,Int32)) | (int, (int, int)) | ValueTuple<Int32, (Int32,Int32)> | 2 | 1 | CSharp7.cs:77:39:77:39 | z |
-| (Int32,(Int32,Int32)) | (int, (int, int)) | ValueTuple<Int32, (Int32,Int32)> | 2 | 1 | CSharp7.cs:78:27:78:32 | Item2 |
 | (Int32,(String,Int32)) | (int, (string, int)) | ValueTuple<Int32, (String,Int32)> | 2 | 0 | CSharp7.cs:98:19:98:19 | Item1 |
 | (Int32,(String,Int32)) | (int, (string, int)) | ValueTuple<Int32, (String,Int32)> | 2 | 1 | CSharp7.cs:98:22:98:42 | Item2 |
 | (Int32,Double) | (int, double) | ValueTuple<Int32, Double> | 2 | 0 | CSharp7.cs:215:6:215:8 | Item1 |
-| (Int32,Double) | (int, double) | ValueTuple<Int32, Double> | 2 | 0 | CSharp7.cs:225:10:225:14 | x |
-| (Int32,Double) | (int, double) | ValueTuple<Int32, Double> | 2 | 0 | CSharp7.cs:226:10:226:10 | Item1 |
 | (Int32,Double) | (int, double) | ValueTuple<Int32, Double> | 2 | 1 | CSharp7.cs:215:11:215:16 | Item2 |
-| (Int32,Double) | (int, double) | ValueTuple<Int32, Double> | 2 | 1 | CSharp7.cs:225:17:225:17 | Item2 |
-| (Int32,Double) | (int, double) | ValueTuple<Int32, Double> | 2 | 1 | CSharp7.cs:226:13:226:17 | y |
-| (Int32,Int32) | (int, int) | ValueTuple<Int32, Int32> | 2 | 0 | CSharp7.cs:64:10:64:10 | A |
-| (Int32,Int32) | (int, int) | ValueTuple<Int32, Int32> | 2 | 0 | CSharp7.cs:71:10:71:14 | x |
-| (Int32,Int32) | (int, int) | ValueTuple<Int32, Int32> | 2 | 0 | CSharp7.cs:77:18:77:22 | b |
-| (Int32,Int32) | (int, int) | ValueTuple<Int32, Int32> | 2 | 0 | CSharp7.cs:78:28:78:28 | c |
-| (Int32,Int32) | (int, int) | ValueTuple<Int32, Int32> | 2 | 0 | CSharp7.cs:112:15:112:16 | m4 |
-| (Int32,Int32) | (int, int) | ValueTuple<Int32, Int32> | 2 | 0 | CSharp7.cs:114:19:114:24 | m8 |
-| (Int32,Int32) | (int, int) | ValueTuple<Int32, Int32> | 2 | 1 | CSharp7.cs:64:17:64:17 | B |
-| (Int32,Int32) | (int, int) | ValueTuple<Int32, Int32> | 2 | 1 | CSharp7.cs:71:17:71:21 | y |
-| (Int32,Int32) | (int, int) | ValueTuple<Int32, Int32> | 2 | 1 | CSharp7.cs:77:25:77:29 | c |
-| (Int32,Int32) | (int, int) | ValueTuple<Int32, Int32> | 2 | 1 | CSharp7.cs:78:31:78:31 | a |
-| (Int32,Int32) | (int, int) | ValueTuple<Int32, Int32> | 2 | 1 | CSharp7.cs:112:19:112:20 | m5 |
-| (Int32,Int32) | (int, int) | ValueTuple<Int32, Int32> | 2 | 1 | CSharp7.cs:114:27:114:32 | m9 |
-| (Int32,Int32,Int32) | (int, int, int) | ValueTuple<Int32, Int32, Int32> | 3 | 0 | CSharp7.cs:75:10:75:10 | x |
-| (Int32,Int32,Int32) | (int, int, int) | ValueTuple<Int32, Int32, Int32> | 3 | 1 | CSharp7.cs:75:13:75:13 | y |
-| (Int32,Int32,Int32) | (int, int, int) | ValueTuple<Int32, Int32, Int32> | 3 | 2 | CSharp7.cs:75:16:75:22 | Item3 |
-| (Int32,String) | (int, string) | ValueTuple<Int32, String> | 2 | 0 | CSharp7.cs:285:41:285:48 | Key |
-| (Int32,String) | (int, string) | ValueTuple<Int32, String> | 2 | 0 | CSharp7.cs:287:19:287:23 | a |
-| (Int32,String) | (int, string) | ValueTuple<Int32, String> | 2 | 1 | CSharp7.cs:285:51:285:60 | Value |
-| (Int32,String) | (int, string) | ValueTuple<Int32, String> | 2 | 1 | CSharp7.cs:287:26:287:33 | b |
-| (String,(Int32,Int32)) | (string, (int, int)) | ValueTuple<String, (Int32,Int32)> | 2 | 0 | CSharp7.cs:109:10:109:15 | m1 |
-| (String,(Int32,Int32)) | (string, (int, int)) | ValueTuple<String, (Int32,Int32)> | 2 | 0 | CSharp7.cs:112:10:112:11 | m3 |
-| (String,(Int32,Int32)) | (string, (int, int)) | ValueTuple<String, (Int32,Int32)> | 2 | 0 | CSharp7.cs:114:10:114:15 | m7 |
-| (String,(Int32,Int32)) | (string, (int, int)) | ValueTuple<String, (Int32,Int32)> | 2 | 1 | CSharp7.cs:109:18:109:23 | m2 |
-| (String,(Int32,Int32)) | (string, (int, int)) | ValueTuple<String, (Int32,Int32)> | 2 | 1 | CSharp7.cs:112:14:112:21 | Item2 |
-| (String,(Int32,Int32)) | (string, (int, int)) | ValueTuple<String, (Int32,Int32)> | 2 | 1 | CSharp7.cs:114:18:114:33 | Item2 |
-| (String,Int32) | (string, int) | ValueTuple<String, Int32> | 2 | 0 | CSharp7.cs:79:14:79:14 | i |
-| (String,Int32) | (string, int) | ValueTuple<String, Int32> | 2 | 0 | CSharp7.cs:79:23:79:24 | Item1 |
-| (String,Int32) | (string, int) | ValueTuple<String, Int32> | 2 | 0 | CSharp7.cs:84:17:84:17 | a |
-| (String,Int32) | (string, int) | ValueTuple<String, Int32> | 2 | 1 | CSharp7.cs:79:17:79:17 | j |
-| (String,Int32) | (string, int) | ValueTuple<String, Int32> | 2 | 1 | CSharp7.cs:79:27:79:27 | x |
-| (String,Int32) | (string, int) | ValueTuple<String, Int32> | 2 | 1 | CSharp7.cs:84:23:84:23 | Item2 |
+| (Int32,Int32) | (int, int) | ValueTuple<Int32, Int32> | 2 | 0 | CSharp7.cs:64:10:64:10 | Item1 |
+| (Int32,Int32) | (int, int) | ValueTuple<Int32, Int32> | 2 | 1 | file://:0:0:0:0 | Item2 |
+| (String,Int32) | (string, int) | ValueTuple<String, Int32> | 2 | 0 | CSharp7.cs:84:17:84:17 | Item1 |
+| (String,Int32) | (string, int) | ValueTuple<String, Int32> | 2 | 1 | file://:0:0:0:0 | Item2 |
 | (String,String) | (string, string) | ValueTuple<String, String> | 2 | 0 | CSharp7.cs:89:19:89:27 | Item1 |
-| (String,String) | (string, string) | ValueTuple<String, String> | 2 | 0 | CSharp7.cs:90:10:90:15 | t2 |
 | (String,String) | (string, string) | ValueTuple<String, String> | 2 | 1 | CSharp7.cs:89:30:89:33 | Item2 |
-| (String,String) | (string, string) | ValueTuple<String, String> | 2 | 1 | CSharp7.cs:90:18:90:23 | t3 |

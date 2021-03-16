@@ -295,7 +295,7 @@ namespace Semmle.Extraction.CSharp
                 trapFile.BuildList(",", named.TupleElements,
                     (f, tb0) =>
                     {
-                        trapFile.Write(f.Name);
+                        trapFile.Write((f.CorrespondingTupleField ?? f).Name);
                         trapFile.Write(":");
                         f.Type.BuildOrWriteId(cx, tb0, symbolBeingDefined, addBaseClass);
                     }
