@@ -17,8 +17,10 @@ public class Test1
     [OnDeserializing]
     public void Deserialize()
     {
-        f = $"invalid";  // BAD
+        f = GetString();  // BAD, non-constant and non-object creation expr
     }
+
+    string GetString() { throw null; }
 }
 
 [Serializable]
