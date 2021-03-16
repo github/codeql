@@ -1,0 +1,29 @@
+edges
+| Async.cs:9:37:9:41 | input : String | Async.cs:11:21:11:25 | access to parameter input : String |
+| Async.cs:11:21:11:25 | access to parameter input : String | Async.cs:11:14:11:26 | call to method Return |
+| Async.cs:14:34:14:34 | x : String | Async.cs:16:16:16:16 | access to parameter x : String |
+| Async.cs:16:16:16:16 | access to parameter x : String | Async.cs:11:14:11:26 | call to method Return |
+| Async.cs:41:33:41:37 | input : String | Async.cs:43:25:43:29 | access to parameter input : String |
+| Async.cs:43:14:43:30 | call to method ReturnTask [Result] : String | Async.cs:43:14:43:37 | access to property Result |
+| Async.cs:43:25:43:29 | access to parameter input : String | Async.cs:43:14:43:30 | call to method ReturnTask [Result] : String |
+| Async.cs:46:44:46:44 | x : String | Async.cs:48:32:48:32 | access to parameter x : String |
+| Async.cs:48:16:48:33 | call to method FromResult [Result] : String | Async.cs:43:14:43:30 | call to method ReturnTask [Result] : String |
+| Async.cs:48:32:48:32 | access to parameter x : String | Async.cs:48:16:48:33 | call to method FromResult [Result] : String |
+nodes
+| Async.cs:9:37:9:41 | input : String | semmle.label | input : String |
+| Async.cs:11:14:11:26 | call to method Return | semmle.label | call to method Return |
+| Async.cs:11:21:11:25 | access to parameter input : String | semmle.label | access to parameter input : String |
+| Async.cs:14:34:14:34 | x : String | semmle.label | x : String |
+| Async.cs:16:16:16:16 | access to parameter x : String | semmle.label | access to parameter x : String |
+| Async.cs:41:33:41:37 | input : String | semmle.label | input : String |
+| Async.cs:43:14:43:30 | call to method ReturnTask [Result] : String | semmle.label | call to method ReturnTask [Result] : String |
+| Async.cs:43:14:43:37 | access to property Result | semmle.label | access to property Result |
+| Async.cs:43:25:43:29 | access to parameter input : String | semmle.label | access to parameter input : String |
+| Async.cs:46:44:46:44 | x : String | semmle.label | x : String |
+| Async.cs:48:16:48:33 | call to method FromResult [Result] : String | semmle.label | call to method FromResult [Result] : String |
+| Async.cs:48:32:48:32 | access to parameter x : String | semmle.label | access to parameter x : String |
+#select
+| Async.cs:11:14:11:26 | call to method Return | Async.cs:9:37:9:41 | input : String | Async.cs:11:14:11:26 | call to method Return | $@ flows to here and is used. | Async.cs:9:37:9:41 | input | User-provided value |
+| Async.cs:11:14:11:26 | call to method Return | Async.cs:14:34:14:34 | x : String | Async.cs:11:14:11:26 | call to method Return | $@ flows to here and is used. | Async.cs:14:34:14:34 | x | User-provided value |
+| Async.cs:43:14:43:37 | access to property Result | Async.cs:41:33:41:37 | input : String | Async.cs:43:14:43:37 | access to property Result | $@ flows to here and is used. | Async.cs:41:33:41:37 | input | User-provided value |
+| Async.cs:43:14:43:37 | access to property Result | Async.cs:46:44:46:44 | x : String | Async.cs:43:14:43:37 | access to property Result | $@ flows to here and is used. | Async.cs:46:44:46:44 | x | User-provided value |
