@@ -288,20 +288,24 @@ Class hierarchy
 -  ``DataFlow::Configuration`` - base class for custom global data flow analysis.
 -  ``DataFlow::Node`` - an element behaving as a data flow node.
 
-   -  ``DataFlow::ExprNode`` - an expression behaving as a data flow node.
-   -  ``DataFlow::ParameterNode`` - a parameter data flow node representing the value of a parameter at function entry.
-   -  ``RemoteFlowSource`` - data flow from network/remote input.
-   -  ``Attributes::AttrRead`` - flow out of an attribute.
-   -  ``Attributes::AttrWrite`` - flow into an attribute.
-   -  ``Concepts::SystemCommandExecution`` - a data-flow node that executes an operating system command, for instance by spawning a new process.
-   -  ``Concepts::FileSystemAccess`` - a data flow node that performs a file system access, including reading and writing data, creating and deleting files and folders, checking and updating permissions, and so on.
-   -  ``Concepts::Path::PathNormalization`` - a data-flow node that performs path normalization. This is often needed in order to safely access paths.
-   -  ``Concepts::Decoding`` - a data-flow node that decodes data from a binary or textual format. A decoding (automatically) preserves taint from input to output. However, it can also be a problem in itself, for example if it allows code execution or could result in denial-of-service.
-   -  ``Concepts::Encoding`` - a data-flow node that encodes data to a binary or textual format. An encoding (automatically) preserves taint from input to output.
-   -  ``Concepts::CodeExecution`` - a data-flow node that dynamically executes Python code.
-   -  ``Concepts::SqlExecution`` - a data-flow node that executes SQL statements.
-   -  ``Concepts::HTTP::Server::RouteSetup`` - a data-flow node that sets up a route on a server.
-   -  ``Concepts::HTTP::Server::HttpResponse`` - a data-flow node that creates a HTTP response on a server.
+    -  ``DataFlow::CfgNode`` - a control-flow node behaving as a data flow node.
+
+        -  ``DataFlow::ExprNode`` - an expression behaving as a data flow node.
+        -  ``DataFlow::ParameterNode`` - a parameter data flow node representing the value of a parameter at function entry.
+        -  ``DataFlow::CallCfgNode`` - a control-flow node for a function or method call behaving as a data flow node.
+
+    -  ``RemoteFlowSource`` - data flow from network/remote input.
+    -  ``Attributes::AttrRead`` - flow out of an attribute.
+    -  ``Attributes::AttrWrite`` - flow into an attribute.
+    -  ``Concepts::SystemCommandExecution`` - a data-flow node that executes an operating system command, for instance by spawning a new process.
+    -  ``Concepts::FileSystemAccess`` - a data flow node that performs a file system access, including reading and writing data, creating and deleting files and folders, checking and updating permissions, and so on.
+    -  ``Concepts::Path::PathNormalization`` - a data-flow node that performs path normalization. This is often needed in order to safely access paths.
+    -  ``Concepts::Decoding`` - a data-flow node that decodes data from a binary or textual format. A decoding (automatically) preserves taint from input to output. However, it can also be a problem in itself, for example if it allows code execution or could result in denial-of-service.
+    -  ``Concepts::Encoding`` - a data-flow node that encodes data to a binary or textual format. An encoding (automatically) preserves taint from input to output.
+    -  ``Concepts::CodeExecution`` - a data-flow node that dynamically executes Python code.
+    -  ``Concepts::SqlExecution`` - a data-flow node that executes SQL statements.
+    -  ``Concepts::HTTP::Server::RouteSetup`` - a data-flow node that sets up a route on a server.
+    -  ``Concepts::HTTP::Server::HttpResponse`` - a data-flow node that creates a HTTP response on a server.
 
 -  ``TaintTracking::Configuration`` - base class for custom global taint tracking analysis.
 
