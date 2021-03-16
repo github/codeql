@@ -182,7 +182,91 @@ private predicate sourceModelCsv(string row) {
 
 private predicate sinkModelCsv(string row) { none() }
 
-private predicate summaryModelCsv(string row) { none() }
+private predicate summaryModelCsv(string row) {
+  row =
+    [
+      // qualifier to arg
+      "java.io;InputStream;true;read;(byte[]);;Argument[-1];Argument[0];taint",
+      "java.io;InputStream;true;read;(byte[],int,int);;Argument[-1];Argument[0];taint",
+      "java.io;ByteArrayOutputStream;false;writeTo;;;Argument[-1];Argument[0];taint",
+      "java.io;Reader;true;read;;;Argument[-1];Argument[0];taint",
+      // qualifier to return
+      "java.io;ByteArrayOutputStream;false;toByteArray;;;Argument[-1];ReturnValue;taint",
+      "java.io;ByteArrayOutputStream;false;toString;;;Argument[-1];ReturnValue;taint",
+      "java.util;StringTokenizer;false;nextElement;();;Argument[-1];ReturnValue;taint",
+      "java.util;StringTokenizer;false;nextToken;;;Argument[-1];ReturnValue;taint",
+      "javax.xml.transform.sax;SAXSource;false;getInputSource;;;Argument[-1];ReturnValue;taint",
+      "javax.xml.transform.stream;StreamSource;false;getInputStream;;;Argument[-1];ReturnValue;taint",
+      "java.nio;ByteBuffer;false;get;;;Argument[-1];ReturnValue;taint",
+      "java.net;URI;false;toURL;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;false;toURI;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;false;toPath;;;Argument[-1];ReturnValue;taint",
+      "java.nio.file;Path;false;toFile;;;Argument[-1];ReturnValue;taint",
+      "java.io;Reader;true;readLine;;;Argument[-1];ReturnValue;taint",
+      "java.io;Reader;true;read;();;Argument[-1];ReturnValue;taint",
+      // arg to return
+      "java.util;Base64$Encoder;false;encode;(byte[]);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Encoder;false;encode;(ByteBuffer);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Encoder;false;encodeToString;(byte[]);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Encoder;false;wrap;(OutputStream);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;decode;(byte[]);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;decode;(ByteBuffer);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;decode;(String);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;wrap;(InputStream);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;Encoder;true;encode;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;Decoder;true;decode;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;buffer;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;readLines;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,int);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toBufferedInputStream;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toBufferedReader;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toByteArray;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toCharArray;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toInputStream;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toString;;;Argument[0];ReturnValue;taint",
+      "java.net;URLDecoder;false;decode;;;Argument[0];ReturnValue;taint",
+      "java.net;URI;false;create;;;Argument[0];ReturnValue;taint",
+      "javax.xml.transform.sax;SAXSource;false;sourceToInputSource;;;Argument[0];ReturnValue;taint",
+      // arg to arg
+      "java.lang;System;false;arraycopy;;;Argument[0];Argument[2];taint",
+      "org.apache.commons.io;IOUtils;false;copy;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;copyLarge;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;read;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,byte[]);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,byte[],int,int);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,ByteBuffer);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(ReadableByteChannel,ByteBuffer);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(Reader,char[]);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(Reader,char[],int,int);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;write;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;writeChunked;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;writeLines;;;Argument[0];Argument[2];taint",
+      "org.apache.commons.io;IOUtils;false;writeLines;;;Argument[1];Argument[2];taint",
+      // constructor flow
+      "java.io;File;false;File;;;Argument[0];Argument[-1];taint",
+      "java.io;File;false;File;;;Argument[1];Argument[-1];taint",
+      "java.net;URI;false;URI;(String);;Argument[0];Argument[-1];taint",
+      "javax.xml.transform.stream;StreamSource;false;StreamSource;;;Argument[0];Argument[-1];taint",
+      "javax.xml.transform.sax;SAXSource;false;SAXSource;(InputSource);;Argument[0];Argument[-1];taint",
+      "javax.xml.transform.sax;SAXSource;false;SAXSource;(XMLReader,InputSource);;Argument[1];Argument[-1];taint",
+      "org.xml.sax;InputSource;false;InputSource;;;Argument[0];Argument[-1];taint",
+      "javax.servlet.http;Cookie;false;Cookie;;;Argument[0];Argument[-1];taint",
+      "javax.servlet.http;Cookie;false;Cookie;;;Argument[1];Argument[-1];taint",
+      "java.util.zip;ZipInputStream;false;ZipInputStream;;;Argument[0];Argument[-1];taint",
+      "java.util.zip;GZIPInputStream;false;GZIPInputStream;;;Argument[0];Argument[-1];taint",
+      "java.util;StringTokenizer;false;StringTokenizer;;;Argument[0];Argument[-1];taint",
+      "java.beans;XMLDecoder;false;XMLDecoder;;;Argument[0];Argument[-1];taint",
+      "com.esotericsoftware.kryo.io;Input;false;Input;;;Argument[0];Argument[-1];taint",
+      "java.io;BufferedInputStream;false;BufferedInputStream;;;Argument[0];Argument[-1];taint",
+      "java.io;DataInputStream;false;DataInputStream;;;Argument[0];Argument[-1];taint",
+      "java.io;ByteArrayInputStream;false;ByteArrayInputStream;;;Argument[0];Argument[-1];taint",
+      "java.io;ObjectInputStream;false;ObjectInputStream;;;Argument[0];Argument[-1];taint",
+      "java.io;StringReader;false;StringReader;;;Argument[0];Argument[-1];taint",
+      "java.io;CharArrayReader;false;CharArrayReader;;;Argument[0];Argument[-1];taint",
+      "java.io;BufferedReader;false;BufferedReader;;;Argument[0];Argument[-1];taint",
+      "java.io;InputStreamReader;false;InputStreamReader;;;Argument[0];Argument[-1];taint"
+    ]
+}
 
 /**
  * A unit class for adding additional source model rows.
