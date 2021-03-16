@@ -12,4 +12,4 @@ from File f
 where
   not exists(ExtractionError e | e.getFile() = f) and
   exists(f.getRelativePath())
-select f
+select f, ""
