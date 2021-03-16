@@ -2,11 +2,11 @@
  * @name Tainted expressions
  * @description The number of expressions reachable from a remote flow source
  *              via default taint-tracking steps.
- * @kind metric
- * @metricType project
- * @metricAggregate sum
+ * @kind problem
+ * @problem.severity recommendation
  * @tags meta
- * @id js/meta/tainted-nodes
+ * @id js/meta/alerts/tainted-nodes
+ * @precision very-low
  */
 
 import javascript
@@ -24,4 +24,8 @@ class BasicTaintConfiguration extends TaintTracking::Configuration {
   }
 }
 
-select projectRoot(), count(DataFlow::Node node | any(BasicTaintConfiguration cfg).hasFlow(_, node))
+// Avoid linking to the source as this would upset the statistics: nodes reachable
+// from multiple sources would be counted multilpe times, and that's not what we intend to measure.
+from DataFlow::Node node
+where any(BasicTaintConfiguration cfg).hasFlow(_, node)
+select node, "Tainted node"
