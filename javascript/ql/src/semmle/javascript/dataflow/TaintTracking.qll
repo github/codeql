@@ -223,6 +223,9 @@ module TaintTracking {
    * allows some data-flow configurations to opt in to specific kinds of taint steps.
    */
   class SharedTaintStep extends Unit {
+    // Each step relation in this class should have a cached version in the `Cached` module
+    // and be included in the `sharedTaintStep` predicate.
+
     /**
      * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
      * data flow edge.
