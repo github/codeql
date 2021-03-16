@@ -3,12 +3,12 @@ import semmle.code.cpp.security.Security
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import semmle.code.cpp.ir.dataflow.DataFlow2
-private import semmle.code.cpp.ir.dataflow.DataFlow3
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowDispatch as Dispatch
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.Taint
 private import semmle.code.cpp.models.interfaces.DataFlow
+private import semmle.code.cpp.ir.dataflow.TaintTracking
 private import semmle.code.cpp.ir.dataflow.TaintTracking2
 private import semmle.code.cpp.ir.dataflow.internal.ModelUtil
 
@@ -67,23 +67,23 @@ private DataFlow::Node getNodeForExpr(Expr node) {
   not argv(node.(VariableAccess).getTarget())
 }
 
-private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
+private class DefaultTaintTrackingCfg extends TaintTracking::Configuration {
   DefaultTaintTrackingCfg() { this = "DefaultTaintTrackingCfg" }
 
   override predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
 
   override predicate isSink(DataFlow::Node sink) { exists(adjustedSink(sink)) }
 
-  override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+  override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
     commonTaintStep(n1, n2)
   }
 
-  override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
+  override predicate isSanitizer(DataFlow::Node node) { nodeIsBarrier(node) }
 
-  override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
+  override predicate isSanitizerIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 }
 
-private class ToGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
+private class ToGlobalVarTaintTrackingCfg extends TaintTracking::Configuration {
   ToGlobalVarTaintTrackingCfg() { this = "GlobalVarTaintTrackingCfg" }
 
   override predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
@@ -92,7 +92,7 @@ private class ToGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
     sink.asVariable() instanceof GlobalOrNamespaceVariable
   }
 
-  override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+  override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
     commonTaintStep(n1, n2)
     or
     writesVariable(n1.asInstruction(), n2.asVariable().(GlobalOrNamespaceVariable))
@@ -100,12 +100,12 @@ private class ToGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
     readsVariable(n2.asInstruction(), n1.asVariable().(GlobalOrNamespaceVariable))
   }
 
-  override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
+  override predicate isSanitizer(DataFlow::Node node) { nodeIsBarrier(node) }
 
-  override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
+  override predicate isSanitizerIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 }
 
-private class FromGlobalVarTaintTrackingCfg extends DataFlow3::Configuration {
+private class FromGlobalVarTaintTrackingCfg extends TaintTracking2::Configuration {
   FromGlobalVarTaintTrackingCfg() { this = "FromGlobalVarTaintTrackingCfg" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -116,7 +116,7 @@ private class FromGlobalVarTaintTrackingCfg extends DataFlow3::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { exists(adjustedSink(sink)) }
 
-  override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+  override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
     commonTaintStep(n1, n2)
     or
     // Additional step for flow out of variables. There is no flow _into_
@@ -125,9 +125,9 @@ private class FromGlobalVarTaintTrackingCfg extends DataFlow3::Configuration {
     readsVariable(n2.asInstruction(), n1.asVariable())
   }
 
-  override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
+  override predicate isSanitizer(DataFlow::Node node) { nodeIsBarrier(node) }
 
-  override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
+  override predicate isSanitizerIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 }
 
 private predicate readsVariable(LoadInstruction load, Variable var) {
