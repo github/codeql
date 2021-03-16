@@ -654,15 +654,15 @@ module IR {
     }
 
     /** Holds if this extracts the `idx`th value of the result of `base`. */
-    predicate extractsElement(Instruction base, int idx) { base = getBase() and idx = i }
+    predicate extractsElement(Instruction base, int idx) { base = this.getBase() and idx = i }
 
     override Type getResultType() {
-      exists(CallExpr c | getBase() = evalExprInstruction(c) |
+      exists(CallExpr c | this.getBase() = evalExprInstruction(c) |
         result = c.getTarget().getResultType(i)
       )
       or
-      exists(TypeAssertExpr tae | getBase() = evalExprInstruction(tae) |
-        result = tae.getType().(TupleType).getComponentType(i)
+      exists(TypeAssertExpr tae | this.getBase() = evalExprInstruction(tae) |
+        result = tae.getType().(TupleType).getComponentType(pragma[only_bind_into](i))
       )
       or
       exists(Type rangeType | rangeType = s.(RangeStmt).getDomain().getType().getUnderlyingType() |
