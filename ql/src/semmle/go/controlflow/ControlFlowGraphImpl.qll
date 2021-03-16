@@ -48,13 +48,13 @@ private predicate isCond(Expr e) {
   e = any(ParenExpr par | isCond(par)).getExpr()
 }
 
-private class PromotedField extends Field {
-  PromotedField() { this = any(StructType t).getFieldOfEmbedded(_, _, _, _) }
+private Type getSelectedStructType(PromotedFieldSelector e) {
+  pragma[only_bind_into](result) = e.getBase().getType().getBaseType*().getUnderlyingType()
 }
 
-private predicate implicitFieldSelection(SelectorExpr e, int i, Field implicitField) {
+private predicate implicitFieldSelection(PromotedFieldSelector e, int i, Field implicitField) {
   exists(StructType baseType, PromotedField child |
-    baseType = e.getBase().getType().getBaseType*().getUnderlyingType() and
+    baseType = getSelectedStructType(e) and
     (
       e.refersTo(child)
       or
@@ -63,6 +63,14 @@ private predicate implicitFieldSelection(SelectorExpr e, int i, Field implicitFi
   |
     child = baseType.getFieldOfEmbedded(implicitField, _, i, _)
   )
+}
+
+private class PromotedFieldSelector extends SelectorExpr {
+  PromotedFieldSelector() { this.refersTo(any(PromotedField f)) }
+}
+
+private class PromotedField extends Field {
+  PromotedField() { this = any(StructType t).getFieldOfEmbedded(_, _, _, _) }
 }
 
 /**
