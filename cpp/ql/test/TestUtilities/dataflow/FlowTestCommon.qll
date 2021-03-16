@@ -16,6 +16,10 @@ private import semmle.code.cpp.ir.dataflow.DataFlow::DataFlow as IRDataFlow
 private import semmle.code.cpp.dataflow.DataFlow::DataFlow as ASTDataFlow
 import TestUtilities.InlineExpectationsTest
 
+string stringOfLocation(Location loc) {
+  result = loc.getStartLine().toString() + ":" + loc.getStartColumn()
+}
+
 class IRFlowTest extends InlineExpectationsTest {
   IRFlowTest() { this = "IRFlowTest" }
 
@@ -27,14 +31,12 @@ class IRFlowTest extends InlineExpectationsTest {
       conf.hasFlow(source, sink) and
       n = strictcount(IRDataFlow::Node otherSource | conf.hasFlow(otherSource, sink)) and
       (
-        n = 1 and value = ""
+        n = 1 and value = ["", stringOfLocation(source.getLocation())]
         or
         // If there is more than one source for this sink
         // we specify the source location explicitly.
         n > 1 and
-        value =
-          source.getLocation().getStartLine().toString() + ":" +
-            source.getLocation().getStartColumn()
+        value = stringOfLocation(source.getLocation())
       ) and
       location = sink.getLocation() and
       element = sink.toString()
@@ -55,14 +57,12 @@ class ASTFlowTest extends InlineExpectationsTest {
       conf.hasFlow(source, sink) and
       n = strictcount(ASTDataFlow::Node otherSource | conf.hasFlow(otherSource, sink)) and
       (
-        n = 1 and value = ""
+        n = 1 and value = ["", stringOfLocation(source.getLocation())]
         or
         // If there is more than one source for this sink
         // we specify the source location explicitly.
         n > 1 and
-        value =
-          source.getLocation().getStartLine().toString() + ":" +
-            source.getLocation().getStartColumn()
+        value = stringOfLocation(source.getLocation())
       ) and
       location = sink.getLocation() and
       element = sink.toString()
