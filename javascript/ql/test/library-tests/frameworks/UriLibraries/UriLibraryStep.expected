@@ -1,34 +1,3 @@
-punycode
-| punycode.js:3:9:3:23 | punycode.decode |
-| punycode.js:5:5:5:19 | punycode.encode |
-| punycode.js:7:5:7:22 | punycode.toUnicode |
-| punycode.js:9:5:9:20 | punycode.toASCII |
-querydashstring
-| query-string.js:3:9:3:25 | queryString.parse |
-| query-string.js:5:5:5:23 | queryString.extract |
-| query-string.js:7:5:7:24 | queryString.parseUrl |
-| query-string.js:9:5:9:25 | querySt ... ringify |
-| query-string_import.js:1:10:1:14 | parse |
-querystring
-| querystring.js:3:9:3:26 | querystring.escape |
-| querystring.js:5:5:5:21 | querystring.parse |
-| querystring.js:7:5:7:25 | queryst ... ringify |
-| querystring.js:9:5:9:24 | querystring.unescape |
-querystringify
-| querystringify.js:3:9:3:28 | querystringify.parse |
-| querystringify.js:5:5:5:28 | queryst ... ringify |
-uridashjs
-| uri-js.js:3:9:3:17 | URI.parse |
-| uri-js.js:5:5:5:17 | URI.serialize |
-| uri-js.js:7:5:7:15 | URI.resolve |
-| uri-js.js:9:5:9:17 | URI.normalize |
-urijs
-| urijs.js:1:13:1:28 | require("urijs") |
-| urijs.js:2:13:2:28 | require("URIjs") |
-| urijs.js:4:5:4:7 | URI |
-| urijs.js:10:1:10:3 | URI |
-| urijs.js:12:13:12:15 | URI |
-uriLibraryStep
 | closureUri.js:5:19:5:19 | x | closureUri.js:5:11:5:20 | new Uri(x) |
 | closureUri.js:6:11:6:11 | x | closureUri.js:6:1:6:12 | Uri.parse(x) |
 | closureUri.js:7:13:7:13 | x | closureUri.js:7:1:7:17 | Uri.resolve(x, y) |
@@ -96,9 +65,3 @@ uriLibraryStep
 | url.js:5:16:5:16 | x | url.js:5:5:5:17 | url.format(x) |
 | url.js:7:17:7:17 | x | url.js:7:5:7:21 | url.resolve(x, y) |
 | url.js:7:20:7:20 | y | url.js:7:5:7:21 | url.resolve(x, y) |
-url
-| url.js:3:9:3:17 | url.parse |
-| url.js:5:5:5:14 | url.format |
-| url.js:7:5:7:15 | url.resolve |
-urlParse
-| url-parse.js:1:13:1:32 | require('url-parse') |

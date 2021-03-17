@@ -14,6 +14,11 @@ module DomBasedXss {
   deprecated class Configuration = HtmlInjectionConfiguration;
 
   /**
+   * DEPRECATED. Use `Vue::VHtmlSourceWrite` instead.
+   */
+  deprecated class VHtmlSourceWrite = Vue::VHtmlSourceWrite;
+
+  /**
    * A taint-tracking configuration for reasoning about XSS.
    */
   class HtmlInjectionConfiguration extends TaintTracking::Configuration {
@@ -71,11 +76,9 @@ module DomBasedXss {
       DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
       DataFlow::FlowLabel succlbl
     ) {
-      exists(TaintTracking::AdditionalTaintStep step |
-        step.step(pred, succ) and
-        predlbl.isData() and
-        succlbl.isTaint()
-      )
+      TaintTracking::sharedTaintStep(pred, succ) and
+      predlbl.isData() and
+      succlbl.isTaint()
     }
 
     override predicate isSanitizer(DataFlow::Node node) {
