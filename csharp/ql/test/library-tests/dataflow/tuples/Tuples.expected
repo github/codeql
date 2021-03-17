@@ -1,4 +1,38 @@
 edges
+| MixedPatterns.cs:6:29:6:50 | { ..., ... } [X] : String | MixedPatterns.cs:9:13:9:47 | SSA def(z) [X] : String |
+| MixedPatterns.cs:6:29:6:50 | { ..., ... } [X] : String | MixedPatterns.cs:10:13:10:51 | SSA def(z) [X] : String |
+| MixedPatterns.cs:6:35:6:48 | "taint source" : String | MixedPatterns.cs:6:29:6:50 | { ..., ... } [X] : String |
+| MixedPatterns.cs:9:13:9:47 | SSA def(z) [X] : String | MixedPatterns.cs:9:57:9:57 | access to local variable z [X] : String |
+| MixedPatterns.cs:9:57:9:57 | access to local variable z [X] : String | MixedPatterns.cs:9:57:9:59 | access to property X |
+| MixedPatterns.cs:10:13:10:51 | SSA def(z) [X] : String | MixedPatterns.cs:10:61:10:61 | access to local variable z [X] : String |
+| MixedPatterns.cs:10:61:10:61 | access to local variable z [X] : String | MixedPatterns.cs:10:61:10:63 | access to property X |
+| MixedPatterns.cs:16:29:16:50 | { ..., ... } [X] : String | MixedPatterns.cs:19:41:19:41 | access to local variable b [X] : String |
+| MixedPatterns.cs:16:29:16:50 | { ..., ... } [X] : String | MixedPatterns.cs:20:45:20:45 | access to local variable b [X] : String |
+| MixedPatterns.cs:16:29:16:50 | { ..., ... } [X] : String | MixedPatterns.cs:21:13:21:33 | SSA def(p) [X] : String |
+| MixedPatterns.cs:16:29:16:50 | { ..., ... } [X] : String | MixedPatterns.cs:22:13:22:37 | SSA def(p) [X] : String |
+| MixedPatterns.cs:16:35:16:48 | "taint source" : String | MixedPatterns.cs:16:29:16:50 | { ..., ... } [X] : String |
+| MixedPatterns.cs:19:41:19:41 | access to local variable b [X] : String | MixedPatterns.cs:19:41:19:43 | access to property X |
+| MixedPatterns.cs:20:45:20:45 | access to local variable b [X] : String | MixedPatterns.cs:20:45:20:47 | access to property X |
+| MixedPatterns.cs:21:13:21:33 | SSA def(p) [X] : String | MixedPatterns.cs:21:43:21:43 | access to local variable p [X] : String |
+| MixedPatterns.cs:21:43:21:43 | access to local variable p [X] : String | MixedPatterns.cs:21:43:21:45 | access to property X |
+| MixedPatterns.cs:22:13:22:37 | SSA def(p) [X] : String | MixedPatterns.cs:22:47:22:47 | access to local variable p [X] : String |
+| MixedPatterns.cs:22:47:22:47 | access to local variable p [X] : String | MixedPatterns.cs:22:47:22:49 | access to property X |
+| MixedPatterns.cs:27:31:27:52 | { ..., ... } [X] : String | MixedPatterns.cs:30:13:30:47 | SSA def(z) [X] : String |
+| MixedPatterns.cs:27:31:27:52 | { ..., ... } [X] : String | MixedPatterns.cs:31:13:31:51 | SSA def(z) [X] : String |
+| MixedPatterns.cs:27:37:27:50 | "taint source" : String | MixedPatterns.cs:27:31:27:52 | { ..., ... } [X] : String |
+| MixedPatterns.cs:30:13:30:47 | SSA def(z) [X] : String | MixedPatterns.cs:30:57:30:57 | access to local variable z [X] : String |
+| MixedPatterns.cs:30:57:30:57 | access to local variable z [X] : String | MixedPatterns.cs:30:57:30:59 | access to property X |
+| MixedPatterns.cs:31:13:31:51 | SSA def(z) [X] : String | MixedPatterns.cs:31:61:31:61 | access to local variable z [X] : String |
+| MixedPatterns.cs:31:61:31:61 | access to local variable z [X] : String | MixedPatterns.cs:31:61:31:63 | access to property X |
+| MixedPatterns.cs:41:19:41:37 | (..., ...) [Item1] : String | MixedPatterns.cs:44:41:44:43 | access to local variable tup [Item1] : String |
+| MixedPatterns.cs:41:19:41:37 | (..., ...) [Item1] : String | MixedPatterns.cs:45:45:45:47 | access to local variable tup [Item1] : String |
+| MixedPatterns.cs:41:19:41:37 | (..., ...) [Item1] : String | MixedPatterns.cs:46:80:46:82 | access to local variable tup [Item1] : String |
+| MixedPatterns.cs:41:19:41:37 | (..., ...) [Item1] : String | MixedPatterns.cs:47:84:47:86 | access to local variable tup [Item1] : String |
+| MixedPatterns.cs:41:20:41:33 | "taint source" : String | MixedPatterns.cs:41:19:41:37 | (..., ...) [Item1] : String |
+| MixedPatterns.cs:44:41:44:43 | access to local variable tup [Item1] : String | MixedPatterns.cs:44:41:44:49 | access to field Item1 |
+| MixedPatterns.cs:45:45:45:47 | access to local variable tup [Item1] : String | MixedPatterns.cs:45:45:45:53 | access to field Item1 |
+| MixedPatterns.cs:46:80:46:82 | access to local variable tup [Item1] : String | MixedPatterns.cs:46:80:46:88 | access to field Item1 |
+| MixedPatterns.cs:47:84:47:86 | access to local variable tup [Item1] : String | MixedPatterns.cs:47:84:47:92 | access to field Item1 |
 | Tuples.cs:7:17:7:56 | (..., ...) [Item1] : String | Tuples.cs:8:9:8:23 | (..., ...) [Item1] : String |
 | Tuples.cs:7:17:7:56 | (..., ...) [Item1] : String | Tuples.cs:13:9:13:19 | (..., ...) [Item1] : String |
 | Tuples.cs:7:17:7:56 | (..., ...) [Item1] : String | Tuples.cs:18:9:18:22 | (..., ...) [Item1] : String |
@@ -68,6 +102,44 @@ edges
 | Tuples.cs:89:24:89:37 | "taint source" : String | Tuples.cs:89:17:89:41 | object creation of type R1 [i] : String |
 | Tuples.cs:90:14:90:14 | access to local variable r [i] : String | Tuples.cs:90:14:90:16 | access to property i |
 nodes
+| MixedPatterns.cs:6:29:6:50 | { ..., ... } [X] : String | semmle.label | { ..., ... } [X] : String |
+| MixedPatterns.cs:6:35:6:48 | "taint source" : String | semmle.label | "taint source" : String |
+| MixedPatterns.cs:9:13:9:47 | SSA def(z) [X] : String | semmle.label | SSA def(z) [X] : String |
+| MixedPatterns.cs:9:57:9:57 | access to local variable z [X] : String | semmle.label | access to local variable z [X] : String |
+| MixedPatterns.cs:9:57:9:59 | access to property X | semmle.label | access to property X |
+| MixedPatterns.cs:10:13:10:51 | SSA def(z) [X] : String | semmle.label | SSA def(z) [X] : String |
+| MixedPatterns.cs:10:61:10:61 | access to local variable z [X] : String | semmle.label | access to local variable z [X] : String |
+| MixedPatterns.cs:10:61:10:63 | access to property X | semmle.label | access to property X |
+| MixedPatterns.cs:16:29:16:50 | { ..., ... } [X] : String | semmle.label | { ..., ... } [X] : String |
+| MixedPatterns.cs:16:35:16:48 | "taint source" : String | semmle.label | "taint source" : String |
+| MixedPatterns.cs:19:41:19:41 | access to local variable b [X] : String | semmle.label | access to local variable b [X] : String |
+| MixedPatterns.cs:19:41:19:43 | access to property X | semmle.label | access to property X |
+| MixedPatterns.cs:20:45:20:45 | access to local variable b [X] : String | semmle.label | access to local variable b [X] : String |
+| MixedPatterns.cs:20:45:20:47 | access to property X | semmle.label | access to property X |
+| MixedPatterns.cs:21:13:21:33 | SSA def(p) [X] : String | semmle.label | SSA def(p) [X] : String |
+| MixedPatterns.cs:21:43:21:43 | access to local variable p [X] : String | semmle.label | access to local variable p [X] : String |
+| MixedPatterns.cs:21:43:21:45 | access to property X | semmle.label | access to property X |
+| MixedPatterns.cs:22:13:22:37 | SSA def(p) [X] : String | semmle.label | SSA def(p) [X] : String |
+| MixedPatterns.cs:22:47:22:47 | access to local variable p [X] : String | semmle.label | access to local variable p [X] : String |
+| MixedPatterns.cs:22:47:22:49 | access to property X | semmle.label | access to property X |
+| MixedPatterns.cs:27:31:27:52 | { ..., ... } [X] : String | semmle.label | { ..., ... } [X] : String |
+| MixedPatterns.cs:27:37:27:50 | "taint source" : String | semmle.label | "taint source" : String |
+| MixedPatterns.cs:30:13:30:47 | SSA def(z) [X] : String | semmle.label | SSA def(z) [X] : String |
+| MixedPatterns.cs:30:57:30:57 | access to local variable z [X] : String | semmle.label | access to local variable z [X] : String |
+| MixedPatterns.cs:30:57:30:59 | access to property X | semmle.label | access to property X |
+| MixedPatterns.cs:31:13:31:51 | SSA def(z) [X] : String | semmle.label | SSA def(z) [X] : String |
+| MixedPatterns.cs:31:61:31:61 | access to local variable z [X] : String | semmle.label | access to local variable z [X] : String |
+| MixedPatterns.cs:31:61:31:63 | access to property X | semmle.label | access to property X |
+| MixedPatterns.cs:41:19:41:37 | (..., ...) [Item1] : String | semmle.label | (..., ...) [Item1] : String |
+| MixedPatterns.cs:41:20:41:33 | "taint source" : String | semmle.label | "taint source" : String |
+| MixedPatterns.cs:44:41:44:43 | access to local variable tup [Item1] : String | semmle.label | access to local variable tup [Item1] : String |
+| MixedPatterns.cs:44:41:44:49 | access to field Item1 | semmle.label | access to field Item1 |
+| MixedPatterns.cs:45:45:45:47 | access to local variable tup [Item1] : String | semmle.label | access to local variable tup [Item1] : String |
+| MixedPatterns.cs:45:45:45:53 | access to field Item1 | semmle.label | access to field Item1 |
+| MixedPatterns.cs:46:80:46:82 | access to local variable tup [Item1] : String | semmle.label | access to local variable tup [Item1] : String |
+| MixedPatterns.cs:46:80:46:88 | access to field Item1 | semmle.label | access to field Item1 |
+| MixedPatterns.cs:47:84:47:86 | access to local variable tup [Item1] : String | semmle.label | access to local variable tup [Item1] : String |
+| MixedPatterns.cs:47:84:47:92 | access to field Item1 | semmle.label | access to field Item1 |
 | Tuples.cs:7:17:7:56 | (..., ...) [Item1] : String | semmle.label | (..., ...) [Item1] : String |
 | Tuples.cs:7:17:7:56 | (..., ...) [Item2, Item2] : String | semmle.label | (..., ...) [Item2, Item2] : String |
 | Tuples.cs:7:21:7:34 | "taint source" : String | semmle.label | "taint source" : String |
@@ -145,6 +217,18 @@ nodes
 | Tuples.cs:90:14:90:14 | access to local variable r [i] : String | semmle.label | access to local variable r [i] : String |
 | Tuples.cs:90:14:90:16 | access to property i | semmle.label | access to property i |
 #select
+| MixedPatterns.cs:6:35:6:48 | "taint source" : String | MixedPatterns.cs:6:35:6:48 | "taint source" : String | MixedPatterns.cs:9:57:9:59 | access to property X | $@ | MixedPatterns.cs:9:57:9:59 | access to property X | access to property X |
+| MixedPatterns.cs:6:35:6:48 | "taint source" : String | MixedPatterns.cs:6:35:6:48 | "taint source" : String | MixedPatterns.cs:10:61:10:63 | access to property X | $@ | MixedPatterns.cs:10:61:10:63 | access to property X | access to property X |
+| MixedPatterns.cs:16:35:16:48 | "taint source" : String | MixedPatterns.cs:16:35:16:48 | "taint source" : String | MixedPatterns.cs:19:41:19:43 | access to property X | $@ | MixedPatterns.cs:19:41:19:43 | access to property X | access to property X |
+| MixedPatterns.cs:16:35:16:48 | "taint source" : String | MixedPatterns.cs:16:35:16:48 | "taint source" : String | MixedPatterns.cs:20:45:20:47 | access to property X | $@ | MixedPatterns.cs:20:45:20:47 | access to property X | access to property X |
+| MixedPatterns.cs:16:35:16:48 | "taint source" : String | MixedPatterns.cs:16:35:16:48 | "taint source" : String | MixedPatterns.cs:21:43:21:45 | access to property X | $@ | MixedPatterns.cs:21:43:21:45 | access to property X | access to property X |
+| MixedPatterns.cs:16:35:16:48 | "taint source" : String | MixedPatterns.cs:16:35:16:48 | "taint source" : String | MixedPatterns.cs:22:47:22:49 | access to property X | $@ | MixedPatterns.cs:22:47:22:49 | access to property X | access to property X |
+| MixedPatterns.cs:27:37:27:50 | "taint source" : String | MixedPatterns.cs:27:37:27:50 | "taint source" : String | MixedPatterns.cs:30:57:30:59 | access to property X | $@ | MixedPatterns.cs:30:57:30:59 | access to property X | access to property X |
+| MixedPatterns.cs:27:37:27:50 | "taint source" : String | MixedPatterns.cs:27:37:27:50 | "taint source" : String | MixedPatterns.cs:31:61:31:63 | access to property X | $@ | MixedPatterns.cs:31:61:31:63 | access to property X | access to property X |
+| MixedPatterns.cs:41:20:41:33 | "taint source" : String | MixedPatterns.cs:41:20:41:33 | "taint source" : String | MixedPatterns.cs:44:41:44:49 | access to field Item1 | $@ | MixedPatterns.cs:44:41:44:49 | access to field Item1 | access to field Item1 |
+| MixedPatterns.cs:41:20:41:33 | "taint source" : String | MixedPatterns.cs:41:20:41:33 | "taint source" : String | MixedPatterns.cs:45:45:45:53 | access to field Item1 | $@ | MixedPatterns.cs:45:45:45:53 | access to field Item1 | access to field Item1 |
+| MixedPatterns.cs:41:20:41:33 | "taint source" : String | MixedPatterns.cs:41:20:41:33 | "taint source" : String | MixedPatterns.cs:46:80:46:88 | access to field Item1 | $@ | MixedPatterns.cs:46:80:46:88 | access to field Item1 | access to field Item1 |
+| MixedPatterns.cs:41:20:41:33 | "taint source" : String | MixedPatterns.cs:41:20:41:33 | "taint source" : String | MixedPatterns.cs:47:84:47:92 | access to field Item1 | $@ | MixedPatterns.cs:47:84:47:92 | access to field Item1 | access to field Item1 |
 | Tuples.cs:7:21:7:34 | "taint source" : String | Tuples.cs:7:21:7:34 | "taint source" : String | Tuples.cs:9:14:9:14 | access to local variable a | $@ | Tuples.cs:9:14:9:14 | access to local variable a | access to local variable a |
 | Tuples.cs:7:21:7:34 | "taint source" : String | Tuples.cs:7:21:7:34 | "taint source" : String | Tuples.cs:14:14:14:14 | access to local variable a | $@ | Tuples.cs:14:14:14:14 | access to local variable a | access to local variable a |
 | Tuples.cs:7:21:7:34 | "taint source" : String | Tuples.cs:7:21:7:34 | "taint source" : String | Tuples.cs:19:14:19:14 | access to local variable p | $@ | Tuples.cs:19:14:19:14 | access to local variable p | access to local variable p |

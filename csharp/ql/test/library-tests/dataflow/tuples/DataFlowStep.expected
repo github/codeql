@@ -1,3 +1,367 @@
+| MixedPatterns.cs:4:17:4:17 | this | MixedPatterns.cs:9:52:9:60 | this access |
+| MixedPatterns.cs:4:17:4:17 | this | MixedPatterns.cs:10:56:10:64 | this access |
+| MixedPatterns.cs:4:17:4:17 | this | MixedPatterns.cs:13:27:13:33 | this access |
+| MixedPatterns.cs:4:17:4:17 | this | MixedPatterns.cs:19:36:19:44 | this access |
+| MixedPatterns.cs:4:17:4:17 | this | MixedPatterns.cs:20:40:20:48 | this access |
+| MixedPatterns.cs:4:17:4:17 | this | MixedPatterns.cs:21:38:21:46 | this access |
+| MixedPatterns.cs:4:17:4:17 | this | MixedPatterns.cs:22:42:22:50 | this access |
+| MixedPatterns.cs:4:17:4:17 | this | MixedPatterns.cs:23:29:23:35 | this access |
+| MixedPatterns.cs:6:14:6:50 | SSA def(a) | MixedPatterns.cs:7:20:7:20 | access to local variable a |
+| MixedPatterns.cs:6:18:6:50 | object creation of type Item | MixedPatterns.cs:6:14:6:50 | SSA def(a) |
+| MixedPatterns.cs:6:29:6:50 | { ..., ... } | MixedPatterns.cs:6:18:6:50 | object creation of type Item |
+| MixedPatterns.cs:6:35:6:48 | "taint source" | MixedPatterns.cs:6:31:6:48 | ... = ... |
+| MixedPatterns.cs:7:20:7:20 | access to local variable a | MixedPatterns.cs:9:13:9:47 | SSA def(z) |
+| MixedPatterns.cs:7:20:7:20 | access to local variable a | MixedPatterns.cs:10:13:10:51 | SSA def(z) |
+| MixedPatterns.cs:9:13:9:47 | SSA def(z) | MixedPatterns.cs:9:57:9:57 | access to local variable z |
+| MixedPatterns.cs:9:13:9:47 | SSA qualifier def(z.X) | MixedPatterns.cs:9:57:9:59 | access to property X |
+| MixedPatterns.cs:9:52:9:60 | [post] this access | MixedPatterns.cs:19:36:19:44 | this access |
+| MixedPatterns.cs:9:52:9:60 | [post] this access | MixedPatterns.cs:20:40:20:48 | this access |
+| MixedPatterns.cs:9:52:9:60 | [post] this access | MixedPatterns.cs:21:38:21:46 | this access |
+| MixedPatterns.cs:9:52:9:60 | [post] this access | MixedPatterns.cs:22:42:22:50 | this access |
+| MixedPatterns.cs:9:52:9:60 | [post] this access | MixedPatterns.cs:23:29:23:35 | this access |
+| MixedPatterns.cs:9:52:9:60 | call to method Sink | MixedPatterns.cs:7:20:14:9 | ... switch { ... } |
+| MixedPatterns.cs:9:52:9:60 | this access | MixedPatterns.cs:19:36:19:44 | this access |
+| MixedPatterns.cs:9:52:9:60 | this access | MixedPatterns.cs:20:40:20:48 | this access |
+| MixedPatterns.cs:9:52:9:60 | this access | MixedPatterns.cs:21:38:21:46 | this access |
+| MixedPatterns.cs:9:52:9:60 | this access | MixedPatterns.cs:22:42:22:50 | this access |
+| MixedPatterns.cs:9:52:9:60 | this access | MixedPatterns.cs:23:29:23:35 | this access |
+| MixedPatterns.cs:10:13:10:51 | SSA def(z) | MixedPatterns.cs:10:61:10:61 | access to local variable z |
+| MixedPatterns.cs:10:13:10:51 | SSA qualifier def(z.X) | MixedPatterns.cs:10:61:10:63 | access to property X |
+| MixedPatterns.cs:10:56:10:64 | [post] this access | MixedPatterns.cs:19:36:19:44 | this access |
+| MixedPatterns.cs:10:56:10:64 | [post] this access | MixedPatterns.cs:20:40:20:48 | this access |
+| MixedPatterns.cs:10:56:10:64 | [post] this access | MixedPatterns.cs:21:38:21:46 | this access |
+| MixedPatterns.cs:10:56:10:64 | [post] this access | MixedPatterns.cs:22:42:22:50 | this access |
+| MixedPatterns.cs:10:56:10:64 | [post] this access | MixedPatterns.cs:23:29:23:35 | this access |
+| MixedPatterns.cs:10:56:10:64 | call to method Sink | MixedPatterns.cs:7:20:14:9 | ... switch { ... } |
+| MixedPatterns.cs:10:56:10:64 | this access | MixedPatterns.cs:19:36:19:44 | this access |
+| MixedPatterns.cs:10:56:10:64 | this access | MixedPatterns.cs:20:40:20:48 | this access |
+| MixedPatterns.cs:10:56:10:64 | this access | MixedPatterns.cs:21:38:21:46 | this access |
+| MixedPatterns.cs:10:56:10:64 | this access | MixedPatterns.cs:22:42:22:50 | this access |
+| MixedPatterns.cs:10:56:10:64 | this access | MixedPatterns.cs:23:29:23:35 | this access |
+| MixedPatterns.cs:12:23:12:24 | "" | MixedPatterns.cs:7:20:14:9 | ... switch { ... } |
+| MixedPatterns.cs:13:14:13:18 | SSA def(s) | MixedPatterns.cs:13:32:13:32 | access to local variable s |
+| MixedPatterns.cs:13:27:13:33 | [post] this access | MixedPatterns.cs:19:36:19:44 | this access |
+| MixedPatterns.cs:13:27:13:33 | [post] this access | MixedPatterns.cs:20:40:20:48 | this access |
+| MixedPatterns.cs:13:27:13:33 | [post] this access | MixedPatterns.cs:21:38:21:46 | this access |
+| MixedPatterns.cs:13:27:13:33 | [post] this access | MixedPatterns.cs:22:42:22:50 | this access |
+| MixedPatterns.cs:13:27:13:33 | [post] this access | MixedPatterns.cs:23:29:23:35 | this access |
+| MixedPatterns.cs:13:27:13:33 | call to method Sink | MixedPatterns.cs:7:20:14:9 | ... switch { ... } |
+| MixedPatterns.cs:13:27:13:33 | this access | MixedPatterns.cs:19:36:19:44 | this access |
+| MixedPatterns.cs:13:27:13:33 | this access | MixedPatterns.cs:20:40:20:48 | this access |
+| MixedPatterns.cs:13:27:13:33 | this access | MixedPatterns.cs:21:38:21:46 | this access |
+| MixedPatterns.cs:13:27:13:33 | this access | MixedPatterns.cs:22:42:22:50 | this access |
+| MixedPatterns.cs:13:27:13:33 | this access | MixedPatterns.cs:23:29:23:35 | this access |
+| MixedPatterns.cs:16:14:16:50 | SSA def(b) | MixedPatterns.cs:17:20:17:20 | access to local variable b |
+| MixedPatterns.cs:16:14:16:50 | SSA qualifier def(b.X) | MixedPatterns.cs:19:41:19:43 | access to property X |
+| MixedPatterns.cs:16:14:16:50 | SSA qualifier def(b.X) | MixedPatterns.cs:20:45:20:47 | access to property X |
+| MixedPatterns.cs:16:18:16:50 | object creation of type Item | MixedPatterns.cs:16:14:16:50 | SSA def(b) |
+| MixedPatterns.cs:16:29:16:50 | { ..., ... } | MixedPatterns.cs:16:18:16:50 | object creation of type Item |
+| MixedPatterns.cs:16:35:16:48 | "taint source" | MixedPatterns.cs:16:31:16:48 | ... = ... |
+| MixedPatterns.cs:17:20:17:20 | access to local variable b | MixedPatterns.cs:19:41:19:41 | access to local variable b |
+| MixedPatterns.cs:17:20:17:20 | access to local variable b | MixedPatterns.cs:20:45:20:45 | access to local variable b |
+| MixedPatterns.cs:17:20:17:20 | access to local variable b | MixedPatterns.cs:21:13:21:33 | SSA def(p) |
+| MixedPatterns.cs:17:20:17:20 | access to local variable b | MixedPatterns.cs:22:13:22:37 | SSA def(p) |
+| MixedPatterns.cs:19:36:19:44 | [post] this access | MixedPatterns.cs:30:52:30:60 | this access |
+| MixedPatterns.cs:19:36:19:44 | [post] this access | MixedPatterns.cs:31:56:31:64 | this access |
+| MixedPatterns.cs:19:36:19:44 | [post] this access | MixedPatterns.cs:32:47:32:53 | this access |
+| MixedPatterns.cs:19:36:19:44 | [post] this access | MixedPatterns.cs:34:27:34:33 | this access |
+| MixedPatterns.cs:19:36:19:44 | [post] this access | MixedPatterns.cs:35:63:35:69 | this access |
+| MixedPatterns.cs:19:36:19:44 | [post] this access | MixedPatterns.cs:36:75:36:81 | this access |
+| MixedPatterns.cs:19:36:19:44 | [post] this access | MixedPatterns.cs:37:79:37:85 | this access |
+| MixedPatterns.cs:19:36:19:44 | [post] this access | MixedPatterns.cs:38:66:38:72 | this access |
+| MixedPatterns.cs:19:36:19:44 | [post] this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:19:36:19:44 | [post] this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:19:36:19:44 | [post] this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:19:36:19:44 | [post] this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:19:36:19:44 | [post] this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:19:36:19:44 | [post] this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:19:36:19:44 | call to method Sink | MixedPatterns.cs:17:20:25:9 | ... switch { ... } |
+| MixedPatterns.cs:19:36:19:44 | this access | MixedPatterns.cs:30:52:30:60 | this access |
+| MixedPatterns.cs:19:36:19:44 | this access | MixedPatterns.cs:31:56:31:64 | this access |
+| MixedPatterns.cs:19:36:19:44 | this access | MixedPatterns.cs:32:47:32:53 | this access |
+| MixedPatterns.cs:19:36:19:44 | this access | MixedPatterns.cs:34:27:34:33 | this access |
+| MixedPatterns.cs:19:36:19:44 | this access | MixedPatterns.cs:35:63:35:69 | this access |
+| MixedPatterns.cs:19:36:19:44 | this access | MixedPatterns.cs:36:75:36:81 | this access |
+| MixedPatterns.cs:19:36:19:44 | this access | MixedPatterns.cs:37:79:37:85 | this access |
+| MixedPatterns.cs:19:36:19:44 | this access | MixedPatterns.cs:38:66:38:72 | this access |
+| MixedPatterns.cs:19:36:19:44 | this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:19:36:19:44 | this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:19:36:19:44 | this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:19:36:19:44 | this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:19:36:19:44 | this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:19:36:19:44 | this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:20:40:20:48 | [post] this access | MixedPatterns.cs:30:52:30:60 | this access |
+| MixedPatterns.cs:20:40:20:48 | [post] this access | MixedPatterns.cs:31:56:31:64 | this access |
+| MixedPatterns.cs:20:40:20:48 | [post] this access | MixedPatterns.cs:32:47:32:53 | this access |
+| MixedPatterns.cs:20:40:20:48 | [post] this access | MixedPatterns.cs:34:27:34:33 | this access |
+| MixedPatterns.cs:20:40:20:48 | [post] this access | MixedPatterns.cs:35:63:35:69 | this access |
+| MixedPatterns.cs:20:40:20:48 | [post] this access | MixedPatterns.cs:36:75:36:81 | this access |
+| MixedPatterns.cs:20:40:20:48 | [post] this access | MixedPatterns.cs:37:79:37:85 | this access |
+| MixedPatterns.cs:20:40:20:48 | [post] this access | MixedPatterns.cs:38:66:38:72 | this access |
+| MixedPatterns.cs:20:40:20:48 | [post] this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:20:40:20:48 | [post] this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:20:40:20:48 | [post] this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:20:40:20:48 | [post] this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:20:40:20:48 | [post] this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:20:40:20:48 | [post] this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:20:40:20:48 | call to method Sink | MixedPatterns.cs:17:20:25:9 | ... switch { ... } |
+| MixedPatterns.cs:20:40:20:48 | this access | MixedPatterns.cs:30:52:30:60 | this access |
+| MixedPatterns.cs:20:40:20:48 | this access | MixedPatterns.cs:31:56:31:64 | this access |
+| MixedPatterns.cs:20:40:20:48 | this access | MixedPatterns.cs:32:47:32:53 | this access |
+| MixedPatterns.cs:20:40:20:48 | this access | MixedPatterns.cs:34:27:34:33 | this access |
+| MixedPatterns.cs:20:40:20:48 | this access | MixedPatterns.cs:35:63:35:69 | this access |
+| MixedPatterns.cs:20:40:20:48 | this access | MixedPatterns.cs:36:75:36:81 | this access |
+| MixedPatterns.cs:20:40:20:48 | this access | MixedPatterns.cs:37:79:37:85 | this access |
+| MixedPatterns.cs:20:40:20:48 | this access | MixedPatterns.cs:38:66:38:72 | this access |
+| MixedPatterns.cs:20:40:20:48 | this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:20:40:20:48 | this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:20:40:20:48 | this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:20:40:20:48 | this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:20:40:20:48 | this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:20:40:20:48 | this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:21:13:21:33 | SSA def(p) | MixedPatterns.cs:21:43:21:43 | access to local variable p |
+| MixedPatterns.cs:21:13:21:33 | SSA qualifier def(p.X) | MixedPatterns.cs:21:43:21:45 | access to property X |
+| MixedPatterns.cs:21:38:21:46 | [post] this access | MixedPatterns.cs:30:52:30:60 | this access |
+| MixedPatterns.cs:21:38:21:46 | [post] this access | MixedPatterns.cs:31:56:31:64 | this access |
+| MixedPatterns.cs:21:38:21:46 | [post] this access | MixedPatterns.cs:32:47:32:53 | this access |
+| MixedPatterns.cs:21:38:21:46 | [post] this access | MixedPatterns.cs:34:27:34:33 | this access |
+| MixedPatterns.cs:21:38:21:46 | [post] this access | MixedPatterns.cs:35:63:35:69 | this access |
+| MixedPatterns.cs:21:38:21:46 | [post] this access | MixedPatterns.cs:36:75:36:81 | this access |
+| MixedPatterns.cs:21:38:21:46 | [post] this access | MixedPatterns.cs:37:79:37:85 | this access |
+| MixedPatterns.cs:21:38:21:46 | [post] this access | MixedPatterns.cs:38:66:38:72 | this access |
+| MixedPatterns.cs:21:38:21:46 | [post] this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:21:38:21:46 | [post] this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:21:38:21:46 | [post] this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:21:38:21:46 | [post] this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:21:38:21:46 | [post] this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:21:38:21:46 | [post] this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:21:38:21:46 | call to method Sink | MixedPatterns.cs:17:20:25:9 | ... switch { ... } |
+| MixedPatterns.cs:21:38:21:46 | this access | MixedPatterns.cs:30:52:30:60 | this access |
+| MixedPatterns.cs:21:38:21:46 | this access | MixedPatterns.cs:31:56:31:64 | this access |
+| MixedPatterns.cs:21:38:21:46 | this access | MixedPatterns.cs:32:47:32:53 | this access |
+| MixedPatterns.cs:21:38:21:46 | this access | MixedPatterns.cs:34:27:34:33 | this access |
+| MixedPatterns.cs:21:38:21:46 | this access | MixedPatterns.cs:35:63:35:69 | this access |
+| MixedPatterns.cs:21:38:21:46 | this access | MixedPatterns.cs:36:75:36:81 | this access |
+| MixedPatterns.cs:21:38:21:46 | this access | MixedPatterns.cs:37:79:37:85 | this access |
+| MixedPatterns.cs:21:38:21:46 | this access | MixedPatterns.cs:38:66:38:72 | this access |
+| MixedPatterns.cs:21:38:21:46 | this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:21:38:21:46 | this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:21:38:21:46 | this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:21:38:21:46 | this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:21:38:21:46 | this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:21:38:21:46 | this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:22:13:22:37 | SSA def(p) | MixedPatterns.cs:22:47:22:47 | access to local variable p |
+| MixedPatterns.cs:22:13:22:37 | SSA qualifier def(p.X) | MixedPatterns.cs:22:47:22:49 | access to property X |
+| MixedPatterns.cs:22:42:22:50 | [post] this access | MixedPatterns.cs:30:52:30:60 | this access |
+| MixedPatterns.cs:22:42:22:50 | [post] this access | MixedPatterns.cs:31:56:31:64 | this access |
+| MixedPatterns.cs:22:42:22:50 | [post] this access | MixedPatterns.cs:32:47:32:53 | this access |
+| MixedPatterns.cs:22:42:22:50 | [post] this access | MixedPatterns.cs:34:27:34:33 | this access |
+| MixedPatterns.cs:22:42:22:50 | [post] this access | MixedPatterns.cs:35:63:35:69 | this access |
+| MixedPatterns.cs:22:42:22:50 | [post] this access | MixedPatterns.cs:36:75:36:81 | this access |
+| MixedPatterns.cs:22:42:22:50 | [post] this access | MixedPatterns.cs:37:79:37:85 | this access |
+| MixedPatterns.cs:22:42:22:50 | [post] this access | MixedPatterns.cs:38:66:38:72 | this access |
+| MixedPatterns.cs:22:42:22:50 | [post] this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:22:42:22:50 | [post] this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:22:42:22:50 | [post] this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:22:42:22:50 | [post] this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:22:42:22:50 | [post] this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:22:42:22:50 | [post] this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:22:42:22:50 | call to method Sink | MixedPatterns.cs:17:20:25:9 | ... switch { ... } |
+| MixedPatterns.cs:22:42:22:50 | this access | MixedPatterns.cs:30:52:30:60 | this access |
+| MixedPatterns.cs:22:42:22:50 | this access | MixedPatterns.cs:31:56:31:64 | this access |
+| MixedPatterns.cs:22:42:22:50 | this access | MixedPatterns.cs:32:47:32:53 | this access |
+| MixedPatterns.cs:22:42:22:50 | this access | MixedPatterns.cs:34:27:34:33 | this access |
+| MixedPatterns.cs:22:42:22:50 | this access | MixedPatterns.cs:35:63:35:69 | this access |
+| MixedPatterns.cs:22:42:22:50 | this access | MixedPatterns.cs:36:75:36:81 | this access |
+| MixedPatterns.cs:22:42:22:50 | this access | MixedPatterns.cs:37:79:37:85 | this access |
+| MixedPatterns.cs:22:42:22:50 | this access | MixedPatterns.cs:38:66:38:72 | this access |
+| MixedPatterns.cs:22:42:22:50 | this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:22:42:22:50 | this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:22:42:22:50 | this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:22:42:22:50 | this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:22:42:22:50 | this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:22:42:22:50 | this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:23:14:23:18 | SSA def(j) | MixedPatterns.cs:23:34:23:34 | access to local variable j |
+| MixedPatterns.cs:23:29:23:35 | [post] this access | MixedPatterns.cs:30:52:30:60 | this access |
+| MixedPatterns.cs:23:29:23:35 | [post] this access | MixedPatterns.cs:31:56:31:64 | this access |
+| MixedPatterns.cs:23:29:23:35 | [post] this access | MixedPatterns.cs:32:47:32:53 | this access |
+| MixedPatterns.cs:23:29:23:35 | [post] this access | MixedPatterns.cs:34:27:34:33 | this access |
+| MixedPatterns.cs:23:29:23:35 | [post] this access | MixedPatterns.cs:35:63:35:69 | this access |
+| MixedPatterns.cs:23:29:23:35 | [post] this access | MixedPatterns.cs:36:75:36:81 | this access |
+| MixedPatterns.cs:23:29:23:35 | [post] this access | MixedPatterns.cs:37:79:37:85 | this access |
+| MixedPatterns.cs:23:29:23:35 | [post] this access | MixedPatterns.cs:38:66:38:72 | this access |
+| MixedPatterns.cs:23:29:23:35 | [post] this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:23:29:23:35 | [post] this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:23:29:23:35 | [post] this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:23:29:23:35 | [post] this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:23:29:23:35 | [post] this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:23:29:23:35 | [post] this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:23:29:23:35 | call to method Sink | MixedPatterns.cs:17:20:25:9 | ... switch { ... } |
+| MixedPatterns.cs:23:29:23:35 | this access | MixedPatterns.cs:30:52:30:60 | this access |
+| MixedPatterns.cs:23:29:23:35 | this access | MixedPatterns.cs:31:56:31:64 | this access |
+| MixedPatterns.cs:23:29:23:35 | this access | MixedPatterns.cs:32:47:32:53 | this access |
+| MixedPatterns.cs:23:29:23:35 | this access | MixedPatterns.cs:34:27:34:33 | this access |
+| MixedPatterns.cs:23:29:23:35 | this access | MixedPatterns.cs:35:63:35:69 | this access |
+| MixedPatterns.cs:23:29:23:35 | this access | MixedPatterns.cs:36:75:36:81 | this access |
+| MixedPatterns.cs:23:29:23:35 | this access | MixedPatterns.cs:37:79:37:85 | this access |
+| MixedPatterns.cs:23:29:23:35 | this access | MixedPatterns.cs:38:66:38:72 | this access |
+| MixedPatterns.cs:23:29:23:35 | this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:23:29:23:35 | this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:23:29:23:35 | this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:23:29:23:35 | this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:23:29:23:35 | this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:23:29:23:35 | this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:27:16:27:52 | SSA def(o) | MixedPatterns.cs:28:20:28:20 | access to local variable o |
+| MixedPatterns.cs:27:20:27:52 | object creation of type Item | MixedPatterns.cs:27:16:27:52 | SSA def(o) |
+| MixedPatterns.cs:27:31:27:52 | { ..., ... } | MixedPatterns.cs:27:20:27:52 | object creation of type Item |
+| MixedPatterns.cs:27:37:27:50 | "taint source" | MixedPatterns.cs:27:33:27:50 | ... = ... |
+| MixedPatterns.cs:28:20:28:20 | access to local variable o | MixedPatterns.cs:30:13:30:47 | SSA def(z) |
+| MixedPatterns.cs:28:20:28:20 | access to local variable o | MixedPatterns.cs:31:13:31:51 | SSA def(z) |
+| MixedPatterns.cs:28:20:28:20 | access to local variable o | MixedPatterns.cs:36:80:36:80 | access to local variable o |
+| MixedPatterns.cs:28:20:28:20 | access to local variable o | MixedPatterns.cs:37:84:37:84 | access to local variable o |
+| MixedPatterns.cs:30:13:30:47 | SSA def(z) | MixedPatterns.cs:30:57:30:57 | access to local variable z |
+| MixedPatterns.cs:30:13:30:47 | SSA qualifier def(z.X) | MixedPatterns.cs:30:57:30:59 | access to property X |
+| MixedPatterns.cs:30:52:30:60 | [post] this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:30:52:30:60 | [post] this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:30:52:30:60 | [post] this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:30:52:30:60 | [post] this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:30:52:30:60 | [post] this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:30:52:30:60 | [post] this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:30:52:30:60 | call to method Sink | MixedPatterns.cs:28:20:39:9 | ... switch { ... } |
+| MixedPatterns.cs:30:52:30:60 | this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:30:52:30:60 | this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:30:52:30:60 | this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:30:52:30:60 | this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:30:52:30:60 | this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:30:52:30:60 | this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:31:13:31:51 | SSA def(z) | MixedPatterns.cs:31:61:31:61 | access to local variable z |
+| MixedPatterns.cs:31:13:31:51 | SSA qualifier def(z.X) | MixedPatterns.cs:31:61:31:63 | access to property X |
+| MixedPatterns.cs:31:56:31:64 | [post] this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:31:56:31:64 | [post] this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:31:56:31:64 | [post] this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:31:56:31:64 | [post] this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:31:56:31:64 | [post] this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:31:56:31:64 | [post] this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:31:56:31:64 | call to method Sink | MixedPatterns.cs:28:20:39:9 | ... switch { ... } |
+| MixedPatterns.cs:31:56:31:64 | this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:31:56:31:64 | this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:31:56:31:64 | this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:31:56:31:64 | this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:31:56:31:64 | this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:31:56:31:64 | this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:32:13:32:42 | [match] SSA phi(i) | MixedPatterns.cs:32:52:32:52 | access to local variable i |
+| MixedPatterns.cs:32:18:32:22 | SSA def(i) | MixedPatterns.cs:32:13:32:42 | [match] SSA phi(i) |
+| MixedPatterns.cs:32:47:32:53 | [post] this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:32:47:32:53 | [post] this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:32:47:32:53 | [post] this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:32:47:32:53 | [post] this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:32:47:32:53 | [post] this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:32:47:32:53 | [post] this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:32:47:32:53 | call to method Sink | MixedPatterns.cs:28:20:39:9 | ... switch { ... } |
+| MixedPatterns.cs:32:47:32:53 | this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:32:47:32:53 | this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:32:47:32:53 | this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:32:47:32:53 | this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:32:47:32:53 | this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:32:47:32:53 | this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:33:23:33:25 | "0" | MixedPatterns.cs:28:20:39:9 | ... switch { ... } |
+| MixedPatterns.cs:34:14:34:18 | SSA def(s) | MixedPatterns.cs:34:32:34:32 | access to local variable s |
+| MixedPatterns.cs:34:27:34:33 | [post] this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:34:27:34:33 | [post] this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:34:27:34:33 | [post] this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:34:27:34:33 | [post] this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:34:27:34:33 | [post] this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:34:27:34:33 | [post] this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:34:27:34:33 | call to method Sink | MixedPatterns.cs:28:20:39:9 | ... switch { ... } |
+| MixedPatterns.cs:34:27:34:33 | this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:34:27:34:33 | this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:34:27:34:33 | this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:34:27:34:33 | this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:34:27:34:33 | this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:34:27:34:33 | this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:35:13:35:58 | [match] SSA phi(i) | MixedPatterns.cs:35:68:35:68 | access to local variable i |
+| MixedPatterns.cs:35:34:35:38 | SSA def(i) | MixedPatterns.cs:35:13:35:58 | [match] SSA phi(i) |
+| MixedPatterns.cs:35:63:35:69 | [post] this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:35:63:35:69 | [post] this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:35:63:35:69 | [post] this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:35:63:35:69 | [post] this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:35:63:35:69 | [post] this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:35:63:35:69 | [post] this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:35:63:35:69 | call to method Sink | MixedPatterns.cs:28:20:39:9 | ... switch { ... } |
+| MixedPatterns.cs:35:63:35:69 | this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:35:63:35:69 | this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:35:63:35:69 | this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:35:63:35:69 | this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:35:63:35:69 | this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:35:63:35:69 | this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:35:68:35:68 | access to local variable i | MixedPatterns.cs:35:68:35:68 | (...) ... |
+| MixedPatterns.cs:36:75:36:81 | [post] this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:36:75:36:81 | [post] this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:36:75:36:81 | [post] this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:36:75:36:81 | [post] this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:36:75:36:81 | [post] this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:36:75:36:81 | [post] this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:36:75:36:81 | call to method Sink | MixedPatterns.cs:28:20:39:9 | ... switch { ... } |
+| MixedPatterns.cs:36:75:36:81 | this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:36:75:36:81 | this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:36:75:36:81 | this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:36:75:36:81 | this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:36:75:36:81 | this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:36:75:36:81 | this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:37:79:37:85 | [post] this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:37:79:37:85 | [post] this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:37:79:37:85 | [post] this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:37:79:37:85 | [post] this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:37:79:37:85 | [post] this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:37:79:37:85 | [post] this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:37:79:37:85 | call to method Sink | MixedPatterns.cs:28:20:39:9 | ... switch { ... } |
+| MixedPatterns.cs:37:79:37:85 | this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:37:79:37:85 | this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:37:79:37:85 | this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:37:79:37:85 | this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:37:79:37:85 | this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:37:79:37:85 | this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:38:13:38:61 | [match] SSA phi(i) | MixedPatterns.cs:38:71:38:71 | access to local variable i |
+| MixedPatterns.cs:38:37:38:41 | SSA def(i) | MixedPatterns.cs:38:13:38:61 | [match] SSA phi(i) |
+| MixedPatterns.cs:38:66:38:72 | [post] this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:38:66:38:72 | [post] this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:38:66:38:72 | [post] this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:38:66:38:72 | [post] this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:38:66:38:72 | [post] this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:38:66:38:72 | [post] this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:38:66:38:72 | call to method Sink | MixedPatterns.cs:28:20:39:9 | ... switch { ... } |
+| MixedPatterns.cs:38:66:38:72 | this access | MixedPatterns.cs:44:36:44:50 | this access |
+| MixedPatterns.cs:38:66:38:72 | this access | MixedPatterns.cs:45:40:45:54 | this access |
+| MixedPatterns.cs:38:66:38:72 | this access | MixedPatterns.cs:46:75:46:89 | this access |
+| MixedPatterns.cs:38:66:38:72 | this access | MixedPatterns.cs:47:79:47:93 | this access |
+| MixedPatterns.cs:38:66:38:72 | this access | MixedPatterns.cs:48:66:48:72 | this access |
+| MixedPatterns.cs:38:66:38:72 | this access | MixedPatterns.cs:49:27:49:33 | this access |
+| MixedPatterns.cs:41:13:41:37 | SSA def(tup) | MixedPatterns.cs:42:20:42:22 | access to local variable tup |
+| MixedPatterns.cs:41:13:41:37 | SSA qualifier def(tup.Item1) | MixedPatterns.cs:44:41:44:49 | access to field Item1 |
+| MixedPatterns.cs:41:13:41:37 | SSA qualifier def(tup.Item1) | MixedPatterns.cs:45:45:45:53 | access to field Item1 |
+| MixedPatterns.cs:41:13:41:37 | SSA qualifier def(tup.Item1) | MixedPatterns.cs:46:80:46:88 | access to field Item1 |
+| MixedPatterns.cs:41:13:41:37 | SSA qualifier def(tup.Item1) | MixedPatterns.cs:47:84:47:92 | access to field Item1 |
+| MixedPatterns.cs:41:19:41:37 | (..., ...) | MixedPatterns.cs:41:13:41:37 | SSA def(tup) |
+| MixedPatterns.cs:42:20:42:22 | access to local variable tup | MixedPatterns.cs:44:41:44:43 | access to local variable tup |
+| MixedPatterns.cs:42:20:42:22 | access to local variable tup | MixedPatterns.cs:45:45:45:47 | access to local variable tup |
+| MixedPatterns.cs:42:20:42:22 | access to local variable tup | MixedPatterns.cs:46:80:46:82 | access to local variable tup |
+| MixedPatterns.cs:42:20:42:22 | access to local variable tup | MixedPatterns.cs:47:84:47:86 | access to local variable tup |
+| MixedPatterns.cs:44:36:44:50 | call to method Sink | MixedPatterns.cs:42:20:50:9 | ... switch { ... } |
+| MixedPatterns.cs:45:40:45:54 | call to method Sink | MixedPatterns.cs:42:20:50:9 | ... switch { ... } |
+| MixedPatterns.cs:46:75:46:89 | call to method Sink | MixedPatterns.cs:42:20:50:9 | ... switch { ... } |
+| MixedPatterns.cs:47:79:47:93 | call to method Sink | MixedPatterns.cs:42:20:50:9 | ... switch { ... } |
+| MixedPatterns.cs:48:13:48:61 | [match] SSA phi(i) | MixedPatterns.cs:48:71:48:71 | access to local variable i |
+| MixedPatterns.cs:48:37:48:41 | SSA def(i) | MixedPatterns.cs:48:13:48:61 | [match] SSA phi(i) |
+| MixedPatterns.cs:48:66:48:72 | call to method Sink | MixedPatterns.cs:42:20:50:9 | ... switch { ... } |
+| MixedPatterns.cs:49:14:49:18 | SSA def(i) | MixedPatterns.cs:49:32:49:32 | access to local variable i |
+| MixedPatterns.cs:49:27:49:33 | call to method Sink | MixedPatterns.cs:42:20:50:9 | ... switch { ... } |
+| MixedPatterns.cs:67:17:67:27 | SSA entry def(this.X) | MixedPatterns.cs:69:13:69:13 | access to property X |
+| MixedPatterns.cs:67:17:67:27 | SSA entry def(this.Y) | MixedPatterns.cs:70:13:70:13 | access to property Y |
+| MixedPatterns.cs:67:17:67:27 | this | MixedPatterns.cs:69:13:69:13 | this access |
+| MixedPatterns.cs:69:13:69:13 | [post] this access | MixedPatterns.cs:70:13:70:13 | this access |
+| MixedPatterns.cs:69:13:69:13 | access to property X | MixedPatterns.cs:69:9:69:13 | SSA def(x) |
+| MixedPatterns.cs:69:13:69:13 | this access | MixedPatterns.cs:70:13:70:13 | this access |
+| MixedPatterns.cs:70:13:70:13 | access to property Y | MixedPatterns.cs:70:9:70:13 | SSA def(y) |
 | Tuples.cs:7:13:7:56 | SSA def(x) | Tuples.cs:8:27:8:27 | access to local variable x |
 | Tuples.cs:7:13:7:56 | SSA qualifier def(x.Item1) | Tuples.cs:23:14:23:20 | access to field Item1 |
 | Tuples.cs:7:13:7:56 | SSA qualifier def(x.Item2) | Tuples.cs:25:14:25:20 | access to field Item2 |
