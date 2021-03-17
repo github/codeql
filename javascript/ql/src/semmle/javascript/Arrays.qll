@@ -250,13 +250,14 @@ private module ArrayDataFlow {
    * A step modelling that `splice` can insert elements into an array.
    * For example in `array.splice(i, del, e)`: if `e` is tainted, then so is `array
    */
-  private class ArraySpliceStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
-    ArraySpliceStep() { this.getMethodName() = "splice" }
-
+  private class ArraySpliceStep extends DataFlow::SharedFlowStep {
     override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
-      prop = arrayElement() and
-      element = getArgument(2) and
-      this = obj.getAMethodCall()
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = "splice" and
+        prop = arrayElement() and
+        element = call.getArgument(2) and
+        call = obj.getAMethodCall()
+      )
     }
   }
 
