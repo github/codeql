@@ -155,6 +155,7 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
       DataFlow::Node ret
     |
       replacer = getCallback(1) and
+      guard.getOutcome() = test.getPolarity() and
       guard.getTest() = test and
       replacer.getParameter(0).flowsToExpr(test.getAnOperand()) and
       test.getAnOperand().getStringValue() = old and
