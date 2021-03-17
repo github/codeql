@@ -726,7 +726,8 @@ private module Stdlib {
     OpenCall() {
       this = API::builtin("open").getACall()
       or
-      this.getFunction() = io_attr("open")
+      // io.open is a special case, since it is an alias for the builtin `open`
+      this = API::moduleImport("io").getMember("open").getACall()
     }
 
     override DataFlow::Node getAPathArgument() {
@@ -878,59 +879,6 @@ private module Stdlib {
         name = "b85decode" and result = "Base85"
       )
     }
-  }
-
-  // ---------------------------------------------------------------------------
-  // io
-  // ---------------------------------------------------------------------------
-  /** Gets a reference to the `io` module. */
-  private DataFlow::Node io(DataFlow::TypeTracker t) {
-    t.start() and
-    result = DataFlow::importNode("io")
-    or
-    exists(DataFlow::TypeTracker t2 | result = io(t2).track(t2, t))
-  }
-
-  /** Gets a reference to the `io` module. */
-  DataFlow::Node io() { result = io(DataFlow::TypeTracker::end()) }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `io` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private DataFlow::Node io_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["open"] and
-    (
-      t.start() and
-      result = DataFlow::importNode("io" + "." + attr_name)
-      or
-      t.startInAttr(attr_name) and
-      result = io()
-    )
-    or
-    // Due to bad performance when using normal setup with `io_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        io_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate io_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(io_attr(t2, attr_name), res, summary)
-  }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `io` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private DataFlow::Node io_attr(string attr_name) {
-    result = io_attr(DataFlow::TypeTracker::end(), attr_name)
   }
 
   // ---------------------------------------------------------------------------
