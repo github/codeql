@@ -89,26 +89,21 @@ private class NodeWithPreCallGraphStep extends DataFlow::Node {
   }
 }
 
-private class AdditionalFlowStepFromPreCallGraph extends NodeWithPreCallGraphStep,
-  DataFlow::AdditionalFlowStep {
+private class SharedFlowStepFromPreCallGraph extends DataFlow::SharedFlowStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    pred = this and
-    PreCallGraphStep::step(this, succ)
+    PreCallGraphStep::step(pred, succ)
   }
 
   override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
-    pred = this and
-    PreCallGraphStep::storeStep(this, succ, prop)
+    PreCallGraphStep::storeStep(pred, succ, prop)
   }
 
   override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-    pred = this and
-    PreCallGraphStep::loadStep(this, succ, prop)
+    PreCallGraphStep::loadStep(pred, succ, prop)
   }
 
   override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-    pred = this and
-    PreCallGraphStep::loadStoreStep(this, succ, prop)
+    PreCallGraphStep::loadStoreStep(pred, succ, prop)
   }
 }
 
