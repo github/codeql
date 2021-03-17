@@ -13,11 +13,11 @@ definition
 | parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x |
 | parameters.rb:2:4:2:8 | ... = ... | parameters.rb:1:18:1:18 | y |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client |
-| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas |
-| parameters.rb:15:15:15:19 | **map | parameters.rb:15:17:15:19 | map |
+| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas |
+| parameters.rb:15:17:15:19 | map | parameters.rb:15:17:15:19 | map |
 | parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key |
 | parameters.rb:16:21:16:25 | value | parameters.rb:16:21:16:25 | value |
-| parameters.rb:21:16:21:21 | &block | parameters.rb:21:17:21:21 | block |
+| parameters.rb:21:17:21:21 | block | parameters.rb:21:17:21:21 | block |
 | parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name |
 | parameters.rb:25:33:25:36 | size | parameters.rb:25:33:25:36 | size |
 | parameters.rb:30:15:30:19 | first | parameters.rb:30:15:30:19 | first |
@@ -100,12 +100,12 @@ read
 | parameters.rb:2:4:2:8 | ... = ... | parameters.rb:1:18:1:18 | y | parameters.rb:4:9:4:9 | y |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:9:25:9:30 | client |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:11:41:11:46 | client |
-| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas |
-| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:11:14:11:19 | pizzas |
-| parameters.rb:15:15:15:19 | **map | parameters.rb:15:17:15:19 | map | parameters.rb:16:3:16:5 | map |
+| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas |
+| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:11:14:11:19 | pizzas |
+| parameters.rb:15:17:15:19 | map | parameters.rb:15:17:15:19 | map | parameters.rb:16:3:16:5 | map |
 | parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key | parameters.rb:17:13:17:15 | key |
 | parameters.rb:16:21:16:25 | value | parameters.rb:16:21:16:25 | value | parameters.rb:17:22:17:26 | value |
-| parameters.rb:21:16:21:21 | &block | parameters.rb:21:17:21:21 | block | parameters.rb:22:3:22:7 | block |
+| parameters.rb:21:17:21:21 | block | parameters.rb:21:17:21:21 | block | parameters.rb:22:3:22:7 | block |
 | parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:25:40:25:43 | name |
 | parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:26:8:26:11 | name |
 | parameters.rb:25:33:25:36 | size | parameters.rb:25:33:25:36 | size | parameters.rb:27:8:27:11 | size |
@@ -181,11 +181,11 @@ firstRead
 | parameters.rb:2:4:2:8 | ... = ... | parameters.rb:1:18:1:18 | y | parameters.rb:4:9:4:9 | y |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:9:25:9:30 | client |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:11:41:11:46 | client |
-| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas |
-| parameters.rb:15:15:15:19 | **map | parameters.rb:15:17:15:19 | map | parameters.rb:16:3:16:5 | map |
+| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas |
+| parameters.rb:15:17:15:19 | map | parameters.rb:15:17:15:19 | map | parameters.rb:16:3:16:5 | map |
 | parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key | parameters.rb:17:13:17:15 | key |
 | parameters.rb:16:21:16:25 | value | parameters.rb:16:21:16:25 | value | parameters.rb:17:22:17:26 | value |
-| parameters.rb:21:16:21:21 | &block | parameters.rb:21:17:21:21 | block | parameters.rb:22:3:22:7 | block |
+| parameters.rb:21:17:21:21 | block | parameters.rb:21:17:21:21 | block | parameters.rb:22:3:22:7 | block |
 | parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:25:40:25:43 | name |
 | parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:26:8:26:11 | name |
 | parameters.rb:25:33:25:36 | size | parameters.rb:25:33:25:36 | size | parameters.rb:27:8:27:11 | size |
@@ -250,12 +250,12 @@ lastRead
 | parameters.rb:2:4:2:8 | ... = ... | parameters.rb:1:18:1:18 | y | parameters.rb:4:9:4:9 | y |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:9:25:9:30 | client |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:11:41:11:46 | client |
-| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas |
-| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:11:14:11:19 | pizzas |
-| parameters.rb:15:15:15:19 | **map | parameters.rb:15:17:15:19 | map | parameters.rb:16:3:16:5 | map |
+| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas |
+| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:11:14:11:19 | pizzas |
+| parameters.rb:15:17:15:19 | map | parameters.rb:15:17:15:19 | map | parameters.rb:16:3:16:5 | map |
 | parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key | parameters.rb:17:13:17:15 | key |
 | parameters.rb:16:21:16:25 | value | parameters.rb:16:21:16:25 | value | parameters.rb:17:22:17:26 | value |
-| parameters.rb:21:16:21:21 | &block | parameters.rb:21:17:21:21 | block | parameters.rb:22:3:22:7 | block |
+| parameters.rb:21:17:21:21 | block | parameters.rb:21:17:21:21 | block | parameters.rb:22:3:22:7 | block |
 | parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:26:8:26:11 | name |
 | parameters.rb:25:33:25:36 | size | parameters.rb:25:33:25:36 | size | parameters.rb:27:8:27:11 | size |
 | parameters.rb:30:15:30:19 | first | parameters.rb:30:15:30:19 | first | parameters.rb:31:11:31:15 | first |
@@ -306,7 +306,7 @@ lastRead
 | ssa.rb:84:10:86:8 | <captured> | ssa.rb:82:3:82:10 | captured | ssa.rb:85:15:85:22 | captured |
 adjacentReads
 | nested_scopes.rb:13:11:13:15 | ... = ... | nested_scopes.rb:13:11:13:11 | a | nested_scopes.rb:14:16:14:16 | a | nested_scopes.rb:15:11:15:11 | a |
-| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas | parameters.rb:11:14:11:19 | pizzas |
+| parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas | parameters.rb:11:14:11:19 | pizzas |
 | parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:25:40:25:43 | name | parameters.rb:26:8:26:11 | name |
 | scopes.rb:9:9:18:3 | <captured> | scopes.rb:7:1:7:1 | a | scopes.rb:10:9:10:9 | a | scopes.rb:11:4:11:4 | a |
 | scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:28:8:28:8 | x | scopes.rb:31:10:31:10 | x |

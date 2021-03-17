@@ -2,7 +2,9 @@
  * Provides classes and predicates relevant for splitting the control flow graph.
  */
 
-private import codeql_ruby.AST
+private import codeql_ruby.ast.internal.TreeSitter::Generated
+private import codeql_ruby.ast.internal.AST as ASTInternal
+private import codeql_ruby.AST as AST
 private import Completion
 private import ControlFlowGraphImpl
 private import SuccessorTypes
@@ -217,19 +219,28 @@ private module ConditionalCompletionSplitting {
       succ(pred, succ, c) and
       last(succ, _, completion) and
       (
-        last(succ.(NotExpr).getOperand(), pred, c) and
+        last(ASTInternal::toGenerated(ASTInternal::fromGenerated(succ).(AST::NotExpr).getOperand()),
+          pred, c) and
         completion.(BooleanCompletion).getDual() = c
         or
-        last(succ.(LogicalAndExpr).getAnOperand(), pred, c) and
+        last(ASTInternal::toGenerated(ASTInternal::fromGenerated(succ)
+                .(AST::LogicalAndExpr)
+                .getAnOperand()), pred, c) and
         completion = c
         or
-        last(succ.(LogicalOrExpr).getAnOperand(), pred, c) and
+        last(ASTInternal::toGenerated(ASTInternal::fromGenerated(succ)
+                .(AST::LogicalOrExpr)
+                .getAnOperand()), pred, c) and
         completion = c
         or
-        last(succ.(ParenthesizedExpr).getLastExpr(), pred, c) and
+        last(ASTInternal::toGenerated(ASTInternal::fromGenerated(succ)
+                .(AST::ParenthesizedExpr)
+                .getLastExpr()), pred, c) and
         completion = c
         or
-        last(succ.(ConditionalExpr).getBranch(_), pred, c) and
+        last(ASTInternal::toGenerated(ASTInternal::fromGenerated(succ)
+                .(AST::ConditionalExpr)
+                .getBranch(_)), pred, c) and
         completion = c
       )
     }
@@ -244,7 +255,7 @@ private module ConditionalCompletionSplitting {
 
     override predicate hasExitScope(CfgScope scope, AstNode last, Completion c) {
       this.appliesTo(last) and
-      succExit(scope, last, c) and
+      succExit(ASTInternal::toGenerated(scope), last, c) and
       if c instanceof ConditionalCompletion then completion = c else any()
     }
 
@@ -461,7 +472,7 @@ module EnsureSplitting {
     }
 
     override predicate hasExitScope(CfgScope scope, AstNode last, Completion c) {
-      succExit(scope, last, c) and
+      succExit(ASTInternal::toGenerated(scope), last, c) and
       (
         exit(_, last, c, _)
         or
@@ -506,7 +517,7 @@ class Splits extends TSplits {
 
 private predicate succEntrySplitsFromRank(CfgScope pred, AstNode succ, Splits splits, int rnk) {
   splits = TSplitsNil() and
-  succEntry(pred, succ) and
+  succEntry(ASTInternal::toGenerated(pred), succ) and
   rnk = 0
   or
   exists(SplitImpl head, Splits tail | succEntrySplitsCons(pred, succ, head, tail, rnk) |
@@ -529,7 +540,7 @@ private predicate succEntrySplitsCons(
 pragma[noinline]
 predicate succEntrySplits(CfgScope pred, AstNode succ, Splits succSplits, SuccessorType t) {
   exists(int rnk |
-    succEntry(pred, succ) and
+    succEntry(ASTInternal::toGenerated(pred), succ) and
     t instanceof NormalSuccessor and
     succEntrySplitsFromRank(pred, succ, succSplits, rnk)
   |
@@ -548,7 +559,7 @@ predicate succExitSplits(AstNode last, Splits predSplits, CfgScope scope, Succes
   exists(Reachability::SameSplitsBlock b, Completion c | last = b.getANode() |
     b.isReachable(predSplits) and
     t = c.getAMatchingSuccessorType() and
-    succExit(scope, last, c) and
+    succExit(ASTInternal::toGenerated(scope), last, c) and
     forall(SplitImpl predSplit | predSplit = predSplits.getASplit() |
       predSplit.hasExitScope(scope, last, c)
     )

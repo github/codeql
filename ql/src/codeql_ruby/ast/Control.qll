@@ -1,5 +1,6 @@
 private import codeql_ruby.AST
-private import internal.Control
+private import internal.AST
+private import internal.TreeSitter
 
 /**
  * A control expression that can be any of the following:
@@ -9,17 +10,13 @@ private import internal.Control
  * - `while`/`until` (including expression-modifier variants)
  * - `for`
  */
-class ControlExpr extends Expr {
-  override ControlExpr::Range range;
-}
+class ControlExpr extends Expr, TControlExpr { }
 
 /**
  * A conditional expression: `if`/`unless` (including expression-modifier
  * variants), and ternary-if (`?:`) expressions.
  */
-class ConditionalExpr extends ControlExpr {
-  override ConditionalExpr::Range range;
-
+class ConditionalExpr extends ControlExpr, TConditionalExpr {
   /**
    * Gets the condition expression. For example, the result is `foo` in the
    * following:
@@ -29,13 +26,19 @@ class ConditionalExpr extends ControlExpr {
    * end
    * ```
    */
-  final Expr getCondition() { result = range.getCondition() }
+  Expr getCondition() { none() }
 
   /**
    * Gets the branch of this conditional expression that is taken when the
    * condition evaluates to `cond`, if any.
    */
-  Stmt getBranch(boolean cond) { result = range.getBranch(cond) }
+  Stmt getBranch(boolean cond) { none() }
+
+  override AstNode getAChild(string pred) {
+    pred = "getCondition" and result = this.getCondition()
+    or
+    pred = "getBranch" and result = this.getBranch(_)
+  }
 }
 
 /**
@@ -48,16 +51,14 @@ class ConditionalExpr extends ControlExpr {
  * end
  * ```
  */
-class IfExpr extends ConditionalExpr {
-  override IfExpr::Range range;
-
+class IfExpr extends ConditionalExpr, TIfExpr {
   final override string getAPrimaryQlClass() { result = "IfExpr" }
 
   /** Holds if this is an `elsif` expression. */
-  final predicate isElsif() { this instanceof @elsif }
+  predicate isElsif() { none() }
 
   /** Gets the 'then' branch of this `if`/`elsif` expression. */
-  final Stmt getThen() { result = range.getThen() }
+  Stmt getThen() { none() }
 
   /**
    * Gets the `elsif`/`else` branch of this `if`/`elsif` expression, if any. In
@@ -90,7 +91,51 @@ class IfExpr extends ConditionalExpr {
    * end
    * ```
    */
-  final Stmt getElse() { result = range.getElse() }
+  Stmt getElse() { none() }
+
+  final override Stmt getBranch(boolean cond) {
+    cond = true and result = this.getThen()
+    or
+    cond = false and result = this.getElse()
+  }
+
+  override AstNode getAChild(string pred) {
+    result = ConditionalExpr.super.getAChild(pred)
+    or
+    pred = "getThen" and result = this.getThen()
+    or
+    pred = "getElse" and result = this.getElse()
+  }
+}
+
+private class If extends IfExpr, TIf {
+  private Generated::If g;
+
+  If() { this = TIf(g) }
+
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
+
+  final override Stmt getThen() { toGenerated(result) = g.getConsequence() }
+
+  final override Stmt getElse() { toGenerated(result) = g.getAlternative() }
+
+  final override string toString() { result = "if ..." }
+}
+
+private class Elsif extends IfExpr, TElsif {
+  private Generated::Elsif g;
+
+  Elsif() { this = TElsif(g) }
+
+  final override predicate isElsif() { any() }
+
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
+
+  final override Stmt getThen() { toGenerated(result) = g.getConsequence() }
+
+  final override Stmt getElse() { toGenerated(result) = g.getAlternative() }
+
+  final override string toString() { result = "elsif ..." }
 }
 
 /**
@@ -101,10 +146,14 @@ class IfExpr extends ConditionalExpr {
  * end
  * ```
  */
-class UnlessExpr extends ConditionalExpr, @unless {
-  final override UnlessExpr::Range range;
+class UnlessExpr extends ConditionalExpr, TUnlessExpr {
+  private Generated::Unless g;
+
+  UnlessExpr() { this = TUnlessExpr(g) }
 
   final override string getAPrimaryQlClass() { result = "UnlessExpr" }
+
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
 
   /**
    * Gets the 'then' branch of this `unless` expression. In the following
@@ -117,7 +166,7 @@ class UnlessExpr extends ConditionalExpr, @unless {
    * end
    * ```
    */
-  final Stmt getThen() { result = range.getThen() }
+  final Stmt getThen() { toGenerated(result) = g.getConsequence() }
 
   /**
    * Gets the 'else' branch of this `unless` expression. In the following
@@ -130,7 +179,23 @@ class UnlessExpr extends ConditionalExpr, @unless {
    * end
    * ```
    */
-  final Stmt getElse() { result = range.getElse() }
+  final Stmt getElse() { toGenerated(result) = g.getAlternative() }
+
+  final override Expr getBranch(boolean cond) {
+    cond = false and result = getThen()
+    or
+    cond = true and result = getElse()
+  }
+
+  final override string toString() { result = "unless ..." }
+
+  override AstNode getAChild(string pred) {
+    result = ConditionalExpr.super.getAChild(pred)
+    or
+    pred = "getThen" and result = this.getThen()
+    or
+    pred = "getElse" and result = this.getElse()
+  }
 }
 
 /**
@@ -139,10 +204,16 @@ class UnlessExpr extends ConditionalExpr, @unless {
  * foo if bar
  * ```
  */
-class IfModifierExpr extends ConditionalExpr, @if_modifier {
-  final override IfModifierExpr::Range range;
+class IfModifierExpr extends ConditionalExpr, TIfModifierExpr {
+  private Generated::IfModifier g;
+
+  IfModifierExpr() { this = TIfModifierExpr(g) }
 
   final override string getAPrimaryQlClass() { result = "IfModifierExpr" }
+
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
+
+  final override Stmt getBranch(boolean cond) { cond = true and result = this.getBody() }
 
   /**
    * Gets the statement that is conditionally evaluated. In the following
@@ -151,7 +222,15 @@ class IfModifierExpr extends ConditionalExpr, @if_modifier {
    * foo if bar
    * ```
    */
-  final Stmt getBody() { result = range.getBody() }
+  final Stmt getBody() { toGenerated(result) = g.getBody() }
+
+  final override string toString() { result = "... if ..." }
+
+  override AstNode getAChild(string pred) {
+    result = ConditionalExpr.super.getAChild(pred)
+    or
+    pred = "getBody" and result = this.getBody()
+  }
 }
 
 /**
@@ -160,10 +239,16 @@ class IfModifierExpr extends ConditionalExpr, @if_modifier {
  * y /= x unless x == 0
  * ```
  */
-class UnlessModifierExpr extends ConditionalExpr, @unless_modifier {
-  final override UnlessModifierExpr::Range range;
+class UnlessModifierExpr extends ConditionalExpr, TUnlessModifierExpr {
+  private Generated::UnlessModifier g;
+
+  UnlessModifierExpr() { this = TUnlessModifierExpr(g) }
 
   final override string getAPrimaryQlClass() { result = "UnlessModifierExpr" }
+
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
+
+  final override Stmt getBranch(boolean cond) { cond = false and result = this.getBody() }
 
   /**
    * Gets the statement that is conditionally evaluated. In the following
@@ -172,7 +257,15 @@ class UnlessModifierExpr extends ConditionalExpr, @unless_modifier {
    * foo unless bar
    * ```
    */
-  final Stmt getBody() { result = range.getBody() }
+  final Stmt getBody() { toGenerated(result) = g.getBody() }
+
+  final override string toString() { result = "... unless ..." }
+
+  override AstNode getAChild(string pred) {
+    result = ConditionalExpr.super.getAChild(pred)
+    or
+    pred = "getBody" and result = this.getBody()
+  }
 }
 
 /**
@@ -181,20 +274,42 @@ class UnlessModifierExpr extends ConditionalExpr, @unless_modifier {
  * (a > b) ? a : b
  * ```
  */
-class TernaryIfExpr extends ConditionalExpr, @conditional {
-  final override TernaryIfExpr::Range range;
+class TernaryIfExpr extends ConditionalExpr, TTernaryIfExpr {
+  private Generated::Conditional g;
+
+  TernaryIfExpr() { this = TTernaryIfExpr(g) }
 
   final override string getAPrimaryQlClass() { result = "TernaryIfExpr" }
 
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
+
   /** Gets the 'then' branch of this ternary if expression. */
-  final Stmt getThen() { result = range.getThen() }
+  final Stmt getThen() { toGenerated(result) = g.getConsequence() }
 
   /** Gets the 'else' branch of this ternary if expression. */
-  final Stmt getElse() { result = range.getElse() }
+  final Stmt getElse() { toGenerated(result) = g.getAlternative() }
+
+  final override Stmt getBranch(boolean cond) {
+    cond = true and result = getThen()
+    or
+    cond = false and result = getElse()
+  }
+
+  final override string toString() { result = "... ? ... : ..." }
+
+  override AstNode getAChild(string pred) {
+    result = ConditionalExpr.super.getAChild(pred)
+    or
+    pred = "getThen" and result = this.getThen()
+    or
+    pred = "getElse" and result = this.getElse()
+  }
 }
 
-class CaseExpr extends ControlExpr, @case__ {
-  final override CaseExpr::Range range;
+class CaseExpr extends ControlExpr, TCaseExpr {
+  private Generated::Case g;
+
+  CaseExpr() { this = TCaseExpr(g) }
 
   final override string getAPrimaryQlClass() { result = "CaseExpr" }
 
@@ -217,13 +332,13 @@ class CaseExpr extends ControlExpr, @case__ {
    * end
    * ```
    */
-  final Expr getValue() { result = range.getValue() }
+  final Expr getValue() { toGenerated(result) = g.getValue() }
 
   /**
    * Gets the `n`th branch of this case expression, either a `WhenExpr` or a
    * `StmtSequence`.
    */
-  final Expr getBranch(int n) { result = range.getBranch(n) }
+  final Expr getBranch(int n) { toGenerated(result) = g.getChild(n) }
 
   /**
    * Gets a branch of this case expression, either a `WhenExpr` or an
@@ -241,6 +356,14 @@ class CaseExpr extends ControlExpr, @case__ {
    * Gets the number of branches of this case expression.
    */
   final int getNumberOfBranches() { result = count(this.getBranch(_)) }
+
+  final override string toString() { result = "case ..." }
+
+  override AstNode getAChild(string pred) {
+    pred = "getValue" and result = this.getValue()
+    or
+    pred = "getBranch" and result = this.getBranch(_)
+  }
 }
 
 /**
@@ -251,13 +374,15 @@ class CaseExpr extends ControlExpr, @case__ {
  * end
  * ```
  */
-class WhenExpr extends Expr, @when {
-  final override WhenExpr::Range range;
+class WhenExpr extends Expr, TWhenExpr {
+  private Generated::When g;
+
+  WhenExpr() { this = TWhenExpr(g) }
 
   final override string getAPrimaryQlClass() { result = "WhenExpr" }
 
   /** Gets the body of this case-when expression. */
-  final Stmt getBody() { result = range.getBody() }
+  final Stmt getBody() { toGenerated(result) = g.getBody() }
 
   /**
    * Gets the `n`th pattern (or condition) in this case-when expression. In the
@@ -270,7 +395,7 @@ class WhenExpr extends Expr, @when {
    * end
    * ```
    */
-  final Expr getPattern(int n) { result = range.getPattern(n) }
+  final Expr getPattern(int n) { toGenerated(result) = g.getPattern(n).getChild() }
 
   /**
    * Gets a pattern (or condition) in this case-when expression.
@@ -281,28 +406,40 @@ class WhenExpr extends Expr, @when {
    * Gets the number of patterns in this case-when expression.
    */
   final int getNumberOfPatterns() { result = count(this.getPattern(_)) }
+
+  final override string toString() { result = "when ..." }
+
+  override AstNode getAChild(string pred) {
+    pred = "getBody" and result = this.getBody()
+    or
+    pred = "getPattern" and result = this.getPattern(_)
+  }
 }
 
 /**
  * A loop. That is, a `for` loop, a `while` or `until` loop, or their
  * expression-modifier variants.
  */
-class Loop extends ControlExpr {
-  override Loop::Range range;
-
+class Loop extends ControlExpr, TLoop {
   /** Gets the body of this loop. */
-  Stmt getBody() { result = range.getBody() }
+  Stmt getBody() { none() }
+
+  override AstNode getAChild(string pred) { pred = "getBody" and result = this.getBody() }
 }
 
 /**
  * A loop using a condition expression. That is, a `while` or `until` loop, or
  * their expression-modifier variants.
  */
-class ConditionalLoop extends Loop {
-  override ConditionalLoop::Range range;
-
+class ConditionalLoop extends Loop, TConditionalLoop {
   /** Gets the condition expression of this loop. */
-  final Expr getCondition() { result = range.getCondition() }
+  Expr getCondition() { none() }
+
+  override AstNode getAChild(string pred) {
+    result = Loop.super.getAChild(pred)
+    or
+    pred = "getCondition" and result = this.getCondition()
+  }
 }
 
 /**
@@ -314,13 +451,19 @@ class ConditionalLoop extends Loop {
  * end
  * ```
  */
-class WhileExpr extends ConditionalLoop, @while {
-  final override WhileExpr::Range range;
+class WhileExpr extends ConditionalLoop, TWhileExpr {
+  private Generated::While g;
+
+  WhileExpr() { this = TWhileExpr(g) }
 
   final override string getAPrimaryQlClass() { result = "WhileExpr" }
 
   /** Gets the body of this `while` loop. */
-  final override Stmt getBody() { result = range.getBody() }
+  final override Stmt getBody() { toGenerated(result) = g.getBody() }
+
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
+
+  final override string toString() { result = "while ..." }
 }
 
 /**
@@ -332,13 +475,19 @@ class WhileExpr extends ConditionalLoop, @while {
  * end
  * ```
  */
-class UntilExpr extends ConditionalLoop, @until {
-  final override UntilExpr::Range range;
+class UntilExpr extends ConditionalLoop, TUntilExpr {
+  private Generated::Until g;
+
+  UntilExpr() { this = TUntilExpr(g) }
 
   final override string getAPrimaryQlClass() { result = "UntilExpr" }
 
   /** Gets the body of this `until` loop. */
-  final override Stmt getBody() { result = range.getBody() }
+  final override Stmt getBody() { toGenerated(result) = g.getBody() }
+
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
+
+  final override string toString() { result = "until ..." }
 }
 
 /**
@@ -347,10 +496,18 @@ class UntilExpr extends ConditionalLoop, @until {
  * foo while bar
  * ```
  */
-class WhileModifierExpr extends ConditionalLoop, @while_modifier {
-  final override WhileModifierExpr::Range range;
+class WhileModifierExpr extends ConditionalLoop, TWhileModifierExpr {
+  private Generated::WhileModifier g;
+
+  WhileModifierExpr() { this = TWhileModifierExpr(g) }
+
+  final override Stmt getBody() { toGenerated(result) = g.getBody() }
+
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
 
   final override string getAPrimaryQlClass() { result = "WhileModifierExpr" }
+
+  final override string toString() { result = "... while ..." }
 }
 
 /**
@@ -359,10 +516,18 @@ class WhileModifierExpr extends ConditionalLoop, @while_modifier {
  * foo until bar
  * ```
  */
-class UntilModifierExpr extends ConditionalLoop, @until_modifier {
-  final override UntilModifierExpr::Range range;
+class UntilModifierExpr extends ConditionalLoop, TUntilModifierExpr {
+  private Generated::UntilModifier g;
+
+  UntilModifierExpr() { this = TUntilModifierExpr(g) }
+
+  final override Stmt getBody() { toGenerated(result) = g.getBody() }
+
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
 
   final override string getAPrimaryQlClass() { result = "UntilModifierExpr" }
+
+  final override string toString() { result = "... until ..." }
 }
 
 /**
@@ -373,16 +538,18 @@ class UntilModifierExpr extends ConditionalLoop, @until_modifier {
  * end
  * ```
  */
-class ForExpr extends Loop, @for {
-  final override ForExpr::Range range;
+class ForExpr extends Loop, TForExpr {
+  private Generated::For g;
+
+  ForExpr() { this = TForExpr(g) }
 
   final override string getAPrimaryQlClass() { result = "ForExpr" }
 
   /** Gets the body of this `for` loop. */
-  final override Stmt getBody() { result = range.getBody() }
+  final override Stmt getBody() { toGenerated(result) = g.getBody() }
 
   /** Gets the pattern representing the iteration argument. */
-  final Pattern getPattern() { result = range.getPattern() }
+  final Pattern getPattern() { toGenerated(result) = g.getPattern() }
 
   /**
    * Gets the value being iterated over. In the following example, the result
@@ -393,5 +560,15 @@ class ForExpr extends Loop, @for {
    * end
    * ```
    */
-  final Expr getValue() { result = range.getValue() }
+  final Expr getValue() { toGenerated(result) = g.getValue().getChild() }
+
+  final override string toString() { result = "for ... in ..." }
+
+  override AstNode getAChild(string pred) {
+    result = Loop.super.getAChild(pred)
+    or
+    pred = "getPattern" and result = this.getPattern()
+    or
+    pred = "getValue" and result = this.getValue()
+  }
 }

@@ -13,12 +13,14 @@ calls/calls.rb:
 #   17|   getStmt: [MethodCall] call to foo
 #   17|     getBlock: [BraceBlock] { ... }
 #   17|       getParameter: [SimpleParameter] x
+#   17|         getDefiningAccess: [LocalVariableAccess] x
 #   17|       getStmt: [AddExpr] ... + ...
 #   17|         getAnOperand/getLeftOperand: [LocalVariableAccess] x
 #   17|         getAnOperand/getRightOperand: [IntegerLiteral] 1
 #   20|   getStmt: [MethodCall] call to foo
 #   20|     getBlock: [DoBlock] do ... end
 #   20|       getParameter: [SimpleParameter] x
+#   20|         getDefiningAccess: [LocalVariableAccess] x
 #   21|       getStmt: [AddExpr] ... + ...
 #   21|         getAnOperand/getLeftOperand: [LocalVariableAccess] x
 #   21|         getAnOperand/getRightOperand: [IntegerLiteral] 1
@@ -28,6 +30,7 @@ calls/calls.rb:
 #   25|       getComponent: [StringTextComponent] foo
 #   25|     getBlock: [DoBlock] do ... end
 #   25|       getParameter: [SimpleParameter] x
+#   25|         getDefiningAccess: [LocalVariableAccess] x
 #   26|       getStmt: [AddExpr] ... + ...
 #   26|         getAnOperand/getLeftOperand: [LocalVariableAccess] x
 #   26|         getAnOperand/getRightOperand: [IntegerLiteral] 1
@@ -153,16 +156,20 @@ calls/calls.rb:
 #  144|       getReceiver: [ConstantReadAccess] X
 #  148|   getStmt: [Method] method_with_keyword_param
 #  148|     getParameter: [KeywordParameter] keyword
+#  148|       getDefiningAccess: [LocalVariableAccess] keyword
 #  148|       getDefaultValue: [MethodCall] call to foo
 #  150|   getStmt: [Method] method_with_keyword_param2
 #  150|     getParameter: [KeywordParameter] keyword
+#  150|       getDefiningAccess: [LocalVariableAccess] keyword
 #  150|       getDefaultValue: [MethodCall] call to foo
 #  150|         getReceiver: [ConstantReadAccess] X
 #  154|   getStmt: [Method] method_with_optional_param
 #  154|     getParameter: [OptionalParameter] param
+#  154|       getDefiningAccess: [LocalVariableAccess] param
 #  154|       getDefaultValue: [MethodCall] call to foo
 #  156|   getStmt: [Method] method_with_optional_param2
 #  156|     getParameter: [OptionalParameter] param
+#  156|       getDefiningAccess: [LocalVariableAccess] param
 #  156|       getDefaultValue: [MethodCall] call to foo
 #  156|         getReceiver: [ConstantReadAccess] X
 #  160|   getStmt: [Module] SomeModule
@@ -383,12 +390,14 @@ calls/calls.rb:
 #  290|       getStmt: [SuperCall] call to super
 #  290|         getBlock: [BraceBlock] { ... }
 #  290|           getParameter: [SimpleParameter] x
+#  290|             getDefiningAccess: [LocalVariableAccess] x
 #  290|           getStmt: [AddExpr] ... + ...
 #  290|             getAnOperand/getLeftOperand: [LocalVariableAccess] x
 #  290|             getAnOperand/getRightOperand: [IntegerLiteral] 1
 #  291|       getStmt: [SuperCall] call to super
 #  291|         getBlock: [DoBlock] do ... end
 #  291|           getParameter: [SimpleParameter] x
+#  291|             getDefiningAccess: [LocalVariableAccess] x
 #  291|           getStmt: [MulExpr] ... * ...
 #  291|             getAnOperand/getLeftOperand: [LocalVariableAccess] x
 #  291|             getAnOperand/getRightOperand: [IntegerLiteral] 2
@@ -397,6 +406,7 @@ calls/calls.rb:
 #  292|         getArgument: [IntegerLiteral] 5
 #  292|         getBlock: [BraceBlock] { ... }
 #  292|           getParameter: [SimpleParameter] x
+#  292|             getDefiningAccess: [LocalVariableAccess] x
 #  292|           getStmt: [AddExpr] ... + ...
 #  292|             getAnOperand/getLeftOperand: [LocalVariableAccess] x
 #  292|             getAnOperand/getRightOperand: [IntegerLiteral] 100
@@ -405,6 +415,7 @@ calls/calls.rb:
 #  293|         getArgument: [IntegerLiteral] 7
 #  293|         getBlock: [DoBlock] do ... end
 #  293|           getParameter: [SimpleParameter] x
+#  293|             getDefiningAccess: [LocalVariableAccess] x
 #  293|           getStmt: [AddExpr] ... + ...
 #  293|             getAnOperand/getLeftOperand: [LocalVariableAccess] x
 #  293|             getAnOperand/getRightOperand: [IntegerLiteral] 200
@@ -689,6 +700,7 @@ constants/constants.rb:
 #   19|       getReceiver: [ConstantReadAccess] Names
 #   19|       getBlock: [DoBlock] do ... end
 #   19|         getParameter: [SimpleParameter] name
+#   19|           getDefiningAccess: [LocalVariableAccess] name
 #   20|         getStmt: [MethodCall] call to puts
 #   20|           getArgument: [StringLiteral] "#{...} #{...}"
 #   20|             getComponent: [StringInterpolationComponent] #{...}
@@ -1528,8 +1540,11 @@ params/params.rb:
 #    1| [Toplevel] params.rb
 #    4|   getStmt: [Method] identifier_method_params
 #    4|     getParameter: [SimpleParameter] foo
+#    4|       getDefiningAccess: [LocalVariableAccess] foo
 #    4|     getParameter: [SimpleParameter] bar
+#    4|       getDefiningAccess: [LocalVariableAccess] bar
 #    4|     getParameter: [SimpleParameter] baz
+#    4|       getDefiningAccess: [LocalVariableAccess] baz
 #    8|   getStmt: [AssignExpr] ... = ...
 #    8|     getAnOperand/getLeftOperand: [LocalVariableAccess] hash
 #    8|     getAnOperand/getRightOperand: [HashLiteral] {...}
@@ -1537,7 +1552,9 @@ params/params.rb:
 #    9|     getReceiver: [LocalVariableAccess] hash
 #    9|     getBlock: [DoBlock] do ... end
 #    9|       getParameter: [SimpleParameter] key
+#    9|         getDefiningAccess: [LocalVariableAccess] key
 #    9|       getParameter: [SimpleParameter] value
+#    9|         getDefiningAccess: [LocalVariableAccess] value
 #   10|       getStmt: [MethodCall] call to puts
 #   10|         getArgument: [StringLiteral] "#{...} -> #{...}"
 #   10|           getComponent: [StringInterpolationComponent] #{...}
@@ -1549,7 +1566,9 @@ params/params.rb:
 #   14|     getAnOperand/getLeftOperand: [LocalVariableAccess] sum
 #   14|     getAnOperand/getRightOperand: [Lambda] -> { ... }
 #   14|       getParameter: [SimpleParameter] foo
+#   14|         getDefiningAccess: [LocalVariableAccess] foo
 #   14|       getParameter: [SimpleParameter] bar
+#   14|         getDefiningAccess: [LocalVariableAccess] bar
 #   14|       getStmt: [AddExpr] ... + ...
 #   14|         getAnOperand/getLeftOperand: [LocalVariableAccess] foo
 #   14|         getAnOperand/getRightOperand: [LocalVariableAccess] bar
@@ -1589,24 +1608,36 @@ params/params.rb:
 #   26|         getAnOperand/getRightOperand: [LocalVariableAccess] fourth
 #   30|   getStmt: [Method] method_with_splat
 #   30|     getParameter: [SimpleParameter] wibble
+#   30|       getDefiningAccess: [LocalVariableAccess] wibble
 #   30|     getParameter: [SplatParameter] *splat
+#   30|       getDefiningAccess: [LocalVariableAccess] splat
 #   30|     getParameter: [HashSplatParameter] **double_splat
+#   30|       getDefiningAccess: [LocalVariableAccess] double_splat
 #   34|   getStmt: [MethodCall] call to each
 #   34|     getReceiver: [LocalVariableAccess] array
 #   34|     getBlock: [DoBlock] do ... end
 #   34|       getParameter: [SimpleParameter] val
+#   34|         getDefiningAccess: [LocalVariableAccess] val
 #   34|       getParameter: [SplatParameter] *splat
+#   34|         getDefiningAccess: [LocalVariableAccess] splat
 #   34|       getParameter: [HashSplatParameter] **double_splat
+#   34|         getDefiningAccess: [LocalVariableAccess] double_splat
 #   38|   getStmt: [AssignExpr] ... = ...
 #   38|     getAnOperand/getLeftOperand: [LocalVariableAccess] lambda_with_splats
 #   38|     getAnOperand/getRightOperand: [Lambda] -> { ... }
 #   38|       getParameter: [SimpleParameter] x
+#   38|         getDefiningAccess: [LocalVariableAccess] x
 #   38|       getParameter: [SplatParameter] *blah
+#   38|         getDefiningAccess: [LocalVariableAccess] blah
 #   38|       getParameter: [HashSplatParameter] **wibble
+#   38|         getDefiningAccess: [LocalVariableAccess] wibble
 #   41|   getStmt: [Method] method_with_keyword_params
 #   41|     getParameter: [SimpleParameter] x
+#   41|       getDefiningAccess: [LocalVariableAccess] x
 #   41|     getParameter: [KeywordParameter] foo
+#   41|       getDefiningAccess: [LocalVariableAccess] foo
 #   41|     getParameter: [KeywordParameter] bar
+#   41|       getDefiningAccess: [LocalVariableAccess] bar
 #   41|       getDefaultValue: [IntegerLiteral] 7
 #   42|     getStmt: [AddExpr] ... + ...
 #   42|       getAnOperand/getLeftOperand: [AddExpr] ... + ...
@@ -1615,6 +1646,7 @@ params/params.rb:
 #   42|       getAnOperand/getRightOperand: [LocalVariableAccess] bar
 #   46|   getStmt: [Method] use_block_with_keyword
 #   46|     getParameter: [BlockParameter] &block
+#   46|       getDefiningAccess: [LocalVariableAccess] block
 #   47|     getStmt: [MethodCall] call to puts
 #   47|       getArgument: [MethodCall] call to call
 #   47|         getReceiver: [LocalVariableAccess] block
@@ -1627,7 +1659,9 @@ params/params.rb:
 #   49|   getStmt: [MethodCall] call to use_block_with_keyword
 #   49|     getBlock: [DoBlock] do ... end
 #   49|       getParameter: [KeywordParameter] xx
+#   49|         getDefiningAccess: [LocalVariableAccess] xx
 #   49|       getParameter: [KeywordParameter] yy
+#   49|         getDefiningAccess: [LocalVariableAccess] yy
 #   49|         getDefaultValue: [IntegerLiteral] 100
 #   50|       getStmt: [AddExpr] ... + ...
 #   50|         getAnOperand/getLeftOperand: [LocalVariableAccess] xx
@@ -1636,8 +1670,11 @@ params/params.rb:
 #   53|     getAnOperand/getLeftOperand: [LocalVariableAccess] lambda_with_keyword_params
 #   53|     getAnOperand/getRightOperand: [Lambda] -> { ... }
 #   53|       getParameter: [SimpleParameter] x
+#   53|         getDefiningAccess: [LocalVariableAccess] x
 #   53|       getParameter: [KeywordParameter] y
+#   53|         getDefiningAccess: [LocalVariableAccess] y
 #   53|       getParameter: [KeywordParameter] z
+#   53|         getDefiningAccess: [LocalVariableAccess] z
 #   53|         getDefaultValue: [IntegerLiteral] 3
 #   54|       getStmt: [AddExpr] ... + ...
 #   54|         getAnOperand/getLeftOperand: [AddExpr] ... + ...
@@ -1646,12 +1683,16 @@ params/params.rb:
 #   54|         getAnOperand/getRightOperand: [LocalVariableAccess] z
 #   58|   getStmt: [Method] method_with_optional_params
 #   58|     getParameter: [SimpleParameter] val1
+#   58|       getDefiningAccess: [LocalVariableAccess] val1
 #   58|     getParameter: [OptionalParameter] val2
+#   58|       getDefiningAccess: [LocalVariableAccess] val2
 #   58|       getDefaultValue: [IntegerLiteral] 0
 #   58|     getParameter: [OptionalParameter] val3
+#   58|       getDefiningAccess: [LocalVariableAccess] val3
 #   58|       getDefaultValue: [IntegerLiteral] 100
 #   62|   getStmt: [Method] use_block_with_optional
 #   62|     getParameter: [BlockParameter] &block
+#   62|       getDefiningAccess: [LocalVariableAccess] block
 #   63|     getStmt: [MethodCall] call to call
 #   63|       getReceiver: [LocalVariableAccess] block
 #   63|       getArgument: [StringLiteral] "Zeus"
@@ -1659,7 +1700,9 @@ params/params.rb:
 #   65|   getStmt: [MethodCall] call to use_block_with_optional
 #   65|     getBlock: [DoBlock] do ... end
 #   65|       getParameter: [SimpleParameter] name
+#   65|         getDefiningAccess: [LocalVariableAccess] name
 #   65|       getParameter: [OptionalParameter] age
+#   65|         getDefiningAccess: [LocalVariableAccess] age
 #   65|         getDefaultValue: [IntegerLiteral] 99
 #   66|       getStmt: [MethodCall] call to puts
 #   66|         getArgument: [StringLiteral] "#{...} is #{...} years old"
@@ -1673,9 +1716,12 @@ params/params.rb:
 #   70|     getAnOperand/getLeftOperand: [LocalVariableAccess] lambda_with_optional_params
 #   70|     getAnOperand/getRightOperand: [Lambda] -> { ... }
 #   70|       getParameter: [SimpleParameter] a
+#   70|         getDefiningAccess: [LocalVariableAccess] a
 #   70|       getParameter: [OptionalParameter] b
+#   70|         getDefiningAccess: [LocalVariableAccess] b
 #   70|         getDefaultValue: [IntegerLiteral] 1000
 #   70|       getParameter: [OptionalParameter] c
+#   70|         getDefiningAccess: [LocalVariableAccess] c
 #   70|         getDefaultValue: [IntegerLiteral] 20
 #   70|       getStmt: [AddExpr] ... + ...
 #   70|         getAnOperand/getLeftOperand: [AddExpr] ... + ...

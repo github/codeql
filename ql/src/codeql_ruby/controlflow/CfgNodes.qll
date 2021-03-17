@@ -1,6 +1,7 @@
 /** Provides classes representing nodes in a control flow graph. */
 
 private import codeql_ruby.AST
+private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.controlflow.BasicBlocks
 private import ControlFlowGraph
 private import internal.ControlFlowGraphImpl
@@ -62,11 +63,11 @@ class ExitNode extends CfgNode, TExitNode {
  * (dead) code or not important for control flow, and multiple when there are different
  * splits for the AST node.
  */
-class AstCfgNode extends CfgNode, TAstNode {
+class AstCfgNode extends CfgNode, TAstCfgNode {
   private Splits splits;
   private AstNode n;
 
-  AstCfgNode() { this = TAstNode(n, splits) }
+  AstCfgNode() { this = TAstCfgNode(toGenerated(n), splits) }
 
   final override AstNode getNode() { result = n }
 
@@ -131,7 +132,7 @@ abstract private class ExprChildMapping extends Expr {
 
   pragma[noinline]
   private BasicBlock getABasicBlockInScope() {
-    result.getANode() = TAstNode(this.getAChildStar(), _)
+    result.getANode() = TAstCfgNode(toGenerated(this.getAChildStar()), _)
   }
 
   pragma[nomagic]

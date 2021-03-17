@@ -1,17 +1,21 @@
 private import codeql_ruby.AST
+private import internal.AST
 private import internal.Scope
+private import internal.TreeSitter
 
-class Scope extends AstNode, Scope::ScopeType {
-  override Scope::Range range;
+class Scope extends AstNode, TScopeType {
+  private Scope::Range range;
 
-  AstNode getADescendant() { result = range.getADescendant() }
+  Scope() { range = toGenerated(this) }
 
-  ModuleBase getEnclosingModule() { result = range.getEnclosingModule() }
+  /** Gets the enclosing module, if any. */
+  ModuleBase getEnclosingModule() { toGenerated(result) = range.getEnclosingModule() }
 
-  MethodBase getEnclosingMethod() { result = range.getEnclosingMethod() }
+  /** Gets the enclosing method, if any. */
+  MethodBase getEnclosingMethod() { toGenerated(result) = range.getEnclosingMethod() }
 
   /** Gets the scope in which this scope is nested, if any. */
-  Scope getOuterScope() { result = range.getOuterScope() }
+  Scope getOuterScope() { toGenerated(result) = range.getOuterScope() }
 
   /** Gets a variable that is declared in this scope. */
   final Variable getAVariable() { result.getDeclaringScope() = this }

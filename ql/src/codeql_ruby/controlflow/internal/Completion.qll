@@ -5,6 +5,7 @@
  */
 
 private import codeql_ruby.AST
+private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.controlflow.ControlFlowGraph
 private import ControlFlowGraphImpl
 private import NonReturning
@@ -53,7 +54,7 @@ private predicate nestedEnsureCompletion(Completion outer, int nestLevel) {
 
 pragma[noinline]
 private predicate completionIsValidForStmt(AstNode n, Completion c) {
-  n instanceof InRange and
+  n = TForIn(_) and
   c instanceof EmptinessCompletion
   or
   n instanceof BreakStmt and
@@ -205,7 +206,7 @@ private predicate inMatchingContext(AstNode n) {
     w.getPattern(_) = n
   )
   or
-  n = any(Trees::DefaultValueParameterTree t | t.hasDefaultValue())
+  toGenerated(n).(Trees::DefaultValueParameterTree).hasDefaultValue()
 }
 
 /**
