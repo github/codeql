@@ -226,9 +226,11 @@ module Revel {
   /**
    * A write to a template argument field that is read raw inside of a template.
    */
-  private class RawTemplateArgument extends HTTP::ResponseBody::Range {
+  private class RawTemplateArgument extends HTTP::TemplateResponseBody::Range {
+    RawTemplateRead read;
+
     RawTemplateArgument() {
-      exists(TemplateRender render, RawTemplateRead read, VariableWithFields var |
+      exists(TemplateRender render, VariableWithFields var |
         render.getRenderedFile() = read.getFile() and
         // if var is a.b.c, any rhs of a write to a, a.b, or a.b.cb
         this = var.getParent*().getAWrite().getRhs()
@@ -260,6 +262,8 @@ module Revel {
     override string getAContentType() { result = "text/html" }
 
     override HTTP::ResponseWriter getResponseWriter() { none() }
+
+    override HtmlTemplate::TemplateRead getRead() { result = read }
   }
 
   /**
