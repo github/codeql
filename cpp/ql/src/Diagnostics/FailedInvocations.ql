@@ -1,8 +1,8 @@
 /**
- * @name Aborted extractor invocations
+ * @name Failed extractor invocations
  * @description Gives the command line of compilations for which extraction did not run to completion.
  * @kind diagnostic
- * @id cpp/diagnostics/aborted-extractions
+ * @id cpp/diagnostics/failed-extractor-invocations
  */
 
 import cpp

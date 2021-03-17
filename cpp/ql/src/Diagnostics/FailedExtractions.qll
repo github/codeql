@@ -84,10 +84,7 @@ class ExtractionUnrecoverableError extends ExtractionError, TCompilationFailed {
     result = "Unrecoverable extraction error while compiling " + f.toString()
   }
 
-  override string getErrorMessage() {
-    result =
-      "Unrecoverable compilation failure; check logs/build-tracer.log in the database directory for more information."
-  }
+  override string getErrorMessage() { result = "unrecoverable compilation failure." }
 
   override File getFile() { result = f }
 
