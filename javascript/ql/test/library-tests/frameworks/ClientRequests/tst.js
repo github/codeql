@@ -281,3 +281,13 @@ httpProxy.createProxyServer({
     },
     changeOrigin: true
 }).listen(8000);
+
+function webSocket() {
+    const socket = new WebSocket('ws://localhost:8080');
+    socket.addEventListener('open', function (event) {
+        socket.send('Hello Server!');
+    });
+    socket.addEventListener('message', function (event) {
+        console.log("Data from server: " + event.data);
+    });
+}
