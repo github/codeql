@@ -625,7 +625,14 @@ namespace Semmle.Extraction.CSharp
             {
                 try
                 {
-                    return symbol.Accept(new Populators.Symbols(cx));
+                    var entity = symbol.Accept(new Populators.Symbols(cx));
+                    if (entity is null)
+                    {
+                        cx.ModelError(symbol, $"Symbol visitor returned null entity on symbol: {symbol}");
+                    }
+#nullable disable warnings
+                    return entity;
+#nullable restore warnings
                 }
                 catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
