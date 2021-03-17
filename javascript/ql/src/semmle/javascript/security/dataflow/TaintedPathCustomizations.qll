@@ -557,7 +557,12 @@ module TaintedPath {
    * tainted-path vulnerabilities.
    */
   class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
+    RemoteFlowSourceAsSource() {
+      exists(RemoteFlowSource src |
+        this = src and
+        not src instanceof ClientSideRemoteFlowSource
+      )
+    }
   }
 
   /**

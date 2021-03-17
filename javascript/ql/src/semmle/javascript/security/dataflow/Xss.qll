@@ -383,25 +383,7 @@ module DomBasedXss {
    */
   class SafePropertyReadSanitizer extends Sanitizer, DataFlow::Node {
     SafePropertyReadSanitizer() {
-      exists(PropAccess pacc | pacc = this.asExpr() |
-        isSafeLocationProperty(pacc)
-        or
-        pacc.getPropertyName() = "length"
-      )
-    }
-  }
-
-  /**
-   * A sanitizer that reads the first part a location split by "?", e.g. `location.href.split('?')[0]`.
-   */
-  class QueryPrefixSanitizer extends Sanitizer {
-    StringSplitCall splitCall;
-
-    QueryPrefixSanitizer() {
-      this = splitCall.getASubstringRead(0) and
-      splitCall.getSeparator() = "?" and
-      splitCall.getBaseString().getALocalSource() =
-        [DOM::locationRef(), DOM::locationRef().getAPropertyRead("href")]
+      exists(PropAccess pacc | pacc = this.asExpr() | pacc.getPropertyName() = "length")
     }
   }
 

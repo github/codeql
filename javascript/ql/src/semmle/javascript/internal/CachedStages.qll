@@ -162,6 +162,8 @@ module Stages {
       exists(any(Import i).getImportedModule())
       or
       exists(DataFlow::moduleImport(_))
+      or
+      exists(any(ReExportDeclaration d).getReExportedModule())
     }
   }
 

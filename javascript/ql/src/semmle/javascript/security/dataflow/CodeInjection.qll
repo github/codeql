@@ -24,7 +24,6 @@ module CodeInjection {
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
-      isSafeLocationProperty(node.asExpr()) or
       node instanceof Sanitizer
     }
 

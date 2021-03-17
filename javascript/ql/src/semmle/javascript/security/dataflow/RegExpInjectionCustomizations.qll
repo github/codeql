@@ -27,7 +27,10 @@ module RegExpInjection {
    * expression injection.
    */
   class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
+    RemoteFlowSourceAsSource() {
+      this instanceof RemoteFlowSource and
+      not this instanceof ClientSideRemoteFlowSource
+    }
   }
 
   /**

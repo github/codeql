@@ -53,7 +53,7 @@ module DomBasedXss {
     override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
       // Reuse any source not derived from location
       source instanceof Source and
-      not source = DOM::locationRef() and
+      not source = [DOM::locationRef(), DOM::locationRef().getAPropertyRead()] and
       label.isTaint()
       or
       source = DOM::locationSource() and
