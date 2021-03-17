@@ -194,9 +194,9 @@ module EventDispatch {
 }
 
 /**
- * A taint-step that models data-flow between event handlers and event dispatchers.
+ * A flow-step that models data-flow between event handlers and event dispatchers.
  */
-private class EventEmitterTaintStep extends DataFlow::SharedFlowStep {
+private class EventEmitterFlowStep extends DataFlow::SharedFlowStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(EventRegistration reg, EventDispatch dispatch |
       reg = dispatch.getAReceiver() and
