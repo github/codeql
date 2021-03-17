@@ -886,13 +886,12 @@ abstract class AdditionalSink extends DataFlow::Node {
  * Additional flow step to model flow from import specifiers into the SSA variable
  * corresponding to the imported variable.
  */
-private class FlowStepThroughImport extends AdditionalFlowStep, DataFlow::ValueNode {
-  override ImportSpecifier astNode;
-
+private class FlowStepThroughImport extends SharedFlowStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    Stages::FlowSteps::ref() and
-    pred = this and
-    succ = DataFlow::ssaDefinitionNode(SSA::definition(astNode))
+    exists(ImportSpecifier specifier |
+      pred = DataFlow::valueNode(specifier) and
+      succ = DataFlow::ssaDefinitionNode(SSA::definition(specifier))
+    )
   }
 }
 
