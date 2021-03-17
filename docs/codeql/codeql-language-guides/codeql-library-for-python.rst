@@ -23,10 +23,7 @@ The CodeQL library for Python incorporates a large number of classes. Each class
 -  **Data flow** - classes that represent entities from the data flow graphs.
 -  **API graphs** - classes that represent entities from the API graphs.
 
-The first two categories are described below. See ":doc:`Analyzing data flow in Python <analyzing-data-flow-in-python>`" for a description of data flow and associated classes.
-
-..
-   and [TO COME IN FUTURE PR] for a description of API graphs and their use.
+The first two categories are described below. See ":doc:`Analyzing data flow in Python <analyzing-data-flow-in-python>`" for a description of data flow and associated classes and ":doc:`Using API graphs in Python <using-api-graphs-in-python>`" for a description of API graphs and their use.
 
 Syntactic classes
 -----------------

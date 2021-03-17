@@ -21,6 +21,8 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  :doc:`Analyzing data flow in Python <analyzing-data-flow-in-python>`: You can use CodeQL to track the flow of data through a Python program to places where the data is used.
 
+-  :doc:`Using API graphs in Python <using-api-graphs-in-python>`: API graphs are a uniform interface for referring to functions, classes, and methods defined in external libraries.
+
 -  :doc:`Functions in Python <functions-in-python>`: You can use syntactic classes from the standard CodeQL library to find Python functions and identify calls to them.
 
 -  :doc:`Expressions and statements in Python <expressions-and-statements-in-python>`: You can use syntactic classes from the CodeQL library to explore how Python expressions and statements are used in a codebase.
