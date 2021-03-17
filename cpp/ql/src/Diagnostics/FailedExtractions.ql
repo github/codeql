@@ -1,6 +1,6 @@
 /**
  * @name Failed extractions
- * @description Gives the command-line of compilations for which extraction did not run to completion.
+ * @description List all files in the source code directory with extraction errors.
  * @kind diagnostic
  * @id cpp/diagnostics/failed-extractions
  */
@@ -12,5 +12,5 @@ from ExtractionError error
 where
   error instanceof ExtractionUnknownError or
   exists(error.getFile().getRelativePath())
-select error, "Extracting file $@ failed with $@ (at $@)", error.getFile(), error.getErrorMessage(),
-  error.getLocation(), error.getSeverity()
+select error, "Extracting failed in " + error.getFile() + " with error " + error.getErrorMessage(),
+  error.getSeverity()

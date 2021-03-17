@@ -1,7 +1,24 @@
 import cpp
 
+/*
+ * A note about how the C/C++ extractor emits diagnostics:
+ * When the extractor frontend encounters an error, it emits a diagnostic message,
+ * that includes a message, location and severity.
+ * However, that process is best-effort and may fail (e.g. due to lack of memory).
+ * Thus, if the extractor emitted at least one diagnostic of severity discretionary
+ * error (or higher), it *also* emits a simple "There was an error during this compilation"
+ * error diagnostic, without location information.
+ * In the common case, this means that a file with one (or more) errors also gets
+ * the catch-all diagnostic.
+ * This diagnostic has the empty string as file path.
+ * We filter out these useless diagnostics if there is at least one error-level diagnostic
+ * for the affected compilation in the database.
+ * Otherwise, we show it to, to indicate that something went wrong, and we
+ * don't know what exactly happened.
+ */
+
 /**
- * The class of errors upon we mark a file as non-successfully extracted.
+ * An error that, if present, leads to a file being marked as non-successfully extracted.
  */
 class ReportableError extends Diagnostic {
   ReportableError() {
@@ -10,13 +27,7 @@ class ReportableError extends Diagnostic {
       this instanceof CompilerError or
       this instanceof CompilerCatastrophe
     ) and
-    // If the extractor encounters an error in a compilation, it always emits a
-    // catch-all diagnostic "There was an error during this compilation", to ensure
-    // that the error makes it to the database.
-    // This error doesn't have a file path attached to it, and is thus
-    // useless for us to report. Furthermore, in the common case, we will have a
-    // proper diagnostic for this error we can show.
-    // Instead, we synthesize `TUnknownError` if this is the only error that we can show to the user.
+    // Filter for the catch-all diagnostic, see note above.
     not this.getFile().getAbsolutePath() = ""
   }
 }
@@ -26,8 +37,11 @@ private newtype TExtractionError =
   TCompilationFailed(Compilation c, File f) {
     f = c.getAFileCompiled() and not c.normalTermination()
   } or
-  // Report generic extractor errors only if we haven't seen any other error-level diagnostic
-  TUnknownError(CompilerError err) { not exists(ReportableError e) }
+  // Show the catch-all diagnostic (see note above) only if we haven't seen any other error-level diagnostic
+  // for that compilation
+  TUnknownError(CompilerError err) {
+    not exists(ReportableError e | e.getCompilation() = err.getCompilation())
+  }
 
 /**
  * Superclass for the extraction error hierarchy.
@@ -53,26 +67,26 @@ class ExtractionError extends TExtractionError {
 }
 
 /**
- * An irrecoverable extraction failure, where extraction was unable to finish.
+ * An unrecoverable extraction error, where extraction was unable to finish.
  * This can be caused by a multitude of reasons, for example:
  *  - hitting a frontend assertion
  *  - crashing due to dereferencing an invalid pointer
  *  - stack overflow
  *  - out of memory
  */
-class ExtractionIrrecoverableError extends ExtractionError, TCompilationFailed {
+class ExtractionUnrecoverableError extends ExtractionError, TCompilationFailed {
   Compilation c;
   File f;
 
-  ExtractionIrrecoverableError() { this = TCompilationFailed(c, f) }
+  ExtractionUnrecoverableError() { this = TCompilationFailed(c, f) }
 
   override string toString() {
-    result = "Irrecoverable extraction error while compiling " + f.toString()
+    result = "Unrecoverable extraction error while compiling " + f.toString()
   }
 
   override string getErrorMessage() {
     result =
-      "Irrecoverable compilation failure, check logs/build-tracer.log in the database directory for more information."
+      "Unrecoverable compilation failure; check logs/build-tracer.log in the database directory for more information."
   }
 
   override File getFile() { result = f }

@@ -1,6 +1,6 @@
 /**
- * @name Successfully extracted files.
- * @description Lists all files in the database that were extracted without encountering an error.
+ * @name Successfully extracted files
+ * @description Lists all files in the source code directory that were extracted without encountering an error.
  * @kind diagnostic
  * @id cpp/diagnostics/successfully-extracted-files
  */
