@@ -11,6 +11,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    basic-query-for-python-code
    codeql-library-for-python
    analyzing-data-flow-in-python
+   using-api-graphs-in-python
    functions-in-python
    expressions-and-statements-in-python
    analyzing-control-flow-in-python
