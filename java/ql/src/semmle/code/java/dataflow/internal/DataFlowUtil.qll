@@ -9,38 +9,77 @@ private import semmle.code.java.dataflow.TypeFlow
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSteps
+private import semmle.code.java.dataflow.FlowSummary
 import semmle.code.java.dataflow.InstanceAccess
+private import FlowSummaryImpl as FlowSummaryImpl
 
-cached
-private newtype TNode =
-  TExprNode(Expr e) {
-    not e.getType() instanceof VoidType and
-    not e.getParent*() instanceof Annotation
-  } or
-  TExplicitParameterNode(Parameter p) { exists(p.getCallable().getBody()) } or
-  TImplicitVarargsArray(Call c) {
-    c.getCallee().isVarargs() and
-    not exists(Argument arg | arg.getCall() = c and arg.isExplicitVarargsArray())
-  } or
-  TInstanceParameterNode(Callable c) { exists(c.getBody()) and not c.isStatic() } or
-  TImplicitInstanceAccess(InstanceAccessExt ia) { not ia.isExplicit(_) } or
-  TMallocNode(ClassInstanceExpr cie) or
-  TExplicitExprPostUpdate(Expr e) {
-    explicitInstanceArgument(_, e)
-    or
-    e instanceof Argument and not e.getType() instanceof ImmutableType
-    or
-    exists(FieldAccess fa | fa.getField() instanceof InstanceField and e = fa.getQualifier())
-    or
-    exists(ArrayAccess aa | e = aa.getArray())
-  } or
-  TImplicitExprPostUpdate(InstanceAccessExt ia) {
-    implicitInstanceArgument(_, ia)
-    or
-    exists(FieldAccess fa |
-      fa.getField() instanceof InstanceField and ia.isImplicitFieldQualifier(fa)
-    )
+private module Cached {
+  cached
+  newtype TNode =
+    TExprNode(Expr e) {
+      not e.getType() instanceof VoidType and
+      not e.getParent*() instanceof Annotation
+    } or
+    TExplicitParameterNode(Parameter p) {
+      exists(p.getCallable().getBody()) or p.getCallable() instanceof SummarizedCallable
+    } or
+    TImplicitVarargsArray(Call c) {
+      c.getCallee().isVarargs() and
+      not exists(Argument arg | arg.getCall() = c and arg.isExplicitVarargsArray())
+    } or
+    TInstanceParameterNode(Callable c) {
+      (exists(c.getBody()) or c instanceof SummarizedCallable) and
+      not c.isStatic()
+    } or
+    TImplicitInstanceAccess(InstanceAccessExt ia) { not ia.isExplicit(_) } or
+    TMallocNode(ClassInstanceExpr cie) or
+    TExplicitExprPostUpdate(Expr e) {
+      explicitInstanceArgument(_, e)
+      or
+      e instanceof Argument and not e.getType() instanceof ImmutableType
+      or
+      exists(FieldAccess fa | fa.getField() instanceof InstanceField and e = fa.getQualifier())
+      or
+      exists(ArrayAccess aa | e = aa.getArray())
+    } or
+    TImplicitExprPostUpdate(InstanceAccessExt ia) {
+      implicitInstanceArgument(_, ia)
+      or
+      exists(FieldAccess fa |
+        fa.getField() instanceof InstanceField and ia.isImplicitFieldQualifier(fa)
+      )
+    } or
+    TSummaryInternalNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
+      FlowSummaryImpl::Private::summaryNodeRange(c, state)
+    }
+
+  cached
+  predicate summaryOutNodeCached(DataFlowCall c, Node out) {
+    FlowSummaryImpl::Private::summaryOutNode(c, out, _)
   }
+
+  cached
+  predicate summaryArgumentNodeCached(DataFlowCall c, Node arg, int i) {
+    FlowSummaryImpl::Private::summaryArgumentNode(c, arg, i)
+  }
+
+  cached
+  predicate summaryPostUpdateNodeCached(Node post, ParameterNode pre) {
+    FlowSummaryImpl::Private::summaryPostUpdateNode(post, pre)
+  }
+
+  cached
+  predicate summaryReturnNodeCached(Node ret) {
+    FlowSummaryImpl::Private::summaryReturnNode(ret, _)
+  }
+}
+
+private import Cached
+
+/** INTERNAL */
+Node getSummaryNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
+  result = TSummaryInternalNode(c, state)
+}
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression,
@@ -87,7 +126,8 @@ class Node extends TNode {
     result = this.(InstanceParameterNode).getCallable() or
     result = this.(ImplicitInstanceAccess).getInstanceAccess().getEnclosingCallable() or
     result = this.(MallocNode).getClassInstanceExpr().getEnclosingCallable() or
-    result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getEnclosingCallableImpl()
+    result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getEnclosingCallableImpl() or
+    this = TSummaryInternalNode(result, _)
   }
 
   /** Gets the callable in which this node occurs. */
@@ -367,7 +407,13 @@ predicate hasNonlocalValue(FieldRead fr) {
 /**
  * Holds if data can flow from `node1` to `node2` in one local step.
  */
-predicate localFlowStep(Node node1, Node node2) { simpleLocalFlowStep(node1, node2) }
+predicate localFlowStep(Node node1, Node node2) {
+  simpleLocalFlowStep(node1, node2)
+  or
+  // Simple flow through library code is included in the exposed local
+  // step relation, even though flow is technically inter-procedural
+  FlowSummaryImpl::Private::Steps::summaryThroughStep(node1, node2, true)
+}
 
 /**
  * INTERNAL: do not use.
@@ -415,6 +461,8 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
     node2.asExpr() = ma and
     node1.(ArgumentNode).argumentOf(ma, argNo)
   )
+  or
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(node1, node2, true)
 }
 
 /**
@@ -466,4 +514,37 @@ class BarrierGuard extends Guard {
       result.asExpr() = use
     )
   }
+}
+
+/**
+ * INTERNAL.
+ *
+ * A data-flow node used to model flow summaries.
+ */
+class SummaryNode extends Node, TSummaryInternalNode {
+  private SummarizedCallable c;
+  private FlowSummaryImpl::Private::SummaryNodeState state;
+
+  SummaryNode() { this = TSummaryInternalNode(c, state) }
+
+  override Location getLocation() { result = c.getLocation() }
+
+  override string toString() { result = "[summary] " + state + " in " + c }
+
+  /** Holds if this summary node is the `i`th argument of `call`. */
+  predicate isArgumentOf(DataFlowCall call, int i) { summaryArgumentNodeCached(call, this, i) }
+
+  /** Holds if this summary node is a return node. */
+  predicate isReturn() { summaryReturnNodeCached(this) }
+
+  /** Holds if this summary node is an out node for `call`. */
+  predicate isOut(DataFlowCall call) { summaryOutNodeCached(call, this) }
+}
+
+private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNode {
+  private Node pre;
+
+  SummaryPostUpdateNode() { summaryPostUpdateNodeCached(this, pre) }
+
+  override Node getPreUpdateNode() { result = pre }
 }

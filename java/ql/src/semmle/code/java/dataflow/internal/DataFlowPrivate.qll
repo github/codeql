@@ -5,6 +5,7 @@ private import DataFlowDispatch
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.dataflow.TypeFlow
+private import FlowSummaryImpl as FlowSummaryImpl
 
 private newtype TReturnKind = TNormalReturnKind()
 
@@ -39,6 +40,8 @@ class ArgumentNode extends Node {
     this instanceof ImplicitVarargsArray
     or
     this = getInstanceArgument(_)
+    or
+    this.(SummaryNode).isArgumentOf(_, _)
   }
 
   /**
@@ -52,6 +55,8 @@ class ArgumentNode extends Node {
     pos = call.getCallee().getNumberOfParameters() - 1
     or
     pos = -1 and this = getInstanceArgument(call)
+    or
+    this.(SummaryNode).isArgumentOf(call, pos)
   }
 
   /** Gets the call in which this node is an argument. */
@@ -59,19 +64,30 @@ class ArgumentNode extends Node {
 }
 
 /** A data flow node that occurs as the result of a `ReturnStmt`. */
-class ReturnNode extends ExprNode {
-  ReturnNode() { exists(ReturnStmt ret | this.getExpr() = ret.getResult()) }
+class ReturnNode extends Node {
+  ReturnNode() {
+    exists(ReturnStmt ret | this.asExpr() = ret.getResult()) or
+    this.(SummaryNode).isReturn()
+  }
 
   /** Gets the kind of this returned value. */
   ReturnKind getKind() { any() }
 }
 
 /** A data flow node that represents the output of a call. */
-class OutNode extends ExprNode {
-  OutNode() { this.getExpr() instanceof MethodAccess }
+class OutNode extends Node {
+  OutNode() {
+    this.asExpr() instanceof MethodAccess
+    or
+    this.(SummaryNode).isOut(_)
+  }
 
   /** Gets the underlying call. */
-  DataFlowCall getCall() { result = this.getExpr() }
+  DataFlowCall getCall() {
+    result = this.asExpr()
+    or
+    this.(SummaryNode).isOut(result)
+  }
 }
 
 /**
@@ -147,7 +163,7 @@ class Content extends TContent {
   }
 }
 
-private class FieldContent extends Content, TFieldContent {
+class FieldContent extends Content, TFieldContent {
   InstanceField f;
 
   FieldContent() { this = TFieldContent(f) }
@@ -161,11 +177,11 @@ private class FieldContent extends Content, TFieldContent {
   }
 }
 
-private class CollectionContent extends Content, TCollectionContent {
+class CollectionContent extends Content, TCollectionContent {
   override string toString() { result = "collection" }
 }
 
-private class ArrayContent extends Content, TArrayContent {
+class ArrayContent extends Content, TArrayContent {
   override string toString() { result = "array" }
 }
 
@@ -180,6 +196,8 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
     node2.getPreUpdateNode() = getFieldQualifier(fa) and
     f.(FieldContent).getField() = fa.getField()
   )
+  or
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, f, node2)
 }
 
 /**
@@ -205,6 +223,8 @@ predicate readStep(Node node1, Content f, Node node2) {
     node1.asExpr() = get.getQualifier() and
     node2.asExpr() = get
   )
+  or
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1, f, node2)
 }
 
 /**
@@ -213,7 +233,14 @@ predicate readStep(Node node1, Content f, Node node2) {
  * in `x.f = newValue`.
  */
 predicate clearsContent(Node n, Content c) {
-  n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
+  c instanceof FieldContent and
+  (
+    n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
+    or
+    FlowSummaryImpl::Private::Steps::summaryStoresIntoArg(c, n)
+  )
+  or
+  FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
 }
 
 /**
@@ -221,7 +248,7 @@ predicate clearsContent(Node n, Content c) {
  * possible flow. A single type is used for all numeric types to account for
  * numeric conversions, and otherwise the erasure is used.
  */
-private DataFlowType getErasedRepr(Type t) {
+DataFlowType getErasedRepr(Type t) {
   exists(Type e | e = t.getErasure() |
     if e instanceof NumericOrCharType
     then result.(BoxedType).getPrimitiveType().getName() = "double"
@@ -235,7 +262,11 @@ private DataFlowType getErasedRepr(Type t) {
 }
 
 pragma[noinline]
-DataFlowType getNodeType(Node n) { result = getErasedRepr(n.getTypeBound()) }
+DataFlowType getNodeType(Node n) {
+  result = getErasedRepr(n.getTypeBound())
+  or
+  result = FlowSummaryImpl::Private::summaryNodeType(n)
+}
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
 string ppReprType(Type t) {
@@ -337,7 +368,7 @@ predicate isImmutableOrUnobservable(Node n) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { none() }
+predicate nodeIsHidden(Node n) { n instanceof SummaryNode }
 
 class LambdaCallKind = Unit;
 
