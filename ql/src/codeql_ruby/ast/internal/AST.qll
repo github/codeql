@@ -162,15 +162,16 @@ private module Cached {
     TRescueModifierExpr(Generated::RescueModifier g) or
     TRetryStmt(Generated::Retry g) or
     TReturnStmt(Generated::Return g) or
-    TScopeResolutionConstantReadAccess(Generated::ScopeResolution g, Generated::Constant constant) {
-      // A tree-sitter `scope_resolution` node with a `constant` name field is a
-      // read of that constant in any context where an identifier would be a
-      // vcall.
+    TScopeResolutionConstantAccess(Generated::ScopeResolution g, Generated::Constant constant) {
       constant = g.getName() and
-      vcall(g)
-    } or
-    TScopeResolutionConstantWriteAccess(Generated::ScopeResolution g, Generated::Constant constant) {
-      explicitAssignmentNode(g, _) and constant = g.getName()
+      (
+        // A tree-sitter `scope_resolution` node with a `constant` name field is a
+        // read of that constant in any context where an identifier would be a
+        // vcall.
+        vcall(g)
+        or
+        explicitAssignmentNode(g, _)
+      )
     } or
     TScopeResolutionMethodCall(Generated::ScopeResolution g, Generated::Identifier i) {
       i = g.getName() and
@@ -196,12 +197,13 @@ private module Cached {
     TSymbolArrayLiteral(Generated::SymbolArray g) or
     TTernaryIfExpr(Generated::Conditional g) or
     TThen(Generated::Then g) or
-    TTokenConstantReadAccess(Generated::Constant g) {
+    TTokenConstantAccess(Generated::Constant g) {
       // A tree-sitter `constant` token is a read of that constant in any context
       // where an identifier would be a vcall.
       vcall(g)
+      or
+      explicitAssignmentNode(g, _)
     } or
-    TTokenConstantWriteAccess(Generated::Constant g) { explicitAssignmentNode(g, _) } or
     TTokenMethodName(MethodName::Token g) { MethodName::range(g) } or
     TTokenSuperCall(Generated::Super g) { vcall(g) } or
     TToplevel(Generated::Program g) { g.getLocation().getFile().getExtension() != "erb" } or
@@ -323,8 +325,7 @@ private module Cached {
     n = TRescueModifierExpr(result) or
     n = TRetryStmt(result) or
     n = TReturnStmt(result) or
-    n = TScopeResolutionConstantReadAccess(result, _) or
-    n = TScopeResolutionConstantWriteAccess(result, _) or
+    n = TScopeResolutionConstantAccess(result, _) or
     n = TScopeResolutionMethodCall(result, _) or
     n = TSelf(result) or
     n = TSimpleParameter(result) or
@@ -344,8 +345,7 @@ private module Cached {
     n = TSymbolArrayLiteral(result) or
     n = TTernaryIfExpr(result) or
     n = TThen(result) or
-    n = TTokenConstantReadAccess(result) or
-    n = TTokenConstantWriteAccess(result) or
+    n = TTokenConstantAccess(result) or
     n = TTokenMethodName(result) or
     n = TTokenSuperCall(result) or
     n = TToplevel(result) or
@@ -377,13 +377,7 @@ class TMethodCall =
 
 class TSuperCall = TTokenSuperCall or TRegularSuperCall;
 
-class TConstantAccess = TConstantReadAccess or TConstantWriteAccess;
-
-class TConstantReadAccess = TTokenConstantReadAccess or TScopeResolutionConstantReadAccess;
-
-class TConstantWriteAccess = TConstantAssignment or TNamespace;
-
-class TConstantAssignment = TTokenConstantWriteAccess or TScopeResolutionConstantWriteAccess;
+class TConstantAccess = TTokenConstantAccess or TScopeResolutionConstantAccess or TNamespace;
 
 class TControlExpr = TConditionalExpr or TCaseExpr or TLoop;
 

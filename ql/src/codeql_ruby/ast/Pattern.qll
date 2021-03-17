@@ -16,7 +16,9 @@ class Pattern extends AstNode {
   Variable getAVariable() { none() }
 }
 
-private class LhsExpr_ = TVariableAccess or TConstantAssignment or TMethodCall or TSimpleParameter;
+private class LhsExpr_ =
+  TVariableAccess or TTokenConstantAccess or TScopeResolutionConstantAccess or TMethodCall or
+      TSimpleParameter;
 
 /**
  * A "left-hand-side" expression. An `LhsExpr` can occur on the left-hand side of

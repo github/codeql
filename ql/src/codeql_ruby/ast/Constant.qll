@@ -1,5 +1,6 @@
 private import codeql_ruby.AST
 private import internal.AST
+private import internal.Variable
 private import internal.TreeSitter
 
 /** An access to a constant. */
@@ -40,6 +41,27 @@ class ConstantAccess extends Expr, TConstantAccess {
   override AstNode getAChild(string pred) { pred = "getScopeExpr" and result = this.getScopeExpr() }
 }
 
+private class TokenConstantAccess extends ConstantAccess, TTokenConstantAccess {
+  private Generated::Constant g;
+
+  TokenConstantAccess() { this = TTokenConstantAccess(g) }
+
+  final override string getName() { result = g.getValue() }
+}
+
+private class ScopeResolutionConstantAccess extends ConstantAccess, TScopeResolutionConstantAccess {
+  private Generated::ScopeResolution g;
+  private Generated::Constant constant;
+
+  ScopeResolutionConstantAccess() { this = TScopeResolutionConstantAccess(g, constant) }
+
+  final override string getName() { result = constant.getValue() }
+
+  final override Expr getScopeExpr() { toGenerated(result) = g.getScope() }
+
+  final override predicate hasGlobalScope() { not exists(g.getScope()) }
+}
+
 /**
  * A use (read) of a constant.
  *
@@ -56,34 +78,15 @@ class ConstantAccess extends Expr, TConstantAccess {
  * end
  * ```
  */
-class ConstantReadAccess extends ConstantAccess, TConstantReadAccess {
-  override Expr getScopeExpr() { none() }
-
-  override predicate hasGlobalScope() { none() }
+class ConstantReadAccess extends ConstantAccess {
+  ConstantReadAccess() {
+    not this instanceof ConstantWriteAccess
+    or
+    // `X` in `X ||= 10` is considered both a read and a write
+    this = any(AssignOperation a).getLeftOperand()
+  }
 
   final override string getAPrimaryQlClass() { result = "ConstantReadAccess" }
-}
-
-private class TokenConstantReadAccess extends ConstantReadAccess, TTokenConstantReadAccess {
-  private Generated::Constant g;
-
-  TokenConstantReadAccess() { this = TTokenConstantReadAccess(g) }
-
-  final override string getName() { result = g.getValue() }
-}
-
-private class ScopeResolutionConstantReadAccess extends ConstantReadAccess,
-  TScopeResolutionConstantReadAccess {
-  private Generated::ScopeResolution g;
-  private Generated::Constant constant;
-
-  ScopeResolutionConstantReadAccess() { this = TScopeResolutionConstantReadAccess(g, constant) }
-
-  final override string getName() { result = constant.getValue() }
-
-  final override Expr getScopeExpr() { toGenerated(result) = g.getScope() }
-
-  final override predicate hasGlobalScope() { not exists(g.getScope()) }
 }
 
 /**
@@ -102,30 +105,12 @@ private class ScopeResolutionConstantReadAccess extends ConstantReadAccess,
  * module M::Baz; end  # defines constant Baz as a module in module M
  * ```
  */
-class ConstantWriteAccess extends ConstantAccess, TConstantWriteAccess {
+class ConstantWriteAccess extends ConstantAccess {
+  ConstantWriteAccess() {
+    explicitAssignmentNode(toGenerated(this), _) or this instanceof TNamespace
+  }
+
   override string getAPrimaryQlClass() { result = "ConstantWriteAccess" }
-}
-
-private class TokenConstantWriteAccess extends ConstantWriteAccess, TTokenConstantWriteAccess {
-  private Generated::Constant g;
-
-  TokenConstantWriteAccess() { this = TTokenConstantWriteAccess(g) }
-
-  final override string getName() { result = g.getValue() }
-}
-
-private class ScopeResolutionConstantWriteAccess extends ConstantWriteAccess,
-  TScopeResolutionConstantWriteAccess {
-  private Generated::ScopeResolution g;
-  private Generated::Constant constant;
-
-  ScopeResolutionConstantWriteAccess() { this = TScopeResolutionConstantWriteAccess(g, constant) }
-
-  final override string getName() { result = constant.getValue() }
-
-  final override Expr getScopeExpr() { toGenerated(result) = g.getScope() }
-
-  final override predicate hasGlobalScope() { not exists(g.getScope()) }
 }
 
 /**
@@ -136,6 +121,6 @@ private class ScopeResolutionConstantWriteAccess extends ConstantWriteAccess,
  * MAX_SIZE = 100
  * ```
  */
-class ConstantAssignment extends ConstantWriteAccess, LhsExpr, TConstantAssignment {
+class ConstantAssignment extends ConstantWriteAccess, LhsExpr {
   override string getAPrimaryQlClass() { result = "ConstantAssignment" }
 }
