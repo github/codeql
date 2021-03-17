@@ -1,12 +1,9 @@
-
-import com.google.common.base.Strings;
-import com.google.common.base.Splitter;
-import com.google.common.base.Joiner;
+package com.google.common.base;
 
 import java.util.Map;
 import java.util.HashMap;
 
-class TestStrings {
+class TestBase {
     String taint() { return "tainted"; }
 
     void sink(Object o) {}
@@ -58,5 +55,9 @@ class TestStrings {
         sink(taintedJoiner.useForNull("(null)").withKeyValueSeparator("=").join(m)); // $numTaintFlow=1
         m.put("k2", x);
         sink(safeJoiner.withKeyValueSeparator("=").join(m)); // $numTaintFlow=1
+    }
+
+    void test4() {
+        sink(Preconditions.checkNotNull(taint())); // $numTaintFlow=1
     }
 }
