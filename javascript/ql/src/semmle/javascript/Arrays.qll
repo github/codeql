@@ -104,28 +104,21 @@ private module ArrayDataFlow {
    *
    * Such a step can occur both with the `push` and `unshift` methods, or when creating a new array.
    */
-  private class ArrayCopySpread extends DataFlow::AdditionalFlowStep {
-    DataFlow::Node spreadArgument; // the spread argument containing the elements to be copied.
-    DataFlow::Node base; // the object where the elements should be copied to.
-
-    ArrayCopySpread() {
-      exists(DataFlow::MethodCallNode mcn | mcn = this |
-        mcn.getMethodName() = ["push", "unshift"] and
-        spreadArgument = mcn.getASpreadArgument() and
-        base = mcn.getReceiver().getALocalSource()
-      )
-      or
-      spreadArgument = this.(DataFlow::ArrayCreationNode).getASpreadArgument() and
-      base = this
-    }
-
+  private class ArrayCopySpread extends DataFlow::SharedFlowStep {
     override predicate loadStoreStep(
       DataFlow::Node pred, DataFlow::Node succ, string fromProp, string toProp
     ) {
-      pred = spreadArgument and
-      succ = base and
       fromProp = arrayLikeElement() and
-      toProp = arrayElement()
+      toProp = arrayElement() and
+      (
+        exists(DataFlow::MethodCallNode mcn |
+          mcn.getMethodName() = ["push", "unshift"] and
+          pred = mcn.getASpreadArgument() and
+          succ = mcn.getReceiver().getALocalSource()
+        )
+        or
+        pred = succ.(DataFlow::ArrayCreationNode).getASpreadArgument()
+      )
     }
   }
 
