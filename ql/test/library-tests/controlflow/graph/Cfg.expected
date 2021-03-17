@@ -8,9 +8,6 @@ break_ensure.rb:
 #    1| m1
 #-----|  -> m2
 
-#    1| elements
-#-----|  -> elements
-
 #    1| exit m1
 
 #    1| exit break_ensure.rb
@@ -20,6 +17,9 @@ break_ensure.rb:
 
 #    1| exit break_ensure.rb (normal)
 #-----|  -> exit break_ensure.rb
+
+#    1| elements
+#-----|  -> elements
 
 #    2| for ... in ...
 #-----|  -> ensure ...
@@ -75,13 +75,13 @@ break_ensure.rb:
 #   13| m2
 #-----|  -> m3
 
-#   13| elements
-#-----|  -> elements
-
 #   13| exit m2
 
 #   13| exit m2 (normal)
 #-----|  -> exit m2
+
+#   13| elements
+#-----|  -> elements
 
 #   14| for ... in ...
 #-----|  -> exit m2 (normal)
@@ -156,13 +156,13 @@ break_ensure.rb:
 #   27| m3
 #-----|  -> m4
 
-#   27| elements
-#-----|  -> elements
-
 #   27| exit m3
 
 #   27| exit m3 (normal)
 #-----|  -> exit m3
+
+#   27| elements
+#-----|  -> elements
 
 #   29| if ...
 #-----|  -> ensure ...
@@ -253,13 +253,13 @@ break_ensure.rb:
 #   44| m4
 #-----|  -> exit break_ensure.rb (normal)
 
-#   44| elements
-#-----|  -> elements
-
 #   44| exit m4
 
 #   44| exit m4 (normal)
 #-----|  -> exit m4
+
+#   44| elements
+#-----|  -> elements
 
 #   45| for ... in ...
 #-----|  -> exit m4 (normal)
@@ -508,17 +508,22 @@ cfg.rb:
 #   23| 1
 #-----|  -> ... + ...
 
-#   25| enter { ... }
-#-----|  -> x
-
 #   25| call to times
 #-----|  -> :puts
 
 #   25| 2
 #-----|  -> { ... }
 
+#   25| enter { ... }
+#-----|  -> x
+
 #   25| { ... }
 #-----|  -> call to times
+
+#   25| exit { ... }
+
+#   25| exit { ... } (normal)
+#-----|  -> exit { ... }
 
 #   25| x
 #-----|  -> x
@@ -529,11 +534,6 @@ cfg.rb:
 #   25| x
 #-----|  -> call to puts
 
-#   25| exit { ... }
-
-#   25| exit { ... } (normal)
-#-----|  -> exit { ... }
-
 #   27| call to puts
 #-----|  -> Proc
 
@@ -543,17 +543,22 @@ cfg.rb:
 #   27| :puts
 #-----|  -> &...
 
-#   29| enter { ... }
-#-----|  -> x
-
 #   29| call to new
 #-----|  -> true
 
 #   29| Proc
 #-----|  -> { ... }
 
+#   29| enter { ... }
+#-----|  -> x
+
 #   29| { ... }
 #-----|  -> call to new
+
+#   29| exit { ... }
+
+#   29| exit { ... } (normal)
+#-----|  -> exit { ... }
 
 #   29| x
 #-----|  -> x
@@ -563,11 +568,6 @@ cfg.rb:
 
 #   29| x
 #-----|  -> call to call
-
-#   29| exit { ... }
-
-#   29| exit { ... } (normal)
-#-----|  -> exit { ... }
 
 #   31| while ...
 #-----|  -> false
@@ -811,6 +811,11 @@ cfg.rb:
 #   63| pattern
 #-----|  -> 1
 
+#   63| exit pattern
+
+#   63| exit pattern (normal)
+#-----|  -> exit pattern
+
 #   63| (..., ...)
 #-----|  -> a
 
@@ -819,11 +824,6 @@ cfg.rb:
 
 #   63| b
 #-----|  -> (..., ...)
-
-#   63| exit pattern
-
-#   63| exit pattern (normal)
-#-----|  -> exit pattern
 
 #   64| call to puts
 #-----|  -> b
@@ -1086,6 +1086,11 @@ cfg.rb:
 #  101| parameters
 #-----|  -> "healthy"
 
+#  101| exit parameters
+
+#  101| exit parameters (normal)
+#-----|  -> exit parameters
+
 #  101| value
 #-----| no-match -> 42
 #-----| match -> key
@@ -1098,11 +1103,6 @@ cfg.rb:
 
 #  101| kwargs
 #-----|  -> value
-
-#  101| exit parameters
-
-#  101| exit parameters (normal)
-#-----|  -> exit parameters
 
 #  102| call to puts
 #-----|  -> kwargs
@@ -1201,17 +1201,22 @@ cfg.rb:
 #  117| 10
 #-----|  -> @@static_field
 
-#  120| enter -> { ... }
-#-----|  -> x
-
 #  120| ... = ...
 #-----|  -> M
 
 #  120| swap
 #-----|  -> ... = ...
 
+#  120| enter -> { ... }
+#-----|  -> x
+
 #  120| -> { ... }
 #-----|  -> swap
+
+#  120| exit -> { ... }
+
+#  120| exit -> { ... } (normal)
+#-----|  -> exit -> { ... }
 
 #  120| (..., ...)
 #-----|  -> y
@@ -1230,11 +1235,6 @@ cfg.rb:
 
 #  120| x
 #-----|  -> [...]
-
-#  120| exit -> { ... }
-
-#  120| exit -> { ... } (normal)
-#-----|  -> exit -> { ... }
 
 #  122| M
 #-----|  -> nil
@@ -1461,16 +1461,16 @@ cfg.rb:
 #  149| method
 #-----|  -> two_parameters
 
+#  149| exit method
+
+#  149| exit method (normal)
+#-----|  -> exit method
+
 #  149| silly
 #-----|  -> method
 
 #  149| x
 #-----|  -> x
-
-#  149| exit method
-
-#  149| exit method (normal)
-#-----|  -> exit method
 
 #  150| call to puts
 #-----|  -> exit method (normal)
@@ -1484,16 +1484,16 @@ cfg.rb:
 #  153| two_parameters
 #-----|  -> 1
 
+#  153| exit two_parameters
+
+#  153| exit two_parameters (normal)
+#-----|  -> exit two_parameters
+
 #  153| a
 #-----|  -> b
 
 #  153| b
 #-----|  -> exit two_parameters (normal)
-
-#  153| exit two_parameters
-
-#  153| exit two_parameters (normal)
-#-----|  -> exit two_parameters
 
 #  155| call to two_parameters
 #-----|  -> call to __FILE__
@@ -1801,14 +1801,19 @@ cfg.rb:
 
 #  188| 42
 
-#  191| enter { ... }
-#-----|  -> x
-
 #  191| call to run_block
 #-----|  -> exit cfg.rb (normal)
 
+#  191| enter { ... }
+#-----|  -> x
+
 #  191| { ... }
 #-----|  -> call to run_block
+
+#  191| exit { ... }
+
+#  191| exit { ... } (normal)
+#-----|  -> exit { ... }
 
 #  191| x
 #-----|  -> x
@@ -1819,11 +1824,6 @@ cfg.rb:
 #  191| x
 #-----|  -> call to puts
 
-#  191| exit { ... }
-
-#  191| exit { ... } (normal)
-#-----|  -> exit { ... }
-
 exit.rb:
 #    1| enter m1
 #-----|  -> x
@@ -1833,9 +1833,6 @@ exit.rb:
 
 #    1| m1
 #-----|  -> m2
-
-#    1| x
-#-----|  -> x
 
 #    1| exit m1
 
@@ -1849,6 +1846,9 @@ exit.rb:
 
 #    1| exit exit.rb (normal)
 #-----|  -> exit exit.rb
+
+#    1| x
+#-----|  -> x
 
 #    2| if ...
 #-----|  -> "x <= 2"
@@ -1881,9 +1881,6 @@ exit.rb:
 #    8| m2
 #-----|  -> exit exit.rb (normal)
 
-#    8| x
-#-----|  -> x
-
 #    8| exit m2
 
 #    8| exit m2 (abnormal)
@@ -1891,6 +1888,9 @@ exit.rb:
 
 #    8| exit m2 (normal)
 #-----|  -> exit m2
+
+#    8| x
+#-----|  -> x
 
 #    9| if ...
 #-----|  -> "x <= 2"
@@ -1956,9 +1956,6 @@ ifs.rb:
 #    1| m1
 #-----|  -> m2
 
-#    1| x
-#-----|  -> x
-
 #    1| exit m1
 
 #    1| exit ifs.rb
@@ -1968,6 +1965,9 @@ ifs.rb:
 
 #    1| exit ifs.rb (normal)
 #-----|  -> exit ifs.rb
+
+#    1| x
+#-----|  -> x
 
 #    2| if ...
 #-----|  -> exit m1 (normal)
@@ -2063,13 +2063,13 @@ ifs.rb:
 #   11| m2
 #-----|  -> m3
 
-#   11| b
-#-----|  -> b
-
 #   11| exit m2
 
 #   11| exit m2 (normal)
 #-----|  -> exit m2
+
+#   11| b
+#-----|  -> b
 
 #   12| if ...
 #-----|  -> 1
@@ -2096,13 +2096,13 @@ ifs.rb:
 #   18| m3
 #-----|  -> m4
 
-#   18| x
-#-----|  -> x
-
 #   18| exit m3
 
 #   18| exit m3 (normal)
 #-----|  -> exit m3
+
+#   18| x
+#-----|  -> x
 
 #   19| if ...
 #-----|  -> x
@@ -2169,6 +2169,11 @@ ifs.rb:
 #   28| m4
 #-----|  -> m5
 
+#   28| exit m4
+
+#   28| exit m4 (normal)
+#-----|  -> exit m4
+
 #   28| b1
 #-----|  -> b2
 
@@ -2177,11 +2182,6 @@ ifs.rb:
 
 #   28| b3
 #-----|  -> b1
-
-#   28| exit m4
-
-#   28| exit m4 (normal)
-#-----|  -> exit m4
 
 #   29| return
 #-----| return -> exit m4 (normal)
@@ -2225,6 +2225,11 @@ ifs.rb:
 #   32| m5
 #-----|  -> 1
 
+#   32| exit m5
+
+#   32| exit m5 (normal)
+#-----|  -> exit m5
+
 #   32| b1
 #-----|  -> b2
 
@@ -2239,11 +2244,6 @@ ifs.rb:
 
 #   32| b5
 #-----|  -> b1
-
-#   32| exit m5
-
-#   32| exit m5 (normal)
-#-----|  -> exit m5
 
 #   33| if ...
 #-----|  -> exit m5 (normal)
@@ -2352,9 +2352,6 @@ loops.rb:
 #    1| m1
 #-----|  -> m2
 
-#    1| x
-#-----|  -> x
-
 #    1| exit m1
 
 #    1| exit loops.rb
@@ -2364,6 +2361,9 @@ loops.rb:
 
 #    1| exit loops.rb (normal)
 #-----|  -> exit loops.rb
+
+#    1| x
+#-----|  -> x
 
 #    2| while ...
 #-----|  -> exit m1 (normal)
@@ -2399,13 +2399,13 @@ loops.rb:
 #    8| m2
 #-----|  -> m3
 
-#    8| x
-#-----|  -> x
-
 #    8| exit m2
 
 #    8| exit m2 (normal)
 #-----|  -> exit m2
+
+#    8| x
+#-----|  -> x
 
 #    9| while ...
 #-----|  -> "Done"
@@ -2506,9 +2506,6 @@ loops.rb:
 #   24| exit m3 (normal)
 #-----|  -> exit m3
 
-#   25| enter do ... end
-#-----|  -> x
-
 #   25| call to each
 #-----|  -> exit m3 (normal)
 
@@ -2524,16 +2521,19 @@ loops.rb:
 #   25| 3
 #-----|  -> [...]
 
+#   25| enter do ... end
+#-----|  -> x
+
 #   25| do ... end
 #-----|  -> call to each
-
-#   25| x
-#-----|  -> x
 
 #   25| exit do ... end
 
 #   25| exit do ... end (normal)
 #-----|  -> exit do ... end
+
+#   25| x
+#-----|  -> x
 
 #   26| call to puts
 #-----|  -> exit do ... end (normal)
@@ -2548,13 +2548,13 @@ raise.rb:
 #    1| ExceptionA
 #-----|  -> Exception
 
-#    1| Exception
-#-----|  -> ExceptionB
-
 #    1| exit raise.rb
 
 #    1| exit raise.rb (normal)
 #-----|  -> exit raise.rb
+
+#    1| Exception
+#-----|  -> ExceptionB
 
 #    4| ExceptionB
 #-----|  -> Exception
@@ -2568,9 +2568,6 @@ raise.rb:
 #    7| m1
 #-----|  -> m2
 
-#    7| x
-#-----|  -> x
-
 #    7| exit m1
 
 #    7| exit m1 (abnormal)
@@ -2578,6 +2575,9 @@ raise.rb:
 
 #    7| exit m1 (normal)
 #-----|  -> exit m1
+
+#    7| x
+#-----|  -> x
 
 #    8| if ...
 #-----|  -> "x <= 2"
@@ -2610,9 +2610,6 @@ raise.rb:
 #   14| m2
 #-----|  -> m3
 
-#   14| b
-#-----|  -> b
-
 #   14| exit m2
 
 #   14| exit m2 (abnormal)
@@ -2620,6 +2617,9 @@ raise.rb:
 
 #   14| exit m2 (normal)
 #-----|  -> exit m2
+
+#   14| b
+#-----|  -> b
 
 #   16| if ...
 #-----|  -> "End m2"
@@ -2659,13 +2659,13 @@ raise.rb:
 #   25| m3
 #-----|  -> m4
 
-#   25| b
-#-----|  -> b
-
 #   25| exit m3
 
 #   25| exit m3 (normal)
 #-----|  -> exit m3
+
+#   25| b
+#-----|  -> b
 
 #   27| if ...
 #-----|  -> "End m3"
@@ -2701,13 +2701,13 @@ raise.rb:
 #   36| m4
 #-----|  -> m5
 
-#   36| b
-#-----|  -> b
-
 #   36| exit m4
 
 #   36| exit m4 (normal)
 #-----|  -> exit m4
+
+#   36| b
+#-----|  -> b
 
 #   38| if ...
 #-----|  -> "End m4"
@@ -2746,13 +2746,13 @@ raise.rb:
 #   47| m5
 #-----|  -> m6
 
-#   47| b
-#-----|  -> b
-
 #   47| exit m5
 
 #   47| exit m5 (normal)
 #-----|  -> exit m5
+
+#   47| b
+#-----|  -> b
 
 #   49| if ...
 #-----|  -> "End m5"
@@ -2785,9 +2785,6 @@ raise.rb:
 #   57| m6
 #-----|  -> m7
 
-#   57| b
-#-----|  -> b
-
 #   57| exit m6
 
 #   57| exit m6 (abnormal)
@@ -2795,6 +2792,9 @@ raise.rb:
 
 #   57| exit m6 (normal)
 #-----|  -> exit m6
+
+#   57| b
+#-----|  -> b
 
 #   59| if ...
 #-----|  -> "End m6"
@@ -2841,9 +2841,6 @@ raise.rb:
 #   68| m7
 #-----|  -> m8
 
-#   68| x
-#-----|  -> x
-
 #   68| exit m7
 
 #   68| exit m7 (abnormal)
@@ -2851,6 +2848,9 @@ raise.rb:
 
 #   68| exit m7 (normal)
 #-----|  -> exit m7
+
+#   68| x
+#-----|  -> x
 
 #   69| if ...
 #-----|  -> "0 <= x <= 2"
@@ -2929,9 +2929,6 @@ raise.rb:
 #   79| m8
 #-----|  -> m9
 
-#   79| x
-#-----|  -> "Begin m8"
-
 #   79| exit m8
 
 #   79| exit m8 (abnormal)
@@ -2939,6 +2936,9 @@ raise.rb:
 
 #   79| exit m8 (normal)
 #-----|  -> exit m8
+
+#   79| x
+#-----|  -> "Begin m8"
 
 #   80| call to puts
 #-----|  -> x
@@ -3029,6 +3029,14 @@ raise.rb:
 #   94| m9
 #-----|  -> m10
 
+#   94| exit m9
+
+#   94| exit m9 (abnormal)
+#-----|  -> exit m9
+
+#   94| exit m9 (normal)
+#-----|  -> exit m9
+
 #   94| x
 #-----|  -> b1
 
@@ -3037,14 +3045,6 @@ raise.rb:
 
 #   94| b2
 #-----|  -> "Begin m9"
-
-#   94| exit m9
-
-#   94| exit m9 (abnormal)
-#-----|  -> exit m9
-
-#   94| exit m9 (normal)
-#-----|  -> exit m9
 
 #   95| call to puts
 #-----|  -> x
@@ -3294,6 +3294,14 @@ raise.rb:
 #  121| m10
 #-----|  -> m11
 
+#  121| exit m10
+
+#  121| exit m10 (abnormal)
+#-----|  -> exit m10
+
+#  121| exit m10 (normal)
+#-----|  -> exit m10
+
 #  121| p
 #-----| no-match -> "Exception"
 #-----| match -> ensure ...
@@ -3303,14 +3311,6 @@ raise.rb:
 
 #  121| "Exception"
 #-----|  -> call to raise
-
-#  121| exit m10
-
-#  121| exit m10 (abnormal)
-#-----|  -> exit m10
-
-#  121| exit m10 (normal)
-#-----|  -> exit m10
 
 #  124| ensure ...
 #-----|  -> "Will not get executed if p is..."
@@ -3327,9 +3327,6 @@ raise.rb:
 #  128| m11
 #-----|  -> m12
 
-#  128| b
-#-----|  -> b
-
 #  128| exit m11
 
 #  128| exit m11 (abnormal)
@@ -3337,6 +3334,9 @@ raise.rb:
 
 #  128| exit m11 (normal)
 #-----|  -> exit m11
+
+#  128| b
+#-----|  -> b
 
 #  130| if ...
 #-----|  -> ensure ...
@@ -3401,13 +3401,13 @@ raise.rb:
 #  142| m12
 #-----|  -> m13
 
-#  142| b
-#-----|  -> b
-
 #  142| exit m12
 
 #  142| exit m12 (normal)
 #-----|  -> exit m12
+
+#  142| b
+#-----|  -> b
 
 #  143| if ...
 #-----|  -> ensure ...
@@ -3460,16 +3460,13 @@ raise.rb:
 #  154| m14
 #-----|  -> exit raise.rb (normal)
 
-#  154| element
-#-----|  -> element
-
 #  154| exit m14
 
 #  154| exit m14 (normal)
 #-----|  -> exit m14
 
-#  155| enter { ... }
-#-----|  -> elem
+#  154| element
+#-----|  -> element
 
 #  155| call to each
 #-----|  -> exit m14 (normal)
@@ -3477,8 +3474,19 @@ raise.rb:
 #  155| element
 #-----|  -> { ... }
 
+#  155| enter { ... }
+#-----|  -> elem
+
 #  155| { ... }
 #-----|  -> call to each
+
+#  155| exit { ... }
+
+#  155| exit { ... } (abnormal)
+#-----|  -> exit { ... }
+
+#  155| exit { ... } (normal)
+#-----|  -> exit { ... }
 
 #  155| elem
 #-----|  -> element
@@ -3498,11 +3506,3 @@ raise.rb:
 
 #  155| element
 #-----|  -> call to nil?
-
-#  155| exit { ... }
-
-#  155| exit { ... } (abnormal)
-#-----|  -> exit { ... }
-
-#  155| exit { ... } (normal)
-#-----|  -> exit { ... }
