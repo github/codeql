@@ -125,16 +125,14 @@ private module ArrayDataFlow {
   /**
    * A step for storing an element on an array using `arr.push(e)` or `arr.unshift(e)`.
    */
-  private class ArrayAppendStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
-    ArrayAppendStep() {
-      this.getMethodName() = "push" or
-      this.getMethodName() = "unshift"
-    }
-
+  private class ArrayAppendStep extends DataFlow::SharedFlowStep {
     override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
       prop = arrayElement() and
-      element = this.getAnArgument() and
-      obj.getAMethodCall() = this
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = ["push", "unshift"] and
+        element = call.getAnArgument() and
+        obj.getAMethodCall() = call
+      )
     }
   }
 
