@@ -551,19 +551,16 @@ abstract class LabeledBarrierGuardNode extends BarrierGuardNode {
  * of the standard library. Override `Configuration::isAdditionalFlowStep`
  * for analysis-specific flow steps.
  */
-cached
 abstract class AdditionalFlowStep extends DataFlow::Node {
   /**
    * Holds if `pred` &rarr; `succ` should be considered a data flow edge.
    */
-  cached
   predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
 
   /**
    * Holds if `pred` &rarr; `succ` should be considered a data flow edge
    * transforming values with label `predlbl` to have label `succlbl`.
    */
-  cached
   predicate step(
     DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
     DataFlow::FlowLabel succlbl
@@ -577,7 +574,6 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
    * Holds if `pred` should be stored in the object `succ` under the property `prop`.
    * The object `succ` must be a `DataFlow::SourceNode` for the object wherein the value is stored.
    */
-  cached
   predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
 
   /**
@@ -585,7 +581,6 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
    *
    * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
    */
-  cached
   predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
 
   /**
@@ -593,7 +588,6 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
    *
    * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
    */
-  cached
   predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
 
   /**
@@ -601,7 +595,6 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
    *
    * Holds if the property `loadProp` should be copied from the object `pred` to the property `storeProp` of object `succ`.
    */
-  cached
   predicate loadStoreStep(
     DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
   ) {
