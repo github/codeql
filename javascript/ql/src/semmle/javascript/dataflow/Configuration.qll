@@ -605,8 +605,7 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
   predicate loadStoreStep(
     DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
   ) {
-    loadProp = storeProp and
-    loadStoreStep(pred, succ, loadProp)
+    none()
   }
 }
 
