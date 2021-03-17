@@ -295,8 +295,8 @@ Class hierarchy
         -  ``DataFlow::CallCfgNode`` - a control-flow node for a function or method call behaving as a data flow node.
 
     -  ``RemoteFlowSource`` - data flow from network/remote input.
-    -  ``Attributes::AttrRead`` - flow out of an attribute.
-    -  ``Attributes::AttrWrite`` - flow into an attribute.
+    -  ``Attributes::AttrRead`` - an attribute read as a data flow node.
+    -  ``Attributes::AttrWrite`` - an attribute write as a data flow node.
     -  ``Concepts::SystemCommandExecution`` - a data-flow node that executes an operating system command, for instance by spawning a new process.
     -  ``Concepts::FileSystemAccess`` - a data flow node that performs a file system access, including reading and writing data, creating and deleting files and folders, checking and updating permissions, and so on.
     -  ``Concepts::Path::PathNormalization`` - a data-flow node that performs path normalization. This is often needed in order to safely access paths.
