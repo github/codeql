@@ -63,7 +63,7 @@ Classes and member predicates in the ``DataFlow::`` module:
     - `getAnInstantiation <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getAnInstantiation.0.html>`__ -- find ``new``-calls with this as the callee
     - `getAnInvocation <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getAnInvocation.0.html>`__ -- find calls or ``new``-calls with this as the callee
     - `getAMethodCall <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getAMethodCall.1.html>`__ -- find method calls with this as the receiver
-    - `getAMemberCall <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getAMemberCall.1.html>`__ -- find calls with a member of this as the receiver
+    - `getAMemberCall <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getAMemberCall.1.html>`__ -- find calls with a member of this as the callee
     - `getAPropertyRead <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getAPropertyRead.1.html>`__ -- find property reads with this as the base
     - `getAPropertyWrite <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getAPropertyWrite.1.html>`__ -- find property writes with this as the base
     - `getAPropertySource <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getAPropertySource.1.html>`__ -- find nodes flowing into a property of this node
@@ -109,12 +109,14 @@ StringOps module
 - StringOps::`StartsWith <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/StringOps.qll/type.StringOps$StringOps$StartsWith.html>`__ -- check if a string starts with something
 - StringOps::`EndsWith <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/StringOps.qll/type.StringOps$StringOps$EndsWith.html>`__ -- check if a string ends with something
 - StringOps::`Includes <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/StringOps.qll/type.StringOps$StringOps$Includes.html>`__ -- check if a string contains something
+- StringOps::`RegExpTest <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/StringOps.qll/type.StringOps$StringOps$RegExpTest.html>`__ -- check if a string matches a RegExp
 
 Utility
 --------
 
 - `ExtendCall <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Extend.qll/type.Extend$ExtendCall.html>`__ -- call that copies properties from one object to another
 - `JsonParserCall <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/JsonParsers.qll/type.JsonParsers$JsonParserCall.html>`__ -- call that deserializes a JSON string
+- `JsonStringifyCall <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/JsonStringifiers.qll/type.JsonStringifiers$JsonStringifyCall.html>`__ -- call that serializes a JSON string
 - `PropertyProjection <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/frameworks/PropertyProjection.qll/type.PropertyProjection$PropertyProjection.html>`__ -- call that extracts nested properties by name
 
 System and Network
