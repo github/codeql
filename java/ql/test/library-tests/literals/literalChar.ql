@@ -1,4 +1,4 @@
 import semmle.code.java.Expr
 
 from CharacterLiteral lit
-select lit
+select lit, lit.getValue()
