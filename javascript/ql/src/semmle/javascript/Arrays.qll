@@ -137,13 +137,12 @@ private module ArrayDataFlow {
   }
 
   /**
-   * A step for reading/writing an element from an array inside a for-loop.
-   * E.g. a read from `foo[i]` to `bar` in `for(var i = 0; i < arr.length; i++) {bar = foo[i]}`.
+   * A node that reads or writes an element from an array inside a for-loop.
    */
-  private class ArrayIndexingStep extends DataFlow::AdditionalFlowStep, DataFlow::Node {
+  private class ArrayIndexingAccess extends DataFlow::Node {
     DataFlow::PropRef read;
 
-    ArrayIndexingStep() {
+    ArrayIndexingAccess() {
       read = this and
       TTNumber() =
         unique(InferredType type | type = read.getPropertyNameExpr().flow().analyze().getAType()) and
@@ -154,17 +153,27 @@ private module ArrayDataFlow {
         i.getVariable().getADefinition().(VariableDeclarator).getDeclStmt() = init
       )
     }
+  }
 
+  /**
+   * A step for reading/writing an element from an array inside a for-loop.
+   * E.g. a read from `foo[i]` to `bar` in `for(var i = 0; i < arr.length; i++) {bar = foo[i]}`.
+   */
+  private class ArrayIndexingStep extends DataFlow::SharedFlowStep {
     override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
-      prop = arrayElement() and
-      obj = this.(DataFlow::PropRead).getBase() and
-      element = this
+      exists(ArrayIndexingAccess access |
+        prop = arrayElement() and
+        obj = access.(DataFlow::PropRead).getBase() and
+        element = access
+      )
     }
 
     override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
-      prop = arrayElement() and
-      element = this.(DataFlow::PropWrite).getRhs() and
-      this = obj.getAPropertyWrite()
+      exists(ArrayIndexingAccess access |
+        prop = arrayElement() and
+        element = access.(DataFlow::PropWrite).getRhs() and
+        access = obj.getAPropertyWrite()
+      )
     }
   }
 
