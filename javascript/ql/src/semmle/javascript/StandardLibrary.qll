@@ -150,6 +150,11 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
       map.hasPropertyWrite(old, any(DataFlow::Node repl | repl.getStringValue() = new))
     )
     or
+    // str.replace(regex, match => {
+    //   if (match === 'old') return 'new';
+    //   if (match === 'foo') return 'bar';
+    //   ...
+    // })
     exists(
       DataFlow::FunctionNode replacer, ConditionGuardNode guard, EqualityTest test,
       DataFlow::Node ret
