@@ -308,7 +308,7 @@ module Actions {
       // TODO: This only handles expression strings that refer to contexts.
       // It does not handle operators within the expression.
       result =
-        this.getValue().regexpFind("(?<=\\$\\{\\{\\s*)[A-Za-z0-9_\\.\\-]+(?=\\s*\\}\\})", _, _)
+        this.getValue().regexpFind("[A-Za-z0-9_\\.\\-]+(?=\\s*\\}\\})", _, _)
     }
   }
 }
