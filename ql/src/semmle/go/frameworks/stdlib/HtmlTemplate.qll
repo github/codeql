@@ -105,6 +105,9 @@ module HtmlTemplate {
     /** Gets a textual representation of this statement. */
     string toString() { result = "HTML template statement" }
 
+    /** Get the HTML element that contains this template statement. */
+    HTML::TextNode getEnclosingTextNode() { result = parent }
+
     /**
      * Holds if this element is at the specified location.
      * The location spans column `startcolumn` of line `startline` to
@@ -149,6 +152,9 @@ module HtmlTemplate {
 
     /** Gets a textual representation of this statement. */
     string toString() { result = "HTML template read of " + text }
+
+    /** Get the HTML element that contains this template read. */
+    HTML::TextNode getEnclosingTextNode() { result = parent.getEnclosingTextNode() }
 
     /**
      * Holds if this element is at the specified location.
