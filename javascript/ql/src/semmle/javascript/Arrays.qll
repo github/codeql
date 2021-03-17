@@ -265,13 +265,14 @@ private module ArrayDataFlow {
    * A step for modelling `concat`.
    * For example in `e = arr1.concat(arr2, arr3)`: if any of the `arr` is tainted, then so is `e`.
    */
-  private class ArrayConcatStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
-    ArrayConcatStep() { this.getMethodName() = "concat" }
-
+  private class ArrayConcatStep extends DataFlow::SharedFlowStep {
     override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      prop = arrayElement() and
-      (pred = this.getReceiver() or pred = this.getAnArgument()) and
-      succ = this
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = "concat" and
+        prop = arrayElement() and
+        (pred = call.getReceiver() or pred = call.getAnArgument()) and
+        succ = call
+      )
     }
   }
 
