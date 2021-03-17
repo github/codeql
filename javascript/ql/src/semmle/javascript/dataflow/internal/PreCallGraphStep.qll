@@ -16,7 +16,7 @@ private class Unit extends TUnit {
  * Internal extension point for adding flow edges prior to call graph construction
  * and type tracking.
  *
- * Steps added here will be added to both `AdditionalFlowStep` and `AdditionalTypeTrackingStep`.
+ * Steps added here will be added to both `SharedFlowStep` and `SharedTypeTrackingStep`.
  *
  * Contributing steps that rely on type tracking will lead to negative recursion.
  */
@@ -77,18 +77,6 @@ module PreCallGraphStep {
   }
 }
 
-private class NodeWithPreCallGraphStep extends DataFlow::Node {
-  NodeWithPreCallGraphStep() {
-    PreCallGraphStep::step(this, _)
-    or
-    PreCallGraphStep::storeStep(this, _, _)
-    or
-    PreCallGraphStep::loadStep(this, _, _)
-    or
-    PreCallGraphStep::loadStoreStep(this, _, _)
-  }
-}
-
 private class SharedFlowStepFromPreCallGraph extends DataFlow::SharedFlowStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     PreCallGraphStep::step(pred, succ)
@@ -107,25 +95,20 @@ private class SharedFlowStepFromPreCallGraph extends DataFlow::SharedFlowStep {
   }
 }
 
-private class AdditionalTypeTrackingStepFromPreCallGraph extends NodeWithPreCallGraphStep,
-  DataFlow::AdditionalTypeTrackingStep {
+private class SharedTypeTrackingStepFromPreCallGraph extends DataFlow::SharedTypeTrackingStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    pred = this and
-    PreCallGraphStep::step(this, succ)
+    PreCallGraphStep::step(pred, succ)
   }
 
   override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
-    pred = this and
-    PreCallGraphStep::storeStep(this, succ, prop)
+    PreCallGraphStep::storeStep(pred, succ, prop)
   }
 
   override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-    pred = this and
-    PreCallGraphStep::loadStep(this, succ, prop)
+    PreCallGraphStep::loadStep(pred, succ, prop)
   }
 
   override predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
-    pred = this and
-    PreCallGraphStep::loadStoreStep(this, succ, prop)
+    PreCallGraphStep::loadStoreStep(pred, succ, prop)
   }
 }

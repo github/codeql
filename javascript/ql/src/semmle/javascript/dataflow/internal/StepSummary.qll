@@ -111,17 +111,17 @@ module StepSummary {
       basicLoadStep(pred, succ, prop) and
       summary = LoadStep(prop)
       or
-      any(AdditionalTypeTrackingStep st).storeStep(pred, succ, prop) and
+      SharedTypeTrackingStep::storeStep(pred, succ, prop) and
       summary = StoreStep(prop)
       or
-      any(AdditionalTypeTrackingStep st).loadStep(pred, succ, prop) and
+      SharedTypeTrackingStep::loadStep(pred, succ, prop) and
       summary = LoadStep(prop)
       or
-      any(AdditionalTypeTrackingStep st).loadStoreStep(pred, succ, prop) and
+      SharedTypeTrackingStep::loadStoreStep(pred, succ, prop) and
       summary = CopyStep(prop)
     )
     or
-    any(AdditionalTypeTrackingStep st).step(pred, succ) and
+    SharedTypeTrackingStep::step(pred, succ) and
     summary = LevelStep()
     or
     // Store to global access path
