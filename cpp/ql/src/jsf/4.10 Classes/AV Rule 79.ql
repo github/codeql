@@ -13,6 +13,7 @@
 
 import cpp
 import Critical.NewDelete
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /**
  * An expression that acquires a resource, and the kind of resource that is acquired.  The
@@ -101,7 +102,7 @@ private predicate exprReleases(Expr e, Expr released, string kind) {
     exprReleases(_, exprOrDereference(f.getParameter(arg).getAnAccess()), kind)
   )
   or
-  exists(Function f, ThisExpr innerThis |
+  exists(Function f, ThisExpr innerThis, Expr likeInnerThis |
     // `e` is a call to a method that releases `this`, and `released`
     // is the object that is called
     (
@@ -110,7 +111,8 @@ private predicate exprReleases(Expr e, Expr released, string kind) {
     ) and
     e.(FunctionCall).getQualifier() = exprOrDereference(released) and
     innerThis.getEnclosingFunction() = f and
-    exprReleases(_, innerThis, kind)
+    globalValueNumber(innerThis) = globalValueNumber(likeInnerThis) and
+    exprReleases(_, likeInnerThis, kind)
   )
 }
 
