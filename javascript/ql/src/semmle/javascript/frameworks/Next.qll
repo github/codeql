@@ -126,17 +126,14 @@ module NextJS {
   /**
    * A step modelling the flow from the server-computed props object to the default exported function that renders the page.
    */
-  class NextJSStaticPropsStep extends DataFlow::AdditionalFlowStep, DataFlow::FunctionNode {
-    Module pageModule;
-
-    NextJSStaticPropsStep() {
-      pageModule = getAPagesModule() and
-      this = pageModule.getAnExportedValue("default").getAFunctionValue()
-    }
-
+  class NextJSStaticPropsStep extends DataFlow::SharedFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getAPropsSource(pageModule) and
-      succ = this.getParameter(0)
+      exists(Module pageModule, DataFlow::FunctionNode function |
+        pageModule = getAPagesModule() and
+        function = pageModule.getAnExportedValue("default").getAFunctionValue() and
+        pred = getAPropsSource(pageModule) and
+        succ = function.getParameter(0)
+      )
     }
   }
 
