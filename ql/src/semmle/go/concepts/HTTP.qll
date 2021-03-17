@@ -223,6 +223,35 @@ module HTTP {
     DataFlow::Node getAContentTypeNode() { result = self.getAContentTypeNode() }
   }
 
+  /** Provides a class for modeling new HTTP template response-body APIs. */
+  module TemplateResponseBody {
+    /**
+     * An expression which is written to an HTTP response body via a template execution.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `HTTP::ResponseBody` instead.
+     */
+    abstract class Range extends ResponseBody::Range {
+      /** Gets the read of the variable inside the template where this value is read. */
+      abstract HtmlTemplate::TemplateRead getRead();
+    }
+  }
+
+  /**
+   * An expression which is written to an HTTP response body via a template execution.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `HTTP::TemplateResponseBody::Range` instead.
+   */
+  class TemplateResponseBody extends ResponseBody {
+    override TemplateResponseBody::Range self;
+
+    TemplateResponseBody() { this = self }
+
+    /** Gets the read of the variable inside the template where this value is read. */
+    HtmlTemplate::TemplateRead getRead() { result = self.getRead() }
+  }
+
   /** Provides a class for modeling new HTTP client request APIs. */
   module ClientRequest {
     /**
