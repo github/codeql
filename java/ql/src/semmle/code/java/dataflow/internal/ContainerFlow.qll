@@ -1,6 +1,7 @@
 import java
 import semmle.code.java.Collections
 import semmle.code.java.Maps
+private import semmle.code.java.dataflow.FlowSummary
 
 private class EntryType extends RefType {
   EntryType() {
@@ -182,9 +183,16 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.(MapMethod).hasName(["elements", "search", "searchEntries", "searchValues"])
 }
 
-private predicate qualifierToMethodStep(Expr tracked, MethodAccess sink) {
-  taintPreservingQualifierToMethod(sink.getMethod()) and
-  tracked = sink.getQualifier()
+private class QualifierToMethodSummarizedCallable extends SummarizedCallable {
+  QualifierToMethodSummarizedCallable() { taintPreservingQualifierToMethod(this) }
+
+  override predicate propagatesFlow(
+    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+  ) {
+    input = SummaryComponentStack::qualifier() and
+    output = SummaryComponentStack::return() and
+    preservesValue = false
+  }
 }
 
 private predicate qualifierToArgumentStep(Expr tracked, Expr sink) {
@@ -402,9 +410,7 @@ private predicate argToArgStep(Expr tracked, Expr sink) {
  * to another. This is restricted to cases where `n2` is the returned value of
  * a call.
  */
-predicate containerReturnValueStep(Expr n1, Expr n2) {
-  qualifierToMethodStep(n1, n2) or argToMethodStep(n1, n2)
-}
+predicate containerReturnValueStep(Expr n1, Expr n2) { argToMethodStep(n1, n2) }
 
 /**
  * Holds if the step from `n1` to `n2` is either extracting a value from a

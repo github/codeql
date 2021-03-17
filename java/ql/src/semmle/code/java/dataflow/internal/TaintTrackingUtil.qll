@@ -12,6 +12,7 @@ private import semmle.code.java.frameworks.spring.SpringHttp
 private import semmle.code.java.frameworks.Networking
 private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSteps
+private import FlowSummaryImpl as FlowSummaryImpl
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
@@ -32,7 +33,10 @@ predicate localExprTaint(Expr src, Expr sink) {
  */
 predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   DataFlow::localFlowStep(src, sink) or
-  localAdditionalTaintStep(src, sink)
+  localAdditionalTaintStep(src, sink) or
+  // Simple flow through library code is included in the exposed local
+  // step relation, even though flow is technically inter-procedural
+  FlowSummaryImpl::Private::Steps::summaryThroughStep(src, sink, false)
 }
 
 /**
@@ -54,6 +58,8 @@ predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
     arg.isVararg() and
     sink.(DataFlow::ImplicitVarargsArray).getCall() = arg.getCall()
   )
+  or
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false)
 }
 
 /**
