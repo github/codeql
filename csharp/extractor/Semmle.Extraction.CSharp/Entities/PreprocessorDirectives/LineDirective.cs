@@ -26,12 +26,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (trivia.Line.IsKind(SyntaxKind.NumericLiteralToken))
             {
-                var value = (int)trivia.Line.Value;
+                var value = (int)trivia.Line.Value!;
                 trapFile.directive_line_value(this, value);
 
                 if (!string.IsNullOrWhiteSpace(trivia.File.ValueText))
                 {
-                    var file = Extraction.Entities.File.Create(cx, trivia.File.ValueText);
+                    var file = File.Create(Context, trivia.File.ValueText);
                     trapFile.directive_line_file(this, file);
                 }
             }

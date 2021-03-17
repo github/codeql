@@ -2,7 +2,7 @@ import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.FlowSource
 
 private class Fread extends AliasFunction, RemoteFlowSourceFunction {
-  Fread() { this.hasGlobalName("fread") }
+  Fread() { this.hasGlobalOrStdOrBslName("fread") }
 
   override predicate parameterNeverEscapes(int n) {
     n = 0 or

@@ -221,20 +221,16 @@ module CleartextLogging {
   /**
    * Holds if `name` is filtered by e.g. a regular-expression test or a filter call.
    */
-  private predicate isFilteredPropertyName(DataFlow::Node name) {
+  private predicate isFilteredPropertyName(DataFlow::SourceNode name) {
     exists(DataFlow::MethodCallNode reduceCall |
-      reduceCall.getABoundCallbackParameter(0, 1).flowsTo(name) and
-      reduceCall.getMethodName() = "reduce"
+      reduceCall.getMethodName() = "reduce" and
+      reduceCall.getABoundCallbackParameter(0, 1) = name
     |
       reduceCall.getReceiver+().(DataFlow::MethodCallNode).getMethodName() = "filter"
     )
     or
-    exists(StringOps::RegExpTest test |
-      test.getStringOperand().getALocalSource() = name.getALocalSource()
-    )
+    exists(StringOps::RegExpTest test | test.getStringOperand().getALocalSource() = name)
     or
-    exists(MembershipCandidate test |
-      test.getAMemberNode().getALocalSource() = name.getALocalSource()
-    )
+    exists(MembershipCandidate test | test.getAMemberNode().getALocalSource() = name)
   }
 }

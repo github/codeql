@@ -2,14 +2,14 @@ using System.IO;
 
 namespace Semmle.Extraction.Entities
 {
-    internal sealed class Folder : CachedEntity<PathTransformer.ITransformedPath>
+    public sealed class Folder : CachedEntity<PathTransformer.ITransformedPath>
     {
         private Folder(Context cx, PathTransformer.ITransformedPath init) : base(cx, init) { }
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.folders(this, symbol.Value, symbol.NameWithoutExtension);
-            if (symbol.ParentDirectory is PathTransformer.ITransformedPath parent)
+            trapFile.folders(this, Symbol.Value, Symbol.NameWithoutExtension);
+            if (Symbol.ParentDirectory is PathTransformer.ITransformedPath parent)
                 trapFile.containerparent(Create(Context, parent), this);
         }
 
@@ -17,7 +17,7 @@ namespace Semmle.Extraction.Entities
 
         public override void WriteId(System.IO.TextWriter trapFile)
         {
-            trapFile.Write(symbol.DatabaseId);
+            trapFile.Write(Symbol.DatabaseId);
             trapFile.Write(";folder");
         }
 
@@ -26,20 +26,20 @@ namespace Semmle.Extraction.Entities
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
 
-        private class FolderFactory : ICachedEntityFactory<PathTransformer.ITransformedPath, Folder>
+        private class FolderFactory : CachedEntityFactory<PathTransformer.ITransformedPath, Folder>
         {
             public static FolderFactory Instance { get; } = new FolderFactory();
 
-            public Folder Create(Context cx, PathTransformer.ITransformedPath init) => new Folder(cx, init);
+            public override Folder Create(Context cx, PathTransformer.ITransformedPath init) => new Folder(cx, init);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
 
-        public override int GetHashCode() => symbol.GetHashCode();
+        public override int GetHashCode() => Symbol.GetHashCode();
 
         public override bool Equals(object? obj)
         {
-            return obj is Folder folder && Equals(folder.symbol, symbol);
+            return obj is Folder folder && Equals(folder.Symbol, Symbol);
         }
     }
 }

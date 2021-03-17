@@ -9,6 +9,7 @@
 private import javascript
 private import internal.FlowSteps
 private import internal.StepSummary
+private import semmle.javascript.internal.CachedStages
 
 private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalPropertyName prop)
 
@@ -51,7 +52,9 @@ class TypeTracker extends TTypeTracker {
   /** Gets the summary resulting from appending `step` to this type-tracking summary. */
   cached
   TypeTracker append(StepSummary step) {
-    step = LevelStep() and result = this
+    Stages::TypeTracking::ref() and
+    step = LevelStep() and
+    result = this
     or
     exists(string toProp | step = LoadStoreStep(prop, toProp) |
       result = MkTypeTracker(hasCall, toProp)
@@ -180,8 +183,8 @@ private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn, Optional
 /**
  * Summary of the steps needed to back-track a use of a value to a given dataflow node.
  *
- * This can be used to track callbacks that are passed to a certian API call, and are
- * therefore expected to called with a certain type of value.
+ * This can be used to track callbacks that are passed to a certain API call, and are
+ * therefore expected to be called with a certain type of value.
  *
  * Note that type back-tracking does not provide a source/sink relation, that is,
  * it may determine that a node will be used in an API call somewhere, but it won't
@@ -214,8 +217,11 @@ class TypeBackTracker extends TTypeBackTracker {
   TypeBackTracker() { this = MkTypeBackTracker(hasReturn, prop) }
 
   /** Gets the summary resulting from prepending `step` to this type-tracking summary. */
+  cached
   TypeBackTracker prepend(StepSummary step) {
-    step = LevelStep() and result = this
+    Stages::TypeTracking::ref() and
+    step = LevelStep() and
+    result = this
     or
     exists(string fromProp | step = LoadStoreStep(fromProp, prop) |
       result = MkTypeBackTracker(hasReturn, fromProp)

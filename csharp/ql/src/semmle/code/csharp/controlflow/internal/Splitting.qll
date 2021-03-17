@@ -6,10 +6,10 @@
 
 import csharp
 private import Completion
-private import PreSsa as PreSsa
 private import ControlFlowGraphImpl
 private import SuccessorTypes
 private import semmle.code.csharp.controlflow.ControlFlowGraph::ControlFlow
+private import semmle.code.csharp.controlflow.internal.PreSsa
 
 /** The maximum number of splits allowed for a given node. */
 private int maxSplits() { result = 5 }
@@ -1143,9 +1143,7 @@ module BooleanSplitting {
      * another condition that reads the same SSA variable.
      */
     private predicate firstDefCondition(ConditionBlock cb) {
-      exists(AssignableRead read | this.defConditionReachableFromRead(cb, read) |
-        PreSsa::firstReadSameVar(def, read)
-      )
+      this.defConditionReachableFromRead(cb, def.getAFirstRead())
     }
 
     override predicate correlatesConditions(ConditionBlock cb1, ConditionBlock cb2, boolean inverted) {
@@ -1168,9 +1166,9 @@ module BooleanSplitting {
       )
     }
 
-    override Callable getEnclosingCallable() { result = def.getCallable() }
+    override Callable getEnclosingCallable() { result = def.getBasicBlock().getEnclosingCallable() }
 
-    override string toString() { result = def.getAssignable().toString() }
+    override string toString() { result = def.getSourceVariable().toString() }
 
     override Location getLocation() { result = def.getLocation() }
   }
@@ -1321,7 +1319,6 @@ module BooleanSplitting {
 module LoopSplitting {
   private import semmle.code.csharp.controlflow.Guards as Guards
   private import PreBasicBlocks
-  private import PreSsa
 
   /** Holds if `ce` is guarded by a (non-)empty check, as specified by `v`. */
   private predicate emptinessGuarded(

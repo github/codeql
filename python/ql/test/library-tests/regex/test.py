@@ -51,7 +51,7 @@ re.compile("", flags=re.VERBOSE|re.IGNORECASE)
 re.search("", None, re.UNICODE)
 x = re.search("", flags=re.UNICODE)
 # using addition for flags was reported as FP in https://github.com/github/codeql/issues/4707
-re.compile("", re.VERBOSE+re.DOTALL) # TODO: Currently not recognized with Mode.ql
+re.compile("", re.VERBOSE+re.DOTALL)
 # re.X is an alias for re.VERBOSE
 re.compile("", re.X)
 

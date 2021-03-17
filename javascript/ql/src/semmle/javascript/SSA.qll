@@ -76,6 +76,7 @@
 
 import javascript
 private import semmle.javascript.dataflow.Refinements
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A variable that can be SSA converted, that is, a local variable.
@@ -354,6 +355,7 @@ private module Internal {
    */
   cached
   SsaDefinition getDefReachingEndOf(ReachableBasicBlock bb, SsaSourceVariable v) {
+    Stages::DataFlowStage::ref() and
     exists(int lastRef | lastRef = max(int i | ssaRef(bb, i, v, _)) |
       result = getLocalDefinition(bb, lastRef, v)
       or
@@ -520,7 +522,10 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getDef().getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    exists(Location loc |
+      pragma[only_bind_into](loc) = pragma[only_bind_into](getDef()).getLocation() and
+      loc.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    )
   }
 
   /**
@@ -552,7 +557,10 @@ abstract class SsaImplicitDefinition extends SsaDefinition {
   ) {
     endline = startline and
     endcolumn = startcolumn and
-    getBasicBlock().getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _)
+    exists(Location loc |
+      pragma[only_bind_into](loc) = pragma[only_bind_into](getBasicBlock()).getLocation() and
+      loc.hasLocationInfo(filepath, startline, startcolumn, _, _)
+    )
   }
 }
 
@@ -619,6 +627,7 @@ abstract class SsaPseudoDefinition extends SsaImplicitDefinition {
   /**
    * Gets an input of this pseudo-definition.
    */
+  cached
   abstract SsaVariable getAnInput();
 
   override VarDef getAContributingVarDef() {
@@ -641,6 +650,7 @@ class SsaPhiNode extends SsaPseudoDefinition, TPhi {
   /**
    * Gets the input to this phi node coming from the given predecessor block.
    */
+  cached
   SsaVariable getInputFromBlock(BasicBlock bb) {
     bb = getBasicBlock().getAPredecessor() and
     result = getDefReachingEndOf(bb, getSourceVariable())
@@ -659,14 +669,6 @@ class SsaPhiNode extends SsaPseudoDefinition, TPhi {
   override string getKind() { result = "phi" }
 
   override string prettyPrintDef() { result = getSourceVariable() + " = phi(" + ppInputs() + ")" }
-
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    endline = startline and
-    endcolumn = startcolumn and
-    getBasicBlock().getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _)
-  }
 
   /**
    * If all inputs to this phi node are (transitive) refinements of the same variable,

@@ -15,10 +15,10 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateMethod(trapFile);
             PopulateModifiers(trapFile);
 
-            var returnType = Type.Create(Context, symbol.ReturnType);
+            var returnType = Type.Create(Context, Symbol.ReturnType);
             trapFile.operators(this,
-                symbol.Name,
-                OperatorSymbol(Context, symbol.Name),
+                Symbol.Name,
+                OperatorSymbol(Context, Symbol),
                 ContainingType,
                 returnType.TypeRef,
                 (UserOperator)OriginalDefinition);
@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (IsSourceDeclaration)
             {
-                var declSyntaxReferences = symbol.DeclaringSyntaxReferences.Select(s => s.GetSyntax()).ToArray();
+                var declSyntaxReferences = Symbol.DeclaringSyntaxReferences.Select(s => s.GetSyntax()).ToArray();
                 foreach (var declaration in declSyntaxReferences.OfType<OperatorDeclarationSyntax>())
                     TypeMention.Create(Context, declaration.ReturnType, this, returnType);
                 foreach (var declaration in declSyntaxReferences.OfType<ConversionOperatorDeclarationSyntax>())
@@ -38,7 +38,7 @@ namespace Semmle.Extraction.CSharp.Entities
             ContainingType.PopulateGenerics();
         }
 
-        public override bool NeedsPopulation => Context.Defines(symbol) || IsImplicitOperator(out _);
+        public override bool NeedsPopulation => Context.Defines(Symbol) || IsImplicitOperator(out _);
 
         public override Type ContainingType
         {
@@ -57,22 +57,22 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <returns></returns>
         private bool IsImplicitOperator(out ITypeSymbol containingType)
         {
-            containingType = symbol.ContainingType;
-            if (containingType != null)
+            containingType = Symbol.ContainingType;
+            if (containingType is not null)
             {
                 var containingNamedType = containingType as INamedTypeSymbol;
-                return containingNamedType == null ||
-                    !containingNamedType.GetMembers(symbol.Name).Contains(symbol);
+                return containingNamedType is null ||
+                    !containingNamedType.GetMembers(Symbol.Name).Contains(Symbol);
             }
 
-            var pointerType = symbol.Parameters.Select(p => p.Type).OfType<IPointerTypeSymbol>().FirstOrDefault();
-            if (pointerType != null)
+            var pointerType = Symbol.Parameters.Select(p => p.Type).OfType<IPointerTypeSymbol>().FirstOrDefault();
+            if (pointerType is not null)
             {
                 containingType = pointerType;
                 return true;
             }
 
-            Context.ModelError(symbol, "Unexpected implicit operator");
+            Context.ModelError(Symbol, "Unexpected implicit operator");
             return true;
         }
 
@@ -176,20 +176,21 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="cx">Extractor context.</param>
         /// <param name="methodName">The method name.</param>
         /// <returns>The converted name.</returns>
-        public static string OperatorSymbol(Context cx, string methodName)
+        private static string OperatorSymbol(Context cx, IMethodSymbol method)
         {
+            var methodName = method.Name;
             if (!OperatorSymbol(methodName, out var result))
-                cx.ModelError($"Unhandled operator name in OperatorSymbol(): '{methodName}'");
+                cx.ModelError(method, $"Unhandled operator name in OperatorSymbol(): '{methodName}'");
             return result;
         }
 
         public static new UserOperator Create(Context cx, IMethodSymbol symbol) => UserOperatorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        private class UserOperatorFactory : ICachedEntityFactory<IMethodSymbol, UserOperator>
+        private class UserOperatorFactory : CachedEntityFactory<IMethodSymbol, UserOperator>
         {
             public static UserOperatorFactory Instance { get; } = new UserOperatorFactory();
 
-            public UserOperator Create(Context cx, IMethodSymbol init) => new UserOperator(cx, init);
+            public override UserOperator Create(Context cx, IMethodSymbol init) => new UserOperator(cx, init);
         }
     }
 }

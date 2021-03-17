@@ -14,10 +14,10 @@ namespace Semmle.Extraction.CIL
         internal static Tuple cil_adder(Event member, Method method) =>
             new Tuple("cil_adder", member, method);
 
-        internal static Tuple cil_access(Instruction i, IEntity m) =>
+        internal static Tuple cil_access(Instruction i, IExtractedEntity m) =>
             new Tuple("cil_access", i, m);
 
-        internal static Tuple cil_attribute(Attribute attribute, IEntity @object, Method constructor) =>
+        internal static Tuple cil_attribute(Attribute attribute, IExtractedEntity @object, Method constructor) =>
             new Tuple("cil_attribute", attribute, @object, constructor);
 
         internal static Tuple cil_attribute_named_argument(Attribute attribute, string name, string value) =>
@@ -197,7 +197,7 @@ namespace Semmle.Extraction.CIL
         internal static Tuple cil_custom_modifiers(ICustomModifierReceiver receiver, Type modifier, bool isRequired) =>
             new Tuple("cil_custom_modifiers", receiver, modifier, isRequired ? 1 : 0);
 
-        internal static Tuple cil_type_annotation(IEntity receiver, TypeAnnotation annotation) =>
+        internal static Tuple cil_type_annotation(IExtractedEntity receiver, TypeAnnotation annotation) =>
             new Tuple("cil_type_annotation", receiver, (int)annotation);
 
         internal static Tuple containerparent(Folder parent, IFileOrFolder child) =>
@@ -215,7 +215,7 @@ namespace Semmle.Extraction.CIL
         internal static Tuple locations_default(PdbSourceLocation label, File file, int startLine, int startCol, int endLine, int endCol) =>
             new Tuple("locations_default", label, file, startLine, startCol, endLine, endCol);
 
-        internal static Tuple metadata_handle(IEntity entity, Assembly assembly, int handleValue) =>
+        internal static Tuple metadata_handle(IExtractedEntity entity, Assembly assembly, int handleValue) =>
             new Tuple("metadata_handle", entity, assembly, handleValue);
 
         internal static Tuple namespaces(Namespace ns, string name) =>

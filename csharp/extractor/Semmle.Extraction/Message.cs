@@ -44,8 +44,8 @@ namespace Semmle.Extraction
             sb.Append(Text);
             if (!string.IsNullOrEmpty(EntityText))
                 sb.Append(" in ").Append(EntityText);
-            if (!(Location is null) && !(Location.UnderlyingObject is null))
-                sb.Append(" at ").Append(Location.UnderlyingObject.GetLineSpan());
+            if (!(Location is null) && !(Location.Symbol is null))
+                sb.Append(" at ").Append(Location.Symbol.GetLineSpan());
             if (!string.IsNullOrEmpty(StackTrace))
                 sb.Append(" ").Append(StackTrace);
             return sb.ToString();

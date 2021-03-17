@@ -738,9 +738,7 @@ module API {
         boundArgs in [0 .. 10]
       )
       or
-      exists(StepSummary summary |
-        t = useStep(nd, promisified, boundArgs, result, summary).append(summary)
-      )
+      t = useStep(nd, promisified, boundArgs, result)
     }
 
     private import semmle.javascript.dataflow.internal.StepSummary
@@ -748,15 +746,19 @@ module API {
     /**
      * Holds if `nd`, which is a use of an API-graph node, flows in zero or more potentially
      * inter-procedural steps to some intermediate node, and then from that intermediate node to
-     * `res` in one step described by `summary`.
+     * `res` in one step. The entire flow is described by the resulting `TypeTracker`.
      *
      * This predicate exists solely to enforce a better join order in `trackUseNode` above.
      */
-    pragma[noinline]
+    pragma[noopt]
     private DataFlow::TypeTracker useStep(
-      DataFlow::Node nd, boolean promisified, int boundArgs, DataFlow::Node res, StepSummary summary
+      DataFlow::Node nd, boolean promisified, int boundArgs, DataFlow::Node res
     ) {
-      StepSummary::step(trackUseNode(nd, promisified, boundArgs, result), res, summary)
+      exists(DataFlow::TypeTracker t, StepSummary summary, DataFlow::SourceNode prev |
+        prev = trackUseNode(nd, promisified, boundArgs, t) and
+        StepSummary::step(prev, res, summary) and
+        result = t.append(summary)
+      )
     }
 
     private DataFlow::SourceNode trackUseNode(
@@ -788,7 +790,23 @@ module API {
         )
       )
       or
-      exists(DataFlow::TypeBackTracker t2 | result = trackDefNode(nd, t2).backtrack(t2, t))
+      t = defStep(nd, result)
+    }
+
+    /**
+     * Holds if `nd`, which is a def of an API-graph node, can be reached in zero or more potentially
+     * inter-procedural steps from some intermediate node, and `prev` flows into that intermediate node
+     * in one step. The entire flow is described by the resulting `TypeTracker`.
+     *
+     * This predicate exists solely to enforce a better join order in `trackDefNode` above.
+     */
+    pragma[noopt]
+    private DataFlow::TypeBackTracker defStep(DataFlow::Node nd, DataFlow::SourceNode prev) {
+      exists(DataFlow::TypeBackTracker t, StepSummary summary, DataFlow::Node next |
+        next = trackDefNode(nd, t) and
+        StepSummary::step(prev, next, summary) and
+        result = t.prepend(summary)
+      )
     }
 
     /**
@@ -912,10 +930,16 @@ module API {
     }
 
     /** Gets the API node for the `i`th parameter of this invocation. */
+    pragma[nomagic]
     Node getParameter(int i) {
       result = callee.getParameter(i) and
-      result.getARhs() = getArgument(i)
+      result = getAParameterCandidate(i)
     }
+
+    /**
+     * Gets an API node where a RHS of the node is the `i`th argument to this call.
+     */
+    private Node getAParameterCandidate(int i) { result.getARhs() = getArgument(i) }
 
     /** Gets the API node for a parameter of this invocation. */
     Node getAParameter() { result = getParameter(_) }

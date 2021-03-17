@@ -11,7 +11,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A type defined in the current assembly.
     /// </summary>
-    public sealed class TypeDefinitionType : Type
+    internal sealed class TypeDefinitionType : Type
     {
         private readonly TypeDefinitionHandle handle;
         private readonly TypeDefinition td;
@@ -45,9 +45,9 @@ namespace Semmle.Extraction.CIL.Entities
             idWriter.WriteId(trapFile, inContext);
         }
 
-        public override string Name => GenericsHelper.GetNonGenericName(td.Name, Cx.MdReader);
+        public override string Name => GenericsHelper.GetNonGenericName(td.Name, Context.MdReader);
 
-        public override Namespace ContainingNamespace => Cx.Create(td.NamespaceDefinition);
+        public override Namespace ContainingNamespace => Context.Create(td.NamespaceDefinition);
 
         public override Type? ContainingType => declType;
 
@@ -58,14 +58,14 @@ namespace Semmle.Extraction.CIL.Entities
             if (TotalTypeParametersCount != typeArguments.Count())
                 throw new InternalError("Mismatched type arguments");
 
-            return Cx.Populate(new ConstructedType(Cx, this, typeArguments));
+            return Context.Populate(new ConstructedType(Context, this, typeArguments));
         }
 
         public override void WriteAssemblyPrefix(TextWriter trapFile)
         {
             var ct = ContainingType;
             if (ct is null)
-                Cx.WriteAssemblyPrefix(trapFile);
+                Context.WriteAssemblyPrefix(trapFile);
             else if (IsPrimitiveType)
                 trapFile.Write(Type.PrimitiveTypePrefix);
             else
@@ -83,7 +83,7 @@ namespace Semmle.Extraction.CIL.Entities
 
             // Two-phase population because type parameters can be mutually dependent
             for (var i = 0; i < newTypeParams.Length; ++i)
-                newTypeParams[i] = Cx.Populate(new TypeTypeParameter(this, i));
+                newTypeParams[i] = Context.Populate(new TypeTypeParameter(this, i));
             for (var i = 0; i < newTypeParams.Length; ++i)
                 newTypeParams[i].PopulateHandle(genericParams[i + toSkip]);
             return newTypeParams;
@@ -96,7 +96,7 @@ namespace Semmle.Extraction.CIL.Entities
                 var containingType = td.GetDeclaringType();
                 var parentTypeParameters = containingType.IsNil
                     ? 0
-                    : Cx.MdReader.GetTypeDefinition(containingType).GetGenericParameters().Count;
+                    : Context.MdReader.GetTypeDefinition(containingType).GetGenericParameters().Count;
 
                 return td.GetGenericParameters().Count - parentTypeParameters;
             }
@@ -110,7 +110,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                yield return Tuples.metadata_handle(this, Cx.Assembly, MetadataTokens.GetToken(handle));
+                yield return Tuples.metadata_handle(this, Context.Assembly, MetadataTokens.GetToken(handle));
 
                 foreach (var c in base.Contents) yield return c;
 
@@ -119,7 +119,7 @@ namespace Semmle.Extraction.CIL.Entities
                 foreach (var f in td.GetFields())
                 {
                     // Populate field if needed
-                    yield return Cx.CreateGeneric(this, f);
+                    yield return Context.CreateGeneric(this, f);
                 }
 
                 foreach (var prop in td.GetProperties())
@@ -129,16 +129,16 @@ namespace Semmle.Extraction.CIL.Entities
 
                 foreach (var @event in td.GetEvents())
                 {
-                    yield return new Event(Cx, this, @event);
+                    yield return new Event(Context, this, @event);
                 }
 
-                foreach (var a in Attribute.Populate(Cx, this, td.GetCustomAttributes()))
+                foreach (var a in Attribute.Populate(Context, this, td.GetCustomAttributes()))
                     yield return a;
 
-                foreach (var impl in td.GetMethodImplementations().Select(i => Cx.MdReader.GetMethodImplementation(i)))
+                foreach (var impl in td.GetMethodImplementations().Select(i => Context.MdReader.GetMethodImplementation(i)))
                 {
-                    var m = (Method)Cx.CreateGeneric(this, impl.MethodBody);
-                    var decl = (Method)Cx.CreateGeneric(this, impl.MethodDeclaration);
+                    var m = (Method)Context.CreateGeneric(this, impl.MethodBody);
+                    var decl = (Method)Context.CreateGeneric(this, impl.MethodDeclaration);
 
                     yield return m;
                     yield return decl;
@@ -166,7 +166,7 @@ namespace Semmle.Extraction.CIL.Entities
 
                 if (!td.BaseType.IsNil)
                 {
-                    var @base = (Type)Cx.CreateGeneric(this, td.BaseType);
+                    var @base = (Type)Context.CreateGeneric(this, td.BaseType);
                     yield return @base;
                     yield return Tuples.cil_base_class(this, @base);
 
@@ -174,21 +174,21 @@ namespace Semmle.Extraction.CIL.Entities
                         GetUnderlyingEnumType() is var underlying &&
                         underlying.HasValue)
                     {
-                        var underlyingType = Cx.Create(underlying.Value);
+                        var underlyingType = Context.Create(underlying.Value);
                         yield return underlyingType;
                         yield return Tuples.cil_enum_underlying_type(this, underlyingType);
                     }
                 }
 
-                foreach (var @interface in td.GetInterfaceImplementations().Select(i => Cx.MdReader.GetInterfaceImplementation(i)))
+                foreach (var @interface in td.GetInterfaceImplementations().Select(i => Context.MdReader.GetInterfaceImplementation(i)))
                 {
-                    var t = (Type)Cx.CreateGeneric(this, @interface.Interface);
+                    var t = (Type)Context.CreateGeneric(this, @interface.Interface);
                     yield return t;
                     yield return Tuples.cil_base_interface(this, t);
                 }
 
                 // Only type definitions have locations.
-                yield return Tuples.cil_type_location(this, Cx.Assembly);
+                yield return Tuples.cil_type_location(this, Context.Assembly);
             }
         }
 
@@ -204,36 +204,36 @@ namespace Semmle.Extraction.CIL.Entities
 
         private bool IsSystemEnum(TypeReferenceHandle baseType)
         {
-            var baseTypeReference = Cx.MdReader.GetTypeReference(baseType);
+            var baseTypeReference = Context.MdReader.GetTypeReference(baseType);
 
             return IsSystemEnum(baseTypeReference.Name, baseTypeReference.Namespace);
         }
 
         private bool IsSystemEnum(TypeDefinitionHandle baseType)
         {
-            var baseTypeDefinition = Cx.MdReader.GetTypeDefinition(baseType);
+            var baseTypeDefinition = Context.MdReader.GetTypeDefinition(baseType);
 
             return IsSystemEnum(baseTypeDefinition.Name, baseTypeDefinition.Namespace);
         }
 
         private bool IsSystemEnum(StringHandle typeName, StringHandle namespaceName)
         {
-            return Cx.MdReader.StringComparer.Equals(typeName, "Enum") &&
+            return Context.MdReader.StringComparer.Equals(typeName, "Enum") &&
                 !namespaceName.IsNil &&
-                Cx.MdReader.StringComparer.Equals(namespaceName, "System");
+                Context.MdReader.StringComparer.Equals(namespaceName, "System");
         }
 
         internal PrimitiveTypeCode? GetUnderlyingEnumType()
         {
             foreach (var handle in td.GetFields())
             {
-                var field = Cx.MdReader.GetFieldDefinition(handle);
+                var field = Context.MdReader.GetFieldDefinition(handle);
                 if (field.Attributes.HasFlag(FieldAttributes.Static))
                 {
                     continue;
                 }
 
-                var blob = Cx.MdReader.GetBlobReader(field.Signature);
+                var blob = Context.MdReader.GetBlobReader(field.Signature);
                 if (blob.ReadSignatureHeader().Kind != SignatureKind.Field)
                 {
                     break;
@@ -249,11 +249,11 @@ namespace Semmle.Extraction.CIL.Entities
         {
             foreach (var h in td.GetMethods())
             {
-                var md = Cx.MdReader.GetMethodDefinition(h);
+                var md = Context.MdReader.GetMethodDefinition(h);
 
                 if (md.Name == name && md.Signature == signature)
                 {
-                    return (Method)Cx.Create(h);
+                    return (Method)Context.Create(h);
                 }
             }
 

@@ -1,5 +1,5 @@
 from django.http import HttpRequest, HttpResponse
-from django.views import View
+from django.views.generic import View, RedirectView
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -32,3 +32,16 @@ class MyViewHandlerWithCustomInheritance(MyCustomViewBaseClass):
     def get(self, request: HttpRequest): # $ requestHandler
         print(self.request.GET)
         return HttpResponse("MyViewHandlerWithCustomInheritance: GET") # $ HttpResponse
+
+# RedirectView
+# See docs at https://docs.djangoproject.com/en/3.1/ref/class-based-views/base/#redirectview
+class CustomRedirectView(RedirectView):
+
+    def get_redirect_url(self, foo): # $ requestHandler routedParameter=foo
+        next = "https://example.com/{}".format(foo)
+        return next # $ HttpResponse HttpRedirectResponse redirectLocation=next
+
+
+class CustomRedirectView2(RedirectView):
+
+    url = "https://example.com/%(foo)s"

@@ -486,7 +486,9 @@ private module Tornado {
   }
 
   /** A tornado route setup. */
-  abstract class TornadoRouteSetup extends HTTP::Server::RouteSetup::Range { }
+  abstract class TornadoRouteSetup extends HTTP::Server::RouteSetup::Range {
+    override string getFramework() { result = "Tornado" }
+  }
 
   /**
    * A regex that is used to set up a route.
@@ -561,6 +563,8 @@ private module Tornado {
       result in [this.getArg(_), this.getArgByName(_)] and
       not result = this.getArg(0)
     }
+
+    override string getFramework() { result = "Tornado" }
   }
 
   // ---------------------------------------------------------------------------

@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CIL.Entities
                 this.shape = shape;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(TextWriter trapFile, IGenericContext gc)
             {
                 elementType.WriteId(trapFile, gc);
                 trapFile.Write('[');
@@ -38,7 +38,7 @@ namespace Semmle.Extraction.CIL.Entities
                 this.elementType = elementType;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(TextWriter trapFile, IGenericContext gc)
             {
                 elementType.WriteId(trapFile, gc);
                 trapFile.Write('&');
@@ -54,7 +54,7 @@ namespace Semmle.Extraction.CIL.Entities
                 this.signature = signature;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(TextWriter trapFile, IGenericContext gc)
             {
                 FunctionPointerType.WriteName(
                     trapFile.Write,
@@ -84,7 +84,7 @@ namespace Semmle.Extraction.CIL.Entities
                 this.typeArguments = typeArguments;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(TextWriter trapFile, IGenericContext gc)
             {
                 genericType.WriteId(trapFile, gc);
                 trapFile.Write('<');
@@ -112,7 +112,7 @@ namespace Semmle.Extraction.CIL.Entities
                 this.index = index;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext outerGc)
+            public void WriteId(TextWriter trapFile, IGenericContext outerGc)
             {
                 if (!ReferenceEquals(innerGc, outerGc) && innerGc is Method method)
                 {
@@ -132,7 +132,7 @@ namespace Semmle.Extraction.CIL.Entities
                 this.index = index;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(TextWriter trapFile, IGenericContext gc)
             {
                 trapFile.Write("T!");
                 trapFile.Write(index);
@@ -158,7 +158,7 @@ namespace Semmle.Extraction.CIL.Entities
                 this.isRequired = isRequired;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(TextWriter trapFile, IGenericContext gc)
             {
                 unmodifiedType.WriteId(trapFile, gc);
                 trapFile.Write(isRequired ? " modreq(" : " modopt(");
@@ -186,7 +186,7 @@ namespace Semmle.Extraction.CIL.Entities
                 this.elementType = elementType;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(TextWriter trapFile, IGenericContext gc)
             {
                 elementType.WriteId(trapFile, gc);
                 trapFile.Write('*');
@@ -207,7 +207,7 @@ namespace Semmle.Extraction.CIL.Entities
                 this.typeCode = typeCode;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(TextWriter trapFile, IGenericContext gc)
             {
                 trapFile.Write(typeCode.Id());
             }
@@ -227,7 +227,7 @@ namespace Semmle.Extraction.CIL.Entities
                 this.elementType = elementType;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(TextWriter trapFile, IGenericContext gc)
             {
                 elementType.WriteId(trapFile, gc);
                 trapFile.Write("[]");
@@ -248,9 +248,9 @@ namespace Semmle.Extraction.CIL.Entities
                 this.handle = handle;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(TextWriter trapFile, IGenericContext gc)
             {
-                var type = (Type)gc.Cx.Create(handle);
+                var type = (Type)gc.Context.Create(handle);
                 type.WriteId(trapFile);
             }
         }
@@ -269,9 +269,9 @@ namespace Semmle.Extraction.CIL.Entities
                 this.handle = handle;
             }
 
-            public void WriteId(TextWriter trapFile, GenericContext gc)
+            public void WriteId(TextWriter trapFile, IGenericContext gc)
             {
-                var type = (Type)gc.Cx.Create(handle);
+                var type = (Type)gc.Context.Create(handle);
                 type.WriteId(trapFile);
             }
         }

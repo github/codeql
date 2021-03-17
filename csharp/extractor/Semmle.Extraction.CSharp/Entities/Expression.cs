@@ -12,11 +12,11 @@ namespace Semmle.Extraction.CSharp.Entities
     internal class Expression : FreshEntity, IExpressionParentEntity
     {
         private readonly IExpressionInfo info;
-        public AnnotatedTypeSymbol? Type { get; }
+        public AnnotatedTypeSymbol? Type { get; private set; }
         public Extraction.Entities.Location Location { get; }
         public ExprKind Kind { get; }
 
-        internal Expression(IExpressionInfo info)
+        internal Expression(IExpressionInfo info, bool shouldPopulate = true)
             : base(info.Context)
         {
             this.info = info;
@@ -24,12 +24,15 @@ namespace Semmle.Extraction.CSharp.Entities
             Kind = info.Kind;
             Type = info.Type;
 
-            TryPopulate();
+            if (shouldPopulate)
+            {
+                TryPopulate();
+            }
         }
 
         protected sealed override void Populate(TextWriter trapFile)
         {
-            var type = Type.HasValue ? Entities.Type.Create(cx, Type.Value) : NullType.Create(cx);
+            var type = Type.HasValue ? Entities.Type.Create(Context, Type.Value) : NullType.Create(Context);
             trapFile.expressions(this, Kind, type.TypeRef);
             if (info.Parent.IsTopLevelParent)
                 trapFile.expr_parent_top_level(this, info.Child, info.Parent);
@@ -39,7 +42,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (Type.HasValue && !Type.Value.HasObliviousNullability())
             {
-                var n = NullabilityEntity.Create(cx, Nullability.Create(Type.Value));
+                var n = NullabilityEntity.Create(Context, Nullability.Create(Type.Value));
                 trapFile.type_nullability(this, n);
             }
 
@@ -57,7 +60,15 @@ namespace Semmle.Extraction.CSharp.Entities
             type.PopulateGenerics();
         }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => Location.symbol;
+        public override Location? ReportingLocation => Location.Symbol;
+
+        internal void SetType(ITypeSymbol? type)
+        {
+            if (type is not null)
+            {
+                Type = new AnnotatedTypeSymbol(type, type.NullableAnnotation);
+            }
+        }
 
         bool IExpressionParentEntity.IsTopLevelParent => false;
 
@@ -66,15 +77,15 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         /// <param name="obj">The value.</param>
         /// <returns>The string representation.</returns>
-        public static string ValueAsString(object value)
+        public static string ValueAsString(object? value)
         {
-            return value == null
+            return value is null
                 ? "null"
                 : value is bool b
                     ? b
                         ? "true"
                         : "false"
-                    : value.ToString();
+                    : value.ToString()!;
         }
 
         /// <summary>
@@ -118,10 +129,11 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// Creates a generated expression from a typed constant.
         /// </summary>
-        public static Expression CreateGenerated(Context cx, TypedConstant constant, IExpressionParentEntity parent,
-            int childIndex, Semmle.Extraction.Entities.Location location)
+        public static Expression? CreateGenerated(Context cx, TypedConstant constant, IExpressionParentEntity parent,
+            int childIndex, Extraction.Entities.Location location)
         {
-            if (constant.IsNull)
+            if (constant.IsNull ||
+                constant.Type is null)
             {
                 return Literal.CreateGeneratedNullLiteral(cx, parent, childIndex, location);
             }
@@ -132,11 +144,11 @@ namespace Semmle.Extraction.CSharp.Entities
                     return Literal.CreateGenerated(cx, parent, childIndex, constant.Type, constant.Value, location);
                 case TypedConstantKind.Enum:
                     // Enum value is generated in the following format: (Enum)value
-                    Action<Expression, int> createChild = (parent, index) => Literal.CreateGenerated(cx, parent, index, ((INamedTypeSymbol)constant.Type).EnumUnderlyingType, constant.Value, location);
-                    var cast = Cast.CreateGenerated(cx, parent, childIndex, constant.Type, constant.Value, createChild, location);
+                    Action<Expression, int> createChild = (parent, index) => Literal.CreateGenerated(cx, parent, index, ((INamedTypeSymbol)constant.Type).EnumUnderlyingType!, constant.Value, location);
+                    var cast = Cast.CreateGenerated(cx, parent, childIndex, constant.Type!, constant.Value, createChild, location);
                     return cast;
                 case TypedConstantKind.Type:
-                    var type = ((ITypeSymbol)constant.Value).OriginalDefinition;
+                    var type = ((ITypeSymbol)constant.Value!).OriginalDefinition;
                     return TypeOf.CreateGenerated(cx, parent, childIndex, type, location);
                 case TypedConstantKind.Array:
                     // Single dimensional arrays are in the following format:
@@ -145,6 +157,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     //
                     // itemI is generated recursively.
                     return NormalArrayCreation.CreateGenerated(cx, parent, childIndex, constant.Type, constant.Values, location);
+                case TypedConstantKind.Error:
                 default:
                     cx.ExtractionError("Couldn't extract constant in attribute", constant.ToString(), location);
                     return null;
@@ -170,10 +183,10 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="node">The expression.</param>
         public void OperatorCall(TextWriter trapFile, ExpressionSyntax node)
         {
-            var @operator = cx.GetSymbolInfo(node);
+            var @operator = Context.GetSymbolInfo(node);
             if (@operator.Symbol is IMethodSymbol method)
             {
-                var callType = GetCallType(cx, node);
+                var callType = GetCallType(Context, node);
                 if (callType == CallType.Dynamic)
                 {
                     UserOperator.OperatorSymbol(method.Name, out var operatorName);
@@ -181,7 +194,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     return;
                 }
 
-                trapFile.expr_call(this, Method.Create(cx, method));
+                trapFile.expr_call(this, Method.Create(Context, method));
             }
         }
 
@@ -213,7 +226,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 switch (method.MethodKind)
                 {
                     case MethodKind.BuiltinOperator:
-                        if (method.ContainingType != null && method.ContainingType.TypeKind == Microsoft.CodeAnalysis.TypeKind.Delegate)
+                        if (method.ContainingType is not null && method.ContainingType.TypeKind == Microsoft.CodeAnalysis.TypeKind.Delegate)
                             return CallType.UserOperator;
                         return CallType.BuiltInOperator;
                     case MethodKind.Constructor:
@@ -232,7 +245,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public static bool IsDynamic(Context cx, ExpressionSyntax node)
         {
             var ti = cx.GetTypeInfo(node).ConvertedType;
-            return ti != null && ti.TypeKind == Microsoft.CodeAnalysis.TypeKind.Dynamic;
+            return ti is not null && ti.TypeKind == Microsoft.CodeAnalysis.TypeKind.Dynamic;
         }
 
         /// <summary>
@@ -242,7 +255,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <returns>The qualifier of the conditional access.</returns>
         protected static ExpressionSyntax FindConditionalQualifier(ExpressionSyntax node)
         {
-            for (SyntaxNode n = node; n != null; n = n.Parent)
+            for (SyntaxNode? n = node; n is not null; n = n.Parent)
             {
                 if (n.Parent is ConditionalAccessExpressionSyntax conditionalAccess &&
                     conditionalAccess.WhenNotNull == n)
@@ -267,7 +280,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private void PopulateArgument(TextWriter trapFile, ArgumentSyntax arg, int child)
         {
-            var expr = Create(cx, arg.Expression, this, child);
+            var expr = Create(Context, arg.Expression, this, child);
             int mode;
             switch (arg.RefOrOutKeyword.Kind())
             {
@@ -288,7 +301,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
             trapFile.expr_argument(expr, mode);
 
-            if (arg.NameColon != null)
+            if (arg.NameColon is not null)
             {
                 trapFile.expr_argument_name(expr, arg.NameColon.Name.Identifier.Text);
             }

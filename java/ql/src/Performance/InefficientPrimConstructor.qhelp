@@ -47,14 +47,15 @@ an argument of this type.</p>
   Addison-Wesley, 2008.
 </li>
 <li>
-  Java Platform, Standard Edition 6, API Documentation:  
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Boolean.html#valueOf%28boolean%29">Boolean.valueOf()</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Byte.html#valueOf%28byte%29">Byte.valueOf()</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Short.html#valueOf%28short%29">Short.valueOf()</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Integer.html#valueOf%28int%29">Integer.valueOf()</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Long.html#valueOf%28long%29">Long.valueOf()</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Float.html#valueOf%28float%29">Float.valueOf()</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Double.html#valueOf%28double%29">Double.valueOf()</a>.
+  Java API Specification:  
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Boolean.html#valueOf(boolean)">Boolean.valueOf()</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Byte.html#valueOf(byte)">Byte.valueOf()</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Short.html#valueOf(short)">Short.valueOf()</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Character.html#valueOf(char)">Character.valueOf()</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Integer.html#valueOf(int)">Integer.valueOf()</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Long.html#valueOf(long)">Long.valueOf()</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Float.html#valueOf(float)">Float.valueOf()</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Double.html#valueOf(double)">Double.valueOf()</a>.
 </li>
 
 

@@ -13,7 +13,7 @@ import semmle.code.cpp.models.interfaces.SideEffect
  */
 class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, SideEffectFunction {
   StrcatFunction() {
-    this.hasGlobalOrStdName([
+    this.hasGlobalOrStdOrBslName([
         "strcat", // strcat(dst, src)
         "strncat", // strncat(dst, src, max_amount)
         "wcscat", // wcscat(dst, src)

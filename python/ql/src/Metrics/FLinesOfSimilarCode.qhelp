@@ -10,7 +10,7 @@ duplicated code.
 </p>
 
 </overview>
-<include src="DuplicationProblems.qhelp" />
+<include src="DuplicationProblems.inc.qhelp" />
 
 <recommendation>
 

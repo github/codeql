@@ -143,6 +143,18 @@ public class HTMLExtractor implements IExtractor {
           }
       }
     }
+
+    @Override
+    public boolean shouldExtractAttributes(Element element) {
+      Attributes attributes = element.getAttributes();
+      if (attributes == null) return false;
+      for (Attribute attr : attributes) {
+        if (!VALID_ATTRIBUTE_NAME.matcher(attr.getName()).matches()) {
+          return false;
+        }
+      }
+      return true;
+    }
   }
 
   private boolean isAngularTemplateAttributeName(String name) {
@@ -152,6 +164,8 @@ public class HTMLExtractor implements IExtractor {
   }
 
   private static final Pattern ANGULAR_FOR_LOOP_DECL = Pattern.compile("^ *let +(\\w+) +of(?: +|(?!\\w))(.*)");
+
+  private static final Pattern VALID_ATTRIBUTE_NAME = Pattern.compile("\\*?\\[?\\(?[\\w:_\\-]+\\]?\\)?");
 
   /** List of HTML attributes whose value is interpreted as JavaScript. */
   private static final Pattern JS_ATTRIBUTE =

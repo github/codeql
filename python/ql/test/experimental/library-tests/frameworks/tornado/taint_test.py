@@ -33,6 +33,10 @@ class TaintTest(tornado.web.RequestHandler):
             # see https://www.tornadoweb.org/en/stable/httputil.html#tornado.httputil.HTTPServerRequest
             request,
 
+            # For the URL https:://example.com/foo/bar?baz=42
+            # request.uri="/foo/bar?baz=42"
+            # request.path="/foo/bar"
+            # request.query="baz=42"
             request.uri,
             request.path,
             request.query,

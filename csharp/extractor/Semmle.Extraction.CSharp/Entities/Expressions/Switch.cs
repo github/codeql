@@ -13,14 +13,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression Create(ExpressionNodeInfo info) => new Switch(info).TryPopulate();
 
-        public Expression SwitchedExpr { get; private set; }
-
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            SwitchedExpr = Expression.Create(cx, Syntax.GoverningExpression, this, -1);
+            Expression.Create(Context, Syntax.GoverningExpression, this, -1);
             for (var i = 0; i < Syntax.Arms.Count; i++)
             {
-                new SwitchCase(cx, Syntax.Arms[i], this, i);
+                new SwitchCase(Context, Syntax.Arms[i], this, i);
             }
         }
     }

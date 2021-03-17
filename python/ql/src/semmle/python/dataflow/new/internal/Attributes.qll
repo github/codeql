@@ -159,7 +159,9 @@ private class SetAttrCallAsAttrWrite extends AttrWrite, CfgNode {
  * Instances of this class correspond to the `NameNode` for `attr`, and also gives access to `value` by
  * virtue of being a `DefinitionNode`.
  */
-private class ClassAttributeAssignmentNode extends DefinitionNode, NameNode { }
+private class ClassAttributeAssignmentNode extends DefinitionNode, NameNode {
+  ClassAttributeAssignmentNode() { this.getScope() = any(ClassExpr c).getInnerScope() }
+}
 
 /**
  * An attribute assignment via a class field, e.g.

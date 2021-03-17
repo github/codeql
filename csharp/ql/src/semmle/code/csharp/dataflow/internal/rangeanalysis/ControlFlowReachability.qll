@@ -61,7 +61,7 @@ abstract class ControlFlowReachabilityConfiguration extends string {
   /**
    * Holds if `e1` and `e2` are expressions for which we want to find a
    * control-flow path that follows control flow successors (resp.
-   * predecessors, as specified by `isSuccesor`) inside the syntactic scope
+   * predecessors, as specified by `isSuccessor`) inside the syntactic scope
    * `scope`. The Boolean `exactScope` indicates whether a transitive child
    * of `scope` is allowed (`exactScope = false`).
    */
@@ -74,7 +74,7 @@ abstract class ControlFlowReachabilityConfiguration extends string {
   /**
    * Holds if `e` and `def` are elements for which we want to find a
    * control-flow path that follows control flow successors (resp.
-   * predecessors, as specified by `isSuccesor`) inside the syntactic scope
+   * predecessors, as specified by `isSuccessor`) inside the syntactic scope
    * `scope`. The Boolean `exactScope` indicates whether a transitive child
    * of `scope` is allowed (`exactScope = false`).
    */

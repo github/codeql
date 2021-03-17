@@ -88,10 +88,10 @@ public class A {
   public void deserializeSnakeYaml4(Socket sock) throws java.io.IOException {
     Yaml yaml = new Yaml(new Constructor(A.class));
     InputStream input = sock.getInputStream();
-    Object o = yaml.load(input); //OK
-    Object o2 = yaml.loadAll(input); //OK
-    Object o3 = yaml.parse(new InputStreamReader(input)); //OK
-    A o4 = yaml.loadAs(input, A.class); //OK
-    A o5 = yaml.loadAs(new InputStreamReader(input), A.class); //OK
+    Object o = yaml.load(input); //unsafe
+    Object o2 = yaml.loadAll(input); //unsafe
+    Object o3 = yaml.parse(new InputStreamReader(input)); //unsafe
+    A o4 = yaml.loadAs(input, A.class); //unsafe
+    A o5 = yaml.loadAs(new InputStreamReader(input), A.class); //unsafe
   }
 }

@@ -30,7 +30,7 @@ into separate classes.</p>
 <sample src="TLackOfCohesionCK.cs" />
 <p>The following table shows which pairs of methods access common
 properties:</p>
-<include src="TLackOfCohesionCKTable.qhelp" />
+<include src="TLackOfCohesionCKTable.inc.qhelp" />
 <p>This table shows that for this example m=2 and n=18. Consequently,
 this example has an LCOM of 8:</p>
 <pre>LCOM = max((18 - 2) / 2, 0)

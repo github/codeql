@@ -12,8 +12,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            Create(cx, Syntax.Expression, this, 0);
-            Expressions.Pattern.Create(cx, Syntax.Pattern, this, 1);
+            Create(Context, Syntax.Expression, this, 0);
+            Expressions.Pattern.Create(Context, Syntax.Pattern, this, 1);
         }
 
         public static Expression Create(ExpressionNodeInfo info) => new IsPattern(info).TryPopulate();

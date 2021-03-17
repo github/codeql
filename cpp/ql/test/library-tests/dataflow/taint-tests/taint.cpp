@@ -631,3 +631,44 @@ void test__strnextc(const char* source) {
 	c = _strnextc("");
 	sink(c);
 }
+
+// --- taint through const specified function ---
+
+class C_no_const_member_function {
+  char* data_;
+public:
+  char* data() { return data_; }
+};
+
+void test_no_const_member(char* source) {
+  C_no_const_member_function c;
+  memcpy(c.data(), source, 16);
+  sink(c.data()); // $ ast MISSING: ir
+}
+
+class C_const_member_function {
+  char* data_;
+public:
+  char* data() const { return data_; }
+};
+
+void test_with_const_member(char* source) {
+  C_const_member_function c;
+  memcpy(c.data(), source, 16);
+  sink(c.data()); // $ ast MISSING: ir
+}
+
+void argument_source(void*);
+
+struct two_members {
+	char *x, *y;
+};
+
+void test_argument_source_field_to_obj() {
+	two_members s;
+	argument_source(s.x);
+
+	sink(s); // $ SPURIOUS: ast
+	sink(s.x); // $ ast MISSING: ir
+	sink(s.y); // clean
+}

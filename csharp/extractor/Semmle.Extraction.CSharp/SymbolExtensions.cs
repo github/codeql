@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using Semmle.Extraction.CSharp.Entities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
@@ -15,10 +16,10 @@ namespace Semmle.Extraction.CSharp
     /// </summary>
     public struct AnnotatedTypeSymbol
     {
-        public ITypeSymbol Symbol { get; set; }
+        public ITypeSymbol? Symbol { get; set; }
         public NullableAnnotation Nullability { get; }
 
-        public AnnotatedTypeSymbol(ITypeSymbol symbol, NullableAnnotation nullability)
+        public AnnotatedTypeSymbol(ITypeSymbol? symbol, NullableAnnotation nullability)
         {
             Symbol = symbol;
             Nullability = nullability;
@@ -36,7 +37,7 @@ namespace Semmle.Extraction.CSharp
         ///
         /// <param name="type">The type to disambiguate.</param>
         /// <returns></returns>
-        public static ITypeSymbol DisambiguateType(this ITypeSymbol type)
+        public static ITypeSymbol? DisambiguateType(this ITypeSymbol? type)
         {
             /* A type could not be determined.
              * Sometimes this happens due to a missing reference,
@@ -48,7 +49,6 @@ namespace Semmle.Extraction.CSharp
              *
              * The conservative option would be to resolve all error types as null.
              */
-
 
             return type is IErrorTypeSymbol errorType && errorType.CandidateSymbols.Any()
                 ? errorType.CandidateSymbols.First() as ITypeSymbol
@@ -93,7 +93,7 @@ namespace Semmle.Extraction.CSharp
         {
             var seen = new HashSet<ITypeSymbol>(SymbolEqualityComparer.Default);
 
-            bool IdDependsOnImpl(ITypeSymbol type)
+            bool IdDependsOnImpl(ITypeSymbol? type)
             {
                 if (SymbolEqualityComparer.Default.Equals(type, symbol))
                     return true;
@@ -117,7 +117,7 @@ namespace Semmle.Extraction.CSharp
                         case TypeKind.Delegate:
                         case TypeKind.Error:
                             var named = (INamedTypeSymbol)type;
-                            if (named.IsTupleType && named.TupleUnderlyingType is object)
+                            if (named.IsTupleType && named.TupleUnderlyingType is not null)
                                 named = named.TupleUnderlyingType;
                             if (IdDependsOnImpl(named.ContainingType))
                                 return true;
@@ -207,8 +207,14 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        private static void BuildOrWriteId(this ISymbol symbol, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType = false)
+        private static void BuildOrWriteId(this ISymbol? symbol, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType = false)
         {
+            if (symbol is null)
+            {
+                cx.ModelError(symbolBeingDefined, "Missing symbol. Couldn't build some part of the ID.");
+                return;
+            }
+
             // We need to keep track of the symbol being defined in order to avoid cyclic labels.
             // For example, in
             //
@@ -243,7 +249,7 @@ namespace Semmle.Extraction.CSharp
         /// it will generate an appropriate ID that encodes the signature of
         /// <paramref name="symbol" />.
         /// </summary>
-        public static void BuildOrWriteId(this ISymbol symbol, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined) =>
+        public static void BuildOrWriteId(this ISymbol? symbol, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined) =>
             symbol.BuildOrWriteId(cx, trapFile, symbolBeingDefined, true);
 
         /// <summary>
@@ -289,7 +295,7 @@ namespace Semmle.Extraction.CSharp
                 trapFile.BuildList(",", named.TupleElements,
                     (f, tb0) =>
                     {
-                        trapFile.Write(f.Name);
+                        trapFile.Write((f.CorrespondingTupleField ?? f).Name);
                         trapFile.Write(":");
                         f.Type.BuildOrWriteId(cx, tb0, symbolBeingDefined, addBaseClass);
                     }
@@ -300,14 +306,14 @@ namespace Semmle.Extraction.CSharp
 
             void AddContaining()
             {
-                if (named.ContainingType != null)
+                if (named.ContainingType is not null)
                 {
                     named.ContainingType.BuildOrWriteId(cx, trapFile, symbolBeingDefined, addBaseClass);
                     trapFile.Write('.');
                 }
-                else if (named.ContainingNamespace != null)
+                else if (named.ContainingNamespace is not null)
                 {
-                    if (cx.ShouldAddAssemblyTrapPrefix && named.ContainingAssembly is object)
+                    if (cx.ShouldAddAssemblyTrapPrefix && named.ContainingAssembly is not null)
                         BuildAssembly(named.ContainingAssembly, trapFile);
                     named.ContainingNamespace.BuildNamespace(cx, trapFile);
                 }
@@ -588,7 +594,7 @@ namespace Semmle.Extraction.CSharp
         /// Holds if this method is a source declaration.
         /// </summary>
         public static bool IsSourceDeclaration(this IMethodSymbol method) =>
-            IsSourceDeclaration((ISymbol)method) && SymbolEqualityComparer.Default.Equals(method, method.ConstructedFrom) && method.ReducedFrom == null;
+            IsSourceDeclaration((ISymbol)method) && SymbolEqualityComparer.Default.Equals(method, method.ConstructedFrom) && method.ReducedFrom is null;
 
         /// <summary>
         /// Holds if this parameter is a source declaration.
@@ -606,12 +612,13 @@ namespace Semmle.Extraction.CSharp
         /// Gets the base type of `symbol`. Unlike `symbol.BaseType`, this excludes effective base
         /// types of type parameters as well as `object` base types.
         /// </summary>
-        public static INamedTypeSymbol GetNonObjectBaseType(this ITypeSymbol symbol, Context cx) =>
+        public static INamedTypeSymbol? GetNonObjectBaseType(this ITypeSymbol symbol, Context cx) =>
             symbol is ITypeParameterSymbol || SymbolEqualityComparer.Default.Equals(symbol.BaseType, cx.Compilation.ObjectType) ? null : symbol.BaseType;
 
-        public static IEntity CreateEntity(this Context cx, ISymbol symbol)
+        [return: NotNullIfNotNull("symbol")]
+        public static IEntity? CreateEntity(this Context cx, ISymbol symbol)
         {
-            if (symbol == null)
+            if (symbol is null)
                 return null;
 
             using (cx.StackGuard)
@@ -623,7 +630,9 @@ namespace Semmle.Extraction.CSharp
                 catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
                     cx.ModelError(symbol, $"Exception processing symbol '{symbol.Kind}' of type '{ex}': {symbol}");
+#nullable disable warnings
                     return null;
+#nullable restore warnings
                 }
             }
         }

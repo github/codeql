@@ -22,23 +22,25 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         /// <summary>
         /// Gets the IMethodSymbol for this local function statement.
         /// </summary>
-        private IMethodSymbol Symbol
+        private IMethodSymbol? Symbol
         {
             get
             {
-                var m = cx.GetModel(Stmt);
+                var m = Context.GetModel(Stmt);
                 return m.GetDeclaredSymbol(Stmt) as IMethodSymbol;
             }
         }
 
-        /// <summary>
-        /// Gets the function defined by this local statement.
-        /// </summary>
-        private Entities.LocalFunction Function => Entities.LocalFunction.Create(cx, Symbol);
-
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            trapFile.local_function_stmts(this, Function);
+            if (Symbol is null)
+            {
+                Context.ExtractionError("Could not get local function symbol", null, Context.CreateLocation(this.ReportingLocation), severity: Util.Logging.Severity.Warning);
+                return;
+            }
+
+            var function = Entities.LocalFunction.Create(Context, Symbol);
+            trapFile.local_function_stmts(this, function);
         }
     }
 }

@@ -1,3 +1,6 @@
+import java.util.Random;
+import org.apache.commons.lang3.RandomUtils;
+
 public class A {
   private static final int[] arr1 = new int[] { 1, 2, 3, 4, 5, 6, 7, 8 };
   private final int[] arr2;
@@ -193,5 +196,12 @@ public class A {
         xs[y]++; // OK
       }
     }
+  }
+
+  static int m16() {
+    return A.arr1[(new Random()).nextInt(arr1.length + 1)] +  // BAD: random int may be out of range
+      A.arr1[(new Random()).nextInt(arr1.length)] + // GOOD: random int must be in range
+      A.arr1[RandomUtils.nextInt(0, arr1.length + 1)] + // BAD: random int may be out of range
+      A.arr1[RandomUtils.nextInt(0, arr1.length)]; // GOOD: random int must be in range
   }
 }

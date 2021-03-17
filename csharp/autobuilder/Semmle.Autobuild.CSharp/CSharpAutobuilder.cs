@@ -97,21 +97,21 @@ namespace Semmle.Autobuild.CSharp
         /// </summary>
         private CSharpBuildStrategy GetCSharpBuildStrategy()
         {
-            if (Options.BuildCommand != null)
+            if (Options.BuildCommand is not null)
                 return CSharpBuildStrategy.CustomBuildCommand;
 
             if (Options.Buildless)
                 return CSharpBuildStrategy.Buildless;
 
-            if (Options.MsBuildArguments != null
-                || Options.MsBuildConfiguration != null
-                || Options.MsBuildPlatform != null
-                || Options.MsBuildTarget != null)
+            if (Options.MsBuildArguments is not null
+                || Options.MsBuildConfiguration is not null
+                || Options.MsBuildPlatform is not null
+                || Options.MsBuildTarget is not null)
             {
                 return CSharpBuildStrategy.MSBuild;
             }
 
-            if (Options.DotNetArguments != null || Options.DotNetVersion != null)
+            if (Options.DotNetArguments is not null || Options.DotNetVersion is not null)
                 return CSharpBuildStrategy.DotNet;
 
             return CSharpBuildStrategy.Auto;

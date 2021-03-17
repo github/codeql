@@ -12,10 +12,10 @@ namespace Semmle.Extraction.CIL.Entities
     internal abstract class Method : TypeContainer, IMember, ICustomModifierReceiver, IParameterizable
     {
         protected MethodTypeParameter[]? genericParams;
-        protected GenericContext gc;
+        protected IGenericContext gc;
         protected MethodSignature<ITypeSignature> signature;
 
-        protected Method(GenericContext gc) : base(gc.Cx)
+        protected Method(IGenericContext gc) : base(gc.Context)
         {
             this.gc = gc;
         }
@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CIL.Entities
         public override IEnumerable<Type> TypeParameters => gc.TypeParameters.Concat(DeclaringType.TypeParameters);
 
         public override IEnumerable<Type> MethodParameters =>
-            genericParams == null ? gc.MethodParameters : gc.MethodParameters.Concat(genericParams);
+            genericParams is null ? gc.MethodParameters : gc.MethodParameters.Concat(genericParams);
 
         public int GenericParameterCount => signature.GenericParameterCount;
 
@@ -83,10 +83,10 @@ namespace Semmle.Extraction.CIL.Entities
 
             if (!IsStatic)
             {
-                yield return Cx.Populate(new Parameter(Cx, this, i++, DeclaringType));
+                yield return Context.Populate(new Parameter(Context, this, i++, DeclaringType));
             }
 
-            foreach (var p in GetParameterExtractionProducts(parameterTypes, this, this, Cx, i))
+            foreach (var p in GetParameterExtractionProducts(parameterTypes, this, this, Context, i))
             {
                 yield return p;
             }

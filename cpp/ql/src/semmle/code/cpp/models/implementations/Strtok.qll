@@ -15,7 +15,7 @@ import semmle.code.cpp.models.interfaces.Taint
  */
 private class Strtok extends ArrayFunction, AliasFunction, TaintFunction, SideEffectFunction {
   Strtok() {
-    this.hasGlobalOrStdName("strtok") or
+    this.hasGlobalOrStdOrBslName("strtok") or
     this.hasGlobalName(["strtok_r", "_strtok_l", "wcstok", "_wcstok_l", "_mbstok", "_mbstok_l"])
   }
 

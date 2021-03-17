@@ -2416,3 +2416,22 @@ class StringValuesFlow extends LibraryTypeDataFlow, Struct {
     preservesValue = false
   }
 }
+
+private class RecordConstructorFlow extends SummarizedCallable {
+  RecordConstructorFlow() { this = any(Record r).getAMember().(Constructor) }
+
+  override predicate propagatesFlow(
+    SummaryInput input, ContentList inputContents, SummaryOutput output, ContentList outputContents,
+    boolean preservesValue
+  ) {
+    exists(int i, Property p, string name |
+      this.getParameter(i).getName() = name and
+      this.getDeclaringType().getAMember(name) = p and
+      input = SummaryInput::parameter(i) and
+      inputContents = ContentList::empty() and
+      output = SummaryOutput::return() and
+      outputContents = ContentList::property(p) and
+      preservesValue = true
+    )
+  }
+}

@@ -7,6 +7,7 @@ import semmle.code.java.frameworks.spring.SpringController
 import semmle.code.java.frameworks.spring.SpringHttp
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking2
+import semmle.code.java.dataflow.ExternalFlow
 
 /** A sink that represent a method that outputs data without applying contextual output encoding. */
 abstract class XssSink extends DataFlow::Node { }
@@ -31,6 +32,8 @@ class XssAdditionalTaintStep extends Unit {
 /** A default sink representing methods susceptible to XSS attacks. */
 private class DefaultXssSink extends XssSink {
   DefaultXssSink() {
+    sinkNode(this, "xss")
+    or
     exists(HttpServletResponseSendErrorMethod m, MethodAccess ma |
       ma.getMethod() = m and
       this.asExpr() = ma.getArgument(1)

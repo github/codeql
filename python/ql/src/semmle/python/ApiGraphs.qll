@@ -93,6 +93,11 @@ module API {
     Node getReturn() { result = getASuccessor(Label::return()) }
 
     /**
+     * Gets a node representing a subclass of the class represented by this node.
+     */
+    Node getASubclass() { result = getASuccessor(Label::subclass()) }
+
+    /**
      * Gets a string representation of the lexicographically least among all shortest access paths
      * from the root to this node.
      */
@@ -211,6 +216,9 @@ module API {
    */
   Node moduleImport(string m) { result = Impl::MkModuleImport(m) }
 
+  /** Gets a node corresponding to the built-in with the given name, if any. */
+  Node builtin(string n) { result = moduleImport("builtins").getMember(n) }
+
   /**
    * Provides the actual implementation of API graphs, cached for performance.
    *
@@ -295,11 +303,18 @@ module API {
       MkRoot() or
       /** An abstract representative for imports of the module called `name`. */
       MkModuleImport(string name) {
-        imports(_, name)
+        // Ignore the following module name for Python 2, as we alias `__builtin__` to `builtins` elsewhere
+        (name != "__builtin__" or major_version() = 3) and
+        (
+          imports(_, name)
+          or
+          // When we `import foo.bar.baz` we want to create API graph nodes also for the prefixes
+          // `foo` and `foo.bar`:
+          name = any(ImportExpr e | not e.isRelative()).getAnImportedModuleName()
+        )
         or
-        // When we `import foo.bar.baz` we want to create API graph nodes also for the prefixes
-        // `foo` and `foo.bar`:
-        name = any(ImportExpr e | not e.isRelative()).getAnImportedModuleName()
+        // The `builtins` module should always be implicitly available
+        name = "builtins"
       } or
       /** A use of an API member at the node `nd`. */
       MkUse(DataFlow::Node nd) { use(_, _, nd) }
@@ -312,12 +327,11 @@ module API {
      * For instance, `prefix_member("foo.bar", "baz", "foo.bar.baz")` would hold.
      */
     private predicate prefix_member(TApiNode base, string member, TApiNode sub) {
-      exists(string base_str, string sub_str |
-        base = MkModuleImport(base_str) and
+      exists(string sub_str, string regexp |
+        regexp = "(.+)[.]([^.]+)" and
+        base = MkModuleImport(sub_str.regexpCapture(regexp, 1)) and
+        member = sub_str.regexpCapture(regexp, 2) and
         sub = MkModuleImport(sub_str)
-      |
-        base_str + "." + member = sub_str and
-        not member.matches("%.%")
       )
     }
 
@@ -333,6 +347,24 @@ module API {
         not iexpr.getNode().isRelative() and
         name = iexpr.getNode().getImportedModuleName()
       )
+    }
+
+    private import semmle.python.types.Builtins as Builtins
+
+    /**
+     * Gets a data flow node that is likely to refer to a built-in with the name `name`.
+     *
+     * Currently this is an over-approximation, and does not account for things like overwriting a
+     * built-in with a different value.
+     */
+    private DataFlow::Node likely_builtin(string name) {
+      result.asCfgNode() =
+        any(NameNode n |
+          n.isGlobal() and
+          n.isLoad() and
+          name = n.getId() and
+          name = any(Builtins::Builtin b).getName()
+        )
     }
 
     /**
@@ -351,14 +383,24 @@ module API {
         // the relationship between `pred` and `ref`.
         use(base, src) and pred = trackUseNode(src)
       |
-        // Reading an attribute on a node that is a use of `base`:
+        // Referring to an attribute on a node that is a use of `base`:
         lbl = Label::memberFromRef(ref) and
-        ref = pred.getAnAttributeRead()
+        ref = pred.getAnAttributeReference()
         or
         // Calling a node that is a use of `base`
         lbl = Label::return() and
         ref = pred.getACall()
+        or
+        // Subclassing a node
+        lbl = Label::subclass() and
+        exists(DataFlow::Node superclass | pred.flowsTo(superclass) |
+          ref.asExpr().(ClassExpr).getABase() = superclass.asExpr()
+        )
       )
+      or
+      // Built-ins, treated as members of the module `builtins`
+      base = MkModuleImport("builtins") and
+      lbl = Label::member(any(string name | ref = likely_builtin(name)))
     }
 
     /**
@@ -370,6 +412,11 @@ module API {
         nd = MkModuleImport(name) and
         imports(ref, name)
       )
+      or
+      // Ensure the Python 2 `__builtin__` module gets the name of the Python 3 `builtins` module.
+      major_version() = 2 and
+      nd = MkModuleImport("builtins") and
+      imports(ref, "__builtin__")
       or
       nd = MkUse(ref)
     }
@@ -468,4 +515,6 @@ private module Label {
 
   /** Gets the `return` edge label. */
   string return() { result = "getReturn()" }
+
+  string subclass() { result = "getASubclass()" }
 }

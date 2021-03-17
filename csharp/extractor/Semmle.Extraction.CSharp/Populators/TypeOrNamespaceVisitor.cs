@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Populators
         public override void VisitUsingDirective(UsingDirectiveSyntax usingDirective)
         {
             // Only deal with "using namespace" not "using X = Y"
-            if (usingDirective.Alias == null)
+            if (usingDirective.Alias is null)
                 new UsingDirective(Cx, usingDirective, (NamespaceDeclaration)Parent);
         }
 

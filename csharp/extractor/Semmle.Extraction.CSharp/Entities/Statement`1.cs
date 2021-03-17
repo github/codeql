@@ -15,7 +15,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             Stmt = stmt;
             this.location = location;
-            cx.BindComments(this, location.symbol);
+            cx.BindComments(this, location.Symbol);
         }
 
         protected Statement(Context cx, TSyntax stmt, Kinds.StmtKind kind, IStatementParentEntity parent, int child)

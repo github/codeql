@@ -23,18 +23,18 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override IList<LocalVariable>? LocalVariables => locals;
 
-        public DefinitionMethod(GenericContext gc, MethodDefinitionHandle handle) : base(gc)
+        public DefinitionMethod(IGenericContext gc, MethodDefinitionHandle handle) : base(gc)
         {
-            md = Cx.MdReader.GetMethodDefinition(handle);
+            md = Context.MdReader.GetMethodDefinition(handle);
             this.gc = gc;
             this.handle = handle;
-            name = Cx.GetString(md.Name);
+            name = Context.GetString(md.Name);
 
-            declaringType = (Type)Cx.CreateGeneric(this, md.GetDeclaringType());
+            declaringType = (Type)Context.CreateGeneric(this, md.GetDeclaringType());
 
             signature = md.DecodeSignature(new SignatureDecoder(), this);
 
-            methodDebugInformation = Cx.GetMethodDebugInformation(handle);
+            methodDebugInformation = Context.GetMethodDebugInformation(handle);
         }
 
         public override bool Equals(object? obj)
@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override Type DeclaringType => declaringType;
 
-        public override string Name => Cx.ShortName(md.Name);
+        public override string Name => Context.ShortName(md.Name);
 
         public override string NameLabel => name;
 
@@ -67,14 +67,14 @@ namespace Semmle.Extraction.CIL.Entities
                     // depend on other type parameters (as a constraint).
                     genericParams = new MethodTypeParameter[md.GetGenericParameters().Count];
                     for (var i = 0; i < genericParams.Length; ++i)
-                        genericParams[i] = Cx.Populate(new MethodTypeParameter(this, this, i));
+                        genericParams[i] = Context.Populate(new MethodTypeParameter(this, this, i));
                     for (var i = 0; i < genericParams.Length; ++i)
                         genericParams[i].PopulateHandle(md.GetGenericParameters()[i]);
                     foreach (var p in genericParams)
                         yield return p;
                 }
 
-                var typeSignature = md.DecodeSignature(Cx.TypeSignatureDecoder, this);
+                var typeSignature = md.DecodeSignature(Context.TypeSignatureDecoder, this);
 
                 var parameters = GetParameterExtractionProducts(typeSignature.ParameterTypes).ToArray();
                 Parameters = parameters.OfType<Parameter>().ToArray();
@@ -85,17 +85,17 @@ namespace Semmle.Extraction.CIL.Entities
                 foreach (var c in PopulateFlags)
                     yield return c;
 
-                foreach (var p in md.GetParameters().Select(h => Cx.MdReader.GetParameter(h)).Where(p => p.SequenceNumber > 0))
+                foreach (var p in md.GetParameters().Select(h => Context.MdReader.GetParameter(h)).Where(p => p.SequenceNumber > 0))
                 {
                     var pe = Parameters[IsStatic ? p.SequenceNumber - 1 : p.SequenceNumber];
                     if (p.Attributes.HasFlag(ParameterAttributes.Out))
                         yield return Tuples.cil_parameter_out(pe);
                     if (p.Attributes.HasFlag(ParameterAttributes.In))
                         yield return Tuples.cil_parameter_in(pe);
-                    Attribute.Populate(Cx, pe, p.GetCustomAttributes());
+                    Attribute.Populate(Context, pe, p.GetCustomAttributes());
                 }
 
-                yield return Tuples.metadata_handle(this, Cx.Assembly, MetadataTokens.GetToken(handle));
+                yield return Tuples.metadata_handle(this, Context.Assembly, MetadataTokens.GetToken(handle));
 
                 foreach (var m in GetMethodExtractionProducts(Name, declaringType, typeSignature.ReturnType))
                 {
@@ -103,19 +103,19 @@ namespace Semmle.Extraction.CIL.Entities
                 }
 
                 yield return Tuples.cil_method_source_declaration(this, this);
-                yield return Tuples.cil_method_location(this, Cx.Assembly);
+                yield return Tuples.cil_method_location(this, Context.Assembly);
 
                 if (HasBytecode)
                 {
                     Implementation = new MethodImplementation(this);
                     yield return Implementation;
 
-                    var body = Cx.PeReader.GetMethodBody(md.RelativeVirtualAddress);
+                    var body = Context.PeReader.GetMethodBody(md.RelativeVirtualAddress);
 
                     if (!body.LocalSignature.IsNil)
                     {
-                        var locals = Cx.MdReader.GetStandaloneSignature(body.LocalSignature);
-                        var localVariableTypes = locals.DecodeLocalSignature(Cx.TypeSignatureDecoder, this);
+                        var locals = Context.MdReader.GetStandaloneSignature(body.LocalSignature);
+                        var localVariableTypes = locals.DecodeLocalSignature(Context.TypeSignatureDecoder, this);
 
                         this.locals = new LocalVariable[localVariableTypes.Length];
 
@@ -125,13 +125,13 @@ namespace Semmle.Extraction.CIL.Entities
                             if (t is ByRefType brt)
                             {
                                 t = brt.ElementType;
-                                this.locals[l] = Cx.Populate(new LocalVariable(Cx, Implementation, l, t));
+                                this.locals[l] = Context.Populate(new LocalVariable(Context, Implementation, l, t));
                                 yield return this.locals[l];
                                 yield return Tuples.cil_type_annotation(this.locals[l], TypeAnnotation.Ref);
                             }
                             else
                             {
-                                this.locals[l] = Cx.Populate(new LocalVariable(Cx, Implementation, l, t));
+                                this.locals[l] = Context.Populate(new LocalVariable(Context, Implementation, l, t));
                                 yield return this.locals[l];
                             }
                         }
@@ -150,9 +150,9 @@ namespace Semmle.Extraction.CIL.Entities
 
                     yield return Tuples.cil_method_stack_size(Implementation, body.MaxStack);
 
-                    if (methodDebugInformation != null)
+                    if (methodDebugInformation is not null)
                     {
-                        var sourceLocation = Cx.CreateSourceLocation(methodDebugInformation.Location);
+                        var sourceLocation = Context.CreateSourceLocation(methodDebugInformation.Location);
                         yield return sourceLocation;
                         yield return Tuples.cil_method_location(this, sourceLocation);
                     }
@@ -191,7 +191,7 @@ namespace Semmle.Extraction.CIL.Entities
                     yield return Tuples.cil_newslot(this);
 
                 // Populate attributes
-                Attribute.Populate(Cx, this, md.GetCustomAttributes());
+                Attribute.Populate(Context, this, md.GetCustomAttributes());
             }
         }
 
@@ -205,12 +205,12 @@ namespace Semmle.Extraction.CIL.Entities
             IEnumerator<PDB.SequencePoint>? nextSequencePoint = null;
             PdbSourceLocation? instructionLocation = null;
 
-            if (methodDebugInformation != null)
+            if (methodDebugInformation is not null)
             {
                 nextSequencePoint = methodDebugInformation.SequencePoints.GetEnumerator();
                 if (nextSequencePoint.MoveNext())
                 {
-                    instructionLocation = Cx.CreateSourceLocation(nextSequencePoint.Current.Location);
+                    instructionLocation = Context.CreateSourceLocation(nextSequencePoint.Current.Location);
                     yield return instructionLocation;
                 }
                 else
@@ -222,18 +222,18 @@ namespace Semmle.Extraction.CIL.Entities
             var child = 0;
             for (var offset = 0; offset < (ilbytes?.Length ?? 0);)
             {
-                var instruction = new Instruction(Cx, this, ilbytes!, offset, child++);
+                var instruction = new Instruction(Context, this, ilbytes!, offset, child++);
                 yield return instruction;
 
-                if (nextSequencePoint != null && offset >= nextSequencePoint.Current.Offset)
+                if (nextSequencePoint is not null && offset >= nextSequencePoint.Current.Offset)
                 {
-                    instructionLocation = Cx.CreateSourceLocation(nextSequencePoint.Current.Location);
+                    instructionLocation = Context.CreateSourceLocation(nextSequencePoint.Current.Location);
                     yield return instructionLocation;
                     if (!nextSequencePoint.MoveNext())
                         nextSequencePoint = null;
                 }
 
-                if (instructionLocation != null)
+                if (instructionLocation is not null)
                     yield return Tuples.cil_instruction_location(instruction, instructionLocation);
 
                 jump_table.Add(instruction.Offset, instruction);
@@ -257,7 +257,7 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 if (md.ImplAttributes == MethodImplAttributes.IL && md.RelativeVirtualAddress != 0)
                 {
-                    var body = Cx.PeReader.GetMethodBody(md.RelativeVirtualAddress);
+                    var body = Context.PeReader.GetMethodBody(md.RelativeVirtualAddress);
 
                     var ilbytes = body.GetILBytes();
 
@@ -267,7 +267,7 @@ namespace Semmle.Extraction.CIL.Entities
                         Instruction decoded;
                         try
                         {
-                            decoded = new Instruction(Cx, this, ilbytes!, offset, child++);
+                            decoded = new Instruction(Context, this, ilbytes!, offset, child++);
                             offset += decoded.Width;
                         }
                         catch  // lgtm[cs/catch-of-all-exceptions]

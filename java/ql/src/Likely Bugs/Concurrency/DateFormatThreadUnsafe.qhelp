@@ -37,15 +37,9 @@ instance of <code>DateFormattingThread</code>.</p>
 
 
 <li>
-  Java API Documentation:
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/text/DateFormat.html#synchronization">java.text.DateFormat synchronization</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/text/DateFormat.html#synchronization">java.text.DateFormat synchronization</a>.
 </li>
-
-
-<!-- LINKS NO LONGER VALID:
-<p>Sun Bug Report: <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6178997">Doc: it's not explicitly documented java.util.Calendar serialization are thread-unsafe</a></p>
-<p>Sun Bug Report: <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6231579">ArrayIndexOutOfBoundsException in BaseCalendar</a></p>
--->
 
 </references>
 </qhelp>

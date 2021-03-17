@@ -17,34 +17,34 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         private void VisitParameter(ParameterSyntax p)
         {
-            var symbol = cx.GetModel(p).GetDeclaredSymbol(p);
-            Parameter.Create(cx, symbol, this);
+            var symbol = Context.GetModel(p).GetDeclaredSymbol(p)!;
+            Parameter.Create(Context, symbol, this);
         }
 
         private Lambda(ExpressionNodeInfo info, CSharpSyntaxNode body, IEnumerable<ParameterSyntax> @params)
             : base(info)
         {
-            if (cx.GetModel(info.Node).GetSymbolInfo(info.Node).Symbol is IMethodSymbol symbol)
+            if (Context.GetModel(info.Node).GetSymbolInfo(info.Node).Symbol is IMethodSymbol symbol)
             {
-                Modifier.ExtractModifiers(cx, info.Context.TrapWriter.Writer, this, symbol);
+                Modifier.ExtractModifiers(Context, info.Context.TrapWriter.Writer, this, symbol);
             }
             else
             {
-                cx.ModelError(info.Node, "Unknown declared symbol");
+                Context.ModelError(info.Node, "Unknown declared symbol");
             }
 
             // No need to use `Populate` as the population happens later
-            cx.PopulateLater(() =>
+            Context.PopulateLater(() =>
             {
                 foreach (var param in @params)
                     VisitParameter(param);
 
                 if (body is ExpressionSyntax exprBody)
-                    Create(cx, exprBody, this, 0);
+                    Create(Context, exprBody, this, 0);
                 else if (body is BlockSyntax blockBody)
-                    Statements.Block.Create(cx, blockBody, this, 0);
+                    Statements.Block.Create(Context, blockBody, this, 0);
                 else
-                    cx.ModelError(body, "Unhandled lambda body");
+                    Context.ModelError(body, "Unhandled lambda body");
             });
         }
 
@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         public static Lambda Create(ExpressionNodeInfo info, SimpleLambdaExpressionSyntax node) => new Lambda(info, node);
 
         private Lambda(ExpressionNodeInfo info, AnonymousMethodExpressionSyntax node) :
-            this(info.SetKind(ExprKind.ANONYMOUS_METHOD), node.Body, node.ParameterList == null ? Enumerable.Empty<ParameterSyntax>() : node.ParameterList.Parameters)
+            this(info.SetKind(ExprKind.ANONYMOUS_METHOD), node.Body, node.ParameterList is null ? Enumerable.Empty<ParameterSyntax>() : node.ParameterList.Parameters)
         { }
 
         public static Lambda Create(ExpressionNodeInfo info, AnonymousMethodExpressionSyntax node) => new Lambda(info, node);

@@ -38,7 +38,7 @@ If you have an idea for a query that you would like to share with other CodeQL u
 
     - The queries and libraries must be autoformatted, for example using the "Format Document" command in [CodeQL for Visual Studio Code](https://help.semmle.com/codeql/codeql-for-vscode/procedures/about-codeql-for-vscode.html).
 
-    If you prefer, you can use this [pre-commit hook](misc/scripts/pre-commit) that automatically checks whether your files are correctly formatted. See the [pre-commit hook installation guide](docs/install-pre-commit-hook.md) for instructions on how to install the hook.
+    If you prefer, you can use this [pre-commit hook](misc/scripts/pre-commit) that automatically checks whether your files are correctly formatted. See the [pre-commit hook installation guide](docs/pre-commit-hook-setup.md) for instructions on how to install the hook.
 
 4. **Compilation**
 
@@ -49,7 +49,11 @@ If you have an idea for a query that you would like to share with other CodeQL u
 
     - The query must have at least one true positive result on some revision of a real project.
 
-Experimental queries and libraries may not be actively maintained as the [supported](docs/supported-queries.md) libraries evolve. They may also be changed in backwards-incompatible ways or may be removed entirely in the future without deprecation warnings.
+6. **Query help files and unit tests**
+
+	- Query help (`.qhelp`) files and unit tests are optional (but strongly encouraged!) for queries in the `experimental` directories. For more information about contributing query help files and unit tests, see [Supported CodeQL queries and libraries](docs/supported-queries.md).
+
+Experimental queries and libraries may not be actively maintained as the supported libraries evolve. They may also be changed in backwards-incompatible ways or may be removed entirely in the future without deprecation warnings.
 
 After the experimental query is merged, we welcome pull requests to improve it. Before a query can be moved out of the `experimental` subdirectory, it must satisfy [the requirements for being a supported query](docs/supported-queries.md).
 

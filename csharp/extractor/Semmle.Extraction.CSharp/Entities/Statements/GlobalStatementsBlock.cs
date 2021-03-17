@@ -15,11 +15,11 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             this.parent = parent;
         }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation
         {
             get
             {
-                return parent.symbol
+                return parent.Symbol
                     ?.DeclaringSyntaxReferences
                     .FirstOrDefault()
                     ?.GetSyntax()
@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            trapFile.stmt_location(this, cx.CreateLocation(ReportingLocation));
+            trapFile.stmt_location(this, Context.CreateLocation(ReportingLocation));
         }
     }
 }

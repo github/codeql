@@ -15,7 +15,7 @@ private class Printf extends FormattingFunction, AliasFunction {
   Printf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdName(["printf", "wprintf"]) or
+      hasGlobalOrStdOrBslName(["printf", "wprintf"]) or
       hasGlobalName(["printf_s", "wprintf_s", "g_printf"])
     ) and
     not exists(getDefinition().getFile().getRelativePath())
@@ -23,10 +23,7 @@ private class Printf extends FormattingFunction, AliasFunction {
 
   override int getFormatParameterIndex() { result = 0 }
 
-  deprecated override predicate isWideCharDefault() {
-    hasGlobalOrStdName("wprintf") or
-    hasGlobalName("wprintf_s")
-  }
+  deprecated override predicate isWideCharDefault() { hasName(["wprintf", "wprintf_s"]) }
 
   override predicate isOutputGlobal() { any() }
 
@@ -44,7 +41,7 @@ private class Fprintf extends FormattingFunction {
   Fprintf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdName(["fprintf", "fwprintf"]) or
+      hasGlobalOrStdOrBslName(["fprintf", "fwprintf"]) or
       hasGlobalName("g_fprintf")
     ) and
     not exists(getDefinition().getFile().getRelativePath())
@@ -52,7 +49,7 @@ private class Fprintf extends FormattingFunction {
 
   override int getFormatParameterIndex() { result = 1 }
 
-  deprecated override predicate isWideCharDefault() { hasGlobalOrStdName("fwprintf") }
+  deprecated override predicate isWideCharDefault() { hasName("fwprintf") }
 
   override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = true }
 }
@@ -64,7 +61,7 @@ private class Sprintf extends FormattingFunction {
   Sprintf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdName([
+      hasGlobalOrStdOrBslName([
           "sprintf", // sprintf(dst, format, args...)
           "wsprintf" // wsprintf(dst, format, args...)
         ])
@@ -90,22 +87,20 @@ private class Sprintf extends FormattingFunction {
   }
 
   override int getFormatParameterIndex() {
-    hasGlobalName("g_strdup_printf") and result = 0
+    hasName("g_strdup_printf") and result = 0
     or
-    hasGlobalName("__builtin___sprintf_chk") and result = 3
+    hasName("__builtin___sprintf_chk") and result = 3
     or
     not getName() = ["g_strdup_printf", "__builtin___sprintf_chk"] and
     result = 1
   }
 
   override int getOutputParameterIndex(boolean isStream) {
-    not hasGlobalName("g_strdup_printf") and result = 0 and isStream = false
+    not hasName("g_strdup_printf") and result = 0 and isStream = false
   }
 
   override int getFirstFormatArgumentIndex() {
-    if hasGlobalName("__builtin___sprintf_chk")
-    then result = 4
-    else result = getNumberOfParameters()
+    if hasName("__builtin___sprintf_chk") then result = 4 else result = getNumberOfParameters()
   }
 }
 
@@ -116,7 +111,7 @@ private class SnprintfImpl extends Snprintf {
   SnprintfImpl() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdName([
+      hasGlobalOrStdOrBslName([
           "snprintf", // C99 defines snprintf
           "swprintf" // The s version of wide-char printf is also always the n version
         ])
@@ -163,10 +158,7 @@ private class SnprintfImpl extends Snprintf {
   }
 
   override predicate returnsFullFormatLength() {
-    (
-      hasGlobalOrStdName("snprintf") or
-      hasGlobalName(["g_snprintf", "__builtin___snprintf_chk", "snprintf_s"])
-    ) and
+    hasName(["snprintf", "g_snprintf", "__builtin___snprintf_chk", "snprintf_s"]) and
     not exists(getDefinition().getFile().getRelativePath())
   }
 

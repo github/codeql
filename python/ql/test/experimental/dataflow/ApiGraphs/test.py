@@ -79,3 +79,63 @@ def f():
 from unknown import * #$ use=moduleImport("unknown")
 
 hello() #$ MISSING: use=moduleImport("unknown").getMember("hello").getReturn()
+
+
+# Subclasses
+
+from flask.views import View #$ use=moduleImport("flask").getMember("views").getMember("View")
+
+class MyView(View): #$ use=moduleImport("flask").getMember("views").getMember("View").getASubclass()
+    myvar = 45 #$ use=moduleImport("flask").getMember("views").getMember("View").getASubclass().getMember("myvar")
+    def my_method(self): #$ use=moduleImport("flask").getMember("views").getMember("View").getASubclass().getMember("my_method")
+        pass
+
+instance = MyView() #$ use=moduleImport("flask").getMember("views").getMember("View").getASubclass().getReturn()
+
+def internal():
+    from pflask.views import View #$ use=moduleImport("pflask").getMember("views").getMember("View")
+    class IntMyView(View): #$ use=moduleImport("pflask").getMember("views").getMember("View").getASubclass()
+        my_internal_var = 35 #$ use=moduleImport("pflask").getMember("views").getMember("View").getASubclass().getMember("my_internal_var")
+        def my_internal_method(self): #$ use=moduleImport("pflask").getMember("views").getMember("View").getASubclass().getMember("my_internal_method")
+            pass
+
+    int_instance = IntMyView() #$ use=moduleImport("pflask").getMember("views").getMember("View").getASubclass().getReturn()
+
+
+# Built-ins
+
+def use_of_builtins():
+    for x in range(5): #$ use=moduleImport("builtins").getMember("range").getReturn()
+        if x < len([]): #$ use=moduleImport("builtins").getMember("len").getReturn()
+            print("Hello") #$ use=moduleImport("builtins").getMember("print").getReturn()
+            raise Exception("Farewell") #$ use=moduleImport("builtins").getMember("Exception").getReturn()
+
+def imported_builtins():
+    import builtins #$ use=moduleImport("builtins")
+    def open(f):
+        return builtins.open(f) #$ MISSING: use=moduleImport("builtins").getMember("open").getReturn()
+
+def redefine_print():
+    def my_print(x):
+        import builtins #$ use=moduleImport("builtins")
+        builtins.print("I'm printing", x) #$ use=moduleImport("builtins").getMember("print").getReturn()
+    print = my_print
+    print("these words")
+
+def local_redefine_range():
+    range = 5
+    return range
+
+def global_redefine_range():
+    global range
+    range = 6
+    return range #$ SPURIOUS: use=moduleImport("builtins").getMember("range")
+
+def obscured_print():
+    p = print #$ use=moduleImport("builtins").getMember("print")
+    p("Can you see me?") #$ use=moduleImport("builtins").getMember("print").getReturn()
+
+def python2_style():
+    # In Python 3, `__builtin__` has no special meaning.
+    from __builtin__ import open #$ use=moduleImport("__builtin__").getMember("open")
+    open("hello.txt") #$ use=moduleImport("__builtin__").getMember("open").getReturn()

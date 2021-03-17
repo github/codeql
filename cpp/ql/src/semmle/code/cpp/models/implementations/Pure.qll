@@ -3,11 +3,14 @@ import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
 
-/** Pure string functions. */
+/**
+ * A function that operates on strings and is pure. That is, its evaluation is
+ * guaranteed to be side-effect free.
+ */
 private class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction,
   SideEffectFunction {
   PureStrFunction() {
-    hasGlobalOrStdName([
+    hasGlobalOrStdOrBslName([
         atoi(), "strcasestr", "strchnul", "strchr", "strchrnul", "strstr", "strpbrk", "strrchr",
         "strspn", strtol(), strrev(), strcmp(), strlwr(), strupr()
       ])
@@ -89,10 +92,12 @@ private string strcmp() {
     ]
 }
 
-/** String standard `strlen` function, and related functions for computing string lengths. */
+/**
+ * A function such as `strlen` that returns the length of the given string.
+ */
 private class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFunction {
   StrLenFunction() {
-    hasGlobalOrStdName(["strlen", "strnlen", "wcslen"])
+    hasGlobalOrStdOrBslName(["strlen", "strnlen", "wcslen"])
     or
     hasGlobalName(["_mbslen", "_mbslen_l", "_mbstrlen", "_mbstrlen_l"])
   }
@@ -123,9 +128,12 @@ private class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFun
   }
 }
 
-/** Pure functions. */
+/**
+ * A function that is pure, that is, its evaluation is guaranteed to be
+ * side-effect free. Excludes functions modeled by `PureStrFunction` and `PureMemFunction`.
+ */
 private class PureFunction extends TaintFunction, SideEffectFunction {
-  PureFunction() { hasGlobalOrStdName(["abs", "labs"]) }
+  PureFunction() { hasGlobalOrStdOrBslName(["abs", "labs"]) }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     exists(ParameterIndex i |
@@ -140,11 +148,14 @@ private class PureFunction extends TaintFunction, SideEffectFunction {
   override predicate hasOnlySpecificWriteSideEffects() { any() }
 }
 
-/** Pure raw-memory functions. */
+/**
+ * A function that operates on memory buffers and is pure. That is, its
+ * evaluation is guaranteed to be side-effect free.
+ */
 private class PureMemFunction extends AliasFunction, ArrayFunction, TaintFunction,
   SideEffectFunction {
   PureMemFunction() {
-    hasGlobalOrStdName([
+    hasGlobalOrStdOrBslName([
         "memchr", "__builtin_memchr", "memrchr", "rawmemchr", "memcmp", "__builtin_memcmp", "memmem"
       ]) or
     this.hasGlobalName("memfrob")

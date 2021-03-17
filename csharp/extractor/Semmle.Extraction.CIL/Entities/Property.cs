@@ -13,14 +13,13 @@ namespace Semmle.Extraction.CIL.Entities
         private readonly Handle handle;
         private readonly Type type;
         private readonly PropertyDefinition pd;
-        public override string IdSuffix => ";cil-property";
-        private readonly GenericContext gc;
+        private readonly IGenericContext gc;
 
-        public Property(GenericContext gc, Type type, PropertyDefinitionHandle handle) : base(gc.Cx)
+        public Property(IGenericContext gc, Type type, PropertyDefinitionHandle handle) : base(gc.Context)
         {
             this.gc = gc;
             this.handle = handle;
-            pd = Cx.MdReader.GetPropertyDefinition(handle);
+            pd = Context.MdReader.GetPropertyDefinition(handle);
             this.type = type;
         }
 
@@ -28,7 +27,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             trapFile.WriteSubId(type);
             trapFile.Write('.');
-            trapFile.Write(Cx.GetString(pd.Name));
+            trapFile.Write(Context.GetString(pd.Name));
             trapFile.Write("(");
             var index = 0;
             var signature = pd.DecodeSignature(new SignatureDecoder(), gc);
@@ -38,6 +37,7 @@ namespace Semmle.Extraction.CIL.Entities
                 param.WriteId(trapFile, gc);
             }
             trapFile.Write(")");
+            trapFile.Write(";cil-property");
         }
 
         public override bool Equals(object? obj)
@@ -51,10 +51,10 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                yield return Tuples.metadata_handle(this, Cx.Assembly, MetadataTokens.GetToken(handle));
-                var sig = pd.DecodeSignature(Cx.TypeSignatureDecoder, type);
+                yield return Tuples.metadata_handle(this, Context.Assembly, MetadataTokens.GetToken(handle));
+                var sig = pd.DecodeSignature(Context.TypeSignatureDecoder, type);
 
-                var name = Cx.ShortName(pd.Name);
+                var name = Context.ShortName(pd.Name);
 
                 var t = sig.ReturnType;
                 if (t is ModifiedType mt)
@@ -72,19 +72,19 @@ namespace Semmle.Extraction.CIL.Entities
                 var accessors = pd.GetAccessors();
                 if (!accessors.Getter.IsNil)
                 {
-                    var getter = (Method)Cx.CreateGeneric(type, accessors.Getter);
+                    var getter = (Method)Context.CreateGeneric(type, accessors.Getter);
                     yield return getter;
                     yield return Tuples.cil_getter(this, getter);
                 }
 
                 if (!accessors.Setter.IsNil)
                 {
-                    var setter = (Method)Cx.CreateGeneric(type, accessors.Setter);
+                    var setter = (Method)Context.CreateGeneric(type, accessors.Setter);
                     yield return setter;
                     yield return Tuples.cil_setter(this, setter);
                 }
 
-                foreach (var c in Attribute.Populate(Cx, this, pd.GetCustomAttributes()))
+                foreach (var c in Attribute.Populate(Context, this, pd.GetCustomAttributes()))
                     yield return c;
             }
         }

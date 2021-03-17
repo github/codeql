@@ -13,24 +13,24 @@ namespace Semmle.Extraction.CSharp.Entities
         public static new Conversion Create(Context cx, IMethodSymbol symbol) =>
             ConversionFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation
         {
             get
             {
-                return symbol.DeclaringSyntaxReferences
+                return Symbol.DeclaringSyntaxReferences
                     .Select(r => r.GetSyntax())
                     .OfType<ConversionOperatorDeclarationSyntax>()
                     .Select(s => s.FixedLocation())
-                    .Concat(symbol.Locations)
+                    .Concat(Symbol.Locations)
                     .FirstOrDefault();
             }
         }
 
-        private class ConversionFactory : ICachedEntityFactory<IMethodSymbol, Conversion>
+        private class ConversionFactory : CachedEntityFactory<IMethodSymbol, Conversion>
         {
             public static ConversionFactory Instance { get; } = new ConversionFactory();
 
-            public Conversion Create(Context cx, IMethodSymbol init) => new Conversion(cx, init);
+            public override Conversion Create(Context cx, IMethodSymbol init) => new Conversion(cx, init);
         }
     }
 }

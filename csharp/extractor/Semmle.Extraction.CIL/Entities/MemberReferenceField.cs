@@ -8,15 +8,15 @@ namespace Semmle.Extraction.CIL.Entities
     {
         private readonly MemberReferenceHandle handle;
         private readonly MemberReference mr;
-        private readonly GenericContext gc;
+        private readonly IGenericContext gc;
         private readonly Type declType;
 
-        public MemberReferenceField(GenericContext gc, MemberReferenceHandle handle) : base(gc.Cx)
+        public MemberReferenceField(IGenericContext gc, MemberReferenceHandle handle) : base(gc.Context)
         {
             this.handle = handle;
             this.gc = gc;
-            mr = Cx.MdReader.GetMemberReference(handle);
-            declType = (Type)Cx.CreateGeneric(gc, mr.Parent);
+            mr = Context.MdReader.GetMemberReference(handle);
+            declType = (Type)Context.CreateGeneric(gc, mr.Parent);
         }
 
         public override bool Equals(object? obj)
@@ -29,11 +29,11 @@ namespace Semmle.Extraction.CIL.Entities
             return handle.GetHashCode();
         }
 
-        public override string Name => Cx.GetString(mr.Name);
+        public override string Name => Context.GetString(mr.Name);
 
         public override Type DeclaringType => declType;
 
-        public override Type Type => mr.DecodeFieldSignature(Cx.TypeSignatureDecoder, this);
+        public override Type Type => mr.DecodeFieldSignature(Context.TypeSignatureDecoder, this);
 
         public override IEnumerable<Type> TypeParameters => gc.TypeParameters.Concat(declType.TypeParameters);
 

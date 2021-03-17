@@ -125,6 +125,19 @@ class Node extends TNode {
    */
   pragma[inline]
   Node track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
+
+  /**
+   * Gets a node that may flow into this one using one heap and/or interprocedural step.
+   *
+   * See `TypeBackTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
+
+  /**
+   * Gets a local source node from which data may flow to this node in zero or more local steps.
+   */
+  LocalSourceNode getALocalSource() { result.flowsTo(this) }
 }
 
 /** A data-flow node corresponding to an SSA variable. */
@@ -163,6 +176,23 @@ class CfgNode extends Node, TCfgNode {
   override Scope getScope() { result = node.getScope() }
 
   override Location getLocation() { result = node.getLocation() }
+}
+
+/** A data-flow node corresponding to a `CallNode` in the control-flow graph. */
+class CallCfgNode extends CfgNode {
+  override CallNode node;
+
+  /**
+   * Gets the data-flow node for the function component of the call corresponding to this data-flow
+   * node.
+   */
+  Node getFunction() { result.asCfgNode() = node.getFunction() }
+
+  /** Gets the data-flow node corresponding to the i'th argument of the call corresponding to this data-flow node */
+  Node getArg(int i) { result.asCfgNode() = node.getArg(i) }
+
+  /** Gets the data-flow node corresponding to the named argument of the call corresponding to this data-flow node */
+  Node getArgByName(string name) { result.asCfgNode() = node.getArgByName(name) }
 }
 
 /**
@@ -481,7 +511,7 @@ class LocalSourceNode extends Node {
   /**
    * Gets a call to this node.
    */
-  Node getACall() { Cached::call(this, result) }
+  CallCfgNode getACall() { Cached::call(this, result) }
 }
 
 cached
@@ -526,10 +556,10 @@ private module Cached {
    * Holds if `func` flows to the callee of `call`.
    */
   cached
-  predicate call(LocalSourceNode func, Node call) {
+  predicate call(LocalSourceNode func, CallCfgNode call) {
     exists(CfgNode n |
       func.flowsTo(n) and
-      n.asCfgNode() = call.asCfgNode().(CallNode).getFunction()
+      n = call.getFunction()
     )
   }
 }
@@ -544,7 +574,12 @@ newtype TContent =
   /** An element of a set. */
   TSetElementContent() or
   /** An element of a tuple at a specific index. */
-  TTupleElementContent(int index) { exists(any(TupleNode tn).getElement(index)) } or
+  TTupleElementContent(int index) {
+    exists(any(TupleNode tn).getElement(index))
+    or
+    // Arguments can overflow and end up in the starred parameter tuple.
+    exists(any(CallNode cn).getArg(index))
+  } or
   /** An element of a dictionary under a specific key. */
   TDictionaryElementContent(string key) {
     key = any(KeyValuePair kvp).getKey().(StrConst).getS()

@@ -90,3 +90,34 @@ void test_insert_iterator() {
     *i2-- = 0;
     sink(c2); // clean
 }
+
+void sink(insert_iterator_by_trait);
+insert_iterator_by_trait &operator+=(insert_iterator_by_trait &it, int amount);
+
+void test_assign_through_iterator() {
+    container c1;
+    insert_iterator_by_trait a, b, c;
+
+	a = c1.begin();
+	b = c1.begin();
+	*a = source();
+	sink(a); // $ ast MISSING: ir
+
+	c = c1.begin();
+	sink(b); // MISSING: ast,ir
+	sink(c); // $ ast MISSING: ir
+	sink(c1); // $ ast MISSING: ir
+}
+
+void test_nonmember_iterator() {
+    container c1;
+    insert_iterator_by_trait it;
+
+	it = c1.begin();
+	sink(it);
+	it += 1;
+	sink(it);
+	it += source();
+	sink(it); // $ ast,ir
+	sink(c1);
+}

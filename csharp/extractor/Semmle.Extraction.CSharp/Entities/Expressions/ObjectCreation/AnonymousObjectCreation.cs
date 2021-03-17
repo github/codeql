@@ -17,32 +17,35 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            var target = cx.GetSymbolInfo(Syntax);
-            var method = (IMethodSymbol)target.Symbol;
-
-            if (method != null)
+            var target = Context.GetSymbolInfo(Syntax);
+            var method = (IMethodSymbol?)target.Symbol;
+            if (method is not null)
             {
-                trapFile.expr_call(this, Method.Create(cx, method));
+                trapFile.expr_call(this, Method.Create(Context, method));
             }
+
             var child = 0;
 
-            var objectInitializer = Syntax.Initializers.Any() ?
-                new Expression(new ExpressionInfo(cx, Type, Location, ExprKind.OBJECT_INIT, this, -1, false, null)) :
-                null;
+            if (!Syntax.Initializers.Any())
+            {
+                return;
+            }
+
+            var objectInitializer = new Expression(new ExpressionInfo(Context, Type, Location, ExprKind.OBJECT_INIT, this, -1, false, null));
 
             foreach (var init in Syntax.Initializers)
             {
                 // Create an "assignment"
-                var property = cx.GetModel(init).GetDeclaredSymbol(init);
-                var propEntity = Property.Create(cx, property);
+                var property = Context.GetModel(init).GetDeclaredSymbol(init)!;
+                var propEntity = Property.Create(Context, property);
                 var type = property.GetAnnotatedType();
-                var loc = cx.CreateLocation(init.GetLocation());
+                var loc = Context.CreateLocation(init.GetLocation());
 
-                var assignment = new Expression(new ExpressionInfo(cx, type, loc, ExprKind.SIMPLE_ASSIGN, objectInitializer, child++, false, null));
-                Create(cx, init.Expression, assignment, 0);
-                Property.Create(cx, property);
+                var assignment = new Expression(new ExpressionInfo(Context, type, loc, ExprKind.SIMPLE_ASSIGN, objectInitializer, child++, false, null));
+                Create(Context, init.Expression, assignment, 0);
+                Property.Create(Context, property);
 
-                var access = new Expression(new ExpressionInfo(cx, type, loc, ExprKind.PROPERTY_ACCESS, assignment, 1, false, null));
+                var access = new Expression(new ExpressionInfo(Context, type, loc, ExprKind.PROPERTY_ACCESS, assignment, 1, false, null));
                 trapFile.expr_access(access, propEntity);
             }
         }

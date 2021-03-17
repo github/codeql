@@ -17,42 +17,42 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            if (Syntax.ArgumentList != null)
+            if (Syntax.ArgumentList is not null)
             {
                 PopulateArguments(trapFile, Syntax.ArgumentList, 0);
             }
 
-            var target = cx.GetModel(Syntax).GetSymbolInfo(Syntax);
+            var target = Context.GetModel(Syntax).GetSymbolInfo(Syntax);
             if (target.Symbol is IMethodSymbol method)
             {
-                trapFile.expr_call(this, Method.Create(cx, method));
+                trapFile.expr_call(this, Method.Create(Context, method));
             }
 
-            if (IsDynamicObjectCreation(cx, Syntax))
+            if (IsDynamicObjectCreation(Context, Syntax))
             {
-                if (cx.GetModel(Syntax).GetTypeInfo(Syntax).Type is INamedTypeSymbol type &&
+                if (Context.GetModel(Syntax).GetTypeInfo(Syntax).Type is INamedTypeSymbol type &&
                     !string.IsNullOrEmpty(type.Name))
                 {
                     trapFile.dynamic_member_name(this, type.Name);
                 }
                 else
                 {
-                    cx.ModelError(Syntax, "Unable to get name for dynamic object creation.");
+                    Context.ModelError(Syntax, "Unable to get name for dynamic object creation.");
                 }
             }
 
-            if (Syntax.Initializer != null)
+            if (Syntax.Initializer is not null)
             {
                 switch (Syntax.Initializer.Kind())
                 {
                     case SyntaxKind.CollectionInitializerExpression:
-                        CollectionInitializer.Create(new ExpressionNodeInfo(cx, Syntax.Initializer, this, -1).SetType(Type));
+                        CollectionInitializer.Create(new ExpressionNodeInfo(Context, Syntax.Initializer, this, -1).SetType(Type));
                         break;
                     case SyntaxKind.ObjectInitializerExpression:
-                        ObjectInitializer.Create(new ExpressionNodeInfo(cx, Syntax.Initializer, this, -1).SetType(Type));
+                        ObjectInitializer.Create(new ExpressionNodeInfo(Context, Syntax.Initializer, this, -1).SetType(Type));
                         break;
                     default:
-                        cx.ModelError("Unhandled initializer in object creation");
+                        Context.ModelError(Syntax.Initializer, "Unhandled initializer in object creation");
                         break;
                 }
             }
@@ -68,7 +68,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         private static bool IsDynamicObjectCreation(Context cx, BaseObjectCreationExpressionSyntax node)
         {
-            return node.ArgumentList != null &&
+            return node.ArgumentList is not null &&
                 node.ArgumentList.Arguments.Any(arg => IsDynamic(cx, arg.Expression));
         }
     }

@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             trapFile.directive_elifs(this, trivia.BranchTaken, trivia.ConditionValue, start, index);
 
-            Expression.Create(cx, trivia.Condition, this, 0);
+            Expression.Create(Context, trivia.Condition, this, 0);
         }
     }
 }
