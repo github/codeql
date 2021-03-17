@@ -3,7 +3,7 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
-/** Json string type data */
+/** Json string type data. */
 abstract class JsonpStringSource extends DataFlow::Node { }
 
 /** Convert to String using Gson library. */

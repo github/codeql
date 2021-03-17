@@ -23,16 +23,6 @@ class SensitiveInfoExpr extends Expr {
   }
 }
 
-/** Holds if `m` is a method of some override of `HttpServlet.doGet`. */
-private predicate isGetServletMethod(Method m) {
-  isServletRequestMethod(m) and m.getName() = "doGet"
-}
-
-/** The `doGet` method of `HttpServlet`. */
-class DoGetServletMethod extends Method {
-  DoGetServletMethod() { isGetServletMethod(this) }
-}
-
 /** Holds if `ma` is (perhaps indirectly) called from the `doGet` method of `HttpServlet`. */
 predicate isReachableFromServletDoGet(MethodAccess ma) {
   ma.getEnclosingCallable() instanceof DoGetServletMethod

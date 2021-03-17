@@ -6,28 +6,25 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.spring.SpringController
 
-/** Taint-tracking configuration tracing flow from user-controllable function name jsonp data to output jsonp data. */
+/** Taint-tracking configuration tracing flow from untrusted inputs to verification of remote user input. */
 class VerificationMethodFlowConfig extends TaintTracking::Configuration {
   VerificationMethodFlowConfig() { this = "VerificationMethodFlowConfig" }
 
   override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma, BarrierGuard bg |
+    exists(MethodAccess ma |
       ma.getMethod().getAParameter().getName().regexpMatch("(?i).*(token|auth|referer|origin).*") and
-      bg = ma and
-      sink.asExpr() = ma.getAnArgument()
+      ma.getAnArgument() = sink.asExpr()
     )
   }
 }
 
-/** The parameter name of the method is `token`, `auth`, `referer`, `origin`. */
+/** The parameter names of this method are token/auth/referer/origin. */
 class VerificationMethodClass extends Method {
   VerificationMethodClass() {
-    exists(MethodAccess ma, BarrierGuard bg, VerificationMethodFlowConfig vmfc, Node node |
+    exists(MethodAccess ma, VerificationMethodFlowConfig vmfc, Node node |
       this = ma.getMethod() and
-      this.getAParameter().getName().regexpMatch("(?i).*(token|auth|referer|origin).*") and
-      bg = ma and
       node.asExpr() = ma.getAnArgument() and
       vmfc.hasFlowTo(node)
     )
@@ -35,38 +32,43 @@ class VerificationMethodClass extends Method {
 }
 
 /** Get Callable by recursive method. */
-Callable getAnMethod(Callable call) {
+Callable getACallingCallableOrSelf(Callable call) {
   result = call
   or
-  result = getAnMethod(call.getAReference().getEnclosingCallable())
+  result = getACallingCallableOrSelf(call.getAReference().getEnclosingCallable())
 }
 
 abstract class RequestGetMethod extends Method { }
 
-/** Holds if `m` is a method of some override of `HttpServlet.doGet`. */
+/** Override method of `doGet` of `Servlet` subclass. */
 private class ServletGetMethod extends RequestGetMethod {
-  ServletGetMethod() {
-    exists(Method m |
-      m = this and
-      isServletRequestMethod(m) and
-      m.getName() = "doGet"
-    )
+  ServletGetMethod() { this instanceof DoGetServletMethod }
+}
+
+/** The method of SpringController class processing `get` request. */
+abstract class SpringControllerGetMethod extends RequestGetMethod { }
+
+/** Method using `GetMapping` annotation in SpringController class. */
+class SpringControllerGetMappingGetMethod extends SpringControllerGetMethod {
+  SpringControllerGetMappingGetMethod() {
+    this.getAnAnnotation()
+        .getType()
+        .hasQualifiedName("org.springframework.web.bind.annotation", "GetMapping")
   }
 }
 
-/** Holds if `m` is a method of some override of `HttpServlet.doGet`. */
-private class SpringControllerGetMethod extends RequestGetMethod {
-  SpringControllerGetMethod() {
-    exists(Annotation a |
-      a = this.getAnAnnotation() and
-      a.getType().hasQualifiedName("org.springframework.web.bind.annotation", "GetMapping")
-    )
-    or
-    exists(Annotation a |
-      a = this.getAnAnnotation() and
-      a.getType().hasQualifiedName("org.springframework.web.bind.annotation", "RequestMapping") and
-      a.getValue("method").toString().regexpMatch("RequestMethod.GET|\\{...\\}")
-    )
+/** The method that uses the `RequestMapping` annotation in the SpringController class and only handles the get request. */
+class SpringControllerRequestMappingGetMethod extends SpringControllerGetMethod {
+  SpringControllerRequestMappingGetMethod() {
+    this.getAnAnnotation()
+        .getType()
+        .hasQualifiedName("org.springframework.web.bind.annotation", "RequestMapping") and
+    this.getAnAnnotation().getValue("method").toString().regexpMatch("RequestMethod.GET|\\{...\\}") and
+    not exists(MethodAccess ma |
+      ma.getMethod() instanceof ServletRequestGetBodyMethod and
+      this = getACallingCallableOrSelf(ma.getEnclosingCallable())
+    ) and
+    not this.getAParamType().getName() = "MultipartFile"
   }
 }
 
@@ -83,12 +85,12 @@ class JsonpInjectionExpr extends AddExpr {
         .regexpMatch("\"\\(\"")
   }
 
-  /** Get the jsonp function name of this expression */
+  /** Get the jsonp function name of this expression. */
   Expr getFunctionName() {
     result = getLeftOperand().(AddExpr).getLeftOperand().(AddExpr).getLeftOperand()
   }
 
-  /** Get the json data of this expression */
+  /** Get the json data of this expression. */
   Expr getJsonExpr() { result = getLeftOperand().(AddExpr).getRightOperand() }
 }
 

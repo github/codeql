@@ -3,18 +3,21 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>The software uses external input as the function name to wrap JSON data and return it to the client as a request response. When there is a cross-domain problem, 
-there is a problem of sensitive information leakage.</p>
+<p>The software uses external input as the function name to wrap JSON data and returns it to the client as a request response. 
+When there is a cross-domain problem, the problem of sensitive information leakage may occur.</p>
 
 </overview>
 <recommendation>
 
-<p>Adding `Referer` or random `token` verification processing can effectively prevent the leakage of sensitive information.</p>
+<p>Adding <code>Referer</code>/<code>Origin</code> or random <code>token</code> verification processing can effectively prevent the leakage of sensitive information.</p>
 
 </recommendation>
 <example>
 
-<p>The following example shows the case of no verification processing and verification processing for the external input function name.</p>
+<p>The following examples show the bad case and the good case respectively. Bad case, such as <code>bad1</code> to <code>bad7</code>, 
+will cause information leakage problems when there are cross-domain problems. In a good case, for example, in the <code>good1</code> 
+method and the <code>good2</code> method, use the <code>verifToken</code> method to do the random <code>token</code> Verification can 
+solve the problem of information leakage caused by cross-domain.</p>
 
 <sample src="JsonpInjection.java" />
 

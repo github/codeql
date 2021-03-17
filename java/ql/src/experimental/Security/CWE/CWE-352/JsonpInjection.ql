@@ -14,25 +14,25 @@ import java
 import JsonpInjectionLib
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.deadcode.WebEntryPoints
-import semmle.code.java.security.XSS
 import DataFlow::PathGraph
 
 /** Determine whether there is a verification method for the remote streaming source data flow path method. */
 predicate existsFilterVerificationMethod() {
-  exists(MethodAccess ma,Node existsNode, Method m|
+  exists(MethodAccess ma, Node existsNode, Method m |
     ma.getMethod() instanceof VerificationMethodClass and
     existsNode.asExpr() = ma and
-    m = getAnMethod(existsNode.getEnclosingCallable()) and
+    m = getACallingCallableOrSelf(existsNode.getEnclosingCallable()) and
     isDoFilterMethod(m)
   )
 }
 
 /** Determine whether there is a verification method for the remote streaming source data flow path method. */
 predicate existsServletVerificationMethod(Node checkNode) {
-  exists(MethodAccess ma,Node existsNode|
+  exists(MethodAccess ma, Node existsNode |
     ma.getMethod() instanceof VerificationMethodClass and
     existsNode.asExpr() = ma and
-    getAnMethod(existsNode.getEnclosingCallable()) = getAnMethod(checkNode.getEnclosingCallable())
+    getACallingCallableOrSelf(existsNode.getEnclosingCallable()) =
+      getACallingCallableOrSelf(checkNode.getEnclosingCallable())
   )
 }
 
@@ -40,12 +40,14 @@ predicate existsServletVerificationMethod(Node checkNode) {
 class RequestResponseFlowConfig extends TaintTracking::Configuration {
   RequestResponseFlowConfig() { this = "RequestResponseFlowConfig" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource and
-    getAnMethod(source.getEnclosingCallable()) instanceof RequestGetMethod
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
+
+  /** Eliminate the method of calling the node is not the get method. */
+  override predicate isSanitizer(DataFlow::Node node) {
+    not getACallingCallableOrSelf(node.getEnclosingCallable()) instanceof RequestGetMethod 
+  }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(MethodAccess ma |
@@ -60,5 +62,5 @@ where
   not existsFilterVerificationMethod() and
   conf.hasFlowPath(source, sink) and
   exists(JsonpInjectionFlowConfig jhfc | jhfc.hasFlowTo(sink.getNode()))
-select sink.getNode(), source, sink, "Jsonp Injection query might include code from $@.",
-  source.getNode(), "this user input"
+select sink.getNode(), source, sink, "Jsonp response might include code from $@.", source.getNode(),
+  "this user input"

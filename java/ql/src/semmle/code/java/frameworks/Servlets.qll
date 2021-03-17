@@ -354,9 +354,20 @@ class FilterChain extends Interface {
 
 /** Holds if `m` is a filter handler method (for example `doFilter`). */
 predicate isDoFilterMethod(Method m) {
+  m.getName().matches("doFilter") and
   m.getDeclaringType() instanceof FilterClass and
   m.getNumberOfParameters() = 3 and
   m.getParameter(0).getType() instanceof ServletRequest and
   m.getParameter(1).getType() instanceof ServletResponse and
   m.getParameter(2).getType() instanceof FilterChain
+}
+
+/** Holds if `m` is a method of some override of `HttpServlet.doGet`. */
+predicate isGetServletMethod(Method m) {
+  isServletRequestMethod(m) and m.getName() = "doGet"
+}
+
+/** The `doGet` method of `HttpServlet`. */
+class DoGetServletMethod extends Method {
+  DoGetServletMethod() { isGetServletMethod(this) }
 }

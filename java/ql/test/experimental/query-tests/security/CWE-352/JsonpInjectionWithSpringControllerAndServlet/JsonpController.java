@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-public class JsonpInjection {
+public class JsonpController {
 
     private static HashMap hashMap = new HashMap();
 
