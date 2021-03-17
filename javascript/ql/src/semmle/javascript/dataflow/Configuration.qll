@@ -635,28 +635,133 @@ class SharedFlowStep extends Unit {
   ) {
     none()
   }
+
+  /**
+   * Holds if `pred` should be stored in the object `succ` under the property `prop`.
+   * The object `succ` must be a `DataFlow::SourceNode` for the object wherein the value is stored.
+   */
+  predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
+
+  /**
+   * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
+   */
+  predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+
+  /**
+   * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
+   */
+  predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+
+  /**
+   * Holds if the property `loadProp` should be copied from the object `pred` to the property `storeProp` of object `succ`.
+   */
+  predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
+  ) {
+    none()
+  }
 }
 
 /**
- * Contributes subclasses of `SharedFlowStep` to `AdditionalFlowStep`.
- *
- * This is a placeholder until we migrate to the `SharedFlowStep` class and deprecate `AdditionalFlowStep`.
+ * Contains predicates for accessing the steps contributed by `SharedFlowStep` subclasses.
  */
-private class SharedStepAsAdditionalFlowStep extends AdditionalFlowStep {
-  SharedStepAsAdditionalFlowStep() {
-    any(SharedFlowStep st).step(_, this) or
-    any(SharedFlowStep st).step(_, this, _, _)
+cached
+module SharedFlowStep {
+  cached
+  private module Internal {
+    // Forces this to be part of the `FlowSteps` stage.
+    // We use a public predicate in a private module to avoid warnings about this being unused.
+    cached
+    predicate forceStage() { Stages::FlowSteps::ref() }
   }
 
+  /**
+   * Holds if `pred` &rarr; `succ` should be considered a data flow edge.
+   */
+  cached
+  predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    any(SharedFlowStep s).step(pred, succ)
+  }
+
+  /**
+   * Holds if `pred` &rarr; `succ` should be considered a data flow edge
+   * transforming values with label `predlbl` to have label `succlbl`.
+   */
+  cached
+  predicate step(
+    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
+    DataFlow::FlowLabel succlbl
+  ) {
+    any(SharedFlowStep s).step(pred, succ, predlbl, succlbl)
+  }
+
+  /**
+   * Holds if `pred` should be stored in the object `succ` under the property `prop`.
+   * The object `succ` must be a `DataFlow::SourceNode` for the object wherein the value is stored.
+   */
+  cached
+  predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+    any(SharedFlowStep s).storeStep(pred, succ, prop)
+  }
+
+  /**
+   * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
+   */
+  cached
+  predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    any(SharedFlowStep s).loadStep(pred, succ, prop)
+  }
+
+  /**
+   * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
+   */
+  cached
+  predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    any(SharedFlowStep s).loadStoreStep(pred, succ, prop)
+  }
+
+  /**
+   * Holds if the property `loadProp` should be copied from the object `pred` to the property `storeProp` of object `succ`.
+   */
+  cached
+  predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
+  ) {
+    any(SharedFlowStep s).loadStoreStep(pred, succ, loadProp, storeProp)
+  }
+}
+
+/**
+ * Contributes subclasses of `AdditionalFlowStep` to `SharedFlowStep`.
+ */
+private class AdditionalFlowStepAsSharedStep extends SharedFlowStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    any(SharedFlowStep st).step(pred, succ) and succ = this
+    any(AdditionalFlowStep s).step(pred, succ)
   }
 
   override predicate step(
     DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
     DataFlow::FlowLabel succlbl
   ) {
-    any(SharedFlowStep st).step(pred, succ, predlbl, succlbl) and succ = this
+    any(AdditionalFlowStep s).step(pred, succ, predlbl, succlbl)
+  }
+
+  override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+    any(AdditionalFlowStep s).storeStep(pred, succ, prop)
+  }
+
+  override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    any(AdditionalFlowStep s).loadStep(pred, succ, prop)
+  }
+
+  override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    any(AdditionalFlowStep s).loadStoreStep(pred, succ, prop)
+  }
+
+  override predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
+  ) {
+    any(AdditionalFlowStep s).loadStoreStep(pred, succ, loadProp, storeProp)
   }
 }
 
@@ -665,7 +770,7 @@ private class SharedStepAsAdditionalFlowStep extends AdditionalFlowStep {
  *
  * A pseudo-property represents the location where some value is stored in an object.
  *
- * For use with load/store steps in `DataFlow::AdditionalFlowStep` and TypeTracking.
+ * For use with load/store steps in `DataFlow::SharedFlowStep` and TypeTracking.
  */
 module PseudoProperties {
   bindingset[s]
@@ -1201,7 +1306,7 @@ private predicate reachesReturn(
 private predicate isAdditionalLoadStep(
   DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg
 ) {
-  any(AdditionalFlowStep s).loadStep(pred, succ, prop)
+  SharedFlowStep::loadStep(pred, succ, prop)
   or
   cfg.isAdditionalLoadStep(pred, succ, prop)
 }
@@ -1212,7 +1317,7 @@ private predicate isAdditionalLoadStep(
 private predicate isAdditionalStoreStep(
   DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg
 ) {
-  any(AdditionalFlowStep s).storeStep(pred, succ, prop)
+  SharedFlowStep::storeStep(pred, succ, prop)
   or
   cfg.isAdditionalStoreStep(pred, succ, prop)
 }
@@ -1224,13 +1329,13 @@ private predicate isAdditionalLoadStoreStep(
   DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp,
   DataFlow::Configuration cfg
 ) {
-  any(AdditionalFlowStep s).loadStoreStep(pred, succ, loadProp, storeProp)
+  SharedFlowStep::loadStoreStep(pred, succ, loadProp, storeProp)
   or
   cfg.isAdditionalLoadStoreStep(pred, succ, loadProp, storeProp)
   or
   loadProp = storeProp and
   (
-    any(AdditionalFlowStep s).loadStoreStep(pred, succ, loadProp)
+    SharedFlowStep::loadStoreStep(pred, succ, loadProp)
     or
     cfg.isAdditionalLoadStoreStep(pred, succ, loadProp)
   )
