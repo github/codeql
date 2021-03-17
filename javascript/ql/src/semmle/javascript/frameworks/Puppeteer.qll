@@ -1,7 +1,11 @@
+/**
+ * Provides classes and predicates for reasoning about [puppeteer](https://www.npmjs.com/package/puppeteer).
+ */
+
 import javascript
 
 /**
- * Classes and predicates modelling the `puppeteer` library.
+ * Classes and predicates modelling the [puppeteer](https://www.npmjs.com/package/puppeteer) library.
  */
 module Puppeteer {
   /**
