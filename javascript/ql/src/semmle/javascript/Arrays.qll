@@ -181,16 +181,14 @@ private module ArrayDataFlow {
    * A step for retrieving an element from an array using `.pop()` or `.shift()`.
    * E.g. `array.pop()`.
    */
-  private class ArrayPopStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
-    ArrayPopStep() {
-      getMethodName() = "pop" or
-      getMethodName() = "shift"
-    }
-
+  private class ArrayPopStep extends DataFlow::SharedFlowStep {
     override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
-      prop = arrayElement() and
-      obj = this.getReceiver() and
-      element = this
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = ["pop", "shift"] and
+        prop = arrayElement() and
+        obj = call.getReceiver() and
+        element = call
+      )
     }
   }
 
