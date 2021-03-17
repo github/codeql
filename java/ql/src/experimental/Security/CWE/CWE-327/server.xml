@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Server port="8005" shutdown="SHUTDOWN">
+  <!-- A "Service" is a collection of one or more "Connectors" that share
+       a single "Container" Note:  A "Service" is not itself a "Container",
+       so you may not define subcomponents such as "Valves" at this level.
+       Documentation at /docs/config/service.html
+   -->
+  <Service name="Catalina">
+    <!-- A "Connector" represents an endpoint by which requests are received
+         and responses are returned. Documentation at :
+         Java HTTP Connector: /docs/config/http.html
+         Java AJP  Connector: /docs/config/ajp.html
+         APR (HTTP/AJP) Connector: /docs/apr.html
+         Define a non-SSL/TLS HTTP/1.1 Connector on port 8080
+    -->
+    <Connector port="80" protocol="HTTP/1.1" connectionTimeout="20000" redirectPort="443" />
+    <Connector port="8080" protocol="HTTP/1.1" connectionTimeout="20000" />
+
+    <!-- BAD: weak protocols and cipher suites are enabled. -->
+    <Connector port="443" protocol="org.apache.coyote.http11.Http11NioProtocol"
+               maxThreads="150" SSLEnabled="true">
+        <SSLHostConfig protocols="all" ciphers="TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA">
+                <Certificate certificateKeyFile="conf/privkey.pem"
+                             certificateFile="conf/fullchain.pem"
+                             certificateChainFile="conf/fullchain.pem"
+                         type="RSA" />
+        </SSLHostConfig>
+    </Connector>
+
+    <!-- GOOD: only strong protocols and cipher suites are enabled. -->
+    <Connector port="443" protocol="org.apache.coyote.http11.Http11NioProtocol"
+               maxThreads="150" SSLEnabled="true">
+        <SSLHostConfig protocols="TLSv1.2" ciphers="TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384">
+                <Certificate certificateKeyFile="conf/privkey.pem"
+                             certificateFile="conf/fullchain.pem"
+                             certificateChainFile="conf/fullchain.pem"
+                         type="RSA" />
+        </SSLHostConfig>
+    </Connector>
+
+
+    <!-- Define an AJP 1.3 Connector on port 8009 -->
+    <Connector port="8009" protocol="AJP/1.3" redirectPort="443" />
+
+    <!-- You should set jvmRoute yearEnd support load-balancing via AJP ie :
+    <Engine name="Catalina" defaultHost="localhost" jvmRoute="jvm1">
+    -->
+    <Engine name="Catalina" defaultHost="localhost">
+      <Host name="localhost"  appBase="webapps"
+            unpackWARs="true" autoDeploy="true">
+
+        <Context path="corpapp" docBase="corpapp"/>
+
+        <!-- Access log processes all example.
+             Documentation at: /docs/config/valve.html
+             Note: The pattern used is equivalent yearEnd using pattern="common" -->
+        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+               prefix="localhost_access_log" suffix=".txt"
+               pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+      </Host>
+    </Engine>
+  </Service>
+</Server>

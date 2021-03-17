@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>The Apache Tomcat server is the most widely used application server for deploying Java 
+  EE applications. Tomcat allows to configure cipher suites and TLS/SSL protocols in its 
+  configuration file <code>server.xml</code>. A cipher suite is a set of cryptographic 
+  algorithms used during SSL or TLS sessions to secure network connections between the client 
+  and the server. The set of algorithms that cipher suites usually contain include: a key 
+  exchange algorithm, a bulk encryption algorithm, and a Message Authentication Code 
+  (MAC) algorithm.</p>
+  
+<p>Old versions of TLS/SSL protocols such as SSLv3 and TLSv1, and old versions of cipher suites 
+  with encryption ciphers such as RC4 and 3DES, and message authentication algorithms such as 
+  SHA1 and MD5 offer insufficient transport layer protection therefore are vulnerable to attacks.</p>
+</overview>
+
+<recommendation>
+<p>Only use strong TLS protocols such as TLSv1.3 and strong cipher suites such as 
+  <code>TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</code> as of 2021.</p>
+</recommendation>
+
+<example>
+<p>The following two examples show two ways of configuring protocols and cipher suites. In the 
+  'BAD' case, weak protocols and cipher suites are enabled. In the 'GOOD' case, only strong 
+  protocols and cipher suites are enabled.</p>
+<sample src="server.xml" />
+</example>
+
+<references>
+<li>
+  OWASP:
+  <a href="https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/09-Testing_for_Weak_Cryptography/01-Testing_for_Weak_SSL_TLS_Ciphers_Insufficient_Transport_Layer_Protection">WSTG - v4.1 Weak SSL TLS Ciphers</a>
+</li>
+
+<li>
+  Louisiana State University:
+  <a href="https://grok.lsu.edu/article.aspx?articleid=17596">Recommendations: SSL/TLS Protocols and Cipher Suites</a>
+</li>
+
+<li>
+  Apache Tomcat 9 Configuration Reference:
+  <a href="https://tomcat.apache.org/tomcat-9.0-doc/config/http.html">The HTTP Connector</a>
+</li>
+</references>
+</qhelp>

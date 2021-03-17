@@ -1,0 +1,2 @@
+| server2.xml:93:5:101:17 | Connector | Tomcat server configuration should not allow obsolete protocols and/or weak cipher suites |
+| server.xml:115:1:118:3 | Connector | Tomcat server configuration should not allow obsolete protocols and/or weak cipher suites |
