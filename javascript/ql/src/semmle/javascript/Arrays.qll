@@ -84,16 +84,17 @@ private module ArrayDataFlow {
    * A step modelling the creation of an Array using the `Array.from(x)` method.
    * The step copies the elements of the argument (set, array, or iterator elements) into the resulting array.
    */
-  private class ArrayFrom extends DataFlow::AdditionalFlowStep, DataFlow::CallNode {
-    ArrayFrom() { this = DataFlow::globalVarRef("Array").getAMemberCall("from") }
-
+  private class ArrayFrom extends DataFlow::SharedFlowStep {
     override predicate loadStoreStep(
       DataFlow::Node pred, DataFlow::Node succ, string fromProp, string toProp
     ) {
-      pred = this.getArgument(0) and
-      succ = this and
-      fromProp = arrayLikeElement() and
-      toProp = arrayElement()
+      exists(DataFlow::CallNode call |
+        call = DataFlow::globalVarRef("Array").getAMemberCall("from") and
+        pred = call.getArgument(0) and
+        succ = call and
+        fromProp = arrayLikeElement() and
+        toProp = arrayElement()
+      )
     }
   }
 
