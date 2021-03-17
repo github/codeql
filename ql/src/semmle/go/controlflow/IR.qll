@@ -271,23 +271,8 @@ module IR {
     result = simpleSelectorBase(e)
   }
 
-  private class PromotedField extends Field {
-    PromotedField() { this = any(StructType t).getFieldOfEmbedded(_, _, _, _) }
-  }
-
-  private class PromotedFieldSelector extends SelectorExpr {
-    PromotedFieldSelector() { this.refersTo(any(PromotedField f)) }
-  }
-
-  private StructType getSelectedStructType(PromotedFieldSelector e) {
-    exists(Type baseType | baseType = e.getBase().getType().getUnderlyingType() |
-      pragma[only_bind_into](result) =
-        [baseType, baseType.(PointerType).getBaseType().getUnderlyingType()]
-    )
-  }
-
   private Instruction promotedFieldSelectorBase(PromotedFieldSelector se, Field field) {
-    exists(StructType baseStructType | baseStructType = getSelectedStructType(se) |
+    exists(StructType baseStructType | baseStructType = se.getSelectedStructType() |
       if field = baseStructType.getOwnField(_, _)
       then
         result = MkImplicitDeref(se.getBase())
