@@ -21,10 +21,10 @@ class Operation extends Expr, TOperation {
 class UnaryOperation extends Operation, TUnaryOperation {
   private Generated::Unary g;
 
-  UnaryOperation() { g = toTreeSitter(this) }
+  UnaryOperation() { g = toGenerated(this) }
 
   /** Gets the operand of this unary operation. */
-  final Expr getOperand() { toTreeSitter(result) = g.getOperand() }
+  final Expr getOperand() { toGenerated(result) = g.getOperand() }
 
   final override string getOperator() { result = g.getOperator() }
 
@@ -103,7 +103,7 @@ class DefinedExpr extends UnaryOperation, TDefinedExpr {
 class BinaryOperation extends Operation, TBinaryOperation {
   private Generated::Binary g;
 
-  BinaryOperation() { g = toTreeSitter(this) }
+  BinaryOperation() { g = toGenerated(this) }
 
   final override string getOperator() { result = g.getOperator() }
 
@@ -122,10 +122,10 @@ class BinaryOperation extends Operation, TBinaryOperation {
   }
 
   /** Gets the left operand of this binary operation. */
-  final Stmt getLeftOperand() { toTreeSitter(result) = g.getLeft() }
+  final Stmt getLeftOperand() { toGenerated(result) = g.getLeft() }
 
   /** Gets the right operand of this binary operation. */
-  final Stmt getRightOperand() { toTreeSitter(result) = g.getRight() }
+  final Stmt getRightOperand() { toGenerated(result) = g.getRight() }
 }
 
 /**
@@ -459,9 +459,9 @@ class AssignExpr extends Assignment, TAssignExpr {
 
   AssignExpr() { this = TAssignExpr(g) }
 
-  final override Pattern getLeftOperand() { toTreeSitter(result) = g.getLeft() }
+  final override Pattern getLeftOperand() { toGenerated(result) = g.getLeft() }
 
-  final override Expr getRightOperand() { toTreeSitter(result) = g.getRight() }
+  final override Expr getRightOperand() { toGenerated(result) = g.getRight() }
 
   final override string getOperator() { result = "=" }
 
@@ -474,13 +474,13 @@ class AssignExpr extends Assignment, TAssignExpr {
 class AssignOperation extends Assignment, TAssignOperation {
   private Generated::OperatorAssignment g;
 
-  AssignOperation() { g = toTreeSitter(this) }
+  AssignOperation() { g = toGenerated(this) }
 
   final override string getOperator() { result = g.getOperator() }
 
-  final override LhsExpr getLeftOperand() { toTreeSitter(result) = g.getLeft() }
+  final override LhsExpr getLeftOperand() { toGenerated(result) = g.getLeft() }
 
-  final override Expr getRightOperand() { toTreeSitter(result) = g.getRight() }
+  final override Expr getRightOperand() { toGenerated(result) = g.getRight() }
 }
 
 /**

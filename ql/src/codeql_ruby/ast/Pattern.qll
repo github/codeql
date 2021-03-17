@@ -7,9 +7,9 @@ private import internal.Variable
 /** A pattern. */
 class Pattern extends AstNode {
   Pattern() {
-    explicitAssignmentNode(toTreeSitter(this), _) or
-    implicitAssignmentNode(toTreeSitter(this)) or
-    implicitParameterAssignmentNode(toTreeSitter(this), _)
+    explicitAssignmentNode(toGenerated(this), _) or
+    implicitAssignmentNode(toGenerated(this)) or
+    implicitParameterAssignmentNode(toGenerated(this), _)
   }
 
   /** Gets a variable used in (or introduced by) this pattern. */
@@ -57,19 +57,19 @@ class TuplePattern extends Pattern, TTuplePattern {
   override string getAPrimaryQlClass() { result = "TuplePattern" }
 
   private Generated::AstNode getChild(int i) {
-    result = toTreeSitter(this).(Generated::DestructuredParameter).getChild(i)
+    result = toGenerated(this).(Generated::DestructuredParameter).getChild(i)
     or
-    result = toTreeSitter(this).(Generated::DestructuredLeftAssignment).getChild(i)
+    result = toGenerated(this).(Generated::DestructuredLeftAssignment).getChild(i)
     or
-    result = toTreeSitter(this).(Generated::LeftAssignmentList).getChild(i)
+    result = toGenerated(this).(Generated::LeftAssignmentList).getChild(i)
   }
 
   /** Gets the `i`th pattern in this tuple pattern. */
   final Pattern getElement(int i) {
     exists(Generated::AstNode c | c = this.getChild(i) |
-      toTreeSitter(result) = c.(Generated::RestAssignment).getChild()
+      toGenerated(result) = c.(Generated::RestAssignment).getChild()
       or
-      toTreeSitter(result) = c
+      toGenerated(result) = c
     )
   }
 

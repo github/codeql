@@ -11,13 +11,13 @@ private import internal.Completion
 
 /** An AST node with an associated control-flow graph. */
 class CfgScope extends AST::AstNode {
-  CfgScope() { ASTInternal::toTreeSitter(this) instanceof CfgScope::Range_ }
+  CfgScope() { ASTInternal::toGenerated(this) instanceof CfgScope::Range_ }
 
   /** Gets the CFG scope that this scope is nested under, if any. */
   final CfgScope getOuterCfgScope() {
     exists(AST::AstNode parent |
       parent = this.getParent() and
-      result = getCfgScope(ASTInternal::toTreeSitter(parent))
+      result = getCfgScope(ASTInternal::toGenerated(parent))
     )
   }
 }

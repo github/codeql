@@ -47,8 +47,7 @@ class Toplevel extends ModuleBase, TToplevel {
    * Gets the `n`th `BEGIN` block.
    */
   final BeginBlock getBeginBlock(int n) {
-    toTreeSitter(result) =
-      rank[n](int i, Generated::BeginBlock b | b = g.getChild(i) | b order by i)
+    toGenerated(result) = rank[n](int i, Generated::BeginBlock b | b = g.getChild(i) | b order by i)
   }
 
   /**
@@ -173,7 +172,7 @@ class Class extends Namespace, TClass {
    * end
    * ```
    */
-  final Expr getSuperclassExpr() { toTreeSitter(result) = g.getSuperclass().getChild() }
+  final Expr getSuperclassExpr() { toGenerated(result) = g.getSuperclass().getChild() }
 
   final override string getName() {
     result = g.getName().(Generated::Token).getValue() or
@@ -181,7 +180,7 @@ class Class extends Namespace, TClass {
   }
 
   final override Expr getScopeExpr() {
-    toTreeSitter(result) = g.getName().(Generated::ScopeResolution).getScope()
+    toGenerated(result) = g.getName().(Generated::ScopeResolution).getScope()
   }
 
   final override predicate hasGlobalScope() {
@@ -225,7 +224,7 @@ class SingletonClass extends ModuleBase, TSingletonClass {
    * end
    * ```
    */
-  final Expr getValue() { toTreeSitter(result) = g.getValue() }
+  final Expr getValue() { toGenerated(result) = g.getValue() }
 
   final override string toString() { result = "class << ..." }
 
@@ -274,7 +273,7 @@ class Module extends Namespace, TModule {
   }
 
   final override Expr getScopeExpr() {
-    toTreeSitter(result) = g.getName().(Generated::ScopeResolution).getScope()
+    toGenerated(result) = g.getName().(Generated::ScopeResolution).getScope()
   }
 
   final override predicate hasGlobalScope() {

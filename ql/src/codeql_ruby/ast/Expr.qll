@@ -39,7 +39,7 @@ class ArgumentList extends Expr, TArgumentList {
 
   /** Gets the `i`th element in this argument list. */
   Expr getElement(int i) {
-    toTreeSitter(result) in [
+    toGenerated(result) in [
         g.(Generated::ArgumentList).getChild(i), g.(Generated::RightAssignmentList).getChild(i)
       ]
   }
@@ -90,7 +90,7 @@ private class Then extends StmtSequence, TThen {
 
   Then() { this = TThen(g) }
 
-  override Stmt getStmt(int n) { toTreeSitter(result) = g.getChild(n) }
+  override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
 }
 
 private class Else extends StmtSequence, TElse {
@@ -98,7 +98,7 @@ private class Else extends StmtSequence, TElse {
 
   Else() { this = TElse(g) }
 
-  override Stmt getStmt(int n) { toTreeSitter(result) = g.getChild(n) }
+  override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
 }
 
 private class Do extends StmtSequence, TDo {
@@ -106,7 +106,7 @@ private class Do extends StmtSequence, TDo {
 
   Do() { this = TDo(g) }
 
-  override Stmt getStmt(int n) { toTreeSitter(result) = g.getChild(n) }
+  override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
 }
 
 private class Ensure extends StmtSequence, TEnsure {
@@ -114,7 +114,7 @@ private class Ensure extends StmtSequence, TEnsure {
 
   Ensure() { this = TEnsure(g) }
 
-  override Stmt getStmt(int n) { toTreeSitter(result) = g.getChild(n) }
+  override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
 
   final override string toString() { result = "ensure ..." }
 }
@@ -153,7 +153,7 @@ class BodyStmt extends StmtSequence, TBodyStmt {
   final override Stmt getStmt(int n) {
     result =
       rank[n + 1](AstNode node, int i |
-        toTreeSitter(node) = this.getChild(i) and
+        toGenerated(node) = this.getChild(i) and
         not node instanceof Else and
         not node instanceof RescueClause and
         not node instanceof Ensure
@@ -165,17 +165,17 @@ class BodyStmt extends StmtSequence, TBodyStmt {
   /** Gets the `n`th rescue clause in this block. */
   final RescueClause getRescue(int n) {
     result =
-      rank[n + 1](RescueClause node, int i | toTreeSitter(node) = getChild(i) | node order by i)
+      rank[n + 1](RescueClause node, int i | toGenerated(node) = getChild(i) | node order by i)
   }
 
   /** Gets a rescue clause in this block. */
   final RescueClause getARescue() { result = this.getRescue(_) }
 
   /** Gets the `else` clause in this block, if any. */
-  final StmtSequence getElse() { result = unique(Else s | toTreeSitter(s) = getChild(_)) }
+  final StmtSequence getElse() { result = unique(Else s | toGenerated(s) = getChild(_)) }
 
   /** Gets the `ensure` clause in this block, if any. */
-  final StmtSequence getEnsure() { result = unique(Ensure s | toTreeSitter(s) = getChild(_)) }
+  final StmtSequence getEnsure() { result = unique(Ensure s | toGenerated(s) = getChild(_)) }
 
   final predicate hasEnsure() { exists(this.getEnsure()) }
 
@@ -220,7 +220,7 @@ class ParenthesizedExpr extends StmtSequence, TParenthesizedExpr {
     )
   }
 
-  final override Stmt getStmt(int n) { toTreeSitter(result) = g.getChild(n) }
+  final override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
 }
 
 /**
@@ -251,7 +251,7 @@ class Pair extends Expr, TPair {
    * { 'foo' => 123 }
    * ```
    */
-  final Expr getKey() { toTreeSitter(result) = g.getKey() }
+  final Expr getKey() { toGenerated(result) = g.getKey() }
 
   /**
    * Gets the value expression of this pair. For example, the `InteralLiteral`
@@ -260,7 +260,7 @@ class Pair extends Expr, TPair {
    * { 'foo' => 123 }
    * ```
    */
-  final Expr getValue() { toTreeSitter(result) = g.getValue() }
+  final Expr getValue() { toGenerated(result) = g.getValue() }
 
   final override string toString() { result = "Pair" }
 
@@ -297,7 +297,7 @@ class RescueClause extends Expr, TRescueClause {
    * end
    * ```
    */
-  final Expr getException(int n) { toTreeSitter(result) = g.getExceptions().getChild(n) }
+  final Expr getException(int n) { toGenerated(result) = g.getExceptions().getChild(n) }
 
   /**
    * Gets an exception to match, if any. For example `FirstError` or `SecondError` in:
@@ -322,12 +322,12 @@ class RescueClause extends Expr, TRescueClause {
    * end
    * ```
    */
-  final LhsExpr getVariableExpr() { toTreeSitter(result) = g.getVariable().getChild() }
+  final LhsExpr getVariableExpr() { toGenerated(result) = g.getVariable().getChild() }
 
   /**
    * Gets the exception handler body.
    */
-  final StmtSequence getBody() { toTreeSitter(result) = g.getBody() }
+  final StmtSequence getBody() { toGenerated(result) = g.getBody() }
 
   final override string toString() { result = "rescue ..." }
 
@@ -359,7 +359,7 @@ class RescueModifierExpr extends Expr, TRescueModifierExpr {
    * body rescue handler
    * ```
    */
-  final Stmt getBody() { toTreeSitter(result) = g.getBody() }
+  final Stmt getBody() { toGenerated(result) = g.getBody() }
 
   /**
    * Gets the exception handler of this `RescueModifierExpr`.
@@ -367,7 +367,7 @@ class RescueModifierExpr extends Expr, TRescueModifierExpr {
    * body rescue handler
    * ```
    */
-  final Stmt getHandler() { toTreeSitter(result) = g.getHandler() }
+  final Stmt getHandler() { toGenerated(result) = g.getHandler() }
 
   final override string toString() { result = "... rescue ..." }
 
@@ -393,7 +393,7 @@ class StringConcatenation extends Expr, TStringConcatenation {
   final override string getAPrimaryQlClass() { result = "StringConcatenation" }
 
   /** Gets the `n`th string literal in this concatenation. */
-  final StringLiteral getString(int n) { toTreeSitter(result) = g.getChild(n) }
+  final StringLiteral getString(int n) { toGenerated(result) = g.getChild(n) }
 
   /** Gets a string literal in this concatenation. */
   final StringLiteral getAString() { result = this.getString(_) }

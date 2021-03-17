@@ -22,7 +22,7 @@ class Variable extends TVariable {
   final Location getLocation() { result = range.getLocation() }
 
   /** Gets the scope this variable is declared in. */
-  final Scope getDeclaringScope() { toTreeSitter(result) = range.getDeclaringScope() }
+  final Scope getDeclaringScope() { toGenerated(result) = range.getDeclaringScope() }
 
   /** Gets an access to this variable. */
   VariableAccess getAnAccess() { result.getVariable() = this }
@@ -94,7 +94,7 @@ class VariableAccess extends Expr, TVariableAccess {
    * both `a` and `b` are write accesses belonging to the same assignment.
    */
   predicate isExplicitWrite(AstNode assignment) {
-    explicitWriteAccess(toTreeSitter(this), toTreeSitter(assignment))
+    explicitWriteAccess(toGenerated(this), toGenerated(assignment))
   }
 
   /**
@@ -112,7 +112,7 @@ class VariableAccess extends Expr, TVariableAccess {
    * the access to `elements` in the parameter list is an implicit assignment,
    * as is the first access to `e`.
    */
-  predicate isImplicitWrite() { implicitWriteAccess(toTreeSitter(this)) }
+  predicate isImplicitWrite() { implicitWriteAccess(toGenerated(this)) }
 }
 
 /** An access to a variable where the value is updated. */

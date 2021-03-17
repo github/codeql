@@ -6,16 +6,16 @@ private import internal.TreeSitter
 class Scope extends AstNode, TScopeType {
   private Scope::Range range;
 
-  Scope() { range = toTreeSitter(this) }
+  Scope() { range = toGenerated(this) }
 
   /** Gets the enclosing module, if any. */
-  ModuleBase getEnclosingModule() { toTreeSitter(result) = range.getEnclosingModule() }
+  ModuleBase getEnclosingModule() { toGenerated(result) = range.getEnclosingModule() }
 
   /** Gets the enclosing method, if any. */
-  MethodBase getEnclosingMethod() { toTreeSitter(result) = range.getEnclosingMethod() }
+  MethodBase getEnclosingMethod() { toGenerated(result) = range.getEnclosingMethod() }
 
   /** Gets the scope in which this scope is nested, if any. */
-  Scope getOuterScope() { toTreeSitter(result) = range.getOuterScope() }
+  Scope getOuterScope() { toGenerated(result) = range.getOuterScope() }
 
   /** Gets a variable that is declared in this scope. */
   final Variable getAVariable() { result.getDeclaringScope() = this }

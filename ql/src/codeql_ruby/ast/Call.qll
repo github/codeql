@@ -129,7 +129,7 @@ private class ScopeResolutionMethodCall extends MethodCall, TScopeResolutionMeth
 
   ScopeResolutionMethodCall() { this = TScopeResolutionMethodCall(g, i) }
 
-  final override Expr getReceiver() { toTreeSitter(result) = g.getScope() }
+  final override Expr getReceiver() { toGenerated(result) = g.getScope() }
 
   final override string getMethodName() { result = getMethodName(this, i.getValue()) }
 }
@@ -140,10 +140,10 @@ private class RegularMethodCall extends MethodCall, TRegularMethodCall {
   RegularMethodCall() { this = TRegularMethodCall(g) }
 
   final override Expr getReceiver() {
-    toTreeSitter(result) = g.getReceiver()
+    toGenerated(result) = g.getReceiver()
     or
     not exists(g.getReceiver()) and
-    toTreeSitter(result) = g.getMethod().(Generated::ScopeResolution).getScope()
+    toGenerated(result) = g.getMethod().(Generated::ScopeResolution).getScope()
   }
 
   final override string getMethodName() {
@@ -157,12 +157,12 @@ private class RegularMethodCall extends MethodCall, TRegularMethodCall {
   }
 
   final override Expr getArgument(int n) {
-    toTreeSitter(result) = g.getArguments().getChild(n)
+    toGenerated(result) = g.getArguments().getChild(n)
     or
-    toTreeSitter(result) = g.getMethod().(Generated::ArgumentList).getChild(n)
+    toGenerated(result) = g.getMethod().(Generated::ArgumentList).getChild(n)
   }
 
-  final override Block getBlock() { toTreeSitter(result) = g.getBlock() }
+  final override Block getBlock() { toGenerated(result) = g.getBlock() }
 }
 
 /**
@@ -189,11 +189,11 @@ class ElementReference extends MethodCall, TElementReference {
 
   final override string getAPrimaryQlClass() { result = "ElementReference" }
 
-  final override Expr getReceiver() { toTreeSitter(result) = g.getObject() }
+  final override Expr getReceiver() { toGenerated(result) = g.getObject() }
 
   final override string getMethodName() { result = getMethodName(this, "[]") }
 
-  final override Expr getArgument(int n) { toTreeSitter(result) = g.getChild(n) }
+  final override Expr getArgument(int n) { toGenerated(result) = g.getChild(n) }
 
   final override string toString() { result = "...[...]" }
 }
@@ -211,7 +211,7 @@ class YieldCall extends Call, TYieldCall {
 
   final override string getAPrimaryQlClass() { result = "YieldCall" }
 
-  final override Expr getArgument(int n) { toTreeSitter(result) = g.getChild().getChild(n) }
+  final override Expr getArgument(int n) { toGenerated(result) = g.getChild().getChild(n) }
 
   final override string toString() { result = "yield ..." }
 }
@@ -247,9 +247,9 @@ private class RegularSuperCall extends SuperCall, TRegularSuperCall {
     result = getMethodName(this, g.getMethod().(Generated::Super).getValue())
   }
 
-  final override Expr getArgument(int n) { toTreeSitter(result) = g.getArguments().getChild(n) }
+  final override Expr getArgument(int n) { toGenerated(result) = g.getArguments().getChild(n) }
 
-  final override Block getBlock() { toTreeSitter(result) = g.getBlock() }
+  final override Block getBlock() { toGenerated(result) = g.getBlock() }
 }
 
 /**
@@ -272,7 +272,7 @@ class BlockArgument extends Expr, TBlockArgument {
    * foo(&bar)
    * ```
    */
-  final Expr getValue() { toTreeSitter(result) = g.getChild() }
+  final Expr getValue() { toGenerated(result) = g.getChild() }
 
   final override string toString() { result = "&..." }
 
@@ -299,7 +299,7 @@ class SplatArgument extends Expr, TSplatArgument {
    * foo(*bar)
    * ```
    */
-  final Expr getValue() { toTreeSitter(result) = g.getChild() }
+  final Expr getValue() { toGenerated(result) = g.getChild() }
 
   final override string toString() { result = "*..." }
 
@@ -326,7 +326,7 @@ class HashSplatArgument extends Expr, THashSplatArgument {
    * foo(**bar)
    * ```
    */
-  final Expr getValue() { toTreeSitter(result) = g.getChild() }
+  final Expr getValue() { toGenerated(result) = g.getChild() }
 
   final override string toString() { result = "**..." }
 

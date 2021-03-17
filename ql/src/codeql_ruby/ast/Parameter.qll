@@ -154,7 +154,7 @@ class KeywordParameter extends NamedParameter, TKeywordParameter {
    * is not provided by the caller. If the parameter is mandatory and does not
    * have a default value, this predicate has no result.
    */
-  final Expr getDefaultValue() { toTreeSitter(result) = g.getValue() }
+  final Expr getDefaultValue() { toGenerated(result) = g.getValue() }
 
   /**
    * Holds if the parameter is optional. That is, there is a default value that
@@ -195,7 +195,7 @@ class OptionalParameter extends NamedParameter, TOptionalParameter {
    * Gets the default value, i.e. the value assigned to the parameter when one
    * is not provided by the caller.
    */
-  final Expr getDefaultValue() { toTreeSitter(result) = g.getValue() }
+  final Expr getDefaultValue() { toGenerated(result) = g.getValue() }
 
   final override LocalVariable getVariable() { result = TLocalVariable(_, _, g.getName()) }
 

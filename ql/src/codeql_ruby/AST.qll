@@ -33,7 +33,7 @@ class AstNode extends TAstNode {
   string toString() { none() }
 
   /** Gets the location of this node. */
-  Location getLocation() { result = toTreeSitter(this).getLocation() }
+  Location getLocation() { result = toGenerated(this).getLocation() }
 
   /** Gets a child node of this `AstNode`. */
   final AstNode getAChild() { result = this.getAChild(_) }

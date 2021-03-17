@@ -15,7 +15,7 @@ class Stmt extends AstNode, TStmt {
   CfgNodes::AstCfgNode getAControlFlowNode() { result.getNode() = this }
 
   /** Gets the control-flow scope of this statement, if any. */
-  CfgScope getCfgScope() { result = getCfgScope(toTreeSitter(this)) }
+  CfgScope getCfgScope() { result = getCfgScope(toGenerated(this)) }
 
   /** Gets the enclosing callable, if any. */
   Callable getEnclosingCallable() { result = this.getCfgScope() }
@@ -59,7 +59,7 @@ class BeginBlock extends StmtSequence, TBeginBlock {
 
   final override string toString() { result = "BEGIN { ... }" }
 
-  final override Stmt getStmt(int n) { toTreeSitter(result) = g.getChild(n) }
+  final override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
 }
 
 /**
@@ -77,7 +77,7 @@ class EndBlock extends StmtSequence, TEndBlock {
 
   final override string toString() { result = "END { ... }" }
 
-  final override Stmt getStmt(int n) { toTreeSitter(result) = g.getChild(n) }
+  final override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
 }
 
 /**
@@ -94,7 +94,7 @@ class UndefStmt extends Stmt, TUndefStmt {
   UndefStmt() { this = TUndefStmt(g) }
 
   /** Gets the `n`th method name to undefine. */
-  final MethodName getMethodName(int n) { toTreeSitter(result) = g.getChild(n) }
+  final MethodName getMethodName(int n) { toGenerated(result) = g.getChild(n) }
 
   /** Gets a method name to undefine. */
   final MethodName getAMethodName() { result = getMethodName(_) }
@@ -122,10 +122,10 @@ class AliasStmt extends Stmt, TAliasStmt {
   AliasStmt() { this = TAliasStmt(g) }
 
   /** Gets the new method name. */
-  final MethodName getNewName() { toTreeSitter(result) = g.getName() }
+  final MethodName getNewName() { toGenerated(result) = g.getName() }
 
   /** Gets the original method name. */
-  final MethodName getOldName() { toTreeSitter(result) = g.getAlias() }
+  final MethodName getOldName() { toGenerated(result) = g.getAlias() }
 
   final override string getAPrimaryQlClass() { result = "AliasStmt" }
 
@@ -161,7 +161,7 @@ class ReturningStmt extends Stmt, TReturningStmt {
 
   /** Gets the returned value, if any. */
   final Expr getValue() {
-    toTreeSitter(result) =
+    toGenerated(result) =
       any(Generated::AstNode res |
         exists(Generated::ArgumentList a, int c |
           a = this.getArgumentList() and c = count(a.getChild(_))

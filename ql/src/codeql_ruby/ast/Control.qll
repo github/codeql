@@ -113,11 +113,11 @@ private class If extends IfExpr, TIf {
 
   If() { this = TIf(g) }
 
-  final override Expr getCondition() { toTreeSitter(result) = g.getCondition() }
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
 
-  final override Stmt getThen() { toTreeSitter(result) = g.getConsequence() }
+  final override Stmt getThen() { toGenerated(result) = g.getConsequence() }
 
-  final override Stmt getElse() { toTreeSitter(result) = g.getAlternative() }
+  final override Stmt getElse() { toGenerated(result) = g.getAlternative() }
 
   final override string toString() { result = "if ..." }
 }
@@ -129,11 +129,11 @@ private class Elsif extends IfExpr, TElsif {
 
   final override predicate isElsif() { any() }
 
-  final override Expr getCondition() { toTreeSitter(result) = g.getCondition() }
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
 
-  final override Stmt getThen() { toTreeSitter(result) = g.getConsequence() }
+  final override Stmt getThen() { toGenerated(result) = g.getConsequence() }
 
-  final override Stmt getElse() { toTreeSitter(result) = g.getAlternative() }
+  final override Stmt getElse() { toGenerated(result) = g.getAlternative() }
 
   final override string toString() { result = "elsif ..." }
 }
@@ -153,7 +153,7 @@ class UnlessExpr extends ConditionalExpr, TUnlessExpr {
 
   final override string getAPrimaryQlClass() { result = "UnlessExpr" }
 
-  final override Expr getCondition() { toTreeSitter(result) = g.getCondition() }
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
 
   /**
    * Gets the 'then' branch of this `unless` expression. In the following
@@ -166,7 +166,7 @@ class UnlessExpr extends ConditionalExpr, TUnlessExpr {
    * end
    * ```
    */
-  final Stmt getThen() { toTreeSitter(result) = g.getConsequence() }
+  final Stmt getThen() { toGenerated(result) = g.getConsequence() }
 
   /**
    * Gets the 'else' branch of this `unless` expression. In the following
@@ -179,7 +179,7 @@ class UnlessExpr extends ConditionalExpr, TUnlessExpr {
    * end
    * ```
    */
-  final Stmt getElse() { toTreeSitter(result) = g.getAlternative() }
+  final Stmt getElse() { toGenerated(result) = g.getAlternative() }
 
   final override Expr getBranch(boolean cond) {
     cond = false and result = getThen()
@@ -211,7 +211,7 @@ class IfModifierExpr extends ConditionalExpr, TIfModifierExpr {
 
   final override string getAPrimaryQlClass() { result = "IfModifierExpr" }
 
-  final override Expr getCondition() { toTreeSitter(result) = g.getCondition() }
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
 
   final override Stmt getBranch(boolean cond) { cond = true and result = this.getBody() }
 
@@ -222,7 +222,7 @@ class IfModifierExpr extends ConditionalExpr, TIfModifierExpr {
    * foo if bar
    * ```
    */
-  final Stmt getBody() { toTreeSitter(result) = g.getBody() }
+  final Stmt getBody() { toGenerated(result) = g.getBody() }
 
   final override string toString() { result = "... if ..." }
 
@@ -246,7 +246,7 @@ class UnlessModifierExpr extends ConditionalExpr, TUnlessModifierExpr {
 
   final override string getAPrimaryQlClass() { result = "UnlessModifierExpr" }
 
-  final override Expr getCondition() { toTreeSitter(result) = g.getCondition() }
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
 
   final override Stmt getBranch(boolean cond) { cond = false and result = this.getBody() }
 
@@ -257,7 +257,7 @@ class UnlessModifierExpr extends ConditionalExpr, TUnlessModifierExpr {
    * foo unless bar
    * ```
    */
-  final Stmt getBody() { toTreeSitter(result) = g.getBody() }
+  final Stmt getBody() { toGenerated(result) = g.getBody() }
 
   final override string toString() { result = "... unless ..." }
 
@@ -281,13 +281,13 @@ class TernaryIfExpr extends ConditionalExpr, TTernaryIfExpr {
 
   final override string getAPrimaryQlClass() { result = "TernaryIfExpr" }
 
-  final override Expr getCondition() { toTreeSitter(result) = g.getCondition() }
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
 
   /** Gets the 'then' branch of this ternary if expression. */
-  final Stmt getThen() { toTreeSitter(result) = g.getConsequence() }
+  final Stmt getThen() { toGenerated(result) = g.getConsequence() }
 
   /** Gets the 'else' branch of this ternary if expression. */
-  final Stmt getElse() { toTreeSitter(result) = g.getAlternative() }
+  final Stmt getElse() { toGenerated(result) = g.getAlternative() }
 
   final override Stmt getBranch(boolean cond) {
     cond = true and result = getThen()
@@ -332,13 +332,13 @@ class CaseExpr extends ControlExpr, TCaseExpr {
    * end
    * ```
    */
-  final Expr getValue() { toTreeSitter(result) = g.getValue() }
+  final Expr getValue() { toGenerated(result) = g.getValue() }
 
   /**
    * Gets the `n`th branch of this case expression, either a `WhenExpr` or a
    * `StmtSequence`.
    */
-  final Expr getBranch(int n) { toTreeSitter(result) = g.getChild(n) }
+  final Expr getBranch(int n) { toGenerated(result) = g.getChild(n) }
 
   /**
    * Gets a branch of this case expression, either a `WhenExpr` or an
@@ -382,7 +382,7 @@ class WhenExpr extends Expr, TWhenExpr {
   final override string getAPrimaryQlClass() { result = "WhenExpr" }
 
   /** Gets the body of this case-when expression. */
-  final Stmt getBody() { toTreeSitter(result) = g.getBody() }
+  final Stmt getBody() { toGenerated(result) = g.getBody() }
 
   /**
    * Gets the `n`th pattern (or condition) in this case-when expression. In the
@@ -395,7 +395,7 @@ class WhenExpr extends Expr, TWhenExpr {
    * end
    * ```
    */
-  final Expr getPattern(int n) { toTreeSitter(result) = g.getPattern(n).getChild() }
+  final Expr getPattern(int n) { toGenerated(result) = g.getPattern(n).getChild() }
 
   /**
    * Gets a pattern (or condition) in this case-when expression.
@@ -459,9 +459,9 @@ class WhileExpr extends ConditionalLoop, TWhileExpr {
   final override string getAPrimaryQlClass() { result = "WhileExpr" }
 
   /** Gets the body of this `while` loop. */
-  final override Stmt getBody() { toTreeSitter(result) = g.getBody() }
+  final override Stmt getBody() { toGenerated(result) = g.getBody() }
 
-  final override Expr getCondition() { toTreeSitter(result) = g.getCondition() }
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
 
   final override string toString() { result = "while ..." }
 }
@@ -483,9 +483,9 @@ class UntilExpr extends ConditionalLoop, TUntilExpr {
   final override string getAPrimaryQlClass() { result = "UntilExpr" }
 
   /** Gets the body of this `until` loop. */
-  final override Stmt getBody() { toTreeSitter(result) = g.getBody() }
+  final override Stmt getBody() { toGenerated(result) = g.getBody() }
 
-  final override Expr getCondition() { toTreeSitter(result) = g.getCondition() }
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
 
   final override string toString() { result = "until ..." }
 }
@@ -501,9 +501,9 @@ class WhileModifierExpr extends ConditionalLoop, TWhileModifierExpr {
 
   WhileModifierExpr() { this = TWhileModifierExpr(g) }
 
-  final override Stmt getBody() { toTreeSitter(result) = g.getBody() }
+  final override Stmt getBody() { toGenerated(result) = g.getBody() }
 
-  final override Expr getCondition() { toTreeSitter(result) = g.getCondition() }
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
 
   final override string getAPrimaryQlClass() { result = "WhileModifierExpr" }
 
@@ -521,9 +521,9 @@ class UntilModifierExpr extends ConditionalLoop, TUntilModifierExpr {
 
   UntilModifierExpr() { this = TUntilModifierExpr(g) }
 
-  final override Stmt getBody() { toTreeSitter(result) = g.getBody() }
+  final override Stmt getBody() { toGenerated(result) = g.getBody() }
 
-  final override Expr getCondition() { toTreeSitter(result) = g.getCondition() }
+  final override Expr getCondition() { toGenerated(result) = g.getCondition() }
 
   final override string getAPrimaryQlClass() { result = "UntilModifierExpr" }
 
@@ -546,10 +546,10 @@ class ForExpr extends Loop, TForExpr {
   final override string getAPrimaryQlClass() { result = "ForExpr" }
 
   /** Gets the body of this `for` loop. */
-  final override Stmt getBody() { toTreeSitter(result) = g.getBody() }
+  final override Stmt getBody() { toGenerated(result) = g.getBody() }
 
   /** Gets the pattern representing the iteration argument. */
-  final Pattern getPattern() { toTreeSitter(result) = g.getPattern() }
+  final Pattern getPattern() { toGenerated(result) = g.getPattern() }
 
   /**
    * Gets the value being iterated over. In the following example, the result
@@ -560,7 +560,7 @@ class ForExpr extends Loop, TForExpr {
    * end
    * ```
    */
-  final Expr getValue() { toTreeSitter(result) = g.getValue().getChild() }
+  final Expr getValue() { toGenerated(result) = g.getValue().getChild() }
 
   final override string toString() { result = "for ... in ..." }
 

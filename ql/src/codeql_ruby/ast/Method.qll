@@ -57,7 +57,7 @@ class Method extends MethodBase, TMethod {
   final predicate isSetter() { g.getName() instanceof Generated::Setter }
 
   final override Parameter getParameter(int n) {
-    toTreeSitter(result) = g.getParameters().getChild(n)
+    toGenerated(result) = g.getParameters().getChild(n)
   }
 
   final override string toString() { result = this.getName() }
@@ -72,7 +72,7 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
   final override string getAPrimaryQlClass() { result = "SingletonMethod" }
 
   /** Gets the object of this singleton method. */
-  final Expr getObject() { toTreeSitter(result) = g.getObject() }
+  final Expr getObject() { toGenerated(result) = g.getObject() }
 
   final override string getName() {
     result = g.getName().(Generated::Token).getValue()
@@ -81,7 +81,7 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
   }
 
   final override Parameter getParameter(int n) {
-    toTreeSitter(result) = g.getParameters().getChild(n)
+    toGenerated(result) = g.getParameters().getChild(n)
   }
 
   final override string toString() { result = this.getName() }
@@ -107,7 +107,7 @@ class Lambda extends Callable, BodyStmt, TLambda {
   final override string getAPrimaryQlClass() { result = "Lambda" }
 
   final override Parameter getParameter(int n) {
-    toTreeSitter(result) = g.getParameters().getChild(n)
+    toGenerated(result) = g.getParameters().getChild(n)
   }
 
   final override string toString() { result = "-> { ... }" }
@@ -135,7 +135,7 @@ class DoBlock extends Block, BodyStmt, TDoBlock {
   DoBlock() { this = TDoBlock(g) }
 
   final override Parameter getParameter(int n) {
-    toTreeSitter(result) = g.getParameters().getChild(n)
+    toGenerated(result) = g.getParameters().getChild(n)
   }
 
   final override string toString() { result = "do ... end" }
@@ -161,10 +161,10 @@ class BraceBlock extends Block, TBraceBlock {
   BraceBlock() { this = TBraceBlock(g) }
 
   final override Parameter getParameter(int n) {
-    toTreeSitter(result) = g.getParameters().getChild(n)
+    toGenerated(result) = g.getParameters().getChild(n)
   }
 
-  final override Stmt getStmt(int i) { toTreeSitter(result) = g.getChild(i) }
+  final override Stmt getStmt(int i) { toGenerated(result) = g.getChild(i) }
 
   final override string toString() { result = "{ ... }" }
 

@@ -206,7 +206,7 @@ private predicate inMatchingContext(AstNode n) {
     w.getPattern(_) = n
   )
   or
-  toTreeSitter(n).(Trees::DefaultValueParameterTree).hasDefaultValue()
+  toGenerated(n).(Trees::DefaultValueParameterTree).hasDefaultValue()
 }
 
 /**

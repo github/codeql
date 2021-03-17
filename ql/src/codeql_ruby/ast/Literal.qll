@@ -226,7 +226,7 @@ class StringInterpolationComponent extends StringComponent, StmtSequence,
 
   final override string toString() { result = "#{...}" }
 
-  final override Stmt getStmt(int n) { toTreeSitter(result) = g.getChild(n) }
+  final override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
 
   final override string getValueText() { none() }
 
@@ -334,9 +334,9 @@ class StringlikeLiteral extends Literal, TStringlikeLiteral {
         concat(StringComponent c, int i, string s |
           c = this.getComponent(i) and
           (
-            s = toTreeSitter(c).(Generated::Token).getValue()
+            s = toGenerated(c).(Generated::Token).getValue()
             or
-            not toTreeSitter(c) instanceof Generated::Token and
+            not toGenerated(c) instanceof Generated::Token and
             s = "#{...}"
           )
         |
@@ -374,7 +374,7 @@ private class RegularStringLiteral extends StringLiteral, TRegularStringLiteral 
 
   RegularStringLiteral() { this = TRegularStringLiteral(g) }
 
-  final override StringComponent getComponent(int n) { toTreeSitter(result) = g.getChild(n) }
+  final override StringComponent getComponent(int n) { toGenerated(result) = g.getChild(n) }
 }
 
 private class BareStringLiteral extends StringLiteral, TBareStringLiteral {
@@ -382,7 +382,7 @@ private class BareStringLiteral extends StringLiteral, TBareStringLiteral {
 
   BareStringLiteral() { this = TBareStringLiteral(g) }
 
-  final override StringComponent getComponent(int n) { toTreeSitter(result) = g.getChild(n) }
+  final override StringComponent getComponent(int n) { toGenerated(result) = g.getChild(n) }
 }
 
 /**
@@ -399,7 +399,7 @@ class RegexLiteral extends StringlikeLiteral, TRegexLiteral {
 
   final override string getAPrimaryQlClass() { result = "RegexLiteral" }
 
-  final override StringComponent getComponent(int i) { toTreeSitter(result) = g.getChild(i) }
+  final override StringComponent getComponent(int i) { toGenerated(result) = g.getChild(i) }
 
   /**
    * Gets the regex flags as a string.
@@ -464,7 +464,7 @@ private class DelimitedSymbolLiteral extends ComplexSymbolLiteral, TDelimitedSym
 
   DelimitedSymbolLiteral() { this = TDelimitedSymbolLiteral(g) }
 
-  final override StringComponent getComponent(int i) { toTreeSitter(result) = g.getChild(i) }
+  final override StringComponent getComponent(int i) { toGenerated(result) = g.getChild(i) }
 }
 
 private class BareSymbolLiteral extends ComplexSymbolLiteral, TBareSymbolLiteral {
@@ -472,7 +472,7 @@ private class BareSymbolLiteral extends ComplexSymbolLiteral, TBareSymbolLiteral
 
   BareSymbolLiteral() { this = TBareSymbolLiteral(g) }
 
-  final override StringComponent getComponent(int i) { toTreeSitter(result) = g.getChild(i) }
+  final override StringComponent getComponent(int i) { toGenerated(result) = g.getChild(i) }
 }
 
 private class HashKeySymbolLiteral extends SymbolLiteral, THashKeySymbolLiteral {
@@ -500,7 +500,7 @@ class SubshellLiteral extends StringlikeLiteral, TSubshellLiteral {
 
   final override string getAPrimaryQlClass() { result = "SubshellLiteral" }
 
-  final override StringComponent getComponent(int i) { toTreeSitter(result) = g.getChild(i) }
+  final override StringComponent getComponent(int i) { toGenerated(result) = g.getChild(i) }
 }
 
 /**
@@ -599,7 +599,7 @@ class HereDoc extends StringlikeLiteral, THereDoc {
   }
 
   final override StringComponent getComponent(int n) {
-    toTreeSitter(result) = this.getBody().getChild(n)
+    toGenerated(result) = this.getBody().getChild(n)
   }
 
   final override string toString() { result = g.getValue() }
@@ -636,7 +636,7 @@ private class RegularArrayLiteral extends ArrayLiteral, TRegularArrayLiteral {
 
   RegularArrayLiteral() { this = TRegularArrayLiteral(g) }
 
-  final override Expr getElement(int i) { toTreeSitter(result) = g.getChild(i) }
+  final override Expr getElement(int i) { toGenerated(result) = g.getChild(i) }
 
   final override string toString() { result = "[...]" }
 }
@@ -646,7 +646,7 @@ private class StringArrayLiteral extends ArrayLiteral, TStringArrayLiteral {
 
   StringArrayLiteral() { this = TStringArrayLiteral(g) }
 
-  final override Expr getElement(int i) { toTreeSitter(result) = g.getChild(i) }
+  final override Expr getElement(int i) { toGenerated(result) = g.getChild(i) }
 
   final override string toString() { result = "%w(...)" }
 }
@@ -656,7 +656,7 @@ private class SymbolArrayLiteral extends ArrayLiteral, TSymbolArrayLiteral {
 
   SymbolArrayLiteral() { this = TSymbolArrayLiteral(g) }
 
-  final override Expr getElement(int i) { toTreeSitter(result) = g.getChild(i) }
+  final override Expr getElement(int i) { toGenerated(result) = g.getChild(i) }
 
   final override string toString() { result = "%i(...)" }
 }
@@ -685,7 +685,7 @@ class HashLiteral extends Literal, THashLiteral {
    * { foo: 123, **bar }
    * ```
    */
-  final Expr getElement(int n) { toTreeSitter(result) = g.getChild(n) }
+  final Expr getElement(int n) { toGenerated(result) = g.getChild(n) }
 
   /** Gets an element in this array literal. */
   final Expr getAnElement() { result = this.getElement(_) }
@@ -719,10 +719,10 @@ class RangeLiteral extends Literal, TRangeLiteral {
   final override string getAPrimaryQlClass() { result = "RangeLiteral" }
 
   /** Gets the begin expression of this range, if any. */
-  final Expr getBegin() { toTreeSitter(result) = g.getBegin() }
+  final Expr getBegin() { toGenerated(result) = g.getBegin() }
 
   /** Gets the end expression of this range, if any. */
-  final Expr getEnd() { toTreeSitter(result) = g.getEnd() }
+  final Expr getEnd() { toGenerated(result) = g.getEnd() }
 
   /**
    * Holds if the range is inclusive of the end value, i.e. uses the `..`
@@ -755,7 +755,7 @@ class RangeLiteral extends Literal, TRangeLiteral {
  * ```
  */
 class MethodName extends Literal {
-  MethodName() { MethodName::range(toTreeSitter(this)) }
+  MethodName() { MethodName::range(toGenerated(this)) }
 
   final override string getAPrimaryQlClass() { result = "MethodName" }
 }

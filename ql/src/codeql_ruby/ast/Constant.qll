@@ -81,7 +81,7 @@ private class ScopeResolutionConstantReadAccess extends ConstantReadAccess,
 
   final override string getName() { result = constant.getValue() }
 
-  final override Expr getScopeExpr() { toTreeSitter(result) = g.getScope() }
+  final override Expr getScopeExpr() { toGenerated(result) = g.getScope() }
 
   final override predicate hasGlobalScope() { not exists(g.getScope()) }
 }
@@ -123,7 +123,7 @@ private class ScopeResolutionConstantWriteAccess extends ConstantWriteAccess,
 
   final override string getName() { result = constant.getValue() }
 
-  final override Expr getScopeExpr() { toTreeSitter(result) = g.getScope() }
+  final override Expr getScopeExpr() { toGenerated(result) = g.getScope() }
 
   final override predicate hasGlobalScope() { not exists(g.getScope()) }
 }

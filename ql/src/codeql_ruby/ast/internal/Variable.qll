@@ -331,7 +331,7 @@ private module Cached {
 
   cached
   predicate isCapturedAccess(LocalVariableAccess access) {
-    toTreeSitter(access.getVariable().getDeclaringScope()) != scopeOf(toTreeSitter(access))
+    toGenerated(access.getVariable().getDeclaringScope()) != scopeOf(toGenerated(access))
   }
 
   cached
@@ -398,7 +398,7 @@ module LocalVariable {
 
     final override Scope::Range getDeclaringScope() { result = scope }
 
-    final VariableAccess getDefiningAccess() { toTreeSitter(result) = i }
+    final VariableAccess getDefiningAccess() { toGenerated(result) = i }
   }
 }
 

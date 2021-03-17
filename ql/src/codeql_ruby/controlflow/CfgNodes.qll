@@ -67,7 +67,7 @@ class AstCfgNode extends CfgNode, TAstCfgNode {
   private Splits splits;
   private AstNode n;
 
-  AstCfgNode() { this = TAstCfgNode(toTreeSitter(n), splits) }
+  AstCfgNode() { this = TAstCfgNode(toGenerated(n), splits) }
 
   final override AstNode getNode() { result = n }
 
@@ -132,7 +132,7 @@ abstract private class ExprChildMapping extends Expr {
 
   pragma[noinline]
   private BasicBlock getABasicBlockInScope() {
-    result.getANode() = TAstCfgNode(toTreeSitter(this.getAChildStar()), _)
+    result.getANode() = TAstCfgNode(toGenerated(this.getAChildStar()), _)
   }
 
   pragma[nomagic]

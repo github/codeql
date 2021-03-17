@@ -221,7 +221,7 @@ private module Cached {
 
   /** Gets the underlying TreeSitter entity for a given AST node. */
   cached
-  Generated::AstNode toTreeSitter(AST::AstNode n) {
+  Generated::AstNode toGenerated(AST::AstNode n) {
     n = TAddExpr(result) or
     n = TAliasStmt(result) or
     n = TArgumentList(result) or
@@ -367,7 +367,7 @@ private module Cached {
 
 import Cached
 
-TAstNode fromTreeSitter(Generated::AstNode n) { n = toTreeSitter(result) }
+TAstNode fromGenerated(Generated::AstNode n) { n = toGenerated(result) }
 
 class TCall = TMethodCall or TYieldCall;
 

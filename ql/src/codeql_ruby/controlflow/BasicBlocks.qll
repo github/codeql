@@ -358,9 +358,9 @@ private module JoinBlockPredecessors {
   private predicate idOf(Generated::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
 
   int getId(JoinBlockPredecessor jbp) {
-    idOf(toTreeSitter(jbp.getFirstNode().(AstCfgNode).getNode()), result)
+    idOf(toGenerated(jbp.getFirstNode().(AstCfgNode).getNode()), result)
     or
-    idOf(toTreeSitter(jbp.(EntryBasicBlock).getScope()), result)
+    idOf(toGenerated(jbp.(EntryBasicBlock).getScope()), result)
   }
 
   string getSplitString(JoinBlockPredecessor jbp) {

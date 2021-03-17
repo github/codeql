@@ -203,7 +203,7 @@ private predicate succImpl(AstNode pred, AstNode succ, Completion c) {
 }
 
 private predicate isHidden(ControlFlowTree t) {
-  not t = ASTInternal::toTreeSitter(_)
+  not t = ASTInternal::toGenerated(_)
   or
   t.isHidden()
 }
@@ -301,7 +301,7 @@ private class ForRange extends AST::ForExpr {
     result = AST::ForExpr.super.getAChild(pred)
     or
     pred = "<in>" and
-    result = ASTInternal::TForIn(ASTInternal::toTreeSitter(this).(For).getValue())
+    result = ASTInternal::TForIn(ASTInternal::toGenerated(this).(For).getValue())
   }
 }
 
@@ -309,7 +309,7 @@ private class ForRange extends AST::ForExpr {
 predicate isValidFor(Completion c, ControlFlowTree node) {
   c instanceof SimpleCompletion and isHidden(node)
   or
-  c.isValidFor(ASTInternal::fromTreeSitter(node))
+  c.isValidFor(ASTInternal::fromGenerated(node))
 }
 
 abstract private class StandardPreOrderTree extends StandardNode, PreOrderTree {
@@ -1278,7 +1278,7 @@ cached
 private module Cached {
   /** Gets the CFG scope of node `n`. */
   cached
-  CfgScope getCfgScope(AstNode n) { ASTInternal::toTreeSitter(result) = parent*(scopeOf(n)) }
+  CfgScope getCfgScope(AstNode n) { ASTInternal::toGenerated(result) = parent*(scopeOf(n)) }
 
   private predicate isAbnormalExitType(SuccessorType t) {
     t instanceof RaiseSuccessor or t instanceof ExitSuccessor
@@ -1359,5 +1359,5 @@ import Cached
 
 /** An AST node that is split into multiple control flow nodes. */
 class SplitAstNode extends AstNode {
-  SplitAstNode() { strictcount(CfgNode n | ASTInternal::toTreeSitter(n.getNode()) = this) > 1 }
+  SplitAstNode() { strictcount(CfgNode n | ASTInternal::toGenerated(n.getNode()) = this) > 1 }
 }
