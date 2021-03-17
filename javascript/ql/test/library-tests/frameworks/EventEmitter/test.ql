@@ -1,6 +1,6 @@
 import javascript
 
-query predicate taintSteps(DataFlow::Node pred, DataFlow::Node succ) {
+query predicate flowSteps(DataFlow::Node pred, DataFlow::Node succ) {
   DataFlow::SharedFlowStep::step(pred, succ)
 }
 
