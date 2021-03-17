@@ -4,8 +4,6 @@ package main
 
 import (
 	"io/ioutil"
-	"mime/multipart"
-	"net/url"
 
 	"github.com/revel/revel"
 )
@@ -22,121 +20,111 @@ type person struct {
 	Address string `form:"address"`
 }
 
-func useString(val string) {}
-
-func useFiles(val *multipart.FileHeader) {}
-
-func useJSON(val []byte) {}
-
-func useURLValues(v url.Values) {
-	useString(v["key"][0])
-	useString(v.Get("key"))
-}
-
-func usePerson(p person) {}
+func sink(_ ...interface{}) {}
 
 func (c myAppController) accessingParamsDirectlyIsUnsafe() {
-	useString(c.Params.Get("key")) // NOT OK
-	useURLValues(c.Params.Values)  // NOT OK
+	sink(c.Params.Get("key"))
+	sink(c.Params.Values) // $source=selection of Params
 
 	val4 := ""
-	c.Params.Bind(&val4, "key") // NOT OK
-	useString(val4)
+	c.Params.Bind(&val4, "key") // $source=selection of Params
+	sink(val4)
 
-	useString(c.Request.FormValue("key")) // NOT OK
+	sink(c.Request.FormValue("key"))
 }
 
 func (c myAppController) accessingFixedIsSafe(mainRouter *revel.Router) {
-	useURLValues(c.Params.Fixed)                          // OK
-	useString(mainRouter.Route(c.Request).FixedParams[0]) // OK
+	sink(c.Params.Fixed.Get("key"))                  // $noflow
+	sink(mainRouter.Route(c.Request).FixedParams[0]) // $noflow
 }
 
 func (c myAppController) accessingRouteIsUnsafe(mainRouter *revel.Router) {
-	useURLValues(c.Params.Route)                     // NOT OK
-	useURLValues(mainRouter.Route(c.Request).Params) // NOT OK
+	sink(c.Params.Route["key"][0])
+	sink(mainRouter.Route(c.Request).Params["key"][0])
 }
 
 func (c myAppController) accessingParamsQueryIsUnsafe() {
-	useURLValues(c.Params.Query) // NOT OK
+	sink(c.Params.Query["key"][0])
 }
 
 func (c myAppController) accessingParamsFormIsUnsafe() {
-	useURLValues(c.Params.Form)               // NOT OK
-	useString(c.Request.PostFormValue("key")) // NOT OK
+	sink(c.Params.Form["key"][0])
+	sink(c.Request.PostFormValue("key"))
 }
 
 func (c myAppController) accessingParamsFilesIsUnsafe() {
-	useFiles(c.Params.Files["key"][0]) // NOT OK
+	sink(c.Params.Files["key"][0])
 }
 
 func (c myAppController) accessingParamsJSONIsUnsafe() {
-	useJSON(c.Params.JSON) // NOT OK
+	sink(c.Params.JSON)
 
 	var val2 map[string]interface{}
-	c.Params.BindJSON(&val2) // NOT OK
-	useString(val2["name"].(string))
+	c.Params.BindJSON(&val2)
+	sink(val2["name"].(string))
 }
 
 func (c myAppController) rawRead() { // $responsebody=argument corresponding to c
 	c.ViewArgs["Foo"] = "<p>raw HTML</p>" // $responsebody="<p>raw HTML</p>"
 	c.ViewArgs["Bar"] = "<p>not raw HTML</p>"
+	c.ViewArgs["Foo"] = c.Params.Query // $responsebody=selection of Query
 	c.Render()
 }
 
 func accessingRequestDirectlyIsUnsafe(c *revel.Controller) {
-	useURLValues(c.Request.GetQuery())               // NOT OK
-	useURLValues(c.Request.Form)                     // NOT OK
-	useURLValues(c.Request.MultipartForm.Value)      // NOT OK
-	useString(c.Request.ContentType)                 // NOT OK
-	useString(c.Request.AcceptLanguages[0].Language) // NOT OK
-	useString(c.Request.Locale)                      // NOT OK
+	sink(c.Request.GetQuery()["key"][0])
+	sink(c.Request.Form["key"][0])
+	sink(c.Request.MultipartForm.Value["key"][0])
+	sink(c.Request.ContentType)
+	sink(c.Request.AcceptLanguages[0].Language)
+	sink(c.Request.Locale)
 
-	form, _ := c.Request.GetForm() // NOT OK
-	useURLValues(form)
+	form, _ := c.Request.GetForm()
+	sink(form["key"][0])
 
-	smp1, _ := c.Request.GetMultipartForm() // NOT OK
-	useURLValues(smp1.GetValues())
+	smp1, _ := c.Request.GetMultipartForm()
+	sink(smp1.GetValues()["key"][0])
 
-	smp2, _ := c.Request.GetMultipartForm() // NOT OK
-	useFiles(smp2.GetFiles()["key"][0])
+	smp2, _ := c.Request.GetMultipartForm()
+	sink(smp2.GetFiles()["key"][0])
 
-	useFiles(c.Request.MultipartForm.File["key"][0]) // NOT OK
+	sink(c.Request.MultipartForm.File["key"][0])
 
-	json, _ := ioutil.ReadAll(c.Request.GetBody()) // NOT OK
-	useJSON(json)
+	json, _ := ioutil.ReadAll(c.Request.GetBody())
+	sink(json)
 
 	cookie, _ := c.Request.Cookie("abc")
-	useString(cookie.GetValue()) // NOT OK
+	sink(cookie.GetValue())
 
-	useString(c.Request.GetHttpHeader("headername")) // NOT OK
+	sink(c.Request.GetHttpHeader("headername"))
 
-	useString(c.Request.GetRequestURI()) // NOT OK
+	sink(c.Request.GetRequestURI())
 
 	reader, _ := c.Request.MultipartReader()
 	part, _ := reader.NextPart()
 	partbody := make([]byte, 100)
 	part.Read(partbody)
-	useString(string(partbody)) // NOT OK
+	sink(string(partbody))
 
-	useString(c.Request.Referer()) // NOT OK
+	sink(c.Request.Referer())
 
-	useString(c.Request.UserAgent()) // NOT OK
+	sink(c.Request.UserAgent())
 }
 
 func accessingServerRequest(c *revel.Controller) {
 	var message string
-	c.Request.WebSocket.MessageReceive(&message) // NOT OK
-	useString(message)
+	c.Request.WebSocket.MessageReceive(&message)
+	sink(message)
 
 	var p person
-	c.Request.WebSocket.MessageReceiveJSON(&p) // NOT OK
-	usePerson(p)
+	c.Request.WebSocket.MessageReceiveJSON(&p)
+	sink(p)
 }
 
 func accessingHeaders(c *revel.Controller) {
-	tainted := c.Request.Header.Get("somekey") // NOT OK
-	useString(tainted)
+	tainted := c.Request.Header.Get("somekey")
+	sink(tainted)
 
-	tainted2 := c.Request.Header.GetAll("somekey") // NOT OK
-	useString(tainted2[0])
+	tainted2 := c.Request.Header.GetAll("somekey")
+	sink(tainted2[0])
 }
