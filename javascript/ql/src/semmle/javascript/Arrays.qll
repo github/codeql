@@ -279,17 +279,14 @@ private module ArrayDataFlow {
   /**
    * A step for modelling that elements from an array `arr` also appear in the result from calling `slice`/`splice`/`filter`.
    */
-  private class ArraySliceStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
-    ArraySliceStep() {
-      this.getMethodName() = "slice" or
-      this.getMethodName() = "splice" or
-      this.getMethodName() = "filter"
-    }
-
+  private class ArraySliceStep extends DataFlow::SharedFlowStep {
     override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      prop = arrayElement() and
-      pred = this.getReceiver() and
-      succ = this
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = ["slice", "splice", "filter"] and
+        prop = arrayElement() and
+        pred = call.getReceiver() and
+        succ = call
+      )
     }
   }
 
