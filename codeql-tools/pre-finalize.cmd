@@ -3,6 +3,7 @@ SETLOCAL EnableDelayedExpansion
 
 if NOT "%CODEQL_EXTRACTOR_GO_EXTRACT_HTML%"=="no" (
   type NUL && "%CODEQL_DIST%/codeql.exe" database index-files ^
+                        --working-dir=. ^
                         --include-extension=.htm ^
                         --include-extension=.html ^
                         --include-extension=.xhtm ^

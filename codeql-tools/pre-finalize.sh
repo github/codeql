@@ -4,6 +4,7 @@ set -eu
 
 if [ "${CODEQL_EXTRACTOR_GO_EXTRACT_HTML:-yes}" != "no" ]; then
   "$CODEQL_DIST/codeql" database index-files \
+                        --working-dir=. \
                         --include-extension=.htm \
                         --include-extension=.html \
                         --include-extension=.xhtm \
