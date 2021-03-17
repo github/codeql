@@ -46,7 +46,7 @@ class RequestResponseFlowConfig extends TaintTracking::Configuration {
 
   /** Eliminate the method of calling the node is not the get method. */
   override predicate isSanitizer(DataFlow::Node node) {
-    not getACallingCallableOrSelf(node.getEnclosingCallable()) instanceof RequestGetMethod 
+    not getACallingCallableOrSelf(node.getEnclosingCallable()) instanceof RequestGetMethod
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
