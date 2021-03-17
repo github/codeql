@@ -140,20 +140,14 @@ module NextJS {
   /**
    * A step modelling the flow from the server-computed props object to the default exported React component that renders the page.
    */
-  class NextJSStaticReactComponentPropsStep extends DataFlow::AdditionalFlowStep,
-    DataFlow::ValueNode {
-    Module pageModule;
-    ReactComponent component;
-
-    NextJSStaticReactComponentPropsStep() {
-      pageModule = getAPagesModule() and
-      this.getAstNode() = component and
-      this = pageModule.getAnExportedValue("default").getALocalSource()
-    }
-
+  class NextJSStaticReactComponentPropsStep extends DataFlow::SharedFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getAPropsSource(pageModule) and
-      succ = component.getADirectPropsAccess()
+      exists(Module pageModule, ReactComponent component |
+        pageModule = getAPagesModule() and
+        pageModule.getAnExportedValue("default").getALocalSource() = DataFlow::valueNode(component) and
+        pred = getAPropsSource(pageModule) and
+        succ = component.getADirectPropsAccess()
+      )
     }
   }
 
