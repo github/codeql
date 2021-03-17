@@ -307,8 +307,7 @@ module Actions {
       // not just the last (greedy match) or first (reluctant match).
       // TODO: This only handles expression strings that refer to contexts.
       // It does not handle operators within the expression.
-      result =
-        this.getValue().regexpFind("[A-Za-z0-9_\\.\\-]+(?=\\s*\\}\\})", _, _)
+      result = this.getValue().regexpFind("[A-Za-z0-9_\\.\\-]+(?=\\s*\\}\\})", _, _)
     }
   }
 }
