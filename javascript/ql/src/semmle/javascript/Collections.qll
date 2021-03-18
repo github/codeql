@@ -10,9 +10,12 @@ private import semmle.javascript.dataflow.internal.PreCallGraphStep
 private import DataFlow::PseudoProperties
 
 /**
- * A pseudo-property used in a data-flow/type-tracking step for collections.
+ * DEPRECATED. Exists only to support other deprecated elements.
+ *
+ * Type-tracking now automatically determines the set of pseudo-properties to include
+ * ased on which properties are contributed by `SharedTaintStep`s.
  */
-private class PseudoProperty extends string {
+deprecated private class PseudoProperty extends string {
   PseudoProperty() {
     this = [arrayLikeElement(), "1"] or // the "1" is required for the `ForOfStep`.
     this =
@@ -24,13 +27,9 @@ private class PseudoProperty extends string {
 }
 
 /**
- * An `AdditionalFlowStep` used to model a data-flow step related to standard library collections.
- *
- * The `loadStep`/`storeStep`/`loadStoreStep` methods are overloaded such that the new predicates
- * `load`/`store`/`loadStore` can be used in the `CollectionsTypeTracking` module.
- * (Thereby avoiding naming conflicts with a "cousin" `AdditionalFlowStep` implementation.)
+ * DEPRECATED. Use `SharedFlowStep` or `SharedTaintTrackingStep` instead.
  */
-abstract class CollectionFlowStep extends DataFlow::AdditionalFlowStep {
+abstract deprecated class CollectionFlowStep extends DataFlow::AdditionalFlowStep {
   final override predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
 
   final override predicate step(
@@ -83,27 +82,28 @@ abstract class CollectionFlowStep extends DataFlow::AdditionalFlowStep {
 }
 
 /**
- * Provides predicates and clases for type-tracking collections.
+ * DEPRECATED. These steps are now included in the default type tracking steps,
+ * in most cases one can simply use those instead.
  */
-module CollectionsTypeTracking {
+deprecated module CollectionsTypeTracking {
   /**
    * Gets the result from a single step through a collection, from `pred` to `result` summarized by `summary`.
    */
   pragma[inline]
   DataFlow::SourceNode collectionStep(DataFlow::Node pred, StepSummary summary) {
-    exists(CollectionFlowStep step, PseudoProperty field |
+    exists(PseudoProperty field |
       summary = LoadStep(field) and
-      step.load(pred, result, field) and
+      DataFlow::SharedTypeTrackingStep::loadStep(pred, result, field) and
       not field = mapValueUnknownKey() // prune unknown reads in type-tracking
       or
       summary = StoreStep(field) and
-      step.store(pred, result, field)
+      DataFlow::SharedTypeTrackingStep::storeStep(pred, result, field)
       or
       summary = CopyStep(field) and
-      step.loadStore(pred, result, field)
+      DataFlow::SharedTypeTrackingStep::loadStoreStep(pred, result, field)
       or
       exists(PseudoProperty toField | summary = LoadStoreStep(field, toField) |
-        step.loadStore(pred, result, field, toField)
+        DataFlow::SharedTypeTrackingStep::loadStoreStep(pred, result, field, toField)
       )
     )
   }
