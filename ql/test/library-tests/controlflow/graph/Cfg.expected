@@ -1345,487 +1345,487 @@ cfg.rb:
 #  130| 5
 #-----|  -> Constant
 
-#  133| ... rescue ...
+#  136| ... rescue ...
 #-----|  -> 1
 
-#  133| ... / ...
+#  136| ... / ...
 #-----| raise -> "div by zero"
 #-----|  -> 1
 
-#  133| 1
+#  136| 1
 #-----|  -> 0
 
-#  133| 0
+#  136| 0
 #-----|  -> ... / ...
 
-#  133| call to puts
+#  136| call to puts
 #-----|  -> 1
 
-#  133| "div by zero"
+#  136| "div by zero"
 #-----|  -> call to puts
 
-#  135| ... = ...
+#  138| ... = ...
 #-----|  -> M
 
-#  135| (..., ...)
+#  138| (..., ...)
 #-----|  -> (..., ...)
 
-#  135| (..., ...)
+#  138| (..., ...)
 #-----|  -> ... = ...
 
-#  135| init
+#  138| init
 #-----|  -> last
 
-#  135| last
+#  138| last
 #-----|  -> (..., ...)
 
-#  135| 1
+#  138| 1
 #-----|  -> 2
 
-#  135| 2
+#  138| 2
 #-----|  -> 3
 
-#  135| 3
+#  138| 3
 #-----|  -> init
 
-#  137| M
+#  140| M
 #-----|  -> Constant
 
-#  137| Constant
+#  140| Constant
 #-----|  -> M
 
-#  138| call to itself
+#  141| call to itself
 #-----|  -> Constant
 
-#  138| M
+#  141| M
 #-----|  -> call to itself
 
-#  138| Constant
+#  141| Constant
 #-----|  -> class << ...
 
-#  140| class << ...
+#  143| class << ...
 #-----|  -> Silly
 
-#  140| call to itself
+#  143| call to itself
 #-----|  -> setter=
 
-#  140| Silly
+#  143| Silly
 #-----|  -> call to itself
 
-#  141| setter=
+#  144| setter=
 #-----|  -> print
 
-#  142| enter print
+#  145| enter print
 #-----|  -> "singleton"
 
-#  142| print
+#  145| print
 #-----|  -> Silly
 
-#  142| exit print
+#  145| exit print
 
-#  142| exit print (normal)
+#  145| exit print (normal)
 #-----|  -> exit print
 
-#  143| call to puts
+#  146| call to puts
 #-----|  -> call to super
 
-#  143| "singleton"
+#  146| "singleton"
 #-----|  -> call to puts
 
-#  144| call to puts
+#  147| call to puts
 #-----|  -> exit print (normal)
 
-#  144| call to print
+#  147| call to print
 #-----|  -> call to puts
 
-#  144| call to super
+#  147| call to super
 #-----|  -> call to print
 
-#  148| ... = ...
+#  151| ... = ...
 #-----|  -> silly
 
-#  148| silly
+#  151| silly
 #-----|  -> ... = ...
 
-#  148| call to new
+#  151| call to new
 #-----|  -> silly
 
-#  148| Silly
+#  151| Silly
 #-----|  -> call to new
 
-#  149| enter method
+#  152| enter method
 #-----|  -> x
 
-#  149| method
+#  152| method
 #-----|  -> two_parameters
 
-#  149| exit method
+#  152| exit method
 
-#  149| exit method (normal)
+#  152| exit method (normal)
 #-----|  -> exit method
 
-#  149| silly
+#  152| silly
 #-----|  -> method
 
-#  149| x
+#  152| x
 #-----|  -> x
 
-#  150| call to puts
+#  153| call to puts
 #-----|  -> exit method (normal)
 
-#  150| x
+#  153| x
 #-----|  -> call to puts
 
-#  153| enter two_parameters
+#  156| enter two_parameters
 #-----|  -> a
 
-#  153| two_parameters
+#  156| two_parameters
 #-----|  -> 1
 
-#  153| exit two_parameters
+#  156| exit two_parameters
 
-#  153| exit two_parameters (normal)
+#  156| exit two_parameters (normal)
 #-----|  -> exit two_parameters
 
-#  153| a
+#  156| a
 #-----|  -> b
 
-#  153| b
+#  156| b
 #-----|  -> exit two_parameters (normal)
 
-#  155| call to two_parameters
+#  158| call to two_parameters
 #-----|  -> call to __FILE__
 
-#  155| *...
+#  158| *...
 #-----|  -> call to two_parameters
 
-#  155| [...]
+#  158| [...]
 #-----|  -> *...
 
-#  155| 1
+#  158| 1
 #-----|  -> 2
 
-#  155| 2
+#  158| 2
 #-----|  -> [...]
 
-#  157| ... = ...
+#  160| ... = ...
 #-----|  -> :hello
 
-#  157| scriptfile
+#  160| scriptfile
 #-----|  -> ... = ...
 
-#  157| `cat "#{...}"`
+#  160| `cat "#{...}"`
 #-----|  -> scriptfile
 
-#  157| #{...}
+#  160| #{...}
 #-----|  -> `cat "#{...}"`
 
-#  157| call to __FILE__
+#  160| call to __FILE__
 #-----|  -> #{...}
 
-#  159| ... = ...
+#  162| ... = ...
 #-----|  -> 12
 
-#  159| symbol
+#  162| symbol
 #-----|  -> ... = ...
 
-#  159| :hello
+#  162| :hello
 #-----|  -> symbol
 
-#  161| ... = ...
+#  164| ... = ...
 #-----|  -> true
 
-#  161| delimited_symbol
+#  164| delimited_symbol
 #-----|  -> ... = ...
 
-#  161| :"goodbye-#{...}"
+#  164| :"goodbye-#{...}"
 #-----|  -> delimited_symbol
 
-#  161| #{...}
+#  164| #{...}
 #-----|  -> :"goodbye-#{...}"
 
-#  161| ... + ...
+#  164| ... + ...
 #-----|  -> #{...}
 
-#  161| 12
+#  164| 12
 #-----|  -> 13
 
-#  161| 13
+#  164| 13
 #-----|  -> ... + ...
 
-#  163| ... = ...
+#  166| ... = ...
 #-----|  -> true
 
-#  163| x
+#  166| x
 #-----|  -> ... = ...
 
-#  163| true
+#  166| true
 #-----|  -> x
 
-#  164| ... = ...
+#  167| ... = ...
 #-----|  -> 42
 
-#  164| x
+#  167| x
 #-----|  -> ... = ...
 
-#  164| ! ...
+#  167| ! ...
 #-----|  -> x
 
-#  164| true
+#  167| true
 #-----|  -> ! ...
 
-#  165| ... = ...
+#  168| ... = ...
 #-----|  -> undef ...
 
-#  165| x
+#  168| x
 #-----|  -> ... = ...
 
-#  165| - ...
+#  168| - ...
 #-----|  -> x
 
-#  165| 42
+#  168| 42
 #-----|  -> - ...
 
-#  167| undef ...
+#  170| undef ...
 #-----|  -> two_parameters
 
-#  167| two_parameters
+#  170| two_parameters
 #-----|  -> x
 
-#  169| unless ...
+#  172| unless ...
 #-----|  -> x
 
-#  169| ... == ...
+#  172| ... == ...
 #-----| false -> "hi"
 #-----| true -> "bye"
 
-#  169| x
+#  172| x
 #-----|  -> 10
 
-#  169| 10
+#  172| 10
 #-----|  -> ... == ...
 
-#  169| call to puts
+#  172| call to puts
 #-----|  -> unless ...
 
-#  169| "hi"
+#  172| "hi"
 #-----|  -> call to puts
 
-#  169| call to puts
+#  172| call to puts
 #-----|  -> unless ...
 
-#  169| "bye"
+#  172| "bye"
 #-----|  -> call to puts
 
-#  171| call to puts
+#  174| call to puts
 #-----|  -> ... unless ...
 
-#  171| ... unless ...
+#  174| ... unless ...
 #-----|  -> x
 
-#  171| "hi"
+#  174| "hi"
 #-----|  -> call to puts
 
-#  171| ... == ...
+#  174| ... == ...
 #-----| false -> "hi"
 #-----| true -> ... unless ...
 
-#  171| x
+#  174| x
 #-----|  -> 0
 
-#  171| 0
+#  174| 0
 #-----|  -> ... == ...
 
-#  173| until ...
+#  176| until ...
 #-----|  -> 0
 
-#  173| ... > ...
+#  176| ... > ...
 #-----| true -> until ...
 #-----| false -> x
 
-#  173| x
+#  176| x
 #-----|  -> 10
 
-#  173| 10
+#  176| 10
 #-----|  -> ... > ...
 
-#  173| ... += ...
+#  176| ... += ...
 #-----|  -> "hello"
 
-#  173| x
+#  176| x
 #-----|  -> 10
 
-#  173| 10
+#  176| 10
 #-----|  -> ... += ...
 
-#  173| call to puts
-#-----|  -> x
-
-#  173| "hello"
-#-----|  -> call to puts
-
-#  175| ... = ...
-#-----|  -> i
-
-#  175| i
-#-----|  -> ... = ...
-
-#  175| 0
-#-----|  -> i
-
-#  176| (...; ...)
-#-----|  -> i
-
-#  176| ... until ...
-#-----|  -> 0
-
 #  176| call to puts
-#-----|  -> i
+#-----|  -> x
 
 #  176| "hello"
 #-----|  -> call to puts
 
-#  176| ... += ...
-#-----|  -> (...; ...)
-
-#  176| i
-#-----|  -> 1
-
-#  176| 1
-#-----|  -> ... += ...
-
-#  176| ... == ...
-#-----| false -> "hello"
-#-----| true -> ... until ...
-
-#  176| i
-#-----|  -> 10
-
-#  176| 10
-#-----|  -> ... == ...
-
 #  178| ... = ...
-#-----|  -> x
+#-----|  -> i
 
-#  178| x
+#  178| i
 #-----|  -> ... = ...
 
 #  178| 0
-#-----|  -> x
-
-#  179| while ...
 #-----|  -> i
 
-#  179| ... < ...
-#-----| true -> x
-#-----| false -> while ...
+#  179| (...; ...)
+#-----|  -> i
 
-#  179| x
+#  179| ... until ...
+#-----|  -> 0
+
+#  179| call to puts
+#-----|  -> i
+
+#  179| "hello"
+#-----|  -> call to puts
+
+#  179| ... += ...
+#-----|  -> (...; ...)
+
+#  179| i
+#-----|  -> 1
+
+#  179| 1
+#-----|  -> ... += ...
+
+#  179| ... == ...
+#-----| false -> "hello"
+#-----| true -> ... until ...
+
+#  179| i
 #-----|  -> 10
 
 #  179| 10
+#-----|  -> ... == ...
+
+#  181| ... = ...
+#-----|  -> x
+
+#  181| x
+#-----|  -> ... = ...
+
+#  181| 0
+#-----|  -> x
+
+#  182| while ...
+#-----|  -> i
+
+#  182| ... < ...
+#-----| true -> x
+#-----| false -> while ...
+
+#  182| x
+#-----|  -> 10
+
+#  182| 10
 #-----|  -> ... < ...
 
-#  180| ... += ...
+#  183| ... += ...
 #-----|  -> x
 
-#  180| x
+#  183| x
 #-----|  -> 1
 
-#  180| 1
+#  183| 1
 #-----|  -> ... += ...
 
-#  181| if ...
+#  184| if ...
 #-----|  -> x
 
-#  181| ... == ...
+#  184| ... == ...
 #-----| true -> redo
 #-----| false -> if ...
 
-#  181| x
+#  184| x
 #-----|  -> 5
 
-#  181| 5
+#  184| 5
 #-----|  -> ... == ...
 
-#  181| redo
+#  184| redo
 #-----| redo -> x
 
-#  182| call to puts
+#  185| call to puts
 #-----|  -> x
 
-#  182| x
+#  185| x
 #-----|  -> call to puts
 
-#  185| (...; ...)
+#  188| (...; ...)
 #-----|  -> i
 
-#  185| ... while ...
+#  188| ... while ...
 #-----|  -> run_block
 
-#  185| call to puts
+#  188| call to puts
 #-----|  -> i
 
-#  185| "hello"
+#  188| "hello"
 #-----|  -> call to puts
 
-#  185| ... -= ...
+#  188| ... -= ...
 #-----|  -> (...; ...)
 
-#  185| i
+#  188| i
 #-----|  -> 1
 
-#  185| 1
+#  188| 1
 #-----|  -> ... -= ...
 
-#  185| ... != ...
+#  188| ... != ...
 #-----| true -> "hello"
 #-----| false -> ... while ...
 
-#  185| i
+#  188| i
 #-----|  -> 0
 
-#  185| 0
+#  188| 0
 #-----|  -> ... != ...
 
-#  187| enter run_block
+#  190| enter run_block
 #-----|  -> yield ...
 
-#  187| run_block
+#  190| run_block
 #-----|  -> { ... }
 
-#  187| exit run_block
+#  190| exit run_block
 
-#  187| exit run_block (normal)
+#  190| exit run_block (normal)
 #-----|  -> exit run_block
 
-#  188| yield ...
+#  191| yield ...
 #-----|  -> 42
 
-#  188| 42
+#  191| 42
 #-----|  -> exit run_block (normal)
 
-#  191| call to run_block
+#  194| call to run_block
 #-----|  -> exit cfg.rb (normal)
 
-#  191| enter { ... }
+#  194| enter { ... }
 #-----|  -> x
 
-#  191| { ... }
+#  194| { ... }
 #-----|  -> call to run_block
 
-#  191| exit { ... }
+#  194| exit { ... }
 
-#  191| exit { ... } (normal)
+#  194| exit { ... } (normal)
 #-----|  -> exit { ... }
 
-#  191| x
+#  194| x
 #-----|  -> x
 
-#  191| call to puts
+#  194| call to puts
 #-----|  -> exit { ... } (normal)
 
-#  191| x
+#  194| x
 #-----|  -> call to puts
 
 exit.rb:

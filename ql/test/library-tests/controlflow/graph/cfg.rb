@@ -130,6 +130,9 @@ module M
  Constant = 5
 end
 
+#class EmptyClass; end
+#module EmptyModule; end
+
 1/0 rescue puts "div by zero"
 
 (*init, last) = 1, 2, 3
