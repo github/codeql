@@ -289,17 +289,4 @@ private module ArrayDataFlow {
       )
     }
   }
-
-  /**
-   * A step for modelling `for of` iteration on arrays.
-   */
-  private class ForOfStep extends PreCallGraphStep {
-    override predicate loadStep(DataFlow::Node obj, DataFlow::Node e, string prop) {
-      exists(ForOfStmt forOf |
-        obj = forOf.getIterationDomain().flow() and
-        e = DataFlow::lvalueNode(forOf.getLValue()) and
-        prop = arrayElement()
-      )
-    }
-  }
 }

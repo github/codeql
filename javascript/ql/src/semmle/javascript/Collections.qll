@@ -152,34 +152,29 @@ private module CollectionDataFlow {
   }
 
   /**
-   * A step for a `for of` statement on a Map, Set, or Iterator.
-   * For Sets and iterators the l-value are the elements of the set/iterator.
-   * For Maps the l-value is a tuple containing a key and a value.
+   * A step for modelling `for of` iteration on arrays, maps, sets, and iterators.
+   *
+   * For sets and iterators the l-value are the elements of the set/iterator.
+   * For maps the l-value is a tuple containing a key and a value.
    */
-  // This is partially duplicated behavior with the `for of` step for Arrays (`ArrayDataFlow::ForOfStep`).
-  // This duplication is required for the type-tracking steps defined in `CollectionsTypeTracking`.
-  private class ForOfStep extends CollectionFlowStep, DataFlow::ValueNode {
-    ForOfStmt forOf;
-    DataFlow::Node element;
-
-    ForOfStep() {
-      this.asExpr() = forOf.getIterationDomain() and
-      element = DataFlow::lvalueNode(forOf.getLValue())
+  private class ForOfStep extends PreCallGraphStep {
+    override predicate loadStep(DataFlow::Node obj, DataFlow::Node e, string prop) {
+      exists(ForOfStmt forOf |
+        obj = forOf.getIterationDomain().flow() and
+        e = DataFlow::lvalueNode(forOf.getLValue()) and
+        prop = arrayLikeElement()
+      )
     }
 
-    override predicate load(DataFlow::Node obj, DataFlow::Node e, PseudoProperty prop) {
-      obj = this and
-      e = element and
-      prop = arrayLikeElement()
-    }
-
-    override predicate loadStore(
-      DataFlow::Node pred, DataFlow::Node succ, PseudoProperty fromProp, PseudoProperty toProp
+    override predicate loadStoreStep(
+      DataFlow::Node pred, DataFlow::SourceNode succ, string fromProp, string toProp
     ) {
-      pred = this and
-      succ = element and
-      fromProp = mapValueAll() and
-      toProp = "1"
+      exists(ForOfStmt forOf |
+        pred = forOf.getIterationDomain().flow() and
+        succ = DataFlow::lvalueNode(forOf.getLValue()) and
+        fromProp = mapValueAll() and
+        toProp = "1"
+      )
     }
   }
 
