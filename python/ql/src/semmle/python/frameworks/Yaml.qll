@@ -56,7 +56,10 @@ private module Yaml {
       not exists(DataFlow::Node loader_arg |
         loader_arg in [this.getArg(1), this.getArgByName("Loader")]
       |
-        loader_arg = API::moduleImport("yaml").getMember(["SafeLoader", "BaseLoader"]).getAUse()
+        loader_arg =
+          API::moduleImport("yaml")
+              .getMember(["SafeLoader", "BaseLoader", "CSafeLoader", "CBaseLoader"])
+              .getAUse()
       )
     }
 
