@@ -23,10 +23,6 @@
       Python
       <a href="https://www.python-ldap.org/en/python-ldap-3.3.0/reference/ldap.html">LDAP Documentation</a>
     </li>
-    <li>
-      CWE-
-      <a href="https://cwe.mitre.org/data/definitions/90.html">090</a>
-    </li>
   </references>
 
 </qhelp>
