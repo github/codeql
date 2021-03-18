@@ -72,9 +72,9 @@ module Koa {
     }
 
     /**
-     * Gets the dataflow node that is given to a `RouteSetup` to register the handler.
+     * Gets a dataflow node that can be given to a `RouteSetup` to register the handler.
      */
-    abstract DataFlow::SourceNode getRouteHandlerRegistration();
+    abstract DataFlow::SourceNode getARouteHandlerRegistrationObject();
   }
 
   /**
@@ -91,7 +91,7 @@ module Koa {
   private class StandardRouteHandler extends RouteHandler {
     StandardRouteHandler() { any(RouteSetup setup).getARouteHandler() = this }
 
-    override DataFlow::SourceNode getRouteHandlerRegistration() { result = this }
+    override DataFlow::SourceNode getARouteHandlerRegistrationObject() { result = this }
   }
 
   /**
@@ -136,7 +136,7 @@ module Koa {
    * app.use(router.routes());
    * ```
    */
-  private class RoutedRouteHandler extends RouteHandler, DataFlow::SourceNode {
+  private class RoutedRouteHandler extends RouteHandler {
     DataFlow::InvokeNode router;
     DataFlow::MethodCallNode call;
 
@@ -151,7 +151,7 @@ module Koa {
       this.flowsTo(call.getArgument(any(int i | i >= 1)))
     }
 
-    override DataFlow::SourceNode getRouteHandlerRegistration() {
+    override DataFlow::SourceNode getARouteHandlerRegistrationObject() {
       result = call
       or
       result = router.getAMethodCall("routes")
@@ -171,7 +171,7 @@ module Koa {
    *    // route handler stuff
    * }));
    */
-  class KoaRouteHandler extends RouteHandler, DataFlow::SourceNode {
+  class KoaRouteHandler extends RouteHandler {
     DataFlow::CallNode call;
 
     KoaRouteHandler() {
@@ -190,7 +190,7 @@ module Koa {
       result = call.getABoundCallbackParameter(1, any(int i | i >= 1))
     }
 
-    override DataFlow::SourceNode getRouteHandlerRegistration() { result = call }
+    override DataFlow::SourceNode getARouteHandlerRegistrationObject() { result = call }
   }
 
   /**
@@ -390,7 +390,7 @@ module Koa {
       result.flowsToExpr(getArgument(0))
       or
       // For the route-handlers that does not depend on this predicate in their charpred.
-      result.(RouteHandler).getRouteHandlerRegistration().flowsToExpr(getArgument(0))
+      result.(RouteHandler).getARouteHandlerRegistrationObject().flowsToExpr(getArgument(0))
     }
 
     override Expr getServer() { result = server }
