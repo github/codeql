@@ -386,6 +386,8 @@ module API {
         imports(_, m)
         or
         m = any(CanonicalName n | isUsed(n)).getExternalModuleName()
+        or
+        any(TypeAnnotation n).hasQualifiedName(m, _)
       } or
       MkClassInstance(DataFlow::ClassNode cls) { cls = trackDefNode(_) and hasSemantics(cls) } or
       MkAsyncFuncResult(DataFlow::FunctionNode f) {
@@ -900,6 +902,12 @@ module API {
         cn2 = cn1.getChild(n) and
         lbl = Label::member(n) and
         succ in [mkCanonicalNameDef(cn2), mkCanonicalNameUse(cn2)]
+      )
+      or
+      exists(string moduleName, string exportName |
+        pred = MkModuleImport(moduleName) and
+        lbl = Label::member(exportName) and
+        succ = MkHasUnderlyingType(moduleName, exportName)
       )
       or
       exists(DataFlow::Node nd, DataFlow::FunctionNode f |
