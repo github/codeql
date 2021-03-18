@@ -9,6 +9,7 @@
  *       external/cwe/cwe-287
  */
 
+// Determine precision above
 import python
 import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.dataflow.new.DataFlow

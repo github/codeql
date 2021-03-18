@@ -23,9 +23,6 @@
       SonarSource
       <a href="https://rules.sonarsource.com/python/type/Vulnerability/RSPEC-4433">RSPEC-4433</a>
     </li>
-    <li>
-      CWE-
-      <a href="https://cwe.mitre.org/data/definitions/287.html">287</a>
   </references>
   
 </qhelp>
