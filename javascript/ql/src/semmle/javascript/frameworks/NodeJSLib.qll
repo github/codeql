@@ -646,8 +646,6 @@ module NodeJSLib {
     }
   }
 
-  private import semmle.javascript.PackageExports as Exports
-
   /**
    * A direct step from an named export to a property-read reading the exported value.
    */
