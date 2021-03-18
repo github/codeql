@@ -250,16 +250,17 @@ private module CollectionDataFlow {
   /**
    * A step for a call to `keys` on a Set.
    */
-  private class SetKeys extends CollectionFlowStep, DataFlow::MethodCallNode {
-    SetKeys() { this.getMethodName() = "keys" }
-
-    override predicate loadStore(
-      DataFlow::Node pred, DataFlow::Node succ, PseudoProperty fromProp, PseudoProperty toProp
+  private class SetKeys extends PreCallGraphStep {
+    override predicate loadStoreStep(
+      DataFlow::Node pred, DataFlow::SourceNode succ, string fromProp, string toProp
     ) {
-      pred = this.getReceiver() and
-      succ = this and
-      fromProp = setElement() and
-      toProp = iteratorElement()
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = "keys" and
+        pred = call.getReceiver() and
+        succ = call and
+        fromProp = setElement() and
+        toProp = iteratorElement()
+      )
     }
   }
 }
