@@ -42,7 +42,7 @@ PackageJSON getTopmostPackageJSON() {
  * Gets a value exported by the main module from one of the topmost `package.json` files (see `getTopmostPackageJSON`).
  * The value is either directly the `module.exports` value, a nested property of `module.exports`, or a method on an exported class.
  */
-private DataFlow::Node getAValueExportedByPackage() {
+DataFlow::Node getAValueExportedByPackage() {
   result = getAnExportFromModule(getTopmostPackageJSON().getMainModule())
   or
   result = getAValueExportedByPackage().(DataFlow::PropWrite).getRhs()
@@ -69,6 +69,61 @@ private DataFlow::Node getAValueExportedByPackage() {
     result = cla.getAnInstanceMethod() or
     result = cla.getAStaticMethod() or
     result = cla.getConstructor()
+  )
+  or
+  // *****
+  // Various standard library methods for transforming exported objects.
+  // *****
+  //
+  // Object.defineProperties
+  exists(DataFlow::MethodCallNode call |
+    call = DataFlow::globalVarRef("Object").getAMethodCall("defineProperties") and
+    [call, call.getArgument(0)] = getAValueExportedByPackage() and
+    result = call.getArgument(any(int i | i > 0))
+  )
+  or
+  // Object.defineProperty
+  exists(DataFlow::MethodCallNode call |
+    call = DataFlow::globalVarRef("Object").getAMethodCall("defineProperty") and
+    [call, call.getArgument(0)] = getAValueExportedByPackage()
+  |
+    result = call.getArgument(2).getALocalSource().getAPropertyReference("value")
+    or
+    result =
+      call.getArgument(2)
+          .getALocalSource()
+          .getAPropertyReference("get")
+          .(DataFlow::FunctionNode)
+          .getAReturn()
+  )
+  or
+  // Object.assign
+  exists(DataFlow::MethodCallNode assign |
+    assign = DataFlow::globalVarRef("Object").getAMethodCall("assign")
+  |
+    getAValueExportedByPackage() = [assign, assign.getArgument(0)] and
+    result = assign.getAnArgument()
+  )
+  or
+  // Array.prototype.{map, reduce, entries, values}
+  exists(DataFlow::MethodCallNode map |
+    map.getMethodName() = ["map", "reduce", "entries", "values"] and
+    map = getAValueExportedByPackage()
+  |
+    result = map.getArgument(0).getABoundFunctionValue(_).getAReturn()
+    or
+    // assuming that the receiver of the call is somehow exported
+    result = map.getReceiver()
+  )
+  or
+  // Object.{fromEntries, freeze, entries, values}
+  exists(DataFlow::MethodCallNode freeze |
+    freeze =
+      DataFlow::globalVarRef("Object")
+          .getAMethodCall(["fromEntries", "freeze", "entries", "values"])
+  |
+    freeze = getAValueExportedByPackage() and
+    result = freeze.getArgument(0)
   )
 }
 

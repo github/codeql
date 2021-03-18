@@ -413,3 +413,30 @@ var asyncExec = require("async-execute");
 module.exports.asyncStuff = function (name) {
 	asyncExec("rm -rf " + name); // NOT OK
 }
+
+const myFuncs = {
+	myFunc: function (name) {
+		asyncExec("rm -rf " + name); // NOT OK
+	}
+};
+
+module.exports.blabity = {};
+
+Object.defineProperties(
+	module.exports.blabity,
+	Object.assign(
+		{},
+		Object.entries(myFuncs).reduce(
+			(props, [ key, value ]) => Object.assign(
+				props,
+				{
+					[key]: {
+						value,
+						configurable: true,
+					},
+				},
+			),
+			{}
+		)
+	)
+);

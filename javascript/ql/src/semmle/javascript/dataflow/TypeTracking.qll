@@ -253,6 +253,12 @@ class TypeBackTracker extends TTypeBackTracker {
   predicate start() { hasReturn = false and prop = "" }
 
   /**
+   * Holds if this is the starting point of type backtracking, and the value is in the property named `propName`.
+   * The type tracking only ends after the property has been stored.
+   */
+  predicate isInProp(PropertyName propName) { hasReturn = false and prop = propName }
+
+  /**
    * Holds if this is the end point of type tracking.
    */
   predicate end() { prop = "" }
