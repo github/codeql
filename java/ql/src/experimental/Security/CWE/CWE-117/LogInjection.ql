@@ -30,35 +30,6 @@ private class LogInjectionConfiguration extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) {
     node.getType() instanceof BoxedType or node.getType() instanceof PrimitiveType
   }
-
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof StrCheckSanitizerGuard
-  }
-}
-
-/**
- * Models any regex or equality check as a sanitizer guard.
- * Assumes any check on the taint to be a valid sanitizing check.
- */
-private class StrCheckSanitizerGuard extends DataFlow::BarrierGuard {
-  StrCheckSanitizerGuard() {
-    exists(Method m |
-      m.getDeclaringType().hasQualifiedName("java.util.regex", "Pattern") and
-      m.hasName("matches")
-      or
-      m.getDeclaringType() instanceof TypeString and
-      m.hasName([
-          "startsWith", "regionMatches", "matches", "equals", "equalsIgnoreCase", "endsWith",
-          "contentEquals", "contains"
-        ])
-    |
-      m.getAReference() = this
-    )
-  }
-
-  override predicate checks(Expr e, boolean branch) {
-    e = this.(MethodAccess).getQualifier() and branch = true
-  }
 }
 
 from LogInjectionConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
