@@ -1389,7 +1389,7 @@ ssa.cpp:
 #  321|     r321_1(glval<char[1024]>) = VariableAddress[buffer]            : 
 #  321|     mu321_2(char[1024])       = Uninitialized[buffer]              : &:r321_1
 #  322|     r322_1(glval<char *>)     = VariableAddress[ptr1]              : 
-#  322|     m322_2(char *)            = Uninitialized[ptr1]                : &:r322_1
+#  322|     mu322_2(char *)           = Uninitialized[ptr1]                : &:r322_1
 #  322|     r322_3(glval<char **>)    = VariableAddress[ptr2]              : 
 #  322|     m322_4(char **)           = Uninitialized[ptr2]                : &:r322_3
 #  323|     r323_1(glval<char *>)     = VariableAddress[ptr3]              : 
@@ -1399,7 +1399,7 @@ ssa.cpp:
 #  325|     r325_1(glval<char[1024]>) = VariableAddress[buffer]            : 
 #  325|     r325_2(char *)            = Convert                            : r325_1
 #  325|     r325_3(glval<char *>)     = VariableAddress[ptr1]              : 
-#  325|     m325_4(char *)            = Store[ptr1]                        : &:r325_3, r325_2
+#  325|     mu325_4(char *)           = Store[ptr1]                        : &:r325_3, r325_2
 #  326|     r326_1(glval<char *>)     = VariableAddress[ptr1]              : 
 #  326|     r326_2(char **)           = CopyValue                          : r326_1
 #  326|     r326_3(glval<char **>)    = VariableAddress[ptr2]              : 
@@ -1425,7 +1425,7 @@ ssa.cpp:
 #  329|     mu329_7(unknown)          = ^BufferMayWriteSideEffect[0]       : &:r329_3
 #  330|     r330_1(glval<unknown>)    = FunctionAddress[sink]              : 
 #  330|     r330_2(glval<char *>)     = VariableAddress[ptr1]              : 
-#  330|     r330_3(char *)            = Load[ptr1]                         : &:r330_2, m325_4
+#  330|     r330_3(char *)            = Load[ptr1]                         : &:r330_2, ~m?
 #  330|     v330_4(void)              = Call[sink]                         : func:r330_1, 0:r330_3
 #  330|     mu330_5(unknown)          = ^CallSideEffect                    : ~m?
 #  330|     v330_6(void)              = ^BufferReadSideEffect[0]           : &:r330_3, ~m?

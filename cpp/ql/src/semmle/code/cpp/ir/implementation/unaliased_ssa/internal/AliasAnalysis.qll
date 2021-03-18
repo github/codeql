@@ -325,6 +325,10 @@ predicate allocationEscapes(Configuration::Allocation allocation) {
   exists(IREscapeAnalysisConfiguration config |
     config.useSoundEscapeAnalysis() and resultEscapesNonReturn(allocation.getABaseInstruction())
   )
+  or
+  exists(Configuration::StageEscapeConfiguration config |
+    config.useSoundEscapeAnalysis() and resultEscapesNonReturn(allocation.getABaseInstruction())
+  )
 }
 
 /**
