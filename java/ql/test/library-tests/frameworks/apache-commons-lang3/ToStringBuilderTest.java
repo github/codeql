@@ -5,6 +5,14 @@ class ToStringBuilderTest {
 
     void sink(Object o) {}
 
+    private static class MyClass {
+        private String s;
+
+        public MyClass(String s_) {
+            this.s = s_;
+        }
+    }
+
     void test() throws Exception {
 
         ToStringBuilder sb1 = new ToStringBuilder(null); sb1.append((Object)taint()); sink(sb1.toString()); // $hasTaintFlow
@@ -33,5 +41,8 @@ class ToStringBuilderTest {
         fluentBackflowTest2.append("Harmless").append(taint());
         sink(fluentBackflowTest2.toString()); // $hasTaintFlow
 
+        // Test reflective to-string building:
+        MyClass myc = new MyClass(taint());
+        sink(ToStringBuilder.reflectionToString(myc)); // $hasTaintFlow
     }
 }

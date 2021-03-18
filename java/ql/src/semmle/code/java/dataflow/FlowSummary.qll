@@ -10,6 +10,7 @@ private import internal.DataFlowPrivate
 // import all instances below
 private module Summaries {
   private import semmle.code.java.dataflow.internal.ContainerFlow
+  private import semmle.code.java.frameworks.apache.Lang
 }
 
 class SummaryComponent = Impl::Public::SummaryComponent;

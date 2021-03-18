@@ -3,6 +3,7 @@
 import java
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSummary
 
 /**
  * The class `org.apache.commons.lang.RandomStringUtils` or `org.apache.commons.lang3.RandomStringUtils`.
@@ -456,4 +457,25 @@ private class ApacheToStringBuilderModel extends SummaryModelCsv {
         "org.apache.commons.lang3.builder;ToStringBuilder;false;appendToString;;;Argument[-1];ReturnValue;value"
       ]
   }
+}
+
+private class QualifierToMethodSummarizedCallable extends SummarizedCallable {
+  QualifierToMethodSummarizedCallable() {
+    this.getDeclaringType().hasQualifiedName("org.apache.commons.lang3.builder", "ToStringBuilder") and
+    this.getName() = "reflectionToString"
+  }
+
+  override predicate propagatesFlow(
+    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+  ) {
+    input = SummaryComponentStack::fieldOf(_, SummaryComponentStack::argument(0)) and
+    output = SummaryComponentStack::return() and
+    preservesValue = false
+  }
+}
+
+private class QualifierToMethodSummarizedCallableStacks extends RequiredSummaryComponentStack {
+  QualifierToMethodSummarizedCallableStacks() { this = SummaryComponentStack::argument(0) }
+
+  override predicate required(SummaryComponent c) { c = SummaryComponent::field(_) }
 }
