@@ -108,7 +108,7 @@ module CfgScope {
   }
 }
 
-abstract /*private*/ class ControlFlowTree extends AstNode {
+abstract private class ControlFlowTree extends AstNode {
   /**
    * Holds if `first` is the first element executed within this AST node.
    */
@@ -1003,7 +1003,6 @@ module Trees {
     final override AstNode getAccessNode() { result = this.getDefiningAccess() }
   }
 
-  /** Contains partridges */
   private class PairTree extends StandardPostOrderTree, Pair {
     final override ControlFlowTree getChildNode(int i) {
       result = this.getKey() and i = 0
