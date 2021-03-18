@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Dynamically loaded classes could contain malicious code executed by a static class initializer. 
+I.E. you wouldn't even have to instantiate or explicitly invoke methods on such classes to be 
+vulnerable to an attack.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Create a whitelist of allowed reflection classes and strictly verify the input content to ensure that 
+users can only execute classes or codes that are running.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following examples show good examples and bad examples respectively. When using <code>Class.forName(...)</code> 
+or <code>ClassLoader.loadClass(...)</code> and not verifying user input, it is easy to cause security risks, for example: 
+<code>bad1</code>/<code>bad2</code>. When the user input is verified by <code>contains</code> or <code>equals</code> and then 
+the reflection operation is performed, the system security can be well controlled, for example: 
+<code >good1</code>/<code>good2</code>/<code>good3</code>.
+</p>
+<sample src="UnsafeReflection.java" />
+
+</example>
+
+<references>
+
+<li>
+Unsafe use of Reflection | OWASP:
+<a href="https://owasp.org/www-community/vulnerabilities/Unsafe_use_of_Reflection">Unsafe use of Reflection</a>.
+</li>
+<li>
+Java owasp: Classes should not be loaded dynamically:
+<a href="https://rules.sonarsource.com/java/tag/owasp/RSPEC-2658">Classes should not be loaded dynamically</a>.
+</li>
+</references>
+
+</qhelp>

@@ -1,0 +1,11 @@
+edges
+| UnsafeReflection.java:12:28:12:60 | getParameter(...) : String | UnsafeReflection.java:14:41:14:49 | className |
+| UnsafeReflection.java:22:28:22:60 | getParameter(...) : String | UnsafeReflection.java:25:49:25:57 | className |
+nodes
+| UnsafeReflection.java:12:28:12:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UnsafeReflection.java:14:41:14:49 | className | semmle.label | className |
+| UnsafeReflection.java:22:28:22:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UnsafeReflection.java:25:49:25:57 | className | semmle.label | className |
+#select
+| UnsafeReflection.java:14:41:14:49 | className | UnsafeReflection.java:12:28:12:60 | getParameter(...) : String | UnsafeReflection.java:14:41:14:49 | className | Unsafe reflection of $@. | UnsafeReflection.java:12:28:12:60 | getParameter(...) | user input |
+| UnsafeReflection.java:25:49:25:57 | className | UnsafeReflection.java:22:28:22:60 | getParameter(...) : String | UnsafeReflection.java:25:49:25:57 | className | Unsafe reflection of $@. | UnsafeReflection.java:22:28:22:60 | getParameter(...) | user input |
