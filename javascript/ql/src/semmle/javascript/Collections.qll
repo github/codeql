@@ -6,6 +6,7 @@
 
 import javascript
 private import semmle.javascript.dataflow.internal.StepSummary
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
 private import DataFlow::PseudoProperties
 
 /**
@@ -123,13 +124,13 @@ private module CollectionDataFlow {
   /**
    * A step for `Set.add()` method, which adds an element to a Set.
    */
-  private class SetAdd extends CollectionFlowStep, DataFlow::MethodCallNode {
-    SetAdd() { this.getMethodName() = "add" }
-
-    override predicate store(DataFlow::Node element, DataFlow::SourceNode obj, PseudoProperty prop) {
-      this = obj.getAMethodCall() and
-      element = this.getArgument(0) and
-      prop = setElement()
+  private class SetAdd extends PreCallGraphStep {
+    override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
+      exists(DataFlow::MethodCallNode call |
+        call = obj.getAMethodCall("add") and
+        element = call.getArgument(0) and
+        prop = setElement()
+      )
     }
   }
 
