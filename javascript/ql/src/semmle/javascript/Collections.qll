@@ -137,16 +137,17 @@ private module CollectionDataFlow {
   /**
    * A step for the `Set` constructor, which copies any elements from the first argument into the resulting set.
    */
-  private class SetConstructor extends CollectionFlowStep, DataFlow::NewNode {
-    SetConstructor() { this = DataFlow::globalVarRef("Set").getAnInstantiation() }
-
-    override predicate loadStore(
-      DataFlow::Node pred, DataFlow::Node succ, PseudoProperty fromProp, PseudoProperty toProp
+  private class SetConstructor extends PreCallGraphStep {
+    override predicate loadStoreStep(
+      DataFlow::Node pred, DataFlow::SourceNode succ, string fromProp, string toProp
     ) {
-      pred = this.getArgument(0) and
-      succ = this and
-      fromProp = arrayLikeElement() and
-      toProp = setElement()
+      exists(DataFlow::NewNode invoke |
+        invoke = DataFlow::globalVarRef("Set").getAnInstantiation() and
+        pred = invoke.getArgument(0) and
+        succ = invoke and
+        fromProp = arrayLikeElement() and
+        toProp = setElement()
+      )
     }
   }
 
