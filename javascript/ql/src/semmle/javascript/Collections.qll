@@ -15,7 +15,11 @@ private import DataFlow::PseudoProperties
 private class PseudoProperty extends string {
   PseudoProperty() {
     this = [arrayLikeElement(), "1"] or // the "1" is required for the `ForOfStep`.
-    this = any(CollectionDataFlow::MapSet step).getAPseudoProperty()
+    this =
+      [
+        mapValue(any(DataFlow::CallNode c | c.getCalleeName() = "set").getArgument(0)),
+        mapValueAll()
+      ]
   }
 }
 
@@ -216,25 +220,14 @@ private module CollectionDataFlow {
    * Otherwise the value will be stored into a pseudo-property corresponding to values with unknown keys.
    * The value will additionally be stored into a pseudo-property corresponding to all values.
    */
-  class MapSet extends CollectionFlowStep, DataFlow::MethodCallNode {
-    MapSet() { this.getMethodName() = "set" }
-
-    override predicate store(DataFlow::Node element, DataFlow::SourceNode obj, PseudoProperty prop) {
-      this = obj.getAMethodCall() and
-      element = this.getArgument(1) and
-      prop = getAPseudoProperty()
+  class MapSet extends PreCallGraphStep {
+    override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
+      exists(DataFlow::MethodCallNode call |
+        call = obj.getAMethodCall("set") and
+        element = call.getArgument(1) and
+        prop = [mapValue(call.getArgument(0)), mapValueAll()]
+      )
     }
-
-    /**
-     * Gets a pseudo-property used to store an element in a map.
-     * The pseudo-property represents both values where the key is a known string value (which is encoded in the pseudo-property),
-     * and values where the key is unknown.
-     *
-     * Additionally, all elements are stored into the pseudo-property `mapValueAll()`.
-     *
-     * The return-type is `string` as this predicate is used to define which pseudo-properties exist.
-     */
-    string getAPseudoProperty() { result = [mapValue(this.getArgument(0)), mapValueAll()] }
   }
 
   /**
