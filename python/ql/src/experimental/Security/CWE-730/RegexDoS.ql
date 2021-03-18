@@ -21,34 +21,25 @@ import DataFlow::PathGraph
 
 // Should this be moved to a different structure? (For other queries to be able to use it)
 class ReMethods extends string {
-  ReMethods() {
-    this = "match" or
-    this = "fullmatch" or
-    this = "search" or
-    this = "split" or
-    this = "findall" or
-    this = "finditer"
-  }
+  ReMethods() { this in ["match", "fullmatch", "search", "split", "findall", "finditer"] }```
 }
 
 class DirectRegex extends DataFlow::Node {
   DirectRegex() {
-    exists(string reMethod, CallNode reCall |
-      reMethod instanceof ReMethods and
-      reCall = Value::named("re." + reMethod).getACall() and
-      this.asExpr() = reCall.getArg(0).getNode()
+    exists(ReMethods reMethod, DataFlow::CallCfgNode reCall |
+      reCall = API::moduleImport("re").getMember(reMethod).getACall() and
+      this = reCall.getArg(0)
     )
   }
 }
 
 class CompiledRegex extends DataFlow::Node {
   CompiledRegex() {
-    exists(CallNode patternCall, SsaVariable patternVar, CallNode reMethodCall |
-      patternCall = Value::named("re.compile").getACall() and
-      patternVar.getDefinition().getImmediateDominator() = patternCall and
-      patternVar.getAUse().getNode() = reMethodCall.getNode().getFunc().(Attribute).getObject() and
-      reMethodCall.getNode().getFunc().(Attribute).getName() instanceof ReMethods and
-      this.asExpr() = patternCall.getArg(0).getNode()
+    exists(DataFlow::CallCfgNode patternCall, AttrRead reMethod |
+      patternCall = API::moduleImport("re").getMember("compile").getACall() and
+      patternCall = reMethod.getObject().getALocalSource() and
+      reMethod.getAttributeName() instanceof ReMethods and
+      this = patternCall.getArg(0)
     )
   }
 }
