@@ -1,3 +1,5 @@
+name: Check change note
+
 on:
   pull_request_target:
     types: [labeled, unlabeled, opened, synchronize, reopened, ready_for_review]
