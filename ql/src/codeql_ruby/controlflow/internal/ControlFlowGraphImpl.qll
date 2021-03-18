@@ -969,7 +969,7 @@ module Trees {
     }
   }
 
-  private class MethodNameTree extends LeafTree, MethodName { }
+  private class MethodNameTree extends LeafTree, MethodName, ASTInternal::TTokenMethodName { }
 
   private class MethodTree extends BodyStmtTree, PostOrderTree, Method {
     final override predicate first(AstNode first) { first = this }
@@ -1273,6 +1273,10 @@ module Trees {
   }
 
   private class StringTextComponentTree extends LeafTree, StringTextComponent {
+    override predicate isHidden() { any() }
+  }
+
+  private class StringEscapeSequenceComponentTree extends LeafTree, StringEscapeSequenceComponent {
     override predicate isHidden() { any() }
   }
 
