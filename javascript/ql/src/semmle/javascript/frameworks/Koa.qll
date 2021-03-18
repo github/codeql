@@ -142,12 +142,12 @@ module Koa {
 
     RoutedRouteHandler() {
       router = DataFlow::moduleImport(["@koa/router", "koa-router"]).getAnInvocation() and
-      call = router.getAMethodCall*() and
-      call.getMethodName() =
-        [
-          "use", "get", "post", "put", "link", "unlink", "delete", "del", "head", "options",
-          "patch", "all"
-        ] and
+      call =
+        router
+            .getAChainedMethodCall([
+                "use", "get", "post", "put", "link", "unlink", "delete", "del", "head", "options",
+                "patch", "all"
+              ]) and
       this.flowsTo(call.getArgument(any(int i | i >= 1)))
     }
 
