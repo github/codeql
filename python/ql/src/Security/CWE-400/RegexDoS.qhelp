@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+
+<qhelp>
+  <overview>
+    <p>If aregular expression is built by a not escaped user-provided value, a user is likely to be able to cause a Denial of Service.</p>
+  </overview>
+
+  <recommendation>
+    <p>In case user input must compose a regular expression, it should be escaped with functions such as <code>re.escape</code>.
+  <recommendation>
+
+  <references>
+    <li>
+      OWASP
+      <a href="https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS">Regular Expression DoS</a>
+    </li>
+    <li>
+      SonarSource
+      <a href="https://rules.sonarsource.com/python/type/Vulnerability/RSPEC-2631">RSPEC-2631</a>
+    </li>
+    <li>
+      CWE-
+      <a href="http://cwe.mitre.org/data/definitions/400">400</a>
+    </li>
+  </references>
+
+</qhelp>
