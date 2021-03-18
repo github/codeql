@@ -376,7 +376,7 @@ class StructType extends @structtype, CompositeType {
   }
 
   /**
-   * hasEmbeddedField holds if there is an embedded field at int `depth`, with either type `tp` or `tp`'s pointer type.
+   * Holds if there is an embedded field at `depth`, with either type `tp` or a pointer to `tp`.
    */
   private predicate hasEmbeddedField(Type tp, int depth) {
     exists(Field f | this.hasFieldCand(_, f, depth, true) |
@@ -386,7 +386,7 @@ class StructType extends @structtype, CompositeType {
   }
 
   /**
-   * getFieldOfEmbedded gets a field of `embeddedParent`, which is then embedded into this struct type.
+   * Gets a field of `embeddedParent`, which is then embedded into this struct type.
    */
   Field getFieldOfEmbedded(Field embeddedParent, string name, int depth, boolean isEmbedded) {
     // embeddedParent is a field of 'this' at depth 'depth - 1'

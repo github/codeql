@@ -368,8 +368,16 @@ module IR {
 
     ImplicitFieldReadInstruction() { this = MkImplicitFieldSelection(e, _, implicitField) }
 
+    /**
+     * Gets the selector expression that requires this implicit field read.
+     */
     SelectorExpr getSelectorExpr() { result = e }
 
+    /**
+     * Gets the field being read. Note this is an embedded field that is not explicitly specified
+     * in `getSelectorExpr()`, whereas the field `getSelectorExpr()` refers to is the promoted field
+     * contained within this embedded field or in turn within a field that it embeds.
+     */
     Field getField() { result = implicitField }
 
     override predicate reads(ValueEntity v) { v = implicitField }
