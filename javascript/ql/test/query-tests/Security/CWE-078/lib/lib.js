@@ -408,3 +408,8 @@ module.exports.sanitizer3 = function (name) {
 	var sanitized = yetAnohterSanitizer(name);
 	cp.exec("rm -rf " + sanitized); // OK
 }
+
+var asyncExec = require("async-execute");
+module.exports.asyncStuff = function (name) {
+	asyncExec("rm -rf " + name); // NOT OK
+}
