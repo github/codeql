@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+
+<qhelp>
+  <overview>
+    <p>If an LDAP query is built by a not sanitized user-provided value, a user is likely to be able to run malicious LDAP queries.</p>
+  </overview>
+
+  <recommendation>
+    <p>In case user input must compose an LDAP query, it should be escaped in order to avoid a malicious user supplying special characters that change the actual purpose of the query. To do so, functions that ldap frameworks provide such as <code>escape_filter_chars</code> should be applied to that user input.
+  <recommendation>
+
+
+  <references>
+    <li>
+      OWASP
+      <a href="https://owasp.org/www-community/attacks/LDAP_Injection">LDAP Injection</a>
+    </li>
+    <li>
+      SonarSource
+      <a href="https://rules.sonarsource.com/python/RSPEC-2078">RSPEC-2078</a>
+    </li>
+    <li>
+      Python
+      <a href="https://www.python-ldap.org/en/python-ldap-3.3.0/reference/ldap.html">LDAP Documentation</a>
+    </li>
+    <li>
+      CWE-
+      <a href="https://cwe.mitre.org/data/definitions/90.html">090</a>
+    </li>
+  </references>
+
+</qhelp>
