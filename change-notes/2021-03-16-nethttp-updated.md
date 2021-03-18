@@ -1,2 +1,2 @@
 lgtm,codescanning
-* Added TransportRoundTrip in NetHttp.qll, it can performs an HTTP request to a URL.
+* Added support for the `Transport.RoundTrip` method in `net/http`.
