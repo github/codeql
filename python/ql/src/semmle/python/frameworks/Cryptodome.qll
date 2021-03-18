@@ -77,12 +77,12 @@ private module CryptodomeModel {
     }
 
     /** Gets the argument that specifies the curve to use (a string). */
-    DataFlow::Node getCurveArg() { result in [this.getArgByName("curve")] }
+    DataFlow::Node getCurveArg() { result = this.getArgByName("curve") }
 
     /** Gets the name of the curve to use, as well as the origin that explains how we obtained this name. */
     string getCurveWithOrigin(DataFlow::Node origin) {
       exists(StrConst str | origin = DataFlow::exprNode(str) |
-        origin.(DataFlow::LocalSourceNode).flowsTo(this.getCurveArg()) and
+        origin = this.getCurveArg().getALocalSource() and
         result = str.getText()
       )
     }

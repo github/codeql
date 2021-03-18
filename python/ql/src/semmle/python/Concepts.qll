@@ -545,7 +545,7 @@ module Cryptography {
       /** Gets the name of the cryptographic algorithm (for example `"RSA"` or `"AES"`). */
       string getName() { result = range.getName() }
 
-      /** Gets the argument that specifies size of the key in bits, if available. */
+      /** Gets the argument that specifies the size of the key in bits, if available. */
       DataFlow::Node getKeySizeArg() { result = range.getKeySizeArg() }
 
       /**
@@ -600,7 +600,7 @@ module Cryptography {
         /** Gets the name of the cryptographic algorithm (for example `"RSA"`). */
         abstract string getName();
 
-        /** Gets the argument that specifies size of the key in bits, if available. */
+        /** Gets the argument that specifies the size of the key in bits, if available. */
         abstract DataFlow::Node getKeySizeArg();
 
         /**

@@ -35,7 +35,7 @@ private module CryptographyModel {
       |
         // obtained by manually looking at source code in
         // https://github.com/pyca/cryptography/blob/cba69f1922803f4f29a3fde01741890d88b8e217/src/cryptography/hazmat/primitives/asymmetric/ec.py#L208-L300
-        curveName = "SECT571R1" and keySize = 570
+        curveName = "SECT571R1" and keySize = 570 // Indeed the numbers do not match.
         or
         curveName = "SECT409R1" and keySize = 409
         or
