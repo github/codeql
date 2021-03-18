@@ -17,3 +17,9 @@ yaml.load_all(payload) # $ decodeInput=payload decodeOutput=Attribute() decodeFo
 yaml.safe_load_all(payload) # $ decodeInput=payload decodeOutput=Attribute() decodeFormat=YAML
 yaml.unsafe_load_all(payload) # $ decodeInput=payload decodeOutput=Attribute() decodeFormat=YAML decodeMayExecuteInput
 yaml.full_load_all(payload) # $ decodeInput=payload decodeOutput=Attribute() decodeFormat=YAML decodeMayExecuteInput
+
+# C-based loaders with `libyaml`
+yaml.load(payload, yaml.CLoader)  # $ decodeInput=payload decodeOutput=Attribute() decodeFormat=YAML decodeMayExecuteInput
+yaml.load(payload, yaml.CFullLoader)  # $ decodeInput=payload decodeOutput=Attribute() decodeFormat=YAML decodeMayExecuteInput
+yaml.load(payload, yaml.CSafeLoader)  # $decodeInput=payload decodeOutput=Attribute() decodeFormat=YAML SPURIOUS: decodeMayExecuteInput
+yaml.load(payload, yaml.CBaseLoader)  # $decodeInput=payload decodeOutput=Attribute() decodeFormat=YAML SPURIOUS: decodeMayExecuteInput
