@@ -233,16 +233,17 @@ private module CollectionDataFlow {
   /**
    * A step for a call to `values` on a Map or a Set.
    */
-  private class MapAndSetValues extends CollectionFlowStep, DataFlow::MethodCallNode {
-    MapAndSetValues() { this.getMethodName() = "values" }
-
-    override predicate loadStore(
-      DataFlow::Node pred, DataFlow::Node succ, PseudoProperty fromProp, PseudoProperty toProp
+  private class MapAndSetValues extends PreCallGraphStep {
+    override predicate loadStoreStep(
+      DataFlow::Node pred, DataFlow::SourceNode succ, string fromProp, string toProp
     ) {
-      pred = this.getReceiver() and
-      succ = this and
-      fromProp = [mapValueAll(), setElement()] and
-      toProp = iteratorElement()
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = "values" and
+        pred = call.getReceiver() and
+        succ = call and
+        fromProp = [mapValueAll(), setElement()] and
+        toProp = iteratorElement()
+      )
     }
   }
 
