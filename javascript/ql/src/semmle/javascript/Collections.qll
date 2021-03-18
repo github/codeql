@@ -196,14 +196,15 @@ private module CollectionDataFlow {
    * A call to the `get` method on a Map.
    * If the key of the call to `get` has a known string value, then only the value corresponding to that key will be retrieved. (The known string value is encoded as part of the pseudo-property)
    */
-  private class MapGet extends CollectionFlowStep, DataFlow::MethodCallNode {
-    MapGet() { this.getMethodName() = "get" }
-
-    override predicate load(DataFlow::Node obj, DataFlow::Node element, PseudoProperty prop) {
-      obj = this.getReceiver() and
-      element = this and
-      // reading the join of known and unknown values
-      (prop = mapValue(this.getArgument(0)) or prop = mapValueUnknownKey())
+  private class MapGet extends PreCallGraphStep {
+    override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = "get" and
+        obj = call.getReceiver() and
+        element = call and
+        // reading the join of known and unknown values
+        (prop = mapValue(call.getArgument(0)) or prop = mapValueUnknownKey())
+      )
     }
   }
 
