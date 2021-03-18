@@ -99,10 +99,11 @@ private predicate exprReleases(Expr e, Expr released, string kind) {
       e.(FunctionCall).getTarget().(MemberFunction).getAnOverridingFunction+() = f
     ) and
     e.(FunctionCall).getArgument(arg) = released and
-    exprReleases(_, exprOrDereference(f.getParameter(arg).getAnAccess()), kind)
+    exprReleases(_,
+      exprOrDereference(globalValueNumber(f.getParameter(arg).getAnAccess()).getAnExpr()), kind)
   )
   or
-  exists(Function f, ThisExpr innerThis, Expr likeInnerThis |
+  exists(Function f, ThisExpr innerThis |
     // `e` is a call to a method that releases `this`, and `released`
     // is the object that is called
     (
@@ -111,8 +112,7 @@ private predicate exprReleases(Expr e, Expr released, string kind) {
     ) and
     e.(FunctionCall).getQualifier() = exprOrDereference(released) and
     innerThis.getEnclosingFunction() = f and
-    globalValueNumber(innerThis) = globalValueNumber(likeInnerThis) and
-    exprReleases(_, likeInnerThis, kind)
+    exprReleases(_, globalValueNumber(innerThis).getAnExpr(), kind)
   )
 }
 
