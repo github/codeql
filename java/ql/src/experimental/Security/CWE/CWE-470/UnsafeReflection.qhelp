@@ -3,9 +3,10 @@
 
 <overview>
 <p>
-Dynamically loaded classes could contain malicious code executed by a static class initializer. 
-I.E. you wouldn't even have to instantiate or explicitly invoke methods on such classes to be 
-vulnerable to an attack.
+Allowing users to freely select a class to load can result in invocation of unexpected dangerous code.
+Dynamically loaded classes could contain dangerous code executed by a constructor or
+static class initializer, which means a vulnerability can rairse even without invoking methods 
+on such classes to be vulnerable to an attack.
 </p>
 </overview>
 
