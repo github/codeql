@@ -17,33 +17,12 @@ DataFlow::ParameterNode getALibraryInputParameter() {
 }
 
 /**
- * Gets the number of occurrences of "/" in `path`.
- */
-bindingset[path]
-private int countSlashes(string path) { result = count(path.splitAt("/")) - 1 }
-
-/**
- * Gets the topmost named package.json that appears in the project.
- *
- * There can be multiple results if the there exists multiple package.json that are equally deeply nested in the folder structure.
- * Results are limited to package.json files that are at most nested 2 directories deep.
- */
-PackageJSON getTopmostPackageJSON() {
-  result =
-    min(PackageJSON j |
-      countSlashes(j.getFile().getRelativePath()) <= 3 and
-      exists(j.getPackageName())
-    |
-      j order by countSlashes(j.getFile().getRelativePath())
-    )
-}
-
-/**
- * Gets a value exported by the main module from one of the topmost `package.json` files (see `getTopmostPackageJSON`).
+ * Gets a value exported by the main module from a named `package.json` file.
  * The value is either directly the `module.exports` value, a nested property of `module.exports`, or a method on an exported class.
  */
 private DataFlow::Node getAValueExportedByPackage() {
-  result = getAnExportFromModule(getTopmostPackageJSON().getMainModule())
+  result =
+    getAnExportFromModule(any(PackageJSON pack | exists(pack.getPackageName())).getMainModule())
   or
   result = getAValueExportedByPackage().(DataFlow::PropWrite).getRhs()
   or
