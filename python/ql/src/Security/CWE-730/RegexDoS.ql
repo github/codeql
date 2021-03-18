@@ -1,14 +1,17 @@
 /**
- * @name Python Regex DoS
- * @description Python Regular Expression Denial of Service
+ * @name Regular expression injection
+ * @description User input should not be used in regular expressions without first being escaped,
+ *              otherwise a malicious user may be able to inject an expression that could require
+ *              exponential time on certain inputs.
  * @kind path-problem
  * @problem.severity error
- * @id python/regex-dos
- * @tags experimental	
- *       security	
+ * @id python/regex-injection
+ * @tags security
+ *       external/cwe/cwe-730
  *       external/cwe/cwe-400
  */
 
+// determine precision above
 import python
 import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.dataflow.new.DataFlow
@@ -16,6 +19,7 @@ import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.internal.TaintTrackingPublic
 import DataFlow::PathGraph
 
+// Should this be moved to a different structure? (For other queries to be able to use it)
 class ReMethods extends string {
   ReMethods() {
     this = "match" or
@@ -49,8 +53,8 @@ class CompiledRegex extends DataFlow::Node {
   }
 }
 
-class RegexDoSSink extends DataFlow::Node {
-  RegexDoSSink() { this instanceof DirectRegex or this instanceof CompiledRegex }
+class RegexInjectionSink extends DataFlow::Node {
+  RegexInjectionSink() { this instanceof DirectRegex or this instanceof CompiledRegex }
 }
 
 class EscapeSanitizer extends DataFlow::Node {
@@ -66,17 +70,17 @@ class EscapeSanitizer extends DataFlow::Node {
   }
 }
 
-class RegexDoSFlowConfig extends TaintTracking::Configuration {
-  RegexDoSFlowConfig() { this = "RegexDoSFlowConfig" }
+class RegexInjectionFlowConfig extends TaintTracking::Configuration {
+  RegexInjectionFlowConfig() { this = "RegexInjectionFlowConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof RegexDoSSink }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof RegexInjectionSink }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) { sanitizer instanceof EscapeSanitizer }
 }
 
-from RegexDoSFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
+from RegexInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ regex operation includes $@.", sink.getNode(), "This",
-  source.getNode(), "a user-provided value"
+select sink.getNode(), source, sink, "$@ regular expression is constructed from a $@.",
+  sink.getNode(), "This", source.getNode(), "user-provided value"
