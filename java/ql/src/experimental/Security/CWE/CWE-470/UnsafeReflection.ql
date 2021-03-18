@@ -1,5 +1,5 @@
 /**
- * @name Use of Externally-Controlled Input to Select Classes or Code ('Unsafe Reflection')
+ * @name Use of externally-controlled input to select classes or code ('unsafe reflection')
  * @description Use external input with reflection function to select the class or code to
  *              be used, which brings serious security risks.
  * @kind path-problem
