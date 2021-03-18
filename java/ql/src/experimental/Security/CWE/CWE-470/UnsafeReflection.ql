@@ -27,7 +27,7 @@ class EqualsSanitizer extends DataFlow::BarrierGuard {
   EqualsSanitizer() { this.(MethodAccess).getMethod().hasName("equals") }
 
   override predicate checks(Expr e, boolean branch) {
-    (e = this.(MethodAccess).getArgument(0) or e = this.(MethodAccess).getQualifier()) and
+    e = [this.(MethodAccess).getArgument(0), this.(MethodAccess).getQualifier()] and
     branch = true
   }
 }
