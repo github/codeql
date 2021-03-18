@@ -11,7 +11,7 @@ vulnerable to an attack.
 
 <recommendation>
 <p>
-Create a whitelist of allowed reflection classes and strictly verify the input content to ensure that 
+Create a list of classes that are allowed to load reflectively and strictly verify the input content to ensure that 
 users can only execute classes or codes that are running.
 </p>
 </recommendation>
