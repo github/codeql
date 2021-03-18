@@ -181,13 +181,14 @@ private module CollectionDataFlow {
   /**
    * A step for a call to `forEach` on a Set or Map.
    */
-  private class SetMapForEach extends CollectionFlowStep, DataFlow::MethodCallNode {
-    SetMapForEach() { this.getMethodName() = "forEach" }
-
-    override predicate load(DataFlow::Node obj, DataFlow::Node element, PseudoProperty prop) {
-      obj = this.getReceiver() and
-      element = this.getCallback(0).getParameter(0) and
-      prop = [setElement(), mapValueAll()]
+  private class SetMapForEach extends PreCallGraphStep {
+    override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = "forEach" and
+        obj = call.getReceiver() and
+        element = call.getCallback(0).getParameter(0) and
+        prop = [setElement(), mapValueAll()]
+      )
     }
   }
 
