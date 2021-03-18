@@ -1337,13 +1337,19 @@ cfg.rb:
 #-----|  -> #{...}
 
 #  130| ... = ...
-#-----|  -> ... rescue ...
+#-----|  -> EmptyClass
 
 #  130| Constant
 #-----|  -> ... = ...
 
 #  130| 5
 #-----|  -> Constant
+
+#  133| EmptyClass
+#-----|  -> EmptyModule
+
+#  134| EmptyModule
+#-----|  -> ... rescue ...
 
 #  136| ... rescue ...
 #-----|  -> 1
