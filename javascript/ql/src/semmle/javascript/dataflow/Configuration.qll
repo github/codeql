@@ -544,6 +544,12 @@ abstract class LabeledBarrierGuardNode extends BarrierGuardNode {
 }
 
 /**
+ * DEPRECATED. Subclasses should extend `SharedFlowStep` instead, unless the subclass
+ * is part of a query, in which case it should be moved into the `isAdditionalFlowStep` predicate
+ * of the relevant data-flow configuration.
+ * Other uses of the predicate in this class should instead reference the predicates in the
+ * `SharedFlowStep::` module, such as `SharedFlowStep::step`.
+ *
  * A data flow edge that should be added to all data flow configurations in
  * addition to standard data flow edges.
  *
@@ -551,7 +557,10 @@ abstract class LabeledBarrierGuardNode extends BarrierGuardNode {
  * of the standard library. Override `Configuration::isAdditionalFlowStep`
  * for analysis-specific flow steps.
  */
-abstract class AdditionalFlowStep extends DataFlow::Node {
+deprecated class AdditionalFlowStep = LegacyAdditionalFlowStep;
+
+// Internal version of AdditionalFlowStep that we can reference without deprecation warnings.
+abstract private class LegacyAdditionalFlowStep extends DataFlow::Node {
   /**
    * Holds if `pred` &rarr; `succ` should be considered a data flow edge.
    */
@@ -729,32 +738,32 @@ module SharedFlowStep {
  */
 private class AdditionalFlowStepAsSharedStep extends SharedFlowStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    any(AdditionalFlowStep s).step(pred, succ)
+    any(LegacyAdditionalFlowStep s).step(pred, succ)
   }
 
   override predicate step(
     DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
     DataFlow::FlowLabel succlbl
   ) {
-    any(AdditionalFlowStep s).step(pred, succ, predlbl, succlbl)
+    any(LegacyAdditionalFlowStep s).step(pred, succ, predlbl, succlbl)
   }
 
   override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
-    any(AdditionalFlowStep s).storeStep(pred, succ, prop)
+    any(LegacyAdditionalFlowStep s).storeStep(pred, succ, prop)
   }
 
   override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-    any(AdditionalFlowStep s).loadStep(pred, succ, prop)
+    any(LegacyAdditionalFlowStep s).loadStep(pred, succ, prop)
   }
 
   override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-    any(AdditionalFlowStep s).loadStoreStep(pred, succ, prop)
+    any(LegacyAdditionalFlowStep s).loadStoreStep(pred, succ, prop)
   }
 
   override predicate loadStoreStep(
     DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
   ) {
-    any(AdditionalFlowStep s).loadStoreStep(pred, succ, loadProp, storeProp)
+    any(LegacyAdditionalFlowStep s).loadStoreStep(pred, succ, loadProp, storeProp)
   }
 }
 
