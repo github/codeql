@@ -1624,6 +1624,9 @@ class RegExpCreationNode extends DataFlow::SourceNode {
     result = this.(RegExpLiteralNode).getFlags()
   }
 
+  /** Holds if the constructed predicate has the `g` flag. */
+  predicate isGlobal() { RegExp::isGlobal(getFlags()) }
+
   /** Gets a data flow node referring to this regular expression. */
   private DataFlow::SourceNode getAReference(DataFlow::TypeTracker t) {
     t.start() and

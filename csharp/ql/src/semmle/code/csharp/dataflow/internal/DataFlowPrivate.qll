@@ -220,6 +220,16 @@ module LocalFlow {
           e1 = we.getInitializer() and
           e2 = we
         )
+        or
+        scope = any(AssignExpr ae | ae.getLValue().(TupleExpr) = e2 and ae.getRValue() = e1) and
+        isSuccessor = false
+        or
+        isSuccessor = true and
+        exists(ControlFlowElement cfe | cfe = e2.(TupleExpr).(PatternExpr).getPatternMatch() |
+          cfe.(IsExpr).getExpr() = e1 and scope = cfe
+          or
+          exists(Switch sw | sw.getACase() = cfe and sw.getExpr() = e1 and scope = sw)
+        )
       )
     }
 
@@ -483,6 +493,18 @@ private predicate fieldOrPropertyStore(Expr e, Content c, Expr src, Expr q, bool
       src = mi.getRValue() and
       postUpdate = false
     )
+    or
+    // Tuple element, `(..., src, ...)` `f` is `ItemX` of tuple `q`
+    e =
+      any(TupleExpr te |
+        exists(int i |
+          e = q and
+          src = te.getArgument(i) and
+          te.isConstruction() and
+          f = q.getType().(TupleType).getElement(i) and
+          postUpdate = false
+        )
+      )
   )
 }
 
@@ -495,7 +517,7 @@ private predicate overridesOrImplementsSourceDecl(Property p1, Property p2) {
 
 /**
  * Holds if `e2` is an expression that reads field or property `c` from
- * expresion `e1`. This takes overriding into account for properties written
+ * expression `e1`. This takes overriding into account for properties written
  * from library code.
  */
 private predicate fieldOrPropertyRead(Expr e1, Content c, FieldOrPropertyRead e2) {
@@ -792,6 +814,37 @@ private module Cached {
       hasNodePath(x, node1, node2) and
       node2.asExpr().(AwaitExpr).getExpr() = node1.asExpr() and
       c = getResultContent()
+      or
+      // node1 = (..., node2, ...)
+      // node1.ItemX flows to node2
+      exists(TupleExpr te, int i, Expr item |
+        te = node1.asExpr() and
+        not te.isConstruction() and
+        c.(FieldContent).getField() = te.getType().(TupleType).getElement(i).getUnboundDeclaration() and
+        // node1 = (..., item, ...)
+        te.getArgument(i) = item
+      |
+        // item = (..., ..., ...) in node1 = (..., (..., ..., ...), ...)
+        node2.asExpr().(TupleExpr) = item and
+        hasNodePath(x, node1, node2)
+        or
+        // item = variable in node1 = (..., variable, ...)
+        exists(AssignableDefinitions::TupleAssignmentDefinition tad, Ssa::ExplicitDefinition def |
+          node2.(SsaDefinitionNode).getDefinition() = def and
+          def.getADefinition() = tad and
+          tad.getLeaf() = item and
+          hasNodePath(x, node1, node2)
+        )
+        or
+        // item = variable in node1 = (..., variable, ...) in a case/is var (..., ...)
+        te = any(PatternExpr pe).getAChildExpr*() and
+        exists(AssignableDefinitions::LocalVariableDefinition lvd, Ssa::ExplicitDefinition def |
+          node2.(SsaDefinitionNode).getDefinition() = def and
+          def.getADefinition() = lvd and
+          lvd.getDeclaration() = item and
+          hasNodePath(x, node1, node2)
+        )
+      )
     )
     or
     FlowSummaryImpl::Private::readStep(node1, c, node2)
@@ -1731,6 +1784,11 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
     e1 = e2.(AwaitExpr).getExpr() and
     scope = e2 and
     isSuccessor = true
+    or
+    exactScope = false and
+    e2 = e1.(TupleExpr).getAnArgument() and
+    scope = e1 and
+    isSuccessor = false
   }
 
   override predicate candidateDef(
@@ -1752,6 +1810,22 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
       scope = fs.getVariableDeclExpr() and
       exactScope = false
     )
+    or
+    scope =
+      any(AssignExpr ae |
+        ae = defTo.(AssignableDefinitions::TupleAssignmentDefinition).getAssignment() and
+        e = ae.getLValue().getAChildExpr*().(TupleExpr) and
+        exactScope = false and
+        isSuccessor = true
+      )
+    or
+    scope =
+      any(TupleExpr te |
+        te.getAnArgument() = defTo.(AssignableDefinitions::LocalVariableDefinition).getDeclaration() and
+        e = te and
+        exactScope = false and
+        isSuccessor = false
+      )
   }
 }
 

@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+#nullable enable
 class AssertTests
 {
     void M1(bool b)

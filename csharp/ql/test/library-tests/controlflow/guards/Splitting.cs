@@ -1,6 +1,6 @@
 using System;
 using System.Diagnostics;
-
+#nullable enable
 /// <summary>
 /// Tests related to CFG splitting.
 /// </summary>

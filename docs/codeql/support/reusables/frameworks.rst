@@ -147,3 +147,6 @@ Python built-in support
    MySQLdb, Database
    psycopg2, Database
    sqlite3, Database
+   cryptography, Cryptography library
+   pycryptodome, Cryptography library
+   pycryptodomex, Cryptography library

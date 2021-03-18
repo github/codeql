@@ -13,7 +13,7 @@ namespace Semmle.Extraction
 
         protected abstract void Populate(TextWriter trapFile);
 
-        protected void TryPopulate()
+        public void TryPopulate()
         {
             Context.Try(null, null, () => Populate(Context.TrapWriter.Writer));
         }

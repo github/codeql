@@ -24,6 +24,7 @@ import javascript
 private import StmtContainers
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
 private import semmle.javascript.dataflow.internal.FlowSteps
+private import semmle.javascript.dataflow.internal.AccessPaths
 
 /**
  * Contains a `cached module` for each stage.
@@ -126,6 +127,12 @@ module Stages {
       exists(any(Expr e).getExceptionTarget())
       or
       exists(DataFlow::ssaDefinitionNode(_))
+      or
+      any(DataFlow::Node node).hasLocationInfo(_, _, _, _, _)
+      or
+      exists(any(DataFlow::Node node).toString())
+      or
+      exists(any(AccessPath a).getAnInstanceIn(_))
     }
   }
 
@@ -155,6 +162,8 @@ module Stages {
       exists(any(Import i).getImportedModule())
       or
       exists(DataFlow::moduleImport(_))
+      or
+      exists(any(ReExportDeclaration d).getReExportedModule())
     }
   }
 
@@ -181,6 +190,10 @@ module Stages {
       PreCallGraphStep::loadStep(_, _, _)
       or
       basicLoadStep(_, _, _)
+      or
+      exists(any(DataFlow::TypeTracker t).append(_))
+      or
+      exists(any(DataFlow::TypeBackTracker t).prepend(_))
     }
   }
 
@@ -230,7 +243,7 @@ module Stages {
     predicate backref() {
       1 = 1
       or
-      any(TaintTracking::AdditionalTaintStep step).step(_, _)
+      TaintTracking::heapStep(_, _)
       or
       exists(RemoteFlowSource r)
     }

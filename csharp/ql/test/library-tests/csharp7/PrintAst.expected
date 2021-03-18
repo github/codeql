@@ -156,7 +156,7 @@ CSharp7.cs:
 #   74|       3: [ExprStmt] ...;
 #   74|         0: [AssignExpr] ... = ...
 #   74|           0: [LocalVariableAccess] access to local variable x
-#   74|           1: [FieldAccess] access to field A
+#   74|           1: [FieldAccess] access to field Item1
 #   74|             -1: [MethodCall] call to method F
 #   75|       4: [ExprStmt] ...;
 #   75|         0: [AssignExpr] ... = ...
@@ -218,7 +218,7 @@ CSharp7.cs:
 #   82|         -1: [TypeMention] string
 #   83|     4: [BlockStmt] {...}
 #   84|       0: [ReturnStmt] return ...;
-#   84|         0: [FieldAccess] access to field a
+#   84|         0: [FieldAccess] access to field Item1
 #   84|           -1: [TupleExpr] (..., ...)
 #   84|             0: [ParameterAccess] access to parameter x
 #   84|             1: [IntLiteral] 2
