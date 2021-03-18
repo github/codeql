@@ -1,5 +1,5 @@
 /**
- * Provides a taint-tracking configuration for detecting regular expression injections
+ * Provides a taint-tracking configuration for detecting regular expression injection
  * vulnerabilities.
  */
 
