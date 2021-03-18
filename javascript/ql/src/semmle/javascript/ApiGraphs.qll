@@ -318,7 +318,7 @@ module API {
         result = Impl::MkCanonicalNameUse(tn).(Node).getInstance()
       )
       or
-      result = Impl::MkHasUnderlyingType(moduleName, exportedName)
+      result = Impl::MkHasUnderlyingType(moduleName, exportedName).(Node).getInstance()
     }
   }
 
@@ -416,7 +416,7 @@ module API {
         isUsed(n)
       } or
       /**
-       * An instance of a TypeScript type, identified by name of the type-annotation.
+       * A TypeScript type, identified by name of the type-annotation.
        * This API node is exclusively used by `API::Node::ofType`.
        */
       MkHasUnderlyingType(string moduleName, string exportName) {
@@ -649,6 +649,12 @@ module API {
           ref = getANodeWithType(tn)
         )
         or
+        exists(string moduleName, string exportName |
+          base = MkHasUnderlyingType(moduleName, exportName) and
+          lbl = Label::instance() and
+          ref.(DataFlow::SourceNode).hasUnderlyingType(moduleName, exportName)
+        )
+        or
         exists(DataFlow::InvokeNode call |
           base = MkSyntheticCallbackArg(_, _, call) and
           lbl = Label::parameter(1) and
@@ -688,12 +694,6 @@ module API {
       nd = MkUse(ref)
       or
       exists(CanonicalName n | nd = MkCanonicalNameUse(n) | ref.asExpr() = n.getAnAccess())
-      or
-      exists(string moduleName, string exportsName |
-        nd = MkHasUnderlyingType(moduleName, exportsName)
-      |
-        ref.(DataFlow::SourceNode).hasUnderlyingType(moduleName, exportsName)
-      )
     }
 
     /** Holds if module `m` exports `rhs`. */
