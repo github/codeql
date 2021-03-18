@@ -216,6 +216,33 @@ module NetHttp {
     }
   }
 
+  /** A call to the `Transport.RoundTrip` function in the `net/http` package. */
+  private class TransportRoundTrip extends HTTP::ClientRequest::Range, DataFlow::MethodCallNode {
+    TransportRoundTrip() { this.getTarget().hasQualifiedName("net/http", "Transport", "RoundTrip") }
+
+    override DataFlow::Node getUrl() {
+      // A URL passed to `NewRequest`, whose result is passed to this `RoundTrip` call
+      exists(DataFlow::CallNode call | call.getTarget().hasQualifiedName("net/http", "NewRequest") |
+        this.getArgument(0) = call.getResult(0).getASuccessor*() and
+        result = call.getArgument(1)
+      )
+      or
+      // A URL passed to `NewRequestWithContext`, whose result is passed to this `RoundTrip` call
+      exists(DataFlow::CallNode call |
+        call.getTarget().hasQualifiedName("net/http", "NewRequestWithContext")
+      |
+        this.getArgument(0) = call.getResult(0).getASuccessor*() and
+        result = call.getArgument(2)
+      )
+      or
+      // A URL assigned to a request that is passed to this `RoundTrip` call
+      exists(Write w, Field f |
+        f.hasQualifiedName("net/http", "Request", "URL") and
+        w.writesField(this.getArgument(0).getAPredecessor*(), f, result)
+      )
+    }
+  }
+
   /** Fields and methods of `net/http.Request` that are not generally exploitable in an open-redirect attack. */
   private class RedirectUnexploitableRequestFields extends HTTP::Redirect::UnexploitableSource {
     RedirectUnexploitableRequestFields() {
