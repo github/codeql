@@ -708,8 +708,8 @@ module HTTP {
       override DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {
         result instanceof RouteHandlerCandidate and
         exists(
-          DataFlow::Node input, TypeTrackingPseudoProperty key, CollectionFlowStep store,
-          CollectionFlowStep load, DataFlow::Node storeTo, DataFlow::Node loadFrom
+          DataFlow::Node input, string key, CollectionFlowStep store, CollectionFlowStep load,
+          DataFlow::Node storeTo, DataFlow::Node loadFrom
         |
           this.flowsTo(storeTo) and
           store.store(input, storeTo, key) and

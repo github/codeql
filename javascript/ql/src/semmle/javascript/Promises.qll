@@ -214,13 +214,6 @@ module PromiseTypeTracking {
       result = PromiseTypeTracking::promiseStep(mid, summary)
     )
   }
-
-  /**
-   * A class enabling the use of the `resolveField` as a pseudo-property in type-tracking predicates.
-   */
-  private class ResolveFieldAsTypeTrackingProperty extends TypeTrackingPseudoProperty {
-    ResolveFieldAsTypeTrackingProperty() { this = Promises::valueProp() }
-  }
 }
 
 private import semmle.javascript.dataflow.internal.PreCallGraphStep

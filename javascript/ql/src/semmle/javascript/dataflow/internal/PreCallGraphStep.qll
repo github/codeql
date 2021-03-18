@@ -40,6 +40,15 @@ class PreCallGraphStep extends Unit {
    * Holds if there is a step from the `prop` property of `pred` to the same property in `succ`.
    */
   predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
+
+  /**
+   * Holds if there is a step from the `loadProp` property of `pred` to the `storeProp` property in `succ`.
+   */
+  predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::SourceNode succ, string loadProp, string storeProp
+  ) {
+    none()
+  }
 }
 
 module PreCallGraphStep {
@@ -75,6 +84,15 @@ module PreCallGraphStep {
   predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
     any(PreCallGraphStep s).loadStoreStep(pred, succ, prop)
   }
+
+  /**
+   * Holds if there is a step from the `loadProp` property of `pred` to the `storeProp` property in `succ`.
+   */
+  predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::SourceNode succ, string loadProp, string storeProp
+  ) {
+    any(PreCallGraphStep s).loadStoreStep(pred, succ, loadProp, storeProp)
+  }
 }
 
 private class SharedFlowStepFromPreCallGraph extends DataFlow::SharedFlowStep {
@@ -93,6 +111,12 @@ private class SharedFlowStepFromPreCallGraph extends DataFlow::SharedFlowStep {
   override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
     PreCallGraphStep::loadStoreStep(pred, succ, prop)
   }
+
+  override predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
+  ) {
+    PreCallGraphStep::loadStoreStep(pred, succ, loadProp, storeProp)
+  }
 }
 
 private class SharedTypeTrackingStepFromPreCallGraph extends DataFlow::SharedTypeTrackingStep {
@@ -110,5 +134,11 @@ private class SharedTypeTrackingStepFromPreCallGraph extends DataFlow::SharedTyp
 
   override predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
     PreCallGraphStep::loadStoreStep(pred, succ, prop)
+  }
+
+  override predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::SourceNode succ, string loadProp, string storeProp
+  ) {
+    PreCallGraphStep::loadStoreStep(pred, succ, loadProp, storeProp)
   }
 }

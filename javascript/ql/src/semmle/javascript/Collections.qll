@@ -10,17 +10,11 @@ private import DataFlow::PseudoProperties
 
 /**
  * A pseudo-property used in a data-flow/type-tracking step for collections.
- *
- * By extending `TypeTrackingPseudoProperty` the class enables the use of the collection related pseudo-properties in type-tracking predicates.
  */
-private class PseudoProperty extends TypeTrackingPseudoProperty {
+private class PseudoProperty extends string {
   PseudoProperty() {
     this = [arrayLikeElement(), "1"] or // the "1" is required for the `ForOfStep`.
     this = any(CollectionDataFlow::MapSet step).getAPseudoProperty()
-  }
-
-  override PseudoProperty getLoadStoreToProp() {
-    exists(CollectionFlowStep step | step.loadStore(_, _, this, result))
   }
 }
 

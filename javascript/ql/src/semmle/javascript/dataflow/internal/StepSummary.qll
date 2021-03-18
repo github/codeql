@@ -10,25 +10,18 @@ class PropertyName extends string {
     or
     exists(AccessPath::getAnAssignmentTo(_, this))
     or
-    this instanceof TypeTrackingPseudoProperty
+    SharedTypeTrackingStep::loadStep(_, _, this)
+    or
+    SharedTypeTrackingStep::storeStep(_, _, this)
+    or
+    SharedTypeTrackingStep::loadStoreStep(_, _, this, _)
+    or
+    SharedTypeTrackingStep::loadStoreStep(_, _, _, this)
   }
 }
 
 class OptionalPropertyName extends string {
   OptionalPropertyName() { this instanceof PropertyName or this = "" }
-}
-
-/**
- * A pseudo-property that can be used in type-tracking.
- */
-abstract class TypeTrackingPseudoProperty extends string {
-  bindingset[this]
-  TypeTrackingPseudoProperty() { any() }
-
-  /**
-   * Gets a property name that `this` can be copied to in a `LoadStoreStep(this, result)`.
-   */
-  string getLoadStoreToProp() { none() }
 }
 
 /**
@@ -42,7 +35,7 @@ newtype TStepSummary =
   LoadStep(PropertyName prop) or
   CopyStep(PropertyName prop) or
   LoadStoreStep(PropertyName fromProp, PropertyName toProp) {
-    exists(TypeTrackingPseudoProperty prop | fromProp = prop and toProp = prop.getLoadStoreToProp())
+    SharedTypeTrackingStep::loadStoreStep(_, _, fromProp, toProp)
   }
 
 /**
@@ -119,6 +112,11 @@ module StepSummary {
       or
       SharedTypeTrackingStep::loadStoreStep(pred, succ, prop) and
       summary = CopyStep(prop)
+    )
+    or
+    exists(string fromProp, string toProp |
+      SharedTypeTrackingStep::loadStoreStep(pred, succ, fromProp, toProp) and
+      summary = LoadStoreStep(fromProp, toProp)
     )
     or
     SharedTypeTrackingStep::step(pred, succ) and

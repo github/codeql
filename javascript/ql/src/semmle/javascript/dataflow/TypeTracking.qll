@@ -358,6 +358,15 @@ class SharedTypeTrackingStep extends Unit {
    * Holds if type-tracking should step from the `prop` property of `pred` to the same property in `succ`.
    */
   predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
+
+  /**
+   * Holds if type-tracking should step from the `loadProp` property of `pred` to the `storeProp` property in `succ`.
+   */
+  predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::SourceNode succ, string loadProp, string storeProp
+  ) {
+    none()
+  }
 }
 
 /** Provides access to the steps contributed by subclasses of `SharedTypeTrackingStep`. */
@@ -388,6 +397,15 @@ module SharedTypeTrackingStep {
    */
   predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
     any(SharedTypeTrackingStep s).loadStoreStep(pred, succ, prop)
+  }
+
+  /**
+   * Holds if type-tracking should step from the `loadProp` property of `pred` to the `storeProp` property in `succ`.
+   */
+  predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::SourceNode succ, string loadProp, string storeProp
+  ) {
+    any(SharedTypeTrackingStep s).loadStoreStep(pred, succ, loadProp, storeProp)
   }
 }
 
