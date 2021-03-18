@@ -3310,11 +3310,7 @@ raise.rb:
 #-----| no-match -> "Exception"
 #-----| match -> ensure ...
 
-#  121| (call to raise)
-#-----|  -> ensure ...
-
 #  121| call to raise
-#-----| raise -> (call to raise)
 #-----| raise -> exit m10 (abnormal)
 
 #  121| "Exception"

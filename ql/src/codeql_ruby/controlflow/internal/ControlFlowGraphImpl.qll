@@ -1254,7 +1254,8 @@ module Trees {
       or
       this instanceof PostOrderTree and
       succ = this and
-      last(this.getLastBodyChild(), pred, c)
+      last(this.getLastBodyChild(), pred, c) and
+      c instanceof NormalCompletion
       or
       // Normal left-to-right evaluation in the body
       exists(int i |
