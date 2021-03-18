@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Frameworks
+private import semmle.python.ApiGraphs
 
 /**
  * A data-flow node that executes an operating system command,
@@ -625,5 +626,47 @@ module Cryptography {
         final override int minimumSecureKeySize() { result = 224 }
       }
     }
+/*
+ */
+
+class ReMethods extends string {
+  ReMethods() { this in ["match", "fullmatch", "search", "split", "findall", "finditer"] }
+}
+
+class DirectRegex extends DataFlow::Node {
+  DirectRegex() {
+    exists(ReMethods reMethod, DataFlow::CallCfgNode reCall |
+      reCall = API::moduleImport("re").getMember(reMethod).getACall() and
+      this = reCall.getArg(0)
+    )
+  }
+}
+
+class CompiledRegex extends DataFlow::Node {
+  CompiledRegex() {
+    exists(DataFlow::CallCfgNode patternCall, DataFlow::AttrRead reMethod |
+      patternCall = API::moduleImport("re").getMember("compile").getACall() and
+      patternCall = reMethod.getObject().getALocalSource() and
+      reMethod.getAttributeName() instanceof ReMethods and
+      this = patternCall.getArg(0)
+    )
+  }
+}
+
+class RegexExecution extends DataFlow::Node {
+  RegexExecution() { this instanceof DirectRegex or this instanceof CompiledRegex }
+}
+
+// pending refactor if needed
+class RegexEscape extends DataFlow::Node {
+  RegexEscape() {
+    exists(Call c |
+      (
+        // avoid flow through any %escape% function
+        c.getFunc().(Attribute).getName().matches("%escape%") or // something.%escape%()
+        c.getFunc().(Name).getId().matches("%escape%") // %escape%()
+      ) and
+      this.asExpr() = c
+    )
   }
 }
