@@ -423,6 +423,8 @@ module API {
        */
       MkHasUnderlyingType(string moduleName, string exportName) {
         any(TypeAnnotation n).hasQualifiedName(moduleName, exportName)
+        or
+        any(Type t).hasUnderlyingType(moduleName, exportName)
       } or
       MkSyntheticCallbackArg(DataFlow::Node src, int bound, DataFlow::InvokeNode nd) {
         trackUseNode(src, true, bound).flowsTo(nd.getCalleeNode())
