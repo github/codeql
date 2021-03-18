@@ -1,6 +1,10 @@
 /**
- * Provides classes modeling security-relevant aspects of the PyYAML package
- * https://pyyaml.org/wiki/PyYAMLDocumentation (obtained via `import yaml`).
+ * Provides classes modeling security-relevant aspects of the PyYAML package (obtained
+ * via `import yaml`)
+ *
+ * See
+ * - https://pyyaml.org/wiki/PyYAMLDocumentation
+ * - https://pyyaml.docsforge.com/master/documentation/
  */
 
 private import python
@@ -8,6 +12,14 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 
+/**
+ * Provides classes modeling security-relevant aspects of the PyYAML package (obtained
+ * via `import yaml`)
+ *
+ * See
+ * - https://pyyaml.org/wiki/PyYAMLDocumentation
+ * - https://pyyaml.docsforge.com/master/documentation/
+ */
 private module Yaml {
   /** Gets a reference to the `yaml` module. */
   private DataFlow::Node yaml(DataFlow::TypeTracker t) {
