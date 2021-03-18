@@ -284,7 +284,7 @@ module ExprNodes {
   }
 
   private class StmtSequenceChildMapping extends ExprChildMapping, StmtSequence {
-    override predicate relevantChild(Expr e) { e = this.getLastExpr() }
+    override predicate relevantChild(Expr e) { e = this.getLastStmt() }
   }
 
   /** A control-flow node that wraps a `StmtSequence` AST expression. */
@@ -293,8 +293,8 @@ module ExprNodes {
 
     final override StmtSequence getExpr() { result = ExprCfgNode.super.getExpr() }
 
-    /** Gets the last expression in this sequence, if any. */
-    final ExprCfgNode getLastExpr() { e.hasCfgChild(e.getLastExpr(), this, result) }
+    /** Gets the last statement in this sequence, if any. */
+    final ExprCfgNode getLastStmt() { e.hasCfgChild(e.getLastStmt(), this, result) }
   }
 
   private class ForExprChildMapping extends ExprChildMapping, ForExpr {

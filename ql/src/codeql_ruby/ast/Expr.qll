@@ -73,8 +73,8 @@ class StmtSequence extends Expr, TStmtSequence {
   /** Gets a statement in this sequence. */
   final Stmt getAStmt() { result = this.getStmt(_) }
 
-  /** Gets the last expression in this sequence, if any. */
-  final Expr getLastExpr() { result = this.getStmt(this.getNumberOfStatements() - 1) }
+  /** Gets the last statement in this sequence, if any. */
+  final Stmt getLastStmt() { result = this.getStmt(this.getNumberOfStatements() - 1) }
 
   /** Gets the number of statements in this sequence. */
   final int getNumberOfStatements() { result = count(this.getAStmt()) }

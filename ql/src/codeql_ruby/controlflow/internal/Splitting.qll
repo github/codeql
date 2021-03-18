@@ -226,7 +226,7 @@ private module ConditionalCompletionSplitting {
         last(succ.(LogicalOrExpr).getAnOperand(), pred, c) and
         completion = c
         or
-        last(succ.(ParenthesizedExpr).getLastExpr(), pred, c) and
+        last(succ.(StmtSequence).getLastStmt(), pred, c) and
         completion = c
         or
         last(succ.(ConditionalExpr).getBranch(_), pred, c) and
