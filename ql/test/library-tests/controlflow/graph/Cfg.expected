@@ -552,11 +552,8 @@ cfg.rb:
 #   29| exit { ... } (normal)
 #-----|  -> exit { ... }
 
-#   29| &x
-#-----|  -> x
-
 #   29| x
-#-----|  -> &x
+#-----|  -> x
 
 #   29| call to call
 #-----|  -> exit { ... } (normal)
@@ -1099,11 +1096,8 @@ cfg.rb:
 #  101| key
 #-----|  -> kwargs
 
-#  101| **kwargs
-#-----|  -> value
-
 #  101| kwargs
-#-----|  -> **kwargs
+#-----|  -> value
 
 #  102| call to puts
 #-----|  -> kwargs
@@ -1473,11 +1467,8 @@ cfg.rb:
 #  149| silly
 #-----|  -> method
 
-#  149| *x
-#-----|  -> x
-
 #  149| x
-#-----|  -> *x
+#-----|  -> x
 
 #  150| call to puts
 #-----|  -> exit method (normal)

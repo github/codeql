@@ -380,11 +380,23 @@ module Trees {
     final override ControlFlowTree getChildNode(int i) { result = this.getValue() and i = 0 }
   }
 
-  private class BlockParameterTree extends StandardPostOrderTree, BlockParameter {
-    final override ControlFlowTree getChildNode(int i) {
-      result = this.getVariable().getDefiningAccess() and i = 0
+  abstract private class MandatoryParameterTree extends ControlFlowTree, NamedParameter {
+    final override predicate first(AstNode first) {
+      this.getDefiningAccess().(ControlFlowTree).first(first)
     }
+
+    final override predicate last(AstNode last, Completion c) {
+      this.getDefiningAccess().(ControlFlowTree).last(last, c)
+    }
+
+    override predicate propagatesAbnormal(AstNode child) {
+      this.getDefiningAccess().(ControlFlowTree).propagatesAbnormal(child)
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
   }
+
+  private class BlockParameterTree extends MandatoryParameterTree, BlockParameter { }
 
   /**
    * TODO: make all StmtSequence tree classes post-order, and simplify class
@@ -868,11 +880,7 @@ module Trees {
     final override ControlFlowTree getChildNode(int i) { result = this.getValue() and i = 0 }
   }
 
-  private class HashSplatParameterTree extends StandardPostOrderTree, HashSplatParameter {
-    final override ControlFlowTree getChildNode(int i) {
-      result = this.getVariable().getDefiningAccess() and i = 0
-    }
-  }
+  private class HashSplatParameterTree extends MandatoryParameterTree, HashSplatParameter { }
 
   private class HereDocTree extends StandardPreOrderTree, HereDoc {
     final override ControlFlowTree getChildNode(int i) { result = this.getComponent(i) }
@@ -1121,7 +1129,13 @@ module Trees {
 
   private class SelfTree extends LeafTree, Self { }
 
-  private class SimpleParameterTree extends LeafTree, SimpleParameter { }
+  private class SimpleParameterTree extends MandatoryParameterTree, SimpleParameter { }
+
+  // Corner case: For duplicated '_' parameters, only the first occurence has a defining
+  // access. For subsequent parameters we simply include the parameter itself in the CFG
+  private class SimpleParameterTreeDupUnderscore extends LeafTree, SimpleParameter {
+    SimpleParameterTreeDupUnderscore() { not exists(this.getDefiningAccess()) }
+  }
 
   /**
    * Control-flow tree for any post-order StmtSequence that doesn't have a more
@@ -1215,11 +1229,7 @@ module Trees {
     final override ControlFlowTree getChildNode(int i) { result = this.getValue() and i = 0 }
   }
 
-  private class SplatParameterTree extends StandardPostOrderTree, SplatParameter {
-    final override ControlFlowTree getChildNode(int i) {
-      result = this.getVariable().getDefiningAccess() and i = 0
-    }
-  }
+  private class SplatParameterTree extends MandatoryParameterTree, SplatParameter { }
 
   abstract class StmtSequenceTree extends ControlFlowTree, StmtSequence {
     override predicate propagatesAbnormal(AstNode child) { none() }
