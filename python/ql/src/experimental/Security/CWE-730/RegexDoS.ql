@@ -17,11 +17,12 @@ import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.internal.TaintTrackingPublic
+import semmle.python.ApiGraphs
 import DataFlow::PathGraph
 
 // Should this be moved to a different structure? (For other queries to be able to use it)
 class ReMethods extends string {
-  ReMethods() { this in ["match", "fullmatch", "search", "split", "findall", "finditer"] }```
+  ReMethods() { this in ["match", "fullmatch", "search", "split", "findall", "finditer"] }
 }
 
 class DirectRegex extends DataFlow::Node {
@@ -35,7 +36,7 @@ class DirectRegex extends DataFlow::Node {
 
 class CompiledRegex extends DataFlow::Node {
   CompiledRegex() {
-    exists(DataFlow::CallCfgNode patternCall, AttrRead reMethod |
+    exists(DataFlow::CallCfgNode patternCall, DataFlow::AttrRead reMethod |
       patternCall = API::moduleImport("re").getMember("compile").getACall() and
       patternCall = reMethod.getObject().getALocalSource() and
       reMethod.getAttributeName() instanceof ReMethods and
