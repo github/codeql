@@ -98,7 +98,7 @@ File resolveMainModule(PackageJSON pkg, int priority) {
   or
   exists(Folder folder | folder = pkg.getFile().getParentContainer() |
     result =
-      tryExtensions([folder, folder.getChildContainer("src")], "index",
+      tryExtensions([folder, folder.getChildContainer(["src", "lib"])], "index",
         priority - prioritiesPerCandidate())
   )
 }
