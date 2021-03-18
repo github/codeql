@@ -18,14 +18,6 @@
       SonarSource
       <a href="https://rules.sonarsource.com/python/type/Vulnerability/RSPEC-2631">RSPEC-2631</a>
     </li>
-    <li>
-      CWE-
-      <a href="http://cwe.mitre.org/data/definitions/400">400</a>
-    </li>
-    <li>
-      CWE-
-      <a href="http://cwe.mitre.org/data/definitions/730">730</a>
-    </li>
   </references>
 
 </qhelp>
