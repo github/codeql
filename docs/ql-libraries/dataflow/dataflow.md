@@ -186,9 +186,9 @@ values, for example through `out` parameters in C#, the `ReturnKind` class can
 be defined and used to match up different kinds of `ReturnNode`s with the
 corresponding `OutNode`s.
 
-#### Lambda flow
+#### First-class functions
 
-For lambda-like calls, the library supports built-in call resolution based on data flow between a lambda creation expression and a lambda call. The interface that needs to be implemented is
+For calls to first-class functions, the library supports built-in call resolution based on data flow between a function creation expression and a call. The interface that needs to be implemented is
 
 ```ql
 class LambdaCallKind
