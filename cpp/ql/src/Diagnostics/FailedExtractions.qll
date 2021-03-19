@@ -47,6 +47,7 @@ private newtype TExtractionError =
  * Superclass for the extraction error hierarchy.
  */
 class ExtractionError extends TExtractionError {
+  /** Gets the string representation of the error. */
   string toString() { none() }
 
   /** Gets the error message for this error. */
