@@ -6,7 +6,7 @@
  * @kind problem
  * @problem.severity warning
  * @precision low
- * @id js/actions/pull_request_target
+ * @id js/actions/pull-request-target
  * @tags actions
  *       security
  *       external/cwe/cwe-094
