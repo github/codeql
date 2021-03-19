@@ -48,16 +48,21 @@ private predicate isCond(Expr e) {
   e = any(ParenExpr par | isCond(par)).getExpr()
 }
 
-private predicate implicitFieldSelection(PromotedFieldSelector e, int i, Field implicitField) {
-  exists(StructType baseType, PromotedField child |
+private predicate implicitFieldSelection(PromotedFieldSelector e, int index, Field implicitField) {
+  exists(StructType baseType, PromotedField child, int implicitFieldDepth |
     baseType = e.getSelectedStructType() and
     (
       e.refersTo(child)
       or
-      implicitFieldSelection(e, i + 1, child)
+      implicitFieldSelection(e, implicitFieldDepth + 1, child)
     )
   |
-    child = baseType.getFieldOfEmbedded(implicitField, _, i, _)
+    child = baseType.getFieldOfEmbedded(implicitField, _, implicitFieldDepth + 1, _) and
+    exists(Field explicitField, int explicitFieldDepth |
+      e.refersTo(explicitField) and baseType.getFieldAtDepth(_, explicitFieldDepth) = explicitField
+    |
+      index = explicitFieldDepth - implicitFieldDepth
+    )
   )
 }
 
@@ -1739,10 +1744,14 @@ module CFG {
       or
       i = -1 and result = MkImplicitDeref(this.getBase())
       or
-      result = MkImplicitFieldSelection(this, i, _)
-      or
-      i = max(int k | k = -1 or exists(MkImplicitFieldSelection(this, k, _))) + 1 and
-      result = mkExprOrSkipNode(this)
+      exists(int maxIndex |
+        maxIndex = max(int k | k = 0 or exists(MkImplicitFieldSelection(this, k, _)))
+      |
+        result = MkImplicitFieldSelection(this, maxIndex - i, _)
+        or
+        i = maxIndex and
+        result = mkExprOrSkipNode(this)
+      )
     }
 
     private ControlFlow::Node getStepWithRank(int i) {
