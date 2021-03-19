@@ -57,16 +57,14 @@ private predicate localAdditionalBasicTaintStep(DataFlow::Node src, DataFlow::No
   localAdditionalTaintUpdateStep(src.asExpr(),
     sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr())
   or
-  summaryStep(src, sink, "taint") and
-  not summaryStep(src, sink, "value")
-  or
   exists(Argument arg |
     src.asExpr() = arg and
     arg.isVararg() and
     sink.(DataFlow::ImplicitVarargsArray).getCall() = arg.getCall()
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false)
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false) and
+  not FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, true)
 }
 
 /**

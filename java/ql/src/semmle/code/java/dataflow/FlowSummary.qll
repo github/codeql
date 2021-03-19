@@ -8,7 +8,9 @@ private import internal.DataFlowDispatch
 private import internal.DataFlowPrivate
 
 // import all instances below
-private module Summaries { }
+private module Summaries {
+  private import semmle.code.java.dataflow.ExternalFlow
+}
 
 class SummaryComponent = Impl::Public::SummaryComponent;
 
