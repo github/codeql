@@ -8,3 +8,4 @@ if [ "$CODEQL_PLATFORM" != "linux64" ] && [ "$CODEQL_PLATFORM" != "osx64" ] ; th
 fi
 
 "$CODEQL_EXTRACTOR_GO_ROOT/tools/$CODEQL_PLATFORM/go-extractor" -mod=vendor ./...
+"$CODEQL_EXTRACTOR_GO_ROOT/tools/pre-finalize.sh"

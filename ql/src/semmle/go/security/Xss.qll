@@ -18,6 +18,14 @@ module SharedXss {
      * that do not allow script injection, but injection of other undesirable HTML elements.
      */
     string getVulnerabilityKind() { result = "Cross-site scripting" }
+
+    /**
+     * Gets the kind of sink
+     */
+    string getSinkKind() { none() }
+
+    /** Gets an associated locatable, if any. */
+    Locatable getAssociatedLoc() { result = this.getFile() }
   }
 
   /** A sanitizer for XSS vulnerabilities. */
@@ -36,6 +44,15 @@ module SharedXss {
    */
   class HttpResponseBodySink extends Sink, HTTP::ResponseBody {
     HttpResponseBodySink() { not nonHtmlContentType(this) }
+  }
+
+  /**
+   * An expression that is rendered as part of a template.
+   */
+  class RawTemplateInstantiationSink extends HttpResponseBodySink, HTTP::TemplateResponseBody {
+    override string getSinkKind() { result = "rawtemplate" }
+
+    override Locatable getAssociatedLoc() { result = this.getRead().getEnclosingTextNode() }
   }
 
   /**

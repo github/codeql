@@ -1,21 +1,9 @@
-# github.com/github/depstubber v0.0.0-20200916130315-f3217697abd4
-## explicit
-github.com/github/depstubber
 # github.com/go-stack/stack v1.8.0
 ## explicit
 github.com/go-stack/stack
-# github.com/mattn/go-colorable v0.1.7
-## explicit
-github.com/mattn/go-colorable
-# github.com/revel/config v1.0.0
-## explicit
-github.com/revel/config
 # github.com/revel/modules v1.0.0
 ## explicit
 github.com/revel/modules
 # github.com/revel/revel v1.0.0
 ## explicit
 github.com/revel/revel
-# golang.org/x/net v0.0.0-20200904194848-62affa334b73
-## explicit
-golang.org/x/net

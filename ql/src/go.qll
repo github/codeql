@@ -12,6 +12,7 @@ import semmle.go.Errors
 import semmle.go.Expr
 import semmle.go.Files
 import semmle.go.GoMod
+import semmle.go.HTML
 import semmle.go.Locations
 import semmle.go.Packages
 import semmle.go.Scopes
@@ -19,6 +20,7 @@ import semmle.go.Stmt
 import semmle.go.StringOps
 import semmle.go.Types
 import semmle.go.Util
+import semmle.go.VariableWithFields
 import semmle.go.concepts.HTTP
 import semmle.go.controlflow.BasicBlocks
 import semmle.go.controlflow.ControlFlowGraph
