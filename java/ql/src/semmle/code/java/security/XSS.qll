@@ -102,7 +102,7 @@ private class DefaultXssSink extends XssSink {
     |
       not exists(resourceMethod.getProducesAnnotation())
       or
-      resourceMethod.getProducesAnnotation().getADeclaredMimeType() = "text/plain"
+      resourceMethod.getProducesAnnotation().getADeclaredContentType() = "text/plain"
     )
   }
 }
