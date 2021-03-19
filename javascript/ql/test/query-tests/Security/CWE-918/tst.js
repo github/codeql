@@ -75,3 +75,10 @@ var server = http.createServer(async function(req, res) {
 
     JSDOM.fromURL(tainted); // NOT OK
 });
+
+import {JSDOM} from "jsdom";
+var server = http.createServer(async function(req, res) {
+    var tainted = url.parse(req.url, true).query.url;
+
+    new WebSocket(tainted); // NOT OK
+});
