@@ -305,6 +305,7 @@ module AccessPath {
    * }
    * ```
    */
+  pragma[inline]
   DataFlow::Node getAReferenceTo(Root root, string path) {
     path = fromReference(result, root) and
     not root.isGlobal()
@@ -327,6 +328,7 @@ module AccessPath {
    * })(NS = NS || {});
    * ```
    */
+  pragma[inline]
   DataFlow::Node getAReferenceTo(string path) {
     path = fromReference(result, DataFlow::globalAccessPathRootPseudoNode())
   }
@@ -347,6 +349,7 @@ module AccessPath {
    * }
    * ```
    */
+  pragma[inline]
   DataFlow::Node getAnAssignmentTo(Root root, string path) {
     path = fromRhs(result, root) and
     not root.isGlobal()
@@ -367,6 +370,7 @@ module AccessPath {
    *  })(foo = foo || {});
    * ```
    */
+  pragma[inline]
   DataFlow::Node getAnAssignmentTo(string path) {
     path = fromRhs(result, DataFlow::globalAccessPathRootPseudoNode())
   }
@@ -376,6 +380,7 @@ module AccessPath {
    *
    * See `getAReferenceTo` and `getAnAssignmentTo` for more details.
    */
+  pragma[inline]
   DataFlow::Node getAReferenceOrAssignmentTo(string path) {
     result = getAReferenceTo(path)
     or
@@ -387,6 +392,7 @@ module AccessPath {
    *
    * See `getAReferenceTo` and `getAnAssignmentTo` for more details.
    */
+  pragma[inline]
   DataFlow::Node getAReferenceOrAssignmentTo(Root root, string path) {
     result = getAReferenceTo(root, path)
     or
