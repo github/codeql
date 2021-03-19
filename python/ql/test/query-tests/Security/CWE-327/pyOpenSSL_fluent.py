@@ -29,3 +29,11 @@ def test_fluent_safe():
     conn = SSL.Connection(context, socket.socket(socket.AF_INET, socket.SOCK_STREAM))
     r = conn.connect((hostname, 443))
     print(r, conn.get_protocol_version_name())
+    
+def test_safe_by_construction():
+    hostname = 'www.python.org'
+    context = SSL.Context(SSL.TLSv1_2_METHOD)
+
+    conn = SSL.Connection(context, socket.socket(socket.AF_INET, socket.SOCK_STREAM))
+    r = conn.connect((hostname, 443))
+    print(conn.get_protocol_version_name())
