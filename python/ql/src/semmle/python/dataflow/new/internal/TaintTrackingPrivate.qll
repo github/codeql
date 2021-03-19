@@ -27,16 +27,16 @@ predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nod
 predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   concatStep(nodeFrom, nodeTo)
   or
-  subscriptStep(nodeFrom, nodeTo)
-  or
+  // subscriptStep(nodeFrom, nodeTo)
+  // or
   stringManipulation(nodeFrom, nodeTo)
   or
   containerStep(nodeFrom, nodeTo)
   or
   copyStep(nodeFrom, nodeTo)
   or
-  forStep(nodeFrom, nodeTo)
-  or
+  // forStep(nodeFrom, nodeTo)
+  // or
   unpackingAssignmentStep(nodeFrom, nodeTo)
 }
 
@@ -57,7 +57,7 @@ predicate concatStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
  * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to subscripting.
  */
 predicate subscriptStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
-  nodeTo.getNode().(SubscriptNode).getObject() = nodeFrom.getNode()
+  subscriptReadStep(nodeFrom, any(DataFlow::AbstractedContent c), nodeTo)
 }
 
 /**
@@ -118,6 +118,8 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
       fmt.getLeft() = nodeFrom.getNode()
       or
       fmt.getRight() = nodeFrom.getNode()
+      or
+      fmt.getRight().(SequenceNode).getAnElement() = nodeFrom.getNode()
     )
   )
   or
