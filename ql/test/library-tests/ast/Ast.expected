@@ -1185,9 +1185,8 @@ control/loops.rb:
 #   24|         getAnOperand/getRightOperand: [LocalVariableAccess] value
 #   28|   getStmt: [ForExpr] for ... in ...
 #   28|     getPattern: [TuplePattern] (..., ...)
-#   28|       getElement: [TuplePattern] (..., ...)
-#   28|         getElement: [LocalVariableAccess] key
-#   28|         getElement: [LocalVariableAccess] value
+#   28|       getElement: [LocalVariableAccess] key
+#   28|       getElement: [LocalVariableAccess] value
 #   28|     <in>: [???] In
 #   28|     getValue: [HashLiteral] {...}
 #   28|       getElement: [Pair] Pair

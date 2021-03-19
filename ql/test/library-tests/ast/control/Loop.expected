@@ -29,7 +29,8 @@ forExprs
 forExprsTuplePatterns
 | loops.rb:22:1:25:3 | for ... in ... | loops.rb:22:5:22:14 | (..., ...) | 0 | loops.rb:22:5:22:7 | key |
 | loops.rb:22:1:25:3 | for ... in ... | loops.rb:22:5:22:14 | (..., ...) | 1 | loops.rb:22:10:22:14 | value |
-| loops.rb:28:1:32:3 | for ... in ... | loops.rb:28:5:28:16 | (..., ...) | 0 | loops.rb:28:5:28:16 | (..., ...) |
+| loops.rb:28:1:32:3 | for ... in ... | loops.rb:28:5:28:16 | (..., ...) | 0 | loops.rb:28:6:28:8 | key |
+| loops.rb:28:1:32:3 | for ... in ... | loops.rb:28:5:28:16 | (..., ...) | 1 | loops.rb:28:11:28:15 | value |
 whileExprs
 | loops.rb:35:1:39:3 | while ... | loops.rb:35:7:35:11 | ... < ... | loops.rb:35:12:39:3 | ...; ... | 0 | loops.rb:36:3:36:8 | ... += ... |
 | loops.rb:35:1:39:3 | while ... | loops.rb:35:7:35:11 | ... < ... | loops.rb:35:12:39:3 | ...; ... | 1 | loops.rb:37:3:37:8 | ... += ... |

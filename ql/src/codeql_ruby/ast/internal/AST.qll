@@ -90,7 +90,9 @@ private module Cached {
     TComplexLiteral(Generated::Complex g) or
     TDefinedExpr(Generated::Unary g) { g instanceof @unary_definedquestion } or
     TDelimitedSymbolLiteral(Generated::DelimitedSymbol g) or
-    TDestructuredLeftAssignment(Generated::DestructuredLeftAssignment g) or
+    TDestructuredLeftAssignment(Generated::DestructuredLeftAssignment g) {
+      not strictcount(int i | exists(g.getParent().(Generated::LeftAssignmentList).getChild(i))) = 1
+    } or
     TDivExpr(Generated::Binary g) { g instanceof @binary_slash } or
     TDo(Generated::Do g) or
     TDoBlock(Generated::DoBlock g) { not g.getParent() instanceof Generated::Lambda } or
