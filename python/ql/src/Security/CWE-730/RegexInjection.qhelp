@@ -2,7 +2,7 @@
 
 <qhelp>
   <overview>
-    <p>If aregular expression is built by a not escaped user-provided value, a user is likely to be able to cause a Denial of Service.</p>
+    <p>If a regular expression is built by a not escaped user-provided value, a user is likely to be able to cause a Denial of Service.</p>
   </overview>
 
   <recommendation>
