@@ -83,14 +83,13 @@ DataFlow::Node getAValueExportedByPackage() {
   )
   or
   // Object.defineProperty
-  exists(DataFlow::MethodCallNode call |
-    call = DataFlow::globalVarRef("Object").getAMethodCall("defineProperty") and
-    [call, call.getArgument(0)] = getAValueExportedByPackage()
+  exists(CallToObjectDefineProperty call |
+    [call, call.getBaseObject()] = getAValueExportedByPackage()
   |
-    result = call.getArgument(2).getALocalSource().getAPropertyReference("value")
+    result = call.getPropertyDescriptor().getALocalSource().getAPropertyReference("value")
     or
     result =
-      call.getArgument(2)
+      call.getPropertyDescriptor()
           .getALocalSource()
           .getAPropertyReference("get")
           .(DataFlow::FunctionNode)
@@ -98,11 +97,9 @@ DataFlow::Node getAValueExportedByPackage() {
   )
   or
   // Object.assign
-  exists(DataFlow::MethodCallNode assign |
-    assign = DataFlow::globalVarRef("Object").getAMethodCall("assign")
-  |
-    getAValueExportedByPackage() = [assign, assign.getArgument(0)] and
-    result = assign.getAnArgument()
+  exists(ExtendCall assign |
+    getAValueExportedByPackage() = [assign, assign.getDestinationOperand()] and
+    result = assign.getASourceOperand()
   )
   or
   // Array.prototype.{map, reduce, entries, values}
@@ -120,7 +117,7 @@ DataFlow::Node getAValueExportedByPackage() {
   exists(DataFlow::MethodCallNode freeze |
     freeze =
       DataFlow::globalVarRef("Object")
-          .getAMethodCall(["fromEntries", "freeze", "entries", "values"])
+          .getAMethodCall(["fromEntries", "freeze", "seal", "entries", "values"])
   |
     freeze = getAValueExportedByPackage() and
     result = freeze.getArgument(0)
