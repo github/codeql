@@ -206,10 +206,11 @@ private module CachedSteps {
       parm = DataFlow::parameterNode(f.getParameter(0))
     )
     or
-    exists(DataFlow::Node callback, int i, Parameter p |
+    exists(DataFlow::Node callback, int i, Parameter p, Function target |
       invk.(DataFlow::PartialInvokeNode).isPartialArgument(callback, arg, i) and
       partiallyCalls(invk, callback, f) and
-      f.getParameter(i) = p and
+      f = pragma[only_bind_into](target) and
+      target.getParameter(i) = p and
       not p.isRestParameter() and
       parm = DataFlow::parameterNode(p)
     )
