@@ -656,9 +656,21 @@ class CompiledRegex extends DataFlow::Node {
 class RegexExecution extends DataFlow::Node {
   RegexExecution() { this instanceof DirectRegex or this instanceof CompiledRegex } // How should this be cross-imported with Stdlib?
 }
+/*
+ */
 
-class RegexEscape extends DataFlow::Node {
-  RegexEscape() {
-    this = API::moduleImport("re").getMember("escape").getACall().(DataFlow::CallCfgNode).getArg(0)
+module RegexExecution {
+  abstract class Range extends DataFlow::Node {
+    DataFlow::Node getRegexNode() {
+      result instanceof DirectRegex or result instanceof CompiledRegex
+    }
   }
+}
+
+class RegexExecution extends DataFlow::Node {
+  override RegexExecution::Range range;
+
+  RegexExecution() { this = range }
+
+  DataFlow::Node getRegexNode() { result = range.getRegexNode() }
 }

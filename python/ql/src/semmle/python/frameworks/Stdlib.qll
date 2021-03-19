@@ -885,7 +885,7 @@ private module Stdlib {
     }
 
     /** re.compile(pattern).ReMethod */
-    class CompiledRegex extends DataFlow::Node {
+    private class CompiledRegex extends DataFlow::Node {
       CompiledRegex() {
         exists(DataFlow::CallCfgNode patternCall, DataFlow::AttrRead reMethod |
           patternCall = API::moduleImport("re").getMember("compile").getACall() and
@@ -893,6 +893,13 @@ private module Stdlib {
           reMethod.getAttributeName() instanceof ReMethods and
           this = patternCall.getArg(0)
         )
+      }
+    }
+
+    private class RegexEscape extends Concepts::RegexExecution {
+      RegexEscape() {
+        this =
+          API::moduleImport("re").getMember("escape").getACall().(DataFlow::CallCfgNode).getArg(0)
       }
     }
   }
