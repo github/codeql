@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+var extractorPath string
+
 // Getenv retrieves the value of the environment variable named by the key.
 // If that variable is not present, it iterates over the given aliases until
 // it finds one that is. If none are present, the empty string is returned.
@@ -137,4 +139,22 @@ func RunCmd(cmd *exec.Cmd) bool {
 	}
 
 	return true
+}
+
+func GetExtractorPath() string {
+	if extractorPath != "" {
+		return extractorPath
+	}
+
+	root, set := os.LookupEnv("CODEQL_EXTRACTOR_GO_ROOT")
+	if !set {
+		log.Fatal("CODEQL_EXTRACTOR_GO_ROOT not set; this binary should be run from the `codeql` CLI.")
+	}
+	platform, set := os.LookupEnv("CODEQL_PLATFORM")
+	if !set {
+		log.Fatal("CODEQL_PLATFORM not set; this binary should be run from the `codeql` CLI.")
+	}
+
+	extractorPath = filepath.Join(root, "tools", platform, "go-extractor")
+	return extractorPath
 }

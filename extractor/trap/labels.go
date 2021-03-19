@@ -70,6 +70,11 @@ func (l *Labeler) FileLabel() Label {
 	return l.fileLabel
 }
 
+// FileLabelFor returns the label for the file for which the trap writer `tw` is associated
+func (l *Labeler) FileLabelFor(tw *Writer) Label {
+	return l.GlobalID(tw.path + ";sourcefile")
+}
+
 // LocalID associates a label with the given AST node `nd` and returns it
 func (l *Labeler) LocalID(nd interface{}) Label {
 	label, exists := l.nodeLabels[nd]

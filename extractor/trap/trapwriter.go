@@ -26,14 +26,22 @@ type Writer struct {
 	Package      *packages.Package
 }
 
+func FileFor(path string) (string, error) {
+	trapFolder, err := trapFolder()
+	if err != nil {
+		return "", err
+	}
+
+	return filepath.Join(trapFolder, srcarchive.AppendablePath(path)+".trap.gz"), nil
+}
+
 // NewWriter creates a TRAP file for the given path and returns a writer for
 // writing to it
 func NewWriter(path string, pkg *packages.Package) (*Writer, error) {
-	trapFolder, err := trapFolder()
+	trapFilePath, err := FileFor(path)
 	if err != nil {
 		return nil, err
 	}
-	trapFilePath := filepath.Join(trapFolder, srcarchive.AppendablePath(path)+".trap.gz")
 	trapFileDir := filepath.Dir(trapFilePath)
 	err = os.MkdirAll(trapFileDir, 0755)
 	if err != nil {
@@ -133,6 +141,8 @@ func (tw *Writer) Emit(table string, values []interface{}) error {
 			fmt.Fprintf(tw.zip, "\"%s\"", escapeString(capStringLength(value)))
 		case int:
 			fmt.Fprintf(tw.zip, "%d", value)
+		case float64:
+			fmt.Fprintf(tw.zip, "%e", value)
 		default:
 			return errors.New("Cannot emit value")
 		}
