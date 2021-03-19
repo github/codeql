@@ -255,7 +255,7 @@ module ExternalAPIUsedWithUntrustedData {
       not exists(DataFlow::Node arg |
         arg = this.getAnArgument() and not arg instanceof DeepObjectSink
       |
-        any(TaintTracking::AdditionalTaintStep s).step(arg, _)
+        TaintTracking::sharedTaintStep(arg, _)
         or
         exists(DataFlow::AdditionalFlowStep s |
           s.step(arg, _) or

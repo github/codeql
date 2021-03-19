@@ -124,4 +124,13 @@ class DelegateFlow
         delegate*<Action<int>, void> fnptr = &M2;
         fnptr((i) => { });
     }
+
+    void M19(Action a, bool b)
+    {
+        if (b)
+            a = () => {};
+        a();
+    }
+
+    void M20(bool b) => M19(() => {}, b);
 }
