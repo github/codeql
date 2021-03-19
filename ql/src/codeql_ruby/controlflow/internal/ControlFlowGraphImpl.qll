@@ -353,9 +353,9 @@ module Trees {
 
   private class AssignmentTree extends StandardPostOrderTree, AssignExpr {
     final override ControlFlowTree getChildNode(int i) {
-      result = this.getRightOperand() and i = 0
+      result = this.getLeftOperand() and i = 0
       or
-      result = this.getLeftOperand() and i = 1
+      result = this.getRightOperand() and i = 1
     }
   }
 
