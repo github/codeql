@@ -1,3 +1,7 @@
+/**
+ * Provides a common hierarchy of all types of errors that can occur during extraction.
+ */
+
 import cpp
 
 /*
