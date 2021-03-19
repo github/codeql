@@ -255,19 +255,19 @@ class MessageBodyReaderRead extends Method {
   }
 }
 
-/** An `@Produces` annotation that describes which MIME types can be produced by this resource. */
+/** An `@Produces` annotation that describes which content types can be produced by this resource. */
 class JaxRSProducesAnnotation extends JaxRSAnnotation {
   JaxRSProducesAnnotation() { getType().hasQualifiedName("javax.ws.rs", "Produces") }
 
   /**
-   * Gets a declared MIME type that can be produced by this resource.
+   * Gets a declared content type that can be produced by this resource.
    */
-  string getADeclaredMimeType() {
+  string getADeclaredContentType() {
     result = getAValue().(CompileTimeConstantExpr).getStringValue()
     or
     exists(Field jaxMediaType |
       // Accesses to static fields on `MediaType` class do not have constant strings in the database
-      // so convert the field name to a mime type string
+      // so convert the field name to a content type string
       jaxMediaType.getDeclaringType().hasQualifiedName("javax.ws.rs.core", "MediaType") and
       jaxMediaType.getAnAccess() = getAValue() and
       // e.g. MediaType.TEXT_PLAIN => text/plain
@@ -276,7 +276,7 @@ class JaxRSProducesAnnotation extends JaxRSAnnotation {
   }
 }
 
-/** An `@Consumes` annotation that describes MIME types can be consumed by this resource. */
+/** An `@Consumes` annotation that describes content types can be consumed by this resource. */
 class JaxRSConsumesAnnotation extends JaxRSAnnotation {
   JaxRSConsumesAnnotation() { getType().hasQualifiedName("javax.ws.rs", "Consumes") }
 }
