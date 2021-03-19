@@ -1356,19 +1356,20 @@ private predicate summarizedHigherOrderCall(
   DataFlow::Node arg, DataFlow::Node cb, int i, DataFlow::Configuration cfg, PathSummary summary
 ) {
   exists(
-    Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner, int j,
-    DataFlow::Node innerArg, DataFlow::SourceNode cbParm, PathSummary oldSummary
+    Function f, DataFlow::InvokeNode inner, int j, DataFlow::Node innerArg,
+    DataFlow::SourceNode cbParm, PathSummary oldSummary
   |
     // Captured flow does not need to be summarized - it is handled by the local case in `higherOrderCall`.
-    not arg = DataFlow::capturedVariableNode(_) and
-    summarizedHigherOrderCallAux(f, outer, arg, innerArg, cfg, oldSummary, cbParm, inner, j, cb)
+    not arg = DataFlow::capturedVariableNode(_)
   |
     // direct higher-order call
+    summarizedHigherOrderCallAux(f, arg, innerArg, cfg, oldSummary, cbParm, inner, j, cb) and
     cbParm.flowsTo(inner.getCalleeNode()) and
     i = j and
     summary = oldSummary
     or
     // indirect higher-order call
+    summarizedHigherOrderCallAux(f, arg, innerArg, cfg, oldSummary, cbParm, inner, j, cb) and
     exists(DataFlow::Node cbArg, PathSummary newSummary |
       cbParm.flowsTo(cbArg) and
       summarizedHigherOrderCall(innerArg, cbArg, i, cfg, newSummary) and
@@ -1382,14 +1383,17 @@ private predicate summarizedHigherOrderCall(
  */
 pragma[noinline]
 private predicate summarizedHigherOrderCallAux(
-  Function f, DataFlow::InvokeNode outer, DataFlow::Node arg, DataFlow::Node innerArg,
-  DataFlow::Configuration cfg, PathSummary oldSummary, DataFlow::SourceNode cbParm,
-  DataFlow::InvokeNode inner, int j, DataFlow::Node cb
+  Function f, DataFlow::Node arg, DataFlow::Node innerArg, DataFlow::Configuration cfg,
+  PathSummary oldSummary, DataFlow::SourceNode cbParm, DataFlow::InvokeNode inner, int j,
+  DataFlow::Node cb
 ) {
-  reachableFromInput(f, outer, arg, innerArg, cfg, oldSummary) and
-  // Only track actual parameter flow.
-  argumentPassing(outer, cb, f, cbParm) and
-  innerArg = inner.getArgument(j)
+  exists(DataFlow::Node outer1, DataFlow::Node outer2 |
+    reachableFromInput(f, outer1, arg, innerArg, cfg, oldSummary) and
+    outer1 = pragma[only_bind_into](outer2) and
+    // Only track actual parameter flow.
+    argumentPassing(outer2, cb, f, cbParm) and
+    innerArg = inner.getArgument(j)
+  )
 }
 
 /**
