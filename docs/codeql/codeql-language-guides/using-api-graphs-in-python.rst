@@ -10,7 +10,7 @@ About this article
 ------------------
 
 This article describes how to use API graphs to reference classes and functions defined in library
-code. This can be used to conveniently refer to external library functions when defining things like
+code. You can use API graphs to conveniently refer to external library functions when defining things like
 remote flow sources.
 
 
@@ -18,8 +18,8 @@ Module imports
 --------------
 
 The most common entry point into the API graph will be the point where an external module or package is
-imported. The API graph node corresponding to the ``re`` library, for instance, can be accessed
-using the ``API::moduleImport`` method defined in the ``semmle.python.ApiGraphs`` module, as the
+imported. For example, you can access the API graph node corresponding to the ``re`` library
+by using the ``API::moduleImport`` method defined in the ``semmle.python.ApiGraphs`` module, as the
 following snippet demonstrates.
 
 .. code-block:: ql
@@ -31,8 +31,8 @@ following snippet demonstrates.
 
 ➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1876172022264324639/>`__.
 
-On its own, this only selects the API graph node corresponding to the ``re`` module. To find
-where this module is referenced, we use the ``getAUse`` method. Thus, the following query selects
+This query only selects the API graph node corresponding to the ``re`` module. To find
+where this module is referenced, you can use the ``getAUse`` method. The following query selects
 all references to the ``re`` module in the current database.
 
 .. code-block:: ql
@@ -56,8 +56,8 @@ correctly recognized as a reference to the ``re.compile`` function.
 
     r = my_re_compile(".*")
 
-If only immediate uses are required, without taking local flow into account, then the method
-``getAnImmediateUse`` may be used instead.
+If you only require immediate uses, without taking local flow into account, then you can use
+the ``getAnImmediateUse`` method instead.
 
 Note that the given module name *must not* contain any dots. Thus, something like
 ``API::moduleImport("flask.views")`` will not do what you expect. Instead, this should be decomposed
@@ -67,8 +67,8 @@ section.
 Accessing attributes
 --------------------
 
-Given a node in the API graph, we may access its attributes by using the ``getMember`` method. Using
-the above ``re.compile`` example, we may now find references to ``re.compile`` by doing
+Given a node in the API graph, you can access its attributes by using the ``getMember`` method. Using
+the above ``re.compile`` example, you can now find references to ``re.compile``.
 
 .. code-block:: ql
 
@@ -79,15 +79,15 @@ the above ``re.compile`` example, we may now find references to ``re.compile`` b
 
 ➤ `See this in the query console on LGTM.com <https://lgtm.com/query/7970570434725297676/>`__.
 
-In addition to ``getMember``, the method ``getUnknownMember`` can be used to find references to API
-components where the name is not known statically, and the ``getAMember`` method can be used to
+In addition to ``getMember``, you can use the ``getUnknownMember`` method to find references to API
+components where the name is not known statically. You can use the ``getAMember`` method to
 access all members, both known and unknown.
 
 Calls and class instantiations
 ------------------------------
 
 To track instances of classes defined in external libraries, or the results of calling externally
-defined functions, we may use the ``getReturn`` method. Thus, the following snippet finds all places
+defined functions, you can use the ``getReturn`` method. The following snippet finds all places
 where the return value of ``re.compile`` is used:
 
 .. code-block:: ql
@@ -100,8 +100,8 @@ where the return value of ``re.compile`` is used:
 ➤ `See this in the query console on LGTM.com <https://lgtm.com/query/4346050399960356921/>`__.
 
 Note that this includes all uses of the result of ``re.compile``, including those reachable via
-local flow. To get just the *calls* to ``re.compile``, we can use ``getAnImmediateUse`` instead of
-``getAUse``. As this is a common occurrence, the method ``getACall`` can be used instead of
+local flow. To get just the *calls* to ``re.compile``, you can use ``getAnImmediateUse`` instead of
+``getAUse``. As this is a common occurrence, you can use ``getACall`` instead of
 ``getReturn`` followed by ``getAnImmediateUse``. 
 
 ➤ `See this in the query console on LGTM.com <https://lgtm.com/query/8143347716552092926/>`__.
@@ -113,14 +113,14 @@ Subclasses
 ----------
 
 For many libraries, the main mode of usage is to extend one or more library classes. To track this
-in the API graph, we can use the ``getASubclass`` method to get the API graph node corresponding to
+in the API graph, you can use the ``getASubclass`` method to get the API graph node corresponding to
 all the immediate subclasses of this node. To find *all* subclasses, use ``*`` or ``+`` to apply the
-method repeatedly, as in `getASubclass*`.
+method repeatedly, as in ``getASubclass*``.
 
 Note that ``getASubclass`` does not account for any subclassing that takes place in library code
 that has not been extracted. Thus, it may be necessary to account for this in the models you write.
-For example, the ``flask.views.View`` class has a predefined subclass ``MethodView``, and so to find
-all subclasses of ``View``, we must explicitly include the subclasses of ``MethodView`` as well.
+For example, the ``flask.views.View`` class has a predefined subclass ``MethodView``. To find
+all subclasses of ``View``, you must explicitly include the subclasses of ``MethodView`` as well.
 
 .. code-block:: ql
 
@@ -132,7 +132,7 @@ all subclasses of ``View``, we must explicitly include the subclasses of ``Metho
         API::moduleImport("flask").getMember("views").getMember(["View", "MethodView"]).getASubclass*()
     }
     
-    select viewClass()
+    select viewClass().getAUse()
 
 ➤ `See this in the query console on LGTM.com <https://lgtm.com/query/288293322319747121/>`__.
 
@@ -141,10 +141,10 @@ Note the use of the set literal ``["View", "MethodView"]`` to match both classes
 Built-in functions and classes
 ------------------------------
 
-Built-in functions and classes can be accessed using the ``API::builtin`` method, giving the name of
+You can access built-in functions and classes using the ``API::builtin`` method, giving the name of
 the built-in as an argument.
 
-To find all calls to the built-in ``open`` function, for instance, can be done using the following snippet
+For example, to find all calls to the built-in ``open`` function, you can use the following snippet.
 
 .. code-block:: ql
 
