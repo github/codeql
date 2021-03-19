@@ -1023,7 +1023,6 @@ module Trees {
 
   private class RedoStmtTree extends LeafTree, RedoStmt { }
 
-  /** A block that may contain `rescue`/`ensure`. */
   private class RescueModifierTree extends PreOrderTree, RescueModifierExpr {
     final override predicate propagatesAbnormal(AstNode child) { child = this.getHandler() }
 
