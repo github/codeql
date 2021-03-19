@@ -864,6 +864,36 @@ private module Stdlib {
   class Sqlite3 extends PEP249ModuleApiNode {
     Sqlite3() { this = API::moduleImport("sqlite3") }
   }
+
+  // ---------------------------------------------------------------------------
+  // re
+  // ---------------------------------------------------------------------------
+  /** List of re methods. */
+  private class ReMethods extends string {
+    ReMethods() { this in ["match", "fullmatch", "search", "split", "findall", "finditer"] }
+  }
+
+  /** re.ReMethod(pattern, string) */
+  private class DirectRegex extends DataFlow::Node {
+    DirectRegex() {
+      exists(ReMethods reMethod, DataFlow::CallCfgNode reCall |
+        reCall = API::moduleImport("re").getMember(reMethod).getACall() and
+        this = reCall.getArg(0)
+      )
+    }
+  }
+
+  /** re.compile(pattern).ReMethod */
+  class CompiledRegex extends DataFlow::Node {
+    CompiledRegex() {
+      exists(DataFlow::CallCfgNode patternCall, DataFlow::AttrRead reMethod |
+        patternCall = API::moduleImport("re").getMember("compile").getACall() and
+        patternCall = reMethod.getObject().getALocalSource() and
+        reMethod.getAttributeName() instanceof ReMethods and
+        this = patternCall.getArg(0)
+      )
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------

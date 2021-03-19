@@ -654,7 +654,7 @@ class CompiledRegex extends DataFlow::Node {
 }
 
 class RegexExecution extends DataFlow::Node {
-  RegexExecution() { this instanceof DirectRegex or this instanceof CompiledRegex }
+  RegexExecution() { this instanceof DirectRegex or this instanceof CompiledRegex } // How should this be cross-imported with Stdlib?
 }
 
 class RegexEscape extends DataFlow::Node {
