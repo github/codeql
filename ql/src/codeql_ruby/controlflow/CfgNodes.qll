@@ -1,7 +1,6 @@
 /** Provides classes representing nodes in a control flow graph. */
 
 private import codeql_ruby.AST
-private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.controlflow.BasicBlocks
 private import ControlFlowGraph
 private import internal.ControlFlowGraphImpl
