@@ -42,7 +42,7 @@ PackageJSON getTopmostPackageJSON() {
  * Gets a value exported by the main module from one of the topmost `package.json` files (see `getTopmostPackageJSON`).
  * The value is either directly the `module.exports` value, a nested property of `module.exports`, or a method on an exported class.
  */
-DataFlow::Node getAValueExportedByPackage() {
+private DataFlow::Node getAValueExportedByPackage() {
   result = getAnExportFromModule(getTopmostPackageJSON().getMainModule())
   or
   result = getAValueExportedByPackage().(DataFlow::PropWrite).getRhs()
@@ -72,7 +72,7 @@ DataFlow::Node getAValueExportedByPackage() {
   )
   or
   // *****
-  // Various standard library methods for transforming exported objects.
+  // Common styles of transforming exported objects.
   // *****
   //
   // Object.defineProperties
@@ -96,7 +96,7 @@ DataFlow::Node getAValueExportedByPackage() {
           .getAReturn()
   )
   or
-  // Object.assign
+  // Object.assign and friends
   exists(ExtendCall assign |
     getAValueExportedByPackage() = [assign, assign.getDestinationOperand()] and
     result = assign.getASourceOperand()
@@ -113,7 +113,7 @@ DataFlow::Node getAValueExportedByPackage() {
     result = map.getReceiver()
   )
   or
-  // Object.{fromEntries, freeze, entries, values}
+  // Object.{fromEntries, freeze, seal, entries, values}
   exists(DataFlow::MethodCallNode freeze |
     freeze =
       DataFlow::globalVarRef("Object")
