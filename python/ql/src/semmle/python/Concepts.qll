@@ -657,16 +657,8 @@ class RegexExecution extends DataFlow::Node {
   RegexExecution() { this instanceof DirectRegex or this instanceof CompiledRegex }
 }
 
-// pending refactor if needed
 class RegexEscape extends DataFlow::Node {
   RegexEscape() {
-    exists(Call c |
-      (
-        // avoid flow through any %escape% function
-        c.getFunc().(Attribute).getName().matches("%escape%") or // something.%escape%()
-        c.getFunc().(Name).getId().matches("%escape%") // %escape%()
-      ) and
-      this.asExpr() = c
-    )
+    this = API::moduleImport("re").getMember("escape").getACall().(DataFlow::CallCfgNode).getArg(0)
   }
 }
