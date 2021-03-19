@@ -1,8 +1,8 @@
 private import csharp
 private import cil
 private import dotnet
+private import DataFlowPublic
 private import DataFlowPrivate
-private import DelegateDataFlow
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dispatch.Dispatch
@@ -131,45 +131,24 @@ private module Cached {
 import Cached
 
 private module DispatchImpl {
-  private import CallContext
-
-  /**
-   * Gets a viable run-time target for the delegate call `call`, requiring
-   * call context `cc`.
-   */
-  private DataFlowCallable viableDelegateCallable(DataFlowCall call, CallContext cc) {
-    result = call.(DelegateDataFlowCall).getARuntimeTarget(cc)
-  }
-
   /**
    * Holds if the set of viable implementations that can be called by `call`
    * might be improved by knowing the call context. This is the case if the
    * call is a delegate call, or if the qualifier accesses a parameter of
    * the enclosing callable `c` (including the implicit `this` parameter).
    */
-  predicate mayBenefitFromCallContext(DataFlowCall call, Callable c) {
+  predicate mayBenefitFromCallContext(NonDelegateDataFlowCall call, Callable c) {
     c = call.getEnclosingCallable() and
-    (
-      exists(CallContext cc | exists(viableDelegateCallable(call, cc)) |
-        not cc instanceof EmptyCallContext
-      )
-      or
-      call.(NonDelegateDataFlowCall).getDispatchCall().mayBenefitFromCallContext()
-    )
+    call.getDispatchCall().mayBenefitFromCallContext()
   }
 
   /**
    * Gets a viable dispatch target of `call` in the context `ctx`. This is
    * restricted to those `call`s for which a context might make a difference.
    */
-  DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
-    exists(ArgumentCallContext cc | result = viableDelegateCallable(call, cc) |
-      cc.isArgument(ctx.getExpr(), _)
-    )
-    or
+  DataFlowCallable viableImplInCallContext(NonDelegateDataFlowCall call, DataFlowCall ctx) {
     result =
-      call.(NonDelegateDataFlowCall)
-          .getDispatchCall()
+      call.getDispatchCall()
           .getADynamicTargetInCallContext(ctx.(NonDelegateDataFlowCall).getDispatchCall())
           .getUnboundDeclaration()
   }
@@ -301,12 +280,7 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
 }
 
 /** A delegate call relevant for data flow. */
-abstract class DelegateDataFlowCall extends DataFlowCall {
-  /** Gets a viable run-time target of this call requiring call context `cc`. */
-  abstract DataFlowCallable getARuntimeTarget(CallContext::CallContext cc);
-
-  override DataFlowCallable getARuntimeTarget() { result = this.getARuntimeTarget(_) }
-}
+abstract class DelegateDataFlowCall extends DataFlowCall { }
 
 /** An explicit delegate or function pointer call relevant for data flow. */
 class ExplicitDelegateLikeDataFlowCall extends DelegateDataFlowCall, TExplicitDelegateLikeCall {
@@ -315,8 +289,11 @@ class ExplicitDelegateLikeDataFlowCall extends DelegateDataFlowCall, TExplicitDe
 
   ExplicitDelegateLikeDataFlowCall() { this = TExplicitDelegateLikeCall(cfn, dc) }
 
-  override DataFlowCallable getARuntimeTarget(CallContext::CallContext cc) {
-    result = getCallableForDataFlow(dc.getARuntimeTarget(cc))
+  /** Gets the underlying call. */
+  DelegateLikeCall getCall() { result = dc }
+
+  override DataFlowCallable getARuntimeTarget() {
+    none() // handled by the shared library
   }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
@@ -389,11 +366,11 @@ class SummaryDelegateCall extends DelegateDataFlowCall, TSummaryDelegateCall {
 
   SummaryDelegateCall() { this = TSummaryDelegateCall(c, pos) }
 
-  override DataFlowCallable getARuntimeTarget(CallContext::CallContext cc) {
-    exists(SummaryDelegateParameterSink p |
-      p.isParameterOf(c, pos) and
-      result = p.getARuntimeTarget(cc)
-    )
+  /** Gets the parameter node that this delegate call targets. */
+  ParameterNode getParameterNode() { result.isParameterOf(c, pos) }
+
+  override DataFlowCallable getARuntimeTarget() {
+    none() // handled by the shared library
   }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { none() }
