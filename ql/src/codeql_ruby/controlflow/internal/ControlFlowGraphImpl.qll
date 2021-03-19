@@ -1172,10 +1172,9 @@ module Trees {
     override predicate propagatesAbnormal(AstNode child) { child = this.getAStmt() }
 
     override predicate isHidden() {
-      // TODO: unhide, or avoid using Generated types
-      ASTInternal::toGenerated(this) instanceof Generated::Else or
-      ASTInternal::toGenerated(this) instanceof Generated::Then or
-      ASTInternal::toGenerated(this) instanceof Generated::Do
+      this instanceof ASTInternal::TElse or
+      this instanceof ASTInternal::TThen or
+      this instanceof ASTInternal::TDo
     }
 
     final AstNode getLastChildNode() { result = this.getStmt(this.getNumberOfStatements() - 1) }
