@@ -374,15 +374,13 @@ module API {
             exists(SSA::implicitInit([nm.getModuleVariable(), nm.getExportsVariable()]))
           )
         )
-        or
-        m = any(CanonicalName n | isDefined(n)).getExternalModuleName()
       } or
       MkModuleImport(string m) {
         imports(_, m)
         or
-        m = any(CanonicalName n | isUsed(n)).getExternalModuleName()
-        or
         any(TypeAnnotation n).hasQualifiedName(m, _)
+        or
+        any(Type t).hasUnderlyingType(m, _)
       } or
       MkClassInstance(DataFlow::ClassNode cls) { cls = trackDefNode(_) and hasSemantics(cls) } or
       MkAsyncFuncResult(DataFlow::FunctionNode f) {
@@ -428,20 +426,6 @@ module API {
         result = pkg.getMainModule() and
         not result.isExterns() and
         m = pkg.getPackageName()
-      )
-    }
-
-    private predicate isUsed(CanonicalName n) {
-      exists(n.(TypeName).getAnAccess()) or
-      exists(n.(Namespace).getAnAccess())
-    }
-
-    private predicate isDefined(CanonicalName n) {
-      exists(ASTNode def |
-        def = n.(TypeName).getADefinition() or
-        def = n.(Namespace).getADefinition()
-      |
-        not def.isAmbient()
       )
     }
 
