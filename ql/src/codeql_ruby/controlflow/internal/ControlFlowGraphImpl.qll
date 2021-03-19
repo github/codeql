@@ -65,23 +65,7 @@ module CfgScope {
     }
   }
 
-  private class MethodScope extends Range_, Method {
-    final override predicate entry(AstNode first) { this.(Trees::BodyStmtTree).firstInner(first) }
-
-    final override predicate exit(AstNode last, Completion c) {
-      this.(Trees::BodyStmtTree).lastInner(last, c)
-    }
-  }
-
-  private class SingletonMethodScope extends Range_, SingletonMethod {
-    final override predicate entry(AstNode first) { this.(Trees::BodyStmtTree).firstInner(first) }
-
-    final override predicate exit(AstNode last, Completion c) {
-      this.(Trees::BodyStmtTree).lastInner(last, c)
-    }
-  }
-
-  private class DoBlockScope extends Range_, DoBlock {
+  private class BodyStmtCallableScope extends Range_, ASTInternal::TBodyStmt, Callable {
     final override predicate entry(AstNode first) { this.(Trees::BodyStmtTree).firstInner(first) }
 
     final override predicate exit(AstNode last, Completion c) {
@@ -96,14 +80,6 @@ module CfgScope {
 
     final override predicate exit(AstNode last, Completion c) {
       last(this.(Trees::BraceBlockTree).getLastChildNode(), last, c)
-    }
-  }
-
-  private class LambdaScope extends Range_, Lambda {
-    final override predicate entry(AstNode first) { this.(Trees::BodyStmtTree).firstInner(first) }
-
-    final override predicate exit(AstNode last, Completion c) {
-      this.(Trees::BodyStmtTree).lastInner(last, c)
     }
   }
 }
