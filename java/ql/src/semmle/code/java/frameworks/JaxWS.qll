@@ -257,15 +257,14 @@ class MessageBodyReaderRead extends Method {
 
 /** An `@Produces` annotation that describes which MIME types can be produced by this resource. */
 class JaxRSProducesAnnotation extends JaxRSAnnotation {
-  JaxRSProducesAnnotation() {
-    getType().hasQualifiedName("javax.ws.rs", "Produces")
-  }
+  JaxRSProducesAnnotation() { getType().hasQualifiedName("javax.ws.rs", "Produces") }
 
   /**
    * Gets a declared MIME type that can be produced by this resource.
    */
   string getADeclaredMimeType() {
-    result = getAValue().(CompileTimeConstantExpr).getStringValue() or
+    result = getAValue().(CompileTimeConstantExpr).getStringValue()
+    or
     exists(Field jaxMediaType |
       // Accesses to static fields on `MediaType` class do not have constant strings in the database
       // so convert the field name to a mime type string
@@ -279,7 +278,5 @@ class JaxRSProducesAnnotation extends JaxRSAnnotation {
 
 /** An `@Consumes` annotation that describes MIME types can be consumed by this resource. */
 class JaxRSConsumesAnnotation extends JaxRSAnnotation {
-  JaxRSConsumesAnnotation() {
-    getType().hasQualifiedName("javax.ws.rs", "Consumes")
-  }
+  JaxRSConsumesAnnotation() { getType().hasQualifiedName("javax.ws.rs", "Consumes") }
 }
