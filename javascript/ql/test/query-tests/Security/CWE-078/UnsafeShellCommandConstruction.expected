@@ -205,6 +205,30 @@ nodes
 | lib/lib.js:405:39:405:42 | name |
 | lib/lib.js:406:22:406:25 | name |
 | lib/lib.js:406:22:406:25 | name |
+| lib/lib.js:414:40:414:43 | name |
+| lib/lib.js:414:40:414:43 | name |
+| lib/lib.js:415:22:415:25 | name |
+| lib/lib.js:415:22:415:25 | name |
+| lib/lib.js:417:28:417:31 | name |
+| lib/lib.js:417:28:417:31 | name |
+| lib/lib.js:418:25:418:28 | name |
+| lib/lib.js:418:25:418:28 | name |
+| lib/lib.js:419:32:419:35 | name |
+| lib/lib.js:419:32:419:35 | name |
+| lib/lib.js:420:29:420:32 | name |
+| lib/lib.js:420:29:420:32 | name |
+| lib/lib.js:424:24:424:27 | name |
+| lib/lib.js:424:24:424:27 | name |
+| lib/lib.js:426:11:426:14 | name |
+| lib/lib.js:426:11:426:14 | name |
+| lib/lib.js:428:28:428:51 | (name ? ... ' : '') |
+| lib/lib.js:428:28:428:57 | (name ? ... ) + '-' |
+| lib/lib.js:428:29:428:50 | name ?  ... :' : '' |
+| lib/lib.js:428:36:428:39 | name |
+| lib/lib.js:428:36:428:45 | name + ':' |
+| lib/lib.js:431:23:431:26 | last |
+| lib/lib.js:436:19:436:22 | last |
+| lib/lib.js:436:19:436:22 | last |
 edges
 | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name |
 | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name |
@@ -444,6 +468,43 @@ edges
 | lib/lib.js:405:39:405:42 | name | lib/lib.js:406:22:406:25 | name |
 | lib/lib.js:405:39:405:42 | name | lib/lib.js:406:22:406:25 | name |
 | lib/lib.js:405:39:405:42 | name | lib/lib.js:406:22:406:25 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:415:22:415:25 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:415:22:415:25 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:415:22:415:25 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:415:22:415:25 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:417:28:417:31 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:417:28:417:31 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:417:28:417:31 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:417:28:417:31 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:418:25:418:28 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:418:25:418:28 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:418:25:418:28 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:418:25:418:28 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:419:32:419:35 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:419:32:419:35 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:419:32:419:35 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:419:32:419:35 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:420:29:420:32 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:420:29:420:32 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:420:29:420:32 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:420:29:420:32 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:424:24:424:27 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:424:24:424:27 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:424:24:424:27 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:424:24:424:27 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:426:11:426:14 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:426:11:426:14 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:426:11:426:14 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:426:11:426:14 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:428:36:428:39 | name |
+| lib/lib.js:414:40:414:43 | name | lib/lib.js:428:36:428:39 | name |
+| lib/lib.js:428:28:428:51 | (name ? ... ' : '') | lib/lib.js:428:28:428:57 | (name ? ... ) + '-' |
+| lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | lib/lib.js:431:23:431:26 | last |
+| lib/lib.js:428:29:428:50 | name ?  ... :' : '' | lib/lib.js:428:28:428:51 | (name ? ... ' : '') |
+| lib/lib.js:428:36:428:39 | name | lib/lib.js:428:36:428:45 | name + ':' |
+| lib/lib.js:428:36:428:45 | name + ':' | lib/lib.js:428:29:428:50 | name ?  ... :' : '' |
+| lib/lib.js:431:23:431:26 | last | lib/lib.js:436:19:436:22 | last |
+| lib/lib.js:431:23:431:26 | last | lib/lib.js:436:19:436:22 | last |
 #select
 | lib/lib2.js:4:10:4:25 | "rm -rf " + name | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name | $@ based on library input is later used in $@. | lib/lib2.js:4:10:4:25 | "rm -rf " + name | String concatenation | lib/lib2.js:4:2:4:26 | cp.exec ... + name) | shell command |
 | lib/lib2.js:8:10:8:25 | "rm -rf " + name | lib/lib2.js:7:32:7:35 | name | lib/lib2.js:8:22:8:25 | name | $@ based on library input is later used in $@. | lib/lib2.js:8:10:8:25 | "rm -rf " + name | String concatenation | lib/lib2.js:8:2:8:26 | cp.exec ... + name) | shell command |
@@ -502,3 +563,11 @@ edges
 | lib/lib.js:351:10:351:27 | "rm -rf " + unsafe | lib/lib.js:349:29:349:34 | unsafe | lib/lib.js:351:22:351:27 | unsafe | $@ based on library input is later used in $@. | lib/lib.js:351:10:351:27 | "rm -rf " + unsafe | String concatenation | lib/lib.js:351:2:351:28 | cp.exec ... unsafe) | shell command |
 | lib/lib.js:366:17:366:56 | "learn  ... + model | lib/lib.js:360:20:360:23 | opts | lib/lib.js:366:28:366:42 | this.learn_args | $@ based on library input is later used in $@. | lib/lib.js:366:17:366:56 | "learn  ... + model | String concatenation | lib/lib.js:367:3:367:18 | cp.exec(command) | shell command |
 | lib/lib.js:406:10:406:25 | "rm -rf " + name | lib/lib.js:405:39:405:42 | name | lib/lib.js:406:22:406:25 | name | $@ based on library input is later used in $@. | lib/lib.js:406:10:406:25 | "rm -rf " + name | String concatenation | lib/lib.js:406:2:406:26 | cp.exec ... + name) | shell command |
+| lib/lib.js:415:10:415:25 | "rm -rf " + name | lib/lib.js:414:40:414:43 | name | lib/lib.js:415:22:415:25 | name | $@ based on library input is later used in $@. | lib/lib.js:415:10:415:25 | "rm -rf " + name | String concatenation | lib/lib.js:415:2:415:26 | cp.exec ... + name) | shell command |
+| lib/lib.js:417:28:417:31 | name | lib/lib.js:414:40:414:43 | name | lib/lib.js:417:28:417:31 | name | $@ based on library input is later used in $@. | lib/lib.js:417:28:417:31 | name | Shell argument | lib/lib.js:417:2:417:66 | cp.exec ...  => {}) | shell command |
+| lib/lib.js:418:25:418:28 | name | lib/lib.js:414:40:414:43 | name | lib/lib.js:418:25:418:28 | name | $@ based on library input is later used in $@. | lib/lib.js:418:25:418:28 | name | Shell argument | lib/lib.js:418:2:418:45 | cp.spaw ...  true}) | shell command |
+| lib/lib.js:419:32:419:35 | name | lib/lib.js:414:40:414:43 | name | lib/lib.js:419:32:419:35 | name | $@ based on library input is later used in $@. | lib/lib.js:419:32:419:35 | name | Shell argument | lib/lib.js:419:2:419:52 | cp.exec ...  true}) | shell command |
+| lib/lib.js:420:29:420:32 | name | lib/lib.js:414:40:414:43 | name | lib/lib.js:420:29:420:32 | name | $@ based on library input is later used in $@. | lib/lib.js:420:29:420:32 | name | Shell argument | lib/lib.js:420:2:420:49 | cp.spaw ...  true}) | shell command |
+| lib/lib.js:424:24:424:27 | name | lib/lib.js:414:40:414:43 | name | lib/lib.js:424:24:424:27 | name | $@ based on library input is later used in $@. | lib/lib.js:424:24:424:27 | name | Shell argument | lib/lib.js:424:2:424:40 | spawn(" ... WN_OPT) | shell command |
+| lib/lib.js:426:11:426:14 | name | lib/lib.js:414:40:414:43 | name | lib/lib.js:426:11:426:14 | name | $@ based on library input is later used in $@. | lib/lib.js:426:11:426:14 | name | Shell argument | lib/lib.js:427:2:427:28 | spawn(" ... WN_OPT) | shell command |
+| lib/lib.js:436:19:436:22 | last | lib/lib.js:414:40:414:43 | name | lib/lib.js:436:19:436:22 | last | $@ based on library input is later used in $@. | lib/lib.js:436:19:436:22 | last | Shell argument | lib/lib.js:428:2:428:70 | spawn(" ... WN_OPT) | shell command |
