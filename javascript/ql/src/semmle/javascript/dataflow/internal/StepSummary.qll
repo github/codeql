@@ -1,42 +1,65 @@
 import javascript
 private import semmle.javascript.dataflow.TypeTracking
+private import semmle.javascript.internal.CachedStages
 private import FlowSteps
 
-class PropertyName extends string {
-  PropertyName() {
-    this = any(DataFlow::PropRef pr).getPropertyName()
-    or
-    AccessPath::isAssignedInUniqueFile(this)
-    or
-    exists(AccessPath::getAnAssignmentTo(_, this))
-    or
-    SharedTypeTrackingStep::loadStep(_, _, this)
-    or
-    SharedTypeTrackingStep::storeStep(_, _, this)
-    or
-    SharedTypeTrackingStep::loadStoreStep(_, _, this, _)
-    or
-    SharedTypeTrackingStep::loadStoreStep(_, _, _, this)
+cached
+private module Cached {
+  cached
+  module Public {
+    cached
+    predicate forceStage() { Stages::TypeTracking::ref() }
+
+    cached
+    class PropertyName extends string {
+      cached
+      PropertyName() {
+        this = any(DataFlow::PropRef pr).getPropertyName()
+        or
+        AccessPath::isAssignedInUniqueFile(this)
+        or
+        exists(AccessPath::getAnAssignmentTo(_, this))
+        or
+        SharedTypeTrackingStep::loadStep(_, _, this)
+        or
+        SharedTypeTrackingStep::storeStep(_, _, this)
+        or
+        SharedTypeTrackingStep::loadStoreStep(_, _, this, _)
+        or
+        SharedTypeTrackingStep::loadStoreStep(_, _, _, this)
+      }
+    }
+
+    /**
+     * A description of a step on an inter-procedural data flow path.
+     */
+    cached
+    newtype TStepSummary =
+      LevelStep() or
+      CallStep() or
+      ReturnStep() or
+      StoreStep(PropertyName prop) or
+      LoadStep(PropertyName prop) or
+      CopyStep(PropertyName prop) or
+      LoadStoreStep(PropertyName fromProp, PropertyName toProp) {
+        SharedTypeTrackingStep::loadStoreStep(_, _, fromProp, toProp)
+      }
+  }
+
+  /**
+   * INTERNAL: Use `SourceNode.track()` or `SourceNode.backtrack()` instead.
+   */
+  cached
+  predicate step(DataFlow::SourceNode pred, DataFlow::SourceNode succ, StepSummary summary) {
+    exists(DataFlow::Node mid | pred.flowsTo(mid) | StepSummary::smallstep(mid, succ, summary))
   }
 }
+
+import Cached::Public
 
 class OptionalPropertyName extends string {
   OptionalPropertyName() { this instanceof PropertyName or this = "" }
 }
-
-/**
- * A description of a step on an inter-procedural data flow path.
- */
-newtype TStepSummary =
-  LevelStep() or
-  CallStep() or
-  ReturnStep() or
-  StoreStep(PropertyName prop) or
-  LoadStep(PropertyName prop) or
-  CopyStep(PropertyName prop) or
-  LoadStoreStep(PropertyName fromProp, PropertyName toProp) {
-    SharedTypeTrackingStep::loadStoreStep(_, _, fromProp, toProp)
-  }
 
 /**
  * INTERNAL: Use `TypeTracker` or `TypeBackTracker` instead.
@@ -68,10 +91,7 @@ module StepSummary {
   /**
    * INTERNAL: Use `SourceNode.track()` or `SourceNode.backtrack()` instead.
    */
-  cached
-  predicate step(DataFlow::SourceNode pred, DataFlow::SourceNode succ, StepSummary summary) {
-    exists(DataFlow::Node mid | pred.flowsTo(mid) | smallstep(mid, succ, summary))
-  }
+  predicate step = Cached::step/3;
 
   /**
    * INTERNAL: Use `TypeBackTracker.smallstep()` instead.
