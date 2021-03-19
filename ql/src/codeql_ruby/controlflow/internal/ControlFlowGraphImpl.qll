@@ -49,7 +49,7 @@ module CfgScope {
     abstract predicate exit(AstNode last, Completion c);
   }
 
-  private class ProgramScope extends Range_, Toplevel {
+  private class ToplevelScope extends Range_, Toplevel {
     final override predicate entry(AstNode first) { first(this, first) }
 
     final override predicate exit(AstNode last, Completion c) { last(this, last, c) }
