@@ -141,29 +141,7 @@ abstract class PathString extends string {
    * components of this path refers to when resolved relative to the
    * given `root` folder.
    */
-  Path resolveUpTo(int n, Folder root) {
-    n = 0 and result.getContainer() = root and root = getARootFolder()
-    or
-    exists(Path base, string next | next = getComponent(this, n - 1, base, root) |
-      // handle empty components and the special "." folder
-      (next = "" or next = ".") and
-      result = base
-      or
-      // handle the special ".." folder
-      next = ".." and result = base.(ConsPath).getParent()
-      or
-      // special handling for Windows drive letters when resolving absolute path:
-      // the extractor populates "C:/" as a folder that has path "C:/" but name ""
-      n = 1 and
-      next.regexpMatch("[A-Za-z]:") and
-      root.getBaseName() = "" and
-      root.toString() = next.toUpperCase() + "/" and
-      result = base
-      or
-      // default case
-      result = TConsPath(base, next)
-    )
-  }
+  Path resolveUpTo(int n, Folder root) { result = resolveUpTo(this, n, root, _) }
 
   /**
    * Gets the absolute path that this path refers to when resolved relative to
@@ -173,15 +151,56 @@ abstract class PathString extends string {
 }
 
 /**
+ * Gets the absolute path that the sub-path consisting of the first `n`
+ * components of this path refers to when resolved relative to the
+ * given `root` folder.
+ */
+private Path resolveUpTo(PathString p, int n, Folder root, boolean inTS) {
+  n = 0 and result.getContainer() = root and root = p.getARootFolder() and inTS = false
+  or
+  exists(Path base, string next | next = getComponent(p, n - 1, base, root, inTS) |
+    // handle empty components and the special "." folder
+    (next = "" or next = ".") and
+    result = base
+    or
+    // handle the special ".." folder
+    next = ".." and result = base.(ConsPath).getParent()
+    or
+    // special handling for Windows drive letters when resolving absolute path:
+    // the extractor populates "C:/" as a folder that has path "C:/" but name ""
+    n = 1 and
+    next.regexpMatch("[A-Za-z]:") and
+    root.getBaseName() = "" and
+    root.toString() = next.toUpperCase() + "/" and
+    result = base
+    or
+    // default case
+    result = TConsPath(base, next)
+  )
+}
+
+/**
  * Gets the `i`th component of the path `str`, where `base` is the resolved path one level up.
  * Supports that the root directory might be compiled output from TypeScript.
+ * `inTS` is true if the result is TypeScript that is compiled into the path specified by `str`.
  */
-private string getComponent(PathString str, int n, Path base, Folder root) {
-  base = str.resolveUpTo(n, root) and
-  (
-    result = str.getComponent(n)
-    or
-    result = TypeScriptOutDir::getOriginalTypeScriptFolder(str.getComponent(n), base.getContainer())
+private string getComponent(PathString str, int n, Path base, Folder root, boolean inTS) {
+  exists(boolean prevTS |
+    base = resolveUpTo(str, n, root, prevTS) and
+    (
+      result = str.getComponent(n) and prevTS = inTS
+      or
+      // If we are in a TypeScript source folder, try to replace file endings with ".ts" or ".tsx"
+      n = str.getNumComponent() - 1 and
+      prevTS = true and
+      inTS = prevTS and
+      result = str.getComponent(n).regexpCapture("^(.*)\\.js$", 1) + "." + ["ts", "tsx"]
+      or
+      prevTS = false and
+      inTS = true and
+      result =
+        TypeScriptOutDir::getOriginalTypeScriptFolder(str.getComponent(n), base.getContainer())
+    )
   )
 }
 
@@ -194,19 +213,33 @@ private module TypeScriptOutDir {
    */
   string getOriginalTypeScriptFolder(string outdir, Folder parent) {
     exists(JSONObject tsconfig |
-      tsconfig.getFile().getBaseName() = "tsconfig.json" and
-      tsconfig.isTopLevel() and
-      tsconfig.getFile().getParentContainer() = parent
-    |
-      outdir =
-        tsconfig
-            .getPropValue("compilerOptions")
-            .(JSONObject)
-            .getPropValue("outDir")
-            .(JSONString)
-            .getValue() and
-      result = getEffectiveRootDirFromTSConfig(tsconfig)
+      outdir = removeLeadingSlash(getOutDir(tsconfig, parent)) and
+      result = removeLeadingSlash(getEffectiveRootDirFromTSConfig(tsconfig))
     )
+  }
+
+  /**
+   * Removes a leading dot and/or slash from `raw`.
+   */
+  bindingset[raw]
+  private string removeLeadingSlash(string raw) {
+    result = raw.regexpCapture("^\\.?/?([\\w.\\-]+)$", 1)
+  }
+
+  /**
+   * Gets the `outDir` option from a tsconfig file from the folder `parent`.
+   */
+  private string getOutDir(JSONObject tsconfig, Folder parent) {
+    tsconfig.getFile().getBaseName().regexpMatch("tsconfig.*\\.json") and
+    tsconfig.isTopLevel() and
+    tsconfig.getFile().getParentContainer() = parent and
+    result =
+      tsconfig
+          .getPropValue("compilerOptions")
+          .(JSONObject)
+          .getPropValue("outDir")
+          .(JSONString)
+          .getValue()
   }
 
   /**
