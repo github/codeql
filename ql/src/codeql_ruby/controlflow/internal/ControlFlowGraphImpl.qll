@@ -378,7 +378,7 @@ module Trees {
     final override ControlFlowTree getChildNode(int i) { result = this.getValue() and i = 0 }
   }
 
-  abstract private class MandatoryParameterTree extends ControlFlowTree, NamedParameter {
+  abstract private class NonDefaultValueParameterTree extends ControlFlowTree, NamedParameter {
     final override predicate first(AstNode first) {
       this.getDefiningAccess().(ControlFlowTree).first(first)
     }
@@ -394,7 +394,7 @@ module Trees {
     final override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
   }
 
-  private class BlockParameterTree extends MandatoryParameterTree, BlockParameter { }
+  private class BlockParameterTree extends NonDefaultValueParameterTree, BlockParameter { }
 
   /**
    * TODO: make all StmtSequence tree classes post-order, and simplify class
@@ -888,7 +888,7 @@ module Trees {
     final override ControlFlowTree getChildNode(int i) { result = this.getValue() and i = 0 }
   }
 
-  private class HashSplatParameterTree extends MandatoryParameterTree, HashSplatParameter { }
+  private class HashSplatParameterTree extends NonDefaultValueParameterTree, HashSplatParameter { }
 
   private class HereDocTree extends StandardPreOrderTree, HereDoc {
     final override ControlFlowTree getChildNode(int i) { result = this.getComponent(i) }
@@ -1130,7 +1130,7 @@ module Trees {
 
   private class SelfTree extends LeafTree, Self { }
 
-  private class SimpleParameterTree extends MandatoryParameterTree, SimpleParameter { }
+  private class SimpleParameterTree extends NonDefaultValueParameterTree, SimpleParameter { }
 
   // Corner case: For duplicated '_' parameters, only the first occurence has a defining
   // access. For subsequent parameters we simply include the parameter itself in the CFG
@@ -1228,7 +1228,7 @@ module Trees {
     final override ControlFlowTree getChildNode(int i) { result = this.getValue() and i = 0 }
   }
 
-  private class SplatParameterTree extends MandatoryParameterTree, SplatParameter { }
+  private class SplatParameterTree extends NonDefaultValueParameterTree, SplatParameter { }
 
   abstract class StmtSequenceTree extends ControlFlowTree, StmtSequence {
     override predicate propagatesAbnormal(AstNode child) { none() }
