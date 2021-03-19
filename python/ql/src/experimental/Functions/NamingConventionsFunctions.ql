@@ -9,15 +9,20 @@
 
 import python
 
-from Function f, string first_char
-where
-  f.inSource() and
-  first_char = f.getName().prefix(1) and
-  not first_char = first_char.toLowerCase() and
-  not exists(Function f1, string first_char1 |
-    f1 != f and
-    f1.getLocation().getFile() = f.getLocation().getFile() and
-    first_char1 = f1.getName().prefix(1) and
-    not first_char1 = first_char1.toLowerCase()
+predicate upper_case_function(Function func) {
+  exists(string first_char | 
+    first_char = func.getName().prefix(1) and
+    not first_char = first_char.toLowerCase()
   )
-select f, "Function names should start in lowercase."
+}
+
+from Function func
+where
+  func.inSource() and
+  upper_case_function(func) and
+  not exists(Function func1 |
+    func1 != func and
+    func1.getLocation().getFile() = func.getLocation().getFile() and
+    upper_case_function(func1)
+  )
+select func, "Function names should start in lowercase."

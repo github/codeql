@@ -9,15 +9,20 @@
 
 import python
 
-from Class c, string first_char
+predicate lower_case_class(Class c) {
+  exists(string first_char | 
+    first_char = c.getName().prefix(1) and
+    not first_char = first_char.toUpperCase()
+  )
+}
+
+from Class c
 where
   c.inSource() and
-  first_char = c.getName().prefix(1) and
-  not first_char = first_char.toUpperCase() and
-  not exists(Class c1, string first_char1 |
+  lower_case_class(c) and
+  not exists(Class c1 |
     c1 != c and
     c1.getLocation().getFile() = c.getLocation().getFile() and
-    first_char1 = c1.getName().prefix(1) and
-    not first_char1 = first_char1.toUpperCase()
+    lower_case_class(c1)
   )
 select c, "Class names should start in uppercase."
