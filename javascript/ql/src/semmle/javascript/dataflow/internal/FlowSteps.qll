@@ -182,7 +182,7 @@ private module CachedSteps {
    */
   cached
   predicate argumentPassing(
-    DataFlow::SourceNode invk, DataFlow::ValueNode arg, Function f, DataFlow::SourceNode parm
+    DataFlow::SourceNode invk, DataFlow::Node arg, Function f, DataFlow::SourceNode parm
   ) {
     calls(invk, f) and
     (
