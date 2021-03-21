@@ -77,22 +77,26 @@ private class TaintPropagatingCall extends Call {
   }
 }
 
-private class ELProcessor extends RefType {
-  ELProcessor() { hasQualifiedName("javax.el", "ELProcessor") }
+private class JakartaType extends RefType {
+  JakartaType() { getPackage().hasName(["javax.el", "jakarta.el"]) }
 }
 
-private class ExpressionFactory extends RefType {
-  ExpressionFactory() { hasQualifiedName("javax.el", "ExpressionFactory") }
+private class ELProcessor extends JakartaType {
+  ELProcessor() { hasName("ELProcessor") }
 }
 
-private class ValueExpression extends RefType {
-  ValueExpression() { hasQualifiedName("javax.el", "ValueExpression") }
+private class ExpressionFactory extends JakartaType {
+  ExpressionFactory() { hasName("ExpressionFactory") }
 }
 
-private class MethodExpression extends RefType {
-  MethodExpression() { hasQualifiedName("javax.el", "MethodExpression") }
+private class ValueExpression extends JakartaType {
+  ValueExpression() { hasName("ValueExpression") }
+}
+
+private class MethodExpression extends JakartaType {
+  MethodExpression() { hasName("MethodExpression") }
 }
 
 private class LambdaExpression extends RefType {
-  LambdaExpression() { hasQualifiedName("javax.el", "LambdaExpression") }
+  LambdaExpression() { hasName("LambdaExpression") }
 }
