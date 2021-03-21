@@ -1,0 +1,73 @@
+edges
+| ../../../stubs/groovy-all-3.0.7/groovy/util/Eval.java:22:29:22:51 | expression : String | ../../../stubs/groovy-all-3.0.7/groovy/util/Eval.java:23:31:23:40 | expression |
+| ../../../stubs/groovy-all-3.0.7/groovy/util/Eval.java:30:44:30:66 | expression : String | ../../../stubs/groovy-all-3.0.7/groovy/util/Eval.java:31:27:31:36 | expression |
+| GroovyClassLoaderTest.java:16:29:16:58 | getParameter(...) : String | GroovyClassLoaderTest.java:18:51:18:56 | script |
+| GroovyClassLoaderTest.java:29:29:29:58 | getParameter(...) : String | GroovyClassLoaderTest.java:32:51:32:53 | gcs |
+| GroovyEvalTest.java:12:25:12:54 | getParameter(...) : String | GroovyEvalTest.java:13:17:13:22 | script |
+| GroovyEvalTest.java:12:25:12:54 | getParameter(...) : String | GroovyEvalTest.java:13:17:13:22 | script : String |
+| GroovyEvalTest.java:13:17:13:22 | script : String | ../../../stubs/groovy-all-3.0.7/groovy/util/Eval.java:22:29:22:51 | expression : String |
+| GroovyEvalTest.java:18:25:18:54 | getParameter(...) : String | GroovyEvalTest.java:19:35:19:40 | script |
+| GroovyEvalTest.java:24:25:24:54 | getParameter(...) : String | GroovyEvalTest.java:25:27:25:32 | script |
+| GroovyEvalTest.java:24:25:24:54 | getParameter(...) : String | GroovyEvalTest.java:25:27:25:32 | script : String |
+| GroovyEvalTest.java:25:27:25:32 | script : String | ../../../stubs/groovy-all-3.0.7/groovy/util/Eval.java:30:44:30:66 | expression : String |
+| GroovyEvalTest.java:31:25:31:54 | getParameter(...) : String | GroovyEvalTest.java:32:39:32:44 | script |
+| GroovyEvalTest.java:37:25:37:54 | getParameter(...) : String | GroovyEvalTest.java:38:47:38:52 | script |
+| GroovyShellTest.java:15:25:15:54 | getParameter(...) : String | GroovyShellTest.java:16:24:16:29 | script |
+| GroovyShellTest.java:22:25:22:54 | getParameter(...) : String | GroovyShellTest.java:23:24:23:29 | script |
+| GroovyShellTest.java:29:25:29:54 | getParameter(...) : String | GroovyShellTest.java:30:24:30:29 | script |
+| GroovyShellTest.java:36:25:36:54 | getParameter(...) : String | GroovyShellTest.java:37:19:37:24 | script |
+| GroovyShellTest.java:43:25:43:54 | getParameter(...) : String | GroovyShellTest.java:45:19:45:21 | gcs |
+| GroovyShellTest.java:51:25:51:54 | getParameter(...) : String | GroovyShellTest.java:53:24:53:26 | gcs |
+| GroovyShellTest.java:59:25:59:54 | getParameter(...) : String | GroovyShellTest.java:60:21:60:26 | script |
+nodes
+| ../../../stubs/groovy-all-3.0.7/groovy/util/Eval.java:22:29:22:51 | expression : String | semmle.label | expression : String |
+| ../../../stubs/groovy-all-3.0.7/groovy/util/Eval.java:23:31:23:40 | expression | semmle.label | expression |
+| ../../../stubs/groovy-all-3.0.7/groovy/util/Eval.java:30:44:30:66 | expression : String | semmle.label | expression : String |
+| ../../../stubs/groovy-all-3.0.7/groovy/util/Eval.java:31:27:31:36 | expression | semmle.label | expression |
+| GroovyClassLoaderTest.java:16:29:16:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyClassLoaderTest.java:18:51:18:56 | script | semmle.label | script |
+| GroovyClassLoaderTest.java:29:29:29:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyClassLoaderTest.java:32:51:32:53 | gcs | semmle.label | gcs |
+| GroovyEvalTest.java:12:25:12:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyEvalTest.java:13:17:13:22 | script | semmle.label | script |
+| GroovyEvalTest.java:13:17:13:22 | script : String | semmle.label | script : String |
+| GroovyEvalTest.java:18:25:18:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyEvalTest.java:19:35:19:40 | script | semmle.label | script |
+| GroovyEvalTest.java:24:25:24:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyEvalTest.java:25:27:25:32 | script | semmle.label | script |
+| GroovyEvalTest.java:25:27:25:32 | script : String | semmle.label | script : String |
+| GroovyEvalTest.java:31:25:31:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyEvalTest.java:32:39:32:44 | script | semmle.label | script |
+| GroovyEvalTest.java:37:25:37:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyEvalTest.java:38:47:38:52 | script | semmle.label | script |
+| GroovyShellTest.java:15:25:15:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:16:24:16:29 | script | semmle.label | script |
+| GroovyShellTest.java:22:25:22:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:23:24:23:29 | script | semmle.label | script |
+| GroovyShellTest.java:29:25:29:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:30:24:30:29 | script | semmle.label | script |
+| GroovyShellTest.java:36:25:36:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:37:19:37:24 | script | semmle.label | script |
+| GroovyShellTest.java:43:25:43:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:45:19:45:21 | gcs | semmle.label | gcs |
+| GroovyShellTest.java:51:25:51:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:53:24:53:26 | gcs | semmle.label | gcs |
+| GroovyShellTest.java:59:25:59:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:60:21:60:26 | script | semmle.label | script |
+#select
+| ../../../stubs/groovy-all-3.0.7/groovy/util/Eval.java:23:31:23:40 | expression | GroovyEvalTest.java:12:25:12:54 | getParameter(...) : String | ../../../stubs/groovy-all-3.0.7/groovy/util/Eval.java:23:31:23:40 | expression | Groovy Injection from $@. | GroovyEvalTest.java:12:25:12:54 | getParameter(...) | this user input |
+| ../../../stubs/groovy-all-3.0.7/groovy/util/Eval.java:31:27:31:36 | expression | GroovyEvalTest.java:24:25:24:54 | getParameter(...) : String | ../../../stubs/groovy-all-3.0.7/groovy/util/Eval.java:31:27:31:36 | expression | Groovy Injection from $@. | GroovyEvalTest.java:24:25:24:54 | getParameter(...) | this user input |
+| GroovyClassLoaderTest.java:18:51:18:56 | script | GroovyClassLoaderTest.java:16:29:16:58 | getParameter(...) : String | GroovyClassLoaderTest.java:18:51:18:56 | script | Groovy Injection from $@. | GroovyClassLoaderTest.java:16:29:16:58 | getParameter(...) | this user input |
+| GroovyClassLoaderTest.java:32:51:32:53 | gcs | GroovyClassLoaderTest.java:29:29:29:58 | getParameter(...) : String | GroovyClassLoaderTest.java:32:51:32:53 | gcs | Groovy Injection from $@. | GroovyClassLoaderTest.java:29:29:29:58 | getParameter(...) | this user input |
+| GroovyEvalTest.java:13:17:13:22 | script | GroovyEvalTest.java:12:25:12:54 | getParameter(...) : String | GroovyEvalTest.java:13:17:13:22 | script | Groovy Injection from $@. | GroovyEvalTest.java:12:25:12:54 | getParameter(...) | this user input |
+| GroovyEvalTest.java:19:35:19:40 | script | GroovyEvalTest.java:18:25:18:54 | getParameter(...) : String | GroovyEvalTest.java:19:35:19:40 | script | Groovy Injection from $@. | GroovyEvalTest.java:18:25:18:54 | getParameter(...) | this user input |
+| GroovyEvalTest.java:25:27:25:32 | script | GroovyEvalTest.java:24:25:24:54 | getParameter(...) : String | GroovyEvalTest.java:25:27:25:32 | script | Groovy Injection from $@. | GroovyEvalTest.java:24:25:24:54 | getParameter(...) | this user input |
+| GroovyEvalTest.java:32:39:32:44 | script | GroovyEvalTest.java:31:25:31:54 | getParameter(...) : String | GroovyEvalTest.java:32:39:32:44 | script | Groovy Injection from $@. | GroovyEvalTest.java:31:25:31:54 | getParameter(...) | this user input |
+| GroovyEvalTest.java:38:47:38:52 | script | GroovyEvalTest.java:37:25:37:54 | getParameter(...) : String | GroovyEvalTest.java:38:47:38:52 | script | Groovy Injection from $@. | GroovyEvalTest.java:37:25:37:54 | getParameter(...) | this user input |
+| GroovyShellTest.java:16:24:16:29 | script | GroovyShellTest.java:15:25:15:54 | getParameter(...) : String | GroovyShellTest.java:16:24:16:29 | script | Groovy Injection from $@. | GroovyShellTest.java:15:25:15:54 | getParameter(...) | this user input |
+| GroovyShellTest.java:23:24:23:29 | script | GroovyShellTest.java:22:25:22:54 | getParameter(...) : String | GroovyShellTest.java:23:24:23:29 | script | Groovy Injection from $@. | GroovyShellTest.java:22:25:22:54 | getParameter(...) | this user input |
+| GroovyShellTest.java:30:24:30:29 | script | GroovyShellTest.java:29:25:29:54 | getParameter(...) : String | GroovyShellTest.java:30:24:30:29 | script | Groovy Injection from $@. | GroovyShellTest.java:29:25:29:54 | getParameter(...) | this user input |
+| GroovyShellTest.java:37:19:37:24 | script | GroovyShellTest.java:36:25:36:54 | getParameter(...) : String | GroovyShellTest.java:37:19:37:24 | script | Groovy Injection from $@. | GroovyShellTest.java:36:25:36:54 | getParameter(...) | this user input |
+| GroovyShellTest.java:45:19:45:21 | gcs | GroovyShellTest.java:43:25:43:54 | getParameter(...) : String | GroovyShellTest.java:45:19:45:21 | gcs | Groovy Injection from $@. | GroovyShellTest.java:43:25:43:54 | getParameter(...) | this user input |
+| GroovyShellTest.java:53:24:53:26 | gcs | GroovyShellTest.java:51:25:51:54 | getParameter(...) : String | GroovyShellTest.java:53:24:53:26 | gcs | Groovy Injection from $@. | GroovyShellTest.java:51:25:51:54 | getParameter(...) | this user input |
+| GroovyShellTest.java:60:21:60:26 | script | GroovyShellTest.java:59:25:59:54 | getParameter(...) : String | GroovyShellTest.java:60:21:60:26 | script | Groovy Injection from $@. | GroovyShellTest.java:59:25:59:54 | getParameter(...) | this user input |
