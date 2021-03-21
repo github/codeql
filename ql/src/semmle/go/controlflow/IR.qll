@@ -337,15 +337,24 @@ module IR {
    */
   class FieldReadInstruction extends ComponentReadInstruction {
     SelectorExpr e;
+    int index;
     Field field;
 
     FieldReadInstruction() {
       e = this.(EvalInstruction).getExpr() and
+      index = 0 and
       field.getAReference() = this.(EvalInstruction).getExpr().(SelectorExpr).getSelector()
       or
       e = this.(ImplicitFieldReadInstruction).getSelectorExpr() and
+      index = this.(ImplicitFieldReadInstruction).getIndex() and
       field = this.(ImplicitFieldReadInstruction).getField()
     }
+
+    /** Gets the `SelectorExpr` of this field read. */
+    SelectorExpr getSelectorExpr() { result = e }
+
+    /** Gets the index of this field read. */
+    int getIndex() { result = index }
 
     /** Gets the field being read. */
     Field getField() { result = field }
@@ -364,14 +373,20 @@ module IR {
    */
   class ImplicitFieldReadInstruction extends Instruction, MkImplicitFieldSelection {
     SelectorExpr e;
+    int index;
     Field implicitField;
 
-    ImplicitFieldReadInstruction() { this = MkImplicitFieldSelection(e, _, implicitField) }
+    ImplicitFieldReadInstruction() { this = MkImplicitFieldSelection(e, index, implicitField) }
 
     /**
      * Gets the selector expression that requires this implicit field read.
      */
     SelectorExpr getSelectorExpr() { result = e }
+
+    /**
+     * Gets the index of this implicit field read.
+     */
+    int getIndex() { result = index }
 
     /**
      * Gets the field being read. Note this is an embedded field that is not explicitly specified
