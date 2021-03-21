@@ -1,6 +1,6 @@
 /**
- * @name Java EE Expression Language injection
- * @description Evaluation of a user-controlled Jave EE expression
+ * @name Jakarta Expression Language injection
+ * @description Evaluation of a user-controlled expression
  *              may lead to arbitrary code execution.
  * @kind path-problem
  * @problem.severity error
@@ -11,10 +11,10 @@
  */
 
 import java
-import JavaEEExpressionInjectionLib
+import JakartaExpressionInjectionLib
 import DataFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, JavaEEExpressionInjectionConfig conf
+from DataFlow::PathNode source, DataFlow::PathNode sink, JakartaExpressionInjectionConfig conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Java EE Expression Language injection from $@.",
+select sink.getNode(), source, sink, "Jakarta Expression Language injection from $@.",
   source.getNode(), "this user input"

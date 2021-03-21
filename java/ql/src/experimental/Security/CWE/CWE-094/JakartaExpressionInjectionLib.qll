@@ -5,10 +5,10 @@ import semmle.code.java.dataflow.TaintTracking
 
 /**
  * A taint-tracking configuration for unsafe user input
- * that is used to construct and evaluate a Java EE expression.
+ * that is used to construct and evaluate an expression.
  */
-class JavaEEExpressionInjectionConfig extends TaintTracking::Configuration {
-  JavaEEExpressionInjectionConfig() { this = "JavaEEExpressionInjectionConfig" }
+class JakartaExpressionInjectionConfig extends TaintTracking::Configuration {
+  JakartaExpressionInjectionConfig() { this = "JakartaExpressionInjectionConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
@@ -22,7 +22,7 @@ class JavaEEExpressionInjectionConfig extends TaintTracking::Configuration {
 
 /**
  * A sink for Expresssion Language injection vulnerabilities,
- * i.e. method calls that run evaluation of a Java EE expression.
+ * i.e. method calls that run evaluation of an expression.
  */
 private class ExpressionEvaluationSink extends DataFlow::ExprNode {
   ExpressionEvaluationSink() {
