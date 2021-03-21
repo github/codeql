@@ -83,7 +83,6 @@ private class GoShCommandExecution extends SystemCommandExecution::Range, DataFl
  */
 module CryptoSsh {
   /** Gets the package path `golang.org/x/crypto/ssh`. */
-  bindingset[result]
   string packagePath() { result = package("golang.org/x/crypto", "ssh") }
 
   /**

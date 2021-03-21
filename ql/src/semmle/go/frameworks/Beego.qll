@@ -13,23 +13,18 @@ private import semmle.go.security.SafeUrlFlowCustomizations
  */
 module Beego {
   /** Gets the module path `github.com/astaxie/beego` or `github.com/beego/beego`. */
-  bindingset[result]
   string modulePath() { result = ["github.com/astaxie/beego", "github.com/beego/beego"] }
 
   /** Gets the path for the root package of beego. */
-  bindingset[result]
   string packagePath() { result = package(modulePath(), "") }
 
   /** Gets the path for the context package of beego. */
-  bindingset[result]
   string contextPackagePath() { result = package(modulePath(), "context") }
 
   /** Gets the path for the logs package of beego. */
-  bindingset[result]
   string logsPackagePath() { result = package(modulePath(), "logs") }
 
   /** Gets the path for the utils package of beego. */
-  bindingset[result]
   string utilsPackagePath() { result = package(modulePath(), "utils") }
 
   /**

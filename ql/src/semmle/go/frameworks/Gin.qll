@@ -6,7 +6,6 @@ import go
 
 private module Gin {
   /** Gets the package name `github.com/gin-gonic/gin`. */
-  bindingset[result]
   string packagePath() { result = package("github.com/gin-gonic/gin", "") }
 
   /**

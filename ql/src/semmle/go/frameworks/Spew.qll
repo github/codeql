@@ -9,7 +9,6 @@ import go
  */
 module Spew {
   /** Gets the package path `github.com/davecgh/go-spew/spew`. */
-  bindingset[result]
   private string packagePath() { result = package("github.com/davecgh/go-spew", "spew") }
 
   private class SpewCall extends LoggerCall::Range, DataFlow::CallNode {

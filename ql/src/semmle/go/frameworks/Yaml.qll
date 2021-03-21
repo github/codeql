@@ -9,7 +9,6 @@ import go
  */
 module Yaml {
   /** Gets a package path for the Yaml package. */
-  bindingset[result]
   string packagePath() { result = package("gopkg.in/yaml", "") }
 
   private class MarshalFunction extends TaintTracking::FunctionModel, MarshalingFunction::Range {
