@@ -27,3 +27,6 @@ def test_model():
 
     raw = RawSQL("so raw")
     User.objects.annotate(val=raw)  # $getSql="so raw"
+
+    # chaining QuerySet calls
+    User.objects.using("db-name").exclude(username="admin").extra("some sql") # $ MISSING: getSql="some sql"
