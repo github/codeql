@@ -633,6 +633,10 @@ class Class extends RefType, @class {
  */
 class Record extends Class {
   Record() { isRecord(this) }
+
+  // JLS 16 §8.10: A record class is implicitly final.
+  /** Always holds; a record class is implicitly final. */
+  override predicate isFinal() { any() }
 }
 
 /** An intersection type. */
@@ -768,22 +772,27 @@ class NestedType extends RefType {
    * because one of the following holds:
    *
    * - it is a member type of an interface,
-   * - it is a member interface, or
-   * - it is a nested enum type.
+   * - it is a nested interface, or
+   * - it is a nested enum type, or
+   * - it is a nested record type.
    *
-   * See JLS v8, section 8.5.1 (Static Member Type Declarations),
-   * section 8.9 (Enums) and section 9.5 (Member Type Declarations).
+   * See JLS 16, section 9.1.1.3 ("`static` interfaces"), section 9.5
+   * ("Member Class and Interface Declarations"), section 8.9 ("Enum Classes")
+   * and section 8.10 ("Record Classes").
    */
   override predicate isStatic() {
     super.isStatic()
     or
-    // JLS 8.5.1: A member interface is implicitly static.
+    // JLS 16 §9.1.1.3: A nested interface is implicitly static.
     this instanceof Interface
     or
-    // JLS 8.9: A nested enum type is implicitly static.
+    // JLS 16 §8.9: A nested enum type is implicitly static.
     this instanceof EnumType
     or
-    // JLS 9.5: A member type declaration in an interface is implicitly public and static
+    // JLS 16 §8.10: A nested record is implicitly static.
+    this instanceof Record
+    or
+    // JLS 16 §9.5: A member type declaration in an interface is implicitly public and static
     exists(Interface i | this = i.getAMember())
   }
 }
