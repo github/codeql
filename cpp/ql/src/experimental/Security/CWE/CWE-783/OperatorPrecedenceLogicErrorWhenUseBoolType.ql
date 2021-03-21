@@ -15,12 +15,12 @@
 import cpp
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 
-/** Holds, if it is an expression, a boolean increment. */
+/** Holds if `exp` increments a boolean value. */
 predicate incrementBoolType(Expr exp) {
   exp.(IncrementOperation).getOperand().getType() instanceof BoolType
 }
 
-/** Holds, if this is an expression, applies a minus to a boolean type. */
+/** Holds if `exp` applies the unary minus operator to a boolean type. */
 predicate revertSignBoolType(Expr exp) {
   exp.(AssignExpr).getRValue().(UnaryMinusExpr).getAnOperand().getType() instanceof BoolType and
   exp.(AssignExpr).getLValue().getType() instanceof BoolType
