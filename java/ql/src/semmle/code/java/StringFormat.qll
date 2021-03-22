@@ -210,10 +210,7 @@ private predicate printMethod(Method m, int i) {
     (t.hasQualifiedName("java.io", "PrintWriter") or t.hasQualifiedName("java.io", "PrintStream")) and
     (m.hasName("print") or m.hasName("println"))
     or
-    (
-      t.hasQualifiedName("java.lang", "StringBuilder") or
-      t.hasQualifiedName("java.lang", "StringBuffer")
-    ) and
+    t instanceof StringBuildingType and
     (m.hasName("append") or m.hasName("insert"))
     or
     t instanceof TypeString and m.hasName("valueOf")
