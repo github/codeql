@@ -2393,7 +2393,7 @@ private module Django {
     }
 
     override string getSourceType() {
-      result = "django.http.request.HttpRequest (attribute on self in View class)"
+      result = "django HttpRequest from self.request in View class"
     }
   }
 
@@ -2413,7 +2413,7 @@ private module Django {
     }
 
     override string getSourceType() {
-      result = "django routed param from attribute on self in View class"
+      result = "django routed param from self.args/kwargs in View class"
     }
   }
 
