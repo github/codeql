@@ -188,3 +188,5 @@ typeaccesses/TA.java:
 #   31|                 0: [TypeAccess] ArrayList<T>
 #   31|                   0: [TypeAccess] T
 #   31|       5: [BlockStmt] stmt
+#   32|         0: [ReturnStmt] stmt
+#   32|           0: [NullLiteral] null

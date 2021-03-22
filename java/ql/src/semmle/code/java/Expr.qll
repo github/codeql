@@ -1743,8 +1743,8 @@ class WildcardTypeAccess extends Expr, @wildcardtypeaccess {
   Expr getLowerBound() { result.isNthChildOf(this, 1) }
 
   /**
-   * Gets the bound of this wildcard type access, if any, i.e. either the upper
-   * or the lower bound.
+   * Gets the bound of this wildcard type access, if any. That is, either
+   * the upper or the lower bound.
    */
   Expr getBound() {
     result = getUpperBound() or

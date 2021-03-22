@@ -17,7 +17,7 @@ private string getValue(WildcardTypeAccess wta) {
 class WildcardTypeAccessTest extends InlineExpectationsTest {
   WildcardTypeAccessTest() { this = "WildcardTypeAccessTest" }
 
-  override string getARelevantTag() { result = ["wildcardTypeAccess"] }
+  override string getARelevantTag() { result = "wildcardTypeAccess" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(WildcardTypeAccess wta |

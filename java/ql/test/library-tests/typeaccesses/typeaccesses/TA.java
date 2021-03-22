@@ -28,5 +28,7 @@ public class TA extends ArrayList<TA> {
 	public <T extends I2 & I1> void method14() { }
 	public <T extends Object & I2 & I1> void method15() { }
 
-	public <T extends Number & Runnable, R extends T, S extends ArrayList<? super R[]>> ArrayList<? super ArrayList<? extends ArrayList<T>[]>> method16() { }
+	public <T extends Number & Runnable, R extends T, S extends ArrayList<? super R[]>> ArrayList<? super ArrayList<? extends ArrayList<T>[]>> method16() {
+		return null;
+	}
 }
