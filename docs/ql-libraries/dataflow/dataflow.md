@@ -186,6 +186,45 @@ values, for example through `out` parameters in C#, the `ReturnKind` class can
 be defined and used to match up different kinds of `ReturnNode`s with the
 corresponding `OutNode`s.
 
+#### First-class functions
+
+For calls to first-class functions, the library supports built-in call resolution based on data flow between a function creation expression and a call. The interface that needs to be implemented is
+
+```ql
+class LambdaCallKind
+
+/** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
+
+/** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver)
+
+/** Extra data-flow steps needed for lambda flow analysis. */
+predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue)
+```
+
+with the semantics that `call` will resolve to `c` if there is a data-flow path from `creation` to `receiver`, with matching `kind`s.
+
+The implementation keeps track of a one-level call context, which means that we are able to handle situations like this:
+```csharp
+Apply(f, x) { f(x); }
+
+Apply(x => NonSink(x), "tainted"); // GOOD
+
+Apply(x => Sink(x), "not tainted"); // GOOD
+```
+
+However, since we only track one level the following example will have false-positive flow:
+```csharp
+Apply(f, x) { f(x); }
+
+ApplyWrapper(f, x) { Apply(f, x) }
+
+ApplyWrapper(x => NonSink(x), "tainted"); // GOOD (FALSE POSITIVE)
+
+ApplyWrapper(x => Sink(x), "not tainted"); // GOOD (FALSE POSITIVE)
+```
+
 ## Flow through global variables
 
 Flow through global variables are called jump-steps, since such flow steps
