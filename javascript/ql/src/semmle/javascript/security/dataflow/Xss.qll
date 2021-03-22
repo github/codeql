@@ -28,19 +28,13 @@ module Shared {
   abstract class SanitizerGuard extends TaintTracking::SanitizerGuardNode { }
 
   /**
-   * A global regexp replacement involving an HTML meta-character, viewed as a sanitizer for
+   * A global regexp replacement involving the `<`, `'`, or `"` meta-character, viewed as a sanitizer for
    * XSS vulnerabilities.
-   *
-   * The XSS queries do not attempt to reason about correctness or completeness of sanitizers,
-   * so any such replacement stops taint propagation.
    */
   class MetacharEscapeSanitizer extends Sanitizer, StringReplaceCall {
     MetacharEscapeSanitizer() {
-      this.isGlobal() and
-      exists(RegExpConstant c |
-        c.getLiteral() = getRegExp().asExpr() and
-        c.getValue().regexpMatch("['\"&<>]")
-      )
+      isGlobal() and
+      RegExp::alwaysMatchesMetaCharacter(getRegExp().getRoot(), ["<", "'", "\""])
     }
   }
 
@@ -338,70 +332,14 @@ module DomBasedXss {
   /**
    * A Vue `v-html` attribute, viewed as an XSS sink.
    */
-  class VHtmlSink extends DomBasedXss::Sink {
-    HTML::Attribute attr;
-
-    VHtmlSink() {
-      this.(DataFlow::HtmlAttributeNode).getAttribute() = attr and attr.getName() = "v-html"
-    }
-
-    /**
-     * Gets the HTML attribute of this sink.
-     */
-    HTML::Attribute getAttr() { result = attr }
-  }
-
-  /**
-   * A taint propagating data flow edge through a string interpolation of a
-   * Vue instance property to a `v-html` attribute.
-   *
-   * As an example, `<div v-html="prop"/>` reads the `prop` property
-   * of `inst = new Vue({ ..., data: { prop: source } })`, if the
-   * `div` element is part of the template for `inst`.
-   */
-  class VHtmlSourceWrite extends TaintTracking::AdditionalTaintStep {
-    VHtmlSink attr;
-
-    VHtmlSourceWrite() {
-      exists(Vue::Instance instance, string expr |
-        attr.getAttr().getRoot() =
-          instance.getTemplateElement().(Vue::Template::HtmlElement).getElement() and
-        expr = attr.getAttr().getValue() and
-        // only support for simple identifier expressions
-        expr.regexpMatch("(?i)[a-z0-9_]+") and
-        this = instance.getAPropertyValue(expr)
-      )
-    }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = this and succ = attr
-    }
-  }
+  class VHtmlSink extends Vue::VHtmlAttribute, DomBasedXss::Sink { }
 
   /**
    * A property read from a safe property is considered a sanitizer.
    */
   class SafePropertyReadSanitizer extends Sanitizer, DataFlow::Node {
     SafePropertyReadSanitizer() {
-      exists(PropAccess pacc | pacc = this.asExpr() |
-        isSafeLocationProperty(pacc)
-        or
-        pacc.getPropertyName() = "length"
-      )
-    }
-  }
-
-  /**
-   * A sanitizer that reads the first part a location split by "?", e.g. `location.href.split('?')[0]`.
-   */
-  class QueryPrefixSanitizer extends Sanitizer {
-    StringSplitCall splitCall;
-
-    QueryPrefixSanitizer() {
-      this = splitCall.getASubstringRead(0) and
-      splitCall.getSeparator() = "?" and
-      splitCall.getBaseString().getALocalSource() =
-        [DOM::locationRef(), DOM::locationRef().getAPropertyRead("href")]
+      exists(PropAccess pacc | pacc = this.asExpr() | pacc.getPropertyName() = "length")
     }
   }
 

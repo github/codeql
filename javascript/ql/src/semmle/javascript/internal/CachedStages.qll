@@ -162,6 +162,8 @@ module Stages {
       exists(any(Import i).getImportedModule())
       or
       exists(DataFlow::moduleImport(_))
+      or
+      exists(any(ReExportDeclaration d).getReExportedModule())
     }
   }
 
@@ -241,7 +243,7 @@ module Stages {
     predicate backref() {
       1 = 1
       or
-      any(TaintTracking::AdditionalTaintStep step).step(_, _)
+      TaintTracking::heapStep(_, _)
       or
       exists(RemoteFlowSource r)
     }

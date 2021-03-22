@@ -59,14 +59,6 @@ module ExternalAPIUsedWithUntrustedData {
     RemoteFlowAsSource() { this instanceof RemoteFlowSource }
   }
 
-  private class LocationSource extends Source {
-    LocationSource() {
-      this = DOM::locationRef().getAPropertyRead(["hash", "search"])
-      or
-      this = DOM::locationSource()
-    }
-  }
-
   /**
    * A package name whose entire API is considered "safe" for the purpose of this query.
    */
@@ -263,7 +255,7 @@ module ExternalAPIUsedWithUntrustedData {
       not exists(DataFlow::Node arg |
         arg = this.getAnArgument() and not arg instanceof DeepObjectSink
       |
-        any(TaintTracking::AdditionalTaintStep s).step(arg, _)
+        TaintTracking::sharedTaintStep(arg, _)
         or
         exists(DataFlow::AdditionalFlowStep s |
           s.step(arg, _) or

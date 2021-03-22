@@ -13,7 +13,7 @@ import CallGraphQuality
 
 predicate relevantStep(DataFlow::Node pred, DataFlow::Node succ) {
   (
-    any(TaintTracking::AdditionalTaintStep dts).step(pred, succ)
+    TaintTracking::sharedTaintStep(pred, succ)
     or
     any(DataFlow::AdditionalFlowStep cfg).step(pred, succ)
     or

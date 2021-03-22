@@ -151,13 +151,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 if (handleProp is null)
                 {
                     var underlyingSymbolProp = GetPropertyInfo(Symbol, "UnderlyingSymbol");
-                    if (underlyingSymbolProp is not null)
+                    if (underlyingSymbolProp?.GetValue(Symbol) is object underlying)
                     {
-                        if (underlyingSymbolProp.GetValue(Symbol) is object underlying)
-                        {
-                            handleProp = GetPropertyInfo(underlying, "Handle");
-                            handleObj = underlying;
-                        }
+                        handleProp = GetPropertyInfo(underlying, "Handle");
+                        handleObj = underlying;
                     }
                 }
 
