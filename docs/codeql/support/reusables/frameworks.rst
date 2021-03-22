@@ -1,4 +1,15 @@
-.. There is currently no built-in support for libraries or frameworks for C/C++.
+C and C++ built-in support
+================================
+
+.. csv-table:: 
+   :header-rows: 1
+   :class: fullWidthTable
+   :widths: auto
+
+   Name, Category
+   `Bloomberg Standard Library <https://github.com/bloomberg/bde>`__, xxx
+   `Berkeley socket API library <https://en.wikipedia.org/wiki/Berkeley_sockets#Socket_API_functions>`__, API library
+   string.h, xxx
 
 C# built-in support
 ================================
@@ -78,6 +89,8 @@ Java built-in support
    :widths: auto
 
    Name, Category
+   Apache Commons, Language library (?)
+   Guava, xxx
    Hibernate, Database
    iBatis / MyBatis, Database
    Java Persistence API (JPA), Database
@@ -102,21 +115,28 @@ JavaScript and TypeScript built-in support
    Name, Category
    angular (modern version), HTML framework
    angular.js (legacy version), HTML framework
+   apollo-link-http, xxx
    axios, Network communicator
    browser, Runtime environment
    electron, Runtime environment
    express, Server
+   Formik
    hapi, Server
+   Immutable.js, xxx
    jquery, Utility library
    koa, Server
    lodash, Utility library
+   marked, xxx
    mongodb, Database
    mssql, Database
+   Multer, xxx
    mysql, Database
    node, Runtime environment
    postgres, Database
+   pug, xxx
    ramda, Utility library
    react, HTML framework
+   react-helmet, xxx
    request, Network communicator
    sequelize, Database
    socket.io, Network communicator
@@ -124,6 +144,8 @@ JavaScript and TypeScript built-in support
    superagent, Network communicator
    underscore, Utility library
    vue, HTML framework
+   vue-router, xxx
+   xml2js, xxx
 
 
 
