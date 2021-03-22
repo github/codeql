@@ -1364,7 +1364,7 @@ private predicate summarizedHigherOrderCall(
   |
     // direct higher-order call
     summarizedHigherOrderCallAux(f, arg, innerArg, cfg, oldSummary, cbParm, inner, j, cb) and
-    cbParm.flowsTo(inner.getCalleeNode()) and
+    inner = cbParm.getAnInvocation() and
     i = j and
     summary = oldSummary
     or
