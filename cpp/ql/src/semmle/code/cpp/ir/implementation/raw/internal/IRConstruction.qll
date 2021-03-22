@@ -168,6 +168,8 @@ predicate hasConflatedMemoryResult(Instruction instruction) {
   instruction instanceof AliasedDefinitionInstruction
   or
   instruction.getOpcode() instanceof Opcode::InitializeNonLocal
+  or
+  instruction.getOpcode() instanceof Opcode::CallSideEffect
 }
 
 Instruction getRegisterOperandDefinition(Instruction instruction, RegisterOperandTag tag) {

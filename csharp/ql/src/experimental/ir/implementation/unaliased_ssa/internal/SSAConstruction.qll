@@ -71,6 +71,8 @@ private module Cached {
     or
     instruction.getOpcode() instanceof Opcode::InitializeNonLocal
     or
+    instruction.getOpcode() instanceof Opcode::CallSideEffect
+    or
     // Chi instructions track virtual variables, and therefore a chi instruction is
     // conflated if it's associated with the aliased virtual variable.
     exists(OldInstruction oldInstruction | instruction = getChi(oldInstruction) |
