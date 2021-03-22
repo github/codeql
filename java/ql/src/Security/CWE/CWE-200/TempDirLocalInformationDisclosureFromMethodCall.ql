@@ -10,11 +10,12 @@
  *       external/cwe/cwe-732
  */
 
+import java
 import TempDirUtils
 
 abstract class MethodAccessInsecureFileCreation extends MethodAccess {
   /**
-   * Docstring describing the file system type (ie. file, directory, ect...) returned.
+   * Docstring describing the file system type (ie. file, directory, etc...) returned.
    */
   abstract string getFileSystemType();
 }

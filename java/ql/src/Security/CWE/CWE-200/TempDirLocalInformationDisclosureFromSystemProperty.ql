@@ -1,6 +1,6 @@
 /**
  * @name Temporary Directory Local information disclosure
- * @description Detect local information disclosure via the java temporary directory
+ * @description Writing information without explicit permissions to a shared temporary directory may disclose it to other users.
  * @kind path-problem
  * @problem.severity warning
  * @precision very-high
@@ -10,16 +10,14 @@
  *       external/cwe/cwe-732
  */
 
+import java
 import TempDirUtils
 import DataFlow::PathGraph
 
 private class MethodFileSystemFileCreation extends Method {
   MethodFileSystemFileCreation() {
     getDeclaringType() instanceof TypeFile and
-    (
-      hasName(["mkdir", "mkdirs"]) or
-      hasName("createNewFile")
-    )
+    hasName(["mkdir", "mkdirs", "createNewFile"])
   }
 }
 
@@ -52,11 +50,13 @@ private class FilesFileCreationSink extends FileCreationSink {
  */
 private class FilesVulnerableCreationMethodAccess extends MethodAccess {
   FilesVulnerableCreationMethodAccess() {
-    getMethod().getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
-    (
-      getMethod().hasName(["write", "newBufferedWriter", "newOutputStream"])
+    exists(Method m |
+      m = this.getMethod() and
+      m.getDeclaringType().hasQualifiedName("java.nio.file", "Files")
+    |
+      m.hasName(["write", "newBufferedWriter", "newOutputStream"])
       or
-      getMethod().hasName(["createFile", "createDirectory", "createDirectories"]) and
+      m.hasName(["createFile", "createDirectory", "createDirectories"]) and
       getNumArgument() = 1
     )
   }

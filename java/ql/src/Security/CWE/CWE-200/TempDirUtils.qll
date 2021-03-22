@@ -30,7 +30,7 @@ private class MethodAccessApacheFileUtilsTempDir extends MethodAccessSystemGetPr
 }
 
 /**
- * All `java.io.File::createTempFile` methods.
+ * A `java.io.File::createTempFile` method.
  */
 class MethodFileCreateTempFile extends Method {
   MethodFileCreateTempFile() {
