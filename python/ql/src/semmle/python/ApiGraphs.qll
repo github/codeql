@@ -55,7 +55,7 @@ module API {
     /**
      * Gets a call to the function represented by this API component.
      */
-    DataFlow::Node getACall() { result = getReturn().getAnImmediateUse() }
+    DataFlow::CallCfgNode getACall() { result = getReturn().getAnImmediateUse() }
 
     /**
      * Gets a node representing member `m` of this API component.
