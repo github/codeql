@@ -4,6 +4,7 @@
 
 import javascript
 private import internal.StmtContainers
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A program element corresponding to JavaScript code, such as an expression
@@ -75,7 +76,7 @@ class ASTNode extends @ast_node, NodeInStmtContainer {
 
   /** Gets the toplevel syntactic unit to which this element belongs. */
   cached
-  TopLevel getTopLevel() { result = getParent().getTopLevel() }
+  TopLevel getTopLevel() { Stages::Ast::ref() and result = getParent().getTopLevel() }
 
   /**
    * Gets the `i`th child node of this node.
@@ -119,7 +120,7 @@ class ASTNode extends @ast_node, NodeInStmtContainer {
 
   /** Gets the parent node of this node, if any. */
   cached
-  ASTNode getParent() { this = result.getAChild() }
+  ASTNode getParent() { Stages::Ast::ref() and this = result.getAChild() }
 
   /** Gets the first control flow node belonging to this syntactic entity. */
   ControlFlowNode getFirstControlFlowNode() { result = this }
@@ -135,6 +136,7 @@ class ASTNode extends @ast_node, NodeInStmtContainer {
    */
   cached
   private predicate isAmbientInternal() {
+    Stages::Ast::ref() and
     getParent().isAmbientInternal()
     or
     not isAmbientTopLevel(getTopLevel()) and
@@ -186,7 +188,9 @@ class ASTNode extends @ast_node, NodeInStmtContainer {
  * Holds if the given file is a `.d.ts` file.
  */
 cached
-private predicate isAmbientTopLevel(TopLevel tl) { tl.getFile().getBaseName().matches("%.d.ts") }
+private predicate isAmbientTopLevel(TopLevel tl) {
+  Stages::Ast::ref() and tl.getFile().getBaseName().matches("%.d.ts")
+}
 
 /**
  * A toplevel syntactic unit; that is, a stand-alone script, an inline script

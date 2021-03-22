@@ -27,7 +27,7 @@ namespace Semmle.Autobuild.Shared
         public static IEnumerable<VcVarsBatFile> GetCandidateVcVarsFiles(IBuildActions actions)
         {
             var programFilesx86 = actions.GetEnvironmentVariable("ProgramFiles(x86)");
-            if (programFilesx86 == null)
+            if (programFilesx86 is null)
                 yield break;
 
             // Attempt to use vswhere to find installations of Visual Studio
@@ -84,7 +84,7 @@ namespace Semmle.Autobuild.Shared
         /// </summary>
         /// <param name="sln">The solution file.</param>
         /// <returns>A compatible file, or throws an exception.</returns>
-        public static VcVarsBatFile FindCompatibleVcVars(IBuildActions actions, ISolution sln) =>
+        public static VcVarsBatFile? FindCompatibleVcVars(IBuildActions actions, ISolution sln) =>
              FindCompatibleVcVars(actions, sln.ToolsVersion.Major);
 
         /// <summary>
@@ -92,9 +92,9 @@ namespace Semmle.Autobuild.Shared
         /// </summary>
         /// <param name="targetVersion">The tools version.</param>
         /// <returns>A compatible file, or null.</returns>
-        public static VcVarsBatFile FindCompatibleVcVars(IBuildActions actions, int targetVersion) =>
-            targetVersion < 10 ?
-                VcVarsAllBatFiles(actions).OrderByDescending(b => b.ToolsVersion).FirstOrDefault() :
-                VcVarsAllBatFiles(actions).Where(b => b.ToolsVersion >= targetVersion).OrderBy(b => b.ToolsVersion).FirstOrDefault();
+        public static VcVarsBatFile? FindCompatibleVcVars(IBuildActions actions, int targetVersion) =>
+            targetVersion < 10
+                ? VcVarsAllBatFiles(actions).OrderByDescending(b => b.ToolsVersion).FirstOrDefault()
+                : VcVarsAllBatFiles(actions).Where(b => b.ToolsVersion >= targetVersion).OrderBy(b => b.ToolsVersion).FirstOrDefault();
     }
 }

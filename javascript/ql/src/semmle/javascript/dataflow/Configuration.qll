@@ -72,6 +72,8 @@ private import javascript
 private import internal.FlowSteps
 private import internal.AccessPaths
 private import internal.CallGraphs
+private import internal.Unit
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A data flow tracking configuration for finding inter-procedural paths from
@@ -609,6 +611,57 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
 }
 
 /**
+ * A data flow edge that should be added to all data flow configurations in
+ * addition to standard data flow edges.
+ *
+ * This class is a singleton, and thus subclasses do not need to specify a characteristic predicate.
+ *
+ * Note: For performance reasons, all subclasses of this class should be part
+ * of the standard library. Override `Configuration::isAdditionalFlowStep`
+ * for analysis-specific flow steps.
+ */
+class SharedFlowStep extends Unit {
+  /**
+   * Holds if `pred` &rarr; `succ` should be considered a data flow edge.
+   */
+  predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+  /**
+   * Holds if `pred` &rarr; `succ` should be considered a data flow edge
+   * transforming values with label `predlbl` to have label `succlbl`.
+   */
+  predicate step(
+    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
+    DataFlow::FlowLabel succlbl
+  ) {
+    none()
+  }
+}
+
+/**
+ * Contributes subclasses of `SharedFlowStep` to `AdditionalFlowStep`.
+ *
+ * This is a placeholder until we migrate to the `SharedFlowStep` class and deprecate `AdditionalFlowStep`.
+ */
+private class SharedStepAsAdditionalFlowStep extends AdditionalFlowStep {
+  SharedStepAsAdditionalFlowStep() {
+    any(SharedFlowStep st).step(_, this) or
+    any(SharedFlowStep st).step(_, this, _, _)
+  }
+
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    any(SharedFlowStep st).step(pred, succ) and succ = this
+  }
+
+  override predicate step(
+    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
+    DataFlow::FlowLabel succlbl
+  ) {
+    any(SharedFlowStep st).step(pred, succ, predlbl, succlbl) and succ = this
+  }
+}
+
+/**
  * A collection of pseudo-properties that are used in multiple files.
  *
  * A pseudo-property represents the location where some value is stored in an object.
@@ -733,6 +786,7 @@ private class FlowStepThroughImport extends AdditionalFlowStep, DataFlow::ValueN
   override ImportSpecifier astNode;
 
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    Stages::FlowSteps::ref() and
     pred = this and
     succ = DataFlow::ssaDefinitionNode(SSA::definition(astNode))
   }

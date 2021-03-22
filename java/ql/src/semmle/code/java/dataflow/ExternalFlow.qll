@@ -64,6 +64,16 @@ import java
 private import semmle.code.java.dataflow.DataFlow::DataFlow
 private import internal.DataFlowPrivate
 
+/**
+ * A module importing the frameworks that provide external flow data,
+ * ensuring that they are visible to the taint tracking / data flow library.
+ */
+private module Frameworks {
+  private import semmle.code.java.frameworks.ApacheHttp
+  private import semmle.code.java.frameworks.apache.Lang
+  private import semmle.code.java.frameworks.guava.Guava
+}
+
 private predicate sourceModelCsv(string row) {
   row =
     [
@@ -86,13 +96,177 @@ private predicate sourceModelCsv(string row) {
       // SocketGetInputStreamMethod
       "java.net;Socket;false;getInputStream;();;ReturnValue;remote",
       // BeanValidationSource
-      "javax.validation;ConstraintValidator;true;isValid;;;Parameter[0];remote"
+      "javax.validation;ConstraintValidator;true;isValid;;;Parameter[0];remote",
+      // SpringMultipartRequestSource
+      "org.springframework.web.multipart;MultipartRequest;true;getFile;(String);;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getFileMap;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getFileNames;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getFiles;(String);;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getMultiFileMap;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartRequest;true;getMultipartContentType;(String);;ReturnValue;remote",
+      // SpringMultipartFileSource
+      "org.springframework.web.multipart;MultipartFile;true;getBytes;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getContentType;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getInputStream;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getName;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getOriginalFilename;();;ReturnValue;remote",
+      "org.springframework.web.multipart;MultipartFile;true;getResource;();;ReturnValue;remote",
+      // HttpServletRequest.get*
+      "javax.servlet.http;HttpServletRequest;false;getHeader;(String);;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getHeaders;(String);;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getHeaderNames;();;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getPathInfo;();;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getRequestURI;();;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getRequestURL;();;ReturnValue;remote",
+      "javax.servlet.http;HttpServletRequest;false;getRemoteUser;();;ReturnValue;remote",
+      // SpringWebRequestGetMethod
+      "org.springframework.web.context.request;WebRequest;false;getDescription;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getHeader;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getHeaderNames;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getHeaderValues;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getParameter;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getParameterMap;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getParameterNames;;;ReturnValue;remote",
+      "org.springframework.web.context.request;WebRequest;false;getParameterValues;;;ReturnValue;remote",
+      // TODO consider org.springframework.web.context.request.WebRequest.getRemoteUser
+      // ServletRequestGetBodyMethod
+      "javax.servlet;ServletRequest;false;getInputStream;();;ReturnValue;remote",
+      "javax.servlet;ServletRequest;false;getReader;();;ReturnValue;remote",
+      // CookieGet*
+      "javax.servlet.http;Cookie;false;getValue;();;ReturnValue;remote",
+      "javax.servlet.http;Cookie;false;getName;();;ReturnValue;remote",
+      "javax.servlet.http;Cookie;false;getComment;();;ReturnValue;remote",
+      // ApacheHttp*
+      "org.apache.http;HttpMessage;false;getParams;();;ReturnValue;remote",
+      "org.apache.http;HttpEntity;false;getContent;();;ReturnValue;remote",
+      // In the setting of Android we assume that XML has been transmitted over
+      // the network, so may be tainted.
+      // XmlPullGetMethod
+      "org.xmlpull.v1;XmlPullParser;false;getName;();;ReturnValue;remote",
+      "org.xmlpull.v1;XmlPullParser;false;getNamespace;();;ReturnValue;remote",
+      "org.xmlpull.v1;XmlPullParser;false;getText;();;ReturnValue;remote",
+      // XmlAttrSetGetMethod
+      "android.util;AttributeSet;false;getAttributeBooleanValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeCount;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeFloatValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeIntValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeListValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeName;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeNameResource;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeNamespace;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeResourceValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeUnsignedIntValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getAttributeValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getClassAttribute;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getIdAttribute;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getIdAttributeResourceValue;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getPositionDescription;;;ReturnValue;remote",
+      "android.util;AttributeSet;false;getStyleAttribute;;;ReturnValue;remote",
+      // The current URL in a browser may be untrusted or uncontrolled.
+      // WebViewGetUrlMethod
+      "android.webkit;WebView;false;getUrl;();;ReturnValue;remote",
+      "android.webkit;WebView;false;getOriginalUrl;();;ReturnValue;remote",
+      // SpringRestTemplateResponseEntityMethod
+      "org.springframework.web.client;RestTemplate;false;exchange;;;ReturnValue;remote",
+      "org.springframework.web.client;RestTemplate;false;getForEntity;;;ReturnValue;remote",
+      "org.springframework.web.client;RestTemplate;false;postForEntity;;;ReturnValue;remote",
+      // WebSocketMessageParameterSource
+      "java.net.http;WebSocket$Listener;true;onText;(WebSocket,CharSequence,boolean);;Parameter[1];remote",
+      // PlayRequestGetMethod
+      "play.mvc;Http$RequestHeader;false;queryString;;;ReturnValue;remote",
+      "play.mvc;Http$RequestHeader;false;getQueryString;;;ReturnValue;remote",
+      "play.mvc;Http$RequestHeader;false;header;;;ReturnValue;remote",
+      "play.mvc;Http$RequestHeader;false;getHeader;;;ReturnValue;remote"
     ]
 }
 
 private predicate sinkModelCsv(string row) { none() }
 
-private predicate summaryModelCsv(string row) { none() }
+private predicate summaryModelCsv(string row) {
+  row =
+    [
+      // qualifier to arg
+      "java.io;InputStream;true;read;(byte[]);;Argument[-1];Argument[0];taint",
+      "java.io;InputStream;true;read;(byte[],int,int);;Argument[-1];Argument[0];taint",
+      "java.io;ByteArrayOutputStream;false;writeTo;;;Argument[-1];Argument[0];taint",
+      "java.io;Reader;true;read;;;Argument[-1];Argument[0];taint",
+      // qualifier to return
+      "java.io;ByteArrayOutputStream;false;toByteArray;;;Argument[-1];ReturnValue;taint",
+      "java.io;ByteArrayOutputStream;false;toString;;;Argument[-1];ReturnValue;taint",
+      "java.util;StringTokenizer;false;nextElement;();;Argument[-1];ReturnValue;taint",
+      "java.util;StringTokenizer;false;nextToken;;;Argument[-1];ReturnValue;taint",
+      "javax.xml.transform.sax;SAXSource;false;getInputSource;;;Argument[-1];ReturnValue;taint",
+      "javax.xml.transform.stream;StreamSource;false;getInputStream;;;Argument[-1];ReturnValue;taint",
+      "java.nio;ByteBuffer;false;get;;;Argument[-1];ReturnValue;taint",
+      "java.net;URI;false;toURL;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;false;toURI;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;false;toPath;;;Argument[-1];ReturnValue;taint",
+      "java.nio.file;Path;false;toFile;;;Argument[-1];ReturnValue;taint",
+      "java.io;Reader;true;readLine;;;Argument[-1];ReturnValue;taint",
+      "java.io;Reader;true;read;();;Argument[-1];ReturnValue;taint",
+      // arg to return
+      "java.util;Base64$Encoder;false;encode;(byte[]);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Encoder;false;encode;(ByteBuffer);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Encoder;false;encodeToString;(byte[]);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Encoder;false;wrap;(OutputStream);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;decode;(byte[]);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;decode;(ByteBuffer);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;decode;(String);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;wrap;(InputStream);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;Encoder;true;encode;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;Decoder;true;decode;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;buffer;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;readLines;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,int);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toBufferedInputStream;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toBufferedReader;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toByteArray;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toCharArray;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toInputStream;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toString;;;Argument[0];ReturnValue;taint",
+      "java.net;URLDecoder;false;decode;;;Argument[0];ReturnValue;taint",
+      "java.net;URI;false;create;;;Argument[0];ReturnValue;taint",
+      "javax.xml.transform.sax;SAXSource;false;sourceToInputSource;;;Argument[0];ReturnValue;taint",
+      // arg to arg
+      "java.lang;System;false;arraycopy;;;Argument[0];Argument[2];taint",
+      "org.apache.commons.io;IOUtils;false;copy;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;copyLarge;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;read;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,byte[]);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,byte[],int,int);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,ByteBuffer);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(ReadableByteChannel,ByteBuffer);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(Reader,char[]);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(Reader,char[],int,int);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;write;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;writeChunked;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;writeLines;;;Argument[0];Argument[2];taint",
+      "org.apache.commons.io;IOUtils;false;writeLines;;;Argument[1];Argument[2];taint",
+      // constructor flow
+      "java.io;File;false;File;;;Argument[0];Argument[-1];taint",
+      "java.io;File;false;File;;;Argument[1];Argument[-1];taint",
+      "java.net;URI;false;URI;(String);;Argument[0];Argument[-1];taint",
+      "javax.xml.transform.stream;StreamSource;false;StreamSource;;;Argument[0];Argument[-1];taint",
+      "javax.xml.transform.sax;SAXSource;false;SAXSource;(InputSource);;Argument[0];Argument[-1];taint",
+      "javax.xml.transform.sax;SAXSource;false;SAXSource;(XMLReader,InputSource);;Argument[1];Argument[-1];taint",
+      "org.xml.sax;InputSource;false;InputSource;;;Argument[0];Argument[-1];taint",
+      "javax.servlet.http;Cookie;false;Cookie;;;Argument[0];Argument[-1];taint",
+      "javax.servlet.http;Cookie;false;Cookie;;;Argument[1];Argument[-1];taint",
+      "java.util.zip;ZipInputStream;false;ZipInputStream;;;Argument[0];Argument[-1];taint",
+      "java.util.zip;GZIPInputStream;false;GZIPInputStream;;;Argument[0];Argument[-1];taint",
+      "java.util;StringTokenizer;false;StringTokenizer;;;Argument[0];Argument[-1];taint",
+      "java.beans;XMLDecoder;false;XMLDecoder;;;Argument[0];Argument[-1];taint",
+      "com.esotericsoftware.kryo.io;Input;false;Input;;;Argument[0];Argument[-1];taint",
+      "java.io;BufferedInputStream;false;BufferedInputStream;;;Argument[0];Argument[-1];taint",
+      "java.io;DataInputStream;false;DataInputStream;;;Argument[0];Argument[-1];taint",
+      "java.io;ByteArrayInputStream;false;ByteArrayInputStream;;;Argument[0];Argument[-1];taint",
+      "java.io;ObjectInputStream;false;ObjectInputStream;;;Argument[0];Argument[-1];taint",
+      "java.io;StringReader;false;StringReader;;;Argument[0];Argument[-1];taint",
+      "java.io;CharArrayReader;false;CharArrayReader;;;Argument[0];Argument[-1];taint",
+      "java.io;BufferedReader;false;BufferedReader;;;Argument[0];Argument[-1];taint",
+      "java.io;InputStreamReader;false;InputStreamReader;;;Argument[0];Argument[-1];taint"
+    ]
+}
 
 /**
  * A unit class for adding additional source model rows.
@@ -214,7 +388,7 @@ module CsvValidation {
       not name.regexpMatch("[a-zA-Z0-9_]*") and
       msg = "Dubious name \"" + name + "\" in " + pred + " model."
       or
-      not signature.regexpMatch("|\\([a-zA-Z0-9_\\.\\$<>,]*\\)") and
+      not signature.regexpMatch("|\\([a-zA-Z0-9_\\.\\$<>,\\[\\]]*\\)") and
       msg = "Dubious signature \"" + signature + "\" in " + pred + " model."
       or
       not ext.regexpMatch("|Annotated") and
@@ -401,21 +575,27 @@ private predicate outputNeedsReference(string c) {
 private predicate sourceElementRef(Top ref, string output, string kind) {
   exists(Element e |
     sourceElement(e, output, kind) and
-    if outputNeedsReference(getLast(output)) then ref.(Call).getCallee() = e else ref = e
+    if outputNeedsReference(getLast(output))
+    then ref.(Call).getCallee().getSourceDeclaration() = e
+    else ref = e
   )
 }
 
 private predicate sinkElementRef(Top ref, string input, string kind) {
   exists(Element e |
     sinkElement(e, input, kind) and
-    if inputNeedsReference(getLast(input)) then ref.(Call).getCallee() = e else ref = e
+    if inputNeedsReference(getLast(input))
+    then ref.(Call).getCallee().getSourceDeclaration() = e
+    else ref = e
   )
 }
 
 private predicate summaryElementRef(Top ref, string input, string output, string kind) {
   exists(Element e |
     summaryElement(e, input, output, kind) and
-    if inputNeedsReference(getLast(input)) then ref.(Call).getCallee() = e else ref = e
+    if inputNeedsReference(getLast(input))
+    then ref.(Call).getCallee().getSourceDeclaration() = e
+    else ref = e
   )
 }
 

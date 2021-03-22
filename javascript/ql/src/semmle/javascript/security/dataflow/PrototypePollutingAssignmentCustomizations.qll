@@ -51,10 +51,6 @@ module PrototypePollutingAssignment {
 
   /** A remote flow source or location.{hash,search} as a taint source. */
   private class DefaultSource extends Source {
-    DefaultSource() {
-      this instanceof RemoteFlowSource
-      or
-      this = DOM::locationRef().getAPropertyRead(["hash", "search"])
-    }
+    DefaultSource() { this instanceof RemoteFlowSource }
   }
 }

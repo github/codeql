@@ -67,3 +67,5 @@ query predicate isRecursivePatternExprWithDecl(
 }
 
 query predicate labeledPatternExpr(LabeledPatternExpr e, string s) { s = e.getLabel() }
+
+query predicate tupleTypes(TupleExpr te, Type t) { te.getType() = t }

@@ -9,6 +9,7 @@
 private import javascript
 private import internal.FlowSteps
 private import internal.StepSummary
+private import semmle.javascript.internal.CachedStages
 
 private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalPropertyName prop)
 
@@ -51,7 +52,9 @@ class TypeTracker extends TTypeTracker {
   /** Gets the summary resulting from appending `step` to this type-tracking summary. */
   cached
   TypeTracker append(StepSummary step) {
-    step = LevelStep() and result = this
+    Stages::TypeTracking::ref() and
+    step = LevelStep() and
+    result = this
     or
     exists(string toProp | step = LoadStoreStep(prop, toProp) |
       result = MkTypeTracker(hasCall, toProp)
@@ -214,8 +217,11 @@ class TypeBackTracker extends TTypeBackTracker {
   TypeBackTracker() { this = MkTypeBackTracker(hasReturn, prop) }
 
   /** Gets the summary resulting from prepending `step` to this type-tracking summary. */
+  cached
   TypeBackTracker prepend(StepSummary step) {
-    step = LevelStep() and result = this
+    Stages::TypeTracking::ref() and
+    step = LevelStep() and
+    result = this
     or
     exists(string fromProp | step = LoadStoreStep(fromProp, prop) |
       result = MkTypeBackTracker(hasReturn, fromProp)

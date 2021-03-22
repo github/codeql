@@ -62,24 +62,8 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
       e1 = e2.(BinaryLogicalOperation).getAnOperand() and
       scope = e2
       or
-      // Taint from tuple argument
-      e2 =
-        any(TupleExpr te |
-          e1 = te.getAnArgument() and
-          te.isReadAccess() and
-          scope = e2
-        )
-      or
       e1 = e2.(InterpolatedStringExpr).getAChild() and
       scope = e2
-      or
-      // Taint from tuple expression
-      e2 =
-        any(MemberAccess ma |
-          ma.getQualifier().getType() instanceof TupleType and
-          e1 = ma.getQualifier() and
-          scope = e2
-        )
       or
       e2 =
         any(OperatorCall oc |

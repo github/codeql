@@ -29,24 +29,26 @@ private module DateFns {
    *
    * A format string can use single-quotes to include mostly arbitrary text.
    */
-  private class FormatStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
-    FormatStep() { this = formatFunction().getACall() }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getArgument(1) and
-      succ = this
+  private class FormatStep extends TaintTracking::SharedTaintStep {
+    override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode call |
+        call = formatFunction().getACall() and
+        pred = call.getArgument(1) and
+        succ = call
+      )
     }
   }
 
   /**
    * Taint step of form: `f -> format(f)(date)`
    */
-  private class CurriedFormatStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
-    CurriedFormatStep() { this = curriedFormatFunction().getACall() }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getArgument(0) and
-      succ = getACall()
+  private class CurriedFormatStep extends TaintTracking::SharedTaintStep {
+    override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode call |
+        call = curriedFormatFunction().getACall() and
+        pred = call.getArgument(0) and
+        succ = call.getACall()
+      )
     }
   }
 }
@@ -66,12 +68,13 @@ private module Moment {
    *
    * The format string can use backslash-escaping to include mostly arbitrary text.
    */
-  private class MomentFormatStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
-    MomentFormatStep() { this = moment().getMember("format").getACall() }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getArgument(0) and
-      succ = this
+  private class MomentFormatStep extends TaintTracking::SharedTaintStep {
+    override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode call |
+        call = moment().getMember("format").getACall() and
+        pred = call.getArgument(0) and
+        succ = call
+      )
     }
   }
 }
@@ -82,12 +85,13 @@ private module DateFormat {
    *
    * The format string can use single-quotes to include mostly arbitrary text.
    */
-  private class DateFormatStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
-    DateFormatStep() { this = DataFlow::moduleImport("dateformat").getACall() }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getArgument(1) and
-      succ = this
+  private class DateFormatStep extends TaintTracking::SharedTaintStep {
+    override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode call |
+        call = DataFlow::moduleImport("dateformat").getACall() and
+        pred = call.getArgument(1) and
+        succ = call
+      )
     }
   }
 }

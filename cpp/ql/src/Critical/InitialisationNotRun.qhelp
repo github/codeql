@@ -11,7 +11,7 @@ Uninitialized variables may contain any value, as not all compilers generate cod
 optimizations are enabled or the compiler is not compliant with the latest language standards.
 </p>
 
-<include src="callGraphWarning.qhelp" />
+<include src="callGraphWarning.inc.qhelp" />
 </overview>
 
 <recommendation>

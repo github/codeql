@@ -1867,7 +1867,11 @@ private module Django {
       // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
       // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
       result = this.getAMethod() and
-      result.getName() = HTTP::httpVerbLower()
+      (
+        result.getName() = HTTP::httpVerbLower()
+        or
+        result.getName() = "get_redirect_url"
+      )
     }
 
     /**
@@ -1917,6 +1921,8 @@ private module Django {
   /**
    * A function that is a django route handler, meaning it handles incoming requests
    * with the django framework.
+   *
+   * Most functions take a django HttpRequest as a parameter (but not all).
    */
   private class DjangoRouteHandler extends Function {
     DjangoRouteHandler() {
@@ -1924,6 +1930,12 @@ private module Django {
       or
       any(DjangoViewClass vc).getARequestHandler() = this
     }
+
+    /**
+     * Gets the index of the parameter where the first routed parameter can be passed --
+     * that is, the one just after any possible `self` or HttpRequest parameters.
+     */
+    int getFirstPossibleRoutedParamIndex() { result = 1 + this.getRequestParamIndex() }
 
     /** Gets the index of the request parameter. */
     int getRequestParamIndex() {
@@ -1936,6 +1948,26 @@ private module Django {
 
     /** Gets the request parameter. */
     Parameter getRequestParam() { result = this.getArg(this.getRequestParamIndex()) }
+  }
+
+  /**
+   * A method named `get_redirect_url` on a django view class.
+   *
+   * See https://docs.djangoproject.com/en/3.1/ref/class-based-views/base/#django.views.generic.base.RedirectView.get_redirect_url
+   *
+   * Note: this function only does something on a subclass of `RedirectView`, but since
+   * classes can be considered django view classes without us knowing their super-classes,
+   * we need to consider _any_ django view class. I don't expect any problems to come from this.
+   */
+  private class GetRedirectUrlFunction extends DjangoRouteHandler {
+    GetRedirectUrlFunction() {
+      this.getName() = "get_redirect_url" and
+      any(DjangoViewClass vc).getARequestHandler() = this
+    }
+
+    override int getFirstPossibleRoutedParamIndex() { result = 1 }
+
+    override int getRequestParamIndex() { none() }
   }
 
   /** A data-flow node that sets up a route on a server, using the django framework. */
@@ -1968,7 +2000,7 @@ private module Django {
       // parameter. This should give us more RemoteFlowSources but could also lead to
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
       result in [this.getArg(_), this.getArgByName(_)] and
-      not result = any(int i | i <= this.getRequestParamIndex() | this.getArg(i))
+      not result = any(int i | i < this.getFirstPossibleRoutedParamIndex() | this.getArg(i))
     }
 
     override string getFramework() { result = "Django" }
@@ -2008,7 +2040,8 @@ private module Django {
       exists(DjangoRouteHandler routeHandler | routeHandler = this.getARequestHandler() |
         not exists(this.getUrlPattern()) and
         result in [routeHandler.getArg(_), routeHandler.getArgByName(_)] and
-        not result = any(int i | i <= routeHandler.getRequestParamIndex() | routeHandler.getArg(i))
+        not result =
+          any(int i | i < routeHandler.getFirstPossibleRoutedParamIndex() | routeHandler.getArg(i))
       )
       or
       exists(string name |
@@ -2030,7 +2063,8 @@ private module Django {
       exists(DjangoRouteHandler routeHandler | routeHandler = this.getARequestHandler() |
         not exists(this.getUrlPattern()) and
         result in [routeHandler.getArg(_), routeHandler.getArgByName(_)] and
-        not result = any(int i | i <= routeHandler.getRequestParamIndex() | routeHandler.getArg(i))
+        not result =
+          any(int i | i < routeHandler.getFirstPossibleRoutedParamIndex() | routeHandler.getArg(i))
       )
       or
       exists(DjangoRouteHandler routeHandler, DjangoRouteRegex regex |
@@ -2042,7 +2076,9 @@ private module Django {
         not exists(regex.getGroupName(_, _)) and
         // first group will have group number 1
         result =
-          routeHandler.getArg(routeHandler.getRequestParamIndex() + regex.getGroupNumber(_, _))
+          routeHandler
+              .getArg(routeHandler.getFirstPossibleRoutedParamIndex() - 1 +
+                  regex.getGroupNumber(_, _))
         or
         result = routeHandler.getArgByName(regex.getGroupName(_, _))
       )
@@ -2231,6 +2267,33 @@ private module Django {
     override DataFlow::Node getRedirectLocation() {
       result.asCfgNode() in [node.getArg(0), node.getArgByName("to")]
     }
+
+    override DataFlow::Node getBody() { none() }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+    override string getMimetypeDefault() { none() }
+  }
+
+  // ---------------------------------------------------------------------------
+  // RedirectView handling
+  // ---------------------------------------------------------------------------
+  /**
+   * A return from a method named `get_redirect_url` on a django view class.
+   *
+   * Note that in reality, this only does something on a subclass of `RedirectView` --
+   * but until API graphs makes this easy to model, I took a shortcut in modeling
+   * preciseness.
+   *
+   * See https://docs.djangoproject.com/en/3.1/ref/class-based-views/base/#redirectview
+   */
+  private class DjangoRedirectViewGetRedirectUrlReturn extends HTTP::Server::HttpRedirectResponse::Range,
+    DataFlow::CfgNode {
+    DjangoRedirectViewGetRedirectUrlReturn() {
+      node = any(GetRedirectUrlFunction f).getAReturnValueFlowNode()
+    }
+
+    override DataFlow::Node getRedirectLocation() { result = this }
 
     override DataFlow::Node getBody() { none() }
 

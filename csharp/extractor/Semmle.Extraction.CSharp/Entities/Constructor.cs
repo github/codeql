@@ -5,10 +5,11 @@ using System.Linq;
 using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Extraction.Entities;
 using System.IO;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public class Constructor : Method
+    internal class Constructor : Method
     {
         private Constructor(Context cx, IMethodSymbol init)
             : base(cx, init) { }
@@ -17,7 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             PopulateMethod(trapFile);
             PopulateModifiers(trapFile);
-            ContainingType.PopulateGenerics();
+            ContainingType!.PopulateGenerics();
 
             trapFile.constructors(this, Symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
             trapFile.constructor_location(this, Location);
@@ -39,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var syntax = Syntax;
             var initializer = syntax?.Initializer;
 
-            if (initializer == null)
+            if (initializer is null)
                 return;
 
             ITypeSymbol initializerType;
@@ -48,7 +49,7 @@ namespace Semmle.Extraction.CSharp.Entities
             switch (initializer.Kind())
             {
                 case SyntaxKind.BaseConstructorInitializer:
-                    initializerType = Symbol.ContainingType.BaseType;
+                    initializerType = Symbol.ContainingType.BaseType!;
                     break;
                 case SyntaxKind.ThisConstructorInitializer:
                     initializerType = Symbol.ContainingType;
@@ -69,9 +70,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
             var init = new Expression(initInfo);
 
-            var target = Constructor.Create(Context, (IMethodSymbol)symbolInfo.Symbol);
-
-            if (target == null)
+            var target = Constructor.Create(Context, (IMethodSymbol?)symbolInfo.Symbol);
+            if (target is null)
             {
                 Context.ModelError(Symbol, "Unable to resolve call");
                 return;
@@ -86,7 +86,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        private ConstructorDeclarationSyntax Syntax
+        private ConstructorDeclarationSyntax? Syntax
         {
             get
             {
@@ -97,9 +97,10 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public static new Constructor Create(Context cx, IMethodSymbol constructor)
+        [return: NotNullIfNotNull("constructor")]
+        public static new Constructor? Create(Context cx, IMethodSymbol? constructor)
         {
-            if (constructor == null)
+            if (constructor is null)
                 return null;
 
             switch (constructor.MethodKind)
@@ -116,40 +117,40 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (Symbol.IsStatic)
                 trapFile.Write("static");
-            trapFile.WriteSubId(ContainingType);
+            trapFile.WriteSubId(ContainingType!);
             AddParametersToId(Context, trapFile, Symbol);
             trapFile.Write(";constructor");
         }
 
-        private ConstructorDeclarationSyntax GetSyntax() =>
+        private ConstructorDeclarationSyntax? GetSyntax() =>
             Symbol.DeclaringSyntaxReferences.Select(r => r.GetSyntax()).OfType<ConstructorDeclarationSyntax>().FirstOrDefault();
 
-        public override Microsoft.CodeAnalysis.Location FullLocation => ReportingLocation;
+        public override Microsoft.CodeAnalysis.Location? FullLocation => ReportingLocation;
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation
         {
             get
             {
                 var syn = GetSyntax();
-                if (syn != null)
+                if (syn is not null)
                 {
                     return syn.Identifier.GetLocation();
                 }
 
                 if (Symbol.IsImplicitlyDeclared)
                 {
-                    return ContainingType.ReportingLocation;
+                    return ContainingType!.ReportingLocation;
                 }
 
                 return Symbol.ContainingType.Locations.FirstOrDefault();
             }
         }
 
-        private class ConstructorFactory : ICachedEntityFactory<IMethodSymbol, Constructor>
+        private class ConstructorFactory : CachedEntityFactory<IMethodSymbol, Constructor>
         {
             public static ConstructorFactory Instance { get; } = new ConstructorFactory();
 
-            public Constructor Create(Context cx, IMethodSymbol init) => new Constructor(cx, init);
+            public override Constructor Create(Context cx, IMethodSymbol init) => new Constructor(cx, init);
         }
     }
 }

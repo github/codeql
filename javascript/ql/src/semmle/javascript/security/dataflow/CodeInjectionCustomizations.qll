@@ -33,13 +33,6 @@ module CodeInjection {
   }
 
   /**
-   * An access to a property that may hold (parts of) the document URL.
-   */
-  class LocationSource extends Source {
-    LocationSource() { this = DOM::locationSource() }
-  }
-
-  /**
    * An expression which may be interpreted as an AngularJS expression.
    */
   class AngularJSExpressionSink extends Sink, DataFlow::ValueNode {

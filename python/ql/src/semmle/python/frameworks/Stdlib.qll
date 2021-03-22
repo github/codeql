@@ -8,6 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
+private import semmle.python.ApiGraphs
 private import PEP249
 
 /** Provides models for the Python standard library. */
@@ -613,82 +614,35 @@ private module Stdlib {
   // ---------------------------------------------------------------------------
   // builtins
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `builtins` module (called `__builtin__` in Python 2). */
-  private DataFlow::Node builtins(DataFlow::TypeTracker t) {
-    t.start() and
-    result = DataFlow::importNode(["builtins", "__builtin__"])
-    or
-    exists(DataFlow::TypeTracker t2 | result = builtins(t2).track(t2, t))
-  }
-
-  /** Gets a reference to the `builtins` module. */
-  DataFlow::Node builtins() { result = builtins(DataFlow::TypeTracker::end()) }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `builtins` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private DataFlow::Node builtins_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["exec", "eval", "compile", "open"] and
-    (
-      t.start() and
-      result = DataFlow::importNode(["builtins", "__builtin__"] + "." + attr_name)
-      or
-      t.startInAttr(attr_name) and
-      result = DataFlow::importNode(["builtins", "__builtin__"])
-      or
-      // special handling of builtins, that are in scope without any imports
-      // TODO: Take care of overrides, either `def eval: ...`, `eval = ...`, or `builtins.eval = ...`
-      t.start() and
-      exists(NameNode ref | result.asCfgNode() = ref |
-        ref.isGlobal() and
-        ref.getId() = attr_name and
-        ref.isLoad()
-      )
-    )
-    or
-    exists(DataFlow::TypeTracker t2 | result = builtins_attr(t2, attr_name).track(t2, t))
-  }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `builtins` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private DataFlow::Node builtins_attr(string attr_name) {
-    result = builtins_attr(DataFlow::TypeTracker::end(), attr_name)
-  }
-
   /**
    * A call to the builtin `exec` function.
    * See https://docs.python.org/3/library/functions.html#exec
    */
-  private class BuiltinsExecCall extends CodeExecution::Range, DataFlow::CfgNode {
-    override CallNode node;
+  private class BuiltinsExecCall extends CodeExecution::Range, DataFlow::CallCfgNode {
+    BuiltinsExecCall() { this = API::builtin("exec").getACall() }
 
-    BuiltinsExecCall() { node.getFunction() = builtins_attr("exec").asCfgNode() }
-
-    override DataFlow::Node getCode() { result.asCfgNode() = node.getArg(0) }
+    override DataFlow::Node getCode() { result = this.getArg(0) }
   }
 
   /**
    * A call to the builtin `eval` function.
    * See https://docs.python.org/3/library/functions.html#eval
    */
-  private class BuiltinsEvalCall extends CodeExecution::Range, DataFlow::CfgNode {
+  private class BuiltinsEvalCall extends CodeExecution::Range, DataFlow::CallCfgNode {
     override CallNode node;
 
-    BuiltinsEvalCall() { node.getFunction() = builtins_attr("eval").asCfgNode() }
+    BuiltinsEvalCall() { this = API::builtin("eval").getACall() }
 
-    override DataFlow::Node getCode() { result.asCfgNode() = node.getArg(0) }
+    override DataFlow::Node getCode() { result = this.getArg(0) }
   }
 
   /** An additional taint step for calls to the builtin function `compile` */
   private class BuiltinsCompileCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      exists(CallNode call |
-        nodeTo.asCfgNode() = call and
-        call.getFunction() = builtins_attr("compile").asCfgNode() and
-        nodeFrom.asCfgNode() in [call.getArg(0), call.getArgByName("source")]
+      exists(DataFlow::CallCfgNode call |
+        nodeTo = call and
+        call = API::builtin("compile").getACall() and
+        nodeFrom in [call.getArg(0), call.getArgByName("source")]
       )
     }
   }
@@ -697,23 +651,22 @@ private module Stdlib {
    * A call to the builtin `open` function.
    * See https://docs.python.org/3/library/functions.html#open
    */
-  private class OpenCall extends FileSystemAccess::Range, DataFlow::CfgNode {
-    override CallNode node;
-
+  private class OpenCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
     OpenCall() {
-      node.getFunction() = builtins_attr("open").asCfgNode()
+      this = API::builtin("open").getACall()
       or
-      node.getFunction() = io_attr("open").asCfgNode()
+      // io.open is a special case, since it is an alias for the builtin `open`
+      this = API::moduleImport("io").getMember("open").getACall()
     }
 
     override DataFlow::Node getAPathArgument() {
-      result.asCfgNode() in [node.getArg(0), node.getArgByName("file")]
+      result in [this.getArg(0), this.getArgByName("file")]
     }
   }
 
   /**
    * An exec statement (only Python 2).
-   * Se ehttps://docs.python.org/2/reference/simple_stmts.html#the-exec-statement.
+   * See https://docs.python.org/2/reference/simple_stmts.html#the-exec-statement.
    */
   private class ExecStatement extends CodeExecution::Range {
     ExecStatement() {
@@ -841,45 +794,6 @@ private module Stdlib {
         name = "b85decode" and result = "Base85"
       )
     }
-  }
-
-  // ---------------------------------------------------------------------------
-  // io
-  // ---------------------------------------------------------------------------
-  /** Gets a reference to the `io` module. */
-  private DataFlow::Node io(DataFlow::TypeTracker t) {
-    t.start() and
-    result = DataFlow::importNode("io")
-    or
-    exists(DataFlow::TypeTracker t2 | result = io(t2).track(t2, t))
-  }
-
-  /** Gets a reference to the `io` module. */
-  DataFlow::Node io() { result = io(DataFlow::TypeTracker::end()) }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `io` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private DataFlow::Node io_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["open"] and
-    (
-      t.start() and
-      result = DataFlow::importNode("io" + "." + attr_name)
-      or
-      t.startInAttr(attr_name) and
-      result = io()
-    )
-    or
-    exists(DataFlow::TypeTracker t2 | result = io_attr(t2, attr_name).track(t2, t))
-  }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `io` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private DataFlow::Node io_attr(string attr_name) {
-    result = io_attr(DataFlow::TypeTracker::end(), attr_name)
   }
 
   // ---------------------------------------------------------------------------

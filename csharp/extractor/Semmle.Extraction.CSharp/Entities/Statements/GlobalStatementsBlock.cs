@@ -15,7 +15,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             this.parent = parent;
         }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation
         {
             get
             {

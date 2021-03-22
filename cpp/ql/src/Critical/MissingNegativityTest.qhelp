@@ -16,7 +16,7 @@ buffer overruns.
 The query looks only at the return values of functions that may return a negative value (not all functions).
 </p>
 
-<include src="dataFlowWarning.qhelp" />
+<include src="dataFlowWarning.inc.qhelp" />
 </overview>
 
 <recommendation>

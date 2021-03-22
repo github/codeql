@@ -72,7 +72,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         {
             Expressions.Pattern.Create(Context, Stmt.Pattern, this, 0);
 
-            if (Stmt.WhenClause != null)
+            if (Stmt.WhenClause is not null)
             {
                 Expression.Create(Context, Stmt.WhenClause.Condition, this, 1);
             }

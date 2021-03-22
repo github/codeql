@@ -26,8 +26,8 @@ rename it to avoid confusion with the inherited method <code>Object.equals</code
 
 
 <li>
-Java 2 Platform, Standard Edition 5.0, API Specification:
-<a href="http://docs.oracle.com/javase/1.5.0/docs/api/java/lang/Object.html#equals(java.lang.Object)">
+Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)">
 equals</a>.
 </li>
 

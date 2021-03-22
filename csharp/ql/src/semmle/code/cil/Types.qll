@@ -310,4 +310,15 @@ class FunctionPointerType extends Type, CustomModifierReceiver, Parameterizable,
   int getCallingConvention() { cil_function_pointer_calling_conventions(this, result) }
 
   override string toString() { result = Type.super.toString() }
+
+  /** Holds if the return type is `void`. */
+  predicate returnsVoid() { getReturnType() instanceof VoidType }
+
+  /** Gets the number of stack items pushed in a call to this method. */
+  int getCallPushCount() { if returnsVoid() then result = 0 else result = 1 }
+
+  /** Gets the number of stack items popped in a call to this method. */
+  int getCallPopCount() { result = count(getRawParameter(_)) }
+
+  override string getLabel() { result = getName() }
 }

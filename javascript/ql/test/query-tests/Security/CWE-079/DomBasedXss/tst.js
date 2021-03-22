@@ -423,3 +423,11 @@ function hash2() {
 
   document.write(window.location.hash.split('#')[1]); // NOT OK
 }
+
+function nonGlobalSanitizer() {
+  var target = document.location.search
+
+  $("#foo").html(target.replace(/<metadata>[\s\S]*<\/metadata>/, '<metadata></metadata>')); // NOT OK
+
+  $("#foo").html(target.replace(/<|>/g, '')); // OK
+}

@@ -77,46 +77,61 @@ module Angular2 {
   }
 
   /** Gets a reference to a `ParamMap` object, usually containing values from the URL. */
-  DataFlow::SourceNode paramMap() {
-    result.hasUnderlyingType("@angular/router", "ParamMap")
+  private DataFlow::SourceNode paramMap(ClientSideRemoteFlowKind kind) {
+    result.hasUnderlyingType("@angular/router", "ParamMap") and kind.isPath()
     or
-    result = activatedRouteProp(["paramMap", "queryParamMap"])
+    result = activatedRouteProp("paramMap") and kind.isPath()
     or
-    result = urlSegment().getAPropertyRead("parameterMap")
+    result = activatedRouteProp("queryParamMap") and kind.isQuery()
+    or
+    result = urlSegment().getAPropertyRead("parameterMap") and kind.isPath()
+  }
+
+  /** Gets a reference to a `ParamMap` object, usually containing values from the URL. */
+  DataFlow::SourceNode paramMap() { result = paramMap(_) }
+
+  /** Gets a reference to a `Params` object, usually containing values from the URL. */
+  private DataFlow::SourceNode paramDictionaryObject(ClientSideRemoteFlowKind kind) {
+    result.hasUnderlyingType("@angular/router", "Params") and
+    kind.isPath() and
+    not result instanceof DataFlow::ObjectLiteralNode // ignore object literals found by contextual typing
+    or
+    result = activatedRouteProp("params") and kind.isPath()
+    or
+    result = activatedRouteProp("queryParams") and kind.isQuery()
+    or
+    result = paramMap(kind).getAPropertyRead("params")
+    or
+    result = urlSegment().getAPropertyRead("parameters") and kind.isPath()
   }
 
   /** Gets a reference to a `Params` object, usually containing values from the URL. */
-  DataFlow::SourceNode paramDictionaryObject() {
-    result.hasUnderlyingType("@angular/router", "Params") and
-    not result instanceof DataFlow::ObjectLiteralNode // ignore object literals found by contextual typing
-    or
-    result = activatedRouteProp(["params", "queryParams"])
-    or
-    result = paramMap().getAPropertyRead("params")
-    or
-    result = urlSegment().getAPropertyRead("parameters")
-  }
+  DataFlow::SourceNode paramDictionaryObject() { result = paramDictionaryObject(_) }
 
   /**
    * A value from `@angular/router` derived from the URL.
    */
-  class AngularSource extends RemoteFlowSource {
+  class AngularSource extends ClientSideRemoteFlowSource {
+    ClientSideRemoteFlowKind kind;
+
     AngularSource() {
-      this = paramMap().getAMethodCall(["get", "getAll"])
+      this = paramMap(kind).getAMethodCall(["get", "getAll"])
       or
-      this = paramDictionaryObject()
+      this = paramDictionaryObject(kind)
       or
-      this = activatedRouteProp("fragment")
+      this = activatedRouteProp("fragment") and kind.isFragment()
       or
-      this = urlSegment().getAPropertyRead("path")
+      this = urlSegment().getAPropertyRead("path") and kind.isPath()
       or
       // Note that Router.url and RouterStateSnapshot.url are strings, not UrlSegment[]
-      this = router().getAPropertyRead("url")
+      this = router().getAPropertyRead("url") and kind.isUrl()
       or
-      this = routerStateSnapshot().getAPropertyRead("url")
+      this = routerStateSnapshot().getAPropertyRead("url") and kind.isUrl()
     }
 
     override string getSourceType() { result = "Angular route parameter" }
+
+    override ClientSideRemoteFlowKind getKind() { result = kind }
   }
 
   /** Gets a reference to a `DomSanitizer` object. */
@@ -165,9 +180,7 @@ module Angular2 {
     )
   }
 
-  private class AngularTaintStep extends TaintTracking::AdditionalTaintStep {
-    AngularTaintStep() { taintStep(_, this) }
-
+  private class AngularTaintStep extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) { taintStep(pred, succ) }
   }
 
@@ -468,14 +481,12 @@ module Angular2 {
    * A taint step `array -> elem` in `*ngFor="let elem of array"`, or more precisely,
    * a step from `array` to each access to `elem`.
    */
-  private class ForLoopStep extends TaintTracking::AdditionalTaintStep {
-    ForLoopAttribute attrib;
-
-    ForLoopStep() { this = attrib.getIterationDomain() }
-
+  private class ForLoopStep extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = this and
-      succ = attrib.getAnIteratorAccess()
+      exists(ForLoopAttribute attrib |
+        pred = attrib.getIterationDomain() and
+        succ = attrib.getAnIteratorAccess()
+      )
     }
   }
 
@@ -498,27 +509,26 @@ module Angular2 {
     result.getCalleeNode().asExpr().(PipeRefExpr).getName() = name
   }
 
-  private class BuiltinPipeStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
-    string name;
-
-    BuiltinPipeStep() { this = getAPipeCall(name) }
-
+  private class BuiltinPipeStep extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      succ = this and
-      exists(int i | pred = getArgument(i) |
-        i = 0 and
-        name =
-          [
-            "async", "i18nPlural", "json", "keyvalue", "lowercase", "uppercase", "titlecase",
-            "slice"
-          ]
+      exists(DataFlow::CallNode call, string name |
+        call = getAPipeCall(name) and
+        succ = call
+      |
+        exists(int i | pred = call.getArgument(i) |
+          i = 0 and
+          name =
+            [
+              "async", "i18nPlural", "json", "keyvalue", "lowercase", "uppercase", "titlecase",
+              "slice"
+            ]
+          or
+          i = 1 and name = "date" // date format string
+        )
         or
-        i = 1 and name = "date" // date format string
+        name = "translate" and
+        pred = [call.getArgument(1), call.getOptionArgument(1, _)]
       )
-      or
-      name = "translate" and
-      succ = this and
-      pred = [getArgument(1), getOptionArgument(1, _)]
     }
   }
 
@@ -567,27 +577,25 @@ module Angular2 {
    * </mat-table>
    * ```
    */
-  private class MatTableTaintStep extends TaintTracking::AdditionalTaintStep {
-    MatTableElement table;
-
-    MatTableTaintStep() { this = table.getDataSourceNode() }
-
+  private class MatTableTaintStep extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = this and
-      succ = table.getARowRef()
+      exists(MatTableElement table |
+        pred = table.getDataSourceNode() and
+        succ = table.getARowRef()
+      )
     }
   }
 
   /** A taint step into the data array of a `MatTableDataSource` instance. */
-  private class MatTableDataSourceStep extends TaintTracking::AdditionalTaintStep, DataFlow::NewNode {
-    MatTableDataSourceStep() {
-      this =
-        DataFlow::moduleMember("@angular/material/table", "MatTableDataSource").getAnInstantiation()
-    }
-
+  private class MatTableDataSourceStep extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = [getArgument(0), getAPropertyWrite("data").getRhs()] and
-      succ = this
+      exists(DataFlow::NewNode invoke |
+        invoke =
+          DataFlow::moduleMember("@angular/material/table", "MatTableDataSource")
+              .getAnInstantiation() and
+        pred = [invoke.getArgument(0), invoke.getAPropertyWrite("data").getRhs()] and
+        succ = invoke
+      )
     }
   }
 }

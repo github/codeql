@@ -27,22 +27,10 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
             Create(Context, Stmt.Block, this, 0);
 
-            if (Stmt.Finally != null)
+            if (Stmt.Finally is not null)
             {
                 Create(Context, Stmt.Finally.Block, this, -1);
             }
-        }
-
-        public static SyntaxNodeOrToken NextNode(SyntaxNode node)
-        {
-            for (var i = node.Parent.ChildNodesAndTokens().GetEnumerator(); i.MoveNext();)
-            {
-                if (i.Current == node)
-                {
-                    return i.MoveNext() ? i.Current : null;
-                }
-            }
-            return null;
         }
     }
 }

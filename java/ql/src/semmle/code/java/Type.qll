@@ -599,6 +599,13 @@ class Class extends RefType, @class {
   /** Holds if this class is a local class. */
   predicate isLocal() { isLocalClass(this, _) }
 
+  /** Holds if this class is package protected, that is, neither public nor private nor protected. */
+  predicate isPackageProtected() {
+    not isPrivate() and
+    not isProtected() and
+    not isPublic()
+  }
+
   override RefType getSourceDeclaration() { classes(this, _, _, result) }
 
   /**
@@ -814,6 +821,13 @@ class Interface extends RefType, @interface {
   override predicate isAbstract() {
     // JLS 9.1.1.1: "Every interface is implicitly abstract"
     any()
+  }
+
+  /** Holds if this interface is package protected, that is, neither public nor private nor protected. */
+  predicate isPackageProtected() {
+    not isPrivate() and
+    not isProtected() and
+    not isPublic()
   }
 
   override string getAPrimaryQlClass() { result = "Interface" }

@@ -10,8 +10,10 @@ namespace Semmle.Extraction.CSharp.Populators
 {
     internal class CompilationUnitVisitor : TypeOrNamespaceVisitor
     {
+#nullable disable warnings
         public CompilationUnitVisitor(Context cx)
             : base(cx, cx.TrapWriter.Writer, null) { }
+#nullable restore warnings
 
         public override void VisitExternAliasDirective(ExternAliasDirectiveSyntax node)
         {
@@ -57,13 +59,13 @@ namespace Semmle.Extraction.CSharp.Populators
                 return;
             }
 
-            var entryPoint = Cx.Compilation.GetEntryPoint(System.Threading.CancellationToken.None);
+            var entryPoint = Cx.Compilation.GetEntryPoint(System.Threading.CancellationToken.None)!;
             var entryMethod = Method.Create(Cx, entryPoint);
             var block = GlobalStatementsBlock.Create(Cx, entryMethod);
 
             for (var i = 0; i < globalStatements.Count; i++)
             {
-                if (globalStatements[i].Statement is object)
+                if (globalStatements[i].Statement is not null)
                 {
                     Statement.Create(Cx, globalStatements[i].Statement, block, i);
                 }

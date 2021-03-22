@@ -236,3 +236,58 @@ const needle = require("needle");
 
     });
 })();
+
+var FormData = require('form-data');
+var request = require('request');
+
+var form = new FormData();
+
+form.append('my_field', 'my value');
+form.append('my_buffer', Buffer.from("foo"));
+form.append('my_logo', request('http://example.org/images/logo.png'));
+
+form.submit('http://example.org/', (err, res) => {
+    res.resume();
+});
+
+
+var form = new FormData();
+form.append('new_form', 'new_value');
+
+form.submit({
+    method: 'post',
+    host: 'example.org',
+    path: '/upload',
+    headers: form.getHeaders()
+});
+
+var httpProxy = require('http-proxy');
+var http = require("http");
+
+httpProxy.createProxyServer({target:'http://localhost:9000'}).listen(8000); 
+
+var proxy = httpProxy.createProxyServer(options);
+http.createServer(function(req, res) {
+  proxy.web(req, res, { target: 'http://mytarget.com:8080' });
+});
+
+httpProxy.createProxyServer({
+    target: {
+        protocol: 'https:',
+        host: 'my-domain-name',
+        port: 443,
+        pfx: fs.readFileSync('path/to/certificate.p12'),
+        passphrase: 'password',
+    },
+    changeOrigin: true
+}).listen(8000);
+
+function webSocket() {
+    const socket = new WebSocket('ws://localhost:8080');
+    socket.addEventListener('open', function (event) {
+        socket.send('Hello Server!');
+    });
+    socket.addEventListener('message', function (event) {
+        console.log("Data from server: " + event.data);
+    });
+}

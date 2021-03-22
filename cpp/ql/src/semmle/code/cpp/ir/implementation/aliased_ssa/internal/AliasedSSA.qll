@@ -629,7 +629,11 @@ MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
 }
 
 /** Gets the start bit offset of a `MemoryLocation`, if any. */
-int getStartBitOffset(VariableMemoryLocation location) { result = location.getStartBitOffset() }
+int getStartBitOffset(VariableMemoryLocation location) {
+  result = location.getStartBitOffset() and Ints::hasValue(result)
+}
 
 /** Gets the end bit offset of a `MemoryLocation`, if any. */
-int getEndBitOffset(VariableMemoryLocation location) { result = location.getEndBitOffset() }
+int getEndBitOffset(VariableMemoryLocation location) {
+  result = location.getEndBitOffset() and Ints::hasValue(result)
+}

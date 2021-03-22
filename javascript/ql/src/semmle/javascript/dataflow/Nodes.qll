@@ -7,6 +7,7 @@
 private import javascript
 private import semmle.javascript.dependencies.Dependencies
 private import internal.CallGraphs
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A data flow node corresponding to an expression.
@@ -19,6 +20,9 @@ private import internal.CallGraphs
  */
 class ExprNode extends DataFlow::ValueNode {
   override Expr astNode;
+
+  pragma[nomagic]
+  ExprNode() { any() }
 }
 
 /**
@@ -165,7 +169,13 @@ class InvokeNode extends DataFlow::SourceNode {
   private ObjectLiteralNode getOptionsArgument(int i) { result.flowsTo(getArgument(i)) }
 
   /** Gets an abstract value representing possible callees of this call site. */
-  final AbstractValue getACalleeValue() { result = getCalleeNode().analyze().getAValue() }
+  final AbstractValue getACalleeValue() {
+    exists(DataFlow::Node callee, DataFlow::AnalyzedNode analyzed |
+      pragma[only_bind_into](callee) = getCalleeNode() and
+      pragma[only_bind_into](analyzed) = callee.analyze() and
+      pragma[only_bind_into](result) = analyzed.getAValue()
+    )
+  }
 
   /**
    * Gets a potential callee of this call site.
@@ -725,7 +735,7 @@ module ModuleImportNode {
  * This predicate can be extended by subclassing `ModuleImportNode::Range`.
  */
 cached
-ModuleImportNode moduleImport(string path) { result.getPath() = path }
+ModuleImportNode moduleImport(string path) { Stages::Imports::ref() and result.getPath() = path }
 
 /**
  * Gets a (default) import of the given dependency `dep`, such as
@@ -999,6 +1009,31 @@ class ClassNode extends DataFlow::SourceNode {
   }
 
   /**
+   * Gets a property read that accesses the property `name` on an instance of this class.
+   *
+   * Concretely, this holds when the base is an instance of this class or a subclass thereof.
+   */
+  pragma[nomagic]
+  DataFlow::PropRead getAnInstanceMemberAccess(string name, DataFlow::TypeTracker t) {
+    result = this.getAnInstanceReference(t.continue()).getAPropertyRead(name)
+    or
+    exists(DataFlow::ClassNode subclass |
+      result = subclass.getAnInstanceMemberAccess(name, t) and
+      not exists(subclass.getInstanceMember(name, _)) and
+      this = subclass.getADirectSuperClass()
+    )
+  }
+
+  /**
+   * Gets a property read that accesses the property `name` on an instance of this class.
+   *
+   * Concretely, this holds when the base is an instance of this class or a subclass thereof.
+   */
+  DataFlow::PropRead getAnInstanceMemberAccess(string name) {
+    result = this.getAnInstanceMemberAccess(name, DataFlow::TypeTracker::end())
+  }
+
+  /**
    * Gets an access to a static member of this class.
    */
   DataFlow::PropRead getAStaticMemberAccess(string name) {
@@ -1164,6 +1199,16 @@ module ClassNode {
   }
 
   /**
+   * Gets a reference to the function `func`, where there exists a read/write of the "prototype" property on that reference.
+   */
+  pragma[noinline]
+  private DataFlow::SourceNode getAFunctionValueWithPrototype(AbstractValue func) {
+    exists(result.getAPropertyReference("prototype")) and
+    result.analyze().getAValue() = pragma[only_bind_into](func) and
+    func instanceof AbstractFunction // the join-order goes bad if `func` has type `AbstractFunction`.
+  }
+
+  /**
    * A function definition with prototype manipulation as a `ClassNode` instance.
    */
   class FunctionStyleClass extends Range, DataFlow::ValueNode {
@@ -1173,10 +1218,7 @@ module ClassNode {
     FunctionStyleClass() {
       function.getFunction() = astNode and
       (
-        exists(DataFlow::PropRef read |
-          read.getPropertyName() = "prototype" and
-          read.getBase().analyze().getAValue() = function
-        )
+        exists(getAFunctionValueWithPrototype(function))
         or
         exists(string name |
           this = AccessPath::getAnAssignmentTo(name) and
@@ -1237,7 +1279,7 @@ module ClassNode {
      * Gets a reference to the prototype of this class.
      */
     DataFlow::SourceNode getAPrototypeReference() {
-      exists(DataFlow::SourceNode base | base.analyze().getAValue() = function |
+      exists(DataFlow::SourceNode base | base = getAFunctionValueWithPrototype(function) |
         result = base.getAPropertyRead("prototype")
         or
         result = base.getAPropertySource("prototype")
@@ -1581,6 +1623,9 @@ class RegExpCreationNode extends DataFlow::SourceNode {
     result = this.(RegExpConstructorInvokeNode).tryGetFlags() or
     result = this.(RegExpLiteralNode).getFlags()
   }
+
+  /** Holds if the constructed predicate has the `g` flag. */
+  predicate isGlobal() { RegExp::isGlobal(getFlags()) }
 
   /** Gets a data flow node referring to this regular expression. */
   private DataFlow::SourceNode getAReference(DataFlow::TypeTracker t) {

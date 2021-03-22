@@ -24,6 +24,9 @@
 | highlight.js:38:54:38:59 | [^()]* | Strings starting with 'A((' and with many repetitions of ''' can start matching anywhere after the start of the preceeding [^()]* |
 | highlight.js:38:64:38:69 | [^()]* | Strings starting with 'A(' and with many repetitions of ''' can start matching anywhere after the start of the preceeding [^()]* |
 | highlight.js:39:22:39:24 | \\w* | Strings starting with 'A' and with many repetitions of 'A' can start matching anywhere after the start of the preceeding [a-zA-Z_]\\w*\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)\\s*\\{ |
+| jsonschema.js:5:15:5:21 | (a?a?)* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a?a?)*b |
+| jsonschema.js:15:23:15:29 | (a?a?)* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a?a?)*b |
+| jsonschema.js:20:18:20:24 | (a?a?)* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a?a?)*b |
 | lib/closure.js:4:6:4:7 | u* | Strings with many repetitions of 'u' can start matching anywhere after the start of the preceeding u*o |
 | lib/lib.js:1:15:1:16 | a* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding a*b |
 | lib/lib.js:8:3:8:4 | f* | Strings with many repetitions of 'f' can start matching anywhere after the start of the preceeding f*g |

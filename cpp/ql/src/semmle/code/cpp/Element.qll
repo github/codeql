@@ -80,11 +80,9 @@ class Element extends ElementBase {
   File getFile() { result = this.getLocation().getFile() }
 
   /**
-   * Holds if this element may be from source.
-   *
-   * Note: this predicate is provided for consistency with the libraries
-   * for other languages, such as Java and Python. In C++, all files are
-   * classified as source files, so this predicate is always true.
+   * Holds if this element may be from source. This predicate holds for all
+   * elements, except for those in the dummy file, whose name is the empty string.
+   * The dummy file contains declarations that are built directly into the compiler.
    */
   predicate fromSource() { this.getFile().fromSource() }
 

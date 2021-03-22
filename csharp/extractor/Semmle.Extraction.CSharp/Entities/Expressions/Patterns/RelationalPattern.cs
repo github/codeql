@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 SyntaxKind.GreaterThanEqualsToken => ExprKind.GE_PATTERN,
                 SyntaxKind.LessThanToken => ExprKind.LT_PATTERN,
                 SyntaxKind.GreaterThanToken => ExprKind.GT_PATTERN,
-                _ => throw new InternalError(operatorToken.Parent, $"Relation pattern with operator token '{operatorToken.Kind()}' is not supported."),
+                _ => throw new InternalError(operatorToken.Parent!, $"Relation pattern with operator token '{operatorToken.Kind()}' is not supported."),
             };
         }
     }

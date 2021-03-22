@@ -194,6 +194,8 @@ predicate getIntervalUpdatedByChi(ChiInstruction chi, int startBit, int endBit) 
  */
 predicate getUsedInterval(Operand operand, int startBit, int endBit) { none() }
 
+predicate chiOnlyPartiallyUpdatesLocation(ChiInstruction chi) { none() }
+
 /** Gets a non-phi instruction that defines an operand of `instr`. */
 private Instruction getNonPhiOperandDef(Instruction instr) {
   result = getRegisterOperandDefinition(instr, _)

@@ -5,6 +5,7 @@ type
 | file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 ref readonly> | readonly int | DefaultCallingConvention |
 | file://:0:0:0:0 | delegate* default<Int32*,Void*> | Void* | DefaultCallingConvention |
 | file://:0:0:0:0 | delegate* default<Int32> | int | DefaultCallingConvention |
+| file://:0:0:0:0 | delegate* default<IntPtr,IntPtr,IntPtr*,Void> | Void | DefaultCallingConvention |
 | file://:0:0:0:0 | delegate* default<T,Int32> | int | DefaultCallingConvention |
 | file://:0:0:0:0 | delegate* default<Void*,Int32*> | int* | DefaultCallingConvention |
 | file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | Void | StdCallCallingConvention |
@@ -18,6 +19,9 @@ parameter
 | file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 ref readonly> | 0 | file://:0:0:0:0 |  | ref int! |
 | file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 ref readonly> | 1 | file://:0:0:0:0 | `1 | out object? |
 | file://:0:0:0:0 | delegate* default<Int32*,Void*> | 0 | file://:0:0:0:0 |  | int*! |
+| file://:0:0:0:0 | delegate* default<IntPtr,IntPtr,IntPtr*,Void> | 0 | file://:0:0:0:0 |  | IntPtr! |
+| file://:0:0:0:0 | delegate* default<IntPtr,IntPtr,IntPtr*,Void> | 1 | file://:0:0:0:0 | `1 | IntPtr! |
+| file://:0:0:0:0 | delegate* default<IntPtr,IntPtr,IntPtr*,Void> | 2 | file://:0:0:0:0 | `2 | IntPtr*! |
 | file://:0:0:0:0 | delegate* default<T,Int32> | 0 | file://:0:0:0:0 |  | T |
 | file://:0:0:0:0 | delegate* default<Void*,Int32*> | 0 | file://:0:0:0:0 |  | Void*! |
 | file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | 0 | file://:0:0:0:0 |  | ref int! |

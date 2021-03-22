@@ -266,7 +266,7 @@ library class CookieGetCommentMethod extends Method {
 }
 
 /**
- * The method `addCookie(String)` declared in `javax.servlet.http.Cookie`.
+ * The method `addCookie(Cookie)` declared in `javax.servlet.http.HttpServletResponse`.
  */
 class ResponseAddCookieMethod extends Method {
   ResponseAddCookieMethod() {

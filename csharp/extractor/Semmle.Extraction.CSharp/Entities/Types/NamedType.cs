@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (Symbol.TypeKind == TypeKind.Error)
             {
-                Context.Extractor.MissingType(Symbol.ToString(), Context.FromSource);
+                Context.Extractor.MissingType(Symbol.ToString()!, Context.FromSource);
                 return;
             }
 
@@ -76,7 +76,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             PopulateType(trapFile, constructUnderlyingTupleType);
 
-            if (Symbol.EnumUnderlyingType != null)
+            if (Symbol.EnumUnderlyingType is not null)
             {
                 trapFile.enum_underlying_type(this, Type.Create(Context, Symbol.EnumUnderlyingType).TypeRef);
             }
@@ -108,7 +108,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 foreach (var l in GetLocations(Symbol))
                     yield return Context.CreateLocation(l);
 
-                if (Context.Extractor.OutputPath != null && Symbol.DeclaringSyntaxReferences.Any())
+                if (!Context.Extractor.Standalone && Symbol.DeclaringSyntaxReferences.Any())
                     yield return Assembly.CreateOutputAssembly(Context);
             }
         }
@@ -124,7 +124,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 );
         }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => GetLocations(Symbol).FirstOrDefault();
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => GetLocations(Symbol).FirstOrDefault();
 
         private bool IsAnonymousType() => Symbol.IsAnonymousType || Symbol.Name.Contains("__AnonymousType");
 
@@ -149,18 +149,18 @@ namespace Semmle.Extraction.CSharp.Entities
                 base.WriteQuotedId(trapFile);
         }
 
-        private class NamedTypeFactory : ICachedEntityFactory<INamedTypeSymbol, NamedType>
+        private class NamedTypeFactory : CachedEntityFactory<INamedTypeSymbol, NamedType>
         {
             public static NamedTypeFactory Instance { get; } = new NamedTypeFactory();
 
-            public NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init, false);
+            public override NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init, false);
         }
 
-        private class UnderlyingTupleTypeFactory : ICachedEntityFactory<INamedTypeSymbol, NamedType>
+        private class UnderlyingTupleTypeFactory : CachedEntityFactory<INamedTypeSymbol, NamedType>
         {
             public static UnderlyingTupleTypeFactory Instance { get; } = new UnderlyingTupleTypeFactory();
 
-            public NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init, true);
+            public override NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init, true);
         }
 
         // Do not create typerefs of constructed generics as they are always in the current trap file.
@@ -186,11 +186,11 @@ namespace Semmle.Extraction.CSharp.Entities
             // `NamedType`s and `NamedTypeRef`s
             NamedTypeRefFactory.Instance.CreateEntity(cx, (typeof(NamedTypeRef), new SymbolEqualityWrapper(type)), type);
 
-        private class NamedTypeRefFactory : ICachedEntityFactory<INamedTypeSymbol, NamedTypeRef>
+        private class NamedTypeRefFactory : CachedEntityFactory<INamedTypeSymbol, NamedTypeRef>
         {
             public static NamedTypeRefFactory Instance { get; } = new NamedTypeRefFactory();
 
-            public NamedTypeRef Create(Context cx, INamedTypeSymbol init) => new NamedTypeRef(cx, init);
+            public override NamedTypeRef Create(Context cx, INamedTypeSymbol init) => new NamedTypeRef(cx, init);
         }
 
         public override bool NeedsPopulation => true;

@@ -228,6 +228,9 @@ private module Cached {
   cached
   predicate getUsedInterval(Operand operand, int startBit, int endBit) { none() }
 
+  cached
+  predicate chiOnlyPartiallyUpdatesLocation(ChiInstruction chi) { none() }
+
   /**
    * Holds if `instr` is part of a cycle in the operand graph that doesn't go
    * through a phi instruction and therefore should be impossible.
