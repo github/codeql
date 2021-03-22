@@ -16,13 +16,13 @@ private module Cached {
   cached
   newtype TSplitKind =
     TConditionalCompletionSplitKind() or
-    TEnsureSplitKind(int nestLevel) { nestLevel = any(Trees::RescueEnsureBlockTree t).nestLevel() }
+    TEnsureSplitKind(int nestLevel) { nestLevel = any(Trees::BodyStmtTree t).getNestLevel() }
 
   cached
   newtype TSplit =
     TConditionalCompletionSplit(ConditionalCompletion c) or
     TEnsureSplit(EnsureSplitting::EnsureSplitType type, int nestLevel) {
-      nestLevel = any(Trees::RescueEnsureBlockTree t).nestLevel()
+      nestLevel = any(Trees::BodyStmtTree t).getNestLevel()
     }
 
   cached
@@ -226,7 +226,7 @@ private module ConditionalCompletionSplitting {
         last(succ.(LogicalOrExpr).getAnOperand(), pred, c) and
         completion = c
         or
-        last(succ.(ParenthesizedExpr).getLastExpr(), pred, c) and
+        last(succ.(StmtSequence).getLastStmt(), pred, c) and
         completion = c
         or
         last(succ.(ConditionalExpr).getBranch(_), pred, c) and
@@ -277,12 +277,11 @@ module EnsureSplitting {
 
   /** A node that belongs to an `ensure` block. */
   private class EnsureNode extends AstNode {
-    private Trees::RescueEnsureBlockTree block;
+    private Trees::BodyStmtTree block;
 
     EnsureNode() { this = block.getAnEnsureDescendant() }
 
-    /** Gets the immediate block that this node belongs to. */
-    Trees::RescueEnsureBlockTree getBlock() { result = block }
+    int getNestLevel() { result = block.getNestLevel() }
 
     /** Holds if this node is the entry node in the `ensure` block it belongs to. */
     predicate isEntryNode() { first(block.getEnsure(), this) }
@@ -355,7 +354,7 @@ module EnsureSplitting {
   pragma[noinline]
   private predicate hasEntry0(AstNode pred, EnsureNode succ, int nestLevel, Completion c) {
     succ.isEntryNode() and
-    nestLevel = succ.getBlock().nestLevel() and
+    nestLevel = succ.getNestLevel() and
     succ(pred, succ, c)
   }
 
@@ -378,11 +377,9 @@ module EnsureSplitting {
     }
 
     pragma[noinline]
-    private predicate exit0(
-      AstNode pred, Trees::RescueEnsureBlockTree block, int nestLevel, Completion c
-    ) {
+    private predicate exit0(AstNode pred, Trees::BodyStmtTree block, int nestLevel, Completion c) {
       this.appliesToPredecessor(pred) and
-      nestLevel = block.nestLevel() and
+      nestLevel = block.getNestLevel() and
       block.lastInner(pred, c)
     }
 
@@ -391,9 +388,7 @@ module EnsureSplitting {
      * `inherited` indicates whether `c` is an inherited completion from the
      * body.
      */
-    private predicate exit(
-      Trees::RescueEnsureBlockTree block, AstNode pred, Completion c, boolean inherited
-    ) {
+    private predicate exit(Trees::BodyStmtTree block, AstNode pred, Completion c, boolean inherited) {
       exists(EnsureSplitType type |
         exit0(pred, block, this.getNestLevel(), c) and
         type = this.getType()
@@ -477,10 +472,10 @@ module EnsureSplitting {
           if en.isEntryNode()
           then
             // entering a nested `ensure` block
-            en.getBlock().nestLevel() > this.getNestLevel()
+            en.getNestLevel() > this.getNestLevel()
           else
             // staying in the same (possibly nested) `ensure` block as `pred`
-            en.getBlock().nestLevel() >= this.getNestLevel()
+            en.getNestLevel() >= this.getNestLevel()
         )
     }
   }

@@ -1,7 +1,7 @@
 /** Provides classes representing the control flow graph. */
 
 private import codeql.Locations
-private import codeql_ruby.AST as AST
+private import codeql_ruby.AST
 private import codeql_ruby.controlflow.BasicBlocks
 private import SuccessorTypes
 private import internal.ControlFlowGraphImpl
@@ -9,12 +9,12 @@ private import internal.Splitting
 private import internal.Completion
 
 /** An AST node with an associated control-flow graph. */
-class CfgScope extends AST::AstNode {
+class CfgScope extends Scope {
   CfgScope() { this instanceof CfgScope::Range_ }
 
   /** Gets the CFG scope that this scope is nested under, if any. */
   final CfgScope getOuterCfgScope() {
-    exists(AST::AstNode parent |
+    exists(AstNode parent |
       parent = this.getParent() and
       result = getCfgScope(parent)
     )
@@ -34,7 +34,7 @@ class CfgNode extends TCfgNode {
   string toString() { none() }
 
   /** Gets the AST node that this node corresponds to, if any. */
-  AST::AstNode getNode() { none() }
+  AstNode getNode() { none() }
 
   /** Gets the location of this control flow node. */
   Location getLocation() { none() }

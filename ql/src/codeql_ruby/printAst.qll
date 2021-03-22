@@ -27,6 +27,19 @@ class PrintAstNode extends AstNode {
   string getProperty(string key) {
     key = "semmle.label" and
     result = "[" + concat(this.getAPrimaryQlClass(), ", ") + "] " + this.toString()
+    or
+    key = "semmle.order" and
+    result =
+      any(int i |
+        this =
+          rank[i](AstNode p |
+            |
+            p
+            order by
+              p.getLocation().getFile().getBaseName(), p.getLocation().getFile().getAbsolutePath(),
+              p.getLocation().getStartLine(), p.getLocation().getStartColumn()
+          )
+      ).toString()
   }
 
   /**
@@ -39,7 +52,7 @@ class PrintAstNode extends AstNode {
   /**
    * Gets the child node that is accessed using the predicate `edgeName`.
    */
-  PrintAstNode getChild(string edgeName) { range.child(edgeName, result) }
+  PrintAstNode getChild(string edgeName) { result = this.getAChild(edgeName) }
 }
 
 private predicate shouldPrintNode(AstNode n) {
@@ -62,9 +75,14 @@ query predicate nodes(PrintAstNode node, string key, string value) {
 query predicate edges(PrintAstNode source, PrintAstNode target, string key, string value) {
   source.shouldPrint() and
   target.shouldPrint() and
-  key = "semmle.label" and
   target = source.getAChild() and
-  value = concat(string name | source.getChild(name) = target | name, "/")
+  (
+    key = "semmle.label" and
+    value = concat(string name | source.getChild(name) = target | name, "/")
+    or
+    key = "semmle.order" and
+    value = target.getProperty("semmle.order")
+  )
 }
 
 /**

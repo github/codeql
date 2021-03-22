@@ -6,7 +6,7 @@ private import CfgNodes::ExprNodes
 
 /** Holds if `v` is uninitialized at index `i` in entry block `bb`. */
 predicate uninitializedWrite(EntryBasicBlock bb, int i, LocalVariable v) {
-  v.getDeclaringScope().getScopeElement() = bb.getScope() and
+  v.getDeclaringScope() = bb.getScope() and
   i = -1
 }
 
@@ -49,7 +49,7 @@ private predicate capturedExitRead(AnnotatedExitBasicBlock bb, int i, LocalVaria
   i = bb.length()
 }
 
-private CfgScope getCaptureOuterCfgScope(Callable scope) {
+private CfgScope getCaptureOuterCfgScope(CfgScope scope) {
   result = scope.getOuterCfgScope() and
   (
     scope instanceof Block

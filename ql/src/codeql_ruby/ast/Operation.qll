@@ -1,33 +1,46 @@
 private import codeql_ruby.AST
-private import internal.Operation
+private import internal.AST
+private import internal.TreeSitter
 
 /**
  * An operation.
  *
  * This is the QL root class for all operations.
  */
-class Operation extends Expr {
-  override Operation::Range range;
-
+class Operation extends Expr, TOperation {
   /** Gets the operator of this operation. */
-  final string getOperator() { result = range.getOperator() }
+  string getOperator() { none() }
 
   /** Gets an operand of this operation. */
-  final Expr getAnOperand() { result = range.getAnOperand() }
+  Expr getAnOperand() { none() }
+
+  override AstNode getAChild(string pred) { pred = "getAnOperand" and result = this.getAnOperand() }
 }
 
 /** A unary operation. */
-class UnaryOperation extends Operation, @unary {
-  override UnaryOperation::Range range;
+class UnaryOperation extends Operation, TUnaryOperation {
+  private Generated::Unary g;
+
+  UnaryOperation() { g = toGenerated(this) }
 
   /** Gets the operand of this unary operation. */
-  final Expr getOperand() { result = range.getOperand() }
+  final Expr getOperand() { toGenerated(result) = g.getOperand() }
+
+  final override string getOperator() { result = g.getOperator() }
+
+  final override Expr getAnOperand() { result = this.getOperand() }
+
+  final override AstNode getAChild(string pred) {
+    result = Operation.super.getAChild(pred)
+    or
+    pred = "getOperand" and result = this.getOperand()
+  }
+
+  final override string toString() { result = this.getOperator() + " ..." }
 }
 
 /** A unary logical operation. */
-class UnaryLogicalOperation extends UnaryOperation {
-  override UnaryLogicalOperation::Range range;
-}
+class UnaryLogicalOperation extends UnaryOperation, TUnaryLogicalOperation { }
 
 /**
  * A logical NOT operation, using either `!` or `not`.
@@ -36,16 +49,12 @@ class UnaryLogicalOperation extends UnaryOperation {
  * not params.empty?
  * ```
  */
-class NotExpr extends UnaryLogicalOperation, NotExpr::DbUnion {
-  final override NotExpr::Range range;
-
+class NotExpr extends UnaryLogicalOperation, TNotExpr {
   final override string getAPrimaryQlClass() { result = "NotExpr" }
 }
 
 /** A unary arithmetic operation. */
-class UnaryArithmeticOperation extends UnaryOperation {
-  override UnaryArithmeticOperation::Range range;
-}
+class UnaryArithmeticOperation extends UnaryOperation, TUnaryArithmeticOperation { }
 
 /**
  * A unary plus expression.
@@ -53,9 +62,7 @@ class UnaryArithmeticOperation extends UnaryOperation {
  * + a
  * ```
  */
-class UnaryPlusExpr extends UnaryArithmeticOperation, @unary_plus {
-  final override UnaryPlusExpr::Range range;
-
+class UnaryPlusExpr extends UnaryArithmeticOperation, TUnaryPlusExpr {
   final override string getAPrimaryQlClass() { result = "UnaryPlusExpr" }
 }
 
@@ -65,16 +72,12 @@ class UnaryPlusExpr extends UnaryArithmeticOperation, @unary_plus {
  * - a
  * ```
  */
-class UnaryMinusExpr extends UnaryArithmeticOperation, @unary_minus {
-  final override UnaryMinusExpr::Range range;
-
+class UnaryMinusExpr extends UnaryArithmeticOperation, TUnaryMinusExpr {
   final override string getAPrimaryQlClass() { result = "UnaryMinusExpr" }
 }
 
 /** A unary bitwise operation. */
-class UnaryBitwiseOperation extends UnaryOperation {
-  override UnaryBitwiseOperation::Range range;
-}
+class UnaryBitwiseOperation extends UnaryOperation, TUnaryBitwiseOperation { }
 
 /**
  * A complement (bitwise NOT) expression.
@@ -82,9 +85,7 @@ class UnaryBitwiseOperation extends UnaryOperation {
  * ~x
  * ```
  */
-class ComplementExpr extends UnaryBitwiseOperation, @unary_tilde {
-  final override ComplementExpr::Range range;
-
+class ComplementExpr extends UnaryBitwiseOperation, TComplementExpr {
   final override string getAPrimaryQlClass() { result = "ComplementExpr" }
 }
 
@@ -94,29 +95,43 @@ class ComplementExpr extends UnaryBitwiseOperation, @unary_tilde {
  * defined? some_method
  * ```
  */
-class DefinedExpr extends UnaryOperation, @unary_definedquestion {
-  final override DefinedExpr::Range range;
-
+class DefinedExpr extends UnaryOperation, TDefinedExpr {
   final override string getAPrimaryQlClass() { result = "DefinedExpr" }
 }
 
 /** A binary operation. */
-class BinaryOperation extends Operation, @binary {
-  override BinaryOperation::Range range;
+class BinaryOperation extends Operation, TBinaryOperation {
+  private Generated::Binary g;
+
+  BinaryOperation() { g = toGenerated(this) }
+
+  final override string getOperator() { result = g.getOperator() }
+
+  final override Expr getAnOperand() {
+    result = this.getLeftOperand() or result = this.getRightOperand()
+  }
+
+  final override string toString() { result = "... " + this.getOperator() + " ..." }
+
+  override AstNode getAChild(string pred) {
+    result = Operation.super.getAChild(pred)
+    or
+    pred = "getLeftOperand" and result = this.getLeftOperand()
+    or
+    pred = "getRightOperand" and result = this.getRightOperand()
+  }
 
   /** Gets the left operand of this binary operation. */
-  final Stmt getLeftOperand() { result = range.getLeftOperand() }
+  final Stmt getLeftOperand() { toGenerated(result) = g.getLeft() }
 
   /** Gets the right operand of this binary operation. */
-  final Stmt getRightOperand() { result = range.getRightOperand() }
+  final Stmt getRightOperand() { toGenerated(result) = g.getRight() }
 }
 
 /**
  * A binary arithmetic operation.
  */
-class BinaryArithmeticOperation extends BinaryOperation {
-  override BinaryArithmeticOperation::Range range;
-}
+class BinaryArithmeticOperation extends BinaryOperation, TBinaryArithmeticOperation { }
 
 /**
  * An add expression.
@@ -124,9 +139,7 @@ class BinaryArithmeticOperation extends BinaryOperation {
  * x + 1
  * ```
  */
-class AddExpr extends BinaryArithmeticOperation, @binary_plus {
-  final override AddExpr::Range range;
-
+class AddExpr extends BinaryArithmeticOperation, TAddExpr {
   final override string getAPrimaryQlClass() { result = "AddExpr" }
 }
 
@@ -136,9 +149,7 @@ class AddExpr extends BinaryArithmeticOperation, @binary_plus {
  * x - 3
  * ```
  */
-class SubExpr extends BinaryArithmeticOperation, @binary_minus {
-  final override SubExpr::Range range;
-
+class SubExpr extends BinaryArithmeticOperation, TSubExpr {
   final override string getAPrimaryQlClass() { result = "SubExpr" }
 }
 
@@ -148,9 +159,7 @@ class SubExpr extends BinaryArithmeticOperation, @binary_minus {
  * x * 10
  * ```
  */
-class MulExpr extends BinaryArithmeticOperation, @binary_star {
-  final override MulExpr::Range range;
-
+class MulExpr extends BinaryArithmeticOperation, TMulExpr {
   final override string getAPrimaryQlClass() { result = "MulExpr" }
 }
 
@@ -160,9 +169,7 @@ class MulExpr extends BinaryArithmeticOperation, @binary_star {
  * x / y
  * ```
  */
-class DivExpr extends BinaryArithmeticOperation, @binary_slash {
-  final override DivExpr::Range range;
-
+class DivExpr extends BinaryArithmeticOperation, TDivExpr {
   final override string getAPrimaryQlClass() { result = "DivExpr" }
 }
 
@@ -172,9 +179,7 @@ class DivExpr extends BinaryArithmeticOperation, @binary_slash {
  * x % 2
  * ```
  */
-class ModuloExpr extends BinaryArithmeticOperation, @binary_percent {
-  final override ModuloExpr::Range range;
-
+class ModuloExpr extends BinaryArithmeticOperation, TModuloExpr {
   final override string getAPrimaryQlClass() { result = "ModuloExpr" }
 }
 
@@ -184,18 +189,14 @@ class ModuloExpr extends BinaryArithmeticOperation, @binary_percent {
  * x ** 2
  * ```
  */
-class ExponentExpr extends BinaryArithmeticOperation, @binary_starstar {
-  final override ExponentExpr::Range range;
-
+class ExponentExpr extends BinaryArithmeticOperation, TExponentExpr {
   final override string getAPrimaryQlClass() { result = "ExponentExpr" }
 }
 
 /**
  * A binary logical operation.
  */
-class BinaryLogicalOperation extends BinaryOperation {
-  override BinaryLogicalOperation::Range range;
-}
+class BinaryLogicalOperation extends BinaryOperation, TBinaryLogicalOperation { }
 
 /**
  * A logical AND operation, using either `and` or `&&`.
@@ -204,9 +205,7 @@ class BinaryLogicalOperation extends BinaryOperation {
  * a && b
  * ```
  */
-class LogicalAndExpr extends BinaryLogicalOperation, LogicalAndExpr::DbUnion {
-  final override LogicalAndExpr::Range range;
-
+class LogicalAndExpr extends BinaryLogicalOperation, TLogicalAndExpr {
   final override string getAPrimaryQlClass() { result = "LogicalAndExpr" }
 }
 
@@ -217,18 +216,14 @@ class LogicalAndExpr extends BinaryLogicalOperation, LogicalAndExpr::DbUnion {
  * a || b
  * ```
  */
-class LogicalOrExpr extends BinaryLogicalOperation, LogicalOrExpr::DbUnion {
-  final override LogicalOrExpr::Range range;
-
+class LogicalOrExpr extends BinaryLogicalOperation, TLogicalOrExpr {
   final override string getAPrimaryQlClass() { result = "LogicalOrExpr" }
 }
 
 /**
  * A binary bitwise operation.
  */
-class BinaryBitwiseOperation extends BinaryOperation {
-  override BinaryBitwiseOperation::Range range;
-}
+class BinaryBitwiseOperation extends BinaryOperation, TBinaryBitwiseOperation { }
 
 /**
  * A left-shift operation.
@@ -236,9 +231,7 @@ class BinaryBitwiseOperation extends BinaryOperation {
  * x << n
  * ```
  */
-class LShiftExpr extends BinaryBitwiseOperation, @binary_langlelangle {
-  final override LShiftExpr::Range range;
-
+class LShiftExpr extends BinaryBitwiseOperation, TLShiftExpr {
   final override string getAPrimaryQlClass() { result = "LShiftExpr" }
 }
 
@@ -248,9 +241,7 @@ class LShiftExpr extends BinaryBitwiseOperation, @binary_langlelangle {
  * x >> n
  * ```
  */
-class RShiftExpr extends BinaryBitwiseOperation, @binary_ranglerangle {
-  final override RShiftExpr::Range range;
-
+class RShiftExpr extends BinaryBitwiseOperation, TRShiftExpr {
   final override string getAPrimaryQlClass() { result = "RShiftExpr" }
 }
 
@@ -260,9 +251,7 @@ class RShiftExpr extends BinaryBitwiseOperation, @binary_ranglerangle {
  * x & 0xff
  * ```
  */
-class BitwiseAndExpr extends BinaryBitwiseOperation, @binary_ampersand {
-  final override BitwiseAndExpr::Range range;
-
+class BitwiseAndExpr extends BinaryBitwiseOperation, TBitwiseAndExpr {
   final override string getAPrimaryQlClass() { result = "BitwiseAndExpr" }
 }
 
@@ -272,9 +261,7 @@ class BitwiseAndExpr extends BinaryBitwiseOperation, @binary_ampersand {
  * x | 0x01
  * ```
  */
-class BitwiseOrExpr extends BinaryBitwiseOperation, @binary_pipe {
-  final override BitwiseOrExpr::Range range;
-
+class BitwiseOrExpr extends BinaryBitwiseOperation, TBitwiseOrExpr {
   final override string getAPrimaryQlClass() { result = "BitwiseOrExpr" }
 }
 
@@ -284,9 +271,7 @@ class BitwiseOrExpr extends BinaryBitwiseOperation, @binary_pipe {
  * x ^ y
  * ```
  */
-class BitwiseXorExpr extends BinaryBitwiseOperation, @binary_caret {
-  final override BitwiseXorExpr::Range range;
-
+class BitwiseXorExpr extends BinaryBitwiseOperation, TBitwiseXorExpr {
   final override string getAPrimaryQlClass() { result = "BitwiseXorExpr" }
 }
 
@@ -294,16 +279,12 @@ class BitwiseXorExpr extends BinaryBitwiseOperation, @binary_caret {
  * A comparison operation. That is, either an equality operation or a
  * relational operation.
  */
-class ComparisonOperation extends BinaryOperation {
-  override ComparisonOperation::Range range;
-}
+class ComparisonOperation extends BinaryOperation, TComparisonOperation { }
 
 /**
  * An equality operation.
  */
-class EqualityOperation extends ComparisonOperation {
-  override EqualityOperation::Range range;
-}
+class EqualityOperation extends ComparisonOperation, TEqualityOperation { }
 
 /**
  * An equals expression.
@@ -311,9 +292,7 @@ class EqualityOperation extends ComparisonOperation {
  * x == y
  * ```
  */
-class EqExpr extends EqualityOperation, @binary_equalequal {
-  final override EqExpr::Range range;
-
+class EqExpr extends EqualityOperation, TEqExpr {
   final override string getAPrimaryQlClass() { result = "EqExpr" }
 }
 
@@ -323,9 +302,7 @@ class EqExpr extends EqualityOperation, @binary_equalequal {
  * x != y
  * ```
  */
-class NEExpr extends EqualityOperation, @binary_bangequal {
-  final override NEExpr::Range range;
-
+class NEExpr extends EqualityOperation, TNEExpr {
   final override string getAPrimaryQlClass() { result = "NEExpr" }
 }
 
@@ -335,21 +312,27 @@ class NEExpr extends EqualityOperation, @binary_bangequal {
  * String === "foo"
  * ```
  */
-class CaseEqExpr extends EqualityOperation, @binary_equalequalequal {
-  final override CaseEqExpr::Range range;
-
+class CaseEqExpr extends EqualityOperation, TCaseEqExpr {
   final override string getAPrimaryQlClass() { result = "CaseEqExpr" }
 }
 
 /**
  * A relational operation, that is, one of `<=`, `<`, `>`, or `>=`.
  */
-class RelationalOperation extends ComparisonOperation {
-  override RelationalOperation::Range range;
+class RelationalOperation extends ComparisonOperation, TRelationalOperation {
+  /** Gets the greater operand. */
+  Expr getGreaterOperand() { none() }
 
-  final Expr getGreaterOperand() { result = range.getGreaterOperand() }
+  /** Gets the lesser operand. */
+  Expr getLesserOperand() { none() }
 
-  final Expr getLesserOperand() { result = range.getLesserOperand() }
+  final override AstNode getAChild(string pred) {
+    result = ComparisonOperation.super.getAChild(pred)
+    or
+    pred = "getGreaterOperand" and result = this.getGreaterOperand()
+    or
+    pred = "getLesserOperand" and result = this.getLesserOperand()
+  }
 }
 
 /**
@@ -358,10 +341,12 @@ class RelationalOperation extends ComparisonOperation {
  * x > 0
  * ```
  */
-class GTExpr extends RelationalOperation, @binary_rangle {
-  final override GTExpr::Range range;
-
+class GTExpr extends RelationalOperation, TGTExpr {
   final override string getAPrimaryQlClass() { result = "GTExpr" }
+
+  final override Expr getGreaterOperand() { result = this.getLeftOperand() }
+
+  final override Expr getLesserOperand() { result = this.getRightOperand() }
 }
 
 /**
@@ -370,10 +355,12 @@ class GTExpr extends RelationalOperation, @binary_rangle {
  * x >= 0
  * ```
  */
-class GEExpr extends RelationalOperation, @binary_rangleequal {
-  final override GEExpr::Range range;
-
+class GEExpr extends RelationalOperation, TGEExpr {
   final override string getAPrimaryQlClass() { result = "GEExpr" }
+
+  final override Expr getGreaterOperand() { result = this.getLeftOperand() }
+
+  final override Expr getLesserOperand() { result = this.getRightOperand() }
 }
 
 /**
@@ -382,10 +369,12 @@ class GEExpr extends RelationalOperation, @binary_rangleequal {
  * x < 10
  * ```
  */
-class LTExpr extends RelationalOperation, @binary_langle {
-  final override LTExpr::Range range;
-
+class LTExpr extends RelationalOperation, TLTExpr {
   final override string getAPrimaryQlClass() { result = "LTExpr" }
+
+  final override Expr getGreaterOperand() { result = this.getRightOperand() }
+
+  final override Expr getLesserOperand() { result = this.getLeftOperand() }
 }
 
 /**
@@ -394,10 +383,12 @@ class LTExpr extends RelationalOperation, @binary_langle {
  * x <= 10
  * ```
  */
-class LEExpr extends RelationalOperation, @binary_langleequal {
-  final override LEExpr::Range range;
-
+class LEExpr extends RelationalOperation, TLEExpr {
   final override string getAPrimaryQlClass() { result = "LEExpr" }
+
+  final override Expr getGreaterOperand() { result = this.getRightOperand() }
+
+  final override Expr getLesserOperand() { result = this.getLeftOperand() }
 }
 
 /**
@@ -406,9 +397,7 @@ class LEExpr extends RelationalOperation, @binary_langleequal {
  * a <=> b
  * ```
  */
-class SpaceshipExpr extends BinaryOperation, @binary_langleequalrangle {
-  final override SpaceshipExpr::Range range;
-
+class SpaceshipExpr extends BinaryOperation, TSpaceshipExpr {
   final override string getAPrimaryQlClass() { result = "SpaceshipExpr" }
 }
 
@@ -418,9 +407,7 @@ class SpaceshipExpr extends BinaryOperation, @binary_langleequalrangle {
  * input =~ /\d/
  * ```
  */
-class RegexMatchExpr extends BinaryOperation, @binary_equaltilde {
-  final override RegexMatchExpr::Range range;
-
+class RegexMatchExpr extends BinaryOperation, TRegexMatchExpr {
   final override string getAPrimaryQlClass() { result = "RegexMatchExpr" }
 }
 
@@ -430,9 +417,7 @@ class RegexMatchExpr extends BinaryOperation, @binary_equaltilde {
  * input !~ /\d/
  * ```
  */
-class NoRegexMatchExpr extends BinaryOperation, @binary_bangtilde {
-  final override NoRegexMatchExpr::Range range;
-
+class NoRegexMatchExpr extends BinaryOperation, TNoRegexMatchExpr {
   final override string getAPrimaryQlClass() { result = "NoRegexMatchExpr" }
 }
 
@@ -441,14 +426,26 @@ class NoRegexMatchExpr extends BinaryOperation, @binary_bangtilde {
  *
  * This is a QL base class for all assignments.
  */
-class Assignment extends Operation {
-  override Assignment::Range range;
-
+class Assignment extends Operation, TAssignment {
   /** Gets the left hand side of this assignment. */
-  Pattern getLeftOperand() { result = range.getLeftOperand() }
+  Pattern getLeftOperand() { none() }
 
   /** Gets the right hand side of this assignment. */
-  final Expr getRightOperand() { result = range.getRightOperand() }
+  Expr getRightOperand() { none() }
+
+  final override Expr getAnOperand() {
+    result = this.getLeftOperand() or result = this.getRightOperand()
+  }
+
+  final override string toString() { result = "... " + this.getOperator() + " ..." }
+
+  override AstNode getAChild(string pred) {
+    result = Operation.super.getAChild(pred)
+    or
+    pred = "getLeftOperand" and result = getLeftOperand()
+    or
+    pred = "getRightOperand" and result = getRightOperand()
+  }
 }
 
 /**
@@ -457,8 +454,16 @@ class Assignment extends Operation {
  * x = 123
  * ```
  */
-class AssignExpr extends Assignment {
-  override AssignExpr::Range range;
+class AssignExpr extends Assignment, TAssignExpr {
+  private Generated::Assignment g;
+
+  AssignExpr() { this = TAssignExpr(g) }
+
+  final override Pattern getLeftOperand() { toGenerated(result) = g.getLeft() }
+
+  final override Expr getRightOperand() { toGenerated(result) = g.getRight() }
+
+  final override string getOperator() { result = "=" }
 
   override string getAPrimaryQlClass() { result = "AssignExpr" }
 }
@@ -466,16 +471,22 @@ class AssignExpr extends Assignment {
 /**
  * A binary assignment operation other than `=`.
  */
-class AssignOperation extends Assignment {
-  override AssignOperation::Range range;
+class AssignOperation extends Assignment, TAssignOperation {
+  private Generated::OperatorAssignment g;
+
+  AssignOperation() { g = toGenerated(this) }
+
+  final override string getOperator() { result = g.getOperator() }
+
+  final override LhsExpr getLeftOperand() { toGenerated(result) = g.getLeft() }
+
+  final override Expr getRightOperand() { toGenerated(result) = g.getRight() }
 }
 
 /**
  * An arithmetic assignment operation: `+=`, `-=`, `*=`, `/=`, `**=`, and `%=`.
  */
-class AssignArithmeticOperation extends AssignOperation {
-  override AssignArithmeticOperation::Range range;
-}
+class AssignArithmeticOperation extends AssignOperation, TAssignArithmeticOperation { }
 
 /**
  * A `+=` assignment expression.
@@ -483,9 +494,7 @@ class AssignArithmeticOperation extends AssignOperation {
  * x += 1
  * ```
  */
-class AssignAddExpr extends AssignArithmeticOperation, @operator_assignment_plusequal {
-  final override AssignAddExpr::Range range;
-
+class AssignAddExpr extends AssignArithmeticOperation, TAssignAddExpr {
   final override string getAPrimaryQlClass() { result = "AssignAddExpr" }
 }
 
@@ -495,9 +504,7 @@ class AssignAddExpr extends AssignArithmeticOperation, @operator_assignment_plus
  * x -= 3
  * ```
  */
-class AssignSubExpr extends AssignArithmeticOperation, @operator_assignment_minusequal {
-  final override AssignSubExpr::Range range;
-
+class AssignSubExpr extends AssignArithmeticOperation, TAssignSubExpr {
   final override string getAPrimaryQlClass() { result = "AssignSubExpr" }
 }
 
@@ -507,9 +514,7 @@ class AssignSubExpr extends AssignArithmeticOperation, @operator_assignment_minu
  * x *= 10
  * ```
  */
-class AssignMulExpr extends AssignArithmeticOperation, @operator_assignment_starequal {
-  final override AssignMulExpr::Range range;
-
+class AssignMulExpr extends AssignArithmeticOperation, TAssignMulExpr {
   final override string getAPrimaryQlClass() { result = "AssignMulExpr" }
 }
 
@@ -519,9 +524,7 @@ class AssignMulExpr extends AssignArithmeticOperation, @operator_assignment_star
  * x /= y
  * ```
  */
-class AssignDivExpr extends AssignArithmeticOperation, @operator_assignment_slashequal {
-  final override AssignDivExpr::Range range;
-
+class AssignDivExpr extends AssignArithmeticOperation, TAssignDivExpr {
   final override string getAPrimaryQlClass() { result = "AssignDivExpr" }
 }
 
@@ -531,9 +534,7 @@ class AssignDivExpr extends AssignArithmeticOperation, @operator_assignment_slas
  * x %= 4
  * ```
  */
-class AssignModuloExpr extends AssignArithmeticOperation, @operator_assignment_percentequal {
-  final override AssignModuloExpr::Range range;
-
+class AssignModuloExpr extends AssignArithmeticOperation, TAssignModuloExpr {
   final override string getAPrimaryQlClass() { result = "AssignModuloExpr" }
 }
 
@@ -543,20 +544,14 @@ class AssignModuloExpr extends AssignArithmeticOperation, @operator_assignment_p
  * x **= 2
  * ```
  */
-class AssignExponentExpr extends AssignArithmeticOperation, @operator_assignment_starstarequal {
-  final override AssignExponentExpr::Range range;
-
+class AssignExponentExpr extends AssignArithmeticOperation, TAssignExponentExpr {
   final override string getAPrimaryQlClass() { result = "AssignExponentExpr" }
 }
 
 /**
  * A logical assignment operation: `&&=` and `||=`.
  */
-class AssignLogicalOperation extends AssignOperation {
-  override AssignLogicalOperation::Range range;
-
-  final override LhsExpr getLeftOperand() { result = super.getLeftOperand() }
-}
+class AssignLogicalOperation extends AssignOperation, TAssignLogicalOperation { }
 
 /**
  * A logical AND assignment operation.
@@ -564,10 +559,7 @@ class AssignLogicalOperation extends AssignOperation {
  * x &&= y.even?
  * ```
  */
-class AssignLogicalAndExpr extends AssignLogicalOperation,
-  @operator_assignment_ampersandampersandequal {
-  final override AssignLogicalAndExpr::Range range;
-
+class AssignLogicalAndExpr extends AssignLogicalOperation, TAssignLogicalAndExpr {
   final override string getAPrimaryQlClass() { result = "AssignLogicalAndExpr" }
 }
 
@@ -577,18 +569,14 @@ class AssignLogicalAndExpr extends AssignLogicalOperation,
  * x ||= y
  * ```
  */
-class AssignLogicalOrExpr extends AssignLogicalOperation, @operator_assignment_pipepipeequal {
-  final override AssignLogicalOrExpr::Range range;
-
+class AssignLogicalOrExpr extends AssignLogicalOperation, TAssignLogicalOrExpr {
   final override string getAPrimaryQlClass() { result = "AssignLogicalOrExpr" }
 }
 
 /**
  * A bitwise assignment operation: `<<=`, `>>=`, `&=`, `|=` and `^=`.
  */
-class AssignBitwiseOperation extends AssignOperation {
-  override AssignBitwiseOperation::Range range;
-}
+class AssignBitwiseOperation extends AssignOperation, TAssignBitwiseOperation { }
 
 /**
  * A left-shift assignment operation.
@@ -596,9 +584,7 @@ class AssignBitwiseOperation extends AssignOperation {
  * x <<= 3
  * ```
  */
-class AssignLShiftExpr extends AssignBitwiseOperation, @operator_assignment_langlelangleequal {
-  final override AssignLShiftExpr::Range range;
-
+class AssignLShiftExpr extends AssignBitwiseOperation, TAssignLShiftExpr {
   final override string getAPrimaryQlClass() { result = "AssignLShiftExpr" }
 }
 
@@ -608,9 +594,7 @@ class AssignLShiftExpr extends AssignBitwiseOperation, @operator_assignment_lang
  * x >>= 3
  * ```
  */
-class AssignRShiftExpr extends AssignBitwiseOperation, @operator_assignment_ranglerangleequal {
-  final override AssignRShiftExpr::Range range;
-
+class AssignRShiftExpr extends AssignBitwiseOperation, TAssignRShiftExpr {
   final override string getAPrimaryQlClass() { result = "AssignRShiftExpr" }
 }
 
@@ -620,9 +604,7 @@ class AssignRShiftExpr extends AssignBitwiseOperation, @operator_assignment_rang
  * x &= 0xff
  * ```
  */
-class AssignBitwiseAndExpr extends AssignBitwiseOperation, @operator_assignment_ampersandequal {
-  final override AssignBitwiseAndExpr::Range range;
-
+class AssignBitwiseAndExpr extends AssignBitwiseOperation, TAssignBitwiseAndExpr {
   final override string getAPrimaryQlClass() { result = "AssignBitwiseAndExpr" }
 }
 
@@ -632,9 +614,7 @@ class AssignBitwiseAndExpr extends AssignBitwiseOperation, @operator_assignment_
  * x |= 0x01
  * ```
  */
-class AssignBitwiseOrExpr extends AssignBitwiseOperation, @operator_assignment_pipeequal {
-  final override AssignBitwiseOrExpr::Range range;
-
+class AssignBitwiseOrExpr extends AssignBitwiseOperation, TAssignBitwiseOrExpr {
   final override string getAPrimaryQlClass() { result = "AssignBitwiseOrExpr" }
 }
 
@@ -644,8 +624,6 @@ class AssignBitwiseOrExpr extends AssignBitwiseOperation, @operator_assignment_p
  * x ^= y
  * ```
  */
-class AssignBitwiseXorExpr extends AssignBitwiseOperation, @operator_assignment_caretequal {
-  final override AssignBitwiseXorExpr::Range range;
-
+class AssignBitwiseXorExpr extends AssignBitwiseOperation, TAssignBitwiseXorExpr {
   final override string getAPrimaryQlClass() { result = "AssignBitwiseXorExpr" }
 }

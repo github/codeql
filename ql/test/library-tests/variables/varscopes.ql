@@ -1,3 +1,3 @@
-import codeql_ruby.ast.Variable
+import codeql_ruby.ast.Scope
 
-select any(VariableScope x)
+select any(Scope x)

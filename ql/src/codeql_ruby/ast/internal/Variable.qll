@@ -2,83 +2,74 @@ private import TreeSitter
 private import codeql.Locations
 private import codeql_ruby.AST
 private import codeql_ruby.ast.internal.AST
-private import codeql_ruby.ast.internal.Expr
-private import codeql_ruby.ast.internal.Method
-private import codeql_ruby.ast.internal.Module
-private import codeql_ruby.ast.internal.Pattern
 private import codeql_ruby.ast.internal.Parameter
+private import codeql_ruby.ast.internal.Scope
 
-Generated::AstNode parentOf(Generated::AstNode n) {
-  exists(Generated::AstNode parent | parent = n.getParent() |
-    if
-      n =
-        [
-          parent.(Generated::Module).getName(), parent.(Generated::Class).getName(),
-          parent.(Generated::Class).getSuperclass(), parent.(Generated::SingletonClass).getValue(),
-          parent.(Generated::Method).getName(), parent.(Generated::SingletonMethod).getName(),
-          parent.(Generated::SingletonMethod).getObject()
-        ]
-    then result = parent.getParent()
-    else result = parent
+/**
+ * Holds if `n` is in the left-hand-side of an explicit assignment `assignment`.
+ */
+predicate explicitAssignmentNode(Generated::AstNode n, Generated::AstNode assignment) {
+  n = assignment.(Generated::Assignment).getLeft()
+  or
+  n = assignment.(Generated::OperatorAssignment).getLeft()
+  or
+  exists(Generated::AstNode parent |
+    parent = n.getParent() and
+    explicitAssignmentNode(parent, assignment)
+  |
+    parent instanceof Generated::DestructuredLeftAssignment
+    or
+    parent instanceof Generated::LeftAssignmentList
+    or
+    parent instanceof Generated::RestAssignment
   )
 }
 
-private Generated::AstNode parentOfNoScope(Generated::AstNode n) {
-  result = parentOf(n) and
-  not n = any(VariableScope::Range s).getScopeElement()
+/** Holds if `n` is inside an implicit assignment. */
+predicate implicitAssignmentNode(Generated::AstNode n) {
+  n = any(Generated::ExceptionVariable ev).getChild()
+  or
+  n = any(Generated::For for).getPattern()
+  or
+  implicitAssignmentNode(n.getParent())
+}
+
+/** Holds if `n` is inside a parameter. */
+predicate implicitParameterAssignmentNode(Generated::AstNode n, Callable::Range c) {
+  n = c.getParameter(_)
+  or
+  implicitParameterAssignmentNode(n.getParent().(Generated::DestructuredParameter), c)
 }
 
 private predicate instanceVariableAccess(
-  Generated::InstanceVariable var, string name, VariableScope scope, boolean instance
+  Generated::InstanceVariable var, string name, Scope::Range scope, boolean instance
 ) {
   name = var.getValue() and
   scope = enclosingModuleOrClass(var) and
   if hasEnclosingMethod(var) then instance = true else instance = false
 }
 
-private predicate classVariableAccess(Generated::ClassVariable var, string name, VariableScope scope) {
+private predicate classVariableAccess(Generated::ClassVariable var, string name, Scope::Range scope) {
   name = var.getValue() and
   scope = enclosingModuleOrClass(var)
 }
 
-predicate hasEnclosingMethod(Generated::AstNode node) {
-  exists(Callable::Range method |
-    parentCallableScope*(enclosingScope(node)) = TCallableScope(method)
-  |
-    method instanceof Method::Range or
-    method instanceof SingletonMethod::Range
-  )
+private predicate hasEnclosingMethod(Generated::AstNode node) {
+  exists(Scope::Range s | scopeOf(node) = s and exists(s.getEnclosingMethod()))
 }
 
-private TCallableScope parentCallableScope(TCallableScope scope) {
-  exists(Callable::Range c |
-    scope = TCallableScope(c) and
-    not c instanceof Method::Range and
-    not c instanceof SingletonMethod::Range
-  |
-    result = scope.(VariableScope::Range).getOuterScope()
-  )
+private ModuleBase::Range enclosingModuleOrClass(Generated::AstNode node) {
+  exists(Scope::Range s | scopeOf(node) = s and result = s.getEnclosingModule())
 }
 
-private VariableScope::Range parentScope(VariableScope::Range scope) {
-  not scope instanceof ModuleOrClassScope and
-  result = scope.getOuterScope()
-}
-
-private ModuleOrClassScope enclosingModuleOrClass(Generated::AstNode node) {
-  result = parentScope*(enclosingScope(node))
-}
-
-private predicate parameterAssignment(
-  CallableScope::Range scope, string name, Generated::Identifier i
-) {
-  implicitParameterAssignmentNode(i, scope.getScopeElement()) and
+private predicate parameterAssignment(Callable::Range scope, string name, Generated::Identifier i) {
+  implicitParameterAssignmentNode(i, scope) and
   name = i.getValue()
 }
 
 /** Holds if `scope` defines `name` in its parameter declaration at `i`. */
 private predicate scopeDefinesParameterVariable(
-  CallableScope::Range scope, string name, Generated::Identifier i
+  Callable::Range scope, string name, Generated::Identifier i
 ) {
   // In case of overlapping parameter names (e.g. `_`), only the first
   // parameter will give rise to a variable
@@ -90,8 +81,8 @@ private predicate scopeDefinesParameterVariable(
     )
   or
   exists(Parameter::Range p |
-    p = scope.getScopeElement().(Callable::Range).getParameter(_) and
-    name = p.(NamedParameter::Range).getName()
+    p = scope.getParameter(_) and
+    name = i.getValue()
   |
     i = p.(Generated::BlockParameter).getName() or
     i = p.(Generated::HashSplatParameter).getName() or
@@ -102,10 +93,10 @@ private predicate scopeDefinesParameterVariable(
 }
 
 /** Holds if `name` is assigned in `scope` at `i`. */
-private predicate scopeAssigns(VariableScope scope, string name, Generated::Identifier i) {
+private predicate scopeAssigns(Scope::Range scope, string name, Generated::Identifier i) {
   (explicitAssignmentNode(i, _) or implicitAssignmentNode(i)) and
   name = i.getValue() and
-  scope = enclosingScope(i)
+  scope = scopeOf(i)
 }
 
 /** Holds if location `one` starts strictly before location `two` */
@@ -116,45 +107,12 @@ private predicate strictlyBefore(Location one, Location two) {
   one.getStartLine() = two.getStartLine() and one.getStartColumn() < two.getStartColumn()
 }
 
-private Generated::AstNode getNodeForIdentifier(Generated::Identifier id) {
-  exists(Generated::AstNode parent | parent = id.getParent() |
-    if
-      parent instanceof Generated::BlockParameter
-      or
-      parent instanceof Generated::SplatParameter
-      or
-      parent instanceof Generated::HashSplatParameter
-      or
-      parent instanceof Generated::KeywordParameter
-      or
-      parent instanceof Generated::OptionalParameter
-    then result = parent
-    else result = id
-  )
-}
-
 cached
 private module Cached {
-  /** Gets the enclosing scope for `node`. */
-  cached
-  VariableScope::Range enclosingScope(Generated::AstNode node) {
-    result.getScopeElement() = parentOfNoScope*(parentOf(node))
-  }
-
-  cached
-  newtype TScope =
-    TGlobalScope() or
-    TTopLevelScope(Generated::Program node) or
-    TModuleScope(Generated::Module node) or
-    TClassScope(Generated::AstNode cls) {
-      cls instanceof Generated::Class or cls instanceof Generated::SingletonClass
-    } or
-    TCallableScope(Callable::Range c)
-
   cached
   newtype TVariable =
     TGlobalVariable(string name) { name = any(Generated::GlobalVariable var).getValue() } or
-    TClassVariable(VariableScope scope, string name, Generated::AstNode decl) {
+    TClassVariable(Scope::Range scope, string name, Generated::AstNode decl) {
       decl =
         min(Generated::ClassVariable other |
           classVariableAccess(other, name, scope)
@@ -162,7 +120,7 @@ private module Cached {
           other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
         )
     } or
-    TInstanceVariable(VariableScope scope, string name, boolean instance, Generated::AstNode decl) {
+    TInstanceVariable(Scope::Range scope, string name, boolean instance, Generated::AstNode decl) {
       decl =
         min(Generated::InstanceVariable other |
           instanceVariableAccess(other, name, scope, instance)
@@ -170,7 +128,7 @@ private module Cached {
           other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
         )
     } or
-    TLocalVariable(VariableScope::Range scope, string name, Generated::Identifier i) {
+    TLocalVariable(Scope::Range scope, string name, Generated::Identifier i) {
       scopeDefinesParameterVariable(scope, name, i)
       or
       i =
@@ -180,7 +138,7 @@ private module Cached {
           other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
         ) and
       not scopeDefinesParameterVariable(scope, name, _) and
-      not scope.inherits(name, _)
+      not inherits(scope, name, _)
     }
 
   // Db types that can be vcalls
@@ -330,10 +288,12 @@ private module Cached {
   }
 
   cached
-  predicate access(Generated::Identifier access, Variable variable) {
-    exists(string name | name = access.getValue() |
-      variable.getDeclaringScope() = enclosingScope(access) and
+  predicate access(Generated::Identifier access, Variable::Range variable) {
+    exists(string name |
       variable.getName() = name and
+      name = access.getValue()
+    |
+      variable.getDeclaringScope() = scopeOf(access) and
       not strictlyBefore(access.getLocation(), variable.getLocation()) and
       // In case of overlapping parameter names, later parameters should not
       // be considered accesses to the first parameter
@@ -341,15 +301,20 @@ private module Cached {
       then scopeDefinesParameterVariable(_, _, access)
       else any()
       or
-      exists(VariableScope declScope |
-        variable = declScope.getVariable(name) and
-        enclosingScope(access).inherits(name, declScope)
+      exists(Scope::Range declScope |
+        variable.getDeclaringScope() = declScope and
+        inherits(scopeOf(access), name, declScope)
       )
     )
   }
 
   private class Access extends Generated::Token {
-    Access() { access(this, _) or this instanceof Generated::GlobalVariable }
+    Access() {
+      access(this, _) or
+      this instanceof Generated::GlobalVariable or
+      this instanceof Generated::InstanceVariable or
+      this instanceof Generated::ClassVariable
+    }
   }
 
   cached
@@ -365,13 +330,13 @@ private module Cached {
   }
 
   cached
-  predicate isCapturedAccess(LocalVariableAccess::Range access) {
-    access.getVariable().getDeclaringScope() != enclosingScope(access)
+  predicate isCapturedAccess(LocalVariableAccess access) {
+    toGenerated(access.getVariable().getDeclaringScope()) != scopeOf(toGenerated(access))
   }
 
   cached
   predicate instanceVariableAccess(Generated::InstanceVariable var, InstanceVariable v) {
-    exists(string name, VariableScope scope, boolean instance |
+    exists(string name, Scope::Range scope, boolean instance |
       v = TInstanceVariable(scope, name, instance, _) and
       instanceVariableAccess(var, name, scope, instance)
     )
@@ -379,7 +344,7 @@ private module Cached {
 
   cached
   predicate classVariableAccess(Generated::ClassVariable var, ClassVariable variable) {
-    exists(VariableScope scope, string name |
+    exists(Scope::Range scope, string name |
       variable = TClassVariable(scope, name, _) and
       classVariableAccess(var, name, scope)
     )
@@ -388,125 +353,23 @@ private module Cached {
 
 import Cached
 
-module VariableScope {
-  abstract class Range extends TScope {
-    abstract string toString();
-
-    abstract Generated::AstNode getScopeElement();
-
-    abstract predicate isCapturing();
-
-    VariableScope::Range getOuterScope() { result = enclosingScope(this.getScopeElement()) }
-
-    /** Holds if this scope inherits `name` from an outer scope `outer`. */
-    predicate inherits(string name, VariableScope::Range outer) {
-      this.isCapturing() and
-      not scopeDefinesParameterVariable(this, name, _) and
-      (
-        outer = this.getOuterScope() and
-        (
-          scopeDefinesParameterVariable(outer, name, _)
-          or
-          exists(Generated::Identifier i |
-            scopeAssigns(outer, name, i) and
-            strictlyBefore(i.getLocation(), this.getLocation())
-          )
-        )
-        or
-        this.getOuterScope().inherits(name, outer)
+/** Holds if this scope inherits `name` from an outer scope `outer`. */
+private predicate inherits(Scope::Range scope, string name, Scope::Range outer) {
+  (scope instanceof Generated::Block or scope instanceof Generated::DoBlock) and
+  not scopeDefinesParameterVariable(scope, name, _) and
+  (
+    outer = scope.getOuterScope() and
+    (
+      scopeDefinesParameterVariable(outer, name, _)
+      or
+      exists(Generated::Identifier i |
+        scopeAssigns(outer, name, i) and
+        strictlyBefore(i.getLocation(), scope.getLocation())
       )
-    }
-
-    final Location getLocation() { result = getScopeElement().getLocation() }
-  }
-}
-
-module GlobalScope {
-  class Range extends VariableScope::Range, TGlobalScope {
-    override string toString() { result = "global scope" }
-
-    override Generated::AstNode getScopeElement() { none() }
-
-    override predicate isCapturing() { none() }
-  }
-}
-
-module TopLevelScope {
-  class Range extends VariableScope::Range, TTopLevelScope {
-    Generated::Program program;
-
-    Range() { TTopLevelScope(program) = this }
-
-    override string toString() {
-      result = "top-level scope for " + program.getLocation().getFile().getBaseName()
-    }
-
-    override Generated::AstNode getScopeElement() { result = program }
-
-    override predicate isCapturing() { none() }
-  }
-}
-
-module ModuleScope {
-  class Range extends VariableScope::Range, TModuleScope {
-    Generated::Module mdl;
-
-    Range() { TModuleScope(mdl) = this }
-
-    override string toString() { result = "module scope for " + mdl.(Module::Range).getName() }
-
-    override Generated::AstNode getScopeElement() { result = mdl }
-
-    override predicate isCapturing() { none() }
-  }
-}
-
-module ClassScope {
-  class Range extends VariableScope::Range, TClassScope {
-    Generated::AstNode cls;
-
-    Range() { TClassScope(cls) = this }
-
-    override string toString() {
-      result = "class scope for " + cls.(Class::Range).getName()
-      or
-      cls instanceof Generated::SingletonClass and result = "class scope"
-    }
-
-    override Generated::AstNode getScopeElement() { result = cls }
-
-    override predicate isCapturing() { none() }
-  }
-}
-
-module CallableScope {
-  class Range extends VariableScope::Range, TCallableScope {
-    private Generated::AstNode c;
-
-    Range() { this = TCallableScope(c) }
-
-    override string toString() {
-      result = "method scope for " + c.(SingletonMethod).getName()
-      or
-      result = "method scope for " + c.(Method).getName()
-      or
-      c instanceof Lambda and
-      result = "lambda scope"
-      or
-      c instanceof Block and
-      result = "block scope"
-    }
-
-    override Generated::AstNode getScopeElement() { TCallableScope(result) = this }
-
-    override predicate isCapturing() {
-      c instanceof Generated::Lambda
-      or
-      c instanceof Generated::Block
-      or
-      c instanceof Generated::DoBlock
-    }
-  }
+    )
+    or
+    inherits(scope.getOuterScope(), name, outer)
+  )
 }
 
 module Variable {
@@ -517,13 +380,13 @@ module Variable {
 
     abstract Location getLocation();
 
-    abstract VariableScope getDeclaringScope();
+    abstract Scope::Range getDeclaringScope();
   }
 }
 
 module LocalVariable {
   class Range extends Variable::Range, TLocalVariable {
-    private VariableScope scope;
+    private Scope::Range scope;
     private string name;
     private Generated::Identifier i;
 
@@ -533,9 +396,9 @@ module LocalVariable {
 
     final override Location getLocation() { result = i.getLocation() }
 
-    final override VariableScope getDeclaringScope() { result = scope }
+    final override Scope::Range getDeclaringScope() { result = scope }
 
-    final VariableAccess getDefiningAccess() { result = getNodeForIdentifier(i) }
+    final VariableAccess getDefiningAccess() { toGenerated(result) = i }
   }
 }
 
@@ -549,15 +412,13 @@ module GlobalVariable {
 
     final override Location getLocation() { none() }
 
-    final override VariableScope getDeclaringScope() { result = TGlobalScope() }
+    final override Scope::Range getDeclaringScope() { none() }
   }
 }
 
-private class ModuleOrClassScope = TClassScope or TModuleScope or TTopLevelScope;
-
 module InstanceVariable {
   class Range extends Variable::Range, TInstanceVariable {
-    private ModuleOrClassScope scope;
+    private ModuleBase::Range scope;
     private boolean instance;
     private string name;
     private Generated::AstNode decl;
@@ -570,13 +431,13 @@ module InstanceVariable {
 
     final override Location getLocation() { result = decl.getLocation() }
 
-    final override VariableScope getDeclaringScope() { result = scope }
+    final override Scope::Range getDeclaringScope() { result = scope }
   }
 }
 
 module ClassVariable {
   class Range extends Variable::Range, TClassVariable {
-    private ModuleOrClassScope scope;
+    private ModuleBase::Range scope;
     private string name;
     private Generated::AstNode decl;
 
@@ -586,90 +447,33 @@ module ClassVariable {
 
     final override Location getLocation() { result = decl.getLocation() }
 
-    final override VariableScope getDeclaringScope() { result = scope }
-  }
-}
-
-module VariableAccess {
-  abstract class Range extends Expr::Range {
-    abstract Variable getVariable();
-
-    final predicate isExplicitWrite(AstNode assignment) {
-      exists(Generated::Identifier i | this = getNodeForIdentifier(i) |
-        explicitWriteAccess(i, assignment)
-      )
-      or
-      not this = getNodeForIdentifier(_) and explicitWriteAccess(this, assignment)
-    }
-
-    final predicate isImplicitWrite() {
-      exists(Generated::Identifier i | this = getNodeForIdentifier(i) | implicitWriteAccess(i))
-      or
-      not this = getNodeForIdentifier(_) and implicitWriteAccess(this)
-    }
+    final override Scope::Range getDeclaringScope() { result = scope }
   }
 }
 
 module LocalVariableAccess {
-  class LocalVariableRange =
-    @token_identifier or @splat_parameter or @keyword_parameter or @optional_parameter or
-        @hash_splat_parameter or @block_parameter;
-
-  class Range extends VariableAccess::Range, LocalVariableRange {
-    LocalVariable variable;
-
-    Range() {
-      exists(Generated::Identifier id |
-        this = getNodeForIdentifier(id) and
-        access(id, variable) and
-        (
-          explicitWriteAccess(id, _)
-          or
-          implicitWriteAccess(id)
-          or
-          vcall(id)
-        )
-      )
-    }
-
-    override string toString() { result = generated.(Generated::Identifier).getValue() }
-
-    final override LocalVariable getVariable() { result = variable }
+  predicate range(Generated::Identifier id, LocalVariable v) {
+    access(id, v) and
+    (
+      explicitWriteAccess(id, _)
+      or
+      implicitWriteAccess(id)
+      or
+      vcall(id)
+    )
   }
 }
 
 module GlobalVariableAccess {
-  class Range extends VariableAccess::Range, @token_global_variable {
-    GlobalVariable variable;
-
-    Range() { this.(Generated::GlobalVariable).getValue() = variable.getName() }
-
-    final override GlobalVariable getVariable() { result = variable }
-
-    override string toString() { result = generated.(Generated::GlobalVariable).getValue() }
-  }
+  predicate range(Generated::GlobalVariable n, GlobalVariable v) { n.getValue() = v.getName() }
 }
 
 module InstanceVariableAccess {
-  class Range extends VariableAccess::Range, @token_instance_variable {
-    InstanceVariable variable;
-
-    Range() { instanceVariableAccess(this, variable) }
-
-    final override InstanceVariable getVariable() { result = variable }
-
-    override string toString() { result = generated.(Generated::InstanceVariable).getValue() }
+  predicate range(Generated::InstanceVariable n, InstanceVariable v) {
+    instanceVariableAccess(n, v)
   }
 }
 
 module ClassVariableAccess {
-  class Range extends VariableAccess::Range, @token_class_variable {
-    ClassVariable variable;
-
-    Range() { classVariableAccess(this, variable) }
-
-    final override ClassVariable getVariable() { result = variable }
-
-    override string toString() { result = generated.(Generated::ClassVariable).getValue() }
-  }
+  predicate range(Generated::ClassVariable n, ClassVariable v) { classVariableAccess(n, v) }
 }

@@ -2,6 +2,8 @@
 
 private import codeql.Locations
 private import codeql_ruby.AST
+private import codeql_ruby.ast.internal.AST
+private import codeql_ruby.ast.internal.TreeSitter
 private import codeql_ruby.controlflow.ControlFlowGraph
 private import internal.ControlFlowGraphImpl
 private import CfgNodes
@@ -351,14 +353,14 @@ class ExitBasicBlock extends BasicBlock {
 }
 
 private module JoinBlockPredecessors {
-  private predicate id(AstNode x, AstNode y) { x = y }
+  private predicate id(Generated::AstNode x, Generated::AstNode y) { x = y }
 
-  private predicate idOf(AstNode x, int y) = equivalenceRelation(id/2)(x, y)
+  private predicate idOf(Generated::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
 
   int getId(JoinBlockPredecessor jbp) {
-    idOf(jbp.getFirstNode().(AstCfgNode).getNode(), result)
+    idOf(toGenerated(jbp.getFirstNode().(AstCfgNode).getNode()), result)
     or
-    idOf(jbp.(EntryBasicBlock).getScope(), result)
+    idOf(toGenerated(jbp.(EntryBasicBlock).getScope()), result)
   }
 
   string getSplitString(JoinBlockPredecessor jbp) {

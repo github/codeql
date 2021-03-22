@@ -1,21 +1,20 @@
 private import codeql_ruby.AST
-private import internal.Literal
+private import internal.AST
+private import internal.TreeSitter
 
 /**
  * A literal.
  *
  * This is the QL root class for all literals.
  */
-class Literal extends Expr {
-  override Literal::Range range;
-
+class Literal extends Expr, TLiteral {
   /**
    * Gets the source text for this literal, if this is a simple literal.
    *
    * For complex literals, such as arrays, hashes, and strings with
    * interpolations, this predicate has no result.
    */
-  final string getValueText() { result = range.getValueText() }
+  string getValueText() { none() }
 }
 
 /**
@@ -31,9 +30,7 @@ class Literal extends Expr {
  * 1i
  * ```
  */
-class NumericLiteral extends Literal {
-  override NumericLiteral::Range range;
-}
+class NumericLiteral extends Literal, TNumericLiteral { }
 
 /**
  * An integer literal.
@@ -43,8 +40,14 @@ class NumericLiteral extends Literal {
  *  0xff
  * ```
  */
-class IntegerLiteral extends NumericLiteral, @token_integer {
-  final override IntegerLiteral::Range range;
+class IntegerLiteral extends NumericLiteral, TIntegerLiteral {
+  private Generated::Integer g;
+
+  IntegerLiteral() { this = TIntegerLiteral(g) }
+
+  final override string getValueText() { result = g.getValue() }
+
+  final override string toString() { result = this.getValueText() }
 
   final override string getAPrimaryQlClass() { result = "IntegerLiteral" }
 }
@@ -57,8 +60,14 @@ class IntegerLiteral extends NumericLiteral, @token_integer {
  * 2.7e+5
  * ```
  */
-class FloatLiteral extends NumericLiteral, @token_float {
-  final override FloatLiteral::Range range;
+class FloatLiteral extends NumericLiteral, TFloatLiteral {
+  private Generated::Float g;
+
+  FloatLiteral() { this = TFloatLiteral(g) }
+
+  final override string getValueText() { result = g.getValue() }
+
+  final override string toString() { result = this.getValueText() }
 
   final override string getAPrimaryQlClass() { result = "FloatLiteral" }
 }
@@ -70,8 +79,14 @@ class FloatLiteral extends NumericLiteral, @token_float {
  * 123r
  * ```
  */
-class RationalLiteral extends NumericLiteral, @rational {
-  final override RationalLiteral::Range range;
+class RationalLiteral extends NumericLiteral, TRationalLiteral {
+  private Generated::Rational g;
+
+  RationalLiteral() { this = TRationalLiteral(g) }
+
+  final override string getValueText() { result = g.getChild().(Generated::Token).getValue() + "r" }
+
+  final override string toString() { result = this.getValueText() }
 
   final override string getAPrimaryQlClass() { result = "RationalLiteral" }
 }
@@ -83,15 +98,27 @@ class RationalLiteral extends NumericLiteral, @rational {
  * 1i
  * ```
  */
-class ComplexLiteral extends NumericLiteral, @token_complex {
-  final override ComplexLiteral::Range range;
+class ComplexLiteral extends NumericLiteral, TComplexLiteral {
+  private Generated::Complex g;
+
+  ComplexLiteral() { this = TComplexLiteral(g) }
+
+  final override string getValueText() { result = g.getValue() }
+
+  final override string toString() { result = this.getValueText() }
 
   final override string getAPrimaryQlClass() { result = "ComplexLiteral" }
 }
 
 /** A `nil` literal. */
-class NilLiteral extends Literal, @token_nil {
-  final override NilLiteral::Range range;
+class NilLiteral extends Literal, TNilLiteral {
+  private Generated::Nil g;
+
+  NilLiteral() { this = TNilLiteral(g) }
+
+  final override string getValueText() { result = g.getValue() }
+
+  final override string toString() { result = this.getValueText() }
 
   final override string getAPrimaryQlClass() { result = "NilLiteral" }
 }
@@ -105,30 +132,48 @@ class NilLiteral extends Literal, @token_nil {
  * FALSE
  * ```
  */
-class BooleanLiteral extends Literal, BooleanLiteral::DbUnion {
-  final override BooleanLiteral::Range range;
-
+class BooleanLiteral extends Literal, TBooleanLiteral {
   final override string getAPrimaryQlClass() { result = "BooleanLiteral" }
 
+  final override string toString() { result = this.getValueText() }
+
   /** Holds if the Boolean literal is `true` or `TRUE`. */
-  predicate isTrue() { range.isTrue() }
+  predicate isTrue() { none() }
 
   /** Holds if the Boolean literal is `false` or `FALSE`. */
-  predicate isFalse() { range.isFalse() }
+  predicate isFalse() { none() }
+}
+
+private class TrueLiteral extends BooleanLiteral, TTrueLiteral {
+  private Generated::True g;
+
+  TrueLiteral() { this = TTrueLiteral(g) }
+
+  final override string getValueText() { result = g.getValue() }
+
+  final override predicate isTrue() { any() }
+}
+
+private class FalseLiteral extends BooleanLiteral, TFalseLiteral {
+  private Generated::False g;
+
+  FalseLiteral() { this = TFalseLiteral(g) }
+
+  final override string getValueText() { result = g.getValue() }
+
+  final override predicate isFalse() { any() }
 }
 
 /**
  * The base class for a component of a string: `StringTextComponent`,
  * `StringEscapeSequenceComponent`, or `StringInterpolationComponent`.
  */
-class StringComponent extends AstNode {
-  override StringComponent::Range range;
-
+class StringComponent extends AstNode, TStringComponent {
   /**
    * Gets the source text for this string component. Has no result if this is
    * a `StringInterpolationComponent`.
    */
-  final string getValueText() { result = range.getValueText() }
+  string getValueText() { none() }
 }
 
 /**
@@ -143,8 +188,14 @@ class StringComponent extends AstNode {
  * "foo#{ bar() } baz"
  * ```
  */
-class StringTextComponent extends StringComponent, StringTextComponent::StringContentToken {
-  final override StringTextComponent::Range range;
+class StringTextComponent extends StringComponent, TStringTextComponent {
+  private Generated::Token g;
+
+  StringTextComponent() { this = TStringTextComponent(g) }
+
+  final override string toString() { result = g.getValue() }
+
+  final override string getValueText() { result = g.getValue() }
 
   final override string getAPrimaryQlClass() { result = "StringTextComponent" }
 }
@@ -152,8 +203,14 @@ class StringTextComponent extends StringComponent, StringTextComponent::StringCo
 /**
  * An escape sequence component of a string or string-like literal.
  */
-class StringEscapeSequenceComponent extends StringComponent, @token_escape_sequence {
-  final override StringEscapeSequenceComponent::Range range;
+class StringEscapeSequenceComponent extends StringComponent, TStringEscapeSequenceComponent {
+  private Generated::EscapeSequence g;
+
+  StringEscapeSequenceComponent() { this = TStringEscapeSequenceComponent(g) }
+
+  final override string toString() { result = g.getValue() }
+
+  final override string getValueText() { result = g.getValue() }
 
   final override string getAPrimaryQlClass() { result = "StringEscapeSequenceComponent" }
 }
@@ -161,8 +218,17 @@ class StringEscapeSequenceComponent extends StringComponent, @token_escape_seque
 /**
  * An interpolation expression component of a string or string-like literal.
  */
-class StringInterpolationComponent extends StringComponent, StmtSequence, @interpolation {
-  final override StringInterpolationComponent::Range range;
+class StringInterpolationComponent extends StringComponent, StmtSequence,
+  TStringInterpolationComponent {
+  private Generated::Interpolation g;
+
+  StringInterpolationComponent() { this = TStringInterpolationComponent(g) }
+
+  final override string toString() { result = "#{...}" }
+
+  final override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
+
+  final override string getValueText() { none() }
 
   final override string getAPrimaryQlClass() { result = "StringInterpolationComponent" }
 }
@@ -170,9 +236,7 @@ class StringInterpolationComponent extends StringComponent, StmtSequence, @inter
 /**
  * A string, symbol, regex, or subshell literal.
  */
-class StringlikeLiteral extends Literal {
-  override StringlikeLiteral::Range range;
-
+class StringlikeLiteral extends Literal, TStringlikeLiteral {
   /**
    * Gets the `n`th component of this string or string-like literal. The result
    * will be one of `StringTextComponent`, `StringInterpolationComponent`, and
@@ -186,7 +250,7 @@ class StringlikeLiteral extends Literal {
    * "foo_#{ Time.now }"
    * ```
    */
-  final StringComponent getComponent(int n) { result = range.getComponent(n) }
+  StringComponent getComponent(int n) { none() }
 
   /**
    * Gets the number of components in this string or string-like literal.
@@ -206,6 +270,91 @@ class StringlikeLiteral extends Literal {
    * ```
    */
   final int getNumberOfComponents() { result = count(this.getComponent(_)) }
+
+  private string getStartDelimiter() {
+    this instanceof TStringLiteral and
+    result = "\""
+    or
+    this instanceof TRegexLiteral and
+    result = "/"
+    or
+    this instanceof TSimpleSymbolLiteral and
+    result = ":"
+    or
+    this instanceof TComplexSymbolLiteral and
+    result = ":\""
+    or
+    this instanceof THashKeySymbolLiteral and
+    result = ""
+    or
+    this instanceof TSubshellLiteral and
+    result = "`"
+    or
+    this instanceof THereDoc and
+    result = ""
+  }
+
+  private string getEndDelimiter() {
+    this instanceof TStringLiteral and
+    result = "\""
+    or
+    this instanceof TRegexLiteral and
+    result = "/"
+    or
+    this instanceof TSimpleSymbolLiteral and
+    result = ""
+    or
+    this instanceof TComplexSymbolLiteral and
+    result = "\""
+    or
+    this instanceof THashKeySymbolLiteral and
+    result = ""
+    or
+    this instanceof TSubshellLiteral and
+    result = "`"
+    or
+    this instanceof THereDoc and
+    result = ""
+  }
+
+  override string getValueText() {
+    // 0 components should result in the empty string
+    // if there are any interpolations, there should be no result
+    // otherwise, concatenate all the components
+    forall(StringComponent c | c = this.getComponent(_) |
+      not c instanceof StringInterpolationComponent
+    ) and
+    result =
+      concat(StringComponent c, int i | c = this.getComponent(i) | c.getValueText() order by i)
+  }
+
+  override string toString() {
+    exists(string full, string summary |
+      full =
+        concat(StringComponent c, int i, string s |
+          c = this.getComponent(i) and
+          (
+            s = toGenerated(c).(Generated::Token).getValue()
+            or
+            not toGenerated(c) instanceof Generated::Token and
+            s = "#{...}"
+          )
+        |
+          s order by i
+        ) and
+      (
+        // summary should be 32 chars max (incl. ellipsis)
+        full.length() > 32 and summary = full.substring(0, 29) + "..."
+        or
+        full.length() <= 32 and summary = full
+      ) and
+      result = this.getStartDelimiter() + summary + this.getEndDelimiter()
+    )
+  }
+
+  final override AstNode getAChild(string pred) {
+    pred = "getComponent" and result = this.getComponent(_)
+  }
 }
 
 /**
@@ -216,10 +365,24 @@ class StringlikeLiteral extends Literal {
  * "hello, #{name}"
  * ```
  */
-class StringLiteral extends StringlikeLiteral {
-  final override StringLiteral::Range range;
-
+class StringLiteral extends StringlikeLiteral, TStringLiteral {
   final override string getAPrimaryQlClass() { result = "StringLiteral" }
+}
+
+private class RegularStringLiteral extends StringLiteral, TRegularStringLiteral {
+  private Generated::String g;
+
+  RegularStringLiteral() { this = TRegularStringLiteral(g) }
+
+  final override StringComponent getComponent(int n) { toGenerated(result) = g.getChild(n) }
+}
+
+private class BareStringLiteral extends StringLiteral, TBareStringLiteral {
+  private Generated::BareString g;
+
+  BareStringLiteral() { this = TBareStringLiteral(g) }
+
+  final override StringComponent getComponent(int n) { toGenerated(result) = g.getChild(n) }
 }
 
 /**
@@ -229,10 +392,14 @@ class StringLiteral extends StringlikeLiteral {
  * /[a-z]+/
  * ```
  */
-class RegexLiteral extends StringlikeLiteral, @regex {
-  final override RegexLiteral::Range range;
+class RegexLiteral extends StringlikeLiteral, TRegexLiteral {
+  private Generated::Regex g;
+
+  RegexLiteral() { this = TRegexLiteral(g) }
 
   final override string getAPrimaryQlClass() { result = "RegexLiteral" }
+
+  final override StringComponent getComponent(int i) { toGenerated(result) = g.getChild(i) }
 
   /**
    * Gets the regex flags as a string.
@@ -242,7 +409,16 @@ class RegexLiteral extends StringlikeLiteral, @regex {
    * /foo/i    # => "i"
    * /foo/imxo # => "imxo"
    */
-  final string getFlagString() { result = range.getFlagString() }
+  final string getFlagString() {
+    // For `/foo/i`, there should be an `/i` token in the database with `this`
+    // as its parents. Strip the delimiter, which can vary.
+    result =
+      max(Generated::Token t |
+        t.getParent() = g
+      |
+        t.getValue().suffix(1) order by t.getParentIndex()
+      )
+  }
 
   /**
    * Holds if the regex was specified using the `i` flag to indicate case
@@ -264,16 +440,49 @@ class RegexLiteral extends StringlikeLiteral, @regex {
  * :"foo bar #{baz}"
  * ```
  */
-class SymbolLiteral extends StringlikeLiteral {
-  final override SymbolLiteral::Range range;
-
-  SymbolLiteral() {
-    not any(UndefStmt u).getAMethodName() = this and
-    not any(AliasStmt a).getNewName() = this and
-    not any(AliasStmt a).getOldName() = this
+class SymbolLiteral extends StringlikeLiteral, TSymbolLiteral {
+  final override string getAPrimaryQlClass() {
+    not this instanceof MethodName and result = "SymbolLiteral"
   }
+}
 
-  final override string getAPrimaryQlClass() { result = "SymbolLiteral" }
+private class SimpleSymbolLiteral extends SymbolLiteral, TSimpleSymbolLiteral {
+  private Generated::SimpleSymbol g;
+
+  SimpleSymbolLiteral() { this = TSimpleSymbolLiteral(g) }
+
+  // Tree-sitter gives us value text including the colon, which we skip.
+  final override string getValueText() { result = g.getValue().suffix(1) }
+
+  final override string toString() { result = g.getValue() }
+}
+
+private class ComplexSymbolLiteral extends SymbolLiteral, TComplexSymbolLiteral { }
+
+private class DelimitedSymbolLiteral extends ComplexSymbolLiteral, TDelimitedSymbolLiteral {
+  private Generated::DelimitedSymbol g;
+
+  DelimitedSymbolLiteral() { this = TDelimitedSymbolLiteral(g) }
+
+  final override StringComponent getComponent(int i) { toGenerated(result) = g.getChild(i) }
+}
+
+private class BareSymbolLiteral extends ComplexSymbolLiteral, TBareSymbolLiteral {
+  private Generated::BareSymbol g;
+
+  BareSymbolLiteral() { this = TBareSymbolLiteral(g) }
+
+  final override StringComponent getComponent(int i) { toGenerated(result) = g.getChild(i) }
+}
+
+private class HashKeySymbolLiteral extends SymbolLiteral, THashKeySymbolLiteral {
+  private Generated::HashKeySymbol g;
+
+  HashKeySymbolLiteral() { this = THashKeySymbolLiteral(g) }
+
+  final override string getValueText() { result = g.getValue() }
+
+  final override string toString() { result = ":" + this.getValueText() }
 }
 
 /**
@@ -284,10 +493,14 @@ class SymbolLiteral extends StringlikeLiteral {
  * %x(/bin/sh foo.sh)
  * ```
  */
-class SubshellLiteral extends StringlikeLiteral, @subshell {
-  final override SubshellLiteral::Range range;
+class SubshellLiteral extends StringlikeLiteral, TSubshellLiteral {
+  private Generated::Subshell g;
+
+  SubshellLiteral() { this = TSubshellLiteral(g) }
 
   final override string getAPrimaryQlClass() { result = "SubshellLiteral" }
+
+  final override StringComponent getComponent(int i) { toGenerated(result) = g.getChild(i) }
 }
 
 /**
@@ -298,8 +511,14 @@ class SubshellLiteral extends StringlikeLiteral, @subshell {
  * ?\u{61}
  * ```
  */
-class CharacterLiteral extends Literal, @token_character {
-  final override CharacterLiteral::Range range;
+class CharacterLiteral extends Literal, TCharacterLiteral {
+  private Generated::Character g;
+
+  CharacterLiteral() { this = TCharacterLiteral(g) }
+
+  final override string getValueText() { result = g.getValue() }
+
+  final override string toString() { result = g.getValue() }
 
   final override string getAPrimaryQlClass() { result = "CharacterLiteral" }
 }
@@ -313,8 +532,10 @@ class CharacterLiteral extends Literal, @token_character {
  * SQL
  * ```
  */
-class HereDoc extends StringlikeLiteral {
-  final override HereDoc::Range range;
+class HereDoc extends StringlikeLiteral, THereDoc {
+  private Generated::HeredocBeginning g;
+
+  HereDoc() { this = THereDoc(g) }
 
   final override string getAPrimaryQlClass() { result = "HereDoc" }
 
@@ -336,7 +557,13 @@ class HereDoc extends StringlikeLiteral {
    * <<`IDENTIFIER`
    * ```
    */
-  final string getQuoteStyle() { result = range.getQuoteStyle() }
+  final string getQuoteStyle() {
+    exists(string s |
+      s = g.getValue() and
+      s.charAt(s.length() - 1) = result and
+      result = ["'", "`", "\""]
+    )
+  }
 
   /**
    * Gets the indentation modifier (`-` or `~`) of the here document identifier, if any.
@@ -346,7 +573,36 @@ class HereDoc extends StringlikeLiteral {
    * <<IDENTIFIER
    * ```
    */
-  final string getIndentationModifier() { result = range.getIndentationModifier() }
+  final string getIndentationModifier() {
+    exists(string s |
+      s = g.getValue() and
+      s.charAt(2) = result and
+      result = ["-", "~"]
+    )
+  }
+
+  private Generated::HeredocBody getBody() {
+    exists(int i, File f |
+      g =
+        rank[i](Generated::HeredocBeginning b |
+          f = b.getLocation().getFile()
+        |
+          b order by b.getLocation().getStartLine(), b.getLocation().getStartColumn()
+        ) and
+      result =
+        rank[i](Generated::HeredocBody b |
+          f = b.getLocation().getFile()
+        |
+          b order by b.getLocation().getStartLine(), b.getLocation().getStartColumn()
+        )
+    )
+  }
+
+  final override StringComponent getComponent(int n) {
+    toGenerated(result) = this.getBody().getChild(n)
+  }
+
+  final override string toString() { result = g.getValue() }
 }
 
 /**
@@ -358,19 +614,51 @@ class HereDoc extends StringlikeLiteral {
  * %i(foo bar)
  * ```
  */
-class ArrayLiteral extends Literal {
-  final override ArrayLiteral::Range range;
-
+class ArrayLiteral extends Literal, TArrayLiteral {
   final override string getAPrimaryQlClass() { result = "ArrayLiteral" }
 
   /** Gets the `n`th element in this array literal. */
-  final Expr getElement(int n) { result = range.getElement(n) }
+  Expr getElement(int n) { none() }
 
   /** Gets an element in this array literal. */
-  final Expr getAnElement() { result = range.getElement(_) }
+  final Expr getAnElement() { result = this.getElement(_) }
 
   /** Gets the number of elements in this array literal. */
-  final int getNumberOfElements() { result = count(range.getElement(_)) }
+  final int getNumberOfElements() { result = count(this.getAnElement()) }
+
+  final override AstNode getAChild(string pred) {
+    pred = "getElement" and result = this.getElement(_)
+  }
+}
+
+private class RegularArrayLiteral extends ArrayLiteral, TRegularArrayLiteral {
+  private Generated::Array g;
+
+  RegularArrayLiteral() { this = TRegularArrayLiteral(g) }
+
+  final override Expr getElement(int i) { toGenerated(result) = g.getChild(i) }
+
+  final override string toString() { result = "[...]" }
+}
+
+private class StringArrayLiteral extends ArrayLiteral, TStringArrayLiteral {
+  private Generated::StringArray g;
+
+  StringArrayLiteral() { this = TStringArrayLiteral(g) }
+
+  final override Expr getElement(int i) { toGenerated(result) = g.getChild(i) }
+
+  final override string toString() { result = "%w(...)" }
+}
+
+private class SymbolArrayLiteral extends ArrayLiteral, TSymbolArrayLiteral {
+  private Generated::SymbolArray g;
+
+  SymbolArrayLiteral() { this = TSymbolArrayLiteral(g) }
+
+  final override Expr getElement(int i) { toGenerated(result) = g.getChild(i) }
+
+  final override string toString() { result = "%i(...)" }
 }
 
 /**
@@ -380,8 +668,10 @@ class ArrayLiteral extends Literal {
  * { foo: 123, bar: 456 }
  * ```
  */
-class HashLiteral extends Literal, @hash {
-  final override HashLiteral::Range range;
+class HashLiteral extends Literal, THashLiteral {
+  private Generated::Hash g;
+
+  HashLiteral() { this = THashLiteral(g) }
 
   final override string getAPrimaryQlClass() { result = "HashLiteral" }
 
@@ -395,16 +685,22 @@ class HashLiteral extends Literal, @hash {
    * { foo: 123, **bar }
    * ```
    */
-  final Expr getElement(int n) { result = range.getElement(n) }
+  final Expr getElement(int n) { toGenerated(result) = g.getChild(n) }
 
   /** Gets an element in this array literal. */
-  final Expr getAnElement() { result = range.getElement(_) }
+  final Expr getAnElement() { result = this.getElement(_) }
 
   /** Gets a key-value `Pair` in this hash literal. */
   final Pair getAKeyValuePair() { result = this.getAnElement() }
 
   /** Gets the number of elements in this hash literal. */
-  final int getNumberOfElements() { result = count(range.getElement(_)) }
+  final int getNumberOfElements() { result = count(this.getAnElement()) }
+
+  final override string toString() { result = "{...}" }
+
+  final override AstNode getAChild(string pred) {
+    pred = "getElement" and result = this.getElement(_)
+  }
 }
 
 /**
@@ -415,28 +711,38 @@ class HashLiteral extends Literal, @hash {
  * (1024...2048)
  * ```
  */
-class RangeLiteral extends Literal, @range {
-  final override RangeLiteral::Range range;
+class RangeLiteral extends Literal, TRangeLiteral {
+  private Generated::Range g;
+
+  RangeLiteral() { this = TRangeLiteral(g) }
 
   final override string getAPrimaryQlClass() { result = "RangeLiteral" }
 
   /** Gets the begin expression of this range, if any. */
-  final Expr getBegin() { result = range.getBegin() }
+  final Expr getBegin() { toGenerated(result) = g.getBegin() }
 
   /** Gets the end expression of this range, if any. */
-  final Expr getEnd() { result = range.getEnd() }
+  final Expr getEnd() { toGenerated(result) = g.getEnd() }
 
   /**
    * Holds if the range is inclusive of the end value, i.e. uses the `..`
    * operator.
    */
-  final predicate isInclusive() { range.isInclusive() }
+  final predicate isInclusive() { g instanceof @range_dotdot }
 
   /**
    * Holds if the range is exclusive of the end value, i.e. uses the `...`
    * operator.
    */
-  final predicate isExclusive() { range.isExclusive() }
+  final predicate isExclusive() { g instanceof @range_dotdotdot }
+
+  final override string toString() { result = "_ " + g.getOperator() + " _" }
+
+  final override AstNode getAChild(string pred) {
+    pred = "getBegin" and result = this.getBegin()
+    or
+    pred = "getEnd" and result = this.getEnd()
+  }
 }
 
 /**
@@ -449,7 +755,21 @@ class RangeLiteral extends Literal, @range {
  * ```
  */
 class MethodName extends Literal {
-  final override MethodName::Range range;
+  MethodName() { MethodName::range(toGenerated(this)) }
 
   final override string getAPrimaryQlClass() { result = "MethodName" }
+}
+
+private class TokenMethodName extends MethodName, TTokenMethodName {
+  private MethodName::Token g;
+
+  TokenMethodName() { this = TTokenMethodName(g) }
+
+  final override string getValueText() {
+    result = g.(Generated::Token).getValue()
+    or
+    result = g.(Generated::Setter).getName().getValue() + "="
+  }
+
+  final override string toString() { result = this.getValueText() }
 }
