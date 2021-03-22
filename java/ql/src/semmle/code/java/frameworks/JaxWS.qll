@@ -1,4 +1,5 @@
 import java
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A JAX WS endpoint is constructed by the container, and its methods
@@ -279,4 +280,251 @@ class JaxRSProducesAnnotation extends JaxRSAnnotation {
 /** An `@Consumes` annotation that describes content types can be consumed by this resource. */
 class JaxRSConsumesAnnotation extends JaxRSAnnotation {
   JaxRSConsumesAnnotation() { getType().hasQualifiedName("javax.ws.rs", "Consumes") }
+}
+
+/**
+ * Model Response:
+ *
+ * - the returned ResponseBuilder gains taint from a tainted entity or existing Response
+ */
+private class ResponseModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.ws.rs.core;Response;false;accepted;;;Argument[0];ReturnValue;taint",
+        "javax.ws.rs.core;Response;false;fromResponse;;;Argument[0];ReturnValue;taint",
+        "javax.ws.rs.core;Response;false;ok;;;Argument[0];ReturnValue;taint"
+      ]
+  }
+}
+
+/**
+ * Model ResponseBuilder:
+ *
+ * - becomes tainted by a tainted entity, but not by metadata, headers etc
+ * - build() method returns taint
+ * - almost all methods are fluent, and so preserve value
+ */
+private class ResponseBuilderModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.ws.rs.core;Response$ResponseBuilder;true;build;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;entity;;;Argument[0];Argument[-1];taint",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;allow;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;cacheControl;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;clone;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;contentLocation;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;cookie;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;encoding;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;entity;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;expires;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;header;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;language;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;lastModified;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;link;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;links;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;location;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;replaceAll;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;status;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;tag;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;type;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;variant;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;Response$ResponseBuilder;true;variants;;;Argument[-1];ReturnValue;value"
+      ]
+  }
+}
+
+/**
+ * Model HttpHeaders: methods that Date have to be syntax-checked, but those returning MediaType
+ * or Locale are assumed potentially dangerous, as these types do not generally check that the
+ * input data is recognised, only that it conforms to the expected syntax.
+ */
+private class HttpHeadersModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.ws.rs.core;HttpHeaders;true;getAcceptableLanguages;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;HttpHeaders;true;getAcceptableMediaTypes;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;HttpHeaders;true;getCookies;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;HttpHeaders;true;getHeaderString;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;HttpHeaders;true;getLanguage;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;HttpHeaders;true;getMediaType;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;HttpHeaders;true;getRequestHeader;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;HttpHeaders;true;getRequestHeaders;;;Argument[-1];ReturnValue;taint"
+      ]
+  }
+}
+
+/**
+ * Model MultivaluedMap, which extends Map<List<K>, V> and provides a few extra helper methods.
+ */
+private class MultivaluedMapModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.ws.rs.core;MultivaluedMap;true;add;;;Argument;Argument[-1];taint",
+        "javax.ws.rs.core;MultivaluedMap;true;addAll;;;Argument;Argument[-1];taint",
+        "javax.ws.rs.core;MultivaluedMap;true;addFirst;;;Argument;Argument[-1];taint",
+        "javax.ws.rs.core;MultivaluedMap;true;getFirst;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;MultivaluedMap;true;putSingle;;;Argument;Argument[-1];taint"
+      ]
+  }
+}
+
+/**
+ * Model PathSegment, which wraps a path and its associated matrix parameters.
+ */
+private class PathSegmentModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.ws.rs.core;PathSegment;true;getMatrixParameters;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;PathSegment;true;getPath;;;Argument[-1];ReturnValue;taint"
+      ]
+  }
+}
+
+/**
+ * Model UriInfo, which provides URI element accessors.
+ */
+private class UriInfoModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.ws.rs.core;UriInfo;true;getPathParameters;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;UriInfo;true;getPathSegments;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;UriInfo;true;getQueryParameters;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;UriInfo;true;getRequestUri;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;UriInfo;true;getRequestUriBuilder;;;Argument[-1];ReturnValue;taint"
+      ]
+  }
+}
+
+/**
+ * Model Cookie, a simple tuple type.
+ */
+private class CookieModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.ws.rs.core;Cookie;true;getDomain;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;Cookie;true;getName;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;Cookie;true;getPath;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;Cookie;true;getValue;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;Cookie;true;getVersion;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;Cookie;true;toString;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;Cookie;false;Cookie;;;Argument;Argument[-1];taint",
+        "javax.ws.rs.core;Cookie;false;valueOf;;;Argument;ReturnValue;taint"
+      ]
+  }
+}
+
+/**
+ * Model Form, a simple container type.
+ */
+private class FormModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.ws.rs.core;Form;true;asMap;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;Form;true;param;;;Argument;Argument[-1];taint",
+        "javax.ws.rs.core;Form;true;param;;;Argument[-1];ReturnValue;value"
+      ]
+  }
+}
+
+/**
+ * Model GenericEntity, a wrapper for HTTP entities (e.g., documents).
+ */
+private class GenericEntityModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.ws.rs.core;GenericEntity;false;GenericEntity;;;Argument[0];Argument[-1];taint",
+        "javax.ws.rs.core;GenericEntity;true;getEntity;;;Argument[-1];ReturnValue;taint"
+      ]
+  }
+}
+
+/**
+ * Model MediaType, which provides accessors for elements of Content-Type and similar
+ * media type specifications.
+ */
+private class MediaTypeModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.ws.rs.core;MediaType;false;MediaType;;;Argument;Argument[-1];taint",
+        "javax.ws.rs.core;MediaType;true;getParameters;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;MediaType;true;getSubtype;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;MediaType;true;getType;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;MediaType;false;valueOf;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;MediaType;true;withCharset;;;Argument[-1];ReturnValue;taint"
+      ]
+  }
+}
+
+/**
+ * Model UriBuilder, which provides a fluent interface to build a URI from components.
+ */
+private class UriBuilderModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.ws.rs.core;UriBuilder;true;build;;;Argument[0];ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;build;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;buildFromEncoded;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;buildFromEncoded;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;buildFromEncodedMap;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;buildFromEncodedMap;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;buildFromMap;;;Argument[0];ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;buildFromMap;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;clone;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;fragment;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;fragment;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;UriBuilder;false;fromLink;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;false;fromPath;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;false;fromUri;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;host;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;host;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;UriBuilder;true;matrixParam;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;matrixParam;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;UriBuilder;true;path;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;path;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;UriBuilder;true;queryParam;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;queryParam;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;UriBuilder;true;replaceMatrix;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;replaceMatrix;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;UriBuilder;true;replaceMatrixParam;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;replaceMatrixParam;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;UriBuilder;true;replacePath;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;replacePath;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;UriBuilder;true;replaceQuery;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;replaceQuery;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;UriBuilder;true;replaceQueryParam;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;replaceQueryParam;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;UriBuilder;true;resolveTemplate;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;resolveTemplate;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;UriBuilder;true;resolveTemplateFromEncoded;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;resolveTemplateFromEncoded;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;UriBuilder;true;resolveTemplates;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;resolveTemplates;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;UriBuilder;true;resolveTemplatesFromEncoded;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;resolveTemplatesFromEncoded;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;UriBuilder;true;scheme;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;scheme;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;UriBuilder;true;schemeSpecificPart;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;schemeSpecificPart;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;UriBuilder;true;segment;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;segment;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;UriBuilder;true;schemeSpecificPart;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;schemeSpecificPart;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;UriBuilder;true;toTemplate;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;uri;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;uri;;;Argument[-1];ReturnValue;value",
+        "javax.ws.rs.core;UriBuilder;true;userInfo;;;Argument;ReturnValue;taint",
+        "javax.ws.rs.core;UriBuilder;true;userInfo;;;Argument[-1];ReturnValue;value"
+      ]
+  }
 }
