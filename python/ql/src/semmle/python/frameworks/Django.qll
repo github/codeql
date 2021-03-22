@@ -1784,7 +1784,9 @@ private module Django {
    * route, but currently it just tracks all functions, since we can't do type-tracking
    * backwards yet (TODO).
    */
-  private DataFlow::Node djangoRouteHandlerFunctionTracker(DataFlow::TypeTracker t, Function func) {
+  private DataFlow::LocalSourceNode djangoRouteHandlerFunctionTracker(
+    DataFlow::TypeTracker t, Function func
+  ) {
     t.start() and
     (
       not exists(func.getADecorator()) and
@@ -1812,7 +1814,7 @@ private module Django {
    * backwards yet (TODO).
    */
   private DataFlow::Node djangoRouteHandlerFunctionTracker(Function func) {
-    result = djangoRouteHandlerFunctionTracker(DataFlow::TypeTracker::end(), func)
+    djangoRouteHandlerFunctionTracker(DataFlow::TypeTracker::end(), func).flowsTo(result)
   }
 
   /**
@@ -1825,7 +1827,7 @@ private module Django {
    */
   class DjangoViewClassHelper extends Class {
     /** Gets a reference to this class. */
-    private DataFlow::Node getARef(DataFlow::TypeTracker t) {
+    private DataFlow::LocalSourceNode getARef(DataFlow::TypeTracker t) {
       t.start() and
       result.asExpr().(ClassExpr) = this.getParent()
       or
@@ -1833,7 +1835,7 @@ private module Django {
     }
 
     /** Gets a reference to this class. */
-    DataFlow::Node getARef() { result = this.getARef(DataFlow::TypeTracker::end()) }
+    DataFlow::Node getARef() { this.getARef(DataFlow::TypeTracker::end()).flowsTo(result) }
 
     /** Gets a reference to the `as_view` classmethod of this class. */
     private DataFlow::Node asViewRef(DataFlow::TypeTracker t) {
