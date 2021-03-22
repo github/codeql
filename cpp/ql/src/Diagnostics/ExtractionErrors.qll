@@ -12,12 +12,12 @@ import cpp
  * Thus, if the extractor emitted at least one diagnostic of severity discretionary
  * error (or higher), it *also* emits a simple "There was an error during this compilation"
  * error diagnostic, without location information.
- * In the common case, this means that a file with one (or more) errors also gets
+ * In the common case, this means that a compilation during which one or more errors happened also gets
  * the catch-all diagnostic.
  * This diagnostic has the empty string as file path.
  * We filter out these useless diagnostics if there is at least one error-level diagnostic
  * for the affected compilation in the database.
- * Otherwise, we show it to, to indicate that something went wrong, and we
+ * Otherwise, we show it to indicate that something went wrong and that we
  * don't know what exactly happened.
  */
 
