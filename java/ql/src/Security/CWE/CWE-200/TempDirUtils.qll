@@ -74,6 +74,9 @@ private predicate isTaintFollowingFileTransformation(Expr expSource, Expr exprDe
   )
 }
 
+/**
+ * Holds if the system temporary directory is still part of the root of the file path.
+ */
 predicate isAdditionalFileTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
   isTaintedFileCreation(node1.asExpr(), node2.asExpr()) or
   isTaintFollowingFileTransformation(node1.asExpr(), node2.asExpr())
