@@ -78,7 +78,21 @@ module Sources {
         }
     }
 }
-
+/** Flow Sinks for the ServiceStack framework */
+module Sinks {
+    private import semmle.code.csharp.security.dataflow.flowsinks.Remote
+  
+    /** RemoteFlow sinks for service stack */
+    class ServiceStackRemoteRequestParameter extends RemoteFlowSink {
+      ServiceStackRemoteRequestParameter() {
+        exists(MethodCall mc |
+          mc.getTarget().hasQualifiedName("ServiceStack.IRestClient.Get") and
+          mc.getArgument(0) = this.asExpr()
+        )
+      }
+    }
+  }
+  
 /** SQLi support for the ServiceStack framework */
 module SQL {
     private import semmle.code.csharp.security.dataflow.SqlInjection::SqlInjection
