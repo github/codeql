@@ -48,6 +48,13 @@ private predicate isCond(Expr e) {
   e = any(ParenExpr par | isCond(par)).getExpr()
 }
 
+/**
+ * Holds if `e` implicitly reads the embedded field `implicitField`.
+ *
+ * The `index` is the distance from the promoted field. For example, if `A` contains an embedded
+ * field `B`, `B` contains an embedded field `C` and `C` contains the non-embedded field `x`.
+ * Then `a.x` implicitly reads `C` with index 1 and `B` with index 2.
+ */
 private predicate implicitFieldSelection(PromotedFieldSelector e, int index, Field implicitField) {
   exists(StructType baseType, PromotedField child, int implicitFieldDepth |
     baseType = e.getSelectedStructType() and
@@ -326,7 +333,7 @@ newtype TControlFlowNode =
    * If that field has a pointer type then this control-flow node also
    * represents an implicit dereference of it.
    */
-  MkImplicitFieldSelection(SelectorExpr e, int i, Field implicitField) {
+  MkImplicitFieldSelection(PromotedFieldSelector e, int i, Field implicitField) {
     implicitFieldSelection(e, i, implicitField)
   } or
   /**

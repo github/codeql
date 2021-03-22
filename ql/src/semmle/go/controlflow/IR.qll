@@ -243,8 +243,8 @@ module IR {
    * and implicit field reads into account.
    *
    * For a selector expression `b.f`, this could be the implicit dereference `*b`, or the implicit
-   * field access `b.Embedded.f` if the field `f` is promoted from an embedded type `Embedded`, or
-   * a combination of both, or simply `b` if neither case applies.
+   * field access `b.Embedded` if the field `f` is promoted from an embedded type `Embedded`, or a
+   * combination of both `*(b.Embedded)`, or simply `b` if neither case applies.
    */
   private Instruction selectorBase(Expr e) {
     exists(ImplicitFieldReadInstruction fri | fri.getSelectorExpr() = e and fri.getIndex() = 1 |
@@ -305,7 +305,7 @@ module IR {
     FieldReadInstruction() {
       e = this.(EvalInstruction).getExpr() and
       index = 0 and
-      field.getAReference() = this.(EvalInstruction).getExpr().(SelectorExpr).getSelector()
+      field.getAReference() = e.getSelector()
       or
       e = this.(ImplicitFieldReadInstruction).getSelectorExpr() and
       index = this.(ImplicitFieldReadInstruction).getIndex() and
@@ -348,8 +348,8 @@ module IR {
    * An IR instruction for an implicit field read as part of reading a
    * promoted field.
    *
-   * If that field has a pointer type then this instruction also represents an
-   * implicit dereference of it.
+   * If the field that is being implicitly read has a pointer type then this
+   * instruction represents an implicit dereference of it.
    */
   class ImplicitFieldReadInstruction extends Instruction, MkImplicitFieldSelection {
     SelectorExpr e;
