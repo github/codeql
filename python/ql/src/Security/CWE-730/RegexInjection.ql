@@ -5,7 +5,7 @@
  *              exponential time on certain inputs.
  * @kind path-problem
  * @problem.severity error
- * @id python/regex-injection
+ * @id py/regex-injection
  * @tags security
  *       external/cwe/cwe-730
  *       external/cwe/cwe-400
