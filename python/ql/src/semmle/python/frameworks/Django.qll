@@ -8,6 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
+private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.PEP249
 private import semmle.python.regex
 
@@ -1975,12 +1976,147 @@ private module Django {
     }
   }
 
+  /** Provides models for django forms (defined in the `django.forms` module) */
+  module Forms {
+    /**
+     * Provides models for the `django.forms.Form` class and subclasses.
+     *
+     * See https://docs.djangoproject.com/en/3.1/ref/forms/api/
+     */
+    module Form {
+      /** Gets a reference to the `django.forms.Form` class or any subclass. */
+      API::Node subclassRef() {
+        result =
+          API::moduleImport("django")
+              .getMember("forms")
+              .getMember([
+                  "Form"
+                  // TODO: Known subclasses
+                ])
+              .getASubclass*()
+      }
+    }
+
+    /**
+     * Provides models for the `django.forms.Field` class and subclasses.
+     *
+     * See https://docs.djangoproject.com/en/3.1/ref/forms/fields/
+     */
+    module Field {
+      /** Gets a reference to the `django.forms.Form` class or any subclass. */
+      API::Node subclassRef() {
+        result =
+          API::moduleImport("django")
+              .getMember("forms")
+              .getMember([
+                  "Field"
+                  // TODO: Known subclasses
+                ])
+              .getASubclass*()
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Helpers
+  // ---------------------------------------------------------------------------
   /**
    * Gets the last decorator call for the function `func`, if `func` has decorators.
    */
   private Expr lastDecoratorCall(Function func) {
     result = func.getDefinition().(FunctionExpr).getADecoratorCall() and
     not exists(Call other_decorator | other_decorator.getArg(0) = result)
+  }
+
+  /** Adds the `getASelfRef` member predicate when modeling a class. */
+  abstract private class SelfRefMixin extends Class {
+    /**
+     * Gets a reference to instances of this class, originating from a self parameter of
+     * a method defined on this class.
+     *
+     * Note: TODO: This doesn't take MRO into account
+     * Note: TODO: This doesn't take staticmethod/classmethod into account
+     */
+    private DataFlow::Node getASelfRef(DataFlow::TypeTracker t) {
+      t.start() and
+      result.(DataFlow::ParameterNode).getParameter() = this.getAMethod().getArg(0)
+      or
+      exists(DataFlow::TypeTracker t2 | result = this.getASelfRef(t2).track(t2, t))
+    }
+
+    /**
+     * Gets a reference to instances of this class, originating from a self parameter of
+     * a method defined on this class.
+     *
+     * Note: TODO: This doesn't take MRO into account
+     * Note: TODO: This doesn't take staticmethod/classmethod into account
+     */
+    DataFlow::Node getASelfRef() { result = this.getASelfRef(DataFlow::TypeTracker::end()) }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Form and form field modeling
+  // ---------------------------------------------------------------------------
+  /**
+   * A class that is a subclass of the `django.forms.Form` class,
+   * thereby handling user input.
+   */
+  class DjangoFormClass extends Class, SelfRefMixin {
+    DjangoFormClass() { this.getABase() = Django::Forms::Form::subclassRef().getAUse().asExpr() }
+  }
+
+  /**
+   * A source of cleaned_data (either the return value from `super().clean()`, or a reference to `self.cleaned_data`)
+   *
+   * See https://docs.djangoproject.com/en/3.1/ref/forms/validation/#form-and-field-validation
+   */
+  private class DjangoFormCleanedData extends RemoteFlowSource::Range, DataFlow::Node {
+    DjangoFormCleanedData() {
+      exists(DjangoFormClass cls, Function meth |
+        cls.getAMethod() = meth and
+        (
+          this = API::builtin("super").getReturn().getMember("clean").getACall() and
+          this.getScope() = meth
+          or
+          this.(DataFlow::AttrRead).getAttributeName() = "cleaned_data" and
+          this.(DataFlow::AttrRead).getObject() = cls.getASelfRef()
+        )
+      )
+    }
+
+    override string getSourceType() {
+      result = "django.forms.Field subclass, value parameter in method"
+    }
+  }
+
+  /**
+   * A class that is a subclass of the `django.forms.Field` class,
+   * thereby handling user input.
+   */
+  class DjangoFormFieldClass extends Class {
+    DjangoFormFieldClass() {
+      this.getABase() = Django::Forms::Field::subclassRef().getAUse().asExpr()
+      // api_node.getAnImmediateUse().asExpr().(ClassExpr) = this.getParent()
+    }
+  }
+
+  /**
+   * A parameter in a method on a `DjangoFormFieldClass` that receives the user-supplied value for this field.
+   *
+   * See https://docs.djangoproject.com/en/3.1/ref/forms/validation/#form-and-field-validation
+   */
+  private class DjangoFormFieldValueParam extends RemoteFlowSource::Range, DataFlow::ParameterNode {
+    DjangoFormFieldValueParam() {
+      exists(DjangoFormFieldClass cls, Function meth |
+        cls.getAMethod() = meth and
+        meth.getName() in ["to_python", "validate", "run_validators", "clean"] and
+        this.getParameter() = meth.getArg(1)
+      )
+    }
+
+    override string getSourceType() {
+      result = "django.forms.Field subclass, value parameter in method"
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -2068,7 +2204,7 @@ private module Django {
   }
 
   /** A class that we consider a django View class. */
-  abstract class DjangoViewClass extends DjangoViewClassHelper {
+  abstract class DjangoViewClass extends DjangoViewClassHelper, SelfRefMixin {
     /** Gets a function that could handle incoming requests, if any. */
     Function getARequestHandler() {
       // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
@@ -2080,29 +2216,6 @@ private module Django {
         result.getName() = "get_redirect_url"
       )
     }
-
-    /**
-     * Gets a reference to instances of this class, originating from a self parameter of
-     * a method defined on this class.
-     *
-     * Note: TODO: This doesn't take MRO into account
-     * Note: TODO: This doesn't take staticmethod/classmethod into account
-     */
-    private DataFlow::Node getASelfRef(DataFlow::TypeTracker t) {
-      t.start() and
-      result.(DataFlow::ParameterNode).getParameter() = this.getAMethod().getArg(0)
-      or
-      exists(DataFlow::TypeTracker t2 | result = this.getASelfRef(t2).track(t2, t))
-    }
-
-    /**
-     * Gets a reference to instances of this class, originating from a self parameter of
-     * a method defined on this class.
-     *
-     * Note: TODO: This doesn't take MRO into account
-     * Note: TODO: This doesn't take staticmethod/classmethod into account
-     */
-    DataFlow::Node getASelfRef() { result = this.getASelfRef(DataFlow::TypeTracker::end()) }
   }
 
   /**
