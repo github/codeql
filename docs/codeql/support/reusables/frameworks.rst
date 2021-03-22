@@ -7,9 +7,9 @@ C and C++ built-in support
    :widths: auto
 
    Name, Category
-   `Bloomberg Standard Library <https://github.com/bloomberg/bde>`__, TODO
-   `Berkeley socket API library <https://en.wikipedia.org/wiki/Berkeley_sockets#Socket_API_functions>`__, API library
-   string.h, TODO
+   `Bloomberg Standard Library <https://github.com/bloomberg/bde>`__, Utility library
+   `Berkeley socket API library <https://en.wikipedia.org/wiki/Berkeley_sockets#Socket_API_functions>`__, Network communicator
+   string.h, String library
 
 C# built-in support
 ================================
