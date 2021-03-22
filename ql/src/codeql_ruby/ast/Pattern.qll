@@ -63,7 +63,14 @@ class TuplePattern extends Pattern, TTuplePattern {
     or
     result = toGenerated(this).(Generated::DestructuredLeftAssignment).getChild(i)
     or
-    result = toGenerated(this).(Generated::LeftAssignmentList).getChild(i)
+    toGenerated(this) =
+      any(Generated::LeftAssignmentList lal |
+        if
+          strictcount(int j | exists(lal.getChild(j))) = 1 and
+          lal.getChild(0) instanceof Generated::DestructuredLeftAssignment
+        then result = lal.getChild(0).(Generated::DestructuredLeftAssignment).getChild(i)
+        else result = lal.getChild(i)
+      )
   }
 
   /** Gets the `i`th pattern in this tuple pattern. */

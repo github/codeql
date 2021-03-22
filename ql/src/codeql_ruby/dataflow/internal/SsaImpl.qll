@@ -49,7 +49,7 @@ private predicate capturedExitRead(AnnotatedExitBasicBlock bb, int i, LocalVaria
   i = bb.length()
 }
 
-private CfgScope getCaptureOuterCfgScope(Callable scope) {
+private CfgScope getCaptureOuterCfgScope(CfgScope scope) {
   result = scope.getOuterCfgScope() and
   (
     scope instanceof Block

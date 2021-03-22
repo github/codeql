@@ -49,7 +49,7 @@ private predicate nestedEnsureCompletion(Completion outer, int nestLevel) {
     or
     outer = TExitCompletion()
   ) and
-  nestLevel = any(Trees::RescueEnsureBlockTree t).nestLevel()
+  nestLevel = any(Trees::BodyStmtTree t).getNestLevel()
 }
 
 pragma[noinline]
@@ -176,7 +176,7 @@ private predicate inBooleanContext(AstNode n) {
   or
   n = any(NotExpr parent | inBooleanContext(parent)).getOperand()
   or
-  n = any(StmtSequence parent | inBooleanContext(parent)).getLastExpr()
+  n = any(StmtSequence parent | inBooleanContext(parent)).getLastStmt()
   or
   exists(CaseExpr c, WhenExpr w |
     not exists(c.getValue()) and
@@ -206,7 +206,7 @@ private predicate inMatchingContext(AstNode n) {
     w.getPattern(_) = n
   )
   or
-  toGenerated(n).(Trees::DefaultValueParameterTree).hasDefaultValue()
+  n.(Trees::DefaultValueParameterTree).hasDefaultValue()
 }
 
 /**

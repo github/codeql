@@ -14,7 +14,7 @@ query predicate nodes(CfgNode n, string attr, string val) {
           p
           order by
             p.getLocation().getFile().getBaseName(), p.getLocation().getFile().getAbsolutePath(),
-            p.getLocation().getStartLine()
+            p.getLocation().getStartLine(), p.getLocation().getStartColumn()
         )
     ).toString()
 }

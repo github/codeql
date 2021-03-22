@@ -1,5 +1,4 @@
 import ruby
-import codeql_ruby.ast.internal.TreeSitter
 
 private string getMethodName(Call c) {
   result = c.(MethodCall).getMethodName()

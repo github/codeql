@@ -1,7 +1,6 @@
 /** Provides classes representing nodes in a control flow graph. */
 
 private import codeql_ruby.AST
-private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.controlflow.BasicBlocks
 private import ControlFlowGraph
 private import internal.ControlFlowGraphImpl
@@ -67,7 +66,7 @@ class AstCfgNode extends CfgNode, TAstCfgNode {
   private Splits splits;
   private AstNode n;
 
-  AstCfgNode() { this = TAstCfgNode(toGenerated(n), splits) }
+  AstCfgNode() { this = TAstCfgNode(n, splits) }
 
   final override AstNode getNode() { result = n }
 
@@ -132,7 +131,7 @@ abstract private class ExprChildMapping extends Expr {
 
   pragma[noinline]
   private BasicBlock getABasicBlockInScope() {
-    result.getANode() = TAstCfgNode(toGenerated(this.getAChildStar()), _)
+    result.getANode() = TAstCfgNode(this.getAChildStar(), _)
   }
 
   pragma[nomagic]
@@ -284,7 +283,7 @@ module ExprNodes {
   }
 
   private class StmtSequenceChildMapping extends ExprChildMapping, StmtSequence {
-    override predicate relevantChild(Expr e) { e = this.getLastExpr() }
+    override predicate relevantChild(Expr e) { e = this.getLastStmt() }
   }
 
   /** A control-flow node that wraps a `StmtSequence` AST expression. */
@@ -293,8 +292,8 @@ module ExprNodes {
 
     final override StmtSequence getExpr() { result = ExprCfgNode.super.getExpr() }
 
-    /** Gets the last expression in this sequence, if any. */
-    final ExprCfgNode getLastExpr() { e.hasCfgChild(e.getLastExpr(), this, result) }
+    /** Gets the last statement in this sequence, if any. */
+    final ExprCfgNode getLastStmt() { e.hasCfgChild(e.getLastStmt(), this, result) }
   }
 
   private class ForExprChildMapping extends ExprChildMapping, ForExpr {
