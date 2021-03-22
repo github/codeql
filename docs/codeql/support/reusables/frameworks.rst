@@ -89,8 +89,8 @@ Java built-in support
    :widths: auto
 
    Name, Category
-   Apache Commons, Language library (?)
-   Guava, TODO
+   Apache Commons Lang, utility library
+   Guava, utility and collections library
    Hibernate, Database
    iBatis / MyBatis, Database
    Java Persistence API (JPA), Database
