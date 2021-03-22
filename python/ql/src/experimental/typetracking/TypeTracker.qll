@@ -2,7 +2,18 @@
 
 private import TypeTrackerPrivate
 
-/** Any string that may appear as the name of a piece of content. */
+/**
+ * Any string that may appear as the name of a piece of content. This will usually include things like:
+ * - Attribute names (in Python)
+ * - Property names (in JavaScript)
+ *
+ * In general, this can also be used to model things like stores to specific list indices. To ensure
+ * correctness, it is important that
+ *
+ * - different types of content do not have overlapping names, and
+ * - the empty string `""` is not a valid piece of content, as it is used to indicate the absence of
+ *   content instead.
+ */
 class ContentName extends string {
   ContentName() { this = getPossibleContentName() }
 }
@@ -70,14 +81,41 @@ module StepSummary {
     summary = ReturnStep()
     or
     exists(string content |
-      basicStoreStep(nodeFrom, nodeTo, content) and
+      localSourceStoreStep(nodeFrom, nodeTo, content) and
       summary = StoreStep(content)
       or
       basicLoadStep(nodeFrom, nodeTo, content) and summary = LoadStep(content)
     )
   }
-}
 
+  /**
+   * Holds if `nodeFrom` is being written to the `content` content of the object in `nodeTo`.
+   *
+   * Note that `nodeTo` will always be a local source node that flows to the place where the content
+   * is written in `basicStoreStep`. This may lead to the flow of information going "back in time"
+   * from the point of view of the execution of the program.
+   *
+   * For instance, if we interpret attribute writes in Python as writing to content with the same
+   * name as the attribute and consider the following snippet
+   *
+   * ```python
+   * def foo(y):
+   *    x = Foo()
+   *    bar(x)
+   *    x.attr = y
+   *    baz(x)
+   *
+   * def bar(x):
+   *    z = x.attr
+   * ```
+   * for the attribute write `x.attr = y`, we will have `content` being the literal string `"attr"`,
+   * `nodeFrom` will be `y`, and `nodeTo` will be the object `Foo()` created on the first line of the
+   * function. This means we will track the fact that `x.attr` can have the type of `y` into the
+   * assignment to `z` inside `bar`, even though this attribute write happens _after_ `bar` is called.
+   */
+  predicate localSourceStoreStep(Node nodeFrom, LocalSourceNode nodeTo, string content) {
+    exists(Node obj | nodeTo.flowsTo(obj) and basicStoreStep(nodeFrom, obj, content))
+  }
 }
 
 private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalContentName content)
@@ -92,7 +130,7 @@ private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalContentNam
  *
  * It is recommended that all uses of this type are written in the following form,
  * for tracking some type `myType`:
- * ```
+ * ```ql
  * DataFlow::LocalSourceNode myType(DataFlow::TypeTracker t) {
  *   t.start() and
  *   result = < source of myType >
@@ -253,7 +291,7 @@ private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn, Optional
  * It is recommended that all uses of this type are written in the following form,
  * for back-tracking some callback type `myCallback`:
  *
- * ```
+ * ```ql
  * DataFlow::LocalSourceNode myCallback(DataFlow::TypeBackTracker t) {
  *   t.start() and
  *   result = (< some API call >).getArgument(< n >).getALocalSource()
