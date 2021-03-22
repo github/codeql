@@ -188,6 +188,8 @@ private module Cached {
     instruction instanceof AliasedDefinitionInstruction
     or
     instruction.getOpcode() instanceof Opcode::InitializeNonLocal
+    or
+    instruction.getOpcode() instanceof Opcode::CallSideEffect
   }
 
   cached
