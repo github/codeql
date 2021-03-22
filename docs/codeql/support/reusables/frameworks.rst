@@ -89,8 +89,9 @@ Java built-in support
    :widths: auto
 
    Name, Category
-   Apache Commons Lang, utility library
-   Guava, utility and collections library
+   Apache Commons Lang, Utility library
+   Apache HTTP components, Network communicator
+   Guava, Utility and collections library
    Hibernate, Database
    iBatis / MyBatis, Database
    Java Persistence API (JPA), Database
@@ -115,28 +116,21 @@ JavaScript and TypeScript built-in support
    Name, Category
    angular (modern version), HTML framework
    angular.js (legacy version), HTML framework
-   apollo-link-http, TODO
    axios, Network communicator
    browser, Runtime environment
    electron, Runtime environment
    express, Server
-   Formik, TODO
    hapi, Server
-   Immutable.js, TODO
    jquery, Utility library
    koa, Server
    lodash, Utility library
-   marked, TODO
    mongodb, Database
    mssql, Database
-   Multer, TODO
    mysql, Database
    node, Runtime environment
    postgres, Database
-   pug, TODO
    ramda, Utility library
    react, HTML framework
-   react-helmet, TODO
    request, Network communicator
    sequelize, Database
    socket.io, Network communicator
@@ -144,9 +138,6 @@ JavaScript and TypeScript built-in support
    superagent, Network communicator
    underscore, Utility library
    vue, HTML framework
-   vue-router, TODO
-   xml2js, TODO
-
 
 
 Python built-in support
