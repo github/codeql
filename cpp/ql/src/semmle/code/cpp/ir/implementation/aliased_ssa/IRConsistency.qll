@@ -445,6 +445,8 @@ module InstructionConsistency {
     isOnAliasedDefinitionChain(instr)
     or
     instr.getOpcode() instanceof Opcode::InitializeNonLocal
+    or
+    instr.getOpcode() instanceof Opcode::CallSideEffect
   }
 
   query predicate notMarkedAsConflated(
