@@ -328,11 +328,17 @@ impl Visitor<'_> {
         match &table.kind {
             EntryKind::Token { kind_id, .. } => {
                 self.trap_writer.add_tuple(
-                    "tokeninfo",
+                    "ast_node_parent",
                     vec![
                         Arg::Label(id),
                         Arg::Label(parent_id),
                         Arg::Int(parent_index),
+                    ],
+                );
+                self.trap_writer.add_tuple(
+                    "tokeninfo",
+                    vec![
+                        Arg::Label(id),
                         Arg::Int(*kind_id),
                         Arg::Label(self.file_label),
                         Arg::Int(self.token_counter),
@@ -347,10 +353,16 @@ impl Visitor<'_> {
                 name: table_name,
             } => {
                 if let Some(args) = self.complex_node(&node, fields, &child_nodes, id) {
+                    self.trap_writer.add_tuple(
+                        "ast_node_parent",
+                        vec![
+                            Arg::Label(id),
+                            Arg::Label(parent_id),
+                            Arg::Int(parent_index),
+                        ],
+                    );
                     let mut all_args = Vec::new();
                     all_args.push(Arg::Label(id));
-                    all_args.push(Arg::Label(parent_id));
-                    all_args.push(Arg::Int(parent_index));
                     all_args.extend(args);
                     all_args.push(Arg::Label(loc));
                     self.trap_writer.add_tuple(&table_name, all_args);

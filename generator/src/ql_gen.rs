@@ -46,8 +46,34 @@ fn create_ast_node_class<'a>() -> ql::Class<'a> {
         create_none_predicate("getLocation", false, Some(ql::Type::Normal("Location")));
     let get_a_field_or_child =
         create_none_predicate("getAFieldOrChild", false, Some(ql::Type::Normal("AstNode")));
-    let get_parent = create_none_predicate("getParent", false, Some(ql::Type::Normal("AstNode")));
-    let get_parent_index = create_none_predicate("getParentIndex", false, Some(ql::Type::Int));
+    let get_parent = ql::Predicate {
+        name: "getParent",
+        overridden: false,
+        return_type: Some(ql::Type::Normal("AstNode")),
+        formal_parameters: vec![],
+        body: ql::Expression::Pred(
+            "ast_node_parent",
+            vec![
+                ql::Expression::Var("this"),
+                ql::Expression::Var("result"),
+                ql::Expression::Var("_"),
+            ],
+        ),
+    };
+    let get_parent_index = ql::Predicate {
+        name: "getParentIndex",
+        overridden: false,
+        return_type: Some(ql::Type::Int),
+        formal_parameters: vec![],
+        body: ql::Expression::Pred(
+            "ast_node_parent",
+            vec![
+                ql::Expression::Var("this"),
+                ql::Expression::Var("_"),
+                ql::Expression::Var("result"),
+            ],
+        ),
+    };
     let get_a_primary_ql_class = ql::Predicate {
         name: "getAPrimaryQlClass",
         overridden: false,
@@ -75,33 +101,20 @@ fn create_ast_node_class<'a>() -> ql::Class<'a> {
 }
 
 fn create_token_class<'a>() -> ql::Class<'a> {
-    let get_parent = ql::Predicate {
-        name: "getParent",
-        overridden: true,
-        return_type: Some(ql::Type::Normal("AstNode")),
-        formal_parameters: vec![],
-        body: create_get_field_expr_for_column_storage("result", "tokeninfo", 0, 8),
-    };
-    let get_parent_index = ql::Predicate {
-        name: "getParentIndex",
-        overridden: true,
-        return_type: Some(ql::Type::Int),
-        formal_parameters: vec![],
-        body: create_get_field_expr_for_column_storage("result", "tokeninfo", 1, 8),
-    };
+    let tokeninfo_arity = 6;
     let get_value = ql::Predicate {
         name: "getValue",
         overridden: false,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
-        body: create_get_field_expr_for_column_storage("result", "tokeninfo", 5, 8),
+        body: create_get_field_expr_for_column_storage("result", "tokeninfo", 3, tokeninfo_arity),
     };
     let get_location = ql::Predicate {
         name: "getLocation",
         overridden: true,
         return_type: Some(ql::Type::Normal("Location")),
         formal_parameters: vec![],
-        body: create_get_field_expr_for_column_storage("result", "tokeninfo", 6, 8),
+        body: create_get_field_expr_for_column_storage("result", "tokeninfo", 4, tokeninfo_arity),
     };
     let to_string = ql::Predicate {
         name: "toString",
@@ -121,8 +134,6 @@ fn create_token_class<'a>() -> ql::Class<'a> {
             .collect(),
         characteristic_predicate: None,
         predicates: vec![
-            get_parent,
-            get_parent_index,
             get_value,
             get_location,
             to_string,
@@ -476,12 +487,10 @@ pub fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<ql::TopLevel
                 // Count how many columns there will be in the main table.
                 // There will be:
                 // - one for the id
-                // - one for the parent
-                // - one for the parent index
                 // - one for the location
                 // - one for each field that's stored as a column
                 // - if there are no fields, one for the text column.
-                let main_table_arity = 4 + if fields.is_empty() {
+                let main_table_arity = 2 + if fields.is_empty() {
                     1
                 } else {
                     fields
@@ -512,7 +521,7 @@ pub fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<ql::TopLevel
                         .predicates
                         .push(create_get_text_predicate(&main_table_name));
                 } else {
-                    let mut main_table_column_index: usize = 2;
+                    let mut main_table_column_index: usize = 0;
                     let mut get_child_exprs: Vec<ql::Expression> = Vec::new();
 
                     // Iterate through the fields, creating:
@@ -532,32 +541,6 @@ pub fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<ql::TopLevel
                             get_child_exprs.push(get_child_expr)
                         }
                     }
-
-                    main_class.predicates.push(ql::Predicate {
-                        name: "getParent",
-                        overridden: true,
-                        return_type: Some(ql::Type::Normal("AstNode")),
-                        formal_parameters: vec![],
-                        body: create_get_field_expr_for_column_storage(
-                            "result",
-                            &main_table_name,
-                            0,
-                            main_table_arity,
-                        ),
-                    });
-
-                    main_class.predicates.push(ql::Predicate {
-                        name: "getParentIndex",
-                        overridden: true,
-                        return_type: Some(ql::Type::Int),
-                        formal_parameters: vec![],
-                        body: create_get_field_expr_for_column_storage(
-                            "result",
-                            &main_table_name,
-                            1,
-                            main_table_arity,
-                        ),
-                    });
 
                     main_class.predicates.push(ql::Predicate {
                         name: "getAFieldOrChild",
