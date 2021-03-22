@@ -2,7 +2,7 @@ import cpp
 import semmle.code.cpp.security.Security
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
-private import semmle.code.cpp.ir.dataflow.DataFlow2
+private import semmle.code.cpp.ir.dataflow.DataFlow3
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowDispatch as Dispatch
 private import semmle.code.cpp.controlflow.IRGuards
@@ -10,6 +10,7 @@ private import semmle.code.cpp.models.interfaces.Taint
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.ir.dataflow.TaintTracking
 private import semmle.code.cpp.ir.dataflow.TaintTracking2
+private import semmle.code.cpp.ir.dataflow.TaintTracking3
 private import semmle.code.cpp.ir.dataflow.internal.ModelUtil
 
 /**
@@ -380,7 +381,7 @@ module TaintedWithPath {
     string toString() { result = "TaintTrackingConfiguration" }
   }
 
-  private class AdjustedConfiguration extends TaintTracking2::Configuration {
+  private class AdjustedConfiguration extends TaintTracking3::Configuration {
     AdjustedConfiguration() { this = "AdjustedConfiguration" }
 
     override predicate isSource(DataFlow::Node source) {
@@ -438,11 +439,11 @@ module TaintedWithPath {
    */
 
   private newtype TPathNode =
-    TWrapPathNode(DataFlow2::PathNode n) or
+    TWrapPathNode(DataFlow3::PathNode n) or
     // There's a single newtype constructor for both sources and sinks since
     // that makes it easiest to deal with the case where source = sink.
     TEndpointPathNode(Element e) {
-      exists(AdjustedConfiguration cfg, DataFlow2::Node sourceNode, DataFlow2::Node sinkNode |
+      exists(AdjustedConfiguration cfg, DataFlow3::Node sourceNode, DataFlow3::Node sinkNode |
         cfg.hasFlow(sourceNode, sinkNode)
       |
         sourceNode = getNodeForExpr(e) and
@@ -473,7 +474,7 @@ module TaintedWithPath {
   }
 
   private class WrapPathNode extends PathNode, TWrapPathNode {
-    DataFlow2::PathNode inner() { this = TWrapPathNode(result) }
+    DataFlow3::PathNode inner() { this = TWrapPathNode(result) }
 
     override string toString() { result = this.inner().toString() }
 
@@ -510,25 +511,25 @@ module TaintedWithPath {
 
   /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
   query predicate edges(PathNode a, PathNode b) {
-    DataFlow2::PathGraph::edges(a.(WrapPathNode).inner(), b.(WrapPathNode).inner())
+    DataFlow3::PathGraph::edges(a.(WrapPathNode).inner(), b.(WrapPathNode).inner())
     or
     // To avoid showing trivial-looking steps, we _replace_ the last node instead
     // of adding an edge out of it.
     exists(WrapPathNode sinkNode |
-      DataFlow2::PathGraph::edges(a.(WrapPathNode).inner(), sinkNode.inner()) and
+      DataFlow3::PathGraph::edges(a.(WrapPathNode).inner(), sinkNode.inner()) and
       b.(FinalPathNode).inner() = adjustedSink(sinkNode.inner().getNode())
     )
     or
     // Same for the first node
     exists(WrapPathNode sourceNode |
-      DataFlow2::PathGraph::edges(sourceNode.inner(), b.(WrapPathNode).inner()) and
+      DataFlow3::PathGraph::edges(sourceNode.inner(), b.(WrapPathNode).inner()) and
       sourceNode.inner().getNode() = getNodeForExpr(a.(InitialPathNode).inner())
     )
     or
     // Finally, handle the case where the path goes directly from a source to a
     // sink, meaning that they both need to be translated.
     exists(WrapPathNode sinkNode, WrapPathNode sourceNode |
-      DataFlow2::PathGraph::edges(sourceNode.inner(), sinkNode.inner()) and
+      DataFlow3::PathGraph::edges(sourceNode.inner(), sinkNode.inner()) and
       sourceNode.inner().getNode() = getNodeForExpr(a.(InitialPathNode).inner()) and
       b.(FinalPathNode).inner() = adjustedSink(sinkNode.inner().getNode())
     )
@@ -550,7 +551,7 @@ module TaintedWithPath {
    * the computation.
    */
   predicate taintedWithPath(Expr source, Element tainted, PathNode sourceNode, PathNode sinkNode) {
-    exists(AdjustedConfiguration cfg, DataFlow2::Node flowSource, DataFlow2::Node flowSink |
+    exists(AdjustedConfiguration cfg, DataFlow3::Node flowSource, DataFlow3::Node flowSink |
       source = sourceNode.(InitialPathNode).inner() and
       flowSource = getNodeForExpr(source) and
       cfg.hasFlow(flowSource, flowSink) and
