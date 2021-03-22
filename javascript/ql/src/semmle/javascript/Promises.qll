@@ -596,6 +596,7 @@ private module ClosurePromise {
    * A promise created by a call `goog.Promise.resolve(value)`.
    */
   private class ResolvedClosurePromiseDefinition extends ResolvedPromiseDefinition {
+    pragma[noinline]
     ResolvedClosurePromiseDefinition() {
       this = Closure::moduleImport("goog.Promise.resolve").getACall()
     }
