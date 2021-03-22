@@ -238,12 +238,21 @@ module IR {
     }
   }
 
-  private Instruction simpleSelectorBase(Expr e) {
+  /**
+   * Gets the effective base of a selector, index or slice expression, taking implicit dereferences
+   * and implicit field reads into account.
+   *
+   * For a selector expression `b.f`, this could be the implicit dereference `*b`, or the implicit
+   * field access `b.Embedded.f` if the field `f` is promoted from an embedded type `Embedded`, or
+   * a combination of both, or simply `b` if neither case applies.
+   */
+  private Instruction selectorBase(Expr e) {
+    exists(ImplicitFieldReadInstruction fri | fri.getSelectorExpr() = e and fri.getIndex() = 1 |
+      result = fri
+    )
+    or
+    not exists(ImplicitFieldReadInstruction fri | fri.getSelectorExpr() = e and fri.getIndex() = 1) and
     exists(Expr base |
-      (
-        e.(SelectorExpr).refersTo(any(Method m)) or
-        e.(SelectorExpr).refersTo(any(Field f | not f instanceof PromotedField))
-      ) and
       base = e.(SelectorExpr).getBase()
       or
       base = e.(IndexExpr).getBase()
@@ -255,52 +264,6 @@ module IR {
       not exists(MkImplicitDeref(base)) and
       result = evalExprInstruction(base)
     )
-  }
-
-  /**
-   * Gets the effective base of a selector, index or slice expression, taking implicit dereferences
-   * and implicit field reads into account.
-   *
-   * For a selector expression `b.f`, this could be the implicit dereference `*b`, or the implicit
-   * field access `b.Embedded.f` if the field `f` is promoted from an embedded type `Embedded`, or
-   * a combination of both, or simply `b` if neither case applies.
-   */
-  private Instruction selectorBase(Expr e) {
-    result = promotedFieldSelectorBase(e, _)
-    or
-    result = simpleSelectorBase(e)
-  }
-
-  private Instruction promotedFieldSelectorBase(PromotedFieldSelector se, Field field) {
-    exists(StructType baseStructType | baseStructType = se.getSelectedStructType() |
-      if field = baseStructType.getOwnField(_, _)
-      then
-        result = MkImplicitDeref(se.getBase())
-        or
-        not exists(MkImplicitDeref(se.getBase())) and
-        result = evalExprInstruction(se.getBase())
-      else
-        exists(
-          ImplicitFieldReadInstruction ifri, Type implicitFieldType,
-          StructType implicitFieldStructType
-        |
-          ifri.getSelectorExpr() = se and
-          implicitFieldType = ifri.getField().getType().getUnderlyingType() and
-          implicitFieldStructType =
-            [implicitFieldType, implicitFieldType.(PointerType).getBaseType().getUnderlyingType()] and
-          implicitFieldStructType.getOwnField(_, _) = field
-        |
-          result = ifri
-        )
-    )
-  }
-
-  private Instruction selectorBase(SelectorExpr se, Field field) {
-    result = promotedFieldSelectorBase(se, field)
-    or
-    se.refersTo(field) and
-    result = simpleSelectorBase(se) and
-    not field instanceof PromotedField
   }
 
   /**
@@ -322,10 +285,9 @@ module IR {
 
     /** Gets the instruction computing the base value on which the field or element is read. */
     Instruction getBase() {
-      result = selectorBase(this.(EvalInstruction).getExpr()) or
-      result =
-        selectorBase(this.(ImplicitFieldReadInstruction).getSelectorExpr(),
-          this.(ImplicitFieldReadInstruction).getField())
+      result = this.(FieldReadInstruction).getBaseInstruction()
+      or
+      result = selectorBase(this.(EvalInstruction).getExpr())
     }
   }
 
@@ -359,8 +321,26 @@ module IR {
     /** Gets the field being read. */
     Field getField() { result = field }
 
+    Instruction getBaseInstruction() {
+      exists(ImplicitFieldReadInstruction fri |
+        fri.getSelectorExpr() = e and fri.getIndex() = index + 1
+      |
+        result = fri
+      )
+      or
+      not exists(ImplicitFieldReadInstruction fri |
+        fri.getSelectorExpr() = e and fri.getIndex() = index + 1
+      ) and
+      (
+        result = MkImplicitDeref(e.getBase())
+        or
+        not exists(MkImplicitDeref(e.getBase())) and
+        result = evalExprInstruction(e.getBase())
+      )
+    }
+
     override predicate readsField(Instruction base, Field f) {
-      base = selectorBase(e, f) and f = field
+      base = this.getBaseInstruction() and f = field
     }
   }
 
