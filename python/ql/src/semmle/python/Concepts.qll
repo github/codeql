@@ -661,9 +661,7 @@ class RegexExecution extends DataFlow::Node {
 
 module RegexExecution {
   abstract class Range extends DataFlow::Node {
-    DataFlow::Node getRegexNode() {
-      result instanceof DirectRegex or result instanceof CompiledRegex
-    }
+    abstract DataFlow::Node getRegexNode();
   }
 }
 
