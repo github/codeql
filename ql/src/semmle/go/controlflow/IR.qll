@@ -234,7 +234,7 @@ module IR {
       or
       this instanceof ReadResultInstruction
       or
-      this instanceof ImplicitFieldReadInstruction
+      this instanceof MkImplicitFieldSelection
     }
   }
 
@@ -280,12 +280,12 @@ module IR {
         not e.(SelectorExpr).getSelector() = any(Method method).getAReference()
       )
       or
-      this instanceof ImplicitFieldReadInstruction
+      this instanceof MkImplicitFieldSelection
     }
 
     /** Gets the instruction computing the base value on which the field or element is read. */
     Instruction getBase() {
-      result = this.(FieldReadInstruction).getBaseInstruction()
+      result = this.(ImplicitFieldReadInstruction).getBaseInstruction()
       or
       result = selectorBase(this.(EvalInstruction).getExpr())
     }
@@ -307,9 +307,7 @@ module IR {
       index = 0 and
       field.getAReference() = e.getSelector()
       or
-      e = this.(ImplicitFieldReadInstruction).getSelectorExpr() and
-      index = this.(ImplicitFieldReadInstruction).getIndex() and
-      field = this.(ImplicitFieldReadInstruction).getField()
+      this = MkImplicitFieldSelection(e, index, field)
     }
 
     /** Gets the `SelectorExpr` of this field read. */
@@ -351,41 +349,20 @@ module IR {
    * If the field that is being implicitly read has a pointer type then this
    * instruction represents an implicit dereference of it.
    */
-  class ImplicitFieldReadInstruction extends Instruction, MkImplicitFieldSelection {
-    SelectorExpr e;
-    int index;
-    Field implicitField;
+  class ImplicitFieldReadInstruction extends FieldReadInstruction, MkImplicitFieldSelection {
+    ImplicitFieldReadInstruction() { this = MkImplicitFieldSelection(e, index, field) }
 
-    ImplicitFieldReadInstruction() { this = MkImplicitFieldSelection(e, index, implicitField) }
-
-    /**
-     * Gets the selector expression that requires this implicit field read.
-     */
-    SelectorExpr getSelectorExpr() { result = e }
-
-    /**
-     * Gets the index of this implicit field read.
-     */
-    int getIndex() { result = index }
-
-    /**
-     * Gets the field being read. Note this is an embedded field that is not explicitly specified
-     * in `getSelectorExpr()`, whereas the field `getSelectorExpr()` refers to is the promoted field
-     * contained within this embedded field or in turn within a field that it embeds.
-     */
-    Field getField() { result = implicitField }
-
-    override predicate reads(ValueEntity v) { v = implicitField }
+    override predicate reads(ValueEntity v) { v = field }
 
     override Type getResultType() {
-      if implicitField.getType() instanceof PointerType
-      then result = implicitField.getType().(PointerType).getBaseType()
-      else result = implicitField.getType()
+      if field.getType() instanceof PointerType
+      then result = field.getType().(PointerType).getBaseType()
+      else result = field.getType()
     }
 
     override ControlFlow::Root getRoot() { result.isRootOf(e) }
 
-    override string toString() { result = "implicit read of field " + implicitField.toString() }
+    override string toString() { result = "implicit read of field " + field.toString() }
 
     override predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
