@@ -95,3 +95,10 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, string content) {
     nodeTo = a
   )
 }
+
+/**
+ * A utility class that is equivalent to `boolean` but does not require type joining.
+ */
+class Boolean extends boolean {
+  Boolean() { this = true or this = false }
+}
