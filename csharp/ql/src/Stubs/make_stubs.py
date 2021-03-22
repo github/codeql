@@ -71,19 +71,36 @@ if subprocess.check_call(cmd):
     print('Failed to run the query to generate output file.')
     exit(1)
 
-# Remove the leading " and trailing " bytes from the file
-len = os.stat(outputFile).st_size
-f = open(outputFile, "rb")
-try:
-    quote = f.read(6)
-    if quote != b"\x02\x01\x86'\x85'":
-        print("Unexpected start characters in file.", quote)
-    contents = f.read(len-21)
-    quote = f.read(15)
-    if quote != b'\x0e\x01\x08#select\x01\x01\x00s\x00':
-        print("Unexpected end character in file.", quote)
-finally:
-    f.close()
+# Remove the leading and trailing bytes from the file
+length = os.stat(outputFile).st_size
+if length < 20:
+    contents = b''
+else:
+    f = open(outputFile, "rb")
+    try:
+        countTillSlash = 0
+        foundSlash = False
+        slash = f.read(1)
+        while slash != b'':
+            if slash == b'/':
+                foundSlash = True
+                break
+            countTillSlash += 1
+            slash = f.read(1)
+
+        if not foundSlash:
+            countTillSlash = 0
+
+        f.seek(0)
+        quote = f.read(countTillSlash)
+        print("Start characters in file skipped.", quote)
+        post = b'\x0e\x01\x08#select\x01\x01\x00s\x00'
+        contents = f.read(length - len(post) - countTillSlash)
+        quote = f.read(len(post))
+        if quote != post:
+            print("Unexpected end character in file.", quote)
+    finally:
+        f.close()
 
 f = open(outputFile, "wb")
 f.write(contents)
