@@ -50,8 +50,7 @@ private DataFlow::SourceNode htmlSanitizerFunction() {
   )
   or
   exists(string name | name = "encode" or name = "encodeNonUTF" |
-    result =
-      DataFlow::moduleMember("html-entities", _).getAnInstantiation().getAPropertyRead(name) or
+    result = DataFlow::moduleMember("html-entities", _).getAnInstantiation().getAPropertyRead(name) or
     result = DataFlow::moduleMember("html-entities", _).getAPropertyRead(name)
   )
   or

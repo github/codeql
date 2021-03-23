@@ -172,7 +172,7 @@ private module PersistentWebStorage {
 
     override PersistentWriteAccess getAWrite() {
       exists(string name |
-        getArgument(0).mayHaveStringValue(name) and 
+        getArgument(0).mayHaveStringValue(name) and
         result = getAWriteByName(name, kind)
       )
     }
