@@ -1,3 +1,5 @@
+| main | code/main.py:0:0:0:0 | Script main |
+| module | code/module.py:0:0:0:0 | Module module |
 | package | code/package:0:0:0:0 | Package package |
 | package.__init__ | code/package/__init__.py:0:0:0:0 | Module package.__init__ |
 | package.package_main | code/package/package_main.py:0:0:0:0 | Module package.package_main |
