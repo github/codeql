@@ -110,72 +110,54 @@ private class SQLiteSinkCsv extends SinkModelCsv {
   }
 }
 
-private class QueryBuilderBuildMethod extends TaintPreservingCallable {
-  int argument;
-
-  QueryBuilderBuildMethod() {
-    this.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
-    (
-      // buildQuery(String[] projectionIn, String selection, String groupBy, String having, String sortOrder, String limit)
-      // buildQuery(String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit)
-      // buildUnionQuery(String[] subQueries, String sortOrder, String limit)
-      this.hasName(["buildQuery", "buildUnionQuery"]) and
-      argument = [-1 .. getNumberOfParameters()]
-      or
-      // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String[] selectionArgs, String groupBy, String having)
-      // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String groupBy, String having)
-      this.hasName("buildUnionSubQuery") and
-      argument = [-1 .. getNumberOfParameters()] and
-      argument != 3
-      or
-      // static buildQueryString(boolean distinct, String tables, String[] columns, String where, String groupBy, String having, String orderBy, String limit)
-      hasName("buildQueryString") and
-      argument = [1 .. getNumberOfParameters()]
-    )
+private class SqlFlowStep extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        //"package;type;overrides;name;signature;ext;inputspec;outputspec;kind",
+        // buildQuery(String[] projectionIn, String selection, String groupBy, String having, String sortOrder, String limit)
+        // buildQuery(String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit)
+        // buildUnionQuery(String[] subQueries, String sortOrder, String limit)
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildQuery;(String[],String,String,String,String,String);;Argument;ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildQuery;(String[],String,String[],String,String,String,String);;Argument;ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildUnionQuery;(String[],String,String);;Argument;ReturnValue;taint",
+        // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String[] selectionArgs, String groupBy, String having)
+        // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String groupBy, String having)
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildUnionSubQuery;(String,String[],Set<String>,int,String,String,String[],String,String);;Argument[-1];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildUnionSubQuery;(String,String[],Set<String>,int,String,String,String[],String,String);;Argument[0];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildUnionSubQuery;(String,String[],Set<String>,int,String,String,String[],String,String);;Argument[1];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildUnionSubQuery;(String,String[],Set<String>,int,String,String,String[],String,String);;Argument[2];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildUnionSubQuery;(String,String[],Set<String>,int,String,String,String[],String,String);;Argument[4];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildUnionSubQuery;(String,String[],Set<String>,int,String,String,String[],String,String);;Argument[5];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildUnionSubQuery;(String,String[],Set<String>,int,String,String,String[],String,String);;Argument[7];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildUnionSubQuery;(String,String[],Set<String>,int,String,String,String[],String,String);;Argument[8];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildUnionSubQuery;(String,String[],Set<String>,int,String,String,String,String);;Argument[-1];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildUnionSubQuery;(String,String[],Set<String>,int,String,String,String,String);;Argument[0];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildUnionSubQuery;(String,String[],Set<String>,int,String,String,String,String);;Argument[1];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildUnionSubQuery;(String,String[],Set<String>,int,String,String,String,String);;Argument[2];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildUnionSubQuery;(String,String[],Set<String>,int,String,String,String,String);;Argument[4];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildUnionSubQuery;(String,String[],Set<String>,int,String,String,String,String);;Argument[5];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildUnionSubQuery;(String,String[],Set<String>,int,String,String,String,String);;Argument[6];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildUnionSubQuery;(String,String[],Set<String>,int,String,String,String,String);;Argument[7];ReturnValue;taint",
+        // static buildQueryString(boolean distinct, String tables, String[] columns, String where, String groupBy, String having, String orderBy, String limit)
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildQueryString;(boolean,String,String[],String,String,String,String,String);;Argument[1];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildQueryString;(boolean,String,String[],String,String,String,String,String);;Argument[2];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildQueryString;(boolean,String,String[],String,String,String,String,String);;Argument[3];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildQueryString;(boolean,String,String[],String,String,String,String,String);;Argument[4];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildQueryString;(boolean,String,String[],String,String,String,String,String);;Argument[5];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildQueryString;(boolean,String,String[],String,String,String,String,String);;Argument[6];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;buildQueryString;(boolean,String,String[],String,String,String,String,String);;Argument[7];ReturnValue;taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;setProjectionMap;(Map<String,String>);;Argument[0];Argument[-1];taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;setTables;(String);;Argument[0];Argument[-1];taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;appendWhere;(CharSequence);;Argument[0];Argument[-1];taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;appendWhereStandalone;(CharSequence);;Argument[0];Argument[-1];taint",
+        "android.database.sqlite;SQLiteQueryBuilder;true;appendColumns;(StringBuilder,String[]);;Argument[1];Argument[0];taint",
+        "android.database;DatabaseUtils;false;appendSelectionArgs;(String[],String[]);;Argument;ReturnValue;taint",
+        "android.database;DatabaseUtils;false;concatenateWhere;(String,String);;Argument;ReturnValue;taint",
+        "android.content;ContentProvider;true;query;(Uri,String[],String,String[],String);;Argument[0];ReturnValue;taint",
+        "android.content;ContentProvider;true;query;(Uri,String[],String,String[],String,CancellationSignal);;Argument[0];ReturnValue;taint",
+        "android.content;ContentResolver;true;query;(Uri,String[],String,String[],String);;Argument[0];ReturnValue;taint",
+        "android.content;ContentResolver;true;query;(Uri,String[],String,String[],String,CancellationSignal);;Argument[0];ReturnValue;taint"
+      ]
   }
-
-  override predicate returnsTaintFrom(int arg) { argument = arg }
-}
-
-private class QueryBuilderAppendMethod extends TaintPreservingCallable {
-  QueryBuilderAppendMethod() {
-    this.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
-    // setProjectionMap(Map<String, String> columnMap)
-    // setTables(String inTables)
-    // appendWhere(CharSequence inWhere)
-    // appendWhereStandalone(CharSequence inWhere)
-    // static appendColumns(StringBuilder s, String[] columns)
-    this.hasName([
-        "setProjectionMap", "setTables", "appendWhere", "appendWhereStandalone", "appendColumns"
-      ])
-  }
-
-  override predicate transfersTaint(int src, int sink) {
-    if hasName("appendColumns") then (src = 1 and sink = 0) else (src = 0 and sink = -1)
-  }
-}
-
-private class UnsafeAppendUtilMethod extends TaintPreservingCallable {
-  UnsafeAppendUtilMethod() {
-    this.getDeclaringType() instanceof TypeDatabaseUtils and
-    // String[] appendSelectionArgs(String[] originalValues, String[] newValues)
-    // String concatenateWhere(String a, String b)
-    this.hasName(["appendSelectionArgs", "concatenateWhere"])
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = [0 .. getNumberOfParameters()] }
-}
-
-private class TaintPreservingQueryMethod extends TaintPreservingCallable {
-  TaintPreservingQueryMethod() {
-    (
-      this.getDeclaringType() instanceof AndroidContentProvider or
-      this.getDeclaringType() instanceof AndroidContentResolver
-    ) and
-    // Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder, CancellationSignal cancellationSignal)
-    // Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
-    this.hasName("query")
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = 0 }
 }
