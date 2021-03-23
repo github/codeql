@@ -1,0 +1,64 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+JSch is a pure Java implementation of SSH2.
+JSch allows you to connect to a sshd server and use port forwarding, X11 forwarding, 
+file transfer, command execution, etc., and you can integrate its functionality into your own Java programs. 
+JSch is licensed under BSD style license.
+If an OS command is built using an attacker-controlled data, it may allow the attacker
+to run an arbitrary code on the remote host.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Including an user input in a JSch lib's OS command expression should be avoided.
+If this is not possible, then a strong input validation must be performed. 
+Some examples of an effective validation include:
+
+Validating against an allowlist of permitted values.
+Validating that the input is a number.
+Validating that the input contains only alphanumeric characters, no other syntax or whitespace.
+
+Never attempt to sanitize input by escaping shell metacharacters. In practice, 
+this is just too error-prone and vulnerable to being bypassed by a skilled attacker.
+
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example uses the untrusted data to build an OS command.
+</p>
+<sample src="JSchOSInjectionBad.java" />
+</example>
+
+<example>
+<p>
+The following example validates the untrusted data before build an OS command.
+</p>
+<sample src="JSchOSInjectionSanitized.java" />
+</example>
+
+<references>
+<li>
+  JCraft:
+  <a href="http://www.jcraft.com/jsch/">JSch - Java Secure Channel</a>.
+</li>
+<li>
+  OWASP:
+  <a href="https://owasp.org/www-community/attacks/Command_Injection">Command Injection</a>.
+</li>
+<li>
+  OWASP:
+  <a href="https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html">OS Command Injection Defense Cheat Sheet</a>.
+</li>
+<li>
+  PortSwigger:
+  <a href="https://portswigger.net/web-security/os-command-injection">OS command injection</a>.
+</li>
+
+</references>
+</qhelp>
