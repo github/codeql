@@ -104,6 +104,6 @@ void testAcceptRecv(int socket1, int socket2)
 
 		accept(socket2, 0, 0);
 		recv(socket2, buffer, 1024);
-		LoadLibrary(buffer); // BAD: using data from recv [NOT DETECTED]
+		LoadLibrary(buffer); // BAD: using data from recv
 	}
 }
