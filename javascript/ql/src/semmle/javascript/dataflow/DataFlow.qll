@@ -724,7 +724,7 @@ module DataFlow {
     override ParameterField prop;
 
     override Node getBase() {
-      result = thisNode(prop.getDeclaringClass().getConstructor().getBody())
+      thisNode(result, prop.getDeclaringClass().getConstructor().getBody())
     }
 
     override Expr getPropertyNameExpr() {
@@ -758,7 +758,7 @@ module DataFlow {
     }
 
     override Node getBase() {
-      result = thisNode(prop.getDeclaringClass().getConstructor().getBody())
+      thisNode(result, prop.getDeclaringClass().getConstructor().getBody())
     }
 
     override Expr getPropertyNameExpr() { result = prop.getNameExpr() }
