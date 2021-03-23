@@ -631,6 +631,9 @@ private module Cached {
     TYieldReturnNode(ControlFlow::Nodes::ElementNode cfn) {
       any(Callable c).canYieldReturn(cfn.getElement())
     } or
+    TAsyncReturnNode(ControlFlow::Nodes::ElementNode cfn) {
+      any(Callable c | c.(Modifiable).isAsync()).canReturn(cfn.getElement())
+    } or
     TImplicitCapturedArgumentNode(ControlFlow::Nodes::ElementNode cfn, LocalScopeVariable v) {
       exists(Ssa::ExplicitDefinition def | def.isCapturedVariableDefinitionFlowIn(_, cfn, _) |
         v = def.getSourceVariable().getAssignable()
@@ -780,6 +783,12 @@ private module Cached {
       e = node1.asExpr() and
       node2.(YieldReturnNode).getYieldReturnStmt().getExpr() = e and
       c instanceof ElementContent
+    )
+    or
+    exists(Expr e |
+      e = node1.asExpr() and
+      node2.(AsyncReturnNode).getExpr() = e and
+      c = getResultContent()
     )
     or
     FlowSummaryImpl::Private::storeStep(node1, c, node2)
@@ -960,6 +969,8 @@ private module Cached {
     )
     or
     n instanceof YieldReturnNode
+    or
+    n instanceof AsyncReturnNode
     or
     n instanceof ImplicitCapturedArgumentNode
     or
@@ -1342,14 +1353,12 @@ abstract class ReturnNode extends Node {
 private module ReturnNodes {
   /**
    * A data-flow node that represents an expression returned by a callable,
-   * either using a (`yield`) `return` statement or an expression body (`=>`).
+   * either using a `return` statement or an expression body (`=>`).
    */
   class ExprReturnNode extends ReturnNode, ExprNode {
     ExprReturnNode() {
       exists(DotNet::Callable c, DotNet::Expr e | e = this.getExpr() |
-        c.canReturn(e)
-        or
-        c.(Callable).canYieldReturn(e)
+        c.canReturn(e) and not c.(Modifiable).isAsync()
       )
     }
 
@@ -1383,7 +1392,7 @@ private module ReturnNodes {
 
     YieldReturnStmt getYieldReturnStmt() { result = yrs }
 
-    override YieldReturnKind getKind() { any() }
+    override NormalReturnKind getKind() { any() }
 
     override Callable getEnclosingCallableImpl() { result = yrs.getEnclosingCallable() }
 
@@ -1394,6 +1403,30 @@ private module ReturnNodes {
     override Location getLocationImpl() { result = yrs.getLocation() }
 
     override string toStringImpl() { result = yrs.toString() }
+  }
+
+  /**
+   * A synthesized `return` node for returned expressions inside `async` methods.
+   */
+  class AsyncReturnNode extends ReturnNode, NodeImpl, TAsyncReturnNode {
+    private ControlFlow::Nodes::ElementNode cfn;
+    private Expr expr;
+
+    AsyncReturnNode() { this = TAsyncReturnNode(cfn) and expr = cfn.getElement() }
+
+    Expr getExpr() { result = expr }
+
+    override NormalReturnKind getKind() { any() }
+
+    override Callable getEnclosingCallableImpl() { result = expr.getEnclosingCallable() }
+
+    override Type getTypeImpl() { result = expr.getEnclosingCallable().getReturnType() }
+
+    override ControlFlow::Node getControlFlowNodeImpl() { result = cfn }
+
+    override Location getLocationImpl() { result = expr.getLocation() }
+
+    override string toStringImpl() { result = expr.toString() }
   }
 
   /**
@@ -1482,21 +1515,6 @@ private module OutNodes {
     result = TExplicitDelegateLikeCall(cfn, e)
   }
 
-  /** A valid return type for a method that uses `yield return`. */
-  private class YieldReturnType extends Type {
-    YieldReturnType() {
-      exists(Type t | t = this.getUnboundDeclaration() |
-        t instanceof SystemCollectionsIEnumerableInterface
-        or
-        t instanceof SystemCollectionsIEnumeratorInterface
-        or
-        t instanceof SystemCollectionsGenericIEnumerableTInterface
-        or
-        t instanceof SystemCollectionsGenericIEnumeratorInterface
-      )
-    }
-  }
-
   /**
    * A data-flow node that reads a value returned directly by a callable,
    * either via a C# call or a CIL call.
@@ -1517,9 +1535,6 @@ private module OutNodes {
       (
         kind instanceof NormalReturnKind and
         not call.getExpr().getType() instanceof VoidType
-        or
-        kind instanceof YieldReturnKind and
-        call.getExpr().getType() instanceof YieldReturnType
       )
     }
   }

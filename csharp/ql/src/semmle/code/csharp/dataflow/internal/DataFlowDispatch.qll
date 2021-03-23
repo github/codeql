@@ -82,7 +82,6 @@ private module Cached {
   cached
   newtype TReturnKind =
     TNormalReturnKind() { Stages::DataFlowStage::forceCachingInSameStage() } or
-    TYieldReturnKind() or
     TOutReturnKind(int i) {
       exists(Parameter p | callableReturnsOutOrRef(_, p, _) and p.isOut() | i = p.getPosition())
     } or
@@ -177,11 +176,6 @@ abstract class ReturnKind extends TReturnKind {
  */
 class NormalReturnKind extends ReturnKind, TNormalReturnKind {
   override string toString() { result = "return" }
-}
-
-/** A value returned from a callable using a `yield return` statement. */
-class YieldReturnKind extends ReturnKind, TYieldReturnKind {
-  override string toString() { result = "yield return" }
 }
 
 /** A value returned from a callable using an `out` or a `ref` parameter. */
