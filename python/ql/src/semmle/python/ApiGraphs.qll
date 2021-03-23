@@ -6,7 +6,7 @@
  * directed and labeled; they specify how the components represented by nodes relate to each other.
  */
 
-import python
+private import python
 import semmle.python.dataflow.new.DataFlow
 
 /**
