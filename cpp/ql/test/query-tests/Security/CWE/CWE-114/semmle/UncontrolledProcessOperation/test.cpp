@@ -86,7 +86,7 @@ void testReferencePointer2()
 
 typedef unsigned long size_t;
 
-void accept(int arg, char *buf, size_t bufSize);
+void accept(int arg, char *buf, size_t *bufSize);
 void recv(int arg, char *buf, size_t bufSize);
 void LoadLibrary(const char *arg);
 
