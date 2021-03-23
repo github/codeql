@@ -6,6 +6,9 @@
 	],
 	"settings": {
 		"editor.formatOnSave": true,
-		"files.eol": "\n"
+		"files.eol": "\n",
+		"files.exclude": {
+			"codeql": true
+		}
 	}
 }
