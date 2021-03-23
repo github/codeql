@@ -80,7 +80,7 @@ private module CryptographyModel {
       DataFlow::TypeTracker t, int keySize, DataFlow::Node origin
     ) {
       t.start() and
-      result.asCfgNode().(CallNode).getFunction() = curveClassWithKeySize(keySize).asCfgNode() and
+      result.(DataFlow::CallCfgNode).getFunction() = curveClassWithKeySize(keySize) and
       origin = result
       or
       // Due to bad performance when using normal setup with we have inlined that code and forced a join
