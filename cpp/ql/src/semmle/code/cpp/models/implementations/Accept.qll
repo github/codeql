@@ -15,9 +15,7 @@ import semmle.code.cpp.models.interfaces.SideEffect
 private class Accept extends ArrayFunction, AliasFunction, TaintFunction, SideEffectFunction {
   Accept() { this.hasGlobalName(["accept", "accept4", "WSAAccept"]) }
 
-  override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
-    bufParam = 1 and countParam = 2
-  }
+  override predicate hasArrayWithUnknownSize(int bufParam) { bufParam = 1 }
 
   override predicate hasArrayInput(int bufParam) { bufParam = 1 }
 
