@@ -563,7 +563,9 @@ module Cryptography {
     /** Provides classes for modeling new key-pair generation APIs. */
     module KeyGeneration {
       /** Gets a back-reference to the keysize argument `arg` that was used to generate a new key-pair. */
-      DataFlow::LocalSourceNode keysizeBacktracker(DataFlow::TypeBackTracker t, DataFlow::Node arg) {
+      private DataFlow::LocalSourceNode keysizeBacktracker(
+        DataFlow::TypeBackTracker t, DataFlow::Node arg
+      ) {
         t.start() and
         arg = any(KeyGeneration::Range r).getKeySizeArg() and
         result = arg.getALocalSource()

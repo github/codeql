@@ -76,7 +76,7 @@ private module CryptographyModel {
     }
 
     /** Gets a reference to a predefined curve class instance with a specific key size (in bits), as well as the origin of the class. */
-    private DataFlow::Node curveClassInstanceWithKeySize(
+    private DataFlow::LocalSourceNode curveClassInstanceWithKeySize(
       DataFlow::TypeTracker t, int keySize, DataFlow::Node origin
     ) {
       t.start() and
