@@ -175,5 +175,13 @@ module CallGraph {
       ref = cls.getAnInstanceReference().getAPropertyWrite(name) and
       result = cls.getInstanceMember(name, DataFlow::MemberKind::setter())
     )
+    or
+    exists(DataFlow::ObjectLiteralNode object, string name |
+      ref = object.getAPropertyRead(name) and
+      result = object.getPropertyGetter(name)
+      or
+      ref = object.getAPropertyWrite(name) and
+      result = object.getPropertySetter(name)
+    )
   }
 }

@@ -546,6 +546,16 @@ class ObjectLiteralNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   DataFlow::Node getASpreadProperty() {
     result = astNode.getAProperty().(SpreadProperty).getInit().(SpreadElement).getOperand().flow()
   }
+
+  /** Gets the property getter of the given name, installed on this object literal. */
+  DataFlow::FunctionNode getPropertyGetter(string name) {
+    result = astNode.getPropertyByName(name).(PropertyGetter).getInit().flow()
+  }
+
+  /** Gets the property setter of the given name, installed on this object literal. */
+  DataFlow::FunctionNode getPropertySetter(string name) {
+    result = astNode.getPropertyByName(name).(PropertySetter).getInit().flow()
+  }
 }
 
 /**

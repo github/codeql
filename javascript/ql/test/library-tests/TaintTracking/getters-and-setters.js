@@ -53,3 +53,22 @@ function testFlowThroughGetter() {
     sink(getX(new C(source()))); // NOT OK - but not flagged
     getX(null);
 }
+
+function testFlowThroughObjectLiteralAccessors() {
+    let obj = {
+        get x() {
+            return source();
+        },
+        set y(value) {
+            sink(value); // NOT OK
+        }
+    };
+    sink(obj.x); // NOT OK
+    obj.y = source();
+
+    function indirection(c) {
+        sink(c.x); // NOT OK - but not currently flagged
+    }
+    indirection(obj);
+    indirection(null);
+}
