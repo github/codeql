@@ -59,18 +59,16 @@ class ParameterNode extends DataFlow::SourceNode {
  * ```
  */
 class InvokeNode extends DataFlow::SourceNode {
-  DataFlow::Impl::InvokeNodeDef impl;
-
-  InvokeNode() { this = impl }
+  InvokeNode() { this instanceof DataFlow::Impl::InvokeNodeDef }
 
   /** Gets the syntactic invoke expression underlying this function invocation. */
-  InvokeExpr getInvokeExpr() { result = impl.getInvokeExpr() }
+  InvokeExpr getInvokeExpr() { result = this.(DataFlow::Impl::InvokeNodeDef).getInvokeExpr() }
 
   /** Gets the name of the function or method being invoked, if it can be determined. */
-  string getCalleeName() { result = impl.getCalleeName() }
+  string getCalleeName() { result = this.(DataFlow::Impl::InvokeNodeDef).getCalleeName() }
 
   /** Gets the data flow node specifying the function to be called. */
-  DataFlow::Node getCalleeNode() { result = impl.getCalleeNode() }
+  DataFlow::Node getCalleeNode() { result = this.(DataFlow::Impl::InvokeNodeDef).getCalleeNode() }
 
   /**
    * Gets the data flow node corresponding to the `i`th argument of this invocation.
@@ -91,10 +89,10 @@ class InvokeNode extends DataFlow::SourceNode {
    * but the position of `z` cannot be determined, hence there are no first and second
    * argument nodes.
    */
-  DataFlow::Node getArgument(int i) { result = impl.getArgument(i) }
+  DataFlow::Node getArgument(int i) { result = this.(DataFlow::Impl::InvokeNodeDef).getArgument(i) }
 
   /** Gets the data flow node corresponding to an argument of this invocation. */
-  DataFlow::Node getAnArgument() { result = impl.getAnArgument() }
+  DataFlow::Node getAnArgument() { result = this.(DataFlow::Impl::InvokeNodeDef).getAnArgument() }
 
   /** Gets the data flow node corresponding to the last argument of this invocation. */
   DataFlow::Node getLastArgument() { result = getArgument(getNumArgument() - 1) }
@@ -111,10 +109,12 @@ class InvokeNode extends DataFlow::SourceNode {
    * ```
    *  .
    */
-  DataFlow::Node getASpreadArgument() { result = impl.getASpreadArgument() }
+  DataFlow::Node getASpreadArgument() {
+    result = this.(DataFlow::Impl::InvokeNodeDef).getASpreadArgument()
+  }
 
   /** Gets the number of arguments of this invocation, if it can be determined. */
-  int getNumArgument() { result = impl.getNumArgument() }
+  int getNumArgument() { result = this.(DataFlow::Impl::InvokeNodeDef).getNumArgument() }
 
   Function getEnclosingFunction() { result = getBasicBlock().getContainer() }
 
@@ -256,14 +256,14 @@ class InvokeNode extends DataFlow::SourceNode {
  * ```
  */
 class CallNode extends InvokeNode {
-  override DataFlow::Impl::CallNodeDef impl;
+  CallNode() { this instanceof DataFlow::Impl::CallNodeDef }
 
   /**
    * Gets the data flow node corresponding to the receiver expression of this method call.
    *
    * For example, the receiver of `x.m()` is `x`.
    */
-  DataFlow::Node getReceiver() { result = impl.getReceiver() }
+  DataFlow::Node getReceiver() { result = this.(DataFlow::Impl::CallNodeDef).getReceiver() }
 }
 
 /**
@@ -277,10 +277,10 @@ class CallNode extends InvokeNode {
  * ```
  */
 class MethodCallNode extends CallNode {
-  override DataFlow::Impl::MethodCallNodeDef impl;
+  MethodCallNode() { this instanceof DataFlow::Impl::MethodCallNodeDef }
 
   /** Gets the name of the invoked method, if it can be determined. */
-  string getMethodName() { result = impl.getMethodName() }
+  string getMethodName() { result = this.(DataFlow::Impl::MethodCallNodeDef).getMethodName() }
 
   /**
    * Holds if this data flow node calls method `methodName` on receiver node `receiver`.
@@ -300,7 +300,7 @@ class MethodCallNode extends CallNode {
  * ```
  */
 class NewNode extends InvokeNode {
-  override DataFlow::Impl::NewNodeDef impl;
+  NewNode() { this instanceof DataFlow::Impl::NewNodeDef }
 }
 
 /**
