@@ -215,6 +215,9 @@ module SQL {
   }
 }
 
+/**
+ * Provides classes for working with the [GORM](https://gorm.io/) package.
+ */
 module Gorm {
   /** Gets the package name for Gorm. */
   string packagePath() {

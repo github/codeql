@@ -8,6 +8,11 @@ import go
 private import semmle.go.security.SensitiveActions
 private import CryptoLibraries
 
+/**
+ * Provides default sources, sinks and sanitizers for reasoning about
+ * sensitive information in weak cryptographic algorithms,
+ * as well as extension points for adding your own.
+ */
 module WeakCryptoAlgorithm {
   /**
    * A data flow source for sensitive information in weak cryptographic algorithms.
