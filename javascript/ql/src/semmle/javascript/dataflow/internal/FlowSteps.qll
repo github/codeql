@@ -25,7 +25,8 @@ predicate shouldTrackProperties(AbstractValue obj) {
  */
 pragma[noinline]
 predicate returnExpr(Function f, DataFlow::Node source, DataFlow::Node sink) {
-  sink.asExpr() = f.getAReturnedExpr() and source = sink and
+  sink.asExpr() = f.getAReturnedExpr() and
+  source = sink and
   not f = any(SetterMethodDeclaration decl).getBody()
 }
 
