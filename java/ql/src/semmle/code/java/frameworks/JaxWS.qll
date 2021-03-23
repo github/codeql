@@ -1,6 +1,11 @@
 import java
 private import semmle.code.java.dataflow.ExternalFlow
 
+string getAJaxWsPackage() { result in ["javax.ws.rs", "jakarta.ws.rs"] }
+
+bindingset[subpackage]
+string getAJaxWsPackage(string subpackage) { result = getAJaxWsPackage() + "." + subpackage }
+
 /**
  * A JAX WS endpoint is constructed by the container, and its methods
  * are -- where annotated -- called remotely.
@@ -29,7 +34,7 @@ class JaxWsEndpoint extends Class {
 private predicate hasPathAnnotation(Annotatable annotatable) {
   exists(AnnotationType a |
     a = annotatable.getAnAnnotation().getType() and
-    a.getPackage().getName() = "javax.ws.rs"
+    a.getPackage().getName() = getAJaxWsPackage()
   |
     a.hasName("Path")
   )
@@ -42,7 +47,7 @@ class JaxRsResourceMethod extends Method {
   JaxRsResourceMethod() {
     exists(AnnotationType a |
       a = this.getAnAnnotation().getType() and
-      a.getPackage().getName() = "javax.ws.rs"
+      a.getPackage().getName() = getAJaxWsPackage()
     |
       a.hasName("GET") or
       a.hasName("POST") or
@@ -179,7 +184,7 @@ class JaxRsInjectionAnnotation extends JaxRSAnnotation {
   JaxRsInjectionAnnotation() {
     exists(AnnotationType a |
       a = getType() and
-      a.getPackage().getName() = "javax.ws.rs"
+      a.getPackage().getName() = getAJaxWsPackage()
     |
       a.hasName("BeanParam") or
       a.hasName("CookieParam") or
@@ -190,23 +195,25 @@ class JaxRsInjectionAnnotation extends JaxRSAnnotation {
       a.hasName("QueryParam")
     )
     or
-    getType().hasQualifiedName("javax.ws.rs.core", "Context")
+    getType().hasQualifiedName(getAJaxWsPackage("core"), "Context")
   }
 }
 
 class JaxRsResponse extends Class {
-  JaxRsResponse() { this.hasQualifiedName("javax.ws.rs.core", "Response") }
+  JaxRsResponse() { this.hasQualifiedName(getAJaxWsPackage("core"), "Response") }
 }
 
 class JaxRsResponseBuilder extends Class {
-  JaxRsResponseBuilder() { this.hasQualifiedName("javax.ws.rs.core", "Response$ResponseBuilder") }
+  JaxRsResponseBuilder() {
+    this.hasQualifiedName(getAJaxWsPackage("core"), "Response$ResponseBuilder")
+  }
 }
 
 /**
  * The class `javax.ws.rs.client.Client`.
  */
 class JaxRsClient extends RefType {
-  JaxRsClient() { this.hasQualifiedName("javax.ws.rs.client", "Client") }
+  JaxRsClient() { this.hasQualifiedName(getAJaxWsPackage("client"), "Client") }
 }
 
 /**
@@ -219,7 +226,7 @@ class JaxRsBeanParamConstructor extends Constructor {
       c = resourceClass.getAnInjectableCallable()
     |
       p = c.getAParameter() and
-      p.getAnAnnotation().getType().hasQualifiedName("javax.ws.rs", "BeanParam") and
+      p.getAnAnnotation().getType().hasQualifiedName(getAJaxWsPackage(), "BeanParam") and
       this.getDeclaringType().getSourceDeclaration() = p.getType().(RefType).getSourceDeclaration()
     ) and
     forall(Parameter p | p = getAParameter() |
@@ -232,7 +239,7 @@ class JaxRsBeanParamConstructor extends Constructor {
  * The class `javax.ws.rs.ext.MessageBodyReader`.
  */
 class MessageBodyReader extends GenericInterface {
-  MessageBodyReader() { this.hasQualifiedName("javax.ws.rs.ext", "MessageBodyReader") }
+  MessageBodyReader() { this.hasQualifiedName(getAJaxWsPackage("ext"), "MessageBodyReader") }
 }
 
 /**
@@ -258,7 +265,7 @@ class MessageBodyReaderRead extends Method {
 
 /** An `@Produces` annotation that describes which content types can be produced by this resource. */
 class JaxRSProducesAnnotation extends JaxRSAnnotation {
-  JaxRSProducesAnnotation() { getType().hasQualifiedName("javax.ws.rs", "Produces") }
+  JaxRSProducesAnnotation() { getType().hasQualifiedName(getAJaxWsPackage(), "Produces") }
 
   /**
    * Gets a declared content type that can be produced by this resource.
@@ -269,7 +276,7 @@ class JaxRSProducesAnnotation extends JaxRSAnnotation {
     exists(Field jaxMediaType |
       // Accesses to static fields on `MediaType` class do not have constant strings in the database
       // so convert the field name to a content type string
-      jaxMediaType.getDeclaringType().hasQualifiedName("javax.ws.rs.core", "MediaType") and
+      jaxMediaType.getDeclaringType().hasQualifiedName(getAJaxWsPackage("core"), "MediaType") and
       jaxMediaType.getAnAccess() = getAValue() and
       // e.g. MediaType.TEXT_PLAIN => text/plain
       result = jaxMediaType.getName().toLowerCase().replaceAll("_", "/")
@@ -279,7 +286,7 @@ class JaxRSProducesAnnotation extends JaxRSAnnotation {
 
 /** An `@Consumes` annotation that describes content types can be consumed by this resource. */
 class JaxRSConsumesAnnotation extends JaxRSAnnotation {
-  JaxRSConsumesAnnotation() { getType().hasQualifiedName("javax.ws.rs", "Consumes") }
+  JaxRSConsumesAnnotation() { getType().hasQualifiedName(getAJaxWsPackage(), "Consumes") }
 }
 
 /**
@@ -293,7 +300,10 @@ private class ResponseModel extends SummaryModelCsv {
       [
         "javax.ws.rs.core;Response;false;accepted;;;Argument[0];ReturnValue;taint",
         "javax.ws.rs.core;Response;false;fromResponse;;;Argument[0];ReturnValue;taint",
-        "javax.ws.rs.core;Response;false;ok;;;Argument[0];ReturnValue;taint"
+        "javax.ws.rs.core;Response;false;ok;;;Argument[0];ReturnValue;taint",
+        "jakarta.ws.rs.core;Response;false;accepted;;;Argument[0];ReturnValue;taint",
+        "jakarta.ws.rs.core;Response;false;fromResponse;;;Argument[0];ReturnValue;taint",
+        "jakarta.ws.rs.core;Response;false;ok;;;Argument[0];ReturnValue;taint"
       ]
   }
 }
@@ -330,7 +340,29 @@ private class ResponseBuilderModel extends SummaryModelCsv {
         "javax.ws.rs.core;Response$ResponseBuilder;true;tag;;;Argument[-1];ReturnValue;value",
         "javax.ws.rs.core;Response$ResponseBuilder;true;type;;;Argument[-1];ReturnValue;value",
         "javax.ws.rs.core;Response$ResponseBuilder;true;variant;;;Argument[-1];ReturnValue;value",
-        "javax.ws.rs.core;Response$ResponseBuilder;true;variants;;;Argument[-1];ReturnValue;value"
+        "javax.ws.rs.core;Response$ResponseBuilder;true;variants;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;build;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;entity;;;Argument[0];Argument[-1];taint",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;allow;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;cacheControl;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;clone;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;contentLocation;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;cookie;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;encoding;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;entity;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;expires;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;header;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;language;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;lastModified;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;link;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;links;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;location;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;replaceAll;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;status;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;tag;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;type;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;variant;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Response$ResponseBuilder;true;variants;;;Argument[-1];ReturnValue;value"
       ]
   }
 }
@@ -351,7 +383,15 @@ private class HttpHeadersModel extends SummaryModelCsv {
         "javax.ws.rs.core;HttpHeaders;true;getLanguage;;;Argument[-1];ReturnValue;taint",
         "javax.ws.rs.core;HttpHeaders;true;getMediaType;;;Argument[-1];ReturnValue;taint",
         "javax.ws.rs.core;HttpHeaders;true;getRequestHeader;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;HttpHeaders;true;getRequestHeaders;;;Argument[-1];ReturnValue;taint"
+        "javax.ws.rs.core;HttpHeaders;true;getRequestHeaders;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;HttpHeaders;true;getAcceptableLanguages;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;HttpHeaders;true;getAcceptableMediaTypes;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;HttpHeaders;true;getCookies;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;HttpHeaders;true;getHeaderString;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;HttpHeaders;true;getLanguage;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;HttpHeaders;true;getMediaType;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;HttpHeaders;true;getRequestHeader;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;HttpHeaders;true;getRequestHeaders;;;Argument[-1];ReturnValue;taint"
       ]
   }
 }
@@ -367,7 +407,12 @@ private class MultivaluedMapModel extends SummaryModelCsv {
         "javax.ws.rs.core;MultivaluedMap;true;addAll;;;Argument;Argument[-1];taint",
         "javax.ws.rs.core;MultivaluedMap;true;addFirst;;;Argument;Argument[-1];taint",
         "javax.ws.rs.core;MultivaluedMap;true;getFirst;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;MultivaluedMap;true;putSingle;;;Argument;Argument[-1];taint"
+        "javax.ws.rs.core;MultivaluedMap;true;putSingle;;;Argument;Argument[-1];taint",
+        "jakarta.ws.rs.core;MultivaluedMap;true;add;;;Argument;Argument[-1];taint",
+        "jakarta.ws.rs.core;MultivaluedMap;true;addAll;;;Argument;Argument[-1];taint",
+        "jakarta.ws.rs.core;MultivaluedMap;true;addFirst;;;Argument;Argument[-1];taint",
+        "jakarta.ws.rs.core;MultivaluedMap;true;getFirst;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;MultivaluedMap;true;putSingle;;;Argument;Argument[-1];taint"
       ]
   }
 }
@@ -380,7 +425,9 @@ private class PathSegmentModel extends SummaryModelCsv {
     row =
       [
         "javax.ws.rs.core;PathSegment;true;getMatrixParameters;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;PathSegment;true;getPath;;;Argument[-1];ReturnValue;taint"
+        "javax.ws.rs.core;PathSegment;true;getPath;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;PathSegment;true;getMatrixParameters;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;PathSegment;true;getPath;;;Argument[-1];ReturnValue;taint"
       ]
   }
 }
@@ -396,7 +443,12 @@ private class UriInfoModel extends SummaryModelCsv {
         "javax.ws.rs.core;UriInfo;true;getPathSegments;;;Argument[-1];ReturnValue;taint",
         "javax.ws.rs.core;UriInfo;true;getQueryParameters;;;Argument[-1];ReturnValue;taint",
         "javax.ws.rs.core;UriInfo;true;getRequestUri;;;Argument[-1];ReturnValue;taint",
-        "javax.ws.rs.core;UriInfo;true;getRequestUriBuilder;;;Argument[-1];ReturnValue;taint"
+        "javax.ws.rs.core;UriInfo;true;getRequestUriBuilder;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;UriInfo;true;getPathParameters;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;UriInfo;true;getPathSegments;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;UriInfo;true;getQueryParameters;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;UriInfo;true;getRequestUri;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;UriInfo;true;getRequestUriBuilder;;;Argument[-1];ReturnValue;taint"
       ]
   }
 }
@@ -415,7 +467,15 @@ private class CookieModel extends SummaryModelCsv {
         "javax.ws.rs.core;Cookie;true;getVersion;;;Argument[-1];ReturnValue;taint",
         "javax.ws.rs.core;Cookie;true;toString;;;Argument[-1];ReturnValue;taint",
         "javax.ws.rs.core;Cookie;false;Cookie;;;Argument;Argument[-1];taint",
-        "javax.ws.rs.core;Cookie;false;valueOf;;;Argument;ReturnValue;taint"
+        "javax.ws.rs.core;Cookie;false;valueOf;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;Cookie;true;getDomain;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;Cookie;true;getName;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;Cookie;true;getPath;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;Cookie;true;getValue;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;Cookie;true;getVersion;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;Cookie;true;toString;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;Cookie;false;Cookie;;;Argument;Argument[-1];taint",
+        "jakarta.ws.rs.core;Cookie;false;valueOf;;;Argument;ReturnValue;taint"
       ]
   }
 }
@@ -429,7 +489,10 @@ private class FormModel extends SummaryModelCsv {
       [
         "javax.ws.rs.core;Form;true;asMap;;;Argument[-1];ReturnValue;taint",
         "javax.ws.rs.core;Form;true;param;;;Argument;Argument[-1];taint",
-        "javax.ws.rs.core;Form;true;param;;;Argument[-1];ReturnValue;value"
+        "javax.ws.rs.core;Form;true;param;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Form;true;asMap;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;Form;true;param;;;Argument;Argument[-1];taint",
+        "jakarta.ws.rs.core;Form;true;param;;;Argument[-1];ReturnValue;value"
       ]
   }
 }
@@ -442,7 +505,9 @@ private class GenericEntityModel extends SummaryModelCsv {
     row =
       [
         "javax.ws.rs.core;GenericEntity;false;GenericEntity;;;Argument[0];Argument[-1];taint",
-        "javax.ws.rs.core;GenericEntity;true;getEntity;;;Argument[-1];ReturnValue;taint"
+        "javax.ws.rs.core;GenericEntity;true;getEntity;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;GenericEntity;false;GenericEntity;;;Argument[0];Argument[-1];taint",
+        "jakarta.ws.rs.core;GenericEntity;true;getEntity;;;Argument[-1];ReturnValue;taint"
       ]
   }
 }
@@ -460,7 +525,13 @@ private class MediaTypeModel extends SummaryModelCsv {
         "javax.ws.rs.core;MediaType;true;getSubtype;;;Argument[-1];ReturnValue;taint",
         "javax.ws.rs.core;MediaType;true;getType;;;Argument[-1];ReturnValue;taint",
         "javax.ws.rs.core;MediaType;false;valueOf;;;Argument;ReturnValue;taint",
-        "javax.ws.rs.core;MediaType;true;withCharset;;;Argument[-1];ReturnValue;taint"
+        "javax.ws.rs.core;MediaType;true;withCharset;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;MediaType;false;MediaType;;;Argument;Argument[-1];taint",
+        "jakarta.ws.rs.core;MediaType;true;getParameters;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;MediaType;true;getSubtype;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;MediaType;true;getType;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;MediaType;false;valueOf;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;MediaType;true;withCharset;;;Argument[-1];ReturnValue;taint"
       ]
   }
 }
@@ -524,7 +595,60 @@ private class UriBuilderModel extends SummaryModelCsv {
         "javax.ws.rs.core;UriBuilder;true;uri;;;Argument;ReturnValue;taint",
         "javax.ws.rs.core;UriBuilder;true;uri;;;Argument[-1];ReturnValue;value",
         "javax.ws.rs.core;UriBuilder;true;userInfo;;;Argument;ReturnValue;taint",
-        "javax.ws.rs.core;UriBuilder;true;userInfo;;;Argument[-1];ReturnValue;value"
+        "javax.ws.rs.core;UriBuilder;true;userInfo;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;true;build;;;Argument[0];ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;build;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;buildFromEncoded;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;buildFromEncoded;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;buildFromEncodedMap;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;buildFromEncodedMap;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;buildFromMap;;;Argument[0];ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;buildFromMap;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;clone;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;fragment;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;fragment;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;false;fromLink;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;false;fromPath;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;false;fromUri;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;host;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;host;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;true;matrixParam;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;matrixParam;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;true;path;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;path;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;true;queryParam;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;queryParam;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;true;replaceMatrix;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;replaceMatrix;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;true;replaceMatrixParam;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;replaceMatrixParam;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;true;replacePath;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;replacePath;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;true;replaceQuery;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;replaceQuery;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;true;replaceQueryParam;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;replaceQueryParam;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;true;resolveTemplate;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;resolveTemplate;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;true;resolveTemplateFromEncoded;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;resolveTemplateFromEncoded;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;true;resolveTemplates;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;resolveTemplates;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;true;resolveTemplatesFromEncoded;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;resolveTemplatesFromEncoded;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;true;scheme;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;scheme;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;true;schemeSpecificPart;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;schemeSpecificPart;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;true;segment;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;segment;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;true;schemeSpecificPart;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;schemeSpecificPart;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;true;toTemplate;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;uri;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;uri;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;UriBuilder;true;userInfo;;;Argument;ReturnValue;taint",
+        "jakarta.ws.rs.core;UriBuilder;true;userInfo;;;Argument[-1];ReturnValue;value"
       ]
   }
 }
