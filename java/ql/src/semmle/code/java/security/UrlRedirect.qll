@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.frameworks.ApacheHttp
+private import semmle.code.java.frameworks.JaxWS
 
 /** A URL redirection sink */
 abstract class UrlRedirectSink extends DataFlow::Node { }
@@ -43,7 +44,7 @@ private class JaxWsUrlRedirectSink extends UrlRedirectSink {
       ma.getMethod()
           .getDeclaringType()
           .getAnAncestor()
-          .hasQualifiedName("javax.ws.rs.core", "Response") and
+          .hasQualifiedName(getAJaxWsPackage("core"), "Response") and
       ma.getMethod().getName() in ["seeOther", "temporaryRedirect"] and
       this.asExpr() = ma.getArgument(0)
     )
