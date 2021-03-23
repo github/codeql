@@ -163,16 +163,36 @@ module CallGraph {
     )
   }
 
+  /** Holds if a property setter named `name` exists in a class. */
+  private predicate isSetterName(string name) {
+    exists(any(DataFlow::ClassNode cls).getInstanceMember(name, DataFlow::MemberKind::setter()))
+  }
+
+  /**
+   * Gets a property write that assigns to the property `name` on an instance of this class,
+   * and `name` is the name of a property setter.
+   */
+  private DataFlow::PropWrite getAnInstanceMemberAssignment(DataFlow::ClassNode cls, string name) {
+    isSetterName(name) and // restrict size of predicate
+    result = cls.getAnInstanceReference().getAPropertyWrite(name)
+    or
+    exists(DataFlow::ClassNode subclass |
+      result = getAnInstanceMemberAssignment(subclass, name) and
+      not exists(subclass.getInstanceMember(name, DataFlow::MemberKind::setter())) and
+      cls = subclass.getADirectSuperClass()
+    )
+  }
+
   /**
    * Gets a getter or setter invoked as a result of the given property access.
    */
   cached
   DataFlow::FunctionNode getAnAccessorCallee(DataFlow::PropRef ref) {
     exists(DataFlow::ClassNode cls, string name |
-      ref = cls.getAnInstanceReference().getAPropertyRead(name) and
+      ref = cls.getAnInstanceMemberAccess(name) and
       result = cls.getInstanceMember(name, DataFlow::MemberKind::getter())
       or
-      ref = cls.getAnInstanceReference().getAPropertyWrite(name) and
+      ref = getAnInstanceMemberAssignment(cls, name) and
       result = cls.getInstanceMember(name, DataFlow::MemberKind::setter())
     )
     or
