@@ -2251,7 +2251,6 @@ private module Django {
   class DjangoFormFieldClass extends Class {
     DjangoFormFieldClass() {
       this.getABase() = Django::Forms::Field::subclassRef().getAUse().asExpr()
-      // api_node.getAnImmediateUse().asExpr().(ClassExpr) = this.getParent()
     }
   }
 
