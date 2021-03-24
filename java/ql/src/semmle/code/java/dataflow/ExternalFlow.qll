@@ -204,27 +204,58 @@ private predicate summaryModel(
   )
 }
 
+private predicate relevantPackage(string package) {
+  sourceModel(package, _, _, _, _, _, _, _) or
+  sinkModel(package, _, _, _, _, _, _, _) or
+  summaryModel(package, _, _, _, _, _, _, _, _)
+}
+
+private predicate packageLink(string shortpkg, string longpkg) {
+  relevantPackage(shortpkg) and
+  relevantPackage(longpkg) and
+  longpkg.prefix(longpkg.indexOf(".")) = shortpkg
+}
+
+private predicate canonicalPackage(string package) {
+  relevantPackage(package) and not packageLink(_, package)
+}
+
+private predicate canonicalPkgLink(string package, string subpkg) {
+  canonicalPackage(package) and
+  (subpkg = package or packageLink(package, subpkg))
+}
+
 /**
  * Holds if CSV framework coverage of `package` is `n` api endpoints of the
  * kind `(kind, part)`.
  */
-predicate modelCoverage(string package, string kind, string part, int n) {
-  part = "source" and
-  n =
-    strictcount(string type, boolean subtypes, string name, string signature, string ext,
-      string output | sourceModel(package, type, subtypes, name, signature, ext, output, kind))
-  or
-  part = "sink" and
-  n =
-    strictcount(string type, boolean subtypes, string name, string signature, string ext,
-      string input | sinkModel(package, type, subtypes, name, signature, ext, input, kind))
-  or
-  part = "summary" and
-  n =
-    strictcount(string type, boolean subtypes, string name, string signature, string ext,
-      string input, string output |
-      summaryModel(package, type, subtypes, name, signature, ext, input, output, kind)
-    )
+predicate modelCoverage(string package, int pkgs, string kind, string part, int n) {
+  pkgs = strictcount(string subpkg | canonicalPkgLink(package, subpkg)) and
+  (
+    part = "source" and
+    n =
+      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
+        string ext, string output |
+        canonicalPkgLink(package, subpkg) and
+        sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind)
+      )
+    or
+    part = "sink" and
+    n =
+      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
+        string ext, string input |
+        canonicalPkgLink(package, subpkg) and
+        sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind)
+      )
+    or
+    part = "summary" and
+    n =
+      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
+        string ext, string input, string output |
+        canonicalPkgLink(package, subpkg) and
+        summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind)
+      )
+  )
 }
 
 /** Provides a query predicate to check the CSV data for validation errors. */
