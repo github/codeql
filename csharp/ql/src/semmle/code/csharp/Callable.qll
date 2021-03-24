@@ -461,6 +461,15 @@ class Operator extends Callable, Member, Attributable, @operator {
   override Parameter getRawParameter(int i) { result = getParameter(i) }
 }
 
+/** A clone method on a record. */
+class RecordCloneMethod extends Method, DotNet::RecordCloneCallable {
+  override Constructor getConstructor() {
+    result = DotNet::RecordCloneCallable.super.getConstructor()
+  }
+
+  override string toString() { result = Method.super.toString() }
+}
+
 /**
  * A user-defined unary operator - an operator taking one operand.
  *

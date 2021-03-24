@@ -653,11 +653,23 @@ class LongLiteral extends Literal, @longliteral {
 
 /** A floating point literal. For example, `4.2f`. */
 class FloatingPointLiteral extends Literal, @floatingpointliteral {
+  /**
+   * Gets the value of this literal as CodeQL 64-bit `float`. The value will
+   * be parsed as Java 32-bit `float` and then converted to a CodeQL `float`.
+   */
+  float getFloatValue() { result = getValue().toFloat() }
+
   override string getAPrimaryQlClass() { result = "FloatingPointLiteral" }
 }
 
 /** A double literal. For example, `4.2`. */
 class DoubleLiteral extends Literal, @doubleliteral {
+  /**
+   * Gets the value of this literal as CodeQL 64-bit `float`. The result will
+   * have the same effective value as the Java `double` literal.
+   */
+  float getDoubleValue() { result = getValue().toFloat() }
+
   override string getAPrimaryQlClass() { result = "DoubleLiteral" }
 }
 

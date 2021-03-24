@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.HashMap;
+import org.apache.commons.lang3.RandomUtils;
 
 class Test {
 	public static void main(String[] args) {
@@ -238,6 +239,45 @@ class Test {
 			// BAD: uncontrolled int value is widened to type long, but
 			// subsequently cast to narrower type int
 			int widenedThenNarrowed = (int) (data + 10L);
+		}
+
+		// ArithmeticUncontrolled using Apache RandomUtils
+		int data2 = RandomUtils.nextInt();
+
+		{
+			// BAD: may overflow if data is large
+			int output = data2 + 1;
+		}
+
+		{
+			// GOOD: guarded
+			if (data2 < Integer.MAX_VALUE) {
+				int output = data2 + 1;
+			}
+		}
+
+		{
+			// guard against underflow
+			if (data2 > Integer.MIN_VALUE) {
+				int stillLarge = data2 - 1;
+				// FALSE NEGATIVE: stillLarge could still be very large, even
+				// after
+				// it has had arithmetic done on it
+				int output = stillLarge + 100;
+			}
+		}
+
+		{
+			// GOOD: uncontrolled int value is widened to type long, thus
+			// avoiding overflow
+			// (see binary numeric promotions in JLS 5.6.2)
+			long widened = data2 + 10L;
+		}
+
+		{
+			// BAD: uncontrolled int value is widened to type long, but
+			// subsequently cast to narrower type int
+			int widenedThenNarrowed = (int) (data2 + 10L);
 		}
 	}
 

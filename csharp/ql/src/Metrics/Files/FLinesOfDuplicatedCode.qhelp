@@ -9,7 +9,7 @@ for a number of reasons.
 </p>
 
 </overview>
-<include src="DuplicationProblems.qhelp" />
+<include src="DuplicationProblems.inc.qhelp" />
 
 <recommendation>
 

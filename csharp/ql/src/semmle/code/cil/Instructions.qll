@@ -482,6 +482,22 @@ module Opcodes {
     override string getOpcodeName() { result = "call" }
   }
 
+  /** A `calli` instruction. */
+  class Calli extends Call, @cil_calli {
+    override string getOpcodeName() { result = "calli" }
+
+    override Callable getTarget() { none() }
+
+    /** Gets the function pointer type targetted by this instruction. */
+    FunctionPointerType getTargetType() { cil_access(this, result) }
+
+    // The number of items popped/pushed from the stack depends on the target of
+    // the call. Also, we need to pop the function pointer itself too.
+    override int getPopCount() { result = getTargetType().getCallPopCount() + 1 }
+
+    override int getPushCount() { result = getTargetType().getCallPushCount() }
+  }
+
   /** A `callvirt` instruction. */
   class Callvirt extends Call, @cil_callvirt {
     override string getOpcodeName() { result = "callvirt" }

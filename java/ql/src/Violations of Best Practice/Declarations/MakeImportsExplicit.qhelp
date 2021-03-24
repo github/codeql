@@ -55,8 +55,8 @@ where the <code>List</code> type on line 5 is imported from.</p>
 
 
 <li>Java Language Specification:
-    <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-6.html#jls-6.4.1">6.4.1 Shadowing</a>,
-    <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-7.html#jls-7.5.2">7.5.2 Type-Import-on-Demand Declarations</a>.</li>
+    <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-6.html#jls-6.4.1">6.4.1 Shadowing</a>,
+    <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-7.html#jls-7.5.2">7.5.2 Type-Import-on-Demand Declarations</a>.</li>
 
 
 </references>

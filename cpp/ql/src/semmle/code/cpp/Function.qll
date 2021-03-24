@@ -467,7 +467,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
       // ... and likewise for destructors.
       this.(Destructor).getADestruction().mayBeGloballyImpure()
     else
-      // Unless it's a function that we know is side-effect-free, it may
+      // Unless it's a function that we know is side-effect free, it may
       // have side-effects.
       not this.hasGlobalOrStdName([
           "strcmp", "wcscmp", "_mbscmp", "strlen", "wcslen", "_mbslen", "_mbslen_l", "_mbstrlen",

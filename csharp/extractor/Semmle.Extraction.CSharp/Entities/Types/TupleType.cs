@@ -13,13 +13,13 @@ namespace Semmle.Extraction.CSharp.Entities
     /// </summary>
     internal class TupleType : Type<INamedTypeSymbol>
     {
-        public static TupleType Create(Context cx, INamedTypeSymbol type) => TupleTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
+        public static TupleType Create(Context cx, INamedTypeSymbol type) => TupleTypeFactory.Instance.CreateEntityFromSymbol(cx, type.TupleUnderlyingType ?? type);
 
-        private class TupleTypeFactory : ICachedEntityFactory<INamedTypeSymbol, TupleType>
+        private class TupleTypeFactory : CachedEntityFactory<INamedTypeSymbol, TupleType>
         {
             public static TupleTypeFactory Instance { get; } = new TupleTypeFactory();
 
-            public TupleType Create(Context cx, INamedTypeSymbol init) => new TupleType(cx, init);
+            public override TupleType Create(Context cx, INamedTypeSymbol init) => new TupleType(cx, init);
         }
 
         private TupleType(Context cx, INamedTypeSymbol init) : base(cx, init)
@@ -41,7 +41,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateType(trapFile);
             PopulateGenerics();
 
-            var underlyingType = NamedType.CreateNamedTypeFromTupleType(Context, Symbol.TupleUnderlyingType ?? Symbol);
+            var underlyingType = NamedType.CreateNamedTypeFromTupleType(Context, Symbol);
 
             trapFile.tuple_underlying_type(this, underlyingType);
 

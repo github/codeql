@@ -266,7 +266,7 @@ library class CookieGetCommentMethod extends Method {
 }
 
 /**
- * The method `addCookie(String)` declared in `javax.servlet.http.Cookie`.
+ * The method `addCookie(Cookie)` declared in `javax.servlet.http.HttpServletResponse`.
  */
 class ResponseAddCookieMethod extends Method {
   ResponseAddCookieMethod() {
@@ -321,4 +321,19 @@ class ServletWebXMLListenerType extends RefType {
     //  - `HttpSessionActivationListener`
     //  - `HttpSessionBindingListener`
   }
+}
+
+/** Holds if `m` is a request handler method (for example `doGet` or `doPost`). */
+predicate isServletRequestMethod(Method m) {
+  m.getDeclaringType() instanceof ServletClass and
+  m.getNumberOfParameters() = 2 and
+  m.getParameter(0).getType() instanceof ServletRequest and
+  m.getParameter(1).getType() instanceof ServletResponse
+}
+
+/** Holds if `ma` is a call that gets a request parameter. */
+predicate isRequestGetParamMethod(MethodAccess ma) {
+  ma.getMethod() instanceof ServletRequestGetParameterMethod or
+  ma.getMethod() instanceof ServletRequestGetParameterMapMethod or
+  ma.getMethod() instanceof HttpServletRequestGetQueryStringMethod
 }

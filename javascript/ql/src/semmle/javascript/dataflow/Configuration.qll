@@ -72,6 +72,8 @@ private import javascript
 private import internal.FlowSteps
 private import internal.AccessPaths
 private import internal.CallGraphs
+private import internal.Unit
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A data flow tracking configuration for finding inter-procedural paths from
@@ -474,18 +476,27 @@ pragma[nomagic]
 private predicate barrierGuardBlocksEdge(
   BarrierGuardNode guard, DataFlow::Node pred, DataFlow::Node succ, string label
 ) {
-  barrierGuardIsRelevant(guard) and
   exists(
     SsaVariable input, SsaPhiNode phi, BasicBlock bb, ConditionGuardNode cond, boolean outcome
   |
+    bb = getADominatedBasicBlock(guard, cond) and
     pred = DataFlow::ssaDefinitionNode(input) and
     succ = DataFlow::ssaDefinitionNode(phi) and
     input = phi.getInputFromBlock(bb) and
-    guard.getEnclosingExpr() = cond.getTest() and
     outcome = cond.getOutcome() and
-    barrierGuardBlocksExpr(guard, outcome, input.getAUse(), label) and
-    cond.dominates(bb)
+    barrierGuardBlocksExpr(guard, outcome, input.getAUse(), label)
   )
+}
+
+/**
+ * Gets a basicblock that is dominated by `cond`, where the test for `cond` cond is `guard`.
+ *
+ * This predicate exists to get a better join-order for the `barrierGuardBlocksEdge` predicate above.
+ */
+private BasicBlock getADominatedBasicBlock(BarrierGuardNode guard, ConditionGuardNode cond) {
+  barrierGuardIsRelevant(guard) and
+  guard.getEnclosingExpr() = cond.getTest() and
+  cond.dominates(result)
 }
 
 /**
@@ -596,6 +607,57 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
   ) {
     loadProp = storeProp and
     loadStoreStep(pred, succ, loadProp)
+  }
+}
+
+/**
+ * A data flow edge that should be added to all data flow configurations in
+ * addition to standard data flow edges.
+ *
+ * This class is a singleton, and thus subclasses do not need to specify a characteristic predicate.
+ *
+ * Note: For performance reasons, all subclasses of this class should be part
+ * of the standard library. Override `Configuration::isAdditionalFlowStep`
+ * for analysis-specific flow steps.
+ */
+class SharedFlowStep extends Unit {
+  /**
+   * Holds if `pred` &rarr; `succ` should be considered a data flow edge.
+   */
+  predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+  /**
+   * Holds if `pred` &rarr; `succ` should be considered a data flow edge
+   * transforming values with label `predlbl` to have label `succlbl`.
+   */
+  predicate step(
+    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
+    DataFlow::FlowLabel succlbl
+  ) {
+    none()
+  }
+}
+
+/**
+ * Contributes subclasses of `SharedFlowStep` to `AdditionalFlowStep`.
+ *
+ * This is a placeholder until we migrate to the `SharedFlowStep` class and deprecate `AdditionalFlowStep`.
+ */
+private class SharedStepAsAdditionalFlowStep extends AdditionalFlowStep {
+  SharedStepAsAdditionalFlowStep() {
+    any(SharedFlowStep st).step(_, this) or
+    any(SharedFlowStep st).step(_, this, _, _)
+  }
+
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    any(SharedFlowStep st).step(pred, succ) and succ = this
+  }
+
+  override predicate step(
+    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
+    DataFlow::FlowLabel succlbl
+  ) {
+    any(SharedFlowStep st).step(pred, succ, predlbl, succlbl) and succ = this
   }
 }
 
@@ -724,6 +786,7 @@ private class FlowStepThroughImport extends AdditionalFlowStep, DataFlow::ValueN
   override ImportSpecifier astNode;
 
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    Stages::FlowSteps::ref() and
     pred = this and
     succ = DataFlow::ssaDefinitionNode(SSA::definition(astNode))
   }
@@ -1296,12 +1359,9 @@ private predicate summarizedHigherOrderCall(
     Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner, int j,
     DataFlow::Node innerArg, DataFlow::SourceNode cbParm, PathSummary oldSummary
   |
-    reachableFromInput(f, outer, arg, innerArg, cfg, oldSummary) and
-    // Only track actual parameter flow.
     // Captured flow does not need to be summarized - it is handled by the local case in `higherOrderCall`.
     not arg = DataFlow::capturedVariableNode(_) and
-    argumentPassing(outer, cb, f, cbParm) and
-    innerArg = inner.getArgument(j)
+    summarizedHigherOrderCallAux(f, outer, arg, innerArg, cfg, oldSummary, cbParm, inner, j, cb)
   |
     // direct higher-order call
     cbParm.flowsTo(inner.getCalleeNode()) and
@@ -1315,6 +1375,21 @@ private predicate summarizedHigherOrderCall(
       summary = oldSummary.append(PathSummary::call()).append(newSummary)
     )
   )
+}
+
+/**
+ * @see `summarizedHigherOrderCall`.
+ */
+pragma[noinline]
+private predicate summarizedHigherOrderCallAux(
+  Function f, DataFlow::InvokeNode outer, DataFlow::Node arg, DataFlow::Node innerArg,
+  DataFlow::Configuration cfg, PathSummary oldSummary, DataFlow::SourceNode cbParm,
+  DataFlow::InvokeNode inner, int j, DataFlow::Node cb
+) {
+  reachableFromInput(f, outer, arg, innerArg, cfg, oldSummary) and
+  // Only track actual parameter flow.
+  argumentPassing(outer, cb, f, cbParm) and
+  innerArg = inner.getArgument(j)
 }
 
 /**

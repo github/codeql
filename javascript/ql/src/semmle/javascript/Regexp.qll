@@ -865,6 +865,17 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
       // because `String.prototype.search` returns a number
       not exists(PropAccess p | p.getBase() = mce.getEnclosingExpr())
     )
+    or
+    exists(DataFlow::SourceNode schema | schema = JsonSchema::getAPartOfJsonSchema() |
+      source = schema.getAPropertyWrite("pattern").getRhs()
+      or
+      source =
+        schema
+            .getAPropertySource("patternProperties")
+            .getAPropertyWrite()
+            .getPropertyNameExpr()
+            .flow()
+    )
   )
 }
 
@@ -893,7 +904,7 @@ private DataFlow::Node regExpSource(DataFlow::Node re, DataFlow::TypeBackTracker
   exists(DataFlow::TypeBackTracker t2, DataFlow::Node succ | succ = regExpSource(re, t2) |
     t2 = t.smallstep(result, succ)
     or
-    any(TaintTracking::AdditionalTaintStep dts).step(result, succ) and
+    TaintTracking::sharedTaintStep(result, succ) and
     t = t2
   )
 }
@@ -1102,5 +1113,65 @@ module RegExp {
     result = getRegExpObjectFromNode(node)
     or
     result = node.asExpr().(StringLiteral).asRegExp()
+  }
+
+  /**
+   * A character that will be analyzed by `RegExp::alwaysMatchesMetaCharacter`.
+   *
+   * Currently only `<`, `'`, and `"` are considered to be meta-characters, but new meta-characters
+   * can be added by subclassing this class.
+   */
+  abstract class MetaCharacter extends string {
+    bindingset[this]
+    MetaCharacter() { any() }
+
+    /**
+     * Holds if the given atomic term matches this meta-character.
+     *
+     * Does not hold for derived terms like alternatives and groups.
+     *
+     * By default, `.`, `\W`, `\S`, and `\D` are considered to match any meta-character,
+     * but the predicate can be overridden for meta-characters where this is not the case.
+     */
+    predicate matchedByAtom(RegExpTerm term) {
+      term.(RegExpConstant).getConstantValue() = this
+      or
+      term instanceof RegExpDot
+      or
+      term.(RegExpCharacterClassEscape).getValue() = ["\\W", "\\S", "\\D"]
+      or
+      exists(string lo, string hi |
+        term.(RegExpCharacterRange).isRange(lo, hi) and
+        lo <= this and
+        this <= hi
+      )
+    }
+  }
+
+  private class DefaultMetaCharacter extends MetaCharacter {
+    DefaultMetaCharacter() { this = ["<", "'", "\""] }
+  }
+
+  /**
+   * Holds if `term` can match any occurence of `char` within a string (not taking into account
+   * the context in which `term` appears).
+   *
+   * This predicate is under-approximate and never considers sequences to guarantee a match.
+   */
+  predicate alwaysMatchesMetaCharacter(RegExpTerm term, MetaCharacter char) {
+    not term.getParent() instanceof RegExpSequence and // restrict size of predicate
+    char.matchedByAtom(term)
+    or
+    alwaysMatchesMetaCharacter(term.(RegExpGroup).getAChild(), char)
+    or
+    alwaysMatchesMetaCharacter(term.(RegExpAlt).getAlternative(), char)
+    or
+    exists(RegExpCharacterClass class_ | term = class_ |
+      not class_.isInverted() and
+      char.matchedByAtom(class_.getAChild())
+      or
+      class_.isInverted() and
+      not char.matchedByAtom(class_.getAChild())
+    )
   }
 }

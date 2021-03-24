@@ -11,7 +11,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static DynamicType Create(Context cx, IDynamicTypeSymbol type) => DynamicTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => Context.Compilation.ObjectType.Locations.FirstOrDefault();
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => Context.Compilation.ObjectType.Locations.FirstOrDefault();
 
         public override void Populate(TextWriter trapFile)
         {
@@ -27,11 +27,11 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write("dynamic;type");
         }
 
-        private class DynamicTypeFactory : ICachedEntityFactory<IDynamicTypeSymbol, DynamicType>
+        private class DynamicTypeFactory : CachedEntityFactory<IDynamicTypeSymbol, DynamicType>
         {
             public static DynamicTypeFactory Instance { get; } = new DynamicTypeFactory();
 
-            public DynamicType Create(Context cx, IDynamicTypeSymbol init) => new DynamicType(cx, init);
+            public override DynamicType Create(Context cx, IDynamicTypeSymbol init) => new DynamicType(cx, init);
         }
     }
 }

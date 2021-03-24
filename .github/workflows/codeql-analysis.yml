@@ -9,6 +9,8 @@ on:
     branches:
       - main
       - 'rc/*'
+    paths:
+      - 'csharp/**'
   schedule:
     - cron: '0 9 * * 1'
 

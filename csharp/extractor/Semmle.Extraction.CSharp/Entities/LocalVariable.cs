@@ -49,15 +49,15 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (Symbol is ILocalSymbol local && local.HasConstantValue)
             {
-                trapFile.constant_value(this, Expression.ValueAsString(local.ConstantValue));
+                trapFile.constant_value(this, Expression.ValueAsString(local.ConstantValue!));
             }
         }
 
-        private class LocalVariableFactory : ICachedEntityFactory<ISymbol, LocalVariable>
+        private class LocalVariableFactory : CachedEntityFactory<ISymbol, LocalVariable>
         {
             public static LocalVariableFactory Instance { get; } = new LocalVariableFactory();
 
-            public LocalVariable Create(Context cx, ISymbol init) => new LocalVariable(cx, init);
+            public override LocalVariable Create(Context cx, ISymbol init) => new LocalVariable(cx, init);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NeedsLabel;

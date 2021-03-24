@@ -21,5 +21,11 @@ private string elementType(Element e) {
 }
 
 from Element e, int i
-where cil_type_annotation(e, i)
+where
+  cil_type_annotation(e, i) and
+  (
+    not e instanceof Parameter or
+    e.(Parameter).getDeclaringElement().(Method).getDeclaringType().getQualifiedName() !=
+      "System.Environment" // There are OS specific methods in this class
+  )
 select e.toString(), elementType(e), i

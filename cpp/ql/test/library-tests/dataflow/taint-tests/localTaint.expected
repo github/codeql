@@ -135,6 +135,17 @@
 | arrayassignment.cpp:145:12:145:12 | 5 | arrayassignment.cpp:145:7:145:13 | access to array | TAINT |
 | arrayassignment.cpp:146:7:146:10 | arr3 | arrayassignment.cpp:146:7:146:13 | access to array |  |
 | arrayassignment.cpp:146:12:146:12 | 5 | arrayassignment.cpp:146:7:146:13 | access to array | TAINT |
+| bsd.cpp:17:11:17:16 | call to source | bsd.cpp:20:18:20:18 | s |  |
+| bsd.cpp:18:12:18:15 | addr | bsd.cpp:20:22:20:25 | addr |  |
+| bsd.cpp:18:12:18:15 | addr | bsd.cpp:23:8:23:11 | addr |  |
+| bsd.cpp:19:14:19:29 | sizeof(sockaddr) | bsd.cpp:20:29:20:32 | size |  |
+| bsd.cpp:20:11:20:16 | call to accept | bsd.cpp:22:8:22:8 | a |  |
+| bsd.cpp:20:18:20:18 | s | bsd.cpp:20:11:20:16 | call to accept | TAINT |
+| bsd.cpp:20:21:20:25 | & ... | bsd.cpp:20:11:20:16 | call to accept | TAINT |
+| bsd.cpp:20:22:20:25 | addr | bsd.cpp:20:11:20:16 | call to accept | TAINT |
+| bsd.cpp:20:22:20:25 | addr | bsd.cpp:20:21:20:25 | & ... |  |
+| bsd.cpp:20:28:20:32 | ref arg & ... | bsd.cpp:20:29:20:32 | size [inner post update] |  |
+| bsd.cpp:20:29:20:32 | size | bsd.cpp:20:28:20:32 | & ... |  |
 | constructor_delegation.cpp:8:2:8:8 | this | constructor_delegation.cpp:8:20:8:24 | constructor init of field x [pre-this] |  |
 | constructor_delegation.cpp:8:14:8:15 | _x | constructor_delegation.cpp:8:22:8:23 | _x |  |
 | constructor_delegation.cpp:8:22:8:23 | _x | constructor_delegation.cpp:8:20:8:24 | constructor init of field x | TAINT |
@@ -6234,6 +6245,14 @@
 | taint.cpp:657:12:657:15 | call to data | taint.cpp:657:3:657:8 | call to memcpy |  |
 | taint.cpp:657:20:657:25 | source | taint.cpp:657:3:657:8 | call to memcpy | TAINT |
 | taint.cpp:657:20:657:25 | source | taint.cpp:657:12:657:15 | ref arg call to data | TAINT |
+| taint.cpp:668:14:668:14 | s | taint.cpp:669:18:669:18 | s |  |
+| taint.cpp:668:14:668:14 | s | taint.cpp:671:7:671:7 | s |  |
+| taint.cpp:668:14:668:14 | s | taint.cpp:672:7:672:7 | s |  |
+| taint.cpp:668:14:668:14 | s | taint.cpp:673:7:673:7 | s |  |
+| taint.cpp:669:18:669:18 | s [post update] | taint.cpp:671:7:671:7 | s |  |
+| taint.cpp:669:18:669:18 | s [post update] | taint.cpp:672:7:672:7 | s |  |
+| taint.cpp:669:18:669:18 | s [post update] | taint.cpp:673:7:673:7 | s |  |
+| taint.cpp:672:7:672:7 | s [post update] | taint.cpp:673:7:673:7 | s |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |

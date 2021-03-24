@@ -24,6 +24,7 @@ private import internal.FlowSteps as FlowSteps
 private import internal.DataFlowNode
 private import internal.AnalyzedParameters
 private import internal.PreCallGraphStep
+private import semmle.javascript.internal.CachedStages
 
 module DataFlow {
   /**
@@ -106,7 +107,11 @@ module DataFlow {
 
     /** Holds if this node may evaluate to the Boolean value `b`. */
     predicate mayHaveBooleanValue(boolean b) {
-      b = analyze().getAValue().(AbstractBoolean).getBooleanValue()
+      getAPredecessor().mayHaveBooleanValue(b)
+      or
+      b = true and asExpr().(BooleanLiteral).getValue() = "true"
+      or
+      b = false and asExpr().(BooleanLiteral).getValue() = "false"
     }
 
     /** Gets the integer value of this node, if it is an integer constant. */
@@ -144,6 +149,7 @@ module DataFlow {
      * For more information, see
      * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
      */
+    cached
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
@@ -166,6 +172,7 @@ module DataFlow {
     int getEndColumn() { hasLocationInfo(_, _, _, _, result) }
 
     /** Gets a textual representation of this element. */
+    cached
     string toString() { none() }
 
     /**
@@ -289,12 +296,13 @@ module DataFlow {
     override predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
+      Stages::DataFlowStage::ref() and
       astNode.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
     override File getFile() { result = astNode.getFile() }
 
-    override string toString() { result = astNode.toString() }
+    override string toString() { Stages::DataFlowStage::ref() and result = astNode.toString() }
   }
 
   /**
@@ -1263,6 +1271,7 @@ module DataFlow {
   /**
    * Gets the data flow node corresponding to `e`.
    */
+  pragma[inline]
   ExprNode exprNode(Expr e) { result = valueNode(e) }
 
   /** Gets the data flow node corresponding to `ssa`. */
@@ -1488,6 +1497,7 @@ module DataFlow {
    */
   cached
   predicate localFlowStep(Node pred, Node succ) {
+    Stages::DataFlowStage::ref() and
     // flow from RHS into LHS
     lvalueFlowStep(pred, succ)
     or
@@ -1540,7 +1550,9 @@ module DataFlow {
    */
   predicate localFieldStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(ClassNode cls, string prop |
-      pred = cls.getAReceiverNode().getAPropertyWrite(prop).getRhs() and
+      pred = cls.getAReceiverNode().getAPropertyWrite(prop).getRhs() or
+      pred = cls.getInstanceMethod(prop)
+    |
       succ = cls.getAReceiverNode().getAPropertyRead(prop)
     )
   }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.semmle</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.0</version>
+    <packaging>pom</packaging>
+
+    <name>Bintray Usage</name>
+    <description>An example of using bintray to download and upload dependencies</description>
+
+    <distributionManagement>
+        <repository>
+            <id>jcenter</id>
+            <name>JCenter</name>
+            <!-- BAD! Don't use JCenter -->
+            <url>https://jcenter.bintray.com</url>
+        </repository>
+        <snapshotRepository>
+            <id>jcenter-snapshots</id>
+            <name>JCenter</name>
+            <!-- BAD! Don't use JCenter -->
+            <url>https://jcenter.bintray.com</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <repositories>
+        <repository>
+            <id>jcenter</id>
+            <name>JCenter</name>
+            <!-- BAD! Don't use JCenter -->
+            <url>https://jcenter.bintray.com</url>
+        </repository>
+    </repositories>
+    <repositories>
+        <repository>
+            <id>jcenter</id>
+            <name>JCenter</name>
+            <!-- BAD! Don't use Bintray -->
+            <url>https://dl.bintray.com/groovy/maven</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jcenter-plugins</id>
+            <name>JCenter</name>
+            <!-- BAD! Don't use JCenter -->
+            <url>https://jcenter.bintray.com</url>
+        </pluginRepository>
+    </pluginRepositories>
+</project>

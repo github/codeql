@@ -20,12 +20,12 @@ query predicate templateElement(Vue::Template::Element template) { any() }
 
 import semmle.javascript.security.dataflow.DomBasedXss
 
-query predicate vhtmlSourceWrite(
-  DomBasedXss::VHtmlSourceWrite w, DataFlow::Node pred, DataFlow::Node succ
-) {
+query predicate vhtmlSourceWrite(Vue::VHtmlSourceWrite w, DataFlow::Node pred, DataFlow::Node succ) {
   w.step(pred, succ)
 }
 
 import semmle.javascript.security.dataflow.DomBasedXss
 
 query predicate xssSink(DomBasedXss::Sink s) { any() }
+
+query RemoteFlowSource remoteFlowSource() { any() }

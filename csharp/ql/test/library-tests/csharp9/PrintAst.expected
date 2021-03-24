@@ -117,6 +117,21 @@ BinaryPattern.cs:
 #   19|           1: [SwitchCaseExpr] ... => ...
 #   19|             0: [DiscardPatternExpr] _
 #   19|             2: [StringLiteral] "other"
+CovariantReturn.cs:
+#    1| [Class] A
+#    3|   5: [Method] M1
+#    3|     -1: [TypeMention] A
+#    3|     4: [BlockStmt] {...}
+#    3|       0: [ThrowStmt] throw ...;
+#    3|         0: [NullLiteral] null
+#    6| [Class] B
+#-----|   3: (Base types)
+#    6|     0: [TypeMention] A
+#    8|   5: [Method] M1
+#    8|     -1: [TypeMention] B
+#    8|     4: [BlockStmt] {...}
+#    8|       0: [ThrowStmt] throw ...;
+#    8|         0: [NullLiteral] null
 Discard.cs:
 #    3| [Class] Discard
 #    5|   5: [Method] M1
@@ -1020,61 +1035,158 @@ Record.cs:
 #   50|           0: [MethodCall] call to method ToString
 #   50|             -1: [LocalVariableAccess] access to local variable s
 #   50|           1: [StringLiteral] " is a dog"
-#   54| [Class] Record1
-#   56|   5: [Method] M1
-#   56|     -1: [TypeMention] Void
-#   57|     4: [BlockStmt] {...}
-#   58|       0: [LocalVariableDeclStmt] ... ...;
-#   58|         0: [LocalVariableDeclAndInitExpr] Person person = ...
-#   58|           -1: [TypeMention] Person
-#   58|           0: [LocalVariableAccess] access to local variable person
-#   58|           1: [ObjectCreation] object creation of type Person
-#   58|             -1: [TypeMention] Person
-#   58|             0: [StringLiteral] "Bill"
-#   58|             1: [StringLiteral] "Wagner"
-#   59|       1: [LocalVariableDeclStmt] ... ...;
-#   59|         0: [LocalVariableDeclAndInitExpr] Student student = ...
-#   59|           -1: [TypeMention] Student
-#   59|           0: [LocalVariableAccess] access to local variable student
-#   59|           1: [ObjectCreation] object creation of type Student
-#   59|             -1: [TypeMention] Student
-#   59|             0: [StringLiteral] "Bill"
-#   59|             1: [StringLiteral] "Wagner"
-#   59|             2: [IntLiteral] 11
-#   61|       2: [ExprStmt] ...;
-#   61|         0: [MethodCall] call to method WriteLine
-#   61|           -1: [TypeAccess] access to type Console
-#   61|             0: [TypeMention] Console
-#   61|           0: [OperatorCall] call to operator ==
-#   61|             0: [LocalVariableAccess] access to local variable student
-#   61|             1: [LocalVariableAccess] access to local variable person
-#   64|   6: [Method] M2
-#   64|     -1: [TypeMention] Void
-#   65|     4: [BlockStmt] {...}
-#   66|       0: [LocalVariableDeclStmt] ... ...;
-#   66|         0: [LocalVariableDeclAndInitExpr] Person1 person = ...
-#   66|           -1: [TypeMention] Person1
-#   66|           0: [LocalVariableAccess] access to local variable person
-#   66|           1: [ObjectCreation] object creation of type Person1
-#   66|             -1: [TypeMention] Person1
-#   66|             0: [StringLiteral] "Bill"
-#   66|             1: [StringLiteral] "Wagner"
-#   68|       1: [ExprStmt] ...;
-#   68|         0: [AssignExpr] ... = ...
-#   68|           0: [TupleExpr] (..., ...)
-#   68|             0: [LocalVariableDeclExpr] String first
-#   68|             1: [LocalVariableDeclExpr] String last
-#   68|           1: [LocalVariableAccess] access to local variable person
-#   69|       2: [ExprStmt] ...;
-#   69|         0: [MethodCall] call to method WriteLine
-#   69|           -1: [TypeAccess] access to type Console
-#   69|             0: [TypeMention] Console
-#   69|           0: [LocalVariableAccess] access to local variable first
-#   70|       3: [ExprStmt] ...;
-#   70|         0: [MethodCall] call to method WriteLine
-#   70|           -1: [TypeAccess] access to type Console
-#   70|             0: [TypeMention] Console
-#   70|           0: [LocalVariableAccess] access to local variable last
+#   54| [Record] R1
+#   54|   12: [NEOperator] !=
+#-----|     2: (Parameters)
+#   54|       0: [Parameter] r1
+#   54|       1: [Parameter] r2
+#   54|   13: [EQOperator] ==
+#-----|     2: (Parameters)
+#   54|       0: [Parameter] r1
+#   54|       1: [Parameter] r2
+#   54|   14: [Property] EqualityContract
+#   54|     3: [Getter] get_EqualityContract
+#   54|   15: [InstanceConstructor] R1
+#-----|     2: (Parameters)
+#   54|       0: [Parameter] A
+#   54|         -1: [TypeMention] string
+#   54|   16: [Property] A
+#   54|     3: [Getter] get_A
+#   54|     4: [Setter] set_A
+#-----|       2: (Parameters)
+#   54|         0: [Parameter] value
+#   56| [Record] R2
+#   56|   13: [NEOperator] !=
+#-----|     2: (Parameters)
+#   56|       0: [Parameter] r1
+#   56|       1: [Parameter] r2
+#   56|   14: [EQOperator] ==
+#-----|     2: (Parameters)
+#   56|       0: [Parameter] r1
+#   56|       1: [Parameter] r2
+#   56|   15: [Property] EqualityContract
+#   56|     3: [Getter] get_EqualityContract
+#   56|   16: [InstanceConstructor] R2
+#-----|     2: (Parameters)
+#   56|       0: [Parameter] A
+#   56|         -1: [TypeMention] string
+#   56|       1: [Parameter] B
+#   56|         -1: [TypeMention] string
+#   56|   17: [Property] B
+#   56|     3: [Getter] get_B
+#   56|     4: [Setter] set_B
+#-----|       2: (Parameters)
+#   56|         0: [Parameter] value
+#   58| [Class] Record1
+#   60|   5: [Method] M1
+#   60|     -1: [TypeMention] Void
+#   61|     4: [BlockStmt] {...}
+#   62|       0: [LocalVariableDeclStmt] ... ...;
+#   62|         0: [LocalVariableDeclAndInitExpr] Person person = ...
+#   62|           -1: [TypeMention] Person
+#   62|           0: [LocalVariableAccess] access to local variable person
+#   62|           1: [ObjectCreation] object creation of type Person
+#   62|             -1: [TypeMention] Person
+#   62|             0: [StringLiteral] "Bill"
+#   62|             1: [StringLiteral] "Wagner"
+#   63|       1: [LocalVariableDeclStmt] ... ...;
+#   63|         0: [LocalVariableDeclAndInitExpr] Student student = ...
+#   63|           -1: [TypeMention] Student
+#   63|           0: [LocalVariableAccess] access to local variable student
+#   63|           1: [ObjectCreation] object creation of type Student
+#   63|             -1: [TypeMention] Student
+#   63|             0: [StringLiteral] "Bill"
+#   63|             1: [StringLiteral] "Wagner"
+#   63|             2: [IntLiteral] 11
+#   65|       2: [ExprStmt] ...;
+#   65|         0: [MethodCall] call to method WriteLine
+#   65|           -1: [TypeAccess] access to type Console
+#   65|             0: [TypeMention] Console
+#   65|           0: [OperatorCall] call to operator ==
+#   65|             0: [LocalVariableAccess] access to local variable student
+#   65|             1: [LocalVariableAccess] access to local variable person
+#   68|   6: [Method] M2
+#   68|     -1: [TypeMention] Void
+#   69|     4: [BlockStmt] {...}
+#   70|       0: [LocalVariableDeclStmt] ... ...;
+#   70|         0: [LocalVariableDeclAndInitExpr] Person1 p1 = ...
+#   70|           -1: [TypeMention] Person1
+#   70|           0: [LocalVariableAccess] access to local variable p1
+#   70|           1: [ObjectCreation] object creation of type Teacher1
+#   70|             -1: [TypeMention] Teacher1
+#   70|             0: [StringLiteral] "Bill"
+#   70|             1: [StringLiteral] "Wagner"
+#   70|             2: [StringLiteral] "Math"
+#   72|       1: [ExprStmt] ...;
+#   72|         0: [AssignExpr] ... = ...
+#   72|           0: [TupleExpr] (..., ...)
+#   72|             0: [LocalVariableDeclExpr] String first
+#   72|             1: [LocalVariableDeclExpr] String last
+#   72|           1: [LocalVariableAccess] access to local variable p1
+#   73|       2: [ExprStmt] ...;
+#   73|         0: [MethodCall] call to method WriteLine
+#   73|           -1: [TypeAccess] access to type Console
+#   73|             0: [TypeMention] Console
+#   73|           0: [LocalVariableAccess] access to local variable first
+#   75|       3: [LocalVariableDeclStmt] ... ...;
+#   75|         0: [LocalVariableDeclAndInitExpr] Person1 p2 = ...
+#   75|           -1: [TypeMention] Person1
+#   75|           0: [LocalVariableAccess] access to local variable p2
+#   75|           1: [WithExpr] ... with { ... }
+#   75|             0: [LocalVariableAccess] access to local variable p1
+#   75|             1: [ObjectInitializer] { ..., ... }
+#   75|               0: [MemberInitializer] ... = ...
+#   75|                 0: [PropertyCall] access to property FirstName
+#   75|                 1: [StringLiteral] "Paul"
+#   76|       4: [LocalVariableDeclStmt] ... ...;
+#   76|         0: [LocalVariableDeclAndInitExpr] Teacher1 p3 = ...
+#   76|           -1: [TypeMention] Teacher1
+#   76|           0: [LocalVariableAccess] access to local variable p3
+#   76|           1: [WithExpr] ... with { ... }
+#   76|             0: [CastExpr] (...) ...
+#   76|               0: [TypeAccess] access to type Teacher1
+#   76|                 0: [TypeMention] Teacher1
+#   76|               1: [LocalVariableAccess] access to local variable p1
+#   76|             1: [ObjectInitializer] { ..., ... }
+#   76|               0: [MemberInitializer] ... = ...
+#   76|                 0: [PropertyCall] access to property FirstName
+#   76|                 1: [StringLiteral] "Paul"
+#   76|               1: [MemberInitializer] ... = ...
+#   76|                 0: [PropertyCall] access to property Subject
+#   76|                 1: [StringLiteral] "Literature"
+#   77|       5: [LocalVariableDeclStmt] ... ...;
+#   77|         0: [LocalVariableDeclAndInitExpr] Person1 clone = ...
+#   77|           -1: [TypeMention] Person1
+#   77|           0: [LocalVariableAccess] access to local variable clone
+#   77|           1: [WithExpr] ... with { ... }
+#   77|             0: [LocalVariableAccess] access to local variable p1
+#   77|             1: [ObjectInitializer] { ..., ... }
+#   80|   7: [Method] M3
+#   80|     -1: [TypeMention] Void
+#   81|     4: [BlockStmt] {...}
+#   82|       0: [LocalVariableDeclStmt] ... ...;
+#   82|         0: [LocalVariableDeclAndInitExpr] R2 a = ...
+#   82|           -1: [TypeMention] R2
+#   82|           0: [LocalVariableAccess] access to local variable a
+#   82|           1: [ObjectCreation] object creation of type R2
+#   82|             -1: [TypeMention] R2
+#   82|             0: [StringLiteral] "A"
+#   82|             1: [StringLiteral] "B"
+#   83|       1: [LocalVariableDeclStmt] ... ...;
+#   83|         0: [LocalVariableDeclAndInitExpr] R1 b = ...
+#   83|           -1: [TypeMention] R1
+#   83|           0: [LocalVariableAccess] access to local variable b
+#   83|           1: [LocalVariableAccess] access to local variable a
+#   84|       2: [LocalVariableDeclStmt] ... ...;
+#   84|         0: [LocalVariableDeclAndInitExpr] R1 c = ...
+#   84|           -1: [TypeMention] R1
+#   84|           0: [LocalVariableAccess] access to local variable c
+#   84|           1: [WithExpr] ... with { ... }
+#   84|             0: [LocalVariableAccess] access to local variable b
+#   84|             1: [ObjectInitializer] { ..., ... }
+#   84|               0: [MemberInitializer] ... = ...
+#   84|                 0: [PropertyCall] access to property A
+#   84|                 1: [StringLiteral] "C"
 RelationalPattern.cs:
 #    3| [Class] RelationalPattern
 #    5|   5: [Method] M1

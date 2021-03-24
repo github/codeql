@@ -257,8 +257,8 @@
 | System.Collections.Concurrent.ConcurrentStack<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
 | System.Collections.Concurrent.IProducerConsumerCollection<>.CopyTo(T[], int) | this parameter [[]] -> parameter 0 [[]] | true |
 | System.Collections.Concurrent.OrderablePartitioner<>.EnumerableDropIndices.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Collections.Concurrent.Partitioner.<CreateRanges>d__6.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Collections.Concurrent.Partitioner.<CreateRanges>d__9.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Collections.Concurrent.Partitioner.<CreateRanges>d__7.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Collections.Concurrent.Partitioner.<CreateRanges>d__10.GetEnumerator() | this parameter [[]] -> return [Current] | true |
 | System.Collections.Concurrent.Partitioner.DynamicPartitionerForArray<>.InternalPartitionEnumerable.GetEnumerator() | this parameter [[]] -> return [Current] | true |
 | System.Collections.Concurrent.Partitioner.DynamicPartitionerForIEnumerable<>.InternalPartitionEnumerable.GetEnumerator() | this parameter [[]] -> return [Current] | true |
 | System.Collections.Concurrent.Partitioner.DynamicPartitionerForIList<>.InternalPartitionEnumerable.GetEnumerator() | this parameter [[]] -> return [Current] | true |
@@ -432,7 +432,7 @@
 | System.Collections.Generic.SortedList<,>.set_Item(TKey, TValue) | parameter 1 -> this parameter [[], Value] | true |
 | System.Collections.Generic.SortedList<,>.set_Item(object, object) | parameter 0 -> this parameter [[], Key] | true |
 | System.Collections.Generic.SortedList<,>.set_Item(object, object) | parameter 1 -> this parameter [[], Value] | true |
-| System.Collections.Generic.SortedSet<>.<Reverse>d__93.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Collections.Generic.SortedSet<>.<Reverse>d__84.GetEnumerator() | this parameter [[]] -> return [Current] | true |
 | System.Collections.Generic.SortedSet<>.Add(T) | parameter 0 -> this parameter [[]] | true |
 | System.Collections.Generic.SortedSet<>.CopyTo(Array, int) | this parameter [[]] -> parameter 0 [[]] | true |
 | System.Collections.Generic.SortedSet<>.CopyTo(T[], int) | this parameter [[]] -> parameter 0 [[]] | true |
@@ -749,6 +749,8 @@
 | System.Convert.ChangeType(object, TypeCode, IFormatProvider) | parameter 0 -> return | false |
 | System.Convert.FromBase64CharArray(Char[], int, int) | parameter 0 -> return | false |
 | System.Convert.FromBase64String(string) | parameter 0 -> return | false |
+| System.Convert.FromHexString(ReadOnlySpan<Char>) | parameter 0 -> return | false |
+| System.Convert.FromHexString(string) | parameter 0 -> return | false |
 | System.Convert.GetTypeCode(object) | parameter 0 -> return | false |
 | System.Convert.IsDBNull(object) | parameter 0 -> return | false |
 | System.Convert.ToBase64CharArray(Byte[], int, int, Char[], int) | parameter 0 -> return | false |
@@ -867,6 +869,9 @@
 | System.Convert.ToDouble(uint) | parameter 0 -> return | false |
 | System.Convert.ToDouble(ulong) | parameter 0 -> return | false |
 | System.Convert.ToDouble(ushort) | parameter 0 -> return | false |
+| System.Convert.ToHexString(Byte[]) | parameter 0 -> return | false |
+| System.Convert.ToHexString(Byte[], int, int) | parameter 0 -> return | false |
+| System.Convert.ToHexString(ReadOnlySpan<Byte>) | parameter 0 -> return | false |
 | System.Convert.ToInt16(DateTime) | parameter 0 -> return | false |
 | System.Convert.ToInt16(bool) | parameter 0 -> return | false |
 | System.Convert.ToInt16(byte) | parameter 0 -> return | false |
@@ -1269,25 +1274,25 @@
 | System.Lazy<>.Lazy(Func<T>, bool) | deleget output from parameter 0 -> return [Value] | true |
 | System.Lazy<>.get_Value() | this parameter -> return | false |
 | System.Linq.EmptyPartition<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Linq.Enumerable.<CastIterator>d__63<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Linq.Enumerable.<ExceptIterator>d__80<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Linq.Enumerable.<GroupJoinIterator>d__97<,,,>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Linq.Enumerable.<IntersectIterator>d__100<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Linq.Enumerable.<JoinIterator>d__104<,,,>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Linq.Enumerable.<OfTypeIterator>d__61<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Linq.Enumerable.<SelectIterator>d__173<,>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Linq.Enumerable.<SelectManyIterator>d__176<,>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Linq.Enumerable.<SelectManyIterator>d__178<,,>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Linq.Enumerable.<SelectManyIterator>d__180<,,>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Linq.Enumerable.<SkipLastIterator>d__193<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Linq.Enumerable.<SkipWhileIterator>d__189<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Linq.Enumerable.<SkipWhileIterator>d__191<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Linq.Enumerable.<TakeLastIterator>d__220<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Linq.Enumerable.<TakeWhileIterator>d__216<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Linq.Enumerable.<TakeWhileIterator>d__218<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Linq.Enumerable.<WhereIterator>d__239<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Linq.Enumerable.<ZipIterator>d__242<,>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Linq.Enumerable.<ZipIterator>d__243<,,>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Linq.Enumerable.<CastIterator>d__64<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Linq.Enumerable.<ExceptIterator>d__81<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Linq.Enumerable.<GroupJoinIterator>d__98<,,,>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Linq.Enumerable.<IntersectIterator>d__101<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Linq.Enumerable.<JoinIterator>d__105<,,,>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Linq.Enumerable.<OfTypeIterator>d__62<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Linq.Enumerable.<SelectIterator>d__174<,>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Linq.Enumerable.<SelectManyIterator>d__177<,>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Linq.Enumerable.<SelectManyIterator>d__179<,,>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Linq.Enumerable.<SelectManyIterator>d__181<,,>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Linq.Enumerable.<SkipLastIterator>d__194<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Linq.Enumerable.<SkipWhileIterator>d__190<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Linq.Enumerable.<SkipWhileIterator>d__192<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Linq.Enumerable.<TakeLastIterator>d__221<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Linq.Enumerable.<TakeWhileIterator>d__217<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Linq.Enumerable.<TakeWhileIterator>d__219<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Linq.Enumerable.<WhereIterator>d__240<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Linq.Enumerable.<ZipIterator>d__243<,>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Linq.Enumerable.<ZipIterator>d__244<,,>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
 | System.Linq.Enumerable.Aggregate<TSource, TAccumulate, TResult>(IEnumerable<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>, Func<TAccumulate, TResult>) | deleget output from parameter 2 -> parameter 0 of delegate parameter 3 | true |
 | System.Linq.Enumerable.Aggregate<TSource, TAccumulate, TResult>(IEnumerable<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>, Func<TAccumulate, TResult>) | deleget output from parameter 3 -> return | true |
 | System.Linq.Enumerable.Aggregate<TSource, TAccumulate, TResult>(IEnumerable<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>, Func<TAccumulate, TResult>) | parameter 0 [[]] -> parameter 1 of delegate parameter 2 | true |
@@ -1986,7 +1991,9 @@
 | System.Net.Security.NegotiateStream.BeginRead(Byte[], int, int, AsyncCallback, object) | this parameter -> parameter 0 | false |
 | System.Net.Security.NegotiateStream.BeginWrite(Byte[], int, int, AsyncCallback, object) | parameter 0 -> this parameter | false |
 | System.Net.Security.NegotiateStream.Read(Byte[], int, int) | this parameter -> parameter 0 | false |
+| System.Net.Security.NegotiateStream.ReadAsync(Byte[], int, int, CancellationToken) | this parameter -> parameter 0 | false |
 | System.Net.Security.NegotiateStream.Write(Byte[], int, int) | parameter 0 -> this parameter | false |
+| System.Net.Security.NegotiateStream.WriteAsync(Byte[], int, int, CancellationToken) | parameter 0 -> this parameter | false |
 | System.Net.Security.SslStream.BeginRead(Byte[], int, int, AsyncCallback, object) | this parameter -> parameter 0 | false |
 | System.Net.Security.SslStream.BeginWrite(Byte[], int, int, AsyncCallback, object) | parameter 0 -> this parameter | false |
 | System.Net.Security.SslStream.Read(Byte[], int, int) | this parameter -> parameter 0 | false |
@@ -2024,9 +2031,9 @@
 | System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>.set_Item(int, T) | parameter 1 -> this parameter [[]] | true |
 | System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>.set_Item(int, object) | parameter 1 -> this parameter [[]] | true |
 | System.Runtime.CompilerServices.TaskAwaiter<>.GetResult() | this parameter [m_task, Result] -> return | true |
-| System.Runtime.InteropServices.MemoryMarshal.<ToEnumerable>d__3<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Runtime.Loader.AssemblyLoadContext.<get_All>d__88.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Runtime.Loader.AssemblyLoadContext.<get_Assemblies>d__58.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Runtime.InteropServices.MemoryMarshal.<ToEnumerable>d__15<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Runtime.Loader.AssemblyLoadContext.<get_All>d__83.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Runtime.Loader.AssemblyLoadContext.<get_Assemblies>d__53.GetEnumerator() | this parameter [[]] -> return [Current] | true |
 | System.Runtime.Loader.LibraryNameVariation.<DetermineLibraryNameVariations>d__5.GetEnumerator() | this parameter [[]] -> return [Current] | true |
 | System.Security.Cryptography.CryptoStream.BeginRead(Byte[], int, int, AsyncCallback, object) | this parameter -> parameter 0 | false |
 | System.Security.Cryptography.CryptoStream.BeginWrite(Byte[], int, int, AsyncCallback, object) | parameter 0 -> this parameter | false |
@@ -2181,8 +2188,8 @@
 | System.Text.RegularExpressions.CaptureCollection.get_Item(int) | this parameter [[]] -> return | true |
 | System.Text.RegularExpressions.CaptureCollection.set_Item(int, Capture) | parameter 1 -> this parameter [[]] | true |
 | System.Text.RegularExpressions.CaptureCollection.set_Item(int, object) | parameter 1 -> this parameter [[]] | true |
-| System.Text.RegularExpressions.GroupCollection.<get_Keys>d__48.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Text.RegularExpressions.GroupCollection.<get_Values>d__50.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Text.RegularExpressions.GroupCollection.<get_Keys>d__49.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Text.RegularExpressions.GroupCollection.<get_Values>d__51.GetEnumerator() | this parameter [[]] -> return [Current] | true |
 | System.Text.RegularExpressions.GroupCollection.Add(Group) | parameter 0 -> this parameter [[]] | true |
 | System.Text.RegularExpressions.GroupCollection.Add(object) | parameter 0 -> this parameter [[]] | true |
 | System.Text.RegularExpressions.GroupCollection.CopyTo(Array, int) | this parameter [[]] -> parameter 0 [[]] | true |
@@ -2257,6 +2264,12 @@
 | System.Text.StringBuilder.StringBuilder(string, int, int, int) | parameter 0 -> return [[]] | true |
 | System.Text.StringBuilder.ToString() | this parameter [[]] -> return | false |
 | System.Text.StringBuilder.ToString(int, int) | this parameter [[]] -> return | false |
+| System.Text.TranscodingStream.BeginRead(Byte[], int, int, AsyncCallback, object) | this parameter -> parameter 0 | false |
+| System.Text.TranscodingStream.BeginWrite(Byte[], int, int, AsyncCallback, object) | parameter 0 -> this parameter | false |
+| System.Text.TranscodingStream.Read(Byte[], int, int) | this parameter -> parameter 0 | false |
+| System.Text.TranscodingStream.ReadAsync(Byte[], int, int, CancellationToken) | this parameter -> parameter 0 | false |
+| System.Text.TranscodingStream.Write(Byte[], int, int) | parameter 0 -> this parameter | false |
+| System.Text.TranscodingStream.WriteAsync(Byte[], int, int, CancellationToken) | parameter 0 -> this parameter | false |
 | System.Threading.Tasks.SingleProducerSingleConsumerQueue<>.GetEnumerator() | this parameter [[]] -> return [Current] | true |
 | System.Threading.Tasks.Task.ContinueWith(Action<Task, Object>, object) | parameter 1 -> parameter 1 of delegate parameter 0 | true |
 | System.Threading.Tasks.Task.ContinueWith(Action<Task, Object>, object, CancellationToken) | parameter 1 -> parameter 1 of delegate parameter 0 | true |
@@ -2290,6 +2303,8 @@
 | System.Threading.Tasks.Task.WhenAll<TResult>(IEnumerable<Task<TResult>>) | parameter 0 [[], Result] -> return [Result, []] | true |
 | System.Threading.Tasks.Task.WhenAll<TResult>(params Task<TResult>[]) | parameter 0 [[], Result] -> return [Result, []] | true |
 | System.Threading.Tasks.Task.WhenAny<TResult>(IEnumerable<Task<TResult>>) | parameter 0 [[], Result] -> return [Result, []] | true |
+| System.Threading.Tasks.Task.WhenAny<TResult>(Task<TResult>, Task<TResult>) | parameter 0 [[], Result] -> return [Result, []] | true |
+| System.Threading.Tasks.Task.WhenAny<TResult>(Task<TResult>, Task<TResult>) | parameter 1 [[], Result] -> return [Result, []] | true |
 | System.Threading.Tasks.Task.WhenAny<TResult>(params Task<TResult>[]) | parameter 0 [[], Result] -> return [Result, []] | true |
 | System.Threading.Tasks.Task<>.ConfigureAwait(bool) | this parameter -> return [m_configuredTaskAwaiter, m_task] | true |
 | System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>, Object>, object) | parameter 1 -> parameter 1 of delegate parameter 0 | true |
@@ -2431,8 +2446,8 @@
 | System.Threading.Tasks.TaskFactory<>.StartNew(Func<TResult>, CancellationToken, TaskCreationOptions, TaskScheduler) | deleget output from parameter 0 -> return [Result] | true |
 | System.Threading.Tasks.TaskFactory<>.StartNew(Func<TResult>, TaskCreationOptions) | deleget output from parameter 0 -> return [Result] | true |
 | System.Threading.Tasks.ThreadPoolTaskScheduler.<FilterTasksFromWorkItems>d__6.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Threading.ThreadPool.<GetLocallyQueuedWorkItems>d__51.GetEnumerator() | this parameter [[]] -> return [Current] | true |
-| System.Threading.ThreadPool.<GetQueuedWorkItems>d__50.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Threading.ThreadPool.<GetLocallyQueuedWorkItems>d__52.GetEnumerator() | this parameter [[]] -> return [Current] | true |
+| System.Threading.ThreadPool.<GetQueuedWorkItems>d__51.GetEnumerator() | this parameter [[]] -> return [Current] | true |
 | System.Tuple.Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | parameter 0 -> return [Item1] | true |
 | System.Tuple.Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | parameter 1 -> return [Item2] | true |
 | System.Tuple.Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | parameter 2 -> return [Item3] | true |

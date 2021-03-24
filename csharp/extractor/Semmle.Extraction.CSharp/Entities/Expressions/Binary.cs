@@ -23,12 +23,13 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         private static ExprKind GetKind(Context cx, BinaryExpressionSyntax node)
         {
-            var k = GetBinaryTokenKind(cx, node.OperatorToken.Kind());
+            var k = GetBinaryTokenKind(cx, node);
             return GetCallType(cx, node).AdjustKind(k);
         }
 
-        private static ExprKind GetBinaryTokenKind(Context cx, SyntaxKind kind)
+        private static ExprKind GetBinaryTokenKind(Context cx, BinaryExpressionSyntax node)
         {
+            var kind = node.OperatorToken.Kind();
             switch (kind)
             {
                 case SyntaxKind.LessThanToken: return ExprKind.LT;
@@ -54,7 +55,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 case SyntaxKind.QuestionQuestionToken: return ExprKind.NULL_COALESCING;
                 // !! And the rest
                 default:
-                    cx.ModelError($"Unhandled operator type {kind}");
+                    cx.ModelError(node, $"Unhandled operator type {kind}");
                     return ExprKind.UNKNOWN;
             }
         }

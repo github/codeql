@@ -58,9 +58,9 @@ of type <code>Galaxy</code>.</p>
   Addison-Wesley, 2008.
 </li>
 <li>
-  Java Platform, Standard Edition 6, API Specification:
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Cloneable.html">Interface Cloneable</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#clone%28%29">Object.clone</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Cloneable.html">Interface Cloneable</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#clone()">Object.clone</a>.
 </li>
 
 

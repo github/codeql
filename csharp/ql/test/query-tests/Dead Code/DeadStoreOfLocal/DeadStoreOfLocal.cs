@@ -275,6 +275,17 @@ public class Captured
     {
         A();
     }
+
+    void M10(bool b)
+    {
+        var x = ""; // GOOD
+        Action action;
+        if (b)
+            action = () => System.Console.WriteLine(x);
+        else
+            action = () => { };
+        action();
+    }
 }
 
 class Patterns

@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
             Create(Context, Stmt.Statement, this, 1);
 
-            if (Stmt.Else != null)
+            if (Stmt.Else is not null)
                 Create(Context, Stmt.Else.Statement, this, 2);
         }
     }

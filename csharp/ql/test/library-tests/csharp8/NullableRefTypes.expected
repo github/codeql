@@ -1,4 +1,5 @@
 suppressNullableWarnings
+| NameResolutionSuppressNullable.cs:8:110:8:112 | ...! | NameResolutionSuppressNullable.cs:8:110:8:111 | access to method M1 |
 | NullableRefTypes.cs:85:20:85:21 | ...! | NullableRefTypes.cs:85:20:85:20 | access to local variable x |
 | NullableRefTypes.cs:86:13:86:14 | ...! | NullableRefTypes.cs:86:13:86:13 | access to local variable x |
 | NullableRefTypes.cs:88:13:88:14 | ...! | NullableRefTypes.cs:88:13:88:13 | access to local variable x |
@@ -206,6 +207,7 @@ returnTypes
 | NullableRefTypes.cs:215:10:215:20 | ElementTest | Void! |
 | NullableRefTypes.cs:223:48:223:54 | GetSelf | TestNullableFlowStates? |
 methodTypeArguments
+| NameResolutionSuppressNullable.cs:10:21:10:40 | EnsureInitialized | 0 | WaitCallback |
 | NullableRefTypes.cs:51:12:51:15 | Q | 0 | MyClass! |
 | NullableRefTypes.cs:51:12:51:15 | Q | 0 | MyClass? |
 | NullableRefTypes.cs:67:10:67:21 | GenericFn | 0 | MyClass! |
@@ -324,11 +326,11 @@ expressionTypes
 | NullableRefTypes.cs:113:36:113:43 | access to field Property | MyClass? |
 | NullableRefTypes.cs:113:36:113:43 | this access | RefTypes |
 | NullableRefTypes.cs:113:36:113:44 | ...! | MyClass? |
-| NullableRefTypes.cs:157:18:157:30 | object creation of type MyClass | MyClass! |
-| NullableRefTypes.cs:160:17:160:17 | access to local variable a | MyClass! |
-| NullableRefTypes.cs:160:17:160:21 | MyClass a = ... | MyClass! |
-| NullableRefTypes.cs:160:21:160:21 | access to parameter p | MyClass! |
-| NullableRefTypes.cs:161:16:161:16 | access to local variable a | MyClass! |
+| NullableRefTypes.cs:157:18:157:30 | object creation of type MyClass | MyClass |
+| NullableRefTypes.cs:160:17:160:17 | access to local variable a | MyClass |
+| NullableRefTypes.cs:160:17:160:21 | MyClass a = ... | MyClass |
+| NullableRefTypes.cs:160:21:160:21 | access to parameter p | MyClass |
+| NullableRefTypes.cs:161:16:161:16 | access to local variable a | MyClass |
 | NullableRefTypes.cs:181:17:181:17 | access to local variable x | string! |
 | NullableRefTypes.cs:181:17:181:31 | String x = ... | string! |
 | NullableRefTypes.cs:181:21:181:31 | call to method MaybeNull | string? |
@@ -442,9 +444,6 @@ exprFlowState
 | NullableRefTypes.cs:110:64:110:67 | null | Maybe null |
 | NullableRefTypes.cs:113:36:113:43 | access to field Property | Not null |
 | NullableRefTypes.cs:113:36:113:44 | ...! | Not null |
-| NullableRefTypes.cs:157:18:157:30 | object creation of type MyClass | Not null |
-| NullableRefTypes.cs:160:21:160:21 | access to parameter p | Not null |
-| NullableRefTypes.cs:161:16:161:16 | access to local variable a | Not null |
 | NullableRefTypes.cs:181:21:181:31 | call to method MaybeNull | Maybe null |
 | NullableRefTypes.cs:183:9:183:16 | call to method Check | Not null |
 | NullableRefTypes.cs:183:15:183:15 | access to local variable x | Maybe null |

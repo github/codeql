@@ -5,7 +5,6 @@ private import DataFlowPublic
 private import DataFlowDispatch
 private import DataFlowImplCommon
 private import ControlFlowReachability
-private import DelegateDataFlow
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.Caching
@@ -209,6 +208,27 @@ module LocalFlow {
         e1 = e2.(SwitchExpr).getACase().getBody() and
         scope = e2 and
         isSuccessor = true
+        or
+        exists(WithExpr we |
+          scope = we and
+          isSuccessor = true
+        |
+          e1 = we.getExpr() and
+          e2 = we.getInitializer()
+          or
+          e1 = we.getInitializer() and
+          e2 = we
+        )
+        or
+        scope = any(AssignExpr ae | ae.getLValue().(TupleExpr) = e2 and ae.getRValue() = e1) and
+        isSuccessor = false
+        or
+        isSuccessor = true and
+        exists(ControlFlowElement cfe | cfe = e2.(TupleExpr).(PatternExpr).getPatternMatch() |
+          cfe.(IsExpr).getExpr() = e1 and scope = cfe
+          or
+          exists(Switch sw | sw.getACase() = cfe and sw.getExpr() = e1 and scope = sw)
+        )
       )
     }
 
@@ -271,8 +291,8 @@ module LocalFlow {
    */
   private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def, Ssa::Definition next) {
     exists(ControlFlow::BasicBlock bb, int i | SsaImpl::lastRefBeforeRedef(def, bb, i, next) |
-      def = nodeFrom.(SsaDefinitionNode).getDefinition() and
-      def.definesAt(_, bb, i)
+      def.definesAt(_, bb, i) and
+      def = getSsaDefinition(nodeFrom)
       or
       nodeFrom.asExprAtNode(bb.getNode(i)) instanceof AssignableRead
     )
@@ -412,7 +432,7 @@ private class Argument extends Expr {
         this = dc.getQualifier() and arg = -1 and not dc.getAStaticTarget().(Modifiable).isStatic()
       ).getCall()
     or
-    this = call.(DelegateCall).getArgument(arg)
+    this = call.(DelegateLikeCall).getArgument(arg)
   }
 
   /**
@@ -451,14 +471,39 @@ private predicate fieldOrPropertyStore(Expr e, Content c, Expr src, Expr q, bool
       postUpdate = true
     )
     or
+    // `with` expression initializer, `x with { f = src }`
+    e =
+      any(WithExpr we |
+        exists(MemberInitializer mi |
+          q = we and
+          mi = we.getInitializer().getAMemberInitializer() and
+          f = mi.getInitializedMember() and
+          src = mi.getRValue() and
+          postUpdate = false
+        )
+      )
+    or
     // Object initializer, `new C() { f = src }`
     exists(MemberInitializer mi |
       e = q and
       mi = q.(ObjectInitializer).getAMemberInitializer() and
+      q.getParent() instanceof ObjectCreation and
       f = mi.getInitializedMember() and
       src = mi.getRValue() and
       postUpdate = false
     )
+    or
+    // Tuple element, `(..., src, ...)` `f` is `ItemX` of tuple `q`
+    e =
+      any(TupleExpr te |
+        exists(int i |
+          e = q and
+          src = te.getArgument(i) and
+          te.isConstruction() and
+          f = q.getType().(TupleType).getElement(i) and
+          postUpdate = false
+        )
+      )
   )
 }
 
@@ -471,7 +516,7 @@ private predicate overridesOrImplementsSourceDecl(Property p1, Property p2) {
 
 /**
  * Holds if `e2` is an expression that reads field or property `c` from
- * expresion `e1`. This takes overriding into account for properties written
+ * expression `e1`. This takes overriding into account for properties written
  * from library code.
  */
 private predicate fieldOrPropertyRead(Expr e1, Content c, FieldOrPropertyRead e2) {
@@ -768,6 +813,37 @@ private module Cached {
       hasNodePath(x, node1, node2) and
       node2.asExpr().(AwaitExpr).getExpr() = node1.asExpr() and
       c = getResultContent()
+      or
+      // node1 = (..., node2, ...)
+      // node1.ItemX flows to node2
+      exists(TupleExpr te, int i, Expr item |
+        te = node1.asExpr() and
+        not te.isConstruction() and
+        c.(FieldContent).getField() = te.getType().(TupleType).getElement(i).getUnboundDeclaration() and
+        // node1 = (..., item, ...)
+        te.getArgument(i) = item
+      |
+        // item = (..., ..., ...) in node1 = (..., (..., ..., ...), ...)
+        node2.asExpr().(TupleExpr) = item and
+        hasNodePath(x, node1, node2)
+        or
+        // item = variable in node1 = (..., variable, ...)
+        exists(AssignableDefinitions::TupleAssignmentDefinition tad, Ssa::ExplicitDefinition def |
+          node2.(SsaDefinitionNode).getDefinition() = def and
+          def.getADefinition() = tad and
+          tad.getLeaf() = item and
+          hasNodePath(x, node1, node2)
+        )
+        or
+        // item = variable in node1 = (..., variable, ...) in a case/is var (..., ...)
+        te = any(PatternExpr pe).getAChildExpr*() and
+        exists(AssignableDefinitions::LocalVariableDefinition lvd, Ssa::ExplicitDefinition def |
+          node2.(SsaDefinitionNode).getDefinition() = def and
+          def.getADefinition() = lvd and
+          lvd.getDeclaration() = item and
+          hasNodePath(x, node1, node2)
+        )
+      )
     )
     or
     FlowSummaryImpl::Private::readStep(node1, c, node2)
@@ -791,6 +867,13 @@ private module Cached {
       FlowSummaryImpl::Private::clearsContent(input, call, c) and
       input = SummaryInput::parameter(i) and
       n.(ArgumentNode).argumentOf(call, i)
+    )
+    or
+    exists(WithExpr we, ObjectInitializer oi, FieldOrProperty f |
+      oi = we.getInitializer() and
+      n.asExpr() = oi and
+      f = oi.getAMemberInitializer().getInitializedMember() and
+      c = f.getContent()
     )
   }
 
@@ -885,6 +968,8 @@ private module Cached {
     n instanceof SummaryNodeImpl
     or
     n instanceof ParamsArgumentNode
+    or
+    n.asExpr() = any(WithExpr we).getInitializer()
   }
 }
 
@@ -1698,6 +1783,11 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
     e1 = e2.(AwaitExpr).getExpr() and
     scope = e2 and
     isSuccessor = true
+    or
+    exactScope = false and
+    e2 = e1.(TupleExpr).getAnArgument() and
+    scope = e1 and
+    isSuccessor = false
   }
 
   override predicate candidateDef(
@@ -1719,6 +1809,22 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
       scope = fs.getVariableDeclExpr() and
       exactScope = false
     )
+    or
+    scope =
+      any(AssignExpr ae |
+        ae = defTo.(AssignableDefinitions::TupleAssignmentDefinition).getAssignment() and
+        e = ae.getLValue().getAChildExpr*().(TupleExpr) and
+        exactScope = false and
+        isSuccessor = true
+      )
+    or
+    scope =
+      any(TupleExpr te |
+        te.getAnArgument() = defTo.(AssignableDefinitions::LocalVariableDefinition).getDeclaration() and
+        e = te and
+        exactScope = false and
+        isSuccessor = false
+      )
   }
 }
 
@@ -1915,3 +2021,69 @@ class Unit extends TUnit {
  * This predicate is only used for consistency checks.
  */
 predicate isImmutableOrUnobservable(Node n) { none() }
+
+class LambdaCallKind = Unit;
+
+/** Holds if `creation` is an expression that creates a delegate for `c`. */
+predicate lambdaCreation(ExprNode creation, LambdaCallKind kind, DataFlowCallable c) {
+  exists(Expr e | e = creation.getExpr() |
+    c = e.(AnonymousFunctionExpr)
+    or
+    c = e.(CallableAccess).getTarget().getUnboundDeclaration()
+    or
+    c = e.(AddressOfExpr).getOperand().(CallableAccess).getTarget().getUnboundDeclaration()
+  ) and
+  kind = TMkUnit()
+}
+
+private class LambdaConfiguration extends ControlFlowReachabilityConfiguration {
+  LambdaConfiguration() { this = "LambdaConfiguration" }
+
+  override predicate candidate(
+    Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor
+  ) {
+    e1 = e2.(DelegateLikeCall).getExpr() and
+    exactScope = false and
+    scope = e2 and
+    isSuccessor = true
+    or
+    e1 = e2.(DelegateCreation).getArgument() and
+    exactScope = false and
+    scope = e2 and
+    isSuccessor = true
+  }
+}
+
+/** Holds if `call` is a lambda call where `receiver` is the lambda expression. */
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+  (
+    exists(LambdaConfiguration x, DelegateLikeCall dc |
+      x.hasExprPath(dc.getExpr(), receiver.(ExprNode).getControlFlowNode(), dc,
+        call.getControlFlowNode())
+    )
+    or
+    receiver = call.(SummaryDelegateCall).getParameterNode()
+  ) and
+  kind = TMkUnit()
+}
+
+/** Extra data-flow steps needed for lamba flow analysis. */
+predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) {
+  exists(Ssa::Definition def |
+    LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo) and
+    LocalFlow::usesInstanceField(def) and
+    preservesValue = true
+  )
+  or
+  exists(LambdaConfiguration x, DelegateCreation dc |
+    x.hasExprPath(dc.getArgument(), nodeFrom.(ExprNode).getControlFlowNode(), dc,
+      nodeTo.(ExprNode).getControlFlowNode()) and
+    preservesValue = false
+  )
+  or
+  exists(AddEventExpr aee |
+    nodeFrom.asExpr() = aee.getRValue() and
+    nodeTo.asExpr().(EventRead).getTarget() = aee.getTarget() and
+    preservesValue = false
+  )
+}

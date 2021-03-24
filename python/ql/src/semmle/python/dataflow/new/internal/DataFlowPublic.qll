@@ -109,13 +109,13 @@ class Node extends TNode {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
-  /** Convenience method for casting to EssaNode and calling getVar. */
+  /** Gets the ESSA variable corresponding to this node, if any. */
   EssaVariable asVar() { none() }
 
-  /** Convenience method for casting to CfgNode and calling getNode. */
+  /** Gets the control-flow node corresponding to this node, if any. */
   ControlFlowNode asCfgNode() { none() }
 
-  /** Convenience method for casting to ExprNode and calling getNode and getNode again. */
+  /** Gets the expression corresponding to this node, if any. */
   Expr asExpr() { none() }
 
   /**
@@ -574,7 +574,12 @@ newtype TContent =
   /** An element of a set. */
   TSetElementContent() or
   /** An element of a tuple at a specific index. */
-  TTupleElementContent(int index) { exists(any(TupleNode tn).getElement(index)) } or
+  TTupleElementContent(int index) {
+    exists(any(TupleNode tn).getElement(index))
+    or
+    // Arguments can overflow and end up in the starred parameter tuple.
+    exists(any(CallNode cn).getArg(index))
+  } or
   /** An element of a dictionary under a specific key. */
   TDictionaryElementContent(string key) {
     key = any(KeyValuePair kvp).getKey().(StrConst).getS()

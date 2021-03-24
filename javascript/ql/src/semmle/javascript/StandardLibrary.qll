@@ -107,7 +107,7 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
   }
 
   /** Gets the regular expression passed as the first argument to `replace`, if any. */
-  DataFlow::RegExpLiteralNode getRegExp() { result.flowsTo(getArgument(0)) }
+  DataFlow::RegExpCreationNode getRegExp() { result.flowsTo(getArgument(0)) }
 
   /** Gets a string that is being replaced by this call. */
   string getAReplacedString() {
@@ -148,6 +148,25 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
       pr = map.getAPropertyRead() and
       pr.flowsTo(replacer.getAReturn()) and
       map.hasPropertyWrite(old, any(DataFlow::Node repl | repl.getStringValue() = new))
+    )
+    or
+    // str.replace(regex, match => {
+    //   if (match === 'old') return 'new';
+    //   if (match === 'foo') return 'bar';
+    //   ...
+    // })
+    exists(
+      DataFlow::FunctionNode replacer, ConditionGuardNode guard, EqualityTest test,
+      DataFlow::Node ret
+    |
+      replacer = getCallback(1) and
+      guard.getOutcome() = test.getPolarity() and
+      guard.getTest() = test and
+      replacer.getParameter(0).flowsToExpr(test.getAnOperand()) and
+      test.getAnOperand().getStringValue() = old and
+      ret = replacer.getAReturn() and
+      guard.dominates(ret.getBasicBlock()) and
+      new = ret.getStringValue()
     )
   }
 }

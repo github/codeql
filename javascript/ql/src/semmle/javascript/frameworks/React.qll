@@ -50,6 +50,12 @@ abstract class ReactComponent extends ASTNode {
   abstract DataFlow::SourceNode getAComponentCreatorReference();
 
   /**
+   * Gets a reference to an instance of this component.
+   */
+  pragma[noinline]
+  DataFlow::SourceNode getAnInstanceReference() { result = ref() }
+
+  /**
    * Gets a reference to this component.
    */
   DataFlow::Node ref() { result.analyze().getAValue() = getAbstractComponent() }
@@ -70,20 +76,19 @@ abstract class ReactComponent extends ASTNode {
    * Gets an access to the `state` object of this component.
    */
   DataFlow::SourceNode getADirectStateAccess() {
-    result.(DataFlow::PropRef).accesses(ref(), "state")
+    result = getAnInstanceReference().getAPropertyReference("state")
   }
 
   /**
    * Gets a data flow node that reads a prop of this component.
    */
-  DataFlow::PropRead getAPropRead() { getADirectPropsAccess().flowsTo(result.getBase()) }
+  DataFlow::PropRead getAPropRead() { result = getADirectPropsAccess().getAPropertyRead() }
 
   /**
    * Gets a data flow node that reads prop `name` of this component.
    */
   DataFlow::PropRead getAPropRead(string name) {
-    result = getAPropRead() and
-    result.getPropertyName() = name
+    result = getADirectPropsAccess().getAPropertyRead(name)
   }
 
   /**
@@ -93,7 +98,7 @@ abstract class ReactComponent extends ASTNode {
   DataFlow::SourceNode getAStateAccess() {
     result = getADirectStateAccess()
     or
-    exists(DataFlow::PropRef prn | result = prn | getAStateAccess().flowsTo(prn.getBase()))
+    result = getAStateAccess().getAPropertyReference()
   }
 
   /**
@@ -116,18 +121,17 @@ abstract class ReactComponent extends ASTNode {
   /**
    * Gets a call to method `name` on this component.
    */
-  DataFlow::MethodCallNode getAMethodCall(string name) { result.calls(ref(), name) }
+  DataFlow::MethodCallNode getAMethodCall(string name) {
+    result = getAnInstanceReference().getAMethodCall(name)
+  }
 
   /**
    * Gets a value that will become (part of) the state
    * object of this component, for example an assignment to `this.state`.
    */
   DataFlow::SourceNode getACandidateStateSource() {
-    exists(DataFlow::PropWrite pwn, DataFlow::Node rhs |
-      // a direct definition: `this.state = o`
-      result.flowsTo(rhs) and
-      pwn.writes(ref(), "state", rhs)
-    )
+    // a direct definition: `this.state = o`
+    result = getAnInstanceReference().getAPropertySource("state")
     or
     exists(DataFlow::MethodCallNode mce, DataFlow::SourceNode arg0 |
       mce = getAMethodCall("setState") or
@@ -314,7 +318,8 @@ abstract private class SharedReactPreactClassComponent extends ReactComponent, C
   }
 
   override DataFlow::SourceNode getADirectPropsAccess() {
-    result.(DataFlow::PropRef).accesses(ref(), "props") or
+    result = getAnInstanceReference().getAPropertyRead("props")
+    or
     result = DataFlow::parameterNode(getConstructor().getBody().getParameter(0))
   }
 
@@ -437,7 +442,7 @@ class ES5Component extends ReactComponent, ObjectExpr {
   override Function getStaticMethod(string name) { none() }
 
   override DataFlow::SourceNode getADirectPropsAccess() {
-    result.(DataFlow::PropRef).accesses(ref(), "props")
+    result = getAnInstanceReference().getAPropertyRead("props")
   }
 
   override AbstractValue getAbstractComponent() { result = TAbstractObjectLiteral(this) }
@@ -686,14 +691,24 @@ private DataFlow::SourceNode reactRouterDom() {
   result = DataFlow::moduleImport("react-router-dom")
 }
 
-private class ReactRouterSource extends RemoteFlowSource {
+private class ReactRouterSource extends ClientSideRemoteFlowSource {
+  ClientSideRemoteFlowKind kind;
+
   ReactRouterSource() {
-    this = reactRouterDom().getAMemberCall("useParams")
+    this = reactRouterDom().getAMemberCall("useParams") and kind.isPath()
     or
-    this = reactRouterDom().getAMemberCall("useRouteMatch").getAPropertyRead(["params", "url"])
+    exists(string prop |
+      this = reactRouterDom().getAMemberCall("useRouteMatch").getAPropertyRead(prop)
+    |
+      prop = "params" and kind.isPath()
+      or
+      prop = "url" and kind.isUrl()
+    )
   }
 
   override string getSourceType() { result = "react-router path parameters" }
+
+  override ClientSideRemoteFlowKind getKind() { result = kind }
 }
 
 /**
@@ -777,6 +792,49 @@ private class HigherOrderComponentStep extends PreCallGraphStep {
       pred = call.getArgument(0) and
       call.flowsTo(expr.getTag().flow()) and
       succ = expr.flow()
+    )
+  }
+}
+
+/**
+ * A taint propagating data flow edge for assignments of the form `c1.state.p = v`,
+ * where `c1` is an instance of React component `C`; in this case, we consider
+ * taint to flow from `v` to any read of `c2.state.p`, where `c2`
+ * also is an instance of `C`.
+ */
+private class StateTaintStep extends TaintTracking::SharedTaintStep {
+  override predicate viewComponentStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(ReactComponent c, DataFlow::PropRead prn, DataFlow::PropWrite pwn |
+      (
+        c.getACandidateStateSource().flowsTo(pwn.getBase()) or
+        c.getADirectStateAccess().flowsTo(pwn.getBase())
+      ) and
+      (
+        c.getAPreviousStateSource().flowsTo(prn.getBase()) or
+        c.getADirectStateAccess().flowsTo(prn.getBase())
+      )
+    |
+      prn.getPropertyName() = pwn.getPropertyName() and
+      succ = prn and
+      pred = pwn.getRhs()
+    )
+  }
+}
+
+/**
+ * A taint propagating data flow edge for assignments of the form `c1.props.p = v`,
+ * where `c1` is an instance of React component `C`; in this case, we consider
+ * taint to flow from `v` to any read of `c2.props.p`, where `c2`
+ * also is an instance of `C`.
+ */
+private class PropsTaintStep extends TaintTracking::SharedTaintStep {
+  override predicate viewComponentStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(ReactComponent c, string name, DataFlow::PropRead prn |
+      prn = c.getAPropRead(name) or
+      prn = c.getAPreviousPropsSource().getAPropertyRead(name)
+    |
+      pred = c.getACandidatePropsValue(name) and
+      succ = prn
     )
   }
 }

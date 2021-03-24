@@ -35,10 +35,10 @@ to <code>Super</code>.</p>
 
 
     <li>J. Bloch, <em>Effective Java (second edition)</em>, Item 12. Addison-Wesley, 2008.</li>
-    <li>The Java Language Specification:
-  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-8.html#jls-8.4.8.1">Overriding (by Instance Methods)</a>,
-  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-8.html#jls-8.4.9">Overloading</a>.</li>
-    <li>The Java Tutorials: <a href="http://docs.oracle.com/javase/tutorial/java/IandI/override.html">Overriding and Hiding Methods</a>.</li>
+    <li>Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-8.html#jls-8.4.8.1">Overriding (by Instance Methods)</a>,
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-8.html#jls-8.4.9">Overloading</a>.</li>
+    <li>The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/java/IandI/override.html">Overriding and Hiding Methods</a>.</li>
 
 
 </references>

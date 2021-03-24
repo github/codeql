@@ -30,3 +30,6 @@ private import implementations.SmartPointer
 private import implementations.Sscanf
 private import implementations.Send
 private import implementations.Recv
+private import implementations.Accept
+private import implementations.Poll
+private import implementations.Select

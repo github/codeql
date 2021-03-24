@@ -173,7 +173,7 @@ private predicate foo(Expr e, Expr p) {
 1. Use [camelCase](https://en.wikipedia.org/wiki/Camel_case) for:
    - Predicate names
    - Variable names
-1. Acronyms *should* use normal PascalCase/camelCase (as an exception, if there are only two letters then using all uppercase letters is acceptable).
+1. Acronyms *should* use normal PascalCase/camelCase. However, two-letter acronyms should have both letters capitalized.
 1. Newtype predicate names *should* begin with `T`.
 1. Predicates that have a result *should* be named `get...`
 1. Predicates that can return multiple results *should* be named `getA...` or `getAn...`

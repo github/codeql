@@ -1035,7 +1035,13 @@ class TupleExpr extends Expr, @tuple_expr {
   Expr getAnArgument() { result = getArgument(_) }
 
   /** Holds if this tuple is a read access. */
-  predicate isReadAccess() { not this = getAnAssignOrForeachChild() }
+  deprecated predicate isReadAccess() { not this = getAnAssignOrForeachChild() }
+
+  /** Holds if this expression is a tuple construction. */
+  predicate isConstruction() {
+    not this = getAnAssignOrForeachChild() and
+    not this = any(PatternExpr pe).getAChildExpr*()
+  }
 
   override string getAPrimaryQlClass() { result = "TupleExpr" }
 }
@@ -1151,4 +1157,22 @@ class DefineSymbolExpr extends Expr, @define_symbol_expr {
   override string toString() { result = getName() }
 
   override string getAPrimaryQlClass() { result = "DefineSymbolExpr" }
+}
+
+/**
+ * A `with` expression called on a record.
+ */
+class WithExpr extends Expr, @with_expr {
+  /** Gets the object initializer of this `with` expression. */
+  ObjectInitializer getInitializer() { result = this.getChild(1) }
+
+  /** Gets the expression on which this `with` is called. */
+  Expr getExpr() { result = this.getChild(0) }
+
+  /** Gets the clone method of the `record` that is targetted by this `with` expression. */
+  RecordCloneMethod getCloneMethod() { result = this.getExpr().getType().(Record).getCloneMethod() }
+
+  override string toString() { result = "... with { ... }" }
+
+  override string getAPrimaryQlClass() { result = "WithExpr" }
 }

@@ -943,13 +943,7 @@
 | Splitting.cs:56:15:56:15 | [b (line 46): true] "c" | Splitting.cs:56:13:56:19 | [b (line 46): true] $"..." |
 | Splitting.cs:56:17:56:17 | [b (line 46): false] access to local variable x | Splitting.cs:56:13:56:19 | [b (line 46): false] $"..." |
 | Splitting.cs:56:17:56:17 | [b (line 46): true] access to local variable x | Splitting.cs:56:13:56:19 | [b (line 46): true] $"..." |
-| Splitting.cs:57:13:57:18 | [b (line 46): false] (..., ...) | Splitting.cs:57:13:57:24 | [b (line 46): false] access to field Item1 |
-| Splitting.cs:57:13:57:18 | [b (line 46): true] (..., ...) | Splitting.cs:57:13:57:24 | [b (line 46): true] access to field Item1 |
-| Splitting.cs:57:14:57:14 | [b (line 46): false] access to local variable x | Splitting.cs:57:13:57:18 | [b (line 46): false] (..., ...) |
-| Splitting.cs:57:14:57:14 | [b (line 46): true] access to local variable x | Splitting.cs:57:13:57:18 | [b (line 46): true] (..., ...) |
-| Splitting.cs:57:17:57:17 | [b (line 46): false] access to local variable y | Splitting.cs:57:13:57:18 | [b (line 46): false] (..., ...) |
 | Splitting.cs:57:17:57:17 | [b (line 46): false] access to local variable y | Splitting.cs:58:27:58:27 | [b (line 46): false] access to local variable y |
-| Splitting.cs:57:17:57:17 | [b (line 46): true] access to local variable y | Splitting.cs:57:13:57:18 | [b (line 46): true] (..., ...) |
 | Splitting.cs:57:17:57:17 | [b (line 46): true] access to local variable y | Splitting.cs:58:27:58:27 | [b (line 46): true] access to local variable y |
 | Splitting.cs:58:22:58:22 | [b (line 46): false] SSA def(s) | Splitting.cs:59:19:59:19 | [b (line 46): false] access to local variable s |
 | Splitting.cs:58:22:58:22 | [b (line 46): true] SSA def(s) | Splitting.cs:59:19:59:19 | [b (line 46): true] access to local variable s |

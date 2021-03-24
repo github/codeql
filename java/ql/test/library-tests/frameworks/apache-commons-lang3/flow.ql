@@ -2,8 +2,20 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import TestUtilities.InlineExpectationsTest
 
-class Conf extends TaintTracking::Configuration {
-  Conf() { this = "qltest:frameworks:apache-commons-lang3" }
+class TaintFlowConf extends TaintTracking::Configuration {
+  TaintFlowConf() { this = "qltest:frameworks:apache-commons-lang3-taint-flow" }
+
+  override predicate isSource(DataFlow::Node n) {
+    n.asExpr().(MethodAccess).getMethod().hasName("taint")
+  }
+
+  override predicate isSink(DataFlow::Node n) {
+    exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
+  }
+}
+
+class ValueFlowConf extends DataFlow::Configuration {
+  ValueFlowConf() { this = "qltest:frameworks:apache-commons-lang3-value-flow" }
 
   override predicate isSource(DataFlow::Node n) {
     n.asExpr().(MethodAccess).getMethod().hasName("taint")
@@ -17,14 +29,22 @@ class Conf extends TaintTracking::Configuration {
 class HasFlowTest extends InlineExpectationsTest {
   HasFlowTest() { this = "HasFlowTest" }
 
-  override string getARelevantTag() { result = "hasTaintFlow" }
+  override string getARelevantTag() { result = ["hasTaintFlow", "hasValueFlow"] }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasTaintFlow" and
-    exists(DataFlow::Node src, DataFlow::Node sink, Conf conf | conf.hasFlow(src, sink) |
+    exists(DataFlow::Node src, DataFlow::Node sink, TaintFlowConf conf | conf.hasFlow(src, sink) |
+      not any(ValueFlowConf vconf).hasFlow(src, sink) and
       sink.getLocation() = location and
       element = sink.toString() and
-      value = "y"
+      value = ""
+    )
+    or
+    tag = "hasValueFlow" and
+    exists(DataFlow::Node src, DataFlow::Node sink, ValueFlowConf conf | conf.hasFlow(src, sink) |
+      sink.getLocation() = location and
+      element = sink.toString() and
+      value = ""
     )
   }
 }

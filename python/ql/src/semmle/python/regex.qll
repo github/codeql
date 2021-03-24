@@ -1,34 +1,39 @@
 import python
-import semmle.python.objects.ObjectInternal
+deprecated import semmle.python.objects.ObjectInternal as OI
+private import semmle.python.ApiGraphs
 
-private predicate re_module_function(string name, int flags) {
-  name = "compile" and flags = 1
+/**
+ * Gets the positional argument index containing the regular expression flags for the member of the
+ * `re` module with the name `name`.
+ */
+private int re_member_flags_arg(string name) {
+  name = "compile" and result = 1
   or
-  name = "search" and flags = 2
+  name = "search" and result = 2
   or
-  name = "match" and flags = 2
+  name = "match" and result = 2
   or
-  name = "split" and flags = 3
+  name = "split" and result = 3
   or
-  name = "findall" and flags = 2
+  name = "findall" and result = 2
   or
-  name = "finditer" and flags = 2
+  name = "finditer" and result = 2
   or
-  name = "sub" and flags = 4
+  name = "sub" and result = 4
   or
-  name = "subn" and flags = 4
+  name = "subn" and result = 4
 }
 
 /**
- * Gets the names and corresponding values of attributes of the `re` module that are likely to be
+ * Gets the names and corresponding API nodes of members of the `re` module that are likely to be
  * methods taking regular expressions as arguments.
  *
  * This is a helper predicate that fixes a bad join order, and should not be inlined without checking
  * that this is safe.
  */
 pragma[nomagic]
-private Value relevant_re_attr(string name) {
-  result = Module::named("re").attr(name) and
+private API::Node relevant_re_member(string name) {
+  result = API::moduleImport("re").getMember(name) and
   name != "escape"
 }
 
@@ -39,24 +44,78 @@ private Value relevant_re_attr(string name) {
 predicate used_as_regex(Expr s, string mode) {
   (s instanceof Bytes or s instanceof Unicode) and
   /* Call to re.xxx(regex, ... [mode]) */
-  exists(CallNode call, string name |
-    call.getArg(0).pointsTo(_, _, s.getAFlowNode()) and
-    call.getFunction().pointsTo(relevant_re_attr(name))
+  exists(DataFlow::CallCfgNode call, string name |
+    call.getArg(0).asExpr() = s and
+    call = relevant_re_member(name).getACall()
   |
     mode = "None"
     or
-    exists(Value obj | mode = mode_from_mode_object(obj) |
-      exists(int flags_arg |
-        re_module_function(name, flags_arg) and
-        call.getArg(flags_arg).pointsTo(obj)
-      )
-      or
-      call.getArgByName("flags").pointsTo(obj)
+    mode = mode_from_node([call.getArg(re_member_flags_arg(name)), call.getArgByName("flags")])
+  )
+}
+
+/**
+ * Gets the canonical name for the API graph node corresponding to the `re` flag `flag`. For flags
+ * that have multiple names, we pick the long-form name as a canonical representative.
+ */
+private string canonical_name(API::Node flag) {
+  result in ["ASCII", "IGNORECASE", "LOCALE", "UNICODE", "MULTILINE", "TEMPLATE"] and
+  flag = API::moduleImport("re").getMember([result, result.prefix(1)])
+  or
+  flag = API::moduleImport("re").getMember(["DOTALL", "S"]) and result = "DOTALL"
+  or
+  flag = API::moduleImport("re").getMember(["VERBOSE", "X"]) and result = "VERBOSE"
+}
+
+/**
+ * A type tracker for regular expression flag names. Holds if the result is a node that may refer
+ * to the `re` flag with the canonical name `flag_name`
+ */
+private DataFlow::LocalSourceNode re_flag_tracker(string flag_name, DataFlow::TypeTracker t) {
+  t.start() and
+  exists(API::Node flag | flag_name = canonical_name(flag) and result = flag.getAUse())
+  or
+  exists(BinaryExprNode binop, DataFlow::Node operand |
+    operand.getALocalSource() = re_flag_tracker(flag_name, t.continue()) and
+    operand.asCfgNode() = binop.getAnOperand() and
+    (binop.getOp() instanceof BitOr or binop.getOp() instanceof Add) and
+    result.asCfgNode() = binop
+  )
+  or
+  // Due to bad performance when using normal setup with `re_flag_tracker(t2, attr_name).track(t2, t)`
+  // we have inlined that code and forced a join
+  exists(DataFlow::TypeTracker t2 |
+    exists(DataFlow::StepSummary summary |
+      re_flag_tracker_first_join(t2, flag_name, result, summary) and
+      t = t2.append(summary)
     )
   )
 }
 
-string mode_from_mode_object(Value obj) {
+pragma[nomagic]
+private predicate re_flag_tracker_first_join(
+  DataFlow::TypeTracker t2, string flag_name, DataFlow::Node res, DataFlow::StepSummary summary
+) {
+  DataFlow::StepSummary::step(re_flag_tracker(flag_name, t2), res, summary)
+}
+
+/**
+ * A type tracker for regular expression flag names. Holds if the result is a node that may refer
+ * to the `re` flag with the canonical name `flag_name`
+ */
+private DataFlow::Node re_flag_tracker(string flag_name) {
+  re_flag_tracker(flag_name, DataFlow::TypeTracker::end()).flowsTo(result)
+}
+
+/** Gets a regular expression mode flag associated with the given data flow node. */
+string mode_from_node(DataFlow::Node node) { node = re_flag_tracker(result) }
+
+/**
+ * DEPRECATED 2021-02-24 -- use `mode_from_node` instead.
+ *
+ * Gets a regular expression mode flag associated with the given value.
+ */
+deprecated string mode_from_mode_object(Value obj) {
   (
     result = "DEBUG" or
     result = "IGNORECASE" or
@@ -67,8 +126,8 @@ string mode_from_mode_object(Value obj) {
     result = "VERBOSE"
   ) and
   exists(int flag |
-    flag = Value::named("sre_constants.SRE_FLAG_" + result).(ObjectInternal).intValue() and
-    obj.(ObjectInternal).intValue().bitAnd(flag) = flag
+    flag = Value::named("sre_constants.SRE_FLAG_" + result).(OI::ObjectInternal).intValue() and
+    obj.(OI::ObjectInternal).intValue().bitAnd(flag) = flag
   )
 }
 

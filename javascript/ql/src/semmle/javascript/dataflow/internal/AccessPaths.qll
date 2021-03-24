@@ -16,6 +16,7 @@
  */
 
 import javascript
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A representation of a property name that is either statically known or is
@@ -88,7 +89,9 @@ class AccessPath extends TAccessPath {
   /**
    * Gets an expression in `bb` represented by this access path.
    */
+  cached
   Expr getAnInstanceIn(BasicBlock bb) {
+    Stages::DataFlowStage::ref() and
     exists(SsaVariable var |
       this = MkSsaRoot(var) and
       result = getARefinementOf*(var).getAUseIn(bb)

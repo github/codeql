@@ -5,6 +5,7 @@
 import javascript
 private import semmle.javascript.DynamicPropertyAccess
 private import semmle.javascript.dataflow.internal.StepSummary
+private import semmle.javascript.dataflow.internal.CallGraphs
 
 module HTTP {
   /**
@@ -299,6 +300,9 @@ module HTTP {
     exists(DataFlow::PartialInvokeNode call |
       succ = call.getBoundFunction(any(DataFlow::Node n | pred.flowsTo(n)), 0)
     )
+    or
+    // references to class methods
+    succ = CallGraph::callgraphStep(pred, DataFlow::TypeTracker::end())
   }
 
   /**

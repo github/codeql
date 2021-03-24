@@ -276,7 +276,10 @@ class File extends Container, @file {
       c.getAFileCompiled() = this and
       (
         c.getAnArgument() = "--microsoft" or
-        c.getAnArgument().toLowerCase().replaceAll("\\", "/").matches("%/cl.exe")
+        c.getAnArgument()
+            .toLowerCase()
+            .replaceAll("\\", "/")
+            .matches(["%/cl.exe", "%/clang-cl.exe"])
       )
     )
     or

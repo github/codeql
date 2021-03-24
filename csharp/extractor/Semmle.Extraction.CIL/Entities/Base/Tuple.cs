@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CIL
 
         public void Extract(Context cx)
         {
-            cx.Cx.Emit(tuple);
+            cx.TrapWriter.Emit(tuple);
         }
 
         public override string ToString() => tuple.ToString();
