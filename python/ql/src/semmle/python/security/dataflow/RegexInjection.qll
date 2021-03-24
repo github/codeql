@@ -8,6 +8,7 @@ import semmle.python.Concepts
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
+import semmle.python.ApiGraphs
 
 /**
  * A taint-tracking configuration for detecting regular expression injections.

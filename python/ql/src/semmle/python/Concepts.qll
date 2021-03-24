@@ -9,7 +9,6 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Frameworks
-private import semmle.python.ApiGraphs
 
 /**
  * A data-flow node that executes an operating system command,
