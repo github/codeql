@@ -144,7 +144,7 @@ class FlowConfFromUntrustedToTemplateExecutionCall extends TaintTracking::Config
   override predicate isSink(DataFlow::Node sink) { isSinkToTemplateExec(sink, _) }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
-    sanitizer instanceof SharedXss::Sanitizer
+    sanitizer instanceof SharedXss::Sanitizer or sanitizer.getType() instanceof NumericType
   }
 }
 
