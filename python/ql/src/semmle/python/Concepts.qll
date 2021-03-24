@@ -625,49 +625,5 @@ module Cryptography {
         final override int minimumSecureKeySize() { result = 224 }
       }
     }
-/*
- */
-
-class ReMethods extends string {
-  ReMethods() { this in ["match", "fullmatch", "search", "split", "findall", "finditer"] }
-}
-
-class DirectRegex extends DataFlow::Node {
-  DirectRegex() {
-    exists(ReMethods reMethod, DataFlow::CallCfgNode reCall |
-      reCall = API::moduleImport("re").getMember(reMethod).getACall() and
-      this = reCall.getArg(0)
-    )
   }
-}
-
-class CompiledRegex extends DataFlow::Node {
-  CompiledRegex() {
-    exists(DataFlow::CallCfgNode patternCall, DataFlow::AttrRead reMethod |
-      patternCall = API::moduleImport("re").getMember("compile").getACall() and
-      patternCall = reMethod.getObject().getALocalSource() and
-      reMethod.getAttributeName() instanceof ReMethods and
-      this = patternCall.getArg(0)
-    )
-  }
-}
-
-class RegexExecution extends DataFlow::Node {
-  RegexExecution() { this instanceof DirectRegex or this instanceof CompiledRegex } // How should this be cross-imported with Stdlib?
-}
-/*
- */
-
-module RegexExecution {
-  abstract class Range extends DataFlow::Node {
-    abstract DataFlow::Node getRegexNode();
-  }
-}
-
-class RegexExecution extends DataFlow::Node {
-  RegexExecution::Range range;
-
-  RegexExecution() { this = range }
-
-  DataFlow::Node getRegexNode() { result = range.getRegexNode() }
 }

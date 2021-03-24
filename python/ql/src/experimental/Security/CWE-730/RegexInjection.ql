@@ -13,7 +13,7 @@
 
 // determine precision above
 import python
-import semmle.python.security.dataflow.RegexInjection
+import experimental.semmle.python.security.injection.RegexInjection
 import DataFlow::PathGraph
 
 from RegexInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink

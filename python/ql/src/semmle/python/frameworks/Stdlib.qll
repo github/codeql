@@ -864,52 +864,6 @@ private module Stdlib {
   class Sqlite3 extends PEP249ModuleApiNode {
     Sqlite3() { this = API::moduleImport("sqlite3") }
   }
-
-  // ---------------------------------------------------------------------------
-  // re
-  // ---------------------------------------------------------------------------
-  private module Re {
-    /** List of re methods. */
-    private class ReMethods extends string {
-      ReMethods() { this in ["match", "fullmatch", "search", "split", "findall", "finditer"] }
-    }
-
-    /** re.ReMethod(pattern, string) */
-    private class DirectRegex extends DataFlow::CallCfgNode, RegexExecution::Range {
-      DataFlow::Node regexNode;
-
-      DirectRegex() {
-        this = API::moduleImport("re").getMember(any(ReMethods m)).getACall() and
-        regexNode = this.getArg(0)
-      }
-
-      override DataFlow::Node getRegexNode() { result = regexNode }
-    }
-
-    /** re.compile(pattern).ReMethod */
-    private class CompiledRegex extends DataFlow::CallCfgNode, RegexExecution::Range {
-      DataFlow::Node regexNode;
-
-      CompiledRegex() {
-        exists(DataFlow::CallCfgNode patternCall, DataFlow::AttrRead reMethod |
-          this.getFunction() = reMethod and
-          patternCall = API::moduleImport("re").getMember("compile").getACall() and
-          patternCall = reMethod.getObject().getALocalSource() and
-          reMethod.getAttributeName() instanceof ReMethods and
-          regexNode = patternCall.getArg(0)
-        )
-      }
-
-      override DataFlow::Node getRegexNode() { result = regexNode }
-    }
-
-    private class RegexEscape extends DataFlow::Node {
-      RegexEscape() {
-        this =
-          API::moduleImport("re").getMember("escape").getACall().(DataFlow::CallCfgNode).getArg(0)
-      }
-    }
-  }
 }
 
 // ---------------------------------------------------------------------------

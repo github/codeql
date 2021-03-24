@@ -4,7 +4,7 @@
  */
 
 import python
-import semmle.python.Concepts
+import experimental.semmle.python.Concepts
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
