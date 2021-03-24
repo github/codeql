@@ -32,26 +32,30 @@
  * 7. The `input` column specifies how data enters the element selected by the
  *    first 6 columns, and the `output` column specifies how data leaves the
  *    element selected by the first 6 columns. An `input` can be either "",
- *    "Argument", "Argument[n]", "ReturnValue":
+ *    "Argument[n]", "Argument[n1..n2]", "ReturnValue":
  *    - "": Selects a write to the selected element in case this is a field.
- *    - "Argument": Selects any argument in a call to the selected element.
- *    - "Argument[n]": Similar to "Argument" but restricted to a specific numbered
- *      argument (zero-indexed, and `-1` specifies the qualifier).
+ *    - "Argument[n]": Selects an argument in a call to the selected element.
+ *      The arguments are zero-indexed, and `-1` specifies the qualifier.
+ *    - "Argument[n1..n2]": Similar to "Argument[n]" but select any argument in
+ *      the given range.
  *    - "ReturnValue": Selects a value being returned by the selected element.
  *      This requires that the selected element is a method with a body.
  *
- *    An `output` can be either "", "Argument", "Argument[n]", "Parameter",
- *    "Parameter[n]", or "ReturnValue":
+ *    An `output` can be either "", "Argument[n]", "Argument[n1..n2]", "Parameter",
+ *    "Parameter[n]", "Parameter[n1..n2]", or "ReturnValue":
  *    - "": Selects a read of a selected field, or a selected parameter.
- *    - "Argument": Selects the post-update value of an argument in a call to the
+ *    - "Argument[n]": Selects the post-update value of an argument in a call to the
  *      selected element. That is, the value of the argument after the call returns.
- *    - "Argument[n]": Similar to "Argument" but restricted to a specific numbered
- *      argument (zero-indexed, and `-1` specifies the qualifier).
+ *      The arguments are zero-indexed, and `-1` specifies the qualifier.
+ *    - "Argument[n1..n2]": Similar to "Argument[n]" but select any argument in
+ *      the given range.
  *    - "Parameter": Selects the value of a parameter of the selected element.
  *      "Parameter" is also allowed in case the selected element is already a
  *      parameter itself.
  *    - "Parameter[n]": Similar to "Parameter" but restricted to a specific
  *      numbered parameter (zero-indexed, and `-1` specifies the value of `this`).
+ *    - "Parameter[n1..n2]": Similar to "Parameter[n]" but selects any parameter
+ *      in the given range.
  *    - "ReturnValue": Selects the return value of a call to the selected element.
  * 8. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
@@ -554,11 +558,29 @@ private string getLast(string s) {
 }
 
 private predicate parseParam(string c, int n) {
-  specSplit(_, c, _) and c.regexpCapture("Parameter\\[([-0-9]+)\\]", 1).toInt() = n
+  specSplit(_, c, _) and
+  (
+    c.regexpCapture("Parameter\\[([-0-9]+)\\]", 1).toInt() = n
+    or
+    exists(int n1, int n2 |
+      c.regexpCapture("Parameter\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
+      c.regexpCapture("Parameter\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
+      n = [n1 .. n2]
+    )
+  )
 }
 
 private predicate parseArg(string c, int n) {
-  specSplit(_, c, _) and c.regexpCapture("Argument\\[([-0-9]+)\\]", 1).toInt() = n
+  specSplit(_, c, _) and
+  (
+    c.regexpCapture("Argument\\[([-0-9]+)\\]", 1).toInt() = n
+    or
+    exists(int n1, int n2 |
+      c.regexpCapture("Argument\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
+      c.regexpCapture("Argument\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
+      n = [n1 .. n2]
+    )
+  )
 }
 
 private predicate inputNeedsReference(string c) {
