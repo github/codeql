@@ -226,11 +226,10 @@ private module Stdlib {
       Attribute regexMethod;
 
       CompiledRegex() {
-        exists(DirectRegex reMethod, ReCompileCall compileCall |
-          this = reMethod and
-          reMethod.getRegexMethod() = compileCall.getRegexMethod() and
+        exists(ReCompileCall compileCall |
           regexNode = compileCall.getRegexNode() and
-          regexMethod = reMethod.getRegexMethod()
+          regexMethod = compileCall.getRegexMethod() and
+          this = compileCall
         )
       }
 
