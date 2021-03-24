@@ -81,7 +81,7 @@ module ClientWebSocket {
   /**
    * A client WebSocket instance.
    */
-  class ClientSocket extends EventEmitter::Range, DataFlow::SourceNode {
+  class ClientSocket extends EventEmitter::Range, DataFlow::NewNode, ClientRequest::Range {
     SocketClass socketClass;
 
     ClientSocket() { this = socketClass.getAnInstantiation() }
@@ -90,6 +90,26 @@ module ClientWebSocket {
      * Gets the WebSocket library name.
      */
     LibraryName getLibrary() { result = socketClass.getLibrary() }
+
+    override DataFlow::Node getUrl() { result = getArgument(0) }
+
+    override DataFlow::Node getHost() { none() }
+
+    override DataFlow::Node getADataNode() {
+      exists(SendNode send |
+        send.getEmitter() = this and
+        result = send.getSentItem(_)
+      )
+    }
+
+    override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+      responseType = "json" and
+      promise = false and
+      exists(WebSocketReceiveNode receiver |
+        receiver.getEmitter() = this and
+        result = receiver.getReceivedItem(_)
+      )
+    }
   }
 
   /**

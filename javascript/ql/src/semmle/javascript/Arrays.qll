@@ -9,12 +9,9 @@ module ArrayTaintTracking {
   /**
    * A taint propagating data flow edge caused by the builtin array functions.
    */
-  private class ArrayFunctionTaintStep extends TaintTracking::AdditionalTaintStep,
-    DataFlow::CallNode {
-    ArrayFunctionTaintStep() { arrayFunctionTaintStep(_, _, this) }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      arrayFunctionTaintStep(pred, succ, this)
+  private class ArrayFunctionTaintStep extends TaintTracking::SharedTaintStep {
+    override predicate arrayStep(DataFlow::Node pred, DataFlow::Node succ) {
+      arrayFunctionTaintStep(pred, succ, _)
     }
   }
 
@@ -25,7 +22,7 @@ module ArrayTaintTracking {
     // `array.map(function (elt, i, ary) { ... })`: if `array` is tainted, then so are
     // `elt` and `ary`; similar for `forEach`
     exists(Function f |
-      call.getArgument(0).analyze().getAValue().(AbstractFunction).getFunction() = f and
+      call.getArgument(0).getAFunctionValue(0).getFunction() = f and
       call.(DataFlow::MethodCallNode).getMethodName() = ["map", "forEach"] and
       pred = call.getReceiver() and
       succ = DataFlow::parameterNode(f.getParameter([0, 2]))

@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-  <include src="LeapYear.qhelp" />
+  <include src="LeapYear.inc.qhelp" />
 
 <p>When performing arithmetic operations on a variable that represents a date, leap years must be taken into account.
 It is not safe to assume that a year is 365 days long.</p>

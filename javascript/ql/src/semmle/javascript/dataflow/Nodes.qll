@@ -7,6 +7,7 @@
 private import javascript
 private import semmle.javascript.dependencies.Dependencies
 private import internal.CallGraphs
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A data flow node corresponding to an expression.
@@ -19,6 +20,9 @@ private import internal.CallGraphs
  */
 class ExprNode extends DataFlow::ValueNode {
   override Expr astNode;
+
+  pragma[nomagic]
+  ExprNode() { any() }
 }
 
 /**
@@ -55,18 +59,16 @@ class ParameterNode extends DataFlow::SourceNode {
  * ```
  */
 class InvokeNode extends DataFlow::SourceNode {
-  DataFlow::Impl::InvokeNodeDef impl;
-
-  InvokeNode() { this = impl }
+  InvokeNode() { this instanceof DataFlow::Impl::InvokeNodeDef }
 
   /** Gets the syntactic invoke expression underlying this function invocation. */
-  InvokeExpr getInvokeExpr() { result = impl.getInvokeExpr() }
+  InvokeExpr getInvokeExpr() { result = this.(DataFlow::Impl::InvokeNodeDef).getInvokeExpr() }
 
   /** Gets the name of the function or method being invoked, if it can be determined. */
-  string getCalleeName() { result = impl.getCalleeName() }
+  string getCalleeName() { result = this.(DataFlow::Impl::InvokeNodeDef).getCalleeName() }
 
   /** Gets the data flow node specifying the function to be called. */
-  DataFlow::Node getCalleeNode() { result = impl.getCalleeNode() }
+  DataFlow::Node getCalleeNode() { result = this.(DataFlow::Impl::InvokeNodeDef).getCalleeNode() }
 
   /**
    * Gets the data flow node corresponding to the `i`th argument of this invocation.
@@ -87,10 +89,10 @@ class InvokeNode extends DataFlow::SourceNode {
    * but the position of `z` cannot be determined, hence there are no first and second
    * argument nodes.
    */
-  DataFlow::Node getArgument(int i) { result = impl.getArgument(i) }
+  DataFlow::Node getArgument(int i) { result = this.(DataFlow::Impl::InvokeNodeDef).getArgument(i) }
 
   /** Gets the data flow node corresponding to an argument of this invocation. */
-  DataFlow::Node getAnArgument() { result = impl.getAnArgument() }
+  DataFlow::Node getAnArgument() { result = this.(DataFlow::Impl::InvokeNodeDef).getAnArgument() }
 
   /** Gets the data flow node corresponding to the last argument of this invocation. */
   DataFlow::Node getLastArgument() { result = getArgument(getNumArgument() - 1) }
@@ -107,10 +109,12 @@ class InvokeNode extends DataFlow::SourceNode {
    * ```
    *  .
    */
-  DataFlow::Node getASpreadArgument() { result = impl.getASpreadArgument() }
+  DataFlow::Node getASpreadArgument() {
+    result = this.(DataFlow::Impl::InvokeNodeDef).getASpreadArgument()
+  }
 
   /** Gets the number of arguments of this invocation, if it can be determined. */
-  int getNumArgument() { result = impl.getNumArgument() }
+  int getNumArgument() { result = this.(DataFlow::Impl::InvokeNodeDef).getNumArgument() }
 
   Function getEnclosingFunction() { result = getBasicBlock().getContainer() }
 
@@ -165,7 +169,13 @@ class InvokeNode extends DataFlow::SourceNode {
   private ObjectLiteralNode getOptionsArgument(int i) { result.flowsTo(getArgument(i)) }
 
   /** Gets an abstract value representing possible callees of this call site. */
-  final AbstractValue getACalleeValue() { result = getCalleeNode().analyze().getAValue() }
+  final AbstractValue getACalleeValue() {
+    exists(DataFlow::Node callee, DataFlow::AnalyzedNode analyzed |
+      pragma[only_bind_into](callee) = getCalleeNode() and
+      pragma[only_bind_into](analyzed) = callee.analyze() and
+      pragma[only_bind_into](result) = analyzed.getAValue()
+    )
+  }
 
   /**
    * Gets a potential callee of this call site.
@@ -246,14 +256,14 @@ class InvokeNode extends DataFlow::SourceNode {
  * ```
  */
 class CallNode extends InvokeNode {
-  override DataFlow::Impl::CallNodeDef impl;
+  CallNode() { this instanceof DataFlow::Impl::CallNodeDef }
 
   /**
    * Gets the data flow node corresponding to the receiver expression of this method call.
    *
    * For example, the receiver of `x.m()` is `x`.
    */
-  DataFlow::Node getReceiver() { result = impl.getReceiver() }
+  DataFlow::Node getReceiver() { result = this.(DataFlow::Impl::CallNodeDef).getReceiver() }
 }
 
 /**
@@ -267,10 +277,10 @@ class CallNode extends InvokeNode {
  * ```
  */
 class MethodCallNode extends CallNode {
-  override DataFlow::Impl::MethodCallNodeDef impl;
+  MethodCallNode() { this instanceof DataFlow::Impl::MethodCallNodeDef }
 
   /** Gets the name of the invoked method, if it can be determined. */
-  string getMethodName() { result = impl.getMethodName() }
+  string getMethodName() { result = this.(DataFlow::Impl::MethodCallNodeDef).getMethodName() }
 
   /**
    * Holds if this data flow node calls method `methodName` on receiver node `receiver`.
@@ -290,7 +300,7 @@ class MethodCallNode extends CallNode {
  * ```
  */
 class NewNode extends InvokeNode {
-  override DataFlow::Impl::NewNodeDef impl;
+  NewNode() { this instanceof DataFlow::Impl::NewNodeDef }
 }
 
 /**
@@ -725,7 +735,7 @@ module ModuleImportNode {
  * This predicate can be extended by subclassing `ModuleImportNode::Range`.
  */
 cached
-ModuleImportNode moduleImport(string path) { result.getPath() = path }
+ModuleImportNode moduleImport(string path) { Stages::Imports::ref() and result.getPath() = path }
 
 /**
  * Gets a (default) import of the given dependency `dep`, such as
@@ -999,6 +1009,31 @@ class ClassNode extends DataFlow::SourceNode {
   }
 
   /**
+   * Gets a property read that accesses the property `name` on an instance of this class.
+   *
+   * Concretely, this holds when the base is an instance of this class or a subclass thereof.
+   */
+  pragma[nomagic]
+  DataFlow::PropRead getAnInstanceMemberAccess(string name, DataFlow::TypeTracker t) {
+    result = this.getAnInstanceReference(t.continue()).getAPropertyRead(name)
+    or
+    exists(DataFlow::ClassNode subclass |
+      result = subclass.getAnInstanceMemberAccess(name, t) and
+      not exists(subclass.getInstanceMember(name, _)) and
+      this = subclass.getADirectSuperClass()
+    )
+  }
+
+  /**
+   * Gets a property read that accesses the property `name` on an instance of this class.
+   *
+   * Concretely, this holds when the base is an instance of this class or a subclass thereof.
+   */
+  DataFlow::PropRead getAnInstanceMemberAccess(string name) {
+    result = this.getAnInstanceMemberAccess(name, DataFlow::TypeTracker::end())
+  }
+
+  /**
    * Gets an access to a static member of this class.
    */
   DataFlow::PropRead getAStaticMemberAccess(string name) {
@@ -1164,6 +1199,16 @@ module ClassNode {
   }
 
   /**
+   * Gets a reference to the function `func`, where there exists a read/write of the "prototype" property on that reference.
+   */
+  pragma[noinline]
+  private DataFlow::SourceNode getAFunctionValueWithPrototype(AbstractValue func) {
+    exists(result.getAPropertyReference("prototype")) and
+    result.analyze().getAValue() = pragma[only_bind_into](func) and
+    func instanceof AbstractFunction // the join-order goes bad if `func` has type `AbstractFunction`.
+  }
+
+  /**
    * A function definition with prototype manipulation as a `ClassNode` instance.
    */
   class FunctionStyleClass extends Range, DataFlow::ValueNode {
@@ -1173,10 +1218,7 @@ module ClassNode {
     FunctionStyleClass() {
       function.getFunction() = astNode and
       (
-        exists(DataFlow::PropRef read |
-          read.getPropertyName() = "prototype" and
-          read.getBase().analyze().getAValue() = function
-        )
+        exists(getAFunctionValueWithPrototype(function))
         or
         exists(string name |
           this = AccessPath::getAnAssignmentTo(name) and
@@ -1237,7 +1279,7 @@ module ClassNode {
      * Gets a reference to the prototype of this class.
      */
     DataFlow::SourceNode getAPrototypeReference() {
-      exists(DataFlow::SourceNode base | base.analyze().getAValue() = function |
+      exists(DataFlow::SourceNode base | base = getAFunctionValueWithPrototype(function) |
         result = base.getAPropertyRead("prototype")
         or
         result = base.getAPropertySource("prototype")
@@ -1581,6 +1623,9 @@ class RegExpCreationNode extends DataFlow::SourceNode {
     result = this.(RegExpConstructorInvokeNode).tryGetFlags() or
     result = this.(RegExpLiteralNode).getFlags()
   }
+
+  /** Holds if the constructed predicate has the `g` flag. */
+  predicate isGlobal() { RegExp::isGlobal(getFlags()) }
 
   /** Gets a data flow node referring to this regular expression. */
   private DataFlow::SourceNode getAReference(DataFlow::TypeTracker t) {

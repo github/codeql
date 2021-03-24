@@ -117,6 +117,21 @@ BinaryPattern.cs:
 #   19|           1: [SwitchCaseExpr] ... => ...
 #   19|             0: [DiscardPatternExpr] _
 #   19|             2: [StringLiteral] "other"
+CovariantReturn.cs:
+#    1| [Class] A
+#    3|   5: [Method] M1
+#    3|     -1: [TypeMention] A
+#    3|     4: [BlockStmt] {...}
+#    3|       0: [ThrowStmt] throw ...;
+#    3|         0: [NullLiteral] null
+#    6| [Class] B
+#-----|   3: (Base types)
+#    6|     0: [TypeMention] A
+#    8|   5: [Method] M1
+#    8|     -1: [TypeMention] B
+#    8|     4: [BlockStmt] {...}
+#    8|       0: [ThrowStmt] throw ...;
+#    8|         0: [NullLiteral] null
 Discard.cs:
 #    3| [Class] Discard
 #    5|   5: [Method] M1

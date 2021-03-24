@@ -22,13 +22,13 @@ namespace Semmle.Extraction.CSharp.Standalone
             get
             {
                 var dotnetPath = FileUtils.FindProgramOnPath(Win32.IsWindows() ? "dotnet.exe" : "dotnet");
-                var dotnetDirs = dotnetPath != null
+                var dotnetDirs = dotnetPath is not null
                     ? new[] { dotnetPath }
                     : new[] { "/usr/share/dotnet", @"C:\Program Files\dotnet" };
                 var coreDirs = dotnetDirs.Select(d => Path.Combine(d, "shared", "Microsoft.NETCore.App"));
 
                 var dir = coreDirs.FirstOrDefault(Directory.Exists);
-                if (dir is object)
+                if (dir is not null)
                 {
                     return Directory.EnumerateDirectories(dir).OrderByDescending(Path.GetFileName);
                 }
@@ -46,7 +46,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             get
             {
                 var monoPath = FileUtils.FindProgramOnPath(Win32.IsWindows() ? "mono.exe" : "mono");
-                var monoDirs = monoPath != null
+                var monoDirs = monoPath is not null
                     ? new[] { monoPath }
                     : new[] { "/usr/lib/mono", @"C:\Program Files\Mono\lib\mono" };
 
@@ -58,7 +58,7 @@ namespace Semmle.Extraction.CSharp.Standalone
 
                 var dir = monoDirs.FirstOrDefault(Directory.Exists);
 
-                if (dir is object)
+                if (dir is not null)
                 {
                     return Directory.EnumerateDirectories(dir)
                         .Where(d => Char.IsDigit(Path.GetFileName(d)[0]))

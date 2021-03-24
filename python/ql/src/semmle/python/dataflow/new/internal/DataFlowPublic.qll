@@ -109,13 +109,13 @@ class Node extends TNode {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
-  /** Convenience method for casting to EssaNode and calling getVar. */
+  /** Gets the ESSA variable corresponding to this node, if any. */
   EssaVariable asVar() { none() }
 
-  /** Convenience method for casting to CfgNode and calling getNode. */
+  /** Gets the control-flow node corresponding to this node, if any. */
   ControlFlowNode asCfgNode() { none() }
 
-  /** Convenience method for casting to ExprNode and calling getNode and getNode again. */
+  /** Gets the expression corresponding to this node, if any. */
   Expr asExpr() { none() }
 
   /**

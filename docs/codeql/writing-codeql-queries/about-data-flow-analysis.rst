@@ -3,7 +3,7 @@
 About data flow analysis
 ########################
 
-Data flow analysis is used to compute the possible values that a variable can hold at various points in a program, determining how those values propagate through the program and where they are used. 
+Data flow analysis is used to compute the possible values that a variable can hold at various points in a program, determining how those values propagate through the program and where they are used.
 
 Overview
 ********
@@ -20,13 +20,13 @@ See the following tutorials for more information about analyzing data flow in sp
 - ":ref:`Analyzing data flow in C# <analyzing-data-flow-in-csharp>`"
 - ":ref:`Analyzing data flow in Java <analyzing-data-flow-in-java>`"
 - ":ref:`Analyzing data flow in JavaScript/TypeScript <analyzing-data-flow-in-javascript-and-typescript>`"
-- ":ref:`Analyzing data flow and tracking tainted data in Python <analyzing-data-flow-and-tracking-tainted-data-in-python>`"
+- ":ref:`Analyzing data flow in Python <analyzing-data-flow-in-python>`"
 
 .. pull-quote::
 
     Note
 
-    Data flow analysis is used extensively in path queries. To learn more about path queries, see ":doc:`Creating path queries <creating-path-queries>`."  
+    Data flow analysis is used extensively in path queries. To learn more about path queries, see ":doc:`Creating path queries <creating-path-queries>`."
 
 .. _data-flow-graph:
 
@@ -78,11 +78,10 @@ The normal data flow libraries are used to analyze the information flow in which
 For example, if you are tracking an insecure object ``x`` (which might be some untrusted or potentially malicious data), a step in the program may 'change' its value. So, in a simple process such as ``y = x + 1``, a normal data flow analysis will highlight the use of ``x``, but not ``y``.
 However, since ``y`` is derived from ``x``, it is influenced by the untrusted or 'tainted' information, and therefore it is also tainted. Analyzing the flow of the taint from ``x`` to ``y`` is known as taint tracking.
 
-In QL, taint tracking extends data flow analysis by including steps in which the data values are not necessarily preserved, but the potentially insecure object is still propagated. 
+In QL, taint tracking extends data flow analysis by including steps in which the data values are not necessarily preserved, but the potentially insecure object is still propagated.
 These flow steps are modeled in the taint-tracking library using predicates that hold if taint is propagated between nodes.
 
 Further reading
 ***************
 
 - ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"
-

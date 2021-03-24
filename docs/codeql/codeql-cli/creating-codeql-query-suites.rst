@@ -100,7 +100,7 @@ representing the constraints. Each constraint is a map entry, where the key is
 typically a query metadata property. The value can be:
 
 - A single string. 
-- A ``/``\ -enclosed `regular expression <https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html>`__.
+- A ``/``\ -enclosed `regular expression <https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html>`__.
 - A list containing strings, regular expressions, or both.
 
 To match a constraint, a metadata value must match one of the strings or

@@ -5,7 +5,7 @@
 /**
  * Provides a QL encoding of the list of unsupported JDK-internal APIs at:
  *
- * http://hg.openjdk.java.net/jdk9/jdk9/langtools/file/6ba2130e87bd/src/jdk.jdeps/share/classes/com/sun/tools/jdeps/resources/jdk8_internals.txt
+ * https://hg.openjdk.java.net/jdk9/jdk9/langtools/file/6ba2130e87bd/src/jdk.jdeps/share/classes/com/sun/tools/jdeps/resources/jdk8_internals.txt
  */
 predicate jdkInternalApi(string p) {
   p = "apple.applescript" or

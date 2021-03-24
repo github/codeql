@@ -315,6 +315,11 @@ module DOM {
       )
     }
 
+    private InferredType getArgumentTypeFromJQueryMethodGet(JQuery::MethodCall call) {
+      call.getMethodName() = "get" and
+      result = call.getArgument(0).analyze().getAType()
+    }
+
     private class DefaultRange extends Range {
       DefaultRange() {
         this.asExpr().(VarAccess).getVariable() instanceof DOMGlobalVariable
@@ -344,7 +349,7 @@ module DOM {
         or
         exists(JQuery::MethodCall call | this = call and call.getMethodName() = "get" |
           call.getNumArgument() = 1 and
-          forex(InferredType t | t = call.getArgument(0).analyze().getAType() | t = TTNumber())
+          unique(InferredType t | t = getArgumentTypeFromJQueryMethodGet(call)) = TTNumber()
         )
         or
         // A `this` node from a callback given to a `$().each(callback)` call.
@@ -353,6 +358,21 @@ module DOM {
           this = DataFlow::thisNode(eachCall.getCallback(0).getFunction()) or
           this = eachCall.getABoundCallbackParameter(0, 1)
         )
+        or
+        // A receiver node of an event handler on a DOM node
+        exists(DataFlow::SourceNode domNode, DataFlow::FunctionNode eventHandler |
+          // NOTE: we do not use `getABoundFunctionValue()`, since bound functions tend to have
+          // a different receiver anyway
+          eventHandler = domNode.getAPropertySource(any(string n | n.matches("on%")))
+          or
+          eventHandler =
+            domNode.getAMethodCall("addEventListener").getArgument(1).getAFunctionValue()
+        |
+          domNode = domValueRef() and
+          this = eventHandler.getReceiver()
+        )
+        or
+        this = DataFlow::thisNode(any(EventHandlerCode evt))
       }
     }
   }
@@ -490,5 +510,12 @@ module DOM {
     result = documentRef(DataFlow::TypeTracker::end())
     or
     result.hasUnderlyingType("Document")
+  }
+
+  /**
+   * Holds if a value assigned to property `name` of a DOM node can be interpreted as JavaScript via the `javascript:` protocol.
+   */
+  string getAPropertyNameInterpretedAsJavaScriptUrl() {
+    result = ["action", "formaction", "href", "src", "data"]
   }
 }

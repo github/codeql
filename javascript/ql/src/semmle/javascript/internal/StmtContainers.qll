@@ -6,9 +6,11 @@
  */
 
 private import javascript
+private import semmle.javascript.internal.CachedStages
 
 cached
 private StmtContainer getStmtContainer(NodeInStmtContainer node) {
+  Stages::Ast::ref() and
   expr_containers(node, result)
   or
   stmt_containers(node, result)

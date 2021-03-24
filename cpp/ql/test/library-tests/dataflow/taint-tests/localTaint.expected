@@ -6245,6 +6245,14 @@
 | taint.cpp:657:12:657:15 | call to data | taint.cpp:657:3:657:8 | call to memcpy |  |
 | taint.cpp:657:20:657:25 | source | taint.cpp:657:3:657:8 | call to memcpy | TAINT |
 | taint.cpp:657:20:657:25 | source | taint.cpp:657:12:657:15 | ref arg call to data | TAINT |
+| taint.cpp:668:14:668:14 | s | taint.cpp:669:18:669:18 | s |  |
+| taint.cpp:668:14:668:14 | s | taint.cpp:671:7:671:7 | s |  |
+| taint.cpp:668:14:668:14 | s | taint.cpp:672:7:672:7 | s |  |
+| taint.cpp:668:14:668:14 | s | taint.cpp:673:7:673:7 | s |  |
+| taint.cpp:669:18:669:18 | s [post update] | taint.cpp:671:7:671:7 | s |  |
+| taint.cpp:669:18:669:18 | s [post update] | taint.cpp:672:7:672:7 | s |  |
+| taint.cpp:669:18:669:18 | s [post update] | taint.cpp:673:7:673:7 | s |  |
+| taint.cpp:672:7:672:7 | s [post update] | taint.cpp:673:7:673:7 | s |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |

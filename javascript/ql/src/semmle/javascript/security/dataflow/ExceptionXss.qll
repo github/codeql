@@ -10,6 +10,7 @@ module ExceptionXss {
   import DomBasedXssCustomizations::DomBasedXss as DomBasedXssCustom
   import ReflectedXssCustomizations::ReflectedXss as ReflectedXssCustom
   import Xss as Xss
+  import Xss::ExceptionXss
   private import semmle.javascript.dataflow.InferredTypes
 
   /**
@@ -71,14 +72,9 @@ module ExceptionXss {
     )
   }
 
-  /**
-   * A FlowLabel representing tainted data that has not been thrown in an exception.
-   * In the js/xss-through-exception query data-flow can only reach a sink after
-   * the data has been thrown as an exception, and data that has not been thrown
-   * as an exception therefore has this flow label, and only this flow label, associated with it.
-   */
-  class NotYetThrown extends DataFlow::FlowLabel {
-    NotYetThrown() { this = "NotYetThrown" }
+  // Materialize flow labels
+  private class ConcreteNotYetThrown extends Xss::ExceptionXss::NotYetThrown {
+    ConcreteNotYetThrown() { this = this }
   }
 
   /**
@@ -139,7 +135,7 @@ module ExceptionXss {
     Configuration() { this = "ExceptionXss" }
 
     override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-      source instanceof Xss::Shared::Source and label instanceof NotYetThrown
+      source.(Xss::ExceptionXss::Source).getAFlowLabel() = label
     }
 
     override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {

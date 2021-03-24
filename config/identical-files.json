@@ -374,50 +374,50 @@
     "javascript/ql/src/semmle/javascript/XML.qll",
     "python/ql/src/semmle/python/xml/XML.qll"
   ],
-  "DuplicationProblems.qhelp": [
-    "cpp/ql/src/Metrics/Files/DuplicationProblems.qhelp",
-    "csharp/ql/src/Metrics/Files/DuplicationProblems.qhelp",
-    "javascript/ql/src/Metrics/DuplicationProblems.qhelp",
-    "python/ql/src/Metrics/DuplicationProblems.qhelp"
+  "DuplicationProblems.inc.qhelp": [
+    "cpp/ql/src/Metrics/Files/DuplicationProblems.inc.qhelp",
+    "csharp/ql/src/Metrics/Files/DuplicationProblems.inc.qhelp",
+    "javascript/ql/src/Metrics/DuplicationProblems.inc.qhelp",
+    "python/ql/src/Metrics/DuplicationProblems.inc.qhelp"
   ],
-  "CommentedOutCodeQuery.qhelp": [
-    "cpp/ql/src/Documentation/CommentedOutCodeQuery.qhelp",
-    "python/ql/src/Lexical/CommentedOutCodeQuery.qhelp",
-    "csharp/ql/src/Bad Practices/Comments/CommentedOutCodeQuery.qhelp",
-    "java/ql/src/Violations of Best Practice/Comments/CommentedOutCodeQuery.qhelp",
-    "javascript/ql/src/Comments/CommentedOutCodeQuery.qhelp"
+  "CommentedOutCodeQuery.inc.qhelp": [
+    "cpp/ql/src/Documentation/CommentedOutCodeQuery.inc.qhelp",
+    "python/ql/src/Lexical/CommentedOutCodeQuery.inc.qhelp",
+    "csharp/ql/src/Bad Practices/Comments/CommentedOutCodeQuery.inc.qhelp",
+    "java/ql/src/Violations of Best Practice/Comments/CommentedOutCodeQuery.inc.qhelp",
+    "javascript/ql/src/Comments/CommentedOutCodeQuery.inc.qhelp"
   ],
-  "FLinesOfCodeReferences.qhelp": [
-    "java/ql/src/Metrics/Files/FLinesOfCodeReferences.qhelp",
-    "javascript/ql/src/Metrics/FLinesOfCodeReferences.qhelp"
+  "FLinesOfCodeReferences.inc.qhelp": [
+    "java/ql/src/Metrics/Files/FLinesOfCodeReferences.inc.qhelp",
+    "javascript/ql/src/Metrics/FLinesOfCodeReferences.inc.qhelp"
   ],
-  "FCommentRatioCommon.qhelp": [
-    "java/ql/src/Metrics/Files/FCommentRatioCommon.qhelp",
-    "javascript/ql/src/Metrics/FCommentRatioCommon.qhelp"
+  "FCommentRatioCommon.inc.qhelp": [
+    "java/ql/src/Metrics/Files/FCommentRatioCommon.inc.qhelp",
+    "javascript/ql/src/Metrics/FCommentRatioCommon.inc.qhelp"
   ],
-  "FLinesOfCodeOverview.qhelp": [
-    "java/ql/src/Metrics/Files/FLinesOfCodeOverview.qhelp",
-    "javascript/ql/src/Metrics/FLinesOfCodeOverview.qhelp"
+  "FLinesOfCodeOverview.inc.qhelp": [
+    "java/ql/src/Metrics/Files/FLinesOfCodeOverview.inc.qhelp",
+    "javascript/ql/src/Metrics/FLinesOfCodeOverview.inc.qhelp"
   ],
-  "CommentedOutCodeMetricOverview.qhelp": [
-    "cpp/ql/src/Metrics/Files/CommentedOutCodeMetricOverview.qhelp",
-    "csharp/ql/src/Metrics/Files/CommentedOutCodeMetricOverview.qhelp",
-    "java/ql/src/Metrics/Files/CommentedOutCodeMetricOverview.qhelp",
-    "javascript/ql/src/Comments/CommentedOutCodeMetricOverview.qhelp",
-    "python/ql/src/Lexical/CommentedOutCodeMetricOverview.qhelp"
+  "CommentedOutCodeMetricOverview.inc.qhelp": [
+    "cpp/ql/src/Metrics/Files/CommentedOutCodeMetricOverview.inc.qhelp",
+    "csharp/ql/src/Metrics/Files/CommentedOutCodeMetricOverview.inc.qhelp",
+    "java/ql/src/Metrics/Files/CommentedOutCodeMetricOverview.inc.qhelp",
+    "javascript/ql/src/Comments/CommentedOutCodeMetricOverview.inc.qhelp",
+    "python/ql/src/Lexical/CommentedOutCodeMetricOverview.inc.qhelp"
   ],
-  "FLinesOfDuplicatedCodeCommon.qhelp": [
-    "cpp/ql/src/Metrics/Files/FLinesOfDuplicatedCodeCommon.qhelp",
-    "java/ql/src/Metrics/Files/FLinesOfDuplicatedCodeCommon.qhelp",
-    "javascript/ql/src/Metrics/FLinesOfDuplicatedCodeCommon.qhelp",
-    "python/ql/src/Metrics/FLinesOfDuplicatedCodeCommon.qhelp"
+  "FLinesOfDuplicatedCodeCommon.inc.qhelp": [
+    "cpp/ql/src/Metrics/Files/FLinesOfDuplicatedCodeCommon.inc.qhelp",
+    "java/ql/src/Metrics/Files/FLinesOfDuplicatedCodeCommon.inc.qhelp",
+    "javascript/ql/src/Metrics/FLinesOfDuplicatedCodeCommon.inc.qhelp",
+    "python/ql/src/Metrics/FLinesOfDuplicatedCodeCommon.inc.qhelp"
   ],
-  "CommentedOutCodeReferences.qhelp": [
-    "cpp/ql/src/Metrics/Files/CommentedOutCodeReferences.qhelp",
-    "csharp/ql/src/Metrics/Files/CommentedOutCodeReferences.qhelp",
-    "java/ql/src/Metrics/Files/CommentedOutCodeReferences.qhelp",
-    "javascript/ql/src/Comments/CommentedOutCodeReferences.qhelp",
-    "python/ql/src/Lexical/CommentedOutCodeReferences.qhelp"
+  "CommentedOutCodeReferences.inc.qhelp": [
+    "cpp/ql/src/Metrics/Files/CommentedOutCodeReferences.inc.qhelp",
+    "csharp/ql/src/Metrics/Files/CommentedOutCodeReferences.inc.qhelp",
+    "java/ql/src/Metrics/Files/CommentedOutCodeReferences.inc.qhelp",
+    "javascript/ql/src/Comments/CommentedOutCodeReferences.inc.qhelp",
+    "python/ql/src/Lexical/CommentedOutCodeReferences.inc.qhelp"
   ],
   "IDE Contextual Queries": [
     "cpp/ql/src/IDEContextual.qll",
@@ -425,5 +425,14 @@
     "java/ql/src/IDEContextual.qll",
     "javascript/ql/src/IDEContextual.qll",
     "python/ql/src/analysis/IDEContextual.qll"
+  ],
+  "SSA C#": [
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/SsaImplCommon.qll",
+    "csharp/ql/src/semmle/code/csharp/controlflow/internal/pressa/SsaImplCommon.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/basessa/SsaImplCommon.qll"
+  ],
+  "CryptoAlgorithms Python/JS": [
+    "javascript/ql/src/semmle/javascript/security/CryptoAlgorithms.qll",
+    "python/ql/src/semmle/crypto/Crypto.qll"
   ]
 }

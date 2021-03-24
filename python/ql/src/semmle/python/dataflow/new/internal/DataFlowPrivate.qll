@@ -819,7 +819,15 @@ class DataFlowType extends TDataFlowType {
 
 /** A node that performs a type cast. */
 class CastNode extends Node {
-  CastNode() { none() }
+  // We include read- and store steps here to force them to be
+  // shown in path explanations.
+  // This hack is necessary, because we have included some of these
+  // steps as default taint steps, making them be suppressed in path
+  // explanations.
+  // We should revert this once, we can remove this steps from the
+  // default taint steps; this should be possible once we have
+  // implemented flow summaries and recursive content.
+  CastNode() { readStep(_, _, this) or storeStep(_, _, this) }
 }
 
 /**
@@ -1597,3 +1605,14 @@ int accessPathLimit() { result = 5 }
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) { none() }
+
+class LambdaCallKind = Unit;
+
+/** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+
+/** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+
+/** Extra data-flow steps needed for lamba flow analysis. */
+predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }

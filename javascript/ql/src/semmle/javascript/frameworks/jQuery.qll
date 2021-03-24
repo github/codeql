@@ -479,8 +479,8 @@ module JQuery {
         // either a reference to a global variable `$` or `jQuery`
         this = DataFlow::globalVarRef(any(string jq | jq = "$" or jq = "jQuery"))
         or
-        // or imported from a module named `jquery`
-        this = DataFlow::moduleImport("jquery")
+        // or imported from a module named `jquery` or `zepto`
+        this = DataFlow::moduleImport(["jquery", "zepto"])
         or
         this.hasUnderlyingType("JQueryStatic")
       }
@@ -544,17 +544,17 @@ module JQuery {
   }
 
   /** A source of jQuery objects from the AST-based `JQueryObject` class. */
-  private DataFlow::Node legacyObjectSource() { result = any(JQueryObjectInternal e).flow() }
+  private DataFlow::SourceNode legacyObjectSource() {
+    result = any(JQueryObjectInternal e).flow().getALocalSource()
+  }
 
   /** Gets a source of jQuery objects. */
   private DataFlow::SourceNode objectSource(DataFlow::TypeTracker t) {
     t.start() and
     result instanceof ObjectSource::Range
     or
-    exists(DataFlow::TypeTracker init |
-      init.start() and
-      t = init.smallstep(legacyObjectSource(), result)
-    )
+    t.start() and
+    result = legacyObjectSource()
   }
 
   /** Gets a data flow node referring to a jQuery object. */
@@ -590,10 +590,6 @@ module JQuery {
         read.getBase().getALocalSource() = [dollar(), objectRef()] and
         read.mayHavePropertyName(name)
       )
-      or
-      // Handle contributed JQuery objects that aren't source nodes (usually parameter uses)
-      getReceiver() = legacyObjectSource() and
-      this.(DataFlow::MethodCallNode).getMethodName() = name
     }
 
     /**

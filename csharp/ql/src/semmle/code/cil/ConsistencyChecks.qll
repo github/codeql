@@ -79,7 +79,13 @@ class MissingValue extends InstructionViolation {
  * A call that does not have exactly one `getTarget()`.
  */
 class MissingCallTarget extends InstructionViolation {
-  MissingCallTarget() { exists(Call c | c = instruction | count(c.getTarget()) != 1) }
+  MissingCallTarget() {
+    exists(Call c | c = instruction |
+      count(c.getTarget()) != 1 and not c instanceof Opcodes::Calli
+      or
+      count(c.(Opcodes::Calli).getTargetType()) != 1 and c instanceof Opcodes::Calli
+    )
+  }
 
   override string getMessage() { result = "Call has invalid target" }
 }

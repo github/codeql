@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 var type = ResolvedType;
 
-                if (type.Symbol == null)
+                if (type.Symbol is null)
                     type.Symbol = (TypeInfo.Type ?? TypeInfo.ConvertedType).DisambiguateType();
 
                 // Roslyn workaround: It can't work out the type of "new object[0]"
@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     {
                         var elementType = Context.GetType(arrayCreation.Type.ElementType);
 
-                        if (elementType.Symbol != null)
+                        if (elementType.Symbol is not null)
                             // There seems to be no way to create an array with a nullable element at present.
                             return new AnnotatedTypeSymbol(Context.Compilation.CreateArrayTypeSymbol(elementType.Symbol, arrayCreation.Type.RankSpecifiers.Count), NullableAnnotation.NotAnnotated);
                     }
@@ -74,13 +74,13 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        private Microsoft.CodeAnalysis.Location location;
+        private Microsoft.CodeAnalysis.Location? location;
 
         public Microsoft.CodeAnalysis.Location CodeAnalysisLocation
         {
             get
             {
-                if (location == null)
+                if (location is null)
                     location = Node.FixedLocation();
                 return location;
             }
@@ -92,7 +92,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public SemanticModel Model => Context.GetModel(Node);
 
-        public string ExprValue
+        public string? ExprValue
         {
             get
             {
@@ -111,13 +111,13 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        private Extraction.Entities.Location cachedLocation;
+        private Extraction.Entities.Location? cachedLocation;
 
         public Extraction.Entities.Location Location
         {
             get
             {
-                if (cachedLocation == null)
+                if (cachedLocation is null)
                     cachedLocation = Context.CreateLocation(CodeAnalysisLocation);
                 return cachedLocation;
             }
@@ -164,7 +164,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                if (cachedSymbolInfo.Symbol == null && cachedSymbolInfo.CandidateReason == CandidateReason.None)
+                if (cachedSymbolInfo.Symbol is null && cachedSymbolInfo.CandidateReason == CandidateReason.None)
                     cachedSymbolInfo = Model.GetSymbolInfo(Node);
                 return cachedSymbolInfo;
             }

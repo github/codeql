@@ -35,7 +35,8 @@ module Vue {
     result =
       [
         "beforeCreate", "created", "beforeMount", "mounted", "beforeUpdate", "updated", "activated",
-        "deactivated", "beforeDestroy", "destroyed", "errorCaptured"
+        "deactivated", "beforeDestroy", "destroyed", "errorCaptured", "beforeRouteEnter",
+        "beforeRouteUpdate", "beforeRouteLeave"
       ]
   }
 
@@ -163,6 +164,13 @@ module Vue {
     }
 
     /**
+     * Gets a source node flowing into the option `name` of this instance, including those from
+     * extended objects and mixins.
+     */
+    pragma[nomagic]
+    DataFlow::SourceNode getOptionSource(string name) { result = getOption(name).getALocalSource() }
+
+    /**
      * Gets the template element used by this instance, if any.
      */
     abstract Template::Element getTemplateElement();
@@ -189,13 +197,15 @@ module Vue {
     /**
      * Gets the node for the `template` option of this instance.
      */
-    DataFlow::Node getTemplate() { result = getOption("template") }
+    pragma[nomagic]
+    DataFlow::SourceNode getTemplate() { result = getOptionSource("template") }
 
     /**
      * Gets the node for the `render` option of this instance.
      */
-    DataFlow::Node getRender() {
-      result = getOption("render")
+    pragma[nomagic]
+    DataFlow::SourceNode getRender() {
+      result = getOptionSource("render")
       or
       result = getAsClassComponent().getInstanceMethod("render")
     }
@@ -203,22 +213,38 @@ module Vue {
     /**
      * Gets the node for the `methods` option of this instance.
      */
-    DataFlow::Node getMethods() { result = getOption("methods") }
+    pragma[nomagic]
+    DataFlow::SourceNode getMethods() { result = getOptionSource("methods") }
 
     /**
      * Gets the node for the `computed` option of this instance.
      */
-    DataFlow::Node getComputed() { result = getOption("computed") }
+    pragma[nomagic]
+    DataFlow::SourceNode getComputed() { result = getOptionSource("computed") }
+
+    /**
+     * Gets the node for the `watch` option of this instance.
+     */
+    pragma[nomagic]
+    DataFlow::SourceNode getWatch() { result = getOptionSource("watch") }
+
+    /**
+     * Gets the function responding to changes to the given `propName`.
+     */
+    DataFlow::FunctionNode getWatchHandler(string propName) {
+      exists(DataFlow::SourceNode watcher | watcher = getWatch().getAPropertySource(propName) |
+        result = watcher
+        or
+        result = watcher.getAPropertySource("handler")
+      )
+    }
 
     /**
      * Gets a node for a member of the `methods` option of this instance.
      */
-    pragma[noinline]
-    private DataFlow::Node getAMethod() {
-      exists(DataFlow::ObjectLiteralNode methods |
-        methods.flowsTo(getMethods()) and
-        result = methods.getAPropertyWrite().getRhs()
-      )
+    pragma[nomagic]
+    private DataFlow::SourceNode getAMethod() {
+      result = getMethods().getAPropertySource()
       or
       result = getAsClassComponent().getAnInstanceMethod() and
       not result = getAsClassComponent().getInstanceMethod([lifecycleHookName(), "render", "data"])
@@ -227,19 +253,11 @@ module Vue {
     /**
      * Gets a node for a member of the `computed` option of this instance that matches `kind`.
      */
-    pragma[noinline]
-    private DataFlow::Node getAnAccessor(DataFlow::MemberKind kind) {
-      exists(DataFlow::ObjectLiteralNode computedObj, DataFlow::Node accessorObjOrGetter |
-        computedObj.flowsTo(getComputed()) and
-        computedObj.getAPropertyWrite().getRhs() = accessorObjOrGetter
-      |
-        result = accessorObjOrGetter and kind = DataFlow::MemberKind::getter()
-        or
-        exists(DataFlow::ObjectLiteralNode accessorObj |
-          accessorObj.flowsTo(accessorObjOrGetter) and
-          result = accessorObj.getAPropertyWrite(memberKindVerb(kind)).getRhs()
-        )
-      )
+    pragma[nomagic]
+    private DataFlow::SourceNode getAnAccessor(DataFlow::MemberKind kind) {
+      result = getComputed().getAPropertySource() and kind = DataFlow::MemberKind::getter()
+      or
+      result = getComputed().getAPropertySource().getAPropertySource(memberKindVerb(kind))
       or
       result = getAsClassComponent().getAnInstanceMember(kind) and
       kind.isAccessor()
@@ -248,18 +266,10 @@ module Vue {
     /**
      * Gets a node for a member `name` of the `computed` option of this instance that matches `kind`.
      */
-    private DataFlow::Node getAccessor(string name, DataFlow::MemberKind kind) {
-      exists(DataFlow::ObjectLiteralNode computedObj, DataFlow::SourceNode accessorObjOrGetter |
-        computedObj.flowsTo(getComputed()) and
-        accessorObjOrGetter.flowsTo(computedObj.getAPropertyWrite(name).getRhs())
-      |
-        result = accessorObjOrGetter and kind = DataFlow::MemberKind::getter()
-        or
-        exists(DataFlow::ObjectLiteralNode accessorObj |
-          accessorObj.flowsTo(accessorObjOrGetter) and
-          result = accessorObj.getAPropertyWrite(memberKindVerb(kind)).getRhs()
-        )
-      )
+    private DataFlow::SourceNode getAccessor(string name, DataFlow::MemberKind kind) {
+      result = getComputed().getAPropertySource(name) and kind = DataFlow::MemberKind::getter()
+      or
+      result = getComputed().getAPropertySource(name).getAPropertySource(memberKindVerb(kind))
       or
       result = getAsClassComponent().getInstanceMember(name, kind) and
       kind.isAccessor()
@@ -268,11 +278,11 @@ module Vue {
     /**
      * Gets the node for the life cycle hook of the `hookName` option of this instance.
      */
-    pragma[noinline]
-    private DataFlow::Node getALifecycleHook(string hookName) {
+    pragma[nomagic]
+    DataFlow::SourceNode getALifecycleHook(string hookName) {
       hookName = lifecycleHookName() and
       (
-        result = getOption(hookName)
+        result = getOptionSource(hookName)
         or
         result = getAsClassComponent().getInstanceMethod(hookName)
       )
@@ -281,27 +291,36 @@ module Vue {
     /**
      * Gets a node for a function that will be invoked with `this` bound to this instance.
      */
-    DataFlow::Node getABoundFunction() {
+    DataFlow::FunctionNode getABoundFunction() {
       result = getAMethod()
       or
       result = getAnAccessor(_)
       or
       result = getALifecycleHook(_)
+      or
+      result = getOptionSource(_)
+      or
+      result = getOptionSource(_).getAPropertySource()
+    }
+
+    pragma[noinline]
+    private DataFlow::PropWrite getAPropertyValueWrite(string name) {
+      result = getData().getALocalSource().getAPropertyWrite(name)
+      or
+      result =
+        getABoundFunction()
+            .getALocalSource()
+            .(DataFlow::FunctionNode)
+            .getReceiver()
+            .getAPropertyWrite(name)
     }
 
     /**
-     * Gets a node for the value for property `name` of this instance.
+     * Gets the data flow node that flows into the property `name` of this instance, or is
+     * returned form a getter defining that property.
      */
     DataFlow::Node getAPropertyValue(string name) {
-      exists(DataFlow::SourceNode obj | obj.getAPropertyWrite(name).getRhs() = result |
-        obj.flowsTo(getData())
-        or
-        exists(DataFlow::FunctionNode bound |
-          bound.flowsTo(getABoundFunction()) and
-          not bound.getFunction() instanceof ArrowFunctionExpr and
-          obj = bound.getReceiver()
-        )
-      )
+      result = getAPropertyValueWrite(name).getRhs()
       or
       exists(DataFlow::FunctionNode getter |
         getter.flowsTo(getAccessor(name, DataFlow::MemberKind::getter())) and
@@ -475,19 +494,53 @@ module Vue {
   /**
    * A taint propagating data flow edge through a Vue instance property.
    */
-  class InstanceHeapStep extends TaintTracking::AdditionalTaintStep {
-    DataFlow::Node src;
-
-    InstanceHeapStep() {
+  class InstanceHeapStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(Instance i, string name, DataFlow::FunctionNode bound |
         bound.flowsTo(i.getABoundFunction()) and
         not bound.getFunction() instanceof ArrowFunctionExpr and
-        bound.getReceiver().getAPropertyRead(name) = this and
-        src = i.getAPropertyValue(name)
+        succ = bound.getReceiver().getAPropertyRead(name) and
+        pred = i.getAPropertyValue(name)
       )
     }
+  }
 
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) { pred = src and succ = this }
+  /**
+   * A Vue `v-html` attribute.
+   */
+  class VHtmlAttribute extends DataFlow::Node {
+    HTML::Attribute attr;
+
+    VHtmlAttribute() {
+      this.(DataFlow::HtmlAttributeNode).getAttribute() = attr and attr.getName() = "v-html"
+    }
+
+    /**
+     * Gets the HTML attribute of this sink.
+     */
+    HTML::Attribute getAttr() { result = attr }
+  }
+
+  /**
+   * A taint propagating data flow edge through a string interpolation of a
+   * Vue instance property to a `v-html` attribute.
+   *
+   * As an example, `<div v-html="prop"/>` reads the `prop` property
+   * of `inst = new Vue({ ..., data: { prop: source } })`, if the
+   * `div` element is part of the template for `inst`.
+   */
+  class VHtmlSourceWrite extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(Vue::Instance instance, string expr, VHtmlAttribute attr |
+        attr.getAttr().getRoot() =
+          instance.getTemplateElement().(Vue::Template::HtmlElement).getElement() and
+        expr = attr.getAttr().getValue() and
+        // only support for simple identifier expressions
+        expr.regexpMatch("(?i)[a-z0-9_]+") and
+        pred = instance.getAPropertyValue(expr) and
+        succ = attr
+      )
+    }
   }
 
   /*
@@ -551,5 +604,68 @@ module Vue {
        */
       HTML::Element getElement() { result = elem }
     }
+  }
+
+  /** An API node referring to a `RouteConfig` being passed to `vue-router`. */
+  private API::Node routeConfig() {
+    result = API::moduleImport("vue-router").getParameter(0).getMember("routes").getAMember()
+    or
+    result = routeConfig().getMember("children").getAMember()
+  }
+
+  /** Gets a data flow node that refers to a `Route` object from `vue-router`. */
+  private DataFlow::SourceNode routeObject(DataFlow::TypeTracker t) {
+    t.start() and
+    (
+      exists(API::Node router | router = API::moduleImport("vue-router") |
+        result = router.getInstance().getMember("currentRoute").getAnImmediateUse()
+        or
+        result =
+          router
+              .getInstance()
+              .getMember(["beforeEach", "beforeResolve", "afterEach"])
+              .getParameter(0)
+              .getParameter([0, 1])
+              .getAnImmediateUse()
+        or
+        result =
+          router
+              .getParameter(0)
+              .getMember("scrollBehavior")
+              .getParameter([0, 1])
+              .getAnImmediateUse()
+      )
+      or
+      result = routeConfig().getMember("beforeEnter").getParameter([0, 1]).getAnImmediateUse()
+      or
+      exists(Instance i |
+        result = i.getABoundFunction().getAFunctionValue().getReceiver().getAPropertyRead("$route")
+        or
+        result =
+          i.getALifecycleHook(["beforeRouteEnter", "beforeRouteUpdate", "beforeRouteLeave"])
+              .getAFunctionValue()
+              .getParameter([0, 1])
+        or
+        result = i.getWatchHandler("$route").getParameter([0, 1])
+      )
+    )
+    or
+    exists(DataFlow::TypeTracker t2 | result = routeObject(t2).track(t2, t))
+  }
+
+  /** Gets a data flow node that refers to a `Route` object from `vue-router`. */
+  DataFlow::SourceNode routeObject() { result = routeObject(DataFlow::TypeTracker::end()) }
+
+  private class VueRouterFlowSource extends RemoteFlowSource {
+    VueRouterFlowSource() {
+      this = routeObject().getAPropertyRead(["params", "query", "hash", "path", "fullPath"])
+      or
+      exists(Instance i, string prop |
+        this = i.getWatchHandler(prop).getParameter([0, 1]) and
+        prop.regexpMatch("\\$route\\.(params|query|hash|path|fullPath)\\b.*")
+      )
+    }
+
+    override string getSourceType() { result = "Vue route parameter" }
   }
 }

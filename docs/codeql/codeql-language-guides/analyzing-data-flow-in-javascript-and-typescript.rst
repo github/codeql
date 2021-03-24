@@ -439,23 +439,24 @@ additional taint step from the first argument of ``resolveSymlinks`` to its resu
   }
 
 We might even consider adding this as a default taint step to be used by all taint-tracking configurations. In order to do this, we need
-to wrap it in a new subclass of ``TaintTracking::AdditionalTaintStep`` like this:
+to wrap it in a new subclass of ``TaintTracking::SharedTaintStep`` like this:
 
 .. code-block:: ql
 
-  class StepThroughResolveSymlinks extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
-    StepThroughResolveSymlinks() { this = DataFlow::moduleImport("resolve-symlinks").getACall() }
-
+  class StepThroughResolveSymlinks extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = this.getArgument(0) and
-      succ = this
+      exists(DataFlow::CallNode c |
+        c = DataFlow::moduleImport("resolve-symlinks").getACall() and
+        pred = c.getArgument(0) and
+        succ = c
+      )
     }
   }
 
 If we add this definition to the standard library, it will be picked up by all taint-tracking configurations. Obviously, one has to be
 careful when adding such new additional taint steps to ensure that they really make sense for `all` configurations.
 
-Analogous to ``TaintTracking::AdditionalTaintStep``, there is also a class ``DataFlow::AdditionalFlowStep`` that can be extended to add
+Analogous to ``TaintTracking::SharedTaintStep``, there is also a class ``DataFlow::SharedFlowStep`` that can be extended to add
 extra steps to all data-flow configurations, and hence also to all taint-tracking configurations.
 
 Exercises

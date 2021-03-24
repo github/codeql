@@ -250,7 +250,7 @@ namespace Semmle.Extraction.CIL.Entities
 
             public void WriteId(TextWriter trapFile, IGenericContext gc)
             {
-                var type = (Type)gc.Cx.Create(handle);
+                var type = (Type)gc.Context.Create(handle);
                 type.WriteId(trapFile);
             }
         }
@@ -271,7 +271,7 @@ namespace Semmle.Extraction.CIL.Entities
 
             public void WriteId(TextWriter trapFile, IGenericContext gc)
             {
-                var type = (Type)gc.Cx.Create(handle);
+                var type = (Type)gc.Context.Create(handle);
                 type.WriteId(trapFile);
             }
         }

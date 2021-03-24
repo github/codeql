@@ -38,7 +38,7 @@ If you have an idea for a query that you would like to share with other CodeQL u
 
     - The queries and libraries must be autoformatted, for example using the "Format Document" command in [CodeQL for Visual Studio Code](https://help.semmle.com/codeql/codeql-for-vscode/procedures/about-codeql-for-vscode.html).
 
-    If you prefer, you can use this [pre-commit hook](misc/scripts/pre-commit) that automatically checks whether your files are correctly formatted. See the [pre-commit hook installation guide](docs/install-pre-commit-hook.md) for instructions on how to install the hook.
+    If you prefer, you can use this [pre-commit hook](misc/scripts/pre-commit) that automatically checks whether your files are correctly formatted. See the [pre-commit hook installation guide](docs/pre-commit-hook-setup.md) for instructions on how to install the hook.
 
 4. **Compilation**
 

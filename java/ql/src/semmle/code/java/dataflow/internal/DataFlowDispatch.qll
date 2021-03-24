@@ -41,6 +41,12 @@ private module DispatchImpl {
     )
   }
 
+  private RefType getPreciseType(Expr e) {
+    result = e.(FunctionalExpr).getConstructedType()
+    or
+    not e instanceof FunctionalExpr and result = e.getType()
+  }
+
   /**
    * Holds if the `i`th argument of `ctx` has type `t` and `ctx` is a
    * relevant call context.
@@ -55,7 +61,7 @@ private module DispatchImpl {
         ctx.getArgument(i) = arg
       |
         src = variableTrack(arg) and
-        srctype = src.getType() and
+        srctype = getPreciseType(src) and
         if src instanceof ClassInstanceExpr then exact = true else exact = false
       )
       or
@@ -67,11 +73,9 @@ private module DispatchImpl {
         if ctx instanceof ClassInstanceExpr then exact = true else exact = false
       )
     |
-      exists(TypeVariable v | v = srctype |
-        t = v.getUpperBoundType+() and not t instanceof TypeVariable
-      )
+      t = srctype.(BoundedType).getAnUltimateUpperBoundType()
       or
-      t = srctype and not srctype instanceof TypeVariable
+      t = srctype and not srctype instanceof BoundedType
     )
   }
 

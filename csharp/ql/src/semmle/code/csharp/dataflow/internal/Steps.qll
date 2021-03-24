@@ -6,17 +6,19 @@ import csharp
  * Provides functionality for performing simple data flow analysis.
  * This library is used by the dispatch library, which in turn is used by the
  * SSA library, so we cannot make use of the SSA library in this library.
- * Instead, this library relies on a self-contained, minimalistic SSA-like
- * implementation.
+ * Instead, this library relies on the `BaseSsa` library.
  */
 module Steps {
   private import semmle.code.csharp.dataflow.internal.BaseSSA
 
   /**
-   * Gets a read that is guaranteed to read the value assigned at definition `def`.
+   * Gets a read that may read the value assigned at definition `def`.
    */
   private AssignableRead getARead(AssignableDefinition def) {
-    result = BaseSsa::getARead(def, _)
+    exists(BaseSsa::Definition ssaDef |
+      ssaDef.getAnUltimateDefinition().getDefinition() = def and
+      result = ssaDef.getARead()
+    )
     or
     exists(LocalScopeVariable v | def.getTarget() = v |
       result = v.getAnAccess() and

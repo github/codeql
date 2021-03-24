@@ -45,7 +45,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public static IEnumerable<Type> GetAllTypeParameters(Type? container, IEnumerable<TypeTypeParameter> thisTypeParameters)
         {
-            if (container != null)
+            if (container is not null)
             {
                 foreach (var t in container.TypeParameters)
                     yield return t;
