@@ -42,5 +42,5 @@ class MyForm(django.forms.Form):
         )
 
     def clean_foo(self):
-        # This method is supposed to clean a the `foo` field in context of this form.
+        # This method is supposed to clean the `foo` field in context of this form.
         ensure_tainted(self.cleaned_data)
