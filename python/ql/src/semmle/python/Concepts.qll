@@ -666,7 +666,7 @@ module RegexExecution {
 }
 
 class RegexExecution extends DataFlow::Node {
-  override RegexExecution::Range range;
+  RegexExecution::Range range;
 
   RegexExecution() { this = range }
 

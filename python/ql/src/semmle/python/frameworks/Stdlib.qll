@@ -875,25 +875,32 @@ private module Stdlib {
     }
 
     /** re.ReMethod(pattern, string) */
-    private class DirectRegex extends RegexExecution::Range {
+    private class DirectRegex extends DataFlow::CallCfgNode, RegexExecution::Range {
+      DataFlow::Node regexNode;
+
       DirectRegex() {
-        exists(ReMethods reMethod, DataFlow::CallCfgNode reCall |
-          reCall = API::moduleImport("re").getMember(reMethod).getACall() and
-          this = reCall.getArg(0)
-        )
+        this = API::moduleImport("re").getMember(any(ReMethods m)).getACall() and
+        regexNode = this.getArg(0)
       }
+
+      override DataFlow::Node getRegexNode() { result = regexNode }
     }
 
     /** re.compile(pattern).ReMethod */
-    private class CompiledRegex extends RegexExecution::Range {
+    private class CompiledRegex extends DataFlow::CallCfgNode, RegexExecution::Range {
+      DataFlow::Node regexNode;
+
       CompiledRegex() {
         exists(DataFlow::CallCfgNode patternCall, DataFlow::AttrRead reMethod |
+          this.getFunction() = reMethod and
           patternCall = API::moduleImport("re").getMember("compile").getACall() and
           patternCall = reMethod.getObject().getALocalSource() and
           reMethod.getAttributeName() instanceof ReMethods and
-          this = patternCall.getArg(0)
+          regexNode = patternCall.getArg(0)
         )
       }
+
+      override DataFlow::Node getRegexNode() { result = regexNode }
     }
 
     private class RegexEscape extends DataFlow::Node {
