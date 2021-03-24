@@ -139,11 +139,6 @@ class Node extends TNode {
    * Gets a local source node from which data may flow to this node in zero or more local data-flow steps.
    */
   LocalSourceNode getALocalSource() { result.flowsTo(this) }
-
-  /**
-   * Gets a local source node from which data may flow to this node in zero or more local taint-flow steps.
-   */
-  LocalSourceNode getALocalTaintSource() { result.taintFlowsTo(this) }
 }
 
 /** A data-flow node corresponding to an SSA variable. */

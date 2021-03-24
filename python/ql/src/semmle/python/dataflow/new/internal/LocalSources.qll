@@ -9,7 +9,6 @@
 import python
 import DataFlowPublic
 private import DataFlowPrivate
-private import TaintTrackingPublic
 
 /**
  * A data flow node that is a source of local flow. This includes things like
@@ -27,10 +26,6 @@ class LocalSourceNode extends Node {
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
   pragma[inline]
   predicate flowsTo(Node nodeTo) { Cached::hasLocalSource(nodeTo, this) }
-
-  /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local taint steps. */
-  pragma[inline]
-  predicate taintFlowsTo(Node nodeTo) { Cached::hasLocalTaintSource(nodeTo, this) }
 
   /**
    * Gets a reference (read or write) of attribute `attrName` on this node.
@@ -79,24 +74,6 @@ private module Cached {
     exists(Node mid |
       hasLocalSource(mid, source) and
       simpleLocalFlowStep(mid, sink)
-    )
-  }
-
-  /**
-   * Holds if `source` is a `LocalSourceNode` that can reach `sink` via local taint steps.
-   *
-   * The slightly backwards parametering ordering is to force correct indexing.
-   */
-  cached
-  predicate hasLocalTaintSource(Node sink, Node source) {
-    // Declaring `source` to be a `LocalSourceNode` currently causes a redundant check in the
-    // recursive case, so instead we check it explicitly here.
-    source = sink and
-    source instanceof LocalSourceNode
-    or
-    exists(Node mid |
-      hasLocalTaintSource(mid, source) and
-      localTaintStep(mid, sink)
     )
   }
 
