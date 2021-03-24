@@ -139,6 +139,20 @@ module Public {
      *
      * `preservesValue` indicates whether this is a value-preserving step
      * or a taint-step.
+     *
+     * Input specications are restricted to stacks that end with
+     * `SummaryComponent::argument(_)`, preceded by zero or more
+     * `SummaryComponent::return(_)` or `SummaryComponent::content(_)` components.
+     *
+     * Output specications are restricted to stacks that end with
+     * `SummaryComponent::return(_)` or `SummaryComponent::argument(_)`.
+     *
+     * Output stacks ending with `SummaryComponent::return(_)` can be preceded by zero
+     * or more `SummaryComponent::content(_)` components.
+     *
+     * Output stacks ending with `SummaryComponent::argument(_)` can be preceded by an
+     * optional `SummaryComponent::parameter(_)` component, which in turn can be preceded
+     * by zero or more `SummaryComponent::content(_)` components.
      */
     pragma[nomagic]
     predicate propagatesFlow(
