@@ -4,6 +4,7 @@
  *              macro expansion whose location spans all the lines of
  *              the result's location.
  * @kind problem
+ * @problem.severity recommendation
  * @id cpp/macros-filter
  * @tags filter
  */

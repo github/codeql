@@ -4,6 +4,7 @@
  * @description Use this filter to return results only if they are
  *              located in files for which we have source code.
  * @kind problem
+ * @problem.severity recommendation
  * @id cpp/from-source-filter
  * @tags filter
  */

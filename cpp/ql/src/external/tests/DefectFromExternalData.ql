@@ -1,5 +1,6 @@
 /**
  * @name Defect from external data
+ * @id cpp/external/tests/defects-from-external-data
  * @description Insert description here...
  * @kind problem
  * @problem.severity warning
