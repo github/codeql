@@ -524,6 +524,7 @@ module PointsToInternal {
     )
   }
 
+  pragma[noinline]
   private boolean ssa_filter_definition_bool(
     PyEdgeRefinement def, PointsToContext context, ObjectInternal value, ControlFlowNode origin
   ) {
