@@ -848,19 +848,13 @@ module Redux {
     )
   }
 
-  private class ActionToReducerStep extends DataFlow::AdditionalFlowStep {
-    ActionToReducerStep() {
-      actionToReducerStep(_, this)
-      or
-      actionToReducerPromiseStep(_, this)
-    }
-
+  private class ActionToReducerStep extends DataFlow::SharedFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      actionToReducerStep(pred, succ) and succ = this
+      actionToReducerStep(pred, succ)
     }
 
     override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      actionToReducerPromiseStep(pred, succ) and succ = this and prop = Promises::valueProp()
+      actionToReducerPromiseStep(pred, succ) and prop = Promises::valueProp()
     }
   }
 
@@ -919,11 +913,9 @@ module Redux {
     )
   }
 
-  private class ReducerToStateStep extends DataFlow::AdditionalFlowStep {
-    ReducerToStateStep() { reducerToStateStep(_, this) }
-
+  private class ReducerToStateStep extends DataFlow::SharedFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      reducerToStateStep(pred, succ) and succ = this
+      reducerToStateStep(pred, succ)
     }
   }
 
@@ -981,8 +973,8 @@ module Redux {
   /**
    * Defines a flow step to be used for propagating tracking access to `state`.
    *
-   * An `AdditionalFlowStep` is generated for these steps as well.
-   * It is distinct from `AdditionalFlowStep` to avoid recursion between that and the propagation of `state`.
+   * A `SharedFlowStep` is generated for these steps as well.
+   * It is distinct from `SharedFlowStep` to avoid recursion between that and the propagation of `state`.
    */
   private class StateStep extends Unit {
     abstract predicate step(DataFlow::Node pred, DataFlow::Node succ);
@@ -992,11 +984,9 @@ module Redux {
     any(StateStep s).step(pred, succ)
   }
 
-  private class StateStepAsFlowStep extends DataFlow::AdditionalFlowStep {
-    StateStepAsFlowStep() { stateStep(_, this) }
-
+  private class StateStepAsFlowStep extends DataFlow::SharedFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      stateStep(pred, succ) and succ = this
+      stateStep(pred, succ)
     }
   }
 
