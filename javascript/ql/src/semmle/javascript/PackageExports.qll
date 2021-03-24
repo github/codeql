@@ -70,6 +70,58 @@ private DataFlow::Node getAValueExportedByPackage() {
     result = cla.getAStaticMethod() or
     result = cla.getConstructor()
   )
+  or
+  // *****
+  // Common styles of transforming exported objects.
+  // *****
+  //
+  // Object.defineProperties
+  exists(DataFlow::MethodCallNode call |
+    call = DataFlow::globalVarRef("Object").getAMethodCall("defineProperties") and
+    [call, call.getArgument(0)] = getAValueExportedByPackage() and
+    result = call.getArgument(any(int i | i > 0))
+  )
+  or
+  // Object.defineProperty
+  exists(CallToObjectDefineProperty call |
+    [call, call.getBaseObject()] = getAValueExportedByPackage()
+  |
+    result = call.getPropertyDescriptor().getALocalSource().getAPropertyReference("value")
+    or
+    result =
+      call.getPropertyDescriptor()
+          .getALocalSource()
+          .getAPropertyReference("get")
+          .(DataFlow::FunctionNode)
+          .getAReturn()
+  )
+  or
+  // Object.assign and friends
+  exists(ExtendCall assign |
+    getAValueExportedByPackage() = [assign, assign.getDestinationOperand()] and
+    result = assign.getASourceOperand()
+  )
+  or
+  // Array.prototype.{map, reduce, entries, values}
+  exists(DataFlow::MethodCallNode map |
+    map.getMethodName() = ["map", "reduce", "entries", "values"] and
+    map = getAValueExportedByPackage()
+  |
+    result = map.getArgument(0).getABoundFunctionValue(_).getAReturn()
+    or
+    // assuming that the receiver of the call is somehow exported
+    result = map.getReceiver()
+  )
+  or
+  // Object.{fromEntries, freeze, seal, entries, values}
+  exists(DataFlow::MethodCallNode freeze |
+    freeze =
+      DataFlow::globalVarRef("Object")
+          .getAMethodCall(["fromEntries", "freeze", "seal", "entries", "values"])
+  |
+    freeze = getAValueExportedByPackage() and
+    result = freeze.getArgument(0)
+  )
 }
 
 /**

@@ -408,3 +408,35 @@ module.exports.sanitizer3 = function (name) {
 	var sanitized = yetAnohterSanitizer(name);
 	cp.exec("rm -rf " + sanitized); // OK
 }
+
+var asyncExec = require("async-execute");
+module.exports.asyncStuff = function (name) {
+	asyncExec("rm -rf " + name); // NOT OK
+}
+
+const myFuncs = {
+	myFunc: function (name) {
+		asyncExec("rm -rf " + name); // NOT OK
+	}
+};
+
+module.exports.blabity = {};
+
+Object.defineProperties(
+	module.exports.blabity,
+	Object.assign(
+		{},
+		Object.entries(myFuncs).reduce(
+			(props, [ key, value ]) => Object.assign(
+				props,
+				{
+					[key]: {
+						value,
+						configurable: true,
+					},
+				},
+			),
+			{}
+		)
+	)
+);
