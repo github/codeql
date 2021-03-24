@@ -79,7 +79,7 @@ class File extends Container {
     exists(this.getRelativePath()) and
     (
       // The file doesn't have the extension `.py` but still contains Python statements
-      not this.getExtension() = "py" and
+      not this.getExtension().matches("py%") and
       exists(Stmt s | s.getLocation().getFile() = this)
       or
       // The file contains the usual `if __name__ == '__main__':` construction
