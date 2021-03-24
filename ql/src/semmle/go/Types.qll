@@ -401,6 +401,22 @@ class StructType extends @structtype, CompositeType {
     )
   }
 
+  /**
+   * Gets a method of `embeddedParent`, which is then embedded into this struct type.
+   */
+  Method getMethodOfEmbedded(Field embeddedParent, string name, int depth) {
+    // embeddedParent is a field of 'this' at depth 'depth - 1'
+    this.hasFieldCand(_, embeddedParent, depth - 1, true) and
+    result.getName() = name and
+    (
+      result.getReceiverBaseType() = embeddedParent.getType()
+      or
+      result.getReceiverBaseType() = embeddedParent.getType().(PointerType).getBaseType()
+      or
+      methodhosts(result, embeddedParent.getType())
+    )
+  }
+
   private predicate hasFieldCand(string name, Field f, int depth, boolean isEmbedded) {
     f = this.getOwnField(name, isEmbedded) and depth = 0
     or
@@ -448,6 +464,11 @@ class StructType extends @structtype, CompositeType {
     depth = min(int depthCand | exists(getFieldCand(name, depthCand, _))) and
     result = getFieldCand(name, depth, _) and
     strictcount(getFieldCand(name, depth, _)) = 1
+  }
+
+  Method getMethodAtDepth(string name, int depth) {
+    depth = min(int depthCand | hasMethodCand(name, _, depthCand)) and
+    result = unique(Method m | hasMethodCand(name, m, depth))
   }
 
   override predicate hasMethod(string name, SignatureType tp) {

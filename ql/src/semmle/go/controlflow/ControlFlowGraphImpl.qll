@@ -55,20 +55,36 @@ private predicate isCond(Expr e) {
  * field `B`, `B` contains an embedded field `C` and `C` contains the non-embedded field `x`.
  * Then `a.x` implicitly reads `C` with index 1 and `B` with index 2.
  */
-private predicate implicitFieldSelection(PromotedFieldSelector e, int index, Field implicitField) {
+private predicate implicitFieldSelectionForField(PromotedSelector e, int index, Field implicitField) {
   exists(StructType baseType, PromotedField child, int implicitFieldDepth |
     baseType = e.getSelectedStructType() and
     (
       e.refersTo(child)
       or
-      implicitFieldSelection(e, implicitFieldDepth + 1, child)
+      implicitFieldSelectionForField(e, implicitFieldDepth + 1, child)
     )
   |
     child = baseType.getFieldOfEmbedded(implicitField, _, implicitFieldDepth + 1, _) and
-    exists(Field explicitField, int explicitFieldDepth |
+    exists(PromotedField explicitField, int explicitFieldDepth |
       e.refersTo(explicitField) and baseType.getFieldAtDepth(_, explicitFieldDepth) = explicitField
     |
       index = explicitFieldDepth - implicitFieldDepth
+    )
+  )
+}
+
+private predicate implicitFieldSelectionForMethod(PromotedSelector e, int index, Field implicitField) {
+  exists(StructType baseType, PromotedMethod method, int mDepth, int implicitFieldDepth |
+    baseType = e.getSelectedStructType() and
+    e.refersTo(method) and
+    baseType.getMethodAtDepth(_, mDepth) = method and
+    index = mDepth - implicitFieldDepth
+  |
+    method = baseType.getMethodOfEmbedded(implicitField, _, implicitFieldDepth + 1)
+    or
+    exists(PromotedField child |
+      child = baseType.getFieldOfEmbedded(implicitField, _, implicitFieldDepth + 1, _) and
+      implicitFieldSelectionForMethod(e, implicitFieldDepth + 1, child)
     )
   )
 }
@@ -333,8 +349,9 @@ newtype TControlFlowNode =
    * If that field has a pointer type then this control-flow node also
    * represents an implicit dereference of it.
    */
-  MkImplicitFieldSelection(PromotedFieldSelector e, int i, Field implicitField) {
-    implicitFieldSelection(e, i, implicitField)
+  MkImplicitFieldSelection(PromotedSelector e, int i, Field implicitField) {
+    implicitFieldSelectionForField(e, i, implicitField) or
+    implicitFieldSelectionForMethod(e, i, implicitField)
   } or
   /**
    * A control-flow node that represents the start of the execution of a function or file.
