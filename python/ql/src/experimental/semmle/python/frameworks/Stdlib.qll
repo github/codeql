@@ -32,7 +32,7 @@ private module Stdlib {
      * WARNING: Only holds for a few predefined attributes.
      */
     private DataFlow::Node re_attr(DataFlow::TypeTracker t, string attr_name) {
-      attr_name in ["match", "fullmatch", "search", "split", "findall", "finditer", "sub", "subn", "compile"] and
+      attr_name in ["match", "fullmatch", "search", "split", "findall", "finditer", "sub", "subn", "compile", "escape"] and
       (
         t.start() and
         result = DataFlow::importNode("re" + "." + attr_name)
@@ -176,6 +176,19 @@ private module Stdlib {
       override CallNode node;
 
       ReSubNCall() { node.getFunction() = re_attr("subn").asCfgNode() }
+
+      override DataFlow::Node getRegexNode() { result.asCfgNode() = node.getArg(0) }
+      override Attribute getRegexMethod() { result = node.getNode().getFunc().(Attribute) }
+    }
+
+    /**
+     * A call to `re.escape`
+     * See https://docs.python.org/3/library/re.html#re.escape
+     */
+    private class ReEscapeCall extends RegexExecution::Range, DataFlow::CfgNode {
+      override CallNode node;
+
+      ReEscapeCall() { node.getFunction() = re_attr("escape").asCfgNode() }
 
       override DataFlow::Node getRegexNode() { result.asCfgNode() = node.getArg(0) }
       override Attribute getRegexMethod() { result = node.getNode().getFunc().(Attribute) }
