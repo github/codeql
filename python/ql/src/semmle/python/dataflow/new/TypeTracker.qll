@@ -180,7 +180,7 @@ private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalAttributeN
  * It is recommended that all uses of this type are written in the following form,
  * for tracking some type `myType`:
  * ```
- * DataFlow::LocalSourceNode myType(DataFlow::TypeTracker t) {
+ * private DataFlow::LocalSourceNode myType(DataFlow::TypeTracker t) {
  *   t.start() and
  *   result = < source of myType >
  *   or
@@ -341,7 +341,7 @@ private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn, Optional
  * for back-tracking some callback type `myCallback`:
  *
  * ```
- * DataFlow::LocalSourceNode myCallback(DataFlow::TypeBackTracker t) {
+ * private DataFlow::LocalSourceNode myCallback(DataFlow::TypeBackTracker t) {
  *   t.start() and
  *   result = (< some API call >).getArgument(< n >).getALocalSource()
  *   or
