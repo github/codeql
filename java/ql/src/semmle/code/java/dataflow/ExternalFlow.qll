@@ -37,7 +37,7 @@
  *    - "Argument[n]": Selects an argument in a call to the selected element.
  *      The arguments are zero-indexed, and `-1` specifies the qualifier.
  *    - "Argument[n1..n2]": Similar to "Argument[n]" but select any argument in
- *      the given range.
+ *      the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects a value being returned by the selected element.
  *      This requires that the selected element is a method with a body.
  *
@@ -48,14 +48,14 @@
  *      selected element. That is, the value of the argument after the call returns.
  *      The arguments are zero-indexed, and `-1` specifies the qualifier.
  *    - "Argument[n1..n2]": Similar to "Argument[n]" but select any argument in
- *      the given range.
+ *      the given range. The range is inclusive at both ends.
  *    - "Parameter": Selects the value of a parameter of the selected element.
  *      "Parameter" is also allowed in case the selected element is already a
  *      parameter itself.
  *    - "Parameter[n]": Similar to "Parameter" but restricted to a specific
  *      numbered parameter (zero-indexed, and `-1` specifies the value of `this`).
  *    - "Parameter[n1..n2]": Similar to "Parameter[n]" but selects any parameter
- *      in the given range.
+ *      in the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects the return value of a call to the selected element.
  * 8. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
