@@ -637,6 +637,20 @@ module TaintedPath {
   }
 
   /**
+   * A path argument given to a `Page` in puppeteer, specifying where a pdf/screenshot should be saved.
+   */
+  private class PuppeteerPath extends TaintedPath::Sink {
+    PuppeteerPath() {
+      this =
+        Puppeteer::page()
+            .getMember(["pdf", "screenshot"])
+            .getParameter(0)
+            .getMember("path")
+            .getARhs()
+    }
+  }
+
+  /**
    * Holds if there is a step `src -> dst` mapping `srclabel` to `dstlabel` relevant for path traversal vulnerabilities.
    */
   predicate isAdditionalTaintedPathFlowStep(

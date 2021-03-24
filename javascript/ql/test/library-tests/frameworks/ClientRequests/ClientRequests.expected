@@ -5,6 +5,9 @@ test_ClientRequest
 | apollo.js:17:1:17:34 | new Pre ... yurl"}) |
 | apollo.js:20:1:20:77 | createN ... phql'}) |
 | apollo.js:23:1:23:31 | new Web ... wsUri}) |
+| puppeteer.ts:6:11:6:42 | page.go ... e.com') |
+| puppeteer.ts:8:5:8:61 | page.ad ... css" }) |
+| puppeteer.ts:18:30:18:50 | page.go ... estUrl) |
 | tst.js:11:5:11:16 | request(url) |
 | tst.js:13:5:13:20 | request.get(url) |
 | tst.js:15:5:15:23 | request.delete(url) |
@@ -138,6 +141,9 @@ test_getUrl
 | apollo.js:17:1:17:34 | new Pre ... yurl"}) | apollo.js:17:26:17:32 | "myurl" |
 | apollo.js:20:1:20:77 | createN ... phql'}) | apollo.js:20:30:20:75 | 'https: ... raphql' |
 | apollo.js:23:1:23:31 | new Web ... wsUri}) | apollo.js:23:25:23:29 | wsUri |
+| puppeteer.ts:6:11:6:42 | page.go ... e.com') | puppeteer.ts:6:21:6:41 | 'https: ... le.com' |
+| puppeteer.ts:8:5:8:61 | page.ad ... css" }) | puppeteer.ts:8:29:8:58 | "http:/ ... le.css" |
+| puppeteer.ts:18:30:18:50 | page.go ... estUrl) | puppeteer.ts:18:40:18:49 | requestUrl |
 | tst.js:11:5:11:16 | request(url) | tst.js:11:13:11:15 | url |
 | tst.js:13:5:13:20 | request.get(url) | tst.js:13:17:13:19 | url |
 | tst.js:15:5:15:23 | request.delete(url) | tst.js:15:20:15:22 | url |

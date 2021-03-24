@@ -46,6 +46,11 @@ class TypeStringBuilder extends Class {
   TypeStringBuilder() { this.hasQualifiedName("java.lang", "StringBuilder") }
 }
 
+/** Class `java.lang.StringBuffer` or `java.lang.StringBuilder`. */
+class StringBuildingType extends Class {
+  StringBuildingType() { this instanceof TypeStringBuffer or this instanceof TypeStringBuilder }
+}
+
 /** The class `java.lang.System`. */
 class TypeSystem extends Class {
   TypeSystem() { this.hasQualifiedName("java.lang", "System") }

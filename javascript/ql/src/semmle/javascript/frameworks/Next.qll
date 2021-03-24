@@ -126,37 +126,28 @@ module NextJS {
   /**
    * A step modelling the flow from the server-computed props object to the default exported function that renders the page.
    */
-  class NextJSStaticPropsStep extends DataFlow::AdditionalFlowStep, DataFlow::FunctionNode {
-    Module pageModule;
-
-    NextJSStaticPropsStep() {
-      pageModule = getAPagesModule() and
-      this = pageModule.getAnExportedValue("default").getAFunctionValue()
-    }
-
+  class NextJSStaticPropsStep extends DataFlow::SharedFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getAPropsSource(pageModule) and
-      succ = this.getParameter(0)
+      exists(Module pageModule, DataFlow::FunctionNode function |
+        pageModule = getAPagesModule() and
+        function = pageModule.getAnExportedValue("default").getAFunctionValue() and
+        pred = getAPropsSource(pageModule) and
+        succ = function.getParameter(0)
+      )
     }
   }
 
   /**
    * A step modelling the flow from the server-computed props object to the default exported React component that renders the page.
    */
-  class NextJSStaticReactComponentPropsStep extends DataFlow::AdditionalFlowStep,
-    DataFlow::ValueNode {
-    Module pageModule;
-    ReactComponent component;
-
-    NextJSStaticReactComponentPropsStep() {
-      pageModule = getAPagesModule() and
-      this.getAstNode() = component and
-      this = pageModule.getAnExportedValue("default").getALocalSource()
-    }
-
+  class NextJSStaticReactComponentPropsStep extends DataFlow::SharedFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getAPropsSource(pageModule) and
-      succ = component.getADirectPropsAccess()
+      exists(Module pageModule, ReactComponent component |
+        pageModule = getAPagesModule() and
+        pageModule.getAnExportedValue("default").getALocalSource() = DataFlow::valueNode(component) and
+        pred = getAPropsSource(pageModule) and
+        succ = component.getADirectPropsAccess()
+      )
     }
   }
 

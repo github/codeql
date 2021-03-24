@@ -229,6 +229,14 @@ nodes
 | lib/lib.js:431:23:431:26 | last |
 | lib/lib.js:436:19:436:22 | last |
 | lib/lib.js:436:19:436:22 | last |
+| lib/lib.js:441:39:441:42 | name |
+| lib/lib.js:441:39:441:42 | name |
+| lib/lib.js:442:24:442:27 | name |
+| lib/lib.js:442:24:442:27 | name |
+| lib/lib.js:446:20:446:23 | name |
+| lib/lib.js:446:20:446:23 | name |
+| lib/lib.js:447:25:447:28 | name |
+| lib/lib.js:447:25:447:28 | name |
 edges
 | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name |
 | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name |
@@ -505,6 +513,14 @@ edges
 | lib/lib.js:428:36:428:45 | name + ':' | lib/lib.js:428:29:428:50 | name ?  ... :' : '' |
 | lib/lib.js:431:23:431:26 | last | lib/lib.js:436:19:436:22 | last |
 | lib/lib.js:431:23:431:26 | last | lib/lib.js:436:19:436:22 | last |
+| lib/lib.js:441:39:441:42 | name | lib/lib.js:442:24:442:27 | name |
+| lib/lib.js:441:39:441:42 | name | lib/lib.js:442:24:442:27 | name |
+| lib/lib.js:441:39:441:42 | name | lib/lib.js:442:24:442:27 | name |
+| lib/lib.js:441:39:441:42 | name | lib/lib.js:442:24:442:27 | name |
+| lib/lib.js:446:20:446:23 | name | lib/lib.js:447:25:447:28 | name |
+| lib/lib.js:446:20:446:23 | name | lib/lib.js:447:25:447:28 | name |
+| lib/lib.js:446:20:446:23 | name | lib/lib.js:447:25:447:28 | name |
+| lib/lib.js:446:20:446:23 | name | lib/lib.js:447:25:447:28 | name |
 #select
 | lib/lib2.js:4:10:4:25 | "rm -rf " + name | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name | $@ based on library input is later used in $@. | lib/lib2.js:4:10:4:25 | "rm -rf " + name | String concatenation | lib/lib2.js:4:2:4:26 | cp.exec ... + name) | shell command |
 | lib/lib2.js:8:10:8:25 | "rm -rf " + name | lib/lib2.js:7:32:7:35 | name | lib/lib2.js:8:22:8:25 | name | $@ based on library input is later used in $@. | lib/lib2.js:8:10:8:25 | "rm -rf " + name | String concatenation | lib/lib2.js:8:2:8:26 | cp.exec ... + name) | shell command |
@@ -571,3 +587,5 @@ edges
 | lib/lib.js:424:24:424:27 | name | lib/lib.js:414:40:414:43 | name | lib/lib.js:424:24:424:27 | name | $@ based on library input is later used in $@. | lib/lib.js:424:24:424:27 | name | Shell argument | lib/lib.js:424:2:424:40 | spawn(" ... WN_OPT) | shell command |
 | lib/lib.js:426:11:426:14 | name | lib/lib.js:414:40:414:43 | name | lib/lib.js:426:11:426:14 | name | $@ based on library input is later used in $@. | lib/lib.js:426:11:426:14 | name | Shell argument | lib/lib.js:427:2:427:28 | spawn(" ... WN_OPT) | shell command |
 | lib/lib.js:436:19:436:22 | last | lib/lib.js:414:40:414:43 | name | lib/lib.js:436:19:436:22 | last | $@ based on library input is later used in $@. | lib/lib.js:436:19:436:22 | last | Shell argument | lib/lib.js:428:2:428:70 | spawn(" ... WN_OPT) | shell command |
+| lib/lib.js:442:12:442:27 | "rm -rf " + name | lib/lib.js:441:39:441:42 | name | lib/lib.js:442:24:442:27 | name | $@ based on library input is later used in $@. | lib/lib.js:442:12:442:27 | "rm -rf " + name | String concatenation | lib/lib.js:442:2:442:28 | asyncEx ... + name) | shell command |
+| lib/lib.js:447:13:447:28 | "rm -rf " + name | lib/lib.js:446:20:446:23 | name | lib/lib.js:447:25:447:28 | name | $@ based on library input is later used in $@. | lib/lib.js:447:13:447:28 | "rm -rf " + name | String concatenation | lib/lib.js:447:3:447:29 | asyncEx ... + name) | shell command |
