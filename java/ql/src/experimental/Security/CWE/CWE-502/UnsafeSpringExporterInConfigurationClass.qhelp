@@ -1,0 +1,8 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <include src="UnsafeSpringExporterQuery.inc.qhelp" />
+  <include src="UnsafeSpringExporterInConfigurationClassExample.inc.qhelp" />
+  <include src="UnsafeSpringExporterReferences.inc.qhelp" />
+</qhelp>
