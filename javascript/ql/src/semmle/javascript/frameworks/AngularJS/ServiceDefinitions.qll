@@ -300,7 +300,7 @@ abstract private class CustomSpecialServiceDefinition extends CustomServiceDefin
 bindingset[moduleMethodName]
 private predicate isCustomServiceDefinitionOnModule(
   DataFlow::CallNode mce, string moduleMethodName, string serviceName,
-  DataFlow::SourceNode factoryArgument
+  DataFlow::Node factoryArgument
 ) {
   mce = moduleRef(_).getAMethodCall(moduleMethodName) and
   mce.getArgument(0).asExpr().mayHaveStringValue(serviceName) and
