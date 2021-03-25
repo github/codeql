@@ -643,17 +643,10 @@ module Trees {
 
     final override predicate first(AstNode first) { first(this.getCondition(), first) }
 
-    private AstNode getConditionSucc() {
-      result = this.getBody()
-      or
-      not exists(this.getBody()) and
-      result = this.getCondition()
-    }
-
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
       last(this.getCondition(), pred, c) and
       this.entersLoopWhenConditionIs(c.(BooleanCompletion).getValue()) and
-      first(this.getConditionSucc(), succ)
+      first(this.getBody(), succ)
       or
       last(this.getBody(), pred, c) and
       first(this.getCondition(), succ) and
@@ -1117,21 +1110,6 @@ module Trees {
     }
   }
 
-  private class TSimpleHiddenStmtSequenceTree =
-    ASTInternal::TElse or ASTInternal::TThen or ASTInternal::TDo;
-
-  private class SimpleHiddenStmtSequenceTree extends StmtSequenceTree, TSimpleHiddenStmtSequenceTree {
-    final override predicate propagatesAbnormal(AstNode child) { child = this.getAStmt() }
-
-    final override predicate first(AstNode first) { first(this.getStmt(0), first) }
-
-    final override predicate last(AstNode last, Completion c) { last(this.getLastStmt(), last, c) }
-
-    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      StmtSequenceTree.super.succ(pred, succ, c)
-    }
-  }
-
   /**
    * Control-flow tree for any pre-order StmtSequence that doesn't have a more
    * specific implementation.
@@ -1144,8 +1122,7 @@ module Trees {
       not this instanceof EndBlock and
       not this instanceof StringInterpolationComponent and
       not this instanceof Block and
-      not this instanceof ParenthesizedExpr and
-      not this instanceof TSimpleHiddenStmtSequenceTree
+      not this instanceof ParenthesizedExpr
     }
 
     final override predicate propagatesAbnormal(AstNode child) { child = this.getAStmt() }

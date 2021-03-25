@@ -3,20 +3,20 @@
 | local_dataflow.rb:2:7:2:7 | a | local_dataflow.rb:2:3:2:7 | ... = ... |
 | local_dataflow.rb:2:7:2:7 | a | local_dataflow.rb:2:3:2:7 | ... = ... |
 | local_dataflow.rb:2:7:2:7 | a | local_dataflow.rb:3:10:3:10 | a |
-| local_dataflow.rb:3:7:3:14 | (...; ...) | local_dataflow.rb:3:3:3:14 | ... = ... |
+| local_dataflow.rb:3:7:3:14 | ( ... ) | local_dataflow.rb:3:3:3:14 | ... = ... |
 | local_dataflow.rb:3:10:3:10 | [post] a | local_dataflow.rb:4:11:4:11 | a |
 | local_dataflow.rb:3:10:3:10 | a | local_dataflow.rb:4:11:4:11 | a |
-| local_dataflow.rb:3:13:3:13 | b | local_dataflow.rb:3:7:3:14 | (...; ...) |
+| local_dataflow.rb:3:13:3:13 | b | local_dataflow.rb:3:7:3:14 | ( ... ) |
 | local_dataflow.rb:3:13:3:13 | b | local_dataflow.rb:6:13:6:13 | b |
 | local_dataflow.rb:4:7:4:11 | ... = ... | local_dataflow.rb:4:3:4:11 | ... = ... |
 | local_dataflow.rb:4:11:4:11 | a | local_dataflow.rb:4:7:4:11 | ... = ... |
 | local_dataflow.rb:4:11:4:11 | a | local_dataflow.rb:5:12:5:12 | a |
-| local_dataflow.rb:5:7:5:13 | (... = ...) | local_dataflow.rb:5:3:5:13 | ... = ... |
-| local_dataflow.rb:5:8:5:12 | ... = ... | local_dataflow.rb:5:7:5:13 | (... = ...) |
+| local_dataflow.rb:5:7:5:13 | ( ... ) | local_dataflow.rb:5:3:5:13 | ... = ... |
+| local_dataflow.rb:5:8:5:12 | ... = ... | local_dataflow.rb:5:7:5:13 | ( ... ) |
 | local_dataflow.rb:5:12:5:12 | a | local_dataflow.rb:5:8:5:12 | ... = ... |
 | local_dataflow.rb:5:12:5:12 | a | local_dataflow.rb:6:8:6:8 | a |
-| local_dataflow.rb:6:7:6:14 | (... += ...) | local_dataflow.rb:6:3:6:14 | ... = ... |
-| local_dataflow.rb:6:8:6:13 | ... += ... | local_dataflow.rb:6:7:6:14 | (... += ...) |
+| local_dataflow.rb:6:7:6:14 | ( ... ) | local_dataflow.rb:6:3:6:14 | ... = ... |
+| local_dataflow.rb:6:8:6:13 | ... += ... | local_dataflow.rb:6:7:6:14 | ( ... ) |
 | local_dataflow.rb:9:1:9:15 | ... = ... | local_dataflow.rb:10:14:10:18 | array |
 | local_dataflow.rb:9:9:9:15 | [...] | local_dataflow.rb:9:1:9:15 | ... = ... |
 | local_dataflow.rb:9:9:9:15 | [...] | local_dataflow.rb:9:1:9:15 | ... = ... |
@@ -24,12 +24,15 @@
 | local_dataflow.rb:10:9:10:9 | x | local_dataflow.rb:12:5:12:5 | x |
 | local_dataflow.rb:10:14:10:18 | array | local_dataflow.rb:10:5:13:3 | for ... in ... |
 | local_dataflow.rb:10:14:10:18 | array | local_dataflow.rb:15:10:15:14 | array |
+| local_dataflow.rb:12:3:12:5 | call to p | local_dataflow.rb:10:19:13:3 | do ... |
 | local_dataflow.rb:15:10:15:14 | array | local_dataflow.rb:15:1:17:3 | for ... in ... |
 | local_dataflow.rb:15:10:15:14 | array | local_dataflow.rb:19:10:19:14 | array |
 | local_dataflow.rb:16:3:16:10 | break | local_dataflow.rb:15:1:17:3 | for ... in ... |
 | local_dataflow.rb:16:9:16:10 | 10 | local_dataflow.rb:16:3:16:10 | break |
 | local_dataflow.rb:19:5:19:5 | x | local_dataflow.rb:20:6:20:6 | x |
 | local_dataflow.rb:19:10:19:14 | array | local_dataflow.rb:19:1:21:3 | for ... in ... |
+| local_dataflow.rb:20:3:20:25 | if ... | local_dataflow.rb:19:16:21:3 | do ... |
+| local_dataflow.rb:20:12:20:21 | then ... | local_dataflow.rb:20:3:20:25 | if ... |
 | local_dataflow.rb:20:17:20:21 | break | local_dataflow.rb:19:1:21:3 | for ... in ... |
 | local_dataflow.rb:24:2:24:8 | break | local_dataflow.rb:23:1:25:3 | while ... |
 | local_dataflow.rb:24:8:24:8 | 5 | local_dataflow.rb:24:2:24:8 | break |
@@ -40,8 +43,10 @@
 | local_dataflow.rb:32:5:32:25 | bar | local_dataflow.rb:32:1:32:25 | ... = ... |
 | local_dataflow.rb:32:5:32:25 | bar | local_dataflow.rb:32:1:32:25 | ... = ... |
 | local_dataflow.rb:34:7:34:7 | x | local_dataflow.rb:35:6:35:6 | x |
+| local_dataflow.rb:35:12:36:13 | then ... | local_dataflow.rb:35:3:37:5 | if ... |
 | local_dataflow.rb:36:13:36:13 | 7 | local_dataflow.rb:36:6:36:13 | return |
 | local_dataflow.rb:41:7:41:7 | x | local_dataflow.rb:42:6:42:6 | x |
+| local_dataflow.rb:42:12:43:13 | then ... | local_dataflow.rb:42:3:44:5 | if ... |
 | local_dataflow.rb:43:13:43:13 | 7 | local_dataflow.rb:43:6:43:13 | return |
 | local_dataflow.rb:45:10:45:10 | 6 | local_dataflow.rb:45:3:45:10 | return |
 | local_dataflow.rb:49:3:53:3 | <captured> | local_dataflow.rb:50:18:50:18 | x |
