@@ -1,10 +1,12 @@
 package util
 
 import (
+	"errors"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 )
 
@@ -141,20 +143,51 @@ func RunCmd(cmd *exec.Cmd) bool {
 	return true
 }
 
-func GetExtractorPath() string {
+func getOsToolsSubdir() (string, error) {
+	switch runtime.GOOS {
+	case "darwin":
+		return "osx64", nil
+	case "linux":
+		return "linux64", nil
+	case "windows":
+		return "win64", nil
+	}
+	return "", errors.New("Unsupported OS: " + runtime.GOOS)
+}
+
+func getExtractorDir() (string, error) {
+	mypath, err := os.Executable()
+	if err == nil {
+		return filepath.Dir(mypath), nil
+	}
+	log.Printf("Could not determine path of autobuilder: %v.\n", err)
+
+	// Fall back to rebuilding our own path from the extractor root:
+	extractorRoot := os.Getenv("CODEQL_EXTRACTOR_GO_ROOT")
+	if extractorRoot == "" {
+		return "", errors.New("CODEQL_EXTRACTOR_GO_ROOT not set.\nThis binary should not be run manually; instead, use the CodeQL CLI or VSCode extension. See https://securitylab.github.com/tools/codeql")
+	}
+
+	osSubdir, err := getOsToolsSubdir()
+	if err != nil {
+		return "", err
+	}
+
+	return filepath.Join(extractorRoot, "tools", osSubdir), nil
+}
+
+func GetExtractorPath() (string, error) {
 	if extractorPath != "" {
-		return extractorPath
+		return extractorPath, nil
 	}
 
-	root, set := os.LookupEnv("CODEQL_EXTRACTOR_GO_ROOT")
-	if !set {
-		log.Fatal("CODEQL_EXTRACTOR_GO_ROOT not set; this binary should be run from the `codeql` CLI.")
+	dirname, err := getExtractorDir()
+	if err != nil {
+		return "", err
 	}
-	platform, set := os.LookupEnv("CODEQL_PLATFORM")
-	if !set {
-		log.Fatal("CODEQL_PLATFORM not set; this binary should be run from the `codeql` CLI.")
+	extractorPath := filepath.Join(dirname, "go-extractor")
+	if runtime.GOOS == "windows" {
+		extractorPath = extractorPath + ".exe"
 	}
-
-	extractorPath = filepath.Join(root, "tools", platform, "go-extractor")
-	return extractorPath
+	return extractorPath, nil
 }

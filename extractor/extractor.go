@@ -301,7 +301,11 @@ func NewExtraction(buildFlags []string, patterns []string) *Extraction {
 
 	dbscheme.CompilationsTable.Emit(statWriter, lbl, wd)
 	i = 0
-	dbscheme.CompilationArgsTable.Emit(statWriter, lbl, 0, util.GetExtractorPath())
+	extractorPath, err := util.GetExtractorPath()
+	if err != nil {
+		log.Fatalf("Unable to get extractor path: %s\n", err.Error())
+	}
+	dbscheme.CompilationArgsTable.Emit(statWriter, lbl, 0, extractorPath)
 	i++
 	for _, flag := range buildFlags {
 		dbscheme.CompilationArgsTable.Emit(statWriter, lbl, i, flag)
