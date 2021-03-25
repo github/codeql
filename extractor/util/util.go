@@ -144,6 +144,13 @@ func RunCmd(cmd *exec.Cmd) bool {
 }
 
 func getOsToolsSubdir() (string, error) {
+	platform, set := os.LookupEnv("CODEQL_PLATFORM")
+	if !set {
+		log.Print("CODEQL_PLATFORM not set; this binary should be run from the `codeql` CLI. Falling back to use `runtime.GOOS`.\n")
+	} else {
+		return platform, nil
+	}
+
 	switch runtime.GOOS {
 	case "darwin":
 		return "osx64", nil
@@ -156,16 +163,17 @@ func getOsToolsSubdir() (string, error) {
 }
 
 func getExtractorDir() (string, error) {
-	mypath, err := os.Executable()
-	if err == nil {
-		return filepath.Dir(mypath), nil
-	}
-	log.Printf("Could not determine path of autobuilder: %v.\n", err)
-
-	// Fall back to rebuilding our own path from the extractor root:
 	extractorRoot := os.Getenv("CODEQL_EXTRACTOR_GO_ROOT")
 	if extractorRoot == "" {
-		return "", errors.New("CODEQL_EXTRACTOR_GO_ROOT not set.\nThis binary should not be run manually; instead, use the CodeQL CLI or VSCode extension. See https://securitylab.github.com/tools/codeql")
+		log.Print("CODEQL_EXTRACTOR_GO_ROOT not set.\nThis binary should not be run manually; instead, use the CodeQL CLI or VSCode extension. See https://securitylab.github.com/tools/codeql.\n")
+		log.Print("Falling back to guess the root based on this executable's path.\n")
+
+		mypath, err := os.Executable()
+		if err == nil {
+			return filepath.Dir(mypath), nil
+		} else {
+			return "", errors.New("CODEQL_EXTRACTOR_GO_ROOT not set, and could not determine path of this executable: " + err.Error())
+		}
 	}
 
 	osSubdir, err := getOsToolsSubdir()
