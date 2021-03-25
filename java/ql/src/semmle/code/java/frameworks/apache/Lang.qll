@@ -221,7 +221,7 @@ private class ApacheStrBuilderModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "org.apache.commons.lang3.text;StrBuilder;false;StrBuilder;(java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrBuilder;false;StrBuilder;(java.lang.String);;Argument;Argument[-1];taint",
         "org.apache.commons.lang3.text;StrBuilder;false;append;(char[]);;Argument;Argument[-1];taint",
         "org.apache.commons.lang3.text;StrBuilder;false;append;(char[],int,int);;Argument[0];Argument[-1];taint",
         "org.apache.commons.lang3.text;StrBuilder;false;append;(java.lang.CharSequence);;Argument;Argument[-1];taint",
@@ -288,7 +288,7 @@ private class ApacheStrBuilderModel extends SummaryModelCsv {
         "org.apache.commons.lang3.text;StrBuilder;false;toString;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrBuilder;false;toStringBuffer;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrBuilder;false;toStringBuilder;;;Argument[-1];ReturnValue;taint",
-        "org.apache.commons.text;StrBuilder;false;StrBuilder;(java.lang.String);;Argument;ReturnValue;taint",
+        "org.apache.commons.text;StrBuilder;false;StrBuilder;(java.lang.String);;Argument;Argument[-1];taint",
         "org.apache.commons.text;StrBuilder;false;append;(char[]);;Argument;Argument[-1];taint",
         "org.apache.commons.text;StrBuilder;false;append;(char[],int,int);;Argument[0];Argument[-1];taint",
         "org.apache.commons.text;StrBuilder;false;append;(java.lang.CharSequence);;Argument;Argument[-1];taint",
@@ -355,8 +355,8 @@ private class ApacheStrBuilderModel extends SummaryModelCsv {
         "org.apache.commons.text;StrBuilder;false;toString;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StrBuilder;false;toStringBuffer;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StrBuilder;false;toStringBuilder;;;Argument[-1];ReturnValue;taint",
-        "org.apache.commons.text;TextStringBuilder;false;TextStringBuilder;(java.lang.String);;Argument;ReturnValue;taint",
-        "org.apache.commons.text;TextStringBuilder;false;TextStringBuilder;(java.lang.CharSequence);;Argument;ReturnValue;taint",
+        "org.apache.commons.text;TextStringBuilder;false;TextStringBuilder;(java.lang.String);;Argument;Argument[-1];taint",
+        "org.apache.commons.text;TextStringBuilder;false;TextStringBuilder;(java.lang.CharSequence);;Argument;Argument[-1];taint",
         "org.apache.commons.text;TextStringBuilder;false;append;(char[]);;Argument;Argument[-1];taint",
         "org.apache.commons.text;TextStringBuilder;false;append;(char[],int,int);;Argument[0];Argument[-1];taint",
         "org.apache.commons.text;TextStringBuilder;false;append;(java.lang.CharSequence);;Argument;Argument[-1];taint",
@@ -471,7 +471,7 @@ private class ApacheStrTokenizerModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "org.apache.commons.lang3.text;StrTokenizer;false;StrTokenizer;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrTokenizer;false;StrTokenizer;;;Argument[0];Argument[-1];taint",
         "org.apache.commons.lang3.text;StrTokenizer;false;clone;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrTokenizer;false;toString;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrTokenizer;false;reset;;;Argument;ReturnValue;taint",
@@ -485,7 +485,7 @@ private class ApacheStrTokenizerModel extends SummaryModelCsv {
         "org.apache.commons.lang3.text;StrTokenizer;false;nextToken;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrTokenizer;false;getTSVInstance;;;Argument;ReturnValue;taint",
         "org.apache.commons.lang3.text;StrTokenizer;false;getCSVInstance;;;Argument;ReturnValue;taint",
-        "org.apache.commons.text;StrTokenizer;false;StrTokenizer;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.text;StrTokenizer;false;StrTokenizer;;;Argument[0];Argument[-1];taint",
         "org.apache.commons.text;StrTokenizer;false;clone;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StrTokenizer;false;toString;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StrTokenizer;false;reset;;;Argument;ReturnValue;taint",
@@ -499,7 +499,7 @@ private class ApacheStrTokenizerModel extends SummaryModelCsv {
         "org.apache.commons.text;StrTokenizer;false;nextToken;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StrTokenizer;false;getTSVInstance;;;Argument;ReturnValue;taint",
         "org.apache.commons.text;StrTokenizer;false;getCSVInstance;;;Argument;ReturnValue;taint",
-        "org.apache.commons.text;StringTokenizer;false;StringTokenizer;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.text;StringTokenizer;false;StringTokenizer;;;Argument[0];Argument[-1];taint",
         "org.apache.commons.text;StringTokenizer;false;clone;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StringTokenizer;false;toString;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StringTokenizer;false;reset;;;Argument;ReturnValue;taint",
@@ -539,7 +539,7 @@ private class ApacheStrSubstitutorModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "org.apache.commons.lang3.text;StrSubstitutor;false;StrSubstitutor;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3.text;StrSubstitutor;false;StrSubstitutor;;;Argument[0];Argument[-1];taint",
         "org.apache.commons.lang3.text;StrSubstitutor;false;replace;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(java.lang.Object);;Argument;ReturnValue;taint",
         "org.apache.commons.lang3.text;StrSubstitutor;false;replace;(char[]);;Argument;ReturnValue;taint",
@@ -563,7 +563,7 @@ private class ApacheStrSubstitutorModel extends SummaryModelCsv {
         "org.apache.commons.lang3.text;StrSubstitutor;false;replaceIn;(java.lang.StringBuilder);;Argument[-1];Argument;taint",
         "org.apache.commons.lang3.text;StrSubstitutor;false;replaceIn;(java.lang.StringBuilder,int,int);;Argument[-1];Argument[0];taint",
         "org.apache.commons.lang3.text;StrSubstitutor;false;replaceIn;(org.apache.commons.lang3.text.StrBuilder,int,int);;Argument[-1];Argument[0];taint",
-        "org.apache.commons.text;StringSubstitutor;false;StringSubstitutor;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.text;StringSubstitutor;false;StringSubstitutor;;;Argument[0];Argument[-1];taint",
         "org.apache.commons.text;StringSubstitutor;false;replace;;;Argument[-1];ReturnValue;taint",
         "org.apache.commons.text;StringSubstitutor;false;replace;(java.lang.Object);;Argument;ReturnValue;taint",
         "org.apache.commons.text;StringSubstitutor;false;replace;(char[]);;Argument;ReturnValue;taint",
