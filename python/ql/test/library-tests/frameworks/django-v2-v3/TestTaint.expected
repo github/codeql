@@ -1,4 +1,15 @@
 | response_test.py:61 | ok   | get_redirect_url | foo |
+| taint_forms.py:6 | ok   | to_python | value |
+| taint_forms.py:9 | ok   | validate | value |
+| taint_forms.py:12 | ok   | run_validators | value |
+| taint_forms.py:15 | ok   | clean | value |
+| taint_forms.py:33 | ok   | clean | cleaned_data |
+| taint_forms.py:34 | ok   | clean | cleaned_data["key"] |
+| taint_forms.py:35 | ok   | clean | cleaned_data.get(..) |
+| taint_forms.py:39 | ok   | clean | self.cleaned_data |
+| taint_forms.py:40 | ok   | clean | self.cleaned_data["key"] |
+| taint_forms.py:41 | ok   | clean | self.cleaned_data.get(..) |
+| taint_forms.py:46 | ok   | clean_foo | self.cleaned_data |
 | taint_test.py:8 | ok   | test_taint | bar |
 | taint_test.py:8 | ok   | test_taint | foo |
 | taint_test.py:9 | ok   | test_taint | baz |
