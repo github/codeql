@@ -1517,7 +1517,7 @@ predicate forReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
     or
     c instanceof SetElementContent
     or
-    c instanceof TupleElementContent
+    c.(TupleElementContent).getIndex() <= 7
   )
 }
 
