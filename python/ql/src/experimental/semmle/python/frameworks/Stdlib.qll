@@ -15,7 +15,6 @@ private module Stdlib {
   // re
   // ---------------------------------------------------------------------------
   private module Re {
-
     /** Gets a reference to the `re` module. */
     private DataFlow::Node re(DataFlow::TypeTracker t) {
       t.start() and
@@ -32,7 +31,10 @@ private module Stdlib {
      * WARNING: Only holds for a few predefined attributes.
      */
     private DataFlow::Node re_attr(DataFlow::TypeTracker t, string attr_name) {
-      attr_name in ["match", "fullmatch", "search", "split", "findall", "finditer", "sub", "subn", "compile", "escape"] and
+      attr_name in [
+          "match", "fullmatch", "search", "split", "findall", "finditer", "sub", "subn", "compile",
+          "escape"
+        ] and
       (
         t.start() and
         result = DataFlow::importNode("re" + "." + attr_name)
@@ -87,6 +89,7 @@ private module Stdlib {
       ReMatchCall() { node.getFunction() = re_attr("match").asCfgNode() }
 
       override DataFlow::Node getRegexNode() { result.asCfgNode() = node.getArg(0) }
+
       override Attribute getRegexMethod() { result = node.getNode().getFunc().(Attribute) }
     }
 
@@ -100,6 +103,7 @@ private module Stdlib {
       ReFullMatchCall() { node.getFunction() = re_attr("fullmatch").asCfgNode() }
 
       override DataFlow::Node getRegexNode() { result.asCfgNode() = node.getArg(0) }
+
       override Attribute getRegexMethod() { result = node.getNode().getFunc().(Attribute) }
     }
 
@@ -113,6 +117,7 @@ private module Stdlib {
       ReSearchCall() { node.getFunction() = re_attr("search").asCfgNode() }
 
       override DataFlow::Node getRegexNode() { result.asCfgNode() = node.getArg(0) }
+
       override Attribute getRegexMethod() { result = node.getNode().getFunc().(Attribute) }
     }
 
@@ -126,6 +131,7 @@ private module Stdlib {
       ReSplitCall() { node.getFunction() = re_attr("split").asCfgNode() }
 
       override DataFlow::Node getRegexNode() { result.asCfgNode() = node.getArg(0) }
+
       override Attribute getRegexMethod() { result = node.getNode().getFunc().(Attribute) }
     }
 
@@ -139,6 +145,7 @@ private module Stdlib {
       ReFindAllCall() { node.getFunction() = re_attr("findall").asCfgNode() }
 
       override DataFlow::Node getRegexNode() { result.asCfgNode() = node.getArg(0) }
+
       override Attribute getRegexMethod() { result = node.getNode().getFunc().(Attribute) }
     }
 
@@ -152,6 +159,7 @@ private module Stdlib {
       ReFindIterCall() { node.getFunction() = re_attr("finditer").asCfgNode() }
 
       override DataFlow::Node getRegexNode() { result.asCfgNode() = node.getArg(0) }
+
       override Attribute getRegexMethod() { result = node.getNode().getFunc().(Attribute) }
     }
 
@@ -165,6 +173,7 @@ private module Stdlib {
       ReSubCall() { node.getFunction() = re_attr("sub").asCfgNode() }
 
       override DataFlow::Node getRegexNode() { result.asCfgNode() = node.getArg(0) }
+
       override Attribute getRegexMethod() { result = node.getNode().getFunc().(Attribute) }
     }
 
@@ -178,6 +187,7 @@ private module Stdlib {
       ReSubNCall() { node.getFunction() = re_attr("subn").asCfgNode() }
 
       override DataFlow::Node getRegexNode() { result.asCfgNode() = node.getArg(0) }
+
       override Attribute getRegexMethod() { result = node.getNode().getFunc().(Attribute) }
     }
 
@@ -191,6 +201,7 @@ private module Stdlib {
       ReEscapeCall() { node.getFunction() = re_attr("escape").asCfgNode() }
 
       override DataFlow::Node getRegexNode() { result.asCfgNode() = node.getArg(0) }
+
       override Attribute getRegexMethod() { result = node.getNode().getFunc().(Attribute) }
     }
 
@@ -204,13 +215,14 @@ private module Stdlib {
       ReCompileCall() { node.getFunction() = re_attr("compile").asCfgNode() }
 
       override DataFlow::Node getRegexNode() { result.asCfgNode() = node.getArg(0) }
-      override Attribute getRegexMethod() { 
-        exists (DataFlow::AttrRead reMethod |
+
+      override Attribute getRegexMethod() {
+        exists(DataFlow::AttrRead reMethod |
           reMethod = re_exec_attr() and
           node.getFunction() = reMethod.getObject().getALocalSource().asCfgNode() and
           result = reMethod.asExpr().(Attribute)
         )
-       }
+      }
     }
   }
 }
