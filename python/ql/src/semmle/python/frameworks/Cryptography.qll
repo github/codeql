@@ -76,11 +76,11 @@ private module CryptographyModel {
     }
 
     /** Gets a reference to a predefined curve class instance with a specific key size (in bits), as well as the origin of the class. */
-    private DataFlow::Node curveClassInstanceWithKeySize(
+    private DataFlow::LocalSourceNode curveClassInstanceWithKeySize(
       DataFlow::TypeTracker t, int keySize, DataFlow::Node origin
     ) {
       t.start() and
-      result.asCfgNode().(CallNode).getFunction() = curveClassWithKeySize(keySize).asCfgNode() and
+      result.(DataFlow::CallCfgNode).getFunction() = curveClassWithKeySize(keySize) and
       origin = result
       or
       // Due to bad performance when using normal setup with we have inlined that code and forced a join
@@ -102,7 +102,7 @@ private module CryptographyModel {
 
     /** Gets a reference to a predefined curve class instance with a specific key size (in bits), as well as the origin of the class. */
     DataFlow::Node curveClassInstanceWithKeySize(int keySize, DataFlow::Node origin) {
-      result = curveClassInstanceWithKeySize(DataFlow::TypeTracker::end(), keySize, origin)
+      curveClassInstanceWithKeySize(DataFlow::TypeTracker::end(), keySize, origin).flowsTo(result)
     }
   }
 

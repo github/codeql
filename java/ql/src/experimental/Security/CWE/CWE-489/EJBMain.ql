@@ -2,6 +2,8 @@
  * @name Main Method in Enterprise Java Bean
  * @description Java EE applications with a main method.
  * @kind problem
+ * @problem.severity warning
+ * @precision medium
  * @id java/main-method-in-enterprise-bean
  * @tags security
  *       external/cwe-489

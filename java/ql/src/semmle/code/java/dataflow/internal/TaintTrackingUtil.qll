@@ -67,8 +67,8 @@ private predicate localAdditionalBasicTaintStep(DataFlow::Node src, DataFlow::No
  * Holds if an additional step from `src` to `sink` through a call can be inferred from the
  * combination of a value-preserving step providing an alias between an input and the output
  * and a taint step from `src` to one the aliased nodes. For example, if we know that `f(a, b)` returns
- * the exact value of `a` and also propagates taint from `b` to its result, then we also know that
- * `a` is tainted after `f` completes, and vice versa.
+ * the exact value of `a` and also propagates taint from `b` to `a`, then we also know that
+ * the return value is tainted after `f` completes.
  */
 private predicate composedValueAndTaintModelStep(ArgumentNode src, DataFlow::Node sink) {
   exists(Call call, ArgumentNode valueSource, DataFlow::PostUpdateNode valueSourcePost |
@@ -76,16 +76,10 @@ private predicate composedValueAndTaintModelStep(ArgumentNode src, DataFlow::Nod
     valueSource.argumentOf(call, _) and
     src != valueSource and
     valueSourcePost.getPreUpdateNode() = valueSource and
+    // in-x -value-> out-y and in-z -taint-> in-x ==> in-z -taint-> out-y
+    localAdditionalBasicTaintStep(src, valueSourcePost) and
     DataFlow::localFlowStep(valueSource, DataFlow::exprNode(call)) and
-    (
-      // in-x -value-> out-y and in-z -taint-> out-y ==> in-z -taint-> in-x
-      localAdditionalBasicTaintStep(src, DataFlow::exprNode(call)) and
-      sink = valueSourcePost
-      or
-      // in-x -value-> out-y and in-z -taint-> in-x ==> in-z -taint-> out-y
-      localAdditionalBasicTaintStep(src, valueSourcePost) and
-      sink = DataFlow::exprNode(call)
-    )
+    sink = DataFlow::exprNode(call)
   )
 }
 

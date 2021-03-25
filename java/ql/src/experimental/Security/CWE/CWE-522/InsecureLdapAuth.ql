@@ -2,6 +2,8 @@
  * @name Insecure LDAP authentication
  * @description LDAP authentication with credentials sent in cleartext.
  * @kind path-problem
+ * @problem.severity warning
+ * @precision medium
  * @id java/insecure-ldap-auth
  * @tags security
  *       external/cwe-522

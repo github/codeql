@@ -156,6 +156,12 @@ private module PersistentWebStorage {
     result = DataFlow::globalVarRef(kind)
   }
 
+  pragma[noinline]
+  WriteAccess getAWriteByName(string name, string kind) {
+    result.getKey() = name and
+    result.getKind() = kind
+  }
+
   /**
    * A read access.
    */
@@ -165,8 +171,10 @@ private module PersistentWebStorage {
     ReadAccess() { this = webStorage(kind).getAMethodCall("getItem") }
 
     override PersistentWriteAccess getAWrite() {
-      getArgument(0).mayHaveStringValue(result.(WriteAccess).getKey()) and
-      result.(WriteAccess).getKind() = kind
+      exists(string name |
+        getArgument(0).mayHaveStringValue(name) and
+        result = getAWriteByName(name, kind)
+      )
     }
   }
 
