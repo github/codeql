@@ -1,8 +1,11 @@
 /**
  * @name Insecure LDAPS Endpoint Configuration
- * @description Java application configured to disable LDAPS endpoint identification does not validate
- *              the SSL certificate to properly ensure that it is actually associated with that host.
+ * @description Java application configured to disable LDAPS endpoint
+ *              identification does not validate the SSL certificate to
+ *              properly ensure that it is actually associated with that host.
  * @kind problem
+ * @problem.severity warning
+ * @precision medium
  * @id java/insecure-ldaps-endpoint
  * @tags security
  *       external/cwe-297
