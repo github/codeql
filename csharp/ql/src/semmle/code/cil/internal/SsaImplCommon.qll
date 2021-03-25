@@ -1,5 +1,5 @@
 /**
- * Provides a language-independant implementation of static single assignment
+ * Provides a language-independent implementation of static single assignment
  * (SSA) form.
  */
 
