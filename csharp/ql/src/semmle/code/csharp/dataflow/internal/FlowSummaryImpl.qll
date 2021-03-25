@@ -1,7 +1,7 @@
 /**
- * Provides classes and predicates for definining flow summaries.
+ * Provides classes and predicates for defining flow summaries.
  *
- * The definitions in this file are language-independant, and language-specific
+ * The definitions in this file are language-independent, and language-specific
  * definitions are passed in via the `DataFlowImplSpecific` and
  * `FlowSummaryImplSpecific` modules.
  */
@@ -10,10 +10,12 @@ private import FlowSummaryImplSpecific
 private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
 
-/** Provides classes and predicates for definining flow summaries. */
+/** Provides classes and predicates for defining flow summaries. */
 module Public {
+  private import Private
+
   /**
-   * A compontent used in a flow summary.
+   * A component used in a flow summary.
    *
    * Either a parameter or an argument at a given position, a specific
    * content type, or a return kind.
@@ -21,7 +23,7 @@ module Public {
   class SummaryComponent extends TSummaryComponent {
     /** Gets a textual representation of this summary component. */
     string toString() {
-      exists(Content c | this = TContantSummaryComponent(c) and result = c.toString())
+      exists(Content c | this = TContentSummaryComponent(c) and result = c.toString())
       or
       exists(int i | this = TParameterSummaryComponent(i) and result = "parameter " + i)
       or
@@ -34,7 +36,7 @@ module Public {
   /** Provides predicates for constructing summary components. */
   module SummaryComponent {
     /** Gets a summary component for content `c`. */
-    SummaryComponent content(Content c) { result = TContantSummaryComponent(c) }
+    SummaryComponent content(Content c) { result = TContentSummaryComponent(c) }
 
     /** Gets a summary component for parameter `i`. */
     SummaryComponent parameter(int i) { result = TParameterSummaryComponent(i) }
@@ -105,7 +107,7 @@ module Public {
     }
 
     /**
-     * Gets the stack obtained by push `head` onto `tail`.
+     * Gets the stack obtained by pushing `head` onto `tail`.
      *
      * Make sure to override `RequiredSummaryComponentStack::required()` in order
      * to ensure that the constructed stack exists.
@@ -140,11 +142,11 @@ module Public {
      * `preservesValue` indicates whether this is a value-preserving step
      * or a taint-step.
      *
-     * Input specications are restricted to stacks that end with
+     * Input specifications are restricted to stacks that end with
      * `SummaryComponent::argument(_)`, preceded by zero or more
      * `SummaryComponent::return(_)` or `SummaryComponent::content(_)` components.
      *
-     * Output specications are restricted to stacks that end with
+     * Output specifications are restricted to stacks that end with
      * `SummaryComponent::return(_)` or `SummaryComponent::argument(_)`.
      *
      * Output stacks ending with `SummaryComponent::return(_)` can be preceded by zero
@@ -179,7 +181,7 @@ module Private {
   private import DataFlowImplCommon as DataFlowImplCommon
 
   newtype TSummaryComponent =
-    TContantSummaryComponent(Content c) or
+    TContentSummaryComponent(Content c) or
     TParameterSummaryComponent(int i) { parameterPosition(i) } or
     TArgumentSummaryComponent(int i) { parameterPosition(i) } or
     TReturnSummaryComponent(ReturnKind rk)
@@ -368,7 +370,7 @@ module Private {
       n = summaryNodeInputState(c, s) and
       (
         exists(Content cont |
-          head = TContantSummaryComponent(cont) and result = getContentType(cont)
+          head = TContentSummaryComponent(cont) and result = getContentType(cont)
         )
         or
         exists(ReturnKind rk |
@@ -380,7 +382,7 @@ module Private {
       n = summaryNodeOutputState(c, s) and
       (
         exists(Content cont |
-          head = TContantSummaryComponent(cont) and result = getContentType(cont)
+          head = TContentSummaryComponent(cont) and result = getContentType(cont)
         )
         or
         s.length() = 1 and
@@ -670,5 +672,3 @@ module Private {
     }
   }
 }
-
-private import Private

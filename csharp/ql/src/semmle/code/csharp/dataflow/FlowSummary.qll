@@ -1,4 +1,4 @@
-/** Provides classes and predicates for definining flow summaries. */
+/** Provides classes and predicates for defining flow summaries. */
 
 import csharp
 private import internal.FlowSummaryImpl as Impl
@@ -70,14 +70,14 @@ module SummaryComponentStack {
   /** Gets a singleton stack representing a qualifier. */
   SummaryComponentStack qualifier() { result = singleton(SummaryComponent::qualifier()) }
 
-  /** Gets a stack representing an element of `of`. */
-  SummaryComponentStack elementOf(SummaryComponentStack of) {
-    result = push(SummaryComponent::element(), of)
+  /** Gets a stack representing an element of `container`. */
+  SummaryComponentStack elementOf(SummaryComponentStack container) {
+    result = push(SummaryComponent::element(), container)
   }
 
-  /** Gets a stack representing a propery `p` of `of`. */
-  SummaryComponentStack propertyOf(Property p, SummaryComponentStack of) {
-    result = push(SummaryComponent::property(p), of)
+  /** Gets a stack representing a propery `p` of `object`. */
+  SummaryComponentStack propertyOf(Property p, SummaryComponentStack object) {
+    result = push(SummaryComponent::property(p), object)
   }
 
   /** Gets a stack representing a field `f` of `of`. */

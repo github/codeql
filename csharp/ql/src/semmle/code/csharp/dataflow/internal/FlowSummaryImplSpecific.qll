@@ -1,5 +1,5 @@
 /**
- * Provides C# specific classes and predicates for definining flow summaries.
+ * Provides C# specific classes and predicates for defining flow summaries.
  */
 
 private import csharp
