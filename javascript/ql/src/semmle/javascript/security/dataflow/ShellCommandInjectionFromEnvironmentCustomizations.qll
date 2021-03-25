@@ -57,7 +57,7 @@ module ShellCommandInjectionFromEnvironment {
   }
 
   /**
-   * A string-concatenation leaf that is sorounded by quotes, seen as a sanitizer for command-injection.
+   * A string-concatenation leaf that is surrounded by quotes, seen as a sanitizer for command-injection.
    */
   class QuotingConcatSanitizer extends Sanitizer, StringOps::ConcatenationLeaf {
     QuotingConcatSanitizer() {
