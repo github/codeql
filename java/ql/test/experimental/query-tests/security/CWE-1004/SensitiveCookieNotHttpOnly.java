@@ -91,6 +91,14 @@ class SensitiveCookieNotHttpOnly {
         return cookie;
     }
 
+    public Cookie removeAuthenticationCookie(HttpServletRequest request, String jwt) {
+        String PRESTO_UI_COOKIE = "Presto-UI-Token";
+        Cookie cookie = new Cookie(PRESTO_UI_COOKIE, jwt);
+        cookie.setPath("/ui");
+        cookie.setMaxAge(0);
+        return cookie;
+    }
+
     // GOOD - Tests set a sensitive cookie header with the `HttpOnly` flag set using a wrapper method.
     public void addCookie11(HttpServletRequest request, HttpServletResponse response, String jwt) {
         Cookie cookie = createHttpOnlyAuthenticationCookie(request, jwt);
@@ -100,6 +108,12 @@ class SensitiveCookieNotHttpOnly {
     // BAD - Tests set a sensitive cookie header without the `HttpOnly` flag set using a wrapper method.
     public void addCookie12(HttpServletRequest request, HttpServletResponse response, String jwt) {
         Cookie cookie = createAuthenticationCookie(request, jwt);
+        response.addCookie(cookie);
+    }
+
+    // GOOD - Tests remove a sensitive cookie header without the `HttpOnly` flag set using a wrapper method.
+    public void addCookie13(HttpServletRequest request, HttpServletResponse response, String jwt) {
+        Cookie cookie = removeAuthenticationCookie(request, jwt);
         response.addCookie(cookie);
     }
 
@@ -119,12 +133,12 @@ class SensitiveCookieNotHttpOnly {
     }
 
     // GOOD - Tests set a sensitive cookie header with the `HttpOnly` flag set through a boolean variable using a wrapper method.
-    public void addCookie13(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
+    public void addCookie14(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
         response.addCookie(createCookie("refresh_token", refreshToken, true));
     }
 
     // BAD - Tests set a sensitive cookie header with the `HttpOnly` flag not set through a boolean variable using a wrapper method.
-    public void addCookie14(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
+    public void addCookie15(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
         response.addCookie(createCookie("refresh_token", refreshToken, false));
     }
 

@@ -11,6 +11,7 @@ import java
 import semmle.code.java.dataflow.FlowSteps
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.TaintTracking2
 import DataFlow::PathGraph
 
 /** Gets a regular expression for matching common names of sensitive cookies. */
@@ -31,28 +32,6 @@ predicate isSensitiveCookieNameExpr(Expr expr) {
   isSensitiveCookieNameExpr(expr.(AddExpr).getAnOperand())
 }
 
-/** Holds if a string is concatenated with the `HttpOnly` flag. */
-predicate hasHttpOnlyExpr(Expr expr) {
-  (
-    expr.(CompileTimeConstantExpr).getStringValue().toLowerCase().matches("%httponly%")
-    or
-    exists(
-      StaticMethodAccess ma // String.format("%s=%s;HttpOnly", "sessionkey", sessionKey)
-    |
-      ma.getType().getName() = "String" and
-      ma.getMethod().getName() = "format" and
-      ma.getArgument(0)
-          .(CompileTimeConstantExpr)
-          .getStringValue()
-          .toLowerCase()
-          .matches("%httponly%") and
-      expr = ma
-    )
-  )
-  or
-  hasHttpOnlyExpr(expr.(AddExpr).getAnOperand())
-}
-
 /** The method call `Set-Cookie` of `addHeader` or `setHeader`. */
 class SetCookieMethodAccess extends MethodAccess {
   SetCookieMethodAccess() {
@@ -61,6 +40,22 @@ class SetCookieMethodAccess extends MethodAccess {
       this.getMethod() instanceof ResponseSetHeaderMethod
     ) and
     this.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() = "set-cookie"
+  }
+}
+
+/**
+ * A taint configuration tracking flow from the text `httponly` to argument 1 of
+ * `SetCookieMethodAccess`.
+ */
+class MatchesHttpOnlyConfiguration extends TaintTracking2::Configuration {
+  MatchesHttpOnlyConfiguration() { this = "MatchesHttpOnlyConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) {
+    source.asExpr().(CompileTimeConstantExpr).getStringValue().toLowerCase().matches("%httponly%")
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() = any(SetCookieMethodAccess ma).getArgument(1)
   }
 }
 
@@ -79,7 +74,7 @@ predicate isBooleanTrue(Expr expr) {
     true
 }
 
-/** Holds if the method or a wrapper method sets the `HttpOnly` flag. */
+/** Holds if the method call sets the `HttpOnly` flag. */
 predicate setHttpOnlyInCookie(MethodAccess ma) {
   ma.getMethod().getName() = "setHttpOnly" and
   (
@@ -93,14 +88,24 @@ predicate setHttpOnlyInCookie(MethodAccess ma) {
       isBooleanTrue(mpa.getArgument(i))
     )
   )
-  or
-  exists(MethodAccess mca |
-    ma.getMethod().calls(mca.getMethod()) and
-    setHttpOnlyInCookie(mca)
-  )
 }
 
-/** Holds if the method or a wrapper method removes a cookie. */
+/**
+ * A taint configuration tracking flow of a method or a wrapper method that sets
+ * the `HttpOnly` flag.
+ */
+class SetHttpOnlyInCookieConfiguration extends TaintTracking2::Configuration {
+  SetHttpOnlyInCookieConfiguration() { this = "SetHttpOnlyInCookieConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) { any() }
+
+  override predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() =
+      any(MethodAccess ma | ma.getMethod() instanceof ResponseAddCookieMethod).getArgument(0)
+  }
+}
+
+/** Holds if the method call removes a cookie. */
 predicate removeCookie(MethodAccess ma) {
   ma.getMethod().getName() = "setMaxAge" and
   ma.getArgument(0).(IntegerLiteral).getIntValue() = 0
@@ -125,15 +130,14 @@ class CookieResponseSink extends DataFlow::ExprNode {
             setHttpOnlyInCookie(ma2) or
             removeCookie(ma2)
           ) and
-          (
-            DataFlow::localExprFlow(ma2.getQualifier(), this.getExpr()) or
-            DataFlow::localExprFlow(ma2, this.getExpr())
+          exists(SetHttpOnlyInCookieConfiguration cc |
+            cc.hasFlow(DataFlow::exprNode(ma2.getQualifier()), this)
           )
         )
         or
         ma instanceof SetCookieMethodAccess and
         this.getExpr() = ma.getArgument(1) and
-        not hasHttpOnlyExpr(this.getExpr()) // response.addHeader("Set-Cookie", "token=" +authId + ";HttpOnly;Secure")
+        not exists(MatchesHttpOnlyConfiguration cc | cc.hasFlowToExpr(ma.getArgument(1))) // response.addHeader("Set-Cookie", "token=" +authId + ";HttpOnly;Secure")
       ) and
       not isTestMethod(ma) // Test class or method
     )
