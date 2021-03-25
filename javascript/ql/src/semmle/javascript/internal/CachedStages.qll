@@ -219,7 +219,7 @@ module Stages {
       or
       AccessPath::DominatingPaths::hasDominatingWrite(_)
       or
-      any(DataFlow::AdditionalFlowStep s).step(_, _)
+      DataFlow::SharedFlowStep::step(_, _)
     }
   }
 

@@ -145,7 +145,7 @@ namespace Semmle.Autobuild.CSharp
                 try
                 {
                     var o = JObject.Parse(File.ReadAllText(path));
-                    version = (string)o["sdk"]["version"];
+                    version = (string)(o?["sdk"]?["version"]!);
                 }
                 catch  // lgtm[cs/catch-of-all-exceptions]
                 {

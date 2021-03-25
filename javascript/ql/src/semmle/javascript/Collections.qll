@@ -6,32 +6,30 @@
 
 import javascript
 private import semmle.javascript.dataflow.internal.StepSummary
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
 private import DataFlow::PseudoProperties
 
 /**
- * A pseudo-property used in a data-flow/type-tracking step for collections.
+ * DEPRECATED. Exists only to support other deprecated elements.
  *
- * By extending `TypeTrackingPseudoProperty` the class enables the use of the collection related pseudo-properties in type-tracking predicates.
+ * Type-tracking now automatically determines the set of pseudo-properties to include
+ * ased on which properties are contributed by `SharedTaintStep`s.
  */
-private class PseudoProperty extends TypeTrackingPseudoProperty {
+deprecated private class PseudoProperty extends string {
   PseudoProperty() {
     this = [arrayLikeElement(), "1"] or // the "1" is required for the `ForOfStep`.
-    this = any(CollectionDataFlow::MapSet step).getAPseudoProperty()
-  }
-
-  override PseudoProperty getLoadStoreToProp() {
-    exists(CollectionFlowStep step | step.loadStore(_, _, this, result))
+    this =
+      [
+        mapValue(any(DataFlow::CallNode c | c.getCalleeName() = "set").getArgument(0)),
+        mapValueAll()
+      ]
   }
 }
 
 /**
- * An `AdditionalFlowStep` used to model a data-flow step related to standard library collections.
- *
- * The `loadStep`/`storeStep`/`loadStoreStep` methods are overloaded such that the new predicates
- * `load`/`store`/`loadStore` can be used in the `CollectionsTypeTracking` module.
- * (Thereby avoiding naming conflicts with a "cousin" `AdditionalFlowStep` implementation.)
+ * DEPRECATED. Use `SharedFlowStep` or `SharedTaintTrackingStep` instead.
  */
-abstract class CollectionFlowStep extends DataFlow::AdditionalFlowStep {
+abstract deprecated class CollectionFlowStep extends DataFlow::AdditionalFlowStep {
   final override predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
 
   final override predicate step(
@@ -84,27 +82,28 @@ abstract class CollectionFlowStep extends DataFlow::AdditionalFlowStep {
 }
 
 /**
- * Provides predicates and clases for type-tracking collections.
+ * DEPRECATED. These steps are now included in the default type tracking steps,
+ * in most cases one can simply use those instead.
  */
-module CollectionsTypeTracking {
+deprecated module CollectionsTypeTracking {
   /**
    * Gets the result from a single step through a collection, from `pred` to `result` summarized by `summary`.
    */
   pragma[inline]
   DataFlow::SourceNode collectionStep(DataFlow::Node pred, StepSummary summary) {
-    exists(CollectionFlowStep step, PseudoProperty field |
+    exists(PseudoProperty field |
       summary = LoadStep(field) and
-      step.load(pred, result, field) and
+      DataFlow::SharedTypeTrackingStep::loadStep(pred, result, field) and
       not field = mapValueUnknownKey() // prune unknown reads in type-tracking
       or
       summary = StoreStep(field) and
-      step.store(pred, result, field)
+      DataFlow::SharedTypeTrackingStep::storeStep(pred, result, field)
       or
       summary = CopyStep(field) and
-      step.loadStore(pred, result, field)
+      DataFlow::SharedTypeTrackingStep::loadStoreStep(pred, result, field)
       or
       exists(PseudoProperty toField | summary = LoadStoreStep(field, toField) |
-        step.loadStore(pred, result, field, toField)
+        DataFlow::SharedTypeTrackingStep::loadStoreStep(pred, result, field, toField)
       )
     )
   }
@@ -129,74 +128,71 @@ private module CollectionDataFlow {
   /**
    * A step for `Set.add()` method, which adds an element to a Set.
    */
-  private class SetAdd extends CollectionFlowStep, DataFlow::MethodCallNode {
-    SetAdd() { this.getMethodName() = "add" }
-
-    override predicate store(DataFlow::Node element, DataFlow::SourceNode obj, PseudoProperty prop) {
-      this = obj.getAMethodCall() and
-      element = this.getArgument(0) and
-      prop = setElement()
+  private class SetAdd extends PreCallGraphStep {
+    override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
+      exists(DataFlow::MethodCallNode call |
+        call = obj.getAMethodCall("add") and
+        element = call.getArgument(0) and
+        prop = setElement()
+      )
     }
   }
 
   /**
    * A step for the `Set` constructor, which copies any elements from the first argument into the resulting set.
    */
-  private class SetConstructor extends CollectionFlowStep, DataFlow::NewNode {
-    SetConstructor() { this = DataFlow::globalVarRef("Set").getAnInstantiation() }
-
-    override predicate loadStore(
-      DataFlow::Node pred, DataFlow::Node succ, PseudoProperty fromProp, PseudoProperty toProp
+  private class SetConstructor extends PreCallGraphStep {
+    override predicate loadStoreStep(
+      DataFlow::Node pred, DataFlow::SourceNode succ, string fromProp, string toProp
     ) {
-      pred = this.getArgument(0) and
-      succ = this and
-      fromProp = arrayLikeElement() and
-      toProp = setElement()
+      exists(DataFlow::NewNode invoke |
+        invoke = DataFlow::globalVarRef("Set").getAnInstantiation() and
+        pred = invoke.getArgument(0) and
+        succ = invoke and
+        fromProp = arrayLikeElement() and
+        toProp = setElement()
+      )
     }
   }
 
   /**
-   * A step for a `for of` statement on a Map, Set, or Iterator.
-   * For Sets and iterators the l-value are the elements of the set/iterator.
-   * For Maps the l-value is a tuple containing a key and a value.
+   * A step for modelling `for of` iteration on arrays, maps, sets, and iterators.
+   *
+   * For sets and iterators the l-value are the elements of the set/iterator.
+   * For maps the l-value is a tuple containing a key and a value.
    */
-  // This is partially duplicated behavior with the `for of` step for Arrays (`ArrayDataFlow::ForOfStep`).
-  // This duplication is required for the type-tracking steps defined in `CollectionsTypeTracking`.
-  private class ForOfStep extends CollectionFlowStep, DataFlow::ValueNode {
-    ForOfStmt forOf;
-    DataFlow::Node element;
-
-    ForOfStep() {
-      this.asExpr() = forOf.getIterationDomain() and
-      element = DataFlow::lvalueNode(forOf.getLValue())
+  private class ForOfStep extends PreCallGraphStep {
+    override predicate loadStep(DataFlow::Node obj, DataFlow::Node e, string prop) {
+      exists(ForOfStmt forOf |
+        obj = forOf.getIterationDomain().flow() and
+        e = DataFlow::lvalueNode(forOf.getLValue()) and
+        prop = arrayLikeElement()
+      )
     }
 
-    override predicate load(DataFlow::Node obj, DataFlow::Node e, PseudoProperty prop) {
-      obj = this and
-      e = element and
-      prop = arrayLikeElement()
-    }
-
-    override predicate loadStore(
-      DataFlow::Node pred, DataFlow::Node succ, PseudoProperty fromProp, PseudoProperty toProp
+    override predicate loadStoreStep(
+      DataFlow::Node pred, DataFlow::SourceNode succ, string fromProp, string toProp
     ) {
-      pred = this and
-      succ = element and
-      fromProp = mapValueAll() and
-      toProp = "1"
+      exists(ForOfStmt forOf |
+        pred = forOf.getIterationDomain().flow() and
+        succ = DataFlow::lvalueNode(forOf.getLValue()) and
+        fromProp = mapValueAll() and
+        toProp = "1"
+      )
     }
   }
 
   /**
    * A step for a call to `forEach` on a Set or Map.
    */
-  private class SetMapForEach extends CollectionFlowStep, DataFlow::MethodCallNode {
-    SetMapForEach() { this.getMethodName() = "forEach" }
-
-    override predicate load(DataFlow::Node obj, DataFlow::Node element, PseudoProperty prop) {
-      obj = this.getReceiver() and
-      element = this.getCallback(0).getParameter(0) and
-      prop = [setElement(), mapValueAll()]
+  private class SetMapForEach extends PreCallGraphStep {
+    override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = "forEach" and
+        obj = call.getReceiver() and
+        element = call.getCallback(0).getParameter(0) and
+        prop = [setElement(), mapValueAll()]
+      )
     }
   }
 
@@ -204,14 +200,15 @@ private module CollectionDataFlow {
    * A call to the `get` method on a Map.
    * If the key of the call to `get` has a known string value, then only the value corresponding to that key will be retrieved. (The known string value is encoded as part of the pseudo-property)
    */
-  private class MapGet extends CollectionFlowStep, DataFlow::MethodCallNode {
-    MapGet() { this.getMethodName() = "get" }
-
-    override predicate load(DataFlow::Node obj, DataFlow::Node element, PseudoProperty prop) {
-      obj = this.getReceiver() and
-      element = this and
-      // reading the join of known and unknown values
-      (prop = mapValue(this.getArgument(0)) or prop = mapValueUnknownKey())
+  private class MapGet extends PreCallGraphStep {
+    override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = "get" and
+        obj = call.getReceiver() and
+        element = call and
+        // reading the join of known and unknown values
+        (prop = mapValue(call.getArgument(0)) or prop = mapValueUnknownKey())
+      )
     }
   }
 
@@ -223,56 +220,47 @@ private module CollectionDataFlow {
    * Otherwise the value will be stored into a pseudo-property corresponding to values with unknown keys.
    * The value will additionally be stored into a pseudo-property corresponding to all values.
    */
-  class MapSet extends CollectionFlowStep, DataFlow::MethodCallNode {
-    MapSet() { this.getMethodName() = "set" }
-
-    override predicate store(DataFlow::Node element, DataFlow::SourceNode obj, PseudoProperty prop) {
-      this = obj.getAMethodCall() and
-      element = this.getArgument(1) and
-      prop = getAPseudoProperty()
+  class MapSet extends PreCallGraphStep {
+    override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
+      exists(DataFlow::MethodCallNode call |
+        call = obj.getAMethodCall("set") and
+        element = call.getArgument(1) and
+        prop = [mapValue(call.getArgument(0)), mapValueAll()]
+      )
     }
-
-    /**
-     * Gets a pseudo-property used to store an element in a map.
-     * The pseudo-property represents both values where the key is a known string value (which is encoded in the pseudo-property),
-     * and values where the key is unknown.
-     *
-     * Additionally, all elements are stored into the pseudo-property `mapValueAll()`.
-     *
-     * The return-type is `string` as this predicate is used to define which pseudo-properties exist.
-     */
-    string getAPseudoProperty() { result = [mapValue(this.getArgument(0)), mapValueAll()] }
   }
 
   /**
    * A step for a call to `values` on a Map or a Set.
    */
-  private class MapAndSetValues extends CollectionFlowStep, DataFlow::MethodCallNode {
-    MapAndSetValues() { this.getMethodName() = "values" }
-
-    override predicate loadStore(
-      DataFlow::Node pred, DataFlow::Node succ, PseudoProperty fromProp, PseudoProperty toProp
+  private class MapAndSetValues extends PreCallGraphStep {
+    override predicate loadStoreStep(
+      DataFlow::Node pred, DataFlow::SourceNode succ, string fromProp, string toProp
     ) {
-      pred = this.getReceiver() and
-      succ = this and
-      fromProp = [mapValueAll(), setElement()] and
-      toProp = iteratorElement()
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = "values" and
+        pred = call.getReceiver() and
+        succ = call and
+        fromProp = [mapValueAll(), setElement()] and
+        toProp = iteratorElement()
+      )
     }
   }
 
   /**
    * A step for a call to `keys` on a Set.
    */
-  private class SetKeys extends CollectionFlowStep, DataFlow::MethodCallNode {
-    SetKeys() { this.getMethodName() = "keys" }
-
-    override predicate loadStore(
-      DataFlow::Node pred, DataFlow::Node succ, PseudoProperty fromProp, PseudoProperty toProp
+  private class SetKeys extends PreCallGraphStep {
+    override predicate loadStoreStep(
+      DataFlow::Node pred, DataFlow::SourceNode succ, string fromProp, string toProp
     ) {
-      pred = this.getReceiver() and
-      succ = this and
-      fromProp = setElement() and
-      toProp = iteratorElement()
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = "keys" and
+        pred = call.getReceiver() and
+        succ = call and
+        fromProp = setElement() and
+        toProp = iteratorElement()
+      )
     }
   }
 }
