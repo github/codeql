@@ -31,9 +31,9 @@ following snippet demonstrates.
 
 ➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1876172022264324639/>`__.
 
-This query selects the API graph node corresponding to the ``re`` module. This node represent the fact that the ``re`` module has been imported rather than a specific place in the program where the import happens. Therefore, there will be at most one result per project, and it will not have a useful location, so you have to click `Show 1 non-source result` in order to see it.
+This query selects the API graph node corresponding to the ``re`` module. This node represents the fact that the ``re`` module has been imported rather than a specific location in the program where the import happens. Therefore, there will be at most one result per project, and it will not have a useful location, so you'll have to click `Show 1 non-source result` in order to see it.
 
-To find places in the program where the ``re`` module is referenced, you can use the ``getAUse`` method. The following query selects all references to the ``re`` module in the current database.
+To find where the ``re`` module is referenced in the program, you can use the ``getAUse`` method. The following query selects all references to the ``re`` module in the current database.
 
 .. code-block:: ql
 
