@@ -323,19 +323,19 @@ module Private {
     isParameterPostUpdate(_, c, i)
   }
 
-  private Node pre(Node post) {
-    summaryPostUpdateNode(post, result)
-    or
-    not summaryPostUpdateNode(post, _) and
-    result = post
-  }
-
   private predicate callbackOutput(
     SummarizedCallable c, SummaryComponentStack s, Node receiver, ReturnKind rk
   ) {
     any(SummaryNodeState state).isInputState(c, s) and
     s.head() = TReturnSummaryComponent(rk) and
-    receiver = pre(summaryNodeInputState(c, s.drop(1)))
+    receiver = summaryNodeInputState(c, s.drop(1))
+  }
+
+  private Node pre(Node post) {
+    summaryPostUpdateNode(post, result)
+    or
+    not summaryPostUpdateNode(post, _) and
+    result = post
   }
 
   private predicate callbackInput(
