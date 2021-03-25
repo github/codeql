@@ -20,3 +20,4 @@ import Attribute
 import Stubs
 import CustomModifierReceiver
 import Parameterizable
+import semmle.code.cil.Ssa
