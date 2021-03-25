@@ -376,7 +376,6 @@
   ],
   "DuplicationProblems.inc.qhelp": [
     "cpp/ql/src/Metrics/Files/DuplicationProblems.inc.qhelp",
-    "csharp/ql/src/Metrics/Files/DuplicationProblems.inc.qhelp",
     "javascript/ql/src/Metrics/DuplicationProblems.inc.qhelp",
     "python/ql/src/Metrics/DuplicationProblems.inc.qhelp"
   ],
