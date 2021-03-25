@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"golang.org/x/mod/semver"
 	"io/ioutil"
@@ -205,51 +204,6 @@ func checkVendor() bool {
 	}
 
 	return true
-}
-
-func getOsToolsSubdir() (string, error) {
-	switch runtime.GOOS {
-	case "darwin":
-		return "osx64", nil
-	case "linux":
-		return "linux64", nil
-	case "windows":
-		return "win64", nil
-	}
-	return "", errors.New("Unsupported OS: " + runtime.GOOS)
-}
-
-func getExtractorDir() (string, error) {
-	mypath, err := os.Executable()
-	if err == nil {
-		return filepath.Dir(mypath), nil
-	}
-	log.Printf("Could not determine path of autobuilder: %v.\n", err)
-
-	// Fall back to rebuilding our own path from the extractor root:
-	extractorRoot := os.Getenv("CODEQL_EXTRACTOR_GO_ROOT")
-	if extractorRoot == "" {
-		return "", errors.New("CODEQL_EXTRACTOR_GO_ROOT not set.\nThis binary should not be run manually; instead, use the CodeQL CLI or VSCode extension. See https://securitylab.github.com/tools/codeql")
-	}
-
-	osSubdir, err := getOsToolsSubdir()
-	if err != nil {
-		return "", err
-	}
-
-	return filepath.Join(extractorRoot, "tools", osSubdir), nil
-}
-
-func getExtractorPath() (string, error) {
-	dirname, err := getExtractorDir()
-	if err != nil {
-		return "", err
-	}
-	extractor := filepath.Join(dirname, "go-extractor")
-	if runtime.GOOS == "windows" {
-		extractor = extractor + ".exe"
-	}
-	return extractor, nil
 }
 
 func main() {
@@ -568,7 +522,7 @@ func main() {
 	}
 
 	// extract
-	extractor, err := getExtractorPath()
+	extractor, err := util.GetExtractorPath()
 	if err != nil {
 		log.Fatalf("Could not determine path of extractor: %v.\n", err)
 	}

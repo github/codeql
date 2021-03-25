@@ -43,13 +43,23 @@ class Diagnostic extends @diagnostic {
   string toString() { result = "error: " + this.getMessage() }
 }
 
-query predicate qcompilations(Compilation c, File f) { c.compilesFile(_, f) }
+/**
+ * Wraps `Compilation`, removing the `.exe` suffixes from compilation descriptions
+ * such that this test produces the same results on Windows and non-Windows platforms.
+ */
+class PlatformNeutralCompilation extends Compilation {
+  override string toString() { result = super.toString().regexpReplaceAll("\\.exe", "") }
+}
 
-query predicate qdiagnostics(Diagnostic d, Compilation c, File f) {
+query predicate qcompilations(PlatformNeutralCompilation c, File f) { c.compilesFile(_, f) }
+
+query predicate qdiagnostics(Diagnostic d, PlatformNeutralCompilation c, File f) {
   exists(int fileno | d.diagnosticFor(c, fileno, _) | c.compilesFile(fileno, f))
 }
 
-query predicate duplicateerrs(Diagnostic d, Diagnostic d1, Compilation c, int fileno, int idx) {
+query predicate duplicateerrs(
+  Diagnostic d, Diagnostic d1, PlatformNeutralCompilation c, int fileno, int idx
+) {
   d != d1 and
   d.diagnosticFor(c, fileno, idx) and
   d1.diagnosticFor(c, fileno, idx)
