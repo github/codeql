@@ -23,6 +23,8 @@ def test_fluent_no_TLSv1():
 def test_fluent_safe():
     hostname = 'www.python.org'
     context = SSL.Context(SSL.SSLv23_METHOD)
+    context.set_options(SSL.OP_NO_SSLv2)
+    context.set_options(SSL.OP_NO_SSLv3)
     context.set_options(SSL.OP_NO_TLSv1)
     context.set_options(SSL.OP_NO_TLSv1_1)
 
