@@ -206,6 +206,59 @@ nodes
 | mongooseModelClient.js:12:22:12:29 | req.body |
 | mongooseModelClient.js:12:22:12:29 | req.body |
 | mongooseModelClient.js:12:22:12:32 | req.body.id |
+| pg-promise.js:6:7:7:55 | query |
+| pg-promise.js:6:15:7:55 | "SELECT ...  PRICE" |
+| pg-promise.js:7:16:7:34 | req.params.category |
+| pg-promise.js:7:16:7:34 | req.params.category |
+| pg-promise.js:9:10:9:14 | query |
+| pg-promise.js:9:10:9:14 | query |
+| pg-promise.js:10:11:10:15 | query |
+| pg-promise.js:10:11:10:15 | query |
+| pg-promise.js:11:17:11:21 | query |
+| pg-promise.js:11:17:11:21 | query |
+| pg-promise.js:12:10:12:14 | query |
+| pg-promise.js:12:10:12:14 | query |
+| pg-promise.js:13:12:13:16 | query |
+| pg-promise.js:13:12:13:16 | query |
+| pg-promise.js:14:18:14:22 | query |
+| pg-promise.js:14:18:14:22 | query |
+| pg-promise.js:15:11:15:15 | query |
+| pg-promise.js:15:11:15:15 | query |
+| pg-promise.js:16:10:16:14 | query |
+| pg-promise.js:16:10:16:14 | query |
+| pg-promise.js:17:16:17:20 | query |
+| pg-promise.js:17:16:17:20 | query |
+| pg-promise.js:18:12:18:16 | query |
+| pg-promise.js:18:12:18:16 | query |
+| pg-promise.js:19:13:19:17 | query |
+| pg-promise.js:19:13:19:17 | query |
+| pg-promise.js:22:11:22:15 | query |
+| pg-promise.js:22:11:22:15 | query |
+| pg-promise.js:30:13:30:25 | req.params.id |
+| pg-promise.js:30:13:30:25 | req.params.id |
+| pg-promise.js:30:13:30:25 | req.params.id |
+| pg-promise.js:34:13:34:25 | req.params.id |
+| pg-promise.js:34:13:34:25 | req.params.id |
+| pg-promise.js:34:13:34:25 | req.params.id |
+| pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] |
+| pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] |
+| pg-promise.js:39:7:39:19 | req.params.id |
+| pg-promise.js:39:7:39:19 | req.params.id |
+| pg-promise.js:39:7:39:19 | req.params.id |
+| pg-promise.js:40:7:40:21 | req.params.name |
+| pg-promise.js:40:7:40:21 | req.params.name |
+| pg-promise.js:40:7:40:21 | req.params.name |
+| pg-promise.js:41:7:41:20 | req.params.foo |
+| pg-promise.js:41:7:41:20 | req.params.foo |
+| pg-promise.js:47:11:47:23 | req.params.id |
+| pg-promise.js:47:11:47:23 | req.params.id |
+| pg-promise.js:47:11:47:23 | req.params.id |
+| pg-promise.js:54:11:54:23 | req.params.id |
+| pg-promise.js:54:11:54:23 | req.params.id |
+| pg-promise.js:54:11:54:23 | req.params.id |
+| pg-promise.js:56:14:56:29 | req.params.title |
+| pg-promise.js:56:14:56:29 | req.params.title |
+| pg-promise.js:56:14:56:29 | req.params.title |
 | redis.js:10:16:10:23 | req.body |
 | redis.js:10:16:10:23 | req.body |
 | redis.js:10:16:10:27 | req.body.key |
@@ -553,6 +606,52 @@ edges
 | mongooseModelClient.js:12:22:12:29 | req.body | mongooseModelClient.js:12:22:12:32 | req.body.id |
 | mongooseModelClient.js:12:22:12:32 | req.body.id | mongooseModelClient.js:12:16:12:34 | { id: req.body.id } |
 | mongooseModelClient.js:12:22:12:32 | req.body.id | mongooseModelClient.js:12:16:12:34 | { id: req.body.id } |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:9:10:9:14 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:9:10:9:14 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:10:11:10:15 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:10:11:10:15 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:11:17:11:21 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:11:17:11:21 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:12:10:12:14 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:12:10:12:14 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:13:12:13:16 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:13:12:13:16 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:14:18:14:22 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:14:18:14:22 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:15:11:15:15 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:15:11:15:15 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:16:10:16:14 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:16:10:16:14 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:17:16:17:20 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:17:16:17:20 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:18:12:18:16 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:18:12:18:16 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:19:13:19:17 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:19:13:19:17 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:22:11:22:15 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:22:11:22:15 | query |
+| pg-promise.js:6:15:7:55 | "SELECT ...  PRICE" | pg-promise.js:6:7:7:55 | query |
+| pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:6:15:7:55 | "SELECT ...  PRICE" |
+| pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:6:15:7:55 | "SELECT ...  PRICE" |
+| pg-promise.js:30:13:30:25 | req.params.id | pg-promise.js:30:13:30:25 | req.params.id |
+| pg-promise.js:34:13:34:25 | req.params.id | pg-promise.js:34:13:34:25 | req.params.id |
+| pg-promise.js:39:7:39:19 | req.params.id | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] |
+| pg-promise.js:39:7:39:19 | req.params.id | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] |
+| pg-promise.js:39:7:39:19 | req.params.id | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] |
+| pg-promise.js:39:7:39:19 | req.params.id | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] |
+| pg-promise.js:39:7:39:19 | req.params.id | pg-promise.js:39:7:39:19 | req.params.id |
+| pg-promise.js:40:7:40:21 | req.params.name | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] |
+| pg-promise.js:40:7:40:21 | req.params.name | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] |
+| pg-promise.js:40:7:40:21 | req.params.name | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] |
+| pg-promise.js:40:7:40:21 | req.params.name | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] |
+| pg-promise.js:40:7:40:21 | req.params.name | pg-promise.js:40:7:40:21 | req.params.name |
+| pg-promise.js:41:7:41:20 | req.params.foo | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] |
+| pg-promise.js:41:7:41:20 | req.params.foo | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] |
+| pg-promise.js:41:7:41:20 | req.params.foo | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] |
+| pg-promise.js:41:7:41:20 | req.params.foo | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] |
+| pg-promise.js:47:11:47:23 | req.params.id | pg-promise.js:47:11:47:23 | req.params.id |
+| pg-promise.js:54:11:54:23 | req.params.id | pg-promise.js:54:11:54:23 | req.params.id |
+| pg-promise.js:56:14:56:29 | req.params.title | pg-promise.js:56:14:56:29 | req.params.title |
 | redis.js:10:16:10:23 | req.body | redis.js:10:16:10:27 | req.body.key |
 | redis.js:10:16:10:23 | req.body | redis.js:10:16:10:27 | req.body.key |
 | redis.js:10:16:10:23 | req.body | redis.js:10:16:10:27 | req.body.key |
@@ -665,6 +764,28 @@ edges
 | mongooseJsonParse.js:23:19:23:23 | query | mongooseJsonParse.js:20:30:20:43 | req.query.data | mongooseJsonParse.js:23:19:23:23 | query | This query depends on $@. | mongooseJsonParse.js:20:30:20:43 | req.query.data | a user-provided value |
 | mongooseModelClient.js:11:16:11:24 | { id: v } | mongooseModelClient.js:10:22:10:29 | req.body | mongooseModelClient.js:11:16:11:24 | { id: v } | This query depends on $@. | mongooseModelClient.js:10:22:10:29 | req.body | a user-provided value |
 | mongooseModelClient.js:12:16:12:34 | { id: req.body.id } | mongooseModelClient.js:12:22:12:29 | req.body | mongooseModelClient.js:12:16:12:34 | { id: req.body.id } | This query depends on $@. | mongooseModelClient.js:12:22:12:29 | req.body | a user-provided value |
+| pg-promise.js:9:10:9:14 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:9:10:9:14 | query | This query depends on $@. | pg-promise.js:7:16:7:34 | req.params.category | a user-provided value |
+| pg-promise.js:10:11:10:15 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:10:11:10:15 | query | This query depends on $@. | pg-promise.js:7:16:7:34 | req.params.category | a user-provided value |
+| pg-promise.js:11:17:11:21 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:11:17:11:21 | query | This query depends on $@. | pg-promise.js:7:16:7:34 | req.params.category | a user-provided value |
+| pg-promise.js:12:10:12:14 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:12:10:12:14 | query | This query depends on $@. | pg-promise.js:7:16:7:34 | req.params.category | a user-provided value |
+| pg-promise.js:13:12:13:16 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:13:12:13:16 | query | This query depends on $@. | pg-promise.js:7:16:7:34 | req.params.category | a user-provided value |
+| pg-promise.js:14:18:14:22 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:14:18:14:22 | query | This query depends on $@. | pg-promise.js:7:16:7:34 | req.params.category | a user-provided value |
+| pg-promise.js:15:11:15:15 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:15:11:15:15 | query | This query depends on $@. | pg-promise.js:7:16:7:34 | req.params.category | a user-provided value |
+| pg-promise.js:16:10:16:14 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:16:10:16:14 | query | This query depends on $@. | pg-promise.js:7:16:7:34 | req.params.category | a user-provided value |
+| pg-promise.js:17:16:17:20 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:17:16:17:20 | query | This query depends on $@. | pg-promise.js:7:16:7:34 | req.params.category | a user-provided value |
+| pg-promise.js:18:12:18:16 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:18:12:18:16 | query | This query depends on $@. | pg-promise.js:7:16:7:34 | req.params.category | a user-provided value |
+| pg-promise.js:19:13:19:17 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:19:13:19:17 | query | This query depends on $@. | pg-promise.js:7:16:7:34 | req.params.category | a user-provided value |
+| pg-promise.js:22:11:22:15 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:22:11:22:15 | query | This query depends on $@. | pg-promise.js:7:16:7:34 | req.params.category | a user-provided value |
+| pg-promise.js:30:13:30:25 | req.params.id | pg-promise.js:30:13:30:25 | req.params.id | pg-promise.js:30:13:30:25 | req.params.id | This query depends on $@. | pg-promise.js:30:13:30:25 | req.params.id | a user-provided value |
+| pg-promise.js:34:13:34:25 | req.params.id | pg-promise.js:34:13:34:25 | req.params.id | pg-promise.js:34:13:34:25 | req.params.id | This query depends on $@. | pg-promise.js:34:13:34:25 | req.params.id | a user-provided value |
+| pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | pg-promise.js:39:7:39:19 | req.params.id | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | This query depends on $@. | pg-promise.js:39:7:39:19 | req.params.id | a user-provided value |
+| pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | pg-promise.js:40:7:40:21 | req.params.name | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | This query depends on $@. | pg-promise.js:40:7:40:21 | req.params.name | a user-provided value |
+| pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | pg-promise.js:41:7:41:20 | req.params.foo | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | This query depends on $@. | pg-promise.js:41:7:41:20 | req.params.foo | a user-provided value |
+| pg-promise.js:39:7:39:19 | req.params.id | pg-promise.js:39:7:39:19 | req.params.id | pg-promise.js:39:7:39:19 | req.params.id | This query depends on $@. | pg-promise.js:39:7:39:19 | req.params.id | a user-provided value |
+| pg-promise.js:40:7:40:21 | req.params.name | pg-promise.js:40:7:40:21 | req.params.name | pg-promise.js:40:7:40:21 | req.params.name | This query depends on $@. | pg-promise.js:40:7:40:21 | req.params.name | a user-provided value |
+| pg-promise.js:47:11:47:23 | req.params.id | pg-promise.js:47:11:47:23 | req.params.id | pg-promise.js:47:11:47:23 | req.params.id | This query depends on $@. | pg-promise.js:47:11:47:23 | req.params.id | a user-provided value |
+| pg-promise.js:54:11:54:23 | req.params.id | pg-promise.js:54:11:54:23 | req.params.id | pg-promise.js:54:11:54:23 | req.params.id | This query depends on $@. | pg-promise.js:54:11:54:23 | req.params.id | a user-provided value |
+| pg-promise.js:56:14:56:29 | req.params.title | pg-promise.js:56:14:56:29 | req.params.title | pg-promise.js:56:14:56:29 | req.params.title | This query depends on $@. | pg-promise.js:56:14:56:29 | req.params.title | a user-provided value |
 | redis.js:10:16:10:27 | req.body.key | redis.js:10:16:10:23 | req.body | redis.js:10:16:10:27 | req.body.key | This query depends on $@. | redis.js:10:16:10:23 | req.body | a user-provided value |
 | redis.js:18:16:18:18 | key | redis.js:12:15:12:22 | req.body | redis.js:18:16:18:18 | key | This query depends on $@. | redis.js:12:15:12:22 | req.body | a user-provided value |
 | redis.js:19:43:19:45 | key | redis.js:12:15:12:22 | req.body | redis.js:19:43:19:45 | key | This query depends on $@. | redis.js:12:15:12:22 | req.body | a user-provided value |
