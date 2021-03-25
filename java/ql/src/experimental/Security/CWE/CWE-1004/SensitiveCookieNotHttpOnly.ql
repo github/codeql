@@ -97,7 +97,10 @@ predicate setHttpOnlyInCookie(MethodAccess ma) {
 class SetHttpOnlyInCookieConfiguration extends TaintTracking2::Configuration {
   SetHttpOnlyInCookieConfiguration() { this = "SetHttpOnlyInCookieConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { any() }
+  override predicate isSource(DataFlow::Node source) {
+    source.asExpr() =
+      any(MethodAccess ma | setHttpOnlyInCookie(ma) or removeCookie(ma)).getQualifier()
+  }
 
   override predicate isSink(DataFlow::Node sink) {
     sink.asExpr() =
@@ -123,21 +126,11 @@ class CookieResponseSink extends DataFlow::ExprNode {
       (
         ma.getMethod() instanceof ResponseAddCookieMethod and
         this.getExpr() = ma.getArgument(0) and
-        not exists(
-          MethodAccess ma2 // a method or wrapper method that invokes cookie.setHttpOnly(true)
-        |
-          (
-            setHttpOnlyInCookie(ma2) or
-            removeCookie(ma2)
-          ) and
-          exists(SetHttpOnlyInCookieConfiguration cc |
-            cc.hasFlow(DataFlow::exprNode(ma2.getQualifier()), this)
-          )
-        )
+        not exists(SetHttpOnlyInCookieConfiguration cc | cc.hasFlowTo(this))
         or
         ma instanceof SetCookieMethodAccess and
         this.getExpr() = ma.getArgument(1) and
-        not exists(MatchesHttpOnlyConfiguration cc | cc.hasFlowToExpr(ma.getArgument(1))) // response.addHeader("Set-Cookie", "token=" +authId + ";HttpOnly;Secure")
+        not exists(MatchesHttpOnlyConfiguration cc | cc.hasFlowTo(this)) // response.addHeader("Set-Cookie", "token=" +authId + ";HttpOnly;Secure")
       ) and
       not isTestMethod(ma) // Test class or method
     )
