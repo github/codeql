@@ -468,8 +468,8 @@ class BarrierGuard extends GuardNode {
 }
 
 private predicate comes_from_cfgnode(Node node) {
-  exists(Node second |
-    simpleLocalFlowStep(any(CfgNode c), second) and
+  exists(CfgNode first, Node second |
+    simpleLocalFlowStep(first, second) and
     simpleLocalFlowStep*(second, node)
   )
 }
