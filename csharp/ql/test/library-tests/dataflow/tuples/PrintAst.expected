@@ -1,3 +1,381 @@
+MixedPatterns.cs:
+#    2| [Class] C
+#    4|   5: [Method] M
+#    4|     -1: [TypeMention] Void
+#    5|     4: [BlockStmt] {...}
+#    6|       0: [LocalVariableDeclStmt] ... ...;
+#    6|         0: [LocalVariableDeclAndInitExpr] Base a = ...
+#    6|           -1: [TypeMention] Base
+#    6|           0: [LocalVariableAccess] access to local variable a
+#    6|           1: [ObjectCreation] object creation of type Item
+#    6|             -2: [TypeMention] Item
+#    6|             -1: [ObjectInitializer] { ..., ... }
+#    6|               0: [MemberInitializer] ... = ...
+#    6|                 0: [PropertyCall] access to property X
+#    6|                 1: [StringLiteral] "taint source"
+#    7|       1: [LocalVariableDeclStmt] ... ...;
+#    7|         0: [LocalVariableDeclAndInitExpr] String ret1 = ...
+#    7|           -1: [TypeMention] string
+#    7|           0: [LocalVariableAccess] access to local variable ret1
+#    7|           1: [SwitchExpr] ... switch { ... }
+#    7|             -1: [LocalVariableAccess] access to local variable a
+#    9|             0: [SwitchCaseExpr] ... => ...
+#    9|               0: [RecursivePatternExpr] { ... }
+#    9|                 0: [VariablePatternExpr] Item z
+#    9|                 1: [TypeAccessPatternExpr] access to type Item
+#    9|                   0: [TypeMention] Item
+#    9|                 2: [PositionalPatternExpr] ( ... )
+#    9|                   0: [ConstantPatternExpr,StringLiteral] "taint source"
+#    9|                   1: [ConstantPatternExpr,IntLiteral] 1
+#    9|                 3: [PropertyPatternExpr] { ... }
+#    9|                   0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 10
+#    9|               2: [MethodCall] call to method Sink
+#    9|                 0: [PropertyCall] access to property X
+#    9|                   -1: [LocalVariableAccess] access to local variable z
+#   10|             1: [SwitchCaseExpr] ... => ...
+#   10|               0: [RecursivePatternExpr] { ... }
+#   10|                 0: [VariablePatternExpr] Item z
+#   10|                 1: [TypeAccessPatternExpr] access to type Item
+#   10|                   0: [TypeMention] Item
+#   10|                 2: [PositionalPatternExpr] ( ... )
+#   10|                   0: [ConstantPatternExpr,StringLiteral] "not taint source"
+#   10|                   1: [ConstantPatternExpr,IntLiteral] 1
+#   10|                 3: [PropertyPatternExpr] { ... }
+#   10|                   0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 10
+#   10|               2: [MethodCall] call to method Sink
+#   10|                 0: [PropertyCall] access to property X
+#   10|                   -1: [LocalVariableAccess] access to local variable z
+#   12|             2: [SwitchCaseExpr] ... => ...
+#   12|               0: [RecursivePatternExpr] { ... }
+#   12|                 2: [PositionalPatternExpr] ( ... )
+#   12|                   0: [ConstantPatternExpr,IntLiteral] 0
+#   12|                   1: [ConstantPatternExpr,IntLiteral] 0
+#   12|               2: [StringLiteral] ""
+#   13|             3: [SwitchCaseExpr] ... => ...
+#   13|               0: [RecursivePatternExpr] { ... }
+#   13|                 2: [PositionalPatternExpr] ( ... )
+#   13|                   0: [VariablePatternExpr] Object s
+#   13|                   1: [ConstantPatternExpr,IntLiteral] 0
+#   13|               2: [MethodCall] call to method Sink
+#   13|                 0: [LocalVariableAccess] access to local variable s
+#   16|       2: [LocalVariableDeclStmt] ... ...;
+#   16|         0: [LocalVariableDeclAndInitExpr] Item b = ...
+#   16|           -1: [TypeMention] Item
+#   16|           0: [LocalVariableAccess] access to local variable b
+#   16|           1: [ObjectCreation] object creation of type Item
+#   16|             -2: [TypeMention] Item
+#   16|             -1: [ObjectInitializer] { ..., ... }
+#   16|               0: [MemberInitializer] ... = ...
+#   16|                 0: [PropertyCall] access to property X
+#   16|                 1: [StringLiteral] "taint source"
+#   17|       3: [LocalVariableDeclStmt] ... ...;
+#   17|         0: [LocalVariableDeclAndInitExpr] String ret2 = ...
+#   17|           -1: [TypeMention] string
+#   17|           0: [LocalVariableAccess] access to local variable ret2
+#   17|           1: [SwitchExpr] ... switch { ... }
+#   17|             -1: [LocalVariableAccess] access to local variable b
+#   19|             0: [SwitchCaseExpr] ... => ...
+#   19|               0: [RecursivePatternExpr] { ... }
+#   19|                 2: [PositionalPatternExpr] ( ... )
+#   19|                   0: [ConstantPatternExpr,StringLiteral] "taint source"
+#   19|                   1: [ConstantPatternExpr,IntLiteral] 0
+#   19|               2: [MethodCall] call to method Sink
+#   19|                 0: [PropertyCall] access to property X
+#   19|                   -1: [LocalVariableAccess] access to local variable b
+#   20|             1: [SwitchCaseExpr] ... => ...
+#   20|               0: [RecursivePatternExpr] { ... }
+#   20|                 2: [PositionalPatternExpr] ( ... )
+#   20|                   0: [ConstantPatternExpr,StringLiteral] "not taint source"
+#   20|                   1: [ConstantPatternExpr,IntLiteral] 0
+#   20|               2: [MethodCall] call to method Sink
+#   20|                 0: [PropertyCall] access to property X
+#   20|                   -1: [LocalVariableAccess] access to local variable b
+#   21|             2: [SwitchCaseExpr] ... => ...
+#   21|               0: [RecursivePatternExpr] { ... }
+#   21|                 0: [VariablePatternExpr] Item p
+#   21|                 2: [PositionalPatternExpr] ( ... )
+#   21|                   0: [ConstantPatternExpr,StringLiteral] "taint source"
+#   21|                   1: [ConstantPatternExpr,IntLiteral] 3
+#   21|               2: [MethodCall] call to method Sink
+#   21|                 0: [PropertyCall] access to property X
+#   21|                   -1: [LocalVariableAccess] access to local variable p
+#   22|             3: [SwitchCaseExpr] ... => ...
+#   22|               0: [RecursivePatternExpr] { ... }
+#   22|                 0: [VariablePatternExpr] Item p
+#   22|                 2: [PositionalPatternExpr] ( ... )
+#   22|                   0: [ConstantPatternExpr,StringLiteral] "not taint source"
+#   22|                   1: [ConstantPatternExpr,IntLiteral] 3
+#   22|               2: [MethodCall] call to method Sink
+#   22|                 0: [PropertyCall] access to property X
+#   22|                   -1: [LocalVariableAccess] access to local variable p
+#   23|             4: [SwitchCaseExpr] ... => ...
+#   23|               0: [RecursivePatternExpr] { ... }
+#   23|                 0: [VariablePatternExpr] Item p
+#   23|                 2: [PositionalPatternExpr] ( ... )
+#   23|                   0: [VariablePatternExpr] String j
+#   23|                   1: [ConstantPatternExpr,IntLiteral] 5
+#   23|               2: [MethodCall] call to method Sink
+#   23|                 0: [LocalVariableAccess] access to local variable j
+#   27|       4: [LocalVariableDeclStmt] ... ...;
+#   27|         0: [LocalVariableDeclAndInitExpr] Object o = ...
+#   27|           -1: [TypeMention] object
+#   27|           0: [LocalVariableAccess] access to local variable o
+#   27|           1: [ObjectCreation] object creation of type Item
+#   27|             -2: [TypeMention] Item
+#   27|             -1: [ObjectInitializer] { ..., ... }
+#   27|               0: [MemberInitializer] ... = ...
+#   27|                 0: [PropertyCall] access to property X
+#   27|                 1: [StringLiteral] "taint source"
+#   28|       5: [LocalVariableDeclStmt] ... ...;
+#   28|         0: [LocalVariableDeclAndInitExpr] String ret3 = ...
+#   28|           -1: [TypeMention] string
+#   28|           0: [LocalVariableAccess] access to local variable ret3
+#   28|           1: [SwitchExpr] ... switch { ... }
+#   28|             -1: [LocalVariableAccess] access to local variable o
+#   30|             0: [SwitchCaseExpr] ... => ...
+#   30|               0: [RecursivePatternExpr] { ... }
+#   30|                 0: [VariablePatternExpr] Item z
+#   30|                 1: [TypeAccessPatternExpr] access to type Item
+#   30|                   0: [TypeMention] Item
+#   30|                 2: [PositionalPatternExpr] ( ... )
+#   30|                   0: [ConstantPatternExpr,StringLiteral] "taint source"
+#   30|                   1: [ConstantPatternExpr,IntLiteral] 1
+#   30|                 3: [PropertyPatternExpr] { ... }
+#   30|                   0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 10
+#   30|               2: [MethodCall] call to method Sink
+#   30|                 0: [PropertyCall] access to property X
+#   30|                   -1: [LocalVariableAccess] access to local variable z
+#   31|             1: [SwitchCaseExpr] ... => ...
+#   31|               0: [RecursivePatternExpr] { ... }
+#   31|                 0: [VariablePatternExpr] Item z
+#   31|                 1: [TypeAccessPatternExpr] access to type Item
+#   31|                   0: [TypeMention] Item
+#   31|                 2: [PositionalPatternExpr] ( ... )
+#   31|                   0: [ConstantPatternExpr,StringLiteral] "not taint source"
+#   31|                   1: [ConstantPatternExpr,IntLiteral] 1
+#   31|                 3: [PropertyPatternExpr] { ... }
+#   31|                   0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 10
+#   31|               2: [MethodCall] call to method Sink
+#   31|                 0: [PropertyCall] access to property X
+#   31|                   -1: [LocalVariableAccess] access to local variable z
+#   32|             2: [SwitchCaseExpr] ... => ...
+#   32|               0: [RecursivePatternExpr] { ... }
+#   32|                 0: [VariablePatternExpr] Item z
+#   32|                 1: [TypeAccessPatternExpr] access to type Item
+#   32|                   0: [TypeMention] Item
+#   32|                 2: [PositionalPatternExpr] ( ... )
+#   32|                   0: [VariablePatternExpr] String i
+#   32|                   1: [VariablePatternExpr] Int32 j
+#   32|                 3: [PropertyPatternExpr] { ... }
+#   32|                   0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 10
+#   32|               2: [MethodCall] call to method Sink
+#   32|                 0: [LocalVariableAccess] access to local variable i
+#   33|             3: [SwitchCaseExpr] ... => ...
+#   33|               0: [RecursivePatternExpr] { ... }
+#   33|                 2: [PositionalPatternExpr] ( ... )
+#   33|                   0: [ConstantPatternExpr,IntLiteral] 0
+#   33|                   1: [ConstantPatternExpr,IntLiteral] 0
+#   33|               2: [StringLiteral] "0"
+#   34|             4: [SwitchCaseExpr] ... => ...
+#   34|               0: [RecursivePatternExpr] { ... }
+#   34|                 2: [PositionalPatternExpr] ( ... )
+#   34|                   0: [VariablePatternExpr] Object s
+#   34|                   1: [ConstantPatternExpr,IntLiteral] 1
+#   34|               2: [MethodCall] call to method Sink
+#   34|                 0: [LocalVariableAccess] access to local variable s
+#   35|             5: [SwitchCaseExpr] ... => ...
+#   35|               0: [RecursivePatternExpr] { ... }
+#   35|                 0: [VariablePatternExpr] (Int32,Int32) t1
+#   35|                 1: [TypeAccessPatternExpr] access to type (Int32,Int32)
+#   35|                   0: [TypeMention] (int, int)
+#   35|                     1: [TypeMention] int
+#   35|                     2: [TypeMention] int
+#   35|                 2: [PositionalPatternExpr] ( ... )
+#   35|                   0: [VariablePatternExpr] Int32 i
+#   35|                   1: [ConstantPatternExpr,IntLiteral] 3
+#   35|                 3: [PropertyPatternExpr] { ... }
+#   35|                   0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 3
+#   35|               2: [MethodCall] call to method Sink
+#   35|                 0: [CastExpr] (...) ...
+#   35|                   1: [LocalVariableAccess] access to local variable i
+#   36|             6: [SwitchCaseExpr] ... => ...
+#   36|               0: [RecursivePatternExpr] { ... }
+#   36|                 0: [VariablePatternExpr] (String,Int32) t1
+#   36|                 1: [TypeAccessPatternExpr] access to type (String,Int32)
+#   36|                   0: [TypeMention] (string, int)
+#   36|                     1: [TypeMention] string
+#   36|                     2: [TypeMention] int
+#   36|                 2: [PositionalPatternExpr] ( ... )
+#   36|                   0: [ConstantPatternExpr,StringLiteral] "taint source"
+#   36|                   1: [ConstantPatternExpr,IntLiteral] 3
+#   36|                 3: [PropertyPatternExpr] { ... }
+#   36|                   0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 3
+#   36|               2: [MethodCall] call to method Sink
+#   36|                 0: [LocalVariableAccess] access to local variable o
+#   37|             7: [SwitchCaseExpr] ... => ...
+#   37|               0: [RecursivePatternExpr] { ... }
+#   37|                 0: [VariablePatternExpr] (String,Int32) t1
+#   37|                 1: [TypeAccessPatternExpr] access to type (String,Int32)
+#   37|                   0: [TypeMention] (string, int)
+#   37|                     1: [TypeMention] string
+#   37|                     2: [TypeMention] int
+#   37|                 2: [PositionalPatternExpr] ( ... )
+#   37|                   0: [ConstantPatternExpr,StringLiteral] "not taint source"
+#   37|                   1: [ConstantPatternExpr,IntLiteral] 3
+#   37|                 3: [PropertyPatternExpr] { ... }
+#   37|                   0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 3
+#   37|               2: [MethodCall] call to method Sink
+#   37|                 0: [LocalVariableAccess] access to local variable o
+#   38|             8: [SwitchCaseExpr] ... => ...
+#   38|               0: [RecursivePatternExpr] { ... }
+#   38|                 0: [VariablePatternExpr] (String,Int32) t1
+#   38|                 1: [TypeAccessPatternExpr] access to type (String,Int32)
+#   38|                   0: [TypeMention] (string, int)
+#   38|                     1: [TypeMention] string
+#   38|                     2: [TypeMention] int
+#   38|                 2: [PositionalPatternExpr] ( ... )
+#   38|                   0: [VariablePatternExpr] String i
+#   38|                   1: [ConstantPatternExpr,IntLiteral] 3
+#   38|                 3: [PropertyPatternExpr] { ... }
+#   38|                   0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 3
+#   38|               2: [MethodCall] call to method Sink
+#   38|                 0: [LocalVariableAccess] access to local variable i
+#   41|       6: [LocalVariableDeclStmt] ... ...;
+#   41|         0: [LocalVariableDeclAndInitExpr] (String,Int32) tup = ...
+#   41|           -1: [TypeMention] (string, int)
+#   41|           0: [LocalVariableAccess] access to local variable tup
+#   41|           1: [TupleExpr] (..., ...)
+#   41|             0: [StringLiteral] "taint source"
+#   41|             1: [IntLiteral] 2
+#   42|       7: [LocalVariableDeclStmt] ... ...;
+#   42|         0: [LocalVariableDeclAndInitExpr] String ret4 = ...
+#   42|           -1: [TypeMention] string
+#   42|           0: [LocalVariableAccess] access to local variable ret4
+#   42|           1: [SwitchExpr] ... switch { ... }
+#   42|             -1: [LocalVariableAccess] access to local variable tup
+#   44|             0: [SwitchCaseExpr] ... => ...
+#   44|               0: [RecursivePatternExpr] { ... }
+#   44|                 2: [PositionalPatternExpr] ( ... )
+#   44|                   0: [ConstantPatternExpr,StringLiteral] "taint source"
+#   44|                   1: [ConstantPatternExpr,IntLiteral] 2
+#   44|               2: [MethodCall] call to method Sink
+#   44|                 0: [FieldAccess] access to field Item1
+#   44|                   -1: [LocalVariableAccess] access to local variable tup
+#   45|             1: [SwitchCaseExpr] ... => ...
+#   45|               0: [RecursivePatternExpr] { ... }
+#   45|                 2: [PositionalPatternExpr] ( ... )
+#   45|                   0: [ConstantPatternExpr,StringLiteral] "not taint source"
+#   45|                   1: [ConstantPatternExpr,IntLiteral] 2
+#   45|               2: [MethodCall] call to method Sink
+#   45|                 0: [FieldAccess] access to field Item1
+#   45|                   -1: [LocalVariableAccess] access to local variable tup
+#   46|             2: [SwitchCaseExpr] ... => ...
+#   46|               0: [RecursivePatternExpr] { ... }
+#   46|                 0: [VariablePatternExpr] (String,Int32) t1
+#   46|                 1: [TypeAccessPatternExpr] access to type (String,Int32)
+#   46|                   0: [TypeMention] (string, int)
+#   46|                     1: [TypeMention] string
+#   46|                     2: [TypeMention] int
+#   46|                 2: [PositionalPatternExpr] ( ... )
+#   46|                   0: [ConstantPatternExpr,StringLiteral] "taint source"
+#   46|                   1: [ConstantPatternExpr,IntLiteral] 3
+#   46|                 3: [PropertyPatternExpr] { ... }
+#   46|                   0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 3
+#   46|               2: [MethodCall] call to method Sink
+#   46|                 0: [FieldAccess] access to field Item1
+#   46|                   -1: [LocalVariableAccess] access to local variable tup
+#   47|             3: [SwitchCaseExpr] ... => ...
+#   47|               0: [RecursivePatternExpr] { ... }
+#   47|                 0: [VariablePatternExpr] (String,Int32) t1
+#   47|                 1: [TypeAccessPatternExpr] access to type (String,Int32)
+#   47|                   0: [TypeMention] (string, int)
+#   47|                     1: [TypeMention] string
+#   47|                     2: [TypeMention] int
+#   47|                 2: [PositionalPatternExpr] ( ... )
+#   47|                   0: [ConstantPatternExpr,StringLiteral] "not taint source"
+#   47|                   1: [ConstantPatternExpr,IntLiteral] 3
+#   47|                 3: [PropertyPatternExpr] { ... }
+#   47|                   0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 3
+#   47|               2: [MethodCall] call to method Sink
+#   47|                 0: [FieldAccess] access to field Item1
+#   47|                   -1: [LocalVariableAccess] access to local variable tup
+#   48|             4: [SwitchCaseExpr] ... => ...
+#   48|               0: [RecursivePatternExpr] { ... }
+#   48|                 0: [VariablePatternExpr] (String,Int32) t1
+#   48|                 1: [TypeAccessPatternExpr] access to type (String,Int32)
+#   48|                   0: [TypeMention] (string, int)
+#   48|                     1: [TypeMention] string
+#   48|                     2: [TypeMention] int
+#   48|                 2: [PositionalPatternExpr] ( ... )
+#   48|                   0: [VariablePatternExpr] String i
+#   48|                   1: [ConstantPatternExpr,IntLiteral] 3
+#   48|                 3: [PropertyPatternExpr] { ... }
+#   48|                   0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 3
+#   48|               2: [MethodCall] call to method Sink
+#   48|                 0: [LocalVariableAccess] access to local variable i
+#   49|             5: [SwitchCaseExpr] ... => ...
+#   49|               0: [RecursivePatternExpr] { ... }
+#   49|                 2: [PositionalPatternExpr] ( ... )
+#   49|                   0: [VariablePatternExpr] String i
+#   49|                   1: [ConstantPatternExpr,IntLiteral] 5
+#   49|               2: [MethodCall] call to method Sink
+#   49|                 0: [LocalVariableAccess] access to local variable i
+#   53|   6: [Method] Sink
+#   53|     -1: [TypeMention] string
+#-----|     2: (Parameters)
+#   53|       0: [Parameter] o
+#   53|         -1: [TypeMention] object
+#   53|     4: [ThrowExpr] throw ...
+#   53|       0: [NullLiteral] null
+#   56| [Class] Base
+#-----|   3: (Base types)
+#   56|     1: [TypeMention] ITuple
+#   58|   5: [Property] Length
+#   58|     -1: [TypeMention] int
+#   58|     3: [Getter] get_Length
+#   58|       4: [ThrowExpr] throw ...
+#   58|         0: [NullLiteral] null
+#   59|   6: [Indexer] Item
+#   59|     -1: [TypeMention] object
+#-----|     1: (Parameters)
+#   59|       0: [Parameter] c
+#   59|         -1: [TypeMention] int
+#   59|     3: [Getter] get_Item
+#-----|       2: (Parameters)
+#   59|         0: [Parameter] c
+#   59|       4: [ThrowExpr] throw ...
+#   59|         0: [NullLiteral] null
+#   62| [Class] Item
+#-----|   3: (Base types)
+#   62|     0: [TypeMention] Base
+#   64|   5: [Property] X
+#   64|     -1: [TypeMention] string
+#   64|     3: [Getter] get_X
+#   64|     4: [Setter] set_X
+#-----|       2: (Parameters)
+#   64|         0: [Parameter] value
+#   65|   6: [Property] Y
+#   65|     -1: [TypeMention] int
+#   65|     3: [Getter] get_Y
+#   65|     4: [Setter] set_Y
+#-----|       2: (Parameters)
+#   65|         0: [Parameter] value
+#   67|   7: [Method] Deconstruct
+#   67|     -1: [TypeMention] Void
+#-----|     2: (Parameters)
+#   67|       0: [Parameter] x
+#   67|         -1: [TypeMention] string
+#   67|       1: [Parameter] y
+#   67|         -1: [TypeMention] int
+#   68|     4: [BlockStmt] {...}
+#   69|       0: [ExprStmt] ...;
+#   69|         0: [AssignExpr] ... = ...
+#   69|           0: [ParameterAccess] access to parameter x
+#   69|           1: [PropertyCall] access to property X
+#   70|       1: [ExprStmt] ...;
+#   70|         0: [AssignExpr] ... = ...
+#   70|           0: [ParameterAccess] access to parameter y
+#   70|           1: [PropertyCall] access to property Y
 Tuples.cs:
 #    3| [Class] Tuples
 #    5|   5: [Method] M1
