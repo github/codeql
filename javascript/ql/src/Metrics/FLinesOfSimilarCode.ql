@@ -8,7 +8,6 @@
  * @treemap.warnOn highValues
  * @metricType file
  * @metricAggregate avg sum max
- * @precision high
  * @id js/similar-lines-in-files
  * @tags testability
  *       duplicate-code
