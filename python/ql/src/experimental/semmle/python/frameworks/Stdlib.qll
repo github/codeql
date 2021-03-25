@@ -212,42 +212,5 @@ private module Stdlib {
         )
        }
     }
-
-    /** 
-     * A class for modeling expressions immediately executing a regular expression.
-     * See `re_exec_attr()`  
-    */
-    private class DirectRegex extends DataFlow::CallCfgNode, RegexExecution::Range {
-      DataFlow::Node regexNode;
-      Attribute regexMethod;
-
-      DirectRegex() {
-        // needs inheritance (?)
-        this = re_exec_attr() and regexNode = this.getRegexNode() and regexMethod = this.getRegexMethod()
-      }
-
-      override DataFlow::Node getRegexNode() { result = regexNode }
-      override Attribute getRegexMethod() { result = regexMethod }
-    }
-
-    /** 
-     * A class for finding `ReCompileCall` whose `Attribute` is an instance of `DirectRegex`.
-     * See `ReCompileCall`, `DirectRegex`, `re_exec_attr()`
-    */
-    private class CompiledRegex extends DataFlow::CallCfgNode, RegexExecution::Range {
-      DataFlow::Node regexNode;
-      Attribute regexMethod;
-
-      CompiledRegex() {
-        exists(ReCompileCall compileCall |
-          regexNode = compileCall.getRegexNode() and
-          regexMethod = compileCall.getRegexMethod() and
-          this = compileCall
-        )
-      }
-
-      override DataFlow::Node getRegexNode() { result = regexNode }
-      override Attribute getRegexMethod() { result = regexMethod }
-    }
   }
 }
