@@ -478,6 +478,28 @@ module NodeJSLib {
               DataFlow::moduleImport("util-promisifyall")
             ].getACall()
         )
+        or
+        // const fs = require('fs');
+        // module.exports = methods.reduce((obj, method) => {
+        //  obj[method] = fs[method];
+        //  return obj;
+        // }, {});
+        t.continue() = t2 and
+        exists(
+          DataFlow::MethodCallNode call, DataFlow::ParameterNode obj, DataFlow::SourceNode method
+        |
+          call.getMethodName() = "reduce" and
+          result = call and
+          obj = call.getABoundCallbackParameter(0, 0) and
+          obj.flowsTo(any(DataFlow::FunctionNode f).getAReturn()) and
+          exists(DataFlow::PropWrite write, DataFlow::PropRead read |
+            write = obj.getAPropertyWrite() and
+            method.flowsToExpr(write.getPropertyNameExpr()) and
+            method.flowsToExpr(read.getPropertyNameExpr()) and
+            read.getBase().getALocalSource() = fsModule(t2) and
+            write.getRhs() = maybePromisified(read)
+          )
+        )
       )
     }
   }
