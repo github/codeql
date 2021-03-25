@@ -56,3 +56,15 @@ a = b unless c < d
 
 # Ternary if expr
 a = b > c ? d + 1 : e - 2
+
+# If expr with empty else (treated as no else)
+if a > b then
+    c
+else
+end
+
+# If expr with empty then (treated as no then)
+if a > b then
+else
+    c
+end

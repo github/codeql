@@ -61,3 +61,7 @@ end
 
 # Until-modified expression
 x -= 1 until x == 0
+
+# While loop with empty `do` block
+while x < y do
+end

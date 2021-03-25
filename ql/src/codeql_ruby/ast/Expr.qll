@@ -57,16 +57,6 @@ class ArgumentList extends Expr, TArgumentList {
 class StmtSequence extends Expr, TStmtSequence {
   override string getAPrimaryQlClass() { result = "StmtSequence" }
 
-  override string toString() {
-    exists(int c | c = this.getNumberOfStatements() |
-      c = 0 and result = ";"
-      or
-      c = 1 and result = this.getStmt(0).toString()
-      or
-      c > 1 and result = "...; ..."
-    )
-  }
-
   /** Gets the `n`th statement in this sequence. */
   Stmt getStmt(int n) { none() }
 
@@ -91,6 +81,8 @@ private class Then extends StmtSequence, TThen {
   Then() { this = TThen(g) }
 
   override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
+
+  final override string toString() { result = "then ..." }
 }
 
 private class Else extends StmtSequence, TElse {
@@ -99,6 +91,8 @@ private class Else extends StmtSequence, TElse {
   Else() { this = TElse(g) }
 
   override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
+
+  final override string toString() { result = "else ..." }
 }
 
 private class Do extends StmtSequence, TDo {
@@ -107,6 +101,8 @@ private class Do extends StmtSequence, TDo {
   Do() { this = TDo(g) }
 
   override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
+
+  final override string toString() { result = "do ..." }
 }
 
 private class Ensure extends StmtSequence, TEnsure {
@@ -212,13 +208,7 @@ class ParenthesizedExpr extends StmtSequence, TParenthesizedExpr {
 
   final override string getAPrimaryQlClass() { result = "ParenthesizedExpr" }
 
-  final override string toString() {
-    exists(int c | c = this.getNumberOfStatements() |
-      c = 0 and result = "()"
-      or
-      c > 0 and result = "(" + StmtSequence.super.toString() + ")"
-    )
-  }
+  final override string toString() { result = "( ... )" }
 
   final override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
 }

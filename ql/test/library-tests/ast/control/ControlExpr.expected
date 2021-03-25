@@ -12,6 +12,8 @@
 | conditionals.rb:52:1:52:14 | ... if ... | IfModifierExpr |
 | conditionals.rb:55:1:55:18 | ... unless ... | UnlessModifierExpr |
 | conditionals.rb:58:5:58:25 | ... ? ... : ... | TernaryIfExpr |
+| conditionals.rb:61:1:64:3 | if ... | IfExpr |
+| conditionals.rb:67:1:70:3 | if ... | IfExpr |
 | loops.rb:9:1:12:3 | for ... in ... | ForExpr |
 | loops.rb:16:1:19:3 | for ... in ... | ForExpr |
 | loops.rb:22:1:25:3 | for ... in ... | ForExpr |
@@ -22,3 +24,4 @@
 | loops.rb:51:1:54:3 | until ... | UntilExpr |
 | loops.rb:57:1:60:3 | until ... | UntilExpr |
 | loops.rb:63:1:63:19 | ... until ... | UntilModifierExpr |
+| loops.rb:66:1:67:3 | while ... | WhileExpr |

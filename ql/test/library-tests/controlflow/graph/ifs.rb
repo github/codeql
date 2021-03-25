@@ -42,3 +42,11 @@ def constant_condition()
     puts "Impossible"
   end
 end
+
+def empty_else b
+  if b then
+    puts "true"
+  else
+  end
+  puts "done"
+end
