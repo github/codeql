@@ -2,6 +2,8 @@
  * @name Use of a hash function without a salt
  * @description Hashed passwords without a salt are vulnerable to dictionary attacks.
  * @kind path-problem
+ * @problem.severity warning
+ * @precision low
  * @id java/hash-without-salt
  * @tags security
  *       external/cwe-759
