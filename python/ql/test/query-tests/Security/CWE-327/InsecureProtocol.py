@@ -28,7 +28,7 @@ ssl.wrap_socket(ssl_version=ssl.PROTOCOL_TLSv1_2)
 SSLContext(protocol=ssl.PROTOCOL_TLSv1_2)
 SSL.Context(SSL.TLSv1_2_METHOD)
 
-# possibly secure versions specified
+# insecure versions allowed by specified range
 SSLContext(protocol=ssl.PROTOCOL_SSLv23)
 SSLContext(protocol=ssl.PROTOCOL_TLS)
 SSLContext(protocol=ssl.PROTOCOL_TLS_CLIENT)
