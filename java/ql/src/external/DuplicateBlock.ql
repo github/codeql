@@ -8,16 +8,10 @@
  * @id java/duplicate-block
  */
 
-import CodeDuplication
+import java
 
-from DuplicateBlock d, DuplicateBlock other, int lines, File otherFile, int otherLine
-where
-  lines = d.sourceLines() and
-  lines > 10 and
-  other.getEquivalenceClass() = d.getEquivalenceClass() and
-  other != d and
-  otherFile = other.sourceFile() and
-  otherLine = other.sourceStartLine()
+from BlockStmt d, int lines, File otherFile, int otherLine
+where none()
 select d,
   "Duplicate code: " + lines + " lines are duplicated at " + otherFile.getStem() + ":" + otherLine +
     "."
