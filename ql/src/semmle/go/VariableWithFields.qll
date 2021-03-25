@@ -46,9 +46,9 @@ private TVariableWithFields accessPath(IR::Instruction insn) {
  * by variable with fields value `base`.
  */
 private IR::Instruction fieldAccessPathAux(TVariableWithFields base, Field f) {
-  exists(IR::FieldReadInstruction fr, IR::EvalInstruction frb |
+  exists(IR::FieldReadInstruction fr, IR::Instruction frb |
     fr.getBase() = frb or
-    fr.getBase() = IR::implicitDerefInstruction(frb.getExpr())
+    fr.getBase() = IR::implicitDerefInstruction(frb.(IR::EvalInstruction).getExpr())
   |
     base = accessPath(frb) and
     f = fr.getField() and
@@ -61,9 +61,9 @@ private IR::Instruction fieldAccessPathAux(TVariableWithFields base, Field f) {
  * by variable with fields value `base`.
  */
 private IR::WriteTarget fieldWriteAccessPathAux(TVariableWithFields base, Field f) {
-  exists(IR::FieldTarget ft, IR::EvalInstruction ftb |
+  exists(IR::FieldTarget ft, IR::Instruction ftb |
     ft.getBase() = ftb or
-    ft.getBase() = IR::implicitDerefInstruction(ftb.getExpr())
+    ft.getBase() = IR::implicitDerefInstruction(ftb.(IR::EvalInstruction).getExpr())
   |
     base = accessPath(ftb) and
     ft.getField() = f and
