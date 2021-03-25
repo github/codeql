@@ -2330,7 +2330,7 @@ ifs.rb:
 #-----|  -> true
 
 #   40| constant_condition
-#-----|  -> exit ifs.rb (normal)
+#-----|  -> empty_else
 
 #   40| exit constant_condition
 
@@ -2345,6 +2345,39 @@ ifs.rb:
 
 #   41| true
 #-----| true -> [false] ! ...
+
+#   46| enter empty_else
+#-----|  -> b
+
+#   46| empty_else
+#-----|  -> exit ifs.rb (normal)
+
+#   46| exit empty_else
+
+#   46| exit empty_else (normal)
+#-----|  -> exit empty_else
+
+#   46| b
+#-----|  -> b
+
+#   47| if ...
+#-----|  -> "done"
+
+#   47| b
+#-----| true -> "true"
+#-----| false -> if ...
+
+#   48| call to puts
+#-----|  -> if ...
+
+#   48| "true"
+#-----|  -> call to puts
+
+#   51| call to puts
+#-----|  -> exit empty_else (normal)
+
+#   51| "done"
+#-----|  -> call to puts
 
 loops.rb:
 #    1| enter m1
@@ -2503,7 +2536,7 @@ loops.rb:
 #-----|  -> 1
 
 #   24| m3
-#-----|  -> exit loops.rb (normal)
+#-----|  -> m4
 
 #   24| exit m3
 
@@ -2544,6 +2577,36 @@ loops.rb:
 
 #   26| x
 #-----|  -> call to puts
+
+#   30| enter m4
+#-----|  -> x
+
+#   30| m4
+#-----|  -> exit loops.rb (normal)
+
+#   30| exit m4
+
+#   30| exit m4 (normal)
+#-----|  -> exit m4
+
+#   30| x
+#-----|  -> y
+
+#   30| y
+#-----|  -> x
+
+#   31| while ...
+#-----|  -> exit m4 (normal)
+
+#   31| ... < ...
+#-----| true -> x
+#-----| false -> while ...
+
+#   31| x
+#-----|  -> y
+
+#   31| y
+#-----|  -> ... < ...
 
 raise.rb:
 #    1| enter raise.rb

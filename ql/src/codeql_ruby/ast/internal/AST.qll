@@ -94,10 +94,10 @@ private module Cached {
       not strictcount(int i | exists(g.getParent().(Generated::LeftAssignmentList).getChild(i))) = 1
     } or
     TDivExpr(Generated::Binary g) { g instanceof @binary_slash } or
-    TDo(Generated::Do g) or
+    TDo(Generated::Do g) { exists(g.getChild(_)) } or
     TDoBlock(Generated::DoBlock g) { not g.getParent() instanceof Generated::Lambda } or
     TElementReference(Generated::ElementReference g) or
-    TElse(Generated::Else g) or
+    TElse(Generated::Else g) { exists(g.getChild(_)) } or
     TElsif(Generated::Elsif g) or
     TEmptyStmt(Generated::EmptyStatement g) or
     TEndBlock(Generated::EndBlock g) or
@@ -198,7 +198,7 @@ private module Cached {
     TSubshellLiteral(Generated::Subshell g) or
     TSymbolArrayLiteral(Generated::SymbolArray g) or
     TTernaryIfExpr(Generated::Conditional g) or
-    TThen(Generated::Then g) or
+    TThen(Generated::Then g) { exists(g.getChild(_)) } or
     TTokenConstantAccess(Generated::Constant g) {
       // A tree-sitter `constant` token is a read of that constant in any context
       // where an identifier would be a vcall.

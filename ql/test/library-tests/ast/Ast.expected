@@ -671,6 +671,18 @@ control/conditionals.rb:
 #   58|       getBranch/getElse: [SubExpr] ... - ...
 #   58|         getAnOperand/getLeftOperand: [LocalVariableAccess] e
 #   58|         getAnOperand/getRightOperand: [IntegerLiteral] 2
+#   61|   getStmt: [IfExpr] if ...
+#   61|     getCondition: [GTExpr] ... > ...
+#   61|       getAnOperand/getGreaterOperand/getLeftOperand: [LocalVariableAccess] a
+#   61|       getAnOperand/getLesserOperand/getRightOperand: [LocalVariableAccess] b
+#   61|     getBranch/getThen: [StmtSequence] c
+#   62|       getStmt: [LocalVariableAccess] c
+#   67|   getStmt: [IfExpr] if ...
+#   67|     getCondition: [GTExpr] ... > ...
+#   67|       getAnOperand/getGreaterOperand/getLeftOperand: [LocalVariableAccess] a
+#   67|       getAnOperand/getLesserOperand/getRightOperand: [LocalVariableAccess] b
+#   68|     getBranch/getElse: [StmtSequence] c
+#   69|       getStmt: [LocalVariableAccess] c
 constants/constants.rb:
 #    1| [Toplevel] constants.rb
 #    1|   getStmt: [Module] ModuleA
@@ -1262,6 +1274,10 @@ control/loops.rb:
 #   63|     getCondition: [EqExpr] ... == ...
 #   63|       getAnOperand/getLeftOperand: [LocalVariableAccess] x
 #   63|       getAnOperand/getRightOperand: [IntegerLiteral] 0
+#   66|   getStmt: [WhileExpr] while ...
+#   66|     getCondition: [LTExpr] ... < ...
+#   66|       getAnOperand/getLeftOperand/getLesserOperand: [LocalVariableAccess] x
+#   66|       getAnOperand/getGreaterOperand/getRightOperand: [LocalVariableAccess] y
 misc/misc.rb:
 #    1| [Toplevel] misc.rb
 #    1|   getStmt: [AssignExpr] ... = ...

@@ -26,3 +26,8 @@ def m3
     puts x
   end
 end
+
+def m4(x, y)
+  while x < y do
+  end
+end

@@ -643,10 +643,17 @@ module Trees {
 
     final override predicate first(AstNode first) { first(this.getCondition(), first) }
 
+    private AstNode getConditionSucc() {
+      result = this.getBody()
+      or
+      not exists(this.getBody()) and
+      result = this.getCondition()
+    }
+
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
       last(this.getCondition(), pred, c) and
       this.entersLoopWhenConditionIs(c.(BooleanCompletion).getValue()) and
-      first(this.getBody(), succ)
+      first(this.getConditionSucc(), succ)
       or
       last(this.getBody(), pred, c) and
       first(this.getCondition(), succ) and
