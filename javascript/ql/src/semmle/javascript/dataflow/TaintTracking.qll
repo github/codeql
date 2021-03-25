@@ -738,7 +738,10 @@ module TaintTracking {
   pragma[nomagic]
   private DataFlow::MethodCallNode execMethodCall() {
     result.getMethodName() = "exec" and
-    result.getReceiver().analyze().getAType() = TTRegExp()
+    exists(DataFlow::AnalyzedNode analyzed |
+      pragma[only_bind_into](analyzed) = result.getReceiver().analyze() and
+      analyzed.getAType() = TTRegExp()
+    )
   }
 
   /**
@@ -759,7 +762,10 @@ module TaintTracking {
   pragma[nomagic]
   private DataFlow::MethodCallNode matchMethodCall() {
     result.getMethodName() = "match" and
-    result.getArgument(0).analyze().getAType() = TTRegExp()
+    exists(DataFlow::AnalyzedNode analyzed |
+      pragma[only_bind_into](analyzed) = result.getArgument(0).analyze() and
+      analyzed.getAType() = TTRegExp()
+    )
   }
 
   /**
