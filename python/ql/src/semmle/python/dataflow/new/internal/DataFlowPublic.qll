@@ -467,14 +467,22 @@ class BarrierGuard extends GuardNode {
   }
 }
 
+private predicate comes_from_cfgnode(Node node) {
+  exists(Node second |
+    simpleLocalFlowStep(any(CfgNode c), second) and
+    simpleLocalFlowStep*(second, node)
+  )
+}
+
 /**
  * A data flow node that is a source of local flow. This includes things like
  * - Expressions
  * - Function parameters
  */
 class LocalSourceNode extends Node {
+  cached
   LocalSourceNode() {
-    not simpleLocalFlowStep+(any(CfgNode n), this) and
+    not comes_from_cfgnode(this) and
     not this instanceof ModuleVariableNode
     or
     this = any(ModuleVariableNode mvn).getARead()
