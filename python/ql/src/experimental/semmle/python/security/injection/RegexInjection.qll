@@ -9,6 +9,19 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
 
+class RegexInjectionSink extends DataFlow::Node {
+  Attribute regexMethod;
+
+  RegexInjectionSink() {
+    exists(RegexExecution reExec |
+      this = reExec.getRegexNode() and
+      regexMethod = reExec.getRegexMethod().getFunction().asExpr().(Attribute)
+    )
+  }
+
+  Attribute getRegexMethod() { result = regexMethod }
+}
+
 /**
  * A taint-tracking configuration for detecting regular expression injections.
  */
