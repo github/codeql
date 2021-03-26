@@ -6,7 +6,7 @@ private import internal.TreeSitter
 /**
  * The base class for classes, singleton classes, and modules.
  */
-class ModuleBase extends BodyStmt, TModuleBase {
+class ModuleBase extends BodyStmt, Scope, TModuleBase {
   /** Gets a method defined in this module/class. */
   MethodBase getAMethod() { result = this.getAStmt() }
 

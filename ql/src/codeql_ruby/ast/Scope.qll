@@ -17,6 +17,9 @@ class Scope extends AstNode, TScopeType {
   /** Gets the scope in which this scope is nested, if any. */
   Scope getOuterScope() { toGenerated(result) = range.getOuterScope() }
 
+  /** Gets the scope in which this scope is nested, if any. */
+  AstNode getADescendant() { range = scopeOf(toGenerated(result)) }
+
   /** Gets a variable that is declared in this scope. */
   final Variable getAVariable() { result.getDeclaringScope() = this }
 
