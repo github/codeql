@@ -1,6 +1,5 @@
 import python
 import semmle.python.ApiGraphs
-import semmle.python.dataflow.new.internal.Attributes as Attributes
 import TlsLibraryModel
 
 class SSLContextCreation extends ContextCreation {
@@ -104,7 +103,7 @@ class ContextSetVersion extends ProtocolRestriction, ProtocolUnrestriction {
   ProtocolVersion restriction;
 
   ContextSetVersion() {
-    exists(Attributes::AttrWrite aw |
+    exists(DataFlow::AttrWrite aw |
       aw.getObject().asCfgNode() = node and
       aw.getAttributeName() = "minimum_version" and
       aw.getValue() =
