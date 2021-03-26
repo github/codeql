@@ -83,14 +83,19 @@ module Sources {
 
 /** Flow Sinks for the ServiceStack framework */
 module Sinks {
-  private import semmle.code.csharp.security.dataflow.flowsinks.Remote
+  private import semmle.code.csharp.security.dataflow.flowsinks.ExternalLocationSink
 
   /** RemoteFlow sinks for service stack */
-  class ServiceStackRemoteRequestParameter extends RemoteFlowSink {
+  class ServiceStackRemoteRequestParameter extends ExternalLocationSink {
     ServiceStackRemoteRequestParameter() {
       exists(MethodCall mc |
-        mc.getTarget().hasQualifiedName("ServiceStack.IRestClient.Get") and
-        mc.getArgument(0) = this.asExpr()
+        mc.getTarget().getQualifiedName() in [
+            "ServiceStack.IRestClient.Get", "ServiceStack.IRestClient.Put",
+            "ServiceStack.IRestClient.Post", "ServiceStack.IRestClient.Delete",
+            "ServiceStack.IRestClient.Post", "ServiceStack.IRestClient.Put",
+            "ServiceStack.IRestClient.Patch", "ServiceStack.IRestClient.Send"
+          ] and
+        this.asExpr() = mc.getAnArgument()
       )
     }
   }
