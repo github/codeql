@@ -58,6 +58,10 @@ abstract class ProtocolUnrestriction extends DataFlow::CfgNode {
   abstract ProtocolVersion getUnrestriction();
 }
 
+/**
+ * A context is being created with a range of allowed protocols.
+ * This also serves as unrestricting these protocols.
+ */
 abstract class UnspecificContextCreation extends ContextCreation, ProtocolUnrestriction {
   TlsLibrary library;
   ProtocolFamily family;
@@ -77,6 +81,7 @@ abstract class UnspecificContextCreation extends ContextCreation, ProtocolUnrest
   }
 }
 
+/** A model of a TLS library. */
 abstract class TlsLibrary extends string {
   TlsLibrary() { this in ["ssl", "pyOpenSSL"] }
 
