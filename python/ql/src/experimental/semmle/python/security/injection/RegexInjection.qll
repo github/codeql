@@ -8,7 +8,6 @@ import experimental.semmle.python.Concepts
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
-import semmle.python.ApiGraphs
 
 /**
  * A taint-tracking configuration for detecting regular expression injections.
@@ -18,7 +17,7 @@ class RegexInjectionFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink = any(RegexExecution re).getRegexNode() }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof RegexInjectionSink }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
     sanitizer = any(RegexEscape reEscape).getRegexNode()

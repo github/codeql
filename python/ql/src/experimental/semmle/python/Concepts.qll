@@ -76,3 +76,16 @@ class RegexEscape extends DataFlow::Node {
 
   DataFlow::CallCfgNode getEscapeMethod() { result = range.getEscapeMethod() }
 }
+
+class RegexInjectionSink extends DataFlow::Node {
+  Attribute regexMethod;
+
+  RegexInjectionSink() {
+    exists(RegexExecution reExec |
+      this = reExec.getRegexNode() and
+      regexMethod = reExec.getRegexMethod().getFunction().asExpr().(Attribute)
+    )
+  }
+
+  Attribute getRegexMethod() { result = regexMethod }
+}

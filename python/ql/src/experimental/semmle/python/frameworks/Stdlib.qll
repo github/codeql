@@ -24,6 +24,7 @@ private module Re {
     DataFlow::CallCfgNode regexMethod;
 
     DirectRegex() {
+      // this.getLocation().getFile().getBaseName().regexpMatch("^re_(good|bad)\\.py$") and // debug
       this = API::moduleImport("re").getMember(any(ReMethods m)).getACall() and
       regexNode = this.getArg(0) and
       regexMethod = this
@@ -41,6 +42,7 @@ private module Re {
 
     CompiledRegex() {
       exists(DataFlow::CallCfgNode patternCall, DataFlow::AttrRead reMethod |
+        // this.getLocation().getFile().getBaseName().regexpMatch("^re_(good|bad)\\.py$") and // debug
         this.getFunction() = reMethod and
         patternCall = API::moduleImport("re").getMember("compile").getACall() and
         patternCall = reMethod.getObject().getALocalSource() and

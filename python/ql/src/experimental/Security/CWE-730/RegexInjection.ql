@@ -16,7 +16,13 @@ import python
 import experimental.semmle.python.security.injection.RegexInjection
 import DataFlow::PathGraph
 
-from RegexInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ regular expression is constructed from a $@.",
-  sink.getNode(), "This", source.getNode(), "user-provided value"
+from
+  RegexInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink,
+  Attribute sinkAttribute
+where
+  config.hasFlowPath(source, sink) and
+  sinkAttribute = sink.getNode().(RegexInjectionSink).getRegexMethod()
+select sink.getNode(), source, sink,
+  "$@ regular expression is constructed from a $@ and executed by $@.", sink.getNode(), "This",
+  source.getNode(), "user-provided value", sinkAttribute,
+  sinkAttribute.getObject().toString() + "." + sinkAttribute.getName()
