@@ -33,13 +33,19 @@ string verb(boolean specific) {
 }
 
 from
-  DataFlow::Node creation, string insecure_version, DataFlow::Node contextOrigin, boolean specific
+  DataFlow::Node connectionCreation, string insecure_version, DataFlow::Node protocolConfiguration,
+  boolean specific
 where
-  unsafe_connection_creation(creation, insecure_version, contextOrigin, specific)
+  unsafe_connection_creation_with_context(connectionCreation, insecure_version,
+    protocolConfiguration, specific)
   or
-  unsafe_context_creation(creation, insecure_version) and
-  contextOrigin = creation and
+  unsafe_connection_creation_without_context(connectionCreation, insecure_version) and
+  protocolConfiguration = connectionCreation and
   specific = true
-select creation,
+  or
+  unsafe_context_creation(protocolConfiguration, insecure_version) and
+  connectionCreation = protocolConfiguration and
+  specific = true
+select connectionCreation,
   "Insecure SSL/TLS protocol version " + insecure_version + " " + verb(specific) + " by $@ ",
-  contextOrigin, originName(contextOrigin)
+  protocolConfiguration, originName(protocolConfiguration)

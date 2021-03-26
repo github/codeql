@@ -43,16 +43,21 @@ class InsecureContextConfiguration extends DataFlow::Configuration {
 }
 
 /**
- * A connection is created from a context allowing an insecure protocol,
- * and that protocol has not been restricted appropriately.
+ * Holds if `conectionCreation` marks the creation of a connetion based on the contex
+ * found at `contextOrigin` and allowing `insecure_version`.
+ * `specific` is true iff the context if configured for a specific protocol version rather
+ * than for a family of protocols.
  */
-predicate unsafe_connection_creation(
-  DataFlow::Node creation, ProtocolVersion insecure_version, DataFlow::Node source, boolean specific
+predicate unsafe_connection_creation_with_context(
+  DataFlow::Node connectionCreation, ProtocolVersion insecure_version, DataFlow::Node contextOrigin,
+  boolean specific
 ) {
   // Connection created from a context allowing `insecure_version`.
-  exists(InsecureContextConfiguration c, ProtocolUnrestriction cc | c.hasFlow(cc, creation) |
+  exists(InsecureContextConfiguration c, ProtocolUnrestriction co |
+    c.hasFlow(co, connectionCreation)
+  |
     insecure_version = c.getTrackedVersion() and
-    source = cc and
+    contextOrigin = co and
     specific = false
   )
   or
@@ -60,15 +65,27 @@ predicate unsafe_connection_creation(
   exists(TlsLibrary l, DataFlow::CfgNode cc |
     cc = l.insecure_connection_creation(insecure_version)
   |
-    creation = cc and
-    source = cc and
+    connectionCreation = cc and
+    contextOrigin = cc and
     specific = true
   )
 }
 
-/** A connection is created insecurely without reference to a context. */
-predicate unsafe_context_creation(DataFlow::CallCfgNode call, string insecure_version) {
+/**
+ * Holds if `conectionCreation` marks the creation of a connetion witout reference to a context
+ * and allowing `insecure_version`.
+ * `specific` is true iff the context if configured for a specific protocol version rather
+ * than for a family of protocols.
+ */
+predicate unsafe_connection_creation_without_context(
+  DataFlow::CallCfgNode connectionCreation, string insecure_version
+) {
+  exists(TlsLibrary l | connectionCreation = l.insecure_connection_creation(insecure_version))
+}
+
+/** Holds if `contextCreation` is creating a context ties to a specific insecure version. */
+predicate unsafe_context_creation(DataFlow::CallCfgNode contextCreation, string insecure_version) {
   exists(TlsLibrary l, ContextCreation cc | cc = l.insecure_context_creation(insecure_version) |
-    cc = call
+    contextCreation = cc
   )
 }
