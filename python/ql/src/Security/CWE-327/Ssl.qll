@@ -45,7 +45,7 @@ class OptionsAugOr extends ProtocolRestriction {
       (
         aa.getValue() = flag
         or
-        impliesValue(aa.getValue(), flag, false, false)
+        impliesBitSet(aa.getValue(), flag, false, false)
       )
     )
   }
@@ -70,7 +70,7 @@ class OptionsAugAndNot extends ProtocolUnrestriction {
       (
         aa.getValue() = notFlag
         or
-        impliesValue(aa.getValue(), notFlag, true, true)
+        impliesBitSet(aa.getValue(), notFlag, true, true)
       )
     )
   }
@@ -80,22 +80,36 @@ class OptionsAugAndNot extends ProtocolUnrestriction {
   override ProtocolVersion getUnrestriction() { result = restriction }
 }
 
-/** Whether `part` evaluates to `partIsTrue` if `whole` evaluates to `wholeIsTrue`. */
-predicate impliesValue(BinaryExpr whole, Expr part, boolean partIsTrue, boolean wholeIsTrue) {
+/**
+ * Holds if
+ *   for every bit, _b_:
+ *     `wholeHasBitSet` represents that _b_ is set in `whole`
+ *     implies
+ *     `partHasBitSet` represents that _b_ is set in `part`
+ *
+ * As an example take `whole` = `part1 & part2`. Then
+ * `impliesBitSet(whole, part1, true, true)` holds
+ * because for any bit in `whole`, if that bit is set it must also be set in `part1`.
+ *
+ * Similarly for `whole` = `part1 | part2`. Here
+ * `impliesBitSet(whole, part1, false, false)` holds
+ * because for any bit in `whole`, if that bit is not set, it cannot be set in `part1`.
+ */
+predicate impliesBitSet(BinaryExpr whole, Expr part, boolean partHasBitSet, boolean wholeHasBitSet) {
   whole.getOp() instanceof BitAnd and
   (
-    wholeIsTrue = true and partIsTrue = true and part in [whole.getLeft(), whole.getRight()]
+    wholeHasBitSet = true and partHasBitSet = true and part in [whole.getLeft(), whole.getRight()]
     or
-    wholeIsTrue = true and
-    impliesValue([whole.getLeft(), whole.getRight()], part, partIsTrue, wholeIsTrue)
+    wholeHasBitSet = true and
+    impliesBitSet([whole.getLeft(), whole.getRight()], part, partHasBitSet, wholeHasBitSet)
   )
   or
   whole.getOp() instanceof BitOr and
   (
-    wholeIsTrue = false and partIsTrue = false and part in [whole.getLeft(), whole.getRight()]
+    wholeHasBitSet = false and partHasBitSet = false and part in [whole.getLeft(), whole.getRight()]
     or
-    wholeIsTrue = false and
-    impliesValue([whole.getLeft(), whole.getRight()], part, partIsTrue, wholeIsTrue)
+    wholeHasBitSet = false and
+    impliesBitSet([whole.getLeft(), whole.getRight()], part, partHasBitSet, wholeHasBitSet)
   )
 }
 
