@@ -21,6 +21,6 @@ class RegexInjectionFlowConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink = any(RegexExecution re).getRegexNode() }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
-    sanitizer = sanitizer.(RegexEscape).getRegexNode()
+    sanitizer = any(RegexEscape reEscape).getRegexNode()
   }
 }

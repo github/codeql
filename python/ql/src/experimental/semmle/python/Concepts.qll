@@ -18,7 +18,7 @@ private import semmle.python.ApiGraphs
 /** Provides classes for modeling Regular Expression-related APIs. */
 module RegexExecution {
   /**
-   * A data-flow node that works with regular expressions.
+   * A data-flow node that works with regular expressions immediately executing an expression.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `RegexExecution` instead.
@@ -31,7 +31,7 @@ module RegexExecution {
 }
 
 /**
- * A data-flow node that works with regular expressions.
+ * A data-flow node that works with regular expressions immediately executing an expression.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `RegexExecution::Range` instead.
@@ -46,17 +46,33 @@ class RegexExecution extends DataFlow::Node {
   Attribute getRegexMethod() { result = range.getRegexMethod() }
 }
 
-class RegexEscape extends DataFlow::CallCfgNode {
-  DataFlow::Node regexNode;
-  Attribute regexMethod;
+/** Provides classes for modeling Regular Expression escape-related APIs. */
+module RegexEscape {
+  /**
+   * A data-flow node that collects functions escaping regular expressions.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `RegexEscape` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    abstract DataFlow::Node getRegexNode();
 
-  RegexEscape() {
-    this = API::moduleImport("re").getMember("escape").getACall() and
-    regexNode = this.getArg(0) and
-    regexMethod = this.asExpr().(Attribute)
+    abstract Attribute getEscapeMethod();
   }
+}
 
-  DataFlow::Node getRegexNode() { result = regexNode }
+/**
+ * A data-flow node that collects functions escaping regular expressions.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `RegexEscape::Range` instead.
+ */
+class RegexEscape extends DataFlow::Node {
+  RegexEscape::Range range;
 
-  Attribute getRegexMethod() { result = regexMethod }
+  RegexEscape() { this = range }
+
+  DataFlow::Node getRegexNode() { result = range.getRegexNode() }
+
+  Attribute getEscapeMethod() { result = range.getEscapeMethod() }
 }

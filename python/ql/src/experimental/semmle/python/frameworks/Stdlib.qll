@@ -53,4 +53,19 @@ private module Re {
 
     override Attribute getRegexMethod() { result = regexMethod }
   }
+
+  class ReEscape extends DataFlow::CallCfgNode, RegexEscape::Range {
+    DataFlow::Node regexNode;
+    Attribute escapeMethod;
+
+    ReEscape() {
+      this = API::moduleImport("re").getMember("escape").getACall() and
+      regexNode = this.getArg(0) and
+      escapeMethod = this.asExpr().(Attribute)
+    }
+
+    override DataFlow::Node getRegexNode() { result = regexNode }
+
+    override Attribute getEscapeMethod() { result = escapeMethod }
+  }
 }
