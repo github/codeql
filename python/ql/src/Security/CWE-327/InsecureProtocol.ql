@@ -37,7 +37,9 @@ from
 where
   unsafe_connection_creation(creation, insecure_version, contextOrigin, specific)
   or
-  unsafe_context_creation(creation, insecure_version, contextOrigin.asCfgNode()) and specific = true
+  unsafe_context_creation(creation, insecure_version) and
+  contextOrigin = creation and
+  specific = true
 select creation,
   "Insecure SSL/TLS protocol version " + insecure_version + " " + verb(specific) + " by $@ ",
   contextOrigin, originName(contextOrigin)

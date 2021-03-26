@@ -67,9 +67,8 @@ predicate unsafe_connection_creation(
 }
 
 /** A connection is created insecurely without reference to a context. */
-predicate unsafe_context_creation(DataFlow::Node node, string insecure_version, CallNode call) {
+predicate unsafe_context_creation(DataFlow::CallCfgNode call, string insecure_version) {
   exists(TlsLibrary l, ContextCreation cc | cc = l.insecure_context_creation(insecure_version) |
-    cc = node and
-    cc.getNode() = call
+    cc = call
   )
 }
