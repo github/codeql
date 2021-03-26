@@ -80,9 +80,9 @@ module SummaryComponentStack {
     result = push(SummaryComponent::property(p), object)
   }
 
-  /** Gets a stack representing a field `f` of `of`. */
-  SummaryComponentStack fieldOf(Field f, SummaryComponentStack of) {
-    result = push(SummaryComponent::field(f), of)
+  /** Gets a stack representing a field `f` of `object`. */
+  SummaryComponentStack fieldOf(Field f, SummaryComponentStack object) {
+    result = push(SummaryComponent::field(f), object)
   }
 
   /** Gets a singleton stack representing the return value of a call. */
