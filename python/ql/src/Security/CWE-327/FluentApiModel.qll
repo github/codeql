@@ -2,9 +2,21 @@ import python
 import TlsLibraryModel
 
 /**
- * Configuration to track flow from the creation of a context to
- * that context being used to create a connection.
- * Flow is broken if the insecure protocol of interest is being restricted.
+ * Configuration to determine the state of a context being used to create
+ * a conection.
+ *
+ * The state is in terms of whether a specific protocol is allowed. This is
+ * either true or false when the context is created and can then be modified
+ * later by either restricting or unrestricting the protocol (see the predicates
+ * `isRestriction` and `isUnrestriction`).
+ *
+ * Since we are interested in the final state, we want the flow to start from
+ * the last unrestriction, so we disallow flow into unrestrictions. We also
+ * model the creation as an unrestriction of everything it allows, to account
+ * for the common case where the creation plays the role of "last unrestriction".
+ *
+ * Since we really want "the last unrestriction, not nullified by a restriction",
+ * we also disallow flow into restrictions.
  */
 class InsecureContextConfiguration extends DataFlow::Configuration {
   TlsLibrary library;
@@ -17,29 +29,35 @@ class InsecureContextConfiguration extends DataFlow::Configuration {
 
   ProtocolVersion getTrackedVersion() { result = tracked_version }
 
-  override predicate isSource(DataFlow::Node source) {
-    // source = library.unspecific_context_creation()
-    exists(ProtocolUnrestriction pu |
-      pu = library.protocol_unrestriction() and
-      pu.getUnrestriction() = tracked_version
-    |
-      source = pu.getContext()
-    )
-  }
+  override predicate isSource(DataFlow::Node source) { this.isUnrestriction(source) }
 
   override predicate isSink(DataFlow::Node sink) {
     sink = library.connection_creation().getContext()
   }
 
-  override predicate isBarrierOut(DataFlow::Node node) {
+  override predicate isBarrierIn(DataFlow::Node node) {
+    this.isRestriction(node)
+    or
+    this.isUnrestriction(node)
+  }
+
+  private predicate isRestriction(DataFlow::Node node) {
     exists(ProtocolRestriction r |
       r = library.protocol_restriction() and
-      node = r.getContext() and
       r.getRestriction() = tracked_version
+    |
+      node = r.getContext()
     )
   }
 
-  override predicate isBarrierIn(DataFlow::Node node) { this.isSource(node) }
+  private predicate isUnrestriction(DataFlow::Node node) {
+    exists(ProtocolUnrestriction pu |
+      pu = library.protocol_unrestriction() and
+      pu.getUnrestriction() = tracked_version
+    |
+      node = pu.getContext()
+    )
+  }
 }
 
 /**
