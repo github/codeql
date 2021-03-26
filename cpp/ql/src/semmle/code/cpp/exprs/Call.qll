@@ -300,6 +300,14 @@ class FunctionCall extends Call, @funbindexpr {
   }
 }
 
+/** A _user-defined_ unary `operator*` function. */
+class OverloadedPointerDereferenceFunction extends Function {
+  OverloadedPointerDereferenceFunction() {
+    this.hasName("operator*") and
+    this.getEffectiveNumberOfParameters() = 1
+  }
+}
+
 /**
  * An instance of a _user-defined_ unary `operator*` applied to its argument.
  * ```
@@ -309,8 +317,7 @@ class FunctionCall extends Call, @funbindexpr {
  */
 class OverloadedPointerDereferenceExpr extends FunctionCall {
   OverloadedPointerDereferenceExpr() {
-    getTarget().hasName("operator*") and
-    getTarget().getEffectiveNumberOfParameters() = 1
+    this.getTarget() instanceof OverloadedPointerDereferenceFunction
   }
 
   override string getAPrimaryQlClass() { result = "OverloadedPointerDereferenceExpr" }
@@ -322,53 +329,6 @@ class OverloadedPointerDereferenceExpr extends FunctionCall {
     result = this.getChild(0) or
     result = this.getQualifier()
   }
-
-  override predicate mayBeImpure() {
-    FunctionCall.super.mayBeImpure() and
-    (
-      this.getExpr().mayBeImpure()
-      or
-      not exists(Class declaring |
-        this.getTarget().getDeclaringType().isConstructedFrom*(declaring)
-      |
-        declaring.getNamespace() instanceof StdNamespace
-      )
-    )
-  }
-
-  override predicate mayBeGloballyImpure() {
-    FunctionCall.super.mayBeGloballyImpure() and
-    (
-      this.getExpr().mayBeGloballyImpure()
-      or
-      not exists(Class declaring |
-        this.getTarget().getDeclaringType().isConstructedFrom*(declaring)
-      |
-        declaring.getNamespace() instanceof StdNamespace
-      )
-    )
-  }
-}
-
-/**
- * An instance of a call to a _user-defined_ `operator->`.
- * ```
- * struct T2 { T1 b; };
- * struct T3 { T2* operator->(); };
- * T3 a;
- * T1 x = a->b;
- * ```
- */
-class OverloadedArrowExpr extends FunctionCall {
-  OverloadedArrowExpr() { getTarget().hasName("operator->") }
-
-  override string getAPrimaryQlClass() { result = "OverloadedArrowExpr" }
-
-  /** Gets the expression this `operator->` applies to. */
-  Expr getExpr() { result = this.getQualifier() }
-
-  /** Gets the field accessed by this call to `operator->`, if any. */
-  FieldAccess getFieldAccess() { result.getQualifier() = this }
 
   override predicate mayBeImpure() {
     FunctionCall.super.mayBeImpure() and
