@@ -40,7 +40,9 @@ module LogInjection {
    * A source of remote user controlled input.
    */
   class RemoteSource extends Source {
-    RemoteSource() { this instanceof RemoteFlowSource }
+    RemoteSource() {
+      this instanceof RemoteFlowSource and not this instanceof ClientSideRemoteFlowSource
+    }
   }
 
   /**

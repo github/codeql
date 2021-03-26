@@ -149,6 +149,7 @@ module DataFlow {
      * For more information, see
      * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
      */
+    cached
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
@@ -171,6 +172,7 @@ module DataFlow {
     int getEndColumn() { hasLocationInfo(_, _, _, _, result) }
 
     /** Gets a textual representation of this element. */
+    cached
     string toString() { none() }
 
     /**
@@ -294,12 +296,13 @@ module DataFlow {
     override predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
+      Stages::DataFlowStage::ref() and
       astNode.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
     override File getFile() { result = astNode.getFile() }
 
-    override string toString() { result = astNode.toString() }
+    override string toString() { Stages::DataFlowStage::ref() and result = astNode.toString() }
   }
 
   /**
@@ -527,6 +530,13 @@ module DataFlow {
      */
     predicate isPrivateField() {
       getPropertyName().charAt(0) = "#" and getPropertyNameExpr() instanceof Label
+    }
+
+    /**
+     * Gets an accessor (`get` or `set` method) that may be invoked by this property reference.
+     */
+    final DataFlow::FunctionNode getAnAccessorCallee() {
+      result = CallGraph::getAnAccessorCallee(this)
     }
   }
 

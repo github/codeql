@@ -18,6 +18,6 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode
 where cfg.hasFlowPath(source, sink) and sinkNode = sink.getNode()
-select sinkNode.getAlertLocation(), source, sink, "$@ based on library input is later used in $@.",
-  sinkNode.getAlertLocation(), sinkNode.getSinkType(), sinkNode.getCommandExecution(),
-  "shell command"
+select sinkNode.getAlertLocation(), source, sink, "$@ based on $@ is later used in $@.",
+  sinkNode.getAlertLocation(), sinkNode.getSinkType(), source.getNode(), "library input",
+  sinkNode.getCommandExecution(), "shell command"

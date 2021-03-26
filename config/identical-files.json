@@ -377,7 +377,6 @@
   ],
   "DuplicationProblems.inc.qhelp": [
     "cpp/ql/src/Metrics/Files/DuplicationProblems.inc.qhelp",
-    "csharp/ql/src/Metrics/Files/DuplicationProblems.inc.qhelp",
     "javascript/ql/src/Metrics/DuplicationProblems.inc.qhelp",
     "python/ql/src/Metrics/DuplicationProblems.inc.qhelp"
   ],
@@ -430,7 +429,8 @@
   "SSA C#": [
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/SsaImplCommon.qll",
     "csharp/ql/src/semmle/code/csharp/controlflow/internal/pressa/SsaImplCommon.qll",
-    "csharp/ql/src/semmle/code/csharp/dataflow/internal/basessa/SsaImplCommon.qll"
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/basessa/SsaImplCommon.qll",
+    "csharp/ql/src/semmle/code/cil/internal/SsaImplCommon.qll"
   ],
   "CryptoAlgorithms Python/JS": [
     "javascript/ql/src/semmle/javascript/security/CryptoAlgorithms.qll",

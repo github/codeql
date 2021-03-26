@@ -304,3 +304,27 @@ function incompleteHtmlAttributeSanitization2() {
 	'="' + s().replace(/[<>&"]/g,'') + '"'; // OK
 	'=\'' + s().replace(/[<>&']/g,'') + '\''; // OK
 }
+
+function incompleteComplexSanitizers() {
+	'=\'' + s().replace(/[&<>"]/gm, function (str) { // NOT OK
+		if (str === "&")
+			return "&amp;";
+		if (str === "<")
+			return "&lt;";
+		if (str === ">")
+			return "&gt;";
+		if (str === "\"")
+			return "&quot;";
+	}) + '\'';
+
+	'="' + s().replace(/[&<>"]/gm, function (str) { // OK
+		if (str === "&")
+			return "&amp;";
+		if (str === "<")
+			return "&lt;";
+		if (str === ">")
+			return "&gt;";
+		if (str === "\"")
+			return "&quot;";
+	}) + '"';
+}

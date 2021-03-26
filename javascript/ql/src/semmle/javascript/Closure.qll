@@ -129,6 +129,9 @@ module Closure {
     container = result.getContainer()
   }
 
+  pragma[noinline]
+  private ClosureRequireCall getARequireInTopLevel(ClosureModule m) { result.getTopLevel() = m }
+
   /**
    * A module using the Closure module system, declared using `goog.module()` or `goog.declareModuleId()`.
    */
@@ -146,10 +149,8 @@ module Closure {
     string getClosureNamespace() { result = getModuleDeclaration().getClosureNamespace() }
 
     override Module getAnImportedModule() {
-      exists(ClosureRequireCall imprt |
-        imprt.getTopLevel() = this and
-        result.(ClosureModule).getClosureNamespace() = imprt.getClosureNamespace()
-      )
+      result.(ClosureModule).getClosureNamespace() =
+        getARequireInTopLevel(this).getClosureNamespace()
     }
 
     /**
