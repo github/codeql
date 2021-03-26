@@ -133,6 +133,8 @@ module Stages {
       exists(any(DataFlow::Node node).toString())
       or
       exists(any(AccessPath a).getAnInstanceIn(_))
+      or
+      exists(any(DataFlow::PropRef ref).getBase())
     }
   }
 

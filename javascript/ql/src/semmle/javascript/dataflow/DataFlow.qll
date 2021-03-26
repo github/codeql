@@ -492,6 +492,7 @@ module DataFlow {
      * Gets the data flow node corresponding to the base object
      * whose property is read from or written to.
      */
+    cached
     abstract Node getBase();
 
     /**
@@ -595,7 +596,10 @@ module DataFlow {
 
     PropLValueAsPropWrite() { astNode instanceof LValue }
 
-    override Node getBase() { result = valueNode(astNode.getBase()) }
+    override Node getBase() {
+      result = valueNode(astNode.getBase()) and
+      Stages::DataFlowStage::ref()
+    }
 
     override Expr getPropertyNameExpr() { result = astNode.getPropertyNameExpr() }
 
