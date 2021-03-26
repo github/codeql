@@ -1168,9 +1168,9 @@ A valid call with results *resolves* to a set of predicates. The ways a call can
 -  If the call has no receiver and the predicate name is a selection identifier, then the qualifier is resolved as a module (see "`Module resolution <#module-resolution>`__"). The identifier is then resolved in the exported predicate environment of the qualifier module.
 
 -  If the call has a super expression as the receiver, then it resolves to a member predicate in a class that the enclosing class inherits from:
-    -  If the super expression is unqualified and there is a single class that the current class inherits from then the super-class is that class. 
-    -  If the super expression is unqualified and there is are multiple classes that the current class inherits from then the super-class is the domain type.
-    -  Otherwise the super-class is the class named by the qualifier of the super expression. 
+    -  If the super expression is unqualified and there is a single class that the current class inherits from, then the super-class is that class. 
+    -  If the super expression is unqualified and there are multiple classes that the current class inherits from, then the super-class is the domain type.
+    -  Otherwise, the super-class is the class named by the qualifier of the super expression. 
 
    The predicate is resolved by looking up its name and arity in the exported predicate environment of the super-class. 
 
