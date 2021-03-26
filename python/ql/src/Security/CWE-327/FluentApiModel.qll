@@ -39,13 +39,7 @@ class InsecureContextConfiguration extends DataFlow::Configuration {
     )
   }
 
-  override predicate isBarrierIn(DataFlow::Node node) {
-    exists(ProtocolUnrestriction r |
-      r = library.protocol_unrestriction() and
-      node = r.getContext() and
-      r.getUnrestriction() = tracked_version
-    )
-  }
+  override predicate isBarrierIn(DataFlow::Node node) { this.isSource(node) }
 }
 
 /**
