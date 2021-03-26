@@ -25,8 +25,6 @@ module RegexExecution {
    */
   abstract class Range extends DataFlow::Node {
     abstract DataFlow::Node getRegexNode();
-
-    abstract DataFlow::CallCfgNode getRegexMethod();
   }
 }
 
@@ -42,8 +40,6 @@ class RegexExecution extends DataFlow::Node {
   RegexExecution() { this = range }
 
   DataFlow::Node getRegexNode() { result = range.getRegexNode() }
-
-  DataFlow::CallCfgNode getRegexMethod() { result = range.getRegexMethod() }
 }
 
 /** Provides classes for modeling Regular Expression escape-related APIs. */
@@ -56,8 +52,6 @@ module RegexEscape {
    */
   abstract class Range extends DataFlow::Node {
     abstract DataFlow::Node getRegexNode();
-
-    abstract DataFlow::CallCfgNode getEscapeMethod();
   }
 }
 
@@ -73,6 +67,4 @@ class RegexEscape extends DataFlow::Node {
   RegexEscape() { this = range }
 
   DataFlow::Node getRegexNode() { result = range.getRegexNode() }
-
-  DataFlow::CallCfgNode getEscapeMethod() { result = range.getEscapeMethod() }
 }

@@ -26,14 +26,10 @@ private module Re {
     DirectRegex() {
       // this.getLocation().getFile().getBaseName().regexpMatch("^re_(good|bad)\\.py$") and // debug
       this = API::moduleImport("re").getMember(any(ReMethods m)).getACall() and
-      regexNode = this.getArg(0) and
-      regexMethod = this
+      regexNode = this.getArg(0)
     }
 
     override DataFlow::Node getRegexNode() { result = regexNode }
-
-    // pending obj.this discussion
-    override DataFlow::CallCfgNode getRegexMethod() { result = regexMethod }
   }
 
   private class CompiledRegex extends DataFlow::CallCfgNode, RegexExecution::Range {
@@ -47,14 +43,11 @@ private module Re {
         patternCall = API::moduleImport("re").getMember("compile").getACall() and
         patternCall = reMethod.getObject().getALocalSource() and
         reMethod.getAttributeName() instanceof ReMethods and
-        regexNode = patternCall.getArg(0) and
-        regexMethod = this
+        regexNode = patternCall.getArg(0)
       )
     }
 
     override DataFlow::Node getRegexNode() { result = regexNode }
-
-    override DataFlow::CallCfgNode getRegexMethod() { result = regexMethod }
   }
 
   class ReEscape extends DataFlow::CallCfgNode, RegexEscape::Range {
@@ -63,12 +56,9 @@ private module Re {
 
     ReEscape() {
       this = API::moduleImport("re").getMember("escape").getACall() and
-      regexNode = this.getArg(0) and
-      escapeMethod = this
+      regexNode = this.getArg(0)
     }
 
     override DataFlow::Node getRegexNode() { result = regexNode }
-
-    override DataFlow::CallCfgNode getEscapeMethod() { result = escapeMethod }
   }
 }

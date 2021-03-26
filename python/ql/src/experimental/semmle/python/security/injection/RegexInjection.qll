@@ -15,7 +15,7 @@ class RegexInjectionSink extends DataFlow::Node {
   RegexInjectionSink() {
     exists(RegexExecution reExec |
       this = reExec.getRegexNode() and
-      regexMethod = reExec.getRegexMethod().getFunction().asExpr().(Attribute)
+      regexMethod = reExec.asExpr().(Attribute)
     )
   }
 
