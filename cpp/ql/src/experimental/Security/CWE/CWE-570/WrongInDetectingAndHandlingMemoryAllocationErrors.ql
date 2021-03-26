@@ -74,7 +74,7 @@ class WrongCheckErrorOperatorNew extends FunctionCall {
   /**
    * Holds if `(std::nothrow)` exists in call `operator new`.
    */
-  predicate isExistsNothrow() { this.getAChild().toString() = "nothrow" }
+  predicate isExistsNothrow() { getTarget().isNoExcept() or getTarget().isNoThrow() }
 }
 
 from WrongCheckErrorOperatorNew op
