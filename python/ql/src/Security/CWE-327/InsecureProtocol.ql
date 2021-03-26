@@ -18,11 +18,11 @@ string callName(AstNode call) {
   exists(Attribute a | a = call | result = callName(a.getObject()) + "." + a.getName())
 }
 
-string sourceName(DataFlow::Node source) {
-  result = "call to " + callName(source.asCfgNode().(CallNode).getFunction().getNode())
+string originName(DataFlow::Node contextOrigin) {
+  result = "call to " + callName(contextOrigin.asCfgNode().(CallNode).getFunction().getNode())
   or
-  not source.asCfgNode() instanceof CallNode and
-  not source instanceof ContextCreation and
+  not contextOrigin.asCfgNode() instanceof CallNode and
+  not contextOrigin instanceof ContextCreation and
   result = "context modification"
 }
 
@@ -32,11 +32,12 @@ string verb(boolean specific) {
   specific = false and result = "allowed"
 }
 
-from DataFlow::Node creation, string insecure_version, DataFlow::Node source, boolean specific
+from
+  DataFlow::Node creation, string insecure_version, DataFlow::Node contextOrigin, boolean specific
 where
-  unsafe_connection_creation(creation, insecure_version, source, specific)
+  unsafe_connection_creation(creation, insecure_version, contextOrigin, specific)
   or
-  unsafe_context_creation(creation, insecure_version, source.asCfgNode()) and specific = true
+  unsafe_context_creation(creation, insecure_version, contextOrigin.asCfgNode()) and specific = true
 select creation,
   "Insecure SSL/TLS protocol version " + insecure_version + " " + verb(specific) + " by $@ ",
-  source, sourceName(source)
+  contextOrigin, originName(contextOrigin)
