@@ -8,6 +8,14 @@
  *       external/cwe-016
  */
 
+/*
+ * Note this query requires properties files to be indexed before it can produce results.
+ * If creating your own database with the CodeQL CLI, you should run
+ * `codeql database index-files --language=properties ...`
+ * If using lgtm.com, you should add `properties_files: true` to the index block of your
+ * lgtm.yml file (see https://lgtm.com/help/lgtm/java-extraction)
+ */
+
 import java
 import semmle.code.configfiles.ConfigFiles
 import semmle.code.xml.MavenPom
