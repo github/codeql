@@ -321,10 +321,9 @@ private module SsaDefReaches {
   }
 
   pragma[noinline]
-  private BasicBlock getAMaybeLiveSuccessor(Definition def, BasicBlock bb) {
-    result = getABasicBlockSuccessor(bb) and
-    not defOccursInBlock(_, bb, def.getSourceVariable()) and
-    ssaDefReachesEndOfBlock(bb, def, _)
+  private predicate ssaDefReachesThroughBlock(Definition def, BasicBlock bb) {
+    ssaDefReachesEndOfBlock(bb, def, _) and
+    not defOccursInBlock(_, bb, def.getSourceVariable())
   }
 
   /**
@@ -337,7 +336,11 @@ private module SsaDefReaches {
     defOccursInBlock(def, bb1, _) and
     bb2 = getABasicBlockSuccessor(bb1)
     or
-    exists(BasicBlock mid | varBlockReaches(def, bb1, mid) | bb2 = getAMaybeLiveSuccessor(def, mid))
+    exists(BasicBlock mid |
+      varBlockReaches(def, bb1, mid) and
+      ssaDefReachesThroughBlock(def, mid) and
+      bb2 = getABasicBlockSuccessor(mid)
+    )
   }
 
   /**
@@ -355,17 +358,10 @@ private module SsaDefReaches {
 
 private import SsaDefReaches
 
-pragma[noinline]
-private predicate ssaDefReachesEndOfBlockRec(BasicBlock bb, Definition def, SourceVariable v) {
-  exists(BasicBlock idom | ssaDefReachesEndOfBlock(idom, def, v) |
-    // The construction of SSA form ensures that each read of a variable is
-    // dominated by its definition. An SSA definition therefore reaches a
-    // control flow node if it is the _closest_ SSA definition that dominates
-    // the node. If two definitions dominate a node then one must dominate the
-    // other, so therefore the definition of _closest_ is given by the dominator
-    // tree. Thus, reaching definitions can be calculated in terms of dominance.
-    idom = getImmediateBasicBlockDominator(bb)
-  )
+pragma[nomagic]
+predicate liveThrough(BasicBlock bb, SourceVariable v) {
+  liveAtExit(bb, v) and
+  not ssaRef(bb, _, v, SsaDef())
 }
 
 /**
@@ -382,9 +378,14 @@ predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def, SourceVariable 
     liveAtExit(bb, v)
   )
   or
-  ssaDefReachesEndOfBlockRec(bb, def, v) and
-  liveAtExit(bb, v) and
-  not ssaRef(bb, _, v, SsaDef())
+  // The construction of SSA form ensures that each read of a variable is
+  // dominated by its definition. An SSA definition therefore reaches a
+  // control flow node if it is the _closest_ SSA definition that dominates
+  // the node. If two definitions dominate a node then one must dominate the
+  // other, so therefore the definition of _closest_ is given by the dominator
+  // tree. Thus, reaching definitions can be calculated in terms of dominance.
+  ssaDefReachesEndOfBlock(getImmediateBasicBlockDominator(bb), def, pragma[only_bind_into](v)) and
+  liveThrough(bb, pragma[only_bind_into](v))
 }
 
 /**
