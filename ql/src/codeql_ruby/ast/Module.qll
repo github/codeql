@@ -14,16 +14,16 @@ class ModuleBase extends BodyStmt, TModuleBase {
   MethodBase getMethod(string name) { result = this.getAMethod() and result.getName() = name }
 
   /** Gets a class defined in this module/class. */
-  Class getAClass() { result = this.getAStmt() }
+  ClassDefinition getAClass() { result = this.getAStmt() }
 
   /** Gets the class named `name` in this module/class, if any. */
-  Class getClass(string name) { result = this.getAClass() and result.getName() = name }
+  ClassDefinition getClass(string name) { result = this.getAClass() and result.getName() = name }
 
   /** Gets a module defined in this module/class. */
-  Module getAModule() { result = this.getAStmt() }
+  ModuleDefinition getAModule() { result = this.getAStmt() }
 
   /** Gets the module named `name` in this module/class, if any. */
-  Module getModule(string name) { result = this.getAModule() and result.getName() = name }
+  ModuleDefinition getModule(string name) { result = this.getAModule() and result.getName() = name }
 }
 
 /**
@@ -150,12 +150,12 @@ class Namespace extends ModuleBase, ConstantWriteAccess, TNamespace {
  * end
  * ```
  */
-class Class extends Namespace, TClass {
+class ClassDefinition extends Namespace, TClass {
   private Generated::Class g;
 
-  Class() { this = TClass(g) }
+  ClassDefinition() { this = TClass(g) }
 
-  final override string getAPrimaryQlClass() { result = "Class" }
+  final override string getAPrimaryQlClass() { result = "ClassDefinition" }
 
   /**
    * Gets the `Expr` used as the superclass in the class definition, if any.
@@ -214,7 +214,7 @@ class SingletonClass extends ModuleBase, TSingletonClass {
 
   SingletonClass() { this = TSingletonClass(g) }
 
-  final override string getAPrimaryQlClass() { result = "Class" }
+  final override string getAPrimaryQlClass() { result = "ClassDefinition" }
 
   /**
    * Gets the expression resulting in the object on which the singleton class
@@ -249,7 +249,7 @@ class SingletonClass extends ModuleBase, TSingletonClass {
  * N.B. this class represents a single instance of a module definition. In the
  * following example, classes `Bar` and `Baz` are both defined in the module
  * `Foo`, but in two syntactically distinct definitions, meaning that there
- * will be two instances of `Module` in the database.
+ * will be two instances of `ModuleDefinition` in the database.
  *
  * ```rb
  * module Foo
@@ -261,12 +261,12 @@ class SingletonClass extends ModuleBase, TSingletonClass {
  * end
  * ```
  */
-class Module extends Namespace, TModule {
+class ModuleDefinition extends Namespace, TModule {
   private Generated::Module g;
 
-  Module() { this = TModule(g) }
+  ModuleDefinition() { this = TModule(g) }
 
-  final override string getAPrimaryQlClass() { result = "Module" }
+  final override string getAPrimaryQlClass() { result = "ModuleDefinition" }
 
   final override string getName() {
     result = g.getName().(Generated::Token).getValue() or
