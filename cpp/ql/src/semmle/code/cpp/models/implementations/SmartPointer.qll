@@ -7,13 +7,10 @@ import semmle.code.cpp.models.interfaces.PointerWrapper
 private class UniqueOrSharedPtr extends Class, PointerWrapper {
   UniqueOrSharedPtr() { this.hasQualifiedName(["std", "bsl"], ["shared_ptr", "unique_ptr"]) }
 
-  override MemberFunction getADereferenceFunction() {
-    result.(OverloadedPointerDereferenceFunction).getDeclaringType() = this
-  }
-
   override MemberFunction getAnUnwrapperFunction() {
-    result.getDeclaringType() = this and
-    result.hasName(["operator->", "get"])
+    result.(OverloadedPointerDereferenceFunction).getDeclaringType() = this
+    or
+    result.getClassAndName(["operator->", "get"]) = this
   }
 }
 
