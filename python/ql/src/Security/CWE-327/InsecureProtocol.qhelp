@@ -34,12 +34,6 @@
           </p>
           <p>
             Note that <code>ssl.wrap_socket</code> has been deprecated in
-            Python 3.7. A preferred alternative is to use
-            <code>ssl.SSLContext</code>, which is supported in Python 2.7.9 and
-            3.2 and later versions.
-          </p>
-          <p>
-            Note that <code>ssl.wrap_socket</code> has been deprecated in
             Python 3.7. The recommended alternatives are:
           </p>
           <ul>
