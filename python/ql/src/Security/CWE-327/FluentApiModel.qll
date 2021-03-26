@@ -63,7 +63,8 @@ class InsecureContextConfiguration extends DataFlow::Configuration {
 /**
  * Holds if `conectionCreation` marks the creation of a connetion based on the contex
  * found at `contextOrigin` and allowing `insecure_version`.
- * `specific` is true iff the context if configured for a specific protocol version rather
+ *
+ * `specific` is true iff the context is configured for a specific protocol version rather
  * than for a family of protocols.
  */
 predicate unsafe_connection_creation_with_context(
@@ -92,7 +93,8 @@ predicate unsafe_connection_creation_with_context(
 /**
  * Holds if `conectionCreation` marks the creation of a connetion witout reference to a context
  * and allowing `insecure_version`.
- * `specific` is true iff the context if configured for a specific protocol version rather
+ *
+ * `specific` is true iff the context is configured for a specific protocol version rather
  * than for a family of protocols.
  */
 predicate unsafe_connection_creation_without_context(
