@@ -46,8 +46,17 @@ class RegexExecution extends DataFlow::Node {
   Attribute getRegexMethod() { result = range.getRegexMethod() }
 }
 
-class RegexEscape extends DataFlow::Node {
+class RegexEscape extends DataFlow::CallCfgNode {
+  DataFlow::Node regexNode;
+  Attribute regexMethod;
+
   RegexEscape() {
-    this = API::moduleImport("re").getMember("escape").getACall().(DataFlow::CallCfgNode).getArg(0)
+    this = API::moduleImport("re").getMember("escape").getACall() and
+    regexNode = this.getArg(0) and
+    regexMethod = this.asExpr().(Attribute)
   }
+
+  DataFlow::Node getRegexNode() { result = regexNode }
+
+  Attribute getRegexMethod() { result = regexMethod }
 }
