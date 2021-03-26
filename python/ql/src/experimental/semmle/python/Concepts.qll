@@ -13,6 +13,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
+private import semmle.python.ApiGraphs
 
 /** Provides classes for modeling Regular Expression-related APIs. */
 module RegexExecution {
@@ -24,6 +25,7 @@ module RegexExecution {
    */
   abstract class Range extends DataFlow::Node {
     abstract DataFlow::Node getRegexNode();
+
     abstract Attribute getRegexMethod();
   }
 }
@@ -40,5 +42,12 @@ class RegexExecution extends DataFlow::Node {
   RegexExecution() { this = range }
 
   DataFlow::Node getRegexNode() { result = range.getRegexNode() }
+
   Attribute getRegexMethod() { result = range.getRegexMethod() }
+}
+
+class RegexEscape extends DataFlow::Node {
+  RegexEscape() {
+    this = API::moduleImport("re").getMember("escape").getACall().(DataFlow::CallCfgNode).getArg(0)
+  }
 }

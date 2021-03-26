@@ -5,7 +5,6 @@
 
 import python
 import experimental.semmle.python.Concepts
-import experimental.semmle.python.frameworks.Stdlib
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
@@ -21,5 +20,5 @@ class RegexInjectionFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink = any(RegexExecution re).getRegexNode() }
 
-  override predicate isSanitizer(DataFlow::Node sanitizer) { sanitizer instanceof ReEscapeCall }
+  override predicate isSanitizer(DataFlow::Node sanitizer) { sanitizer instanceof RegexEscape }
 }
