@@ -530,15 +530,12 @@ private module Cached {
    * The slightly backwards parametering ordering is to force correct indexing.
    */
   cached
-  predicate hasLocalSource(Node sink, Node source) {
-    // Declaring `source` to be a `SourceNode` currently causes a redundant check in the
-    // recursive case, so instead we check it explicitly here.
-    source = sink and
-    source instanceof LocalSourceNode
+  predicate hasLocalSource(Node sink, LocalSourceNode source) {
+    source = sink
     or
-    exists(Node mid |
-      hasLocalSource(mid, source) and
-      simpleLocalFlowStep(mid, sink)
+    exists(Node second |
+      simpleLocalFlowStep(source, second) and
+      simpleLocalFlowStep*(second, sink)
     )
   }
 
