@@ -31,6 +31,7 @@ private module Re {
 
     override DataFlow::Node getRegexNode() { result = regexNode }
 
+    // pending obj.this discussion
     override DataFlow::CallCfgNode getRegexMethod() { result = regexMethod }
   }
 
@@ -39,13 +40,13 @@ private module Re {
     DataFlow::CallCfgNode regexMethod;
 
     CompiledRegex() {
-      exists(DataFlow::CallCfgNode patternCall, DirectRegex reMethod |
-        this = reMethod and
+      exists(DataFlow::CallCfgNode patternCall, DataFlow::AttrRead reMethod |
+        this.getFunction() = reMethod and
         patternCall = API::moduleImport("re").getMember("compile").getACall() and
-        patternCall = reMethod.(DataFlow::AttrRead).getObject().getALocalSource() and
+        patternCall = reMethod.getObject().getALocalSource() and
+        reMethod.getAttributeName() instanceof ReMethods and
         regexNode = patternCall.getArg(0) and
-        // regexMethod is *not* worked out outside class instanciation because `CompiledRegex` focuses on re.compile(pattern).ReMethod
-        regexMethod = reMethod.getRegexMethod()
+        regexMethod = this
       )
     }
 
