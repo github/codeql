@@ -594,14 +594,18 @@ class SelectorExpr extends @selectorexpr, Expr {
 }
 
 /**
- * A selector expression that refers to a promoted field. These selectors may implicitly
- * address an embedded struct of their base type - for example, the selector `x.field` may
- * implicitly address `x.Embedded.field`). Note they may also explicitly address `field`;
- * being a `PromotedFieldSelector` only indicates the addressed field may be promoted, not
- * that it is promoted in this particular context.
+ * A selector expression that refers to a promoted field or a promoted method. These
+ * selectors may implicitly address an embedded struct of their base type - for example,
+ * the selector `x.field` may implicitly address `x.Embedded.field`). Note they may also
+ * explicitly address `field`; being a `PromotedSelector` only indicates the addressed
+ * field or method may be promoted, not that it is promoted in this particular context.
  */
-class PromotedFieldSelector extends SelectorExpr {
-  PromotedFieldSelector() { this.refersTo(any(PromotedField f)) }
+class PromotedSelector extends SelectorExpr {
+  PromotedSelector() {
+    exists(ValueEntity ve | this.refersTo(ve) |
+      ve instanceof PromotedField or ve instanceof PromotedMethod
+    )
+  }
 
   /**
    * Gets the underlying struct type of this selector's base. Note because this selector

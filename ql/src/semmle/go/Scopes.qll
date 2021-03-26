@@ -539,6 +539,15 @@ class Method extends Function {
   }
 }
 
+/**
+ * A method whose receiver may be embedded within a struct.
+ *
+ * When a selector addresses such a method, it is possible it is implicitly addressing a nested struct.
+ */
+class PromotedMethod extends Method {
+  PromotedMethod() { this = any(StructType t).getMethodOfEmbedded(_, _, _) }
+}
+
 /** A declared function. */
 class DeclaredFunction extends Function, DeclaredEntity, @declfunctionobject {
   override FuncDecl getFuncDecl() { result.getNameExpr() = this.getDeclaration() }
