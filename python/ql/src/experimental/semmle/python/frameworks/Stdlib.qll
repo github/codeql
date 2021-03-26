@@ -21,22 +21,22 @@ private module Re {
 
   private class DirectRegex extends DataFlow::CallCfgNode, RegexExecution::Range {
     DataFlow::Node regexNode;
-    Attribute regexMethod;
+    DataFlow::CallCfgNode regexMethod;
 
     DirectRegex() {
       this = API::moduleImport("re").getMember(any(ReMethods m)).getACall() and
       regexNode = this.getArg(0) and
-      regexMethod = this.asExpr().(Attribute)
+      regexMethod = this
     }
 
     override DataFlow::Node getRegexNode() { result = regexNode }
 
-    override Attribute getRegexMethod() { result = regexMethod }
+    override DataFlow::CallCfgNode getRegexMethod() { result = regexMethod }
   }
 
   private class CompiledRegex extends DataFlow::CallCfgNode, RegexExecution::Range {
     DataFlow::Node regexNode;
-    Attribute regexMethod;
+    DataFlow::CallCfgNode regexMethod;
 
     CompiledRegex() {
       exists(DataFlow::CallCfgNode patternCall, DirectRegex reMethod |
@@ -51,21 +51,21 @@ private module Re {
 
     override DataFlow::Node getRegexNode() { result = regexNode }
 
-    override Attribute getRegexMethod() { result = regexMethod }
+    override DataFlow::CallCfgNode getRegexMethod() { result = regexMethod }
   }
 
   class ReEscape extends DataFlow::CallCfgNode, RegexEscape::Range {
     DataFlow::Node regexNode;
-    Attribute escapeMethod;
+    DataFlow::CallCfgNode escapeMethod;
 
     ReEscape() {
       this = API::moduleImport("re").getMember("escape").getACall() and
       regexNode = this.getArg(0) and
-      escapeMethod = this.asExpr().(Attribute)
+      escapeMethod = this
     }
 
     override DataFlow::Node getRegexNode() { result = regexNode }
 
-    override Attribute getEscapeMethod() { result = escapeMethod }
+    override DataFlow::CallCfgNode getEscapeMethod() { result = escapeMethod }
   }
 }
