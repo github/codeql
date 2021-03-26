@@ -321,13 +321,13 @@ module IR {
 
     Instruction getBaseInstruction() {
       exists(ImplicitFieldReadInstruction fri |
-        fri.getSelectorExpr() = e and fri.getIndex() = index + 1
+        fri.getSelectorExpr() = e and fri.getIndex() = pragma[only_bind_into](index + 1)
       |
         result = fri
       )
       or
       not exists(ImplicitFieldReadInstruction fri |
-        fri.getSelectorExpr() = e and fri.getIndex() = index + 1
+        fri.getSelectorExpr() = e and fri.getIndex() = pragma[only_bind_into](index + 1)
       ) and
       (
         result = MkImplicitDeref(e.getBase())
