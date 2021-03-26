@@ -71,11 +71,14 @@ abstract class UnspecificContextCreation extends ContextCreation, ProtocolUnrest
   override DataFlow::CfgNode getContext() { result = this }
 
   override ProtocolVersion getUnrestriction() {
+    // see https://www.openssl.org/docs/man1.1.0/man3/TLS_method.html
     family = "TLS" and
-    result in ["TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
+    result in ["SSLv3", "TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
     or
     // This can negotiate a TLS 1.3 connection (!)
-    // see https://docs.python.org/3/library/ssl.html#ssl-contexts
+    // see
+    // - https://docs.python.org/3/library/ssl.html#ssl-contexts
+    // - https://www.openssl.org/docs/man1.0.2/man3/TLSv1_method.html
     family = "SSLv23" and
     result in ["SSLv2", "SSLv3", "TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
   }
