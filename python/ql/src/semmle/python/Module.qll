@@ -204,13 +204,8 @@ private string moduleNameFromBase(Container file) {
 string moduleNameFromFile(Container file) {
   exists(string basename |
     basename = moduleNameFromBase(file) and
-    legalShortName(basename)
-  |
+    legalShortName(basename) and
     result = moduleNameFromFile(file.getParent()) + "." + basename
-    or
-    // If execution can start in the folder containing this module, then we will assume `file` can
-    // be imported as an absolute import, and hence return `basename` as a possible name.
-    file.getParent().(Folder).mayContainEntryPoint() and result = basename
   )
   or
   isPotentialSourcePackage(file) and
