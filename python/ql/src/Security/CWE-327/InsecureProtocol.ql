@@ -12,13 +12,46 @@
 import python
 import FluentApiModel
 
-string callName(AstNode call) {
+// Helper for pretty printer `configName`.
+// This is a consequence of missing pretty priting.
+// We do not want to evaluate our bespoke pretty printer
+// for all `DataFlow::Node`s so we define a sub class of interesting ones.
+class ProtocolConfiguration extends DataFlow::Node {
+  ProtocolConfiguration() {
+    unsafe_connection_creation_with_context(_, _, this, _)
+    or
+    unsafe_connection_creation_without_context(this, _)
+    or
+    unsafe_context_creation(this, _)
+  }
+}
+
+// Helper for pretty printer `callName`.
+// This is a consequence of missing pretty priting.
+// We do not want to evaluate our bespoke pretty printer
+// for all `AstNode`s so we define a sub class of interesting ones.
+//
+// Note that AstNode is abstract and AstNode_ is a library class, so
+// we have to extend @py_ast_node.
+class Namable extends @py_ast_node {
+  Namable() {
+    exists(ProtocolConfiguration protocolConfiguration |
+      this = protocolConfiguration.asCfgNode().(CallNode).getFunction().getNode()
+    )
+    or
+    exists(Namable attr | this = attr.(Attribute).getObject())
+  }
+
+  string toString() { result = "AstNode" }
+}
+
+string callName(Namable call) {
   result = call.(Name).getId()
   or
   exists(Attribute a | a = call | result = callName(a.getObject()) + "." + a.getName())
 }
 
-string configName(DataFlow::Node protocolConfiguration) {
+string configName(ProtocolConfiguration protocolConfiguration) {
   result =
     "call to " + callName(protocolConfiguration.asCfgNode().(CallNode).getFunction().getNode())
   or
