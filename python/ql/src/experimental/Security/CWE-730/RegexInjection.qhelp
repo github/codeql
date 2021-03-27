@@ -31,7 +31,7 @@
       <code>re.escape</code>. This ensures that the user cannot insert characters which have a
       special meaning in regular expressions.
     </p>
-    <sample src="examples/re_good.py" />
+    <sample src="unit_tests/re_good.py" />
   </example>
 
   <references>
