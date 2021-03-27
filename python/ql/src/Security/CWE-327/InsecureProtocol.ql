@@ -18,11 +18,12 @@ string callName(AstNode call) {
   exists(Attribute a | a = call | result = callName(a.getObject()) + "." + a.getName())
 }
 
-string originName(DataFlow::Node contextOrigin) {
-  result = "call to " + callName(contextOrigin.asCfgNode().(CallNode).getFunction().getNode())
+string configName(DataFlow::Node protocolConfiguration) {
+  result =
+    "call to " + callName(protocolConfiguration.asCfgNode().(CallNode).getFunction().getNode())
   or
-  not contextOrigin.asCfgNode() instanceof CallNode and
-  not contextOrigin instanceof ContextCreation and
+  not protocolConfiguration.asCfgNode() instanceof CallNode and
+  not protocolConfiguration instanceof ContextCreation and
   result = "context modification"
 }
 
@@ -48,4 +49,4 @@ where
   specific = true
 select connectionCreation,
   "Insecure SSL/TLS protocol version " + insecure_version + " " + verb(specific) + " by $@ ",
-  protocolConfiguration, originName(protocolConfiguration)
+  protocolConfiguration, configName(protocolConfiguration)
