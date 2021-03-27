@@ -22,10 +22,28 @@ class SSLDefaultContextCreation extends ContextCreation {
   override DataFlow::CfgNode getProtocol() { none() }
 }
 
+/** Gets a reference to an `ssl.Context` instance. */
+private DataFlow::LocalSourceNode sslContextInstance(DataFlow::TypeTracker t) {
+  t.start() and
+  result = API::moduleImport("ssl").getMember(["SSLContext", "create_default_context"]).getACall()
+  or
+  exists(DataFlow::TypeTracker t2 | result = sslContextInstance(t2).track(t2, t))
+}
+
+/** Gets a reference to an `ssl.Context` instance. */
+DataFlow::Node sslContextInstance() {
+  sslContextInstance(DataFlow::TypeTracker::end()).flowsTo(result)
+}
+
 class WrapSocketCall extends ConnectionCreation {
   override CallNode node;
 
-  WrapSocketCall() { node.getFunction().(AttrNode).getName() = "wrap_socket" }
+  WrapSocketCall() {
+    exists(DataFlow::AttrRead call | node.getFunction() = call.asCfgNode() |
+      call.getAttributeName() = "wrap_socket" and
+      call.getObject() = sslContextInstance()
+    )
+  }
 
   override DataFlow::CfgNode getContext() {
     result.getNode() = node.getFunction().(AttrNode).getObject()
