@@ -32,7 +32,7 @@ class RegexInjectionSink extends DataFlow::Node {
   string getRegexModule() { result = regexModule }
 
   /**
-   * Gets the mthod used to execute the regular expression.
+   * Gets the method used to execute the regular expression.
    */
   Attribute getRegexMethod() { result = regexMethod }
 }
