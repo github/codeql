@@ -26,8 +26,14 @@ class RegexInjectionSink extends DataFlow::Node {
     )
   }
 
+  /**
+   * Gets the argument containing the executed expression.
+   */
   string getRegexModule() { result = regexModule }
 
+  /**
+   * Gets the mthod used to execute the regular expression.
+   */
   Attribute getRegexMethod() { result = regexMethod }
 }
 
