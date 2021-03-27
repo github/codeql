@@ -10,16 +10,16 @@ import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
 
 class RegexInjectionSink extends DataFlow::Node {
-  Attribute regexMethod;
+  string regexModule;
 
   RegexInjectionSink() {
     exists(RegexExecution reExec |
       this = reExec.getRegexNode() and
-      regexMethod = reExec.asExpr().(Attribute)
+      regexModule = reExec.getRegexModule()
     )
   }
 
-  Attribute getRegexMethod() { result = regexMethod }
+  string getRegexModule() { result = regexModule }
 }
 
 /**

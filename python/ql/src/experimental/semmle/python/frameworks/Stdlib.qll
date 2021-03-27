@@ -21,15 +21,15 @@ private module Re {
 
   private class DirectRegex extends DataFlow::CallCfgNode, RegexExecution::Range {
     DataFlow::Node regexNode;
-    DataFlow::CallCfgNode regexMethod;
 
     DirectRegex() {
-      // this.getLocation().getFile().getBaseName().regexpMatch("^re_(good|bad)\\.py$") and // debug
       this = API::moduleImport("re").getMember(any(ReMethods m)).getACall() and
       regexNode = this.getArg(0)
     }
 
     override DataFlow::Node getRegexNode() { result = regexNode }
+
+    override string getRegexModule() { result = "re" }
   }
 
   private class CompiledRegex extends DataFlow::CallCfgNode, RegexExecution::Range {
@@ -38,7 +38,6 @@ private module Re {
 
     CompiledRegex() {
       exists(DataFlow::CallCfgNode patternCall, DataFlow::AttrRead reMethod |
-        // this.getLocation().getFile().getBaseName().regexpMatch("^re_(good|bad)\\.py$") and // debug
         this.getFunction() = reMethod and
         patternCall = API::moduleImport("re").getMember("compile").getACall() and
         patternCall = reMethod.getObject().getALocalSource() and
@@ -48,6 +47,8 @@ private module Re {
     }
 
     override DataFlow::Node getRegexNode() { result = regexNode }
+
+    override string getRegexModule() { result = "re" }
   }
 
   class ReEscape extends DataFlow::CallCfgNode, RegexEscape::Range {
