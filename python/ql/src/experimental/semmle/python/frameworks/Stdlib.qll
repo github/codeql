@@ -46,8 +46,7 @@ private module Re {
   }
 
   /**
-   * A class to find `re` methods immediately executing an expression from a
-   * compiled expression by `re.compile`.
+   * A class to find `re` methods immediately executing a compiled expression by `re.compile`.
    *
    * See `RegexExecutionMethods`
    *
