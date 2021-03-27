@@ -16,10 +16,14 @@ import python
 import experimental.semmle.python.security.injection.RegexInjection
 import DataFlow::PathGraph
 
-from RegexInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from
+  RegexInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink,
+  RegexInjectionSink castedSink, Attribute methodAttribute
+where
+  config.hasFlowPath(source, sink) and
+  castedSink = sink.getNode() and
+  methodAttribute = castedSink.getRegexMethod()
 select sink.getNode(), source, sink,
   "$@ regular expression is constructed from a $@ and executed by $@.", sink.getNode(), "This",
-  source.getNode(), "user-provided value", sink.getNode(),
-  sink.getNode().(RegexInjectionSink).getRegexModule() + "." +
-    sink.getNode().(RegexInjectionSink).getRegexMethod().getName()
+  source.getNode(), "user-provided value", methodAttribute,
+  castedSink.getRegexModule() + "." + methodAttribute.getName()
