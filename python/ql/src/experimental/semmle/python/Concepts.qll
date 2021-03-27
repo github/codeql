@@ -18,7 +18,7 @@ private import semmle.python.ApiGraphs
 /** Provides classes for modeling Regular Expression-related APIs. */
 module RegexExecution {
   /**
-   * A data-flow node that works with regular expressions immediately executing an expression.
+   * A data-flow node that collects methods immediately executing an expression.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `RegexExecution` instead.
@@ -37,7 +37,7 @@ module RegexExecution {
 }
 
 /**
- * A data-flow node that works with regular expressions immediately executing an expression.
+ * A data-flow node that collect methods immediately executing an expression.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `RegexExecution::Range` instead.
