@@ -60,15 +60,6 @@ predicate isNotCleartextCredentials(string value) {
   value.toLowerCase().matches(possibleSecretName())
 }
 
-/**
- * Holds if the credentials are in a non-production properties file indicated by:
- *    a) in a non-production directory
- *    b) with a non-production file name
- */
-predicate isNonProdCredentials(CredentialsConfig cc) {
-  cc.getFile().getAbsolutePath().matches(["%dev%", "%test%", "%sample%"])
-}
-
 /** The properties file with configuration key/value pairs. */
 class ConfigProperties extends ConfigPair {
   ConfigProperties() { this.getFile().getBaseName().toLowerCase().matches("%.properties") }
@@ -87,9 +78,7 @@ class CredentialsConfig extends ConfigProperties {
 }
 
 from CredentialsConfig cc
-where
-  not isNotCleartextCredentials(cc.getValue()) and
-  not isNonProdCredentials(cc)
+where not isNotCleartextCredentials(cc.getValue())
 select cc,
   "Plaintext credentials " + cc.getName() + " have cleartext value " + cc.getValue() +
     " in properties file."
