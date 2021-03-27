@@ -11,15 +11,19 @@ import semmle.python.dataflow.new.RemoteFlowSources
 
 class RegexInjectionSink extends DataFlow::Node {
   string regexModule;
+  Attribute regexMethod;
 
   RegexInjectionSink() {
     exists(RegexExecution reExec |
       this = reExec.getRegexNode() and
-      regexModule = reExec.getRegexModule()
+      regexModule = reExec.getRegexModule() and
+      regexMethod = reExec.(DataFlow::CallCfgNode).getFunction().asExpr().(Attribute)
     )
   }
 
   string getRegexModule() { result = regexModule }
+
+  Attribute getRegexMethod() { result = regexMethod }
 }
 
 /**
