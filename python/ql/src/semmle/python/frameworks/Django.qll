@@ -2081,20 +2081,21 @@ private module Django {
     module Field {
       /** Gets a reference to the `django.forms.fields.Field` class or any subclass. */
       API::Node subclassRef() {
-        exists(string modName, string clsName |
+        exists(string moduleName, string className |
           // canonical definition
           result =
             API::moduleImport("django")
                 .getMember("forms")
-                .getMember(modName)
-                .getMember(clsName)
+                .getMember(moduleName)
+                .getMember(className)
                 .getASubclass*()
           or
           // alias from `django.forms`
-          result = API::moduleImport("django").getMember("forms").getMember(clsName).getASubclass*()
+          result =
+            API::moduleImport("django").getMember("forms").getMember(className).getASubclass*()
         |
-          modName = "fields" and
-          clsName in [
+          moduleName = "fields" and
+          className in [
               "Field",
               // Known subclasses
               "BooleanField", "IntegerField", "CharField", "SlugField", "DateTimeField",
@@ -2106,8 +2107,8 @@ private module Django {
             ]
           or
           // Known subclasses from `django.forms.models`
-          modName = "models" and
-          clsName in ["ModelChoiceField", "ModelMultipleChoiceField", "InlineForeignKeyField"]
+          moduleName = "models" and
+          className in ["ModelChoiceField", "ModelMultipleChoiceField", "InlineForeignKeyField"]
         )
         or
         // other Field subclasses defined in Django
