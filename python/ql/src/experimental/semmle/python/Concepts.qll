@@ -24,8 +24,14 @@ module RegexExecution {
    * extend `RegexExecution` instead.
    */
   abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the argument containing the executed expression.
+     */
     abstract DataFlow::Node getRegexNode();
 
+    /**
+     * Gets the library used to execute the regular expression.
+     */
     abstract string getRegexModule();
   }
 }
@@ -55,6 +61,9 @@ module RegexEscape {
    * extend `RegexEscape` instead.
    */
   abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the argument containing the escaped expression.
+     */
     abstract DataFlow::Node getRegexNode();
   }
 }

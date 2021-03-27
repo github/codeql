@@ -9,6 +9,11 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
 
+/**
+ * A class to find methods executing regular expressions.
+ *
+ * See `RegexExecution`
+ */
 class RegexInjectionSink extends DataFlow::Node {
   string regexModule;
   Attribute regexMethod;
