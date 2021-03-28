@@ -13,17 +13,17 @@
  */
 
 import cpp
-import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
+import semmle.code.cpp.valuenumbering.HashCons
 
 /** Holds if `exp` increments a boolean value. */
-predicate incrementBoolType(Expr exp) {
-  exp.(IncrementOperation).getOperand().getType() instanceof BoolType
+predicate incrementBoolType(IncrementOperation exp) {
+  exp.getOperand().getType() instanceof BoolType
 }
 
 /** Holds if `exp` applies the unary minus operator to a boolean type. */
-predicate revertSignBoolType(Expr exp) {
-  exp.(AssignExpr).getRValue().(UnaryMinusExpr).getAnOperand().getType() instanceof BoolType and
-  exp.(AssignExpr).getLValue().getType() instanceof BoolType
+predicate revertSignBoolType(UnaryMinusExpr exp) {
+  exp.getAnOperand().getType() instanceof BoolType and
+  exp.getFullyConverted().getType() instanceof BoolType
 }
 
 /** Holds, if this is an expression, uses comparison and assignment outside of execution precedence. */
@@ -33,6 +33,12 @@ predicate assignBoolType(Expr exp) {
     exp.isCondition() and
     not co.isParenthesised() and
     not exp.(AssignExpr).getLValue().getType() instanceof BoolType and
+    not exists(Expr exbl |
+      hashCons(exbl.(AssignExpr).getLValue()) = hashCons(exp.(AssignExpr).getLValue()) and
+      not exbl.isCondition() and
+      exbl.(AssignExpr).getRValue().getType() instanceof BoolType and
+      exbl.(AssignExpr).getLValue().getType() = exp.(AssignExpr).getLValue().getType()
+    ) and
     co.getLeftOperand() instanceof FunctionCall and
     not co.getRightOperand().getType() instanceof BoolType and
     not co.getRightOperand().getValue() = "0" and
