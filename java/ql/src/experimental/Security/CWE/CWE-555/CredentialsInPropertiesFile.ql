@@ -14,28 +14,22 @@
  * If creating your own database with the CodeQL CLI, you should run
  * `codeql database index-files --language=properties ...`
  * If using lgtm.com, you should add `properties_files: true` to the index block of your
- * lgtm.yml file (see https://lgtm.com/help/lgtm/java-extraction)
+ * lgtm.yml file (see https://lgtm.com/help/lgtm/java-extraction#customizing-index)
  */
 
 import java
 import semmle.code.configfiles.ConfigFiles
+import semmle.code.java.dataflow.FlowSources
 
 private string possibleSecretName() {
-  result = "%password%" or
-  result = "%passwd%" or
-  result = "%account%" or
-  result = "%accnt%" or
-  result = "%credential%" or
-  result = "%token%" or
-  result = "%secret%" or
-  result = "%access%key%"
+  result =
+    [
+      "%password%", "%passwd%", "%account%", "%accnt%", "%credential%", "%token%", "%secret%",
+      "%access%key%"
+    ]
 }
 
-private string possibleEncryptedSecretName() {
-  result = "%hashed%" or
-  result = "%encrypted%" or
-  result = "%crypt%"
-}
+private string possibleEncryptedSecretName() { result = ["%hashed%", "%encrypted%", "%crypt%"] }
 
 /** Holds if the value is not cleartext credentials. */
 bindingset[value]
@@ -69,27 +63,63 @@ predicate isNonProdCredentials(CredentialsConfig cc) {
   cc.getFile().getAbsolutePath().matches(["%dev%", "%test%", "%sample%"])
 }
 
-/** The properties file with configuration key/value pairs. */
-class ConfigProperties extends ConfigPair {
-  ConfigProperties() { this.getFile().getBaseName().toLowerCase().matches("%.properties") }
-}
-
 /** The credentials configuration property. */
-class CredentialsConfig extends ConfigProperties {
+class CredentialsConfig extends ConfigPair {
   CredentialsConfig() {
     this.getNameElement().getName().trim().toLowerCase().matches(possibleSecretName()) and
-    not this.getNameElement().getName().trim().toLowerCase().matches(possibleEncryptedSecretName())
+    not this.getNameElement().getName().trim().toLowerCase().matches(possibleEncryptedSecretName()) and
+    not isNotCleartextCredentials(this.getValueElement().getValue().trim())
   }
 
   string getName() { result = this.getNameElement().getName().trim() }
 
   string getValue() { result = this.getValueElement().getValue().trim() }
+
+  /** Returns a description of this vulnerability. */
+  string getConfigDesc() {
+    exists(
+      LoadCredentialsConfiguration cc, DataFlow::Node source, DataFlow::Node sink, MethodAccess ma
+    |
+      this.getName() = source.asExpr().(CompileTimeConstantExpr).getStringValue() and
+      cc.hasFlow(source, sink) and
+      ma.getArgument(0) = sink.asExpr() and
+      result = "Plaintext credentials " + this.getName() + " are loaded in " + ma
+    )
+    or
+    not exists(LoadCredentialsConfiguration cc, DataFlow::Node source, DataFlow::Node sink |
+      this.getName() = source.asExpr().(CompileTimeConstantExpr).getStringValue() and
+      cc.hasFlow(source, sink)
+    ) and
+    result =
+      "Plaintext credentials " + this.getName() + " have cleartext value " + this.getValue() +
+        " in properties file"
+  }
+}
+
+/**
+ * A dataflow configuration tracking flow of a method that loads a credentials property.
+ */
+class LoadCredentialsConfiguration extends DataFlow::Configuration {
+  LoadCredentialsConfiguration() { this = "LoadCredentialsConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) {
+    exists(CredentialsConfig cc |
+      source.asExpr().(CompileTimeConstantExpr).getStringValue() = cc.getName()
+    )
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() =
+      any(MethodAccess ma |
+        ma.getMethod()
+            .getDeclaringType()
+            .getASupertype*()
+            .hasQualifiedName("java.util", "Properties") and
+        ma.getMethod().getName() = "getProperty"
+      ).getArgument(0)
+  }
 }
 
 from CredentialsConfig cc
-where
-  not isNotCleartextCredentials(cc.getValue()) and
-  not isNonProdCredentials(cc)
-select cc,
-  "Plaintext credentials " + cc.getName() + " have cleartext value " + cc.getValue() +
-    " in properties file."
+where not isNonProdCredentials(cc)
+select cc, cc.getConfigDesc()
