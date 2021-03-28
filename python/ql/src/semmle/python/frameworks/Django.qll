@@ -16,7 +16,284 @@ private import semmle.python.regex
  * Provides models for the `django` PyPI package.
  * See https://www.djangoproject.com/.
  */
-private module Django {
+module Django {
+  /** Provides models for the `django.views` module */
+  module Views {
+    /**
+     * Provides models for the `django.views.generic.View` class and subclasses.
+     *
+     * See
+     *  - https://docs.djangoproject.com/en/3.1/topics/class-based-views/
+     *  - https://docs.djangoproject.com/en/3.1/ref/class-based-views/
+     */
+    module View {
+      /**
+       * An `API::Node` for references to `django.views.generic.View` or any subclass
+       * that has explicitly been modeled in the CodeQL libraries.
+       */
+      abstract class ModeledSubclass extends API::Node {
+        override string toString() { result = this.(API::Node).toString() }
+      }
+
+      /** A Django view subclass in the `django` package. */
+      private class DjangoViewSubclassesInDjango extends ModeledSubclass {
+        DjangoViewSubclassesInDjango() {
+          exists(string moduleName, string className |
+            // canonical definition
+            this =
+              API::moduleImport("django")
+                  .getMember("views")
+                  .getMember("generic")
+                  .getMember(moduleName)
+                  .getMember(className)
+            or
+            // aliases from `django.views.generic`
+            this =
+              API::moduleImport("django")
+                  .getMember("views")
+                  .getMember("generic")
+                  .getMember(className)
+          |
+            moduleName = "base" and
+            className in ["RedirectView", "TemplateView", "View"]
+            or
+            moduleName = "dates" and
+            className in [
+                "ArchiveIndexView", "DateDetailView", "DayArchiveView", "MonthArchiveView",
+                "TodayArchiveView", "WeekArchiveView", "YearArchiveView"
+              ]
+            or
+            moduleName = "detail" and
+            className = "DetailView"
+            or
+            moduleName = "edit" and
+            className in ["CreateView", "DeleteView", "FormView", "UpdateView"]
+            or
+            moduleName = "list" and
+            className = "ListView"
+          )
+          or
+          // `django.views.View` alias
+          this = API::moduleImport("django").getMember("views").getMember("View")
+        }
+      }
+
+      /** Gets a reference to the `django.views.generic.View` class or any subclass. */
+      API::Node subclassRef() { result = any(ModeledSubclass subclass).getASubclass*() }
+    }
+  }
+
+  /** Provides models for django forms (defined in the `django.forms` module) */
+  module Forms {
+    /**
+     * Provides models for the `django.forms.forms.BaseForm` class and subclasses. This
+     * is usually used by the `django.forms.forms.Form` class, which is also available
+     * under the more commonly used alias `django.forms.Form`.
+     *
+     * See https://docs.djangoproject.com/en/3.1/ref/forms/api/
+     */
+    module Form {
+      /**
+       * An `API::Node` for references to `django.forms.forms.BaseForm` or any subclass
+       * that has explicitly been modeled in the CodeQL libraries.
+       */
+      abstract class ModeledSubclass extends API::Node {
+        override string toString() { result = this.(API::Node).toString() }
+      }
+
+      /** A Django form subclass in the `django` package. */
+      private class DjangoFormSubclassesInDjango extends ModeledSubclass {
+        DjangoFormSubclassesInDjango() {
+          // canonical definition
+          this =
+            API::moduleImport("django")
+                .getMember("forms")
+                .getMember("forms")
+                .getMember(["BaseForm", "Form"])
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("forms")
+                .getMember("models")
+                .getMember(["BaseModelForm", "ModelForm"])
+          or
+          // aliases from `django.forms`
+          this =
+            API::moduleImport("django")
+                .getMember("forms")
+                .getMember(["BaseForm", "Form", "BaseModelForm", "ModelForm"])
+          or
+          // other Form subclasses defined in Django
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("admin")
+                .getMember("forms")
+                .getMember(["AdminAuthenticationForm", "AdminPasswordChangeForm"])
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("admin")
+                .getMember("helpers")
+                .getMember("ActionForm")
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("admin")
+                .getMember("views")
+                .getMember("main")
+                .getMember("ChangeListSearchForm")
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("auth")
+                .getMember("forms")
+                .getMember([
+                    "PasswordResetForm", "UserChangeForm", "SetPasswordForm",
+                    "AdminPasswordChangeForm", "PasswordChangeForm", "AuthenticationForm",
+                    "UserCreationForm"
+                  ])
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("flatpages")
+                .getMember("forms")
+                .getMember("FlatpageForm")
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("forms")
+                .getMember("formsets")
+                .getMember("ManagementForm")
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("forms")
+                .getMember("models")
+                .getMember(["ModelForm", "BaseModelForm"])
+        }
+      }
+
+      /** Gets a reference to the `django.forms.forms.BaseForm` class or any subclass. */
+      API::Node subclassRef() { result = any(ModeledSubclass subclass).getASubclass*() }
+    }
+
+    /**
+     * Provides models for the `django.forms.fields.Field` class and subclasses. This is
+     * also available under the more commonly used alias `django.forms.Field`.
+     *
+     * See https://docs.djangoproject.com/en/3.1/ref/forms/fields/
+     */
+    module Field {
+      /**
+       * An `API::Node` for references to `django.forms.fields.Field` or any subclass
+       * that has explicitly been modeled in the CodeQL libraries.
+       */
+      abstract class ModeledSubclass extends API::Node {
+        override string toString() { result = this.(API::Node).toString() }
+      }
+
+      /** A Django field subclass in the `django` package. */
+      private class DjangoFieldSubclassesInDjango extends ModeledSubclass {
+        DjangoFieldSubclassesInDjango() {
+          exists(string moduleName, string className |
+            // canonical definition
+            this =
+              API::moduleImport("django")
+                  .getMember("forms")
+                  .getMember(moduleName)
+                  .getMember(className)
+            or
+            // aliases from `django.forms`
+            this = API::moduleImport("django").getMember("forms").getMember(className)
+          |
+            moduleName = "fields" and
+            className in [
+                "Field",
+                // Known subclasses
+                "BooleanField", "IntegerField", "CharField", "SlugField", "DateTimeField",
+                "EmailField", "DateField", "TimeField", "DurationField", "DecimalField",
+                "FloatField", "GenericIPAddressField", "UUIDField", "JSONField", "FilePathField",
+                "NullBooleanField", "URLField", "TypedChoiceField", "FileField", "ImageField",
+                "RegexField", "ChoiceField", "MultipleChoiceField", "ComboField", "MultiValueField",
+                "SplitDateTimeField", "TypedMultipleChoiceField", "BaseTemporalField"
+              ]
+            or
+            // Known subclasses from `django.forms.models`
+            moduleName = "models" and
+            className in ["ModelChoiceField", "ModelMultipleChoiceField", "InlineForeignKeyField"]
+          )
+          or
+          // other Field subclasses defined in Django
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("auth")
+                .getMember("forms")
+                .getMember(["ReadOnlyPasswordHashField", "UsernameField"])
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("gis")
+                .getMember("forms")
+                .getMember("fields")
+                .getMember([
+                    "GeometryCollectionField", "GeometryField", "LineStringField",
+                    "MultiLineStringField", "MultiPointField", "MultiPolygonField", "PointField",
+                    "PolygonField"
+                  ])
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("postgres")
+                .getMember("forms")
+                .getMember("array")
+                .getMember(["SimpleArrayField", "SplitArrayField"])
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("postgres")
+                .getMember("forms")
+                .getMember("hstore")
+                .getMember("HStoreField")
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("postgres")
+                .getMember("forms")
+                .getMember("ranges")
+                .getMember([
+                    "BaseRangeField", "DateRangeField", "DateTimeRangeField", "DecimalRangeField",
+                    "IntegerRangeField"
+                  ])
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("forms")
+                .getMember("models")
+                .getMember(["InlineForeignKeyField", "ModelChoiceField", "ModelMultipleChoiceField"])
+        }
+      }
+
+      /** Gets a reference to the `django.forms.fields.Field` class or any subclass. */
+      API::Node subclassRef() { result = any(ModeledSubclass subclass).getASubclass*() }
+    }
+  }
+}
+
+/**
+ * Provides models for the `django` PyPI package (that we are not quite ready to publicly expose yet).
+ * See https://www.djangoproject.com/.
+ */
+private module PrivateDjango {
   // ---------------------------------------------------------------------------
   // django
   // ---------------------------------------------------------------------------
@@ -1511,71 +1788,6 @@ private module Django {
     }
 
     // -------------------------------------------------------------------------
-    // django.views
-    // -------------------------------------------------------------------------
-    /** Gets a reference to the `django.views` module. */
-    DataFlow::Node views() { result = django_attr("views") }
-
-    /** Provides models for the `django.views` module */
-    module views {
-      /**
-       * Provides models for the `django.views.generic.View` class and subclasses.
-       *
-       * See
-       *  - https://docs.djangoproject.com/en/3.1/topics/class-based-views/
-       *  - https://docs.djangoproject.com/en/3.1/ref/class-based-views/
-       */
-      module View {
-        /**
-         * Get a references to: the `django.views.generic.View` class, or any subclass
-         * that has explicitly been modeled in the CodeQL libraries.
-         */
-        API::Node modeledSubclassRef() {
-          exists(string moduleName, string className |
-            // canonical definition
-            result =
-              API::moduleImport("django")
-                  .getMember("views")
-                  .getMember("generic")
-                  .getMember(moduleName)
-                  .getMember(className)
-            or
-            // alias from `django.view.generic`
-            result =
-              API::moduleImport("django")
-                  .getMember("view")
-                  .getMember("generic")
-                  .getMember(className)
-          |
-            moduleName = "base" and
-            className in ["RedirectView", "TemplateView", "View"]
-            or
-            moduleName = "dates" and
-            className in [
-                "ArchiveIndexView", "DateDetailView", "DayArchiveView", "MonthArchiveView",
-                "TodayArchiveView", "WeekArchiveView", "YearArchiveView"
-              ]
-            or
-            moduleName = "detail" and
-            className = "DetailView"
-            or
-            moduleName = "edit" and
-            className in ["CreateView", "DeleteView", "FormView", "UpdateView"]
-            or
-            moduleName = "list" and
-            className = "ListView"
-          )
-          or
-          // `django.views.View` alias
-          result = API::moduleImport("django").getMember("views").getMember("View")
-        }
-
-        /** Gets a reference to the `django.views.generic.View` class or any subclass. */
-        API::Node subclassRef() { result = modeledSubclassRef().getASubclass*() }
-      }
-    }
-
-    // -------------------------------------------------------------------------
     // django.shortcuts
     // -------------------------------------------------------------------------
     /** Gets a reference to the `django.shortcuts` module. */
@@ -1629,197 +1841,6 @@ private module Django {
        * See https://docs.djangoproject.com/en/3.1/topics/http/shortcuts/#redirect
        */
       DataFlow::Node redirect() { result = shortcuts_attr("redirect") }
-    }
-  }
-
-  /** Provides models for django forms (defined in the `django.forms` module) */
-  module Forms {
-    /**
-     * Provides models for the `django.forms.forms.BaseForm` class and subclasses. This
-     * is usually used by the `django.forms.forms.Form` class, which is also available
-     * under the more commonly used alias `django.forms.Form`.
-     *
-     * See https://docs.djangoproject.com/en/3.1/ref/forms/api/
-     */
-    module Form {
-      /**
-       * Get a references to: the `django.forms.forms.BaseForm` class, or any subclass
-       * that has explicitly been modeled in the CodeQL libraries.
-       */
-      API::Node modeledSubclassRef() {
-        // canonical definition
-        result =
-          API::moduleImport("django")
-              .getMember("forms")
-              .getMember("forms")
-              .getMember(["BaseForm", "Form"])
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("forms")
-              .getMember("models")
-              .getMember(["BaseModelForm", "ModelForm"])
-        or
-        // aliases from `django.forms`
-        result =
-          API::moduleImport("django")
-              .getMember("forms")
-              .getMember(["BaseForm", "Form", "BaseModelForm", "ModelForm"])
-        or
-        // other Form subclasses defined in Django
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("admin")
-              .getMember("forms")
-              .getMember(["AdminAuthenticationForm", "AdminPasswordChangeForm"])
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("admin")
-              .getMember("helpers")
-              .getMember("ActionForm")
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("admin")
-              .getMember("views")
-              .getMember("main")
-              .getMember("ChangeListSearchForm")
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("auth")
-              .getMember("forms")
-              .getMember([
-                  "PasswordResetForm", "UserChangeForm", "SetPasswordForm",
-                  "AdminPasswordChangeForm", "PasswordChangeForm", "AuthenticationForm",
-                  "UserCreationForm"
-                ])
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("flatpages")
-              .getMember("forms")
-              .getMember("FlatpageForm")
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("forms")
-              .getMember("formsets")
-              .getMember("ManagementForm")
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("forms")
-              .getMember("models")
-              .getMember(["ModelForm", "BaseModelForm"])
-      }
-
-      /** Gets a reference to the `django.forms.forms.BaseForm` class or any subclass. */
-      API::Node subclassRef() { result = modeledSubclassRef().getASubclass*() }
-    }
-
-    /**
-     * Provides models for the `django.forms.fields.Field` class and subclasses. This is
-     * also available under the more commonly used alias `django.forms.Field`.
-     *
-     * See https://docs.djangoproject.com/en/3.1/ref/forms/fields/
-     */
-    module Field {
-      /**
-       * Get a references to: the `django.forms.fields.Field` class, or any subclass
-       * that has explicitly been modeled in the CodeQL libraries.
-       */
-      API::Node modeledSubclassRef() {
-        exists(string moduleName, string className |
-          // canonical definition
-          result =
-            API::moduleImport("django")
-                .getMember("forms")
-                .getMember(moduleName)
-                .getMember(className)
-          or
-          // alias from `django.forms`
-          result = API::moduleImport("django").getMember("forms").getMember(className)
-        |
-          moduleName = "fields" and
-          className in [
-              "Field",
-              // Known subclasses
-              "BooleanField", "IntegerField", "CharField", "SlugField", "DateTimeField",
-              "EmailField", "DateField", "TimeField", "DurationField", "DecimalField", "FloatField",
-              "GenericIPAddressField", "UUIDField", "JSONField", "FilePathField",
-              "NullBooleanField", "URLField", "TypedChoiceField", "FileField", "ImageField",
-              "RegexField", "ChoiceField", "MultipleChoiceField", "ComboField", "MultiValueField",
-              "SplitDateTimeField", "TypedMultipleChoiceField", "BaseTemporalField"
-            ]
-          or
-          // Known subclasses from `django.forms.models`
-          moduleName = "models" and
-          className in ["ModelChoiceField", "ModelMultipleChoiceField", "InlineForeignKeyField"]
-        )
-        or
-        // other Field subclasses defined in Django
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("auth")
-              .getMember("forms")
-              .getMember(["ReadOnlyPasswordHashField", "UsernameField"])
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("gis")
-              .getMember("forms")
-              .getMember("fields")
-              .getMember([
-                  "GeometryCollectionField", "GeometryField", "LineStringField",
-                  "MultiLineStringField", "MultiPointField", "MultiPolygonField", "PointField",
-                  "PolygonField"
-                ])
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("postgres")
-              .getMember("forms")
-              .getMember("array")
-              .getMember(["SimpleArrayField", "SplitArrayField"])
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("postgres")
-              .getMember("forms")
-              .getMember("hstore")
-              .getMember("HStoreField")
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("postgres")
-              .getMember("forms")
-              .getMember("ranges")
-              .getMember([
-                  "BaseRangeField", "DateRangeField", "DateTimeRangeField", "DecimalRangeField",
-                  "IntegerRangeField"
-                ])
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("forms")
-              .getMember("models")
-              .getMember(["InlineForeignKeyField", "ModelChoiceField", "ModelMultipleChoiceField"])
-      }
-
-      /** Gets a reference to the `django.forms.fields.Field` class or any subclass. */
-      API::Node subclassRef() { result = modeledSubclassRef().getASubclass*() }
     }
   }
 
@@ -2039,7 +2060,7 @@ private module Django {
    */
   class DjangoViewClassFromSuperClass extends DjangoViewClass {
     DjangoViewClassFromSuperClass() {
-      this.getABase() = django::views::View::subclassRef().getAUse().asExpr()
+      this.getABase() = Django::Views::View::subclassRef().getAUse().asExpr()
     }
   }
 
