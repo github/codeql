@@ -228,6 +228,13 @@ private predicate isCreateRequire(DataFlow::Node nd) {
     nd = prop.getValuePattern().flow()
   )
   or
+  exists(ImportDeclaration decl, NamedImportSpecifier spec |
+    decl.getImportedPath().getValue() = "module" and
+    spec = decl.getASpecifier() and
+    spec.getImportedName() = "createRequire" and
+    nd = spec.flow()
+  )
+  or
   isCreateRequire(nd.getAPredecessor())
 }
 
