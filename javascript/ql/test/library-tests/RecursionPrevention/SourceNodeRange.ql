@@ -8,9 +8,7 @@
 import javascript
 
 class BadSourceNodeRange extends DataFlow::SourceNode::Internal::RecursionGuard {
-  BadSourceNodeRange() {
-    not this instanceof DataFlow::SourceNode::Range
-  }
+  BadSourceNodeRange() { not this instanceof DataFlow::SourceNode::Range }
 }
 
 select "Success"
