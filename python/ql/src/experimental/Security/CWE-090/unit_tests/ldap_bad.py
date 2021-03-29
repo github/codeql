@@ -14,6 +14,16 @@ def normal():
         unsafe_dn, ldap.SCOPE_SUBTREE, unsafe_filter, ["testAttr1", "testAttr2"])
 
 
+@app.route("/normal_noAttrs")
+def normal_noAttrs():
+    unsafe_dn = "dc=%s" % request.args['dc']
+    unsafe_filter = "(user=%s)" % request.args['username']
+
+    ldap_connection = ldap.initialize("ldap://127.0.0.1:1337")
+    user = ldap_connection.search_s(
+        unsafe_dn, ldap.SCOPE_SUBTREE, unsafe_filter)
+
+
 @app.route("/direct")
 def direct():
     unsafe_dn = "dc=%s" % request.args['dc']
