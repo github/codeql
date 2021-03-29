@@ -131,10 +131,10 @@ see ":doc:`About QL packs <about-ql-packs>`."
    - For the queries used on `LGTM.com <https://lgtm.com>`__, check out the
      ``lgtm.com`` branch. You should use this branch for databases you've built
      using CODEQL CLI, fetched from Code Scanning, or recently downloaded from LGTM.com. 
-     Older databases may need to be upgraded before you can analyze them. The 
-     queries on the ``lgtm.com`` branch are also more likely to be compatible 
+     The queries on the ``lgtm.com`` branch are more likely to be compatible 
      with the ``latest`` CLI, so you'll be less likely to have to upgrade 
-     newly-created databases than if you use the ``main`` branch.
+     newly-created databases than if you use the ``main`` branch. Older databases 
+     may need to be upgraded before you can analyze them.
            
    - For the queries used in a particular LGTM Enterprise release, check out the
      branch tagged with the relevant release number. For example, the branch
