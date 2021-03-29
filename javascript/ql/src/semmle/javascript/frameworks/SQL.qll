@@ -93,7 +93,7 @@ private module MySql {
 }
 
 /**
- * Provides classes modelling the `pg` package.
+ * Provides classes modelling the PostgreSQL packages, such as `pg` and `pg-promise`.
  */
 private module Postgres {
   API::Node pg() {
