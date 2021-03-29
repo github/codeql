@@ -26,3 +26,21 @@ void test_unique_ptr_struct() {
 	sink(p2->x); // $ ir=22:46
 	sink(p2->y); // $ SPURIOUS: ir=22:46
 }
+
+void test_shared_ptr_int() {
+	std::shared_ptr<int> p1(new int(source()));
+	std::shared_ptr<int> p2 = std::make_shared<int>(source());
+	
+	sink(*p1); // $ ast
+	sink(*p2); // $ ast ir=32:50 
+}
+
+void test_shared_ptr_struct() {
+	std::shared_ptr<A> p1(new A{source(), 0});
+	std::shared_ptr<A> p2 = std::make_shared<A>(source(), 0);
+	
+	sink(p1->x); // $ MISSING: ast,ir
+	sink(p1->y);
+	sink(p2->x); // $ ir=40:46
+	sink(p2->y); // $ SPURIOUS: ir=40:46
+}
