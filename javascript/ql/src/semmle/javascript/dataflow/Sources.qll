@@ -34,7 +34,11 @@ private import semmle.javascript.internal.CachedStages
  * ```
  */
 class SourceNode extends DataFlow::Node {
-  SourceNode() { this instanceof SourceNode::Range }
+  SourceNode() {
+    this instanceof SourceNode::Range
+    or
+    none() and this instanceof SourceNode::Internal::RecursionGuard
+  }
 
   /**
    * Holds if this node flows into `sink` in zero or more local (that is,
@@ -328,6 +332,12 @@ module SourceNode {
       // Include return nodes because they model the implicit Promise creation in async functions.
       DataFlow::functionReturnNode(this, _)
     }
+  }
+
+  /** INTERNAL. DO NOT USE. */
+  module Internal {
+    /** An empty class that some tests are using to enforce that SourceNode is non-recursive. */
+    abstract class RecursionGuard extends DataFlow::Node {}
   }
 }
 
