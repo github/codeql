@@ -3,6 +3,8 @@
  * @description URL redirection based on unvalidated user input
  *              may cause redirection to malicious web sites.
  * @kind path-problem
+ * @problem.severity error
+ * @id py/old/url-redirection
  */
 
 import python
