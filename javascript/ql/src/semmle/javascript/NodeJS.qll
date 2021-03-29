@@ -205,10 +205,11 @@ private predicate moduleInFile(Module m, File f) { m.getFile() = f }
 private predicate isModuleModule(DataFlow::Node nd) {
   exists(ImportDeclaration imp |
     imp.getImportedPath().getValue() = "module" and
-    nd = [
-      DataFlow::destructuredModuleImportNode(imp),
-      DataFlow::valueNode(imp.getASpecifier().(ImportNamespaceSpecifier))
-    ]
+    nd =
+      [
+        DataFlow::destructuredModuleImportNode(imp),
+        DataFlow::valueNode(imp.getASpecifier().(ImportNamespaceSpecifier))
+      ]
   )
   or
   isModuleModule(nd.getAPredecessor())
