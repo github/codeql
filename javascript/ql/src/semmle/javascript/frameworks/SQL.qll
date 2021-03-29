@@ -166,14 +166,24 @@ private module Postgres {
   API::Node pgPromise() { result = API::moduleImport("pg-promise") }
 
   /** Gets an initialized `pg-promise` library. */
-  API::Node pgpMain() { result = pgPromise().getReturn() }
+  API::Node pgpMain() {
+    result = pgPromise().getReturn()
+    or
+    result = API::Node::ofType("pg-promise", "IMain")
+  }
 
   /** Gets a database from `pg-promise`. */
-  API::Node pgpDatabase() { result = pgpMain().getReturn() }
+  API::Node pgpDatabase() {
+    result = pgpMain().getReturn()
+    or
+    result = API::Node::ofType("pg-promise", "IDatabase")
+  }
 
   /** Gets a connection created from a `pg-promise` database. */
   API::Node pgpConnection() {
     result = pgpDatabase().getMember("connect").getReturn().getPromised()
+    or
+    result = API::Node::ofType("pg-promise", "IConnected")
   }
 
   /** Gets a `pg-promise` task object. */
@@ -185,10 +195,16 @@ private module Postgres {
       or
       result = taskMethod.getParameter(0).getMember("cnd").getParameter(0)
     )
+    or
+    result = API::Node::ofType("pg-promise", "ITask")
   }
 
   /** Gets a `pg-promise` object which supports querying (database, connection, or task). */
-  API::Node pgpObject() { result = [pgpDatabase(), pgpConnection(), pgpTask()] }
+  API::Node pgpObject() {
+    result = [pgpDatabase(), pgpConnection(), pgpTask()]
+    or
+    result = API::Node::ofType("pg-promise", "IBaseProtocol")
+  }
 
   private string pgpQueryMethodName() {
     result =

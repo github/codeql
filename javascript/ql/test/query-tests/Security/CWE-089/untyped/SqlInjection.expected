@@ -206,6 +206,11 @@ nodes
 | mongooseModelClient.js:12:22:12:29 | req.body |
 | mongooseModelClient.js:12:22:12:29 | req.body |
 | mongooseModelClient.js:12:22:12:32 | req.body.id |
+| pg-promise-types.ts:7:9:7:28 | taint |
+| pg-promise-types.ts:7:17:7:28 | req.params.x |
+| pg-promise-types.ts:7:17:7:28 | req.params.x |
+| pg-promise-types.ts:8:17:8:21 | taint |
+| pg-promise-types.ts:8:17:8:21 | taint |
 | pg-promise.js:6:7:7:55 | query |
 | pg-promise.js:6:15:7:55 | "SELECT ...  PRICE" |
 | pg-promise.js:7:16:7:34 | req.params.category |
@@ -612,6 +617,10 @@ edges
 | mongooseModelClient.js:12:22:12:29 | req.body | mongooseModelClient.js:12:22:12:32 | req.body.id |
 | mongooseModelClient.js:12:22:12:32 | req.body.id | mongooseModelClient.js:12:16:12:34 | { id: req.body.id } |
 | mongooseModelClient.js:12:22:12:32 | req.body.id | mongooseModelClient.js:12:16:12:34 | { id: req.body.id } |
+| pg-promise-types.ts:7:9:7:28 | taint | pg-promise-types.ts:8:17:8:21 | taint |
+| pg-promise-types.ts:7:9:7:28 | taint | pg-promise-types.ts:8:17:8:21 | taint |
+| pg-promise-types.ts:7:17:7:28 | req.params.x | pg-promise-types.ts:7:9:7:28 | taint |
+| pg-promise-types.ts:7:17:7:28 | req.params.x | pg-promise-types.ts:7:9:7:28 | taint |
 | pg-promise.js:6:7:7:55 | query | pg-promise.js:9:10:9:14 | query |
 | pg-promise.js:6:7:7:55 | query | pg-promise.js:9:10:9:14 | query |
 | pg-promise.js:6:7:7:55 | query | pg-promise.js:10:11:10:15 | query |
@@ -776,6 +785,7 @@ edges
 | mongooseJsonParse.js:23:19:23:23 | query | mongooseJsonParse.js:20:30:20:43 | req.query.data | mongooseJsonParse.js:23:19:23:23 | query | This query depends on $@. | mongooseJsonParse.js:20:30:20:43 | req.query.data | a user-provided value |
 | mongooseModelClient.js:11:16:11:24 | { id: v } | mongooseModelClient.js:10:22:10:29 | req.body | mongooseModelClient.js:11:16:11:24 | { id: v } | This query depends on $@. | mongooseModelClient.js:10:22:10:29 | req.body | a user-provided value |
 | mongooseModelClient.js:12:16:12:34 | { id: req.body.id } | mongooseModelClient.js:12:22:12:29 | req.body | mongooseModelClient.js:12:16:12:34 | { id: req.body.id } | This query depends on $@. | mongooseModelClient.js:12:22:12:29 | req.body | a user-provided value |
+| pg-promise-types.ts:8:17:8:21 | taint | pg-promise-types.ts:7:17:7:28 | req.params.x | pg-promise-types.ts:8:17:8:21 | taint | This query depends on $@. | pg-promise-types.ts:7:17:7:28 | req.params.x | a user-provided value |
 | pg-promise.js:9:10:9:14 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:9:10:9:14 | query | This query depends on $@. | pg-promise.js:7:16:7:34 | req.params.category | a user-provided value |
 | pg-promise.js:10:11:10:15 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:10:11:10:15 | query | This query depends on $@. | pg-promise.js:7:16:7:34 | req.params.category | a user-provided value |
 | pg-promise.js:11:17:11:21 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:11:17:11:21 | query | This query depends on $@. | pg-promise.js:7:16:7:34 | req.params.category | a user-provided value |
