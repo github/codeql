@@ -259,6 +259,12 @@ nodes
 | pg-promise.js:56:14:56:29 | req.params.title |
 | pg-promise.js:56:14:56:29 | req.params.title |
 | pg-promise.js:56:14:56:29 | req.params.title |
+| pg-promise.js:60:20:60:24 | query |
+| pg-promise.js:60:20:60:24 | query |
+| pg-promise.js:63:23:63:27 | query |
+| pg-promise.js:63:23:63:27 | query |
+| pg-promise.js:64:16:64:20 | query |
+| pg-promise.js:64:16:64:20 | query |
 | redis.js:10:16:10:23 | req.body |
 | redis.js:10:16:10:23 | req.body |
 | redis.js:10:16:10:27 | req.body.key |
@@ -630,6 +636,12 @@ edges
 | pg-promise.js:6:7:7:55 | query | pg-promise.js:19:13:19:17 | query |
 | pg-promise.js:6:7:7:55 | query | pg-promise.js:22:11:22:15 | query |
 | pg-promise.js:6:7:7:55 | query | pg-promise.js:22:11:22:15 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:60:20:60:24 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:60:20:60:24 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:63:23:63:27 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:63:23:63:27 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:64:16:64:20 | query |
+| pg-promise.js:6:7:7:55 | query | pg-promise.js:64:16:64:20 | query |
 | pg-promise.js:6:15:7:55 | "SELECT ...  PRICE" | pg-promise.js:6:7:7:55 | query |
 | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:6:15:7:55 | "SELECT ...  PRICE" |
 | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:6:15:7:55 | "SELECT ...  PRICE" |
@@ -786,6 +798,9 @@ edges
 | pg-promise.js:47:11:47:23 | req.params.id | pg-promise.js:47:11:47:23 | req.params.id | pg-promise.js:47:11:47:23 | req.params.id | This query depends on $@. | pg-promise.js:47:11:47:23 | req.params.id | a user-provided value |
 | pg-promise.js:54:11:54:23 | req.params.id | pg-promise.js:54:11:54:23 | req.params.id | pg-promise.js:54:11:54:23 | req.params.id | This query depends on $@. | pg-promise.js:54:11:54:23 | req.params.id | a user-provided value |
 | pg-promise.js:56:14:56:29 | req.params.title | pg-promise.js:56:14:56:29 | req.params.title | pg-promise.js:56:14:56:29 | req.params.title | This query depends on $@. | pg-promise.js:56:14:56:29 | req.params.title | a user-provided value |
+| pg-promise.js:60:20:60:24 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:60:20:60:24 | query | This query depends on $@. | pg-promise.js:7:16:7:34 | req.params.category | a user-provided value |
+| pg-promise.js:63:23:63:27 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:63:23:63:27 | query | This query depends on $@. | pg-promise.js:7:16:7:34 | req.params.category | a user-provided value |
+| pg-promise.js:64:16:64:20 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:64:16:64:20 | query | This query depends on $@. | pg-promise.js:7:16:7:34 | req.params.category | a user-provided value |
 | redis.js:10:16:10:27 | req.body.key | redis.js:10:16:10:23 | req.body | redis.js:10:16:10:27 | req.body.key | This query depends on $@. | redis.js:10:16:10:23 | req.body | a user-provided value |
 | redis.js:18:16:18:18 | key | redis.js:12:15:12:22 | req.body | redis.js:18:16:18:18 | key | This query depends on $@. | redis.js:12:15:12:22 | req.body | a user-provided value |
 | redis.js:19:43:19:45 | key | redis.js:12:15:12:22 | req.body | redis.js:19:43:19:45 | key | This query depends on $@. | redis.js:12:15:12:22 | req.body | a user-provided value |

@@ -56,4 +56,11 @@ require('express')().get('/foo', (req, res) => {
       title: req.params.title, // NOT OK - enclosed by wrong type of quote
     }
   });
+  db.task(t => {
+      return t.one(query); // NOT OK
+  });
+  db.task(
+    { cnd: t => t.one(query) }, // NOT OK
+    t => t.one(query) // NOT OK
+  );
 });
