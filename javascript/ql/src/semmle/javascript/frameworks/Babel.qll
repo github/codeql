@@ -194,13 +194,13 @@ module Babel {
    */
   private class TransformTaintStep extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(DataFlow::CallNode call |
+      exists(API::CallNode call |
         call =
           API::moduleImport(["@babel/standalone", "@babel/core"])
-              .getMember(["transform", "transformSync"])
+              .getMember(["transform", "transformSync", "transformAsync"])
               .getACall() and
         pred = call.getArgument(0) and
-        succ = call
+        succ = [call, call.getParameter(2).getParameter(0).getAnImmediateUse()]
       )
     }
   }
