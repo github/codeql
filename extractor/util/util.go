@@ -145,9 +145,7 @@ func RunCmd(cmd *exec.Cmd) bool {
 
 func getOsToolsSubdir() (string, error) {
 	platform, set := os.LookupEnv("CODEQL_PLATFORM")
-	if !set {
-		log.Print("CODEQL_PLATFORM not set; this binary should be run from the `codeql` CLI. Falling back to use `runtime.GOOS`.\n")
-	} else {
+	if set && platform != "" {
 		return platform, nil
 	}
 
