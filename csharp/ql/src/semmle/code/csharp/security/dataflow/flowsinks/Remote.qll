@@ -8,7 +8,6 @@ private import ExternalLocationSink
 private import Html
 private import semmle.code.csharp.security.dataflow.XSS
 private import semmle.code.csharp.frameworks.system.web.UI
-private import semmle.code.csharp.frameworks.ServiceStack::Sinks
 
 /** A data flow sink of remote user output. */
 abstract class RemoteFlowSink extends DataFlow::Node { }

@@ -91,9 +91,11 @@ module Sinks {
       exists(MethodCall mc |
         mc.getTarget().getQualifiedName() in [
             "ServiceStack.IRestClient.Get", "ServiceStack.IRestClient.Put",
-            "ServiceStack.IRestClient.Post", "ServiceStack.IRestClient.Delete",
-            "ServiceStack.IRestClient.Post", "ServiceStack.IRestClient.Put",
-            "ServiceStack.IRestClient.Patch", "ServiceStack.IRestClient.Send"
+            "ServiceStack.IRestClient.Post", "ServiceStack.IRestClient.Delete", 
+            "ServiceStack.IRestClient.Patch", "ServiceStack.IRestClient.Send",
+            "ServiceStack.IRestClientAsync.GetAsync","ServiceStack.IRestClientAsync.DeleteAsync",
+            "ServiceStack.IRestClientAsync.PutAsync","ServiceStack.IRestClientAsync.PostAsync",
+            "ServiceStack.IRestClientAsync.PatchAsync","ServiceStack.IRestClientAsync.CustomMethodAsync"
           ] and
         this.asExpr() = mc.getAnArgument()
       )
