@@ -121,13 +121,7 @@ see ":doc:`About QL packs <about-ql-packs>`."
 
    There are different versions of the CodeQL queries available for different
    users. Check out the correct version for your use case:
-   
-   - For the most up to date CodeQL queries, check out the ``main`` branch. 
-     This branch represents the very latest version of CodeQL's analysis. Even
-     databases created using the most recent version of the CLI may have to be
-     upgraded before you can analyze them. For more information, see
-     ":doc:`Upgrading CodeQL databases <upgrading-codeql-databases>`."
-    
+
    - For the queries used on `LGTM.com <https://lgtm.com>`__, check out the
      ``lgtm.com`` branch. You should use this branch for databases you've built
      using CODEQL CLI, fetched from Code Scanning, or recently downloaded from LGTM.com. 
@@ -135,7 +129,13 @@ see ":doc:`About QL packs <about-ql-packs>`."
      with the ``latest`` CLI, so you'll be less likely to have to upgrade 
      newly-created databases than if you use the ``main`` branch. Older databases 
      may need to be upgraded before you can analyze them.
-           
+   
+   - For the most up to date CodeQL queries, check out the ``main`` branch. 
+     This branch represents the very latest version of CodeQL's analysis. Even
+     databases created using the most recent version of the CLI may have to be
+     upgraded before you can analyze them. For more information, see
+     ":doc:`Upgrading CodeQL databases <upgrading-codeql-databases>`."
+        
    - For the queries used in a particular LGTM Enterprise release, check out the
      branch tagged with the relevant release number. For example, the branch
      tagged ``v1.23.0`` corresponds to LGTM Enterprise 1.23. You must use this
