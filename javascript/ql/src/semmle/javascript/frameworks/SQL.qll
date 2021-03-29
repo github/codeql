@@ -134,7 +134,20 @@ private module Postgres {
     // pool.connect(function(err, client) { ... })
     result = pool().getMember("connect").getParameter(0).getParameter(1)
     or
+    // await pool.connect()
+    result = pool().getMember("connect").getReturn().getPromised()
+    or
     result = pgpConnection().getMember("client")
+    or
+    exists(API::CallNode call |
+      call = pool().getMember("on").getACall() and
+      call.getArgument(0).getStringValue() = ["connect", "acquire"] and
+      result = call.getParameter(1).getParameter(0)
+    )
+    or
+    result = client().getMember("on").getReturn()
+    or
+    result = API::Node::ofType("pg", ["Client", "PoolClient"])
   }
 
   /** Gets a constructor that when invoked constructs a new connection pool. */
@@ -151,6 +164,10 @@ private module Postgres {
     result = newPool().getInstance()
     or
     result = pgpDatabase().getMember("$pool")
+    or
+    result = pool().getMember("on").getReturn()
+    or
+    result = API::Node::ofType("pg", "Pool")
   }
 
   /** A call to the Postgres `query` method. */
@@ -162,7 +179,11 @@ private module Postgres {
 
   /** An expression that is passed to the `query` method and hence interpreted as SQL. */
   class QueryString extends SQL::SqlString {
-    QueryString() { this = any(QueryCall qc).getAQueryArgument().asExpr() }
+    QueryString() {
+      this = any(QueryCall qc).getAQueryArgument().asExpr()
+      or
+      this = API::moduleImport("pg-cursor").getParameter(0).getARhs().asExpr()
+    }
   }
 
   /** An expression that is passed as user name or password when creating a client or a pool. */
