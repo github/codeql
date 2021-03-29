@@ -129,12 +129,13 @@ see ":doc:`About QL packs <about-ql-packs>`."
      ":doc:`Upgrading CodeQL databases <upgrading-codeql-databases>`."
     
    - For the queries used on `LGTM.com <https://lgtm.com>`__, check out the
-     ``lgtm.com`` branch. You can run these queries on databases you've recently
-     downloaded from LGTM.com. Older databases may need to be upgraded before
-     you can analyze them. The queries on the ``lgtm.com`` branch are also more
-     likely to be compatible with the ``latest`` CLI, so you'll be less likely
-     to have to upgrade newly-created databases than if you use the ``main``
-     branch.
+     ``lgtm.com`` branch. You should use this branch if you've built a database 
+     using CODEQL CLI or fetched a database from Code Scanning. You can 
+     run these queries on databases you've recently downloaded from LGTM.com. 
+     Older databases may need to be upgraded before you can analyze them. The 
+     queries on the ``lgtm.com`` branch are also more likely to be compatible 
+     with the ``latest`` CLI, so you'll be less likely to have to upgrade 
+     newly-created databases than if you use the ``main`` branch.
            
    - For the queries used in a particular LGTM Enterprise release, check out the
      branch tagged with the relevant release number. For example, the branch
