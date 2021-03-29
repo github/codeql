@@ -26,9 +26,6 @@ public class JsonpController {
         hashMap.put("password","123456");
     }
 
-    private String name = null;
-
-
     @GetMapping(value = "jsonp1")
     @ResponseBody
     public String bad1(HttpServletRequest request) {
@@ -77,7 +74,6 @@ public class JsonpController {
         PrintWriter pw = null;
         Gson gson = new Gson();
         String result = gson.toJson(hashMap);
-
         String resultStr = null;
         pw = response.getWriter();
         resultStr = jsonpCallback + "(" + result + ")";
@@ -109,13 +105,25 @@ public class JsonpController {
         return resultStr;
     }
 
-
     @GetMapping(value = "jsonp8")
+    @ResponseBody
+    public String bad8(HttpServletRequest request) {
+        String resultStr = null;
+        String token = request.getParameter("token");
+        boolean result = verifToken(token); //Just check.
+        String jsonpCallback = request.getParameter("jsonpCallback");
+        String jsonStr = getJsonStr(hashMap);
+        resultStr = jsonpCallback + "(" + jsonStr + ")";
+        return resultStr;
+    }
+
+
+    @GetMapping(value = "jsonp9")
     @ResponseBody
     public String good1(HttpServletRequest request) {
         String resultStr = null;
-        String token = request.getParameter("token");
-        if (verifToken(token)){
+        String referer = request.getParameter("referer");
+        if (verifReferer(referer)){
             String jsonpCallback = request.getParameter("jsonpCallback");
             String jsonStr = getJsonStr(hashMap);
             resultStr = jsonpCallback + "(" + jsonStr + ")";
@@ -125,7 +133,7 @@ public class JsonpController {
     }
 
 
-    @GetMapping(value = "jsonp9")
+    @GetMapping(value = "jsonp10")
     @ResponseBody
     public String good2(HttpServletRequest request) {
         String resultStr = null;
@@ -140,7 +148,7 @@ public class JsonpController {
         return resultStr;
     }
 
-    @RequestMapping(value = "jsonp10")
+    @RequestMapping(value = "jsonp11")
     @ResponseBody
     public String good3(HttpServletRequest request) {
         JSONObject parameterObj = readToJSONObect(request);
@@ -151,7 +159,7 @@ public class JsonpController {
         return resultStr;
     }
 
-    @RequestMapping(value = "jsonp11")
+    @RequestMapping(value = "jsonp12")
     @ResponseBody
     public String good4(@RequestParam("file") MultipartFile file,HttpServletRequest request) {
         if(null == file){
@@ -196,6 +204,13 @@ public class JsonpController {
 
     public static boolean verifToken(String token){
         if (token != "xxxx"){
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean verifReferer(String str){
+        if (str != "xxxx"){
             return false;
         }
         return true;

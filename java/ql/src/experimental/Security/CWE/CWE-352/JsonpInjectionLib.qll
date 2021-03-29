@@ -3,30 +3,47 @@ import DataFlow
 import JsonStringLib
 import semmle.code.java.security.XSS
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.DataFlow3
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.spring.SpringController
 
+/** A data flow configuration is tracing flow from the access to the authentication method of token/auth/referer/origin to if condition. */
+class VerificationMethodToIfFlowConfig extends DataFlow3::Configuration {
+  VerificationMethodToIfFlowConfig() { this = "VerificationMethodToIfFlowConfig" }
+
+  override predicate isSource(DataFlow::Node src) {
+    exists(MethodAccess ma, BarrierGuard bg | ma = bg |
+      (
+        ma.getMethod().getAParameter().getName().regexpMatch("(?i).*(token|auth|referer|origin).*")
+        or
+        ma.getMethod().getName().regexpMatch("(?i).*(token|auth|referer|origin).*")
+      ) and
+      ma = src.asExpr()
+    )
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(IfStmt is | is.getCondition() = sink.asExpr())
+  }
+}
+
 /** Taint-tracking configuration tracing flow from untrusted inputs to verification of remote user input. */
-class VerificationMethodFlowConfig extends TaintTracking::Configuration {
+class VerificationMethodFlowConfig extends TaintTracking2::Configuration {
   VerificationMethodFlowConfig() { this = "VerificationMethodFlowConfig" }
 
   override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      ma.getMethod().getAParameter().getName().regexpMatch("(?i).*(token|auth|referer|origin).*") and
-      ma.getAnArgument() = sink.asExpr()
-    )
-  }
-}
-
-/** The parameter names of this method are token/auth/referer/origin. */
-class VerificationMethodClass extends Method {
-  VerificationMethodClass() {
-    exists(MethodAccess ma, VerificationMethodFlowConfig vmfc, Node node |
-      this = ma.getMethod() and
-      node.asExpr() = ma.getAnArgument() and
-      vmfc.hasFlowTo(node)
+    exists(MethodAccess ma, BarrierGuard bg, int i, VerificationMethodToIfFlowConfig vmtifc |
+      ma = bg
+    |
+      (
+        ma.getMethod().getParameter(i).getName().regexpMatch("(?i).*(token|auth|referer|origin).*")
+        or
+        ma.getMethod().getName().regexpMatch("(?i).*(token|auth|referer|origin).*")
+      ) and
+      ma.getArgument(i) = sink.asExpr() and
+      vmtifc.hasFlow(exprNode(ma), _)
     )
   }
 }

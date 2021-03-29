@@ -18,20 +18,18 @@ import DataFlow::PathGraph
 
 /** Determine whether there is a verification method for the remote streaming source data flow path method. */
 predicate existsFilterVerificationMethod() {
-  exists(MethodAccess ma, Node existsNode, Method m |
-    ma.getMethod() instanceof VerificationMethodClass and
-    existsNode.asExpr() = ma and
-    m = getACallingCallableOrSelf(existsNode.getEnclosingCallable()) and
+  exists(DataFlow::Node source, DataFlow::Node sink, VerificationMethodFlowConfig vmfc, Method m |
+    vmfc.hasFlow(source, sink) and
+    m = getACallingCallableOrSelf(source.getEnclosingCallable()) and
     isDoFilterMethod(m)
   )
 }
 
 /** Determine whether there is a verification method for the remote streaming source data flow path method. */
 predicate existsServletVerificationMethod(Node checkNode) {
-  exists(MethodAccess ma, Node existsNode |
-    ma.getMethod() instanceof VerificationMethodClass and
-    existsNode.asExpr() = ma and
-    getACallingCallableOrSelf(existsNode.getEnclosingCallable()) =
+  exists(DataFlow::Node source, DataFlow::Node sink, VerificationMethodFlowConfig vmfc |
+    vmfc.hasFlow(source, sink) and
+    getACallingCallableOrSelf(source.getEnclosingCallable()) =
       getACallingCallableOrSelf(checkNode.getEnclosingCallable())
   )
 }
@@ -40,13 +38,14 @@ predicate existsServletVerificationMethod(Node checkNode) {
 class RequestResponseFlowConfig extends TaintTracking::Configuration {
   RequestResponseFlowConfig() { this = "RequestResponseFlowConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  override predicate isSource(DataFlow::Node source) {
+    source instanceof RemoteFlowSource and
+    getACallingCallableOrSelf(source.getEnclosingCallable()) instanceof RequestGetMethod
+  }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
-
-  /** Eliminate the method of calling the node is not the get method. */
-  override predicate isSanitizer(DataFlow::Node node) {
-    not getACallingCallableOrSelf(node.getEnclosingCallable()) instanceof RequestGetMethod
+  override predicate isSink(DataFlow::Node sink) {
+    sink instanceof XssSink and
+    getACallingCallableOrSelf(sink.getEnclosingCallable()) instanceof RequestGetMethod
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
