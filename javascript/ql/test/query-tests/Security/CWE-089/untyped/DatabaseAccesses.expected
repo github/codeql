@@ -37,6 +37,7 @@
 | mongoose.js:97:2:97:52 | Documen ... query)) |
 | mongoose.js:99:2:99:50 | Documen ... query)) |
 | mongoose.js:113:2:113:53 | Documen ... () { }) |
+| pg-promise-types.ts:8:5:8:22 | this.db.one(taint) |
 | pg-promise.js:9:3:9:15 | db.any(query) |
 | pg-promise.js:10:3:10:16 | db.many(query) |
 | pg-promise.js:11:3:11:22 | db.manyOrNone(query) |
@@ -55,6 +56,9 @@
 | pg-promise.js:36:3:43:4 | db.one( ...  ]\\n  }) |
 | pg-promise.js:44:3:50:4 | db.one( ...  }\\n  }) |
 | pg-promise.js:51:3:58:4 | db.one( ...  }\\n  }) |
+| pg-promise.js:60:14:60:25 | t.one(query) |
+| pg-promise.js:63:17:63:28 | t.one(query) |
+| pg-promise.js:64:10:64:21 | t.one(query) |
 | socketio.js:11:5:11:54 | db.run( ... ndle}`) |
 | tst2.js:7:3:7:62 | sql.que ... ms.id}` |
 | tst2.js:9:3:9:85 | new sql ...  + "'") |
