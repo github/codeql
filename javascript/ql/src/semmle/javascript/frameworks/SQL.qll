@@ -342,24 +342,17 @@ private module Sqlite {
   }
 
   /** Gets an expression that constructs a Sqlite database instance. */
-  API::Node newDb() {
+  API::Node database() {
     // new require('sqlite3').Database()
     result = sqlite().getMember("Database").getInstance()
+    or
+    result = API::Node::ofType("sqlite3", "Database")
   }
 
   /** A call to a Sqlite query method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() {
-      exists(string meth |
-        meth = "all" or
-        meth = "each" or
-        meth = "exec" or
-        meth = "get" or
-        meth = "prepare" or
-        meth = "run"
-      |
-        this = newDb().getMember(meth).getACall()
-      )
+      this = database().getMember(["all", "each", "exec", "get", "prepare", "run"]).getACall()
     }
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
