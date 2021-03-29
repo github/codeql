@@ -15,12 +15,6 @@ private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 private import semmle.python.ApiGraphs
 
-/**
- * To-Do
- *
- * LDAPQuery -> collect functions executing a search filter/DN
- * LDAPEscape -> collect functions escaping a search filter/DN
- */
 module LDAPQuery {
   abstract class Range extends DataFlow::Node {
     abstract DataFlow::Node getLDAPNode();
