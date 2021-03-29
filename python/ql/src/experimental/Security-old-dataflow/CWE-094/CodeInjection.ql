@@ -1,6 +1,6 @@
 /**
  * @name Code injection
- * @description Interpreting unsanitized user input as code allows a malicious user arbitrary
+ * @description OLD QUERY: Interpreting unsanitized user input as code allows a malicious user arbitrary
  *              code execution.
  * @kind path-problem
  * @problem.severity error
