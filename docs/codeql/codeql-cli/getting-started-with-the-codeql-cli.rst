@@ -130,7 +130,7 @@ see ":doc:`About QL packs <about-ql-packs>`."
     
    - For the queries used on `LGTM.com <https://lgtm.com>`__, check out the
      ``lgtm.com`` branch. You should use this branch for databases you've built
-     using CODEQL CLI, fetched from Code Scanning, or recently downloaded from LGTM.com. 
+     using the CodeQL CLI, fetched from code scanning on GitHub, or recently downloaded from LGTM.com.
      The queries on the ``lgtm.com`` branch are more likely to be compatible 
      with the ``latest`` CLI, so you'll be less likely to have to upgrade 
      newly-created databases than if you use the ``main`` branch. Older databases 
