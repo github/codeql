@@ -48,14 +48,15 @@ module IR {
       this instanceof MkImplicitLowerSliceBound or
       this instanceof MkImplicitUpperSliceBound or
       this instanceof MkImplicitMaxSliceBound or
-      this instanceof MkImplicitDeref
+      this instanceof MkImplicitDeref or
+      this instanceof MkImplicitFieldSelection
     }
 
     /** Holds if this instruction reads the value of variable or constant `v`. */
-    predicate reads(ValueEntity v) { readsField(_, v) or readsMethod(_, v) }
+    predicate reads(ValueEntity v) { this.readsField(_, v) or this.readsMethod(_, v) }
 
     /** Holds if this instruction updates variable or constant `v` to the value of `rhs`. */
-    predicate writes(ValueEntity v, Instruction rhs) { writesField(_, v, rhs) }
+    predicate writes(ValueEntity v, Instruction rhs) { this.writesField(_, v, rhs) }
 
     /** Holds if this instruction reads the value of field `f` on the value of `base`. */
     predicate readsField(Instruction base, Field f) { none() }
@@ -173,6 +174,8 @@ module IR {
       this instanceof MkImplicitMaxSliceBound and result = "implicit maximum"
       or
       this instanceof MkImplicitDeref and result = "implicit dereference"
+      or
+      this instanceof MkImplicitFieldSelection and result = "implicit field selection"
     }
   }
 
@@ -230,20 +233,30 @@ module IR {
       )
       or
       this instanceof ReadResultInstruction
+      or
+      this instanceof MkImplicitFieldSelection
     }
   }
 
   /**
    * Gets the effective base of a selector, index or slice expression, taking implicit dereferences
-   * into account.
+   * and implicit field reads into account.
    *
-   * For a selector expression `b.f`, this will either be the implicit dereference `*b`, or just
-   * `b` if there is no implicit dereferencing.
+   * For a selector expression `b.f`, this could be the implicit dereference `*b`, or the implicit
+   * field access `b.Embedded` if the field `f` is promoted from an embedded type `Embedded`, or a
+   * combination of both `*(b.Embedded)`, or simply `b` if neither case applies.
    */
   private Instruction selectorBase(Expr e) {
+    exists(ImplicitFieldReadInstruction fri | fri.getSelectorExpr() = e and fri.getIndex() = 1 |
+      result = fri
+    )
+    or
+    not exists(ImplicitFieldReadInstruction fri | fri.getSelectorExpr() = e and fri.getIndex() = 1) and
     exists(Expr base |
-      base = e.(SelectorExpr).getBase() or
-      base = e.(IndexExpr).getBase() or
+      base = e.(SelectorExpr).getBase()
+      or
+      base = e.(IndexExpr).getBase()
+      or
       base = e.(SliceExpr).getBase()
     |
       result = MkImplicitDeref(base)
@@ -258,16 +271,24 @@ module IR {
    *
    * This is either a field of a struct, or an element of an array, map, slice or string.
    */
-  class ComponentReadInstruction extends ReadInstruction, EvalInstruction {
+  class ComponentReadInstruction extends ReadInstruction {
     ComponentReadInstruction() {
-      e instanceof IndexExpr
+      exists(Expr e | e = this.(EvalInstruction).getExpr() |
+        e instanceof IndexExpr
+        or
+        e.(SelectorExpr).getBase() instanceof ValueExpr and
+        not e.(SelectorExpr).getSelector() = any(Method method).getAReference()
+      )
       or
-      e.(SelectorExpr).getBase() instanceof ValueExpr and
-      not e.(SelectorExpr).getSelector() = any(Method method).getAReference()
+      this instanceof MkImplicitFieldSelection
     }
 
     /** Gets the instruction computing the base value on which the field or element is read. */
-    Instruction getBase() { result = selectorBase(e) }
+    Instruction getBase() {
+      result = this.(ImplicitFieldReadInstruction).getBaseInstruction()
+      or
+      result = selectorBase(this.(EvalInstruction).getExpr())
+    }
   }
 
   /**
@@ -277,12 +298,77 @@ module IR {
    * misclassified as field reads.
    */
   class FieldReadInstruction extends ComponentReadInstruction {
-    override SelectorExpr e;
+    SelectorExpr e;
+    int index;
+    Field field;
+
+    FieldReadInstruction() {
+      e = this.(EvalInstruction).getExpr() and
+      index = 0 and
+      field.getAReference() = e.getSelector()
+      or
+      this = MkImplicitFieldSelection(e, index, field)
+    }
+
+    /** Gets the `SelectorExpr` of this field read. */
+    SelectorExpr getSelectorExpr() { result = e }
+
+    /** Gets the index of this field read. */
+    int getIndex() { result = index }
 
     /** Gets the field being read. */
-    Field getField() { e.getSelector() = result.getAReference() }
+    Field getField() { result = field }
 
-    override predicate readsField(Instruction base, Field f) { base = getBase() and f = getField() }
+    Instruction getBaseInstruction() {
+      exists(ImplicitFieldReadInstruction fri |
+        fri.getSelectorExpr() = e and fri.getIndex() = pragma[only_bind_into](index + 1)
+      |
+        result = fri
+      )
+      or
+      not exists(ImplicitFieldReadInstruction fri |
+        fri.getSelectorExpr() = e and fri.getIndex() = pragma[only_bind_into](index + 1)
+      ) and
+      (
+        result = MkImplicitDeref(e.getBase())
+        or
+        not exists(MkImplicitDeref(e.getBase())) and
+        result = evalExprInstruction(e.getBase())
+      )
+    }
+
+    override predicate readsField(Instruction base, Field f) {
+      base = this.getBaseInstruction() and f = field
+    }
+  }
+
+  /**
+   * An IR instruction for an implicit field read as part of reading a
+   * promoted field.
+   *
+   * If the field that is being implicitly read has a pointer type then this
+   * instruction represents an implicit dereference of it.
+   */
+  class ImplicitFieldReadInstruction extends FieldReadInstruction, MkImplicitFieldSelection {
+    ImplicitFieldReadInstruction() { this = MkImplicitFieldSelection(e, index, field) }
+
+    override predicate reads(ValueEntity v) { v = field }
+
+    override Type getResultType() {
+      if field.getType() instanceof PointerType
+      then result = field.getType().(PointerType).getBaseType()
+      else result = field.getType()
+    }
+
+    override ControlFlow::Root getRoot() { result.isRootOf(e) }
+
+    override string toString() { result = "implicit read of field " + field.toString() }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      e.getBase().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
   }
 
   /**
@@ -308,7 +394,7 @@ module IR {
   /**
    * An IR instruction that reads an element of an array, slice, map or string.
    */
-  class ElementReadInstruction extends ComponentReadInstruction {
+  class ElementReadInstruction extends ComponentReadInstruction, EvalInstruction {
     override IndexExpr e;
 
     /** Gets the instruction computing the index of the element being looked up. */
@@ -1395,7 +1481,7 @@ module IR {
     }
 
     /** Get the type of the base of this field access, that is, the type that contains the field. */
-    Type getBaseType() { result = this.getBase().(EvalInstruction).getExpr().getType() }
+    Type getBaseType() { result = this.getBase().getResultType() }
 
     override predicate refersTo(ValueEntity e) {
       exists(SelectorExpr sel | this = MkLhs(_, sel) | sel.uses(e))

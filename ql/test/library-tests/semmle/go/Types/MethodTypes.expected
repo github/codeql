@@ -16,5 +16,6 @@
 | embedder | f | func() int |
 | embedder2 | f | func() int |
 | embedder3 | f | func() int |
+| embedder4 | f | func() int |
 | ptrembedder | f | func() int |
 | ptrembedder | g | func() int |

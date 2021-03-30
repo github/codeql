@@ -5,9 +5,12 @@
 | AExtended | AExtended |
 | B | B |
 | Bar | Bar |
+| Baz | Baz |
 | C | C |
+| EmbedsBaz | EmbedsBaz |
 | Foo | Foo |
 | G | G |
+| Qux | Qux |
 | T | T |
 | T | T |
 | T2 | T2 |
@@ -26,3 +29,4 @@
 | s | s |
 | t | t |
 | u | u |
+| v | v |

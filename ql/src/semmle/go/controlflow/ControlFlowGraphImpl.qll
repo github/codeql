@@ -49,6 +49,47 @@ private predicate isCond(Expr e) {
 }
 
 /**
+ * Holds if `e` implicitly reads the embedded field `implicitField`.
+ *
+ * The `index` is the distance from the promoted field. For example, if `A` contains an embedded
+ * field `B`, `B` contains an embedded field `C` and `C` contains the non-embedded field `x`.
+ * Then `a.x` implicitly reads `C` with index 1 and `B` with index 2.
+ */
+private predicate implicitFieldSelectionForField(PromotedSelector e, int index, Field implicitField) {
+  exists(StructType baseType, PromotedField child, int implicitFieldDepth |
+    baseType = e.getSelectedStructType() and
+    (
+      e.refersTo(child)
+      or
+      implicitFieldSelectionForField(e, implicitFieldDepth + 1, child)
+    )
+  |
+    child = baseType.getFieldOfEmbedded(implicitField, _, implicitFieldDepth + 1, _) and
+    exists(PromotedField explicitField, int explicitFieldDepth |
+      e.refersTo(explicitField) and baseType.getFieldAtDepth(_, explicitFieldDepth) = explicitField
+    |
+      index = explicitFieldDepth - implicitFieldDepth
+    )
+  )
+}
+
+private predicate implicitFieldSelectionForMethod(PromotedSelector e, int index, Field implicitField) {
+  exists(StructType baseType, PromotedMethod method, int mDepth, int implicitFieldDepth |
+    baseType = e.getSelectedStructType() and
+    e.refersTo(method) and
+    baseType.getMethodAtDepth(_, mDepth) = method and
+    index = mDepth - implicitFieldDepth
+  |
+    method = baseType.getMethodOfEmbedded(implicitField, _, implicitFieldDepth + 1)
+    or
+    exists(PromotedField child |
+      child = baseType.getFieldOfEmbedded(implicitField, _, implicitFieldDepth + 1, _) and
+      implicitFieldSelectionForMethod(e, implicitFieldDepth + 1, child)
+    )
+  )
+}
+
+/**
  * A node in the intra-procedural control-flow graph of a Go function or file.
  *
  * There are two kinds of control-flow nodes:
@@ -300,6 +341,17 @@ newtype TControlFlowNode =
       or
       e = any(SliceExpr se).getBase()
     )
+  } or
+  /**
+   * A control-flow node that represents the implicit selection of a field when
+   * accessing a promoted field.
+   *
+   * If that field has a pointer type then this control-flow node also
+   * represents an implicit dereference of it.
+   */
+  MkImplicitFieldSelection(PromotedSelector e, int i, Field implicitField) {
+    implicitFieldSelectionForField(e, i, implicitField) or
+    implicitFieldSelectionForMethod(e, i, implicitField)
   } or
   /**
    * A control-flow node that represents the start of the execution of a function or file.
@@ -1692,9 +1744,9 @@ module CFG {
   }
 
   private class SelectorExprTree extends ControlFlowTree, SelectorExpr {
-    SelectorExprTree() { getBase() instanceof ValueExpr }
+    SelectorExprTree() { this.getBase() instanceof ValueExpr }
 
-    override predicate firstNode(ControlFlow::Node first) { firstNode(getBase(), first) }
+    override predicate firstNode(ControlFlow::Node first) { firstNode(this.getBase(), first) }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       ControlFlowTree.super.lastNode(last, cmpl)
@@ -1708,16 +1760,29 @@ module CFG {
     }
 
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      lastNode(getBase(), pred, normalCompletion()) and
-      (
-        succ = MkImplicitDeref(this.getBase())
-        or
-        not exists(MkImplicitDeref(this.getBase())) and
-        succ = mkExprOrSkipNode(this)
-      )
+      exists(int i | pred = this.getStepWithRank(i) and succ = this.getStepWithRank(i + 1))
+    }
+
+    private ControlFlow::Node getStepOrdered(int i) {
+      i = -2 and lastNode(this.getBase(), result, normalCompletion())
       or
-      pred = MkImplicitDeref(this.getBase()) and
-      succ = mkExprOrSkipNode(this)
+      i = -1 and result = MkImplicitDeref(this.getBase())
+      or
+      exists(int maxIndex |
+        maxIndex = max(int k | k = 0 or exists(MkImplicitFieldSelection(this, k, _)))
+      |
+        result = MkImplicitFieldSelection(this, maxIndex - i, _)
+        or
+        i = maxIndex and
+        result = mkExprOrSkipNode(this)
+      )
+    }
+
+    private ControlFlow::Node getStepWithRank(int i) {
+      exists(int j |
+        result = this.getStepOrdered(j) and
+        j = rank[i + 1](int k | exists(this.getStepOrdered(k)))
+      )
     }
   }
 

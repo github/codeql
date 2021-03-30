@@ -353,6 +353,15 @@ class Field extends Variable {
   }
 }
 
+/**
+ * A field that belongs to a struct that may be embedded within another struct.
+ *
+ * When a selector addresses such a field, it is possible it is implicitly addressing a nested struct.
+ */
+class PromotedField extends Field {
+  PromotedField() { this = any(StructType t).getFieldOfEmbedded(_, _, _, _) }
+}
+
 /** A built-in or declared function. */
 class Function extends ValueEntity, @functionobject {
   /** Gets a call to this function. */
@@ -528,6 +537,15 @@ class Method extends Function {
   predicate implements(string pkg, string tp, string name) {
     exists(Method m | m.hasQualifiedName(pkg, tp, name) | this.implements(m))
   }
+}
+
+/**
+ * A method whose receiver may be embedded within a struct.
+ *
+ * When a selector addresses such a method, it is possible it is implicitly addressing a nested struct.
+ */
+class PromotedMethod extends Method {
+  PromotedMethod() { this = any(StructType t).getMethodOfEmbedded(_, _, _) }
 }
 
 /** A declared function. */

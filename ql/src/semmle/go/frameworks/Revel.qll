@@ -279,6 +279,11 @@ module Revel {
     override DataFlow::Node getADataArgument() { result = this.getArgumentVariable().getAUse() }
   }
 
+  private IR::EvalInstruction skipImplicitFieldReads(IR::Instruction insn) {
+    result = insn or
+    result = skipImplicitFieldReads(insn.(IR::ImplicitFieldReadInstruction).getBase())
+  }
+
   /** A call to `Controller.Render`. */
   private class ControllerRender extends TemplateRender, DataFlow::MethodCallNode {
     ControllerRender() { this.getTarget().hasQualifiedName(packagePath(), "Controller", "Render") }
@@ -286,8 +291,9 @@ module Revel {
     override DataFlow::Node getTemplateArgument() { none() }
 
     override File getRenderedFile() {
-      exists(string controllerRe, string handlerRe, string pathRe |
-        controllerRe = "\\Q" + this.getReceiver().getType().getName() + "\\E" and
+      exists(Type controllerType, string controllerRe, string handlerRe, string pathRe |
+        controllerType = skipImplicitFieldReads(this.getReceiver().asInstruction()).getResultType() and
+        controllerRe = "\\Q" + controllerType.getName() + "\\E" and
         handlerRe = "\\Q" + this.getEnclosingCallable().getName() + "\\E" and
         // find a file named '/views/<controller>/<handler>(.<template type>).html
         pathRe = "/views/" + controllerRe + "/" + handlerRe + "(\\..*)?\\.html?"

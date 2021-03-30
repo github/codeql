@@ -5,9 +5,12 @@
 | AExtended | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.AExtended |
 | B | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.B |
 | Bar | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.Bar |
+| Baz | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.Baz |
 | C | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.C |
+| EmbedsBaz | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.EmbedsBaz |
 | Foo | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.Foo |
 | G | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2.G |
+| Qux | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.Qux |
 | T | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.T |
 | T | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2.T |
 | T2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.T2 |
@@ -26,3 +29,4 @@
 | s | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.s |
 | t | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.t |
 | u | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.u |
+| v | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.v |
