@@ -14,12 +14,30 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 
-/**
- * To-Do:
- *
- * NoSQLExecution: Collects functions that execute nosql queries
- *  getNoSQLNode - get (Sink) argument holding the query
- * NoSQLEscape: Collects functions that escape nosql queries
- *  getNoSQLEscapeNode - get argument holding the query to-sanitize
- */
-module NoSQLExecution { }
+module NoSQLQuery {
+  abstract class Range extends DataFlow::Node {
+    abstract DataFlow::Node getQueryNode();
+  }
+}
+
+class NoSQLQuery extends DataFlow::Node {
+  NoSQLQuery::Range range;
+
+  NoSQLQuery() { this = range }
+
+  DataFlow::Node getQueryNode() { result = range.getQueryNode() }
+}
+
+module NoSQLSanitizer {
+  abstract class Range extends DataFlow::Node {
+    abstract DataFlow::Node getSanitizerNode();
+  }
+}
+
+class NoSQLSanitizer extends DataFlow::Node {
+  NoSQLSanitizer::Range range;
+
+  NoSQLSanitizer() { this = range }
+
+  DataFlow::Node getSanitizerNode() { result = range.getSanitizerNode() }
+}
