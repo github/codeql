@@ -95,10 +95,10 @@ private module LDAP {
           (
             ldapNode = this.getArg(0) and
             ldapPart = "DN"
-            or
-            ldapNode = this.getArg(1) and
-            ldapPart = "search_filter"
           )
+          or
+          ldapNode = this.getArg(1) and
+          ldapPart = "search_filter"
         )
       }
 

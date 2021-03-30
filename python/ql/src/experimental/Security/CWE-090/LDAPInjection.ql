@@ -16,11 +16,10 @@ import DataFlow::PathGraph
 
 from
   LDAPInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  LDAPQuery castedSink
+  LDAPInjectionSink castedSink
 where
   config.hasFlowPath(source, sink) and
-  castedSink = sink.getNode() //and
+  castedSink.getLDAPNode() = sink.getNode() //and
 // if exists(castedSink.getAttrs()) then
-select sink.getNode(), source, sink, "$@ LDAP query executes $@ as a $@ probably leaking $@.",
-  sink.getNode(), "This", source.getNode(), "a user-provided value", castedSink.getLDAPNode(),
-  castedSink.getLDAPPart(), castedSink.getAttrs(), "this attribute(s)"
+select sink.getNode(), source, sink, "$@ LDAP query executes $@ as a $@.", castedSink, "This",
+  source.getNode(), "a user-provided value", castedSink.getLDAPNode(), castedSink.getLDAPPart() //, castedSink.getAttrs(), "probably leaking this attribute(s)"
