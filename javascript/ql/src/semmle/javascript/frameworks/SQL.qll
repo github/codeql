@@ -28,30 +28,52 @@ module SQL {
  * Provides classes modelling the (API compatible) `mysql` and `mysql2` packages.
  */
 private module MySql {
+  private string moduleName() { result = ["mysql", "mysql2", "mysql2/promise"] }
+
   /** Gets the package name `mysql` or `mysql2`. */
-  API::Node mysql() { result = API::moduleImport(["mysql", "mysql2"]) }
+  API::Node mysql() { result = API::moduleImport(moduleName()) }
 
   /** Gets a reference to `mysql.createConnection`. */
-  API::Node createConnection() { result = mysql().getMember("createConnection") }
+  API::Node createConnection() {
+    result = mysql().getMember(["createConnection", "createConnectionPromise"])
+  }
 
   /** Gets a reference to `mysql.createPool`. */
-  API::Node createPool() { result = mysql().getMember("createPool") }
+  API::Node createPool() { result = mysql().getMember(["createPool", "createPoolCluster"]) }
 
   /** Gets a node that contains a MySQL pool created using `mysql.createPool()`. */
-  API::Node pool() { result = createPool().getReturn() }
+  API::Node pool() {
+    result = createPool().getReturn()
+    or
+    result = pool().getMember("on").getReturn()
+    or
+    result = API::Node::ofType(moduleName(), ["Pool", "PoolCluster"])
+  }
 
   /** Gets a data flow node that contains a freshly created MySQL connection instance. */
   API::Node connection() {
     result = createConnection().getReturn()
     or
+    result = createConnection().getReturn().getPromised()
+    or
     result = pool().getMember("getConnection").getParameter(0).getParameter(1)
+    or
+    result = pool().getMember("getConnection").getPromised()
+    or
+    exists(API::CallNode call |
+      call = pool().getMember("on").getACall() and
+      call.getArgument(0).getStringValue() = ["connection", "acquire", "release"] and
+      result = call.getParameter(1).getParameter(0)
+    )
+    or
+    result = API::Node::ofType(moduleName(), ["Connection", "PoolConnection"])
   }
 
   /** A call to the MySql `query` method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() {
       exists(API::Node recv | recv = pool() or recv = connection() |
-        this = recv.getMember("query").getACall()
+        this = recv.getMember(["query", "execute"]).getACall()
       )
     }
 

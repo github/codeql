@@ -7,10 +7,18 @@
 | mysql1.js:13:18:13:43 | 'SELECT ... lution' |
 | mysql1.js:18:18:22:1 | {\\n    s ... vid']\\n} |
 | mysql1a.js:17:18:17:43 | 'SELECT ... lution' |
+| mysql2-promise.js:14:3:14:62 | 'SELECT ... ` > 45' |
+| mysql2-promise.js:23:3:23:56 | 'SELECT ... e` > ?' |
+| mysql2-promise.js:31:19:31:39 | 'SELECT ...  users' |
+| mysql2-promise.js:32:21:32:41 | 'SELECT ...  users' |
+| mysql2-types.ts:4:16:4:36 | 'SELECT ...  users' |
 | mysql2.js:12:12:12:37 | 'SELECT ... lution' |
 | mysql2tst.js:14:3:14:62 | 'SELECT ... ` > 45' |
 | mysql2tst.js:23:3:23:56 | 'SELECT ... e` > ?' |
+| mysql2tst.js:31:19:31:39 | 'SELECT ...  users' |
+| mysql2tst.js:32:21:32:41 | 'SELECT ...  users' |
 | mysql3.js:14:20:14:52 | 'SELECT ... etable' |
+| mysql3.js:26:14:26:31 | 'SELECT something' |
 | mysql4.js:14:18:14:20 | sql |
 | mysqlImport.js:3:18:5:1 | {\\n    s ... = ?',\\n} |
 | postgres1.js:37:21:37:24 | text |

@@ -1,9 +1,9 @@
 // Adapted from the documentation of https://github.com/sidorares/node-mysql2,
 // which is licensed under the MIT license; see file node-mysql2-License.
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
  
 // create the connection to database
-const connection = mysql.createConnection({
+const connection = await mysql.createConnection({
   host: 'localhost',
   user: 'root',
   database: 'test'
