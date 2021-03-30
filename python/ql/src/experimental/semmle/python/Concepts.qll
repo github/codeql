@@ -13,7 +13,6 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
-private import semmle.python.ApiGraphs
 
 /** Provides classes for modeling Regular Expression-related APIs. */
 module RegexExecution {
