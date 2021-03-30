@@ -23,8 +23,8 @@ void test_unique_ptr_struct() {
 	
 	sink(p1->x); // $ MISSING: ast,ir
 	sink(p1->y);
-	sink(p2->x); // $ ir=22:46
-	sink(p2->y); // $ SPURIOUS: ir=22:46
+	sink(p2->x); // $ MISSING: ast,ir
+	sink(p2->y);
 }
 
 void test_shared_ptr_int() {
@@ -41,6 +41,6 @@ void test_shared_ptr_struct() {
 	
 	sink(p1->x); // $ MISSING: ast,ir
 	sink(p1->y);
-	sink(p2->x); // $ ir=40:46
-	sink(p2->y); // $ SPURIOUS: ir=40:46
+	sink(p2->x); // $ MISSING: ast,ir
+	sink(p2->y);
 }
