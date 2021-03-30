@@ -5,7 +5,7 @@ void *malloc(size_t size);
 void *calloc(size_t nmemb, size_t size);
 void *realloc(void *ptr, size_t size);
 void free(void* ptr);
-
+char *strdup(const char *s1);
 
 int *ID(int *x) 
 {
@@ -46,7 +46,7 @@ public:
 		a = new int[10]; // GOOD
 		b = (int *)calloc(10, sizeof(int)); // GOOD
 		c = (int *)realloc(0, 10 * sizeof(int)); // GOOD
-
+		d = strdup("string");
 	}
 	
 	~MyClass5()
@@ -54,11 +54,11 @@ public:
 		delete [] a;
 		free(b);
 		free(c);
-
+		free(d);
 	}
 
 	int *a, *b, *c;
-
+	char *d;
 };
 
 class MyClass6
@@ -69,7 +69,7 @@ public:
 		a = new int[10]; // BAD
 		b = (int *)calloc(10, sizeof(int)); // BAD
 		c = (int *)realloc(0, 10 * sizeof(int)); // BAD
-
+		d = strdup("string"); // BAD
 	}
 	
 	~MyClass6()
@@ -77,7 +77,7 @@ public:
 	}
 
 	int *a, *b, *c;
-
+	char *d;
 };
 
 class MyClass7

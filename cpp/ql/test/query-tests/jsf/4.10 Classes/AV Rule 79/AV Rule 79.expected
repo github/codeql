@@ -22,5 +22,6 @@
 | Variants.cpp:69:3:69:17 | ... = ... | Resource a is acquired by class MyClass6 but not released anywhere in this class. |
 | Variants.cpp:70:3:70:36 | ... = ... | Resource b is acquired by class MyClass6 but not released anywhere in this class. |
 | Variants.cpp:71:3:71:41 | ... = ... | Resource c is acquired by class MyClass6 but not released anywhere in this class. |
+| Variants.cpp:72:3:72:22 | ... = ... | Resource d is acquired by class MyClass6 but not released anywhere in this class. |
 | Wrapped.cpp:46:3:46:22 | ... = ... | Resource ptr2 is acquired by class Wrapped2 but not released anywhere in this class. |
 | Wrapped.cpp:59:3:59:22 | ... = ... | Resource ptr4 is acquired by class Wrapped2 but not released anywhere in this class. |
