@@ -691,15 +691,22 @@ private DataFlow::SourceNode reactRouterDom() {
   result = DataFlow::moduleImport("react-router-dom")
 }
 
+private DataFlow::SourceNode reactRouterMatchObject() {
+  result = reactRouterDom().getAMemberCall(["useRouteMatch", "matchPath"])
+  or
+  exists(ReactComponent c |
+    dependedOnByReactRouterClient(c.getTopLevel()) and
+    result = c.getAPropRead("match")
+  )
+}
+
 private class ReactRouterSource extends ClientSideRemoteFlowSource {
   ClientSideRemoteFlowKind kind;
 
   ReactRouterSource() {
     this = reactRouterDom().getAMemberCall("useParams") and kind.isPath()
     or
-    exists(string prop |
-      this = reactRouterDom().getAMemberCall("useRouteMatch").getAPropertyRead(prop)
-    |
+    exists(string prop | this = reactRouterMatchObject().getAPropertyRead(prop) |
       prop = "params" and kind.isPath()
       or
       prop = "url" and kind.isUrl()
@@ -713,14 +720,23 @@ private class ReactRouterSource extends ClientSideRemoteFlowSource {
 
 /**
  * Holds if `mod` transitively depends on `react-router-dom`.
- *
- * We assume any React component in such a file may be used in a context where react-router
- * injects the `location` property in its `props` object.
  */
 private predicate dependsOnReactRouter(Module mod) {
   mod.getAnImport().getImportedPath().getValue() = "react-router-dom"
   or
   dependsOnReactRouter(mod.getAnImportedModule())
+}
+
+/**
+ * Holds if `mod` is imported from a module that transitively depends on `react-router-dom`.
+ *
+ * We assume any React component in such a file may be used in a context where react-router
+ * injects the `location` and `match` properties in its `props` object.
+ */
+private predicate dependedOnByReactRouterClient(Module mod) {
+  dependsOnReactRouter(mod)
+  or
+  dependedOnByReactRouterClient(any(Module m | m.getAnImportedModule() = mod))
 }
 
 /**
@@ -740,7 +756,7 @@ private class ReactRouterLocationSource extends DOM::LocationSource::Range {
     this = reactRouterDom().getAMemberCall("useLocation")
     or
     exists(ReactComponent component |
-      dependsOnReactRouter(component.getTopLevel()) and
+      dependedOnByReactRouterClient(component.getTopLevel()) and
       this = component.getAPropRead("location")
     )
   }
@@ -758,6 +774,8 @@ private DataFlow::SourceNode higherOrderComponentBuilder() {
   result = DataFlow::moduleMember("react-redux", "connect").getACall()
   or
   result = DataFlow::moduleMember(["react-hot-loader", "react-hot-loader/root"], "hot").getACall()
+  or
+  result = DataFlow::moduleMember("redux-form", "reduxForm").getACall()
   or
   result = reactRouterDom().getAPropertyRead("withRouter")
   or
