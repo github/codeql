@@ -188,4 +188,20 @@ module Babel {
     /** Gets the name of the variable used to create JSX elements. */
     string getJsxFactoryVariableName() { result = getOption("pragma").(JSONString).getValue() }
   }
+
+  /**
+   * A taint step through a call to the Babel `transform` function.
+   */
+  private class TransformTaintStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(API::CallNode call |
+        call =
+          API::moduleImport(["@babel/standalone", "@babel/core"])
+              .getMember(["transform", "transformSync", "transformAsync"])
+              .getACall() and
+        pred = call.getArgument(0) and
+        succ = [call, call.getParameter(2).getParameter(0).getAnImmediateUse()]
+      )
+    }
+  }
 }
