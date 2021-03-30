@@ -5213,7 +5213,6 @@
 | swap1.cpp:14:17:14:17 | t | swap1.cpp:14:17:14:17 | t |  |
 | swap1.cpp:14:17:14:17 | t | swap1.cpp:14:17:14:17 | t |  |
 | swap1.cpp:14:17:14:17 | t | swap1.cpp:14:56:14:56 | t |  |
-| swap1.cpp:14:17:14:17 | t | swap1.cpp:14:56:14:56 | t |  |
 | swap1.cpp:24:9:24:13 | this | swap1.cpp:24:31:24:34 | this |  |
 | swap1.cpp:24:23:24:26 | that | swap1.cpp:24:23:24:26 | that |  |
 | swap1.cpp:24:23:24:26 | that | swap1.cpp:24:36:24:39 | that |  |
@@ -5378,7 +5377,6 @@
 | swap1.cpp:142:29:142:29 | x | swap1.cpp:142:19:142:27 | call to move |  |
 | swap2.cpp:14:17:14:17 | t | swap2.cpp:14:17:14:17 | t |  |
 | swap2.cpp:14:17:14:17 | t | swap2.cpp:14:17:14:17 | t |  |
-| swap2.cpp:14:17:14:17 | t | swap2.cpp:14:56:14:56 | t |  |
 | swap2.cpp:14:17:14:17 | t | swap2.cpp:14:56:14:56 | t |  |
 | swap2.cpp:24:9:24:13 | this | swap2.cpp:24:31:24:34 | this |  |
 | swap2.cpp:24:23:24:26 | that | swap2.cpp:24:23:24:26 | that |  |
