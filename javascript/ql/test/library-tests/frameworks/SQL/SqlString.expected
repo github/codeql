@@ -1,9 +1,11 @@
 | mssql1.js:7:40:7:72 | select  ... e id =  |
 | mssql1.js:7:75:7:79 | value |
+| mssql1.js:10:19:10:30 | 'SELECT 123' |
 | mssql2.js:5:15:5:34 | 'select 1 as number' |
 | mssql2.js:13:15:13:66 | 'create ...  table' |
 | mssql2.js:22:24:22:43 | 'select 1 as number' |
 | mssql2.js:29:30:29:81 | 'create ...  table' |
+| mssql-types.ts:7:31:7:42 | 'SELECT 123' |
 | mysql1.js:13:18:13:43 | 'SELECT ... lution' |
 | mysql1.js:18:18:22:1 | {\\n    s ... vid']\\n} |
 | mysql1a.js:17:18:17:43 | 'SELECT ... lution' |

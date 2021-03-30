@@ -371,14 +371,31 @@ private module MsSql {
   /** Gets a reference to the `mssql` module. */
   API::Node mssql() { result = API::moduleImport("mssql") }
 
-  /** Gets an expression that creates a request object. */
-  API::Node request() {
-    // new require('mssql').Request()
-    result = mssql().getMember("Request").getInstance()
+  /** Gets a node referring to an instance of the given class. */
+  API::Node mssqlClass(string name) {
+    result = mssql().getMember(name).getInstance()
     or
-    // request.input(...)
-    result = request().getMember("input").getReturn()
+    result = API::Node::ofType("mssql", name)
   }
+
+  /** Gets an API node referring to a Request object. */
+  API::Node request() {
+    result = mssqlClass("Request")
+    or
+    result = request().getMember(["input", "replaceInput", "output", "replaceOutput"]).getReturn()
+    or
+    result = [transaction(), pool()].getMember("request").getReturn()
+  }
+
+  /** Gets an API node referring to a Transaction object. */
+  API::Node transaction() {
+    result = mssqlClass("Transaction")
+    or
+    result = pool().getMember("transaction").getReturn()
+  }
+
+  /** Gets a API node referring to a ConnectionPool object. */
+  API::Node pool() { result = mssqlClass("ConnectionPool") }
 
   /** A tagged template evaluated as a query. */
   private class QueryTemplateExpr extends DatabaseAccess, DataFlow::ValueNode {
@@ -395,7 +412,7 @@ private module MsSql {
 
   /** A call to a MsSql query method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() { this = request().getMember(["query", "batch"]).getACall() }
+    QueryCall() { this = [mssql(), request()].getMember(["query", "batch"]).getACall() }
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
   }
