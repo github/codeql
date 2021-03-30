@@ -184,7 +184,14 @@ private predicate sourceModelCsv(string row) {
     ]
 }
 
-private predicate sinkModelCsv(string row) { none() }
+private predicate sinkModelCsv(string row) {
+  row =
+    [
+      // Open URL
+      "java.net;URL;false;openConnection;;;Argument[-1];open-url",
+      "java.net;URL;false;openStream;;;Argument[-1];open-url"
+    ]
+}
 
 private predicate summaryModelCsv(string row) {
   row =

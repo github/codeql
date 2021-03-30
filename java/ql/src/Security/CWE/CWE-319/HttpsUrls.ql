@@ -13,6 +13,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.Networking
 import DataFlow::PathGraph
+private import semmle.code.java.dataflow.ExternalFlow
 
 class HTTPString extends StringLiteral {
   HTTPString() {
@@ -30,26 +31,12 @@ class HTTPString extends StringLiteral {
   }
 }
 
-class URLOpenMethod extends Method {
-  URLOpenMethod() {
-    this.getDeclaringType().getQualifiedName() = "java.net.URL" and
-    (
-      this.getName() = "openConnection" or
-      this.getName() = "openStream"
-    )
-  }
-}
-
 class HTTPStringToURLOpenMethodFlowConfig extends TaintTracking::Configuration {
   HTTPStringToURLOpenMethodFlowConfig() { this = "HttpsUrls::HTTPStringToURLOpenMethodFlowConfig" }
 
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof HTTPString }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess m |
-      sink.asExpr() = m.getQualifier() and m.getMethod() instanceof URLOpenMethod
-    )
-  }
+  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "open-url") }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(UrlConstructorCall u |
