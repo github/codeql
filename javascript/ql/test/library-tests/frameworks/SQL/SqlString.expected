@@ -41,6 +41,7 @@
 | sequelizeImport.js:3:17:3:118 | 'SELECT ... Y name' |
 | spanner2.js:5:26:5:35 | "SQL code" |
 | spanner2.js:7:35:7:44 | "SQL code" |
+| spanner-types.ts:4:12:4:23 | 'SELECT 123' |
 | spanner.js:6:8:6:17 | "SQL code" |
 | spanner.js:7:8:7:26 | { sql: "SQL code" } |
 | spanner.js:7:15:7:24 | "SQL code" |
@@ -59,6 +60,8 @@
 | spanner.js:18:16:18:25 | "SQL code" |
 | spanner.js:19:16:19:34 | { sql: "SQL code" } |
 | spanner.js:19:23:19:32 | "SQL code" |
+| spanner.js:23:12:23:23 | 'SELECT 123' |
+| spanner.js:26:12:26:38 | 'UPDATE ... = @baz' |
 | spannerImport.js:4:8:4:17 | "SQL code" |
 | sqlite-types.ts:4:12:4:49 | "UPDATE ... id = ?" |
 | sqlite.js:7:8:7:45 | "UPDATE ... id = ?" |

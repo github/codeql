@@ -543,6 +543,8 @@ private module Spanner {
   API::Node database() {
     result =
       spanner().getReturn().getMember("instance").getReturn().getMember("database").getReturn()
+    or
+    result = API::Node::ofType("@google-cloud/spanner", "Database")
   }
 
   /**
@@ -550,61 +552,81 @@ private module Spanner {
    */
   API::Node v1SpannerClient() {
     result = spanner().getMember("v1").getMember("SpannerClient").getInstance()
+    or
+    result = API::Node::ofType("@google-cloud/spanner", "v1.SpannerClient")
   }
 
   /**
    * Gets a node that refers to a transaction object.
    */
   API::Node transaction() {
-    result = database().getMember("runTransaction").getParameter(0).getParameter(1)
+    result =
+      database()
+          .getMember(["runTransaction", "runTransactionAsync"])
+          .getParameter([0, 1])
+          .getParameter(1)
+    or
+    result = API::Node::ofType("@google-cloud/spanner", "Transaction")
+  }
+
+  /** Gets an API node referring to a `BatchTransaction` object. */
+  API::Node batchTransaction() {
+    result = database().getMember("batchTransaction").getReturn()
+    or
+    result = database().getMember("createBatchTransaction").getReturn().getPromised()
+    or
+    result = API::Node::ofType("@google-cloud/spanner", "BatchTransaction")
   }
 
   /**
    * A call to a Spanner method that executes a SQL query.
    */
-  abstract class SqlExecution extends DatabaseAccess, DataFlow::InvokeNode {
-    /**
-     * Gets the position of the query argument; default is zero, which can be overridden
-     * by subclasses.
-     */
-    int getQueryArgumentPosition() { result = 0 }
+  abstract class SqlExecution extends DatabaseAccess, DataFlow::InvokeNode { }
+
+  /**
+   * A SQL execution that takes the input directly in the first argument or in the `sql` option.
+   */
+  class SqlExecutionDirect extends SqlExecution {
+    SqlExecutionDirect() {
+      this = database().getMember(["run", "runPartitionedUpdate", "runStream"]).getACall()
+      or
+      this = transaction().getMember(["run", "runStream", "runUpdate"]).getACall()
+      or
+      this = batchTransaction().getMember("createQueryPartitions").getACall()
+    }
 
     override DataFlow::Node getAQueryArgument() {
-      result = getArgument(getQueryArgumentPosition()) or
-      result = getOptionArgument(getQueryArgumentPosition(), "sql")
+      result = getArgument(0)
+      or
+      result = getOptionArgument(0, "sql")
     }
   }
 
   /**
-   * A call to `Database.run`, `Database.runPartitionedUpdate` or `Database.runStream`.
+   * A SQL execution that takes an array of SQL strings or { sql: string } objects.
    */
-  class DatabaseRunCall extends SqlExecution {
-    DatabaseRunCall() {
-      this = database().getMember(["run", "runPartitionedUpdate", "runStream"]).getACall()
+  class SqlExecutionBatch extends SqlExecution, API::CallNode {
+    SqlExecutionBatch() { this = transaction().getMember("batchUpdate").getACall() }
+
+    override DataFlow::Node getAQueryArgument() {
+      // just use the whole array as the query argument, as arrays becomes tainted if one of the elements
+      // are tainted
+      result = getArgument(0)
+      or
+      result = getParameter(0).getUnknownMember().getMember("sql").getARhs()
     }
   }
 
   /**
-   * A call to `Transaction.run`, `Transaction.runStream` or `Transaction.runUpdate`.
+   * A SQL execution that only takes the input in the `sql` option, and do not accept query strings
+   * directly.
    */
-  class TransactionRunCall extends SqlExecution {
-    TransactionRunCall() {
-      this = transaction().getMember(["run", "runStream", "runUpdate"]).getACall()
-    }
-  }
-
-  /**
-   * A call to `v1.SpannerClient.executeSql` or `v1.SpannerClient.executeStreamingSql`.
-   */
-  class ExecuteSqlCall extends SqlExecution {
-    ExecuteSqlCall() {
+  class SqlExecutionWithOption extends SqlExecution {
+    SqlExecutionWithOption() {
       this = v1SpannerClient().getMember(["executeSql", "executeStreamingSql"]).getACall()
     }
 
-    override DataFlow::Node getAQueryArgument() {
-      // `executeSql` and `executeStreamingSql` do not accept query strings directly
-      result = getOptionArgument(0, "sql")
-    }
+    override DataFlow::Node getAQueryArgument() { result = getOptionArgument(0, "sql") }
   }
 
   /**
