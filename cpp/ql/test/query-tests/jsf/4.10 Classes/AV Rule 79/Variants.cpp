@@ -6,6 +6,7 @@ void *calloc(size_t nmemb, size_t size);
 void *realloc(void *ptr, size_t size);
 void free(void* ptr);
 
+
 int *ID(int *x) 
 {
 	return x;
@@ -45,6 +46,7 @@ public:
 		a = new int[10]; // GOOD
 		b = (int *)calloc(10, sizeof(int)); // GOOD
 		c = (int *)realloc(0, 10 * sizeof(int)); // GOOD
+
 	}
 	
 	~MyClass5()
@@ -52,9 +54,11 @@ public:
 		delete [] a;
 		free(b);
 		free(c);
+
 	}
 
 	int *a, *b, *c;
+
 };
 
 class MyClass6
@@ -65,6 +69,7 @@ public:
 		a = new int[10]; // BAD
 		b = (int *)calloc(10, sizeof(int)); // BAD
 		c = (int *)realloc(0, 10 * sizeof(int)); // BAD
+
 	}
 	
 	~MyClass6()
@@ -72,6 +77,7 @@ public:
 	}
 
 	int *a, *b, *c;
+
 };
 
 class MyClass7
