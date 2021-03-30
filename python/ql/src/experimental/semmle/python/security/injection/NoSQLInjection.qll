@@ -2,6 +2,8 @@ import python
 import experimental.semmle.python.Concepts
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
+// https://ghsecuritylab.slack.com/archives/CQJU6RN49/p1617022135088100
+import semmle.python.dataflow.new.TaintTracking2
 import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.ApiGraphs
 

@@ -11,10 +11,6 @@
  */
 
 import python
-import semmle.python.dataflow.new.RemoteFlowSources
-import semmle.python.dataflow.new.DataFlow
-import semmle.python.dataflow.new.TaintTracking
-// https://ghsecuritylab.slack.com/archives/CQJU6RN49/p1617022135088100
-import semmle.python.dataflow.new.TaintTracking2
+import experimental.semmle.python.security.injection.NoSQLInjection
 import DataFlow::PathGraph
 // from, where, select statements
