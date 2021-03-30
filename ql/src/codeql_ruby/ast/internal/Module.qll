@@ -51,6 +51,11 @@ ModuleBase enclosing(ModuleBase m, int level) {
   result = enclosing(m.getOuterScope().getEnclosingModule(), level - 1)
 }
 
+bindingset[qualifier, name]
+private string scopeAppend(string qualifier, string name) {
+  if qualifier = "Object" then result = name else result = qualifier + "::" + name
+}
+
 private string resolveRelativeToEnclosing(ConstantAccess n, int i) {
   not isToplevel(n) and
   not exists(n.getScopeExpr()) and
@@ -58,7 +63,7 @@ private string resolveRelativeToEnclosing(ConstantAccess n, int i) {
     n = s.getADescendant() and
     enclosing = enclosing(s.getEnclosingModule(), i) and
     (
-      result = constantDefinition0(enclosing) + "::" + n.getName()
+      result = scopeAppend(constantDefinition0(enclosing), n.getName())
       or
       enclosing instanceof Toplevel and result = n.getName()
     )
@@ -71,13 +76,13 @@ private string qualifiedNameForConstant0(ConstantAccess n) {
   or
   result = resolveRelativeToEnclosing(n, 0)
   or
-  result = resolveScopeExpr0(n.getScopeExpr()) + "::" + n.getName()
+  result = scopeAppend(resolveScopeExpr0(n.getScopeExpr()), n.getName())
 }
 
 string constantDefinition(ConstantWriteAccess n) {
   result = constantDefinition0(n)
   or
-  result = resolveScopeExpr(n.getScopeExpr()) + "::" + n.getName()
+  result = scopeAppend(resolveScopeExpr(n.getScopeExpr()), n.getName())
 }
 
 private string resolveScopeExpr(ConstantReadAccess n) {

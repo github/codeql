@@ -68,3 +68,35 @@ modulesInModules
 | modules.rb:63:1:81:3 | Test | modules.rb:70:3:74:5 | Foo2 | Foo2 |
 | modules.rb:63:1:81:3 | Test | modules.rb:76:3:80:5 | Foo3 | Foo3 |
 | modules.rb:70:3:74:5 | Foo2 | modules.rb:71:5:71:19 | Foo2 | Foo2 |
+moduleTypes
+| classes.rb:2:1:56:3 | classes.rb | file://:0:0:0:0 | Object |
+| classes.rb:3:1:4:3 | Foo | modules.rb:4:1:24:3 | Foo |
+| classes.rb:7:1:8:3 | Bar | modules.rb:37:1:46:3 | Bar |
+| classes.rb:11:1:12:3 | Baz | classes.rb:11:1:12:3 | Baz |
+| classes.rb:15:1:15:20 | MyModule | classes.rb:15:1:15:20 | MyModule |
+| classes.rb:16:1:17:3 | MyClass | classes.rb:16:1:17:3 | MyModule::MyClass |
+| classes.rb:20:1:37:3 | Wibble | classes.rb:20:1:37:3 | Wibble |
+| classes.rb:32:3:33:5 | ClassInWibble | classes.rb:32:3:33:5 | Wibble::ClassInWibble |
+| classes.rb:35:3:36:5 | ModuleInWibble | classes.rb:35:3:36:5 | Wibble::ModuleInWibble |
+| classes.rb:55:1:56:3 | MyClassInGlobalScope | classes.rb:55:1:56:3 | MyClassInGlobalScope |
+| modules.rb:1:1:2:3 | Empty | modules.rb:1:1:2:3 | Empty |
+| modules.rb:1:1:82:1 | modules.rb | file://:0:0:0:0 | Object |
+| modules.rb:4:1:24:3 | Foo | modules.rb:4:1:24:3 | Foo |
+| modules.rb:5:3:14:5 | Bar | modules.rb:5:3:14:5 | Foo::Bar |
+| modules.rb:6:5:7:7 | ClassInFooBar | modules.rb:6:5:7:7 | Foo::Bar::ClassInFooBar |
+| modules.rb:19:3:20:5 | ClassInFoo | modules.rb:19:3:20:5 | Foo::ClassInFoo |
+| modules.rb:26:1:35:3 | Foo | modules.rb:4:1:24:3 | Foo |
+| modules.rb:30:3:31:5 | ClassInAnotherDefinitionOfFoo | modules.rb:30:3:31:5 | Foo::ClassInAnotherDefinitionOfFoo |
+| modules.rb:37:1:46:3 | Bar | modules.rb:37:1:46:3 | Bar |
+| modules.rb:48:1:57:3 | Bar | modules.rb:5:3:14:5 | Foo::Bar |
+| modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar | modules.rb:49:3:50:5 | Foo::Bar::ClassInAnotherDefinitionOfFooBar |
+| modules.rb:60:1:61:3 | MyModuleInGlobalScope | modules.rb:60:1:61:3 | MyModuleInGlobalScope |
+| modules.rb:63:1:81:3 | Test | modules.rb:63:1:81:3 | Test |
+| modules.rb:65:3:68:5 | Foo1 | modules.rb:65:3:68:5 | Test::Foo1 |
+| modules.rb:66:5:67:7 | Bar | modules.rb:66:5:67:7 | Test::Foo1::Bar |
+| modules.rb:70:3:74:5 | Foo2 | modules.rb:70:3:74:5 | Test::Foo2 |
+| modules.rb:71:5:71:19 | Foo2 | modules.rb:71:5:71:19 | Test::Foo2::Foo2 |
+| modules.rb:72:5:73:7 | Bar | modules.rb:72:5:73:7 | Test::Foo2::Foo2::Bar |
+| modules.rb:76:3:80:5 | Foo3 | modules.rb:76:3:80:5 | Test::Foo3 |
+| modules.rb:78:5:79:7 | Bar | modules.rb:37:1:46:3 | Bar |
+| toplevel.rb:1:1:5:23 | toplevel.rb | file://:0:0:0:0 | Object |
