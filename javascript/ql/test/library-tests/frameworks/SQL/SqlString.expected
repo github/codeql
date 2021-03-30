@@ -33,6 +33,10 @@
 | postgres-types.ts:4:18:4:29 | 'SELECT 123' |
 | postgresImport.js:4:18:4:43 | 'SELECT ... number' |
 | sequelize2.js:10:17:10:118 | 'SELECT ... Y name' |
+| sequelize2.js:12:17:15:1 | {\\n  que ... [123]\\n} |
+| sequelize2.js:13:10:13:20 | 'SELECT $1' |
+| sequelize2.js:17:31:17:41 | '123 + 345' |
+| sequelize-types.ts:7:24:7:35 | 'SELECT 123' |
 | sequelize.js:8:17:8:118 | 'SELECT ... Y name' |
 | sequelizeImport.js:3:17:3:118 | 'SELECT ... Y name' |
 | spanner2.js:5:26:5:35 | "SQL code" |

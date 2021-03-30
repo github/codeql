@@ -463,22 +463,34 @@ private module MsSql {
  * Provides classes modelling the `sequelize` package.
  */
 private module Sequelize {
-  /** Gets an import of the `sequelize` module. */
-  API::Node sequelize() { result = API::moduleImport("sequelize") }
+  /** Gets an import of the `sequelize` module or one that re-exports it. */
+  API::Node sequelize() { result = API::moduleImport(["sequelize", "sequelize-typescript"]) }
 
   /** Gets an expression that creates an instance of the `Sequelize` class. */
-  API::Node newSequelize() { result = sequelize().getInstance() }
+  API::Node instance() {
+    result = [sequelize(), sequelize().getMember("Sequelize")].getInstance()
+    or
+    result = API::Node::ofType(["sequelize", "sequelize-typescript"], ["Sequelize", "default"])
+  }
 
   /** A call to `Sequelize.query`. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() { this = newSequelize().getMember("query").getACall() }
+    QueryCall() { this = instance().getMember("query").getACall() }
 
-    override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
+    override DataFlow::Node getAQueryArgument() {
+      result = getArgument(0)
+      or
+      result = getOptionArgument(0, "query")
+    }
   }
 
   /** An expression that is passed to `Sequelize.query` method and hence interpreted as SQL. */
   class QueryString extends SQL::SqlString {
-    QueryString() { this = any(QueryCall qc).getAQueryArgument().asExpr() }
+    QueryString() {
+      this = any(QueryCall qc).getAQueryArgument().asExpr()
+      or
+      this = sequelize().getMember(["literal", "asIs"]).getParameter(0).getARhs().asExpr()
+    }
   }
 
   /**
