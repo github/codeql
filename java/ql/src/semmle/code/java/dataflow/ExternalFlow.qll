@@ -189,7 +189,21 @@ private predicate sinkModelCsv(string row) {
     [
       // Open URL
       "java.net;URL;false;openConnection;;;Argument[-1];open-url",
-      "java.net;URL;false;openStream;;;Argument[-1];open-url"
+      "java.net;URL;false;openStream;;;Argument[-1];open-url",
+      // Create file
+      "java.io;FileOutputStream;false;FileOutputStream;;;Argument[0];create-file",
+      "java.io;RandomAccessFile;false;RandomAccessFile;;;Argument[0];create-file",
+      "java.io;FileWriter;false;FileWriter;;;Argument[0];create-file",
+      "java.nio.file;Files;false;move;;;Argument[1];create-file",
+      "java.nio.file;Files;false;copy;;;Argument[1];create-file",
+      "java.nio.file;Files;false;newOutputStream;;;Argument[0];create-file",
+      "java.nio.file;Files;false;newBufferedReader;;;Argument[0];create-file",
+      "java.nio.file;Files;false;createDirectory;;;Argument[0];create-file",
+      "java.nio.file;Files;false;createFile;;;Argument[0];create-file",
+      "java.nio.file;Files;false;createLink;;;Argument[0];create-file",
+      "java.nio.file;Files;false;createSymbolicLink;;;Argument[0];create-file",
+      "java.nio.file;Files;false;createTempDirectory;;;Argument[0];create-file",
+      "java.nio.file;Files;false;createTempFile;;;Argument[0];create-file"
     ]
 }
 

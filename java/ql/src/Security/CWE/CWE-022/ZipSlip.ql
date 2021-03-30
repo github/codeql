@@ -17,6 +17,7 @@ import semmle.code.java.dataflow.SSA
 import semmle.code.java.dataflow.TaintTracking
 import DataFlow
 import PathGraph
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A method that returns the name of an archive entry.
@@ -29,34 +30,6 @@ class ArchiveEntryNameMethod extends Method {
     |
       this.getDeclaringType().getASupertype*() = archiveEntry and
       this.hasName("getName")
-    )
-  }
-}
-
-/**
- * An expression that will be treated as the destination of a write.
- */
-class WrittenFileName extends Expr {
-  WrittenFileName() {
-    // Constructors that write to their first argument.
-    exists(ConstructorCall ctr | this = ctr.getArgument(0) |
-      exists(Class c | ctr.getConstructor() = c.getAConstructor() |
-        c.hasQualifiedName("java.io", "FileOutputStream") or
-        c.hasQualifiedName("java.io", "RandomAccessFile") or
-        c.hasQualifiedName("java.io", "FileWriter")
-      )
-    )
-    or
-    // Methods that write to their n'th argument
-    exists(MethodAccess call, int n | this = call.getArgument(n) |
-      call.getMethod().getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
-      (
-        call.getMethod().getName().regexpMatch("new.*Reader|newOutputStream|create.*") and n = 0
-        or
-        call.getMethod().hasName("copy") and n = 1
-        or
-        call.getMethod().hasName("move") and n = 1
-      )
     )
   }
 }
@@ -151,7 +124,7 @@ class ZipSlipConfiguration extends TaintTracking::Configuration {
     source.asExpr().(MethodAccess).getMethod() instanceof ArchiveEntryNameMethod
   }
 
-  override predicate isSink(Node sink) { sink.asExpr() instanceof WrittenFileName }
+  override predicate isSink(Node sink) { sinkNode(sink, "create-file") }
 
   override predicate isAdditionalTaintStep(Node n1, Node n2) {
     filePathStep(n1, n2) or fileTaintStep(n1, n2)
