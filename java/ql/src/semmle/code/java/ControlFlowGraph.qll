@@ -578,6 +578,8 @@ private module ControlFlowGraphImpl {
     n instanceof Stmt and
     not n instanceof PostOrderNode and
     not n instanceof SynchronizedStmt
+    or
+    result = n and n instanceof SwitchExpr
   }
 
   /**

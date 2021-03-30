@@ -76,15 +76,15 @@ namespace Semmle.Extraction.CSharp
                 return ExitCode.Ok;
             }
 
-            using (var analyser = new Analyser(new LogProgressMonitor(logger), logger))
+            var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
+            var pathTransformer = new PathTransformer(canonicalPathCache);
+
+            using (var analyser = new Analyser(new LogProgressMonitor(logger), logger, pathTransformer))
             using (var references = new BlockingCollection<MetadataReference>())
             {
                 try
                 {
                     var compilerVersion = new CompilerVersion(commandLineArguments);
-
-                    bool preserveSymlinks = Environment.GetEnvironmentVariable("SEMMLE_PRESERVE_SYMLINKS") == "true";
-                    var canonicalPathCache = CanonicalPathCache.Create(logger, 1000, preserveSymlinks ? CanonicalPathCache.Symlinks.Preserve : CanonicalPathCache.Symlinks.Follow);
 
                     if (compilerVersion.SkipExtraction)
                     {
@@ -317,7 +317,10 @@ namespace Semmle.Extraction.CSharp
             ILogger logger,
             CommonOptions options)
         {
-            using (var analyser = new Analyser(pm, logger))
+            var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
+            var pathTransformer = new PathTransformer(canonicalPathCache);
+
+            using (var analyser = new Analyser(pm, logger, pathTransformer))
             using (var references = new BlockingCollection<MetadataReference>())
             {
                 try
