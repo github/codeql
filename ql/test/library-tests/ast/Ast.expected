@@ -1370,6 +1370,20 @@ modules/modules.rb:
 #   56|       getAnOperand/getLeftOperand: [GlobalVariableAccess] $global_var
 #   56|       getAnOperand/getRightOperand: [IntegerLiteral] 4
 #   60|   getStmt: [ModuleDefinition] MyModuleInGlobalScope
+#   63|   getStmt: [ModuleDefinition] Test
+#   65|     getStmt: [ModuleDefinition] Foo1
+#   66|       getStmt: [ClassDefinition] Bar
+#   66|         getScopeExpr: [ConstantReadAccess] Foo1
+#   70|     getStmt: [ModuleDefinition] Foo2
+#   71|       getStmt: [ModuleDefinition] Foo2
+#   72|       getStmt: [ClassDefinition] Bar
+#   72|         getScopeExpr: [ConstantReadAccess] Foo2
+#   76|     getStmt: [ModuleDefinition] Foo3
+#   77|       getStmt: [AssignExpr] ... = ...
+#   77|         getAnOperand/getLeftOperand: [ConstantAssignment] Foo3
+#   77|         getAnOperand/getRightOperand: [ConstantReadAccess] Object
+#   78|       getStmt: [ClassDefinition] Bar
+#   78|         getScopeExpr: [ConstantReadAccess] Foo3
 operations/operations.rb:
 #    1| [Toplevel] operations.rb
 #    3|   getStmt: [AssignExpr] ... = ...

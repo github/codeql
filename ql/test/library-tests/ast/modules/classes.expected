@@ -10,8 +10,14 @@ classes
 | modules.rb:19:3:20:5 | ClassInFoo | ClassDefinition | ClassInFoo |
 | modules.rb:30:3:31:5 | ClassInAnotherDefinitionOfFoo | ClassDefinition | ClassInAnotherDefinitionOfFoo |
 | modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar | ClassDefinition | ClassInAnotherDefinitionOfFooBar |
+| modules.rb:66:5:67:7 | Bar | ClassDefinition | Bar |
+| modules.rb:72:5:73:7 | Bar | ClassDefinition | Bar |
+| modules.rb:78:5:79:7 | Bar | ClassDefinition | Bar |
 classesWithNameScopeExprs
 | classes.rb:16:1:17:3 | MyClass | classes.rb:16:7:16:14 | MyModule |
+| modules.rb:66:5:67:7 | Bar | modules.rb:66:11:66:14 | Foo1 |
+| modules.rb:72:5:73:7 | Bar | modules.rb:72:11:72:14 | Foo2 |
+| modules.rb:78:5:79:7 | Bar | modules.rb:78:11:78:14 | Foo3 |
 classesWithGlobalNameScopeExprs
 | classes.rb:55:1:56:3 | MyClassInGlobalScope |
 exprsInClasses

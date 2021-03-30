@@ -59,3 +59,24 @@ end
 # a module where the name is a scope resolution using the global scope
 module ::MyModuleInGlobalScope
 end
+
+module Test
+
+  module Foo1
+    class Foo1::Bar
+    end
+  end
+
+  module Foo2
+    module Foo2 end
+    class Foo2::Bar
+    end
+  end
+  
+  module Foo3
+    Foo3 = Object
+    class Foo3::Bar
+    end
+  end
+end
+

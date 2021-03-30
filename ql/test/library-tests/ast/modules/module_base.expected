@@ -11,7 +11,7 @@ moduleBases
 | classes.rb:41:1:52:3 | class << ... | ClassDefinition |
 | classes.rb:55:1:56:3 | MyClassInGlobalScope | ClassDefinition |
 | modules.rb:1:1:2:3 | Empty | ModuleDefinition |
-| modules.rb:1:1:61:3 | modules.rb | Toplevel |
+| modules.rb:1:1:82:1 | modules.rb | Toplevel |
 | modules.rb:4:1:24:3 | Foo | ModuleDefinition |
 | modules.rb:5:3:14:5 | Bar | ModuleDefinition |
 | modules.rb:6:5:7:7 | ClassInFooBar | ClassDefinition |
@@ -22,6 +22,14 @@ moduleBases
 | modules.rb:48:1:57:3 | Bar | ModuleDefinition |
 | modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar | ClassDefinition |
 | modules.rb:60:1:61:3 | MyModuleInGlobalScope | ModuleDefinition |
+| modules.rb:63:1:81:3 | Test | ModuleDefinition |
+| modules.rb:65:3:68:5 | Foo1 | ModuleDefinition |
+| modules.rb:66:5:67:7 | Bar | ClassDefinition |
+| modules.rb:70:3:74:5 | Foo2 | ModuleDefinition |
+| modules.rb:71:5:71:19 | Foo2 | ModuleDefinition |
+| modules.rb:72:5:73:7 | Bar | ClassDefinition |
+| modules.rb:76:3:80:5 | Foo3 | ModuleDefinition |
+| modules.rb:78:5:79:7 | Bar | ClassDefinition |
 | toplevel.rb:1:1:5:23 | toplevel.rb | Toplevel |
 moduleBaseClasses
 | classes.rb:2:1:56:3 | classes.rb | classes.rb:3:1:4:3 | Foo |
@@ -35,6 +43,9 @@ moduleBaseClasses
 | modules.rb:5:3:14:5 | Bar | modules.rb:6:5:7:7 | ClassInFooBar |
 | modules.rb:26:1:35:3 | Foo | modules.rb:30:3:31:5 | ClassInAnotherDefinitionOfFoo |
 | modules.rb:48:1:57:3 | Bar | modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar |
+| modules.rb:65:3:68:5 | Foo1 | modules.rb:66:5:67:7 | Bar |
+| modules.rb:70:3:74:5 | Foo2 | modules.rb:72:5:73:7 | Bar |
+| modules.rb:76:3:80:5 | Foo3 | modules.rb:78:5:79:7 | Bar |
 moduleBaseMethods
 | classes.rb:20:1:37:3 | Wibble | classes.rb:21:3:23:5 | method_a |
 | classes.rb:20:1:37:3 | Wibble | classes.rb:25:3:27:5 | method_b |
@@ -49,10 +60,15 @@ moduleBaseMethods
 moduleBaseModules
 | classes.rb:2:1:56:3 | classes.rb | classes.rb:15:1:15:20 | MyModule |
 | classes.rb:20:1:37:3 | Wibble | classes.rb:35:3:36:5 | ModuleInWibble |
-| modules.rb:1:1:61:3 | modules.rb | modules.rb:1:1:2:3 | Empty |
-| modules.rb:1:1:61:3 | modules.rb | modules.rb:4:1:24:3 | Foo |
-| modules.rb:1:1:61:3 | modules.rb | modules.rb:26:1:35:3 | Foo |
-| modules.rb:1:1:61:3 | modules.rb | modules.rb:37:1:46:3 | Bar |
-| modules.rb:1:1:61:3 | modules.rb | modules.rb:48:1:57:3 | Bar |
-| modules.rb:1:1:61:3 | modules.rb | modules.rb:60:1:61:3 | MyModuleInGlobalScope |
+| modules.rb:1:1:82:1 | modules.rb | modules.rb:1:1:2:3 | Empty |
+| modules.rb:1:1:82:1 | modules.rb | modules.rb:4:1:24:3 | Foo |
+| modules.rb:1:1:82:1 | modules.rb | modules.rb:26:1:35:3 | Foo |
+| modules.rb:1:1:82:1 | modules.rb | modules.rb:37:1:46:3 | Bar |
+| modules.rb:1:1:82:1 | modules.rb | modules.rb:48:1:57:3 | Bar |
+| modules.rb:1:1:82:1 | modules.rb | modules.rb:60:1:61:3 | MyModuleInGlobalScope |
+| modules.rb:1:1:82:1 | modules.rb | modules.rb:63:1:81:3 | Test |
 | modules.rb:4:1:24:3 | Foo | modules.rb:5:3:14:5 | Bar |
+| modules.rb:63:1:81:3 | Test | modules.rb:65:3:68:5 | Foo1 |
+| modules.rb:63:1:81:3 | Test | modules.rb:70:3:74:5 | Foo2 |
+| modules.rb:63:1:81:3 | Test | modules.rb:76:3:80:5 | Foo3 |
+| modules.rb:70:3:74:5 | Foo2 | modules.rb:71:5:71:19 | Foo2 |
