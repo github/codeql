@@ -3,7 +3,7 @@
  * @description Extracts source summaries, that is, tuples `(p, lbl, cfg)` representing the fact
  *              that data may flow from a known source for configuration `cfg` to an escaping entry
  *              node of portal `p`, and have flow label `lbl` at that point.
- * @kind source-summary
+ * @kind table
  * @id js/source-summary-extraction
  */
 
