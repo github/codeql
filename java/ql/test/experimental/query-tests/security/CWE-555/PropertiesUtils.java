@@ -35,16 +35,6 @@ public class PropertiesUtils {
 		return properties.getProperty("datasource1.password");
 	}
     
-	/** Returns the mail account property value. */
-	public static String getMailUserName() {
-		return properties.getProperty("mail.username");
-	}
-
- 	/** Returns the mail password property value. */
-	public static String getMailPassword() {
-		return properties.getProperty("mail.password");
-	}
-
 	/** Returns the AWS Access Key property value. */
 	public static String getAWSAccessKey() {
 		return properties.getProperty("com.example.aws.s3.access_key");
