@@ -175,6 +175,16 @@ class FormattingCall extends Call {
     )
   }
 
+  /** Gets the `i`th argument to be formatted. */
+  Expr getArgumentToBeFormatted(int i) {
+    i >= 0 and
+    if this.hasExplicitVarargsArray()
+    then
+      result =
+        this.getArgument(1 + this.getFormatStringIndex()).(ArrayCreationExpr).getInit().getInit(i)
+    else result = this.getArgument(this.getFormatStringIndex() + 1 + i)
+  }
+
   /** Holds if the varargs argument is given as an explicit array. */
   private predicate hasExplicitVarargsArray() {
     this.getNumArgument() = this.getFormatStringIndex() + 2 and
@@ -353,6 +363,11 @@ class FormatString extends string {
    * is not referred by any format specifier.
    */
   /*abstract*/ int getASkippedFmtSpecIndex() { none() }
+
+  /**
+   * Gets an offset in this format string where argument `argNo` will be interpolated, if any.
+   */
+  int getAnArgUsageOffset(int argNo) { none() }
 }
 
 private class PrintfFormatString extends FormatString {
@@ -425,6 +440,16 @@ private class PrintfFormatString extends FormatString {
     result > count(int i | fmtSpecRefersToSequentialIndex(i)) and
     not result = fmtSpecRefersToSpecificIndex(_)
   }
+
+  override int getAnArgUsageOffset(int argNo) {
+    argNo = fmtSpecRefersToSpecificIndex(result)
+    or
+    fmtSpecRefersToSequentialIndex(result) and
+    argNo = count(int i | i < result and fmtSpecRefersToSequentialIndex(i))
+    or
+    fmtSpecRefersToPrevious(result) and
+    argNo = count(int i | i < result and fmtSpecRefersToSequentialIndex(i)) - 1
+  }
 }
 
 private class LoggerFormatString extends FormatString {
@@ -449,4 +474,9 @@ private class LoggerFormatString extends FormatString {
   }
 
   override int getMaxFmtSpecIndex() { result = count(int i | fmtPlaceholder(i)) }
+
+  override int getAnArgUsageOffset(int argNo) {
+    fmtPlaceholder(result) and
+    argNo = count(int i | fmtPlaceholder(i) and i < result)
+  }
 }

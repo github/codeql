@@ -5,6 +5,8 @@ import semmle.code.java.frameworks.spring.Spring
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.frameworks.javase.Http
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.StringFormat
 
 predicate requestForgeryStep(DataFlow::Node pred, DataFlow::Node succ) {
   // propagate to a URI when its host is assigned to
@@ -189,4 +191,84 @@ private class SpringRestTemplateUrlMethods extends Method {
     //  ResponseExtractor<T> responseExtractor)
     result = ma.getArgument(0)
   }
+}
+
+/** A sanitizer for request forgery vulnerabilities. */
+abstract class RequestForgerySanitizer extends DataFlow::Node { }
+
+private class HostnameSanitzingPrefix extends CompileTimeConstantExpr {
+  int offset;
+
+  HostnameSanitzingPrefix() {
+    exists(
+      this.getStringValue().regexpFind(".*([?#]|[^?#:/\\\\][/\\\\]).*|[/\\\\][^/\\\\].*", 0, offset)
+    )
+  }
+
+  int getOffset() { result = offset }
+}
+
+private AddExpr getParentAdd(AddExpr e) { result = e.getParent() }
+
+private AddExpr getAnAddContainingHostnameSanitizingPrefix() {
+  result = getParentAdd*(any(HostnameSanitzingPrefix p).getParent())
+}
+
+private Expr getASanitizedAddOperand() {
+  exists(AddExpr e |
+    e = getAnAddContainingHostnameSanitizingPrefix() and
+    (
+      e.getLeftOperand() = getAnAddContainingHostnameSanitizingPrefix() or
+      e.getLeftOperand() instanceof HostnameSanitzingPrefix
+    ) and
+    result = e.getRightOperand()
+  )
+}
+
+private MethodAccess getNextAppend(MethodAccess append) {
+  result = any(StringBuilderVar sbv).getNextAppend(append)
+}
+
+class HostnameSanitizedExpr extends Expr {
+  HostnameSanitizedExpr() {
+    // Sanitize expressions that come after a sanitizing prefix in a tree of string additions:
+    this = getASanitizedAddOperand()
+    or
+    // Sanitize expressions that come after a sanitizing prefix in a sequence of StringBuilder operations:
+    exists(MethodAccess appendSanitizingConstant, MethodAccess subsequentAppend |
+      appendSanitizingConstant.getArgument(0) instanceof HostnameSanitzingPrefix and
+      getNextAppend*(appendSanitizingConstant) = subsequentAppend and
+      this = subsequentAppend.getArgument(0)
+    )
+    or
+    // Sanitize expressions that come after a sanitizing prefix in the args to a format call:
+    exists(
+      FormattingCall formatCall, FormatString formatString, HostnameSanitzingPrefix prefix,
+      int sanitizedFromOffset, int laterOffset, int sanitizedArg
+    |
+      formatString = unique(FormatString fs | fs = formatCall.getAFormatString()) and
+      (
+        // An argument that sanitizes will be come before this:
+        exists(int argIdx |
+          formatCall.getArgumentToBeFormatted(argIdx) = prefix and
+          sanitizedFromOffset = formatString.getAnArgUsageOffset(argIdx)
+        )
+        or
+        // The format string itself sanitizes subsequent arguments:
+        formatString = prefix.getStringValue() and
+        sanitizedFromOffset = prefix.getOffset()
+      ) and
+      laterOffset > sanitizedFromOffset and
+      laterOffset = formatString.getAnArgUsageOffset(sanitizedArg) and
+      this = formatCall.getArgumentToBeFormatted(sanitizedArg)
+    )
+  }
+}
+
+/**
+ * A value that is the result of prepending a string that prevents any value from controlling the
+ * host of a URL.
+ */
+class HostnameSantizer extends RequestForgerySanitizer {
+  HostnameSantizer() { this.asExpr() instanceof HostnameSanitizedExpr }
 }

@@ -25,6 +25,8 @@ class RequestForgeryConfiguration extends TaintTracking::Configuration {
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     requestForgeryStep(pred, succ)
   }
+
+  override predicate isSanitizer(DataFlow::Node node) { node instanceof RequestForgerySanitizer }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, RequestForgeryConfiguration conf
