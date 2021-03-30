@@ -1,7 +1,38 @@
 private import codeql_ruby.AST
 private import codeql_ruby.ast.Constant
 private import internal.AST
+private import internal.Module
 private import internal.TreeSitter
+
+/**
+ * A representation of a run-time `module` or `class` value.
+ */
+class Module extends TConstant {
+  Module() { this = TResolved(_, true) or this = TUnresolved(any(Namespace n)) }
+
+  string toString() {
+    this = TResolved(result, _)
+    or
+    exists(Namespace n | this = TUnresolved(n) and result = "...::" + n.toString())
+  }
+
+  Location getLocation() {
+    exists(Namespace n | this = TUnresolved(n) and result = n.getLocation())
+    or
+    result =
+      min(Namespace n, string qName, Location loc, int weight |
+        this = TResolved(qName, _) and
+        qName = constantDefinition(n) and
+        loc = n.getLocation() and
+        if exists(loc.getFile().getRelativePath()) then weight = 0 else weight = 1
+      |
+        loc
+        order by
+          weight, count(n.getAStmt()) desc, loc.getFile().getAbsolutePath(), loc.getStartLine(),
+          loc.getStartColumn()
+      )
+  }
+}
 
 /**
  * The base class for classes, singleton classes, and modules.
@@ -24,6 +55,9 @@ class ModuleBase extends BodyStmt, Scope, TModuleBase {
 
   /** Gets the module named `name` in this module/class, if any. */
   ModuleDefinition getModule(string name) { result = this.getAModule() and result.getName() = name }
+
+  /** Gets the representation of the run-time value of this module or class. */
+  Module getModule() { none() }
 }
 
 /**
@@ -61,6 +95,8 @@ class Toplevel extends ModuleBase, TToplevel {
     or
     pred = "getBeginBlock" and result = this.getBeginBlock(_)
   }
+
+  final override Module getModule() { result = TResolved("Object", true) }
 
   final override string toString() { result = g.getLocation().getFile().getBaseName() }
 }
@@ -131,6 +167,12 @@ class Namespace extends ModuleBase, ConstantWriteAccess, TNamespace {
    * ```
    */
   override predicate hasGlobalScope() { none() }
+
+  final override Module getModule() {
+    result = any(string qName | qName = constantDefinition(this) | TResolved(qName, true))
+    or
+    result = TUnresolved(this)
+  }
 
   override AstNode getAChild(string pred) {
     result = ModuleBase.super.getAChild(pred) or
