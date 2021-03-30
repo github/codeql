@@ -390,9 +390,9 @@ Binding sets
 ``bindingset[...]``
 -------------------
 
-You can use this annotation to explicitly state the binding sets for a class or predicate. A binding set
-is a subset of a class or predicate's arguments such that, if those arguments are constrained to a
-finite set of values, then the class or predicate itself is finite (that is, it evaluates to a finite 
+You can use this annotation to explicitly state the binding sets for a predicate or class. A binding set
+is a subset of a predicate's or class body's arguments such that, if those arguments are constrained to a
+finite set of values, then the predicate or class itself is finite (that is, it evaluates to a finite 
 set of tuples).
 
 The ``bindingset`` annotation takes a comma-separated list of variables.
