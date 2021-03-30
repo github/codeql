@@ -13,3 +13,13 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
+
+/**
+ * To-Do:
+ *
+ * NoSQLExecution: Collects functions that execute nosql queries
+ *  getNoSQLNode - get (Sink) argument holding the query
+ * NoSQLEscape: Collects functions that escape nosql queries
+ *  getNoSQLEscapeNode - get argument holding the query to-sanitize
+ */
+module NoSQLExecution { }

@@ -9,3 +9,11 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
+
+/**
+ * PyMongoQuery
+ * MongoEngineQuery
+ * Custom escapes
+ */
+private module NoSQL { }
+// introduce more json libs like python\ql\src\semmle\python\frameworks\Stdlib.qll:941
