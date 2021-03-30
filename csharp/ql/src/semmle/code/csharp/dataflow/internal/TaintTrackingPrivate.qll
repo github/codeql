@@ -103,19 +103,19 @@ private module Cached {
     (
       // Simple flow through library code is included in the exposed local
       // step relation, even though flow is technically inter-procedural
-      FlowSummaryImpl::Private::throughStep(nodeFrom, nodeTo, false)
+      FlowSummaryImpl::Private::Steps::summaryThroughStep(nodeFrom, nodeTo, false)
       or
       // Taint collection by adding a tainted element
       exists(DataFlow::ElementContent c |
         storeStep(nodeFrom, c, nodeTo)
         or
-        FlowSummaryImpl::Private::setterStep(nodeFrom, c, nodeTo)
+        FlowSummaryImpl::Private::Steps::summarySetterStep(nodeFrom, c, nodeTo)
       )
       or
       exists(DataFlow::Content c |
         readStep(nodeFrom, c, nodeTo)
         or
-        FlowSummaryImpl::Private::getterStep(nodeFrom, c, nodeTo)
+        FlowSummaryImpl::Private::Steps::summaryGetterStep(nodeFrom, c, nodeTo)
       |
         // Taint members
         c = any(TaintedMember m).(FieldOrProperty).getContent()
@@ -142,7 +142,7 @@ private module Cached {
     // tracking configurations where the source is a collection
     readStep(nodeFrom, TElementContent(), nodeTo)
     or
-    FlowSummaryImpl::Private::localStep(nodeFrom, nodeTo, false)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
     or
     nodeTo = nodeFrom.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
   }

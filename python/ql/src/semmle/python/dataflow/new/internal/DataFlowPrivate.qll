@@ -1517,9 +1517,12 @@ predicate forReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
     or
     c instanceof SetElementContent
     or
-    c instanceof TupleElementContent
+    c = small_tuple()
   )
 }
+
+pragma[noinline]
+TupleElementContent small_tuple() { result.getIndex() <= 7 }
 
 /**
  * Holds if `nodeTo` is a read of an attribute (corresponding to `c`) of the object in `nodeFrom`.

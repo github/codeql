@@ -144,6 +144,53 @@ module UnsafeShellCommandConstruction {
   }
 
   /**
+   * Gets a node that ends up in an array that is ultimately executed as a shell script by `sys`.
+   */
+  private DataFlow::SourceNode endsInShellExecutedArray(
+    DataFlow::TypeBackTracker t, SystemCommandExecution sys
+  ) {
+    t.start() and
+    result = sys.getArgumentList().getALocalSource() and
+    // the array gets joined to a string when `shell` is set to true.
+    sys.getOptionsArg()
+        .getALocalSource()
+        .getAPropertyWrite("shell")
+        .getRhs()
+        .asExpr()
+        .(BooleanLiteral)
+        .getValue() = "true"
+    or
+    exists(DataFlow::TypeBackTracker t2 |
+      result = endsInShellExecutedArray(t2, sys).backtrack(t2, t)
+    )
+  }
+
+  /**
+   * An argument to a command invocation where the `shell` option is set to true.
+   */
+  class ShellTrueCommandExecutionSink extends Sink {
+    SystemCommandExecution sys;
+
+    ShellTrueCommandExecutionSink() {
+      // `shell` is set to true. That means string-concatenation happens behind the scenes.
+      // We just assume that a `shell` option in any library means the same thing as it does in NodeJS.
+      exists(DataFlow::SourceNode arr |
+        arr = endsInShellExecutedArray(DataFlow::TypeBackTracker::end(), sys)
+      |
+        this = arr.(DataFlow::ArrayCreationNode).getAnElement()
+        or
+        this = arr.getAMethodCall(["push", "unshift"]).getAnArgument()
+      )
+    }
+
+    override string getSinkType() { result = "Shell argument" }
+
+    override SystemCommandExecution getCommandExecution() { result = sys }
+
+    override DataFlow::Node getAlertLocation() { result = this }
+  }
+
+  /**
    * A sanitizer like: "'"+name.replace(/'/g,"'\\''")+"'"
    * Which sanitizes on Unix.
    * The sanitizer is only safe if sorounded by single-quotes, which is assumed.

@@ -91,16 +91,17 @@ private predicate exprReleases(Expr e, Expr released, string kind) {
   // `e` is a call to a release function and `released` is the released argument
   releaseExpr(e, released, kind)
   or
-  exists(Function f, int arg |
+  exists(int arg, VariableAccess access, Function f |
     // `e` is a call to a function that releases one of it's parameters,
     // and `released` is the corresponding argument
     (
       e.(FunctionCall).getTarget() = f or
       e.(FunctionCall).getTarget().(MemberFunction).getAnOverridingFunction+() = f
     ) and
+    access = f.getParameter(arg).getAnAccess() and
     e.(FunctionCall).getArgument(arg) = released and
     exprReleases(_,
-      exprOrDereference(globalValueNumber(f.getParameter(arg).getAnAccess()).getAnExpr()), kind)
+      pragma[only_bind_into](exprOrDereference(globalValueNumber(access).getAnExpr())), kind)
   )
   or
   exists(Function f, ThisExpr innerThis |
@@ -112,7 +113,7 @@ private predicate exprReleases(Expr e, Expr released, string kind) {
     ) and
     e.(FunctionCall).getQualifier() = exprOrDereference(released) and
     innerThis.getEnclosingFunction() = f and
-    exprReleases(_, globalValueNumber(innerThis).getAnExpr(), kind)
+    exprReleases(_, pragma[only_bind_into](globalValueNumber(innerThis).getAnExpr()), kind)
   )
 }
 

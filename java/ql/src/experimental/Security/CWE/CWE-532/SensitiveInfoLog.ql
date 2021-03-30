@@ -1,8 +1,11 @@
 /**
- * @id java/sensitiveinfo-in-logfile
  * @name Insertion of sensitive information into log files
- * @description Writing sensitive information to log files can give valuable guidance to an attacker or expose sensitive user information.
+ * @description Writing sensitive information to log files can give valuable
+ *              guidance to an attacker or expose sensitive user information.
  * @kind path-problem
+ * @problem.severity warning
+ * @precision medium
+ * @id java/sensitiveinfo-in-logfile
  * @tags security
  *       external/cwe-532
  */
