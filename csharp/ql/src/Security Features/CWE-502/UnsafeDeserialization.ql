@@ -13,7 +13,7 @@
 import csharp
 import semmle.code.csharp.security.dataflow.UnsafeDeserialization::UnsafeDeserialization
 
-from Call deserializeCall, ObjectMethodSink sink
+from Call deserializeCall, InstanceMethodSink sink
 where
   deserializeCall.getAnArgument() = sink.asExpr() and
   not exists(

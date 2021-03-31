@@ -16,7 +16,7 @@ module UnsafeDeserialization {
   /**
    * A data flow sink for unsafe deserialization vulnerabilities.
    */
-  abstract class ObjectMethodSink extends DataFlow::Node { }
+  abstract class InstanceMethodSink extends DataFlow::Node { }
 
   /**
    * A data flow sink for unsafe deserialization vulnerabilities.
@@ -36,7 +36,7 @@ module UnsafeDeserialization {
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof ObjectMethodSink }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof InstanceMethodSink }
 
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }
@@ -133,7 +133,7 @@ module UnsafeDeserialization {
     )
   }
 
-  abstract class BinaryFormatterSink extends ObjectMethodSink { }
+  abstract class BinaryFormatterSink extends InstanceMethodSink { }
 
   class BinaryFormatterDeserializeMethodSink extends BinaryFormatterSink {
     BinaryFormatterDeserializeMethodSink() {
@@ -151,7 +151,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class SoapFormatterSink extends ObjectMethodSink { }
+  abstract class SoapFormatterSink extends InstanceMethodSink { }
 
   class SoapFormatterDeserializeMethodSink extends SoapFormatterSink {
     SoapFormatterDeserializeMethodSink() {
@@ -169,7 +169,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class ObjectStateFormatterSink extends ObjectMethodSink { }
+  abstract class ObjectStateFormatterSink extends InstanceMethodSink { }
 
   class ObjectStateFormatterDeserializeMethodSink extends ObjectStateFormatterSink {
     ObjectStateFormatterDeserializeMethodSink() {
@@ -192,7 +192,7 @@ module UnsafeDeserialization {
     )
   }
 
-  abstract class NetDataContractSerializerSink extends ObjectMethodSink { }
+  abstract class NetDataContractSerializerSink extends InstanceMethodSink { }
 
   class NetDataContractSerializerDeserializeMethodSink extends NetDataContractSerializerSink {
     NetDataContractSerializerDeserializeMethodSink() {
@@ -210,7 +210,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class DataContractJsonSerializerSink extends ObjectMethodSink { }
+  abstract class DataContractJsonSerializerSink extends InstanceMethodSink { }
 
   class DataContractJsonSerializerDeserializeMethodSink extends DataContractJsonSerializerSink {
     DataContractJsonSerializerDeserializeMethodSink() {
@@ -253,7 +253,7 @@ module UnsafeDeserialization {
     )
   }
 
-  abstract class JavaScriptSerializerSink extends ObjectMethodSink { }
+  abstract class JavaScriptSerializerSink extends InstanceMethodSink { }
 
   class JavaScriptSerializerDeserializeMethodSink extends JavaScriptSerializerSink {
     JavaScriptSerializerDeserializeMethodSink() {
@@ -291,7 +291,7 @@ module UnsafeDeserialization {
     not mc.targetIsLocalInstance()
   }
 
-  abstract class XmlObjectSerializerSink extends ObjectMethodSink { }
+  abstract class XmlObjectSerializerSink extends InstanceMethodSink { }
 
   class XmlObjectSerializerDeserializeMethodSink extends XmlObjectSerializerSink {
     XmlObjectSerializerDeserializeMethodSink() {
@@ -333,7 +333,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class XmlSerializerSink extends ObjectMethodSink { }
+  abstract class XmlSerializerSink extends InstanceMethodSink { }
 
   class XmlSerializerDeserializeMethodSink extends XmlSerializerSink {
     XmlSerializerDeserializeMethodSink() {
@@ -374,7 +374,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class DataContractSerializerSink extends ObjectMethodSink { }
+  abstract class DataContractSerializerSink extends InstanceMethodSink { }
 
   class DataContractSerializerDeserializeMethodSink extends DataContractSerializerSink {
     DataContractSerializerDeserializeMethodSink() {
@@ -412,7 +412,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class XmlMessageFormatterSink extends ObjectMethodSink { }
+  abstract class XmlMessageFormatterSink extends InstanceMethodSink { }
 
   class XmlMessageFormatterDeserializeMethodSink extends XmlMessageFormatterSink {
     XmlMessageFormatterDeserializeMethodSink() {
@@ -450,7 +450,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class LosFormatterSink extends ObjectMethodSink { }
+  abstract class LosFormatterSink extends InstanceMethodSink { }
 
   class LosFormatterDeserializeMethodSink extends LosFormatterSink {
     LosFormatterDeserializeMethodSink() {
@@ -486,7 +486,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class ActivitySink extends ObjectMethodSink { }
+  abstract class ActivitySink extends InstanceMethodSink { }
 
   class ActivityDeserializeMethodSink extends ActivitySink {
     ActivityDeserializeMethodSink() {
@@ -522,7 +522,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class BinaryMessageFormatterSink extends ObjectMethodSink { }
+  abstract class BinaryMessageFormatterSink extends InstanceMethodSink { }
 
   class BinaryMessageFormatterDeserializeMethodSink extends BinaryMessageFormatterSink {
     BinaryMessageFormatterDeserializeMethodSink() {
@@ -568,7 +568,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class ProxyObjectSink extends ObjectMethodSink { }
+  abstract class ProxyObjectSink extends InstanceMethodSink { }
 
   class ProxyObjectDeserializeMethodSink extends ProxyObjectSink {
     ProxyObjectDeserializeMethodSink() {
