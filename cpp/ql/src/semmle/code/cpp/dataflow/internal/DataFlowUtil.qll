@@ -199,6 +199,8 @@ class DefinitionByReferenceOrIteratorNode extends PartialDefinitionNode {
       this.getPartialDefinition() instanceof DefinitionByReference
       or
       this.getPartialDefinition() instanceof DefinitionByIterator
+      or
+      this.getPartialDefinition() instanceof DefinitionBySmartPointer
     )
   }
 
@@ -326,6 +328,18 @@ private class VariablePartialDefinitionNode extends PartialDefinitionNode {
  */
 class IteratorPartialDefinitionNode extends PartialDefinitionNode {
   override IteratorPartialDefinition pd;
+
+  override Node getPreUpdateNode() { pd.definesExpressions(_, result.asExpr()) }
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * A synthetic data flow node used for flow into a collection when a smart pointer
+ * write occurs in a callee.
+ */
+class SmartPointerPartialDefinitionNode extends PartialDefinitionNode {
+  override SmartPointerPartialDefinition pd;
 
   override Node getPreUpdateNode() { pd.definesExpressions(_, result.asExpr()) }
 }

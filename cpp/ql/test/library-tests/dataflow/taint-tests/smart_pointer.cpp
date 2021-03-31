@@ -35,16 +35,16 @@ void test_reverse_taint_shared() {
     std::shared_ptr<int> p = std::make_shared<int>();
 
     *p = source();
-    sink(p); // $ MISSING: ast,ir
-    sink(*p); // $ MISSING: ast,ir
+    sink(p); // $ ast MISSING: ir
+    sink(*p); // $ ast MISSING: ir
 }
 
 void test_reverse_taint_unique() {
     std::unique_ptr<int> p = std::unique_ptr<int>();
 
     *p = source();
-    sink(p); // $ MISSING: ast,ir
-    sink(*p); // $ MISSING: ast,ir
+    sink(p); // $ ast MISSING: ir
+    sink(*p); // $ ast MISSING: ir
 }
 
 void test_shared_get() {
@@ -74,5 +74,5 @@ void getNumber(std::shared_ptr<int> ptr) {
 int test_from_issue_5190() {
   std::shared_ptr<int> p(new int);
   getNumber(p);
-  sink(*p); // $ MISSING: ast,ir
+  sink(*p); // $ ast MISSING: ir
 }

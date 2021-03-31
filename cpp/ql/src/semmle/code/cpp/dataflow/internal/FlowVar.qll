@@ -7,6 +7,7 @@ private import semmle.code.cpp.controlflow.SSA
 private import semmle.code.cpp.dataflow.internal.SubBasicBlocks
 private import semmle.code.cpp.dataflow.internal.AddressFlow
 private import semmle.code.cpp.models.implementations.Iterator
+private import semmle.code.cpp.models.interfaces.PointerWrapper
 
 /**
  * A conceptual variable that is assigned only once, like an SSA variable. This
@@ -243,6 +244,54 @@ private module PartialDefinitions {
     }
   }
 
+  class SmartPointerPartialDefinition extends PartialDefinition {
+    Variable pointer;
+    Expr innerDefinedExpr;
+
+    SmartPointerPartialDefinition() {
+      exists(Expr convertedInner |
+        not this instanceof Conversion and
+        valueToUpdate(convertedInner, this.getFullyConverted(), node) and
+        innerDefinedExpr = convertedInner.getUnconverted() and
+        innerDefinedExpr = getAPointerWrapperAccess(pointer)
+      )
+      or
+      // iterators passed by value without a copy constructor
+      exists(Call call |
+        call = node and
+        call.getAnArgument() = innerDefinedExpr and
+        innerDefinedExpr = this and
+        this = getAPointerWrapperAccess(pointer) and
+        not call instanceof OverloadedPointerDereferenceExpr
+      )
+      or
+      // iterators passed by value with a copy constructor
+      exists(Call call, ConstructorCall copy |
+        copy.getTarget() instanceof CopyConstructor and
+        call = node and
+        call.getAnArgument() = copy and
+        copy.getArgument(0) = getAPointerWrapperAccess(pointer) and
+        innerDefinedExpr = this and
+        this = copy and
+        not call instanceof OverloadedPointerDereferenceExpr
+      )
+    }
+
+    deprecated override predicate partiallyDefines(Variable v) { v = pointer }
+
+    deprecated override predicate partiallyDefinesThis(ThisExpr e) { none() }
+
+    override predicate definesExpressions(Expr inner, Expr outer) {
+      inner = innerDefinedExpr and
+      outer = this
+    }
+
+    override predicate partiallyDefinesVariableAt(Variable v, ControlFlowNode cfn) {
+      v = pointer and
+      cfn = node
+    }
+  }
+
   /**
    * A partial definition that's a definition via an output iterator.
    */
@@ -255,6 +304,15 @@ private module PartialDefinitions {
    */
   class DefinitionByReference extends VariablePartialDefinition {
     DefinitionByReference() { exists(Call c | this = c.getAnArgument() or this = c.getQualifier()) }
+  }
+
+  /**
+   * A partial definition that's a definition via a smart pointer being passed into a function.
+   */
+  class DefinitionBySmartPointer extends SmartPointerPartialDefinition {
+    DefinitionBySmartPointer() {
+      exists(Call c | this = c.getAnArgument() or this = c.getQualifier())
+    }
   }
 }
 
@@ -296,7 +354,8 @@ module FlowVar_internal {
     // treating them as immutable, but for data flow it gives better results in
     // practice to make the variable synonymous with its contents.
     not v.getUnspecifiedType() instanceof ReferenceType and
-    not v instanceof IteratorParameter
+    not v instanceof IteratorParameter and
+    not v instanceof PointerWrapperParameter
   }
 
   /**
@@ -648,6 +707,8 @@ module FlowVar_internal {
     )
     or
     p instanceof IteratorParameter
+    or
+    p instanceof PointerWrapperParameter
   }
 
   /**
@@ -832,8 +893,17 @@ module FlowVar_internal {
     )
   }
 
+  Call getAPointerWrapperAccess(Variable pointer) {
+    pointer.getUnspecifiedType() instanceof PointerWrapper and
+    [result.getQualifier(), result.getAnArgument()] = pointer.getAnAccess()
+  }
+
   class IteratorParameter extends Parameter {
     IteratorParameter() { this.getUnspecifiedType() instanceof Iterator }
+  }
+
+  class PointerWrapperParameter extends Parameter {
+    PointerWrapperParameter() { this.getUnspecifiedType() instanceof PointerWrapper }
   }
 
   /**
