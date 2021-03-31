@@ -38,18 +38,17 @@ private module NoSQL {
     override DataFlow::Node getQueryNode() { result = queryNode }
   }
 
-  // `API::moduleImport("mongoengine").getMember("Document").getASubclass*().getACall()` doesn't point
-  // to our sinks
   private class MongoEngineCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
     DataFlow::Node queryNode;
 
     MongoEngineCall() {
-      exists(DataFlow::AttrRead objectsMethod |
-        this.getFunction() = objectsMethod and
-        API::moduleImport("mongoengine").getMember("Document").getASubclass*().getACall() =
-          objectsMethod.getObject().getALocalSource() and
-        queryNode = this.getArg(0)
-      )
+      this =
+        API::moduleImport("mongoengine")
+            .getMember("Document")
+            .getASubclass()
+            .getMember("objects")
+            .getACall() and
+      queryNode = this.getArg(0)
     }
 
     override DataFlow::Node getQueryNode() { result = queryNode }
