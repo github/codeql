@@ -10,60 +10,65 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
-/**
- * PyMongoCall
- * MongoEngineCall
- * Custom escapes
- */
 private module NoSQL {
-  // doesn't work currently
-  private class PyMongoCall extends DataFlow::Node, NoSQLQuery::Range {
-    DataFlow::Node queryNode;
+  // more methods?
+  private class PyMongoMethods extends string {
+    PyMongoMethods() { this in ["find_one"] }
+  }
 
+  private class PyMongoCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
     PyMongoCall() {
-      exists(SsaVariable clientVar, CallNode findCall |
-        (
-          clientVar.getDefinition().getImmediateDominator() =
-            Value::named("pymongo.MongoClient").getACall() or
-          clientVar.getDefinition().getImmediateDominator() =
-            Value::named("flask_pymongo.PyMongo").getACall()
-        ) and
-        clientVar.getAUse().getNode() = findCall.getNode().getFunc().(Attribute).getObject() and
-        findCall.getNode().getFunc().(Attribute).getName().matches("%find%") and
-        this.asCfgNode() = findCall and
-        queryNode.asExpr() = findCall.getArg(0).getNode()
-      )
+      this =
+        API::moduleImport("pymongo")
+            .getMember("MongoClient")
+            .getReturn()
+            .getAMember*()
+            .getMember(any(PyMongoMethods pyMongoM))
+            .getACall()
     }
 
-    override DataFlow::Node getQueryNode() { result = queryNode }
+    override DataFlow::Node getQueryNode() { result = this.getArg(0) }
+  }
+
+  // more methods?
+  private class PyMongoFlaskMethods extends string {
+    PyMongoFlaskMethods() { this in ["find"] }
+  }
+
+  private class PyMongoFlaskCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
+    PyMongoFlaskCall() {
+      this =
+        API::moduleImport("flask_pymongo")
+            .getMember("PyMongo")
+            .getReturn()
+            .getAMember*()
+            .getMember(any(PyMongoFlaskMethods pyMongoFlaskM))
+            .getACall()
+    }
+
+    override DataFlow::Node getQueryNode() { result = this.getArg(0) }
   }
 
   private class MongoEngineCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
-    DataFlow::Node queryNode;
-
     MongoEngineCall() {
       this =
         API::moduleImport("mongoengine")
             .getMember("Document")
             .getASubclass()
             .getMember("objects")
-            .getACall() and
-      queryNode = this.getArg(0)
+            .getACall()
     }
 
-    override DataFlow::Node getQueryNode() { result = queryNode }
+    override DataFlow::Node getQueryNode() { result = this.getArg(0) }
   }
 
   // pending: look for more Sanitizer libs
-  private class MongoSanitizer extends DataFlow::CallCfgNode, NoSQLSanitizer::Range {
-    DataFlow::Node escapeNode;
-
-    MongoSanitizer() {
+  private class MongoSanitizerCall extends DataFlow::CallCfgNode, NoSQLSanitizer::Range {
+    MongoSanitizerCall() {
       this =
-        API::moduleImport("mongosanitizer").getMember("sanitizer").getMember("sanitize").getACall() and
-      escapeNode = this.getArg(0)
+        API::moduleImport("mongosanitizer").getMember("sanitizer").getMember("sanitize").getACall()
     }
 
-    override DataFlow::Node getSanitizerNode() { result = escapeNode }
+    override DataFlow::Node getSanitizerNode() { result = this.getArg(0) }
   }
 }
