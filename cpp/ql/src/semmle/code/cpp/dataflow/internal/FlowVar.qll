@@ -256,7 +256,7 @@ private module PartialDefinitions {
         innerDefinedExpr = getAPointerWrapperAccess(pointer)
       )
       or
-      // iterators passed by value without a copy constructor
+      // pointer wrappers passed by value without a copy constructor
       exists(Call call |
         call = node and
         call.getAnArgument() = innerDefinedExpr and
@@ -265,7 +265,7 @@ private module PartialDefinitions {
         not call instanceof OverloadedPointerDereferenceExpr
       )
       or
-      // iterators passed by value with a copy constructor
+      // pointer wrappers passed by value with a copy constructor
       exists(Call call, ConstructorCall copy |
         copy.getTarget() instanceof CopyConstructor and
         call = node and
