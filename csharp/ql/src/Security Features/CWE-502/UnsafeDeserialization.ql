@@ -17,11 +17,11 @@ from Call deserializeCall, InstanceMethodSink sink
 where
   deserializeCall.getAnArgument() = sink.asExpr() and
   not exists(
-    DataFlow::PathNode constructor, DataFlow::PathNode usage,
-    SafeConstructorTrackingConfig constructorTracking
+    SafeConstructorTrackingConfig safeConstructorTracking, DataFlow::PathNode safeCreation,
+    DataFlow::PathNode safeTypeUsage
   |
-    constructorTracking.hasFlowPath(constructor, usage) and
-    usage.getNode().asExpr().getParent() = deserializeCall
+    safeConstructorTracking.hasFlowPath(safeCreation, safeTypeUsage) and
+    safeTypeUsage.getNode().asExpr().getParent() = deserializeCall
   )
   or
   exists(ConstructorOrStaticMethodSink sink2 | deserializeCall.getAnArgument() = sink2.asExpr())
