@@ -236,6 +236,11 @@ type FileInfo struct {
 	NextErr int
 }
 
+func (extraction *Extraction) SeenFile(path string) bool {
+	_, ok := extraction.FileInfo[path]
+	return ok
+}
+
 func (extraction *Extraction) GetFileInfo(path string) *FileInfo {
 	if fileInfo, ok := extraction.FileInfo[path]; ok {
 		return fileInfo
@@ -487,13 +492,15 @@ func (extraction *Extraction) extractError(tw *trap.Writer, err packages.Error, 
 	}
 	transformed := filepath.ToSlash(srcarchive.TransformPath(ffile))
 
+	extraction.extractFileInfo(tw, ffile)
+
 	extraction.Lock.Lock()
+
 	diagLbl := extraction.StatWriter.Labeler.FreshID()
-	dbscheme.DiagnosticsTable.Emit(extraction.StatWriter, diagLbl, 1, tag, err.Msg, err.Msg,
-		emitLocation(
-			extraction.StatWriter, extraction.StatWriter.Labeler.GlobalID(ffile+";sourcefile"),
-			line, col, line, col,
-		))
+	flbl := extraction.StatWriter.Labeler.FileLabelFor(ffile)
+	dbscheme.DiagnosticsTable.Emit(
+		extraction.StatWriter, diagLbl, 1, tag, err.Msg, err.Msg,
+		emitLocation(extraction.StatWriter, flbl, line, col, line, col))
 	dbscheme.DiagnosticForTable.Emit(extraction.StatWriter, diagLbl, extraction.Label, extraction.GetFileIdx(transformed), extraction.GetNextErr(transformed))
 	extraction.Lock.Unlock()
 	dbscheme.ErrorsTable.Emit(tw, lbl, kind, err.Msg, pos, transformed, line, col, pkglbl, idx)
@@ -585,6 +592,16 @@ func (extraction *Extraction) extractFileInfo(tw *trap.Writer, file string) {
 	components := strings.Split(path, "/")
 	parentPath := ""
 	var parentLbl trap.Label
+
+	// We may visit the same file twice because `extractError` calls this function to describe files containing
+	// compilation errors. It is also called for user source files being extracted.
+	extraction.Lock.Lock()
+	if extraction.SeenFile(path) {
+		extraction.Lock.Unlock()
+		return
+	}
+	extraction.Lock.Unlock()
+
 	for i, component := range components {
 		if i == 0 {
 			if component == "" {
@@ -597,12 +614,13 @@ func (extraction *Extraction) extractFileInfo(tw *trap.Writer, file string) {
 		}
 		if i == len(components)-1 {
 			stem, ext := stemAndExt(component)
-			lbl := tw.Labeler.FileLabel()
+			lbl := tw.Labeler.FileLabelFor(path)
 			dbscheme.FilesTable.Emit(tw, lbl, path, stem, ext, 0)
 			dbscheme.ContainerParentTable.Emit(tw, parentLbl, lbl)
-			extractLocation(tw, lbl, 0, 0, 0, 0)
+			dbscheme.HasLocationTable.Emit(tw, lbl, emitLocation(tw, lbl, 0, 0, 0, 0))
 			extraction.Lock.Lock()
-			dbscheme.CompilationCompilingFilesTable.Emit(extraction.StatWriter, extraction.Label, extraction.GetFileIdx(path), extraction.StatWriter.Labeler.FileLabelFor(tw))
+			slbl := extraction.StatWriter.Labeler.FileLabelFor(path)
+			dbscheme.CompilationCompilingFilesTable.Emit(extraction.StatWriter, extraction.Label, extraction.GetFileIdx(path), slbl)
 			extraction.Lock.Unlock()
 			break
 		}

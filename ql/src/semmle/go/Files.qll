@@ -180,9 +180,22 @@ class Folder extends Container, @folder {
 /** A file. */
 class File extends Container, @file, Documentable, ExprParent, GoModExprParent, DeclParent,
   ScopeNode {
+  string path;
+
+  File() {
+    files(this, path, _, _, _) and
+    (
+      // Exclude `.go` files that have not been extracted. Non-extracted files only exist in the `files`
+      // table if we are reporting compilation errors relating to them in the `diagnostics` table.
+      not path.matches("%.go")
+      or
+      exists(this.getAChild())
+    )
+  }
+
   override Location getLocation() { has_location(this, result) }
 
-  override string getAbsolutePath() { files(this, result, _, _, _) }
+  override string getAbsolutePath() { result = path }
 
   /** Gets the number of lines in this file. */
   int getNumberOfLines() { numlines(this, result, _, _) }
