@@ -26,10 +26,10 @@ class LocalSource extends Source {
 
 from
   TaintToObjectMethodTrackingConfig taintTracking, DataFlow::PathNode userInput,
-  DataFlow::PathNode deserializeCall
+  DataFlow::PathNode deserializeCallArg
 where
   // all flows from user input to deserialization with weak and strong type serializers
-  taintTracking.hasFlowPath(userInput, deserializeCall) and
+  taintTracking.hasFlowPath(userInput, deserializeCallArg) and
   // intersect with strong types, but user controlled or weak types deserialization usages
   (
     exists(
@@ -37,7 +37,8 @@ where
       WeakTypeCreationToUsageTrackingConfig weakTypeDeserializerTracking
     |
       weakTypeDeserializerTracking.hasFlowPath(weakTypeCreation, weakTypeUsage) and
-      weakTypeUsage.getNode().asExpr().getParent() = deserializeCall.getNode().asExpr().getParent()
+      weakTypeUsage.getNode().asExpr().getParent() =
+        deserializeCallArg.getNode().asExpr().getParent()
     )
     or
     exists(
@@ -46,7 +47,7 @@ where
     |
       userControlledTypeTracking.hasFlowPath(userInput2, taintedTypeUsage) and
       taintedTypeUsage.getNode().asExpr().getParent() =
-        deserializeCall.getNode().asExpr().getParent()
+        deserializeCallArg.getNode().asExpr().getParent()
     )
   ) and
   // exclude deserialization flows with safe instances (i.e. JavaScriptSerializer without resolver)
@@ -55,12 +56,12 @@ where
     DataFlow::PathNode safeTypeUsage
   |
     safeConstructorTracking.hasFlowPath(safeCreation, safeTypeUsage) and
-    safeTypeUsage.getNode().asExpr().getParent() = deserializeCall.getNode().asExpr().getParent()
+    safeTypeUsage.getNode().asExpr().getParent() = deserializeCallArg.getNode().asExpr().getParent()
   )
   or
   // no type check needed - straightforward taint -> sink
   exists(TaintToConstructorOrStaticMethodTrackingConfig taintTracking2 |
-    taintTracking2.hasFlowPath(userInput, deserializeCall)
+    taintTracking2.hasFlowPath(userInput, deserializeCallArg)
   )
-select deserializeCall, userInput, deserializeCall, "$@ flows to unsafe deserializer.", userInput,
-  "User-provided data"
+select deserializeCallArg, userInput, deserializeCallArg, "$@ flows to unsafe deserializer.",
+  userInput, "User-provided data"
