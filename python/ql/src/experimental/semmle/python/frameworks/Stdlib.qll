@@ -62,7 +62,7 @@ private module NoSQL {
     override DataFlow::Node getQueryNode() { result = this.getArg(0) }
   }
 
-  // pending: look for more Sanitizer libs
+  // more sanitizer libs?
   private class MongoSanitizerCall extends DataFlow::CallCfgNode, NoSQLSanitizer::Range {
     MongoSanitizerCall() {
       this =

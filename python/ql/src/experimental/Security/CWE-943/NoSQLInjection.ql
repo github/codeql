@@ -12,5 +12,8 @@
 
 import python
 import experimental.semmle.python.security.injection.NoSQLInjection
-import DataFlow::PathGraph
-// from, where, select statements
+
+// https://github.com/github/codeql/blob/e266cedc84cf73d01c9b2d4b0e4313e5d96755ba/python/ql/src/semmle/python/security/dataflow/PathInjection.qll#L103
+from CustomPathNode source, CustomPathNode sink
+where noSQLInjectionFlow(source, sink)
+select source, sink

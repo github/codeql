@@ -1,13 +1,14 @@
 import python
-import experimental.semmle.python.Concepts
 import semmle.python.dataflow.new.DataFlow
+import semmle.python.dataflow.new.DataFlow2
 import semmle.python.dataflow.new.TaintTracking
-// https://ghsecuritylab.slack.com/archives/CQJU6RN49/p1617022135088100
 import semmle.python.dataflow.new.TaintTracking2
+import experimental.semmle.python.Concepts
 import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.ApiGraphs
+// temporary imports (change after query normalization)
+import semmle.python.security.dataflow.ChainedConfigs12
 
-// custom no-Concepts classes
 class JsonLoadsCall extends DataFlow::CallCfgNode {
   JsonLoadsCall() { this = API::moduleImport("json").getMember("loads").getACall() }
 
@@ -47,9 +48,9 @@ class NoSQLInjectionConfig extends TaintTracking::Configuration {
   }
 }
 
-// I hate the name ObjectBuilderFunctionConfig so this can be renamed
-class ObjectBuilderFunctionConfig extends TaintTracking2::Configuration {
-  ObjectBuilderFunctionConfig() { this = "ObjectBuilderFunctionConfig" }
+// better name?
+class FromJSONConfig extends TaintTracking2::Configuration {
+  FromJSONConfig() { this = "FromJSONConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof JSONRelatedSink }
 
@@ -60,4 +61,15 @@ class ObjectBuilderFunctionConfig extends TaintTracking2::Configuration {
   override predicate isSanitizer(DataFlow::Node sanitizer) {
     sanitizer = any(NoSQLSanitizer noSQLSanitizer).getSanitizerNode()
   }
+}
+
+predicate noSQLInjectionFlow(CustomPathNode source, CustomPathNode sink) {
+  exists(
+    FromJSONConfig config, DataFlow::PathNode mid1, DataFlow2::PathNode mid2,
+    NoSQLInjectionConfig config2
+  |
+    config.hasFlowPath(source.asNode1(), mid1) and
+    config2.hasFlowPath(mid2, sink.asNode2()) and
+    mid1.getNode().asCfgNode() = mid2.getNode().asCfgNode()
+  )
 }
