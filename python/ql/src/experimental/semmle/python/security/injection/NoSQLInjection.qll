@@ -9,24 +9,18 @@ import semmle.python.ApiGraphs
 
 // custom no-Concepts classes
 class JsonLoadsCall extends DataFlow::CallCfgNode {
-  DataFlow::Node loadNode;
-
   JsonLoadsCall() { this = API::moduleImport("json").getMember("loads").getACall() }
 
   DataFlow::Node getLoadNode() { result = this.getArg(0) }
 }
 
 class XmlToDictParseCall extends DataFlow::CallCfgNode {
-  DataFlow::Node parseNode;
-
   XmlToDictParseCall() { this = API::moduleImport("xmltodict").getMember("parse").getACall() }
 
   DataFlow::Node getParseNode() { result = this.getArg(0) }
 }
 
 class UltraJsonLoadsCall extends DataFlow::CallCfgNode {
-  DataFlow::Node loadNode;
-
   UltraJsonLoadsCall() { this = API::moduleImport("ujson").getMember("loads").getACall() }
 
   DataFlow::Node getLoadNode() { result = this.getArg(0) }
