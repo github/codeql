@@ -75,3 +75,193 @@ void test(unsigned x, unsigned y, bool unknown) {
   	if (x - y > 0) {} // GOOD [FALSE POSITIVE]
 	}
 }
+
+void test2() {
+	unsigned int a = getAnInt();
+	unsigned int b = a;
+
+	if (a - b > 0) { // GOOD (as a = b) [FALSE POSITIVE]
+		// ...
+	}
+}
+
+void test3() {
+	unsigned int a = getAnInt();
+	unsigned int b = a - 1;
+
+	if (a - b > 0) { // GOOD (as a >= b) [FALSE POSITIVE]
+		// ...
+	}
+}
+
+void test4() {
+	unsigned int a = getAnInt();
+	unsigned int b = a + 1;
+
+	if (a - b > 0) { // BAD
+		// ...
+	}
+}
+
+void test5() {
+	unsigned int b = getAnInt();
+	unsigned int a = b;
+
+	if (a - b > 0) { // GOOD (as a = b) [FALSE POSITIVE]
+		// ...
+	}
+}
+
+void test6() {
+	unsigned int b = getAnInt();
+	unsigned int a = b + 1;
+
+	if (a - b > 0) { // GOOD (as a >= b) [FALSE POSITIVE]
+		// ...
+	}
+}
+
+void test7() {
+	unsigned int b = getAnInt();
+	unsigned int a = b - 1;
+
+	if (a - b > 0) { // BAD
+		// ...
+	}
+}
+
+void test8() {
+	unsigned int a = getAnInt();
+	unsigned int b = getAnInt();
+
+	if (a - b > 0) { // BAD
+		// ...
+	}
+
+	if (a >= b) { // GOOD
+		if (a - b > 0) { // GOOD (as a >= b)
+			// ...
+		}
+	} else {
+		if (a - b > 0) { // BAD
+			// ...
+		}
+	}
+
+	if (b >= a) { // GOOD
+		if (a - b > 0) { // BAD
+			// ...
+		}
+	} else {
+		if (a - b > 0) { // GOOD (as a > b) [FALSE POSITIVE]
+			// ...
+		}
+	}
+
+	while (a >= b) { // GOOD
+		if (a - b > 0) { // GOOD (as a >= b)
+			// ...
+		}
+	}
+
+	if (a < b) return;
+
+	if (a - b > 0) { // GOOD (as a >= b) [FALSE POSITIVE]
+		// ...
+	}
+}
+
+void test9() {
+	unsigned int a = getAnInt();
+	unsigned int b = getAnInt();
+
+	if (a < b) {
+		b = 0;
+	}
+
+	if (a - b > 0) { // GOOD (as a >= b) [FALSE POSITIVE]
+		// ...
+	}
+}
+
+void test10() {
+	unsigned int a = getAnInt();
+	unsigned int b = getAnInt();
+
+	if (a < b) {
+		a = b;
+	}
+
+	if (a - b > 0) { // GOOD (as a >= b) [FALSE POSITIVE]
+		// ...
+	}
+}
+
+void test11() {
+	unsigned int a = getAnInt();
+	unsigned int b = getAnInt();
+
+	if (a < b) return;
+
+	b = getAnInt();
+
+	if (a - b > 0) { // BAD
+		// ...
+	}
+}
+
+void test12() {
+	unsigned int a = getAnInt();
+	unsigned int b = getAnInt();
+	unsigned int c;
+
+	if ((b <= c) && (c <= a)) {
+		if (a - b > 0) { // GOOD (as b <= a) [FALSE POSITIVE]
+			// ...
+		}
+	}
+
+	if (b <= c) {
+		if (c <= a) {
+			if (a - b > 0) { // GOOD (as b <= a) [FALSE POSITIVE]
+				// ...
+			}
+		}
+	}
+}
+
+int test13() {
+	unsigned int a = getAnInt();
+	unsigned int b = getAnInt();
+
+	if (b != 0) {
+		return 0;
+	}
+
+	return (a - b > 0); // GOOD (as b = 0)
+}
+
+int test14() {
+	unsigned int a = getAnInt();
+	unsigned int b = getAnInt();
+
+	if (!b) {
+		return 0;
+	}
+
+	return (a - b > 0); // GOOD (as b = 0) [FALSE POSITIVE]
+}
+
+struct Numbers
+{
+	unsigned int a, b;
+};
+
+int test15(Numbers *n) {
+
+	if (!n) {
+		return 0;
+	}
+
+	return (n->a - n->b > 0); // BAD
+}
