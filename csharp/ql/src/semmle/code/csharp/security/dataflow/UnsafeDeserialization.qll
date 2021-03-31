@@ -14,12 +14,12 @@ module UnsafeDeserialization {
   abstract class Source extends DataFlow::Node { }
 
   /**
-   * A data flow sink for unsafe deserialization vulnerabilities.
+   * A data flow sink for unsafe deserialization vulnerabilities to an instance method.
    */
   abstract class InstanceMethodSink extends DataFlow::Node { }
 
   /**
-   * A data flow sink for unsafe deserialization vulnerabilities.
+   * A data flow sink for unsafe deserialization vulnerabilities to a static method or constructor call.
    */
   abstract class ConstructorOrStaticMethodSink extends DataFlow::Node { }
 
