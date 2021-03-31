@@ -14,6 +14,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import XQueryInjectionLib
 import DataFlow::PathGraph
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration tracing flow from remote sources, through an XQuery parser, to its eventual execution.
@@ -23,11 +24,7 @@ class XQueryInjectionConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(XQueryPreparedExecuteCall xpec).getPreparedExpression() or
-    sink.asExpr() = any(XQueryExecuteCall xec).getExecuteQueryArgument() or
-    sink.asExpr() = any(XQueryExecuteCommandCall xecc).getExecuteCommandArgument()
-  }
+  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "xquery") }
 
   /**
    * Holds if taint from the input `pred` to a `prepareExpression` call flows to the returned prepared expression `succ`.

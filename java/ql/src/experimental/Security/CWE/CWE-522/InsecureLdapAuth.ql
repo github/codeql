@@ -16,6 +16,7 @@ import semmle.code.java.frameworks.Jndi
 import semmle.code.java.frameworks.Networking
 import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * Insecure (non-SSL, non-private) LDAP URL string literal.
@@ -145,12 +146,7 @@ class InsecureUrlFlowConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof InsecureLdapUrl }
 
   /** Sink of directory context creation. */
-  override predicate isSink(DataFlow::Node sink) {
-    exists(ConstructorCall cc |
-      cc.getConstructedType().getASupertype*() instanceof TypeDirContext and
-      sink.asExpr() = cc.getArgument(0)
-    )
-  }
+  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "ldap") }
 
   /** Method call of `env.put()`. */
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
@@ -176,11 +172,12 @@ class BasicAuthFlowConfig extends DataFlow::Configuration {
   }
 
   /** Sink of directory context creation. */
-  override predicate isSink(DataFlow::Node sink) {
-    exists(ConstructorCall cc |
-      cc.getConstructedType().getASupertype*() instanceof TypeDirContext and
-      sink.asExpr() = cc.getArgument(0)
-    )
+  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "ldap") }
+}
+
+private class LdapSinkModel extends SinkModelCsv {
+  override predicate row(string row) {
+    row = ["javax.naming.directory;DirContext;true;.ctor;;;Argument[0];ldap"]
   }
 }
 
@@ -198,12 +195,7 @@ class SSLFlowConfig extends DataFlow::Configuration {
   }
 
   /** Sink of directory context creation. */
-  override predicate isSink(DataFlow::Node sink) {
-    exists(ConstructorCall cc |
-      cc.getConstructedType().getASupertype*() instanceof TypeDirContext and
-      sink.asExpr() = cc.getArgument(0)
-    )
-  }
+  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "ldap") }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, InsecureUrlFlowConfig config

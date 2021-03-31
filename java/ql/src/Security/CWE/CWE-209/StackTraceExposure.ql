@@ -16,6 +16,7 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.XSS
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * One of the `printStackTrace()` overloads on `Throwable`.
@@ -37,10 +38,12 @@ class ServletWriterSourceToPrintStackTraceMethodFlowConfig extends TaintTracking
 
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ServletWriterSource }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      sink.asExpr() = ma.getAnArgument() and ma.getMethod() instanceof PrintStackTraceMethod
-    )
+  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "print-stack-trace") }
+}
+
+private class PrintStackTraceSinkModel extends SinkModelCsv {
+  override predicate row(string row) {
+    row = ["java.lang;Throwable;true;printStackTrace;;;Argument;print-stack-trace"]
   }
 }
 

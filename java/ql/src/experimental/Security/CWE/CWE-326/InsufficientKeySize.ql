@@ -12,6 +12,7 @@
 import java
 import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.ExternalFlow
 
 /** The Java class `java.security.spec.ECGenParameterSpec`. */
 class ECGenParameterSpec extends RefType {
@@ -55,11 +56,12 @@ class KeyGeneratorInitConfiguration extends TaintTracking::Configuration {
     exists(JavaxCryptoKeyGenerator jcg | jcg = source.asExpr())
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof KeyGeneratorInitMethod and
-      sink.asExpr() = ma.getQualifier()
-    )
+  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "keygen") }
+}
+
+private class KeyGeneratorInitSinkModel extends SinkModelCsv {
+  override predicate row(string row) {
+    row = ["javax.crypto;KeyGenerator;false;init;;;Argument[-1];keygen"]
   }
 }
 
@@ -71,11 +73,12 @@ class KeyPairGeneratorInitConfiguration extends TaintTracking::Configuration {
     exists(JavaSecurityKeyPairGenerator jkg | jkg = source.asExpr())
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof KeyPairGeneratorInitMethod and
-      sink.asExpr() = ma.getQualifier()
-    )
+  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "keypairgen") }
+}
+
+private class KeyPairGeneratorInitSinkModel extends SinkModelCsv {
+  override predicate row(string row) {
+    row = ["java.security;KeyPairGenerator;false;initialize;;;Argument[-1];keypairgen"]
   }
 }
 

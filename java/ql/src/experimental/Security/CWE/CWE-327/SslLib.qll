@@ -3,6 +3,7 @@ import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.TaintTracking
 import DataFlow
 import PathGraph
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for unsafe SSL and TLS versions.
@@ -12,11 +13,20 @@ class UnsafeTlsVersionConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof UnsafeTlsVersion }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink instanceof SslContextGetInstanceSink or
-    sink instanceof CreateSslParametersSink or
-    sink instanceof SslParametersSetProtocolsSink or
-    sink instanceof SetEnabledProtocolsSink
+  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "ssl") }
+}
+
+private class UnsafeTlsVersionSinkModel extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.net.ssl;SSLContext;false;getInstance;;;Argument[0];ssl",
+        "javax.net.ssl;SSLParameters;false;SSLParameters;;;Argument[1];ssl",
+        "javax.net.ssl;SSLParameters;false;setProtocols;;;Argument[0];ssl",
+        "javax.net.ssl;SSLSocket;false;setEnabledProtocols;;;Argument[0];ssl",
+        "javax.net.ssl;SSLServerSocket;false;setEnabledProtocols;;;Argument[0];ssl",
+        "javax.net.ssl;SSLEngine;false;setEnabledProtocols;;;Argument[0];ssl"
+      ]
   }
 }
 

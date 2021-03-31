@@ -3,6 +3,7 @@ import semmle.code.java.frameworks.XStream
 import semmle.code.java.frameworks.SnakeYaml
 import semmle.code.java.frameworks.FastJson
 import semmle.code.java.frameworks.apache.Lang
+private import semmle.code.java.dataflow.ExternalFlow
 
 class ObjectInputStreamReadObjectMethod extends Method {
   ObjectInputStreamReadObjectMethod() {
@@ -26,11 +27,16 @@ class SafeXStream extends DataFlow2::Configuration {
       src.asExpr()
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      sink.asExpr() = ma.getQualifier() and
-      ma.getMethod() instanceof XStreamReadObjectMethod
-    )
+  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "safe-xstream") }
+}
+
+private class SafeXStreamSinkModel extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "com.thoughtworks.xstream;XStream;false;unmarshal;;;Argument[-1];safe-xstream",
+        "com.thoughtworks.xstream;XStream;false;fromXML;;;Argument[-1];safe-xstream"
+      ]
   }
 }
 
@@ -42,11 +48,17 @@ class SafeKryo extends DataFlow2::Configuration {
       src.asExpr()
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      sink.asExpr() = ma.getQualifier() and
-      ma.getMethod() instanceof KryoReadObjectMethod
-    )
+  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "safe-kryo") }
+}
+
+private class SafeKryoSinkModel extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "com.esotericsoftware.kryo;Kryo;false;readObjectOrNull;;;Argument[-1];safe-kryo",
+        "com.esotericsoftware.kryo;Kryo;false;readObject;;;Argument[-1];safe-kryo",
+        "com.esotericsoftware.kryo;Kryo;false;readClassAndObject;;;Argument[-1];safe-kryo"
+      ]
   }
 }
 
