@@ -9,7 +9,6 @@ import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
 
 class LDAPInjectionSink extends DataFlow::Node {
-  // DataFlow::Node attrs;
   DataFlow::Node ldapNode;
   string ldapPart;
 
@@ -17,15 +16,13 @@ class LDAPInjectionSink extends DataFlow::Node {
     exists(LDAPQuery ldapQuery |
       this = ldapQuery and
       ldapNode = ldapQuery.getLDAPNode() and
-      ldapPart = ldapQuery.getLDAPPart() // and
-      // if exists(ldapQuery.getAttrs()) then attrs = ldapQuery.getAttrs()
+      ldapPart = ldapQuery.getLDAPPart()
     )
   }
 
   DataFlow::Node getLDAPNode() { result = ldapNode }
 
   string getLDAPPart() { result = ldapPart }
-  // DataFlow::Node getAttrs() { result = attrs }
 }
 
 /**

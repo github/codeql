@@ -21,7 +21,6 @@ private module LDAP {
     private class LDAP2Query extends DataFlow::CallCfgNode, LDAPQuery::Range {
       DataFlow::Node ldapNode;
       string ldapPart;
-      DataFlow::Node attrs;
 
       LDAP2Query() {
         exists(DataFlow::AttrRead searchMethod, DataFlow::CallCfgNode initCall |
@@ -45,10 +44,6 @@ private module LDAP {
       override DataFlow::Node getLDAPNode() { result = ldapNode }
 
       override string getLDAPPart() { result = ldapPart }
-
-      override DataFlow::Node getAttrs() {
-        result = this.getArg(3) or result = this.getArgByName("attrlist")
-      }
     }
 
     private class LDAP2EscapeDN extends DataFlow::CallCfgNode, LDAPEscape::Range {
@@ -77,14 +72,12 @@ private module LDAP {
 
   private module LDAP3 {
     private class LDAP3QueryMethods extends string {
-      // pending to dig into this although https://github.com/cannatag/ldap3/blob/21001d9087c0d24c399eec433a261c455b7bc97f/ldap3/core/connection.py#L760
       LDAP3QueryMethods() { this in ["search"] }
     }
 
     private class LDAP3Query extends DataFlow::CallCfgNode, LDAPQuery::Range {
       DataFlow::Node ldapNode;
       string ldapPart;
-      DataFlow::Node attrs;
 
       LDAP3Query() {
         exists(DataFlow::AttrRead searchMethod, DataFlow::CallCfgNode connCall |
@@ -105,10 +98,6 @@ private module LDAP {
       override DataFlow::Node getLDAPNode() { result = ldapNode }
 
       override string getLDAPPart() { result = ldapPart }
-
-      override DataFlow::Node getAttrs() {
-        result = this.getArg(3) or result = this.getArgByName("attributes")
-      }
     }
 
     private class LDAP3EscapeDN extends DataFlow::CallCfgNode, LDAPEscape::Range {

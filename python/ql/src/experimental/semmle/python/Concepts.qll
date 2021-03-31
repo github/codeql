@@ -20,8 +20,6 @@ module LDAPQuery {
     abstract DataFlow::Node getLDAPNode();
 
     abstract string getLDAPPart();
-
-    abstract DataFlow::Node getAttrs();
   }
 }
 
@@ -33,8 +31,6 @@ class LDAPQuery extends DataFlow::Node {
   DataFlow::Node getLDAPNode() { result = range.getLDAPNode() }
 
   string getLDAPPart() { result = range.getLDAPPart() }
-
-  DataFlow::Node getAttrs() { result = range.getAttrs() }
 }
 
 module LDAPEscape {

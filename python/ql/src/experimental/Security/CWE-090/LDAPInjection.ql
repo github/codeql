@@ -19,7 +19,6 @@ from
   LDAPInjectionSink castedSink
 where
   config.hasFlowPath(source, sink) and
-  castedSink.getLDAPNode() = sink.getNode() //and
-// if exists(castedSink.getAttrs()) then
+  castedSink.getLDAPNode() = sink.getNode()
 select sink.getNode(), source, sink, "$@ LDAP query executes $@ as a $@.", castedSink, "This",
-  source.getNode(), "a user-provided value", castedSink.getLDAPNode(), castedSink.getLDAPPart() //, castedSink.getAttrs(), "probably leaking this attribute(s)"
+  source.getNode(), "a user-provided value", castedSink.getLDAPNode(), castedSink.getLDAPPart()
