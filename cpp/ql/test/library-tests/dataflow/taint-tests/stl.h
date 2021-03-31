@@ -348,7 +348,7 @@ namespace std {
 	class shared_ptr {
 	public:
 		shared_ptr() noexcept;
-		explicit shared_ptr(T*);
+		explicit shared_ptr(T*); shared_ptr(const shared_ptr&) noexcept;
 		template<class U> shared_ptr(const shared_ptr<U>&) noexcept;
 		template<class U> shared_ptr(shared_ptr<U>&&) noexcept;
 

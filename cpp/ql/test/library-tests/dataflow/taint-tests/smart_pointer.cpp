@@ -66,3 +66,13 @@ void test_shared_field_member() {
     sink(p->x); // $ MISSING: ast,ir
     sink(p->y); // not tainted
 }
+
+void getNumber(std::shared_ptr<int> ptr) {
+  *ptr = source();
+}
+
+int test_from_issue_5190() {
+  std::shared_ptr<int> p(new int);
+  getNumber(p);
+  sink(*p); // $ MISSING: ast,ir
+}
