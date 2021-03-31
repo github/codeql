@@ -13,6 +13,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A message interpolator Type that perform Expression Language (EL) evaluations
@@ -51,19 +52,6 @@ class SetMessageInterpolatorCall extends MethodAccess {
 }
 
 /**
- * A method named `buildConstraintViolationWithTemplate` declared on a subtype
- * of `javax.validation.ConstraintValidatorContext`.
- */
-class BuildConstraintViolationWithTemplateMethod extends Method {
-  BuildConstraintViolationWithTemplateMethod() {
-    this.getDeclaringType()
-        .getASupertype*()
-        .hasQualifiedName("javax.validation", "ConstraintValidatorContext") and
-    this.hasName("buildConstraintViolationWithTemplate")
-  }
-}
-
-/**
  * Taint tracking BeanValidationConfiguration describing the flow of data from user input
  * to the argument of a method that builds constraint error messages.
  */
@@ -72,12 +60,7 @@ class BeanValidationConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof BuildConstraintViolationWithTemplateMethod and
-      sink.asExpr() = ma.getArgument(0)
-    )
-  }
+  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "bean-validation") }
 }
 
 from BeanValidationConfig cfg, DataFlow::PathNode source, DataFlow::PathNode sink

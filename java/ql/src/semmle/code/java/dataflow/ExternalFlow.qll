@@ -203,7 +203,9 @@ private predicate sinkModelCsv(string row) {
       "java.nio.file;Files;false;createLink;;;Argument[0];create-file",
       "java.nio.file;Files;false;createSymbolicLink;;;Argument[0];create-file",
       "java.nio.file;Files;false;createTempDirectory;;;Argument[0];create-file",
-      "java.nio.file;Files;false;createTempFile;;;Argument[0];create-file"
+      "java.nio.file;Files;false;createTempFile;;;Argument[0];create-file",
+      // Bean validation
+      "javax.validation;ConstraintValidatorContext;true;buildConstraintViolationWithTemplate;;;Argument[0];bean-validation"
     ]
 }
 
