@@ -129,7 +129,11 @@ class Module extends Module_, Scope, AstNode {
       a.defines(all) and
       a.getScope() = this and
       all.getId() = "__all__" and
-      a.getValue().(List).getAnElt().(StrConst).getText() = name
+      (
+        a.getValue().(List).getAnElt().(StrConst).getText() = name
+        or
+        a.getValue().(Tuple).getAnElt().(StrConst).getText() = name
+      )
     )
   }
 
