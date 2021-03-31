@@ -46,27 +46,21 @@ private module LDAP {
       override string getLDAPPart() { result = ldapPart }
     }
 
-    private class LDAP2EscapeDN extends DataFlow::CallCfgNode, LDAPEscape::Range {
-      DataFlow::Node escapeNode;
-
-      LDAP2EscapeDN() {
-        this = API::moduleImport("ldap").getMember("dn").getMember("escape_dn_chars").getACall() and
-        escapeNode = this.getArg(0)
+    private class LDAP2EscapeDNCall extends DataFlow::CallCfgNode, LDAPEscape::Range {
+      LDAP2EscapeDNCall() {
+        this = API::moduleImport("ldap").getMember("dn").getMember("escape_dn_chars").getACall()
       }
 
-      override DataFlow::Node getEscapeNode() { result = escapeNode }
+      override DataFlow::Node getEscapeNode() { result = this.getArg(0) }
     }
 
-    private class LDAP2EscapeFilter extends DataFlow::CallCfgNode, LDAPEscape::Range {
-      DataFlow::Node escapeNode;
-
-      LDAP2EscapeFilter() {
+    private class LDAP2EscapeFilterCall extends DataFlow::CallCfgNode, LDAPEscape::Range {
+      LDAP2EscapeFilterCall() {
         this =
-          API::moduleImport("ldap").getMember("filter").getMember("escape_filter_chars").getACall() and
-        escapeNode = this.getArg(0)
+          API::moduleImport("ldap").getMember("filter").getMember("escape_filter_chars").getACall()
       }
 
-      override DataFlow::Node getEscapeNode() { result = escapeNode }
+      override DataFlow::Node getEscapeNode() { result = this.getArg(0) }
     }
   }
 
@@ -100,36 +94,30 @@ private module LDAP {
       override string getLDAPPart() { result = ldapPart }
     }
 
-    private class LDAP3EscapeDN extends DataFlow::CallCfgNode, LDAPEscape::Range {
-      DataFlow::Node escapeNode;
-
-      LDAP3EscapeDN() {
+    private class LDAP3EscapeDNCall extends DataFlow::CallCfgNode, LDAPEscape::Range {
+      LDAP3EscapeDNCall() {
         this =
           API::moduleImport("ldap3")
               .getMember("utils")
               .getMember("dn")
               .getMember("escape_rdn")
-              .getACall() and
-        escapeNode = this.getArg(0)
+              .getACall()
       }
 
-      override DataFlow::Node getEscapeNode() { result = escapeNode }
+      override DataFlow::Node getEscapeNode() { result = this.getArg(0) }
     }
 
-    private class LDAP3EscapeFilter extends DataFlow::CallCfgNode, LDAPEscape::Range {
-      DataFlow::Node escapeNode;
-
-      LDAP3EscapeFilter() {
+    private class LDAP3EscapeFilterCall extends DataFlow::CallCfgNode, LDAPEscape::Range {
+      LDAP3EscapeFilterCall() {
         this =
           API::moduleImport("ldap3")
               .getMember("utils")
               .getMember("conv")
               .getMember("escape_filter_chars")
-              .getACall() and
-        escapeNode = this.getArg(0)
+              .getACall()
       }
 
-      override DataFlow::Node getEscapeNode() { result = escapeNode }
+      override DataFlow::Node getEscapeNode() { result = this.getArg(0) }
     }
   }
 }
