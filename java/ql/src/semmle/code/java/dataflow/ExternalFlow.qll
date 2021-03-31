@@ -77,6 +77,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.apache.Lang
   private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.security.ResponseSplitting
+  private import semmle.code.java.security.XSS
 }
 
 private predicate sourceModelCsv(string row) {
