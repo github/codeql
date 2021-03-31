@@ -49,6 +49,15 @@ except NameError:
     print("  baz not imported")
 del foo, bar
 
+from all_dynamic2 import *
+print("all_dynamic2.py")
+print("  foo={!r}".format(foo))
+print("  bar={!r}".format(bar))
+try:
+    print("  baz={!r}".format(baz))
+except NameError:
+    print("  baz not imported")
+del foo, bar
 
 # Example of wrong definition of `__all__`, where it is not a sequence.
 try:
@@ -65,9 +74,10 @@ import no_all
 import all_list
 import all_tuple
 import all_dynamic
+import all_dynamic2
 import all_set
 
-for mod in [no_all, all_list, all_tuple, all_dynamic, all_set]:
+for mod in [no_all, all_list, all_tuple, all_dynamic, all_dynamic2, all_set]:
     print("{}.py".format(mod.__name__))
     print("  foo={!r}".format(mod.foo))
     print("  bar={!r}".format(mod.bar))
