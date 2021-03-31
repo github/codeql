@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Cookies without <code>HttpOnly</code> flag are accessible to JavaScript running in the same origin. In case of
+Cross-Site Scripting (XSS) vulnerability the cookie can be stolen by malicious script. By default,
+cookies are accessibe to JavaScript. By explicitly setting <code>HttpOnly</code>
+property to <code>false</code> the cookie may be accessed by JavaScript.
+</p>
+</overview>
+
+<recommendation>
+
+<p>
+When using cookies, ensure that they are not accessible to JavaScript via <code>&lt;httpCookies&gt;</code> element
+with the attribute <code>httpOnlyCookies="true"</code>.
+It is also possible to require cookies to use SSL programmatically, by setting the property
+<code>System.Web.HttpCookie.HttpOnly</code> to <code>true</code>.
+</p>
+
+</recommendation>
+
+<example>
+
+<p>
+In the example below to <code>System.Web.HttpCookie.HttpOnly</code> is set to <code>true</code>.
+</p>
+
+<sample src="httponlyflag.cs" />
+
+</example>
+
+<references>
+
+<li>MSDN:
+    <a href="https://msdn.microsoft.com/en-us/library/system.web.httpcookie.httponly(v=vs.110).aspx">HttpCookie.HttpOnly Property</a>,
+    <a href="https://msdn.microsoft.com/library/ms228262%28v=vs.100%29.aspx">httpCookies Element</a>.
+</li>
+
+</references>
+</qhelp>

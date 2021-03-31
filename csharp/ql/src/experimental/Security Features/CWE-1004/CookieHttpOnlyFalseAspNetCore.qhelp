@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Cookies without <code>HttpOnly</code> flag are accessible to JavaScript running in the same origin. In case of
+Cross-Site Scripting (XSS) vulnerability the cookie can be stolen by malicious script. By explicitly setting <code>HttpOnly</code>
+property to <code>false</code> the cookie may be accessed by JavaScript.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Protect sensitive cookies, such as related to authentication, by setting <code>HttpOnly</code> to <code>true</code> to make
+them not accessibe to JavaScript.
+</p>
+</recommendation>
+
+<example>
+
+<p>
+In the example below to <code>Microsoft.AspNetCore.Http.CookieOptions.HttpOnly</code> is set to <code>true</code>.
+</p>
+
+<sample src="httponlyflagcore.cs" />
+
+<p>
+In the following example <code>CookiePolicyOptions</code> are set programmatically to configure defaults.
+</p>
+
+<sample src="cookiepolicyoptions.cs" />
+
+</example>
+
+<references>
+
+<li>MSDN: <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.cookieoptions.httponly">CookieOptions.HttpOnly Property</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a> Header</li>
+
+</references>
+</qhelp>

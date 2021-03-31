@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Sensitive data that is transmitted using HTTP is vulnerable to being read by a third party.  By explicitly setting <code>Secure</code>
+property to <code>false</code> the cookie may be transferred via HTTP, not HTTPS.
+</p>
+</overview>
+
+<recommendation>
+<p>
+When using cookies ensure that HTTPS is used by setting the property <code>Microsoft.AspNetCore.Http.CookieOptions.Secure</code> to <code>true</code>.
+</p>
+</recommendation>
+
+<example>
+
+<p>
+In the example below to <code>Microsoft.AspNetCore.Http.CookieOptions.Secure</code> is set to <code>true</code> programmatically.
+</p>
+
+<sample src="secureflagcore.cs" />
+
+</example>
+
+<references>
+
+<li>MSDN: <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.cookieoptions.secure">CookieOptions.Secure Property</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a> Header</li>
+
+</references>
+</qhelp>

@@ -298,6 +298,44 @@ class MicrosoftAspNetCoreHttpHeaderDictionaryExtensions extends RefType {
   Method getSetCommaSeparatedValuesMethod() { result = this.getAMethod("SetCommaSeparatedValues") }
 }
 
+/** The `Microsoft.AspNetCore.Http.CookieOptions` class. */
+class MicrosoftAspNetCoreHttpCookieOptions extends RefType {
+  MicrosoftAspNetCoreHttpCookieOptions() {
+    this.hasQualifiedName("Microsoft.AspNetCore.Http", "CookieOptions")
+  }
+}
+
+/** The `Microsoft.AspNetCore.Http.CookieBuilder` class. */
+class MicrosoftAspNetCoreHttpCookieBuilder extends RefType {
+  MicrosoftAspNetCoreHttpCookieBuilder() {
+    this.hasQualifiedName("Microsoft.AspNetCore.Http", "CookieBuilder")
+  }
+}
+
+/** The `Microsoft.AspNetCore.Builder.CookiePolicyOptions` class. */
+class MicrosoftAspNetCoreBuilderCookiePolicyOptions extends RefType {
+  MicrosoftAspNetCoreBuilderCookiePolicyOptions() {
+    this.hasQualifiedName("Microsoft.AspNetCore.Builder", "CookiePolicyOptions")
+  }
+}
+
+/** The `Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions` class. */
+class MicrosoftAspNetCoreAuthenticationCookiesCookieAuthenticationOptions extends RefType {
+  MicrosoftAspNetCoreAuthenticationCookiesCookieAuthenticationOptions() {
+    this.hasQualifiedName("Microsoft.AspNetCore.Authentication.Cookies", "CookieAuthenticationOptions")
+  }
+}
+
+/** The `Microsoft.AspNetCore.Builder.CookiePolicyAppBuilderExtensions` class. */
+class MicrosoftAspNetCoreBuilderCookiePolicyAppBuilderExtensions extends RefType {
+  MicrosoftAspNetCoreBuilderCookiePolicyAppBuilderExtensions() {
+    this.hasQualifiedName("Microsoft.AspNetCore.Builder", "CookiePolicyAppBuilderExtensions")
+  }
+
+  /** Gets the `UseCookiePolicy` extension method. */
+  Method getUseCookiePolicyMethod() { result = this.getAMethod("UseCookiePolicy") }
+}
+
 /**
  * The `Microsoft.AspNetCore.Html.HtmlString` class, supposed to wrap HTML-encoded string in ASP.NET Core
  * Untrusted and unsanitized data should never flow there.

@@ -203,6 +203,9 @@ class SystemWebHttpCookie extends SystemWebClass {
 
   /** Gets the `Secure` property. */
   Property getSecureProperty() { result = this.getProperty("Secure") }
+
+  /** Gets the `HttpOnly` property. */
+  Property getHttpOnlyProperty() { result = this.getProperty("HttpOnly") }
 }
 
 /** The `System.Web.IHtmlString` class. */

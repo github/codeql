@@ -17,29 +17,6 @@ import csharp
 import semmle.code.asp.WebConfig
 import semmle.code.csharp.frameworks.system.Web
 
-class FormsElement extends XMLElement {
-  FormsElement() {
-    this = any(SystemWebXMLElement sw).getAChild("authentication").getAChild("forms")
-  }
-
-  string getRequireSSL() { result = getAttribute("requireSSL").getValue().trim().toLowerCase() }
-
-  predicate isRequireSSL() { getRequireSSL() = "true" }
-}
-
-class HttpCookiesElement extends XMLElement {
-  HttpCookiesElement() { this = any(SystemWebXMLElement sw).getAChild("httpCookies") }
-
-  string getRequireSSL() { result = getAttribute("requireSSL").getValue().trim().toLowerCase() }
-
-  predicate isRequireSSL() {
-    getRequireSSL() = "true"
-    or
-    not getRequireSSL() = "false" and
-    exists(FormsElement forms | forms.getFile() = getFile() | forms.isRequireSSL())
-  }
-}
-
 from XMLElement element
 where
   element instanceof FormsElement and
