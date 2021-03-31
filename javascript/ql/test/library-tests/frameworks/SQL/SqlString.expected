@@ -62,6 +62,7 @@
 | spanner.js:19:23:19:32 | "SQL code" |
 | spanner.js:23:12:23:23 | 'SELECT 123' |
 | spanner.js:26:12:26:38 | 'UPDATE ... = @baz' |
+| spanner.js:31:18:31:24 | queries |
 | spannerImport.js:4:8:4:17 | "SQL code" |
 | sqlite-types.ts:4:12:4:49 | "UPDATE ... id = ?" |
 | sqlite.js:7:8:7:45 | "UPDATE ... id = ?" |
