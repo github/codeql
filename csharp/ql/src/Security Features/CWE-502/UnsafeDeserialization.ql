@@ -21,7 +21,7 @@ where
     SafeConstructorTrackingConfig constructorTracking
   |
     constructorTracking.hasFlowPath(constructor, usage) and
-    usage.getNode().asExpr().getParent() = sink.asExpr().getParent()
+    usage.getNode().asExpr().getParent() = deserializeCall
   )
   or
   exists(ConstructorOrStaticMethodSink sink2 | deserializeCall.getAnArgument() = sink2.asExpr())
