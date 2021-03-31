@@ -352,7 +352,5 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         public override string ToString() => Label.ToString();
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }
 }

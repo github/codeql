@@ -26,8 +26,6 @@ namespace Semmle.Extraction
 
         public abstract Location? ReportingLocation { get; }
 
-        public abstract TrapStackBehaviour TrapStackBehaviour { get; }
-
         public void DefineLabel(TextWriter trapFile, Extractor extractor)
         {
             trapFile.WriteLabel(this);

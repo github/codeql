@@ -35,7 +35,5 @@ namespace Semmle.Extraction.CSharp.Entities
         protected abstract void PopulatePreprocessor(TextWriter trapFile);
 
         public sealed override Microsoft.CodeAnalysis.Location ReportingLocation => trivia.GetLocation();
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }
 }

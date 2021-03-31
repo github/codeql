@@ -51,7 +51,5 @@ namespace Semmle.Extraction.CSharp.Entities
             public override CommentLine Create(Context cx, (Microsoft.CodeAnalysis.Location, CommentLineType, string, string) init) =>
                 new CommentLine(cx, init.Item1, init.Item2, init.Item3, init.Item4);
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }
 }

@@ -112,8 +112,6 @@ namespace Semmle.Extraction.CSharp.Entities
                 : Expression.Create(Context, syntax, parent, childIndex);
         }
 
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
-
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => attributeSyntax?.Name.GetLocation();
 
         private Semmle.Extraction.Entities.Location? location;

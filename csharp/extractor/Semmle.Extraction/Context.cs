@@ -151,19 +151,9 @@ namespace Semmle.Extraction
         /// Enqueue the given action to be performed later.
         /// </summary>
         /// <param name="toRun">The action to run.</param>
-        public void PopulateLater(Action a)
+        public void PopulateLater(Action toRun)
         {
-            var key = GetCurrentTagStackKey();
-            if (key is not null)
-            {
-                // If we are currently executing with a duplication guard, then the same
-                // guard must be used for the deferred action
-                populateQueue.Enqueue(() => WithDuplicationGuard(key, a));
-            }
-            else
-            {
-                populateQueue.Enqueue(a);
-            }
+            populateQueue.Enqueue(toRun);
         }
 
         /// <summary>
@@ -228,33 +218,6 @@ namespace Semmle.Extraction
             }
         }
 
-        private class PushEmitter : ITrapEmitter
-        {
-            private readonly Key key;
-
-            public PushEmitter(Key key)
-            {
-                this.key = key;
-            }
-
-            public void EmitTrap(TextWriter trapFile)
-            {
-                trapFile.Write(".push ");
-                key.AppendTo(trapFile);
-                trapFile.WriteLine();
-            }
-        }
-
-        private class PopEmitter : ITrapEmitter
-        {
-            public void EmitTrap(TextWriter trapFile)
-            {
-                trapFile.WriteLine(".pop");
-            }
-        }
-
-        private readonly Stack<Key> tagStack = new Stack<Key>();
-
         /// <summary>
         /// Populates an entity, handling the tag stack appropriately
         /// </summary>
@@ -270,71 +233,8 @@ namespace Semmle.Extraction
                 return;
             }
 
-            bool duplicationGuard;
-            bool deferred;
-
-            switch (entity.TrapStackBehaviour)
-            {
-                case TrapStackBehaviour.NeedsLabel:
-                    if (!tagStack.Any())
-                        ExtractionError("TagStack unexpectedly empty", optionalSymbol, entity);
-                    duplicationGuard = false;
-                    deferred = false;
-                    break;
-                case TrapStackBehaviour.NoLabel:
-                    duplicationGuard = false;
-                    deferred = tagStack.Any();
-                    break;
-                case TrapStackBehaviour.OptionalLabel:
-                    duplicationGuard = false;
-                    deferred = false;
-                    break;
-                case TrapStackBehaviour.PushesLabel:
-                    duplicationGuard = true;
-                    deferred = tagStack.Any();
-                    break;
-                default:
-                    throw new InternalError("Unexpected TrapStackBehaviour");
-            }
-
-            var a = duplicationGuard && IsEntityDuplicationGuarded(entity, out var loc)
-                ? (Action)(() => WithDuplicationGuard(new Key(entity, loc), () => entity.Populate(TrapWriter.Writer)))
-                : (Action)(() => this.Try(null, optionalSymbol, () => entity.Populate(TrapWriter.Writer)));
-
-            if (deferred)
-                populateQueue.Enqueue(a);
-            else
-                a();
+            this.Try(null, optionalSymbol, () => entity.Populate(TrapWriter.Writer));
         }
-
-        protected virtual bool IsEntityDuplicationGuarded(IEntity entity, [NotNullWhen(returnValue: true)] out Entities.Location? loc)
-        {
-            loc = null;
-            return false;
-        }
-
-        /// <summary>
-        /// Runs the given action <paramref name="a"/>, guarding for trap duplication
-        /// based on key <paramref name="key"/>.
-        /// </summary>
-        public virtual void WithDuplicationGuard(Key key, Action a)
-        {
-            tagStack.Push(key);
-            TrapWriter.Emit(new PushEmitter(key));
-            try
-            {
-                a();
-            }
-            finally
-            {
-                TrapWriter.Emit(new PopEmitter());
-                tagStack.Pop();
-            }
-        }
-
-        protected Key? GetCurrentTagStackKey() => tagStack.Count > 0
-            ? tagStack.Peek()
-            : null;
 
         /// <summary>
         /// Log an extraction error.

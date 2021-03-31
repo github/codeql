@@ -178,8 +178,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
             public override Parameter Create(Context cx, (IParameterSymbol, IEntity?, Parameter?) init) => new Parameter(cx, init.Item1, init.Item2, init.Item3);
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }
 
     internal class VarargsType : Type

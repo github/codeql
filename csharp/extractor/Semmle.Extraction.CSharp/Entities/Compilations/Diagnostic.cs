@@ -4,7 +4,6 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class Diagnostic : FreshEntity
     {
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
 
         private readonly Microsoft.CodeAnalysis.Diagnostic diagnostic;
 

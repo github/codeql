@@ -7,8 +7,6 @@ namespace Semmle.Extraction.CSharp.Entities
         public TypeParameterConstraints(Context cx)
             : base(cx) { }
 
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
-
         protected override void Populate(TextWriter trapFile)
         {
         }

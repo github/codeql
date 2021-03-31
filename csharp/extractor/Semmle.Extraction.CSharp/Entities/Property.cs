@@ -130,7 +130,5 @@ namespace Semmle.Extraction.CSharp.Entities
 
             public override Property Create(Context cx, IPropertySymbol init) => new Property(cx, init);
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;
     }
 }

@@ -59,8 +59,6 @@ namespace Semmle.Extraction
             var other = obj as CachedEntity<TSymbol>;
             return other?.GetType() == GetType() && Equals(other.Symbol, Symbol);
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour { get; }
     }
 
     /// <summary>

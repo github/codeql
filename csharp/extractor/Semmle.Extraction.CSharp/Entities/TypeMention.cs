@@ -130,7 +130,5 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static TypeMention Create(Context cx, TypeSyntax syntax, IEntity parent, AnnotatedTypeSymbol? type, Microsoft.CodeAnalysis.Location? loc = null) =>
             Create(cx, syntax, parent, Type.Create(cx, type?.Symbol), loc);
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }
 }

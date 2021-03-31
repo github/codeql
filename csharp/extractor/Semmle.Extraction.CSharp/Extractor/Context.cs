@@ -63,21 +63,6 @@ namespace Semmle.Extraction.CSharp
             !SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) ||
             scope.InScope(symbol);
 
-        public override void WithDuplicationGuard(Key key, Action a)
-        {
-            if (IsAssemblyScope)
-            {
-                // No need for a duplication guard when extracting assemblies,
-                // and the duplication guard could lead to method bodies being missed
-                // depending on trap import order.
-                a();
-            }
-            else
-            {
-                base.WithDuplicationGuard(key, a);
-            }
-        }
-
         public override Extraction.Entities.Location CreateLocation()
         {
             return SourceTree is null
@@ -102,20 +87,7 @@ namespace Semmle.Extraction.CSharp
         /// <param name="l">Location of the entity.</param>
         public void BindComments(Entity entity, Microsoft.CodeAnalysis.Location? l)
         {
-            var duplicationGuardKey = GetCurrentTagStackKey();
-            CommentGenerator.AddElement(entity.Label, duplicationGuardKey, l);
-        }
-
-        protected override bool IsEntityDuplicationGuarded(IEntity entity, [NotNullWhen(true)] out Extraction.Entities.Location? loc)
-        {
-            if (CreateLocation(entity.ReportingLocation) is Entities.NonGeneratedSourceLocation l)
-            {
-                loc = l;
-                return true;
-            }
-
-            loc = null;
-            return false;
+            CommentGenerator.AddElement(entity.Label, l);
         }
 
         private readonly HashSet<Label> extractedGenerics = new HashSet<Label>();

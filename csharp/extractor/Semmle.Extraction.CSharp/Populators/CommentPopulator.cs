@@ -14,20 +14,10 @@ namespace Semmle.Extraction.CSharp.Populators
         {
             cx.Try(null, null, () =>
             {
-                gen.GenerateBindings((entity, duplicationGuardKey, block, binding) =>
+                gen.GenerateBindings((entity, block, binding) =>
                 {
                     var commentBlock = Entities.CommentBlock.Create(cx, block);
-                    Action a = () =>
-                    {
-                        commentBlock.BindTo(entity, binding);
-                    };
-                    // When the duplication guard key exists, it means that the entity is guarded against
-                    // trap duplication (<see cref = "Context.BindComments(IEntity, Location)" />).
-                    // We must therefore also guard comment construction.
-                    if (duplicationGuardKey is not null)
-                        cx.WithDuplicationGuard(duplicationGuardKey, a);
-                    else
-                        a();
+                    commentBlock.BindTo(entity, binding);
                 });
             });
         }

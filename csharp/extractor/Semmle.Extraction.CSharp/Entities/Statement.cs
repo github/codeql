@@ -47,7 +47,5 @@ namespace Semmle.Extraction.CSharp.Entities
         bool IExpressionParentEntity.IsTopLevelParent => false;
 
         bool IStatementParentEntity.IsTopLevelParent => false;
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NeedsLabel;
     }
 }

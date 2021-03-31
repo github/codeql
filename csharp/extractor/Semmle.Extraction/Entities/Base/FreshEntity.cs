@@ -32,7 +32,5 @@ namespace Semmle.Extraction
         }
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
-
-        public override TrapStackBehaviour TrapStackBehaviour { get; }
     }
 }

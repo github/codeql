@@ -43,11 +43,6 @@ namespace Semmle.Extraction
         /// </summary>
         Location? ReportingLocation { get; }
 
-        /// <summary>
-        /// How the entity handles .push and .pop.
-        /// </summary>
-        TrapStackBehaviour TrapStackBehaviour { get; }
-
         void DefineLabel(TextWriter trapFile, Extractor extractor);
     }
 }

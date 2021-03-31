@@ -106,8 +106,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
-
         public override void Populate(TextWriter trapFile)
         {
             trapFile.nullability(this, Symbol.Annotation);

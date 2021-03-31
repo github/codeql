@@ -39,7 +39,5 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.local_functions(this, Symbol.Name, returnType, originalDefinition);
             ExtractRefReturn(trapFile, Symbol, this);
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NeedsLabel;
     }
 }

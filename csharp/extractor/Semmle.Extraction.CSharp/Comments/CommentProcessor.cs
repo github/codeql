@@ -24,15 +24,6 @@ namespace Semmle.Extraction.CSharp
         // Program elements sorted by location.
         private readonly SortedDictionary<Location, Label> elements = new SortedDictionary<Location, Label>(new LocationComparer());
 
-        private readonly Dictionary<Label, Key> duplicationGuardKeys = new Dictionary<Label, Key>();
-
-        private Key? GetDuplicationGuardKey(Label label)
-        {
-            if (duplicationGuardKeys.TryGetValue(label, out var duplicationGuardKey))
-                return duplicationGuardKey;
-            return null;
-        }
-
         private class LocationComparer : IComparer<Location>
         {
             public int Compare(Location? l1, Location? l2) => CommentProcessor.Compare(l1, l2);
@@ -66,14 +57,11 @@ namespace Semmle.Extraction.CSharp
         /// Called by the populator when there is a program element which can have comments.
         /// </summary>
         /// <param name="elementLabel">The label of the element in the trap file.</param>
-        /// <param name="duplicationGuardKey">The duplication guard key of the element, if any.</param>
         /// <param name="loc">The location of the element.</param>
-        public void AddElement(Label elementLabel, Key? duplicationGuardKey, Location? loc)
+        public void AddElement(Label elementLabel, Location? loc)
         {
             if (loc is not null && loc.IsInSource)
                 elements[loc] = elementLabel;
-            if (duplicationGuardKey is not null)
-                duplicationGuardKeys[elementLabel] = duplicationGuardKey;
         }
 
         // Ensure that commentBlock and element refer to the same file
@@ -94,7 +82,7 @@ namespace Semmle.Extraction.CSharp
         /// <param name="nextElement">The element after the comment block.</param>
         /// <param name="parentElement">The parent element of the comment block.</param>
         /// <param name="callback">Output binding information.</param>
-        private void GenerateBindings(
+        private static void GenerateBindings(
             Comments.CommentBlock commentBlock,
             KeyValuePair<Location, Label>? previousElement,
             KeyValuePair<Location, Label>? nextElement,
@@ -109,19 +97,19 @@ namespace Semmle.Extraction.CSharp
             if (previousElement is not null)
             {
                 var key = previousElement.Value.Value;
-                callback(key, GetDuplicationGuardKey(key), commentBlock, CommentBinding.Before);
+                callback(key, commentBlock, CommentBinding.Before);
             }
 
             if (nextElement is not null)
             {
                 var key = nextElement.Value.Value;
-                callback(key, GetDuplicationGuardKey(key), commentBlock, CommentBinding.After);
+                callback(key, commentBlock, CommentBinding.After);
             }
 
             if (parentElement is not null)
             {
                 var key = parentElement.Value.Value;
-                callback(key, GetDuplicationGuardKey(key), commentBlock, CommentBinding.Parent);
+                callback(key, commentBlock, CommentBinding.Parent);
             }
 
             // Heuristic to decide which is the "best" element associated with the comment.
@@ -171,7 +159,7 @@ namespace Semmle.Extraction.CSharp
             if (bestElement is not null)
             {
                 var label = bestElement.Value.Value;
-                callback(label, GetDuplicationGuardKey(label), commentBlock, CommentBinding.Best);
+                callback(label, commentBlock, CommentBinding.Best);
             }
         }
 
@@ -230,7 +218,7 @@ namespace Semmle.Extraction.CSharp
         }
 
         // Generate binding information for one CommentBlock.
-        private void GenerateBindings(
+        private static void GenerateBindings(
             Comments.CommentBlock block,
             ElementStack elementStack,
             KeyValuePair<Location, Label>? nextElement,
@@ -258,7 +246,7 @@ namespace Semmle.Extraction.CSharp
         /// <param name="elementStack">A stack of nested program elements.</param>
         /// <param name="cb">Where to send the results.</param>
         /// <returns>true if there are more comments to process, false otherwise.</returns>
-        private bool GenerateBindings(
+        private static bool GenerateBindings(
             IEnumerator<KeyValuePair<Location, CommentLine>> commentEnumerator,
             KeyValuePair<Location, Label>? nextElement,
             ElementStack elementStack,
@@ -347,8 +335,7 @@ namespace Semmle.Extraction.CSharp
     /// Callback for generated comment associations.
     /// </summary>
     /// <param name="elementLabel">The label of the element</param>
-    /// <param name="duplicationGuardKey">The duplication guard key of the element, if any</param>
     /// <param name="commentBlock">The comment block associated with the element</param>
     /// <param name="binding">The relationship between the commentblock and the element</param>
-    internal delegate void CommentBindingCallback(Label elementLabel, Key? duplicationGuardKey, Comments.CommentBlock commentBlock, CommentBinding binding);
+    internal delegate void CommentBindingCallback(Label elementLabel, Comments.CommentBlock commentBlock, CommentBinding binding);
 }

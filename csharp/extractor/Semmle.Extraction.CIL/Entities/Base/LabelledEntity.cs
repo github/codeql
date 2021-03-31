@@ -30,8 +30,6 @@ namespace Semmle.Extraction.CIL
             return writer.ToString();
         }
 
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
-
         public abstract IEnumerable<IExtractionProduct> Contents { get; }
     }
 }

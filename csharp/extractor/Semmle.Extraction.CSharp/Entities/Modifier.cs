@@ -138,6 +138,5 @@ namespace Semmle.Extraction.CSharp.Entities
 
             public override Modifier Create(Context cx, string init) => new Modifier(cx, init);
         }
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }
 }

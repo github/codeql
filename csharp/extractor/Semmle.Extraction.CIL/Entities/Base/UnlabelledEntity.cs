@@ -22,8 +22,6 @@ namespace Semmle.Extraction.CIL
             cx2.Extract(this);
         }
 
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
-
         public abstract IEnumerable<IExtractionProduct> Contents { get; }
     }
 }
