@@ -16,14 +16,14 @@ private module NoSQL {
     PyMongoMethods() { this in ["find_one"] }
   }
 
-  private class PyMongoCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
-    PyMongoCall() {
+  private class PyMongoClientCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
+    PyMongoClientCall() {
       this =
         API::moduleImport("pymongo")
             .getMember("MongoClient")
             .getReturn()
             .getAMember*()
-            .getMember(any(PyMongoMethods pyMongoM))
+            .getMember(any(PyMongoMethods pyMongoMethods))
             .getACall()
     }
 
@@ -42,7 +42,7 @@ private module NoSQL {
             .getMember("PyMongo")
             .getReturn()
             .getAMember*()
-            .getMember(any(PyMongoFlaskMethods pyMongoFlaskM))
+            .getMember(any(PyMongoFlaskMethods pyMongoFlaskMethods))
             .getACall()
     }
 
