@@ -42,10 +42,9 @@ class PassthroughTypeName extends string {
  * output of the templates.
  */
 class FlowConfFromUntrustedToPassthroughTypeConversion extends TaintTracking::Configuration {
-  string dstTypeName;
+  PassthroughTypeName dstTypeName;
 
   FlowConfFromUntrustedToPassthroughTypeConversion() {
-    dstTypeName instanceof PassthroughTypeName and
     this = "UntrustedToConversion" + dstTypeName
   }
 
@@ -105,11 +104,10 @@ class FlowConfPassthroughTypeConversionToTemplateExecutionCall extends TaintTrac
     isSourceConversionToPassthroughType(source, _)
   }
 
-  private predicate isSourceConversionToPassthroughType(DataFlow::TypeCastNode source, string name) {
+  private predicate isSourceConversionToPassthroughType(DataFlow::TypeCastNode source, PassthroughTypeName name) {
     exists(Type typ |
       typ = source.getResultType() and
-      typ.getUnderlyingType*().hasQualifiedName("html/template", name) and
-      name instanceof PassthroughTypeName
+      typ.getUnderlyingType*().hasQualifiedName("html/template", name)
     )
   }
 
