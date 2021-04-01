@@ -135,45 +135,14 @@ module Babel {
     Folder getFolder() { result = getJsonFile().getParentContainer() }
   }
 
-  /**
-   * An import path expression that may be transformed by `babel-plugin-root-import`.
-   */
-  private class BabelRootTransformedPathExpr extends PathExpr, Expr {
+  private class BabelPathMapping extends ImportResolution::ScopedPathMapping {
     RootImportConfig plugin;
-    string rawPath;
-    string prefix;
-    string mappedPrefix;
-    string suffix;
 
-    BabelRootTransformedPathExpr() {
-      this instanceof PathExpr and
-      plugin.appliesTo(getTopLevel()) and
-      rawPath = getStringValue() and
-      prefix = rawPath.regexpCapture("(.)/(.*)", 1) and
-      suffix = rawPath.regexpCapture("(.)/(.*)", 2) and
-      mappedPrefix = plugin.getRoot(prefix)
+    BabelPathMapping() { this = plugin.getFolder() }
+
+    override predicate replaceByPrefix(string oldPrefix, string newPrefix) {
+      plugin.getRoot(oldPrefix) = newPrefix
     }
-
-    /** Gets the configuration that applies to this path. */
-    RootImportConfig getPlugin() { result = plugin }
-
-    override string getValue() { result = mappedPrefix + "/" + suffix }
-
-    override Folder getSearchRoot(int priority) {
-      priority = 0 and
-      result = plugin.getFolder()
-    }
-  }
-
-  /**
-   * An import path transformed by `babel-plugin-root-import`.
-   */
-  private class BabelRootTransformedPath extends PathString {
-    BabelRootTransformedPathExpr pathExpr;
-
-    BabelRootTransformedPath() { this = pathExpr.getValue() }
-
-    override Folder getARootFolder() { result = pathExpr.getPlugin().getFolder() }
   }
 
   /**
