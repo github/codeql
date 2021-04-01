@@ -303,12 +303,22 @@ abstract class PathExpr extends Locatable {
   /** Gets the (unresolved) path represented by this expression. */
   abstract string getValue();
 
+  private string getMappedValue() {
+    ImportResolution::replaceByRelativePath(this, _, result)
+    or
+    not ImportResolution::replaceByRelativePath(this, _, _) and
+    result = getValue()
+  }
+
   /** Gets the root folder of priority `priority` associated with this path expression. */
   Folder getSearchRoot(int priority) {
     // We default to the enclosing module's search root, though this may be overridden.
     getEnclosingModule().searchRoot(this, result, priority)
     or
     result = getAdditionalSearchRoot(priority)
+    or
+    ImportResolution::replaceByRelativePath(this, result, _) and
+    priority = -1
   }
 
   /**
@@ -320,16 +330,16 @@ abstract class PathExpr extends Locatable {
   Folder getAdditionalSearchRoot(int priority) { none() }
 
   /** Gets the `i`th component of this path. */
-  string getComponent(int i) { result = getValue().(PathString).getComponent(i) }
+  string getComponent(int i) { result = getMappedValue().(PathString).getComponent(i) }
 
   /** Gets the number of components of this path. */
-  int getNumComponent() { result = getValue().(PathString).getNumComponent() }
+  int getNumComponent() { result = getMappedValue().(PathString).getNumComponent() }
 
   /** Gets the base name of the folder or file this path refers to. */
-  string getBaseName() { result = getValue().(PathString).getBaseName() }
+  string getBaseName() { result = getMappedValue().(PathString).getBaseName() }
 
   /** Gets the stem, that is, base name without extension, of the folder or file this path refers to. */
-  string getStem() { result = getValue().(PathString).getStem() }
+  string getStem() { result = getMappedValue().(PathString).getStem() }
 
   /**
    * Gets the extension of the folder or file this path refers to, that is, the suffix of the base name
@@ -337,7 +347,7 @@ abstract class PathExpr extends Locatable {
    *
    * Has no result if the base name does not contain a dot.
    */
-  string getExtension() { result = getValue().(PathString).getExtension() }
+  string getExtension() { result = getMappedValue().(PathString).getExtension() }
 
   /**
    * Gets the file or folder that the first `n` components of this path refer to
@@ -345,7 +355,7 @@ abstract class PathExpr extends Locatable {
    */
   pragma[nomagic]
   Container resolveUpTo(int n, int priority) {
-    result = getValue().(PathString).resolveUpTo(n, getSearchRoot(priority)).getContainer()
+    result = getMappedValue().(PathString).resolveUpTo(n, getSearchRoot(priority)).getContainer()
   }
 
   /**
@@ -419,4 +429,169 @@ abstract class PathExprCandidate extends Expr {
    */
   pragma[nomagic]
   Expr getAPart() { result = this or result = getAPart().getAChildExpr() }
+}
+
+/**
+ * Provides classes for customizing import resolution.
+ */
+module ImportResolution {
+  /**
+   * A folder in which paths should be resolved differently.
+   *
+   * The predicates in this class can be overridden by subclasses in order to control how paths
+   * should be resolved within this folder.
+   *
+   * `PathMapping` may be subclassed instead if the mapping should apply everywhere, or if more control
+   * is needed by overriding `PathMapping.replaceByRelativePath`.
+   */
+  abstract class ScopedPathMapping extends Folder {
+    /**
+     * Whenever an import path matches `regexp`, its path will be replaced by `replacement`
+     * and resolved relative to `this` (the scope of the path mapping).
+     *
+     * The `replacement` string may use `$1`, `$2` and so forth to refer to capture groups from the regexp.
+     *
+     * For example, if `regexp` is `@/(.*)` and `replacement` is `src/$1`,
+     * an import of `@/foo/bar` will be resolved as `src/foo/bar` relative to this folder.
+     *
+     * More general transformations can be implemented by overriding `replaceByRelativePath` instead.
+     */
+    predicate replaceByRegExp(string regexp, string replacement) { none() }
+
+    /**
+     * Similar to 2-argument version of `replaceByRegExp` but with `root` denoting
+     * the folder to resolve the new path from.
+     *
+     * This can be used if the redirection target is outside the scope of the path mapping itself.
+     */
+    predicate replaceByRegExp(string regexp, string replacement, Folder root) { none() }
+
+    /**
+     * Whenever an import path starts with `oldPrefix`, that prefix is replaced by `newPrefix` and
+     * the resulting path is resolved relative to `this` (the scope of the path mapping).
+     *
+     * In order to match, the prefix must be followed by a path delimeter (`/` or `\`), or match
+     * the whole string. For example, the prefix `foo` does not match `foobar/baz` but matches
+     * `foo`, `foo/`, and `foo/bar/baz`.
+     */
+    predicate replaceByPrefix(string oldPrefix, string newPrefix) { none() }
+
+    /**
+     * Whenever an import path starts with `oldPrefix`, that prefix is replaced by `newPrefix` and
+     * the resulting path is resolved relative to `root`.
+     *
+     * In order to match, the prefix must be followed by a path delimeter (`/` or `\`), or match
+     * the whole string. For example, the prefix `foo` does not match `foobar/baz` but matches
+     * `foo`, `foo/`, and `foo/bar/baz`.
+     */
+    predicate replaceByPrefix(string oldPrefix, string newPrefix, Folder root) { none() }
+  }
+
+  /**
+   * The predicates in this class can be overridden by subclasses in order to control how paths
+   * should be resolved within this folder.
+   *
+   * This is a special case of `ScopedPathMapping` where the scope is the source root folder.
+   */
+  class PathMapping extends ScopedPathMapping, Folder {
+    PathMapping() { getRelativePath() = "" }
+
+    /**
+     * Replaces the resolution target of `expr` with `root/path`, that is, `path` resolved
+     * relative to the given `root` folder.
+     */
+    predicate replaceByRelativePath(PathExpr expr, Folder root, string path) { none() }
+  }
+
+  /** Gets a path mapping effective in `folder`. */
+  pragma[noinline]
+  private ScopedPathMapping getAPathMappingInScopeAtFolder(Folder folder) {
+    result = folder
+    or
+    result = getAPathMappingInScopeAtFolder(folder.getParentContainer())
+  }
+
+  /** Gets a path mapping effective at the given path expression (it may or not actually match). */
+  pragma[noinline]
+  private ScopedPathMapping getAPathMappingInScopeOfPathExpr(PathExpr expr) {
+    result = getAPathMappingInScopeAtFolder(expr.getFile().getParentContainer())
+  }
+
+  /**
+   * Holds if `value` can be split into the given prefix and suffix without splitting up
+   * a path component. See `ScopedPathMapping.replaceByPrefix`.
+   */
+  bindingset[value, prefix]
+  private predicate matchPrefix(string value, string prefix, string suffix) {
+    value = prefix + suffix and
+    suffix.regexpMatch("(?s)^$|[/\\\\].*") // prefix must be followed by delimeter or the end of the string
+  }
+
+  /** Gets a path mapping that matches `expr`. */
+  pragma[noinline]
+  private ScopedPathMapping getAMatchingPathMapping(PathExpr expr) {
+    result = getAPathMappingInScopeOfPathExpr(expr) and
+    (
+      exists(string regexp |
+        result.replaceByRegExp(regexp, _) or result.replaceByRegExp(regexp, _, _)
+      |
+        expr.(Expr).getStringValue().regexpMatch(regexp)
+      )
+      or
+      exists(string prefix |
+        result.replaceByPrefix(prefix, _) or result.replaceByPrefix(prefix, _, _)
+      |
+        matchPrefix(expr.(Expr).getStringValue(), prefix, _)
+      )
+    )
+    or
+    result.(PathMapping).replaceByRelativePath(expr, _, _)
+  }
+
+  /** Gets the most specific path mapping that matches `expr`. */
+  language[monotonicAggregates]
+  pragma[noinline]
+  private ScopedPathMapping getMostSpecificPathMapping(PathExpr expr) {
+    result =
+      max(ScopedPathMapping mapping |
+        mapping = getAMatchingPathMapping(expr)
+      |
+        mapping order by mapping.getRelativePath().length()
+      )
+  }
+
+  /**
+   * INTERNAL. DO NOT USE.
+   *
+   * Holds if the root of `expr` should be replaced by `root/path`, taking into account
+   * contributions all path mappings.
+   */
+  predicate replaceByRelativePath(PathExpr expr, Folder root, string path) {
+    exists(ScopedPathMapping mapping | mapping = getMostSpecificPathMapping(expr) |
+      mapping.(PathMapping).replaceByRelativePath(expr, root, path)
+      or
+      exists(string regexp, string replacement |
+        mapping.replaceByRegExp(regexp, replacement) and root = mapping
+        or
+        mapping.replaceByRegExp(regexp, replacement, root)
+      |
+        path = expr.(Expr).getStringValue().regexpReplaceAll(regexp, replacement)
+      )
+      or
+      exists(string prefix, string replacement, string suffix |
+        mapping.replaceByPrefix(prefix, replacement) and root = mapping
+        or
+        mapping.replaceByPrefix(prefix, replacement, root)
+      |
+        matchPrefix(expr.(Expr).getStringValue(), prefix, suffix) and
+        path = replacement + suffix
+      )
+    )
+  }
+
+  private class MappedPathString extends PathString {
+    MappedPathString() { replaceByRelativePath(_, _, this) }
+
+    override Folder getARootFolder() { replaceByRelativePath(_, result, this) }
+  }
 }

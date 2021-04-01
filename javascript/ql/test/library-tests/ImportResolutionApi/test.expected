@@ -1,0 +1,9 @@
+| packages/pack1/src/components/calendar/index.js:1:1:1:57 | import  ... ation"; | @/components/notification | packages/pack1/src/components/notification/index.js:1:1:3:0 | <toplevel> |
+| packages/pack1/src/components/calendar/index.js:2:1:2:55 | import  ... ation"; | SOURCE/components/notification | packages/pack1/src/components/notification/index.js:1:1:3:0 | <toplevel> |
+| packages/pack2/src/components/monitor/index.js:1:1:1:57 | import  ... ation"; | @/components/notification | packages/pack2/src/components/notification/index.js:1:1:3:0 | <toplevel> |
+| packages/pack2/src/components/monitor/index.js:2:1:2:55 | import  ... ation"; | SOURCE/components/notification | packages/pack2/src/components/notification/index.js:1:1:3:0 | <toplevel> |
+| packages/pack2/src/components/monitor/index.js:4:1:4:24 | import  ... EXACT"; | EXACT | packages/pack2/exact-imported.js:1:1:2:0 | <toplevel> |
+| packages/pack2/src/components/monitor/index.js:5:1:5:25 | import  ... OURCE"; | SOURCE | packages/pack2/src/index.js:1:1:2:0 | <toplevel> |
+| packages/pack2/src/components/special/index.js:1:1:1:57 | import  ... ation"; | @/components/notification | packages/pack2/src/components/notification/index.js:1:1:3:0 | <toplevel> |
+| packages/pack2/src/components/special/index.js:2:1:2:55 | import  ... ation"; | SOURCE/components/notification | packages/pack2/src/components/notification/index.js:1:1:3:0 | <toplevel> |
+| packages/pack2/src/components/special/index.js:4:1:4:24 | import  ... EXACT"; | EXACT | packages/pack2/special.js:1:1:2:0 | <toplevel> |
