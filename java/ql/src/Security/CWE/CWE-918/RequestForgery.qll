@@ -8,6 +8,9 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.StringFormat
 
+/**
+ * Holds if taint is propagated from `pred` to `succ`.
+ */
 predicate requestForgeryStep(DataFlow::Node pred, DataFlow::Node succ) {
   // propagate to a URI when its host is assigned to
   exists(UriCreation c | c.getHostArg() = pred.asExpr() | succ.asExpr() = c)
@@ -205,6 +208,9 @@ private class HostnameSanitzingPrefix extends CompileTimeConstantExpr {
     )
   }
 
+  /**
+   * Gets the offset in this constant string where a sanitizing substring begins.
+   */
   int getOffset() { result = offset }
 }
 
@@ -241,6 +247,11 @@ private MethodAccess getAChainedAppend(Expr e) {
   result.getCallee().getName() = "append"
 }
 
+/**
+ * An expression that is sanitized because it is concatenated onto a string that looks like
+ * a hostname or a URL separator, preventing the appended string from arbitrarily controlling
+ * the addressed server.
+ */
 class HostnameSanitizedExpr extends Expr {
   HostnameSanitizedExpr() {
     // Sanitize expressions that come after a sanitizing prefix in a tree of string additions:
