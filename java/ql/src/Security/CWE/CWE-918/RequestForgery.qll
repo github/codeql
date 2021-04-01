@@ -229,10 +229,36 @@ private MethodAccess getNextAppend(MethodAccess append) {
   result = any(StringBuilderVar sbv).getNextAppend(append)
 }
 
+private Expr getQualifier(MethodAccess e) { result = e.getQualifier() }
+
+private MethodAccess getAChainedAppend(Expr e) {
+  (
+    result.getQualifier() = e
+    or
+    result.getQualifier() = getAChainedAppend(e)
+  ) and
+  result.getCallee().getDeclaringType() instanceof StringBuildingType and
+  result.getCallee().getName() = "append"
+}
+
 class HostnameSanitizedExpr extends Expr {
   HostnameSanitizedExpr() {
     // Sanitize expressions that come after a sanitizing prefix in a tree of string additions:
     this = getASanitizedAddOperand()
+    or
+    // Sanitize all appends to a StringBuilder that is initialized with a sanitizing prefix:
+    // (note imprecision: if the same StringBuilder/StringBuffer has more than one constructor call,
+    //  this sanitizes all of its append calls, not just those that may follow the constructor).
+    exists(StringBuilderVar sbv, ConstructorCall constructor, Expr initializer |
+      initializer = sbv.getAnAssignedValue() and
+      constructor = getQualifier*(initializer) and
+      constructor.getArgument(0) instanceof HostnameSanitzingPrefix and
+      (
+        this = sbv.getAnAppend().getArgument(0)
+        or
+        this = getAChainedAppend(constructor).getArgument(0)
+      )
+    )
     or
     // Sanitize expressions that come after a sanitizing prefix in a sequence of StringBuilder operations:
     exists(MethodAccess appendSanitizingConstant, MethodAccess subsequentAppend |
