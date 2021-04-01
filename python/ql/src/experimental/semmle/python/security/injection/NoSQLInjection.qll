@@ -36,8 +36,8 @@ class JSONRelatedSink extends DataFlow::Node {
   }
 }
 
-class NoSQLInjectionConfig extends TaintTracking::Configuration {
-  NoSQLInjectionConfig() { this = "NoSQLInjectionConfig" }
+class RFStoJSON extends TaintTracking::Configuration {
+  RFStoJSON() { this = "RFStoJSON" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
@@ -49,8 +49,8 @@ class NoSQLInjectionConfig extends TaintTracking::Configuration {
 }
 
 // better name?
-class FromJSONConfig extends TaintTracking2::Configuration {
-  FromJSONConfig() { this = "FromJSONConfig" }
+class FromJSONtoSink extends TaintTracking2::Configuration {
+  FromJSONtoSink() { this = "FromJSONtoSink" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof JSONRelatedSink }
 
@@ -65,8 +65,7 @@ class FromJSONConfig extends TaintTracking2::Configuration {
 
 predicate noSQLInjectionFlow(CustomPathNode source, CustomPathNode sink) {
   exists(
-    FromJSONConfig config, DataFlow::PathNode mid1, DataFlow2::PathNode mid2,
-    NoSQLInjectionConfig config2
+    RFStoJSON config, DataFlow::PathNode mid1, DataFlow2::PathNode mid2, FromJSONtoSink config2
   |
     config.hasFlowPath(source.asNode1(), mid1) and
     config2.hasFlowPath(mid2, sink.asNode2()) and
