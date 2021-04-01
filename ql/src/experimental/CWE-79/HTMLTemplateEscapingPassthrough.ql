@@ -18,11 +18,11 @@ import DataFlow::PathGraph
  * and `conversionSink` gets populated with the node where the conversion happens.
  */
 predicate flowsFromUntrustedToConversion(
-  DataFlow::PathNode untrusted, string targetType, DataFlow::PathNode conversionSink
+  DataFlow::Node untrusted, string targetType, DataFlow::Node conversionSink
 ) {
-  exists(FlowConfFromUntrustedToPassthroughTypeConversion cfg, DataFlow::PathNode source |
-    cfg.hasFlowPath(source, conversionSink) and
-    source.getNode() = untrusted.getNode() and
+  exists(FlowConfFromUntrustedToPassthroughTypeConversion cfg, DataFlow::Node source |
+    cfg.hasFlow(source, conversionSink) and
+    source = untrusted and
     targetType = cfg.getDstTypeName()
   )
 }
@@ -70,15 +70,15 @@ class FlowConfFromUntrustedToPassthroughTypeConversion extends TaintTracking::Co
  * Holds if the provided `conversion` node flows into the provided `execSink`.
  */
 predicate flowsFromConversionToExec(
-  DataFlow::PathNode conversion, string targetType, DataFlow::PathNode execSink
+  DataFlow::Node conversion, string targetType, DataFlow::Node execSink
 ) {
   exists(
-    FlowConfPassthroughTypeConversionToTemplateExecutionCall cfg, DataFlow::PathNode source,
-    DataFlow::PathNode execSinkLocal
+    FlowConfPassthroughTypeConversionToTemplateExecutionCall cfg, DataFlow::Node source,
+    DataFlow::Node execSinkLocal
   |
-    cfg.hasFlowPath(source, execSinkLocal) and
-    source.getNode() = conversion.getNode() and
-    execSink.getNode() = execSinkLocal.getNode() and
+    cfg.hasFlow(source, execSinkLocal) and
+    source = conversion and
+    execSink = execSinkLocal and
     targetType = cfg.getDstTypeName()
   )
 }
@@ -104,7 +104,9 @@ class FlowConfPassthroughTypeConversionToTemplateExecutionCall extends TaintTrac
     isSourceConversionToPassthroughType(source, _)
   }
 
-  private predicate isSourceConversionToPassthroughType(DataFlow::TypeCastNode source, PassthroughTypeName name) {
+  private predicate isSourceConversionToPassthroughType(
+    DataFlow::TypeCastNode source, PassthroughTypeName name
+  ) {
     exists(Type typ |
       typ = source.getResultType() and
       typ.getUnderlyingType*().hasQualifiedName("html/template", name)
@@ -162,9 +164,9 @@ where
   // C = template execution call
   // Flows:
   // A -> B
-  flowsFromUntrustedToConversion(untrustedSource, targetTypeName, conversion) and
+  flowsFromUntrustedToConversion(untrustedSource.getNode(), targetTypeName, conversion.getNode()) and
   // B -> C
-  flowsFromConversionToExec(conversion, targetTypeName, templateExecCall) and
+  flowsFromConversionToExec(conversion.getNode(), targetTypeName, templateExecCall.getNode()) and
   // A -> C
   flowsFromUntrustedToExec(untrustedSource, templateExecCall)
 select templateExecCall.getNode(), untrustedSource, templateExecCall,
