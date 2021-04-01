@@ -17,18 +17,18 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.ApiGraphs
 import DataFlow::PathGraph
-import semmle.python.frameworks.Flask
 
-class WerkzeugHeader extends DataFlow::Node {
-  WerkzeugHeader() {
-    exists(DataFlow::CallCfgNode headerInstance, DataFlow::AttrRead addMethod |
-      headerInstance =
+class WerkzeugHeaderCall extends DataFlow::CallCfgNode {
+  WerkzeugHeaderCall() {
+    exists(DataFlow::AttrRead addMethod |
+      this.getFunction() = addMethod and
+      addMethod.getObject().getALocalSource() =
         API::moduleImport("werkzeug").getMember("datastructures").getMember("Headers").getACall() and
-      addMethod.getAttributeName() = "add" and
-      addMethod.getObject().getALocalSource() = headerInstance and
-      this = addMethod.(DataFlow::CallCfgNode).getArg(1)
+      addMethod.getAttributeName() = "add"
     )
   }
+
+  DataFlow::Node getHeaderInputNode() { result = this.getArg(1) }
 }
 
 class FlaskHeader extends DataFlow::Node {
