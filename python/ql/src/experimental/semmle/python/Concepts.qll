@@ -14,7 +14,7 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 
-/** Provides classes for modeling JWT-related APIs. */
+/** Provides classes for modeling JWT encoding-related APIs. */
 module JWTEncoding {
   /**
    * A data-flow node that collects methods encoding a JWT token.
@@ -41,7 +41,7 @@ module JWTEncoding {
 }
 
 /**
- * A data-flow node that collect methods immediately executing an expression.
+ * A data-flow node that collects methods encoding a JWT token.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `JWTEncoding::Range` instead.
@@ -58,7 +58,7 @@ class JWTEncoding extends DataFlow::Node {
   string getAlgorithm() { result = range.getAlgorithm() }
 }
 
-/** Provides classes for modeling Regular Expression escape-related APIs. */
+/** Provides classes for modeling JWT decoding-related APIs. */
 module JWTDecoding {
   /**
    * A data-flow node that collects functions escaping regular expressions.
@@ -72,7 +72,7 @@ module JWTDecoding {
 }
 
 /**
- * A data-flow node that collects functions escaping regular expressions.
+ * A data-flow node that collects methods encoding a JWT token.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `JWTDecoding::Range` instead.
