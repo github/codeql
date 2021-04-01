@@ -31,8 +31,10 @@ class WerkzeugHeaderCall extends DataFlow::CallCfgNode {
   DataFlow::Node getHeaderInputNode() { result = this.getArg(1) }
 }
 
-class FlaskHeader extends DataFlow::Node {
-  FlaskHeader() {
+class FlaskHeaderCall extends DataFlow::CallCfgNode {
+  DataFlow::Node headerInputNode;
+
+  FlaskHeaderCall() {
     exists(
       DataFlow::CallCfgNode headerInstance, DataFlow::AttrRead responseMethod,
       AssignStmt sinkDeclaration
@@ -41,9 +43,12 @@ class FlaskHeader extends DataFlow::Node {
       responseMethod.getAttributeName() = "headers" and
       responseMethod.getObject().getALocalSource() = headerInstance and
       sinkDeclaration.getATarget() = responseMethod.asExpr().getParentNode() and
-      this.asExpr() = sinkDeclaration.getValue()
+      headerInputNode.asExpr() = sinkDeclaration.getValue() and
+      this.getFunction() = responseMethod
     )
   }
+
+  DataFlow::Node getHeaderInputNode() { result = headerInputNode }
 }
 
 class FlaskMakeResponse extends DataFlow::Node {
@@ -69,8 +74,8 @@ class FlaskMakeResponse extends DataFlow::Node {
 
 class HeaderInjectionSink extends DataFlow::Node {
   HeaderInjectionSink() {
-    this instanceof WerkzeugHeader or
-    this instanceof FlaskHeader or
+    this instanceof WerkzeugHeaderCall or
+    this instanceof FlaskHeaderCall or
     this instanceof FlaskMakeResponse
   }
 }
