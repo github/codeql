@@ -18,7 +18,7 @@ import DataFlow::PathGraph
  * and `conversionSink` gets populated with the node where the conversion happens.
  */
 predicate flowsFromUntrustedToConversion(
-  DataFlow::Node untrusted, string targetType, DataFlow::Node conversionSink
+  DataFlow::Node untrusted, PassthroughTypeName targetType, DataFlow::Node conversionSink
 ) {
   exists(FlowConfFromUntrustedToPassthroughTypeConversion cfg, DataFlow::Node source |
     cfg.hasFlow(source, conversionSink) and
@@ -51,15 +51,14 @@ class FlowConfFromUntrustedToPassthroughTypeConversion extends TaintTracking::Co
   /**
    * Gets the name of conversion's destination type.
    */
-  string getDstTypeName() { result = dstTypeName }
+  PassthroughTypeName getDstTypeName() { result = dstTypeName }
 
   override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
-  private predicate isSinkToPassthroughType(DataFlow::TypeCastNode sink, string name) {
+  private predicate isSinkToPassthroughType(DataFlow::TypeCastNode sink, PassthroughTypeName name) {
     exists(Type typ |
       typ = sink.getResultType() and
-      typ.getUnderlyingType*().hasQualifiedName("html/template", name) and
-      name instanceof PassthroughTypeName
+      typ.getUnderlyingType*().hasQualifiedName("html/template", name)
     )
   }
 
@@ -70,7 +69,7 @@ class FlowConfFromUntrustedToPassthroughTypeConversion extends TaintTracking::Co
  * Holds if the provided `conversion` node flows into the provided `execSink`.
  */
 predicate flowsFromConversionToExec(
-  DataFlow::Node conversion, string targetType, DataFlow::Node execSink
+  DataFlow::Node conversion, PassthroughTypeName targetType, DataFlow::Node execSink
 ) {
   exists(
     FlowConfPassthroughTypeConversionToTemplateExecutionCall cfg, DataFlow::Node source,
@@ -88,17 +87,16 @@ predicate flowsFromConversionToExec(
  * to a PassthroughType flows to a template execution call.
  */
 class FlowConfPassthroughTypeConversionToTemplateExecutionCall extends TaintTracking::Configuration {
-  string dstTypeName;
+  PassthroughTypeName dstTypeName;
 
   FlowConfPassthroughTypeConversionToTemplateExecutionCall() {
-    dstTypeName instanceof PassthroughTypeName and
     this = "ConversionToExec" + dstTypeName
   }
 
   /**
    * Gets the name of conversion's destination type.
    */
-  string getDstTypeName() { result = dstTypeName }
+  PassthroughTypeName getDstTypeName() { result = dstTypeName }
 
   override predicate isSource(DataFlow::Node source) {
     isSourceConversionToPassthroughType(source, _)
@@ -156,8 +154,8 @@ predicate flowsFromUntrustedToExec(DataFlow::PathNode untrusted, DataFlow::PathN
 }
 
 from
-  DataFlow::PathNode untrustedSource, DataFlow::PathNode templateExecCall, string targetTypeName,
-  DataFlow::PathNode conversion
+  DataFlow::PathNode untrustedSource, DataFlow::PathNode templateExecCall,
+  PassthroughTypeName targetTypeName, DataFlow::PathNode conversion
 where
   // A = untrusted remote flow source
   // B = conversion to PassthroughType
