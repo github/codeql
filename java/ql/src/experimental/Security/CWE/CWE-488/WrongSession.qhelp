@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The software does not sufficiently enforce boundaries between the states of different sessions, causing data to be 
+provided to, or used by, the wrong session.</p>
+
+</overview>
+<recommendation>
+
+<p>Do not use member fields to store information in the Servlet.</p>
+
+</recommendation>
+<example>
+
+<p>The following examples show the bad case and the good case respectively.Bad case, such as <code>bad1</code> to 
+<code>bad3</code>, when a non-<code>final</code> member field is used to store user input and the verification is 
+ incorrect, there may be information leakage. Good case, such as <code>good1</code> to <code>good3</code>, after
+ correct processing of user input, assign values to non-<code>final</code> member variables.</p>
+
+<sample src="WrongSession.java" />
+
+</example>
+<references>
+
+<li>
+  Java owasp: Members of Spring components should be injected: 
+  <a href="https://rules.sonarsource.com/java/tag/owasp/RSPEC-3749">Members of Spring components should be injected</a>
+</li>
+
+<li>
+  Common Architectural Weakness Enumeration (CAWE): 
+  <a href="https://www.serc.net/wp-content/uploads/2017/08/SC2017S_05.3_CAWE_S.pdf">Architectural Weaknesses vs Bugs</a>
+</li>
+
+</references>
+</qhelp>

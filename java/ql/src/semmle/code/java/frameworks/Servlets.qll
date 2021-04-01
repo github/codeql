@@ -337,3 +337,16 @@ predicate isRequestGetParamMethod(MethodAccess ma) {
   ma.getMethod() instanceof ServletRequestGetParameterMapMethod or
   ma.getMethod() instanceof HttpServletRequestGetQueryStringMethod
 }
+
+/**
+ * The method is `doGet` or `doPost`.
+ */
+class ServletRequestMethod extends Method {
+  ServletRequestMethod() {
+    this.getDeclaringType() instanceof ServletClass and
+    this.getNumberOfParameters() = 2 and
+    this.getParameter(0).getType() instanceof ServletRequest and
+    this.getParameter(1).getType() instanceof ServletResponse and
+    this.getName().regexpMatch("doGet|doPost")
+  }
+}

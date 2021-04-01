@@ -1,0 +1,19 @@
+edges
+| WrongSession.java:19:22:19:35 | greetee : String | WrongSession.java:21:24:21:48 | parseInt(...) |
+| WrongSession.java:30:22:30:35 | greetee : String | WrongSession.java:32:20:32:26 | greetee |
+| WrongSession.java:40:22:40:35 | greetee : String | WrongSession.java:43:20:43:26 | greetee |
+| WrongSessionServlet1.java:14:26:14:52 | getParameter(...) : String | WrongSessionServlet1.java:17:19:17:25 | greetee |
+nodes
+| WrongSession.java:19:22:19:35 | greetee : String | semmle.label | greetee : String |
+| WrongSession.java:21:24:21:48 | parseInt(...) | semmle.label | parseInt(...) |
+| WrongSession.java:30:22:30:35 | greetee : String | semmle.label | greetee : String |
+| WrongSession.java:32:20:32:26 | greetee | semmle.label | greetee |
+| WrongSession.java:40:22:40:35 | greetee : String | semmle.label | greetee : String |
+| WrongSession.java:43:20:43:26 | greetee | semmle.label | greetee |
+| WrongSessionServlet1.java:14:26:14:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| WrongSessionServlet1.java:17:19:17:25 | greetee | semmle.label | greetee |
+#select
+| WrongSession.java:21:24:21:48 | parseInt(...) | WrongSession.java:19:22:19:35 | greetee : String | WrongSession.java:21:24:21:48 | parseInt(...) | Wrong session might include code from $@. | WrongSession.java:19:22:19:35 | greetee | this user input |
+| WrongSession.java:32:20:32:26 | greetee | WrongSession.java:30:22:30:35 | greetee : String | WrongSession.java:32:20:32:26 | greetee | Wrong session might include code from $@. | WrongSession.java:30:22:30:35 | greetee | this user input |
+| WrongSession.java:43:20:43:26 | greetee | WrongSession.java:40:22:40:35 | greetee : String | WrongSession.java:43:20:43:26 | greetee | Wrong session might include code from $@. | WrongSession.java:40:22:40:35 | greetee | this user input |
+| WrongSessionServlet1.java:17:19:17:25 | greetee | WrongSessionServlet1.java:14:26:14:52 | getParameter(...) : String | WrongSessionServlet1.java:17:19:17:25 | greetee | Wrong session might include code from $@. | WrongSessionServlet1.java:14:26:14:52 | getParameter(...) | this user input |
