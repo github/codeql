@@ -199,15 +199,15 @@ private string getComponent(PathString str, int n, Path base, Folder root, boole
       prevTS = false and
       inTS = true and
       result =
-        TypeScriptOutDir::getOriginalTypeScriptFolder(str.getComponent(n), base.getContainer())
+        TypeScriptFileMapping::getOriginalTypeScriptFolder(str.getComponent(n), base.getContainer())
     )
   )
 }
 
 /**
- * Predicates for resolving imports to compiled TypeScript.
+ * Predicates for resolving imports based on the contents of `tsconfig.json`.
  */
-private module TypeScriptOutDir {
+private module TypeScriptFileMapping {
   /**
    * Gets a folder of TypeScript files that is compiled to JavaScript files in `outdir` relative to a `parent`.
    */
@@ -284,6 +284,64 @@ private module TypeScriptOutDir {
   pragma[inline]
   private string getRootDir(JSONObject tsconfig) {
     result = tsconfig.getPropValue("compilerOptions").getPropValue("rootDir").getStringValue()
+  }
+
+  /** Holds if the given `tsconfig.json` object has a `paths` mapping from `pattern` to `target`. */
+  pragma[noinline]
+  private predicate hasPathMapping(JSONObject tsconfig, string pattern, string target) {
+    tsconfig
+        .getPropValue("compilerOptions")
+        .getPropValue("paths")
+        .getPropValue(pattern)
+        .getElementValue(_)
+        .getStringValue() = target
+  }
+
+  /**
+   * Gets the `baseUrl` value of the given `tsconfig`, if it exists.
+   *
+   * Note that this property is required for `"paths"` to work, so there is no
+   * fallback value if it is omitted.
+   */
+  pragma[noinline]
+  private string getBaseUrl(JSONObject tsconfig) {
+    result = tsconfig.getPropValue("compilerOptions").getPropValue("baseUrl").getStringValue()
+  }
+
+  /**
+   * Gets the directory referred to by the `baseUrl` of the given `tsconfig`.
+   */
+  pragma[noinline]
+  private Folder getBaseUrlFolder(JSONObject tsconfig) {
+    exists(string dirname |
+      dirname = getBaseUrl(tsconfig).replaceAll("\\", "/") and
+      result.getRelativePath() =
+        (tsconfig.getFile().getParentContainer().getRelativePath() + "/" + dirname)
+            .regexpReplaceAll("/\\.?(?=$|/)", "")
+    )
+  }
+
+  /** Holds if the given `tsconfig.json` object has a `paths` mapping the given `prefix` to `replacement`. */
+  pragma[noinline]
+  private predicate hasPathMappingPrefix(JSONObject tsconfig, string prefix, string replacement) {
+    hasPathMapping(tsconfig, prefix + "*", replacement + "*")
+    or
+    hasPathMapping(tsconfig, prefix, replacement) and
+    not prefix.matches("%*%")
+  }
+
+  class TSConfigPathMapping extends ImportResolution::ScopedPathMapping {
+    JSONObject tsconfig;
+
+    TSConfigPathMapping() {
+      hasPathMappingPrefix(tsconfig, _, _) and
+      this = tsconfig.getFile().getParentContainer()
+    }
+
+    override predicate replaceByPrefix(string oldPrefix, string newPrefix, Folder root) {
+      hasPathMappingPrefix(tsconfig, oldPrefix, newPrefix) and
+      root = getBaseUrlFolder(tsconfig)
+    }
   }
 }
 
