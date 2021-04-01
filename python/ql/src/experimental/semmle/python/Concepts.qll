@@ -67,9 +67,6 @@ module JWTDecoding {
    * extend `JWTDecoding` instead.
    */
   abstract class Range extends DataFlow::Node {
-    /**
-     * Gets the argument containing the escaped expression.
-     */
     abstract predicate verifiesSignature();
   }
 }
