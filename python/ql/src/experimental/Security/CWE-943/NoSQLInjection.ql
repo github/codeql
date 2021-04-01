@@ -15,4 +15,5 @@ import experimental.semmle.python.security.injection.NoSQLInjection
 
 from CustomPathNode source, CustomPathNode sink
 where noSQLInjectionFlow(source, sink)
-select source, sink
+select sink, source, sink, "$@ NoSQL query contains an unsanitized $@", sink, "This", source,
+  "user-provided value"
