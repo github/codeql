@@ -18,7 +18,13 @@ import DataFlow::PathGraph
 class RequestForgeryConfiguration extends TaintTracking::Configuration {
   RequestForgeryConfiguration() { this = "Server Side Request Forgery" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  override predicate isSource(DataFlow::Node source) {
+    source instanceof RemoteFlowSource and
+    // Exclude results of remote HTTP requests: fetching something else based on that result
+    // is no worse than following a redirect returned by the remote server, and typically
+    // we're requesting a resource via https which we trust to only send us to safe URLs.
+    not source.asExpr().(MethodAccess).getCallee() instanceof URLConnectionGetInputStreamMethod
+  }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof RequestForgerySink }
 
