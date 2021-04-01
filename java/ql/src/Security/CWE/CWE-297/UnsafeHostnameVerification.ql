@@ -15,6 +15,7 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.Encryption
 import DataFlow::PathGraph
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * Holds if `m` always returns `true` ignoring any exceptional flow.
@@ -49,14 +50,7 @@ class TrustAllHostnameVerifierConfiguration extends DataFlow::Configuration {
     source.asExpr().(ClassInstanceExpr).getConstructedType() instanceof TrustAllHostnameVerifier
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma, Method m |
-      (m instanceof SetDefaultHostnameVerifierMethod or m instanceof SetHostnameVerifierMethod) and
-      ma.getMethod() = m
-    |
-      ma.getArgument(0) = sink.asExpr()
-    )
-  }
+  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "set-hostname") }
 
   override predicate isBarrier(DataFlow::Node barrier) {
     // ignore nodes that are in functions that intentionally disable hostname verification

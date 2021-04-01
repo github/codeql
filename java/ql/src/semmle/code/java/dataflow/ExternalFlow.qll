@@ -207,7 +207,10 @@ private predicate sinkModelCsv(string row) {
       "java.nio.file;Files;false;createTempDirectory;;;Argument[0];create-file",
       "java.nio.file;Files;false;createTempFile;;;Argument[0];create-file",
       // Bean validation
-      "javax.validation;ConstraintValidatorContext;true;buildConstraintViolationWithTemplate;;;Argument[0];bean-validation"
+      "javax.validation;ConstraintValidatorContext;true;buildConstraintViolationWithTemplate;;;Argument[0];bean-validation",
+      // Set hostname
+      "javax.net.ssl;HttpsURLConnection;true;setDefaultHostnameVerifier;;;Argument[0];set-hostname",
+      "javax.net.ssl;HttpsURLConnection;true;setHostnameVerifier;;;Argument[0];set-hostname"
     ]
 }
 
