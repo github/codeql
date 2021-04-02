@@ -62,7 +62,7 @@ func (l *Labeler) GlobalID(key string) Label {
 	return label
 }
 
-// FileLabel returns the label for the file with which the trap writer is associated
+// FileLabel returns the label for a file with path `path`.
 func (l *Labeler) FileLabel() Label {
 	if l.fileLabel == InvalidLabel {
 		l.fileLabel = l.GlobalID(l.tw.path + ";sourcefile")
@@ -71,8 +71,8 @@ func (l *Labeler) FileLabel() Label {
 }
 
 // FileLabelFor returns the label for the file for which the trap writer `tw` is associated
-func (l *Labeler) FileLabelFor(tw *Writer) Label {
-	return l.GlobalID(tw.path + ";sourcefile")
+func (l *Labeler) FileLabelFor(path string) Label {
+	return l.GlobalID(path + ";sourcefile")
 }
 
 // LocalID associates a label with the given AST node `nd` and returns it
