@@ -12,6 +12,7 @@ import semmle.code.java.frameworks.spring.SpringConstructorArg
 import semmle.code.java.frameworks.spring.SpringController
 import semmle.code.java.frameworks.spring.SpringDescription
 import semmle.code.java.frameworks.spring.SpringEntry
+import semmle.code.java.frameworks.spring.SpringErrors
 import semmle.code.java.frameworks.spring.SpringFlex
 import semmle.code.java.frameworks.spring.SpringIdRef
 import semmle.code.java.frameworks.spring.SpringImport
