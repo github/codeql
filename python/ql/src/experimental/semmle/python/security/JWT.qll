@@ -4,8 +4,17 @@ import semmle.python.dataflow.new.DataFlow
 
 predicate isEmptyOrNone(DataFlow::Node arg) { isEmpty(arg) or isNone(arg) }
 
-predicate isEmpty(DataFlow::Node arg) { arg.asExpr().(Str_).getS() = "" }
+predicate isEmpty(DataFlow::Node arg) {
+  exists(StrConst emptyString |
+    emptyString.getText() = "" and
+    DataFlow::exprNode(emptyString).(DataFlow::LocalSourceNode).flowsTo(arg)
+  )
+}
 
 predicate isNone(DataFlow::Node arg) {
-  exists(NameConstant noneName | noneName.getId() = "None" and arg.asExpr() = noneName)
+  exists( | DataFlow::exprNode(any(None no)).(DataFlow::LocalSourceNode).flowsTo(arg))
+}
+
+predicate isFalse(DataFlow::Node arg) {
+  exists( | DataFlow::exprNode(any(False falseExpr)).(DataFlow::LocalSourceNode).flowsTo(arg))
 }
