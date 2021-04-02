@@ -177,25 +177,12 @@ class Folder extends Container, @folder {
   override string getURL() { result = "folder://" + getAbsolutePath() }
 }
 
-/** A file. */
-class File extends Container, @file, Documentable, ExprParent, GoModExprParent, DeclParent,
-  ScopeNode {
-  string path;
-
-  File() {
-    files(this, path, _, _, _) and
-    (
-      // Exclude `.go` files that have not been extracted. Non-extracted files only exist in the `files`
-      // table if we are reporting compilation errors relating to them in the `diagnostics` table.
-      not path.matches("%.go")
-      or
-      exists(this.getAChild())
-    )
-  }
-
+/** Any file, including files that have not been extracted but must exist as locations for errors. */
+class DiagnosticFile extends Container, @file, Documentable, ExprParent, GoModExprParent,
+  DeclParent, ScopeNode {
   override Location getLocation() { has_location(this, result) }
 
-  override string getAbsolutePath() { result = path }
+  override string getAbsolutePath() { files(this, result, _, _, _) }
 
   /** Gets the number of lines in this file. */
   int getNumberOfLines() { numlines(this, result, _, _) }
@@ -265,4 +252,15 @@ class File extends Container, @file, Documentable, ExprParent, GoModExprParent, 
   int getNumCommentGroups() { result = count(getACommentGroup()) }
 
   override string getAPrimaryQlClass() { result = "File" }
+}
+
+/** A file that has been extracted. */
+class File extends DiagnosticFile {
+  File() {
+    // getAChild is specifically for the Go SAT and so does not apply to non-go files
+    // we care about all non-go extracted files, as only go files can have `@file` entries due to requiring a file entry for diagnostic errors
+    not this.getExtension() = "go"
+    or
+    exists(this.getAChild())
+  }
 }

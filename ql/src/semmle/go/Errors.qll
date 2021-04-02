@@ -19,7 +19,7 @@ class Error extends @error {
   int getIndex() { errors(this, _, _, _, _, _, _, _, result) }
 
   /** Gets the file in which this error was reported, if it can be determined. */
-  File getFile() { hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
+  DiagnosticFile getFile() { hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
 
   /**
    * Holds if this element is at the specified location.
