@@ -1,4 +1,4 @@
-from flask import Response, request, Flask
+from flask import Response, request, Flask, make_response
 from werkzeug.datastructures import Headers
 
 app = Flask(__name__)
@@ -35,7 +35,7 @@ def flask_make_response_extend():
     rfs_header = request.args["rfs_header"]
     resp = make_response("hello")
     resp.headers.extend(
-        {'HeaderName': request.args["rfs_header"]})
+        {'HeaderName': rfs_header})
     return resp
 
 
