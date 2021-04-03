@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import experimental.semmle.python.security.JWT
 
 private module JWT {
   private class PyJWTEncodeCall extends DataFlow::CallCfgNode, JWTEncoding::Range {
@@ -23,22 +24,25 @@ private module JWT {
       result = this.getArgByName("algorithm")
     }
 
-    override string getAlgorithm() { result = getAlgorithmNode().asExpr().(Str_).getS() }
+    override string getAlgorithm() {
+      exists(StrConst str |
+        DataFlow::exprNode(str).(DataFlow::LocalSourceNode).flowsTo(getAlgorithmNode()) and
+        result = str.getText()
+      )
+    }
   }
 
   private class PyJWTDecodeCall extends DataFlow::CallCfgNode, JWTDecoding::Range {
     PyJWTDecodeCall() { this = API::moduleImport("jwt").getMember("decode").getACall() }
 
     override predicate verifiesSignature() {
-      not exists(NameConstant falseName |
+      not isFalse(this.getArgByName("verify"))
+      or
+      not exists(KeyValuePair optionsDict, NameConstant falseName |
         falseName.getId() = "False" and
-        exists( | falseName = this.getArgByName("verify").asExpr())
-        or
-        exists(KeyValuePair optionsDict |
-          optionsDict = this.getArgByName("options").asExpr().(Dict).getItems().getAnItem() and
-          optionsDict.getKey().(Str_).getS().matches("verify_signature") and
-          falseName = optionsDict.getValue()
-        )
+        optionsDict = this.getArgByName("options").asExpr().(Dict).getItems().getAnItem() and
+        optionsDict.getKey().(Str_).getS().matches("verify_signature") and
+        falseName = optionsDict.getValue()
       )
     }
   }
