@@ -36,8 +36,7 @@ private module JWT {
     PyJWTDecodeCall() { this = API::moduleImport("jwt").getMember("decode").getACall() }
 
     override predicate verifiesSignature() {
-      not isFalse(this.getArgByName("verify"))
-      or
+      not isFalse(this.getArgByName("verify")) and
       not exists(KeyValuePair optionsDict, NameConstant falseName |
         falseName.getId() = "False" and
         optionsDict = this.getArgByName("options").asExpr().(Dict).getItems().getAnItem() and
