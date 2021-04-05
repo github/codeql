@@ -25,7 +25,7 @@ def home_page():
     unsanitized_search = json.loads(request.args['search'])
     sanitize(unsanitized_search)
 
-    data = Movie.objects(unsanitized_search)
+    data = Movie.objects(__raw__=unsanitized_search)
     return data.to_json()
 
 # if __name__ == "__main__":
