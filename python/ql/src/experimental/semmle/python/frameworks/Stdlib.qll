@@ -11,9 +11,14 @@ private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
 private module NoSQL {
-  // more methods?
   private class PyMongoMethods extends string {
-    PyMongoMethods() { this in ["find_one"] }
+    // These are all find-keyword relevant PyMongo collection level operation methods
+    PyMongoMethods() {
+      this in [
+          "find", "find_raw_batches", "find_one", "find_one_and_delete", "find_and_modify",
+          "find_one_and_replace", "find_one_and_update"
+        ]
+    }
   }
 
   private class PyMongoClientCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
@@ -30,9 +35,8 @@ private module NoSQL {
     override DataFlow::Node getQueryNode() { result = this.getArg(0) }
   }
 
-  // more methods?
   private class PyMongoFlaskMethods extends string {
-    PyMongoFlaskMethods() { this in ["find"] }
+    PyMongoFlaskMethods() { this in ["find_one_or_404"] }
   }
 
   private class PyMongoFlaskCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
@@ -62,7 +66,6 @@ private module NoSQL {
     override DataFlow::Node getQueryNode() { result = this.getArg(0) }
   }
 
-  // more sanitizer libs?
   private class MongoSanitizerCall extends DataFlow::CallCfgNode, NoSQLSanitizer::Range {
     MongoSanitizerCall() {
       this =
