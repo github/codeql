@@ -27,32 +27,30 @@ class UltraJsonLoadsCall extends DataFlow::CallCfgNode {
   DataFlow::Node getLoadNode() { result = this.getArg(0) }
 }
 
-// better name?
-class JSONRelatedSink extends DataFlow::Node {
-  JSONRelatedSink() {
+class DataToDictSink extends DataFlow::Node {
+  DataToDictSink() {
     this = any(JsonLoadsCall jsonLoads).getLoadNode() or
     this = any(XmlToDictParseCall jsonLoads).getParseNode() or
     this = any(UltraJsonLoadsCall jsonLoads).getLoadNode()
   }
 }
 
-class RFStoJSON extends TaintTracking::Configuration {
-  RFStoJSON() { this = "RFStoJSON" }
+class RFSToDictConfig extends TaintTracking::Configuration {
+  RFSToDictConfig() { this = "RFSToDictConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof JSONRelatedSink }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof DataToDictSink }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
     sanitizer = any(NoSQLSanitizer noSQLSanitizer).getSanitizerNode()
   }
 }
 
-// better name?
-class FromJSONtoSink extends TaintTracking2::Configuration {
-  FromJSONtoSink() { this = "FromJSONtoSink" }
+class FromDataDictToSink extends TaintTracking2::Configuration {
+  FromDataDictToSink() { this = "FromDataDictToSink" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof JSONRelatedSink }
+  override predicate isSource(DataFlow::Node source) { source instanceof DataToDictSink }
 
   override predicate isSink(DataFlow::Node sink) {
     sink = any(NoSQLQuery noSQLQuery).getQueryNode()
@@ -65,7 +63,8 @@ class FromJSONtoSink extends TaintTracking2::Configuration {
 
 predicate noSQLInjectionFlow(CustomPathNode source, CustomPathNode sink) {
   exists(
-    RFStoJSON config, DataFlow::PathNode mid1, DataFlow2::PathNode mid2, FromJSONtoSink config2
+    RFSToDictConfig config, DataFlow::PathNode mid1, DataFlow2::PathNode mid2,
+    FromDataDictToSink config2
   |
     config.hasFlowPath(source.asNode1(), mid1) and
     config2.hasFlowPath(mid2, sink.asNode2()) and
