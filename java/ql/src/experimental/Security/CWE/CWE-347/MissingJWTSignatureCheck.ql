@@ -1,0 +1,177 @@
+/**
+ * @name Missing JWT signature check
+ * @description Not checking the JWT signature allows an attacker to forge their own tokens.
+ * @kind problem
+ * @problem.severity error
+ * @precision high
+ * @id java/missing-jwt-signature-check
+ * @tags security
+ *       external/cwe/cwe-347
+ */
+
+import java
+import semmle.code.java.dataflow.DataFlow
+
+/** The interface `io.jsonwebtoken.JwtParser`. */
+class TypeJwtParser extends Interface {
+  TypeJwtParser() { hasQualifiedName("io.jsonwebtoken", "JwtParser") }
+}
+
+/** The interface `io.jsonwebtoken.JwtParserBuilder`. */
+class TypeJwtParserBuilder extends Interface {
+  TypeJwtParserBuilder() { hasQualifiedName("io.jsonwebtoken", "JwtParserBuilder") }
+}
+
+/** The interface `io.jsonwebtoken.JwtHandler`. */
+class TypeJwtHandler extends Interface {
+  TypeJwtHandler() { hasQualifiedName("io.jsonwebtoken", "JwtHandler") }
+}
+
+/** The class `io.jsonwebtoken.JwtHandlerAdapter`. */
+class TypeJwtHandlerAdapter extends Class {
+  TypeJwtHandlerAdapter() { hasQualifiedName("io.jsonwebtoken", "JwtHandlerAdapter") }
+}
+
+/** The `parse(token, handler)` method defined in `TypeJwtParser`. */
+private class JwtParserParseHandlerMethod extends Method {
+  JwtParserParseHandlerMethod() {
+    hasName("parse") and
+    getDeclaringType() instanceof TypeJwtParser and
+    getNumberOfParameters() = 2
+  }
+}
+
+/** The `parse(token)`, `parseClaimsJwt(token)` and `parsePlaintextJwt(token)` methods defined in `TypeJwtParser`. */
+private class JwtParserInsecureParseMethods extends Method {
+  JwtParserInsecureParseMethods() {
+    hasName(["parse", "parseClaimsJwt", "parsePlaintextJwt"]) and
+    getNumberOfParameters() = 1 and
+    getDeclaringType() instanceof TypeJwtParser
+  }
+}
+
+/** The `onClaimsJwt(jwt)` and `onPlaintextJwt(jwt)` methods defined in `TypeJwtHandler`. */
+private class JwtHandlerOnJwtMethods extends Method {
+  JwtHandlerOnJwtMethods() {
+    hasName(["onClaimsJwt", "onPlaintextJwt"]) and
+    getNumberOfParameters() = 1 and
+    getDeclaringType() instanceof TypeJwtHandler
+  }
+}
+
+/** The `onClaimsJwt(jwt)` and `onPlaintextJwt(jwt)` methods defined in `TypeJwtHandlerAdapter`. */
+private class JwtHandlerAdapterOnJwtMethods extends Method {
+  JwtHandlerAdapterOnJwtMethods() {
+    hasName(["onClaimsJwt", "onPlaintextJwt"]) and
+    getNumberOfParameters() = 1 and
+    getDeclaringType() instanceof TypeJwtHandlerAdapter
+  }
+}
+
+/**
+ * Holds if `parseHandlerExpr` is an insecure `JwtHandler`.
+ * That is, it overrides a method from `JwtHandlerOnJwtMethods` and the overriden method is not a method from `JwtHandlerAdapterOnJwtMethods`.
+ * A overriden method which is a method from `JwtHandlerAdapterOnJwtMethods` is safe, because these always throw an exception.
+ */
+private predicate isInsecureParseHandler(Expr parseHandlerExpr) {
+  exists(RefType t |
+    parseHandlerExpr.getType() = t and
+    t.getASourceSupertype*() instanceof TypeJwtHandler and
+    exists(Method m |
+      m = t.getAMethod() and
+      m.getASourceOverriddenMethod+() instanceof JwtHandlerOnJwtMethods and
+      not m.getSourceDeclaration() instanceof JwtHandlerAdapterOnJwtMethods
+    )
+  )
+}
+
+/**
+ * An access to an insecure parsing method.
+ * That is, either a call to a `parse(token)`, `parseClaimsJwt(token)` or `parsePlaintextJwt(token)` method or
+ * a call to a `parse(token, handler)` method where the `handler` is considered insecure.
+ */
+private class JwtParserInsecureParseMethodAccess extends MethodAccess {
+  JwtParserInsecureParseMethodAccess() {
+    getMethod().getASourceOverriddenMethod*() instanceof JwtParserInsecureParseMethods
+    or
+    getMethod().getASourceOverriddenMethod*() instanceof JwtParserParseHandlerMethod and
+    isInsecureParseHandler(this.getArgument(1))
+  }
+}
+
+/**
+ * Holds if `signingMa` directly or indirectly sets a signing key for `expr`, which is a `TypeJwtParser`.
+ * The `setSigningKey` and `setSigningKeyResolver` methods set a signing key for a `TypeJwtParser`.
+ * Directly means code like this:
+ * ```java
+ * Jwts.parser().setSigningKey(key).parse(token);
+ * ```
+ * Here the signing key is set directly on a `TypeJwtParser`.
+ * Indirectly means code like this:
+ * ```java
+ * Jwts.parserBuilder().setSigningKey(key).build().parse(token);
+ * ```
+ * In this case, the signing key is set on a `TypeJwtParserBuilder` indirectly setting the key of `TypeJwtParser` that is created by the call to `build`.
+ */
+private predicate isSigningKeySet(Expr expr, MethodAccess signingMa) {
+  any(SigningToExprDataFlow s).hasFlow(DataFlow::exprNode(signingMa), DataFlow::exprNode(expr))
+}
+
+/** An expr that is a `TypeJwtParser` for which a signing key has been set. */
+private class JwtParserWithSigningKeyExpr extends Expr {
+  MethodAccess signingMa;
+
+  JwtParserWithSigningKeyExpr() {
+    this.getType().(RefType).getASourceSupertype*() instanceof TypeJwtParser and
+    isSigningKeySet(this, signingMa)
+  }
+
+  /** Gets the method access that sets the signing key for this parser. */
+  MethodAccess getSigningMethodAccess() { result = signingMa }
+}
+
+/**
+ * Models flow from `SigningKeyMethodAccess`es to expressions that are a (sub-type of) `TypeJwtParser`.
+ * This is used to determine whether a `TypeJwtParser` has a signing key set.
+ */
+private class SigningToExprDataFlow extends DataFlow::Configuration {
+  SigningToExprDataFlow() { this = "SigningToExprDataFlow" }
+
+  override predicate isSource(DataFlow::Node source) {
+    source.asExpr() instanceof SigningKeyMethodAccess
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    sink.asExpr().getType().(RefType).getASourceSupertype*() instanceof TypeJwtParser
+  }
+
+  /** Models the builder style of `TypeJwtParser` and `TypeJwtParserBuilder`. */
+  override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    (
+      pred.asExpr().getType().(RefType).getASourceSupertype*() instanceof TypeJwtParser or
+      pred.asExpr().getType().(RefType).getASourceSupertype*() instanceof TypeJwtParserBuilder
+    ) and
+    succ.asExpr().(MethodAccess).getQualifier() = pred.asExpr()
+  }
+}
+
+/** An access to the `setSigningKey` or `setSigningKeyResolver` method (or an overriden method) defined in `TypeJwtParser` and `TypeJwtParserBuilder`. */
+private class SigningKeyMethodAccess extends MethodAccess {
+  SigningKeyMethodAccess() {
+    exists(Method m |
+      m.hasName(["setSigningKey", "setSigningKeyResolver"]) and
+      m.getNumberOfParameters() = 1 and
+      (
+        m.getDeclaringType() instanceof TypeJwtParser or
+        m.getDeclaringType() instanceof TypeJwtParserBuilder
+      )
+    |
+      m = this.getMethod().getASourceOverriddenMethod*()
+    )
+  }
+}
+
+from JwtParserInsecureParseMethodAccess ma, JwtParserWithSigningKeyExpr parserExpr
+where ma.getQualifier() = parserExpr
+select ma, "A signing key is set $@, but the signature is not verified.",
+  parserExpr.getSigningMethodAccess(), "here"
