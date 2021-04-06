@@ -7,21 +7,13 @@
  * @treemap.warnOn highValues
  * @metricType file
  * @metricAggregate avg sum max
- * @precision high
  * @id java/duplicated-lines-in-files
  * @tags testability
  *       modularity
  */
 
-import external.CodeDuplication
+import java
 
 from File f, int n
-where
-  n =
-    count(int line |
-      exists(DuplicateBlock d | d.sourceFile() = f |
-        line in [d.sourceStartLine() .. d.sourceEndLine()] and
-        not whitelistedLineForDuplication(f, line)
-      )
-    )
+where none()
 select f, n order by n desc

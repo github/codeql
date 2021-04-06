@@ -184,7 +184,11 @@ class PointsToContext extends TPointsToContext {
 
   /** Holds if this context can apply to the CFG node `n`. */
   pragma[inline]
-  predicate appliesTo(ControlFlowNode n) { this.appliesToScope(n.getScope()) }
+  predicate appliesTo(ControlFlowNode n) {
+    exists(Scope s |
+      this.appliesToScope(pragma[only_bind_into](s)) and pragma[only_bind_into](s) = n.getScope()
+    )
+  }
 
   /** Holds if this context is a call context. */
   predicate isCall() { this = TCallContext(_, _, _) }

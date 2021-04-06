@@ -10,14 +10,22 @@ import python
 import DataFlowPublic
 private import DataFlowPrivate
 
+private predicate comes_from_cfgnode(Node node) {
+  exists(CfgNode first, Node second |
+    simpleLocalFlowStep(first, second) and
+    simpleLocalFlowStep*(second, node)
+  )
+}
+
 /**
  * A data flow node that is a source of local flow. This includes things like
  * - Expressions
  * - Function parameters
  */
 class LocalSourceNode extends Node {
+  cached
   LocalSourceNode() {
-    not simpleLocalFlowStep+(any(CfgNode n), this) and
+    not comes_from_cfgnode(this) and
     not this instanceof ModuleVariableNode
     or
     this = any(ModuleVariableNode mvn).getARead()
@@ -65,15 +73,12 @@ private module Cached {
    * The slightly backwards parametering ordering is to force correct indexing.
    */
   cached
-  predicate hasLocalSource(Node sink, Node source) {
-    // Declaring `source` to be a `LocalSourceNode` currently causes a redundant check in the
-    // recursive case, so instead we check it explicitly here.
-    source = sink and
-    source instanceof LocalSourceNode
+  predicate hasLocalSource(Node sink, LocalSourceNode source) {
+    source = sink
     or
-    exists(Node mid |
-      hasLocalSource(mid, source) and
-      simpleLocalFlowStep(mid, sink)
+    exists(Node second |
+      simpleLocalFlowStep(source, second) and
+      simpleLocalFlowStep*(second, sink)
     )
   }
 

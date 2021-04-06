@@ -110,20 +110,15 @@ module FunctionCompositionCall {
   }
 }
 
-/**
- * A taint step for a composed function.
- */
-private class ComposedFunctionTaintStep extends TaintTracking::AdditionalTaintStep {
-  FunctionCompositionCall composed;
-  DataFlow::CallNode call;
-
-  ComposedFunctionTaintStep() {
-    call = composed.getACall() and
-    this = call
-  }
-
+private class ComposedFunctionTaintStep extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(int fnIndex, DataFlow::FunctionNode fn | fn = composed.getOperandFunction(fnIndex) |
+    exists(
+      int fnIndex, DataFlow::FunctionNode fn, FunctionCompositionCall composed,
+      DataFlow::CallNode call
+    |
+      fn = composed.getOperandFunction(fnIndex) and
+      call = composed.getACall()
+    |
       // flow into the first function
       fnIndex = composed.getNumOperand() - 1 and
       exists(int callArgIndex |
@@ -140,7 +135,7 @@ private class ComposedFunctionTaintStep extends TaintTracking::AdditionalTaintSt
       // flow out of the composed call
       fnIndex = 0 and
       pred = fn.getReturnNode() and
-      succ = this
+      succ = call
     )
   }
 }

@@ -5,7 +5,6 @@
  * @treemap.warnOn highValues
  * @metricType file
  * @metricAggregate avg sum max
- * @precision very-high
  * @id js/statements-per-file
  */
 

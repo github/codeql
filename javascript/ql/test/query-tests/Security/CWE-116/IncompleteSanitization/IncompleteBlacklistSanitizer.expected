@@ -63,3 +63,5 @@
 | tst.js:303:10:303:34 | s().rep ... /g, '') | This HTML sanitizer does not sanitize single quotes |
 | tst.js:304:9:304:33 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize single quotes |
 | tst.js:305:10:305:34 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) | This HTML sanitizer does not sanitize single quotes |
+| tst.js:320:9:329:3 | s().rep ... ;";\\n\\t}) | This HTML sanitizer does not sanitize single quotes |

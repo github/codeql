@@ -1,0 +1,8 @@
+| Executor.java:11:15:11:22 | source(...) | Executor.java:50:39:50:45 | command |
+| Executor.java:11:15:11:22 | source(...) | StringProcessor.java:23:39:23:45 | command |
+| Executor.java:12:15:12:22 | source(...) | Executor.java:50:39:50:45 | command |
+| Executor.java:12:15:12:22 | source(...) | StringProcessor.java:23:39:23:45 | command |
+| Executor.java:13:15:13:22 | source(...) | Executor.java:50:39:50:45 | command |
+| Executor.java:13:15:13:22 | source(...) | StringProcessor.java:23:39:23:45 | command |
+| Executor.java:15:15:15:22 | source(...) | Executor.java:58:39:58:45 | command |
+| StringProcessor.java:8:26:8:29 | args | StringProcessor.java:23:39:23:45 | command |

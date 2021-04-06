@@ -99,6 +99,8 @@ Python has builtin functionality for reading and writing files, such as the func
 
 ➤ `See this in the query console on LGTM.com <https://lgtm.com/query/8635258505893505141/>`__. Two of the demo projects make use of this low-level API.
 
+Notice the use of the ``API`` module for referring to library functions. For more information, see ":doc:`Using API graphs in Python <using-api-graphs-in-python>`."
+
 Unfortunately this will only give the expression in the argument, not the values which could be passed to it. So we use local data flow to find all expressions that flow into the argument:
 
 .. code-block:: ql

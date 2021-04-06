@@ -6,7 +6,7 @@ import TestUtilities.InlineExpectationsTest
 // -----------------------------------------------------------------------------
 // tracked
 // -----------------------------------------------------------------------------
-DataFlow::LocalSourceNode tracked(TypeTracker t) {
+private DataFlow::LocalSourceNode tracked(TypeTracker t) {
   t.start() and
   result.asCfgNode() = any(NameNode n | n.getId() = "tracked")
   or
@@ -34,14 +34,14 @@ class TrackedTest extends InlineExpectationsTest {
 // -----------------------------------------------------------------------------
 // int + str
 // -----------------------------------------------------------------------------
-DataFlow::LocalSourceNode int_type(TypeTracker t) {
+private DataFlow::LocalSourceNode int_type(TypeTracker t) {
   t.start() and
   result.asCfgNode() = any(CallNode c | c.getFunction().(NameNode).getId() = "int")
   or
   exists(TypeTracker t2 | result = int_type(t2).track(t2, t))
 }
 
-DataFlow::LocalSourceNode string_type(TypeTracker t) {
+private DataFlow::LocalSourceNode string_type(TypeTracker t) {
   t.start() and
   result.asCfgNode() = any(CallNode c | c.getFunction().(NameNode).getId() = "str")
   or
@@ -83,7 +83,7 @@ class TrackedStringTest extends InlineExpectationsTest {
 // -----------------------------------------------------------------------------
 // tracked_self
 // -----------------------------------------------------------------------------
-DataFlow::LocalSourceNode tracked_self(TypeTracker t) {
+private DataFlow::LocalSourceNode tracked_self(TypeTracker t) {
   t.start() and
   exists(Function f |
     f.isMethod() and

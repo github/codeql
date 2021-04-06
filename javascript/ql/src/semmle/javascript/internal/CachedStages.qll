@@ -133,6 +133,8 @@ module Stages {
       exists(any(DataFlow::Node node).toString())
       or
       exists(any(AccessPath a).getAnInstanceIn(_))
+      or
+      exists(any(DataFlow::PropRef ref).getBase())
     }
   }
 
@@ -219,7 +221,7 @@ module Stages {
       or
       AccessPath::DominatingPaths::hasDominatingWrite(_)
       or
-      any(DataFlow::AdditionalFlowStep s).step(_, _)
+      DataFlow::SharedFlowStep::step(_, _)
     }
   }
 
@@ -243,7 +245,7 @@ module Stages {
     predicate backref() {
       1 = 1
       or
-      any(TaintTracking::AdditionalTaintStep step).step(_, _)
+      TaintTracking::heapStep(_, _)
       or
       exists(RemoteFlowSource r)
     }

@@ -75,3 +75,27 @@ var server = http.createServer(async function(req, res) {
 
     JSDOM.fromURL(tainted); // NOT OK
 });
+
+var route = require('koa-route');
+var Koa = require('koa');
+var app = new Koa();
+
+app.use(route.get('/pets', (context, param1, param2, param3) => { 
+    JSDOM.fromURL(param1); // NOT OK
+}));
+
+const router = require('koa-router')();
+const app = new Koa();
+router.get('/', async (ctx, next) => {
+    JSDOM.fromURL(ctx.params.foo); // NOT OK
+}).post('/', async (ctx, next) => {
+    JSDOM.fromURL(ctx.params.foo); // NOT OK
+});
+app.use(router.routes());
+
+import {JSDOM} from "jsdom";
+var server = http.createServer(async function(req, res) {
+    var tainted = url.parse(req.url, true).query.url;
+
+    new WebSocket(tainted); // NOT OK
+});

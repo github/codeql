@@ -1,4 +1,15 @@
-.. There is currently no built-in support for libraries or frameworks for C/C++.
+C and C++ built-in support
+================================
+
+.. csv-table:: 
+   :header-rows: 1
+   :class: fullWidthTable
+   :widths: auto
+
+   Name, Category
+   `Bloomberg Standard Library <https://github.com/bloomberg/bde>`__, Utility library
+   `Berkeley socket API library <https://en.wikipedia.org/wiki/Berkeley_sockets#Socket_API_functions>`__, Network communicator
+   string.h, String library
 
 C# built-in support
 ================================
@@ -78,6 +89,9 @@ Java built-in support
    :widths: auto
 
    Name, Category
+   Apache Commons Lang, Utility library
+   Apache HTTP components, Network communicator
+   Guava, Utility and collections library
    Hibernate, Database
    iBatis / MyBatis, Database
    Java Persistence API (JPA), Database
@@ -126,7 +140,6 @@ JavaScript and TypeScript built-in support
    vue, HTML framework
 
 
-
 Python built-in support
 ====================================
 
@@ -147,3 +160,6 @@ Python built-in support
    MySQLdb, Database
    psycopg2, Database
    sqlite3, Database
+   cryptography, Cryptography library
+   pycryptodome, Cryptography library
+   pycryptodomex, Cryptography library

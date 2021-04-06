@@ -37,7 +37,7 @@ module ResourceExhaustion {
   }
 
   predicate isRestrictedAdditionalTaintStep(DataFlow::Node src, DataFlow::Node dst) {
-    any(TaintTracking::AdditionalTaintStep dts).step(src, dst) and
+    TaintTracking::sharedTaintStep(src, dst) and
     not dst.asExpr() instanceof AddExpr and
     not dst.(DataFlow::MethodCallNode).calls(src, "toString")
   }

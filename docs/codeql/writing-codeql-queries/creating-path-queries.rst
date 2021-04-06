@@ -55,10 +55,12 @@ You should use the following template:
      */
 
     import <language>
+    // For some languages (Java/C++/Python) you need to explicitly import the data flow library, such as
+    // import semmle.code.java.dataflow.DataFlow
     import DataFlow::PathGraph
     ...
 
-    from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
+    from MyConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
     where config.hasFlowPath(source, sink)
     select sink.getNode(), source, sink, "<message>"
 
@@ -66,7 +68,7 @@ Where:
 
 - ``DataFlow::Pathgraph`` is the path graph module you need to import from the standard CodeQL libraries.
 - ``source`` and ``sink`` are nodes on the `path graph <https://en.wikipedia.org/wiki/Path_graph>`__, and ``DataFlow::PathNode`` is their type.
-- ``Configuration`` is a class containing the predicates which define how data may flow between the ``source`` and the ``sink``.
+- ``MyConfiguration`` is a class containing the predicates which define how data may flow between the ``source`` and the ``sink``.
 
 
 The following sections describe the main requirements for a valid path query.

@@ -313,10 +313,7 @@ module API {
   module Node {
     /** Gets a node whose type has the given qualified name. */
     Node ofType(string moduleName, string exportedName) {
-      exists(TypeName tn |
-        tn.hasQualifiedName(moduleName, exportedName) and
-        result = Impl::MkCanonicalNameUse(tn).(Node).getInstance()
-      )
+      result = Impl::MkHasUnderlyingType(moduleName, exportedName).(Node).getInstance()
     }
   }
 
@@ -384,6 +381,8 @@ module API {
         imports(_, m)
         or
         m = any(CanonicalName n | isUsed(n)).getExternalModuleName()
+        or
+        any(TypeAnnotation n).hasQualifiedName(m, _)
       } or
       MkClassInstance(DataFlow::ClassNode cls) { cls = trackDefNode(_) and hasSemantics(cls) } or
       MkAsyncFuncResult(DataFlow::FunctionNode f) {
@@ -392,26 +391,13 @@ module API {
       MkDef(DataFlow::Node nd) { rhs(_, _, nd) } or
       MkUse(DataFlow::Node nd) { use(_, _, nd) } or
       /**
-       * A TypeScript canonical name that is defined somewhere, and that isn't a module root.
-       * (Module roots are represented by `MkModuleExport` nodes instead.)
-       *
-       * For most purposes, you probably want to use the `mkCanonicalNameDef` predicate instead of
-       * this constructor.
+       * A TypeScript type, identified by name of the type-annotation.
+       * This API node is exclusively used by `API::Node::ofType`.
        */
-      MkCanonicalNameDef(CanonicalName n) {
-        not n.isRoot() and
-        isDefined(n)
-      } or
-      /**
-       * A TypeScript canonical name that is used somewhere, and that isn't a module root.
-       * (Module roots are represented by `MkModuleImport` nodes instead.)
-       *
-       * For most purposes, you probably want to use the `mkCanonicalNameUse` predicate instead of
-       * this constructor.
-       */
-      MkCanonicalNameUse(CanonicalName n) {
-        not n.isRoot() and
-        isUsed(n)
+      MkHasUnderlyingType(string moduleName, string exportName) {
+        any(TypeAnnotation n).hasQualifiedName(moduleName, exportName)
+        or
+        any(Type t).hasUnderlyingType(moduleName, exportName)
       } or
       MkSyntheticCallbackArg(DataFlow::Node src, int bound, DataFlow::InvokeNode nd) {
         trackUseNode(src, true, bound).flowsTo(nd.getCalleeNode())
@@ -420,10 +406,9 @@ module API {
     class TDef = MkModuleDef or TNonModuleDef;
 
     class TNonModuleDef =
-      MkModuleExport or MkClassInstance or MkAsyncFuncResult or MkDef or MkCanonicalNameDef or
-          MkSyntheticCallbackArg;
+      MkModuleExport or MkClassInstance or MkAsyncFuncResult or MkDef or MkSyntheticCallbackArg;
 
-    class TUse = MkModuleUse or MkModuleImport or MkUse or MkCanonicalNameUse;
+    class TUse = MkModuleUse or MkModuleImport or MkUse or MkHasUnderlyingType;
 
     private predicate hasSemantics(DataFlow::Node nd) { not nd.getTopLevel().isExterns() }
 
@@ -458,20 +443,6 @@ module API {
       |
         not def.isAmbient()
       )
-    }
-
-    /** An API-graph node representing definitions of the canonical name `cn`. */
-    private TApiNode mkCanonicalNameDef(CanonicalName cn) {
-      if cn.isModuleRoot()
-      then result = MkModuleExport(cn.getExternalModuleName())
-      else result = MkCanonicalNameDef(cn)
-    }
-
-    /** An API-graph node representing uses of the canonical name `cn`. */
-    private TApiNode mkCanonicalNameUse(CanonicalName cn) {
-      if cn.isModuleRoot()
-      then result = MkModuleImport(cn.getExternalModuleName())
-      else result = MkCanonicalNameUse(cn)
     }
 
     /**
@@ -577,11 +548,6 @@ module API {
       exists(string m | nd = MkModuleExport(m) | exports(m, rhs))
       or
       nd = MkDef(rhs)
-      or
-      exists(CanonicalName n | nd = MkCanonicalNameDef(n) |
-        rhs = n.(Namespace).getADefinition().flow() or
-        rhs = n.(CanonicalFunctionName).getADefinition().flow()
-      )
     }
 
     /**
@@ -633,10 +599,10 @@ module API {
           ref = cls.getConstructor().getParameter(i)
         )
         or
-        exists(TypeName tn |
-          base = MkCanonicalNameUse(tn) and
+        exists(string moduleName, string exportName |
+          base = MkHasUnderlyingType(moduleName, exportName) and
           lbl = Label::instance() and
-          ref = getANodeWithType(tn)
+          ref.(DataFlow::SourceNode).hasUnderlyingType(moduleName, exportName)
         )
         or
         exists(DataFlow::InvokeNode call |
@@ -653,11 +619,11 @@ module API {
     cached
     predicate use(TApiNode nd, DataFlow::Node ref) {
       exists(string m, Module mod | nd = MkModuleDef(m) and mod = importableModule(m) |
-        ref.(ModuleAsSourceNode).getModule() = mod
+        ref.(ModuleVarNode).getModule() = mod
       )
       or
       exists(string m, Module mod | nd = MkModuleExport(m) and mod = importableModule(m) |
-        ref.(ExportsAsSourceNode).getModule() = mod
+        ref.(ExportsVarNode).getModule() = mod
         or
         exists(DataFlow::Node base | use(MkModuleDef(m), base) |
           ref = trackUseNode(base).getAPropertyRead("exports")
@@ -676,8 +642,6 @@ module API {
       )
       or
       nd = MkUse(ref)
-      or
-      exists(CanonicalName n | nd = MkCanonicalNameUse(n) | ref.asExpr() = n.getAnAccess())
     }
 
     /** Holds if module `m` exports `rhs`. */
@@ -782,9 +746,9 @@ module API {
       or
       // additional backwards step from `require('m')` to `exports` or `module.exports` in m
       exists(Import imp | imp.getImportedModuleNode() = trackDefNode(nd, t.continue()) |
-        result.(ExportsAsSourceNode).getModule() = imp.getImportedModule()
+        result.(ExportsVarNode).getModule() = imp.getImportedModule()
         or
-        exists(ModuleAsSourceNode mod |
+        exists(ModuleVarNode mod |
           mod.getModule() = imp.getImportedModule() and
           result = mod.(DataFlow::SourceNode).getAPropertyRead("exports")
         )
@@ -832,13 +796,6 @@ module API {
       result = awaited(call, DataFlow::TypeTracker::end())
     }
 
-    private DataFlow::SourceNode getANodeWithType(TypeName tn) {
-      exists(string moduleName, string typeName |
-        tn.hasQualifiedName(moduleName, typeName) and
-        result.hasUnderlyingType(moduleName, typeName)
-      )
-    }
-
     /**
      * Holds if there is an edge from `pred` to `succ` in the API graph that is labeled with `lbl`.
      */
@@ -879,11 +836,10 @@ module API {
         succ = MkClassInstance(trackDefNode(def))
       )
       or
-      exists(CanonicalName cn1, string n, CanonicalName cn2 |
-        pred in [mkCanonicalNameDef(cn1), mkCanonicalNameUse(cn1)] and
-        cn2 = cn1.getChild(n) and
-        lbl = Label::member(n) and
-        succ in [mkCanonicalNameDef(cn2), mkCanonicalNameUse(cn2)]
+      exists(string moduleName, string exportName |
+        pred = MkModuleImport(moduleName) and
+        lbl = Label::member(exportName) and
+        succ = MkHasUnderlyingType(moduleName, exportName)
       )
       or
       exists(DataFlow::Node nd, DataFlow::FunctionNode f |
@@ -1027,31 +983,44 @@ private module Label {
   string promised() { result = "promised" }
 }
 
+private class NodeModuleSourcesNodes extends DataFlow::SourceNode::Range {
+  Variable v;
+
+  NodeModuleSourcesNodes() {
+    exists(NodeModule m |
+      this = DataFlow::ssaDefinitionNode(SSA::implicitInit(v)) and
+      v = [m.getModuleVariable(), m.getExportsVariable()]
+    )
+  }
+
+  Variable getVariable() { result = v }
+}
+
 /**
- * A CommonJS/AMD `module` variable, considered as a source node.
+ * A CommonJS/AMD `module` variable.
  */
-private class ModuleAsSourceNode extends DataFlow::SourceNode::Range {
+private class ModuleVarNode extends DataFlow::Node {
   Module m;
 
-  ModuleAsSourceNode() {
-    this = DataFlow::ssaDefinitionNode(SSA::implicitInit(m.(NodeModule).getModuleVariable()))
+  ModuleVarNode() {
+    this.(NodeModuleSourcesNodes).getVariable() = m.(NodeModule).getModuleVariable()
     or
-    this = DataFlow::parameterNode(m.(AmdModule).getDefine().getModuleParameter())
+    DataFlow::parameterNode(this, m.(AmdModule).getDefine().getModuleParameter())
   }
 
   Module getModule() { result = m }
 }
 
 /**
- * A CommonJS/AMD `exports` variable, considered as a source node.
+ * A CommonJS/AMD `exports` variable.
  */
-private class ExportsAsSourceNode extends DataFlow::SourceNode::Range {
+private class ExportsVarNode extends DataFlow::Node {
   Module m;
 
-  ExportsAsSourceNode() {
-    this = DataFlow::ssaDefinitionNode(SSA::implicitInit(m.(NodeModule).getExportsVariable()))
+  ExportsVarNode() {
+    this.(NodeModuleSourcesNodes).getVariable() = m.(NodeModule).getExportsVariable()
     or
-    this = DataFlow::parameterNode(m.(AmdModule).getDefine().getExportsParameter())
+    DataFlow::parameterNode(this, m.(AmdModule).getDefine().getExportsParameter())
   }
 
   Module getModule() { result = m }

@@ -8,6 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
+private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.PEP249
 private import semmle.python.regex
 
@@ -1975,12 +1976,301 @@ private module Django {
     }
   }
 
+  /** Provides models for django forms (defined in the `django.forms` module) */
+  module Forms {
+    /**
+     * Provides models for the `django.forms.forms.BaseForm` class and subclasses. This
+     * is usually used by the `django.forms.forms.Form` class, which is also available
+     * under the more commonly used alias `django.forms.Form`.
+     *
+     * See https://docs.djangoproject.com/en/3.1/ref/forms/api/
+     */
+    module Form {
+      /** Gets a reference to the `django.forms.forms.BaseForm` class or any subclass. */
+      API::Node subclassRef() {
+        // canonical definition
+        result =
+          API::moduleImport("django")
+              .getMember("forms")
+              .getMember("forms")
+              .getMember(["BaseForm", "Form"])
+              .getASubclass*()
+        or
+        result =
+          API::moduleImport("django")
+              .getMember("forms")
+              .getMember("models")
+              .getMember(["BaseModelForm", "ModelForm"])
+              .getASubclass*()
+        or
+        // aliases from `django.forms`
+        result =
+          API::moduleImport("django")
+              .getMember("forms")
+              .getMember(["BaseForm", "Form", "BaseModelForm", "ModelForm"])
+              .getASubclass*()
+        or
+        // other Form subclasses defined in Django
+        result =
+          API::moduleImport("django")
+              .getMember("contrib")
+              .getMember("admin")
+              .getMember("forms")
+              .getMember(["AdminAuthenticationForm", "AdminPasswordChangeForm"])
+              .getASubclass*()
+        or
+        result =
+          API::moduleImport("django")
+              .getMember("contrib")
+              .getMember("admin")
+              .getMember("helpers")
+              .getMember("ActionForm")
+              .getASubclass*()
+        or
+        result =
+          API::moduleImport("django")
+              .getMember("contrib")
+              .getMember("admin")
+              .getMember("views")
+              .getMember("main")
+              .getMember("ChangeListSearchForm")
+              .getASubclass*()
+        or
+        result =
+          API::moduleImport("django")
+              .getMember("contrib")
+              .getMember("auth")
+              .getMember("forms")
+              .getMember([
+                  "PasswordResetForm", "UserChangeForm", "SetPasswordForm",
+                  "AdminPasswordChangeForm", "PasswordChangeForm", "AuthenticationForm",
+                  "UserCreationForm"
+                ])
+              .getASubclass*()
+        or
+        result =
+          API::moduleImport("django")
+              .getMember("contrib")
+              .getMember("flatpages")
+              .getMember("forms")
+              .getMember("FlatpageForm")
+              .getASubclass*()
+        or
+        result =
+          API::moduleImport("django")
+              .getMember("forms")
+              .getMember("formsets")
+              .getMember("ManagementForm")
+              .getASubclass*()
+        or
+        result =
+          API::moduleImport("django")
+              .getMember("forms")
+              .getMember("models")
+              .getMember(["ModelForm", "BaseModelForm"])
+              .getASubclass*()
+      }
+    }
+
+    /**
+     * Provides models for the `django.forms.fields.Field` class and subclasses. This is
+     * also available under the more commonly used alias `django.forms.Field`.
+     *
+     * See https://docs.djangoproject.com/en/3.1/ref/forms/fields/
+     */
+    module Field {
+      /** Gets a reference to the `django.forms.fields.Field` class or any subclass. */
+      API::Node subclassRef() {
+        exists(string modName, string clsName |
+          // canonical definition
+          result =
+            API::moduleImport("django")
+                .getMember("forms")
+                .getMember(modName)
+                .getMember(clsName)
+                .getASubclass*()
+          or
+          // alias from `django.forms`
+          result = API::moduleImport("django").getMember("forms").getMember(clsName).getASubclass*()
+        |
+          modName = "fields" and
+          clsName in [
+              "Field",
+              // Known subclasses
+              "BooleanField", "IntegerField", "CharField", "SlugField", "DateTimeField",
+              "EmailField", "DateField", "TimeField", "DurationField", "DecimalField", "FloatField",
+              "GenericIPAddressField", "UUIDField", "JSONField", "FilePathField",
+              "NullBooleanField", "URLField", "TypedChoiceField", "FileField", "ImageField",
+              "RegexField", "ChoiceField", "MultipleChoiceField", "ComboField", "MultiValueField",
+              "SplitDateTimeField", "TypedMultipleChoiceField", "BaseTemporalField"
+            ]
+          or
+          // Known subclasses from `django.forms.models`
+          modName = "models" and
+          clsName in ["ModelChoiceField", "ModelMultipleChoiceField", "InlineForeignKeyField"]
+        )
+        or
+        // other Field subclasses defined in Django
+        result =
+          API::moduleImport("django")
+              .getMember("contrib")
+              .getMember("auth")
+              .getMember("forms")
+              .getMember(["ReadOnlyPasswordHashField", "UsernameField"])
+              .getASubclass*()
+        or
+        result =
+          API::moduleImport("django")
+              .getMember("contrib")
+              .getMember("gis")
+              .getMember("forms")
+              .getMember("fields")
+              .getMember([
+                  "GeometryCollectionField", "GeometryField", "LineStringField",
+                  "MultiLineStringField", "MultiPointField", "MultiPolygonField", "PointField",
+                  "PolygonField"
+                ])
+              .getASubclass*()
+        or
+        result =
+          API::moduleImport("django")
+              .getMember("contrib")
+              .getMember("postgres")
+              .getMember("forms")
+              .getMember("array")
+              .getMember(["SimpleArrayField", "SplitArrayField"])
+              .getASubclass*()
+        or
+        result =
+          API::moduleImport("django")
+              .getMember("contrib")
+              .getMember("postgres")
+              .getMember("forms")
+              .getMember("hstore")
+              .getMember("HStoreField")
+              .getASubclass*()
+        or
+        result =
+          API::moduleImport("django")
+              .getMember("contrib")
+              .getMember("postgres")
+              .getMember("forms")
+              .getMember("ranges")
+              .getMember([
+                  "BaseRangeField", "DateRangeField", "DateTimeRangeField", "DecimalRangeField",
+                  "IntegerRangeField"
+                ])
+              .getASubclass*()
+        or
+        result =
+          API::moduleImport("django")
+              .getMember("forms")
+              .getMember("models")
+              .getMember(["InlineForeignKeyField", "ModelChoiceField", "ModelMultipleChoiceField"])
+              .getASubclass*()
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Helpers
+  // ---------------------------------------------------------------------------
   /**
    * Gets the last decorator call for the function `func`, if `func` has decorators.
    */
   private Expr lastDecoratorCall(Function func) {
     result = func.getDefinition().(FunctionExpr).getADecoratorCall() and
     not exists(Call other_decorator | other_decorator.getArg(0) = result)
+  }
+
+  /** Adds the `getASelfRef` member predicate when modeling a class. */
+  abstract private class SelfRefMixin extends Class {
+    /**
+     * Gets a reference to instances of this class, originating from a self parameter of
+     * a method defined on this class.
+     *
+     * Note: TODO: This doesn't take MRO into account
+     * Note: TODO: This doesn't take staticmethod/classmethod into account
+     */
+    private DataFlow::Node getASelfRef(DataFlow::TypeTracker t) {
+      t.start() and
+      result.(DataFlow::ParameterNode).getParameter() = this.getAMethod().getArg(0)
+      or
+      exists(DataFlow::TypeTracker t2 | result = this.getASelfRef(t2).track(t2, t))
+    }
+
+    /**
+     * Gets a reference to instances of this class, originating from a self parameter of
+     * a method defined on this class.
+     *
+     * Note: TODO: This doesn't take MRO into account
+     * Note: TODO: This doesn't take staticmethod/classmethod into account
+     */
+    DataFlow::Node getASelfRef() { result = this.getASelfRef(DataFlow::TypeTracker::end()) }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Form and form field modeling
+  // ---------------------------------------------------------------------------
+  /**
+   * A class that is a subclass of the `django.forms.Form` class,
+   * thereby handling user input.
+   */
+  class DjangoFormClass extends Class, SelfRefMixin {
+    DjangoFormClass() { this.getABase() = Django::Forms::Form::subclassRef().getAUse().asExpr() }
+  }
+
+  /**
+   * A source of cleaned_data (either the return value from `super().clean()`, or a reference to `self.cleaned_data`)
+   *
+   * See https://docs.djangoproject.com/en/3.1/ref/forms/validation/#form-and-field-validation
+   */
+  private class DjangoFormCleanedData extends RemoteFlowSource::Range, DataFlow::Node {
+    DjangoFormCleanedData() {
+      exists(DjangoFormClass cls, Function meth |
+        cls.getAMethod() = meth and
+        (
+          this = API::builtin("super").getReturn().getMember("clean").getACall() and
+          this.getScope() = meth
+          or
+          this.(DataFlow::AttrRead).getAttributeName() = "cleaned_data" and
+          this.(DataFlow::AttrRead).getObject() = cls.getASelfRef()
+        )
+      )
+    }
+
+    override string getSourceType() {
+      result = "django.forms.Field subclass, value parameter in method"
+    }
+  }
+
+  /**
+   * A class that is a subclass of the `django.forms.Field` class,
+   * thereby handling user input.
+   */
+  class DjangoFormFieldClass extends Class {
+    DjangoFormFieldClass() {
+      this.getABase() = Django::Forms::Field::subclassRef().getAUse().asExpr()
+    }
+  }
+
+  /**
+   * A parameter in a method on a `DjangoFormFieldClass` that receives the user-supplied value for this field.
+   *
+   * See https://docs.djangoproject.com/en/3.1/ref/forms/validation/#form-and-field-validation
+   */
+  private class DjangoFormFieldValueParam extends RemoteFlowSource::Range, DataFlow::ParameterNode {
+    DjangoFormFieldValueParam() {
+      exists(DjangoFormFieldClass cls, Function meth |
+        cls.getAMethod() = meth and
+        meth.getName() in ["to_python", "validate", "run_validators", "clean"] and
+        this.getParameter() = meth.getArg(1)
+      )
+    }
+
+    override string getSourceType() {
+      result = "django.forms.Field subclass, value parameter in method"
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -2068,7 +2358,7 @@ private module Django {
   }
 
   /** A class that we consider a django View class. */
-  abstract class DjangoViewClass extends DjangoViewClassHelper {
+  abstract class DjangoViewClass extends DjangoViewClassHelper, SelfRefMixin {
     /** Gets a function that could handle incoming requests, if any. */
     Function getARequestHandler() {
       // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
@@ -2080,29 +2370,6 @@ private module Django {
         result.getName() = "get_redirect_url"
       )
     }
-
-    /**
-     * Gets a reference to instances of this class, originating from a self parameter of
-     * a method defined on this class.
-     *
-     * Note: TODO: This doesn't take MRO into account
-     * Note: TODO: This doesn't take staticmethod/classmethod into account
-     */
-    private DataFlow::Node getASelfRef(DataFlow::TypeTracker t) {
-      t.start() and
-      result.(DataFlow::ParameterNode).getParameter() = this.getAMethod().getArg(0)
-      or
-      exists(DataFlow::TypeTracker t2 | result = this.getASelfRef(t2).track(t2, t))
-    }
-
-    /**
-     * Gets a reference to instances of this class, originating from a self parameter of
-     * a method defined on this class.
-     *
-     * Note: TODO: This doesn't take MRO into account
-     * Note: TODO: This doesn't take staticmethod/classmethod into account
-     */
-    DataFlow::Node getASelfRef() { result = this.getASelfRef(DataFlow::TypeTracker::end()) }
   }
 
   /**
@@ -2393,7 +2660,7 @@ private module Django {
     }
 
     override string getSourceType() {
-      result = "django.http.request.HttpRequest (attribute on self in View class)"
+      result = "django HttpRequest from self.request in View class"
     }
   }
 
@@ -2413,7 +2680,7 @@ private module Django {
     }
 
     override string getSourceType() {
-      result = "django routed param from attribute on self in View class"
+      result = "django routed param from self.args/kwargs in View class"
     }
   }
 

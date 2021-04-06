@@ -75,10 +75,6 @@ private DataFlow::SourceNode getASimplePropertyProjectionCallee(
 ) {
   singleton = false and
   (
-    result = LodashUnderscore::member("pick") and
-    objectIndex = 0 and
-    selectorIndex = [1 .. max(result.getACall().getNumArgument())]
-    or
     result = LodashUnderscore::member("pickBy") and
     objectIndex = 0 and
     selectorIndex = 1
@@ -132,16 +128,27 @@ private class SimplePropertyProjection extends PropertyProjection::Range {
 }
 
 /**
+ * A property projection with a variable number of selector indices.
+ */
+private class VarArgsPropertyProjection extends PropertyProjection::Range {
+  VarArgsPropertyProjection() { this = LodashUnderscore::member("pick").getACall() }
+
+  override DataFlow::Node getObject() { result = getArgument(0) }
+
+  override DataFlow::Node getASelector() { result = getArgument(any(int i | i > 0)) }
+
+  override predicate isSingletonProjection() { none() }
+}
+
+/**
  * A taint step for a property projection.
  */
-private class PropertyProjectionTaintStep extends TaintTracking::AdditionalTaintStep {
-  PropertyProjection projection;
-
-  PropertyProjectionTaintStep() { projection = this }
-
+private class PropertyProjectionTaintStep extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     // reading from a tainted object yields a tainted result
-    this = succ and
-    pred = projection.getObject()
+    exists(PropertyProjection projection |
+      pred = projection.getObject() and
+      succ = projection
+    )
   }
 }

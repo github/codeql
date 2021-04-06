@@ -1,10 +1,17 @@
 import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.models.interfaces.PointerWrapper
 
 /**
  * The `std::shared_ptr` and `std::unique_ptr` template classes.
  */
-private class UniqueOrSharedPtr extends Class {
+private class UniqueOrSharedPtr extends Class, PointerWrapper {
   UniqueOrSharedPtr() { this.hasQualifiedName(["std", "bsl"], ["shared_ptr", "unique_ptr"]) }
+
+  override MemberFunction getAnUnwrapperFunction() {
+    result.(OverloadedPointerDereferenceFunction).getDeclaringType() = this
+    or
+    result.getClassAndName(["operator->", "get"]) = this
+  }
 }
 
 /**
