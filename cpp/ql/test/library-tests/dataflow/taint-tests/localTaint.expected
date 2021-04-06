@@ -3269,6 +3269,26 @@
 | smart_pointer.cpp:65:48:65:53 | call to source | smart_pointer.cpp:65:28:65:46 | call to make_unique | TAINT |
 | smart_pointer.cpp:65:58:65:58 | 0 | smart_pointer.cpp:65:28:65:46 | call to make_unique | TAINT |
 | smart_pointer.cpp:66:10:66:10 | ref arg p | smart_pointer.cpp:67:10:67:10 | p |  |
+| smart_pointer.cpp:76:45:76:45 | p | smart_pointer.cpp:77:5:77:5 | p |  |
+| smart_pointer.cpp:76:45:76:45 | p | smart_pointer.cpp:78:10:78:10 | p |  |
+| smart_pointer.cpp:76:45:76:45 | p | smart_pointer.cpp:79:10:79:10 | p |  |
+| smart_pointer.cpp:76:67:76:67 | q | smart_pointer.cpp:81:5:81:5 | q |  |
+| smart_pointer.cpp:76:67:76:67 | q | smart_pointer.cpp:82:10:82:10 | q |  |
+| smart_pointer.cpp:76:67:76:67 | q | smart_pointer.cpp:83:10:83:10 | q |  |
+| smart_pointer.cpp:76:67:76:67 | q | smart_pointer.cpp:84:10:84:10 | q |  |
+| smart_pointer.cpp:77:5:77:5 | ref arg p | smart_pointer.cpp:78:10:78:10 | p |  |
+| smart_pointer.cpp:77:5:77:5 | ref arg p | smart_pointer.cpp:79:10:79:10 | p |  |
+| smart_pointer.cpp:77:5:77:19 | ... = ... | smart_pointer.cpp:77:8:77:8 | x [post update] |  |
+| smart_pointer.cpp:77:12:77:17 | call to source | smart_pointer.cpp:77:5:77:19 | ... = ... |  |
+| smart_pointer.cpp:78:10:78:10 | ref arg p | smart_pointer.cpp:79:10:79:10 | p |  |
+| smart_pointer.cpp:81:5:81:5 | ref arg q | smart_pointer.cpp:82:10:82:10 | q |  |
+| smart_pointer.cpp:81:5:81:5 | ref arg q | smart_pointer.cpp:83:10:83:10 | q |  |
+| smart_pointer.cpp:81:5:81:5 | ref arg q | smart_pointer.cpp:84:10:84:10 | q |  |
+| smart_pointer.cpp:81:5:81:22 | ... = ... | smart_pointer.cpp:81:11:81:11 | x [post update] |  |
+| smart_pointer.cpp:81:15:81:20 | call to source | smart_pointer.cpp:81:5:81:22 | ... = ... |  |
+| smart_pointer.cpp:82:10:82:10 | ref arg q | smart_pointer.cpp:83:10:83:10 | q |  |
+| smart_pointer.cpp:82:10:82:10 | ref arg q | smart_pointer.cpp:84:10:84:10 | q |  |
+| smart_pointer.cpp:83:10:83:10 | ref arg q | smart_pointer.cpp:84:10:84:10 | q |  |
 | standalone_iterators.cpp:39:45:39:51 | source1 | standalone_iterators.cpp:39:45:39:51 | source1 |  |
 | standalone_iterators.cpp:39:45:39:51 | source1 | standalone_iterators.cpp:40:11:40:17 | source1 |  |
 | standalone_iterators.cpp:39:45:39:51 | source1 | standalone_iterators.cpp:41:12:41:18 | source1 |  |
