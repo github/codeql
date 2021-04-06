@@ -62,9 +62,9 @@ To set up VS Code for CodeQL query development, follow these steps:
 
 ## Documentation Links
 If you get stuck, try searching our documentation and blog posts for help and ideas. Below are a few links to help you get started:
-- [Learning CodeQL](https://help.semmle.com/QL/learn-ql)
-- [Learning CodeQL for C/C++](https://help.semmle.com/QL/learn-ql/cpp/ql-for-cpp.html)
-- [Using the CodeQL extension for VS Code](https://help.semmle.com/codeql/codeql-for-vscode.html)
+- [Learning CodeQL](https://codeql.github.com/docs/)
+- [Learning CodeQL for Python](https://codeql.github.com/docs/codeql-language-guides/codeql-for-python/)
+- [Using the CodeQL extension for VS Code](https://codeql.github.com/docs/codeql-for-visual-studio-code/)
 
 ## Codeql Recap
 This is a brief review of CodeQL taken from the [full
