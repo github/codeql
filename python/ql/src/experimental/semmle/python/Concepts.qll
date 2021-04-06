@@ -13,13 +13,10 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
-private import semmle.python.ApiGraphs
 
 module LDAPQuery {
   abstract class Range extends DataFlow::Node {
     abstract DataFlow::Node getLDAPNode();
-
-    abstract string getLDAPPart();
   }
 }
 
@@ -29,8 +26,6 @@ class LDAPQuery extends DataFlow::Node {
   LDAPQuery() { this = range }
 
   DataFlow::Node getLDAPNode() { result = range.getLDAPNode() }
-
-  string getLDAPPart() { result = range.getLDAPPart() }
 }
 
 module LDAPEscape {

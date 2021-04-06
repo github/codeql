@@ -20,7 +20,6 @@ private module LDAP {
 
     private class LDAP2Query extends DataFlow::CallCfgNode, LDAPQuery::Range {
       DataFlow::Node ldapNode;
-      string ldapPart;
 
       LDAP2Query() {
         exists(DataFlow::AttrRead searchMethod, DataFlow::CallCfgNode initCall |
@@ -29,21 +28,17 @@ private module LDAP {
           initCall = searchMethod.getObject().getALocalSource() and
           searchMethod.getAttributeName() instanceof LDAP2QueryMethods and
           (
-            ldapNode = this.getArg(0) and
-            ldapPart = "DN"
+            ldapNode = this.getArg(0)
             or
             (
               ldapNode = this.getArg(2) or
               ldapNode = this.getArgByName("filterstr")
-            ) and
-            ldapPart = "search_filter"
+            )
           )
         )
       }
 
       override DataFlow::Node getLDAPNode() { result = ldapNode }
-
-      override string getLDAPPart() { result = ldapPart }
     }
 
     private class LDAP2EscapeDNCall extends DataFlow::CallCfgNode, LDAPEscape::Range {
@@ -71,7 +66,6 @@ private module LDAP {
 
     private class LDAP3Query extends DataFlow::CallCfgNode, LDAPQuery::Range {
       DataFlow::Node ldapNode;
-      string ldapPart;
 
       LDAP3Query() {
         exists(DataFlow::AttrRead searchMethod, DataFlow::CallCfgNode connCall |
@@ -80,18 +74,13 @@ private module LDAP {
           connCall = searchMethod.getObject().getALocalSource() and
           searchMethod.getAttributeName() instanceof LDAP3QueryMethods and
           (
-            ldapNode = this.getArg(0) and
-            ldapPart = "DN"
+            ldapNode = this.getArg(0) or
+            ldapNode = this.getArg(1)
           )
-          or
-          ldapNode = this.getArg(1) and
-          ldapPart = "search_filter"
         )
       }
 
       override DataFlow::Node getLDAPNode() { result = ldapNode }
-
-      override string getLDAPPart() { result = ldapPart }
     }
 
     private class LDAP3EscapeDNCall extends DataFlow::CallCfgNode, LDAPEscape::Range {
