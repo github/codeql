@@ -157,11 +157,11 @@ void f3(int x, int y) {
 bool use(int);
 
 void f4(int x, bool b) {
-  if((x = 10) && use(x)) {} // GOOD [FALSE POSITIVE]: This is likely just a short-hand way of writing an assignment
+  if((x = 10) && use(x)) {} // GOOD: This is likely just a short-hand way of writing an assignment
                             // followed by a boolean check.
-  if((x = 10) && b && use(x)) {} // GOOD [FALSE POSITIVE]: Same reason as above
-  if((x = 10) && use(x) && b) {} // GOOD [FALSE POSITIVE]: Same reason as above
-  if((x = 10) && (use(x) && b)) {} // GOOD [FALSE POSITIVE]: Same reason as above
+  if((x = 10) && b && use(x)) {} // GOOD: Same reason as above
+  if((x = 10) && use(x) && b) {} // GOOD: Same reason as above
+  if((x = 10) && (use(x) && b)) {} // GOOD: Same reason as above
 
   if(use(x) && b && (x = 10)) {} // BAD: The assignment is the last thing that happens in the comparison.
                                  // This doesn't match the usual pattern.
