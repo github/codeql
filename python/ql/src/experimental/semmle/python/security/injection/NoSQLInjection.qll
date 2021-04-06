@@ -6,7 +6,6 @@ import semmle.python.dataflow.new.TaintTracking2
 import experimental.semmle.python.Concepts
 import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.ApiGraphs
-// temporary imports (change after query normalization)
 import semmle.python.security.dataflow.ChainedConfigs12
 
 class JsonLoadsCall extends DataFlow::CallCfgNode {
