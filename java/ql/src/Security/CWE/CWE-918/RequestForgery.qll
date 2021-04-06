@@ -199,10 +199,10 @@ private class SpringRestTemplateUrlMethods extends Method {
 /** A sanitizer for request forgery vulnerabilities. */
 abstract class RequestForgerySanitizer extends DataFlow::Node { }
 
-private class HostnameSanitzingPrefix extends CompileTimeConstantExpr {
+private class HostnameSanitizingPrefix extends CompileTimeConstantExpr {
   int offset;
 
-  HostnameSanitzingPrefix() {
+  HostnameSanitizingPrefix() {
     exists(
       this.getStringValue().regexpFind(".*([?#]|[^?#:/\\\\][/\\\\]).*|[/\\\\][^/\\\\].*", 0, offset)
     )
@@ -217,7 +217,7 @@ private class HostnameSanitzingPrefix extends CompileTimeConstantExpr {
 private AddExpr getParentAdd(AddExpr e) { result = e.getParent() }
 
 private AddExpr getAnAddContainingHostnameSanitizingPrefix() {
-  result = getParentAdd*(any(HostnameSanitzingPrefix p).getParent())
+  result = getParentAdd*(any(HostnameSanitizingPrefix p).getParent())
 }
 
 private Expr getASanitizedAddOperand() {
@@ -225,7 +225,7 @@ private Expr getASanitizedAddOperand() {
     e = getAnAddContainingHostnameSanitizingPrefix() and
     (
       e.getLeftOperand() = getAnAddContainingHostnameSanitizingPrefix() or
-      e.getLeftOperand() instanceof HostnameSanitzingPrefix
+      e.getLeftOperand() instanceof HostnameSanitizingPrefix
     ) and
     result = e.getRightOperand()
   )
@@ -263,7 +263,7 @@ class HostnameSanitizedExpr extends Expr {
     exists(StringBuilderVar sbv, ConstructorCall constructor, Expr initializer |
       initializer = sbv.getAnAssignedValue() and
       constructor = getQualifier*(initializer) and
-      constructor.getArgument(0) instanceof HostnameSanitzingPrefix and
+      constructor.getArgument(0) instanceof HostnameSanitizingPrefix and
       (
         this = sbv.getAnAppend().getArgument(0)
         or
@@ -273,14 +273,14 @@ class HostnameSanitizedExpr extends Expr {
     or
     // Sanitize expressions that come after a sanitizing prefix in a sequence of StringBuilder operations:
     exists(MethodAccess appendSanitizingConstant, MethodAccess subsequentAppend |
-      appendSanitizingConstant.getArgument(0) instanceof HostnameSanitzingPrefix and
+      appendSanitizingConstant.getArgument(0) instanceof HostnameSanitizingPrefix and
       getNextAppend*(appendSanitizingConstant) = subsequentAppend and
       this = subsequentAppend.getArgument(0)
     )
     or
     // Sanitize expressions that come after a sanitizing prefix in the args to a format call:
     exists(
-      FormattingCall formatCall, FormatString formatString, HostnameSanitzingPrefix prefix,
+      FormattingCall formatCall, FormatString formatString, HostnameSanitizingPrefix prefix,
       int sanitizedFromOffset, int laterOffset, int sanitizedArg
     |
       formatString = unique(FormatString fs | fs = formatCall.getAFormatString()) and
