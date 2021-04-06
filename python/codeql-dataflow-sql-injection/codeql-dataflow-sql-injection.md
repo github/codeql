@@ -67,17 +67,17 @@ If you get stuck, try searching our documentation and blog posts for help and id
 - [Using the CodeQL extension for VS Code](https://codeql.github.com/docs/codeql-for-visual-studio-code/)
 
 ## Codeql Recap
-This is a brief review of CodeQL taken from the [full
-introduction](https://git.io/JJqdS).  For more details, see the [documentation
-links](#documentation-links).  We will revisit all of this during the tutorial.
+This is a brief review of CodeQL to accompany the tutorial session.  We will cover
+all of this in more detail during the tutorial.  For more details beyond that, see
+the [documentation links](#documentation-links).
 
 ### from, where, select
-Recall that codeql is a declarative language and a basic query is defined by a
-_select_ clause, which specifies what the result of the query should be. For
+CodeQL is a declarative language and a basic query is defined by a
+`select` clause, which specifies what the result of the query should be. For
 example:
 
 ```ql
-import cpp
+import python
 
 select "hello world"
 ```
@@ -98,23 +98,25 @@ The `from` clause is defined as a series of variable declarations, where each
 declaration has a _type_ and a _name_. For example:
 
 ```ql
-from IfStmt ifStmt
+from If ifStmt
 select ifStmt
 ```
 
-We are declaring a variable with the name `ifStmt` and the type `IfStmt` (from the
-CodeQL standard library for analyzing C/C++).  Variables represent a **set of
+We are declaring a variable with the name `ifStmt` and the type `If` (from the
+CodeQL standard library for analyzing Python).  Variables represent a **set of
 values**, initially constrained by the type of the variable.  Here, the variable
-`ifStmt` represents the set of all `if` statements in the C/C++ program, as we can
+`ifStmt` represents the set of all `if` statements in the Python program, as we can
 see if we run the query.
 
-A query using all three clauses to find empty blocks:
+A query using all three clauses to find empty true branches:
 ```ql
-from IfStmt ifStmt, Block block
+import python
+
+from If ifstmt
 where
-  ifStmt.getThen() = block and
-  block.getNumStmt() = 0
-select ifStmt, "Empty if statement"
+    count(ifstmt.getBody().getAnItem()) = 1 and
+    ifstmt.getBody().getAnItem() instanceof Pass
+select ifstmt
 ```
 
 
