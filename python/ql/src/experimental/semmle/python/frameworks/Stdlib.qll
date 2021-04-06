@@ -36,7 +36,7 @@ private module NoSQL {
   }
 
   private class PyMongoFlaskMethods extends string {
-    PyMongoFlaskMethods() { this in ["find_one_or_404"] }
+    PyMongoFlaskMethods() { this in ["find_one_or_404"] or this instanceof PyMongoMethods }
   }
 
   private class PyMongoFlaskCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
