@@ -480,7 +480,7 @@ module NodeJSLib {
         )
         or
         // const fs = require('fs');
-        // module.exports = methods.reduce((obj, method) => {
+        // let fs_copy = methods.reduce((obj, method) => {
         //  obj[method] = fs[method];
         //  return obj;
         // }, {});
