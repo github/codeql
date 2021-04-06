@@ -130,13 +130,17 @@ We can introduce a new predicate in our query that identifies the set of empty
 blocks in the program (for example, to reuse this feature in another query):
 
 ```ql
-predicate isEmptyBlock(Block block) {
-  block.getNumStmt() = 0
+import python
+
+predicate isEmptyBlock(StmtList stmt) {
+    count(stmt.getAnItem()) = 1 and
+    stmt.getAnItem() instanceof Pass
 }
 
-from IfStmt ifStmt
-where isEmptyBlock(ifStmt.getThen())
-select ifStmt, "Empty if statement"
+from If ifstmt
+where
+    isEmptyBlock(ifstmt.getBody())
+select ifstmt
 ```
 
 ### Existential quantifiers (local variables in queries)
