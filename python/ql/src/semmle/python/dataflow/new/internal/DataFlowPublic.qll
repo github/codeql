@@ -6,6 +6,7 @@ private import python
 private import DataFlowPrivate
 import semmle.python.dataflow.new.TypeTracker
 import Attributes
+import LocalSources
 private import semmle.python.essa.SsaCompute
 
 /**
@@ -135,7 +136,7 @@ class Node extends TNode {
   LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
 
   /**
-   * Gets a local source node from which data may flow to this node in zero or more local steps.
+   * Gets a local source node from which data may flow to this node in zero or more local data-flow steps.
    */
   LocalSourceNode getALocalSource() { result.flowsTo(this) }
 }
@@ -215,7 +216,7 @@ ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends CfgNode {
+class ParameterNode extends CfgNode, LocalSourceNode {
   ParameterDefinition def;
 
   ParameterNode() {
@@ -236,6 +237,9 @@ class ParameterNode extends CfgNode {
   /** Gets the `Parameter` this `ParameterNode` represents. */
   Parameter getParameter() { result = def.getParameter() }
 }
+
+/** Gets a node corresponding to parameter `p`. */
+ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
 /** A data flow node that represents a call argument. */
 class ArgumentNode extends Node {
@@ -463,108 +467,6 @@ class BarrierGuard extends GuardNode {
       this.checks(node, branch) and
       AdjacentUses::useOfDef(def, result.asCfgNode()) and
       this.controlsBlock(result.asCfgNode().getBasicBlock(), branch)
-    )
-  }
-}
-
-private predicate comes_from_cfgnode(Node node) {
-  exists(CfgNode first, Node second |
-    simpleLocalFlowStep(first, second) and
-    simpleLocalFlowStep*(second, node)
-  )
-}
-
-/**
- * A data flow node that is a source of local flow. This includes things like
- * - Expressions
- * - Function parameters
- */
-class LocalSourceNode extends Node {
-  cached
-  LocalSourceNode() {
-    not comes_from_cfgnode(this) and
-    not this instanceof ModuleVariableNode
-    or
-    this = any(ModuleVariableNode mvn).getARead()
-  }
-
-  /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
-  pragma[inline]
-  predicate flowsTo(Node nodeTo) { Cached::hasLocalSource(nodeTo, this) }
-
-  /**
-   * Gets a reference (read or write) of attribute `attrName` on this node.
-   */
-  AttrRef getAnAttributeReference(string attrName) { Cached::namedAttrRef(this, attrName, result) }
-
-  /**
-   * Gets a read of attribute `attrName` on this node.
-   */
-  AttrRead getAnAttributeRead(string attrName) { result = getAnAttributeReference(attrName) }
-
-  /**
-   * Gets a reference (read or write) of any attribute on this node.
-   */
-  AttrRef getAnAttributeReference() {
-    Cached::namedAttrRef(this, _, result)
-    or
-    Cached::dynamicAttrRef(this, result)
-  }
-
-  /**
-   * Gets a read of any attribute on this node.
-   */
-  AttrRead getAnAttributeRead() { result = getAnAttributeReference() }
-
-  /**
-   * Gets a call to this node.
-   */
-  CallCfgNode getACall() { Cached::call(this, result) }
-}
-
-cached
-private module Cached {
-  /**
-   * Holds if `source` is a `LocalSourceNode` that can reach `sink` via local flow steps.
-   *
-   * The slightly backwards parametering ordering is to force correct indexing.
-   */
-  cached
-  predicate hasLocalSource(Node sink, LocalSourceNode source) {
-    source = sink
-    or
-    exists(Node second |
-      simpleLocalFlowStep(source, second) and
-      simpleLocalFlowStep*(second, sink)
-    )
-  }
-
-  /**
-   * Holds if `base` flows to the base of `ref` and `ref` has attribute name `attr`.
-   */
-  cached
-  predicate namedAttrRef(LocalSourceNode base, string attr, AttrRef ref) {
-    base.flowsTo(ref.getObject()) and
-    ref.getAttributeName() = attr
-  }
-
-  /**
-   * Holds if `base` flows to the base of `ref` and `ref` has no known attribute name.
-   */
-  cached
-  predicate dynamicAttrRef(LocalSourceNode base, AttrRef ref) {
-    base.flowsTo(ref.getObject()) and
-    not exists(ref.getAttributeName())
-  }
-
-  /**
-   * Holds if `func` flows to the callee of `call`.
-   */
-  cached
-  predicate call(LocalSourceNode func, CallCfgNode call) {
-    exists(CfgNode n |
-      func.flowsTo(n) and
-      n = call.getFunction()
     )
   }
 }
