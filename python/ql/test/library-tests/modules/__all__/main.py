@@ -49,8 +49,8 @@ except NameError:
     print("  baz not imported")
 del foo, bar
 
-from all_dynamic2 import *
-print("all_dynamic2.py")
+from all_indirect import *
+print("all_indirect.py")
 print("  foo={!r}".format(foo))
 print("  bar={!r}".format(bar))
 try:
@@ -74,10 +74,10 @@ import no_all
 import all_list
 import all_tuple
 import all_dynamic
-import all_dynamic2
+import all_indirect
 import all_set
 
-for mod in [no_all, all_list, all_tuple, all_dynamic, all_dynamic2, all_set]:
+for mod in [no_all, all_list, all_tuple, all_dynamic, all_indirect, all_set]:
     print("{}.py".format(mod.__name__))
     print("  foo={!r}".format(mod.foo))
     print("  bar={!r}".format(mod.bar))
