@@ -80,7 +80,7 @@ void test2() {
 	unsigned int a = getAnInt();
 	unsigned int b = a;
 
-	if (a - b > 0) { // GOOD (as a = b) [FALSE POSITIVE]
+	if (a - b > 0) { // GOOD (as a = b)
 		// ...
 	}
 }
@@ -107,7 +107,7 @@ void test5() {
 	unsigned int b = getAnInt();
 	unsigned int a = b;
 
-	if (a - b > 0) { // GOOD (as a = b) [FALSE POSITIVE]
+	if (a - b > 0) { // GOOD (as a = b)
 		// ...
 	}
 }
@@ -216,14 +216,14 @@ void test12() {
 	unsigned int c;
 
 	if ((b <= c) && (c <= a)) {
-		if (a - b > 0) { // GOOD (as b <= a) [FALSE POSITIVE]
+		if (a - b > 0) { // GOOD (as b <= a)
 			// ...
 		}
 	}
 
 	if (b <= c) {
 		if (c <= a) {
-			if (a - b > 0) { // GOOD (as b <= a) [FALSE POSITIVE]
+			if (a - b > 0) { // GOOD (as b <= a)
 				// ...
 			}
 		}
@@ -238,7 +238,7 @@ int test13() {
 		return 0;
 	}
 
-	return (a - b > 0); // GOOD (as b = 0)
+	return (a - b > 0); // GOOD (as b = 0) [FALSE POSITIVE]
 }
 
 int test14() {

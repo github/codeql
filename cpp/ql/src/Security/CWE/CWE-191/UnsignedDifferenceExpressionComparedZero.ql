@@ -29,16 +29,22 @@ predicate isGuarded(SubExpr sub, Expr left, Expr right) {
   )
 }
 
-/** Holds if `sub` will never be negative. */
-predicate nonNegative(SubExpr sub) {
-  not exprMightOverflowNegatively(sub.getFullyConverted())
+/**
+ * Holds if `e` is known to be less than or equal to `sub.getLeftOperand()`.
+ */
+predicate exprIsSubLeftOrLess(SubExpr sub, Expr e) {
+  e = sub.getLeftOperand()
   or
-  // The subtraction is guarded by a check of the form `left >= right`.
-  exists(GVN left, GVN right |
-    // This is basically a poor man's version of a directional unbind operator.
-    strictcount([left, globalValueNumber(sub.getLeftOperand())]) = 1 and
-    strictcount([right, globalValueNumber(sub.getRightOperand())]) = 1 and
-    isGuarded(sub, left.getAnExpr(), right.getAnExpr())
+  exists(Expr other |
+    // GVN equality
+    exprIsSubLeftOrLess(sub, other) and
+    globalValueNumber(e) = globalValueNumber(other)
+  )
+  or
+  exists(Expr other |
+    // guard constraining `sub`
+    exprIsSubLeftOrLess(sub, other) and
+    isGuarded(sub, other, e) // left >= right
   )
 }
 
@@ -49,5 +55,5 @@ where
   ro.getLesserOperand().getValue().toInt() = 0 and
   ro.getGreaterOperand() = sub and
   sub.getFullyConverted().getUnspecifiedType().(IntegralType).isUnsigned() and
-  not nonNegative(sub)
+  not exprIsSubLeftOrLess(sub, sub.getRightOperand())
 select ro, "Unsigned subtraction can never be negative."
