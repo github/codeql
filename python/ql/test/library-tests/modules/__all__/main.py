@@ -17,6 +17,10 @@ print("no_all.py")
 print("  foo={!r}".format(foo))
 print("  bar={!r}".format(bar))
 print("  baz={!r}".format(baz))
+try:
+    print("  _qux={!r}".format(_qux))
+except NameError:
+    print("  _qux not imported")
 del foo, bar, baz
 
 from all_list import *
@@ -82,3 +86,5 @@ for mod in [no_all, all_list, all_tuple, all_dynamic, all_indirect, all_set]:
     print("  foo={!r}".format(mod.foo))
     print("  bar={!r}".format(mod.bar))
     print("  baz={!r}".format(mod.baz))
+
+print("\nspecial: no_all._qux={!r}".format(no_all._qux))
