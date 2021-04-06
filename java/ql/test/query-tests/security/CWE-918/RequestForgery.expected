@@ -15,13 +15,13 @@ edges
 | RequestForgery.java:19:23:19:58 | new URI(...) : URI | RequestForgery.java:27:57:27:59 | uri |
 | RequestForgery.java:19:31:19:57 | getParameter(...) : String | RequestForgery.java:19:23:19:58 | new URI(...) : URI |
 | RequestForgery.java:19:31:19:57 | getParameter(...) : String | RequestForgery.java:22:52:22:54 | uri |
-| RequestForgery.java:19:31:19:57 | getParameter(...) : String | RequestForgery.java:27:57:27:59 | uri |
-| RequestForgery.java:61:33:61:63 | getParameter(...) : String | RequestForgery.java:62:59:62:77 | new URI(...) |
-| RequestForgery.java:65:49:65:79 | getParameter(...) : String | RequestForgery.java:66:59:66:77 | new URI(...) |
-| RequestForgery.java:70:31:70:61 | getParameter(...) : String | RequestForgery.java:71:59:71:88 | new URI(...) |
-| RequestForgery.java:74:73:74:103 | getParameter(...) : String | RequestForgery.java:75:59:75:77 | new URI(...) |
-| RequestForgery.java:78:56:78:86 | getParameter(...) : String | RequestForgery.java:79:59:79:77 | new URI(...) |
-| RequestForgery.java:82:55:82:85 | getParameter(...) : String | RequestForgery.java:83:59:83:77 | new URI(...) |
+| RequestForgery.java:59:33:59:63 | getParameter(...) : String | RequestForgery.java:60:59:60:77 | new URI(...) |
+| RequestForgery.java:63:49:63:79 | getParameter(...) : String | RequestForgery.java:64:59:64:77 | new URI(...) |
+| RequestForgery.java:68:31:68:61 | getParameter(...) : String | RequestForgery.java:69:59:69:88 | new URI(...) |
+| RequestForgery.java:72:73:72:103 | getParameter(...) : String | RequestForgery.java:73:59:73:77 | new URI(...) |
+| RequestForgery.java:76:56:76:86 | getParameter(...) : String | RequestForgery.java:77:59:77:77 | new URI(...) |
+| RequestForgery.java:80:55:80:85 | getParameter(...) : String | RequestForgery.java:81:59:81:77 | new URI(...) |
+| RequestForgery.java:84:33:84:63 | getParameter(...) : String | RequestForgery.java:85:59:85:77 | new URI(...) |
 | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:32:47:32:67 | ... + ... |
 | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:37:43:37:56 | fooResourceUrl |
 | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:41:42:41:55 | fooResourceUrl |
@@ -49,19 +49,20 @@ nodes
 | RequestForgery.java:19:23:19:58 | new URI(...) : URI | semmle.label | new URI(...) : URI |
 | RequestForgery.java:19:31:19:57 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | RequestForgery.java:22:52:22:54 | uri | semmle.label | uri |
-| RequestForgery.java:27:57:27:59 | uri | semmle.label | uri |
-| RequestForgery.java:61:33:61:63 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| RequestForgery.java:62:59:62:77 | new URI(...) | semmle.label | new URI(...) |
-| RequestForgery.java:65:49:65:79 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| RequestForgery.java:66:59:66:77 | new URI(...) | semmle.label | new URI(...) |
-| RequestForgery.java:70:31:70:61 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| RequestForgery.java:71:59:71:88 | new URI(...) | semmle.label | new URI(...) |
-| RequestForgery.java:74:73:74:103 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| RequestForgery.java:75:59:75:77 | new URI(...) | semmle.label | new URI(...) |
-| RequestForgery.java:78:56:78:86 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| RequestForgery.java:79:59:79:77 | new URI(...) | semmle.label | new URI(...) |
-| RequestForgery.java:82:55:82:85 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| RequestForgery.java:83:59:83:77 | new URI(...) | semmle.label | new URI(...) |
+| RequestForgery.java:59:33:59:63 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RequestForgery.java:60:59:60:77 | new URI(...) | semmle.label | new URI(...) |
+| RequestForgery.java:63:49:63:79 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RequestForgery.java:64:59:64:77 | new URI(...) | semmle.label | new URI(...) |
+| RequestForgery.java:68:31:68:61 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RequestForgery.java:69:59:69:88 | new URI(...) | semmle.label | new URI(...) |
+| RequestForgery.java:72:73:72:103 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RequestForgery.java:73:59:73:77 | new URI(...) | semmle.label | new URI(...) |
+| RequestForgery.java:76:56:76:86 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RequestForgery.java:77:59:77:77 | new URI(...) | semmle.label | new URI(...) |
+| RequestForgery.java:80:55:80:85 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RequestForgery.java:81:59:81:77 | new URI(...) | semmle.label | new URI(...) |
+| RequestForgery.java:84:33:84:63 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RequestForgery.java:85:59:85:77 | new URI(...) | semmle.label | new URI(...) |
 | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | SpringSSRF.java:32:47:32:67 | ... + ... | semmle.label | ... + ... |
 | SpringSSRF.java:37:43:37:56 | fooResourceUrl | semmle.label | fooResourceUrl |
@@ -83,13 +84,13 @@ nodes
 | RequestForgery2.java:67:43:67:45 | uri | RequestForgery2.java:23:27:23:53 | getParameter(...) : String | RequestForgery2.java:67:43:67:45 | uri | Potential server side request forgery due to $@. | RequestForgery2.java:23:27:23:53 | getParameter(...) | a user-provided value |
 | RequestForgery2.java:69:29:69:32 | uri2 | RequestForgery2.java:23:27:23:53 | getParameter(...) : String | RequestForgery2.java:69:29:69:32 | uri2 | Potential server side request forgery due to $@. | RequestForgery2.java:23:27:23:53 | getParameter(...) | a user-provided value |
 | RequestForgery.java:22:52:22:54 | uri | RequestForgery.java:19:31:19:57 | getParameter(...) : String | RequestForgery.java:22:52:22:54 | uri | Potential server side request forgery due to $@. | RequestForgery.java:19:31:19:57 | getParameter(...) | a user-provided value |
-| RequestForgery.java:27:57:27:59 | uri | RequestForgery.java:19:31:19:57 | getParameter(...) : String | RequestForgery.java:27:57:27:59 | uri | Potential server side request forgery due to $@. | RequestForgery.java:19:31:19:57 | getParameter(...) | a user-provided value |
-| RequestForgery.java:62:59:62:77 | new URI(...) | RequestForgery.java:61:33:61:63 | getParameter(...) : String | RequestForgery.java:62:59:62:77 | new URI(...) | Potential server side request forgery due to $@. | RequestForgery.java:61:33:61:63 | getParameter(...) | a user-provided value |
-| RequestForgery.java:66:59:66:77 | new URI(...) | RequestForgery.java:65:49:65:79 | getParameter(...) : String | RequestForgery.java:66:59:66:77 | new URI(...) | Potential server side request forgery due to $@. | RequestForgery.java:65:49:65:79 | getParameter(...) | a user-provided value |
-| RequestForgery.java:71:59:71:88 | new URI(...) | RequestForgery.java:70:31:70:61 | getParameter(...) : String | RequestForgery.java:71:59:71:88 | new URI(...) | Potential server side request forgery due to $@. | RequestForgery.java:70:31:70:61 | getParameter(...) | a user-provided value |
-| RequestForgery.java:75:59:75:77 | new URI(...) | RequestForgery.java:74:73:74:103 | getParameter(...) : String | RequestForgery.java:75:59:75:77 | new URI(...) | Potential server side request forgery due to $@. | RequestForgery.java:74:73:74:103 | getParameter(...) | a user-provided value |
-| RequestForgery.java:79:59:79:77 | new URI(...) | RequestForgery.java:78:56:78:86 | getParameter(...) : String | RequestForgery.java:79:59:79:77 | new URI(...) | Potential server side request forgery due to $@. | RequestForgery.java:78:56:78:86 | getParameter(...) | a user-provided value |
-| RequestForgery.java:83:59:83:77 | new URI(...) | RequestForgery.java:82:55:82:85 | getParameter(...) : String | RequestForgery.java:83:59:83:77 | new URI(...) | Potential server side request forgery due to $@. | RequestForgery.java:82:55:82:85 | getParameter(...) | a user-provided value |
+| RequestForgery.java:60:59:60:77 | new URI(...) | RequestForgery.java:59:33:59:63 | getParameter(...) : String | RequestForgery.java:60:59:60:77 | new URI(...) | Potential server side request forgery due to $@. | RequestForgery.java:59:33:59:63 | getParameter(...) | a user-provided value |
+| RequestForgery.java:64:59:64:77 | new URI(...) | RequestForgery.java:63:49:63:79 | getParameter(...) : String | RequestForgery.java:64:59:64:77 | new URI(...) | Potential server side request forgery due to $@. | RequestForgery.java:63:49:63:79 | getParameter(...) | a user-provided value |
+| RequestForgery.java:69:59:69:88 | new URI(...) | RequestForgery.java:68:31:68:61 | getParameter(...) : String | RequestForgery.java:69:59:69:88 | new URI(...) | Potential server side request forgery due to $@. | RequestForgery.java:68:31:68:61 | getParameter(...) | a user-provided value |
+| RequestForgery.java:73:59:73:77 | new URI(...) | RequestForgery.java:72:73:72:103 | getParameter(...) : String | RequestForgery.java:73:59:73:77 | new URI(...) | Potential server side request forgery due to $@. | RequestForgery.java:72:73:72:103 | getParameter(...) | a user-provided value |
+| RequestForgery.java:77:59:77:77 | new URI(...) | RequestForgery.java:76:56:76:86 | getParameter(...) : String | RequestForgery.java:77:59:77:77 | new URI(...) | Potential server side request forgery due to $@. | RequestForgery.java:76:56:76:86 | getParameter(...) | a user-provided value |
+| RequestForgery.java:81:59:81:77 | new URI(...) | RequestForgery.java:80:55:80:85 | getParameter(...) : String | RequestForgery.java:81:59:81:77 | new URI(...) | Potential server side request forgery due to $@. | RequestForgery.java:80:55:80:85 | getParameter(...) | a user-provided value |
+| RequestForgery.java:85:59:85:77 | new URI(...) | RequestForgery.java:84:33:84:63 | getParameter(...) : String | RequestForgery.java:85:59:85:77 | new URI(...) | Potential server side request forgery due to $@. | RequestForgery.java:84:33:84:63 | getParameter(...) | a user-provided value |
 | SpringSSRF.java:32:47:32:67 | ... + ... | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:32:47:32:67 | ... + ... | Potential server side request forgery due to $@. | SpringSSRF.java:26:33:26:60 | getParameter(...) | a user-provided value |
 | SpringSSRF.java:37:43:37:56 | fooResourceUrl | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:37:43:37:56 | fooResourceUrl | Potential server side request forgery due to $@. | SpringSSRF.java:26:33:26:60 | getParameter(...) | a user-provided value |
 | SpringSSRF.java:41:42:41:55 | fooResourceUrl | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:41:42:41:55 | fooResourceUrl | Potential server side request forgery due to $@. | SpringSSRF.java:26:33:26:60 | getParameter(...) | a user-provided value |

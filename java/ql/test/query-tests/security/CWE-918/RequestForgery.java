@@ -22,12 +22,6 @@ public class RequestForgery extends HttpServlet {
             HttpRequest r = HttpRequest.newBuilder(uri).build();
             client.send(r, null);
 
-            // GOOD: the request parameter is validated against a known fixed string
-            if (VALID_URI.equals(request.getParameter("uri"))) {
-                HttpRequest r2 = HttpRequest.newBuilder(uri).build();
-                client.send(r2, null);
-            }
-
             // GOOD: sanitisation by concatenation with a prefix that prevents targeting an arbitrary host.
             // We test a few different ways of sanitisation: via string conctentation (perhaps nested),
             // via a stringbuilder and via String.format.
