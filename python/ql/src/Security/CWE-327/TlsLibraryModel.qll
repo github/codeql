@@ -84,7 +84,7 @@ abstract class UnspecificContextCreation extends ContextCreation, ProtocolUnrest
   }
 }
 
-/** A model of a TLS library. */
+/** A model of a SSL/TLS library. */
 abstract class TlsLibrary extends string {
   TlsLibrary() { this in ["ssl", "pyOpenSSL"] }
 

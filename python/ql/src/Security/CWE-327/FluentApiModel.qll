@@ -3,7 +3,8 @@ import TlsLibraryModel
 
 /**
  * Configuration to determine the state of a context being used to create
- * a conection.
+ * a conection. There is one configuration for each pair of `TlsLibrary` and `ProtocolVersion`,
+ * such that a single configuration only tracks contexts where a specific `ProtocolVersion` is allowed.
  *
  * The state is in terms of whether a specific protocol is allowed. This is
  * either true or false when the context is created and can then be modified
@@ -72,20 +73,18 @@ predicate unsafe_connection_creation_with_context(
   boolean specific
 ) {
   // Connection created from a context allowing `insecure_version`.
-  exists(InsecureContextConfiguration c, ProtocolUnrestriction co |
-    c.hasFlow(co, connectionCreation)
+  exists(InsecureContextConfiguration c |
+    c.hasFlow(contextOrigin, connectionCreation)
   |
     insecure_version = c.getTrackedVersion() and
-    contextOrigin = co and
+    contextOrigin instanceof ProtocolUnrestriction and
     specific = false
   )
   or
   // Connection created from a context specifying `insecure_version`.
-  exists(TlsLibrary l, DataFlow::CfgNode cc |
-    cc = l.insecure_connection_creation(insecure_version)
-  |
-    connectionCreation = cc and
-    contextOrigin = cc and
+  exists(TlsLibrary l |
+    connectionCreation = l.insecure_connection_creation(insecure_version) and
+    contextOrigin = connectionCreation and
     specific = true
   )
 }
@@ -105,7 +104,6 @@ predicate unsafe_connection_creation_without_context(
 
 /** Holds if `contextCreation` is creating a context ties to a specific insecure version. */
 predicate unsafe_context_creation(DataFlow::CallCfgNode contextCreation, string insecure_version) {
-  exists(TlsLibrary l, ContextCreation cc | cc = l.insecure_context_creation(insecure_version) |
-    contextCreation = cc
-  )
+  contextCreation instanceof ContextCreation and
+  exists(TlsLibrary l | contextCreation = l.insecure_context_creation(insecure_version))
 }

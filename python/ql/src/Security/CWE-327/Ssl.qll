@@ -23,30 +23,17 @@ class SSLDefaultContextCreation extends ContextCreation {
 }
 
 /** Gets a reference to an `ssl.Context` instance. */
-private DataFlow::LocalSourceNode sslContextInstance(DataFlow::TypeTracker t) {
-  t.start() and
-  result = API::moduleImport("ssl").getMember(["SSLContext", "create_default_context"]).getACall()
-  or
-  exists(DataFlow::TypeTracker t2 | result = sslContextInstance(t2).track(t2, t))
+API::Node sslContextInstance() {
+  result = API::moduleImport("ssl").getMember(["SSLContext", "create_default_context"]).getReturn()
 }
 
-/** Gets a reference to an `ssl.Context` instance. */
-DataFlow::Node sslContextInstance() {
-  sslContextInstance(DataFlow::TypeTracker::end()).flowsTo(result)
-}
-
-class WrapSocketCall extends ConnectionCreation {
-  override CallNode node;
-
+class WrapSocketCall extends ConnectionCreation, DataFlow::CallCfgNode {
   WrapSocketCall() {
-    exists(DataFlow::AttrRead call | node.getFunction() = call.asCfgNode() |
-      call.getAttributeName() = "wrap_socket" and
-      call.getObject() = sslContextInstance()
-    )
+    this = sslContextInstance().getMember("wrap_socket").getACall()
   }
 
   override DataFlow::CfgNode getContext() {
-    result.getNode() = node.getFunction().(AttrNode).getObject()
+    result = this.getFunction().(DataFlow::AttrRead).getObject()
   }
 }
 
