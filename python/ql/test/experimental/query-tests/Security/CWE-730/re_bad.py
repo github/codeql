@@ -14,8 +14,6 @@ def direct():
     re.search(unsafe_pattern, "")
 
 
-# A RemoteFlowSource is used directly as re.compile's pattern
-
 @app.route("/compile")
 def compile():
     """
