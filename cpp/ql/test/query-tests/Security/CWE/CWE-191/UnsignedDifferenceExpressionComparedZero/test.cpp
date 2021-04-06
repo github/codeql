@@ -238,7 +238,7 @@ int test13() {
 		return 0;
 	}
 
-	return (a - b > 0); // GOOD (as b = 0) [FALSE POSITIVE]
+	return (a - b > 0); // GOOD (as b = 0)
 }
 
 int test14() {

@@ -16,6 +16,5 @@
 | test.cpp:182:6:182:14 | ... > ... | Unsigned subtraction can never be negative. |
 | test.cpp:195:6:195:14 | ... > ... | Unsigned subtraction can never be negative. |
 | test.cpp:208:6:208:14 | ... > ... | Unsigned subtraction can never be negative. |
-| test.cpp:241:10:241:18 | ... > ... | Unsigned subtraction can never be negative. |
 | test.cpp:252:10:252:18 | ... > ... | Unsigned subtraction can never be negative. |
 | test.cpp:266:10:266:24 | ... > ... | Unsigned subtraction can never be negative. |

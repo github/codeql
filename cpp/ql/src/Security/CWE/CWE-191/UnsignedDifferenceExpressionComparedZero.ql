@@ -72,5 +72,6 @@ where
   ro.getLesserOperand().getValue().toInt() = 0 and
   ro.getGreaterOperand() = sub and
   sub.getFullyConverted().getUnspecifiedType().(IntegralType).isUnsigned() and
-  not exprIsSubLeftOrLess(sub, sub.getRightOperand())
+  exprMightOverflowNegatively(sub.getFullyConverted()) and // generally catches false positives involving constants
+  not exprIsSubLeftOrLess(sub, sub.getRightOperand()) // generally catches false positives where there's a relation between the left and right operands
 select ro, "Unsigned subtraction can never be negative."
