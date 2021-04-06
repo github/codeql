@@ -3223,72 +3223,91 @@
 | smart_pointer.cpp:11:30:11:50 | call to make_shared | smart_pointer.cpp:12:11:12:11 | p |  |
 | smart_pointer.cpp:11:30:11:50 | call to make_shared | smart_pointer.cpp:13:10:13:10 | p |  |
 | smart_pointer.cpp:11:52:11:57 | call to source | smart_pointer.cpp:11:30:11:50 | call to make_shared | TAINT |
-| smart_pointer.cpp:12:11:12:11 | p | smart_pointer.cpp:12:10:12:10 | call to operator* | TAINT |
+| smart_pointer.cpp:12:11:12:11 | p | smart_pointer.cpp:12:10:12:10 | call to operator* |  |
 | smart_pointer.cpp:12:11:12:11 | ref arg p | smart_pointer.cpp:13:10:13:10 | p |  |
 | smart_pointer.cpp:17:32:17:54 | call to make_shared | smart_pointer.cpp:18:11:18:11 | p |  |
 | smart_pointer.cpp:17:32:17:54 | call to make_shared | smart_pointer.cpp:19:10:19:10 | p |  |
-| smart_pointer.cpp:18:11:18:11 | p | smart_pointer.cpp:18:10:18:10 | call to operator* | TAINT |
+| smart_pointer.cpp:18:10:18:10 | ref arg call to operator* | smart_pointer.cpp:18:11:18:11 | ref arg p |  |
+| smart_pointer.cpp:18:11:18:11 | p | smart_pointer.cpp:18:10:18:10 | call to operator* |  |
 | smart_pointer.cpp:18:11:18:11 | ref arg p | smart_pointer.cpp:19:10:19:10 | p |  |
 | smart_pointer.cpp:23:30:23:50 | call to make_unique | smart_pointer.cpp:24:11:24:11 | p |  |
 | smart_pointer.cpp:23:30:23:50 | call to make_unique | smart_pointer.cpp:25:10:25:10 | p |  |
 | smart_pointer.cpp:23:52:23:57 | call to source | smart_pointer.cpp:23:30:23:50 | call to make_unique | TAINT |
-| smart_pointer.cpp:24:11:24:11 | p | smart_pointer.cpp:24:10:24:10 | call to operator* | TAINT |
+| smart_pointer.cpp:24:11:24:11 | p | smart_pointer.cpp:24:10:24:10 | call to operator* |  |
 | smart_pointer.cpp:24:11:24:11 | ref arg p | smart_pointer.cpp:25:10:25:10 | p |  |
 | smart_pointer.cpp:29:32:29:54 | call to make_unique | smart_pointer.cpp:30:11:30:11 | p |  |
 | smart_pointer.cpp:29:32:29:54 | call to make_unique | smart_pointer.cpp:31:10:31:10 | p |  |
-| smart_pointer.cpp:30:11:30:11 | p | smart_pointer.cpp:30:10:30:10 | call to operator* | TAINT |
+| smart_pointer.cpp:30:10:30:10 | ref arg call to operator* | smart_pointer.cpp:30:11:30:11 | ref arg p |  |
+| smart_pointer.cpp:30:11:30:11 | p | smart_pointer.cpp:30:10:30:10 | call to operator* |  |
 | smart_pointer.cpp:30:11:30:11 | ref arg p | smart_pointer.cpp:31:10:31:10 | p |  |
 | smart_pointer.cpp:35:30:35:50 | call to make_shared | smart_pointer.cpp:37:6:37:6 | p |  |
 | smart_pointer.cpp:35:30:35:50 | call to make_shared | smart_pointer.cpp:38:10:38:10 | p |  |
 | smart_pointer.cpp:35:30:35:50 | call to make_shared | smart_pointer.cpp:39:11:39:11 | p |  |
+| smart_pointer.cpp:37:5:37:5 | call to operator* [post update] | smart_pointer.cpp:37:6:37:6 | ref arg p |  |
 | smart_pointer.cpp:37:5:37:17 | ... = ... | smart_pointer.cpp:37:5:37:5 | call to operator* [post update] |  |
-| smart_pointer.cpp:37:6:37:6 | p | smart_pointer.cpp:37:5:37:5 | call to operator* | TAINT |
+| smart_pointer.cpp:37:6:37:6 | p | smart_pointer.cpp:37:5:37:5 | call to operator* |  |
 | smart_pointer.cpp:37:6:37:6 | ref arg p | smart_pointer.cpp:38:10:38:10 | p |  |
 | smart_pointer.cpp:37:6:37:6 | ref arg p | smart_pointer.cpp:39:11:39:11 | p |  |
 | smart_pointer.cpp:37:10:37:15 | call to source | smart_pointer.cpp:37:5:37:17 | ... = ... |  |
 | smart_pointer.cpp:38:10:38:10 | ref arg p | smart_pointer.cpp:39:11:39:11 | p |  |
-| smart_pointer.cpp:39:11:39:11 | p | smart_pointer.cpp:39:10:39:10 | call to operator* | TAINT |
+| smart_pointer.cpp:39:11:39:11 | p | smart_pointer.cpp:39:10:39:10 | call to operator* |  |
 | smart_pointer.cpp:43:29:43:51 | call to unique_ptr | smart_pointer.cpp:45:6:45:6 | p |  |
 | smart_pointer.cpp:43:29:43:51 | call to unique_ptr | smart_pointer.cpp:46:10:46:10 | p |  |
 | smart_pointer.cpp:43:29:43:51 | call to unique_ptr | smart_pointer.cpp:47:11:47:11 | p |  |
+| smart_pointer.cpp:45:5:45:5 | call to operator* [post update] | smart_pointer.cpp:45:6:45:6 | ref arg p |  |
 | smart_pointer.cpp:45:5:45:17 | ... = ... | smart_pointer.cpp:45:5:45:5 | call to operator* [post update] |  |
-| smart_pointer.cpp:45:6:45:6 | p | smart_pointer.cpp:45:5:45:5 | call to operator* | TAINT |
+| smart_pointer.cpp:45:6:45:6 | p | smart_pointer.cpp:45:5:45:5 | call to operator* |  |
 | smart_pointer.cpp:45:6:45:6 | ref arg p | smart_pointer.cpp:46:10:46:10 | p |  |
 | smart_pointer.cpp:45:6:45:6 | ref arg p | smart_pointer.cpp:47:11:47:11 | p |  |
 | smart_pointer.cpp:45:10:45:15 | call to source | smart_pointer.cpp:45:5:45:17 | ... = ... |  |
 | smart_pointer.cpp:46:10:46:10 | ref arg p | smart_pointer.cpp:47:11:47:11 | p |  |
-| smart_pointer.cpp:47:11:47:11 | p | smart_pointer.cpp:47:10:47:10 | call to operator* | TAINT |
+| smart_pointer.cpp:47:11:47:11 | p | smart_pointer.cpp:47:10:47:10 | call to operator* |  |
 | smart_pointer.cpp:51:30:51:50 | call to make_shared | smart_pointer.cpp:52:10:52:10 | p |  |
 | smart_pointer.cpp:51:52:51:57 | call to source | smart_pointer.cpp:51:30:51:50 | call to make_shared | TAINT |
-| smart_pointer.cpp:52:10:52:10 | p | smart_pointer.cpp:52:12:52:14 | call to get | TAINT |
+| smart_pointer.cpp:52:10:52:10 | p | smart_pointer.cpp:52:12:52:14 | call to get |  |
+| smart_pointer.cpp:52:12:52:14 | ref arg call to get | smart_pointer.cpp:52:10:52:10 | ref arg p |  |
 | smart_pointer.cpp:56:30:56:50 | call to make_unique | smart_pointer.cpp:57:10:57:10 | p |  |
 | smart_pointer.cpp:56:52:56:57 | call to source | smart_pointer.cpp:56:30:56:50 | call to make_unique | TAINT |
-| smart_pointer.cpp:57:10:57:10 | p | smart_pointer.cpp:57:12:57:14 | call to get | TAINT |
+| smart_pointer.cpp:57:10:57:10 | p | smart_pointer.cpp:57:12:57:14 | call to get |  |
+| smart_pointer.cpp:57:12:57:14 | ref arg call to get | smart_pointer.cpp:57:10:57:10 | ref arg p |  |
 | smart_pointer.cpp:65:28:65:46 | call to make_unique | smart_pointer.cpp:66:10:66:10 | p |  |
 | smart_pointer.cpp:65:28:65:46 | call to make_unique | smart_pointer.cpp:67:10:67:10 | p |  |
 | smart_pointer.cpp:65:48:65:53 | call to source | smart_pointer.cpp:65:28:65:46 | call to make_unique | TAINT |
 | smart_pointer.cpp:65:58:65:58 | 0 | smart_pointer.cpp:65:28:65:46 | call to make_unique | TAINT |
+| smart_pointer.cpp:66:10:66:10 | p | smart_pointer.cpp:66:11:66:11 | call to operator-> |  |
 | smart_pointer.cpp:66:10:66:10 | ref arg p | smart_pointer.cpp:67:10:67:10 | p |  |
-| smart_pointer.cpp:76:45:76:45 | p | smart_pointer.cpp:77:5:77:5 | p |  |
-| smart_pointer.cpp:76:45:76:45 | p | smart_pointer.cpp:78:10:78:10 | p |  |
-| smart_pointer.cpp:76:45:76:45 | p | smart_pointer.cpp:79:10:79:10 | p |  |
-| smart_pointer.cpp:76:67:76:67 | q | smart_pointer.cpp:81:5:81:5 | q |  |
-| smart_pointer.cpp:76:67:76:67 | q | smart_pointer.cpp:82:10:82:10 | q |  |
-| smart_pointer.cpp:76:67:76:67 | q | smart_pointer.cpp:83:10:83:10 | q |  |
-| smart_pointer.cpp:76:67:76:67 | q | smart_pointer.cpp:84:10:84:10 | q |  |
-| smart_pointer.cpp:77:5:77:5 | ref arg p | smart_pointer.cpp:78:10:78:10 | p |  |
-| smart_pointer.cpp:77:5:77:5 | ref arg p | smart_pointer.cpp:79:10:79:10 | p |  |
-| smart_pointer.cpp:77:5:77:19 | ... = ... | smart_pointer.cpp:77:8:77:8 | x [post update] |  |
-| smart_pointer.cpp:77:12:77:17 | call to source | smart_pointer.cpp:77:5:77:19 | ... = ... |  |
-| smart_pointer.cpp:78:10:78:10 | ref arg p | smart_pointer.cpp:79:10:79:10 | p |  |
-| smart_pointer.cpp:81:5:81:5 | ref arg q | smart_pointer.cpp:82:10:82:10 | q |  |
-| smart_pointer.cpp:81:5:81:5 | ref arg q | smart_pointer.cpp:83:10:83:10 | q |  |
-| smart_pointer.cpp:81:5:81:5 | ref arg q | smart_pointer.cpp:84:10:84:10 | q |  |
-| smart_pointer.cpp:81:5:81:22 | ... = ... | smart_pointer.cpp:81:11:81:11 | x [post update] |  |
-| smart_pointer.cpp:81:15:81:20 | call to source | smart_pointer.cpp:81:5:81:22 | ... = ... |  |
-| smart_pointer.cpp:82:10:82:10 | ref arg q | smart_pointer.cpp:83:10:83:10 | q |  |
-| smart_pointer.cpp:82:10:82:10 | ref arg q | smart_pointer.cpp:84:10:84:10 | q |  |
-| smart_pointer.cpp:83:10:83:10 | ref arg q | smart_pointer.cpp:84:10:84:10 | q |  |
+| smart_pointer.cpp:67:10:67:10 | p | smart_pointer.cpp:67:11:67:11 | call to operator-> |  |
+| smart_pointer.cpp:76:45:76:45 | p | smart_pointer.cpp:77:3:77:3 | p |  |
+| smart_pointer.cpp:76:45:76:45 | p | smart_pointer.cpp:78:8:78:8 | p |  |
+| smart_pointer.cpp:76:45:76:45 | p | smart_pointer.cpp:79:8:79:8 | p |  |
+| smart_pointer.cpp:76:67:76:67 | q | smart_pointer.cpp:81:3:81:3 | q |  |
+| smart_pointer.cpp:76:67:76:67 | q | smart_pointer.cpp:82:8:82:8 | q |  |
+| smart_pointer.cpp:76:67:76:67 | q | smart_pointer.cpp:83:8:83:8 | q |  |
+| smart_pointer.cpp:76:67:76:67 | q | smart_pointer.cpp:84:8:84:8 | q |  |
+| smart_pointer.cpp:77:3:77:3 | p | smart_pointer.cpp:77:4:77:4 | call to operator-> |  |
+| smart_pointer.cpp:77:3:77:3 | ref arg p | smart_pointer.cpp:78:8:78:8 | p |  |
+| smart_pointer.cpp:77:3:77:3 | ref arg p | smart_pointer.cpp:79:8:79:8 | p |  |
+| smart_pointer.cpp:77:3:77:17 | ... = ... | smart_pointer.cpp:77:6:77:6 | x [post update] |  |
+| smart_pointer.cpp:77:3:77:17 | ... = ... | smart_pointer.cpp:78:11:78:11 | x |  |
+| smart_pointer.cpp:77:4:77:4 | call to operator-> [post update] | smart_pointer.cpp:77:3:77:3 | ref arg p |  |
+| smart_pointer.cpp:77:10:77:15 | call to source | smart_pointer.cpp:77:3:77:17 | ... = ... |  |
+| smart_pointer.cpp:78:8:78:8 | p | smart_pointer.cpp:78:9:78:9 | call to operator-> |  |
+| smart_pointer.cpp:78:8:78:8 | ref arg p | smart_pointer.cpp:79:8:79:8 | p |  |
+| smart_pointer.cpp:79:8:79:8 | p | smart_pointer.cpp:79:9:79:9 | call to operator-> |  |
+| smart_pointer.cpp:81:3:81:3 | q | smart_pointer.cpp:81:4:81:4 | call to operator-> |  |
+| smart_pointer.cpp:81:3:81:3 | ref arg q | smart_pointer.cpp:82:8:82:8 | q |  |
+| smart_pointer.cpp:81:3:81:3 | ref arg q | smart_pointer.cpp:83:8:83:8 | q |  |
+| smart_pointer.cpp:81:3:81:3 | ref arg q | smart_pointer.cpp:84:8:84:8 | q |  |
+| smart_pointer.cpp:81:3:81:20 | ... = ... | smart_pointer.cpp:81:9:81:9 | x [post update] |  |
+| smart_pointer.cpp:81:3:81:20 | ... = ... | smart_pointer.cpp:82:14:82:14 | x |  |
+| smart_pointer.cpp:81:4:81:4 | call to operator-> [post update] | smart_pointer.cpp:81:3:81:3 | ref arg q |  |
+| smart_pointer.cpp:81:13:81:18 | call to source | smart_pointer.cpp:81:3:81:20 | ... = ... |  |
+| smart_pointer.cpp:82:8:82:8 | q | smart_pointer.cpp:82:9:82:9 | call to operator-> |  |
+| smart_pointer.cpp:82:8:82:8 | ref arg q | smart_pointer.cpp:83:8:83:8 | q |  |
+| smart_pointer.cpp:82:8:82:8 | ref arg q | smart_pointer.cpp:84:8:84:8 | q |  |
+| smart_pointer.cpp:83:8:83:8 | q | smart_pointer.cpp:83:9:83:9 | call to operator-> |  |
+| smart_pointer.cpp:83:8:83:8 | ref arg q | smart_pointer.cpp:84:8:84:8 | q |  |
+| smart_pointer.cpp:84:8:84:8 | q | smart_pointer.cpp:84:9:84:9 | call to operator-> |  |
 | standalone_iterators.cpp:39:45:39:51 | source1 | standalone_iterators.cpp:39:45:39:51 | source1 |  |
 | standalone_iterators.cpp:39:45:39:51 | source1 | standalone_iterators.cpp:40:11:40:17 | source1 |  |
 | standalone_iterators.cpp:39:45:39:51 | source1 | standalone_iterators.cpp:41:12:41:18 | source1 |  |

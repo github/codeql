@@ -35,16 +35,16 @@ void test_reverse_taint_shared() {
     std::shared_ptr<int> p = std::make_shared<int>();
 
     *p = source();
-    sink(p); // $ MISSING: ast,ir
-    sink(*p); // $ MISSING: ast,ir
+    sink(p); // $ ast MISSING: ir
+    sink(*p); // $ ast MISSING: ir
 }
 
 void test_reverse_taint_unique() {
     std::unique_ptr<int> p = std::unique_ptr<int>();
 
     *p = source();
-    sink(p); // $ MISSING: ast,ir
-    sink(*p); // $ MISSING: ast,ir
+    sink(p); // $ ast MISSING: ir
+    sink(*p); // $ ast MISSING: ir
 }
 
 void test_shared_get() {
@@ -75,11 +75,11 @@ struct B {
 
 void test_operator_arrow(std::unique_ptr<A> p, std::unique_ptr<B> q) {
   p->x = source();
-  sink(p->x); // $ MISSING: ast,ir
+  sink(p->x); // $ ast MISSING: ir
   sink(p->y);
 
   q->a1.x = source();
-  sink(q->a1.x); // $ MISSING: ast,ir
+  sink(q->a1.x); // $ ast MISSING: ir
   sink(q->a1.y);
   sink(q->a2.x);
 }
