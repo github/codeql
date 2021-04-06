@@ -14,6 +14,7 @@ import cpp
 import semmle.code.cpp.commons.Exclusions
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
+import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 import semmle.code.cpp.controlflow.Guards
 
 /**
@@ -45,6 +46,22 @@ predicate exprIsSubLeftOrLess(SubExpr sub, Expr e) {
     // guard constraining `sub`
     exprIsSubLeftOrLess(sub, other) and
     isGuarded(sub, other, e) // left >= right
+  )
+  or
+  exists(Expr other, float p, float q |
+    // linear access of `other`
+    exprIsSubLeftOrLess(sub, other) and
+    linearAccess(e, other, p, q) and // e = p * other + q
+    p <= 1 and
+    q <= 0
+  )
+  or
+  exists(Expr other, float p, float q |
+    // linear access of `e`
+    exprIsSubLeftOrLess(sub, other) and
+    linearAccess(other, e, p, q) and // other = p * e + q
+    p >= 1 and
+    q >= 0
   )
 }
 

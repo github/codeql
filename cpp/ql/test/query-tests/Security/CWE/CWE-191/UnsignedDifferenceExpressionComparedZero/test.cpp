@@ -89,7 +89,7 @@ void test3() {
 	unsigned int a = getAnInt();
 	unsigned int b = a - 1;
 
-	if (a - b > 0) { // GOOD (as a >= b) [FALSE POSITIVE]
+	if (a - b > 0) { // GOOD (as a >= b)
 		// ...
 	}
 }
@@ -116,7 +116,7 @@ void test6() {
 	unsigned int b = getAnInt();
 	unsigned int a = b + 1;
 
-	if (a - b > 0) { // GOOD (as a >= b) [FALSE POSITIVE]
+	if (a - b > 0) { // GOOD (as a >= b)
 		// ...
 	}
 }

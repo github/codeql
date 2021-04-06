@@ -8,9 +8,7 @@
 | test.cpp:62:5:62:13 | ... > ... | Unsigned subtraction can never be negative. |
 | test.cpp:69:5:69:13 | ... > ... | Unsigned subtraction can never be negative. |
 | test.cpp:75:8:75:16 | ... > ... | Unsigned subtraction can never be negative. |
-| test.cpp:92:6:92:14 | ... > ... | Unsigned subtraction can never be negative. |
 | test.cpp:101:6:101:14 | ... > ... | Unsigned subtraction can never be negative. |
-| test.cpp:119:6:119:14 | ... > ... | Unsigned subtraction can never be negative. |
 | test.cpp:128:6:128:14 | ... > ... | Unsigned subtraction can never be negative. |
 | test.cpp:137:6:137:14 | ... > ... | Unsigned subtraction can never be negative. |
 | test.cpp:146:7:146:15 | ... > ... | Unsigned subtraction can never be negative. |
