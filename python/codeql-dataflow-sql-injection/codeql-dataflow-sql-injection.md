@@ -189,24 +189,28 @@ Classes are a way in which you can define new types within CodeQL, as well as
 providing an easy way to reuse and structure code.
 
 Like all types in CodeQL, classes represent a set of values. For example, the
-`Block` type is, in fact, a class, and it represents the set of all blocks in the
-program. You can also think of a class as defining a set of logical conditions
-that specifies the set of values for that class.
+`StmtList` type is, in fact, a class, and it represents the set of all statement
+lists in the program. You can also think of a class as defining a set of logical
+conditions that specifies the set of values for that class.
 
-For example, we can define a new CodeQL class to represent empty blocks:
+For example, we can define a new CodeQL class to represent empty statement lists:
 ```ql
-class EmptyBlock extends Block {
-  EmptyBlock() {
-    this.getNumStmt() = 0
-  }
+import python
+
+class EmptyStmt extends StmtList {
+    EmptyStmt() {
+        count(this.getAnItem()) = 1 and
+        this.getAnItem() instanceof Pass
+    }
 }
 ```
 
 and use it in a query:
 ```ql
-from IfStmt ifStmt, EmptyBlock block
-where ifStmt.getThen() = block
-select ifStmt, "Empty if statement"
+from If ifstmt, EmptyStmt empty
+where
+    ifstmt.getBody() = empty
+select ifstmt
 ```
 
 ## The Problem in Action
