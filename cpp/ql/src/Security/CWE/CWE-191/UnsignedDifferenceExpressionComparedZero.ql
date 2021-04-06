@@ -16,12 +16,16 @@ import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.controlflow.Guards
 
-/** Holds if `sub` is guarded by a condition which ensures that `left >= right`. */
+/**
+ *  Holds if `sub` is guarded by a condition which ensures that
+ * `left >= right`.
+ */
 pragma[noinline]
 predicate isGuarded(SubExpr sub, Expr left, Expr right) {
-  exists(GuardCondition guard |
-    guard.controls(sub.getBasicBlock(), true) and
-    guard.ensuresLt(left, right, 0, sub.getBasicBlock(), false)
+  exists(GuardCondition guard, int k |
+    guard.controls(sub.getBasicBlock(), _) and
+    guard.ensuresLt(left, right, k, sub.getBasicBlock(), false) and
+    k >= 0
   )
 }
 

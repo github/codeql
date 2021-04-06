@@ -153,7 +153,7 @@ void test8() {
 			// ...
 		}
 	} else {
-		if (a - b > 0) { // GOOD (as a > b) [FALSE POSITIVE]
+		if (a - b > 0) { // GOOD (as a > b)
 			// ...
 		}
 	}
@@ -166,7 +166,7 @@ void test8() {
 
 	if (a < b) return;
 
-	if (a - b > 0) { // GOOD (as a >= b) [FALSE POSITIVE]
+	if (a - b > 0) { // GOOD (as a >= b)
 		// ...
 	}
 }
