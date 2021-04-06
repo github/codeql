@@ -6,4 +6,3 @@ unsanitized_search = json.loads(request.args['search'])
 sanitize(unsanitized_search)
 
 db_results = mongo.db.user.find({'name': unsanitized_search})
-return db_results[0].keys()
