@@ -468,3 +468,13 @@ Object.defineProperties(
 		)
 	)
 );
+
+const path = require('path');
+const {promisify} = require('util');
+
+const exec = promisify(require('child_process').exec);
+
+module.exports = function check(config) {
+    const cmd = path.join(config.installedPath, 'myBinary -v'); // NOT OK
+    return exec(cmd);
+}

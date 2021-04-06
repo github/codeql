@@ -191,6 +191,27 @@ module UnsafeShellCommandConstruction {
   }
 
   /**
+   * A joined path (`path.{resolve/join}(..)`) that is later executed as a shell command.
+   * Joining a path is similar to string concatenation that automatically inserts slashes.
+   */
+  class JoinedPathEndingInCommandExecutionSink extends Sink {
+    DataFlow::MethodCallNode joinCall;
+    SystemCommandExecution sys;
+
+    JoinedPathEndingInCommandExecutionSink() {
+      this = joinCall.getAnArgument() and
+      joinCall = DataFlow::moduleMember("path", ["resolve", "join"]).getACall() and
+      joinCall = isExecutedAsShellCommand(DataFlow::TypeBackTracker::end(), sys)
+    }
+
+    override string getSinkType() { result = "Uncontrolled path" }
+
+    override SystemCommandExecution getCommandExecution() { result = sys }
+
+    override DataFlow::Node getAlertLocation() { result = this }
+  }
+
+  /**
    * A sanitizer like: "'"+name.replace(/'/g,"'\\''")+"'"
    * Which sanitizes on Unix.
    * The sanitizer is only safe if sorounded by single-quotes, which is assumed.
