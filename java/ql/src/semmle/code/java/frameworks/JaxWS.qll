@@ -1,10 +1,16 @@
 import java
 private import semmle.code.java.dataflow.ExternalFlow
 
-string getAJaxWsPackage() { result in ["javax.ws.rs", "jakarta.ws.rs"] }
+/**
+ * Gets a name for the root package of JAX-RS.
+ */
+string getAJaxRsPackage() { result in ["javax.ws.rs", "jakarta.ws.rs"] }
 
+/**
+ * Gets a name for package `subpackage` within the JAX-RS hierarchy.
+ */
 bindingset[subpackage]
-string getAJaxWsPackage(string subpackage) { result = getAJaxWsPackage() + "." + subpackage }
+string getAJaxRsPackage(string subpackage) { result = getAJaxRsPackage() + "." + subpackage }
 
 /**
  * A JAX WS endpoint is constructed by the container, and its methods
@@ -34,7 +40,7 @@ class JaxWsEndpoint extends Class {
 private predicate hasPathAnnotation(Annotatable annotatable) {
   exists(AnnotationType a |
     a = annotatable.getAnAnnotation().getType() and
-    a.getPackage().getName() = getAJaxWsPackage()
+    a.getPackage().getName() = getAJaxRsPackage()
   |
     a.hasName("Path")
   )
@@ -47,7 +53,7 @@ class JaxRsResourceMethod extends Method {
   JaxRsResourceMethod() {
     exists(AnnotationType a |
       a = this.getAnAnnotation().getType() and
-      a.getPackage().getName() = getAJaxWsPackage()
+      a.getPackage().getName() = getAJaxRsPackage()
     |
       a.hasName("GET") or
       a.hasName("POST") or
@@ -184,7 +190,7 @@ class JaxRsInjectionAnnotation extends JaxRSAnnotation {
   JaxRsInjectionAnnotation() {
     exists(AnnotationType a |
       a = getType() and
-      a.getPackage().getName() = getAJaxWsPackage()
+      a.getPackage().getName() = getAJaxRsPackage()
     |
       a.hasName("BeanParam") or
       a.hasName("CookieParam") or
@@ -195,17 +201,17 @@ class JaxRsInjectionAnnotation extends JaxRSAnnotation {
       a.hasName("QueryParam")
     )
     or
-    getType().hasQualifiedName(getAJaxWsPackage("core"), "Context")
+    getType().hasQualifiedName(getAJaxRsPackage("core"), "Context")
   }
 }
 
 class JaxRsResponse extends Class {
-  JaxRsResponse() { this.hasQualifiedName(getAJaxWsPackage("core"), "Response") }
+  JaxRsResponse() { this.hasQualifiedName(getAJaxRsPackage("core"), "Response") }
 }
 
 class JaxRsResponseBuilder extends Class {
   JaxRsResponseBuilder() {
-    this.hasQualifiedName(getAJaxWsPackage("core"), "Response$ResponseBuilder")
+    this.hasQualifiedName(getAJaxRsPackage("core"), "Response$ResponseBuilder")
   }
 }
 
@@ -213,7 +219,7 @@ class JaxRsResponseBuilder extends Class {
  * The class `javax.ws.rs.client.Client`.
  */
 class JaxRsClient extends RefType {
-  JaxRsClient() { this.hasQualifiedName(getAJaxWsPackage("client"), "Client") }
+  JaxRsClient() { this.hasQualifiedName(getAJaxRsPackage("client"), "Client") }
 }
 
 /**
@@ -226,7 +232,7 @@ class JaxRsBeanParamConstructor extends Constructor {
       c = resourceClass.getAnInjectableCallable()
     |
       p = c.getAParameter() and
-      p.getAnAnnotation().getType().hasQualifiedName(getAJaxWsPackage(), "BeanParam") and
+      p.getAnAnnotation().getType().hasQualifiedName(getAJaxRsPackage(), "BeanParam") and
       this.getDeclaringType().getSourceDeclaration() = p.getType().(RefType).getSourceDeclaration()
     ) and
     forall(Parameter p | p = getAParameter() |
@@ -239,7 +245,7 @@ class JaxRsBeanParamConstructor extends Constructor {
  * The class `javax.ws.rs.ext.MessageBodyReader`.
  */
 class MessageBodyReader extends GenericInterface {
-  MessageBodyReader() { this.hasQualifiedName(getAJaxWsPackage("ext"), "MessageBodyReader") }
+  MessageBodyReader() { this.hasQualifiedName(getAJaxRsPackage("ext"), "MessageBodyReader") }
 }
 
 /**
@@ -265,7 +271,7 @@ class MessageBodyReaderRead extends Method {
 
 /** An `@Produces` annotation that describes which content types can be produced by this resource. */
 class JaxRSProducesAnnotation extends JaxRSAnnotation {
-  JaxRSProducesAnnotation() { getType().hasQualifiedName(getAJaxWsPackage(), "Produces") }
+  JaxRSProducesAnnotation() { getType().hasQualifiedName(getAJaxRsPackage(), "Produces") }
 
   /**
    * Gets a declared content type that can be produced by this resource.
@@ -276,7 +282,7 @@ class JaxRSProducesAnnotation extends JaxRSAnnotation {
     exists(Field jaxMediaType |
       // Accesses to static fields on `MediaType` class do not have constant strings in the database
       // so convert the field name to a content type string
-      jaxMediaType.getDeclaringType().hasQualifiedName(getAJaxWsPackage("core"), "MediaType") and
+      jaxMediaType.getDeclaringType().hasQualifiedName(getAJaxRsPackage("core"), "MediaType") and
       jaxMediaType.getAnAccess() = getAValue() and
       // e.g. MediaType.TEXT_PLAIN => text/plain
       result = jaxMediaType.getName().toLowerCase().replaceAll("_", "/")
@@ -286,7 +292,7 @@ class JaxRSProducesAnnotation extends JaxRSAnnotation {
 
 /** An `@Consumes` annotation that describes content types can be consumed by this resource. */
 class JaxRSConsumesAnnotation extends JaxRSAnnotation {
-  JaxRSConsumesAnnotation() { getType().hasQualifiedName(getAJaxWsPackage(), "Consumes") }
+  JaxRSConsumesAnnotation() { getType().hasQualifiedName(getAJaxRsPackage(), "Consumes") }
 }
 
 /**
