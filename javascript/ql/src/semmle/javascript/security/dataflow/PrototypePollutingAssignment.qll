@@ -100,10 +100,10 @@ module PrototypePollutingAssignment {
     // users wouldn't bother to call Object.create in that case.
     result = DataFlow::globalVarRef("Object").getAMemberCall("create")
     or
-    // Allow use of AdditionalFlowSteps and AdditionalTaintSteps to track a bit further
+    // Allow use of SharedFlowSteps to track a bit further
     exists(DataFlow::Node mid |
       prototypeLessObject(t.continue()).flowsTo(mid) and
-      any(DataFlow::AdditionalFlowStep s).step(mid, result)
+      DataFlow::SharedFlowStep::step(mid, result)
     )
     or
     exists(DataFlow::TypeTracker t2 | result = prototypeLessObject(t2).track(t2, t))

@@ -15,9 +15,7 @@ import semmle.code.cpp.models.interfaces.SideEffect
 private class Accept extends ArrayFunction, AliasFunction, TaintFunction, SideEffectFunction {
   Accept() { this.hasGlobalName(["accept", "accept4", "WSAAccept"]) }
 
-  override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
-    bufParam = 1 and countParam = 2
-  }
+  override predicate hasArrayWithUnknownSize(int bufParam) { bufParam = 1 }
 
   override predicate hasArrayInput(int bufParam) { bufParam = 1 }
 
@@ -46,8 +44,8 @@ private class Accept extends ArrayFunction, AliasFunction, TaintFunction, SideEf
     i = 1 and buffer = false
   }
 
-  override ParameterIndex getParameterSizeIndex(ParameterIndex i) { i = 1 and result = 2 }
-
+  // NOTE: The size parameter is a pointer to the size. So we can't implement `getParameterSizeIndex` for
+  // this model.
   // NOTE: We implement thse two predicates as none because we can't model the low-level changes made to
   // the structure pointed to by the file-descriptor argument.
   override predicate hasOnlySpecificReadSideEffects() { none() }

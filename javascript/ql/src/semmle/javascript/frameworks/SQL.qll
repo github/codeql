@@ -93,11 +93,17 @@ private module MySql {
 }
 
 /**
- * Provides classes modelling the `pg` package.
+ * Provides classes modelling the PostgreSQL packages, such as `pg` and `pg-promise`.
  */
 private module Postgres {
+  API::Node pg() {
+    result = API::moduleImport("pg")
+    or
+    result = pgpMain().getMember("pg")
+  }
+
   /** Gets a reference to the `Client` constructor in the `pg` package, for example `require('pg').Client`. */
-  API::Node newClient() { result = API::moduleImport("pg").getMember("Client") }
+  API::Node newClient() { result = pg().getMember("Client") }
 
   /** Gets a freshly created Postgres client instance. */
   API::Node client() {
@@ -105,19 +111,25 @@ private module Postgres {
     or
     // pool.connect(function(err, client) { ... })
     result = pool().getMember("connect").getParameter(0).getParameter(1)
+    or
+    result = pgpConnection().getMember("client")
   }
 
   /** Gets a constructor that when invoked constructs a new connection pool. */
   API::Node newPool() {
     // new require('pg').Pool()
-    result = API::moduleImport("pg").getMember("Pool")
+    result = pg().getMember("Pool")
     or
     // new require('pg-pool')
     result = API::moduleImport("pg-pool")
   }
 
-  /** Gets an expression that constructs a new connection pool. */
-  API::Node pool() { result = newPool().getInstance() }
+  /** Gets an API node that refers to a connection pool. */
+  API::Node pool() {
+    result = newPool().getInstance()
+    or
+    result = pgpDatabase().getMember("$pool")
+  }
 
   /** A call to the Postgres `query` method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
@@ -137,16 +149,141 @@ private module Postgres {
 
     Credentials() {
       exists(string prop |
-        this = [newClient(), newPool()].getParameter(0).getMember(prop).getARhs().asExpr() and
-        (
-          prop = "user" and kind = "user name"
-          or
-          prop = "password" and kind = prop
-        )
+        this = [newClient(), newPool()].getParameter(0).getMember(prop).getARhs().asExpr()
+        or
+        this = pgPromise().getParameter(0).getMember(prop).getARhs().asExpr()
+      |
+        prop = "user" and kind = "user name"
+        or
+        prop = "password" and kind = prop
       )
     }
 
     override string getCredentialsKind() { result = kind }
+  }
+
+  /** Gets a node referring to the `pg-promise` library (which is not itself a Promise). */
+  API::Node pgPromise() { result = API::moduleImport("pg-promise") }
+
+  /** Gets an initialized `pg-promise` library. */
+  API::Node pgpMain() {
+    result = pgPromise().getReturn()
+    or
+    result = API::Node::ofType("pg-promise", "IMain")
+  }
+
+  /** Gets a database from `pg-promise`. */
+  API::Node pgpDatabase() {
+    result = pgpMain().getReturn()
+    or
+    result = API::Node::ofType("pg-promise", "IDatabase")
+  }
+
+  /** Gets a connection created from a `pg-promise` database. */
+  API::Node pgpConnection() {
+    result = pgpDatabase().getMember("connect").getReturn().getPromised()
+    or
+    result = API::Node::ofType("pg-promise", "IConnected")
+  }
+
+  /** Gets a `pg-promise` task object. */
+  API::Node pgpTask() {
+    exists(API::Node taskMethod |
+      taskMethod = pgpObject().getMember(["task", "taskIf", "tx", "txIf"])
+    |
+      result = taskMethod.getParameter([0, 1]).getParameter(0)
+      or
+      result = taskMethod.getParameter(0).getMember("cnd").getParameter(0)
+    )
+    or
+    result = API::Node::ofType("pg-promise", "ITask")
+  }
+
+  /** Gets a `pg-promise` object which supports querying (database, connection, or task). */
+  API::Node pgpObject() {
+    result = [pgpDatabase(), pgpConnection(), pgpTask()]
+    or
+    result = API::Node::ofType("pg-promise", "IBaseProtocol")
+  }
+
+  private string pgpQueryMethodName() {
+    result =
+      [
+        "any", "each", "many", "manyOrNone", "map", "multi", "multiResult", "none", "one",
+        "oneOrNone", "query", "result"
+      ]
+  }
+
+  /** A call that executes a SQL query via `pg-promise`. */
+  private class PgPromiseQueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
+    PgPromiseQueryCall() { this = pgpObject().getMember(pgpQueryMethodName()).getACall() }
+
+    /** Gets an argument interpreted as a SQL string, not including raw interpolation variables. */
+    private DataFlow::Node getADirectQueryArgument() {
+      result = getArgument(0)
+      or
+      result = getOptionArgument(0, "text")
+    }
+
+    /**
+     * Gets an interpolation parameter whose value is interpreted literally, or is not escaped appropriately for its context.
+     *
+     * For example, the following are raw placeholders: $1:raw, $1^, ${prop}:raw, $(prop)^
+     */
+    private string getARawParameterName() {
+      exists(string sqlString, string placeholderRegexp, string regexp |
+        placeholderRegexp = "\\$(\\d+|[{(\\[/]\\w+[})\\]/])" and // For example: $1 or ${prop}
+        sqlString = getADirectQueryArgument().getStringValue()
+      |
+        // Match $1:raw or ${prop}:raw
+        regexp = placeholderRegexp + "(:raw|\\^)" and
+        result =
+          sqlString
+              .regexpFind(regexp, _, _)
+              .regexpCapture(regexp, 1)
+              .regexpReplaceAll("[^\\w\\d]", "")
+        or
+        // Match $1:value or ${prop}:value unless enclosed by single quotes (:value prevents breaking out of single quotes)
+        regexp = placeholderRegexp + "(:value|\\#)" and
+        result =
+          sqlString
+              .regexpReplaceAll("'[^']*'", "''")
+              .regexpFind(regexp, _, _)
+              .regexpCapture(regexp, 1)
+              .regexpReplaceAll("[^\\w\\d]", "")
+      )
+    }
+
+    /** Gets the argument holding the values to plug into placeholders. */
+    private DataFlow::Node getValues() {
+      result = getArgument(1)
+      or
+      result = getOptionArgument(0, "values")
+    }
+
+    /** Gets a value that is plugged into a raw placeholder variable, making it a sink for SQL injection. */
+    private DataFlow::Node getARawValue() {
+      result = getValues() and getARawParameterName() = "1" // Special case: if the argument is not an array or object, it's just plugged into $1
+      or
+      exists(DataFlow::SourceNode values | values = getValues().getALocalSource() |
+        result = values.getAPropertyWrite(getARawParameterName()).getRhs()
+        or
+        // Array literals do not have PropWrites with property names so handle them separately,
+        // and also translate to 0-based indexing.
+        result = values.(DataFlow::ArrayCreationNode).getElement(getARawParameterName().toInt() - 1)
+      )
+    }
+
+    override DataFlow::Node getAQueryArgument() {
+      result = getADirectQueryArgument()
+      or
+      result = getARawValue()
+    }
+  }
+
+  /** An expression that is interpreted as SQL by `pg-promise`. */
+  class PgPromiseQueryString extends SQL::SqlString {
+    PgPromiseQueryString() { this = any(PgPromiseQueryCall qc).getAQueryArgument().asExpr() }
   }
 }
 

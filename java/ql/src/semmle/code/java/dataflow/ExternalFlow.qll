@@ -32,26 +32,30 @@
  * 7. The `input` column specifies how data enters the element selected by the
  *    first 6 columns, and the `output` column specifies how data leaves the
  *    element selected by the first 6 columns. An `input` can be either "",
- *    "Argument", "Argument[n]", "ReturnValue":
+ *    "Argument[n]", "Argument[n1..n2]", "ReturnValue":
  *    - "": Selects a write to the selected element in case this is a field.
- *    - "Argument": Selects any argument in a call to the selected element.
- *    - "Argument[n]": Similar to "Argument" but restricted to a specific numbered
- *      argument (zero-indexed, and `-1` specifies the qualifier).
+ *    - "Argument[n]": Selects an argument in a call to the selected element.
+ *      The arguments are zero-indexed, and `-1` specifies the qualifier.
+ *    - "Argument[n1..n2]": Similar to "Argument[n]" but select any argument in
+ *      the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects a value being returned by the selected element.
  *      This requires that the selected element is a method with a body.
  *
- *    An `output` can be either "", "Argument", "Argument[n]", "Parameter",
- *    "Parameter[n]", or "ReturnValue":
+ *    An `output` can be either "", "Argument[n]", "Argument[n1..n2]", "Parameter",
+ *    "Parameter[n]", "Parameter[n1..n2]", or "ReturnValue":
  *    - "": Selects a read of a selected field, or a selected parameter.
- *    - "Argument": Selects the post-update value of an argument in a call to the
+ *    - "Argument[n]": Selects the post-update value of an argument in a call to the
  *      selected element. That is, the value of the argument after the call returns.
- *    - "Argument[n]": Similar to "Argument" but restricted to a specific numbered
- *      argument (zero-indexed, and `-1` specifies the qualifier).
+ *      The arguments are zero-indexed, and `-1` specifies the qualifier.
+ *    - "Argument[n1..n2]": Similar to "Argument[n]" but select any argument in
+ *      the given range. The range is inclusive at both ends.
  *    - "Parameter": Selects the value of a parameter of the selected element.
  *      "Parameter" is also allowed in case the selected element is already a
  *      parameter itself.
  *    - "Parameter[n]": Similar to "Parameter" but restricted to a specific
  *      numbered parameter (zero-indexed, and `-1` specifies the value of `this`).
+ *    - "Parameter[n1..n2]": Similar to "Parameter[n]" but selects any parameter
+ *      in the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects the return value of a call to the selected element.
  * 8. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
@@ -182,7 +186,91 @@ private predicate sourceModelCsv(string row) {
 
 private predicate sinkModelCsv(string row) { none() }
 
-private predicate summaryModelCsv(string row) { none() }
+private predicate summaryModelCsv(string row) {
+  row =
+    [
+      // qualifier to arg
+      "java.io;InputStream;true;read;(byte[]);;Argument[-1];Argument[0];taint",
+      "java.io;InputStream;true;read;(byte[],int,int);;Argument[-1];Argument[0];taint",
+      "java.io;ByteArrayOutputStream;false;writeTo;;;Argument[-1];Argument[0];taint",
+      "java.io;Reader;true;read;;;Argument[-1];Argument[0];taint",
+      // qualifier to return
+      "java.io;ByteArrayOutputStream;false;toByteArray;;;Argument[-1];ReturnValue;taint",
+      "java.io;ByteArrayOutputStream;false;toString;;;Argument[-1];ReturnValue;taint",
+      "java.util;StringTokenizer;false;nextElement;();;Argument[-1];ReturnValue;taint",
+      "java.util;StringTokenizer;false;nextToken;;;Argument[-1];ReturnValue;taint",
+      "javax.xml.transform.sax;SAXSource;false;getInputSource;;;Argument[-1];ReturnValue;taint",
+      "javax.xml.transform.stream;StreamSource;false;getInputStream;;;Argument[-1];ReturnValue;taint",
+      "java.nio;ByteBuffer;false;get;;;Argument[-1];ReturnValue;taint",
+      "java.net;URI;false;toURL;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;false;toURI;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;false;toPath;;;Argument[-1];ReturnValue;taint",
+      "java.nio.file;Path;false;toFile;;;Argument[-1];ReturnValue;taint",
+      "java.io;Reader;true;readLine;;;Argument[-1];ReturnValue;taint",
+      "java.io;Reader;true;read;();;Argument[-1];ReturnValue;taint",
+      // arg to return
+      "java.util;Base64$Encoder;false;encode;(byte[]);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Encoder;false;encode;(ByteBuffer);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Encoder;false;encodeToString;(byte[]);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Encoder;false;wrap;(OutputStream);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;decode;(byte[]);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;decode;(ByteBuffer);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;decode;(String);;Argument[0];ReturnValue;taint",
+      "java.util;Base64$Decoder;false;wrap;(InputStream);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;Encoder;true;encode;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;Decoder;true;decode;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;buffer;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;readLines;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,int);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toBufferedInputStream;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toBufferedReader;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toByteArray;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toCharArray;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toInputStream;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.io;IOUtils;false;toString;;;Argument[0];ReturnValue;taint",
+      "java.net;URLDecoder;false;decode;;;Argument[0];ReturnValue;taint",
+      "java.net;URI;false;create;;;Argument[0];ReturnValue;taint",
+      "javax.xml.transform.sax;SAXSource;false;sourceToInputSource;;;Argument[0];ReturnValue;taint",
+      // arg to arg
+      "java.lang;System;false;arraycopy;;;Argument[0];Argument[2];taint",
+      "org.apache.commons.io;IOUtils;false;copy;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;copyLarge;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;read;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,byte[]);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,byte[],int,int);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(InputStream,ByteBuffer);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(ReadableByteChannel,ByteBuffer);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(Reader,char[]);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;readFully;(Reader,char[],int,int);;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;write;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;writeChunked;;;Argument[0];Argument[1];taint",
+      "org.apache.commons.io;IOUtils;false;writeLines;;;Argument[0];Argument[2];taint",
+      "org.apache.commons.io;IOUtils;false;writeLines;;;Argument[1];Argument[2];taint",
+      // constructor flow
+      "java.io;File;false;File;;;Argument[0];Argument[-1];taint",
+      "java.io;File;false;File;;;Argument[1];Argument[-1];taint",
+      "java.net;URI;false;URI;(String);;Argument[0];Argument[-1];taint",
+      "javax.xml.transform.stream;StreamSource;false;StreamSource;;;Argument[0];Argument[-1];taint",
+      "javax.xml.transform.sax;SAXSource;false;SAXSource;(InputSource);;Argument[0];Argument[-1];taint",
+      "javax.xml.transform.sax;SAXSource;false;SAXSource;(XMLReader,InputSource);;Argument[1];Argument[-1];taint",
+      "org.xml.sax;InputSource;false;InputSource;;;Argument[0];Argument[-1];taint",
+      "javax.servlet.http;Cookie;false;Cookie;;;Argument[0];Argument[-1];taint",
+      "javax.servlet.http;Cookie;false;Cookie;;;Argument[1];Argument[-1];taint",
+      "java.util.zip;ZipInputStream;false;ZipInputStream;;;Argument[0];Argument[-1];taint",
+      "java.util.zip;GZIPInputStream;false;GZIPInputStream;;;Argument[0];Argument[-1];taint",
+      "java.util;StringTokenizer;false;StringTokenizer;;;Argument[0];Argument[-1];taint",
+      "java.beans;XMLDecoder;false;XMLDecoder;;;Argument[0];Argument[-1];taint",
+      "com.esotericsoftware.kryo.io;Input;false;Input;;;Argument[0];Argument[-1];taint",
+      "java.io;BufferedInputStream;false;BufferedInputStream;;;Argument[0];Argument[-1];taint",
+      "java.io;DataInputStream;false;DataInputStream;;;Argument[0];Argument[-1];taint",
+      "java.io;ByteArrayInputStream;false;ByteArrayInputStream;;;Argument[0];Argument[-1];taint",
+      "java.io;ObjectInputStream;false;ObjectInputStream;;;Argument[0];Argument[-1];taint",
+      "java.io;StringReader;false;StringReader;;;Argument[0];Argument[-1];taint",
+      "java.io;CharArrayReader;false;CharArrayReader;;;Argument[0];Argument[-1];taint",
+      "java.io;BufferedReader;false;BufferedReader;;;Argument[0];Argument[-1];taint",
+      "java.io;InputStreamReader;false;InputStreamReader;;;Argument[0];Argument[-1];taint"
+    ]
+}
 
 /**
  * A unit class for adding additional source model rows.
@@ -281,6 +369,60 @@ private predicate summaryModel(
     row.splitAt(";", 6) = input and
     row.splitAt(";", 7) = output and
     row.splitAt(";", 8) = kind
+  )
+}
+
+private predicate relevantPackage(string package) {
+  sourceModel(package, _, _, _, _, _, _, _) or
+  sinkModel(package, _, _, _, _, _, _, _) or
+  summaryModel(package, _, _, _, _, _, _, _, _)
+}
+
+private predicate packageLink(string shortpkg, string longpkg) {
+  relevantPackage(shortpkg) and
+  relevantPackage(longpkg) and
+  longpkg.prefix(longpkg.indexOf(".")) = shortpkg
+}
+
+private predicate canonicalPackage(string package) {
+  relevantPackage(package) and not packageLink(_, package)
+}
+
+private predicate canonicalPkgLink(string package, string subpkg) {
+  canonicalPackage(package) and
+  (subpkg = package or packageLink(package, subpkg))
+}
+
+/**
+ * Holds if CSV framework coverage of `package` is `n` api endpoints of the
+ * kind `(kind, part)`.
+ */
+predicate modelCoverage(string package, int pkgs, string kind, string part, int n) {
+  pkgs = strictcount(string subpkg | canonicalPkgLink(package, subpkg)) and
+  (
+    part = "source" and
+    n =
+      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
+        string ext, string output |
+        canonicalPkgLink(package, subpkg) and
+        sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind)
+      )
+    or
+    part = "sink" and
+    n =
+      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
+        string ext, string input |
+        canonicalPkgLink(package, subpkg) and
+        sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind)
+      )
+    or
+    part = "summary" and
+    n =
+      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
+        string ext, string input, string output |
+        canonicalPkgLink(package, subpkg) and
+        summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind)
+      )
   )
 }
 
@@ -470,11 +612,29 @@ private string getLast(string s) {
 }
 
 private predicate parseParam(string c, int n) {
-  specSplit(_, c, _) and c.regexpCapture("Parameter\\[([-0-9]+)\\]", 1).toInt() = n
+  specSplit(_, c, _) and
+  (
+    c.regexpCapture("Parameter\\[([-0-9]+)\\]", 1).toInt() = n
+    or
+    exists(int n1, int n2 |
+      c.regexpCapture("Parameter\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
+      c.regexpCapture("Parameter\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
+      n = [n1 .. n2]
+    )
+  )
 }
 
 private predicate parseArg(string c, int n) {
-  specSplit(_, c, _) and c.regexpCapture("Argument\\[([-0-9]+)\\]", 1).toInt() = n
+  specSplit(_, c, _) and
+  (
+    c.regexpCapture("Argument\\[([-0-9]+)\\]", 1).toInt() = n
+    or
+    exists(int n1, int n2 |
+      c.regexpCapture("Argument\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
+      c.regexpCapture("Argument\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
+      n = [n1 .. n2]
+    )
+  )
 }
 
 private predicate inputNeedsReference(string c) {

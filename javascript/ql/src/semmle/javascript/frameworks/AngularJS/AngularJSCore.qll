@@ -636,7 +636,7 @@ private class LocationFlowSource extends RemoteFlowSource {
  *
  * See https://docs.angularjs.org/api/ngRoute/service/$routeParams for more details.
  */
-private class RouteParamSource extends RemoteFlowSource {
+private class RouteParamSource extends ClientSideRemoteFlowSource {
   RouteParamSource() {
     exists(ServiceReference service |
       service.getName() = "$routeParams" and
@@ -645,6 +645,8 @@ private class RouteParamSource extends RemoteFlowSource {
   }
 
   override string getSourceType() { result = "$routeParams" }
+
+  override ClientSideRemoteFlowKind getKind() { result.isPath() }
 }
 
 /**

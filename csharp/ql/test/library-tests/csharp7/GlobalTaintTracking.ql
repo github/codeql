@@ -1,4 +1,9 @@
+/**
+ * @kind path-problem
+ */
+
 import csharp
+import DataFlow::PathGraph
 
 class DataflowConfiguration extends TaintTracking::Configuration {
   DataflowConfiguration() { this = "taint tracking configuration" }
@@ -12,6 +17,6 @@ class DataflowConfiguration extends TaintTracking::Configuration {
   }
 }
 
-from DataflowConfiguration config, DataFlow::Node source, DataFlow::Node sink
-where config.hasFlow(source, sink)
-select source, sink
+from DataFlow::PathNode source, DataFlow::PathNode sink, DataflowConfiguration conf
+where conf.hasFlowPath(source, sink)
+select source, source, sink, "$@", sink, sink.toString()

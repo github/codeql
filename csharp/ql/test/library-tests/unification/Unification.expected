@@ -7,7 +7,6 @@ constrainedTypeParameterSubsumes
 | Unification.cs:8:10:8:11 | T2 | Unification.cs:30:12:30:24 | (string, int) |
 | Unification.cs:8:10:8:11 | T2 | Unification.cs:31:12:31:23 | (string, T9) |
 | Unification.cs:8:10:8:11 | T2 | Unification.cs:32:12:32:19 | (T8, T9) |
-| Unification.cs:8:10:8:11 | T2 | Unification.cs:33:12:33:23 | (T8, T9) |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:1:11:1:12 | I1 |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:6:7:6:8 | C0 |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:7:7:7:12 | C1<C0> |
@@ -97,7 +96,6 @@ constrainedTypeParameterSubsumes
 | Unification.cs:12:25:12:27 | T6d | Unification.cs:30:12:30:24 | (string, int) |
 | Unification.cs:12:25:12:27 | T6d | Unification.cs:31:12:31:23 | (string, T9) |
 | Unification.cs:12:25:12:27 | T6d | Unification.cs:32:12:32:19 | (T8, T9) |
-| Unification.cs:12:25:12:27 | T6d | Unification.cs:33:12:33:23 | (T8, T9) |
 | Unification.cs:24:12:24:13 | Tm | Unification.cs:8:7:8:12 | C2<S2> |
 | Unification.cs:24:12:24:13 | Tm | Unification.cs:24:12:24:13 | Tm |
 constrainedTypeParameterSubsumptionImpliesUnification
@@ -110,7 +108,6 @@ constrainedTypeParameterUnifiable
 | Unification.cs:8:10:8:11 | T2 | Unification.cs:30:12:30:24 | (string, int) |
 | Unification.cs:8:10:8:11 | T2 | Unification.cs:31:12:31:23 | (string, T9) |
 | Unification.cs:8:10:8:11 | T2 | Unification.cs:32:12:32:19 | (T8, T9) |
-| Unification.cs:8:10:8:11 | T2 | Unification.cs:33:12:33:23 | (T8, T9) |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:1:11:1:12 | I1 |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:6:7:6:8 | C0 |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:7:7:7:12 | C1<C0> |
@@ -208,7 +205,6 @@ constrainedTypeParameterUnifiable
 | Unification.cs:12:25:12:27 | T6d | Unification.cs:30:12:30:24 | (string, int) |
 | Unification.cs:12:25:12:27 | T6d | Unification.cs:31:12:31:23 | (string, T9) |
 | Unification.cs:12:25:12:27 | T6d | Unification.cs:32:12:32:19 | (T8, T9) |
-| Unification.cs:12:25:12:27 | T6d | Unification.cs:33:12:33:23 | (T8, T9) |
 | Unification.cs:24:12:24:13 | Tm | Unification.cs:8:7:8:12 | C2<S2> |
 | Unification.cs:24:12:24:13 | Tm | Unification.cs:8:7:8:12 | C2<T2> |
 | Unification.cs:24:12:24:13 | Tm | Unification.cs:24:12:24:13 | Tm |
@@ -284,12 +280,6 @@ subsumes
 | Unification.cs:32:12:32:19 | (T8, T9) | Unification.cs:30:12:30:24 | (string, int) |
 | Unification.cs:32:12:32:19 | (T8, T9) | Unification.cs:31:12:31:23 | (string, T9) |
 | Unification.cs:32:12:32:19 | (T8, T9) | Unification.cs:32:12:32:19 | (T8, T9) |
-| Unification.cs:32:12:32:19 | (T8, T9) | Unification.cs:33:12:33:23 | (T8, T9) |
-| Unification.cs:33:12:33:23 | (T8, T9) | Unification.cs:29:12:29:20 | (T8, int) |
-| Unification.cs:33:12:33:23 | (T8, T9) | Unification.cs:30:12:30:24 | (string, int) |
-| Unification.cs:33:12:33:23 | (T8, T9) | Unification.cs:31:12:31:23 | (string, T9) |
-| Unification.cs:33:12:33:23 | (T8, T9) | Unification.cs:32:12:32:19 | (T8, T9) |
-| Unification.cs:33:12:33:23 | (T8, T9) | Unification.cs:33:12:33:23 | (T8, T9) |
 | Unification.cs:36:7:36:17 | Nested<Int32> | Unification.cs:36:7:36:17 | Nested<Int32> |
 | Unification.cs:36:7:36:17 | Nested<String> | Unification.cs:36:7:36:17 | Nested<String> |
 | Unification.cs:36:7:36:17 | Nested<T10> | Unification.cs:36:7:36:17 | Nested<Int32> |
@@ -352,14 +342,11 @@ unifiable
 | Unification.cs:12:7:12:28 | C6<C2<S2>, Tm, C3<Tm>, S2> | Unification.cs:12:7:12:28 | C6<T6a, T6b, T6c, T6d> |
 | Unification.cs:29:12:29:20 | (T8, int) | Unification.cs:31:12:31:23 | (string, T9) |
 | Unification.cs:29:12:29:20 | (T8, int) | Unification.cs:32:12:32:19 | (T8, T9) |
-| Unification.cs:29:12:29:20 | (T8, int) | Unification.cs:33:12:33:23 | (T8, T9) |
 | Unification.cs:30:12:30:24 | (string, int) | Unification.cs:29:12:29:20 | (T8, int) |
 | Unification.cs:30:12:30:24 | (string, int) | Unification.cs:31:12:31:23 | (string, T9) |
 | Unification.cs:30:12:30:24 | (string, int) | Unification.cs:32:12:32:19 | (T8, T9) |
-| Unification.cs:30:12:30:24 | (string, int) | Unification.cs:33:12:33:23 | (T8, T9) |
 | Unification.cs:31:12:31:23 | (string, T9) | Unification.cs:29:12:29:20 | (T8, int) |
 | Unification.cs:31:12:31:23 | (string, T9) | Unification.cs:32:12:32:19 | (T8, T9) |
-| Unification.cs:31:12:31:23 | (string, T9) | Unification.cs:33:12:33:23 | (T8, T9) |
 | Unification.cs:36:7:36:17 | Nested<Int32> | Unification.cs:36:7:36:17 | Nested<T10> |
 | Unification.cs:36:7:36:17 | Nested<String> | Unification.cs:36:7:36:17 | Nested<T10> |
 | Unification.cs:38:11:38:22 | Nested<Int32>.NestedA<String> | Unification.cs:38:11:38:22 | Nested<>.NestedA<T11> |

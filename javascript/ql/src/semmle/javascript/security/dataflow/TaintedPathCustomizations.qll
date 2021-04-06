@@ -557,7 +557,12 @@ module TaintedPath {
    * tainted-path vulnerabilities.
    */
   class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
+    RemoteFlowSourceAsSource() {
+      exists(RemoteFlowSource src |
+        this = src and
+        not src instanceof ClientSideRemoteFlowSource
+      )
+    }
   }
 
   /**
@@ -632,6 +637,20 @@ module TaintedPath {
   }
 
   /**
+   * A path argument given to a `Page` in puppeteer, specifying where a pdf/screenshot should be saved.
+   */
+  private class PuppeteerPath extends TaintedPath::Sink {
+    PuppeteerPath() {
+      this =
+        Puppeteer::page()
+            .getMember(["pdf", "screenshot"])
+            .getParameter(0)
+            .getMember("path")
+            .getARhs()
+    }
+  }
+
+  /**
    * Holds if there is a step `src -> dst` mapping `srclabel` to `dstlabel` relevant for path traversal vulnerabilities.
    */
   predicate isAdditionalTaintedPathFlowStep(
@@ -644,7 +663,7 @@ module TaintedPath {
     srclabel instanceof Label::PosixPath and
     dstlabel instanceof Label::PosixPath and
     (
-      any(UriLibraryStep step).step(src, dst)
+      TaintTracking::uriStep(src, dst)
       or
       exists(DataFlow::CallNode decode |
         decode.getCalleeName() = "decodeURIComponent" or decode.getCalleeName() = "decodeURI"
@@ -654,9 +673,9 @@ module TaintedPath {
       )
     )
     or
-    promiseTaintStep(src, dst) and srclabel = dstlabel
+    TaintTracking::promiseStep(src, dst) and srclabel = dstlabel
     or
-    any(TaintTracking::PersistentStorageTaintStep st).step(src, dst) and srclabel = dstlabel
+    TaintTracking::persistentStorageStep(src, dst) and srclabel = dstlabel
     or
     exists(DataFlow::PropRead read | read = dst |
       src = read.getBase() and

@@ -67,14 +67,12 @@ module Base64 {
    * Note that we currently do not model base64 encoding as a taint-propagating data flow edge
    * to avoid false positives.
    */
-  private class Base64DecodingStep extends TaintTracking::AdditionalTaintStep {
-    Decode dec;
-
-    Base64DecodingStep() { this = dec }
-
+  private class Base64DecodingStep extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = dec.getInput() and
-      succ = dec.getOutput()
+      exists(Decode dec |
+        pred = dec.getInput() and
+        succ = dec.getOutput()
+      )
     }
   }
 }
@@ -152,7 +150,8 @@ private class NpmBase64Encode extends Base64::Encode::Range, DataFlow::CallNode 
       enc = DataFlow::moduleMember("base64url", "toBase64") or
       enc = DataFlow::moduleMember("js-base64", "Base64").getAPropertyRead("encode") or
       enc = DataFlow::moduleMember("js-base64", "Base64").getAPropertyRead("encodeURI") or
-      enc = DataFlow::moduleMember("urlsafe-base64", "encode")
+      enc = DataFlow::moduleMember("urlsafe-base64", "encode") or
+      enc = DataFlow::moduleMember("react-native-base64", ["encode", "encodeFromByteArray"])
     |
       this = enc.getACall()
     )
@@ -188,7 +187,8 @@ private class NpmBase64Decode extends Base64::Decode::Range, DataFlow::CallNode 
       dec = DataFlow::moduleMember("base64url", "decode") or
       dec = DataFlow::moduleMember("base64url", "fromBase64") or
       dec = DataFlow::moduleMember("js-base64", "Base64").getAPropertyRead("decode") or
-      dec = DataFlow::moduleMember("urlsafe-base64", "decode")
+      dec = DataFlow::moduleMember("urlsafe-base64", "decode") or
+      dec = DataFlow::moduleMember("react-native-base64", "decode")
     |
       this = dec.getACall()
     )

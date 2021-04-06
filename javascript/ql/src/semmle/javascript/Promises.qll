@@ -214,13 +214,6 @@ module PromiseTypeTracking {
       result = PromiseTypeTracking::promiseStep(mid, summary)
     )
   }
-
-  /**
-   * A class enabling the use of the `resolveField` as a pseudo-property in type-tracking predicates.
-   */
-  private class ResolveFieldAsTypeTrackingProperty extends TypeTrackingPseudoProperty {
-    ResolveFieldAsTypeTrackingProperty() { this = Promises::valueProp() }
-  }
 }
 
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
@@ -398,74 +391,65 @@ module PromiseFlow {
 }
 
 /**
- * Holds if taint propagates from `pred` to `succ` through promises.
+ * DEPRECATED. Use `TaintTracking::promiseStep` instead.
  */
-predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-  // from `x` to `new Promise((res, rej) => res(x))`
-  pred = succ.(PromiseDefinition).getResolveParameter().getACall().getArgument(0)
-  or
-  // from `x` to `Promise.resolve(x)`
-  pred = succ.(PromiseCreationCall).getValue() and
-  not succ instanceof PromiseAllCreation
-  or
-  // from `arr` to `Promise.all(arr)`
-  pred = succ.(PromiseAllCreation).getArrayNode()
-  or
-  exists(DataFlow::MethodCallNode thn | thn.getMethodName() = "then" |
-    // from `p` to `x` in `p.then(x => ...)`
-    pred = thn.getReceiver() and
-    succ = thn.getCallback(0).getParameter(0)
-    or
-    // from `v` to `p.then(x => return v)`
-    pred = thn.getCallback([0 .. 1]).getAReturn() and
-    succ = thn
-  )
-  or
-  exists(DataFlow::MethodCallNode catch | catch.getMethodName() = "catch" |
-    // from `p` to `p.catch(..)`
-    pred = catch.getReceiver() and
-    succ = catch
-    or
-    // from `v` to `p.catch(x => return v)`
-    pred = catch.getCallback(0).getAReturn() and
-    succ = catch
-  )
-  or
-  // from `p` to `p.finally(..)`
-  exists(DataFlow::MethodCallNode finally | finally.getMethodName() = "finally" |
-    pred = finally.getReceiver() and
-    succ = finally
-  )
-  or
-  // from `x` to `await x`
-  exists(AwaitExpr await |
-    pred.getEnclosingExpr() = await.getOperand() and
-    succ.getEnclosingExpr() = await
-  )
-  or
-  exists(DataFlow::CallNode mapSeries |
-    mapSeries = DataFlow::moduleMember("bluebird", "mapSeries").getACall()
-  |
-    // from `xs` to `x` in `require("bluebird").mapSeries(xs, (x) => {...})`.
-    pred = mapSeries.getArgument(0) and
-    succ = mapSeries.getABoundCallbackParameter(1, 0)
-    or
-    // from `y` to `require("bluebird").mapSeries(x, x => y)`.
-    pred = mapSeries.getCallback(1).getAReturn() and
-    succ = mapSeries
-  )
-}
+deprecated predicate promiseTaintStep = TaintTracking::promiseStep/2;
 
-/**
- * An additional taint step that involves promises.
- */
-private class PromiseTaintStep extends TaintTracking::AdditionalTaintStep {
-  DataFlow::Node source;
-
-  PromiseTaintStep() { promiseTaintStep(source, this) }
-
-  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    pred = source and succ = this
+private class PromiseTaintStep extends TaintTracking::SharedTaintStep {
+  override predicate promiseStep(DataFlow::Node pred, DataFlow::Node succ) {
+    // from `x` to `new Promise((res, rej) => res(x))`
+    pred = succ.(PromiseDefinition).getResolveParameter().getACall().getArgument(0)
+    or
+    // from `x` to `Promise.resolve(x)`
+    pred = succ.(PromiseCreationCall).getValue() and
+    not succ instanceof PromiseAllCreation
+    or
+    // from `arr` to `Promise.all(arr)`
+    pred = succ.(PromiseAllCreation).getArrayNode()
+    or
+    exists(DataFlow::MethodCallNode thn | thn.getMethodName() = "then" |
+      // from `p` to `x` in `p.then(x => ...)`
+      pred = thn.getReceiver() and
+      succ = thn.getCallback(0).getParameter(0)
+      or
+      // from `v` to `p.then(x => return v)`
+      pred = thn.getCallback([0 .. 1]).getAReturn() and
+      succ = thn
+    )
+    or
+    exists(DataFlow::MethodCallNode catch | catch.getMethodName() = "catch" |
+      // from `p` to `p.catch(..)`
+      pred = catch.getReceiver() and
+      succ = catch
+      or
+      // from `v` to `p.catch(x => return v)`
+      pred = catch.getCallback(0).getAReturn() and
+      succ = catch
+    )
+    or
+    // from `p` to `p.finally(..)`
+    exists(DataFlow::MethodCallNode finally | finally.getMethodName() = "finally" |
+      pred = finally.getReceiver() and
+      succ = finally
+    )
+    or
+    // from `x` to `await x`
+    exists(AwaitExpr await |
+      pred.getEnclosingExpr() = await.getOperand() and
+      succ.getEnclosingExpr() = await
+    )
+    or
+    exists(DataFlow::CallNode mapSeries |
+      mapSeries = DataFlow::moduleMember("bluebird", "mapSeries").getACall()
+    |
+      // from `xs` to `x` in `require("bluebird").mapSeries(xs, (x) => {...})`.
+      pred = mapSeries.getArgument(0) and
+      succ = mapSeries.getABoundCallbackParameter(1, 0)
+      or
+      // from `y` to `require("bluebird").mapSeries(x, x => y)`.
+      pred = mapSeries.getCallback(1).getAReturn() and
+      succ = mapSeries
+    )
   }
 }
 
@@ -500,14 +484,13 @@ private module AsyncReturnSteps {
   /**
    * A data-flow step for ordinary return from an async function in a taint configuration.
    */
-  private class AsyncTaintReturn extends TaintTracking::AdditionalTaintStep, DataFlow::FunctionNode {
-    Function f;
-
-    AsyncTaintReturn() { this.getFunction() = f and f.isAsync() }
-
+  private class AsyncTaintReturn extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      returnExpr(f, pred, _) and
-      succ.(DataFlow::FunctionReturnNode).getFunction() = f
+      exists(Function f |
+        f.isAsync() and
+        returnExpr(f, pred, _) and
+        succ.(DataFlow::FunctionReturnNode).getFunction() = f
+      )
     }
   }
 }
@@ -606,6 +589,7 @@ private module ClosurePromise {
    * A promise created by a call `goog.Promise.resolve(value)`.
    */
   private class ResolvedClosurePromiseDefinition extends ResolvedPromiseDefinition {
+    pragma[noinline]
     ResolvedClosurePromiseDefinition() {
       this = Closure::moduleImport("goog.Promise.resolve").getACall()
     }
@@ -616,14 +600,12 @@ private module ClosurePromise {
   /**
    * Taint steps through closure promise methods.
    */
-  private class ClosurePromiseTaintStep extends TaintTracking::AdditionalTaintStep {
-    DataFlow::Node pred;
-
-    ClosurePromiseTaintStep() {
+  private class ClosurePromiseTaintStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       // static methods in goog.Promise
       exists(DataFlow::CallNode call, string name |
         call = Closure::moduleImport("goog.Promise." + name).getACall() and
-        this = call and
+        succ = call and
         pred = call.getAnArgument()
       |
         name = "all" or
@@ -635,12 +617,10 @@ private module ClosurePromise {
       // promise created through goog.promise.withResolver()
       exists(DataFlow::CallNode resolver |
         resolver = Closure::moduleImport("goog.Promise.withResolver").getACall() and
-        this = resolver.getAPropertyRead("promise") and
+        succ = resolver.getAPropertyRead("promise") and
         pred = resolver.getAMethodCall("resolve").getArgument(0)
       )
     }
-
-    override predicate step(DataFlow::Node src, DataFlow::Node dst) { src = pred and dst = this }
   }
 }
 

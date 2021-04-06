@@ -1,8 +1,12 @@
 /**
- * @id java/insecure-smtp-ssl
  * @name Insecure JavaMail SSL Configuration
- * @description Java application configured to use authenticated mail session over SSL does not validate the SSL certificate to properly ensure that it is actually associated with that host.
+ * @description Java application configured to use authenticated mail session
+ *              over SSL does not validate the SSL certificate to properly
+ *              ensure that it is actually associated with that host.
  * @kind problem
+ * @problem.severity warning
+ * @precision medium
+ * @id java/insecure-smtp-ssl
  * @tags security
  *       external/cwe-297
  */

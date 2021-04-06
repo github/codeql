@@ -2,6 +2,7 @@
  * @name Extension of standard query: Stored XSS
  * @description Extends the standard Stored XSS query with an additional source.
  * @kind path-problem
+ * @problem.severity error
  * @tags security
  * @id js/examples/stored-xss
  */

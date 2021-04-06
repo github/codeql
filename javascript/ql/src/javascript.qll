@@ -80,6 +80,7 @@ import semmle.javascript.frameworks.ClosureLibrary
 import semmle.javascript.frameworks.CookieLibraries
 import semmle.javascript.frameworks.Credentials
 import semmle.javascript.frameworks.CryptoLibraries
+import semmle.javascript.frameworks.D3
 import semmle.javascript.frameworks.DateFunctions
 import semmle.javascript.frameworks.DigitalOcean
 import semmle.javascript.frameworks.Electron
@@ -101,6 +102,7 @@ import semmle.javascript.frameworks.Next
 import semmle.javascript.frameworks.NoSQL
 import semmle.javascript.frameworks.PkgCloud
 import semmle.javascript.frameworks.PropertyProjection
+import semmle.javascript.frameworks.Puppeteer
 import semmle.javascript.frameworks.React
 import semmle.javascript.frameworks.ReactNative
 import semmle.javascript.frameworks.Request

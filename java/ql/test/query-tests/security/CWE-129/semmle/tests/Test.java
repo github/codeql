@@ -5,6 +5,7 @@
 package test.cwe129.cwe.examples;
 
 import java.security.SecureRandom;
+import org.apache.commons.lang3.RandomUtils;
 
 class Test {
   public static void basic() {
@@ -38,6 +39,24 @@ class Test {
     int array[] = { 0, 1, 2, 3, 4 };
 
     int index = (new SecureRandom()).nextInt(10);
+
+    // BAD Accessing array without conditional check
+    System.out.println(array[index]);
+
+    if (index < array.length) {
+      // GOOD Accessing array under conditions
+      System.out.println(array[index]);
+    }
+
+    // GOOD, the array access is protected by short-circuiting
+    if (index < array.length && array[index] > 0) {
+    }
+  }
+
+  public static void apacheRandom() {
+    int array[] = { 0, 1, 2, 3, 4 };
+
+    int index = RandomUtils.nextInt(0, 10);
 
     // BAD Accessing array without conditional check
     System.out.println(array[index]);

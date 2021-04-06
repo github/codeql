@@ -526,3 +526,118 @@ module HTTP {
     }
   }
 }
+
+/** Provides models for cryptographic things. */
+module Cryptography {
+  /** Provides models for public-key cryptography, also called asymmetric cryptography. */
+  module PublicKey {
+    /**
+     * A data-flow node that generates a new key-pair for use with public-key cryptography.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `KeyGeneration::Range` instead.
+     */
+    class KeyGeneration extends DataFlow::Node {
+      KeyGeneration::Range range;
+
+      KeyGeneration() { this = range }
+
+      /** Gets the name of the cryptographic algorithm (for example `"RSA"` or `"AES"`). */
+      string getName() { result = range.getName() }
+
+      /** Gets the argument that specifies the size of the key in bits, if available. */
+      DataFlow::Node getKeySizeArg() { result = range.getKeySizeArg() }
+
+      /**
+       * Gets the size of the key generated (in bits), as well as the `origin` that
+       * explains how we obtained this specific key size.
+       */
+      int getKeySizeWithOrigin(DataFlow::Node origin) {
+        result = range.getKeySizeWithOrigin(origin)
+      }
+
+      /** Gets the minimum key size (in bits) for this algorithm to be considered secure. */
+      int minimumSecureKeySize() { result = range.minimumSecureKeySize() }
+    }
+
+    /** Provides classes for modeling new key-pair generation APIs. */
+    module KeyGeneration {
+      /** Gets a back-reference to the keysize argument `arg` that was used to generate a new key-pair. */
+      private DataFlow::LocalSourceNode keysizeBacktracker(
+        DataFlow::TypeBackTracker t, DataFlow::Node arg
+      ) {
+        t.start() and
+        arg = any(KeyGeneration::Range r).getKeySizeArg() and
+        result = arg.getALocalSource()
+        or
+        // Due to bad performance when using normal setup with we have inlined that code and forced a join
+        exists(DataFlow::TypeBackTracker t2 |
+          exists(DataFlow::StepSummary summary |
+            keysizeBacktracker_first_join(t2, arg, result, summary) and
+            t = t2.prepend(summary)
+          )
+        )
+      }
+
+      pragma[nomagic]
+      private predicate keysizeBacktracker_first_join(
+        DataFlow::TypeBackTracker t2, DataFlow::Node arg, DataFlow::Node res,
+        DataFlow::StepSummary summary
+      ) {
+        DataFlow::StepSummary::step(res, keysizeBacktracker(t2, arg), summary)
+      }
+
+      /** Gets a back-reference to the keysize argument `arg` that was used to generate a new key-pair. */
+      DataFlow::LocalSourceNode keysizeBacktracker(DataFlow::Node arg) {
+        result = keysizeBacktracker(DataFlow::TypeBackTracker::end(), arg)
+      }
+
+      /**
+       * A data-flow node that generates a new key-pair for use with public-key cryptography.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `KeyGeneration` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /** Gets the name of the cryptographic algorithm (for example `"RSA"`). */
+        abstract string getName();
+
+        /** Gets the argument that specifies the size of the key in bits, if available. */
+        abstract DataFlow::Node getKeySizeArg();
+
+        /**
+         * Gets the size of the key generated (in bits), as well as the `origin` that
+         * explains how we obtained this specific key size.
+         */
+        int getKeySizeWithOrigin(DataFlow::Node origin) {
+          origin = keysizeBacktracker(this.getKeySizeArg()) and
+          result = origin.asExpr().(IntegerLiteral).getValue()
+        }
+
+        /** Gets the minimum key size (in bits) for this algorithm to be considered secure. */
+        abstract int minimumSecureKeySize();
+      }
+
+      /** A data-flow node that generates a new RSA key-pair. */
+      abstract class RsaRange extends Range {
+        final override string getName() { result = "RSA" }
+
+        final override int minimumSecureKeySize() { result = 2048 }
+      }
+
+      /** A data-flow node that generates a new DSA key-pair. */
+      abstract class DsaRange extends Range {
+        final override string getName() { result = "DSA" }
+
+        final override int minimumSecureKeySize() { result = 2048 }
+      }
+
+      /** A data-flow node that generates a new ECC key-pair. */
+      abstract class EccRange extends Range {
+        final override string getName() { result = "ECC" }
+
+        final override int minimumSecureKeySize() { result = 224 }
+      }
+    }
+  }
+}

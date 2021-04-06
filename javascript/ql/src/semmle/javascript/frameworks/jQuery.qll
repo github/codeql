@@ -479,8 +479,8 @@ module JQuery {
         // either a reference to a global variable `$` or `jQuery`
         this = DataFlow::globalVarRef(any(string jq | jq = "$" or jq = "jQuery"))
         or
-        // or imported from a module named `jquery`
-        this = DataFlow::moduleImport("jquery")
+        // or imported from a module named `jquery` or `zepto`
+        this = DataFlow::moduleImport(["jquery", "zepto"])
         or
         this.hasUnderlyingType("JQueryStatic")
       }

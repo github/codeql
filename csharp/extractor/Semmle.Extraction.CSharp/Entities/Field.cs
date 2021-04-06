@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities
             type = new Lazy<Type>(() => Entities.Type.Create(cx, Symbol.Type));
         }
 
-        public static Field Create(Context cx, IFieldSymbol field) => FieldFactory.Instance.CreateEntityFromSymbol(cx, field);
+        public static Field Create(Context cx, IFieldSymbol field) => FieldFactory.Instance.CreateEntityFromSymbol(cx, field.CorrespondingTupleField ?? field);
 
         // Do not populate backing fields.
         // Populate Tuple fields.

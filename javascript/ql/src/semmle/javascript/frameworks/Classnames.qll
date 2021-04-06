@@ -8,32 +8,28 @@ private DataFlow::SourceNode classnames() {
   result = DataFlow::moduleImport(["classnames", "classnames/dedupe", "classnames/bind"])
 }
 
-private class PlainStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
-  PlainStep() {
-    this = classnames().getACall()
-    or
-    this = DataFlow::moduleImport("clsx").getACall()
-  }
-
+private class PlainStep extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    pred = getAnArgument() and
-    succ = this
+    exists(DataFlow::CallNode call |
+      call = [classnames().getACall(), DataFlow::moduleImport("clsx").getACall()] and
+      pred = call.getAnArgument() and
+      succ = call
+    )
   }
 }
 
 /**
  * Step from `x` or `y` to the result of `classnames.bind(x)(y)`.
  */
-private class BindStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
-  DataFlow::CallNode bind;
-
-  BindStep() {
-    bind = classnames().getAMemberCall("bind") and
-    this = bind.getACall()
-  }
-
+private class BindStep extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    pred = [getAnArgument(), bind.getAnArgument(), bind.getOptionArgument(_, _)] and
-    succ = this
+    exists(DataFlow::CallNode bind | bind = classnames().getAMemberCall("bind") |
+      pred =
+        [
+          succ.(DataFlow::CallNode).getAnArgument(), bind.getAnArgument(),
+          bind.getOptionArgument(_, _)
+        ] and
+      succ = bind.getACall()
+    )
   }
 }
