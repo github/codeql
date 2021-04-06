@@ -158,25 +158,31 @@ part allows you to declare one or more variables, and the second formula
 
 For example, we can use this to refactor the query 
 ```ql
-from IfStmt ifStmt, Block block
+import python
+
+from If ifstmt
 where
-  ifStmt.getThen() = block and
-  block.getNumStmt() = 0
-select ifStmt, "Empty if statement"
+    count(ifstmt.getBody().getAnItem()) = 1 and
+    ifstmt.getBody().getAnItem() instanceof Pass
+select ifstmt
 ```
 
 to use a temporary variable for the empty block:
 ```ql
-from IfStmt ifStmt
+import python
+
+from If ifstmt
 where
-  exists(Block block |
-    ifStmt.getThen() = block and
-    block.getNumStmt() = 0
-  )
-select ifStmt, "Empty if statement"
+    exists(Stmt stmt |
+        stmt = ifstmt.getBody().getAnItem() and
+        count(stmt) = 1 and
+        stmt instanceof Pass
+    )
+select ifstmt
 ```
 
-This is frequently used to convert a query into a predicate.
+This is frequently used to convert a query into a predicate; by introducing local
+variables, the predicate's interface can be kept more minimal.
 
 ### Classes
 Classes are a way in which you can define new types within CodeQL, as well as
