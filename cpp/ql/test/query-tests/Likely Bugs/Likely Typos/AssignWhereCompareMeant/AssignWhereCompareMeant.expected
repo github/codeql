@@ -19,10 +19,6 @@
 | test.cpp:144:32:144:36 | ... = ... | Use of '=' where '==' may have been intended. |
 | test.cpp:150:32:150:36 | ... = ... | Use of '=' where '==' may have been intended. |
 | test.cpp:153:46:153:50 | ... = ... | Use of '=' where '==' may have been intended. |
-| test.cpp:160:7:160:12 | ... = ... | Use of '=' where '==' may have been intended. |
-| test.cpp:162:7:162:12 | ... = ... | Use of '=' where '==' may have been intended. |
-| test.cpp:163:7:163:12 | ... = ... | Use of '=' where '==' may have been intended. |
-| test.cpp:164:7:164:12 | ... = ... | Use of '=' where '==' may have been intended. |
 | test.cpp:166:22:166:27 | ... = ... | Use of '=' where '==' may have been intended. |
 | test.cpp:168:24:168:29 | ... = ... | Use of '=' where '==' may have been intended. |
 | test.cpp:169:23:169:28 | ... = ... | Use of '=' where '==' may have been intended. |
