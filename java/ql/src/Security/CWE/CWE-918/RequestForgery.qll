@@ -204,7 +204,8 @@ private class HostnameSanitizingPrefix extends CompileTimeConstantExpr {
 
   HostnameSanitizingPrefix() {
     exists(
-      this.getStringValue().regexpFind(".*([?#]|[^?#:/\\\\][/\\\\]).*|[/\\\\][^/\\\\].*", 0, offset)
+      this.getStringValue()
+          .regexpFind(".*([?#]|[^?#:/\\\\][/\\\\]).*|[/\\\\][^/\\\\].*|^/$", 0, offset)
     )
   }
 

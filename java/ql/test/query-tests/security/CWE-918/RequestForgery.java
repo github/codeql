@@ -56,6 +56,10 @@ public class RequestForgery extends HttpServlet {
             HttpRequest r8 = HttpRequest.newBuilder(new URI(safeUri8)).build();
             client.send(r8, null);
 
+            String safeUri9 = String.format("http://%s", "myserver.com") + "/" + request.getParameter("uri9");
+            HttpRequest r9 = HttpRequest.newBuilder(new URI(safeUri9)).build();
+            client.send(r9, null);
+
             // BAD: cases where a string that would sanitise is used, but occurs in the wrong
             // place to sanitise user input:
             String unsafeUri3 = request.getParameter("baduri3") + "https://example.com/";
@@ -82,6 +86,10 @@ public class RequestForgery extends HttpServlet {
             String unsafeUri8 = String.format("%s%s", request.getParameter("baduri8"), "https://example.com/");
             HttpRequest unsafer8 = HttpRequest.newBuilder(new URI(unsafeUri8)).build();
             client.send(unsafer8, null);
+
+            String unsafeUri9 = request.getParameter("baduri9") + "/" + String.format("http://%s", "myserver.com");
+            HttpRequest unsafer9 = HttpRequest.newBuilder(new URI(unsafeUri9)).build();
+            client.send(unsafer9, null);
 
         } catch (Exception e) {
             // TODO: handle exception
