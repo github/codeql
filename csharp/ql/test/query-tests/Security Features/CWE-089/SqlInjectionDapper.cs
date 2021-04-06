@@ -79,6 +79,17 @@ namespace Test
             }
         }
 
+        public async Task Ok07()
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" + box1.Text + "' ORDER BY PRICE";
+
+                var comDef = new CommandDefinition(query);
+                // no call to any query method
+            }
+        }
+
         System.Windows.Forms.TextBox box1;
     }
 }
