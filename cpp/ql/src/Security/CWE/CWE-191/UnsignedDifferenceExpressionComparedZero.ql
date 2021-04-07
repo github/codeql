@@ -16,6 +16,8 @@ import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 import semmle.code.cpp.controlflow.Guards
+import semmle.code.cpp.ir.IR
+import experimental.semmle.code.cpp.rangeanalysis.RangeAnalysis
 
 /**
  *  Holds if `sub` is guarded by a condition which ensures that
@@ -65,6 +67,33 @@ predicate exprIsSubLeftOrLess(SubExpr sub, Expr e) {
   )
 }
 
+predicate subIsSafe(SubExpr sub) {
+  // RangeAnalysis shows `left >= right`.
+  exists(Instruction i, LeftOperand left, RightOperand right, Bound b, int delta |
+    i.getAST() = sub and
+    left = i.getAnOperand() and
+    right = i.getAnOperand() and
+    boundedOperand(left, b, delta, false, _) and // left >= b + delta
+    delta >= 0 and
+    (
+      b.getInstruction() = right.getAnyDef() or // b = right
+      b instanceof ZeroBound // b = 0
+    )
+  )
+  or
+  exists(Instruction i, LeftOperand left, RightOperand right, Bound b, int delta |
+    i.getAST() = sub and
+    left = i.getAnOperand() and
+    right = i.getAnOperand() and
+    boundedOperand(right, b, delta, true, _) and // right <= b + delta
+    delta <= 0 and
+    (
+      b.getInstruction() = left.getAnyDef() or // b = left
+      b instanceof ZeroBound // b = 0
+    )
+  )
+}
+
 from RelationalOperation ro, SubExpr sub
 where
   not isFromMacroDefinition(ro) and
@@ -73,5 +102,6 @@ where
   ro.getGreaterOperand() = sub and
   sub.getFullyConverted().getUnspecifiedType().(IntegralType).isUnsigned() and
   exprMightOverflowNegatively(sub.getFullyConverted()) and // generally catches false positives involving constants
-  not exprIsSubLeftOrLess(sub, sub.getRightOperand()) // generally catches false positives where there's a relation between the left and right operands
+  not exprIsSubLeftOrLess(sub, sub.getRightOperand()) and // generally catches false positives where there's a relation between the left and right operands
+  not subIsSafe(sub)
 select ro, "Unsigned subtraction can never be negative."

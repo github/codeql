@@ -12,7 +12,7 @@ void test(unsigned x, unsigned y, bool unknown) {
 	}
 
 	if(total <= limit) {
-		while(limit - total > 0) { // GOOD [FALSE POSITIVE]
+		while(limit - total > 0) { // GOOD
 			total += getAnInt();
 			if(total > limit) break;
 		}
@@ -29,14 +29,14 @@ void test(unsigned x, unsigned y, bool unknown) {
 	} else {
 		y = x;
 	}
-	bool b1 = x - y > 0; // GOOD [FALSE POSITIVE]
+	bool b1 = x - y > 0; // GOOD
 
 	x = getAnInt();
 	y = getAnInt();
 	if(y > x) {
 		y = x - 1;
 	}
-	bool b2 = x - y > 0; // GOOD [FALSE POSITIVE]
+	bool b2 = x - y > 0; // GOOD
 
 	int N = getAnInt();
 	y = x;
@@ -44,7 +44,7 @@ void test(unsigned x, unsigned y, bool unknown) {
 		if(unknown) { y--; }
 	}
 	
-	if(x - y > 0) { } // GOOD [FALSE POSITIVE]
+	if(x - y > 0) { } // GOOD
 
 	x = y;
 	while(cond()) {
@@ -52,7 +52,7 @@ void test(unsigned x, unsigned y, bool unknown) {
 		y--;
 	}
 
-	if(x - y > 0) { } // GOOD [FALSE POSITIVE]
+	if(x - y > 0) { } // GOOD
 
 	y = 0;
 	for(int i = 0; i < x; ++i) {
@@ -66,13 +66,13 @@ void test(unsigned x, unsigned y, bool unknown) {
 		if(unknown) { x++; }
 	}
 
-	if(x - y > 0) { } // GOOD [FALSE POSITIVE]
+	if(x - y > 0) { } // GOOD
 
 	int n = getAnInt();
 	if (n > x - y) { n = x - y; }
 	if (n > 0) {
   	y += n; // NOTE: `n` is at most `x - y` at this point.
-  	if (x - y > 0) {} // GOOD [FALSE POSITIVE]
+  	if (x - y > 0) {} // GOOD
 	}
 }
 
@@ -192,7 +192,7 @@ void test10() {
 		a = b;
 	}
 
-	if (a - b > 0) { // GOOD (as a >= b) [FALSE POSITIVE]
+	if (a - b > 0) { // GOOD (as a >= b)
 		// ...
 	}
 }
