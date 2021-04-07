@@ -56,15 +56,17 @@ private class TaintPropagatingCall extends Call {
 
   TaintPropagatingCall() {
     taintFromExpr = this.getArgument(1) and
-    exists(Method m | this.(MethodAccess).getMethod() = m |
-      m.getDeclaringType() instanceof ExpressionFactory and
-      m.hasName(["createValueExpression", "createMethodExpression"]) and
-      taintFromExpr.getType() instanceof TypeString
-    )
-    or
-    exists(Constructor c | this.(ConstructorCall).getConstructor() = c |
-      c.getDeclaringType() instanceof LambdaExpression and
-      taintFromExpr.getType() instanceof ValueExpression
+    (
+      exists(Method m | this.(MethodAccess).getMethod() = m |
+        m.getDeclaringType() instanceof ExpressionFactory and
+        m.hasName(["createValueExpression", "createMethodExpression"]) and
+        taintFromExpr.getType() instanceof TypeString
+      )
+      or
+      exists(Constructor c | this.(ConstructorCall).getConstructor() = c |
+        c.getDeclaringType() instanceof LambdaExpression and
+        taintFromExpr.getType() instanceof ValueExpression
+      )
     )
   }
 
