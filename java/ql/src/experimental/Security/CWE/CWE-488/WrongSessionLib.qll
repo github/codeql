@@ -72,7 +72,7 @@ predicate hasDefaultValue(Node node) {
 class RequestMethod extends Method {
   RequestMethod() {
     (
-      this instanceof ServletRequestMethod
+      isServletRequestMethod(this)
       or
       this instanceof SpringControllerMethod
     ) and
