@@ -211,7 +211,7 @@ private predicate transitively_imported_from_entry_point(File file) {
     importer.getParent() = file.getParent() and
     exists(ImportExpr i | i.getLocation().getFile() = importer and i.getName() = file.getStem())
   |
-    importer.maybeExecutedDirectly() or transitively_imported_from_entry_point(importer)
+    importer.isPossibleEntryPoint() or transitively_imported_from_entry_point(importer)
   )
 }
 

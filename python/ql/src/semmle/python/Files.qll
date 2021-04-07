@@ -74,7 +74,7 @@ class File extends Container {
   string getContents() { file_contents(this, result) }
 
   /** Holds if this file is likely to get executed directly, and thus act as an entry point for execution. */
-  predicate maybeExecutedDirectly() {
+  predicate isPossibleEntryPoint() {
     // Only consider files in the source code, and not things like the standard library
     exists(this.getRelativePath()) and
     (
@@ -148,9 +148,6 @@ class Folder extends Container {
     this.getBaseName().regexpMatch("[^\\d\\W]\\w*") and
     result = this.getParent().getImportRoot(n)
   }
-
-  /** Holds if execution may start in a file in this directory. */
-  predicate mayContainEntryPoint() { any(File f | f.getParent() = this).maybeExecutedDirectly() }
 }
 
 /**
