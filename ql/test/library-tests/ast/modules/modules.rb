@@ -80,3 +80,20 @@ module Test
   end
 end
 
+module IncludeTest
+  include ::Test
+  module Foo1::Y
+  end
+end
+
+module IncludeTest2
+  include Test
+  module Foo1::Z
+  end
+end
+
+module PrependTest
+  prepend ::Test
+  module Foo2::Y
+  end
+end

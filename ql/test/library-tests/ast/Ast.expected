@@ -1384,6 +1384,21 @@ modules/modules.rb:
 #   77|         getAnOperand/getRightOperand: [ConstantReadAccess] Object
 #   78|       getStmt: [ClassDeclaration] Bar
 #   78|         getScopeExpr: [ConstantReadAccess] Foo3
+#   83|   getStmt: [ModuleDeclaration] IncludeTest
+#   84|     getStmt: [MethodCall] call to include
+#   84|       getArgument: [ConstantReadAccess] Test
+#   85|     getStmt: [ModuleDeclaration] Y
+#   85|       getScopeExpr: [ConstantReadAccess] Foo1
+#   89|   getStmt: [ModuleDeclaration] IncludeTest2
+#   90|     getStmt: [MethodCall] call to include
+#   90|       getArgument: [ConstantReadAccess] Test
+#   91|     getStmt: [ModuleDeclaration] Z
+#   91|       getScopeExpr: [ConstantReadAccess] Foo1
+#   95|   getStmt: [ModuleDeclaration] PrependTest
+#   96|     getStmt: [MethodCall] call to prepend
+#   96|       getArgument: [ConstantReadAccess] Test
+#   97|     getStmt: [ModuleDeclaration] Y
+#   97|       getScopeExpr: [ConstantReadAccess] Foo2
 operations/operations.rb:
 #    1| [Toplevel] operations.rb
 #    3|   getStmt: [AssignExpr] ... = ...
