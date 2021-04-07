@@ -204,7 +204,7 @@ module UnsafeShellCommandConstruction {
       joinCall = isExecutedAsShellCommand(DataFlow::TypeBackTracker::end(), sys)
     }
 
-    override string getSinkType() { result = "Uncontrolled path" }
+    override string getSinkType() { result = "Path concatenation" }
 
     override SystemCommandExecution getCommandExecution() { result = sys }
 
