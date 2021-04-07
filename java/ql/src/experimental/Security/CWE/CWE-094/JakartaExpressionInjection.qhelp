@@ -57,9 +57,5 @@ uses a Regex pattern to check whether a user tries to run an allowed expression 
   JUEL:
   <a href="http://juel.sourceforge.net">Home page</a>
 </li>
-<li>
-  Apache Foundation:
-  <a href="https://commons.apache.org/dormant/commons-el/">Apache Commons EL</a>
-</li>
 </references>
 </qhelp>
