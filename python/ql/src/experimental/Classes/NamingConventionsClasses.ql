@@ -10,7 +10,7 @@
 import python
 
 predicate lower_case_class(Class c) {
-  exists(string first_char | 
+  exists(string first_char |
     first_char = c.getName().prefix(1) and
     not first_char = first_char.toUpperCase()
   )
