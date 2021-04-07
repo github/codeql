@@ -22,10 +22,10 @@ private module LDAP {
       DataFlow::Node ldapNode;
 
       LDAP2Query() {
-        exists(DataFlow::AttrRead searchMethod, DataFlow::CallCfgNode initCall |
+        exists(DataFlow::AttrRead searchMethod |
           this.getFunction() = searchMethod and
-          initCall = API::moduleImport("ldap").getMember("initialize").getACall() and
-          initCall = searchMethod.getObject().getALocalSource() and
+          API::moduleImport("ldap").getMember("initialize").getACall() =
+            searchMethod.getObject().getALocalSource() and
           searchMethod.getAttributeName() instanceof LDAP2QueryMethods and
           (
             ldapNode = this.getArg(0)
@@ -68,10 +68,10 @@ private module LDAP {
       DataFlow::Node ldapNode;
 
       LDAP3Query() {
-        exists(DataFlow::AttrRead searchMethod, DataFlow::CallCfgNode connCall |
+        exists(DataFlow::AttrRead searchMethod |
           this.getFunction() = searchMethod and
-          connCall = API::moduleImport("ldap3").getMember("Connection").getACall() and
-          connCall = searchMethod.getObject().getALocalSource() and
+          API::moduleImport("ldap3").getMember("Connection").getACall() =
+            searchMethod.getObject().getALocalSource() and
           searchMethod.getAttributeName() instanceof LDAP3QueryMethods and
           (
             ldapNode = this.getArg(0) or
