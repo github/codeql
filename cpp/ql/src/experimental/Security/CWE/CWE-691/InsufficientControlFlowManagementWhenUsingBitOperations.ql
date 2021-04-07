@@ -1,8 +1,7 @@
 /**
  * @name Errors When Using Bit Operations
- * @description --Using bitwise operations can be a mistake in some situations.
- *              --For example, if parameters are evaluated in an expression and the function should be called only upon certain test results.
- *              --These bitwise operations look suspicious and require developer attention.
+ * @description Unlike the binary operations `||` and `&&`, there is no sequence point after evaluating an
+ *              operand of a bitwise operation like `|` or `&`. If left-to-right evaluation is expected this may be confusing.
  * @kind problem
  * @id cpp/errors-when-using-bit-operations
  * @problem.severity warning
@@ -77,4 +76,4 @@ where
   not dbo.useInOtherCalls() and
   dbo.useInLogicalOperations() and
   (not dbo.functionCallsInBitsExpression() or dbo.dangerousArgumentChecking())
-select dbo, "this bit expression needs your attention"
+select dbo, "This bitwise operation appears in a context where a Boolean operation is expected."
