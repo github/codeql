@@ -63,7 +63,7 @@ private module NoSQL {
             .getACall()
     }
 
-    override DataFlow::Node getQueryNode() { result = this.getArgByName("__raw__") }
+    override DataFlow::Node getQueryNode() { result = this.getArgByName(any(string name)) }
   }
 
   private class MongoSanitizerCall extends DataFlow::CallCfgNode, NoSQLSanitizer::Range {
