@@ -141,13 +141,15 @@ class UnspecificSSLContextCreation extends SSLContextCreation, UnspecificContext
   UnspecificSSLContextCreation() { library = "ssl" }
 
   override ProtocolVersion getUnrestriction() {
+    // Case: A protocol argument is present.
     result = UnspecificContextCreation.super.getUnrestriction() and
     // These are turned off by default
     // see https://docs.python.org/3/library/ssl.html#ssl-contexts
     not result in ["SSLv2", "SSLv3"]
     or
-    // The default argument is TLS and the SSL versions are turned off by default.
+    // Case: No protocol arguemnt is present.
     not exists(this.getProtocol()) and
+    // The default argument is TLS and the SSL versions are turned off by default.
     result in ["TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
   }
 }
