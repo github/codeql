@@ -29,7 +29,7 @@ class DangerousBitOperations extends Expr {
    */
   DangerousBitOperations() {
     bfc = this.(BinaryBitwiseOperation).getRightOperand() and
-    not this.getParent*() instanceof AssignExpr and
+    not this.getParent*() instanceof Assignment and
     not this.getParent*() instanceof Initializer and
     not this.getParent*() instanceof ReturnStmt and
     not this.getParent*() instanceof EqualityOperation and
