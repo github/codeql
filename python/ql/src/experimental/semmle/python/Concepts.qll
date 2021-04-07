@@ -13,3 +13,21 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
+
+module LDAPBind {
+  abstract class Range extends DataFlow::Node {
+    abstract DataFlow::Node getPasswordNode();
+
+    abstract DataFlow::Node getQueryNode();
+  }
+}
+
+class LDAPBind extends DataFlow::Node {
+  LDAPBind::Range range;
+
+  LDAPBind() { this = range }
+
+  DataFlow::Node getPasswordNode() { result = range.getPasswordNode() }
+
+  DataFlow::Node getQueryNode() { result = range.getQueryNode() }
+}
