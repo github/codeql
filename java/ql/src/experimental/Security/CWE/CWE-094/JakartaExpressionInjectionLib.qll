@@ -97,6 +97,6 @@ private class MethodExpression extends JakartaType {
   MethodExpression() { hasName("MethodExpression") }
 }
 
-private class LambdaExpression extends RefType {
+private class LambdaExpression extends JakartaType {
   LambdaExpression() { hasName("LambdaExpression") }
 }
