@@ -636,31 +636,41 @@ private module Internal {
       )
     }
 
-    private predicate stepExpr0(Expr succ, Expr pred) {
-      Steps::stepOpen(pred, succ)
-      or
-      exists(Assignable a |
-        a instanceof Field or
-        a instanceof Property
-      |
-        succ.(AssignableRead) = a.getAnAccess() and
-        pred = a.getAnAssignedValue() and
-        a = any(Modifiable m | not m.isEffectivelyPublic())
-      )
-    }
-
-    private predicate stepExpr(Expr succ, Expr pred) {
-      stepExpr0(succ, pred) and
+    private predicate stepExpr(Expr pred, Expr succ) {
+      Steps::stepOpen(pred, succ) and
       // Do not step through down casts
       not downCast(succ) and
       // Only step when we may learn more about the actual type
       typeMayBeImprecise(succ.getType())
     }
 
-    private predicate stepTC(Expr succ, Expr pred) = fastTC(stepExpr/2)(succ, pred)
+    private class AnalyzableFieldOrProperty extends Assignable, Modifiable {
+      AnalyzableFieldOrProperty() {
+        (
+          this instanceof Field or
+          this instanceof Property
+        ) and
+        not this.isEffectivelyPublic() and
+        exists(this.getAnAssignedValue())
+      }
+
+      AssignableRead getARead() { result = this.getAnAccess() }
+    }
 
     private class Source extends Expr {
-      Source() { not stepExpr(this, _) }
+      Source() {
+        not stepExpr(_, this) and
+        not this = any(AnalyzableFieldOrProperty a).getARead()
+      }
+
+      Type getType(boolean isExact) {
+        result = this.getType() and
+        if
+          this instanceof ObjectCreation or
+          this instanceof BaseAccess
+        then isExact = true
+        else isExact = false
+      }
     }
 
     private class Sink extends Expr {
@@ -680,24 +690,38 @@ private module Internal {
         this = any(DispatchCallImpl c).getArgument(_)
       }
 
-      Source getASource() { stepTC(this, result) }
+      pragma[nomagic]
+      Expr getAPred() { stepExpr*(result, this) }
+
+      pragma[nomagic]
+      AnalyzableFieldOrProperty getAPredRead() { this.getAPred() = result.getARead() }
     }
 
-    /** Holds if the expression `e` has an exact type. */
-    private predicate hasExactType(Expr e) {
-      e instanceof ObjectCreation or
-      e instanceof BaseAccess
+    /** Gets a source type for sink expression `e`, using simple data flow. */
+    Type getASourceType(Sink sink, boolean isExact) {
+      result = sink.getAPred().(Source).getType(isExact)
+      or
+      result = sink.getAPredRead().(RelevantFieldOrProperty).getASourceType(isExact)
     }
 
-    /** Gets a source type for expression `e`, using simple data flow. */
-    Type getASourceType(Sink e, boolean isExact) {
-      exists(Source s |
-        s = e.getASource() or
-        s = e
-      |
-        result = s.getType() and
-        if hasExactType(s) then isExact = true else isExact = false
-      )
+    private class RelevantFieldOrProperty extends AnalyzableFieldOrProperty {
+      RelevantFieldOrProperty() {
+        this = any(Sink s).getAPredRead()
+        or
+        this = any(RelevantFieldOrProperty a).getAPredRead()
+      }
+
+      pragma[nomagic]
+      Expr getAPred() { stepExpr*(result, this.getAnAssignedValue()) }
+
+      pragma[nomagic]
+      AnalyzableFieldOrProperty getAPredRead() { this.getAPred() = result.getARead() }
+
+      Type getASourceType(boolean isExact) {
+        result = this.getAPred().(Source).getType(isExact)
+        or
+        result = this.getAPredRead().(RelevantFieldOrProperty).getASourceType(isExact)
+      }
     }
   }
 
