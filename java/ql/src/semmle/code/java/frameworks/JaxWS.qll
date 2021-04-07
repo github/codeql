@@ -1,3 +1,8 @@
+/**
+ * Definitions relating to JAX-WS (Java/Jakarta API for XML Web Services) and JAX-RS
+ * (Java/Jakarta API for RESTful Web Services).
+ */
+
 import java
 private import semmle.code.java.dataflow.ExternalFlow
 
