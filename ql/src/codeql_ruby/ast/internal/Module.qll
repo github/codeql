@@ -23,7 +23,7 @@ private predicate isToplevel(ConstantAccess n) {
   (
     n.hasGlobalScope()
     or
-    exists(Scope x | x.getADescendant() = n and x.getEnclosingModule() instanceof Toplevel)
+    n.getEnclosingModule() instanceof Toplevel
   )
 }
 
@@ -48,7 +48,7 @@ private string resolveScopeExpr0(ConstantReadAccess n) {
 ModuleBase enclosing(ModuleBase m, int level) {
   result = m and level = 0
   or
-  result = enclosing(m.getOuterScope().getEnclosingModule(), level - 1)
+  result = enclosing(m.getEnclosingModule(), level - 1)
 }
 
 bindingset[qualifier, name]
@@ -59,9 +59,8 @@ private string scopeAppend(string qualifier, string name) {
 private string resolveRelativeToEnclosing(ConstantAccess n, int i) {
   not isToplevel(n) and
   not exists(n.getScopeExpr()) and
-  exists(Scope s, ModuleBase enclosing |
-    n = s.getADescendant() and
-    enclosing = enclosing(s.getEnclosingModule(), i) and
+  exists(ModuleBase enclosing |
+    enclosing = enclosing(n.getEnclosingModule(), i) and
     result = scopeAppend(constantDefinition0(enclosing), n.getName()) and
     (result = builtin() or result = constantDefinition0(_) or n instanceof ConstantWriteAccess)
   )
@@ -75,12 +74,12 @@ private class IncludeOrPrependCall extends MethodCall {
   string getTarget() {
     result = resolveScopeExpr0(this.getReceiver())
     or
-    exists(Scope s |
-      s.getADescendant() = this and
+    exists(ModuleBase enclosing |
+      enclosing = this.getEnclosingModule() and
       (
-        result = constantDefinition0(s.getEnclosingModule())
+        result = constantDefinition0(enclosing)
         or
-        result = "Object" and s.getEnclosingModule() instanceof Toplevel
+        result = "Object" and enclosing instanceof Toplevel
       )
     |
       this.getReceiver() instanceof Self
@@ -171,10 +170,7 @@ private string containsIgnoringSuper(string qname, string name) {
 private string resolveRelativeToAncestors(ConstantReadAccess n) {
   not isToplevel(n) and
   not exists(n.getScopeExpr()) and
-  exists(Scope s, ModuleBase enclosing |
-    n = s.getADescendant() and
-    enclosing = s.getEnclosingModule()
-  |
+  exists(ModuleBase enclosing | enclosing = n.getEnclosingModule() |
     result = contains(constantDefinition(enclosing), n.getName())
     or
     enclosing instanceof Toplevel and result = contains("Object", n.getName())
