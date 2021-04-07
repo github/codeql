@@ -149,7 +149,8 @@ class UnspecificSSLContextCreation extends SSLContextCreation, UnspecificContext
     or
     // Case: No protocol arguemnt is present.
     not exists(this.getProtocol()) and
-    // The default argument is TLS and the SSL versions are turned off by default.
+    // The default argument is TLS and the SSL versions are turned off by default since Python 3.6
+    // see https://docs.python.org/3.6/library/ssl.html#ssl.SSLContext
     result in ["TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
   }
 }

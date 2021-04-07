@@ -49,6 +49,8 @@ def test_fluent_tls_safe():
 
 def test_fluent_ssl():
     hostname = 'www.python.org'
+    # notice that `ssl.PROTOCOL_SSLv23` is just a deprecated alias for `ssl.PROTOCOL_TLS`.
+    # Therefore, we only have this one test using PROTOCOL_SSLv23, to show that we handle this alias correctly.
     context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
 
     with socket.create_connection((hostname, 443)) as sock:

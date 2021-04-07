@@ -65,8 +65,8 @@ class InsecureContextConfiguration extends DataFlow::Configuration {
  * Holds if `conectionCreation` marks the creation of a connetion based on the contex
  * found at `contextOrigin` and allowing `insecure_version`.
  *
- * `specific` is true iff the context is configured for a specific protocol version rather
- * than for a family of protocols.
+ * `specific` is true iff the context is configured for a specific protocol version (`ssl.PROTOCOL_TLSv1_2`) rather
+ * than for a family of protocols (`ssl.PROTOCOL_TLS`).
  */
 predicate unsafe_connection_creation_with_context(
   DataFlow::Node connectionCreation, ProtocolVersion insecure_version, DataFlow::Node contextOrigin,
