@@ -1,4 +1,5 @@
 import go
+import experimental.frameworks.CleverGo
 import TestUtilities.InlineExpectationsTest
 
 class HttpRedirectTest extends InlineExpectationsTest {
