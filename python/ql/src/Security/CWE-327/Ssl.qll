@@ -28,9 +28,7 @@ API::Node sslContextInstance() {
 }
 
 class WrapSocketCall extends ConnectionCreation, DataFlow::CallCfgNode {
-  WrapSocketCall() {
-    this = sslContextInstance().getMember("wrap_socket").getACall()
-  }
+  WrapSocketCall() { this = sslContextInstance().getMember("wrap_socket").getACall() }
 
   override DataFlow::CfgNode getContext() {
     result = this.getFunction().(DataFlow::AttrRead).getObject()
