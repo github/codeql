@@ -164,12 +164,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 // In case this parameter belongs to an accessor of an indexer, we need
                 // to get the default value from the corresponding parameter belonging
                 // to the indexer itself
-                var method = (IMethodSymbol)symbol.ContainingSymbol;
-                if (method is not null)
+                if (symbol.ContainingSymbol is IMethodSymbol method)
                 {
                     var i = method.Parameters.IndexOf(symbol);
-                    var indexer = (IPropertySymbol?)method.AssociatedSymbol;
-                    if (indexer is not null)
+                    if (method.AssociatedSymbol is IPropertySymbol indexer)
                         defaultValue = GetParameterDefaultValue(indexer.Parameters[i]);
                 }
             }
