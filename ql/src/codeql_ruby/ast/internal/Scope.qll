@@ -7,7 +7,7 @@ class TScopeType = TMethodBase or TModuleLike or TBlockLike;
 
 private class TBlockLike = TDoBlock or TLambda or TBlock or TEndBlock;
 
-private class TModuleLike = TToplevel or TModule or TClass or TSingletonClass;
+private class TModuleLike = TToplevel or TModuleDeclaration or TClassDeclaration or TSingletonClass;
 
 module Scope {
   class TypeRange = Callable::TypeRange or ModuleBase::TypeRange or @end_block;

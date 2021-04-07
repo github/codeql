@@ -10,16 +10,13 @@ private import codeql_ruby.ast.Scope
 private string builtin() { result = ["Object", "Kernel", "BasicObject", "Class", "Module"] }
 
 cached
-newtype TConstant =
-  TResolved(string qName, boolean isModule) {
-    exists(ConstantWriteAccess n |
-      qName = builtin() and isModule = true
-      or
-      qName = constantDefinition(n) and
-      if n instanceof Namespace then isModule = true else isModule = false
-    )
+newtype TModule =
+  TResolved(string qName) {
+    qName = builtin()
+    or
+    qName = constantDefinition(_)
   } or
-  TUnresolved(ConstantWriteAccess n) { not exists(constantDefinition(n)) }
+  TUnresolved(Namespace n) { not exists(constantDefinition(n)) }
 
 private predicate isToplevel(ConstantAccess n) {
   not exists(n.getScopeExpr()) and
@@ -113,7 +110,7 @@ private string includes(string qname) {
 }
 
 private Expr superexpr(string qname) {
-  exists(ClassDefinition c | qname = constantDefinition0(c) and result = c.getSuperclassExpr())
+  exists(ClassDeclaration c | qname = constantDefinition0(c) and result = c.getSuperclassExpr())
 }
 
 private string superclass(string qname) {

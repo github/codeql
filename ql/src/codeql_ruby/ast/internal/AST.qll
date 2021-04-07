@@ -82,7 +82,7 @@ private module Cached {
     TCaseEqExpr(Generated::Binary g) { g instanceof @binary_equalequalequal } or
     TCaseExpr(Generated::Case g) or
     TCharacterLiteral(Generated::Character g) or
-    TClass(Generated::Class g) or
+    TClassDeclaration(Generated::Class g) or
     TClassVariableAccess(Generated::ClassVariable g, AST::ClassVariable v) {
       ClassVariableAccess::range(g, v)
     } or
@@ -139,7 +139,7 @@ private module Cached {
     } or
     TLogicalOrExpr(Generated::Binary g) { g instanceof @binary_or or g instanceof @binary_pipepipe } or
     TMethod(Generated::Method g) or
-    TModule(Generated::Module g) or
+    TModuleDeclaration(Generated::Module g) or
     TModuloExpr(Generated::Binary g) { g instanceof @binary_percent } or
     TMulExpr(Generated::Binary g) { g instanceof @binary_star } or
     TNEExpr(Generated::Binary g) { g instanceof @binary_bangequal } or
@@ -257,7 +257,7 @@ private module Cached {
     n = TCaseEqExpr(result) or
     n = TCaseExpr(result) or
     n = TCharacterLiteral(result) or
-    n = TClass(result) or
+    n = TClassDeclaration(result) or
     n = TClassVariableAccess(result, _) or
     n = TComplementExpr(result) or
     n = TComplexLiteral(result) or
@@ -302,7 +302,7 @@ private module Cached {
     n = TLogicalAndExpr(result) or
     n = TLogicalOrExpr(result) or
     n = TMethod(result) or
-    n = TModule(result) or
+    n = TModuleDeclaration(result) or
     n = TModuloExpr(result) or
     n = TMulExpr(result) or
     n = TNEExpr(result) or
@@ -434,7 +434,7 @@ class TBlock = TDoBlock or TBraceBlock;
 
 class TModuleBase = TToplevel or TNamespace or TSingletonClass;
 
-class TNamespace = TClass or TModule;
+class TNamespace = TClassDeclaration or TModuleDeclaration;
 
 class TOperation = TUnaryOperation or TBinaryOperation or TAssignment;
 

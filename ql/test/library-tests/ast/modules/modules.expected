@@ -1,52 +1,52 @@
 modules
-| classes.rb:15:1:15:20 | MyModule | ModuleDefinition | MyModule |
-| classes.rb:35:3:36:5 | ModuleInWibble | ModuleDefinition | ModuleInWibble |
-| modules.rb:1:1:2:3 | Empty | ModuleDefinition | Empty |
-| modules.rb:4:1:24:3 | Foo | ModuleDefinition | Foo |
-| modules.rb:5:3:14:5 | Bar | ModuleDefinition | Bar |
-| modules.rb:26:1:35:3 | Foo | ModuleDefinition | Foo |
-| modules.rb:37:1:46:3 | Bar | ModuleDefinition | Bar |
-| modules.rb:48:1:57:3 | Bar | ModuleDefinition | Bar |
-| modules.rb:60:1:61:3 | MyModuleInGlobalScope | ModuleDefinition | MyModuleInGlobalScope |
-| modules.rb:63:1:81:3 | Test | ModuleDefinition | Test |
-| modules.rb:65:3:68:5 | Foo1 | ModuleDefinition | Foo1 |
-| modules.rb:70:3:74:5 | Foo2 | ModuleDefinition | Foo2 |
-| modules.rb:71:5:71:19 | Foo2 | ModuleDefinition | Foo2 |
-| modules.rb:76:3:80:5 | Foo3 | ModuleDefinition | Foo3 |
+| classes.rb:15:1:15:20 | MyModule | ModuleDeclaration | MyModule |
+| classes.rb:35:3:36:5 | ModuleInWibble | ModuleDeclaration | ModuleInWibble |
+| modules.rb:1:1:2:3 | Empty | ModuleDeclaration | Empty |
+| modules.rb:4:1:24:3 | Foo | ModuleDeclaration | Foo |
+| modules.rb:5:3:14:5 | Bar | ModuleDeclaration | Bar |
+| modules.rb:26:1:35:3 | Foo | ModuleDeclaration | Foo |
+| modules.rb:37:1:46:3 | Bar | ModuleDeclaration | Bar |
+| modules.rb:48:1:57:3 | Bar | ModuleDeclaration | Bar |
+| modules.rb:60:1:61:3 | MyModuleInGlobalScope | ModuleDeclaration | MyModuleInGlobalScope |
+| modules.rb:63:1:81:3 | Test | ModuleDeclaration | Test |
+| modules.rb:65:3:68:5 | Foo1 | ModuleDeclaration | Foo1 |
+| modules.rb:70:3:74:5 | Foo2 | ModuleDeclaration | Foo2 |
+| modules.rb:71:5:71:19 | Foo2 | ModuleDeclaration | Foo2 |
+| modules.rb:76:3:80:5 | Foo3 | ModuleDeclaration | Foo3 |
 modulesWithScopeExprs
 | modules.rb:48:1:57:3 | Bar | modules.rb:48:8:48:10 | Foo |
 modulesWithGlobalNameScopeExprs
 | modules.rb:60:1:61:3 | MyModuleInGlobalScope |
 exprsInModules
-| modules.rb:4:1:24:3 | Foo | 0 | modules.rb:5:3:14:5 | Bar | ModuleDefinition |
+| modules.rb:4:1:24:3 | Foo | 0 | modules.rb:5:3:14:5 | Bar | ModuleDeclaration |
 | modules.rb:4:1:24:3 | Foo | 1 | modules.rb:16:3:17:5 | method_in_foo | Method |
-| modules.rb:4:1:24:3 | Foo | 2 | modules.rb:19:3:20:5 | ClassInFoo | ClassDefinition |
+| modules.rb:4:1:24:3 | Foo | 2 | modules.rb:19:3:20:5 | ClassInFoo | ClassDeclaration |
 | modules.rb:4:1:24:3 | Foo | 3 | modules.rb:22:3:22:19 | call to puts | MethodCall |
 | modules.rb:4:1:24:3 | Foo | 4 | modules.rb:23:3:23:17 | ... = ... | AssignExpr |
-| modules.rb:5:3:14:5 | Bar | 0 | modules.rb:6:5:7:7 | ClassInFooBar | ClassDefinition |
+| modules.rb:5:3:14:5 | Bar | 0 | modules.rb:6:5:7:7 | ClassInFooBar | ClassDeclaration |
 | modules.rb:5:3:14:5 | Bar | 1 | modules.rb:9:5:10:7 | method_in_foo_bar | Method |
 | modules.rb:5:3:14:5 | Bar | 2 | modules.rb:12:5:12:26 | call to puts | MethodCall |
 | modules.rb:5:3:14:5 | Bar | 3 | modules.rb:13:5:13:19 | ... = ... | AssignExpr |
 | modules.rb:26:1:35:3 | Foo | 0 | modules.rb:27:3:28:5 | method_in_another_definition_of_foo | Method |
-| modules.rb:26:1:35:3 | Foo | 1 | modules.rb:30:3:31:5 | ClassInAnotherDefinitionOfFoo | ClassDefinition |
+| modules.rb:26:1:35:3 | Foo | 1 | modules.rb:30:3:31:5 | ClassInAnotherDefinitionOfFoo | ClassDeclaration |
 | modules.rb:26:1:35:3 | Foo | 2 | modules.rb:33:3:33:25 | call to puts | MethodCall |
 | modules.rb:26:1:35:3 | Foo | 3 | modules.rb:34:3:34:17 | ... = ... | AssignExpr |
 | modules.rb:37:1:46:3 | Bar | 0 | modules.rb:38:3:39:5 | method_a | Method |
 | modules.rb:37:1:46:3 | Bar | 1 | modules.rb:41:3:42:5 | method_b | Method |
 | modules.rb:37:1:46:3 | Bar | 2 | modules.rb:44:3:44:19 | call to puts | MethodCall |
 | modules.rb:37:1:46:3 | Bar | 3 | modules.rb:45:3:45:17 | ... = ... | AssignExpr |
-| modules.rb:48:1:57:3 | Bar | 0 | modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar | ClassDefinition |
+| modules.rb:48:1:57:3 | Bar | 0 | modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar | ClassDeclaration |
 | modules.rb:48:1:57:3 | Bar | 1 | modules.rb:52:3:53:5 | method_in_another_definition_of_foo_bar | Method |
 | modules.rb:48:1:57:3 | Bar | 2 | modules.rb:55:3:55:30 | call to puts | MethodCall |
 | modules.rb:48:1:57:3 | Bar | 3 | modules.rb:56:3:56:17 | ... = ... | AssignExpr |
-| modules.rb:63:1:81:3 | Test | 0 | modules.rb:65:3:68:5 | Foo1 | ModuleDefinition |
-| modules.rb:63:1:81:3 | Test | 1 | modules.rb:70:3:74:5 | Foo2 | ModuleDefinition |
-| modules.rb:63:1:81:3 | Test | 2 | modules.rb:76:3:80:5 | Foo3 | ModuleDefinition |
-| modules.rb:65:3:68:5 | Foo1 | 0 | modules.rb:66:5:67:7 | Bar | ClassDefinition |
-| modules.rb:70:3:74:5 | Foo2 | 0 | modules.rb:71:5:71:19 | Foo2 | ModuleDefinition |
-| modules.rb:70:3:74:5 | Foo2 | 1 | modules.rb:72:5:73:7 | Bar | ClassDefinition |
+| modules.rb:63:1:81:3 | Test | 0 | modules.rb:65:3:68:5 | Foo1 | ModuleDeclaration |
+| modules.rb:63:1:81:3 | Test | 1 | modules.rb:70:3:74:5 | Foo2 | ModuleDeclaration |
+| modules.rb:63:1:81:3 | Test | 2 | modules.rb:76:3:80:5 | Foo3 | ModuleDeclaration |
+| modules.rb:65:3:68:5 | Foo1 | 0 | modules.rb:66:5:67:7 | Bar | ClassDeclaration |
+| modules.rb:70:3:74:5 | Foo2 | 0 | modules.rb:71:5:71:19 | Foo2 | ModuleDeclaration |
+| modules.rb:70:3:74:5 | Foo2 | 1 | modules.rb:72:5:73:7 | Bar | ClassDeclaration |
 | modules.rb:76:3:80:5 | Foo3 | 0 | modules.rb:77:5:77:17 | ... = ... | AssignExpr |
-| modules.rb:76:3:80:5 | Foo3 | 1 | modules.rb:78:5:79:7 | Bar | ClassDefinition |
+| modules.rb:76:3:80:5 | Foo3 | 1 | modules.rb:78:5:79:7 | Bar | ClassDeclaration |
 methodsInModules
 | modules.rb:4:1:24:3 | Foo | modules.rb:16:3:17:5 | method_in_foo | method_in_foo |
 | modules.rb:5:3:14:5 | Bar | modules.rb:9:5:10:7 | method_in_foo_bar | method_in_foo_bar |

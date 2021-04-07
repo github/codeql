@@ -598,7 +598,7 @@ module Trees {
 
   private class CharacterTree extends LeafTree, CharacterLiteral { }
 
-  private class ClassTree extends BodyStmtPreOrderTree, ClassDefinition {
+  private class ClassTree extends BodyStmtPreOrderTree, ClassDeclaration {
     /** Gets the `i`th child in the body of this block. */
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getScopeExpr() and i = 0 and rescuable = false
@@ -673,8 +673,8 @@ module Trees {
 
   private class ConstantAccessTree extends PostOrderTree, ConstantAccess {
     ConstantAccessTree() {
-      not this instanceof ClassDefinition and
-      not this instanceof ModuleDefinition
+      not this instanceof ClassDeclaration and
+      not this instanceof ModuleDeclaration
     }
 
     final override predicate propagatesAbnormal(AstNode child) { child = this.getScopeExpr() }
@@ -934,7 +934,7 @@ module Trees {
     }
   }
 
-  private class ModuleTree extends BodyStmtPreOrderTree, ModuleDefinition {
+  private class ModuleTree extends BodyStmtPreOrderTree, ModuleDeclaration {
     /** Gets the `i`th child in the body of this block. */
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getScopeExpr() and i = 0 and rescuable = false
