@@ -70,6 +70,12 @@ module UnsafeShellCommandConstruction {
     exists(DataFlow::TypeBackTracker t2 |
       t2 = t.smallstep(result, isExecutedAsShellCommand(t2, sys))
     )
+    or
+    exists(DataFlow::TypeBackTracker t2, StringOps::ConcatenationRoot prev |
+      t = t2.continue() and
+      isExecutedAsShellCommand(t2, sys) = prev and
+      result = prev.getALeaf()
+    )
   }
 
   /**
