@@ -180,7 +180,7 @@ class CfgNode extends Node, TCfgNode {
 }
 
 /** A data-flow node corresponding to a `CallNode` in the control-flow graph. */
-class CallCfgNode extends CfgNode {
+class CallCfgNode extends CfgNode, LocalSourceNode {
   override CallNode node;
 
   /**
