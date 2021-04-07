@@ -24,10 +24,7 @@ predicate subIsSafe(SubExpr sub) {
     right = i.getAnOperand() and
     boundedOperand(left, b, delta, false, _) and // left >= b + delta
     delta >= 0 and
-    (
-      b.getInstruction() = right.getAnyDef() or // b = right
-      b instanceof ZeroBound // b = 0
-    )
+    b.getInstruction() = right.getAnyDef() // b = right
   )
   or
   exists(Instruction i, LeftOperand left, RightOperand right, Bound b, int delta |
