@@ -1,7 +1,7 @@
 String input = getRemoteUserInput();
 String pattern = "(inside|outside)\\.(temperature|humidity)";
 if (!input.matches(pattern)) {
-    throw new IllegalArgumentException("Unexpected exression");
+    throw new IllegalArgumentException("Unexpected expression");
 }
 String expression = "${" + input + "}";
 ExpressionFactory factory = new de.odysseus.el.ExpressionFactoryImpl();
