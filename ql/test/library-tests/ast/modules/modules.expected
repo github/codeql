@@ -120,7 +120,7 @@ moduleTypes
 | modules.rb:83:1:87:3 | IncludeTest | modules.rb:83:1:87:3 | IncludeTest |
 | modules.rb:85:3:86:5 | Y | modules.rb:85:3:86:5 | Test::Foo1::Y |
 | modules.rb:89:1:93:3 | IncludeTest2 | modules.rb:89:1:93:3 | IncludeTest2 |
-| modules.rb:91:3:92:5 | Z | modules.rb:91:3:92:5 | ...::Z |
+| modules.rb:91:3:92:5 | Z | modules.rb:91:3:92:5 | Test::Foo1::Z |
 | modules.rb:95:1:99:3 | PrependTest | modules.rb:95:1:99:3 | PrependTest |
 | modules.rb:97:3:98:5 | Y | modules.rb:97:3:98:5 | Test::Foo2::Y |
 | toplevel.rb:1:1:5:23 | toplevel.rb | file://:0:0:0:0 | Object |

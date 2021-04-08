@@ -27,28 +27,71 @@ private predicate isToplevel(ConstantAccess n) {
   )
 }
 
-private string constantDefinition0(ConstantWriteAccess n) { result = qualifiedNameForConstant0(n) }
+string constantDefinition(ConstantWriteAccess n) {
+  isToplevel(n) and result = n.getName()
+  or
+  not isToplevel(n) and
+  not exists(n.getScopeExpr()) and
+  result = scopeAppend(constantDefinition(n.getEnclosingModule()), n.getName())
+  or
+  result = scopeAppend(resolveScopeExpr(n.getScopeExpr()), n.getName())
+}
+
+private predicate isDefinedConstant(string qualifiedModuleName) {
+  qualifiedModuleName = [builtin(), constantDefinition0(_)]
+}
 
 /**
  * Resolve a scope expression
  */
-private string resolveScopeExpr0(ConstantReadAccess n) {
-  exists(string qname | qname = qualifiedNameForConstant0(n) |
-    qname = builtin() and result = qname
+private string resolveScopeExpr(ConstantReadAccess r) {
+  exists(string container |
+    container =
+      min(string c, int p |
+        isDefinedConstant(c) and
+        c = resolveScopeExpr(r, p)
+      |
+        c order by p
+      )
+  |
+    result = container and
+    container = [builtin(), constantDefinition(any(Namespace x))]
     or
-    not qname = builtin() and
-    exists(ConstantWriteAccess def | qname = constantDefinition0(def) |
-      result = qname and def instanceof Namespace
-      or
-      result = resolveScopeExpr0(def.getParent().(Assignment).getRightOperand())
+    exists(ConstantAssignment a |
+      container = constantDefinition(a) and
+      result = resolveScopeExpr(a.getParent().(Assignment).getRightOperand())
     )
   )
 }
 
-ModuleBase enclosing(ModuleBase m, int level) {
+cached
+private int maxDepth() { result = max(ConstantAccess c | | count(c.getEnclosingModule+())) }
+
+private ModuleBase enclosing(ModuleBase m, int level) {
   result = m and level = 0
   or
   result = enclosing(m.getEnclosingModule(), level - 1)
+}
+
+private string resolveScopeExpr(ConstantReadAccess c, int priority) {
+  c.hasGlobalScope() and result = c.getName() and priority = 0
+  or
+  result = qualifiedModuleName(resolveScopeExpr(c.getScopeExpr(), priority), c.getName())
+  or
+  not exists(c.getScopeExpr()) and
+  not c.hasGlobalScope() and
+  exists(Namespace n |
+    result = qualifiedModuleName(constantDefinition0(n), c.getName()) and
+    n = enclosing(c.getEnclosingModule(), priority)
+  )
+  or
+  result =
+    qualifiedModuleName(ancestors(qualifiedModuleName(c.getEnclosingModule()), priority - maxDepth()),
+      c.getName())
+  or
+  result = c.getName() and
+  priority = maxDepth() + 4 and
+  qualifiedModuleName(c.getEnclosingModule()) != "BasicObject"
 }
 
 bindingset[qualifier, name]
@@ -56,32 +99,44 @@ private string scopeAppend(string qualifier, string name) {
   if qualifier = "Object" then result = name else result = qualifier + "::" + name
 }
 
-private string resolveRelativeToEnclosing(ConstantAccess n, int i) {
-  not isToplevel(n) and
-  not exists(n.getScopeExpr()) and
-  exists(ModuleBase enclosing |
-    enclosing = enclosing(n.getEnclosingModule(), i) and
-    result = scopeAppend(constantDefinition0(enclosing), n.getName()) and
-    (result = builtin() or result = constantDefinition0(_) or n instanceof ConstantWriteAccess)
+private string qualifiedModuleName(ModuleBase m) {
+  result = "Object" and m instanceof Toplevel
+  or
+  result = constantDefinition0(m)
+}
+
+private string constantDefinition0(ConstantWriteAccess c) {
+  c.hasGlobalScope() and result = c.getName()
+  or
+  result = scopeAppend(resolveScopeExpr(c.getScopeExpr(), _), c.getName())
+  or
+  not exists(c.getScopeExpr()) and
+  not c.hasGlobalScope() and
+  exists(ModuleBase enclosing | enclosing = c.getEnclosingModule() |
+    result = scopeAppend(qualifiedModuleName(enclosing), c.getName())
   )
+}
+
+private string ancestors(string qname, int priority) {
+  result = ancestors(prepends(qname), _) and priority = 0
+  or
+  result = qname and priority = 1 and isDefinedConstant(qname)
+  or
+  result = ancestors(includes(qname), _) and priority = 2
+  or
+  result = ancestors(superclass(qname), _) and priority = 3
 }
 
 private class IncludeOrPrependCall extends MethodCall {
   IncludeOrPrependCall() { this.getMethodName() = ["include", "prepend"] }
 
-  string getAModule() { result = resolveScopeExpr0(this.getAnArgument()) }
+  string getAModule() { result = resolveScopeExpr(this.getAnArgument(), _) }
 
   string getTarget() {
-    result = resolveScopeExpr0(this.getReceiver())
+    result = resolveScopeExpr(this.getReceiver(), _)
     or
-    exists(ModuleBase enclosing |
-      enclosing = this.getEnclosingModule() and
-      (
-        result = constantDefinition0(enclosing)
-        or
-        result = "Object" and enclosing instanceof Toplevel
-      )
-    |
+    result = qualifiedModuleName(this.getEnclosingModule()) and
+    (
       this.getReceiver() instanceof Self
       or
       not exists(this.getReceiver())
@@ -115,99 +170,15 @@ private Expr superexpr(string qname) {
 private string superclass(string qname) {
   qname = "Object" and result = "BasicObject"
   or
-  result = resolveScopeExpr(superexpr(qname))
-  or
-  qname = constantDefinition0(_) and
-  not exists(superexpr(qname)) and
-  result = "Object" and
-  qname != "BasicObject"
+  result = resolveScopeExpr(superexpr(qname), _)
 }
 
-private string ancestors(string qname) {
-  qname = [builtin(), constantDefinition0(any(Namespace x))] and
-  (
-    result = prepends(qname)
-    or
-    result = qname
-    or
-    result = includes(qname)
-  )
-}
-
-private string contains(string qname, string name) {
-  result = containsIgnoringSuper(qname, name)
-  or
-  not exists(containsIgnoringSuper(qname, name)) and
-  result = contains(superclass(qname), name)
-}
-
-private string qualifiedName(string container, string name) {
-  result = [builtin(), constantDefinition0(_)] and
+private string qualifiedModuleName(string container, string name) {
+  isDefinedConstant(result) and
   (
     container = result.regexpCapture("(.+)::([^:]+)", 1) and
     name = result.regexpCapture("(.+)::([^:]+)", 2)
     or
     container = "Object" and name = result
-  )
-}
-
-private string containsIgnoringSuper(string qname, string name) {
-  result =
-    min(string n, string container, int i |
-      n = qualifiedName(container, name) and
-      (
-        container = ancestors*(prepends(qname)) and i = 0
-        or
-        container = qname and i = 1
-        or
-        container = ancestors*(includes(qname)) and i = 2
-      )
-    |
-      n order by i
-    )
-}
-
-private string resolveRelativeToAncestors(ConstantReadAccess n) {
-  not isToplevel(n) and
-  not exists(n.getScopeExpr()) and
-  exists(ModuleBase enclosing | enclosing = n.getEnclosingModule() |
-    result = contains(constantDefinition(enclosing), n.getName())
-    or
-    enclosing instanceof Toplevel and result = contains("Object", n.getName())
-  )
-}
-
-private string qualifiedNameForConstant0(ConstantAccess n) {
-  isToplevel(n) and
-  result = n.getName()
-  or
-  result = resolveRelativeToEnclosing(n, 0)
-  or
-  result = scopeAppend(resolveScopeExpr0(n.getScopeExpr()), n.getName())
-}
-
-string constantDefinition(ConstantWriteAccess n) {
-  result = constantDefinition0(n)
-  or
-  result = scopeAppend(resolveScopeExpr(n.getScopeExpr()), n.getName())
-}
-
-private string resolveScopeExpr(ConstantReadAccess n) {
-  result = resolveScopeExpr0(n)
-  or
-  exists(string qname |
-    qname = min(int i, string x | x = resolveRelativeToEnclosing(n, i) | x order by i)
-    or
-    not exists(resolveRelativeToEnclosing(n, _)) and
-    qname = resolveRelativeToAncestors(n)
-  |
-    qname = builtin() and result = qname
-    or
-    not qname = builtin() and
-    exists(ConstantWriteAccess def | qname = constantDefinition(def) |
-      result = qname and def instanceof Namespace
-      or
-      result = resolveScopeExpr(def.getParent().(Assignment).getRightOperand())
-    )
   )
 }
