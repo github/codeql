@@ -120,7 +120,7 @@ if subprocess.check_call(cmd):
 
 print("\nStub generation successful! Next steps:")
 print('1. Edit "semmle-extractor-options" in the .cs files to remove unused references')
-print('2. Re-run odasa qltest --optimize "' + testDir + '"')
+print('2. Re-run codeql test run "' + testDir + '"')
 print('3. git add "' + outputFile + '"')
 print('4. Commit your changes.')
 
