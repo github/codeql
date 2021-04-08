@@ -9,7 +9,7 @@ import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
 
 /**
- * A taint-tracking configuration for detecting regular expression injections.
+ * A taint-tracking configuration for detecting LDAP injections.
  */
 class LDAPInjectionFlowConfig extends TaintTracking::Configuration {
   LDAPInjectionFlowConfig() { this = "LDAPInjectionFlowConfig" }

@@ -14,12 +14,28 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 
+/** Provides classes for modeling LDAP-related APIs. */
 module LDAPQuery {
+  /**
+   * A data-flow node that collects methods executing a LDAP query.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `LDAPQuery` instead.
+   */
   abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the argument containing the executed expression.
+     */
     abstract DataFlow::Node getLDAPNode();
   }
 }
 
+/**
+ * A data-flow node that collect methods executing a LDAP query.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `LDAPQuery::Range` instead.
+ */
 class LDAPQuery extends DataFlow::Node {
   LDAPQuery::Range range;
 
@@ -28,12 +44,28 @@ class LDAPQuery extends DataFlow::Node {
   DataFlow::Node getLDAPNode() { result = range.getLDAPNode() }
 }
 
+/** Provides classes for modeling LDAP components escape-related APIs. */
 module LDAPEscape {
+  /**
+   * A data-flow node that collects functions escaping LDAP components.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `LDAPEscape` instead.
+   */
   abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the argument containing the escaped expression.
+     */
     abstract DataFlow::Node getEscapeNode();
   }
 }
 
+/**
+ * A data-flow node that collects functions escaping LDAP components.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `RegexEscape::Range` instead.
+ */
 class LDAPEscape extends DataFlow::Node {
   LDAPEscape::Range range;
 
