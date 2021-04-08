@@ -1,9 +1,10 @@
 /**
- * @name Python LDAP Injection
- * @description Python LDAP Injection through search filter
+ * @name LDAP query built from user-controlled sources
+ * @description Building an LDAP query from user-controlled sources is vulnerable to insertion of
+ *              malicious LDAP code by the user.
  * @kind path-problem
  * @problem.severity error
- * @id python/ldap-injection
+ * @id py/ldap-injection
  * @tags experimental	
  *       security	
  *       external/cwe/cwe-090
