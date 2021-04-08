@@ -9,7 +9,7 @@ func main()                 {}
 func sink(v ...interface{}) {}
 
 // Package clevergo.tech/clevergo@v0.5.2
-func ClevergoTechClevergov052() {
+func UntrustedSources_ClevergoTechClevergov052() {
 	// Untrusted flow sources from method calls.
 	{
 		// Untrusted flow sources from method calls on clevergo.tech/clevergo.Context.

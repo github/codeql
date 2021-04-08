@@ -11,7 +11,7 @@ func source() interface{} {
 }
 
 // Package clevergo.tech/clevergo@v0.5.2
-func ClevergoTechClevergov052() {
+func HeaderWrite_ClevergoTechClevergov052() {
 	// Header write via method calls.
 	{
 		// Header write via method calls on clevergo.tech/clevergo.Context.

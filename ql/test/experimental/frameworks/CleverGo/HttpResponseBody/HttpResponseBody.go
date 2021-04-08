@@ -11,7 +11,7 @@ func source() interface{} {
 }
 
 // Package clevergo.tech/clevergo@v0.5.2
-func ClevergoTechClevergov052() {
+func HttpResponseBody_ClevergoTechClevergov052() {
 	// Response body is set via a method call (the content-type is implicit in the method name).
 	{
 		// Response body is set via a method call on the clevergo.tech/clevergo.Context type (the content-type is implicit in the method name).

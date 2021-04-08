@@ -11,7 +11,7 @@ func source() interface{} {
 }
 
 // Package clevergo.tech/clevergo@v0.5.2
-func ClevergoTechClevergov052() {
+func HttpRedirect_ClevergoTechClevergov052() {
 	// Redirect via method calls.
 	{
 		// Redirect via method calls on clevergo.tech/clevergo.Context.
