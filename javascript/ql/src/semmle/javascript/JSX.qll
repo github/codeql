@@ -15,7 +15,7 @@ import javascript
  * <><h1>Title</h1>Some <b>text</b></>
  * ```
  */
-class JSXNode extends Expr, @jsxelement {
+class JSXNode extends Expr, @jsx_element {
   /** Gets the `i`th element in the body of this element or fragment. */
   Expr getBodyElement(int i) { i >= 0 and result = getChildExpr(-i - 2) }
 
@@ -26,6 +26,8 @@ class JSXNode extends Expr, @jsxelement {
    * Gets the parent JSX element or fragment of this element.
    */
   JSXNode getJsxParent() { this = result.getABodyElement() }
+
+  override string getAPrimaryQlClass() { result = "JSXNode" }
 }
 
 /**
@@ -61,6 +63,14 @@ class JSXElement extends JSXNode {
   override ControlFlowNode getFirstControlFlowNode() {
     result = getNameExpr().getFirstControlFlowNode()
   }
+
+  override string getAPrimaryQlClass() { result = "JSXElement" }
+
+  /**
+   * Holds if this JSX element is a HTML element.
+   * That is, the name starts with a lowercase letter.
+   */
+  predicate isHTMLElement() { getName().regexpMatch("[a-z].*") }
 }
 
 /**
@@ -80,6 +90,8 @@ class JSXFragment extends JSXNode {
     or
     not exists(getABodyElement()) and result = this
   }
+
+  override string getAPrimaryQlClass() { result = "JSXFragment" }
 }
 
 /**
@@ -124,6 +136,8 @@ class JSXAttribute extends ASTNode, @jsx_attribute {
   }
 
   override string toString() { properties(this, _, _, _, result) }
+
+  override string getAPrimaryQlClass() { result = "JSXAttribute" }
 }
 
 /**
@@ -153,7 +167,7 @@ class JSXSpreadAttribute extends JSXAttribute {
  * html:href
  * ```
  */
-class JSXQualifiedName extends Expr, @jsxqualifiedname {
+class JSXQualifiedName extends Expr, @jsx_qualified_name {
   /** Gets the namespace component of this qualified name. */
   Identifier getNamespace() { result = getChildExpr(0) }
 
@@ -163,6 +177,8 @@ class JSXQualifiedName extends Expr, @jsxqualifiedname {
   override ControlFlowNode getFirstControlFlowNode() {
     result = getNamespace().getFirstControlFlowNode()
   }
+
+  override string getAPrimaryQlClass() { result = "JSXQualifiedName" }
 }
 
 /**
@@ -181,6 +197,7 @@ class JSXQualifiedName extends Expr, @jsxqualifiedname {
 class JSXName extends Expr {
   JSXName() {
     this instanceof Identifier or
+    this instanceof ThisExpr or
     this.(DotExpr).getBase() instanceof JSXName or
     this instanceof JSXQualifiedName
   }
@@ -198,6 +215,9 @@ class JSXName extends Expr {
     exists(JSXQualifiedName qual | qual = this |
       result = qual.getNamespace().getName() + ":" + qual.getName().getName()
     )
+    or
+    this instanceof ThisExpr and
+    result = "this"
   }
 }
 
@@ -210,7 +230,9 @@ class JSXName extends Expr {
  * { /* TBD *&#47; }
  * </pre>
  */
-class JSXEmptyExpr extends Expr, @jsxemptyexpr { }
+class JSXEmptyExpr extends Expr, @jsx_empty_expr {
+  override string getAPrimaryQlClass() { result = "JSXEmptyExpr" }
+}
 
 /**
  * A legacy `@jsx` pragma.

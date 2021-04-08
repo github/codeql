@@ -95,10 +95,84 @@ class State {
 
     /** Next response to be delivered. */
     public pendingResponse: string = null;
+
+    /** Map from `package.json` files to their contents. */
+    public parsedPackageJson = new Map<string, any>();
+
+    /** Map from `package.json` files to the file referenced in its `types` or `typings` field. */
+    public packageTypings = new Map<string, string | undefined>();
+
+    /** Map from file path to the enclosing `package.json` file, if any. Will not traverse outside node_modules. */
+    public enclosingPackageJson = new Map<string, string | undefined>();
 }
 let state = new State();
 
 const reloadMemoryThresholdMb = getEnvironmentVariable("SEMMLE_TYPESCRIPT_MEMORY_THRESHOLD", Number, 1000);
+
+function getPackageJson(file: string): any {
+    let cache = state.parsedPackageJson;
+    if (cache.has(file)) return cache.get(file);
+    let result = getPackageJsonRaw(file);
+    cache.set(file, result);
+    return result;
+}
+
+function getPackageJsonRaw(file: string): any {
+    if (!ts.sys.fileExists(file)) return undefined;
+    try {
+        let json = JSON.parse(ts.sys.readFile(file));
+        if (typeof json !== 'object') return undefined;
+        return json;
+    } catch (e) {
+        return undefined;
+    }
+}
+
+function getPackageTypings(file: string): string | undefined {
+    let cache = state.packageTypings;
+    if (cache.has(file)) return cache.get(file);
+    let result = getPackageTypingsRaw(file);
+    cache.set(file, result);
+    return result;
+}
+
+function getPackageTypingsRaw(packageJsonFile: string): string | undefined {
+    let json = getPackageJson(packageJsonFile);
+    if (json == null) return undefined;
+    let typings = json.types || json.typings; // "types" and "typings" are aliases
+    if (typeof typings !== 'string') return undefined;
+    let absolutePath = pathlib.join(pathlib.dirname(packageJsonFile), typings);
+    if (ts.sys.directoryExists(absolutePath)) {
+        absolutePath = pathlib.join(absolutePath, 'index.d.ts');
+    } else if (!absolutePath.endsWith('.ts')) {
+        absolutePath += '.d.ts';
+    }
+    if (!ts.sys.fileExists(absolutePath)) return undefined;
+    return ts.sys.resolvePath(absolutePath);
+}
+
+function getEnclosingPackageJson(file: string): string | undefined {
+    let cache = state.packageTypings;
+    if (cache.has(file)) return cache.get(file);
+    let result = getEnclosingPackageJsonRaw(file);
+    cache.set(file, result);
+    return result;
+}
+
+function getEnclosingPackageJsonRaw(file: string): string | undefined {
+    let packageJson = pathlib.join(file, 'package.json');
+    if (ts.sys.fileExists(packageJson)) {
+        return packageJson;
+    }
+    if (pathlib.basename(file) === 'node_modules') {
+        return undefined;
+    }
+    let dirname = pathlib.dirname(file);
+    if (dirname.length < file.length) {
+        return getEnclosingPackageJson(dirname);
+    }
+    return undefined;
+}
 
 /**
  * Debugging method for finding cycles in the TypeScript AST. Should not be used in production.
@@ -505,13 +579,17 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
     // inverse mapping, nor a way to enumerate all known module names. So we discover all
     // modules on the type roots (usually "node_modules/@types" but this is configurable).
     let typeRoots = ts.getEffectiveTypeRoots(config.options, {
-        directoryExists: (path) => fs.existsSync(path),
+        directoryExists: (path) => ts.sys.directoryExists(path),
         getCurrentDirectory: () => basePath,
     });
 
     for (let typeRoot of typeRoots || []) {
-        if (fs.existsSync(typeRoot) && fs.statSync(typeRoot).isDirectory()) {
+        if (ts.sys.directoryExists(typeRoot)) {
             traverseTypeRoot(typeRoot, "");
+        }
+        let virtualTypeRoot = virtualSourceRoot.toVirtualPathIfDirectoryExists(typeRoot);
+        if (virtualTypeRoot != null) {
+            traverseTypeRoot(virtualTypeRoot, "");
         }
     }
 
@@ -549,21 +627,24 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
             if (sourceFile == null) {
                 continue;
             }
-            addModuleBindingFromRelativePath(sourceFile, importPrefix, child);
+            let importPath = getImportPathFromFileInFolder(importPrefix, child);
+            addModuleBindingFromImportPath(sourceFile, importPath);
         }
+    }
+
+    function getImportPathFromFileInFolder(folder: string, baseName: string) {
+        let stem = getStem(baseName);
+        return (stem === "index")
+            ? folder
+            : joinModulePath(folder, stem);
     }
 
     /**
      * Emits module bindings for a module with relative path `folder/baseName`.
      */
-    function addModuleBindingFromRelativePath(sourceFile: ts.SourceFile, folder: string, baseName: string) {
+    function addModuleBindingFromImportPath(sourceFile: ts.SourceFile, importPath: string) {
         let symbol = typeChecker.getSymbolAtLocation(sourceFile);
         if (symbol == null) return; // Happens if the source file is not a module.
-
-        let stem = getStem(baseName);
-        let importPath = (stem === "index")
-            ? folder
-            : joinModulePath(folder, stem);
 
         let canonicalSymbol = getEffectiveExportTarget(symbol); // Follow `export = X` declarations.
         let symbolId = state.typeTable.getSymbolId(canonicalSymbol);
@@ -576,7 +657,7 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
         // Note: the `globalExports` map is stored on the original symbol, not the target of `export=`.
         if (symbol.globalExports != null) {
             symbol.globalExports.forEach((global: ts.Symbol) => {
-              state.typeTable.addGlobalMapping(symbolId, global.name);
+                state.typeTable.addGlobalMapping(symbolId, global.name);
             });
         }
     }
@@ -605,11 +686,30 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
         let fullPath = sourceFile.fileName;
         let index = fullPath.lastIndexOf('/node_modules/');
         if (index === -1) return;
+
         let relativePath = fullPath.substring(index + '/node_modules/'.length);
+
         // Ignore node_modules/@types folders here as they are typically handled as type roots.
         if (relativePath.startsWith("@types/")) return;
+
+        // If the enclosing package has a "typings" field, only add module bindings for that file.
+        let packageJsonFile = getEnclosingPackageJson(fullPath);
+        if (packageJsonFile != null) {
+            let json = getPackageJson(packageJsonFile);
+            let typings = getPackageTypings(packageJsonFile);
+            if (json != null && typings != null) {
+                let name = json.name;
+                if (typings === fullPath && typeof name === 'string') {
+                    addModuleBindingFromImportPath(sourceFile, name);
+                } else if (typings != null) {
+                    return; // Typings field prevents access to other files in package.
+                }
+            }
+        }
+
+        // Add module bindings relative to package directory.
         let { dir, base } = pathlib.parse(relativePath);
-        addModuleBindingFromRelativePath(sourceFile, dir, base);
+        addModuleBindingFromImportPath(sourceFile, getImportPathFromFileInFolder(dir, base));
     }
 
     /**

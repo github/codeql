@@ -26,11 +26,13 @@ int getFileExtensionPriority(string ext) {
   or
   ext = "mjs" and result = 5
   or
-  ext = "js" and result = 6
+  ext = "cjs" and result = 6
   or
-  ext = "json" and result = 7
+  ext = "js" and result = 7
   or
-  ext = "node" and result = 8
+  ext = "json" and result = 8
+  or
+  ext = "node" and result = 9
 }
 
 int prioritiesPerCandidate() { result = 3 * (numberOfExtensions() + 1) }
@@ -94,8 +96,11 @@ File resolveMainModule(PackageJSON pkg, int priority) {
     )
   )
   or
-  result =
-    tryExtensions(pkg.getFile().getParentContainer(), "index", priority - prioritiesPerCandidate())
+  exists(Folder folder | folder = pkg.getFile().getParentContainer() |
+    result =
+      tryExtensions([folder, folder.getChildContainer(["src", "lib"])], "index",
+        priority - prioritiesPerCandidate())
+  )
 }
 
 /**

@@ -123,9 +123,7 @@ class WriteFunctionCall extends ChainedOutputCall {
 private predicate fileStreamChain(ChainedOutputCall out, Expr source, Expr dest) {
   source = out.getSource() and
   dest = out.getEndDest() and
-  exists(string nme | nme = "basic_ofstream" or nme = "basic_fstream" |
-    dest.getUnderlyingType().(Class).getSimpleName() = nme
-  )
+  dest.getUnderlyingType().(Class).getSimpleName() = ["basic_ofstream", "basic_fstream"]
 }
 
 /**
@@ -139,22 +137,14 @@ private predicate fileWrite(Call write, Expr source, Expr dest) {
       // named functions
       name = "fwrite" and s = 0 and d = 3
       or
-      (
-        name = "fputs" or
-        name = "fputws" or
-        name = "fputc" or
-        name = "fputwc" or
-        name = "putc" or
-        name = "putwc" or
-        name = "putw"
-      ) and
+      name = ["fputs", "fputws", "fputc", "fputwc", "putc", "putwc", "putw"] and
       s = 0 and
       d = 1
     )
     or
     // fprintf
-    s >= f.(Fprintf).getFormatParameterIndex() and
-    d = f.(Fprintf).getOutputParameterIndex()
+    s >= f.(FormattingFunction).getFormatParameterIndex() and
+    d = f.(FormattingFunction).getOutputParameterIndex(true)
   )
   or
   // file stream using '<<', 'put' or 'write'

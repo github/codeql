@@ -4,6 +4,6 @@
 <qhelp>
 
 
-<include src="Generics_Common.qhelp" />
+<include src="Generics_Common.inc.qhelp" />
 
 </qhelp>

@@ -12,5 +12,5 @@ import definitions
 external string selectedSourceFile();
 
 from Locatable e, ASTNode def, string kind
-where def = definitionOf(e, kind) and e.getFile() = getEncodedFile(selectedSourceFile())
+where def = definitionOf(e, kind) and e.getFile() = getFileBySourceArchiveName(selectedSourceFile())
 select e, def, kind

@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-  <include src="LeapYear.qhelp" />
+  <include src="LeapYear.inc.qhelp" />
 
 <p>This query helps to detect when a developer allocates an array or other fixed-length data structure such as <code>std::vector</code> with 365 elements – one for each day of the year.</p>
 <p>Since leap years have 366 days, there will be no allocated element on December 31st at the end of a leap year; which will lead to a buffer overflow on a leap year.</p>
@@ -23,7 +23,7 @@
 </example>
 
 <references>
-  <li>U.S. Naval Observatory Website - <a href="https://aa.usno.navy.mil/faq/docs/calendars.php"> Introduction to Calendars</a></li>
+  <li>NASA / Goddard Space Flight Center - <a href="https://eclipse.gsfc.nasa.gov/SEhelp/calendars.html">Calendars</a></li>
   <li>Wikipedia - <a href="https://en.wikipedia.org/wiki/Leap_year_bug"> Leap year bug</a> </li>
   <li>Microsoft Azure blog - <a href="https://azure.microsoft.com/en-us/blog/is-your-code-ready-for-the-leap-year/"> Is your code ready for the leap year?</a> </li>
 </references>

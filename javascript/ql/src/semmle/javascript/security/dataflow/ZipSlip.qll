@@ -12,6 +12,15 @@ import javascript
 module ZipSlip {
   import ZipSlipCustomizations::ZipSlip
 
+  // Materialize flow labels
+  private class ConcretePosixPath extends TaintedPath::Label::PosixPath {
+    ConcretePosixPath() { this = this }
+  }
+
+  private class ConcreteSplitPath extends TaintedPath::Label::SplitPath {
+    ConcreteSplitPath() { this = this }
+  }
+
   /** A taint tracking configuration for unsafe archive extraction. */
   class Configuration extends DataFlow::Configuration {
     Configuration() { this = "ZipSlip" }

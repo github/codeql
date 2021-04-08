@@ -3,15 +3,11 @@ using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    interface ILocal : IExtractedEntity
+    internal class LocalVariable : LabelledEntity
     {
-    }
-
-    class LocalVariable : LabelledEntity, ILocal
-    {
-        readonly MethodImplementation method;
-        readonly int index;
-        readonly Type type;
+        private readonly MethodImplementation method;
+        private readonly int index;
+        private readonly Type type;
 
         public LocalVariable(Context cx, MethodImplementation m, int i, Type t) : base(cx)
         {
@@ -25,9 +21,8 @@ namespace Semmle.Extraction.CIL.Entities
             trapFile.WriteSubId(method);
             trapFile.Write('_');
             trapFile.Write(index);
+            trapFile.Write(";cil-local");
         }
-
-        public override string IdSuffix => ";cil-local";
 
         public override IEnumerable<IExtractionProduct> Contents
         {

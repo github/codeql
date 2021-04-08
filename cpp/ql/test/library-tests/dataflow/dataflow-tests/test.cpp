@@ -4,15 +4,15 @@ void sink(int); void sink(const int *); void sink(int **);
 void intraprocedural_with_local_flow() {
   int t2;
   int t1 = source();
-  sink(t1); // tainted
+  sink(t1); // $ ast,ir
   t2 = t1;
-  sink(t1); // tainted
-  sink(t2); // tainted
+  sink(t1); // $ ast,ir
+  sink(t2); // $ ast,ir
   if (t1) {
     t2 = 0;
     sink(t2); // clean
   }
-  sink(t2); // tainted
+  sink(t2); // $ ast,ir
 
   t1 = 0;
   while (false) {
@@ -23,12 +23,12 @@ void intraprocedural_with_local_flow() {
   for (int i = 0; i < t1; i++) {
     t1 = t2;
   }
-  sink(t1); // tainted
+  sink(t1); // $ ast,ir
 }
 
 static void callee(int t, int c) {
-  sink(t); // tainted (from first call in caller() function)
-  sink(c); // tainted (from second call in caller() function)
+  sink(t); // $ ast,ir // (from first call in caller() function)
+  sink(c); // $ ast,ir // (from second call in caller() function)
 }
 
 void caller() {
@@ -55,7 +55,7 @@ void branching(bool b) {
     }
 
 
-    sink(t); // tainted
+    sink(t); // $ ast,ir
   }
 }
 
@@ -68,12 +68,12 @@ void identityOperations(int* source1) {
   int* x2 = const_cast<int*>(x1);
   int* x3 = (x2);
   const int* x4 = (const int *)x3;
-  sink(x4);
+  sink(x4);  // $ ast,ir
 }
 
-void trackUninitialized() {
+void trackUninitialized() { // NOTE: uninitialized tracking for IR dataflow is deprecated
   int u1;
-  sink(u1); // tainted
+  sink(u1); // $ ast
   u1 = 2;
   sink(u1); // clean
 
@@ -81,15 +81,15 @@ void trackUninitialized() {
   sink(i1); // clean
 
   int u2;
-  sink(i1 ? u2 : 1); // tainted
+  sink(i1 ? u2 : 1); // $ ast
   i1 = u2;
-  sink(i1); // tainted
+  sink(i1); // $ ast
 }
 
 void local_references(int &source1, int clean1) {
-  sink(source1); // tainted
+  sink(source1); // $ ast,ir
   source1 = clean1;
-  sink(source1); // clean
+  sink(source1); // $ SPURIOUS: ir
 
   // The next two test cases show that the analysis does not understand the "&"
   // on the type at all. It does not understand that the initialization creates
@@ -100,14 +100,14 @@ void local_references(int &source1, int clean1) {
     int t = source();
     int &ref = t;
     t = clean1;
-    sink(ref); // clean (FALSE POSITIVE)
+    sink(ref); // $ SPURIOUS: ast
   }
 
   {
     int t = clean1;
     int &ref = t;
     t = source();
-    sink(ref); // tainted (FALSE NEGATIVE)
+    sink(ref); // $ ir MISSING: ast
   }
 }
 
@@ -137,11 +137,11 @@ int returnParameter(int p) {
 void callReturnParameter() {
   int x = returnParameter(source());
   int y = x;
-  sink(y); // tainted due to above source
+  sink(y); // $ ast,ir
 }
 
 int returnSourceParameter(int s) {
-  sink(s); // tainted
+  sink(s); // $ ast,ir // from line 151
   return s; // considered clean unless the caller passes taint into the parameter source
 }
 
@@ -149,12 +149,12 @@ void callReturnSourceParameter() {
   int x = returnSourceParameter(0);
   sink(x); // clean
   int y = returnSourceParameter(source());
-  sink(y); // tainted
+  sink(y); // $ ast,ir
 }
 
 int returnSourceParameter2(int s) {
   int x = s;
-  sink(x); // tainted
+  sink(x); // $ ast,ir // from line 164
   return x; // considered clean unless the caller passes taint into the parameter source
 }
 
@@ -162,7 +162,7 @@ void callReturnSourceParameter2() {
   int x = returnSourceParameter2(0);
   sink(x); // clean
   int y = returnSourceParameter2(source());
-  sink(y); // tainted
+  sink(y); // $ ast,ir
 }
 
 // Tests for non-parameter sources returned to a function call
@@ -175,7 +175,7 @@ int returnSource() {
 void callReturnSource() {
   int x = returnSource();
   int y = x;
-  sink(y); // tainted
+  sink(y); // $ ast,ir
 }
 
 // TESTS WITH BARRIERS: none of these should have results
@@ -257,13 +257,13 @@ namespace NestedTests {
       }
 
     void level2(int x) {
-      sink(x); // tainted from call to level1() but not from call to safelevel1()
+      sink(x); // $ ast,ir // tainted from call to level1() but not from call to safelevel1()
     }
   };
   class FlowThroughFunctionReturn {
     void level0() {
       int x = level1(source());
-      sink(x); // tainted
+      sink(x); // $ ast,ir
       x = safelevel1(source());
       sink(x); // no longer tainted
     }
@@ -286,7 +286,7 @@ namespace NestedTests {
   class FlowOutOfFunction {
       void level0() {
         int x = level1();
-        sink(x); // tainted
+        sink(x); // $ ast,ir
         x = safelevel1();
         sink(x); // no longer tainted
       }
@@ -315,7 +315,7 @@ namespace NestedTests {
       }
       void g(int p) {
 	int x = h(p);
-	sink(x); // tainted from f
+	sink(x); // $ ast,ir  // tainted from f
 	int y = h(0);
 	sink(y); // clean
 	f();
@@ -336,17 +336,17 @@ namespace FlowThroughGlobals {
   int f() {
     sink(globalVar); // tainted or clean? Not sure.
     taintGlobal();
-    sink(globalVar); // tainted (FALSE NEGATIVE)
+    sink(globalVar); // $ MISSING: ast,ir
   }
 
   int calledAfterTaint() {
-    sink(globalVar); // tainted (FALSE NEGATIVE)
+    sink(globalVar); // $ MISSING: ast,ir
   }
 
   int taintAndCall() {
     globalVar = source();
     calledAfterTaint();
-    sink(globalVar); // tainted
+    sink(globalVar); // $ ast MISSING: ir
   }
 }
 
@@ -362,17 +362,17 @@ class FlowThroughFields {
   int f() {
     sink(field); // tainted or clean? Not sure.
     taintField();
-    sink(field); // tainted [NOT DETECTED with IR]
+    sink(field); // $ ast MISSING: ir
   }
 
   int calledAfterTaint() {
-    sink(field); // tainted
+    sink(field); // $ ast,ir
   }
 
   int taintAndCall() {
     field = source();
     calledAfterTaint();
-    sink(field); // tainted
+    sink(field); // $ ast,ir
   }
 };
 
@@ -382,30 +382,30 @@ void *memcpy(void *dest, const void *src, size_t count);
 void flowThroughMemcpy_ssa_with_local_flow(int source1) {
   int tmp = 0;
   memcpy(&tmp, &source1, sizeof tmp);
-  sink(tmp); // tainted
+  sink(tmp); // $ ast,ir
 }
 
 void flowThroughMemcpy_blockvar_with_local_flow(int source1, int b) {
   int tmp = 0;
   int *capture = &tmp;
   memcpy(&tmp, &source1, sizeof tmp);
-  sink(tmp); // tainted
+  sink(tmp); // $ ast,ir
   if (b) {
-    sink(tmp); // tainted
+    sink(tmp); // $ ast,ir
   }
 }
 
 void cleanedByMemcpy_ssa(int clean1) { // currently modeled with BlockVar, not SSA
   int tmp;
   memcpy(&tmp, &clean1, sizeof tmp);
-  sink(tmp); // clean [FALSE POSITIVE]
+  sink(tmp); // $ SPURIOUS: ast
 }
 
 void cleanedByMemcpy_blockvar(int clean1) {
   int tmp;
   int *capture = &tmp;
   memcpy(&tmp, &clean1, sizeof tmp);
-  sink(tmp); // clean [FALSE POSITIVE]
+  sink(tmp); // $ SPURIOUS: ast
 }
 
 void intRefSource(int &ref_source);
@@ -415,39 +415,39 @@ void intArraySource(int ref_source[], size_t len);
 void intRefSourceCaller() {
   int local;
   intRefSource(local);
-  sink(local); // tainted
+  sink(local); // $ ast=416:7 ast=417:16 MISSING: ir
 }
 
 void intPointerSourceCaller() {
   int local;
   intPointerSource(&local);
-  sink(local); // tainted
+  sink(local); // $ ast=422:7 ast=423:20 MISSING: ir
 }
 
 void intPointerSourceCaller2() {
   int local[1];
   intPointerSource(local);
-  sink(local); // tainted
-  sink(*local); // clean
+  sink(local); // $ ast=428:7 ast=429:20 MISSING: ir
+  sink(*local); // $ ast=428:7 ast=429:20 MISSING: ir
 }
 
 void intArraySourceCaller() {
   int local;
   intArraySource(&local, 1);
-  sink(local); // tainted
+  sink(local); // $ ast=435:7 ast=436:18 MISSING: ir
 }
 
 void intArraySourceCaller2() {
   int local[2];
   intArraySource(local, 2);
-  sink(local); // tainted
-  sink(*local); // clean
+  sink(local); // $ ast=441:7 ast=442:18 MISSING: ir
+  sink(*local); // $ ast=441:7 ast=442:18 MISSING: ir
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void throughStmtExpr(int source1, int clean1) {
-  sink( ({ source1; }) ); // tainted
+  sink( ({ source1; }) ); // $ ast,ir
   sink( ({ clean1; }) ); // clean
 
   int local = ({
@@ -458,7 +458,7 @@ void throughStmtExpr(int source1, int clean1) {
       tmp = clean1;
     tmp;
   });
-  sink(local); // tainted
+  sink(local); // $ ast,ir
 }
 
 void intOutparamSource(int *p) {
@@ -468,5 +468,5 @@ void intOutparamSource(int *p) {
 void viaOutparam() {
   int x = 0;
   intOutparamSource(&x);
-  sink(x); // tainted [FALSE NEGATIVE]
+  sink(x); // $ ast,ir
 }

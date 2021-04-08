@@ -25,6 +25,9 @@ module XML {
 
     /** Holds if this call to the XML parser resolves entities of the given `kind`. */
     abstract predicate resolvesEntities(EntityKind kind);
+
+    /** Gets a reference to a value resulting from parsing the XML. */
+    js::DataFlow::Node getAResult() { none() }
   }
 
   /**
@@ -98,10 +101,11 @@ module XML {
    * An invocation of `expat.Parser.parse` or `expat.Parser.write`.
    */
   class ExpatParserInvocation extends ParserInvocation {
+    js::DataFlow::NewNode parser;
+
     ExpatParserInvocation() {
-      exists(string m | m = "parse" or m = "write" |
-        this = moduleMethodCall("node-expat", "Parser", m)
-      )
+      parser = js::DataFlow::moduleMember("node-expat", "Parser").getAnInstantiation() and
+      this = parser.getAMemberCall(["parse", "write"]).asExpr()
     }
 
     override js::Expr getSourceArgument() { result = getArgument(0) }
@@ -109,6 +113,10 @@ module XML {
     override predicate resolvesEntities(EntityKind kind) {
       // only internal entities are resolved by default
       kind = InternalEntity()
+    }
+
+    override js::DataFlow::Node getAResult() {
+      result = parser.getAMemberCall("on").getABoundCallbackParameter(1, _)
     }
   }
 
@@ -159,5 +167,121 @@ module XML {
     override js::Expr getSourceArgument() { result = getArgument(0) }
 
     override predicate resolvesEntities(XML::EntityKind kind) { kind = InternalEntity() }
+  }
+
+  /**
+   * An invocation of `xml2js`.
+   */
+  private class Xml2JSInvocation extends XML::ParserInvocation {
+    js::DataFlow::CallNode call;
+
+    Xml2JSInvocation() {
+      exists(js::API::Node imp | imp = js::API::moduleImport("xml2js") |
+        call = [imp, imp.getMember("Parser").getInstance()].getMember("parseString").getACall() and
+        this = call.asExpr()
+      )
+    }
+
+    override js::Expr getSourceArgument() { result = getArgument(0) }
+
+    override predicate resolvesEntities(XML::EntityKind kind) {
+      // sax-js (the parser used) does not expand entities.
+      none()
+    }
+
+    override js::DataFlow::Node getAResult() {
+      result = call.getABoundCallbackParameter(call.getNumArgument() - 1, 1)
+    }
+  }
+
+  /**
+   * An invocation of `sax`.
+   */
+  private class SaxInvocation extends XML::ParserInvocation {
+    js::DataFlow::InvokeNode parser;
+
+    SaxInvocation() {
+      exists(js::API::Node imp | imp = js::API::moduleImport("sax") |
+        parser = imp.getMember("parser").getACall()
+        or
+        parser = imp.getMember("SAXParser").getAnInstantiation()
+      ) and
+      this = parser.getAMemberCall("write").asExpr()
+    }
+
+    override js::Expr getSourceArgument() { result = getArgument(0) }
+
+    override predicate resolvesEntities(XML::EntityKind kind) {
+      // sax-js does not expand entities.
+      none()
+    }
+
+    override js::DataFlow::Node getAResult() {
+      result =
+        parser
+            .getAPropertyWrite(any(string s | s.matches("on%")))
+            .getRhs()
+            .getAFunctionValue()
+            .getAParameter()
+    }
+  }
+
+  /**
+   * An invocation of `xml-js`.
+   */
+  private class XmlJSInvocation extends XML::ParserInvocation {
+    XmlJSInvocation() {
+      this =
+        js::DataFlow::moduleMember("xml-js", ["xml2json", "xml2js", "json2xml", "js2xml"])
+            .getACall()
+            .asExpr()
+    }
+
+    override js::Expr getSourceArgument() { result = getArgument(0) }
+
+    override predicate resolvesEntities(XML::EntityKind kind) {
+      // xml-js does not expand custom entities.
+      none()
+    }
+
+    override js::DataFlow::Node getAResult() { result.asExpr() = this }
+  }
+
+  /**
+   * An invocation of `htmlparser2`.
+   */
+  private class HtmlParser2Invocation extends XML::ParserInvocation {
+    js::DataFlow::NewNode parser;
+
+    HtmlParser2Invocation() {
+      parser = js::DataFlow::moduleMember("htmlparser2", "Parser").getAnInstantiation() and
+      this = parser.getAMemberCall("write").asExpr()
+    }
+
+    override js::Expr getSourceArgument() { result = getArgument(0) }
+
+    override predicate resolvesEntities(XML::EntityKind kind) {
+      // htmlparser2 does not expand entities.
+      none()
+    }
+
+    override js::DataFlow::Node getAResult() {
+      result =
+        parser
+            .getArgument(0)
+            .getALocalSource()
+            .getAPropertySource()
+            .getAFunctionValue()
+            .getAParameter()
+    }
+  }
+
+  private class XMLParserTaintStep extends js::TaintTracking::SharedTaintStep {
+    override predicate deserializeStep(js::DataFlow::Node pred, js::DataFlow::Node succ) {
+      exists(XML::ParserInvocation parser |
+        pred.asExpr() = parser.getSourceArgument() and
+        succ = parser.getAResult()
+      )
+    }
   }
 }

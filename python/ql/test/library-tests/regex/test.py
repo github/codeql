@@ -1,5 +1,5 @@
 import re
-#            0123456789ABCDEF  
+#            0123456789ABCDEF
 re.compile(r'012345678')
 re.compile(r'(\033|~{)')
 re.compile(r'\A[+-]?\d+')
@@ -50,6 +50,10 @@ re.compile("", re.VERBOSE|re.DOTALL)
 re.compile("", flags=re.VERBOSE|re.IGNORECASE)
 re.search("", None, re.UNICODE)
 x = re.search("", flags=re.UNICODE)
+# using addition for flags was reported as FP in https://github.com/github/codeql/issues/4707
+re.compile("", re.VERBOSE+re.DOTALL)
+# re.X is an alias for re.VERBOSE
+re.compile("", re.X)
 
 #empty choice
 re.compile(r'|x')

@@ -26,6 +26,7 @@ class RuntimeMethod extends RuntimeCallable {
     this instanceof CIL::Method
   }
 
+  /** Holds if the method is `static`. */
   predicate isStatic() { this.(Method).isStatic() or this.(CIL::Method).isStatic() }
 }
 

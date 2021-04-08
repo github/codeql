@@ -1,10 +1,10 @@
 /**
+ * @deprecated
  * @name External dependencies
  * @description Count the number of dependencies that a Python source file has on external packages.
  * @kind treemap
  * @treemap.warnOn highValues
  * @metricType externalDependency
- * @precision medium
  * @id py/external-dependencies
  */
 

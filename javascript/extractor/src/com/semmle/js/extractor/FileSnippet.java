@@ -11,10 +11,10 @@ public class FileSnippet {
   private Path originalFile;
   private int line;
   private int column;
-  private int topLevelKind;
+  private TopLevelKind topLevelKind;
   private SourceType sourceType;
 
-  public FileSnippet(Path originalFile, int line, int column, int topLevelKind, SourceType sourceType) {
+  public FileSnippet(Path originalFile, int line, int column, TopLevelKind topLevelKind, SourceType sourceType) {
     this.originalFile = originalFile;
     this.line = line;
     this.column = column;
@@ -34,7 +34,7 @@ public class FileSnippet {
     return column;
   }
 
-  public int getTopLevelKind() {
+  public TopLevelKind getTopLevelKind() {
     return topLevelKind;
   }
 

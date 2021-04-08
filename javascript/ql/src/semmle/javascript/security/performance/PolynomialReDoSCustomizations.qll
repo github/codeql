@@ -11,13 +11,31 @@ module PolynomialReDoS {
   /**
    * A data flow source node for polynomial regular expression denial-of-service vulnerabilities.
    */
-  abstract class Source extends DataFlow::Node { }
+  abstract class Source extends DataFlow::Node {
+    /**
+     * Gets the kind of source that is being accesed.
+     *
+     * Is either a kind from `HTTP::RequestInputAccess::getKind()`, or "library".
+     */
+    abstract string getKind();
+
+    /**
+     * Gets a string that describes the source.
+     * For use in the alert message.
+     */
+    string describe() { result = "a user-provided value" }
+  }
 
   /**
    * A data flow sink node for polynomial regular expression denial-of-service vulnerabilities.
    */
   abstract class Sink extends DataFlow::Node {
     abstract RegExpTerm getRegExp();
+
+    /**
+     * Gets the node to highlight in the alert message.
+     */
+    DataFlow::Node getHighlight() { result = this }
   }
 
   /**
@@ -31,6 +49,8 @@ module PolynomialReDoS {
    */
   class RequestInputAccessAsSource extends Source {
     RequestInputAccessAsSource() { this instanceof HTTP::RequestInputAccess }
+
+    override string getKind() { result = this.(HTTP::RequestInputAccess).getKind() }
   }
 
   /**
@@ -39,9 +59,10 @@ module PolynomialReDoS {
    */
   class PolynomialBackTrackingTermUse extends Sink {
     PolynomialBackTrackingTerm term;
+    DataFlow::MethodCallNode mcn;
 
     PolynomialBackTrackingTermUse() {
-      exists(DataFlow::MethodCallNode mcn, DataFlow::Node regexp, string name |
+      exists(DataFlow::Node regexp, string name |
         term.getRootTerm() = RegExp::getRegExpFromNode(regexp)
       |
         this = mcn.getArgument(0) and
@@ -51,6 +72,7 @@ module PolynomialReDoS {
           name = "split" or
           name = "matchAll" or
           name = "replace" or
+          name = "replaceAll" or
           name = "search"
         )
         or
@@ -61,6 +83,8 @@ module PolynomialReDoS {
     }
 
     override RegExpTerm getRegExp() { result = term }
+
+    override DataFlow::Node getHighlight() { result = mcn }
   }
 
   /**
@@ -68,7 +92,13 @@ module PolynomialReDoS {
    */
   class StringLengthLimiter extends Sanitizer {
     StringLengthLimiter() {
-      this.(StringReplaceCall).isGlobal()
+      this.(StringReplaceCall).isGlobal() and
+      // not lone char classes - they don't remove any repeated pattern.
+      not exists(RegExpTerm root | root = this.(StringReplaceCall).getRegExp().getRoot() |
+        root instanceof RegExpCharacterClass
+        or
+        root instanceof RegExpCharacterClassEscape
+      )
       or
       exists(string name | name = "slice" or name = "substring" or name = "substr" |
         this.(DataFlow::MethodCallNode).getMethodName() = name
@@ -98,5 +128,18 @@ module PolynomialReDoS {
       outcome = polarity and
       e = input.asExpr()
     }
+  }
+
+  private import semmle.javascript.PackageExports as Exports
+
+  /**
+   * A parameter of an exported function, seen as a source for polynomial-redos.
+   */
+  class ExternalInputSource extends Source, DataFlow::ParameterNode {
+    ExternalInputSource() { this = Exports::getALibraryInputParameter() }
+
+    override string getKind() { result = "library" }
+
+    override string describe() { result = "library input" }
   }
 }

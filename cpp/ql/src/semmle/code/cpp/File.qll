@@ -276,7 +276,10 @@ class File extends Container, @file {
       c.getAFileCompiled() = this and
       (
         c.getAnArgument() = "--microsoft" or
-        c.getAnArgument().toLowerCase().replaceAll("\\", "/").matches("%/cl.exe")
+        c.getAnArgument()
+            .toLowerCase()
+            .replaceAll("\\", "/")
+            .matches(["%/cl.exe", "%/clang-cl.exe"])
       )
     )
     or
@@ -363,20 +366,8 @@ class File extends Container, @file {
  */
 class HeaderFile extends File {
   HeaderFile() {
-    exists(string ext | ext = this.getExtension().toLowerCase() |
-      ext = "h" or
-      ext = "r" or
-      /*    ---   */ ext = "hpp" or
-      ext = "hxx" or
-      ext = "h++" or
-      ext = "hh" or
-      ext = "hp" or
-      ext = "tcc" or
-      ext = "tpp" or
-      ext = "txx" or
-      ext = "t++"
-      /*    ---         ---    */
-    )
+    this.getExtension().toLowerCase() =
+      ["h", "r", "hpp", "hxx", "h++", "hh", "hp", "tcc", "tpp", "txx", "t++"]
     or
     not exists(this.getExtension()) and
     exists(Include i | i.getIncludedFile() = this)
@@ -406,7 +397,7 @@ class HeaderFile extends File {
  * `File.compiledAsC`.
  */
 class CFile extends File {
-  CFile() { exists(string ext | ext = this.getExtension().toLowerCase() | ext = "c" or ext = "i") }
+  CFile() { this.getExtension().toLowerCase() = ["c", "i"] }
 
   override string getAPrimaryQlClass() { result = "CFile" }
 }
@@ -419,21 +410,10 @@ class CFile extends File {
  */
 class CppFile extends File {
   CppFile() {
-    exists(string ext | ext = this.getExtension().toLowerCase() |
-      /*     ---     */ ext = "cpp" or
-      ext = "cxx" or
-      ext = "c++" or
-      ext = "cc" or
-      ext = "cp" or
-      ext = "icc" or
-      ext = "ipp" or
-      ext = "ixx" or
-      ext = "i++" or
-      ext = "ii"
-      /*  ---    */
-      // Note: .C files are indistinguishable from .c files on some
-      // file systems, so we just treat them as CFile's.
-    )
+    this.getExtension().toLowerCase() =
+      ["cpp", "cxx", "c++", "cc", "cp", "icc", "ipp", "ixx", "i++", "ii"]
+    // Note: .C files are indistinguishable from .c files on some
+    // file systems, so we just treat them as CFile's.
   }
 
   override string getAPrimaryQlClass() { result = "CppFile" }

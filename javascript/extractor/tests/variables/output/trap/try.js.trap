@@ -129,11 +129,11 @@ variables(#20044,"f",#20000)
 #20045=*
 stmts(#20045,17,#20001,0,"functio ... ly {}\n}")
 hasLocation(#20045,#20043)
-stmtContainers(#20045,#20001)
+stmt_containers(#20045,#20001)
 #20046=*
 exprs(#20046,78,#20045,-1,"f")
 hasLocation(#20046,#20015)
-exprContainers(#20046,#20045)
+expr_containers(#20046,#20045)
 literals("f","f",#20046)
 decl(#20046,#20044)
 #20047=*
@@ -144,41 +144,41 @@ scopenesting(#20047,#20000)
 variables(#20048,"x",#20047)
 #20049=@"var;{arguments};{#20047}"
 variables(#20049,"arguments",#20047)
-isArgumentsObject(#20049)
+is_arguments_object(#20049)
 #20050=*
 stmts(#20050,1,#20045,-2,"{\n\ttry  ... ly {}\n}")
 #20051=@"loc,{#10000},1,14,5,1"
 locations_default(#20051,#10000,1,14,5,1)
 hasLocation(#20050,#20051)
-stmtContainers(#20050,#20045)
+stmt_containers(#20050,#20045)
 #20052=*
 stmts(#20052,11,#20050,0,"try {\n\t ... ally {}")
 #20053=@"loc,{#10000},2,2,4,13"
 locations_default(#20053,#10000,2,2,4,13)
 hasLocation(#20052,#20053)
-stmtContainers(#20052,#20045)
+stmt_containers(#20052,#20045)
 #20054=*
 stmts(#20054,1,#20052,0,"{\n\t\tvar x;\n\t}")
 #20055=@"loc,{#10000},2,6,4,2"
 locations_default(#20055,#10000,2,6,4,2)
 hasLocation(#20054,#20055)
-stmtContainers(#20054,#20045)
+stmt_containers(#20054,#20045)
 #20056=*
 stmts(#20056,18,#20054,0,"var x;")
 #20057=@"loc,{#10000},3,3,3,8"
 locations_default(#20057,#10000,3,3,3,8)
 hasLocation(#20056,#20057)
-stmtContainers(#20056,#20045)
+stmt_containers(#20056,#20045)
 #20058=*
 exprs(#20058,64,#20056,0,"x")
 hasLocation(#20058,#20029)
-enclosingStmt(#20058,#20056)
-exprContainers(#20058,#20045)
+enclosing_stmt(#20058,#20056)
+expr_containers(#20058,#20045)
 #20059=*
 exprs(#20059,78,#20058,0,"x")
 hasLocation(#20059,#20029)
-enclosingStmt(#20059,#20056)
-exprContainers(#20059,#20045)
+enclosing_stmt(#20059,#20056)
+expr_containers(#20059,#20045)
 literals("x","x",#20059)
 decl(#20059,#20048)
 #20060=*
@@ -186,7 +186,7 @@ stmts(#20060,1,#20052,-1,"{}")
 #20061=@"loc,{#10000},4,12,4,13"
 locations_default(#20061,#10000,4,12,4,13)
 hasLocation(#20060,#20061)
-stmtContainers(#20060,#20045)
+stmt_containers(#20060,#20045)
 #20062=*
 entry_cfg_node(#20062,#20001)
 #20063=@"loc,{#10000},1,1,1,0"

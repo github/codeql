@@ -80,24 +80,24 @@ hasLocation(#20001,#20003)
 #20028=*
 stmts(#20028,2,#20001,0,"functio ... es) { }")
 hasLocation(#20028,#20003)
-stmtContainers(#20028,#20001)
+stmt_containers(#20028,#20001)
 #20029=*
 exprs(#20029,47,#20028,0,"functio ... es) { }")
 hasLocation(#20029,#20003)
-enclosingStmt(#20029,#20028)
-exprContainers(#20029,#20001)
+enclosing_stmt(#20029,#20028)
+expr_containers(#20029,#20001)
 #20030=*
 exprs(#20030,14,#20029,0,"ISMTPOn ... Arrival")
 #20031=@"loc,{#10000},1,10,1,34"
 locations_default(#20031,#10000,1,10,1,34)
 hasLocation(#20030,#20031)
-enclosingStmt(#20030,#20028)
-exprContainers(#20030,#20001)
+enclosing_stmt(#20030,#20028)
+expr_containers(#20030,#20001)
 #20032=*
 exprs(#20032,79,#20030,0,"ISMTPOnArrival")
 hasLocation(#20032,#20007)
-enclosingStmt(#20032,#20028)
-exprContainers(#20032,#20001)
+enclosing_stmt(#20032,#20028)
+expr_containers(#20032,#20001)
 literals("ISMTPOnArrival","ISMTPOnArrival",#20032)
 #20033=@"var;{ISMTPOnArrival};{#20000}"
 variables(#20033,"ISMTPOnArrival",#20000)
@@ -105,14 +105,14 @@ bind(#20032,#20033)
 #20034=*
 exprs(#20034,0,#20030,1,"OnArrival")
 hasLocation(#20034,#20011)
-enclosingStmt(#20034,#20028)
-exprContainers(#20034,#20001)
+enclosing_stmt(#20034,#20028)
+expr_containers(#20034,#20001)
 literals("OnArrival","OnArrival",#20034)
 #20035=*
 exprs(#20035,9,#20029,1,"functio ... es) { }")
 hasLocation(#20035,#20003)
-enclosingStmt(#20035,#20028)
-exprContainers(#20035,#20001)
+enclosing_stmt(#20035,#20028)
+expr_containers(#20035,#20001)
 #20036=*
 scopes(#20036,1)
 scopenodes(#20035,#20036)
@@ -122,7 +122,7 @@ variables(#20037,"OnArrival",#20036)
 #20038=*
 exprs(#20038,78,#20035,-1,"OnArrival")
 hasLocation(#20038,#20011)
-exprContainers(#20038,#20035)
+expr_containers(#20038,#20035)
 literals("OnArrival","OnArrival",#20038)
 decl(#20038,#20037)
 #20039=@"var;{Msg};{#20036}"
@@ -130,7 +130,7 @@ variables(#20039,"Msg",#20036)
 #20040=*
 exprs(#20040,78,#20035,0,"Msg")
 hasLocation(#20040,#20015)
-exprContainers(#20040,#20035)
+expr_containers(#20040,#20035)
 literals("Msg","Msg",#20040)
 decl(#20040,#20039)
 #20041=@"var;{States};{#20036}"
@@ -138,18 +138,18 @@ variables(#20041,"States",#20036)
 #20042=*
 exprs(#20042,78,#20035,1,"States")
 hasLocation(#20042,#20019)
-exprContainers(#20042,#20035)
+expr_containers(#20042,#20035)
 literals("States","States",#20042)
 decl(#20042,#20041)
 #20043=@"var;{arguments};{#20036}"
 variables(#20043,"arguments",#20036)
-isArgumentsObject(#20043)
+is_arguments_object(#20043)
 #20044=*
 stmts(#20044,1,#20035,-2,"{ }")
 #20045=@"loc,{#10000},1,50,1,52"
 locations_default(#20045,#10000,1,50,1,52)
 hasLocation(#20044,#20045)
-stmtContainers(#20044,#20035)
+stmt_containers(#20044,#20035)
 #20046=*
 entry_cfg_node(#20046,#20001)
 #20047=@"loc,{#10000},1,1,1,0"

@@ -17,5 +17,11 @@ app.post("/documents/find", (req, res) => {
     doc.find(query); // NOT OK, but that is flagged by js/sql-injection [INCONSISTENCY]
     doc.find({ $where: req.body.query }); // NOT OK
     doc.find({ $where: "name = " + req.body.name }); // NOT OK
+
+    function mkWhereObj() {
+      return { $where: "name = " + req.body.name };  // NOT OK
+    }
+
+    doc.find(mkWhereObj()); // the alert location is in mkWhereObj.
   });
 });

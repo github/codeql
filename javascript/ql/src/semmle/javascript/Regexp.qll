@@ -188,7 +188,7 @@ class RegExpTerm extends Locatable, @regexpterm {
  */
 class RegExpQuantifier extends RegExpTerm, @regexp_quantifier {
   /** Holds if the quantifier of this term is a greedy quantifier. */
-  predicate isGreedy() { isGreedy(this) }
+  predicate isGreedy() { is_greedy(this) }
 }
 
 /**
@@ -216,7 +216,7 @@ class RegExpEscape extends RegExpTerm, @regexp_escape { }
  */
 class RegExpConstant extends RegExpTerm, @regexp_constant {
   /** Gets the string matched by this constant term. */
-  string getValue() { regexpConstValue(this, result) }
+  string getValue() { regexp_const_value(this, result) }
 
   /**
    * Holds if this constant represents a valid Unicode character (as opposed
@@ -522,7 +522,7 @@ class RegExpOpt extends RegExpQuantifier, @regexp_opt {
  */
 class RegExpRange extends RegExpQuantifier, @regexp_range {
   /** Gets the lower bound of the range. */
-  int getLowerBound() { rangeQuantifierLowerBound(this, result) }
+  int getLowerBound() { range_quantifier_lower_bound(this, result) }
 
   /**
    * Gets the upper bound of the range, if any.
@@ -531,7 +531,7 @@ class RegExpRange extends RegExpQuantifier, @regexp_range {
    * For a term of the form `r{lo}`, both the lower and the upper bound
    * are `lo`.
    */
-  int getUpperBound() { rangeQuantifierUpperBound(this, result) }
+  int getUpperBound() { range_quantifier_upper_bound(this, result) }
 
   override predicate isNullable() {
     getAChild().isNullable() or
@@ -565,7 +565,7 @@ class RegExpDot extends RegExpTerm, @regexp_dot {
  */
 class RegExpGroup extends RegExpTerm, @regexp_group {
   /** Holds if this is a capture group. */
-  predicate isCapture() { isCapture(this, _) }
+  predicate isCapture() { is_capture(this, _) }
 
   /**
    * Gets the index of this capture group within the enclosing regular
@@ -576,13 +576,13 @@ class RegExpGroup extends RegExpTerm, @regexp_group {
    * has index 2, and the group `(?:b)` has no index, since it is
    * not a capture group.
    */
-  int getNumber() { isCapture(this, result) }
+  int getNumber() { is_capture(this, result) }
 
   /** Holds if this is a named capture group. */
-  predicate isNamed() { isNamedCapture(this, _) }
+  predicate isNamed() { is_named_capture(this, _) }
 
   /** Gets the name of this capture group, if any. */
-  string getName() { isNamedCapture(this, result) }
+  string getName() { is_named_capture(this, result) }
 
   override predicate isNullable() { getAChild().isNullable() }
 
@@ -679,7 +679,7 @@ class RegExpControlEscape extends RegExpCharEscape, @regexp_ctrl_escape { }
  */
 class RegExpCharacterClassEscape extends RegExpEscape, @regexp_char_class_escape {
   /** Gets the name of the character class; for example, `w` for `\w`. */
-  string getValue() { charClassEscape(this, result) }
+  string getValue() { char_class_escape(this, result) }
 
   override predicate isNullable() { none() }
 }
@@ -699,7 +699,7 @@ class RegExpUnicodePropertyEscape extends RegExpEscape, @regexp_unicode_property
    * Gets the name of this Unicode property; for example, `Number` for `\p{Number}` and
    * `Script` for `\p{Script=Greek}`.
    */
-  string getName() { unicodePropertyEscapeName(this, result) }
+  string getName() { unicode_property_escapename(this, result) }
 
   /**
    * Gets the value of this Unicode property, if any.
@@ -707,7 +707,7 @@ class RegExpUnicodePropertyEscape extends RegExpEscape, @regexp_unicode_property
    * For example, the value of Unicode property `\p{Script=Greek}` is `Greek`, while
    * `\p{Number}` does not have a value.
    */
-  string getValue() { unicodePropertyEscapeValue(this, result) }
+  string getValue() { unicode_property_escapevalue(this, result) }
 
   override predicate isNullable() { none() }
 }
@@ -745,7 +745,7 @@ class RegExpBackRef extends RegExpTerm, @regexp_backref {
   /**
    * Gets the name of the capture group this back reference refers to, if any.
    */
-  string getName() { namedBackref(this, result) }
+  string getName() { named_backref(this, result) }
 
   /** Gets the capture group this back reference refers to. */
   RegExpGroup getGroup() {
@@ -771,7 +771,7 @@ class RegExpBackRef extends RegExpTerm, @regexp_backref {
  */
 class RegExpCharacterClass extends RegExpTerm, @regexp_char_class {
   /** Holds if this is an inverted character class, that is, a term of the form `[^...]`. */
-  predicate isInverted() { isInverted(this) }
+  predicate isInverted() { is_inverted(this) }
 
   override predicate isNullable() { none() }
 
@@ -819,12 +819,12 @@ class RegExpCharacterRange extends RegExpTerm, @regexp_char_range {
 /** A parse error encountered while processing a regular expression literal. */
 class RegExpParseError extends Error, @regexp_parse_error {
   /** Gets the regular expression term that triggered the parse error. */
-  RegExpTerm getTerm() { regexpParseErrors(this, result, _) }
+  RegExpTerm getTerm() { regexp_parse_errors(this, result, _) }
 
   /** Gets the regular expression literal in which the parse error occurred. */
   RegExpLiteral getLiteral() { result = getTerm().getLiteral() }
 
-  override string getMessage() { regexpParseErrors(this, _, result) }
+  override string getMessage() { regexp_parse_errors(this, _, result) }
 
   override string toString() { result = getMessage() }
 }
@@ -865,6 +865,17 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
       // because `String.prototype.search` returns a number
       not exists(PropAccess p | p.getBase() = mce.getEnclosingExpr())
     )
+    or
+    exists(DataFlow::SourceNode schema | schema = JsonSchema::getAPartOfJsonSchema() |
+      source = schema.getAPropertyWrite("pattern").getRhs()
+      or
+      source =
+        schema
+            .getAPropertySource("patternProperties")
+            .getAPropertyWrite()
+            .getPropertyNameExpr()
+            .flow()
+    )
   )
 }
 
@@ -893,7 +904,7 @@ private DataFlow::Node regExpSource(DataFlow::Node re, DataFlow::TypeBackTracker
   exists(DataFlow::TypeBackTracker t2, DataFlow::Node succ | succ = regExpSource(re, t2) |
     t2 = t.smallstep(result, succ)
     or
-    any(TaintTracking::AdditionalTaintStep dts).step(result, succ) and
+    TaintTracking::sharedTaintStep(result, succ) and
     t = t2
   )
 }
@@ -1102,5 +1113,65 @@ module RegExp {
     result = getRegExpObjectFromNode(node)
     or
     result = node.asExpr().(StringLiteral).asRegExp()
+  }
+
+  /**
+   * A character that will be analyzed by `RegExp::alwaysMatchesMetaCharacter`.
+   *
+   * Currently only `<`, `'`, and `"` are considered to be meta-characters, but new meta-characters
+   * can be added by subclassing this class.
+   */
+  abstract class MetaCharacter extends string {
+    bindingset[this]
+    MetaCharacter() { any() }
+
+    /**
+     * Holds if the given atomic term matches this meta-character.
+     *
+     * Does not hold for derived terms like alternatives and groups.
+     *
+     * By default, `.`, `\W`, `\S`, and `\D` are considered to match any meta-character,
+     * but the predicate can be overridden for meta-characters where this is not the case.
+     */
+    predicate matchedByAtom(RegExpTerm term) {
+      term.(RegExpConstant).getConstantValue() = this
+      or
+      term instanceof RegExpDot
+      or
+      term.(RegExpCharacterClassEscape).getValue() = ["\\W", "\\S", "\\D"]
+      or
+      exists(string lo, string hi |
+        term.(RegExpCharacterRange).isRange(lo, hi) and
+        lo <= this and
+        this <= hi
+      )
+    }
+  }
+
+  private class DefaultMetaCharacter extends MetaCharacter {
+    DefaultMetaCharacter() { this = ["<", "'", "\""] }
+  }
+
+  /**
+   * Holds if `term` can match any occurence of `char` within a string (not taking into account
+   * the context in which `term` appears).
+   *
+   * This predicate is under-approximate and never considers sequences to guarantee a match.
+   */
+  predicate alwaysMatchesMetaCharacter(RegExpTerm term, MetaCharacter char) {
+    not term.getParent() instanceof RegExpSequence and // restrict size of predicate
+    char.matchedByAtom(term)
+    or
+    alwaysMatchesMetaCharacter(term.(RegExpGroup).getAChild(), char)
+    or
+    alwaysMatchesMetaCharacter(term.(RegExpAlt).getAlternative(), char)
+    or
+    exists(RegExpCharacterClass class_ | term = class_ |
+      not class_.isInverted() and
+      char.matchedByAtom(class_.getAChild())
+      or
+      class_.isInverted() and
+      not char.matchedByAtom(class_.getAChild())
+    )
   }
 }

@@ -794,6 +794,7 @@ test_isRequest
 | src/advanced-routehandler-registration.js:123:46:123:48 | req |
 | src/advanced-routehandler-registration.js:124:21:124:23 | req |
 | src/advanced-routehandler-registration.js:124:46:124:48 | req |
+| src/advanced-routehandler-registration.js:146:29:146:31 | req |
 | src/advanced-routehandler-registration.js:156:22:156:24 | req |
 | src/advanced-routehandler-registration.js:156:47:156:49 | req |
 | src/advanced-routehandler-registration.js:157:28:157:30 | req |
@@ -925,10 +926,16 @@ test_RouteSetup_getRouter
 test_RedirectInvocation
 | src/express.js:5:3:5:35 | res.red ... rget")) | src/express.js:4:23:9:1 | functio ... res);\\n} |
 test_StandardRouteHandler
+| src/advanced-routehandler-registration.js:46:11:48:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:46:20:46:22 | req | src/advanced-routehandler-registration.js:46:25:46:27 | res |
 | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:51:10:51:12 | req | src/advanced-routehandler-registration.js:51:15:51:17 | res |
+| src/advanced-routehandler-registration.js:59:11:61:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:59:20:59:22 | req | src/advanced-routehandler-registration.js:59:25:59:27 | res |
 | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) | src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:64:10:64:12 | req | src/advanced-routehandler-registration.js:64:15:64:17 | res |
+| src/advanced-routehandler-registration.js:68:12:68:41 | (req, r ... og(req) | src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:68:13:68:15 | req | src/advanced-routehandler-registration.js:68:18:68:20 | res |
+| src/advanced-routehandler-registration.js:69:11:71:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:69:20:69:22 | req | src/advanced-routehandler-registration.js:69:25:69:27 | res |
 | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) | src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:73:10:73:12 | req | src/advanced-routehandler-registration.js:73:15:73:17 | res |
+| src/advanced-routehandler-registration.js:81:11:83:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:81:20:81:22 | req | src/advanced-routehandler-registration.js:81:25:81:27 | res |
 | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:92:10:92:12 | req | src/advanced-routehandler-registration.js:92:15:92:17 | res |
+| src/advanced-routehandler-registration.js:100:11:102:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:100:20:100:22 | req | src/advanced-routehandler-registration.js:100:25:100:27 | res |
 | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:111:10:111:12 | req | src/advanced-routehandler-registration.js:111:15:111:17 | res |
 | src/csurf-example.js:20:18:23:1 | functio ... () })\\n} | src/csurf-example.js:7:11:7:19 | express() | src/csurf-example.js:20:28:20:30 | req | src/csurf-example.js:20:33:20:35 | res |
 | src/csurf-example.js:25:22:27:1 | functio ... ere')\\n} | src/csurf-example.js:7:11:7:19 | express() | src/csurf-example.js:25:32:25:34 | req | src/csurf-example.js:25:37:25:39 | res |
@@ -1024,29 +1031,42 @@ test_ResponseExpr
 | src/advanced-routehandler-registration.js:16:12:16:14 | res | src/advanced-routehandler-registration.js:16:6:16:35 | (req, r ... og(req) |
 | src/advanced-routehandler-registration.js:24:12:24:14 | res | src/advanced-routehandler-registration.js:24:6:24:35 | (req, r ... og(req) |
 | src/advanced-routehandler-registration.js:25:12:25:14 | res | src/advanced-routehandler-registration.js:25:6:25:35 | (req, r ... og(req) |
+| src/advanced-routehandler-registration.js:46:25:46:27 | res | src/advanced-routehandler-registration.js:46:11:48:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:46:25:46:27 | res | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:47:32:47:34 | res | src/advanced-routehandler-registration.js:46:11:48:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:47:32:47:34 | res | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:51:15:51:17 | res | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:51:45:51:47 | res | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:59:25:59:27 | res | src/advanced-routehandler-registration.js:59:11:61:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:59:25:59:27 | res | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:60:23:60:25 | res | src/advanced-routehandler-registration.js:59:11:61:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:60:23:60:25 | res | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) |
 | src/advanced-routehandler-registration.js:64:15:64:17 | res | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) |
 | src/advanced-routehandler-registration.js:64:50:64:52 | res | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:68:18:68:20 | res | src/advanced-routehandler-registration.js:68:12:68:41 | (req, r ... og(req) |
+| src/advanced-routehandler-registration.js:68:18:68:20 | res | src/advanced-routehandler-registration.js:69:11:71:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:68:18:68:20 | res | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:69:25:69:27 | res | src/advanced-routehandler-registration.js:69:11:71:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:69:25:69:27 | res | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:70:23:70:25 | res | src/advanced-routehandler-registration.js:69:11:71:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:70:23:70:25 | res | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) |
 | src/advanced-routehandler-registration.js:73:15:73:17 | res | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) |
 | src/advanced-routehandler-registration.js:73:52:73:54 | res | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:81:25:81:27 | res | src/advanced-routehandler-registration.js:81:11:83:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:81:25:81:27 | res | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:82:32:82:34 | res | src/advanced-routehandler-registration.js:81:11:83:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:82:32:82:34 | res | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:92:15:92:17 | res | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:92:45:92:47 | res | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:100:25:100:27 | res | src/advanced-routehandler-registration.js:100:11:102:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:100:25:100:27 | res | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:101:36:101:38 | res | src/advanced-routehandler-registration.js:100:11:102:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:101:36:101:38 | res | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:111:15:111:17 | res | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:111:45:111:47 | res | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:123:26:123:28 | res | src/advanced-routehandler-registration.js:123:20:123:49 | (req, r ... og(req) |
 | src/advanced-routehandler-registration.js:124:26:124:28 | res | src/advanced-routehandler-registration.js:124:20:124:49 | (req, r ... og(req) |
+| src/advanced-routehandler-registration.js:146:34:146:36 | res | src/advanced-routehandler-registration.js:146:28:146:50 | (req, r ... defined |
 | src/advanced-routehandler-registration.js:156:27:156:29 | res | src/advanced-routehandler-registration.js:156:21:156:50 | (req, r ... og(req) |
 | src/advanced-routehandler-registration.js:157:33:157:35 | res | src/advanced-routehandler-registration.js:157:27:157:56 | (req, r ... og(req) |
 | src/controllers/handler-in-bulk-require.js:1:50:1:52 | res | src/controllers/handler-in-bulk-require.js:1:44:1:66 | (req, r ... defined |
@@ -1528,29 +1548,42 @@ test_RouteHandler_getAResponseExpr
 | src/advanced-routehandler-registration.js:16:6:16:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:16:12:16:14 | res |
 | src/advanced-routehandler-registration.js:24:6:24:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:24:12:24:14 | res |
 | src/advanced-routehandler-registration.js:25:6:25:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:25:12:25:14 | res |
+| src/advanced-routehandler-registration.js:46:11:48:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:46:25:46:27 | res |
+| src/advanced-routehandler-registration.js:46:11:48:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:47:32:47:34 | res |
 | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:46:25:46:27 | res |
 | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:47:32:47:34 | res |
 | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:51:15:51:17 | res |
 | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:51:45:51:47 | res |
+| src/advanced-routehandler-registration.js:59:11:61:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:59:25:59:27 | res |
+| src/advanced-routehandler-registration.js:59:11:61:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:60:23:60:25 | res |
 | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) | src/advanced-routehandler-registration.js:59:25:59:27 | res |
 | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) | src/advanced-routehandler-registration.js:60:23:60:25 | res |
 | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) | src/advanced-routehandler-registration.js:64:15:64:17 | res |
 | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) | src/advanced-routehandler-registration.js:64:50:64:52 | res |
+| src/advanced-routehandler-registration.js:68:12:68:41 | (req, r ... og(req) | src/advanced-routehandler-registration.js:68:18:68:20 | res |
+| src/advanced-routehandler-registration.js:69:11:71:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:68:18:68:20 | res |
+| src/advanced-routehandler-registration.js:69:11:71:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:69:25:69:27 | res |
+| src/advanced-routehandler-registration.js:69:11:71:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:70:23:70:25 | res |
 | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) | src/advanced-routehandler-registration.js:68:18:68:20 | res |
 | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) | src/advanced-routehandler-registration.js:69:25:69:27 | res |
 | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) | src/advanced-routehandler-registration.js:70:23:70:25 | res |
 | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) | src/advanced-routehandler-registration.js:73:15:73:17 | res |
 | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) | src/advanced-routehandler-registration.js:73:52:73:54 | res |
+| src/advanced-routehandler-registration.js:81:11:83:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:81:25:81:27 | res |
+| src/advanced-routehandler-registration.js:81:11:83:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:82:32:82:34 | res |
 | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:81:25:81:27 | res |
 | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:82:32:82:34 | res |
 | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:92:15:92:17 | res |
 | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:92:45:92:47 | res |
+| src/advanced-routehandler-registration.js:100:11:102:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:100:25:100:27 | res |
+| src/advanced-routehandler-registration.js:100:11:102:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:101:36:101:38 | res |
 | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:100:25:100:27 | res |
 | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:101:36:101:38 | res |
 | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:111:15:111:17 | res |
 | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:111:45:111:47 | res |
 | src/advanced-routehandler-registration.js:123:20:123:49 | (req, r ... og(req) | src/advanced-routehandler-registration.js:123:26:123:28 | res |
 | src/advanced-routehandler-registration.js:124:20:124:49 | (req, r ... og(req) | src/advanced-routehandler-registration.js:124:26:124:28 | res |
+| src/advanced-routehandler-registration.js:146:28:146:50 | (req, r ... defined | src/advanced-routehandler-registration.js:146:34:146:36 | res |
 | src/advanced-routehandler-registration.js:156:21:156:50 | (req, r ... og(req) | src/advanced-routehandler-registration.js:156:27:156:29 | res |
 | src/advanced-routehandler-registration.js:157:27:157:56 | (req, r ... og(req) | src/advanced-routehandler-registration.js:157:33:157:35 | res |
 | src/controllers/handler-in-bulk-require.js:1:44:1:66 | (req, r ... defined | src/controllers/handler-in-bulk-require.js:1:50:1:52 | res |
@@ -1690,6 +1723,7 @@ test_isResponse
 | src/advanced-routehandler-registration.js:111:45:111:47 | res |
 | src/advanced-routehandler-registration.js:123:26:123:28 | res |
 | src/advanced-routehandler-registration.js:124:26:124:28 | res |
+| src/advanced-routehandler-registration.js:146:34:146:36 | res |
 | src/advanced-routehandler-registration.js:156:27:156:29 | res |
 | src/advanced-routehandler-registration.js:157:33:157:35 | res |
 | src/controllers/handler-in-bulk-require.js:1:50:1:52 | res |
@@ -1828,11 +1862,25 @@ test_RouteSetup_getARouteHandler
 | src/advanced-routehandler-registration.js:28:3:28:24 | app.get ... es2[p]) | src/advanced-routehandler-registration.js:27:12:27:12 | p |
 | src/advanced-routehandler-registration.js:28:3:28:24 | app.get ... es2[p]) | src/advanced-routehandler-registration.js:28:14:28:23 | routes2[p] |
 | src/advanced-routehandler-registration.js:37:3:37:12 | app.use(h) | src/advanced-routehandler-registration.js:36:12:36:12 | h |
+| src/advanced-routehandler-registration.js:51:1:51:61 | app.use ... ever")) | src/advanced-routehandler-registration.js:46:11:48:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:51:1:51:61 | app.use ... ever")) | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:51:1:51:61 | app.use ... ever")) | src/advanced-routehandler-registration.js:51:23:51:38 | myRouter1.handle |
+| src/advanced-routehandler-registration.js:64:1:64:54 | app.use ... , res)) | src/advanced-routehandler-registration.js:55:12:55:20 | undefined |
+| src/advanced-routehandler-registration.js:64:1:64:54 | app.use ... , res)) | src/advanced-routehandler-registration.js:59:11:61:3 | functio ... s);\\n  } |
+| src/advanced-routehandler-registration.js:64:1:64:54 | app.use ... , res)) | src/advanced-routehandler-registration.js:60:5:60:16 | this.handler |
 | src/advanced-routehandler-registration.js:64:1:64:54 | app.use ... , res)) | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:64:1:64:54 | app.use ... , res)) | src/advanced-routehandler-registration.js:64:23:64:43 | mySimpl ... .handle |
+| src/advanced-routehandler-registration.js:73:1:73:56 | app.use ... , res)) | src/advanced-routehandler-registration.js:68:12:68:41 | (req, r ... og(req) |
+| src/advanced-routehandler-registration.js:73:1:73:56 | app.use ... , res)) | src/advanced-routehandler-registration.js:69:11:71:3 | functio ... s);\\n  } |
+| src/advanced-routehandler-registration.js:73:1:73:56 | app.use ... , res)) | src/advanced-routehandler-registration.js:70:5:70:16 | this.handler |
 | src/advanced-routehandler-registration.js:73:1:73:56 | app.use ... , res)) | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:73:1:73:56 | app.use ... , res)) | src/advanced-routehandler-registration.js:73:23:73:45 | mySimpl ... .handle |
+| src/advanced-routehandler-registration.js:92:1:92:61 | app.use ... ever")) | src/advanced-routehandler-registration.js:81:11:83:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:92:1:92:61 | app.use ... ever")) | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:92:1:92:61 | app.use ... ever")) | src/advanced-routehandler-registration.js:92:23:92:38 | myRouter3.handle |
+| src/advanced-routehandler-registration.js:111:1:111:61 | app.use ... ever")) | src/advanced-routehandler-registration.js:100:11:102:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:111:1:111:61 | app.use ... ever")) | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:111:1:111:61 | app.use ... ever")) | src/advanced-routehandler-registration.js:111:23:111:38 | myRouter4.handle |
 | src/advanced-routehandler-registration.js:116:3:116:31 | app.get ... tes[p]) | src/advanced-routehandler-registration.js:116:14:116:30 | importedRoutes[p] |
 | src/advanced-routehandler-registration.js:116:3:116:31 | app.get ... tes[p]) | src/route-collection.js:2:6:2:35 | (req, r ... og(req) |
 | src/advanced-routehandler-registration.js:116:3:116:31 | app.get ... tes[p]) | src/route-collection.js:3:6:3:35 | (req, r ... og(req) |
@@ -1853,6 +1901,8 @@ test_RouteSetup_getARouteHandler
 | src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | src/advanced-routehandler-registration.js:139:9:139:30 | bulkReq ... ky.path |
 | src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | src/advanced-routehandler-registration.js:139:33:139:57 | bulkReq ... handler |
 | src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | src/controllers/handler-in-bulk-require.js:1:44:1:66 | (req, r ... defined |
+| src/advanced-routehandler-registration.js:147:1:147:37 | app.use ... (data)) | src/advanced-routehandler-registration.js:146:28:146:50 | (req, r ... defined |
+| src/advanced-routehandler-registration.js:147:1:147:37 | app.use ... (data)) | src/advanced-routehandler-registration.js:147:9:147:25 | handlers.handlerA |
 | src/advanced-routehandler-registration.js:147:1:147:37 | app.use ... (data)) | src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) |
 | src/advanced-routehandler-registration.js:150:2:150:14 | app.get(k, v) | src/advanced-routehandler-registration.js:150:10:150:10 | k |
 | src/advanced-routehandler-registration.js:150:2:150:14 | app.get(k, v) | src/advanced-routehandler-registration.js:150:13:150:13 | v |
@@ -1867,6 +1917,7 @@ test_RouteSetup_getARouteHandler
 | src/advanced-routehandler-registration.js:163:1:163:33 | app.get ... t("f")) | src/advanced-routehandler-registration.js:163:14:163:32 | routesMap2.get("f") |
 | src/auth.js:4:1:4:53 | app.use ... d' }})) | src/auth.js:4:9:4:52 | basicAu ... rd' }}) |
 | src/csurf-example.js:13:1:13:20 | app.use('/api', api) | src/csurf-example.js:10:11:10:27 | createApiRouter() |
+| src/csurf-example.js:13:1:13:20 | app.use('/api', api) | src/csurf-example.js:29:1:37:1 | return of function createApiRouter |
 | src/csurf-example.js:13:1:13:20 | app.use('/api', api) | src/csurf-example.js:30:16:30:35 | new express.Router() |
 | src/csurf-example.js:16:1:16:51 | app.use ... lse })) | src/csurf-example.js:16:9:16:50 | bodyPar ... alse }) |
 | src/csurf-example.js:17:1:17:23 | app.use ... rser()) | src/csurf-example.js:17:9:17:22 | cookieParser() |
@@ -1880,6 +1931,7 @@ test_RouteSetup_getARouteHandler
 | src/express2.js:3:1:4:77 | router. ... sult }) | src/express2.js:4:32:4:76 | functio ... esult } |
 | src/express2.js:6:1:6:15 | app.use(router) | src/express2.js:2:14:2:23 | e.Router() |
 | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | src/express3.js:4:23:7:1 | functio ... al");\\n} |
+| src/express3.js:12:1:12:21 | app.use ... dler()) | src/express3.js:9:1:11:1 | return of function getHandler |
 | src/express3.js:12:1:12:21 | app.use ... dler()) | src/express3.js:10:12:10:32 | functio ...  res){} |
 | src/express3.js:12:1:12:21 | app.use ... dler()) | src/express3.js:12:9:12:20 | getHandler() |
 | src/express4.js:4:1:9:2 | app.get ... c1);\\n}) | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
@@ -1888,8 +1940,10 @@ test_RouteSetup_getARouteHandler
 | src/express.js:22:1:32:2 | app.pos ... r');\\n}) | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:34:1:34:53 | app.get ... andler) | src/exportedHandler.js:1:19:1:55 | functio ... res) {} |
 | src/express.js:34:1:34:53 | app.get ... andler) | src/express.js:34:14:34:52 | require ... handler |
+| src/express.js:39:1:39:21 | app.use ... dler()) | src/express.js:36:1:38:1 | return of function getHandler |
 | src/express.js:39:1:39:21 | app.use ... dler()) | src/express.js:37:12:37:32 | functio ...  res){} |
 | src/express.js:39:1:39:21 | app.use ... dler()) | src/express.js:39:9:39:20 | getHandler() |
+| src/express.js:44:1:44:26 | app.use ... dler()) | src/express.js:41:1:43:1 | return of function getArrowHandler |
 | src/express.js:44:1:44:26 | app.use ... dler()) | src/express.js:42:12:42:28 | (req, res) => f() |
 | src/express.js:44:1:44:26 | app.use ... dler()) | src/express.js:44:9:44:25 | getArrowHandler() |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | src/express.js:46:22:51:1 | functio ... ame];\\n} |
@@ -1908,6 +1962,7 @@ test_RouteSetup_getARouteHandler
 | src/routesetups.js:12:1:12:16 | root.post('', h) | src/routesetups.js:12:15:12:15 | h |
 | src/subrouter.js:4:1:4:26 | app.use ... rotect) | src/subrouter.js:4:19:4:25 | protect |
 | src/subrouter.js:5:1:5:29 | app.use ... uter()) | src/subrouter.js:5:14:5:28 | makeSubRouter() |
+| src/subrouter.js:5:1:5:29 | app.use ... uter()) | src/subrouter.js:7:1:12:1 | return of function makeSubRouter |
 | src/subrouter.js:5:1:5:29 | app.use ... uter()) | src/subrouter.js:8:16:8:31 | express.Router() |
 | src/subrouter.js:9:3:9:35 | router. ... ndler1) | src/subrouter.js:9:27:9:34 | handler1 |
 | src/subrouter.js:10:3:10:41 | router. ... ndler2) | src/subrouter.js:10:33:10:40 | handler2 |
@@ -2235,13 +2290,20 @@ test_RouteHandler
 | src/advanced-routehandler-registration.js:16:6:16:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:16:7:16:9 | req | src/advanced-routehandler-registration.js:16:12:16:14 | res |
 | src/advanced-routehandler-registration.js:24:6:24:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:24:7:24:9 | req | src/advanced-routehandler-registration.js:24:12:24:14 | res |
 | src/advanced-routehandler-registration.js:25:6:25:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:25:7:25:9 | req | src/advanced-routehandler-registration.js:25:12:25:14 | res |
+| src/advanced-routehandler-registration.js:46:11:48:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:46:20:46:22 | req | src/advanced-routehandler-registration.js:46:25:46:27 | res |
 | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:51:10:51:12 | req | src/advanced-routehandler-registration.js:51:15:51:17 | res |
+| src/advanced-routehandler-registration.js:59:11:61:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:59:20:59:22 | req | src/advanced-routehandler-registration.js:59:25:59:27 | res |
 | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) | src/advanced-routehandler-registration.js:64:10:64:12 | req | src/advanced-routehandler-registration.js:64:15:64:17 | res |
+| src/advanced-routehandler-registration.js:68:12:68:41 | (req, r ... og(req) | src/advanced-routehandler-registration.js:68:13:68:15 | req | src/advanced-routehandler-registration.js:68:18:68:20 | res |
+| src/advanced-routehandler-registration.js:69:11:71:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:69:20:69:22 | req | src/advanced-routehandler-registration.js:69:25:69:27 | res |
 | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) | src/advanced-routehandler-registration.js:73:10:73:12 | req | src/advanced-routehandler-registration.js:73:15:73:17 | res |
+| src/advanced-routehandler-registration.js:81:11:83:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:81:20:81:22 | req | src/advanced-routehandler-registration.js:81:25:81:27 | res |
 | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:92:10:92:12 | req | src/advanced-routehandler-registration.js:92:15:92:17 | res |
+| src/advanced-routehandler-registration.js:100:11:102:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:100:20:100:22 | req | src/advanced-routehandler-registration.js:100:25:100:27 | res |
 | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:111:10:111:12 | req | src/advanced-routehandler-registration.js:111:15:111:17 | res |
 | src/advanced-routehandler-registration.js:123:20:123:49 | (req, r ... og(req) | src/advanced-routehandler-registration.js:123:21:123:23 | req | src/advanced-routehandler-registration.js:123:26:123:28 | res |
 | src/advanced-routehandler-registration.js:124:20:124:49 | (req, r ... og(req) | src/advanced-routehandler-registration.js:124:21:124:23 | req | src/advanced-routehandler-registration.js:124:26:124:28 | res |
+| src/advanced-routehandler-registration.js:146:28:146:50 | (req, r ... defined | src/advanced-routehandler-registration.js:146:29:146:31 | req | src/advanced-routehandler-registration.js:146:34:146:36 | res |
 | src/advanced-routehandler-registration.js:156:21:156:50 | (req, r ... og(req) | src/advanced-routehandler-registration.js:156:22:156:24 | req | src/advanced-routehandler-registration.js:156:27:156:29 | res |
 | src/advanced-routehandler-registration.js:157:27:157:56 | (req, r ... og(req) | src/advanced-routehandler-registration.js:157:28:157:30 | req | src/advanced-routehandler-registration.js:157:33:157:35 | res |
 | src/controllers/handler-in-bulk-require.js:1:44:1:66 | (req, r ... defined | src/controllers/handler-in-bulk-require.js:1:45:1:47 | req | src/controllers/handler-in-bulk-require.js:1:50:1:52 | res |
@@ -2398,25 +2460,39 @@ test_RequestExpr
 | src/advanced-routehandler-registration.js:24:32:24:34 | req | src/advanced-routehandler-registration.js:24:6:24:35 | (req, r ... og(req) |
 | src/advanced-routehandler-registration.js:25:7:25:9 | req | src/advanced-routehandler-registration.js:25:6:25:35 | (req, r ... og(req) |
 | src/advanced-routehandler-registration.js:25:32:25:34 | req | src/advanced-routehandler-registration.js:25:6:25:35 | (req, r ... og(req) |
+| src/advanced-routehandler-registration.js:46:20:46:22 | req | src/advanced-routehandler-registration.js:46:11:48:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:46:20:46:22 | req | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:47:27:47:29 | req | src/advanced-routehandler-registration.js:46:11:48:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:47:27:47:29 | req | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:51:10:51:12 | req | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:51:40:51:42 | req | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:59:20:59:22 | req | src/advanced-routehandler-registration.js:59:11:61:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:59:20:59:22 | req | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:60:18:60:20 | req | src/advanced-routehandler-registration.js:59:11:61:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:60:18:60:20 | req | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) |
 | src/advanced-routehandler-registration.js:64:10:64:12 | req | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) |
 | src/advanced-routehandler-registration.js:64:45:64:47 | req | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:68:13:68:15 | req | src/advanced-routehandler-registration.js:68:12:68:41 | (req, r ... og(req) |
+| src/advanced-routehandler-registration.js:68:13:68:15 | req | src/advanced-routehandler-registration.js:69:11:71:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:68:13:68:15 | req | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:68:38:68:40 | req | src/advanced-routehandler-registration.js:68:12:68:41 | (req, r ... og(req) |
+| src/advanced-routehandler-registration.js:68:38:68:40 | req | src/advanced-routehandler-registration.js:69:11:71:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:68:38:68:40 | req | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:69:20:69:22 | req | src/advanced-routehandler-registration.js:69:11:71:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:69:20:69:22 | req | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:70:18:70:20 | req | src/advanced-routehandler-registration.js:69:11:71:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:70:18:70:20 | req | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) |
 | src/advanced-routehandler-registration.js:73:10:73:12 | req | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) |
 | src/advanced-routehandler-registration.js:73:47:73:49 | req | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:81:20:81:22 | req | src/advanced-routehandler-registration.js:81:11:83:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:81:20:81:22 | req | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:82:27:82:29 | req | src/advanced-routehandler-registration.js:81:11:83:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:82:27:82:29 | req | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:92:10:92:12 | req | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:92:40:92:42 | req | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:100:20:100:22 | req | src/advanced-routehandler-registration.js:100:11:102:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:100:20:100:22 | req | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:101:31:101:33 | req | src/advanced-routehandler-registration.js:100:11:102:3 | functio ... s);\\n  } |
 | src/advanced-routehandler-registration.js:101:31:101:33 | req | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:111:10:111:12 | req | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:111:40:111:42 | req | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
@@ -2424,6 +2500,7 @@ test_RequestExpr
 | src/advanced-routehandler-registration.js:123:46:123:48 | req | src/advanced-routehandler-registration.js:123:20:123:49 | (req, r ... og(req) |
 | src/advanced-routehandler-registration.js:124:21:124:23 | req | src/advanced-routehandler-registration.js:124:20:124:49 | (req, r ... og(req) |
 | src/advanced-routehandler-registration.js:124:46:124:48 | req | src/advanced-routehandler-registration.js:124:20:124:49 | (req, r ... og(req) |
+| src/advanced-routehandler-registration.js:146:29:146:31 | req | src/advanced-routehandler-registration.js:146:28:146:50 | (req, r ... defined |
 | src/advanced-routehandler-registration.js:156:22:156:24 | req | src/advanced-routehandler-registration.js:156:21:156:50 | (req, r ... og(req) |
 | src/advanced-routehandler-registration.js:156:47:156:49 | req | src/advanced-routehandler-registration.js:156:21:156:50 | (req, r ... og(req) |
 | src/advanced-routehandler-registration.js:157:28:157:30 | req | src/advanced-routehandler-registration.js:157:27:157:56 | (req, r ... og(req) |
@@ -2510,24 +2587,38 @@ test_RouteHandler_getARequestExpr
 | src/advanced-routehandler-registration.js:24:6:24:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:24:32:24:34 | req |
 | src/advanced-routehandler-registration.js:25:6:25:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:25:7:25:9 | req |
 | src/advanced-routehandler-registration.js:25:6:25:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:25:32:25:34 | req |
+| src/advanced-routehandler-registration.js:46:11:48:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:46:20:46:22 | req |
+| src/advanced-routehandler-registration.js:46:11:48:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:47:27:47:29 | req |
 | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:46:20:46:22 | req |
 | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:47:27:47:29 | req |
 | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:51:10:51:12 | req |
 | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:51:40:51:42 | req |
+| src/advanced-routehandler-registration.js:59:11:61:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:59:20:59:22 | req |
+| src/advanced-routehandler-registration.js:59:11:61:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:60:18:60:20 | req |
 | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) | src/advanced-routehandler-registration.js:59:20:59:22 | req |
 | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) | src/advanced-routehandler-registration.js:60:18:60:20 | req |
 | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) | src/advanced-routehandler-registration.js:64:10:64:12 | req |
 | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) | src/advanced-routehandler-registration.js:64:45:64:47 | req |
+| src/advanced-routehandler-registration.js:68:12:68:41 | (req, r ... og(req) | src/advanced-routehandler-registration.js:68:13:68:15 | req |
+| src/advanced-routehandler-registration.js:68:12:68:41 | (req, r ... og(req) | src/advanced-routehandler-registration.js:68:38:68:40 | req |
+| src/advanced-routehandler-registration.js:69:11:71:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:68:13:68:15 | req |
+| src/advanced-routehandler-registration.js:69:11:71:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:68:38:68:40 | req |
+| src/advanced-routehandler-registration.js:69:11:71:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:69:20:69:22 | req |
+| src/advanced-routehandler-registration.js:69:11:71:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:70:18:70:20 | req |
 | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) | src/advanced-routehandler-registration.js:68:13:68:15 | req |
 | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) | src/advanced-routehandler-registration.js:68:38:68:40 | req |
 | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) | src/advanced-routehandler-registration.js:69:20:69:22 | req |
 | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) | src/advanced-routehandler-registration.js:70:18:70:20 | req |
 | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) | src/advanced-routehandler-registration.js:73:10:73:12 | req |
 | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) | src/advanced-routehandler-registration.js:73:47:73:49 | req |
+| src/advanced-routehandler-registration.js:81:11:83:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:81:20:81:22 | req |
+| src/advanced-routehandler-registration.js:81:11:83:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:82:27:82:29 | req |
 | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:81:20:81:22 | req |
 | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:82:27:82:29 | req |
 | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:92:10:92:12 | req |
 | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:92:40:92:42 | req |
+| src/advanced-routehandler-registration.js:100:11:102:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:100:20:100:22 | req |
+| src/advanced-routehandler-registration.js:100:11:102:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:101:31:101:33 | req |
 | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:100:20:100:22 | req |
 | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:101:31:101:33 | req |
 | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:111:10:111:12 | req |
@@ -2536,6 +2627,7 @@ test_RouteHandler_getARequestExpr
 | src/advanced-routehandler-registration.js:123:20:123:49 | (req, r ... og(req) | src/advanced-routehandler-registration.js:123:46:123:48 | req |
 | src/advanced-routehandler-registration.js:124:20:124:49 | (req, r ... og(req) | src/advanced-routehandler-registration.js:124:21:124:23 | req |
 | src/advanced-routehandler-registration.js:124:20:124:49 | (req, r ... og(req) | src/advanced-routehandler-registration.js:124:46:124:48 | req |
+| src/advanced-routehandler-registration.js:146:28:146:50 | (req, r ... defined | src/advanced-routehandler-registration.js:146:29:146:31 | req |
 | src/advanced-routehandler-registration.js:156:21:156:50 | (req, r ... og(req) | src/advanced-routehandler-registration.js:156:22:156:24 | req |
 | src/advanced-routehandler-registration.js:156:21:156:50 | (req, r ... og(req) | src/advanced-routehandler-registration.js:156:47:156:49 | req |
 | src/advanced-routehandler-registration.js:157:27:157:56 | (req, r ... og(req) | src/advanced-routehandler-registration.js:157:28:157:30 | req |
@@ -2606,6 +2698,9 @@ getRouteHandlerContainerStep
 | src/advanced-routehandler-registration.js:14:15:17:1 | {\\n  a:  ... (req)\\n} | src/advanced-routehandler-registration.js:16:6:16:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:18:12:18:18 | handler |
 | src/advanced-routehandler-registration.js:23:15:26:1 | {\\n  a:  ... (req)\\n} | src/advanced-routehandler-registration.js:24:6:24:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:28:14:28:23 | routes2[p] |
 | src/advanced-routehandler-registration.js:23:15:26:1 | {\\n  a:  ... (req)\\n} | src/advanced-routehandler-registration.js:25:6:25:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:28:14:28:23 | routes2[p] |
+| src/advanced-routehandler-registration.js:54:22:62:1 | {\\n  han ... ;\\n  }\\n} | src/advanced-routehandler-registration.js:59:11:61:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:64:23:64:43 | mySimpl ... .handle |
+| src/advanced-routehandler-registration.js:67:24:72:1 | {\\n  han ... ;\\n  }\\n} | src/advanced-routehandler-registration.js:68:12:68:41 | (req, r ... og(req) | src/advanced-routehandler-registration.js:70:5:70:16 | this.handler |
+| src/advanced-routehandler-registration.js:67:24:72:1 | {\\n  han ... ;\\n  }\\n} | src/advanced-routehandler-registration.js:69:11:71:3 | functio ... s);\\n  } | src/advanced-routehandler-registration.js:73:23:73:45 | mySimpl ... .handle |
 | src/advanced-routehandler-registration.js:85:15:88:1 | {\\n  a:  ... (req)\\n} | src/advanced-routehandler-registration.js:86:6:86:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:90:20:90:29 | routes3[p] |
 | src/advanced-routehandler-registration.js:85:15:88:1 | {\\n  a:  ... (req)\\n} | src/advanced-routehandler-registration.js:87:6:87:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:90:20:90:29 | routes3[p] |
 | src/advanced-routehandler-registration.js:104:15:107:1 | {\\n  a:  ... (req)\\n} | src/advanced-routehandler-registration.js:105:6:105:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:109:20:109:29 | routes4[p] |

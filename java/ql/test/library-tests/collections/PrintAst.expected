@@ -1,0 +1,19 @@
+collections/Test.java:
+#    0| [CompilationUnit] Test
+#-----|   -1: (Imports)
+#    3|     1: [ImportOnDemandFromPackage] import java.util.*
+#    5|   1: [Class] Test
+#    6|     3: [FieldDeclaration] Map<String,Integer> m, ...;
+#    6|       -1: [TypeAccess] Map<String,Integer>
+#    6|         0: [TypeAccess] String
+#    6|         1: [TypeAccess] Integer
+#    6|       0: [ClassInstanceExpr] new LinkedHashMap<String,Integer>(...)
+#    6|         -3: [TypeAccess] LinkedHashMap<String,Integer>
+#    6|           0: [TypeAccess] String
+#    6|           1: [TypeAccess] Integer
+#    8|     4: [BlockStmt] stmt
+#    9|       0: [ExprStmt] stmt
+#    9|         0: [MethodAccess] put(...)
+#    9|           -1: [VarAccess] m
+#    9|           0: [StringLiteral] "key"
+#    9|           1: [IntegerLiteral] 23

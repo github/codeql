@@ -34,18 +34,11 @@ module UnsafeJQueryPlugin {
   /**
    * An argument that may act as a HTML fragment rather than a CSS selector, as a sink for remote unsafe jQuery plugins.
    */
-  class AmbiguousHtmlOrSelectorArgument extends DataFlow::Node {
+  class AmbiguousHtmlOrSelectorArgument extends DataFlow::Node,
+    DomBasedXss::JQueryHtmlOrSelectorArgument {
     AmbiguousHtmlOrSelectorArgument() {
-      exists(JQuery::MethodCall call |
-        call.interpretsArgumentAsSelector(this) and call.interpretsArgumentAsHtml(this)
-      ) and
-      // the $-function in particular will not construct HTML for non-string values
-      analyze().getAType() = TTString() and
       // any fixed prefix makes the call unambiguous
-      not exists(DataFlow::Node prefix |
-        DomBasedXss::isPrefixOfJQueryHtmlString(this, prefix) and
-        prefix.mayHaveStringValue(_)
-      )
+      not exists(getAPrefix())
     }
   }
 
@@ -141,16 +134,18 @@ module UnsafeJQueryPlugin {
             SyntacticConstants::isUndefined(undef)
           )
           or
-          exists(Expr op1, Expr op2 | test.hasOperands(op1, op2) |
-            read.asExpr() = op1.(TypeofExpr).getOperand() and
-            op2.mayHaveStringValue(any(InferredType t | t = TTUndefined()).getTypeofTag())
-          )
+          TaintTracking::isTypeofGuard(test, read.asExpr(), "undefined")
         )
         or
         polarity = true and
         this = read
       )
     }
+
+    /**
+     * Gets the property read that is used to sanitize the base value.
+     */
+    DataFlow::PropRead getPropRead() { result = this }
 
     override predicate sanitizes(boolean outcome, Expr e) {
       outcome = polarity and
@@ -171,7 +166,9 @@ module UnsafeJQueryPlugin {
    * An argument that may act as a HTML fragment rather than a CSS selector, as a sink for remote unsafe jQuery plugins.
    */
   class AmbiguousHtmlOrSelectorArgumentAsSink extends Sink {
-    AmbiguousHtmlOrSelectorArgumentAsSink() { this instanceof AmbiguousHtmlOrSelectorArgument }
+    AmbiguousHtmlOrSelectorArgumentAsSink() {
+      this instanceof AmbiguousHtmlOrSelectorArgument and not isLikelyIntentionalHtmlSink(this)
+    }
   }
 
   /**
@@ -184,15 +181,29 @@ module UnsafeJQueryPlugin {
   }
 
   /**
-   * Holds if `plugin` likely expects `sink` to be treated as a HTML fragment.
+   * Holds if there exists a jQuery plugin that likely expects `sink` to be treated as a HTML fragment.
    */
-  predicate isLikelyIntentionalHtmlSink(JQuery::JQueryPluginMethod plugin, Sink sink) {
-    exists(DataFlow::PropWrite defaultDef, string default, DataFlow::PropRead finalRead |
+  predicate isLikelyIntentionalHtmlSink(DataFlow::Node sink) {
+    exists(
+      JQuery::JQueryPluginMethod plugin, DataFlow::PropWrite defaultDef,
+      DataFlow::PropRead finalRead
+    |
       hasDefaultOption(plugin, defaultDef) and
-      defaultDef.getPropertyName() = finalRead.getPropertyName() and
-      defaultDef.getRhs().mayHaveStringValue(default) and
+      defaultDef = getALikelyHTMLWrite(finalRead.getPropertyName()) and
+      finalRead.flowsTo(sink) and
+      sink.getTopLevel() = plugin.getTopLevel()
+    )
+  }
+
+  /**
+   * Gets a property-write that writes a HTML-like constant string to `prop`.
+   */
+  pragma[noinline]
+  private DataFlow::PropWrite getALikelyHTMLWrite(string prop) {
+    exists(string default |
+      result.getRhs().mayHaveStringValue(default) and
       default.regexpMatch("\\s*<.*") and
-      finalRead.flowsTo(sink)
+      result.getPropertyName() = prop
     )
   }
 }

@@ -28,7 +28,7 @@ predicate oppositeOperators(string op1, string op2) {
  * `!op2(_, _)`.
  */
 predicate implementedAsNegationOf(Operator op1, Operator op2) {
-  exists(Block b, ReturnStmt r, NotExpr n, Expr o |
+  exists(BlockStmt b, ReturnStmt r, NotExpr n, Expr o |
     b = op1.getBlock() and
     b.getNumStmt() = 1 and
     r = b.getStmt(0) and

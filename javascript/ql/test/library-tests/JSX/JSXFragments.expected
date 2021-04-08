@@ -1,6 +1,0 @@
-| tst.js:7:16:7:52 | <> frag ... ext </> | 0 | tst.js:7:18:7:32 |  fragment text  |
-| tst.js:7:16:7:52 | <> frag ... ext </> | 1 | tst.js:7:33:7:38 | <Foo/> |
-| tst.js:7:16:7:52 | <> frag ... ext </> | 2 | tst.js:7:39:7:49 |  more text  |
-| tstest.tsx:7:16:7:52 | <> frag ... ext </> | 0 | tstest.tsx:7:19:7:32 | fragment text  |
-| tstest.tsx:7:16:7:52 | <> frag ... ext </> | 1 | tstest.tsx:7:33:7:38 | <Foo/> |
-| tstest.tsx:7:16:7:52 | <> frag ... ext </> | 2 | tstest.tsx:7:40:7:49 | more text  |

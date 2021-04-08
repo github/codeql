@@ -47,8 +47,10 @@
 | isfromtemplateinstantiation.cpp:40:2:40:2 | return ... | isfromtemplateinstantiation.cpp:38:26:38:26 | normal_class::a_template_method<short>() |
 | isfromtemplateinstantiation.cpp:44:26:44:26 | declaration of operator= | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<char> |
 | isfromtemplateinstantiation.cpp:44:26:44:26 | declaration of operator= | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<char> |
+| isfromtemplateinstantiation.cpp:44:26:44:26 | definition of template_class | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<char> |
 | isfromtemplateinstantiation.cpp:44:26:44:26 | template_class<char>::operator=(const template_class<char> &) | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<char> |
 | isfromtemplateinstantiation.cpp:44:26:44:26 | template_class<char>::operator=(template_class<char> &&) | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<char> |
+| isfromtemplateinstantiation.cpp:44:26:44:26 | template_class<char>::template_class() | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<char> |
 | isfromtemplateinstantiation.cpp:46:4:46:4 | definition of t | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<char> |
 | isfromtemplateinstantiation.cpp:46:4:46:4 | t | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<char> |
 | isfromtemplateinstantiation.cpp:49:7:49:7 | definition of b_method | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<char> |

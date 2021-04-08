@@ -290,7 +290,7 @@ class TranslatedTryStmt extends TranslatedStmt {
 }
 
 class TranslatedBlock extends TranslatedStmt {
-  override Block stmt;
+  override BlockStmt stmt;
 
   override TranslatedElement getChild(int id) { result = getStmt(id) }
 

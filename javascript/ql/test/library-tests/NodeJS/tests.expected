@@ -1,0 +1,107 @@
+module_getAnExportedSymbol
+| b.js:1:1:8:0 | <toplevel> | sneaky |
+| d.js:1:1:7:15 | <toplevel> | baz |
+| reexport/a.js:1:1:3:1 | <toplevel> | foo |
+| reexport/b.js:1:1:6:1 | <toplevel> | bar |
+| reexport/b.js:1:1:6:1 | <toplevel> | foo |
+| sub/c.js:1:1:4:0 | <toplevel> | foo |
+| sub/f.js:1:1:4:17 | <toplevel> | bar |
+module_getAnImport
+| a.js:1:1:14:0 | <toplevel> | a.js:1:9:1:22 | require('./b') |
+| a.js:1:1:14:0 | <toplevel> | a.js:2:7:2:19 | require('fs') |
+| a.js:1:1:14:0 | <toplevel> | a.js:3:6:3:23 | require('./sub/c') |
+| a.js:1:1:14:0 | <toplevel> | a.js:4:6:4:29 | require ... /d.js') |
+| a.js:1:1:14:0 | <toplevel> | a.js:7:1:7:18 | require('./sub/c') |
+| a.js:1:1:14:0 | <toplevel> | a.js:10:1:10:18 | require(__dirname) |
+| a.js:1:1:14:0 | <toplevel> | a.js:11:1:11:25 | require ... + '/e') |
+| a.js:1:1:14:0 | <toplevel> | a.js:12:1:12:28 | require ...  + 'c') |
+| b.js:1:1:8:0 | <toplevel> | b.js:1:1:1:18 | require('./sub/c') |
+| d.js:1:1:7:15 | <toplevel> | d.js:1:1:1:38 | require ... s/ini') |
+| d.js:1:1:7:15 | <toplevel> | d.js:7:1:7:14 | require('foo') |
+| e.js:1:1:6:0 | <toplevel> | e.js:5:1:5:18 | require("process") |
+| index.js:1:1:3:0 | <toplevel> | index.js:1:12:1:26 | require('path') |
+| index.js:1:1:3:0 | <toplevel> | index.js:2:1:2:41 | require ... b.js")) |
+| mjs-files/require-from-js.js:1:1:4:0 | <toplevel> | mjs-files/require-from-js.js:1:12:1:36 | require ... on-me') |
+| mjs-files/require-from-js.js:1:1:4:0 | <toplevel> | mjs-files/require-from-js.js:2:12:2:39 | require ... me.js') |
+| mjs-files/require-from-js.js:1:1:4:0 | <toplevel> | mjs-files/require-from-js.js:3:12:3:40 | require ... e.mjs') |
+| reexport/b.js:1:1:6:1 | <toplevel> | reexport/b.js:1:11:1:24 | require("./a") |
+| sub/c.js:1:1:4:0 | <toplevel> | sub/c.js:1:1:1:15 | require('../a') |
+module_getAnImportedModule
+| a.js:1:1:14:0 | <toplevel> | b.js:1:1:8:0 | <toplevel> |
+| a.js:1:1:14:0 | <toplevel> | d.js:1:1:7:15 | <toplevel> |
+| a.js:1:1:14:0 | <toplevel> | e.js:1:1:6:0 | <toplevel> |
+| a.js:1:1:14:0 | <toplevel> | index.js:1:1:3:0 | <toplevel> |
+| a.js:1:1:14:0 | <toplevel> | sub/c.js:1:1:4:0 | <toplevel> |
+| b.js:1:1:8:0 | <toplevel> | sub/c.js:1:1:4:0 | <toplevel> |
+| d.js:1:1:7:15 | <toplevel> | sub/f.js:1:1:4:17 | <toplevel> |
+| index.js:1:1:3:0 | <toplevel> | b.js:1:1:8:0 | <toplevel> |
+| mjs-files/require-from-js.js:1:1:4:0 | <toplevel> | mjs-files/depend-on-me.js:1:1:8:0 | <toplevel> |
+| mjs-files/require-from-js.js:1:1:4:0 | <toplevel> | mjs-files/depend-on-me.mjs:1:1:7:1 | <toplevel> |
+| reexport/b.js:1:1:6:1 | <toplevel> | reexport/a.js:1:1:3:1 | <toplevel> |
+| sub/c.js:1:1:4:0 | <toplevel> | a.js:1:1:14:0 | <toplevel> |
+moduleAccess
+| b.js:7:22:7:27 | module |
+| d.js:3:1:3:6 | module |
+| reexport/a.js:1:1:1:6 | module |
+| reexport/b.js:3:1:3:6 | module |
+modules
+| a.js:1:1:14:0 | <toplevel> | a.js:0:0:0:0 | a.js | a.js | a |
+| b.js:1:1:8:0 | <toplevel> | b.js:0:0:0:0 | b.js | b.js | b |
+| d.js:1:1:7:15 | <toplevel> | d.js:0:0:0:0 | d.js | d.js | d |
+| e.js:1:1:6:0 | <toplevel> | e.js:0:0:0:0 | e.js | e.js | e |
+| index.js:1:1:3:0 | <toplevel> | index.js:0:0:0:0 | index.js | index.js | index |
+| mjs-files/require-from-js.js:1:1:4:0 | <toplevel> | mjs-files/require-from-js.js:0:0:0:0 | mjs-files/require-from-js.js | mjs-files/require-from-js.js | require-from-js |
+| reexport/a.js:1:1:3:1 | <toplevel> | reexport/a.js:0:0:0:0 | reexport/a.js | reexport/a.js | a |
+| reexport/b.js:1:1:6:1 | <toplevel> | reexport/b.js:0:0:0:0 | reexport/b.js | reexport/b.js | b |
+| sub/c.js:1:1:4:0 | <toplevel> | sub/c.js:0:0:0:0 | sub/c.js | sub/c.js | c |
+| sub/f.js:1:1:4:17 | <toplevel> | sub/f.js:0:0:0:0 | sub/f.js | sub/f.js | f |
+nodeModule_exports
+| b.js:1:1:8:0 | <toplevel> | sneaky | b.js:7:52:7:53 | 56 |
+| d.js:1:1:7:15 | <toplevel> | baz | d.js:4:7:4:8 | 42 |
+| mjs-files/depend-on-me.js:1:1:8:0 | <toplevel> | add | mjs-files/depend-on-me.js:5:8:7:1 | functio ...  + y;\\n} |
+| mjs-files/depend-on-me.mjs:1:1:7:1 | <toplevel> | add | mjs-files/depend-on-me.mjs:5:8:7:1 | functio ...  + y;\\n} |
+| reexport/a.js:1:1:3:1 | <toplevel> | foo | reexport/a.js:2:10:2:26 | function foo() {} |
+| reexport/b.js:1:1:6:1 | <toplevel> | bar | reexport/b.js:4:10:4:26 | function bar() {} |
+| reexport/b.js:1:1:6:1 | <toplevel> | foo | reexport/a.js:2:10:2:26 | function foo() {} |
+| sub/c.js:1:1:4:0 | <toplevel> | foo | sub/c.js:3:15:3:16 | 23 |
+| sub/f.js:1:1:4:17 | <toplevel> | bar | sub/f.js:4:15:4:16 | 42 |
+require
+| a.js:1:9:1:22 | require('./b') |
+| a.js:2:7:2:19 | require('fs') |
+| a.js:3:6:3:23 | require('./sub/c') |
+| a.js:4:6:4:29 | require ... /d.js') |
+| a.js:7:1:7:18 | require('./sub/c') |
+| a.js:10:1:10:18 | require(__dirname) |
+| a.js:11:1:11:25 | require ... + '/e') |
+| a.js:12:1:12:28 | require ...  + 'c') |
+| b.js:1:1:1:18 | require('./sub/c') |
+| d.js:1:1:1:38 | require ... s/ini') |
+| d.js:7:1:7:14 | require('foo') |
+| e.js:5:1:5:18 | require("process") |
+| f.js:2:1:2:7 | r("fs") |
+| g.js:1:1:1:96 | (proces ... https") |
+| g.js:1:43:1:61 | require("electron") |
+| index.js:1:12:1:26 | require('path') |
+| index.js:2:1:2:41 | require ... b.js")) |
+| mjs-files/createRequire.mjs:4:26:4:49 | require ... erver') |
+| mjs-files/require-from-js.js:1:12:1:36 | require ... on-me') |
+| mjs-files/require-from-js.js:2:12:2:39 | require ... me.js') |
+| mjs-files/require-from-js.js:3:12:3:40 | require ... e.mjs') |
+| reexport/b.js:1:11:1:24 | require("./a") |
+| sub/c.js:1:1:1:15 | require('../a') |
+requireImport
+| a.js:1:9:1:22 | require('./b') | ./b | b.js:1:1:8:0 | <toplevel> |
+| a.js:3:6:3:23 | require('./sub/c') | ./sub/c | sub/c.js:1:1:4:0 | <toplevel> |
+| a.js:4:6:4:29 | require ... /d.js') | ./sub/../d.js | d.js:1:1:7:15 | <toplevel> |
+| a.js:7:1:7:18 | require('./sub/c') | ./sub/c | sub/c.js:1:1:4:0 | <toplevel> |
+| a.js:10:1:10:18 | require(__dirname) | /library-tests/NodeJS | index.js:1:1:3:0 | <toplevel> |
+| a.js:11:1:11:25 | require ... + '/e') | /library-tests/NodeJS/e | e.js:1:1:6:0 | <toplevel> |
+| a.js:12:1:12:28 | require ...  + 'c') | ./sub/c | sub/c.js:1:1:4:0 | <toplevel> |
+| b.js:1:1:1:18 | require('./sub/c') | ./sub/c | sub/c.js:1:1:4:0 | <toplevel> |
+| d.js:7:1:7:14 | require('foo') | foo | sub/f.js:1:1:4:17 | <toplevel> |
+| index.js:2:1:2:41 | require ... b.js")) | /library-tests/NodeJS/index.js/../b.js | b.js:1:1:8:0 | <toplevel> |
+| mjs-files/require-from-js.js:1:12:1:36 | require ... on-me') | ./depend-on-me | mjs-files/depend-on-me.mjs:1:1:7:1 | <toplevel> |
+| mjs-files/require-from-js.js:2:12:2:39 | require ... me.js') | ./depend-on-me.js | mjs-files/depend-on-me.js:1:1:8:0 | <toplevel> |
+| mjs-files/require-from-js.js:3:12:3:40 | require ... e.mjs') | ./depend-on-me.mjs | mjs-files/depend-on-me.mjs:1:1:7:1 | <toplevel> |
+| reexport/b.js:1:11:1:24 | require("./a") | ./a | reexport/a.js:1:1:3:1 | <toplevel> |
+| sub/c.js:1:1:1:15 | require('../a') | ../a | a.js:1:1:14:0 | <toplevel> |

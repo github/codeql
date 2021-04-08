@@ -41,3 +41,29 @@ let unknownType: unknown;
 
 let constArrayLiteral = [1, 2] as const;
 let constObjectLiteral = { foo: "foo" } as const;
+
+
+try { }
+catch (e: unknown) {
+  if (typeof e === "string") {
+      let b : string = e;
+  }
+}
+
+
+interface NonAbstractDummy {
+  getArea(): number;
+}
+
+interface HasArea {
+  getArea(): number;
+}
+
+// abstract construct signature!
+let Ctor: abstract new () => HasArea = Shape;
+
+type MyUnion = {myUnion: true} | {stillMyUnion: true};
+let union1: MyUnion = {myUnion: true};
+
+type MyUnion2 = MyUnion | {yetAnotherType: true};
+let union2: MyUnion2 = {yetAnotherType: true};

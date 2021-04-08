@@ -514,6 +514,11 @@ predicate convNullableType(ValueOrRefType fromType, NullableType toType) {
   )
 }
 
+/**
+ * Holds if `fromType` is `NullType`, and `toType` is a type that can represent
+ * the `null` value, such as a reference type, `Nullable<T>` or a type parameter
+ * with contraints that restrict it to a reference type.
+ */
 // This is a deliberate, small Cartesian product, so we have manually lifted it to force the
 // evaluator to evaluate it in its entirety, rather than trying to optimize it in context.
 pragma[noinline]
@@ -596,11 +601,12 @@ private predicate convArrayTypeCovariance(ArrayType fromType, ArrayType toType) 
   convArrayTypeCovarianceJoin(fromType, toType, toType.getDimension(), toType.getRank())
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate convArrayTypeCovarianceJoin(ArrayType fromType, ArrayType toType, int dim, int rnk) {
   convArrayElementType(fromType, toType.getElementType(), dim, rnk)
 }
 
+pragma[nomagic]
 private predicate convArrayElementType(ArrayType at, ArrayElementType aet, int dim, int rnk) {
   convRefTypeNonNull(at.getElementType(), aet) and
   dim = at.getDimension() and

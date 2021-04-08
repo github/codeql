@@ -32,7 +32,7 @@ predicate important(Method m) {
 /** Holds if the return type of `m` is an instantiated type parameter from `m`. */
 predicate methodHasGenericReturnType(ConstructedMethod cm) {
   exists(UnboundGenericMethod ugm |
-    ugm = cm.getSourceDeclaration() and
+    ugm = cm.getUnboundGeneric() and
     ugm.getReturnType() = ugm.getATypeParameter()
   )
 }
@@ -46,16 +46,16 @@ predicate dubious(Method m, int percentage) {
   // Suppress on methods designed for chaining
   not designedForChaining(m) and
   exists(int used, int total, Method target |
-    target = m.getSourceDeclaration() and
+    target = m.getUnboundDeclaration() and
     used =
       count(MethodCall mc |
-        mc.getTarget().getSourceDeclaration() = target and
+        mc.getTarget().getUnboundDeclaration() = target and
         not mc instanceof DiscardedMethodCall and
         (methodHasGenericReturnType(m) implies m.getReturnType() = mc.getTarget().getReturnType())
       ) and
     total =
       count(MethodCall mc |
-        mc.getTarget().getSourceDeclaration() = target and
+        mc.getTarget().getUnboundDeclaration() = target and
         (methodHasGenericReturnType(m) implies m.getReturnType() = mc.getTarget().getReturnType())
       ) and
     used != total and

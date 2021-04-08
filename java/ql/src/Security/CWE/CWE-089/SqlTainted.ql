@@ -8,6 +8,7 @@
  * @id java/sql-injection
  * @tags security
  *       external/cwe/cwe-089
+ *       external/cwe/cwe-564
  */
 
 import java

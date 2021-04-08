@@ -20,7 +20,9 @@ class StructuralComparisonConfig extends StructuralComparisonConfiguration {
     exists(AssignExpr ae |
       // Member initializers are never self-assignments, in particular
       // not initializers such as `new C { F = F };`
-      not ae instanceof MemberInitializer
+      not ae instanceof MemberInitializer and
+      // Enum field initializers are never self assignments. `enum E { A = 42 }`
+      not ae.getParent().(Field).getDeclaringType() instanceof Enum
     |
       ae.getLValue() = x and
       ae.getRValue() = y

@@ -66,6 +66,49 @@ module PropertyProjection {
 deprecated class CustomPropertyProjection = PropertyProjection::Range;
 
 /**
+ * Gets a callee of a simple property projection call.
+ * This predicate is used exclusively in `SimplePropertyProjection`.
+ */
+pragma[noinline]
+private DataFlow::SourceNode getASimplePropertyProjectionCallee(
+  boolean singleton, int selectorIndex, int objectIndex
+) {
+  singleton = false and
+  (
+    result = LodashUnderscore::member("pickBy") and
+    objectIndex = 0 and
+    selectorIndex = 1
+    or
+    result = DataFlow::moduleMember("ramda", ["pick", "pickAll", "pickBy"]) and
+    objectIndex = 1 and
+    selectorIndex = 0
+    or
+    result = DataFlow::moduleMember("dotty", "search") and
+    objectIndex = 0 and
+    selectorIndex = 1
+  )
+  or
+  singleton = true and
+  (
+    result = LodashUnderscore::member("get") and
+    objectIndex = 0 and
+    selectorIndex = 1
+    or
+    result = DataFlow::moduleMember("ramda", "path") and
+    objectIndex = 1 and
+    selectorIndex = 0
+    or
+    result = DataFlow::moduleMember("dottie", "get") and
+    objectIndex = 0 and
+    selectorIndex = 1
+    or
+    result = DataFlow::moduleMember("dotty", "get") and
+    objectIndex = 0 and
+    selectorIndex = 1
+  )
+}
+
+/**
  * A simple model of common property projection functions.
  */
 private class SimplePropertyProjection extends PropertyProjection::Range {
@@ -74,51 +117,7 @@ private class SimplePropertyProjection extends PropertyProjection::Range {
   boolean singleton;
 
   SimplePropertyProjection() {
-    exists(DataFlow::SourceNode callee | this = callee.getACall() |
-      singleton = false and
-      (
-        callee = LodashUnderscore::member("pick") and
-        objectIndex = 0 and
-        selectorIndex = [1 .. getNumArgument()]
-        or
-        callee = LodashUnderscore::member("pickBy") and
-        objectIndex = 0 and
-        selectorIndex = 1
-        or
-        exists(string name |
-          name = "pick" or
-          name = "pickAll" or
-          name = "pickBy"
-        |
-          callee = DataFlow::moduleMember("ramda", name) and
-          objectIndex = 1 and
-          selectorIndex = 0
-        )
-        or
-        callee = DataFlow::moduleMember("dotty", "search") and
-        objectIndex = 0 and
-        selectorIndex = 1
-      )
-      or
-      singleton = true and
-      (
-        callee = LodashUnderscore::member("get") and
-        objectIndex = 0 and
-        selectorIndex = 1
-        or
-        callee = DataFlow::moduleMember("ramda", "path") and
-        objectIndex = 1 and
-        selectorIndex = 0
-        or
-        callee = DataFlow::moduleMember("dottie", "get") and
-        objectIndex = 0 and
-        selectorIndex = 1
-        or
-        callee = DataFlow::moduleMember("dotty", "get") and
-        objectIndex = 0 and
-        selectorIndex = 1
-      )
-    )
+    this = getASimplePropertyProjectionCallee(singleton, selectorIndex, objectIndex).getACall()
   }
 
   override DataFlow::Node getObject() { result = getArgument(objectIndex) }
@@ -129,16 +128,27 @@ private class SimplePropertyProjection extends PropertyProjection::Range {
 }
 
 /**
+ * A property projection with a variable number of selector indices.
+ */
+private class VarArgsPropertyProjection extends PropertyProjection::Range {
+  VarArgsPropertyProjection() { this = LodashUnderscore::member("pick").getACall() }
+
+  override DataFlow::Node getObject() { result = getArgument(0) }
+
+  override DataFlow::Node getASelector() { result = getArgument(any(int i | i > 0)) }
+
+  override predicate isSingletonProjection() { none() }
+}
+
+/**
  * A taint step for a property projection.
  */
-private class PropertyProjectionTaintStep extends TaintTracking::AdditionalTaintStep {
-  PropertyProjection projection;
-
-  PropertyProjectionTaintStep() { projection = this }
-
+private class PropertyProjectionTaintStep extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     // reading from a tainted object yields a tainted result
-    this = succ and
-    pred = projection.getObject()
+    exists(PropertyProjection projection |
+      pred = projection.getObject() and
+      succ = projection
+    )
   }
 }

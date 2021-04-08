@@ -1,0 +1,141 @@
+unsafe.cs:
+#    1| [NamespaceDeclaration] namespace ... { ... }
+#    3|   1: [Class] Test
+#    5|     5: [Method] Main
+#    5|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#    5|         0: [Parameter] args
+#    5|           -1: [TypeMention] String[]
+#    5|             1: [TypeMention] string
+#    6|       4: [BlockStmt] {...}
+#    7|         0: [LocalVariableDeclStmt] ... ...;
+#    7|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#    7|             -1: [TypeMention] int
+#    7|             0: [LocalVariableAccess] access to local variable i
+#    7|             1: [IntLiteral] 42
+#    8|         1: [LocalVariableDeclStmt] ... ...;
+#    8|           0: [LocalVariableDeclAndInitExpr] Int32[] ia = ...
+#    8|             -1: [TypeMention] Int32[]
+#    8|               1: [TypeMention] int
+#    8|             0: [LocalVariableAccess] access to local variable ia
+#    8|             1: [ArrayCreation] array creation of type Int32[]
+#    8|               -1: [TypeMention] Int32[]
+#    8|                 1: [TypeMention] int
+#    8|               0: [IntLiteral] 2
+#    9|         2: [ExprStmt] ...;
+#    9|           0: [AssignExpr] ... = ...
+#    9|             0: [ArrayAccess] access to array element
+#    9|               -1: [LocalVariableAccess] access to local variable ia
+#    9|               0: [IntLiteral] 0
+#    9|             1: [IntLiteral] 0
+#   10|         3: [ExprStmt] ...;
+#   10|           0: [AssignExpr] ... = ...
+#   10|             0: [ArrayAccess] access to array element
+#   10|               -1: [LocalVariableAccess] access to local variable ia
+#   10|               0: [IntLiteral] 1
+#   10|             1: [IntLiteral] 1
+#   11|         4: [LocalVariableDeclStmt] ... ...;
+#   11|           0: [LocalVariableDeclAndInitExpr] Int32* ip = ...
+#   11|             -1: [TypeMention] int*
+#   11|               1: [TypeMention] int
+#   11|             0: [LocalVariableAccess] access to local variable ip
+#   11|             1: [AddressOfExpr] &...
+#   11|               0: [LocalVariableAccess] access to local variable i
+#   12|         5: [ExprStmt] ...;
+#   12|           0: [AssignExpr] ... = ...
+#   12|             0: [LocalVariableAccess] access to local variable ip
+#   12|             1: [AddExpr] ... + ...
+#   12|               0: [LocalVariableAccess] access to local variable ip
+#   12|               1: [IntLiteral] 1
+#   13|         6: [ExprStmt] ...;
+#   13|           0: [AssignExpr] ... = ...
+#   13|             0: [LocalVariableAccess] access to local variable ip
+#   13|             1: [AddExpr] ... + ...
+#   13|               0: [PointerIndirectionExpr] *...
+#   13|                 0: [LocalVariableAccess] access to local variable ip
+#   13|               1: [LocalVariableAccess] access to local variable ip
+#   14|         7: [ExprStmt] ...;
+#   14|           0: [AssignExpr] ... = ...
+#   14|             0: [LocalVariableAccess] access to local variable ip
+#   14|             1: [AddExpr] ... + ...
+#   14|               0: [PointerIndirectionExpr] *...
+#   14|                 0: [LocalVariableAccess] access to local variable ip
+#   14|               1: [AddressOfExpr] &...
+#   14|                 0: [LocalVariableAccess] access to local variable i
+#   15|         8: [LocalVariableDeclStmt] ... ...;
+#   15|           0: [LocalVariableDeclAndInitExpr] Int32* ip42 = ...
+#   15|             -1: [TypeMention] int*
+#   15|               1: [TypeMention] int
+#   15|             0: [LocalVariableAccess] access to local variable ip42
+#   15|             1: [AddressOfExpr] &...
+#   15|               0: [LocalVariableAccess] access to local variable i
+#   16|         9: [ExprStmt] ...;
+#   16|           0: [PostIncrExpr] ...++
+#   16|             0: [LocalVariableAccess] access to local variable ip
+#   17|         10: [ExprStmt] ...;
+#   17|           0: [AssignExpr] ... = ...
+#   17|             0: [LocalVariableAccess] access to local variable ip
+#   17|             1: [SubExpr] ... - ...
+#   17|               0: [LocalVariableAccess] access to local variable ip
+#   17|               1: [IntLiteral] 1
+#   18|         11: [ExprStmt] ...;
+#   18|           0: [AssignExpr] ... = ...
+#   18|             0: [PointerIndirectionExpr] *...
+#   18|               0: [LocalVariableAccess] access to local variable ip42
+#   18|             1: [SizeofExpr] sizeof(..)
+#   18|               0: [TypeAccess] access to type Char*
+#   18|                 0: [TypeMention] char*
+#   18|                   1: [TypeMention] char
+#   19|         12: [LocalVariableDeclStmt] ... ...;
+#   19|           0: [LocalVariableDeclAndInitExpr] Int64 distance = ...
+#   19|             -1: [TypeMention] long
+#   19|             0: [LocalVariableAccess] access to local variable distance
+#   19|             1: [SubExpr] ... - ...
+#   19|               0: [LocalVariableAccess] access to local variable ip
+#   19|               1: [LocalVariableAccess] access to local variable ip42
+#   22|     6: [Method] f
+#   22|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   22|         0: [Parameter] p
+#   22|           -1: [TypeMention] char*
+#   22|             1: [TypeMention] char
+#   23|       4: [BlockStmt] {...}
+#   24|         0: [ExprStmt] ...;
+#   24|           0: [MethodCall] call to method ToString
+#   24|             -1: [PointerIndirectionExpr] *...
+#   24|               0: [ParameterAccess] access to parameter p
+#   25|         1: [ExprStmt] ...;
+#   25|           0: [MethodCall] call to method ToString
+#   25|             -1: [PointerIndirectionExpr] *...
+#   25|               0: [ParameterAccess] access to parameter p
+#   26|         2: [ExprStmt] ...;
+#   26|           0: [MethodCall] call to method ToString
+#   26|             -1: [PointerIndirectionExpr] *...
+#   26|               0: [AddExpr] ... + ...
+#   26|                 0: [ParameterAccess] access to parameter p
+#   26|               1: [IntLiteral] 0
+#   30|     7: [Method] g
+#   30|       -1: [TypeMention] Void
+#   30|       4: [BlockStmt] {...}
+#   32|     8: [Method] h
+#   32|       -1: [TypeMention] Void
+#   33|       4: [BlockStmt] {...}
+#   34|         0: [UnsafeStmt] unsafe {...}
+#   35|           0: [BlockStmt] {...}
+#   36|             0: [LocalVariableDeclStmt] ... ...;
+#   36|               0: [LocalVariableDeclAndInitExpr] Int32[] data = ...
+#   36|                 -1: [TypeMention] Int32[]
+#   36|                 0: [LocalVariableAccess] access to local variable data
+#   36|                 1: [ArrayCreation] array creation of type Int32[]
+#   36|                   -1: [TypeMention] Int32[]
+#   36|                     1: [TypeMention] int
+#   36|                   0: [IntLiteral] 10
+#   37|             1: [FixedStmt] fixed(...) { ... }
+#   37|               -1: [LocalVariableDeclAndInitExpr] Int32* p = ...
+#   37|                 -1: [TypeMention] int*
+#   37|                   1: [TypeMention] int
+#   37|                 0: [LocalVariableAccess] access to local variable p
+#   37|                 1: [CastExpr] (...) ...
+#   37|                   1: [LocalVariableAccess] access to local variable data
+#   38|               0: [BlockStmt] {...}
+#   44|   2: [Class] SafeClass

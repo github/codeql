@@ -66,10 +66,7 @@ class IFStream extends Type {
  */
 class CinVariable extends NamespaceVariable {
   CinVariable() {
-    (
-      getName() = "cin" or
-      getName() = "wcin"
-    ) and
+    getName() = ["cin", "wcin"] and
     getNamespace().getName() = "std"
   }
 }

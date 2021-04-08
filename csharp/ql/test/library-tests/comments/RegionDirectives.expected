@@ -1,0 +1,2 @@
+| trivia.cs:36:9:36:22 | #region ... | fields | trivia.cs:41:9:41:18 | #endregion |
+| trivia.cs:38:9:38:22 | #region ... | nested | trivia.cs:40:9:40:18 | #endregion |

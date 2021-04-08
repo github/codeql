@@ -10,7 +10,7 @@ where
   is.getEnclosingFunction().hasName("normal") and
   is.getParentStmt().hasChild(is, k) and
   is.getParentStmt().hasChild(l3, k + 1) and
-  last = is.getElse().(Block).getLastStmt() and
+  last = is.getElse().(BlockStmt).getLastStmt() and
   l3 = last.getASuccessor() and
   count(last.getASuccessor()) = 1
 select last, l3.getName()

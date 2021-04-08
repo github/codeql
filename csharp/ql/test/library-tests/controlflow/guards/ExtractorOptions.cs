@@ -1,2 +1,2 @@
-// semmle-extractor-options: --cil /langversion:8.0
+// semmle-extractor-options: --cil
 #nullable enable

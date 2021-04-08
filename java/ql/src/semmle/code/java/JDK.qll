@@ -46,6 +46,11 @@ class TypeStringBuilder extends Class {
   TypeStringBuilder() { this.hasQualifiedName("java.lang", "StringBuilder") }
 }
 
+/** Class `java.lang.StringBuffer` or `java.lang.StringBuilder`. */
+class StringBuildingType extends Class {
+  StringBuildingType() { this instanceof TypeStringBuffer or this instanceof TypeStringBuilder }
+}
+
 /** The class `java.lang.System`. */
 class TypeSystem extends Class {
   TypeSystem() { this.hasQualifiedName("java.lang", "System") }
@@ -208,6 +213,21 @@ class MethodSystemGetProperty extends Method {
   MethodSystemGetProperty() {
     hasName("getProperty") and
     getDeclaringType() instanceof TypeSystem
+  }
+}
+
+/**
+ * An access to a method named `getProperty` on class `java.lang.System`.
+ */
+class MethodAccessSystemGetProperty extends MethodAccess {
+  MethodAccessSystemGetProperty() { getMethod() instanceof MethodSystemGetProperty }
+
+  /**
+   * Holds if this call has a compile-time constant first argument with the value `propertyName`.
+   * For example: `System.getProperty("user.dir")`.
+   */
+  predicate hasCompileTimeConstantGetPropertyName(string propertyName) {
+    this.getArgument(0).(CompileTimeConstantExpr).getStringValue() = propertyName
   }
 }
 

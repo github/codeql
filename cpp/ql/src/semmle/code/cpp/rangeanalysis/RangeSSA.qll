@@ -40,21 +40,20 @@ library class RangeSSA extends SSAHelper {
   }
 }
 
-private predicate guard_defn(
-  VariableAccess v, ComparisonOperation guard, BasicBlock b, boolean branch
-) {
+private predicate guard_defn(VariableAccess v, Expr guard, BasicBlock b, boolean branch) {
   guardCondition(guard, v, branch) and
   guardSuccessor(guard, branch, b)
 }
 
-private predicate guardCondition(ComparisonOperation guard, VariableAccess v, boolean branch) {
+private predicate guardCondition(Expr guard, VariableAccess v, boolean branch) {
   exists(Expr lhs | linearAccess(lhs, v, _, _) |
     relOpWithSwapAndNegate(guard, lhs, _, _, _, branch) or
-    eqOpWithSwapAndNegate(guard, lhs, _, _, branch)
+    eqOpWithSwapAndNegate(guard, lhs, _, _, branch) or
+    eqZeroWithNegate(guard, lhs, _, branch)
   )
 }
 
-private predicate guardSuccessor(ComparisonOperation guard, boolean branch, BasicBlock succ) {
+private predicate guardSuccessor(Expr guard, boolean branch, BasicBlock succ) {
   branch = true and succ = guard.getATrueSuccessor()
   or
   branch = false and succ = guard.getAFalseSuccessor()
@@ -98,7 +97,7 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
    * If this definition is a phi node corresponding to a guard,
    * then return the variable and the guard.
    */
-  predicate isGuardPhi(VariableAccess v, ComparisonOperation guard, boolean branch) {
+  predicate isGuardPhi(VariableAccess v, Expr guard, boolean branch) {
     guard_defn(v, guard, this, branch)
   }
 

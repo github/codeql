@@ -1,0 +1,14 @@
+fields/FieldTest.java:
+#    0| [CompilationUnit] FieldTest
+#    3|   1: [Class] FieldTest
+#    4|     4: [FieldDeclaration] float ff, ...;
+#    4|       -1: [TypeAccess] float
+#    4|       1: [FloatingPointLiteral] 2.3f
+#    5|     5: [FieldDeclaration] Object obj, ...;
+#    5|       -1: [TypeAccess] Object
+#    5|       0: [NullLiteral] null
+#    6|     6: [FieldDeclaration] List<> l, ...;
+#-----|       -2: (Annotations)
+#    6|         1: [Annotation] SuppressWarnings
+#    6|           1: [StringLiteral] "rawtypes"
+#    6|       -1: [TypeAccess] List<>

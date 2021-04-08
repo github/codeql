@@ -4,6 +4,7 @@
  */
 
 import java
+import IDEContextual
 
 /**
  * Restricts the location of a method access to the method identifier only,
@@ -202,11 +203,3 @@ Element definitionOf(Element e, string kind) {
   not dummyVarAccess(e) and
   not dummyTypeAccess(e)
 }
-
-/**
- * Returns an appropriately encoded version of a filename `name`
- * passed by the VS Code extension in order to coincide with the
- * output of `.getFile()` on locatable entities.
- */
-cached
-File getEncodedFile(string name) { result.getAbsolutePath().replaceAll(":", "_") = name }

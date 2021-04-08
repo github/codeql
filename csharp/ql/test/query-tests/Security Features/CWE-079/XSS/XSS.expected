@@ -2,11 +2,16 @@ edges
 | XSSAspNet.cs:20:25:20:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:27:30:27:34 | access to local variable sayHi |
 | XSSAspNet.cs:20:25:20:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:37:40:37:44 | access to local variable sayHi |
 | XSSAspNet.cs:44:28:44:46 | access to property QueryString : NameValueCollection | XSSAspNet.cs:44:28:44:55 | access to indexer |
-| XSSAspNetCore.cs:21:52:21:64 | access to property Query : IQueryCollection | XSSAspNetCore.cs:21:52:21:76 | call to operator implicit conversion |
+| XSSAspNetCore.cs:21:52:21:64 | access to property Query : IQueryCollection | XSSAspNetCore.cs:21:52:21:76 | access to indexer : StringValues |
+| XSSAspNetCore.cs:21:52:21:76 | access to indexer : StringValues | XSSAspNetCore.cs:21:52:21:76 | call to operator implicit conversion |
 | XSSAspNetCore.cs:40:56:40:58 | foo : String | XSSAspNetCore.cs:44:51:44:53 | access to parameter foo |
-| XSSAspNetCore.cs:58:43:58:55 | access to property Query : IQueryCollection | XSSAspNetCore.cs:58:43:58:73 | call to method ToString |
+| XSSAspNetCore.cs:58:43:58:55 | access to property Query : IQueryCollection | XSSAspNetCore.cs:58:43:58:62 | access to indexer : StringValues |
+| XSSAspNetCore.cs:58:43:58:62 | access to indexer : StringValues | XSSAspNetCore.cs:58:43:58:73 | call to method ToString |
+| XSSAspNetCore.cs:61:44:61:56 | access to property Query : IQueryCollection | XSSAspNetCore.cs:61:44:61:63 | access to indexer : StringValues |
 | XSSAspNetCore.cs:61:44:61:56 | access to property Query : IQueryCollection | XSSAspNetCore.cs:61:44:61:66 | access to indexer |
-| XSSAspNetCore.cs:72:51:72:65 | access to property Headers : IHeaderDictionary | XSSAspNetCore.cs:72:51:72:72 | call to operator implicit conversion |
+| XSSAspNetCore.cs:61:44:61:63 | access to indexer : StringValues | XSSAspNetCore.cs:61:44:61:66 | access to indexer |
+| XSSAspNetCore.cs:72:51:72:65 | access to property Headers : IHeaderDictionary | XSSAspNetCore.cs:72:51:72:72 | access to indexer : StringValues |
+| XSSAspNetCore.cs:72:51:72:72 | access to indexer : StringValues | XSSAspNetCore.cs:72:51:72:72 | call to operator implicit conversion |
 #select
 | XSSAspNet.cs:27:30:27:34 | access to local variable sayHi | XSSAspNet.cs:20:25:20:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:27:30:27:34 | access to local variable sayHi | $@ flows to here and is written to HTML or JavaScript: System.Web.WebPages.WebPage.WriteLiteral() method. | XSSAspNet.cs:20:25:20:43 | access to property QueryString : NameValueCollection | User-provided value |
 | XSSAspNet.cs:37:40:37:44 | access to local variable sayHi | XSSAspNet.cs:20:25:20:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:37:40:37:44 | access to local variable sayHi | $@ flows to here and is written to HTML or JavaScript: System.Web.WebPages.WebPage.WriteLiteralTo() method. | XSSAspNet.cs:20:25:20:43 | access to property QueryString : NameValueCollection | User-provided value |

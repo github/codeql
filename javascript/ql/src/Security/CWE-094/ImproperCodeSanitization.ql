@@ -27,7 +27,7 @@ private DataFlow::Node remoteFlow(DataFlow::TypeTracker t) {
   exists(DataFlow::TypeTracker t2, DataFlow::Node prev | prev = remoteFlow(t2) |
     t2 = t.smallstep(prev, result)
     or
-    any(TaintTracking::AdditionalTaintStep dts).step(prev, result) and
+    TaintTracking::sharedTaintStep(prev, result) and
     t = t2
   )
 }

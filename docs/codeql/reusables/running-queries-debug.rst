@@ -1,0 +1,1 @@
+If you want to examine query performance, enable the **Running Queries: Debug** setting to include timing and tuple counts in the CodeQL Query Server logs shown in the Output view. The tuple count is useful because it indicates the size of the :ref:`predicates <predicates>` computed by the query.

@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Duplicate anonymous class
  * @description Duplicated anonymous classes indicate that refactoring is necessary.
  * @kind problem
@@ -14,11 +15,8 @@
  */
 
 import java
-import CodeDuplication
 
 from AnonymousClass c, AnonymousClass other
-where
-  duplicateAnonymousClass(c, other) and
-  not fileLevelDuplication(c.getCompilationUnit(), other.getCompilationUnit())
+where none()
 select c, "Anonymous class is identical to $@.", other,
   "another anonymous class in " + other.getFile().getStem()

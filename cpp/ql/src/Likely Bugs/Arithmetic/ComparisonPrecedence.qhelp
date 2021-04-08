@@ -21,7 +21,7 @@ It is best to fully parenthesize complex comparison expressions to explicitly de
 <references>
 
 <li>
-  <a href="http://msdn.microsoft.com/en-us/library/126fe14k%28v=VS.80%29.aspx">Operator Precedence and Associativity</a>
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/cpp/cpp-built-in-operators-precedence-and-associativity">C++ built-in operators, precedence, and associativity</a>
 </li>
 <li>
   <a href="http://www.cplusplus.com/doc/tutorial/operators/">Operators</a>

@@ -1,0 +1,10 @@
+| fabric_v1_execute.py:7 | fail | unsafe | cmd |
+| fabric_v1_execute.py:7 | fail | unsafe | cmd2 |
+| fabric_v1_execute.py:8 | ok   | unsafe | safe_arg |
+| fabric_v1_execute.py:8 | ok   | unsafe | safe_optional |
+| fabric_v1_execute.py:14 | fail | unsafe | cmd |
+| fabric_v1_execute.py:14 | fail | unsafe | cmd2 |
+| fabric_v1_execute.py:15 | ok   | unsafe | safe_arg |
+| fabric_v1_execute.py:15 | ok   | unsafe | safe_optional |
+| fabric_v1_execute.py:21 | ok   | some_http_handler | cmd |
+| fabric_v1_execute.py:21 | ok   | some_http_handler | cmd2 |

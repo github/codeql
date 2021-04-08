@@ -1,6 +1,6 @@
 using System;
 using System.Diagnostics;
-
+#nullable enable
 /// <summary>
 /// Tests related to CFG splitting.
 /// </summary>
@@ -125,6 +125,7 @@ public class Splitting
         object? o = null;
         do
         {
+            o.GetHashCode(); // not null guarded
             if (o != null)
             {
                 if (b)

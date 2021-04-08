@@ -1,4 +1,0 @@
-| tests/es6Module.js:0:0:0:0 | tests/es6Module.js |
-| tests/es6ModuleDefault.js:0:0:0:0 | tests/es6ModuleDefault.js |
-| tests/importFromEs6.js:0:0:0:0 | tests/importFromEs6.js |
-| tests/requireFromEs6.js:0:0:0:0 | tests/requireFromEs6.js |

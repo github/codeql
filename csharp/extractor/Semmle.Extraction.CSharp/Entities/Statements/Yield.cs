@@ -4,9 +4,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class Yield : Statement<YieldStatementSyntax>
+    internal class Yield : Statement<YieldStatementSyntax>
     {
-        Yield(Context cx, YieldStatementSyntax node, IStatementParentEntity parent, int child)
+        private Yield(Context cx, YieldStatementSyntax node, IStatementParentEntity parent, int child)
             : base(cx, node, StmtKind.YIELD, parent, child) { }
 
         public static Yield Create(Context cx, YieldStatementSyntax node, IStatementParentEntity parent, int child)
@@ -18,9 +18,9 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            if (Stmt.Expression != null)
+            if (Stmt.Expression is not null)
             {
-                Expression.Create(cx, Stmt.Expression, this, 0);
+                Expression.Create(Context, Stmt.Expression, this, 0);
             }
         }
     }

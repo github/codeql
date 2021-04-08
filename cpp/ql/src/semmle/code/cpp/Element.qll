@@ -65,11 +65,10 @@ class ElementBase extends @element {
    * which they belong; for example, `AddExpr` is a primary class, but
    * `BinaryOperation` is not.
    *
-   * This predicate always has a result. If no primary class can be
-   * determined, the result is `"???"`. If multiple primary classes match,
-   * this predicate can have multiple results.
+   * This predicate can have multiple results if multiple primary classes match.
+   * For some elements, this predicate may not have a result.
    */
-  string getAPrimaryQlClass() { result = "???" }
+  string getAPrimaryQlClass() { none() }
 }
 
 /**
@@ -81,11 +80,9 @@ class Element extends ElementBase {
   File getFile() { result = this.getLocation().getFile() }
 
   /**
-   * Holds if this element may be from source.
-   *
-   * Note: this predicate is provided for consistency with the libraries
-   * for other languages, such as Java and Python. In C++, all files are
-   * classified as source files, so this predicate is always true.
+   * Holds if this element may be from source. This predicate holds for all
+   * elements, except for those in the dummy file, whose name is the empty string.
+   * The dummy file contains declarations that are built directly into the compiler.
    */
   predicate fromSource() { this.getFile().fromSource() }
 
@@ -128,7 +125,7 @@ class Element extends ElementBase {
 
   /**
    * Gets the parent scope of this `Element`, if any.
-   * A scope is a `Type` (`Class` / `Enum`), a `Namespace`, a `Block`, a `Function`,
+   * A scope is a `Type` (`Class` / `Enum`), a `Namespace`, a `BlockStmt`, a `Function`,
    * or certain kinds of `Statement`.
    */
   Element getParentScope() {
@@ -161,7 +158,7 @@ class Element extends ElementBase {
     exists(EnumConstant e | this = e and result = e.getDeclaringEnum())
     or
     // result instanceof block|function
-    exists(Block b | this = b and blockscope(unresolveElement(b), unresolveElement(result)))
+    exists(BlockStmt b | this = b and blockscope(unresolveElement(b), unresolveElement(result)))
     or
     exists(TemplateFunction tf | this = tf.getATemplateArgument() and result = tf)
     or
@@ -271,7 +268,12 @@ private predicate isFromUninstantiatedTemplateRec(Element e, Element template) {
 }
 
 /**
- * A C++11 `static_assert` or C11 `_Static_assert` construct.
+ * A C++11 `static_assert` or C11 `_Static_assert` construct. For example each
+ * line in the following example contains a static assert:
+ * ```
+ * static_assert(sizeof(MyStruct) <= 4096);
+ * static_assert(sizeof(MyStruct) <= 4096, "MyStruct is too big!");
+ * ```
  */
 class StaticAssert extends Locatable, @static_assert {
   override string toString() { result = "static_assert(..., \"" + getMessage() + "\")" }

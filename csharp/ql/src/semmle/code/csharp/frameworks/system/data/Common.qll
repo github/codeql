@@ -5,6 +5,7 @@
 private import csharp as csharp
 private import semmle.code.csharp.frameworks.system.Data as Data
 
+/** Definitions relating to the `System.Data.Common` namespace. */
 module SystemDataCommon {
   /** The `System.Data.Common` namespace. */
   class Namespace extends csharp::Namespace {

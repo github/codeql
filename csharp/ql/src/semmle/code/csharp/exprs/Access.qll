@@ -78,6 +78,8 @@ class ThisAccess extends Access, @this_access_expr {
   override Class getTarget() { result = this.getEnclosingCallable().getDeclaringType() }
 
   override string toString() { result = "this access" }
+
+  override string getAPrimaryQlClass() { result = "ThisAccess" }
 }
 
 /**
@@ -96,6 +98,8 @@ class BaseAccess extends Access, @base_access_expr {
   }
 
   override string toString() { result = "base access" }
+
+  override string getAPrimaryQlClass() { result = "BaseAccess" }
 }
 
 /**
@@ -221,6 +225,8 @@ class ParameterAccess extends LocalScopeVariableAccess, @parameter_access_expr {
   override Parameter getTarget() { expr_access(this, result) }
 
   override string toString() { result = "access to parameter " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "ParameterAccess" }
 }
 
 /**
@@ -273,6 +279,8 @@ class LocalVariableAccess extends LocalScopeVariableAccess, @local_variable_acce
     not this instanceof LocalVariableDeclExpr and
     result = "access to local variable " + this.getTarget().getName()
   }
+
+  override string getAPrimaryQlClass() { result = "LocalVariableAccess" }
 }
 
 /**
@@ -325,6 +333,8 @@ class FieldAccess extends AssignableMemberAccess, VariableAccess, @field_access_
   override Field getTarget() { expr_access(this, result) }
 
   override string toString() { result = "access to field " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "FieldAccess" }
 }
 
 /**
@@ -378,6 +388,8 @@ class MemberConstantAccess extends FieldAccess {
   override MemberConstant getTarget() { expr_access(this, result) }
 
   override string toString() { result = "access to constant " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "MemberConstantAccess" }
 }
 
 /**
@@ -636,6 +648,8 @@ library class EventAccessExpr extends Expr, @event_access_expr {
  */
 class EventAccess extends AssignableMemberAccess, EventAccessExpr {
   override Event getTarget() { result = getEvent() }
+
+  override string getAPrimaryQlClass() { result = "EventAccess" }
 }
 
 /**
@@ -727,6 +741,8 @@ class MethodAccess extends MemberAccess, CallableAccess {
   override Method getTarget() { expr_access(this, result) }
 
   override string toString() { result = "access to method " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "MethodAccess" }
 }
 
 /**
@@ -750,6 +766,8 @@ class LocalFunctionAccess extends CallableAccess {
   override LocalFunction getTarget() { expr_access(this, result) }
 
   override string toString() { result = "access to local function " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "LocalFunctionAccess" }
 }
 
 /**
@@ -787,6 +805,8 @@ class TypeAccess extends MemberAccess, @type_access_expr {
   override Type getTarget() { result = this.getType() }
 
   override string toString() { result = "access to type " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "TypeAccess" }
 }
 
 /**
@@ -807,6 +827,8 @@ class ArrayAccess extends ElementAccess, @array_access_expr {
   // Although an array (element) can be assigned a value, there is no
   // corresponding assignable (`ArrayAccess` does not extend `MemberAccess`)
   override Assignable getTarget() { none() }
+
+  override string getAPrimaryQlClass() { result = "ArrayAccess" }
 }
 
 /**
@@ -840,4 +862,6 @@ class NamespaceAccess extends Access, @namespace_access_expr {
   override Namespace getTarget() { expr_access(this, result) }
 
   override string toString() { result = "access to namespace " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "NamespaceAccess" }
 }

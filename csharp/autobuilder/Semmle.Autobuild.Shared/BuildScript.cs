@@ -46,12 +46,12 @@ namespace Semmle.Autobuild.Shared
         /// <returns>The exit code from this build script.</returns>
         public abstract int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack, out IList<string> stdout);
 
-        class BuildCommand : BuildScript
+        private class BuildCommand : BuildScript
         {
-            readonly string exe, arguments;
-            readonly string? workingDirectory;
-            readonly IDictionary<string, string>? environment;
-            readonly bool silent;
+            private readonly string exe, arguments;
+            private readonly string? workingDirectory;
+            private readonly IDictionary<string, string>? environment;
+            private readonly bool silent;
 
             /// <summary>
             /// Create a simple build command.
@@ -104,7 +104,7 @@ namespace Semmle.Autobuild.Shared
                     when (ex is System.ComponentModel.Win32Exception || ex is FileNotFoundException)
                 {
                     retMessage = ex.Message;
-                    stdout = new string[0];
+                    stdout = Array.Empty<string>();
                 }
                 exitCallBack(ret, retMessage, silent);
                 return ret;
@@ -112,9 +112,9 @@ namespace Semmle.Autobuild.Shared
 
         }
 
-        class ReturnBuildCommand : BuildScript
+        private class ReturnBuildCommand : BuildScript
         {
-            readonly Func<IBuildActions, int> func;
+            private readonly Func<IBuildActions, int> func;
             public ReturnBuildCommand(Func<IBuildActions, int> func)
             {
                 this.func = func;
@@ -124,16 +124,17 @@ namespace Semmle.Autobuild.Shared
 
             public override int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack, out IList<string> stdout)
             {
-                stdout = new string[0];
+                stdout = Array.Empty<string>();
                 return func(actions);
             }
         }
 
-        class BindBuildScript : BuildScript
+        private class BindBuildScript : BuildScript
         {
-            readonly BuildScript s1;
-            readonly Func<IList<string>, int, BuildScript>? s2a;
-            readonly Func<int, BuildScript>? s2b;
+            private readonly BuildScript s1;
+            private readonly Func<IList<string>, int, BuildScript>? s2a;
+            private readonly Func<int, BuildScript>? s2b;
+
             public BindBuildScript(BuildScript s1, Func<IList<string>, int, BuildScript> s2)
             {
                 this.s1 = s1;
@@ -149,13 +150,13 @@ namespace Semmle.Autobuild.Shared
             public override int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack)
             {
                 int ret1;
-                if (s2a != null)
+                if (s2a is not null)
                 {
                     ret1 = s1.Run(actions, startCallback, exitCallBack, out var stdout1);
                     return s2a(stdout1, ret1).Run(actions, startCallback, exitCallBack);
                 }
 
-                if (s2b != null)
+                if (s2b is not null)
                 {
                     ret1 = s1.Run(actions, startCallback, exitCallBack);
                     return s2b(ret1).Run(actions, startCallback, exitCallBack);
@@ -167,7 +168,7 @@ namespace Semmle.Autobuild.Shared
             public override int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack, out IList<string> stdout)
             {
                 var ret1 = s1.Run(actions, startCallback, exitCallBack, out var stdout1);
-                var ret2 = (s2a != null ? s2a(stdout1, ret1) : s2b!(ret1)).Run(actions, startCallback, exitCallBack, out var stdout2);
+                var ret2 = (s2a is not null ? s2a(stdout1, ret1) : s2b!(ret1)).Run(actions, startCallback, exitCallBack, out var stdout2);
                 var @out = new List<string>();
                 @out.AddRange(stdout1);
                 @out.AddRange(stdout2);
@@ -193,6 +194,26 @@ namespace Semmle.Autobuild.Shared
             new ReturnBuildCommand(func);
 
         /// <summary>
+        /// Creates a build script that downloads the specified file.
+        /// </summary>
+        public static BuildScript DownloadFile(string address, string fileName, Action<Exception> exceptionCallback) =>
+            Create(actions =>
+            {
+                if (actions.GetDirectoryName(fileName) is string dir && !string.IsNullOrWhiteSpace(dir))
+                    actions.CreateDirectory(dir);
+                try
+                {
+                    actions.DownloadFile(address, fileName);
+                    return 0;
+                }
+                catch (Exception e)
+                {
+                    exceptionCallback(e);
+                    return 1;
+                }
+            });
+
+        /// <summary>
         /// Creates a build script that runs <paramref name="s1"/>, followed by running the script
         /// produced by <paramref name="s2"/> on the exit code from <paramref name="s1"/>.
         /// </summary>
@@ -207,19 +228,19 @@ namespace Semmle.Autobuild.Shared
         public static BuildScript Bind(BuildScript s1, Func<IList<string>, int, BuildScript> s2) =>
             new BindBuildScript(s1, s2);
 
-        const int SuccessCode = 0;
+        private const int successCode = 0;
         /// <summary>
         /// The empty build script that always returns exit code 0.
         /// </summary>
-        public static readonly BuildScript Success = Create(actions => SuccessCode);
+        public static BuildScript Success { get; } = Create(actions => successCode);
 
-        const int FailureCode = 1;
+        private const int failureCode = 1;
         /// <summary>
         /// The empty build script that always returns exit code 1.
         /// </summary>
-        public static readonly BuildScript Failure = Create(actions => FailureCode);
+        public static BuildScript Failure { get; } = Create(actions => failureCode);
 
-        static bool Succeeded(int i) => i == SuccessCode;
+        private static bool Succeeded(int i) => i == successCode;
 
         public static BuildScript operator &(BuildScript s1, BuildScript s2) =>
             new BindBuildScript(s1, ret1 => Succeeded(ret1) ? s2 : Create(actions => ret1));
@@ -246,7 +267,7 @@ namespace Semmle.Autobuild.Shared
             Create(actions =>
             {
                 if (string.IsNullOrEmpty(dir) || !actions.DirectoryExists(dir))
-                    return FailureCode;
+                    return failureCode;
 
                 try
                 {
@@ -254,9 +275,9 @@ namespace Semmle.Autobuild.Shared
                 }
                 catch  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    return FailureCode;
+                    return failureCode;
                 }
-                return SuccessCode;
+                return successCode;
             });
 
         /// <summary>
@@ -266,7 +287,7 @@ namespace Semmle.Autobuild.Shared
             Create(actions =>
             {
                 if (string.IsNullOrEmpty(file) || !actions.FileExists(file))
-                    return FailureCode;
+                    return failureCode;
 
                 try
                 {
@@ -274,9 +295,9 @@ namespace Semmle.Autobuild.Shared
                 }
                 catch  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    return FailureCode;
+                    return failureCode;
                 }
-                return SuccessCode;
+                return successCode;
             });
     }
 }

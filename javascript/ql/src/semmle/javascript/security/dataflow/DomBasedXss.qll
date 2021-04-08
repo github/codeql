@@ -9,14 +9,27 @@ module DomBasedXss {
   import DomBasedXssCustomizations::DomBasedXss
 
   /**
+   * DEPRECATED. Use `HtmlInjectionConfiguration` or `JQueryHtmlOrSelectorInjectionConfiguration`.
+   */
+  deprecated class Configuration = HtmlInjectionConfiguration;
+
+  /**
+   * DEPRECATED. Use `Vue::VHtmlSourceWrite` instead.
+   */
+  deprecated class VHtmlSourceWrite = Vue::VHtmlSourceWrite;
+
+  /**
    * A taint-tracking configuration for reasoning about XSS.
    */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "DomBasedXss" }
+  class HtmlInjectionConfiguration extends TaintTracking::Configuration {
+    HtmlInjectionConfiguration() { this = "HtmlInjection" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+    override predicate isSink(DataFlow::Node sink) {
+      sink instanceof Sink and
+      not sink instanceof JQueryHtmlOrSelectorSink // Handled by JQueryHtmlOrSelectorInjectionConfiguration below
+    }
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node)
@@ -28,59 +41,66 @@ module DomBasedXss {
       guard instanceof SanitizerGuard
     }
 
-    override predicate isAdditionalStoreStep(
-      DataFlow::Node pred, DataFlow::SourceNode succ, string prop
-    ) {
-      exists(DataFlow::PropRead read |
-        pred = read.getBase() and
-        succ = read and
-        read.getPropertyName() = "hash" and
-        prop = urlSuffixPseudoProperty()
-      )
-    }
-
-    override predicate isAdditionalLoadStoreStep(
-      DataFlow::Node pred, DataFlow::Node succ, string predProp, string succProp
-    ) {
-      exists(DataFlow::PropRead read |
-        pred = read.getBase() and
-        succ = read and
-        read.getPropertyName() = "hash" and
-        predProp = "hash" and
-        succProp = urlSuffixPseudoProperty()
-      )
-    }
-
-    override predicate isAdditionalLoadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      exists(DataFlow::MethodCallNode call |
-        call.getMethodName() = ["substr", "substring", "slice"] and
-        not call.getArgument(0).getIntValue() = 0 and
-        pred = call.getReceiver() and
-        succ = call and
-        prop = urlSuffixPseudoProperty()
-      )
-      or
-      exists(DataFlow::MethodCallNode call |
-        call.getMethodName() = "exec" and pred = call.getArgument(0)
-        or
-        call.getMethodName() = "match" and pred = call.getReceiver()
-      |
-        succ = call and
-        prop = urlSuffixPseudoProperty()
-      )
-      or
-      exists(StringSplitCall split |
-        split.getSeparator() = ["#", "?"] and
-        pred = split.getBaseString() and
-        succ = split.getASubstringRead(1) and
-        prop = urlSuffixPseudoProperty()
-      )
-    }
-
     override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
       DomBasedXss::isOptionallySanitizedEdge(pred, succ)
     }
   }
 
-  private string urlSuffixPseudoProperty() { result = "$UrlSuffix$" }
+  /**
+   * A taint-tracking configuration for reasoning about injection into the jQuery `$` function
+   * or similar, where the interpretation of the input string depends on its first character.
+   *
+   * Values are only considered tainted if they can start with the `<` character.
+   */
+  class JQueryHtmlOrSelectorInjectionConfiguration extends TaintTracking::Configuration {
+    JQueryHtmlOrSelectorInjectionConfiguration() { this = "JQueryHtmlOrSelectorInjection" }
+
+    override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
+      // Reuse any source not derived from location
+      source instanceof Source and
+      not source = [DOM::locationRef(), DOM::locationRef().getAPropertyRead()] and
+      label.isTaint()
+      or
+      source = DOM::locationSource() and
+      label.isData() // Require transformation before reaching sink
+      or
+      source = DOM::locationRef().getAPropertyRead(["hash", "search"]) and
+      label.isData() // Require transformation before reaching sink
+    }
+
+    override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
+      sink instanceof JQueryHtmlOrSelectorSink and label.isTaint()
+    }
+
+    override predicate isAdditionalFlowStep(
+      DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
+      DataFlow::FlowLabel succlbl
+    ) {
+      TaintTracking::sharedTaintStep(pred, succ) and
+      predlbl.isData() and
+      succlbl.isTaint()
+    }
+
+    override predicate isSanitizer(DataFlow::Node node) {
+      super.isSanitizer(node)
+      or
+      node instanceof Sanitizer
+    }
+
+    override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
+      guard instanceof SanitizerGuard
+    }
+
+    override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
+      DomBasedXss::isOptionallySanitizedEdge(pred, succ)
+      or
+      // Avoid stepping from location -> location.hash, as the .hash is already treated as a source
+      // (with a different flow label)
+      exists(DataFlow::PropRead read |
+        read = DOM::locationRef().getAPropertyRead(["hash", "search"]) and
+        pred = read.getBase() and
+        succ = read
+      )
+    }
+  }
 }

@@ -39,17 +39,8 @@ void sink(int x)
 
 void bar(Outer &b)
 {
-  // The library correctly finds that the four `user_input` sources can make it
-  // to the `sink` calls, but it also finds some source/sink combinations that
-  // are impossible. Those false positives here are a consequence of how the
-  // shared data flow library overapproximates field flow. The library only
-  // tracks the final two fields (`f` and `inner`) and the length (3) of the field
-  // access path, and then it tracks that both `a_` and `b_` have followed `f.inner`
-  // in _some_ access path somewhere in the search. That makes the library conclude
-  // that there could be flow to `b.inner.f.a_` even when the flow was actually to
-  // `b.inner.f.b_`.
-  sink(b.inner.f.a()); // $ast=62:19 $f+:ast=63:19 $ast=64:19 $f+:ast=65:19 $ir=62:19 $f+:ir=63:19 $ir=64:19 $f+:ir=65:19
-  sink(b.inner.f.b()); // $f+:ast=62:19 $ast=63:19 $f+:ast=64:19 $ast=65:19 $f+:ir=62:19 $ir=63:19 $f+:ir=64:19 $ir=65:19
+  sink(b.inner.f.a()); // $ ast=53:19 ast=55:19 ir=53:19 ir=55:19
+  sink(b.inner.f.b()); // $ ast=54:19 ast=56:19 ir=54:19 ir=56:19
 }
 
 void foo()

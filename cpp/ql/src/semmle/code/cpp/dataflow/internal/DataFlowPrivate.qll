@@ -1,6 +1,7 @@
 private import cpp
 private import DataFlowUtil
 private import DataFlowDispatch
+private import FlowVar
 
 /** Gets the instance argument of a non-static call. */
 private Node getInstanceArgument(Call call) {
@@ -106,7 +107,7 @@ private class ExprOutNode extends OutNode, ExprNode {
   override DataFlowCall getCall() { result = this.getExpr() }
 }
 
-private class RefOutNode extends OutNode, DefinitionByReferenceNode {
+private class RefOutNode extends OutNode, DefinitionByReferenceOrIteratorNode {
   /** Gets the underlying call. */
   override DataFlowCall getCall() { result = this.getArgument().getParent() }
 }
@@ -120,7 +121,7 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
   kind = TNormalReturnKind()
   or
   exists(int i |
-    result.asDefiningArgument() = call.getArgument(i) and
+    result.(DefinitionByReferenceOrIteratorNode).getArgument() = call.getArgument(i) and
     kind = TRefReturnKind(i)
   )
 }
@@ -279,6 +280,15 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub impl
 
 int accessPathLimit() { result = 5 }
 
+/** The unit type. */
+private newtype TUnit = TMkUnit()
+
+/** The trivial type with a single element. */
+class Unit extends TUnit {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "unit" }
+}
+
 /**
  * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
  * modified or its modification cannot be observed, for example if it is a
@@ -302,3 +312,14 @@ predicate isImmutableOrUnobservable(Node n) {
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) { none() }
+
+class LambdaCallKind = Unit;
+
+/** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+
+/** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+
+/** Extra data-flow steps needed for lamba flow analysis. */
+predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }

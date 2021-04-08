@@ -20,8 +20,7 @@ class AntTarget extends XMLElement {
   string getDependsString() {
     result =
       "," +
-        this
-            .getAttributeValue("depends")
+        this.getAttributeValue("depends")
             .replaceAll(" ", "")
             .replaceAll("\r", "")
             .replaceAll("\n", "")

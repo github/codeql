@@ -49,4 +49,12 @@ function test() {
 
   middleCallback(source());
   middleCallback(source());
+
+  let capturedTaint = source();
+  function helper2(cb) {
+    cb(capturedTaint);
+  }
+  helper2(x => {
+    sink(x); // NOT OK
+  });
 }

@@ -11,3 +11,5 @@ set -eu
     --language xml \
     -- \
     "$CODEQL_EXTRACTOR_CSHARP_WIP_DATABASE"
+
+"$CODEQL_JAVA_HOME/bin/java" -jar "$CODEQL_EXTRACTOR_CSHARP_ROOT/tools/extractor-asp.jar" .

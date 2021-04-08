@@ -12,10 +12,15 @@
 
 import csharp
 
+pragma[noinline]
+private predicate isTypePattern(IsExpr ie, ValueOrRefType t, ValueOrRefType ct) {
+  t = ie.getExpr().getType() and
+  ct = ie.getPattern().(TypePatternExpr).getCheckedType()
+}
+
 from IsExpr ie, ValueOrRefType t, ValueOrRefType ct
 where
-  t = ie.getExpr().getType() and
-  ct = ie.getPattern().(TypePatternExpr).getCheckedType() and
+  isTypePattern(ie, t, ct) and
   ct = t.getABaseType+()
 select ie,
   "There is no need to test whether an instance of $@ is also an instance of $@ - it always is.", t,

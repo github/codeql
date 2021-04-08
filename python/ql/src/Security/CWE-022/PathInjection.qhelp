@@ -43,7 +43,8 @@ In the second example, it appears that the user is restricted to opening a file 
 special characters. For example, the string <code>"../../../etc/passwd"</code> will result in the code
 reading the file located at <code>"/server/static/images/../../../etc/passwd"</code>, which is the system's
 password file. This file would then be sent back to the user, giving them access to all the
-system's passwords.
+system's passwords. Note that a user could also use an absolute path here, since the result of
+<code>os.path.join("/server/static/images/", "/etc/passwd")</code> is <code>"/etc/passwd"</code>.
 </p>
 
 <p>
@@ -55,7 +56,7 @@ known prefix. This ensures that regardless of the user input, the resulting path
 </example>
 
 <references>
-<li>OWASP: <a href="https://www.owasp.org/index.php/Path_traversal">Path Traversal</a>.</li>
+<li>OWASP: <a href="https://owasp.org/www-community/attacks/Path_Traversal">Path Traversal</a>.</li>
 <li>npm: <a href="http://werkzeug.pocoo.org/docs/utils/#werkzeug.utils.secure_filename">werkzeug.utils.secure_filename</a>.</li>
 </references>
 </qhelp>

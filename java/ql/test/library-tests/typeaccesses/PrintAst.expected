@@ -1,0 +1,104 @@
+typeaccesses/Arrays.java:
+#    0| [CompilationUnit] Arrays
+#    3|   1: [Class] Arrays
+#    4|     2: [FieldDeclaration] ...[] ss, ...;
+#    4|       -1: [ArrayTypeAccess] ...[]
+#    4|         0: [TypeAccess] String
+#    5|     3: [FieldDeclaration] ...[] sls, ...;
+#    5|       -1: [ArrayTypeAccess] ...[]
+#    5|         0: [TypeAccess] List<String>
+#    5|           0: [TypeAccess] String
+typeaccesses/Outer.java:
+#    0| [CompilationUnit] Outer
+#    3|   1: [Class] Outer
+#    4|     3: [Class] Inner
+#    5|     4: [BlockStmt] stmt
+#    6|       0: [LocalVariableDeclStmt] stmt
+#    6|         0: [TypeAccess] Object
+#    6|         1: [LocalVariableDeclExpr] o
+#    6|           0: [ArrayCreationExpr] new Outer[]
+#    6|             -1: [TypeAccess] Outer
+#    6|             0: [IntegerLiteral] 1
+#    7|         2: [LocalVariableDeclExpr] i
+#    7|           0: [ArrayCreationExpr] new Inner[]
+#    7|             -1: [TypeAccess] Outer.Inner
+#    7|               -1: [TypeAccess] Outer
+#    7|             0: [IntegerLiteral] 1
+typeaccesses/TA.java:
+#    0| [CompilationUnit] TA
+#-----|   -1: (Imports)
+#    3|     1: [ImportType] import ArrayList
+#    5|   1: [Class] TA
+#-----|     -1: (Base Types)
+#    5|       -1: [TypeAccess] ArrayList<TA>
+#    5|         0: [TypeAccess] TA
+#    6|     2: [FieldDeclaration] ArrayList<TA> field, ...;
+#    6|       -1: [TypeAccess] ArrayList<TA>
+#    6|         0: [TypeAccess] TA
+#    7|     3: [Method] method1
+#    7|       3: [TypeAccess] ArrayList<TA>
+#    7|         0: [TypeAccess] TA
+#    7|       5: [BlockStmt] stmt
+#    7|         0: [ReturnStmt] stmt
+#    7|           0: [NullLiteral] null
+#    8|     4: [Method] method2
+#    8|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#    8|         0: [Parameter] param
+#    8|           0: [TypeAccess] ArrayList<TA>
+#    8|             0: [TypeAccess] TA
+#    8|       5: [BlockStmt] stmt
+#    9|     5: [Method] method3
+#    9|       3: [TypeAccess] void
+#    9|       5: [BlockStmt] stmt
+#    9|         0: [LocalVariableDeclStmt] stmt
+#    9|           0: [TypeAccess] ArrayList<TA>
+#    9|             0: [TypeAccess] TA
+#    9|           1: [LocalVariableDeclExpr] local
+#   10|     6: [Method] method4
+#-----|       2: (Generic Parameters)
+#   10|         0: [TypeVariable] T
+#   10|           0: [TypeAccess] ArrayList<TA>
+#   10|             0: [TypeAccess] TA
+#   10|       3: [TypeAccess] void
+#   10|       5: [BlockStmt] stmt
+#   11|     7: [Method] method5
+#   11|       3: [TypeAccess] void
+#   11|       5: [BlockStmt] stmt
+#   11|         0: [ExprStmt] stmt
+#   11|           0: [MethodAccess] toString(...)
+#   11|             -1: [CastExpr] (...)...
+#   11|               0: [TypeAccess] ArrayList<TA>
+#   11|                 0: [TypeAccess] TA
+#   11|               1: [NullLiteral] null
+#   12|     8: [Method] method6
+#   12|       3: [TypeAccess] void
+#   12|       5: [BlockStmt] stmt
+#   12|         0: [ExprStmt] stmt
+#   12|           0: [ClassInstanceExpr] new ArrayList<TA>(...)
+#   12|             -3: [TypeAccess] ArrayList<TA>
+#   12|               0: [TypeAccess] TA
+#   13|     9: [Method] method7
+#   13|       3: [TypeAccess] void
+#   13|       5: [BlockStmt] stmt
+#   13|         0: [ExprStmt] stmt
+#   13|           0: [MethodAccess] method3(...)
+#   13|             -1: [TypeAccess] TA
+#   14|     10: [Class] Inner
+#-----|       -2: (Generic Parameters)
+#   14|         0: [TypeVariable] T
+#   14|           0: [TypeAccess] ArrayList<TA>
+#   14|             0: [TypeAccess] TA
+#   15|     11: [Method] method8
+#   15|       3: [TypeAccess] TA.Inner<?>
+#   15|         -1: [TypeAccess] TA
+#   15|         0: [WildcardTypeAccess] ? ...
+#   15|       5: [BlockStmt] stmt
+#   15|         0: [ReturnStmt] stmt
+#   15|           0: [NullLiteral] null
+#   16|     12: [Method] method9
+#   16|       3: [TypeAccess] List<TA>
+#   16|         0: [TypeAccess] TA
+#   16|       5: [BlockStmt] stmt
+#   16|         0: [ReturnStmt] stmt
+#   16|           0: [NullLiteral] null

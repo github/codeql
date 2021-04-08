@@ -5,9 +5,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class Try : Statement<TryStatementSyntax>
+    internal class Try : Statement<TryStatementSyntax>
     {
-        Try(Context cx, TryStatementSyntax node, IStatementParentEntity parent, int child)
+        private Try(Context cx, TryStatementSyntax node, IStatementParentEntity parent, int child)
             : base(cx, node, StmtKind.TRY, parent, child) { }
 
         public static Try Create(Context cx, TryStatementSyntax node, IStatementParentEntity parent, int child)
@@ -22,27 +22,15 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             var child = 1;
             foreach (var c in Stmt.Catches)
             {
-                Catch.Create(cx, c, this, child++);
+                Catch.Create(Context, c, this, child++);
             }
 
-            Create(cx, Stmt.Block, this, 0);
+            Create(Context, Stmt.Block, this, 0);
 
-            if (Stmt.Finally != null)
+            if (Stmt.Finally is not null)
             {
-                Create(cx, Stmt.Finally.Block, this, -1);
+                Create(Context, Stmt.Finally.Block, this, -1);
             }
-        }
-
-        public static SyntaxNodeOrToken NextNode(SyntaxNode node)
-        {
-            for (var i = node.Parent.ChildNodesAndTokens().GetEnumerator(); i.MoveNext();)
-            {
-                if (i.Current == node)
-                {
-                    return i.MoveNext() ? i.Current : null;
-                }
-            }
-            return null;
         }
     }
 }

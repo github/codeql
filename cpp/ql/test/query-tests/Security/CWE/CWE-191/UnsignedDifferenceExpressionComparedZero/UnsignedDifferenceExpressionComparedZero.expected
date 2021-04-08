@@ -1,0 +1,10 @@
+| test.cpp:6:5:6:13 | ... > ... | Unsigned subtraction can never be negative. |
+| test.cpp:10:8:10:24 | ... > ... | Unsigned subtraction can never be negative. |
+| test.cpp:15:9:15:25 | ... > ... | Unsigned subtraction can never be negative. |
+| test.cpp:32:12:32:20 | ... > ... | Unsigned subtraction can never be negative. |
+| test.cpp:39:12:39:20 | ... > ... | Unsigned subtraction can never be negative. |
+| test.cpp:47:5:47:13 | ... > ... | Unsigned subtraction can never be negative. |
+| test.cpp:55:5:55:13 | ... > ... | Unsigned subtraction can never be negative. |
+| test.cpp:62:5:62:13 | ... > ... | Unsigned subtraction can never be negative. |
+| test.cpp:69:5:69:13 | ... > ... | Unsigned subtraction can never be negative. |
+| test.cpp:75:8:75:16 | ... > ... | Unsigned subtraction can never be negative. |

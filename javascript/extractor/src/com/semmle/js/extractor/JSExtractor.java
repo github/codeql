@@ -1,5 +1,9 @@
 package com.semmle.js.extractor;
 
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.semmle.js.ast.Comment;
 import com.semmle.js.ast.Node;
 import com.semmle.js.ast.Token;
@@ -14,9 +18,6 @@ import com.semmle.util.exception.Exceptions;
 import com.semmle.util.exception.UserError;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Extractor for populating JavaScript source code, including AST information, lexical information
@@ -36,7 +37,7 @@ public class JSExtractor {
       Pattern.compile("(?m)^([ \t]*)(import|export|goog\\.module)\\b");
 
   public Pair<Label, LoCInfo> extract(
-      TextualExtractor textualExtractor, String source, int toplevelKind, ScopeManager scopeManager)
+      TextualExtractor textualExtractor, String source, TopLevelKind toplevelKind, ScopeManager scopeManager)
       throws ParseError {
     // if the file starts with `{ "<string>":` it won't parse as JavaScript; try parsing as JSON
     // instead
@@ -84,7 +85,7 @@ public class JSExtractor {
   public Pair<Label, LoCInfo> extract(
       TextualExtractor textualExtractor,
       String source,
-      int toplevelKind,
+      TopLevelKind toplevelKind,
       ScopeManager scopeManager,
       SourceType sourceType,
       JSParser.Result parserRes)
@@ -105,7 +106,7 @@ public class JSExtractor {
 
       lexicalExtractor =
           new LexicalExtractor(textualExtractor, parserRes.getTokens(), parserRes.getComments());
-      ASTExtractor scriptExtractor = new ASTExtractor(lexicalExtractor, scopeManager);
+      ASTExtractor scriptExtractor = new ASTExtractor(config, lexicalExtractor, scopeManager);
       toplevelLabel = scriptExtractor.getToplevelLabel();
       lexicalExtractor.extractComments(toplevelLabel);
       loc = lexicalExtractor.extractLines(parserRes.getSource(), toplevelLabel);
@@ -118,10 +119,10 @@ public class JSExtractor {
     } else {
       lexicalExtractor =
           new LexicalExtractor(textualExtractor, new ArrayList<Token>(), new ArrayList<Comment>());
-      ASTExtractor scriptExtractor = new ASTExtractor(lexicalExtractor, null);
+      ASTExtractor scriptExtractor = new ASTExtractor(config, lexicalExtractor, null);
       toplevelLabel = scriptExtractor.getToplevelLabel();
 
-      trapwriter.addTuple("toplevels", toplevelLabel, toplevelKind);
+      trapwriter.addTuple("toplevels", toplevelLabel, toplevelKind.getValue());
       locationManager.emitSnippetLocation(toplevelLabel, 1, 1, 1, 1);
       loc = new LoCInfo(0, 0);
     }
@@ -130,15 +131,15 @@ public class JSExtractor {
       if (!config.isTolerateParseErrors()) throw parseError;
       Label key = trapwriter.freshLabel();
       String errorLine = textualExtractor.getLine(parseError.getPosition().getLine());
-      trapwriter.addTuple("jsParseErrors", key, toplevelLabel, "Error: " + parseError, errorLine);
+      trapwriter.addTuple("js_parse_errors", key, toplevelLabel, "Error: " + parseError, errorLine);
       locationManager.emitErrorLocation(
           key, parseError.getPosition(), textualExtractor.getNumLines());
       lexicalExtractor.extractLines(source, toplevelLabel);
     }
 
-    if (config.isExterns()) textualExtractor.getTrapwriter().addTuple("isExterns", toplevelLabel);
+    if (config.isExterns()) textualExtractor.getTrapwriter().addTuple("is_externs", toplevelLabel);
     if (platform == Platform.NODE && sourceType == SourceType.COMMONJS_MODULE)
-      textualExtractor.getTrapwriter().addTuple("isNodejs", toplevelLabel);
+      textualExtractor.getTrapwriter().addTuple("is_nodejs", toplevelLabel);
 
     textualExtractor.getMetrics().stopPhase(ExtractionPhase.JSExtractor_extract);
 

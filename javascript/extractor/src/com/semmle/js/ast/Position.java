@@ -1,6 +1,13 @@
 package com.semmle.js.ast;
 
-/** A source position identifying a single character. */
+/**
+ * A source position identifying a single character.
+ * <p>
+ * Note that this class remains distinct from {@link com.semmle.util.locations.Position},
+ * due to the 1-based line number convention and the tendency for users of this class to provide
+ * dummy offset values. Although the classes are structurally identical, it is not always safe to
+ * convert one into the other.
+ */
 public class Position implements Comparable<Position> {
   private final int line, column, offset;
 
@@ -23,6 +30,8 @@ public class Position implements Comparable<Position> {
   /**
    * The offset (0-based) of this position from the start of the file, that is, the number of
    * characters that precede it.
+   * <p>
+   * Note that in some cases, a dummy value is filled in for the offset.
    */
   public int getOffset() {
     return offset;

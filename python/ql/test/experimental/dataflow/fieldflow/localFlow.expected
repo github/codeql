@@ -1,0 +1,14 @@
+| examples.py:53:1:53:30 | GSSA Variable MyObj | examples.py:54:11:54:15 | ControlFlowNode for MyObj |
+| examples.py:53:28:53:28 | ControlFlowNode for x | examples.py:53:28:53:28 | SSA variable x |
+| examples.py:53:28:53:28 | SSA variable x | examples.py:54:17:54:17 | ControlFlowNode for x |
+| examples.py:54:5:54:7 | SSA variable obj | examples.py:55:9:55:11 | ControlFlowNode for obj |
+| examples.py:54:11:54:18 | ControlFlowNode for MyObj() | examples.py:54:5:54:7 | SSA variable obj |
+| examples.py:55:5:55:5 | SSA variable a | examples.py:56:12:56:12 | ControlFlowNode for a |
+| examples.py:55:9:55:15 | ControlFlowNode for Attribute | examples.py:55:5:55:5 | SSA variable a |
+| test.py:90:1:90:30 | GSSA Variable MyObj | test.py:91:11:91:15 | ControlFlowNode for MyObj |
+| test.py:90:28:90:28 | ControlFlowNode for x | test.py:90:28:90:28 | SSA variable x |
+| test.py:90:28:90:28 | SSA variable x | test.py:91:17:91:17 | ControlFlowNode for x |
+| test.py:91:5:91:7 | SSA variable obj | test.py:92:9:92:11 | ControlFlowNode for obj |
+| test.py:91:11:91:18 | ControlFlowNode for MyObj() | test.py:91:5:91:7 | SSA variable obj |
+| test.py:92:5:92:5 | SSA variable a | test.py:93:12:93:12 | ControlFlowNode for a |
+| test.py:92:9:92:15 | ControlFlowNode for Attribute | test.py:92:5:92:5 | SSA variable a |

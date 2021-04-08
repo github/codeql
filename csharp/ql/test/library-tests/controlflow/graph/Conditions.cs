@@ -78,7 +78,7 @@ class Conditions
             if (x > 0)
                 b = false;
         }
-        if(b)
+        if (b)
             x++;
         return x;
     }
@@ -113,7 +113,7 @@ class Conditions
     void M9(string[] args)
     {
         string s = null;
-        for(var i = 0; i < args.Length; i++)
+        for (var i = 0; i < args.Length; i++)
         {
             var last = i == args.Length - 1;
             if (!last)
@@ -138,5 +138,14 @@ class Conditions
                 }
             }
         }
+    }
+
+    void M11(bool b)
+    {
+        var s = b ? "a" : "b";
+        if (b)
+            System.Console.WriteLine($"a = {s}");
+        else
+            System.Console.WriteLine($"b = {s}");
     }
 }

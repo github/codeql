@@ -2,14 +2,14 @@
 {
     public sealed class Language
     {
-        public static readonly Language Cpp = new Language(".vcxproj", "CPP");
-        public static readonly Language CSharp = new Language(".csproj", "CSHARP");
+        public static Language Cpp { get; } = new Language(".vcxproj", "CPP");
+        public static Language CSharp { get; } = new Language(".csproj", "CSHARP");
 
         public bool ProjectFileHasThisLanguage(string path) =>
             System.IO.Path.GetExtension(path) == ProjectExtension;
 
-        public readonly string ProjectExtension;
-        public readonly string UpperCaseName;
+        public string ProjectExtension { get; }
+        public string UpperCaseName { get; }
 
         private Language(string extension, string name)
         {

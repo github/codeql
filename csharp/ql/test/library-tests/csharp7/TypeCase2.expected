@@ -1,4 +1,4 @@
-| CSharp7.cs:258:13:258:36 | case ...: | CSharp7.cs:258:18:258:23 | Int32 i2 | Int32 | false |
-| CSharp7.cs:261:13:261:24 | case ...: | CSharp7.cs:261:18:261:23 | Int32 i3 | Int32 | false |
-| CSharp7.cs:264:13:264:27 | case ...: | CSharp7.cs:264:18:264:26 | String s2 | String | false |
-| CSharp7.cs:270:13:270:24 | case ...: | CSharp7.cs:270:18:270:23 | Object v2 | Object | true |
+| CSharp7.cs:259:13:259:36 | case ...: | CSharp7.cs:259:18:259:23 | Int32 i2 | Int32 | false |
+| CSharp7.cs:262:13:262:24 | case ...: | CSharp7.cs:262:18:262:23 | Int32 i3 | Int32 | false |
+| CSharp7.cs:265:13:265:27 | case ...: | CSharp7.cs:265:18:265:26 | String s2 | String | false |
+| CSharp7.cs:271:13:271:24 | case ...: | CSharp7.cs:271:18:271:23 | Object v2 | Object | true |

@@ -67,7 +67,7 @@ def re_path_kwargs(request):
 
 
 urlpatterns = [
-    re_path(view=re_path_kwargs, regex=r'^specifying-as-kwargs-is-not-a-problem$')
+    re_path(view=re_path_kwargs, route=r'^specifying-as-kwargs-is-not-a-problem$')
 ]
 
 ################################################################################

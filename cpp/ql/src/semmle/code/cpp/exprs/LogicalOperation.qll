@@ -39,7 +39,7 @@ class BinaryLogicalOperation extends BinaryOperation, @bin_log_op_expr {
    * is true, `x` and `y` must also be true, so `impliesValue(x, true, true)` and
    * `impliesValue(y, true, true)` hold.
    */
-  abstract predicate impliesValue(Expr part, boolean partIsTrue, boolean wholeIsTrue);
+  predicate impliesValue(Expr part, boolean partIsTrue, boolean wholeIsTrue) { none() } // overridden in subclasses
 }
 
 /**

@@ -133,6 +133,12 @@ abstract class MemoryLocation extends TMemoryLocation {
   predicate isAlwaysAllocatedOnStack() { none() }
 }
 
+/**
+ * Represents a set of `MemoryLocation`s that cannot overlap with
+ * `MemoryLocation`s outside of the set. The `VirtualVariable` will be
+ * represented by a `MemoryLocation` that totally overlaps all other
+ * `MemoryLocations` in the set.
+ */
 abstract class VirtualVariable extends MemoryLocation { }
 
 abstract class AllocationMemoryLocation extends MemoryLocation {
@@ -556,6 +562,9 @@ private Overlap getVariableMemoryLocationOverlap(
       use.getEndBitOffset())
 }
 
+bindingset[result, b]
+private boolean unbindBool(boolean b) { result != b.booleanNot() }
+
 MemoryLocation getResultMemoryLocation(Instruction instr) {
   exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = instr.getResultMemoryAccess() and
@@ -568,7 +577,8 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
           exists(Allocation var, IRType type, IntValue startBitOffset, IntValue endBitOffset |
             hasResultMemoryAccess(instr, var, type, _, startBitOffset, endBitOffset, isMayAccess) and
             result =
-              TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset, isMayAccess)
+              TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset,
+                unbindBool(isMayAccess))
           )
         else result = TUnknownMemoryLocation(instr.getEnclosingIRFunction(), isMayAccess)
       )
@@ -576,7 +586,7 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
       kind instanceof EntireAllocationMemoryAccess and
       result =
         TEntireAllocationMemoryLocation(getAddressOperandAllocation(instr.getResultAddressOperand()),
-          isMayAccess)
+          unbindBool(isMayAccess))
       or
       kind instanceof EscapedMemoryAccess and
       result = TAllAliasedMemory(instr.getEnclosingIRFunction(), isMayAccess)
@@ -616,4 +626,14 @@ MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
       result = TAllNonLocalMemory(operand.getEnclosingIRFunction(), isMayAccess)
     )
   )
+}
+
+/** Gets the start bit offset of a `MemoryLocation`, if any. */
+int getStartBitOffset(VariableMemoryLocation location) {
+  result = location.getStartBitOffset() and Ints::hasValue(result)
+}
+
+/** Gets the end bit offset of a `MemoryLocation`, if any. */
+int getEndBitOffset(VariableMemoryLocation location) {
+  result = location.getEndBitOffset() and Ints::hasValue(result)
 }

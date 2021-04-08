@@ -83,4 +83,7 @@
 
   o.notTracked = source1;
   var sink22 = o.notTracked;
+
+  var sink23 = source1.replaceAll(/f/g, ""); 
+  var sink24 = "foo".replaceAll(/f/g, source1); 
 })();

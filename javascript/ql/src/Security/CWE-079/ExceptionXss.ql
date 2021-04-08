@@ -19,4 +19,4 @@ from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
   "$@ is reinterpreted as HTML without escaping meta-characters.", source.getNode(),
-  "Exception text"
+  source.getNode().(Source).getDescription()

@@ -8,6 +8,7 @@
  * @id java/sql-injection-local
  * @tags security
  *       external/cwe/cwe-089
+ *       external/cwe/cwe-564
  */
 
 import semmle.code.java.Expr
@@ -24,6 +25,10 @@ class LocalUserInputToQueryInjectionFlowConfig extends TaintTracking::Configurat
 
   override predicate isSanitizer(DataFlow::Node node) {
     node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    any(AdditionalQueryInjectionTaintStep s).step(node1, node2)
   }
 }
 

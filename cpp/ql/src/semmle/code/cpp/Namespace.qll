@@ -7,8 +7,21 @@ import semmle.code.cpp.Type
 import semmle.code.cpp.metrics.MetricNamespace
 
 /**
- * A C++ namespace.
+ * A C++ namespace. For example the (single) namespace `A` in the following
+ * code:
+ * ```
+ * namespace A
+ * {
+ *   // ...
+ * }
  *
+ * // ...
+ *
+ * namespace A
+ * {
+ *   // ...
+ * }
+ * ```
  * Note that namespaces are somewhat nebulous entities, as they do not in
  * general have a single well-defined location in the source code. The
  * related notion of a `NamespaceDeclarationEntry` is rather more concrete,
@@ -96,10 +109,22 @@ class Namespace extends NameQualifyingElement, @namespace {
 }
 
 /**
- * A declaration of (part of) a C++ namespace.
+ * A declaration of (part of) a C++ namespace. This corresponds to a single
+ * `namespace N { ... }` occurrence in the source code. For example the two
+ * mentions of `A` in the following code:
+ * ```
+ * namespace A
+ * {
+ *   // ...
+ * }
  *
- * This corresponds to a single `namespace N { ... }` occurrence in the
- * source code.
+ * // ...
+ *
+ * namespace A
+ * {
+ *   // ...
+ * }
+ * ```
  */
 class NamespaceDeclarationEntry extends Locatable, @namespace_decl {
   /**
@@ -143,8 +168,9 @@ class UsingEntry extends Locatable, @using {
 
 /**
  * A C++ `using` declaration. For example:
- *
- *   `using std::string;`
+ * ```
+ * using std::string;
+ * ```
  */
 class UsingDeclarationEntry extends UsingEntry {
   UsingDeclarationEntry() {
@@ -162,8 +188,9 @@ class UsingDeclarationEntry extends UsingEntry {
 
 /**
  * A C++ `using` directive. For example:
- *
- *   `using namespace std;`
+ * ```
+ * using namespace std;
+ * ```
  */
 class UsingDirectiveEntry extends UsingEntry {
   UsingDirectiveEntry() {

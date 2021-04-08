@@ -1,3 +1,5 @@
+| test2.cpp:14:11:14:11 | v | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test2.cpp:25:22:25:23 | & ... | User-provided value |
+| test2.cpp:14:11:14:11 | v | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test2.cpp:25:22:25:23 | & ... | User-provided value |
 | test3.c:15:10:15:10 | x | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test3.c:11:15:11:18 | argv | User-provided value |
 | test3.c:15:14:15:14 | y | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test3.c:11:15:11:18 | argv | User-provided value |
 | test3.c:15:18:15:18 | z | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test3.c:11:15:11:18 | argv | User-provided value |

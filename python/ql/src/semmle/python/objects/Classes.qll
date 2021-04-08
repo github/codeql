@@ -61,8 +61,8 @@ abstract class ClassObjectInternal extends ObjectInternal {
   pragma[noinline]
   override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
     instance = this and
-    PointsToInternal::attributeRequired(this, name) and
-    this.lookup(name, descriptor, _) and
+    PointsToInternal::attributeRequired(this, pragma[only_bind_into](name)) and
+    this.lookup(pragma[only_bind_into](name), descriptor, _) and
     descriptor.isDescriptor() = true
   }
 
@@ -311,7 +311,8 @@ class SubscriptedTypeInternal extends ObjectInternal, TSubscriptedType {
   override string getName() { result = this.getGeneric().getName() }
 
   override string toString() {
-    result = this.getGeneric().toString() + "[" + this.getSpecializer().toString() + "]"
+    result =
+      bounded_toString(this.getGeneric()) + "[" + bounded_toString(this.getSpecializer()) + "]"
   }
 
   override predicate introducedAt(ControlFlowNode node, PointsToContext context) {

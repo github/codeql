@@ -15,5 +15,6 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Potential type confusion for $@.", source.getNode(),
-  "HTTP request parameter"
+select sink.getNode(), source, sink,
+  "Potential type confusion as $@ may be either an array or a string.", source.getNode(),
+  "this HTTP request parameter"

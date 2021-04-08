@@ -482,6 +482,10 @@ class SafeSAXParserFactory extends VarAccess {
   SafeSAXParserFactory() {
     exists(Variable v | v = this.getVariable() |
       exists(SAXParserFactoryConfig config | config.getQualifier() = v.getAnAccess() |
+        config.enables(singleSafeConfig())
+      )
+      or
+      exists(SAXParserFactoryConfig config | config.getQualifier() = v.getAnAccess() |
         config
             .disables(any(ConstantStringExpr s |
                 s.getStringValue() = "http://xml.org/sax/features/external-general-entities"
@@ -1171,4 +1175,16 @@ class SimpleXMLFormatterCall extends XmlParserCall {
   override Expr getSink() { result = this.getArgument(0) }
 
   override predicate isSafe() { none() }
+}
+
+/** A configuration for secure processing. */
+Expr configSecureProcessing() {
+  result.(ConstantStringExpr).getStringValue() =
+    "http://javax.xml.XMLConstants/feature/secure-processing"
+  or
+  exists(Field f |
+    result = f.getAnAccess() and
+    f.hasName("FEATURE_SECURE_PROCESSING") and
+    f.getDeclaringType() instanceof XmlConstants
+  )
 }

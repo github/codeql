@@ -14,12 +14,7 @@ import cpp
 
 predicate potentiallyDangerousFunction(Function f, string message) {
   exists(string name | f.hasGlobalName(name) |
-    (
-      name = "gmtime" or
-      name = "localtime" or
-      name = "ctime" or
-      name = "asctime"
-    ) and
+    name = ["gmtime", "localtime", "ctime", "asctime"] and
     message = "Call to " + name + " is potentially dangerous"
   )
 }

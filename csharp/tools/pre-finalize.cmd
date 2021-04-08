@@ -1,5 +1,4 @@
 @echo off
-SETLOCAL EnableDelayedExpansion
 
 type NUL && "%CODEQL_DIST%\codeql" database index-files ^
     --include-extension=.config ^
@@ -10,5 +9,7 @@ type NUL && "%CODEQL_DIST%\codeql" database index-files ^
     --language xml ^
     -- ^
     "%CODEQL_EXTRACTOR_CSHARP_WIP_DATABASE%"
+IF %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%
 
-ENDLOCAL
+type NUL && "%CODEQL_JAVA_HOME%\bin\java.exe" -jar "%CODEQL_EXTRACTOR_CSHARP_ROOT%\tools\extractor-asp.jar" .
+exit /b %ERRORLEVEL%

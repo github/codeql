@@ -7,3 +7,5 @@ paths-ignore:
   - '/cpp/'
   - '/java/'
   - '/python/'
+  - '/javascript/ql/test'
+  - '/javascript/extractor/tests'

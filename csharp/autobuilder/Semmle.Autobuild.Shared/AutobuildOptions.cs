@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -9,27 +10,24 @@ namespace Semmle.Autobuild.Shared
     /// </summary>
     public class AutobuildOptions
     {
-        public readonly int SearchDepth = 3;
-        public readonly string RootDirectory;
         private const string prefix = "LGTM_INDEX_";
 
-        public readonly string? VsToolsVersion;
-        public readonly string? MsBuildArguments;
-        public readonly string? MsBuildPlatform;
-        public readonly string? MsBuildConfiguration;
-        public readonly string? MsBuildTarget;
-        public readonly string? DotNetArguments;
-        public readonly string? DotNetVersion;
-        public readonly string? BuildCommand;
-        public readonly string[] Solution;
-
-        public readonly bool IgnoreErrors;
-        public readonly bool Buildless;
-        public readonly bool AllSolutions;
-        public readonly bool NugetRestore;
-
-        public readonly Language Language;
-        public readonly bool Indexing;
+        public int SearchDepth { get; } = 3;
+        public string RootDirectory { get; }
+        public string? VsToolsVersion { get; }
+        public string? MsBuildArguments { get; }
+        public string? MsBuildPlatform { get; }
+        public string? MsBuildConfiguration { get; }
+        public string? MsBuildTarget { get; }
+        public string? DotNetArguments { get; }
+        public string? DotNetVersion { get; }
+        public string? BuildCommand { get; }
+        public IEnumerable<string> Solution { get; }
+        public bool IgnoreErrors { get; }
+        public bool Buildless { get; }
+        public bool AllSolutions { get; }
+        public bool NugetRestore { get; }
+        public Language Language { get; }
 
         /// <summary>
         /// Reads options from environment variables.
@@ -46,7 +44,7 @@ namespace Semmle.Autobuild.Shared
             DotNetArguments = actions.GetEnvironmentVariable(prefix + "DOTNET_ARGUMENTS")?.AsStringWithExpandedEnvVars(actions);
             DotNetVersion = actions.GetEnvironmentVariable(prefix + "DOTNET_VERSION");
             BuildCommand = actions.GetEnvironmentVariable(prefix + "BUILD_COMMAND");
-            Solution = actions.GetEnvironmentVariable(prefix + "SOLUTION").AsListWithExpandedEnvVars(actions, new string[0]);
+            Solution = actions.GetEnvironmentVariable(prefix + "SOLUTION").AsListWithExpandedEnvVars(actions, Array.Empty<string>());
 
             IgnoreErrors = actions.GetEnvironmentVariable(prefix + "IGNORE_ERRORS").AsBool("ignore_errors", false);
             Buildless = actions.GetEnvironmentVariable(prefix + "BUILDLESS").AsBool("buildless", false);
@@ -54,8 +52,6 @@ namespace Semmle.Autobuild.Shared
             NugetRestore = actions.GetEnvironmentVariable(prefix + "NUGET_RESTORE").AsBool("nuget_restore", true);
 
             Language = language;
-
-            Indexing = !actions.GetEnvironmentVariable($"CODEQL_AUTOBUILDER_{Language.UpperCaseName}_NO_INDEXING").AsBool("no_indexing", false);
         }
     }
 
@@ -63,7 +59,9 @@ namespace Semmle.Autobuild.Shared
     {
         public static bool AsBool(this string? value, string param, bool defaultValue)
         {
-            if (value == null) return defaultValue;
+            if (value is null)
+                return defaultValue;
+
             switch (value.ToLower())
             {
                 case "on":
@@ -83,7 +81,7 @@ namespace Semmle.Autobuild.Shared
 
         public static string[] AsListWithExpandedEnvVars(this string? value, IBuildActions actions, string[] defaultValue)
         {
-            if (value == null)
+            if (value is null)
                 return defaultValue;
 
             return value.
@@ -91,7 +89,7 @@ namespace Semmle.Autobuild.Shared
                 Select(s => AsStringWithExpandedEnvVars(s, actions)).ToArray();
         }
 
-        static readonly Regex linuxEnvRegEx = new Regex(@"\$([a-zA-Z_][a-zA-Z_0-9]*)", RegexOptions.Compiled);
+        private static readonly Regex linuxEnvRegEx = new Regex(@"\$([a-zA-Z_][a-zA-Z_0-9]*)", RegexOptions.Compiled);
 
         public static string AsStringWithExpandedEnvVars(this string value, IBuildActions actions)
         {

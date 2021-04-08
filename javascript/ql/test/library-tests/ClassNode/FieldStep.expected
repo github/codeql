@@ -1,3 +1,0 @@
-| tst2.js:3:14:3:14 | x | tst2.js:7:5:7:10 | this.x |
-| tst2.js:3:14:3:14 | x | tst2.js:8:25:8:30 | this.x |
-| tst2.js:3:14:3:14 | x | tst2.js:12:12:12:17 | this.x |

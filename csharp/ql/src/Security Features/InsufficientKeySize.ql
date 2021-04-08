@@ -15,8 +15,7 @@ predicate incorrectUseOfRC2(Assignment e, string msg) {
   exists(PropertyAccess pa |
     pa.getParent() = e and
     pa.getTarget().hasName("EffectiveKeySize") and
-    pa
-        .getTarget()
+    pa.getTarget()
         .getDeclaringType()
         .hasQualifiedName("System.Security.Cryptography", "RC2CryptoServiceProvider")
   ) and
@@ -25,21 +24,19 @@ predicate incorrectUseOfRC2(Assignment e, string msg) {
 }
 
 predicate incorrectUseOfDSA(ObjectCreation e, string msg) {
-  e
-      .getTarget()
+  e.getTarget()
       .getDeclaringType()
       .hasQualifiedName("System.Security.Cryptography", "DSACryptoServiceProvider") and
-  exists(Expr i | e.getArgument(0) = i and i.getValue().toInt() < 1024) and
-  msg = "Key size should be at least 1024 bits for DSA encryption."
+  exists(Expr i | e.getArgument(0) = i and i.getValue().toInt() < 2048) and
+  msg = "Key size should be at least 2048 bits for DSA encryption."
 }
 
 predicate incorrectUseOfRSA(ObjectCreation e, string msg) {
-  e
-      .getTarget()
+  e.getTarget()
       .getDeclaringType()
       .hasQualifiedName("System.Security.Cryptography", "RSACryptoServiceProvider") and
-  exists(Expr i | e.getArgument(0) = i and i.getValue().toInt() < 1024) and
-  msg = "Key size should be at least 1024 bits for RSA encryption."
+  exists(Expr i | e.getArgument(0) = i and i.getValue().toInt() < 2048) and
+  msg = "Key size should be at least 2048 bits for RSA encryption."
 }
 
 from Expr e, string msg

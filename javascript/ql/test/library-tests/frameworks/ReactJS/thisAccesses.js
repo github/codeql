@@ -50,3 +50,14 @@ class C2 extends React.Component {
         this.state = y;
     }
 }
+
+class C3 extends React.Component {
+    constructor() {
+
+    }
+
+    render() {
+        var foo = <this.name></this.name>;
+        var bar = <this.this></this.this>;
+    }
+}

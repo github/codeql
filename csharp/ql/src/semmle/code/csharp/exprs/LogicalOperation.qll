@@ -25,6 +25,8 @@ class UnaryLogicalOperation extends LogicalOperation, UnaryOperation, @un_log_op
  */
 class LogicalNotExpr extends UnaryLogicalOperation, @log_not_expr {
   override string getOperator() { result = "!" }
+
+  override string getAPrimaryQlClass() { result = "LogicalNotExpr" }
 }
 
 /**
@@ -41,6 +43,8 @@ class BinaryLogicalOperation extends LogicalOperation, BinaryOperation, @bin_log
  */
 class LogicalAndExpr extends BinaryLogicalOperation, @log_and_expr {
   override string getOperator() { result = "&&" }
+
+  override string getAPrimaryQlClass() { result = "LogicalAndExpr" }
 }
 
 /**
@@ -48,6 +52,8 @@ class LogicalAndExpr extends BinaryLogicalOperation, @log_and_expr {
  */
 class LogicalOrExpr extends BinaryLogicalOperation, @log_or_expr {
   override string getOperator() { result = "||" }
+
+  override string getAPrimaryQlClass() { result = "LogicalOrExpr" }
 }
 
 /**
@@ -61,6 +67,8 @@ class LogicalOrExpr extends BinaryLogicalOperation, @log_or_expr {
  */
 class NullCoalescingExpr extends BinaryLogicalOperation, @null_coalescing_expr {
   override string getOperator() { result = "??" }
+
+  override string getAPrimaryQlClass() { result = "NullCoalescingExpr" }
 }
 
 /**
@@ -92,4 +100,6 @@ class ConditionalExpr extends TernaryLogicalOperation, @conditional_expr {
   override string getOperator() { result = "?" }
 
   override string toString() { result = "... ? ... : ..." }
+
+  override string getAPrimaryQlClass() { result = "ConditionalExpr" }
 }

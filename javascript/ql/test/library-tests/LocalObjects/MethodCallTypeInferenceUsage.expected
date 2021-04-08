@@ -1,4 +1,0 @@
-| method-calls.js:25:11:25:21 | {m: f1}.m() | method-calls.js:26:2:26:3 | v1 | method-calls.js:24:23:24:24 | object literal |
-| method-calls.js:30:11:30:16 | o2.m() | method-calls.js:31:2:31:3 | v2 | method-calls.js:28:23:28:24 | object literal |
-| method-calls.js:34:11:34:23 | ({m: f3}).m() | method-calls.js:35:2:35:3 | v3 | method-calls.js:33:23:33:24 | object literal |
-| method-calls.js:41:11:41:16 | o4.m() | method-calls.js:42:2:42:3 | v4 | file://:0:0:0:0 | indefinite value (call) |

@@ -74,23 +74,13 @@ private class ArrayIterationCallbackAsPartialInvoke extends DataFlow::PartialInv
  * A flow step propagating the exception thrown from a callback to a method whose name coincides
  * a built-in Array iteration method, such as `forEach` or `map`.
  */
-private class IteratorExceptionStep extends DataFlow::MethodCallNode, DataFlow::AdditionalFlowStep {
-  IteratorExceptionStep() {
-    exists(string name | name = getMethodName() |
-      name = "forEach" or
-      name = "each" or
-      name = "map" or
-      name = "filter" or
-      name = "some" or
-      name = "every" or
-      name = "fold" or
-      name = "reduce"
-    )
-  }
-
+private class IteratorExceptionStep extends DataFlow::SharedFlowStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    pred = getAnArgument().(DataFlow::FunctionNode).getExceptionalReturn() and
-    succ = this.getExceptionalReturn()
+    exists(DataFlow::MethodCallNode call |
+      call.getMethodName() = ["forEach", "each", "map", "filter", "some", "every", "fold", "reduce"] and
+      pred = call.getAnArgument().(DataFlow::FunctionNode).getExceptionalReturn() and
+      succ = call.getExceptionalReturn()
+    )
   }
 }
 
@@ -102,12 +92,12 @@ private class IteratorExceptionStep extends DataFlow::MethodCallNode, DataFlow::
  */
 class StringReplaceCall extends DataFlow::MethodCallNode {
   StringReplaceCall() {
-    getMethodName() = "replace" and
+    getMethodName() = ["replace", "replaceAll"] and
     (getNumArgument() = 2 or getReceiver().mayHaveStringValue(_))
   }
 
   /** Gets the regular expression passed as the first argument to `replace`, if any. */
-  DataFlow::RegExpLiteralNode getRegExp() { result.flowsTo(getArgument(0)) }
+  DataFlow::RegExpCreationNode getRegExp() { result.flowsTo(getArgument(0)) }
 
   /** Gets a string that is being replaced by this call. */
   string getAReplacedString() {
@@ -128,9 +118,9 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
 
   /**
    * Holds if this is a global replacement, that is, the first argument is a regular expression
-   * with the `g` flag.
+   * with the `g` flag, or this is a call to `.replaceAll()`.
    */
-  predicate isGlobal() { getRegExp().isGlobal() }
+  predicate isGlobal() { getRegExp().isGlobal() or getMethodName() = "replaceAll" }
 
   /**
    * Holds if this call to `replace` replaces `old` with `new`.
@@ -148,6 +138,25 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
       pr = map.getAPropertyRead() and
       pr.flowsTo(replacer.getAReturn()) and
       map.hasPropertyWrite(old, any(DataFlow::Node repl | repl.getStringValue() = new))
+    )
+    or
+    // str.replace(regex, match => {
+    //   if (match === 'old') return 'new';
+    //   if (match === 'foo') return 'bar';
+    //   ...
+    // })
+    exists(
+      DataFlow::FunctionNode replacer, ConditionGuardNode guard, EqualityTest test,
+      DataFlow::Node ret
+    |
+      replacer = getCallback(1) and
+      guard.getOutcome() = test.getPolarity() and
+      guard.getTest() = test and
+      replacer.getParameter(0).flowsToExpr(test.getAnOperand()) and
+      test.getAnOperand().getStringValue() = old and
+      ret = replacer.getAReturn() and
+      guard.dominates(ret.getBasicBlock()) and
+      new = ret.getStringValue()
     )
   }
 }

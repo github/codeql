@@ -1,8 +1,7 @@
 /**
  * @name Polynomial regular expression used on uncontrolled data
  * @description A regular expression that can require polynomial time
- *              to match user-provided values may be
- *              vulnerable to denial-of-service attacks.
+ *              to match may be vulnerable to denial-of-service attacks.
  * @kind path-problem
  * @problem.severity warning
  * @precision high
@@ -14,9 +13,21 @@
 
 import javascript
 import semmle.javascript.security.performance.PolynomialReDoS::PolynomialReDoS
+import semmle.javascript.security.performance.SuperlinearBackTracking
 import DataFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This expensive $@ use depends on $@.",
-  sink.getNode().(Sink).getRegExp(), "regular expression", source.getNode(), "a user-provided value"
+from
+  Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode,
+  PolynomialBackTrackingTerm regexp
+where
+  cfg.hasFlowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  regexp = sinkNode.getRegExp() and
+  not (
+    source.getNode().(Source).getKind() = "url" and
+    regexp.isAtEndLine()
+  )
+select sinkNode.getHighlight(), source, sink,
+  "This $@ that depends on $@ may run slow on strings " + regexp.getPrefixMessage() +
+    "with many repetitions of '" + regexp.getPumpString() + "'.", regexp, "regular expression",
+  source.getNode(), source.getNode().(Source).describe()

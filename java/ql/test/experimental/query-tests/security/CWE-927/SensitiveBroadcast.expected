@@ -1,0 +1,34 @@
+edges
+| SensitiveBroadcast.java:12:34:12:38 | token : String | SensitiveBroadcast.java:14:31:14:36 | intent |
+| SensitiveBroadcast.java:13:41:13:52 | refreshToken : String | SensitiveBroadcast.java:14:31:14:36 | intent |
+| SensitiveBroadcast.java:25:32:25:39 | password : String | SensitiveBroadcast.java:26:31:26:36 | intent |
+| SensitiveBroadcast.java:36:35:36:39 | email : String | SensitiveBroadcast.java:38:31:38:36 | intent |
+| SensitiveBroadcast.java:50:22:50:29 | password : String | SensitiveBroadcast.java:52:31:52:36 | intent |
+| SensitiveBroadcast.java:97:35:97:40 | ticket : String | SensitiveBroadcast.java:98:54:98:59 | intent |
+| SensitiveBroadcast.java:109:32:109:39 | passcode : String | SensitiveBroadcast.java:111:54:111:59 | intent |
+| SensitiveBroadcast.java:136:33:136:38 | passwd : String | SensitiveBroadcast.java:140:54:140:59 | intent |
+nodes
+| SensitiveBroadcast.java:12:34:12:38 | token : String | semmle.label | token : String |
+| SensitiveBroadcast.java:13:41:13:52 | refreshToken : String | semmle.label | refreshToken : String |
+| SensitiveBroadcast.java:14:31:14:36 | intent | semmle.label | intent |
+| SensitiveBroadcast.java:25:32:25:39 | password : String | semmle.label | password : String |
+| SensitiveBroadcast.java:26:31:26:36 | intent | semmle.label | intent |
+| SensitiveBroadcast.java:36:35:36:39 | email : String | semmle.label | email : String |
+| SensitiveBroadcast.java:38:31:38:36 | intent | semmle.label | intent |
+| SensitiveBroadcast.java:50:22:50:29 | password : String | semmle.label | password : String |
+| SensitiveBroadcast.java:52:31:52:36 | intent | semmle.label | intent |
+| SensitiveBroadcast.java:97:35:97:40 | ticket : String | semmle.label | ticket : String |
+| SensitiveBroadcast.java:98:54:98:59 | intent | semmle.label | intent |
+| SensitiveBroadcast.java:109:32:109:39 | passcode : String | semmle.label | passcode : String |
+| SensitiveBroadcast.java:111:54:111:59 | intent | semmle.label | intent |
+| SensitiveBroadcast.java:136:33:136:38 | passwd : String | semmle.label | passwd : String |
+| SensitiveBroadcast.java:140:54:140:59 | intent | semmle.label | intent |
+#select
+| SensitiveBroadcast.java:14:31:14:36 | intent | SensitiveBroadcast.java:12:34:12:38 | token : String | SensitiveBroadcast.java:14:31:14:36 | intent | Sending $@ to broadcast. | SensitiveBroadcast.java:12:34:12:38 | token | sensitive information |
+| SensitiveBroadcast.java:14:31:14:36 | intent | SensitiveBroadcast.java:13:41:13:52 | refreshToken : String | SensitiveBroadcast.java:14:31:14:36 | intent | Sending $@ to broadcast. | SensitiveBroadcast.java:13:41:13:52 | refreshToken | sensitive information |
+| SensitiveBroadcast.java:26:31:26:36 | intent | SensitiveBroadcast.java:25:32:25:39 | password : String | SensitiveBroadcast.java:26:31:26:36 | intent | Sending $@ to broadcast. | SensitiveBroadcast.java:25:32:25:39 | password | sensitive information |
+| SensitiveBroadcast.java:38:31:38:36 | intent | SensitiveBroadcast.java:36:35:36:39 | email : String | SensitiveBroadcast.java:38:31:38:36 | intent | Sending $@ to broadcast. | SensitiveBroadcast.java:36:35:36:39 | email | sensitive information |
+| SensitiveBroadcast.java:52:31:52:36 | intent | SensitiveBroadcast.java:50:22:50:29 | password : String | SensitiveBroadcast.java:52:31:52:36 | intent | Sending $@ to broadcast. | SensitiveBroadcast.java:50:22:50:29 | password | sensitive information |
+| SensitiveBroadcast.java:98:54:98:59 | intent | SensitiveBroadcast.java:97:35:97:40 | ticket : String | SensitiveBroadcast.java:98:54:98:59 | intent | Sending $@ to broadcast. | SensitiveBroadcast.java:97:35:97:40 | ticket | sensitive information |
+| SensitiveBroadcast.java:111:54:111:59 | intent | SensitiveBroadcast.java:109:32:109:39 | passcode : String | SensitiveBroadcast.java:111:54:111:59 | intent | Sending $@ to broadcast. | SensitiveBroadcast.java:109:32:109:39 | passcode | sensitive information |
+| SensitiveBroadcast.java:140:54:140:59 | intent | SensitiveBroadcast.java:136:33:136:38 | passwd : String | SensitiveBroadcast.java:140:54:140:59 | intent | Sending $@ to broadcast. | SensitiveBroadcast.java:136:33:136:38 | passwd | sensitive information |

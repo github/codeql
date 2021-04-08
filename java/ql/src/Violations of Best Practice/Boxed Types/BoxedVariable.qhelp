@@ -53,9 +53,9 @@ be rewritten in the following way:
 <references>
 
 <li>
-The Java Language Specification:
-<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-5.html#jls-5.1.7">Boxing Conversion</a>,
-<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-5.html#jls-5.1.8">Unboxing Conversion</a>.
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-5.html#jls-5.1.7">Boxing Conversion</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-5.html#jls-5.1.8">Unboxing Conversion</a>.
 </li>
 <li>
 The Java Tutorials:

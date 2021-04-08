@@ -9,24 +9,19 @@ private import semmle.code.cpp.ir.dataflow.DataFlow
 /**
  * Gets the instruction that goes into `input` for `call`.
  */
-Instruction callInput(CallInstruction call, FunctionInput input) {
-  // A positional argument
+Operand callInput(CallInstruction call, FunctionInput input) {
+  // An argument or qualifier
   exists(int index |
-    result = call.getPositionalArgument(index) and
-    input.isParameter(index)
+    result = call.getArgumentOperand(index) and
+    input.isParameterOrQualifierAddress(index)
   )
   or
-  // A value pointed to by a positional argument
+  // A value pointed to by an argument or qualifier
   exists(ReadSideEffectInstruction read |
-    result = read and
+    result = read.getSideEffectOperand() and
     read.getPrimaryInstruction() = call and
-    input.isParameterDeref(read.getIndex())
+    input.isParameterDerefOrQualifierObject(read.getIndex())
   )
-  or
-  // The qualifier pointer
-  result = call.getThisArgument() and
-  input.isQualifierAddress()
-  //TODO: qualifier deref
 }
 
 /**
@@ -37,11 +32,11 @@ Instruction callOutput(CallInstruction call, FunctionOutput output) {
   result = call and
   output.isReturnValue()
   or
-  // The side effect of a call on the value pointed to by a positional argument
+  // The side effect of a call on the value pointed to by an argument or qualifier
   exists(WriteSideEffectInstruction effect |
     result = effect and
     effect.getPrimaryInstruction() = call and
-    output.isParameterDeref(effect.getIndex())
+    output.isParameterDerefOrQualifierObject(effect.getIndex())
   )
-  // TODO: qualifiers, return value dereference
+  // TODO: return value dereference
 }

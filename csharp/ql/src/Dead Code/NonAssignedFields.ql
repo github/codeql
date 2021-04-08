@@ -85,31 +85,31 @@ where
   not f.getType() instanceof Struct and
   not exists(Assignment ae, Field g |
     ae.getLValue().(FieldAccess).getTarget() = g and
-    g.getSourceDeclaration() = f and
+    g.getUnboundDeclaration() = f and
     not ae.getRValue() instanceof NullLiteral
   ) and
   not exists(MethodCall mc, int i, Field g |
     exists(Parameter p | mc.getTarget().getParameter(i) = p | p.isOut() or p.isRef()) and
     mc.getArgument(i) = g.getAnAccess() and
-    g.getSourceDeclaration() = f
+    g.getUnboundDeclaration() = f
   ) and
   not isFieldExternallyInitialized(f) and
   not exists(f.getAnAttribute()) and
   not exists(Expr init, Field g |
-    g.getSourceDeclaration() = f and
+    g.getUnboundDeclaration() = f and
     g.getInitializer() = init and
     not init instanceof NullLiteral
   ) and
   not exists(AssignOperation ua, Field g |
     ua.getLValue().(FieldAccess).getTarget() = g and
-    g.getSourceDeclaration() = f
+    g.getUnboundDeclaration() = f
   ) and
   not exists(MutatorOperation op |
-    op.getAnOperand().(FieldAccess).getTarget().getSourceDeclaration() = f
+    op.getAnOperand().(FieldAccess).getTarget().getUnboundDeclaration() = f
   ) and
   exists(Field g |
     fa.getTarget() = g and
-    g.getSourceDeclaration() = f
+    g.getUnboundDeclaration() = f
   )
 select f,
   "The field '" + f.getName() + "' is never explicitly assigned a value, yet it is read $@.", fa,

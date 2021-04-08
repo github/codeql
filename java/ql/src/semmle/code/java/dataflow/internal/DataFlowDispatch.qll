@@ -1,5 +1,7 @@
 private import java
 private import DataFlowPrivate
+private import DataFlowUtil
+private import semmle.code.java.dataflow.InstanceAccess
 import semmle.code.java.dispatch.VirtualDispatch
 
 private module DispatchImpl {
@@ -17,6 +19,13 @@ private module DispatchImpl {
       not p.isVarargs() and
       c = ma.getEnclosingCallable()
     )
+    or
+    exists(OwnInstanceAccess ia |
+      2 <= strictcount(viableImpl(ma)) and
+      (ia.isExplicit(ma.getQualifier()) or ia.isImplicitMethodQualifier(ma)) and
+      i = -1 and
+      c = ma.getEnclosingCallable()
+    )
   }
 
   /**
@@ -32,23 +41,41 @@ private module DispatchImpl {
     )
   }
 
+  private RefType getPreciseType(Expr e) {
+    result = e.(FunctionalExpr).getConstructedType()
+    or
+    not e instanceof FunctionalExpr and result = e.getType()
+  }
+
   /**
    * Holds if the `i`th argument of `ctx` has type `t` and `ctx` is a
    * relevant call context.
    */
   private predicate contextArgHasType(Call ctx, int i, RefType t, boolean exact) {
-    exists(Expr arg, Expr src |
-      relevantContext(ctx, i) and
-      ctx.getArgument(i) = arg and
-      src = variableTrack(arg) and
-      exists(RefType srctype | srctype = src.getType() |
-        exists(TypeVariable v | v = srctype |
-          t = v.getUpperBoundType+() and not t instanceof TypeVariable
-        )
+    relevantContext(ctx, i) and
+    exists(RefType srctype |
+      exists(Expr arg, Expr src |
+        i = -1 and
+        ctx.getQualifier() = arg
         or
-        t = srctype and not srctype instanceof TypeVariable
-      ) and
-      if src instanceof ClassInstanceExpr then exact = true else exact = false
+        ctx.getArgument(i) = arg
+      |
+        src = variableTrack(arg) and
+        srctype = getPreciseType(src) and
+        if src instanceof ClassInstanceExpr then exact = true else exact = false
+      )
+      or
+      exists(Node arg |
+        i = -1 and
+        not exists(ctx.getQualifier()) and
+        getInstanceArgument(ctx) = arg and
+        arg.getTypeBound() = srctype and
+        if ctx instanceof ClassInstanceExpr then exact = true else exact = false
+      )
+    |
+      t = srctype.(BoundedType).getAnUltimateUpperBoundType()
+      or
+      t = srctype and not srctype instanceof BoundedType
     )
   }
 

@@ -2,12 +2,13 @@
  * Provides classes for properties, indexers, and accessors.
  */
 
-import Type
 import Member
 import Stmt
-private import semmle.code.csharp.ExprOrStmtParent
-private import dotnet
+import Type
 private import cil
+private import dotnet
+private import semmle.code.csharp.ExprOrStmtParent
+private import TypeRef
 
 /**
  * A declaration that may have accessors. Either an event (`Event`), a property
@@ -146,7 +147,7 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
     not this.getAnAccessor().hasBody()
   }
 
-  override Property getSourceDeclaration() { properties(this, _, _, _, result) }
+  override Property getUnboundDeclaration() { properties(this, _, _, _, result) }
 
   override Property getOverridee() { result = DeclarationWithGetSetAccessors.super.getOverridee() }
 
@@ -232,6 +233,8 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
   override Getter getGetter() { result = DeclarationWithGetSetAccessors.super.getGetter() }
 
   override Setter getSetter() { result = DeclarationWithGetSetAccessors.super.getSetter() }
+
+  override string getAPrimaryQlClass() { result = "Property" }
 }
 
 /**
@@ -271,7 +274,7 @@ class Indexer extends DeclarationWithGetSetAccessors, Parameterizable, @indexer 
     result = DeclarationWithGetSetAccessors.super.getExpressionBody()
   }
 
-  override Indexer getSourceDeclaration() { indexers(this, _, _, _, result) }
+  override Indexer getUnboundDeclaration() { indexers(this, _, _, _, result) }
 
   override Indexer getOverridee() { result = DeclarationWithGetSetAccessors.super.getOverridee() }
 
@@ -298,6 +301,8 @@ class Indexer extends DeclarationWithGetSetAccessors, Parameterizable, @indexer 
   override Location getALocation() { indexer_location(this, result) }
 
   override string toStringWithTypes() { result = getName() + "[" + parameterTypesToString() + "]" }
+
+  override string getAPrimaryQlClass() { result = "Indexer" }
 }
 
 /**
@@ -365,7 +370,7 @@ class Accessor extends Callable, Modifiable, Attributable, @callable_accessor {
     not (result instanceof AccessModifier and exists(getAnAccessModifier()))
   }
 
-  override Accessor getSourceDeclaration() { accessors(this, _, _, _, result) }
+  override Accessor getUnboundDeclaration() { accessors(this, _, _, _, result) }
 
   override Location getALocation() { accessor_location(this, result) }
 
@@ -415,6 +420,8 @@ class Getter extends Accessor, @getter {
   override DeclarationWithGetSetAccessors getDeclaration() {
     result = Accessor.super.getDeclaration()
   }
+
+  override string getAPrimaryQlClass() { result = "Getter" }
 }
 
 /**
@@ -464,6 +471,11 @@ class Setter extends Accessor, @setter {
   override DeclarationWithGetSetAccessors getDeclaration() {
     result = Accessor.super.getDeclaration()
   }
+
+  /** Holds if this setter is an `init`-only accessor. */
+  predicate isInitOnly() { init_only_accessors(this) }
+
+  override string getAPrimaryQlClass() { result = "Setter" }
 }
 
 /**

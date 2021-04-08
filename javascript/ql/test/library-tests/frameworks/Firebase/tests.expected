@@ -1,0 +1,45 @@
+firebaseRef
+| src/import_assign.ts:4:3:4:17 | db.ref("hello") |
+| src/import_named.ts:4:3:4:17 | db.ref("hello") |
+| src/import_star.ts:4:3:4:17 | db.ref("hello") |
+| tst.js:5:1:5:22 | fb.data ... ef('x') |
+| tst.js:7:3:7:7 | x.ref |
+| tst.js:7:3:7:14 | x.ref.parent |
+| tst.js:10:1:10:25 | admin.d ... ef('x') |
+| tst.js:12:3:12:7 | x.ref |
+| tst.js:12:3:12:14 | x.ref.parent |
+| tst.js:17:3:17:7 | x.ref |
+| tst.js:17:3:17:14 | x.ref.parent |
+| tst.js:23:3:23:7 | x.ref |
+| tst.js:23:3:23:14 | x.ref.parent |
+| tst.js:32:12:32:42 | this.fi ... .ref(x) |
+| tst.js:46:12:46:42 | this.fi ... .ref(x) |
+| tst.js:50:12:50:25 | this.getRef(x) |
+| tst.js:50:12:50:34 | this.ge ... hild(x) |
+| tst.js:54:5:54:37 | this.fi ... ef('x') |
+| tst.js:58:1:58:61 | new Fir ... /news') |
+| tst.js:59:1:59:38 | new Fir ... /news') |
+firebaseSnapshot
+| tst.js:5:1:8:2 | fb.data ... ent;\\n}) |
+| tst.js:5:38:5:38 | x |
+| tst.js:10:1:13:2 | admin.d ... ent;\\n}) |
+| tst.js:10:41:10:41 | x |
+| tst.js:15:38:15:38 | x |
+| tst.js:20:38:20:38 | x |
+| tst.js:21:3:21:10 | x.before |
+| tst.js:22:3:22:9 | x.after |
+| tst.js:50:12:50:48 | this.ge ... value') |
+| tst.js:60:1:60:39 | new Fir ... em('x') |
+firebaseVal
+| tst.js:6:3:6:9 | x.val() |
+| tst.js:11:3:11:9 | x.val() |
+| tst.js:16:3:16:9 | x.val() |
+| tst.js:21:3:21:16 | x.before.val() |
+| tst.js:22:3:22:15 | x.after.val() |
+| tst.js:61:36:61:36 | x |
+requestInputAccess
+| tst.js:72:52:72:65 | req.params.foo |
+responseSendArgument
+| tst.js:72:52:72:65 | req.params.foo |
+routeHandler
+| tst.js:72:27:72:69 | (req, r ... foo); } |

@@ -4,12 +4,13 @@
  * All statements have the common base class `Stmt`.
  */
 
-import Location
 import Element
+import Location
 import Member
 import exprs.Expr
-private import semmle.code.csharp.Enclosing::Internal
+private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.frameworks.System
+private import TypeRef
 
 /**
  * A statement.
@@ -31,6 +32,9 @@ class Stmt extends ControlFlowElement, @stmt {
   override string toString() { result = "Statement" }
 
   override Location getALocation() { stmt_location(this, result) }
+
+  /** Holds if this statement is a global statement. */
+  predicate isGlobal() { this.getParent().(BlockStmt).isGlobalStatementContainer() }
 
   /**
    * Gets the singleton statement contained in this statement, by removing
@@ -69,6 +73,11 @@ class BlockStmt extends Stmt, @block_stmt {
   /** Holds if this block is an empty block with no statements. */
   predicate isEmpty() { not exists(this.getAStmt()) }
 
+  /** Holds if this block is the container of the global statements. */
+  predicate isGlobalStatementContainer() {
+    this.getEnclosingCallable().hasQualifiedName("<Program>$.<Main>$")
+  }
+
   override Stmt stripSingletonBlocks() {
     if getNumberOfStmts() = 1
     then result = getAChildStmt().stripSingletonBlocks()
@@ -76,6 +85,8 @@ class BlockStmt extends Stmt, @block_stmt {
   }
 
   override string toString() { result = "{...}" }
+
+  override string getAPrimaryQlClass() { result = "BlockStmt" }
 }
 
 /**
@@ -96,6 +107,8 @@ class ExprStmt extends Stmt, @expr_stmt {
   Expr getExpr() { result.getParent() = this }
 
   override string toString() { result = "...;" }
+
+  override string getAPrimaryQlClass() { result = "ExprStmt" }
 }
 
 /**
@@ -131,6 +144,8 @@ class IfStmt extends SelectionStmt, @if_stmt {
   Stmt getElse() { result = this.getChild(2) }
 
   override string toString() { result = "if (...) ..." }
+
+  override string getAPrimaryQlClass() { result = "IfStmt" }
 }
 
 /**
@@ -179,6 +194,8 @@ class SwitchStmt extends SelectionStmt, Switch, @switch_stmt {
   DefaultCase getDefaultCase() { result = this.getACase() }
 
   override string toString() { result = "switch (...) {...}" }
+
+  override string getAPrimaryQlClass() { result = "SwitchStmt" }
 
   /**
    * Gets the `i`th statement in the body of this `switch` statement.
@@ -284,6 +301,8 @@ class CaseStmt extends Case, @case_stmt {
   SwitchStmt getSwitchStmt() { result.getACase() = this }
 
   override string toString() { result = "case ...:" }
+
+  override string getAPrimaryQlClass() { result = "CaseStmt" }
 }
 
 /**
@@ -305,6 +324,8 @@ class ConstCase extends CaseStmt, LabeledStmt {
   override string getLabel() { result = p.getValue() }
 
   override string toString() { result = CaseStmt.super.toString() }
+
+  override string getAPrimaryQlClass() { result = "ConstCase" }
 }
 
 /**
@@ -324,6 +345,8 @@ class DefaultCase extends CaseStmt, LabeledStmt {
   override string getLabel() { result = "default" }
 
   override string toString() { result = "default:" }
+
+  override string getAPrimaryQlClass() { result = "DefaultCase" }
 }
 
 /**
@@ -354,6 +377,8 @@ class WhileStmt extends LoopStmt, @while_stmt {
   override Expr getCondition() { result.getParent() = this }
 
   override string toString() { result = "while (...) ..." }
+
+  override string getAPrimaryQlClass() { result = "WhileStmt" }
 }
 
 /**
@@ -370,6 +395,8 @@ class DoStmt extends LoopStmt, @do_stmt {
   override Expr getCondition() { result.getParent() = this }
 
   override string toString() { result = "do ... while (...);" }
+
+  override string getAPrimaryQlClass() { result = "DoStmt" }
 }
 
 /**
@@ -440,6 +467,8 @@ class ForStmt extends LoopStmt, @for_stmt {
   Expr getUpdate(int n) { exists(int i | result = this.getChild(i) and n = i - 1 and i >= 1) }
 
   override string toString() { result = "for (...;...;...) ..." }
+
+  override string getAPrimaryQlClass() { result = "ForStmt" }
 }
 
 /**
@@ -561,7 +590,30 @@ class ForeachStmt extends LoopStmt, @foreach_stmt {
    */
   Expr getIterableExpr() { result = this.getChild(1) }
 
+  /** Gets the called `GetEnumerator` method. */
+  Method getGetEnumerator() { foreach_stmt_desugar(this, result, 1) }
+
+  /** Gets the called `MoveNext` or `MoveNextAsync` method. */
+  Method getMoveNext() { foreach_stmt_desugar(this, result, 3) }
+
+  /** Gets the called `Dispose` or `DisposeAsync` method, if any. */
+  Method getDispose() { foreach_stmt_desugar(this, result, 4) }
+
+  /** Gets the called `Current` property. */
+  Property getCurrent() { foreach_stmt_desugar(this, result, 2) }
+
+  /**
+   * Gets the intermediate type to which the `Current` property is converted before
+   * being converted to the iteration variable type.
+   */
+  Type getElementType() { foreach_stmt_desugar(this, result, 5) }
+
+  /** Holds if this `foreach` statement is asynchronous. */
+  predicate isAsync() { foreach_stmt_info(this, 2) }
+
   override string toString() { result = "foreach (... ... in ...) ..." }
+
+  override string getAPrimaryQlClass() { result = "ForeachStmt" }
 }
 
 /**
@@ -586,6 +638,8 @@ class JumpStmt extends Stmt, @jump_stmt { }
  */
 class BreakStmt extends JumpStmt, @break_stmt {
   override string toString() { result = "break;" }
+
+  override string getAPrimaryQlClass() { result = "BreakStmt" }
 }
 
 /**
@@ -602,6 +656,8 @@ class BreakStmt extends JumpStmt, @break_stmt {
  */
 class ContinueStmt extends JumpStmt, @continue_stmt {
   override string toString() { result = "continue;" }
+
+  override string getAPrimaryQlClass() { result = "ContinueStmt" }
 }
 
 /**
@@ -637,6 +693,8 @@ class GotoLabelStmt extends GotoStmt, @goto_stmt {
     result.getEnclosingCallable() = getEnclosingCallable() and
     result.getLabel() = getLabel()
   }
+
+  override string getAPrimaryQlClass() { result = "GotoLabelStmt" }
 }
 
 /**
@@ -662,6 +720,8 @@ class GotoCaseStmt extends GotoStmt, @goto_case_stmt {
   override string getLabel() { result = getExpr().getValue() }
 
   override string toString() { result = "goto case ...;" }
+
+  override string getAPrimaryQlClass() { result = "GotoCaseStmt" }
 }
 
 /**
@@ -684,6 +744,8 @@ class GotoDefaultStmt extends GotoStmt, @goto_default_stmt {
   override string toString() { result = "goto default;" }
 
   override string getLabel() { result = "default" }
+
+  override string getAPrimaryQlClass() { result = "GotoDefaultStmt" }
 }
 
 /**
@@ -714,6 +776,8 @@ class ThrowStmt extends JumpStmt, ThrowElement, @throw_stmt {
       result = mid.getParent()
     )
   }
+
+  override string getAPrimaryQlClass() { result = "ThrowStmt" }
 }
 
 /**
@@ -738,6 +802,8 @@ class ReturnStmt extends JumpStmt, @return_stmt {
   Expr getExpr() { result.getParent() = this }
 
   override string toString() { result = "return ...;" }
+
+  override string getAPrimaryQlClass() { result = "ReturnStmt" }
 }
 
 /**
@@ -769,6 +835,8 @@ class YieldBreakStmt extends YieldStmt {
   YieldBreakStmt() { not exists(this.getExpr()) }
 
   override string toString() { result = "yield break;" }
+
+  override string getAPrimaryQlClass() { result = "YieldBreakStmt" }
 }
 
 /**
@@ -789,6 +857,8 @@ class YieldReturnStmt extends YieldStmt {
   YieldReturnStmt() { exists(this.getExpr()) }
 
   override string toString() { result = "yield return ...;" }
+
+  override string getAPrimaryQlClass() { result = "YieldReturnStmt" }
 }
 
 /**
@@ -823,6 +893,8 @@ class TryStmt extends Stmt, @try_stmt {
   predicate hasFinally() { exists(this.getFinally()) }
 
   override string toString() { result = "try {...} ..." }
+
+  override string getAPrimaryQlClass() { result = "TryStmt" }
 
   /** Gets the `catch` clause that handles an exception of type `ex`, if any. */
   CatchClause getAnExceptionHandler(ExceptionClass ex) { result = clauseHandlesException(ex, 0) }
@@ -965,6 +1037,8 @@ class SpecificCatchClause extends CatchClause {
   LocalVariableDeclExpr getVariableDeclExpr() { result.getParent() = this }
 
   override string toString() { result = "catch (...) {...}" }
+
+  override string getAPrimaryQlClass() { result = "SpecificCatchClause" }
 }
 
 /**
@@ -985,6 +1059,8 @@ class GeneralCatchClause extends CatchClause {
   GeneralCatchClause() { catch_type(this, _, 2) }
 
   override string toString() { result = "catch {...}" }
+
+  override string getAPrimaryQlClass() { result = "GeneralCatchClause" }
 }
 
 /**
@@ -1002,6 +1078,8 @@ class CheckedStmt extends Stmt, @checked_stmt {
   BlockStmt getBlock() { result.getParent() = this }
 
   override string toString() { result = "checked {...}" }
+
+  override string getAPrimaryQlClass() { result = "CheckedStmt" }
 }
 
 /**
@@ -1019,6 +1097,8 @@ class UncheckedStmt extends Stmt, @unchecked_stmt {
   BlockStmt getBlock() { result.getParent() = this }
 
   override string toString() { result = "unchecked {...}" }
+
+  override string getAPrimaryQlClass() { result = "UncheckedStmt" }
 }
 
 /**
@@ -1056,6 +1136,8 @@ class LockStmt extends Stmt, @lock_stmt {
 
   /** Gets the type `T` if this statement is of the form `lock(typeof(T)) { ... }`. */
   Type getLockTypeObject() { result = getExpr().(TypeofExpr).getTypeAccess().getTarget() }
+
+  override string getAPrimaryQlClass() { result = "LockStmt" }
 }
 
 /**
@@ -1134,6 +1216,8 @@ class UsingBlockStmt extends UsingStmt, @using_block_stmt {
   Stmt getBody() { result.getParent() = this }
 
   override string toString() { result = "using (...) {...}" }
+
+  override string getAPrimaryQlClass() { result = "UsingBlockStmt" }
 }
 
 /**
@@ -1171,6 +1255,8 @@ class LocalVariableDeclStmt extends Stmt, @decl_stmt {
   LocalVariableDeclExpr getVariableDeclExpr(int n) { result = this.getChild(n) }
 
   override string toString() { result = "... ...;" }
+
+  override string getAPrimaryQlClass() { result = "LocalVariableDeclStmt" }
 }
 
 /**
@@ -1207,6 +1293,8 @@ class LocalConstantDeclStmt extends LocalVariableDeclStmt, @const_decl_stmt {
   override LocalConstantDeclExpr getVariableDeclExpr(int n) { result = this.getChild(n) }
 
   override string toString() { result = "const ... ...;" }
+
+  override string getAPrimaryQlClass() { result = "LocalConstantDeclStmt" }
 }
 
 /**
@@ -1228,6 +1316,8 @@ class UsingDeclStmt extends LocalVariableDeclStmt, UsingStmt, @using_decl_stmt {
   }
 
   override Expr getAnExpr() { result = this.getAVariableDeclExpr().getInitializer() }
+
+  override string getAPrimaryQlClass() { result = "UsingDeclStmt" }
 }
 
 /**
@@ -1241,6 +1331,8 @@ class UsingDeclStmt extends LocalVariableDeclStmt, UsingStmt, @using_decl_stmt {
  */
 class EmptyStmt extends Stmt, @empty_stmt {
   override string toString() { result = ";" }
+
+  override string getAPrimaryQlClass() { result = "EmptyStmt" }
 }
 
 /**
@@ -1260,6 +1352,8 @@ class UnsafeStmt extends Stmt, @unsafe_stmt {
   BlockStmt getBlock() { result.getParent() = this }
 
   override string toString() { result = "unsafe {...}" }
+
+  override string getAPrimaryQlClass() { result = "UnsafeStmt" }
 }
 
 /**
@@ -1291,6 +1385,8 @@ class FixedStmt extends Stmt, @fixed_stmt {
   Stmt getBody() { result.getParent() = this }
 
   override string toString() { result = "fixed(...) { ... }" }
+
+  override string getAPrimaryQlClass() { result = "FixedStmt" }
 }
 
 /**
@@ -1306,7 +1402,9 @@ class FixedStmt extends Stmt, @fixed_stmt {
  * exit: ...
  * ```
  */
-class LabelStmt extends LabeledStmt, @label_stmt { }
+class LabelStmt extends LabeledStmt, @label_stmt {
+  override string getAPrimaryQlClass() { result = "LabelStmt" }
+}
 
 /**
  * A labeled statement.
@@ -1356,4 +1454,6 @@ class LocalFunctionStmt extends Stmt, @local_function_stmt {
   LocalFunction getLocalFunction() { local_function_stmts(this, result) }
 
   override string toString() { result = getLocalFunction().getName() + "(...)" }
+
+  override string getAPrimaryQlClass() { result = "LocalFunctionStmt" }
 }

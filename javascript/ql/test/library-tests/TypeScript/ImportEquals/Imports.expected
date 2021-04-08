@@ -1,5 +1,0 @@
-| tst.ts:1:26:1:53 | require ... xport') | ./esDefaultExport | esDefaultExport.ts:1:1:2:0 | <toplevel> |
-| tst.ts:2:18:2:44 | require ... ports') | ./esNamedExports | esNamedExports.ts:1:1:6:0 | <toplevel> |
-| tst.ts:3:25:3:51 | require ... xport') | ./nodeFullExport | nodeFullExport.ts:1:1:4:0 | <toplevel> |
-| tst.ts:4:20:4:47 | require ... xport') | ./nodeNamedExport | nodeNamedExport.ts:1:1:4:0 | <toplevel> |
-| tst.ts:16:22:16:45 | require ... ource') | ./taintSource | taintSource.ts:1:1:4:0 | <toplevel> |

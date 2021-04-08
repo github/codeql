@@ -15,6 +15,7 @@ import com.semmle.js.ast.jsx.JSXMemberExpression;
 import com.semmle.js.ast.jsx.JSXNamespacedName;
 import com.semmle.js.ast.jsx.JSXOpeningElement;
 import com.semmle.js.ast.jsx.JSXSpreadAttribute;
+import com.semmle.js.ast.jsx.JSXThisExpr;
 import com.semmle.ts.ast.ExportWholeDeclaration;
 import com.semmle.ts.ast.ExternalModuleReference;
 import com.semmle.ts.ast.ImportWholeDeclaration;
@@ -633,6 +634,11 @@ public class AST2JSON extends DefaultVisitor<Void, JsonElement> {
     JsonObject result = this.mkNode(nd, "JSXIdentifier");
     result.add("name", visitPrimitive(nd.getName()));
     return result;
+  }
+
+  @Override
+  public JsonElement visit(JSXThisExpr nd, Void c) {
+    return this.mkNode(nd, "JSXThisExpr");
   }
 
   @Override

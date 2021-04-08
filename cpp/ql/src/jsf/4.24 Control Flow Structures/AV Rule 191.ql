@@ -18,7 +18,7 @@ import cpp
 
 // whether t is the last statement of s, possibly peeling off blocks
 predicate isTerminatingStmt(Stmt s, Stmt t) {
-  s = t or isTerminatingStmt(s.(Block).getLastStmt(), t)
+  s = t or isTerminatingStmt(s.(BlockStmt).getLastStmt(), t)
 }
 
 from BreakStmt s

@@ -7,7 +7,7 @@
  * @id js/incomplete-url-substring-sanitization
  * @tags correctness
  *       security
- *       external/cwe/cwe-20
+ *       external/cwe/cwe-020
  */
 
 import javascript
@@ -43,6 +43,10 @@ where
     or
     // target is a HTTP URL to a domain on any TLD
     target.regexpMatch("(?i)https?://([a-z0-9-]+\\.)+([a-z]+)(:[0-9]+)?/?")
+    or
+    // target is a HTTP URL to a domain on any TLD with path elements, and the check is an includes check
+    check instanceof StringOps::Includes and
+    target.regexpMatch("(?i)https?://([a-z0-9-]+\\.)+([a-z]+)(:[0-9]+)?/[a-z0-9/_-]+")
   ) and
   (
     if check instanceof StringOps::StartsWith

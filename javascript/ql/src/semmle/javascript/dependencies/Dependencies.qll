@@ -127,16 +127,20 @@ class ExternalNPMDependency extends NPMDependency {
     exists(PackageDependencies pkgdeps | this = pkgdeps.getPropValue(result))
   }
 
-  override string getVersion() {
+  private string getVersionNumber() {
     exists(string versionRange | versionRange = this.(JSONString).getValue() |
       // extract a concrete version from the version range; currently,
       // we handle exact versions as well as `<=`, `>=`, `~` and `^` ranges
       result = versionRange.regexpCapture("(?:[><]=|[=~^])?v?(\\d+(\\.\\d+){1,2})", 1)
-      or
-      // if no version is specified, report version `unknown`
-      result = "unknown" and
-      (versionRange = "" or versionRange = "*")
     )
+  }
+
+  override string getVersion() {
+    result = getVersionNumber()
+    or
+    // if no version is specified or could not be parsed, report version `unknown`
+    not exists(getVersionNumber()) and
+    result = "unknown"
   }
 
   override Import getAnImport() {
@@ -273,7 +277,7 @@ private class GWTDependency extends ScriptDependency {
  * A dependency on the Google Closure library indicated by
  * a call to `goog.require` or `goog.provide`.
  */
-private class GoogleClosureDep extends Dependency, @callexpr {
+private class GoogleClosureDep extends Dependency, @call_expr {
   GoogleClosureDep() {
     exists(MethodCallExpr mce |
       mce = this and mce.getReceiver().(GlobalVarAccess).getName() = "goog"

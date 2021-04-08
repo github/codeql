@@ -1,6 +1,6 @@
 /**
- * @name __iter__ method returns a non-iterator
- * @description The '__iter__' method returns a non-iterator which, if used in a 'for' loop, would raise a 'TypeError'.
+ * @name `__iter__` method returns a non-iterator
+ * @description The `__iter__` method returns a non-iterator which, if used in a 'for' loop, would raise a 'TypeError'.
  * @kind problem
  * @tags reliability
  *       correctness

@@ -233,7 +233,9 @@ private module NpmPackagePortal {
         apw.writes(m.(AnalyzedModule).getModuleObject(), "exports", exp)
       )
       or
-      m.(ES2015Module).exports("default", exp.(DataFlow::ValueNode).getAstNode())
+      exists(DataFlow::PropWrite export | exp = export |
+        export.getRhs() = m.(ES2015Module).getAnExportedValue("default")
+      )
     )
   }
 }

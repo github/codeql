@@ -1,0 +1,48 @@
+generics/A.java:
+#    0| [CompilationUnit] A
+#-----|   -1: (Imports)
+#    3|     1: [ImportType] import HashMap
+#    4|     2: [ImportType] import Map
+#    6|   1: [Class] A
+#-----|     -2: (Generic Parameters)
+#    6|       0: [TypeVariable] T
+#    7|     2: [Class] B
+#   10|   2: [Class] C
+#   11|     3: [FieldDeclaration] A<String> f, ...;
+#   11|       -1: [TypeAccess] A<String>
+#   11|         0: [TypeAccess] String
+#   12|     4: [FieldDeclaration] A<String>.B<> b, ...;
+#   12|       -1: [TypeAccess] A<String>.B<>
+#   12|         -1: [TypeAccess] A<String>
+#   12|           0: [TypeAccess] String
+#   13|     5: [FieldDeclaration] Map<String,Object> m, ...;
+#   13|       -1: [TypeAccess] Map<String,Object>
+#   13|         0: [TypeAccess] String
+#   13|         1: [TypeAccess] Object
+#   13|       0: [ClassInstanceExpr] new HashMap<String,Object>(...)
+#   13|         -3: [TypeAccess] HashMap<String,Object>
+#   13|           0: [TypeAccess] String
+#   13|           1: [TypeAccess] Object
+#   16|   3: [Class] D
+#-----|     -2: (Generic Parameters)
+#   16|       0: [TypeVariable] V
+#   16|         0: [TypeAccess] Number
+#   17|     3: [FieldDeclaration] D<?> d1, ...;
+#   17|       -1: [TypeAccess] D<?>
+#   17|         0: [WildcardTypeAccess] ? ...
+#   18|     4: [FieldDeclaration] D<? extends Object> d2, ...;
+#   18|       -1: [TypeAccess] D<? extends Object>
+#   18|         0: [WildcardTypeAccess] ? ...
+#   18|           0: [TypeAccess] Object
+#   19|     5: [FieldDeclaration] D<? extends Float> d3, ...;
+#   19|       -1: [TypeAccess] D<? extends Float>
+#   19|         0: [WildcardTypeAccess] ? ...
+#   19|           0: [TypeAccess] Float
+#   20|     6: [FieldDeclaration] D<? super Double> d4, ...;
+#   20|       -1: [TypeAccess] D<? super Double>
+#   20|         0: [WildcardTypeAccess] ? ...
+#   20|           1: [TypeAccess] Double
+#   21|     7: [BlockStmt] stmt
+#   21|       0: [ExprStmt] stmt
+#   21|         0: [MethodAccess] asList(...)
+#   21|           -1: [TypeAccess] Arrays

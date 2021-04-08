@@ -47,14 +47,14 @@ class Node extends TNode {
   cached
   final DataFlowCallable getEnclosingCallable() {
     Stages::DataFlowStage::forceCachingInSameStage() and
-    result = unique(DataFlowCallable c | c = this.(NodeImpl).getEnclosingCallableImpl() | c)
+    result = this.(NodeImpl).getEnclosingCallableImpl()
   }
 
   /** Gets the control flow node corresponding to this node, if any. */
   cached
   final ControlFlow::Node getControlFlowNode() {
     Stages::DataFlowStage::forceCachingInSameStage() and
-    result = unique(ControlFlow::Node n | n = this.(NodeImpl).getControlFlowNodeImpl() | n)
+    result = this.(NodeImpl).getControlFlowNodeImpl()
   }
 
   /** Gets a textual representation of this node. */
@@ -117,23 +117,18 @@ class ExprNode extends Node {
  * flow graph.
  */
 class ParameterNode extends Node {
-  ParameterNode() {
-    // charpred needed to avoid making `ParameterNode` abstract
-    explicitParameterNode(this, _) or
-    this.(SsaDefinitionNode).getDefinition() instanceof
-      ImplicitCapturedParameterNodeImpl::SsaCapturedEntryDefinition or
-    this = TInstanceParameterNode(_) or
-    this = TCilParameterNode(_)
-  }
+  private ParameterNodeImpl p;
+
+  ParameterNode() { this = p }
 
   /** Gets the parameter corresponding to this node, if any. */
-  DotNet::Parameter getParameter() { none() }
+  DotNet::Parameter getParameter() { result = p.getParameter() }
 
   /**
    * Holds if this node is the parameter of callable `c` at the specified
    * (zero-based) position.
    */
-  predicate isParameterOf(DataFlowCallable c, int i) { none() }
+  predicate isParameterOf(DataFlowCallable c, int i) { p.isParameterOf(c, i) }
 }
 
 /** A definition, viewed as a node in a data flow graph. */
@@ -222,10 +217,10 @@ class Content extends TContent {
   Location getLocation() { none() }
 
   /** Gets the type of the object containing this content. */
-  deprecated DataFlowType getContainerType() { none() }
+  deprecated Gvn::GvnType getContainerType() { none() }
 
   /** Gets the type of this content. */
-  deprecated DataFlowType getType() { none() }
+  deprecated Gvn::GvnType getType() { none() }
 }
 
 /** A reference to a field. */
@@ -237,15 +232,15 @@ class FieldContent extends Content, TFieldContent {
   /** Gets the field that is referenced. */
   Field getField() { result = f }
 
-  override string toString() { result = f.toString() }
+  override string toString() { result = "field " + f.getName() }
 
   override Location getLocation() { result = f.getLocation() }
 
-  deprecated override DataFlowType getContainerType() {
+  deprecated override Gvn::GvnType getContainerType() {
     result = Gvn::getGlobalValueNumber(f.getDeclaringType())
   }
 
-  deprecated override DataFlowType getType() { result = Gvn::getGlobalValueNumber(f.getType()) }
+  deprecated override Gvn::GvnType getType() { result = Gvn::getGlobalValueNumber(f.getType()) }
 }
 
 /** A reference to a property. */
@@ -257,20 +252,20 @@ class PropertyContent extends Content, TPropertyContent {
   /** Gets the property that is referenced. */
   Property getProperty() { result = p }
 
-  override string toString() { result = p.toString() }
+  override string toString() { result = "property " + p.getName() }
 
   override Location getLocation() { result = p.getLocation() }
 
-  deprecated override DataFlowType getContainerType() {
+  deprecated override Gvn::GvnType getContainerType() {
     result = Gvn::getGlobalValueNumber(p.getDeclaringType())
   }
 
-  deprecated override DataFlowType getType() { result = Gvn::getGlobalValueNumber(p.getType()) }
+  deprecated override Gvn::GvnType getType() { result = Gvn::getGlobalValueNumber(p.getType()) }
 }
 
 /** A reference to an element in a collection. */
 class ElementContent extends Content, TElementContent {
-  override string toString() { result = "[]" }
+  override string toString() { result = "element" }
 
   override Location getLocation() { result instanceof EmptyLocation }
 }

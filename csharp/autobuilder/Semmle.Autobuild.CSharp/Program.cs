@@ -3,9 +3,9 @@ using Semmle.Autobuild.Shared;
 
 namespace Semmle.Autobuild.CSharp
 {
-    class Program
+    public static class Program
     {
-        static int Main()
+        public static int Main()
         {
 
             try

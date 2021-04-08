@@ -15,7 +15,7 @@ as both virtual and non-virtual in one hierarchy as violations.</p>
   AV Rule 89, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
 </li>
 <li>
-  <a href="http://msdn.microsoft.com/en-us/library/wcz57btd%28v=vs.80%29.aspx">Virtual Base Classes</a>
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/cpp/multiple-base-classes">Multiple Base Classes</a>.
 </li>
 
 

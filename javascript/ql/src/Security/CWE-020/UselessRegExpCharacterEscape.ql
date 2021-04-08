@@ -9,7 +9,7 @@
  * @id js/useless-regexp-character-escape
  * @tags correctness
  *       security
- *       external/cwe/cwe-20
+ *       external/cwe/cwe-020
  */
 
 import javascript

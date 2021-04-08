@@ -38,7 +38,7 @@ predicate noDefUsePath(LocalVariable lv, ControlFlowNode n) {
 }
 
 predicate neighbouringStmts(Stmt s1, Stmt s2) {
-  exists(Block b, int i |
+  exists(BlockStmt b, int i |
     i in [0 .. b.getNumStmt() - 2] and
     s1 = b.getStmt(i) and
     s2 = b.getStmt(i + 1)

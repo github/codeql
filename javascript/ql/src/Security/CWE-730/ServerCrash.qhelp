@@ -1,0 +1,86 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+
+	<p>
+
+		Servers handle requests from clients until terminated
+		deliberately by a server administrator. A client request that results
+		in an uncaught server-side exception causes the current server
+		response generation to fail, and should not have an effect on
+		subsequent client requests.
+
+	</p>
+
+	<p>
+
+		Under some circumstances, uncaught exceptions can however
+		cause the entire server to terminate abruptly. Such a behavior is
+		highly undesirable, especially if it gives malicious users the ability
+		to turn off the server at will, which is an efficient
+		denial-of-service attack.
+
+	</p>
+
+</overview>
+
+<recommendation>
+
+	<p>
+
+		Ensure that the processing of client requests can not cause
+		uncaught exceptions to terminate the entire server abruptly.
+
+	</p>
+
+</recommendation>
+
+<example>
+
+	<p>
+
+		The following server implementation checks if a client-provided
+		file path is valid and throws an exception if the check fails. It can
+		be seen that the exception is uncaught, and it is therefore reasonable to
+		expect the server to respond with an error response to client requests
+		that cause the check to fail.
+
+		But since the exception is uncaught in the context of an
+		asynchronous callback invocation (<code>fs.access(...)</code>), the
+		entire server will terminate instead.
+
+	</p>
+
+	<sample src="examples/server-crash.BAD.js"/>
+
+	<p>
+		To remedy this, the server can catch the exception explicitly with
+		a <code>try/catch</code> block, and generate an appropriate error
+		response instead:
+
+	</p>
+
+	<sample src="examples/server-crash.GOOD-A.js"/>
+
+	<p>
+
+		An alternative is to use an <code>async</code> and
+		<code>await</code> for the asynchronous behavior, since the server
+		will then print warning messages about uncaught exceptions instead of
+		terminating, unless the server was started with the commandline option
+		<code>--unhandled-rejections=strict</code>:
+
+	</p>
+
+	<sample src="examples/server-crash.GOOD-B.js"/>
+
+</example>
+
+<references>
+
+</references>
+
+</qhelp>

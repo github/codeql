@@ -1,0 +1,2 @@
+| Test.java:7:44:7:69 | ... + ... | Command line is built with string concatenation. |
+| Test.java:29:44:29:64 | ... + ... | Command line is built with string concatenation. |

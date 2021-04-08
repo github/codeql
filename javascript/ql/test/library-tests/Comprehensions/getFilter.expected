@@ -1,4 +1,0 @@
-| comprehensions.js:2:1:2:43 | [for (y ... ) year] | 0 | comprehensions.js:2:26:2:36 | year > 2000 |
-| comprehensions.js:5:1:5:52 | [for (i ... j) i+j] | 0 | comprehensions.js:5:44:5:46 | i<j |
-| comprehensions.js:7:1:7:43 | (for (y ... ) year) | 0 | comprehensions.js:7:26:7:36 | year > 2000 |
-| comprehensions.js:10:1:10:52 | (for (i ... j) i+j) | 0 | comprehensions.js:10:44:10:46 | i<j |

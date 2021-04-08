@@ -1,16 +1,18 @@
 edges
-| test.py:11:15:11:26 | dict of externally controlled string | test.py:11:15:11:41 | externally controlled string |
-| test.py:11:15:11:26 | dict of externally controlled string | test.py:11:15:11:41 | externally controlled string |
-| test.py:11:15:11:41 | externally controlled string | test.py:12:18:12:24 | externally controlled string |
-| test.py:11:15:11:41 | externally controlled string | test.py:12:18:12:24 | externally controlled string |
-| test.py:11:15:11:41 | externally controlled string | test.py:13:15:13:21 | externally controlled string |
-| test.py:11:15:11:41 | externally controlled string | test.py:13:15:13:21 | externally controlled string |
-| test.py:11:15:11:41 | externally controlled string | test.py:14:19:14:25 | externally controlled string |
-| test.py:11:15:11:41 | externally controlled string | test.py:14:19:14:25 | externally controlled string |
-| test.py:11:15:11:41 | externally controlled string | test.py:16:16:16:22 | externally controlled string |
-| test.py:11:15:11:41 | externally controlled string | test.py:16:16:16:22 | externally controlled string |
+| unsafe_deserialization.py:14:15:14:21 | ControlFlowNode for request | unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute |
+| unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | unsafe_deserialization.py:15:18:15:24 | ControlFlowNode for payload |
+| unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | unsafe_deserialization.py:16:15:16:21 | ControlFlowNode for payload |
+| unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | unsafe_deserialization.py:18:19:18:25 | ControlFlowNode for payload |
+| unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | unsafe_deserialization.py:21:16:21:22 | ControlFlowNode for payload |
+nodes
+| unsafe_deserialization.py:14:15:14:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| unsafe_deserialization.py:15:18:15:24 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
+| unsafe_deserialization.py:16:15:16:21 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
+| unsafe_deserialization.py:18:19:18:25 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
+| unsafe_deserialization.py:21:16:21:22 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
 #select
-| test.py:12:18:12:24 | payload | test.py:11:15:11:26 | dict of externally controlled string | test.py:12:18:12:24 | externally controlled string | Deserializing of $@. | test.py:11:15:11:26 | Attribute | untrusted input |
-| test.py:13:15:13:21 | payload | test.py:11:15:11:26 | dict of externally controlled string | test.py:13:15:13:21 | externally controlled string | Deserializing of $@. | test.py:11:15:11:26 | Attribute | untrusted input |
-| test.py:14:19:14:25 | payload | test.py:11:15:11:26 | dict of externally controlled string | test.py:14:19:14:25 | externally controlled string | Deserializing of $@. | test.py:11:15:11:26 | Attribute | untrusted input |
-| test.py:16:16:16:22 | payload | test.py:11:15:11:26 | dict of externally controlled string | test.py:16:16:16:22 | externally controlled string | Deserializing of $@. | test.py:11:15:11:26 | Attribute | untrusted input |
+| unsafe_deserialization.py:15:18:15:24 | ControlFlowNode for payload | unsafe_deserialization.py:14:15:14:21 | ControlFlowNode for request | unsafe_deserialization.py:15:18:15:24 | ControlFlowNode for payload | Deserializing of $@. | unsafe_deserialization.py:14:15:14:21 | ControlFlowNode for request | untrusted input |
+| unsafe_deserialization.py:16:15:16:21 | ControlFlowNode for payload | unsafe_deserialization.py:14:15:14:21 | ControlFlowNode for request | unsafe_deserialization.py:16:15:16:21 | ControlFlowNode for payload | Deserializing of $@. | unsafe_deserialization.py:14:15:14:21 | ControlFlowNode for request | untrusted input |
+| unsafe_deserialization.py:18:19:18:25 | ControlFlowNode for payload | unsafe_deserialization.py:14:15:14:21 | ControlFlowNode for request | unsafe_deserialization.py:18:19:18:25 | ControlFlowNode for payload | Deserializing of $@. | unsafe_deserialization.py:14:15:14:21 | ControlFlowNode for request | untrusted input |
+| unsafe_deserialization.py:21:16:21:22 | ControlFlowNode for payload | unsafe_deserialization.py:14:15:14:21 | ControlFlowNode for request | unsafe_deserialization.py:21:16:21:22 | ControlFlowNode for payload | Deserializing of $@. | unsafe_deserialization.py:14:15:14:21 | ControlFlowNode for request | untrusted input |

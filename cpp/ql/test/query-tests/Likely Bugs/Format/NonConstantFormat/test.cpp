@@ -2,6 +2,8 @@ extern "C" int printf(const char *fmt, ...);
 extern "C" int sprintf(char *buf, const char *fmt, ...);
 extern "C" char *gettext (const char *);
 
+#define MYSPRINTF sprintf
+
 bool gettext_debug = false;
 
 const char *messages[] = {
@@ -119,6 +121,13 @@ int main(int argc, char **argv) {
   //
   //
   printf(const_wash("Hello, World\n")); // GOOD
+
+  {
+	char buffer[1024];
+
+	MYSPRINTF(buffer, "constant"); // GOOD
+	MYSPRINTF(buffer, argv[0]); // BAD
+  }
 }
 
 const char *simple_func(const char *str) {

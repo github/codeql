@@ -27,7 +27,7 @@ int logicalLength(FunctionDeclarationEntry f) {
     count(Stmt s |
         s.getEnclosingFunction() = f.getFunction() and
         s.getFile() = f.getFile() and
-        not s instanceof Block and
+        not s instanceof BlockStmt and
         not s instanceof EmptyStmt and
         not exists(ForStmt for | s = for.getInitialization()) and
         not s.isAffectedByMacro()

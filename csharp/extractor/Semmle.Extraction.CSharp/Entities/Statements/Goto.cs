@@ -8,9 +8,9 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
     /// <summary>
     /// A goto, goto case or goto default.
     /// </summary>
-    class Goto : Statement<GotoStatementSyntax>
+    internal class Goto : Statement<GotoStatementSyntax>
     {
-        static StmtKind GetKind(GotoStatementSyntax node)
+        private static StmtKind GetKind(GotoStatementSyntax node)
         {
             switch (node.CaseOrDefaultKeyword.Kind())
             {
@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             }
         }
 
-        Goto(Context cx, GotoStatementSyntax node, IStatementParentEntity parent, int child)
+        private Goto(Context cx, GotoStatementSyntax node, IStatementParentEntity parent, int child)
             : base(cx, node, GetKind(node), parent, child) { }
 
         public static Goto Create(Context cx, GotoStatementSyntax node, IStatementParentEntity parent, int child)
@@ -36,12 +36,12 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             switch (GetKind(Stmt))
             {
                 case StmtKind.GOTO:
-                    var target = ((IdentifierNameSyntax)Stmt.Expression).Identifier.Text;
+                    var target = ((IdentifierNameSyntax)Stmt.Expression!).Identifier.Text;
                     trapFile.exprorstmt_name(this, target);
                     break;
                 case StmtKind.GOTO_CASE:
-                    Expr = Expression.Create(cx, Stmt.Expression, this, 0);
-                    ConstantValue = Switch.LabelForValue(cx.GetModel(Stmt).GetConstantValue(Stmt.Expression).Value);
+                    Expr = Expression.Create(Context, Stmt.Expression!, this, 0);
+                    ConstantValue = Switch.LabelForValue(Context.GetModel(Stmt).GetConstantValue(Stmt.Expression!).Value);
                     break;
                 case StmtKind.GOTO_DEFAULT:
                     ConstantValue = Switch.DefaultLabel;
@@ -49,9 +49,9 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             }
         }
 
-        public Expression Expr { get; private set; }
+        public Expression? Expr { get; private set; }
 
-        public object ConstantValue { get; private set; }
+        public object? ConstantValue { get; private set; }
 
         public bool IsDefault => ConstantValue == Switch.DefaultLabel;
     }

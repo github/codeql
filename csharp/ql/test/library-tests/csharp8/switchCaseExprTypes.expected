@@ -1,0 +1,16 @@
+| patterns.cs:101:34:101:40 | "large" | String |
+| patterns.cs:102:18:102:24 | "small" | String |
+| patterns.cs:110:22:110:26 | (..., ...) | (Int32,Int32) |
+| patterns.cs:111:22:111:26 | (..., ...) | (Int32,Int32) |
+| patterns.cs:117:27:117:33 | (..., ...) | (Int32,Int32) |
+| patterns.cs:118:28:118:34 | (..., ...) | (Int32,Int32) |
+| patterns.cs:119:33:119:38 | (..., ...) | (Int32,Int32) |
+| patterns.cs:128:49:128:49 | 0 | Int32 |
+| patterns.cs:129:38:129:38 | 1 | Int32 |
+| patterns.cs:130:23:130:23 | 2 | Int32 |
+| patterns.cs:131:27:131:27 | 3 | Int32 |
+| patterns.cs:138:22:138:50 | throw ... | null |
+| patterns.cs:139:22:139:22 | 3 | Int32 |
+| patterns.cs:140:42:140:42 | 4 | Int32 |
+| patterns.cs:141:29:141:29 | 5 | Int32 |
+| patterns.cs:142:41:142:41 | 6 | Int32 |

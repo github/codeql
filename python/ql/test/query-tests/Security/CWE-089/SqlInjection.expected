@@ -1,22 +1,16 @@
 edges
-| sql_injection.py:12:24:12:31 | externally controlled string | sql_injection.py:19:70:19:77 | externally controlled string |
-| sql_injection.py:12:24:12:31 | externally controlled string | sql_injection.py:19:70:19:77 | externally controlled string |
-| sql_injection.py:12:24:12:31 | externally controlled string | sql_injection.py:22:88:22:95 | externally controlled string |
-| sql_injection.py:12:24:12:31 | externally controlled string | sql_injection.py:22:88:22:95 | externally controlled string |
-| sql_injection.py:12:24:12:31 | externally controlled string | sql_injection.py:23:76:23:83 | externally controlled string |
-| sql_injection.py:12:24:12:31 | externally controlled string | sql_injection.py:23:76:23:83 | externally controlled string |
-| sql_injection.py:12:24:12:31 | externally controlled string | sql_injection.py:24:78:24:85 | externally controlled string |
-| sql_injection.py:12:24:12:31 | externally controlled string | sql_injection.py:24:78:24:85 | externally controlled string |
-| sql_injection.py:19:70:19:77 | externally controlled string | sql_injection.py:19:24:19:77 | externally controlled string |
-| sql_injection.py:19:70:19:77 | externally controlled string | sql_injection.py:19:24:19:77 | externally controlled string |
-| sql_injection.py:22:88:22:95 | externally controlled string | sql_injection.py:22:38:22:95 | externally controlled string |
-| sql_injection.py:22:88:22:95 | externally controlled string | sql_injection.py:22:38:22:95 | externally controlled string |
-| sql_injection.py:23:76:23:83 | externally controlled string | sql_injection.py:23:26:23:83 | externally controlled string |
-| sql_injection.py:23:76:23:83 | externally controlled string | sql_injection.py:23:26:23:83 | externally controlled string |
-| sql_injection.py:24:78:24:85 | externally controlled string | sql_injection.py:24:28:24:85 | externally controlled string |
-| sql_injection.py:24:78:24:85 | externally controlled string | sql_injection.py:24:28:24:85 | externally controlled string |
+| sql_injection.py:14:15:14:22 | ControlFlowNode for username | sql_injection.py:21:24:21:77 | ControlFlowNode for BinaryExpr |
+| sql_injection.py:14:15:14:22 | ControlFlowNode for username | sql_injection.py:24:38:24:95 | ControlFlowNode for BinaryExpr |
+| sql_injection.py:14:15:14:22 | ControlFlowNode for username | sql_injection.py:25:26:25:83 | ControlFlowNode for BinaryExpr |
+| sql_injection.py:14:15:14:22 | ControlFlowNode for username | sql_injection.py:26:28:26:85 | ControlFlowNode for BinaryExpr |
+nodes
+| sql_injection.py:14:15:14:22 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| sql_injection.py:21:24:21:77 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| sql_injection.py:24:38:24:95 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| sql_injection.py:25:26:25:83 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| sql_injection.py:26:28:26:85 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 #select
-| sql_injection.py:19:24:19:77 | BinaryExpr | sql_injection.py:12:24:12:31 | externally controlled string | sql_injection.py:19:24:19:77 | externally controlled string | This SQL query depends on $@. | sql_injection.py:12:24:12:31 | username | a user-provided value |
-| sql_injection.py:22:38:22:95 | BinaryExpr | sql_injection.py:12:24:12:31 | externally controlled string | sql_injection.py:22:38:22:95 | externally controlled string | This SQL query depends on $@. | sql_injection.py:12:24:12:31 | username | a user-provided value |
-| sql_injection.py:23:26:23:83 | BinaryExpr | sql_injection.py:12:24:12:31 | externally controlled string | sql_injection.py:23:26:23:83 | externally controlled string | This SQL query depends on $@. | sql_injection.py:12:24:12:31 | username | a user-provided value |
-| sql_injection.py:24:28:24:85 | BinaryExpr | sql_injection.py:12:24:12:31 | externally controlled string | sql_injection.py:24:28:24:85 | externally controlled string | This SQL query depends on $@. | sql_injection.py:12:24:12:31 | username | a user-provided value |
+| sql_injection.py:21:24:21:77 | ControlFlowNode for BinaryExpr | sql_injection.py:14:15:14:22 | ControlFlowNode for username | sql_injection.py:21:24:21:77 | ControlFlowNode for BinaryExpr | This SQL query depends on $@. | sql_injection.py:14:15:14:22 | ControlFlowNode for username | a user-provided value |
+| sql_injection.py:24:38:24:95 | ControlFlowNode for BinaryExpr | sql_injection.py:14:15:14:22 | ControlFlowNode for username | sql_injection.py:24:38:24:95 | ControlFlowNode for BinaryExpr | This SQL query depends on $@. | sql_injection.py:14:15:14:22 | ControlFlowNode for username | a user-provided value |
+| sql_injection.py:25:26:25:83 | ControlFlowNode for BinaryExpr | sql_injection.py:14:15:14:22 | ControlFlowNode for username | sql_injection.py:25:26:25:83 | ControlFlowNode for BinaryExpr | This SQL query depends on $@. | sql_injection.py:14:15:14:22 | ControlFlowNode for username | a user-provided value |
+| sql_injection.py:26:28:26:85 | ControlFlowNode for BinaryExpr | sql_injection.py:14:15:14:22 | ControlFlowNode for username | sql_injection.py:26:28:26:85 | ControlFlowNode for BinaryExpr | This SQL query depends on $@. | sql_injection.py:14:15:14:22 | ControlFlowNode for username | a user-provided value |

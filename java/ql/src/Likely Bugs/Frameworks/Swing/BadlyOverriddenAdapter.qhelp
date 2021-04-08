@@ -84,12 +84,12 @@ not a function of the same name to be overridden.</p>
 D. Flanagan, <em>Java Foundation Classes in a Nutshell</em>, Chapter 26. O'Reilly, 1999.
 </li>
 <li>
-Java Platform, Standard Edition 7, API Specification:
-<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Override.html">Annotation Type Override</a>.
+Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Override.html">Annotation Type Override</a>.
 </li>
 <li>
 The Java Tutorials:
-<a href="http://docs.oracle.com/javase/tutorial/uiswing/events/generalrules.html#eventAdapters">Event Adapters</a>.
+<a href="https://docs.oracle.com/javase/tutorial/uiswing/events/generalrules.html#eventAdapters">Event Adapters</a>.
 </li>
 
 

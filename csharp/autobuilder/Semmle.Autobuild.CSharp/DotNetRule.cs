@@ -14,7 +14,7 @@ namespace Semmle.Autobuild.CSharp
     /// A build rule where the build command is of the form "dotnet build".
     /// Currently unused because the tracer does not work with dotnet.
     /// </summary>
-    class DotNetRule : IBuildRule
+    internal class DotNetRule : IBuildRule
     {
         public BuildScript Analyse(Autobuilder builder, bool auto)
         {
@@ -23,11 +23,11 @@ namespace Semmle.Autobuild.CSharp
 
             if (auto)
             {
-                var notDotNetProject = builder.ProjectsOrSolutionsToBuild.
-                  SelectMany(p => Enumerators.Singleton(p).Concat(p.IncludedProjects)).
-                  OfType<Project>().
-                  FirstOrDefault(p => !p.DotNetProject);
-                if (notDotNetProject != null)
+                var notDotNetProject = builder.ProjectsOrSolutionsToBuild
+                    .SelectMany(p => Enumerators.Singleton(p).Concat(p.IncludedProjects))
+                    .OfType<Project>()
+                    .FirstOrDefault(p => !p.DotNetProject);
+                if (notDotNetProject is not null)
                 {
                     builder.Log(Severity.Info, "Not using .NET Core because of incompatible project {0}", notDotNetProject);
                     return BuildScript.Failure;
@@ -57,9 +57,9 @@ namespace Semmle.Autobuild.CSharp
                 });
         }
 
-        static BuildScript WithDotNet(Autobuilder builder, Func<string?, IDictionary<string, string>?, bool, BuildScript> f)
+        private static BuildScript WithDotNet(Autobuilder builder, Func<string?, IDictionary<string, string>?, bool, BuildScript> f)
         {
-            string? installDir = builder.Actions.PathCombine(builder.Options.RootDirectory, ".dotnet");
+            var installDir = builder.Actions.PathCombine(builder.Options.RootDirectory, ".dotnet");
             var installScript = DownloadDotNet(builder, installDir);
             return BuildScript.Bind(installScript, installed =>
             {
@@ -94,16 +94,16 @@ namespace Semmle.Autobuild.CSharp
                     {
                         var minimumVersion = new Version(3, 0);
                         var regex = new Regex(@"Microsoft\.NETCore\.App (\d\.\d\.\d)");
-                        compatibleClr = runtimes.
-                            Select(runtime => regex.Match(runtime)).
-                            Where(m => m.Success).
-                            Select(m => m.Groups[1].Value).
-                            Any(m => Version.TryParse(m, out var v) && v >= minimumVersion);
+                        compatibleClr = runtimes
+                            .Select(runtime => regex.Match(runtime))
+                            .Where(m => m.Success)
+                            .Select(m => m.Groups[1].Value)
+                            .Any(m => Version.TryParse(m, out var v) && v >= minimumVersion);
                     }
 
                     if (!compatibleClr)
                     {
-                        if (env == null)
+                        if (env is null)
                             env = new Dictionary<string, string>();
                         env.Add("UseSharedCompilation", "false");
                     }
@@ -129,7 +129,7 @@ namespace Semmle.Autobuild.CSharp
         /// .NET Core SDK. The SDK(s) will be installed at <code>installDir</code>
         /// (provided that the script succeeds).
         /// </summary>
-        static BuildScript DownloadDotNet(Autobuilder builder, string installDir)
+        private static BuildScript DownloadDotNet(Autobuilder builder, string installDir)
         {
             if (!string.IsNullOrEmpty(builder.Options.DotNetVersion))
                 // Specific version supplied in configuration: always use that
@@ -145,7 +145,7 @@ namespace Semmle.Autobuild.CSharp
                 try
                 {
                     var o = JObject.Parse(File.ReadAllText(path));
-                    version = (string)o["sdk"]["version"];
+                    version = (string)(o?["sdk"]?["version"]!);
                 }
                 catch  // lgtm[cs/catch-of-all-exceptions]
                 {
@@ -166,11 +166,11 @@ namespace Semmle.Autobuild.CSharp
         ///
         /// See https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script.
         /// </summary>
-        static BuildScript DownloadDotNetVersion(Autobuilder builder, string path, string version)
+        private static BuildScript DownloadDotNetVersion(Autobuilder builder, string path, string version)
         {
             return BuildScript.Bind(GetInstalledSdksScript(builder.Actions), (sdks, sdksRet) =>
                 {
-                    if (sdksRet == 0 && sdks.Count() == 1 && sdks[0].StartsWith(version + " ", StringComparison.Ordinal))
+                    if (sdksRet == 0 && sdks.Count == 1 && sdks[0].StartsWith(version + " ", StringComparison.Ordinal))
                         // The requested SDK is already installed (and no other SDKs are installed), so
                         // no need to reinstall
                         return BuildScript.Failure;
@@ -229,11 +229,10 @@ Invoke-Command -ScriptBlock $ScriptBlock";
                     }
                     else
                     {
-                        var curl = new CommandBuilder(builder.Actions).
-                            RunCommand("curl").
-                            Argument("-L").
-                            Argument("-sO").
-                            Argument("https://dot.net/v1/dotnet-install.sh");
+                        var downloadDotNetInstallSh = BuildScript.DownloadFile(
+                            "https://dot.net/v1/dotnet-install.sh",
+                            "dotnet-install.sh",
+                            e => builder.Log(Severity.Warning, $"Failed to download 'dotnet-install.sh': {e.Message}"));
 
                         var chmod = new CommandBuilder(builder.Actions).
                             RunCommand("chmod").
@@ -253,12 +252,12 @@ Invoke-Command -ScriptBlock $ScriptBlock";
                             RunCommand("rm").
                             Argument("dotnet-install.sh");
 
-                        return curl.Script & chmod.Script & install.Script & BuildScript.Try(removeScript.Script);
+                        return downloadDotNetInstallSh & chmod.Script & install.Script & BuildScript.Try(removeScript.Script);
                     }
                 });
         }
 
-        static BuildScript GetInstalledSdksScript(IBuildActions actions)
+        private static BuildScript GetInstalledSdksScript(IBuildActions actions)
         {
             var listSdks = new CommandBuilder(actions, silent: true).
                 RunCommand("dotnet").
@@ -266,10 +265,10 @@ Invoke-Command -ScriptBlock $ScriptBlock";
             return listSdks.Script;
         }
 
-        static string DotNetCommand(IBuildActions actions, string? dotNetPath) =>
-            dotNetPath != null ? actions.PathCombine(dotNetPath, "dotnet") : "dotnet";
+        private static string DotNetCommand(IBuildActions actions, string? dotNetPath) =>
+            dotNetPath is not null ? actions.PathCombine(dotNetPath, "dotnet") : "dotnet";
 
-        BuildScript GetInfoCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
+        private static BuildScript GetInfoCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
         {
             var info = new CommandBuilder(actions, null, environment).
                 RunCommand(DotNetCommand(actions, dotNetPath)).
@@ -277,7 +276,7 @@ Invoke-Command -ScriptBlock $ScriptBlock";
             return info.Script;
         }
 
-        CommandBuilder GetCleanCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
+        private static CommandBuilder GetCleanCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
         {
             var clean = new CommandBuilder(actions, null, environment).
                 RunCommand(DotNetCommand(actions, dotNetPath)).
@@ -285,7 +284,7 @@ Invoke-Command -ScriptBlock $ScriptBlock";
             return clean;
         }
 
-        CommandBuilder GetRestoreCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
+        private static CommandBuilder GetRestoreCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
         {
             var restore = new CommandBuilder(actions, null, environment).
                 RunCommand(DotNetCommand(actions, dotNetPath)).
@@ -293,7 +292,7 @@ Invoke-Command -ScriptBlock $ScriptBlock";
             return restore;
         }
 
-        static BuildScript GetInstalledRuntimesScript(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
+        private static BuildScript GetInstalledRuntimesScript(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
         {
             var listSdks = new CommandBuilder(actions, environment: environment, silent: true).
                 RunCommand(DotNetCommand(actions, dotNetPath)).
@@ -310,7 +309,7 @@ Invoke-Command -ScriptBlock $ScriptBlock";
         /// hence the need for CLR tracing), by adding a
         /// `/p:UseSharedCompilation=false` argument.
         /// </summary>
-        BuildScript GetBuildScript(Autobuilder builder, string? dotNetPath, IDictionary<string, string>? environment, bool compatibleClr, string projOrSln)
+        private static BuildScript GetBuildScript(Autobuilder builder, string? dotNetPath, IDictionary<string, string>? environment, bool compatibleClr, string projOrSln)
         {
             var build = new CommandBuilder(builder.Actions, null, environment);
             var script = builder.MaybeIndex(build, DotNetCommand(builder.Actions, dotNetPath)).

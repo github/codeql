@@ -6,8 +6,8 @@
 	<overview>
 		<p>
 
-			Sanitizing untrusted input for HTML meta-characters is an
-			important technique for preventing cross-site scripting attacks. But
+			Sanitizing untrusted input for HTML meta-characters is a
+			common technique for preventing cross-site scripting attacks. But
 			even a sanitized input can be dangerous to use if it is modified
 			further before a browser treats it as HTML.
 
@@ -28,6 +28,15 @@
 			them as HTML.
 
 		</p>
+
+		<p>
+
+			An even safer alternative is to design the application
+			so that sanitization is not needed, for instance by using HTML
+			templates that are explicit about the values they treat as HTML.
+
+		</p>
+
 	</recommendation>
 
 	<example>

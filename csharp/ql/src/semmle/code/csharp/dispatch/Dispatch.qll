@@ -239,7 +239,7 @@ private module Internal {
 
   pragma[noinline]
   private predicate hasCallable(OverridableCallable source, ValueOrRefType t, OverridableCallable c) {
-    c.getSourceDeclaration() = source and
+    c.getUnboundDeclaration() = source and
     t.hasCallable(c) and
     hasOverrider(c, t) and
     hasQualifierTypeOverridden0(t, _) and
@@ -284,9 +284,9 @@ private module Internal {
     OverridableCallable c, DispatchMethodOrAccessorCall call
   ) {
     exists(OverridableCallable target | call.getAStaticTarget() = target |
-      c = target.getSourceDeclaration()
+      c = target.getUnboundDeclaration()
       or
-      c = target.getAnUltimateImplementor().getSourceDeclaration()
+      c = target.getAnUltimateImplementor().getUnboundDeclaration()
     )
   }
 
@@ -309,11 +309,16 @@ private module Internal {
      * have a more precise type.
      */
     predicate mayBenefitFromCallContext(Callable c, int i) {
-      1 < strictcount(this.getADynamicTarget().getSourceDeclaration()) and
-      c = this.getCall().getEnclosingCallable().getSourceDeclaration() and
+      1 < strictcount(this.getADynamicTarget().getUnboundDeclaration()) and
+      c = this.getCall().getEnclosingCallable().getUnboundDeclaration() and
       (
-        exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
-          this.getQualifier() = BaseSsa::getARead(pdef, p) and
+        exists(
+          BaseSsa::Definition def, AssignableDefinitions::ImplicitParameterDefinition pdef,
+          Parameter p
+        |
+          pdef = def.getDefinition() and
+          p = pdef.getTarget() and
+          this.getQualifier() = def.getARead() and
           p.getPosition() = i and
           c.getAParameter() = p and
           not p.isParams()
@@ -331,7 +336,7 @@ private module Internal {
      */
     pragma[nomagic]
     private predicate relevantContext(DispatchCall ctx, int i) {
-      this.mayBenefitFromCallContext(ctx.getADynamicTarget().getSourceDeclaration(), i)
+      this.mayBenefitFromCallContext(ctx.getADynamicTarget().getUnboundDeclaration(), i)
     }
 
     /**
@@ -356,7 +361,7 @@ private module Internal {
       exists(Callable staticTarget, Type declType |
         staticTarget = this.getAStaticTarget() and
         declType = staticTarget.getDeclaringType() and
-        result = staticTarget.getSourceDeclaration() and
+        result = staticTarget.getUnboundDeclaration() and
         Unification::subsumes(declType, t)
       )
     }
@@ -370,7 +375,7 @@ private module Internal {
     private Callable getASubsumedStaticTarget() {
       result = this.getAStaticTarget()
       or
-      result.getSourceDeclaration() = this.getASubsumedStaticTarget0(result.getDeclaringType())
+      result.getUnboundDeclaration() = this.getASubsumedStaticTarget0(result.getDeclaringType())
     }
 
     /**

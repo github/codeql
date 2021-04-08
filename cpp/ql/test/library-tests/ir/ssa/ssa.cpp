@@ -291,7 +291,7 @@ struct A {
 Point *NewAliasing(int x) {
   Point* p = new Point;
   Point* q = new Point;
-  int j = new A(new A(x))->i;
+  int j = (new A(new A(x)))->i;
   A* a = new A;
   return p;
 }

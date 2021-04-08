@@ -32,7 +32,8 @@ namespace Semmle.Extraction
 
         public static void WriteSeparator(this TextWriter trapFile, string separator, ref int index)
         {
-            if (index++ > 0) trapFile.Write(separator);
+            if (index++ > 0)
+                trapFile.Write(separator);
         }
 
 
@@ -85,16 +86,16 @@ namespace Semmle.Extraction
                 case Enum _:
                     return trapFile.WriteColumn((int)o);
                 default:
-                    throw new ArgumentException(nameof(o));
+                    throw new NotSupportedException($"Unsupported object type '{o.GetType()}' received");
             }
         }
 
-        const int maxStringBytes = 1 << 20;  // 1MB
-        static readonly System.Text.Encoding encoding = System.Text.Encoding.UTF8;
+        private const int maxStringBytes = 1 << 20;  // 1MB
+        private static readonly System.Text.Encoding encoding = System.Text.Encoding.UTF8;
 
         private static bool NeedsTruncation(string s)
         {
-            // Optimization: only count the actual number of bytes if there is the possibility 
+            // Optimization: only count the actual number of bytes if there is the possibility
             // of the string exceeding maxStringBytes
             return encoding.GetMaxByteCount(s.Length) > maxStringBytes &&
                 encoding.GetByteCount(s) > maxStringBytes;
@@ -110,7 +111,7 @@ namespace Semmle.Extraction
         /// <returns>The truncated string.</returns>
         private static string TruncateString(string s, ref int bytesRemaining)
         {
-            int outputLen = encoding.GetByteCount(s);
+            var outputLen = encoding.GetByteCount(s);
             if (outputLen > bytesRemaining)
             {
                 outputLen = 0;
@@ -149,7 +150,7 @@ namespace Semmle.Extraction
             if (NeedsTruncation(s))
             {
                 // Slow path
-                int remaining = maxStringBytes;
+                var remaining = maxStringBytes;
                 WriteTruncatedString(trapFile, s, ref remaining);
             }
             else
@@ -169,7 +170,7 @@ namespace Semmle.Extraction
         {
             trapFile.Write(name);
             trapFile.Write('(');
-            int index = 0;
+            var index = 0;
             foreach (var p in @params)
             {
                 trapFile.WriteSeparator(",", ref index);
@@ -246,10 +247,13 @@ namespace Semmle.Extraction
         /// <returns>The original trap builder (fluent interface).</returns>
         public static TextWriter BuildList<T>(this TextWriter trapFile, string separator, IEnumerable<T> items, Action<T, TextWriter> action)
         {
-            bool first = true;
+            var first = true;
             foreach (var item in items)
             {
-                if (first) first = false; else trapFile.Write(separator);
+                if (first)
+                    first = false;
+                else
+                    trapFile.Write(separator);
                 action(item, trapFile);
             }
             return trapFile;

@@ -57,41 +57,41 @@ predicate depends(ValueOrRefType t, ValueOrRefType u) {
     exists(MethodCall mc, Method m |
       mc.getEnclosingCallable().getDeclaringType() = t and
       mc.getTarget() = m and
-      usesType(m.getSourceDeclaration().getDeclaringType(), u)
+      usesType(m.getUnboundDeclaration().getDeclaringType(), u)
     )
     or
     exists(ObjectCreation oc |
       oc.getEnclosingCallable().getDeclaringType() = t and
-      usesType(oc.getObjectType().getSourceDeclaration(), u)
+      usesType(oc.getObjectType().getUnboundDeclaration(), u)
     )
     or
     exists(ObjectCreation oc, Field f |
       f.getDeclaringType() = t and
       f.getInitializer().getAChild*() = oc and
-      usesType(oc.getObjectType().getSourceDeclaration(), u)
+      usesType(oc.getObjectType().getUnboundDeclaration(), u)
     )
     or
     exists(DelegateCreation oc |
       oc.getEnclosingCallable().getDeclaringType() = t and
-      usesType(oc.getDelegateType().getSourceDeclaration(), u)
+      usesType(oc.getDelegateType().getUnboundDeclaration(), u)
     )
     or
     exists(DelegateCall dc, DelegateType dt |
       dc.getEnclosingCallable().getDeclaringType() = t and
-      dc.getDelegateExpr().getType() = dt and
-      usesType(dt.getSourceDeclaration(), u)
+      dc.getExpr().getType() = dt and
+      usesType(dt.getUnboundDeclaration(), u)
     )
     or
     exists(OperatorCall oc, Operator o |
       oc.getEnclosingCallable().getDeclaringType() = t and
       oc.getTarget() = o and
-      usesType(o.getSourceDeclaration().getDeclaringType(), u)
+      usesType(o.getUnboundDeclaration().getDeclaringType(), u)
     )
     or
     exists(MemberAccess ma, Member m |
       ma.getEnclosingCallable().getDeclaringType() = t and
       ma.getTarget() = m and
-      usesType(m.getSourceDeclaration().getDeclaringType(), u)
+      usesType(m.getUnboundDeclaration().getDeclaringType(), u)
     )
     or
     exists(LocalVariableDeclExpr e, LocalVariable v |
@@ -121,7 +121,7 @@ predicate depends(ValueOrRefType t, ValueOrRefType u) {
 
 /** does t use dep in any way? */
 predicate usesType(Type t, Type u) {
-  t.(ValueOrRefType).getSourceDeclaration() = u or
+  t.(ValueOrRefType).getUnboundDeclaration() = u or
   usesType(t.(ConstructedType).getATypeArgument(), u) or
   usesType(t.(ArrayType).getElementType(), u)
 }
@@ -222,6 +222,10 @@ predicate shareFieldOrProperty(ValueOrRefType t, Method m1, Method m2) {
   )
 }
 
+/**
+ * Holds if the declaring type of method `m` is `t` and `m` accesses declaration
+ * `d`, which is either a field or a property.
+ */
 predicate methodUsesFieldOrProperty(ValueOrRefType t, Method m, Declaration d) {
   m.getDeclaringType() = t and
   (

@@ -15,5 +15,5 @@ from Use e, Declaration def, string kind, string filepath
 where
   def = definitionOf(e, kind) and
   e.hasLocationInfo(filepath, _, _, _, _) and
-  filepath = getEncodedFile(selectedSourceFile()).getAbsolutePath()
+  filepath = getFileBySourceArchiveName(selectedSourceFile()).getAbsolutePath()
 select e, def, kind

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class UserOperator : Method
+    internal class UserOperator : Method
     {
         protected UserOperator(Context cx, IMethodSymbol init)
             : base(cx, init) { }
@@ -15,10 +15,10 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateMethod(trapFile);
             PopulateModifiers(trapFile);
 
-            var returnType = Type.Create(Context, symbol.ReturnType);
+            var returnType = Type.Create(Context, Symbol.ReturnType);
             trapFile.operators(this,
-                symbol.Name,
-                OperatorSymbol(Context, symbol.Name),
+                Symbol.Name,
+                OperatorSymbol(Context, Symbol),
                 ContainingType,
                 returnType.TypeRef,
                 (UserOperator)OriginalDefinition);
@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (IsSourceDeclaration)
             {
-                var declSyntaxReferences = symbol.DeclaringSyntaxReferences.Select(s => s.GetSyntax()).ToArray();
+                var declSyntaxReferences = Symbol.DeclaringSyntaxReferences.Select(s => s.GetSyntax()).ToArray();
                 foreach (var declaration in declSyntaxReferences.OfType<OperatorDeclarationSyntax>())
                     TypeMention.Create(Context, declaration.ReturnType, this, returnType);
                 foreach (var declaration in declSyntaxReferences.OfType<ConversionOperatorDeclarationSyntax>())
@@ -38,7 +38,7 @@ namespace Semmle.Extraction.CSharp.Entities
             ContainingType.PopulateGenerics();
         }
 
-        public override bool NeedsPopulation => Context.Defines(symbol) || IsImplicitOperator(out _);
+        public override bool NeedsPopulation => Context.Defines(Symbol) || IsImplicitOperator(out _);
 
         public override Type ContainingType
         {
@@ -49,36 +49,30 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override void WriteId(TextWriter trapFile)
-        {
-            AddSignatureTypeToId(Context, trapFile, symbol, symbol.ReturnType); // Needed for op_explicit(), which differs only by return type.
-            trapFile.Write(' ');
-            BuildMethodId(this, trapFile);
-        }
-
         /// <summary>
         /// For some reason, some operators are missing from the Roslyn database of mscorlib.
         /// This method returns <code>true</code> for such operators.
         /// </summary>
         /// <param name="containingType">The type containing this operator.</param>
         /// <returns></returns>
-        bool IsImplicitOperator(out ITypeSymbol containingType)
+        private bool IsImplicitOperator(out ITypeSymbol containingType)
         {
-            containingType = symbol.ContainingType;
-            if (containingType != null)
+            containingType = Symbol.ContainingType;
+            if (containingType is not null)
             {
                 var containingNamedType = containingType as INamedTypeSymbol;
-                return containingNamedType == null || !containingNamedType.MemberNames.Contains(symbol.Name);
+                return containingNamedType is null ||
+                    !containingNamedType.GetMembers(Symbol.Name).Contains(Symbol);
             }
 
-            var pointerType = symbol.Parameters.Select(p => p.Type).OfType<IPointerTypeSymbol>().FirstOrDefault();
-            if (pointerType != null)
+            var pointerType = Symbol.Parameters.Select(p => p.Type).OfType<IPointerTypeSymbol>().FirstOrDefault();
+            if (pointerType is not null)
             {
                 containingType = pointerType;
                 return true;
             }
 
-            Context.ModelError(symbol, "Unexpected implicit operator");
+            Context.ModelError(Symbol, "Unexpected implicit operator");
             return true;
         }
 
@@ -182,21 +176,21 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="cx">Extractor context.</param>
         /// <param name="methodName">The method name.</param>
         /// <returns>The converted name.</returns>
-        public static string OperatorSymbol(Context cx, string methodName)
+        private static string OperatorSymbol(Context cx, IMethodSymbol method)
         {
-            string result;
-            if (!OperatorSymbol(methodName, out result))
-                cx.ModelError($"Unhandled operator name in OperatorSymbol(): '{methodName}'");
+            var methodName = method.Name;
+            if (!OperatorSymbol(methodName, out var result))
+                cx.ModelError(method, $"Unhandled operator name in OperatorSymbol(): '{methodName}'");
             return result;
         }
 
-        public new static UserOperator Create(Context cx, IMethodSymbol symbol) => UserOperatorFactory.Instance.CreateEntity(cx, symbol);
+        public static new UserOperator Create(Context cx, IMethodSymbol symbol) => UserOperatorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        class UserOperatorFactory : ICachedEntityFactory<IMethodSymbol, UserOperator>
+        private class UserOperatorFactory : CachedEntityFactory<IMethodSymbol, UserOperator>
         {
-            public static readonly UserOperatorFactory Instance = new UserOperatorFactory();
+            public static UserOperatorFactory Instance { get; } = new UserOperatorFactory();
 
-            public UserOperator Create(Context cx, IMethodSymbol init) => new UserOperator(cx, init);
+            public override UserOperator Create(Context cx, IMethodSymbol init) => new UserOperator(cx, init);
         }
     }
 }

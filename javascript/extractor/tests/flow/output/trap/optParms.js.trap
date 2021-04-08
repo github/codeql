@@ -158,19 +158,19 @@ variables(#20058,"g",#20000)
 #20059=*
 stmts(#20059,23,#20001,0,"let f = (x?) => {};")
 hasLocation(#20059,#20003)
-stmtContainers(#20059,#20001)
+stmt_containers(#20059,#20001)
 #20060=*
 exprs(#20060,64,#20059,0,"f = (x?) => {}")
 #20061=@"loc,{#10000},1,5,1,18"
 locations_default(#20061,#10000,1,5,1,18)
 hasLocation(#20060,#20061)
-enclosingStmt(#20060,#20059)
-exprContainers(#20060,#20001)
+enclosing_stmt(#20060,#20059)
+expr_containers(#20060,#20001)
 #20062=*
 exprs(#20062,78,#20060,0,"f")
 hasLocation(#20062,#20009)
-enclosingStmt(#20062,#20059)
-exprContainers(#20062,#20001)
+enclosing_stmt(#20062,#20059)
+expr_containers(#20062,#20001)
 literals("f","f",#20062)
 decl(#20062,#20057)
 #20063=*
@@ -178,8 +178,8 @@ exprs(#20063,65,#20060,1,"(x?) => {}")
 #20064=@"loc,{#10000},1,9,1,18"
 locations_default(#20064,#10000,1,9,1,18)
 hasLocation(#20063,#20064)
-enclosingStmt(#20063,#20059)
-exprContainers(#20063,#20001)
+enclosing_stmt(#20063,#20059)
+expr_containers(#20063,#20001)
 #20065=*
 scopes(#20065,1)
 scopenodes(#20063,#20065)
@@ -189,7 +189,7 @@ variables(#20066,"x",#20065)
 #20067=*
 exprs(#20067,78,#20063,0,"x")
 hasLocation(#20067,#20015)
-exprContainers(#20067,#20063)
+expr_containers(#20067,#20063)
 literals("x","x",#20067)
 decl(#20067,#20066)
 #20068=*
@@ -197,23 +197,23 @@ stmts(#20068,1,#20063,-2,"{}")
 #20069=@"loc,{#10000},1,17,1,18"
 locations_default(#20069,#10000,1,17,1,18)
 hasLocation(#20068,#20069)
-stmtContainers(#20068,#20063)
+stmt_containers(#20068,#20063)
 #20070=*
 stmts(#20070,23,#20001,1,"let g = ...  => {};")
 hasLocation(#20070,#20005)
-stmtContainers(#20070,#20001)
+stmt_containers(#20070,#20001)
 #20071=*
 exprs(#20071,64,#20070,0,"g = (x?, y) => {}")
 #20072=@"loc,{#10000},2,5,2,21"
 locations_default(#20072,#10000,2,5,2,21)
 hasLocation(#20071,#20072)
-enclosingStmt(#20071,#20070)
-exprContainers(#20071,#20001)
+enclosing_stmt(#20071,#20070)
+expr_containers(#20071,#20001)
 #20073=*
 exprs(#20073,78,#20071,0,"g")
 hasLocation(#20073,#20031)
-enclosingStmt(#20073,#20070)
-exprContainers(#20073,#20001)
+enclosing_stmt(#20073,#20070)
+expr_containers(#20073,#20001)
 literals("g","g",#20073)
 decl(#20073,#20058)
 #20074=*
@@ -221,8 +221,8 @@ exprs(#20074,65,#20071,1,"(x?, y) => {}")
 #20075=@"loc,{#10000},2,9,2,21"
 locations_default(#20075,#10000,2,9,2,21)
 hasLocation(#20074,#20075)
-enclosingStmt(#20074,#20070)
-exprContainers(#20074,#20001)
+enclosing_stmt(#20074,#20070)
+expr_containers(#20074,#20001)
 #20076=*
 scopes(#20076,1)
 scopenodes(#20074,#20076)
@@ -232,7 +232,7 @@ variables(#20077,"x",#20076)
 #20078=*
 exprs(#20078,78,#20074,0,"x")
 hasLocation(#20078,#20037)
-exprContainers(#20078,#20074)
+expr_containers(#20078,#20074)
 literals("x","x",#20078)
 decl(#20078,#20077)
 #20079=@"var;{y};{#20076}"
@@ -240,7 +240,7 @@ variables(#20079,"y",#20076)
 #20080=*
 exprs(#20080,78,#20074,1,"y")
 hasLocation(#20080,#20043)
-exprContainers(#20080,#20074)
+expr_containers(#20080,#20074)
 literals("y","y",#20080)
 decl(#20080,#20079)
 #20081=*
@@ -248,7 +248,7 @@ stmts(#20081,1,#20074,-2,"{}")
 #20082=@"loc,{#10000},2,20,2,21"
 locations_default(#20082,#10000,2,20,2,21)
 hasLocation(#20081,#20082)
-stmtContainers(#20081,#20074)
+stmt_containers(#20081,#20074)
 #20083=*
 entry_cfg_node(#20083,#20001)
 #20084=@"loc,{#10000},1,1,1,0"

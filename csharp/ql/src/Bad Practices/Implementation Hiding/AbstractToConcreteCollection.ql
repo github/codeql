@@ -22,9 +22,9 @@ class CollectionInterface extends Interface {
   CollectionInterface() {
     exists(Interface i | i = this.getABaseInterface*() |
       i instanceof SystemCollectionsICollectionInterface or
-      i.getSourceDeclaration() instanceof SystemCollectionsGenericICollectionInterface or
+      i.getUnboundDeclaration() instanceof SystemCollectionsGenericICollectionInterface or
       i instanceof SystemCollectionsIEnumerableInterface or
-      i.getSourceDeclaration() instanceof SystemCollectionsGenericIEnumerableTInterface
+      i.getUnboundDeclaration() instanceof SystemCollectionsGenericIEnumerableTInterface
     )
   }
 }

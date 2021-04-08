@@ -4,6 +4,7 @@
 
 import python
 import semmle.python.pointsto.PointsTo
+import IDEContextual
 
 private newtype TDefinition =
   TLocalDefinition(AstNode a) { a instanceof Expr or a instanceof Stmt or a instanceof Module }
@@ -513,11 +514,3 @@ Definition definitionOf(NiceLocationExpr use, string kind) {
     not result.getLocation().hasLocationInfo(f, l, _, _, _)
   )
 }
-
-/**
- * Returns an appropriately encoded version of a filename `name`
- * passed by the VS Code extension in order to coincide with the
- * output of `.getFile()` on locatable entities.
- */
-cached
-File getEncodedFile(string name) { result.getAbsolutePath().replaceAll(":", "_") = name }

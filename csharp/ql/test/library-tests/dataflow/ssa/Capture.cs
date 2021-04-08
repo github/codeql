@@ -99,7 +99,7 @@ class Capture
             return x;
         });
 
-        var z = 12; // Should *not* get an SSA definition
+        var z = 12; // Should *not* get an SSA definition, but currently does because it is considered live via the lambda
         fn(() =>
         {
             z = 0;
@@ -119,7 +119,7 @@ class Capture
         };
         M1();
 
-        var b = 12; // Should *not* get an SSA definition
+        var b = 12; // Should *not* get an SSA definition, but currently does because it is considered live via the lambda
         void M2()
         {
             b = 0;
@@ -155,7 +155,7 @@ class Capture
         Use(f);
         void M6()
         {
-            f = 0; // Should *not* get an SSA definition (`f` is not read after `M6` is called)
+            f = 0; // Should *not* get an SSA definition (`f` is not read after `M6` is called), but currently does because it is considered live via the call to `M6`
         }
         M6();
 
@@ -234,6 +234,24 @@ class C
 
         void M3() { i = 2; };
         M3();
+        System.Console.WriteLine(i);
+    }
+
+    void M2()
+    {
+        int i = 0;
+        void CaptureWrite()
+        {
+            i = 1;
+        }
+
+        void CaptureAndRef(ref int j)
+        {
+            CaptureWrite();
+            j = 2;
+        }
+
+        CaptureAndRef(ref i); // explicit definition only (no call definition)
         System.Console.WriteLine(i);
     }
 }

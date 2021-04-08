@@ -68,3 +68,19 @@ function getArrowHandler() {
     return (req,res) => f();
 }
 http.createServer(getArrowHandler());
+
+http.createServer(function (req, res) {
+  req.on("data", chunk => { // RemoteFlowSource
+    res.send(chunk); 
+  })
+});
+
+var httpProxy = require('http-proxy');
+var proxy = httpProxy.createProxyServer({});
+ 
+proxy.on('proxyReq', function(proxyReq, req, res, options) {
+  req.on("data", chunk => { // RemoteFlowSource
+    res.send(chunk); 
+  });
+  res.end("bla");
+});

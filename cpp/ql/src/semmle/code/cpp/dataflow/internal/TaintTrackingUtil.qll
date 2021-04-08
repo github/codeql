@@ -10,6 +10,7 @@
 
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.models.interfaces.Taint
+private import semmle.code.cpp.models.interfaces.Iterator
 
 private module DataFlow {
   import semmle.code.cpp.dataflow.internal.DataFlowUtil
@@ -33,10 +34,10 @@ predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
 }
 
 /**
- * Holds if `node` should be a barrier in all global taint flow configurations
+ * Holds if `node` should be a sanitizer in all global taint flow configurations
  * but not in local taint.
  */
-predicate defaultTaintBarrier(DataFlow::Node node) { none() }
+predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
 
 /**
  * Holds if taint can flow in one local step from `nodeFrom` to `nodeTo` excluding
@@ -82,6 +83,26 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   exprToDefinitionByReferenceStep(nodeFrom.asExpr(), nodeTo.asDefiningArgument())
   or
   exprToPartialDefinitionStep(nodeFrom.asExpr(), nodeTo.asPartialDefinition())
+  or
+  // Reverse taint: taint that flows from the post-update node of a reference
+  // returned by a function call, back into the qualifier of that function.
+  // This allows taint to flow 'in' through references returned by a modeled
+  // function such as `operator[]`.
+  exists(TaintFunction f, Call call, FunctionInput inModel, FunctionOutput outModel |
+    call.getTarget() = f and
+    inModel.isReturnValueDeref() and
+    nodeFrom.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = call and
+    f.hasTaintFlow(inModel, outModel) and
+    (
+      outModel.isQualifierObject() and
+      nodeTo.asDefiningArgument() = call.getQualifier()
+      or
+      exists(int argOutIndex |
+        outModel.isParameterDeref(argOutIndex) and
+        nodeTo.asDefiningArgument() = call.getArgument(argOutIndex)
+      )
+    )
+  )
 }
 
 /**
@@ -235,4 +256,12 @@ private predicate exprToPartialDefinitionStep(Expr exprIn, Expr exprOut) {
       exprIn = call.getArgument(argInIndex)
     )
   )
+  or
+  exists(Assignment a |
+    iteratorDereference(exprOut) and
+    a.getLValue() = exprOut and
+    a.getRValue() = exprIn
+  )
 }
+
+private predicate iteratorDereference(Call c) { c.getTarget() instanceof IteratorReferenceFunction }

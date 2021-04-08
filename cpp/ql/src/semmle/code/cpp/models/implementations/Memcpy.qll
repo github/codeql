@@ -6,49 +6,65 @@
 import semmle.code.cpp.Function
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.DataFlow
+import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
 import semmle.code.cpp.models.interfaces.Taint
 
 /**
- * The standard functions `memcpy` and `memmove`, and the gcc variant
- * `__builtin___memcpy_chk`
+ * The standard functions `memcpy`, `memmove` and `bcopy`; and the gcc variant
+ * `__builtin___memcpy_chk`.
  */
-class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffectFunction, TaintFunction {
+private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffectFunction,
+  AliasFunction {
   MemcpyFunction() {
-    this.hasName("memcpy") or
-    this.hasName("memmove") or
-    this.hasName("__builtin___memcpy_chk")
+    // memcpy(dest, src, num)
+    // memmove(dest, src, num)
+    // memmove(dest, src, num, remaining)
+    this.hasGlobalOrStdOrBslName(["memcpy", "memmove"])
+    or
+    // bcopy(src, dest, num)
+    // mempcpy(dest, src, num)
+    // memccpy(dest, src, c, n)
+    this.hasGlobalName(["bcopy", mempcpy(), "memccpy", "__builtin___memcpy_chk"])
   }
 
-  override predicate hasArrayInput(int bufParam) { bufParam = 1 }
+  /**
+   * Gets the index of the parameter that is the source buffer for the copy.
+   */
+  int getParamSrc() { if this.hasGlobalName("bcopy") then result = 0 else result = 1 }
 
-  override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
+  /**
+   * Gets the index of the parameter that is the destination buffer for the
+   * copy.
+   */
+  int getParamDest() { if this.hasGlobalName("bcopy") then result = 1 else result = 0 }
+
+  /**
+   * Gets the index of the parameter that is the size of the copy (in bytes).
+   */
+  int getParamSize() { if this.hasGlobalName("memccpy") then result = 3 else result = 2 }
+
+  override predicate hasArrayInput(int bufParam) { bufParam = getParamSrc() }
+
+  override predicate hasArrayOutput(int bufParam) { bufParam = getParamDest() }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameterDeref(1) and
-    output.isParameterDeref(0)
+    input.isParameterDeref(getParamSrc()) and
+    output.isParameterDeref(getParamDest())
     or
-    input.isParameterDeref(1) and
+    input.isParameterDeref(getParamSrc()) and
     output.isReturnValueDeref()
     or
-    input.isParameter(0) and
+    input.isParameter(getParamDest()) and
     output.isReturnValue()
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameter(2) and
-    output.isParameterDeref(0)
-    or
-    input.isParameter(2) and
-    output.isReturnValueDeref()
   }
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
     (
-      bufParam = 0 or
-      bufParam = 1
+      bufParam = getParamDest() or
+      bufParam = getParamSrc()
     ) and
-    countParam = 2
+    countParam = getParamSize()
   }
 
   override predicate hasOnlySpecificReadSideEffects() { any() }
@@ -56,18 +72,38 @@ class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffectFunction
   override predicate hasOnlySpecificWriteSideEffects() { any() }
 
   override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
-    i = 0 and buffer = true and mustWrite = true
+    i = getParamDest() and
+    buffer = true and
+    // memccpy only writes until a given character `c` is found
+    (if this.hasGlobalName("memccpy") then mustWrite = false else mustWrite = true)
   }
 
   override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
-    i = 1 and buffer = true
+    i = getParamSrc() and buffer = true
   }
 
   override ParameterIndex getParameterSizeIndex(ParameterIndex i) {
-    result = 2 and
+    result = getParamSize() and
     (
-      i = 0 or
-      i = 1
+      i = getParamDest() or
+      i = getParamSrc()
     )
   }
+
+  override predicate parameterNeverEscapes(int index) {
+    index = getParamSrc()
+    or
+    this.hasGlobalName("bcopy") and index = getParamDest()
+  }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) {
+    not this.hasGlobalName("bcopy") and index = getParamDest()
+  }
+
+  override predicate parameterIsAlwaysReturned(int index) {
+    not this.hasGlobalName(["bcopy", mempcpy(), "memccpy"]) and
+    index = getParamDest()
+  }
 }
+
+private string mempcpy() { result = ["mempcpy", "wmempcpy"] }

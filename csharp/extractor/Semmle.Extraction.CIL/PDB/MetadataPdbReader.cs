@@ -13,9 +13,9 @@ namespace Semmle.Extraction.PDB
     ///
     /// PDB information can be in a separate PDB file, or embedded in the DLL.
     /// </summary>
-    class MetadataPdbReader : IPdb
+    internal sealed class MetadataPdbReader : IPdb
     {
-        class SourceFile : ISourceFile
+        private class SourceFile : ISourceFile
         {
             public SourceFile(MetadataReader reader, DocumentHandle handle)
             {
@@ -25,13 +25,13 @@ namespace Semmle.Extraction.PDB
 
             public string Path { get; private set; }
 
-            public string Contents => File.Exists(Path) ? File.ReadAllText(Path, System.Text.Encoding.Default) : null;
+            public string? Contents => File.Exists(Path) ? File.ReadAllText(Path, System.Text.Encoding.Default) : null;
         }
 
         // Turns out to be very important to keep the MetadataReaderProvider live
         // or the reader will crash.
-        readonly MetadataReaderProvider provider;
-        readonly MetadataReader reader;
+        private readonly MetadataReaderProvider provider;
+        private readonly MetadataReader reader;
 
         public MetadataPdbReader(MetadataReaderProvider provider)
         {
@@ -41,36 +41,42 @@ namespace Semmle.Extraction.PDB
 
         public IEnumerable<ISourceFile> SourceFiles => reader.Documents.Select(handle => new SourceFile(reader, handle));
 
-        public IMethod GetMethod(MethodDebugInformationHandle handle)
+        public Method? GetMethod(MethodDebugInformationHandle handle)
         {
             var debugInfo = reader.GetMethodDebugInformation(handle);
 
-            var sequencePoints = debugInfo.GetSequencePoints().
-                Where(p => !p.Document.IsNil && !p.IsHidden).
-                Select(p => new SequencePoint(p.Offset, new Location(new SourceFile(reader, p.Document), p.StartLine, p.StartColumn, p.EndLine, p.EndColumn))).
-                Where(p => p.Location.File.Path != null).
-                ToArray();
+            var sequencePoints = debugInfo.GetSequencePoints()
+                .Where(p => !p.Document.IsNil && !p.IsHidden)
+                .Select(p => new SequencePoint(p.Offset, new Location(
+                    new SourceFile(reader, p.Document), p.StartLine, p.StartColumn, p.EndLine, p.EndColumn)))
+                .Where(p => p.Location.File.Path is not null)
+                .ToArray();
 
-            return sequencePoints.Any() ? new Method() { SequencePoints = sequencePoints } : null;
+            return sequencePoints.Any() ? new Method(sequencePoints) : null;
         }
 
-        public static MetadataPdbReader CreateFromAssembly(string assemblyPath, PEReader peReader)
+        public static MetadataPdbReader? CreateFromAssembly(string assemblyPath, PEReader peReader)
         {
-            foreach (var provider in peReader.
-                ReadDebugDirectory().
-                Where(d => d.Type == DebugDirectoryEntryType.EmbeddedPortablePdb).
-                Select(dirEntry => peReader.ReadEmbeddedPortablePdbDebugDirectoryData(dirEntry)))
+            var provider = peReader
+                .ReadDebugDirectory()
+                .Where(d => d.Type == DebugDirectoryEntryType.EmbeddedPortablePdb)
+                .Select(dirEntry => peReader.ReadEmbeddedPortablePdbDebugDirectoryData(dirEntry))
+                .FirstOrDefault();
+
+            if (provider is not null)
             {
                 return new MetadataPdbReader(provider);
             }
 
             try
             {
-                MetadataReaderProvider provider;
-                string pdbPath;
-                if (peReader.TryOpenAssociatedPortablePdb(assemblyPath, s => new FileStream(s, FileMode.Open, FileAccess.Read, FileShare.Read), out provider, out pdbPath))
+                if (peReader.TryOpenAssociatedPortablePdb(
+                    assemblyPath,
+                    s => new FileStream(s, FileMode.Open, FileAccess.Read, FileShare.Read),
+                    out provider,
+                    out _))
                 {
-                    return new MetadataPdbReader(provider);
+                    return new MetadataPdbReader(provider!);
                 }
             }
 

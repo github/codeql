@@ -268,9 +268,11 @@ module SocketIO {
 
     /** Gets the `i`th parameter through which data is received from a client. */
     override DataFlow::SourceNode getReceivedItem(int i) {
-      exists(DataFlow::FunctionNode cb | cb = getListener() and result = cb.getParameter(i) |
+      exists(DataFlow::FunctionNode cb |
+        cb = getListener() and
+        result = cb.getParameter(i) and
         // exclude last parameter if it looks like a callback
-        result != cb.getLastParameter() or not exists(result.getAnInvocation())
+        not (result = cb.getLastParameter() and exists(result.getAnInvocation()))
       )
     }
 

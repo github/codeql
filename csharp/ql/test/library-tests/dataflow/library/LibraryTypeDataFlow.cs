@@ -85,7 +85,7 @@ public class LibraryTypeDataFlow
         HttpContextBase context = null;
         string name = context.Request.QueryString["name"];
 
-        var dict = new Dictionary<string, int>() { {"abc", 0 } };
+        var dict = new Dictionary<string, int>() { { "abc", 0 } };
     }
 
     [DataContract]

@@ -156,3 +156,15 @@ int overloadedNew() {
   new(std::nothrow) int(3); // BAD
   new(std::nothrow) int[2]; // BAD
 }
+
+// --- strdup ---
+
+char *strdup(const char *s1);
+void output_msg(const char *msg);
+
+void test_strdup() {
+	char msg[] = "OctoCat";
+	char *cpy = strdup(msg); // BAD
+
+	output_msg(cpy);
+}

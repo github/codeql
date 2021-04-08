@@ -117,7 +117,7 @@ private predicate blockCoversStatement(int equivClass, int first, int last, Stmt
 private Stmt statementInMethod(FunctionDeclarationEntry m) {
   result.getParent+() = m.getBlock() and
   not result.getLocation() instanceof UnknownStmtLocation and
-  not result instanceof Block
+  not result instanceof BlockStmt
 }
 
 private predicate duplicateStatement(

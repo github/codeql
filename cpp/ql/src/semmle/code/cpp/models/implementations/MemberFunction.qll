@@ -12,7 +12,7 @@ import semmle.code.cpp.models.interfaces.Taint
  * it does correspond with the constructors we are confident taint should flow
  * through.
  */
-class ConversionConstructorModel extends Constructor, TaintFunction {
+private class ConversionConstructorModel extends Constructor, TaintFunction {
   ConversionConstructorModel() {
     strictcount(Parameter p | p = getAParameter() and not p.hasInitializer()) = 1 and
     not hasSpecifier("explicit")
@@ -21,36 +21,48 @@ class ConversionConstructorModel extends Constructor, TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from the first constructor argument to the returned object
     input.isParameter(0) and
-    output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
+    (
+      output.isReturnValue()
+      or
+      output.isQualifierObject()
+    )
   }
 }
 
 /**
  * Model for C++ copy constructors.
  */
-class CopyConstructorModel extends CopyConstructor, DataFlowFunction {
+private class CopyConstructorModel extends CopyConstructor, DataFlowFunction {
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     // data flow from the first constructor argument to the returned object
-    input.isParameter(0) and
-    output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
+    input.isParameterDeref(0) and
+    (
+      output.isReturnValue()
+      or
+      output.isQualifierObject()
+    )
   }
 }
 
 /**
  * Model for C++ move constructors.
  */
-class MoveConstructorModel extends MoveConstructor, DataFlowFunction {
+private class MoveConstructorModel extends MoveConstructor, DataFlowFunction {
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     // data flow from the first constructor argument to the returned object
-    input.isParameter(0) and
-    output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
+    input.isParameterDeref(0) and
+    (
+      output.isReturnValue()
+      or
+      output.isQualifierObject()
+    )
   }
 }
 
 /**
  * Model for C++ copy assignment operators.
  */
-class CopyAssignmentOperatorModel extends CopyAssignmentOperator, TaintFunction {
+private class CopyAssignmentOperatorModel extends CopyAssignmentOperator, TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from argument to self
     input.isParameterDeref(0) and
@@ -66,7 +78,7 @@ class CopyAssignmentOperatorModel extends CopyAssignmentOperator, TaintFunction 
 /**
  * Model for C++ move assignment operators.
  */
-class MoveAssignmentOperatorModel extends MoveAssignmentOperator, TaintFunction {
+private class MoveAssignmentOperatorModel extends MoveAssignmentOperator, TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from argument to self
     input.isParameterDeref(0) and

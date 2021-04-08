@@ -39,7 +39,8 @@ class StackVariable extends Variable, @cil_stack_variable {
  */
 class LocalVariable extends StackVariable, @cil_local_variable {
   override string toString() {
-    result = "Local variable " + getIndex() + " of method " + getImplementation().getMethod()
+    result =
+      "Local variable " + getIndex() + " of method " + getImplementation().getMethod().getName()
   }
 
   /** Gets the method implementation defining this local variable. */
@@ -55,17 +56,16 @@ class LocalVariable extends StackVariable, @cil_local_variable {
   override Method getMethod() { result = getImplementation().getMethod() }
 }
 
-/** A method parameter. */
-class Parameter extends DotNet::Parameter, StackVariable, @cil_parameter {
-  /** Gets the method declaring this parameter. */
-  override Method getMethod() { this = result.getARawParameter() }
-
-  override Method getCallable() { result = getMethod() }
+/** A parameter of a `Method` or `FunctionPointerType`. */
+class Parameter extends DotNet::Parameter, CustomModifierReceiver, @cil_parameter {
+  override Parameterizable getDeclaringElement() { cil_parameter(this, result, _, _) }
 
   /** Gets the index of this parameter. */
   int getIndex() { cil_parameter(this, _, result, _) }
 
-  override string toString() { result = "Parameter " + getIndex() + " of " + getMethod() }
+  override string toString() {
+    result = "Parameter " + getIndex() + " of " + getDeclaringElement().getName()
+  }
 
   override Type getType() { cil_parameter(this, _, _, result) }
 
@@ -98,22 +98,36 @@ class Parameter extends DotNet::Parameter, StackVariable, @cil_parameter {
       else result = ""
   }
 
-  override Location getLocation() { result = getMethod().getLocation() }
+  override Location getLocation() { result = getDeclaringElement().getLocation() }
+}
+
+/** A method parameter. */
+class MethodParameter extends Parameter, StackVariable {
+  /** Gets the method declaring this parameter. */
+  override Method getMethod() { this = result.getARawParameter() }
 
   override ParameterAccess getAnAccess() { result.getTarget() = this }
 
   /** Gets a parameter in an overridden method. */
-  Parameter getOverriddenParameter() {
+  MethodParameter getOverriddenParameter() {
     result = getMethod().getOverriddenMethod().getRawParameter(getRawPosition())
   }
 
-  override Parameter getSourceDeclaration() {
-    result = getMethod().getSourceDeclaration().getRawParameter(getRawPosition())
+  override MethodParameter getUnboundDeclaration() {
+    result = getMethod().getUnboundDeclaration().getRawParameter(getRawPosition())
   }
+
+  override string toString() { result = Parameter.super.toString() }
+
+  override string toStringWithTypes() { result = Parameter.super.toStringWithTypes() }
+
+  override Type getType() { result = Parameter.super.getType() }
+
+  override Location getLocation() { result = Parameter.super.getLocation() }
 }
 
 /** A parameter corresponding to `this`. */
-class ThisParameter extends Parameter {
+class ThisParameter extends MethodParameter {
   ThisParameter() {
     not this.getMethod().isStatic() and
     this.getIndex() = 0
@@ -121,7 +135,7 @@ class ThisParameter extends Parameter {
 }
 
 /** A field. */
-class Field extends DotNet::Field, Variable, Member, @cil_field {
+class Field extends DotNet::Field, Variable, Member, CustomModifierReceiver, @cil_field {
   override string toString() { result = getName() }
 
   override string toStringWithTypes() {

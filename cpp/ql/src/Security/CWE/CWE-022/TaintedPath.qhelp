@@ -39,7 +39,7 @@ access all the system's passwords.</p>
 
 <li>
 OWASP:
-<a href="https://www.owasp.org/index.php/Path_traversal">Path Traversal</a>.
+<a href="https://owasp.org/www-community/attacks/Path_Traversal">Path Traversal</a>.
 </li>
 
 </references>

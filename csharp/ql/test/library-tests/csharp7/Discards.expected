@@ -1,8 +1,8 @@
-| CSharp7.cs:222:9:222:9 | _ | (Int32,Double) |
-| CSharp7.cs:222:19:222:19 | _ | Boolean |
-| CSharp7.cs:223:10:223:10 | _ | Int32 |
-| CSharp7.cs:223:13:223:13 | _ | Double |
-| CSharp7.cs:223:24:223:24 | _ | Boolean |
-| CSharp7.cs:224:17:224:17 | _ | Double |
-| CSharp7.cs:224:28:224:28 | _ | Boolean |
-| CSharp7.cs:225:10:225:10 | _ | Int32 |
+| CSharp7.cs:223:9:223:9 | _ | (Int32,Double) |
+| CSharp7.cs:223:19:223:19 | _ | Boolean |
+| CSharp7.cs:224:10:224:10 | _ | Int32 |
+| CSharp7.cs:224:13:224:13 | _ | Double |
+| CSharp7.cs:224:24:224:24 | _ | Boolean |
+| CSharp7.cs:225:17:225:17 | _ | Double |
+| CSharp7.cs:225:28:225:28 | _ | Boolean |
+| CSharp7.cs:226:10:226:10 | _ | Int32 |

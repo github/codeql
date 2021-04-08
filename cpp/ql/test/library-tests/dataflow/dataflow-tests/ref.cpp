@@ -53,16 +53,16 @@ namespace withoutFields {
     int x1, x2, x3, x4;
 
     assignWrapper(x1, source());
-    sink(x1); // flow [FALSE POSITIVE from uninitialized]
+    sink(x1); // $ ast=55:23 ir SPURIOUS: ast=53:9
 
     notAssign(x2, source());
-    sink(x2); // no flow [FALSE POSITIVE from uninitialized]
+    sink(x2); // $ SPURIOUS: ast,ir
 
     sourceToParamWrapper(x3);
-    sink(x3); // flow [FALSE POSITIVE from uninitialized]
+    sink(x3); // $ ast=29:11 ir SPURIOUS: ast=53:17
 
     notSource(x4);
-    sink(x4); // no flow [FALSE POSITIVE from uninitialized]
+    sink(x4); // $ SPURIOUS: ast,ir
   }
 }
 
@@ -120,15 +120,15 @@ namespace withFields {
     Int x1, x2, x3, x4;
 
     assignWrapper(x1, source());
-    sink(x1.val); // flow
+    sink(x1.val); // $ ast,ir
 
     notAssign(x2, source());
-    sink(x2.val); // no flow [FALSE POSITIVE]
+    sink(x2.val); // $ SPURIOUS: ast,ir
 
     sourceToParamWrapper(x3);
-    sink(x3.val); // flow
+    sink(x3.val); // $ ast,ir
 
     notSource(x4);
-    sink(x4.val); // no flow [FALSE POSITIVE]
+    sink(x4.val); // $ SPURIOUS: ast,ir
   }
 }

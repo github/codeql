@@ -1,1 +1,0 @@
-../CallGraph/CallGraphTest.qll

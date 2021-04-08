@@ -58,3 +58,8 @@ function f() {
 <a href="index.html/{{X}}" target="_blank">Example</a>;
 <a href="../index.html/{{X}}" target="_blank">Example</a>;
 <a href="/{{X}}" target="_blank">Example</a>;
+
+// OK, Flask application with internal links
+<a href="{{url_for('foo.html', 'foo')}}" target="_blank">Example</a>;
+<a href="{{ url_for('foo.html', 'foo')}}" target="_blank">Example</a>;
+<a href="{{ 	url_for('foo.html', 'foo')}}" target="_blank">Example</a>;

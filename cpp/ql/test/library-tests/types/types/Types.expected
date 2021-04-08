@@ -1,8 +1,8 @@
+| file://:0:0:0:0 | (unnamed parameter 0) | Parameter | file://:0:0:0:0 | __va_list_tag && | ReferenceType, base: __va_list_tag |
+| file://:0:0:0:0 | (unnamed parameter 0) | Parameter | file://:0:0:0:0 | const __va_list_tag & | ReferenceType, base: const __va_list_tag |
 | file://:0:0:0:0 | fp_offset |  | file://:0:0:0:0 | unsigned int | IntType |
 | file://:0:0:0:0 | gp_offset |  | file://:0:0:0:0 | unsigned int | IntType |
 | file://:0:0:0:0 | overflow_arg_area |  | file://:0:0:0:0 | void * | PointerType, VoidPointerType, base: void |
-| file://:0:0:0:0 | p#0 | Parameter | file://:0:0:0:0 | __va_list_tag && | ReferenceType, base: __va_list_tag |
-| file://:0:0:0:0 | p#0 | Parameter | file://:0:0:0:0 | const __va_list_tag & | ReferenceType, base: const __va_list_tag |
 | file://:0:0:0:0 | reg_save_area |  | file://:0:0:0:0 | void * | PointerType, VoidPointerType, base: void |
 | types.cpp:1:12:1:12 | i |  | file://:0:0:0:0 | int | IntType |
 | types.cpp:3:11:3:11 | c | isConst | file://:0:0:0:0 | const int | base: int, isConst |

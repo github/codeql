@@ -4,9 +4,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class Continue : Statement<ContinueStatementSyntax>
+    internal class Continue : Statement<ContinueStatementSyntax>
     {
-        Continue(Context cx, ContinueStatementSyntax stmt, IStatementParentEntity parent, int child)
+        private Continue(Context cx, ContinueStatementSyntax stmt, IStatementParentEntity parent, int child)
             : base(cx, stmt, StmtKind.CONTINUE, parent, child) { }
 
         public static Continue Create(Context cx, ContinueStatementSyntax node, IStatementParentEntity parent, int child)
@@ -19,4 +19,3 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         protected override void PopulateStatement(TextWriter trapFile) { }
     }
 }
-

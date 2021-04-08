@@ -17,8 +17,8 @@ import semmle.code.cpp.stmts.Stmt
  * }
  * ```
  */
-class Block extends Stmt, @stmt_block {
-  override string getAPrimaryQlClass() { result = "Block" }
+class BlockStmt extends Stmt, @stmt_block {
+  override string getAPrimaryQlClass() { result = "BlockStmt" }
 
   /**
    * Gets a child declaration of this block.
@@ -76,8 +76,8 @@ class Block extends Stmt, @stmt_block {
    * the result is the expression statement `a = b`.
    */
   Stmt getLastStmtIn() {
-    if getLastStmt() instanceof Block
-    then result = getLastStmt().(Block).getLastStmtIn()
+    if getLastStmt() instanceof BlockStmt
+    then result = getLastStmt().(BlockStmt).getLastStmtIn()
     else result = getLastStmt()
   }
 
@@ -126,3 +126,9 @@ class Block extends Stmt, @stmt_block {
 
   override predicate mayBeGloballyImpure() { this.getAStmt().mayBeGloballyImpure() }
 }
+
+/**
+ * DEPRECATED: This is now called `BlockStmt` to avoid confusion with
+ * `BasicBlock`.
+ */
+deprecated class Block = BlockStmt;

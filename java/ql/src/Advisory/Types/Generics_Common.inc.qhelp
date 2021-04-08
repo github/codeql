@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+The use of generics in Java improves compile-time type safety and
+code readability.
+Users of a class or interface that has been designed using generic types
+should therefore make use of parameterized instances
+in variable declarations, method return types, and constructor calls.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Provide type parameters to generic classes and interfaces where possible.
+</p>
+<p>
+Note that converting legacy code to use generics may
+have to be done carefully in order to preserve the existing
+functionality of an API; for detailed guidance, see the references.
+</p>
+
+</recommendation>
+<example>
+<p>The following example is poorly written because it uses raw types. This makes it
+more error prone because the compiler is less able to perform type checks.</p>
+<sample src="Generics_Common.java" />
+
+<p>A parameterized version can be easily made and is much safer.</p>
+<sample src="Generics_CommonGood.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>,
+  Item 23.
+  Addison-Wesley, 2008.
+</li>
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+<li>
+  The Java Tutorials:
+  <a href="https://docs.oracle.com/javase/tutorial/java/generics/">Generics</a>,
+  <a href="https://docs.oracle.com/javase/tutorial/extra/generics/convert.html">Converting Legacy Code to Use Generics</a>.
+</li>
+
+
+</references>
+</qhelp>
