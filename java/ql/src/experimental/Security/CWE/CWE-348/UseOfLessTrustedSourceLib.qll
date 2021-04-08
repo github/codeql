@@ -41,7 +41,7 @@ class SplitMethod extends Method {
 }
 
 /**
- * A call to the ServletRequest.getHeader method and the argument are
+ * A call to the ServletRequest.getHeader method with an argument
  * `wl-proxy-client-ip`/`proxy-client-ip`/`http_client_ip`/`http_x_forwarded_for`/`x-real-ip`.
  */
 class HeaderIpCall extends MethodAccess {
