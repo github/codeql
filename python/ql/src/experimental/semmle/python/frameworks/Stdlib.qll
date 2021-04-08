@@ -60,10 +60,6 @@ private module LDAP {
   }
 
   private module LDAP3 {
-    private class LDAP3QueryMethods extends string {
-      LDAP3QueryMethods() { this in ["search"] }
-    }
-
     private class LDAP3Query extends DataFlow::CallCfgNode, LDAPQuery::Range {
       DataFlow::Node ldapNode;
 
@@ -72,7 +68,7 @@ private module LDAP {
           this.getFunction() = searchMethod and
           API::moduleImport("ldap3").getMember("Connection").getACall() =
             searchMethod.getObject().getALocalSource() and
-          searchMethod.getAttributeName() instanceof LDAP3QueryMethods and
+          searchMethod.getAttributeName() = "search" and
           (
             ldapNode = this.getArg(0) or
             ldapNode = this.getArg(1)
