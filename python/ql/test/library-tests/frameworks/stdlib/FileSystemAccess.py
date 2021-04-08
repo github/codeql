@@ -16,3 +16,18 @@ builtins.open(file="filepath")  # $getAPathArgument="filepath"
 
 io.open("filepath")  # $getAPathArgument="filepath"
 io.open(file="filepath")  # $getAPathArgument="filepath"
+
+from pathlib import Path, PosixPath, WindowsPath
+
+p = Path("filepath")
+posix = PosixPath("posix/filepath")
+windows = WindowsPath("windows/filepath")
+
+p.chmod(0o777)  # MISSING: $getAPathArgument=p
+posix.chmod(0o777)  # MISSING: $getAPathArgument=posix
+windows.chmod(0o777)  # MISSING: $getAPathArgument=windows
+
+with p.open() as f:  # MISSING: $getAPathArgument=p
+    f.read()
+
+p.write_bytes(b"hello")  # MISSING: $getAPathArgument=p
