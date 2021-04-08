@@ -51,7 +51,7 @@ class PackageJSON extends JSONObject {
   string getAFile() { result = getFiles().getElementStringValue(_) }
 
   /** Gets the main module of this package. */
-  string getMain() { result = getPropStringValue("main") }
+  string getMain() { result = MainModulePath::of(this).getValue() }
 
   /** Gets the path of a command defined for this package. */
   string getBin(string cmd) {
