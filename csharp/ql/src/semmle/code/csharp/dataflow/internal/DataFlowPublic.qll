@@ -47,14 +47,14 @@ class Node extends TNode {
   cached
   final DataFlowCallable getEnclosingCallable() {
     Stages::DataFlowStage::forceCachingInSameStage() and
-    result = unique(DataFlowCallable c | c = this.(NodeImpl).getEnclosingCallableImpl() | c)
+    result = this.(NodeImpl).getEnclosingCallableImpl()
   }
 
   /** Gets the control flow node corresponding to this node, if any. */
   cached
   final ControlFlow::Node getControlFlowNode() {
     Stages::DataFlowStage::forceCachingInSameStage() and
-    result = unique(ControlFlow::Node n | n = this.(NodeImpl).getControlFlowNodeImpl() | n)
+    result = this.(NodeImpl).getControlFlowNodeImpl()
   }
 
   /** Gets a textual representation of this node. */
