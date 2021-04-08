@@ -8,8 +8,15 @@ class LDAPImproperAuthSink extends DataFlow::Node {
   LDAPImproperAuthSink() {
     exists(LDAPBind ldapBind |
       (
-        DataFlow::localFlow(DataFlow::exprNode(any(None noneName)), ldapBind.getPasswordNode()) or
-        not exists(ldapBind.getPasswordNode())
+        (
+          DataFlow::localFlow(DataFlow::exprNode(any(None noneName)), ldapBind.getPasswordNode()) or
+          not exists(ldapBind.getPasswordNode())
+        )
+        or
+        exists(StrConst emptyString |
+          emptyString.getText() = "" and
+          DataFlow::localFlow(DataFlow::exprNode(emptyString), ldapBind.getPasswordNode())
+        )
       ) and
       this = ldapBind.getQueryNode()
     )
