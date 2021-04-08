@@ -1,9 +1,9 @@
 /**
- * @name Python LDAP Improper Authentication
- * @description Check if a user-controlled query carries no authentication
+ * @name Improper LDAP Authentication
+ * @description A user-controlled query carries no authentication
  * @kind path-problem
  * @problem.severity warning
- * @id python/ldap-improper-authentication
+ * @id py/improper-ldap-auth
  * @tags experimental
  *       security
  *       external/cwe/cwe-287
