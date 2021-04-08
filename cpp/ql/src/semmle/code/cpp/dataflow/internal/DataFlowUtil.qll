@@ -46,7 +46,7 @@ class Node extends TNode {
   /**
    * INTERNAL: Do not use. Alternative name for `getFunction`.
    */
-  final Function getEnclosingCallable() { result = unique(Function f | f = this.getFunction() | f) }
+  final Function getEnclosingCallable() { result = this.getFunction() }
 
   /** Gets the type of this node. */
   Type getType() { none() } // overridden in subclasses
@@ -715,6 +715,7 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
 }
 
 private module FieldFlow {
+  private import DataFlowImplCommon
   private import DataFlowImplLocal
   private import DataFlowPrivate
 
@@ -747,7 +748,7 @@ private module FieldFlow {
     exists(FieldConfiguration cfg | cfg.hasFlow(node1, node2)) and
     // This configuration should not be able to cross function boundaries, but
     // we double-check here just to be sure.
-    node1.getEnclosingCallable() = node2.getEnclosingCallable()
+    getNodeEnclosingCallable(node1) = getNodeEnclosingCallable(node2)
   }
 }
 
