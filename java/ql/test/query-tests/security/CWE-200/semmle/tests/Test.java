@@ -11,35 +11,35 @@ import java.util.EnumSet;
 
 public class Test {
 
-    void vulnerableFileCreateTempFile() {
+    void vulnerableFileCreateTempFile() throws IOException {
         File temp = File.createTempFile("random", "file");
     }
 
-    void vulnerableFileCreateTempFileNull() {
+    void vulnerableFileCreateTempFileNull() throws IOException {
         File temp = File.createTempFile("random", "file", null);
     }
 
-    void vulnerableFileCreateTempFileTainted() {
+    void vulnerableFileCreateTempFileTainted() throws IOException {
         File tempDir = new File(System.getProperty("java.io.tmpdir"));
         File temp = File.createTempFile("random", "file", tempDir);
     }
 
-    void vulnerableFileCreateTempFileChildTainted() {
+    void vulnerableFileCreateTempFileChildTainted() throws IOException {
         File tempDirChild = new File(new File(System.getProperty("java.io.tmpdir")), "/child");
         File temp = File.createTempFile("random", "file", tempDirChild);
     }
 
-    void vulnerableFileCreateTempFileCanonical() {
+    void vulnerableFileCreateTempFileCanonical() throws IOException {
         File tempDir = new File(System.getProperty("java.io.tmpdir")).getCanonicalFile();
         File temp = File.createTempFile("random", "file", tempDir);
     }
 
-    void vulnerableFileCreateTempFileAbsolute() {
+    void vulnerableFileCreateTempFileAbsolute() throws IOException {
         File tempDir = new File(System.getProperty("java.io.tmpdir")).getAbsoluteFile();
         File temp = File.createTempFile("random", "file", tempDir);
     }
 
-    void safeFileCreateTempFileTainted() {
+    void safeFileCreateTempFileTainted() throws IOException {
         /* Creating a temporary directoy in the current user directory is not a vulnerability. */
         File currentDirectory = new File(System.getProperty("user.dir"));
         File temp = File.createTempFile("random", "file", currentDirectory);
@@ -59,12 +59,12 @@ public class Test {
         tempDirChild.mkdirs();
     }
 
-    void vulnerableFileCreateTempFilesWrite1() {
+    void vulnerableFileCreateTempFilesWrite1() throws IOException {
         File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child.txt");
         Files.write(tempDirChild.toPath(), Arrays.asList("secret"), StandardCharsets.UTF_8, StandardOpenOption.CREATE);
     }
     
-    void vulnerableFileCreateTempFilesWrite2() {
+    void vulnerableFileCreateTempFilesWrite2() throws IOException {
         File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child.txt");
         String secret = "secret";
         byte[] byteArrray = secret.getBytes();
