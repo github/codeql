@@ -27,14 +27,14 @@ in the search filter and DN for the LDAP query.
 A malicious user could provide special characters to change the meaning of these
 components, and search for a completely different set of values.</p>
 
-<sample src="examples/example_bad1.js" />
-<sample src="examples/example_bad2.js" />
+<sample src="examples/example_bad1.py" />
+<sample src="examples/example_bad2.py" />
 
 <p>In the third and four example, the input provided by the user is sanitized before it is included in the search filter or DN. 
 This ensures the meaning of the query cannot be changed by a malicious user.</p>
 
-<sample src="examples/example_good1.js" />
-<sample src="examples/example_good2.js" />
+<sample src="examples/example_good1.py" />
+<sample src="examples/example_good2.py" />
 </example>
 
 <references>
