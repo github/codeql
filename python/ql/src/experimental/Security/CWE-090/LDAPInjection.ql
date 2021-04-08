@@ -11,7 +11,7 @@
 
 // Determine precision above
 import python
-import experimental.semmle.python.security.injection.LDAPInjection
+import experimental.semmle.python.security.injection.LDAP
 import DataFlow::PathGraph
 
 from LDAPInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
