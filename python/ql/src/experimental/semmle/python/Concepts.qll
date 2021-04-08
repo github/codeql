@@ -14,14 +14,33 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 
+/** Provides classes for modeling LDAP bind-related APIs. */
 module LDAPBind {
+  /**
+   * A data-flow node that collects methods binding a LDAP connection.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `LDAPBind` instead.
+   */
   abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the argument containing the binding expression.
+     */
     abstract DataFlow::Node getPasswordNode();
 
+    /**
+     * Gets the argument containing the executed query.
+     */
     abstract DataFlow::Node getQueryNode();
   }
 }
 
+/**
+ * A data-flow node that collects methods binding a LDAP connection.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `LDAPBind::Range` instead.
+ */
 class LDAPBind extends DataFlow::Node {
   LDAPBind::Range range;
 
