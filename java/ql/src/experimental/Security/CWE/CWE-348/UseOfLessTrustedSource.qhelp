@@ -28,9 +28,7 @@ and get the last value of the split array.</p>
 Prevent IP address spoofing with X-Forwarded-For header when using AWS ELB and Clojure Ring</a>
 </li>
 
-<li>Security Rule Zero: A Warning about X-Forwarded-For: 
-<a href="https://www.f5.com/company/blog/security-rule-zero-a-warning-about-x-forwarded-for">
-Security Rule Zero: A Warning about X-Forwarded-For</a>
+<li>Security Rule Zero: <a href="https://www.f5.com/company/blog/security-rule-zero-a-warning-about-x-forwarded-for">A Warning about X-Forwarded-For</a>
 </li>
 
 </references>
