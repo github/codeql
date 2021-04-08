@@ -190,7 +190,7 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 // = null, = default, = default(T), = new MyStruct()
                 // we're generating a default expression:
-                return Default.CreateGenerated(cx, parent, childIndex, location);
+                return Default.CreateGenerated(cx, parent, childIndex, location, parameter.Type.IsValueType ? null : ValueAsString(null));
             }
 
             // const literal:
