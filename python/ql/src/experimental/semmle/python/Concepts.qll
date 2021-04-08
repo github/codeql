@@ -64,7 +64,7 @@ module LDAPEscape {
  * A data-flow node that collects functions escaping LDAP components.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `RegexEscape::Range` instead.
+ * extend `LDAPEscape::Range` instead.
  */
 class LDAPEscape extends DataFlow::Node {
   LDAPEscape::Range range;
