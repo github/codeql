@@ -13,3 +13,17 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
+
+module HeaderDeclaration {
+  abstract class Range extends DataFlow::Node {
+    abstract DataFlow::Node getHeaderInputNode();
+  }
+}
+
+class HeaderDeclaration extends DataFlow::Node {
+  HeaderDeclaration::Range range;
+
+  HeaderDeclaration() { this = range }
+
+  DataFlow::Node getHeaderInputNode() { result = range.getHeaderInputNode() }
+}
