@@ -177,8 +177,8 @@ class Folder extends Container, @folder {
   override string getURL() { result = "folder://" + getAbsolutePath() }
 }
 
-/** Any file, including files that have not been extracted but must exist as locations for errors. */
-class DiagnosticFile extends Container, @file, Documentable, ExprParent, GoModExprParent,
+/** Any file, including files that have not been extracted but are referred to as locations for errors. */
+class ExtractedOrExternalFile extends Container, @file, Documentable, ExprParent, GoModExprParent,
   DeclParent, ScopeNode {
   override Location getLocation() { has_location(this, result) }
 
@@ -255,9 +255,9 @@ class DiagnosticFile extends Container, @file, Documentable, ExprParent, GoModEx
 }
 
 /** A file that has been extracted. */
-class File extends DiagnosticFile {
+class File extends ExtractedOrExternalFile {
   File() {
-    // getAChild is specifically for the Go SAT and so does not apply to non-go files
+    // getAChild is specifically for the Go AST and so does not apply to non-go files
     // we care about all non-go extracted files, as only go files can have `@file` entries due to requiring a file entry for diagnostic errors
     not this.getExtension() = "go"
     or
