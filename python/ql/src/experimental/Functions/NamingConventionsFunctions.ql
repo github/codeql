@@ -10,7 +10,7 @@
 import python
 
 predicate upper_case_function(Function func) {
-  exists(string first_char | 
+  exists(string first_char |
     first_char = func.getName().prefix(1) and
     not first_char = first_char.toLowerCase()
   )
