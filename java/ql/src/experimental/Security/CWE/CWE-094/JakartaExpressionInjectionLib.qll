@@ -44,6 +44,10 @@ private class ExpressionEvaluationSink extends DataFlow::ExprNode {
       m.getDeclaringType() instanceof ELProcessor and
       m.hasName(["eval", "getValue", "setValue"]) and
       ma.getArgument(0) = taintFrom
+      or
+      m.getDeclaringType() instanceof ELProcessor and
+      m.hasName("setVariable") and
+      ma.getArgument(1) = taintFrom
     )
   }
 }

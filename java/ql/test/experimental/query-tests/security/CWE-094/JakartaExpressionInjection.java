@@ -57,6 +57,13 @@ public class JakartaExpressionInjection {
         });
     }
 
+    private static void testWithELProcessorSetVariable() throws IOException {
+        testWithSocket(expression -> {
+            ELProcessor processor = new ELProcessor();
+            processor.setVariable("test", expression);
+        });
+    }
+
     private static void testWithJuelValueExpressionGetValue() throws IOException {
         testWithSocket(expression -> {
             ExpressionFactory factory = new de.odysseus.el.ExpressionFactoryImpl();
