@@ -9,21 +9,40 @@
  */
 
 import python
+import semmle.python.ApiGraphs
 
-from
-  FunctionValue urlopen, CallNode call, ControlFlowNode http_arg, StringValue http_string,
-  Value empty
-where
-  urlopen = Value::named(["urllib2.request.urlopen", "urllib.request.urlopen"]) and
-  http_arg = urlopen.getArgumentForCall(call, 0) and
-  http_arg.pointsTo(http_string) and
-  http_string.getText().matches("https://%") and
-  (
-    not exists(Value verify |
-      verify = call.getArgByName(["cafile", "capath", "context"]).pointsTo()
-    )
-    or
+predicate calls_urllib(CallNode call) {
+  call =
+    API::moduleImport(["urllib", "urllib2"])
+        .getMember("request")
+        .getMember("urlopen")
+        .getACall()
+        .getNode()
+}
+
+predicate is_https(CallNode call) {
+  exists(ControlFlowNode http_arg, StringValue http_string |
+    http_arg = call.getArg(0) and
+    http_arg.pointsTo(http_string) and
+    http_string.getText().matches("https://%")
+  )
+}
+
+predicate contains_capath(CallNode call) {
+  not exists(ControlFlowNode verify | verify = call.getArgByName(["cafile", "capath", "context"]))
+  or
+  exists(Value empty |
+    // exists(ControlFlowNode empty |
+    //   empty = call.getArgByName(["cafile", "capath", "context"]) and
+    //   empty = API::builtin("None").getAUse().asCfgNode()
     empty = call.getArgByName(["cafile", "capath", "context"]).pointsTo() and
     empty = Value::none_()
   )
+}
+
+from CallNode call
+where
+  calls_urllib(call) and
+  is_https(call) and
+  contains_capath(call)
 select call, "This call to urlopen does not provide any certificate validation"
