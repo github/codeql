@@ -1,11 +1,13 @@
 package com.semmle.js.extractor;
 
+import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.semmle.js.ast.Position;
 import com.semmle.js.ast.SourceElement;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Extractor for populating purely textual information about a file, namely its lines and their line
@@ -21,19 +23,40 @@ public class TextualExtractor {
   private final Label fileLabel;
   private final boolean extractLines;
   private final ExtractionMetrics metrics;
+  private final File extractedFile;
 
   public TextualExtractor(
       TrapWriter trapwriter,
       LocationManager locationManager,
       String source,
       boolean extractLines,
-      ExtractionMetrics metrics) {
+      ExtractionMetrics metrics,
+      File extractedFile) {
     this.trapwriter = trapwriter;
     this.locationManager = locationManager;
     this.source = source;
     this.fileLabel = locationManager.getFileLabel();
     this.extractLines = extractLines;
     this.metrics = metrics;
+    this.extractedFile = extractedFile;
+  }
+
+  /**
+   * Returns the file whose contents should be extracted, and is contained
+   * in {@link #source}.
+   *
+   * <p>This may differ from the source file of the location manager, which refers
+   * to the original file that this was derived from.
+   */
+  public File getExtractedFile() {
+    return extractedFile;
+  }
+
+  /**
+   * Returns true if the extracted file and the source location files are different.
+   */
+  public boolean isSnippet() {
+    return !extractedFile.equals(locationManager.getSourceFile());
   }
 
   public TrapWriter getTrapwriter() {

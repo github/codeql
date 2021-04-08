@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI.WebControls;
 
@@ -46,7 +45,7 @@ namespace System.Runtime.Serialization
 /// </summary>
 public class LocalDataFlow
 {
-    public async void M(bool b)
+    public void M(bool b)
     {
         // Assignment, tainted
         var sink0 = "taint source";
@@ -128,7 +127,7 @@ public class LocalDataFlow
         Check(sink49);
         var sink50 = String.Copy(sink49);
         Check(sink50);
-        var sink51 = String.Join(", ", "", sink50, "");
+        var sink51 = String.Join(", ", new string[] { "", sink50, "" });
         Check(sink51);
         var sink52 = "".Insert(0, sink51);
         Check(sink52);
@@ -152,7 +151,7 @@ public class LocalDataFlow
         Check(nonSink0);
         nonSink0 = String.Copy(nonSink0);
         Check(nonSink0);
-        nonSink0 = String.Join(", ", "", nonSink0, "");
+        nonSink0 = String.Join(", ", new string[] { "", nonSink0, "" });
         Check(nonSink0);
         nonSink0 = "".Insert(0, nonSink0);
         Check(nonSink0);
@@ -218,13 +217,13 @@ public class LocalDataFlow
         // Ad hoc tracking (System.String), tainted
         var sink33 = (string)sink32.Substring(0).ToLowerInvariant().ToUpper().Trim(' ').Replace("a", "b").Insert(0, "").Clone();
         Check(sink33);
-        var sink48 = sink33.Normalize().Remove(4, 5).Split(' ');
+        var sink48 = sink33.Normalize().Remove(4, 5);
         Check(sink48);
 
         // Ad hoc tracking (System.String), not tainted
         nonSink0 = (string)nonSink0.Substring(0).ToLowerInvariant().ToUpper().Trim(' ').Replace("a", "b").Insert(0, "").Clone();
         Check(nonSink0);
-        var nonSink15 = nonSink0.Normalize().Remove(4, 5).Split(' ');
+        var nonSink15 = nonSink0.Normalize().Remove(4, 5);
         Check(nonSink15);
 
         // Ad hoc tracking (System.Text.StringBuilder), tainted
@@ -268,18 +267,6 @@ public class LocalDataFlow
         // Ad hoc tracking (HttpRequest), not tainted
         TextBox nonTaintedTextBox = null;
         nonSink0 = nonTaintedTextBox.Text;
-        Check(nonSink0);
-
-        // async await, tainted
-        var sink67 = Task.Run(() => "taint source");
-        Check(sink67);
-        var sink68 = await sink67;
-        Check(sink68);
-
-        // async await, not tainted
-        var nonSink21 = Task.Run(() => "");
-        Check(nonSink21);
-        nonSink0 = await nonSink21;
         Check(nonSink0);
 
         // Interpolated string, tainted
@@ -366,7 +353,7 @@ public class LocalDataFlow
         using (x1 = x) { }
 
         IEnumerable<object> os2;
-        foreach(var o in os2 = os) { }
+        foreach (var o in os2 = os) { }
     }
 
     public static implicit operator LocalDataFlow(string[] args) => null;

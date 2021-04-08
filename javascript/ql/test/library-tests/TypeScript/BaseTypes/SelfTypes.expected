@@ -7,7 +7,6 @@
 | CImplementsString | CImplementsString |
 | CStringSub | CStringSub |
 | CSub | CSub |
-| CollatorOptions | CollatorOptions |
 | IBase | IBase |
 | IEmpty | IEmpty |
 | IEmptySub | IEmptySub |
@@ -16,6 +15,3 @@
 | IMulti | IMulti<T> |
 | IStringSub | IStringSub |
 | ISub | ISub |
-| NumberFormatOptions | NumberFormatOptions |
-| RegExp | RegExp |
-| RegExpMatchArray | RegExpMatchArray |

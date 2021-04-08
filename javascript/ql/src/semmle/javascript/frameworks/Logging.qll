@@ -19,6 +19,7 @@ abstract class LoggerCall extends DataFlow::CallNode {
  */
 string getAStandardLoggerMethodName() {
   result = "crit" or
+  result = "dir" or
   result = "debug" or
   result = "error" or
   result = "emerg" or
@@ -28,6 +29,7 @@ string getAStandardLoggerMethodName() {
   result = "notice" or
   result = "silly" or
   result = "trace" or
+  result = "verbose" or
   result = "warn"
 }
 
@@ -54,7 +56,7 @@ private module Console {
         name = getAStandardLoggerMethodName() or
         name = "assert"
       ) and
-      this = console().getAMethodCall(name)
+      this = console().getAMemberCall(name)
     }
 
     override DataFlow::Node getAMessageComponent() {
@@ -126,6 +128,50 @@ private module log4js {
         DataFlow::moduleMember("log4js", "getLogger")
             .getACall()
             .getAMethodCall(getAStandardLoggerMethodName())
+    }
+
+    override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
+  }
+}
+
+/**
+ * Provides classes for working with [npmlog](https://github.com/npm/npmlog)
+ */
+private module Npmlog {
+  /**
+   * A call to the npmlog logging mechanism.
+   */
+  class Npmlog extends LoggerCall {
+    string name;
+
+    Npmlog() {
+      this = DataFlow::moduleMember("npmlog", name).getACall() and
+      name = getAStandardLoggerMethodName()
+    }
+
+    override DataFlow::Node getAMessageComponent() {
+      (
+        if name = "log"
+        then result = getArgument([1 .. getNumArgument()])
+        else result = getAnArgument()
+      )
+      or
+      result = getASpreadArgument()
+    }
+  }
+}
+
+/**
+ * Provides classes for working with [fancy-log](https://github.com/gulpjs/fancy-log).
+ */
+private module Fancylog {
+  /**
+   * A call to the fancy-log logging mechanism.
+   */
+  class Fancylog extends LoggerCall {
+    Fancylog() {
+      this = DataFlow::moduleMember("fancy-log", getAStandardLoggerMethodName()).getACall() or
+      this = DataFlow::moduleImport("fancy-log").getACall()
     }
 
     override DataFlow::Node getAMessageComponent() { result = getAnArgument() }

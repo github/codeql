@@ -12,7 +12,7 @@ private import semmle.code.csharp.frameworks.system.Text
  * invocation will take place, unless the expression is already a string.
  * For example, `o` and `o.ToString()` on lines 2 and 3, respectively, in
  *
- * ```
+ * ```csharp
  * void Hello(object o) {
  *   Console.WriteLine("Hello, " + o);
  *   Console.WriteLine("Hello, " + o.ToString());

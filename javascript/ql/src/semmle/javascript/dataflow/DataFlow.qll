@@ -198,6 +198,8 @@ module DataFlow {
         result = unique(Expr ret | ret = fun.getAReturnedExpr()).flow() and
         not fun.getExit().isJoin() // can only reach exit by the return statement
       )
+      or
+      FlowSteps::identityFunctionStep(result, this)
     }
 
     /**

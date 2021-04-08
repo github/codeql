@@ -56,26 +56,6 @@ private DataFlow::Node isPowerOfTwoMinusOne() {
 }
 
 /**
- * Gets a Buffer/TypedArray containing cryptographically secure random numbers.
- */
-private DataFlow::SourceNode randomBufferSource() {
-  result = DataFlow::moduleMember("crypto", ["randomBytes", "randomFillSync"]).getACall()
-  or
-  exists(DataFlow::CallNode call |
-    call = DataFlow::moduleMember("crypto", ["randomFill", "randomFillSync"]) and
-    result = call.getArgument(0).getALocalSource()
-  )
-  or
-  result = DataFlow::globalVarRef("crypto").getAMethodCall("getRandomValues")
-  or
-  result = DataFlow::moduleImport("secure-random").getACall()
-  or
-  result =
-    DataFlow::moduleImport("secure-random")
-        .getAMethodCall(["randomArray", "randomUint8Array", "randomBuffer"])
-}
-
-/**
  * Gets the pseudo-property used to track elements inside a Buffer.
  * The API for `Set` is close enough to the API for `Buffer` that we can reuse the type-tracking steps.
  */
@@ -86,7 +66,7 @@ private string prop() { result = DataFlow::PseudoProperties::setElement() }
  */
 private DataFlow::Node goodRandom(DataFlow::TypeTracker t, DataFlow::SourceNode source) {
   t.startInProp(prop()) and
-  result = randomBufferSource() and
+  result = InsecureRandomness::randomBufferSource() and
   result = source
   or
   // Loading a number from a `Buffer`.

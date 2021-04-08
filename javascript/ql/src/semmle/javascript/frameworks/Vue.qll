@@ -30,6 +30,54 @@ module Vue {
     MkComponent(DataFlow::CallNode def) { def = vue().getAMemberCall("component") } or
     MkSingleFileComponent(VueFile file)
 
+  /** Gets the name of a lifecycle hook method. */
+  private string lifecycleHookName() {
+    result =
+      ["beforeCreate", "created", "beforeMount", "mounted", "beforeUpdate", "updated", "activated",
+          "deactivated", "beforeDestroy", "destroyed", "errorCaptured"]
+  }
+
+  /** Gets a value that can be used as a `@Component` decorator. */
+  private DataFlow::SourceNode componentDecorator() {
+    result = DataFlow::moduleImport("vue-class-component")
+    or
+    result = DataFlow::moduleMember("vue-property-decorator", "Component")
+  }
+
+  /**
+   * A class with a `@Component` decorator, making it usable as an "options" object in Vue.
+   */
+  private class ClassComponent extends DataFlow::ClassNode {
+    DataFlow::Node decorator;
+
+    ClassComponent() {
+      exists(ClassDefinition cls |
+        this = cls.flow() and
+        cls.getADecorator().getExpression() = decorator.asExpr() and
+        (
+          componentDecorator().flowsTo(decorator)
+          or
+          componentDecorator().getACall() = decorator
+        )
+      )
+    }
+
+    /**
+     * Gets an option passed to the `@Component` decorator.
+     *
+     * These options correspond to the options one would pass to `new Vue({...})` or similar.
+     */
+    DataFlow::Node getDecoratorOption(string name) {
+      result = decorator.(DataFlow::CallNode).getOptionArgument(0, name)
+    }
+  }
+
+  private string memberKindVerb(DataFlow::MemberKind kind) {
+    kind = DataFlow::MemberKind::getter() and result = "get"
+    or
+    kind = DataFlow::MemberKind::setter() and result = "set"
+  }
+
   /**
    * A Vue instance definition.
    *
@@ -66,10 +114,26 @@ module Vue {
     }
 
     /**
+     * Gets the options passed to the Vue object, such as the object literal `{...}` in `new Vue{{...})`
+     * or the default export of a single-file component.
+     */
+    abstract DataFlow::Node getOwnOptionsObject();
+
+    /**
+     * Gets the class component implementing this Vue instance, if any.
+     *
+     * Specifically, this is a class annotated with `@Component` which flows to the options
+     * object of this Vue instance.
+     */
+    ClassComponent getAsClassComponent() { result.flowsTo(getOwnOptionsObject()) }
+
+    /**
      * Gets the node for option `name` for this instance, this does not include
      * those from extended objects and mixins.
      */
-    abstract DataFlow::Node getOwnOption(string name);
+    DataFlow::Node getOwnOption(string name) {
+      result = getOwnOptionsObject().getALocalSource().getAPropertyWrite(name).getRhs()
+    }
 
     /**
      * Gets the node for option `name` for this instance, including those from
@@ -92,6 +156,8 @@ module Vue {
         mixin.flowsTo(mixins.getAnElement()) and
         result = mixin.getAPropertyWrite(name).getRhs()
       )
+      or
+      result = getAsClassComponent().getDecoratorOption(name)
     }
 
     /**
@@ -112,6 +178,10 @@ module Vue {
           result = f.getAReturn()
         )
       )
+      or
+      result = getAsClassComponent().getAReceiverNode()
+      or
+      result = getAsClassComponent().getInstanceMethod("data").getAReturn()
     }
 
     /**
@@ -122,7 +192,11 @@ module Vue {
     /**
      * Gets the node for the `render` option of this instance.
      */
-    DataFlow::Node getRender() { result = getOption("render") }
+    DataFlow::Node getRender() {
+      result = getOption("render")
+      or
+      result = getAsClassComponent().getInstanceMethod("render")
+    }
 
     /**
      * Gets the node for the `methods` option of this instance.
@@ -143,41 +217,50 @@ module Vue {
         methods.flowsTo(getMethods()) and
         result = methods.getAPropertyWrite().getRhs()
       )
+      or
+      result = getAsClassComponent().getAnInstanceMethod() and
+      not result = getAsClassComponent().getInstanceMethod([lifecycleHookName(), "render", "data"])
     }
 
     /**
-     * Gets a node for a member of the `computed` option of this instance that matches `kind` ("get" or "set").
+     * Gets a node for a member of the `computed` option of this instance that matches `kind`.
      */
     pragma[noinline]
-    private DataFlow::Node getAnAccessor(string kind) {
+    private DataFlow::Node getAnAccessor(DataFlow::MemberKind kind) {
       exists(DataFlow::ObjectLiteralNode computedObj, DataFlow::Node accessorObjOrGetter |
         computedObj.flowsTo(getComputed()) and
         computedObj.getAPropertyWrite().getRhs() = accessorObjOrGetter
       |
-        result = accessorObjOrGetter and kind = "get"
+        result = accessorObjOrGetter and kind = DataFlow::MemberKind::getter()
         or
         exists(DataFlow::ObjectLiteralNode accessorObj |
           accessorObj.flowsTo(accessorObjOrGetter) and
-          result = accessorObj.getAPropertyWrite(kind).getRhs()
+          result = accessorObj.getAPropertyWrite(memberKindVerb(kind)).getRhs()
         )
       )
+      or
+      result = getAsClassComponent().getAnInstanceMember(kind) and
+      kind.isAccessor()
     }
 
     /**
-     * Gets a node for a member `name` of the `computed` option of this instance that matches `kind` ("get" or "set").
+     * Gets a node for a member `name` of the `computed` option of this instance that matches `kind`.
      */
-    private DataFlow::Node getAccessor(string name, string kind) {
+    private DataFlow::Node getAccessor(string name, DataFlow::MemberKind kind) {
       exists(DataFlow::ObjectLiteralNode computedObj, DataFlow::SourceNode accessorObjOrGetter |
         computedObj.flowsTo(getComputed()) and
         accessorObjOrGetter.flowsTo(computedObj.getAPropertyWrite(name).getRhs())
       |
-        result = accessorObjOrGetter and kind = "get"
+        result = accessorObjOrGetter and kind = DataFlow::MemberKind::getter()
         or
         exists(DataFlow::ObjectLiteralNode accessorObj |
           accessorObj.flowsTo(accessorObjOrGetter) and
-          result = accessorObj.getAPropertyWrite(kind).getRhs()
+          result = accessorObj.getAPropertyWrite(memberKindVerb(kind)).getRhs()
         )
       )
+      or
+      result = getAsClassComponent().getInstanceMember(name, kind) and
+      kind.isAccessor()
     }
 
     /**
@@ -185,20 +268,12 @@ module Vue {
      */
     pragma[noinline]
     private DataFlow::Node getALifecycleHook(string hookName) {
+      hookName = lifecycleHookName() and
       (
-        hookName = "beforeCreate" or
-        hookName = "created" or
-        hookName = "beforeMount" or
-        hookName = "mounted" or
-        hookName = "beforeUpdate" or
-        hookName = "updated" or
-        hookName = "activated" or
-        hookName = "deactivated" or
-        hookName = "beforeDestroy" or
-        hookName = "destroyed" or
-        hookName = "errorCaptured"
-      ) and
-      result = getOption(hookName)
+        result = getOption(hookName)
+        or
+        result = getAsClassComponent().getInstanceMethod(hookName)
+      )
     }
 
     /**
@@ -227,7 +302,7 @@ module Vue {
       )
       or
       exists(DataFlow::FunctionNode getter |
-        getter.flowsTo(getAccessor(name, "get")) and
+        getter.flowsTo(getAccessor(name, DataFlow::MemberKind::getter())) and
         result = getter.getAReturn()
       )
     }
@@ -249,7 +324,7 @@ module Vue {
       def.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
-    override DataFlow::Node getOwnOption(string name) { result = def.getOptionArgument(0, name) }
+    override DataFlow::Node getOwnOptionsObject() { result = def.getArgument(0) }
 
     override Template::Element getTemplateElement() { none() }
   }
@@ -270,7 +345,7 @@ module Vue {
       extend.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
-    override DataFlow::Node getOwnOption(string name) { result = extend.getOptionArgument(0, name) }
+    override DataFlow::Node getOwnOptionsObject() { result = extend.getArgument(0) }
 
     override Template::Element getTemplateElement() { none() }
   }
@@ -292,7 +367,7 @@ module Vue {
       sub.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
-    override DataFlow::Node getOwnOption(string name) { result = sub.getOptionArgument(0, name) }
+    override DataFlow::Node getOwnOptionsObject() { result = sub.getArgument(0) }
 
     override DataFlow::Node getOption(string name) {
       result = Instance.super.getOption(name)
@@ -319,7 +394,7 @@ module Vue {
       def.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
-    override DataFlow::Node getOwnOption(string name) { result = def.getOptionArgument(1, name) }
+    override DataFlow::Node getOwnOptionsObject() { result = def.getArgument(1) }
 
     override Template::Element getTemplateElement() { none() }
   }
@@ -354,6 +429,13 @@ module Vue {
       exists(HTML::ScriptElement elem |
         xmlElements(elem, _, _, _, file) and // Avoid materializing all of Locatable.getFile()
         result.getTopLevel() = elem.getScript()
+      )
+    }
+
+    override DataFlow::Node getOwnOptionsObject() {
+      exists(ExportDefaultDeclaration decl |
+        decl.getTopLevel() = getModule() and
+        result = DataFlow::valueNode(decl.getOperand())
       )
     }
 

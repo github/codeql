@@ -1,3 +1,8 @@
+/**
+ * Provides classes for modeling logical operations such as `!`, `&&`, `||`, and
+ * the ternary `? :` expression.
+ */
+
 import semmle.code.cpp.exprs.Expr
 
 /**
@@ -14,7 +19,7 @@ class UnaryLogicalOperation extends UnaryOperation, @un_log_op_expr { }
 class NotExpr extends UnaryLogicalOperation, @notexpr {
   override string getOperator() { result = "!" }
 
-  override string getCanonicalQLClass() { result = "NotExpr" }
+  override string getAPrimaryQlClass() { result = "NotExpr" }
 
   override int getPrecedence() { result = 16 }
 }
@@ -46,7 +51,7 @@ class BinaryLogicalOperation extends BinaryOperation, @bin_log_op_expr {
 class LogicalAndExpr extends BinaryLogicalOperation, @andlogicalexpr {
   override string getOperator() { result = "&&" }
 
-  override string getCanonicalQLClass() { result = "LogicalAndExpr" }
+  override string getAPrimaryQlClass() { result = "LogicalAndExpr" }
 
   override int getPrecedence() { result = 5 }
 
@@ -67,7 +72,7 @@ class LogicalAndExpr extends BinaryLogicalOperation, @andlogicalexpr {
 class LogicalOrExpr extends BinaryLogicalOperation, @orlogicalexpr {
   override string getOperator() { result = "||" }
 
-  override string getCanonicalQLClass() { result = "LogicalOrExpr" }
+  override string getAPrimaryQlClass() { result = "LogicalOrExpr" }
 
   override int getPrecedence() { result = 4 }
 
@@ -89,7 +94,7 @@ class ConditionalExpr extends Operation, @conditionalexpr {
   /** Gets the condition of this conditional expression. */
   Expr getCondition() { expr_cond_guard(underlyingElement(this), unresolveElement(result)) }
 
-  override string getCanonicalQLClass() { result = "ConditionalExpr" }
+  override string getAPrimaryQlClass() { result = "ConditionalExpr" }
 
   /** Gets the 'then' expression of this conditional expression. */
   Expr getThen() {

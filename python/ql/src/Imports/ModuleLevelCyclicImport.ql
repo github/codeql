@@ -24,7 +24,7 @@ import Cyclic
 from ModuleValue m1, Stmt imp, ModuleValue m2, string attr, Expr use, ControlFlowNode defn
 where failing_import_due_to_cycle(m1, m2, imp, defn, use, attr)
 select use,
-    "'" + attr + "' may not be defined if module $@ is imported before module $@, as the $@ of " +
-        attr + " occurs after the cyclic $@ of " + m2.getName() + ".",
-    // Arguments for the placeholders in the above message:
-    m1, m1.getName(), m2, m2.getName(), defn, "definition", imp, "import"
+  "'" + attr + "' may not be defined if module $@ is imported before module $@, as the $@ of " +
+    attr + " occurs after the cyclic $@ of " + m2.getName() + ".",
+  // Arguments for the placeholders in the above message:
+  m1, m1.getName(), m2, m2.getName(), defn, "definition", imp, "import"

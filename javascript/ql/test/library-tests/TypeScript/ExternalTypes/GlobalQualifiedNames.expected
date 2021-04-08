@@ -1,8 +1,4 @@
-| Intl.CollatorOptions | CollatorOptions |
-| Intl.NumberFormatOptions | NumberFormatOptions |
 | LegacyGlobals.LegacySubclass | LegacySubclass |
 | Modern.ModernClass | ModernClass |
 | ModernGlobals.ModernSubclass | ModernSubclass |
-| RegExp | RegExp |
-| RegExpMatchArray | RegExpMatchArray |
 | __Legacy.LegacyClass | LegacyClass |

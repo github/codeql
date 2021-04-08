@@ -1,16 +1,7 @@
 uniqueEnclosingCallable
 | C.cpp:37:24:37:33 | 0 | Node should have one enclosing callable but has 0. |
 | C.cpp:37:24:37:33 | new | Node should have one enclosing callable but has 0. |
-uniqueTypeBound
-| complex.cpp:22:11:22:17 | constructor init of field f [post-this] | Node should have one type bound but has 0. |
-| complex.cpp:22:11:22:17 | constructor init of field f [pre-this] | Node should have one type bound but has 0. |
-| complex.cpp:25:7:25:7 | constructor init of field inner [post-this] | Node should have one type bound but has 0. |
-| complex.cpp:25:7:25:7 | constructor init of field inner [pre-this] | Node should have one type bound but has 0. |
-uniqueTypeRepr
-| complex.cpp:22:11:22:17 | constructor init of field f [post-this] | Node should have one type representation but has 0. |
-| complex.cpp:22:11:22:17 | constructor init of field f [pre-this] | Node should have one type representation but has 0. |
-| complex.cpp:25:7:25:7 | constructor init of field inner [post-this] | Node should have one type representation but has 0. |
-| complex.cpp:25:7:25:7 | constructor init of field inner [pre-this] | Node should have one type representation but has 0. |
+uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString

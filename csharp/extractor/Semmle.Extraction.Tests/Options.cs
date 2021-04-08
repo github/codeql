@@ -191,7 +191,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void ArchiveArguments()
         {
-            var sw = new StringWriter();
+            using var sw = new StringWriter();
             var file = Path.GetTempFileName();
 
             try

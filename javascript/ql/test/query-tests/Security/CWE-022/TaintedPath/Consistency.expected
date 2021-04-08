@@ -1,4 +1,0 @@
-| normalizedPaths.js:208:38:208:63 | // OK - ...  anyway | Spurious alert |
-| tainted-string-steps.js:25:43:25:74 | // NOT  ... flagged | Missing alert |
-| tainted-string-steps.js:26:49:26:74 | // OK - ... flagged | Spurious alert |
-| tainted-string-steps.js:28:39:28:70 | // NOT  ... flagged | Missing alert |

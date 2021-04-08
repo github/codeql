@@ -38,7 +38,7 @@ class Attributable extends @attributable {
 /**
  * An attribute, for example `[...]` on line 1 in
  *
- * ```
+ * ```csharp
  * [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
  * public static extern int GetFinalPathNameByHandle(
  *   SafeHandle handle,
@@ -64,7 +64,7 @@ class Attribute extends TopLevelExprParent, @attribute {
    * Gets the `i`th constructor argument of this attribute. For example, only
    * `true` is a constructor argument in
    *
-   * ```
+   * ```csharp
    * MyAttribute[true, Foo = 0]
    * ```
    */
@@ -76,7 +76,7 @@ class Attribute extends TopLevelExprParent, @attribute {
    * Gets the named argument `name` of this attribute. For example, only
    * `0` is a named argument in
    *
-   * ```
+   * ```csharp
    * MyAttribute[true, Foo = 0]
    * ```
    */

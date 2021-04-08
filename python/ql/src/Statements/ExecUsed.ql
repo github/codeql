@@ -13,13 +13,13 @@
 import python
 
 string message() {
-    result = "The 'exec' statement is used." and major_version() = 2
-    or
-    result = "The 'exec' function is used." and major_version() = 3
+  result = "The 'exec' statement is used." and major_version() = 2
+  or
+  result = "The 'exec' function is used." and major_version() = 3
 }
 
 predicate exec_function_call(Call c) {
-    exists(GlobalVariable exec | exec = c.getFunc().(Name).getVariable() and exec.getId() = "exec")
+  exists(GlobalVariable exec | exec = c.getFunc().(Name).getVariable() and exec.getId() = "exec")
 }
 
 from AstNode exec

@@ -10,7 +10,7 @@
 
 /*
  * This library tackles range analysis as a flow problem. Consider e.g.:
- * ```
+ * ```csharp
  *   len = arr.length;
  *   if (x < len) { ... y = x-1; ... y ... }
  * ```

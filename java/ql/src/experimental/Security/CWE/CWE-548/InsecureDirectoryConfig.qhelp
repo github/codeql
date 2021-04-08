@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>Enabling directory listing in J2EE application servers introduces the vulnerability of filename and path disclosure, which could allow an attacker to read arbitrary files in the server web directory. This includes application source code and data, as well as credentials for back-end systems.</p>
+    <p>The query detects insecure configuration by validating its web configuration.</p>
+  </overview>
+
+  <recommendation>
+    <p>Always disabling directory listing in the production environment.</p>
+  </recommendation>
+
+  <example>
+    <p>The following two examples show two ways of directory listing configuration. In the 'BAD' case, it is enabled. In the 'GOOD' case, it is disabled.</p>
+    <sample src="web.xml" />
+  </example>
+
+  <references>
+    <li>
+      <a href="https://cwe.mitre.org/data/definitions/548.html">CWE-548: Exposure of Information Through Directory Listing</a>
+      <a href="https://portswigger.net/kb/issues/00600100_directory-listing">Directory listing</a>
+      <a href="https://portswigger.net/web-security/file-path-traversal">Directory traversal</a>
+    </li>
+  </references>
+</qhelp>

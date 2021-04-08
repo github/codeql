@@ -13,7 +13,7 @@ Valid QL comments are known as QLDoc. This document describes the recommended st
    - For single-line documentation, the `/**` and `*/` are written on the same line as the comment.
    - For multi-line documentation, the `/**` and `*/` are written on separate lines. There is a `*` preceding each comment line, aligned on the first `*`.
 1. Use code formatting (backticks) within comments for code from the source language, and also for QL code (for example, names of classes, predicates, and variables).
-1. Give explanatory examples of code in the target language, enclosed in ```` ``` ````  or `` ` ``.
+1. Give explanatory examples of code in the target language, enclosed in ```` ```<target language> ````  or `` ` ``.
 
 
 ### Language requirements
@@ -37,7 +37,7 @@ Valid QL comments are known as QLDoc. This document describes the recommended st
 
 1. Refer to all predicate parameters in the predicate documentation.
 1. Reference names, such as types and parameters, using backticks `` ` ``.
-1. Give examples of code in the target language, enclosed in ```` ``` ````  or `` ` ``.
+1. Give examples of code in the target language, enclosed in ```` ```<target language> ````  or `` ` ``.
 1. Predicates that override a single predicate don't need QLDoc, as they will inherit it.
 
 ### Predicates without result

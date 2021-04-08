@@ -22,7 +22,7 @@ class DynamicExpr extends LateBindableExpr {
  * A constructor call where one of the arguments is a `dynamic` expression, for
  * example `new A(d)` on line 8 in
  *
- * ```
+ * ```csharp
  * class A {
  *   A(int i) { }
  *
@@ -48,7 +48,7 @@ class DynamicObjectCreation extends DynamicExpr, ObjectCreation {
  * A method call where the qualifier or one of the arguments is a `dynamic`
  * expression, for example `M(d)` on line 8 in
  *
- * ```
+ * ```csharp
  * class A {
  *   void M(int i) { }
  *
@@ -72,7 +72,7 @@ class DynamicMethodCall extends DynamicExpr, MethodCall {
  * A call to a user-defined operator where one of the operands is a `dynamic`
  * expression, for example `this + d` on line 12 in
  *
- * ```
+ * ```csharp
  * class A {
  *   public static A operator+(A left, int right) {
  *     return left;
@@ -100,7 +100,7 @@ class DynamicOperatorCall extends DynamicExpr, OperatorCall {
  * A call to a user-defined mutator operator where the operand is a `dynamic`
  * expression, for example `d++` on line 20 in
  *
- * ```
+ * ```csharp
  * class A {
  *   public A() { }
  *
@@ -147,7 +147,7 @@ class DynamicAccess extends DynamicExpr {
  * A member access where the qualifier is a `dynamic` expression, for example
  * `d.X` on line 24 in
  *
- * ```
+ * ```csharp
  * class A {
  *   public A() { }
  *
@@ -193,7 +193,7 @@ class DynamicMemberAccess extends DynamicAccess, MemberAccess, AssignableAccess,
  * An access to a dynamic member that reads the underlying value, for example
  * `d.X` on line 16 in
  *
- * ```
+ * ```csharp
  * class A {
  *   public A() { }
  *
@@ -220,7 +220,7 @@ class DynamicMemberRead extends DynamicMemberAccess, AssignableRead { }
  * An access to a dynamic member that updates the underlying value, for
  * example `d.X` on line 16 in
  *
- * ```
+ * ```csharp
  * class A {
  *   public A() { }
  *
@@ -259,7 +259,7 @@ class DynamicMember extends AssignableMember {
  * A call to an accessor where the qualifier is a `dynamic` expression, for
  * example `d.X` on line 20 and `d[0]` on line 25 in
  *
- * ```
+ * ```csharp
  * class A {
  *   public A() { }
  *
@@ -315,7 +315,7 @@ class DynamicAccessorCall extends DynamicAccess {
  * An element access where the qualifier is a `dynamic` expression, for example
  * `d[0]` on line 12 in
  *
- * ```
+ * ```csharp
  * class A {
  *   public A() { }
  *
@@ -344,7 +344,7 @@ class DynamicElementAccess extends DynamicAccess, ElementAccess, @dynamic_elemen
  * An access to a dynamic element that reads the underlying value, for example
  * `d[0]` on line 12 in
  *
- * ```
+ * ```csharp
  * class A {
  *   public A() { }
  *
@@ -367,7 +367,7 @@ class DynamicElementRead extends DynamicElementAccess, ElementRead { }
  * An access to a dynamic element that updates the underlying value, for example
  * `d[0]` on line 12 in
  *
- * ```
+ * ```csharp
  * class A {
  *   public A() { }
  *

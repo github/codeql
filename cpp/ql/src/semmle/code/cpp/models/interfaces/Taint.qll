@@ -24,5 +24,9 @@ import semmle.code.cpp.models.Models
  * data flow.
  */
 abstract class TaintFunction extends Function {
+  /**
+   * Holds if data passed into the argument, qualifier, or buffer represented by
+   * `input` influences the return value or buffer represented by `output`
+   */
   abstract predicate hasTaintFlow(FunctionInput input, FunctionOutput output);
 }

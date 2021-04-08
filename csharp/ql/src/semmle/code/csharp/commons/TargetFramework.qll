@@ -6,7 +6,7 @@ import csharp
  * An attribute of type `System.Runtime.Versioning.TargetFrameworkAttribute`,
  * specifying the target framework of an assembly. For example
  *
- * ```
+ * ```csharp
  * [assembly: TargetFramework(".NETFramework,Version=v4.6.1")]
  * ```
  */
@@ -20,7 +20,7 @@ class TargetFrameworkAttribute extends Attribute {
 
   /**
    * Gets the framework name of this attribute. For example, the framework name of
-   * ```
+   * ```csharp
    * [assembly: TargetFramework(".NETFramework,Version=v4.6.1")]
    * ```
    * is `".NETFramework,Version=v4.6.1"`.
@@ -33,7 +33,7 @@ class TargetFrameworkAttribute extends Attribute {
 
   /**
    * Gets the framework type of this attribute. For example, the framework type of
-   * ```
+   * ```csharp
    * [assembly: TargetFramework(".NETFramework,Version=v4.6.1")]
    * ```
    * is `".NETFramework"`. Other framework types include `".NETStandard"` and `".NETCoreApp"`.
@@ -42,7 +42,7 @@ class TargetFrameworkAttribute extends Attribute {
 
   /**
    * Gets the framework version of this attribute. For example, the framework version of
-   * ```
+   * ```csharp
    * [assembly: TargetFramework(".NETFramework,Version=v4.6.1")]
    * ```
    * is `"4.6.1"`. Note that you can use the `Version` class to compare versions, for example

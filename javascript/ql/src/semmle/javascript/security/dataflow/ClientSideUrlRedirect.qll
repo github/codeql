@@ -50,5 +50,9 @@ module ClientSideUrlRedirect {
       g instanceof DocumentUrl and
       succ.(DataFlow::PropRead).accesses(pred, "href")
     }
+
+    override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
+      guard instanceof HostnameSanitizerGuard
+    }
   }
 }

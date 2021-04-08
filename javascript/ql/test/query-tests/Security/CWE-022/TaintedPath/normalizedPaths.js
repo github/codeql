@@ -205,7 +205,7 @@ app.get('/join-regression', (req, res) => {
     fs.readFileSync(normalizedPath); // NOT OK
 
   if (normalizedPath.startsWith('/home/user/www') || normalizedPath.startsWith('/home/user/public'))
-    fs.readFileSync(normalizedPath); // OK - but flagged anyway
+    fs.readFileSync(normalizedPath); // OK - but flagged anyway [INCONSISTENCY]
   else
     fs.readFileSync(normalizedPath); // NOT OK
 });

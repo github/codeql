@@ -1,10 +1,10 @@
 import python
 
 predicate reaches_exit(Name u) {
-    u.uses(_) and
-    exists(ControlFlowNode f, BasicBlock b | f.getNode() = u and f.getBasicBlock() = b |
-        b.reachesExit()
-    )
+  u.uses(_) and
+  exists(ControlFlowNode f, BasicBlock b | f.getNode() = u and f.getBasicBlock() = b |
+    b.reachesExit()
+  )
 }
 
 from Name u

@@ -4,11 +4,11 @@ import org.apache.commons.codec.BinaryEncoder;
 import org.apache.commons.codec.BinaryDecoder;
 import org.apache.commons.codec.StringEncoder;
 import org.apache.commons.codec.StringDecoder;
-
-
+import java.util.Date;
 
 class Test {
 	public static void taintSteps(
+                Date date,
 		Decoder decoder,
 		Encoder encoder,
 		StringEncoder stringEncoder,
@@ -29,5 +29,7 @@ class Test {
 
 		bytes1 = binEncoder.encode(bytes2);
 		bytes1 = binDecoder.decode(bytes2);
+
+		Object clone = date.clone();
 	}
 }

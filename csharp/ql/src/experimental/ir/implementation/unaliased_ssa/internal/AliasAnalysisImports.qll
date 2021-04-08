@@ -12,7 +12,7 @@ module AliasModels {
      * the function returns.
      *
      * Example:
-     * ```
+     * ```csharp
      * int* g;
      * int* func(int* p, int* q, int* r, int* s, int n) {
      *   *s = 1;  // `s` does not escape.

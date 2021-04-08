@@ -360,12 +360,11 @@ class SystemStringClass extends StringType {
     result.getReturnType() instanceof StringType
   }
 
-  /** Gets a `Join(string, ...)` method. */
+  /** Gets a `Join(...)` method. */
   Method getJoinMethod() {
     result.getDeclaringType() = this and
     result.hasName("Join") and
     result.getNumberOfParameters() > 1 and
-    result.getParameter(0).getType() instanceof StringType and
     result.getReturnType() instanceof StringType
   }
 
@@ -564,7 +563,7 @@ private EqualsMethod getInheritedEqualsMethod(ValueOrRefType t) { t.hasMethod(re
  *
  * Example:
  *
- * ```
+ * ```csharp
  * abstract class A<T> : IEquatable<T> {
  *   public abstract bool Equals(T other);
  *   public override bool Equals(object other) { return other != null && GetType() == other.GetType() && Equals((T)other); }
@@ -653,7 +652,7 @@ private DisposeMethod getInheritedDisposeMethod(ValueOrRefType t) { t.hasMethod(
  *
  * Example:
  *
- * ```
+ * ```csharp
  * class A : IDisposable {
  *   public void Dispose() { Dispose(true); }
  *   public virtual void Dispose(bool disposing) { ... }

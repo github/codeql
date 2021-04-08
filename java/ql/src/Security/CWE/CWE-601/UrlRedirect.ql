@@ -12,7 +12,7 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import UrlRedirect
+import semmle.code.java.security.UrlRedirect
 import DataFlow::PathGraph
 
 class UrlRedirectConfig extends TaintTracking::Configuration {

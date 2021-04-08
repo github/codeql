@@ -40,3 +40,20 @@ function baz() {
 
     nugget("ftp://example.org/unsafe.APK") // NOT OK
 }
+
+const fs = require("fs");
+var writeFileAtomic = require("write-file-atomic");
+
+function test() {
+    nugget("http://example.org/unsafe", {target: "foo.exe"}, () => { }) // NOT OK
+
+    nugget("http://example.org/unsafe", {target: "foo.safe"}, () => { }) // OK
+
+    $.get("http://example.org/unsafe.unknown", function( data ) {
+        writeFileAtomic('unsafe.exe', data, {}, function (err) {}); // NOT OK
+    });
+
+    $.get("http://example.org/unsafe.unknown", function( data ) {
+        writeFileAtomic('foo.safe', data, {}, function (err) {}); // OK
+    });
+}

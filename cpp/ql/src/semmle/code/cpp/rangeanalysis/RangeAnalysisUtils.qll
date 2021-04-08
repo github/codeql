@@ -5,7 +5,13 @@ import cpp
  * relation) or 'non-strict' (a `<=` or `>=` relation).
  */
 newtype RelationStrictness =
+  /**
+   * Represents that a relation is 'strict' (that is, a `<` or `>` relation).
+   */
   Strict() or
+  /**
+   * Represents that a relation is 'non-strict' (that is, a `<=` or `>=` relation)
+   */
   Nonstrict()
 
 /**
@@ -13,7 +19,13 @@ newtype RelationStrictness =
  * relation) or 'lesser' (a `<` or `<=` relation).
  */
 newtype RelationDirection =
+  /**
+   * Represents that a relation is 'greater' (that is, a `>` or `>=` relation).
+   */
   Greater() or
+  /**
+   * Represents that a relation is 'lesser' (that is, a `<` or `<=` relation).
+   */
   Lesser()
 
 private RelationStrictness negateStrictness(RelationStrictness strict) {
@@ -28,12 +40,18 @@ private RelationDirection negateDirection(RelationDirection dir) {
   dir = Lesser() and result = Greater()
 }
 
+/**
+ * Holds if `dir` is `Greater` (that is, a `>` or `>=` relation)
+ */
 boolean directionIsGreater(RelationDirection dir) {
   dir = Greater() and result = true
   or
   dir = Lesser() and result = false
 }
 
+/**
+ * Holds if `dir` is `Lesser` (that is, a `<` or `<=` relation)
+ */
 boolean directionIsLesser(RelationDirection dir) {
   dir = Greater() and result = false
   or

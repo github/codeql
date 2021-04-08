@@ -6,7 +6,7 @@
 
 import javascript
 import semmle.javascript.security.dataflow.RemoteFlowSources
-import UrlConcatenation
+private import UrlConcatenation
 
 module ClientSideUrlRedirect {
   private import Xss::DomBasedXss as DomBasedXss
@@ -142,6 +142,19 @@ module ClientSideUrlRedirect {
         (eltName = "script" or eltName = "iframe") and
         attr.getName() = "src" and
         this = attr.getValueNode()
+      )
+    }
+  }
+
+  /**
+   * A write of an attribute which may execute JavaScript code or
+   * exfiltrate data to an attacker controlled site.
+   */
+  class AttributeWriteUrlSink extends ScriptUrlSink, DataFlow::ValueNode {
+    AttributeWriteUrlSink() {
+      exists(DomPropWriteNode pw |
+        pw.interpretsValueAsJavaScriptUrl() and
+        this = DataFlow::valueNode(pw.getRhs())
       )
     }
   }

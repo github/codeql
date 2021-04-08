@@ -1,3 +1,7 @@
+/**
+ * Provides the `Initializer` class, representing C/C++ declaration initializers.
+ */
+
 import semmle.code.cpp.controlflow.ControlFlowGraph
 
 /**
@@ -18,7 +22,7 @@ import semmle.code.cpp.controlflow.ControlFlowGraph
 class Initializer extends ControlFlowNode, @initialiser {
   override Location getLocation() { initialisers(underlyingElement(this), _, _, result) }
 
-  override string getCanonicalQLClass() { result = "Initializer" }
+  override string getAPrimaryQlClass() { result = "Initializer" }
 
   /** Holds if this initializer is explicit in the source. */
   override predicate fromSource() { not this.getLocation() instanceof UnknownLocation }

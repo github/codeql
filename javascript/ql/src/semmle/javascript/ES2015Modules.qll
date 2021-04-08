@@ -330,7 +330,7 @@ class ExportDefaultDeclaration extends ExportDeclaration, @exportdefaultdeclarat
   /** Gets the declaration, if any, exported by this default export. */
   VarDecl getADecl() {
     exists(ExprOrStmt op | op = getOperand() |
-      result = op.(FunctionDeclStmt).getId() or
+      result = op.(FunctionDeclStmt).getIdentifier() or
       result = op.(ClassDeclStmt).getIdentifier()
     )
   }
@@ -364,13 +364,13 @@ class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration 
   Identifier getAnExportedDecl() {
     exists(ExprOrStmt op | op = getOperand() |
       result = op.(DeclStmt).getADecl().getBindingPattern().getABindingVarRef() or
-      result = op.(FunctionDeclStmt).getId() or
+      result = op.(FunctionDeclStmt).getIdentifier() or
       result = op.(ClassDeclStmt).getIdentifier() or
-      result = op.(NamespaceDeclaration).getId() or
+      result = op.(NamespaceDeclaration).getIdentifier() or
       result = op.(EnumDeclaration).getIdentifier() or
       result = op.(InterfaceDeclaration).getIdentifier() or
       result = op.(TypeAliasDeclaration).getIdentifier() or
-      result = op.(ImportEqualsDeclaration).getId()
+      result = op.(ImportEqualsDeclaration).getIdentifier()
     )
   }
 

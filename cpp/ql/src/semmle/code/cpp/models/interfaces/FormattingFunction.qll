@@ -44,7 +44,7 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
   /** Gets the position at which the format parameter occurs. */
   abstract int getFormatParameterIndex();
 
-  override string getCanonicalQLClass() { result = "FormattingFunction" }
+  override string getAPrimaryQlClass() { result = "FormattingFunction" }
 
   /**
    * Holds if this `FormattingFunction` is in a context that supports

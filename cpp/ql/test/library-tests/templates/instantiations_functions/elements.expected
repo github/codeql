@@ -54,6 +54,7 @@
 | file://:0:0:0:0 | char8_t |
 | file://:0:0:0:0 | char16_t |
 | file://:0:0:0:0 | char32_t |
+| file://:0:0:0:0 | composite<B> * |
 | file://:0:0:0:0 | composite<int> & |
 | file://:0:0:0:0 | composite<int> && |
 | file://:0:0:0:0 | composite<int> * |
@@ -156,6 +157,7 @@
 | file://:0:0:0:0 | restrict |
 | file://:0:0:0:0 | rule & |
 | file://:0:0:0:0 | rule && |
+| file://:0:0:0:0 | rule * |
 | file://:0:0:0:0 | sealed |
 | file://:0:0:0:0 | selectany |
 | file://:0:0:0:0 | short |

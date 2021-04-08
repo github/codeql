@@ -15,15 +15,15 @@ import semmle.python.security.strings.Untrusted
  * The `vuln` in `exec(vuln)` or similar.
  */
 class StringEvaluationNode extends TaintSink {
-    override string toString() { result = "exec or eval" }
+  override string toString() { result = "exec or eval" }
 
-    StringEvaluationNode() {
-        exists(Exec exec | exec.getASubExpression().getAFlowNode() = this)
-        or
-        Value::named("exec").getACall().getAnArg() = this
-        or
-        Value::named("eval").getACall().getAnArg() = this
-    }
+  StringEvaluationNode() {
+    exists(Exec exec | exec.getASubExpression().getAFlowNode() = this)
+    or
+    Value::named("exec").getACall().getAnArg() = this
+    or
+    Value::named("eval").getACall().getAnArg() = this
+  }
 
-    override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
+  override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
 }

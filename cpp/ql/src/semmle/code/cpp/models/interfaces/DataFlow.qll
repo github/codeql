@@ -19,5 +19,10 @@ import semmle.code.cpp.models.Models
  * to destinations; that is covered by `TaintModel.qll`.
  */
 abstract class DataFlowFunction extends Function {
+  /**
+   * Holds if data can be copied from the argument, qualifier, or buffer
+   * represented by `input` to the return value or buffer represented by
+   * `output`
+   */
   abstract predicate hasDataFlow(FunctionInput input, FunctionOutput output);
 }

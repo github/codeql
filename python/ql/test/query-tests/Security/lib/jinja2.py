@@ -18,3 +18,6 @@ class FileSystemLoader(object):
 
     def __init__(self, searchpath):
         pass
+
+def from_string(source, globals=None, template_class=None):
+    pass

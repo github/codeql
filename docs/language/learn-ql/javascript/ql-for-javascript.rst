@@ -6,6 +6,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 .. toctree::
    :hidden:
 
+   basic-query-javascript
    introduce-libraries-js
    introduce-libraries-ts
    dataflow
@@ -14,7 +15,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    ast-class-reference
    dataflow-cheat-sheet
 
--  `Basic JavaScript query <https://lgtm.com/help/lgtm/console/ql-javascript-basic-example>`__: Learn to write and run a simple CodeQL query using LGTM.
+-  :doc:`Basic query for JavaScript code <basic-query-javascript>`: Learn to write and run a simple CodeQL query using LGTM.
 
 -  :doc:`CodeQL library for JavaScript <introduce-libraries-js>`: When you're analyzing a JavaScript program, you can make use of the large collection of classes in the CodeQL library for JavaScript.
 

@@ -130,3 +130,7 @@
 | tst.js:115:1:115:10 | Array.call |
 | tst.js:115:1:115:12 | Array.call() |
 | tst.js:115:1:115:12 | reflective call |
+| tst.js:117:10:117:15 | Object |
+| tst.js:117:10:117:20 | Object.seal |
+| tst.js:117:10:117:24 | Object.seal(x1) |
+| tst.js:117:22:117:23 | x1 |

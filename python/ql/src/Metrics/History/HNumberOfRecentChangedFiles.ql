@@ -13,8 +13,8 @@ import external.VCS
 
 from Module m
 where
-    exists(Commit e |
-        e.getAnAffectedFile() = m.getFile() and e.daysToNow() <= 180 and not artificialChange(e)
-    ) and
-    exists(m.getMetrics().getNumberOfLinesOfCode())
+  exists(Commit e |
+    e.getAnAffectedFile() = m.getFile() and e.daysToNow() <= 180 and not artificialChange(e)
+  ) and
+  exists(m.getMetrics().getNumberOfLinesOfCode())
 select m, 1

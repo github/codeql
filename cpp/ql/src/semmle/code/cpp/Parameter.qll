@@ -1,3 +1,7 @@
+/**
+ * Provides a class that models parameters to functions.
+ */
+
 import semmle.code.cpp.Location
 import semmle.code.cpp.Declaration
 private import semmle.code.cpp.internal.ResolveClass
@@ -45,7 +49,7 @@ class Parameter extends LocalScopeVariable, @parameter {
     result = "p#" + this.getIndex().toString()
   }
 
-  override string getCanonicalQLClass() { result = "Parameter" }
+  override string getAPrimaryQlClass() { result = "Parameter" }
 
   /**
    * Gets the name of this parameter, including it's type.

@@ -13,7 +13,7 @@ bindingset[path]
 private int countSlashes(string path) { result = count(path.splitAt("/")) - 1 }
 
 /**
- * Gets the topmost package.json that appears in the project.
+ * Gets the topmost named package.json that appears in the project.
  *
  * There can be multiple results if the there exists multiple package.json that are equally deeply nested in the folder structure.
  * Results are limited to package.json files that are at most nested 2 directories deep.
@@ -21,7 +21,8 @@ private int countSlashes(string path) { result = count(path.splitAt("/")) - 1 }
 PackageJSON getTopmostPackageJSON() {
   result =
     min(PackageJSON j |
-      countSlashes(j.getFile().getRelativePath()) <= 3
+      countSlashes(j.getFile().getRelativePath()) <= 3 and
+      exists(j.getPackageName())
     |
       j order by countSlashes(j.getFile().getRelativePath())
     )

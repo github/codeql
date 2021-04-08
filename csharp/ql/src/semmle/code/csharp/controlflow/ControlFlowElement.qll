@@ -118,7 +118,7 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
    * Moreover, this control flow element corresponds to multiple control flow nodes,
    * which is why
    *
-   * ```
+   * ```ql
    * exists(ConditionBlock cb |
    *   cb.getLastNode() = this.getAControlFlowNode() |
    *   cb.immediatelyControls(succ, s)
@@ -162,7 +162,7 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
     or
     // Equivalent with
     //
-    // ```
+    // ```ql
     // exists(JoinBlockPredecessor pred | pred = controlled.getAPredecessor() |
     //   this.controlsBlockSplit(pred, s)
     // ) and
@@ -192,7 +192,7 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
    *
    * This predicate is different from
    *
-   * ```
+   * ```ql
    * exists(ConditionBlock cb |
    *   cb.getLastNode() = this.getAControlFlowNode() |
    *   cb.controls(controlled, s)
@@ -216,7 +216,7 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
    *
    * This predicate is different from
    *
-   * ```
+   * ```ql
    * exists(ConditionBlock cb |
    *   cb.getLastNode() = this.getAControlFlowNode() |
    *   cb.controls(controlled.getAControlFlowNode().getBasicBlock(), s)

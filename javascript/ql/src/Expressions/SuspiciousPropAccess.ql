@@ -23,7 +23,7 @@ private import semmle.javascript.dataflow.InferredTypes
  * if it is part of a const enum access, so we conservatively silence the alert in that case.
  */
 predicate namespaceOrConstEnumAccess(VarAccess e) {
-  exists(NamespaceDeclaration decl | e.getVariable().getADeclaration() = decl.getId())
+  exists(NamespaceDeclaration decl | e.getVariable().getADeclaration() = decl.getIdentifier())
   or
   exists(EnumDeclaration decl | e.getVariable().getADeclaration() = decl.getIdentifier() |
     decl.isConst()

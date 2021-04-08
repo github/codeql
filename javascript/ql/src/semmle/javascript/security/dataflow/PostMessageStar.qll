@@ -49,8 +49,7 @@ module PostMessageStar {
       exists(DataFlow::InvokeNode toString | toString = trg |
         toString.(DataFlow::MethodCallNode).calls(src, "toString")
         or
-        toString = DataFlow::globalVarRef("JSON").getAMemberCall("stringify") and
-        src = toString.getArgument(0)
+        src = toString.(JsonStringifyCall).getInput()
       ) and
       inlbl instanceof PartiallyTaintedObject and
       outlbl.isTaint()

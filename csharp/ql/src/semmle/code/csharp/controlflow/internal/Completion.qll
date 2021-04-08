@@ -635,7 +635,7 @@ class EmptinessCompletion extends ConditionalCompletion, TEmptinessCompletion {
  *
  * Example:
  *
- * ```
+ * ```csharp
  * while (...) {
  *    ...
  *    break;
@@ -656,7 +656,7 @@ class BreakNormalCompletion extends NormalCompletion, TBreakNormalCompletion {
 /**
  * A nested completion. For example, in
  *
- * ```
+ * ```csharp
  * void M(bool b)
  * {
  *     try

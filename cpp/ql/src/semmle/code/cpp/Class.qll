@@ -33,7 +33,7 @@ private import semmle.code.cpp.internal.ResolveClass
 class Class extends UserType {
   Class() { isClass(underlyingElement(this)) }
 
-  override string getCanonicalQLClass() { result = "Class" }
+  override string getAPrimaryQlClass() { result = "Class" }
 
   /** Gets a child declaration of this class, struct or union. */
   override Declaration getADeclaration() { result = this.getAMember() }
@@ -768,7 +768,7 @@ class ClassDerivation extends Locatable, @derivation {
    */
   Class getBaseClass() { result = getBaseType().getUnderlyingType() }
 
-  override string getCanonicalQLClass() { result = "ClassDerivation" }
+  override string getAPrimaryQlClass() { result = "ClassDerivation" }
 
   /**
    * Gets the type from which we are deriving, without resolving any
@@ -849,9 +849,7 @@ class ClassDerivation extends Locatable, @derivation {
 class LocalClass extends Class {
   LocalClass() { isLocal() }
 
-  override string getCanonicalQLClass() {
-    not this instanceof LocalStruct and result = "LocalClass"
-  }
+  override string getAPrimaryQlClass() { not this instanceof LocalStruct and result = "LocalClass" }
 
   override Function getEnclosingAccessHolder() { result = this.getEnclosingFunction() }
 }
@@ -872,7 +870,7 @@ class LocalClass extends Class {
 class NestedClass extends Class {
   NestedClass() { this.isMember() }
 
-  override string getCanonicalQLClass() {
+  override string getAPrimaryQlClass() {
     not this instanceof NestedStruct and result = "NestedClass"
   }
 
@@ -893,7 +891,7 @@ class NestedClass extends Class {
 class AbstractClass extends Class {
   AbstractClass() { exists(PureVirtualFunction f | this.getAMemberFunction() = f) }
 
-  override string getCanonicalQLClass() { result = "AbstractClass" }
+  override string getAPrimaryQlClass() { result = "AbstractClass" }
 }
 
 /**
@@ -934,7 +932,7 @@ class TemplateClass extends Class {
     exists(result.getATemplateArgument())
   }
 
-  override string getCanonicalQLClass() { result = "TemplateClass" }
+  override string getAPrimaryQlClass() { result = "TemplateClass" }
 }
 
 /**
@@ -955,7 +953,7 @@ class ClassTemplateInstantiation extends Class {
 
   ClassTemplateInstantiation() { tc.getAnInstantiation() = this }
 
-  override string getCanonicalQLClass() { result = "ClassTemplateInstantiation" }
+  override string getAPrimaryQlClass() { result = "ClassTemplateInstantiation" }
 
   /**
    * Gets the class template from which this instantiation was instantiated.
@@ -996,7 +994,7 @@ abstract class ClassTemplateSpecialization extends Class {
       count(int i | exists(result.getTemplateArgument(i)))
   }
 
-  override string getCanonicalQLClass() { result = "ClassTemplateSpecialization" }
+  override string getAPrimaryQlClass() { result = "ClassTemplateSpecialization" }
 }
 
 /**
@@ -1025,7 +1023,7 @@ class FullClassTemplateSpecialization extends ClassTemplateSpecialization {
     not this instanceof ClassTemplateInstantiation
   }
 
-  override string getCanonicalQLClass() { result = "FullClassTemplateSpecialization" }
+  override string getAPrimaryQlClass() { result = "FullClassTemplateSpecialization" }
 }
 
 /**
@@ -1064,7 +1062,7 @@ class PartialClassTemplateSpecialization extends ClassTemplateSpecialization {
       count(int i | exists(getTemplateArgument(i)))
   }
 
-  override string getCanonicalQLClass() { result = "PartialClassTemplateSpecialization" }
+  override string getAPrimaryQlClass() { result = "PartialClassTemplateSpecialization" }
 }
 
 /**
@@ -1089,7 +1087,7 @@ deprecated class Interface extends Class {
     )
   }
 
-  override string getCanonicalQLClass() { result = "Interface" }
+  override string getAPrimaryQlClass() { result = "Interface" }
 }
 
 /**
@@ -1104,7 +1102,7 @@ deprecated class Interface extends Class {
 class VirtualClassDerivation extends ClassDerivation {
   VirtualClassDerivation() { hasSpecifier("virtual") }
 
-  override string getCanonicalQLClass() { result = "VirtualClassDerivation" }
+  override string getAPrimaryQlClass() { result = "VirtualClassDerivation" }
 }
 
 /**
@@ -1124,7 +1122,7 @@ class VirtualClassDerivation extends ClassDerivation {
 class VirtualBaseClass extends Class {
   VirtualBaseClass() { exists(VirtualClassDerivation cd | cd.getBaseClass() = this) }
 
-  override string getCanonicalQLClass() { result = "VirtualBaseClass" }
+  override string getAPrimaryQlClass() { result = "VirtualBaseClass" }
 
   /** A virtual class derivation of which this class/struct is the base. */
   VirtualClassDerivation getAVirtualDerivation() { result.getBaseClass() = this }
@@ -1146,7 +1144,7 @@ class VirtualBaseClass extends Class {
 class ProxyClass extends UserType {
   ProxyClass() { usertypes(underlyingElement(this), _, 9) }
 
-  override string getCanonicalQLClass() { result = "ProxyClass" }
+  override string getAPrimaryQlClass() { result = "ProxyClass" }
 
   /** Gets the location of the proxy class. */
   override Location getLocation() { result = getTemplateParameter().getDefinitionLocation() }

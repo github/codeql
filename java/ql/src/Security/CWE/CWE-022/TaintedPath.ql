@@ -14,8 +14,9 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import PathsCommon
+import semmle.code.java.security.PathCreation
 import DataFlow::PathGraph
+import TaintedPathCommon
 
 class ContainsDotDotSanitizer extends DataFlow::BarrierGuard {
   ContainsDotDotSanitizer() {
@@ -34,7 +35,7 @@ class TaintedPathConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(Expr e | e = sink.asExpr() | e = any(PathCreation p).getInput() and not guarded(e))
+    exists(Expr e | e = sink.asExpr() | e = any(PathCreation p).getAnInput() and not guarded(e))
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
@@ -48,7 +49,7 @@ class TaintedPathConfig extends TaintTracking::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, PathCreation p, TaintedPathConfig conf
 where
-  sink.getNode().asExpr() = p.getInput() and
+  sink.getNode().asExpr() = p.getAnInput() and
   conf.hasFlowPath(source, sink)
 select p, source, sink, "$@ flows to here and is used in a path.", source.getNode(),
   "User-provided value"

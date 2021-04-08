@@ -26,7 +26,7 @@ private import TaintTrackingParameter::Private
  * To create a configuration, extend this class with a subclass whose
  * characteristic predicate is a unique singleton string. For example, write
  *
- * ```
+ * ```ql
  * class MyAnalysisConfiguration extends TaintTracking::Configuration {
  *   MyAnalysisConfiguration() { this = "MyAnalysisConfiguration" }
  *   // Override `isSource` and `isSink`.
@@ -41,7 +41,7 @@ private import TaintTrackingParameter::Private
  * Then, to query whether there is flow between some `source` and `sink`,
  * write
  *
- * ```
+ * ```ql
  * exists(MyAnalysisConfiguration cfg | cfg.hasFlow(source, sink))
  * ```
  *

@@ -19,3 +19,8 @@ query predicate nextLeaf(StringOps::ConcatenationNode node, DataFlow::Node next)
 query StringOps::HtmlConcatenationRoot htmlRoot() { any() }
 
 query StringOps::HtmlConcatenationLeaf htmlLeaf() { any() }
+
+query string getStringValue(Expr e) {
+  result = e.getStringValue() and
+  e.getEnclosingFunction().getName() = "stringValue"
+}

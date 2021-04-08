@@ -3,7 +3,6 @@
  */
 
 import csharp
-private import semmle.code.csharp.frameworks.WCF
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
@@ -16,24 +15,59 @@ private import semmle.code.csharp.frameworks.system.threading.Tasks
 private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.frameworks.system.web.ui.WebControls
 private import semmle.code.csharp.frameworks.system.Xml
+private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.DataFlowPublic
 private import semmle.code.csharp.dataflow.internal.DelegateDataFlow
+// import `LibraryTypeDataFlow` definitions from other files to avoid potential reevaluation
+private import semmle.code.csharp.frameworks.EntityFramework
+private import semmle.code.csharp.frameworks.JsonNET
 
 private newtype TAccessPath =
   TNilAccessPath() or
-  TAccessPathConsNil(Content c)
+  TConsAccessPath(Content head, AccessPath tail) {
+    tail = TNilAccessPath()
+    or
+    exists(LibraryTypeDataFlow ltdf |
+      ltdf.requiresAccessPath(head, tail) and
+      tail.length() < accessPathLimit()
+    )
+    or
+    tail = AccessPath::singleton(_) and
+    head instanceof ElementContent
+  }
 
-/** An access path of length 0 or 1. */
+/** An access path. */
 class AccessPath extends TAccessPath {
   /** Gets the head of this access path, if any. */
-  Content getHead() { this = TAccessPathConsNil(result) }
+  Content getHead() { this = TConsAccessPath(result, _) }
+
+  /** Gets the tail of this access path, if any. */
+  AccessPath getTail() { this = TConsAccessPath(_, result) }
+
+  /** Gets the length of this access path. */
+  int length() {
+    this = TNilAccessPath() and result = 0
+    or
+    result = 1 + this.getTail().length()
+  }
+
+  /** Gets the access path obtained by dropping the first `i` elements, if any. */
+  AccessPath drop(int i) {
+    i = 0 and result = this
+    or
+    result = this.getTail().drop(i - 1)
+  }
 
   /** Holds if this access path contains content `c`. */
-  predicate contains(Content c) { this = TAccessPathConsNil(c) }
+  predicate contains(Content c) { c = this.drop(_).getHead() }
 
   /** Gets a textual representation of this access path. */
   string toString() {
-    result = this.getHead().toString()
+    exists(Content head, AccessPath tail |
+      head = this.getHead() and
+      tail = this.getTail() and
+      if tail.length() = 0 then result = head.toString() else result = head + ", " + tail
+    )
     or
     this = TNilAccessPath() and
     result = "<empty>"
@@ -45,10 +79,22 @@ module AccessPath {
   /** Gets the empty access path. */
   AccessPath empty() { result = TNilAccessPath() }
 
+  /** Gets a singleton access path containing `c`. */
+  AccessPath singleton(Content c) { result = TConsAccessPath(c, TNilAccessPath()) }
+
+  /** Gets the access path obtained by concatenating `head` onto `tail`. */
+  AccessPath cons(Content head, AccessPath tail) { result = TConsAccessPath(head, tail) }
+
+  /** Gets the singleton "element content" access path. */
+  AccessPath element() { result = singleton(any(ElementContent c)) }
+
   /** Gets a singleton property access path. */
   AccessPath property(Property p) {
-    result = TAccessPathConsNil(any(PropertyContent c | c.getProperty() = p.getSourceDeclaration()))
+    result = singleton(any(PropertyContent c | c.getProperty() = p.getSourceDeclaration()))
   }
+
+  /** Gets an access path representing a property inside a collection. */
+  AccessPath properties(Property p) { result = TConsAccessPath(any(ElementContent c), property(p)) }
 }
 
 /** An unbound callable. */
@@ -61,24 +107,8 @@ class SourceDeclarationMethod extends SourceDeclarationCallable, Method { }
 
 private newtype TCallableFlowSource =
   TCallableFlowSourceQualifier() or
-  TCallableFlowSourceArg(int i) { hasArgumentPosition(_, i) } or
+  TCallableFlowSourceArg(int i) { i = any(Parameter p).getPosition() } or
   TCallableFlowSourceDelegateArg(int i) { hasDelegateArgumentPosition(_, i) }
-
-private predicate hasArgumentPosition(SourceDeclarationCallable callable, int position) {
-  exists(int arity |
-    if callable.getAParameter().isParams()
-    then
-      arity =
-        max(Call call |
-          call.getTarget().getSourceDeclaration() = callable
-        |
-          call.getNumberOfArguments()
-        )
-    else arity = callable.getNumberOfParameters()
-  |
-    position in [0 .. arity - 1]
-  )
-}
 
 private predicate hasDelegateArgumentPosition(SourceDeclarationCallable c, int i) {
   exists(DelegateType dt |
@@ -173,7 +203,15 @@ class CallableFlowSink extends TCallableFlowSink {
 class CallableFlowSinkQualifier extends CallableFlowSink, TCallableFlowSinkQualifier {
   override string toString() { result = "qualifier" }
 
-  override Expr getSink(Call c) { result = c.getChild(-1) }
+  override Expr getSink(Call c) {
+    result = c.getChild(-1)
+    or
+    // E.g. `new Dictionary<int, string>{ {0, "a"}, {1, "b"} }`
+    result.(CollectionInitializer).getAnElementInitializer() = c
+    or
+    // E.g. `new Dictionary<int, string>() { [0] = "a", [1] = "b" }`
+    result.(ObjectInitializer).getAMemberInitializer().getLValue() = c
+  }
 }
 
 /** A flow sink specification: return value. */
@@ -211,10 +249,20 @@ class CallableFlowSinkArg extends CallableFlowSink, TCallableFlowSinkArg {
   override Type getSinkType(Call c) { result = this.getArgument(c).getType() }
 }
 
+private predicate isCollectionType(ValueOrRefType t) {
+  t.getABaseType*() instanceof SystemCollectionsIEnumerableInterface and
+  not t instanceof StringType
+}
+
 /** Gets the flow source for argument `i` of callable `callable`. */
-private CallableFlowSourceArg getFlowSourceArg(SourceDeclarationCallable callable, int i) {
+private CallableFlowSourceArg getFlowSourceArg(
+  SourceDeclarationCallable callable, int i, AccessPath ap
+) {
   i = result.getArgumentIndex() and
-  hasArgumentPosition(callable, i)
+  exists(Parameter p |
+    p = callable.getParameter(i) and
+    if isCollectionType(p.getType()) then ap = AccessPath::element() else ap = AccessPath::empty()
+  )
 }
 
 /** Gets the flow source for argument `i` of delegate `callable`. */
@@ -297,7 +345,27 @@ abstract class LibraryTypeDataFlow extends Type {
   pragma[nomagic]
   predicate callableFlow(
     CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
-    SourceDeclarationCallable c
+    SourceDeclarationCallable c, boolean preservesValue
+  ) {
+    none()
+  }
+
+  /**
+   * Holds if the access path obtained by concatenating `head` onto `tail` is
+   * needed for a summary specified by `callableFlow()`.
+   *
+   * This predicate is needed for QL technical reasons only (the IPA type used
+   * to represent access paths needs to be bounded).
+   */
+  predicate requiresAccessPath(Content head, AccessPath tail) { none() }
+
+  /**
+   * Holds if values stored inside `content` are cleared on objects passed as
+   * arguments of type `source` to calls that target `callable`.
+   */
+  pragma[nomagic]
+  predicate clearsContent(
+    CallableFlowSource source, Content content, SourceDeclarationCallable callable
   ) {
     none()
   }
@@ -392,8 +460,7 @@ class SystemUriFlow extends LibraryTypeDataFlow, SystemUriClass {
   private predicate methodFlow(
     CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
   ) {
-    m.getDeclaringType() = getABaseType*() and
-    m = any(SystemObjectClass c).getToStringMethod().getAnOverrider*() and
+    m = this.getAMethod("ToString") and
     source = TCallableFlowSourceQualifier() and
     sink = TCallableFlowSinkReturn()
   }
@@ -441,41 +508,48 @@ class SystemIOStringReaderFlow extends LibraryTypeDataFlow, SystemIOStringReader
 /** Data flow for `System.String`. */
 class SystemStringFlow extends LibraryTypeDataFlow, SystemStringClass {
   override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
   ) {
-    constructorFlow(source, sink, c) and preservesValue = false
+    constructorFlow(source, sourceAp, sink, sinkAp, c) and
+    preservesValue = false
     or
-    methodFlow(source, sink, c, preservesValue)
+    methodFlow(source, sourceAp, sink, sinkAp, c, preservesValue)
   }
 
-  private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
+  private predicate constructorFlow(
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    Constructor c
+  ) {
     c = getAMember() and
     c.getParameter(0).getType().(ArrayType).getElementType() instanceof CharType and
     source = TCallableFlowSourceArg(0) and
-    sink = TCallableFlowSinkReturn()
+    sourceAp = AccessPath::element() and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty()
   }
 
   private predicate methodFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m,
-    boolean preservesValue
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationMethod m, boolean preservesValue
   ) {
-    m = getAMethod() and
-    (
-      m = any(SystemObjectClass c).getToStringMethod().getAnOverrider*() and
-      source = TCallableFlowSourceQualifier() and
-      sink = TCallableFlowSinkReturn() and
-      preservesValue = true
-    )
+    m = this.getAMethod("ToString") and
+    source = TCallableFlowSourceQualifier() and
+    sourceAp = AccessPath::empty() and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty() and
+    preservesValue = true
     or
     m = getSplitMethod() and
-    (
-      source = TCallableFlowSourceQualifier() and
-      sink = TCallableFlowSinkReturn() and
-      preservesValue = false
-    )
+    source = TCallableFlowSourceQualifier() and
+    sourceAp = AccessPath::empty() and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::element() and
+    preservesValue = false
     or
     m = getReplaceMethod() and
+    sourceAp = AccessPath::empty() and
+    sinkAp = AccessPath::empty() and
     (
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
@@ -487,20 +561,22 @@ class SystemStringFlow extends LibraryTypeDataFlow, SystemStringClass {
     )
     or
     m = getSubstringMethod() and
-    (
-      source = TCallableFlowSourceQualifier() and
-      sink = TCallableFlowSinkReturn() and
-      preservesValue = false
-    )
+    source = TCallableFlowSourceQualifier() and
+    sourceAp = AccessPath::empty() and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty() and
+    preservesValue = false
     or
     m = getCloneMethod() and
-    (
-      source = TCallableFlowSourceQualifier() and
-      sink = TCallableFlowSinkReturn() and
-      preservesValue = true
-    )
+    source = TCallableFlowSourceQualifier() and
+    sourceAp = AccessPath::empty() and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty() and
+    preservesValue = true
     or
     m = getInsertMethod() and
+    sourceAp = AccessPath::empty() and
+    sinkAp = AccessPath::empty() and
     (
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
@@ -512,55 +588,54 @@ class SystemStringFlow extends LibraryTypeDataFlow, SystemStringClass {
     )
     or
     m = getNormalizeMethod() and
-    (
-      source = TCallableFlowSourceQualifier() and
-      sink = TCallableFlowSinkReturn() and
-      preservesValue = false
-    )
+    source = TCallableFlowSourceQualifier() and
+    sourceAp = AccessPath::empty() and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty() and
+    preservesValue = false
     or
     m = getRemoveMethod() and
-    (
-      source = TCallableFlowSourceQualifier() and
-      sink = TCallableFlowSinkReturn() and
-      preservesValue = false
-    )
+    source = TCallableFlowSourceQualifier() and
+    sourceAp = AccessPath::empty() and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty() and
+    preservesValue = false
     or
     m = getAMethod() and
-    (
-      m
-          .getName()
-          .regexpMatch("((ToLower|ToUpper)(Invariant)?)|(Trim(Start|End)?)|(Pad(Left|Right))") and
-      source = TCallableFlowSourceQualifier() and
-      sink = TCallableFlowSinkReturn() and
-      preservesValue = false
-    )
+    m.getName().regexpMatch("((ToLower|ToUpper)(Invariant)?)|(Trim(Start|End)?)|(Pad(Left|Right))") and
+    source = TCallableFlowSourceQualifier() and
+    sourceAp = AccessPath::empty() and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty() and
+    preservesValue = false
     or
     m = getConcatMethod() and
-    (
-      source = getFlowSourceArg(m, _) and
+    exists(int i |
+      source = getFlowSourceArg(m, i, sourceAp) and
       sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::empty() and
       preservesValue = false
     )
     or
     m = getCopyMethod() and
-    (
-      source = TCallableFlowSourceArg(0) and
-      sink = TCallableFlowSinkReturn() and
-      preservesValue = true
-    )
+    source = TCallableFlowSourceArg(0) and
+    sourceAp = AccessPath::empty() and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty() and
+    preservesValue = true
     or
     m = getJoinMethod() and
-    (
-      source = getFlowSourceArg(m, _) and
-      sink = TCallableFlowSinkReturn() and
-      preservesValue = false
-    )
+    source = getFlowSourceArg(m, [0, 1], sourceAp) and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty() and
+    preservesValue = false
     or
     m = getFormatMethod() and
     exists(int i |
       (m.getParameter(0).getType() instanceof SystemIFormatProviderInterface implies i != 0) and
-      source = getFlowSourceArg(m, i) and
+      source = getFlowSourceArg(m, i, sourceAp) and
       sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::empty() and
       preservesValue = false
     )
   }
@@ -569,44 +644,62 @@ class SystemStringFlow extends LibraryTypeDataFlow, SystemStringClass {
 /** Data flow for `System.Text.StringBuilder`. */
 class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringBuilderClass {
   override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
   ) {
     (
-      constructorFlow(source, sink, c)
+      constructorFlow(source, sourceAp, sink, sinkAp, c) and
+      preservesValue = true
       or
-      methodFlow(source, sink, c)
-    ) and
-    preservesValue = false
+      methodFlow(source, sourceAp, sink, sinkAp, c, preservesValue)
+    )
   }
 
-  private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
+  private predicate constructorFlow(
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    Constructor c
+  ) {
     c = getAMember() and
     c.getParameter(0).getType() instanceof StringType and
     source = TCallableFlowSourceArg(0) and
-    sink = TCallableFlowSinkReturn()
+    sourceAp = AccessPath::empty() and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::element()
   }
 
   private predicate methodFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationMethod m, boolean preservesValue
   ) {
-    m.getDeclaringType() = getABaseType*() and
-    (
-      m = any(SystemObjectClass c).getToStringMethod().getAnOverrider*() and
+    exists(string name | m = this.getAMethod(name) |
+      name = "ToString" and
       source = TCallableFlowSourceQualifier() and
-      sink = TCallableFlowSinkReturn()
+      sourceAp = AccessPath::element() and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::empty() and
+      preservesValue = false
+      or
+      exists(int i, Type t |
+        name.regexpMatch("Append(Format|Line)?") and
+        t = m.getParameter(i).getType() and
+        source = TCallableFlowSourceArg(i) and
+        sourceAp = AccessPath::empty() and
+        sink = [TCallableFlowSinkQualifier().(TCallableFlowSink), TCallableFlowSinkReturn()] and
+        sinkAp = AccessPath::element() and
+        preservesValue = true
+      |
+        t instanceof StringType or
+        t instanceof ObjectType
+      )
     )
-    or
-    m = getAMethod() and
-    exists(int i, Type t |
-      m.getName().regexpMatch("Append(Format|Line)?") and
-      t = m.getParameter(i).getType() and
-      source = getFlowSourceArg(m, i) and
-      sink = TCallableFlowSinkQualifier()
-    |
-      t instanceof StringType or
-      t instanceof ObjectType
-    )
+  }
+
+  override predicate clearsContent(
+    CallableFlowSource source, Content content, SourceDeclarationCallable callable
+  ) {
+    source = TCallableFlowSourceQualifier() and
+    callable = this.getAMethod("Clear") and
+    content instanceof ElementContent
   }
 }
 
@@ -614,8 +707,9 @@ class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringB
 class SystemLazyFlow extends LibraryTypeDataFlow, SystemLazyClass {
   override predicate callableFlow(
     CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
-    SourceDeclarationCallable c
+    SourceDeclarationCallable c, boolean preservesValue
   ) {
+    preservesValue = true and
     exists(SystemFuncDelegateType t, int i | t.getNumberOfTypeParameters() = 1 |
       c.(Constructor).getDeclaringType() = this and
       c.getParameter(i).getType().getSourceDeclaration() = t and
@@ -627,50 +721,84 @@ class SystemLazyFlow extends LibraryTypeDataFlow, SystemLazyClass {
   }
 }
 
-/**
- * Data flow for `System.Collections.IEnumerable`, `System.Collections.Generic.IEnumerable<>`,
- * and their sub types (for example `System.Collections.Generic.List<>`).
- */
-class IEnumerableFlow extends LibraryTypeDataFlow {
-  IEnumerableFlow() {
-    exists(RefType t | t = this.(RefType).getABaseType*() |
-      t instanceof SystemCollectionsIEnumerableInterface
+/** Data flow for `System.Collections.IEnumerable` (and sub types). */
+class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
+  IEnumerableFlow() { this.getABaseType*() instanceof SystemCollectionsIEnumerableInterface }
+
+  override predicate callableFlow(
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
+  ) {
+    preservesValue = true and
+    (
+      methodFlowLINQExtensions(source, sourceAp, sink, sinkAp, c)
       or
-      t instanceof SystemCollectionsGenericIEnumerableTInterface
+      c = this.getFind() and
+      sourceAp = AccessPath::element() and
+      sinkAp = AccessPath::empty() and
+      if c.(Method).isStatic()
+      then
+        source = TCallableFlowSourceArg(0) and
+        (
+          sink = TCallableFlowSinkReturn() or
+          sink = getDelegateFlowSinkArg(c, 1, 0)
+        )
+      else (
+        source = TCallableFlowSourceQualifier() and
+        (
+          sink = TCallableFlowSinkReturn() or
+          sink = getDelegateFlowSinkArg(c, 0, 0)
+        )
+      )
       or
-      t.(ConstructedInterface).getUnboundGeneric() instanceof
-        SystemCollectionsGenericIEnumerableTInterface
+      exists(string name, int arity |
+        arity = c.getNumberOfParameters() and
+        c = this.getAMethod(name)
+      |
+        name = "Add" and
+        arity = 1 and
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::empty() and
+        sink instanceof CallableFlowSinkQualifier and
+        sinkAp = AccessPath::element()
+        or
+        name = "AddRange" and
+        arity = 1 and
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = TCallableFlowSinkQualifier() and
+        sinkAp = AccessPath::element()
+        or
+        exists(Property current |
+          name = "GetEnumerator" and
+          source = TCallableFlowSourceQualifier() and
+          sourceAp = AccessPath::element() and
+          sink = TCallableFlowSinkReturn() and
+          sinkAp = AccessPath::property(current) and
+          current = c.getReturnType().(ValueOrRefType).getProperty("Current")
+        )
+        or
+        name = "Repeat" and
+        c.(Method).isStatic() and
+        arity = 2 and
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::empty() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::element()
+        or
+        name = "Reverse" and
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::element()
+      )
     )
   }
 
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    (
-      methodFlow(source, sink, c)
-      or
-      exists(Property p |
-        propertyFlow(p) and
-        source = TCallableFlowSourceQualifier() and
-        sink = TCallableFlowSinkReturn() and
-        c = p.getGetter()
-      )
-    ) and
-    preservesValue = false
-  }
-
-  private predicate methodFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
-  ) {
-    methodFlowLINQ(source, sink, m)
-    or
-    methodFlowSpecific(source, sink, m)
-  }
-
-  /** Flow for LINQ methods. */
-  private predicate methodFlowLINQ(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
+  /** Flow for LINQ extension methods. */
+  private predicate methodFlowLINQExtensions(
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationMethod m
   ) {
     m.(ExtensionMethod).getExtendedType().getSourceDeclaration() = this and
     exists(string name, int arity | name = m.getName() and arity = m.getNumberOfParameters() |
@@ -679,192 +807,239 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         arity = 2 and
         (
           source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 1, 1)
+          sourceAp = AccessPath::element() and
+          sink = getDelegateFlowSinkArg(m, 1, 1) and
+          sinkAp = AccessPath::empty()
           or
           source = TCallableFlowSourceDelegateArg(1) and
-          sink = TCallableFlowSinkReturn()
+          sourceAp = AccessPath::empty() and
+          sink = TCallableFlowSinkReturn() and
+          sinkAp = AccessPath::empty()
         )
         or
         arity = 3 and
         (
           source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 2, 1)
+          sourceAp = AccessPath::element() and
+          sink = getDelegateFlowSinkArg(m, 2, 1) and
+          sinkAp = AccessPath::empty()
           or
           source = TCallableFlowSourceArg(1) and
-          sink = getDelegateFlowSinkArg(m, 2, 0)
+          sourceAp = AccessPath::empty() and
+          sink = getDelegateFlowSinkArg(m, 2, 0) and
+          sinkAp = AccessPath::empty()
           or
           source = TCallableFlowSourceDelegateArg(2) and
-          sink = TCallableFlowSinkReturn()
+          sourceAp = AccessPath::empty() and
+          sink = TCallableFlowSinkReturn() and
+          sinkAp = AccessPath::empty()
         )
         or
         arity = 4 and
         (
           source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 2, 1)
+          sourceAp = AccessPath::element() and
+          sink = getDelegateFlowSinkArg(m, 2, 1) and
+          sinkAp = AccessPath::empty()
           or
           source = TCallableFlowSourceArg(1) and
-          sink = getDelegateFlowSinkArg(m, 2, 0)
+          sourceAp = AccessPath::empty() and
+          sink = getDelegateFlowSinkArg(m, 2, 0) and
+          sinkAp = AccessPath::empty()
           or
           source = TCallableFlowSourceDelegateArg(2) and
-          sink = getDelegateFlowSinkArg(m, 3, 0)
+          sourceAp = AccessPath::empty() and
+          sink = getDelegateFlowSinkArg(m, 3, 0) and
+          sinkAp = AccessPath::empty()
           or
           source = TCallableFlowSourceDelegateArg(3) and
-          sink = TCallableFlowSinkReturn()
+          sourceAp = AccessPath::empty() and
+          sink = TCallableFlowSinkReturn() and
+          sinkAp = AccessPath::empty()
         )
       )
       or
       name = "All" and
-      (
-        arity = 2 and
-        source = TCallableFlowSourceArg(0) and
-        sink = getDelegateFlowSinkArg(m, 1, 0)
-      )
+      arity = 2 and
+      source = TCallableFlowSourceArg(0) and
+      sourceAp = AccessPath::element() and
+      sink = getDelegateFlowSinkArg(m, 1, 0) and
+      sinkAp = AccessPath::empty()
       or
       name = "Any" and
-      (
-        arity = 2 and
-        source = TCallableFlowSourceArg(0) and
-        sink = getDelegateFlowSinkArg(m, 1, 0)
-      )
+      arity = 2 and
+      source = TCallableFlowSourceArg(0) and
+      sourceAp = AccessPath::element() and
+      sink = getDelegateFlowSinkArg(m, 1, 0) and
+      sinkAp = AccessPath::empty()
       or
       name = "AsEnumerable" and
-      (
-        arity = 1 and
-        source = TCallableFlowSourceArg(0) and
-        sink = TCallableFlowSinkReturn()
-      )
+      arity = 1 and
+      source = TCallableFlowSourceArg(0) and
+      sourceAp = AccessPath::element() and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::element()
       or
       name = "AsQueryable" and
       arity = 1 and
       source = TCallableFlowSourceArg(0) and
-      sink = TCallableFlowSinkReturn()
+      sourceAp = AccessPath::element() and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::element()
       or
       name = "Average" and
-      (
-        arity = 2 and
-        source = TCallableFlowSourceArg(0) and
-        sink = getDelegateFlowSinkArg(m, 1, 0)
-      )
+      arity = 2 and
+      source = TCallableFlowSourceArg(0) and
+      sourceAp = AccessPath::element() and
+      sink = getDelegateFlowSinkArg(m, 1, 0) and
+      sinkAp = AccessPath::empty()
       or
       name = "Cast" and
-      (
-        arity = 1 and
-        source = TCallableFlowSourceArg(0) and
-        sink = TCallableFlowSinkReturn()
-      )
+      arity = 1 and
+      source = TCallableFlowSourceArg(0) and
+      sourceAp = AccessPath::element() and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::element()
       or
       name = "Concat" and
+      arity = 2 and
       (
-        arity = 2 and
-        (
-          source = TCallableFlowSourceArg(0) and
-          sink = TCallableFlowSinkReturn()
-          or
-          source = TCallableFlowSourceArg(1) and
-          sink = TCallableFlowSinkReturn()
-        )
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::element()
+        or
+        source = TCallableFlowSourceArg(1) and
+        sourceAp = AccessPath::element() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::element()
       )
       or
       name.regexpMatch("(Long)?Count") and
-      (
-        arity = 2 and
-        source = TCallableFlowSourceArg(0) and
-        sink = getDelegateFlowSinkArg(m, 1, 0)
-      )
+      arity = 2 and
+      source = TCallableFlowSourceArg(0) and
+      sourceAp = AccessPath::element() and
+      sink = getDelegateFlowSinkArg(m, 1, 0) and
+      sinkAp = AccessPath::empty()
       or
       name = "DefaultIfEmpty" and
       (
         arity in [1 .. 2] and
         source = TCallableFlowSourceArg(0) and
-        sink = TCallableFlowSinkReturn()
+        sourceAp = AccessPath::element() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::empty()
         or
         arity = 2 and
         source = TCallableFlowSourceArg(1) and
-        sink = TCallableFlowSinkReturn()
+        sourceAp = AccessPath::empty() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::empty()
       )
       or
       name = "Distinct" and
-      (
-        arity in [1 .. 2] and
-        source = TCallableFlowSourceArg(0) and
-        sink = TCallableFlowSinkReturn()
-      )
+      arity in [1 .. 2] and
+      source = TCallableFlowSourceArg(0) and
+      sourceAp = AccessPath::element() and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::element()
       or
       name.regexpMatch("ElementAt(OrDefault)?") and
-      (
-        arity = 2 and
-        source = TCallableFlowSourceArg(0) and
-        sink = TCallableFlowSinkReturn()
-      )
+      arity = 2 and
+      source = TCallableFlowSourceArg(0) and
+      sourceAp = AccessPath::element() and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::empty()
       or
       name = "Except" and
-      (
-        arity in [2 .. 3] and
-        source = TCallableFlowSourceArg(0) and
-        sink = TCallableFlowSinkReturn()
-      )
+      arity in [2 .. 3] and
+      source = TCallableFlowSourceArg(0) and
+      sourceAp = AccessPath::element() and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::empty()
       or
       name.regexpMatch("(First|Single)(OrDefault)?") and
       (
         arity in [1 .. 2] and
-        (
-          source = TCallableFlowSourceArg(0) and
-          sink = TCallableFlowSinkReturn()
-        )
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::empty()
         or
         arity = 2 and
-        (
-          source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 1, 0)
-        )
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = getDelegateFlowSinkArg(m, 1, 0) and
+        sinkAp = AccessPath::empty()
       )
       or
       name = "GroupBy" and
       (
+        arity = 2 and
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = getDelegateFlowSinkArg(m, 1, 0) and
+        sinkAp = AccessPath::empty()
+        or
         arity = 3 and
         (
           source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 1, 0)
+          sourceAp = AccessPath::element() and
+          sink = getDelegateFlowSinkArg(m, 1, 0) and
+          sinkAp = AccessPath::empty()
           or
           m.getParameter(2).getType().(ConstructedDelegateType).getNumberOfTypeArguments() = 2 and
           source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 2, 0)
+          sourceAp = AccessPath::element() and
+          sink = getDelegateFlowSinkArg(m, 2, 0) and
+          sinkAp = AccessPath::empty()
           or
           m.getParameter(2).getType().(ConstructedDelegateType).getNumberOfTypeArguments() = 3 and
           source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 2, 1)
+          sourceAp = AccessPath::empty() and
+          sink = getDelegateFlowSinkArg(m, 2, 1) and
+          sinkAp = AccessPath::empty()
           or
           m.getParameter(2).getType().(ConstructedDelegateType).getNumberOfTypeArguments() = 3 and
           source = getDelegateFlowSourceArg(m, 1) and
-          sink = getDelegateFlowSinkArg(m, 2, 0)
+          sourceAp = AccessPath::empty() and
+          sink = getDelegateFlowSinkArg(m, 2, 0) and
+          sinkAp = AccessPath::empty()
           or
           not m.getParameter(2).getType().getSourceDeclaration() instanceof
             SystemCollectionsGenericIEqualityComparerTInterface and
           source = getDelegateFlowSourceArg(m, 2) and
-          sink = TCallableFlowSinkReturn()
-          or
-          m.getParameter(2).getType().getSourceDeclaration() instanceof
-            SystemCollectionsGenericIEqualityComparerTInterface and
-          source = TCallableFlowSourceArg(0) and
-          sink = TCallableFlowSinkReturn()
+          sourceAp = AccessPath::empty() and
+          sink = TCallableFlowSinkReturn() and
+          sinkAp = AccessPath::element()
         )
         or
         arity in [4 .. 5] and
         (
           source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 1, 0)
+          sourceAp = AccessPath::element() and
+          sink = getDelegateFlowSinkArg(m, 1, 0) and
+          sinkAp = AccessPath::empty()
           or
           source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 2, 0)
+          sourceAp = AccessPath::element() and
+          sink = getDelegateFlowSinkArg(m, 2, 0) and
+          sinkAp = AccessPath::empty()
           or
           source = getDelegateFlowSourceArg(m, 1) and
-          sink = getDelegateFlowSinkArg(m, 3, 0)
+          sourceAp = AccessPath::empty() and
+          sink = getDelegateFlowSinkArg(m, 2, 0) and
+          sinkAp = AccessPath::empty()
           or
           source = getDelegateFlowSourceArg(m, 2) and
-          sink = getDelegateFlowSinkArg(m, 3, 1)
+          sourceAp = AccessPath::empty() and
+          sink = getDelegateFlowSinkArg(m, 3, 1) and
+          sinkAp = AccessPath::element()
           or
           source = getDelegateFlowSourceArg(m, 3) and
-          sink = TCallableFlowSinkReturn()
+          sourceAp = AccessPath::empty() and
+          sink = TCallableFlowSinkReturn() and
+          sinkAp = AccessPath::element()
         )
       )
       or
@@ -873,19 +1048,29 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         arity in [5 .. 6] and
         (
           source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 2, 0)
+          sourceAp = AccessPath::element() and
+          sink = getDelegateFlowSinkArg(m, 2, 0) and
+          sinkAp = AccessPath::empty()
           or
           source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 4, 0)
+          sourceAp = AccessPath::element() and
+          sink = getDelegateFlowSinkArg(m, 4, 0) and
+          sinkAp = AccessPath::empty()
           or
           source = TCallableFlowSourceArg(1) and
-          sink = getDelegateFlowSinkArg(m, 3, 0)
+          sourceAp = AccessPath::element() and
+          sink = getDelegateFlowSinkArg(m, 3, 0) and
+          sinkAp = AccessPath::empty()
           or
           source = TCallableFlowSourceArg(1) and
-          sink = getDelegateFlowSinkArg(m, 4, 1)
+          sourceAp = AccessPath::element() and
+          sink = getDelegateFlowSinkArg(m, 4, 1) and
+          sinkAp = AccessPath::empty()
           or
           source = TCallableFlowSourceDelegateArg(4) and
-          sink = TCallableFlowSinkReturn()
+          sourceAp = AccessPath::empty() and
+          sink = TCallableFlowSinkReturn() and
+          sinkAp = AccessPath::element()
         )
       )
       or
@@ -894,269 +1079,222 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         arity in [2 .. 3] and
         (
           source = TCallableFlowSourceArg(0) and
-          sink = TCallableFlowSinkReturn()
+          sourceAp = AccessPath::element() and
+          sink = TCallableFlowSinkReturn() and
+          sinkAp = AccessPath::element()
           or
           source = TCallableFlowSourceArg(1) and
-          sink = TCallableFlowSinkReturn()
+          sourceAp = AccessPath::element() and
+          sink = TCallableFlowSinkReturn() and
+          sinkAp = AccessPath::element()
         )
       )
       or
       name.regexpMatch("Last(OrDefault)?") and
       (
         arity in [1 .. 2] and
-        (
-          source = TCallableFlowSourceArg(0) and
-          sink = TCallableFlowSinkReturn()
-        )
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::empty()
         or
         arity = 2 and
-        (
-          source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 1, 0)
-        )
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = getDelegateFlowSinkArg(m, 1, 0) and
+        sinkAp = AccessPath::empty()
       )
       or
       name.regexpMatch("Max|Min|Sum") and
       (
         arity = 2 and
-        (
-          source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 1, 0)
-        )
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = getDelegateFlowSinkArg(m, 1, 0) and
+        sinkAp = AccessPath::empty()
       )
       or
       name = "OfType" and
-      (
-        arity = 1 and
-        (
-          source = TCallableFlowSourceArg(0) and
-          sink = TCallableFlowSinkReturn()
-        )
-      )
+      arity = 1 and
+      source = TCallableFlowSourceArg(0) and
+      sourceAp = AccessPath::element() and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::element()
       or
       name.regexpMatch("OrderBy(Descending)?") and
+      arity in [2 .. 3] and
       (
-        arity in [2 .. 3] and
-        (
-          source = TCallableFlowSourceArg(0) and
-          sink = TCallableFlowSinkReturn()
-          or
-          source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 1, 0)
-        )
-      )
-      or
-      name = "Repeat" and
-      (
-        arity = 2 and
-        (
-          source = TCallableFlowSourceArg(0) and
-          sink = TCallableFlowSinkReturn()
-        )
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::element()
+        or
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = getDelegateFlowSinkArg(m, 1, 0) and
+        sinkAp = AccessPath::empty()
       )
       or
       name = "Reverse" and
-      (
-        arity = 1 and
-        (
-          source = TCallableFlowSourceArg(0) and
-          sink = TCallableFlowSinkReturn()
-        )
-      )
+      arity = 1 and
+      source = TCallableFlowSourceArg(0) and
+      sourceAp = AccessPath::element() and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::element()
       or
       name.regexpMatch("Select(Many)?") and
+      arity = 2 and
       (
-        arity = 2 and
-        (
-          source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 1, 0)
-          or
-          source = TCallableFlowSourceDelegateArg(1) and
-          sink = TCallableFlowSinkReturn()
-        )
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = getDelegateFlowSinkArg(m, 1, 0) and
+        sinkAp = AccessPath::empty()
+        or
+        source = TCallableFlowSourceDelegateArg(1) and
+        sourceAp = AccessPath::empty() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::element()
       )
       or
       name = "SelectMany" and
+      arity = 3 and
       (
-        arity = 3 and
-        (
-          source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 1, 0)
-          or
-          source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 2, 0)
-          or
-          source = TCallableFlowSourceDelegateArg(1) and
-          sink = getDelegateFlowSinkArg(m, 2, 1)
-          or
-          source = TCallableFlowSourceDelegateArg(2) and
-          sink = TCallableFlowSinkReturn()
-        )
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = getDelegateFlowSinkArg(m, 1, 0) and
+        sinkAp = AccessPath::empty()
+        or
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = getDelegateFlowSinkArg(m, 2, 0) and
+        sinkAp = AccessPath::empty()
+        or
+        source = TCallableFlowSourceDelegateArg(1) and
+        sourceAp = AccessPath::element() and
+        sink = getDelegateFlowSinkArg(m, 2, 1) and
+        sinkAp = AccessPath::empty()
+        or
+        source = TCallableFlowSourceDelegateArg(2) and
+        sourceAp = AccessPath::empty() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::element()
       )
       or
       name.regexpMatch("(Skip|Take)(While)?") and
-      (
-        arity = 2 and
-        (
-          source = TCallableFlowSourceArg(0) and
-          sink = TCallableFlowSinkReturn()
-        )
-      )
+      arity = 2 and
+      source = TCallableFlowSourceArg(0) and
+      sourceAp = AccessPath::element() and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::element()
       or
       name.regexpMatch("(Skip|Take)While") and
-      (
-        arity = 2 and
-        (
-          source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 1, 0)
-        )
-      )
+      arity = 2 and
+      source = TCallableFlowSourceArg(0) and
+      sourceAp = AccessPath::element() and
+      sink = getDelegateFlowSinkArg(m, 1, 0) and
+      sinkAp = AccessPath::empty()
       or
       name.regexpMatch("ThenBy(Descending)?") and
+      arity in [2 .. 3] and
       (
-        arity in [2 .. 3] and
-        (
-          source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 1, 0)
-          or
-          source = TCallableFlowSourceArg(0) and
-          sink = TCallableFlowSinkReturn()
-        )
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = getDelegateFlowSinkArg(m, 1, 0) and
+        sinkAp = AccessPath::empty()
+        or
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::element()
       )
       or
       name.regexpMatch("To(Array|List)") and
-      (
-        arity = 1 and
-        (
-          source = TCallableFlowSourceArg(0) and
-          sink = TCallableFlowSinkReturn()
-        )
-      )
+      arity = 1 and
+      source = TCallableFlowSourceArg(0) and
+      sourceAp = AccessPath::element() and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::element()
       or
       name.regexpMatch("To(Dictionary|Lookup)") and
       (
         arity in [2 .. 3] and
         (
           source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 1, 0)
+          sourceAp = AccessPath::element() and
+          sink = getDelegateFlowSinkArg(m, 1, 0) and
+          sinkAp = AccessPath::empty()
           or
           source = TCallableFlowSourceArg(0) and
+          sourceAp = AccessPath::element() and
           sink = TCallableFlowSinkReturn() and
+          sinkAp = AccessPath::element() and
           not m.getParameter(2).getType() instanceof DelegateType
         )
         or
         arity in [3 .. 4] and
         (
           source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 1, 0)
+          sourceAp = AccessPath::element() and
+          sink = getDelegateFlowSinkArg(m, 1, 0) and
+          sinkAp = AccessPath::empty()
           or
           source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 2, 0)
+          sourceAp = AccessPath::element() and
+          sink = getDelegateFlowSinkArg(m, 2, 0) and
+          sinkAp = AccessPath::empty()
           or
           source = getDelegateFlowSourceArg(m, 2) and
-          sink = TCallableFlowSinkReturn()
+          sourceAp = AccessPath::empty() and
+          sink = TCallableFlowSinkReturn() and
+          sinkAp = AccessPath::element()
         )
       )
       or
       name = "Union" and
+      arity in [2 .. 3] and
       (
-        arity in [2 .. 3] and
-        (
-          source = TCallableFlowSourceArg(0) and
-          sink = TCallableFlowSinkReturn()
-          or
-          source = TCallableFlowSourceArg(1) and
-          sink = TCallableFlowSinkReturn()
-        )
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::element()
+        or
+        source = TCallableFlowSourceArg(1) and
+        sourceAp = AccessPath::element() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::element()
       )
       or
       name = "Where" and
+      arity = 2 and
       (
-        arity = 2 and
-        (
-          source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 1, 0)
-          or
-          source = TCallableFlowSourceArg(0) and
-          sink = TCallableFlowSinkReturn()
-        )
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = getDelegateFlowSinkArg(m, 1, 0) and
+        sinkAp = AccessPath::empty()
+        or
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::element()
       )
       or
       name = "Zip" and
-      (
-        arity = 3 and
-        (
-          source = TCallableFlowSourceArg(0) and
-          sink = getDelegateFlowSinkArg(m, 2, 0)
-          or
-          source = TCallableFlowSourceArg(1) and
-          sink = getDelegateFlowSinkArg(m, 2, 1)
-          or
-          source = getDelegateFlowSourceArg(m, 2) and
-          sink = TCallableFlowSinkReturn()
-        )
-      )
-    )
-  }
-
-  /** Flow for specific enumerables (e.g., `List<T>` and `Stack<T>`). */
-  private predicate methodFlowSpecific(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
-  ) {
-    m = getFind() and
-    if m.isStatic()
-    then
-      source = TCallableFlowSourceArg(0) and
-      (
-        sink = TCallableFlowSinkReturn() or
-        sink = getDelegateFlowSinkArg(m, 1, 0)
-      )
-    else (
-      source = TCallableFlowSourceQualifier() and
-      (
-        sink = TCallableFlowSinkReturn() or
-        sink = getDelegateFlowSinkArg(m, 0, 0)
-      )
-    )
-    or
-    exists(string name, int arity |
-      name = m.getName() and
-      arity = m.getNumberOfParameters() and
-      m.getDeclaringType() = this.(RefType).getABaseType*()
-    |
-      name = "FixedSize" and
+      arity = 3 and
       (
         source = TCallableFlowSourceArg(0) and
-        sink = TCallableFlowSinkReturn()
-      )
-      or
-      name
-          .regexpMatch("GetByIndex|Peek|Pop|AsReadOnly|Clone|GetRange|MemberwiseClone|Reverse|GetEnumerator|GetValueList") and
-      (
-        source = TCallableFlowSourceQualifier() and
-        sink = TCallableFlowSinkReturn()
-      )
-      or
-      name.regexpMatch("Add(Range)?") and
-      (
-        arity = 1 and
-        source = TCallableFlowSourceArg(0) and
-        sink = TCallableFlowSinkQualifier()
-      )
-      or
-      name = "Add" and
-      (
-        arity = 2 and
+        sourceAp = AccessPath::element() and
+        sink = getDelegateFlowSinkArg(m, 2, 0) and
+        sinkAp = AccessPath::empty()
+        or
         source = TCallableFlowSourceArg(1) and
-        sink = TCallableFlowSinkQualifier()
-      )
-      or
-      name.regexpMatch("Insert(Range)?") and
-      (
-        not this instanceof StringType and
-        arity = 2 and
-        source = TCallableFlowSourceArg(1) and
-        sink = TCallableFlowSinkQualifier()
+        sourceAp = AccessPath::element() and
+        sink = getDelegateFlowSinkArg(m, 2, 1) and
+        sinkAp = AccessPath::empty()
+        or
+        source = getDelegateFlowSourceArg(m, 2) and
+        sourceAp = AccessPath::empty() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::element()
       )
     )
   }
@@ -1164,15 +1302,203 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
   private SourceDeclarationMethod getFind() {
     exists(string name |
       name = result.getName() and
-      result.getDeclaringType() = this.(RefType).getABaseType*()
+      result.getDeclaringType() = this.getABaseType*()
     |
       name.regexpMatch("Find(All|Last)?")
     )
   }
 
-  private predicate propertyFlow(Property p) {
-    this.(RefType).getABaseType*() = p.getDeclaringType() and
-    p.hasName("Values")
+  override predicate clearsContent(
+    CallableFlowSource source, Content content, SourceDeclarationCallable callable
+  ) {
+    source = TCallableFlowSourceQualifier() and
+    callable = this.getAMethod("Clear") and
+    content instanceof ElementContent
+  }
+}
+
+/** Data flow for `System.Collections.[Generic.]ICollection` (and sub types). */
+class ICollectionFlow extends LibraryTypeDataFlow, RefType {
+  ICollectionFlow() {
+    exists(Interface i | i = this.getABaseType*().getSourceDeclaration() |
+      i instanceof SystemCollectionsICollectionInterface
+      or
+      i instanceof SystemCollectionsGenericICollectionInterface
+    )
+  }
+
+  override predicate callableFlow(
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
+  ) {
+    preservesValue = true and
+    exists(string name, int arity |
+      name = c.getName() and
+      arity = c.getNumberOfParameters() and
+      c = this.getAMethod()
+    |
+      name = "CopyTo" and
+      arity = 2 and
+      source instanceof CallableFlowSourceQualifier and
+      sourceAp = AccessPath::element() and
+      sink = TCallableFlowSinkArg(0) and
+      sinkAp = AccessPath::element()
+      or
+      name.regexpMatch("AsReadOnly|Clone") and
+      source = TCallableFlowSourceArg(0) and
+      sourceAp = AccessPath::element() and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::element()
+      or
+      name.regexpMatch("Peek|Pop") and
+      source = TCallableFlowSourceQualifier() and
+      sourceAp = AccessPath::element() and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::empty()
+      or
+      name = "InsertRange" and
+      arity = 2 and
+      source = TCallableFlowSourceArg(1) and
+      sourceAp = AccessPath::element() and
+      sink = TCallableFlowSinkQualifier() and
+      sinkAp = AccessPath::element()
+    )
+  }
+}
+
+/** Data flow for `System.Collections.[Generic.]IList` (and sub types). */
+class IListFlow extends LibraryTypeDataFlow, RefType {
+  IListFlow() {
+    exists(Interface i | i = this.getABaseType*().getSourceDeclaration() |
+      i instanceof SystemCollectionsIListInterface
+      or
+      i instanceof SystemCollectionsGenericIListInterface
+    )
+  }
+
+  override predicate callableFlow(
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
+  ) {
+    preservesValue = true and
+    (
+      exists(string name, int arity |
+        name = c.getName() and
+        arity = c.getNumberOfParameters() and
+        c = this.getAMethod()
+      |
+        name = "Insert" and
+        arity = 2 and
+        source = TCallableFlowSourceArg(1) and
+        sourceAp = AccessPath::empty() and
+        sink instanceof CallableFlowSinkQualifier and
+        sinkAp = AccessPath::element()
+        or
+        name.regexpMatch("FixedSize|GetRange") and
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::element() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::element()
+      )
+      or
+      c = this.getAnIndexer().getSetter() and
+      source = TCallableFlowSourceArg(1) and
+      sourceAp = AccessPath::empty() and
+      sink instanceof CallableFlowSinkQualifier and
+      sinkAp = AccessPath::element()
+      or
+      c = this.getAnIndexer().getGetter() and
+      source instanceof CallableFlowSourceQualifier and
+      sourceAp = AccessPath::element() and
+      sink instanceof CallableFlowSinkReturn and
+      sinkAp = AccessPath::empty()
+    )
+  }
+}
+
+/** Data flow for `System.Collections.[Generic.]IDictionary` (and sub types). */
+class IDictionaryFlow extends LibraryTypeDataFlow, RefType {
+  IDictionaryFlow() {
+    exists(Interface i | i = this.getABaseType*().getSourceDeclaration() |
+      i instanceof SystemCollectionsIDictionaryInterface
+      or
+      i instanceof SystemCollectionsGenericIDictionaryInterface
+    )
+  }
+
+  override predicate callableFlow(
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
+  ) {
+    preservesValue = true and
+    exists(SystemCollectionsGenericKeyValuePairStruct kvp |
+      exists(int i |
+        c = this.getAConstructor() and
+        source = TCallableFlowSourceArg(i) and
+        sourceAp = sinkAp and
+        c.getParameter(i).getType().(ValueOrRefType).getABaseType*() instanceof
+          SystemCollectionsIEnumerableInterface and
+        sink instanceof CallableFlowSinkReturn
+      |
+        sinkAp = AccessPath::properties(kvp.getKeyProperty())
+        or
+        sinkAp = AccessPath::properties(kvp.getValueProperty())
+      )
+      or
+      c = this.getProperty("Keys").getGetter() and
+      source instanceof CallableFlowSourceQualifier and
+      sourceAp = AccessPath::properties(kvp.getKeyProperty()) and
+      sink instanceof CallableFlowSinkReturn and
+      sinkAp = AccessPath::element()
+      or
+      (
+        c = this.getProperty("Values").getGetter()
+        or
+        c = this.getAMethod("GetValueList")
+      ) and
+      source instanceof CallableFlowSourceQualifier and
+      sourceAp = AccessPath::properties(kvp.getValueProperty()) and
+      sink instanceof CallableFlowSinkReturn and
+      sinkAp = AccessPath::element()
+      or
+      (
+        c = this.getAMethod("Add") and
+        c.getNumberOfParameters() = 2
+        or
+        c = this.getAnIndexer().getSetter()
+      ) and
+      (
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::empty() and
+        sink instanceof CallableFlowSinkQualifier and
+        sinkAp = AccessPath::properties(kvp.getKeyProperty())
+        or
+        source = TCallableFlowSourceArg(1) and
+        sourceAp = AccessPath::empty() and
+        sink instanceof CallableFlowSinkQualifier and
+        sinkAp = AccessPath::properties(kvp.getValueProperty())
+      )
+      or
+      exists(Property p |
+        c = this.getAMethod("Add") and
+        c.getNumberOfParameters() = 1 and
+        source = TCallableFlowSourceArg(0) and
+        sourceAp = AccessPath::property(p) and
+        sink instanceof CallableFlowSinkQualifier and
+        sinkAp = AccessPath::properties(p) and
+        p = kvp.getAProperty()
+      )
+      or
+      (
+        c = this.getAnIndexer().getGetter()
+        or
+        c = this.getAMethod("GetByIndex")
+      ) and
+      source instanceof CallableFlowSourceQualifier and
+      sourceAp = AccessPath::properties(kvp.getValueProperty()) and
+      sink instanceof CallableFlowSinkReturn and
+      sinkAp = AccessPath::empty()
+    )
   }
 }
 
@@ -1192,33 +1518,6 @@ class SystemConvertFlow extends LibraryTypeDataFlow, SystemConvertClass {
     m = getAMethod() and
     source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn()
-  }
-}
-
-/**
- * Data flow for WCF data contracts.
- *
- * Flow is defined from a WCF data contract object to any of its data member
- * properties. This flow model only makes sense from a taint-tracking perspective
- * (a tainted data contract object implies tainted data members).
- */
-class DataContractFlow extends LibraryTypeDataFlow, DataContractClass {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    exists(Property p |
-      propertyFlow(p) and
-      source = TCallableFlowSourceQualifier() and
-      sink = TCallableFlowSinkReturn() and
-      c = p.getGetter()
-    ) and
-    preservesValue = false
-  }
-
-  private predicate propertyFlow(Property p) {
-    p.getDeclaringType() = this and
-    p.getAnAttribute() instanceof DataMemberAttribute
   }
 }
 
@@ -1301,97 +1600,39 @@ class SystemWebUIWebControlsTextBoxFlow extends LibraryTypeDataFlow,
   private predicate propertyFlow(Property p) { p = getTextProperty() }
 }
 
-/**
- * Data flow for `System.Collections.Generic.KeyValuePair`.
- *
- * Flow is only considered for the value (not the key).
- */
-class SystemCollectionsGenericKeyValuePairStructFlow extends LibraryTypeDataFlow {
-  SystemCollectionsGenericKeyValuePairStructFlow() {
-    this instanceof SystemCollectionsGenericKeyValuePairStruct
-  }
-
+/** Data flow for `System.Collections.Generic.KeyValuePair`. */
+class SystemCollectionsGenericKeyValuePairStructFlow extends LibraryTypeDataFlow,
+  SystemCollectionsGenericKeyValuePairStruct {
   override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
   ) {
-    (
-      constructorFlow(source, sink, c)
+    preservesValue = true and
+    exists(int i |
+      c.(Constructor).getDeclaringType() = this and
+      source = TCallableFlowSourceArg(i) and
+      sourceAp = AccessPath::empty() and
+      sink = TCallableFlowSinkReturn()
+    |
+      i = 0 and sinkAp = AccessPath::property(this.getKeyProperty())
       or
-      exists(Property p |
-        propertyFlow(p) and
-        source = TCallableFlowSourceQualifier() and
-        sink = TCallableFlowSinkReturn() and
-        c = p.getGetter()
-      )
-    ) and
-    preservesValue = true
+      i = 1 and sinkAp = AccessPath::property(this.getValueProperty())
+    )
   }
-
-  private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
-    c.getDeclaringType() = this and
-    source = getFlowSourceArg(c, 1) and
-    sink = TCallableFlowSinkReturn()
-  }
-
-  private predicate propertyFlow(Property p) {
-    p = this.(SystemCollectionsGenericKeyValuePairStruct).getValueProperty()
-  }
-}
-
-/** Data flow for `System.Collections.Generic.IEnumerator`. */
-class SystemCollectionsGenericIEnumeratorInterfaceFlow extends LibraryTypeDataFlow {
-  SystemCollectionsGenericIEnumeratorInterfaceFlow() {
-    this instanceof SystemCollectionsGenericIEnumeratorInterface
-  }
-
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    exists(Property p |
-      propertyFlow(p) and
-      source = TCallableFlowSourceQualifier() and
-      sink = TCallableFlowSinkReturn() and
-      c = p.getGetter()
-    ) and
-    preservesValue = true
-  }
-
-  private predicate propertyFlow(Property p) {
-    p = this.(SystemCollectionsGenericIEnumeratorInterface).getCurrentProperty()
-  }
-}
-
-/** Data flow for `System.Collections.IEnumerator`. */
-class SystemCollectionsIEnumeratorInterfaceFlow extends LibraryTypeDataFlow,
-  SystemCollectionsIEnumeratorInterface {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    exists(Property p |
-      propertyFlow(p) and
-      source = TCallableFlowSourceQualifier() and
-      sink = TCallableFlowSinkReturn() and
-      c = p.getGetter()
-    ) and
-    preservesValue = true
-  }
-
-  private predicate propertyFlow(Property p) { p = getCurrentProperty() }
 }
 
 /** Data flow for `System.Threading.Tasks.Task`. */
 class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingTasksTaskClass {
   override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
   ) {
     (
-      constructorFlow(source, sink, c)
+      constructorFlow(source, sink, c) and
+      sourceAp = AccessPath::empty() and
+      sinkAp = AccessPath::empty()
       or
-      methodFlow(source, sink, c)
+      methodFlow(source, sourceAp, sink, sinkAp, c)
     ) and
     preservesValue = true
   }
@@ -1410,11 +1651,14 @@ class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingT
   }
 
   private predicate methodFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationMethod m
   ) {
     m.getDeclaringType() = this and
     (
       m.hasName("ContinueWith") and
+      sourceAp = AccessPath::empty() and
+      sinkAp = AccessPath::empty() and
       (
         // flow from supplied state to supplied delegate
         exists(ConstructedDelegateType delegate, int i, int j, int k |
@@ -1439,12 +1683,16 @@ class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingT
       )
       or
       m.hasName("FromResult") and
+      sourceAp = AccessPath::empty() and
+      sinkAp = AccessPath::empty() and
       (
         source = TCallableFlowSourceArg(0) and
         sink = TCallableFlowSinkReturn()
       )
       or
       m.hasName("Run") and
+      sourceAp = AccessPath::empty() and
+      sinkAp = AccessPath::empty() and
       (
         m.getReturnType() = any(SystemThreadingTasksTaskTClass c).getAConstructedGeneric() and
         m.(UnboundGenericMethod).getNumberOfTypeParameters() = 1 and
@@ -1453,10 +1701,11 @@ class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingT
       )
       or
       m.getName().regexpMatch("WhenAll|WhenAny") and
+      sinkAp = AccessPath::empty() and
       (
         m.getReturnType() = any(SystemThreadingTasksTaskTClass c).getAConstructedGeneric() and
         m.(UnboundGenericMethod).getNumberOfTypeParameters() = 1 and
-        source = getFlowSourceArg(m, _) and
+        source = getFlowSourceArg(m, _, sourceAp) and
         sink = TCallableFlowSinkReturn()
       )
     )
@@ -1624,13 +1873,23 @@ class SystemThreadingTasksFactoryFlow extends LibraryTypeDataFlow {
 /** Data flow for `System.Text.Encoding`. */
 library class SystemTextEncodingFlow extends LibraryTypeDataFlow, SystemTextEncodingClass {
   override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
   ) {
-    (c = getGetBytesMethod() or c = getGetStringMethod() or c = getGetCharsMethod()) and
-    source = TCallableFlowSourceArg(0) and
-    sink = TCallableFlowSinkReturn() and
-    preservesValue = false
+    preservesValue = false and
+    c = this.getAMethod() and
+    exists(Method m | m.getAnOverrider*().getSourceDeclaration() = c |
+      m = getGetBytesMethod() and
+      source = getFlowSourceArg(m, 0, sourceAp) and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::empty()
+      or
+      m = [getGetStringMethod(), getGetCharsMethod()] and
+      source = TCallableFlowSourceArg(0) and
+      sourceAp = AccessPath::element() and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::empty()
+    )
   }
 }
 
@@ -1766,12 +2025,13 @@ class SystemXmlXmlNamedNodeMapFlow extends LibraryTypeDataFlow, SystemXmlXmlName
 /** Data flow for `System.IO.Path`. */
 class SystemIOPathFlow extends LibraryTypeDataFlow, SystemIOPathClass {
   override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
   ) {
     c = getAMethod("Combine") and
-    source = getFlowSourceArg(c, _) and
+    source = getFlowSourceArg(c, _, sourceAp) and
     sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty() and
     preservesValue = false
     or
     exists(Parameter p |
@@ -1779,8 +2039,9 @@ class SystemIOPathFlow extends LibraryTypeDataFlow, SystemIOPathClass {
       c.getName().matches("Get%") and
       p = c.getAParameter() and
       p.hasName("path") and
-      source = getFlowSourceArg(c, p.getPosition()) and
+      source = getFlowSourceArg(c, p.getPosition(), sourceAp) and
       sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::empty() and
       preservesValue = false
     )
   }
@@ -1837,26 +2098,21 @@ class SystemNetWebUtilityFlow extends LibraryTypeDataFlow, SystemNetWebUtility {
 }
 
 /**
- * The `StringValues` class used in many .NET Core libraries. Requires special `LibraryTypeDataFlow` flow.
+ * Custom flow through `StringValues` library class.
  */
-class StringValues extends Struct {
-  StringValues() { this.hasQualifiedName("Microsoft.Extensions.Primitives", "StringValues") }
-}
+class StringValuesFlow extends LibraryTypeDataFlow, Struct {
+  StringValuesFlow() { this.hasQualifiedName("Microsoft.Extensions.Primitives", "StringValues") }
 
-/**
- * Custom flow through StringValues.StringValues library class
- */
-class StringValuesFlow extends LibraryTypeDataFlow, StringValues {
   override predicate callableFlow(
     CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
     boolean preservesValue
   ) {
-    c = any(Callable ca | this = ca.getDeclaringType()) and
+    c.getDeclaringType() = this and
     (
-      source = any(CallableFlowSourceArg a) or
-      source = any(CallableFlowSourceQualifier q)
+      source instanceof CallableFlowSourceArg or
+      source instanceof CallableFlowSourceQualifier
     ) and
-    sink = any(CallableFlowSinkReturn r) and
+    sink instanceof CallableFlowSinkReturn and
     preservesValue = false
   }
 }

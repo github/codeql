@@ -19,7 +19,7 @@ import DataFlowImplSpecific::Public
  * a subclass whose characteristic predicate is a unique singleton string.
  * For example, write
  *
- * ```
+ * ```ql
  * class MyAnalysisConfiguration extends DataFlow::Configuration {
  *   MyAnalysisConfiguration() { this = "MyAnalysisConfiguration" }
  *   // Override `isSource` and `isSink`.
@@ -37,7 +37,7 @@ import DataFlowImplSpecific::Public
  * Then, to query whether there is flow between some `source` and `sink`,
  * write
  *
- * ```
+ * ```ql
  * exists(MyAnalysisConfiguration cfg | cfg.hasFlow(source, sink))
  * ```
  *
@@ -1052,6 +1052,17 @@ private predicate flowIntoCallNodeCand2(
 
 private module LocalFlowBigStep {
   /**
+   * A node where some checking is required, and hence the big-step relation
+   * is not allowed to step over.
+   */
+  private class FlowCheckNode extends Node {
+    FlowCheckNode() {
+      this instanceof CastNode or
+      clearsContent(this, _)
+    }
+  }
+
+  /**
    * Holds if `node` can be the first node in a maximal subsequence of local
    * flow steps in a dataflow path.
    */
@@ -1065,7 +1076,7 @@ private module LocalFlowBigStep {
       node instanceof OutNodeExt or
       store(_, _, node, _) or
       read(_, _, node) or
-      node instanceof CastNode
+      node instanceof FlowCheckNode
     )
   }
 
@@ -1083,7 +1094,7 @@ private module LocalFlowBigStep {
       read(node, _, next)
     )
     or
-    node instanceof CastNode
+    node instanceof FlowCheckNode
     or
     config.isSink(node)
   }
@@ -1113,11 +1124,11 @@ private module LocalFlowBigStep {
       (
         localFlowStepNodeCand1(node1, node2, config) and
         preservesValue = true and
-        t = getErasedNodeTypeBound(node1)
+        t = getNodeType(node1)
         or
         additionalLocalFlowStepNodeCand2(node1, node2, config) and
         preservesValue = false and
-        t = getErasedNodeTypeBound(node2)
+        t = getNodeType(node2)
       ) and
       node1 != node2 and
       cc.relevantFor(node1.getEnclosingCallable()) and
@@ -1127,16 +1138,16 @@ private module LocalFlowBigStep {
       exists(Node mid |
         localFlowStepPlus(node1, mid, preservesValue, t, config, cc) and
         localFlowStepNodeCand1(mid, node2, config) and
-        not mid instanceof CastNode and
+        not mid instanceof FlowCheckNode and
         nodeCand2(node2, unbind(config))
       )
       or
       exists(Node mid |
         localFlowStepPlus(node1, mid, _, _, config, cc) and
         additionalLocalFlowStepNodeCand2(mid, node2, config) and
-        not mid instanceof CastNode and
+        not mid instanceof FlowCheckNode and
         preservesValue = false and
-        t = getErasedNodeTypeBound(node2) and
+        t = getNodeType(node2) and
         nodeCand2(node2, unbind(config))
       )
     )
@@ -1190,9 +1201,8 @@ private predicate flowCandFwd(
   Configuration config
 ) {
   flowCandFwd0(node, fromArg, argApf, apf, config) and
-  if node instanceof CastingNode
-  then compatibleTypes(getErasedNodeTypeBound(node), apf.getType())
-  else any()
+  not apf.isClearedAt(node) and
+  if node instanceof CastingNode then compatibleTypes(getNodeType(node), apf.getType()) else any()
 }
 
 pragma[nomagic]
@@ -1204,7 +1214,7 @@ private predicate flowCandFwd0(
   config.isSource(node) and
   fromArg = false and
   argApf = TAccessPathFrontNone() and
-  apf = TFrontNil(getErasedNodeTypeBound(node))
+  apf = TFrontNil(getNodeType(node))
   or
   exists(Node mid |
     flowCandFwd(mid, fromArg, argApf, apf, config) and
@@ -1230,7 +1240,7 @@ private predicate flowCandFwd0(
     additionalJumpStep(mid, node, config) and
     fromArg = false and
     argApf = TAccessPathFrontNone() and
-    apf = TFrontNil(getErasedNodeTypeBound(node))
+    apf = TFrontNil(getNodeType(node))
   )
   or
   // store
@@ -1660,7 +1670,7 @@ private predicate flowFwd0(
   config.isSource(node) and
   fromArg = false and
   argAp = TAccessPathNone() and
-  ap = TNil(getErasedNodeTypeBound(node)) and
+  ap = TNil(getNodeType(node)) and
   apf = ap.(AccessPathNil).getFront()
   or
   flowCand(node, _, _, _, unbind(config)) and
@@ -1688,7 +1698,7 @@ private predicate flowFwd0(
       additionalJumpStep(mid, node, config) and
       fromArg = false and
       argAp = TAccessPathNone() and
-      ap = TNil(getErasedNodeTypeBound(node)) and
+      ap = TNil(getNodeType(node)) and
       apf = ap.(AccessPathNil).getFront()
     )
   )
@@ -2065,7 +2075,7 @@ private newtype TPathNode =
     config.isSource(node) and
     cc instanceof CallContextAny and
     sc instanceof SummaryCtxNone and
-    ap = TNil(getErasedNodeTypeBound(node))
+    ap = TNil(getNodeType(node))
     or
     // ... or a step from an existing PathNode to another node.
     exists(PathNodeMid mid |
@@ -2292,7 +2302,7 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCt
   cc instanceof CallContextAny and
   sc instanceof SummaryCtxNone and
   mid.getAp() instanceof AccessPathNil and
-  ap = TNil(getErasedNodeTypeBound(node))
+  ap = TNil(getNodeType(node))
   or
   exists(TypedContent tc | pathStoreStep(mid, node, pop(tc, ap), tc, cc)) and
   sc = mid.getSummaryCtx()
@@ -2634,7 +2644,7 @@ private module FlowExploration {
       cc instanceof CallContextAny and
       sc1 = TSummaryCtx1None() and
       sc2 = TSummaryCtx2None() and
-      ap = TPartialNil(getErasedNodeTypeBound(node)) and
+      ap = TPartialNil(getNodeType(node)) and
       not fullBarrier(node, config) and
       exists(config.explorationLimit())
       or
@@ -2651,7 +2661,7 @@ private module FlowExploration {
       partialPathStep(mid, node, cc, sc1, sc2, ap, config) and
       not fullBarrier(node, config) and
       if node instanceof CastingNode
-      then compatibleTypes(getErasedNodeTypeBound(node), ap.getType())
+      then compatibleTypes(getNodeType(node), ap.getType())
       else any()
     )
   }
@@ -2764,7 +2774,7 @@ private module FlowExploration {
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
       mid.getAp() instanceof PartialAccessPathNil and
-      ap = TPartialNil(getErasedNodeTypeBound(node)) and
+      ap = TPartialNil(getNodeType(node)) and
       config = mid.getConfiguration()
     )
     or
@@ -2780,7 +2790,7 @@ private module FlowExploration {
     sc1 = TSummaryCtx1None() and
     sc2 = TSummaryCtx2None() and
     mid.getAp() instanceof PartialAccessPathNil and
-    ap = TPartialNil(getErasedNodeTypeBound(node)) and
+    ap = TPartialNil(getNodeType(node)) and
     config = mid.getConfiguration()
     or
     partialPathStoreStep(mid, _, _, node, ap) and
@@ -2794,7 +2804,7 @@ private module FlowExploration {
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
       apConsFwd(ap, tc, ap0, config) and
-      compatibleTypes(ap.getType(), getErasedNodeTypeBound(node))
+      compatibleTypes(ap.getType(), getNodeType(node))
     )
     or
     partialPathIntoCallable(mid, node, _, cc, sc1, sc2, _, ap, config)

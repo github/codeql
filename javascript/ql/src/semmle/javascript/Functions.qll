@@ -77,8 +77,15 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
     result = getDocumentation().getATagByTitle("this").getType()
   }
 
+  /**
+   * DEPRECATED: Use `getIdentifier()` instead.
+   *
+   * Gets the identifier specifying the name of this function, if any.
+   */
+  deprecated VarDecl getId() { result = getIdentifier() }
+
   /** Gets the identifier specifying the name of this function, if any. */
-  VarDecl getId() { result = getChildExpr(-1) }
+  VarDecl getIdentifier() { result = getChildExpr(-1) }
 
   /**
    * Gets the name of this function if it has one, or a name inferred from its context.
@@ -89,9 +96,9 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    * can be inferred, there is no result.
    */
   string getName() {
-    result = getId().getName()
+    result = getIdentifier().getName()
     or
-    not exists(getId()) and
+    not exists(getIdentifier()) and
     (
       exists(VarDef vd | this = vd.getSource() | result = vd.getTarget().(VarRef).getName())
       or
@@ -111,7 +118,7 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   }
 
   /** Gets the variable holding this function. */
-  Variable getVariable() { result = getId().getVariable() }
+  Variable getVariable() { result = getIdentifier().getVariable() }
 
   /** Gets the `arguments` variable of this function, if any. */
   ArgumentsVariable getArgumentsVariable() { result.getFunction() = this }
@@ -183,11 +190,11 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
     not exists(getAParameter()) and
     (
       // if the function has a name, the opening parenthesis comes right after it
-      result = getId().getLastToken().getNextToken()
+      result = getIdentifier().getLastToken().getNextToken()
       or
       // otherwise this must be an arrow function with no parameters, so the opening
       // parenthesis is the very first token of the function
-      not exists(getId()) and result = getFirstToken()
+      not exists(getIdentifier()) and result = getFirstToken()
     )
   }
 
@@ -309,8 +316,8 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    */
   private string inferNameFromVarDef() {
     // in ambiguous cases like `var f = function g() {}`, prefer `g` to `f`
-    if exists(getId())
-    then result = "function " + getId().getName()
+    if exists(getIdentifier())
+    then result = "function " + getIdentifier().getName()
     else
       exists(VarDef vd | this = vd.getSource() |
         result = "function " + vd.getTarget().(VarRef).getName()

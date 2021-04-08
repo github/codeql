@@ -12,16 +12,16 @@ class Location extends @location {
   /** Gets the file for this location. */
   File getFile() { locations_default(this, result, _, _, _, _) }
 
-  /** Gets the start line of this location. */
+  /** Gets the 1-based line number (inclusive) where this location starts. */
   int getStartLine() { locations_default(this, _, result, _, _, _) }
 
-  /** Gets the start column of this location. */
+  /** Gets the 1-based column number (inclusive) where this location starts. */
   int getStartColumn() { locations_default(this, _, _, result, _, _) }
 
-  /** Gets the end line of this location. */
+  /** Gets the 1-based line number (inclusive) where this location ends. */
   int getEndLine() { locations_default(this, _, _, _, result, _) }
 
-  /** Gets the end column of this location. */
+  /** Gets the 1-based column number (inclusive) where this location ends. */
   int getEndColumn() { locations_default(this, _, _, _, _, result) }
 
   /** Gets the number of lines covered by this location. */

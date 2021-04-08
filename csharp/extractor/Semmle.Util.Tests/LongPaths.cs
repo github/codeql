@@ -93,7 +93,7 @@ namespace SemmleTests.Semmle.Util
             Assert.Equal("def", File.ReadAllText(shortPath));
         }
 
-        byte[] buffer1 = new byte[10] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        readonly byte[] buffer1 = new byte[10] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
         [Fact]
         public void CreateShortStream()

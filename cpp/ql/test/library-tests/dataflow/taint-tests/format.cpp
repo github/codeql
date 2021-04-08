@@ -112,7 +112,7 @@ void test1()
 	{
 		char buffer[256] = {0};
 		sink(mysprintf(buffer, 256, "%s", string::source()));
-		sink(buffer); // tainted [NOT DETECTED - implement UserDefinedFormattingFunction.getOutputParameterIndex()]
+		sink(buffer); // tainted
 	}
 
 	{

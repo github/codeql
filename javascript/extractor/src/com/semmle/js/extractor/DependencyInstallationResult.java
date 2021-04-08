@@ -6,29 +6,17 @@ import java.util.Map;
 
 /** Contains the results of installing dependencies. */
 public class DependencyInstallationResult {
-  private Path virtualSourceRoot;
   private Map<String, Path> packageEntryPoints;
   private Map<String, Path> packageJsonFiles;
 
   public static final DependencyInstallationResult empty =
-      new DependencyInstallationResult(null, Collections.emptyMap(), Collections.emptyMap());
+      new DependencyInstallationResult(Collections.emptyMap(), Collections.emptyMap());
 
   public DependencyInstallationResult(
-      Path virtualSourceRoot,
       Map<String, Path> packageEntryPoints,
       Map<String, Path> packageJsonFiles) {
     this.packageEntryPoints = packageEntryPoints;
     this.packageJsonFiles = packageJsonFiles;
-  }
-
-  /**
-   * Returns the virtual source root or <code>null</code> if no virtual source root exists.
-   *
-   * The virtual source root is a directory hierarchy that mirrors the real source
-   * root, where dependencies are installed.
-   */
-  public Path getVirtualSourceRoot() {
-    return virtualSourceRoot;
   }
 
   /**

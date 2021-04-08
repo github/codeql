@@ -1,0 +1,21 @@
+edges
+| test.cpp:77:16:77:22 | medical | test.cpp:78:24:78:27 | temp |
+| test.cpp:81:17:81:20 | call to func | test.cpp:82:24:82:28 | buff5 |
+| test.cpp:81:22:81:28 | medical | test.cpp:81:17:81:20 | call to func |
+nodes
+| test.cpp:57:9:57:18 | theZipcode | semmle.label | theZipcode |
+| test.cpp:74:24:74:30 | medical | semmle.label | medical |
+| test.cpp:77:16:77:22 | medical | semmle.label | medical |
+| test.cpp:78:24:78:27 | temp | semmle.label | temp |
+| test.cpp:81:17:81:20 | call to func | semmle.label | call to func |
+| test.cpp:81:22:81:28 | medical | semmle.label | medical |
+| test.cpp:82:24:82:28 | buff5 | semmle.label | buff5 |
+| test.cpp:96:37:96:46 | theZipcode | semmle.label | theZipcode |
+| test.cpp:99:42:99:51 | theZipcode | semmle.label | theZipcode |
+#select
+| test.cpp:57:9:57:18 | theZipcode | This write into the external location 'theZipcode' may contain unencrypted data from $@ | test.cpp:57:9:57:18 | theZipcode | this source. |
+| test.cpp:74:24:74:30 | medical | This write into the external location 'medical' may contain unencrypted data from $@ | test.cpp:74:24:74:30 | medical | this source. |
+| test.cpp:78:24:78:27 | temp | This write into the external location 'temp' may contain unencrypted data from $@ | test.cpp:77:16:77:22 | medical | this source. |
+| test.cpp:82:24:82:28 | buff5 | This write into the external location 'buff5' may contain unencrypted data from $@ | test.cpp:81:22:81:28 | medical | this source. |
+| test.cpp:96:37:96:46 | theZipcode | This write into the external location 'theZipcode' may contain unencrypted data from $@ | test.cpp:96:37:96:46 | theZipcode | this source. |
+| test.cpp:99:42:99:51 | theZipcode | This write into the external location 'theZipcode' may contain unencrypted data from $@ | test.cpp:99:42:99:51 | theZipcode | this source. |

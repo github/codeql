@@ -34,7 +34,7 @@ class CommentLine extends @commentline {
 /**
  * A single-line comment, for example line 1 in
  *
- * ```
+ * ```csharp
  * // This method returns the successor of its argument
  * public int Succ(int x) => x + 1;
  * ```
@@ -47,7 +47,7 @@ class SinglelineComment extends CommentLine, @singlelinecomment {
  * A line of comment in a multiline style, for example each of the
  * lines in
  *
- * ```
+ * ```csharp
  * /* This is
  *    a comment * /
  * ```
@@ -60,7 +60,7 @@ class MultilineComment extends CommentLine, @multilinecomment {
  * A line of XML documentation comment, for example each of the
  * lines in
  *
- * ```
+ * ```csharp
  * /// <summary>
  * ///   This method ...
  * /// </summary>
@@ -148,7 +148,7 @@ class XmlComment extends CommentLine, @xmldoccomment {
 /**
  * A collection of adjacent comment lines, for example
  *
- * ```
+ * ```csharp
  * /// <summary>
  * /// Represents a named tuple.
  * /// </summary>

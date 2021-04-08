@@ -59,7 +59,7 @@ module SuccessorTypes {
    *
    * For example, this program fragment:
    *
-   * ```
+   * ```csharp
    * if (x < 0)
    *     return 0;
    * else
@@ -95,7 +95,7 @@ module SuccessorTypes {
    *
    * For example, this program fragment:
    *
-   * ```
+   * ```csharp
    * int? M(string s) => s?.Length;
    * ```
    *
@@ -134,7 +134,7 @@ module SuccessorTypes {
    *
    * For example, this program fragment:
    *
-   * ```
+   * ```csharp
    * switch (x) {
    *     case 0 :
    *         return 0;
@@ -181,7 +181,7 @@ module SuccessorTypes {
    *
    * For example, this program fragment:
    *
-   * ```
+   * ```csharp
    * foreach (var arg in args)
    * {
    *     yield return arg;
@@ -228,7 +228,7 @@ module SuccessorTypes {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * void M()
    * {
    *     return;
@@ -249,7 +249,7 @@ module SuccessorTypes {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(int x)
    * {
    *     while (true)
@@ -277,7 +277,7 @@ module SuccessorTypes {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(int x)
    * {
    *     while (true) {
@@ -302,7 +302,7 @@ module SuccessorTypes {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(int x)
    * {
    *     while (true)
@@ -333,7 +333,7 @@ module SuccessorTypes {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(string s)
    * {
    *     if (s == null)
@@ -361,7 +361,7 @@ module SuccessorTypes {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(string s)
    * {
    *     if (s == null)

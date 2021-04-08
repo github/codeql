@@ -370,6 +370,9 @@ nodes
 | E.cs:384:27:384:28 | access to parameter e2 |
 | E.cs:386:16:386:17 | access to parameter e1 |
 | E.cs:386:27:386:28 | access to parameter e2 |
+| E.cs:404:9:404:18 | SSA def(i) |
+| E.cs:404:9:404:18 | SSA def(i) |
+| E.cs:405:16:405:16 | access to local variable i |
 | Forwarding.cs:7:16:7:23 | SSA def(s) |
 | Forwarding.cs:14:9:17:9 | if (...) ... |
 | Forwarding.cs:19:9:22:9 | if (...) ... |
@@ -719,6 +722,8 @@ edges
 | E.cs:384:9:385:24 | if (...) ... | E.cs:384:27:384:28 | access to parameter e2 |
 | E.cs:384:9:385:24 | if (...) ... | E.cs:386:27:386:28 | access to parameter e2 |
 | E.cs:384:27:384:28 | access to parameter e2 | E.cs:386:16:386:17 | access to parameter e1 |
+| E.cs:404:9:404:18 | SSA def(i) | E.cs:405:16:405:16 | access to local variable i |
+| E.cs:404:9:404:18 | SSA def(i) | E.cs:405:16:405:16 | access to local variable i |
 | Forwarding.cs:7:16:7:23 | SSA def(s) | Forwarding.cs:14:9:17:9 | if (...) ... |
 | Forwarding.cs:14:9:17:9 | if (...) ... | Forwarding.cs:19:9:22:9 | if (...) ... |
 | Forwarding.cs:19:9:22:9 | if (...) ... | Forwarding.cs:24:9:27:9 | if (...) ... |

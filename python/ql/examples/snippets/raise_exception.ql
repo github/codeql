@@ -11,6 +11,6 @@ import python
 
 from Raise raise, ClassValue ex
 where
-    ex.getName() = "AnException" and
-    raise.getException().pointsTo(ex.getASuperType())
+  ex.getName() = "AnException" and
+  raise.getException().pointsTo(ex.getASuperType())
 select raise, "Don't raise instances of 'AnException'"

@@ -24,5 +24,6 @@ where
   // ignore ambient, abstract, and overloaded declarations in TypeScript
   f.hasBody() and
   g.hasBody()
-select f.getId(), "Declaration of " + f.describe() + " conflicts with $@ in the same scope.",
-  g.getId(), "another declaration"
+select f.getIdentifier(),
+  "Declaration of " + f.describe() + " conflicts with $@ in the same scope.", g.getIdentifier(),
+  "another declaration"

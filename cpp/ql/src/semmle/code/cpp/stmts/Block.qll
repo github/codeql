@@ -1,3 +1,7 @@
+/**
+ * Provides a class to model C/C++ block statements, enclosed by `{` and `}`.
+ */
+
 import semmle.code.cpp.Element
 import semmle.code.cpp.stmts.Stmt
 
@@ -14,7 +18,7 @@ import semmle.code.cpp.stmts.Stmt
  * ```
  */
 class Block extends Stmt, @stmt_block {
-  override string getCanonicalQLClass() { result = "Block" }
+  override string getAPrimaryQlClass() { result = "Block" }
 
   /**
    * Gets a child declaration of this block.

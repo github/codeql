@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>Basic authentication only obfuscates username/password in Base64 encoding, which can be easily recognized and reversed, thus it must not be transmitted over the cleartext HTTP channel. Transmission of sensitive information not in HTTPS is vulnerable to packet sniffing.</p>
+  </overview>
+
+  <recommendation>
+    <p>Either use a more secure authentication mechanism like digest authentication or federated authentication, or use the HTTPS communication protocol.</p>
+  </recommendation>
+
+  <example>
+    <p>The following example shows two ways of using basic authentication. In the 'BAD' case, the credentials are transmitted over HTTP. In the 'GOOD' case, the credentials are transmitted over HTTPS.</p>
+    <sample src="InsecureBasicAuth.java" />
+  </example>
+
+  <references>
+    <li>
+      <a href="https://cwe.mitre.org/data/definitions/522">CWE-522</a>
+    </li>
+    <li>
+      SonarSource rule:
+      <a href="https://rules.sonarsource.com/java/tag/owasp/RSPEC-2647">Basic authentication should not be used</a>
+    </li>
+    <li>
+      Acunetix:
+      <a href="https://www.acunetix.com/vulnerabilities/web/basic-authentication-over-http/">WEB VULNERABILITIES INDEX - Basic authentication over HTTP</a>
+    </li>
+  </references>
+</qhelp>

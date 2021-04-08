@@ -1,5 +1,7 @@
 | single-component-file-1.vue:2:8:2:21 | v-html=dataA |
 | single-file-component-2.vue:2:8:2:21 | v-html=dataA |
 | single-file-component-3.vue:2:8:2:21 | v-html=dataA |
+| single-file-component-4.vue:2:8:2:21 | v-html=dataA |
+| single-file-component-5.vue:2:8:2:21 | v-html=dataA |
 | tst.js:5:13:5:13 | a |
 | tst.js:38:12:38:17 | danger |

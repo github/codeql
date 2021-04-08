@@ -29,8 +29,10 @@ class Assignable extends Declaration, @assignable {
  * An assignable that is also a member. Either a field (`Field`), a
  * property (`Property`), an indexer (`Indexer`), or an event (`Event`).
  */
-class AssignableMember extends Member, Assignable {
+class AssignableMember extends Member, Assignable, Attributable {
   override AssignableMemberAccess getAnAccess() { result = Assignable.super.getAnAccess() }
+
+  override string toString() { result = Assignable.super.toString() }
 }
 
 /**
@@ -55,7 +57,7 @@ private predicate nameOfChild(NameOfExpr noe, Expr child) {
  *
  * For example, the last occurrence of `Length` in
  *
- * ```
+ * ```csharp
  * class C {
  *   int Length;
  *
@@ -89,7 +91,7 @@ class AssignableRead extends AssignableAccess {
    * that can be reached from this read without passing through any other reads,
    * and which is guaranteed to read the same value. Example:
    *
-   * ```
+   * ```csharp
    * int Field;
    *
    * void SetField(int i) {
@@ -131,7 +133,7 @@ class AssignableRead extends AssignableAccess {
  *
  * For example, the last occurrence of `Length` in
  *
- * ```
+ * ```csharp
  * class C {
  *   int Length;
  *
@@ -454,7 +456,7 @@ class AssignableDefinition extends TAssignableDefinition {
    * reads, and which is guaranteed to read the value assigned in this
    * definition. Example:
    *
-   * ```
+   * ```csharp
    * int Field;
    *
    * void SetField(int i) {
@@ -720,7 +722,7 @@ module AssignableDefinitions {
    * An initializer definition for a field or a property, for example
    * line 2 in
    *
-   * ```
+   * ```csharp
    * class C {
    *   int Field = 0;
    * }

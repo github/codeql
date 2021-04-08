@@ -6,6 +6,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 .. toctree::
    :hidden:
 
+   basic-query-java
    introduce-libraries-java
    dataflow
    types-class-hierarchy
@@ -16,7 +17,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    source-locations
    ast-class-reference
 
--  `Basic Java query <https://lgtm.com/help/lgtm/console/ql-java-basic-example>`__: Learn to write and run a simple CodeQL query using LGTM.
+-  :doc:`Basic query for Java code <basic-query-java>`: Learn to write and run a simple CodeQL query using LGTM.
 
 -  :doc:`CodeQL library for Java <introduce-libraries-java>`: When analyzing Java code, you can use the large collection of classes in the CodeQL library for Java.
 

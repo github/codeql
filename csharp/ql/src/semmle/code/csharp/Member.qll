@@ -24,7 +24,7 @@ class Declaration extends DotNet::Declaration, Element, @declaration {
    * Gets the fully qualified name of this declaration, including types, for example
    * the fully qualified name with types of `M` on line 3 is `N.C.M(int, string)` in
    *
-   * ```
+   * ```csharp
    * namespace N {
    *   class C {
    *     void M(int i, string s) { }
@@ -195,7 +195,7 @@ class Virtualizable extends Member, @virtualizable {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * interface I { void M(); }
    *
    * class A { public void M() { } }
@@ -223,7 +223,7 @@ class Virtualizable extends Member, @virtualizable {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * interface I { void M(); }
    *
    * class A { public void M() { } }
@@ -251,7 +251,7 @@ class Virtualizable extends Member, @virtualizable {
    * Note that this is generally *not* equivalent with
    * `getOverridee*().getImplementee()`, as the example below illustrates:
    *
-   * ```
+   * ```csharp
    * interface I { void M(); }
    *
    * class A { public virtual void M() { } }

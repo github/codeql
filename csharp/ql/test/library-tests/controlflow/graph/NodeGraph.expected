@@ -495,6 +495,7 @@
 | CompileTimeOperators.cs:40:14:40:37 | call to method WriteLine | CompileTimeOperators.cs:28:10:28:10 | exit M | semmle.label | successor |
 | CompileTimeOperators.cs:40:14:40:38 | ...; | CompileTimeOperators.cs:40:32:40:36 | "End" | semmle.label | successor |
 | CompileTimeOperators.cs:40:32:40:36 | "End" | CompileTimeOperators.cs:40:14:40:37 | call to method WriteLine | semmle.label | successor |
+| ConditionalAccess.cs:1:7:1:23 | enter ConditionalAccess | ConditionalAccess.cs:30:32:30:32 | 0 | semmle.label | successor |
 | ConditionalAccess.cs:3:12:3:13 | enter M1 | ConditionalAccess.cs:3:26:3:26 | access to parameter i | semmle.label | successor |
 | ConditionalAccess.cs:3:26:3:26 | access to parameter i | ConditionalAccess.cs:3:12:3:13 | exit M1 | semmle.label | null |
 | ConditionalAccess.cs:3:26:3:26 | access to parameter i | ConditionalAccess.cs:3:28:3:38 | call to method ToString | semmle.label | non-null |
@@ -554,12 +555,28 @@
 | ConditionalAccess.cs:25:13:25:14 | "" | ConditionalAccess.cs:25:31:25:31 | access to local variable s | semmle.label | non-null |
 | ConditionalAccess.cs:25:16:25:32 | call to method CommaJoinWith | ConditionalAccess.cs:25:9:25:32 | ... = ... | semmle.label | successor |
 | ConditionalAccess.cs:25:31:25:31 | access to local variable s | ConditionalAccess.cs:25:16:25:32 | call to method CommaJoinWith | semmle.label | successor |
-| ConditionalAccess.cs:31:26:31:38 | enter CommaJoinWith | ConditionalAccess.cs:31:70:31:71 | access to parameter s1 | semmle.label | successor |
-| ConditionalAccess.cs:31:70:31:71 | access to parameter s1 | ConditionalAccess.cs:31:75:31:78 | ", " | semmle.label | successor |
-| ConditionalAccess.cs:31:70:31:78 | ... + ... | ConditionalAccess.cs:31:82:31:83 | access to parameter s2 | semmle.label | successor |
-| ConditionalAccess.cs:31:70:31:83 | ... + ... | ConditionalAccess.cs:31:26:31:38 | exit CommaJoinWith | semmle.label | successor |
-| ConditionalAccess.cs:31:75:31:78 | ", " | ConditionalAccess.cs:31:70:31:78 | ... + ... | semmle.label | successor |
-| ConditionalAccess.cs:31:82:31:83 | access to parameter s2 | ConditionalAccess.cs:31:70:31:83 | ... + ... | semmle.label | successor |
+| ConditionalAccess.cs:30:10:30:12 | enter Out | ConditionalAccess.cs:30:32:30:32 | 0 | semmle.label | successor |
+| ConditionalAccess.cs:30:28:30:32 | ... = ... | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess | semmle.label | successor |
+| ConditionalAccess.cs:30:28:30:32 | ... = ... | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess | semmle.label | successor |
+| ConditionalAccess.cs:30:28:30:32 | ... = ... | ConditionalAccess.cs:30:10:30:12 | exit Out | semmle.label | successor |
+| ConditionalAccess.cs:30:32:30:32 | 0 | ConditionalAccess.cs:30:28:30:32 | ... = ... | semmle.label | successor |
+| ConditionalAccess.cs:30:32:30:32 | 0 | ConditionalAccess.cs:30:28:30:32 | ... = ... | semmle.label | successor |
+| ConditionalAccess.cs:32:10:32:11 | enter M8 | ConditionalAccess.cs:33:5:36:5 | {...} | semmle.label | successor |
+| ConditionalAccess.cs:33:5:36:5 | {...} | ConditionalAccess.cs:34:9:34:14 | ...; | semmle.label | successor |
+| ConditionalAccess.cs:34:9:34:13 | ... = ... | ConditionalAccess.cs:35:9:35:25 | ...; | semmle.label | successor |
+| ConditionalAccess.cs:34:9:34:14 | ...; | ConditionalAccess.cs:34:13:34:13 | 0 | semmle.label | successor |
+| ConditionalAccess.cs:34:13:34:13 | 0 | ConditionalAccess.cs:34:9:34:13 | ... = ... | semmle.label | successor |
+| ConditionalAccess.cs:35:9:35:12 | access to property Prop | ConditionalAccess.cs:32:10:32:11 | exit M8 | semmle.label | null |
+| ConditionalAccess.cs:35:9:35:12 | access to property Prop | ConditionalAccess.cs:35:14:35:24 | call to method Out | semmle.label | non-null |
+| ConditionalAccess.cs:35:9:35:12 | this access | ConditionalAccess.cs:35:9:35:12 | access to property Prop | semmle.label | successor |
+| ConditionalAccess.cs:35:9:35:25 | ...; | ConditionalAccess.cs:35:9:35:12 | this access | semmle.label | successor |
+| ConditionalAccess.cs:35:14:35:24 | call to method Out | ConditionalAccess.cs:32:10:32:11 | exit M8 | semmle.label | successor |
+| ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 | semmle.label | successor |
+| ConditionalAccess.cs:41:70:41:71 | access to parameter s1 | ConditionalAccess.cs:41:75:41:78 | ", " | semmle.label | successor |
+| ConditionalAccess.cs:41:70:41:78 | ... + ... | ConditionalAccess.cs:41:82:41:83 | access to parameter s2 | semmle.label | successor |
+| ConditionalAccess.cs:41:70:41:83 | ... + ... | ConditionalAccess.cs:41:26:41:38 | exit CommaJoinWith | semmle.label | successor |
+| ConditionalAccess.cs:41:75:41:78 | ", " | ConditionalAccess.cs:41:70:41:78 | ... + ... | semmle.label | successor |
+| ConditionalAccess.cs:41:82:41:83 | access to parameter s2 | ConditionalAccess.cs:41:70:41:83 | ... + ... | semmle.label | successor |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:4:5:9:5 | {...} | semmle.label | successor |
 | Conditions.cs:4:5:9:5 | {...} | Conditions.cs:5:9:6:16 | if (...) ... | semmle.label | successor |
 | Conditions.cs:5:9:6:16 | if (...) ... | Conditions.cs:5:13:5:15 | access to parameter inc | semmle.label | successor |

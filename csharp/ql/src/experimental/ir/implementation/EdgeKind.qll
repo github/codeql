@@ -1,3 +1,7 @@
+/**
+ * Provides classes that specify the conditions under which control flows along a given edge.
+ */
+
 private import internal.EdgeKindInternal
 
 private newtype TEdgeKind =
@@ -77,9 +81,15 @@ class CaseEdge extends EdgeKind, TCaseEdge {
     else result = "Case[" + minValue + ".." + maxValue + "]"
   }
 
-  string getMinValue() { result = minValue }
+  /**
+   * Gets the smallest value of the switch expression for which control will flow along this edge.
+   */
+  final string getMinValue() { result = minValue }
 
-  string getMaxValue() { result = maxValue }
+  /**
+   * Gets the largest value of the switch expression for which control will flow along this edge.
+   */
+  final string getMaxValue() { result = maxValue }
 }
 
 /**

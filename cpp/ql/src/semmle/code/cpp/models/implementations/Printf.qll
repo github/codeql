@@ -1,3 +1,10 @@
+/**
+ * Provides implementation classes modeling various standard formatting
+ * functions (`printf`, `snprintf` etc).
+ * See `semmle.code.cpp.models.interfaces.FormattingFunction` for usage
+ * information.
+ */
+
 import semmle.code.cpp.models.interfaces.FormattingFunction
 import semmle.code.cpp.models.interfaces.Alias
 
@@ -59,12 +66,25 @@ class Sprintf extends FormattingFunction {
   Sprintf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdName("sprintf") or
-      hasGlobalName("_sprintf_l") or
-      hasGlobalName("__swprintf_l") or
-      hasGlobalOrStdName("wsprintf") or
-      hasGlobalName("g_strdup_printf") or
-      hasGlobalName("g_sprintf") or
+      // sprintf(dst, format, args...)
+      hasGlobalOrStdName("sprintf")
+      or
+      //  _sprintf_l(dst, format, locale, args...)
+      hasGlobalName("_sprintf_l")
+      or
+      // __swprintf_l(dst, format, locale, args...)
+      hasGlobalName("__swprintf_l")
+      or
+      // wsprintf(dst, format, args...)
+      hasGlobalOrStdName("wsprintf")
+      or
+      // g_strdup_printf(format, ...)
+      hasGlobalName("g_strdup_printf")
+      or
+      // g_sprintf(dst, format, ...)
+      hasGlobalName("g_sprintf")
+      or
+      // __builtin___sprintf_chk(dst, flag, os, format, ...)
       hasGlobalName("__builtin___sprintf_chk")
     ) and
     not exists(getDefinition().getFile().getRelativePath())

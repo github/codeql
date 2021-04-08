@@ -33,11 +33,13 @@ class PreprocessorDirective extends Locatable, @preprocdirect {
   }
 }
 
+private class TPreprocessorBranchDirective = @ppd_branch or @ppd_else or @ppd_endif;
+
 /**
  * A C/C++ preprocessor branch related directive: `#if`, `#ifdef`,
  * `#ifndef`, `#elif`, `#else` or `#endif`.
  */
-abstract class PreprocessorBranchDirective extends PreprocessorDirective {
+class PreprocessorBranchDirective extends PreprocessorDirective, TPreprocessorBranchDirective {
   /**
    * Gets the `#if`, `#ifdef` or `#ifndef` directive which matches this
    * branching directive.
@@ -152,7 +154,7 @@ class PreprocessorIf extends PreprocessorBranch, @ppd_if {
 class PreprocessorIfdef extends PreprocessorBranch, @ppd_ifdef {
   override string toString() { result = "#ifdef " + this.getHead() }
 
-  override string getCanonicalQLClass() { result = "PreprocessorIfdef" }
+  override string getAPrimaryQlClass() { result = "PreprocessorIfdef" }
 }
 
 /**

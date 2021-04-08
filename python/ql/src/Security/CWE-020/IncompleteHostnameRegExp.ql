@@ -21,21 +21,21 @@ private string commonTopLevelDomainRegex() { result = "com|org|edu|gov|uk|net|io
  */
 bindingset[pattern]
 predicate isIncompleteHostNameRegExpPattern(string pattern, string hostPart) {
-    hostPart =
-        pattern
-                .regexpCapture("(?i).*" +
-                        // an unescaped single `.`
-                        "(?<!\\\\)[.]" +
-                        // immediately followed by a sequence of subdomains, perhaps with some regex characters mixed in, followed by a known TLD
-                        "([():|?a-z0-9-]+(\\\\)?[.](" + commonTopLevelDomainRegex() + "))" + ".*", 1)
+  hostPart =
+    pattern
+        .regexpCapture("(?i).*" +
+            // an unescaped single `.`
+            "(?<!\\\\)[.]" +
+            // immediately followed by a sequence of subdomains, perhaps with some regex characters mixed in, followed by a known TLD
+            "([():|?a-z0-9-]+(\\\\)?[.](" + commonTopLevelDomainRegex() + "))" + ".*", 1)
 }
 
 from Regex r, string pattern, string hostPart
 where
-    r.getText() = pattern and
-    isIncompleteHostNameRegExpPattern(pattern, hostPart) and
-    // ignore patterns with capture groups after the TLD
-    not pattern.regexpMatch("(?i).*[.](" + commonTopLevelDomainRegex() + ").*[(][?]:.*[)].*")
+  r.getText() = pattern and
+  isIncompleteHostNameRegExpPattern(pattern, hostPart) and
+  // ignore patterns with capture groups after the TLD
+  not pattern.regexpMatch("(?i).*[.](" + commonTopLevelDomainRegex() + ").*[(][?]:.*[)].*")
 select r,
-    "This regular expression has an unescaped '.' before '" + hostPart +
-        "', so it might match more hosts than expected."
+  "This regular expression has an unescaped '.' before '" + hostPart +
+    "', so it might match more hosts than expected."

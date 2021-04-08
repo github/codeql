@@ -32,7 +32,7 @@ class AspAttribute extends AspElement, @asp_attribute { }
 /**
  * An open tag, for example the tag on line 1 in
  *
- * ```
+ * ```html
  * <script runat="server">
  *   Label.Text = "Hello, World!";
  * </script>
@@ -67,7 +67,7 @@ class AspOpenTag extends AspElement, @asp_open_tag {
 /**
  * A close tag, for example the tag on line 3 in
  *
- * ```
+ * ```html
  * <script runat="server">
  *   Label.Text = "Hello, World!";
  * </script>
@@ -123,7 +123,7 @@ class AspServerComment extends AspComment {
 /**
  * A data-binding expression, for example `<%# myArray %>` in
  *
- * ```
+ * ```html
  * <asp:ListBox id="List1" datasource='<%# myArray %>' runat="server">
  * ```
  */

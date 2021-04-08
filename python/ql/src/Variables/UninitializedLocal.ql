@@ -15,20 +15,20 @@ import Undefined
 import semmle.python.pointsto.PointsTo
 
 predicate uninitialized_local(NameNode use) {
-    exists(FastLocalVariable local | use.uses(local) or use.deletes(local) | not local.escapes()) and
-    (
-        any(Uninitialized uninit).taints(use) and
-        PointsToInternal::reachableBlock(use.getBasicBlock(), _)
-        or
-        not exists(EssaVariable var | var.getASourceUse() = use)
-    )
+  exists(FastLocalVariable local | use.uses(local) or use.deletes(local) | not local.escapes()) and
+  (
+    any(Uninitialized uninit).taints(use) and
+    PointsToInternal::reachableBlock(use.getBasicBlock(), _)
+    or
+    not exists(EssaVariable var | var.getASourceUse() = use)
+  )
 }
 
 predicate explicitly_guarded(NameNode u) {
-    exists(Try t |
-        t.getBody().contains(u.getNode()) and
-        t.getAHandler().getType().pointsTo(ClassValue::nameError())
-    )
+  exists(Try t |
+    t.getBody().contains(u.getNode()) and
+    t.getAHandler().getType().pointsTo(ClassValue::nameError())
+  )
 }
 
 from NameNode u

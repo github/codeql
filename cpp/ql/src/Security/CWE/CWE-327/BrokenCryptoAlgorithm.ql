@@ -18,7 +18,7 @@ abstract class InsecureCryptoSpec extends Locatable {
 }
 
 Function getAnInsecureFunction() {
-  result.getName().regexpMatch(algorithmBlacklistRegex()) and
+  result.getName().regexpMatch(getInsecureAlgorithmRegex()) and
   exists(result.getACallToThisFunction())
 }
 
@@ -33,7 +33,7 @@ class InsecureFunctionCall extends InsecureCryptoSpec, FunctionCall {
 }
 
 Macro getAnInsecureMacro() {
-  result.getName().regexpMatch(algorithmBlacklistRegex()) and
+  result.getName().regexpMatch(getInsecureAlgorithmRegex()) and
   exists(result.getAnInvocation())
 }
 

@@ -22,7 +22,10 @@ import semmle.code.java.security.XSS
  */
 class PrintStackTraceMethod extends Method {
   PrintStackTraceMethod() {
-    getDeclaringType().hasQualifiedName("java.lang", "Throwable") and
+    getDeclaringType()
+        .getSourceDeclaration()
+        .getASourceSupertype*()
+        .hasQualifiedName("java.lang", "Throwable") and
     getName() = "printStackTrace"
   }
 }
@@ -96,7 +99,8 @@ class StackTraceStringToXssSinkFlowConfig extends TaintTracking2::Configuration 
  */
 predicate printsStackExternally(MethodAccess call, Expr stackTrace) {
   printsStackToWriter(call) and
-  call.getQualifier() = stackTrace
+  call.getQualifier() = stackTrace and
+  not call.getQualifier() instanceof SuperAccess
 }
 
 /**

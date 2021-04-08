@@ -68,7 +68,8 @@ app.post('/documents/find', (req, res) => {
 		.and(query, function(){}) // NOT OK
 	;
 
-	Document.where(query)	// NOT OK
+    Document.where(query)	// NOT OK - `.where()` on a Model. 
+        .where(query)	// NOT OK - `.where()` on a Query. 
 		.and(query) // NOT OK
 		.or(query) // NOT OK
 		.distinct(X, query) // NOT OK

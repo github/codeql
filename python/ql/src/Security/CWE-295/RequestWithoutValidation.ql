@@ -19,8 +19,8 @@ predicate falseNotNone(Value v) { v.getDefiniteBooleanValue() = false and not v 
 
 from CallNode call, FunctionValue func, Value falsey, ControlFlowNode origin
 where
-    func = requestFunction() and
-    func.getACall() = call and
-    falseNotNone(falsey) and
-    call.getArgByName("verify").pointsTo(falsey, origin)
+  func = requestFunction() and
+  func.getACall() = call and
+  falseNotNone(falsey) and
+  call.getArgByName("verify").pointsTo(falsey, origin)
 select call, "Call to $@ with verify=$@", func, "requests." + func.getName(), origin, "False"

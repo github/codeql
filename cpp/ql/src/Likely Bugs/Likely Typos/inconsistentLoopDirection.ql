@@ -50,7 +50,12 @@ predicate illDefinedDecrForStmt(
     DataFlow::localFlowStep(DataFlow::exprNode(initialCondition), DataFlow::exprNode(lesserOperand)) and
     // `initialCondition` < `terminalCondition`
     (
-      upperBound(initialCondition) < lowerBound(terminalCondition)
+      upperBound(initialCondition) < lowerBound(terminalCondition) and
+      (
+        // exclude cases where the loop counter is `unsigned` (where wrapping behaviour can be used deliberately)
+        v.getUnspecifiedType().(IntegralType).isSigned() or
+        initialCondition.getValue().toInt() = 0
+      )
       or
       (forstmt.conditionAlwaysFalse() or forstmt.conditionAlwaysTrue())
     )

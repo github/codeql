@@ -20,34 +20,34 @@ private ModuleObject xmlPullDomModule() { result.getName() = "xml.dom.pulldom" }
 private ModuleObject xmlSaxModule() { result.getName() = "xml.sax" }
 
 private class ExpatParser extends TaintKind {
-    ExpatParser() { this = "expat.parser" }
+  ExpatParser() { this = "expat.parser" }
 }
 
 private FunctionObject expatCreateParseFunction() {
-    result = ModuleObject::named("xml.parsers.expat").attr("ParserCreate")
+  result = ModuleObject::named("xml.parsers.expat").attr("ParserCreate")
 }
 
 private class ExpatCreateParser extends TaintSource {
-    ExpatCreateParser() { expatCreateParseFunction().getACall() = this }
+  ExpatCreateParser() { expatCreateParseFunction().getACall() = this }
 
-    override predicate isSourceOf(TaintKind kind) { kind instanceof ExpatParser }
+  override predicate isSourceOf(TaintKind kind) { kind instanceof ExpatParser }
 
-    string toString() { result = "expat.create.parser" }
+  string toString() { result = "expat.create.parser" }
 }
 
 private FunctionObject xmlFromString() {
-    result = xmlElementTreeModule().attr("fromstring")
-    or
-    result = xmlMiniDomModule().attr("parseString")
-    or
-    result = xmlPullDomModule().attr("parseString")
-    or
-    result = xmlSaxModule().attr("parseString")
+  result = xmlElementTreeModule().attr("fromstring")
+  or
+  result = xmlMiniDomModule().attr("parseString")
+  or
+  result = xmlPullDomModule().attr("parseString")
+  or
+  result = xmlSaxModule().attr("parseString")
 }
 
 /** A (potentially) malicious XML string. */
 class ExternalXmlString extends ExternalStringKind {
-    ExternalXmlString() { this = "external xml encoded object" }
+  ExternalXmlString() { this = "external xml encoded object" }
 }
 
 /**
@@ -55,14 +55,14 @@ class ExternalXmlString extends ExternalStringKind {
  * specially crafted XML string.
  */
 class XmlLoadNode extends DeserializationSink {
-    override string toString() { result = "xml.load vulnerability" }
+  override string toString() { result = "xml.load vulnerability" }
 
-    XmlLoadNode() {
-        exists(CallNode call | call.getAnArg() = this |
-            xmlFromString().getACall() = call or
-            any(ExpatParser parser).taints(call.getFunction().(AttrNode).getObject("Parse"))
-        )
-    }
+  XmlLoadNode() {
+    exists(CallNode call | call.getAnArg() = this |
+      xmlFromString().getACall() = call or
+      any(ExpatParser parser).taints(call.getFunction().(AttrNode).getObject("Parse"))
+    )
+  }
 
-    override predicate sinks(TaintKind kind) { kind instanceof ExternalXmlString }
+  override predicate sinks(TaintKind kind) { kind instanceof ExternalXmlString }
 }

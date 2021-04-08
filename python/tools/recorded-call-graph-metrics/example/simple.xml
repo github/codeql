@@ -1,0 +1,6 @@
+<root>
+    <recorded_call call_filename="/home/rasmus/code/ql/python/tools/recorded-call-graph-metrics/example/simple.py" call_linenum="7" call_inst_index="18" callee_funcname="foo" callee_filename="/home/rasmus/code/ql/python/tools/recorded-call-graph-metrics/example/simple.py" callee_linenum="1" />
+    <recorded_call call_filename="/home/rasmus/code/ql/python/tools/recorded-call-graph-metrics/example/simple.py" call_linenum="8" call_inst_index="24" callee_funcname="bar" callee_filename="/home/rasmus/code/ql/python/tools/recorded-call-graph-metrics/example/simple.py" callee_linenum="4" />
+    <recorded_call call_filename="/home/rasmus/code/ql/python/tools/recorded-call-graph-metrics/example/simple.py" call_linenum="10" call_inst_index="30" callee_funcname="foo" callee_filename="/home/rasmus/code/ql/python/tools/recorded-call-graph-metrics/example/simple.py" callee_linenum="1" />
+    <recorded_call call_filename="/home/rasmus/code/ql/python/tools/recorded-call-graph-metrics/example/simple.py" call_linenum="10" call_inst_index="36" callee_funcname="bar" callee_filename="/home/rasmus/code/ql/python/tools/recorded-call-graph-metrics/example/simple.py" callee_linenum="4" />
+</root>

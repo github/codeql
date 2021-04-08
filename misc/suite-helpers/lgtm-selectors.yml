@@ -21,3 +21,5 @@
       - file-classifier
 - exclude:
     deprecated: //
+- exclude:
+    query path: /^experimental\/.*/

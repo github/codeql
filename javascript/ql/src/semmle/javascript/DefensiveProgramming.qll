@@ -14,9 +14,9 @@ abstract class DefensiveExpressionTest extends DataFlow::ValueNode {
 }
 
 /**
- * INTERNAL: Do not use directly; use `DefensiveExpressionTest` instead.
+ * Provides classes for specific kinds of defensive programming patterns.
  */
-module Internal {
+module DefensiveExpressionTest {
   /**
    * A defensive truthiness check that may be worth keeping, even if it
    * is strictly speaking useless.
@@ -185,6 +185,13 @@ module Internal {
     }
 
     override Expr getOperand() { result = operand }
+  }
+
+  /**
+   * Comparison against `undefined`, such as `x === undefined`.
+   */
+  class UndefinedComparison extends NullUndefinedComparison {
+    UndefinedComparison() { op2type = TTUndefined() }
   }
 
   /**
@@ -380,7 +387,7 @@ module Internal {
   /**
    * A test for `undefined` using a `typeof` expression.
    *
-   * Example: `typeof x === undefined'.
+   * Example: `typeof x === "undefined"'.
    */
   class TypeofUndefinedTest extends UndefinedNullTest {
     TypeofTest test;

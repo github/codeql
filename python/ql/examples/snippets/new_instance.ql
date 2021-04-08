@@ -11,6 +11,6 @@ import python
 
 from Call new, ClassValue cls
 where
-    cls.getName() = "MyClass" and
-    new.getFunc().pointsTo(cls)
+  cls.getName() = "MyClass" and
+  new.getFunc().pointsTo(cls)
 select new

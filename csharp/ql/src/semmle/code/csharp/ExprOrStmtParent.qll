@@ -126,7 +126,7 @@ class TopLevelExprParent extends Element, @top_level_expr_parent {
  * encountered multiple potential implementations at compile-time. For example,
  * if we compile both `A.cs`
  *
- * ```
+ * ```csharp
  * namespaces N {
  *   public class C {
  *     public int M() => 0;
@@ -136,7 +136,7 @@ class TopLevelExprParent extends Element, @top_level_expr_parent {
  *
  * and later `B.cs`
  *
- * ```
+ * ```csharp
  * namespaces N {
  *   public class C {
  *     public int M() => 1;

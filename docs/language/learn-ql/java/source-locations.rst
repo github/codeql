@@ -54,17 +54,17 @@ In our example, the expression statement starts at line 5, column 3 (the first t
 
 Class ``File`` defines these member predicates:
 
--  ``getFullName`` returns the fully qualified name of the file.
+-  ``getAbsolutePath`` returns the fully qualified name of the file.
 -  ``getRelativePath`` returns the path of the file relative to the base directory of the source code.
 -  ``getExtension`` returns the extension of the file.
--  ``getShortName`` returns the base name of the file, without its extension.
+-  ``getStem`` returns the base name of the file, without its extension.
 
 In our example, assume file ``A.java`` is located in directory ``/home/testuser/code/pkg``, where ``/home/testuser/code`` is the base directory of the program being analyzed. Then, a ``File`` object for ``A.java`` returns:
 
--  ``getFullName`` is ``/home/testuser/code/pkg/A.java``.
+-  ``getAbsolutePath`` is ``/home/testuser/code/pkg/A.java``.
 -  ``getRelativePath`` is ``pkg/A.java``.
 -  ``getExtension`` is ``java``.
--  ``getShortName`` is ``A``.
+-  ``getStem`` is ``A``.
 
 Determining white space around an operator
 ------------------------------------------
@@ -110,7 +110,7 @@ Here's a first version of our query:
        wsinner > wsouter
    select outer, "Whitespace around nested operators contradicts precedence."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/672230027/>`__. This query is likely to find results on most projects.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/8141155897270480914/>`__. This query is likely to find results on most projects.
 
 The first conjunct of the ``where`` clause restricts ``inner`` to be an operand of ``outer``, the second conjunct binds ``wsinner`` and ``wsouter``, while the last conjunct selects the suspicious cases.
 
@@ -141,9 +141,9 @@ Note that our predicate ``operatorWS`` computes the **total** amount of white sp
        wsinner > wsouter
    select outer, "Whitespace around nested operators contradicts precedence."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/665761067/>`__. Any results will be refined by our changes to the query.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/3151720037708691205/>`__. Any results will be refined by our changes to the query.
 
-Another source of false positives are associative operators: in an expression of the form ``x + y+z``, the first plus is syntactically nested inside the second, since + in Java associates to the left; hence the expression is flagged as suspicious. But since + is associative to begin with, it does not matter which way around the operators are nested, so this is a false positive.To exclude these cases, let us define a new class identifying binary expressions with an associative operator:
+Another source of false positives are associative operators: in an expression of the form ``x + y+z``, the first plus is syntactically nested inside the second, since + in Java associates to the left; hence the expression is flagged as suspicious. But since + is associative to begin with, it does not matter which way around the operators are nested, so this is a false positive. To exclude these cases, let us define a new class identifying binary expressions with an associative operator:
 
 .. code-block:: ql
 
@@ -173,9 +173,9 @@ Now we can extend our query to discard results where the outer and the inner exp
        wsinner > wsouter
    select outer, "Whitespace around nested operators contradicts precedence."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/659662169/>`__.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/5714614966569401039/>`__.
 
-Notice that we again use ``getOp``, this time to determine whether two binary expressions have the same operator. Running our improved query now finds the Java standard library bug described in the Overview. It also flags up the following suspicious code in `Hadoop HBase <http://hbase.apache.org/>`__:
+Notice that we again use ``getOp``, this time to determine whether two binary expressions have the same operator. Running our improved query now finds the Java standard library bug described in the Overview. It also flags up the following suspicious code in `Hadoop HBase <https://hbase.apache.org/>`__:
 
 .. code-block:: java
 

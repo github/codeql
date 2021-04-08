@@ -1,7 +1,4 @@
 getTopmostPackageJSON
-| absent_main/package.json:1:1:3:1 | {\\n    " ... t.js"\\n} |
-| esmodules/package.json:1:1:3:1 | {\\n    " ... n.js"\\n} |
-| lib1/package.json:1:1:3:1 | {\\n    " ... n.js"\\n} |
 getAValueExportedBy
 | absent_main/package.json:1:1:3:1 | {\\n    " ... t.js"\\n} | absent_main/index.js:1:1:1:0 | this |
 | absent_main/package.json:1:1:3:1 | {\\n    " ... t.js"\\n} | absent_main/index.js:1:1:1:14 | module.exports |

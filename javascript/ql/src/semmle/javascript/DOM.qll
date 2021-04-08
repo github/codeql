@@ -340,6 +340,9 @@ module DOM {
     t.start() and
     result = domValueSource()
     or
+    t.start() and
+    result = domValueRef().getAMethodCall(["item", "namedItem"])
+    or
     exists(DataFlow::TypeTracker t2 | result = domValueRef(t2).track(t2, t))
   }
 

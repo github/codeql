@@ -231,8 +231,10 @@
 | file://:0:0:0:0 | const lambda [] type at line 9, col. 5 * |
 | file://:0:0:0:0 | const lambda [] type at line 9, col. 15 |
 | file://:0:0:0:0 | const lambda [] type at line 9, col. 15 & |
+| file://:0:0:0:0 | const lambda [] type at line 9, col. 15 * |
 | file://:0:0:0:0 | const lambda [] type at line 15, col. 5 |
 | file://:0:0:0:0 | const lambda [] type at line 15, col. 5 & |
+| file://:0:0:0:0 | const lambda [] type at line 15, col. 5 * |
 | file://:0:0:0:0 | const lambda [] type at line 22, col. 19 |
 | file://:0:0:0:0 | const lambda [] type at line 22, col. 19 & |
 | file://:0:0:0:0 | const lambda [] type at line 22, col. 19 * |
@@ -277,8 +279,10 @@
 | file://:0:0:0:0 | lambda [] type at line 9, col. 5 * |
 | file://:0:0:0:0 | lambda [] type at line 9, col. 15 & |
 | file://:0:0:0:0 | lambda [] type at line 9, col. 15 && |
+| file://:0:0:0:0 | lambda [] type at line 9, col. 15 * |
 | file://:0:0:0:0 | lambda [] type at line 15, col. 5 & |
 | file://:0:0:0:0 | lambda [] type at line 15, col. 5 && |
+| file://:0:0:0:0 | lambda [] type at line 15, col. 5 * |
 | file://:0:0:0:0 | lambda [] type at line 22, col. 19 & |
 | file://:0:0:0:0 | lambda [] type at line 22, col. 19 && |
 | file://:0:0:0:0 | lambda [] type at line 22, col. 19 * |

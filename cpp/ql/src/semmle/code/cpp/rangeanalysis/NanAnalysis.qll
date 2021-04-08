@@ -1,3 +1,7 @@
+/**
+ * Provides classes and predicates for recognizing floating point expressions which cannot be NaN.
+ */
+
 import cpp
 private import semmle.code.cpp.rangeanalysis.RangeSSA
 

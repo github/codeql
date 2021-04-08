@@ -6,10 +6,11 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 .. toctree::
    :hidden:
 
+   basic-query-csharp
    introduce-libraries-csharp
    dataflow
 
--  `Basic C# query <https://lgtm.com/help/lgtm/console/ql-csharp-basic-example>`__: Learn to write and run a simple CodeQL query using LGTM.
+-  :doc:`Basic query for C# code <basic-query-csharp>`: Learn to write and run a simple CodeQL query using LGTM.
 
 -  :doc:`CodeQL library for C# <introduce-libraries-csharp>`: When you're analyzing a C# program, you can make use of the large collection of classes in the CodeQL library for C#.
 

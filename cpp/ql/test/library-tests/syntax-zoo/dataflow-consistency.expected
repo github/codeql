@@ -8,26 +8,7 @@ uniqueEnclosingCallable
 | misc.c:210:24:210:24 | 0 | Node should have one enclosing callable but has 0. |
 | misc.c:210:24:210:28 | ... + ... | Node should have one enclosing callable but has 0. |
 | misc.c:210:28:210:28 | 1 | Node should have one enclosing callable but has 0. |
-uniqueTypeBound
-| bad_asts.cpp:19:10:19:10 | constructor init of field x [post-this] | Node should have one type bound but has 0. |
-| bad_asts.cpp:19:10:19:10 | constructor init of field x [pre-this] | Node should have one type bound but has 0. |
-| bad_asts.cpp:19:10:19:10 | constructor init of field y [post-this] | Node should have one type bound but has 0. |
-| bad_asts.cpp:19:10:19:10 | constructor init of field y [pre-this] | Node should have one type bound but has 0. |
-| cpp17.cpp:15:5:15:45 | call to unknown function | Node should have one type bound but has 0. |
-| ir.cpp:784:15:784:15 | constructor init of field middlevb2_s [post-this] | Node should have one type bound but has 0. |
-| ir.cpp:784:15:784:15 | constructor init of field middlevb2_s [pre-this] | Node should have one type bound but has 0. |
-| static_init_templates.cpp:240:7:240:7 | constructor init of field mcc [post-this] | Node should have one type bound but has 0. |
-| static_init_templates.cpp:240:7:240:7 | constructor init of field mcc [pre-this] | Node should have one type bound but has 0. |
-uniqueTypeRepr
-| bad_asts.cpp:19:10:19:10 | constructor init of field x [post-this] | Node should have one type representation but has 0. |
-| bad_asts.cpp:19:10:19:10 | constructor init of field x [pre-this] | Node should have one type representation but has 0. |
-| bad_asts.cpp:19:10:19:10 | constructor init of field y [post-this] | Node should have one type representation but has 0. |
-| bad_asts.cpp:19:10:19:10 | constructor init of field y [pre-this] | Node should have one type representation but has 0. |
-| cpp17.cpp:15:5:15:45 | call to unknown function | Node should have one type representation but has 0. |
-| ir.cpp:784:15:784:15 | constructor init of field middlevb2_s [post-this] | Node should have one type representation but has 0. |
-| ir.cpp:784:15:784:15 | constructor init of field middlevb2_s [pre-this] | Node should have one type representation but has 0. |
-| static_init_templates.cpp:240:7:240:7 | constructor init of field mcc [post-this] | Node should have one type representation but has 0. |
-| static_init_templates.cpp:240:7:240:7 | constructor init of field mcc [pre-this] | Node should have one type representation but has 0. |
+uniqueType
 uniqueNodeLocation
 | break_labels.c:2:11:2:11 | i | Node should have one location but has 4. |
 | break_labels.c:2:11:2:11 | x | Node should have one location but has 4. |

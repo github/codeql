@@ -1,6 +1,5 @@
 uniqueEnclosingCallable
-uniqueTypeBound
-uniqueTypeRepr
+uniqueType
 uniqueNodeLocation
 | D.cpp:1:17:1:17 | o | Node should have one location but has 3. |
 | by_reference.cpp:1:17:1:17 | o | Node should have one location but has 3. |

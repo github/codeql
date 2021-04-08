@@ -14,9 +14,8 @@
 
 import javascript
 
-class RootDestructuringPattern extends BindingPattern {
+class RootDestructuringPattern extends DestructuringPattern {
   RootDestructuringPattern() {
-    this instanceof DestructuringPattern and
     not this = any(PropertyPattern p).getValuePattern() and
     not this = any(ArrayPattern p).getAnElement()
   }

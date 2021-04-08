@@ -37,6 +37,19 @@ namespace IntWrapper
             return *this;
         }
 
+        Class &copy_assign(const Class &that) // copy assignment without the usual signature
+        {
+            auto tmp = that;
+            swap(tmp);
+            return *this;
+        }
+
+        Class &move_assign(Class &&that) // move assignment without the usual signature
+        {
+            swap(that);
+            return *this;
+        }
+
         void swap(Class &that) noexcept
         {
             using std::swap;
@@ -100,4 +113,34 @@ void test_move_constructor()
     IntWrapper::Class move_to(std::move(move_from));
 
     sink(move_to.data1); // tainted
+}
+
+void test_copy_assignment_method()
+{
+    IntWrapper::Class x;
+    IntWrapper::Class y;
+    x.data1 = source();
+
+    sink(x.data1); // tainted
+    sink(y.data1); // clean
+
+    y.copy_assign(x);
+
+    sink(y.data1); // tainted
+    sink(x.data1); // tainted
+}
+
+void test_move_assignment_method()
+{
+    IntWrapper::Class x;
+    IntWrapper::Class y;
+    x.data1 = source();
+
+    sink(x.data1); // tainted
+    sink(y.data1); // clean
+
+    y.move_assign(std::move(x));
+
+    sink(y.data1); // tainted
+    sink(x.data1); // tainted
 }

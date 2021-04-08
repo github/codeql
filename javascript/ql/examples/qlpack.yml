@@ -1,0 +1,3 @@
+name: codeql-javascript-examples
+version: 0.0.0
+libraryPathDependencies: codeql-javascript

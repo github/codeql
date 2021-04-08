@@ -348,11 +348,12 @@ class CompareMethodCallComparisonTest extends ComparisonTest, TCompareCall { }
  * A comparison test using a user-defined comparison operator, for example
  * `this == other` on line 3 in
  *
- * ```
+ * ```csharp
  * public class C {
  *   public static bool operator ==(C lhs, C rhs) => true;
  *   public bool Is(C other) => this == other;
  * }
+ * ```
  */
 class OperatorCallComparisonTest extends ComparisonTest, TComparisonOperatorCall { }
 

@@ -1,6 +1,10 @@
+/**
+ * Provides classes for modeling user-defined types such as classes, typedefs
+ * and enums.
+ */
+
 import semmle.code.cpp.Declaration
 import semmle.code.cpp.Type
-import semmle.code.cpp.Member
 import semmle.code.cpp.Function
 private import semmle.code.cpp.internal.ResolveClass
 
@@ -20,7 +24,7 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
    */
   override string getName() { usertypes(underlyingElement(this), result, _) }
 
-  override string getCanonicalQLClass() { result = "UserType" }
+  override string getAPrimaryQlClass() { result = "UserType" }
 
   /**
    * Gets the simple name of this type, without any template parameters.  For example
@@ -84,6 +88,9 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
    * type exactly - but this is not apparent from its subclasses
    */
 
+  /**
+   * Gets a child declaration within this user-defined type.
+   */
   Declaration getADeclaration() { none() }
 
   override string explain() { result = this.getName() }
@@ -104,7 +111,7 @@ class TypeDeclarationEntry extends DeclarationEntry, @type_decl {
 
   override string getName() { result = getType().getName() }
 
-  override string getCanonicalQLClass() { result = "TypeDeclarationEntry" }
+  override string getAPrimaryQlClass() { result = "TypeDeclarationEntry" }
 
   /**
    * The type which is being declared or defined.

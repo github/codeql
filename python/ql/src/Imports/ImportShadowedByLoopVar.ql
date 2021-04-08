@@ -13,11 +13,11 @@
 import python
 
 predicate shadowsImport(Variable l) {
-    exists(Import i, Name shadow |
-        shadow = i.getAName().getAsname() and
-        shadow.getId() = l.getId() and
-        i.getScope() = l.getScope().getScope*()
-    )
+  exists(Import i, Name shadow |
+    shadow = i.getAName().getAsname() and
+    shadow.getId() = l.getId() and
+    i.getScope() = l.getScope().getScope*()
+  )
 }
 
 from Variable l, Name defn

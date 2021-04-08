@@ -36,7 +36,7 @@ abstract private class DelegateFlowSink extends DataFlow::ExprNode {
    * context, if any. The call context records the *last* call required to
    * resolve the target, if any. Example:
    *
-   * ```
+   * ```csharp
    * public int M(Func<string, int> f, string x) {
    *   return f(x);
    * }
@@ -60,7 +60,7 @@ abstract private class DelegateFlowSink extends DataFlow::ExprNode {
    * Note that only the *last* call required is taken into account, hence if
    * `M` above is redefined as follows:
    *
-   * ```
+   * ```csharp
    * public int M(Func<string, int> f, string x) {
    *   return M2(f, x);
    * }

@@ -68,6 +68,11 @@ class ClientRequest extends DataFlow::InvokeNode {
    * wrapped in a promise object.
    */
   DataFlow::Node getAResponseDataNode() { result = getAResponseDataNode(_, _) }
+
+  /**
+   * Gets a data-flow node that determines where in the file-system the result of the request should be saved.
+   */
+  DataFlow::Node getASavePath() { result = self.getASavePath() }
 }
 
 deprecated class CustomClientRequest = ClientRequest::Range;
@@ -103,6 +108,11 @@ module ClientRequest {
      * See the decription of `responseType` in `ClientRequest::getAResponseDataNode`.
      */
     DataFlow::Node getAResponseDataNode(string responseType, boolean promise) { none() }
+
+    /**
+     * Gets a data-flow node that determines where in the file-system the result of the request should be saved.
+     */
+    DataFlow::Node getASavePath() { none() }
   }
 
   /**
@@ -180,6 +190,14 @@ module ClientRequest {
     }
 
     override DataFlow::Node getADataNode() { result = getArgument(1) }
+
+    override DataFlow::Node getASavePath() {
+      exists(DataFlow::CallNode write |
+        write = DataFlow::moduleMember("fs", "createWriteStream").getACall() and
+        write = this.getAMemberCall("pipe").getArgument(0).getALocalSource() and
+        result = write.getArgument(0)
+      )
+    }
   }
 
   /** Gets the string `url` or `uri`. */
@@ -632,6 +650,10 @@ module ClientRequest {
     override DataFlow::Node getHost() { none() }
 
     override DataFlow::Node getADataNode() { none() }
+
+    override DataFlow::Node getASavePath() {
+      result = this.getArgument(1).getALocalSource().getAPropertyWrite("target").getRhs()
+    }
   }
 
   /**

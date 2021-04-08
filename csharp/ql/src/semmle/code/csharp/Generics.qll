@@ -190,7 +190,7 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
  *
  * For example, `where` on line 2 in
  *
- * ```
+ * ```csharp
  * class Factory<T>
  *   where T : ICloneable {
  * }
@@ -233,7 +233,7 @@ class TypeParameterConstraints extends Element, @type_parameter_constraints {
  *
  * For example,
  *
- * ```
+ * ```csharp
  * struct KeyValuePair<Key, Value> {
  *   ...
  * }
@@ -256,7 +256,7 @@ class UnboundGenericStruct extends Struct, UnboundGenericType {
 /**
  * An unbound generic class, for example
  *
- * ```
+ * ```csharp
  * class List<T> {
  *   ...
  * }
@@ -279,7 +279,7 @@ class UnboundGenericClass extends Class, UnboundGenericType {
 /**
  * An unbound generic interface, for example
  *
- * ```
+ * ```csharp
  * interface IEnumerable<T> {
  *   ...
  * }
@@ -305,7 +305,7 @@ class UnboundGenericInterface extends Interface, UnboundGenericType {
  *
  * For example
  *
- * ```
+ * ```csharp
  * delegate void F<T>(T t);
  * ```
  */
@@ -375,7 +375,7 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
  *
  * For example, `KeyValuePair<int, string>` on line 4 in
  *
- * ```
+ * ```csharp
  * struct KeyValuePair<Key, Value> { ... }
  *
  * class C {
@@ -398,7 +398,7 @@ class ConstructedStruct extends Struct, ConstructedType {
  *
  * For example, `List<int>` on line 4 in
  *
- * ```
+ * ```csharp
  * class List<T> { ... }
  *
  * class C {
@@ -421,7 +421,7 @@ class ConstructedClass extends Class, ConstructedType {
  *
  * For example, `IEnumerable<string>` on line 4 in
  *
- * ```
+ * ```csharp
  * interface IEnumerable<T> { ... }
  *
  * class C {
@@ -444,7 +444,7 @@ class ConstructedInterface extends Interface, ConstructedType {
  *
  * For example, `F<int>` on line 4 in
  *
- * ```
+ * ```csharp
  * delegate void F<T>(T t);
  *
  * class C {
@@ -466,7 +466,7 @@ class ConstructedDelegateType extends DelegateType, ConstructedType {
  * An unbound generic method. This is a generic method whose signature involves formal type parameters,
  * For example `M<T>` on line 2 in
  *
- * ```
+ * ```csharp
  * class C {
  *   void M<T>() { ... }
  * }
@@ -492,7 +492,7 @@ class UnboundGenericMethod extends Method, UnboundGeneric {
  * A constructed (bound) method, for example the target `M<int>` of the call on
  * line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   void M<T>() { ... }
  *
@@ -526,8 +526,8 @@ class ConstructedMethod extends Method, ConstructedGeneric {
 /**
  * An unbound generic local function, for example `f` on line 3 in
  *
- * ```
- * class {
+ * ```csharp
+ * class C {
  *   void M() {
  *     void f<T>(T t) { ... }
  *   }
@@ -544,8 +544,8 @@ class UnboundLocalFunction extends LocalFunction, UnboundGeneric {
  * A constructed generic local function, for example the target `f<int>`
  * of the function call `f(5)` on line 4 in
  *
- * ```
- * class {
+ * ```csharp
+ * class C {
  *   void M() {
  *     void f<T>(T t) { ... }
  *     f(5);
@@ -580,7 +580,7 @@ class NonConstructedMethod extends Method {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * class A<T1> {
    *   void M1(T1 x1) { }
    *   void M2<T2>(T1 x1, T2 x) { }

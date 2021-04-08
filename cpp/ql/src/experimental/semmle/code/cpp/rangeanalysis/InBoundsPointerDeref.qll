@@ -13,7 +13,7 @@
 
 import cpp
 private import experimental.semmle.code.cpp.rangeanalysis.ArrayLengthAnalysis
-private import semmle.code.cpp.rangeanalysis.RangeAnalysis
+private import experimental.semmle.code.cpp.rangeanalysis.RangeAnalysis
 
 /**
  * Gets the instruction that computes the address of memory that `i` accesses.

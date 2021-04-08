@@ -4,6 +4,6 @@ import semmle.python.objects.ObjectInternal
 
 from ControlFlowNode f, ObjectInternal obj, ControlFlowNode orig
 where
-    exists(ExprStmt s | s.getValue().getAFlowNode() = f) and
-    PointsTo::pointsTo(f, _, obj, orig)
+  exists(ExprStmt s | s.getValue().getAFlowNode() = f) and
+  PointsTo::pointsTo(f, _, obj, orig)
 select f, obj.toString(), orig

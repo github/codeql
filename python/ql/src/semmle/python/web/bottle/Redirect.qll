@@ -15,14 +15,14 @@ FunctionValue bottle_redirect() { result = theBottleModule().attr("redirect") }
  * Represents an argument to the `bottle.redirect` function.
  */
 class BottleRedirect extends TaintSink {
-    override string toString() { result = "bottle.redirect" }
+  override string toString() { result = "bottle.redirect" }
 
-    BottleRedirect() {
-        exists(CallNode call |
-            bottle_redirect().getACall() = call and
-            this = call.getAnArg()
-        )
-    }
+  BottleRedirect() {
+    exists(CallNode call |
+      bottle_redirect().getACall() = call and
+      this = call.getAnArg()
+    )
+  }
 
-    override predicate sinks(TaintKind kind) { kind instanceof StringKind }
+  override predicate sinks(TaintKind kind) { kind instanceof StringKind }
 }

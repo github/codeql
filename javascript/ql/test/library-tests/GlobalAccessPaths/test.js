@@ -39,3 +39,33 @@ function lazy() {
   lazyInit = foo.bar; // 'foo.bar'
   lazyInit;
 }
+
+function dominatingWrite() {
+  var obj = Object.create();
+
+  obj.prop1; // no
+  obj.prop1 = "foo";
+  obj.prop1; // yes
+
+  if (random()) {
+    obj.prop2 = "foo";
+  }
+  obj.prop2; // no
+
+  obj.prop3 = "foo";
+  if (random()) {
+    obj.prop3; // yes
+  }
+
+  obj.prop4 = obj.prop4; // no
+
+  var foo = (obj.prop5 = 2, obj.prop5); // yes
+  var bar = (obj.prop6, obj.prop6 = 3); // no
+}
+
+(function(){
+	var v1 = Object.freeze(foo.bar).baz; // foo.baz.baz
+	var v2 = Object.seal(foo.bar).baz; // foo.baz.baz
+	let O = Object;
+	var v3 = O.seal(foo.bar).baz; // not recognized
+});

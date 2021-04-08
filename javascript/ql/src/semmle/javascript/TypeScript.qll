@@ -8,13 +8,16 @@ import javascript
  */
 class NamespaceDefinition extends Stmt, @namespacedefinition, AST::ValueNode {
   /**
+   * DEPRECATED: Use `getIdentifier()` instead.
+   *
    * Gets the identifier naming the namespace.
    */
-  Identifier getId() {
-    result = this.(NamespaceDeclaration).getId()
-    or
-    result = this.(EnumDeclaration).getIdentifier()
-  }
+  deprecated Identifier getId() { result = getIdentifier() }
+
+  /**
+   * Gets the identifier naming the namespace.
+   */
+  Identifier getIdentifier() { none() } // Overridden in subtypes.
 
   /**
    * Gets unqualified name of the namespace being defined.
@@ -29,7 +32,7 @@ class NamespaceDefinition extends Stmt, @namespacedefinition, AST::ValueNode {
    * Gets the local namespace name induced by this namespace.
    */
   LocalNamespaceName getLocalNamespaceName() {
-    result = getId().(LocalNamespaceDecl).getLocalNamespaceName()
+    result = getIdentifier().(LocalNamespaceDecl).getLocalNamespaceName()
   }
 
   /**
@@ -55,10 +58,10 @@ class NamespaceDefinition extends Stmt, @namespacedefinition, AST::ValueNode {
  */
 class NamespaceDeclaration extends NamespaceDefinition, StmtContainer, @namespacedeclaration {
   /** Gets the name of this namespace. */
-  override Identifier getId() { result = getChildExpr(-1) }
+  override Identifier getIdentifier() { result = getChildExpr(-1) }
 
   /** Gets the name of this namespace as a string. */
-  override string getName() { result = getId().getName() }
+  override string getName() { result = getIdentifier().getName() }
 
   /** Gets the `i`th statement in this namespace. */
   Stmt getStmt(int i) {
@@ -83,7 +86,7 @@ class NamespaceDeclaration extends NamespaceDefinition, StmtContainer, @namespac
   predicate isInstantiated() { isInstantiated(this) }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    if hasDeclareKeyword(this) then result = this else result = getId()
+    if hasDeclareKeyword(this) then result = this else result = getIdentifier()
   }
 }
 
@@ -178,13 +181,20 @@ class GlobalAugmentationDeclaration extends Stmt, StmtContainer, @globalaugmenta
 
 /** A TypeScript "import-equals" declaration. */
 class ImportEqualsDeclaration extends Stmt, @importequalsdeclaration {
+  /**
+   * DEPRECATED: Use `getIdentifier()` instead.
+   *
+   * Gets the name under which the imported entity is imported.
+   */
+  deprecated Identifier getId() { result = getIdentifier() }
+
   /** Gets the name under which the imported entity is imported. */
-  Identifier getId() { result = getChildExpr(0) }
+  Identifier getIdentifier() { result = getChildExpr(0) }
 
   /** Gets the expression specifying the imported module or entity. */
   Expr getImportedEntity() { result = getChildExpr(1) }
 
-  override ControlFlowNode getFirstControlFlowNode() { result = getId() }
+  override ControlFlowNode getFirstControlFlowNode() { result = getIdentifier() }
 }
 
 /**
@@ -348,7 +358,7 @@ class TypeDecl extends Identifier, TypeRef, LexicalDecl {
     this = any(ClassOrInterface ci).getIdentifier() or
     this = any(TypeParameter tp).getIdentifier() or
     this = any(ImportSpecifier im).getLocal() or
-    this = any(ImportEqualsDeclaration im).getId() or
+    this = any(ImportEqualsDeclaration im).getIdentifier() or
     this = any(TypeAliasDeclaration td).getIdentifier() or
     this = any(EnumDeclaration ed).getIdentifier() or
     this = any(EnumMember member).getIdentifier()
@@ -1226,8 +1236,8 @@ abstract class NamespaceRef extends ASTNode { }
  */
 class LocalNamespaceDecl extends VarDecl, NamespaceRef {
   LocalNamespaceDecl() {
-    any(NamespaceDeclaration nd).getId() = this or
-    any(ImportEqualsDeclaration im).getId() = this or
+    any(NamespaceDeclaration nd).getIdentifier() = this or
+    any(ImportEqualsDeclaration im).getIdentifier() = this or
     any(ImportSpecifier im).getLocal() = this or
     any(EnumDeclaration ed).getIdentifier() = this
   }
@@ -1325,7 +1335,7 @@ class ImportVarTypeAccess extends VarTypeAccess, ImportTypeExpr, @importvartypea
  */
 class EnumDeclaration extends NamespaceDefinition, @enumdeclaration, AST::ValueNode {
   /** Gets the name of this enum, such as `E` in `enum E { A, B }`. */
-  Identifier getIdentifier() { result = getChildExpr(0) }
+  override Identifier getIdentifier() { result = getChildExpr(0) }
 
   /** Gets the name of this enum as a string. */
   override string getName() { result = getIdentifier().getName() }
@@ -1649,11 +1659,9 @@ class Type extends @type {
   Type getChild(int i) { type_child(result, this, i) }
 
   /**
-   * Gets the type of the given property of this type.
-   *
-   * Note that this does not account for properties implied by index signatures.
+   * DEPRECATED. Property lookup on types is no longer supported.
    */
-  Type getProperty(string name) { type_property(this, name, result) }
+  deprecated Type getProperty(string name) { none() }
 
   /**
    * Gets the type of the string index signature on this type,
@@ -1758,33 +1766,19 @@ class Type extends @type {
   int getNumConstructorSignature() { result = count(getAConstructorSignature()) }
 
   /**
-   * Gets the last signature of the method of the given name.
-   *
-   * For overloaded methods, this is the most general version of the its
-   * signature, which covers all cases, but with less precision than the
-   * overload signatures.
-   *
-   * Use `getAMethodOverload` to get any of its overload signatures.
+   * DEPRECATED. Method lookup on types is no longer supported.
    */
-  FunctionCallSignatureType getMethod(string name) {
-    result = getProperty(name).getLastFunctionSignature()
-  }
+  deprecated FunctionCallSignatureType getMethod(string name) { none() }
 
   /**
-   * Gets the `n`th overload signature of the given method.
+   * DEPRECATED. Method lookup on types is no longer supported.
    */
-  FunctionCallSignatureType getMethodOverload(string name, int n) {
-    result = getProperty(name).getFunctionSignature(n)
-  }
+  deprecated FunctionCallSignatureType getMethodOverload(string name, int n) { none() }
 
   /**
-   * Gets a signature of the method of the given name.
-   *
-   * Overloaded methods have multiple signatures.
+   * DEPRECATED. Method lookup on types is no longer supported.
    */
-  FunctionCallSignatureType getAMethodOverload(string name) {
-    result = getProperty(name).getAFunctionSignature()
-  }
+  deprecated FunctionCallSignatureType getAMethodOverload(string name) { none() }
 
   /**
    * Repeatedly unfolds union and intersection types and gets any of the underlying types,
@@ -2638,10 +2632,11 @@ private class PromiseTypeName extends TypeName {
       name.matches("%Deferred")
     ) and
     // The `then` method should take a callback, taking an argument of type `T`.
-    exists(TypeReference self | self = getType() |
+    exists(TypeReference self, Type thenMethod | self = getType() |
       self.getNumTypeArgument() = 1 and
-      self
-          .getAMethodOverload("then")
+      type_property(self, "then", thenMethod) and
+      thenMethod
+          .getAFunctionSignature()
           .getParameter(0)
           .unfold()
           .getAFunctionSignature()

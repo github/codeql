@@ -1115,12 +1115,14 @@
 | E.cs:176:13:176:14 | access to local variable b2 | true | E.cs:175:19:175:42 | ... ? ... : ... | true |
 | E.cs:176:13:176:22 | ... == ... | false | E.cs:176:13:176:14 | (...) ... | non-null |
 | E.cs:176:13:176:22 | ... == ... | true | E.cs:176:13:176:14 | (...) ... | null |
+| E.cs:176:13:176:22 | ... == ... | true | E.cs:176:19:176:22 | null | non-null |
 | E.cs:180:13:180:23 | ... == ... | false | E.cs:180:13:180:15 | access to parameter obj | non-null |
 | E.cs:180:13:180:23 | ... == ... | true | E.cs:180:13:180:15 | access to parameter obj | null |
 | E.cs:184:13:184:14 | (...) ... | non-null | E.cs:184:13:184:14 | access to parameter b1 | non-null |
 | E.cs:184:13:184:14 | (...) ... | null | E.cs:184:13:184:14 | access to parameter b1 | null |
 | E.cs:184:13:184:22 | ... == ... | false | E.cs:184:13:184:14 | (...) ... | non-null |
 | E.cs:184:13:184:22 | ... == ... | true | E.cs:184:13:184:14 | (...) ... | null |
+| E.cs:184:13:184:22 | ... == ... | true | E.cs:184:19:184:22 | null | non-null |
 | E.cs:193:19:193:29 | call to method ToString | non-null | E.cs:193:17:193:17 | access to parameter o | non-null |
 | E.cs:198:17:198:29 | ... ? ... : ... | non-null | E.cs:198:17:198:17 | access to parameter b | false |
 | E.cs:198:17:198:29 | ... ? ... : ... | non-null | E.cs:198:28:198:29 | "" | non-null |
@@ -1256,6 +1258,26 @@
 | E.cs:384:13:384:36 | ... && ... | true | E.cs:384:27:384:36 | ... == ... | true |
 | E.cs:384:27:384:36 | ... == ... | false | E.cs:384:27:384:28 | access to parameter e2 | non-null |
 | E.cs:384:27:384:36 | ... == ... | true | E.cs:384:27:384:28 | access to parameter e2 | null |
+| E.cs:404:9:404:9 | access to local variable i | non-null | E.cs:403:18:403:21 | null | non-null |
+| E.cs:404:9:404:9 | access to local variable i | null | E.cs:403:18:403:21 | null | null |
+| E.cs:404:9:404:18 | ... = ... | non-null | E.cs:404:9:404:9 | access to local variable i | non-null |
+| E.cs:404:9:404:18 | ... = ... | non-null | E.cs:404:9:404:18 | ... ?? ... | non-null |
+| E.cs:404:9:404:18 | ... = ... | null | E.cs:404:9:404:9 | access to local variable i | null |
+| E.cs:404:9:404:18 | ... = ... | null | E.cs:404:9:404:18 | ... ?? ... | null |
+| E.cs:404:9:404:18 | ... ?? ... | null | E.cs:404:9:404:9 | access to local variable i | null |
+| E.cs:404:9:404:18 | ... ?? ... | null | E.cs:404:15:404:18 | null | null |
+| E.cs:405:16:405:16 | access to local variable i | non-null | E.cs:404:9:404:18 | ... ?? ... | non-null |
+| E.cs:405:16:405:16 | access to local variable i | null | E.cs:404:9:404:18 | ... ?? ... | null |
+| E.cs:411:9:411:9 | access to local variable i | non-null | E.cs:410:18:410:18 | (...) ... | non-null |
+| E.cs:411:9:411:9 | access to local variable i | null | E.cs:410:18:410:18 | (...) ... | null |
+| E.cs:411:9:411:18 | ... = ... | non-null | E.cs:411:9:411:9 | access to local variable i | non-null |
+| E.cs:411:9:411:18 | ... = ... | non-null | E.cs:411:9:411:18 | ... ?? ... | non-null |
+| E.cs:411:9:411:18 | ... = ... | null | E.cs:411:9:411:9 | access to local variable i | null |
+| E.cs:411:9:411:18 | ... = ... | null | E.cs:411:9:411:18 | ... ?? ... | null |
+| E.cs:411:9:411:18 | ... ?? ... | null | E.cs:411:9:411:9 | access to local variable i | null |
+| E.cs:411:9:411:18 | ... ?? ... | null | E.cs:411:15:411:18 | null | null |
+| E.cs:412:16:412:16 | access to local variable i | non-null | E.cs:411:9:411:18 | ... ?? ... | non-null |
+| E.cs:412:16:412:16 | access to local variable i | null | E.cs:411:9:411:18 | ... ?? ... | null |
 | Forwarding.cs:9:13:9:30 | !... | false | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | true |
 | Forwarding.cs:9:13:9:30 | !... | true | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | false |
 | Forwarding.cs:9:14:9:14 | access to local variable s | empty | Forwarding.cs:7:20:7:23 | null | empty |

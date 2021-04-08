@@ -153,9 +153,6 @@ module StepSummary {
       name != ""
     )
     or
-    // Step in/out of a promise
-    succ = PromiseTypeTracking::promiseStep(pred, summary)
-    or
     // Summarize calls with flow directly from a parameter to a return.
     exists(DataFlow::ParameterNode param, DataFlow::FunctionNode fun |
       (

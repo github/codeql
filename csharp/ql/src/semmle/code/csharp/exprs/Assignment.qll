@@ -192,7 +192,7 @@ class AddOrRemoveEventExpr extends AssignOperation, @assign_event_expr {
 /**
  * An event addition, for example line 9 in
  *
- * ```
+ * ```csharp
  * class A {
  *   public delegate void EventHandler(object sender, object e);
  *
@@ -213,7 +213,7 @@ class AddEventExpr extends AddOrRemoveEventExpr, @add_event_expr {
 /**
  * An event removal, for example line 9 in
  *
- * ```
+ * ```csharp
  * class A {
  *   public delegate void EventHandler(object sender, object e);
  *

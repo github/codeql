@@ -11,9 +11,9 @@ import semmle.python.filters.GeneratedCode
 import semmle.python.filters.Tests
 
 predicate classify(File f, string tag) {
-    f instanceof GeneratedFile and tag = "generated"
-    or
-    exists(TestScope t | t.getLocation().getFile() = f) and tag = "test"
+  f instanceof GeneratedFile and tag = "generated"
+  or
+  exists(TestScope t | t.getLocation().getFile() = f) and tag = "test"
 }
 
 from File f, string tag

@@ -217,16 +217,19 @@ predicate readStep(Node node1, Content f, Node node2) {
 }
 
 /**
- * Gets a representative (boxed) type for `t` for the purpose of pruning
- * possible flow. A single type is used for all numeric types to account for
- * numeric conversions, and otherwise the erasure is used.
+ * Holds if values stored inside content `c` are cleared at node `n`.
  */
-Type getErasedRepr(Type t) {
-  suppressUnusedType(t) and
+predicate clearsContent(Node n, Content c) {
+  none() // stub implementation
+}
+
+/** Gets the type of `n` used for type pruning. */
+Type getNodeType(Node n) {
+  suppressUnusedNode(n) and
   result instanceof VoidType // stub implementation
 }
 
-/** Gets a string representation of a type returned by `getErasedRepr`. */
+/** Gets a string representation of a type returned by `getNodeType`. */
 string ppReprType(Type t) { none() } // stub implementation
 
 /**
@@ -238,7 +241,7 @@ predicate compatibleTypes(Type t1, Type t2) {
   any() // stub implementation
 }
 
-private predicate suppressUnusedType(Type t) { any() }
+private predicate suppressUnusedNode(Node n) { any() }
 
 //////////////////////////////////////////////////////////////////////////////
 // Java QL library compatibility wrappers

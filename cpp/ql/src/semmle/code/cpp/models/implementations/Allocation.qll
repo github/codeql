@@ -1,5 +1,5 @@
 /**
- * Provides implementation classes modelling various methods of allocation
+ * Provides implementation classes modeling various methods of allocation
  * (`malloc`, `new` etc). See `semmle.code.cpp.models.interfaces.Allocation`
  * for usage information.
  */

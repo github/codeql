@@ -17,7 +17,7 @@ class ObjectOrCollectionInitializer extends Expr, @objectorcollection_init_expr 
 /**
  * An object initializer, for example `{ X = 0, Y = 1 }` on line 6 in
  *
- * ```
+ * ```csharp
  * class A {
  *   int X;
  *   int Y;
@@ -34,7 +34,7 @@ class ObjectInitializer extends ObjectOrCollectionInitializer, @object_init_expr
    * is a member initializer of the object initializer `{ X = 0, Y = 1 }` on
    * line 6 in
    *
-   * ```
+   * ```csharp
    * class A {
    *   int X;
    *   int Y;
@@ -52,7 +52,7 @@ class ObjectInitializer extends ObjectOrCollectionInitializer, @object_init_expr
    * `Y = 1` is the second (`i = 1`) member initializer of the object initializer
    * `{ X = 0, Y = 1 }` on line 6 in
    *
-   * ```
+   * ```csharp
    * class A {
    *   int X;
    *   int Y;
@@ -78,7 +78,7 @@ class ObjectInitializer extends ObjectOrCollectionInitializer, @object_init_expr
 /**
  * A member initializer, for example `X = 0` on line 6 in
  *
- * ```
+ * ```csharp
  * class A {
  *   int X;
  *   int Y;
@@ -99,7 +99,7 @@ class MemberInitializer extends AssignExpr {
 /**
  * A collection initializer, for example `{ {0, "a"}, {1, "b"} }` in
  *
- * ```
+ * ```csharp
  * var dict = new Dictionary<int, string>{
  *   {0, "a"},
  *   {1, "b"}
@@ -111,7 +111,7 @@ class CollectionInitializer extends ObjectOrCollectionInitializer, @collection_i
    * Gets an element initializer of this collection initializer, for example the
    * implicit call to `Add(0, "a")` on line 2 in
    *
-   * ```
+   * ```csharp
    * var dict = new Dictionary<int, string>{
    *   {0, "a"},
    *   {1, "b"}
@@ -125,7 +125,7 @@ class CollectionInitializer extends ObjectOrCollectionInitializer, @collection_i
    * example the second (`i = 1`) element initializer is the implicit call to
    * `Add(1, "b")` in
    *
-   * ```
+   * ```csharp
    * var dict = new Dictionary<int, string>{
    *   {0, "a"},
    *   {1, "b"}
@@ -148,7 +148,7 @@ class CollectionInitializer extends ObjectOrCollectionInitializer, @collection_i
  * An element initializer, for example the implicit call to `Add(0, "a")`
  * on line 2 in
  *
- * ```
+ * ```csharp
  * var dict = new Dictionary<int, string>{
  *   {0, "a"},
  *   {1, "b"}
@@ -162,7 +162,7 @@ class ElementInitializer extends MethodCall {
 /**
  * A constructor call, for example `new A()` on line 3 in
  *
- * ```
+ * ```csharp
  * class A {
  *   public static A Create() {
  *     return new A();
@@ -188,7 +188,7 @@ class ObjectCreation extends Call, LateBindableExpr, @object_creation_expr {
    * Gets the object initializer or collection initializer of this constructor
    * call, if any. For example `{ {0, "a"}, {1, "b"} }` in
    *
-   * ```
+   * ```csharp
    * var dict = new Dictionary<int, string>{
    *   {0, "a"},
    *   {1, "b"}
@@ -210,7 +210,7 @@ class ObjectCreation extends Call, LateBindableExpr, @object_creation_expr {
  * An anonymous constructor call, for example
  * `new { First = x[0], Last = x[x.Length - 1] }` on line 2 in
  *
- * ```
+ * ```csharp
  * public IEnumerable<string> FirstLast(IEnumerable<string> list) {
  *   return list.Select(x => new { First = x[0], Last = x[x.Length - 1] }).
  *               Select(y => y.First + y.Last);
@@ -245,7 +245,7 @@ class DelegateCreation extends Expr, @delegate_creation_expr {
 /**
  * An explicit delegate creation, for example `new D(M)` on line 6 in
  *
- * ```
+ * ```csharp
  * class A {
  *   delegate void D(int x);
  *
@@ -260,7 +260,7 @@ class ExplicitDelegateCreation extends DelegateCreation, @explicit_delegate_crea
 /**
  * An implicit delegate creation, for example the access to `M` on line 6 in
  *
- * ```
+ * ```csharp
  * class A {
  *   delegate void D(int x);
  *
@@ -275,7 +275,7 @@ class ImplicitDelegateCreation extends DelegateCreation, @implicit_delegate_crea
 /**
  * An array initializer, for example `{ {0, 1}, {2, 3}, {4, 5} }` in
  *
- * ```
+ * ```csharp
  * var ints = new int[,] {
  *   {0, 1},
  *   {2, 3},
@@ -288,7 +288,7 @@ class ArrayInitializer extends Expr, @array_init_expr {
    * Gets an element of this array initializer, for example `{0, 1}` on line
    * 2 (itself an array initializer) in
    *
-   * ```
+   * ```csharp
    * var ints = new int[,] {
    *   {0, 1},
    *   {2, 3},
@@ -302,7 +302,7 @@ class ArrayInitializer extends Expr, @array_init_expr {
    * Gets the `i`th element of this array initializer, for example the second
    * (`i = 1`) element is `{2, 3}` on line 3 (itself an array initializer) in
    *
-   * ```
+   * ```csharp
    * var ints = new int[,] {
    *   {0, 1},
    *   {2, 3},
@@ -335,7 +335,7 @@ class ArrayCreation extends Expr, @array_creation_expr {
    * Gets a dimension's length argument of this array creation, for
    * example `5` in
    *
-   * ```
+   * ```csharp
    * new int[5, 10]
    * ```
    */
@@ -345,7 +345,7 @@ class ArrayCreation extends Expr, @array_creation_expr {
    * Gets the `i`th dimension's length argument of this array creation, for
    * example the second (`i = 1`) dimension's length is `10` in
    *
-   * ```
+   * ```csharp
    * new int[5, 10]
    * ```
    */

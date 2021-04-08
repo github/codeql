@@ -4,7 +4,7 @@ private import semmle.python.pointsto.PointsTo
 
 /** Make unknown type visible */
 class UnknownType extends UnknownClassInternal {
-    override string toString() { result = "*UNKNOWN TYPE" }
+  override string toString() { result = "*UNKNOWN TYPE" }
 }
 
 from PythonClassObjectInternal cls

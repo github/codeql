@@ -23,7 +23,7 @@ predicate isConstantCondition(Expr e, boolean b) {
  * Holds if comparison operation `co` is constant with the Boolean value `b`.
  * For example, the comparison `x > x` is constantly `false` in
  *
- * ```
+ * ```csharp
  * int MaxWrong(int x, int y) => x > x ? x : y;
  * ```
  */

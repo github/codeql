@@ -1,3 +1,8 @@
+/**
+ * Provides implementation classes modeling `memcpy` and various similar
+ * functions. See `semmle.code.cpp.models.Models` for usage information.
+ */
+
 import semmle.code.cpp.Function
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.DataFlow

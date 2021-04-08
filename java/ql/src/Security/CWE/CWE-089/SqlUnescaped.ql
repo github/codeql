@@ -40,7 +40,7 @@ class UncontrolledStringBuilderSourceFlowConfig extends TaintTracking::Configura
 from QueryInjectionSink query, Expr uncontrolled
 where
   (
-    builtFromUncontrolledConcat(query.getExpr(), uncontrolled)
+    builtFromUncontrolledConcat(query.asExpr(), uncontrolled)
     or
     exists(StringBuilderVar sbv, UncontrolledStringBuilderSourceFlowConfig conf |
       uncontrolledStringBuilderQuery(sbv, uncontrolled) and

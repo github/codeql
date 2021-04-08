@@ -62,7 +62,7 @@ abstract class AbstractValue extends TAbstractValue {
    *
    * Such values only propagate through adjacent reads, for example, in
    *
-   * ```
+   * ```csharp
    * int M()
    * {
    *     var x = new string[]{ "a", "b", "c" }.ToList();
@@ -350,7 +350,7 @@ class DereferenceableExpr extends Expr {
    *
    * For example, if the case statement `case string s` matches in
    *
-   * ```
+   * ```csharp
    * switch (o)
    * {
    *     case string s:
@@ -562,7 +562,7 @@ class AccessOrCallExpr extends Expr {
    *
    * Examples:
    *
-   * ```
+   * ```csharp
    * x.Foo.Bar();   // SSA qualifier: SSA definition for `x.Foo`
    * x.Bar();       // SSA qualifier: SSA definition for `x`
    * x.Foo().Bar(); // SSA qualifier: SSA definition for `x`
@@ -607,7 +607,7 @@ private AssignableAccess getATrackedAccess(Ssa::Definition def, ControlFlow::Nod
  *
  * For example, the property call `x.Field.Property` on line 3 is guarded in
  *
- * ```
+ * ```csharp
  * string M(C x) {
  *   if (x.Field.Property != null)
  *     return x.Field.Property.ToString();
@@ -621,7 +621,7 @@ private AssignableAccess getATrackedAccess(Ssa::Definition def, ControlFlow::Nod
  * guard, whereas the null-guard on `stack.Pop()` on line 4 is not (invoking
  * `Pop()` twice on a stack does not yield the same result):
  *
- * ```
+ * ```csharp
  * string M(Stack<object> stack) {
  *   if (stack == null)
  *     return "";
@@ -686,7 +686,7 @@ class GuardedExpr extends AccessOrCallExpr {
  * into account. That is, one control flow node belonging to an expression may
  * be guarded, while another split need not be guarded:
  *
- * ```
+ * ```csharp
  * if (b)
  *     if (x == null)
  *         return;
@@ -736,7 +736,7 @@ class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
  * is, one data flow node belonging to an expression may be guarded, while another
  * split need not be guarded:
  *
- * ```
+ * ```csharp
  * if (b)
  *     if (x == null)
  *         return;
@@ -876,6 +876,8 @@ module Internal {
     not e.(QualifiableExpr).isConditional()
     or
     e instanceof SuppressNullableWarningExpr
+    or
+    e.stripCasts().getType() = any(ValueType t | not t instanceof NullableType)
   }
 
   /** Holds if expression `e2` is a non-`null` value whenever `e1` is. */
@@ -1262,7 +1264,7 @@ module Internal {
      *
      * For example, if the case statement `case ""` matches in
      *
-     * ```
+     * ```csharp
      * switch (o)
      * {
      *     case "":

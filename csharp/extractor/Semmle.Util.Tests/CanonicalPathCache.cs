@@ -21,15 +21,7 @@ namespace SemmleTests.Semmle.Util
             // Change directories to a directory that is in canonical form.
             Directory.SetCurrentDirectory(cache.GetCanonicalPath(Path.GetTempPath()));
 
-            if (Win32.IsWindows())
-            {
-                root = @"X:\";
-            }
-            else
-            {
-                root = "/";
-            }
-
+            root = Win32.IsWindows() ? @"X:\" : "/";
         }
 
         void IDisposable.Dispose()
@@ -143,10 +135,10 @@ namespace SemmleTests.Semmle.Util
             Assert.Equal(0, cache.CacheSize);
 
             // The file "ABC" will fill the cache with parent directory info.
-            string cp = cache.GetCanonicalPath("ABC");
+            cache.GetCanonicalPath("ABC");
             Assert.True(cache.CacheSize == 2);
 
-            cp = cache.GetCanonicalPath("def");
+            string cp = cache.GetCanonicalPath("def");
             Assert.Equal(2, cache.CacheSize);
             Assert.Equal(Path.GetFullPath("def"), cp);
         }

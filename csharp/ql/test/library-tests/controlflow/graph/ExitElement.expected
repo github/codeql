@@ -582,11 +582,25 @@
 | ConditionalAccess.cs:25:13:25:14 | "" | ConditionalAccess.cs:25:13:25:14 | "" | non-null |
 | ConditionalAccess.cs:25:16:25:32 | call to method CommaJoinWith | ConditionalAccess.cs:25:16:25:32 | call to method CommaJoinWith | normal |
 | ConditionalAccess.cs:25:31:25:31 | access to local variable s | ConditionalAccess.cs:25:31:25:31 | access to local variable s | normal |
-| ConditionalAccess.cs:31:70:31:71 | access to parameter s1 | ConditionalAccess.cs:31:70:31:71 | access to parameter s1 | normal |
-| ConditionalAccess.cs:31:70:31:78 | ... + ... | ConditionalAccess.cs:31:70:31:78 | ... + ... | normal |
-| ConditionalAccess.cs:31:70:31:83 | ... + ... | ConditionalAccess.cs:31:70:31:83 | ... + ... | normal |
-| ConditionalAccess.cs:31:75:31:78 | ", " | ConditionalAccess.cs:31:75:31:78 | ", " | normal |
-| ConditionalAccess.cs:31:82:31:83 | access to parameter s2 | ConditionalAccess.cs:31:82:31:83 | access to parameter s2 | normal |
+| ConditionalAccess.cs:30:28:30:32 | ... = ... | ConditionalAccess.cs:30:28:30:32 | ... = ... | normal |
+| ConditionalAccess.cs:30:32:30:32 | 0 | ConditionalAccess.cs:30:32:30:32 | 0 | normal |
+| ConditionalAccess.cs:33:5:36:5 | {...} | ConditionalAccess.cs:35:9:35:12 | access to property Prop | null |
+| ConditionalAccess.cs:33:5:36:5 | {...} | ConditionalAccess.cs:35:14:35:24 | call to method Out | normal |
+| ConditionalAccess.cs:34:9:34:13 | ... = ... | ConditionalAccess.cs:34:9:34:13 | ... = ... | normal |
+| ConditionalAccess.cs:34:9:34:14 | ...; | ConditionalAccess.cs:34:9:34:13 | ... = ... | normal |
+| ConditionalAccess.cs:34:13:34:13 | 0 | ConditionalAccess.cs:34:13:34:13 | 0 | normal |
+| ConditionalAccess.cs:35:9:35:12 | access to property Prop | ConditionalAccess.cs:35:9:35:12 | access to property Prop | non-null |
+| ConditionalAccess.cs:35:9:35:12 | access to property Prop | ConditionalAccess.cs:35:9:35:12 | access to property Prop | null |
+| ConditionalAccess.cs:35:9:35:12 | this access | ConditionalAccess.cs:35:9:35:12 | this access | normal |
+| ConditionalAccess.cs:35:9:35:25 | ...; | ConditionalAccess.cs:35:9:35:12 | access to property Prop | null |
+| ConditionalAccess.cs:35:9:35:25 | ...; | ConditionalAccess.cs:35:14:35:24 | call to method Out | normal |
+| ConditionalAccess.cs:35:14:35:24 | call to method Out | ConditionalAccess.cs:35:9:35:12 | access to property Prop | null |
+| ConditionalAccess.cs:35:14:35:24 | call to method Out | ConditionalAccess.cs:35:14:35:24 | call to method Out | normal |
+| ConditionalAccess.cs:41:70:41:71 | access to parameter s1 | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 | normal |
+| ConditionalAccess.cs:41:70:41:78 | ... + ... | ConditionalAccess.cs:41:70:41:78 | ... + ... | normal |
+| ConditionalAccess.cs:41:70:41:83 | ... + ... | ConditionalAccess.cs:41:70:41:83 | ... + ... | normal |
+| ConditionalAccess.cs:41:75:41:78 | ", " | ConditionalAccess.cs:41:75:41:78 | ", " | normal |
+| ConditionalAccess.cs:41:82:41:83 | access to parameter s2 | ConditionalAccess.cs:41:82:41:83 | access to parameter s2 | normal |
 | Conditions.cs:4:5:9:5 | {...} | Conditions.cs:7:14:7:16 | access to parameter inc | false [true] |
 | Conditions.cs:4:5:9:5 | {...} | Conditions.cs:8:13:8:15 | ...-- | normal |
 | Conditions.cs:5:9:6:16 | if (...) ... | Conditions.cs:5:13:5:15 | access to parameter inc | false |

@@ -18,32 +18,32 @@
 import python
 
 predicate needs_docstring(Scope s) {
-    s.isPublic() and
-    (
-        not s instanceof Function
-        or
-        function_needs_docstring(s)
-    )
+  s.isPublic() and
+  (
+    not s instanceof Function
+    or
+    function_needs_docstring(s)
+  )
 }
 
 predicate function_needs_docstring(Function f) {
-    not exists(FunctionValue fo, FunctionValue base | fo.overrides(base) and fo.getScope() = f |
-        not function_needs_docstring(base.getScope())
-    ) and
-    f.getName() != "lambda" and
-    (f.getMetrics().getNumberOfLinesOfCode() - count(f.getADecorator())) > 2 and
-    not exists(PythonPropertyObject p |
-        p.getGetter().getFunction() = f or
-        p.getSetter().getFunction() = f
-    )
+  not exists(FunctionValue fo, FunctionValue base | fo.overrides(base) and fo.getScope() = f |
+    not function_needs_docstring(base.getScope())
+  ) and
+  f.getName() != "lambda" and
+  (f.getMetrics().getNumberOfLinesOfCode() - count(f.getADecorator())) > 2 and
+  not exists(PythonPropertyObject p |
+    p.getGetter().getFunction() = f or
+    p.getSetter().getFunction() = f
+  )
 }
 
 string scope_type(Scope s) {
-    result = "Module" and s instanceof Module and not s.(Module).isPackage()
-    or
-    result = "Class" and s instanceof Class
-    or
-    result = "Function" and s instanceof Function
+  result = "Module" and s instanceof Module and not s.(Module).isPackage()
+  or
+  result = "Class" and s instanceof Class
+  or
+  result = "Function" and s instanceof Function
 }
 
 from Scope s

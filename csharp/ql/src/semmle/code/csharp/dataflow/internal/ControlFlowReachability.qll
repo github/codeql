@@ -44,7 +44,7 @@ private ControlFlow::BasicBlock getABasicBlockInScope(ControlFlowScope scope, bo
  *
  * For example, in
  *
- * ```
+ * ```csharp
  * if (b)
  *     ....
  * var x = "foo";

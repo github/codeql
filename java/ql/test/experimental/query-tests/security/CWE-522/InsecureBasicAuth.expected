@@ -1,0 +1,43 @@
+edges
+| InsecureBasicAuth.java:20:39:20:52 | ... + ... : String | InsecureBasicAuth.java:28:3:28:6 | post |
+| InsecureBasicAuth.java:35:19:35:64 | "http://www.example.com:8000/payment/retrieve" : String | InsecureBasicAuth.java:38:3:38:5 | get |
+| InsecureBasicAuth.java:45:19:45:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:54:3:54:6 | post |
+| InsecureBasicAuth.java:61:19:61:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:71:3:71:6 | post |
+| InsecureBasicAuth.java:78:47:78:52 | "http" : String | InsecureBasicAuth.java:86:3:86:6 | post |
+| InsecureBasicAuth.java:93:19:93:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:102:3:102:6 | post |
+| InsecureBasicAuth.java:109:19:109:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:119:3:119:6 | post |
+| InsecureBasicAuth.java:126:19:126:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:130:28:130:67 | (...)... : URLConnection |
+| InsecureBasicAuth.java:130:28:130:67 | (...)... : URLConnection | InsecureBasicAuth.java:133:3:133:6 | conn |
+| InsecureBasicAuth.java:145:21:145:28 | protocol : String | InsecureBasicAuth.java:146:28:146:67 | (...)... : URLConnection |
+| InsecureBasicAuth.java:146:28:146:67 | (...)... : URLConnection | InsecureBasicAuth.java:149:3:149:6 | conn |
+nodes
+| InsecureBasicAuth.java:20:39:20:52 | ... + ... : String | semmle.label | ... + ... : String |
+| InsecureBasicAuth.java:28:3:28:6 | post | semmle.label | post |
+| InsecureBasicAuth.java:35:19:35:64 | "http://www.example.com:8000/payment/retrieve" : String | semmle.label | "http://www.example.com:8000/payment/retrieve" : String |
+| InsecureBasicAuth.java:38:3:38:5 | get | semmle.label | get |
+| InsecureBasicAuth.java:45:19:45:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | semmle.label | "http://www.example.com/rest/getuser.do?uid=abcdx" : String |
+| InsecureBasicAuth.java:54:3:54:6 | post | semmle.label | post |
+| InsecureBasicAuth.java:61:19:61:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | semmle.label | "http://www.example.com/rest/getuser.do?uid=abcdx" : String |
+| InsecureBasicAuth.java:71:3:71:6 | post | semmle.label | post |
+| InsecureBasicAuth.java:78:47:78:52 | "http" : String | semmle.label | "http" : String |
+| InsecureBasicAuth.java:86:3:86:6 | post | semmle.label | post |
+| InsecureBasicAuth.java:93:19:93:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | semmle.label | "http://www.example.com/rest/getuser.do?uid=abcdx" : String |
+| InsecureBasicAuth.java:102:3:102:6 | post | semmle.label | post |
+| InsecureBasicAuth.java:109:19:109:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | semmle.label | "http://www.example.com/rest/getuser.do?uid=abcdx" : String |
+| InsecureBasicAuth.java:119:3:119:6 | post | semmle.label | post |
+| InsecureBasicAuth.java:126:19:126:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | semmle.label | "http://www.example.com/rest/getuser.do?uid=abcdx" : String |
+| InsecureBasicAuth.java:130:28:130:67 | (...)... : URLConnection | semmle.label | (...)... : URLConnection |
+| InsecureBasicAuth.java:133:3:133:6 | conn | semmle.label | conn |
+| InsecureBasicAuth.java:145:21:145:28 | protocol : String | semmle.label | protocol : String |
+| InsecureBasicAuth.java:146:28:146:67 | (...)... : URLConnection | semmle.label | (...)... : URLConnection |
+| InsecureBasicAuth.java:149:3:149:6 | conn | semmle.label | conn |
+#select
+| InsecureBasicAuth.java:28:3:28:6 | post | InsecureBasicAuth.java:20:39:20:52 | ... + ... : String | InsecureBasicAuth.java:28:3:28:6 | post | Insecure basic authentication from $@. | InsecureBasicAuth.java:20:39:20:52 | ... + ... | HTTP url |
+| InsecureBasicAuth.java:38:3:38:5 | get | InsecureBasicAuth.java:35:19:35:64 | "http://www.example.com:8000/payment/retrieve" : String | InsecureBasicAuth.java:38:3:38:5 | get | Insecure basic authentication from $@. | InsecureBasicAuth.java:35:19:35:64 | "http://www.example.com:8000/payment/retrieve" | HTTP url |
+| InsecureBasicAuth.java:54:3:54:6 | post | InsecureBasicAuth.java:45:19:45:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:54:3:54:6 | post | Insecure basic authentication from $@. | InsecureBasicAuth.java:45:19:45:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" | HTTP url |
+| InsecureBasicAuth.java:71:3:71:6 | post | InsecureBasicAuth.java:61:19:61:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:71:3:71:6 | post | Insecure basic authentication from $@. | InsecureBasicAuth.java:61:19:61:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" | HTTP url |
+| InsecureBasicAuth.java:86:3:86:6 | post | InsecureBasicAuth.java:78:47:78:52 | "http" : String | InsecureBasicAuth.java:86:3:86:6 | post | Insecure basic authentication from $@. | InsecureBasicAuth.java:78:47:78:52 | "http" | HTTP url |
+| InsecureBasicAuth.java:102:3:102:6 | post | InsecureBasicAuth.java:93:19:93:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:102:3:102:6 | post | Insecure basic authentication from $@. | InsecureBasicAuth.java:93:19:93:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" | HTTP url |
+| InsecureBasicAuth.java:119:3:119:6 | post | InsecureBasicAuth.java:109:19:109:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:119:3:119:6 | post | Insecure basic authentication from $@. | InsecureBasicAuth.java:109:19:109:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" | HTTP url |
+| InsecureBasicAuth.java:133:3:133:6 | conn | InsecureBasicAuth.java:126:19:126:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:133:3:133:6 | conn | Insecure basic authentication from $@. | InsecureBasicAuth.java:126:19:126:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" | HTTP url |
+| InsecureBasicAuth.java:149:3:149:6 | conn | InsecureBasicAuth.java:145:21:145:28 | protocol : String | InsecureBasicAuth.java:149:3:149:6 | conn | Insecure basic authentication from $@. | InsecureBasicAuth.java:145:21:145:28 | protocol | HTTP url |

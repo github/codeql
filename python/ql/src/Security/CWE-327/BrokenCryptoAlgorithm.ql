@@ -15,16 +15,16 @@ import semmle.python.security.SensitiveData
 import semmle.python.security.Crypto
 
 class BrokenCryptoConfiguration extends TaintTracking::Configuration {
-    BrokenCryptoConfiguration() { this = "Broken crypto configuration" }
+  BrokenCryptoConfiguration() { this = "Broken crypto configuration" }
 
-    override predicate isSource(TaintTracking::Source source) {
-        source instanceof SensitiveDataSource
-    }
+  override predicate isSource(TaintTracking::Source source) {
+    source instanceof SensitiveDataSource
+  }
 
-    override predicate isSink(TaintTracking::Sink sink) { sink instanceof WeakCryptoSink }
+  override predicate isSink(TaintTracking::Sink sink) { sink instanceof WeakCryptoSink }
 }
 
 from BrokenCryptoConfiguration config, TaintedPathSource src, TaintedPathSink sink
 where config.hasFlowPath(src, sink)
 select sink.getSink(), src, sink, "$@ is used in a broken or weak cryptographic algorithm.",
-    src.getSource(), "Sensitive data"
+  src.getSource(), "Sensitive data"

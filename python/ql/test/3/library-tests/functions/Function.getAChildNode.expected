@@ -1,0 +1,16 @@
+| test.py:4:1:11:2 | Function func | test.py:5:5:5:12 | pos_only |
+| test.py:4:1:11:2 | Function func | test.py:7:5:7:10 | normal |
+| test.py:4:1:11:2 | Function func | test.py:8:6:8:9 | args |
+| test.py:4:1:11:2 | Function func | test.py:9:5:9:16 | keyword_only |
+| test.py:4:1:11:2 | Function func | test.py:10:7:10:12 | kwargs |
+| test.py:4:1:11:2 | Function func | test.py:12:5:12:41 | ExprStmt |
+| test.py:4:1:11:2 | Function func | test.py:13:5:13:15 | ExprStmt |
+| test.py:4:1:11:2 | Function func | test.py:14:5:14:17 | ExprStmt |
+| test.py:23:1:31:2 | Function func2 | test.py:24:5:24:11 | pos_req |
+| test.py:23:1:31:2 | Function func2 | test.py:25:5:25:17 | pos_w_default |
+| test.py:23:1:31:2 | Function func2 | test.py:26:5:26:18 | pos_w_default2 |
+| test.py:23:1:31:2 | Function func2 | test.py:28:5:28:15 | keyword_req |
+| test.py:23:1:31:2 | Function func2 | test.py:29:5:29:21 | keyword_w_default |
+| test.py:23:1:31:2 | Function func2 | test.py:30:5:30:20 | keyword_also_req |
+| test.py:23:1:31:2 | Function func2 | test.py:32:5:32:18 | ExprStmt |
+| test.py:23:1:31:2 | Function func2 | test.py:33:5:40:5 | ExprStmt |

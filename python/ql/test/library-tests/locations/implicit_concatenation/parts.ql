@@ -1,7 +1,7 @@
 import python
 
 class ImplicitConcat extends StrConst {
-    ImplicitConcat() { exists(this.getAnImplicitlyConcatenatedPart()) }
+  ImplicitConcat() { exists(this.getAnImplicitlyConcatenatedPart()) }
 }
 
 from StrConst s, StringPart part, int n

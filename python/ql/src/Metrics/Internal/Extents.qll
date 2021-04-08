@@ -15,10 +15,19 @@ import python
  * including the body (if any), as opposed to the location of its name only.
  */
 class RangeFunction extends Function {
-    predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-        super.getLocation().hasLocationInfo(path, sl, sc, _, _) and
-        this.getBody().getLastItem().getLocation().hasLocationInfo(path, _, _, el, ec)
-    }
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    super.getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _) and
+    this.getBody().getLastItem().getLocation().hasLocationInfo(filepath, _, _, endline, endcolumn)
+  }
 }
 
 /**
@@ -26,8 +35,17 @@ class RangeFunction extends Function {
  * including the body (if any), as opposed to the location of its name only.
  */
 class RangeClass extends Class {
-    predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-        super.getLocation().hasLocationInfo(path, sl, sc, _, _) and
-        this.getBody().getLastItem().getLocation().hasLocationInfo(path, _, _, el, ec)
-    }
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    super.getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _) and
+    this.getBody().getLastItem().getLocation().hasLocationInfo(filepath, _, _, endline, endcolumn)
+  }
 }

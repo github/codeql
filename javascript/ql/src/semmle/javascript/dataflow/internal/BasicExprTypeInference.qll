@@ -111,7 +111,7 @@ private class AnalyzedNamespaceDeclaration extends DataFlow::AnalyzedValueNode {
 
   AbstractValue getPreviousValue() {
     exists(AnalyzedSsaDefinition def |
-      def.getVariable().getAUse() = astNode.getId() and
+      def.getVariable().getAUse() = astNode.getIdentifier() and
       result = def.getAnRhsValue()
     )
   }

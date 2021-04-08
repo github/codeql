@@ -10,6 +10,6 @@ import python
 
 from AstNode call, PythonFunctionValue method
 where
-    method.getQualifiedName() = "MyClass.methodName" and
-    method.getACall().getNode() = call
+  method.getQualifiedName() = "MyClass.methodName" and
+  method.getACall().getNode() = call
 select call

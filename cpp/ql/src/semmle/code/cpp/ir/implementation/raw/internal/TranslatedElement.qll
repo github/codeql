@@ -24,6 +24,16 @@ private Element getRealParent(Expr expr) {
   result.(Destructor).getADestruction() = expr
 }
 
+IRUserVariable getIRUserVariable(Function func, Variable var) {
+  result.getVariable() = var and
+  result.getEnclosingFunction() = func
+}
+
+IRTempVariable getIRTempVariable(Locatable ast, TempVariableTag tag) {
+  result.getAST() = ast and
+  result.getTag() = tag
+}
+
 /**
  * Holds if `expr` is a constant of a type that can be replaced directly with
  * its value in the IR. This does not include address constants as we have no

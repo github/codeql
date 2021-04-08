@@ -362,7 +362,7 @@ private module Identity {
     IdentityConvertibleGenericType fromType, IdentityConvertibleGenericType toType
   ) {
     // Semantically equivalent with
-    // ```
+    // ```ql
     // ugt = fromType.getUnboundGeneric()
     // and
     // forex(int i |
@@ -773,7 +773,7 @@ predicate convConversionOperator(Type fromType, Type toType) {
 /** 13.1.3.2: Variance conversion. */
 private predicate convVariance(GenericType fromType, GenericType toType) {
   // Semantically equivalent with
-  // ```
+  // ```ql
   // ugt = fromType.getUnboundGeneric()
   // and
   // forex(int i |
