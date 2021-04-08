@@ -1,3 +1,0 @@
-# clevergo.tech/clevergo v0.5.2
-## explicit
-clevergo.tech/clevergo
