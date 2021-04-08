@@ -54,7 +54,7 @@ private predicate isTaintedFileCreation(Expr expSource, Expr exprDest) {
 }
 
 /**
- * Any `File` methods where the temporary directory is still part of the root path.
+ * A `File` method where the temporary directory is still part of the root path.
  */
 private class TaintFollowingFileMethod extends Method {
   TaintFollowingFileMethod() {
