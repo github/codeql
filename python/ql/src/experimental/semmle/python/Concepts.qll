@@ -13,3 +13,17 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
+
+module SqlSanitizer {
+  abstract class Range extends DataFlow::Node {
+    abstract DataFlow::Node getSanitizerNode();
+  }
+}
+
+class SqlSanitizer extends DataFlow::Node {
+  SqlSanitizer::Range range;
+
+  SqlSanitizer() { this = range }
+
+  DataFlow::Node getSanitizerNode() { result = range.getSanitizerNode() }
+}

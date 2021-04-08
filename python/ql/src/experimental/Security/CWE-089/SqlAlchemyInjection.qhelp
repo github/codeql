@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+  <p>
+  Passing user-controlled sources into SQL queries used in SQLAlchemy methods can result in a SQL injection flaw.
+  This tainted SQL query containing a user-controlled source when passed into a SQLAlchemy method can execute a malicious query in a SQL database such as Postgres, MySQL, or SQLite.
+  </p>
+
+  <p>
+  Because a user-controlled source is passed into the query, the malicious user can have complete control over the query itself.
+  When the tainted query is executed, the malicious user can commit malicious actions such as bypassing role restrictions or accessing and modifying restricted data in the SQL database.
+  </p>
+</overview>
+
+<recommendation>
+  <p>
+  SQL injections can be prevented by escaping user-input's special characters that are passed into the SQL query from the user-supplied source.
+  Alternatively, using a sanitize library such as Sqlescapy will ensure that user-supplied sources can not act as a malicious query.
+  </p>
+<recommendation>
+
+<example>
+  <p>In the example below, the user-supplied source is passed to a SQLAlchemy method that queries the SQLite database.</p>
+  <sample src="SqlAlchemyInjection-Bad.py" />
+  <p> This can be fixed by using a sanitizer library like Sqlescapy as shown in this annotated code version below.</p>
+  <sample src="SqlAlchemyInjection-Good.py" />
+<example>
+
+<references>
+  <li>OWASP: <a href="https://owasp.org/www-community/attacks/SQL_Injection">SQL Injection</a></li>
+  <li>SQLAlchemy: <a href="https://docs.sqlalchemy.org/en/14/index.html">Documentation</a></li>
+</references>
+</qhelp>
