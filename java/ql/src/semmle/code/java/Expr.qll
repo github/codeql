@@ -645,9 +645,10 @@ class BooleanLiteral extends Literal, @booleanliteral {
  * - It is written in binary, octal or hexadecimal notation
  * - It is written in decimal notation, has the value `2147483648` and is preceded
  *   by a minus; in this case the value of the IntegerLiteral is -2147483648 and
- *   the preceding minus will *not* be modeled as `MinusExpr`.<br/>
- *   In all other cases the preceding minus, if any, will be modeled as separate
- *   `MinusExpr`.
+ *   the preceding minus will *not* be modeled as `MinusExpr`.
+ *
+ * In all other cases the preceding minus, if any, will be modeled as a separate
+ * `MinusExpr`.
  *
  * The last exception is necessary because `2147483648` on its own would not be
  * a valid integer literal (and could also not be parsed as CodeQL `int`).
@@ -667,9 +668,10 @@ class IntegerLiteral extends Literal, @integerliteral {
  * - It is written in decimal notation, has the value `9223372036854775808` and
  *   is preceded by a minus; in this case the value of the LongLiteral is
  *   -9223372036854775808 and the preceding minus will *not* be modeled as
- *   `MinusExpr`.<br/>
- *   In all other cases the preceding minus, if any, will be modeled as separate
  *   `MinusExpr`.
+ *
+ * In all other cases the preceding minus, if any, will be modeled as a separate
+ * `MinusExpr`.
  *
  * The last exception is necessary because `9223372036854775808` on its own
  * would not be a valid long literal.
