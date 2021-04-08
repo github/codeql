@@ -82,7 +82,7 @@ module Babel {
    * specifies a mapping from a path prefix to a root.
    */
   class RootImportConfig extends Plugin {
-    RootImportConfig() { pluginName = "babel-plugin-root-import" }
+    RootImportConfig() { pluginName = ["babel-plugin-root-import", "root-import"] }
 
     /**
      * Gets the root specified for the given prefix.
@@ -135,13 +135,41 @@ module Babel {
     Folder getFolder() { result = getJsonFile().getParentContainer() }
   }
 
-  private class BabelPathMapping extends ImportResolution::ScopedPathMapping {
+  private class RootImportPathMapping extends ImportResolution::ScopedPathMapping {
     RootImportConfig plugin;
 
-    BabelPathMapping() { this = plugin.getFolder() }
+    RootImportPathMapping() { this = plugin.getFolder() }
 
     override predicate replaceByPrefix(string oldPrefix, string newPrefix) {
       plugin.getRoot(oldPrefix) = newPrefix
+    }
+  }
+
+  /** A configuration object for the `babel-plugin-module-resolver` plugin. */
+  private class ModuleResolverConfig extends Plugin {
+    ModuleResolverConfig() { pluginName = ["babel-plugin-module-resolver", "module-resolver"] }
+
+    /** Gets a folder from which non-relative imports can be resolved. */
+    string getARoot() { result = getOption("root").getElementValue(_).getStringValue() }
+
+    /** Gets a path that the prefix `name` should be resolved to. */
+    string getAlias(string name) { result = getOption("alias").getPropValue(name).getStringValue() }
+
+    /** Gets the folder in which this configuration is located. */
+    Folder getFolder() { result = getJsonFile().getParentContainer() }
+  }
+
+  private class ModuleResolverPathMapping extends ImportResolution::ScopedPathMapping {
+    ModuleResolverConfig plugin;
+
+    ModuleResolverPathMapping() { this = plugin.getFolder() }
+
+    override predicate replaceByPrefix(string oldPrefix, string newPrefix) {
+      newPrefix = plugin.getAlias(oldPrefix)
+    }
+
+    override predicate isAdditionalRoot(string root) {
+      root = plugin.getARoot()
     }
   }
 

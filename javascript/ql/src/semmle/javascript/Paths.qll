@@ -376,6 +376,9 @@ abstract class PathExpr extends Locatable {
     result = getAdditionalSearchRoot(priority)
     or
     ImportResolution::replaceByRelativePath(this, result, _) and
+    priority = -2
+    or
+    ImportResolution::hasExtraSearchRoot(this, result) and
     priority = -1
   }
 
@@ -543,6 +546,32 @@ module ImportResolution {
      * `foo`, `foo/`, and `foo/bar/baz`.
      */
     predicate replaceByPrefix(string oldPrefix, string newPrefix, Folder root) { none() }
+
+    /**
+     * Holds if any non-relative import path in scope of this path mapping should be attempted to be resolved
+     * relative to the given `root` folder.
+     */
+    predicate isAdditionalRootFolder(Folder root) { none() }
+
+    /**
+     * Holds if any non-relative import path in scope of this path mapping should be attempted to be resolved
+     * relative to the given `root` folder.
+     *
+     * This is similar to `isAdditionalRootFolder`, except the `root` is given as a string, interpreted
+     * relative to `this`.
+     */
+    predicate isAdditionalRoot(string root) { none() }
+  }
+
+  private predicate isAdditionalRootFolder(ScopedPathMapping mapping, Folder root) {
+    mapping.isAdditionalRootFolder(root)
+    or
+    exists(string rootString |
+      mapping.isAdditionalRoot(rootString) and
+      root.getRelativePath() =
+        (mapping.getRelativePath() + "/" + rootString.replaceAll("\\", "/"))
+            .regexpReplaceAll("/\\.?(?=$|/)", "") // remove extra slashes and `/.` segments
+    )
   }
 
   /**
@@ -647,9 +676,23 @@ module ImportResolution {
     )
   }
 
+  /**
+   * Holds if an import mapping has provided `root` as an extra search root for `expr`.
+   */
+  predicate hasExtraSearchRoot(PathExpr expr, Folder root) {
+    isAdditionalRootFolder(getAPathMappingInScopeOfPathExpr(expr), root)
+  }
+
   private class MappedPathString extends PathString {
     MappedPathString() { replaceByRelativePath(_, _, this) }
 
-    override Folder getARootFolder() { replaceByRelativePath(_, result, this) }
+    override Folder getARootFolder() {
+      replaceByRelativePath(_, result, this)
+      or
+      exists(PathExpr expr |
+        expr.getValue() = this and
+        hasExtraSearchRoot(expr, result)
+      )
+    }
   }
 }
