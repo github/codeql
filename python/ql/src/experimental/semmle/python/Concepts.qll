@@ -14,7 +14,7 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 
-/** Provides classes for modeling LDAP-related APIs. */
+/** Provides classes for modeling LDAP query execution-related APIs. */
 module LDAPQuery {
   /**
    * A data-flow node that collects methods executing a LDAP query.
