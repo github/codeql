@@ -19,7 +19,7 @@ import semmle.code.cpp.valuenumbering.GlobalValueNumbering
  * For example: `if(intA>0 & intA<10 & charBuf&myFunc(charBuf[intA]))`.
  * In this case, the function will be called in any case, and even the sequence of the call is not guaranteed.
  */
-class DangerousBitOperations extends Expr {
+class DangerousBitOperations extends BinaryBitwiseOperation {
   FunctionCall bfc;
 
   /**
@@ -28,16 +28,16 @@ class DangerousBitOperations extends Expr {
    * The use of shifts and bitwise operations on any element of an expression indicates a conscious use of the bitwise operator.
    */
   DangerousBitOperations() {
-    bfc = this.(BinaryBitwiseOperation).getRightOperand() and
+    bfc = this.getRightOperand() and
     not this.getParent*() instanceof Assignment and
     not this.getParent*() instanceof Initializer and
     not this.getParent*() instanceof ReturnStmt and
     not this.getParent*() instanceof EqualityOperation and
     not this.getParent*() instanceof UnaryLogicalOperation and
     not this.getParent*() instanceof BinaryLogicalOperation and
-    not this.(BinaryBitwiseOperation).getAChild*() instanceof BitwiseXorExpr and
-    not this.(BinaryBitwiseOperation).getAChild*() instanceof LShiftExpr and
-    not this.(BinaryBitwiseOperation).getAChild*() instanceof RShiftExpr
+    not this.getAChild*() instanceof BitwiseXorExpr and
+    not this.getAChild*() instanceof LShiftExpr and
+    not this.getAChild*() instanceof RShiftExpr
   }
 
   /** Holds when part of a bit expression is used in a logical operation. */
@@ -60,14 +60,14 @@ class DangerousBitOperations extends Expr {
 
   /** Holds when the bit expression contains both arguments and a function call. */
   predicate dangerousArgumentChecking() {
-    not this.(BinaryBitwiseOperation).getLeftOperand() instanceof Call and
-    globalValueNumber(this.(BinaryBitwiseOperation).getLeftOperand().getAChild*()) =
+    not this.getLeftOperand() instanceof Call and
+    globalValueNumber(this.getLeftOperand().getAChild*()) =
       globalValueNumber(bfc.getAnArgument())
   }
 
   /** Holds when function calls are present in the bit expression. */
   predicate functionCallsInBitsExpression() {
-    this.(BinaryBitwiseOperation).getLeftOperand().getAChild*() instanceof FunctionCall
+    this.getLeftOperand().getAChild*() instanceof FunctionCall
   }
 }
 
