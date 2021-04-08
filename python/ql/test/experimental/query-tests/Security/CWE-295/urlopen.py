@@ -5,6 +5,7 @@ urllib.request.urlopen('https://semmle.com', "/path/to/cert/") # BAD (does not a
 urllib.request.urlopen('https://semmle.com', cafile="/path/to/cert/")
 urllib.request.urlopen('https://semmle.com') # BAD
 urllib.request.urlopen('https://semmle.com', cafile=None) # BAD
+urllib.request.urlopen('http://semmle.com', cafile=None) # OK
 
 # Simple flow
 urlopen = urllib.request.urlopen
