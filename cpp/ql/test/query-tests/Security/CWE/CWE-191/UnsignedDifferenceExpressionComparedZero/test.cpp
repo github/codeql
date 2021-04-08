@@ -236,7 +236,7 @@ int test13() {
 
 	if (b != 0) {
 		return 0;
-	}
+	} // b = 0
 
 	return (a - b > 0); // GOOD (as b = 0)
 }
@@ -247,9 +247,9 @@ int test14() {
 
 	if (!b) {
 		return 0;
-	}
+	} // b != 0
 
-	return (a - b > 0); // GOOD (as b = 0) [FALSE POSITIVE]
+	return (a - b > 0); // BAD
 }
 
 struct Numbers
@@ -264,4 +264,37 @@ int test15(Numbers *n) {
 	}
 
 	return (n->a - n->b > 0); // BAD
+}
+
+int test16() {
+	unsigned int a = getAnInt();
+	unsigned int b = getAnInt();
+
+	if (!b) {
+		return 0;
+	} else {
+		return (a - b > 0); // BAD
+	}
+}
+
+int test17() {
+	unsigned int a = getAnInt();
+	unsigned int b = getAnInt();
+
+	if (b == 0) {
+		return 0;
+	} // b != 0
+
+	return (a - b > 0); // BAD
+}
+
+int test18() {
+	unsigned int a = getAnInt();
+	unsigned int b = getAnInt();
+
+	if (b) {
+		return 0;
+	} // b == 0
+
+	return (a - b > 0); // GOOD (as b = 0)
 }
