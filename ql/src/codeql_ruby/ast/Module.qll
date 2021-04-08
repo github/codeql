@@ -8,8 +8,6 @@ private import internal.TreeSitter
  * A representation of a run-time `module` or `class` value.
  */
 class Module extends TModule {
-  Module() { this = TResolved(_) or this = TUnresolved(_) }
-
   /** Get a declaration of this module, if any. */
   ModuleBase getADeclaration() { result.getModule() = this }
 
