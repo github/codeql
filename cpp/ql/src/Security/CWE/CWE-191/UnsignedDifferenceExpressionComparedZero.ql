@@ -12,10 +12,10 @@
 
 import cpp
 import semmle.code.cpp.commons.Exclusions
-import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 import semmle.code.cpp.controlflow.Guards
+import semmle.code.cpp.dataflow.DataFlow
 
 /**
  *  Holds if `sub` is guarded by a condition which ensures that
@@ -37,15 +37,27 @@ predicate exprIsSubLeftOrLess(SubExpr sub, Expr e) {
   e = sub.getLeftOperand()
   or
   exists(Expr other |
-    // GVN equality
+    // use-use
     exprIsSubLeftOrLess(sub, other) and
-    globalValueNumber(e) = globalValueNumber(other)
+    (
+      useUsePair(_, other, e) or
+      useUsePair(_, e, other)
+    )
+  )
+  or
+  exists(Expr other |
+    // dataflow
+    exprIsSubLeftOrLess(sub, other) and
+    (
+      DataFlow::localFlowStep(DataFlow::exprNode(e), DataFlow::exprNode(other)) or
+      DataFlow::localFlowStep(DataFlow::exprNode(other), DataFlow::exprNode(e))
+    )
   )
   or
   exists(Expr other |
     // guard constraining `sub`
     exprIsSubLeftOrLess(sub, other) and
-    isGuarded(sub, other, e) // left >= right
+    isGuarded(sub, other, e) // other >= e
   )
   or
   exists(Expr other, float p, float q |
