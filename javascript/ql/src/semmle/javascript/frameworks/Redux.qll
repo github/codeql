@@ -985,9 +985,7 @@ module Redux {
   }
 
   private class StateStepAsFlowStep extends DataFlow::SharedFlowStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      stateStep(pred, succ)
-    }
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) { stateStep(pred, succ) }
   }
 
   /**
