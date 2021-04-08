@@ -11,6 +11,7 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.PEP249
 private import semmle.python.regex
+private import semmle.python.frameworks.internal.AutomatedModeling
 
 /**
  * Provides models for the `django` PyPI package.
@@ -75,6 +76,8 @@ module Django {
           or
           // `django.views.View` alias
           this = API::moduleImport("django").getMember("views").getMember("View")
+          or
+          this = automatedModeledClass("Django::Views::View", _)
         }
       }
 
@@ -123,58 +126,7 @@ module Django {
                 .getMember("forms")
                 .getMember(["BaseForm", "Form", "BaseModelForm", "ModelForm"])
           or
-          // other Form subclasses defined in Django
-          this =
-            API::moduleImport("django")
-                .getMember("contrib")
-                .getMember("admin")
-                .getMember("forms")
-                .getMember(["AdminAuthenticationForm", "AdminPasswordChangeForm"])
-          or
-          this =
-            API::moduleImport("django")
-                .getMember("contrib")
-                .getMember("admin")
-                .getMember("helpers")
-                .getMember("ActionForm")
-          or
-          this =
-            API::moduleImport("django")
-                .getMember("contrib")
-                .getMember("admin")
-                .getMember("views")
-                .getMember("main")
-                .getMember("ChangeListSearchForm")
-          or
-          this =
-            API::moduleImport("django")
-                .getMember("contrib")
-                .getMember("auth")
-                .getMember("forms")
-                .getMember([
-                    "PasswordResetForm", "UserChangeForm", "SetPasswordForm",
-                    "AdminPasswordChangeForm", "PasswordChangeForm", "AuthenticationForm",
-                    "UserCreationForm"
-                  ])
-          or
-          this =
-            API::moduleImport("django")
-                .getMember("contrib")
-                .getMember("flatpages")
-                .getMember("forms")
-                .getMember("FlatpageForm")
-          or
-          this =
-            API::moduleImport("django")
-                .getMember("forms")
-                .getMember("formsets")
-                .getMember("ManagementForm")
-          or
-          this =
-            API::moduleImport("django")
-                .getMember("forms")
-                .getMember("models")
-                .getMember(["ModelForm", "BaseModelForm"])
+          this = automatedModeledClass("Django::Forms::Form", _)
         }
       }
 
@@ -228,58 +180,7 @@ module Django {
             className in ["ModelChoiceField", "ModelMultipleChoiceField", "InlineForeignKeyField"]
           )
           or
-          // other Field subclasses defined in Django
-          this =
-            API::moduleImport("django")
-                .getMember("contrib")
-                .getMember("auth")
-                .getMember("forms")
-                .getMember(["ReadOnlyPasswordHashField", "UsernameField"])
-          or
-          this =
-            API::moduleImport("django")
-                .getMember("contrib")
-                .getMember("gis")
-                .getMember("forms")
-                .getMember("fields")
-                .getMember([
-                    "GeometryCollectionField", "GeometryField", "LineStringField",
-                    "MultiLineStringField", "MultiPointField", "MultiPolygonField", "PointField",
-                    "PolygonField"
-                  ])
-          or
-          this =
-            API::moduleImport("django")
-                .getMember("contrib")
-                .getMember("postgres")
-                .getMember("forms")
-                .getMember("array")
-                .getMember(["SimpleArrayField", "SplitArrayField"])
-          or
-          this =
-            API::moduleImport("django")
-                .getMember("contrib")
-                .getMember("postgres")
-                .getMember("forms")
-                .getMember("hstore")
-                .getMember("HStoreField")
-          or
-          this =
-            API::moduleImport("django")
-                .getMember("contrib")
-                .getMember("postgres")
-                .getMember("forms")
-                .getMember("ranges")
-                .getMember([
-                    "BaseRangeField", "DateRangeField", "DateTimeRangeField", "DecimalRangeField",
-                    "IntegerRangeField"
-                  ])
-          or
-          this =
-            API::moduleImport("django")
-                .getMember("forms")
-                .getMember("models")
-                .getMember(["InlineForeignKeyField", "ModelChoiceField", "ModelMultipleChoiceField"])
+          this = automatedModeledClass("Django::Forms::Field", _)
         }
       }
 
