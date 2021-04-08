@@ -1,0 +1,14 @@
+edges
+| UseOfLessTrustedSource.java:19:26:19:61 | getHeader(...) : String | UseOfLessTrustedSource.java:25:16:25:25 | remoteAddr |
+| UseOfLessTrustedSource.java:30:21:30:56 | getHeader(...) : String | UseOfLessTrustedSource.java:32:60:32:61 | ip |
+| UseOfLessTrustedSource.java:30:21:30:56 | getHeader(...) : String | UseOfLessTrustedSource.java:58:28:58:48 | ... + ... |
+nodes
+| UseOfLessTrustedSource.java:19:26:19:61 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| UseOfLessTrustedSource.java:25:16:25:25 | remoteAddr | semmle.label | remoteAddr |
+| UseOfLessTrustedSource.java:30:21:30:56 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| UseOfLessTrustedSource.java:32:60:32:61 | ip | semmle.label | ip |
+| UseOfLessTrustedSource.java:58:28:58:48 | ... + ... | semmle.label | ... + ... |
+#select
+| UseOfLessTrustedSource.java:25:16:25:25 | remoteAddr | UseOfLessTrustedSource.java:19:26:19:61 | getHeader(...) : String | UseOfLessTrustedSource.java:25:16:25:25 | remoteAddr | X-Forwarded-For spoofing might include code from $@. | UseOfLessTrustedSource.java:19:26:19:61 | getHeader(...) | this user input |
+| UseOfLessTrustedSource.java:32:60:32:61 | ip | UseOfLessTrustedSource.java:30:21:30:56 | getHeader(...) : String | UseOfLessTrustedSource.java:32:60:32:61 | ip | X-Forwarded-For spoofing might include code from $@. | UseOfLessTrustedSource.java:30:21:30:56 | getHeader(...) | this user input |
+| UseOfLessTrustedSource.java:58:28:58:48 | ... + ... | UseOfLessTrustedSource.java:30:21:30:56 | getHeader(...) : String | UseOfLessTrustedSource.java:58:28:58:48 | ... + ... | X-Forwarded-For spoofing might include code from $@. | UseOfLessTrustedSource.java:30:21:30:56 | getHeader(...) | this user input |

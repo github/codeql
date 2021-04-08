@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The software obtains the original client IP address through the http header <code>X-Forwarded-For</code>, which is used to ensure 
+security or track it in the log for statistical or other reasons. Attackers can use <code>X-Forwarded-For </code> Spoofing software.</p>
+
+</overview>
+<recommendation>
+
+<p>When the software is not using a proxy server, get the last ip.</p>
+
+</recommendation>
+<example>
+
+<p>The following examples show the bad case and the good case respectively. Bad case, such as <code>bad1</code> to <code>bad2</code>. 
+In the <code>bad1</code> method, the value of <code>X-Forwarded-For</code> in <code>header</code> is split, and the first value of 
+the split array is obtained. Good case, such as <code>good1</code>, split the value of <code>X-Forwarded-For</code> in <code>header</code> 
+and get the last value of the split array.</p>
+
+<sample src="UseOfLessTrustedSource.java" />
+
+</example>
+<references>
+
+<li>Prevent IP address spoofing with X-Forwarded-For header when using AWS ELB and Clojure Ring: 
+<a href="https://www.dennis-schneider.com/blog/prevent-ip-address-spoofing-with-x-forwarded-for-header-and-aws-elb-in-clojure-ring/">
+Prevent IP address spoofing with...</a>
+</li>
+
+<li>Security Rule Zero: A Warning about X-Forwarded-For: 
+<a href="https://www.f5.com/company/blog/security-rule-zero-a-warning-about-x-forwarded-for">
+Security Rule Zero: A Warning about X-Forwarded-For</a>
+</li>
+
+</references>
+</qhelp>
