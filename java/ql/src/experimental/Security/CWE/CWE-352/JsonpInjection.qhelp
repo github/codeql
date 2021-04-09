@@ -17,7 +17,7 @@ When there is a cross-domain problem, this could lead to information leakage.</p
 <p>The following examples show the bad case and the good case respectively. Bad cases, such as <code>bad1</code> to <code>bad8</code>, 
 will cause information leakage when there are cross-domain problems. In a good case, for example, in the <code>good1</code> 
 method and the <code>good2</code> method, using the <code>verifToken</code> method to do random <code>token</code> verification
-solve the problem of information leakage caused by cross-domain.</p>
+solves the problem of information leakage even in the presence of cross-domain access issues.</p>
 
 <sample src="JsonpInjection.java" />
 
