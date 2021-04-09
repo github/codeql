@@ -130,7 +130,7 @@ class RemoteFlowConfig extends DataFlow2::Configuration {
   }
 }
 
-/** A data flow configuration tracing flow from json data to splicing jsonp data. */
+/** A data flow configuration tracing flow from json data into the argument `json` of JSONP-like string `someFunctionName + "(" + json + ")"`. */
 class JsonDataFlowConfig extends DataFlow2::Configuration {
   JsonDataFlowConfig() { this = "JsonDataFlowConfig" }
 
