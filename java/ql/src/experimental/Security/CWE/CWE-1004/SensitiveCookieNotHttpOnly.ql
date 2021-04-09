@@ -1,6 +1,8 @@
 /**
  * @name Sensitive cookies without the HttpOnly response header set
- * @description Sensitive cookies without 'HttpOnly' leaves session cookies vulnerable to an XSS attack.
+ * @description Sensitive cookies without the 'HttpOnly' flag set leaves session cookies vulnerable to
+ *              an XSS attack. This query checks whether 'HttpOnly' is not set in a Java Cookie object
+ *              or the 'Set-Cookie' HTTP header.
  * @kind path-problem
  * @id java/sensitive-cookie-not-httponly
  * @tags security
@@ -25,14 +27,14 @@ string getCsrfCookieNameRegex() { result = "(?i).*(csrf).*" }
  * they are special cookies implementing the Synchronizer Token Pattern that can be used in JavaScript.
  */
 predicate isSensitiveCookieNameExpr(Expr expr) {
-  exists(string s | s = expr.(CompileTimeConstantExpr).getStringValue().toLowerCase() |
+  exists(string s | s = expr.(CompileTimeConstantExpr).getStringValue() |
     s.regexpMatch(getSensitiveCookieNameRegex()) and not s.regexpMatch(getCsrfCookieNameRegex())
   )
   or
   isSensitiveCookieNameExpr(expr.(AddExpr).getAnOperand())
 }
 
-/** The method call `Set-Cookie` of `addHeader` or `setHeader`. */
+/** A method call that sets a `Set-Cookie` header. */
 class SetCookieMethodAccess extends MethodAccess {
   SetCookieMethodAccess() {
     (
@@ -59,7 +61,7 @@ class MatchesHttpOnlyConfiguration extends TaintTracking2::Configuration {
   }
 }
 
-/** The cookie class of Java EE. */
+/** A class descended from `javax.servlet.http.Cookie` or `javax/jakarta.ws.rs.core.Cookie`. */
 class CookieClass extends RefType {
   CookieClass() {
     this.getASupertype*()
@@ -67,25 +69,23 @@ class CookieClass extends RefType {
   }
 }
 
-/** Holds if the `Expr` expr is evaluated to boolean true. */
-predicate isBooleanTrue(Expr expr) {
+/** Holds if the `expr` is `true` or a variable that is ever assigned `true`. */
+predicate mayBeBooleanTrue(Expr expr) {
   expr.(CompileTimeConstantExpr).getBooleanValue() = true or
   expr.(VarAccess).getVariable().getAnAssignedValue().(CompileTimeConstantExpr).getBooleanValue() =
     true
 }
 
 /** Holds if the method call sets the `HttpOnly` flag. */
-predicate setHttpOnlyInCookie(MethodAccess ma) {
+predicate setsCookieHttpOnly(MethodAccess ma) {
   ma.getMethod().getName() = "setHttpOnly" and
   (
-    isBooleanTrue(ma.getArgument(0)) // boolean literal true
+    ma.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true
     or
-    exists(
-      MethodAccess mpa, int i // runtime assignment of boolean value true
-    |
-      TaintTracking::localTaint(DataFlow::parameterNode(mpa.getMethod().getParameter(i)),
-        DataFlow::exprNode(ma.getArgument(0))) and
-      isBooleanTrue(mpa.getArgument(i))
+    // any use of setHttpOnly(x) where x isn't false is probably safe
+    not exists(VarAccess va |
+      ma.getArgument(0).(VarAccess).getVariable().getAnAccess() = va and
+      va.getVariable().getAnAssignedValue().(CompileTimeConstantExpr).getBooleanValue() = false
     )
   )
 }
@@ -99,7 +99,7 @@ class SetHttpOnlyInCookieConfiguration extends TaintTracking2::Configuration {
 
   override predicate isSource(DataFlow::Node source) {
     source.asExpr() =
-      any(MethodAccess ma | setHttpOnlyInCookie(ma) or removeCookie(ma)).getQualifier()
+      any(MethodAccess ma | setsCookieHttpOnly(ma) or removeCookie(ma)).getQualifier()
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -108,18 +108,18 @@ class SetHttpOnlyInCookieConfiguration extends TaintTracking2::Configuration {
   }
 }
 
-/** Holds if the method call removes a cookie. */
+/** Holds if `ma` removes a cookie. */
 predicate removeCookie(MethodAccess ma) {
   ma.getMethod().getName() = "setMaxAge" and
   ma.getArgument(0).(IntegerLiteral).getIntValue() = 0
 }
 
-/** Sensitive cookie name used in a `Cookie` constructor or a `Set-Cookie` call. */
+/** A sensitive cookie name. */
 class SensitiveCookieNameExpr extends Expr {
   SensitiveCookieNameExpr() { isSensitiveCookieNameExpr(this) }
 }
 
-/** Sink of adding a cookie to the HTTP response. */
+/** A cookie that is added to an HTTP response, used as a sink in `MissingHttpOnlyConfiguration`. */
 class CookieResponseSink extends DataFlow::ExprNode {
   CookieResponseSink() {
     exists(MethodAccess ma |
@@ -145,14 +145,14 @@ predicate setHttpOnlyInNewCookie(ClassInstanceExpr cie) {
   cie.getConstructedType().hasQualifiedName(["javax.ws.rs.core", "jakarta.ws.rs.core"], "NewCookie") and
   (
     cie.getNumArgument() = 6 and
-    isBooleanTrue(cie.getArgument(5)) // NewCookie(Cookie cookie, String comment, int maxAge, Date expiry, boolean secure, boolean httpOnly)
+    mayBeBooleanTrue(cie.getArgument(5)) // NewCookie(Cookie cookie, String comment, int maxAge, Date expiry, boolean secure, boolean httpOnly)
     or
     cie.getNumArgument() = 8 and
     cie.getArgument(6).getType() instanceof BooleanType and
-    isBooleanTrue(cie.getArgument(7)) // NewCookie(String name, String value, String path, String domain, String comment, int maxAge, boolean secure, boolean httpOnly)
+    mayBeBooleanTrue(cie.getArgument(7)) // NewCookie(String name, String value, String path, String domain, String comment, int maxAge, boolean secure, boolean httpOnly)
     or
     cie.getNumArgument() = 10 and
-    isBooleanTrue(cie.getArgument(9)) // NewCookie(String name, String value, String path, String domain, int version, String comment, int maxAge, Date expiry, boolean secure, boolean httpOnly)
+    mayBeBooleanTrue(cie.getArgument(9)) // NewCookie(String name, String value, String path, String domain, int version, String comment, int maxAge, Date expiry, boolean secure, boolean httpOnly)
   )
 }
 
