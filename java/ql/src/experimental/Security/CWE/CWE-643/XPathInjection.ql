@@ -15,7 +15,6 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.XmlParsers
 import DataFlow::PathGraph
-private import semmle.code.java.dataflow.ExternalFlow
 
 class XPathInjectionConfiguration extends TaintTracking::Configuration {
   XPathInjectionConfiguration() { this = "XPathInjection" }
@@ -26,18 +25,16 @@ class XPathInjectionConfiguration extends TaintTracking::Configuration {
 }
 
 class XPathInjectionSink extends DataFlow::ExprNode {
-  XPathInjectionSink() { sinkNode(this, "xpath") }
-}
-
-private class XPathInjectionSinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "javax.xml.xpath;XPath;false;compile;;;Argument[0];xpath",
-        "javax.xml.xpath;XPath;false;evaluate;;;Argument[0];xpath",
-        "org.dom4j;Node;false;selectNodes;;;Argument[0];xpath",
-        "org.dom4j;Node;false;selectSingleNode;;;Argument[0];xpath"
-      ]
+  XPathInjectionSink() {
+    exists(Method m, MethodAccess ma | ma.getMethod() = m |
+      m.getDeclaringType().hasQualifiedName("javax.xml.xpath", "XPath") and
+      (m.hasName("evaluate") or m.hasName("compile")) and
+      ma.getArgument(0) = this.getExpr()
+      or
+      m.getDeclaringType().hasQualifiedName("org.dom4j", "Node") and
+      (m.hasName("selectNodes") or m.hasName("selectSingleNode")) and
+      ma.getArgument(0) = this.getExpr()
+    )
   }
 }
 

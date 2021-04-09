@@ -1,5 +1,4 @@
 import java
-private import semmle.code.java.dataflow.ExternalFlow
 
 /** A call to `XQConnection.prepareExpression`. */
 class XQueryParserCall extends MethodAccess {
@@ -66,15 +65,4 @@ class XQueryExecuteCommandCall extends MethodAccess {
 
   /** Return this execute command argument. */
   Expr getExecuteCommandArgument() { result = this.getArgument(0) }
-}
-
-private class XQuerySinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "javax.xml.xquery;XQPreparedExpression;true;executeQuery;;;Argument[-1];xquery",
-        "javax.xml.xquery;XQExpression;true;executeQuery;;;Argument[0];xquery",
-        "javax.xml.xquery;XQExpression;true;executeCommand;;;Argument[0];xquery"
-      ]
-  }
 }

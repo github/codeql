@@ -15,7 +15,6 @@ import semmle.code.java.frameworks.Servlets
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.TaintTracking2
 import DataFlow::PathGraph
-private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  *  Holds if `header` sets `Access-Control-Allow-Credentials` to `true`. This ensures fair chances of exploitability.
@@ -30,29 +29,33 @@ private predicate setsAllowCredentials(MethodAccess header) {
   header.getArgument(1).(CompileTimeConstantExpr).getStringValue().toLowerCase() = "true"
 }
 
+private class CorsProbableCheckAccess extends MethodAccess {
+  CorsProbableCheckAccess() {
+    getMethod().hasName("contains") and
+    getMethod().getDeclaringType().getASourceSupertype*() instanceof CollectionType
+    or
+    getMethod().hasName("containsKey") and
+    getMethod().getDeclaringType().getASourceSupertype*() instanceof MapType
+    or
+    getMethod().hasName("equals") and
+    getQualifier().getType() instanceof TypeString
+  }
+}
+
 private Expr getAccessControlAllowOriginHeaderName() {
   result.(CompileTimeConstantExpr).getStringValue().toLowerCase() = "access-control-allow-origin"
 }
 
 /**
- * This taintflow2 configuration checks if there is a flow from source node towards probably CORS checking methods.
+ * This taintflow2 configuration checks if there is a flow from source node towards CorsProbableCheckAccess methods.
  */
 class CorsSourceReachesCheckConfig extends TaintTracking2::Configuration {
   CorsSourceReachesCheckConfig() { this = "CorsOriginConfig" }
 
   override predicate isSource(DataFlow::Node source) { any(CorsOriginConfig c).hasFlow(source, _) }
 
-  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "cors") }
-}
-
-private class CorsProbableCheckAccessSinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "java.util;Collection;true;contains;;;Argument;cors",
-        "java.util;Map;true;containsKey;;;Argument;cors",
-        "java.lang;String;true;equals;;;Argument;cors"
-      ]
+  override predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() = any(CorsProbableCheckAccess check).getAnArgument()
   }
 }
 

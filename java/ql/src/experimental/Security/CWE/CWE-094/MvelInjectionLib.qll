@@ -1,7 +1,6 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
-private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for unsafe user input
@@ -31,31 +30,36 @@ class MvelInjectionConfig extends TaintTracking::Configuration {
  * i.e. methods that run evaluation of a MVEL expression.
  */
 class MvelEvaluationSink extends DataFlow::ExprNode {
-  MvelEvaluationSink() { sinkNode(this, "mvel") }
-}
-
-private class MvelEvaluationSinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "org.mvel2.jsr223;MvelScriptEngine;false;evaluate;;;Argument[0];mvel",
-        "org.mvel2.jsr223;MvelScriptEngine;false;eval;;;Argument[0];mvel",
-        "org.mvel2.compiler;ExecutableStatement;false;getValue;;;Argument[-1];mvel",
-        "org.mvel2.compiler;CompiledExpression;false;getDirectValue;;;Argument[-1];mvel",
-        "org.mvel2.compiler;CompiledAccExpression;false;getValue;;;Argument[-1];mvel",
-        "org.mvel2.compiler;Accessor;false;getValue;;;Argument[-1];mvel",
-        "javax.script;CompiledScript;false;eval;;;Argument[-1];mvel",
-        "org.mvel2.jsr223;MvelCompiledScript;false;eval;;;Argument[-1];mvel",
-        "org.mvel2;MVEL;false;eval;;;Argument[0];mvel",
-        "org.mvel2;MVEL;false;executeExpression;;;Argument[0];mvel",
-        "org.mvel2;MVEL;false;evalToBoolean;;;Argument[0];mvel",
-        "org.mvel2;MVEL;false;evalToString;;;Argument[0];mvel",
-        "org.mvel2;MVEL;false;executeAllExpression;;;Argument[0];mvel",
-        "org.mvel2;MVEL;false;executeSetExpression;;;Argument[0];mvel",
-        "org.mvel2.templates;TemplateRuntime;false;eval;;;Argument[0];mvel",
-        "org.mvel2.templates;TemplateRuntime;false;execute;;;Argument[0];mvel",
-        "org.mvel2;MVELRuntime;false;execute;;;Argument[1];mvel"
-      ]
+  MvelEvaluationSink() {
+    exists(StaticMethodAccess ma, Method m | m = ma.getMethod() |
+      (
+        m instanceof MvelEvalMethod or
+        m instanceof TemplateRuntimeEvaluationMethod
+      ) and
+      ma.getArgument(0) = asExpr()
+    )
+    or
+    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+      m instanceof MvelScriptEngineEvaluationMethod and
+      ma.getArgument(0) = asExpr()
+    )
+    or
+    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+      (
+        m instanceof ExecutableStatementEvaluationMethod or
+        m instanceof CompiledExpressionEvaluationMethod or
+        m instanceof CompiledAccExpressionEvaluationMethod or
+        m instanceof AccessorEvaluationMethod or
+        m instanceof CompiledScriptEvaluationMethod or
+        m instanceof MvelCompiledScriptEvaluationMethod
+      ) and
+      ma.getQualifier() = asExpr()
+    )
+    or
+    exists(StaticMethodAccess ma, Method m | m = ma.getMethod() |
+      m instanceof MvelRuntimeEvaluationMethod and
+      ma.getArgument(1) = asExpr()
+    )
   }
 }
 

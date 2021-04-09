@@ -14,16 +14,13 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import RequestForgery
 import DataFlow::PathGraph
-private import semmle.code.java.dataflow.ExternalFlow
 
 class RequestForgeryConfiguration extends TaintTracking::Configuration {
   RequestForgeryConfiguration() { this = "Server Side Request Forgery" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink instanceof RequestForgerySink or sinkNode(sink, "request-forgery-sink")
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof RequestForgerySink }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     requestForgeryStep(pred, succ)

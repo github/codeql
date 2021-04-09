@@ -15,7 +15,6 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.ExternalFlow
 import DataFlow::PathGraph
-private import semmle.code.java.dataflow.ExternalFlow
 
 class URLConstructor extends ClassInstanceExpr {
   URLConstructor() { this.getConstructor().getDeclaringType() instanceof TypeUrl }
@@ -40,19 +39,19 @@ class RemoteURLToOpenStreamFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "url-open-stream") }
+  override predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess m |
+      sink.asExpr() = m.getQualifier() and m.getMethod() instanceof URLOpenStreamMethod
+    )
+    or
+    sinkNode(sink, "url-open-stream")
+  }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(URLConstructor u |
       node1.asExpr() = u.stringArg() and
       node2.asExpr() = u
     )
-  }
-}
-
-private class URLOpenStreamSinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row = ["java.net;URL;false;openStream;;;Argument[-1];url-open-stream"]
   }
 }
 

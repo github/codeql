@@ -2,7 +2,6 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import DataFlow
 import DataFlow::PathGraph
-private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for unvalidated user input that is used in OGNL EL evaluation.
@@ -83,25 +82,12 @@ predicate ognlInjectionSinkMethod(Method m, int index) {
 
 /** A data flow sink for unvalidated user input that is used in OGNL EL evaluation. */
 class OgnlInjectionSink extends DataFlow::ExprNode {
-  OgnlInjectionSink() { sinkNode(this, "ognl") }
-}
-
-private class OgnlInjectionSinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "org.apache.commons.ognl;Ognl;false;setValue;;;Argument[-1..0];ognl",
-        "org.apache.commons.ognl;Ognl;false;getValue;;;Argument[-1..0];ognl",
-        "ognl;Ognl;false;setValue;;;Argument[-1..0];ognl",
-        "ognl;Ognl;false;getValue;;;Argument[-1..0];ognl",
-        "org.apache.commons.ognl;Node;true;setValue;;;Argument[-1..0];ognl",
-        "org.apache.commons.ognl;Node;true;getValue;;;Argument[-1..0];ognl",
-        "ognl;Node;true;setValue;;;Argument[-1..0];ognl",
-        "ognl;Node;true;getValue;;;Argument[-1..0];ognl",
-        "com.opensymphony.xwork2.ognl;OgnlUtil;false;setValue;;;Argument[-1..0];ognl",
-        "com.opensymphony.xwork2.ognl;OgnlUtil;false;getValue;;;Argument[-1..0];ognl",
-        "com.opensymphony.xwork2.ognl;OgnlUtil;false;callMethod;;;Argument[-1..0];ognl"
-      ]
+  OgnlInjectionSink() {
+    exists(MethodAccess ma, Method m, int index |
+      ma.getMethod() = m and
+      (ma.getArgument(index) = this.getExpr() or ma.getQualifier() = this.getExpr()) and
+      ognlInjectionSinkMethod(m, index)
+    )
   }
 }
 

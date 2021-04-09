@@ -2,7 +2,6 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.XmlParsers
 import DataFlow
-private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for unvalidated user input that is used in XSLT transformation.
@@ -104,20 +103,15 @@ class TypeXsltPackage extends Class {
 
 /** A data flow sink for unvalidated user input that is used in XSLT transformation. */
 class XsltInjectionSink extends DataFlow::ExprNode {
-  XsltInjectionSink() { sinkNode(this, "xslt") }
-}
-
-private class XsltInjectionSinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "net.sf.saxon.s9api;XsltTransformer;false;transform;;;Argument[-1];xslt",
-        "net.sf.saxon.s9api;Xslt30Transformer;false;transform;;;Argument[-1];xslt",
-        "net.sf.saxon.s9api;Xslt30Transformer;false;applyTemplates;;;Argument[-1];xslt",
-        "net.sf.saxon.s9api;Xslt30Transformer;false;callFunction;;;Argument[-1];xslt",
-        "net.sf.saxon.s9api;Xslt30Transformer;false;callTemplate;;;Argument[-1];xslt",
-        "javax.xml.transform;Transformer;false;transform;;;Argument[-1];xslt"
-      ]
+  XsltInjectionSink() {
+    exists(MethodAccess ma, Method m | m = ma.getMethod() and ma.getQualifier() = this.getExpr() |
+      ma instanceof TransformerTransform or
+      m instanceof XsltTransformerTransformMethod or
+      m instanceof Xslt30TransformerTransformMethod or
+      m instanceof Xslt30TransformerApplyTemplatesMethod or
+      m instanceof Xslt30TransformerCallFunctionMethod or
+      m instanceof Xslt30TransformerCallTemplateMethod
+    )
   }
 }
 
@@ -192,19 +186,14 @@ private class TransformerFactoryWithSecureProcessingFeatureFlowConfig extends Da
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "xslt-transformer") }
+  override predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess ma |
+      sink.asExpr() = ma.getQualifier() and
+      ma.getMethod().getDeclaringType() instanceof TransformerFactory
+    )
+  }
 
   override int fieldFlowBranchLimit() { result = 0 }
-}
-
-private class TransformerFactorySinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "javax.xml.transform;TransformerFactory;false;;;;Argument[-1];xslt-transformer",
-        "javax.xml.transform.sax;SAXTransformerFactory;false;;;;Argument[-1];xslt-transformer"
-      ]
-  }
 }
 
 /** A `ParserConfig` specific to `TransformerFactory`. */

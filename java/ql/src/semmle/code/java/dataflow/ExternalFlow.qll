@@ -472,7 +472,7 @@ module CsvValidation {
       not type.regexpMatch("[a-zA-Z0-9_\\$]+") and
       msg = "Dubious type \"" + type + "\" in " + pred + " model."
       or
-      not (name.regexpMatch("[a-zA-Z0-9_]*") or name = ".ctor") and
+      not name.regexpMatch("[a-zA-Z0-9_]*") and
       msg = "Dubious name \"" + name + "\" in " + pred + " model."
       or
       not signature.regexpMatch("|\\([a-zA-Z0-9_\\.\\$<>,\\[\\]]*\\)") and
@@ -562,34 +562,23 @@ private string paramsString(Callable c) {
 }
 
 private Element interpretElement0(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext
+  string namespace, string type, boolean subtypes, string name, string signature
 ) {
   elementSpec(namespace, type, subtypes, name, signature, _) and
   exists(RefType t | t = interpretType(namespace, type, subtypes) |
     exists(Member m |
       result = m and
       m.getDeclaringType() = t and
-      (
-        m.hasName(name)
-        or
-        name = ".ctor" and m.hasName(t.getName())
-      )
+      m.hasName(name)
     |
       signature = "" or
       m.(Callable).getSignature() = any(string nameprefix) + signature or
       paramsString(m) = signature
-    ) and
-    ext = ""
+    )
     or
     result = t and
     name = "" and
-    signature = "" and
-    ext = "Annotated"
-    or
-    result = t.getAMember() and
-    name = "" and
-    signature = "" and
-    ext = ""
+    signature = ""
   )
 }
 
@@ -597,7 +586,7 @@ private Element interpretElement(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
   elementSpec(namespace, type, subtypes, name, signature, ext) and
-  exists(Element e | e = interpretElement0(namespace, type, subtypes, name, signature, ext) |
+  exists(Element e | e = interpretElement0(namespace, type, subtypes, name, signature) |
     ext = "" and result = e
     or
     ext = "Annotated" and result.(Annotatable).getAnAnnotation().getType() = e

@@ -1,7 +1,6 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
-private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for unsafe user input
@@ -22,7 +21,7 @@ class JexlInjectionConfig extends TaintTracking::Configuration {
 }
 
 /**
- * A sink for Expression Language injection vulnerabilities via Jexl,
+ * A sink for Expresssion Language injection vulnerabilities via Jexl,
  * i.e. method calls that run evaluation of a JEXL expression.
  *
  * Creating a `Callable` from a tainted JEXL expression or script is considered as a sink
@@ -31,41 +30,18 @@ class JexlInjectionConfig extends TaintTracking::Configuration {
  * maybe stored in an object field and then reached by a different flow.
  */
 private class JexlEvaluationSink extends DataFlow::ExprNode {
-  JexlEvaluationSink() { sinkNode(this, "jexl") }
-}
-
-private class JexlEvaluationSinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        // Direct JEXL evaluation
-        "org.apache.commons.jexl2;Expression;false;evaluate;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;JexlExpression;false;evaluate;;;Argument[-1];jexl",
-        "org.apache.commons.jexl2;Script;false;execute;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;JexlScript;false;execute;;;Argument[-1];jexl",
-        "org.apache.commons.jexl2;JxltEngine$Expression;false;evaluate;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;JxltEngine$Expression;false;evaluate;;;Argument[-1];jexl",
-        "org.apache.commons.jexl2;JxltEngine$Expression;false;prepare;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;JxltEngine$Expression;false;prepare;;;Argument[-1];jexl",
-        "org.apache.commons.jexl2;JxltEngine$Template;false;evaluate;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;JxltEngine$Template;false;evaluate;;;Argument[-1];jexl",
-        "org.apache.commons.jexl2;UnifiedJEXL$Expression;false;evaluate;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;UnifiedJEXL$Expression;false;evaluate;;;Argument[-1];jexl",
-        "org.apache.commons.jexl2;UnifiedJEXL$Expression;false;prepare;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;UnifiedJEXL$Expression;false;prepare;;;Argument[-1];jexl",
-        "org.apache.commons.jexl2;UnifiedJEXL$Template;false;evaluate;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;UnifiedJEXL$Template;false;evaluate;;;Argument[-1];jexl",
-        // JEXL callable
-        "org.apache.commons.jexl2;Expression;false;callable;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;JexlExpression;false;callable;;;Argument[-1];jexl",
-        "org.apache.commons.jexl2;Script;false;callable;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;JexlScript;false;callable;;;Argument[-1];jexl",
-        // Methods in the `JexlEngine` class that gets or sets a property with a JEXL expression.
-        "org.apache.commons.jexl2;JexlEngine;false;getProperty;;;Argument[1..2];jexl",
-        "org.apache.commons.jexl3;JexlEngine;false;getProperty;;;Argument[1..2];jexl",
-        "org.apache.commons.jexl2;JexlEngine;false;setProperty;;;Argument[1];jexl",
-        "org.apache.commons.jexl3;JexlEngine;false;setProperty;;;Argument[1];jexl"
-      ]
+  JexlEvaluationSink() {
+    exists(MethodAccess ma, Method m, Expr taintFrom |
+      ma.getMethod() = m and taintFrom = this.asExpr()
+    |
+      m instanceof DirectJexlEvaluationMethod and ma.getQualifier() = taintFrom
+      or
+      m instanceof CreateJexlCallableMethod and ma.getQualifier() = taintFrom
+      or
+      m instanceof JexlEngineGetSetPropertyMethod and
+      taintFrom.getType() instanceof TypeString and
+      ma.getAnArgument() = taintFrom
+    )
   }
 }
 
@@ -122,33 +98,19 @@ private class SandboxedJexlFlowConfig extends DataFlow2::Configuration {
 
   override predicate isSource(DataFlow::Node node) { node instanceof SandboxedJexlSource }
 
-  override predicate isSink(DataFlow::Node node) { sinkNode(node, "sandboxed-jexl") }
+  override predicate isSink(DataFlow::Node node) {
+    exists(MethodAccess ma, Method m | ma.getMethod() = m |
+      (
+        m instanceof CreateJexlScriptMethod or
+        m instanceof CreateJexlExpressionMethod or
+        m instanceof CreateJexlTemplateMethod
+      ) and
+      ma.getQualifier() = node.asExpr()
+    )
+  }
 
   override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
     createsJexlEngine(fromNode, toNode)
-  }
-}
-
-private class SandboxedJexlEvaluationSinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        // CreateJexlScriptMethod
-        "org.apache.commons.jexl2;JexlEngine;false;createScript;;;Argument[-1];sandboxed-jexl",
-        "org.apache.commons.jexl3;JexlEngine;false;createScript;;;Argument[-1];sandboxed-jexl",
-        // CreateJexlExpressionMethod
-        "org.apache.commons.jexl2;UnifiedJEXL;false;parse;;;Argument[-1];sandboxed-jexl",
-        "org.apache.commons.jexl3;UnifiedJEXL;false;parse;;;Argument[-1];sandboxed-jexl",
-        "org.apache.commons.jexl2;JxltEngine;false;createExpression;;;Argument[-1];sandboxed-jexl",
-        "org.apache.commons.jexl3;JxltEngine;false;createExpression;;;Argument[-1];sandboxed-jexl",
-        "org.apache.commons.jexl2;JexlEngine;false;createExpression;;;Argument[-1];sandboxed-jexl",
-        "org.apache.commons.jexl3;JexlEngine;false;createExpression;;;Argument[-1];sandboxed-jexl",
-        // CreateJexlTemplateMethod
-        "org.apache.commons.jexl2;JxltEngine;false;createTemplate;;;Argument[-1];sandboxed-jexl",
-        "org.apache.commons.jexl3;JxltEngine;false;createTemplate;;;Argument[-1];sandboxed-jexl",
-        "org.apache.commons.jexl2;UnifiedJEXL;false;createTemplate;;;Argument[-1];sandboxed-jexl",
-        "org.apache.commons.jexl3;UnifiedJEXL;false;createTemplate;;;Argument[-1];sandboxed-jexl"
-      ]
   }
 }
 
@@ -203,10 +165,49 @@ private predicate returnsDataFromBean(DataFlow::Node fromNode, DataFlow::Node to
 }
 
 /**
+ * A methods in the `JexlEngine` class that gets or sets a property with a JEXL expression.
+ */
+private class JexlEngineGetSetPropertyMethod extends Method {
+  JexlEngineGetSetPropertyMethod() {
+    getDeclaringType() instanceof JexlEngine and
+    hasName(["getProperty", "setProperty"])
+  }
+}
+
+/**
+ * A method that triggers direct evaluation of JEXL expressions.
+ */
+private class DirectJexlEvaluationMethod extends Method {
+  DirectJexlEvaluationMethod() {
+    getDeclaringType() instanceof JexlExpression and hasName("evaluate")
+    or
+    getDeclaringType() instanceof JexlScript and hasName("execute")
+    or
+    getDeclaringType() instanceof JxltEngineExpression and hasName(["evaluate", "prepare"])
+    or
+    getDeclaringType() instanceof JxltEngineTemplate and hasName("evaluate")
+    or
+    getDeclaringType() instanceof UnifiedJexlExpression and hasName(["evaluate", "prepare"])
+    or
+    getDeclaringType() instanceof UnifiedJexlTemplate and hasName("evaluate")
+  }
+}
+
+/**
  * A method that creates a JEXL script.
  */
 private class CreateJexlScriptMethod extends Method {
   CreateJexlScriptMethod() { getDeclaringType() instanceof JexlEngine and hasName("createScript") }
+}
+
+/**
+ * A method that creates a `Callable` for a JEXL expression or script.
+ */
+private class CreateJexlCallableMethod extends Method {
+  CreateJexlCallableMethod() {
+    (getDeclaringType() instanceof JexlExpression or getDeclaringType() instanceof JexlScript) and
+    hasName("callable")
+  }
 }
 
 /**
@@ -264,6 +265,22 @@ private class JexlUberspect extends Interface {
     hasQualifiedName("org.apache.commons.jexl2.introspection", "Uberspect") or
     hasQualifiedName("org.apache.commons.jexl3.introspection", "JexlUberspect")
   }
+}
+
+private class JxltEngineExpression extends NestedType {
+  JxltEngineExpression() { getEnclosingType() instanceof JxltEngine and hasName("Expression") }
+}
+
+private class JxltEngineTemplate extends NestedType {
+  JxltEngineTemplate() { getEnclosingType() instanceof JxltEngine and hasName("Template") }
+}
+
+private class UnifiedJexlExpression extends NestedType {
+  UnifiedJexlExpression() { getEnclosingType() instanceof UnifiedJexl and hasName("Expression") }
+}
+
+private class UnifiedJexlTemplate extends NestedType {
+  UnifiedJexlTemplate() { getEnclosingType() instanceof UnifiedJexl and hasName("Template") }
 }
 
 private class Reader extends RefType {
