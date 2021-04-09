@@ -9,7 +9,7 @@ template<typename T> void sink(std::unique_ptr<T>&);
 
 void test_make_shared() {
     std::shared_ptr<int> p = std::make_shared<int>(source());
-    sink(*p); // $ MISSING: ast,ir
+    sink(*p); // $ ast MISSING: ir
     sink(p); // $ ast,ir
 }
 
@@ -21,7 +21,7 @@ void test_make_shared_array() {
 
 void test_make_unique() {
     std::unique_ptr<int> p = std::make_unique<int>(source());
-    sink(*p); // $ MISSING: ast,ir
+    sink(*p); // $ ast MISSING: ir
     sink(p); // $ ast,ir
 }
 
