@@ -85,12 +85,7 @@ File tryExtensions(Folder dir, string basename, int priority) {
  * Or `name`, if `name` has no file extension.
  */
 bindingset[name]
-private string maybeRemoveExtension(string name) {
-  result = name.regexpCapture("^(.+)\\.[^.]+$", 1)
-  or
-  not name.regexpMatch(".+\\..+") and
-  result = name
-}
+private string getStem(string name) { result = name.regexpCapture("(.+?)(?:\\.([^.]+))?", 1) }
 
 /**
  * Gets the main module described by `pkg` with the given `priority`.
@@ -103,9 +98,7 @@ File resolveMainModule(PackageJSON pkg, int priority) {
     or
     not exists(main.resolve()) and
     exists(int n | n = main.getNumComponent() |
-      result =
-        tryExtensions(main.resolveUpTo(n - 1), maybeRemoveExtension(main.getComponent(n - 1)),
-          priority)
+      result = tryExtensions(main.resolveUpTo(n - 1), getStem(main.getComponent(n - 1)), priority)
     )
   )
   or
@@ -129,8 +122,7 @@ File resolveMainModule(PackageJSON pkg, int priority) {
     exists(int n | n = file.getNumComponent() |
       result =
         min(int i, File res |
-          res =
-            tryExtensions(file.resolveUpTo(n - 1), maybeRemoveExtension(file.getComponent(n - 1)), i)
+          res = tryExtensions(file.resolveUpTo(n - 1), getStem(file.getComponent(n - 1)), i)
         |
           res order by i
         )
