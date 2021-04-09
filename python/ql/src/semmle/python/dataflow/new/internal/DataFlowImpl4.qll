@@ -2132,7 +2132,7 @@ private module Stage4 {
   }
 
   bindingset[node, cc, config]
-  LocalCc getLocalCc(Node node, Cc cc, Configuration config) {
+  private LocalCc getLocalCc(Node node, Cc cc, Configuration config) {
     localFlowEntry(node, config) and
     result = getLocalCallContext(pragma[only_bind_out](cc), getNodeEnclosingCallable(node))
   }
