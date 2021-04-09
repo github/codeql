@@ -16,19 +16,22 @@ module Cached {
     TResolved(string qName) {
       qName = builtin()
       or
-      qName = constantDefinition(_)
+      qName = namespaceDeclaration(_)
     } or
-    TUnresolved(Namespace n) { not exists(constantDefinition(n)) }
+    TUnresolved(Namespace n) { not exists(namespaceDeclaration(n)) }
 
   cached
-  string constantDefinition(ConstantWriteAccess n) {
+  string namespaceDeclaration(Namespace n) {
     isToplevel(n) and result = n.getName()
     or
     not isToplevel(n) and
     not exists(n.getScopeExpr()) and
-    result = scopeAppend(constantDefinition(n.getEnclosingModule()), n.getName())
+    result = scopeAppend(namespaceDeclaration(n.getEnclosingModule()), n.getName())
     or
-    result = scopeAppend(resolveScopeExpr(n.getScopeExpr()), n.getName())
+    exists(string container |
+      TResolved(container) = resolveScopeExpr(n.getScopeExpr()) and
+      result = scopeAppend(container, n.getName())
+    )
   }
 }
 
@@ -48,29 +51,32 @@ private predicate isDefinedConstant(string qualifiedModuleName) {
 }
 
 /**
- * Resolve a scope expression
+ * Resolve constant read access (typically a scope expression) to a qualified module name.
+ * `resolveScopeExpr/1` picks the best (lowest priority number) result of
+ * `resolveScopeExpr/2` that resolves to a constant definition. If the constant
+ * definition is a Namespace then it is returned, if it's a constant assignment then
+ * the right-hand side of the assignment is resolved.
  */
-private string resolveScopeExpr(ConstantReadAccess r) {
-  exists(string container |
-    container =
-      min(string c, int p |
-        isDefinedConstant(c) and
-        c = resolveScopeExpr(r, p)
+private TResolved resolveScopeExpr(ConstantReadAccess r) {
+  exists(string qname |
+    qname =
+      min(string qn, int p |
+        isDefinedConstant(qn) and
+        qn = resolveScopeExpr(r, p)
       |
-        c order by p
+        qn order by p
       )
   |
-    result = container and
-    container = [builtin(), constantDefinition(any(Namespace x))]
+    result = TResolved(qname)
     or
     exists(ConstantAssignment a |
-      container = constantDefinition(a) and
+      qname = constantDefinition0(a) and
       result = resolveScopeExpr(a.getParent().(Assignment).getRightOperand())
     )
   )
 }
 
-private int maxDepth() { result = max(ConstantAccess c | | count(c.getEnclosingModule+())) }
+private int maxDepth() { result = 1 + max(int level | exists(enclosing(_, level))) }
 
 private ModuleBase enclosing(ModuleBase m, int level) {
   result = m and level = 0
@@ -78,6 +84,14 @@ private ModuleBase enclosing(ModuleBase m, int level) {
   result = enclosing(m.getEnclosingModule(), level - 1)
 }
 
+/**
+ * Resolve constant read access (typically a scope expression) to a qualified name. The
+ * `priority` value indicates the precedence of the solution with respect to the lookup order.
+ * A constant name without scope specifier is resolved against its enclosing modules (inner-most first);
+ * if the constant is not found in any of the enclosing modules, then the constant will be resolved
+ * with respect to the ancestors (prepends, includes, super classes, and their ancestors) of the
+ * directly enclosing module.
+ */
 private string resolveScopeExpr(ConstantReadAccess c, int priority) {
   c.hasGlobalScope() and result = c.getName() and priority = 0
   or
@@ -110,6 +124,12 @@ private string qualifiedModuleName(ModuleBase m) {
   result = constantDefinition0(m)
 }
 
+/**
+ * Get a qualified name for a constant definition. May return multiple qualified
+ * names because we over-approximate when resolving scope resolutions and ignore
+ * lookup order precedence. Taking lookup order into account here would lead to
+ * non-monotonic recursion.
+ */
 private string constantDefinition0(ConstantWriteAccess c) {
   c.hasGlobalScope() and result = c.getName()
   or
@@ -122,6 +142,15 @@ private string constantDefinition0(ConstantWriteAccess c) {
   )
 }
 
+/**
+ * The qualified names of the ancestors of a class/module. The ancestors should be an ordered list
+ * of the ancestores of `prepend`ed modules, the module itself , the ancestors or `include`d modules
+ * and the ancestors of the super class. The priority value only distinguishes the kind of ancestor,
+ * it does not order the ancestors within a group of the same kind. This is an over-approximation, however,
+ * computing the precise order is tricky because it depends on the evaluation/file loading order.
+ */
+// TODO: the order of super classes can be determined more precisely even without knowing the evaluation
+// order, so we should be able to make this more precise.
 private string ancestors(string qname, int priority) {
   result = ancestors(prepends(qname), _) and priority = 0
   or

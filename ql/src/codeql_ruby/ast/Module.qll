@@ -25,7 +25,7 @@ class Module extends TModule {
     result =
       min(Namespace n, string qName, Location loc, int weight |
         this = TResolved(qName) and
-        qName = constantDefinition(n) and
+        qName = namespaceDeclaration(n) and
         loc = n.getLocation() and
         if exists(loc.getFile().getRelativePath()) then weight = 0 else weight = 1
       |
@@ -174,7 +174,7 @@ class Namespace extends ModuleBase, ConstantWriteAccess, TNamespace {
   override predicate hasGlobalScope() { none() }
 
   final override Module getModule() {
-    result = any(string qName | qName = constantDefinition(this) | TResolved(qName))
+    result = any(string qName | qName = namespaceDeclaration(this) | TResolved(qName))
     or
     result = TUnresolved(this)
   }
