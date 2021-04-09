@@ -10,7 +10,7 @@ private import codeql_ruby.ast.Scope
 private string builtin() { result = ["Object", "Kernel", "BasicObject", "Class", "Module"] }
 
 cached
-module Cached {
+private module Cached {
   cached
   newtype TModule =
     TResolved(string qName) {
