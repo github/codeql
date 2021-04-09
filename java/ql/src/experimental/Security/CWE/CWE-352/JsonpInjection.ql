@@ -16,7 +16,10 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.deadcode.WebEntryPoints
 import DataFlow::PathGraph
 
-/** Determine whether there is a verification method for the remote streaming source data flow path method. */
+/** 
+ * Holds if some `Filter.doFilter` method exists in the whole program that takes some user-controlled
+ * input and tests it with what appears to be a token- or authentication-checking function.
+ */
 predicate existsFilterVerificationMethod() {
   exists(DataFlow::Node source, DataFlow::Node sink, VerificationMethodFlowConfig vmfc, Method m |
     vmfc.hasFlow(source, sink) and
