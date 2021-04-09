@@ -7,7 +7,7 @@ import semmle.code.java.dataflow.DataFlow3
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.spring.SpringController
 
-/** A data flow configuration is tracing flow from the access to the authentication method of token/auth/referer/origin to if condition. */
+/** A data flow configuration tracing flow from the result of a method whose name includes token/auth/referer/origin to an if-statement condition. */
 class VerificationMethodToIfFlowConfig extends DataFlow3::Configuration {
   VerificationMethodToIfFlowConfig() { this = "VerificationMethodToIfFlowConfig" }
 
