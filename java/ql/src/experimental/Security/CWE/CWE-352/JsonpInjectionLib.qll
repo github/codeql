@@ -27,7 +27,12 @@ class VerificationMethodToIfFlowConfig extends DataFlow3::Configuration {
   }
 }
 
-/** Taint-tracking configuration tracing flow from untrusted inputs to verification of remote user input. */
+/** Taint-tracking configuration tracing flow from untrusted inputs to an argument of a function whose result is used as an if-statement condition.
+* 
+* For example, in the context `String userControlled = request.getHeader("xyz"); boolean isGood = checkToken(userControlled); if(isGood) { ...`,
+* the flow from `checkToken`'s result to the condition of `if(isGood)` matches the configuration `VerificationMethodToIfFlowConfig` above,
+* and so the flow from `getHeader(...)` to the argument to `checkToken` matches this configuration.
+ */
 class VerificationMethodFlowConfig extends TaintTracking2::Configuration {
   VerificationMethodFlowConfig() { this = "VerificationMethodFlowConfig" }
 
