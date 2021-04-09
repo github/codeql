@@ -341,10 +341,8 @@ private module Stdlib {
   // ---------------------------------------------------------------------------
   // pickle
   // ---------------------------------------------------------------------------
-  private string pickleModuleName() { result in ["pickle", "cPickle", "_pickle"] }
-
   /** Gets a reference to the `pickle` module. */
-  deprecated DataFlow::Node pickle() {
+  DataFlow::Node pickle() {
     result = API::moduleImport(["pickle", "cPickle", "_pickle"]).getAUse()
   }
 
@@ -578,7 +576,7 @@ private module Stdlib {
   // json
   // ---------------------------------------------------------------------------
   /** Gets a reference to the `json` module. */
-  API::Node json() { result = API::moduleImport("node") }
+  API::Node json() { result = API::moduleImport("json") }
 
   /**
    * Gets a reference to the attribute `attr_name` of the `json` module.
