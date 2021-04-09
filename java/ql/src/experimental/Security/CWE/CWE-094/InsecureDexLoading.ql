@@ -1,7 +1,7 @@
 /**
  * @name Insecure loading of an Android Dex File
- * @description Loading a DEX library located in a world-readable/ writable location such as
- * a SD card can cause arbitary code execution vulnerabilities.
+ * @description Loading a DEX library located in a world-writable location such as
+ * an SD card can lead to arbitrary code execution vulnerabilities.
  * @kind path-problem
  * @problem.severity error
  * @precision high
@@ -16,5 +16,5 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, InsecureDexConfiguration conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Potential arbitary code execution due to $@.",
-  source.getNode(), "a value loaded from a world readable/writable source."
+select sink.getNode(), source, sink, "Potential arbitrary code execution due to $@.",
+  source.getNode(), "a value loaded from a world-writable source."

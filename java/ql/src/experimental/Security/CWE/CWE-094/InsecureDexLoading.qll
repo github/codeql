@@ -2,7 +2,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 
 /**
- * A taint-tracking configuration fordetecting unsafe use of a
+ * A taint-tracking configuration detecting unsafe use of a
  * `DexClassLoader` by an Android app.
  */
 class InsecureDexConfiguration extends TaintTracking::Configuration {
@@ -63,7 +63,7 @@ private class DexClassLoader extends InsecureDexSink {
 }
 
 /**
- * An `File` instance which reads from an SD card
+ * A `File` instance which reads from an SD card
  * taken as a source for insecure Dex class loading vulnerabilities.
  */
 private class ExternalFile extends InsecureDexSource {

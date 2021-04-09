@@ -22,7 +22,7 @@ public class InsecureDexLoading extends Application {
 						getClassLoader());
 				int version = (int) cl.loadClass("my.package.class").getDeclaredMethod("myMethod").invoke(null);
 				if (Build.VERSION.SDK_INT < version) {
-					Toast.makeText(this, "Securely loaded Dex!", Toast.LENGTH_LONG).show();
+					Toast.makeText(this, "Loaded Dex!", Toast.LENGTH_LONG).show();
 				}
 			}
 		} catch (Exception e) {
