@@ -141,7 +141,7 @@ class JsonDataFlowConfig extends DataFlow2::Configuration {
   }
 }
 
-/** Taint-tracking configuration tracing flow from user-controllable function name jsonp data to output jsonp data. */
+/** Taint-tracking configuration tracing flow from probable jsonp data with a user-controlled function name to an outgoing HTTP entity. */
 class JsonpInjectionFlowConfig extends TaintTracking::Configuration {
   JsonpInjectionFlowConfig() { this = "JsonpInjectionFlowConfig" }
 
