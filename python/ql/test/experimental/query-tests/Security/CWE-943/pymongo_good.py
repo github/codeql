@@ -9,11 +9,11 @@ client = MongoClient()
 
 @app.route("/")
 def home_page():
-    unsanitized_search = json.loads(request.args['search'])
-    sanitize(unsanitized_search)
+    unsafe_search = request.args['search']
+    json_search = json.loads(unsafe_search)
+    safe_search = sanitize(json_search)
 
-    db_results = client.db.collection.find_one({'data': unsanitized_search})
-    return db_results[0].keys()
+    result = client.db.collection.find_one({'data': safe_search})
 
 # if __name__ == "__main__":
 #     app.run(debug=True)

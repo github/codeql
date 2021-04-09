@@ -1,19 +1,17 @@
 from flask import Flask, request
-from flask_mongoengine import MongoEngine
+import mongoengine as me
 from mongosanitizer.sanitizer import sanitize
 import json
 
 app = Flask(__name__)
-db = MongoEngine(app)
-db.init_app(app)
 
 
-class Movie(db.Document):
-    title = db.StringField(required=True)
-    year = db.IntField()
-    rated = db.StringField()
-    director = db.StringField()
-    actors = db.ListField()
+class Movie(me.Document):
+    title = me.StringField(required=True)
+    year = me.IntField()
+    rated = me.StringField()
+    director = me.StringField()
+    actors = me.ListField()
 
 
 Movie(title='aa').save()
@@ -26,7 +24,7 @@ def home_page():
     json_search = json.loads(unsafe_search)
     safe_search = sanitize(json_search)
 
-    result = Movie.objects(__raw__=safe_search)
+    data = Movie.objects(__raw__=safe_search)
 
 # if __name__ == "__main__":
 #     app.run(debug=True)
