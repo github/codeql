@@ -9,7 +9,7 @@ template<typename T> void sink(std::unique_ptr<T>&);
 
 void test_make_shared() {
     std::shared_ptr<int> p = std::make_shared<int>(source());
-    sink(*p); // $ ast,ir
+    sink(*p); // $ MISSING: ast,ir
     sink(p); // $ ast,ir
 }
 
@@ -21,7 +21,7 @@ void test_make_shared_array() {
 
 void test_make_unique() {
     std::unique_ptr<int> p = std::make_unique<int>(source());
-    sink(*p); // $ ast,ir
+    sink(*p); // $ MISSING: ast,ir
     sink(p); // $ ast,ir
 }
 
@@ -35,16 +35,16 @@ void test_reverse_taint_shared() {
     std::shared_ptr<int> p = std::make_shared<int>();
 
     *p = source();
-    sink(p); // $ ast MISSING: ir
-    sink(*p); // $ ast MISSING: ir
+    sink(p); // $ MISSING: ast,ir
+    sink(*p); // $ MISSING: ast,ir
 }
 
 void test_reverse_taint_unique() {
     std::unique_ptr<int> p = std::unique_ptr<int>();
 
     *p = source();
-    sink(p); // $ ast MISSING: ir
-    sink(*p); // $ ast MISSING: ir
+    sink(p); // $ MISSING: ast,ir
+    sink(*p); // $ MISSING: ast,ir
 }
 
 void test_shared_get() {
