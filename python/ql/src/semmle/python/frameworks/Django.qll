@@ -78,8 +78,11 @@ private module Django {
     /** Gets a reference to the `django.db` module. */
     DataFlow::Node db() { result = django_attr("db") }
 
-    class DjangoDb extends PEP249Module {
-      DjangoDb() { this = db() }
+    /**
+     * `django.db` implements PEP249, providing ways to execute SQL statements against a database.
+     */
+    private class DjangoDb extends PEP249ModuleApiNode {
+      DjangoDb() { this = API::moduleImport("django").getMember("db") }
     }
 
     /** Provides models for the `django.db` module. */

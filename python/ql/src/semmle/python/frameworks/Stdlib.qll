@@ -1523,24 +1523,13 @@ private module Stdlib {
   // ---------------------------------------------------------------------------
   // sqlite3
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `sqlite3` module. */
-  private DataFlow::Node sqlite3(DataFlow::TypeTracker t) {
-    t.start() and
-    result = DataFlow::importNode("sqlite3")
-    or
-    exists(DataFlow::TypeTracker t2 | result = sqlite3(t2).track(t2, t))
-  }
-
-  /** Gets a reference to the `sqlite3` module. */
-  DataFlow::Node sqlite3() { result = sqlite3(DataFlow::TypeTracker::end()) }
-
   /**
    * sqlite3 implements PEP 249, providing ways to execute SQL statements against a database.
    *
    * See https://devdocs.io/python~3.9/library/sqlite3
    */
-  class Sqlite3 extends PEP249Module {
-    Sqlite3() { this = sqlite3() }
+  class Sqlite3 extends PEP249ModuleApiNode {
+    Sqlite3() { this = API::moduleImport("sqlite3") }
   }
 }
 

@@ -7,20 +7,23 @@ private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
+private import semmle.python.ApiGraphs
 
-/** A module implementing PEP 249. Extend this class for implementations. */
-abstract class PEP249Module extends DataFlow::Node { }
+/**
+ * A module implementing PEP 249. Extend this class for implementations.
+ *
+ * DEPRECATED: Extend `PEP249ModuleApiNode` instead.
+ */
+abstract deprecated class PEP249Module extends DataFlow::Node { }
+
+/**
+ * An abstract class encompassing API graph nodes that implement PEP 249.
+ * Extend this class for implementations.
+ */
+abstract class PEP249ModuleApiNode extends API::Node { }
 
 /** Gets a reference to a connect call. */
-private DataFlow::Node connect(DataFlow::TypeTracker t) {
-  t.startInAttr("connect") and
-  result instanceof PEP249Module
-  or
-  exists(DataFlow::TypeTracker t2 | result = connect(t2).track(t2, t))
-}
-
-/** Gets a reference to a connect call. */
-DataFlow::Node connect() { result = connect(DataFlow::TypeTracker::end()) }
+DataFlow::Node connect() { result = any(PEP249ModuleApiNode a).getMember("connect").getAUse() }
 
 /**
  * Provides models for the `db.Connection` class
@@ -43,10 +46,8 @@ module Connection {
   abstract class InstanceSource extends DataFlow::Node { }
 
   /** A direct instantiation of `db.Connection`. */
-  private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
-    override CallNode node;
-
-    ClassInstantiation() { node.getFunction() = connect().asCfgNode() }
+  private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+    ClassInstantiation() { this.getFunction() = connect() }
   }
 
   /** Gets a reference to an instance of `db.Connection`. */
@@ -115,10 +116,8 @@ private DataFlow::Node execute(DataFlow::TypeTracker t) {
 DataFlow::Node execute() { result = execute(DataFlow::TypeTracker::end()) }
 
 /** A call to the `execute` method on a cursor (or on a connection). */
-private class ExecuteCall extends SqlExecution::Range, DataFlow::CfgNode {
-  override CallNode node;
-
-  ExecuteCall() { node.getFunction() = execute().asCfgNode() }
+private class ExecuteCall extends SqlExecution::Range, DataFlow::CallCfgNode {
+  ExecuteCall() { this.getFunction() = execute() }
 
   override DataFlow::Node getSql() {
     result.asCfgNode() in [node.getArg(0), node.getArgByName("sql")]

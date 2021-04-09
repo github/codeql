@@ -157,7 +157,7 @@ module API {
     /**
      * Gets a textual representation of this element.
      */
-    abstract string toString();
+    string toString() { none() }
 
     /**
      * Gets a path of the given `length` from the root to this node.
