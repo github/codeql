@@ -3308,6 +3308,15 @@
 | smart_pointer.cpp:83:8:83:8 | q | smart_pointer.cpp:83:9:83:9 | call to operator-> |  |
 | smart_pointer.cpp:83:8:83:8 | ref arg q | smart_pointer.cpp:84:8:84:8 | q |  |
 | smart_pointer.cpp:84:8:84:8 | q | smart_pointer.cpp:84:9:84:9 | call to operator-> |  |
+| smart_pointer.cpp:87:17:87:18 | pa | smart_pointer.cpp:88:5:88:6 | pa |  |
+| smart_pointer.cpp:88:5:88:20 | ... = ... | smart_pointer.cpp:88:9:88:9 | x [post update] |  |
+| smart_pointer.cpp:88:13:88:18 | call to source | smart_pointer.cpp:88:5:88:20 | ... = ... |  |
+| smart_pointer.cpp:92:25:92:50 | call to unique_ptr | smart_pointer.cpp:93:11:93:11 | p |  |
+| smart_pointer.cpp:92:25:92:50 | call to unique_ptr | smart_pointer.cpp:94:8:94:8 | p |  |
+| smart_pointer.cpp:93:11:93:11 | p | smart_pointer.cpp:93:13:93:15 | call to get |  |
+| smart_pointer.cpp:93:11:93:11 | ref arg p | smart_pointer.cpp:94:8:94:8 | p |  |
+| smart_pointer.cpp:93:13:93:15 | ref arg call to get | smart_pointer.cpp:93:11:93:11 | ref arg p |  |
+| smart_pointer.cpp:94:8:94:8 | p | smart_pointer.cpp:94:9:94:9 | call to operator-> |  |
 | standalone_iterators.cpp:39:45:39:51 | source1 | standalone_iterators.cpp:39:45:39:51 | source1 |  |
 | standalone_iterators.cpp:39:45:39:51 | source1 | standalone_iterators.cpp:40:11:40:17 | source1 |  |
 | standalone_iterators.cpp:39:45:39:51 | source1 | standalone_iterators.cpp:41:12:41:18 | source1 |  |

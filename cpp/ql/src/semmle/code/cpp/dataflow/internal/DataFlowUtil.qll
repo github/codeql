@@ -521,22 +521,6 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
   FieldFlow::fieldFlow(nodeFrom, nodeTo)
 }
 
-private predicate pointerWrapperFlow(Node nodeFrom, Node nodeTo) {
-  // post-update-smart-pointer-`operator->` -> `post-update`-qualifier
-  exists(PointerWrapper wrapper, Call call |
-    call = wrapper.getAnUnwrapperFunction().getACallToThisFunction() and
-    nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr() = call and
-    nodeTo.asDefiningArgument() = call.getQualifier()
-  )
-  or
-  // smart-pointer-qualifier -> smart-pointer-`operator->`
-  exists(PointerWrapper wrapper, Call call |
-    call = wrapper.getAnUnwrapperFunction().getACallToThisFunction() and
-    nodeFrom.asExpr() = call.getQualifier() and
-    nodeTo.asExpr() = call
-  )
-}
-
 /**
  * INTERNAL: do not use.
  *
@@ -602,8 +586,6 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
     nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr() = call and
     nodeTo.asDefiningArgument() = call.getQualifier()
   )
-  or
-  pointerWrapperFlow(nodeFrom, nodeTo)
 }
 
 /**
