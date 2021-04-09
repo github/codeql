@@ -80,19 +80,15 @@ class Node extends TNode {
     result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getType()
   }
 
-  private Callable getEnclosingCallableImpl() {
+  /** Gets the callable in which this node occurs. */
+  Callable getEnclosingCallable() {
     result = this.asExpr().getEnclosingCallable() or
     result = this.asParameter().getCallable() or
     result = this.(ImplicitVarargsArray).getCall().getEnclosingCallable() or
     result = this.(InstanceParameterNode).getCallable() or
     result = this.(ImplicitInstanceAccess).getInstanceAccess().getEnclosingCallable() or
     result = this.(MallocNode).getClassInstanceExpr().getEnclosingCallable() or
-    result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getEnclosingCallableImpl()
-  }
-
-  /** Gets the callable in which this node occurs. */
-  Callable getEnclosingCallable() {
-    result = unique(DataFlowCallable c | c = this.getEnclosingCallableImpl() | c)
+    result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getEnclosingCallable()
   }
 
   private Type getImprovedTypeBound() {

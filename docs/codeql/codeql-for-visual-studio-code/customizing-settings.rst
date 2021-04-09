@@ -58,6 +58,11 @@ Configuring settings for testing queries
 
 To increase the number of threads used for testing queries, you can update the **Running Tests > Number Of Threads** setting.
 
+Configuring settings for telemetry and data collection
+--------------------------------------------------------
+
+You can configure whether the CodeQL extension collects telemetry data. This is disabled by default. For more information, see ":doc:`About telemetry in CodeQL for Visual Studio Code <about-telemetry-in-codeql-for-visual-studio-code>`."
+
 Further reading
 ----------------
 

@@ -55,4 +55,14 @@ module ShellCommandInjectionFromEnvironment {
   class ShellCommandSink extends Sink, DataFlow::ValueNode {
     ShellCommandSink() { any(SystemCommandExecution sys).isShellInterpreted(this) }
   }
+
+  /**
+   * A string-concatenation leaf that is surrounded by quotes, seen as a sanitizer for command-injection.
+   */
+  class QuotingConcatSanitizer extends Sanitizer, StringOps::ConcatenationLeaf {
+    QuotingConcatSanitizer() {
+      this.getNextLeaf().getStringValue().regexpMatch("(\"|').*") and
+      this.getPreviousLeaf().getStringValue().regexpMatch(".*(\"|')")
+    }
+  }
 }

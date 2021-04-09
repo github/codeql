@@ -75,7 +75,7 @@ The following properties are supported in ``qlpack.yml`` files.
    * - ``name``
      - ``org-queries``
      - All packs
-     - The name of the QL pack defined using alphanumeric characters, hyphens, and periods. It must be unique as CodeQL cannot differentiate between QL packs with identical names. If you intend to    distribute the pack, prefix the name with your (or your organization's) name followed by a hyphen. Use the pack name to specify queries to run using ``database analyze`` and to define    dependencies between QL packs (see examples below).- '
+     - The name of the QL pack defined using alphanumeric characters, hyphens, and periods. It must be unique as CodeQL cannot differentiate between QL packs with identical names. If you intend to    distribute the pack, prefix the name with your (or your organization's) name followed by a hyphen. Use the pack name to specify queries to run using ``database analyze`` and to define    dependencies between QL packs (see examples below).
    * - ``version``
      - ``0.0.0``
      - All packs
