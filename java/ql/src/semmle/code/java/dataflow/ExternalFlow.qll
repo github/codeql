@@ -74,6 +74,7 @@ private import FlowSummary
  * ensuring that they are visible to the taint tracking / data flow library.
  */
 private module Frameworks {
+  private import internal.ContainerFlow
   private import semmle.code.java.frameworks.ApacheHttp
   private import semmle.code.java.frameworks.apache.Lang
   private import semmle.code.java.frameworks.guava.Guava
