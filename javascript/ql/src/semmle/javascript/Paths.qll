@@ -236,10 +236,8 @@ private module TypeScriptOutDir {
     result =
       tsconfig
           .getPropValue("compilerOptions")
-          .(JSONObject)
           .getPropValue("outDir")
-          .(JSONString)
-          .getValue()
+          .getStringValue()
   }
 
   /**
@@ -283,10 +281,8 @@ private module TypeScriptOutDir {
     result =
       getRootFolderFromPath(tsconfig
             .getPropValue("include")
-            .(JSONArray)
             .getElementValue(_)
-            .(JSONString)
-            .getValue())
+            .getStringValue())
   }
 
   /**
@@ -297,10 +293,8 @@ private module TypeScriptOutDir {
     result =
       tsconfig
           .getPropValue("compilerOptions")
-          .(JSONObject)
           .getPropValue("rootDir")
-          .(JSONString)
-          .getValue()
+          .getStringValue()
   }
 }
 
