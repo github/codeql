@@ -10,13 +10,29 @@ private import codeql_ruby.ast.Scope
 private string builtin() { result = ["Object", "Kernel", "BasicObject", "Class", "Module"] }
 
 cached
-newtype TModule =
-  TResolved(string qName) {
-    qName = builtin()
+module Cached {
+  cached
+  newtype TModule =
+    TResolved(string qName) {
+      qName = builtin()
+      or
+      qName = constantDefinition(_)
+    } or
+    TUnresolved(Namespace n) { not exists(constantDefinition(n)) }
+
+  cached
+  string constantDefinition(ConstantWriteAccess n) {
+    isToplevel(n) and result = n.getName()
     or
-    qName = constantDefinition(_)
-  } or
-  TUnresolved(Namespace n) { not exists(constantDefinition(n)) }
+    not isToplevel(n) and
+    not exists(n.getScopeExpr()) and
+    result = scopeAppend(constantDefinition(n.getEnclosingModule()), n.getName())
+    or
+    result = scopeAppend(resolveScopeExpr(n.getScopeExpr()), n.getName())
+  }
+}
+
+import Cached
 
 private predicate isToplevel(ConstantAccess n) {
   not exists(n.getScopeExpr()) and
@@ -25,16 +41,6 @@ private predicate isToplevel(ConstantAccess n) {
     or
     n.getEnclosingModule() instanceof Toplevel
   )
-}
-
-string constantDefinition(ConstantWriteAccess n) {
-  isToplevel(n) and result = n.getName()
-  or
-  not isToplevel(n) and
-  not exists(n.getScopeExpr()) and
-  result = scopeAppend(constantDefinition(n.getEnclosingModule()), n.getName())
-  or
-  result = scopeAppend(resolveScopeExpr(n.getScopeExpr()), n.getName())
 }
 
 private predicate isDefinedConstant(string qualifiedModuleName) {
@@ -64,7 +70,6 @@ private string resolveScopeExpr(ConstantReadAccess r) {
   )
 }
 
-cached
 private int maxDepth() { result = max(ConstantAccess c | | count(c.getEnclosingModule+())) }
 
 private ModuleBase enclosing(ModuleBase m, int level) {
