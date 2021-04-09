@@ -8,12 +8,6 @@ class Scope extends AstNode, TScopeType {
 
   Scope() { range = toGenerated(this) }
 
-  /** Gets the enclosing module, if any. */
-  ModuleBase getEnclosingModule() { toGenerated(result) = range.getEnclosingModule() }
-
-  /** Gets the enclosing method, if any. */
-  MethodBase getEnclosingMethod() { toGenerated(result) = range.getEnclosingMethod() }
-
   /** Gets the scope in which this scope is nested, if any. */
   Scope getOuterScope() { toGenerated(result) = range.getOuterScope() }
 

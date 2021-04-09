@@ -13,6 +13,7 @@ import ast.Scope
 import ast.Statement
 import ast.Variable
 private import ast.internal.AST
+private import ast.internal.Scope
 
 /**
  * A node in the abstract syntax tree. This class is the base class for all Ruby
@@ -27,6 +28,20 @@ class AstNode extends TAstNode {
    * this predicate can have multiple results.
    */
   string getAPrimaryQlClass() { result = "???" }
+
+  /** Gets the enclosing module, if any. */
+  ModuleBase getEnclosingModule() {
+    exists(Scope::Range s |
+      s = scopeOf(toGenerated(this)) and toGenerated(result) = s.getEnclosingModule()
+    )
+  }
+
+  /** Gets the enclosing method, if any. */
+  MethodBase getEnclosingMethod() {
+    exists(Scope::Range s |
+      s = scopeOf(toGenerated(this)) and toGenerated(result) = s.getEnclosingMethod()
+    )
+  }
 
   /** Gets a textual representation of this node. */
   cached

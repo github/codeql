@@ -137,11 +137,11 @@ class BodyStmt extends StmtSequence, TBodyStmt {
     result = any(Generated::Program g | this = TToplevel(g)).getChild(i) and
     not result instanceof Generated::BeginBlock
     or
-    result = any(Generated::Class g | this = TClass(g)).getChild(i)
+    result = any(Generated::Class g | this = TClassDeclaration(g)).getChild(i)
     or
     result = any(Generated::SingletonClass g | this = TSingletonClass(g)).getChild(i)
     or
-    result = any(Generated::Module g | this = TModule(g)).getChild(i)
+    result = any(Generated::Module g | this = TModuleDeclaration(g)).getChild(i)
     or
     result = any(Generated::Begin g | this = TBeginExpr(g)).getChild(i)
   }

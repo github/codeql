@@ -1,17 +1,23 @@
 classes
-| classes.rb:3:1:4:3 | Foo | Class | Foo |
-| classes.rb:7:1:8:3 | Bar | Class | Bar |
-| classes.rb:11:1:12:3 | Baz | Class | Baz |
-| classes.rb:16:1:17:3 | MyClass | Class | MyClass |
-| classes.rb:20:1:37:3 | Wibble | Class | Wibble |
-| classes.rb:32:3:33:5 | ClassInWibble | Class | ClassInWibble |
-| classes.rb:55:1:56:3 | MyClassInGlobalScope | Class | MyClassInGlobalScope |
-| modules.rb:6:5:7:7 | ClassInFooBar | Class | ClassInFooBar |
-| modules.rb:19:3:20:5 | ClassInFoo | Class | ClassInFoo |
-| modules.rb:30:3:31:5 | ClassInAnotherDefinitionOfFoo | Class | ClassInAnotherDefinitionOfFoo |
-| modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar | Class | ClassInAnotherDefinitionOfFooBar |
+| classes.rb:3:1:4:3 | Foo | ClassDeclaration | Foo |
+| classes.rb:7:1:8:3 | Bar | ClassDeclaration | Bar |
+| classes.rb:11:1:12:3 | Baz | ClassDeclaration | Baz |
+| classes.rb:16:1:17:3 | MyClass | ClassDeclaration | MyClass |
+| classes.rb:20:1:37:3 | Wibble | ClassDeclaration | Wibble |
+| classes.rb:32:3:33:5 | ClassInWibble | ClassDeclaration | ClassInWibble |
+| classes.rb:55:1:56:3 | MyClassInGlobalScope | ClassDeclaration | MyClassInGlobalScope |
+| modules.rb:6:5:7:7 | ClassInFooBar | ClassDeclaration | ClassInFooBar |
+| modules.rb:19:3:20:5 | ClassInFoo | ClassDeclaration | ClassInFoo |
+| modules.rb:30:3:31:5 | ClassInAnotherDefinitionOfFoo | ClassDeclaration | ClassInAnotherDefinitionOfFoo |
+| modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar | ClassDeclaration | ClassInAnotherDefinitionOfFooBar |
+| modules.rb:66:5:67:7 | Bar | ClassDeclaration | Bar |
+| modules.rb:72:5:73:7 | Bar | ClassDeclaration | Bar |
+| modules.rb:78:5:79:7 | Bar | ClassDeclaration | Bar |
 classesWithNameScopeExprs
 | classes.rb:16:1:17:3 | MyClass | classes.rb:16:7:16:14 | MyModule |
+| modules.rb:66:5:67:7 | Bar | modules.rb:66:11:66:14 | Foo1 |
+| modules.rb:72:5:73:7 | Bar | modules.rb:72:11:72:14 | Foo2 |
+| modules.rb:78:5:79:7 | Bar | modules.rb:78:11:78:14 | Foo3 |
 classesWithGlobalNameScopeExprs
 | classes.rb:55:1:56:3 | MyClassInGlobalScope |
 exprsInClasses
@@ -19,8 +25,8 @@ exprsInClasses
 | classes.rb:20:1:37:3 | Wibble | 1 | classes.rb:25:3:27:5 | method_b | Method |
 | classes.rb:20:1:37:3 | Wibble | 2 | classes.rb:29:3:29:20 | call to some_method_call | MethodCall |
 | classes.rb:20:1:37:3 | Wibble | 3 | classes.rb:30:3:30:19 | ... = ... | AssignExpr |
-| classes.rb:20:1:37:3 | Wibble | 4 | classes.rb:32:3:33:5 | ClassInWibble | Class |
-| classes.rb:20:1:37:3 | Wibble | 5 | classes.rb:35:3:36:5 | ModuleInWibble | Module |
+| classes.rb:20:1:37:3 | Wibble | 4 | classes.rb:32:3:33:5 | ClassInWibble | ClassDeclaration |
+| classes.rb:20:1:37:3 | Wibble | 5 | classes.rb:35:3:36:5 | ModuleInWibble | ModuleDeclaration |
 methodsInClasses
 | classes.rb:20:1:37:3 | Wibble | classes.rb:21:3:23:5 | method_a | method_a |
 | classes.rb:20:1:37:3 | Wibble | classes.rb:25:3:27:5 | method_b | method_b |

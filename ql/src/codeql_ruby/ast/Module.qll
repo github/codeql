@@ -1,12 +1,46 @@
 private import codeql_ruby.AST
 private import codeql_ruby.ast.Constant
 private import internal.AST
+private import internal.Module
 private import internal.TreeSitter
+
+/**
+ * A representation of a run-time `module` or `class` value.
+ */
+class Module extends TModule {
+  /** Get a declaration of this module, if any. */
+  ModuleBase getADeclaration() { result.getModule() = this }
+
+  /** Gets a textual representation of this module. */
+  string toString() {
+    this = TResolved(result)
+    or
+    exists(Namespace n | this = TUnresolved(n) and result = "...::" + n.toString())
+  }
+
+  /** Gets the location of this module. */
+  Location getLocation() {
+    exists(Namespace n | this = TUnresolved(n) and result = n.getLocation())
+    or
+    result =
+      min(Namespace n, string qName, Location loc, int weight |
+        this = TResolved(qName) and
+        qName = namespaceDeclaration(n) and
+        loc = n.getLocation() and
+        if exists(loc.getFile().getRelativePath()) then weight = 0 else weight = 1
+      |
+        loc
+        order by
+          weight, count(n.getAStmt()) desc, loc.getFile().getAbsolutePath(), loc.getStartLine(),
+          loc.getStartColumn()
+      )
+  }
+}
 
 /**
  * The base class for classes, singleton classes, and modules.
  */
-class ModuleBase extends BodyStmt, TModuleBase {
+class ModuleBase extends BodyStmt, Scope, TModuleBase {
   /** Gets a method defined in this module/class. */
   MethodBase getAMethod() { result = this.getAStmt() }
 
@@ -14,16 +48,21 @@ class ModuleBase extends BodyStmt, TModuleBase {
   MethodBase getMethod(string name) { result = this.getAMethod() and result.getName() = name }
 
   /** Gets a class defined in this module/class. */
-  Class getAClass() { result = this.getAStmt() }
+  ClassDeclaration getAClass() { result = this.getAStmt() }
 
   /** Gets the class named `name` in this module/class, if any. */
-  Class getClass(string name) { result = this.getAClass() and result.getName() = name }
+  ClassDeclaration getClass(string name) { result = this.getAClass() and result.getName() = name }
 
   /** Gets a module defined in this module/class. */
-  Module getAModule() { result = this.getAStmt() }
+  ModuleDeclaration getAModule() { result = this.getAStmt() }
 
   /** Gets the module named `name` in this module/class, if any. */
-  Module getModule(string name) { result = this.getAModule() and result.getName() = name }
+  ModuleDeclaration getModule(string name) {
+    result = this.getAModule() and result.getName() = name
+  }
+
+  /** Gets the representation of the run-time value of this module or class. */
+  Module getModule() { none() }
 }
 
 /**
@@ -61,6 +100,8 @@ class Toplevel extends ModuleBase, TToplevel {
     or
     pred = "getBeginBlock" and result = this.getBeginBlock(_)
   }
+
+  final override Module getModule() { result = TResolved("Object") }
 
   final override string toString() { result = g.getLocation().getFile().getBaseName() }
 }
@@ -132,6 +173,12 @@ class Namespace extends ModuleBase, ConstantWriteAccess, TNamespace {
    */
   override predicate hasGlobalScope() { none() }
 
+  final override Module getModule() {
+    result = any(string qName | qName = namespaceDeclaration(this) | TResolved(qName))
+    or
+    result = TUnresolved(this)
+  }
+
   override AstNode getAChild(string pred) {
     result = ModuleBase.super.getAChild(pred) or
     result = ConstantWriteAccess.super.getAChild(pred)
@@ -150,12 +197,12 @@ class Namespace extends ModuleBase, ConstantWriteAccess, TNamespace {
  * end
  * ```
  */
-class Class extends Namespace, TClass {
+class ClassDeclaration extends Namespace, TClassDeclaration {
   private Generated::Class g;
 
-  Class() { this = TClass(g) }
+  ClassDeclaration() { this = TClassDeclaration(g) }
 
-  final override string getAPrimaryQlClass() { result = "Class" }
+  final override string getAPrimaryQlClass() { result = "ClassDeclaration" }
 
   /**
    * Gets the `Expr` used as the superclass in the class definition, if any.
@@ -214,7 +261,7 @@ class SingletonClass extends ModuleBase, TSingletonClass {
 
   SingletonClass() { this = TSingletonClass(g) }
 
-  final override string getAPrimaryQlClass() { result = "Class" }
+  final override string getAPrimaryQlClass() { result = "ClassDeclaration" }
 
   /**
    * Gets the expression resulting in the object on which the singleton class
@@ -249,7 +296,7 @@ class SingletonClass extends ModuleBase, TSingletonClass {
  * N.B. this class represents a single instance of a module definition. In the
  * following example, classes `Bar` and `Baz` are both defined in the module
  * `Foo`, but in two syntactically distinct definitions, meaning that there
- * will be two instances of `Module` in the database.
+ * will be two instances of `ModuleDeclaration` in the database.
  *
  * ```rb
  * module Foo
@@ -261,12 +308,12 @@ class SingletonClass extends ModuleBase, TSingletonClass {
  * end
  * ```
  */
-class Module extends Namespace, TModule {
+class ModuleDeclaration extends Namespace, TModuleDeclaration {
   private Generated::Module g;
 
-  Module() { this = TModule(g) }
+  ModuleDeclaration() { this = TModuleDeclaration(g) }
 
-  final override string getAPrimaryQlClass() { result = "Module" }
+  final override string getAPrimaryQlClass() { result = "ModuleDeclaration" }
 
   final override string getName() {
     result = g.getName().(Generated::Token).getValue() or
