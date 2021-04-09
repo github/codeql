@@ -13,6 +13,8 @@ private class UniqueOrSharedPtr extends Class, PointerWrapper {
     or
     result.getClassAndName(["operator->", "get"]) = this
   }
+
+  override predicate pointsToConst() { this.getTemplateArgument(0).(Type).isConst() }
 }
 
 /** Any function that unwraps a pointer wrapper class to reveal the underlying pointer. */

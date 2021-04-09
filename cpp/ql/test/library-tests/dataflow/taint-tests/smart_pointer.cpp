@@ -103,3 +103,36 @@ void reverse_taint_smart_pointer() {
   taint_x(p.get());
   sink(p->x); // $ ast MISSING: ir
 }
+
+struct C {
+	int z;
+	std::shared_ptr<A> q;
+};
+
+void taint_x_shared(std::shared_ptr<A> ptr) {
+	ptr->x = source();
+}
+
+void taint_x_shared_cref(const std::shared_ptr<A>& ptr) {
+	ptr->x = source();
+}
+
+void getNumberCRef(const std::shared_ptr<int>& ptr) {
+  *ptr = source();
+}
+
+int nested_shared_ptr_taint(std::shared_ptr<C> p1, std::unique_ptr<std::shared_ptr<int>> p2) {
+  taint_x_shared(p1->q);
+  sink(p1->q->x); // $ ast MISSING: ir
+
+  getNumber(*p2);
+  sink(**p2); // $ ast MISSING: ir
+}
+
+int nested_shared_ptr_taint_cref(std::shared_ptr<C> p1, std::unique_ptr<std::shared_ptr<int>> p2) {
+  taint_x_shared_cref(p1->q);
+  sink(p1->q->x); // $ MISSING: ast,ir
+
+  getNumberCRef(*p2);
+  sink(**p2); // $ MISSING: ast,ir
+}

@@ -242,39 +242,6 @@ private module PartialDefinitions {
     }
   }
 
-  class SmartPointerPartialDefinition extends PartialDefinition {
-    Variable pointer;
-    Expr innerDefinedExpr;
-
-    SmartPointerPartialDefinition() {
-      innerDefinedExpr = pragma[only_bind_out](getInnerDefinedExpr(this, node)) and
-      innerDefinedExpr = getAPointerWrapperAccess(pointer, -1)
-      or
-      // Pointer wrappers passed to a function by value.
-      exists(Call call |
-        call = node and
-        call.getAnArgument() = innerDefinedExpr and
-        innerDefinedExpr = this and
-        this = getAPointerWrapperAccess(pointer, 0) and
-        not call instanceof OverloadedPointerDereferenceExpr
-      )
-    }
-
-    deprecated override predicate partiallyDefines(Variable v) { v = pointer }
-
-    deprecated override predicate partiallyDefinesThis(ThisExpr e) { none() }
-
-    override predicate definesExpressions(Expr inner, Expr outer) {
-      inner = innerDefinedExpr and
-      outer = this
-    }
-
-    override predicate partiallyDefinesVariableAt(Variable v, ControlFlowNode cfn) {
-      v = pointer and
-      cfn = node
-    }
-  }
-
   /**
    * A partial definition that's a definition via an output iterator.
    */
@@ -287,15 +254,6 @@ private module PartialDefinitions {
    */
   class DefinitionByReference extends VariablePartialDefinition {
     DefinitionByReference() { exists(Call c | this = c.getAnArgument() or this = c.getQualifier()) }
-  }
-
-  /**
-   * A partial definition that's a definition via a smart pointer being passed into a function.
-   */
-  class DefinitionBySmartPointer extends SmartPointerPartialDefinition {
-    DefinitionBySmartPointer() {
-      exists(Call c | this = c.getAnArgument() or this = c.getQualifier())
-    }
   }
 }
 
@@ -873,22 +831,6 @@ module FlowVar_internal {
       crement = result and
       [crement.getQualifier(), crement.getArgument(0)] = getAnIteratorAccess(collection) and
       crement.getTarget().getName() = ["operator++", "operator--"]
-    )
-  }
-
-  /**
-   * Gets either:
-   * - A call to an unwrapper function, where an access to `pointer` is the qualifier, or
-   * - A call to the `CopyConstructor` that copies the value of an access to `pointer`.
-   */
-  Call getAPointerWrapperAccess(Variable pointer, int n) {
-    exists(PointerWrapper wrapper | wrapper = pointer.getUnspecifiedType().stripType() |
-      n = -1 and
-      result.getQualifier() = pointer.getAnAccess() and
-      result.getTarget() = wrapper.getAnUnwrapperFunction()
-      or
-      result.getArgument(n) = pointer.getAnAccess() and
-      result.getTarget() instanceof CopyConstructor
     )
   }
 
