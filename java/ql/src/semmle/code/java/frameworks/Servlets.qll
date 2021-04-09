@@ -354,7 +354,7 @@ class FilterChain extends Interface {
 
 /** Holds if `m` is a filter handler method (for example `doFilter`). */
 predicate isDoFilterMethod(Method m) {
-  m.getName().matches("doFilter") and
+  m.getName() ="doFilter" and
   m.getDeclaringType() instanceof FilterClass and
   m.getNumberOfParameters() = 3 and
   m.getParameter(0).getType() instanceof ServletRequest and
