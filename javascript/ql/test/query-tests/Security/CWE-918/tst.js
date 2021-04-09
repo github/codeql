@@ -109,3 +109,11 @@ new ws.Server({ port: 8080 }).on('connection', function(socket, request) {
     const socket = new ws(url);
   });
 });
+
+new ws.Server({ port: 8080 }).on('connection', function (socket, request) {
+  socket.on('message', function (message) {
+    const url = new URL(request.url, base);
+    const target = new URL(url.pathname, base);
+    const socket = new ws(url);
+  });
+});
