@@ -60,6 +60,9 @@ Callable getACallingCallableOrSelf(Callable call) {
   result = getACallingCallableOrSelf(call.getAReference().getEnclosingCallable())
 }
 
+/**
+ * A method that is called to handle an HTTP GET request.
+ */
 abstract class RequestGetMethod extends Method { }
 
 /** Override method of `doGet` of `Servlet` subclass. */
