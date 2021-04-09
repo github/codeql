@@ -31,7 +31,8 @@ predicate isGuarded(SubExpr sub, Expr left, Expr right) {
 }
 
 /**
- * Holds if `e` is known to be less than or equal to `sub.getLeftOperand()`.
+ * Holds if `e` is known or suspected to be less than or equal to
+ * `sub.getLeftOperand()`.
  */
 predicate exprIsSubLeftOrLess(SubExpr sub, Expr e) {
   e = sub.getLeftOperand()
