@@ -9,7 +9,6 @@
   This tainted NoSQL query containing a user-controlled source can then execute a malicious query in a NoSQL database such as MongoDB.
   In order for the user-controlled source to taint the NoSQL query, the user-controller source must be converted into a Python object using something like <code>json.loads</code> or <code>xmltodict.parse</code>.
   </p>
-
   <p>
   Because a user-controlled source is passed into the query, the malicious user can have complete control over the query itself.
   When the tainted query is executed, the malicious user can commit malicious actions such as bypassing role restrictions or accessing and modifying restricted data in the NoSQL database.
@@ -25,13 +24,13 @@
 
 <example>
   <p>In the example below, the user-supplied source is passed to a MongoDB function that queries the MongoDB database.</p>
-  <sample src="NoSQLInjection-Bad.py" />
+  <sample src="examples/NoSQLInjection-bad.py" />
   <p> This can be fixed by using a sanitizer library like MongoSanitizer as shown in this annotated code version below.</p>
-  <sample src="NoSQLInjection-Good.py" />
+  <sample src="examples/NoSQLInjection-good.py" />
 <example>
 
 <references>
-  <li>OWASP: <a href="https://owasp.org/www-pdf-archive/GOD16-NOSQL.pdf">NoSQL Injection</a></li>
-  <li>Security Stack Exchange Discussion: <a href="https://security.stackexchange.com/questions/83231/mongodb-nosql-injection-in-python-code">Question 83231</a></li>
+  <li>OWASP: <a href="https://owasp.org/www-pdf-archive/GOD16-NOSQL.pdf">NoSQL Injection</a>.</li>
+  <li>Security Stack Exchange Discussion: <a href="https://security.stackexchange.com/questions/83231/mongodb-nosql-injection-in-python-code">Question 83231</a>.</li>
 </references>
 </qhelp>
