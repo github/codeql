@@ -1,0 +1,71 @@
+edges
+| flask_mongoengine_bad.py:24:26:24:32 | ControlFlowNode for request | flask_mongoengine_bad.py:24:26:24:37 | ControlFlowNode for Attribute |
+| flask_mongoengine_bad.py:24:26:24:37 | ControlFlowNode for Attribute | flask_mongoengine_bad.py:24:26:24:47 | ControlFlowNode for Subscript |
+| flask_mongoengine_bad.py:24:26:24:47 | ControlFlowNode for Subscript | flask_mongoengine_bad.py:25:30:25:47 | ControlFlowNode for unsanitized_search |
+| flask_mongoengine_bad.py:25:30:25:47 | ControlFlowNode for unsanitized_search | flask_mongoengine_bad.py:27:36:27:46 | ControlFlowNode for json_search |
+| flask_mongoengine_good.py:25:21:25:27 | ControlFlowNode for request | flask_mongoengine_good.py:25:21:25:32 | ControlFlowNode for Attribute |
+| flask_mongoengine_good.py:25:21:25:32 | ControlFlowNode for Attribute | flask_mongoengine_good.py:25:21:25:42 | ControlFlowNode for Subscript |
+| flask_mongoengine_good.py:25:21:25:42 | ControlFlowNode for Subscript | flask_mongoengine_good.py:26:30:26:42 | ControlFlowNode for unsafe_search |
+| flask_pymongo_bad.py:11:26:11:32 | ControlFlowNode for request | flask_pymongo_bad.py:11:26:11:37 | ControlFlowNode for Attribute |
+| flask_pymongo_bad.py:11:26:11:37 | ControlFlowNode for Attribute | flask_pymongo_bad.py:11:26:11:47 | ControlFlowNode for Subscript |
+| flask_pymongo_bad.py:11:26:11:47 | ControlFlowNode for Subscript | flask_pymongo_bad.py:12:30:12:47 | ControlFlowNode for unsanitized_search |
+| flask_pymongo_bad.py:12:30:12:47 | ControlFlowNode for unsanitized_search | flask_pymongo_bad.py:14:33:14:53 | ControlFlowNode for Dict |
+| flask_pymongo_good.py:12:21:12:27 | ControlFlowNode for request | flask_pymongo_good.py:12:21:12:32 | ControlFlowNode for Attribute |
+| flask_pymongo_good.py:12:21:12:32 | ControlFlowNode for Attribute | flask_pymongo_good.py:12:21:12:42 | ControlFlowNode for Subscript |
+| flask_pymongo_good.py:12:21:12:42 | ControlFlowNode for Subscript | flask_pymongo_good.py:13:30:13:42 | ControlFlowNode for unsafe_search |
+| mongoengine_bad.py:22:21:22:27 | ControlFlowNode for request | mongoengine_bad.py:22:21:22:32 | ControlFlowNode for Attribute |
+| mongoengine_bad.py:22:21:22:32 | ControlFlowNode for Attribute | mongoengine_bad.py:22:21:22:42 | ControlFlowNode for Subscript |
+| mongoengine_bad.py:22:21:22:42 | ControlFlowNode for Subscript | mongoengine_bad.py:23:30:23:42 | ControlFlowNode for unsafe_search |
+| mongoengine_bad.py:23:30:23:42 | ControlFlowNode for unsafe_search | mongoengine_bad.py:25:34:25:44 | ControlFlowNode for json_search |
+| mongoengine_good.py:23:21:23:27 | ControlFlowNode for request | mongoengine_good.py:23:21:23:32 | ControlFlowNode for Attribute |
+| mongoengine_good.py:23:21:23:32 | ControlFlowNode for Attribute | mongoengine_good.py:23:21:23:42 | ControlFlowNode for Subscript |
+| mongoengine_good.py:23:21:23:42 | ControlFlowNode for Subscript | mongoengine_good.py:24:30:24:42 | ControlFlowNode for unsafe_search |
+| pymongo_bad.py:11:21:11:27 | ControlFlowNode for request | pymongo_bad.py:11:21:11:32 | ControlFlowNode for Attribute |
+| pymongo_bad.py:11:21:11:32 | ControlFlowNode for Attribute | pymongo_bad.py:11:21:11:42 | ControlFlowNode for Subscript |
+| pymongo_bad.py:11:21:11:42 | ControlFlowNode for Subscript | pymongo_bad.py:12:30:12:42 | ControlFlowNode for unsafe_search |
+| pymongo_bad.py:12:30:12:42 | ControlFlowNode for unsafe_search | pymongo_bad.py:14:44:14:64 | ControlFlowNode for Dict |
+| pymongo_good.py:12:21:12:27 | ControlFlowNode for request | pymongo_good.py:12:21:12:32 | ControlFlowNode for Attribute |
+| pymongo_good.py:12:21:12:32 | ControlFlowNode for Attribute | pymongo_good.py:12:21:12:42 | ControlFlowNode for Subscript |
+| pymongo_good.py:12:21:12:42 | ControlFlowNode for Subscript | pymongo_good.py:13:30:13:42 | ControlFlowNode for unsafe_search |
+nodes
+| flask_mongoengine_bad.py:24:26:24:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_mongoengine_bad.py:24:26:24:37 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| flask_mongoengine_bad.py:24:26:24:47 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| flask_mongoengine_bad.py:25:30:25:47 | ControlFlowNode for unsanitized_search | semmle.label | ControlFlowNode for unsanitized_search |
+| flask_mongoengine_bad.py:27:36:27:46 | ControlFlowNode for json_search | semmle.label | ControlFlowNode for json_search |
+| flask_mongoengine_good.py:25:21:25:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_mongoengine_good.py:25:21:25:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| flask_mongoengine_good.py:25:21:25:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| flask_mongoengine_good.py:26:30:26:42 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| flask_pymongo_bad.py:11:26:11:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_pymongo_bad.py:11:26:11:37 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| flask_pymongo_bad.py:11:26:11:47 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| flask_pymongo_bad.py:12:30:12:47 | ControlFlowNode for unsanitized_search | semmle.label | ControlFlowNode for unsanitized_search |
+| flask_pymongo_bad.py:14:33:14:53 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| flask_pymongo_good.py:12:21:12:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_pymongo_good.py:12:21:12:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| flask_pymongo_good.py:12:21:12:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| flask_pymongo_good.py:13:30:13:42 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| mongoengine_bad.py:22:21:22:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| mongoengine_bad.py:22:21:22:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| mongoengine_bad.py:22:21:22:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| mongoengine_bad.py:23:30:23:42 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| mongoengine_bad.py:25:34:25:44 | ControlFlowNode for json_search | semmle.label | ControlFlowNode for json_search |
+| mongoengine_good.py:23:21:23:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| mongoengine_good.py:23:21:23:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| mongoengine_good.py:23:21:23:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| mongoengine_good.py:24:30:24:42 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| pymongo_bad.py:11:21:11:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| pymongo_bad.py:11:21:11:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| pymongo_bad.py:11:21:11:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| pymongo_bad.py:12:30:12:42 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+| pymongo_bad.py:14:44:14:64 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| pymongo_good.py:12:21:12:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| pymongo_good.py:12:21:12:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| pymongo_good.py:12:21:12:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| pymongo_good.py:13:30:13:42 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
+#select
+| flask_mongoengine_bad.py:27:36:27:46 | ControlFlowNode for json_search | flask_mongoengine_bad.py:24:26:24:32 | ControlFlowNode for request | flask_mongoengine_bad.py:27:36:27:46 | ControlFlowNode for json_search | $@ NoSQL query contains an unsanitized $@ | flask_mongoengine_bad.py:27:36:27:46 | ControlFlowNode for json_search | This | flask_mongoengine_bad.py:24:26:24:32 | ControlFlowNode for request | user-provided value |
+| flask_pymongo_bad.py:14:33:14:53 | ControlFlowNode for Dict | flask_pymongo_bad.py:11:26:11:32 | ControlFlowNode for request | flask_pymongo_bad.py:14:33:14:53 | ControlFlowNode for Dict | $@ NoSQL query contains an unsanitized $@ | flask_pymongo_bad.py:14:33:14:53 | ControlFlowNode for Dict | This | flask_pymongo_bad.py:11:26:11:32 | ControlFlowNode for request | user-provided value |
+| mongoengine_bad.py:25:34:25:44 | ControlFlowNode for json_search | mongoengine_bad.py:22:21:22:27 | ControlFlowNode for request | mongoengine_bad.py:25:34:25:44 | ControlFlowNode for json_search | $@ NoSQL query contains an unsanitized $@ | mongoengine_bad.py:25:34:25:44 | ControlFlowNode for json_search | This | mongoengine_bad.py:22:21:22:27 | ControlFlowNode for request | user-provided value |
+| pymongo_bad.py:14:44:14:64 | ControlFlowNode for Dict | pymongo_bad.py:11:21:11:27 | ControlFlowNode for request | pymongo_bad.py:14:44:14:64 | ControlFlowNode for Dict | $@ NoSQL query contains an unsanitized $@ | pymongo_bad.py:14:44:14:64 | ControlFlowNode for Dict | This | pymongo_bad.py:11:21:11:27 | ControlFlowNode for request | user-provided value |
