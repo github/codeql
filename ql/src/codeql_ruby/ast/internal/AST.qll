@@ -138,7 +138,7 @@ private module Cached {
       g instanceof @binary_and or g instanceof @binary_ampersandampersand
     } or
     TLogicalOrExpr(Generated::Binary g) { g instanceof @binary_or or g instanceof @binary_pipepipe } or
-    TMethod(Generated::Method g) or
+    TMethodDeclaration(Generated::Method g) or
     TModuleDeclaration(Generated::Module g) or
     TModuloExpr(Generated::Binary g) { g instanceof @binary_percent } or
     TMulExpr(Generated::Binary g) { g instanceof @binary_star } or
@@ -301,7 +301,7 @@ private module Cached {
     n = TLocalVariableAccess(result, _) or
     n = TLogicalAndExpr(result) or
     n = TLogicalOrExpr(result) or
-    n = TMethod(result) or
+    n = TMethodDeclaration(result) or
     n = TModuleDeclaration(result) or
     n = TModuloExpr(result) or
     n = TMulExpr(result) or
@@ -402,7 +402,8 @@ class TStmtSequence =
   TBeginBlock or TEndBlock or TThen or TElse or TDo or TEnsure or TStringInterpolationComponent or
       TBlock or TBodyStmt or TParenthesizedExpr;
 
-class TBodyStmt = TBeginExpr or TModuleBase or TMethod or TLambda or TDoBlock or TSingletonMethod;
+class TBodyStmt =
+  TBeginExpr or TModuleBase or TMethodDeclaration or TLambda or TDoBlock or TSingletonMethod;
 
 class TLiteral =
   TNumericLiteral or TNilLiteral or TBooleanLiteral or TStringlikeLiteral or TCharacterLiteral or
@@ -428,7 +429,7 @@ class TArrayLiteral = TRegularArrayLiteral or TStringArrayLiteral or TSymbolArra
 
 class TCallable = TMethodBase or TLambda or TBlock;
 
-class TMethodBase = TMethod or TSingletonMethod;
+class TMethodBase = TMethodDeclaration or TSingletonMethod;
 
 class TBlock = TDoBlock or TBraceBlock;
 

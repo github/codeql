@@ -123,7 +123,7 @@ private class Ensure extends StmtSequence, TEnsure {
 class BodyStmt extends StmtSequence, TBodyStmt {
   // Not defined by dispatch, as it should not be exposed
   private Generated::AstNode getChild(int i) {
-    result = any(Generated::Method g | this = TMethod(g)).getChild(i)
+    result = any(Generated::Method g | this = TMethodDeclaration(g)).getChild(i)
     or
     result = any(Generated::SingletonMethod g | this = TSingletonMethod(g)).getChild(i)
     or

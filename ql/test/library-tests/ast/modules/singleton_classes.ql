@@ -8,4 +8,6 @@ query predicate exprsInSingletonClasses(SingletonClass sc, int i, Expr e, string
   e = sc.getStmt(i) and eClass = e.getAPrimaryQlClass()
 }
 
-query predicate methodsInSingletonClasses(SingletonClass sc, Method m) { m = sc.getAMethod() }
+query predicate methodsInSingletonClasses(SingletonClass sc, MethodDeclaration m) {
+  m = sc.getAMethod()
+}

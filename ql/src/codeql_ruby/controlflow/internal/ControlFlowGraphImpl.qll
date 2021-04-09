@@ -925,7 +925,7 @@ module Trees {
 
   private class MethodNameTree extends LeafTree, MethodName, ASTInternal::TTokenMethodName { }
 
-  private class MethodTree extends BodyStmtPostOrderTree, Method {
+  private class MethodDeclarationTree extends BodyStmtPostOrderTree, MethodDeclaration {
     /** Gets the `i`th child in the body of this block. */
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getParameter(i) and rescuable = false

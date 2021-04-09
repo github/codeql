@@ -12,7 +12,7 @@ query predicate exprsInModules(ModuleDeclaration m, int i, Expr e, string eClass
   e = m.getStmt(i) and eClass = e.getAPrimaryQlClass()
 }
 
-query predicate methodsInModules(ModuleDeclaration mod, Method method, string name) {
+query predicate methodsInModules(ModuleDeclaration mod, MethodDeclaration method, string name) {
   method = mod.getMethod(name)
 }
 
