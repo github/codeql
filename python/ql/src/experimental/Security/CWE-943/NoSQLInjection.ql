@@ -4,7 +4,7 @@
  *              malicious NoSQL code by the user.
  * @kind path-problem
  * @problem.severity error
- * @id python/nosql-injection
+ * @id py/nosql-injection
  * @tags experimental
  *       security
  *       external/cwe/cwe-943
