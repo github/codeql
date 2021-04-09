@@ -159,18 +159,14 @@ private module PartialDefinitions {
     Expr innerDefinedExpr;
 
     IteratorPartialDefinition() {
-      exists(Expr convertedInner |
-        not this instanceof Conversion and
-        valueToUpdate(convertedInner, this.getFullyConverted(), node) and
-        innerDefinedExpr = convertedInner.getUnconverted() and
-        (
-          innerDefinedExpr.(Call).getQualifier() = getAnIteratorAccess(collection)
-          or
-          innerDefinedExpr.(Call).getQualifier() = collection.getAnAccess() and
-          collection instanceof IteratorParameter
-        ) and
-        innerDefinedExpr.(Call).getTarget() instanceof IteratorPointerDereferenceMemberOperator
-      )
+      innerDefinedExpr = getInnerDefinedExpr(this, node) and
+      (
+        innerDefinedExpr.(Call).getQualifier() = getAnIteratorAccess(collection)
+        or
+        innerDefinedExpr.(Call).getQualifier() = collection.getAnAccess() and
+        collection instanceof IteratorParameter
+      ) and
+      innerDefinedExpr.(Call).getTarget() instanceof IteratorPointerDereferenceMemberOperator
       or
       // iterators passed by value without a copy constructor
       exists(Call call |
@@ -208,16 +204,18 @@ private module PartialDefinitions {
     }
   }
 
+  private Expr getInnerDefinedExpr(Expr e, ControlFlowNode node) {
+    not e instanceof Conversion and
+    exists(Expr convertedInner |
+      valueToUpdate(convertedInner, e.getFullyConverted(), node) and
+      result = convertedInner.getUnconverted()
+    )
+  }
+
   class VariablePartialDefinition extends PartialDefinition {
     Expr innerDefinedExpr;
 
-    VariablePartialDefinition() {
-      not this instanceof Conversion and
-      exists(Expr convertedInner |
-        valueToUpdate(convertedInner, this.getFullyConverted(), node) and
-        innerDefinedExpr = convertedInner.getUnconverted()
-      )
-    }
+    VariablePartialDefinition() { innerDefinedExpr = getInnerDefinedExpr(this, node) }
 
     deprecated override predicate partiallyDefines(Variable v) {
       innerDefinedExpr = v.getAnAccess()
@@ -249,30 +247,15 @@ private module PartialDefinitions {
     Expr innerDefinedExpr;
 
     SmartPointerPartialDefinition() {
-      exists(Expr convertedInner |
-        not this instanceof Conversion and
-        valueToUpdate(convertedInner, this.getFullyConverted(), node) and
-        innerDefinedExpr = convertedInner.getUnconverted() and
-        innerDefinedExpr = getAPointerWrapperAccess(pointer)
-      )
+      innerDefinedExpr = pragma[only_bind_out](getInnerDefinedExpr(this, node)) and
+      innerDefinedExpr = getAPointerWrapperAccess(pointer, -1)
       or
-      // pointer wrappers passed by value without a copy constructor
+      // Pointer wrappers passed to a function by value.
       exists(Call call |
         call = node and
         call.getAnArgument() = innerDefinedExpr and
         innerDefinedExpr = this and
-        this = getAPointerWrapperAccess(pointer) and
-        not call instanceof OverloadedPointerDereferenceExpr
-      )
-      or
-      // pointer wrappers passed by value with a copy constructor
-      exists(Call call, ConstructorCall copy |
-        copy.getTarget() instanceof CopyConstructor and
-        call = node and
-        call.getAnArgument() = copy and
-        copy.getArgument(0) = getAPointerWrapperAccess(pointer) and
-        innerDefinedExpr = this and
-        this = copy and
+        this = getAPointerWrapperAccess(pointer, 0) and
         not call instanceof OverloadedPointerDereferenceExpr
       )
     }
@@ -893,9 +876,20 @@ module FlowVar_internal {
     )
   }
 
-  Call getAPointerWrapperAccess(Variable pointer) {
-    pointer.getUnspecifiedType() instanceof PointerWrapper and
-    [result.getQualifier(), result.getAnArgument()] = pointer.getAnAccess()
+  /**
+   * Gets either:
+   * - A call to an unwrapper function, where an access to `pointer` is the qualifier, or
+   * - A call to the `CopyConstructor` that copies the value of an access to `pointer`.
+   */
+  Call getAPointerWrapperAccess(Variable pointer, int n) {
+    exists(PointerWrapper wrapper | wrapper = pointer.getUnspecifiedType().stripType() |
+      n = -1 and
+      result.getQualifier() = pointer.getAnAccess() and
+      result.getTarget() = wrapper.getAnUnwrapperFunction()
+      or
+      result.getArgument(n) = pointer.getAnAccess() and
+      result.getTarget() instanceof CopyConstructor
+    )
   }
 
   class IteratorParameter extends Parameter {
