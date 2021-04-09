@@ -53,10 +53,14 @@ private module NoSQL {
     override DataFlow::Node getQueryNode() { result = this.getArg(0) }
   }
 
-  private class MongoEngineCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
-    MongoEngineCall() {
+  private class MongoEngineMethods extends string {
+    MongoEngineMethods() { this in ["mongoengine", "flask_mongoengine"] }
+  }
+
+  private class MongoEngineObjectsCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
+    MongoEngineObjectsCall() {
       this =
-        API::moduleImport("mongoengine")
+        API::moduleImport(any(MongoEngineMethods mongoEngineMethod))
             .getMember("Document")
             .getASubclass()
             .getMember("objects")
