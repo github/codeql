@@ -7,7 +7,6 @@ private import semmle.code.cpp.dataflow.internal.FlowVar
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.controlflow.Guards
 private import semmle.code.cpp.dataflow.internal.AddressFlow
-private import semmle.code.cpp.models.interfaces.PointerWrapper
 
 cached
 private newtype TNode =
