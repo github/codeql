@@ -40,7 +40,7 @@ predicate isNotCleartextCredentials(string value) {
   value.toLowerCase().matches(possibleSecretName())
 }
 
-/** The credentials configuration property. */
+/** A configuration property that appears to contain a cleartext secret. */
 class CredentialsConfig extends ConfigPair {
   CredentialsConfig() {
     this.getNameElement().getName().trim().toLowerCase().matches(possibleSecretName()) and
@@ -48,60 +48,16 @@ class CredentialsConfig extends ConfigPair {
     not isNotCleartextCredentials(this.getValueElement().getValue().trim())
   }
 
+  /** Gets the whitespace-trimmed name of this property. */
   string getName() { result = this.getNameElement().getName().trim() }
 
+  /** Gets the whitespace-trimmed value of this property. */
   string getValue() { result = this.getValueElement().getValue().trim() }
 
   /** Returns a description of this vulnerability. */
   string getConfigDesc() {
-    exists(
-      // getProperty(...)
-      LoadCredentialsConfiguration cc, DataFlow::Node source, DataFlow::Node sink, MethodAccess ma
-    |
-      this.getName() = source.asExpr().(CompileTimeConstantExpr).getStringValue() and
-      cc.hasFlow(source, sink) and
-      ma.getArgument(0) = sink.asExpr() and
-      result = "Plaintext credentials " + this.getName() + " are loaded in Java Properties " + ma
-    )
-    or
-    exists(
-      // @Value("${mail.password}")
-      Annotation a
-    |
-      a.getType().hasQualifiedName("org.springframework.beans.factory.annotation", "Value") and
-      a.getAValue().(CompileTimeConstantExpr).getStringValue() = "${" + this.getName() + "}" and
-      result = "Plaintext credentials " + this.getName() + " are loaded in Spring annotation " + a
-    )
-    or
-    not exists(LoadCredentialsConfiguration cc, DataFlow::Node source, DataFlow::Node sink |
-      this.getName() = source.asExpr().(CompileTimeConstantExpr).getStringValue() and
-      cc.hasFlow(source, sink)
-    ) and
-    not exists(Annotation a |
-      a.getType().hasQualifiedName("org.springframework.beans.factory.annotation", "Value") and
-      a.getAValue().(CompileTimeConstantExpr).getStringValue() = "${" + this.getName() + "}"
-    ) and
     result =
       "Plaintext credentials " + this.getName() + " have cleartext value " + this.getValue() +
         " in properties file"
-  }
-}
-
-/**
- * A dataflow configuration tracking flow of cleartext credentials stored in a properties file
- *  to a `Properties.getProperty(...)` method call.
- */
-class LoadCredentialsConfiguration extends DataFlow::Configuration {
-  LoadCredentialsConfiguration() { this = "LoadCredentialsConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(CredentialsConfig cc |
-      source.asExpr().(CompileTimeConstantExpr).getStringValue() = cc.getName()
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() =
-      any(MethodAccess ma | ma.getMethod() instanceof PropertiesGetPropertyMethod).getArgument(0)
   }
 }
