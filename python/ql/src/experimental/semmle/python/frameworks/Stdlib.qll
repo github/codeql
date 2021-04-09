@@ -28,7 +28,7 @@ private module NoSQL {
             .getMember("MongoClient")
             .getReturn()
             .getAMember*()
-            .getMember(any(PyMongoMethods pyMongoMethods))
+            .getMember(any(PyMongoMethods pyMongoMethod))
             .getACall()
     }
 
@@ -36,7 +36,7 @@ private module NoSQL {
   }
 
   private class PyMongoFlaskMethods extends string {
-    PyMongoFlaskMethods() { this in ["find_one_or_404"] or this instanceof PyMongoMethods }
+    PyMongoFlaskMethods() { this in ["find_one_or_404", any(PyMongoMethods pyMongoMethod)] }
   }
 
   private class PyMongoFlaskCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
@@ -46,7 +46,7 @@ private module NoSQL {
             .getMember("PyMongo")
             .getReturn()
             .getAMember*()
-            .getMember(any(PyMongoFlaskMethods pyMongoFlaskMethods))
+            .getMember(any(PyMongoFlaskMethods pyMongoFlaskMethod))
             .getACall()
     }
 
