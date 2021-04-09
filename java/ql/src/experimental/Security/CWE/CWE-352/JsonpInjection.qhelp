@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 <p>The software uses external input as the function name to wrap JSON data and returns it to the client as a request response. 
-When there is a cross-domain problem, the problem of sensitive information leakage may occur.</p>
+When there is a cross-domain problem, this could lead to information leakage.</p>
 
 </overview>
 <recommendation>
