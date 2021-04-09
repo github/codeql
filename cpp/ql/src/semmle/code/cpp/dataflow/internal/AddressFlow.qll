@@ -247,7 +247,9 @@ private predicate referenceToUpdate(Expr reference, Expr outer, ControlFlowNode 
     not stdIdentityFunction(call.getTarget()) and
     not stdAddressOf(call.getTarget()) and
     exists(ReferenceType rt | rt = outer.getType().stripTopLevelSpecifiers() |
-      not rt.getBaseType().isConst()
+      not rt.getBaseType().isConst() or
+      rt.getBaseType().getUnspecifiedType() =
+        any(PointerWrapper wrapper | not wrapper.pointsToConst())
     )
   ) and
   reference = outer

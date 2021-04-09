@@ -644,7 +644,14 @@ module FlowVar_internal {
   predicate parameterIsNonConstReference(Parameter p) {
     exists(ReferenceType refType |
       refType = p.getUnderlyingType() and
-      not refType.getBaseType().isConst()
+      (
+        not refType.getBaseType().isConst()
+        or
+        // A field of a parameter of type `const std::shared_ptr<A>& p` can still be changed even though
+        // the base type of the reference is `const`.
+        refType.getBaseType().getUnspecifiedType() =
+          any(PointerWrapper wrapper | not wrapper.pointsToConst())
+      )
     )
     or
     p instanceof IteratorParameter

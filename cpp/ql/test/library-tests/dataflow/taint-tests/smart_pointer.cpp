@@ -131,8 +131,8 @@ int nested_shared_ptr_taint(std::shared_ptr<C> p1, std::unique_ptr<std::shared_p
 
 int nested_shared_ptr_taint_cref(std::shared_ptr<C> p1, std::unique_ptr<std::shared_ptr<int>> p2) {
   taint_x_shared_cref(p1->q);
-  sink(p1->q->x); // $ MISSING: ast,ir
+  sink(p1->q->x); // $ ast MISSING: ir
 
   getNumberCRef(*p2);
-  sink(**p2); // $ MISSING: ast,ir
+  sink(**p2); // $ ast MISSING: ir
 }
