@@ -1,5 +1,5 @@
 /**
- * Classes for modelling Dapper.
+ * Classes for modeling Dapper.
  */
 
 import csharp

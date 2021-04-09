@@ -6,7 +6,7 @@ private import semmle.code.csharp.frameworks.system.data.SqlClient
 private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.Dapper
-private import semmle.code.csharp.dataflow.DataFlow3
+private import semmle.code.csharp.dataflow.DataFlow4
 
 /** An expression containing a SQL command. */
 abstract class SqlExpr extends Expr {
@@ -105,7 +105,7 @@ class DapperCommandDefinitionMethodCallSqlExpr extends SqlExpr, ObjectCreation {
   override Expr getSql() { result = this.getArgumentForName("commandText") }
 }
 
-private class Conf extends DataFlow3::Configuration {
+private class Conf extends DataFlow4::Configuration {
   Conf() { this = "DapperCommandDefinitionFlowConfig" }
 
   override predicate isSource(DataFlow::Node node) {
