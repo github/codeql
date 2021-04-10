@@ -149,6 +149,8 @@ class XMLFile extends XMLParent, File {
 
   /** Gets a DTD associated with this XML file. */
   XMLDTD getADTD() { xmlDTDs(result, _, _, _, this) }
+
+  override string getAPrimaryQlClass() { result = "XMLFile" }
 }
 
 /**

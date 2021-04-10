@@ -159,6 +159,8 @@ class Folder extends Container, @folder {
 
   /** Gets the URL of this folder. */
   override string getURL() { result = "folder://" + getAbsolutePath() }
+
+  override string getAPrimaryQlClass() { result = "Folder" }
 }
 
 /**
@@ -171,6 +173,8 @@ class File extends Container, @file {
 
   /** Gets the URL of this file. */
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
+
+  override string getAPrimaryQlClass() { result = "File" }
 }
 
 /**
@@ -204,4 +208,6 @@ class JarFile extends File {
   string getManifestEntryAttribute(string entry, string key) {
     jarManifestEntries(this, entry, key, result)
   }
+
+  override string getAPrimaryQlClass() { result = "JarFile" }
 }
