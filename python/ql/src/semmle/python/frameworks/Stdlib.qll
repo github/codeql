@@ -19,31 +19,15 @@ private module Stdlib {
   /** Gets a reference to the `os` module. */
   API::Node os() { result = API::moduleImport("os") }
 
-  /**
-   * Gets a reference to the attribute `attr_name` of the `os` module.
-   * WARNING: Only holds for a few predefined attributes.
-   *
-   * For example, using `"system"` will get all uses of `os.system`.
-   */
-  private API::Node os_attr(string attr_name) { result = os().getMember(attr_name) }
-
   /** Provides models for the `os` module. */
   module os {
     /** Gets a reference to the `os.path` module. */
-    API::Node path() { result = os_attr("path") }
+    API::Node path() { result = os().getMember("path") }
 
     /** Provides models for the `os.path` module */
     module path {
-      /**
-       * Gets a reference to the attribute `attr_name` of the `os.path` module.
-       * WARNING: Only holds for a few predefined attributes.
-       *
-       * For example, using `attr_name = "join"` will get all uses of `os.path.join`.
-       */
-      API::Node path_attr(string attr_name) { result = path().getMember(attr_name) }
-
       /** Gets a reference to the `os.path.join` function. */
-      API::Node join() { result = path_attr("join") }
+      API::Node join() { result = path().getMember("join") }
     }
   }
 
@@ -52,7 +36,7 @@ private module Stdlib {
    * See https://docs.python.org/3/library/os.path.html#os.path.normpath
    */
   private class OsPathNormpathCall extends Path::PathNormalization::Range, DataFlow::CallCfgNode {
-    OsPathNormpathCall() { this = os::path::path_attr("normpath").getACall() }
+    OsPathNormpathCall() { this = os::path().getMember("normpath").getACall() }
 
     DataFlow::Node getPathArg() {
       result.asCfgNode() in [node.getArg(0), node.getArgByName("path")]
@@ -73,10 +57,8 @@ private module Stdlib {
    * A call to `os.path.abspath`.
    * See https://docs.python.org/3/library/os.path.html#os.path.abspath
    */
-  private class OsPathAbspathCall extends Path::PathNormalization::Range, DataFlow::CfgNode {
-    override CallNode node;
-
-    OsPathAbspathCall() { this = os::path::path_attr("abspath").getACall() }
+  private class OsPathAbspathCall extends Path::PathNormalization::Range, DataFlow::CallCfgNode {
+    OsPathAbspathCall() { this = os::path().getMember("abspath").getACall() }
 
     DataFlow::Node getPathArg() {
       result.asCfgNode() in [node.getArg(0), node.getArgByName("path")]
@@ -97,10 +79,8 @@ private module Stdlib {
    * A call to `os.path.realpath`.
    * See https://docs.python.org/3/library/os.path.html#os.path.realpath
    */
-  private class OsPathRealpathCall extends Path::PathNormalization::Range, DataFlow::CfgNode {
-    override CallNode node;
-
-    OsPathRealpathCall() { this = os::path::path_attr("realpath").getACall() }
+  private class OsPathRealpathCall extends Path::PathNormalization::Range, DataFlow::CallCfgNode {
+    OsPathRealpathCall() { this = os::path().getMember("realpath").getACall() }
 
     DataFlow::Node getPathArg() {
       result.asCfgNode() in [node.getArg(0), node.getArgByName("path")]
@@ -121,10 +101,8 @@ private module Stdlib {
    * A call to `os.system`.
    * See https://docs.python.org/3/library/os.html#os.system
    */
-  private class OsSystemCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
-    override CallNode node;
-
-    OsSystemCall() { this = os_attr("system").getACall() }
+  private class OsSystemCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+    OsSystemCall() { this = os().getMember("system").getACall() }
 
     override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(0) }
   }
@@ -137,13 +115,12 @@ private module Stdlib {
    * Although deprecated since version 2.6, they still work in 2.7.
    * See https://docs.python.org/2.7/library/os.html#os.popen2
    */
-  private class OsPopenCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
-    override CallNode node;
+  private class OsPopenCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     string name;
 
     OsPopenCall() {
       name in ["popen", "popen2", "popen3", "popen4"] and
-      this = os_attr(name).getACall()
+      this = os().getMember(name).getACall()
     }
 
     override DataFlow::Node getCommand() {
@@ -158,13 +135,11 @@ private module Stdlib {
    * A call to any of the `os.exec*` functions
    * See https://docs.python.org/3.8/library/os.html#os.execl
    */
-  private class OsExecCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
-    override CallNode node;
-
+  private class OsExecCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     OsExecCall() {
       exists(string name |
         name in ["execl", "execle", "execlp", "execlpe", "execv", "execve", "execvp", "execvpe"] and
-        this = os_attr(name).getACall()
+        this = os().getMember(name).getACall()
       )
     }
 
@@ -175,15 +150,13 @@ private module Stdlib {
    * A call to any of the `os.spawn*` functions
    * See https://docs.python.org/3.8/library/os.html#os.spawnl
    */
-  private class OsSpawnCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
-    override CallNode node;
-
+  private class OsSpawnCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     OsSpawnCall() {
       exists(string name |
         name in [
             "spawnl", "spawnle", "spawnlp", "spawnlpe", "spawnv", "spawnve", "spawnvp", "spawnvpe"
           ] and
-        this = os_attr(name).getACall()
+        this = os().getMember(name).getACall()
       )
     }
 
@@ -194,10 +167,8 @@ private module Stdlib {
    * A call to any of the `os.posix_spawn*` functions
    * See https://docs.python.org/3.8/library/os.html#os.posix_spawn
    */
-  private class OsPosixSpawnCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
-    override CallNode node;
-
-    OsPosixSpawnCall() { this = os_attr(["posix_spawn", "posix_spawnp"]).getACall() }
+  private class OsPosixSpawnCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+    OsPosixSpawnCall() { this = os().getMember(["posix_spawn", "posix_spawnp"]).getACall() }
 
     override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(0) }
   }
@@ -218,29 +189,17 @@ private module Stdlib {
   // subprocess
   // ---------------------------------------------------------------------------
   /** Gets a reference to the `subprocess` module. */
-  deprecated DataFlow::Node subprocess() { result = API::moduleImport("subprocess").getAUse() }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `subprocess` module.
-   * WARNING: Only holds for a few predefined attributes.
-   *
-   * For example, using `attr_name = "Popen"` will get all uses of `subprocess.Popen`.
-   */
-  private DataFlow::Node subprocess_attr(string attr_name) {
-    result = API::moduleImport("subprocess").getMember(attr_name).getAUse()
-  }
+  API::Node subprocess() { result = API::moduleImport("subprocess") }
 
   /**
    * A call to `subprocess.Popen` or helper functions (call, check_call, check_output, run)
    * See https://docs.python.org/3.8/library/subprocess.html#subprocess.Popen
    */
-  private class SubprocessPopenCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
-    override CallNode node;
-
+  private class SubprocessPopenCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     SubprocessPopenCall() {
       exists(string name |
         name in ["Popen", "call", "check_call", "check_output", "run"] and
-        node.getFunction() = subprocess_attr(name).asCfgNode()
+        this = subprocess().getMember(name).getACall()
       )
     }
 
@@ -311,17 +270,6 @@ private module Stdlib {
   // ---------------------------------------------------------------------------
   // marshal
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `marshal` module. */
-  deprecated DataFlow::Node marshal() { result = API::moduleImport("marshal").getAUse() }
-
-  /** Provides models for the `marshal` module. */
-  module marshal {
-    /** Gets a reference to the `marshal.loads` function. */
-    deprecated DataFlow::Node loads() {
-      result = API::moduleImport("marshal").getMember("loads").getAUse()
-    }
-  }
-
   /**
    * A call to `marshal.loads`
    * See https://docs.python.org/3/library/marshal.html#marshal.loads
@@ -342,9 +290,7 @@ private module Stdlib {
   // pickle
   // ---------------------------------------------------------------------------
   /** Gets a reference to the `pickle` module. */
-  DataFlow::Node pickle() {
-    result = API::moduleImport(["pickle", "cPickle", "_pickle"]).getAUse()
-  }
+  DataFlow::Node pickle() { result = API::moduleImport(["pickle", "cPickle", "_pickle"]).getAUse() }
 
   /** Provides models for the `pickle` module. */
   module pickle {
@@ -377,24 +323,14 @@ private module Stdlib {
   API::Node popen2() { result = API::moduleImport("popen2") }
 
   /**
-   * Gets a reference to the attribute `attr_name` of the `popen2` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private API::Node popen2_attr(string attr_name) {
-    result = API::moduleImport("popen2").getMember(attr_name)
-  }
-
-  /**
    * A call to any of the `popen.popen*` functions, or instantiation of a `popen.Popen*` class.
    * See https://docs.python.org/2.7/library/popen2.html
    */
-  private class Popen2PopenCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
-    override CallNode node;
-
+  private class Popen2PopenCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     Popen2PopenCall() {
       exists(string name |
         name in ["popen2", "popen3", "popen4", "Popen3", "Popen4"] and
-        this = popen2_attr(name).getACall()
+        this = popen2().getMember(name).getACall()
       )
     }
 
@@ -410,17 +346,11 @@ private module Stdlib {
   API::Node platform() { result = API::moduleImport("platform") }
 
   /**
-   * Gets a reference to the attribute `attr_name` of the `platform` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private API::Node platform_attr(string attr_name) { result = platform().getMember(attr_name) }
-
-  /**
    * A call to the `platform.popen` function.
    * See https://docs.python.org/2.7/library/platform.html#platform.popen
    */
   private class PlatformPopenCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
-    PlatformPopenCall() { this = platform_attr("popen").getACall() }
+    PlatformPopenCall() { this = platform().getMember("popen").getACall() }
 
     override DataFlow::Node getCommand() {
       result.asCfgNode() in [node.getArg(0), node.getArgByName("cmd")]
@@ -500,12 +430,6 @@ private module Stdlib {
   /** Gets a reference to the `base64` module. */
   API::Node base64() { result = API::moduleImport("base64") }
 
-  /**
-   * Gets a reference to the attribute `attr_name` of the `base64` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private API::Node base64_attr(string attr_name) { result = base64().getMember(attr_name) }
-
   /** A call to any of the encode functions in the `base64` module. */
   private class Base64EncodeCall extends Encoding::Range, DataFlow::CallCfgNode {
     string name;
@@ -515,7 +439,7 @@ private module Stdlib {
           "b64encode", "standard_b64encode", "urlsafe_b64encode", "b32encode", "b16encode",
           "encodestring", "a85encode", "b85encode", "encodebytes"
         ] and
-      this = base64_attr(name).getACall()
+      this = base64().getMember(name).getACall()
     }
 
     override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
@@ -547,7 +471,7 @@ private module Stdlib {
           "b64decode", "standard_b64decode", "urlsafe_b64decode", "b32decode", "b16decode",
           "decodestring", "a85decode", "b85decode", "decodebytes"
         ] and
-      this = base64_attr(name).getACall()
+      this = base64().getMember(name).getACall()
     }
 
     override predicate mayExecuteInput() { none() }
@@ -579,17 +503,11 @@ private module Stdlib {
   API::Node json() { result = API::moduleImport("json") }
 
   /**
-   * Gets a reference to the attribute `attr_name` of the `json` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private API::Node json_attr(string attr_name) { result = json().getMember(attr_name) }
-
-  /**
    * A call to `json.loads`
    * See https://docs.python.org/3/library/json.html#json.loads
    */
   private class JsonLoadsCall extends Decoding::Range, DataFlow::CallCfgNode {
-    JsonLoadsCall() { this = json_attr("loads").getACall() }
+    JsonLoadsCall() { this = json().getMember("loads").getACall() }
 
     override predicate mayExecuteInput() { none() }
 
@@ -605,7 +523,7 @@ private module Stdlib {
    * See https://docs.python.org/3/library/json.html#json.dumps
    */
   private class JsonDumpsCall extends Encoding::Range, DataFlow::CallCfgNode {
-    JsonDumpsCall() { this = json_attr("dumps").getACall() }
+    JsonDumpsCall() { this = json().getMember("dumps").getACall() }
 
     override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
 
@@ -799,28 +717,16 @@ private module Stdlib {
   /** Gets a reference to the `http` module. */
   API::Node http() { result = API::moduleImport("http") }
 
-  /**
-   * Gets a reference to the attribute `attr_name` of the `http` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private API::Node http_attr(string attr_name) { result = http().getMember(attr_name) }
-
   /** Provides models for the `http` module. */
   module http {
     // -------------------------------------------------------------------------
     // http.server
     // -------------------------------------------------------------------------
     /** Gets a reference to the `http.server` module. */
-    API::Node server() { result = http_attr("server") }
+    API::Node server() { result = http().getMember("server") }
 
     /** Provides models for the `http.server` module */
     module server {
-      /**
-       * Gets a reference to the attribute `attr_name` of the `http.server` module.
-       * WARNING: Only holds for a few predefined attributes.
-       */
-      private API::Node server_attr(string attr_name) { result = server().getMember(attr_name) }
-
       /**
        * Provides models for the `http.server.BaseHTTPRequestHandler` class (Python 3 only).
        *
@@ -828,7 +734,7 @@ private module Stdlib {
        */
       module BaseHTTPRequestHandler {
         /** Gets a reference to the `http.server.BaseHTTPRequestHandler` class. */
-        API::Node classRef() { result = server_attr("BaseHTTPRequestHandler") }
+        API::Node classRef() { result = server().getMember("BaseHTTPRequestHandler") }
       }
 
       /**
@@ -838,7 +744,7 @@ private module Stdlib {
        */
       module SimpleHTTPRequestHandler {
         /** Gets a reference to the `http.server.SimpleHTTPRequestHandler` class. */
-        API::Node classRef() { result = server_attr("SimpleHTTPRequestHandler") }
+        API::Node classRef() { result = server().getMember("SimpleHTTPRequestHandler") }
       }
 
       /**
@@ -848,7 +754,7 @@ private module Stdlib {
        */
       module CGIHTTPRequestHandler {
         /** Gets a reference to the `http.server.CGIHTTPRequestHandler` class. */
-        API::Node classRef() { result = server_attr("CGIHTTPRequestHandler") }
+        API::Node classRef() { result = server().getMember("CGIHTTPRequestHandler") }
       }
     }
   }
