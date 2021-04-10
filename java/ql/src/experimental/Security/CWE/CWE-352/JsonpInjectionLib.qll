@@ -39,8 +39,8 @@ class VerificationMethodFlowConfig extends TaintTracking2::Configuration {
   override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma, BarrierGuard bg, int i, VerificationMethodToIfFlowConfig vmtifc |
-      ma = bg
+    exists(MethodAccess ma, int i, VerificationMethodToIfFlowConfig vmtifc |
+      ma instanceof BarrierGuard
     |
       (
         ma.getMethod().getParameter(i).getName().regexpMatch("(?i).*(token|auth|referer|origin).*")
