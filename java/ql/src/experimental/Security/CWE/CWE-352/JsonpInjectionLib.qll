@@ -100,7 +100,7 @@ class SpringControllerRequestMappingGetMethod extends SpringControllerGetMethod 
 /** A concatenate expression using `(` and `)` or `);`. */
 class JsonpBuilderExpr extends AddExpr {
   JsonpInjectionExpr() {
-    getRightOperand().toString().regexpMatch("\"\\)\"|\"\\);\"") and
+    getRightOperand().toString().regexpMatch("\"\\);?\"") and
     getLeftOperand()
         .(AddExpr)
         .getLeftOperand()
