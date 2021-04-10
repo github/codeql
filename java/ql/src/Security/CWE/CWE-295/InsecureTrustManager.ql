@@ -44,9 +44,8 @@ private class CertificateException extends RefType {
  * - `m` calls a method declared to throw a `CertificateException`, but for which no source is available
  */
 private predicate mayThrowCertificateException(Method m) {
-  exists(Stmt stmt | m.getBody().getAChild*() = stmt |
-    stmt.(ThrowStmt).getThrownExceptionType().getASupertype*() instanceof CertificateException
-  )
+  m.getBody().getAChild*().(ThrowStmt).getThrownExceptionType().getASupertype*() instanceof
+    CertificateException
   or
   exists(Method otherMethod | m.polyCalls(otherMethod) |
     mayThrowCertificateException(otherMethod)
@@ -74,31 +73,6 @@ class InsecureTrustManagerConfiguration extends TaintTracking::Configuration {
     |
       ma.getArgument(1) = sink.asExpr()
     )
-  }
-
-  override predicate isSanitizer(DataFlow::Node barrier) {
-    // ignore nodes that are in functions that intentionally trust all certificates
-    barrier
-        .getEnclosingCallable()
-        .getName()
-        /*
-         * Regex: (_)* :
-         * some methods have underscores.
-         * Regex: (no|ignore|disable)(strictssl|ssl|verify|verification)
-         * noStrictSSL ignoreSsl
-         * Regex: (set)?(accept|trust|ignore|allow)(all|every|any|selfsigned)
-         * acceptAll trustAll ignoreAll setTrustAnyHttps
-         * Regex: (use|do|enable)insecure
-         * useInsecureSSL
-         * Regex: (set|do|use)?no.*(check|validation|verify|verification)
-         * setNoCertificateCheck
-         * Regex: disable
-         * disableChecks
-         */
-
-        .regexpMatch("^(?i)(_)*((no|ignore|disable)(strictssl|ssl|verify|verification)" +
-            "|(set)?(accept|trust|ignore|allow)(all|every|any|selfsigned)" +
-            "|(use|do|enable)insecure|(set|do|use)?no.*(check|validation|verify|verification)|disable).*$")
   }
 }
 
@@ -139,7 +113,12 @@ private predicate isFlag(DataFlow::Node source) {
   )
 }
 
-/** Holds if there is flow from `node1` to `node2` either due to local flow or due to custom flow steps. */
+/**
+ * Holds if there is flow from `node1` to `node2` either due to local flow or due to custom flow steps:
+ * 1. `Boolean.parseBoolean(taintedValue)` taints the return value of `parseBoolean`.
+ * 2. A call to an `EnvReadMethod` such as `System.getProperty` where a tainted value is used as an argument.
+ *    The return value of such a method is then tainted.
+ */
 private predicate flagFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
   DataFlow::localFlowStep(node1, node2)
   or
