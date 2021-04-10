@@ -99,7 +99,7 @@ class SpringControllerRequestMappingGetMethod extends SpringControllerGetMethod 
 
 /** A concatenate expression using `(` and `)` or `);`. */
 class JsonpBuilderExpr extends AddExpr {
-  JsonpInjectionExpr() {
+  JsonpBuilderExpr() {
     getRightOperand().toString().regexpMatch("\"\\);?\"") and
     getLeftOperand()
         .(AddExpr)
@@ -126,7 +126,7 @@ class RemoteFlowConfig extends DataFlow2::Configuration {
   override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(JsonpInjectionExpr jhe | jhe.getFunctionName() = sink.asExpr())
+    exists(JsonpBuilderExpr jhe | jhe.getFunctionName() = sink.asExpr())
   }
 }
 
@@ -137,7 +137,7 @@ class JsonDataFlowConfig extends DataFlow2::Configuration {
   override predicate isSource(DataFlow::Node src) { src instanceof JsonpStringSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(JsonpInjectionExpr jhe | jhe.getJsonExpr() = sink.asExpr())
+    exists(JsonpBuilderExpr jhe | jhe.getJsonExpr() = sink.asExpr())
   }
 }
 
@@ -146,7 +146,7 @@ class JsonpInjectionFlowConfig extends TaintTracking::Configuration {
   JsonpInjectionFlowConfig() { this = "JsonpInjectionFlowConfig" }
 
   override predicate isSource(DataFlow::Node src) {
-    exists(JsonpInjectionExpr jhe, JsonDataFlowConfig jdfc, RemoteFlowConfig rfc |
+    exists(JsonpBuilderExpr jhe, JsonDataFlowConfig jdfc, RemoteFlowConfig rfc |
       jhe = src.asExpr() and
       jdfc.hasFlowTo(DataFlow::exprNode(jhe.getJsonExpr())) and
       rfc.hasFlowTo(DataFlow::exprNode(jhe.getFunctionName()))
