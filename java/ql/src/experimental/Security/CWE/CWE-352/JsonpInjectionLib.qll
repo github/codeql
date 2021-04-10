@@ -12,7 +12,7 @@ class VerificationMethodToIfFlowConfig extends DataFlow3::Configuration {
   VerificationMethodToIfFlowConfig() { this = "VerificationMethodToIfFlowConfig" }
 
   override predicate isSource(DataFlow::Node src) {
-    exists(MethodAccess ma, BarrierGuard bg | ma = bg |
+    exists(MethodAccess ma | ma instanceof BarrierGuard |
       (
         ma.getMethod().getAParameter().getName().regexpMatch("(?i).*(token|auth|referer|origin).*")
         or
