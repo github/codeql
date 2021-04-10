@@ -28,7 +28,11 @@ predicate existsFilterVerificationMethod() {
   )
 }
 
-/** Determine whether there is a verification method for the remote streaming source data flow path method. */
+/** 
+ * Holds if somewhere in the whole program some user-controlled
+ * input is tested with what appears to be a token- or authentication-checking function,
+ * and `checkNode` is reachable from any function that can reach the user-controlled input source.
+ */
 predicate existsServletVerificationMethod(Node checkNode) {
   exists(DataFlow::Node source, DataFlow::Node sink, VerificationMethodFlowConfig vmfc |
     vmfc.hasFlow(source, sink) and
