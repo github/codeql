@@ -32,13 +32,11 @@ which when loaded by the app can lead to code execution.
   <references>
     <li>
       Android Documentation:
-      <a href="https://developer.android.com/training/data-storage/">Data and file storage overview</a>
-      .
+      <a href="https://developer.android.com/training/data-storage/">Data and file storage overview</a>.
     </li>
     <li>
       Android Documentation:
-      <a href="https://developer.android.com/reference/dalvik/system/DexClassLoader">DexClassLoader</a>
-      .
+      <a href="https://developer.android.com/reference/dalvik/system/DexClassLoader">DexClassLoader</a>.
     </li>
   </references>
 </qhelp>
