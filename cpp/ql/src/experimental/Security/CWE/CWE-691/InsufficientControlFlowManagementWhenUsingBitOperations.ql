@@ -61,8 +61,7 @@ class DangerousBitOperations extends BinaryBitwiseOperation {
   /** Holds when the bit expression contains both arguments and a function call. */
   predicate dangerousArgumentChecking() {
     not this.getLeftOperand() instanceof Call and
-    globalValueNumber(this.getLeftOperand().getAChild*()) =
-      globalValueNumber(bfc.getAnArgument())
+    globalValueNumber(this.getLeftOperand().getAChild*()) = globalValueNumber(bfc.getAnArgument())
   }
 
   /** Holds when function calls are present in the bit expression. */
