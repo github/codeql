@@ -14,20 +14,13 @@ import java
 import semmle.code.java.StringFormat
 
 predicate explicitToStringCall(Expr e) {
-  exists(MethodAccess ma, Method toString | toString = ma.getMethod() |
-    e = ma.getQualifier() and
-    toString.getName() = "toString" and
-    toString.getNumberOfParameters() = 0 and
-    not toString.isStatic()
+  exists(MethodAccess ma |
+    ma.getMethod() instanceof ToStringMethod and
+    e = ma.getQualifier()
   )
 }
 
-predicate directlyDeclaresToString(Class c) {
-  exists(Method m | m.getDeclaringType() = c |
-    m.getName() = "toString" and
-    m.getNumberOfParameters() = 0
-  )
-}
+predicate directlyDeclaresToString(Class c) { any(ToStringMethod m).getDeclaringType() = c }
 
 predicate inheritsObjectToString(Class t) {
   not directlyDeclaresToString(t.getSourceDeclaration()) and
