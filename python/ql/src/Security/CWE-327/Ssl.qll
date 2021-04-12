@@ -2,13 +2,12 @@
  * Provides modeling of SSL/TLS functionality of the `ssl` module from the standard library.
  * See https://docs.python.org/3.9/library/ssl.html
  */
+
 private import python
 private import semmle.python.ApiGraphs
 import TlsLibraryModel
 
-class SSLContextCreation extends ContextCreation {
-  override CallNode node;
-
+class SSLContextCreation extends ContextCreation, DataFlow::CallCfgNode {
   SSLContextCreation() { this = API::moduleImport("ssl").getMember("SSLContext").getACall() }
 
   override string getProtocol() {
@@ -46,7 +45,7 @@ class WrapSocketCall extends ConnectionCreation, DataFlow::CallCfgNode {
   }
 }
 
-class OptionsAugOr extends ProtocolRestriction {
+class OptionsAugOr extends ProtocolRestriction, DataFlow::CallCfgNode {
   ProtocolVersion restriction;
 
   OptionsAugOr() {
@@ -69,7 +68,7 @@ class OptionsAugOr extends ProtocolRestriction {
   override ProtocolVersion getRestriction() { result = restriction }
 }
 
-class OptionsAugAndNot extends ProtocolUnrestriction {
+class OptionsAugAndNot extends ProtocolUnrestriction, DataFlow::CallCfgNode {
   ProtocolVersion restriction;
 
   OptionsAugAndNot() {
@@ -127,7 +126,7 @@ predicate impliesBitSet(BinaryExpr whole, Expr part, boolean partHasBitSet, bool
   )
 }
 
-class ContextSetVersion extends ProtocolRestriction, ProtocolUnrestriction {
+class ContextSetVersion extends ProtocolRestriction, ProtocolUnrestriction, DataFlow::CallCfgNode {
   ProtocolVersion restriction;
 
   ContextSetVersion() {
@@ -189,8 +188,7 @@ class Ssl extends TlsLibrary {
 
   override DataFlow::CfgNode insecure_connection_creation(ProtocolVersion version) {
     result = API::moduleImport("ssl").getMember("wrap_socket").getACall() and
-    this.specific_version(version) =
-      result.(DataFlow::CallCfgNode).getArgByName("ssl_version") and
+    this.specific_version(version) = result.(DataFlow::CallCfgNode).getArgByName("ssl_version") and
     version.isInsecure()
   }
 

@@ -30,30 +30,30 @@ class ProtocolFamily extends string {
 }
 
 /** The creation of a context. */
-abstract class ContextCreation extends DataFlow::CfgNode {
+abstract class ContextCreation extends DataFlow::Node {
   /** Gets the protocol version or family for this context. */
   abstract string getProtocol();
 }
 
 /** The creation of a connection from a context. */
-abstract class ConnectionCreation extends DataFlow::CfgNode {
+abstract class ConnectionCreation extends DataFlow::Node {
   /** Gets the context used to create the connection. */
-  abstract DataFlow::CfgNode getContext();
+  abstract DataFlow::Node getContext();
 }
 
 /** A context is being restricted on which protocols it can accepts. */
-abstract class ProtocolRestriction extends DataFlow::CfgNode {
+abstract class ProtocolRestriction extends DataFlow::Node {
   /** Gets the context being restricted. */
-  abstract DataFlow::CfgNode getContext();
+  abstract DataFlow::Node getContext();
 
   /** Gets the protocol version being disallowed. */
   abstract ProtocolVersion getRestriction();
 }
 
 /** A context is being relaxed on which protocols it can accepts. */
-abstract class ProtocolUnrestriction extends DataFlow::CfgNode {
+abstract class ProtocolUnrestriction extends DataFlow::Node {
   /** Gets the context being relaxed. */
-  abstract DataFlow::CfgNode getContext();
+  abstract DataFlow::Node getContext();
 
   /** Gets the protocol version being allowed. */
   abstract ProtocolVersion getUnrestriction();

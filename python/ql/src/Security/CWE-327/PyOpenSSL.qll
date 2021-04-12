@@ -2,13 +2,12 @@
  * Provides modeling of SSL/TLS functionality of the `OpenSSL` module from the `pyOpenSSL` PyPI package.
  * See https://www.pyopenssl.org/en/stable/
  */
+
 private import python
 private import semmle.python.ApiGraphs
 import TlsLibraryModel
 
-class PyOpenSSLContextCreation extends ContextCreation {
-  override CallNode node;
-
+class PyOpenSSLContextCreation extends ContextCreation, DataFlow::CallCfgNode {
   PyOpenSSLContextCreation() {
     this = API::moduleImport("OpenSSL").getMember("SSL").getMember("Context").getACall()
   }
@@ -22,9 +21,7 @@ class PyOpenSSLContextCreation extends ContextCreation {
   }
 }
 
-class ConnectionCall extends ConnectionCreation {
-  override CallNode node;
-
+class ConnectionCall extends ConnectionCreation, DataFlow::CallCfgNode {
   ConnectionCall() {
     this = API::moduleImport("OpenSSL").getMember("SSL").getMember("Connection").getACall()
   }
@@ -36,9 +33,7 @@ class ConnectionCall extends ConnectionCreation {
 
 // This cannot be used to unrestrict,
 // see https://www.pyopenssl.org/en/stable/api/ssl.html#OpenSSL.SSL.Context.set_options
-class SetOptionsCall extends ProtocolRestriction {
-  override CallNode node;
-
+class SetOptionsCall extends ProtocolRestriction, DataFlow::CallCfgNode {
   SetOptionsCall() { node.getFunction().(AttrNode).getName() = "set_options" }
 
   override DataFlow::CfgNode getContext() {
