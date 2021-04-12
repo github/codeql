@@ -29,14 +29,14 @@ with sandboxing capabilities such as Apache Commons JEXL or the Spring Expressio
 The following example shows how untrusted data is used to build and run an expression
 using the JUEL interpreter:
 </p>
-<sample src="UnsafeExpressionEvaluationWithJUEL.java" />
+<sample src="UnsafeExpressionEvaluationWithJuel.java" />
 
 <p>
-JUEL does not support to run expressions in a sandbox. To prevent running arbitrary code,
+JUEL does not support running expressions in a sandbox. To prevent running arbitrary code,
 incoming data has to be checked before including it in an expression. The next example
 uses a Regex pattern to check whether a user tries to run an allowed expression or not:
 </p>
-<sample src="SaferExpressionEvaluationWithJUEL.java" />
+<sample src="SaferExpressionEvaluationWithJuel.java" />
 
 </example>
 

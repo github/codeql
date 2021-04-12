@@ -1,5 +1,5 @@
 import java
-import InjectionLib
+import FlowUtils
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 
@@ -16,7 +16,7 @@ class JakartaExpressionInjectionConfig extends TaintTracking::Configuration {
 
   override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
     any(TaintPropagatingCall c).taintFlow(fromNode, toNode) or
-    returnsDataFromBean(fromNode, toNode)
+    hasGetterFlow(fromNode, toNode)
   }
 }
 

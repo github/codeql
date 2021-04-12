@@ -1,5 +1,5 @@
 import java
-import InjectionLib
+import FlowUtils
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 
@@ -17,7 +17,7 @@ class JexlInjectionConfig extends TaintTracking::Configuration {
 
   override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
     any(TaintPropagatingJexlMethodCall c).taintFlow(fromNode, toNode) or
-    returnsDataFromBean(fromNode, toNode)
+    hasGetterFlow(fromNode, toNode)
   }
 }
 
