@@ -44,7 +44,7 @@ class UsingWhileAfterWhile extends WhileStmt {
 }
 
 /**
- * Using arithmetic in comparison.
+ * Using arithmetic in a condition.
  */
 class UsingArithmeticInComparison extends BinaryArithmeticOperation {
   /**
