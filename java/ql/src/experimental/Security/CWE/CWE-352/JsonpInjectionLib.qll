@@ -7,31 +7,11 @@ import semmle.code.java.dataflow.DataFlow3
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.spring.SpringController
 
-/** A data flow configuration tracing flow from the result of a method whose name includes token/auth/referer/origin to an if-statement condition. */
-class VerificationMethodToIfFlowConfig extends DataFlow3::Configuration {
-  VerificationMethodToIfFlowConfig() { this = "VerificationMethodToIfFlowConfig" }
-
-  override predicate isSource(DataFlow::Node src) {
-    exists(MethodAccess ma | ma instanceof BarrierGuard |
-      (
-        ma.getMethod().getAParameter().getName().regexpMatch("(?i).*(token|auth|referer|origin).*")
-        or
-        ma.getMethod().getName().regexpMatch("(?i).*(token|auth|referer|origin).*")
-      ) and
-      ma = src.asExpr()
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(IfStmt is | is.getCondition() = sink.asExpr())
-  }
-}
-
-/** Taint-tracking configuration tracing flow from untrusted inputs to an argument of a function whose result is used as an if-statement condition.
-* 
-* For example, in the context `String userControlled = request.getHeader("xyz"); boolean isGood = checkToken(userControlled); if(isGood) { ...`,
-* the flow from `checkToken`'s result to the condition of `if(isGood)` matches the configuration `VerificationMethodToIfFlowConfig` above,
-* and so the flow from `getHeader(...)` to the argument to `checkToken` matches this configuration.
+/**
+ * Taint-tracking configuration tracing flow from untrusted inputs to an argument of a function whose result is used as an if-statement condition.
+ *
+ * For example, in the context `String userControlled = request.getHeader("xyz"); boolean isGood = checkToken(userControlled); if(isGood) { ...`,
+ * the flow from `getHeader(...)` to the argument to `checkToken`, and then the flow from `checkToken`'s result to the condition of `if(isGood)`.
  */
 class VerificationMethodFlowConfig extends TaintTracking2::Configuration {
   VerificationMethodFlowConfig() { this = "VerificationMethodFlowConfig" }
@@ -39,16 +19,25 @@ class VerificationMethodFlowConfig extends TaintTracking2::Configuration {
   override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma, int i, VerificationMethodToIfFlowConfig vmtifc |
-      ma instanceof BarrierGuard
-    |
+    exists(IfStmt is, Method m | is.getEnclosingCallable() = m |
       (
-        ma.getMethod().getParameter(i).getName().regexpMatch("(?i).*(token|auth|referer|origin).*")
+        not m.getAParameter().getName().regexpMatch("(?i).*(token|auth|referer|origin).*")
+        or
+        not m.getName().regexpMatch("(?i).*(token|auth|referer|origin).*")
+      ) and
+      sink.asExpr() = is.getCondition()
+    )
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node prod, DataFlow::Node succ) {
+    exists(MethodAccess ma |
+      (
+        ma.getMethod().getAParameter().getName().regexpMatch("(?i).*(token|auth|referer|origin).*")
         or
         ma.getMethod().getName().regexpMatch("(?i).*(token|auth|referer|origin).*")
       ) and
-      ma.getArgument(i) = sink.asExpr() and
-      vmtifc.hasFlow(exprNode(ma), _)
+      ma.getAnArgument() = prod.asExpr() and
+      ma = succ.asExpr()
     )
   }
 }
