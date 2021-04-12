@@ -105,7 +105,8 @@ func HttpResponseBody_ClevergoTechClevergov052() {
 			{
 				bodyByte839 := source().([]byte)
 				var rece clevergo.Context
-				rece.Blob(0, "application/json", bodyByte839) // $contentType=application/json $responseBody=bodyByte839
+				ct := "application/json"
+				rece.Blob(0, ct, bodyByte839) // $contentType=application/json $responseBody=bodyByte839
 			}
 			// func (*Context).Emit(code int, contentType string, body string) (err error)
 			{
