@@ -116,7 +116,7 @@ abstract class TlsLibrary extends string {
   }
 
   /** The creation of a context with an unspecific protocol version, say TLS, known to have insecure instances. */
-  DataFlow::CfgNode unspecific_context_creation(ProtocolFamily family) {
+  ContextCreation unspecific_context_creation(ProtocolFamily family) {
     result = default_context_creation()
     or
     result = specific_context_creation() and
