@@ -20,6 +20,10 @@ void workFunction_1(char *s) {
     if(intB - intA<10) break;
     intA--;
   }while(intA>0); // BAD
+  for(intA=100; intA>0; intA--)
+  {
+    if(intB - intA<10) break;
+  }while(intA>0); // BAD
   while(intA>0)
   {
     if(intB - intA<10) break;
