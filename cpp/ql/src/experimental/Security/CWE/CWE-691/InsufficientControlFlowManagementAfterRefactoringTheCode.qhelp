@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>In some situations, after code refactoring, parts of the old constructs may remain. They are correctly accepted by the compiler, but can critically affect program execution. For example, if you switch from `do {...} while ();` to `while () {...}` with errors, you run the risk of running out of resources. These code snippets look suspicious and require the developer's attention.</p>
+<p>In some situations, after code refactoring, parts of the old constructs may remain. They are correctly accepted by the compiler, but can critically affect program execution. For example, if you switch from `do {...} while ();` to `while () {...}` forgetting to remove the old construct completely, you get `while(){...}while();` which may be vulnerable. These code snippets look suspicious and require the developer's attention.</p>
 
 
 </overview>
