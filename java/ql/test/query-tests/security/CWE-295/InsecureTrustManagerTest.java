@@ -89,9 +89,9 @@ public class InsecureTrustManagerTest {
 	private static void disableTrustManager() throws NoSuchAlgorithmException, KeyManagementException {
 		SSLContext context = SSLContext.getInstance("TLS");
 		TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
-		context.init(null, trustManager, null); // GOOD: Uses a `TrustManager` that does not verify the
+		context.init(null, trustManager, null); // BAD: Uses a `TrustManager` that does not verify the
 												// certificate
-		// chain, allowing any certificate. BUT it is the method name suggests that this
-		// is intentional.
+		// chain, allowing any certificate. The method name suggests that this may be
+		// intentional, but we flag it anyway.
 	}
 }
