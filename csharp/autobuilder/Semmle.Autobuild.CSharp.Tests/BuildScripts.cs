@@ -981,7 +981,7 @@ Microsoft.NETCore.App 2.1.4 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
         {
             actions.RunProcess["cmd.exe /C dotnet --list-sdks"] = 0;
             actions.RunProcessOut["cmd.exe /C dotnet --list-sdks"] = "2.1.3 [C:\\Program Files\\dotnet\\sdks]\n2.1.4 [C:\\Program Files\\dotnet\\sdks]";
-            actions.RunProcess[@"cmd.exe /C powershell -NoProfile -ExecutionPolicy unrestricted -file C:\Project\install-dotnet.ps1 -Version 2.1.3 -InstallDir C:\Project\.dotnet"] = 0;
+            actions.RunProcess[@"cmd.exe /C pwsh -NoProfile -ExecutionPolicy unrestricted -file C:\Project\install-dotnet.ps1 -Version 2.1.3 -InstallDir C:\Project\.dotnet"] = 0;
             actions.RunProcess[@"cmd.exe /C del C:\Project\install-dotnet.ps1"] = 0;
             actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet --info"] = 0;
             actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet clean C:\Project\test.csproj"] = 0;
@@ -1006,6 +1006,39 @@ Microsoft.NETCore.App 2.1.4 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
 
             var autobuilder = CreateAutoBuilder(true, dotnetVersion: "2.1.3");
             TestAutobuilderScript(autobuilder, 0, 7);
+        }
+
+        [Fact]
+        public void TestDotnetVersionWindowsNoPwsh()
+        {
+            actions.RunProcess["cmd.exe /C dotnet --list-sdks"] = 0;
+            actions.RunProcessOut["cmd.exe /C dotnet --list-sdks"] = "2.1.3 [C:\\Program Files\\dotnet\\sdks]\n2.1.4 [C:\\Program Files\\dotnet\\sdks]";
+            actions.RunProcess[@"cmd.exe /C pwsh -NoProfile -ExecutionPolicy unrestricted -file C:\Project\install-dotnet.ps1 -Version 2.1.3 -InstallDir C:\Project\.dotnet"] = 1;
+            actions.RunProcess[@"cmd.exe /C powershell -NoProfile -ExecutionPolicy unrestricted -file C:\Project\install-dotnet.ps1 -Version 2.1.3 -InstallDir C:\Project\.dotnet"] = 0;
+            actions.RunProcess[@"cmd.exe /C del C:\Project\install-dotnet.ps1"] = 0;
+            actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet --info"] = 0;
+            actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet clean C:\Project\test.csproj"] = 0;
+            actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet restore C:\Project\test.csproj"] = 0;
+            actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --auto C:\Project\.dotnet\dotnet build --no-incremental C:\Project\test.csproj"] = 0;
+            actions.FileExists["csharp.log"] = true;
+            actions.FileExists[@"C:\Project\test.csproj"] = true;
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["PATH"] = "/bin:/usr/bin";
+            actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.cs\ntest.csproj";
+            actions.EnumerateDirectories[@"C:\Project"] = "";
+            var xml = new XmlDocument();
+            xml.LoadXml(@"<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+</Project>");
+            actions.LoadXml[@"C:\Project\test.csproj"] = xml;
+
+            var autobuilder = CreateAutoBuilder(true, dotnetVersion: "2.1.3");
+            TestAutobuilderScript(autobuilder, 0, 8);
         }
 
         [Fact]
