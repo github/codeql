@@ -96,6 +96,7 @@ module DataFlow {
     predicate accessesGlobal(string g) { globalVarRef(g).flowsTo(this) }
 
     /** Holds if this node may evaluate to the string `s`, possibly through local data flow. */
+    pragma[nomagic]
     predicate mayHaveStringValue(string s) {
       getAPredecessor().mayHaveStringValue(s)
       or
