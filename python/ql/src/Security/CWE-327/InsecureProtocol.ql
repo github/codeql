@@ -33,19 +33,19 @@ class ProtocolConfiguration extends DataFlow::Node {
 //
 // Note that AstNode is abstract and AstNode_ is a library class, so
 // we have to extend @py_ast_node.
-class Namable extends @py_ast_node {
-  Namable() {
+class Nameable extends @py_ast_node {
+  Nameable() {
     exists(ProtocolConfiguration protocolConfiguration |
       this = protocolConfiguration.asCfgNode().(CallNode).getFunction().getNode()
     )
     or
-    exists(Namable attr | this = attr.(Attribute).getObject())
+    exists(Nameable attr | this = attr.(Attribute).getObject())
   }
 
   string toString() { result = "AstNode" }
 }
 
-string callName(Namable call) {
+string callName(Nameable call) {
   result = call.(Name).getId()
   or
   exists(Attribute a | a = call | result = callName(a.getObject()) + "." + a.getName())
