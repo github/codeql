@@ -2,7 +2,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.security.KeyManagementException;
 import java.security.KeyStore;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -84,7 +86,7 @@ public class InsecureTrustManagerTest {
 		}
 	}
 
-	private static void disableTrustManager() {
+	private static void disableTrustManager() throws NoSuchAlgorithmException, KeyManagementException {
 		SSLContext context = SSLContext.getInstance("TLS");
 		TrustManager[] trustManager = new TrustManager[] { new InsecureTrustManager() };
 		context.init(null, trustManager, null); // GOOD: Uses a `TrustManager` that does not verify the
