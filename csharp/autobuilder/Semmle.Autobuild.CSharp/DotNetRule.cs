@@ -209,8 +209,9 @@ Invoke-Command -ScriptBlock $ScriptBlock";
                         var psScriptFile = builder.Actions.PathCombine(builder.Options.RootDirectory, "install-dotnet.ps1");
                         builder.Actions.WriteAllText(psScriptFile, psScript);
 
-                        var install = new CommandBuilder(builder.Actions).
-                            RunCommand("powershell").
+                        BuildScript GetInstall(string pwsh) =>
+                            new CommandBuilder(builder.Actions).
+                            RunCommand(pwsh).
                             Argument("-NoProfile").
                             Argument("-ExecutionPolicy").
                             Argument("unrestricted").
@@ -219,13 +220,14 @@ Invoke-Command -ScriptBlock $ScriptBlock";
                             Argument("-Version").
                             Argument(version).
                             Argument("-InstallDir").
-                            Argument(path);
+                            Argument(path).
+                            Script;
 
                         var removeScript = new CommandBuilder(builder.Actions).
                             RunCommand("del").
                             Argument(psScriptFile);
 
-                        return install.Script & BuildScript.Try(removeScript.Script);
+                        return (GetInstall("pwsh") | GetInstall("powershell")) & BuildScript.Try(removeScript.Script);
                     }
                     else
                     {
