@@ -495,10 +495,8 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
   override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) {
-    (
-      tag = OnlyInstructionTag() and
-      opcode = sideEffectOpcode
-    ) and
+    tag = OnlyInstructionTag() and
+    opcode = sideEffectOpcode and
     (
       isWrite() and
       (
