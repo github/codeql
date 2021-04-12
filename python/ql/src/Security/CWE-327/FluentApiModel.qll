@@ -1,4 +1,4 @@
-import python
+private import python
 import TlsLibraryModel
 
 /**
@@ -89,9 +89,6 @@ predicate unsafe_connection_creation_with_context(
 /**
  * Holds if `conectionCreation` marks the creation of a connetion witout reference to a context
  * and allowing `insecure_version`.
- *
- * `specific` is true iff the context is configured for a specific protocol version rather
- * than for a family of protocols.
  */
 predicate unsafe_connection_creation_without_context(
   DataFlow::CallCfgNode connectionCreation, string insecure_version
@@ -99,7 +96,7 @@ predicate unsafe_connection_creation_without_context(
   exists(TlsLibrary l | connectionCreation = l.insecure_connection_creation(insecure_version))
 }
 
-/** Holds if `contextCreation` is creating a context ties to a specific insecure version. */
+/** Holds if `contextCreation` is creating a context tied to a specific insecure version. */
 predicate unsafe_context_creation(DataFlow::CallCfgNode contextCreation, string insecure_version) {
   exists(TlsLibrary l | contextCreation = l.insecure_context_creation(insecure_version))
 }

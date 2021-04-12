@@ -1,15 +1,15 @@
-import python
-import semmle.python.ApiGraphs
+private import python
+private import semmle.python.ApiGraphs
 import Ssl
 import PyOpenSSL
 
 /**
- * A specific protocol version.
- * We use this to identify a protocol.
+ * A specific protocol version of SSL or TLS.
  */
 class ProtocolVersion extends string {
   ProtocolVersion() { this in ["SSLv2", "SSLv3", "TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"] }
 
+  /** Gets a `ProtocolVersion` that is less than this `ProtocolVersion`, if any. */
   predicate lessThan(ProtocolVersion version) {
     this = "SSLv2" and version = "SSLv3"
     or
@@ -20,6 +20,7 @@ class ProtocolVersion extends string {
     this = ["TLSv1", "TLSv1_1", "TLSv1_2"] and version = "TLSv1_3"
   }
 
+  /** Holds if this protocol version is known to be insecure. */
   predicate isInsecure() { this in ["SSLv2", "SSLv3", "TLSv1", "TLSv1_1"] }
 }
 
@@ -81,12 +82,13 @@ abstract class UnspecificContextCreation extends ContextCreation, ProtocolUnrest
 
 /** A model of a SSL/TLS library. */
 abstract class TlsLibrary extends string {
-  TlsLibrary() { this in ["ssl", "pyOpenSSL"] }
+  bindingset[this]
+  TlsLibrary() { any() }
 
   /** The name of a specific protocol version. */
   abstract string specific_version_name(ProtocolVersion version);
 
-  /** The name of an unspecific protocol version, say TLS, known to have insecure instances. */
+  /** Gets a name, which is a member of `version_constants`,  that can be used to specify the protocol family `family`. */
   abstract string unspecific_version_name(ProtocolFamily family);
 
   /** The module or class holding the version constants. */
@@ -97,12 +99,12 @@ abstract class TlsLibrary extends string {
     result = version_constants().getMember(specific_version_name(version)).getAUse()
   }
 
-  /** A dataflow node representing an unspecific protocol version, say TLS, known to have insecure instances. */
+  /** Gets a dataflow node representing the protocol family `family`. */
   DataFlow::Node unspecific_version(ProtocolFamily family) {
     result = version_constants().getMember(unspecific_version_name(family)).getAUse()
   }
 
-  /** The creation of a context with a deafult protocol. */
+  /** The creation of a context with a default protocol. */
   abstract ContextCreation default_context_creation();
 
   /** The creation of a context with a specific protocol. */
@@ -115,7 +117,7 @@ abstract class TlsLibrary extends string {
     version.isInsecure()
   }
 
-  /** The creation of a context with an unspecific protocol version, say TLS, known to have insecure instances. */
+  /** Gets a context that was created using `family`, known to have insecure instances. */
   ContextCreation unspecific_context_creation(ProtocolFamily family) {
     result in [specific_context_creation(), default_context_creation()] and
     result.getProtocol() = family

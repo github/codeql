@@ -1,5 +1,9 @@
-import python
-import semmle.python.ApiGraphs
+/**
+ * Provides modeling of SSL/TLS functionality of the `OpenSSL` module from the `pyOpenSSL` PyPI package.
+ * See https://www.pyopenssl.org/en/stable/
+ */
+private import python
+private import semmle.python.ApiGraphs
 import TlsLibraryModel
 
 class PyOpenSSLContextCreation extends ContextCreation {
@@ -49,7 +53,7 @@ class SetOptionsCall extends ProtocolRestriction {
 }
 
 class UnspecificPyOpenSSLContextCreation extends PyOpenSSLContextCreation, UnspecificContextCreation {
-  UnspecificPyOpenSSLContextCreation() { library = "pyOpenSSL" }
+  UnspecificPyOpenSSLContextCreation() { library instanceof PyOpenSSL }
 }
 
 class PyOpenSSL extends TlsLibrary {

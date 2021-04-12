@@ -1,5 +1,9 @@
-import python
-import semmle.python.ApiGraphs
+/**
+ * Provides modeling of SSL/TLS functionality of the `ssl` module from the standard library.
+ * See https://docs.python.org/3.9/library/ssl.html
+ */
+private import python
+private import semmle.python.ApiGraphs
 import TlsLibraryModel
 
 class SSLContextCreation extends ContextCreation {
@@ -145,12 +149,12 @@ class ContextSetVersion extends ProtocolRestriction, ProtocolUnrestriction {
 }
 
 class UnspecificSSLContextCreation extends SSLContextCreation, UnspecificContextCreation {
-  UnspecificSSLContextCreation() { library = "ssl" }
+  UnspecificSSLContextCreation() { library instanceof Ssl }
 
   override ProtocolVersion getUnrestriction() {
     result = UnspecificContextCreation.super.getUnrestriction() and
-    // These are turned off by default
-    // see https://docs.python.org/3/library/ssl.html#ssl-contexts
+    // These are turned off by default since Python 3.6
+    // see https://docs.python.org/3.6/library/ssl.html#ssl.SSLContext
     not result in ["SSLv2", "SSLv3"]
   }
 }
@@ -185,8 +189,8 @@ class Ssl extends TlsLibrary {
 
   override DataFlow::CfgNode insecure_connection_creation(ProtocolVersion version) {
     result = API::moduleImport("ssl").getMember("wrap_socket").getACall() and
-    specific_version(version).asCfgNode() =
-      result.asCfgNode().(CallNode).getArgByName("ssl_version") and
+    this.specific_version(version) =
+      result.(DataFlow::CallCfgNode).getArgByName("ssl_version") and
     version.isInsecure()
   }
 
