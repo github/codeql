@@ -66,3 +66,30 @@ void test_shared_field_member() {
     sink(p->x); // $ MISSING: ast,ir
     sink(p->y); // not tainted
 }
+
+struct B {
+  A a1;
+  A a2;
+  int z;
+};
+
+void test_operator_arrow(std::unique_ptr<A> p, std::unique_ptr<B> q) {
+  p->x = source();
+  sink(p->x); // $ ast MISSING: ir
+  sink(p->y);
+
+  q->a1.x = source();
+  sink(q->a1.x); // $ ast MISSING: ir
+  sink(q->a1.y);
+  sink(q->a2.x);
+}
+
+void taint_x(A* pa) {
+    pa->x = source();
+}
+
+void reverse_taint_smart_pointer() {
+  std::unique_ptr<A> p = std::unique_ptr<A>(new A);
+  taint_x(p.get());
+  sink(p->x); // $ ast MISSING: ir
+}

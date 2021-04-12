@@ -72,6 +72,7 @@ class Location extends @location {
   }
 
   /** Holds if `this` comes on a line strictly before `l`. */
+  pragma[inline]
   predicate isBefore(Location l) {
     this.getFile() = l.getFile() and this.getEndLine() < l.getStartLine()
   }
