@@ -52,10 +52,13 @@ class ApplicationProperties extends ConfigPair {
 class ManagementSecurityConfig extends ApplicationProperties {
   ManagementSecurityConfig() { this.getNameElement().getName() = "management.security.enabled" }
 
+  /** Gets the whitespace-trimmed value of this property. */
   string getValue() { result = this.getValueElement().getValue().trim() }
 
+  /** Holds if `management.security.enabled` is set to `false`. */
   predicate hasSecurityDisabled() { getValue() = "false" }
 
+  /** Holds if `management.security.enabled` is set to `true`. */
   predicate hasSecurityEnabled() { getValue() = "true" }
 }
 
@@ -65,6 +68,7 @@ class ManagementEndPointInclude extends ApplicationProperties {
     this.getNameElement().getName() = "management.endpoints.web.exposure.include"
   }
 
+  /** Gets the whitespace-trimmed value of this property. */
   string getValue() { result = this.getValueElement().getValue().trim() }
 }
 
