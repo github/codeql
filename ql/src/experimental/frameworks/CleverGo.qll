@@ -293,12 +293,12 @@ private module CleverGo {
           // signature: func (*Context).Blob(code int, contentType string, bs []byte) (err error)
           methodName = "Blob" and
           this = bodySetterCall.getArgument(2) and
-          contentType = bodySetterCall.getArgument(1).getStringValue()
+          contentType = bodySetterCall.getArgument(1).getAPredecessor*().getStringValue()
           or
           // signature: func (*Context).Emit(code int, contentType string, body string) (err error)
           methodName = "Emit" and
           this = bodySetterCall.getArgument(2) and
-          contentType = bodySetterCall.getArgument(1).getStringValue()
+          contentType = bodySetterCall.getArgument(1).getAPredecessor*().getStringValue()
         )
         or
         // Two calls, one to set the response body and one to set the content-type.
@@ -325,7 +325,7 @@ private module CleverGo {
           |
             // signature: func (*Context).SetContentType(v string)
             methodName = "SetContentType" and
-            contentType = contentTypeSetterCall.getArgument(0).getStringValue()
+            contentType = contentTypeSetterCall.getArgument(0).getAPredecessor*().getStringValue()
           )
           or
           // Receiver type: Context
