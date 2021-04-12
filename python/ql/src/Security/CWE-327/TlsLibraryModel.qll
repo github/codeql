@@ -30,8 +30,8 @@ class ProtocolFamily extends string {
 
 /** The creation of a context. */
 abstract class ContextCreation extends DataFlow::CfgNode {
-  /** Gets the requested protocol if any. */
-  abstract DataFlow::CfgNode getProtocol();
+  /** Gets the protocol version or family for this context. */
+  abstract string getProtocol();
 }
 
 /** The creation of a connection from a context. */
@@ -66,7 +66,7 @@ abstract class UnspecificContextCreation extends ContextCreation, ProtocolUnrest
   TlsLibrary library;
   ProtocolFamily family;
 
-  UnspecificContextCreation() { this.getProtocol() = library.unspecific_version(family) }
+  UnspecificContextCreation() { this.getProtocol() = family }
 
   override DataFlow::CfgNode getContext() { result = this }
 
@@ -92,9 +92,8 @@ abstract class TlsLibrary extends string {
   /** The module or class holding the version constants. */
   abstract API::Node version_constants();
 
-  /** A dataflow node representing a specific protocol version, known to be insecure. */
-  DataFlow::Node insecure_version(ProtocolVersion version) {
-    version.isInsecure() and
+  /** A dataflow node representing a specific protocol version. */
+  DataFlow::Node specific_version(ProtocolVersion version) {
     result = version_constants().getMember(specific_version_name(version)).getAUse()
   }
 
@@ -111,16 +110,15 @@ abstract class TlsLibrary extends string {
 
   /** The creation of a context with a specific protocol version, known to be insecure. */
   ContextCreation insecure_context_creation(ProtocolVersion version) {
-    result = specific_context_creation() and
-    result.getProtocol() = insecure_version(version)
+    result in [specific_context_creation(), default_context_creation()] and
+    result.getProtocol() = version and
+    version.isInsecure()
   }
 
   /** The creation of a context with an unspecific protocol version, say TLS, known to have insecure instances. */
   ContextCreation unspecific_context_creation(ProtocolFamily family) {
-    result = default_context_creation()
-    or
-    result = specific_context_creation() and
-    result.(ContextCreation).getProtocol() = unspecific_version(family)
+    result in [specific_context_creation(), default_context_creation()] and
+    result.getProtocol() = family
   }
 
   /** A connection is created in an insecure manner, not from a context. */

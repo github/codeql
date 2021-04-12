@@ -7,8 +7,15 @@ class SSLContextCreation extends ContextCreation {
 
   SSLContextCreation() { this = API::moduleImport("ssl").getMember("SSLContext").getACall() }
 
-  override DataFlow::CfgNode getProtocol() {
-    result.getNode() in [node.getArg(0), node.getArgByName("protocol")]
+  override string getProtocol() {
+    exists(ControlFlowNode protocolArg, Ssl ssl |
+      protocolArg in [node.getArg(0), node.getArgByName("protocol")]
+    |
+      protocolArg = [ssl.specific_version(result), ssl.unspecific_version(result)].asCfgNode()
+    )
+    or
+    not exists(node.getAnArg()) and
+    result = "TLS"
   }
 }
 
@@ -19,7 +26,7 @@ class SSLDefaultContextCreation extends ContextCreation {
 
   // Allowed insecure versions are "TLSv1" and "TLSv1_1"
   // see https://docs.python.org/3/library/ssl.html#context-creation
-  override DataFlow::CfgNode getProtocol() { none() }
+  override string getProtocol() { result = "TLS" }
 }
 
 /** Gets a reference to an `ssl.Context` instance. */
@@ -141,17 +148,10 @@ class UnspecificSSLContextCreation extends SSLContextCreation, UnspecificContext
   UnspecificSSLContextCreation() { library = "ssl" }
 
   override ProtocolVersion getUnrestriction() {
-    // Case: A protocol argument is present.
     result = UnspecificContextCreation.super.getUnrestriction() and
     // These are turned off by default
     // see https://docs.python.org/3/library/ssl.html#ssl-contexts
     not result in ["SSLv2", "SSLv3"]
-    or
-    // Case: No protocol arguemnt is present.
-    not exists(this.getProtocol()) and
-    // The default argument is TLS and the SSL versions are turned off by default since Python 3.6
-    // see https://docs.python.org/3.6/library/ssl.html#ssl.SSLContext
-    result in ["TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
   }
 }
 
@@ -185,8 +185,9 @@ class Ssl extends TlsLibrary {
 
   override DataFlow::CfgNode insecure_connection_creation(ProtocolVersion version) {
     result = API::moduleImport("ssl").getMember("wrap_socket").getACall() and
-    insecure_version(version).asCfgNode() =
-      result.asCfgNode().(CallNode).getArgByName("ssl_version")
+    specific_version(version).asCfgNode() =
+      result.asCfgNode().(CallNode).getArgByName("ssl_version") and
+    version.isInsecure()
   }
 
   override ConnectionCreation connection_creation() { result instanceof WrapSocketCall }

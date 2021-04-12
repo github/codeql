@@ -9,8 +9,12 @@ class PyOpenSSLContextCreation extends ContextCreation {
     this = API::moduleImport("OpenSSL").getMember("SSL").getMember("Context").getACall()
   }
 
-  override DataFlow::CfgNode getProtocol() {
-    result.getNode() in [node.getArg(0), node.getArgByName("method")]
+  override string getProtocol() {
+    exists(ControlFlowNode protocolArg, PyOpenSSL pyo |
+      protocolArg in [node.getArg(0), node.getArgByName("method")]
+    |
+      protocolArg = [pyo.specific_version(result), pyo.unspecific_version(result)].asCfgNode()
+    )
   }
 }
 
