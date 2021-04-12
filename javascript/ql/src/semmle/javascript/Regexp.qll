@@ -827,6 +827,8 @@ class RegExpParseError extends Error, @regexp_parse_error {
   override string getMessage() { regexp_parse_errors(this, _, result) }
 
   override string toString() { result = getMessage() }
+
+  override predicate isFatal() { none() }
 }
 
 /**
