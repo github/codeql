@@ -125,7 +125,7 @@ public class Cookie {
      * @return the cookie name.
      */
     public String getName() {
-        return name;
+        return null;
     }
 
     /**
@@ -134,7 +134,7 @@ public class Cookie {
      * @return the cookie value.
      */
     public String getValue() {
-        return value;
+        return null;
     }
 
     /**
@@ -143,7 +143,7 @@ public class Cookie {
      * @return the cookie version.
      */
     public int getVersion() {
-        return version;
+        return -1;
     }
 
     /**
@@ -152,7 +152,7 @@ public class Cookie {
      * @return the cookie domain.
      */
     public String getDomain() {
-        return domain;
+        return null;
     }
 
     /**
@@ -161,6 +161,6 @@ public class Cookie {
      * @return the cookie path.
      */
     public String getPath() {
-        return path;
+        return null;
     }
 }

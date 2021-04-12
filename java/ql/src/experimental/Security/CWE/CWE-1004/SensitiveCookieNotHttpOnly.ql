@@ -82,8 +82,8 @@ class CookieClass extends RefType {
   }
 }
 
-/** Holds if the `expr` is `true` or a variable that is ever assigned `true`. */
-// This could be a very large result set if computed out of context
+/** Holds if `expr` is any boolean-typed expression other than literal `false`. */
+// Inlined because this could be a very large result set if computed out of context
 pragma[inline]
 predicate mayBeBooleanTrue(Expr expr) {
   expr.getType() instanceof BooleanType and
@@ -123,11 +123,11 @@ predicate isTestMethod(MethodAccess ma) {
 }
 
 /**
- * A taint configuration tracking flow of a method or a wrapper method that sets the `HttpOnly`
- * flag, or one that removes a cookie, to a `ServletResponse.addCookie` call.
+ * A taint configuration tracking flow of a method that sets the `HttpOnly` flag,
+ * or one that removes a cookie, to a `ServletResponse.addCookie` call.
  */
-class SetHttpOnlyInCookieConfiguration extends TaintTracking2::Configuration {
-  SetHttpOnlyInCookieConfiguration() { this = "SetHttpOnlyInCookieConfiguration" }
+class SetHttpOnlyOrRemovesCookieConfiguration extends TaintTracking2::Configuration {
+  SetHttpOnlyOrRemovesCookieConfiguration() { this = "SetHttpOnlyOrRemovesCookieConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
     source.asExpr() =
@@ -150,7 +150,7 @@ class CookieResponseSink extends DataFlow::ExprNode {
       (
         ma.getMethod() instanceof ResponseAddCookieMethod and
         this.getExpr() = ma.getArgument(0) and
-        not exists(SetHttpOnlyInCookieConfiguration cc | cc.hasFlowTo(this))
+        not exists(SetHttpOnlyOrRemovesCookieConfiguration cc | cc.hasFlowTo(this))
         or
         ma instanceof SetCookieMethodAccess and
         this.getExpr() = ma.getArgument(1) and
