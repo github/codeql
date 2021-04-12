@@ -105,7 +105,7 @@ class UsingArithmeticInComparison extends BinaryArithmeticOperation {
   }
 }
 
-from Expr exp, WhileStmt wst
+from Expr exp
 where
   exp instanceof UsingArithmeticInComparison and
   not exp.(UsingArithmeticInComparison).workingWithValue() and
@@ -114,5 +114,5 @@ where
   not exp.(UsingArithmeticInComparison).compareWithZero() and
   exp.(UsingArithmeticInComparison).compareWithOutZero()
   or
-  wst instanceof UsingWhileAfterWhile and exp = wst.getCondition()
+  exists(WhileStmt wst | wst instanceof UsingWhileAfterWhile and exp = wst.getCondition())
 select exp, "this expression needs your attention"
