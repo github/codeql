@@ -59,14 +59,25 @@ private predicate pointerToLvalueStep(Expr pointerIn, Expr lvalueOut) {
   pointerIn = lvalueOut.(ArrayExpr).getArrayBase().getFullyConverted()
   or
   pointerIn = lvalueOut.(PointerDereferenceExpr).getOperand().getFullyConverted()
-  or
-  pointerIn = lvalueOut.(OverloadedPointerDereferenceExpr).getQualifier().getFullyConverted()
 }
 
 private predicate lvalueToPointerStep(Expr lvalueIn, Expr pointerOut) {
   lvalueIn.getConversion() = pointerOut.(ArrayToPointerConversion)
   or
   lvalueIn = pointerOut.(AddressOfExpr).getOperand().getFullyConverted()
+}
+
+/**
+ * Since pointer wrappers behave as raw pointers, we treat the conversions from `lvalueToLvalueStepPure`
+ * as pointer-to-pointer steps when they involve pointer wrappers.
+ */
+private predicate pointerWrapperToPointerWrapperStep(Expr pointerIn, Expr pointerOut) {
+  pointerIn.getUnspecifiedType() instanceof PointerWrapper and
+  pointerIn.getConversion() = pointerOut and
+  pointerOut.(CStyleCast).isImplicit()
+  or
+  pointerOut.getUnspecifiedType() instanceof PointerWrapper and
+  pointerIn.getConversion() = pointerOut.(ReferenceDereferenceExpr)
 }
 
 private predicate pointerToPointerStep(Expr pointerIn, Expr pointerOut) {
@@ -93,20 +104,52 @@ private predicate pointerToPointerStep(Expr pointerIn, Expr pointerOut) {
   pointerIn = pointerOut.(CommaExpr).getRightOperand().getFullyConverted()
   or
   pointerIn = pointerOut.(StmtExpr).getResultExpr().getFullyConverted()
+  or
+  pointerWrapperToPointerWrapperStep(pointerIn, pointerOut)
 }
 
 private predicate lvalueToReferenceStep(Expr lvalueIn, Expr referenceOut) {
   lvalueIn.getConversion() = referenceOut.(ReferenceToExpr)
-  or
-  exists(PointerWrapper wrapper, Call call | call = referenceOut |
-    referenceOut.getUnspecifiedType() instanceof ReferenceType and
-    call = wrapper.getAnUnwrapperFunction().getACallToThisFunction() and
-    lvalueIn = call.getQualifier().getFullyConverted()
-  )
 }
 
 private predicate referenceToLvalueStep(Expr referenceIn, Expr lvalueOut) {
   referenceIn.getConversion() = lvalueOut.(ReferenceDereferenceExpr)
+}
+
+private predicate referenceToPointerToPointerStep(Expr referenceToPointerIn, Expr pointerOut) {
+  exists(CopyConstructor copy, Call call | call = pointerOut |
+    copy.getDeclaringType() instanceof PointerWrapper and
+    call.getTarget() = copy and
+    // The 0'th argument is the value being copied.
+    referenceToPointerIn = call.getArgument(0).getFullyConverted()
+  )
+  or
+  referenceToPointerIn.getConversion() = pointerOut.(ReferenceDereferenceExpr)
+}
+
+/**
+ * This predicate exists only to support "fake pointer" objects like
+ * smart pointers. We treat these as raw pointers for dataflow purposes.
+ */
+private predicate referenceToPointerToUpdate(
+  Expr referenceToPointer, Expr outer, ControlFlowNode node
+) {
+  exists(Call call |
+    node = call and
+    outer = call.getAnArgument().getFullyConverted() and
+    not stdIdentityFunction(call.getTarget()) and
+    not stdAddressOf(call.getTarget()) and
+    exists(ReferenceType rt | rt = outer.getType().stripTopLevelSpecifiers() |
+      rt.getBaseType().getUnspecifiedType() =
+        any(PointerWrapper wrapper | not wrapper.pointsToConst())
+    )
+  ) and
+  referenceToPointer = outer
+  or
+  exists(Expr pointerMid |
+    referenceToPointerToPointerStep(referenceToPointer, pointerMid) and
+    pointerToUpdate(pointerMid, outer, node)
+  )
 }
 
 private predicate referenceToPointerStep(Expr referenceIn, Expr pointerOut) {
@@ -115,13 +158,6 @@ private predicate referenceToPointerStep(Expr referenceIn, Expr pointerOut) {
       stdAddressOf(call.getTarget()) and
       referenceIn = call.getArgument(0).getFullyConverted()
     )
-  or
-  exists(CopyConstructor copy, Call call | call = pointerOut |
-    copy.getDeclaringType() instanceof PointerWrapper and
-    call.getTarget() = copy and
-    // The 0'th argument is the value being copied.
-    referenceIn = call.getArgument(0).getFullyConverted()
-  )
 }
 
 private predicate referenceToReferenceStep(Expr referenceIn, Expr referenceOut) {
@@ -238,6 +274,16 @@ private predicate pointerToUpdate(Expr pointer, Expr outer, ControlFlowNode node
     pointerToPointerStep(pointer, pointerMid) and
     pointerToUpdate(pointerMid, outer, node)
   )
+  or
+  exists(Expr referenceMid |
+    pointerToReferenceStep(pointer, referenceMid) and
+    referenceToUpdate(referenceMid, outer, node)
+  )
+  or
+  exists(Expr referenceToPointerMid |
+    pointerToReferenceToPointerStep(pointer, referenceToPointerMid) and
+    referenceToPointerToUpdate(referenceToPointerMid, outer, node)
+  )
 }
 
 private predicate referenceToUpdate(Expr reference, Expr outer, ControlFlowNode node) {
@@ -247,9 +293,7 @@ private predicate referenceToUpdate(Expr reference, Expr outer, ControlFlowNode 
     not stdIdentityFunction(call.getTarget()) and
     not stdAddressOf(call.getTarget()) and
     exists(ReferenceType rt | rt = outer.getType().stripTopLevelSpecifiers() |
-      not rt.getBaseType().isConst() or
-      rt.getBaseType().getUnspecifiedType() =
-        any(PointerWrapper wrapper | not wrapper.pointsToConst())
+      not rt.getBaseType().isConst()
     )
   ) and
   reference = outer
@@ -267,6 +311,14 @@ private predicate referenceToUpdate(Expr reference, Expr outer, ControlFlowNode 
   exists(Expr referenceMid |
     referenceToReferenceStep(reference, referenceMid) and
     referenceToUpdate(referenceMid, outer, node)
+  )
+}
+
+private predicate pointerToReferenceStep(Expr pointerIn, Expr referenceOut) {
+  exists(PointerWrapper wrapper, Call call | call = referenceOut |
+    referenceOut.getUnspecifiedType() instanceof ReferenceType and
+    call = wrapper.getAnUnwrapperFunction().getACallToThisFunction() and
+    pointerIn = call.getQualifier().getFullyConverted()
   )
 }
 
@@ -331,6 +383,21 @@ private predicate referenceFromVariableAccess(VariableAccess va, Expr reference)
     lvalueFromVariableAccess(va, prev) and
     lvalueToReferenceStep(prev, reference)
   )
+  or
+  exists(Expr prev |
+    pointerFromVariableAccess(va, prev) and
+    pointerToReferenceStep(prev, reference)
+  )
+}
+
+private predicate pointerToReferenceToPointerStep(Expr pointerIn, Expr referenceToPointerOut) {
+  pointerIn.getConversion() = referenceToPointerOut.(ReferenceToExpr)
+  or
+  exists(PointerWrapper wrapper, Call call | call = referenceToPointerOut |
+    referenceToPointerOut.getUnspecifiedType() instanceof ReferenceType and
+    call = wrapper.getAnUnwrapperFunction().getACallToThisFunction() and
+    pointerIn = call.getQualifier().getFullyConverted()
+  )
 }
 
 /**
@@ -351,6 +418,8 @@ predicate valueToUpdate(Expr inner, Expr outer, ControlFlowNode node) {
     pointerToUpdate(inner, outer, node)
     or
     referenceToUpdate(inner, outer, node)
+    or
+    referenceToPointerToUpdate(inner, outer, node)
   ) and
   (
     inner instanceof VariableAccess and
