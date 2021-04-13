@@ -31,57 +31,39 @@ predicate isGuarded(SubExpr sub, Expr left, Expr right) {
 }
 
 /**
- * Holds if `e` is known or suspected to be less than or equal to
+ * Holds if `n` is known or suspected to be less than or equal to
  * `sub.getLeftOperand()`.
  */
-predicate exprIsSubLeftOrLess(SubExpr sub, Element e) {
-  e = sub.getLeftOperand()
+predicate exprIsSubLeftOrLess(SubExpr sub, DataFlow::Node n) {
+  n = DataFlow::exprNode(sub.getLeftOperand())
   or
-  exists(Expr other |
+  exists(DataFlow::Node other |
     // dataflow
     exprIsSubLeftOrLess(sub, other) and
     (
-      DataFlow::localFlowStep(DataFlow::exprNode(e), DataFlow::exprNode(other)) or
-      DataFlow::localFlowStep(DataFlow::exprNode(other), DataFlow::exprNode(e))
+      DataFlow::localFlowStep(n, other) or
+      DataFlow::localFlowStep(other, n)
     )
   )
   or
-  exists(Element other |
-    // dataflow (via parameter)
-    exprIsSubLeftOrLess(sub, other) and
-    (
-      DataFlow::localFlowStep(DataFlow::parameterNode(e), DataFlow::exprNode(other)) or
-      DataFlow::localFlowStep(DataFlow::parameterNode(other), DataFlow::exprNode(e))
-    )
-  )
-  or
-  exists(Element other |
-    // dataflow (via uninitialized)
-    exprIsSubLeftOrLess(sub, other) and
-    (
-      DataFlow::localFlowStep(DataFlow::uninitializedNode(e), DataFlow::exprNode(other)) or
-      DataFlow::localFlowStep(DataFlow::uninitializedNode(other), DataFlow::exprNode(e))
-    )
-  )
-  or
-  exists(Expr other |
+  exists(DataFlow::Node other |
     // guard constraining `sub`
     exprIsSubLeftOrLess(sub, other) and
-    isGuarded(sub, other, e) // other >= e
+    isGuarded(sub, other.asExpr(), n.asExpr()) // other >= e
   )
   or
-  exists(Expr other, float p, float q |
+  exists(DataFlow::Node other, float p, float q |
     // linear access of `other`
     exprIsSubLeftOrLess(sub, other) and
-    linearAccess(e, other, p, q) and // e = p * other + q
+    linearAccess(n.asExpr(), other.asExpr(), p, q) and // e = p * other + q
     p <= 1 and
     q <= 0
   )
   or
-  exists(Expr other, float p, float q |
+  exists(DataFlow::Node other, float p, float q |
     // linear access of `e`
     exprIsSubLeftOrLess(sub, other) and
-    linearAccess(other, e, p, q) and // other = p * e + q
+    linearAccess(other.asExpr(), n.asExpr(), p, q) and // other = p * e + q
     p >= 1 and
     q >= 0
   )
@@ -95,5 +77,5 @@ where
   ro.getGreaterOperand() = sub and
   sub.getFullyConverted().getUnspecifiedType().(IntegralType).isUnsigned() and
   exprMightOverflowNegatively(sub.getFullyConverted()) and // generally catches false positives involving constants
-  not exprIsSubLeftOrLess(sub, sub.getRightOperand()) // generally catches false positives where there's a relation between the left and right operands
+  not exprIsSubLeftOrLess(sub, DataFlow::exprNode(sub.getRightOperand())) // generally catches false positives where there's a relation between the left and right operands
 select ro, "Unsigned subtraction can never be negative."
