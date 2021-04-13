@@ -137,7 +137,9 @@ class SensitiveCookieNotHttpOnly {
         response.addCookie(createCookie("refresh_token", refreshToken, true));
     }
 
-    // GOOD - Tests set a sensitive cookie header with the `HttpOnly` flag not set through a boolean variable using a wrapper method.
+    // BAD (but not detected) - Tests set a sensitive cookie header with the `HttpOnly` flag not set through a boolean variable using a wrapper method.
+    // This example is missed because the `cookie.setHttpOnly` call in `createCookie` is thought to maybe set the HTTP-only flag, and the `cookie`
+    // object flows to this `addCookie` call.
     public void addCookie15(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
         response.addCookie(createCookie("refresh_token", refreshToken, false));
     }
