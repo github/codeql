@@ -569,15 +569,13 @@ private Overlap getVariableMemoryLocationOverlap(
  * Holds if the def/use information for the result of `instr` can be reused from the previous
  * iteration of the IR.
  */
-predicate canReuseSSAForOldResult(Instruction instr) {
-  OldSSA::canReuseSSAForMemoryResult(instr)
-}
+predicate canReuseSSAForOldResult(Instruction instr) { OldSSA::canReuseSSAForMemoryResult(instr) }
 
 bindingset[result, b]
 private boolean unbindBool(boolean b) { result != b.booleanNot() }
 
 MemoryLocation getResultMemoryLocation(Instruction instr) {
-  not(canReuseSSAForOldResult(instr)) and
+  not canReuseSSAForOldResult(instr) and
   exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = instr.getResultMemoryAccess() and
     (if instr.hasResultMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
@@ -610,7 +608,7 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
 }
 
 MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
-  not(canReuseSSAForOldResult(operand.getAnyDef())) and
+  not canReuseSSAForOldResult(operand.getAnyDef()) and
   exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = operand.getMemoryAccess() and
     (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and

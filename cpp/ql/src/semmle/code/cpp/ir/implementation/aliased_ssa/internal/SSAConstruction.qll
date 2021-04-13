@@ -150,13 +150,16 @@ private module Cached {
       (
         result = getNewInstruction(oldOperand.getAnyDef()) and
         overlap = originalOverlap
-        /*or
-        exists(OldIR::PhiInputOperand phiOperand, Overlap phiOperandOverlap |
-          phiOperand = getDegeneratePhiOperand(oldOperand.getAnyDef()) and
-          result = getNewDefinitionFromOldSSA(phiOperand, phiOperandOverlap) and
-          overlap = combineOverlap(phiOperandOverlap, originalOverlap)
-        ) */
-      )
+        /*
+         * or
+         *        exists(OldIR::PhiInputOperand phiOperand, Overlap phiOperandOverlap |
+         *          phiOperand = getDegeneratePhiOperand(oldOperand.getAnyDef()) and
+         *          result = getNewDefinitionFromOldSSA(phiOperand, phiOperandOverlap) and
+         *          overlap = combineOverlap(phiOperandOverlap, originalOverlap)
+         *        )
+         */
+
+        )
     )
   }
 
@@ -313,12 +316,13 @@ private module Cached {
 
   cached
   Instruction getPhiInstructionBlockStart(PhiInstruction instr) {
-    exists(OldBlock oldBlock |      (
-      instr = getPhi(oldBlock, _)
-      or
-      // Any `Phi` that we propagated from the previous iteration stays in the same block.
-      getOldInstruction(instr).getBlock() = oldBlock
-    ) and
+    exists(OldBlock oldBlock |
+      (
+        instr = getPhi(oldBlock, _)
+        or
+        // Any `Phi` that we propagated from the previous iteration stays in the same block.
+        getOldInstruction(instr).getBlock() = oldBlock
+      ) and
       result = getNewInstruction(oldBlock.getFirstInstruction())
     )
   }

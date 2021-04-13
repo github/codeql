@@ -92,9 +92,7 @@ private predicate operandIsConsumedWithoutEscaping(Operand operand) {
       instr.(ConvertInstruction).getResultIRType() instanceof IRBooleanType
       or
       instr instanceof CallInstruction and
-      not exists(IREscapeAnalysisConfiguration config |
-        config.useSoundEscapeAnalysis()
-      )
+      not exists(IREscapeAnalysisConfiguration config | config.useSoundEscapeAnalysis())
     )
   )
   or

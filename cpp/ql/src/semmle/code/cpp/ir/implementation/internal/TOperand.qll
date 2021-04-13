@@ -84,7 +84,7 @@ private module Shared {
   }
 }
 
-/** 
+/**
  * Provides wrappers for the constructors of each branch of `TOperand` that is used by the
  * raw IR stage.
  * These wrappers are not parameterized because it is not possible to invoke an IPA constructor via
@@ -115,6 +115,7 @@ module RawOperands {
   ) {
     none()
   }
+
   /**
    * Returns the Chi operand with the specified parameters.
    */
@@ -152,6 +153,7 @@ module UnaliasedSSAOperands {
   ) {
     none()
   }
+
   /**
    * Returns the Chi operand with the specified parameters.
    */
@@ -195,6 +197,7 @@ module AliasedSSAOperands {
       result = Internal::TUnaliasedPhiOperand(useInstr, defInstr, oldBlock, overlap)
     )
   }
+
   /**
    * Returns the Chi operand with the specified parameters.
    */

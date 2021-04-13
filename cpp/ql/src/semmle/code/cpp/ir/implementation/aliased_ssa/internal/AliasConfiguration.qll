@@ -144,9 +144,7 @@ class DynamicAllocation extends Allocation, TDynamicAllocation {
 }
 
 class StageEscapeConfiguration extends string {
-  StageEscapeConfiguration() {
-    this = "StageEscapeConfiguration (aliased_ssa)"
-  }
+  StageEscapeConfiguration() { this = "StageEscapeConfiguration (aliased_ssa)" }
 
   predicate useSoundEscapeAnalysis() { none() }
 }
