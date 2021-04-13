@@ -34,7 +34,7 @@ predicate isGuarded(SubExpr sub, Expr left, Expr right) {
  * Holds if `e` is known or suspected to be less than or equal to
  * `sub.getLeftOperand()`.
  */
-predicate exprIsSubLeftOrLess(SubExpr sub, Expr e) {
+predicate exprIsSubLeftOrLess(SubExpr sub, Element e) {
   e = sub.getLeftOperand()
   or
   exists(Expr other |
@@ -43,6 +43,24 @@ predicate exprIsSubLeftOrLess(SubExpr sub, Expr e) {
     (
       DataFlow::localFlowStep(DataFlow::exprNode(e), DataFlow::exprNode(other)) or
       DataFlow::localFlowStep(DataFlow::exprNode(other), DataFlow::exprNode(e))
+    )
+  )
+  or
+  exists(Element other |
+    // dataflow (via parameter)
+    exprIsSubLeftOrLess(sub, other) and
+    (
+      DataFlow::localFlowStep(DataFlow::parameterNode(e), DataFlow::exprNode(other)) or
+      DataFlow::localFlowStep(DataFlow::parameterNode(other), DataFlow::exprNode(e))
+    )
+  )
+  or
+  exists(Element other |
+    // dataflow (via uninitialized)
+    exprIsSubLeftOrLess(sub, other) and
+    (
+      DataFlow::localFlowStep(DataFlow::uninitializedNode(e), DataFlow::exprNode(other)) or
+      DataFlow::localFlowStep(DataFlow::uninitializedNode(other), DataFlow::exprNode(e))
     )
   )
   or
