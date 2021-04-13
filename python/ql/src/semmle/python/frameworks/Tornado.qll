@@ -32,7 +32,6 @@ private module Tornado {
 
     /** Provides models for the `tornado.web` module */
     module web {
-
       /**
        * Provides models for the `tornado.web.RequestHandler` class and subclasses.
        *
@@ -75,7 +74,7 @@ private module Tornado {
          *
          * Use the predicate `RequestHandler::instance()` to get references to instances of the `tornado.web.RequestHandler` class or any subclass.
          */
-        abstract class InstanceSource extends DataFlow::Node { }
+        abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
         /** The `self` parameter in a method on the `tornado.web.RequestHandler` class or any subclass. */
         private class SelfParam extends InstanceSource, RemoteFlowSource::Range,
@@ -120,7 +119,9 @@ private module Tornado {
         }
 
         /** Gets a reference to one of the methods `get_arguments`, `get_body_arguments`, `get_query_arguments`. */
-        DataFlow::Node argumentsMethod() { result = argumentsMethod(DataFlow::TypeTracker::end()) }
+        DataFlow::Node argumentsMethod() {
+          argumentsMethod(DataFlow::TypeTracker::end()).flowsTo(result)
+        }
 
         /** Gets a reference the `redirect` method. */
         private DataFlow::LocalSourceNode redirectMethod(DataFlow::TypeTracker t) {
@@ -198,12 +199,10 @@ private module Tornado {
          *
          * Use the predicate `Application::instance()` to get references to instances of `tornado.web.Application`.
          */
-        abstract class InstanceSource extends DataFlow::Node { }
+        abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
         /** A direct instantiation of `tornado.web.Application`. */
-        class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
-          override CallNode node;
-
+        class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
           ClassInstantiation() { this = classRef().getACall() }
         }
 
@@ -239,7 +238,6 @@ private module Tornado {
 
     /** Provides models for the `tornado.httputil` module */
     module httputil {
-
       /**
        * Provides models for the `tornado.httputil.HttpServerRequest` class
        *
@@ -258,12 +256,10 @@ private module Tornado {
          *
          * Use the predicate `HttpServerRequest::instance()` to get references to instances of `tornado.httputil.HttpServerRequest`.
          */
-        abstract class InstanceSource extends DataFlow::Node { }
+        abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
         /** A direct instantiation of `tornado.httputil.HttpServerRequest`. */
-        private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
-          override CallNode node;
-
+        private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
           ClassInstantiation() { this = classRef().getACall() }
         }
 
@@ -277,7 +273,6 @@ private module Tornado {
 
         /** Gets a reference to an instance of `tornado.httputil.HttpServerRequest`. */
         DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
-        
 
         /** Gets a reference to the `full_url` method. */
         private DataFlow::LocalSourceNode full_url(DataFlow::TypeTracker t) {
@@ -430,11 +425,9 @@ private module Tornado {
    * See https://www.tornadoweb.org/en/stable/web.html?highlight=write#tornado.web.RequestHandler.redirect
    */
   private class TornadoRequestHandlerRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
-    DataFlow::CfgNode {
-    override CallNode node;
-
+    DataFlow::CallCfgNode {
     TornadoRequestHandlerRedirectCall() {
-      node.getFunction() = tornado::web::RequestHandler::redirectMethod().asCfgNode()
+      this.getFunction() = tornado::web::RequestHandler::redirectMethod()
     }
 
     override DataFlow::Node getRedirectLocation() {
@@ -454,11 +447,9 @@ private module Tornado {
    * See https://www.tornadoweb.org/en/stable/web.html?highlight=write#tornado.web.RequestHandler.write
    */
   private class TornadoRequestHandlerWriteCall extends HTTP::Server::HttpResponse::Range,
-    DataFlow::CfgNode {
-    override CallNode node;
-
+    DataFlow::CallCfgNode {
     TornadoRequestHandlerWriteCall() {
-      node.getFunction() = tornado::web::RequestHandler::writeMethod().asCfgNode()
+      this.getFunction() = tornado::web::RequestHandler::writeMethod()
     }
 
     override DataFlow::Node getBody() {
