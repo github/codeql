@@ -40,9 +40,7 @@ class PackageJSON extends JSONObject {
   ContributorInfo getAuthor() { result = getPropValue("author") }
 
   /** Gets information for a contributor to this package. */
-  ContributorInfo getAContributor() {
-    result = getPropValue("contributors").getElementValue(_)
-  }
+  ContributorInfo getAContributor() { result = getPropValue("contributors").getElementValue(_) }
 
   /** Gets the array of files for this package. */
   JSONArray getFiles() { result = getPropValue("files") }
