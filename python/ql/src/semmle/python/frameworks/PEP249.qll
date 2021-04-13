@@ -20,7 +20,10 @@ abstract deprecated class PEP249Module extends DataFlow::Node { }
  * An abstract class encompassing API graph nodes that implement PEP 249.
  * Extend this class for implementations.
  */
-abstract class PEP249ModuleApiNode extends API::Node { }
+abstract class PEP249ModuleApiNode extends API::Node {
+  /** Gets a string representation of this element. */
+  override string toString() { result = this.(API::Node).toString() }
+}
 
 /** Gets a reference to a connect call. */
 DataFlow::Node connect() { result = any(PEP249ModuleApiNode a).getMember("connect").getAUse() }
