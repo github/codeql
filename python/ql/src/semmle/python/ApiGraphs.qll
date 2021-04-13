@@ -363,7 +363,7 @@ module API {
           n.isGlobal() and
           n.isLoad() and
           name = n.getId() and
-          name = any(Builtins::Builtin b).getName()
+          name in [any(Builtins::Builtin b).getName(), "None", "True", "False"]
         )
     }
 
