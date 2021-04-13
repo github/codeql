@@ -15,8 +15,7 @@ private import semmle.python.ApiGraphs
  * to https://docs.python.org/3/library/pickle.html#pickle.loads)
  */
 private class DillLoadsCall extends Decoding::Range, DataFlow::CallCfgNode {
-
-  DillLoadsCall() { this = API::moduleImport("dill").getMember("loads").getACall()}
+  DillLoadsCall() { this = API::moduleImport("dill").getMember("loads").getACall() }
 
   override predicate mayExecuteInput() { any() }
 
