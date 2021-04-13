@@ -311,3 +311,23 @@ class ThisAliasTest {
     this->x = arg;
   }
 };
+
+void sink(char **);
+void sink(char *);
+
+// This test case comes from DefaultTaintTracking.
+void DoubleIndirectionEscapes(char *s)
+{
+	char buffer[1024];
+	char *ptr1, **ptr2;
+	char *ptr3, **ptr4;
+
+	ptr1 = buffer;
+	ptr2 = &ptr1;
+	memcpy(*ptr2, s, 1024);
+
+	sink(buffer); // $ MISSING: ast,ir
+	sink(ptr1); // $ ast MISSING: ir
+	sink(ptr2); // $ SPURIOUS: ast
+	sink(*ptr2); // $ ast MISSING: ir
+}
