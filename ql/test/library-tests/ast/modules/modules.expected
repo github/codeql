@@ -141,10 +141,9 @@ moduleTypes
 | modules.rb:101:1:105:3 | PrependTest | modules.rb:101:1:105:3 | PrependTest |
 | modules.rb:103:3:104:5 | Y | modules.rb:103:3:104:5 | Test::Foo2::Y |
 | modules.rb:107:1:110:3 | MM | modules.rb:107:1:110:3 | MM |
-| modules.rb:108:3:109:5 | MM | modules.rb:108:3:109:5 | ...::MM |
+| modules.rb:108:3:109:5 | MM | modules.rb:108:3:109:5 | MM::MM |
 | modules.rb:112:1:113:3 | YY | modules.rb:112:1:113:3 | YY |
 | modules.rb:115:1:118:3 | XX | modules.rb:115:1:118:3 | XX |
 | modules.rb:116:7:117:9 | YY | modules.rb:116:7:117:9 | XX::YY |
-| modules.rb:120:1:121:3 | Baz | modules.rb:120:1:121:3 | Bar::Baz |
 | modules.rb:120:1:121:3 | Baz | modules.rb:120:1:121:3 | Test::Foo1::Bar::Baz |
 | toplevel.rb:1:1:5:23 | toplevel.rb | file://:0:0:0:0 | Object |

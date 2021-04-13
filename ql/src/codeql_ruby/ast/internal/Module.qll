@@ -63,7 +63,13 @@ private TResolved resolveScopeExpr(ConstantReadAccess r) {
     qname =
       min(string qn, int p |
         isDefinedConstant(qn) and
-        qn = resolveScopeExpr(r, p)
+        qn = resolveScopeExpr(r, p) and
+        // prevent classes/modules that contain/extend themselves
+        not exists(ConstantWriteAccess w | qn = constantDefinition0(w) |
+          r = w.getScopeExpr()
+          or
+          r = w.(ClassDeclaration).getSuperclassExpr()
+        )
       |
         qn order by p
       )
@@ -100,18 +106,20 @@ private string resolveScopeExpr(ConstantReadAccess c, int priority) {
   or
   not exists(c.getScopeExpr()) and
   not c.hasGlobalScope() and
-  exists(Namespace n |
-    result = qualifiedModuleName(constantDefinition0(n), c.getName()) and
-    n = enclosing(c.getEnclosingModule(), priority)
+  (
+    exists(Namespace n |
+      result = qualifiedModuleName(constantDefinition0(n), c.getName()) and
+      n = enclosing(c.getEnclosingModule(), priority)
+    )
+    or
+    result =
+      qualifiedModuleName(ancestors(qualifiedModuleName(c.getEnclosingModule()),
+          priority - maxDepth()), c.getName())
+    or
+    result = c.getName() and
+    priority = maxDepth() + 4 and
+    qualifiedModuleName(c.getEnclosingModule()) != "BasicObject"
   )
-  or
-  result =
-    qualifiedModuleName(ancestors(qualifiedModuleName(c.getEnclosingModule()), priority - maxDepth()),
-      c.getName())
-  or
-  result = c.getName() and
-  priority = maxDepth() + 4 and
-  qualifiedModuleName(c.getEnclosingModule()) != "BasicObject"
 }
 
 bindingset[qualifier, name]
