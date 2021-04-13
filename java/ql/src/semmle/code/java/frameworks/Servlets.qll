@@ -352,7 +352,7 @@ class FilterChain extends Interface {
   FilterChain() { hasQualifiedName("javax.servlet", "FilterChain") }
 }
 
-/** Holds if `m` is a filter handler method (for example `doFilter`). */
+/** Holds if `m` is an implementation of `javax.servlet.Filter.doFilter`. */
 predicate isDoFilterMethod(Method m) {
   m.getName() = "doFilter" and
   m.getDeclaringType() instanceof FilterClass and
