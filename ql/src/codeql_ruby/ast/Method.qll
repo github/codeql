@@ -11,6 +11,12 @@ class Method extends TMethod {
   /** Get a declaration of this module, if any. */
   MethodBase getADeclaration() { result.getMethod() = this }
 
+  /** Get the name of this method */
+  string getName() { this = TInstanceMethod(_, result) }
+
+  /** Get the module in which this method is defined */
+  Module getModule() { this = TInstanceMethod(result, _) }
+
   /** Gets a textual representation of this method. */
   string toString() {
     exists(Module m, string name |

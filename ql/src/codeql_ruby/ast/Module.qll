@@ -11,6 +11,21 @@ class Module extends TModule {
   /** Get a declaration of this module, if any. */
   ModuleBase getADeclaration() { result.getModule() = this }
 
+  /** Get the super class of this module, if any. */
+  Module getSuperClass() { result = getSuperClass(this) }
+
+  /** Get a method defined in this module by name. */
+  Method getMethod(string name) { result.getName() = name and result.getModule() = this }
+
+  /** Look up a method in this module's ancestor chain. */
+  Method lookupMethod(string name) { result = lookupMethod(this, name) }
+
+  /** Get a `prepend`ed module. */
+  Module getAPrependedModule() { result = getAPrependedModule(this) }
+
+  /** Get an `include`d module. */
+  Module getAnIncludedModule() { result = getAnIncludedModule(this) }
+
   /** Gets a textual representation of this module. */
   string toString() {
     this = TResolved(result)

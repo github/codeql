@@ -34,6 +34,66 @@ private module Cached {
       result = scopeAppend(container, n.getName())
     )
   }
+
+  cached
+  Module getSuperClass(Module cls) {
+    cls = TResolved("Object") and result = TResolved("BasicObject")
+    or
+    cls = TResolved("Module") and result = TResolved("Object")
+    or
+    cls = TResolved("Class") and result = TResolved("Module")
+    or
+    not cls = TResolved(builtin()) and
+    (
+      exists(ClassDeclaration d |
+        d = cls.getADeclaration() and
+        result = resolveScopeExpr(d.getSuperclassExpr())
+      )
+      or
+      result = TResolved("Object") and
+      forex(ClassDeclaration d | d = cls.getADeclaration() |
+        not exists(resolveScopeExpr(d.getSuperclassExpr()))
+      )
+    )
+  }
+
+  cached
+  Module getAnIncludedModule(Module m) {
+    m = TResolved("Object") and result = TResolved("Kernel")
+    or
+    exists(IncludeOrPrependCall c |
+      c.getMethodName() = "include" and
+      (
+        m = resolveScopeExpr(c.getReceiver())
+        or
+        m = enclosingModule(c).getModule() and
+        (
+          c.getReceiver() instanceof Self
+          or
+          not exists(c.getReceiver())
+        )
+      ) and
+      result = resolveScopeExpr(c.getAnArgument())
+    )
+  }
+
+  cached
+  Module getAPrependedModule(Module m) {
+    exists(IncludeOrPrependCall c |
+      c.getMethodName() = "prepend" and
+      (
+        m = resolveScopeExpr(c.getReceiver())
+        or
+        m = enclosingModule(c).getModule() and
+        (
+          c.getReceiver() instanceof Self
+          or
+          not exists(c.getReceiver())
+        )
+      ) and
+      result = resolveScopeExpr(c.getAnArgument())
+    )
+  }
 }
 
 import Cached
@@ -241,4 +301,28 @@ private string qualifiedModuleName(string container, string name) {
     or
     container = "Object" and name = result
   )
+}
+
+private Module getAncestors(Module m) {
+  result = m or
+  result = getAncestors(m.getAnIncludedModule()) or
+  result = getAncestors(m.getAPrependedModule())
+}
+
+private Method lookupMethod0(Module m, string name) {
+  result = lookupMethod0(m.getAPrependedModule(), name)
+  or
+  not exists(getAncestors(m.getAPrependedModule()).getMethod(name)) and
+  (
+    result = m.getMethod(name)
+    or
+    not exists(m.getMethod(name)) and result = lookupMethod0(m.getAnIncludedModule(), name)
+  )
+}
+
+Method lookupMethod(Module m, string name) {
+  result = lookupMethod0(m, name)
+  or
+  not exists(lookupMethod0(m, name)) and
+  result = lookupMethod(m.getSuperClass(), name)
 }
