@@ -47,7 +47,7 @@ class RequestResponseFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource and
-    getACallingCallableOrSelf(source.getEnclosingCallable()) instanceof RequestGetMethod
+    any(RequestGetMethod m).polyCalls*(source.getEnclosingCallable())
   }
 
   override predicate isSink(DataFlow::Node sink) {
