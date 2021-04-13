@@ -69,7 +69,7 @@ class PyOpenSSL extends TlsLibrary {
     result instanceof PyOpenSSLContextCreation
   }
 
-  override DataFlow::CfgNode insecure_connection_creation(ProtocolVersion version) { none() }
+  override DataFlow::Node insecure_connection_creation(ProtocolVersion version) { none() }
 
   override ConnectionCreation connection_creation() { result instanceof ConnectionCall }
 

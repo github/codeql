@@ -124,7 +124,7 @@ abstract class TlsLibrary extends string {
   }
 
   /** A connection is created in an insecure manner, not from a context. */
-  abstract DataFlow::CfgNode insecure_connection_creation(ProtocolVersion version);
+  abstract DataFlow::Node insecure_connection_creation(ProtocolVersion version);
 
   /** A connection is created from a context. */
   abstract ConnectionCreation connection_creation();

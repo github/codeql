@@ -40,7 +40,7 @@ API::Node sslContextInstance() {
 class WrapSocketCall extends ConnectionCreation, DataFlow::CallCfgNode {
   WrapSocketCall() { this = sslContextInstance().getMember("wrap_socket").getACall() }
 
-  override DataFlow::CfgNode getContext() {
+  override DataFlow::Node getContext() {
     result = this.getFunction().(DataFlow::AttrRead).getObject()
   }
 }
@@ -63,7 +63,7 @@ class OptionsAugOr extends ProtocolRestriction, DataFlow::CfgNode {
     )
   }
 
-  override DataFlow::CfgNode getContext() { result = this }
+  override DataFlow::Node getContext() { result = this }
 
   override ProtocolVersion getRestriction() { result = restriction }
 }
@@ -88,7 +88,7 @@ class OptionsAugAndNot extends ProtocolUnrestriction, DataFlow::CfgNode {
     )
   }
 
-  override DataFlow::CfgNode getContext() { result = this }
+  override DataFlow::Node getContext() { result = this }
 
   override ProtocolVersion getUnrestriction() { result = restriction }
 }
@@ -138,7 +138,7 @@ class ContextSetVersion extends ProtocolRestriction, ProtocolUnrestriction, Data
     )
   }
 
-  override DataFlow::CfgNode getContext() { result = this }
+  override DataFlow::Node getContext() { result = this }
 
   override ProtocolVersion getRestriction() { result.lessThan(restriction) }
 
@@ -159,7 +159,7 @@ class UnspecificSSLContextCreation extends SSLContextCreation, UnspecificContext
 }
 
 class UnspecificSSLDefaultContextCreation extends SSLDefaultContextCreation, ProtocolUnrestriction {
-  override DataFlow::CfgNode getContext() { result = this }
+  override DataFlow::Node getContext() { result = this }
 
   // see https://docs.python.org/3/library/ssl.html#ssl.create_default_context
   override ProtocolVersion getUnrestriction() {
@@ -186,9 +186,9 @@ class Ssl extends TlsLibrary {
 
   override ContextCreation specific_context_creation() { result instanceof SSLContextCreation }
 
-  override DataFlow::CfgNode insecure_connection_creation(ProtocolVersion version) {
+  override DataFlow::CallCfgNode insecure_connection_creation(ProtocolVersion version) {
     result = API::moduleImport("ssl").getMember("wrap_socket").getACall() and
-    this.specific_version(version) = result.(DataFlow::CallCfgNode).getArgByName("ssl_version") and
+    this.specific_version(version) = result.getArgByName("ssl_version") and
     version.isInsecure()
   }
 
