@@ -22,27 +22,16 @@ private module Tornado {
   /** Gets a reference to the `tornado` module. */
   API::Node tornado() { result = API::moduleImport("tornado") }
 
-  /**
-   * Gets a reference to the attribute `attr_name` of the `tornado` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private API::Node tornado_attr(string attr_name) { result = tornado().getMember(attr_name) }
-
   /** Provides models for the `tornado` module. */
   module tornado {
     // -------------------------------------------------------------------------
     // tornado.web
     // -------------------------------------------------------------------------
     /** Gets a reference to the `tornado.web` module. */
-    API::Node web() { result = tornado_attr("web") }
+    API::Node web() { result = tornado().getMember("web") }
 
     /** Provides models for the `tornado.web` module */
     module web {
-      /**
-       * Gets a reference to the attribute `attr_name` of the `tornado.web` module.
-       * WARNING: Only holds for a few predefined attributes.
-       */
-      private API::Node web_attr(string attr_name) { result = web().getMember(attr_name) }
 
       /**
        * Provides models for the `tornado.web.RequestHandler` class and subclasses.
@@ -51,7 +40,7 @@ private module Tornado {
        */
       module RequestHandler {
         /** Gets a reference to the `tornado.web.RequestHandler` class or any subclass. */
-        API::Node subclassRef() { result = web_attr("RequestHandler").getASubclass*() }
+        API::Node subclassRef() { result = web().getMember("RequestHandler").getASubclass*() }
 
         /** A RequestHandler class (most likely in project code). */
         class RequestHandlerClass extends Class {
@@ -198,7 +187,7 @@ private module Tornado {
        */
       module Application {
         /** Gets a reference to the `tornado.web.Application` class. */
-        API::Node classRef() { result = web_attr("Application") }
+        API::Node classRef() { result = web().getMember("Application") }
 
         /**
          * A source of instances of `tornado.web.Application`, extend this class to model new instances.
@@ -246,15 +235,10 @@ private module Tornado {
     // tornado.httputil
     // -------------------------------------------------------------------------
     /** Gets a reference to the `tornado.httputil` module. */
-    API::Node httputil() { result = tornado_attr("httputil") }
+    API::Node httputil() { result = tornado().getMember("httputil") }
 
     /** Provides models for the `tornado.httputil` module */
     module httputil {
-      /**
-       * Gets a reference to the attribute `attr_name` of the `tornado.httputil` module.
-       * WARNING: Only holds for a few predefined attributes.
-       */
-      private API::Node httputil_attr(string attr_name) { result = httputil().getMember(attr_name) }
 
       /**
        * Provides models for the `tornado.httputil.HttpServerRequest` class
@@ -263,7 +247,7 @@ private module Tornado {
        */
       module HttpServerRequest {
         /** Gets a reference to the `tornado.httputil.HttpServerRequest` class. */
-        API::Node classRef() { result = httputil_attr("HttpServerRequest") }
+        API::Node classRef() { result = httputil().getMember("HttpServerRequest") }
 
         /**
          * A source of instances of `tornado.httputil.HttpServerRequest`, extend this class to model new instances.
@@ -284,7 +268,7 @@ private module Tornado {
         }
 
         /** Gets a reference to an instance of `tornado.httputil.HttpServerRequest`. */
-        private DataFlow::Node instance(DataFlow::TypeTracker t) {
+        private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
           t.start() and
           result instanceof InstanceSource
           or
@@ -292,10 +276,11 @@ private module Tornado {
         }
 
         /** Gets a reference to an instance of `tornado.httputil.HttpServerRequest`. */
-        DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+        DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+        
 
         /** Gets a reference to the `full_url` method. */
-        private DataFlow::Node full_url(DataFlow::TypeTracker t) {
+        private DataFlow::LocalSourceNode full_url(DataFlow::TypeTracker t) {
           t.startInAttr("full_url") and
           result = instance()
           or
@@ -303,7 +288,7 @@ private module Tornado {
         }
 
         /** Gets a reference to the `full_url` method. */
-        DataFlow::Node full_url() { result = full_url(DataFlow::TypeTracker::end()) }
+        DataFlow::Node full_url() { full_url(DataFlow::TypeTracker::end()).flowsTo(result) }
 
         private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
           override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
