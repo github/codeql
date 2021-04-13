@@ -1,7 +1,39 @@
 private import codeql_ruby.AST
 private import codeql_ruby.controlflow.ControlFlowGraph
 private import internal.AST
+private import internal.Method
 private import internal.TreeSitter
+
+/**
+ * A representation of a method.
+ */
+class Method extends TMethod {
+  /** Get a declaration of this module, if any. */
+  MethodBase getADeclaration() { result.getMethod() = this }
+
+  /** Gets a textual representation of this method. */
+  string toString() {
+    exists(Module m, string name |
+      this = TInstanceMethod(m, name) and result = m.toString() + "." + name
+    )
+  }
+
+  /** Gets the location of this method. */
+  Location getLocation() {
+    result =
+      min(MethodBase decl, Module m, string name, Location loc, int weight |
+        this = TInstanceMethod(m, name) and
+        decl = methodDeclaration(m, name) and
+        loc = decl.getLocation() and
+        if exists(loc.getFile().getRelativePath()) then weight = 0 else weight = 1
+      |
+        loc
+        order by
+          weight, count(decl.getAStmt()) desc, loc.getFile().getAbsolutePath(), loc.getStartLine(),
+          loc.getStartColumn()
+      )
+  }
+}
 
 /** A callable. */
 class Callable extends Expr, Scope, TCallable {
@@ -24,6 +56,9 @@ class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
   /** Gets the name of this method. */
   string getName() { none() }
 
+  /** Gets the method defined by this declaration. */
+  Method getMethod() { none() }
+
   override AstNode getAChild(string pred) {
     result = Callable.super.getAChild(pred)
     or
@@ -42,6 +77,12 @@ class MethodDeclaration extends MethodBase, TMethodDeclaration {
   final override string getName() {
     result = g.getName().(Generated::Token).getValue() or
     result = g.getName().(Generated::Setter).getName().getValue() + "="
+  }
+
+  final override Method getMethod() {
+    exists(Module owner, string name |
+      result = TInstanceMethod(owner, name) and this = methodDeclaration(owner, name)
+    )
   }
 
   /**
