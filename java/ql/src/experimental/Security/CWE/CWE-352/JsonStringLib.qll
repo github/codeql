@@ -4,10 +4,15 @@ import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
 /** Json string type data. */
-abstract class JsonpStringSource extends DataFlow::Node { }
+abstract class JsonStringSource extends DataFlow::Node { }
 
-/** Convert to String using Gson library. */
-private class GsonString extends JsonpStringSource {
+/**
+ * Convert to String using Gson library. *
+ *
+ * For example, in the method access `Gson.toJson(...)`,
+ * the `Object` type data is converted to the `String` type data.
+ */
+private class GsonString extends JsonStringSource {
   GsonString() {
     exists(MethodAccess ma, Method m | ma.getMethod() = m |
       m.hasName("toJson") and
@@ -17,8 +22,13 @@ private class GsonString extends JsonpStringSource {
   }
 }
 
-/** Convert to String using Fastjson library. */
-private class FastjsonString extends JsonpStringSource {
+/**
+ * Convert to String using Fastjson library.
+ *
+ * For example, in the method access `JSON.toJSONString(...)`,
+ * the `Object` type data is converted to the `String` type data.
+ */
+private class FastjsonString extends JsonStringSource {
   FastjsonString() {
     exists(MethodAccess ma, Method m | ma.getMethod() = m |
       m.hasName("toJSONString") and
@@ -28,8 +38,13 @@ private class FastjsonString extends JsonpStringSource {
   }
 }
 
-/** Convert to String using Jackson library. */
-private class JacksonString extends JsonpStringSource {
+/**
+ * Convert to String using Jackson library.
+ *
+ * For example, in the method access `ObjectMapper.writeValueAsString(...)`,
+ * the `Object` type data is converted to the `String` type data.
+ */
+private class JacksonString extends JsonStringSource {
   JacksonString() {
     exists(MethodAccess ma, Method m | ma.getMethod() = m |
       m.hasName("writeValueAsString") and

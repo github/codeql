@@ -86,17 +86,21 @@ class SpringControllerRequestMappingGetMethod extends SpringControllerGetMethod 
   }
 }
 
-/** A concatenate expression using `(` and `)` or `);`. */
+/**
+ * A concatenate expression using `(` and `)` or `);`.
+ *
+ * E.g: `functionName + "(" + json + ")"` or `functionName + "(" + json + ");"`
+ */
 class JsonpBuilderExpr extends AddExpr {
   JsonpBuilderExpr() {
-    getRightOperand().toString().regexpMatch("\"\\);?\"") and
+    getRightOperand().(CompileTimeConstantExpr).getStringValue().regexpMatch("\\);?") and
     getLeftOperand()
         .(AddExpr)
         .getLeftOperand()
         .(AddExpr)
         .getRightOperand()
-        .toString()
-        .regexpMatch("\"\\(\"")
+        .(CompileTimeConstantExpr)
+        .getStringValue() = "("
   }
 
   /** Get the jsonp function name of this expression. */
@@ -123,7 +127,7 @@ class RemoteFlowConfig extends DataFlow2::Configuration {
 class JsonDataFlowConfig extends DataFlow2::Configuration {
   JsonDataFlowConfig() { this = "JsonDataFlowConfig" }
 
-  override predicate isSource(DataFlow::Node src) { src instanceof JsonpStringSource }
+  override predicate isSource(DataFlow::Node src) { src instanceof JsonStringSource }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(JsonpBuilderExpr jhe | jhe.getJsonExpr() = sink.asExpr())
