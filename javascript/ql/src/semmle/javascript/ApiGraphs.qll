@@ -313,7 +313,7 @@ module API {
   module Node {
     /** Gets a node whose type has the given qualified name. */
     Node ofType(string moduleName, string exportedName) {
-      result = Impl::MkHasUnderlyingType(moduleName, exportedName).(Node).getInstance()
+      result = Impl::MkTypeUse(moduleName, exportedName).(Node).getInstance()
     }
   }
 
@@ -374,15 +374,13 @@ module API {
             exists(SSA::implicitInit([nm.getModuleVariable(), nm.getExportsVariable()]))
           )
         )
-        or
-        m = any(CanonicalName n | isDefined(n)).getExternalModuleName()
       } or
       MkModuleImport(string m) {
         imports(_, m)
         or
-        m = any(CanonicalName n | isUsed(n)).getExternalModuleName()
-        or
         any(TypeAnnotation n).hasQualifiedName(m, _)
+        or
+        any(Type t).hasUnderlyingType(m, _)
       } or
       MkClassInstance(DataFlow::ClassNode cls) { cls = trackDefNode(_) and hasSemantics(cls) } or
       MkAsyncFuncResult(DataFlow::FunctionNode f) {
@@ -390,11 +388,8 @@ module API {
       } or
       MkDef(DataFlow::Node nd) { rhs(_, _, nd) } or
       MkUse(DataFlow::Node nd) { use(_, _, nd) } or
-      /**
-       * A TypeScript type, identified by name of the type-annotation.
-       * This API node is exclusively used by `API::Node::ofType`.
-       */
-      MkHasUnderlyingType(string moduleName, string exportName) {
+      /** A use of a TypeScript type. */
+      MkTypeUse(string moduleName, string exportName) {
         any(TypeAnnotation n).hasQualifiedName(moduleName, exportName)
         or
         any(Type t).hasUnderlyingType(moduleName, exportName)
@@ -408,7 +403,7 @@ module API {
     class TNonModuleDef =
       MkModuleExport or MkClassInstance or MkAsyncFuncResult or MkDef or MkSyntheticCallbackArg;
 
-    class TUse = MkModuleUse or MkModuleImport or MkUse or MkHasUnderlyingType;
+    class TUse = MkModuleUse or MkModuleImport or MkUse or MkTypeUse;
 
     private predicate hasSemantics(DataFlow::Node nd) { not nd.getTopLevel().isExterns() }
 
@@ -428,20 +423,6 @@ module API {
         result = pkg.getMainModule() and
         not result.isExterns() and
         m = pkg.getPackageName()
-      )
-    }
-
-    private predicate isUsed(CanonicalName n) {
-      exists(n.(TypeName).getAnAccess()) or
-      exists(n.(Namespace).getAnAccess())
-    }
-
-    private predicate isDefined(CanonicalName n) {
-      exists(ASTNode def |
-        def = n.(TypeName).getADefinition() or
-        def = n.(Namespace).getADefinition()
-      |
-        not def.isAmbient()
       )
     }
 
@@ -600,7 +581,7 @@ module API {
         )
         or
         exists(string moduleName, string exportName |
-          base = MkHasUnderlyingType(moduleName, exportName) and
+          base = MkTypeUse(moduleName, exportName) and
           lbl = Label::instance() and
           ref.(DataFlow::SourceNode).hasUnderlyingType(moduleName, exportName)
         )
@@ -839,7 +820,7 @@ module API {
       exists(string moduleName, string exportName |
         pred = MkModuleImport(moduleName) and
         lbl = Label::member(exportName) and
-        succ = MkHasUnderlyingType(moduleName, exportName)
+        succ = MkTypeUse(moduleName, exportName)
       )
       or
       exists(DataFlow::Node nd, DataFlow::FunctionNode f |
