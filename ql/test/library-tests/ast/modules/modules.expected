@@ -125,7 +125,7 @@ moduleTypes
 | modules.rb:83:1:86:3 | Other | modules.rb:83:1:86:3 | Other |
 | modules.rb:84:3:85:5 | Foo1 | modules.rb:84:3:85:5 | Other::Foo1 |
 | modules.rb:88:1:93:3 | IncludeTest | modules.rb:88:1:93:3 | IncludeTest |
-| modules.rb:91:3:92:5 | Y | modules.rb:91:3:92:5 | Other::Foo1::Y |
+| modules.rb:91:3:92:5 | Y | modules.rb:91:3:92:5 | Test::Foo1::Y |
 | modules.rb:95:1:99:3 | IncludeTest2 | modules.rb:95:1:99:3 | IncludeTest2 |
 | modules.rb:97:3:98:5 | Z | modules.rb:97:3:98:5 | Test::Foo1::Z |
 | modules.rb:101:1:105:3 | PrependTest | modules.rb:101:1:105:3 | PrependTest |

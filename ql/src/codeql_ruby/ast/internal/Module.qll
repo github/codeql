@@ -1,4 +1,5 @@
 private import codeql.Locations
+private import codeql_ruby.AST
 private import codeql_ruby.ast.Call
 private import codeql_ruby.ast.Constant
 private import codeql_ruby.ast.Expr
@@ -169,13 +170,32 @@ private class IncludeOrPrependCall extends MethodCall {
   string getTarget() {
     result = resolveScopeExpr(this.getReceiver(), _)
     or
-    result = qualifiedModuleName(this.getEnclosingModule()) and
+    result = qualifiedModuleName(enclosingModule(this)) and
     (
       this.getReceiver() instanceof Self
       or
       not exists(this.getReceiver())
     )
   }
+}
+
+/**
+ * A variant of AstNode::getEnclosingModule that excludes
+ * results that are enclosed in a block. This is a bit wrong because
+ * it could lead to false negatives. However, `include` statements in
+ * blocks are very rare in normal code. The majority of cases are in calls
+ * to methods like `module_eval` and `Rspec.describe` / `Rspec.context`. These
+ * methods evaluate the block in the context of some other module/class instead of
+ * the enclosing one.
+ */
+private ModuleBase enclosingModule(AstNode node) {
+  exists(AstNode parent | parent = node.getParent() |
+    result = parent
+    or
+    not parent instanceof ModuleBase and
+    not parent instanceof Block and
+    result = enclosingModule(parent)
+  )
 }
 
 private string prepends(string qname) {
