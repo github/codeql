@@ -57,12 +57,6 @@ public class NewCookie extends Cookie {
      */
     public static final int DEFAULT_MAX_AGE = -1;
 
-    private final String comment;
-    private final int maxAge;
-    private final Date expiry;
-    private final boolean secure;
-    private final boolean httpOnly;
-
     /**
      * Create a new instance.
      *
@@ -71,7 +65,7 @@ public class NewCookie extends Cookie {
      * @throws IllegalArgumentException if name is {@code null}.
      */
     public NewCookie(String name, String value) {
-        this(name, value, null, null, DEFAULT_VERSION, null, DEFAULT_MAX_AGE, null, false, false);
+        super("", "");
     }
 
     /**
@@ -93,7 +87,7 @@ public class NewCookie extends Cookie {
                      String comment,
                      int maxAge,
                      boolean secure) {
-        this(name, value, path, domain, DEFAULT_VERSION, comment, maxAge, null, secure, false);                  
+        super("", "");
     }
 
     /**
@@ -118,7 +112,7 @@ public class NewCookie extends Cookie {
                      int maxAge,
                      boolean secure,
                      boolean httpOnly) {
-        this(name, value, path, domain, DEFAULT_VERSION, comment, maxAge, null, secure, httpOnly);
+        super("", "");
     }
 
     /**
@@ -142,7 +136,7 @@ public class NewCookie extends Cookie {
                      String comment,
                      int maxAge,
                      boolean secure) {
-        this(name, value, path, domain, version, comment, maxAge, null, secure, false);                 
+        super("", "");
     }
 
     /**
@@ -171,12 +165,7 @@ public class NewCookie extends Cookie {
                      Date expiry,
                      boolean secure,
                      boolean httpOnly) {
-            super(name, value, path, domain, version);
-            this.comment = comment;
-            this.maxAge = maxAge;
-            this.expiry = expiry;
-            this.secure = secure;
-            this.httpOnly = httpOnly;
+        super("", "");
     }
 
     /**
@@ -186,7 +175,7 @@ public class NewCookie extends Cookie {
      * @throws IllegalArgumentException if cookie is {@code null}.
      */
     public NewCookie(Cookie cookie) {
-        this(cookie, null, DEFAULT_MAX_AGE, null, false, false);
+        super("", "");
     }
 
     /**
@@ -199,7 +188,7 @@ public class NewCookie extends Cookie {
      * @throws IllegalArgumentException if cookie is {@code null}.
      */
     public NewCookie(Cookie cookie, String comment, int maxAge, boolean secure) {
-        this(cookie, comment, maxAge, null, secure, false);
+        super("", "");
     }
 
     /**
@@ -215,16 +204,7 @@ public class NewCookie extends Cookie {
      * @since 2.0
      */
     public NewCookie(Cookie cookie, String comment, int maxAge, Date expiry, boolean secure, boolean httpOnly) {
-        super(cookie == null ? null : cookie.getName(),
-        cookie == null ? null : cookie.getValue(),
-        cookie == null ? null : cookie.getPath(),
-        cookie == null ? null : cookie.getDomain(),
-        cookie == null ? Cookie.DEFAULT_VERSION : cookie.getVersion());
-        this.comment = comment;
-        this.maxAge = maxAge;
-        this.expiry = expiry;
-        this.secure = secure;
-        this.httpOnly = httpOnly;        
+        super("", "");
     }
 
     /**

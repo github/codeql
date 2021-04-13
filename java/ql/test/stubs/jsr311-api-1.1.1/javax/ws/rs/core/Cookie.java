@@ -56,11 +56,6 @@ public class Cookie {
      * Cookies using the default version correspond to RFC 2109.
      */
     public static final int DEFAULT_VERSION = 1;
-    private final String name;
-    private final String value;
-    private final int version;
-    private final String path;
-    private final String domain;
 
     /**
      * Create a new instance.
@@ -74,11 +69,6 @@ public class Cookie {
      */
     public Cookie(final String name, final String value, final String path, final String domain, final int version)
             throws IllegalArgumentException {
-        this.name = name;
-        this.value = value;
-        this.version = version;
-        this.domain = domain;
-        this.path = path;
     }
 
     /**
@@ -92,7 +82,6 @@ public class Cookie {
      */
     public Cookie(final String name, final String value, final String path, final String domain)
             throws IllegalArgumentException {
-        this(name, value, path, domain, DEFAULT_VERSION);
     }
 
     /**
@@ -104,7 +93,6 @@ public class Cookie {
      */
     public Cookie(final String name, final String value)
             throws IllegalArgumentException {
-        this(name, value, null, null);
     }
 
     /**
