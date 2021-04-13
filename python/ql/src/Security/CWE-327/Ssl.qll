@@ -45,7 +45,7 @@ class WrapSocketCall extends ConnectionCreation, DataFlow::CallCfgNode {
   }
 }
 
-class OptionsAugOr extends ProtocolRestriction, DataFlow::CallCfgNode {
+class OptionsAugOr extends ProtocolRestriction, DataFlow::CfgNode {
   ProtocolVersion restriction;
 
   OptionsAugOr() {
@@ -68,7 +68,7 @@ class OptionsAugOr extends ProtocolRestriction, DataFlow::CallCfgNode {
   override ProtocolVersion getRestriction() { result = restriction }
 }
 
-class OptionsAugAndNot extends ProtocolUnrestriction, DataFlow::CallCfgNode {
+class OptionsAugAndNot extends ProtocolUnrestriction, DataFlow::CfgNode {
   ProtocolVersion restriction;
 
   OptionsAugAndNot() {
@@ -126,7 +126,7 @@ predicate impliesBitSet(BinaryExpr whole, Expr part, boolean partHasBitSet, bool
   )
 }
 
-class ContextSetVersion extends ProtocolRestriction, ProtocolUnrestriction, DataFlow::CallCfgNode {
+class ContextSetVersion extends ProtocolRestriction, ProtocolUnrestriction, DataFlow::CfgNode {
   ProtocolVersion restriction;
 
   ContextSetVersion() {
