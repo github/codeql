@@ -13,17 +13,19 @@ modules
 | modules.rb:70:3:74:5 | Foo2 | ModuleDeclaration | Foo2 |
 | modules.rb:71:5:71:19 | Foo2 | ModuleDeclaration | Foo2 |
 | modules.rb:76:3:80:5 | Foo3 | ModuleDeclaration | Foo3 |
-| modules.rb:83:1:87:3 | IncludeTest | ModuleDeclaration | IncludeTest |
-| modules.rb:85:3:86:5 | Y | ModuleDeclaration | Y |
-| modules.rb:89:1:93:3 | IncludeTest2 | ModuleDeclaration | IncludeTest2 |
-| modules.rb:91:3:92:5 | Z | ModuleDeclaration | Z |
-| modules.rb:95:1:99:3 | PrependTest | ModuleDeclaration | PrependTest |
-| modules.rb:97:3:98:5 | Y | ModuleDeclaration | Y |
+| modules.rb:83:1:86:3 | Other | ModuleDeclaration | Other |
+| modules.rb:84:3:85:5 | Foo1 | ModuleDeclaration | Foo1 |
+| modules.rb:88:1:93:3 | IncludeTest | ModuleDeclaration | IncludeTest |
+| modules.rb:91:3:92:5 | Y | ModuleDeclaration | Y |
+| modules.rb:95:1:99:3 | IncludeTest2 | ModuleDeclaration | IncludeTest2 |
+| modules.rb:97:3:98:5 | Z | ModuleDeclaration | Z |
+| modules.rb:101:1:105:3 | PrependTest | ModuleDeclaration | PrependTest |
+| modules.rb:103:3:104:5 | Y | ModuleDeclaration | Y |
 modulesWithScopeExprs
 | modules.rb:48:1:57:3 | Bar | modules.rb:48:8:48:10 | Foo |
-| modules.rb:85:3:86:5 | Y | modules.rb:85:10:85:13 | Foo1 |
-| modules.rb:91:3:92:5 | Z | modules.rb:91:10:91:13 | Foo1 |
-| modules.rb:97:3:98:5 | Y | modules.rb:97:10:97:13 | Foo2 |
+| modules.rb:91:3:92:5 | Y | modules.rb:91:10:91:13 | Foo1 |
+| modules.rb:97:3:98:5 | Z | modules.rb:97:10:97:13 | Foo1 |
+| modules.rb:103:3:104:5 | Y | modules.rb:103:10:103:13 | Foo2 |
 modulesWithGlobalNameScopeExprs
 | modules.rb:60:1:61:3 | MyModuleInGlobalScope |
 exprsInModules
@@ -56,12 +58,14 @@ exprsInModules
 | modules.rb:70:3:74:5 | Foo2 | 1 | modules.rb:72:5:73:7 | Bar | ClassDeclaration |
 | modules.rb:76:3:80:5 | Foo3 | 0 | modules.rb:77:5:77:17 | ... = ... | AssignExpr |
 | modules.rb:76:3:80:5 | Foo3 | 1 | modules.rb:78:5:79:7 | Bar | ClassDeclaration |
-| modules.rb:83:1:87:3 | IncludeTest | 0 | modules.rb:84:3:84:16 | call to include | MethodCall |
-| modules.rb:83:1:87:3 | IncludeTest | 1 | modules.rb:85:3:86:5 | Y | ModuleDeclaration |
-| modules.rb:89:1:93:3 | IncludeTest2 | 0 | modules.rb:90:3:90:14 | call to include | MethodCall |
-| modules.rb:89:1:93:3 | IncludeTest2 | 1 | modules.rb:91:3:92:5 | Z | ModuleDeclaration |
-| modules.rb:95:1:99:3 | PrependTest | 0 | modules.rb:96:3:96:16 | call to prepend | MethodCall |
-| modules.rb:95:1:99:3 | PrependTest | 1 | modules.rb:97:3:98:5 | Y | ModuleDeclaration |
+| modules.rb:83:1:86:3 | Other | 0 | modules.rb:84:3:85:5 | Foo1 | ModuleDeclaration |
+| modules.rb:88:1:93:3 | IncludeTest | 0 | modules.rb:89:3:89:16 | call to include | MethodCall |
+| modules.rb:88:1:93:3 | IncludeTest | 1 | modules.rb:90:3:90:38 | call to module_eval | MethodCall |
+| modules.rb:88:1:93:3 | IncludeTest | 2 | modules.rb:91:3:92:5 | Y | ModuleDeclaration |
+| modules.rb:95:1:99:3 | IncludeTest2 | 0 | modules.rb:96:3:96:14 | call to include | MethodCall |
+| modules.rb:95:1:99:3 | IncludeTest2 | 1 | modules.rb:97:3:98:5 | Z | ModuleDeclaration |
+| modules.rb:101:1:105:3 | PrependTest | 0 | modules.rb:102:3:102:16 | call to prepend | MethodCall |
+| modules.rb:101:1:105:3 | PrependTest | 1 | modules.rb:103:3:104:5 | Y | ModuleDeclaration |
 methodsInModules
 | modules.rb:4:1:24:3 | Foo | modules.rb:16:3:17:5 | method_in_foo | method_in_foo |
 | modules.rb:5:3:14:5 | Bar | modules.rb:9:5:10:7 | method_in_foo_bar | method_in_foo_bar |
@@ -83,9 +87,10 @@ modulesInModules
 | modules.rb:63:1:81:3 | Test | modules.rb:70:3:74:5 | Foo2 | Foo2 |
 | modules.rb:63:1:81:3 | Test | modules.rb:76:3:80:5 | Foo3 | Foo3 |
 | modules.rb:70:3:74:5 | Foo2 | modules.rb:71:5:71:19 | Foo2 | Foo2 |
-| modules.rb:83:1:87:3 | IncludeTest | modules.rb:85:3:86:5 | Y | Y |
-| modules.rb:89:1:93:3 | IncludeTest2 | modules.rb:91:3:92:5 | Z | Z |
-| modules.rb:95:1:99:3 | PrependTest | modules.rb:97:3:98:5 | Y | Y |
+| modules.rb:83:1:86:3 | Other | modules.rb:84:3:85:5 | Foo1 | Foo1 |
+| modules.rb:88:1:93:3 | IncludeTest | modules.rb:91:3:92:5 | Y | Y |
+| modules.rb:95:1:99:3 | IncludeTest2 | modules.rb:97:3:98:5 | Z | Z |
+| modules.rb:101:1:105:3 | PrependTest | modules.rb:103:3:104:5 | Y | Y |
 moduleTypes
 | classes.rb:2:1:56:3 | classes.rb | file://:0:0:0:0 | Object |
 | classes.rb:3:1:4:3 | Foo | modules.rb:4:1:24:3 | Foo |
@@ -98,7 +103,7 @@ moduleTypes
 | classes.rb:35:3:36:5 | ModuleInWibble | classes.rb:35:3:36:5 | Wibble::ModuleInWibble |
 | classes.rb:55:1:56:3 | MyClassInGlobalScope | classes.rb:55:1:56:3 | MyClassInGlobalScope |
 | modules.rb:1:1:2:3 | Empty | modules.rb:1:1:2:3 | Empty |
-| modules.rb:1:1:99:3 | modules.rb | file://:0:0:0:0 | Object |
+| modules.rb:1:1:105:4 | modules.rb | file://:0:0:0:0 | Object |
 | modules.rb:4:1:24:3 | Foo | modules.rb:4:1:24:3 | Foo |
 | modules.rb:5:3:14:5 | Bar | modules.rb:5:3:14:5 | Foo::Bar |
 | modules.rb:6:5:7:7 | ClassInFooBar | modules.rb:6:5:7:7 | Foo::Bar::ClassInFooBar |
@@ -117,10 +122,12 @@ moduleTypes
 | modules.rb:72:5:73:7 | Bar | modules.rb:72:5:73:7 | Test::Foo2::Foo2::Bar |
 | modules.rb:76:3:80:5 | Foo3 | modules.rb:76:3:80:5 | Test::Foo3 |
 | modules.rb:78:5:79:7 | Bar | modules.rb:37:1:46:3 | Bar |
-| modules.rb:83:1:87:3 | IncludeTest | modules.rb:83:1:87:3 | IncludeTest |
-| modules.rb:85:3:86:5 | Y | modules.rb:85:3:86:5 | Test::Foo1::Y |
-| modules.rb:89:1:93:3 | IncludeTest2 | modules.rb:89:1:93:3 | IncludeTest2 |
-| modules.rb:91:3:92:5 | Z | modules.rb:91:3:92:5 | Test::Foo1::Z |
-| modules.rb:95:1:99:3 | PrependTest | modules.rb:95:1:99:3 | PrependTest |
-| modules.rb:97:3:98:5 | Y | modules.rb:97:3:98:5 | Test::Foo2::Y |
+| modules.rb:83:1:86:3 | Other | modules.rb:83:1:86:3 | Other |
+| modules.rb:84:3:85:5 | Foo1 | modules.rb:84:3:85:5 | Other::Foo1 |
+| modules.rb:88:1:93:3 | IncludeTest | modules.rb:88:1:93:3 | IncludeTest |
+| modules.rb:91:3:92:5 | Y | modules.rb:91:3:92:5 | Other::Foo1::Y |
+| modules.rb:95:1:99:3 | IncludeTest2 | modules.rb:95:1:99:3 | IncludeTest2 |
+| modules.rb:97:3:98:5 | Z | modules.rb:97:3:98:5 | Test::Foo1::Z |
+| modules.rb:101:1:105:3 | PrependTest | modules.rb:101:1:105:3 | PrependTest |
+| modules.rb:103:3:104:5 | Y | modules.rb:103:3:104:5 | Test::Foo2::Y |
 | toplevel.rb:1:1:5:23 | toplevel.rb | file://:0:0:0:0 | Object |
