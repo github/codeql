@@ -10,6 +10,7 @@
  */
 
 import python
+import semmle.python.dataflow.new.DataFlow
 import FluentApiModel
 
 // Helper for pretty printer `configName`.
