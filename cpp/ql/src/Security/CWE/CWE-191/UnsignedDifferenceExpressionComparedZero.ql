@@ -38,15 +38,6 @@ predicate exprIsSubLeftOrLess(SubExpr sub, Expr e) {
   e = sub.getLeftOperand()
   or
   exists(Expr other |
-    // use-use
-    exprIsSubLeftOrLess(sub, other) and
-    (
-      useUsePair(_, other, e) or
-      useUsePair(_, e, other)
-    )
-  )
-  or
-  exists(Expr other |
     // dataflow
     exprIsSubLeftOrLess(sub, other) and
     (
