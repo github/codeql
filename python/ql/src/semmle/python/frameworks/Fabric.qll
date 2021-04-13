@@ -23,28 +23,16 @@ private module FabricV1 {
   /** Gets a reference to the `fabric` module. */
   API::Node fabric() { result = API::moduleImport("fabric") }
 
-  /**
-   * Gets a reference to the attribute `attr_name` of the `fabric` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private API::Node fabric_attr(string attr_name) { result = fabric().getMember(attr_name) }
-
   /** Provides models for the `fabric` module. */
   module fabric {
     // -------------------------------------------------------------------------
     // fabric.api
     // -------------------------------------------------------------------------
     /** Gets a reference to the `fabric.api` module. */
-    API::Node api() { result = fabric_attr("api") }
+    API::Node api() { result = fabric().getMember("api") }
 
     /** Provides models for the `fabric.api` module */
     module api {
-      /**
-       * Gets a reference to the attribute `attr_name` of the `fabric.api` module.
-       * WARNING: Only holds for a few predefined attributes.
-       */
-      private API::Node api_attr(string attr_name) { result = api().getMember(attr_name) }
-
       /**
        * A call to either
        * - `fabric.api.local`
@@ -57,7 +45,7 @@ private module FabricV1 {
        */
       private class FabricApiLocalRunSudoCall extends SystemCommandExecution::Range,
         DataFlow::CallCfgNode {
-        FabricApiLocalRunSudoCall() { this = api_attr(["local", "run", "sudo"]).getACall() }
+        FabricApiLocalRunSudoCall() { this = api().getMember(["local", "run", "sudo"]).getACall() }
 
         override DataFlow::Node getCommand() {
           result.asCfgNode() = [node.getArg(0), node.getArgByName("command")]
@@ -77,30 +65,16 @@ private module FabricV2 {
   /** Gets a reference to the `fabric` module. */
   API::Node fabric() { result = API::moduleImport("fabric") }
 
-  /**
-   * Gets a reference to the attribute `attr_name` of the `fabric` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private API::Node fabric_attr(string attr_name) { result = fabric().getMember(attr_name) }
-
   /** Provides models for the `fabric` module. */
   module fabric {
     // -------------------------------------------------------------------------
     // fabric.connection
     // -------------------------------------------------------------------------
     /** Gets a reference to the `fabric.connection` module. */
-    API::Node connection() { result = fabric_attr("connection") }
+    API::Node connection() { result = fabric().getMember("connection") }
 
     /** Provides models for the `fabric.connection` module */
     module connection {
-      /**
-       * Gets a reference to the attribute `attr_name` of the `fabric.connection` module.
-       * WARNING: Only holds for a few predefined attributes.
-       */
-      private API::Node connection_attr(string attr_name) {
-        result = connection().getMember(attr_name)
-      }
-
       /**
        * Provides models for the `fabric.connection.Connection` class
        *
@@ -109,7 +83,7 @@ private module FabricV2 {
       module Connection {
         /** Gets a reference to the `fabric.connection.Connection` class. */
         API::Node classRef() {
-          result in [fabric_attr("Connection"), connection_attr("Connection")]
+          result in [fabric().getMember("Connection"), connection().getMember("Connection")]
         }
 
         /**
@@ -136,7 +110,7 @@ private module FabricV2 {
         }
 
         /** Gets a reference to an instance of `fabric.connection.Connection`. */
-        DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+        DataFlow::LocalSourceNode instance() { result = instance(DataFlow::TypeTracker::end()) }
 
         /**
          * Gets a reference to either `run`, `sudo`, or `local` method on a
@@ -191,7 +165,7 @@ private module FabricV2 {
     // fabric.tasks
     // -------------------------------------------------------------------------
     /** Gets a reference to the `fabric.tasks` module. */
-    API::Node tasks() { result = fabric_attr("tasks") }
+    API::Node tasks() { result = fabric().getMember("tasks") }
 
     /** Provides models for the `fabric.tasks` module */
     module tasks {
@@ -213,16 +187,10 @@ private module FabricV2 {
     // fabric.group
     // -------------------------------------------------------------------------
     /** Gets a reference to the `fabric.group` module. */
-    API::Node group() { result = fabric_attr("group") }
+    API::Node group() { result = fabric().getMember("group") }
 
     /** Provides models for the `fabric.group` module */
     module group {
-      /**
-       * Gets a reference to the attribute `attr_name` of the `fabric.group` module.
-       * WARNING: Only holds for a few predefined attributes.
-       */
-      private API::Node group_attr(string attr_name) { result = group().getMember(attr_name) }
-
       /**
        * Provides models for the `fabric.group.Group` class and its subclasses.
        *
@@ -280,7 +248,9 @@ private module FabricV2 {
        */
       module SerialGroup {
         private class ClassInstantiation extends Group::ModeledSubclass {
-          ClassInstantiation() { this in [group_attr("SerialGroup"), fabric_attr("SerialGroup")] }
+          ClassInstantiation() {
+            this in [group().getMember("SerialGroup"), fabric().getMember("SerialGroup")]
+          }
         }
       }
 
@@ -292,7 +262,7 @@ private module FabricV2 {
       module ThreadingGroup {
         private class ClassInstantiation extends Group::ModeledSubclass {
           ClassInstantiation() {
-            this in [group_attr("ThreadingGroup"), fabric_attr("ThreadingGroup")]
+            this in [group().getMember("ThreadingGroup"), fabric().getMember("ThreadingGroup")]
           }
         }
       }
