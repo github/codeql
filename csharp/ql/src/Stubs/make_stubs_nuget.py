@@ -46,7 +46,7 @@ if not os.path.isdir(dbDir):
 
 print("\nRunning query")
 helpers.run_cmd(['codeql', 'query', 'run', os.path.join(
-    thisDir, 'MinimalStubsFromSource.ql'), '--database', dbDir, '--output', bqrsFile])
+    thisDir, 'AllStubsFromReference.ql'), '--database', dbDir, '--output', bqrsFile])
 
 helpers.run_cmd(['codeql', 'bqrs', 'decode', bqrsFile, '--output',
                  outputFile, '--format=text', '--no-titles'])
