@@ -15,6 +15,7 @@ import javax.el.ValueExpression;
 
 public class JakartaExpressionInjection {
     
+    // calls a consumer with a string received from a socket
     private static void testWithSocket(Consumer<String> action) throws IOException {
         try (ServerSocket serverSocket = new ServerSocket(0)) {
             try (Socket socket = serverSocket.accept()) {
@@ -26,6 +27,7 @@ public class JakartaExpressionInjection {
         }
     }
 
+    // BAD (untrusted input to ELProcessor.eval)
     private static void testWithELProcessorEval() throws IOException {
         testWithSocket(expression -> {
             ELProcessor processor = new ELProcessor();
@@ -33,6 +35,7 @@ public class JakartaExpressionInjection {
         });
     }
 
+    // BAD (untrusted input to ELProcessor.getValue)
     private static void testWithELProcessorGetValue() throws IOException {
         testWithSocket(expression -> {   
             ELProcessor processor = new ELProcessor();
@@ -40,6 +43,7 @@ public class JakartaExpressionInjection {
         });
     }
 
+    // BAD (untrusted input to LambdaExpression.invoke)
     private static void testWithLambdaExpressionInvoke() throws IOException {
         testWithSocket(expression -> {
             ExpressionFactory factory = ELManager.getExpressionFactory();
@@ -50,6 +54,7 @@ public class JakartaExpressionInjection {
         });
     }
 
+    // BAD (untrusted input to ELProcessor.setValue)
     private static void testWithELProcessorSetValue() throws IOException {
         testWithSocket(expression -> {
             ELProcessor processor = new ELProcessor();
@@ -57,6 +62,7 @@ public class JakartaExpressionInjection {
         });
     }
 
+    // BAD (untrusted input to ELProcessor.setVariable)
     private static void testWithELProcessorSetVariable() throws IOException {
         testWithSocket(expression -> {
             ELProcessor processor = new ELProcessor();
@@ -64,6 +70,7 @@ public class JakartaExpressionInjection {
         });
     }
 
+    // BAD (untrusted input to ValueExpression.getValue when it was created by JUEL)
     private static void testWithJuelValueExpressionGetValue() throws IOException {
         testWithSocket(expression -> {
             ExpressionFactory factory = new de.odysseus.el.ExpressionFactoryImpl();
@@ -73,6 +80,7 @@ public class JakartaExpressionInjection {
         });
     }
 
+    // BAD (untrusted input to ValueExpression.setValue when it was created by JUEL)
     private static void testWithJuelValueExpressionSetValue() throws IOException {
         testWithSocket(expression -> {
             ExpressionFactory factory = new de.odysseus.el.ExpressionFactoryImpl();
@@ -82,6 +90,7 @@ public class JakartaExpressionInjection {
         });
     }
 
+    // BAD (untrusted input to MethodExpression.invoke when it was created by JUEL)
     private static void testWithJuelMethodExpressionInvoke() throws IOException {
         testWithSocket(expression -> {
             ExpressionFactory factory = new de.odysseus.el.ExpressionFactoryImpl();
