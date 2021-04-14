@@ -80,8 +80,14 @@ module Test
   end
 end
 
+module Other
+  module Foo1
+  end
+end
+
 module IncludeTest
   include ::Test
+  Object.module_eval { prepend Other }
   module Foo1::Y
   end
 end

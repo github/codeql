@@ -1384,21 +1384,28 @@ modules/modules.rb:
 #   77|         getAnOperand/getRightOperand: [ConstantReadAccess] Object
 #   78|       getStmt: [ClassDeclaration] Bar
 #   78|         getScopeExpr: [ConstantReadAccess] Foo3
-#   83|   getStmt: [ModuleDeclaration] IncludeTest
-#   84|     getStmt: [MethodCall] call to include
-#   84|       getArgument: [ConstantReadAccess] Test
-#   85|     getStmt: [ModuleDeclaration] Y
-#   85|       getScopeExpr: [ConstantReadAccess] Foo1
-#   89|   getStmt: [ModuleDeclaration] IncludeTest2
-#   90|     getStmt: [MethodCall] call to include
-#   90|       getArgument: [ConstantReadAccess] Test
-#   91|     getStmt: [ModuleDeclaration] Z
+#   83|   getStmt: [ModuleDeclaration] Other
+#   84|     getStmt: [ModuleDeclaration] Foo1
+#   88|   getStmt: [ModuleDeclaration] IncludeTest
+#   89|     getStmt: [MethodCall] call to include
+#   89|       getArgument: [ConstantReadAccess] Test
+#   90|     getStmt: [MethodCall] call to module_eval
+#   90|       getReceiver: [ConstantReadAccess] Object
+#   90|       getBlock: [BraceBlock] { ... }
+#   90|         getStmt: [MethodCall] call to prepend
+#   90|           getArgument: [ConstantReadAccess] Other
+#   91|     getStmt: [ModuleDeclaration] Y
 #   91|       getScopeExpr: [ConstantReadAccess] Foo1
-#   95|   getStmt: [ModuleDeclaration] PrependTest
-#   96|     getStmt: [MethodCall] call to prepend
+#   95|   getStmt: [ModuleDeclaration] IncludeTest2
+#   96|     getStmt: [MethodCall] call to include
 #   96|       getArgument: [ConstantReadAccess] Test
-#   97|     getStmt: [ModuleDeclaration] Y
-#   97|       getScopeExpr: [ConstantReadAccess] Foo2
+#   97|     getStmt: [ModuleDeclaration] Z
+#   97|       getScopeExpr: [ConstantReadAccess] Foo1
+#  101|   getStmt: [ModuleDeclaration] PrependTest
+#  102|     getStmt: [MethodCall] call to prepend
+#  102|       getArgument: [ConstantReadAccess] Test
+#  103|     getStmt: [ModuleDeclaration] Y
+#  103|       getScopeExpr: [ConstantReadAccess] Foo2
 operations/operations.rb:
 #    1| [Toplevel] operations.rb
 #    3|   getStmt: [AssignExpr] ... = ...
