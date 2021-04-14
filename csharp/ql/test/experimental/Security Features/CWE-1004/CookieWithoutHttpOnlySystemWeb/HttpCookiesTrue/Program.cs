@@ -23,17 +23,6 @@ class Program
         var cookie = new System.Web.HttpCookie("sessionID") { HttpOnly = true }; // GOOD
     }
 
-    void CookieDirectFalse()
-    {
-        var cookie = new System.Web.HttpCookie("sessionID");
-        cookie.HttpOnly = false; // GOOD: separate query for setting `false`
-    }
-
-    void CookieDirectFalseInitializer()
-    {
-        var cookie = new System.Web.HttpCookie("sessionID") { HttpOnly = false }; // GOOD: separate query for setting `false`
-    }
-
     void CookieIntermediateTrue()
     {
         var cookie = new System.Web.HttpCookie("sessionID");
@@ -45,18 +34,5 @@ class Program
     {
         bool v = true;
         var cookie = new System.Web.HttpCookie("sessionID") { HttpOnly = v }; // GOOD: should track local data flow
-    }
-
-    void CookieIntermediateFalse()
-    {
-        var cookie = new System.Web.HttpCookie("sessionID");
-        bool v = false;
-        cookie.HttpOnly = v; // GOOD: separate query for setting `false`
-    }
-
-    void CookieIntermediateFalseInitializer()
-    {
-        bool v = false;
-        var cookie = new System.Web.HttpCookie("sessionID") { HttpOnly = v }; // GOOD: separate query for setting `false`
     }
 }

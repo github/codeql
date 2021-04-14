@@ -37,19 +37,6 @@ public class MyController : Microsoft.AspNetCore.Mvc.Controller
         Response.Cookies.Append("auth", "secret", cookieOptions); // GOOD
     }
 
-    void CookieDirectFalse()
-    {
-        var cookieOptions = new Microsoft.AspNetCore.Http.CookieOptions();
-        cookieOptions.HttpOnly = false;
-        Response.Cookies.Append("auth", "secret", cookieOptions); // GOOD: separate query for setting `false`
-    }
-
-    void CookieDirectFalseInitializer()
-    {
-        var cookieOptions = new Microsoft.AspNetCore.Http.CookieOptions() { HttpOnly = false };
-        Response.Cookies.Append("auth", "secret", cookieOptions); // GOOD: separate query for setting `false`
-    }
-
     void CookieIntermediateTrue()
     {
         var cookieOptions = new Microsoft.AspNetCore.Http.CookieOptions();
@@ -63,20 +50,5 @@ public class MyController : Microsoft.AspNetCore.Mvc.Controller
         bool v = true;
         var cookieOptions = new Microsoft.AspNetCore.Http.CookieOptions() { HttpOnly = v };
         Response.Cookies.Append("auth", "secret", cookieOptions); // GOOD: should track local data flow
-    }
-
-    void CookieIntermediateFalse()
-    {
-        var cookieOptions = new Microsoft.AspNetCore.Http.CookieOptions();
-        bool v = false;
-        cookieOptions.HttpOnly = v;
-        Response.Cookies.Append("auth", "secret", cookieOptions); // GOOD: separate query for setting `false`
-    }
-
-    void CookieIntermediateFalseInitializer()
-    {
-        bool v = false;
-        var cookieOptions = new Microsoft.AspNetCore.Http.CookieOptions() { HttpOnly = v };
-        Response.Cookies.Append("auth", "secret", cookieOptions); // GOOD: separate query for setting `false`
     }
 }
