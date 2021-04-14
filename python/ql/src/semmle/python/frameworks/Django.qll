@@ -17,6 +17,283 @@ private import semmle.python.regex
  * See https://www.djangoproject.com/.
  */
 private module Django {
+  /** Provides models for the `django.views` module */
+  module Views {
+    /**
+     * Provides models for the `django.views.generic.View` class and subclasses.
+     *
+     * See
+     *  - https://docs.djangoproject.com/en/3.1/topics/class-based-views/
+     *  - https://docs.djangoproject.com/en/3.1/ref/class-based-views/
+     */
+    module View {
+      /**
+       * An `API::Node` representing the `django.views.generic.View` class or any subclass
+       * that has explicitly been modeled in the CodeQL libraries.
+       */
+      abstract class ModeledSubclass extends API::Node {
+        override string toString() { result = this.(API::Node).toString() }
+      }
+
+      /** A Django view subclass in the `django` package. */
+      private class DjangoViewSubclassesInDjango extends ModeledSubclass {
+        DjangoViewSubclassesInDjango() {
+          exists(string moduleName, string className |
+            // canonical definition
+            this =
+              API::moduleImport("django")
+                  .getMember("views")
+                  .getMember("generic")
+                  .getMember(moduleName)
+                  .getMember(className)
+            or
+            // aliases from `django.views.generic`
+            this =
+              API::moduleImport("django")
+                  .getMember("views")
+                  .getMember("generic")
+                  .getMember(className)
+          |
+            moduleName = "base" and
+            className in ["RedirectView", "TemplateView", "View"]
+            or
+            moduleName = "dates" and
+            className in [
+                "ArchiveIndexView", "DateDetailView", "DayArchiveView", "MonthArchiveView",
+                "TodayArchiveView", "WeekArchiveView", "YearArchiveView"
+              ]
+            or
+            moduleName = "detail" and
+            className = "DetailView"
+            or
+            moduleName = "edit" and
+            className in ["CreateView", "DeleteView", "FormView", "UpdateView"]
+            or
+            moduleName = "list" and
+            className = "ListView"
+          )
+          or
+          // `django.views.View` alias
+          this = API::moduleImport("django").getMember("views").getMember("View")
+        }
+      }
+
+      /** Gets a reference to the `django.views.generic.View` class or any subclass. */
+      API::Node subclassRef() { result = any(ModeledSubclass subclass).getASubclass*() }
+    }
+  }
+
+  /** Provides models for django forms (defined in the `django.forms` module) */
+  module Forms {
+    /**
+     * Provides models for the `django.forms.forms.BaseForm` class and subclasses. This
+     * is usually used by the `django.forms.forms.Form` class, which is also available
+     * under the more commonly used alias `django.forms.Form`.
+     *
+     * See https://docs.djangoproject.com/en/3.1/ref/forms/api/
+     */
+    module Form {
+      /**
+       * An `API::Node` representing the `django.forms.forms.BaseForm` class or any subclass
+       * that has explicitly been modeled in the CodeQL libraries.
+       */
+      abstract class ModeledSubclass extends API::Node {
+        override string toString() { result = this.(API::Node).toString() }
+      }
+
+      /** A Django form subclass in the `django` package. */
+      private class DjangoFormSubclassesInDjango extends ModeledSubclass {
+        DjangoFormSubclassesInDjango() {
+          // canonical definition
+          this =
+            API::moduleImport("django")
+                .getMember("forms")
+                .getMember("forms")
+                .getMember(["BaseForm", "Form"])
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("forms")
+                .getMember("models")
+                .getMember(["BaseModelForm", "ModelForm"])
+          or
+          // aliases from `django.forms`
+          this =
+            API::moduleImport("django")
+                .getMember("forms")
+                .getMember(["BaseForm", "Form", "BaseModelForm", "ModelForm"])
+          or
+          // other Form subclasses defined in Django
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("admin")
+                .getMember("forms")
+                .getMember(["AdminAuthenticationForm", "AdminPasswordChangeForm"])
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("admin")
+                .getMember("helpers")
+                .getMember("ActionForm")
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("admin")
+                .getMember("views")
+                .getMember("main")
+                .getMember("ChangeListSearchForm")
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("auth")
+                .getMember("forms")
+                .getMember([
+                    "PasswordResetForm", "UserChangeForm", "SetPasswordForm",
+                    "AdminPasswordChangeForm", "PasswordChangeForm", "AuthenticationForm",
+                    "UserCreationForm"
+                  ])
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("flatpages")
+                .getMember("forms")
+                .getMember("FlatpageForm")
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("forms")
+                .getMember("formsets")
+                .getMember("ManagementForm")
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("forms")
+                .getMember("models")
+                .getMember(["ModelForm", "BaseModelForm"])
+        }
+      }
+
+      /** Gets a reference to the `django.forms.forms.BaseForm` class or any subclass. */
+      API::Node subclassRef() { result = any(ModeledSubclass subclass).getASubclass*() }
+    }
+
+    /**
+     * Provides models for the `django.forms.fields.Field` class and subclasses. This is
+     * also available under the more commonly used alias `django.forms.Field`.
+     *
+     * See https://docs.djangoproject.com/en/3.1/ref/forms/fields/
+     */
+    module Field {
+      /**
+       * An `API::Node` representing the `django.forms.fields.Field` class or any subclass
+       * that has explicitly been modeled in the CodeQL libraries.
+       */
+      abstract class ModeledSubclass extends API::Node {
+        override string toString() { result = this.(API::Node).toString() }
+      }
+
+      /** A Django field subclass in the `django` package. */
+      private class DjangoFieldSubclassesInDjango extends ModeledSubclass {
+        DjangoFieldSubclassesInDjango() {
+          exists(string moduleName, string className |
+            // canonical definition
+            this =
+              API::moduleImport("django")
+                  .getMember("forms")
+                  .getMember(moduleName)
+                  .getMember(className)
+            or
+            // aliases from `django.forms`
+            this = API::moduleImport("django").getMember("forms").getMember(className)
+          |
+            moduleName = "fields" and
+            className in [
+                "Field",
+                // Known subclasses
+                "BooleanField", "IntegerField", "CharField", "SlugField", "DateTimeField",
+                "EmailField", "DateField", "TimeField", "DurationField", "DecimalField",
+                "FloatField", "GenericIPAddressField", "UUIDField", "JSONField", "FilePathField",
+                "NullBooleanField", "URLField", "TypedChoiceField", "FileField", "ImageField",
+                "RegexField", "ChoiceField", "MultipleChoiceField", "ComboField", "MultiValueField",
+                "SplitDateTimeField", "TypedMultipleChoiceField", "BaseTemporalField"
+              ]
+            or
+            // Known subclasses from `django.forms.models`
+            moduleName = "models" and
+            className in ["ModelChoiceField", "ModelMultipleChoiceField", "InlineForeignKeyField"]
+          )
+          or
+          // other Field subclasses defined in Django
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("auth")
+                .getMember("forms")
+                .getMember(["ReadOnlyPasswordHashField", "UsernameField"])
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("gis")
+                .getMember("forms")
+                .getMember("fields")
+                .getMember([
+                    "GeometryCollectionField", "GeometryField", "LineStringField",
+                    "MultiLineStringField", "MultiPointField", "MultiPolygonField", "PointField",
+                    "PolygonField"
+                  ])
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("postgres")
+                .getMember("forms")
+                .getMember("array")
+                .getMember(["SimpleArrayField", "SplitArrayField"])
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("postgres")
+                .getMember("forms")
+                .getMember("hstore")
+                .getMember("HStoreField")
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("contrib")
+                .getMember("postgres")
+                .getMember("forms")
+                .getMember("ranges")
+                .getMember([
+                    "BaseRangeField", "DateRangeField", "DateTimeRangeField", "DecimalRangeField",
+                    "IntegerRangeField"
+                  ])
+          or
+          this =
+            API::moduleImport("django")
+                .getMember("forms")
+                .getMember("models")
+                .getMember(["InlineForeignKeyField", "ModelChoiceField", "ModelMultipleChoiceField"])
+        }
+      }
+
+      /** Gets a reference to the `django.forms.fields.Field` class or any subclass. */
+      API::Node subclassRef() { result = any(ModeledSubclass subclass).getASubclass*() }
+    }
+  }
+}
+
+/**
+ * Provides models for the `django` PyPI package (that we are not quite ready to publicly expose yet).
+ * See https://www.djangoproject.com/.
+ */
+private module PrivateDjango {
   // ---------------------------------------------------------------------------
   // django
   // ---------------------------------------------------------------------------
@@ -1484,415 +1761,6 @@ private module Django {
     }
 
     // -------------------------------------------------------------------------
-    // django.views
-    // -------------------------------------------------------------------------
-    /** Gets a reference to the `django.views` module. */
-    DataFlow::Node views() { result = django_attr("views") }
-
-    /** Provides models for the `django.views` module */
-    module views {
-      /**
-       * Gets a reference to the attribute `attr_name` of the `django.views` module.
-       * WARNING: Only holds for a few predefined attributes.
-       */
-      private DataFlow::Node views_attr(DataFlow::TypeTracker t, string attr_name) {
-        // for 1.11.x, see: https://github.com/django/django/blob/stable/1.11.x/django/views/__init__.py
-        attr_name in ["generic", "View"] and
-        (
-          t.start() and
-          result = DataFlow::importNode("django.views" + "." + attr_name)
-          or
-          t.startInAttr(attr_name) and
-          result = views()
-        )
-        or
-        // Due to bad performance when using normal setup with `views_attr(t2, attr_name).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            views_attr_first_join(t2, attr_name, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate views_attr_first_join(
-        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(views_attr(t2, attr_name), res, summary)
-      }
-
-      /**
-       * Gets a reference to the attribute `attr_name` of the `django.views` module.
-       * WARNING: Only holds for a few predefined attributes.
-       */
-      private DataFlow::Node views_attr(string attr_name) {
-        result = views_attr(DataFlow::TypeTracker::end(), attr_name)
-      }
-
-      // -------------------------------------------------------------------------
-      // django.views.generic
-      // -------------------------------------------------------------------------
-      /** Gets a reference to the `django.views.generic` module. */
-      DataFlow::Node generic() { result = views_attr("generic") }
-
-      /** Provides models for the `django.views.generic` module */
-      module generic {
-        /**
-         * Gets a reference to the attribute `attr_name` of the `django.views.generic` module.
-         * WARNING: Only holds for a few predefined attributes.
-         */
-        private DataFlow::Node generic_attr(DataFlow::TypeTracker t, string attr_name) {
-          // for 3.1.x see: https://github.com/django/django/blob/stable/3.1.x/django/views/generic/__init__.py
-          // same for 1.11.x see: https://github.com/django/django/blob/stable/1.11.x/django/views/generic/__init__.py
-          attr_name in [
-              "View", "TemplateView", "RedirectView", "ArchiveIndexView", "YearArchiveView",
-              "MonthArchiveView", "WeekArchiveView", "DayArchiveView", "TodayArchiveView",
-              "DateDetailView", "DetailView", "FormView", "CreateView", "UpdateView", "DeleteView",
-              "ListView", "GenericViewError",
-              // modules
-              "base", "dates", "detail", "edit", "list"
-            ] and
-          (
-            t.start() and
-            result = DataFlow::importNode("django.views.generic" + "." + attr_name)
-            or
-            t.startInAttr(attr_name) and
-            result = generic()
-          )
-          or
-          // Due to bad performance when using normal setup with `generic_attr(t2, attr_name).track(t2, t)`
-          // we have inlined that code and forced a join
-          exists(DataFlow::TypeTracker t2 |
-            exists(DataFlow::StepSummary summary |
-              generic_attr_first_join(t2, attr_name, result, summary) and
-              t = t2.append(summary)
-            )
-          )
-        }
-
-        pragma[nomagic]
-        private predicate generic_attr_first_join(
-          DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-          DataFlow::StepSummary summary
-        ) {
-          DataFlow::StepSummary::step(generic_attr(t2, attr_name), res, summary)
-        }
-
-        /**
-         * Gets a reference to the attribute `attr_name` of the `django.views.generic` module.
-         * WARNING: Only holds for a few predefined attributes.
-         */
-        private DataFlow::Node generic_attr(string attr_name) {
-          result = generic_attr(DataFlow::TypeTracker::end(), attr_name)
-        }
-
-        // -------------------------------------------------------------------------
-        // django.views.generic.base
-        // -------------------------------------------------------------------------
-        /** Gets a reference to the `django.views.generic.base` module. */
-        DataFlow::Node base() { result = generic_attr("base") }
-
-        /** Provides models for the `django.views.generic.base` module */
-        module base {
-          /**
-           * Gets a reference to the attribute `attr_name` of the `django.views.generic.base` module.
-           * WARNING: Only holds for a few predefined attributes.
-           */
-          private DataFlow::Node base_attr(DataFlow::TypeTracker t, string attr_name) {
-            attr_name in ["RedirectView", "TemplateView", "View"] and
-            (
-              t.start() and
-              result = DataFlow::importNode("django.views.generic.base" + "." + attr_name)
-              or
-              t.startInAttr(attr_name) and
-              result = base()
-            )
-            or
-            // Due to bad performance when using normal setup with `base_attr(t2, attr_name).track(t2, t)`
-            // we have inlined that code and forced a join
-            exists(DataFlow::TypeTracker t2 |
-              exists(DataFlow::StepSummary summary |
-                base_attr_first_join(t2, attr_name, result, summary) and
-                t = t2.append(summary)
-              )
-            )
-          }
-
-          pragma[nomagic]
-          private predicate base_attr_first_join(
-            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-            DataFlow::StepSummary summary
-          ) {
-            DataFlow::StepSummary::step(base_attr(t2, attr_name), res, summary)
-          }
-
-          /**
-           * Gets a reference to the attribute `attr_name` of the `django.views.generic.base` module.
-           * WARNING: Only holds for a few predefined attributes.
-           */
-          DataFlow::Node base_attr(string attr_name) {
-            result = base_attr(DataFlow::TypeTracker::end(), attr_name)
-          }
-        }
-
-        // -------------------------------------------------------------------------
-        // django.views.generic.dates
-        // -------------------------------------------------------------------------
-        /** Gets a reference to the `django.views.generic.dates` module. */
-        DataFlow::Node dates() { result = generic_attr("dates") }
-
-        /** Provides models for the `django.views.generic.dates` module */
-        module dates {
-          /**
-           * Gets a reference to the attribute `attr_name` of the `django.views.generic.dates` module.
-           * WARNING: Only holds for a few predefined attributes.
-           */
-          private DataFlow::Node dates_attr(DataFlow::TypeTracker t, string attr_name) {
-            attr_name in [
-                "ArchiveIndexView", "DateDetailView", "DayArchiveView", "MonthArchiveView",
-                "TodayArchiveView", "WeekArchiveView", "YearArchiveView"
-              ] and
-            (
-              t.start() and
-              result = DataFlow::importNode("django.views.generic.dates" + "." + attr_name)
-              or
-              t.startInAttr(attr_name) and
-              result = dates()
-            )
-            or
-            // Due to bad performance when using normal setup with `dates_attr(t2, attr_name).track(t2, t)`
-            // we have inlined that code and forced a join
-            exists(DataFlow::TypeTracker t2 |
-              exists(DataFlow::StepSummary summary |
-                dates_attr_first_join(t2, attr_name, result, summary) and
-                t = t2.append(summary)
-              )
-            )
-          }
-
-          pragma[nomagic]
-          private predicate dates_attr_first_join(
-            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-            DataFlow::StepSummary summary
-          ) {
-            DataFlow::StepSummary::step(dates_attr(t2, attr_name), res, summary)
-          }
-
-          /**
-           * Gets a reference to the attribute `attr_name` of the `django.views.generic.dates` module.
-           * WARNING: Only holds for a few predefined attributes.
-           */
-          DataFlow::Node dates_attr(string attr_name) {
-            result = dates_attr(DataFlow::TypeTracker::end(), attr_name)
-          }
-        }
-
-        // -------------------------------------------------------------------------
-        // django.views.generic.detail
-        // -------------------------------------------------------------------------
-        /** Gets a reference to the `django.views.generic.detail` module. */
-        DataFlow::Node detail() { result = generic_attr("detail") }
-
-        /** Provides models for the `django.views.generic.detail` module */
-        module detail {
-          /**
-           * Gets a reference to the attribute `attr_name` of the `django.views.generic.detail` module.
-           * WARNING: Only holds for a few predefined attributes.
-           */
-          private DataFlow::Node detail_attr(DataFlow::TypeTracker t, string attr_name) {
-            attr_name in ["DetailView"] and
-            (
-              t.start() and
-              result = DataFlow::importNode("django.views.generic.detail" + "." + attr_name)
-              or
-              t.startInAttr(attr_name) and
-              result = detail()
-            )
-            or
-            // Due to bad performance when using normal setup with `detail_attr(t2, attr_name).track(t2, t)`
-            // we have inlined that code and forced a join
-            exists(DataFlow::TypeTracker t2 |
-              exists(DataFlow::StepSummary summary |
-                detail_attr_first_join(t2, attr_name, result, summary) and
-                t = t2.append(summary)
-              )
-            )
-          }
-
-          pragma[nomagic]
-          private predicate detail_attr_first_join(
-            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-            DataFlow::StepSummary summary
-          ) {
-            DataFlow::StepSummary::step(detail_attr(t2, attr_name), res, summary)
-          }
-
-          /**
-           * Gets a reference to the attribute `attr_name` of the `django.views.generic.detail` module.
-           * WARNING: Only holds for a few predefined attributes.
-           */
-          DataFlow::Node detail_attr(string attr_name) {
-            result = detail_attr(DataFlow::TypeTracker::end(), attr_name)
-          }
-        }
-
-        // -------------------------------------------------------------------------
-        // django.views.generic.edit
-        // -------------------------------------------------------------------------
-        /** Gets a reference to the `django.views.generic.edit` module. */
-        DataFlow::Node edit() { result = generic_attr("edit") }
-
-        /** Provides models for the `django.views.generic.edit` module */
-        module edit {
-          /**
-           * Gets a reference to the attribute `attr_name` of the `django.views.generic.edit` module.
-           * WARNING: Only holds for a few predefined attributes.
-           */
-          private DataFlow::Node edit_attr(DataFlow::TypeTracker t, string attr_name) {
-            attr_name in ["CreateView", "DeleteView", "FormView", "UpdateView"] and
-            (
-              t.start() and
-              result = DataFlow::importNode("django.views.generic.edit" + "." + attr_name)
-              or
-              t.startInAttr(attr_name) and
-              result = edit()
-            )
-            or
-            // Due to bad performance when using normal setup with `edit_attr(t2, attr_name).track(t2, t)`
-            // we have inlined that code and forced a join
-            exists(DataFlow::TypeTracker t2 |
-              exists(DataFlow::StepSummary summary |
-                edit_attr_first_join(t2, attr_name, result, summary) and
-                t = t2.append(summary)
-              )
-            )
-          }
-
-          pragma[nomagic]
-          private predicate edit_attr_first_join(
-            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-            DataFlow::StepSummary summary
-          ) {
-            DataFlow::StepSummary::step(edit_attr(t2, attr_name), res, summary)
-          }
-
-          /**
-           * Gets a reference to the attribute `attr_name` of the `django.views.generic.edit` module.
-           * WARNING: Only holds for a few predefined attributes.
-           */
-          DataFlow::Node edit_attr(string attr_name) {
-            result = edit_attr(DataFlow::TypeTracker::end(), attr_name)
-          }
-        }
-
-        // -------------------------------------------------------------------------
-        // django.views.generic.list
-        // -------------------------------------------------------------------------
-        /** Gets a reference to the `django.views.generic.list` module. */
-        DataFlow::Node list() { result = generic_attr("list") }
-
-        /** Provides models for the `django.views.generic.list` module */
-        module list {
-          /**
-           * Gets a reference to the attribute `attr_name` of the `django.views.generic.list` module.
-           * WARNING: Only holds for a few predefined attributes.
-           */
-          private DataFlow::Node list_attr(DataFlow::TypeTracker t, string attr_name) {
-            attr_name in ["ListView"] and
-            (
-              t.start() and
-              result = DataFlow::importNode("django.views.generic.list" + "." + attr_name)
-              or
-              t.startInAttr(attr_name) and
-              result = list()
-            )
-            or
-            // Due to bad performance when using normal setup with `list_attr(t2, attr_name).track(t2, t)`
-            // we have inlined that code and forced a join
-            exists(DataFlow::TypeTracker t2 |
-              exists(DataFlow::StepSummary summary |
-                list_attr_first_join(t2, attr_name, result, summary) and
-                t = t2.append(summary)
-              )
-            )
-          }
-
-          pragma[nomagic]
-          private predicate list_attr_first_join(
-            DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-            DataFlow::StepSummary summary
-          ) {
-            DataFlow::StepSummary::step(list_attr(t2, attr_name), res, summary)
-          }
-
-          /**
-           * Gets a reference to the attribute `attr_name` of the `django.views.generic.list` module.
-           * WARNING: Only holds for a few predefined attributes.
-           */
-          DataFlow::Node list_attr(string attr_name) {
-            result = list_attr(DataFlow::TypeTracker::end(), attr_name)
-          }
-        }
-
-        /**
-         * Provides models for the `django.views.generic.View` class and subclasses.
-         *
-         * See
-         *  - https://docs.djangoproject.com/en/3.1/topics/class-based-views/
-         *  - https://docs.djangoproject.com/en/3.1/ref/class-based-views/
-         */
-        module View {
-          /** Gets a reference to the `django.views.generic.View` class or any subclass. */
-          private DataFlow::Node subclassRef(DataFlow::TypeTracker t) {
-            t.start() and
-            result =
-              generic_attr([
-                  "View",
-                  // Known Views
-                  "TemplateView", "RedirectView", "ArchiveIndexView", "YearArchiveView",
-                  "MonthArchiveView", "WeekArchiveView", "DayArchiveView", "TodayArchiveView",
-                  "DateDetailView", "DetailView", "FormView", "CreateView", "UpdateView",
-                  "DeleteView", "ListView"
-                ])
-            or
-            // aliases
-            t.start() and
-            (
-              // django.views.View
-              result = views_attr("View")
-              or
-              // django.views.generic.base.*
-              result = base::base_attr(_)
-              or
-              // django.views.generic.dates.*
-              result = dates::dates_attr(_)
-              or
-              // django.views.generic.detail.*
-              result = detail::detail_attr(_)
-              or
-              // django.views.generic.edit.*
-              result = edit::edit_attr(_)
-              or
-              // django.views.generic.list.*
-              result = list::list_attr(_)
-            )
-            or
-            // subclasses in project code
-            result.asExpr().(ClassExpr).getABase() = subclassRef(t.continue()).asExpr()
-            or
-            exists(DataFlow::TypeTracker t2 | result = subclassRef(t2).track(t2, t))
-          }
-
-          /** Gets a reference to the `django.views.generic.View` class or any subclass. */
-          DataFlow::Node subclassRef() { result = subclassRef(DataFlow::TypeTracker::end()) }
-        }
-      }
-    }
-
-    // -------------------------------------------------------------------------
     // django.shortcuts
     // -------------------------------------------------------------------------
     /** Gets a reference to the `django.shortcuts` module. */
@@ -1946,202 +1814,6 @@ private module Django {
        * See https://docs.djangoproject.com/en/3.1/topics/http/shortcuts/#redirect
        */
       DataFlow::Node redirect() { result = shortcuts_attr("redirect") }
-    }
-  }
-
-  /** Provides models for django forms (defined in the `django.forms` module) */
-  module Forms {
-    /**
-     * Provides models for the `django.forms.forms.BaseForm` class and subclasses. This
-     * is usually used by the `django.forms.forms.Form` class, which is also available
-     * under the more commonly used alias `django.forms.Form`.
-     *
-     * See https://docs.djangoproject.com/en/3.1/ref/forms/api/
-     */
-    module Form {
-      /** Gets a reference to the `django.forms.forms.BaseForm` class or any subclass. */
-      API::Node subclassRef() {
-        // canonical definition
-        result =
-          API::moduleImport("django")
-              .getMember("forms")
-              .getMember("forms")
-              .getMember(["BaseForm", "Form"])
-              .getASubclass*()
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("forms")
-              .getMember("models")
-              .getMember(["BaseModelForm", "ModelForm"])
-              .getASubclass*()
-        or
-        // aliases from `django.forms`
-        result =
-          API::moduleImport("django")
-              .getMember("forms")
-              .getMember(["BaseForm", "Form", "BaseModelForm", "ModelForm"])
-              .getASubclass*()
-        or
-        // other Form subclasses defined in Django
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("admin")
-              .getMember("forms")
-              .getMember(["AdminAuthenticationForm", "AdminPasswordChangeForm"])
-              .getASubclass*()
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("admin")
-              .getMember("helpers")
-              .getMember("ActionForm")
-              .getASubclass*()
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("admin")
-              .getMember("views")
-              .getMember("main")
-              .getMember("ChangeListSearchForm")
-              .getASubclass*()
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("auth")
-              .getMember("forms")
-              .getMember([
-                  "PasswordResetForm", "UserChangeForm", "SetPasswordForm",
-                  "AdminPasswordChangeForm", "PasswordChangeForm", "AuthenticationForm",
-                  "UserCreationForm"
-                ])
-              .getASubclass*()
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("flatpages")
-              .getMember("forms")
-              .getMember("FlatpageForm")
-              .getASubclass*()
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("forms")
-              .getMember("formsets")
-              .getMember("ManagementForm")
-              .getASubclass*()
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("forms")
-              .getMember("models")
-              .getMember(["ModelForm", "BaseModelForm"])
-              .getASubclass*()
-      }
-    }
-
-    /**
-     * Provides models for the `django.forms.fields.Field` class and subclasses. This is
-     * also available under the more commonly used alias `django.forms.Field`.
-     *
-     * See https://docs.djangoproject.com/en/3.1/ref/forms/fields/
-     */
-    module Field {
-      /** Gets a reference to the `django.forms.fields.Field` class or any subclass. */
-      API::Node subclassRef() {
-        exists(string modName, string clsName |
-          // canonical definition
-          result =
-            API::moduleImport("django")
-                .getMember("forms")
-                .getMember(modName)
-                .getMember(clsName)
-                .getASubclass*()
-          or
-          // alias from `django.forms`
-          result = API::moduleImport("django").getMember("forms").getMember(clsName).getASubclass*()
-        |
-          modName = "fields" and
-          clsName in [
-              "Field",
-              // Known subclasses
-              "BooleanField", "IntegerField", "CharField", "SlugField", "DateTimeField",
-              "EmailField", "DateField", "TimeField", "DurationField", "DecimalField", "FloatField",
-              "GenericIPAddressField", "UUIDField", "JSONField", "FilePathField",
-              "NullBooleanField", "URLField", "TypedChoiceField", "FileField", "ImageField",
-              "RegexField", "ChoiceField", "MultipleChoiceField", "ComboField", "MultiValueField",
-              "SplitDateTimeField", "TypedMultipleChoiceField", "BaseTemporalField"
-            ]
-          or
-          // Known subclasses from `django.forms.models`
-          modName = "models" and
-          clsName in ["ModelChoiceField", "ModelMultipleChoiceField", "InlineForeignKeyField"]
-        )
-        or
-        // other Field subclasses defined in Django
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("auth")
-              .getMember("forms")
-              .getMember(["ReadOnlyPasswordHashField", "UsernameField"])
-              .getASubclass*()
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("gis")
-              .getMember("forms")
-              .getMember("fields")
-              .getMember([
-                  "GeometryCollectionField", "GeometryField", "LineStringField",
-                  "MultiLineStringField", "MultiPointField", "MultiPolygonField", "PointField",
-                  "PolygonField"
-                ])
-              .getASubclass*()
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("postgres")
-              .getMember("forms")
-              .getMember("array")
-              .getMember(["SimpleArrayField", "SplitArrayField"])
-              .getASubclass*()
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("postgres")
-              .getMember("forms")
-              .getMember("hstore")
-              .getMember("HStoreField")
-              .getASubclass*()
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("contrib")
-              .getMember("postgres")
-              .getMember("forms")
-              .getMember("ranges")
-              .getMember([
-                  "BaseRangeField", "DateRangeField", "DateTimeRangeField", "DecimalRangeField",
-                  "IntegerRangeField"
-                ])
-              .getASubclass*()
-        or
-        result =
-          API::moduleImport("django")
-              .getMember("forms")
-              .getMember("models")
-              .getMember(["InlineForeignKeyField", "ModelChoiceField", "ModelMultipleChoiceField"])
-              .getASubclass*()
-      }
     }
   }
 
@@ -2361,7 +2033,7 @@ private module Django {
    */
   class DjangoViewClassFromSuperClass extends DjangoViewClass {
     DjangoViewClassFromSuperClass() {
-      this.getABase() = django::views::generic::View::subclassRef().asExpr()
+      this.getABase() = Django::Views::View::subclassRef().getAUse().asExpr()
     }
   }
 
