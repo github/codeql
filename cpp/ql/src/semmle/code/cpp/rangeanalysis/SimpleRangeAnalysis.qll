@@ -1630,6 +1630,9 @@ private module SimpleRangeAnalysisCached {
     // bound of `x`, so the standard logic (above) does not work for
     // detecting whether it might overflow.
     getLowerBoundsImpl(expr.(PostfixDecrExpr)) = exprMinVal(expr)
+    or
+    // Expressions we cannot analyze could potentially overflow
+    not analyzableExpr(expr)
   }
 
   /**
@@ -1657,6 +1660,9 @@ private module SimpleRangeAnalysisCached {
     // bound of `x`, so the standard logic (above) does not work for
     // detecting whether it might overflow.
     getUpperBoundsImpl(expr.(PostfixIncrExpr)) = exprMaxVal(expr)
+    or
+    // Expressions we cannot analyze could potentially overflow
+    not analyzableExpr(expr)
   }
 
   /**
