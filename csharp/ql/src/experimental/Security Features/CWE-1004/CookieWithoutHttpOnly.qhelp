@@ -42,10 +42,10 @@ In the example below <code>System.Web.HttpCookie.HttpOnly</code> is set to <code
 
 <references>
 
-<li><a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.cookieoptions.httponly">CookieOptions.HttpOnly Property</a></li>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a> Header</li>
-<li><a href="https://msdn.microsoft.com/en-us/library/system.web.httpcookie.httponly(v=vs.110).aspx">HttpCookie.HttpOnly Property</a></li>
-<li><a href="https://msdn.microsoft.com/library/ms228262%28v=vs.100%29.aspx">httpCookies Element</a></li>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.cookieoptions.httponly">CookieOptions.HttpOnly Property,</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a> Header,</li>
+<li><a href="https://msdn.microsoft.com/en-us/library/system.web.httpcookie.httponly(v=vs.110).aspx">HttpCookie.HttpOnly Property,</a></li>
+<li><a href="https://msdn.microsoft.com/library/ms228262%28v=vs.100%29.aspx">httpCookies Element,</a></li>
 
 </references>
 </qhelp>
