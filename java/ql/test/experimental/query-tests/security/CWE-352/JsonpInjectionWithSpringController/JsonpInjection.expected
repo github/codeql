@@ -15,9 +15,7 @@ edges
 | JsonpController.java:104:21:104:54 | ... + ... : String | JsonpController.java:105:16:105:24 | resultStr |
 | JsonpController.java:114:32:114:68 | getParameter(...) : String | JsonpController.java:117:16:117:24 | resultStr |
 | JsonpController.java:116:21:116:55 | ... + ... : String | JsonpController.java:117:16:117:24 | resultStr |
-| JsonpController.java:127:36:127:72 | getParameter(...) : String | JsonpController.java:130:20:130:28 | resultStr |
 | JsonpController.java:129:25:129:59 | ... + ... : String | JsonpController.java:130:20:130:28 | resultStr |
-| JsonpController.java:145:32:145:68 | getParameter(...) : String | JsonpController.java:148:16:148:24 | resultStr |
 | JsonpController.java:147:21:147:55 | ... + ... : String | JsonpController.java:148:16:148:24 | resultStr |
 | JsonpController.java:158:21:158:54 | ... + ... : String | JsonpController.java:159:16:159:24 | resultStr |
 | JsonpController.java:173:21:173:54 | ... + ... : String | JsonpController.java:174:16:174:24 | resultStr |
@@ -54,13 +52,9 @@ nodes
 | JsonpController.java:116:21:116:55 | ... + ... : String | semmle.label | ... + ... : String |
 | JsonpController.java:117:16:117:24 | resultStr | semmle.label | resultStr |
 | JsonpController.java:117:16:117:24 | resultStr | semmle.label | resultStr |
-| JsonpController.java:127:36:127:72 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | JsonpController.java:129:25:129:59 | ... + ... : String | semmle.label | ... + ... : String |
 | JsonpController.java:130:20:130:28 | resultStr | semmle.label | resultStr |
-| JsonpController.java:130:20:130:28 | resultStr | semmle.label | resultStr |
-| JsonpController.java:145:32:145:68 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | JsonpController.java:147:21:147:55 | ... + ... : String | semmle.label | ... + ... : String |
-| JsonpController.java:148:16:148:24 | resultStr | semmle.label | resultStr |
 | JsonpController.java:148:16:148:24 | resultStr | semmle.label | resultStr |
 | JsonpController.java:158:21:158:54 | ... + ... : String | semmle.label | ... + ... : String |
 | JsonpController.java:159:16:159:24 | resultStr | semmle.label | resultStr |

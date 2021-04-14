@@ -42,17 +42,21 @@ class VerificationMethodFlowConfig extends TaintTracking2::Configuration {
   }
 }
 
-/** Get Callable by recursive method. */
-Callable getACallingCallableOrSelf(Callable call) {
-  result = call
-  or
-  result = getACallingCallableOrSelf(call.getAReference().getEnclosingCallable())
-}
-
 /**
  * A method that is called to handle an HTTP GET request.
  */
-abstract class RequestGetMethod extends Method { }
+abstract class RequestGetMethod extends Method {
+  RequestGetMethod() {
+    not exists(DataFlow::Node source, DataFlow::Node sink, VerificationMethodFlowConfig vmfc |
+      vmfc.hasFlow(source, sink) and
+      any(this).polyCalls*(source.getEnclosingCallable())
+    ) and
+    not exists(MethodAccess ma |
+      ma.getMethod() instanceof ServletRequestGetBodyMethod and
+      any(this).polyCalls*(ma.getEnclosingCallable())
+    )
+  }
+}
 
 /** Override method of `doGet` of `Servlet` subclass. */
 private class ServletGetMethod extends RequestGetMethod {
@@ -80,10 +84,6 @@ class SpringControllerRequestMappingGetMethod extends SpringControllerGetMethod 
     (
       this.getAnAnnotation().getValue("method").(VarAccess).getVariable().getName() = "GET" or
       this.getAnAnnotation().getValue("method").(ArrayInit).getSize() = 0 //Java code example: @RequestMapping(value = "test")
-    ) and
-    not exists(MethodAccess ma |
-      ma.getMethod() instanceof ServletRequestGetBodyMethod and
-      any(this).polyCalls*(ma.getEnclosingCallable())
     ) and
     not this.getAParamType().getName() = "MultipartFile"
   }
