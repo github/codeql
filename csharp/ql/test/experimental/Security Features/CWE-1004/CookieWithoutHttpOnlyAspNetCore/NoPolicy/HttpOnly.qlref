@@ -1,1 +1,1 @@
-experimental/Security Features/CWE-1004/CookieWithoutHttpOnlyAspNetCore.ql
+experimental/Security Features/CWE-1004/CookieWithoutHttpOnly.ql
