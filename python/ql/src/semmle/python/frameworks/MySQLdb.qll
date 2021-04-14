@@ -9,6 +9,7 @@ private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
+private import semmle.python.ApiGraphs
 private import PEP249
 
 /**
@@ -21,19 +22,8 @@ private module MySQLdb {
   // ---------------------------------------------------------------------------
   // MySQLdb
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `MySQLdb` module. */
-  private DataFlow::Node moduleMySQLdb(DataFlow::TypeTracker t) {
-    t.start() and
-    result = DataFlow::importNode("MySQLdb")
-    or
-    exists(DataFlow::TypeTracker t2 | result = moduleMySQLdb(t2).track(t2, t))
-  }
-
-  /** Gets a reference to the `MySQLdb` module. */
-  DataFlow::Node moduleMySQLdb() { result = moduleMySQLdb(DataFlow::TypeTracker::end()) }
-
   /** MySQLdb implements PEP 249, providing ways to execute SQL statements against a database. */
-  class MySQLdb extends PEP249Module {
-    MySQLdb() { this = moduleMySQLdb() }
+  class MySQLdb extends PEP249ModuleApiNode {
+    MySQLdb() { this = API::moduleImport("MySQLdb") }
   }
 }
