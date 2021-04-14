@@ -50,7 +50,6 @@ where
     // IResponseCookies.Append(String, String) was called, `HttpOnly` is set to `false` by default
     exists(AuthCookieNameConfiguration dataflow, DataFlow::Node source, DataFlow::Node sink |
       mc = c and
-      iResponse.getAppendMethod() = mc.getTarget() and
       mc.getNumberOfArguments() < 3 and
       // It is a sensitive cookie name
       dataflow.hasFlow(source, sink) and
