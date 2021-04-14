@@ -593,7 +593,11 @@ private string stubMember(Member m) {
         p.getName() + " { " + stubGetter(p) + stubSetter(p) + "}\n"
   )
   or
-  exists(Constructor c | m = c and not c.getDeclaringType() instanceof Enum |
+  exists(Constructor c |
+    m = c and
+    not c.getDeclaringType() instanceof Enum and
+    (not c.getDeclaringType() instanceof Struct or c.getNumberOfParameters() > 0)
+  |
     result =
       "    " + stubModifiers(m) + c.getName() + "(" + stubParameters(c) + ") => throw null;\n"
   )
