@@ -542,7 +542,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
    *
    * For nested types the name of the nested type is prefixed with a `$` and appended
    * to the name of the enclosing type, which might be a nested type as well. For example:
-   * `java.util.Map$Entry`.
+   * `java.lang.Thread$State`.
    */
   string getQualifiedName() {
     exists(string pkgName | pkgName = getPackage().getName() |
@@ -814,7 +814,7 @@ class MemberType extends NestedType, Member {
    *
    * The qualified name consists of the package name, a `.`, the name of the declaring
    * type (which might be a nested or member type as well), followed by a `$` and the
-   * name of this member type. For example: `java.util.Map$Entry`.
+   * name of this member type. For example: `java.lang.Thread$State`.
    */
   override string getQualifiedName() { result = NestedType.super.getQualifiedName() }
 }
