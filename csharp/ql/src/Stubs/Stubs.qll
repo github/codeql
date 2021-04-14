@@ -57,6 +57,8 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
     this instanceof Class and result = "class"
     or
     this instanceof Enum and result = "enum"
+    or
+    this instanceof DelegateType and result = "delegate"
   }
 
   private string stubAbstractModifier() {
@@ -87,12 +89,20 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
   final string getStub() {
     if this.isDuplicate()
     then result = ""
-    else
+    else (
+      not this instanceof DelegateType and
       result =
         this.stubComment() + this.stubAttributes() + this.stubAbstractModifier() +
           this.stubStaticModifier() + this.stubAccessibilityModifier() + this.stubKeyword() + " " +
           this.getUndecoratedName() + stubGenericArguments(this) + stubBaseTypesString() +
           stubTypeParametersConstraints(this) + "\n{\n" + stubMembers() + "}\n\n"
+      or
+      result =
+        this.stubComment() + this.stubAttributes() + this.stubAccessibilityModifier() +
+          this.stubKeyword() + " " + stubClassName(this.(DelegateType).getReturnType()) + " " +
+          this.getUndecoratedName() + stubGenericArguments(this) + "(" + stubParameters(this) +
+          ");\n\n"
+    )
   }
 
   private ValueOrRefType getAnInterestingBaseType() {
