@@ -199,6 +199,10 @@ private class SpringRestTemplateUrlMethods extends Method {
 /** A sanitizer for request forgery vulnerabilities. */
 abstract class RequestForgerySanitizer extends DataFlow::Node { }
 
+private class PrimitiveSanitizer extends RequestForgerySanitizer {
+  PrimitiveSanitizer() { this.getType() instanceof PrimitiveType }
+}
+
 private class HostnameSanitizingPrefix extends CompileTimeConstantExpr {
   int offset;
 
