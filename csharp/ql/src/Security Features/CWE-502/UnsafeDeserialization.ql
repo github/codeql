@@ -25,8 +25,7 @@ where
       safeTypeUsage.getNode().asExpr().getParent() = deserializeCall
     )
     or
-    sink instanceof ConstructorOrStaticMethodSink and
-    deserializeCall.getAnArgument() = sink.asExpr()
+    sink instanceof ConstructorOrStaticMethodSink
   )
 select deserializeCall,
   "Unsafe deserializer is used. Make sure the value being deserialized comes from a trusted source."
