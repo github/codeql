@@ -59,8 +59,6 @@ private predicate pointerToLvalueStep(Expr pointerIn, Expr lvalueOut) {
   pointerIn = lvalueOut.(ArrayExpr).getArrayBase().getFullyConverted()
   or
   pointerIn = lvalueOut.(PointerDereferenceExpr).getOperand().getFullyConverted()
-  or
-  pointerIn = lvalueOut.(OverloadedPointerDereferenceExpr).getQualifier().getFullyConverted()
 }
 
 private predicate lvalueToPointerStep(Expr lvalueIn, Expr pointerOut) {

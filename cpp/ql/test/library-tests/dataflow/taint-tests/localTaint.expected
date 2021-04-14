@@ -3476,26 +3476,20 @@
 | standalone_iterators.cpp:85:35:85:36 | c1 | standalone_iterators.cpp:85:38:85:42 | call to begin | TAINT |
 | standalone_iterators.cpp:85:35:85:36 | ref arg c1 | standalone_iterators.cpp:87:10:87:11 | c1 |  |
 | standalone_iterators.cpp:85:38:85:42 | call to begin | standalone_iterators.cpp:86:6:86:7 | i1 |  |
-| standalone_iterators.cpp:86:5:86:5 | ref arg call to operator* | standalone_iterators.cpp:86:8:86:8 | call to operator-- [inner post update] |  |
 | standalone_iterators.cpp:86:5:86:5 | ref arg call to operator* | standalone_iterators.cpp:86:8:86:8 | ref arg call to operator-- | TAINT |
 | standalone_iterators.cpp:86:5:86:5 | ref arg call to operator* | standalone_iterators.cpp:87:10:87:11 | c1 |  |
 | standalone_iterators.cpp:86:6:86:7 | i1 | standalone_iterators.cpp:86:8:86:8 | call to operator-- |  |
 | standalone_iterators.cpp:86:8:86:8 | call to operator-- | standalone_iterators.cpp:86:5:86:5 | call to operator* | TAINT |
-| standalone_iterators.cpp:86:8:86:8 | call to operator-- [inner post update] | standalone_iterators.cpp:86:6:86:7 | ref arg i1 |  |
 | standalone_iterators.cpp:86:8:86:8 | ref arg call to operator-- | standalone_iterators.cpp:86:6:86:7 | ref arg i1 |  |
-| standalone_iterators.cpp:86:8:86:8 | ref arg call to operator-- | standalone_iterators.cpp:86:8:86:8 | call to operator-- [inner post update] |  |
 | standalone_iterators.cpp:86:13:86:18 | call to source | standalone_iterators.cpp:86:5:86:5 | ref arg call to operator* | TAINT |
 | standalone_iterators.cpp:89:35:89:36 | c2 | standalone_iterators.cpp:89:38:89:42 | call to begin | TAINT |
 | standalone_iterators.cpp:89:35:89:36 | ref arg c2 | standalone_iterators.cpp:91:10:91:11 | c2 |  |
 | standalone_iterators.cpp:89:38:89:42 | call to begin | standalone_iterators.cpp:90:6:90:7 | i2 |  |
-| standalone_iterators.cpp:90:5:90:5 | ref arg call to operator* | standalone_iterators.cpp:90:8:90:8 | call to operator-- [inner post update] |  |
 | standalone_iterators.cpp:90:5:90:5 | ref arg call to operator* | standalone_iterators.cpp:90:8:90:8 | ref arg call to operator-- | TAINT |
 | standalone_iterators.cpp:90:5:90:5 | ref arg call to operator* | standalone_iterators.cpp:91:10:91:11 | c2 |  |
 | standalone_iterators.cpp:90:6:90:7 | i2 | standalone_iterators.cpp:90:8:90:8 | call to operator-- |  |
 | standalone_iterators.cpp:90:8:90:8 | call to operator-- | standalone_iterators.cpp:90:5:90:5 | call to operator* | TAINT |
-| standalone_iterators.cpp:90:8:90:8 | call to operator-- [inner post update] | standalone_iterators.cpp:90:6:90:7 | ref arg i2 |  |
 | standalone_iterators.cpp:90:8:90:8 | ref arg call to operator-- | standalone_iterators.cpp:90:6:90:7 | ref arg i2 |  |
-| standalone_iterators.cpp:90:8:90:8 | ref arg call to operator-- | standalone_iterators.cpp:90:8:90:8 | call to operator-- [inner post update] |  |
 | standalone_iterators.cpp:90:13:90:13 | 0 | standalone_iterators.cpp:90:5:90:5 | ref arg call to operator* | TAINT |
 | standalone_iterators.cpp:98:15:98:16 | call to container | standalone_iterators.cpp:101:6:101:7 | c1 |  |
 | standalone_iterators.cpp:98:15:98:16 | call to container | standalone_iterators.cpp:102:6:102:7 | c1 |  |
@@ -3513,13 +3507,10 @@
 | standalone_iterators.cpp:102:6:102:7 | ref arg c1 | standalone_iterators.cpp:109:7:109:8 | c1 |  |
 | standalone_iterators.cpp:102:9:102:13 | call to begin | standalone_iterators.cpp:102:2:102:15 | ... = ... |  |
 | standalone_iterators.cpp:102:9:102:13 | call to begin | standalone_iterators.cpp:107:7:107:7 | b |  |
-| standalone_iterators.cpp:103:2:103:2 | ref arg call to operator* | standalone_iterators.cpp:103:3:103:3 | a [inner post update] |  |
 | standalone_iterators.cpp:103:2:103:2 | ref arg call to operator* | standalone_iterators.cpp:103:3:103:3 | ref arg a | TAINT |
-| standalone_iterators.cpp:103:2:103:2 | ref arg call to operator* | standalone_iterators.cpp:104:7:104:7 | a |  |
 | standalone_iterators.cpp:103:2:103:2 | ref arg call to operator* | standalone_iterators.cpp:106:6:106:7 | c1 |  |
 | standalone_iterators.cpp:103:2:103:2 | ref arg call to operator* | standalone_iterators.cpp:109:7:109:8 | c1 |  |
 | standalone_iterators.cpp:103:3:103:3 | a | standalone_iterators.cpp:103:2:103:2 | call to operator* | TAINT |
-| standalone_iterators.cpp:103:3:103:3 | ref arg a | standalone_iterators.cpp:103:3:103:3 | a [inner post update] |  |
 | standalone_iterators.cpp:103:3:103:3 | ref arg a | standalone_iterators.cpp:104:7:104:7 | a |  |
 | standalone_iterators.cpp:103:7:103:12 | call to source | standalone_iterators.cpp:103:2:103:2 | ref arg call to operator* | TAINT |
 | standalone_iterators.cpp:104:7:104:7 | a [post update] | standalone_iterators.cpp:106:6:106:7 | c1 |  |
