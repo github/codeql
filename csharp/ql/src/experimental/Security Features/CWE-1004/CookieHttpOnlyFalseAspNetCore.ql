@@ -29,11 +29,7 @@ where
     |
       config.hasFlow(source, sink)
     ) and
-    // It is a sensitive cookie name
-    exists(AuthCookieNameConfiguration dataflow, DataFlow::Node source, DataFlow::Node sink |
-      dataflow.hasFlow(source, sink) and
-      sink.asExpr() = mc.getArgument(0)
-    ) and
+    isCookieWithSensitiveName(mc.getArgument(0)) and
     // Passed as third argument to `IResponseCookies.Append`
     exists(
       CookieOptionsTrackingConfiguration cookieTracking, DataFlow::Node creation,

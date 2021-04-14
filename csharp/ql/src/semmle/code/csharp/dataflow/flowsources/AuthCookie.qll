@@ -6,9 +6,19 @@ import csharp
 import semmle.code.csharp.frameworks.microsoft.AspNetCore
 
 /**
+ * Holds if the expression is a variable with a sensitive name.
+ */
+predicate isCookieWithSensitiveName(Expr cookieExpr) {
+  exists(AuthCookieNameConfiguration dataflow, DataFlow::Node source, DataFlow::Node sink |
+    dataflow.hasFlow(source, sink) and
+    sink.asExpr() = cookieExpr
+  )
+}
+
+/**
  * Tracks if a variable with a sensitive name is used as an argument.
  */
-class AuthCookieNameConfiguration extends DataFlow::Configuration {
+private class AuthCookieNameConfiguration extends DataFlow::Configuration {
   AuthCookieNameConfiguration() { this = "AuthCookieNameConfiguration" }
 
   private predicate isAuthVariable(Expr expr) {

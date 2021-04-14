@@ -21,9 +21,5 @@ where
   getAValueForProp(oc, a, "HttpOnly") = val and
   val.getValue() = "false" and
   oc.getType() instanceof SystemWebHttpCookie and
-  // It is a sensitive cookie name
-  exists(AuthCookieNameConfiguration dataflow, DataFlow::Node source, DataFlow::Node sink |
-    dataflow.hasFlow(source, sink) and
-    sink.asExpr() = oc.getArgument(0)
-  )
+  isCookieWithSensitiveName(oc.getArgument(0))
 select a.getRValue(), "Cookie attribute 'HttpOnly' is set to false."

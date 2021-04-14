@@ -26,12 +26,8 @@ where
   |
     config.hasFlow(source, sink)
   ) and
-  // It is a sensitive cookie name
-  exists(AuthCookieNameConfiguration dataflow, DataFlow::Node source, DataFlow::Node sink |
-    iResponse.getAppendMethod() = mc.getTarget() and
-    dataflow.hasFlow(source, sink) and
-    sink.asExpr() = mc.getArgument(0)
-  ) and
+  iResponse.getAppendMethod() = mc.getTarget() and
+  isCookieWithSensitiveName(mc.getArgument(0)) and
   (
     // `HttpOnly` property in `CookieOptions` passed to IResponseCookies.Append(...) wasn't set
     exists(ObjectCreation oc |
@@ -48,12 +44,8 @@ where
     )
     or
     // IResponseCookies.Append(String, String) was called, `HttpOnly` is set to `false` by default
-    exists(AuthCookieNameConfiguration dataflow, DataFlow::Node source, DataFlow::Node sink |
-      mc = c and
-      mc.getNumberOfArguments() < 3 and
-      // It is a sensitive cookie name
-      dataflow.hasFlow(source, sink) and
-      sink.asExpr() = mc.getArgument(0)
-    )
+    mc = c and
+    mc.getNumberOfArguments() < 3 and
+    isCookieWithSensitiveName(mc.getArgument(0))
   )
 select c, "Cookie attribute 'HttpOnly' is not set to true."

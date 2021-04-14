@@ -27,9 +27,5 @@ where
     element instanceof HttpCookiesElement and
     element.(HttpCookiesElement).isHttpOnlyCookies()
   ) and
-  // it is a cookie with a sensitive name
-  exists(AuthCookieNameConfiguration dataflow, DataFlow::Node source, DataFlow::Node sink |
-    dataflow.hasFlow(source, sink) and
-    sink.asExpr() = oc.getArgument(0)
-  )
+  isCookieWithSensitiveName(oc.getArgument(0))
 select oc, "Cookie attribute 'HttpOnly' is not set to true."
