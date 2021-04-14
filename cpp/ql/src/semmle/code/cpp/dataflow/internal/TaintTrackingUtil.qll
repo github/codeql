@@ -11,6 +11,7 @@
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.models.interfaces.Taint
 private import semmle.code.cpp.models.interfaces.Iterator
+private import semmle.code.cpp.models.interfaces.PointerWrapper
 
 private module DataFlow {
   import semmle.code.cpp.dataflow.internal.DataFlowUtil
@@ -141,7 +142,10 @@ private predicate noFlowFromChildExpr(Expr e) {
   or
   e instanceof LogicalOrExpr
   or
-  e instanceof Call
+  // Allow taint from `operator*` on smart pointers.
+  exists(Call call | e = call |
+    not call.getTarget() = any(PointerWrapper wrapper).getAnUnwrapperFunction()
+  )
   or
   e instanceof SizeofOperator
   or

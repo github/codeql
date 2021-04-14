@@ -324,7 +324,7 @@ private class VariablePartialDefinitionNode extends PartialDefinitionNode {
  * A synthetic data flow node used for flow into a collection when an iterator
  * write occurs in a callee.
  */
-class IteratorPartialDefinitionNode extends PartialDefinitionNode {
+private class IteratorPartialDefinitionNode extends PartialDefinitionNode {
   override IteratorPartialDefinition pd;
 
   override Node getPreUpdateNode() { pd.definesExpressions(_, result.asExpr()) }
