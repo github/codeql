@@ -98,7 +98,7 @@ VariableAccess varUse(LocalScopeVariable v) { result = v.getAnAccess() }
  * Holds if `e` potentially overflows and `use` is an operand of `e` that is not guarded.
  */
 predicate missingGuardAgainstOverflow(Operation e, VariableAccess use) {
-  convertedExprMightOverflow(e) and
+  convertedExprMightOverflowPositively(e) and
   use = e.getAnOperand() and
   exists(LocalScopeVariable v | use.getTarget() = v |
     // overflow possible if large
