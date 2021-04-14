@@ -119,7 +119,7 @@ module UnsafeDeserialization {
   }
 
   /** BinaryFormatter */
-  predicate isBinaryFormatterCall(MethodCall mc, Method m) {
+  private predicate isBinaryFormatterCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     (
       m instanceof BinaryFormatterDeserializeMethod and
@@ -133,9 +133,9 @@ module UnsafeDeserialization {
     )
   }
 
-  abstract class BinaryFormatterSink extends InstanceMethodSink { }
+  private abstract class BinaryFormatterSink extends InstanceMethodSink { }
 
-  class BinaryFormatterDeserializeMethodSink extends BinaryFormatterSink {
+  private class BinaryFormatterDeserializeMethodSink extends BinaryFormatterSink {
     BinaryFormatterDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         isBinaryFormatterCall(mc, m) and
@@ -145,15 +145,15 @@ module UnsafeDeserialization {
   }
 
   /** SoapFormatter */
-  predicate isSoapFormatterCall(MethodCall mc, Method m) {
+  private predicate isSoapFormatterCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     m instanceof SoapFormatterDeserializeMethod and
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class SoapFormatterSink extends InstanceMethodSink { }
+  private abstract class SoapFormatterSink extends InstanceMethodSink { }
 
-  class SoapFormatterDeserializeMethodSink extends SoapFormatterSink {
+  private class SoapFormatterDeserializeMethodSink extends SoapFormatterSink {
     SoapFormatterDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         isSoapFormatterCall(mc, m) and
@@ -163,15 +163,15 @@ module UnsafeDeserialization {
   }
 
   /** ObjectStateFormatter */
-  predicate isObjectStateFormatterCall(MethodCall mc, Method m) {
+  private predicate isObjectStateFormatterCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     m instanceof ObjectStateFormatterDeserializeMethod and
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class ObjectStateFormatterSink extends InstanceMethodSink { }
+  private abstract class ObjectStateFormatterSink extends InstanceMethodSink { }
 
-  class ObjectStateFormatterDeserializeMethodSink extends ObjectStateFormatterSink {
+  private class ObjectStateFormatterDeserializeMethodSink extends ObjectStateFormatterSink {
     ObjectStateFormatterDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         isObjectStateFormatterCall(mc, m) and
@@ -181,7 +181,7 @@ module UnsafeDeserialization {
   }
 
   /** NetDataContractSerializer */
-  predicate isNetDataContractSerializerCall(MethodCall mc, Method m) {
+  private predicate isNetDataContractSerializerCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     (
       m instanceof NetDataContractSerializerDeserializeMethod and
@@ -192,9 +192,9 @@ module UnsafeDeserialization {
     )
   }
 
-  abstract class NetDataContractSerializerSink extends InstanceMethodSink { }
+  private abstract class NetDataContractSerializerSink extends InstanceMethodSink { }
 
-  class NetDataContractSerializerDeserializeMethodSink extends NetDataContractSerializerSink {
+  private class NetDataContractSerializerDeserializeMethodSink extends NetDataContractSerializerSink {
     NetDataContractSerializerDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         isNetDataContractSerializerCall(mc, m) and
@@ -204,15 +204,15 @@ module UnsafeDeserialization {
   }
 
   /** DataContractJsonSerializer */
-  predicate isDataContractJsonSerializerCall(MethodCall mc, Method m) {
+  private predicate isDataContractJsonSerializerCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     m instanceof DataContractJsonSerializerReadObjectMethod and
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class DataContractJsonSerializerSink extends InstanceMethodSink { }
+  private abstract class DataContractJsonSerializerSink extends InstanceMethodSink { }
 
-  class DataContractJsonSerializerDeserializeMethodSink extends DataContractJsonSerializerSink {
+  private class DataContractJsonSerializerDeserializeMethodSink extends DataContractJsonSerializerSink {
     DataContractJsonSerializerDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         isDataContractJsonSerializerCall(mc, m) and
@@ -221,7 +221,7 @@ module UnsafeDeserialization {
     }
   }
 
-  class DataContractJsonSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
+  private class DataContractJsonSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
     DataContractJsonSafeConstructorTrackingConfiguration() {
       this = "DataContractJsonSafeConstructorTrackingConfiguration"
     }
@@ -242,7 +242,7 @@ module UnsafeDeserialization {
   }
 
   /** JavaScriptSerializer */
-  predicate isJavaScriptSerializerCall(MethodCall mc, Method m) {
+  private predicate isJavaScriptSerializerCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     (
       m instanceof JavaScriptSerializerClassDeserializeMethod and
@@ -253,9 +253,9 @@ module UnsafeDeserialization {
     )
   }
 
-  abstract class JavaScriptSerializerSink extends InstanceMethodSink { }
+  private abstract class JavaScriptSerializerSink extends InstanceMethodSink { }
 
-  class JavaScriptSerializerDeserializeMethodSink extends JavaScriptSerializerSink {
+  private class JavaScriptSerializerDeserializeMethodSink extends JavaScriptSerializerSink {
     JavaScriptSerializerDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         isJavaScriptSerializerCall(mc, m) and
@@ -264,7 +264,7 @@ module UnsafeDeserialization {
     }
   }
 
-  class JavaScriptSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
+  private class JavaScriptSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
     JavaScriptSerializerSafeConstructorTrackingConfiguration() {
       this = "JavaScriptSerializerSafeConstructorTrackingConfiguration"
     }
@@ -284,16 +284,16 @@ module UnsafeDeserialization {
   }
 
   /** XmlObjectSerializer */
-  predicate isXmlObjectSerializerCall(MethodCall mc, Method m) {
+  private predicate isXmlObjectSerializerCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     m instanceof XmlObjectSerializerReadObjectMethod and
     not mc.getArgument(0).hasValue() and
     not mc.targetIsLocalInstance()
   }
 
-  abstract class XmlObjectSerializerSink extends InstanceMethodSink { }
+  private abstract class XmlObjectSerializerSink extends InstanceMethodSink { }
 
-  class XmlObjectSerializerDeserializeMethodSink extends XmlObjectSerializerSink {
+  private class XmlObjectSerializerDeserializeMethodSink extends XmlObjectSerializerSink {
     XmlObjectSerializerDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         isXmlObjectSerializerCall(mc, m) and
@@ -302,7 +302,7 @@ module UnsafeDeserialization {
     }
   }
 
-  class XmlObjectSerializerDerivedConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
+  private class XmlObjectSerializerDerivedConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
     XmlObjectSerializerDerivedConstructorTrackingConfiguration() {
       this = "XmlObjectSerializerDerivedConstructorTrackingConfiguration"
     }
@@ -327,15 +327,15 @@ module UnsafeDeserialization {
   }
 
   /** XmlSerializer */
-  predicate isXmlSerializerCall(MethodCall mc, Method m) {
+  private predicate isXmlSerializerCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     m instanceof XmlSerializerDeserializeMethod and
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class XmlSerializerSink extends InstanceMethodSink { }
+  private abstract class XmlSerializerSink extends InstanceMethodSink { }
 
-  class XmlSerializerDeserializeMethodSink extends XmlSerializerSink {
+  private class XmlSerializerDeserializeMethodSink extends XmlSerializerSink {
     XmlSerializerDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         isXmlSerializerCall(mc, m) and
@@ -344,7 +344,7 @@ module UnsafeDeserialization {
     }
   }
 
-  class XmlSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
+  private class XmlSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
     XmlSerializerSafeConstructorTrackingConfiguration() {
       this = "XmlSerializerSafeConstructorTrackingConfiguration"
     }
@@ -364,7 +364,7 @@ module UnsafeDeserialization {
   }
 
   /** DataContractSerializer */
-  predicate isDataContractSerializerCall(MethodCall mc, Method m) {
+  private predicate isDataContractSerializerCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     (
       m instanceof DataContractSerializerReadObjectMethod
@@ -374,9 +374,9 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class DataContractSerializerSink extends InstanceMethodSink { }
+  private abstract class DataContractSerializerSink extends InstanceMethodSink { }
 
-  class DataContractSerializerDeserializeMethodSink extends DataContractSerializerSink {
+  private class DataContractSerializerDeserializeMethodSink extends DataContractSerializerSink {
     DataContractSerializerDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         isDataContractSerializerCall(mc, m) and
@@ -385,7 +385,7 @@ module UnsafeDeserialization {
     }
   }
 
-  class DataContractSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
+  private class DataContractSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
     DataContractSerializerSafeConstructorTrackingConfiguration() {
       this = "DataContractSerializerSafeConstructorTrackingConfiguration"
     }
@@ -406,15 +406,15 @@ module UnsafeDeserialization {
   }
 
   /** XmlMessageFormatter */
-  predicate isXmlMessageFormatterCall(MethodCall mc, Method m) {
+  private predicate isXmlMessageFormatterCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     m instanceof XmlMessageFormatterReadMethod and
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class XmlMessageFormatterSink extends InstanceMethodSink { }
+  private abstract class XmlMessageFormatterSink extends InstanceMethodSink { }
 
-  class XmlMessageFormatterDeserializeMethodSink extends XmlMessageFormatterSink {
+  private class XmlMessageFormatterDeserializeMethodSink extends XmlMessageFormatterSink {
     XmlMessageFormatterDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         isXmlMessageFormatterCall(mc, m) and
@@ -423,7 +423,7 @@ module UnsafeDeserialization {
     }
   }
 
-  class XmlMessageFormatterSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
+  private class XmlMessageFormatterSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
     XmlMessageFormatterSafeConstructorTrackingConfiguration() {
       this = "XmlMessageFormatterSafeConstructorTrackingConfiguration"
     }
@@ -444,15 +444,15 @@ module UnsafeDeserialization {
   }
 
   /** LosFormatter */
-  predicate isLosFormatterCall(MethodCall mc, Method m) {
+  private predicate isLosFormatterCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     m instanceof LosFormatterDeserializeMethod and
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class LosFormatterSink extends InstanceMethodSink { }
+  private abstract class LosFormatterSink extends InstanceMethodSink { }
 
-  class LosFormatterDeserializeMethodSink extends LosFormatterSink {
+  private class LosFormatterDeserializeMethodSink extends LosFormatterSink {
     LosFormatterDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         isLosFormatterCall(mc, m) and
@@ -462,15 +462,15 @@ module UnsafeDeserialization {
   }
 
   /** fastJSON */
-  predicate isFastJsonCall(MethodCall mc, Method m) {
+  private predicate isFastJsonCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     m instanceof FastJsonClassToObjectMethod and
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class FastJsonSink extends ConstructorOrStaticMethodSink { }
+  private abstract class FastJsonSink extends ConstructorOrStaticMethodSink { }
 
-  class FastJsonDeserializeMethodSink extends FastJsonSink {
+  private class FastJsonDeserializeMethodSink extends FastJsonSink {
     FastJsonDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         isFastJsonCall(mc, m) and
@@ -480,15 +480,15 @@ module UnsafeDeserialization {
   }
 
   /** Activity */
-  predicate isActivityCall(MethodCall mc, Method m) {
+  private predicate isActivityCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     m instanceof ActivityLoadMethod and
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class ActivitySink extends InstanceMethodSink { }
+  private abstract class ActivitySink extends InstanceMethodSink { }
 
-  class ActivityDeserializeMethodSink extends ActivitySink {
+  private class ActivityDeserializeMethodSink extends ActivitySink {
     ActivityDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         isActivityCall(mc, m) and
@@ -498,15 +498,15 @@ module UnsafeDeserialization {
   }
 
   /** ResourceReader */
-  predicate isResourceReaderCall(Call mc, Constructor m) {
+  private predicate isResourceReaderCall(Call mc, Constructor m) {
     m = mc.getTarget() and
     m instanceof ResourceReaderConstructor and
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class ResourceReaderSink extends ConstructorOrStaticMethodSink { }
+  private abstract class ResourceReaderSink extends ConstructorOrStaticMethodSink { }
 
-  class ResourceReaderDeserializeMethodSink extends ResourceReaderSink {
+  private class ResourceReaderDeserializeMethodSink extends ResourceReaderSink {
     ResourceReaderDeserializeMethodSink() {
       exists(Call mc, Constructor m |
         isResourceReaderCall(mc, m) and
@@ -516,15 +516,15 @@ module UnsafeDeserialization {
   }
 
   /** BinaryMessageFormatter */
-  predicate isBinaryMessageFormatterCall(MethodCall mc, Method m) {
+  private predicate isBinaryMessageFormatterCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     m instanceof BinaryMessageFormatterReadMethod and
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class BinaryMessageFormatterSink extends InstanceMethodSink { }
+  private abstract class BinaryMessageFormatterSink extends InstanceMethodSink { }
 
-  class BinaryMessageFormatterDeserializeMethodSink extends BinaryMessageFormatterSink {
+  private class BinaryMessageFormatterDeserializeMethodSink extends BinaryMessageFormatterSink {
     BinaryMessageFormatterDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         isBinaryMessageFormatterCall(mc, m) and
@@ -534,7 +534,7 @@ module UnsafeDeserialization {
   }
 
   /** XamlReader */
-  predicate isXamlReaderCall(MethodCall mc, Method m) {
+  private predicate isXamlReaderCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     (
       m instanceof XamlReaderParseMethod
@@ -546,9 +546,9 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class XamlReaderSink extends ConstructorOrStaticMethodSink { }
+  private abstract class XamlReaderSink extends ConstructorOrStaticMethodSink { }
 
-  class XamlReaderDeserializeMethodSink extends XamlReaderSink {
+  private class XamlReaderDeserializeMethodSink extends XamlReaderSink {
     XamlReaderDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         isXamlReaderCall(mc, m) and
@@ -558,7 +558,7 @@ module UnsafeDeserialization {
   }
 
   /** ProxyObject */
-  predicate isProxyObjectCall(MethodCall mc, Method m) {
+  private predicate isProxyObjectCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     (
       m instanceof ProxyObjectDecodeValueMethod
@@ -568,9 +568,9 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class ProxyObjectSink extends InstanceMethodSink { }
+  private abstract class ProxyObjectSink extends InstanceMethodSink { }
 
-  class ProxyObjectDeserializeMethodSink extends ProxyObjectSink {
+  private class ProxyObjectDeserializeMethodSink extends ProxyObjectSink {
     ProxyObjectDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         isProxyObjectCall(mc, m) and
@@ -580,15 +580,15 @@ module UnsafeDeserialization {
   }
 
   /** SweetJayson */
-  predicate isSweetJaysonCall(MethodCall mc, Method m) {
+  private predicate isSweetJaysonCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     m instanceof JaysonConverterToObjectMethod and
     not mc.getArgument(0).hasValue()
   }
 
-  abstract class SweetJaysonSink extends ConstructorOrStaticMethodSink { }
+  private abstract class SweetJaysonSink extends ConstructorOrStaticMethodSink { }
 
-  class SweetJaysonDeserializeMethodSink extends SweetJaysonSink {
+  private class SweetJaysonDeserializeMethodSink extends SweetJaysonSink {
     SweetJaysonDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         isSweetJaysonCall(mc, m) and
@@ -598,9 +598,9 @@ module UnsafeDeserialization {
   }
 
   /** ServiceStack.Text.JsonSerializer */
-  abstract class ServiceStackTextJsonSerializerSink extends ConstructorOrStaticMethodSink { }
+  private abstract class ServiceStackTextJsonSerializerSink extends ConstructorOrStaticMethodSink { }
 
-  class ServiceStackTextJsonSerializerDeserializeMethodSink extends ServiceStackTextJsonSerializerSink {
+  private class ServiceStackTextJsonSerializerDeserializeMethodSink extends ServiceStackTextJsonSerializerSink {
     ServiceStackTextJsonSerializerDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         m = mc.getTarget() and
@@ -619,9 +619,9 @@ module UnsafeDeserialization {
   }
 
   /** ServiceStack.Text.TypeSerializer */
-  abstract class ServiceStackTextTypeSerializerSink extends ConstructorOrStaticMethodSink { }
+  private abstract class ServiceStackTextTypeSerializerSink extends ConstructorOrStaticMethodSink { }
 
-  class ServiceStackTextTypeSerializerDeserializeMethodSink extends ServiceStackTextTypeSerializerSink {
+  private class ServiceStackTextTypeSerializerDeserializeMethodSink extends ServiceStackTextTypeSerializerSink {
     ServiceStackTextTypeSerializerDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         m = mc.getTarget() and
@@ -640,9 +640,9 @@ module UnsafeDeserialization {
   }
 
   /** ServiceStack.Text.CsvSerializer */
-  abstract class ServiceStackTextCsvSerializerSink extends ConstructorOrStaticMethodSink { }
+  private abstract class ServiceStackTextCsvSerializerSink extends ConstructorOrStaticMethodSink { }
 
-  class ServiceStackTextCsvSerializerDeserializeMethodSink extends ServiceStackTextCsvSerializerSink {
+  private class ServiceStackTextCsvSerializerDeserializeMethodSink extends ServiceStackTextCsvSerializerSink {
     ServiceStackTextCsvSerializerDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         m = mc.getTarget() and
@@ -661,9 +661,9 @@ module UnsafeDeserialization {
   }
 
   /** ServiceStack.Text.XmlSerializer */
-  abstract class ServiceStackTextXmlSerializerSink extends ConstructorOrStaticMethodSink { }
+  private abstract class ServiceStackTextXmlSerializerSink extends ConstructorOrStaticMethodSink { }
 
-  class ServiceStackTextXmlSerializerDeserializeMethodSink extends ServiceStackTextXmlSerializerSink {
+  private class ServiceStackTextXmlSerializerDeserializeMethodSink extends ServiceStackTextXmlSerializerSink {
     ServiceStackTextXmlSerializerDeserializeMethodSink() {
       exists(MethodCall mc, Method m |
         m = mc.getTarget() and
