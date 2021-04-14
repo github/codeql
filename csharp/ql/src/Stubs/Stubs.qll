@@ -633,6 +633,12 @@ private string stubMember(Member m) {
     result =
       "    " + stubModifiers(m) + stubClassName(f.getType()) + " " + f.getName() + impl + ";\n"
   )
+  or
+  exists(Event e | m = e |
+    result =
+      "    " + stubModifiers(m) + "event " + stubClassName(e.getType()) + " " +
+        stubExplicitImplementation(e) + e.getName() + ";\n"
+  )
 }
 
 private string stubConstructorInitializer(Constructor c) {
