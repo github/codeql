@@ -139,7 +139,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 		scope := extractPackageScope(tw, pkg)
 		tw.ForEachObject(extractObjectType)
-		lbl := tw.Labeler.GlobalID(pkg.PkgPath + ";pkg")
+		lbl := tw.Labeler.GlobalID(util.EscapeCurlyBraces(pkg.PkgPath) + ";pkg")
 		dbscheme.PackagesTable.Emit(tw, lbl, pkg.Name, pkg.PkgPath, scope)
 
 		if len(pkg.Errors) != 0 {
@@ -624,7 +624,7 @@ func (extraction *Extraction) extractFileInfo(tw *trap.Writer, file string) {
 			extraction.Lock.Unlock()
 			break
 		}
-		lbl := tw.Labeler.GlobalID(path + ";folder")
+		lbl := tw.Labeler.GlobalID(util.EscapeCurlyBraces(path) + ";folder")
 		dbscheme.FoldersTable.Emit(tw, lbl, path, component)
 		if i > 0 {
 			dbscheme.ContainerParentTable.Emit(tw, parentLbl, lbl)
@@ -1496,7 +1496,7 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 				if field.Embedded() {
 					name = ""
 				}
-				fmt.Fprintf(&b, "%s,{%s},%s", name, fieldTypeLbl, tp.Tag(i))
+				fmt.Fprintf(&b, "%s,{%s},%s", name, fieldTypeLbl, util.EscapeCurlyBraces(tp.Tag(i)))
 			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%s;structtype", b.String()))
 		case *types.Pointer:
