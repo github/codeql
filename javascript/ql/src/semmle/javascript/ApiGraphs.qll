@@ -924,7 +924,7 @@ private module Label {
       result = member(pn) and
       // only consider properties with alphanumeric(-ish) names, excluding special properties
       // and properties whose names look like they are meant to be internal
-      pn.regexpMatch("(?!prototype$|__)[a-zA-Z_$][\\w\\-.$]*")
+      pn.regexpMatch("(?!prototype$|__)[\\w_$][\\w\\-.$]*")
     )
     or
     not exists(pr.getPropertyName()) and
