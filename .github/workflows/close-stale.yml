@@ -25,6 +25,6 @@ jobs:
         days-before-pr-stale: -1
         days-before-pr-close: -1
         
-        # Dry-run only. remove this when we are ready to actually change issues
-        debug-only: true
-        operations-per-run: 1000
+        # Uncomment for dry-run
+        # debug-only: true
+        # operations-per-run: 1000
