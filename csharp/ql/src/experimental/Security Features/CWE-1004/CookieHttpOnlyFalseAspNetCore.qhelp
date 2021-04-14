@@ -14,7 +14,7 @@ property to <code>false</code> the cookie may be accessed by JavaScript.
 <recommendation>
 <p>
 Protect sensitive cookies, such as related to authentication, by setting <code>HttpOnly</code> to <code>true</code> to make
-them not accessibe to JavaScript.
+them not accessible to JavaScript.
 </p>
 </recommendation>
 

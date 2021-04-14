@@ -7,7 +7,7 @@
 <p>
 Cookies without <code>HttpOnly</code> flag are accessible to JavaScript running in the same origin. In case of
 Cross-Site Scripting (XSS) vulnerability the cookie can be stolen by malicious script. By default,
-cookies are accessibe to JavaScript. This setting can be changed by setting the <code>httpOnlyCookies</code>
+cookies are accessible to JavaScript. This setting can be changed by setting the <code>httpOnlyCookies</code>
 attribute to <code>"true"</code> in <code>Web.config</code>.
 </p>
 </overview>
