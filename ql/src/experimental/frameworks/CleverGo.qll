@@ -240,7 +240,7 @@ private module CleverGo {
       )
     }
 
-    override DataFlow::Node getAContentTypeNode() { result = contentTypeNode.getAPredecessor*() }
+    override DataFlow::Node getAContentTypeNode() { result = contentTypeNode }
 
     override HTTP::ResponseWriter getResponseWriter() { none() }
   }

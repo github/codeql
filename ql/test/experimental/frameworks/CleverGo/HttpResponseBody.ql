@@ -11,8 +11,13 @@ class HttpResponseBodyTest extends InlineExpectationsTest {
     exists(HTTP::ResponseBody rd |
       rd.hasLocationInfo(file, line, _, _, _) and
       (
-        element = rd.getAContentType().toString() and
-        value = rd.getAContentType().toString() and
+        (
+          element = rd.getAContentType().toString() and
+          value = rd.getAContentType()
+          or
+          element = rd.getAContentTypeNode().toString() and
+          value = rd.getAContentTypeNode().getAPredecessor*().getStringValue()
+        ) and
         tag = "contentType"
         or
         element = rd.toString() and
