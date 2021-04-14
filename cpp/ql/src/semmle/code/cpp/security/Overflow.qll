@@ -6,6 +6,7 @@
 import cpp
 import semmle.code.cpp.controlflow.Dominance
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
+import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 
 /**
  * Holds if the value of `use` is guarded using `abs`.
@@ -98,7 +99,12 @@ VariableAccess varUse(LocalScopeVariable v) { result = v.getAnAccess() }
  * Holds if `e` potentially overflows and `use` is an operand of `e` that is not guarded.
  */
 predicate missingGuardAgainstOverflow(Operation e, VariableAccess use) {
-  convertedExprMightOverflowPositively(e) and
+  (
+    convertedExprMightOverflowPositively(e)
+    or
+    // Ensure that the predicate holds when range analysis cannot determine an upper bound
+    upperBound(e.getFullyConverted()) = exprMaxVal(e.getFullyConverted())
+  ) and
   use = e.getAnOperand() and
   exists(LocalScopeVariable v | use.getTarget() = v |
     // overflow possible if large
@@ -120,7 +126,12 @@ predicate missingGuardAgainstOverflow(Operation e, VariableAccess use) {
  * Holds if `e` potentially underflows and `use` is an operand of `e` that is not guarded.
  */
 predicate missingGuardAgainstUnderflow(Operation e, VariableAccess use) {
-  convertedExprMightOverflowNegatively(e) and
+  (
+    convertedExprMightOverflowNegatively(e)
+    or
+    // Ensure that the predicate holds when range analysis cannot determine a lower bound
+    lowerBound(e.getFullyConverted()) = exprMinVal(e.getFullyConverted())
+  ) and
   use = e.getAnOperand() and
   exists(LocalScopeVariable v | use.getTarget() = v |
     // underflow possible if use is left operand and small
