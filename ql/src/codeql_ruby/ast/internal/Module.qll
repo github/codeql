@@ -188,14 +188,12 @@ private class IncludeOrPrependCall extends MethodCall {
  * methods evaluate the block in the context of some other module/class instead of
  * the enclosing one.
  */
-private ModuleBase enclosingModule(AstNode node) {
-  exists(AstNode parent | parent = node.getParent() |
-    result = parent
-    or
-    not parent instanceof ModuleBase and
-    not parent instanceof Block and
-    result = enclosingModule(parent)
-  )
+private ModuleBase enclosingModule(AstNode node) { result = parent*(node).getParent() }
+
+private AstNode parent(AstNode n) {
+  result = n.getParent() and
+  not result instanceof ModuleBase and
+  not result instanceof Block
 }
 
 private string prepends(string qname) {
