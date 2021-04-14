@@ -604,8 +604,8 @@ private string stubMember(Member m) {
   or
   exists(Indexer i | m = i |
     result =
-      "    " + stubModifiers(m) + stubClassName(i.getType()) + " this[" + stubParameters(i) + "] { "
-        + stubGetter(i) + stubSetter(i) + "}\n"
+      "    " + stubModifiers(m) + stubClassName(i.getType()) + " " + stubExplicitImplementation(i) +
+        "this[" + stubParameters(i) + "] { " + stubGetter(i) + stubSetter(i) + "}\n"
   )
   or
   exists(Field f, string impl | f = m and not f instanceof EnumConstant |
