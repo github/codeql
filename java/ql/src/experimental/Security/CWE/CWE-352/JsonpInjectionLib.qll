@@ -77,10 +77,13 @@ class SpringControllerRequestMappingGetMethod extends SpringControllerGetMethod 
     this.getAnAnnotation()
         .getType()
         .hasQualifiedName("org.springframework.web.bind.annotation", "RequestMapping") and
-    this.getAnAnnotation().getValue("method").toString().regexpMatch("RequestMethod.GET|\\{...\\}") and
+    (
+      this.getAnAnnotation().getValue("method").(VarAccess).getVariable().getName() = "GET" or
+      this.getAnAnnotation().getValue("method").(ArrayInit).getSize() = 0 //Java code example: @RequestMapping(value = "test")
+    ) and
     not exists(MethodAccess ma |
       ma.getMethod() instanceof ServletRequestGetBodyMethod and
-      this = getACallingCallableOrSelf(ma.getEnclosingCallable())
+      any(this).polyCalls*(ma.getEnclosingCallable())
     ) and
     not this.getAParamType().getName() = "MultipartFile"
   }

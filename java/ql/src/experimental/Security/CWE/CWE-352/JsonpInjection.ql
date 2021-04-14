@@ -52,7 +52,7 @@ class RequestResponseFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     sink instanceof XssSink and
-    any(RequestGetMethod m).polyCalls*(source.getEnclosingCallable())
+    any(RequestGetMethod m).polyCalls*(sink.getEnclosingCallable())
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
