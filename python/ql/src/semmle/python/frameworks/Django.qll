@@ -16,7 +16,7 @@ private import semmle.python.regex
  * Provides models for the `django` PyPI package.
  * See https://www.djangoproject.com/.
  */
-module Django {
+private module Django {
   /** Provides models for the `django.views` module */
   module Views {
     /**
@@ -28,7 +28,7 @@ module Django {
      */
     module View {
       /**
-       * An `API::Node` for references to `django.views.generic.View` or any subclass
+       * An `API::Node` representing the `django.views.generic.View` class or any subclass
        * that has explicitly been modeled in the CodeQL libraries.
        */
       abstract class ModeledSubclass extends API::Node {
@@ -94,7 +94,7 @@ module Django {
      */
     module Form {
       /**
-       * An `API::Node` for references to `django.forms.forms.BaseForm` or any subclass
+       * An `API::Node` representing the `django.forms.forms.BaseForm` class or any subclass
        * that has explicitly been modeled in the CodeQL libraries.
        */
       abstract class ModeledSubclass extends API::Node {
@@ -190,7 +190,7 @@ module Django {
      */
     module Field {
       /**
-       * An `API::Node` for references to `django.forms.fields.Field` or any subclass
+       * An `API::Node` representing the `django.forms.fields.Field` class or any subclass
        * that has explicitly been modeled in the CodeQL libraries.
        */
       abstract class ModeledSubclass extends API::Node {
