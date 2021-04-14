@@ -57,6 +57,7 @@ class UsingArithmeticInComparison extends BinaryArithmeticOperation {
     not this.getAChild*().isConstant() and
     not this.getParent*() instanceof Call and
     not this.getParent*() instanceof AssignExpr and
+    not this.getParent*() instanceof ArrayExpr and
     not this.getParent*() instanceof RemExpr and
     not this.getParent*() instanceof AssignBitwiseOperation and
     not this.getParent*() instanceof AssignArithmeticOperation and
