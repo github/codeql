@@ -543,6 +543,15 @@ private string stubParameters(Parameterizable p) {
     )
 }
 
+private string stubDefaultArguments(Parameterizable p) {
+  result =
+    concat(int i, Parameter param |
+      param = p.getParameter(i) and not param.getType() instanceof ArglistType
+    |
+      "default(" + stubClassName(param.getType()) + ")", ", " order by i
+    )
+}
+
 private string stubParameterModifiers(Parameter p) {
   if p.isOut()
   then result = "out "
@@ -609,7 +618,8 @@ private string stubMember(Member m) {
     (not c.getDeclaringType() instanceof Struct or c.getNumberOfParameters() > 0)
   |
     result =
-      "    " + stubModifiers(m) + c.getName() + "(" + stubParameters(c) + ") => throw null;\n"
+      "    " + stubModifiers(m) + c.getName() + "(" + stubParameters(c) + ")" +
+        stubConstructorInitializer(c) + " => throw null;\n"
   )
   or
   exists(Indexer i | m = i |
@@ -623,6 +633,24 @@ private string stubMember(Member m) {
     result =
       "    " + stubModifiers(m) + stubClassName(f.getType()) + " " + f.getName() + impl + ";\n"
   )
+}
+
+private string stubConstructorInitializer(Constructor c) {
+  exists(Constructor baseCtor |
+    baseCtor =
+      min(Constructor bc |
+        c.getDeclaringType().getBaseClass().getAMember() = bc
+      |
+        bc order by bc.getNumberOfParameters(), stubParameters(bc)
+      ) and
+    if baseCtor.getNumberOfParameters() = 0
+    then result = ""
+    else result = " : base(" + stubDefaultArguments(baseCtor) + ")"
+  )
+  or
+  // abstract base class might not have a constructor
+  not exists(Constructor baseCtor | c.getDeclaringType().getBaseClass().getAMember() = baseCtor) and
+  result = ""
 }
 
 private string stubExplicit(ConversionOperator op) {
