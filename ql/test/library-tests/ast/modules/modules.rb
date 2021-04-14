@@ -103,3 +103,20 @@ module PrependTest
   module Foo2::Y
   end
 end
+
+module MM
+  module MM::MM
+  end
+end
+
+class YY
+end
+
+module XX
+      class YY < YY
+      end
+end
+
+module Test::Foo1::Bar::Baz
+end
+
