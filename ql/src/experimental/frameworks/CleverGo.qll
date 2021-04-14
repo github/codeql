@@ -196,18 +196,18 @@ private module CleverGo {
   }
 
   /**
-   * Models HTTP ResponseBody.
+   * Models HTTP ResponseBody where the content-type is static and non-modifiable.
    */
-  private class HttpResponseBodyContentTypeString extends HTTP::ResponseBody::Range {
+  private class HttpResponseBodyStaticContentType extends HTTP::ResponseBody::Range {
     string contentTypeString;
 
-    HttpResponseBodyContentTypeString() {
+    HttpResponseBodyStaticContentType() {
       exists(string package, string receiverName |
-        holdsBodyAndContentTypeString(package, receiverName, this, contentTypeString)
+        setsBodyAndStaticContentType(package, receiverName, this, contentTypeString)
         or
         exists(DataFlow::CallNode bodySetterCall, DataFlow::CallNode contentTypeSetterCall |
-          holdsBodyOnly(package, receiverName, bodySetterCall, this) and
-          holdsContentTypeString(package, receiverName, contentTypeSetterCall, contentTypeString)
+          setsBody(package, receiverName, bodySetterCall, this) and
+          setsStaticContentType(package, receiverName, contentTypeSetterCall, contentTypeString)
         |
           contentTypeSetterCall.getReceiver().getAPredecessor*() =
             bodySetterCall.getReceiver().getAPredecessor*()
@@ -221,18 +221,18 @@ private module CleverGo {
   }
 
   /**
-   * Models HTTP ResponseBody.
+   * Models HTTP ResponseBody where the content-type can be dynamically set by the caller.
    */
-  private class HttpResponseBodyContentTypeNode extends HTTP::ResponseBody::Range {
+  private class HttpResponseBodyDynamicContentType extends HTTP::ResponseBody::Range {
     DataFlow::Node contentTypeNode;
 
-    HttpResponseBodyContentTypeNode() {
+    HttpResponseBodyDynamicContentType() {
       exists(string package, string receiverName |
-        holdsBodyAndContentTypeNode(package, receiverName, this, contentTypeNode)
+        setsBodyAndDynamicContentType(package, receiverName, this, contentTypeNode)
         or
         exists(DataFlow::CallNode bodySetterCall, DataFlow::CallNode contentTypeSetterCall |
-          holdsBodyOnly(package, receiverName, bodySetterCall, this) and
-          holdsContentTypeNode(package, receiverName, contentTypeSetterCall, contentTypeNode)
+          setsBody(package, receiverName, bodySetterCall, this) and
+          setsDynamicContentType(package, receiverName, contentTypeSetterCall, contentTypeNode)
         |
           contentTypeSetterCall.getReceiver().getAPredecessor*() =
             bodySetterCall.getReceiver().getAPredecessor*()
@@ -246,7 +246,7 @@ private module CleverGo {
   }
 
   // Holds for a call that sets the body.
-  private predicate holdsBodyOnly(
+  private predicate setsBody(
     string package, string receiverName, DataFlow::CallNode bodySetterCall, DataFlow::Node bodyNode
   ) {
     exists(string methodName, Method m |
@@ -270,8 +270,8 @@ private module CleverGo {
     )
   }
 
-  // Holds for a call that sets the body; the content-type is implicit.
-  private predicate holdsBodyAndContentTypeString(
+  // Holds for a call that sets the body; the content-type is static and implicit.
+  private predicate setsBodyAndStaticContentType(
     string package, string receiverName, DataFlow::Node bodyNode, string contentTypeString
   ) {
     // One call sets both body and content-type (which is implicit in the func name).
@@ -359,7 +359,7 @@ private module CleverGo {
   }
 
   // Holds for a call that sets the body; the content-type is a parameter.
-  private predicate holdsBodyAndContentTypeNode(
+  private predicate setsBodyAndDynamicContentType(
     string package, string receiverName, DataFlow::Node bodyNode, DataFlow::Node contentTypeNode
   ) {
     exists(string methodName, Method m, DataFlow::CallNode bodySetterCall |
@@ -386,7 +386,7 @@ private module CleverGo {
   }
 
   // Holds for a call that sets the content-type (implicit).
-  private predicate holdsContentTypeString(
+  private predicate setsStaticContentType(
     string package, string receiverName, DataFlow::CallNode contentTypeSetterCall,
     string contentType
   ) {
@@ -420,7 +420,7 @@ private module CleverGo {
   }
 
   // Holds for a call that sets the content-type via a parameter.
-  private predicate holdsContentTypeNode(
+  private predicate setsDynamicContentType(
     string package, string receiverName, DataFlow::CallNode contentTypeSetterCall,
     DataFlow::Node contentTypeNode
   ) {
