@@ -19,10 +19,9 @@ where
   (
     sink instanceof InstanceMethodSink and
     not exists(
-      SafeConstructorTrackingConfig safeConstructorTracking, DataFlow::PathNode safeCreation,
-      DataFlow::PathNode safeTypeUsage
+      SafeConstructorTrackingConfig safeConstructorTracking, DataFlow::PathNode safeTypeUsage
     |
-      safeConstructorTracking.hasFlowPath(safeCreation, safeTypeUsage) and
+      safeConstructorTracking.hasFlowPath(_, safeTypeUsage) and
       safeTypeUsage.getNode().asExpr().getParent() = deserializeCall
     )
     or
