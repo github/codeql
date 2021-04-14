@@ -13,7 +13,8 @@ Cross-Site Scripting (XSS) vulnerability the cookie can be stolen by malicious s
 <recommendation>
 <p>
 Protect sensitive cookies, such as related to authentication, by setting <code>HttpOnly</code> to <code>true</code> to make
-them not accessible to JavaScript.
+them not accessible to JavaScript. In ASP.NET case it is also possible to set the attribute via <code>&lt;httpCookies&gt;</code> element
+of <code>web.config</code> with the attribute <code>httpOnlyCookies="true"</code>.
 </p>
 </recommendation>
 

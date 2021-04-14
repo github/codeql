@@ -7,7 +7,7 @@
  * @kind problem
  * @problem.severity warning
  * @precision high
- * @id cs/web/httponly-not-set
+ * @id cs/web/cookie-httponly-not-set
  * @tags security
  *       external/cwe/cwe-1004
  */
