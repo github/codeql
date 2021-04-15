@@ -26,7 +26,8 @@ class LocalSourceNode extends Node {
   cached
   LocalSourceNode() {
     not comes_from_cfgnode(this) and
-    not this instanceof ModuleVariableNode
+    not this instanceof ModuleVariableNode and
+    not this instanceof PostUpdateNode
     or
     this = any(ModuleVariableNode mvn).getARead()
   }
