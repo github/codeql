@@ -4,6 +4,7 @@
  *              characters is vulnerable to insertion of malicious code.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity critical
  * @precision high
  * @id java/concatenated-sql-query
  * @tags security

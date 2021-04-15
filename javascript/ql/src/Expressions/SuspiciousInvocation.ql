@@ -4,6 +4,7 @@
  *              in a runtime exception.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @id js/call-to-non-callable
  * @tags correctness
  *       external/cwe/cwe-476

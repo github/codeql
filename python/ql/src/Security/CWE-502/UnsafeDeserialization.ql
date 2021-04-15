@@ -4,6 +4,7 @@
  * @kind path-problem
  * @id py/unsafe-deserialization
  * @problem.severity error
+ * @problem.security-severity critical
  * @sub-severity high
  * @precision high
  * @tags external/cwe/cwe-502

@@ -3,6 +3,7 @@
  * @description Making a request without certificate validation can allow man-in-the-middle attacks.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision medium
  * @id py/request-without-cert-validation
  * @tags security

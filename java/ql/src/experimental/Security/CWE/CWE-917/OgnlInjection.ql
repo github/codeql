@@ -4,6 +4,7 @@
  *                lead to execution of arbitrary code.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity critical
  * @precision high
  * @id java/ognl-injection
  * @tags security

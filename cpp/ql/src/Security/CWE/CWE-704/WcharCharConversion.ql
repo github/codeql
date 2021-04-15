@@ -6,6 +6,7 @@
  * @kind problem
  * @id cpp/incorrect-string-type-conversion
  * @problem.severity error
+ * @problem.security-severity critical
  * @precision high
  * @tags security
  *       external/cwe/cwe-704

@@ -5,6 +5,7 @@
  * @kind path-problem
  * @precision low
  * @problem.severity error
+ * @problem.security-severity high
  * @tags security external/cwe/cwe-20
  */
 

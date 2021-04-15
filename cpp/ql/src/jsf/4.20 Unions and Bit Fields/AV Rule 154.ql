@@ -4,6 +4,7 @@
  *              may result in unexpected sign extension or overflow.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision low
  * @id cpp/signed-bit-field
  * @tags correctness

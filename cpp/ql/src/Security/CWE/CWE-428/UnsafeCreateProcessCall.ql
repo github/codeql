@@ -4,6 +4,7 @@
  * @id cpp/unsafe-create-process-call
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision medium
  * @msrc.severity important
  * @tags security

@@ -4,6 +4,7 @@
  *              expose it to an attacker.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision high
  * @id js/clear-text-logging
  * @tags security

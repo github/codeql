@@ -3,6 +3,7 @@
  * @description A lock is held during a call to System.Threading.Monitor.Wait(). This can lead to deadlocks and performance problems.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision high
  * @id cs/locked-wait
  * @tags reliability

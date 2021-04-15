@@ -4,6 +4,7 @@
  *              user can result in integer overflow.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision medium
  * @id cpp/uncontrolled-allocation-size
  * @tags reliability

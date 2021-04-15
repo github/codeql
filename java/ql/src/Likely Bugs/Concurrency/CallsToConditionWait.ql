@@ -4,6 +4,7 @@
  *              probably a typographical error.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision medium
  * @id java/wait-on-condition-interface
  * @tags reliability

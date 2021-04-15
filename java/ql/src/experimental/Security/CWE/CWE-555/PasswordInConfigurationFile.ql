@@ -3,6 +3,7 @@
  * @description Finds passwords in configuration files.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity medium
  * @precision medium
  * @id java/password-in-configuration
  * @tags security

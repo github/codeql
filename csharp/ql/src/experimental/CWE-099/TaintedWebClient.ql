@@ -4,6 +4,7 @@
  *              accessing resources influenced by users can allow an attacker to access local files.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity critical
  * @precision high
  * @id cs/webclient-path-injection
  * @tags security

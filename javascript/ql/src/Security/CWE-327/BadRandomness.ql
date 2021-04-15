@@ -4,6 +4,7 @@
  *              the results and compromise security.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision high
  * @id js/biased-cryptographic-random
  * @tags security

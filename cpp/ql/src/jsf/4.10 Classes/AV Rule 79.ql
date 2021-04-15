@@ -3,6 +3,7 @@
  * @description All resources acquired by a class should be released by its destructor. Avoid the use of the 'open / close' pattern, since C++ constructors and destructors provide a safer way to handle resource acquisition and release. Best practice in C++ is to use the 'RAII' technique: constructors allocate resources and destructors free them.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision high
  * @id cpp/resource-not-released-in-destructor
  * @tags efficiency

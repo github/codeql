@@ -5,6 +5,7 @@
  *              for the object.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision very-high
  * @id java/unsynchronized-getter
  * @tags reliability

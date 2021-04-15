@@ -4,6 +4,7 @@
  *              leak.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision high
  * @id java/output-resource-leak
  * @tags efficiency

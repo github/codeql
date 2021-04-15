@@ -4,6 +4,7 @@
  *              cannot wake up multiple threads.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision medium
  * @id java/notify-instead-of-notify-all
  * @tags reliability

@@ -3,6 +3,7 @@
  * @description Writing network data directly to the file system allows arbitrary file upload and might indicate a backdoor.
  * @kind path-problem
  * @problem.severity warning
+ * @problem.security-severity critical
  * @precision medium
  * @id js/http-to-file-access
  * @tags security

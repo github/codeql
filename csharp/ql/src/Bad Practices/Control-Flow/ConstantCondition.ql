@@ -5,6 +5,7 @@
  *              is likely to cause an infinite loop.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision very-high
  * @id cs/constant-condition
  * @tags maintainability

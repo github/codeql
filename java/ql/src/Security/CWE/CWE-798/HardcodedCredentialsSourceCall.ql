@@ -3,6 +3,7 @@
  * @description Using a hard-coded credential in a sensitive call may compromise security.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity critical
  * @precision low
  * @id java/hardcoded-credential-sensitive-call
  * @tags security

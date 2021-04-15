@@ -4,6 +4,7 @@
  *              allows for a cross-site scripting vulnerability.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity medium
  * @sub-severity high
  * @precision high
  * @id py/reflective-xss

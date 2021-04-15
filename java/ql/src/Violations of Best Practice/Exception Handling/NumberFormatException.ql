@@ -4,6 +4,7 @@
  *              'NumberFormatException' may cause unexpected runtime exceptions.
  * @kind problem
  * @problem.severity recommendation
+ * @problem.security-severity high
  * @precision high
  * @id java/uncaught-number-format-exception
  * @tags reliability

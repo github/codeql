@@ -4,6 +4,7 @@
  * @kind problem
  * @id cpp/use-after-free
  * @problem.severity warning
+ * @problem.security-severity high
  * @tags reliability
  *       security
  *       external/cwe/cwe-416

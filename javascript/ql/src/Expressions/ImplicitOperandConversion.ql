@@ -4,6 +4,7 @@
  *              hard to read.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity critical
  * @id js/implicit-operand-conversion
  * @tags reliability
  *       readability

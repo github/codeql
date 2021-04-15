@@ -4,6 +4,7 @@
  *              should also declare/override 'Dispose()'.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision low
  * @id cs/missing-dispose-method
  * @tags efficiency

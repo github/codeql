@@ -3,6 +3,7 @@
  * @description A function is called, and the same operation is usually performed on the return value - for example, free, delete, close etc. However, in some cases it is not performed. These unusual cases may indicate misuse of the API and could cause resource leaks.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity critical
  * @precision medium
  * @id cpp/inconsistent-call-on-result
  * @tags reliability

@@ -5,6 +5,7 @@
  *              exponential time on certain inputs.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision high
  * @id cs/regex-injection
  * @tags security

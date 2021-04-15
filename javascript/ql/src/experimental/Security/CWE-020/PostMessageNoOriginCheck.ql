@@ -4,6 +4,7 @@
  * This could lead to unexpected behaviour, especially when `MessageEvent.data` is used in an unsafe way.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision high
  * @id js/missing-postmessageorigin-verification
  * @tags correctness

@@ -5,6 +5,7 @@
  *              is used at all times.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision high
  * @id cs/web/requiressl-not-set
  * @tags security

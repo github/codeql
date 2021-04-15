@@ -5,6 +5,7 @@
  *              that is able to push to the base repository and to access secrets.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity critical
  * @precision low
  * @id js/actions/pull-request-target
  * @tags actions

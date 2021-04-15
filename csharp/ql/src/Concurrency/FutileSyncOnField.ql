@@ -4,6 +4,7 @@
  *              to provide the desired thread safety.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision high
  * @id cs/unsafe-sync-on-field
  * @tags reliability

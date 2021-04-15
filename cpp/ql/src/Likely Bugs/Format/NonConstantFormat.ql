@@ -6,6 +6,7 @@
  *              from an untrusted source, this can be used for exploits.
  * @kind problem
  * @problem.severity recommendation
+ * @problem.security-severity critical
  * @precision high
  * @id cpp/non-constant-format
  * @tags maintainability

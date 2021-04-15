@@ -4,6 +4,7 @@
  *              guidance to an attacker or expose sensitive user information.
  * @kind path-problem
  * @problem.severity warning
+ * @problem.security-severity medium
  * @precision medium
  * @id java/sensitiveinfo-in-logfile
  * @tags security

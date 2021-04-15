@@ -6,6 +6,7 @@
  *              vulnerable to packet sniffing.
  * @kind path-problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision medium
  * @id java/insecure-basic-auth
  * @tags security

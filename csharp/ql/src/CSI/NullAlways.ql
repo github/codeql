@@ -3,6 +3,7 @@
  * @description Dereferencing a variable whose value is 'null' causes a 'NullReferenceException'.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision very-high
  * @id cs/dereferenced-value-is-always-null
  * @tags reliability

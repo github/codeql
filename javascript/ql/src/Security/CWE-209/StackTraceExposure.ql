@@ -5,6 +5,7 @@
  *              to an attacker for developing a subsequent exploit.
  * @kind path-problem
  * @problem.severity warning
+ * @problem.security-severity medium
  * @precision very-high
  * @id js/stack-trace-exposure
  * @tags security

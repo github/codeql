@@ -4,6 +4,7 @@
  *              attacker.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision high
  * @id js/clear-text-storage-of-sensitive-data
  * @tags security

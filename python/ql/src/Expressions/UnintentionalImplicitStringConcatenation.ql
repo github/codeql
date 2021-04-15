@@ -7,6 +7,7 @@
  *       convention
  *       external/cwe/cwe-665
  * @problem.severity warning
+ * @problem.security-severity high
  * @sub-severity high
  * @precision high
  * @id py/implicit-string-concatenation-in-list

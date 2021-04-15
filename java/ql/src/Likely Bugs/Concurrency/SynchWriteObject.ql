@@ -4,6 +4,7 @@
  *              synchronized methods usually lack a sufficient level of synchronization.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision medium
  * @id java/inconsistent-sync-writeobject
  * @tags reliability

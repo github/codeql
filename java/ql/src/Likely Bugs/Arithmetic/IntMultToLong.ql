@@ -4,6 +4,7 @@
  *              before the multiplication may cause overflow.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision very-high
  * @id java/integer-multiplication-cast-to-long
  * @tags reliability

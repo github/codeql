@@ -6,6 +6,7 @@
  * @kind problem
  * @id cs/assembly-path-injection
  * @problem.severity error
+ * @problem.security-severity high
  * @precision high
  * @tags security
  *       external/cwe/cwe-114

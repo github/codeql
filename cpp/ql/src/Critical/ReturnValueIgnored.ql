@@ -4,6 +4,7 @@
  * @kind problem
  * @id cpp/return-value-ignored
  * @problem.severity recommendation
+ * @problem.security-severity critical
  * @precision medium
  * @tags reliability
  *       correctness

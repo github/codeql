@@ -5,6 +5,7 @@
  *              conditions.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision low
  * @id java/inconsistent-field-synchronization
  * @tags reliability

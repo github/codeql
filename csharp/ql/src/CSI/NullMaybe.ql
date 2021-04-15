@@ -4,6 +4,7 @@
  *              'NullReferenceException'.
  * @kind path-problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision high
  * @id cs/dereferenced-value-may-be-null
  * @tags reliability

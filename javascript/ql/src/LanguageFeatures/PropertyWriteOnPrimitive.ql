@@ -4,6 +4,7 @@
  *              and may trigger a runtime error.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity critical
  * @id js/property-assignment-on-primitive
  * @tags correctness
  *       language-features

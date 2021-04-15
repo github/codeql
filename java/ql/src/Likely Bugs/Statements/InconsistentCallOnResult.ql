@@ -5,6 +5,7 @@
  *              is not performed may indicate resource leaks or other problems.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity critical
  * @precision low
  * @id java/inconsistent-call-on-result
  * @tags reliability

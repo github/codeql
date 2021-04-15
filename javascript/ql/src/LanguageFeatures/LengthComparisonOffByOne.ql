@@ -4,6 +4,7 @@
  *              and then used in an indexing operation that could be out of bounds.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity critical
  * @id js/index-out-of-bounds
  * @tags reliability
  *       correctness

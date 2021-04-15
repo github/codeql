@@ -5,6 +5,7 @@
  *              not be released.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision medium
  * @id cs/dispose-not-called-on-throw
  * @tags efficiency

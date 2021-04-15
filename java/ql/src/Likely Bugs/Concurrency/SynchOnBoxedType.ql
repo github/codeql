@@ -5,6 +5,7 @@
  *              be shared between many parts of the program.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision very-high
  * @id java/sync-on-boxed-types
  * @tags reliability

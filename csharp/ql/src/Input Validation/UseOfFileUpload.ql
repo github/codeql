@@ -3,6 +3,7 @@
  * @description Finds uses of file upload
  * @kind problem
  * @problem.severity recommendation
+ * @problem.security-severity high
  * @precision high
  * @id cs/web/file-upload
  * @tags security

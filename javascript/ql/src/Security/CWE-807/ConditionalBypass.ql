@@ -3,6 +3,7 @@
  * @description Conditions that the user controls are not suited for making security-related decisions.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision medium
  * @id js/user-controlled-bypass
  * @tags security

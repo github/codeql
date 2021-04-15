@@ -6,6 +6,7 @@
  *              omitting the check could crash the program.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision medium
  * @id cpp/inconsistent-null-check
  * @tags reliability

@@ -3,6 +3,7 @@
  * @description ASP.NET pages should not disable the built-in request validation.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @id cs/web/request-validation-disabled
  * @tags security
  *       frameworks/asp.net

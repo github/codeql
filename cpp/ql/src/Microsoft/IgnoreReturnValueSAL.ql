@@ -6,6 +6,7 @@
  * @kind problem
  * @id cpp/ignore-return-value-sal
  * @problem.severity warning
+ * @problem.security-severity critical
  * @tags reliability
  *       external/cwe/cwe-573
  *       external/cwe/cwe-252

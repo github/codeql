@@ -4,6 +4,7 @@
  *              floating-point value may result in a loss of precision.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision high
  * @id cs/loss-of-precision
  * @tags reliability

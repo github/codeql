@@ -4,6 +4,7 @@
  *              'ClassCastException' at runtime.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity critical
  * @precision low
  * @id java/impossible-array-cast
  * @tags reliability

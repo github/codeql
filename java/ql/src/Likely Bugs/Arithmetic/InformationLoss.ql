@@ -5,6 +5,7 @@
  *              numeric errors such as overflows.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision very-high
  * @id java/implicit-cast-in-compound-assignment
  * @tags reliability

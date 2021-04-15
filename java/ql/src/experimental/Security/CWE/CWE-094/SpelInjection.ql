@@ -4,6 +4,7 @@
  *              may lead to remote code execution.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity critical
  * @precision high
  * @id java/spel-expression-injection
  * @tags security

@@ -6,6 +6,7 @@
  *                from these methods is not checked.
  * @kind problem
  * @problem.severity recommendation
+ * @problem.security-severity critical
  * @id cpp/drop-linux-privileges-outoforder
  * @tags security
  *       external/cwe/cwe-273

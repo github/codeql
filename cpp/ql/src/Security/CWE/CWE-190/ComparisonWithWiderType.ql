@@ -5,6 +5,7 @@
  * @id cpp/comparison-with-wider-type
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision high
  * @tags reliability
  *       security

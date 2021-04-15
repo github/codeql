@@ -3,6 +3,7 @@
  * @description Comparing a parameter to a hard-coded credential may compromise security.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity critical
  * @precision low
  * @id java/hardcoded-credential-comparison
  * @tags security

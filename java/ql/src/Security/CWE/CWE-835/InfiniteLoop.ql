@@ -5,6 +5,7 @@
  *              looping.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision medium
  * @id java/unreachable-exit-in-loop
  * @tags security

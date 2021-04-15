@@ -5,6 +5,7 @@
  *              a specific value to terminate the argument list.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity critical
  * @precision medium
  * @id cpp/unterminated-variadic-call
  * @tags reliability

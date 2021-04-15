@@ -5,6 +5,7 @@
  *              developing a subsequent exploit.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity medium
  * @precision high
  * @id cs/information-exposure-through-exception
  * @tags security

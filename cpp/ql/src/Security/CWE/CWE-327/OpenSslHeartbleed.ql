@@ -4,6 +4,7 @@
  *              attackers to retrieve portions of memory.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision very-high
  * @id cpp/openssl-heartbleed
  * @tags security

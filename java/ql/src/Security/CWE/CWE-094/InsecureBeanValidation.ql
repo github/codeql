@@ -3,6 +3,7 @@
  * @description User-controlled data may be evaluated as a Java EL expression, leading to arbitrary code execution.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity critical
  * @precision high
  * @id java/insecure-bean-validation
  * @tags security

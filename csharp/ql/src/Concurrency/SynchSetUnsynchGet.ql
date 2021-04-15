@@ -4,6 +4,7 @@
  *              then the value returned by the getter can be inconsistent.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision medium
  * @id cs/unsynchronized-getter
  * @tags correctness

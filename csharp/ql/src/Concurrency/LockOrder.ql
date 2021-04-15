@@ -3,6 +3,7 @@
  * @description Locking in an inconsistent sequence can lead to deadlock.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision high
  * @id cs/inconsistent-lock-sequence
  * @tags reliability

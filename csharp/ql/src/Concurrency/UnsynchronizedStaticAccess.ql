@@ -4,6 +4,7 @@
  *              during an addition or resizing operation, an infinite loop can occur.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision medium
  * @id cs/unsynchronized-static-access
  * @tags concurrency

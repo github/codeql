@@ -5,6 +5,7 @@
  *              attacks.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision medium
  * @id java/jxbrowser/disabled-certificate-validation
  * @tags security

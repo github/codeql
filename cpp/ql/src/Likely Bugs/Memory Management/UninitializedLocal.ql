@@ -5,6 +5,7 @@
  * @kind problem
  * @id cpp/uninitialized-local
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision medium
  * @tags security
  *       external/cwe/cwe-665

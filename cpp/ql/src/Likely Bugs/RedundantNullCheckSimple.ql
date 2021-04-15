@@ -5,6 +5,7 @@
  *              it should be moved before the dereference.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @id cpp/redundant-null-check-simple
  * @tags reliability
  *       correctness

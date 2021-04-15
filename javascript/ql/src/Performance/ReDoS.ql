@@ -5,6 +5,7 @@
  *              attacks.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision high
  * @id js/redos
  * @tags security

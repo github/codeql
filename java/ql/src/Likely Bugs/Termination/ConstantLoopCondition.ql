@@ -5,6 +5,7 @@
  *              looping.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision very-high
  * @id java/constant-loop-condition
  * @tags correctness

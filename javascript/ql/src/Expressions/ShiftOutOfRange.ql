@@ -4,6 +4,7 @@
  *              right operand into account. Thus, it is not possible to shift an integer by more than 31 bits.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity critical
  * @id js/shift-out-of-range
  * @tags reliability
  *       correctness

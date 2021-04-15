@@ -3,6 +3,7 @@
  * @description Dereferencing a variable whose value is 'null' causes a 'NullPointerException'.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision very-high
  * @id java/dereferenced-value-is-always-null
  * @tags reliability

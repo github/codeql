@@ -4,6 +4,7 @@
  *              should dispose those members in their 'Dispose()' method.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision low
  * @id cs/member-not-disposed
  * @tags efficiency

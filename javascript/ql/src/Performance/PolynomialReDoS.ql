@@ -4,6 +4,7 @@
  *              to match may be vulnerable to denial-of-service attacks.
  * @kind path-problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision high
  * @id js/polynomial-redos
  * @tags security

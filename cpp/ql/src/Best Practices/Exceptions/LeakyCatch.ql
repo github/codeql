@@ -3,6 +3,7 @@
  * @description If an exception is allocated on the heap, then it should be deleted when caught.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision high
  * @id cpp/catch-missing-free
  * @tags efficiency

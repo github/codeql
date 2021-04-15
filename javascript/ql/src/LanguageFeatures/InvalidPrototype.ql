@@ -4,6 +4,7 @@
  *              prototype will either be ignored or result in a runtime error.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity critical
  * @id js/invalid-prototype-value
  * @tags correctness
  *       language-features

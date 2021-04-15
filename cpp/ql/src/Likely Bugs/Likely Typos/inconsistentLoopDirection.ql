@@ -3,6 +3,7 @@
  * @description A for-loop iteration expression goes backward with respect of the initialization statement and condition expression.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision high
  * @id cpp/inconsistent-loop-direction
  * @tags correctness

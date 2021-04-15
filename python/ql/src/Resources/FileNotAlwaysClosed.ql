@@ -7,6 +7,7 @@
  *       resources
  *       external/cwe/cwe-772
  * @problem.severity warning
+ * @problem.security-severity high
  * @sub-severity high
  * @precision medium
  * @id py/file-not-closed

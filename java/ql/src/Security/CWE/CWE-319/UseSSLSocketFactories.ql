@@ -4,6 +4,7 @@
  *              third parties.
  * @kind problem
  * @problem.severity recommendation
+ * @problem.security-severity high
  * @precision medium
  * @id java/non-ssl-socket-factory
  * @tags security

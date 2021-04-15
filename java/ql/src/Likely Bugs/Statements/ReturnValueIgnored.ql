@@ -4,6 +4,7 @@
  *              of that method, the calls that do not check the return value may be mistakes.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity critical
  * @precision low
  * @id java/return-value-ignored
  * @tags reliability

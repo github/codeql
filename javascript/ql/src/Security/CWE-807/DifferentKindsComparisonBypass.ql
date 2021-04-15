@@ -3,6 +3,7 @@
  * @description Comparing different kinds of HTTP request data may be a symptom of an insufficient security check.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @precision low
  * @id js/different-kinds-comparison-bypass
  * @tags security

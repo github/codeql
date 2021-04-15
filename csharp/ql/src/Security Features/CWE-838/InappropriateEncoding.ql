@@ -4,6 +4,7 @@
  *              pose a security risk.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity medium
  * @precision low
  * @id cs/inappropriate-encoding
  * @tags security

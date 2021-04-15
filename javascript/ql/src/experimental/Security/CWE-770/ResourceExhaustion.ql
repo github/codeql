@@ -4,6 +4,7 @@
  *              sizes or durations can cause resource exhaustion.
  * @kind path-problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @id js/resource-exhaustion
  * @precision high
  * @tags security

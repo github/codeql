@@ -4,6 +4,7 @@
  *              objects, otherwise unmanaged resources may not be released.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision high
  * @id cs/local-not-disposed
  * @tags efficiency

@@ -3,6 +3,7 @@
  * @description LDAP authentication with credentials sent in cleartext.
  * @kind path-problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision medium
  * @id java/insecure-ldap-auth
  * @tags security

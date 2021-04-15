@@ -4,6 +4,7 @@
  *              length of the array causes an 'ArrayIndexOutOfBoundsException'.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity critical
  * @precision high
  * @id java/index-out-of-bounds
  * @tags reliability

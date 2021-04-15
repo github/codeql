@@ -6,6 +6,7 @@
  *       maintainability
  *       external/cwe/cwe-670
  * @problem.severity error
+ * @problem.security-severity high
  * @sub-severity low
  * @precision very-high
  * @id py/asserts-tuple

@@ -3,6 +3,7 @@
  * @description Regular expressions without anchors can be vulnerable to bypassing.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision medium
  * @id js/regex/missing-regexp-anchor
  * @tags correctness

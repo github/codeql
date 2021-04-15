@@ -3,6 +3,7 @@
  * @description Not every enumerable sequence is repeatable, so it is dangerous to write code that can consume elements of a sequence in more than one place.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision medium
  * @id cs/linq/inconsistent-enumeration
  * @tags reliability

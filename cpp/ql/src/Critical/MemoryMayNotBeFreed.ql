@@ -4,6 +4,7 @@
  * @kind problem
  * @id cpp/memory-may-not-be-freed
  * @problem.severity warning
+ * @problem.security-severity high
  * @tags efficiency
  *       security
  *       external/cwe/cwe-401

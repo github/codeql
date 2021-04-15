@@ -3,6 +3,7 @@
  * @description Using broken or weak cryptographic algorithms can allow an attacker to compromise security.
  * @kind path-problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision high
  * @id java/weak-cryptographic-algorithm
  * @tags security

@@ -5,6 +5,7 @@
  * @kind problem
  * @id cs/unsafe-deserialization
  * @problem.severity warning
+ * @problem.security-severity critical
  * @precision low
  * @tags security
  *       external/cwe/cwe-502

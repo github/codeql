@@ -3,6 +3,7 @@
  * @description Transmitting sensitive information to the user is a potential security risk.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity medium
  * @precision high
  * @id cs/sensitive-data-transmission
  * @tags security

@@ -4,6 +4,7 @@
  *              may cause redirection to malicious web sites.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity medium
  * @sub-severity low
  * @id py/url-redirection
  * @tags security

@@ -4,6 +4,7 @@
  *              in an array indexing operation that could be out of bounds.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity critical
  * @precision high
  * @id cs/index-out-of-bounds
  * @tags reliability

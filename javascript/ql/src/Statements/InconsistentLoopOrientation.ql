@@ -7,6 +7,7 @@
  *              indicative of a typo.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity high
  * @id js/inconsistent-loop-direction
  * @tags correctness
  *       external/cwe/cwe-835

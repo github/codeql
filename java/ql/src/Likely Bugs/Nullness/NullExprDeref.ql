@@ -4,6 +4,7 @@
  *              'NullPointerException'.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision high
  * @id java/dereferenced-expr-may-be-null
  * @tags reliability

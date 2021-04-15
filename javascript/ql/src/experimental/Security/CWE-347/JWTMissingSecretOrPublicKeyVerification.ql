@@ -3,6 +3,7 @@
  * @description The application does not verify the JWT payload with a cryptographic secret or public key.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision high
  * @id js/jwt-missing-verification
  * @tags security

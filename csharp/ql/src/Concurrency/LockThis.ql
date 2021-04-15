@@ -4,6 +4,7 @@
  *              it might be locked elsewhere.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision high
  * @id cs/lock-this
  * @tags reliability

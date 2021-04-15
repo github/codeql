@@ -5,6 +5,7 @@
  * @kind problem
  * @id cpp/memory-leak-on-failed-call-to-realloc
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision medium
  * @tags correctness
  *       security

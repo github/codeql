@@ -9,6 +9,7 @@
  *       non-attributable
  *       external/cwe/cwe-252
  * @problem.severity recommendation
+ * @problem.security-severity critical
  * @sub-severity high
  * @precision medium
  * @id py/ignored-return-value

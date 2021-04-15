@@ -7,6 +7,7 @@
  *              overflow.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision high
  * @id cpp/ambiguously-signed-bit-field
  * @tags reliability

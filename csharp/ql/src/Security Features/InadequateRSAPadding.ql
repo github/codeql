@@ -3,6 +3,7 @@
  * @description Finds uses of RSA encryption with inadequate padding.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @precision high
  * @id cs/inadequate-rsa-padding
  * @tags security

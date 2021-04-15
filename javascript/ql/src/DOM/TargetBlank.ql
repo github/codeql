@@ -4,6 +4,7 @@
  *              link type 'noopener' or 'noreferrer' are a potential security risk.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity medium
  * @id js/unsafe-external-link
  * @tags maintainability
  *       security

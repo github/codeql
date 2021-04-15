@@ -3,6 +3,7 @@
  * @description Replacing a substring with itself has no effect and may indicate a mistake.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity high
  * @id js/identity-replacement
  * @precision very-high
  * @tags correctness

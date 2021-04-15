@@ -4,6 +4,7 @@
  *              changes in the strings.
  * @kind path-problem
  * @problem.severity recommendation
+ * @problem.security-severity critical
  * @precision medium
  * @id java/command-line-injection-local
  * @tags security
