@@ -96,14 +96,22 @@ class Modifiable extends Declaration, @modifiable {
   /** Holds if this declaration is `async`. */
   predicate isAsync() { this.hasModifier("async") }
 
+  private predicate isReallyPrivate() { this.isPrivate() and not this.isProtected() }
+
   /**
    * Holds if this declaration is effectively `private` (either directly or
    * because one of the enclosing types is `private`).
    */
   predicate isEffectivelyPrivate() {
-    this.isPrivate() or
-    this.getDeclaringType+().isPrivate() or
+    this.isReallyPrivate() or
+    this.getDeclaringType+().(Modifiable).isReallyPrivate() or
     this.(Virtualizable).getExplicitlyImplementedInterface().isEffectivelyPrivate()
+  }
+
+  private predicate isReallyInternal() {
+    this.isInternal() and not this.isProtected()
+    or
+    this.isPrivate() and this.isProtected()
   }
 
   /**
@@ -111,9 +119,9 @@ class Modifiable extends Declaration, @modifiable {
    * because one of the enclosing types is `internal`).
    */
   predicate isEffectivelyInternal() {
-    this.isInternal() or
-    this.getDeclaringType+().isInternal() or
-    this.(Virtualizable).getExplicitlyImplementedInterface().isInternal()
+    this.isReallyInternal() or
+    this.getDeclaringType+().(Modifiable).isReallyInternal() or
+    this.(Virtualizable).getExplicitlyImplementedInterface().isEffectivelyInternal()
   }
 
   /**

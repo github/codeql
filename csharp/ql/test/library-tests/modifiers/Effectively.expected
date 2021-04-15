@@ -27,3 +27,5 @@
 | Modifiers.cs:68:14:68:15 | M1 | internal |
 | Modifiers.cs:71:18:71:19 | C2 | public |
 | Modifiers.cs:73:17:73:18 | M1 | internal |
+| Modifiers.cs:75:32:75:33 | M2 | internal |
+| Modifiers.cs:76:33:76:34 | M3 | public |
