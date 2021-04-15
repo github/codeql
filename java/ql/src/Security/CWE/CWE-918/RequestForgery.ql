@@ -29,7 +29,7 @@ class RequestForgeryConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof RequestForgerySink }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    requestForgeryStep(pred, succ)
+    any(RequestForgeryAdditionalTaintStep r).propagatesTaint(pred, succ)
   }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof RequestForgerySanitizer }

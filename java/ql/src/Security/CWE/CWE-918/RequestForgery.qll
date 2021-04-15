@@ -8,39 +8,47 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.StringFormat
 
-/**
- * Holds if taint is propagated from `pred` to `succ`.
- */
-predicate requestForgeryStep(DataFlow::Node pred, DataFlow::Node succ) {
-  // propagate to a URI when its host is assigned to
-  exists(UriCreation c | c.getHostArg() = pred.asExpr() | succ.asExpr() = c)
-  or
-  // propagate to a URL when its host is assigned to
-  exists(UrlConstructorCall c | c.getHostArg() = pred.asExpr() | succ.asExpr() = c)
-  or
-  // propagate to a RequestEntity when its url is assigned to
-  exists(MethodAccess m |
-    m.getMethod().getDeclaringType() instanceof SpringRequestEntity and
-    (
-      m.getMethod().hasName(["get", "post", "head", "delete", "options", "patch", "put"]) and
-      m.getArgument(0) = pred.asExpr() and
-      m = succ.asExpr()
-      or
-      m.getMethod().hasName("method") and
-      m.getArgument(1) = pred.asExpr() and
+abstract class RequestForgeryAdditionalTaintStep extends string {
+  bindingset[this]
+  RequestForgeryAdditionalTaintStep() { any() }
+
+  abstract predicate propagatesTaint(DataFlow::Node pred, DataFlow::Node succ);
+}
+
+private class DefaultRequestForgeryAdditionalTaintStep extends RequestForgeryAdditionalTaintStep {
+  DefaultRequestForgeryAdditionalTaintStep() { this = "DefaultRequestForgeryAdditionalTaintStep" }
+
+  override predicate propagatesTaint(DataFlow::Node pred, DataFlow::Node succ) {
+    // propagate to a URI when its host is assigned to
+    exists(UriCreation c | c.getHostArg() = pred.asExpr() | succ.asExpr() = c)
+    or
+    // propagate to a URL when its host is assigned to
+    exists(UrlConstructorCall c | c.getHostArg() = pred.asExpr() | succ.asExpr() = c)
+    or
+    // propagate to a RequestEntity when its url is assigned to
+    exists(MethodAccess m |
+      m.getMethod().getDeclaringType() instanceof SpringRequestEntity and
+      (
+        m.getMethod().hasName(["get", "post", "head", "delete", "options", "patch", "put"]) and
+        m.getArgument(0) = pred.asExpr() and
+        m = succ.asExpr()
+        or
+        m.getMethod().hasName("method") and
+        m.getArgument(1) = pred.asExpr() and
+        m = succ.asExpr()
+      )
+    )
+    or
+    // propagate from a `RequestEntity<>$BodyBuilder` to a `RequestEntity`
+    // when the builder is tainted
+    exists(MethodAccess m, RefType t |
+      m.getMethod().getDeclaringType() = t and
+      t.hasQualifiedName("org.springframework.http", "RequestEntity<>$BodyBuilder") and
+      m.getMethod().hasName("body") and
+      m.getQualifier() = pred.asExpr() and
       m = succ.asExpr()
     )
-  )
-  or
-  // propagate from a `RequestEntity<>$BodyBuilder` to a `RequestEntity`
-  // when the builder is tainted
-  exists(MethodAccess m, RefType t |
-    m.getMethod().getDeclaringType() = t and
-    t.hasQualifiedName("org.springframework.http", "RequestEntity<>$BodyBuilder") and
-    m.getMethod().hasName("body") and
-    m.getQualifier() = pred.asExpr() and
-    m = succ.asExpr()
-  )
+  }
 }
 
 /** A data flow sink for request forgery vulnerabilities. */
@@ -257,7 +265,7 @@ private MethodAccess getAChainedAppend(Expr e) {
  * a hostname or a URL separator, preventing the appended string from arbitrarily controlling
  * the addressed server.
  */
-class HostnameSanitizedExpr extends Expr {
+private class HostnameSanitizedExpr extends Expr {
   HostnameSanitizedExpr() {
     // Sanitize expressions that come after a sanitizing prefix in a tree of string additions:
     this = getASanitizedAddOperand()
@@ -311,6 +319,6 @@ class HostnameSanitizedExpr extends Expr {
  * A value that is the result of prepending a string that prevents any value from controlling the
  * host of a URL.
  */
-class HostnameSantizer extends RequestForgerySanitizer {
+private class HostnameSantizer extends RequestForgerySanitizer {
   HostnameSantizer() { this.asExpr() instanceof HostnameSanitizedExpr }
 }
