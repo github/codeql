@@ -128,7 +128,10 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
       else result = ""
   }
 
-  private string stubMembers() { result = concat(stubMember(this.getAGeneratedMember())) }
+  language[monotonicAggregates]
+  private string stubMembers() {
+    result = concat(Member m | m = this.getAGeneratedMember() | stubMember(m) order by m.getName())
+  }
 
   private GeneratedMember getAGeneratedMember() { result.getDeclaringType() = this }
 
@@ -313,8 +316,8 @@ private string stubQualifiedNamePrefix(ValueOrRefType t) {
   then result = ""
   else
     if t.getParent() instanceof Namespace
-    then result = t.getParent().(Namespace).getQualifiedName() + "."
-    else result = stubQualifiedNamePrefix(t.getParent()) + "."
+    then result = t.getDeclaringNamespace().getQualifiedName() + "."
+    else result = t.getDeclaringType().getQualifiedName() + "."
 }
 
 language[monotonicAggregates]
@@ -583,62 +586,85 @@ private string stubExplicitImplementation(Member c) {
 }
 
 private string stubMember(Member m) {
-  exists(Method c | m = c and not m.getDeclaringType() instanceof Enum |
-    result =
-      "    " + stubModifiers(c) + stubClassName(c.getReturnType()) + " " +
-        stubExplicitImplementation(c) + c.getName() + stubGenericMethodParams(c) + "(" +
-        stubParameters(c) + ")" + stubTypeParametersConstraints(c) + stubImplementation(c) + ";\n"
-  )
-  or
-  exists(Operator op |
-    m = op and not m.getDeclaringType() instanceof Enum and not op instanceof ConversionOperator
-  |
-    result =
-      "    " + stubModifiers(op) + stubClassName(op.getReturnType()) + " operator " + op.getName() +
-        "(" + stubParameters(op) + ") => throw null;\n"
-  )
-  or
-  exists(ConversionOperator op | m = op |
-    result =
-      "    " + stubModifiers(op) + stubExplicit(op) + "operator " +
-        stubClassName(op.getReturnType()) + "(" + stubParameters(op) + ") => throw null;\n"
-  )
-  or
-  result = "    " + m.(EnumConstant).getName() + ",\n"
-  or
-  exists(Property p | m = p |
-    result =
-      "    " + stubModifiers(m) + stubClassName(p.getType()) + " " + stubExplicitImplementation(p) +
-        p.getName() + " { " + stubGetter(p) + stubSetter(p) + "}\n"
-  )
-  or
-  exists(Constructor c |
-    m = c and
-    not c.getDeclaringType() instanceof Enum and
-    (not c.getDeclaringType() instanceof Struct or c.getNumberOfParameters() > 0)
-  |
-    result =
-      "    " + stubModifiers(m) + c.getName() + "(" + stubParameters(c) + ")" +
-        stubConstructorInitializer(c) + " => throw null;\n"
-  )
-  or
-  exists(Indexer i | m = i |
-    result =
-      "    " + stubModifiers(m) + stubClassName(i.getType()) + " " + stubExplicitImplementation(i) +
-        "this[" + stubParameters(i) + "] { " + stubGetter(i) + stubSetter(i) + "}\n"
-  )
-  or
-  exists(Field f, string impl | f = m and not f instanceof EnumConstant |
-    (if f.isConst() then impl = " = throw null" else impl = "") and
-    result =
-      "    " + stubModifiers(m) + stubClassName(f.getType()) + " " + f.getName() + impl + ";\n"
-  )
-  or
-  exists(Event e | m = e |
-    result =
-      "    " + stubModifiers(m) + "event " + stubClassName(e.getType()) + " " +
-        stubExplicitImplementation(e) + e.getName() + ";\n"
-  )
+  if m instanceof Method
+  then
+    if not m.getDeclaringType() instanceof Enum
+    then
+      result =
+        "    " + stubModifiers(m) + stubClassName(m.(Method).getReturnType()) + " " +
+          stubExplicitImplementation(m) + m.getName() + stubGenericMethodParams(m) + "(" +
+          stubParameters(m) + ")" + stubTypeParametersConstraints(m) + stubImplementation(m) + ";\n"
+    else result = "    // Stub generator skipped method: " + m.getName() + "\n"
+  else
+    if m instanceof Operator
+    then
+      if
+        not m.getDeclaringType() instanceof Enum and
+        not m instanceof ConversionOperator
+      then
+        result =
+          "    " + stubModifiers(m) + stubClassName(m.(Operator).getReturnType()) + " operator " +
+            m.getName() + "(" + stubParameters(m) + ") => throw null;\n"
+      else result = "    // Stub generator skipped operator: " + m.getName() + "\n"
+    else
+      if m instanceof ConversionOperator
+      then
+        result =
+          "    " + stubModifiers(m) + stubExplicit(m) + "operator " +
+            stubClassName(m.(ConversionOperator).getReturnType()) + "(" + stubParameters(m) +
+            ") => throw null;\n"
+      else
+        if m instanceof EnumConstant
+        then result = "    " + m.(EnumConstant).getName() + ",\n"
+        else
+          if m instanceof Property
+          then
+            result =
+              "    " + stubModifiers(m) + stubClassName(m.(Property).getType()) + " " +
+                stubExplicitImplementation(m) + m.getName() + " { " + stubGetter(m) + stubSetter(m) +
+                "}\n"
+          else
+            if m instanceof Constructor
+            then
+              if
+                not m.getDeclaringType() instanceof Enum and
+                (
+                  not m.getDeclaringType() instanceof Struct or
+                  m.(Constructor).getNumberOfParameters() > 0
+                )
+              then
+                result =
+                  "    " + stubModifiers(m) + m.getName() + "(" + stubParameters(m) + ")" +
+                    stubConstructorInitializer(m) + " => throw null;\n"
+              else result = "    // Stub generator skipped constructor \n"
+            else
+              if m instanceof Indexer
+              then
+                result =
+                  "    " + stubModifiers(m) + stubClassName(m.(Indexer).getType()) + " " +
+                    stubExplicitImplementation(m) + "this[" + stubParameters(m) + "] { " +
+                    stubGetter(m) + stubSetter(m) + "}\n"
+              else
+                if m instanceof Field // EnumConstants are already stubbed
+                then
+                  exists(string impl |
+                    (if m.(Field).isConst() then impl = " = throw null" else impl = "") and
+                    result =
+                      "    " + stubModifiers(m) + stubClassName(m.(Field).getType()) + " " +
+                        m.(Field).getName() + impl + ";\n"
+                  )
+                else
+                  if m instanceof Event
+                  then
+                    result =
+                      "    " + stubModifiers(m) + "event " + stubClassName(m.(Event).getType()) +
+                        " " + stubExplicitImplementation(m) + m.getName() + ";\n"
+                  else
+                    if m instanceof GeneratedType
+                    then result = m.(GeneratedType).getStub() + "\n"
+                    else
+                      result =
+                        "    // ERR: Stub generator didn't handle member: " + m.getName() + "\n"
 }
 
 private string stubConstructorInitializer(Constructor c) {
