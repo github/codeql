@@ -7,6 +7,7 @@ import csharp
 
 module UnsafeDeserialization {
   private import semmle.code.csharp.serialization.Deserializers
+  private import semmle.code.csharp.dataflow.TaintTracking2
 
   /**
    * A data flow source for unsafe deserialization vulnerabilities.
@@ -57,7 +58,7 @@ module UnsafeDeserialization {
   /**
    * User input to instance type flow tracking.
    */
-  class TaintToObjectTypeTrackingConfig extends TaintTracking::Configuration {
+  class TaintToObjectTypeTrackingConfig extends TaintTracking2::Configuration {
     TaintToObjectTypeTrackingConfig() { this = "TaintToObjectTypeTrackingConfig" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -90,7 +91,7 @@ module UnsafeDeserialization {
   /**
    * Unsafe deserializer creation to usage tracking config.
    */
-  class WeakTypeCreationToUsageTrackingConfig extends TaintTracking::Configuration {
+  class WeakTypeCreationToUsageTrackingConfig extends TaintTracking2::Configuration {
     WeakTypeCreationToUsageTrackingConfig() { this = "DeserializerCreationToUsageTrackingConfig" }
 
     override predicate isSource(DataFlow::Node source) {
@@ -111,7 +112,7 @@ module UnsafeDeserialization {
   /**
    * Safe deserializer creation to usage tracking config.
    */
-  abstract class SafeConstructorTrackingConfig extends TaintTracking::Configuration {
+  abstract class SafeConstructorTrackingConfig extends TaintTracking2::Configuration {
     bindingset[this]
     SafeConstructorTrackingConfig() { any() }
   }

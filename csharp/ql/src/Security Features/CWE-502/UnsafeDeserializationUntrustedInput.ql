@@ -24,12 +24,12 @@ class LocalSource extends Source {
   LocalSource() { this instanceof LocalFlowSource }
 }
 
-from
-  TaintToObjectMethodTrackingConfig taintTracking, DataFlow::PathNode userInput,
-  DataFlow::PathNode deserializeCallArg
+from DataFlow::PathNode userInput, DataFlow::PathNode deserializeCallArg
 where
-  // all flows from user input to deserialization with weak and strong type serializers
-  taintTracking.hasFlowPath(userInput, deserializeCallArg) and
+  exists(TaintToObjectMethodTrackingConfig taintTracking |
+    // all flows from user input to deserialization with weak and strong type serializers
+    taintTracking.hasFlowPath(userInput, deserializeCallArg)
+  ) and
   // intersect with strong types, but user controlled or weak types deserialization usages
   (
     exists(
