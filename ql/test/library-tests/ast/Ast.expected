@@ -1406,6 +1406,17 @@ modules/modules.rb:
 #  102|       getArgument: [ConstantReadAccess] Test
 #  103|     getStmt: [ModuleDeclaration] Y
 #  103|       getScopeExpr: [ConstantReadAccess] Foo2
+#  107|   getStmt: [ModuleDeclaration] MM
+#  108|     getStmt: [ModuleDeclaration] MM
+#  108|       getScopeExpr: [ConstantReadAccess] MM
+#  112|   getStmt: [ClassDeclaration] YY
+#  115|   getStmt: [ModuleDeclaration] XX
+#  116|     getStmt: [ClassDeclaration] YY
+#  116|       getSuperclassExpr: [ConstantReadAccess] YY
+#  120|   getStmt: [ModuleDeclaration] Baz
+#  120|     getScopeExpr: [ConstantReadAccess] Bar
+#  120|       getScopeExpr: [ConstantReadAccess] Foo1
+#  120|         getScopeExpr: [ConstantReadAccess] Test
 operations/operations.rb:
 #    1| [Toplevel] operations.rb
 #    3|   getStmt: [AssignExpr] ... = ...

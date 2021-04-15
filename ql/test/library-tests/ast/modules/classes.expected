@@ -13,6 +13,8 @@ classes
 | modules.rb:66:5:67:7 | Bar | ClassDeclaration | Bar |
 | modules.rb:72:5:73:7 | Bar | ClassDeclaration | Bar |
 | modules.rb:78:5:79:7 | Bar | ClassDeclaration | Bar |
+| modules.rb:112:1:113:3 | YY | ClassDeclaration | YY |
+| modules.rb:116:7:117:9 | YY | ClassDeclaration | YY |
 classesWithNameScopeExprs
 | classes.rb:16:1:17:3 | MyClass | classes.rb:16:7:16:14 | MyModule |
 | modules.rb:66:5:67:7 | Bar | modules.rb:66:11:66:14 | Foo1 |
@@ -37,3 +39,4 @@ modulesInClasses
 classesWithASuperclass
 | classes.rb:7:1:8:3 | Bar | classes.rb:7:13:7:21 | BaseClass |
 | classes.rb:11:1:12:3 | Baz | classes.rb:11:13:11:32 | call to superclass_for |
+| modules.rb:116:7:117:9 | YY | modules.rb:116:18:116:19 | YY |
