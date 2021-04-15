@@ -47,6 +47,9 @@ class ParameterNode extends DataFlow::SourceNode {
 
   /** Holds if this parameter is a rest parameter. */
   predicate isRestParameter() { p.isRestParameter() }
+
+  /** Gets the data flow node for an expression that is applied to this decorator. */
+  DataFlow::Node getADecorator() { result = getParameter().getADecorator().getExpression().flow() }
 }
 
 /**
