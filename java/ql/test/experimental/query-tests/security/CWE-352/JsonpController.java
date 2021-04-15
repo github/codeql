@@ -105,52 +105,9 @@ public class JsonpController {
         return resultStr;
     }
 
-    @GetMapping(value = "jsonp8")
-    @ResponseBody
-    public String bad8(HttpServletRequest request) {
-        String resultStr = null;
-        String token = request.getParameter("token");
-        boolean result = verifToken(token); //Just check.
-        String jsonpCallback = request.getParameter("jsonpCallback");
-        String jsonStr = getJsonStr(hashMap);
-        resultStr = jsonpCallback + "(" + jsonStr + ")";
-        return resultStr;
-    }
-
-
-    @GetMapping(value = "jsonp9")
-    @ResponseBody
-    public String good1(HttpServletRequest request) {
-        String resultStr = null;
-        String referer = request.getParameter("referer");
-        if (verifReferer(referer)){
-            String jsonpCallback = request.getParameter("jsonpCallback");
-            String jsonStr = getJsonStr(hashMap);
-            resultStr = jsonpCallback + "(" + jsonStr + ")";
-            return resultStr;
-        }
-        return "error";
-    }
-
-
-    @GetMapping(value = "jsonp10")
-    @ResponseBody
-    public String good2(HttpServletRequest request) {
-        String resultStr = null;
-        String token = request.getParameter("token");
-        boolean result = verifToken(token);
-        if (result){
-            return "";
-        }
-        String jsonpCallback = request.getParameter("jsonpCallback");
-        String jsonStr = getJsonStr(hashMap);
-        resultStr = jsonpCallback + "(" + jsonStr + ")";
-        return resultStr;
-    }
-
     @RequestMapping(value = "jsonp11")
     @ResponseBody
-    public String good3(HttpServletRequest request) {
+    public String good1(HttpServletRequest request) {
         JSONObject parameterObj = readToJSONObect(request);
         String resultStr = null;
         String jsonpCallback = request.getParameter("jsonpCallback");
@@ -161,7 +118,7 @@ public class JsonpController {
 
     @RequestMapping(value = "jsonp12")
     @ResponseBody
-    public String good4(@RequestParam("file") MultipartFile file,HttpServletRequest request) {
+    public String good2(@RequestParam("file") MultipartFile file,HttpServletRequest request) {
         if(null == file){
             return "upload file error";
         }
@@ -200,19 +157,5 @@ public class JsonpController {
 
     public static String getJsonStr(Object result) {
         return JSONObject.toJSONString(result);
-    }
-
-    public static boolean verifToken(String token){
-        if (token != "xxxx"){
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean verifReferer(String str){
-        if (str != "xxxx"){
-            return false;
-        }
-        return true;
     }
 }
