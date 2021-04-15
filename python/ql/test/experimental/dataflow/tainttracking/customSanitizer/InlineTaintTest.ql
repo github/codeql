@@ -1,4 +1,4 @@
-import experimental.dataflow.tainttracking.TestTaintLib
+import experimental.meta.InlineTaintTest
 
 class IsSafeCheck extends DataFlow::BarrierGuard {
   IsSafeCheck() {

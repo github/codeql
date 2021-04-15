@@ -1,4 +1,4 @@
-import experimental.dataflow.tainttracking.TestTaintLib
+import experimental.meta.InlineTaintTest
 import semmle.python.dataflow.new.BarrierGuards
 
 class CustomSanitizerOverrides extends TestTaintTrackingConfiguration {

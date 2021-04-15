@@ -1,0 +1,5 @@
+argumentToEnsureNotTaintedNotMarkedAsSpurious
+| ERROR, you should add `SPURIOUS:` to this annotation | taint_test.py:36:9:36:29 | taint_test.py:36 | should_not_be_tainted |
+untaintedArgumentToEnsureTaintedNotMarkedAsMissing
+| ERROR, you should add `# $ MISSING: tainted` annotation | taint_test.py:28:9:28:25 | taint_test.py:28 |
+failures
