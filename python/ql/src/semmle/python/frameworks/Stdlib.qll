@@ -946,7 +946,11 @@ private module Stdlib {
       slash.getOp() instanceof Div and
       right.asCfgNode() = slash.getRight() and
       left.asCfgNode() = slash.getLeft() and
-      left.getALocalSource() = pathlibPath(t2) and
+      (
+        left.getALocalSource() = pathlibPath(t2)
+        or
+        right.getALocalSource() = pathlibPath(t2)
+      ) and
       t2.end()
     |
       t.start() and
@@ -1030,19 +1034,24 @@ private module Stdlib {
       nodeTo.getALocalSource() = pathlibPath() and
       (
         // Special handling of the `/` operator
-        exists(BinaryExprNode slash, DataFlow::Node left |
+        exists(BinaryExprNode slash, DataFlow::Node path_operand, DataFlow::Node data_operand |
           slash.getOp() instanceof Div and
-          left.asCfgNode() = slash.getLeft() and
-          left.getALocalSource() = pathlibPath()
+          (
+            path_operand.asCfgNode() = slash.getLeft() and
+            data_operand.asCfgNode() = slash.getRight()
+            or
+            path_operand.asCfgNode() = slash.getRight() and
+            data_operand.asCfgNode() = slash.getLeft()
+          ) and
+          path_operand.getALocalSource() = pathlibPath()
         |
           nodeTo.asCfgNode() = slash and
-          (
-            // type-preserving call
-            nodeFrom = left
-            or
-            // data injection
-            nodeFrom.asCfgNode() = slash.getRight()
-          )
+          nodeFrom in [
+              // type-preserving call
+              path_operand,
+              // data injection
+              data_operand
+            ]
         )
         or
         // standard case
