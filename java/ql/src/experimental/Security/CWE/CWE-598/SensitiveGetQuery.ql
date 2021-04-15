@@ -2,6 +2,8 @@
  * @name Sensitive GET Query
  * @description Use of GET request method with sensitive query strings.
  * @kind path-problem
+ * @problem.severity warning
+ * @precision medium
  * @id java/sensitive-query-with-get
  * @tags security
  *       external/cwe-598
@@ -21,6 +23,16 @@ class SensitiveInfoExpr extends Expr {
       not v.getName().regexpMatch("token.*") // exclude ^token.* since sensitive tokens are usually in the form of accessToken, authToken, ...
     )
   }
+}
+
+/** Holds if `m` is a method of some override of `HttpServlet.doGet`. */
+private predicate isGetServletMethod(Method m) {
+  isServletRequestMethod(m) and m.getName() = "doGet"
+}
+
+/** The `doGet` method of `HttpServlet`. */
+class DoGetServletMethod extends Method {
+  DoGetServletMethod() { isGetServletMethod(this) }
 }
 
 /** Holds if `ma` is (perhaps indirectly) called from the `doGet` method of `HttpServlet`. */
