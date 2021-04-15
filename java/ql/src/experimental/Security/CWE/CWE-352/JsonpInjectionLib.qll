@@ -13,7 +13,10 @@ import semmle.code.java.frameworks.spring.SpringController
 abstract class RequestGetMethod extends Method {
   RequestGetMethod() {
     not exists(MethodAccess ma |
-      // Exclude apparent GET handlers that read a request entity, because this is the principle of JSONP.
+      // Exclude apparent GET handlers that read a request entity, because this likely indicates this is not in fact a GET handler.
+      // This is particularly a problem with Spring handlers, which can sometimes neglect to specify a request method.
+      // Even if it is in fact a GET handler, such a request method will be unusable in the context `<script src="...">`,
+      // which is the typical use-case for JSONP but cannot supply a request body.
       ma.getMethod() instanceof ServletRequestGetBodyMethod and
       this.polyCalls*(ma.getEnclosingCallable())
     )
