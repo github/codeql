@@ -12,7 +12,7 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import RequestForgery
+import semmle.code.java.security.RequestForgery
 import DataFlow::PathGraph
 
 class RequestForgeryConfiguration extends TaintTracking::Configuration {
