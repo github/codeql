@@ -1,6 +1,9 @@
 /**
  * @name Unsafe deserialization with RMI.
- * @description TBD
+ * @description Java RMI uses native Java serialization mechanism.
+ *              If a registered remote object has a method that takes a complex object,
+ *              an attacker can take advantage of unsafe Java deserialization mechanism.
+ *              In the worst case, it results in remote code execution.
  * @kind problem
  * @problem.severity error
  * @precision high
@@ -16,13 +19,22 @@ private class ObjectInputStream extends RefType {
   ObjectInputStream() { hasQualifiedName("java.io", "ObjectInputStream") }
 }
 
+/**
+ * A method that binds a name to a remote object.
+ */
 private class BindMethod extends Method {
   BindMethod() {
-    getDeclaringType().hasQualifiedName("java.rmi", "Naming") and
+    (
+      getDeclaringType().hasQualifiedName("java.rmi", "Naming") or
+      getDeclaringType().hasQualifiedName("java.rmi.registry", "Registry")
+    ) and
     hasName(["bind", "rebind"])
   }
 }
 
+/**
+ * Looks for a vulnerable method in a `Remote` object.
+ */
 private Method getVulnerableMethod(Type type) {
   type.(RefType).getASupertype*() instanceof TypeRemote and
   exists(Method m, Type parameterType |
@@ -35,6 +47,9 @@ private Method getVulnerableMethod(Type type) {
   )
 }
 
+/**
+ * A method call that registers a remote object that has a vulnerable method.
+ */
 private class UnsafeRmiBinding extends MethodAccess {
   Method vulnerableMethod;
 
@@ -45,8 +60,6 @@ private class UnsafeRmiBinding extends MethodAccess {
 
   Method getVulnerableMethod() { result = vulnerableMethod }
 }
-
-// TODO: Cover Registry.bind() and rebind() -- test these sinks first
 
 from UnsafeRmiBinding call
 select call, "Unsafe deserialization with RMI in '" + call.getVulnerableMethod() + "' method"
