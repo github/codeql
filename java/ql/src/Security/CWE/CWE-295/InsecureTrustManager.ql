@@ -80,7 +80,8 @@ class InsecureTrustManagerConfiguration extends TaintTracking::Configuration {
 bindingset[result]
 private string getAFlagName() {
   result
-      .regexpMatch("(?i).*(secure|disable|selfCert|selfSign|validat|verif|trust|ignore|nocertificatecheck).*")
+      .regexpMatch("(?i).*(secure|disable|selfCert|selfSign|validat|verif|trust|ignore|nocertificatecheck).*") and
+  result != "equalsIgnoreCase"
 }
 
 /**
@@ -94,11 +95,6 @@ private class FlagType extends Type {
   }
 }
 
-private predicate isEqualsIgnoreCaseMethodAccess(MethodAccess ma) {
-  ma.getMethod().hasName("equalsIgnoreCase") and
-  ma.getMethod().getDeclaringType() instanceof TypeString
-}
-
 /** Holds if `source` should is considered a flag. */
 private predicate isFlag(DataFlow::Node source) {
   exists(VarAccess v | v.getVariable().getName() = getAFlagName() |
@@ -109,13 +105,13 @@ private predicate isFlag(DataFlow::Node source) {
   or
   exists(MethodAccess ma | ma.getMethod().getName() = getAFlagName() |
     source.asExpr() = ma and
-    ma.getType() instanceof FlagType and
-    not isEqualsIgnoreCaseMethodAccess(ma)
+    ma.getType() instanceof FlagType
   )
 }
 
 /**
- * Holds if there is flow from `node1` to `node2` either due to local flow or due to custom flow steps:
+ * Holds if there is local flow from `node1` to `node2` either due to standard data-flow steps or the
+ * following custom flow steps:
  * 1. `Boolean.parseBoolean(taintedValue)` taints the return value of `parseBoolean`.
  * 2. A call to an `EnvReadMethod` such as `System.getProperty` where a tainted value is used as an argument.
  *    The return value of such a method is then tainted.
