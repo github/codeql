@@ -438,6 +438,6 @@
   ],
   "CryptoAlgorithms Python/JS": [
     "javascript/ql/src/semmle/javascript/security/CryptoAlgorithms.qll",
-    "python/ql/src/semmle/crypto/Crypto.qll"
+    "python/ql/src/semmle/python/concepts/CryptoAlgorithms.qll"
   ]
 }

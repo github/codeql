@@ -634,7 +634,7 @@ module Cryptography {
     }
   }
 
-  import semmle.crypto.Crypto
+  import semmle.python.concepts.CryptoAlgorithms
 
   /**
    * A data-flow node that is an application of a cryptographic algorithm. For example,
