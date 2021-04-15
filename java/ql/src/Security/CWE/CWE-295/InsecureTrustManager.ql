@@ -23,7 +23,7 @@ import DataFlow::PathGraph
  */
 class InsecureX509TrustManager extends RefType {
   InsecureX509TrustManager() {
-    getASupertype*() instanceof X509TrustManager and
+    this.getASupertype*() instanceof X509TrustManager and
     exists(Method m |
       m.getDeclaringType() = this and
       m.hasName("checkServerTrusted") and
@@ -34,7 +34,7 @@ class InsecureX509TrustManager extends RefType {
 
 /** The `java.security.cert.CertificateException` class. */
 private class CertificateException extends RefType {
-  CertificateException() { hasQualifiedName("java.security.cert", "CertificateException") }
+  CertificateException() { this.hasQualifiedName("java.security.cert", "CertificateException") }
 }
 
 /**
