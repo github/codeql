@@ -27,7 +27,9 @@ class LocalSourceNode extends Node {
   LocalSourceNode() {
     not comes_from_cfgnode(this) and
     not this instanceof ModuleVariableNode and
-    not this instanceof PostUpdateNode
+    not this.(PostUpdateNode).getPreUpdateNode() in [
+        syntheticPostUpdateNode::storePreUpdateNode(), syntheticPostUpdateNode::readPreUpdateNode()
+      ]
     or
     this = any(ModuleVariableNode mvn).getARead()
   }
