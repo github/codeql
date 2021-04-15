@@ -648,7 +648,7 @@ private string stubMember(Member m) {
                 if m instanceof Field // EnumConstants are already stubbed
                 then
                   exists(string impl |
-                    (if m.(Field).isConst() then impl = " = throw null" else impl = "") and
+                    (if m.(Field).isConst() then impl = " = default" else impl = "") and
                     result =
                       "    " + stubModifiers(m) + stubClassName(m.(Field).getType()) + " " +
                         m.(Field).getName() + impl + ";\n"
