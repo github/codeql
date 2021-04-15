@@ -33,30 +33,28 @@ where
   // intersect with strong types, but user controlled or weak types deserialization usages
   (
     exists(
-      DataFlow::PathNode weakTypeCreation, DataFlow::PathNode weakTypeUsage,
+      DataFlow::Node weakTypeCreation, DataFlow::Node weakTypeUsage,
       WeakTypeCreationToUsageTrackingConfig weakTypeDeserializerTracking
     |
-      weakTypeDeserializerTracking.hasFlowPath(weakTypeCreation, weakTypeUsage) and
-      weakTypeUsage.getNode().asExpr().getParent() =
-        deserializeCallArg.getNode().asExpr().getParent()
+      weakTypeDeserializerTracking.hasFlow(weakTypeCreation, weakTypeUsage) and
+      weakTypeUsage.asExpr().getParent() = deserializeCallArg.getNode().asExpr().getParent()
     )
     or
     exists(
-      TaintToObjectTypeTrackingConfig userControlledTypeTracking,
-      DataFlow::PathNode taintedTypeUsage, DataFlow::PathNode userInput2
+      TaintToObjectTypeTrackingConfig userControlledTypeTracking, DataFlow::Node taintedTypeUsage,
+      DataFlow::Node userInput2
     |
-      userControlledTypeTracking.hasFlowPath(userInput2, taintedTypeUsage) and
-      taintedTypeUsage.getNode().asExpr().getParent() =
-        deserializeCallArg.getNode().asExpr().getParent()
+      userControlledTypeTracking.hasFlow(userInput2, taintedTypeUsage) and
+      taintedTypeUsage.asExpr().getParent() = deserializeCallArg.getNode().asExpr().getParent()
     )
   ) and
   // exclude deserialization flows with safe instances (i.e. JavaScriptSerializer without resolver)
   not exists(
-    SafeConstructorTrackingConfig safeConstructorTracking, DataFlow::PathNode safeCreation,
-    DataFlow::PathNode safeTypeUsage
+    SafeConstructorTrackingConfig safeConstructorTracking, DataFlow::Node safeCreation,
+    DataFlow::Node safeTypeUsage
   |
-    safeConstructorTracking.hasFlowPath(safeCreation, safeTypeUsage) and
-    safeTypeUsage.getNode().asExpr().getParent() = deserializeCallArg.getNode().asExpr().getParent()
+    safeConstructorTracking.hasFlow(safeCreation, safeTypeUsage) and
+    safeTypeUsage.asExpr().getParent() = deserializeCallArg.getNode().asExpr().getParent()
   )
   or
   // no type check needed - straightforward taint -> sink
