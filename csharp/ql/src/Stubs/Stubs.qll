@@ -81,10 +81,6 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
         min(this.getLocation().toString()) + "`\n"
   }
 
-  private string stubAccessibilityModifier() {
-    if this.isPublic() then result = "public " else result = ""
-  }
-
   /** Gets the entire C# stub code for this type. */
   final string getStub() {
     if this.isDuplicate()
@@ -93,15 +89,14 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
       not this instanceof DelegateType and
       result =
         this.stubComment() + this.stubAttributes() + this.stubAbstractModifier() +
-          this.stubStaticModifier() + this.stubAccessibilityModifier() + this.stubKeyword() + " " +
+          this.stubStaticModifier() + stubAccessibility(this) + this.stubKeyword() + " " +
           this.getUndecoratedName() + stubGenericArguments(this) + stubBaseTypesString() +
           stubTypeParametersConstraints(this) + "\n{\n" + stubMembers() + "}\n\n"
       or
       result =
-        this.stubComment() + this.stubAttributes() + this.stubAccessibilityModifier() +
-          this.stubKeyword() + " " + stubClassName(this.(DelegateType).getReturnType()) + " " +
-          this.getUndecoratedName() + stubGenericArguments(this) + "(" + stubParameters(this) +
-          ");\n\n"
+        this.stubComment() + this.stubAttributes() + stubAccessibility(this) + this.stubKeyword() +
+          " " + stubClassName(this.(DelegateType).getReturnType()) + " " + this.getUndecoratedName()
+          + stubGenericArguments(this) + "(" + stubParameters(this) + ");\n\n"
     )
   }
 
@@ -273,7 +268,13 @@ private string stubAccessibility(Member m) {
     then result = "public "
     else
       if m.isProtected()
-      then result = "protected "
+      then
+        if m.isPrivate()
+        then result = "protected private "
+        else
+          if m.isInternal()
+          then result = "protected internal "
+          else result = "protected "
       else
         if m.isPrivate()
         then result = "private "
