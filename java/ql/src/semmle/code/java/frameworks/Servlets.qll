@@ -361,13 +361,3 @@ predicate isDoFilterMethod(Method m) {
   m.getParameter(1).getType() instanceof ServletResponse and
   m.getParameter(2).getType() instanceof FilterChain
 }
-
-/** Holds if `m` is a method of some override of `HttpServlet.doGet`. */
-predicate isGetServletMethod(Method m) {
-  isServletRequestMethod(m) and m.getName() = "doGet"
-}
-
-/** The `doGet` method of `HttpServlet`. */
-class DoGetServletMethod extends Method {
-  DoGetServletMethod() { isGetServletMethod(this) }
-}

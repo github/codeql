@@ -21,7 +21,7 @@ abstract class RequestGetMethod extends Method {
 
 /** Override method of `doGet` of `Servlet` subclass. */
 private class ServletGetMethod extends RequestGetMethod {
-  ServletGetMethod() { isServletRequestMethod(this) and m.getName() = "doGet" }
+  ServletGetMethod() { isServletRequestMethod(this) and this.getName() = "doGet" }
 }
 
 /** The method of SpringController class processing `get` request. */
