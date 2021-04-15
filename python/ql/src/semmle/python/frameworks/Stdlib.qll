@@ -887,7 +887,9 @@ private module Stdlib {
   /**
    * Gets a name of a method of a `pathlib.Path` object that returns a `pathlib.Path` object.
    */
-  private string pathlibPathMethod() { result in ["absolute", "relative_to"] }
+  private string pathlibPathMethod() {
+    result in ["absolute", "relative_to", "rename", "replace", "resolve"]
+  }
 
   /**
    * Gets a name of a method of a `pathlib.Path` object that modifies a `pathlib.Path` object based on new data.
