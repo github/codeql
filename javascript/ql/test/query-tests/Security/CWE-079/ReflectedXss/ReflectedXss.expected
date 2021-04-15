@@ -66,6 +66,13 @@ nodes
 | ReflectedXss.js:85:12:85:31 | snarkdown2(req.body) |
 | ReflectedXss.js:85:23:85:30 | req.body |
 | ReflectedXss.js:85:23:85:30 | req.body |
+| ReflectedXss.js:94:12:94:19 | req.body |
+| ReflectedXss.js:94:12:94:19 | req.body |
+| ReflectedXss.js:94:12:94:19 | req.body |
+| ReflectedXss.js:95:12:95:38 | markdow ... q.body) |
+| ReflectedXss.js:95:12:95:38 | markdow ... q.body) |
+| ReflectedXss.js:95:30:95:37 | req.body |
+| ReflectedXss.js:95:30:95:37 | req.body |
 | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id |
 | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id |
 | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id |
@@ -212,6 +219,11 @@ edges
 | ReflectedXss.js:85:23:85:30 | req.body | ReflectedXss.js:85:12:85:31 | snarkdown2(req.body) |
 | ReflectedXss.js:85:23:85:30 | req.body | ReflectedXss.js:85:12:85:31 | snarkdown2(req.body) |
 | ReflectedXss.js:85:23:85:30 | req.body | ReflectedXss.js:85:12:85:31 | snarkdown2(req.body) |
+| ReflectedXss.js:94:12:94:19 | req.body | ReflectedXss.js:94:12:94:19 | req.body |
+| ReflectedXss.js:95:30:95:37 | req.body | ReflectedXss.js:95:12:95:38 | markdow ... q.body) |
+| ReflectedXss.js:95:30:95:37 | req.body | ReflectedXss.js:95:12:95:38 | markdow ... q.body) |
+| ReflectedXss.js:95:30:95:37 | req.body | ReflectedXss.js:95:12:95:38 | markdow ... q.body) |
+| ReflectedXss.js:95:30:95:37 | req.body | ReflectedXss.js:95:12:95:38 | markdow ... q.body) |
 | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id |
 | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id |
 | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id |
@@ -307,6 +319,8 @@ edges
 | ReflectedXss.js:83:12:83:19 | req.body | ReflectedXss.js:83:12:83:19 | req.body | ReflectedXss.js:83:12:83:19 | req.body | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:83:12:83:19 | req.body | user-provided value |
 | ReflectedXss.js:84:12:84:30 | snarkdown(req.body) | ReflectedXss.js:84:22:84:29 | req.body | ReflectedXss.js:84:12:84:30 | snarkdown(req.body) | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:84:22:84:29 | req.body | user-provided value |
 | ReflectedXss.js:85:12:85:31 | snarkdown2(req.body) | ReflectedXss.js:85:23:85:30 | req.body | ReflectedXss.js:85:12:85:31 | snarkdown2(req.body) | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:85:23:85:30 | req.body | user-provided value |
+| ReflectedXss.js:94:12:94:19 | req.body | ReflectedXss.js:94:12:94:19 | req.body | ReflectedXss.js:94:12:94:19 | req.body | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:94:12:94:19 | req.body | user-provided value |
+| ReflectedXss.js:95:12:95:38 | markdow ... q.body) | ReflectedXss.js:95:30:95:37 | req.body | ReflectedXss.js:95:12:95:38 | markdow ... q.body) | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:95:30:95:37 | req.body | user-provided value |
 | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | user-provided value |
 | ReflectedXssContentTypes.js:20:14:20:36 | "FOO: " ... rams.id | ReflectedXssContentTypes.js:20:24:20:36 | req.params.id | ReflectedXssContentTypes.js:20:14:20:36 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXssContentTypes.js:20:24:20:36 | req.params.id | user-provided value |
 | ReflectedXssContentTypes.js:39:13:39:35 | "FOO: " ... rams.id | ReflectedXssContentTypes.js:39:23:39:35 | req.params.id | ReflectedXssContentTypes.js:39:13:39:35 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXssContentTypes.js:39:23:39:35 | req.params.id | user-provided value |

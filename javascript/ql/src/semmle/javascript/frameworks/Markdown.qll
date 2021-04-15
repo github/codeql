@@ -118,3 +118,20 @@ private class SnarkdownStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
+
+/**
+ * A taint step for the `markdown-it` library.
+ */
+private class MarkdownItStep extends TaintTracking::SharedTaintStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode renderer, API::CallNode call |
+      renderer = API::moduleImport("markdown-it").getACall() and
+      renderer.getParameter(0).getMember("html").getARhs().asExpr().(BooleanLiteral).getValue() =
+        "true" and
+      call = renderer.getReturn().getMember(["render", "renderInline"]).getACall()
+    |
+      succ = call and
+      pred = call.getArgument(0)
+    )
+  }
+}
