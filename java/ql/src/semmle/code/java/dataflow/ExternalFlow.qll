@@ -460,7 +460,7 @@ module CsvValidation {
       summaryModel(_, _, _, _, _, _, input, _, _) and pred = "summary"
     |
       specSplit(input, part, _) and
-      not part.regexpMatch("|ReturnValue|ArrayElement|Element") and
+      not part.regexpMatch("|ReturnValue|ArrayElement|Element|MapKey|MapValue") and
       not (part = "Argument" and pred = "sink") and
       not parseArg(part, _) and
       msg = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
@@ -472,7 +472,7 @@ module CsvValidation {
       summaryModel(_, _, _, _, _, _, _, output, _) and pred = "summary"
     |
       specSplit(output, part, _) and
-      not part.regexpMatch("|ReturnValue|ArrayElement|Element") and
+      not part.regexpMatch("|ReturnValue|ArrayElement|Element|MapKey|MapValue") and
       not (part = ["Argument", "Parameter"] and pred = "source") and
       not parseArg(part, _) and
       not parseParam(part, _) and
@@ -690,10 +690,10 @@ private SummaryComponent interpretComponent(string c) {
     c = "ArrayElement" and result = SummaryComponent::content(any(ArrayContent c0))
     or
     c = "Element" and result = SummaryComponent::content(any(CollectionContent c0))
-    // or
-    // c = "MapKey" and result = SummaryComponent::content(any(MapKeyContent c0))
-    // or
-    // c = "MapValue" and result = SummaryComponent::content(any(MapValueContent c0))
+    or
+    c = "MapKey" and result = SummaryComponent::content(any(MapKeyContent c0))
+    or
+    c = "MapValue" and result = SummaryComponent::content(any(MapValueContent c0))
   )
 }
 
