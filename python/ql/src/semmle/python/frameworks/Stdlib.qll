@@ -940,17 +940,10 @@ private module Stdlib {
     )
     or
     // Data injection
-    exists(
-      BinaryExprNode slash, DataFlow::Node right, DataFlow::Node left, DataFlow::TypeTracker t2
-    |
+    exists(BinaryExprNode slash, DataFlow::Node pathOperand, DataFlow::TypeTracker t2 |
       slash.getOp() instanceof Div and
-      right.asCfgNode() = slash.getRight() and
-      left.asCfgNode() = slash.getLeft() and
-      (
-        left.getALocalSource() = pathlibPath(t2)
-        or
-        right.getALocalSource() = pathlibPath(t2)
-      ) and
+      pathOperand.asCfgNode() = slash.getAnOperand() and
+      pathOperand.getALocalSource() = pathlibPath(t2) and
       t2.end()
     |
       t.start() and
@@ -1021,23 +1014,23 @@ private module Stdlib {
       nodeTo.getALocalSource() = pathlibPath() and
       (
         // Special handling of the `/` operator
-        exists(BinaryExprNode slash, DataFlow::Node path_operand, DataFlow::Node data_operand |
+        exists(BinaryExprNode slash, DataFlow::Node pathOperand, DataFlow::Node dataOperand |
           slash.getOp() instanceof Div and
           (
-            path_operand.asCfgNode() = slash.getLeft() and
-            data_operand.asCfgNode() = slash.getRight()
+            pathOperand.asCfgNode() = slash.getLeft() and
+            dataOperand.asCfgNode() = slash.getRight()
             or
-            path_operand.asCfgNode() = slash.getRight() and
-            data_operand.asCfgNode() = slash.getLeft()
+            pathOperand.asCfgNode() = slash.getRight() and
+            dataOperand.asCfgNode() = slash.getLeft()
           ) and
-          path_operand.getALocalSource() = pathlibPath()
+          pathOperand.getALocalSource() = pathlibPath()
         |
           nodeTo.asCfgNode() = slash and
           nodeFrom in [
               // type-preserving call
-              path_operand,
+              pathOperand,
               // data injection
-              data_operand
+              dataOperand
             ]
         )
         or
