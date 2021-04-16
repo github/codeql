@@ -192,7 +192,7 @@ private module CleverGo {
 
     override DataFlow::Node getUrl() { result = urlNode }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
   }
 
   /**
@@ -455,6 +455,6 @@ private module CleverGo {
 
     override DataFlow::Node getValue() { result = this.getArgument(1) }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
   }
 }
