@@ -34,8 +34,7 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
       this instanceof DelegateType
     ) and
     not this instanceof ConstructedType and
-    not this.getALocation() instanceof ExcludedAssembly and
-    this.fromLibrary()
+    not this.getALocation() instanceof ExcludedAssembly
   }
 
   /**
@@ -103,7 +102,8 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
   private ValueOrRefType getAnInterestingBaseType() {
     result = this.getABaseType() and
     not result instanceof ObjectType and
-    not result.getQualifiedName() = "System.ValueType"
+    not result.getQualifiedName() = "System.ValueType" and
+    (not result instanceof Interface or result.(Interface).isEffectivelyPublic())
   }
 
   private string stubBaseTypesString() {
