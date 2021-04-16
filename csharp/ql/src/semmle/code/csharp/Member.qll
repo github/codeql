@@ -99,8 +99,15 @@ class Modifiable extends Declaration, @modifiable {
   private predicate isReallyPrivate() { this.isPrivate() and not this.isProtected() }
 
   /**
-   * Holds if this declaration is effectively `private` (either directly or
-   * because one of the enclosing types is `private`).
+   * Holds if this declaration is effectively `private`. A declaration is considered
+   * effectively `private` if it can only be referenced from
+   * - the declaring and its nested types, similarly to `private` declarations, and
+   * - the enclosing types.
+   *
+   * Note that explicit interface implementation are also considered effectively
+   * `private` if the implemented interface is itself effectively `private`. Finally,
+   * `private protected` members are not considered effectively `private`, because
+   * they can be overriden within the declaring assembly.
    */
   predicate isEffectivelyPrivate() {
     this.isReallyPrivate() or
@@ -115,8 +122,14 @@ class Modifiable extends Declaration, @modifiable {
   }
 
   /**
-   * Holds if this declaration is effectively `internal` (either directly or
-   * because one of the enclosing types is `internal`).
+   * Holds if this declaration is effectively `internal`. A declaration is considered
+   * effectively `internal` if it can only be referenced from the declaring assembly.
+   *
+   * Note that friend assemblies declared in `InternalsVisibleToAttribute` are not
+   * considered. Explicit interface implementation are also considered effectively
+   * `internal` if the implemented interface is itself effectively `internal`. Finally,
+   * `internal protected` members are not considered effectively `internal`, because
+   * they can be overriden outside the declaring assembly.
    */
   predicate isEffectivelyInternal() {
     this.isReallyInternal() or
@@ -125,8 +138,8 @@ class Modifiable extends Declaration, @modifiable {
   }
 
   /**
-   * Holds if this declaration is effectively `public`, because it
-   * and all enclosing types are `public`.
+   * Holds if this declaration is effectively `public`, meaning that it can be
+   * referenced outside the declaring assembly.
    */
   predicate isEffectivelyPublic() { not isEffectivelyPrivate() and not isEffectivelyInternal() }
 }
