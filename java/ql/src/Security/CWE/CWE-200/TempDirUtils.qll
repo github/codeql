@@ -63,23 +63,21 @@ private predicate isTaintedFileCreation(Expr expSource, Expr exprDest) {
 private class TaintFollowingFileMethod extends Method {
   TaintFollowingFileMethod() {
     getDeclaringType() instanceof TypeFile and
-    (
-      hasName("getAbsoluteFile") or
-      hasName("getCanonicalFile")
-    )
+    hasName(["getAbsoluteFile", "getCanonicalFile"])
   }
 }
 
-private predicate isTaintFollowingFileTransformation(Expr expSource, Expr exprDest) {
+private predicate isTaintPropagatingFileTransformation(Expr expSource, Expr exprDest) {
   exists(MethodAccess fileMethodAccess |
-    fileMethodAccess.getMethod() instanceof TaintFollowingFileMethod and
+    fileMethodAccess.getMethod() instanceof TaintPropagatingFileMethod and
     fileMethodAccess.getQualifier() = expSource and
     fileMethodAccess = exprDest
   )
 }
 
 /**
- * Holds if the system temporary directory is still part of the root of the file path.
+ * Holds if taint should propagate from `node1` to `node2` across some file creation or transformation operation.
+ * For example, `taintedFile.getCanonicalFile()` is itself tainted.
  */
 predicate isAdditionalFileTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
   isTaintedFileCreation(node1.asExpr(), node2.asExpr()) or

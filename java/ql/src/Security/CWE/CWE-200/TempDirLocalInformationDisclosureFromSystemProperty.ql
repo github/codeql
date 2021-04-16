@@ -1,10 +1,10 @@
 /**
- * @name Temporary Directory Local information disclosure
- * @description Writing information without explicit permissions to a shared temporary directory may disclose it to other users.
+ * @name Temporary directory local information disclosure (file creation without explicit mode)
+ * @description Creating a temporary file in the system shared temporary directory without specifying explicit access rights (mode) may disclose its contents to other users.
  * @kind path-problem
  * @problem.severity warning
  * @precision very-high
- * @id java/local-temp-file-or-directory-information-disclosure-path
+ * @id java/local-temp-file-or-directory-information-disclosure-missing-mode
  * @tags security
  *       external/cwe/cwe-200
  *       external/cwe/cwe-732
@@ -36,7 +36,7 @@ private class FileFileCreationSink extends FileCreationSink {
 }
 
 /**
- * Sink for if tained File/Path having some `Files` method called on it that creates a file or directory.
+ * Sink for calling a file-creating or directory-creating `Files` method on a tainted `File` or `Path`.
  */
 private class FilesFileCreationSink extends FileCreationSink {
   FilesFileCreationSink() {
@@ -63,7 +63,7 @@ private class FilesVulnerableCreationMethodAccess extends MethodAccess {
 }
 
 /**
- * A call to `java.io.File::createTempFile` where the the system temp dir sinks to the last argument.
+ * The temp directory argument to a call to `java.io.File::createTempFile`, treated as a sink by `TempDirSystemGetPropertyToCreateConfig`.
  */
 private class FileCreateTempFileSink extends FileCreationSink {
   FileCreateTempFileSink() {
