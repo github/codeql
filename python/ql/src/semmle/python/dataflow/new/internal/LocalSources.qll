@@ -21,15 +21,34 @@ private predicate comes_from_cfgnode(Node node) {
  * A data flow node that is a source of local flow. This includes things like
  * - Expressions
  * - Function parameters
+ *
+ *
+ * Local source nodes and the `flowsTo` relation should be thought of in terms of the reference
+ * semantics of the underlying object. For instance, in the following snippet of code
+ *
+ * ```python
+ *     x = []
+ *     x.append(1)
+ *     x.append(2)
+ * ```
+ *
+ * the local source node corresponding to the occurrences of `x` is the empty list that is assigned to `x`
+ * originally. Even though the two `append` calls modify the value of `x`, they do not change the fact that
+ * `x` still points to the same object. If, however, we next do `x = x + [3]`, then the expression `x + [3]`
+ * will be the new local source of what `x` now points to.
  */
 class LocalSourceNode extends Node {
   cached
   LocalSourceNode() {
     not comes_from_cfgnode(this) and
     not this instanceof ModuleVariableNode and
-    not this.(PostUpdateNode).getPreUpdateNode() in [
-        syntheticPostUpdateNode::storePreUpdateNode(), syntheticPostUpdateNode::readPreUpdateNode()
-      ]
+    // Currently, we create synthetic post-update nodes for
+    // - arguments to calls that may modify said argument
+    // - direct reads a writes of object attributes
+    // Both of these preserve the identity of the underlying pointer, and hence we exclude these as
+    // local source nodes.
+    // We do, however, allow the post-update nodes that arise from object creation (which are non-synthetic).
+    not this instanceof SyntheticPostUpdateNode
     or
     this = any(ModuleVariableNode mvn).getARead()
   }
