@@ -966,21 +966,8 @@ private module Stdlib {
       result.(DataFlow::CallCfgNode).getFunction() = returnsPath
     )
     or
-    // Due to bad performance when using normal setup with `path(t2).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        pathlibPath_first_join(t2, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate pathlibPath_first_join(
-    DataFlow::TypeTracker t2, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(pathlibPath(t2), res, summary)
+    // Track further
+    exists(DataFlow::TypeTracker t2 | result = pathlibPath(t2).track(t2, t))
   }
 
   /** Gets a reference to a `pathlib.Path` object. */
