@@ -23,5 +23,3 @@ query predicate classesInModules(ModuleDeclaration mod, ClassDeclaration klass, 
 query predicate modulesInModules(ModuleDeclaration mod, ModuleDeclaration child, string name) {
   child = mod.getModule(name)
 }
-
-query predicate moduleTypes(ModuleBase def, Module type) { type = def.getModule() }
