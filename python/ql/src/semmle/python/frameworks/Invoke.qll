@@ -30,9 +30,9 @@ private module Invoke {
       module Context {
         /** Gets a reference to the `invoke.context.Context` class. */
         API::Node classRef() {
-          result =
-            [API::moduleImport("invoke").getMember("context"), API::moduleImport("invoke")]
-                .getMember("Context")
+          result = API::moduleImport("invoke").getMember("context").getMember("Context")
+          or
+          result = API::moduleImport("invoke").getMember("Context")
         }
 
         /** Gets a reference to an instance of `invoke.context.Context`. */
@@ -51,7 +51,7 @@ private module Invoke {
         }
 
         /** Gets a reference to an instance of `invoke.context.Context`. */
-        DataFlow::LocalSourceNode instance() { result = instance(DataFlow::TypeTracker::end()) }
+        DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
         /** Gets a reference to the `run` or `sudo` methods on a `invoke.context.Context` instance. */
         private DataFlow::LocalSourceNode instanceRunMethods(DataFlow::TypeTracker t) {
