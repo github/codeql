@@ -39,6 +39,13 @@ struct buffers
     unsigned char *pointer;
 } globalBuff1,*globalBuff2,globalBuff1_c,*globalBuff2_c;
 
+void strncat_test5(char* s, struct buffers* buffers) {
+  unsigned len_array = strlen(buffers->array);
+  unsigned max_size = sizeof(buffers->array);
+  unsigned free_size = max_size - len_array;
+  strncat(buffers->array, s, free_size); // BAD [NOT DETECTED]
+}
+
 void strlen_test1(){
   unsigned char buff1[12];
   struct buffers buffAll;
