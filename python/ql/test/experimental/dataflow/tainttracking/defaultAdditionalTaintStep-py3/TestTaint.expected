@@ -6,7 +6,7 @@
 | test_pathlib.py:29 | ok   | test_basic | tainted_pure_posix_path |
 | test_pathlib.py:30 | ok   | test_basic | tainted_pure_windows_path |
 | test_pathlib.py:32 | ok   | test_basic | BinaryExpr |
-| test_pathlib.py:33 | fail | test_basic | BinaryExpr |
+| test_pathlib.py:33 | ok   | test_basic | BinaryExpr |
 | test_pathlib.py:35 | ok   | test_basic | tainted_path.joinpath(..) |
 | test_pathlib.py:36 | ok   | test_basic | pathlib.Path(..).joinpath(..) |
 | test_pathlib.py:37 | ok   | test_basic | pathlib.Path(..).joinpath(..) |
