@@ -678,7 +678,7 @@ private string stubMember(Member m) {
                     (if m.(Field).isConst() then impl = " = default" else impl = "") and
                     result =
                       "    " + stubModifiers(m) + stubClassName(m.(Field).getType()) + " " +
-                        m.(Field).getName() + impl + ";\n"
+                        escapeIfKeyword(m.(Field).getName()) + impl + ";\n"
                   )
                 else
                   if m instanceof Event
