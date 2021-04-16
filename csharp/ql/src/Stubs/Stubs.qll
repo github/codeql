@@ -433,10 +433,22 @@ private string stubConstraints(TypeParameterConstraints tpc) {
 }
 
 private string stubTypeParameterConstraints(TypeParameter tp) {
-  exists(TypeParameterConstraints tpc | tpc = tp.getConstraints() |
-    result =
-      " where " + tp.getName() + ": " + strictconcat(string s | s = stubConstraints(tpc) | s, ", ")
-  )
+  if
+    tp.getDeclaringGeneric().(Virtualizable).isOverride() or
+    tp.getDeclaringGeneric().(Virtualizable).implementsExplicitInterface()
+  then
+    if tp.getConstraints().hasValueTypeConstraint()
+    then result = " where " + tp.getName() + ": struct"
+    else
+      if tp.getConstraints().hasRefTypeConstraint()
+      then result = " where " + tp.getName() + ": class"
+      else result = ""
+  else
+    exists(TypeParameterConstraints tpc | tpc = tp.getConstraints() |
+      result =
+        " where " + tp.getName() + ": " +
+          strictconcat(string s | s = stubConstraints(tpc) | s, ", ")
+    )
 }
 
 private string stubTypeParametersConstraints(Declaration d) {
