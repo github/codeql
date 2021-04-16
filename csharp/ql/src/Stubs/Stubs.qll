@@ -425,20 +425,20 @@ private string stubGenericMethodParams(Method m) {
   else result = ""
 }
 
-private string stubConstraints(TypeParameterConstraints tpc) {
-  tpc.hasConstructorConstraint() and result = "new()"
+private string stubConstraints(TypeParameterConstraints tpc, int i) {
+  tpc.hasConstructorConstraint() and result = "new()" and i = 2
   or
-  tpc.hasUnmanagedTypeConstraint() and result = "unmanaged"
+  tpc.hasUnmanagedTypeConstraint() and result = "unmanaged" and i = 0
   or
-  tpc.hasValueTypeConstraint() and result = "struct"
+  tpc.hasValueTypeConstraint() and result = "struct" and i = 0
   or
-  tpc.hasRefTypeConstraint() and result = "class"
+  tpc.hasRefTypeConstraint() and result = "class" and i = 0
   or
-  result = tpc.getATypeConstraint().(TypeParameter).getName()
+  result = tpc.getATypeConstraint().(TypeParameter).getName() and i = 1
   or
-  result = stubClassName(tpc.getATypeConstraint().(Interface))
+  result = stubClassName(tpc.getATypeConstraint().(Interface)) and i = 1
   or
-  result = stubClassName(tpc.getATypeConstraint().(Class))
+  result = stubClassName(tpc.getATypeConstraint().(Class)) and i = 1
 }
 
 private string stubTypeParameterConstraints(TypeParameter tp) {
@@ -456,7 +456,7 @@ private string stubTypeParameterConstraints(TypeParameter tp) {
     exists(TypeParameterConstraints tpc | tpc = tp.getConstraints() |
       result =
         " where " + tp.getName() + ": " +
-          strictconcat(string s | s = stubConstraints(tpc) | s, ", ")
+          strictconcat(string s, int i | s = stubConstraints(tpc, i) | s, ", " order by i)
     )
 }
 
