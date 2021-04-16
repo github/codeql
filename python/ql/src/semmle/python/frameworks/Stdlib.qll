@@ -911,6 +911,26 @@ private module Stdlib {
   private string pathlibPathMethodExport() { result in ["as_posix", "as_uri"] }
 
   /**
+   * Flow for type presering mehtods.
+   */
+  private predicate typePreservingCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    exists(DataFlow::AttrRead returnsPath | returnsPath.getAttributeName() = pathlibPathMethod() |
+      nodeTo.(DataFlow::CallCfgNode).getFunction() = returnsPath and
+      nodeFrom = returnsPath.getObject()
+    )
+  }
+
+  /**
+   * Flow for type presering attributes.
+   */
+  private predicate typePreservingAttribute(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    exists(DataFlow::AttrRead isPath | isPath.getAttributeName() = pathlibPathAttribute() |
+      nodeTo = isPath and
+      nodeFrom = isPath.getObject()
+    )
+  }
+
+  /**
    * Gets a reference to a `pathlib.Path` object.
    * This type tracker makes the monomorphic API use assumption.
    */
@@ -920,26 +940,25 @@ private module Stdlib {
     result = pathlib().getMember(pathlibPathConstructor()).getACall()
     or
     // Type-preserving call
-    exists(DataFlow::AttrRead returnsPath, DataFlow::TypeTracker t2 |
-      returnsPath.getAttributeName() = pathlibPathMethod() and
-      returnsPath.getObject().getALocalSource() = pathlibPath(t2) and
+    exists(DataFlow::Node nodeFrom, DataFlow::TypeTracker t2 |
+      nodeFrom.getALocalSource() = pathlibPath(t2) and
       t2.end()
     |
       t.start() and
-      result.(DataFlow::CallCfgNode).getFunction() = returnsPath
+      typePreservingCall(nodeFrom, result)
     )
     or
     // Type-preserving attribute
-    exists(DataFlow::AttrRead isPath, DataFlow::TypeTracker t2 |
-      isPath.getAttributeName() = pathlibPathAttribute() and
-      isPath.getObject().getALocalSource() = pathlibPath(t2) and
+    exists(DataFlow::Node nodeFrom, DataFlow::TypeTracker t2 |
+      nodeFrom.getALocalSource() = pathlibPath(t2) and
       t2.end()
     |
       t.start() and
-      result = isPath
+      typePreservingAttribute(nodeFrom, result)
     )
     or
     // Data injection
+    //   Special handling of the `/` operator
     exists(BinaryExprNode slash, DataFlow::Node pathOperand, DataFlow::TypeTracker t2 |
       slash.getOp() instanceof Div and
       pathOperand.asCfgNode() = slash.getAnOperand() and
@@ -950,6 +969,7 @@ private module Stdlib {
       result.asCfgNode() = slash
     )
     or
+    //   standard case
     exists(DataFlow::AttrRead returnsPath, DataFlow::TypeTracker t2 |
       returnsPath.getAttributeName() = pathlibPathInjection() and
       returnsPath.getObject().getALocalSource() = pathlibPath(t2) and
@@ -996,18 +1016,10 @@ private module Stdlib {
       nodeTo.getALocalSource() = pathlibPath() and
       (
         // Type-preserving call
-        exists(DataFlow::AttrRead returnsPath |
-          returnsPath.getAttributeName() = pathlibPathMethod()
-        |
-          nodeTo.(DataFlow::CallCfgNode).getFunction() = returnsPath and
-          nodeFrom = returnsPath.getObject()
-        )
+        typePreservingCall(nodeFrom, nodeTo)
         or
         // Type-preserving attribute
-        exists(DataFlow::AttrRead isPath | isPath.getAttributeName() = pathlibPathAttribute() |
-          nodeTo = isPath and
-          nodeFrom = isPath.getObject()
-        )
+        typePreservingAttribute(nodeFrom, nodeTo)
       )
       or
       // Data injection
