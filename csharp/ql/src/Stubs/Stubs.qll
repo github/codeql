@@ -290,8 +290,11 @@ private Virtualizable getAccessibilityDeclaringVirtualizable(Virtualizable v) {
 
 private string stubAccessibility(Member m) {
   if
-    m.getDeclaringType() instanceof Interface or
+    m.getDeclaringType() instanceof Interface
+    or
     exists(m.(Virtualizable).getExplicitlyImplementedInterface())
+    or
+    m instanceof Constructor and m.isStatic()
   then result = ""
   else
     if m.isPublic()
@@ -445,7 +448,7 @@ private string stubGenericMethodParams(Method m) {
 }
 
 private string stubConstraints(TypeParameterConstraints tpc, int i) {
-  tpc.hasConstructorConstraint() and result = "new()" and i = 2
+  tpc.hasConstructorConstraint() and result = "new()" and i = 4
   or
   tpc.hasUnmanagedTypeConstraint() and result = "unmanaged" and i = 0
   or
@@ -453,9 +456,9 @@ private string stubConstraints(TypeParameterConstraints tpc, int i) {
   or
   tpc.hasRefTypeConstraint() and result = "class" and i = 0
   or
-  result = tpc.getATypeConstraint().(TypeParameter).getName() and i = 1
+  result = tpc.getATypeConstraint().(TypeParameter).getName() and i = 3
   or
-  result = stubClassName(tpc.getATypeConstraint().(Interface)) and i = 1
+  result = stubClassName(tpc.getATypeConstraint().(Interface)) and i = 2
   or
   result = stubClassName(tpc.getATypeConstraint().(Class)) and i = 1
 }
@@ -492,9 +495,7 @@ private string stubTypeParametersConstraints(Declaration d) {
 }
 
 private string stubImplementation(Virtualizable c) {
-  if c.isAbstract() or c.getDeclaringType() instanceof Interface
-  then result = ""
-  else result = " => throw null"
+  if c.isAbstract() then result = "" else result = " => throw null"
 }
 
 private predicate isKeyword(string s) {
@@ -716,7 +717,11 @@ private string stubMember(Member m) {
 private Constructor getBaseConstructor(ValueOrRefType type) {
   result =
     min(Constructor bc |
-      type.getBaseClass().getAMember() = bc
+      type.getBaseClass().getAMember() = bc and
+      // not the `static` constructor
+      not bc.isStatic() and
+      // not a `private` constructor, unless it's `private protected`, or if the derived class is nested
+      (not bc.isPrivate() or bc.isProtected() or bc.getDeclaringType() = type.getDeclaringType+())
     |
       bc order by bc.getNumberOfParameters(), stubParameters(bc)
     )
@@ -725,13 +730,15 @@ private Constructor getBaseConstructor(ValueOrRefType type) {
 private string stubConstructorInitializer(Constructor c) {
   exists(Constructor baseCtor |
     baseCtor = getBaseConstructor(c.getDeclaringType()) and
-    if baseCtor.getNumberOfParameters() = 0
+    if baseCtor.getNumberOfParameters() = 0 or c.isStatic()
     then result = ""
     else result = " : base(" + stubDefaultArguments(baseCtor) + ")"
   )
   or
   // abstract base class might not have a constructor
-  not exists(Constructor baseCtor | c.getDeclaringType().getBaseClass().getAMember() = baseCtor) and
+  not exists(Constructor baseCtor |
+    c.getDeclaringType().getBaseClass().getAMember() = baseCtor and not baseCtor.isStatic()
+  ) and
   result = ""
 }
 
@@ -743,19 +750,13 @@ private string stubExplicit(ConversionOperator op) {
 
 private string stubGetter(DeclarationWithGetSetAccessors p) {
   if exists(p.getGetter())
-  then
-    if p.isAbstract() or p.getDeclaringType() instanceof Interface
-    then result = "get; "
-    else result = "get => throw null; "
+  then if p.isAbstract() then result = "get; " else result = "get => throw null; "
   else result = ""
 }
 
 private string stubSetter(DeclarationWithGetSetAccessors p) {
   if exists(p.getSetter())
-  then
-    if p.isAbstract() or p.getDeclaringType() instanceof Interface
-    then result = "set; "
-    else result = "set => throw null; "
+  then if p.isAbstract() then result = "set; " else result = "set => throw null; "
   else result = ""
 }
 
