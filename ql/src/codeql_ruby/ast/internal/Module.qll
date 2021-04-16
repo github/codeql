@@ -67,11 +67,7 @@ private module Cached {
         m = resolveScopeExpr(c.getReceiver())
         or
         m = enclosingModule(c).getModule() and
-        (
-          c.getReceiver() instanceof Self
-          or
-          not exists(c.getReceiver())
-        )
+        c.receiverIsSelf()
       ) and
       result = resolveScopeExpr(c.getAnArgument())
     )
@@ -85,11 +81,7 @@ private module Cached {
         m = resolveScopeExpr(c.getReceiver())
         or
         m = enclosingModule(c).getModule() and
-        (
-          c.getReceiver() instanceof Self
-          or
-          not exists(c.getReceiver())
-        )
+        c.receiverIsSelf()
       ) and
       result = resolveScopeExpr(c.getAnArgument())
     )

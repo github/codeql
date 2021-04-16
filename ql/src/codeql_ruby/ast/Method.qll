@@ -8,13 +8,13 @@ private import internal.TreeSitter
  * A representation of a method.
  */
 class Method extends TMethod {
-  /** Get a declaration of this module, if any. */
+  /** Gets a declaration of this module, if any. */
   MethodBase getADeclaration() { result.getMethod() = this }
 
-  /** Get the name of this method */
+  /** Gets the name of this method */
   string getName() { this = TInstanceMethod(_, result) }
 
-  /** Get the module in which this method is defined */
+  /** Gets the module in which this method is defined */
   Module getModule() { this = TInstanceMethod(result, _) }
 
   /** Gets a textual representation of this method. */
