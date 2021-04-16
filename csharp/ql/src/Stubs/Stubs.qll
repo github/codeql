@@ -323,7 +323,7 @@ private string stubQualifiedNamePrefix(ValueOrRefType t) {
   else
     if t.getParent() instanceof Namespace
     then result = t.getDeclaringNamespace().getQualifiedName() + "."
-    else result = t.getDeclaringType().getQualifiedName() + "."
+    else result = stubClassName(t.getDeclaringType()) + "."
 }
 
 language[monotonicAggregates]
