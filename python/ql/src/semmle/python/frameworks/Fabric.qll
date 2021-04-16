@@ -83,7 +83,9 @@ private module FabricV2 {
       module Connection {
         /** Gets a reference to the `fabric.connection.Connection` class. */
         API::Node classRef() {
-          result in [fabric().getMember("Connection"), connection().getMember("Connection")]
+          result = fabric().getMember("Connection")
+          or
+          result = connection().getMember("Connection")
         }
 
         /**
@@ -110,7 +112,7 @@ private module FabricV2 {
         }
 
         /** Gets a reference to an instance of `fabric.connection.Connection`. */
-        DataFlow::LocalSourceNode instance() { result = instance(DataFlow::TypeTracker::end()) }
+        DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
         /**
          * Gets a reference to either `run`, `sudo`, or `local` method on a
@@ -249,7 +251,9 @@ private module FabricV2 {
       module SerialGroup {
         private class ClassInstantiation extends Group::ModeledSubclass {
           ClassInstantiation() {
-            this in [group().getMember("SerialGroup"), fabric().getMember("SerialGroup")]
+            this = group().getMember("SerialGroup")
+            or
+            this = fabric().getMember("SerialGroup")
           }
         }
       }
@@ -262,7 +266,9 @@ private module FabricV2 {
       module ThreadingGroup {
         private class ClassInstantiation extends Group::ModeledSubclass {
           ClassInstantiation() {
-            this in [group().getMember("ThreadingGroup"), fabric().getMember("ThreadingGroup")]
+            this = group().getMember("ThreadingGroup")
+            or
+            this = fabric().getMember("ThreadingGroup")
           }
         }
       }
