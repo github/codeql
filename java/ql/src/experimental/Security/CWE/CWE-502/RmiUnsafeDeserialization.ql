@@ -1,8 +1,8 @@
 /**
  * @name Unsafe deserialization with RMI.
- * @description Java RMI uses native Java serialization mechanism.
- *              If a registered remote object has a method that takes a complex object,
- *              an attacker can take advantage of unsafe Java deserialization mechanism.
+ * @description If a registered remote object has a method that accepts a complex object,
+ *              an attacker can take advantage of the unsafe deserialization mechanism
+ *              which is used to pass parameters in RMI.
  *              In the worst case, it results in remote code execution.
  * @kind problem
  * @problem.severity error

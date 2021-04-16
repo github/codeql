@@ -1,0 +1,68 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Java RMI uses the default Java serialization mechanism (in other words, <code>ObjectInputStream</code>)
+to pass parameters in remote method invocations. This mechanism is known to be unsafe when deserializing 
+untrusted data. If a registered remote object has a method that accepts a complex object,
+an attacker can take advantage of the unsafe deserialization mechanism.
+In the worst case, it results in remote code execution.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Use only strings and primitive types in parameters of remote objects.
+</p>
+<p>
+Java RMI does not offer API for specifying classes which are only allowed for deserialization.
+However, it is possible to set a process-wide deserialization filter that was introduced in JEP 290.
+The filter can be set via system or security property <code>jdk.serialFilter</code>.
+Make sure that you use the latest Java versions that include JEP 290.
+</p>
+<p>
+Consider using other implementations of remote procedure calls. For example, HTTP API with JSON.
+Make sure that the underlying deserialization mechanism is properly configured
+so that deserialization attacks are not possible.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following code registers a vulnerable remote object 
+which has a method that accepts a complex object:
+</p>
+<sample src="RmiUnsafeRemoteObject.java" />
+
+<p>
+The next example registers a safe remote object
+which has methods that use only primitive types and strings:
+</p>
+<sample src="RmiSafeRemoteObject.java" />
+
+</example>
+
+<references>
+<li>
+Oracle:
+<a href="https://www.oracle.com/java/technologies/javase/remote-method-invocation-home.html">Remote Method Invocation (RMI)</a>.
+</li>
+<li>
+ITNEXT:
+<a href="https://itnext.io/java-rmi-for-pentesters-part-two-reconnaissance-attack-against-non-jmx-registries-187a6561314d">Java RMI for pentesters part two — reconnaissance & attack against non-JMX registries</a>.
+</li>
+<li>
+MOGWAI LABS:
+<a href="https://mogwailabs.de/en/blog/2019/03/attacking-java-rmi-services-after-jep-290/">Attacking Java RMI services after JEP 290</a>
+</li>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Deserialization_of_untrusted_data">Deserialization of untrusted data</a>.
+</li>
+<li>
+OpenJDK:
+<a href="https://openjdk.java.net/jeps/290">JEP 290: Filter Incoming Serialization Data</a>
+</li>
+</references>
+</qhelp>
