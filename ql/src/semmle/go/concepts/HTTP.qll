@@ -190,7 +190,14 @@ module HTTP {
       abstract ResponseWriter getResponseWriter();
 
       /** Gets a content-type associated with this body. */
-      string getAContentType() { result = getAContentTypeNode().getStringValue() }
+      string getAContentType() {
+        exists(HTTP::HeaderWrite hw | hw = getResponseWriter().getAHeaderWrite() |
+          hw.getHeaderName() = "content-type" and
+          result = hw.getHeaderValue()
+        )
+        or
+        result = getAContentTypeNode().getStringValue()
+      }
 
       /** Gets a dataflow node for a content-type associated with this body. */
       DataFlow::Node getAContentTypeNode() {
