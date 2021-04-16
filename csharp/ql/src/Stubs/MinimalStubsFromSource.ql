@@ -25,7 +25,8 @@ class UsedInSource extends GeneratedDeclaration {
       or
       this = any(Attribute a).getType().getAConstructor()
     ) and
-    this.fromLibrary()
+    this.fromLibrary() and
+    this.(Modifiable).isEffectivelyPublic()
   }
 }
 
