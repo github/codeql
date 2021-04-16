@@ -1,6 +1,7 @@
 /**
  * Provides classes and predicates for reasoning about temporary file/directory creations.
  */
+
 import java
 import semmle.code.java.dataflow.FlowSources
 
