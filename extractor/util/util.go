@@ -198,10 +198,13 @@ func GetExtractorPath() (string, error) {
 	return extractorPath, nil
 }
 
-func EscapeCurlyBraces(s string) string {
-	// Replace carets with ^caret, then curly braces with ^lcbrace and ^rcbrace.
-	s = strings.ReplaceAll(s, "^", "^caret")
-	s = strings.ReplaceAll(s, "{", "^lcbrace")
-	s = strings.ReplaceAll(s, "}", "^rcbrace")
+func EscapeTrapSpecialChars(s string) string {
+	// Replace TRAP special characters with their HTML entities, as well as '&' to avoid ambiguity.
+	s = strings.ReplaceAll(s, "&", "&amp;")
+	s = strings.ReplaceAll(s, "{", "&lbrace;")
+	s = strings.ReplaceAll(s, "}", "&rbrace;")
+	s = strings.ReplaceAll(s, "\"", "&quot;")
+	s = strings.ReplaceAll(s, "@", "&commat;")
+	s = strings.ReplaceAll(s, "#", "&num;")
 	return s
 }

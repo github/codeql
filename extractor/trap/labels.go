@@ -74,7 +74,7 @@ func (l *Labeler) FileLabel() Label {
 
 // FileLabelFor returns the label for the file for which the trap writer `tw` is associated
 func (l *Labeler) FileLabelFor(path string) Label {
-	return l.GlobalID(util.EscapeCurlyBraces(path) + ";sourcefile")
+	return l.GlobalID(util.EscapeTrapSpecialChars(path) + ";sourcefile")
 }
 
 // LocalID associates a label with the given AST node `nd` and returns it
@@ -103,7 +103,7 @@ func (l *Labeler) ScopeID(scope *types.Scope, pkg *types.Package) Label {
 		} else {
 			if pkg != nil && pkg.Scope() == scope {
 				// if this scope is the package scope
-				pkgLabel := l.GlobalID(util.EscapeCurlyBraces(pkg.Path()) + ";package")
+				pkgLabel := l.GlobalID(util.EscapeTrapSpecialChars(pkg.Path()) + ";package")
 				label = l.GlobalID("{" + pkgLabel.String() + "};scope")
 			} else {
 				label = l.FreshID()
