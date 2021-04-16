@@ -16,16 +16,6 @@ import semmle.code.csharp.security.dataflow.UnsafeDeserialization::UnsafeDeseria
 from Call deserializeCall, DataFlow::Node sink
 where
   deserializeCall.getAnArgument() = sink.asExpr() and
-  (
-    sink instanceof InstanceMethodSink and
-    not exists(
-      SafeConstructorTrackingConfig safeConstructorTracking, DataFlow::Node safeTypeUsage
-    |
-      safeConstructorTracking.hasFlow(_, safeTypeUsage) and
-      safeTypeUsage.asExpr().getParent() = deserializeCall
-    )
-    or
-    sink instanceof ConstructorOrStaticMethodSink
-  )
+  sink instanceof Sink
 select deserializeCall,
   "Unsafe deserializer is used. Make sure the value being deserialized comes from a trusted source."

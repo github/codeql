@@ -15,14 +15,28 @@ module UnsafeDeserialization {
   abstract class Source extends DataFlow::Node { }
 
   /**
+   * A data flow sink for unsafe deserialization vulnerabilities.
+   */
+  abstract class Sink extends DataFlow::Node { }
+
+  /**
    * A data flow sink for unsafe deserialization vulnerabilities to an instance method.
    */
-  abstract class InstanceMethodSink extends DataFlow::Node { }
+  abstract private class InstanceMethodSink extends Sink {
+    InstanceMethodSink() {
+      not exists(
+        SafeConstructorTrackingConfig safeConstructorTracking, DataFlow::Node safeTypeUsage
+      |
+        safeConstructorTracking.hasFlow(_, safeTypeUsage) and
+        safeTypeUsage.asExpr().getParent() = this.asExpr().getParent()
+      )
+    }
+  }
 
   /**
    * A data flow sink for unsafe deserialization vulnerabilities to a static method or constructor call.
    */
-  abstract class ConstructorOrStaticMethodSink extends DataFlow::Node { }
+  abstract private class ConstructorOrStaticMethodSink extends Sink { }
 
   /**
    * A sanitizer for unsafe deserialization vulnerabilities.
@@ -132,7 +146,7 @@ module UnsafeDeserialization {
     )
   }
 
-  private abstract class BinaryFormatterSink extends InstanceMethodSink { }
+  abstract private class BinaryFormatterSink extends InstanceMethodSink { }
 
   private class BinaryFormatterDeserializeMethodSink extends BinaryFormatterSink {
     BinaryFormatterDeserializeMethodSink() {
@@ -150,7 +164,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  private abstract class SoapFormatterSink extends InstanceMethodSink { }
+  abstract private class SoapFormatterSink extends InstanceMethodSink { }
 
   private class SoapFormatterDeserializeMethodSink extends SoapFormatterSink {
     SoapFormatterDeserializeMethodSink() {
@@ -168,7 +182,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  private abstract class ObjectStateFormatterSink extends InstanceMethodSink { }
+  abstract private class ObjectStateFormatterSink extends InstanceMethodSink { }
 
   private class ObjectStateFormatterDeserializeMethodSink extends ObjectStateFormatterSink {
     ObjectStateFormatterDeserializeMethodSink() {
@@ -191,7 +205,7 @@ module UnsafeDeserialization {
     )
   }
 
-  private abstract class NetDataContractSerializerSink extends InstanceMethodSink { }
+  abstract private class NetDataContractSerializerSink extends InstanceMethodSink { }
 
   private class NetDataContractSerializerDeserializeMethodSink extends NetDataContractSerializerSink {
     NetDataContractSerializerDeserializeMethodSink() {
@@ -209,7 +223,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  private abstract class DataContractJsonSerializerSink extends InstanceMethodSink { }
+  abstract private class DataContractJsonSerializerSink extends InstanceMethodSink { }
 
   private class DataContractJsonSerializerDeserializeMethodSink extends DataContractJsonSerializerSink {
     DataContractJsonSerializerDeserializeMethodSink() {
@@ -252,7 +266,7 @@ module UnsafeDeserialization {
     )
   }
 
-  private abstract class JavaScriptSerializerSink extends InstanceMethodSink { }
+  abstract private class JavaScriptSerializerSink extends InstanceMethodSink { }
 
   private class JavaScriptSerializerDeserializeMethodSink extends JavaScriptSerializerSink {
     JavaScriptSerializerDeserializeMethodSink() {
@@ -290,7 +304,7 @@ module UnsafeDeserialization {
     not mc.targetIsLocalInstance()
   }
 
-  private abstract class XmlObjectSerializerSink extends InstanceMethodSink { }
+  abstract private class XmlObjectSerializerSink extends InstanceMethodSink { }
 
   private class XmlObjectSerializerDeserializeMethodSink extends XmlObjectSerializerSink {
     XmlObjectSerializerDeserializeMethodSink() {
@@ -332,7 +346,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  private abstract class XmlSerializerSink extends InstanceMethodSink { }
+  abstract private class XmlSerializerSink extends InstanceMethodSink { }
 
   private class XmlSerializerDeserializeMethodSink extends XmlSerializerSink {
     XmlSerializerDeserializeMethodSink() {
@@ -373,7 +387,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  private abstract class DataContractSerializerSink extends InstanceMethodSink { }
+  abstract private class DataContractSerializerSink extends InstanceMethodSink { }
 
   private class DataContractSerializerDeserializeMethodSink extends DataContractSerializerSink {
     DataContractSerializerDeserializeMethodSink() {
@@ -411,7 +425,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  private abstract class XmlMessageFormatterSink extends InstanceMethodSink { }
+  abstract private class XmlMessageFormatterSink extends InstanceMethodSink { }
 
   private class XmlMessageFormatterDeserializeMethodSink extends XmlMessageFormatterSink {
     XmlMessageFormatterDeserializeMethodSink() {
@@ -449,7 +463,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  private abstract class LosFormatterSink extends InstanceMethodSink { }
+  abstract private class LosFormatterSink extends InstanceMethodSink { }
 
   private class LosFormatterDeserializeMethodSink extends LosFormatterSink {
     LosFormatterDeserializeMethodSink() {
@@ -467,7 +481,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  private abstract class FastJsonSink extends ConstructorOrStaticMethodSink { }
+  abstract private class FastJsonSink extends ConstructorOrStaticMethodSink { }
 
   private class FastJsonDeserializeMethodSink extends FastJsonSink {
     FastJsonDeserializeMethodSink() {
@@ -485,7 +499,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  private abstract class ActivitySink extends InstanceMethodSink { }
+  abstract private class ActivitySink extends InstanceMethodSink { }
 
   private class ActivityDeserializeMethodSink extends ActivitySink {
     ActivityDeserializeMethodSink() {
@@ -503,7 +517,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  private abstract class ResourceReaderSink extends ConstructorOrStaticMethodSink { }
+  abstract private class ResourceReaderSink extends ConstructorOrStaticMethodSink { }
 
   private class ResourceReaderDeserializeMethodSink extends ResourceReaderSink {
     ResourceReaderDeserializeMethodSink() {
@@ -521,7 +535,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  private abstract class BinaryMessageFormatterSink extends InstanceMethodSink { }
+  abstract private class BinaryMessageFormatterSink extends InstanceMethodSink { }
 
   private class BinaryMessageFormatterDeserializeMethodSink extends BinaryMessageFormatterSink {
     BinaryMessageFormatterDeserializeMethodSink() {
@@ -545,7 +559,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  private abstract class XamlReaderSink extends ConstructorOrStaticMethodSink { }
+  abstract private class XamlReaderSink extends ConstructorOrStaticMethodSink { }
 
   private class XamlReaderDeserializeMethodSink extends XamlReaderSink {
     XamlReaderDeserializeMethodSink() {
@@ -567,7 +581,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  private abstract class ProxyObjectSink extends InstanceMethodSink { }
+  abstract private class ProxyObjectSink extends InstanceMethodSink { }
 
   private class ProxyObjectDeserializeMethodSink extends ProxyObjectSink {
     ProxyObjectDeserializeMethodSink() {
@@ -585,7 +599,7 @@ module UnsafeDeserialization {
     not mc.getArgument(0).hasValue()
   }
 
-  private abstract class SweetJaysonSink extends ConstructorOrStaticMethodSink { }
+  abstract private class SweetJaysonSink extends ConstructorOrStaticMethodSink { }
 
   private class SweetJaysonDeserializeMethodSink extends SweetJaysonSink {
     SweetJaysonDeserializeMethodSink() {
@@ -597,7 +611,8 @@ module UnsafeDeserialization {
   }
 
   /** ServiceStack.Text.JsonSerializer */
-  private abstract class ServiceStackTextJsonSerializerSink extends ConstructorOrStaticMethodSink { }
+  abstract private class ServiceStackTextJsonSerializerSink extends ConstructorOrStaticMethodSink {
+  }
 
   private class ServiceStackTextJsonSerializerDeserializeMethodSink extends ServiceStackTextJsonSerializerSink {
     ServiceStackTextJsonSerializerDeserializeMethodSink() {
@@ -618,7 +633,8 @@ module UnsafeDeserialization {
   }
 
   /** ServiceStack.Text.TypeSerializer */
-  private abstract class ServiceStackTextTypeSerializerSink extends ConstructorOrStaticMethodSink { }
+  abstract private class ServiceStackTextTypeSerializerSink extends ConstructorOrStaticMethodSink {
+  }
 
   private class ServiceStackTextTypeSerializerDeserializeMethodSink extends ServiceStackTextTypeSerializerSink {
     ServiceStackTextTypeSerializerDeserializeMethodSink() {
@@ -639,7 +655,7 @@ module UnsafeDeserialization {
   }
 
   /** ServiceStack.Text.CsvSerializer */
-  private abstract class ServiceStackTextCsvSerializerSink extends ConstructorOrStaticMethodSink { }
+  abstract private class ServiceStackTextCsvSerializerSink extends ConstructorOrStaticMethodSink { }
 
   private class ServiceStackTextCsvSerializerDeserializeMethodSink extends ServiceStackTextCsvSerializerSink {
     ServiceStackTextCsvSerializerDeserializeMethodSink() {
@@ -660,7 +676,7 @@ module UnsafeDeserialization {
   }
 
   /** ServiceStack.Text.XmlSerializer */
-  private abstract class ServiceStackTextXmlSerializerSink extends ConstructorOrStaticMethodSink { }
+  abstract private class ServiceStackTextXmlSerializerSink extends ConstructorOrStaticMethodSink { }
 
   private class ServiceStackTextXmlSerializerDeserializeMethodSink extends ServiceStackTextXmlSerializerSink {
     ServiceStackTextXmlSerializerDeserializeMethodSink() {
