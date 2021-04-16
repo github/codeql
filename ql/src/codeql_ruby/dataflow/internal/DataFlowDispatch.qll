@@ -40,6 +40,12 @@ class DataFlowCallable = CfgScope;
 
 class DataFlowCall extends CfgNodes::ExprNodes::CallCfgNode {
   DataFlowCallable getEnclosingCallable() { result = this.getScope() }
+
+  DataFlowCallable getCallable() {
+    // TODO: this is a placeholder that finds a method with the same name, iff it's uniquely named.
+    result =
+      unique(DataFlowCallable c | c.(Method).getName() = this.getNode().(MethodCall).getMethodName())
+  }
 }
 
 /** Gets a viable run-time target for the call `call`. */
