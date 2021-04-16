@@ -1,3 +1,5 @@
+/** Provides classes to reason about Server-side Request Forgery attacks. */
+
 import java
 import semmle.code.java.frameworks.Networking
 import semmle.code.java.frameworks.ApacheHttp
@@ -8,16 +10,21 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.StringFormat
 
-abstract class RequestForgeryAdditionalTaintStep extends string {
-  bindingset[this]
-  RequestForgeryAdditionalTaintStep() { any() }
-
+/**
+ * A unit class for adding additional taint steps that are specific to Server-side
+ * Request Forgery (SSRF) attacks.
+ *
+ * Extend this class to add additional taint steps to the SSRF query.
+ */
+class RequestForgeryAdditionalTaintStep extends Unit {
+  /**
+   * Holds if the step from `pred` to `succ` should be considered a taint
+   * step for Server-side Request Forgery.
+   */
   abstract predicate propagatesTaint(DataFlow::Node pred, DataFlow::Node succ);
 }
 
 private class DefaultRequestForgeryAdditionalTaintStep extends RequestForgeryAdditionalTaintStep {
-  DefaultRequestForgeryAdditionalTaintStep() { this = "DefaultRequestForgeryAdditionalTaintStep" }
-
   override predicate propagatesTaint(DataFlow::Node pred, DataFlow::Node succ) {
     // propagate to a URI when its host is assigned to
     exists(UriCreation c | c.getHostArg() = pred.asExpr() | succ.asExpr() = c)
