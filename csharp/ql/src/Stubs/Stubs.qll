@@ -202,6 +202,25 @@ private class InheritedMember extends GeneratedMember, Virtualizable {
   }
 }
 
+private class ExtraGeneratedConstructor extends GeneratedMember, Constructor {
+  ExtraGeneratedConstructor() {
+    not this.isEffectivelyPublic() and
+    this.getDeclaringType() instanceof GeneratedType and
+    (
+      // if the base class has no 0 parameter constructor
+      not exists(Constructor c |
+        c = this.getDeclaringType().getBaseClass().getAMember() and c.getNumberOfParameters() = 0
+      )
+      or
+      // if this constructor might be called from a derived class
+      exists(Class c |
+        c.getBaseClass() = this.getDeclaringType() and
+        this = getBaseConstructor(c)
+      )
+    )
+  }
+}
+
 /** A namespace that contains at least one generated type. */
 private class GeneratedNamespace extends Namespace, GeneratedElement {
   GeneratedNamespace() {
@@ -694,14 +713,18 @@ private string stubMember(Member m) {
                         "    // ERR: Stub generator didn't handle member: " + m.getName() + "\n"
 }
 
+private Constructor getBaseConstructor(ValueOrRefType type) {
+  result =
+    min(Constructor bc |
+      type.getBaseClass().getAMember() = bc
+    |
+      bc order by bc.getNumberOfParameters(), stubParameters(bc)
+    )
+}
+
 private string stubConstructorInitializer(Constructor c) {
   exists(Constructor baseCtor |
-    baseCtor =
-      min(Constructor bc |
-        c.getDeclaringType().getBaseClass().getAMember() = bc
-      |
-        bc order by bc.getNumberOfParameters(), stubParameters(bc)
-      ) and
+    baseCtor = getBaseConstructor(c.getDeclaringType()) and
     if baseCtor.getNumberOfParameters() = 0
     then result = ""
     else result = " : base(" + stubDefaultArguments(baseCtor) + ")"
