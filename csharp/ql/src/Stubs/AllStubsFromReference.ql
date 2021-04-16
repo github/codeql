@@ -7,10 +7,7 @@ import Stubs
 
 /** All public declarations from assemblies. */
 class AllExternalPublicDeclarations extends GeneratedDeclaration {
-  AllExternalPublicDeclarations() {
-    this.fromLibrary() and
-    this.(Modifiable).isEffectivelyPublic()
-  }
+  AllExternalPublicDeclarations() { this.fromLibrary() }
 }
 
 /** All framework assemblies. */
