@@ -260,6 +260,15 @@ private class DefaultLibs extends ExcludedAssembly {
   }
 }
 
+private Virtualizable getAccessibilityDeclaringVirtualizable(Virtualizable v) {
+  if not v.isOverride()
+  then result = v
+  else
+    if not v.getOverridee().getLocation() instanceof ExcludedAssembly
+    then result = getAccessibilityDeclaringVirtualizable(v.getOverridee())
+    else result = v
+}
+
 private string stubAccessibility(Member m) {
   if
     m.getDeclaringType() instanceof Interface or
@@ -271,10 +280,10 @@ private string stubAccessibility(Member m) {
     else
       if m.isProtected()
       then
-        if m.isPrivate()
+        if m.isPrivate() or getAccessibilityDeclaringVirtualizable(m).isPrivate()
         then result = "protected private "
         else
-          if m.isInternal()
+          if m.isInternal() or getAccessibilityDeclaringVirtualizable(m).isInternal()
           then result = "protected internal "
           else result = "protected "
       else
