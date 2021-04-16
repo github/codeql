@@ -307,7 +307,10 @@ private string stubOverride(Member m) {
     then result = "virtual "
     else
       if m.(Virtualizable).isAbstract()
-      then result = "abstract "
+      then
+        if m.(Virtualizable).isOverride()
+        then result = "abstract override "
+        else result = "abstract "
       else
         if m.(Virtualizable).isOverride()
         then result = "override "
