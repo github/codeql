@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id java/JSONP-Injection
+ * @id java/jsonp-injection
  * @tags security
  *       external/cwe/cwe-352
  */
