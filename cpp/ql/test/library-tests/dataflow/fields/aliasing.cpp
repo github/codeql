@@ -124,7 +124,7 @@ void pointer_deref(int* xs) {
 
 void pointer_deref_sub(int* xs) {
   taint_a_ptr(xs - 2);
-  sink(*(xs - 2)); // $ ir MISSING: ast
+  sink(*(xs - 2)); // $ MISSING: ast,ir
 }
 
 void pointer_many_addrof_and_deref(int* xs) {
@@ -156,13 +156,13 @@ struct S_with_array {
 void pointer_member_deref() {
   S_with_array s;
   taint_a_ptr(s.data);
-  sink(*s.data); // $ ir,ast
+  sink(*s.data); // $ ast MISSING: ir
 }
 
 void array_member_deref() {
   S_with_array s;
   taint_a_ptr(s.data);
-  sink(s.data[0]); // $ ir,ast
+  sink(s.data[0]); // $ ast MISSING: ir
 }
 
 struct S2 {

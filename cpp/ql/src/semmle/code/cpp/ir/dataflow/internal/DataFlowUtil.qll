@@ -362,15 +362,22 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
 
 /**
  * Not every store instruction generates a chi instruction that we can attach a PostUpdateNode to.
- * For instance, an update to a field of a struct containing only one field. For these cases we
- * attach the PostUpdateNode to the store instruction. There's no obvious pre update node for this case
- * (as the entire memory is updated), so `getPreUpdateNode` is implemented as `none()`.
+ * For instance, an update to a field of a struct containing only one field. Even if the store does
+ * have a chi instruction, a subsequent use of the result of the store may be linked directly to the
+ * result of the store as an inexact definition if the store totally overlaps the use. For these
+ * cases we attach the PostUpdateNode to the store instruction. There's no obvious pre update node
+ * for this case (as the entire memory is updated), so `getPreUpdateNode` is implemented as
+ * `none()`.
  */
 private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
   override StoreInstruction instr;
 
   ExplicitSingleFieldStoreQualifierNode() {
-    not exists(ChiInstruction chi | chi.getPartial() = instr) and
+    (
+      instr.getAUse().isDefinitionInexact()
+      or
+      not exists(ChiInstruction chi | chi.getPartial() = instr)
+    ) and
     // Without this condition any store would create a `PostUpdateNode`.
     instr.getDestinationAddress() instanceof FieldAddressInstruction
   }
@@ -693,7 +700,11 @@ private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo
   exists(ChiInstruction chi | chi = iTo |
     opFrom.getAnyDef() instanceof WriteSideEffectInstruction and
     chi.getPartialOperand() = opFrom and
-    not chi.isResultConflated()
+    not chi.isResultConflated() and
+    // In a call such as `set_value(&x->val);` we don't want the memory representing `x` to receive
+    // dataflow by a simple step. Instead, this is handled by field flow. If we add a simple step here
+    // we can get field-to-object flow.
+    not chi.isPartialUpdate()
   )
   or
   // Flow through modeled functions

@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 if (transformedPath.ParentDirectory is PathTransformer.ITransformedPath parent)
                 {
-                    var parentFolder = Cx.CreateFolder(parent);
+                    var parentFolder = Context.CreateFolder(parent);
                     yield return parentFolder;
                     yield return Tuples.containerparent(parentFolder, this);
                 }

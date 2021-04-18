@@ -179,6 +179,22 @@ private module Cached {
   }
 
   /**
+   * Holds if the `ChiPartialOperand` only partially overlaps with the `ChiTotalOperand`.
+   * This means that the `ChiPartialOperand` will not override the entire memory associated
+   * with the `ChiTotalOperand`.
+   */
+  cached
+  predicate chiOnlyPartiallyUpdatesLocation(ChiInstruction chi) {
+    exists(Alias::MemoryLocation location, OldInstruction oldInstruction |
+      oldInstruction = getOldInstruction(chi.getPartial()) and
+      location = Alias::getResultMemoryLocation(oldInstruction)
+    |
+      Alias::getStartBitOffset(location) != 0 or
+      Alias::getEndBitOffset(location) != 8 * location.getType().getByteSize()
+    )
+  }
+
+  /**
    * Holds if `instr` is part of a cycle in the operand graph that doesn't go
    * through a phi instruction and therefore should be impossible.
    *

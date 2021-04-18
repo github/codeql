@@ -1,15 +1,10 @@
 /**
- * @name Reflected server-side cross-site scripting
+ * @name OLD QUERY: Reflected server-side cross-site scripting
  * @description Writing user input directly to a web page
  *              allows for a cross-site scripting vulnerability.
  * @kind path-problem
  * @problem.severity error
- * @sub-severity high
- * @precision high
- * @id py/reflective-xss
- * @tags security
- *       external/cwe/cwe-079
- *       external/cwe/cwe-116
+ * @id py/old/reflective-xss
  */
 
 import python

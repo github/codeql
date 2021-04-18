@@ -62,8 +62,8 @@ namespace Semmle.Extraction.CSharp.Entities
                 var declSyntaxReferences = Symbol.DeclaringSyntaxReferences
                     .Select(d => d.GetSyntax())
                     .Select(s => s.Parent)
-                    .Where(p => p != null)
-                    .Select(p => p.Parent)
+                    .Where(p => p is not null)
+                    .Select(p => p!.Parent)
                     .ToArray();
                 var clauses = declSyntaxReferences.OfType<MethodDeclarationSyntax>().SelectMany(m => m.ConstraintClauses);
                 clauses = clauses.Concat(declSyntaxReferences.OfType<ClassDeclarationSyntax>().SelectMany(c => c.ConstraintClauses));

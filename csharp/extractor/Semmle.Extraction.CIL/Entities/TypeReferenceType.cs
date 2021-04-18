@@ -46,16 +46,16 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        public override string Name => GenericsHelper.GetNonGenericName(tr.Name, Cx.MdReader);
+        public override string Name => GenericsHelper.GetNonGenericName(tr.Name, Context.MdReader);
 
-        public override Namespace ContainingNamespace => Cx.CreateNamespace(tr.Namespace);
+        public override Namespace ContainingNamespace => Context.CreateNamespace(tr.Namespace);
 
         public override Type? ContainingType
         {
             get
             {
                 return tr.ResolutionScope.Kind == HandleKind.TypeReference
-                    ? (Type)Cx.Create((TypeReferenceHandle)tr.ResolutionScope)
+                    ? (Type)Context.Create((TypeReferenceHandle)tr.ResolutionScope)
                     : null;
             }
         }
@@ -70,19 +70,19 @@ namespace Semmle.Extraction.CIL.Entities
                     ContainingType!.WriteAssemblyPrefix(trapFile);
                     break;
                 case HandleKind.AssemblyReference:
-                    var assemblyDef = Cx.MdReader.GetAssemblyReference((AssemblyReferenceHandle)tr.ResolutionScope);
-                    trapFile.Write(Cx.GetString(assemblyDef.Name));
+                    var assemblyDef = Context.MdReader.GetAssemblyReference((AssemblyReferenceHandle)tr.ResolutionScope);
+                    trapFile.Write(Context.GetString(assemblyDef.Name));
                     trapFile.Write('_');
                     trapFile.Write(assemblyDef.Version.ToString());
                     trapFile.Write(Entities.Type.AssemblyTypeNameSeparator);
                     break;
                 default:
-                    Cx.WriteAssemblyPrefix(trapFile);
+                    Context.WriteAssemblyPrefix(trapFile);
                     break;
             }
         }
 
-        public override int ThisTypeParameterCount => GenericsHelper.GetGenericTypeParameterCount(tr.Name, Cx.MdReader);
+        public override int ThisTypeParameterCount => GenericsHelper.GetGenericTypeParameterCount(tr.Name, Context.MdReader);
 
         public override IEnumerable<Type> TypeParameters => GenericsHelper.GetAllTypeParameters(ContainingType, typeParams!.Value);
 
@@ -98,7 +98,7 @@ namespace Semmle.Extraction.CIL.Entities
             if (TotalTypeParametersCount != typeArguments.Count())
                 throw new InternalError("Mismatched type arguments");
 
-            return Cx.Populate(new ConstructedType(Cx, this, typeArguments));
+            return Context.Populate(new ConstructedType(Context, this, typeArguments));
         }
     }
 }

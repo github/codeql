@@ -3,7 +3,7 @@
 Analyzing data flow in C#
 =========================
 
-You can use CodeQL to track the flow of data through a C# program to its use. 
+You can use CodeQL to track the flow of data through a C# program to its use.
 
 About this article
 ------------------
@@ -216,7 +216,7 @@ Flow sources
 
 The data flow library contains some predefined flow sources. The class ``PublicCallableParameterFlowSource`` (defined in module ``semmle.code.csharp.dataflow.flowsources.PublicCallableParameter``) represents data flow from public parameters, which is useful for finding security problems in a public API.
 
-The class ``RemoteSourceFlow`` (defined in module ``semmle.code.csharp.dataflow.flowsources.Remote``) represents data flow from remote network inputs. This is useful for finding security problems in networked services.
+The class ``RemoteFlowSource`` (defined in module ``semmle.code.csharp.dataflow.flowsources.Remote``) represents data flow from remote network inputs. This is useful for finding security problems in networked services.
 
 Example
 ~~~~~~~
@@ -251,7 +251,7 @@ Class hierarchy
 
       -  ``PublicCallableParameter`` - a parameter to a public method/callable in a public class.
 
-   -  ``RemoteSourceFlow`` - data flow from network/remote input.
+   -  ``RemoteFlowSource`` - data flow from network/remote input.
 
       -  ``AspNetRemoteFlowSource`` - data flow from remote ASP.NET user input.
 
@@ -437,11 +437,11 @@ Exercise 2
 
    class Configuration extends DataFlow::Configuration {
      Configuration() { this="String to System.Uri" }
-     
+
      override predicate isSource(DataFlow::Node src) {
        src.asExpr().hasValue()
      }
-     
+
      override predicate isSink(DataFlow::Node sink) {
        exists(Call c | c.getTarget().(Constructor).getDeclaringType().hasQualifiedName("System.Uri")
        and sink.asExpr()=c.getArgument(0))
@@ -458,7 +458,7 @@ Exercise 3
 .. code-block:: ql
 
    class EnvironmentVariableFlowSource extends DataFlow::ExprNode {
-     EnvironmentVariableFlowSource() { 
+     EnvironmentVariableFlowSource() {
        this.getExpr().(MethodCall).getTarget().hasQualifiedName("System.Environment.GetEnvironmentVariable")
      }
    }
@@ -471,18 +471,18 @@ Exercise 4
    import csharp
 
    class EnvironmentVariableFlowSource extends DataFlow::ExprNode {
-     EnvironmentVariableFlowSource() { 
+     EnvironmentVariableFlowSource() {
        this.getExpr().(MethodCall).getTarget().hasQualifiedName("System.Environment.GetEnvironmentVariable")
      }
    }
 
    class Configuration extends DataFlow::Configuration {
      Configuration() { this="Environment to System.Uri" }
-     
+
      override predicate isSource(DataFlow::Node src) {
        src instanceof EnvironmentVariableFlowSource
      }
-     
+
      override predicate isSink(DataFlow::Node sink) {
        exists(Call c | c.getTarget().(Constructor).getDeclaringType().hasQualifiedName("System.Uri")
        and sink.asExpr()=c.getArgument(0))

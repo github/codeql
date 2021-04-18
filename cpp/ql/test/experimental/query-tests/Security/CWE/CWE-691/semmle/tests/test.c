@@ -5,9 +5,9 @@ void workFunction_0(char *s) {
   int intSize;
   char buf[80];
   if(intSize>0 && intSize<80 && memset(buf,0,intSize)) return; // GOOD
-  if(intSize>0 & intSize<80 & memset(buf,0,intSize)) return; // BAD [NOT DETECTED]
+  if(intSize>0 & intSize<80 & memset(buf,0,intSize)) return; // BAD
   if(intSize>0 && tmpFunction()) return;
-  if(intSize<0 & tmpFunction()) return; // BAD [NOT DETECTED]
+  if(intSize<0 & tmpFunction()) return; // BAD
 }
 void workFunction_1(char *s) {
   int intA,intB;

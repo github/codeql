@@ -46,6 +46,11 @@ class TypeStringBuilder extends Class {
   TypeStringBuilder() { this.hasQualifiedName("java.lang", "StringBuilder") }
 }
 
+/** Class `java.lang.StringBuffer` or `java.lang.StringBuilder`. */
+class StringBuildingType extends Class {
+  StringBuildingType() { this instanceof TypeStringBuffer or this instanceof TypeStringBuilder }
+}
+
 /** The class `java.lang.System`. */
 class TypeSystem extends Class {
   TypeSystem() { this.hasQualifiedName("java.lang", "System") }
@@ -348,7 +353,7 @@ class EqualsMethod extends Method {
 class HashCodeMethod extends Method {
   HashCodeMethod() {
     this.hasName("hashCode") and
-    this.getNumberOfParameters() = 0
+    this.hasNoParameters()
   }
 }
 
@@ -356,6 +361,14 @@ class HashCodeMethod extends Method {
 class CloneMethod extends Method {
   CloneMethod() {
     this.hasName("clone") and
+    this.hasNoParameters()
+  }
+}
+
+/** A method with the same signature as `java.lang.Object.toString`. */
+class ToStringMethod extends Method {
+  ToStringMethod() {
+    this.hasName("toString") and
     this.hasNoParameters()
   }
 }

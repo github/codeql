@@ -139,7 +139,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                 var invocation = new Expression(new ExpressionInfo(Context, voidType, Context.CreateLocation(i.GetLocation()), ExprKind.METHOD_INVOCATION, this, child++, false, null));
 
-                if (addMethod != null)
+                if (addMethod is not null)
                     trapFile.expr_call(invocation, addMethod);
                 else
                     Context.ModelError(Syntax, "Unable to find an Add() method for collection initializer");

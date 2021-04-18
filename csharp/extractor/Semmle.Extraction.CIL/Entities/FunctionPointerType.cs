@@ -30,7 +30,7 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        public override Namespace? ContainingNamespace => Cx.GlobalNamespace;
+        public override Namespace? ContainingNamespace => Context.GlobalNamespace;
 
         public override Type? ContainingType => null;
 
@@ -104,7 +104,7 @@ namespace Semmle.Extraction.CIL.Entities
 
                 yield return Tuples.cil_function_pointer_calling_conventions(this, signature.Header.CallingConvention);
 
-                foreach (var p in Method.GetParameterExtractionProducts(signature.ParameterTypes, this, this, Cx, 0))
+                foreach (var p in Method.GetParameterExtractionProducts(signature.ParameterTypes, this, this, Context, 0))
                 {
                     yield return p;
                 }

@@ -8,8 +8,7 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class File : Extraction.Entities.File
     {
-        // todo: this can be changed to an override after the .NET 5 upgrade
-        private new Context Context => (Context)base.Context;
+        public override Context Context => (Context)base.Context;
 
         protected File(Context cx, string path)
             : base(cx, path)
@@ -46,7 +45,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     var lineCount = 0;
                     using (var sr = new StreamReader(originalPath, detectEncodingFromByteOrderMarks: true))
                     {
-                        while (sr.ReadLine() != null)
+                        while (sr.ReadLine() is not null)
                         {
                             lineCount++;
                         }

@@ -54,27 +54,37 @@ module CallGraph {
     PreCallGraphStep::step(any(DataFlow::Node n | function.flowsTo(n)), result)
     or
     imprecision = 0 and
+    result = callgraphStep(function, t)
+  }
+
+  /**
+   * Gets a reference to `function` type-tracked by `t`.
+   *
+   * This only includes steps that aren't included in ordinary type-tracking.
+   * For example, this steps from a method definition to an access on an instance, but
+   * does not step through access paths, as those are included in type-tracking already.
+   */
+  cached
+  DataFlow::SourceNode callgraphStep(DataFlow::FunctionNode function, DataFlow::TypeTracker t) {
     exists(DataFlow::ClassNode cls |
       exists(string name |
         function = cls.getInstanceMethod(name) and
-        getAnInstanceMemberAccess(cls, name, t.continue()).flowsTo(result)
+        cls.getAnInstanceMemberAccess(name, t.continue()) = result
         or
         function = cls.getStaticMethod(name) and
-        cls.getAClassReference(t.continue()).getAPropertyRead(name).flowsTo(result)
+        cls.getAClassReference(t.continue()).getAPropertyRead(name) = result
       )
       or
       function = cls.getConstructor() and
-      cls.getAClassReference(t.continue()).flowsTo(result)
+      cls.getAClassReference(t.continue()) = result
     )
     or
-    imprecision = 0 and
     exists(DataFlow::FunctionNode outer |
       result = getAFunctionReference(outer, 0, t.continue()).getAnInvocation() and
       locallyReturnedFunction(outer, function)
     )
   }
 
-  cached
   private predicate locallyReturnedFunction(
     DataFlow::FunctionNode outer, DataFlow::FunctionNode inner
   ) {
@@ -134,26 +144,6 @@ module CallGraph {
   }
 
   /**
-   * Gets a property read that accesses the property `name` on an instance of this class.
-   *
-   * Concretely, this holds when the base is an instance of this class or a subclass thereof.
-   *
-   * This predicate may be overridden to customize the class hierarchy analysis.
-   */
-  pragma[nomagic]
-  private DataFlow::PropRead getAnInstanceMemberAccess(
-    DataFlow::ClassNode cls, string name, DataFlow::TypeTracker t
-  ) {
-    result = cls.getAnInstanceReference(t.continue()).getAPropertyRead(name)
-    or
-    exists(DataFlow::ClassNode subclass |
-      result = getAnInstanceMemberAccess(subclass, name, t) and
-      not exists(subclass.getInstanceMember(name, _)) and
-      cls = subclass.getADirectSuperClass()
-    )
-  }
-
-  /**
    * Gets a possible callee of `node` with the given `imprecision`.
    *
    * Does not include custom call edges.
@@ -170,6 +160,48 @@ module CallGraph {
         expr.(SuperCall).getBinder() = cls.getConstructor().getFunction() and
         result = cls.getADirectSuperClass().getConstructor()
       )
+    )
+  }
+
+  /** Holds if a property setter named `name` exists in a class. */
+  private predicate isSetterName(string name) {
+    exists(any(DataFlow::ClassNode cls).getInstanceMember(name, DataFlow::MemberKind::setter()))
+  }
+
+  /**
+   * Gets a property write that assigns to the property `name` on an instance of this class,
+   * and `name` is the name of a property setter.
+   */
+  private DataFlow::PropWrite getAnInstanceMemberAssignment(DataFlow::ClassNode cls, string name) {
+    isSetterName(name) and // restrict size of predicate
+    result = cls.getAnInstanceReference().getAPropertyWrite(name)
+    or
+    exists(DataFlow::ClassNode subclass |
+      result = getAnInstanceMemberAssignment(subclass, name) and
+      not exists(subclass.getInstanceMember(name, DataFlow::MemberKind::setter())) and
+      cls = subclass.getADirectSuperClass()
+    )
+  }
+
+  /**
+   * Gets a getter or setter invoked as a result of the given property access.
+   */
+  cached
+  DataFlow::FunctionNode getAnAccessorCallee(DataFlow::PropRef ref) {
+    exists(DataFlow::ClassNode cls, string name |
+      ref = cls.getAnInstanceMemberAccess(name) and
+      result = cls.getInstanceMember(name, DataFlow::MemberKind::getter())
+      or
+      ref = getAnInstanceMemberAssignment(cls, name) and
+      result = cls.getInstanceMember(name, DataFlow::MemberKind::setter())
+    )
+    or
+    exists(DataFlow::ObjectLiteralNode object, string name |
+      ref = object.getAPropertyRead(name) and
+      result = object.getPropertyGetter(name)
+      or
+      ref = object.getAPropertyWrite(name) and
+      result = object.getPropertySetter(name)
     )
   }
 }

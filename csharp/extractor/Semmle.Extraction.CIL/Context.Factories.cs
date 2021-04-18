@@ -114,7 +114,7 @@ namespace Semmle.Extraction.CIL
                     entity = new MethodSpecificationMethod(gc, (MethodSpecificationHandle)handle);
                     break;
                 case HandleKind.FieldDefinition:
-                    entity = new DefinitionField(gc.Cx, (FieldDefinitionHandle)handle);
+                    entity = new DefinitionField(gc.Context, (FieldDefinitionHandle)handle);
                     break;
                 case HandleKind.TypeReference:
                     var tr = new TypeReferenceType(this, (TypeReferenceHandle)handle);
@@ -130,7 +130,7 @@ namespace Semmle.Extraction.CIL
                     break;
                 case HandleKind.StandaloneSignature:
                     var signature = MdReader.GetStandaloneSignature((StandaloneSignatureHandle)handle);
-                    var method = signature.DecodeMethodSignature(gc.Cx.TypeSignatureDecoder, gc);
+                    var method = signature.DecodeMethodSignature(gc.Context.TypeSignatureDecoder, gc);
                     entity = new FunctionPointerType(this, method);
                     break;
                 default:

@@ -14,6 +14,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             foreach (var sub in pp.Subpatterns)
             {
                 var p = Expressions.Pattern.Create(cx, sub.Pattern, this, child++);
+                if (sub.NameColon is null)
+                {
+                    Context.ModelError(sub, "Expected to find 'Name:' in pattern.");
+                    continue;
+                }
                 trapFile.exprorstmt_name(p, sub.NameColon.Name.ToString());
             }
         }

@@ -38,6 +38,9 @@ nodes
 | tst.js:303:10:303:34 | s().rep ... /g, '') |
 | tst.js:303:10:303:34 | s().rep ... /g, '') |
 | tst.js:303:10:303:34 | s().rep ... /g, '') |
+| tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) |
+| tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) |
+| tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) |
 edges
 | tst.js:243:9:243:31 | s().rep ... ]/g,'') | tst.js:243:9:243:31 | s().rep ... ]/g,'') |
 | tst.js:244:9:244:33 | s().rep ... /g, '') | tst.js:244:9:244:33 | s().rep ... /g, '') |
@@ -55,6 +58,7 @@ edges
 | tst.js:301:10:301:32 | s().rep ... ]/g,'') | tst.js:301:10:301:32 | s().rep ... ]/g,'') |
 | tst.js:302:10:302:34 | s().rep ... ]/g,'') | tst.js:302:10:302:34 | s().rep ... ]/g,'') |
 | tst.js:303:10:303:34 | s().rep ... /g, '') | tst.js:303:10:303:34 | s().rep ... /g, '') |
+| tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) | tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) |
 #select
 | tst.js:243:9:243:31 | s().rep ... ]/g,'') | tst.js:243:9:243:31 | s().rep ... ]/g,'') | tst.js:243:9:243:31 | s().rep ... ]/g,'') | Cross-site scripting vulnerability as the output of $@ may contain double quotes when it reaches this attribute definition. | tst.js:243:9:243:31 | s().rep ... ]/g,'') | this final HTML sanitizer step |
 | tst.js:244:9:244:33 | s().rep ... /g, '') | tst.js:244:9:244:33 | s().rep ... /g, '') | tst.js:244:9:244:33 | s().rep ... /g, '') | Cross-site scripting vulnerability as the output of $@ may contain double quotes when it reaches this attribute definition. | tst.js:244:9:244:33 | s().rep ... /g, '') | this final HTML sanitizer step |
@@ -68,3 +72,4 @@ edges
 | tst.js:301:10:301:32 | s().rep ... ]/g,'') | tst.js:301:10:301:32 | s().rep ... ]/g,'') | tst.js:301:10:301:32 | s().rep ... ]/g,'') | Cross-site scripting vulnerability as the output of $@ may contain single quotes when it reaches this attribute definition. | tst.js:301:10:301:32 | s().rep ... ]/g,'') | this final HTML sanitizer step |
 | tst.js:302:10:302:34 | s().rep ... ]/g,'') | tst.js:302:10:302:34 | s().rep ... ]/g,'') | tst.js:302:10:302:34 | s().rep ... ]/g,'') | Cross-site scripting vulnerability as the output of $@ may contain single quotes when it reaches this attribute definition. | tst.js:302:10:302:34 | s().rep ... ]/g,'') | this final HTML sanitizer step |
 | tst.js:303:10:303:34 | s().rep ... /g, '') | tst.js:303:10:303:34 | s().rep ... /g, '') | tst.js:303:10:303:34 | s().rep ... /g, '') | Cross-site scripting vulnerability as the output of $@ may contain single quotes when it reaches this attribute definition. | tst.js:303:10:303:34 | s().rep ... /g, '') | this final HTML sanitizer step |
+| tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) | tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) | tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) | Cross-site scripting vulnerability as the output of $@ may contain single quotes when it reaches this attribute definition. | tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) | this final HTML sanitizer step |

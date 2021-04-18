@@ -66,7 +66,7 @@ namespace Semmle.Util
             if (Win32.IsWindows())
             {
                 var extensions = Environment.GetEnvironmentVariable("PATHEXT")?.Split(';')?.ToArray();
-                exes = extensions == null || extensions.Any(prog.EndsWith)
+                exes = extensions is null || extensions.Any(prog.EndsWith)
                     ? new[] { prog }
                     : extensions.Select(ext => prog + ext).ToArray();
             }

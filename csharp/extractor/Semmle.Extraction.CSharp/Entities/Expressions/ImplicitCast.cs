@@ -3,7 +3,7 @@ using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    internal class ImplicitCast : Expression
+    internal sealed class ImplicitCast : Expression
     {
         public Expression Expr
         {
@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             Expr = Factory.Create(info.SetParent(this, 0));
 
             var target = Method.Create(Context, method);
-            if (target != null)
+            if (target is not null)
                 Context.TrapWriter.Writer.expr_call(this, target);
             else
                 Context.ModelError(info.Node, "Failed to resolve target for operator invocation");
@@ -44,7 +44,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             var convertedType = info.ConvertedType;
             var conversion = info.Conversion;
 
-            if (conversion.MethodSymbol != null)
+            if (conversion.MethodSymbol is not null)
             {
                 var convertedToDelegate = Entities.Type.IsDelegate(convertedType.Symbol);
 
@@ -65,15 +65,15 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     return Factory.Create(info);
                 }
 
-                if (resolvedType.Symbol != null)
+                if (resolvedType.Symbol is not null)
                     return new ImplicitCast(info, conversion.MethodSymbol);
             }
 
             var implicitUpcast = conversion.IsImplicit &&
-                convertedType.Symbol != null &&
+                convertedType.Symbol is not null &&
                 !conversion.IsBoxing &&
                 (
-                    resolvedType.Symbol == null ||
+                    resolvedType.Symbol is null ||
                     conversion.IsReference ||
                     convertedType.Symbol.SpecialType == SpecialType.System_Object)
                 ;

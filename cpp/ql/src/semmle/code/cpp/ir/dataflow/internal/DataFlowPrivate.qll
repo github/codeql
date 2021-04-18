@@ -31,9 +31,19 @@ private class PrimaryArgumentNode extends ArgumentNode {
   override predicate argumentOf(DataFlowCall call, int pos) { op = call.getArgumentOperand(pos) }
 
   override string toString() {
-    result = "Argument " + op.(PositionalArgumentOperand).getIndex()
+    exists(Expr unconverted |
+      unconverted = op.getDef().getUnconvertedResultExpression() and
+      result = unconverted.toString()
+    )
     or
-    op instanceof ThisArgumentOperand and result = "This argument"
+    // Certain instructions don't map to an unconverted result expression. For these cases
+    // we fall back to a simpler naming scheme. This can happen in IR-generated constructors.
+    not exists(op.getDef().getUnconvertedResultExpression()) and
+    (
+      result = "Argument " + op.(PositionalArgumentOperand).getIndex()
+      or
+      op instanceof ThisArgumentOperand and result = "Argument this"
+    )
   }
 }
 
@@ -52,7 +62,18 @@ private class SideEffectArgumentNode extends ArgumentNode {
     pos = getArgumentPosOfSideEffect(read.getIndex())
   }
 
-  override string toString() { result = "Argument " + read.getIndex() + " indirection" }
+  override string toString() {
+    result = read.getArgumentDef().getUnconvertedResultExpression().toString() + " indirection"
+    or
+    // Some instructions don't map to an unconverted result expression. For these cases
+    // we fall back to a simpler naming scheme. This can happen in IR-generated constructors.
+    not exists(read.getArgumentDef().getUnconvertedResultExpression()) and
+    (
+      if read.getIndex() = -1
+      then result = "Argument this indirection"
+      else result = "Argument " + read.getIndex() + " indirection"
+    )
+  }
 }
 
 private newtype TReturnKind =
@@ -526,4 +547,15 @@ predicate isImmutableOrUnobservable(Node n) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof OperandNode }
+predicate nodeIsHidden(Node n) { n instanceof OperandNode and not n instanceof ArgumentNode }
+
+class LambdaCallKind = Unit;
+
+/** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+
+/** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+
+/** Extra data-flow steps needed for lamba flow analysis. */
+predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }

@@ -12,15 +12,7 @@
 
 import java
 
-/** Access to a method in `this` object. */
-class MethodAccessInThis extends MethodAccess {
-  MethodAccessInThis() {
-    not this.hasQualifier() or
-    this.getQualifier() instanceof ThisAccess
-  }
-}
-
-from Class c, MethodAccess getResource, MethodAccessInThis getClass
+from Class c, MethodAccess getResource, MethodAccess getClass
 where
   getResource.getNumArgument() = 1 and
   (
@@ -28,6 +20,7 @@ where
     getResource.getMethod().hasName("getResourceAsStream")
   ) and
   getResource.getQualifier() = getClass and
+  getClass.isOwnMethodAccess() and
   getClass.getNumArgument() = 0 and
   getClass.getMethod().hasName("getClass") and
   getResource.getEnclosingCallable().getDeclaringType() = c and

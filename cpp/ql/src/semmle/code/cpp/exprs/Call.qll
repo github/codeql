@@ -300,17 +300,25 @@ class FunctionCall extends Call, @funbindexpr {
   }
 }
 
+/** A _user-defined_ unary `operator*` function. */
+class OverloadedPointerDereferenceFunction extends Function {
+  OverloadedPointerDereferenceFunction() {
+    this.hasName("operator*") and
+    this.getEffectiveNumberOfParameters() = 1
+  }
+}
+
 /**
  * An instance of a _user-defined_ unary `operator*` applied to its argument.
  * ```
  * T1 operator*(const T2 &);
  * T1 a; T2 b;
  * a = *b;
+ * ```
  */
 class OverloadedPointerDereferenceExpr extends FunctionCall {
   OverloadedPointerDereferenceExpr() {
-    getTarget().hasName("operator*") and
-    getTarget().getEffectiveNumberOfParameters() = 1
+    this.getTarget() instanceof OverloadedPointerDereferenceFunction
   }
 
   override string getAPrimaryQlClass() { result = "OverloadedPointerDereferenceExpr" }

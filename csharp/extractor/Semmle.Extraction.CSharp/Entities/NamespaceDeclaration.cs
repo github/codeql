@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            var @namespace = (INamespaceSymbol)Context.GetModel(node).GetSymbolInfo(node.Name).Symbol;
+            var @namespace = (INamespaceSymbol)Context.GetModel(node).GetSymbolInfo(node.Name).Symbol!;
             var ns = Namespace.Create(Context, @namespace);
             trapFile.namespace_declarations(this, ns);
             trapFile.namespace_declaration_location(this, Context.CreateLocation(node.Name.GetLocation()));
@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 member.Accept(visitor);
             }
 
-            if (parent != null)
+            if (parent is not null)
             {
                 trapFile.parent_namespace_declaration(this, parent);
             }

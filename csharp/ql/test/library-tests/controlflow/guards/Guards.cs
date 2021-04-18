@@ -1,5 +1,5 @@
 using System;
-
+#nullable enable
 public class Guards
 {
     public string? Field;

@@ -537,6 +537,9 @@ module AssignableDefinitions {
     /** Gets the underlying assignment. */
     AssignExpr getAssignment() { result = ae }
 
+    /** Gets the leaf expression. */
+    Expr getLeaf() { result = leaf }
+
     /**
      * Gets the evaluation order of this definition among the other definitions
      * in the compound tuple assignment. For example, in `(x, (y, z)) = ...` the

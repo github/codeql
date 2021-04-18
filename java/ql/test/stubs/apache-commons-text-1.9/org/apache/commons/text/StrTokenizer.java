@@ -16,8 +16,12 @@
  */
 package org.apache.commons.text;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
+
 
 public class StrTokenizer implements ListIterator<String>, Cloneable {
     public static StrTokenizer getCSVInstance() {

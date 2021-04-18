@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             Expression.Create(Context, Stmt.Expression, this, 1);
 
             var semanticModel = Context.GetModel(Stmt);
-            var typeSymbol = semanticModel.GetDeclaredSymbol(Stmt);
+            var typeSymbol = semanticModel.GetDeclaredSymbol(Stmt)!;
             var type = typeSymbol.GetAnnotatedType();
 
             var location = Context.CreateLocation(Stmt.Identifier.GetLocation());
@@ -51,31 +51,31 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
             trapFile.foreach_stmt_info(this, info.IsAsynchronous);
 
-            if (info.GetEnumeratorMethod != null)
+            if (info.GetEnumeratorMethod is not null)
             {
                 var m = Method.Create(Context, info.GetEnumeratorMethod);
                 trapFile.foreach_stmt_desugar(this, m, ForeachSymbolType.GetEnumeratorMethod);
             }
 
-            if (info.MoveNextMethod != null)
+            if (info.MoveNextMethod is not null)
             {
                 var m = Method.Create(Context, info.MoveNextMethod);
                 trapFile.foreach_stmt_desugar(this, m, ForeachSymbolType.MoveNextMethod);
             }
 
-            if (info.DisposeMethod != null)
+            if (info.DisposeMethod is not null)
             {
                 var m = Method.Create(Context, info.DisposeMethod);
                 trapFile.foreach_stmt_desugar(this, m, ForeachSymbolType.DisposeMethod);
             }
 
-            if (info.CurrentProperty != null)
+            if (info.CurrentProperty is not null)
             {
                 var p = Property.Create(Context, info.CurrentProperty);
                 trapFile.foreach_stmt_desugar(this, p, ForeachSymbolType.CurrentProperty);
             }
 
-            if (info.ElementType != null)
+            if (info.ElementType is not null)
             {
                 var t = Type.Create(Context, info.ElementType);
                 trapFile.foreach_stmt_desugar(this, t, ForeachSymbolType.ElementType);

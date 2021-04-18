@@ -5,6 +5,8 @@
 import javascript
 private import semmle.javascript.DynamicPropertyAccess
 private import semmle.javascript.dataflow.internal.StepSummary
+private import semmle.javascript.dataflow.internal.CallGraphs
+private import DataFlow::PseudoProperties as PseudoProperties
 
 module HTTP {
   /**
@@ -299,6 +301,9 @@ module HTTP {
     exists(DataFlow::PartialInvokeNode call |
       succ = call.getBoundFunction(any(DataFlow::Node n | pred.flowsTo(n)), 0)
     )
+    or
+    // references to class methods
+    succ = CallGraph::callgraphStep(pred, DataFlow::TypeTracker::end())
   }
 
   /**
@@ -685,33 +690,30 @@ module HTTP {
       isDecoratedCall(result, candidate)
     }
 
+    private string mapValueProp() {
+      result = [PseudoProperties::mapValueAll(), PseudoProperties::mapValueUnknownKey()]
+    }
+
     /**
      * A collection that contains one or more route potential handlers.
      */
-    private class ContainerCollection extends HTTP::RouteHandlerCandidateContainer::Range {
+    private class ContainerCollection extends HTTP::RouteHandlerCandidateContainer::Range,
+      DataFlow::NewNode {
       ContainerCollection() {
         this = DataFlow::globalVarRef("Map").getAnInstantiation() and // restrict to Map for now
-        exists(
-          CollectionFlowStep store, DataFlow::Node storeTo, DataFlow::Node input,
-          RouteHandlerCandidate candidate
-        |
-          this.flowsTo(storeTo) and
-          store.store(input, storeTo, _) and
-          candidate.flowsTo(input)
+        exists(DataFlow::Node use |
+          DataFlow::SharedTypeTrackingStep::storeStep(use, this, mapValueProp()) and
+          use.getALocalSource() instanceof RouteHandlerCandidate
         )
       }
 
       override DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {
-        result instanceof RouteHandlerCandidate and
-        exists(
-          DataFlow::Node input, TypeTrackingPseudoProperty key, CollectionFlowStep store,
-          CollectionFlowStep load, DataFlow::Node storeTo, DataFlow::Node loadFrom
-        |
-          this.flowsTo(storeTo) and
-          store.store(input, storeTo, key) and
+        exists(DataFlow::Node input, string key, DataFlow::Node loadFrom |
           getAPossiblyDecoratedHandler(result).flowsTo(input) and
+          DataFlow::SharedTypeTrackingStep::storeStep(input, this, key) and
           ref(this).flowsTo(loadFrom) and
-          load.load(loadFrom, access, key)
+          DataFlow::SharedTypeTrackingStep::loadStep(loadFrom, access,
+            [key, PseudoProperties::mapValueAll()])
         )
       }
     }

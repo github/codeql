@@ -11,6 +11,7 @@ typeInferenceMismatch
 | array-mutation.js:27:16:27:23 | source() | array-mutation.js:28:8:28:8 | g |
 | array-mutation.js:31:33:31:40 | source() | array-mutation.js:32:8:32:8 | h |
 | array-mutation.js:35:36:35:43 | source() | array-mutation.js:36:8:36:8 | i |
+| array-mutation.js:39:17:39:24 | source() | array-mutation.js:40:8:40:8 | j |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:4:8:4:8 | x |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:13:10:13:10 | x |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:19:10:19:10 | x |
@@ -66,6 +67,16 @@ typeInferenceMismatch
 | exceptions.js:144:9:144:16 | source() | exceptions.js:132:8:132:27 | returnThrownSource() |
 | exceptions.js:150:13:150:20 | source() | exceptions.js:153:10:153:10 | e |
 | exceptions.js:158:13:158:20 | source() | exceptions.js:161:10:161:10 | e |
+| getters-and-setters.js:6:20:6:27 | source() | getters-and-setters.js:9:10:9:18 | new C().x |
+| getters-and-setters.js:6:20:6:27 | source() | getters-and-setters.js:13:18:13:20 | c.x |
+| getters-and-setters.js:27:15:27:22 | source() | getters-and-setters.js:23:18:23:18 | v |
+| getters-and-setters.js:47:23:47:30 | source() | getters-and-setters.js:45:14:45:16 | c.x |
+| getters-and-setters.js:60:20:60:27 | source() | getters-and-setters.js:66:10:66:14 | obj.x |
+| getters-and-setters.js:67:13:67:20 | source() | getters-and-setters.js:63:18:63:22 | value |
+| getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:88:10:88:18 | new C().x |
+| getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:92:14:92:16 | c.x |
+| getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:100:10:100:22 | getX(new C()) |
+| getters-and-setters.js:89:17:89:24 | source() | getters-and-setters.js:82:18:82:22 | value |
 | importedReactComponent.jsx:4:40:4:47 | source() | exportedReactComponent.jsx:2:10:2:19 | props.text |
 | indexOf.js:4:11:4:18 | source() | indexOf.js:9:10:9:10 | x |
 | json-stringify.js:2:16:2:23 | source() | json-stringify.js:5:8:5:29 | JSON.st ... source) |
@@ -124,6 +135,11 @@ typeInferenceMismatch
 | static-capture-groups.js:2:17:2:24 | source() | static-capture-groups.js:27:14:27:22 | RegExp.$1 |
 | static-capture-groups.js:32:17:32:24 | source() | static-capture-groups.js:38:10:38:18 | RegExp.$1 |
 | static-capture-groups.js:42:12:42:19 | source() | static-capture-groups.js:43:14:43:22 | RegExp.$1 |
+| string-replace.js:3:13:3:20 | source() | string-replace.js:14:10:14:13 | data |
+| string-replace.js:3:13:3:20 | source() | string-replace.js:18:10:18:13 | data |
+| string-replace.js:3:13:3:20 | source() | string-replace.js:21:6:21:41 | safe(). ...  taint) |
+| string-replace.js:3:13:3:20 | source() | string-replace.js:22:6:22:48 | safe(). ...  taint) |
+| string-replace.js:3:13:3:20 | source() | string-replace.js:24:6:24:45 | taint.r ...  + '!') |
 | thisAssignments.js:4:17:4:24 | source() | thisAssignments.js:5:10:5:18 | obj.field |
 | thisAssignments.js:7:19:7:26 | source() | thisAssignments.js:8:10:8:20 | this.field2 |
 | tst.js:2:13:2:20 | source() | tst.js:4:10:4:10 | x |
@@ -150,3 +166,7 @@ typeInferenceMismatch
 | xml.js:23:18:23:25 | source() | xml.js:20:14:20:17 | attr |
 | xml.js:26:27:26:34 | source() | xml.js:26:10:26:39 | convert ... (), {}) |
 | xml.js:34:18:34:25 | source() | xml.js:31:18:31:21 | name |
+| xml.js:41:15:41:22 | source() | xml.js:44:10:44:22 | gchild.text() |
+| xml.js:41:15:41:22 | source() | xml.js:49:10:49:34 | child.a ... value() |
+| xml.js:41:15:41:22 | source() | xml.js:52:10:52:34 | child2. ... .name() |
+| xml.js:41:15:41:22 | source() | xml.js:58:12:58:14 | str |

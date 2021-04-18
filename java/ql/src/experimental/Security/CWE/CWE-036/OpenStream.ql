@@ -1,13 +1,19 @@
 /**
  * @name openStream called on URLs created from remote source
  * @description Calling openStream on URLs created from remote source
- * can lead to local file disclosure.
+ *              can lead to local file disclosure.
  * @kind path-problem
+ * @problem.severity warning
+ * @precision medium
+ * @id java/openstream-called-on-tainted-url
+ * @tags security
+ *       external/cwe/cwe-036
  */
 
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.ExternalFlow
 import DataFlow::PathGraph
 
 class URLConstructor extends ClassInstanceExpr {
@@ -37,6 +43,8 @@ class RemoteURLToOpenStreamFlowConfig extends TaintTracking::Configuration {
     exists(MethodAccess m |
       sink.asExpr() = m.getQualifier() and m.getMethod() instanceof URLOpenStreamMethod
     )
+    or
+    sinkNode(sink, "url-open-stream")
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {

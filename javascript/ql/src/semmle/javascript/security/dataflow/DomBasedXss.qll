@@ -14,6 +14,11 @@ module DomBasedXss {
   deprecated class Configuration = HtmlInjectionConfiguration;
 
   /**
+   * DEPRECATED. Use `Vue::VHtmlSourceWrite` instead.
+   */
+  deprecated class VHtmlSourceWrite = Vue::VHtmlSourceWrite;
+
+  /**
    * A taint-tracking configuration for reasoning about XSS.
    */
   class HtmlInjectionConfiguration extends TaintTracking::Configuration {
@@ -53,7 +58,7 @@ module DomBasedXss {
     override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
       // Reuse any source not derived from location
       source instanceof Source and
-      not source = DOM::locationRef() and
+      not source = [DOM::locationRef(), DOM::locationRef().getAPropertyRead()] and
       label.isTaint()
       or
       source = DOM::locationSource() and
@@ -71,11 +76,9 @@ module DomBasedXss {
       DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
       DataFlow::FlowLabel succlbl
     ) {
-      exists(TaintTracking::AdditionalTaintStep step |
-        step.step(pred, succ) and
-        predlbl.isData() and
-        succlbl.isTaint()
-      )
+      TaintTracking::sharedTaintStep(pred, succ) and
+      predlbl.isData() and
+      succlbl.isTaint()
     }
 
     override predicate isSanitizer(DataFlow::Node node) {

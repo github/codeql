@@ -26,7 +26,7 @@ namespace Semmle.Extraction.Entities
 
         public override int GetHashCode() => 98732567;
 
-        public override bool Equals(object? obj) => obj != null && obj.GetType() == typeof(GeneratedLocation);
+        public override bool Equals(object? obj) => obj is not null && obj.GetType() == typeof(GeneratedLocation);
 
         public static GeneratedLocation Create(Context cx) => GeneratedLocationFactory.Instance.CreateEntity(cx, typeof(GeneratedLocation), null);
 

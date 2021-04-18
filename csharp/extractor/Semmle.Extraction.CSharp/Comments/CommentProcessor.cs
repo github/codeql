@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp
 
         private readonly Dictionary<Label, Key> duplicationGuardKeys = new Dictionary<Label, Key>();
 
-        private Key GetDuplicationGuardKey(Label label)
+        private Key? GetDuplicationGuardKey(Label label)
         {
             if (duplicationGuardKeys.TryGetValue(label, out var duplicationGuardKey))
                 return duplicationGuardKey;
@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CSharp
 
         private class LocationComparer : IComparer<Location>
         {
-            public int Compare(Location l1, Location l2) => CommentProcessor.Compare(l1, l2);
+            public int Compare(Location? l1, Location? l2) => CommentProcessor.Compare(l1, l2);
         }
 
         /// <summary>
@@ -44,13 +44,13 @@ namespace Semmle.Extraction.CSharp
         /// <param name="l1">First location</param>
         /// <param name="l2">Second location</param>
         /// <returns>&lt;0 if l1 before l2, &gt;0 if l1 after l2, else 0.</returns>
-        private static int Compare(Location l1, Location l2)
+        private static int Compare(Location? l1, Location? l2)
         {
             if (object.ReferenceEquals(l1, l2))
                 return 0;
-            if (l1 == null)
+            if (l1 is null)
                 return -1;
-            if (l2 == null)
+            if (l2 is null)
                 return 1;
 
             var diff = l1.SourceTree == l2.SourceTree ? 0 : l1.SourceTree!.FilePath.CompareTo(l2.SourceTree!.FilePath);
@@ -68,11 +68,11 @@ namespace Semmle.Extraction.CSharp
         /// <param name="elementLabel">The label of the element in the trap file.</param>
         /// <param name="duplicationGuardKey">The duplication guard key of the element, if any.</param>
         /// <param name="loc">The location of the element.</param>
-        public void AddElement(Label elementLabel, Key duplicationGuardKey, Location loc)
+        public void AddElement(Label elementLabel, Key? duplicationGuardKey, Location? loc)
         {
-            if (loc != null && loc.IsInSource)
+            if (loc is not null && loc.IsInSource)
                 elements[loc] = elementLabel;
-            if (duplicationGuardKey != null)
+            if (duplicationGuardKey is not null)
                 duplicationGuardKeys[elementLabel] = duplicationGuardKey;
         }
 
@@ -80,7 +80,7 @@ namespace Semmle.Extraction.CSharp
         // which can happen when processing multiple files.
         private static void EnsureSameFile(Comments.CommentBlock commentBlock, ref KeyValuePair<Location, Label>? element)
         {
-            if (element != null && element.Value.Key.SourceTree != commentBlock.Location.SourceTree)
+            if (element is not null && element.Value.Key.SourceTree != commentBlock.Location.SourceTree)
                 element = null;
         }
 
@@ -106,19 +106,19 @@ namespace Semmle.Extraction.CSharp
             EnsureSameFile(commentBlock, ref nextElement);
             EnsureSameFile(commentBlock, ref parentElement);
 
-            if (previousElement != null)
+            if (previousElement is not null)
             {
                 var key = previousElement.Value.Value;
                 callback(key, GetDuplicationGuardKey(key), commentBlock, CommentBinding.Before);
             }
 
-            if (nextElement != null)
+            if (nextElement is not null)
             {
                 var key = nextElement.Value.Value;
                 callback(key, GetDuplicationGuardKey(key), commentBlock, CommentBinding.After);
             }
 
-            if (parentElement != null)
+            if (parentElement is not null)
             {
                 var key = parentElement.Value.Value;
                 callback(key, GetDuplicationGuardKey(key), commentBlock, CommentBinding.Parent);
@@ -127,17 +127,17 @@ namespace Semmle.Extraction.CSharp
             // Heuristic to decide which is the "best" element associated with the comment.
             KeyValuePair<Location, Label>? bestElement;
 
-            if (previousElement != null && previousElement.Value.Key.EndLine() == commentBlock.Location.StartLine())
+            if (previousElement is not null && previousElement.Value.Key.EndLine() == commentBlock.Location.StartLine())
             {
                 // 1. If the comment is on the same line as the previous element, use that
                 bestElement = previousElement;
             }
-            else if (nextElement != null && nextElement.Value.Key.StartLine() == commentBlock.Location.EndLine())
+            else if (nextElement is not null && nextElement.Value.Key.StartLine() == commentBlock.Location.EndLine())
             {
                 // 2. If the comment is on the same line as the next element, use that
                 bestElement = nextElement;
             }
-            else if (nextElement != null && previousElement != null &&
+            else if (nextElement is not null && previousElement is not null &&
                 previousElement.Value.Key.EndLine() + 1 == commentBlock.Location.StartLine() &&
                 commentBlock.Location.EndLine() + 1 == nextElement.Value.Key.StartLine())
             {
@@ -145,12 +145,12 @@ namespace Semmle.Extraction.CSharp
                 // because it's ambiguous whether the comment refers to the next or previous element
                 bestElement = parentElement;
             }
-            else if (nextElement != null && nextElement.Value.Key.StartLine() == commentBlock.Location.EndLine() + 1)
+            else if (nextElement is not null && nextElement.Value.Key.StartLine() == commentBlock.Location.EndLine() + 1)
             {
                 // 4. If there is no gap after the comment, use "nextElement"
                 bestElement = nextElement;
             }
-            else if (previousElement != null && previousElement.Value.Key.EndLine() + 1 == commentBlock.Location.StartLine())
+            else if (previousElement is not null && previousElement.Value.Key.EndLine() + 1 == commentBlock.Location.StartLine())
             {
                 // 5. If there is no gap before the comment, use previousElement
                 bestElement = previousElement;
@@ -168,7 +168,7 @@ namespace Semmle.Extraction.CSharp
                  */
             }
 
-            if (bestElement != null)
+            if (bestElement is not null)
             {
                 var label = bestElement.Value.Value;
                 callback(label, GetDuplicationGuardKey(label), commentBlock, CommentBinding.Best);
@@ -265,10 +265,10 @@ namespace Semmle.Extraction.CSharp
             CommentBindingCallback cb
             )
         {
-            Comments.CommentBlock block = null;
+            Comments.CommentBlock? block = null;
 
             // Iterate comments until the commentEnumerator has gone past nextElement
-            while (nextElement == null || Compare(commentEnumerator.Current.Value.Location, nextElement.Value.Key) < 0)
+            while (nextElement is null || Compare(commentEnumerator.Current.Value.Location, nextElement.Value.Key) < 0)
             {
                 if (block is null)
                     block = new Comments.CommentBlock(commentEnumerator.Current.Value);
@@ -350,5 +350,5 @@ namespace Semmle.Extraction.CSharp
     /// <param name="duplicationGuardKey">The duplication guard key of the element, if any</param>
     /// <param name="commentBlock">The comment block associated with the element</param>
     /// <param name="binding">The relationship between the commentblock and the element</param>
-    internal delegate void CommentBindingCallback(Label elementLabel, Key duplicationGuardKey, Comments.CommentBlock commentBlock, CommentBinding binding);
+    internal delegate void CommentBindingCallback(Label elementLabel, Key? duplicationGuardKey, Comments.CommentBlock commentBlock, CommentBinding binding);
 }

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-
+#nullable enable
 public class Collections
 {
     void M1(string[] args)

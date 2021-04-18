@@ -23,10 +23,10 @@ namespace Semmle.Util
             do
             {
                 s = process.StandardOutput.ReadLine();
-                if (s != null)
+                if (s is not null)
                     stdout.Add(s);
             }
-            while (s != null);
+            while (s is not null);
             process.WaitForExit();
             return process.ExitCode;
         }

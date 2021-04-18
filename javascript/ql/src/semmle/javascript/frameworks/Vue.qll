@@ -303,20 +303,24 @@ module Vue {
       result = getOptionSource(_).getAPropertySource()
     }
 
+    pragma[noinline]
+    private DataFlow::PropWrite getAPropertyValueWrite(string name) {
+      result = getData().getALocalSource().getAPropertyWrite(name)
+      or
+      result =
+        getABoundFunction()
+            .getALocalSource()
+            .(DataFlow::FunctionNode)
+            .getReceiver()
+            .getAPropertyWrite(name)
+    }
+
     /**
      * Gets the data flow node that flows into the property `name` of this instance, or is
      * returned form a getter defining that property.
      */
     DataFlow::Node getAPropertyValue(string name) {
-      exists(DataFlow::SourceNode obj | obj.getAPropertyWrite(name).getRhs() = result |
-        obj.flowsTo(getData())
-        or
-        exists(DataFlow::FunctionNode bound |
-          bound.flowsTo(getABoundFunction()) and
-          not bound.getFunction() instanceof ArrowFunctionExpr and
-          obj = bound.getReceiver()
-        )
-      )
+      result = getAPropertyValueWrite(name).getRhs()
       or
       exists(DataFlow::FunctionNode getter |
         getter.flowsTo(getAccessor(name, DataFlow::MemberKind::getter())) and
@@ -490,19 +494,53 @@ module Vue {
   /**
    * A taint propagating data flow edge through a Vue instance property.
    */
-  class InstanceHeapStep extends TaintTracking::AdditionalTaintStep {
-    DataFlow::Node src;
-
-    InstanceHeapStep() {
+  class InstanceHeapStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(Instance i, string name, DataFlow::FunctionNode bound |
         bound.flowsTo(i.getABoundFunction()) and
         not bound.getFunction() instanceof ArrowFunctionExpr and
-        bound.getReceiver().getAPropertyRead(name) = this and
-        src = i.getAPropertyValue(name)
+        succ = bound.getReceiver().getAPropertyRead(name) and
+        pred = i.getAPropertyValue(name)
       )
     }
+  }
 
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) { pred = src and succ = this }
+  /**
+   * A Vue `v-html` attribute.
+   */
+  class VHtmlAttribute extends DataFlow::Node {
+    HTML::Attribute attr;
+
+    VHtmlAttribute() {
+      this.(DataFlow::HtmlAttributeNode).getAttribute() = attr and attr.getName() = "v-html"
+    }
+
+    /**
+     * Gets the HTML attribute of this sink.
+     */
+    HTML::Attribute getAttr() { result = attr }
+  }
+
+  /**
+   * A taint propagating data flow edge through a string interpolation of a
+   * Vue instance property to a `v-html` attribute.
+   *
+   * As an example, `<div v-html="prop"/>` reads the `prop` property
+   * of `inst = new Vue({ ..., data: { prop: source } })`, if the
+   * `div` element is part of the template for `inst`.
+   */
+  class VHtmlSourceWrite extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(Vue::Instance instance, string expr, VHtmlAttribute attr |
+        attr.getAttr().getRoot() =
+          instance.getTemplateElement().(Vue::Template::HtmlElement).getElement() and
+        expr = attr.getAttr().getValue() and
+        // only support for simple identifier expressions
+        expr.regexpMatch("(?i)[a-z0-9_]+") and
+        pred = instance.getAPropertyValue(expr) and
+        succ = attr
+      )
+    }
   }
 
   /*

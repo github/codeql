@@ -1,0 +1,1 @@
+| .github/workflows/comment_issue.yml:7:12:8:47 | \| | Potential injection from the github.event.comment.body context, which may be controlled by an external user. |
