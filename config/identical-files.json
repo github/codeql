@@ -439,5 +439,9 @@
   "CryptoAlgorithms Python/JS": [
     "javascript/ql/src/semmle/javascript/security/CryptoAlgorithms.qll",
     "python/ql/src/semmle/crypto/Crypto.qll"
+  ],
+  "SensitiveDataHeuristics Python/JS": [
+    "javascript/ql/src/semmle/javascript/security/internal/SensitiveDataHeuristics.qll",
+    "python/ql/src/semmle/python/security/internal/SensitiveDataHeuristics.qll"
   ]
 }
