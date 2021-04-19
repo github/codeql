@@ -976,13 +976,11 @@ Microsoft.NETCore.App 2.1.4 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
             TestAutobuilderScript(autobuilder, 0, 9);
         }
 
-        [Fact]
-        public void TestDotnetVersionWindows()
+        private void TestDotnetVersionWindows(Action action, int commandsRun)
         {
             actions.RunProcess["cmd.exe /C dotnet --list-sdks"] = 0;
             actions.RunProcessOut["cmd.exe /C dotnet --list-sdks"] = "2.1.3 [C:\\Program Files\\dotnet\\sdks]\n2.1.4 [C:\\Program Files\\dotnet\\sdks]";
-            actions.RunProcess[@"cmd.exe /C powershell -NoProfile -ExecutionPolicy unrestricted -file C:\Project\install-dotnet.ps1 -Version 2.1.3 -InstallDir C:\Project\.dotnet"] = 0;
-            actions.RunProcess[@"cmd.exe /C del C:\Project\install-dotnet.ps1"] = 0;
+            action();
             actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet --info"] = 0;
             actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet clean C:\Project\test.csproj"] = 0;
             actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet restore C:\Project\test.csproj"] = 0;
@@ -1005,7 +1003,28 @@ Microsoft.NETCore.App 2.1.4 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
             actions.LoadXml[@"C:\Project\test.csproj"] = xml;
 
             var autobuilder = CreateAutoBuilder(true, dotnetVersion: "2.1.3");
-            TestAutobuilderScript(autobuilder, 0, 7);
+            TestAutobuilderScript(autobuilder, 0, commandsRun);
+        }
+
+        [Fact]
+        public void TestDotnetVersionWindowsWithPwsh()
+        {
+            TestDotnetVersionWindows(() =>
+            {
+                actions.RunProcess[@"cmd.exe /C pwsh -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version 2.1.3 -InstallDir C:\Project\.dotnet"""] = 0;
+            },
+            6);
+        }
+
+        [Fact]
+        public void TestDotnetVersionWindowsWithoutPwsh()
+        {
+            TestDotnetVersionWindows(() =>
+            {
+                actions.RunProcess[@"cmd.exe /C pwsh -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version 2.1.3 -InstallDir C:\Project\.dotnet"""] = 1;
+                actions.RunProcess[@"cmd.exe /C powershell -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version 2.1.3 -InstallDir C:\Project\.dotnet"""] = 0;
+            },
+            7);
         }
 
         [Fact]

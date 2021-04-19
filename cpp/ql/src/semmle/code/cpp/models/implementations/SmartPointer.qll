@@ -1,4 +1,5 @@
 import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.PointerWrapper
 
 /**
@@ -11,6 +12,25 @@ private class UniqueOrSharedPtr extends Class, PointerWrapper {
     result.(OverloadedPointerDereferenceFunction).getDeclaringType() = this
     or
     result.getClassAndName(["operator->", "get"]) = this
+  }
+
+  override predicate pointsToConst() { this.getTemplateArgument(0).(Type).isConst() }
+}
+
+/** Any function that unwraps a pointer wrapper class to reveal the underlying pointer. */
+private class PointerWrapperDataFlow extends DataFlowFunction {
+  PointerWrapperDataFlow() {
+    this = any(PointerWrapper wrapper).getAnUnwrapperFunction() and
+    not this.getUnspecifiedType() instanceof ReferenceType
+  }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    input.isQualifierAddress() and output.isReturnValue()
+    or
+    input.isQualifierObject() and output.isReturnValueDeref()
+    or
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
   }
 }
 

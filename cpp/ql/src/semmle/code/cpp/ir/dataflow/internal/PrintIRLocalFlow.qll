@@ -6,34 +6,7 @@ private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
-
-/**
- * Gets a short ID for an IR dataflow node.
- * - For `Instruction`s, this is just the result ID of the instruction (e.g. `m128`).
- * - For `Operand`s, this is the label of the operand, prefixed with the result ID of the
- *   instruction and a dot (e.g. `m128.left`).
- * - For `Variable`s, this is the qualified name of the variable.
- */
-private string nodeId(DataFlow::Node node, int order1, int order2) {
-  exists(Instruction instruction | instruction = node.asInstruction() |
-    result = instruction.getResultId() and
-    order1 = instruction.getBlock().getDisplayIndex() and
-    order2 = instruction.getDisplayIndexInBlock()
-  )
-  or
-  exists(Operand operand, Instruction instruction |
-    operand = node.asOperand() and
-    instruction = operand.getUse()
-  |
-    result = instruction.getResultId() + "." + operand.getDumpId() and
-    order1 = instruction.getBlock().getDisplayIndex() and
-    order2 = instruction.getDisplayIndexInBlock()
-  )
-  or
-  result = "var(" + node.asVariable().getQualifiedName() + ")" and
-  order1 = 1000000 and
-  order2 = 0
-}
+private import PrintIRUtilities
 
 /**
  * Gets the local dataflow from other nodes in the same function to this node.

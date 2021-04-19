@@ -19,14 +19,14 @@ class HardcodedCredentialApiCallConfiguration extends DataFlow::Configuration {
 
   override predicate isSource(DataFlow::Node n) {
     n.asExpr() instanceof HardcodedExpr and
-    not n.asExpr().getEnclosingCallable().getName() = "toString"
+    not n.asExpr().getEnclosingCallable() instanceof ToStringMethod
   }
 
   override predicate isSink(DataFlow::Node n) { n.asExpr() instanceof CredentialsApiSink }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     node1.asExpr().getType() instanceof TypeString and
-    exists(MethodAccess ma | ma.getMethod().getName().regexpMatch("getBytes|toCharArray") |
+    exists(MethodAccess ma | ma.getMethod().hasName(["getBytes", "toCharArray"]) |
       node2.asExpr() = ma and
       ma.getQualifier() = node1.asExpr()
     )

@@ -433,9 +433,7 @@ final class ClassInterfaceNode extends ElementNode {
     or
     result.(FieldDeclaration).getAField().getDeclaringType() = ty
     or
-    result.(NestedType).getEnclosingType().getSourceDeclaration() = ty and
-    not result instanceof AnonymousClass and
-    not result instanceof LocalClass
+    result.(MemberType).getEnclosingType().getSourceDeclaration() = ty
     or
     isInitBlock(ty, result)
   }

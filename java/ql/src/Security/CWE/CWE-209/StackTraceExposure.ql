@@ -79,8 +79,7 @@ predicate stackTraceExpr(Expr exception, MethodAccess stackTraceString) {
     printStackCall.getAnArgument() = printWriter and
     printStackCall.getQualifier() = exception and
     stackTraceString.getQualifier() = stringWriterVar.getAnAccess() and
-    stackTraceString.getMethod().getName() = "toString" and
-    stackTraceString.getMethod().getNumberOfParameters() = 0
+    stackTraceString.getMethod() instanceof ToStringMethod
   )
 }
 

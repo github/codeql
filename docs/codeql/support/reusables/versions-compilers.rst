@@ -11,9 +11,11 @@
    Microsoft extensions (up to VS 2019),
 
    Arm Compiler 5 [2]_","``.cpp``, ``.c++``, ``.cxx``, ``.hpp``, ``.hh``, ``.h++``, ``.hxx``, ``.c``, ``.cc``, ``.h``"
-   C#,C# up to 8.0,"Microsoft Visual Studio up to 2019 with .NET up to 4.8,
+   C#,C# up to 9.0,"Microsoft Visual Studio up to 2019 with .NET up to 4.8,
 
-   .NET Core up to 3.1","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
+   .NET Core up to 3.1
+
+   .NET 5","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
    Go (aka Golang), "Go up to 1.16", "Go 1.11 or more recent", ``.go``
    Java,"Java 7 to 15 [3]_","javac (OpenJDK and Oracle JDK),
 
@@ -28,5 +30,5 @@
     .. [2] Support for the Arm Compiler (armcc) is preliminary.
     .. [3] Builds that execute on Java 7 to 15 can be analyzed. The analysis understands Java 15 standard language features.
     .. [4] ECJ is supported when the build invokes it via the Maven Compiler plugin or the Takari Lifecycle plugin.
-    .. [5] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files. 
-    .. [6] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default for LGTM.   
+    .. [5] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files.
+    .. [6] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default for LGTM.

@@ -1,0 +1,3 @@
+| A/index.ts:1:1:1:35 | import  ... c/foo"; | B/src/foo.ts:1:1:4:0 | <toplevel> |
+| B/src/foo.ts:1:1:1:30 | import  ... b/bar"; | B/src/lib/bar.ts:1:1:4:0 | <toplevel> |
+| B/src/lib/bar.ts:1:1:1:26 | import  ...  "foo"; | B/src/foo.ts:1:1:4:0 | <toplevel> |

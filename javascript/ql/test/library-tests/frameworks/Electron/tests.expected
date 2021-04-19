@@ -15,8 +15,6 @@ browserObject
 | electron.js:62:13:62:59 | new Bro ... 1500 }) |
 | electron.js:63:3:63:5 | win |
 | electron.js:65:18:65:20 | win |
-| electronTs.d.ts:2:16:2:28 | BrowserWindow |
-| electronTs.d.ts:3:16:3:26 | BrowserView |
 | electronTs.ts:3:12:3:13 | bw |
 | electronTs.ts:3:40:3:41 | bv |
 | electronTs.ts:4:3:4:4 | bw |

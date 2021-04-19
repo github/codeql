@@ -2,7 +2,7 @@
  * @name Access Of Memory Location After The End Of A Buffer Using Strncat
  * @description Calls of the form `strncat(dest, source, sizeof (dest) - strlen (dest))` set the third argument to one more than possible. So when `dest` is full, the expression `sizeof(dest) - strlen (dest)` will be equal to one, and not zero as the programmer might think. Making a call of this type may result in a zero byte being written just outside the `dest` buffer.
  * @kind problem
- * @id cpp/access-memory-location-after-end-buffer
+ * @id cpp/access-memory-location-after-end-buffer-strncat
  * @problem.severity warning
  * @precision medium
  * @tags correctness
