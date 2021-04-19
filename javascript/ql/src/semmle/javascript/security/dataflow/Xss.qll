@@ -211,7 +211,7 @@ module DomBasedXss {
       exists(JQuery::MethodCall call |
         call.interpretsArgumentAsHtml(this) and
         call.interpretsArgumentAsSelector(this) and
-        analyze().getAType() = TTString()
+        pragma[only_bind_out](analyze()).getAType() = TTString()
       )
     }
 
