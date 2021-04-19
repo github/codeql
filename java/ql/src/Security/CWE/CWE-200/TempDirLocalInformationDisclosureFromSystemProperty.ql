@@ -24,7 +24,7 @@ private class MethodFileSystemFileCreation extends Method {
 abstract private class FileCreationSink extends DataFlow::Node { }
 
 /**
- * Sink for tainted `File` having a file or directory creation method called on it.
+ * The qualifier of a call to one of `File`'s file-creating or directory-creating methods, treated as a sink by `TempDirSystemGetPropertyToCreateConfig`.
  */
 private class FileFileCreationSink extends FileCreationSink {
   FileFileCreationSink() {
@@ -36,7 +36,8 @@ private class FileFileCreationSink extends FileCreationSink {
 }
 
 /**
- * Sink for calling a file-creating or directory-creating `Files` method on a tainted `File` or `Path`.
+ * The argument to 
+ a call to one of `Files` file-creating or directory-creating methods, treated as a sink by `TempDirSystemGetPropertyToCreateConfig`.
  */
 private class FilesFileCreationSink extends FileCreationSink {
   FilesFileCreationSink() {
@@ -45,8 +46,8 @@ private class FilesFileCreationSink extends FileCreationSink {
 }
 
 /**
- * Captures all of the vulnerable methods on `Files` that create files/directories without explicitly
- * setting the permissions.
+ * A call to a `Files` method that create files/directories without explicitly
+ * setting the newly-created file or directory's permissions.
  */
 private class FilesVulnerableCreationMethodAccess extends MethodAccess {
   FilesVulnerableCreationMethodAccess() {

@@ -49,7 +49,7 @@ class MethodFileCreateTempFile extends Method {
  *  - `new File(System.getProperty("java.io.tmpdir"))`
  *  - `new File(new File(System.getProperty("java.io.tmpdir")), "/child")`
  */
-private predicate isTaintedFileCreation(Expr expSource, Expr exprDest) {
+private predicate isFileConstructorArgument(Expr expSource, Expr exprDest) {
   exists(ConstructorCall construtorCall |
     construtorCall.getConstructedType() instanceof TypeFile and
     construtorCall.getArgument(0) = expSource and

@@ -38,6 +38,9 @@ class MethodAccessInsecureFileCreateTempFile extends MethodAccessInsecureFileCre
   override string getFileSystemType() { result = "file" }
 }
 
+/**
+ * The `com.google.common.io.Files.createTempDir` method.
+ */
 class MethodGuavaFilesCreateTempFile extends Method {
   MethodGuavaFilesCreateTempFile() {
     getDeclaringType().hasQualifiedName("com.google.common.io", "Files") and
@@ -45,6 +48,9 @@ class MethodGuavaFilesCreateTempFile extends Method {
   }
 }
 
+/**
+ * A call to the `com.google.common.io.Files.createTempDir` method.
+ */
 class MethodAccessInsecureGuavaFilesCreateTempFile extends MethodAccessInsecureFileCreation {
   MethodAccessInsecureGuavaFilesCreateTempFile() {
     getMethod() instanceof MethodGuavaFilesCreateTempFile

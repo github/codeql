@@ -19,10 +19,10 @@ can occur.</p>
 <recommendation>
 <p>Use JDK methods that specifically protect against this vulnerability:</p>
 <ul>
-    <li><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#createTempDirectory-java.nio.file.Path-java.lang.String-java.nio.file.attribute.FileAttribute...-">java.nio.file.Files#createTempDirectory</a></li>
+    <li><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#createTempDirectory-java.nio.file.Path-java.lang.String-java.nio.file.attribute.FileAttribute...-">java.nio.file.Files.createTempDirectory</a></li>
     <li><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#createTempFile-java.nio.file.Path-java.lang.String-java.lang.String-java.nio.file.attribute.FileAttribute...-">java.nio.file.Files#createTempFile</a></li>
 </ul>
-<p>Otherwise, create the file/directory by manually specificfying the expected posix file permissions.
+<p>Otherwise, create the file/directory by manually specifying the expected posix file permissions.
 For example: <code>PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE))</code></p>
 <ul>
     <li><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#createFile-java.nio.file.Path-java.nio.file.attribute.FileAttribute...-">java.nio.file.Files#createFile</a></li>
