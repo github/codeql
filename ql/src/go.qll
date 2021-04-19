@@ -21,7 +21,6 @@ import semmle.go.StringOps
 import semmle.go.Types
 import semmle.go.Util
 import semmle.go.VariableWithFields
-import semmle.go.concepts.HTTP
 import semmle.go.controlflow.BasicBlocks
 import semmle.go.controlflow.ControlFlowGraph
 import semmle.go.controlflow.IR
