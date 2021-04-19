@@ -2,6 +2,7 @@ missingOperand
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
+| ssa.cpp:398:3:398:13 | Phi: return ... | Instruction 'Phi: return ...' is missing an operand for predecessor block 'VariableAddress: y' in function '$@'. | ssa.cpp:383:5:383:24 | int FusedBlockPhiOperand(int, int, int, bool) | int FusedBlockPhiOperand(int, int, int, bool) |
 missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
@@ -9,9 +10,13 @@ instructionWithoutSuccessor
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
+| ssa.cpp:345:3:345:13 | Phi: return ... | Instruction 'Phi: return ...' is in a block with only 0 predecessors in function '$@'. | ssa.cpp:335:5:335:25 | int UnreachablePhiOperand(int, int) | int UnreachablePhiOperand(int, int) |
+| ssa.cpp:395:5:395:5 | Phi: ; | Instruction 'Phi: ;' is in a block with only 0 predecessors in function '$@'. | ssa.cpp:383:5:383:24 | int FusedBlockPhiOperand(int, int, int, bool) | int FusedBlockPhiOperand(int, int, int, bool) |
 memoryOperandDefinitionIsUnmodeled
 operandAcrossFunctions
 instructionWithoutUniqueBlock
+| ssa.cpp:345:3:345:13 | Phi: return ... | Instruction 'Phi: return ...' is a member of 0 blocks in function '$@'. | ssa.cpp:335:5:335:25 | int UnreachablePhiOperand(int, int) | int UnreachablePhiOperand(int, int) |
+| ssa.cpp:395:5:395:5 | Phi: ; | Instruction 'Phi: ;' is a member of 0 blocks in function '$@'. | ssa.cpp:383:5:383:24 | int FusedBlockPhiOperand(int, int, int, bool) | int FusedBlockPhiOperand(int, int, int, bool) |
 containsLoopOfForwardEdges
 lostReachability
 backEdgeCountMismatch
