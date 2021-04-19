@@ -626,12 +626,12 @@ private class ApacheObjectUtilsModel extends SummaryModelCsv {
         "org.apache.commons.lang3;ObjectUtils;false;CONST_BYTE;;;Argument[0];ReturnValue;value",
         "org.apache.commons.lang3;ObjectUtils;false;CONST_SHORT;;;Argument[0];ReturnValue;value",
         "org.apache.commons.lang3;ObjectUtils;false;defaultIfNull;;;Argument[0..1];ReturnValue;value",
-        "org.apache.commons.lang3;ObjectUtils;false;firstNonNull;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ObjectUtils;false;firstNonNull;;;ArrayElement of Argument[0];ReturnValue;value",
         "org.apache.commons.lang3;ObjectUtils;false;getIfNull;;;Argument[0];ReturnValue;value",
-        "org.apache.commons.lang3;ObjectUtils;false;max;;;Argument[0];ReturnValue;taint",
-        "org.apache.commons.lang3;ObjectUtils;false;median;;;Argument[0];ReturnValue;taint",
-        "org.apache.commons.lang3;ObjectUtils;false;min;;;Argument[0];ReturnValue;taint",
-        "org.apache.commons.lang3;ObjectUtils;false;mode;;;Argument[0];ReturnValue;taint",
+        "org.apache.commons.lang3;ObjectUtils;false;max;;;ArrayElement of Argument[0];ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;median;;;ArrayElement of Argument[0];ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;min;;;ArrayElement of Argument[0];ReturnValue;value",
+        "org.apache.commons.lang3;ObjectUtils;false;mode;;;ArrayElement of Argument[0];ReturnValue;value",
         "org.apache.commons.lang3;ObjectUtils;false;requireNonEmpty;;;Argument[0];ReturnValue;value",
         "org.apache.commons.lang3;ObjectUtils;false;toString;(Object,String);;Argument[1];ReturnValue;value"
       ]

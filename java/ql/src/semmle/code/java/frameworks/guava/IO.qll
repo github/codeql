@@ -61,7 +61,7 @@ private class GuavaIoCsv extends SummaryModelCsv {
         "com.google.common.io;Files;false;simplifyPath;(String);;Argument[0];ReturnValue;taint",
         "com.google.common.io;MoreFiles;false;getFileExtension;(Path);;Argument[0];ReturnValue;taint",
         "com.google.common.io;MoreFiles;false;getNameWithoutExtension;(Path);;Argument[0];ReturnValue;taint",
-        "com.google.common.io;LineReader;false;LineReader;(Readable);;Argument[0];ReturnValue;taint",
+        "com.google.common.io;LineReader;false;LineReader;(Readable);;Argument[0];Argument[-1];taint",
         "com.google.common.io;LineReader;true;readLine;();;Argument[-1];ReturnValue;taint",
         "com.google.common.io;ByteArrayDataOutput;true;toByteArray;();;Argument[-1];ReturnValue;taint",
         "com.google.common.io;ByteArrayDataOutput;true;write;(byte[]);;Argument[0];Argument[-1];taint",

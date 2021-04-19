@@ -46,19 +46,10 @@ predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
  * different objects.
  */
 predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-  localAdditionalBasicTaintStep(src, sink)
-  or
-  composedValueAndTaintModelStep(src, sink)
-}
-
-private predicate localAdditionalBasicTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   localAdditionalTaintExprStep(src.asExpr(), sink.asExpr())
   or
   localAdditionalTaintUpdateStep(src.asExpr(),
     sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr())
-  or
-  summaryStep(src, sink, "taint") and
-  not summaryStep(src, sink, "value")
   or
   exists(Argument arg |
     src.asExpr() = arg and
@@ -66,27 +57,8 @@ private predicate localAdditionalBasicTaintStep(DataFlow::Node src, DataFlow::No
     sink.(DataFlow::ImplicitVarargsArray).getCall() = arg.getCall()
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false)
-}
-
-/**
- * Holds if an additional step from `src` to `sink` through a call can be inferred from the
- * combination of a value-preserving step providing an alias between an input and the output
- * and a taint step from `src` to one the aliased nodes. For example, if we know that `f(a, b)` returns
- * the exact value of `a` and also propagates taint from `b` to `a`, then we also know that
- * the return value is tainted after `f` completes.
- */
-private predicate composedValueAndTaintModelStep(ArgumentNode src, DataFlow::Node sink) {
-  exists(Call call, ArgumentNode valueSource, DataFlow::PostUpdateNode valueSourcePost |
-    src.argumentOf(call, _) and
-    valueSource.argumentOf(call, _) and
-    src != valueSource and
-    valueSourcePost.getPreUpdateNode() = valueSource and
-    // in-x -value-> out-y and in-z -taint-> in-x ==> in-z -taint-> out-y
-    localAdditionalBasicTaintStep(src, valueSourcePost) and
-    DataFlow::localFlowStep(valueSource, DataFlow::exprNode(call)) and
-    sink = DataFlow::exprNode(call)
-  )
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false) and
+  not FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, true)
 }
 
 /**
