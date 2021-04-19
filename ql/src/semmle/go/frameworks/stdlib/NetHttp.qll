@@ -257,7 +257,7 @@ module NetHttp {
       or
       exists(Method m, string methName |
         m.hasQualifiedName("net/http", "Request", methName) and
-        this = m.getACall()
+        this = m.getACall().getResult(0)
       |
         methName = ["Cookie", "Cookies", "MultipartReader", "PostFormValue", "Referer", "UserAgent"]
       )
