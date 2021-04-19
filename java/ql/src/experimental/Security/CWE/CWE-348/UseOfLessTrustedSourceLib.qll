@@ -1,24 +1,105 @@
 import java
 import DataFlow
-import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking2
+import semmle.code.java.security.QueryInjection
 import experimental.semmle.code.java.Logging
 
-/** A data flow source of the value of the `x-forwarded-for` field in the `header`. */
+/**
+ * A data flow source of the client ip obtained according to the remote endpoint identifier specified
+ * in the header (`X-Forwarded-For`, `X-Real-IP`, `Proxy-Client-IP`, etc.).
+ *
+ * For example: `ServletRequest.getHeader("X-Forwarded-For")`.
+ */
 class UseOfLessTrustedSource extends DataFlow::Node {
   UseOfLessTrustedSource() {
     exists(MethodAccess ma |
       ma.getMethod().hasName("getHeader") and
-      ma.getArgument(0).toString().toLowerCase() = "\"x-forwarded-for\"" and
+      ma.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
+          "x-forwarded-for", "x-real-ip", "proxy-client-ip", "wl-proxy-client-ip",
+          "http_x_forwarded_for", "http_x_forwarded", "http_x_cluster_client_ip", "http_client_ip",
+          "http_forwarded_for", "http_forwarded", "http_via", "remote_addr"
+        ] and
       ma = this.asExpr()
     )
   }
 }
 
-/** A data flow sink of method return or log output or local print. */
-class UseOfLessTrustedSink extends DataFlow::Node {
-  UseOfLessTrustedSink() {
-    exists(ReturnStmt rs | rs.getResult() = this.asExpr())
-    or
+/** A data flow sink for ip address forgery vulnerabilities. */
+abstract class UseOfLessTrustedSink extends DataFlow::Node { }
+
+/**
+ * A data flow sink for the if condition, which does not include the null judgment of the remote client ip address.
+ *
+ * For example: `if (!StringUtils.startsWith(ipAddr, "192.168.")){...` determine whether the client ip starts
+ * with `192.168.`, and the program can be deceived by forging the ip address.
+ * `if (remoteAddr == null || "".equals(remoteAddr)) {...` judging whether the client ip is a null value,
+ * it needs to be excluded
+ */
+private class IfConditionSink extends UseOfLessTrustedSink {
+  IfConditionSink() {
+    exists(IfStmt is |
+      is.getCondition() = this.asExpr() and
+      not exists(EQExpr eqe |
+        eqe.getAnOperand() instanceof NullLiteral and
+        is.getCondition() = eqe.getParent*()
+      ) and
+      not exists(NEExpr nee |
+        nee.getAnOperand() instanceof NullLiteral and
+        is.getCondition() = nee.getParent*()
+      ) and
+      not exists(MethodAccess ma |
+        ma.getMethod().hasName("equals") and
+        ma.getMethod().getNumberOfParameters() = 1 and
+        (
+          ma.getQualifier().(CompileTimeConstantExpr).getStringValue() = "" or
+          ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = ""
+        ) and
+        is.getCondition() = ma.getParent*()
+      ) and
+      not exists(MethodAccess ma |
+        ma.getMethod().hasName("equalsIgnoreCase") and
+        ma.getMethod().getNumberOfParameters() = 1 and
+        (
+          ma.getQualifier().(CompileTimeConstantExpr).getStringValue() = "unknown" or
+          ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "unknown"
+        ) and
+        is.getCondition() = ma.getParent*()
+      ) and
+      not exists(MethodAccess ma |
+        ma.getMethod().getName() in ["isEmpty", "isNotEmpty"] and
+        ma.getMethod().getNumberOfParameters() = 1 and
+        is.getCondition() = ma.getParent*()
+      ) and
+      not exists(MethodAccess ma |
+        (
+          ma.getMethod().hasQualifiedName("org.apache.commons.lang3", "StringUtils", "isBlank") or
+          ma.getMethod().hasQualifiedName("org.apache.commons.lang3", "StringUtils", "isNotBlank")
+        ) and
+        is.getCondition() = ma.getParent*()
+      ) and
+      not exists(MethodAccess ma |
+        ma.getMethod()
+            .hasQualifiedName("org.apache.commons.lang3", "StringUtils", "equalsIgnoreCase") and
+        ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() = "unknown" and
+        is.getCondition() = ma.getParent*()
+      )
+    )
+  }
+}
+
+/** A data flow sink for sql operation. */
+private class SqlOperationSink extends UseOfLessTrustedSink {
+  SqlOperationSink() { this instanceof QueryInjectionSink }
+}
+
+/** A data flow sink for log operation. */
+private class LogOperationSink extends UseOfLessTrustedSink {
+  LogOperationSink() { exists(LoggingCall lc | lc.getAnArgument() = this.asExpr()) }
+}
+
+/** A data flow sink for local output. */
+private class PrintSink extends UseOfLessTrustedSink {
+  PrintSink() {
     exists(MethodAccess ma |
       ma.getMethod().getName() in ["print", "println"] and
       (
@@ -27,8 +108,6 @@ class UseOfLessTrustedSink extends DataFlow::Node {
       ) and
       ma.getAnArgument() = this.asExpr()
     )
-    or
-    exists(LoggingCall lc | lc.getAnArgument() = this.asExpr())
   }
 }
 
@@ -38,51 +117,4 @@ class SplitMethod extends Method {
     this.getNumberOfParameters() = 1 and
     this.hasQualifiedName("java.lang", "String", "split")
   }
-}
-
-/**
- * A call to the ServletRequest.getHeader method and the argument are
- * `wl-proxy-client-ip`/`proxy-client-ip`/`http_client_ip`/`http_x_forwarded_for`/`x-real-ip`.
- */
-class HeaderIpCall extends MethodAccess {
-  HeaderIpCall() {
-    this.getMethod().hasName("getHeader") and
-    this.getMethod()
-        .getDeclaringType()
-        .getASupertype*()
-        .hasQualifiedName("javax.servlet", "ServletRequest") and
-    this.getArgument(0).toString().toLowerCase() in [
-        "\"wl-proxy-client-ip\"", "\"proxy-client-ip\"", "\"http_client_ip\"",
-        "\"http_x_forwarded_for\"", "\"x-real-ip\""
-      ]
-  }
-}
-
-/** A call to `ServletRequest.getRemoteAddr` method. */
-class RemoteAddrCall extends MethodAccess {
-  RemoteAddrCall() {
-    this.getMethod().hasName("getRemoteAddr") and
-    this.getMethod()
-        .getDeclaringType()
-        .getASupertype*()
-        .hasQualifiedName("javax.servlet", "ServletRequest")
-  }
-}
-
-/** The first one in the method to get the ip value through `x-forwarded-for`. */
-predicate xffIsFirstGet(Node node) {
-  exists(HeaderIpCall hic |
-    node.getEnclosingCallable() = hic.getEnclosingCallable() and
-    node.getLocation().getEndLine() < hic.getLocation().getEndLine()
-  )
-  or
-  exists(RemoteAddrCall rac |
-    node.getEnclosingCallable() = rac.getEnclosingCallable() and
-    node.getLocation().getEndLine() < rac.getLocation().getEndLine()
-  )
-  or
-  not exists(HeaderIpCall hic, RemoteAddrCall rac |
-    node.getEnclosingCallable() = hic.getEnclosingCallable() and
-    node.getEnclosingCallable() = rac.getEnclosingCallable()
-  )
 }

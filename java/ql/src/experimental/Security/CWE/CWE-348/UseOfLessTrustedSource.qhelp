@@ -24,14 +24,11 @@ and get the last value of the split array.</p>
 </example>
 <references>
 
-<li>Prevent IP address spoofing with X-Forwarded-For header when using AWS ELB and Clojure Ring: 
-<a href="https://www.dennis-schneider.com/blog/prevent-ip-address-spoofing-with-x-forwarded-for-header-and-aws-elb-in-clojure-ring/">
-Prevent IP address spoofing with...</a>
+<li>Dennis Schneider: <a href="https://www.dennis-schneider.com/blog/prevent-ip-address-spoofing-with-x-forwarded-for-header-and-aws-elb-in-clojure-ring/">
+Prevent IP address spoofing with X-Forwarded-For header when using AWS ELB and Clojure Ring</a>
 </li>
 
-<li>Security Rule Zero: A Warning about X-Forwarded-For: 
-<a href="https://www.f5.com/company/blog/security-rule-zero-a-warning-about-x-forwarded-for">
-Security Rule Zero: A Warning about X-Forwarded-For</a>
+<li>Security Rule Zero: <a href="https://www.f5.com/company/blog/security-rule-zero-a-warning-about-x-forwarded-for">A Warning about X-Forwarded-For</a>
 </li>
 
 </references>

@@ -1,20 +1,23 @@
 /**
- * @name X-Forwarded-For spoofing
+ * @name IP address spoofing
  * @description The software obtains the client ip through `X-Forwarded-For`,
  *              and the attacker can modify the value of `X-Forwarded-For` to forge the ip.
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id java/use-of-less-trusted-source
+ * @id java/ip-address-spoofing
  * @tags security
  *       external/cwe/cwe-348
  */
 
 import java
 import UseOfLessTrustedSourceLib
+import semmle.code.java.dataflow.DataFlow2
+import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
+/** Taint-tracking configuration tracing flow from get method request sources to output jsonp data. */
 class UseOfLessTrustedSourceConfig extends TaintTracking::Configuration {
   UseOfLessTrustedSourceConfig() { this = "UseOfLessTrustedSourceConfig" }
 
@@ -23,22 +26,26 @@ class UseOfLessTrustedSourceConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof UseOfLessTrustedSink }
 
   /**
-   * When using `,` split request data and not taking the first value of
-   *  the array, it is considered as `good`.
+   * When using `,` split request data and not taking the first value of the array, it is considered as `good`.
    */
   override predicate isSanitizer(DataFlow::Node node) {
     exists(ArrayAccess aa, MethodAccess ma | aa.getArray() = ma |
       ma.getQualifier() = node.asExpr() and
       ma.getMethod() instanceof SplitMethod and
-      not aa.getIndexExpr().toString() = "0"
+      not aa.getIndexExpr().(CompileTimeConstantExpr).getIntValue() = 0
+    )
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node prod, DataFlow::Node succ) {
+    exists(MethodAccess ma |
+      ma.getAnArgument() = prod.asExpr() and
+      ma = succ.asExpr() and
+      ma.getMethod().getReturnType() instanceof BooleanType
     )
   }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, UseOfLessTrustedSourceConfig conf
-where
-  conf.hasFlowPath(source, sink) and
-  source.getNode().getEnclosingCallable() = sink.getNode().getEnclosingCallable() and
-  xffIsFirstGet(source.getNode())
-select sink.getNode(), source, sink, "X-Forwarded-For spoofing might include code from $@.",
+where conf.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "IP address spoofing might include code from $@.",
   source.getNode(), "this user input"
