@@ -264,3 +264,13 @@ class File extends ExtractedOrExternalFile {
     exists(this.getAChild())
   }
 }
+
+/** A Go file. */
+class GoFile extends File {
+  GoFile() { this.getExtension() = "go" }
+}
+
+/** An HTML file. */
+class HtmlFile extends File {
+  HtmlFile() { this.getExtension().regexpMatch("x?html?") }
+}
