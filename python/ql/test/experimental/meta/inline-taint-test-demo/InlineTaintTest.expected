@@ -1,5 +1,7 @@
 argumentToEnsureNotTaintedNotMarkedAsSpurious
-| ERROR, you should add `SPURIOUS:` to this annotation | taint_test.py:36:9:36:29 | taint_test.py:36 | should_not_be_tainted |
+| ERROR, you should add `SPURIOUS:` to this annotation | taint_test.py:48:9:48:29 | taint_test.py:48 | should_not_be_tainted |
 untaintedArgumentToEnsureTaintedNotMarkedAsMissing
-| ERROR, you should add `# $ MISSING: tainted` annotation | taint_test.py:28:9:28:25 | taint_test.py:28 |
+| ERROR, you should add `# $ MISSING: tainted` annotation | taint_test.py:32:9:32:25 | taint_test.py:32 |
+| ERROR, you should add `# $ MISSING: tainted` annotation | taint_test.py:37:24:37:40 | taint_test.py:37 |
 failures
+| taint_test.py:41:20:41:21 | ts | Fixed missing result:tainted= |
