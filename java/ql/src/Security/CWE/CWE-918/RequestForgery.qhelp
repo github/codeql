@@ -13,9 +13,11 @@ may be tricked into making a request and interacting with an attacker-controlled
 </overview>
 <recommendation>
 
-<p>To guard against SSRF attacks, it is advisable to avoid putting user input
+<p>To guard against SSRF attacks, you should avoid putting user-provided input
 directly into a request URL. Instead, maintain a list of authorized
-URLs on the server; then choose from that list based on the user input provided.</p>
+URLs on the server; then choose from that list based on the input provided.
+Alternatively, ensure requests constructed from user input are limited to
+a particular host or more restrictive URL prefix.</p>
 
 </recommendation>
 <example>
