@@ -44,7 +44,7 @@ class Node extends TNode {
    * See `TypeTracker` for more details about how to use this.
    */
   pragma[inline]
-  Node track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
+  LocalSourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
 }
 
 /**
