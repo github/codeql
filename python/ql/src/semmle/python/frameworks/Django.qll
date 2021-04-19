@@ -300,19 +300,13 @@ private module PrivateDjango {
   /** Gets a reference to the `django` module. */
   API::Node django() { result = API::moduleImport("django") }
 
-  /**
-   * Gets a reference to the attribute `attr_name` of the `django` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private API::Node django_attr(string attr_name) { result = django().getMember(attr_name) }
-
   /** Provides models for the `django` module. */
   module django {
     // -------------------------------------------------------------------------
     // django.db
     // -------------------------------------------------------------------------
     /** Gets a reference to the `django.db` module. */
-    API::Node db() { result = django_attr("db") }
+    API::Node db() { result = django().getMember("db") }
 
     /**
      * `django.db` implements PEP249, providing ways to execute SQL statements against a database.
@@ -473,34 +467,28 @@ private module PrivateDjango {
     // django.urls
     // -------------------------------------------------------------------------
     /** Gets a reference to the `django.urls` module. */
-    API::Node urls() { result = django_attr("urls") }
+    API::Node urls() { result = django().getMember("urls") }
 
     /** Provides models for the `django.urls` module */
     module urls {
       /**
-       * Gets a reference to the attribute `attr_name` of the `urls` module.
-       * WARNING: Only holds for a few predefined attributes.
-       */
-      private API::Node urls_attr(string attr_name) { result = urls().getMember(attr_name) }
-
-      /**
        * Gets a reference to the `django.urls.path` function.
        * See https://docs.djangoproject.com/en/3.0/ref/urls/#path
        */
-      API::Node path() { result = urls_attr("path") }
+      API::Node path() { result = urls().getMember("path") }
 
       /**
        * Gets a reference to the `django.urls.re_path` function.
        * See https://docs.djangoproject.com/en/3.0/ref/urls/#re_path
        */
-      API::Node re_path() { result = urls_attr("re_path") }
+      API::Node re_path() { result = urls().getMember("re_path") }
     }
 
     // -------------------------------------------------------------------------
     // django.conf
     // -------------------------------------------------------------------------
     /** Gets a reference to the `django.conf` module. */
-    API::Node conf() { result = django_attr("conf") }
+    API::Node conf() { result = django().getMember("conf") }
 
     /** Provides models for the `django.conf` module */
     module conf {
@@ -525,30 +513,18 @@ private module PrivateDjango {
     // django.http
     // -------------------------------------------------------------------------
     /** Gets a reference to the `django.http` module. */
-    API::Node http() { result = django_attr("http") }
+    API::Node http() { result = django().getMember("http") }
 
     /** Provides models for the `django.http` module */
     module http {
-      /**
-       * Gets a reference to the attribute `attr_name` of the `django.http` module.
-       * WARNING: Only holds for a few predefined attributes.
-       */
-      private API::Node http_attr(string attr_name) { result = http().getMember(attr_name) }
-
       // ---------------------------------------------------------------------------
       // django.http.request
       // ---------------------------------------------------------------------------
       /** Gets a reference to the `django.http.request` module. */
-      API::Node request() { result = http_attr("request") }
+      API::Node request() { result = http().getMember("request") }
 
       /** Provides models for the `django.http.request` module. */
       module request {
-        /**
-         * Gets a reference to the attribute `attr_name` of the `django.http.request` module.
-         * WARNING: Only holds for a few predefined attributes.
-         */
-        private API::Node request_attr(string attr_name) { result = request().getMember(attr_name) }
-
         /**
          * Provides models for the `django.http.request.HttpRequest` class
          *
@@ -557,10 +533,10 @@ private module PrivateDjango {
         module HttpRequest {
           /** Gets a reference to the `django.http.request.HttpRequest` class. */
           API::Node classRef() {
-            result = request_attr("HttpRequest")
+            result = request().getMember("HttpRequest")
             or
             // handle django.http.HttpRequest alias
-            result = http_attr("HttpRequest")
+            result = http().getMember("HttpRequest")
           }
 
           /**
@@ -592,18 +568,10 @@ private module PrivateDjango {
       // django.http.response
       // -------------------------------------------------------------------------
       /** Gets a reference to the `django.http.response` module. */
-      API::Node response() { result = http_attr("response") }
+      API::Node response() { result = http().getMember("response") }
 
       /** Provides models for the `django.http.response` module */
       module response {
-        /**
-         * Gets a reference to the attribute `attr_name` of the `django.http.response` module.
-         * WARNING: Only holds for a few predefined attributes.
-         */
-        private API::Node response_attr(string attr_name) {
-          result = response().getMember(attr_name)
-        }
-
         /**
          * Provides models for the `django.http.response.HttpResponse` class
          *
@@ -611,10 +579,10 @@ private module PrivateDjango {
          */
         module HttpResponse {
           API::Node baseClassRef() {
-            result = response_attr("HttpResponse")
+            result = response().getMember("HttpResponse")
             or
             // Handle `django.http.HttpResponse` alias
-            result = http_attr("HttpResponse")
+            result = http().getMember("HttpResponse")
           }
 
           /** Gets a reference to the `django.http.response.HttpResponse` class. */
@@ -672,10 +640,10 @@ private module PrivateDjango {
         module HttpResponseRedirect {
           /** Gets a reference to the `django.http.response.HttpResponseRedirect` class. */
           API::Node baseClassRef() {
-            result = response_attr("HttpResponseRedirect")
+            result = response().getMember("HttpResponseRedirect")
             or
             // Handle `django.http.HttpResponseRedirect` alias
-            result = http_attr("HttpResponseRedirect")
+            result = http().getMember("HttpResponseRedirect")
           }
 
           /** Gets a reference a subclass of the `django.http.response.HttpResponseRedirect` class. */
@@ -734,10 +702,10 @@ private module PrivateDjango {
         module HttpResponsePermanentRedirect {
           /** Gets a reference to the `django.http.response.HttpResponsePermanentRedirect` class. */
           API::Node baseClassRef() {
-            result = response_attr("HttpResponsePermanentRedirect")
+            result = response().getMember("HttpResponsePermanentRedirect")
             or
             // Handle `django.http.HttpResponsePermanentRedirect` alias
-            result = http_attr("HttpResponsePermanentRedirect")
+            result = http().getMember("HttpResponsePermanentRedirect")
           }
 
           /** Gets a reference to the `django.http.response.HttpResponsePermanentRedirect` class. */
@@ -796,11 +764,11 @@ private module PrivateDjango {
         module HttpResponseNotModified {
           /** Gets a reference to the `django.http.response.HttpResponseNotModified` class. */
           API::Node baseClassRef() {
-            result = response_attr("HttpResponseNotModified")
+            result = response().getMember("HttpResponseNotModified")
             or
             // TODO: remove/expand this part of the template as needed
             // Handle `django.http.HttpResponseNotModified` alias
-            result = http_attr("HttpResponseNotModified")
+            result = http().getMember("HttpResponseNotModified")
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseNotModified` class. */
@@ -849,10 +817,10 @@ private module PrivateDjango {
         module HttpResponseBadRequest {
           /** Gets a reference to the `django.http.response.HttpResponseBadRequest` class. */
           API::Node baseClassRef() {
-            result = response_attr("HttpResponseBadRequest")
+            result = response().getMember("HttpResponseBadRequest")
             or
             // Handle `django.http.HttpResponseBadRequest` alias
-            result = http_attr("HttpResponseBadRequest")
+            result = http().getMember("HttpResponseBadRequest")
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseBadRequest` class. */
@@ -903,10 +871,10 @@ private module PrivateDjango {
         module HttpResponseNotFound {
           /** Gets a reference to the `django.http.response.HttpResponseNotFound` class. */
           API::Node baseClassRef() {
-            result = response_attr("HttpResponseNotFound")
+            result = response().getMember("HttpResponseNotFound")
             or
             // Handle `django.http.HttpResponseNotFound` alias
-            result = http_attr("HttpResponseNotFound")
+            result = http().getMember("HttpResponseNotFound")
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseNotFound` class. */
@@ -957,10 +925,10 @@ private module PrivateDjango {
         module HttpResponseForbidden {
           /** Gets a reference to the `django.http.response.HttpResponseForbidden` class. */
           API::Node baseClassRef() {
-            result = response_attr("HttpResponseForbidden")
+            result = response().getMember("HttpResponseForbidden")
             or
             // Handle `django.http.HttpResponseForbidden` alias
-            result = http_attr("HttpResponseForbidden")
+            result = http().getMember("HttpResponseForbidden")
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseForbidden` class. */
@@ -1011,10 +979,10 @@ private module PrivateDjango {
         module HttpResponseNotAllowed {
           /** Gets a reference to the `django.http.response.HttpResponseNotAllowed` class. */
           API::Node baseClassRef() {
-            result = response_attr("HttpResponseNotAllowed")
+            result = response().getMember("HttpResponseNotAllowed")
             or
             // Handle `django.http.HttpResponseNotAllowed` alias
-            result = http_attr("HttpResponseNotAllowed")
+            result = http().getMember("HttpResponseNotAllowed")
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseNotAllowed` class. */
@@ -1066,10 +1034,10 @@ private module PrivateDjango {
         module HttpResponseGone {
           /** Gets a reference to the `django.http.response.HttpResponseGone` class. */
           API::Node baseClassRef() {
-            result = response_attr("HttpResponseGone")
+            result = response().getMember("HttpResponseGone")
             or
             // Handle `django.http.HttpResponseGone` alias
-            result = http_attr("HttpResponseGone")
+            result = http().getMember("HttpResponseGone")
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseGone` class. */
@@ -1120,10 +1088,10 @@ private module PrivateDjango {
         module HttpResponseServerError {
           /** Gets a reference to the `django.http.response.HttpResponseServerError` class. */
           API::Node baseClassRef() {
-            result = response_attr("HttpResponseServerError")
+            result = response().getMember("HttpResponseServerError")
             or
             // Handle `django.http.HttpResponseServerError` alias
-            result = http_attr("HttpResponseServerError")
+            result = http().getMember("HttpResponseServerError")
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseServerError` class. */
@@ -1174,10 +1142,10 @@ private module PrivateDjango {
         module JsonResponse {
           /** Gets a reference to the `django.http.response.JsonResponse` class. */
           API::Node baseClassRef() {
-            result = response_attr("JsonResponse")
+            result = response().getMember("JsonResponse")
             or
             // Handle `django.http.JsonResponse` alias
-            result = http_attr("JsonResponse")
+            result = http().getMember("JsonResponse")
           }
 
           /** Gets a reference to the `django.http.response.JsonResponse` class. */
@@ -1231,10 +1199,10 @@ private module PrivateDjango {
         module StreamingHttpResponse {
           /** Gets a reference to the `django.http.response.StreamingHttpResponse` class. */
           API::Node baseClassRef() {
-            result = response_attr("StreamingHttpResponse")
+            result = response().getMember("StreamingHttpResponse")
             or
             // Handle `django.http.StreamingHttpResponse` alias
-            result = http_attr("StreamingHttpResponse")
+            result = http().getMember("StreamingHttpResponse")
           }
 
           /** Gets a reference to the `django.http.response.StreamingHttpResponse` class. */
@@ -1285,10 +1253,10 @@ private module PrivateDjango {
         module FileResponse {
           /** Gets a reference to the `django.http.response.FileResponse` class. */
           API::Node baseClassRef() {
-            result = response_attr("FileResponse")
+            result = response().getMember("FileResponse")
             or
             // Handle `django.http.FileResponse` alias
-            result = http_attr("FileResponse")
+            result = http().getMember("FileResponse")
           }
 
           /** Gets a reference to the `django.http.response.FileResponse` class. */
@@ -1378,24 +1346,16 @@ private module PrivateDjango {
     // django.shortcuts
     // -------------------------------------------------------------------------
     /** Gets a reference to the `django.shortcuts` module. */
-    API::Node shortcuts() { result = django_attr("shortcuts") }
+    API::Node shortcuts() { result = django().getMember("shortcuts") }
 
     /** Provides models for the `django.shortcuts` module */
     module shortcuts {
-      /**
-       * Gets a reference to the attribute `attr_name` of the `django.shortcuts` module.
-       * WARNING: Only holds for a few predefined attributes.
-       */
-      private API::Node shortcuts_attr(string attr_name) {
-        result = shortcuts().getMember(attr_name)
-      }
-
       /**
        * Gets a reference to the `django.shortcuts.redirect` function
        *
        * See https://docs.djangoproject.com/en/3.1/topics/http/shortcuts/#redirect
        */
-      API::Node redirect() { result = shortcuts_attr("redirect") }
+      API::Node redirect() { result = shortcuts().getMember("redirect") }
     }
   }
 
