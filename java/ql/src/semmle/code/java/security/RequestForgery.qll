@@ -152,7 +152,7 @@ private class HttpBuilderUriArgument extends RequestForgerySink {
 private class SpringRestTemplateArgument extends RequestForgerySink {
   SpringRestTemplateArgument() {
     exists(MethodAccess ma |
-      this.asExpr() = ma.getMethod().(SpringRestTemplateUrlMethods).getUrlArgument(ma)
+      this.asExpr() = ma.getMethod().(SpringRestTemplateUrlMethod).getUrlArgument(ma)
     )
   }
 }
