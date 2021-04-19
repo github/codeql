@@ -2,6 +2,7 @@ edges
 | DocumentBuilderTests.java:93:51:93:71 | getInputStream(...) : InputStream | DocumentBuilderTests.java:94:16:94:38 | getInputSource(...) |
 | DocumentBuilderTests.java:100:41:100:61 | getInputStream(...) : InputStream | DocumentBuilderTests.java:101:16:101:52 | sourceToInputSource(...) |
 | DocumentBuilderTests.java:100:41:100:61 | getInputStream(...) : InputStream | DocumentBuilderTests.java:102:16:102:38 | getInputStream(...) |
+| SAXSourceTests.java:17:62:17:82 | getInputStream(...) : InputStream | SAXSourceTests.java:20:18:20:23 | source |
 | SchemaTests.java:12:56:12:76 | getInputStream(...) : InputStream | SchemaTests.java:12:39:12:77 | new StreamSource(...) |
 | SchemaTests.java:25:56:25:76 | getInputStream(...) : InputStream | SchemaTests.java:25:39:25:77 | new StreamSource(...) |
 | SchemaTests.java:31:56:31:76 | getInputStream(...) : InputStream | SchemaTests.java:31:39:31:77 | new StreamSource(...) |
@@ -78,6 +79,8 @@ nodes
 | SAXReaderTests.java:45:17:45:37 | getInputStream(...) | semmle.label | getInputStream(...) |
 | SAXReaderTests.java:53:17:53:37 | getInputStream(...) | semmle.label | getInputStream(...) |
 | SAXReaderTests.java:61:17:61:37 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXSourceTests.java:17:62:17:82 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SAXSourceTests.java:20:18:20:23 | source | semmle.label | source |
 | SchemaTests.java:12:39:12:77 | new StreamSource(...) | semmle.label | new StreamSource(...) |
 | SchemaTests.java:12:56:12:76 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | SchemaTests.java:25:39:25:77 | new StreamSource(...) | semmle.label | new StreamSource(...) |
@@ -163,6 +166,7 @@ nodes
 | TransformerTests.java:136:38:136:58 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | TransformerTests.java:141:18:141:70 | new SAXSource(...) | semmle.label | new SAXSource(...) |
 | TransformerTests.java:141:48:141:68 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| UnmarshallerTests.java:28:18:28:38 | getInputStream(...) | semmle.label | getInputStream(...) |
 | XMLReaderTests.java:16:18:16:55 | new InputSource(...) | semmle.label | new InputSource(...) |
 | XMLReaderTests.java:16:34:16:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | XMLReaderTests.java:56:18:56:55 | new InputSource(...) | semmle.label | new InputSource(...) |
@@ -220,6 +224,7 @@ nodes
 | SAXReaderTests.java:45:17:45:37 | getInputStream(...) | SAXReaderTests.java:45:17:45:37 | getInputStream(...) | SAXReaderTests.java:45:17:45:37 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXReaderTests.java:45:17:45:37 | getInputStream(...) | user input |
 | SAXReaderTests.java:53:17:53:37 | getInputStream(...) | SAXReaderTests.java:53:17:53:37 | getInputStream(...) | SAXReaderTests.java:53:17:53:37 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXReaderTests.java:53:17:53:37 | getInputStream(...) | user input |
 | SAXReaderTests.java:61:17:61:37 | getInputStream(...) | SAXReaderTests.java:61:17:61:37 | getInputStream(...) | SAXReaderTests.java:61:17:61:37 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXReaderTests.java:61:17:61:37 | getInputStream(...) | user input |
+| SAXSourceTests.java:20:18:20:23 | source | SAXSourceTests.java:17:62:17:82 | getInputStream(...) : InputStream | SAXSourceTests.java:20:18:20:23 | source | Unsafe parsing of XML file from $@. | SAXSourceTests.java:17:62:17:82 | getInputStream(...) | user input |
 | SchemaTests.java:12:39:12:77 | new StreamSource(...) | SchemaTests.java:12:56:12:76 | getInputStream(...) : InputStream | SchemaTests.java:12:39:12:77 | new StreamSource(...) | Unsafe parsing of XML file from $@. | SchemaTests.java:12:56:12:76 | getInputStream(...) | user input |
 | SchemaTests.java:25:39:25:77 | new StreamSource(...) | SchemaTests.java:25:56:25:76 | getInputStream(...) : InputStream | SchemaTests.java:25:39:25:77 | new StreamSource(...) | Unsafe parsing of XML file from $@. | SchemaTests.java:25:56:25:76 | getInputStream(...) | user input |
 | SchemaTests.java:31:39:31:77 | new StreamSource(...) | SchemaTests.java:31:56:31:76 | getInputStream(...) : InputStream | SchemaTests.java:31:39:31:77 | new StreamSource(...) | Unsafe parsing of XML file from $@. | SchemaTests.java:31:56:31:76 | getInputStream(...) | user input |
@@ -267,6 +272,7 @@ nodes
 | TransformerTests.java:129:21:129:59 | new StreamSource(...) | TransformerTests.java:129:38:129:58 | getInputStream(...) : InputStream | TransformerTests.java:129:21:129:59 | new StreamSource(...) | Unsafe parsing of XML file from $@. | TransformerTests.java:129:38:129:58 | getInputStream(...) | user input |
 | TransformerTests.java:136:21:136:59 | new StreamSource(...) | TransformerTests.java:136:38:136:58 | getInputStream(...) : InputStream | TransformerTests.java:136:21:136:59 | new StreamSource(...) | Unsafe parsing of XML file from $@. | TransformerTests.java:136:38:136:58 | getInputStream(...) | user input |
 | TransformerTests.java:141:18:141:70 | new SAXSource(...) | TransformerTests.java:141:48:141:68 | getInputStream(...) : InputStream | TransformerTests.java:141:18:141:70 | new SAXSource(...) | Unsafe parsing of XML file from $@. | TransformerTests.java:141:48:141:68 | getInputStream(...) | user input |
+| UnmarshallerTests.java:28:18:28:38 | getInputStream(...) | UnmarshallerTests.java:28:18:28:38 | getInputStream(...) | UnmarshallerTests.java:28:18:28:38 | getInputStream(...) | Unsafe parsing of XML file from $@. | UnmarshallerTests.java:28:18:28:38 | getInputStream(...) | user input |
 | XMLReaderTests.java:16:18:16:55 | new InputSource(...) | XMLReaderTests.java:16:34:16:54 | getInputStream(...) : InputStream | XMLReaderTests.java:16:18:16:55 | new InputSource(...) | Unsafe parsing of XML file from $@. | XMLReaderTests.java:16:34:16:54 | getInputStream(...) | user input |
 | XMLReaderTests.java:56:18:56:55 | new InputSource(...) | XMLReaderTests.java:56:34:56:54 | getInputStream(...) : InputStream | XMLReaderTests.java:56:18:56:55 | new InputSource(...) | Unsafe parsing of XML file from $@. | XMLReaderTests.java:56:34:56:54 | getInputStream(...) | user input |
 | XMLReaderTests.java:63:18:63:55 | new InputSource(...) | XMLReaderTests.java:63:34:63:54 | getInputStream(...) : InputStream | XMLReaderTests.java:63:18:63:55 | new InputSource(...) | Unsafe parsing of XML file from $@. | XMLReaderTests.java:63:34:63:54 | getInputStream(...) | user input |
