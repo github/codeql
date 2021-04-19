@@ -646,7 +646,7 @@ private module PrivateDjango {
             result = http().getMember("HttpResponseRedirect")
           }
 
-          /** Gets a reference a subclass of the `django.http.response.HttpResponseRedirect` class. */
+          /** Gets a reference to a subclass of the `django.http.response.HttpResponseRedirect` class. */
           API::Node classRef() { result = baseClassRef().getASubclass*() }
 
           /**
