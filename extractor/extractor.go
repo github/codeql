@@ -501,7 +501,7 @@ func (extraction *Extraction) extractError(tw *trap.Writer, err packages.Error, 
 	dbscheme.DiagnosticsTable.Emit(
 		extraction.StatWriter, diagLbl, 1, tag, err.Msg, err.Msg,
 		emitLocation(extraction.StatWriter, flbl, line, col, line, col))
-	dbscheme.DiagnosticForTable.Emit(extraction.StatWriter, diagLbl, extraction.Label, extraction.GetFileIdx(transformed), extraction.GetNextErr(transformed))
+	dbscheme.DiagnosticForTable.Emit(extraction.StatWriter, diagLbl, extraction.Label, extraction.GetFileIdx(file), extraction.GetNextErr(file))
 	extraction.Lock.Unlock()
 	dbscheme.ErrorsTable.Emit(tw, lbl, kind, err.Msg, pos, transformed, line, col, pkglbl, idx)
 }
@@ -588,19 +588,19 @@ func stemAndExt(base string) (string, string) {
 // extractFileInfo extracts file-system level information for the given file, populating
 // the `files` and `containerparent` tables
 func (extraction *Extraction) extractFileInfo(tw *trap.Writer, file string) {
-	path := filepath.ToSlash(srcarchive.TransformPath(file))
-	components := strings.Split(path, "/")
-	parentPath := ""
-	var parentLbl trap.Label
-
 	// We may visit the same file twice because `extractError` calls this function to describe files containing
 	// compilation errors. It is also called for user source files being extracted.
 	extraction.Lock.Lock()
-	if extraction.SeenFile(path) {
+	if extraction.SeenFile(file) {
 		extraction.Lock.Unlock()
 		return
 	}
 	extraction.Lock.Unlock()
+
+	path := filepath.ToSlash(srcarchive.TransformPath(file))
+	components := strings.Split(path, "/")
+	parentPath := ""
+	var parentLbl trap.Label
 
 	for i, component := range components {
 		if i == 0 {
@@ -620,7 +620,7 @@ func (extraction *Extraction) extractFileInfo(tw *trap.Writer, file string) {
 			dbscheme.HasLocationTable.Emit(tw, lbl, emitLocation(tw, lbl, 0, 0, 0, 0))
 			extraction.Lock.Lock()
 			slbl := extraction.StatWriter.Labeler.FileLabelFor(file)
-			dbscheme.CompilationCompilingFilesTable.Emit(extraction.StatWriter, extraction.Label, extraction.GetFileIdx(path), slbl)
+			dbscheme.CompilationCompilingFilesTable.Emit(extraction.StatWriter, extraction.Label, extraction.GetFileIdx(file), slbl)
 			extraction.Lock.Unlock()
 			break
 		}
