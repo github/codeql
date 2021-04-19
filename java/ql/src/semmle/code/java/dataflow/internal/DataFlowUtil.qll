@@ -156,7 +156,7 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   // to B as well. As an example, this simplifies modeling of fluent methods:
   // for `StringBuilder.append(x)` with a specified value flow from qualifier to
   // return value and taint flow from argument 0 to the qualifier, then this
-  // allows the inferral of taint flow from argument 0 to the return value.
+  // allows us to infer taint flow from argument 0 to the return value.
   node1.(SummaryNode).(PostUpdateNode).getPreUpdateNode().(ParameterNode) = node2
 }
 
