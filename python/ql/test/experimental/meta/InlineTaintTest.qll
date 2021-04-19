@@ -66,7 +66,7 @@ class InlineTaintTest extends InlineExpectationsTest {
 }
 
 query predicate argumentToEnsureNotTaintedNotMarkedAsSpurious(
-  string error, Location location, string element
+  Location location, string error, string element
 ) {
   error = "ERROR, you should add `SPURIOUS:` to this annotation" and
   location = shouldNotBeTainted().getLocation() and
@@ -78,7 +78,7 @@ query predicate argumentToEnsureNotTaintedNotMarkedAsSpurious(
   )
 }
 
-query predicate untaintedArgumentToEnsureTaintedNotMarkedAsMissing(string error, Location location) {
+query predicate untaintedArgumentToEnsureTaintedNotMarkedAsMissing(Location location, string error) {
   error = "ERROR, you should add `# $ MISSING: tainted` annotation" and
   exists(DataFlow::Node sink |
     sink = shouldBeTainted() and
